@@ -2,82 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C08FCA86A6
-	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 17:42:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95FB7CA86AF
+	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 17:42:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vRYsB-0005Up-5h; Fri, 05 Dec 2025 11:41:35 -0500
+	id 1vRYsD-0005W2-Ld; Fri, 05 Dec 2025 11:41:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vRYs9-0005TZ-Ew
+ id 1vRYs9-0005UJ-PI
  for qemu-devel@nongnu.org; Fri, 05 Dec 2025 11:41:33 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vRYs6-0005jK-Dx
+ id 1vRYs7-0005jp-VL
  for qemu-devel@nongnu.org; Fri, 05 Dec 2025 11:41:33 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-42e2e671521so1528976f8f.1
- for <qemu-devel@nongnu.org>; Fri, 05 Dec 2025 08:41:29 -0800 (PST)
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-477ba2c1ca2so29664225e9.2
+ for <qemu-devel@nongnu.org>; Fri, 05 Dec 2025 08:41:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764952887; x=1765557687; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=1155hxUGMmswdZayXsFxvNHEuA+dzyh/qWFq8oUu1Hg=;
- b=oCgOo7LVHQE6KEl7vi8rfXxjr6xIlBY2Kq3ssD/Aqg6GLVjUoeTx3+RhBkWdwPw4QQ
- tkaGiiTmvUgVX66FfuwPK8kFByfLWWk1yfc93Iy9sgjY/gaO8uq6VLI6u0Ib9wk5MYiV
- WocGRkdDnj9x3UHbasth1QcWUxJlwA3cpDOi3G8C4iTFTuN+gTFUjA+yTrXvVnHWVuya
- n6XhResnnd1STOWJ9BW3v/YMhfQ6qQZlelWXKuh1eH1FjMp+N5nG7Dgz1Nk782ykBme3
- q1Qd+Y76z640Wahdvl+09oQP0GvNFHfs/kPn39+vvM/gi8Xl5JCFDGBVpvOeLaGFi7Sb
- GlbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764952887; x=1765557687;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1764952890; x=1765557690; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1155hxUGMmswdZayXsFxvNHEuA+dzyh/qWFq8oUu1Hg=;
- b=vwUIt0fkU6/0S67aF/oulnrY61p60jmSqcMh56bYTq2yuU9rQzpPOai1f6Pmdm9k05
- AbrX1NV6bKJ3uY2KbeOiEEEMUjzSpKimT+hR+oC5y8bA5NekMahZt3gxEs2hqMORKx8W
- 70jCC8XbdWgnXG5zzLpdPrHSiTQ06PGQROeOe2x/m9ttBGa7R0qWGkrHj10no0R2BeId
- a7XnZxFPC/uWHZwqBrM6qSYlfNPtc71NyFh753UBR674M2SlgTmwnEmVE6SWvh3cX2b6
- sHQ/y3FrSQ/2EYnvopMWddQl9of99Ds6BJy0BAPsN1rZwkI/aIqPRxjpTW0OJkB2K0dG
- K5fw==
-X-Gm-Message-State: AOJu0Yz7gRcbb+Buw4hbtSH6ugp3sJqCPlUNO1adX+8NHoTsXNjGqQQP
- YLNiNABq6uATNq2AcevLJ+NPFCRSPshcHeHWN+RYBwDcYrSTYc4SHNzzcmt5YRmjQiUvczW7Gx7
- e1AsX
-X-Gm-Gg: ASbGncujUmgOemk2s9Nfnp8BVdrZ/rKG3kcgJd72jQ8Xa4MaCDe3BXd0ik9k9/bAs7G
- aIkSGOPnWN0WANdHqbH0olsf3McaV+fuPO1gDCZ+79CTCnLjb1Y1XHeZq9N0VQyDoF2ZdC/C4oM
- +p7QxEdJUwc0mTsiVnyD/kEZMwyKjhEMVsJoyAD+IQOaNxwzoqo4PQaBaLf5JfQPnlTsLhHpifr
- 9pO3XQKbK1tOz1R2q/YZAR/YPR8I5SKM46GMhOaLH9O55PBFDtuAJ0yxUb8SrsZulzml9VMzKk5
- CsjACzN9Dk35Wc/QRGPKq60nna9zyvgHhVdOuihvL+ZtrhjCqKbfH+Jp5j993+lGNyUTD+zYpnr
- L1M+0zsg95ViLq/tZA1vGcu6n15MgY8Lmiyy8EZcIjnsjTWPx1BFytyHKEfXI4D8CWQks08L9L9
- Vl4ypH9v5fmsM=
-X-Google-Smtp-Source: AGHT+IGXTDuCKXUlfJNy6FsevDa7jFbF8EeD6M4d8/w8kdBakDqHyURIhhYrJt3Zcz/bL/1uXfm+6g==
-X-Received: by 2002:adf:fe08:0:b0:42f:8816:6e55 with SMTP id
- ffacd0b85a97d-42f88166e96mr649627f8f.63.1764952887438; 
- Fri, 05 Dec 2025 08:41:27 -0800 (PST)
+ bh=0zGaWdP6bu+uZrFtqustVUWUW1vb2Tudl4LtLpMgFZA=;
+ b=b90FwYBKdJTqwzkQeZNIAsK91wykGuAxvljiJD+BxL1jdE/5LhQNqIC3p06gZdD+jZ
+ 4YJko3HsxVFRl5lWc/9R/oKF6S5+v0qiOeRyQXAWOE2RElY1KkoDkp0ZdP5SNvFMWgP6
+ CTWf1xtry84qGnOPguhyEM65Ld9E4fl6siyCKpBtXgM4qA3lKrh4LN37D5+W03QGqU4L
+ Mvao633AszN0kUyiIDpxCnoVBOYr/gJlGX/5ya0Yu8FOpERPdb5iKNKCFKI+8fDbYMix
+ jVfEI9jGRiN45tX6MnRbkzqvosnfSym/pLlyH6ovChTaGkBYdEeC+xh91nlKdQAGylR4
+ fg+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1764952890; x=1765557690;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=0zGaWdP6bu+uZrFtqustVUWUW1vb2Tudl4LtLpMgFZA=;
+ b=bif7lffuZOQ6UWShJFLXzy8Xs4PeGW2RSyjLFPkiC9wSEdGLI64CzCm50OpUeisDLI
+ bdqW1lijlMc/gbH952EQuHN9BYa6ecrsdekFXxmWx93c32ZMdpVnzQhzgW1xGz3cO1Ol
+ HZavCnmfq5TRNPw3pq8frTdVCvzYhNvy6ACHK5nY2/OqWSEFvovn/V8LXLb3OhLwjJTs
+ 0TheouRPHQ5jXJcMAh/lVVEyUD/ZV7/k0Wd1g5a9AiKHGLuJ2axiAJx/yZCN42oiuqHO
+ wlvssDaruzvHbyXX8Z2zif/VqrpsfbP/tNEZxIQfIiKeVEx6pO0VdS4fgCDbHOE7xiAy
+ QAUQ==
+X-Gm-Message-State: AOJu0YzEK3YBkiKARruVSx+76zyBpTH9aif7EIJysIMkr5b6foLhAfpo
+ 4g2JTOurNuH27Uj549GLAa1K+Dn6/0sQ27vKrHQ3OnOgldwXUq4FhAdouSCm3rjmZK2kyycaj9G
+ Zm4Mz
+X-Gm-Gg: ASbGnctrisITsprDTVBGMyRhQwWeaf53x+91JGXfQIk5eci/WhgfnX7tEfF09eGwzdq
+ jUOKNKKSxMpZ5ERpt7oJA+sBS6zNzaqEbgwXdI+3m/K9zto9QldFY9/SunTzpP1khe/Rv6W5Mi6
+ 5j6+KLePjHQGUKNOacYXZhhIokko/RJ4a39041a+vYr5U3F3NsnOuYFvag4ezWjvjvpgwC+fbW4
+ wiSlCkc5u/qHf1vV/mAGgM5QGw6JFq2+s+b0ckseDTVbOT1cM2wk4kdq2E5zzR1I2tksX/qNXCw
+ z0hrBarkPfUQwAOcjwh2u1SrFNkiFGQ31HSgqPdkfgdVjZTo38jJ13pGP2Qozx9ghXFSJg1arFi
+ JEbclt9c40dVW2kvERQDILgphPC20HUQ30tjZii5vjwkjltU7L8zdHJA6Y3PgYib24ILzHv1mw+
+ ItxW9ZyGW2UcG7Vn0qVGbJFQ==
+X-Google-Smtp-Source: AGHT+IHagn4U0cHIL7+f222868MfltvgxqBpqQCLm71bISCx5COqb5KLsqzSaHOLgBbO2kXUIXWCpg==
+X-Received: by 2002:a05:600c:154c:b0:477:1af2:f40a with SMTP id
+ 5b1f17b1804b1-4792f28b98amr75580415e9.17.1764952889767; 
+ Fri, 05 Dec 2025 08:41:29 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42f7d331092sm9887416f8f.30.2025.12.05.08.41.26
+ 5b1f17b1804b1-479311e707asm88197635e9.10.2025.12.05.08.41.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 05 Dec 2025 08:41:26 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 00C545F82E;
- Fri, 05 Dec 2025 16:41:25 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 16AA55F833;
+ Fri, 05 Dec 2025 16:41:26 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 00/14] Final fixes for 10.2 (gitlab, testing, docker, docs,
- plugins)
-Date: Fri,  5 Dec 2025 16:41:11 +0000
-Message-ID: <20251205164125.2122504-1-alex.bennee@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 01/14] gitlab: drop --disable-pie from aarch64-all-linux-static
+ build
+Date: Fri,  5 Dec 2025 16:41:12 +0000
+Message-ID: <20251205164125.2122504-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251205164125.2122504-1-alex.bennee@linaro.org>
+References: <20251205164125.2122504-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,81 +105,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 864814f71b4cbb2e65bc83a502e63b3cbdd43b0f:
+Since we have upgraded to 24.04 with its new libc we no longer need
+this workaround.
 
-  Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging (2025-12-04 13:37:46 -0600)
+Link: https://bugs.launchpad.net/ubuntu/+source/glibc/+bug/1987438
+Suggested-by: Michael Tokarev <mjt@tls.msk.ru>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20251204194902.1340008-2-alex.bennee@linaro.org>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-are available in the Git repository at:
-
-  https://gitlab.com/stsquad/qemu.git tags/pull-10.2-final-fixes-051225-2
-
-for you to fetch changes up to 704db3e250f5c646b3f51bfc7975b66b0f47d767:
-
-  aspeed: Deprecate the fby35 machine (2025-12-05 15:37:18 +0000)
-
-----------------------------------------------------------------
-Final fixes for 10.2 (gitlab, testing, docker, docs, plugins)
-
- - drop out of date --disable-pie workaround for aarch64 custom job
- - remove explicit pxe-test from build with no libslirp
- - update the FreeBSD test image
- - don't try and run check-tcg tests we haven't built qemu for
- - skip iotests which need crypto if we haven't got support
- - transition debian-all-test-cross to lcitool
- - update build env documentation to refer to lcitool
- - update MAINTAINERS entry for custom runners
- - ensure discon plugins can read registers
- - fix a bug on uftrace symbol helper script
- - deprecate the fby35 machine
-
-----------------------------------------------------------------
-Alano Song (1):
-      docs/devel: Correct typo
-
-Alex Bennée (9):
-      gitlab: drop --disable-pie from aarch64-all-linux-static build
-      gitlab: drop explicit pxe-test from the build-tci job
-      tests/tcg: honour the available QEMU binaries when running check-tcg
-      tests/lcitool: add bzip2 to the minimal dependency list
-      tests/docker: transition debian-all-test-cross to lcitool
-      tests/docker: drop --disable-[tools|system] from all-test-cross
-      docs/devel: update build environment setup documentation
-      MAINTAINERS: update the custom runner entries
-      plugins/core: allow reading of registers during discon events
-
-Cédric Le Goater (1):
-      aspeed: Deprecate the fby35 machine
-
-Michael Tokarev (1):
-      gitlab-ci.d/cirrus: Update the FreeBSD job to v14.3
-
-Sönke Holz (1):
-      contrib/plugins/uftrace_symbols.py: unbreak --no-prefix-symbols
-
-Thomas Huth (1):
-      tests/qemu-iotests: Check for a functional "secret" object before using it
-
- MAINTAINERS                                        |   7 +-
- docs/about/deprecated.rst                          |  13 +-
- docs/devel/atomics.rst                             |   4 +-
- docs/devel/build-environment.rst                   | 145 ++++++++++++++-------
- configure                                          |   6 +-
- hw/arm/fby35.c                                     |   1 +
- plugins/core.c                                     |   2 +
- .gitlab-ci.d/buildtest.yml                         |   4 +-
- .gitlab-ci.d/cirrus.yml                            |   2 +-
- .../custom-runners/ubuntu-24.04-aarch64.yml        |   4 +-
- contrib/plugins/uftrace_symbols.py                 |   2 +
- tests/Makefile.include                             |   9 ++
- .../dockerfiles/debian-all-test-cross.docker       | 130 ++++++++++--------
- tests/lcitool/projects/qemu-minimal.yml            |   1 +
- tests/lcitool/refresh                              |  49 +++++++
- tests/qemu-iotests/049                             |   2 +
- tests/qemu-iotests/134                             |   1 +
- tests/qemu-iotests/158                             |   1 +
- tests/qemu-iotests/common.rc                       |  14 ++
- 19 files changed, 277 insertions(+), 120 deletions(-)
-
+diff --git a/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml b/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml
+index 98d99193457..b4c0faab15d 100644
+--- a/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml
++++ b/.gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml
+@@ -41,9 +41,7 @@
+ ubuntu-24.04-aarch64-all-linux-static:
+   extends: .ubuntu_aarch64_template
+   variables:
+-    # Disable -static-pie due to build error with system libc:
+-    # https://bugs.launchpad.net/ubuntu/+source/glibc/+bug/1987438
+-    CONFIGURE_ARGS: --enable-debug --static --disable-system --disable-pie
++    CONFIGURE_ARGS: --enable-debug --static --disable-system
+     MAKE_CHECK_ARGS: check-tcg
+ 
+ ubuntu-24.04-aarch64-all:
 -- 
 2.47.3
 
