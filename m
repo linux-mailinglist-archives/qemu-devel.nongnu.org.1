@@ -2,43 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 997D7CA8D93
-	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 19:44:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18538CA8D1B
+	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 19:38:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vRamK-0003Hn-0q; Fri, 05 Dec 2025 13:43:40 -0500
+	id 1vRafr-0000ny-NI; Fri, 05 Dec 2025 13:36:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1vRamH-0003Gu-GE
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 13:43:37 -0500
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1vRafo-0000kU-6d
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 13:36:56 -0500
 Received: from mail-a.sr.ht ([46.23.81.152])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1vRamF-0002TP-01
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 13:43:37 -0500
-DKIM-Signature: a=rsa-sha256; bh=lKcU4S4dX52gx3GTm/ddyMmDfJyf2aThLjJei3Ka8gc=; 
- c=simple/simple; d=git.sr.ht;
- h=From:Date:Subject:Reply-to:In-Reply-To:To; 
- q=dns/txt; s=20240113; t=1764960213; v=1;
- b=F9O8D0VFuT8ziwYkHHRanItYCNLVd7LBo41oga5ApwEDofO2cZaePuX5AXW+yckoy5l8DlK9
- KM0c5NY+fqlkVSy68iHodj7y1j4YUlM2Btt3fKW2HNV+ZQcbYsV0IBQBg5DKXJsxylnnJmREJHo
- 4IvbY3ZPsN+A9WaSlSQPfDMpkMa2fCVjKqRlczWzDcxhrLVSs6Wa2nnH1Yg+JBo/1Ydd3MZdKDT
- nuktFQIjYySzuLzdXdozHvKd2iMERbA0IoRYm3AX2drEA4Ghv3n1vp4iC/q0MlbM/LJA1q2EIbi
- 2i/t6e1DVHi3WlG2vM5h9aIXrDd6iww2p2G3NK7cJ4PIQ==
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1vRafm-0000rS-8t
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 13:36:55 -0500
+DKIM-Signature: a=rsa-sha256; bh=U4sHZo2vYI9DpEwuwFV391sTfFBrE6j4Hv4APCnMGbY=; 
+ c=simple/simple; d=git.sr.ht; h=From:Date:Subject:Reply-to:To;
+ q=dns/txt; s=20240113; t=1764959811; v=1;
+ b=AmmFGPwZEs3iSXPFM9zsus/Ulbe8BmkEeAt7DM9VbkR5/H5i16unbJNrcVpVwVe8hdXudPe5
+ TvkN22hyATnKMpOOmhzUGjKwr+EgvYMf9Q40smIHv3X/5coR+rgIQiBpxKayLiDfJrFRQLK5rpQ
+ zLVEn1ammINSdslDHFKib7ru2e8j5hcvV218GVZGury4L0xDmqQe4SloYfJ7yC3ou6gcgZofdSh
+ sUotfDDZM5y6phHBqbBUDM4NuGb0d7roiW1AIyKeSsRj3nG9E/sQxw9PTOE1Zvx7SIW1l3hlbrv
+ wCCPqa5TaX8WnOX06XqCTJuZXV/Q5OcsbOcOuxB8d6Tzw==
 Received: from git.sr.ht (unknown [46.23.81.155])
- by mail-a.sr.ht (Postfix) with ESMTPSA id 8B811243E3
- for <qemu-devel@nongnu.org>; Fri, 05 Dec 2025 18:43:33 +0000 (UTC)
+ by mail-a.sr.ht (Postfix) with ESMTPSA id D633B240D9
+ for <qemu-devel@nongnu.org>; Fri, 05 Dec 2025 18:36:51 +0000 (UTC)
 From: ~katharine_chui <katharine_chui@git.sr.ht>
-Date: Fri, 05 Dec 2025 19:04:06 +0100
-Subject: [PATCH qemu 1/1] hw/input/virtio-input-hid: remove mouse buttons on
- virtio-multitouch-pci
-Message-ID: <176496021331.28461.6801034554708153621-1@git.sr.ht>
+Date: Fri, 05 Dec 2025 18:36:51 +0000
+Subject: [PATCH qemu v2 0/1] ui/sdl2: add multitouch support
+MIME-Version: 1.0
+Message-ID: <176495981181.29650.15848321452328771053-0@git.sr.ht>
 X-Mailer: git.sr.ht
-In-Reply-To: <176496021331.28461.6801034554708153621-0@git.sr.ht>
 To: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-MIME-Version: 1.0
 Received-SPF: pass client-ip=46.23.81.152; envelope-from=outgoing@sr.ht;
  helo=mail-a.sr.ht
 X-Spam_score_int: -16
@@ -64,43 +61,19 @@ Reply-To: ~katharine_chui <kwchuiaa@connect.ust.hk>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Katharine Chui <katharine.chui@gmail.com>
+SDL2 has multi touch events, use those to provide multitouch like with
+the GTK ui
 
-Having mouse buttons on the multitouch devices causes ui mouse
-button events to get routed to the multitouch device, despite
-having better options such as a single point tablet or a mouse.
+Compared to v1, this requests SDL to not emit mouse events on touch when
+possible
 
-This change fixes Android guests behavior when having both a mouse
-and a multitouch device present.
+Katharine Chui (1):
+  ui/sdl2: add multitouch support
 
-Signed-off-by: Katharine Chui katharine.chui@gmail.com
----
- hw/input/virtio-input-hid.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ include/ui/sdl2.h |  9 +++++
+ ui/sdl2.c         | 99 ++++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 107 insertions(+), 1 deletion(-)
 
-diff --git a/hw/input/virtio-input-hid.c b/hw/input/virtio-input-hid.c
-index d986c3c16e3..5fe91fe498c 100644
---- a/hw/input/virtio-input-hid.c
-+++ b/hw/input/virtio-input-hid.c
-@@ -540,7 +540,7 @@ static const TypeInfo virtio_tablet_info = {
- 
- static const QemuInputHandler virtio_multitouch_handler = {
-     .name  = VIRTIO_ID_NAME_MULTITOUCH,
--    .mask  = INPUT_EVENT_MASK_BTN | INPUT_EVENT_MASK_MTT,
-+    .mask  = INPUT_EVENT_MASK_MTT,
-     .event = virtio_input_handle_event,
-     .sync  = virtio_input_handle_sync,
- };
-@@ -603,9 +603,6 @@ static void virtio_multitouch_init(Object *obj)
- 
-     vhid->handler = &virtio_multitouch_handler;
-     virtio_input_init_config(vinput, virtio_multitouch_config);
--    virtio_input_extend_config(vinput, keymap_button,
--                               ARRAY_SIZE(keymap_button),
--                               VIRTIO_INPUT_CFG_EV_BITS, EV_KEY);
-     virtio_input_extend_config(vinput, abs_props,
-                                ARRAY_SIZE(abs_props),
-                                VIRTIO_INPUT_CFG_PROP_BITS, 0);
 -- 
 2.49.1
 
