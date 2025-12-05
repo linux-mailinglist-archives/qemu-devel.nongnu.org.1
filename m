@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F86DCA6322
-	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 07:03:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBC69CA6319
+	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 07:03:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vROth-0002FG-Mt; Fri, 05 Dec 2025 01:02:29 -0500
+	id 1vROtk-0002GQ-Ba; Fri, 05 Dec 2025 01:02:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vROtb-00028c-Ej
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 01:02:23 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vROtd-0002Aw-4N
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 01:02:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vROtY-0001JK-UJ
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 01:02:22 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vROtZ-0001Ja-Ry
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 01:02:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764914537;
+ s=mimecast20190719; t=1764914541;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7RsWX4xpBMv9wwe5yt8cTrWe21+SZiWOSumz7ND4bWw=;
- b=DJUC0gvjvOdp7yMpChkUW9DhXKIucLPnlK/WEI4VlJBkUL2UwjjOUF1XPQMETK5/oDAEzS
- Uy0me2FEk5SJ9qoRIjExzI42vlZRGDlBVS/Nw9fdu44fHfyxC1QMaYTVGZgqgDhqUjQE1V
- tbhPz3o6hcus7XJ0eMtKdYbWcNdZCvo=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=9JGRrGpz2pf8T+gKW6OqS0q3yHMVYsD/ap0BLe9xBqQ=;
+ b=eCps92wFZVxQiTe5EOn2HXxGUWYosOXIduMznQPOhOuchwwFa/ohxTm26/JML72exgZyiK
+ gofUD2lCkbyIN8iWzBC5OjHCtTOZcPZrAVyrmnpYYJ71OnGTcpuCmQxnPYqXN/oNz0OBgk
+ wKgjxJzppebjz1J6L5p7y1z6JXSTENU=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-310-Sb9sWPPhMk-pVYUTWcnDBw-1; Fri,
- 05 Dec 2025 01:02:14 -0500
-X-MC-Unique: Sb9sWPPhMk-pVYUTWcnDBw-1
-X-Mimecast-MFC-AGG-ID: Sb9sWPPhMk-pVYUTWcnDBw_1764914532
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-199-TZB7i-hRM4Orou4IMUX5Ng-1; Fri,
+ 05 Dec 2025 01:02:19 -0500
+X-MC-Unique: TZB7i-hRM4Orou4IMUX5Ng-1
+X-Mimecast-MFC-AGG-ID: TZB7i-hRM4Orou4IMUX5Ng_1764914537
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B737F1956058; Fri,  5 Dec 2025 06:02:12 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B78E618001D7; Fri,  5 Dec 2025 06:02:17 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.55])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 20F5F3011A86; Fri,  5 Dec 2025 06:02:08 +0000 (UTC)
+ id 6A7513011A86; Fri,  5 Dec 2025 06:02:13 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Cleber Rosa <crosa@redhat.com>,
@@ -56,26 +56,25 @@ Cc: Cleber Rosa <crosa@redhat.com>,
  Ed Maste <emaste@freebsd.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 13/15] meson,
- mkvenv: add qemu.git/python/qemu package to pythondeps.toml
-Date: Fri,  5 Dec 2025 01:00:55 -0500
-Message-ID: <20251205060058.1503170-14-jsnow@redhat.com>
+Subject: [PATCH v3 14/15] tests: replace old "check-venv" target with meson
+ target
+Date: Fri,  5 Dec 2025 01:00:56 -0500
+Message-ID: <20251205060058.1503170-15-jsnow@redhat.com>
 In-Reply-To: <20251205060058.1503170-1-jsnow@redhat.com>
 References: <20251205060058.1503170-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,27 +90,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the local python package group into pythondeps.toml for the
-checktests group. This makes qemu.qmp, qemu.machine and qemu.utils
-packages unconditionally available for tests.
+With new meson dependencies in place, swap the "check-venv" command to
+one that invokes the meson dependency system to ensure the appropriate
+testing dependencies are installed to the pyvenv.
+
+This command is not required when running "make check" as the meson
+dependency system is aware that it needs to install the testing deps to
+run that suite, however, for certain manual test invocations
+(device-crash-test, iotests when run manually) this make target serves
+as a convenient way to explicitly request those dependencies be added to
+the pyvenv.
+
+Note that this patch actually changes the meaning of check-venv slightly
+to how it has been operating in the past: this target now only installs
+the necessary patches to run "make check" and will no longer pull in
+dependencies for functional tests. This winds up being safe to do
+because the meson dependencies will handle functional tests
+satisfactorily; running "make check-functional" will pull in any
+additional dependencies needed to run that portion of the test suite on
+its own.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- pythondeps.toml | 1 +
- 1 file changed, 1 insertion(+)
+ tests/Makefile.include | 25 ++++++-------------------
+ 1 file changed, 6 insertions(+), 19 deletions(-)
 
-diff --git a/pythondeps.toml b/pythondeps.toml
-index 14ceb4e7787..6057e3453e1 100644
---- a/pythondeps.toml
-+++ b/pythondeps.toml
-@@ -37,6 +37,7 @@ sphinx_rtd_theme = { accepted = ">=0.5", installed = "1.2.2" }
- # vendor.
- [checktests]
- "qemu.qmp" = { accepted = ">=0.0.5", installed = "0.0.5" }
-+"$SRCROOT/python/" = { }
+diff --git a/tests/Makefile.include b/tests/Makefile.include
+index 40b114bd158..237d410ad83 100644
+--- a/tests/Makefile.include
++++ b/tests/Makefile.include
+@@ -83,33 +83,16 @@ clean-tcg: $(CLEAN_TCG_TARGET_RULES)
+ .PHONY: distclean-tcg
+ distclean-tcg: $(DISTCLEAN_TCG_TARGET_RULES)
  
- # This test group is for functional tests, and can include dependencies
- # fetched from PyPI.
+-# Python venv for running tests
+-
+-.PHONY: check-venv
+-
+ # Build up our target list from the filtered list of ninja targets
+ TARGETS=$(patsubst libqemu-%.a, %, $(filter libqemu-%.a, $(ninja-targets)))
+ 
+-TESTS_VENV_TOKEN=$(BUILD_DIR)/pyvenv/tests.group
+-
+-quiet-venv-pip = $(quiet-@)$(call quiet-command-run, \
+-    $(PYTHON) -m pip -q --disable-pip-version-check $1, \
+-    "VENVPIP","$1")
+-
+-$(TESTS_VENV_TOKEN): $(SRC_PATH)/pythondeps.toml
+-	$(call quiet-venv-pip,install -e "$(SRC_PATH)/python/")
+-	$(MKVENV_ENSUREGROUP) $< checktests functests
+-	$(call quiet-command, touch $@)
+-
+-check-venv: $(TESTS_VENV_TOKEN)
+-
+ FUNCTIONAL_TARGETS=$(patsubst %-softmmu,check-functional-%, $(filter %-softmmu,$(TARGETS)))
+ .PHONY: $(FUNCTIONAL_TARGETS)
+-$(FUNCTIONAL_TARGETS): check-venv
++$(FUNCTIONAL_TARGETS):
+ 	@$(MAKE) SPEED=thorough $(subst -functional,-func,$@)
+ 
+ .PHONY: check-functional
+-check-functional: check-venv
++check-functional:
+ 	@$(NINJA) precache-functional
+ 	@$(PYTHON) $(SRC_PATH)/scripts/clean_functional_cache.py
+ 	@QEMU_TEST_NO_DOWNLOAD=1 $(MAKE) SPEED=thorough check-func check-func-quick
+@@ -117,6 +100,10 @@ check-functional: check-venv
+ .PHONY: check-func check-func-quick
+ check-func check-func-quick:
+ 
++.PHONY: check-venv
++check-venv:
++	@$(NINJA) pyvenv/checktests.group
++
+ # Consolidated targets
+ 
+ .PHONY: check check-clean
 -- 
 2.51.1
 
