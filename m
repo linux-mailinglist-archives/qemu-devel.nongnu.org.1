@@ -2,103 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C75DCA637D
-	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 07:20:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6C84CA6343
+	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 07:05:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vRPAV-0004hQ-6c; Fri, 05 Dec 2025 01:19:51 -0500
+	id 1vROwh-0000iP-1p; Fri, 05 Dec 2025 01:05:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1vRPAT-0004h3-CR
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 01:19:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vROwX-0000dq-Cb; Fri, 05 Dec 2025 01:05:26 -0500
+Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1vRPAS-0008Rm-4C
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 01:19:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764915587;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=fyrbJxebtpi7hClNkdZAeqk08Z+JUfzm1YUmhz3bYO4=;
- b=McdmJndeSvIt+2Go1peZDaSqX1/lN/OyIvYWQ8EE946sC6k4ok3Obp9W4S1eyGJisQBKvX
- zLN5Sn0OTwzxuCyknGUWvvqRgzVBvChckI4JGj94TU3Ii7HwLRCaRzQkmCyDj318iafD5/
- snn0/CSUl2AwmxPl+xEEXjHS9qagL1k=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-471-fxs6txT3PQC8VTDsCNAlDw-1; Fri, 05 Dec 2025 01:19:45 -0500
-X-MC-Unique: fxs6txT3PQC8VTDsCNAlDw-1
-X-Mimecast-MFC-AGG-ID: fxs6txT3PQC8VTDsCNAlDw_1764915584
-Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-3438744f12fso4490022a91.2
- for <qemu-devel@nongnu.org>; Thu, 04 Dec 2025 22:19:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1764915584; x=1765520384; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=fyrbJxebtpi7hClNkdZAeqk08Z+JUfzm1YUmhz3bYO4=;
- b=lkngh0G88YhFOo7ZRGTyCcA8MA3DQmcDsZimyG1BLwR7DDNd15ZUti61ksfWSdcDXf
- rdwS6Af//jCprQM8rg6cFgER1dHECn9xpefcsvHm4TN5CnyMmXTExgd9qw2RdD7r5N/U
- ZvJveotRJdUeWbN1OEeFzpBJbg+7R5/2hNTKJmzhpJkMo44evfLLcP2r1bQ8bBNyqa3G
- c7xEf6PKzQ4FyjlIHo5wAFjUAl/yP+aL1/r5061p4iFGhNzeORWQrMR8KDdSEOqMjKFN
- D2w8hIjapmxB+3m6Hjz/7pUMTnT8nkk7Dh1FMY0dcUlyrUva3QAgMwCNbLxfxhhOP3WZ
- fMbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764915584; x=1765520384;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=fyrbJxebtpi7hClNkdZAeqk08Z+JUfzm1YUmhz3bYO4=;
- b=hXsNnPfom4yFcUivWFVwSvReL/vqi3926VEaGDkUL0Q3Sru9WSE6p4+/ZkW3u+imZ0
- 4HZTqziOtw+LRvZyoUaJH/sWuSAAA0dARiGlP0ccm/d0cG6UAf+pZsNtzh/fAaF9a+FD
- KNpX53DvwF5uFz7yV2t01Izh+3i3rfmUtJDpnULBN2qRSIOkpwrK2DwPdCdsVrFcePXB
- NGDBAB7+pGD+KeDupP1G+u88tP7u+MtGFG+4RoOpCWM/UjbmO8c4YpXX1wDFayke/P5d
- MH1e80xPxi9eJ37d0pRe08yMBDooe0OAJ2fxnxBAO9/LJrc0jtcH5wt7g7WlAWiP1Os0
- wVrA==
-X-Gm-Message-State: AOJu0YwiMYVBTYKZuvG7eTDRxZB2LVIu1KIPM/WUZEPTLakhGMjFEdNu
- +4LTsq6Kfd5OpxyTL1tL/CvkVLxReIxG4fxGFfFRFaca/+DndzmO8SpSvqQcEyuC2rz97p/sKxK
- d25lafdIK1CaHVQxKOSm7/dHMS8AykvQTnL+ixVp3ZIQ0sKFloXMPtvNF4FQp+XQUx8bV3R3n9Q
- f9uRvhaP4TkSuZQkB6GdAHqhqvuA+joFk=
-X-Gm-Gg: ASbGnctkUtnBMJydS0Nh2y95ZgPmBA1H7CPI5hLf5Js4+Uv9/XI1BaaFrFSCFph2RvU
- vUsL6tJthOuRz2wkPRb79RIYpVSaYMsfuRpke0e3Mb//IRNDHkbsD1oMkNW71XRtWWU0hno6Cyf
- xy3kinKloBLbiH/fhoONYSOcmgYLF/RzQRPnGVZPAkCd+3ftN296TT1P8vAE0Dk1rj3Q==
-X-Received: by 2002:a17:90b:350e:b0:343:5f43:933e with SMTP id
- 98e67ed59e1d1-34947efa122mr6227800a91.19.1764915584548; 
- Thu, 04 Dec 2025 22:19:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEigJx5uiS36Mp46TT2kfzShSXIGHEvjkFXjQjUZw+Q3Cz2dxG8wAuqfe14JqSMaUPsgznaAcHTJPP+6AW3IXs=
-X-Received: by 2002:a17:90b:350e:b0:343:5f43:933e with SMTP id
- 98e67ed59e1d1-34947efa122mr6227772a91.19.1764915584114; Thu, 04 Dec 2025
- 22:19:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vROwU-0003hm-WA; Fri, 05 Dec 2025 01:05:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1764914723; x=1796450723;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=6hK2yJ3ej5c9kSN5m5/VeTFATwCnDQwtzLFWqdLNsf4=;
+ b=k+M7inteHO+mCp+ORe7Q63kfffK5J26nb3N3NiM+6Hw8rRBV2P4Y+1vS
+ y/SCeQKxadnMtj/siHoKJlJPggXgemjMS4I6WqUC+fCu7r3vWSnjhaSi4
+ zUiWrRt5XyJ66qBy/UmSeAso4VjrSyi2Pd0j4Q1BJgsy7pw2jhm0duKes
+ IG1YjSCcV2hQFMeVwd6kHsYfHalNtZ83vblPbStlhzkqdo/YwiwXApubH
+ eJHQ7PsttjX0bnaaFQrTwjJfcTe1Uiy612zWM2BrcCmEuz50UgmhpWZC5
+ k8nrXdfyj8hcTvsQCrvVO3Vdtbl70tW3UOvVLMkF3oPP9AwAqY9Ij41w0 w==;
+X-CSE-ConnectionGUID: XdSpDPU6S+WSBIiRBZSZ7A==
+X-CSE-MsgGUID: h1THoOCXSrCdkZr3qJWrHA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11632"; a="78057197"
+X-IronPort-AV: E=Sophos;i="6.20,251,1758610800"; d="scan'208";a="78057197"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2025 22:05:18 -0800
+X-CSE-ConnectionGUID: 2qzI66wVQ4KyATTWdidQUA==
+X-CSE-MsgGUID: MR56snghS/qz3UolNHY3eQ==
+X-ExtLoop1: 1
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa003.fm.intel.com with ESMTP; 04 Dec 2025 22:05:17 -0800
+Date: Fri, 5 Dec 2025 14:30:01 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, armbru@redhat.com,
+ marcandre.lureau@redhat.com
+Subject: Re: [PATCH 02/14] rust: add basic QObject bindings
+Message-ID: <aTJ76Ufe0vs3aKPL@intel.com>
+References: <20251001075005.1041833-1-pbonzini@redhat.com>
+ <20251001080051.1043944-3-pbonzini@redhat.com>
+ <aTGXmfbzug5cQAbV@intel.com>
+ <382ef69e-50b7-4a7f-aa9d-63c076a737f3@redhat.com>
 MIME-Version: 1.0
-References: <20251030164023.710048-1-vsementsov@yandex-team.ru>
- <a8dcf37b-f7c1-486b-bc7d-5877c4d9ccfe@yandex-team.ru>
-In-Reply-To: <a8dcf37b-f7c1-486b-bc7d-5877c4d9ccfe@yandex-team.ru>
-From: Jason Wang <jasowang@redhat.com>
-Date: Fri, 5 Dec 2025 14:19:32 +0800
-X-Gm-Features: AWmQ_bk7TIAhe56Xl0zjAqwr9CKhSZolug9ZkCohYUPIarFczzyrsrpgi8fpxpQ
-Message-ID: <CACGkMEtUn8aLApCu5RCF2tpNgMskOYycp4jjrNCvgNe3aWuTLA@mail.gmail.com>
-Subject: Re: [PATCH v9 0/7] net/tap: simple refactoring
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, leiyang@redhat.com, davydov-max@yandex-team.ru, 
- yc-core@yandex-team.ru
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <382ef69e-50b7-4a7f-aa9d-63c076a737f3@redhat.com>
+Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,16 +81,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Dec 5, 2025 at 4:05=E2=80=AFAM Vladimir Sementsov-Ogievskiy
-<vsementsov@yandex-team.ru> wrote:
->
-> ping
->
-> (now as 11.0 material)
->
+> > > +pub struct QObject(&'static UnsafeCell<bindings::QObject>);
+> > 
+> > It seems Opaque<> feels more natural than UnsafeCell<>.
+> > 
+> > Opaque::from_raw() requires *mut T, but QObject::from_raw() and
+> > QObject::clone_from_raw() mainly play with C bindings which usually use
+> > *mut pointer. So it seems unnecessary to convert *mut to *const in the
+> > middle.
+> > 
+> > And furthermore, I think QObject(Opaque<bindings::QObject>) is better
+> > than QObject(&'static Opaque<bindings::QObject>). From a semantic view,
+> > C's QObject is a struct, while Rust's QObject is a reference, which seems
+> > somewhat mismatched.
+> > 
+> > I'm not sure yet if there may be gaps when remove &'static, but it
+> > looks like using &'static Opaque<> instead of &'static UnsafeCell<> is
+> > Okay in code?
+> 
+> I am using UnsafeCell because the QObject here is always valid, i.e.
+> MaybeUninit is explicitly not necessary.  Opaque explicitly allows it to be
+> invalid, here instead the API is "create via C code or FFI and only then
+> create the QObject".
 
-I've queued this.
+Just want to clarify the use for Opaque, we've already used Opaque<>::from_raw()
+for the case "create via C code or FFI and only then create the" something? In
+DeviceState::init_clock_[in|out](), and ObjectClassMethods::new().
 
-Thanks
+But I also agree, for this case MaybeUninit is not necessary. And PhantomPinned
+is simply replaced by &'static.
+
+> However, while it is possible to use Opaque<> instead of UnsafeCell<>, it is
+> not possible to make this a simple wrapper because QObject is unmovable and
+> reference counted.  That is, QObject is the equivalent of (for example)
+> Owned<DeviceState>.
+
+Got it, if Rust owns data by QObject(Opaque<>) but without Owned<>, this
+can't work since it's no way to handle refcnt.
+
+So &'static UnsafeCell<> is the simplest way to meet both unmovable &
+refcnt rquirements.
+
+I'm good with this design. Thanks!
+
+Regards,
+Zhao
 
 
