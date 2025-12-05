@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F4CECA86BE
-	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 17:43:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCECCCA86B8
+	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 17:42:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vRYsd-0005aw-0c; Fri, 05 Dec 2025 11:42:04 -0500
+	id 1vRYsa-0005ap-Vs; Fri, 05 Dec 2025 11:42:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vRYsC-0005Vu-KI
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 11:41:36 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1vRYsD-0005WZ-Jy
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 11:41:38 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vRYsA-0005kv-TG
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 11:41:36 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-477b5e0323bso19698495e9.0
- for <qemu-devel@nongnu.org>; Fri, 05 Dec 2025 08:41:34 -0800 (PST)
+ id 1vRYsB-0005lJ-Uu
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 11:41:37 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4779aa4f928so23706765e9.1
+ for <qemu-devel@nongnu.org>; Fri, 05 Dec 2025 08:41:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764952893; x=1765557693; darn=nongnu.org;
+ d=linaro.org; s=google; t=1764952894; x=1765557694; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sObp8UBrI/xfgGGLKvYX8yVXYXP1HQDePXzaB7T+dOo=;
- b=z3Dv0nZA2M8Rjq+FzKRdOpK0m+pyRPzGC2myen4RslNUCEwjrl3FoJLxILFJ5QGnmU
- xjgsGvvwfychwLwEuXY2AB7p9o5UxrjyY+ajW2jI40RVquz+qLpSEfoH/E8hHQRGTrYi
- GceiDOJO962YqpIhhWZ5asRC+PDeQBupvqbkccsufiPR9DbaMRL5jfrnG+9t8LKL8uzy
- AqOnoinp8+LA4rCshrh0VEeLrkqGQGey6cS8OIZvrbR7Tf/HWO+v8hLek46z+d1tvIOi
- 5E76/3kp28gerDjKk3cU+fWqucgPU3eoNiKAx3/ISWhMyNeIuNJFUlM7JiGQ8m3fXu+k
- v+GA==
+ bh=74Wp3ifpoSboSpeuz+yKQ7pVV8feIghZIJx4U7i0D0M=;
+ b=zaDyKa0Frvp4sDYSuRvP1YhNCXx/Kry96GSrnqgTnVdqBW2DeY/+XQXsSPAaa6Wgbe
+ K8Z1MP+gmwrNUXec+cpksRd7N+I4OvZc1rwb/NfZ3YmvZuTCQhU9CpgZW3eGLzzxq2cW
+ rnRAmFj6cgWV98HHYSCcQ8WXejCuOwEtUp083cJ3OUydx4kEY/izb7cPlK9hiAc62e98
+ 1CLVM9B1uZK4nKo3eDFZ+sUuGKWazRzlCkGRTHSltEuS4hTjnv2XOIlAQU/IBzaO+R/A
+ KfIFThA44jh7iY3zI67dmuoMQcn0m6gyp2guQpxnadpkfntusXv8N9uZDcrcjEw7SQjh
+ nCQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764952893; x=1765557693;
+ d=1e100.net; s=20230601; t=1764952894; x=1765557694;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=sObp8UBrI/xfgGGLKvYX8yVXYXP1HQDePXzaB7T+dOo=;
- b=RaDoNB7h7vnyxwqRawJkN4FihWZfVzkefqDWGHnTP2EO92Tgj5EOGrcnEvVx1x8i3+
- uX6eLbTEVZvJomDD4G2cVxV2UgTQggSl5w3pJFsEynTlifZr03RyIkphKbXeVPeOSl9H
- ow0u1jjd7t4LSpeymz2r2OSO4FZtMQjRrbBExU8VyU1hofFgHtq6x90jddg2Qy7dPy8U
- NRcxPri0IgAyLP5ZRirITD3pG3d7Q46PuF5T7kNJLQvEh0RectFo9ew/g3A7ubtrYyru
- FWxku5DEgeVwgW/FwE57myC4m7FCYrCyGUMgLDHaSBa6lNVHjTUxWqWmuRHk+Upfenwq
- MM8w==
-X-Gm-Message-State: AOJu0YwF8ZublO/oXUd63GLo0Ky1ltaAiYcHVC711t57iN2rXpSpkvyB
- e9oqCAgX9/ghkySSJx4yqpFW/oM/Tm27Drlncp+vLY/2OsdC9S81pmIj/m6e/B8kvDkN6YI74KQ
- sgQQr
-X-Gm-Gg: ASbGnct+9dC17+STgVsuP79V+0PmoL/dfTqW9jJZkUViRY3vDb8Umd2FkGJLq+hy/Nf
- iK2KqUXekCkU3wvMZonUBKbNLUwRpTekkfwSrn7C0ihrLf3YlEJcuhhjha9DGEK8X1DFHv135FZ
- gDhI/1dq1YXQfe6i79aB/Q+m46TnbapTqLy3CuCHrdANWRGBHEUiXWuWszZsJb1zktXhGJPO33L
- 4g8hZPfpUa3qVF0gF9E9ClLf0B5hm5Rypu5mItXPmIZOzKMmWjYDQtnB8ZZcvBl7pxNTVeOv/B9
- 5UaGjYNbXOeXSXu7QehQtuNXRgIHj9NmyONGYJRI2HUlW6AO85T7cff1S3XROCLR07teTUDX+bn
- G8HrfoZFILj3r+cMharPnC5k4yYeq50rpKAKXZlAnEVIFcQ49cg6JeS6a5FdrOJL9LFZQl0snsG
- bzj4Uw6S8Z5S4=
-X-Google-Smtp-Source: AGHT+IHtwhlq0bKrqskxc85ZA7g4TVrIWY2d6mw1vXwIpNss7AXqpn0XaNkfXahrrBF9dnguQhUyTg==
-X-Received: by 2002:a05:600c:3151:b0:479:255f:8805 with SMTP id
- 5b1f17b1804b1-4792eb10e97mr79887495e9.4.1764952892827; 
- Fri, 05 Dec 2025 08:41:32 -0800 (PST)
+ bh=74Wp3ifpoSboSpeuz+yKQ7pVV8feIghZIJx4U7i0D0M=;
+ b=CI8IHRkGst40G1G1nMmtyCp+x9rv8wjMitx1nZxAjZo0d6JK7z5lJDNp0ofpcB4QOf
+ C6ooRbm3gZH6JZT8EkfxfsSkLarT77fSJUcTlZmpeUqw5wtdeB/jxNMeplhVEb2nshM0
+ shBdzFLYkmu01Zpjliq0hM+7ZOkfgHGLwpSWJxnocZztDtrrtqgPDmwkY7cO1wgisFdZ
+ iO8iKdJstgOLzACtCUT0qXD9eZKWVONMLtOog5hVpTNLXWqtYcljT2+qVhW+0g5A2ueo
+ NrLD2Q4ubM+EuUrkXveWQpiG+yisJKxtG/f8wt02uiHNpEmBYb9V5Q3+C/gD+CalH2Vz
+ 69Iw==
+X-Gm-Message-State: AOJu0YwN9mW89yaF8DxS/qzForUXOsd5viF4cZyoqJChdclksPdl29ef
+ jXyyJFBDS9f8+eQyN1E7G5q9l/roXqK8SJYZFFsllp6smD6qTpGFqeoese36rfh7l+GXNfveI97
+ lTtfp
+X-Gm-Gg: ASbGncsde4gqkLkboqlpkpvvWiSuxHYmOcBoMXTfIIw51utjpqjvqo929fDwkyIqcbp
+ tKggNxVlfvtiWsk/Gf98yOyCKstM74thjntr3lk4QMSxd/ERu2t+zWRWx4KAZ0oFyOrp1Y0npNr
+ 9Vv/bvBIKK1z/VF8J6KYtIYJKkV+K94KRRTuUvJ05PibhgKm/ct5L5y2VAFHsOkOAxHJ28IYbjD
+ B2jYiinU8T/5ZX/q7jCfW/NBRObqUSGRsOhk1CEZp8IPw0jbhhLIIy3YBEVBA1uc9pvb+dyYFLi
+ VkXeLri//GfbIRPsaN1026NkOc/4O2NCT/Ol0IjtDt4s0YpNwuuRNSf3TsHHU0dXPbg31PRai4K
+ zNo60eVr3z82EJIv08JWIg7qTf0+F/Mtl1A80OJuy/h4d2NLdIl1rUgdh/7suBHDHgtREclskOT
+ VvxSuYa0Uzl9U=
+X-Google-Smtp-Source: AGHT+IHqkYElxZuZe5gnEejsB1m1MSXzJoj8HyEhj2i/COrQ7/5y6NbEMmruIrceUmQDuADGjqAYsA==
+X-Received: by 2002:a05:600c:4711:b0:476:84e9:b571 with SMTP id
+ 5b1f17b1804b1-4792f25f316mr78488395e9.14.1764952894053; 
+ Fri, 05 Dec 2025 08:41:34 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4793091c740sm87256255e9.3.2025.12.05.08.41.29
+ 5b1f17b1804b1-479310b693csm89738615e9.4.2025.12.05.08.41.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 05 Dec 2025 08:41:29 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E90BA5F90B;
- Fri, 05 Dec 2025 16:41:26 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 093725F910;
+ Fri, 05 Dec 2025 16:41:27 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Alano Song <AlanoSong@163.com>,
- Christian Schoenebeck <qemu_oss@crudebyte.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 10/14] docs/devel: Correct typo
-Date: Fri,  5 Dec 2025 16:41:21 +0000
-Message-ID: <20251205164125.2122504-11-alex.bennee@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PULL 11/14] MAINTAINERS: update the custom runner entries
+Date: Fri,  5 Dec 2025 16:41:22 +0000
+Message-ID: <20251205164125.2122504-12-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251205164125.2122504-1-alex.bennee@linaro.org>
 References: <20251205164125.2122504-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,39 +103,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alano Song <AlanoSong@163.com>
+Fix a number of issues:
 
-Correct typo in atomics.rst
+  - update the ubuntu references to 24.0
+  - add the s390x and ppc64le yml files
+  - replace Works on Arm with Linaro
+  - Also mention IBM (s390x) and OSUL (ppc64le) as HW hosts
 
-Signed-off-by: Alano Song <AlanoSong@163.com>
-Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-[AJB: fixed author entry]
-Message-ID: <20251204194902.1340008-10-alex.bennee@linaro.org>
+Message-ID: <20251204194902.1340008-11-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-diff --git a/docs/devel/atomics.rst b/docs/devel/atomics.rst
-index 95c7b77c01e..ea4ede4b8c4 100644
---- a/docs/devel/atomics.rst
-+++ b/docs/devel/atomics.rst
-@@ -266,7 +266,7 @@ Splitting a loop can also be useful to reduce the number of barriers:
-     |   n = 0;                                 |     smp_mb_release();            |
-     |   for (i = 0; i < 10; i++) {             |     for (i = 0; i < 10; i++)     |
-     |     qatomic_store_release(&a[i], false); |       qatomic_set(&a[i], false); |
--    |     smp_mb();                            |     smb_mb();                    |
-+    |     smp_mb();                            |     smp_mb();                    |
-     |     n += qatomic_read(&b[i]);            |     n = 0;                       |
-     |   }                                      |     for (i = 0; i < 10; i++)     |
-     |                                          |       n += qatomic_read(&b[i]);  |
-@@ -283,7 +283,7 @@ as well) ``smp_wmb()``:
-     |                                          |     smp_mb_release();            |
-     |   for (i = 0; i < 10; i++) {             |     for (i = 0; i < 10; i++)     |
-     |     qatomic_store_release(&a[i], false); |       qatomic_set(&a[i], false); |
--    |     qatomic_store_release(&b[i], false); |     smb_wmb();                   |
-+    |     qatomic_store_release(&b[i], false); |     smp_wmb();                   |
-     |   }                                      |     for (i = 0; i < 10; i++)     |
-     |                                          |       qatomic_set(&b[i], false); |
-     +------------------------------------------+----------------------------------+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index d007584b476..63e9ba521bc 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4444,12 +4444,13 @@ R: Philippe Mathieu-Daudé <philmd@linaro.org>
+ S: Maintained
+ F: tests/tcg/Makefile.target
+ 
+-GitLab custom runner (Works On Arm Sponsored)
++GitLab custom runners (HW sponsored by Linaro, OSOUL and IBM)
+ M: Alex Bennée <alex.bennee@linaro.org>
+ M: Philippe Mathieu-Daudé <philmd@linaro.org>
+ S: Maintained
+-F: .gitlab-ci.d/custom-runners/ubuntu-22.04-aarch64.yml
+-F: .gitlab-ci.d/custom-runners/ubuntu-22.04-aarch32.yml
++F: .gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml
++F: .gitlab-ci.d/custom-runners/ubuntu-24.04-s390x.yml
++F: .gitlab-ci.d/custom-runners/debian-13-ppc64le.yml
+ 
+ Documentation
+ -------------
 -- 
 2.47.3
 
