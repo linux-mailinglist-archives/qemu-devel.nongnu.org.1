@@ -2,40 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E91ECA62B2
-	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 06:40:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C036DCA6291
+	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 06:39:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vROWv-0008Hd-HC; Fri, 05 Dec 2025 00:38:57 -0500
+	id 1vROWv-0008Hg-Hc; Fri, 05 Dec 2025 00:38:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaurav.sharma_7@nxp.com>)
- id 1vROWf-0008Fz-TW
+ id 1vROWe-0008Fv-0E
  for qemu-devel@nongnu.org; Fri, 05 Dec 2025 00:38:44 -0500
 Received: from inva021.nxp.com ([92.121.34.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaurav.sharma_7@nxp.com>)
- id 1vROWS-0005IV-L5
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 00:38:33 -0500
+ id 1vROWS-0005IZ-LD
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 00:38:32 -0500
 Received: from inva021.nxp.com (localhost [127.0.0.1])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 76F842012F3;
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id C7EB42015FE;
  Fri,  5 Dec 2025 06:38:22 +0100 (CET)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com
  (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 3FF9D201128;
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 920D52015F9;
  Fri,  5 Dec 2025 06:38:22 +0100 (CET)
 Received: from lsv031015.swis.in-blr01.nxp.com
  (lsv031015.swis.in-blr01.nxp.com [10.12.177.77])
- by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 61A65180007D;
+ by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id BB061180008F;
  Fri,  5 Dec 2025 13:38:21 +0800 (+08)
 From: Gaurav Sharma <gaurav.sharma_7@nxp.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, peter.maydell@linaro.org,
  Gaurav Sharma <gaurav.sharma_7@nxp.com>
-Subject: [PATCHv4 03/15] hw/arm/fsl-imx8mm: Add Analog device IP to iMX8MM SOC
-Date: Fri,  5 Dec 2025 11:08:07 +0530
-Message-Id: <20251205053819.2021772-4-gaurav.sharma_7@nxp.com>
+Subject: [PATCHv4 04/15] hw/arm/fsl-imx8mm: Add Clock Control Module IP to
+ iMX8MM
+Date: Fri,  5 Dec 2025 11:08:08 +0530
+Message-Id: <20251205053819.2021772-5-gaurav.sharma_7@nxp.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251205053819.2021772-1-gaurav.sharma_7@nxp.com>
 References: <20251205053819.2021772-1-gaurav.sharma_7@nxp.com>
@@ -65,90 +66,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the Analog IP to i.MX8MM SoC. iMX8MM and i.MX8MP uses
-the same Analog IP so the analog ip source will be shared.
-
-The ARM PLL divider control register (arm-pll-fdiv-ctl0) has
-a different reset value on i.MX8MM (0x000fa030) compared to
-i.MX8MP (0x000fa031). So iMX8MM will be overriding this property
-with its own reset-value.
+Add the Clock Control Module (CCM) device to i.MX8MM SoC.
+The CCM implementation is shared with i.MX8MP as the register
+layout is identical between the two variants.Hence iMX8MM will
+be using the source of iMX8MP CCM.
 
 Signed-off-by: Gaurav Sharma <gaurav.sharma_7@nxp.com>
 ---
- hw/arm/Kconfig              |  1 +
- hw/arm/fsl-imx8mm.c         | 12 ++++++++++++
- include/hw/arm/fsl-imx8mm.h |  2 ++
- 3 files changed, 15 insertions(+)
+ docs/system/arm/imx8mm-evk.rst |  1 +
+ hw/arm/Kconfig                 |  1 +
+ hw/arm/fsl-imx8mm.c            | 10 ++++++++++
+ include/hw/arm/fsl-imx8mm.h    |  2 ++
+ 4 files changed, 14 insertions(+)
 
+diff --git a/docs/system/arm/imx8mm-evk.rst b/docs/system/arm/imx8mm-evk.rst
+index 408253193c..09aa63240a 100644
+--- a/docs/system/arm/imx8mm-evk.rst
++++ b/docs/system/arm/imx8mm-evk.rst
+@@ -12,6 +12,7 @@ The ``imx8mm-evk`` machine implements the following devices:
+  * Up to 4 Cortex-A53 cores
+  * Generic Interrupt Controller (GICv3)
+  * 4 UARTs
++ * Clock Tree
+ 
+ Boot options
+ ------------
 diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index be38c67a1c..3737335841 100644
+index 3737335841..758addea22 100644
 --- a/hw/arm/Kconfig
 +++ b/hw/arm/Kconfig
-@@ -629,6 +629,7 @@ config FSL_IMX8MP_EVK
- config FSL_IMX8MM
+@@ -630,6 +630,7 @@ config FSL_IMX8MM
      bool
      select ARM_GIC
-+    select FSL_IMX8MP_ANALOG
+     select FSL_IMX8MP_ANALOG
++    select FSL_IMX8MP_CCM
      select IMX
  
  config FSL_IMX8MM_EVK
 diff --git a/hw/arm/fsl-imx8mm.c b/hw/arm/fsl-imx8mm.c
-index fb6a78adba..2c84e70c01 100644
+index 2c84e70c01..a3eddfe3f6 100644
 --- a/hw/arm/fsl-imx8mm.c
 +++ b/hw/arm/fsl-imx8mm.c
 @@ -169,6 +169,8 @@ static void fsl_imx8mm_init(Object *obj)
  
      object_initialize_child(obj, "gic", &s->gic, gicv3_class_name());
  
-+    object_initialize_child(obj, "analog", &s->analog, TYPE_IMX8MP_ANALOG);
++    object_initialize_child(obj, "ccm", &s->ccm, TYPE_IMX8MP_CCM);
 +
+     object_initialize_child(obj, "analog", &s->analog, TYPE_IMX8MP_ANALOG);
+ 
      for (i = 0; i < FSL_IMX8MM_NUM_UARTS; i++) {
-         g_autofree char *name = g_strdup_printf("uart%d", i + 1);
-         object_initialize_child(obj, name, &s->uart[i], TYPE_IMX_SERIAL);
-@@ -303,6 +305,15 @@ static void fsl_imx8mm_realize(DeviceState *dev, Error **errp)
+@@ -305,6 +307,13 @@ static void fsl_imx8mm_realize(DeviceState *dev, Error **errp)
          }
      }
  
-+    /* Analog */
-+    object_property_set_uint(OBJECT(&s->analog), "arm-pll-fdiv-ctl0-reset",
-+                            0x000fa030, &error_abort);
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->analog), errp)) {
++    /* CCM */
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s->ccm), errp)) {
 +        return;
 +    }
-+    sysbus_mmio_map(SYS_BUS_DEVICE(&s->analog), 0,
-+                    fsl_imx8mm_memmap[FSL_IMX8MM_ANA_PLL].addr);
++    sysbus_mmio_map(SYS_BUS_DEVICE(&s->ccm), 0,
++                    fsl_imx8mm_memmap[FSL_IMX8MM_CCM].addr);
 +
-     /* UARTs */
-     for (i = 0; i < FSL_IMX8MM_NUM_UARTS; i++) {
-         static const struct {
-@@ -328,6 +339,7 @@ static void fsl_imx8mm_realize(DeviceState *dev, Error **errp)
-     /* Unimplemented devices */
+     /* Analog */
+     object_property_set_uint(OBJECT(&s->analog), "arm-pll-fdiv-ctl0-reset",
+                             0x000fa030, &error_abort);
+@@ -340,6 +349,7 @@ static void fsl_imx8mm_realize(DeviceState *dev, Error **errp)
      for (i = 0; i < ARRAY_SIZE(fsl_imx8mm_memmap); i++) {
          switch (i) {
-+        case FSL_IMX8MM_ANA_PLL:
+         case FSL_IMX8MM_ANA_PLL:
++        case FSL_IMX8MM_CCM:
          case FSL_IMX8MM_GIC_DIST:
          case FSL_IMX8MM_GIC_REDIST:
          case FSL_IMX8MM_RAM:
 diff --git a/include/hw/arm/fsl-imx8mm.h b/include/hw/arm/fsl-imx8mm.h
-index 133f519b7c..4601f57f2b 100644
+index 4601f57f2b..03ab45d94e 100644
 --- a/include/hw/arm/fsl-imx8mm.h
 +++ b/include/hw/arm/fsl-imx8mm.h
-@@ -13,6 +13,7 @@
- #include "cpu.h"
+@@ -14,6 +14,7 @@
  #include "hw/char/imx_serial.h"
  #include "hw/intc/arm_gicv3_common.h"
-+#include "hw/misc/imx8mp_analog.h"
+ #include "hw/misc/imx8mp_analog.h"
++#include "hw/misc/imx8mp_ccm.h"
  #include "qom/object.h"
  #include "qemu/units.h"
  
-@@ -33,6 +34,7 @@ struct FslImx8mmState {
+@@ -34,6 +35,7 @@ struct FslImx8mmState {
  
      ARMCPU             cpu[FSL_IMX8MM_NUM_CPUS];
      GICv3State         gic;
-+    IMX8MPAnalogState  analog;
++    IMX8MPCCMState     ccm;
+     IMX8MPAnalogState  analog;
      IMXSerialState     uart[FSL_IMX8MM_NUM_UARTS];
  };
- 
 -- 
 2.34.1
 
