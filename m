@@ -2,79 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC6BCCA800B
-	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 15:46:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D3ECA80C1
+	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 15:59:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vRX3T-000200-Px; Fri, 05 Dec 2025 09:45:07 -0500
+	id 1vRXFg-00052m-0U; Fri, 05 Dec 2025 09:57:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vRX3Q-0001zl-7m
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 09:45:05 -0500
-Received: from mail-yx1-xb12f.google.com ([2607:f8b0:4864:20::b12f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vRX3N-0001yk-K6
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 09:45:02 -0500
-Received: by mail-yx1-xb12f.google.com with SMTP id
- 956f58d0204a3-6432842cafdso1945233d50.2
- for <qemu-devel@nongnu.org>; Fri, 05 Dec 2025 06:45:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764945900; x=1765550700; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=BjxtfHT4xz1xk6ih1qyrbNnTXa1K0Qn5l7NXue+n1A0=;
- b=FFz/OdHujPaq+bUB5lWLIcSUQMTJSriTBbiYG0N5nszpyCKBxMO5T3aZujTTEYlAio
- vGe/q1tSj6M6SAuCRh4KAZuwNKGXcNTvM8wztKfaqGx5SvS4BHR9q1JslaXhMJ6nqKsz
- r5X0ZD/cZBi+fy8Ab3X8cz9qbd/qaPpjpjsSwEvKbBNPb1msH6bGFxVbL9YQ4haKn2ew
- v7oXqD4f8cG8RPz0ngq5E3iO9DvRDaHWYUrJcN/iP7kjbnLe+DlNU5U0JcwaXX9+OWym
- 58L5fBITLoNRxxg6dp77s/IITr9hA39JsK3SJpXQsGuQRPfXn3yftFPf9KEwmvqzVUE8
- 352A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764945900; x=1765550700;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BjxtfHT4xz1xk6ih1qyrbNnTXa1K0Qn5l7NXue+n1A0=;
- b=JXwB+xHewZMuXJbfDDd4ttGXkqnjg8Lwe2HLo7cUQpdvfTkMVrmp6+/VwfEv3lAKL/
- G1tCnP7weA/LOU0tXOXdh0C1DiST3fB1QH/OGx3aHgMpzTwzbg7/cR1dPvPC9/v6/JAr
- rziDgvLZh9IxyrtY5xC7NUMfjCakr14ROpbxIVzG+E/hPJ07PhoEvE0h7DZ2VIjxZ4ux
- GTi7LSWRt2I3BEKmwDnGUswSdi7I3BtvW/5PUGZx63A74uLEJaRK7JOi0Ooq1UKkn5ko
- joCUEcutT3EVij1X4/MY05yJRKAEy1rVImHsJreAYD9Y/uY0X4RrdcPNYBYQKTgr6b+k
- A8xQ==
-X-Gm-Message-State: AOJu0Yz6Ry0oALe7qYN3y7gUiqzYuLd8GeOMfyrUxSFmQMeDGLeB1t8F
- G8cUT1SEdTpIt9pY3IHddu0E49rR+mUKYWM/MKFmuhpupPNK3tQTqOr68SmvQaDfvuztsBd1EBJ
- xjc4QzS7tNabnt3a1KpufTvpPp8uXudQAlJ014XBNgAG+kdEjhCkNr94=
-X-Gm-Gg: ASbGncvETQ5Kap5hE3tUELJH48UT6S1xhhSClfNAVMHRHLq7t1Hlk/GWLsOEdZhgQ+i
- RiF4cMFp+aLluCsNWjObngYLnrZOfz+6ipNOpSTVDe3gnjHDGRKcekQkhUdVzAjL62PvqYgNrAd
- pwMwZGV35ZFQpnDuM44j6qa7SEOneRc8IrOSuM/fjm77MUoM/q3ysLu3ZK4E5bYzu4fxdFJNz3H
- c9rHhaF+EzVLOCrD1gz7f5TzOvmk2LkJvdw/Y5mfk22RCS4GU+Aoa9Yf3nEKyNjovGoAkL4
-X-Google-Smtp-Source: AGHT+IHHLuomsiTLiotBypV7gZQUviA6YV7Ci89ZTbqI7HXbnU3+7xfxYi6srdQLsVVONFM7/Wpn7y/kthUtl7c7/sU=
-X-Received: by 2002:a05:690e:120e:b0:642:1d3:adf5 with SMTP id
- 956f58d0204a3-644370394bemr7260244d50.48.1764945900152; Fri, 05 Dec 2025
- 06:45:00 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vRXFd-00052J-R2
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 09:57:42 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vRXFc-0004qz-FJ
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 09:57:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1764946658;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=VwumzNpliOTN0Zo+0UIBDlVATpWTRIApdu7VTg2khBQ=;
+ b=Ylp8w09W97vJqZX010zGOzt9/xvWb8v9VU0lPzan1kP3+FhDrE86+lKHe3d2Qem2NhGOoC
+ UoSKoXb8okj3Z9/hMU4YM4CAVKqTULncLVViCYLADAVWmqMcHd33r3E819iABYGRwzKjB5
+ ydko8aWJ58Gh7pHlhDbIsjUkg5C4PZM=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-472-shU7WiXWM6q0PllZWNAk9w-1; Fri,
+ 05 Dec 2025 09:57:33 -0500
+X-MC-Unique: shU7WiXWM6q0PllZWNAk9w-1
+X-Mimecast-MFC-AGG-ID: shU7WiXWM6q0PllZWNAk9w_1764946652
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8A5C51956054; Fri,  5 Dec 2025 14:57:32 +0000 (UTC)
+Received: from merkur.redhat.com (unknown [10.45.225.174])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id BFC7719560B4; Fri,  5 Dec 2025 14:57:29 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: kwolf@redhat.com, stefanha@redhat.com, mst@redhat.com,
+ akihiko.odaki@daynix.com, qemu-stable@nongnu.org
+Subject: [PATCH] pcie_sriov: Fix PCI_SRIOV_* accesses in pcie_sriov_pf_exit()
+Date: Fri,  5 Dec 2025 15:57:18 +0100
+Message-ID: <20251205145718.55136-1-kwolf@redhat.com>
 MIME-Version: 1.0
-References: <3d73bcbc-d3f0-4271-9f99-d53fb5a85db6@ksl.ci.kyutech.ac.jp>
-In-Reply-To: <3d73bcbc-d3f0-4271-9f99-d53fb5a85db6@ksl.ci.kyutech.ac.jp>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 5 Dec 2025 14:44:48 +0000
-X-Gm-Features: AWmQ_bllnWx1htotPYmK686nGlvGtXqpF4Lrp1yNq-OzH2OQRBTx2WI5_yeu9xY
-Message-ID: <CAFEAcA_XNdUDFLojnqYdsBqh2jZyg45ds9wJjiS9ujhPnX2z9Q@mail.gmail.com>
-Subject: Re: tcg: Requesting clarification on return value of prepare_host_addr
-To: Shusaku KURAMITSU <kuramitsu@ksl.ci.kyutech.ac.jp>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b12f;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb12f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,97 +78,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 5 Dec 2025 at 14:27, Shusaku KURAMITSU
-<kuramitsu@ksl.ci.kyutech.ac.jp> wrote:
-> I've noticed a possible discrepancy between the comment and the behavior
->
-> of i386's prepare_host_addr (located at tcg/i386/tcg-target.c.inc, line
-> 2157-2260):
->
->
-> ```
->
-> /*
->   * For softmmu, perform the TLB load and compare.
->   * For useronly, perform any required alignment tests.
->   * In both cases, return a TCGLabelQemuLdst structure if the slow path
->   * is required and fill in @h with the host address for the fast path.
->   */
-> static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
->                                             TCGReg addr, MemOpIdx oi,
-> bool is_ld)
-> {
->      TCGLabelQemuLdst *ldst = NULL;
->
-> ...
->      if (tcg_use_softmmu) {
->
-> ...
->
->          ldst = new_ldst_label(s);
->          ldst->is_ld = is_ld;
->          ldst->oi = oi;
->          ldst->addr_reg = addr;
->
-> ...
->
->      } else if (a_mask) {
-> ...
->      }
->
->      return ldst;
-> }
->
-> ```
->
->
-> The code appears to always assign (in case of softmmu) a label to `ldst`
-> and return it,
+PCI_SRIOV_* are offsets into the SR-IOV capability, not into the PCI
+config space. pcie_sriov_pf_exit() erroneously takes them as the latter,
+which makes it read PCI_HEADER_TYPE and PCI_BIST when it tries to read
+PCI_SRIOV_TOTAL_VF.
 
-No; if tcg_use_softmmu is false and a_mask is zero then
-we will not take either the if() or the else if() block,
-and ldst will still be NULL when we return it.
+In many cases we're lucky enough that the PCI config space will be 0
+there, so we just skip the whole for loop, but this isn't guaranteed.
+For example, setting the multifunction bit on the PF and then doing a
+'device_del' on it will get a larger number and cause a segfault.
 
-This is because:
- * softmmu always requires a slowpath (because we might
-   look the guest address up in the TLB but not find it)
- * linux-user mode needs a slowpath only if we need to
-   enforce alignment and atomicity checks for this
-   memory access (because linux-user always has "guest
-   address == host address + some constant", so most
-   simple loads and stores cannot fail or be complicated)
+Fix this and access the real PCI_SRIOV_* fields in the capability.
 
-If we don't have to do either, then we don't need the slowpath.
+Cc: qemu-stable@nongnu.org
+Fixes: 19e55471d4e8 ('pcie_sriov: Allow user to create SR-IOV device')
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+---
+ hw/pci/pcie_sriov.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-> As I understand it, there is no way to determine, at this point, which
-> of the two paths to use;
->
-> the generated machine code (see L2233-2237), not the C code here,
-> performs the TLB comparison.
+diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
+index c4f88f09757..d467284cbda 100644
+--- a/hw/pci/pcie_sriov.c
++++ b/hw/pci/pcie_sriov.c
+@@ -195,14 +195,17 @@ bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
+ 
+ void pcie_sriov_pf_exit(PCIDevice *dev)
+ {
++    uint8_t *cfg;
++
+     if (dev->exp.sriov_cap == 0) {
+         return;
+     }
++    cfg = dev->config + dev->exp.sriov_cap;
+ 
+     if (dev->exp.sriov_pf.vf_user_created) {
+         uint16_t ven_id = pci_get_word(dev->config + PCI_VENDOR_ID);
+-        uint16_t total_vfs = pci_get_word(dev->config + PCI_SRIOV_TOTAL_VF);
+-        uint16_t vf_dev_id = pci_get_word(dev->config + PCI_SRIOV_VF_DID);
++        uint16_t total_vfs = pci_get_word(cfg + PCI_SRIOV_TOTAL_VF);
++        uint16_t vf_dev_id = pci_get_word(cfg + PCI_SRIOV_VF_DID);
+ 
+         unregister_vfs(dev);
+ 
+@@ -213,8 +216,6 @@ void pcie_sriov_pf_exit(PCIDevice *dev)
+             pci_config_set_device_id(dev->exp.sriov_pf.vf[i]->config, vf_dev_id);
+         }
+     } else {
+-        uint8_t *cfg = dev->config + dev->exp.sriov_cap;
+-
+         unparent_vfs(dev, pci_get_word(cfg + PCI_SRIOV_TOTAL_VF));
+     }
+ }
+-- 
+2.52.0
 
-That's right. We are generating the code in this function
-to do everything except the final "load/store from the host
-address" part. If we're using softmmu that includes all the
-code to look the guest address up in the TLB.
-
-I think the way to understand this function is to look at
-the functions that call it, like tgen_qemu_ld(). They do:
-
- * call prepare_host_addr()
- * call a function to generate a plain host load or store
-
-If the prepare_host_addr() code wants to do an out of
-line slow-path, then the code we emit looks like:
-  - do stuff to figure out if we can fast path this
-  - conditional jump to out-of-line label for slow path
-  - fast path handling; at the end of this we have the
-    host address for the memory access
-  - host load or store generated by tgen_qemu_ld etc
-  - and then fall through into code for the next guest insn
-
-At the end of the TB we will arrange to emit the
-out-of-line label and the slow path code.
-
-thanks
--- PMM
 
