@@ -2,63 +2,151 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82EC6CA6B25
-	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 09:25:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E10CA6B71
+	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 09:35:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vRR6d-0002s1-9Y; Fri, 05 Dec 2025 03:23:59 -0500
+	id 1vRRH4-0006QM-If; Fri, 05 Dec 2025 03:34:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tangtao1634@phytium.com.cn>)
- id 1vRR6a-0002rd-B4; Fri, 05 Dec 2025 03:23:56 -0500
-Received: from sgoci-sdnproxy-4.icoremail.net ([129.150.39.64])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <tangtao1634@phytium.com.cn>)
- id 1vRR6X-0003B5-9H; Fri, 05 Dec 2025 03:23:56 -0500
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwCXn2OMljJpxkgSAw--.572S2;
- Fri, 05 Dec 2025 16:23:40 +0800 (CST)
-Received: from [10.31.62.13] (unknown [218.76.62.144])
- by mail (Coremail) with SMTP id AQAAfwCX7eqCljJpvLwJAA--.4322S2;
- Fri, 05 Dec 2025 16:23:37 +0800 (CST)
-Message-ID: <d9547948-6a69-46ca-8837-329ffd1b5f9f@phytium.com.cn>
-Date: Fri, 5 Dec 2025 16:23:30 +0800
+ (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
+ id 1vRRH2-0006Q3-1O; Fri, 05 Dec 2025 03:34:44 -0500
+Received: from mail-centralusazon11011036.outbound.protection.outlook.com
+ ([52.101.62.36] helo=DM5PR21CU001.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
+ id 1vRRH0-0004ti-5Z; Fri, 05 Dec 2025 03:34:43 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UWRsAgt/nit6FGuBHyfywKGHZiRhYS13e4x5uLR69x1dX2JLuhxIQJtfFZHe2kuliltsJdAZIJ89sKg35mGsuku7tPXjTAhSmm//pJIDtXX+Gqnhg7ypWWDogB3WS8ZY8O/yVL7+poyXvUdt4IFPtNUpwq3QjBpd4JMgJOros0QVasbYuBcMsdadpMl0MEu/b2rqBeUmGiWmb90cpCi6ayLSqvRnb6yekl6E15Hr2bQg2vSKWH6fBoIpn8HwY7pRuwxbk50i/XqDvo5iR6ZUo5NRAWnyyFCtdhg/IFpJxPGgfQS9zgMC3qZPQpi3xMyXbEbCfCJ2J6Fy+phlny04Ag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jUzZ3mh+neuVTn5R+mZ47jYyaxlRpOu4LB16t7RIyg8=;
+ b=C8D/YO/eLJYyq58lILsv+oMhJcSkqG2jauiqmGpNYFwfdrk5OWLRPEVFpkOAbSKBg3DT2fZGpbTcGcGaQvF8twUCSbMhMQHYclrzUlme2tHZ+C+uk8Hrld1mblbmfe9KuyWt12mtIAr29uPyL1ONNNtOVg6xXkNsArRlb/eaMxaSCDOpT2KWGjZBGgNcBj+Q0be4U08SQ5rcWeNeRcftvkMJs+YSwGJP7LfcXIi+MlnReoTZSHIDSxEPiNBhzfKjkF3gdxafi1GRyJ6WFQ2Pr7jKakfXXtWjMB1E0oF23Wb44s5WdgbcfHMHwN44qd1Nq77sZ2vCr/OOgpyoQKXQjw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jUzZ3mh+neuVTn5R+mZ47jYyaxlRpOu4LB16t7RIyg8=;
+ b=03M+6kyLBCsWJI3i1jfUmDGRL+q/dbjiJc5604jAHy/Usew8X77EWmiPcdylVzYkGT+rTMS8jWPMvLhBksxyYO/H7ZDkFXDSmgGq0MGufLZIxGkGQiYZBmXXotkBpPFXgcsqMTJPmhZSMuYWbR3HPs2N2fyvkdAaztNrZGsfrC4=
+Received: from SJ0PR05CA0156.namprd05.prod.outlook.com (2603:10b6:a03:339::11)
+ by CY5PR12MB6081.namprd12.prod.outlook.com (2603:10b6:930:2b::15)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.9; Fri, 5 Dec
+ 2025 08:29:34 +0000
+Received: from CO1PEPF000075F2.namprd03.prod.outlook.com
+ (2603:10b6:a03:339:cafe::f) by SJ0PR05CA0156.outlook.office365.com
+ (2603:10b6:a03:339::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9388.9 via Frontend Transport; Fri, 5
+ Dec 2025 08:29:33 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CO1PEPF000075F2.mail.protection.outlook.com (10.167.249.41) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9388.8 via Frontend Transport; Fri, 5 Dec 2025 08:29:33 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 5 Dec
+ 2025 02:29:32 -0600
+Received: from XFR-LUMICHEL-L2.amd.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
+ Transport; Fri, 5 Dec 2025 00:29:31 -0800
+Date: Fri, 5 Dec 2025 09:29:31 +0100
+From: Luc Michel <luc.michel@amd.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+CC: <qemu-devel@nongnu.org>, <qemu-riscv@nongnu.org>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
+ <liwei1518@gmail.com>, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Francisco Iglesias
+ <francisco.iglesias@amd.com>
+Subject: Re: [PATCH 0/9] RISC-V CPU time source interface
+Message-ID: <aTKXssxseF4wfXiw@XFR-LUMICHEL-L2.amd.com>
+References: <20251107102340.471141-1-luc.michel@amd.com>
+ <aRb1jmwXE18JB2_g@XFR-LUMICHEL-L2.amd.com>
+ <a5e9c465-5c4a-403e-8768-bf383256091f@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v3 16/21] hw/arm/smmuv3: Implement SMMU_S_INIT register
-To: eric.auger@redhat.com, Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- Chen Baozi <chenbaozi@phytium.com.cn>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Mostafa Saleh <smostafa@google.com>
-References: <20251012150701.4127034-1-tangtao1634@phytium.com.cn>
- <20251012151351.4130239-1-tangtao1634@phytium.com.cn>
- <421fdc65-c21d-4606-a241-28341955104a@redhat.com>
-From: Tao Tang <tangtao1634@phytium.com.cn>
-In-Reply-To: <421fdc65-c21d-4606-a241-28341955104a@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAfwCX7eqCljJpvLwJAA--.4322S2
-X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQAOBWkwma4FjAALsm
-Authentication-Results: hzbj-icmmx-7; spf=neutral smtp.mail=tangtao163
- 4@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvJXoW3XF1fuw18CFWUJFy7CryfWFg_yoW3GFy8pr
- WkGF15KFWUAw4fu3W2kw4kAFyUZw1kK3W7Cr98Ga4ava4Yyry0qr4qgw4Y9F1DCr48A3y2
- qr4YgFsruw1UZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
- DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
- UUUUU
-Received-SPF: pass client-ip=129.150.39.64;
- envelope-from=tangtao1634@phytium.com.cn; helo=sgoci-sdnproxy-4.icoremail.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+In-Reply-To: <a5e9c465-5c4a-403e-8768-bf383256091f@linaro.org>
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000075F2:EE_|CY5PR12MB6081:EE_
+X-MS-Office365-Filtering-Correlation-Id: b60ae0af-9a90-4e81-127f-08de33d86b1d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|36860700013|376014|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?cy8vZXFIc3ptNUczL29XZ2x3anBSdHpzR0JmWjBndy9RRDQ5MWlCc0hXc0Jp?=
+ =?utf-8?B?aHVEc3A3d3kvOGFObS91THlzbHNaaUU3aGJkL2Z1WGh3MHAzOWg5bEJFbG96?=
+ =?utf-8?B?UGFxblVFN09udi9zdDZmZHV5cWRUQTFSUG5oLzZqWWd0bGluT1E4eVFxeVNS?=
+ =?utf-8?B?WnpyV21JSWhNQTFkRkREUXl4dFlCQlNBcEtQcld1TDhWSmxrd3RJVlhtcWZ5?=
+ =?utf-8?B?KzhRcks2MzdwaGN5cjlCMDI1NzRtSEM3QnRHM24wMmJkQXBiSlJzWGZSTmoy?=
+ =?utf-8?B?YzFWMlYraExMQ1BkRUNvcnZxSDd1eWs4Q0NuV2d5eFVhRVp5ZVBoemwyZG1w?=
+ =?utf-8?B?N0RXRmRqeUFHcEQ3NkcxdkI1N1F0Q01DZUU0T215bzRYck1Ld0JPOEQwY1pm?=
+ =?utf-8?B?NkNKb0IwMUpTTVNvcGdzR3REQ2RyUkRnak9ZeFlmRS9OOElrY0VKN3JueGRy?=
+ =?utf-8?B?VldZMnJqeHN1MDZVb1pJdFMxZnJSY29maVRJQlJBU0dJSmRYbjl3cGl6NTZB?=
+ =?utf-8?B?eElpYzd5MlpxVDdzWEVCUmg5ZEs2TnJWRFl1bVN4UlEwVlhwdWlzd2VyUUVv?=
+ =?utf-8?B?NnljYmpweTRBeEVjL3lLaVdlSms2elhLVVFiZTI0cDA5eEw4WjRkakxCZDdK?=
+ =?utf-8?B?VDhRWmxBMkM0UGZ2Zkx0d0lRRm5YMzlzR05GMWVaZHlEYk9ZcWRpVGl6ckVn?=
+ =?utf-8?B?cm5YSzd3aXRnc1VvRk1UZUxnaVlTZXFjVHhTcHNZMmJKU3c2ZDV2VWpZYnND?=
+ =?utf-8?B?dTE0V0FpWmhaeGoyUHdLTElrRWcvVGkzS2F0STRFdXZ4Mm92SGpWc1JQQzNl?=
+ =?utf-8?B?dlRxd0wvank4am9ha0wxcGNIYzVXV1JqUjhoaStlUkxOOWk1WU9EWDVTWk9x?=
+ =?utf-8?B?MGFNSWE4NFYwYTZDVWhab2ZKQWp5M3FPL2V6ZmRqZ09hUnNkcFVQcjNKOXlS?=
+ =?utf-8?B?Q2NxV2Z0N0Z6T29rTzBvS3ptcG1kdnEreGdwVUVaeno4TVBCYTZodStZNWZs?=
+ =?utf-8?B?N1VxU2lTR283OGhnNkZJektMSzVEK1k5WFgxN2NZTHM4MTdjanZtUTB4V3ZM?=
+ =?utf-8?B?M0RRQnVSUFg0Z2pMSTJSVkdxZU5jUDFxdjlqamQwWlJKRXVIam5pNjhHZVRL?=
+ =?utf-8?B?REJDRFlLa3VzaHY1SzBIMGVvY3gyTmNzTmxEVFFXWlFhWGZUVlptWUlhbmJk?=
+ =?utf-8?B?ZkpoQ3dkdUE3ZFd2YXJQL0F0VWVqaC9vL1F1bm1hY0UycFBzZTIvL3J3clNk?=
+ =?utf-8?B?Z20vMjAwdGljTEdDZjMxTGF2U0htLzA5TzFoZm5JSHZPbUJCcHZqYXdnWmEx?=
+ =?utf-8?B?MlVQNzJ1dlpVK1FlTyswYWdmZG5KY1V4Vk1OT2lFRm1Sa1R3WmNVUGhTV3hQ?=
+ =?utf-8?B?ajZCclZocCszWndsK2ZsRFkxZWJlRERoZHFxMkVUdjduSmtJU09DMGl5RXJN?=
+ =?utf-8?B?MmlpQnJvclVHSCtSVVJEU1BvVndaOWlqRktJa2NKeWZIRm8vYXNVUUhxS2Nu?=
+ =?utf-8?B?YXRINFIwaUZCLzRla1RienRUOUFjanBiQklUZXVMdDdpSGZDU3pRMnBXNkhu?=
+ =?utf-8?B?alRmZjRRSHJ4dmllNXhNbmlUVjR4Z29Pby96RjI4ZkhWU2Q0RkZEN1VETkxo?=
+ =?utf-8?B?R1c2ZE92QUNESitPM0xKUWp1WVdmQ3grOVJqbnNTREdIZUU2blRmbnFGRk9v?=
+ =?utf-8?B?TW5KNDJNU2wyUENSVEh3ZDl1dzJGeS9yN3JlZmNWZSs5VGw0Zk5XQ05CMW55?=
+ =?utf-8?B?Zm4yWmFRY1hybXhoQnhZeUR0Uy9xMmZGVHMyUUVwVTUyVkp4VlROUUFLZUpE?=
+ =?utf-8?B?ZWxkOHB4dFJ6UVY1cW9kTVlqN0JOcS85bzVsMUpXRWtsWGpNSzYrMjE5NXk1?=
+ =?utf-8?B?bFNNRm5VekJpQTdueGZYbnUxRWxPWFgyU3luN1c3aHZwdU5pY0xoQUQrVG0y?=
+ =?utf-8?B?MUVqSWR2dVRIK2FXcTlOend1T3B4T3RBbHFGR2lReTZqaHJybm1pbE51RS8v?=
+ =?utf-8?B?UkM4ZEtHTW1oY2cyMWhEZVQ3emFOVnFWSTRScUpnaldpMlIrZFJyOTUwY3Ix?=
+ =?utf-8?B?VWYySVNiTWRyTGRoNmxiTWxxVjhmbUMwYmliNHI1eVVFdzFYODNxYW5oWVh2?=
+ =?utf-8?Q?cB50=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2025 08:29:33.4868 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b60ae0af-9a90-4e81-127f-08de33d86b1d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000075F2.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6081
+Received-SPF: permerror client-ip=52.101.62.36;
+ envelope-from=Luc.Michel@amd.com;
+ helo=DM5PR21CU001.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,219 +162,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Eric,
+On 18:16 Thu 20 Nov     , Philippe Mathieu-Daudé wrote:
+> On 14/11/25 10:25, Luc Michel wrote:
+> > Hi,
+> > 
+> > Ping, patches missing review: 8 and 9.
+> 
+> Doh sorry, I don't remember why I stopped... I suppose I got interrupted
+> and forgot. Too bad this missed the soft-freeze, now we'll have to wait
+> after Xmas :/
 
-On 2025/12/4 22:33, Eric Auger wrote:
->
-> On 10/12/25 5:13 PM, Tao Tang wrote:
->> Implement read/write handlers for the SMMU_S_INIT secure-only
->> register.
->>
->> Writing to this register provides a mechanism for software to perform a
->> global invalidation of ALL caches within the SMMU. This includes the
->> IOTLBs and Configuration Caches across all security states.
->>
->> This feature is critical for secure hypervisors like Hafnium, which
->> use it as a final step in their SMMU initialization sequence. It
->> provides a reliable, architecturally defined method to ensure a clean
->> and known-good cache state before enabling translations.
->>
->> Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
->> ---
->>   hw/arm/smmuv3.c     | 33 +++++++++++++++++++++++++++++++++
->>   hw/arm/trace-events |  1 +
->>   2 files changed, 34 insertions(+)
->>
->> diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
->> index 100caeeb35..432de88610 100644
->> --- a/hw/arm/smmuv3.c
->> +++ b/hw/arm/smmuv3.c
->> @@ -354,6 +354,21 @@ static int smmu_get_ste(SMMUv3State *s, dma_addr_t addr, STE *buf,
->>   
->>   }
->>   
->> +static void smmuv3_invalidate_all_caches(SMMUv3State *s)
->> +{
->> +    trace_smmuv3_invalidate_all_caches();
->> +    SMMUState *bs = &s->smmu_state;
->> +
->> +    /* Clear all cached configs including STE and CD */
->> +    if (bs->configs) {
->> +        g_hash_table_remove_all(bs->configs);
->> +    }
->> +
->> +    /* Invalidate all SMMU IOTLB entries */
->> +    smmu_inv_notifiers_all(&s->smmu_state);
->> +    smmu_iotlb_inv_all(bs);
->> +}
->> +
->>   static SMMUTranslationStatus smmuv3_do_translate(SMMUv3State *s, hwaddr addr,
->>                                                    SMMUTransCfg *cfg,
->>                                                    SMMUEventInfo *event,
->> @@ -1969,6 +1984,21 @@ static MemTxResult smmu_writel(SMMUv3State *s, hwaddr offset,
->>   
->>           bank->eventq_irq_cfg2 = data;
->>           return MEMTX_OK;
->> +    case (A_S_INIT & 0xfff):
-> why do we apply & 0xfff ?
+No problem, thanks for the reviews :)
 
+RISC-V people, may I ask for some feedback on the series now that it is
+fully reviewed?
 
+Thanks in advance
 
-Let me clarify what I was trying to do with the `(A_S_INIT & 0xfff)` 
-case, and then ask your opinion on how to clean this up.
-
-According to the SMMUv3 spec , registers with the same function across 
-different security states (Non-secure, Realm, Root) share the same 
-*relative* offset within their 4KB bank window. In the MMIO handlers we 
-first decode the bank from the high bits of the offset (to get 
-`reg_sec_sid`), and then do:
-
-     uint32_t reg_offset = offset & 0xfff;
-
-     switch (reg_offset) {
-         ...
-     }
-
-So the `switch` is really operating on the per-bank 4KB-relative offset, 
-and the banked registers can share the same `case` logic while 
-`reg_sec_sid` selects which bank structure we actually touch.
-
-Most of the `A_*` macros (e.g. `A_CR0`) are already defined as these 
-relative offsets (just the low 12 bits), so they fit naturally in this 
-scheme and we can simply write `case A_CR0:`.
-
-`A_S_INIT`, however, is still defined as an *absolute* offset that 
-already includes the secure-bank base. Since the `switch` is matching on 
-`reg_offset = offset & 0xfff`, I ended up writing:
-
-     case (A_S_INIT & 0xfff):
-
-as a shortcut to adapt an absolute macro to the “relative” decode. 
-S_INIT is also a secure-only register, so there is no NS twin that I 
-could reuse as the shared low-12-bit macro. In practice that makes 
-S_INIT a one-off special case in the current code, which is why the `& 
-0xfff` sticks out.
-
-
-I agree this looks more like a hack than a clean design, so I’d like to 
-rework it in the next version. I see a couple of possible directions and 
-would appreciate your view on which one is preferable:
-
-1) Stop using NS macros as the canonical case labels and list all 
-bank-specific variants explicitly.
-
-    Instead of relying on a single “NS” macro for the shared low-12-bit 
-offset, we could have:
-
-        switch (reg_offset) {
-        case A_STRTAB_BASE_CFG:
-        case A_S_STRTAB_BASE_CFG:
-            ...
-            break;
-        }
-
-    This makes the banked nature explicit in the `switch` and avoids 
-relying on NS as the “reference” definition. The bank selection would 
-still be driven by `reg_sec_sid`, but the case labels themselves would 
-be per-bank macros where that makes sense.
-
-2) Go back to the v2 [1] idea and introduce a dedicated S_INIT-relative 
-alias macro.
-
-    As I had in v2, we could define a separate macro that encodes only 
-the relative offset, e.g. something like:
-
-         REG32(S_INIT,               0x803c)
-             FIELD(S_INIT, INV_ALL,    0, 1)
-         /* Alias for the S_INIT offset to match in the dispatcher switch */
-         #define A_S_INIT_ALIAS         0x3c
-
-
-    and then the decode would simply use:
-
-        switch (reg_offset) {
-        case A_S_INIT_ALIAS:
-            ...
-            break;
-        }
-
-    This keeps the “absolute” constant for the secure MMIO layout (if we 
-still find that useful elsewhere), but makes the decode logic work 
-entirely in terms of relative offsets and removes the inline.
-
-3) Keep the current implementation and add some comment about it.
-
-
-Which option would you prefer? Any other thoughts or suggestions would 
-be greatly appreciated.
-
-
-[1] 
-https://lore.kernel.org/qemu-devel/7161c00c-c519-4e90-9dca-99bcf7518d40@redhat.com/
-
-
-
->> +        if (data & R_S_INIT_INV_ALL_MASK) {
->> +            int cr0_smmuen = smmu_enabled(s, reg_sec_sid);
->> +            int s_cr0_smmuen = smmuv3_get_cr0ack_smmuen(s, reg_sec_sid);
->> +            if (cr0_smmuen || s_cr0_smmuen) {
-> use smmuv3_is_smmu_enabled()?
-
-
-Yes using smmuv3_is_smmu_enabled is a better choice. And I'll check both 
-CR0.SMMUEN and S_CR0.SMMUEN in V4. As I found *any SMMU_(*_)CR0.SMMUEN 
-== 1* descriptions in 6.3.62 SMMU_S_INIT ARM IHI 0070 G.b:
-
- > If SMMU_ROOT_CR0.GPCEN == 0, a write of 1 to INV_ALL when any 
-SMMU_(*_)CR0.SMMUEN == 1,
- >     or an Update of any SMMUEN to 1 is in progress ........ , is 
-CONSTRAINED UNPREDICTABLE......
-
-
-Thanks for your review.
-
-
-Yours,
-
-Tao
-
->> +                /* CONSTRAINED UNPREDICTABLE behavior: Ignore this write */
->> +                qemu_log_mask(LOG_GUEST_ERROR, "S_INIT write ignored: "
->> +                              "CR0.SMMUEN=%d or S_CR0.SMMUEN=%d is set\n",
->> +                              cr0_smmuen, s_cr0_smmuen);
->> +                return MEMTX_OK;
->> +            }
->> +            smmuv3_invalidate_all_caches(s);
->> +        }
->> +        /* Synchronous emulation: invalidation completed instantly. */
->> +        return MEMTX_OK;
->>       default:
->>           qemu_log_mask(LOG_UNIMP,
->>                         "%s Unexpected 32-bit access to 0x%"PRIx64" (WI)\n",
->> @@ -2172,6 +2202,9 @@ static MemTxResult smmu_readl(SMMUv3State *s, hwaddr offset,
->>       case A_EVENTQ_CONS:
->>           *data = bank->eventq.cons;
->>           return MEMTX_OK;
->> +    case (A_S_INIT & 0xfff):
->> +        *data = 0;
->> +        return MEMTX_OK;
->>       default:
->>           *data = 0;
->>           qemu_log_mask(LOG_UNIMP,
->> diff --git a/hw/arm/trace-events b/hw/arm/trace-events
->> index 434d6abfc2..0e7ad8fee3 100644
->> --- a/hw/arm/trace-events
->> +++ b/hw/arm/trace-events
->> @@ -64,6 +64,7 @@ smmuv3_cmdq_tlbi_s12_vmid(int vmid) "vmid=%d"
->>   smmuv3_notify_flag_add(const char *iommu) "ADD SMMUNotifier node for iommu mr=%s"
->>   smmuv3_notify_flag_del(const char *iommu) "DEL SMMUNotifier node for iommu mr=%s"
->>   smmuv3_inv_notifiers_iova(const char *name, int asid, int vmid, uint64_t iova, uint8_t tg, uint64_t num_pages, int stage) "iommu mr=%s asid=%d vmid=%d iova=0x%"PRIx64" tg=%d num_pages=0x%"PRIx64" stage=%d"
->> +smmuv3_invalidate_all_caches(void) "Invalidate all SMMU caches and TLBs"
->>   smmu_reset_exit(void) ""
->>   
->>   # strongarm.c
-> Thanks
->
-> Eric
-
+-- 
+Luc
 
