@@ -2,70 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 900E9CA701D
-	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 10:52:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 806C2CA72DF
+	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 11:34:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vRSTo-0000cS-NN; Fri, 05 Dec 2025 04:52:00 -0500
+	id 1vRT7r-0007fB-IJ; Fri, 05 Dec 2025 05:33:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vRSTm-0000bd-Bq; Fri, 05 Dec 2025 04:51:58 -0500
-Received: from mgamail.intel.com ([192.198.163.16])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vRSTk-00075l-2Y; Fri, 05 Dec 2025 04:51:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764928316; x=1796464316;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=bCGZ6DQdtonXrOU1TaCOp0E2igJF926Ay2psHyCh7Wc=;
- b=Tk/9S0DJkT1solhCNnPqljeo12JTOO2d41oslskC8wG29Jx69TH/twGI
- f3w7Aa3oaA/EFl3FFkNYbuviur9SKf6r2M0vtjwc+pZmgvf4XFEOjvsEB
- DfSZgYP7YqfX7mlQAnBxNX4zTOp/pug+Nc0siC6KJAM4ZsoywiVhejOIy
- 5ICYTAblbRgopewHrZncsRnGJ9oA1GFO+sU5T312cOZhZAuZpY2UcrunT
- ryaoUv8U0owJIbHGGaL2aoh9yf5ghFcKfMDKMHMQSFYvztHeAYy2nplUi
- Yla175y33nimuz2r60tOWkpgjjiDLo+7l5ri4ZHZoZ+RvYUqASVBxkGaw A==;
-X-CSE-ConnectionGUID: 84/nPccMQ26M0wlkKyZaMw==
-X-CSE-MsgGUID: LRtBAZG9Sy6Evj4vll0dgA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11632"; a="54508155"
-X-IronPort-AV: E=Sophos;i="6.20,251,1758610800"; d="scan'208";a="54508155"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Dec 2025 01:51:52 -0800
-X-CSE-ConnectionGUID: mVVhOGC8RyarA7KT5shZeA==
-X-CSE-MsgGUID: kukjKAaBT++4UZaKrDFkxg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,251,1758610800"; d="scan'208";a="194325199"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa006.jf.intel.com with ESMTP; 05 Dec 2025 01:51:51 -0800
-Date: Fri, 5 Dec 2025 18:16:34 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, armbru@redhat.com,
- marcandre.lureau@redhat.com
-Subject: Re: [PATCH 07/14] rust: add Deserializer (from_qobject)
- implementation for QObject
-Message-ID: <aTKxAl9eCMnGcyi0@intel.com>
-References: <20251001075005.1041833-1-pbonzini@redhat.com>
- <20251001080051.1043944-8-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vRT7q-0007f2-29
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 05:33:22 -0500
+Received: from mail-yx1-xb12a.google.com ([2607:f8b0:4864:20::b12a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vRT7o-0002xd-Hs
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 05:33:21 -0500
+Received: by mail-yx1-xb12a.google.com with SMTP id
+ 956f58d0204a3-6443bc360bdso1687238d50.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Dec 2025 02:33:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1764930799; x=1765535599; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=kXfINn6d6AVvIaVaiK0+GAywxgUy3ybiY67UBJ9l20A=;
+ b=CUlXBxWPWQMpattGLTzrsasr9xVk0SF6SbVGkW2X+uzrKfw/SiZFo+uRGkERk8oeaz
+ nIy8WQFATuNuSydPY34i8TmiZ4i6L/RgAbiSjOUz5YoDn+b9PWXiOPl1SYFjt/yh94Hh
+ lFs1cZwxzPL9LuOVZU6zicH2Ujkh02wXoG1iQt0kgRPrM6gQjW6017NlyiWE2F44H0nJ
+ 2J5JeShOyKsUuatjZy9vqJA+dE8PS1q5qLs+181OEnl3tAtapdrA/gZu+gxUaWRLgHcf
+ Q/BTqlRKXUD6utPsxN+A37ZT+2zwa6MyI/lUE4QdXkUYjTnlMI3xQeXkBtz5CcDX0EXh
+ 5V3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1764930799; x=1765535599;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=kXfINn6d6AVvIaVaiK0+GAywxgUy3ybiY67UBJ9l20A=;
+ b=K4xVfZpGc7+/BqcVdSFLsjjYtXcsovo4AWyBvXSlX67hfKLiEL12BgNrGuEOvzEwpX
+ d8+tW10scHlG+CvXjTgdCcU540N23g1y7VBtxcK2f7sSaeH/G9Ej5PF3icv/RxL3QgAP
+ wON8I4r/cjpIiveySJho3BsrtVfE6lBaqVfGjkDyaWL2ZPA14i8zWZE1wOyW1SNofJKy
+ axOvteIvANMZwqRw0FtswPR1uY5gqOyx2ienb2js7kpv7/ZpQSY5rlEZNskh/B2L44e4
+ 21KXwv3ay/l/GpBOH8XwUEJ5jrydYiGuY32sX2oNLCzX9qBRxVOTC8iqN0bc9+F+lQGQ
+ QB2g==
+X-Gm-Message-State: AOJu0Yx0NI3+whRknYcfUCrkZ8ELNGYqBtDHwZpsjngm4Cf/AV37YdsO
+ wgRG2qqdu0SdMna9fFTB60nGXpqyx1PoPYjAuRy32rVTte5/0urLbsEvZTSGpZEzAWcBn3amU+U
+ xKmcqpd7/3R89Z5jOgLkiTtK7vhjBdiKVGPgK0RYfig==
+X-Gm-Gg: ASbGncscA3I+EyIVRna88hzAWpnVU8Y0vb8I6mW8CVxrdMScYD+NvNu+8l75Be14ZCY
+ vZ2Sya2PnRvMFBnQsD7xd2lmBHlf+JdjhcoFT+ffIjluOLubyu6DPYNEG9/4H8qk6HCLFMiqvVl
+ rh5yQyNWAv0MzYiRa4TTqXT+jvmsfGFpPFmxThXBPfGKZb56fq/VLnywLR6n66Nkl4G/40sOokq
+ JclvYTvC+1O+UX/BwB+c+M4lnzSkQkezsa+zV8XIenouM3HQcWf7nboCUyPFb+F3ocS80eqcReq
+ KB5Yv74=
+X-Google-Smtp-Source: AGHT+IH6mxOJqFMjAvr9XptP5rLAw42Tq7oDzPgl7MwyhCBT840pd2o5DOaXj6ZwhIYy3wfW8OoFWidQTwXgwcxZmWg=
+X-Received: by 2002:a05:690c:23c5:b0:787:e3c0:f61f with SMTP id
+ 00721157ae682-78c1890e3c6mr98833737b3.57.1764930799132; Fri, 05 Dec 2025
+ 02:33:19 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251001080051.1043944-8-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.16; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+References: <20251204193311.1281133-1-jim.macarthur@linaro.org>
+In-Reply-To: <20251204193311.1281133-1-jim.macarthur@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 5 Dec 2025 10:33:07 +0000
+X-Gm-Features: AWmQ_bmb6yVFxlVe983n5vyLxNt5308SiNUPWg-0a4kSuLvE2jObWnsbQbxzSeg
+Message-ID: <CAFEAcA_s2fDnr6PQfvjjYT_wnmMg1YUw=tVY5SnM2-QrDAh68A@mail.gmail.com>
+Subject: Re: [PATCH] hw/dma/omap_dma.c: Use 64 bit maths for
+ omap_dma_transfer_setup
+To: Jim MacArthur <jim.macarthur@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b12a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb12a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,62 +92,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 01, 2025 at 10:00:44AM +0200, Paolo Bonzini wrote:
-> Date: Wed,  1 Oct 2025 10:00:44 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 07/14] rust: add Deserializer (from_qobject) implementation
->  for QObject
-> X-Mailer: git-send-email 2.51.0
-> 
-> This allows creating any serializable data structure from QObject.
-> 
-> Co-authored-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+On Thu, 4 Dec 2025 at 19:34, Jim MacArthur <jim.macarthur@linaro.org> wrote:
+>
+> If both frame and element count are 65535, which appears valid from my
+> reading of the OMAP5912 documentation, then some of the calculations
+> will overflow the 32-bit signed integer range and produce a negative
+> min_elems value.
+>
+> Raised by #3204 (https://gitlab.com/qemu-project/qemu/-/issues/3204).
+>
+> Signed-off-by: Jim MacArthur <jim.macarthur@linaro.org>
 > ---
->  docs/devel/rust.rst                   |   1 +
->  rust/util/meson.build                 |   1 +
->  rust/util/src/qobject/deserializer.rs | 373 ++++++++++++++++++++++++++
->  rust/util/src/qobject/error.rs        |   8 +-
->  rust/util/src/qobject/mod.rs          |   2 +
->  5 files changed, 384 insertions(+), 1 deletion(-)
->  create mode 100644 rust/util/src/qobject/deserializer.rs
+>  hw/dma/omap_dma.c | 32 +++++++++++++++++++++-----------
+>  1 file changed, 21 insertions(+), 11 deletions(-)
+>
+> diff --git a/hw/dma/omap_dma.c b/hw/dma/omap_dma.c
+> index 101f91f4a3..93e6503ff9 100644
+> --- a/hw/dma/omap_dma.c
+> +++ b/hw/dma/omap_dma.c
+> @@ -504,9 +504,19 @@ static void omap_dma_transfer_setup(struct soc_dma_ch_s *dma)
+>      struct omap_dma_channel_s *ch = dma->opaque;
+>      struct omap_dma_s *s = dma->dma->opaque;
+>      int frames, min_elems, elements[__omap_dma_intr_last];
+> +    uint64_t frames64, frame64, elements64, element64;
+>
+>      a = &ch->active_set;
+>
+> +    /*
+> +     * We do maths with the frame and element fields which exceeds
+> +     * a signed 32-bit integer, so convert all these to 64 bit for future use.
+> +     */
+> +    frames64 = a->frames;
+> +    frame64 = a->frame;
+> +    elements64 = a->elements;
+> +    element64 = a->element;
 
-...
+The real hardware is surely not doing 64-bit arithmetic though.
+It's presumably working with elements * frames as unsigned 32 bit
+multiplication.
 
-> diff --git a/rust/util/src/qobject/deserializer.rs b/rust/util/src/qobject/deserializer.rs
-> new file mode 100644
-> index 00000000000..a2fe417e72a
-> --- /dev/null
-> +++ b/rust/util/src/qobject/deserializer.rs
-> @@ -0,0 +1,373 @@
-> +//! `QObject` deserializer
-> +//!
-> +//! This module implements a [`Deserializer`](serde::de::Deserializer) that
-> +//! produces `QObject`s, allowing them to be turned into deserializable data
-       ^^^^^^^^
-Only a nit,
-
-This "produces" word puzzled me for a while. I think it should be
-"consumes".
-
-Then the logic of 4 things did in this series should be the following?
-
-            serializer          serialize
-Rust struct ----------> QObject ---------> JSON
-            <----------         <---------
-	    deserializer        deserialize
-
-Maybe we could have the similar documentation/decription in mod.rs or
-somewhere to provide a high-level overview :).
-
-> +//! structures (such as primitive data types, or structs that implement
-> +//! `Deserialize`).
-> +
-
-The implementation itself looks good,
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
-
+-- PMM
 
