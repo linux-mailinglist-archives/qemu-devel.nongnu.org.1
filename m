@@ -2,82 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B5DBCA88DD
-	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 18:21:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1466CA88D7
+	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 18:20:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vRZU7-0006OK-DC; Fri, 05 Dec 2025 12:20:47 -0500
+	id 1vRZSz-0005gh-9J; Fri, 05 Dec 2025 12:19:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1vRZU3-0006GY-G0
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 12:20:43 -0500
-Received: from smtp-relay-services-0.canonical.com ([185.125.188.250])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1vRZU0-0004BG-T2
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 12:20:43 -0500
-Received: from scripts.lp.internal (scripts.lp.internal [10.131.215.246])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-relay-services-0.canonical.com (Postfix) with ESMTPSA id 72A5645988
- for <qemu-devel@nongnu.org>; Fri,  5 Dec 2025 17:20:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
- s=20210803; t=1764955237;
- bh=1Kh3+kXbNOBZv6kAzmaMdrMHA2wzZrwk043Vy5LrPhw=;
- h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
- Message-Id:Subject;
- b=CTWrveoxxJDjXr3y0MfAZhzVD6abAxd1NlZecogu9+6bkeUm1d3EWuA7VhIs1dTmz
- O1FNYSn7Q3rJOWAwfKe7R5dI3DeIlupX6Y43I/eXMWrrASz9AqeLN3zN13bo08lPaX
- 3r5PyWKE86U9id4N77M5z6XmhskqharMp+Vphn5VhqoVZMbwgAECh4N9Tz9qEXlU77
- hc/Nvrd9FCBnJhEe7dCT23fD6JPLrBDk1k9WwvKNFtKnMMuv5A3ZwYZZ972ucXYVFH
- MN+5ZwPtvhF7JE9OAV89/0jTvizxmG0ebPwEVNyHw3zbFlLo8BKec9HbW4paP1siBP
- G4+xyQN8VI4KQ==
-Received: from scripts.lp.internal (localhost [127.0.0.1])
- by scripts.lp.internal (Postfix) with ESMTP id 3A9577F8FA
- for <qemu-devel@nongnu.org>; Fri,  5 Dec 2025 17:20:37 +0000 (UTC)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1vRZSm-0005gM-HX
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 12:19:24 -0500
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1vRZSk-0003tk-0I
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 12:19:24 -0500
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-bbf2c3eccc9so1624070a12.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Dec 2025 09:19:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1764955160; x=1765559960; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fNr3vkwz8TE38u1XNmS2c3w2p3CdTxpHlmwQlriUDHg=;
+ b=OZMeC24UrDsCdJqFlatzr8SnD8B6Fna1ESjuQ4oztO72p8PzixUBq4dJXkWrbrm/Ip
+ 4rFtQV/UB6R2vS422JCbwM5Y5kK+LcJ5Q514DaKUzqyRGwABx38ulvcC+6JY9P9rYj5c
+ 3XKBdif3JnIx5iMyvgsmlpC+msgMdn4qqcbjWvQfk7SkT7AE/K/KRbl0JuFzjJ8r1KS/
+ x/zazxsRoU0WhU6dVy60kxXmf9YH5PrBDQ+5bCO06P9pvTU5PmWAFenc9hO2iTf80uTo
+ cZvM8TGq59pGo+3sVPJxsj8wepuj+1YTB3rHrdsqi2jyX2YdZjT/K1aF01uFzqCSLCzG
+ aCyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1764955160; x=1765559960;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=fNr3vkwz8TE38u1XNmS2c3w2p3CdTxpHlmwQlriUDHg=;
+ b=sERl3ucqnbiOYjlFbOtqgO1OuEPfgmWQrkj5prighfiAXu3Ms8yRdB0smh33sHJsNB
+ u7ZXqMfpIM9OeEHEtUMl1XOn5QsJLt37djaUBstjdg8Ke0pgV//qMcobAmyTi3ud3U5C
+ OmCxWp0/uG7EZ3QakjoFSuKo/1GrgxN2PJutryVI3lsA4hQ0stei7mIvPDgW0iWTPrch
+ wWtpEjuBp+I+d+mvypJRR26nJQFmvCUBEp/3KgCTCUwERFSsQfWyD1y4vuykcXkFokLV
+ NpG5k0TTLMuiG0HhqHCMiaGXE2og7FKs1fgbb65ibJ8CtL45TCmcsdjS+T0AAynl+/H2
+ mtdw==
+X-Gm-Message-State: AOJu0YzMSgcKWBTx+Hzl/9dretQiop54M3zKp3Yjkke+X+Ws3+V0a22A
+ NLSFwYHLPgFDcdAQbw7AurqW4g2y/7a3AyOIZJVgp1PRGLebaehMR86B+oN4KtWTbDI=
+X-Gm-Gg: ASbGncvVMOCuRb2O5GNSinbgum+roNihdWdgJMD79L6RUUeXadnrhWfUWaXahslVAq+
+ jg3ONYD8hTMROj5L7Ac5mIdo1JoTNoi+8dukTpqAIlpMp8DvthzCPyftPY94wZUdw11Dao/6tpt
+ LPsfwnWNOzTOi8HTNiqjsDMg9qr0oDxQTEaSYB+4XpZ1rV4FQPGD7BvGoAmYeBxWyqhNv8xLEBy
+ thvDtyzL6Mfb1kKEKoEa7ryAfOzrjq99S0wMXpqrj4Pjqe09UqTezt7pR8vYQXDMUWTrdDdtAFo
+ SJVw2WinzlrqvRyRczwE7RXFxMKn3HZfUe1YA9z1ZSVOZcghd7cL8O7ujXNtqc5cH6vJhHQRbDR
+ VSl89kqlROFgpsJPGXUS3/ImKAqH2HWlPQYWlcpQcnZkezKNp0Jr8j1dKmaF0OfLnnXNNgiw2oq
+ /MMRR9ft2X38huUm3h6RgEPvvIT6FDGfcOaV2jrOCMqhXqaOKVWoUnF/w=
+X-Google-Smtp-Source: AGHT+IH/cHLhy23k2UA+wVY+EWNMpezGTrOJ4ke0g0WyckePYsGJ7iz1T/r1JzBAX3s94WkfoSBBHg==
+X-Received: by 2002:a17:90b:3a47:b0:343:7711:127d with SMTP id
+ 98e67ed59e1d1-349438d603fmr7554402a91.9.1764955160169; 
+ Fri, 05 Dec 2025 09:19:20 -0800 (PST)
+Received: from [192.168.1.87] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-29daeae6ae0sm54197205ad.93.2025.12.05.09.19.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 05 Dec 2025 09:19:19 -0800 (PST)
+Message-ID: <a361b46f-2173-4c98-a5d3-6b4d2ac004af@linaro.org>
+Date: Fri, 5 Dec 2025 09:19:19 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 05 Dec 2025 17:15:07 -0000
-From: Heinrich Schuchardt <2133188@bugs.launchpad.net>
-To: qemu-devel@nongnu.org
-X-Launchpad-Notification-Type: bug
-X-Launchpad-Bug: product=qemu; status=New; importance=Unknown; assignee=None;
-X-Launchpad-Bug: distribution=ubuntu; sourcepackage=qemu; component=main;
- status=Confirmed; importance=Medium;
- assignee=heinrich.schuchardt@canonical.com; 
-X-Launchpad-Bug-Information-Type: Public
-X-Launchpad-Bug-Private: no
-X-Launchpad-Bug-Security-Vulnerability: no
-X-Launchpad-Bug-Commenters: janitor qianqiu-2020 xypron
-X-Launchpad-Bug-Reporter: qianqiu (qianqiu-2020)
-X-Launchpad-Bug-Modifier: Heinrich Schuchardt (xypron)
-References: <176429928488.3164788.8613118615925713152.malonedeb@juju-98d295-prod-launchpad-2>
-Message-Id: <176495490783.3914078.6430121245979800991.malone@juju-98d295-prod-launchpad-7>
-Subject: [Bug 2133188] Re: Illegal instruction in memset under qemu-user for
- riscv64
-X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
-X-Launchpad-Message-For: qemu-devel-ml
-Precedence: bulk
-X-Generated-By: Launchpad (canonical.com);
- Revision="379e22b8475e3402088a4cdb4a6e7936a4d28414";
- Instance="launchpad-scripts"
-X-Launchpad-Hash: 61b75e261a4a36723fb275ed7cdda9a3de853f42
-Received-SPF: pass client-ip=185.125.188.250;
- envelope-from=noreply@launchpad.net; helo=smtp-relay-services-0.canonical.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC RESEND v5 3/4] tests/qtest/libqos: Add SMMUv3 helper library
+Content-Language: en-US
+To: Tao Tang <tangtao1634@phytium.com.cn>, Paolo Bonzini
+ <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>, Eric Auger <eric.auger@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Chen Baozi <chenbaozi@phytium.com.cn>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Mostafa Saleh <smostafa@google.com>,
+ CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
+References: <20251126154547.1300748-1-tangtao1634@phytium.com.cn>
+ <20251126154547.1300748-4-tangtao1634@phytium.com.cn>
+ <9b2c0429-a8bb-4df4-ad95-492f463cf29f@linaro.org>
+ <b184c907-e073-43d0-87b9-cf8c6c23dbed@phytium.com.cn>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <b184c907-e073-43d0-87b9-cf8c6c23dbed@phytium.com.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x535.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -86,166 +110,197 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Bug 2133188 <2133188@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The failure is cause in QEMU function vext_check_store() function
-require_align() is invoked.
+On 12/5/25 7:03 AM, Tao Tang wrote:
+> Hi Pierrick,
+> 
+> On 2025/12/5 07:53, Pierrick Bouvier wrote:
+>> On 11/26/25 7:45 AM, Tao Tang wrote:
+>>> Introduce qos-smmuv3, a reusable library for SMMUv3-related qtest
+>>> operations. This module encapsulates common tasks like:
+>>>
+>>> - SMMUv3 initialization (enabling, configuring command/event queues)
+>>> - Stream Table Entry (STE) and Context Descriptor (CD) setup
+>>> - Multi-level page table construction (L0-L3 for 4KB granules)
+>>> - Support for Stage 1, Stage 2, and nested translation modes
+>>> - Could be easily extended to support multi-space testing infrastructure
+>>>       (Non-Secure, Secure, Root, Realm)
+>>>
+>>> The library provides high-level abstractions that allow test code to
+>>> focus on IOMMU behavior validation rather than low-level register
+>>> manipulation and page table encoding. Key features include:
+>>>
+>>> - Automatic memory allocation for translation structures with proper
+>>>       alignment
+>>> - Helper functions to build valid STEs/CDs for different translation
+>>>       scenarios
+>>> - Page table walkers that handle address offset calculations per
+>>>       security space
+>>> - Command queue management for SMMU configuration commands
+>>>
+>>> This infrastructure is designed to be used by iommu-testdev-based tests
+>>> and future SMMUv3 test suites, reducing code duplication and improving
+>>> test maintainability.
+>>>
+>>> Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
+>>> ---
+>>>    tests/qtest/libqos/meson.build  |   3 +
+>>>    tests/qtest/libqos/qos-smmuv3.c | 731 ++++++++++++++++++++++++++++++++
+>>>    tests/qtest/libqos/qos-smmuv3.h | 267 ++++++++++++
+>>>    3 files changed, 1001 insertions(+)
+>>>    create mode 100644 tests/qtest/libqos/qos-smmuv3.c
+>>>    create mode 100644 tests/qtest/libqos/qos-smmuv3.h
+>>>
+>>
+>> ...
+>>
+>>> +
+>>> +void qsmmu_single_translation(QSMMUTestContext *ctx)
+>>> +{
+>>> +    uint32_t config_result;
+>>> +    uint32_t dma_result;
+>>> +    bool test_passed;
+>>> +
+>>> +    /* Configure SMMU translation */
+>>> +    config_result = qsmmu_setup_and_enable_translation(ctx);
+>>> +    if (config_result != 0) {
+>>> +        g_test_message("Configuration failed: mode=%u status=0x%x",
+>>> +                       ctx->config.trans_mode, config_result);
+>>> +        return;
+>>
+>> Is that expected to silently return if we can't configure translation?
+> 
+> 
+> No, it is not intended to silently return on a failed configuration.
+> Maybe an assertion is a better choice:
+> 
+> 
+> config_result = qsmmu_setup_and_enable_translation(ctx);
+> 
+> g_assert_cmpuint(config_result, ==, 0);
+> 
 
-For the failing instruction the following test is not passed:
+Looks good. We should rely on exit code first, and then on verbose log 
+to find what is the problem.
 
-/*
- * Vector register should aligned with the passed-in LMUL (EMUL).
- * If LMUL < 0, i.e. fractional LMUL, any vector register is allowed.
- */
-static bool require_align(const int8_t val, const int8_t lmul)
-{
-    return lmul <=3D 0 || extract32(val, 0, lmul) =3D=3D 0;
-}
+>>
+>>> +    }
+>>> +
+>>> +    /* Trigger DMA operation */
+>>> +    dma_result = qsmmu_trigger_dma(ctx);
+>>> +    if (dma_result != 0) {
+>>> +        g_test_message("DMA failed: mode=%u result=0x%x",
+>>> +                       ctx->config.trans_mode, dma_result);
+>>> +    } else {
+>>> +        g_test_message("-> DMA succeeded: mode=%u",
+>>> ctx->config.trans_mode);
+>>> +    }
+>>> +
+>>> +    /* Validate test result */
+>>> +    test_passed = qsmmu_validate_test_result(ctx);
+>>> +    g_assert_true(test_passed);
+>>> +
+>>> +    /* Clean up translation state to prepare for the next test */
+>>> +    qsmmu_cleanup_translation(ctx);
+>>> +}
+>>> +
+>>> +void qsmmu_translation_batch(const QSMMUTestConfig *configs, size_t
+>>> count,
+>>> +                             QTestState *qts, QPCIDevice *dev,
+>>> +                             QPCIBar bar, uint64_t smmu_base)
+>>> +{
+>>> +    for (int i = 0; i < count; i++) {
+>>> +        /* Initialize test memory */
+>>> +        qtest_memset(qts, configs[i].dma_iova, 0x00,
+>>> configs[i].dma_len);
+>>> +        /* Execute each test configuration */
+>>> +        QSMMUTestContext ctx = {
+>>> +            .qts = qts,
+>>> +            .dev = dev,
+>>> +            .bar = bar,
+>>> +            .smmu_base = smmu_base,
+>>> +            .config = configs[i],
+>>> +            .trans_status = 0,
+>>> +            .dma_result = 0,
+>>> +            .sid = dev->devfn,
+>>> +            .tx_space = qsmmu_sec_sid_to_space(configs[i].sec_sid),
+>>> +        };
+>>> +
+>>> +        qsmmu_single_translation(&ctx);
+>>> +        g_test_message("--> Test %d completed: mode=%u sec_sid=%u "
+>>> +                       "status=0x%x result=0x%x", i,
+>>> configs[i].trans_mode,
+>>> +                       configs[i].sec_sid, ctx.trans_status,
+>>> ctx.dma_result);
+>>> +    }
+>>> +}
+>>
+>> What is the reason for batching operations?
+>> We are not in a performance critical scenario for running this test,
+>> so it's probably better to have distinct calls to single_translation.
+> 
+> 
+> As described in the previous thread [1] , I plan to split the tests so
+> that each translation mode is exercised by its own qtest. With that
+> split in place, there is no real need for a qsmmu_translation_batch()
+> helper anymore, so I refactor it into a qsmmu_run_translation_case
+> function and drop the inside for-loop.
+>
 
-I added some debug output for function vext_check_store():
+All good, indeed removes the need for translation_batch.
 
-eew =3D 3 but s->seq =3D 0.
-eew =3D 3, s->sew =3D 0, s->lmul =3D 0
-emul =3D 3 : emul >=3D -3 && emul <=3D 3 =3D 1
-require_align(vd =3D 1, emul =3D 3) =3D 0
-require_nf(vd =3D 1, nf =3D 1, emul =3D 3) =3D 1
+> 
+> [1]
+> https://lore.kernel.org/qemu-devel/7370070a-c569-4b77-bd1e-6fc749ba9c90@phytium.com.cn/
+> 
+>>
+>> ...
+>>
+>> For the rest of the patch, which is quite consequent, congrats. It's
+>> hard to review all the setup phase here, but knowing it works with the
+>> current smmuv3 implementation, that's a good proof that it's working
+>> as expected.
+> 
+> 
+> Yes, setting up all this infrastructure did take some time, especially
+> getting the nested mode page tables right (and Secure state-related
+> configuration which is still in my local repo).
+>
 
---=20
-You received this bug notification because you are a member of qemu-
-devel-ml, which is subscribed to QEMU.
-https://bugs.launchpad.net/bugs/2133188
+Feel free to start with the current version, and then you'll add secure 
+state related changes as part of your other series.
 
-Title:
-  Illegal instruction in memset under qemu-user for riscv64
+> I really appreciate that you ran the tests yourself and even checked
+> with a coverage-enabled build to confirm that it exercises the smmuv3
+> implementation. Thanks again for the thorough review.
+>
 
-Status in QEMU:
-  New
-Status in qemu package in Ubuntu:
-  Confirmed
+In case someone else wants to reproduce:
+$ export CFLAGS="--coverage"
+$ ./configure --target-list=aarch64-softmmu
+$ ninja -C build
+$ QTEST_QEMU_BINARY=./build/qemu-system-aarch64 \
+   ./build/tests/qtest/iommu-smmuv3-test
+$ rm -rf build/coverage_html
+$ mkdir build/coverage_html
+$ gcovr \
+       --gcov-ignore-parse-errors suspicious_hits.warn \
+       --gcov-ignore-parse-errors negative_hits.warn \
+       --merge-mode-functions=separate \
+       --html-details build/coverage_html/index.html \
+       --filter 'hw/arm/smmu*'
+$ echo file://$(pwd)/build/coverage_html/index.html
+# open this in browser by clicking on your terminal
 
-Bug description:
-  # Title
-  qemu-user (qemu-riscv64-static): intermittent Illegal instruction in mems=
-et (vse64.v) when running cmake in riscv64 container (Ubuntu 26.04)
+If useful for you, you can attach those instructions in your next cover 
+letter, so people can easily reproduce.
 
-  ## Summary
-  While running cmake (and other build steps) inside a linux/riscv64 Ubuntu=
- 26.04 container on an x86_64 host using qemu-user (qemu-riscv64-static) re=
-gistered via binfmt_misc, cmake sometimes crashes with "Illegal instruction=
- (core dumped)" or "died with signal 4". The illegal instruction is observe=
-d inside glibc's memset implementation at an instruction that uses RISC-V v=
-ector extension (vse64.v). The failure is intermittent (~50% reproducer rat=
-e). Using a scalar-only memset (libnovecmem.so via LD_PRELOAD) or running u=
-nder gdb / enabling QEMU_STRACE significantly reduces or eliminates the fai=
-lure, which strongly suggests a qemu-user/emulation bug (vector handling / =
-code generation / state corruption), not a cmake bug.
-
-  ## Affects
-  - qemu-user qemu-riscv64-static (as packaged in Ubuntu qemu 10.1.0+ds-5ub=
-untu3)
-  - Running in Docker container for riscv64 on x86_64 host via binfmt_misc =
-qemu-user static interpreter
-
-  ## Environment / Context
-  - Host CPU: x86_64 (Docker multiarch running qemu-user for riscv64)
-  - Host OS=EF=BC=9Amultiple Ubuntu releases (22.04, 24.04, 25.10)=20
-  - Container image: ubuntu:26.04 for riscv64
-  - qemu package used:
-    - downloaded .deb from Launchpad: qemu-user_10.1.0+ds-5ubuntu3_amd64.de=
-b and on several Debian qemu-user packages (qemu-user_10.2.0~rc1+ds-1, qemu=
--user_10.0.6+ds-0+deb13u2).=20
-    - copied qemu-riscv64 binary into /usr/bin/qemu-riscv64-static inside h=
-ost and registered via /proc/sys/fs/binfmt_misc/register
-  - CMake version used inside container (bootstrap/build may use system-pro=
-vided cmake binary): cmake 3.x (bootstrapping cmake while building also tri=
-ggers crash)
-  - Reproduction frequency: intermittent, ~50% (can get large variance: sev=
-eral consecutive successes or failures)
-  - Observed behavior changes when: LD_PRELOAD libnovecmem.so (scalar memse=
-t) =E2=80=94 almost completely avoids crash; running under gdb or enabling =
-QEMU_STRACE also makes it much harder to reproduce.
-   =20
-
-  ## Full reproduction steps
-  1. On x86_64 host, fetch qemu-user .deb and extract the riscv static bina=
-ry:
-     wget https://launchpad.net/ubuntu/+source/qemu/1:10.1.0+ds-5ubuntu3/+b=
-uild/31393935/+files/qemu-user_10.1.0+ds-5ubuntu3_amd64.deb
-     dpkg-deb -x qemu-user_10.1.0+ds-5ubuntu3_amd64.deb qemu-user_10.1.0+ds=
--5ubuntu3_amd64
-     sudo cp qemu-user_10.1.0+ds-5ubuntu3_amd64/usr/bin/qemu-riscv64 /usr/b=
-in/qemu-riscv64-static
-
-  2. Register qemu-riscv64 with binfmt_misc:
-     echo -1 > /proc/sys/fs/binfmt_misc/qemu-riscv64
-     echo ':qemu-riscv64:M:0:\x7f\x45\x4c\x46\x02\x01\x01\x00\x00\x00\x00\x=
-00\x00\x00\x00\x00\x02\x00\xf3\x00:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff=
-\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:/usr/bin/qemu-riscv64-static:POCF'=
- >/proc/sys/fs/binfmt_misc/register
-
-  3. Start riscv64 ubuntu container:
-     docker run --platform=3Dlinux/riscv64 --name ubuntu26 -itd ubuntu:26.0=
-4 bash
-     docker exec -it ubuntu26 bash -i
-
-  4. Inside container:
-     apt update
-     apt install -y build-essential cmake
-
-  5. Reproducer 1:
-     cmake --system-information
-     -> Often fails with:
-        bash: [15: 1 (255)] tcsetattr: Inappropriate ioctl for device
-        Illegal instruction (core dumped)
-
-  6. Reproducer 2 (minimal C project):
-     Create test_cmake/CMakeLists.txt:
-     cmake_minimum_required(VERSION 3.10)
-     project(HelloCMake C)
-     add_executable(hello main.c)
-
-     Create test_cmake/main.c:
-     #include <stdio.h>
-     int main() {
-         printf("Hello, CMake!\n");
-         return 0;
-     }
-
-     cd test_cmake
-     cmake .
-     -> Crash with:
-        -- Detecting C compiler ABI info
-        bash: line 1:  8489 Illegal instruction        (core dumped) cmake .
-
-  7. Reproducer 3 (rebuild cmake from source inside container):
-     apt source cmake
-     cd cmake
-     apt-get build-dep .
-     dpkg-buildpackage -us -uc -b
-     -> Bootstrapping error:
-        Illegal instruction (core dumped)
-        Error when bootstrapping CMake:
-        Problem while running initial CMake
-
-  8. Observed crash location (from gdb/QEMU_STRACE when available):
-     - Illegal instruction is in memset@@GLIBC_2.27+0x52
-     - Faulting instruction: vse64.v v1,(a5)    (RISC-V vector store of 64-=
-bit elements)
-
-
-  ## Workarounds
-  - LD_PRELOAD a scalar-only memset library (libnovecmem.so) to avoid glibc=
- using vectorized memset.
-  - Run the failing process under gdb (slower) or enable QEMU_STRACE=3D1 =
-=E2=80=94 both make the failure much less likely.
-
-  Note: The same workload does not reproduce the crash when run under
-  qemu-system (full-system emulation). The issue appears specific to
-  qemu-user
-
-To manage notifications about this bug go to:
-https://bugs.launchpad.net/qemu/+bug/2133188/+subscriptions
+> 
+> Best regards,
+> 
+> Tao
+> 
 
 
