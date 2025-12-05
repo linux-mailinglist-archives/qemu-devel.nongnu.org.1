@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FA03CA630F
-	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 07:02:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA793CA6334
+	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 07:04:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vROt3-0001Z5-J2; Fri, 05 Dec 2025 01:01:49 -0500
+	id 1vROt6-0001a4-FF; Fri, 05 Dec 2025 01:01:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vROsy-0001WY-4s
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 01:01:45 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vROt0-0001Xq-8W
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 01:01:47 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vROsw-0001DH-Nt
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 01:01:43 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vROsy-0001Dq-Ue
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 01:01:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1764914502;
+ s=mimecast20190719; t=1764914504;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=S6z3TeIGPOjKLc0KO8kGFkugLfsWmb/7CTCNmC8CdtY=;
- b=Cqi96J4uxptlDTtQykE1mCS+vKutlaqIWaI5WDljwiCOvV8BfXkFL6P5Anwe2IGs8GA9sg
- eMdJ5xDnmLpDhqPyG6Y5GnSafjtkPZ6Hw7Z+BCGJ4Lh8vD1o0en36J/hzNQqDZNdKFnpb8
- /0cyrXld4Jr0RX1AwiEn63E+i0scWNE=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=yfn3FMkVsJCMgk5I8kYIst0qnUZNoJnoGhsbuPyBRrY=;
+ b=EoEqQ7Bxun3fe7FHo/re+ifHAMbPBwrkN9tN4IGybfLc4cOiujyt0w/pHkVZoWsQrAuQwA
+ ss5ssn5otQDhVmMDDGVxyUBXrv4ruYJeSeEivH+NXlwfqWBLcm63YhcZJ75wJiCcYXOu5a
+ xq204HxhCe/BAbq8+/Qx2/9iDxMwRug=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-218-JRTHtVAxPSuvjg_DelSvKg-1; Fri,
- 05 Dec 2025 01:01:38 -0500
-X-MC-Unique: JRTHtVAxPSuvjg_DelSvKg-1
-X-Mimecast-MFC-AGG-ID: JRTHtVAxPSuvjg_DelSvKg_1764914497
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-563-Lg3BdOgNPIu00jXfr_jqhA-1; Fri,
+ 05 Dec 2025 01:01:43 -0500
+X-MC-Unique: Lg3BdOgNPIu00jXfr_jqhA-1
+X-Mimecast-MFC-AGG-ID: Lg3BdOgNPIu00jXfr_jqhA_1764914501
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4B0211801214; Fri,  5 Dec 2025 06:01:37 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AB36D18001E2; Fri,  5 Dec 2025 06:01:41 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.55])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id EC49B3011A84; Fri,  5 Dec 2025 06:01:31 +0000 (UTC)
+ id 9E4D43011A88; Fri,  5 Dec 2025 06:01:37 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Cleber Rosa <crosa@redhat.com>,
@@ -56,22 +56,22 @@ Cc: Cleber Rosa <crosa@redhat.com>,
  Ed Maste <emaste@freebsd.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 06/15] tests: Use configured python to run GitLab iotests
-Date: Fri,  5 Dec 2025 01:00:48 -0500
-Message-ID: <20251205060058.1503170-7-jsnow@redhat.com>
+Subject: [PATCH v3 07/15] tests: run "make check-venv" before running iotests
+Date: Fri,  5 Dec 2025 01:00:49 -0500
+Message-ID: <20251205060058.1503170-8-jsnow@redhat.com>
 In-Reply-To: <20251205060058.1503170-1-jsnow@redhat.com>
 References: <20251205060058.1503170-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -89,32 +89,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-use the configured python (and the pyvenv) to run iotests instead of the
-system default python3 interpreter.
+Soon, qemu.qmp will not be included in the qemu.git tree and so invoking
+the meson target for preparing the "checktests" mkvenv group will be
+necessary for this test to run successfully. Doing it now in its own
+patch separates this change from the big switcheroo patches.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- .gitlab-ci.d/buildtest.yml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .gitlab-ci.d/buildtest.yml | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 44df116139b..c3a9e8428c2 100644
+index c3a9e8428c2..97bddbffb40 100644
 --- a/.gitlab-ci.d/buildtest.yml
 +++ b/.gitlab-ci.d/buildtest.yml
-@@ -351,10 +351,10 @@ build-tcg-disabled:
+@@ -348,6 +348,7 @@ build-tcg-disabled:
+                    --disable-docs --disable-sdl --disable-gtk --disable-vnc
+       || { cat config.log meson-logs/meson-log.txt && exit 1; }
+     - make -j"$JOBS"
++    - make check-venv
      - make check-unit
      - make check-qapi-schema
      - cd tests/qemu-iotests/
--    - ./check -raw 001 002 003 004 005 008 009 010 011 012 021 025 032 033 048
-+    - ../../pyvenv/bin/python3 ./check -raw 001 002 003 004 005 008 009 010 011 012 021 025 032 033 048
-             052 063 077 086 101 104 106 113 148 150 151 152 157 159 160 163
-             170 171 184 192 194 208 221 226 227 236 253 277 image-fleecing
--    - ./check -qcow2 028 051 056 057 058 065 068 082 085 091 095 096 102 122
-+    - ../../pyvenv/bin/python3 ./check -qcow2 028 051 056 057 058 065 068 082 085 091 095 096 102 122
-             124 132 139 142 144 145 151 152 155 157 165 194 196 200 202
-             208 209 216 218 227 234 246 247 248 250 254 255 257 258
-             260 261 262 263 264 270 272 273 277 279 image-fleecing
 -- 
 2.51.1
 
