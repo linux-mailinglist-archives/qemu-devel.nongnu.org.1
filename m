@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCECCCA86B8
-	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 17:42:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B87BCA86A1
+	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 17:42:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vRYsa-0005ap-Vs; Fri, 05 Dec 2025 11:42:01 -0500
+	id 1vRYsR-0005aQ-Af; Fri, 05 Dec 2025 11:41:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vRYsD-0005WZ-Jy
+ id 1vRYsE-0005XO-Os
  for qemu-devel@nongnu.org; Fri, 05 Dec 2025 11:41:38 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vRYsB-0005lJ-Uu
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 11:41:37 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4779aa4f928so23706765e9.1
- for <qemu-devel@nongnu.org>; Fri, 05 Dec 2025 08:41:35 -0800 (PST)
+ id 1vRYsC-0005ld-Sl
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 11:41:38 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-477b198f4bcso19642235e9.3
+ for <qemu-devel@nongnu.org>; Fri, 05 Dec 2025 08:41:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764952894; x=1765557694; darn=nongnu.org;
+ d=linaro.org; s=google; t=1764952895; x=1765557695; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=74Wp3ifpoSboSpeuz+yKQ7pVV8feIghZIJx4U7i0D0M=;
- b=zaDyKa0Frvp4sDYSuRvP1YhNCXx/Kry96GSrnqgTnVdqBW2DeY/+XQXsSPAaa6Wgbe
- K8Z1MP+gmwrNUXec+cpksRd7N+I4OvZc1rwb/NfZ3YmvZuTCQhU9CpgZW3eGLzzxq2cW
- rnRAmFj6cgWV98HHYSCcQ8WXejCuOwEtUp083cJ3OUydx4kEY/izb7cPlK9hiAc62e98
- 1CLVM9B1uZK4nKo3eDFZ+sUuGKWazRzlCkGRTHSltEuS4hTjnv2XOIlAQU/IBzaO+R/A
- KfIFThA44jh7iY3zI67dmuoMQcn0m6gyp2guQpxnadpkfntusXv8N9uZDcrcjEw7SQjh
- nCQA==
+ bh=7rE+4JaESMxx65UWEyNZXMtlyYKEPHX61flyGj4szr4=;
+ b=n7FR25De3DhNiobrbrV1AA1/a/SVWeAfYwp3PR6KXRpIJ2BdDO4t+gQUvlNzFxzu8u
+ JA/dx5zsNTEn3yhbVt7x7YPXa7YKi0b6TPDykDg7mQA74e7pQz1cvynY6Ah68AXatuFC
+ YnFq93bH69t0GbqxrQLQtDATS52lT2365oBQfjBadg/5NxHoAKNJ+B3LOfisFl8LVeIN
+ amKtJQJoz6tSI3HbqtVmJ7wU9JTt4zYekZV2/TNN0YOKAVtTj49PgXGel1Y7H9TuOyyb
+ 3d8BUf2gm39RDee2NLTxqKPyveszYMO+sIW8Htdc2jv9XlxSgK/ih38/Cx5K9D6gQkN4
+ Teug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764952894; x=1765557694;
+ d=1e100.net; s=20230601; t=1764952895; x=1765557695;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=74Wp3ifpoSboSpeuz+yKQ7pVV8feIghZIJx4U7i0D0M=;
- b=CI8IHRkGst40G1G1nMmtyCp+x9rv8wjMitx1nZxAjZo0d6JK7z5lJDNp0ofpcB4QOf
- C6ooRbm3gZH6JZT8EkfxfsSkLarT77fSJUcTlZmpeUqw5wtdeB/jxNMeplhVEb2nshM0
- shBdzFLYkmu01Zpjliq0hM+7ZOkfgHGLwpSWJxnocZztDtrrtqgPDmwkY7cO1wgisFdZ
- iO8iKdJstgOLzACtCUT0qXD9eZKWVONMLtOog5hVpTNLXWqtYcljT2+qVhW+0g5A2ueo
- NrLD2Q4ubM+EuUrkXveWQpiG+yisJKxtG/f8wt02uiHNpEmBYb9V5Q3+C/gD+CalH2Vz
- 69Iw==
-X-Gm-Message-State: AOJu0YwN9mW89yaF8DxS/qzForUXOsd5viF4cZyoqJChdclksPdl29ef
- jXyyJFBDS9f8+eQyN1E7G5q9l/roXqK8SJYZFFsllp6smD6qTpGFqeoese36rfh7l+GXNfveI97
- lTtfp
-X-Gm-Gg: ASbGncsde4gqkLkboqlpkpvvWiSuxHYmOcBoMXTfIIw51utjpqjvqo929fDwkyIqcbp
- tKggNxVlfvtiWsk/Gf98yOyCKstM74thjntr3lk4QMSxd/ERu2t+zWRWx4KAZ0oFyOrp1Y0npNr
- 9Vv/bvBIKK1z/VF8J6KYtIYJKkV+K94KRRTuUvJ05PibhgKm/ct5L5y2VAFHsOkOAxHJ28IYbjD
- B2jYiinU8T/5ZX/q7jCfW/NBRObqUSGRsOhk1CEZp8IPw0jbhhLIIy3YBEVBA1uc9pvb+dyYFLi
- VkXeLri//GfbIRPsaN1026NkOc/4O2NCT/Ol0IjtDt4s0YpNwuuRNSf3TsHHU0dXPbg31PRai4K
- zNo60eVr3z82EJIv08JWIg7qTf0+F/Mtl1A80OJuy/h4d2NLdIl1rUgdh/7suBHDHgtREclskOT
- VvxSuYa0Uzl9U=
-X-Google-Smtp-Source: AGHT+IHqkYElxZuZe5gnEejsB1m1MSXzJoj8HyEhj2i/COrQ7/5y6NbEMmruIrceUmQDuADGjqAYsA==
-X-Received: by 2002:a05:600c:4711:b0:476:84e9:b571 with SMTP id
- 5b1f17b1804b1-4792f25f316mr78488395e9.14.1764952894053; 
+ bh=7rE+4JaESMxx65UWEyNZXMtlyYKEPHX61flyGj4szr4=;
+ b=eFfkAm3XDu4f9AK1wasTC74iYifz16gu5hPxFFHb1CBQYi7t0u1Np2ZYOGxzowIAFq
+ +4mq4SedipbHq/T4BvGxO3hNHZpnMlh7a8Ls4ZYd+4YHvAK+uKw7V4tz/t99R4OQUUUU
+ 2h+y+SkWdphJlFD53LRt9RrBHo3HFZu1ue0F47GmOdCTu139BGknD0uxc1xBZk75ymPv
+ FqBiebVsRCnqEkQoL0m32AtLzt/eq31SnjyQ7R+s6TjwqvjxGWCRsdZWy4EMfhRvvqH3
+ +etLpezbaUaNuAsOSo5gf3dBXHafI823MEX/w14dDkno1K9CG0jJCO32YhEM1jehg+sy
+ ebkg==
+X-Gm-Message-State: AOJu0YzLlxU5qcW3RJez2nh4mfVuu6kTKlcab+cq3RT0aXJZGLnDp/ZR
+ ucTParkTtIqVH2WNhunxmlBLnx8gf9kfYgsflFDxr1M23vdvtxq7f69bIxPKIBfHVXk=
+X-Gm-Gg: ASbGncufPSSh1eE8ptNBvmCv9OPkd884Q1WqVGiuPNBNVOFOOcVtxw8SQzxxcVVW5nM
+ cBY8CUhyv98AcocqBF7G3cfjNR5DhXL0VCMHI4D+EhJ3FqP70wWcrOAZYJWXN8karID8eGeRe4o
+ FshQUho1FLY1whkj8YABLta13JeI3SciPRyeseBALU5/0nF3qa5reCEMZpkNDlxL7ABfVBL1CrS
+ w9V1Ky2ZKnS83q6RkJa9jgIDuzCqgTf3gNEdABBMtw0R0UWr3PfwxZUqAM8+cA2k7SvgrB5qqNJ
+ AQftmOSjCkLm5o4/0m7IlhXwFK3g5qR/NNFl4G+Af2cOiUuCq8Q5AyH4ao/r9YW7dVfZBIFC+UG
+ nmjBgg4jrSgwhqRPojeoYE96DC4ae4xIPQgMcj/IGknu4M+AnT90ctSnTrwskBhM4vMbvY7CqCI
+ YCtw17knVwwyA=
+X-Google-Smtp-Source: AGHT+IHAVk56YLlSRLmDP26XUGgLhNFVMdahiQOlO0jnfZkZey8YU8yWsky3Rj224nEGT8qjlyPULQ==
+X-Received: by 2002:a05:600c:474b:b0:477:9392:8557 with SMTP id
+ 5b1f17b1804b1-4792af30ebcmr109932175e9.18.1764952894598; 
  Fri, 05 Dec 2025 08:41:34 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-479310b693csm89738615e9.4.2025.12.05.08.41.29
+ 5b1f17b1804b1-4793092c32asm93574865e9.6.2025.12.05.08.41.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 05 Dec 2025 08:41:29 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 093725F910;
+ by draig.lan (Postfix) with ESMTP id 1EEF25F913;
  Fri, 05 Dec 2025 16:41:27 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PULL 11/14] MAINTAINERS: update the custom runner entries
-Date: Fri,  5 Dec 2025 16:41:22 +0000
-Message-ID: <20251205164125.2122504-12-alex.bennee@linaro.org>
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Julian Ganz <neither@nut.email>, Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>
+Subject: [PULL 12/14] plugins/core: allow reading of registers during discon
+ events
+Date: Fri,  5 Dec 2025 16:41:23 +0000
+Message-ID: <20251205164125.2122504-13-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251205164125.2122504-1-alex.bennee@linaro.org>
 References: <20251205164125.2122504-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,38 +105,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix a number of issues:
+We have protections that prevent callbacks that didn't declare
+themselves as wanting to access registers. However for discontinuities
+the system state is fully rectified so they should always be able to
+read the register values.
 
-  - update the ubuntu references to 24.0
-  - add the s390x and ppc64le yml files
-  - replace Works on Arm with Linaro
-  - Also mention IBM (s390x) and OSUL (ppc64le) as HW hosts
+a1688bc86ce (plugins: add hooks for new discontinuity related callbacks)
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20251204194902.1340008-11-alex.bennee@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: Julian Ganz <neither@nut.email>
+Reviewed-by: Julian Ganz <neither@nut.email>
+Message-ID: <20251204194902.1340008-12-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d007584b476..63e9ba521bc 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4444,12 +4444,13 @@ R: Philippe Mathieu-Daudé <philmd@linaro.org>
- S: Maintained
- F: tests/tcg/Makefile.target
+diff --git a/plugins/core.c b/plugins/core.c
+index 8f8bc7219c2..b4b783008f7 100644
+--- a/plugins/core.c
++++ b/plugins/core.c
+@@ -119,6 +119,7 @@ static void plugin_vcpu_cb__discon(CPUState *cpu,
+     struct qemu_plugin_cb *cb, *next;
+     uint64_t to = cpu->cc->get_pc(cpu);
  
--GitLab custom runner (Works On Arm Sponsored)
-+GitLab custom runners (HW sponsored by Linaro, OSOUL and IBM)
- M: Alex Bennée <alex.bennee@linaro.org>
- M: Philippe Mathieu-Daudé <philmd@linaro.org>
- S: Maintained
--F: .gitlab-ci.d/custom-runners/ubuntu-22.04-aarch64.yml
--F: .gitlab-ci.d/custom-runners/ubuntu-22.04-aarch32.yml
-+F: .gitlab-ci.d/custom-runners/ubuntu-24.04-aarch64.yml
-+F: .gitlab-ci.d/custom-runners/ubuntu-24.04-s390x.yml
-+F: .gitlab-ci.d/custom-runners/debian-13-ppc64le.yml
++    qemu_plugin_set_cb_flags(cpu, QEMU_PLUGIN_CB_RW_REGS);
+     if (cpu->cpu_index < plugin.num_vcpus) {
+         /* iterate safely; plugins might uninstall themselves at any time */
+         QLIST_FOREACH_SAFE_RCU(cb, &plugin.cb_lists[ev], entry, next) {
+@@ -127,6 +128,7 @@ static void plugin_vcpu_cb__discon(CPUState *cpu,
+             func(cb->ctx->id, cpu->cpu_index, type, from, to);
+         }
+     }
++    qemu_plugin_set_cb_flags(cpu, QEMU_PLUGIN_CB_NO_REGS);
+ }
  
- Documentation
- -------------
+ /*
 -- 
 2.47.3
 
