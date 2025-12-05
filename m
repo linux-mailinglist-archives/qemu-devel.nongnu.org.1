@@ -2,93 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF4ECA81AD
-	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 16:11:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06A27CA81C7
+	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 16:11:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vRXS5-0001zm-Gd; Fri, 05 Dec 2025 10:10:33 -0500
+	id 1vRXSs-0003eu-Ju; Fri, 05 Dec 2025 10:11:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jim.macarthur@linaro.org>)
- id 1vRXS4-0001zX-5j
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 10:10:32 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vRXSq-0003cw-Qm
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 10:11:20 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jim.macarthur@linaro.org>)
- id 1vRXS2-0001Kx-Jo
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 10:10:31 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-42f762198cbso1479869f8f.3
- for <qemu-devel@nongnu.org>; Fri, 05 Dec 2025 07:10:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vRXSo-0001Rj-JE
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 10:11:20 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-4779ce2a624so27397195e9.2
+ for <qemu-devel@nongnu.org>; Fri, 05 Dec 2025 07:11:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764947429; x=1765552229; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Rbhpjym1vgkeLDHAgNjEb/30rxftnXX/M3jxKOIEln4=;
- b=Lr9jiFfDS0I5rcN93wFBMMBZt/TcrqiuJIYPSe5sewDz85CRgnLWQbpSg0WHd93m3d
- ZX/foU3x0qFkepbPSd1ylKpF3ibrXJ6MU5ayR25edjmsTnkoM2M/NHpIsEMv20cI9TrF
- ec+Gcbtk5IMikqlXO3h27ZUZprmZ6gP+tbEQfEIXPtUpxp0Msv+cPo3omQFSK62cWg8D
- Xp0w+GSEwwtKfcyL3qqR0wqROm4sACHww2oo+gIVrpiJb+Spabg0zenFyZzFU716RQnV
- QXYgX3J0bWTNNV+FBhZCCSjsdruw2V1Dh6v0dnTaS1vnu0CJ0XhOq4RLuZnkTR4bWVze
- NQLA==
+ d=linaro.org; s=google; t=1764947477; x=1765552277; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=lnP94QzJYdcIFYVLamZVmYmkVOkYawK77F+QBWnmxK8=;
+ b=y7nbS9u77uVWp3ekW62zmEIVqZWlCkm5CRkDl58pc6tz+PNrFRlgg/rKs2RBaMXlFy
+ 3MoiG61ng1w+H0PghmzP6oSBLCeNJAbKsEPtBNEzA00G5IZ6UEVYp1XnSf5MKzkqBDdX
+ IIxqOn2ZTf6wlh+RLWdHZfWopdaht4kP4A0gEAETlulatnPX1HZDmajSHr1h8pt+T25i
+ HgXIfVT960DATuDp7qfx2fuY3+cxYfxzja+6u1jSwviG/8JD0YvZJJT4Q2jbIhxRgGGQ
+ EdJw/mpTKyE0D1LXLZ2Pp/xvabIWjkpgU/TQVlk4Auz4Lq89qqmB0DuZr6zGdM2lJwfN
+ Jffw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764947429; x=1765552229;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Rbhpjym1vgkeLDHAgNjEb/30rxftnXX/M3jxKOIEln4=;
- b=cQSolnqhSa8YRgM+6E+MJLfw38DcDtkCNFczQv3hbC0lQciDZbdqMf8jcVoI5AaEo6
- LLjieivMItH0h+Bg+G/94qHqXtNJqsZq9mjNhJhXfBf0Wskf0siRKZGZHBAYZbzQHBys
- JnlSFxgTOrMhSTANfmC/hVOeGL1hnRkB0srVx5BZa7jneJlszVajOtF0e/y0xiNJfOIX
- 760AkwNnQdMsae+iGC0GIH6I7K4F9xmQ6oeQVWr1mUNdi5+6GwzC2AdF4xlzZ8mILqVk
- Ylff6ZgGGc/R6vQpoOLA0OI/GjL7viLcLZtz2k16l/zDFJAIE6A/HHI5zk+MTThiKBbm
- aScw==
-X-Gm-Message-State: AOJu0Yzh/qfTf/bAg12Bs0wTVyyuRSjZY3gRpGWANN8cxas6OnxbEoCJ
- I7pUaylO/j4eIAXmG7qNLOlxKewOUlEKyvt684e3I3DLTykYQyjd2nM/2n24sn77hAI=
-X-Gm-Gg: ASbGnctIbzquqHY20GiTEtsPIsYYaU00g6LWBY/yz4DH7iR/sMWLYNWue/VqlkRauQO
- /gsqtrMLA1HQPQCP6orb+qYofNrD/kh53fwcuFL7ucoTV2yy2ZsVmZM8EPL6um3qCTxrasyxgK0
- f+7K4x48c2VX317mJ6H3R/3ed44Z4Zh8WtHlfu4V16vQBW5/XJtiXwKQwkDjKY76QKtSzQ524+n
- XoXH9Tr3weGvfZN1hMVZ3fVoU5f569N+t1NNJjryITB3Wkwp/Ff+oTVidLGcxHvAacjYFR6bljq
- ADYTuyYnyt2ghyF4aLT8poL4/gAU1XcnAE3bXG3iUSH3YVPv6+bENfY+jJd2Qr927w2jCfmL65B
- p2WyUo/wGpr2H6aohYuCJyz+q9M/EbZBsTzEWvAS3AfH/ljm2D3ZGC3birUFV8utQEU7Oih2ams
- L3ftx2vVKT1aHFN0cKbhqv4UW/7vfyjXjaFOt6e9+i1BOXhidEn2KrEQ==
-X-Google-Smtp-Source: AGHT+IHSx6szBGFAAiidE5ektQ6MfWZgy2XygW/btVoxfhCy2svX5p3opu98FgHLguPbG2Amhv+tWA==
-X-Received: by 2002:a05:6000:2310:b0:42b:41d3:daf9 with SMTP id
- ffacd0b85a97d-42f795147dfmr8626606f8f.2.1764947428774; 
- Fri, 05 Dec 2025 07:10:28 -0800 (PST)
-Received: from ?IPV6:2a10:d582:31e:0:901:1329:d82a:8818?
- ([2a10:d582:31e:0:901:1329:d82a:8818])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42f7d3319ccsm8975469f8f.34.2025.12.05.07.10.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 05 Dec 2025 07:10:28 -0800 (PST)
-Message-ID: <4df48949-bf78-4169-b72f-8871d31a66da@linaro.org>
-Date: Fri, 5 Dec 2025 15:10:27 +0000
+ d=1e100.net; s=20230601; t=1764947477; x=1765552277;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=lnP94QzJYdcIFYVLamZVmYmkVOkYawK77F+QBWnmxK8=;
+ b=KvjopxZv5AWg4ngTY70ihDzlk6DQwAEF6yKIy2NVwZ8bIVlh69xEdgwHfILd5UhH79
+ AA1zCTTgXxIZ9h/DwTu1FPyk1TZb3StLEzN9gRWt/HqUxGGO0RrgaSHHDf/jX4IUv4dz
+ hzPEb8tqqWziXf44Hj+cgq3wpkwN7NpY7YTaaFQ8bdvK4LnX7XScrABbzdyhalv8EqsE
+ QhooL4MtxOIlRWJAxR8Qilw+rGC+B/79HDiD0QSKKFmU//75/AXZrUOoVThA3yqyNwxR
+ 7A6H0ZFMdqT2yMkzfUbxlOArwSHl9JXJ+scXnr27cCDBRirzanNIWdW6BLDS71IqDh74
+ L07w==
+X-Gm-Message-State: AOJu0YwdMwZTTYTVfQTlD3X/NtQedUzP6vuK67UcYuAyu3Qvsc084nmu
+ 3QkKvj9RmWMAtfT0Zy6XHb4f8IMeGnH0XjvP4j3loFeTGRx3Bl59YN+wuspJMbDxaUvJNrKgXiu
+ WcCNu
+X-Gm-Gg: ASbGncuMTFIhulKNxqYdWLQzzQOldOicNY/FUHfM8yaxut4+5a5tL0RzinUxZYACHnz
+ Yga4bYKNaxe7ZEgULVsPCx8K1d/7pZyvqk9vxKSf3jhZq0h4GXDcdVkDZSTJzfhrJy9g56wifO4
+ 7uUVW8b/tDdBfZeMTLKWw3FEthiIIQd3MeFXT7vCXI6yHdCu3fNTd/FuL2lnwxMoxIGQP8w4VW3
+ 8U34REeyQ3yUCMaLYUSXo965rC3V2XoAnrEeE52cZuKh2IWSBMFVetMahH/QJx7ApFA+2ry8ubl
+ QfU8adny8VcSWnV9GHfVO+pPJZjgjBjsXXbRMAUjZt7j7tY2VTKOVTeC0QaKFvZhCq4GrJtfZ6V
+ 5fHvr/e9bIQwTuBjl+yCDkMRvTSD4eWuprlg9yKMgej0U8LrEm/yrc9IJYiCwns42y/Q2h8o+CA
+ pk+h3yPX+a6Wk=
+X-Google-Smtp-Source: AGHT+IHrxzncpq3CW/62XHFieacCMbuk0+0KP2h8agiE66SoYcxvX4ST1TBTglUXgS1ET+1INfImNg==
+X-Received: by 2002:a05:600c:4507:b0:477:6374:6347 with SMTP id
+ 5b1f17b1804b1-4792f38659fmr63409225e9.22.1764947477022; 
+ Fri, 05 Dec 2025 07:11:17 -0800 (PST)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4792b0d5e55sm95237475e9.2.2025.12.05.07.11.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 05 Dec 2025 07:11:16 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 5B88A5F7F6;
+ Fri, 05 Dec 2025 15:11:15 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Mads Ynddal <mads@ynddal.dk>, Peter Maydell <peter.maydell@linaro.org>,
+ qemu-arm@nongnu.org, Alexander Graf <agraf@csgraf.de>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH 0/2] target/arm: fix for hvf regression in v10.2-rc1 (#3228)
+Date: Fri,  5 Dec 2025 15:11:13 +0000
+Message-ID: <20251205151115.2035930-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/dma/omap_dma.c: Use 64 bit maths for
- omap_dma_transfer_setup
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org
-References: <20251204193311.1281133-1-jim.macarthur@linaro.org>
- <CAFEAcA_s2fDnr6PQfvjjYT_wnmMg1YUw=tVY5SnM2-QrDAh68A@mail.gmail.com>
-Content-Language: en-US
-From: Jim MacArthur <jim.macarthur@linaro.org>
-In-Reply-To: <CAFEAcA_s2fDnr6PQfvjjYT_wnmMg1YUw=tVY5SnM2-QrDAh68A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=jim.macarthur@linaro.org; helo=mail-wr1-x433.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,27 +101,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/5/25 10:33, Peter Maydell wrote:
-> On Thu, 4 Dec 2025 at 19:34, Jim MacArthur <jim.macarthur@linaro.org> wrote:
->> If both frame and element count are 65535, which appears valid from my
->> reading of the OMAP5912 documentation, then some of the calculations
->> will overflow the 32-bit signed integer range and produce a negative
->> min_elems value.
->>
->> Raised by #3204 (https://gitlab.com/qemu-project/qemu/-/issues/3204).
-> The real hardware is surely not doing 64-bit arithmetic though.
-> It's presumably working with elements * frames as unsigned 32 bit
-> multiplication.
->
-> -- PMM
+Although bisecting indicated 93ac765076a (target/arm/hvf: Keep calling
+hv_vcpu_run() in loop) was the culprit I noticed that using gdbstub
+would get further in the run due to the enforced syncing from being
+debugged.
 
-I agree it's unlikely that the hardware would use 64 bit maths, but 
-without any spec (that I've found so far) or real hardware to test on, I 
-can't be sure what the expected behaviour is.
+As far as I can tell the kernel got confused by contradictory responses
+from PSCI while booting up and then never recovered.
 
-If we think that uint32_t is a more likely situation than the current 
-`int` then I'm happy to change it to that.
+Please test.
 
-Jim
+Alex
+
+Alex Bennée (2):
+  Revert "target/arm: Re-use arm_is_psci_call() in HVF"
+  target/arm: ensure PSCI register updates are flushed
+
+ target/arm/hvf/hvf.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+-- 
+2.47.3
 
 
