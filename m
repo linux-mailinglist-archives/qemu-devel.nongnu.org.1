@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41CFCCA86C4
-	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 17:43:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54B1CCA86B2
+	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 17:42:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vRYsA-0005U9-EE; Fri, 05 Dec 2025 11:41:34 -0500
+	id 1vRYsE-0005WY-Lh; Fri, 05 Dec 2025 11:41:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vRYs8-0005TA-7v
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 11:41:32 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1vRYsA-0005Us-U8
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 11:41:35 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vRYs6-0005jR-Dw
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 11:41:31 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-42e2e671521so1528989f8f.1
- for <qemu-devel@nongnu.org>; Fri, 05 Dec 2025 08:41:30 -0800 (PST)
+ id 1vRYs9-0005k9-8d
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 11:41:34 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-47789cd2083so15014675e9.2
+ for <qemu-devel@nongnu.org>; Fri, 05 Dec 2025 08:41:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764952889; x=1765557689; darn=nongnu.org;
+ d=linaro.org; s=google; t=1764952891; x=1765557691; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yQLx+6d6Ez6DsIvWmne01CEnlhyk4EppoX8NoUOZaGM=;
- b=zzzhzrspZBaUOEL7UEGWz2NUWaqQLhj16KlD7dfVh8JAPwvmmHCxg5VtIGPKiAJ+se
- fFch/dZzoKqOvoJOUrrXGWnrkou7wYXy9g4tdK8e9NUETt2hZ9rPU/5XlsZ0o4shw2+r
- hucmHBqVg2pEyJlDcc2fChTyw6Ajv/UUjfeg3dayIZIvpG58Y/2DpDrwbi6TL3R36Ueu
- yIR4jeCSeg2cTji7GWpVq4+y7OvBlBG06ihLrhohSOHzyHD4yfIYOBI0zTT3Lkhx7yce
- 3IkOnSVWjOKSZCZE/XC1V1DHtXc8P2eSdAeg7dbVff+vkcGlpXbx8Ok5Fb07ppzLOJJT
- l06A==
+ bh=UgC1n9c0p0XafiXg1Pp+WyNc7po/v/NB3rG48EO9ToA=;
+ b=d2UTO4pwyxPqpSpQjPukX84jshrnaEFTibtakqdkFQknqaCf2U6xW6lq7OZ4vObaCO
+ gXbMMIDXYHZ2Ecur38Ny6KXEWDw9ZPjqk28JBmYcP8GXUHgjQAPW+x19XjKbe90BxwgZ
+ E5sqf/dQLvVl8ljYaKK1rtu5gd8Nc+0qfNK9UK9wNRlA4JnDYrde3ryuMO9AzZlzdDqk
+ SzWoolnAiuPTKtXlBcQg5p/A54RrfXcu420ddJUj958On/cOsxJ/XWt+FltjZRV/Oiz2
+ ScHa6XRdwOJoEoaXPuQ9HPkplSfAPNVrEQoXV6OEG4pAZlJQ2l/HAoS/PyhP3TXyGM/9
+ bERw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764952889; x=1765557689;
+ d=1e100.net; s=20230601; t=1764952891; x=1765557691;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=yQLx+6d6Ez6DsIvWmne01CEnlhyk4EppoX8NoUOZaGM=;
- b=VVzX3Q4jqj8dKuG1RBVp5D66EYpzODwmFw+xbM/hfaw99bMrzZEhVazR3MII5IWwft
- g2xcjVsFgoqbfCVb591QTrQ8cm2a6Iqy1ZW9UkADF2P7ngawUS5T2GItcU3u7+WwC4FK
- kOnYQN0XICin2ONOOJc/N5wp9Z2fiuLhhVZlyfwsHrTFoOuS0Ns5VF+hZOZk2IPIDJ+/
- qVSBpx7F5YQqdEA7K9lVZ6IT6SHLYghTIoMF3HSXAFVBJZqqfCgHfJcd5100x/ktkOfn
- ApT8qDGIsEtFJaG/3qo36cOmPBXt/SUp85hEOp3PAKqeilE0NL1wOK1Tfv+9VOMmAgTb
- Za8Q==
-X-Gm-Message-State: AOJu0YzYgtPBll060FttP3HBgdrHrTOePrLWVH95Huu6Pecolv+L2e6x
- o5/R0+433llCWdYYyIvxGzHlFvMNpKw3MgZ3d8uKnXVrXnwX/Z+TgV7dP3Vyue/NXuM=
-X-Gm-Gg: ASbGnctZNt/6aZJ/X4RFWahezYtG6A8tZ8wDL7Kg8aOXrYAJpNq2j3KblElC61k9N56
- nnMZqFeUQ9vcnIOzL8YCnLXKcVJS9Mhqnz3SKhnmZFz+ymoUmjWQViPG8rDnNwK1AfbZ+c2bT+P
- 2zofa9vOtzvobMMJoqVUHKG7kO1orbpeR+/H4W6BsoFTWtUCBhPTY5BZJjarJuyDFu8hUCyixV7
- c9cccfHa7Ykx2dhzM+Ohvck4KPcUi/HXJhap5h0JFvflhTcuARF2bQn5KF7cEjH8WgqHaGvwcms
- 8t/9mknPJs4rGeHcVwPMqNd3B8RiAeuY7fsCIPqRjnrbO8nqhfrrB7Wc3IEhP4QLPlVJ4audnZh
- 0QFJCruXCxYg96Zk9z5jigvSyPveRi2b1OkqpqM5HOgu2hV17VQ0nwUUhtZ13sCKTa2QTCcBXEz
- kovvzIer7tvmc=
-X-Google-Smtp-Source: AGHT+IEfELTYmQxf01Zxqee+JZZIK1xmmHzaYsOBFzGvBRLyY1gKEJ5j8gvI3Y+c6GrLEEAV7cUybg==
-X-Received: by 2002:a5d:588e:0:b0:42b:3220:941e with SMTP id
- ffacd0b85a97d-42f79800e4fmr7657135f8f.19.1764952888625; 
- Fri, 05 Dec 2025 08:41:28 -0800 (PST)
+ bh=UgC1n9c0p0XafiXg1Pp+WyNc7po/v/NB3rG48EO9ToA=;
+ b=PBDsN0Rj6S1ZZQ99KcBDXlng1Hwl3ct9moB42x+cKwBHFsnoQ2+XVH4WCKxYO1tgYp
+ B9mwpmFcdc5hZkLmOND8vKRHCgolNkGTX9IiCmPGOql2jj2/WeGV+QNR6mLEpci1o3h6
+ K17llPojlnAIVBpfXa0WEt57oilndw1wvw1LXIaYrPFwDZc03qd4SpyTPOPKFe6qS1sE
+ no+yZv1wTFVFl1i/NL0dr3LW5x2dmV4jAaE+k0GW9r1jmXyxP1yFORPJLoWKt2ul5jwe
+ Kqk3/3rmcT8+9hj8fOdwvxijbm96tDFE0bl4S6SfWIyJDii53QNjOKr62tJv0MGAfHpv
+ LceQ==
+X-Gm-Message-State: AOJu0YwiaOU3ihpgMbaLh4x5OLSrUX64kiGGuMFGzuvRb8TgSsFfpsOx
+ Giu0KwA3Dt/AsSE375WXmY6LpIHbjVOcY25OQq/C60ykfhAVoHiQo0PYkDVG/ieQOd0=
+X-Gm-Gg: ASbGncudjUlddlSm6oq7ymd8VCj/7niLrnSoUUnGl3Z9cih666y25R9LjQ8pH92ldny
+ EHLE7obh1BXfdv1dTJQ8rHIxnvQUFjlBWUm/nG+N/dThGSGdrazf7DPkwTG9zJjqRuoPYp27KH9
+ o1PqZYZ4F5rGoLiAi1pcHEDS/Eid5MTh48hkVLKHzEhSZP6maZkj92dpWX/U1mQuDpNTGV1evCw
+ e3jtA6vmmPVrpDyVT8o195ymyvDY4cINC/W+8HCRurCnA2LpeBaGF7Bsibpy2K6ofWji92d9eZ2
+ dm5bibKdwPeXCZ7OuuBVyeuj1uMjac/BVS8Bc204wWVPWsXnY8ARv+HH5BQI6RJHR9vHwefMrZC
+ /TadEIWPQm96B6YSshgAz+V8kvB729VSkk8/sFSwKSijjjC38lIv12ws3HEJkr4OTjRzPEqkf0f
+ WzAsSbcJChvuSWCMoXOXx6Ow==
+X-Google-Smtp-Source: AGHT+IEKTCzqo1lcqGCt4z544PMM16ygqm+IsOpO7xWFbx86AYITyhEWBBr7XgxyPG+If0uxpUczgg==
+X-Received: by 2002:a05:600c:4755:b0:477:63a4:88fe with SMTP id
+ 5b1f17b1804b1-4792aed9b2emr111134245e9.2.1764952891041; 
+ Fri, 05 Dec 2025 08:41:31 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42f7cbe9065sm9601141f8f.8.2025.12.05.08.41.26
+ ffacd0b85a97d-42f7cbfee71sm9475442f8f.15.2025.12.05.08.41.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Dec 2025 08:41:27 -0800 (PST)
+ Fri, 05 Dec 2025 08:41:29 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 56DBE5F874;
+ by draig.lan (Postfix) with ESMTP id 71CCD5F87C;
  Fri, 05 Dec 2025 16:41:26 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: [PULL 04/14] tests/tcg: honour the available QEMU binaries when
- running check-tcg
-Date: Fri,  5 Dec 2025 16:41:15 +0000
-Message-ID: <20251205164125.2122504-5-alex.bennee@linaro.org>
+Cc: Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org (open list:Block layer core)
+Subject: [PULL 05/14] tests/qemu-iotests: Check for a functional "secret"
+ object before using it
+Date: Fri,  5 Dec 2025 16:41:16 +0000
+Message-ID: <20251205164125.2122504-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251205164125.2122504-1-alex.bennee@linaro.org>
 References: <20251205164125.2122504-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,72 +105,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently configure can identify all the targets that have
-cross-compilers available from the supplied target-list. By default
-this is the default_target_list which is all possible targets we can
-build.
+From: Thomas Huth <thuth@redhat.com>
 
-At the same time the target list passed to meson is filtered down
-depending on various factors including not building 64 bit targets on
-32 bit hosts. As a result make check-tcg will erroneously attempt to
-run tests for which we haven't built a QEMU.
+QEMU iotests 049, 134 and 158 are currently failing if you compiled
+QEMU without the crypto libraries. Thus make sure that the "secret"
+object is really usable and skip the tests otherwise.
 
-Solve this by filtering the final list of TCG_TEST_TARGETS based on
-what actually was configured by meson. Rename the variable that
-configure spits out to TCG_TESTS_WITH_COMPILERS for clarity and to
-avoid larger churn in the Makefile.
-
-Message-ID: <20251204194902.1340008-4-alex.bennee@linaro.org>
+Reported-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20251205130014.693799-1-thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-diff --git a/configure b/configure
-index a2f66f7ff9c..82cace1bc95 100755
---- a/configure
-+++ b/configure
-@@ -1801,7 +1801,7 @@ if test "$plugins" = "yes" ; then
- fi
- echo "PYTHON=$python" >> tests/tcg/$config_host_mak
+diff --git a/tests/qemu-iotests/049 b/tests/qemu-iotests/049
+index ed12fa49d7f..a1b922060db 100755
+--- a/tests/qemu-iotests/049
++++ b/tests/qemu-iotests/049
+@@ -39,6 +39,8 @@ trap "_cleanup; exit \$status" 0 1 2 3 15
  
--tcg_tests_targets=
-+tcg_tests_with_compilers=
- for target in $target_list; do
-   arch=${target%%-*}
- 
-@@ -1852,12 +1852,12 @@ for target in $target_list; do
-       fi
- 
-       echo "run-tcg-tests-$target: $qemu\$(EXESUF)" >> Makefile.prereqs
--      tcg_tests_targets="$tcg_tests_targets $target"
-+      tcg_tests_with_compilers="$tcg_tests_with_compilers $target"
-   fi
- done
- 
- if test "$tcg" = "enabled"; then
--    echo "TCG_TESTS_TARGETS=$tcg_tests_targets" >> $config_host_mak
-+    echo "TCG_TESTS_WITH_COMPILERS=$tcg_tests_with_compilers" >> $config_host_mak
- fi
- 
- if test "$skip_meson" = no; then
-diff --git a/tests/Makefile.include b/tests/Makefile.include
-index d4dfbf3716d..7728098981d 100644
---- a/tests/Makefile.include
-+++ b/tests/Makefile.include
-@@ -37,6 +37,15 @@ export SRC_PATH
- 
- SPEED = quick
- 
+ _supported_fmt qcow2
+ _supported_proto file
++_require_secret
 +
-+# TCG_TESTS_WITH_COMPILERS represents the test targets we have cross compiler
-+# support for, CONFIGURED_TEST_TARGETS it what meson has finally
-+# configured having rejected stuff we can't build.
-+CONFIGURED_TCG_TARGETS=$(patsubst %-config-target.h, %, $(wildcard *-config-target.h))
+ 
+ filter_test_dir()
+ {
+diff --git a/tests/qemu-iotests/134 b/tests/qemu-iotests/134
+index b2c3c03f08b..cc1e35eb161 100755
+--- a/tests/qemu-iotests/134
++++ b/tests/qemu-iotests/134
+@@ -39,6 +39,7 @@ trap "_cleanup; exit \$status" 0 1 2 3 15
+ 
+ _supported_fmt qcow qcow2
+ _supported_proto file
++_require_secret
+ 
+ 
+ size=128M
+diff --git a/tests/qemu-iotests/158 b/tests/qemu-iotests/158
+index 3a9ad7eed03..8fc4e986532 100755
+--- a/tests/qemu-iotests/158
++++ b/tests/qemu-iotests/158
+@@ -39,6 +39,7 @@ trap "_cleanup; exit \$status" 0 1 2 3 15
+ 
+ _supported_fmt qcow qcow2
+ _supported_proto file
++_require_secret
+ 
+ 
+ size=128M
+diff --git a/tests/qemu-iotests/common.rc b/tests/qemu-iotests/common.rc
+index e977cb4eb61..10d83d8361b 100644
+--- a/tests/qemu-iotests/common.rc
++++ b/tests/qemu-iotests/common.rc
+@@ -1053,6 +1053,20 @@ _require_one_device_of()
+     _notrun "$* not available"
+ }
+ 
++_require_secret()
++{
++    if [ -e "$TEST_IMG" ]; then
++        echo "unwilling to overwrite existing file"
++        exit 1
++    fi
++    if $QEMU_IMG create -f $IMGFMT --object secret,id=sec0,data=123 \
++                 -o encryption=on,encrypt.key-secret=sec0 "$TEST_IMG" 1M 2>&1 \
++                 | grep "Unsupported cipher" ; then
++        _notrun "missing cipher support"
++    fi
++    rm -f "$TEST_IMG"
++}
 +
-+# This is the intersection of what tests we can build and is configured
-+TCG_TESTS_TARGETS=$(filter $(CONFIGURED_TCG_TARGETS), $(TCG_TESTS_WITH_COMPILERS))
-+
- # Per guest TCG tests
- BUILD_TCG_TARGET_RULES=$(patsubst %,build-tcg-tests-%, $(TCG_TESTS_TARGETS))
- CLEAN_TCG_TARGET_RULES=$(patsubst %,clean-tcg-tests-%, $(TCG_TESTS_TARGETS))
+ _qcow2_dump_header()
+ {
+     if [[ "$1" == "--no-filter-compression" ]]; then
 -- 
 2.47.3
 
