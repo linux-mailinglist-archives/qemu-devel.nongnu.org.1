@@ -2,92 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C87E2CA81BE
-	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 16:11:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D91B5CA8A89
+	for <lists+qemu-devel@lfdr.de>; Fri, 05 Dec 2025 18:44:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vRXSs-0003eN-4e; Fri, 05 Dec 2025 10:11:22 -0500
+	id 1vRZqa-0005Of-1U; Fri, 05 Dec 2025 12:44:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vRXSr-0003dJ-8O
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 10:11:21 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vRXSo-0001Rp-UT
- for qemu-devel@nongnu.org; Fri, 05 Dec 2025 10:11:20 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-47796a837c7so18747885e9.0
- for <qemu-devel@nongnu.org>; Fri, 05 Dec 2025 07:11:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1764947477; x=1765552277; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cfX9YOm1De6R6T1aFALHx1afL1WHdp07Fe4YIeRNplQ=;
- b=A4vutgGFNBoI4H1iPbsz5WO2tylDiEFGK2Wu/WHHxphfoH8PnTbHnS6NZcAB/n+2tJ
- fDcg7lzZguIDoPIHTSPu3+MuJXELz63RaakhEqeCEFTDRWwRThC/cjBu0aPmCLPqT4Ps
- yFanhFcMs8r0t8lK1cQeGbcVrNMwwFQ5//eQOhp/ak7mT0EaxMRAqeldPjfDfQWAhV8d
- s+s9U4CWqh312bvUHcpW8ugYP3+5SLLVGCpyU6X02PzFcvOPNc4OKIbqZE7DpXQ7aKmA
- Zb6hLEJUZ8SNQigviXaBn1CNFb73iberUfs48phAXmEyOqi5q+RVwSwXft2cZ2DKtvpL
- ychQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1764947477; x=1765552277;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=cfX9YOm1De6R6T1aFALHx1afL1WHdp07Fe4YIeRNplQ=;
- b=dPOPYt8a8JDrVSu0gjLqdGBtumGpiabN7S0r8fuZHTS4cHZr9R/eoEtVwTeVjSbGmI
- dhdYzJ53m1yvVoAsXpG6ZQT0X4z9yrRYPHvbK8I3ofbFaMk8hj5EhOXnmTsk2QVomXbw
- La8MsOhk4QpkrOe2Ddaqg+WZESfPN4ryoz8M1U10XvNbdRiqrznTJtdivzLAeQbKSQHr
- qs4BxH4UOsnJqwSedoOlhf+i8alUKqotiddwZuKh2kE2hplxSdQqhAS2C0aG/f2UbqZK
- fTen5eWTs2IAG1NteX6XUXneubs8PzVVSPsEelYkU4WDqMAol51AqDtb7Nw7jgY1bfz+
- Cn7g==
-X-Gm-Message-State: AOJu0YxtAeqd2JjvGHA5DVE1/lmnUyySNRIxGxnYifv83mcNPXHBNors
- GhqNCQr0y+L3v3kCSeSfVhOecRY9dJ5znAY8M3zEe3JU0tH97kOPUWlWnTBiSHpX8ek=
-X-Gm-Gg: ASbGncvmDKjCYdD9lC/vIrrgCYFbK+0vIeJ7ls+hzpJI0knGV/nh0SDM0WwCvknNHJ0
- Oj1nTw5+r8Ys7n6G+jQ5BzC6cZo1ubsk99GPj5pCtwSaJqJBdz/pXXpYPutk0adRZSrcNUvNOjh
- Dkjk/0wxazyOuDQQDXlWoBlbecVxrMCMQ3wb7ZWbo5CDHlyMWbd3EypGKJzBT/vIH8ggIzPFNZr
- D7gE8PnWqay1wLogKHvXmQ8pVpl9tF59m9J6HRuEcZgQ9MtOiL/IP2oq4+LsQUoCaEnt3WpwJ5D
- J0kZeOAqGV1sIBRIIapKDN/uLtfwUzDWbX9WjpkwVZxJHvz0FAVOobiuc7W9+pRtwOqeaG1RJJX
- WC4cIOOx5OD1tNOxshjowO0VbDQKjc6/MPoHXJfX691vOoAXZbFyaswW8g52B9yAp0tb0rS9sK9
- cnjzy55MKY0b8=
-X-Google-Smtp-Source: AGHT+IHfd1Higw70dl2d7141IVGsKJB45YCokbQ8pRdJgFqGLyT05yhnROoJMBoyrwV87/072IaQTw==
-X-Received: by 2002:a05:600c:1390:b0:477:a3f9:fda5 with SMTP id
- 5b1f17b1804b1-4792aef1a50mr92069565e9.9.1764947477413; 
- Fri, 05 Dec 2025 07:11:17 -0800 (PST)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-479311e712fsm91377305e9.9.2025.12.05.07.11.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Dec 2025 07:11:16 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 8A9D55F839;
- Fri, 05 Dec 2025 15:11:15 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1vRZqX-0005OS-MH
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 12:43:57 -0500
+Received: from mail-a.sr.ht ([46.23.81.152])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1vRZqW-0000Go-4B
+ for qemu-devel@nongnu.org; Fri, 05 Dec 2025 12:43:57 -0500
+DKIM-Signature: a=rsa-sha256; bh=Zr7kN9BFdfhvl7BTHD1/K/nzttBV8fp488Ml9yVcVoc=; 
+ c=simple/simple; d=git.sr.ht;
+ h=From:Date:Subject:Reply-to:In-Reply-To:To; 
+ q=dns/txt; s=20240113; t=1764956630; v=1;
+ b=CRhfo0jjRLnW5uedQ0Z4uSGlYl2l3DfCknFDXCgpTmP1kuvEPqVbb55ajaY9RIzWjJXDjARY
+ UUz+eDOMe5XOBukMXsv/TFR/jAFVdESRkpYe3+Wxpo2fXw+l/wCln0pRrutlW8rx5R7sQnY+NVQ
+ /nV3hDy66adwom1lJizQ+/WdK+q8A9CeLPRLtzErENKM5ecSgOfDnvaoXZGyQfxhRrqX7ZMYMYy
+ NpUYVEXD2+jHLBbPVXf0XYy2+Xugm5tZ+K5Z/uD4fxtvTEPemwwDIYOPeagpKQRPEHWSVuKY9+5
+ rjlN8/EmCip8UuEc75VrR2mHVEIzHi054KXHt4iG4elpQ==
+Received: from git.sr.ht (unknown [46.23.81.155])
+ by mail-a.sr.ht (Postfix) with ESMTPSA id BC0D324485
+ for <qemu-devel@nongnu.org>; Fri, 05 Dec 2025 17:43:50 +0000 (UTC)
+From: ~katharine_chui <katharine_chui@git.sr.ht>
+Date: Fri, 05 Dec 2025 16:11:19 +0100
+Subject: [PATCH qemu 1/1] ui/sdl2: add multitouch support
+Message-ID: <176495663056.25695.17714158054733102404-1@git.sr.ht>
+X-Mailer: git.sr.ht
+In-Reply-To: <176495663056.25695.17714158054733102404-0@git.sr.ht>
 To: qemu-devel@nongnu.org
-Cc: Mads Ynddal <mads@ynddal.dk>, Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org, Alexander Graf <agraf@csgraf.de>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 2/2] target/arm: ensure PSCI register updates are flushed
-Date: Fri,  5 Dec 2025 15:11:15 +0000
-Message-ID: <20251205151115.2035930-3-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251205151115.2035930-1-alex.bennee@linaro.org>
-References: <20251205151115.2035930-1-alex.bennee@linaro.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=46.23.81.152; envelope-from=outgoing@sr.ht;
+ helo=mail-a.sr.ht
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,54 +59,177 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ~katharine_chui <kwchuiaa@connect.ust.hk>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When we handle a host call we report state back to the caller via
-registers. Set vcpu_dirty to indicate QEMU is currently the reference
-and hoist the flush_cpu_state() and make the call unconditional.
+From: Katharine Chui <katharine.chui@gmail.com>
 
-Fixes: https://gitlab.com/qemu-project/qemu/-/issues/3228
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Katharine Chui katharine.chui@gmail.com
 ---
- target/arm/hvf/hvf.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ include/ui/sdl2.h |  9 +++++
+ ui/sdl2.c         | 98 ++++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 106 insertions(+), 1 deletion(-)
 
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 70d34063df8..8e2940217a6 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -1942,6 +1942,7 @@ static int hvf_handle_exception(CPUState *cpu, hv_vcpu_exit_exception_t *excp)
-                 /* SMCCC 1.3 section 5.2 says every unknown SMCCC call returns -1 */
-                 env->xregs[0] = -1;
-             }
-+            cpu->vcpu_dirty = true;
-         } else {
-             trace_hvf_unknown_hvc(env->pc, env->xregs[0]);
-             hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized(), 1);
-@@ -1958,6 +1959,7 @@ static int hvf_handle_exception(CPUState *cpu, hv_vcpu_exit_exception_t *excp)
-                 /* SMCCC 1.3 section 5.2 says every unknown SMCCC call returns -1 */
-                 env->xregs[0] = -1;
-             }
-+            cpu->vcpu_dirty = true;
-         } else {
-             trace_hvf_unknown_smc(env->xregs[0]);
-             hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized(), 1);
-@@ -1980,10 +1982,12 @@ static int hvf_handle_exception(CPUState *cpu, hv_vcpu_exit_exception_t *excp)
-         error_report("0x%llx: unhandled exception ec=0x%x", env->pc, ec);
-     }
- 
-+    /* flush any changed cpu state back to HVF */
-+    flush_cpu_state(cpu);
+diff --git a/include/ui/sdl2.h b/include/ui/sdl2.h
+index dbe6e3d9739..d965554e185 100644
+--- a/include/ui/sdl2.h
++++ b/include/ui/sdl2.h
+@@ -26,6 +26,9 @@
+ # include "ui/egl-helpers.h"
+ #endif
+=20
++#include "input.h"
++#include "console.h"
 +
-     if (advance_pc) {
-         uint64_t pc;
- 
--        flush_cpu_state(cpu);
- 
-         r = hv_vcpu_get_reg(cpu->accel->fd, HV_REG_PC, &pc);
-         assert_hvf_ok(r);
--- 
-2.47.3
-
+ struct sdl2_console {
+     DisplayGLCtx dgc;
+     DisplayChangeListener dcl;
+@@ -52,6 +55,12 @@ struct sdl2_console {
+     bool y0_top;
+     bool scanout_mode;
+ #endif
++    struct {
++        bool pressing;
++        SDL_TouchID touch_id;
++        SDL_FingerID finger_id;
++    } fingers[INPUT_EVENT_SLOTS_MAX];
++    struct touch_slot touch_slots[INPUT_EVENT_SLOTS_MAX];
+ };
+=20
+ void sdl2_window_create(struct sdl2_console *scon);
+diff --git a/ui/sdl2.c b/ui/sdl2.c
+index 032dc14bc39..56ec0c5a97e 100644
+--- a/ui/sdl2.c
++++ b/ui/sdl2.c
+@@ -651,6 +651,92 @@ static void handle_windowevent(SDL_Event *ev)
+     }
+ }
+=20
++static void handle_touch(SDL_Event *ev){
++    SDL_TouchFingerEvent *finger_ev =3D (SDL_TouchFingerEvent *)ev;
++    struct sdl2_console *scon =3D get_scon_from_window(finger_ev->windowID);
++    Error *err =3D NULL;
++    int num_slot =3D -1;
++    int type =3D -1;
++    int width, height;
++    double x, y;
++    int i;
++
++    if (!scon) {
++        return;
++    }
++
++    switch (finger_ev->type) {
++    case SDL_FINGERDOWN:
++        for (i =3D 0; i < INPUT_EVENT_SLOTS_MAX; i++){
++            if (scon->fingers[i].pressing &&
++                scon->fingers[i].touch_id =3D=3D finger_ev->touchId &&
++                scon->fingers[i].finger_id =3D=3D finger_ev->fingerId){
++                // it is possible for sdl2 to send this twice, in that case =
+treat it as an update
++                num_slot =3D i;
++                type =3D INPUT_MULTI_TOUCH_TYPE_UPDATE;
++                break;
++            }
++        }
++        if (num_slot !=3D -1){
++            break;
++        }
++        for (i =3D 0; i < INPUT_EVENT_SLOTS_MAX; i++){
++            if (!scon->fingers[i].pressing){
++                scon->fingers[i].pressing =3D true;
++                scon->fingers[i].touch_id =3D finger_ev->touchId;
++                scon->fingers[i].finger_id =3D finger_ev->fingerId;
++                num_slot =3D i;
++                type =3D INPUT_MULTI_TOUCH_TYPE_BEGIN;
++                break;
++            }
++        }
++        break;
++    case SDL_FINGERMOTION:
++        for (i =3D 0; i < INPUT_EVENT_SLOTS_MAX; i++){
++            if (scon->fingers[i].pressing &&
++                scon->fingers[i].touch_id =3D=3D finger_ev->touchId &&
++                scon->fingers[i].finger_id =3D=3D finger_ev->fingerId){
++                num_slot =3D i;
++                type =3D INPUT_MULTI_TOUCH_TYPE_UPDATE;
++                break;
++            }
++        }
++        break;
++    case SDL_FINGERUP:
++        for (i =3D 0; i < INPUT_EVENT_SLOTS_MAX; i++){
++            if (scon->fingers[i].pressing &&
++                scon->fingers[i].touch_id =3D=3D finger_ev->touchId &&
++                scon->fingers[i].finger_id =3D=3D finger_ev->fingerId){
++                scon->fingers[i].pressing =3D false;
++                num_slot =3D i;
++                type =3D INPUT_MULTI_TOUCH_TYPE_END;
++                break;
++            }
++        }
++        break;
++    }
++
++    if (num_slot =3D=3D -1){
++        error_setg(&err, "Cannot handle more than %d fingers",
++                   INPUT_EVENT_SLOTS_MAX);
++        warn_report_err(err);
++        return;
++    }
++
++    width =3D surface_width(scon->surface);
++    height =3D surface_height(scon->surface);
++    x =3D finger_ev->x * width;
++    y =3D finger_ev->y * height;
++
++    console_handle_touch_event(scon->dcl.con, scon->touch_slots,
++                               num_slot, width, height, x, y,
++                               type, &err);
++
++    if (err) {
++        warn_report_err(err);
++    }
++}
++
+ void sdl2_poll_events(struct sdl2_console *scon)
+ {
+     SDL_Event ev1, *ev =3D &ev1;
+@@ -701,6 +787,12 @@ void sdl2_poll_events(struct sdl2_console *scon)
+         case SDL_WINDOWEVENT:
+             handle_windowevent(ev);
+             break;
++        case SDL_FINGERMOTION:
++        case SDL_FINGERDOWN:
++        case SDL_FINGERUP:
++            idle =3D 0;
++            handle_touch(ev);
++            break;
+         default:
+             break;
+         }
+@@ -838,7 +930,7 @@ static void sdl2_display_early_init(DisplayOptions *o)
+ static void sdl2_display_init(DisplayState *ds, DisplayOptions *o)
+ {
+     uint8_t data =3D 0;
+-    int i;
++    int i, j;
+     SDL_SysWMinfo info;
+     SDL_Surface *icon =3D NULL;
+     char *dir;
+@@ -920,6 +1012,10 @@ static void sdl2_display_init(DisplayState *ds, Display=
+Options *o)
+ #endif
+         }
+ #endif
++
++        for (j =3D 0; j < INPUT_EVENT_SLOTS_MAX; j++) {
++            sdl2_console[i].touch_slots[j].tracking_id =3D -1;
++        }
+     }
+=20
+ #ifdef CONFIG_SDL_IMAGE
+--=20
+2.49.1
 
