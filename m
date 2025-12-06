@@ -2,92 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08850CAA1AC
-	for <lists+qemu-devel@lfdr.de>; Sat, 06 Dec 2025 06:59:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21DCACAA1BA
+	for <lists+qemu-devel@lfdr.de>; Sat, 06 Dec 2025 07:00:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vRlJL-00043f-13; Sat, 06 Dec 2025 00:58:27 -0500
+	id 1vRlJQ-00045L-4R; Sat, 06 Dec 2025 00:58:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1vRlJJ-00043J-Sc; Sat, 06 Dec 2025 00:58:25 -0500
+ id 1vRlJK-00043c-PP; Sat, 06 Dec 2025 00:58:26 -0500
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1vRlJI-0005Wg-5G; Sat, 06 Dec 2025 00:58:25 -0500
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5B60OOn7026227;
- Sat, 6 Dec 2025 05:58:21 GMT
+ id 1vRlJJ-0005Ww-5U; Sat, 06 Dec 2025 00:58:26 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5B62uLKN010164;
+ Sat, 6 Dec 2025 05:58:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=pp1; bh=W+i1W0P4rmivtdj6md0qmpgIMTrpmlTSfhRUzTC6o
- g0=; b=ppxjU0g4Rdh6sYw8OFYcWNAwJORvcRwEy1lzZDYRGC+3nb4DK76QZwJrk
- Bze+C5Gd+qEAZ2OeQ+TM9ME7gV53Ee/0/s87HAzhFz+VJ7fh89CmYauW15b3G797
- zAq+yLqLNmiPCKi3+GTRyRELHPONVfUN/s+KlH7YS2lGx0UhivI/jajQWnvIjOoA
- Leh+RjL/chESDYsPrFJ+XDalQlbRpzREOdTO46b1lXjopmbdMgyJmdUzxhK5//sO
- CjPs+71PmmCSUeOtVgw2UjT1HfdrzQM2Tkvl0UDRtXWloul2z8E+Z/WhbzM8DIRk
- PRAMRaGgXhMNtrUCroJApa0idO3Pw==
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4av9wv8r1w-1
+ :content-transfer-encoding:date:from:in-reply-to:message-id
+ :mime-version:references:subject:to; s=pp1; bh=WXAbInoT68uGejwRc
+ twGK6rViOYGNcdONtCfPHF5hx8=; b=NU+Cl2wxXZHztCSm+sSkEWQHZBvzLVSyC
+ PE/1VAts9F73moA7n3t0RcMYWME+X0Sz8aDtncL9DfRT8Kz3lpxkOoVwGJ8z07UQ
+ fz1Vrvi42wxxTqmbcM3y5/SFOeBsZJOgPP0OvcTttndwpl9qnD+ODSJym0Y1fni2
+ xsA+SrVEPxSM+sd2jkh/xjSXSlFSElL/rr7bmB4fx1qXHK5mm26CieaqY3v8mShv
+ OVzlKWgC+vcH/ZhFwAqUk8JdBUKjq7uOdbA6cmPcpgOpfnRhrIKsTPjn987i+6EI
+ i3e9BNc3om2wcbrg/vZCFDohsT326wDo4LS9EtJy32DZp/HPMHsAQ==
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4avc530e6r-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 06 Dec 2025 05:58:20 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5B61Z6Ca019035;
- Sat, 6 Dec 2025 05:58:20 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4arbhyh1vm-1
+ Sat, 06 Dec 2025 05:58:23 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5B62t0tj003867;
+ Sat, 6 Dec 2025 05:58:22 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ardck8taq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 06 Dec 2025 05:58:20 +0000
+ Sat, 06 Dec 2025 05:58:22 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
  [10.20.54.102])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 5B65wGgJ8388960
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 5B65wJuH57082258
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 6 Dec 2025 05:58:16 GMT
+ Sat, 6 Dec 2025 05:58:19 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4511920043;
+ by IMSVA (Postfix) with ESMTP id 131F520043;
+ Sat,  6 Dec 2025 05:58:19 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CD40420040;
  Sat,  6 Dec 2025 05:58:16 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 55A8420040;
- Sat,  6 Dec 2025 05:58:14 +0000 (GMT)
 Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com (unknown
  [9.39.31.93]) by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Sat,  6 Dec 2025 05:58:14 +0000 (GMT)
+ Sat,  6 Dec 2025 05:58:16 +0000 (GMT)
 From: Aditya Gupta <adityag@linux.ibm.com>
 To: <qemu-devel@nongnu.org>
 Cc: <qemu-ppc@nongnu.org>, Hari Bathini <hbathini@linux.ibm.com>,
  Sourabh Jain <sourabhjain@linux.ibm.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PATCH v2 0/9] Implement MPIPL for PowerNV
-Date: Sat,  6 Dec 2025 11:26:39 +0530
-Message-ID: <20251206055648.1908734-1-adityag@linux.ibm.com>
+Subject: [PATCH v2 1/9] hw/ppc: Move SBE host doorbell function to top of file
+Date: Sat,  6 Dec 2025 11:26:40 +0530
+Message-ID: <20251206055648.1908734-2-adityag@linux.ibm.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251206055648.1908734-1-adityag@linux.ibm.com>
+References: <20251206055648.1908734-1-adityag@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: -rmSMytNHsvqHjWa4pwfXq7MU7-Byt6c
-X-Proofpoint-ORIG-GUID: -rmSMytNHsvqHjWa4pwfXq7MU7-Byt6c
-X-Authority-Analysis: v=2.4 cv=AdS83nXG c=1 sm=1 tr=0 ts=6933c5fc cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=NEAV23lmAAAA:8
- a=Ln0G2CSHtJ96cT1x5koA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDAwMCBTYWx0ZWRfX9hrRgUpWZr/W
- qNG+N7qiNw5Cev2iJCATHlU6bSkrq5Hui6F8zeixYNWswiWLzOhl8Q6UXEQTAV7q0HrdOPo58va
- HVDVrwbfSYJyjhzi4ihPCKEC2PmoPGnf8C9ybtaAfYi813wvvxfc5iO7j/J5fXnf8cPY1PUgo4S
- LbzweyfQPYKD8j6JfsnwOo2TXYb+VcO6TQ1jz/zoQSLs8t6B+XfNVMWPXwtD0JEfhdBZWPFM8E6
- NOsgZgFC8SywqzEOjtHByQ+r1OFQV74wXAOwPPw+2JJW/7EE164JEQBesMjI3nE5Bvz/ri/OTef
- NhRiufy9W9kpBv7JaxBfJEqwwacj8baKkJlN/OWpmTN9otHevSoQlwzlgnAh3wyQ3QmMlC4or+4
- 879uHftGWd1nufU58SVuAJ4nB45q/w==
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDAyMCBTYWx0ZWRfX1MVWpgbLN3q7
+ UAqlUM9bfdjkYoZgDD3nvbO9gLEMl5LU9NhRiudlj0WrOUi/h6CGejpKHIX4r95atOMD/JiMbZX
+ kStnxJ/dPSN7mzpZVfAOgotkXwYix8GKlzsD/s/eSzbku9tLHhWYf9MATjVw2HEmhCc9DRglkl/
+ 8Ne2yKidPJdIML3wILpZB4mHsCp0i2f56+3QWybqMYVP4iERPaDFpYDHLOVQsesu/6kuurSGjch
+ dhChRDCXgM2Le2mpxqzYDkjoZ2rlUSI98hxotuLc4RUfhuRmCkAFbBXM6cwt8GNt2PmJIIGQarA
+ evyK6xWWkx/b9WxnxiFs+PtCN1zl3LRs3BYECJXqFUQzh/1QcIGi+SqmBM8MqVA2V6p3B11DB+k
+ XDitNNvnBfPCx4VJbcBP8mMA3WvyxA==
+X-Authority-Analysis: v=2.4 cv=S/DUAYsP c=1 sm=1 tr=0 ts=6933c5ff cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
+ a=Cz7AoQ69vTHEakZR_RYA:9
+X-Proofpoint-ORIG-GUID: 2OkVG0BBIofgT17B29lmCdQRqO9aClX_
+X-Proofpoint-GUID: 2OkVG0BBIofgT17B29lmCdQRqO9aClX_
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-06_01,2025-12-04_04,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 priorityscore=1501 spamscore=0 phishscore=0
- lowpriorityscore=0 bulkscore=0 clxscore=1015 malwarescore=0 impostorscore=0
+ malwarescore=0 phishscore=0 clxscore=1015 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 adultscore=0 spamscore=0 bulkscore=0 priorityscore=1501
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512060000
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512060020
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -113,82 +115,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Overview
-=========
+Moved 'pnv_sbe_set_host_doorbell' as-it-is to above
+'pnv_sbe_power9_xscom_ctrl_write'.
 
-Implemented MPIPL (Memory Preserving IPL, aka fadump) on PowerNV machine
-in QEMU.
+This is done since in a future patch, S0 interrupt implementation uses
+'pnv_sbe_set_host_doorbell', hence the host doorbell function needs to
+be declared/defined before 'pnv_sbe_power9_xscom_ctrl_write' where we
+implement the S0 interrupt.
 
-Note: It's okay if this isn't merged as there might be less users. Sending
-for archieval purpose, as the patches can be referred for how fadump/mpipl
-can be implemented in baremetal/PowerNV/any other arch QEMU.
+No functional change.
 
-Fadump is an alternative dump mechanism to kdump, in which we the firmware
-does a memory preserving boot, and the second/crashkernel is booted fresh
-like a normal system reset, instead of the crashed kernel loading the
-second/crashkernel in case of kdump.
+Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+---
+ hw/ppc/pnv_sbe.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-MPIPL in PowerNV, is similar to fadump in Pseries. The idea is same, memory
-preserving, where in PowerNV we are assisted by SBE (Self Boot Engine) &
-Hostboot, while in Pseries we are assisted by PHyp (Power Hypervisor)
-
-For implementing in baremetal/powernv QEMU, we need to export a
-"ibm,opal/dump" node in the device tree, to tell the kernel we support
-MPIPL
-
-Once kernel sees the support, and "fadump=on" is passed on commandline,
-kernel will register memory regions to preserve with Skiboot.
-
-Kernel sends these data using OPAL calls, after which skiboot/opal saves
-the memory region details to MDST and MDDT tables (S-source, D-destination)
-
-Skiboot then triggers the "S0 Interrupt" to the SBE (Self Boot Engine),
-along with OPAL's relocated base address.
-
-SBE then stops all core clocks, and only does particular ISteps for a
-memory preserving boot.
-
-Then, hostboot comes up, and with help of the relocated base address, it
-accesses MDST & MDDT tables (S-source and D-destination), and preserves the
-memory regions according to the data in these tables.
-And after preserving, it writes the preserved memory region details to MDRT
-tables (R-Result), for the kernel to know where/whether a memory region is
-preserved.
-
-Both SBE's and hostboot responsiblities have in implemented in the SBE code
-in QEMU.
-
-Then in the second kernel/crashkernel boot, OPAL passes the "mpipl-boot"
-property for the kernel to know that a dump is active, which kernel then
-exports in /proc/vmcore
-
-Git Tree for Testing
-====================
-
-https://github.com/adi-g15-ibm/qemu/tree/fadump-powernv-v2
-
-Aditya Gupta (9):
-  hw/ppc: Move SBE host doorbell function to top of file
-  hw/ppc: Implement S0 SBE interrupt as cpu_pause then host reset
-  hw/ppc: Handle stash command in PowerNV SBE
-  pnv/mpipl: Preserve memory regions as per MDST/MDDT tables
-  pnv/mpipl: Preserve CPU registers after crash
-  pnv/mpipl: Set thread entry size to be allocated by firmware
-  pnv/mpipl: Write the preserved CPU and MDRT state
-  pnv/mpipl: Enable MPIPL support
-  tests/functional: Add test for MPIPL in PowerNV
-
- hw/ppc/meson.build                    |   1 +
- hw/ppc/pnv.c                          |  90 ++++++
- hw/ppc/pnv_mpipl.c                    | 388 ++++++++++++++++++++++++++
- hw/ppc/pnv_sbe.c                      |  74 ++++-
- include/hw/ppc/pnv.h                  |   7 +
- include/hw/ppc/pnv_mpipl.h            | 167 +++++++++++
- tests/functional/ppc64/test_fadump.py |  35 +--
- 7 files changed, 731 insertions(+), 31 deletions(-)
- create mode 100644 hw/ppc/pnv_mpipl.c
- create mode 100644 include/hw/ppc/pnv_mpipl.h
-
+diff --git a/hw/ppc/pnv_sbe.c b/hw/ppc/pnv_sbe.c
+index 34dc013d47bb..b9b28c5deaef 100644
+--- a/hw/ppc/pnv_sbe.c
++++ b/hw/ppc/pnv_sbe.c
+@@ -80,6 +80,15 @@
+ #define SBE_CONTROL_REG_S0              PPC_BIT(14)
+ #define SBE_CONTROL_REG_S1              PPC_BIT(15)
+ 
++static void pnv_sbe_set_host_doorbell(PnvSBE *sbe, uint64_t val)
++{
++    val &= SBE_HOST_RESPONSE_MASK; /* Is this right? What does HW do? */
++    sbe->host_doorbell = val;
++
++    trace_pnv_sbe_reg_set_host_doorbell(val);
++    qemu_set_irq(sbe->psi_irq, !!val);
++}
++
+ struct sbe_msg {
+     uint64_t reg[4];
+ };
+@@ -125,15 +134,6 @@ static const MemoryRegionOps pnv_sbe_power9_xscom_ctrl_ops = {
+     .endianness = DEVICE_BIG_ENDIAN,
+ };
+ 
+-static void pnv_sbe_set_host_doorbell(PnvSBE *sbe, uint64_t val)
+-{
+-    val &= SBE_HOST_RESPONSE_MASK; /* Is this right? What does HW do? */
+-    sbe->host_doorbell = val;
+-
+-    trace_pnv_sbe_reg_set_host_doorbell(val);
+-    qemu_set_irq(sbe->psi_irq, !!val);
+-}
+-
+ /* SBE Target Type */
+ #define SBE_TARGET_TYPE_PROC            0x00
+ #define SBE_TARGET_TYPE_EX              0x01
 -- 
 2.52.0
 
