@@ -2,96 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21DCACAA1BA
-	for <lists+qemu-devel@lfdr.de>; Sat, 06 Dec 2025 07:00:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC8EBCAA1AB
+	for <lists+qemu-devel@lfdr.de>; Sat, 06 Dec 2025 06:59:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vRlJQ-00045L-4R; Sat, 06 Dec 2025 00:58:32 -0500
+	id 1vRlJW-00049y-LD; Sat, 06 Dec 2025 00:58:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1vRlJK-00043c-PP; Sat, 06 Dec 2025 00:58:26 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1vRlJR-00048D-UU; Sat, 06 Dec 2025 00:58:33 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1vRlJJ-0005Ww-5U; Sat, 06 Dec 2025 00:58:26 -0500
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5B62uLKN010164;
- Sat, 6 Dec 2025 05:58:23 GMT
+ id 1vRlJQ-0005XJ-4X; Sat, 06 Dec 2025 00:58:33 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5B62l2pf023008;
+ Sat, 6 Dec 2025 05:58:26 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=WXAbInoT68uGejwRc
- twGK6rViOYGNcdONtCfPHF5hx8=; b=NU+Cl2wxXZHztCSm+sSkEWQHZBvzLVSyC
- PE/1VAts9F73moA7n3t0RcMYWME+X0Sz8aDtncL9DfRT8Kz3lpxkOoVwGJ8z07UQ
- fz1Vrvi42wxxTqmbcM3y5/SFOeBsZJOgPP0OvcTttndwpl9qnD+ODSJym0Y1fni2
- xsA+SrVEPxSM+sd2jkh/xjSXSlFSElL/rr7bmB4fx1qXHK5mm26CieaqY3v8mShv
- OVzlKWgC+vcH/ZhFwAqUk8JdBUKjq7uOdbA6cmPcpgOpfnRhrIKsTPjn987i+6EI
- i3e9BNc3om2wcbrg/vZCFDohsT326wDo4LS9EtJy32DZp/HPMHsAQ==
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4avc530e6r-1
+ :mime-version:references:subject:to; s=pp1; bh=ROy75RqasHOPQn/yH
+ ra7gT4mwXrRJKa5wKQA5F3mCLQ=; b=CAsYvkP1Do3D7WdEhGIhRpLMzIUBWZvkX
+ RQTcMqHtAd0oNpzcmM7mfx5MvGLazEsvH0Zxb3wqJWiDRgG3CiEbJiIIKuBt3X4o
+ fgNJQkMy9T2f6r7U5qu3ZzJrpstQqPZOqSPUHd+D+98l8kRHyrJg25rtMQeNbfAm
+ nETj7L/aNCVI4uyPCugiZHTzWz+XD86Bp7hEhrVuxtlGPmKOZCTXVUq+mThZFkuU
+ xv1fAAOISu3yHs8GrOalN3DRs8e7XobCZEF4AlY/RRvBiYdQtYVZNNJLQmBRwSic
+ PpcqYNtfXMYB51p+7Cqnj7UTC3vyQT5bChi6H+JnIccjlAY2Rzq9g==
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4avc0jgg53-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 06 Dec 2025 05:58:23 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5B62t0tj003867;
- Sat, 6 Dec 2025 05:58:22 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ardck8taq-1
+ Sat, 06 Dec 2025 05:58:26 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5B62uRfw029343;
+ Sat, 6 Dec 2025 05:58:25 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ardv20qbm-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 06 Dec 2025 05:58:22 +0000
+ Sat, 06 Dec 2025 05:58:25 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
  [10.20.54.102])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 5B65wJuH57082258
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 5B65wLRG51184114
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 6 Dec 2025 05:58:19 GMT
+ Sat, 6 Dec 2025 05:58:21 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 131F520043;
+ by IMSVA (Postfix) with ESMTP id 8BF9520043;
+ Sat,  6 Dec 2025 05:58:21 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 89A4C20040;
  Sat,  6 Dec 2025 05:58:19 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CD40420040;
- Sat,  6 Dec 2025 05:58:16 +0000 (GMT)
 Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com (unknown
  [9.39.31.93]) by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Sat,  6 Dec 2025 05:58:16 +0000 (GMT)
+ Sat,  6 Dec 2025 05:58:19 +0000 (GMT)
 From: Aditya Gupta <adityag@linux.ibm.com>
 To: <qemu-devel@nongnu.org>
 Cc: <qemu-ppc@nongnu.org>, Hari Bathini <hbathini@linux.ibm.com>,
  Sourabh Jain <sourabhjain@linux.ibm.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PATCH v2 1/9] hw/ppc: Move SBE host doorbell function to top of file
-Date: Sat,  6 Dec 2025 11:26:40 +0530
-Message-ID: <20251206055648.1908734-2-adityag@linux.ibm.com>
+Subject: [PATCH v2 2/9] hw/ppc: Implement S0 SBE interrupt as cpu_pause then
+ host reset
+Date: Sat,  6 Dec 2025 11:26:41 +0530
+Message-ID: <20251206055648.1908734-3-adityag@linux.ibm.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251206055648.1908734-1-adityag@linux.ibm.com>
 References: <20251206055648.1908734-1-adityag@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDAyMCBTYWx0ZWRfX1MVWpgbLN3q7
- UAqlUM9bfdjkYoZgDD3nvbO9gLEMl5LU9NhRiudlj0WrOUi/h6CGejpKHIX4r95atOMD/JiMbZX
- kStnxJ/dPSN7mzpZVfAOgotkXwYix8GKlzsD/s/eSzbku9tLHhWYf9MATjVw2HEmhCc9DRglkl/
- 8Ne2yKidPJdIML3wILpZB4mHsCp0i2f56+3QWybqMYVP4iERPaDFpYDHLOVQsesu/6kuurSGjch
- dhChRDCXgM2Le2mpxqzYDkjoZ2rlUSI98hxotuLc4RUfhuRmCkAFbBXM6cwt8GNt2PmJIIGQarA
- evyK6xWWkx/b9WxnxiFs+PtCN1zl3LRs3BYECJXqFUQzh/1QcIGi+SqmBM8MqVA2V6p3B11DB+k
- XDitNNvnBfPCx4VJbcBP8mMA3WvyxA==
-X-Authority-Analysis: v=2.4 cv=S/DUAYsP c=1 sm=1 tr=0 ts=6933c5ff cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+X-Authority-Analysis: v=2.4 cv=Cf8FJbrl c=1 sm=1 tr=0 ts=6933c602 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
  a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=Cz7AoQ69vTHEakZR_RYA:9
-X-Proofpoint-ORIG-GUID: 2OkVG0BBIofgT17B29lmCdQRqO9aClX_
-X-Proofpoint-GUID: 2OkVG0BBIofgT17B29lmCdQRqO9aClX_
+ a=atcXKtye3xvqEmVJAE4A:9
+X-Proofpoint-ORIG-GUID: uDVTGdwLNzsEH_zgtH0g23nIvYVmpYmS
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDAxNiBTYWx0ZWRfX3S/LmDZpcTjs
+ RFr+I2nu0HC9ngcO7WN81adXFyCn+T54wbOF+/GFs21bme78Nm8zLNoZKm/+jh+hbh5JD/1EVh6
+ U8Rw4YG6bAGfo5SSypOVsasd0zzjQ9GtU90sXcmrdJFf4y5/vofY2GHOMTCM3CclLvfkr6vKg3b
+ gJ5L83c3RT7x4McAZ70FQLnco+c2V3lgRWxElIMkMfX06ByB1X2Ug/1w/1p60oH/kysxR8i+gOH
+ Gu5Teilu2Gnu0/7F/j1X7PonrAjVlpDBIGT7sv4WSLamPeM8sXIaezua/TCk96z6hPQ6Wvjj49a
+ gKkbG4uRHy1fPHLWGCEAr9Z/GIKgFY6CQnM5Ovex67mvJVhVy9qA27rwxDEytoS0XovGpcjgKNx
+ IcC9PplS941ojALb5UCj4/3c5rGr/w==
+X-Proofpoint-GUID: uDVTGdwLNzsEH_zgtH0g23nIvYVmpYmS
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-06_01,2025-12-04_04,2025-10-01_01
+ definitions=2025-12-05_09,2025-12-04_04,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 clxscore=1015 impostorscore=0 suspectscore=0
- lowpriorityscore=0 adultscore=0 spamscore=0 bulkscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512060020
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ phishscore=0 bulkscore=0 malwarescore=0 clxscore=1015 adultscore=0
+ lowpriorityscore=0 impostorscore=0 priorityscore=1501 spamscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
+ definitions=main-2512060016
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=adityag@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -115,57 +117,188 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Moved 'pnv_sbe_set_host_doorbell' as-it-is to above
-'pnv_sbe_power9_xscom_ctrl_write'.
+During MPIPL (aka fadump), OPAL triggers the S0 SBE interrupt to trigger
+MPIPL.
 
-This is done since in a future patch, S0 interrupt implementation uses
-'pnv_sbe_set_host_doorbell', hence the host doorbell function needs to
-be declared/defined before 'pnv_sbe_power9_xscom_ctrl_write' where we
-implement the S0 interrupt.
+Currently S0 interrupt is unimplemented in QEMU.
 
-No functional change.
+Implement S0 interrupt as 'pause_vcpus' + 'guest_reset' in QEMU, as the
+SBE's implementation of S0 seems to be basically "stop all clocks" and
+then "host reset".
+
+pause_vcpus is done in a later patch when register preserving support is
+added
+
+See 'stopClocksS0' in SBE source code for more information.
+
+Also log both S0 and S1 interrupts.
 
 Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
 ---
- hw/ppc/pnv_sbe.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ hw/ppc/meson.build         |  1 +
+ hw/ppc/pnv_mpipl.c         | 26 ++++++++++++++++++++++++++
+ hw/ppc/pnv_sbe.c           | 29 +++++++++++++++++++++++++++++
+ include/hw/ppc/pnv.h       |  6 ++++++
+ include/hw/ppc/pnv_mpipl.h | 19 +++++++++++++++++++
+ 5 files changed, 81 insertions(+)
+ create mode 100644 hw/ppc/pnv_mpipl.c
+ create mode 100644 include/hw/ppc/pnv_mpipl.h
 
+diff --git a/hw/ppc/meson.build b/hw/ppc/meson.build
+index f7dac87a2a48..c61fba4ec8f2 100644
+--- a/hw/ppc/meson.build
++++ b/hw/ppc/meson.build
+@@ -56,6 +56,7 @@ ppc_ss.add(when: 'CONFIG_POWERNV', if_true: files(
+   'pnv_pnor.c',
+   'pnv_nest_pervasive.c',
+   'pnv_n1_chiplet.c',
++  'pnv_mpipl.c',
+ ))
+ # PowerPC 4xx boards
+ ppc_ss.add(when: 'CONFIG_PPC405', if_true: files(
+diff --git a/hw/ppc/pnv_mpipl.c b/hw/ppc/pnv_mpipl.c
+new file mode 100644
+index 000000000000..d8c9b7a428b7
+--- /dev/null
++++ b/hw/ppc/pnv_mpipl.c
+@@ -0,0 +1,26 @@
++/*
++ * Emulation of MPIPL (Memory Preserving Initial Program Load), aka fadump
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "system/runstate.h"
++#include "hw/ppc/pnv.h"
++#include "hw/ppc/pnv_mpipl.h"
++
++void do_mpipl_preserve(PnvMachineState *pnv)
++{
++    /* Mark next boot as Memory-preserving boot */
++    pnv->mpipl_state.is_next_boot_mpipl = true;
++
++    /*
++     * Do a guest reset.
++     * Next reset will see 'is_next_boot_mpipl' as true, and trigger MPIPL
++     *
++     * Requirement:
++     * GUEST_RESET is expected to NOT clear the memory, as is the case when
++     * this is merged
++     */
++    qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
++}
 diff --git a/hw/ppc/pnv_sbe.c b/hw/ppc/pnv_sbe.c
-index 34dc013d47bb..b9b28c5deaef 100644
+index b9b28c5deaef..d004b7d5c225 100644
 --- a/hw/ppc/pnv_sbe.c
 +++ b/hw/ppc/pnv_sbe.c
-@@ -80,6 +80,15 @@
- #define SBE_CONTROL_REG_S0              PPC_BIT(14)
- #define SBE_CONTROL_REG_S1              PPC_BIT(15)
+@@ -21,11 +21,14 @@
+ #include "qapi/error.h"
+ #include "qemu/log.h"
+ #include "qemu/module.h"
++#include "system/cpus.h"
++#include "system/runstate.h"
+ #include "hw/irq.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/ppc/pnv.h"
+ #include "hw/ppc/pnv_xscom.h"
+ #include "hw/ppc/pnv_sbe.h"
++#include "hw/ppc/pnv_mpipl.h"
+ #include "trace.h"
  
-+static void pnv_sbe_set_host_doorbell(PnvSBE *sbe, uint64_t val)
-+{
-+    val &= SBE_HOST_RESPONSE_MASK; /* Is this right? What does HW do? */
-+    sbe->host_doorbell = val;
+ /*
+@@ -113,11 +116,37 @@ static uint64_t pnv_sbe_power9_xscom_ctrl_read(void *opaque, hwaddr addr,
+ static void pnv_sbe_power9_xscom_ctrl_write(void *opaque, hwaddr addr,
+                                        uint64_t val, unsigned size)
+ {
++    PnvMachineState *pnv = PNV_MACHINE(qdev_get_machine());
++    PnvSBE *sbe = opaque;
+     uint32_t offset = addr >> 3;
+ 
+     trace_pnv_sbe_xscom_ctrl_write(addr, val);
+ 
+     switch (offset) {
++    case SBE_CONTROL_REG_RW:
++        switch (val) {
++        case SBE_CONTROL_REG_S0:
++            qemu_log_mask(LOG_UNIMP, "SBE: S0 Interrupt triggered\n");
 +
-+    trace_pnv_sbe_reg_set_host_doorbell(val);
-+    qemu_set_irq(sbe->psi_irq, !!val);
-+}
++            pnv_sbe_set_host_doorbell(sbe, sbe->host_doorbell | SBE_HOST_RESPONSE_MASK);
 +
- struct sbe_msg {
-     uint64_t reg[4];
- };
-@@ -125,15 +134,6 @@ static const MemoryRegionOps pnv_sbe_power9_xscom_ctrl_ops = {
-     .endianness = DEVICE_BIG_ENDIAN,
++            /* Preserve memory regions and CPU state, if MPIPL is registered */
++            do_mpipl_preserve(pnv);
++
++            /*
++             * Control may not come back here as 'do_mpipl_preserve' triggers
++             * a guest reboot
++             */
++            break;
++        case SBE_CONTROL_REG_S1:
++            qemu_log_mask(LOG_UNIMP, "SBE: S1 Interrupt triggered\n");
++            break;
++        default:
++            qemu_log_mask(LOG_UNIMP,
++                "SBE: CONTROL_REG_RW: Unknown value: Ox%."
++                  HWADDR_PRIx "\n", val);
++        }
++        break;
+     default:
+         qemu_log_mask(LOG_UNIMP, "SBE Unimplemented register: Ox%"
+                       HWADDR_PRIx "\n", addr >> 3);
+diff --git a/include/hw/ppc/pnv.h b/include/hw/ppc/pnv.h
+index cbdddfc73cd4..02baa0012460 100644
+--- a/include/hw/ppc/pnv.h
++++ b/include/hw/ppc/pnv.h
+@@ -25,6 +25,7 @@
+ #include "hw/sysbus.h"
+ #include "hw/ipmi/ipmi.h"
+ #include "hw/ppc/pnv_pnor.h"
++#include "hw/ppc/pnv_mpipl.h"
+ 
+ #define TYPE_PNV_CHIP "pnv-chip"
+ 
+@@ -111,6 +112,8 @@ struct PnvMachineState {
+ 
+     bool         big_core;
+     bool         lpar_per_core;
++
++    MpiplPreservedState mpipl_state;
  };
  
--static void pnv_sbe_set_host_doorbell(PnvSBE *sbe, uint64_t val)
--{
--    val &= SBE_HOST_RESPONSE_MASK; /* Is this right? What does HW do? */
--    sbe->host_doorbell = val;
--
--    trace_pnv_sbe_reg_set_host_doorbell(val);
--    qemu_set_irq(sbe->psi_irq, !!val);
--}
--
- /* SBE Target Type */
- #define SBE_TARGET_TYPE_PROC            0x00
- #define SBE_TARGET_TYPE_EX              0x01
+ PnvChip *pnv_get_chip(PnvMachineState *pnv, uint32_t chip_id);
+@@ -290,4 +293,7 @@ void pnv_bmc_set_pnor(IPMIBmc *bmc, PnvPnor *pnor);
+ 
+ #define PNV11_OCC_SENSOR_BASE(chip) PNV10_OCC_SENSOR_BASE(chip)
+ 
++/* MPIPL helpers */
++void do_mpipl_preserve(PnvMachineState *pnv);
++
+ #endif /* PPC_PNV_H */
+diff --git a/include/hw/ppc/pnv_mpipl.h b/include/hw/ppc/pnv_mpipl.h
+new file mode 100644
+index 000000000000..c544984dc76d
+--- /dev/null
++++ b/include/hw/ppc/pnv_mpipl.h
+@@ -0,0 +1,19 @@
++/*
++ * Emulation of MPIPL (Memory Preserving Initial Program Load), aka fadump
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef PNV_MPIPL_H
++#define PNV_MPIPL_H
++
++#include "qemu/osdep.h"
++
++typedef struct MpiplPreservedState MpiplPreservedState;
++
++/* Preserved state to be saved in PnvMachineState */
++struct MpiplPreservedState {
++    bool       is_next_boot_mpipl;
++};
++
++#endif
 -- 
 2.52.0
 
