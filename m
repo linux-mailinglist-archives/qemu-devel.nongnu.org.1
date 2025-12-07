@@ -2,83 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAD48CAB16B
-	for <lists+qemu-devel@lfdr.de>; Sun, 07 Dec 2025 05:35:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58FAFCAB16E
+	for <lists+qemu-devel@lfdr.de>; Sun, 07 Dec 2025 05:35:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vS6TG-0001bW-S6; Sat, 06 Dec 2025 23:34:06 -0500
+	id 1vS6TK-0001cP-MX; Sat, 06 Dec 2025 23:34:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chenmiao.ku@gmail.com>)
- id 1vS5X5-0002r5-Ot
- for qemu-devel@nongnu.org; Sat, 06 Dec 2025 22:34:00 -0500
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1vS5XE-0002ul-69
+ for qemu-devel@nongnu.org; Sat, 06 Dec 2025 22:34:08 -0500
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <chenmiao.ku@gmail.com>)
- id 1vS5X3-0002Tb-EE
- for qemu-devel@nongnu.org; Sat, 06 Dec 2025 22:33:59 -0500
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-7b86e0d9615so5905211b3a.0
- for <qemu-devel@nongnu.org>; Sat, 06 Dec 2025 19:33:43 -0800 (PST)
+ id 1vS5X3-0002Tm-GB
+ for qemu-devel@nongnu.org; Sat, 06 Dec 2025 22:34:01 -0500
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-7b9c17dd591so3039402b3a.3
+ for <qemu-devel@nongnu.org>; Sat, 06 Dec 2025 19:33:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1765078422; x=1765683222; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=sVSIaBHHB4I/cKA4IxMpB61FxEaOsUyCl0g7ZJyx4/Y=;
- b=cTBVWrA1WPKRSFCc47C2dXM4yrLxY6bS5oJQsearisa8qce5IChFgIdcmGo6SR1YSB
- HApObMH8cgWQgwVHYroTkOb/8n8IUcTtD63hLHEdydIsW0243SszTyWhLUwQRvNg5PQE
- n61T8GcVsNtQUdlQDIxzqGjagyyyg7Oa1OnaH8IkhxG3mPowkZrcXbvgJ8hJQg/RaYGB
- 7+oS/kzD4793wxFGEKH3TP5Ys99i6RYO/7U2/3NmUxXybbgMpWuMaRrihvVb2H6B6eVb
- TxR905ITfjSkpuh1DOGH3JsE9BNkUnYMQr52i7cry7AYkwFTXrf5fmma0IPfUhnuzvol
- DYEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765078422; x=1765683222;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1765078428; x=1765683228; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sVSIaBHHB4I/cKA4IxMpB61FxEaOsUyCl0g7ZJyx4/Y=;
- b=ptpd8F4C3N+aVFl0h4RAbTxFnlk5RTOAk6XlHLf04qXsgbMWSIz5dyszxVlEaRA1xe
- +L5/O8QLVH/Glp0MCv1/LyGJKyqXzZtUjFG4sE2LYLAo35quQ07VuCLmFOyrF8fGypyh
- m5Lm7XRwfMvrh8tqloKwA1PENxV+c0UEoIh49auZ4YZtZeSTifXJCAz+1JOydA/Vig/V
- Vj84WJn7lGZn5mOykY5oFKAMawYOg3mr/Ok+ndiQ4Op6jO7gvK/RrNoS7wLq5C+6B4Af
- 79BB9/KSr8CDkJYoDAWAefjvikTJbTOerWZxWkDkzl70zJhvdohBzUf1HPQufmbpWidL
- yBEg==
+ bh=TYQYrBtyfKJUAHag5BzfJ2Xcf0l0PHjigYu6ruxK0gU=;
+ b=mCqhMVgSYTupCxvSl0a2p1Bd65IKi1t3SGE+vKv3n1uZOohAIky8ZYGihrgE4N305h
+ xzWW2bBvIYH8X0cBrQxsjcf3vWQmxLK+xHBiTKnAzyeLpSJKg0Xn4sAe+AsKU9Xqdd0v
+ KZPBUGWQJaPw7WAxTjwKoWtlJ56RZjcaEn821o08niPlzaxokAqv7xDktWD9IAgfWWDw
+ lomKfdZetRm83g1od+tSM/ay7Xvv8wx5MM6ep04ewO7xWj2eqRYn5mIb1iGIkcHK8smd
+ 9Si0yk+eZ1DmcbJro6ptWaOMHShpoyTc4CElf6BO4+QDmFD2NBFtzql82XbsIT7aiUnn
+ MbOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1765078428; x=1765683228;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=TYQYrBtyfKJUAHag5BzfJ2Xcf0l0PHjigYu6ruxK0gU=;
+ b=h/NdoOoMU5vfksgg55Nxgj1SkcashB3oX6y2gnt/xvkH0COI0xiskQxwZolhSypkf1
+ 5w6wFDIxJUf/y2psd7qHLFgIXJVg39xmx2h1KRigB6Wun1FK42ZrDywJaIz9UE4Hdcbe
+ vYvlaVyWf2TGP5WnlsKyDbobddGST7DHGCBzhpw57iL2ICoWgAnPrXTVsTRbbvMFeQHu
+ zn3V+0p94UtCCQz1MoKJ9d99O7DnCNSXRi/Pt6umRVxqmNZWlpIkiqx9G5FCuEA5hs7k
+ /totoMnZ/PNO4tqzVeEJ4cHc6rRtcF1ftfvgTymYj41uOpfFvl5/82rrBrMYWaasX+6+
+ HpVw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWmhVHRWdPf7N5zTeym6ntH6ACiKOk2PXKHHyD7yLsqcBIekdeXFdVO5wmFdgVp5+hDmh4epGDMoBpc@nongnu.org
-X-Gm-Message-State: AOJu0YwlvMXJU0HWg6vNgG/VlGpbsxLrCruQWRYmdC/rDr4unX94+6kp
- AsaEFfaKpYIDECMzJOcwsfOrGCDoM40U2u5lAmE9uzzi15+CgsUSSc55EQTrx5jLM6i6DA==
-X-Gm-Gg: ASbGnctdKk2NySMgSHbaiDDz7QgLpKk9kXHRo+31ntoG8hjlj5KcoEFJjoZONBsHt+I
- Um1JnmhDabu+UQquaJuNzbepIYigOxcfKNiLAKZEmoJOJXdh/s+9uhFE32Fx6fbNMSz8AabBbUj
- c1UdV4rH1Y1Ei45g+Ku3IaLzXVAYavv+FJFJJqrn0w3BrzCPYPLkt9+EoxZ1uBjFSMtpM4MRcmn
- d3eu5zBVECKuKRM4utD/lwzGMsNyxFeNzx2x6Lg+C65nXf1TdxYdEb2pXrIZweWY5lww5mIeGkv
- sbTROEFY5jquT3XdI21u60KlAXLeKLLL3MtqI0aVy8rCtwf17reHJCVXB/qIcSTbizX5OGUugUI
- uXonCujziELIx9O3TaQkwb2rVdiZTD5L9aGPP/BftsrINqOEypDDEagtzQf/wigD0sMdAiupZrv
- CqhSOYeAD1WBJN/NyjSWPKd2wI80Di/Ew7SN1kf8nW7Yqr+Q==
-X-Google-Smtp-Source: AGHT+IEGLGrbbVIQ+SP5A8d2M+t/bFTx23pF2qTCzw3x6GZOQL59th29qzBTmk5Yd9wZOanbyZVxow==
-X-Received: by 2002:a05:6a20:4310:b0:35e:8b76:c94a with SMTP id
- adf61e73a8af0-36617ef423dmr3722713637.45.1765078422050; 
- Sat, 06 Dec 2025 19:33:42 -0800 (PST)
+ AJvYcCWbubH5G+ZsphBwMmuxQK0ZQ8hqZZUpbXQcrUaEItQLnUp5lS5Dm/B7enrtkUHN9p4fsR7HfyO5JPE+@nongnu.org
+X-Gm-Message-State: AOJu0Yywa5kL6jn6lb0dvD8LxjnS6uE97kEnF6WDVThaAUolp1+G9KKA
+ YO+44zBYweWDJSzyih1mieafKuW+Q+k9aU8XsC/5WzYLxoqeSOrSvpKcU50aJtBc0JXGLQ==
+X-Gm-Gg: ASbGncuDbkUcrR7RuIN5uTXn4dPpueRgWX63OlAC+5oZ/pQqqDCduZEP1cqKLf9hqXQ
+ Y2P96Vd59lQsvlrLugQtN33b9Vmmo4//oMirdcuATwAkdDXZp8/6GX1wzYIdiOcpRWZtVAnfEiv
+ C1JXQNqYugJv1ku9Uiw6mOMUvLj7ZtA/hVCdLAnI8IIBibeRUS3wMIpSMmObTXKOQ11oyaVUefB
+ QZ4GGcvGqobLW26Diwj+Xc7nsl+Dl1a3aTDDEt9Ywu6YTGNsbTxk5Wwhm2WXrSxXrgBQ0BqJdD5
+ GwSyFTiSzR9FBFv2QUUJt51L0fDzPzZfbCf4AHngJiq6aTY/YYKW7X7LwIBlAavqniNeE1OAc0K
+ D76/vBMW1O4DTjoSP+sBdQA0f5muV6V1CgD5VqSCD+DT4E5TnwqBzQGQUg2gvw/4SQUk52zMGEI
+ Mm+hVIxtISiZulVvd25KYUmppHhu+BmLIZVoMccPFY9pc6EA==
+X-Google-Smtp-Source: AGHT+IHLKeAyCUZ8NBnh10nkmhn9X2UWmYQZyZk1k2lI1Wod142J5tzz9PMYLXTZNInaffP16H73Cw==
+X-Received: by 2002:a05:6a21:32a0:b0:34f:4309:ed32 with SMTP id
+ adf61e73a8af0-36617e6f4e5mr4032494637.23.1765078427849; 
+ Sat, 06 Dec 2025 19:33:47 -0800 (PST)
 Received: from nyaos.localdomain ([166.0.199.48])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-bf6a1caeea7sm8496390a12.24.2025.12.06.19.33.35
+ 41be03b00d2f7-bf6a1caeea7sm8496390a12.24.2025.12.06.19.33.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 06 Dec 2025 19:33:41 -0800 (PST)
+ Sat, 06 Dec 2025 19:33:47 -0800 (PST)
 From: ChenMiao <chenmiao.ku@gmail.com>
 To: zhao1.liu@intel.com, pbonzini@redhat.com, manos.pitsidianakis@linaro.org,
  richard.henderson@linaro.org, philmd@linaro.org
 Cc: chao.liu@openatom.club , dzm91@openatom.club , qemu-rust@nongnu.org,
  qemu-devel@nongnu.org, hust-os-kernel-patches@googlegroups.com,
- Chen Miao <chenmiao@openatom.club>
-Subject: [PATCH v3 0/4] rust/hw: Add the I2C and the first GPIO device
-Date: Sun,  7 Dec 2025 03:33:27 +0000
-Message-ID: <cover.1765077679.git.chenmiao@openatom.club>
+ chenmiao <chenmiao@openatom.club>
+Subject: [PATCH v3 1/4] rust/hw/core: Add the BusState of rust version
+Date: Sun,  7 Dec 2025 03:33:28 +0000
+Message-ID: <4e3b8548a26867260f137c719d3c26a24d7954bd.1765077679.git.chenmiao@openatom.club>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1765077679.git.chenmiao@openatom.club>
+References: <cover.1765077679.git.chenmiao@openatom.club>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=chenmiao.ku@gmail.com; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=chenmiao.ku@gmail.com; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,7 +89,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Sat, 06 Dec 2025 23:34:04 -0500
+X-Mailman-Approved-At: Sat, 06 Dec 2025 23:34:09 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,62 +104,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Chen Miao <chenmiao@openatom.club>
+From: chenmiao <chenmiao@openatom.club>
 
-We have implemented I2C and the first GPIO device in Rust for QEMU.
-Additionally, in the respective patches, we have shared our insights and
-experiences regarding the use of Rust for device modeling within QEMU.
-
-1. The first patch implements the BusState for the I2CBus infrastructure.
-2. The second patch implements the I2CBus and I2CSlave infrastructure, along
-   with a discussion of the challenges encountered during the implementation.
-3. The third patch provides a set of necessary helper functions for the PCF8574
-   GPIO device.
-4. The fourth patch implements the PCF8574 GPIO device, along with a discussion
-   of the issues and considerations addressed during the implementation.
+A Rust version implementation has been designed for BusState,
+which will be used for the subsequent I2CBus implementation.
 
 Signed-off-by: Chen Miao <chenmiao@openatom.club>
 Signed-off-by: Chao Liu <chao.liu@openatom.club>
-
 ---
-
-Due to issues with the email service provider, the previous PATCH series was not
-properly displayed as a thread. Subsequently, the resent emails were
-accidentally merged into a single thread, making the review process difficult.
-Therefore, resending it and hope to receive review.
-
-chenmiao (4):
-  rust/hw/core: Add the BusState of rust version
-  rust/hw/core: Add rust bindings/funcs for i2c bus
-  rust/hw/core: Provide some interfaces for the GPIO device
-  rust/hw/gpio: Add the the first gpio device pcf8574
-
- hw/gpio/Kconfig                  |   5 +
- hw/gpio/meson.build              |   2 +-
- rust/Cargo.lock                  |  18 +-
- rust/Cargo.toml                  |   1 +
- rust/hw/Kconfig                  |   1 +
- rust/hw/core/meson.build         |   2 +
- rust/hw/core/src/bus.rs          |  44 +++++
- rust/hw/core/src/i2c.rs          | 303 +++++++++++++++++++++++++++++++
- rust/hw/core/src/lib.rs          |   6 +
- rust/hw/core/src/qdev.rs         |  17 +-
- rust/hw/core/wrapper.h           |   1 +
- rust/hw/gpio/Kconfig             |   2 +
- rust/hw/gpio/meson.build         |   1 +
- rust/hw/gpio/pcf8574/Cargo.toml  |  28 +++
- rust/hw/gpio/pcf8574/meson.build |  37 ++++
- rust/hw/gpio/pcf8574/src/lib.rs  | 178 ++++++++++++++++++
- rust/hw/meson.build              |   1 +
- 17 files changed, 642 insertions(+), 5 deletions(-)
+ rust/hw/core/meson.build |  1 +
+ rust/hw/core/src/bus.rs  | 44 ++++++++++++++++++++++++++++++++++++++++
+ rust/hw/core/src/lib.rs  |  3 +++
+ 3 files changed, 48 insertions(+)
  create mode 100644 rust/hw/core/src/bus.rs
- create mode 100644 rust/hw/core/src/i2c.rs
- create mode 100644 rust/hw/gpio/Kconfig
- create mode 100644 rust/hw/gpio/meson.build
- create mode 100644 rust/hw/gpio/pcf8574/Cargo.toml
- create mode 100644 rust/hw/gpio/pcf8574/meson.build
- create mode 100644 rust/hw/gpio/pcf8574/src/lib.rs
 
+diff --git a/rust/hw/core/meson.build b/rust/hw/core/meson.build
+index 1560dd20c6..efcda50fef 100644
+--- a/rust/hw/core/meson.build
++++ b/rust/hw/core/meson.build
+@@ -50,6 +50,7 @@ _hwcore_rs = static_library(
+     [
+       'src/lib.rs',
+       'src/bindings.rs',
++      'src/bus.rs',
+       'src/irq.rs',
+       'src/qdev.rs',
+       'src/sysbus.rs',
+diff --git a/rust/hw/core/src/bus.rs b/rust/hw/core/src/bus.rs
+new file mode 100644
+index 0000000000..d3fbf519d4
+--- /dev/null
++++ b/rust/hw/core/src/bus.rs
+@@ -0,0 +1,44 @@
++// Copyright 2025 HUST OpenAtom Open Source Club.
++// Author(s): Chen Miao <chenmiao@openatom.club>
++// SPDX-License-Identifier: GPL-2.0-or-later
++
++use std::ffi::CStr;
++
++pub use bindings::BusClass;
++use common::Opaque;
++use qom::{qom_isa, IsA, Object, ObjectDeref, ObjectType};
++
++use crate::{bindings, DeviceImpl};
++
++#[repr(transparent)]
++#[derive(Debug, common::Wrapper)]
++pub struct BusState(Opaque<bindings::BusState>);
++
++unsafe impl Send for BusState {}
++unsafe impl Sync for BusState {}
++
++unsafe impl ObjectType for BusState {
++    type Class = BusClass;
++    const TYPE_NAME: &'static std::ffi::CStr =
++        unsafe { CStr::from_bytes_with_nul_unchecked(bindings::TYPE_BUS) };
++}
++
++qom_isa!(BusState: Object);
++
++pub trait BusStateImpl: DeviceImpl + IsA<BusState> {}
++
++impl BusClass {
++    pub fn class_init<T: BusStateImpl>(self: &mut BusClass) {
++        self.parent_class.class_init::<T>();
++    }
++}
++
++pub trait BusMethods: ObjectDeref
++where
++    Self::Target: IsA<BusState>,
++{
++    // TODO: Since the bus does not currently provide services to other
++    // components, we have not implemented any functions yet.
++}
++
++impl<R: ObjectDeref> BusMethods for R where R::Target: IsA<BusState> {}
+diff --git a/rust/hw/core/src/lib.rs b/rust/hw/core/src/lib.rs
+index b40801eb84..10cc516664 100644
+--- a/rust/hw/core/src/lib.rs
++++ b/rust/hw/core/src/lib.rs
+@@ -13,3 +13,6 @@
+ 
+ mod sysbus;
+ pub use sysbus::*;
++
++mod bus;
++pub use bus::*;
 -- 
 2.43.0
 
