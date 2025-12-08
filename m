@@ -2,49 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C179ACAD0D9
+	by mail.lfdr.de (Postfix) with ESMTPS id A697FCAD0D6
 	for <lists+qemu-devel@lfdr.de>; Mon, 08 Dec 2025 13:11:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vSa4j-00070z-IC; Mon, 08 Dec 2025 07:10:45 -0500
+	id 1vSa50-0007Bf-3N; Mon, 08 Dec 2025 07:11:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xuchuangxclwt@bytedance.com>)
- id 1vSa4c-00070q-OW
- for qemu-devel@nongnu.org; Mon, 08 Dec 2025 07:10:39 -0500
-Received: from sg-1-100.ptr.blmpb.com ([118.26.132.100])
+ id 1vSa4l-000720-3I
+ for qemu-devel@nongnu.org; Mon, 08 Dec 2025 07:10:49 -0500
+Received: from sg-1-101.ptr.blmpb.com ([118.26.132.101])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <xuchuangxclwt@bytedance.com>)
- id 1vSa4Y-0003Hh-Nc
- for qemu-devel@nongnu.org; Mon, 08 Dec 2025 07:10:38 -0500
+ id 1vSa4i-0003Ro-OG
+ for qemu-devel@nongnu.org; Mon, 08 Dec 2025 07:10:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1765195816; h=from:subject:
+ s=2212171451; d=bytedance.com; t=1765195828; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=gZyI/XsjZiM5ib2NK+w8S+bx76otR7d/4oq7pAk6Pw8=;
- b=nyOvLkUvr66PZwTAE6XHcX5fOuwyzczOyKItaJ2qPUHgzpDJtdWN8TbKK5ElhgRXBt8Ed1
- FlY0D5qibWPO2KUN+jLYXBadLDe4u+GV5UciawcnfAHmoadgiFeznnfsQqblJIm8LSkqd7
- YQTCqPQrBZkpONdQwHURrs6FYd0Wy3FBweYtdjvvK/c5nrILgK1AGTTx19xgc1otlVNTCC
- b0JUZNGqv7HhWwRob6jSayNeqoH1wQb8sEESWeQmdqD6n0CZ2CEF0LUqy05I1B3swkgi69
- z1Kh4pST7frg1htbg07+lJPJM2hBCDIeHCVMj8DcPZTa2THGA4bHket0SmQ5Ig==
+ bh=9fivGahwD7eJxbsYIpWsK5p26Hc0D9+NFC1zD62ElmQ=;
+ b=CTregnjBbwjlmEvmTq4Ce10OHaHdkqN69DaHkoramvpKD1jicjkaqqDeMz20XxpVaP9s31
+ iWxN1HmJg8xhuexP+5LxG9H3pNtJMsrge+ZxLBlzcLMeOp/ngIzGKXLFavlpNPqBxwu3Z5
+ wMdnVKYPx4YckQKMcrkwWYrVu6qJ664eQ7T4hfUjpWOzZbuimotizW2ynDVn1G2VzvXwk5
+ H8/D7JbP0lv7tmF/NFV9p1C2+v7Hw1KresIu/rFF3XvVrggJXLSPctMeEPiIb2/4VjPbgO
+ v/tNLdh0OdBf9w5aWdTIHmLGtziVfALvZzU4zXUNcnNcrrIWY2GmIdWCWtoP4Q==
 From: "Chuang Xu" <xuchuangxclwt@bytedance.com>
-X-Original-From: Chuang Xu <xuchuangxclwt@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Message-Id: <20251208120952.37563-1-xuchuangxclwt@bytedance.com>
-Mime-Version: 1.0
+Subject: [RFC v1 1/2] vhost: eliminate duplicate dirty_bitmap sync when log
+ shared by multiple devices
 Content-Transfer-Encoding: 7bit
+X-Original-From: Chuang Xu <xuchuangxclwt@bytedance.com>
+X-Lms-Return-Path: <lba+26936c032+bdd0a6+nongnu.org+xuchuangxclwt@bytedance.com>
 Cc: <mst@redhat.com>, <sgarzare@redhat.com>, <richard.henderson@linaro.org>, 
  <pbonzini@redhat.com>, <peterx@redhat.com>, <david@kernel.org>, 
- <philmd@linaro.org>, <farosas@suse.de>
-Subject: [RFC v1 0/2] migration: reduce bitmap sync time and make dirty pages
- converge much more easily
+ <philmd@linaro.org>, <farosas@suse.de>, 
+ "xuchuangxclwt" <xuchuangxclwt@bytedance.com>
+References: <20251208120952.37563-1-xuchuangxclwt@bytedance.com>
+Date: Mon,  8 Dec 2025 20:09:51 +0800
+Mime-Version: 1.0
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+Content-Type: text/plain; charset=UTF-8
 To: <qemu-devel@nongnu.org>
-Date: Mon,  8 Dec 2025 20:09:50 +0800
-X-Lms-Return-Path: <lba+26936c026+f53b9c+nongnu.org+xuchuangxclwt@bytedance.com>
-Received-SPF: pass client-ip=118.26.132.100;
- envelope-from=xuchuangxclwt@bytedance.com; helo=sg-1-100.ptr.blmpb.com
+Message-Id: <20251208120952.37563-2-xuchuangxclwt@bytedance.com>
+In-Reply-To: <20251208120952.37563-1-xuchuangxclwt@bytedance.com>
+Received-SPF: pass client-ip=118.26.132.101;
+ envelope-from=xuchuangxclwt@bytedance.com; helo=sg-1-101.ptr.blmpb.com
 X-Spam_score_int: -15
 X-Spam_score: -1.6
 X-Spam_bar: -
@@ -68,95 +71,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In our long-term experience in Bytedance, we've found that under the same load,
-live migration of larger VMs with more devices is often more difficult to
-converge (requiring a larger downtime limit).
+From: xuchuangxclwt <xuchuangxclwt@bytedance.com>
 
-We've observed that the live migration bandwidth of large, multi-device VMs is
-severely distorted, a phenomenon likely similar to the problem described in this link
-(https://wiki.qemu.org/ToDo/LiveMigration#Optimize_migration_bandwidth_calculation).
+Although logs can now be shared among multiple vhost devices,
+live migration still performs repeated vhost_log_sync for each
+vhost device during bitmap_sync, which increases the time required
+for bitmap_sync and makes it more difficult for dirty pages to converge.
 
-Through some testing and calculations, we conclude that bitmap sync time affects
-the calculation of live migration bandwidth.
+Attempt to eliminate these duplicate sync.
 
-Now, let me use formulaic reasoning to illustrate the relationship between the downtime
-limit required to achieve the stop conditions and the bitmap sync time.
+Signed-off-by: Chuang Xu <xuchuangxclwt@bytedance.com>
+---
+ hw/virtio/vhost.c         | 30 ++++++++++++++++++++++--------
+ include/hw/virtio/vhost.h |  1 +
+ 2 files changed, 23 insertions(+), 8 deletions(-)
 
-Assume the actual live migration bandwidth is B, the dirty page rate is D,
-the bitmap sync time is x (ms), the transfer time per iteration is t (ms), and the
-downtime limit is y (ms).
-
-To simplify the calculation, we assume all of dirty pages are not zero page and only
-consider the case B > D.
-
-When x + t > 100ms, the bandwidth calculated by qemu is R = B * t / (x + t).
-When x + t < 100ms, the bandwidth calculated by qemu is R = B * (100 - x) / 100.
-
-If there is a critical convergence state, then we have:
-  (1) B * t = D * (x + t)
-  (2) t = D * x / (B - D)
-For the stop condition to be successfully determined, then we have two cases:
-  When:
-  (3) x + t > 100
-  (4) x + D * x / (B - D) > 100
-  (5) x > 100 - 100 * D / B
-  Then:
-  (6) R * y > D * (x + t)
-  (7) B * t * y / (x + t) > D * (x + t)
-  (8) (B * (D * x / (B - D)) * y) / (x + D * x / (B - D)) > D * (x + D * x / (B - D))
-  (9) D * y > D * (x + D * x / (B - D))
-  (10) y > x + D * x / (B - D)
-  (11) (B - D) * y > B * x
-  (12) y > B * x / (B - D)
-  
-  When:
-  (13) x + t < 100
-  (14) x + D * x / (B - D) < 100
-  (15) x < 100 - 100 * D / B
-  Then:
-  (16) R * y > D * (x + t)
-  (17) B * (100 - x) * y / 100 > D * (x + t)
-  (18) B * (100 - x) * y / 100 > D * (x + D * x / (B - D))
-  (19) y > 100 * D * x / ((B - D) * (100 - x))
-
-After deriving the formula, we can use some data for comparison.
-
-For a 64C256G vm with 8 vhost-user-net(32 queue per nic) and 16 vhost-user-blk(4 queue per blk),
-the sync time is as high as 250ms, while after applying this patch, the sync time is only 10ms.
-
-*First case, assume our maximum bandwidth can reach 15GBps and the dirty page rate is 7.5GBps.
-
-If x = 250 ms, when there is a critical convergence state,
-we use formula(2) get t = D * x / (B - D) = 250 ms,
-because x + t = 500ms > 100ms,
-so we get y > B * x / (B - D) = 500ms.
-
-If x = 10 ms,
-when there is a critical convergence state,
-we use formula(2) get t = D * x / (B - D) = 10 ms,
-because x + t = 20ms < 100ms,
-so we get y > 100 * D * x / ((B - D) * (100 - x)) = 11.1ms.
-
-We can see that after optimization, under the same bandwidth and dirty rate scenario,
-the downtime limit required for dirty page convergence is significantly reduced.
-
-*Second case, assume our maximum bandwidth can reach 15GBps and the downtime limit is set to 300ms.
-If x = 250 ms,  x + t > 250ms > 100ms,
-so we use formula(12) get D < B * (y - x) / y = 15 * (300 - 250) / 300 = 2.5GBps
-
-If x = 10 ms,
-when x + t > 100ms,
-we use formula(12) get D < B * (y - x) / y = 15 * (300 - 10) / 300 = 14.5GBps,
-when x + t < 100ms,
-we use formula(19) get D < 14.46GBps
-
-We can see that after optimization, under the same bandwidth and downtime limit scenario,
-the convergent dirty page rate is significantly improved.
-
-Through the above formula derivation, we have proven that reducing bitmap sync time
-can significantly improve dirty page convergence capability.
-
-This series only optimize bitmap sync time for some scenarios.
-There may still be many scenarios where bitmap sync time negatively impacts dirty page
-convergence capability, and we can also try to optimize using this approach.
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 266a11514a..d397ca327f 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -268,14 +268,6 @@ static int vhost_sync_dirty_bitmap(struct vhost_dev *dev,
+     return 0;
+ }
+ 
+-static void vhost_log_sync(MemoryListener *listener,
+-                          MemoryRegionSection *section)
+-{
+-    struct vhost_dev *dev = container_of(listener, struct vhost_dev,
+-                                         memory_listener);
+-    vhost_sync_dirty_bitmap(dev, section, 0x0, ~0x0ULL);
+-}
+-
+ static void vhost_log_sync_range(struct vhost_dev *dev,
+                                  hwaddr first, hwaddr last)
+ {
+@@ -287,6 +279,27 @@ static void vhost_log_sync_range(struct vhost_dev *dev,
+     }
+ }
+ 
++static void vhost_log_sync(MemoryListener *listener,
++                          MemoryRegionSection *section)
++{
++    struct vhost_dev *dev = container_of(listener, struct vhost_dev,
++                                         memory_listener);
++    struct vhost_log *log = dev->log;
++
++    if (log && log->refcnt > 1) {
++        /*
++         * When multiple devices use same log, we implement the logic of
++         * vhost_log_sync just like what we do in vhost_log_put.
++         */
++        log->sync_cnt = (log->sync_cnt + 1) % log->refcnt;
++        if (!log->sync_cnt) {
++            vhost_log_sync_range(dev, 0, dev->log_size * VHOST_LOG_CHUNK - 1);
++        }
++    } else {
++        vhost_sync_dirty_bitmap(dev, section, 0x0, ~0x0ULL);
++    }
++}
++
+ static uint64_t vhost_get_log_size(struct vhost_dev *dev)
+ {
+     uint64_t log_size = 0;
+@@ -383,6 +396,7 @@ static struct vhost_log *vhost_log_get(VhostBackendType backend_type,
+         ++log->refcnt;
+     }
+ 
++    log->sync_cnt = 0;
+     return log;
+ }
+ 
+diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+index 08bbb4dfe9..43bf1c2150 100644
+--- a/include/hw/virtio/vhost.h
++++ b/include/hw/virtio/vhost.h
+@@ -50,6 +50,7 @@ typedef unsigned long vhost_log_chunk_t;
+ struct vhost_log {
+     unsigned long long size;
+     int refcnt;
++    int sync_cnt;
+     int fd;
+     vhost_log_chunk_t *log;
+ };
+-- 
+2.20.1
 
