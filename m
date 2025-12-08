@@ -2,91 +2,140 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 957D2CACF57
+	by mail.lfdr.de (Postfix) with ESMTPS id C3225CACF58
 	for <lists+qemu-devel@lfdr.de>; Mon, 08 Dec 2025 12:11:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vSZ8e-0007Yu-M4; Mon, 08 Dec 2025 06:10:44 -0500
+	id 1vSZ8J-0007W3-6Q; Mon, 08 Dec 2025 06:10:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1vSZ8b-0007Xt-Sg
- for qemu-devel@nongnu.org; Mon, 08 Dec 2025 06:10:41 -0500
-Received: from smtp-relay-services-1.canonical.com ([185.125.188.251])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>)
+ id 1vSZ8F-0007VJ-6n; Mon, 08 Dec 2025 06:10:19 -0500
+Received: from mout.kundenserver.de ([212.227.126.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1vSZ8Z-0006zc-Lc
- for qemu-devel@nongnu.org; Mon, 08 Dec 2025 06:10:41 -0500
-Received: from scripts.lp.internal (scripts.lp.internal [10.131.215.246])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-relay-services-1.canonical.com (Postfix) with ESMTPSA id BE4FC44C6D
- for <qemu-devel@nongnu.org>; Mon,  8 Dec 2025 11:10:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
- s=20210803; t=1765192237;
- bh=TuPlPXLtnDw7iMes18FJMscywCHb5fAyA1+7nIwkiPQ=;
- h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
- Message-Id:Subject;
- b=MFPQHW2DoQO5KAfvYXhVoScJmR16oBweHQNlz2vq4xqHoyLUrYCqcI2ZY0c9DGVIM
- 0BBsmamzeVL2G6WIbYfdznhTppYMsCZe68flPgFbSzNuBjhr6n3ImxZ8NFp+JafVJM
- e/L6qJhEOeJnSowdPU1s5j5VubFxZGtkYHMumb2+LV/JGhel0aOTN/gKKbh/vBcEUx
- ZTMmrP+CRG7jX/B+sccTQZZxzhLniz3+C1buX7pJXgagKvjQL/8zRIbxUn5ZRYAkWb
- 1tlHnIEet/oRoGt3XRh4OauJHg9J+QjkZVL4x7BvsUm6NlmgcQ3P43qnDC1f62DLVs
- HETHUR3hZRb4g==
-Received: from scripts.lp.internal (localhost [127.0.0.1])
- by scripts.lp.internal (Postfix) with ESMTP id B04E17F4D4
- for <qemu-devel@nongnu.org>; Mon,  8 Dec 2025 11:10:37 +0000 (UTC)
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>)
+ id 1vSZ8C-0006ni-VX; Mon, 08 Dec 2025 06:10:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivier.eu;
+ s=s1-ionos; t=1765192205; x=1765797005; i=laurent@vivier.eu;
+ bh=3ZYk1PxAi4ZGCsg0hoODXKyqMgaOOWn/kDu1Z0dqpMs=;
+ h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:Subject:To:
+ Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+ cc:content-transfer-encoding:content-type:date:from:message-id:
+ mime-version:reply-to:subject:to;
+ b=oaU6rwg9jk830cVedZTrqTbrBD+i4J6kPNlio65oTrSssoP9EvCAsBlOcvjTklIl
+ g3mIxGcUHp4NKMs1zLjD7+HMAJPURpf9KIyDj8AnMIMtHedGcnKz4v3EvIhvJPy1K
+ DgNaUsyru0cUW+i/j2g4eiIFTPzibhXkPPbXRURC4oTGXFExOKVTmyhfzqNwnIleh
+ Me5QdPU2eDXzl/mshJbQINMoNMUw/yCwW1NSVxZu+6dRpyqr32SMbIVqlNNuYDKYj
+ 0e+65hS1TydbiQf8WXZy8IYk9A5KhTi3Lv9C/BfgjIe7m1ELVKscXMtmBHtSdy0Em
+ Koofg7S2x+8Y4ZyOIQ==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from [192.168.100.1] ([82.64.211.94]) by mrelayeu.kundenserver.de
+ (mreue011 [213.165.67.103]) with ESMTPSA (Nemesis) id
+ 1Mnq8Y-1vq23b12iI-00lhCc; Mon, 08 Dec 2025 12:10:05 +0100
+Message-ID: <a961c501-d6e6-4567-8e35-9ddaf6356dcd@vivier.eu>
+Date: Mon, 8 Dec 2025 12:10:04 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+From: Laurent Vivier <laurent@vivier.eu>
+Subject: Re: [PATCH] tests/qemu-iotests: Fix check for existing file in
+ _require_disk_usage()
+To: Thomas Huth <thuth@redhat.com>
+Cc: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
+ Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org,
+ Hanna Reitz <hreitz@redhat.com>, Fiona Ebner <f.ebner@proxmox.com>,
+ qemu-trivial@nongnu.org
+References: <20251208075320.35682-1-thuth@redhat.com>
+Content-Language: fr
+Autocrypt: addr=laurent@vivier.eu; keydata=
+ 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
+In-Reply-To: <20251208075320.35682-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 08 Dec 2025 11:03:48 -0000
-From: Heinrich Schuchardt <2133188@bugs.launchpad.net>
-To: qemu-devel@nongnu.org
-X-Launchpad-Notification-Type: bug
-X-Launchpad-Bug: product=qemu; status=New; importance=Unknown; assignee=None;
-X-Launchpad-Bug: distribution=ubuntu; sourcepackage=qemu; component=main;
- milestone=ubuntu-26.04; status=Confirmed; importance=High; assignee=None; 
-X-Launchpad-Bug: distribution=ubuntu; distroseries=noble; sourcepackage=qemu;
- component=main; milestone=ubuntu-24.04.4; status=New; importance=Undecided;
- assignee=None; 
-X-Launchpad-Bug: distribution=ubuntu; distroseries=plucky; sourcepackage=qemu;
- component=main; status=New; importance=Undecided; assignee=None; 
-X-Launchpad-Bug: distribution=ubuntu; distroseries=questing; sourcepackage=qemu;
- component=main; status=New; importance=Undecided; assignee=None; 
-X-Launchpad-Bug: distribution=ubuntu; distroseries=resolute; sourcepackage=qemu;
- component=main; milestone=ubuntu-26.04; status=Confirmed; importance=High;
- assignee=None; 
-X-Launchpad-Bug-Information-Type: Public
-X-Launchpad-Bug-Private: no
-X-Launchpad-Bug-Security-Vulnerability: no
-X-Launchpad-Bug-Commenters: janitor qianqiu-2020 xypron
-X-Launchpad-Bug-Reporter: qianqiu (qianqiu-2020)
-X-Launchpad-Bug-Modifier: Heinrich Schuchardt (xypron)
-References: <176429928488.3164788.8613118615925713152.malonedeb@juju-98d295-prod-launchpad-2>
-Message-Id: <176519182928.2235321.3659407963302335535.launchpad@juju-98d295-prod-launchpad-4>
-Subject: [Bug 2133188] Re: [SRU] RISC-V vector state not restored by signal
- handler
-X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
-X-Launchpad-Message-For: qemu-devel-ml
-Precedence: bulk
-X-Generated-By: Launchpad (canonical.com);
- Revision="379e22b8475e3402088a4cdb4a6e7936a4d28414";
- Instance="launchpad-scripts"
-X-Launchpad-Hash: c619c6a3083df1746cf22c86bfee4a80b848dd7c
-Received-SPF: pass client-ip=185.125.188.251;
- envelope-from=noreply@launchpad.net; helo=smtp-relay-services-1.canonical.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+X-Provags-ID: V03:K1:jKhlqREaYzyZHqa0X2CAM621Bc2E1zAfHJC0TUo4NZBYGz8Z7lF
+ La+KuOXUjmxee6NJypn2XIXBz02sAVwLYvLz81UXKDS5EYSka35f/RQuYeIqIR6KiyjI/ih
+ e39bADefTjajJT264NpQZ1t7CGP7bF+ZSnESyFi4X/wnG8j7Z5wsbLFOcjQAhYcZqPs7HY5
+ JEqUVQRpJR2Z3WNRiNbPg==
+UI-OutboundReport: notjunk:1;M01:P0:QT3zAtWEoco=;ro1MyN6RwF7OFoa8ZjLf7vI6+oq
+ PeoQx/pKaKg2C7YcdVYHC8NLTRyVsH/gHmzebBXFJZB8wAzBd+X1kV0h2QUWeAfb+OoFack40
+ KdPTxKDpqRAdfdc3kA18yt5cu0PY1nSHG+/r7xXsGbGlcHXkgC8taTINpyJfDACw1XKuHV0HN
+ rVfW5nK6ncmUxsqJCs6aGO3xVjfChTYKaZpIihXxIW97SpMrWuZm7XuKoQr+EFzWVOlhxmraL
+ Np8ki7/5UeYqBeBfnHtO63h5Zvi3gwxhgmlrIVpC4KBpQKBJiSuSa+IYhHZLipKNFpkkh2Esi
+ OZfIpYg+jIiO9j9FBX3R6JW9YYdwbI7zfpi0V38EXpOuByuRFy6PmCakT/taKGEnaJ/ggRv0Y
+ kyFjKeJEeH+myHosqxWTPSLB3c/rS1X+o+bg2aAREfks9M+k8Sr9otv5G4wD9xYPf8qjXFQqi
+ BAz0n1KnugGm0uyHq2BiLzaZpegbvCuMx6CAkA3qX7n5RaQBPpUrs+DG45EJcQOHJmTuUtml4
+ XMq3mzJPHmu1TVwVIRPpLl0oHOpeqIVSsggGfOWIt3/JYwHvld1sbQkO7PXwFrhPyMaTPcXpH
+ sNZ/Asiqb+zu/458ihTW0jGZ6LKX+61+NrhQpmxbMlsDFNBDu4o2EFWnNsvT2A5iO5hblXNTp
+ KprzLZNipYbn0YjIk/gOvXn5CtN9QOdm4N3PYzpi8hZDHhl6S35I3R2Feo9EY5iAIRK2MiMsX
+ aJlD8Dy5BZkVVNIppIRN7v62LFWafb3k0R2/QrU86o/cHHd8w0mQ5aiS3MXbatL2/PxGdhsbr
+ IzZaypz7jeGwMWapgD7uQTZ7iT5XMufQm6VMcJCbWxoXfV3fXzrLBLvL2Ssra3U2BW5u/Rm08
+ QeZFbAvt38860JRYimwa5egKj+8QFsoR2VJDsmU9QoWlfivTjC1WFVtVwKrgML8xYmv03dISh
+ ENYptdZIsTMjfgYZv2erIP+LmdfkaBpvD0zhPFvNTSHEGP9tpr49tzeS7d1pDKvkpanz5D4ud
+ pNHTwGSli8WGrnJ1QOSGl556OHEok1YWBzwIKueXV2L+sJqKl8YblC40QkHCAsnCvuXr72YqS
+ QK2LdOIonByHW3/5KjHn1EREMXsWzDfxDa/qutf7836dI9hmg9pl9INWIV0SYyvSb3nratDyA
+ i/VFhkovUyP1WFLPqGSP1pEHShcaq1VlsRkywG18YWnoKPjNYMcjPJacWMKtlBQAQmlypCy0z
+ IZTo36ZsgnQ2BZzwhBtz7wcG5z0Hh4NQ6FGWXEBk22Ky+41+VcZqjE3A02inSIyNTjyUCFXdE
+ KJvLvn7NPgffD0mm+LES42CsDAicjF5Fl7Ev+7xVJor4dBxi9neiOa14ygbp2lUNkGwUBkP3o
+ YhUyteS4qJspzaPBkYyXK6J7D2YmIDWULu5W5LC7qQMdpMDJ5+CL3cJwiHf4LU7/DS7Okfhd+
+ aWX9VjqJLrLacQ+1EjjpTJYoG5qmCCXxhGFqCtXo4nuxm3pU9jHhkQrGUcfeBqHV6xYcdTezm
+ fpzXjgu503zxPNsp1SI5emQwd/8omuxCssPWIqBLFhdEetlpPv438qzwm+A4qRDGAvaqqsZOj
+ fthBDSv+W9P3RIetHYDTEUk8BKaFopo5hZhJmiE65KQN8j9c+94jzGfU1/+8GqPYukbgIeFG0
+ r6lPngzihAobMwM7Hlxpm0xEmbHGwL9+v+fl8eHBle7f9hMDsUzbAZHcoeN5EO+3quzcs2mro
+ tsLUDfS+/SkQTtWOgeIS3qTKNYDc5gDuNQq8CTVCmdSYbC6y99QrbqNg=
+Received-SPF: pass client-ip=212.227.126.130; envelope-from=laurent@vivier.eu;
+ helo=mout.kundenserver.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -95,155 +144,38 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Bug 2133188 <2133188@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-** Changed in: qemu (Ubuntu Noble)
-    Milestone: None =3D> ubuntu-24.04.4
+On Mon,  8 Dec 2025 08:53:20 +0100 Thomas Huth <thuth@redhat.com> wrote:
+> From: Thomas Huth <thuth@redhat.com>
+>
+> Looks like the "$" has been forgotten here to get the contents of
+> the FILENAME variable.
+>
+> Fixes: c49dda7254d ("iotests: Filter out ZFS in several tests")
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>  tests/qemu-iotests/common.rc | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/tests/qemu-iotests/common.rc b/tests/qemu-iotests/common.rc
+> index 10d83d8361b..c0f8f0f8dfa 100644
+> --- a/tests/qemu-iotests/common.rc
+> +++ b/tests/qemu-iotests/common.rc
+> @@ -1008,7 +1008,7 @@ _require_disk_usage()
+>      else
+>          FILENAME=3D"$TEST_IMG_FILE"
+>      fi
+> -    if [ -e "FILENAME" ]; then
+> +    if [ -e "$FILENAME" ]; then
+>          echo "unwilling to overwrite existing file"
+>          exit 1
+>      fi
+> --=20
+> 2.52.0
 
---=20
-You received this bug notification because you are a member of qemu-
-devel-ml, which is subscribed to QEMU.
-https://bugs.launchpad.net/bugs/2133188
+Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 
-Title:
-  [SRU] RISC-V vector state not restored by signal handler
-
-Status in QEMU:
-  New
-Status in qemu package in Ubuntu:
-  Confirmed
-Status in qemu source package in Noble:
-  New
-Status in qemu source package in Plucky:
-  New
-Status in qemu source package in Questing:
-  New
-Status in qemu source package in Resolute:
-  Confirmed
-
-Bug description:
-  # Title
-  qemu-user (qemu-riscv64-static): intermittent Illegal instruction in mems=
-et (vse64.v) when running cmake in riscv64 container (Ubuntu 26.04)
-
-  ## Summary
-  While running cmake (and other build steps) inside a linux/riscv64 Ubuntu=
- 26.04 container on an x86_64 host using qemu-user (qemu-riscv64-static) re=
-gistered via binfmt_misc, cmake sometimes crashes with "Illegal instruction=
- (core dumped)" or "died with signal 4". The illegal instruction is observe=
-d inside glibc's memset implementation at an instruction that uses RISC-V v=
-ector extension (vse64.v). The failure is intermittent (~50% reproducer rat=
-e). Using a scalar-only memset (libnovecmem.so via LD_PRELOAD) or running u=
-nder gdb / enabling QEMU_STRACE significantly reduces or eliminates the fai=
-lure, which strongly suggests a qemu-user/emulation bug (vector handling / =
-code generation / state corruption), not a cmake bug.
-
-  ## Affects
-  - qemu-user qemu-riscv64-static (as packaged in Ubuntu qemu 10.1.0+ds-5ub=
-untu3)
-  - Running in Docker container for riscv64 on x86_64 host via binfmt_misc =
-qemu-user static interpreter
-
-  ## Environment / Context
-  - Host CPU: x86_64 (Docker multiarch running qemu-user for riscv64)
-  - Host OS=EF=BC=9Amultiple Ubuntu releases (22.04, 24.04, 25.10)=20
-  - Container image: ubuntu:26.04 for riscv64
-  - qemu package used:
-    - downloaded .deb from Launchpad: qemu-user_10.1.0+ds-5ubuntu3_amd64.de=
-b and on several Debian qemu-user packages (qemu-user_10.2.0~rc1+ds-1, qemu=
--user_10.0.6+ds-0+deb13u2).=20
-    - copied qemu-riscv64 binary into /usr/bin/qemu-riscv64-static inside h=
-ost and registered via /proc/sys/fs/binfmt_misc/register
-  - CMake version used inside container (bootstrap/build may use system-pro=
-vided cmake binary): cmake 3.x (bootstrapping cmake while building also tri=
-ggers crash)
-  - Reproduction frequency: intermittent, ~50% (can get large variance: sev=
-eral consecutive successes or failures)
-  - Observed behavior changes when: LD_PRELOAD libnovecmem.so (scalar memse=
-t) =E2=80=94 almost completely avoids crash; running under gdb or enabling =
-QEMU_STRACE also makes it much harder to reproduce.
-   =20
-
-  ## Full reproduction steps
-  1. On x86_64 host, fetch qemu-user .deb and extract the riscv static bina=
-ry:
-     wget https://launchpad.net/ubuntu/+source/qemu/1:10.1.0+ds-5ubuntu3/+b=
-uild/31393935/+files/qemu-user_10.1.0+ds-5ubuntu3_amd64.deb
-     dpkg-deb -x qemu-user_10.1.0+ds-5ubuntu3_amd64.deb qemu-user_10.1.0+ds=
--5ubuntu3_amd64
-     sudo cp qemu-user_10.1.0+ds-5ubuntu3_amd64/usr/bin/qemu-riscv64 /usr/b=
-in/qemu-riscv64-static
-
-  2. Register qemu-riscv64 with binfmt_misc:
-     echo -1 > /proc/sys/fs/binfmt_misc/qemu-riscv64
-     echo ':qemu-riscv64:M:0:\x7f\x45\x4c\x46\x02\x01\x01\x00\x00\x00\x00\x=
-00\x00\x00\x00\x00\x02\x00\xf3\x00:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff=
-\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:/usr/bin/qemu-riscv64-static:POCF'=
- >/proc/sys/fs/binfmt_misc/register
-
-  3. Start riscv64 ubuntu container:
-     docker run --platform=3Dlinux/riscv64 --name ubuntu26 -itd ubuntu:26.0=
-4 bash
-     docker exec -it ubuntu26 bash -i
-
-  4. Inside container:
-     apt update
-     apt install -y build-essential cmake
-
-  5. Reproducer 1:
-     cmake --system-information
-     -> Often fails with:
-        bash: [15: 1 (255)] tcsetattr: Inappropriate ioctl for device
-        Illegal instruction (core dumped)
-
-  6. Reproducer 2 (minimal C project):
-     Create test_cmake/CMakeLists.txt:
-     cmake_minimum_required(VERSION 3.10)
-     project(HelloCMake C)
-     add_executable(hello main.c)
-
-     Create test_cmake/main.c:
-     #include <stdio.h>
-     int main() {
-         printf("Hello, CMake!\n");
-         return 0;
-     }
-
-     cd test_cmake
-     cmake .
-     -> Crash with:
-        -- Detecting C compiler ABI info
-        bash: line 1:  8489 Illegal instruction        (core dumped) cmake .
-
-  7. Reproducer 3 (rebuild cmake from source inside container):
-     apt source cmake
-     cd cmake
-     apt-get build-dep .
-     dpkg-buildpackage -us -uc -b
-     -> Bootstrapping error:
-        Illegal instruction (core dumped)
-        Error when bootstrapping CMake:
-        Problem while running initial CMake
-
-  8. Observed crash location (from gdb/QEMU_STRACE when available):
-     - Illegal instruction is in memset@@GLIBC_2.27+0x52
-     - Faulting instruction: vse64.v v1,(a5)    (RISC-V vector store of 64-=
-bit elements)
-
-
-  ## Workarounds
-  - LD_PRELOAD a scalar-only memset library (libnovecmem.so) to avoid glibc=
- using vectorized memset.
-  - Run the failing process under gdb (slower) or enable QEMU_STRACE=3D1 =
-=E2=80=94 both make the failure much less likely.
-
-  Note: The same workload does not reproduce the crash when run under
-  qemu-system (full-system emulation). The issue appears specific to
-  qemu-user
-
-To manage notifications about this bug go to:
-https://bugs.launchpad.net/qemu/+bug/2133188/+subscriptions
-
+Thanks!
 
