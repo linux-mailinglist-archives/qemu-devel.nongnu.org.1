@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BCCACAE3BB
-	for <lists+qemu-devel@lfdr.de>; Mon, 08 Dec 2025 22:34:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C310CAE401
+	for <lists+qemu-devel@lfdr.de>; Mon, 08 Dec 2025 22:37:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vSirG-0007QJ-5q; Mon, 08 Dec 2025 16:33:27 -0500
+	id 1vSirK-0007S4-Cm; Mon, 08 Dec 2025 16:33:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
- id 1vSirC-0007Ot-4t; Mon, 08 Dec 2025 16:33:22 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1vSirG-0007QX-53; Mon, 08 Dec 2025 16:33:27 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
- id 1vSirA-0000iY-D4; Mon, 08 Dec 2025 16:33:21 -0500
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5B8Iddwo010256;
- Mon, 8 Dec 2025 21:33:19 GMT
+ id 1vSirE-0000jh-3K; Mon, 08 Dec 2025 16:33:25 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5B8Dk56Z007030;
+ Mon, 8 Dec 2025 21:33:22 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=rJ7aSbIKSQTKF79TT
- qMF9AMBrS7oSPgyJPe2NgvEpNw=; b=fykm5cDgsDOV5s39OxiqDH7U5amkkHpuB
- zYhqZGBDXGOTM6nu/BF/DCsb3QGHG8LxzD2USzzayyxQ3NDlans9Pj7h2YXKmUss
- xKe+MViHk6PNkT2QqTGxnv0mBiby/KO6+uvZ95Wlnlvro5Eeq3L6mdBkhBDKxNt5
- 4K66Mo18d3U5nYXbC1vbPj7QKppdyanLcqef5ITIVUEK96y8ks3jp0WmgqpxNfJR
- JN5lpTWH/qz/JcHkXl7b2JW03AKlPPPoFWeIu+2nAQw/TMOdTlAcflUHNHI/lew9
- hzboo+JPVHY/ptSvURZyA4DAUCHA9u8nXejea6YRDeS/IPCzPbL2w==
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4avc539aj4-1
+ :mime-version:references:subject:to; s=pp1; bh=oRHoF6Wq0AKqQqLL2
+ 2vxnOX3Y9l4J62BuzoU7Q+Mso4=; b=IQkbIe4seMbXYLX3kR8QqybTSuwrZtuUN
+ RsQ60HVrORpUuF/SssAoQzwfBaCGmLFdM7wjPV7OkeQvb9U+mw4KhUBBswPOhxPQ
+ W0v6aIuiIDI881Kl2cK86A1nEVx8oKJq4H5e/fiSe1ZT3gNBKWcPi7ZCvi1gK/Rt
+ 6uwUN3pkGLzsk6CjXlRtB9mruMFYBjG3hJsFALo5mzJkLHLr0WXozP4H+NmZkkU5
+ MIVPkRU+tES3xdIlhUkD89yOUN3rk7K/aT+/YtZOPxzpKkoEoR/oPmkr9jdjKDrp
+ RF0MkGIkKYfcQX/54E0ENoEJdskO4bTrcTFSVpMLqIb6nAwW9nsVw==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4avc0jsune-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Dec 2025 21:33:18 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5B8IWARu002053;
- Mon, 8 Dec 2025 21:33:18 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4aw11j7juw-1
+ Mon, 08 Dec 2025 21:33:21 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5B8IVghX012862;
+ Mon, 8 Dec 2025 21:33:20 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4aw0ajqnn6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Dec 2025 21:33:17 +0000
+ Mon, 08 Dec 2025 21:33:20 +0000
 Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
  [10.39.53.229])
- by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 5B8LXGaH31326958
+ by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 5B8LXIqA27984456
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 8 Dec 2025 21:33:17 GMT
+ Mon, 8 Dec 2025 21:33:19 GMT
 Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BF6135805B;
+ by IMSVA (Postfix) with ESMTP id B15D758058;
+ Mon,  8 Dec 2025 21:33:18 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E07BA5805C;
  Mon,  8 Dec 2025 21:33:16 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0E6A958058;
- Mon,  8 Dec 2025 21:33:15 +0000 (GMT)
 Received: from fedora-workstation.ibmuc.com (unknown [9.61.66.246])
  by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  8 Dec 2025 21:33:14 +0000 (GMT)
+ Mon,  8 Dec 2025 21:33:16 +0000 (GMT)
 From: Zhuoying Cai <zycai@linux.ibm.com>
 To: thuth@redhat.com, berrange@redhat.com, richard.henderson@linaro.org,
  david@redhat.com, jrossi@linux.ibm.com, qemu-s390x@nongnu.org,
@@ -63,39 +63,39 @@ Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, pasic@linux.ibm.com,
  borntraeger@linux.ibm.com, farman@linux.ibm.com,
  mjrosato@linux.ibm.com, iii@linux.ibm.com, eblake@redhat.com,
  armbru@redhat.com, zycai@linux.ibm.com, alifm@linux.ibm.com
-Subject: [PATCH v7 14/29] pc-bios/s390-ccw: Define memory for IPLB and convert
- IPLB to pointers
-Date: Mon,  8 Dec 2025 16:32:31 -0500
-Message-ID: <20251208213247.702569-15-zycai@linux.ibm.com>
+Subject: [PATCH v7 15/29] hw/s390x/ipl: Add IPIB flags to IPL Parameter Block
+Date: Mon,  8 Dec 2025 16:32:32 -0500
+Message-ID: <20251208213247.702569-16-zycai@linux.ibm.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251208213247.702569-1-zycai@linux.ibm.com>
 References: <20251208213247.702569-1-zycai@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDAyMCBTYWx0ZWRfX0DFhxz6wrho/
- /snrSvumQHPM/5fEvR8HHgCzKqAPJxQicqw06PwREHT4BlMI8vl0TrbyCOVdxv8W4b68LjIdSWx
- CHOfvdiZW3R303Wf7iXowxbpUj9vFXKjtk1tMM2O7ZBiLHbBRsZJSWRQQY3NV4AJrN70S5rtLg7
- PXWbyOlb0MESU2XxfuMNTDch6OIOQCSYIvXOZn7D6MVrtXNdjDYjaAoZQo9Idcqd6eI2Msfq4px
- BQGu8ra1cqCOqY2tro5XrncxJLJdDofwmUAASS/usyhtVRtlGutNMkWe4SZgZfXf5ypi0vfEEkO
- sHQ5g62ByDyvRfFBpJh5LO5NxeppBrzj3Ax8TlvaTjBWoIKWPR4sdCbplwu/BXJGKi2UF6O9uHK
- kEAXHxt5yKyfe0FRQ6vHMv+9BJpvBQ==
-X-Authority-Analysis: v=2.4 cv=S/DUAYsP c=1 sm=1 tr=0 ts=6937441e cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+X-Authority-Analysis: v=2.4 cv=Cf8FJbrl c=1 sm=1 tr=0 ts=69374421 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
  a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=_GZQR2ZoBes7ElOevS0A:9
-X-Proofpoint-ORIG-GUID: g9oR1UhBfEUhMuoRPysNgdZdtdDCUpb8
-X-Proofpoint-GUID: g9oR1UhBfEUhMuoRPysNgdZdtdDCUpb8
+ a=0RU0I6ilb4cTaI3NU4AA:9
+X-Proofpoint-ORIG-GUID: LyPw5xmaBdtClgkI42ynNcsqfcESuaVb
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDAxNiBTYWx0ZWRfX9i0bAa3a0REQ
+ r56IRM2EKhs2iK3lg9+/hvmVkcbAYgreeuOAGxtqaDksWChe3EJOff8oBHWD1ohjDsLO0E7Dre2
+ xPwPC6inO1w7diZ1TnYn40JQntphhFXzkqNhahQRsaHgTGmH+FU4NaTqxrnp+6UU4w26Oc7NcRY
+ +tJMQTHeqoOBE88gE3NNfB7ZZtgZVCpdE6YsanrnnO2mAIzqtG7o/XX+a7GWfOjysrzt/h6Ay2S
+ 9t08x93CK5a3MKCUqHBw4RFvFQXUeaRJx9mOAzCQTeDfj78aSIA6RIV91oGR1qZnYVAgJEQBFGl
+ h8mLotnj6/XQaR2iN4yQm9FDLOMaCwo0P57XNWeNDAjSRfAS2hOwGXD4NAt85F2Pciwcu558Muo
+ 6o6xCKpyqf6nR6rRIj4h/szBPYCdtg==
+X-Proofpoint-GUID: LyPw5xmaBdtClgkI42ynNcsqfcESuaVb
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-06_02,2025-12-04_04,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 clxscore=1015 impostorscore=0 suspectscore=0
- lowpriorityscore=0 adultscore=0 spamscore=0 bulkscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512060020
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=zycai@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ phishscore=0 bulkscore=0 malwarescore=0 clxscore=1011 adultscore=0
+ lowpriorityscore=0 impostorscore=0 priorityscore=1501 spamscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
+ definitions=main-2512060016
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=zycai@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -119,187 +119,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Define a memory space for both IPL Parameter Block (IPLB) and
-IPL Information Report Block (IIRB) since IIRB is stored immediately
-following IPLB.
+Add IPIB flags to IPL Parameter Block to determine if IPL needs to
+perform securely and if IPL Information Report Block (IIRB) exists.
 
-Convert IPLB to pointer and it points to the start of the defined memory space.
-IIRB points to the end of IPLB.
+Move DIAG308 flags to a separated header file and add flags for secure IPL.
+
+Secure boot in audit mode will perform if certificate(s) exist in the
+key store. IIRB will exist and results of verification will be stored in
+IIRB.
+
+To ensure proper alignment of the IIRB and prevent overlap, set
+iplb->len to the maximum length of the IPLB, allowing alignment
+constraints to be determined based on its size.
 
 Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
 ---
- pc-bios/s390-ccw/iplb.h     | 13 +++++++++++--
- pc-bios/s390-ccw/jump2ipl.c |  6 +++---
- pc-bios/s390-ccw/main.c     | 34 +++++++++++++++++++---------------
- pc-bios/s390-ccw/netmain.c  |  8 ++++----
- 4 files changed, 37 insertions(+), 24 deletions(-)
+ hw/s390x/ipl.c                 | 14 ++++++++++++++
+ hw/s390x/ipl.h                 | 18 +-----------------
+ include/hw/s390x/ipl/diag308.h | 34 ++++++++++++++++++++++++++++++++++
+ include/hw/s390x/ipl/qipl.h    |  5 ++++-
+ 4 files changed, 53 insertions(+), 18 deletions(-)
+ create mode 100644 include/hw/s390x/ipl/diag308.h
 
-diff --git a/pc-bios/s390-ccw/iplb.h b/pc-bios/s390-ccw/iplb.h
-index cc3ecc69e5..a0f58d125c 100644
---- a/pc-bios/s390-ccw/iplb.h
-+++ b/pc-bios/s390-ccw/iplb.h
-@@ -20,7 +20,7 @@
- #include <string.h>
+diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
+index 38d5fff154..a95a1de647 100644
+--- a/hw/s390x/ipl.c
++++ b/hw/s390x/ipl.c
+@@ -496,6 +496,20 @@ static bool s390_build_iplb(DeviceState *dev_st, IplParameterBlock *iplb)
+         s390_ipl_convert_loadparm((char *)lp, iplb->loadparm);
+         iplb->flags |= DIAG308_FLAGS_LP_VALID;
  
- extern QemuIplParameters qipl;
--extern IplParameterBlock iplb __attribute__((__aligned__(PAGE_SIZE)));
-+extern IplParameterBlock *iplb;
- extern bool have_iplb;
++        /*
++         * Secure boot in audit mode will perform
++         * if certificate(s) exist in the key store.
++         *
++         * IPL Information Report Block (IIRB) will exist
++         * for secure boot in audit mode.
++         *
++         * Results of secure boot will be stored in IIRB.
++         */
++        if (s390_has_certificate()) {
++            iplb->hdr_flags |= DIAG308_IPIB_FLAGS_IPLIR;
++            iplb->len = cpu_to_be32(S390_IPLB_MAX_LEN);
++        }
++
+         return true;
+     }
  
- struct IplInfoReportBlockHeader {
-@@ -85,6 +85,15 @@ struct IplInfoReportBlock {
+diff --git a/hw/s390x/ipl.h b/hw/s390x/ipl.h
+index bee72dfbb3..9e67c9446a 100644
+--- a/hw/s390x/ipl.h
++++ b/hw/s390x/ipl.h
+@@ -23,7 +23,6 @@
+ #include "qom/object.h"
+ #include "target/s390x/kvm/pv.h"
+ 
+-#define DIAG308_FLAGS_LP_VALID 0x80
+ #define MAX_BOOT_DEVS 8 /* Max number of devices that may have a bootindex */
+ 
+ void s390_ipl_convert_loadparm(char *ascii_lp, uint8_t *ebcdic_lp);
+@@ -91,22 +90,6 @@ struct S390IPLState {
  };
- typedef struct IplInfoReportBlock IplInfoReportBlock;
+ QEMU_BUILD_BUG_MSG(offsetof(S390IPLState, iplb) & 3, "alignment of iplb wrong");
  
-+struct IplBlocks {
-+    IplParameterBlock   iplb;
-+    IplInfoReportBlock  iirb;
-+};
-+typedef struct IplBlocks IplBlocks;
-+
-+/* extern only allowed in header file */
-+extern IplBlocks ipl_data __attribute__((__aligned__(PAGE_SIZE)));
-+
+-#define DIAG_308_RC_OK              0x0001
+-#define DIAG_308_RC_NO_CONF         0x0102
+-#define DIAG_308_RC_INVALID         0x0402
+-#define DIAG_308_RC_NO_PV_CONF      0x0902
+-#define DIAG_308_RC_INVAL_FOR_PV    0x0a02
+-
+-#define DIAG308_RESET_MOD_CLR       0
+-#define DIAG308_RESET_LOAD_NORM     1
+-#define DIAG308_LOAD_CLEAR          3
+-#define DIAG308_LOAD_NORMAL_DUMP    4
+-#define DIAG308_SET                 5
+-#define DIAG308_STORE               6
+-#define DIAG308_PV_SET              8
+-#define DIAG308_PV_STORE            9
+-#define DIAG308_PV_START            10
+-
  #define S390_IPL_TYPE_FCP 0x00
  #define S390_IPL_TYPE_CCW 0x02
- #define S390_IPL_TYPE_QEMU_SCSI 0xff
-@@ -127,7 +136,7 @@ static inline bool load_next_iplb(void)
+ #define S390_IPL_TYPE_PV 0x05
+@@ -117,6 +100,7 @@ QEMU_BUILD_BUG_MSG(offsetof(S390IPLState, iplb) & 3, "alignment of iplb wrong");
+ #define S390_IPLB_MIN_CCW_LEN 200
+ #define S390_IPLB_MIN_FCP_LEN 384
+ #define S390_IPLB_MIN_QEMU_SCSI_LEN 200
++#define S390_IPLB_MAX_LEN 4096
  
-     qipl.index++;
-     next_iplb = (IplParameterBlock *) qipl.next_iplb;
--    memcpy(&iplb, next_iplb, sizeof(IplParameterBlock));
-+    memcpy(iplb, next_iplb, sizeof(IplParameterBlock));
- 
-     qipl.chain_len--;
-     qipl.next_iplb = qipl.next_iplb + sizeof(IplParameterBlock);
-diff --git a/pc-bios/s390-ccw/jump2ipl.c b/pc-bios/s390-ccw/jump2ipl.c
-index 86321d0f46..fa2ca5cbe1 100644
---- a/pc-bios/s390-ccw/jump2ipl.c
-+++ b/pc-bios/s390-ccw/jump2ipl.c
-@@ -43,11 +43,11 @@ int jump_to_IPL_code(uint64_t address)
-      * The IPLB for QEMU SCSI type devices must be rebuilt during re-ipl. The
-      * iplb.devno is set to the boot position of the target SCSI device.
-      */
--    if (iplb.pbt == S390_IPL_TYPE_QEMU_SCSI) {
--        iplb.devno = qipl.index;
-+    if (iplb->pbt == S390_IPL_TYPE_QEMU_SCSI) {
-+        iplb->devno = qipl.index;
-     }
- 
--    if (have_iplb && !set_iplb(&iplb)) {
-+    if (have_iplb && !set_iplb(iplb)) {
-         panic("Failed to set IPLB");
-     }
- 
-diff --git a/pc-bios/s390-ccw/main.c b/pc-bios/s390-ccw/main.c
-index 76bf743900..c9328f1c51 100644
---- a/pc-bios/s390-ccw/main.c
-+++ b/pc-bios/s390-ccw/main.c
-@@ -22,7 +22,9 @@
- static SubChannelId blk_schid = { .one = 1 };
- static char loadparm_str[LOADPARM_LEN + 1];
- QemuIplParameters qipl;
--IplParameterBlock iplb __attribute__((__aligned__(PAGE_SIZE)));
-+/* Ensure that IPLB and IIRB are page aligned and sequential in memory */
-+IplBlocks ipl_data;
-+IplParameterBlock *iplb;
- bool have_iplb;
- static uint16_t cutype;
- LowCore *lowcore; /* Yes, this *is* a pointer to address 0 */
-@@ -51,7 +53,7 @@ void write_subsystem_identification(void)
- void write_iplb_location(void)
+ static inline bool iplb_valid_len(IplParameterBlock *iplb)
  {
-     if (cutype == CU_TYPE_VIRTIO && virtio_get_device_type() != VIRTIO_ID_NET) {
--        lowcore->ptr_iplb = ptr2u32(&iplb);
-+        lowcore->ptr_iplb = ptr2u32(iplb);
-     }
- }
- 
-@@ -162,7 +164,7 @@ static void menu_setup(void)
-         return;
-     }
- 
--    switch (iplb.pbt) {
-+    switch (iplb->pbt) {
-     case S390_IPL_TYPE_CCW:
-     case S390_IPL_TYPE_QEMU_SCSI:
-         menu_set_parms(qipl.qipl_flags & BOOT_MENU_FLAG_MASK,
-@@ -191,8 +193,8 @@ static void boot_setup(void)
- {
-     char lpmsg[] = "LOADPARM=[________]\n";
- 
--    if (have_iplb && memcmp(iplb.loadparm, NO_LOADPARM, LOADPARM_LEN) != 0) {
--        ebcdic_to_ascii((char *) iplb.loadparm, loadparm_str, LOADPARM_LEN);
-+    if (have_iplb && memcmp(iplb->loadparm, NO_LOADPARM, LOADPARM_LEN) != 0) {
-+        ebcdic_to_ascii((char *) iplb->loadparm, loadparm_str, LOADPARM_LEN);
-     } else {
-         sclp_get_loadparm_ascii(loadparm_str);
-     }
-@@ -216,21 +218,21 @@ static bool find_boot_device(void)
-     VDev *vdev = virtio_get_device();
-     bool found = false;
- 
--    switch (iplb.pbt) {
-+    switch (iplb->pbt) {
-     case S390_IPL_TYPE_CCW:
-         vdev->scsi_device_selected = false;
--        debug_print_int("device no. ", iplb.ccw.devno);
--        blk_schid.ssid = iplb.ccw.ssid & 0x3;
-+        debug_print_int("device no. ", iplb->ccw.devno);
-+        blk_schid.ssid = iplb->ccw.ssid & 0x3;
-         debug_print_int("ssid ", blk_schid.ssid);
--        found = find_subch(iplb.ccw.devno);
-+        found = find_subch(iplb->ccw.devno);
-         break;
-     case S390_IPL_TYPE_QEMU_SCSI:
-         vdev->scsi_device_selected = true;
--        vdev->selected_scsi_device.channel = iplb.scsi.channel;
--        vdev->selected_scsi_device.target = iplb.scsi.target;
--        vdev->selected_scsi_device.lun = iplb.scsi.lun;
--        blk_schid.ssid = iplb.scsi.ssid & 0x3;
--        found = find_subch(iplb.scsi.devno);
-+        vdev->selected_scsi_device.channel = iplb->scsi.channel;
-+        vdev->selected_scsi_device.target = iplb->scsi.target;
-+        vdev->selected_scsi_device.lun = iplb->scsi.lun;
-+        blk_schid.ssid = iplb->scsi.ssid & 0x3;
-+        found = find_subch(iplb->scsi.devno);
-         break;
-     default:
-         puts("Unsupported IPLB");
-@@ -311,10 +313,12 @@ static void probe_boot_device(void)
- 
- void main(void)
- {
-+    iplb = &ipl_data.iplb;
+diff --git a/include/hw/s390x/ipl/diag308.h b/include/hw/s390x/ipl/diag308.h
+new file mode 100644
+index 0000000000..6e62f29215
+--- /dev/null
++++ b/include/hw/s390x/ipl/diag308.h
+@@ -0,0 +1,34 @@
++/*
++ * S/390 DIAGNOSE 308 definitions and structures
++ *
++ * Copyright 2025 IBM Corp.
++ * Author(s): Zhuoying Cai <zycai@linux.ibm.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
 +
-     copy_qipl();
-     sclp_setup();
-     css_setup();
--    have_iplb = store_iplb(&iplb);
-+    have_iplb = store_iplb(iplb);
-     if (!have_iplb) {
-         boot_setup();
-         probe_boot_device();
-diff --git a/pc-bios/s390-ccw/netmain.c b/pc-bios/s390-ccw/netmain.c
-index a9521dff41..457fbc3095 100644
---- a/pc-bios/s390-ccw/netmain.c
-+++ b/pc-bios/s390-ccw/netmain.c
-@@ -528,11 +528,11 @@ static bool virtio_setup(void)
-      */
-     enable_mss_facility();
++#ifndef S390X_DIAG308_H
++#define S390X_DIAG308_H
++
++#define DIAG_308_RC_OK              0x0001
++#define DIAG_308_RC_NO_CONF         0x0102
++#define DIAG_308_RC_INVALID         0x0402
++#define DIAG_308_RC_NO_PV_CONF      0x0902
++#define DIAG_308_RC_INVAL_FOR_PV    0x0a02
++
++#define DIAG308_RESET_MOD_CLR       0
++#define DIAG308_RESET_LOAD_NORM     1
++#define DIAG308_LOAD_CLEAR          3
++#define DIAG308_LOAD_NORMAL_DUMP    4
++#define DIAG308_SET                 5
++#define DIAG308_STORE               6
++#define DIAG308_PV_SET              8
++#define DIAG308_PV_STORE            9
++#define DIAG308_PV_START            10
++
++#define DIAG308_FLAGS_LP_VALID 0x80
++
++#define DIAG308_IPIB_FLAGS_SIPL 0x40
++#define DIAG308_IPIB_FLAGS_IPLIR 0x20
++
++#endif
+diff --git a/include/hw/s390x/ipl/qipl.h b/include/hw/s390x/ipl/qipl.h
+index e505f44020..5c2bf3051c 100644
+--- a/include/hw/s390x/ipl/qipl.h
++++ b/include/hw/s390x/ipl/qipl.h
+@@ -12,6 +12,8 @@
+ #ifndef S390X_QIPL_H
+ #define S390X_QIPL_H
  
--    if (have_iplb || store_iplb(&iplb)) {
--        IPL_assert(iplb.pbt == S390_IPL_TYPE_CCW, "IPL_TYPE_CCW expected");
--        dev_no = iplb.ccw.devno;
-+    if (have_iplb || store_iplb(iplb)) {
-+        IPL_assert(iplb->pbt == S390_IPL_TYPE_CCW, "IPL_TYPE_CCW expected");
-+        dev_no = iplb->ccw.devno;
-         debug_print_int("device no. ", dev_no);
--        net_schid.ssid = iplb.ccw.ssid & 0x3;
-+        net_schid.ssid = iplb->ccw.ssid & 0x3;
-         debug_print_int("ssid ", net_schid.ssid);
-         found = find_net_dev(&schib, dev_no);
-     } else {
++#include "diag308.h"
++
+ /* Boot Menu flags */
+ #define QIPL_FLAG_BM_OPTS_CMD   0x80
+ #define QIPL_FLAG_BM_OPTS_ZIPL  0x40
+@@ -103,7 +105,8 @@ typedef struct IplBlockQemuScsi IplBlockQemuScsi;
+ union IplParameterBlock {
+     struct {
+         uint32_t len;
+-        uint8_t  reserved0[3];
++        uint8_t  hdr_flags;
++        uint8_t  reserved0[2];
+         uint8_t  version;
+         uint32_t blk0_len;
+         uint8_t  pbt;
 -- 
 2.51.1
 
