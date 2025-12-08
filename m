@@ -2,81 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53C56CAD6C3
-	for <lists+qemu-devel@lfdr.de>; Mon, 08 Dec 2025 15:21:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C179ACAD0D9
+	for <lists+qemu-devel@lfdr.de>; Mon, 08 Dec 2025 13:11:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vSc6c-0003ah-Lu; Mon, 08 Dec 2025 09:20:50 -0500
+	id 1vSa4j-00070z-IC; Mon, 08 Dec 2025 07:10:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <weizhi.li@linux.spacemit.com>)
- id 1vSZnh-0002gH-2v; Mon, 08 Dec 2025 06:53:10 -0500
-Received: from smtpbgsg1.qq.com ([54.254.200.92])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <weizhi.li@linux.spacemit.com>)
- id 1vSZnb-0007Yo-6y; Mon, 08 Dec 2025 06:53:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.spacemit.com;
- s=mxsw2412; t=1765194755;
- bh=BhI3RNQ2Y+SzZZkgI/7u4UYKsOvFlB0vJxcJn+/o0yo=;
- h=From:To:Subject:Date:Message-Id:MIME-Version;
- b=msYthhvXWmZLx4BwBgynH7JSn+xvygX8VPstg3stZLL3Az6ftKhfOOYaqg5YG12OV
- jZtjfHLVXWgQBtfRhBxs8oJm7WaKhwqpe+YhHLgS7cJDZJAjEZ0WhfetlNdc/fWmJj
- tT2BwTlK/9ZTOha7xkiY3UJbJYIVN18bt8H8PmlE=
-X-QQ-mid: zesmtpsz1t1765194747t42c78f87
-X-QQ-Originating-IP: Apr2DuTZvpBvLqbQ4qzv6njTQgMdFbrQ0CCMyilzSGg=
-Received: from host1.dc.com ( [120.237.158.181])
- by bizesmtp.qq.com (ESMTP) with 
- id ; Mon, 08 Dec 2025 19:52:25 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 6037169953519126958
-From: "weizhi.li" <weizhi.li@linux.spacemit.com>
-To: npiggin@gmail.com
-Cc: alistair.francis@wdc.com, dbarboza@ventanamicro.com, laurent@vivier.eu,
- liwei1518@gmail.com, palmer@dabbelt.com, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org, zhiwei_liu@linux.alibaba.com,
- heinrich.schuchardt@canonical.com, Weizhi Li <weizhi.li@spacemit.com>
-Subject: Re: [PATCH v2 0/4] linux-user/riscv: add vector state to signal
- context
-Date: Mon,  8 Dec 2025 19:50:16 +0800
-Message-Id: <20251208115014.2933813-1-weizhi.li@linux.spacemit.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250903081417.338515-1-npiggin@gmail.com>
-References: <20250903081417.338515-1-npiggin@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:linux.spacemit.com:qybglogicsvrsz:qybglogicsvrsz3b-0
-X-QQ-XMAILINFO: N0zPMTspoMafUShgy4yeZZAlnVCqZVi7VNvhvyHy5X1N9C5xGaCgd0Zi
- t8iVbRxt+dKWa1ap+NDvSXYqHIfh/yGod6r1Bv9oZ8sIoefAfmHjipVlmd7xCSc1LWyVmMs
- puZuoqGy8BSR/f8S0zfqGX24ycmb9/8jqc4MQWD0Jej11te2G1dK8I3g7l89hwil+mZ5aaq
- 8F3iFQ7Jb0Q0MyzEByZDhgRKRMYAZcQAYphEGh/dPTg/LNgiJ9veHXkzKU8kxwwdkzKNQyE
- NLUJRrI11LG9WaZ8vNOwBsyXeMPfJpsQN71OW/xzUfbR31UjSvBk2+aqQBzv89T7dFjtzAM
- YXIoGadhx2aWCuvddlajEWiMKA91I5z7skvWfO6FIwppMFFy0A8FtkYm21HFEenlpt4CSab
- eRTaHYsQGeCDaHP+GEKbDqeomYK17aQ47FcO2SZDpgFu0WnsZvnCaKxl2brnFxwKGaNelrE
- 0I3Zy9aWOeFcI8b5T1u5sl9q3K1Gegc6GJiz7WqwdkfvpZ9R/AFWfdP1fcB4MIPfsQzCHl8
- sJkjxSXuciYicFS9ri/wt06/tAHQYjYLx53hWAE7buoGm5fscRzMJLxJ9c1DV/2oFdRoqXA
- Bct9rH/3BFlpY6FZodslLhYeQALveXU9jEKCQAfZONDZdE0ttxJX4IrlmEAIT4d5GlA+WWI
- XmObjJWrXDT3f6dJkODogXVbZE8618nJDj40QUETLZMehBjVq+MZZqqXLYUSfbgzbvtj7oR
- pO+f/3d2nR7U8ZdhJE2crrLHIzqHl5CgVZ77yb617sKMVArW9It5OlAHnYrKQVQrUe5Rnqk
- KtKsUxOYD847oX3xggHhfFNiuXOIan4lPZGZD2skfILXYrnB0wn0D3uLWuY7gHrX9uteOni
- 4nshI5X0p4zP6eZOMz1hb4m2R7r2Efk7dV0+4WYZ6d0IXgYR/NEgIqq6YhIVA5GxYW+KzQX
- FxJgMu8rzpFKqLAmFNAVKtQkefmmTPggA1u0hkvFvcy6Pbw==
-X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
-X-QQ-RECHKSPAM: 0
-Received-SPF: none client-ip=54.254.200.92;
- envelope-from=weizhi.li@linux.spacemit.com; helo=smtpbgsg1.qq.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ (Exim 4.90_1) (envelope-from <xuchuangxclwt@bytedance.com>)
+ id 1vSa4c-00070q-OW
+ for qemu-devel@nongnu.org; Mon, 08 Dec 2025 07:10:39 -0500
+Received: from sg-1-100.ptr.blmpb.com ([118.26.132.100])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <xuchuangxclwt@bytedance.com>)
+ id 1vSa4Y-0003Hh-Nc
+ for qemu-devel@nongnu.org; Mon, 08 Dec 2025 07:10:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1765195816; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=gZyI/XsjZiM5ib2NK+w8S+bx76otR7d/4oq7pAk6Pw8=;
+ b=nyOvLkUvr66PZwTAE6XHcX5fOuwyzczOyKItaJ2qPUHgzpDJtdWN8TbKK5ElhgRXBt8Ed1
+ FlY0D5qibWPO2KUN+jLYXBadLDe4u+GV5UciawcnfAHmoadgiFeznnfsQqblJIm8LSkqd7
+ YQTCqPQrBZkpONdQwHURrs6FYd0Wy3FBweYtdjvvK/c5nrILgK1AGTTx19xgc1otlVNTCC
+ b0JUZNGqv7HhWwRob6jSayNeqoH1wQb8sEESWeQmdqD6n0CZ2CEF0LUqy05I1B3swkgi69
+ z1Kh4pST7frg1htbg07+lJPJM2hBCDIeHCVMj8DcPZTa2THGA4bHket0SmQ5Ig==
+From: "Chuang Xu" <xuchuangxclwt@bytedance.com>
+X-Original-From: Chuang Xu <xuchuangxclwt@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Message-Id: <20251208120952.37563-1-xuchuangxclwt@bytedance.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Cc: <mst@redhat.com>, <sgarzare@redhat.com>, <richard.henderson@linaro.org>, 
+ <pbonzini@redhat.com>, <peterx@redhat.com>, <david@kernel.org>, 
+ <philmd@linaro.org>, <farosas@suse.de>
+Subject: [RFC v1 0/2] migration: reduce bitmap sync time and make dirty pages
+ converge much more easily
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+To: <qemu-devel@nongnu.org>
+Date: Mon,  8 Dec 2025 20:09:50 +0800
+X-Lms-Return-Path: <lba+26936c026+f53b9c+nongnu.org+xuchuangxclwt@bytedance.com>
+Received-SPF: pass client-ip=118.26.132.100;
+ envelope-from=xuchuangxclwt@bytedance.com; helo=sg-1-100.ptr.blmpb.com
+X-Spam_score_int: -15
+X-Spam_score: -1.6
+X-Spam_bar: -
+X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FROM_LOCAL_NOVOWEL=0.5, HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 08 Dec 2025 09:20:46 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,16 +68,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch series resolves the issue I reported at:
+In our long-term experience in Bytedance, we've found that under the same load,
+live migration of larger VMs with more devices is often more difficult to
+converge (requiring a larger downtime limit).
 
-https://gitlab.com/qemu-project/qemu/-/issues/3224
-https://bugs.launchpad.net/ubuntu/+source/qemu/+bug/2133188
+We've observed that the live migration bandwidth of large, multi-device VMs is
+severely distorted, a phenomenon likely similar to the problem described in this link
+(https://wiki.qemu.org/ToDo/LiveMigration#Optimize_migration_bandwidth_calculation).
 
-Programs in foreign architecture RISC-V containers using RVA23 crash due
-to not restoring the vector state after handling signals.
+Through some testing and calculations, we conclude that bitmap sync time affects
+the calculation of live migration bandwidth.
 
-It would be great if this series could be reviewed soon.
+Now, let me use formulaic reasoning to illustrate the relationship between the downtime
+limit required to achieve the stop conditions and the bitmap sync time.
 
-Tested-by: Weizhi Li <weizhi.li@spacemit.com>
+Assume the actual live migration bandwidth is B, the dirty page rate is D,
+the bitmap sync time is x (ms), the transfer time per iteration is t (ms), and the
+downtime limit is y (ms).
 
+To simplify the calculation, we assume all of dirty pages are not zero page and only
+consider the case B > D.
+
+When x + t > 100ms, the bandwidth calculated by qemu is R = B * t / (x + t).
+When x + t < 100ms, the bandwidth calculated by qemu is R = B * (100 - x) / 100.
+
+If there is a critical convergence state, then we have:
+  (1) B * t = D * (x + t)
+  (2) t = D * x / (B - D)
+For the stop condition to be successfully determined, then we have two cases:
+  When:
+  (3) x + t > 100
+  (4) x + D * x / (B - D) > 100
+  (5) x > 100 - 100 * D / B
+  Then:
+  (6) R * y > D * (x + t)
+  (7) B * t * y / (x + t) > D * (x + t)
+  (8) (B * (D * x / (B - D)) * y) / (x + D * x / (B - D)) > D * (x + D * x / (B - D))
+  (9) D * y > D * (x + D * x / (B - D))
+  (10) y > x + D * x / (B - D)
+  (11) (B - D) * y > B * x
+  (12) y > B * x / (B - D)
+  
+  When:
+  (13) x + t < 100
+  (14) x + D * x / (B - D) < 100
+  (15) x < 100 - 100 * D / B
+  Then:
+  (16) R * y > D * (x + t)
+  (17) B * (100 - x) * y / 100 > D * (x + t)
+  (18) B * (100 - x) * y / 100 > D * (x + D * x / (B - D))
+  (19) y > 100 * D * x / ((B - D) * (100 - x))
+
+After deriving the formula, we can use some data for comparison.
+
+For a 64C256G vm with 8 vhost-user-net(32 queue per nic) and 16 vhost-user-blk(4 queue per blk),
+the sync time is as high as 250ms, while after applying this patch, the sync time is only 10ms.
+
+*First case, assume our maximum bandwidth can reach 15GBps and the dirty page rate is 7.5GBps.
+
+If x = 250 ms, when there is a critical convergence state,
+we use formula(2) get t = D * x / (B - D) = 250 ms,
+because x + t = 500ms > 100ms,
+so we get y > B * x / (B - D) = 500ms.
+
+If x = 10 ms,
+when there is a critical convergence state,
+we use formula(2) get t = D * x / (B - D) = 10 ms,
+because x + t = 20ms < 100ms,
+so we get y > 100 * D * x / ((B - D) * (100 - x)) = 11.1ms.
+
+We can see that after optimization, under the same bandwidth and dirty rate scenario,
+the downtime limit required for dirty page convergence is significantly reduced.
+
+*Second case, assume our maximum bandwidth can reach 15GBps and the downtime limit is set to 300ms.
+If x = 250 ms,  x + t > 250ms > 100ms,
+so we use formula(12) get D < B * (y - x) / y = 15 * (300 - 250) / 300 = 2.5GBps
+
+If x = 10 ms,
+when x + t > 100ms,
+we use formula(12) get D < B * (y - x) / y = 15 * (300 - 10) / 300 = 14.5GBps,
+when x + t < 100ms,
+we use formula(19) get D < 14.46GBps
+
+We can see that after optimization, under the same bandwidth and downtime limit scenario,
+the convergent dirty page rate is significantly improved.
+
+Through the above formula derivation, we have proven that reducing bitmap sync time
+can significantly improve dirty page convergence capability.
+
+This series only optimize bitmap sync time for some scenarios.
+There may still be many scenarios where bitmap sync time negatively impacts dirty page
+convergence capability, and we can also try to optimize using this approach.
 
