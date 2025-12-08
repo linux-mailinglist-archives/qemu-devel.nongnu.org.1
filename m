@@ -2,59 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF5EDCAE3B7
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AA51CAE3B0
 	for <lists+qemu-devel@lfdr.de>; Mon, 08 Dec 2025 22:34:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vSir8-0007Mc-6D; Mon, 08 Dec 2025 16:33:18 -0500
+	id 1vSir9-0007N6-Lw; Mon, 08 Dec 2025 16:33:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
- id 1vSir5-0007Kg-9I; Mon, 08 Dec 2025 16:33:15 -0500
+ id 1vSir6-0007LL-8D; Mon, 08 Dec 2025 16:33:16 -0500
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
- id 1vSir3-0000gX-F1; Mon, 08 Dec 2025 16:33:15 -0500
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5B8E186n006746;
- Mon, 8 Dec 2025 21:33:12 GMT
+ id 1vSir4-0000h3-Gl; Mon, 08 Dec 2025 16:33:16 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5B8JMo53029631;
+ Mon, 8 Dec 2025 21:33:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=huh4bYf+BaXw4sSH7
- xmD1LKVof03IZp8NvKREvINOhE=; b=FOlxRmfqLVP8o2+2flFum3PfNaEH3bC+n
- 7sR4/G+/kucvqtAvcazcNrNY4qsZMNBVWFIX6SDjMmzSk4wP4UVQWQL1/PZBim1N
- 8gmJPvOx0qkjjCfSWXytCWTIYrbFFMbskuwWc54BWgUsRRhtMb9Old12Gx92KBKo
- PFVLZnSqXP5klUPXX0Xs8WQ/15ek4GxfkdOot/JSGfMzBrjM9wkvo7aAx8No9ZtF
- TMBLm+/UBYMwYLFeXoXT3L4wDBnp2XVTasYk9faPb/IREZARMrlLJCUd8alNM3sq
- B+6fTfrLuIz/nsQAqOVJl96A+Qcv+ffb7ZEjzNuQhGJJyUTgZKiUw==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4av9wvhmmh-1
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=4QagXK
+ 15lEGBNY69j3/Ip8T+HoPJ4u8BU8bY8UX4lFA=; b=WvUhS2mPfVrZYk9Egz8oWl
+ dASXYfn/JsYv+Q0wKMkbS31cI1dTSDGG2xTheCYEEBAMkuL5NblQotmwK4anB3lo
+ eQS0g3ZbA7RQkzY/Eg8c0MjYB/XJXbW51B8LdwkrM5nJUJV46Y8GZkN78l1qXxWa
+ qPbNWiwN3lzPmjCEOzLpXTwM0cTAM2MHuL2l1A2ckY1buPDY+k2/tUNxtZj3I9nT
+ KAWRCfRbptJ3ZTSgGaEXBBcCP4g9MnXNNOURj+Lf1thbww8MxNuJPmFF5VvZ5zNd
+ N8AY6/Z5+qu+umiNeT2aolXSI9iOUw61d4OF21R9On420AOnum/+VQBr5Z/QaZJw
+ ==
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4avc539ahw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Dec 2025 21:33:11 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5B8JIvsH026813;
- Mon, 8 Dec 2025 21:33:10 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4aw1h0yf8b-1
+ Mon, 08 Dec 2025 21:33:12 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5B8Hebow028126;
+ Mon, 8 Dec 2025 21:33:12 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4avy6xqvwy-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Dec 2025 21:33:10 +0000
+ Mon, 08 Dec 2025 21:33:12 +0000
 Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
  [10.39.53.229])
- by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 5B8LWrdb30474904
+ by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 5B8LXBR930474922
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 8 Dec 2025 21:32:53 GMT
+ Mon, 8 Dec 2025 21:33:11 GMT
 Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3172658058;
+ by IMSVA (Postfix) with ESMTP id 198EC5805B;
+ Mon,  8 Dec 2025 21:33:11 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 59CB758058;
  Mon,  8 Dec 2025 21:33:09 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6FDE65805B;
- Mon,  8 Dec 2025 21:33:07 +0000 (GMT)
 Received: from fedora-workstation.ibmuc.com (unknown [9.61.66.246])
  by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  8 Dec 2025 21:33:07 +0000 (GMT)
+ Mon,  8 Dec 2025 21:33:09 +0000 (GMT)
 From: Zhuoying Cai <zycai@linux.ibm.com>
 To: thuth@redhat.com, berrange@redhat.com, richard.henderson@linaro.org,
  david@redhat.com, jrossi@linux.ibm.com, qemu-s390x@nongnu.org,
@@ -63,37 +64,38 @@ Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, pasic@linux.ibm.com,
  borntraeger@linux.ibm.com, farman@linux.ibm.com,
  mjrosato@linux.ibm.com, iii@linux.ibm.com, eblake@redhat.com,
  armbru@redhat.com, zycai@linux.ibm.com, alifm@linux.ibm.com
-Subject: [PATCH v7 10/29] s390x/diag: Introduce DIAG 508 for secure IPL
- operations
-Date: Mon,  8 Dec 2025 16:32:27 -0500
-Message-ID: <20251208213247.702569-11-zycai@linux.ibm.com>
+Subject: [PATCH v7 11/29] crypto/x509-utils: Add helper functions for DIAG 508
+ subcode 1
+Date: Mon,  8 Dec 2025 16:32:28 -0500
+Message-ID: <20251208213247.702569-12-zycai@linux.ibm.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251208213247.702569-1-zycai@linux.ibm.com>
 References: <20251208213247.702569-1-zycai@linux.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: PSo1r7xXtg3hio58V21sTrDYGPh1q1em
-X-Proofpoint-ORIG-GUID: PSo1r7xXtg3hio58V21sTrDYGPh1q1em
-X-Authority-Analysis: v=2.4 cv=AdS83nXG c=1 sm=1 tr=0 ts=69374417 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=hXQcL9AfcS-IPDpH2m0A:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDAwMCBTYWx0ZWRfX3yQB3qTK6/gt
- 14tudGMnV8zxL6GEul9YuYjoof4IzRmEW4A/jdv6IajbhI53NInnRDYkg0EGrl0mwJdEShnvfU/
- bv0MDVFNRYEou22wEnMgwGYwfnzmpTlPOjDm9F/iShqYo8awou1KaVOfQAW6Vc8mG49eXdPaIvb
- 7R3/YoQLohywOn2p/d4FWAr+Hu5hvsC8jcsBiW/jhOb6je0kIX7qE4X/6h1C7sqy3mdFGxUviqU
- lZNZLhXp0yiAJimsx6+480OmDuN9145tJPew4cOdRvM7sK2L9mUIXqvnXDa9PSr8oovJQ/gyYQ5
- JEAkJmJxdg2C5aIiTbhEA5f2KJee9VrMYMZ0CEhyOhM7/chKbN73CnOno4wxXRhfh1JC2vt83ty
- u5rk35c6ytF4FBv/mhVMoQvfHxNFng==
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDAyMCBTYWx0ZWRfX/goZsMhN5ZDt
+ J8VZa6LeQP1h2mFaUrycrBPe7n1+Rfc77UAIsk56WDo4epkR3/9Jn2RuFz97Gf4tm5bdmDJ2975
+ d2WajyXrV+FIzAKeamWSND5QpjiXLTYHXtCOkL19UhpV/h2cIeWGAHlFVeVdcxgm2epTkGrAXEb
+ WlPBtY2/bVWpAAeWfdIiCctECGARuY4ujHuC/j1XOxo/kxmmNbEy9OThyPurrb4RNfbQVQQRVW+
+ zFVSfKuV6oOSMQ/Iekosfn6nyCvs0PHoMCa2q4ik+aeQkJtok7O/NlR6BDmaXqcFG8RPx8lDYfz
+ pVp/s//0fRQ79ElgDbYNoOSRJZezVa0nKMgZ2Zc4EvB6E56o0kb66nrqZlpghuq7//nTOgKc92N
+ /17K+hXsddTPEKdS6C3H8coV/v2c6g==
+X-Authority-Analysis: v=2.4 cv=S/DUAYsP c=1 sm=1 tr=0 ts=69374419 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=Ehcw9bocbOASTidboh8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: ZooGejH0f15ULM14GEaQaWTKK0LQ8CoI
+X-Proofpoint-GUID: ZooGejH0f15ULM14GEaQaWTKK0LQ8CoI
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-06_02,2025-12-04_04,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 priorityscore=1501 spamscore=0 phishscore=0
- lowpriorityscore=0 bulkscore=0 clxscore=1015 malwarescore=0 impostorscore=0
+ malwarescore=0 phishscore=0 clxscore=1015 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 adultscore=0 spamscore=0 bulkscore=0 priorityscore=1501
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512060000
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512060020
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=zycai@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -119,187 +121,201 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Collin Walling <walling@linux.ibm.com>
+Introduce helper functions to support signature verification required by
+DIAG 508 subcode 1:
 
-In order to support secure IPL (aka secure boot) for the s390-ccw BIOS,
-a new s390 DIAGNOSE instruction is introduced to leverage QEMU for
-handling operations such as signature verification and certificate
-retrieval.
+qcrypto_pkcs7_convert_sig_pem() – converts a signature from DER to PEM format
+qcrypto_x509_verify_sig() – verifies the provided data against the given signature
 
-Currently, only subcode 0 is supported with this patch, which is used to
-query a bitmap of which subcodes are supported.
+These functions enable basic signature verification support.
 
-Signed-off-by: Collin Walling <walling@linux.ibm.com>
-Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
+Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
 ---
- docs/specs/s390x-secure-ipl.rst | 18 ++++++++++++++++++
- include/hw/s390x/ipl/diag508.h  | 15 +++++++++++++++
- target/s390x/diag.c             | 27 +++++++++++++++++++++++++++
- target/s390x/kvm/kvm.c          | 14 ++++++++++++++
- target/s390x/s390x-internal.h   |  2 ++
- target/s390x/tcg/misc_helper.c  |  7 +++++++
- 6 files changed, 83 insertions(+)
- create mode 100644 include/hw/s390x/ipl/diag508.h
+ crypto/x509-utils.c         | 108 ++++++++++++++++++++++++++++++++++++
+ include/crypto/x509-utils.h |  41 ++++++++++++++
+ 2 files changed, 149 insertions(+)
 
-diff --git a/docs/specs/s390x-secure-ipl.rst b/docs/specs/s390x-secure-ipl.rst
-index 560cf9b4f5..84a1691e1b 100644
---- a/docs/specs/s390x-secure-ipl.rst
-+++ b/docs/specs/s390x-secure-ipl.rst
-@@ -51,3 +51,21 @@ Subcode 2 - store verification certificates
-     insufficient storage specified in the VCB input length field.
+diff --git a/crypto/x509-utils.c b/crypto/x509-utils.c
+index f91fa56563..370df8dabd 100644
+--- a/crypto/x509-utils.c
++++ b/crypto/x509-utils.c
+@@ -16,6 +16,7 @@
+ #include <gnutls/gnutls.h>
+ #include <gnutls/crypto.h>
+ #include <gnutls/x509.h>
++#include <gnutls/pkcs7.h>
  
-     VCE contains various information of a VC from the CS.
-+
-+
-+Secure IPL Data Structures, Facilities, and Functions
-+=====================================================
-+
-+DIAGNOSE function code 'X'508' - IPL extensions
-+---------------------------------------------------
-+
-+DIAGNOSE 'X'508' is reserved for guest use in order to facilitate communication
-+of additional IPL operations that cannot be handled by userspace, such as
-+signature verification for secure IPL.
-+
-+If the function code specifies 0x508, IPL extension functions are performed.
-+These functions are meant to provide extended functionality for s390 guest boot
-+that requires assistance from QEMU.
-+
-+Subcode 0 - query installed subcodes
-+    Returns a 64-bit mask indicating which subcodes are supported.
-diff --git a/include/hw/s390x/ipl/diag508.h b/include/hw/s390x/ipl/diag508.h
-new file mode 100644
-index 0000000000..6281ad8299
---- /dev/null
-+++ b/include/hw/s390x/ipl/diag508.h
-@@ -0,0 +1,15 @@
-+/*
-+ * S/390 DIAGNOSE 508 definitions and structures
-+ *
-+ * Copyright 2025 IBM Corp.
-+ * Author(s): Collin Walling <walling@linux.ibm.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef S390X_DIAG508_H
-+#define S390X_DIAG508_H
-+
-+#define DIAG_508_SUBC_QUERY_SUBC    0x0000
-+
-+#endif
-diff --git a/target/s390x/diag.c b/target/s390x/diag.c
-index 1498b29a0d..5878745eb9 100644
---- a/target/s390x/diag.c
-+++ b/target/s390x/diag.c
-@@ -20,6 +20,7 @@
- #include "hw/s390x/cert-store.h"
- #include "hw/s390x/ipl.h"
- #include "hw/s390x/ipl/diag320.h"
-+#include "hw/s390x/ipl/diag508.h"
- #include "hw/s390x/s390-virtio-ccw.h"
- #include "system/kvm.h"
- #include "kvm/kvm_s390x.h"
-@@ -628,3 +629,29 @@ void handle_diag_320(CPUS390XState *env, uint64_t r1, uint64_t r3, uintptr_t ra)
-         break;
-     }
+ static const int qcrypto_to_gnutls_hash_alg_map[QCRYPTO_HASH_ALGO__MAX] = {
+     [QCRYPTO_HASH_ALGO_MD5] = GNUTLS_DIG_MD5,
+@@ -341,6 +342,96 @@ int qcrypto_x509_check_ecc_curve_p521(uint8_t *cert, size_t size, Error **errp)
+     return 0;
  }
-+
-+void handle_diag_508(CPUS390XState *env, uint64_t r1, uint64_t r3, uintptr_t ra)
+ 
++int qcrypto_pkcs7_convert_sig_pem(uint8_t *sig, size_t sig_size,
++                                  uint8_t **result, size_t *resultlen,
++                                  Error **errp)
 +{
-+    uint64_t subcode = env->regs[r3];
++    int ret = -1;
 +    int rc;
++    gnutls_pkcs7_t signature;
++    gnutls_datum_t sig_datum_der = {.data = sig, .size = sig_size};
++    gnutls_datum_t sig_datum_pem = {.data = NULL, .size = 0};
 +
-+    if (env->psw.mask & PSW_MASK_PSTATE) {
-+        s390_program_interrupt(env, PGM_PRIVILEGED, ra);
-+        return;
++    rc = gnutls_pkcs7_init(&signature);
++    if (rc < 0) {
++        error_setg(errp, "Failed to initalize pkcs7 data: %s", gnutls_strerror(rc));
++        return ret;
 +    }
 +
-+    if ((subcode & ~0x0ffffULL) || (r1 & 1)) {
-+        s390_program_interrupt(env, PGM_SPECIFICATION, ra);
-+        return;
++    rc = gnutls_pkcs7_import(signature, &sig_datum_der, GNUTLS_X509_FMT_DER);
++    if (rc != 0) {
++        error_setg(errp, "Failed to import signature: %s", gnutls_strerror(rc));
++        goto cleanup;
 +    }
 +
-+    switch (subcode) {
-+    case DIAG_508_SUBC_QUERY_SUBC:
-+        rc = 0;
-+        break;
-+    default:
-+        s390_program_interrupt(env, PGM_SPECIFICATION, ra);
-+        return;
++    rc = gnutls_pkcs7_export2(signature, GNUTLS_X509_FMT_PEM, &sig_datum_pem);
++    if (rc != 0) {
++        error_setg(errp, "Failed to convert signature to PEM format: %s",
++                   gnutls_strerror(rc));
++        goto cleanup;
 +    }
-+    env->regs[r1 + 1] = rc;
++
++    *resultlen = sig_datum_pem.size;
++    *result = g_memdup2(sig_datum_pem.data, sig_datum_pem.size);
++
++    ret = 0;
++
++cleanup:
++    gnutls_pkcs7_deinit(signature);
++    gnutls_free(sig_datum_pem.data);
++    return ret;
 +}
-diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-index e65d754112..fc253ecf18 100644
---- a/target/s390x/kvm/kvm.c
-+++ b/target/s390x/kvm/kvm.c
-@@ -101,6 +101,7 @@
- #define DIAG_CERT_STORE                 0x320
- #define DIAG_KVM_HYPERCALL              0x500
- #define DIAG_KVM_BREAKPOINT             0x501
-+#define DIAG_SECURE_IPL                 0x508
++
++int qcrypto_x509_verify_sig(uint8_t *cert, size_t cert_size,
++                            uint8_t *comp, size_t comp_size,
++                            uint8_t *sig, size_t sig_size, Error **errp)
++{
++    int rc;
++    int ret = -1;
++    gnutls_x509_crt_t crt = NULL;
++    gnutls_pkcs7_t signature = NULL;
++    gnutls_datum_t cert_datum = {.data = cert, .size = cert_size};
++    gnutls_datum_t data_datum = {.data = comp, .size = comp_size};
++    gnutls_datum_t sig_datum = {.data = sig, .size = sig_size};
++
++    rc = gnutls_x509_crt_init(&crt);
++    if (rc < 0) {
++        error_setg(errp, "Failed to initialize certificate: %s", gnutls_strerror(rc));
++        goto cleanup;
++    }
++
++    rc = gnutls_x509_crt_import(crt, &cert_datum, GNUTLS_X509_FMT_PEM);
++    if (rc != 0) {
++        error_setg(errp, "Failed to import certificate: %s", gnutls_strerror(rc));
++        goto cleanup;
++    }
++
++    rc = gnutls_pkcs7_init(&signature);
++    if (rc < 0) {
++        error_setg(errp, "Failed to initalize pkcs7 data: %s", gnutls_strerror(rc));
++        goto cleanup;
++     }
++
++    rc = gnutls_pkcs7_import(signature, &sig_datum , GNUTLS_X509_FMT_PEM);
++    if (rc != 0) {
++        error_setg(errp, "Failed to import signature: %s", gnutls_strerror(rc));
++        goto cleanup;
++    }
++
++    rc = gnutls_pkcs7_verify_direct(signature, crt, 0, &data_datum, 0);
++    if (rc != 0) {
++        error_setg(errp, "Failed to verify signature: %s", gnutls_strerror(rc));
++        goto cleanup;
++    }
++
++    ret = 0;
++
++cleanup:
++    gnutls_x509_crt_deinit(crt);
++    gnutls_pkcs7_deinit(signature);
++    return ret;
++}
++
+ #else /* ! CONFIG_GNUTLS */
  
- #define ICPT_INSTRUCTION                0x04
- #define ICPT_PROGRAM                    0x08
-@@ -1571,6 +1572,16 @@ static void kvm_handle_diag_320(S390CPU *cpu, struct kvm_run *run)
-     handle_diag_320(&cpu->env, r1, r3, RA_IGNORED);
+ int qcrypto_get_x509_cert_fingerprint(uint8_t *cert, size_t size,
+@@ -390,4 +481,21 @@ int qcrypto_x509_check_ecc_curve_p521(uint8_t *cert, size_t size, Error **errp)
+     return -1;
  }
  
-+static void kvm_handle_diag_508(S390CPU *cpu, struct kvm_run *run)
++int qcrypto_pkcs7_convert_sig_pem(uint8_t *sig, size_t sig_size,
++                                  uint8_t **result,
++                                  size_t *resultlen,
++                                  Error **errp)
 +{
-+    uint64_t r1, r3;
-+
-+    r1 = (run->s390_sieic.ipa & 0x00f0) >> 4;
-+    r3 = run->s390_sieic.ipa & 0x000f;
-+
-+    handle_diag_508(&cpu->env, r1, r3, RA_IGNORED);
++    error_setg(errp, "GNUTLS is required to export pkcs7 signature");
++    return -1;
 +}
 +
- #define DIAG_KVM_CODE_MASK 0x000000000000ffff
++int qcrypto_x509_verify_sig(uint8_t *cert, size_t cert_size,
++                            uint8_t *comp, size_t comp_size,
++                            uint8_t *sig, size_t sig_size, Error **errp)
++{
++    error_setg(errp, "GNUTLS is required for signature-verification support");
++    return -1;
++}
++
+ #endif /* ! CONFIG_GNUTLS */
+diff --git a/include/crypto/x509-utils.h b/include/crypto/x509-utils.h
+index f65be67a2c..a0fb3c6ebf 100644
+--- a/include/crypto/x509-utils.h
++++ b/include/crypto/x509-utils.h
+@@ -113,4 +113,45 @@ int qcrypto_x509_get_cert_key_id(uint8_t *cert, size_t size,
+  */
+ int qcrypto_x509_check_ecc_curve_p521(uint8_t *cert, size_t size, Error **errp);
  
- static int handle_diag(S390CPU *cpu, struct kvm_run *run, uint32_t ipb)
-@@ -1604,6 +1615,9 @@ static int handle_diag(S390CPU *cpu, struct kvm_run *run, uint32_t ipb)
-     case DIAG_CERT_STORE:
-         kvm_handle_diag_320(cpu, run);
-         break;
-+    case DIAG_SECURE_IPL:
-+        kvm_handle_diag_508(cpu, run);
-+        break;
-     default:
-         trace_kvm_insn_diag(func_code);
-         kvm_s390_program_interrupt(cpu, PGM_SPECIFICATION);
-diff --git a/target/s390x/s390x-internal.h b/target/s390x/s390x-internal.h
-index 771b62fbe2..949a6a4552 100644
---- a/target/s390x/s390x-internal.h
-+++ b/target/s390x/s390x-internal.h
-@@ -390,6 +390,8 @@ void handle_diag_308(CPUS390XState *env, uint64_t r1, uint64_t r3,
-                      uintptr_t ra);
- void handle_diag_320(CPUS390XState *env, uint64_t r1, uint64_t r3,
-                      uintptr_t ra);
-+void handle_diag_508(CPUS390XState *env, uint64_t r1, uint64_t r3,
-+                     uintptr_t ra);
- 
- 
- /* translate.c */
-diff --git a/target/s390x/tcg/misc_helper.c b/target/s390x/tcg/misc_helper.c
-index 16eddd7593..f03bd7d13a 100644
---- a/target/s390x/tcg/misc_helper.c
-+++ b/target/s390x/tcg/misc_helper.c
-@@ -149,6 +149,13 @@ void HELPER(diag)(CPUS390XState *env, uint32_t r1, uint32_t r3, uint32_t num)
-         bql_unlock();
-         r = 0;
-         break;
-+    case 0x508:
-+        /* secure ipl operations */
-+        bql_lock();
-+        handle_diag_508(env, r1, r3, GETPC());
-+        bql_unlock();
-+        r = 0;
-+        break;
-     default:
-         r = -1;
-         break;
++/**
++ * qcrypto_pkcs7_convert_sig_pem
++ * @sig: pointer to the PKCS#7 signature in DER format
++ * @sig_size: size of the signature
++ * @result: output location for the allocated buffer for the signature in
++ *          PEM format
++ *          (the function allocates memory which must be freed by the caller)
++ * @resultlen: pointer to the size of the buffer
++ *              (will be updated with the actual size of the PEM-encoded
++ *               signature)
++ * @errp: error pointer
++ *
++ * Convert given PKCS#7 @sig from DER to PEM format.
++ *
++ * Returns: 0 if PEM-encoded signature was successfully stored in @result,
++ *         -1 on error.
++ */
++int qcrypto_pkcs7_convert_sig_pem(uint8_t *sig, size_t sig_size,
++                                  uint8_t **result,
++                                  size_t *resultlen,
++                                  Error **errp);
++
++/**
++ * qcrypto_x509_verify_sig
++ * @cert: pointer to the raw certificate data
++ * @cert_size: size of the certificate
++ * @comp: pointer to the component to be verified
++ * @comp_size: size of the component
++ * @sig: pointer to the signature
++ * @sig_size: size of the signature
++ * @errp: error pointer
++ *
++ * Verify the provided @comp against the @sig and @cert.
++ *
++ * Returns: 0 on success,
++ *         -1 on error.
++ */
++int qcrypto_x509_verify_sig(uint8_t *cert, size_t cert_size,
++                            uint8_t *comp, size_t comp_size,
++                            uint8_t *sig, size_t sig_size, Error **errp);
++
+ #endif
 -- 
 2.51.1
 
