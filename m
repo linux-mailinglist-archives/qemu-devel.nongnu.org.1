@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DB26CAC6B3
-	for <lists+qemu-devel@lfdr.de>; Mon, 08 Dec 2025 08:49:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6E23CAC695
+	for <lists+qemu-devel@lfdr.de>; Mon, 08 Dec 2025 08:48:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vSVyT-0001PR-LG; Mon, 08 Dec 2025 02:48:01 -0500
+	id 1vSVyH-0000a8-7T; Mon, 08 Dec 2025 02:47:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1vSVwf-0007Pm-9i; Mon, 08 Dec 2025 02:46:17 -0500
+ id 1vSVwk-0007Zx-S9; Mon, 08 Dec 2025 02:46:29 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1vSVwd-0000Ml-1L; Mon, 08 Dec 2025 02:46:09 -0500
+ id 1vSVwh-0000Ml-Vn; Mon, 08 Dec 2025 02:46:14 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Mon, 8 Dec
- 2025 15:44:43 +0800
+ 2025 15:44:44 +0800
 Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Mon, 8 Dec 2025 15:44:43 +0800
+ Transport; Mon, 8 Dec 2025 15:44:44 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>, Andrew Jeffery
@@ -30,9 +30,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  list:ASPEED BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>
 CC: <troy_lee@aspeedtech.com>, Kane-Chen-AS <kane_chen@aspeedtech.com>
-Subject: [PATCH v3 16/18] hw/arm/aspeed: Attach PWM device to AST1700 model
-Date: Mon, 8 Dec 2025 15:44:28 +0800
-Message-ID: <20251208074436.1871180-17-kane_chen@aspeedtech.com>
+Subject: [PATCH v3 17/18] hw/arm/aspeed: Attach SGPIOM device to AST1700 model
+Date: Mon, 8 Dec 2025 15:44:29 +0800
+Message-ID: <20251208074436.1871180-18-kane_chen@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251208074436.1871180-1-kane_chen@aspeedtech.com>
 References: <20251208074436.1871180-1-kane_chen@aspeedtech.com>
@@ -66,79 +66,94 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Kane-Chen-AS <kane_chen@aspeedtech.com>
 
-Connect the PWM device to AST1700 model.
+Connect the SGPIOM device to AST1700 model.
 
 Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
 ---
- include/hw/arm/aspeed_ast1700.h |  2 ++
- hw/arm/aspeed_ast1700.c         | 13 +++++++++++++
- 2 files changed, 15 insertions(+)
+ include/hw/arm/aspeed_ast1700.h |  3 +++
+ hw/arm/aspeed_ast1700.c         | 20 ++++++++++++++++++++
+ 2 files changed, 23 insertions(+)
 
 diff --git a/include/hw/arm/aspeed_ast1700.h b/include/hw/arm/aspeed_ast1700.h
-index f43c0c5475..7292719dc2 100644
+index 7292719dc2..490f2a3b05 100644
 --- a/include/hw/arm/aspeed_ast1700.h
 +++ b/include/hw/arm/aspeed_ast1700.h
-@@ -14,6 +14,7 @@
+@@ -12,6 +12,7 @@
+ #include "hw/misc/aspeed_scu.h"
+ #include "hw/adc/aspeed_adc.h"
  #include "hw/gpio/aspeed_gpio.h"
++#include "hw/gpio/aspeed_sgpio.h"
  #include "hw/i2c/aspeed_i2c.h"
  #include "hw/misc/aspeed_ltpi.h"
-+#include "hw/misc/aspeed_pwm.h"
- #include "hw/ssi/aspeed_smc.h"
+ #include "hw/misc/aspeed_pwm.h"
+@@ -19,6 +20,7 @@
  #include "hw/watchdog/wdt_aspeed.h"
  #include "hw/char/serial-mm.h"
-@@ -39,6 +40,7 @@ struct AspeedAST1700SoCState {
+ 
++#define AST1700_SGPIO_NUM            2
+ #define AST1700_WDT_NUM              9
+ 
+ #define TYPE_ASPEED_AST1700 "aspeed.ast1700"
+@@ -39,6 +41,7 @@ struct AspeedAST1700SoCState {
+     AspeedADCState adc;
      AspeedSCUState scu;
      AspeedGPIOState gpio;
++    AspeedSGPIOState sgpiom[AST1700_SGPIO_NUM];
      AspeedI2CState i2c;
-+    AspeedPWMState pwm;
+     AspeedPWMState pwm;
      AspeedWDTState wdt[AST1700_WDT_NUM];
- };
- 
 diff --git a/hw/arm/aspeed_ast1700.c b/hw/arm/aspeed_ast1700.c
-index 289c65749a..c9d7a97a80 100644
+index c9d7a97a80..e027ae02ad 100644
 --- a/hw/arm/aspeed_ast1700.c
 +++ b/hw/arm/aspeed_ast1700.c
-@@ -18,6 +18,7 @@
- 
- enum {
-     ASPEED_AST1700_DEV_SPI0,
-+    ASPEED_AST1700_DEV_PWM,
-     ASPEED_AST1700_DEV_SRAM,
+@@ -23,6 +23,8 @@ enum {
      ASPEED_AST1700_DEV_ADC,
      ASPEED_AST1700_DEV_SCU,
-@@ -31,6 +32,7 @@ enum {
- 
- static const hwaddr aspeed_ast1700_io_memmap[] = {
-     [ASPEED_AST1700_DEV_SPI0]      =  0x00030000,
-+    [ASPEED_AST1700_DEV_PWM]       =  0x000C0000,
-     [ASPEED_AST1700_DEV_SRAM]      =  0x00BC0000,
+     ASPEED_AST1700_DEV_GPIO,
++    ASPEED_AST1700_DEV_SGPIOM0,
++    ASPEED_AST1700_DEV_SGPIOM1,
+     ASPEED_AST1700_DEV_I2C,
+     ASPEED_AST1700_DEV_UART12,
+     ASPEED_AST1700_DEV_LTPI_CTRL,
+@@ -37,6 +39,8 @@ static const hwaddr aspeed_ast1700_io_memmap[] = {
      [ASPEED_AST1700_DEV_ADC]       =  0x00C00000,
      [ASPEED_AST1700_DEV_SCU]       =  0x00C02000,
-@@ -124,6 +126,14 @@ static void aspeed_ast1700_realize(DeviceState *dev, Error **errp)
-                         aspeed_ast1700_io_memmap[ASPEED_AST1700_DEV_I2C],
-                         sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->i2c), 0));
+     [ASPEED_AST1700_DEV_GPIO]      =  0x00C0B000,
++    [ASPEED_AST1700_DEV_SGPIOM0]   =  0x00C0C000,
++    [ASPEED_AST1700_DEV_SGPIOM1]   =  0x00C0D000,
+     [ASPEED_AST1700_DEV_I2C]       =  0x00C0F000,
+     [ASPEED_AST1700_DEV_UART12]    =  0x00C33B00,
+     [ASPEED_AST1700_DEV_LTPI_CTRL] =  0x00C34000,
+@@ -142,6 +146,16 @@ static void aspeed_ast1700_realize(DeviceState *dev, Error **errp)
+                         aspeed_ast1700_io_memmap[ASPEED_AST1700_DEV_LTPI_CTRL],
+                         sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->ltpi), 0));
  
-+    /* PWM */
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->pwm), errp)) {
-+        return;
++    /* SGPIOM */
++    for (int i = 0; i < AST1700_SGPIO_NUM; i++) {
++        if (!sysbus_realize(SYS_BUS_DEVICE(&s->sgpiom[i]), errp)) {
++            return;
++        }
++        memory_region_add_subregion(&s->iomem,
++                    aspeed_ast1700_io_memmap[ASPEED_AST1700_DEV_SGPIOM0 + i],
++                    sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->sgpiom[i]), 0));
 +    }
-+    memory_region_add_subregion(&s->iomem,
-+                        aspeed_ast1700_io_memmap[ASPEED_AST1700_DEV_PWM],
-+                        sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->pwm), 0));
 +
-     /* LTPI controller */
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->ltpi), errp)) {
-         return;
-@@ -177,6 +187,9 @@ static void aspeed_ast1700_instance_init(Object *obj)
-     object_initialize_child(obj, "ioexp-i2c[*]", &s->i2c,
-                             "aspeed.i2c-ast2700");
- 
-+    /* PWM */
-+    object_initialize_child(obj, "pwm", &s->pwm, TYPE_ASPEED_PWM);
-+
-     /* LTPI controller */
+     /* WDT */
+     for (int i = 0; i < AST1700_WDT_NUM; i++) {
+         AspeedWDTClass *awc = ASPEED_WDT_GET_CLASS(&s->wdt[i]);
+@@ -194,6 +208,12 @@ static void aspeed_ast1700_instance_init(Object *obj)
      object_initialize_child(obj, "ltpi-ctrl",
                              &s->ltpi, TYPE_ASPEED_LTPI);
+ 
++    /* SGPIOM */
++    for (int i = 0; i < AST1700_SGPIO_NUM; i++) {
++        object_initialize_child(obj, "ioexp-sgpiom[*]", &s->sgpiom[i],
++                                "aspeed.sgpio-ast2700");
++    }
++
+     /* WDT */
+     for (int i = 0; i < AST1700_WDT_NUM; i++) {
+         object_initialize_child(obj, "ioexp-wdt[*]",
 -- 
 2.43.0
 
