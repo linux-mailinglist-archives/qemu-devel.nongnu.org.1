@@ -2,109 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 442C5CAD012
-	for <lists+qemu-devel@lfdr.de>; Mon, 08 Dec 2025 12:31:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53C56CAD6C3
+	for <lists+qemu-devel@lfdr.de>; Mon, 08 Dec 2025 15:21:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vSZRx-0004zA-Ja; Mon, 08 Dec 2025 06:30:41 -0500
+	id 1vSc6c-0003ah-Lu; Mon, 08 Dec 2025 09:20:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vSZRl-0004xZ-B0
- for qemu-devel@nongnu.org; Mon, 08 Dec 2025 06:30:33 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <weizhi.li@linux.spacemit.com>)
+ id 1vSZnh-0002gH-2v; Mon, 08 Dec 2025 06:53:10 -0500
+Received: from smtpbgsg1.qq.com ([54.254.200.92])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vSZRg-0002zq-KX
- for qemu-devel@nongnu.org; Mon, 08 Dec 2025 06:30:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1765193420;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=eA9M4bUUTwdhIFdwPqMQzMGX27jCw7d5GGHwnwX8YyY=;
- b=e6CAQI8Tq/oETalSMSZ67HccDLgst0msZJcHeHD3pdsd0eq8fxr33aFWqAnhm/mM7v1mR4
- hwx/8haWmmZQs0fPgvUQxppTwZbS51SBEZ8UWP8inF2ATaROJp6cH74f3B5W4gPOPxaxfm
- J1znFogCm+g66cMn29TWVrIpLF6iLS8=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-hU7ub04TPl-RvL2dM9YGWg-1; Mon, 08 Dec 2025 06:30:19 -0500
-X-MC-Unique: hU7ub04TPl-RvL2dM9YGWg-1
-X-Mimecast-MFC-AGG-ID: hU7ub04TPl-RvL2dM9YGWg_1765193418
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-47799717212so28254485e9.3
- for <qemu-devel@nongnu.org>; Mon, 08 Dec 2025 03:30:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1765193417; x=1765798217; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=eA9M4bUUTwdhIFdwPqMQzMGX27jCw7d5GGHwnwX8YyY=;
- b=ShnD8GivqhiI7mnvnVm2PlJCU9QGde7hit1XtFC8Dm+q49ZtTvHvCoYwO2Ab1RFWFy
- g+lYu5j00UFUmiy2wU1px5vQTPdG0TW/rVdVZPx7jIfhhE8FXEWAA2/yBNChvIr7GkwN
- gb7e2GmKq22epGEfCNM8Yo6xzES0pKUyo4DnCDACGR6Fg+MCPUsI9PDPo+Yj8vcqZYyL
- 1aBtcxqfb0iwXjhYg0AKNl8plTu6AnrkGnTzZot0c0uXs2x4Xen7rW8B0bXwUh3wvGNZ
- ditVX+9u/cIMoK/XI3s0/YjZVgfKxSawUu1qAH32qbb/3Sht55G8G7Vygsoamd+pGY4F
- WV2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765193417; x=1765798217;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eA9M4bUUTwdhIFdwPqMQzMGX27jCw7d5GGHwnwX8YyY=;
- b=CRQNRwRy41y3hM4JH8wvWP1SHJUJ2hx1zRKNmO53RPfG3l5v4020iuoQ0QkC0MIOwM
- fiVv574I8hkXTQ4nermRo7D3Ut4Ae69EKhAiRXHy91BwaE4Rn8JOP9zsYMtO+3dzMge0
- NT8HoAgLC3dINA6/U2kbeNLMA0wFW/l0I/hFQdAKyWYxSJ4XjjX7g0e0K7FxDDD6KfM0
- ie2Pnai7ImD1lGrqY/xwMRkmf9JlMhknshnYhT/9mDVIJR0wJjy/E/NQ5/WI977IRXgN
- yExtua1zlwKBo+WPJnskoWrrUVjRjq0o6Jo6DG9vMuLDs2I/kTFyJLuCWLJJuMiw4jad
- zQBQ==
-X-Gm-Message-State: AOJu0YzWgaqC4MLgUwyRJPRREP5o1sphOLL6oMOTx8Uac2vYN5VW+Io2
- +At9/TKm0gwVNSi1LEPcjmMrlZwjtRZLT+agdkxNe+HhuO3YDo4yYC10fsHsOTxWRtJd/q9dGlv
- Zpt1+WbQEDzzN5Ezwvy/+P1aLhyyNTFd6GNAN9PWLt3pfKhrE0SssJ7FIRzhhgBFo7qfFH5hqsJ
- 0loD1EVSasF7CnrxdGnM67LV9evXinX+7Ee2DaCw==
-X-Gm-Gg: ASbGncsxAA76/HNjM9QvmaKXYiLJ9R3+lu81A6hEpLLZ2gRxYHVvPQV91q9AEavzvvN
- wbOuq9kYpi7Q4zNfTCbTMgJZ99QxHQht3L3WzO/ictAXK244o0Q03FihPc/B8tpGra/Gayt06a9
- 8yVv39vba11igZa+pDd6N607qNoz0rvtc5ORgNdJI2oxnFejCh391GEptwwyilQ2+1cyR58OUbd
- CwwFKh4okle9ZiCePYPEiZL0FJ674wgLkBoyrn5tzddJ688wjBg7mVnpEkhuvx6yBve/6Gon3wx
- /RV/Jehgd+XtOW1JMLPvOJ7hqKofWjgvOJXpCuoAfsfDZuDi3yHChWuSHTZ3vdpzN+j291g7BTw
- OwEu9Oy++LKhrtUERHtBuX0fw1bHy/bor1FAGRIRCEQL7NASZi9xIOKUZtJ7hwERATNM=
-X-Received: by 2002:a05:600c:45c7:b0:477:3543:3a3b with SMTP id
- 5b1f17b1804b1-47939deaa4fmr66842805e9.6.1765193417140; 
- Mon, 08 Dec 2025 03:30:17 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHXqZkQllJkzoINa5hXPZYfTxm8LtkJrl5GNxExWBVILtcG+HEBJbT0/WOs6LVw9JSozRGJfw==
-X-Received: by 2002:a05:600c:45c7:b0:477:3543:3a3b with SMTP id
- 5b1f17b1804b1-47939deaa4fmr66842565e9.6.1765193416680; 
- Mon, 08 Dec 2025 03:30:16 -0800 (PST)
-Received: from localhost
- (p200300cfd7171fc04a21127b08cb8133.dip0.t-ipconnect.de.
- [2003:cf:d717:1fc0:4a21:127b:8cb:8133])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-479311ece7asm234908415e9.12.2025.12.08.03.30.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Dec 2025 03:30:15 -0800 (PST)
-From: Hanna Czenczek <hreitz@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Hanna Czenczek <hreitz@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>
-Subject: [PATCH] vhost: Always initialize cached vring data
-Date: Mon,  8 Dec 2025 12:30:08 +0100
-Message-ID: <20251208113008.153249-1-hreitz@redhat.com>
-X-Mailer: git-send-email 2.52.0
+ (Exim 4.90_1) (envelope-from <weizhi.li@linux.spacemit.com>)
+ id 1vSZnb-0007Yo-6y; Mon, 08 Dec 2025 06:53:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.spacemit.com;
+ s=mxsw2412; t=1765194755;
+ bh=BhI3RNQ2Y+SzZZkgI/7u4UYKsOvFlB0vJxcJn+/o0yo=;
+ h=From:To:Subject:Date:Message-Id:MIME-Version;
+ b=msYthhvXWmZLx4BwBgynH7JSn+xvygX8VPstg3stZLL3Az6ftKhfOOYaqg5YG12OV
+ jZtjfHLVXWgQBtfRhBxs8oJm7WaKhwqpe+YhHLgS7cJDZJAjEZ0WhfetlNdc/fWmJj
+ tT2BwTlK/9ZTOha7xkiY3UJbJYIVN18bt8H8PmlE=
+X-QQ-mid: zesmtpsz1t1765194747t42c78f87
+X-QQ-Originating-IP: Apr2DuTZvpBvLqbQ4qzv6njTQgMdFbrQ0CCMyilzSGg=
+Received: from host1.dc.com ( [120.237.158.181])
+ by bizesmtp.qq.com (ESMTP) with 
+ id ; Mon, 08 Dec 2025 19:52:25 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 6037169953519126958
+From: "weizhi.li" <weizhi.li@linux.spacemit.com>
+To: npiggin@gmail.com
+Cc: alistair.francis@wdc.com, dbarboza@ventanamicro.com, laurent@vivier.eu,
+ liwei1518@gmail.com, palmer@dabbelt.com, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org, zhiwei_liu@linux.alibaba.com,
+ heinrich.schuchardt@canonical.com, Weizhi Li <weizhi.li@spacemit.com>
+Subject: Re: [PATCH v2 0/4] linux-user/riscv: add vector state to signal
+ context
+Date: Mon,  8 Dec 2025 19:50:16 +0800
+Message-Id: <20251208115014.2933813-1-weizhi.li@linux.spacemit.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250903081417.338515-1-npiggin@gmail.com>
+References: <20250903081417.338515-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:linux.spacemit.com:qybglogicsvrsz:qybglogicsvrsz3b-0
+X-QQ-XMAILINFO: N0zPMTspoMafUShgy4yeZZAlnVCqZVi7VNvhvyHy5X1N9C5xGaCgd0Zi
+ t8iVbRxt+dKWa1ap+NDvSXYqHIfh/yGod6r1Bv9oZ8sIoefAfmHjipVlmd7xCSc1LWyVmMs
+ puZuoqGy8BSR/f8S0zfqGX24ycmb9/8jqc4MQWD0Jej11te2G1dK8I3g7l89hwil+mZ5aaq
+ 8F3iFQ7Jb0Q0MyzEByZDhgRKRMYAZcQAYphEGh/dPTg/LNgiJ9veHXkzKU8kxwwdkzKNQyE
+ NLUJRrI11LG9WaZ8vNOwBsyXeMPfJpsQN71OW/xzUfbR31UjSvBk2+aqQBzv89T7dFjtzAM
+ YXIoGadhx2aWCuvddlajEWiMKA91I5z7skvWfO6FIwppMFFy0A8FtkYm21HFEenlpt4CSab
+ eRTaHYsQGeCDaHP+GEKbDqeomYK17aQ47FcO2SZDpgFu0WnsZvnCaKxl2brnFxwKGaNelrE
+ 0I3Zy9aWOeFcI8b5T1u5sl9q3K1Gegc6GJiz7WqwdkfvpZ9R/AFWfdP1fcB4MIPfsQzCHl8
+ sJkjxSXuciYicFS9ri/wt06/tAHQYjYLx53hWAE7buoGm5fscRzMJLxJ9c1DV/2oFdRoqXA
+ Bct9rH/3BFlpY6FZodslLhYeQALveXU9jEKCQAfZONDZdE0ttxJX4IrlmEAIT4d5GlA+WWI
+ XmObjJWrXDT3f6dJkODogXVbZE8618nJDj40QUETLZMehBjVq+MZZqqXLYUSfbgzbvtj7oR
+ pO+f/3d2nR7U8ZdhJE2crrLHIzqHl5CgVZ77yb617sKMVArW9It5OlAHnYrKQVQrUe5Rnqk
+ KtKsUxOYD847oX3xggHhfFNiuXOIan4lPZGZD2skfILXYrnB0wn0D3uLWuY7gHrX9uteOni
+ 4nshI5X0p4zP6eZOMz1hb4m2R7r2Efk7dV0+4WYZ6d0IXgYR/NEgIqq6YhIVA5GxYW+KzQX
+ FxJgMu8rzpFKqLAmFNAVKtQkefmmTPggA1u0hkvFvcy6Pbw==
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
+X-QQ-RECHKSPAM: 0
+Received-SPF: none client-ip=54.254.200.92;
+ envelope-from=weizhi.li@linux.spacemit.com; helo=smtpbgsg1.qq.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 08 Dec 2025 09:20:46 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -119,98 +91,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vhost_virtqueue_start() can exit early if the descriptor ring address is
-0, assuming the virtqueue isn’t ready to start.
+This patch series resolves the issue I reported at:
 
-In this case, all cached vring information (size, physical address,
-pointer) is left as-is.  This is OK at first startup, when that info is
-still initialized to 0, but after a reset, it will retain old (outdated)
-information.
+https://gitlab.com/qemu-project/qemu/-/issues/3224
+https://bugs.launchpad.net/ubuntu/+source/qemu/+bug/2133188
 
-vhost_virtqueue_start() must make sure these values are (re-)set
-properly before exiting.
+Programs in foreign architecture RISC-V containers using RVA23 crash due
+to not restoring the vector state after handling signals.
 
-(When using an IOMMU, these outdated values can stall the device:
-vhost_dev_start() deliberately produces an IOMMU miss event for each
-used vring.  If used_phys contains an outdated value, the resulting
-lookup may fail, forcing the device to be stopped.)
+It would be great if this series could be reviewed soon.
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
----
- hw/virtio/vhost.c | 38 +++++++++++++++++++++++---------------
- 1 file changed, 23 insertions(+), 15 deletions(-)
-
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 266a11514a..e654ea468a 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -1261,7 +1261,7 @@ int vhost_virtqueue_start(struct vhost_dev *dev,
-     BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
-     VirtioBusState *vbus = VIRTIO_BUS(qbus);
-     VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(vbus);
--    hwaddr s, l, a;
-+    hwaddr l;
-     int r;
-     int vhost_vq_index = dev->vhost_ops->vhost_get_vq_index(dev, idx);
-     struct vhost_vring_file file = {
-@@ -1272,8 +1272,17 @@ int vhost_virtqueue_start(struct vhost_dev *dev,
-     };
-     struct VirtQueue *vvq = virtio_get_queue(vdev, idx);
- 
--    a = virtio_queue_get_desc_addr(vdev, idx);
--    if (a == 0) {
-+    vq->desc_size = virtio_queue_get_desc_size(vdev, idx);
-+    vq->desc_phys = virtio_queue_get_desc_addr(vdev, idx);
-+    vq->desc = NULL;
-+    vq->avail_size = virtio_queue_get_avail_size(vdev, idx);
-+    vq->avail_phys = virtio_queue_get_avail_addr(vdev, idx);
-+    vq->avail = NULL;
-+    vq->used_size = virtio_queue_get_used_size(vdev, idx);
-+    vq->used_phys = virtio_queue_get_used_addr(vdev, idx);
-+    vq->used = NULL;
-+
-+    if (vq->desc_phys == 0) {
-         /* Queue might not be ready for start */
-         return 0;
-     }
-@@ -1301,24 +1310,23 @@ int vhost_virtqueue_start(struct vhost_dev *dev,
-         }
-     }
- 
--    vq->desc_size = s = l = virtio_queue_get_desc_size(vdev, idx);
--    vq->desc_phys = a;
--    vq->desc = vhost_memory_map(dev, a, &l, false);
--    if (!vq->desc || l != s) {
-+    l = vq->desc_size;
-+    vq->desc = vhost_memory_map(dev, vq->desc_phys, &l, false);
-+    if (!vq->desc || l != vq->desc_size) {
-         r = -ENOMEM;
-         goto fail_alloc_desc;
-     }
--    vq->avail_size = s = l = virtio_queue_get_avail_size(vdev, idx);
--    vq->avail_phys = a = virtio_queue_get_avail_addr(vdev, idx);
--    vq->avail = vhost_memory_map(dev, a, &l, false);
--    if (!vq->avail || l != s) {
-+
-+    l = vq->avail_size;
-+    vq->avail = vhost_memory_map(dev, vq->avail_phys, &l, false);
-+    if (!vq->avail || l != vq->avail_size) {
-         r = -ENOMEM;
-         goto fail_alloc_avail;
-     }
--    vq->used_size = s = l = virtio_queue_get_used_size(vdev, idx);
--    vq->used_phys = a = virtio_queue_get_used_addr(vdev, idx);
--    vq->used = vhost_memory_map(dev, a, &l, true);
--    if (!vq->used || l != s) {
-+
-+    l = vq->used_size;
-+    vq->used = vhost_memory_map(dev, vq->used_phys, &l, true);
-+    if (!vq->used || l != vq->used_size) {
-         r = -ENOMEM;
-         goto fail_alloc_used;
-     }
--- 
-2.52.0
+Tested-by: Weizhi Li <weizhi.li@spacemit.com>
 
 
