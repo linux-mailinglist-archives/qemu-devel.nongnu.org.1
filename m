@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED8C9CAE3E6
-	for <lists+qemu-devel@lfdr.de>; Mon, 08 Dec 2025 22:35:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0EC7CAE404
+	for <lists+qemu-devel@lfdr.de>; Mon, 08 Dec 2025 22:37:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vSirx-0007ty-23; Mon, 08 Dec 2025 16:34:09 -0500
+	id 1vSisA-0008Bv-84; Mon, 08 Dec 2025 16:34:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
- id 1vSire-0007j3-Ie; Mon, 08 Dec 2025 16:33:52 -0500
+ id 1vSirg-0007jz-Mq; Mon, 08 Dec 2025 16:33:53 -0500
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
- id 1vSirZ-0000jx-VN; Mon, 08 Dec 2025 16:33:49 -0500
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5B8DYYax024916;
- Mon, 8 Dec 2025 21:33:24 GMT
+ id 1vSirc-0000kR-I0; Mon, 08 Dec 2025 16:33:51 -0500
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5B8HbWqA021630;
+ Mon, 8 Dec 2025 21:33:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=AiAZZrvHqDSFbG++q
- aCndOTzNJFqwDcJF/LDsTHP9cs=; b=aCCIr0/GOv2i92Vw9JpUw3DSijJPDUFWR
- Kzz+SLqTAlhDE1qdM34Ut2zLtMFeVk7aVwBgaQmPz8XSC9JRVewzk9n43OTuY7Qe
- n2esr9EKKRe6bZkQwIiDG04i97lpXJJEiM5NBKLg9ZsARRR0wq0iFkoWX8IvSiIM
- tjmDgV8BLpuL2Mmj3VT9fH84jbR8l33s4S3AVLaY6vcnZkxqxAl7e26GkTrGjQiF
- Ow5jkbI5CF7LjpQq4WBW3JoZ/jQ391zjXPW5gsKsCUV1lwetkPN8MotRtLZtj8XR
- rWsFoO5cAhxZM7sXHouNOvtOtGNApZt2KSrjTMopdCxwUDkVbiXrA==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4avc539ajd-1
+ :mime-version:references:subject:to; s=pp1; bh=ZGtUQz3u27Tl6WiRg
+ oUc5gzosfSK1k0Qda/ebvgo2vQ=; b=jcim+3jxHN0lA+7Q6FLIk3tfjwDUOXwwX
+ /bBNl2ZMhIZ2eH0miqHC8jmP5/k0NB+UmoYvrmozEQRPnKTk5e1M+473ls33BouO
+ q9P30uUeLGbZtp16Ck9FjjGNuLQjXVUwNHh8hblw6+8Jv3SHccs3Lc3Zb4x/2V9u
+ DunwNNGT02nzXLPpexBn+VZOHQO7D1sq2B3MWwPr53jjVY0t94JDuiCVJmEPCK2r
+ 7OOtJDjSnYQV0mkB9rQL4jAIwheStiRL79ybWZ4VYvyJZsiR+SBH19sLALMQvnPs
+ CueM9OoN/MIJFMX+RlOJOelPmPLWD7bBnQ3yTWRMjjNppA0UJTTHw==
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4av9wvhmn8-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Dec 2025 21:33:24 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5B8HxMZj008447;
- Mon, 8 Dec 2025 21:33:23 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4avytmqs3k-1
+ Mon, 08 Dec 2025 21:33:26 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5B8JdMnj026807;
+ Mon, 8 Dec 2025 21:33:26 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4aw1h0yf94-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Dec 2025 21:33:23 +0000
+ Mon, 08 Dec 2025 21:33:26 +0000
 Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
  [10.39.53.229])
- by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 5B8LX7Bi25232032
+ by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 5B8LXOq723069212
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 8 Dec 2025 21:33:07 GMT
+ Mon, 8 Dec 2025 21:33:24 GMT
 Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 766245805B;
+ by IMSVA (Postfix) with ESMTP id 56AAE58059;
+ Mon,  8 Dec 2025 21:33:24 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9E97358058;
  Mon,  8 Dec 2025 21:33:22 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BC38858058;
- Mon,  8 Dec 2025 21:33:20 +0000 (GMT)
 Received: from fedora-workstation.ibmuc.com (unknown [9.61.66.246])
  by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  8 Dec 2025 21:33:20 +0000 (GMT)
+ Mon,  8 Dec 2025 21:33:22 +0000 (GMT)
 From: Zhuoying Cai <zycai@linux.ibm.com>
 To: thuth@redhat.com, berrange@redhat.com, richard.henderson@linaro.org,
  david@redhat.com, jrossi@linux.ibm.com, qemu-s390x@nongnu.org,
@@ -63,36 +63,36 @@ Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, pasic@linux.ibm.com,
  borntraeger@linux.ibm.com, farman@linux.ibm.com,
  mjrosato@linux.ibm.com, iii@linux.ibm.com, eblake@redhat.com,
  armbru@redhat.com, zycai@linux.ibm.com, alifm@linux.ibm.com
-Subject: [PATCH v7 17/29] pc-bios/s390-ccw: Refactor zipl_run()
-Date: Mon,  8 Dec 2025 16:32:34 -0500
-Message-ID: <20251208213247.702569-18-zycai@linux.ibm.com>
+Subject: [PATCH v7 18/29] pc-bios/s390-ccw: Rework zipl_load_segment function
+Date: Mon,  8 Dec 2025 16:32:35 -0500
+Message-ID: <20251208213247.702569-19-zycai@linux.ibm.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251208213247.702569-1-zycai@linux.ibm.com>
 References: <20251208213247.702569-1-zycai@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDAyMCBTYWx0ZWRfX9tcyMUXUDp9j
- gQNoW1UIcA3E8Tf4ZLTtuhhnIXRPub1POppciO0TCDy+Ib4kLqRKqLxD0XVywgWRBMhVyMf0IYc
- ri5PjVJ+rRF+ACaRk3XULRDa9x1vNwm8qvhH40hmbguQIj2yxHLo3xCp1T762/Er95KBE3EKvkn
- ehFu09jhDjm4dkXCsagQhRPsR/TvfYfWnfyq9F5TX6V4tYOGPrUfuIcB28ff/gy+6R3MSuwjvW1
- 5faxIxqDt+I0fQXVXLIk16J0HR8XJkyYs7cHpmVEplahRAuHlnwdfmm/KtrRQ2amcW2cfCsTnpP
- 35mdtkG92r945ulq2FF/+4AwobF+MV14CCDEKQYlk6e6KgW5N3/dfCul1d0UpY8T9wvIGmy5VWI
- 9Gau2eLSiZBzl/BPEvEwe4gtXA+QeA==
-X-Authority-Analysis: v=2.4 cv=S/DUAYsP c=1 sm=1 tr=0 ts=69374424 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=se3WwofzMRKbtILPOyIA:9
-X-Proofpoint-ORIG-GUID: 7yno2LYz_QdOcym5g3BlPvB6mFec5i-Z
-X-Proofpoint-GUID: 7yno2LYz_QdOcym5g3BlPvB6mFec5i-Z
+X-Proofpoint-GUID: Shcy37rL3ITTK2N_Zj4CR0miXa2zokO7
+X-Proofpoint-ORIG-GUID: Shcy37rL3ITTK2N_Zj4CR0miXa2zokO7
+X-Authority-Analysis: v=2.4 cv=AdS83nXG c=1 sm=1 tr=0 ts=69374427 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8
+ a=wVZWP19Ib8Popp5rDVAA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDAwMCBTYWx0ZWRfX+uHqMYlr4s3g
+ mwWooGWvPYXvWXfCqvn1Z9h2xEFOh/xNAzLYXAR/Ol8xOU8KG+TtHr4zEmDk17DocM0FIu+ykoI
+ IxyG7bjNy2NJy1QRZO/7E8bHK0wPMEK7AbniF07+0sTgOrCkvCz0PzPoN+HWx4jBVPNLtWQ0JGq
+ 26fGfzVYnKIFOpskrk1D12kEvHlIoMFaNnZtYz/facuoglMhDPqBMeqMOPiR/oEqY3iZ6kKXkUf
+ OBySYGJwz7aYJ+1vDl/4Ywqyb202K+S8ZaLI3jCruloSVRpe4Q0k92Zr/b3YK74Nbg5b/d01q26
+ FZeWZqAq/BodvR1fnO9JwLvBv+6XrYB9h0lywMiAyf+g87AD7DvS/xpc26XWvj8JIRPEuHhpSYx
+ 8kFGsYWdzCV8hDLkbNrX63fjbksplA==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-06_02,2025-12-04_04,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 clxscore=1015 impostorscore=0 suspectscore=0
- lowpriorityscore=0 adultscore=0 spamscore=0 bulkscore=0 priorityscore=1501
+ suspectscore=0 adultscore=0 priorityscore=1501 spamscore=0 phishscore=0
+ lowpriorityscore=0 bulkscore=0 clxscore=1015 malwarescore=0 impostorscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512060020
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512060000
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=zycai@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -118,90 +118,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Refactor to enhance readability before enabling secure IPL in later
-patches.
+Make the address variable a parameter of zipl_load_segment and return
+segment length.
+
+Modify this function to allow the caller to specify a memory address
+where segment data should be loaded into.
+
+seg_len variable is necessary to store the calculated segment length and
+is used during signature verification. Return the length on success, or
+a negative return code on failure.
 
 Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- pc-bios/s390-ccw/bootmap.c | 51 ++++++++++++++++++++++++--------------
- 1 file changed, 33 insertions(+), 18 deletions(-)
+ pc-bios/s390-ccw/bootmap.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
 diff --git a/pc-bios/s390-ccw/bootmap.c b/pc-bios/s390-ccw/bootmap.c
-index 0f8baa0198..22801ca746 100644
+index 22801ca746..9a03eab6ed 100644
 --- a/pc-bios/s390-ccw/bootmap.c
 +++ b/pc-bios/s390-ccw/bootmap.c
-@@ -674,12 +674,42 @@ static int zipl_load_segment(ComponentEntry *entry)
-     return 0;
+@@ -613,19 +613,22 @@ static int ipl_eckd(void)
+  * IPL a SCSI disk
+  */
+ 
+-static int zipl_load_segment(ComponentEntry *entry)
++/*
++ * Returns: length of the segment on success,
++ *          negative value on error.
++ */
++static int zipl_load_segment(ComponentEntry *entry, uint64_t address)
+ {
+     const int max_entries = (MAX_SECTOR_SIZE / sizeof(ScsiBlockPtr));
+     ScsiBlockPtr *bprs = (void *)sec;
+     const int bprs_size = sizeof(sec);
+     block_number_t blockno;
+-    uint64_t address;
+     int i;
+     char err_msg[] = "zIPL failed to read BPRS at 0xZZZZZZZZZZZZZZZZ";
+     char *blk_no = &err_msg[30]; /* where to print blockno in (those ZZs) */
++    int seg_len = 0;
+ 
+     blockno = entry->data.blockno;
+-    address = entry->compdat.load_addr;
+ 
+     debug_print_int("loading segment at block", blockno);
+     debug_print_int("addr", address);
+@@ -668,10 +671,12 @@ static int zipl_load_segment(ComponentEntry *entry)
+                 puts("zIPL load segment failed");
+                 return -EIO;
+             }
++
++            seg_len += bprs->size * (bprs[i].blockct + 1);
+         }
+     } while (blockno);
+ 
+-    return 0;
++    return seg_len;
  }
  
-+static int zipl_run_normal(ComponentEntry **entry_ptr, uint8_t *tmp_sec)
-+{
-+    ComponentEntry *entry = *entry_ptr;
-+
-+    while (entry->component_type == ZIPL_COMP_ENTRY_LOAD ||
-+           entry->component_type == ZIPL_COMP_ENTRY_SIGNATURE) {
-+
-+        /* Secure boot is off, so we skip signature entries */
-+        if (entry->component_type == ZIPL_COMP_ENTRY_SIGNATURE) {
-+            entry++;
-+            continue;
-+        }
-+
-+        if (zipl_load_segment(entry)) {
-+            return -1;
-+        }
-+
-+        entry++;
-+
-+        if ((uint8_t *)&entry[1] > tmp_sec + MAX_SECTOR_SIZE) {
-+            puts("Wrong entry value");
-+            return -EINVAL;
-+        }
-+    }
-+
-+    *entry_ptr = entry;
-+    return 0;
-+}
-+
- /* Run a zipl program */
- static int zipl_run(ScsiBlockPtr *pte)
- {
-     ComponentHeader *header;
-     ComponentEntry *entry;
-     uint8_t tmp_sec[MAX_SECTOR_SIZE];
-+    int rc;
+ static int zipl_run_normal(ComponentEntry **entry_ptr, uint8_t *tmp_sec)
+@@ -687,7 +692,7 @@ static int zipl_run_normal(ComponentEntry **entry_ptr, uint8_t *tmp_sec)
+             continue;
+         }
  
-     if (virtio_read(pte->blockno, tmp_sec)) {
-         puts("Cannot read header");
-@@ -700,25 +730,10 @@ static int zipl_run(ScsiBlockPtr *pte)
- 
-     /* Load image(s) into RAM */
-     entry = (ComponentEntry *)(&header[1]);
--    while (entry->component_type == ZIPL_COMP_ENTRY_LOAD ||
--           entry->component_type == ZIPL_COMP_ENTRY_SIGNATURE) {
--
--        /* We don't support secure boot yet, so we skip signature entries */
--        if (entry->component_type == ZIPL_COMP_ENTRY_SIGNATURE) {
--            entry++;
--            continue;
--        }
--
 -        if (zipl_load_segment(entry)) {
--            return -1;
--        }
++        if (zipl_load_segment(entry, entry->compdat.load_addr) < 0) {
+             return -1;
+         }
  
--        entry++;
--
--        if ((uint8_t *)(&entry[1]) > (tmp_sec + MAX_SECTOR_SIZE)) {
--            puts("Wrong entry value");
--            return -EINVAL;
--        }
-+    rc = zipl_run_normal(&entry, tmp_sec);
-+    if (rc) {
-+        return rc;
-     }
- 
-     if (entry->component_type != ZIPL_COMP_ENTRY_EXEC) {
 -- 
 2.51.1
 
