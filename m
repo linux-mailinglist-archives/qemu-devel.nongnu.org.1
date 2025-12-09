@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5F8CCB020C
-	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 14:59:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 110C7CB0219
+	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 15:00:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vSyFW-00052I-DV; Tue, 09 Dec 2025 08:59:30 -0500
+	id 1vSyFW-00052J-Ef; Tue, 09 Dec 2025 08:59:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vSyFS-00051M-VP
- for qemu-devel@nongnu.org; Tue, 09 Dec 2025 08:59:26 -0500
-Received: from mail-wm1-x34a.google.com ([2a00:1450:4864:20::34a])
+ id 1vSyFT-00051N-1Y
+ for qemu-devel@nongnu.org; Tue, 09 Dec 2025 08:59:27 -0500
+Received: from mail-wr1-x449.google.com ([2a00:1450:4864:20::449])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vSyFP-0004BQ-PM
+ id 1vSyFP-0004BM-VF
  for qemu-devel@nongnu.org; Tue, 09 Dec 2025 08:59:26 -0500
-Received: by mail-wm1-x34a.google.com with SMTP id
- 5b1f17b1804b1-477563e531cso36986025e9.1
+Received: by mail-wr1-x449.google.com with SMTP id
+ ffacd0b85a97d-42b2ffbba05so2638007f8f.0
  for <qemu-devel@nongnu.org>; Tue, 09 Dec 2025 05:59:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=google.com; s=20230601; t=1765288762; x=1765893562; darn=nongnu.org;
  h=to:from:subject:date:message-id:auto-submitted:sender:reply-to
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=FrrRSFSHKdRze+d8T34+5uaOM8Hfrd7gc1920BFNAfU=;
- b=cdQqYumcSqGYqSqCKY7oVFsNTHorGl67UdieM8lwR3TbQj1ychp7QM6aTJgbGDXnpP
- vB5C078hwq3OMrefRVdXlAxFS0wJDDyB7tbv+NwiSDKrjNfwp7OAWhYZc6veRj1UcV65
- fMS7+QrZSGB9Ehn4PtW+C+GbjEiu0ZxVpRr8Z3KB4SuRFvK/LKo1l74R1ViRv8Gknci2
- vedEP1m5jiToTFYB5zpMCM4JzZYemrFDKrPWv1MKxc4Sdspe5z92UaJbbfs+ey0RmDHl
- limklaLaM5c6HR2Kx04/6v7DOc+4NJZhrUuqp/vbcwml3pCV7Hi0PoIUvALcQyZeE6qk
- N+Qg==
+ bh=zUX1hTT6YeANogp4Ktoix+dqaaW5b4qThL9x+sm+lkk=;
+ b=ol0Ug0yXgP6rknuKH1o1xxSI/Da//L2Hj1YTIR3kYt6uwotrq/Yx9+BnymKlMehdjX
+ zuh5M0mxVeRuF6CcFsfdCExrGIFqJYD/tSJEiPIDQ/Y74fLNxgFLIT/eXI+tlRuiUkjg
+ Ofm2pJkPQDdBocyhf3kFpw/YAVv8qOa9YE7OA0Lp5cVm3KEtt2+iHs7jTeLmA4v0IKiT
+ 0oIW1hgyS/3Tf4FCGmqnD0B7b9hvxKeKPD4B+Rt5P2zJTpPSzuTN/DRcVTAEqOjDwJdc
+ qPxd7Fp59B2tBmt9XQBMzCw5LayfoJXPndaQPkkPwRGhqQAp1gRwX+QMulYwu0UpVyAo
+ FMcQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1765288762; x=1765893562; darn=nongnu.org;
  h=to:from:subject:date:message-id:auto-submitted:sender:reply-to
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=FrrRSFSHKdRze+d8T34+5uaOM8Hfrd7gc1920BFNAfU=;
- b=NcCWeG+HZGQWrQ96ggWx79C3vZ5lpnkNkHn/HUu0kQVqWEaDB3HuirRt8b2Wt03LOb
- YOoB3gULz9v5LS0C2JYwPZVBGkKWlKyKgSGkqVAH6N9/03yIJB7WuEXhFFdeuxjyn1JP
- poVOsiLPUWldK6JwoP3spW+hP4Sk/uE7amIaeqSH9VUCYGgSQ6dAoqztDO2cc+WR42hB
- y21l23+qov6lvznL4ndKvK66kwUcjBzjI6SUFbaZByKsF/MmQDeghkT5mAxc8m5NdMXD
- oV6zdnxIZ7tmLShi4NlxZSYJp1C3CBp5F8VIN6vaGCZojxVCulUSv2y0Xdtp2xB6HUIZ
- fzDQ==
+ bh=zUX1hTT6YeANogp4Ktoix+dqaaW5b4qThL9x+sm+lkk=;
+ b=heu7FugQLqcIClxOFn9Ys+emAoEcd4RE0e98la8GkcCMzdmzBOL9uri/VFe1XbIRNn
+ V7XUJdsFE0kkOVhmGJF1nQmQmlV0hX5+75yP8iXU8cvJXSFMzbAJje0Q8/dDZZK2qx8E
+ q6TaX2sPNuMCbe+F18DSpSX0cKYhgCqqijtv7FFj7n4TXk2Hd5/QiL257Ma/j+ldouY9
+ 9WZZjMBUYAJyiCPMP+XvQSYAFj3Ooikp+WYTAaRmaxwbvFeb9MdM+GDTjjOD1cI3u7jJ
+ gN7SVeOcDZWKuJ67oq2mVDS7aWamFCT6CdkNw6n87rQ6KJY6cMNxpt1MjWhEbewnWyga
+ ffPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1765288762; x=1765893562;
  h=to:from:subject:date:message-id:auto-submitted:sender:reply-to
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=FrrRSFSHKdRze+d8T34+5uaOM8Hfrd7gc1920BFNAfU=;
- b=rAWsZs83+kS0Rtz4kkK11hnik+cRP3JZjz9iz48mTg3iykPEv7w2Bf/RE8W8eP9dCL
- os+yma/0icT69dYD9ElhHCcotFrw3BWNJij194yJ41WSFwtvmKnqzXYfxiMAQ6eKVAB9
- rFgdviL6NOKBHle4ZPQAdt7azKkEGUPNJkDcov50LiERneGZ2FEzCw1x896Mgqq1PAOd
- AnmgkJam6zMsBr/lkw2qZW7Lns2XOIr8u1WLmu+802q/E6dOgAJNfC1bMGAhAyWcx9ym
- JR7kxAqSvQcE/AAsiw8nfiOkWCqZAqRbdln932K8PCt+q8lERJILUE0gikhSEXIn/PcX
- 2uJw==
-X-Gm-Message-State: AOJu0YzwnPtohxmm60VdiApaNB1tdzBeVeG842t6k6PuttomgsR0sbMQ
- S75UdUvtSvtV3XNOX0A2KUGyKGx+vSBoYVMr4MSNN+tLAQ0YPekxJHxanFsLH/gpiRGIyOz7J7B
- tM7qY/G0amM6Nc11KU9JRuv2rV4jK9rlzb2upaP/mWENmr2OkaevOug==
-X-Google-Smtp-Source: AGHT+IGOhEwBb/hooe5oPL/uF++dVsGNvGmkUUj1S+wo6WpB1Kw6jxtsebh0fjgDVFiivQ5FAi6Px/YxCP9CRBwXIK78
+ bh=zUX1hTT6YeANogp4Ktoix+dqaaW5b4qThL9x+sm+lkk=;
+ b=ga1RcI3+xdPccTSJEWmMvo/VZGfZlPHZTAy4ueZSAn1NxrpsgAn5l5lF9hypEIvyxh
+ PJ4X88OiRtdnSJSeVdK6+c+BCfsxQNs+g70ay30437i1+sgLlyi6/yeg0Lg8mUwtslUH
+ S6zde8w5HCHI3tuH8S/qKoJJRbavt8tDBkk/0Raz04tG6NBDj0JYNkwa5MR3NWjZHTxt
+ qqeCj+DQmKjBbzViZ4LpPKgipL5d1cgVrt6wMgqXdAFLUJFQvs2w6naHO9mx6s0ZWohY
+ sdNRjI7hpAuFElgxkV8Lau/qtuQaifwi9VFI/s/iRrGLVvSEuNgeFAcXw+PONT+bPB3x
+ vJYQ==
+X-Gm-Message-State: AOJu0Yx6govZnuYbCfE85ftmuCkLEtP5UD4bgLaIxgI//V7GsGeap6fR
+ P/2D/CdTP1+fpTVhDsZUUmCdVA1Zj7vDoQYQe0SNYE0VlIjRgBgHdK3PC00u3DPZ2fqw+5ee5Cf
+ QhljU7yfnyQYcfmeH0dfk7jOWEAn8zoGLM80s+uOaHI2oN6czzMGFVg==
+X-Google-Smtp-Source: AGHT+IH+D7gPvHOXJ0qi2Cbi3sZMffx+bSwfNu919IG2r/ZATHmxw6L5dOK1LrAKMCUlTJ/D2b+5qhX+1wRL4z676opO
 MIME-Version: 1.0
-X-Received: by 2002:a05:600c:4351:b0:477:8a2a:1244 with SMTP id
- 5b1f17b1804b1-4793a022fb6mr69143285e9.11.1765288762351; Tue, 09 Dec 2025
+X-Received: by 2002:a05:600c:5489:b0:477:7925:f7fb with SMTP id
+ 5b1f17b1804b1-47939dfcc18mr126156745e9.10.1765288762143; Tue, 09 Dec 2025
  05:59:22 -0800 (PST)
 Auto-Submitted: auto-generated
-Message-ID: <calendar-9cff7c18-bec0-470b-830f-41ccecd114a0@google.com>
+Message-ID: <calendar-6f940d78-d90a-4c31-b808-ed0de0a3cf1c@google.com>
 Date: Tue, 09 Dec 2025 13:59:22 +0000
-Subject: Synced invitation: QEMU/KVM developers conference call @ Tue 23 Dec
- 2025 13:00 - 14:00 (GMT) (qemu-devel@nongnu.org)
+Subject: Synced invitation: QEMU/KVM developers conference call @ Tue 12 May
+ 2026 14:00 - 15:00 (BST) (qemu-devel@nongnu.org)
 From: alex.bennee@linaro.org
 To: qemu-devel@nongnu.org
-Content-Type: multipart/mixed; boundary="0000000000009b375c064585518d"
-Received-SPF: pass client-ip=2a00:1450:4864:20::34a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x34a.google.com
+Content-Type: multipart/mixed; boundary="00000000000097fb5206458551a8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::449;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x449.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,16 +97,16 @@ Reply-To: alex.bennee@linaro.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000009b375c064585518d
-Content-Type: multipart/alternative; boundary="0000000000009b375a064585518b"
+--00000000000097fb5206458551a8
+Content-Type: multipart/alternative; boundary="00000000000097fb5106458551a6"
 
---0000000000009b375a064585518b
+--00000000000097fb5106458551a6
 Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Content-Transfer-Encoding: base64
 
 VGhpcyBlbWFpbCBrZWVwcyB0aGUgZXZlbnQgdXAgdG8gZGF0ZSBpbiB5b3VyIGNhbGVuZGFyLg0K
-DQpRRU1VL0tWTSBkZXZlbG9wZXJzIGNvbmZlcmVuY2UgY2FsbA0KVHVlc2RheSAyMyBEZWMgMjAy
-NSDii4UgMTM6MDAg4oCTIDE0OjAwDQpVbml0ZWQgS2luZ2RvbSBUaW1lDQoNCkxvY2F0aW9uDQpo
+DQpRRU1VL0tWTSBkZXZlbG9wZXJzIGNvbmZlcmVuY2UgY2FsbA0KVHVlc2RheSAxMiBNYXkgMjAy
+NiDii4UgMTQ6MDAg4oCTIDE1OjAwDQpVbml0ZWQgS2luZ2RvbSBUaW1lDQoNCkxvY2F0aW9uDQpo
 dHRwczovL21lZXQuaml0LnNpL2t2bWNhbGxtZWV0aW5nCQ0KaHR0cHM6Ly93d3cuZ29vZ2xlLmNv
 bS91cmw/cT1odHRwcyUzQSUyRiUyRm1lZXQuaml0LnNpJTJGa3ZtY2FsbG1lZXRpbmcmc2E9RCZz
 b3VyY2U9Y2FsZW5kYXImdXN0PTE3NjU3MjA3NDAwMDAwMDAmdXNnPUFPdlZhdzFKaklmeEdmd21I
@@ -143,7 +143,7 @@ IHRvIHRoZSBndWVzdCBsaXN0LCBpbnZpdGUgb3RoZXJzIHJlZ2FyZGxlc3Mgb2YgIA0KdGhlaXIg
 b3duIGludml0YXRpb24gc3RhdHVzLCBvciBtb2RpZnkgeW91ciBSU1ZQLg0KDQpMZWFybiBtb3Jl
 IGh0dHBzOi8vc3VwcG9ydC5nb29nbGUuY29tL2NhbGVuZGFyL2Fuc3dlci8zNzEzNSNmb3J3YXJk
 aW5nDQo=
---0000000000009b375a064585518b
+--00000000000097fb5106458551a6
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -556,12 +556,12 @@ a.org/Event"><meta itemprop=3D"eventStatus" content=3D"http://schema.org/Ev=
 entScheduled"/><span itemprop=3D"publisher" itemscope itemtype=3D"http://sc=
 hema.org/Organization"><meta itemprop=3D"name" content=3D"Google Calendar"/=
 ></span><meta itemprop=3D"eventId/googleCalendar" content=3D"5o8knt1c26rbmq=
-46204rq8mc53_20251223T130000Z"/><span style=3D"display: none; font-size: 1p=
+46204rq8mc53_20260512T130000Z"/><span style=3D"display: none; font-size: 1p=
 x; color: #fff; line-height: 1px; height: 0; max-height: 0; width: 0; max-w=
 idth: 0; opacity: 0; overflow: hidden;" itemprop=3D"name">QEMU/KVM develope=
 rs conference call</span><span aria-hidden=3D"true"><time itemprop=3D"start=
-Date" datetime=3D"20251223T130000Z"></time><time itemprop=3D"endDate" datet=
-ime=3D"20251223T140000Z"></time></span><table border=3D"0" cellpadding=3D"0=
+Date" datetime=3D"20260512T130000Z"></time><time itemprop=3D"endDate" datet=
+ime=3D"20260512T140000Z"></time></span><table border=3D"0" cellpadding=3D"0=
 " cellspacing=3D"0" role=3D"presentation" align=3D"center" style=3D"width:1=
 00%;" class=3D"body-container"><tbody><tr><td style=3D"" class=3D"" align=
 =3D"left"><!--[if mso | IE]><table border=3D"0" cellpadding=3D"0" cellspaci=
@@ -646,14 +646,14 @@ ng: 0; text-align: left; word-break: break-word;;padding-bottom:24px;"><div=
  style=3D"font-family: Roboto, sans-serif;font-style: normal; font-weight: =
 400; font-size: 14px; line-height: 20px; letter-spacing: 0.2px;color: #3c40=
 43; text-decoration: none;" class=3D"primary-text" role=3D"presentation"><s=
-pan aria-hidden=3D"true"><time itemprop=3D"startDate" datetime=3D"20251223T=
-130000Z"></time><time itemprop=3D"endDate" datetime=3D"20251223T140000Z"></=
+pan aria-hidden=3D"true"><time itemprop=3D"startDate" datetime=3D"20260512T=
+130000Z"></time><time itemprop=3D"endDate" datetime=3D"20260512T140000Z"></=
 time></span><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D=
 "presentation" style=3D"padding-bottom: 4px;"><tr><td><h2 class=3D"primary-=
 text" style=3D"font-size: 14px;color: #3c4043; text-decoration: none;font-w=
 eight: 700;-webkit-font-smoothing: antialiased;margin: 0; padding: 0;">When=
-</h2></td></tr></table><span>Tuesday 23 Dec 2025 =E2=8B=85 13:00 =E2=80=93 =
-14:00 (United Kingdom Time)</span></div></td></tr><tr><td style=3D"font-siz=
+</h2></td></tr></table><span>Tuesday 12 May 2026 =E2=8B=85 14:00 =E2=80=93 =
+15:00 (United Kingdom Time)</span></div></td></tr><tr><td style=3D"font-siz=
 e: 0; padding: 0; text-align: left; word-break: break-word;;padding-bottom:=
 24px;"><div style=3D"font-family: Roboto, sans-serif;font-style: normal; fo=
 nt-weight: 400; font-size: 14px; line-height: 20px; letter-spacing: 0.2px;c=
@@ -1035,7 +1035,7 @@ size: 12px; line-height: 16px; mso-line-height-rule: exactly;;color: #1a73e=
 8; text-decoration: none;" href=3D"https://support.google.com/calendar/answ=
 er/37135#forwarding">Learn more</a></p></div></td></tr></tbody></table></td=
 ></tr></tbody></table></span></span></body></html>
---0000000000009b375a064585518b
+--00000000000097fb5106458551a6
 Content-Type: text/calendar; charset="UTF-8"; method=CANCEL
 Content-Transfer-Encoding: quoted-printable
 
@@ -1045,14 +1045,14 @@ VERSION:2.0
 CALSCALE:GREGORIAN
 METHOD:CANCEL
 BEGIN:VEVENT
-DTSTART:20251223T130000Z
-DTEND:20251223T140000Z
+DTSTART:20260512T130000Z
+DTEND:20260512T140000Z
 DTSTAMP:20251209T135922Z
 ORGANIZER;CN=3DQEMU Project Calendar:mailto:c_k5p2lpgvbptdirku5si01blmnk@gr=
 ou
  p.calendar.google.com
-UID:5o8knt1c26rbmq46204rq8mc53_R20251111T130000@google.com
-RECURRENCE-ID:20251223T130000Z
+UID:5o8knt1c26rbmq46204rq8mc53@google.com
+RECURRENCE-ID:20260512T130000Z
 CREATED:20230221T153950Z
 LAST-MODIFIED:20251209T135854Z
 SEQUENCE:2
@@ -1074,29 +1074,29 @@ END:VALARM
 END:VEVENT
 END:VCALENDAR
 
---0000000000009b375a064585518b--
+--00000000000097fb5106458551a6--
 
---0000000000009b375c064585518d
+--00000000000097fb5206458551a8
 Content-Type: application/ics; name="invite.ics"
 Content-Disposition: attachment; filename="invite.ics"
 Content-Transfer-Encoding: base64
 
 QkVHSU46VkNBTEVOREFSDQpQUk9ESUQ6LS8vR29vZ2xlIEluYy8vR29vZ2xlIENhbGVuZGFyIDcw
 LjkwNTQvL0VODQpWRVJTSU9OOjIuMA0KQ0FMU0NBTEU6R1JFR09SSUFODQpNRVRIT0Q6Q0FOQ0VM
-DQpCRUdJTjpWRVZFTlQNCkRUU1RBUlQ6MjAyNTEyMjNUMTMwMDAwWg0KRFRFTkQ6MjAyNTEyMjNU
+DQpCRUdJTjpWRVZFTlQNCkRUU1RBUlQ6MjAyNjA1MTJUMTMwMDAwWg0KRFRFTkQ6MjAyNjA1MTJU
 MTQwMDAwWg0KRFRTVEFNUDoyMDI1MTIwOVQxMzU5MjJaDQpPUkdBTklaRVI7Q049UUVNVSBQcm9q
 ZWN0IENhbGVuZGFyOm1haWx0bzpjX2s1cDJscGd2YnB0ZGlya3U1c2kwMWJsbW5rQGdyb3UNCiBw
-LmNhbGVuZGFyLmdvb2dsZS5jb20NClVJRDo1bzhrbnQxYzI2cmJtcTQ2MjA0cnE4bWM1M19SMjAy
-NTExMTFUMTMwMDAwQGdvb2dsZS5jb20NClJFQ1VSUkVOQ0UtSUQ6MjAyNTEyMjNUMTMwMDAwWg0K
-Q1JFQVRFRDoyMDIzMDIyMVQxNTM5NTBaDQpMQVNULU1PRElGSUVEOjIwMjUxMjA5VDEzNTg1NFoN
-ClNFUVVFTkNFOjINClNUQVRVUzpDQU5DRUxMRUQNClNVTU1BUlk6UUVNVS9LVk0gZGV2ZWxvcGVy
-cyBjb25mZXJlbmNlIGNhbGwNClRSQU5TUDpPUEFRVUUNCkFUVEFDSDtGSUxFTkFNRT1Ob3RlcyDi
-gJMgUUVNVS9LVk0gZGV2ZWxvcGVycyBjb25mZXJlbmNlIGNhbGw7Rk1UVFlQRT1hcHBsaWNhDQog
-dGlvbi92bmQuZ29vZ2xlLWFwcHMuZG9jdW1lbnQ6aHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20vZG9j
-dW1lbnQvZC8xLUx0cTExTEx6DQogeENjY2ZxZk5OS2NNRzc0SE1VSmY2RFVSbVNKQkdRWnJlay9l
-ZGl0DQpCRUdJTjpWQUxBUk0NCkFDVElPTjpFTUFJTA0KREVTQ1JJUFRJT046VGhpcyBpcyBhbiBl
-dmVudCByZW1pbmRlcg0KU1VNTUFSWTpBbGFybSBub3RpZmljYXRpb24NCkFUVEVOREVFOm1haWx0
-bzpxZW11LWRldmVsQG5vbmdudS5vcmcNClRSSUdHRVI6LVAyRA0KRU5EOlZBTEFSTQ0KRU5EOlZF
-VkVOVA0KRU5EOlZDQUxFTkRBUg0K
---0000000000009b375c064585518d--
+LmNhbGVuZGFyLmdvb2dsZS5jb20NClVJRDo1bzhrbnQxYzI2cmJtcTQ2MjA0cnE4bWM1M0Bnb29n
+bGUuY29tDQpSRUNVUlJFTkNFLUlEOjIwMjYwNTEyVDEzMDAwMFoNCkNSRUFURUQ6MjAyMzAyMjFU
+MTUzOTUwWg0KTEFTVC1NT0RJRklFRDoyMDI1MTIwOVQxMzU4NTRaDQpTRVFVRU5DRToyDQpTVEFU
+VVM6Q0FOQ0VMTEVEDQpTVU1NQVJZOlFFTVUvS1ZNIGRldmVsb3BlcnMgY29uZmVyZW5jZSBjYWxs
+DQpUUkFOU1A6T1BBUVVFDQpBVFRBQ0g7RklMRU5BTUU9Tm90ZXMg4oCTIFFFTVUvS1ZNIGRldmVs
+b3BlcnMgY29uZmVyZW5jZSBjYWxsO0ZNVFRZUEU9YXBwbGljYQ0KIHRpb24vdm5kLmdvb2dsZS1h
+cHBzLmRvY3VtZW50Omh0dHBzOi8vZG9jcy5nb29nbGUuY29tL2RvY3VtZW50L2QvMS1MdHExMUxM
+eg0KIHhDY2NmcWZOTktjTUc3NEhNVUpmNkRVUm1TSkJHUVpyZWsvZWRpdA0KQkVHSU46VkFMQVJN
+DQpBQ1RJT046RU1BSUwNCkRFU0NSSVBUSU9OOlRoaXMgaXMgYW4gZXZlbnQgcmVtaW5kZXINClNV
+TU1BUlk6QWxhcm0gbm90aWZpY2F0aW9uDQpBVFRFTkRFRTptYWlsdG86cWVtdS1kZXZlbEBub25n
+bnUub3JnDQpUUklHR0VSOi1QMkQNCkVORDpWQUxBUk0NCkVORDpWRVZFTlQNCkVORDpWQ0FMRU5E
+QVINCg==
+--00000000000097fb5206458551a8--
 
