@@ -2,58 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B44BCAFF9B
-	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 13:52:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25192CB0035
+	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 14:07:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vSxBa-0007x1-5J; Tue, 09 Dec 2025 07:51:22 -0500
+	id 1vSxQV-0004Ia-Rh; Tue, 09 Dec 2025 08:06:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefan@weilnetz.de>)
- id 1vSxBN-0007wY-1P; Tue, 09 Dec 2025 07:51:09 -0500
+ id 1vSxQU-0004IN-Al; Tue, 09 Dec 2025 08:06:46 -0500
 Received: from mail.weilnetz.de ([37.120.169.71]
  helo=mail.v2201612906741603.powersrv.de)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <stefan@weilnetz.de>)
- id 1vSxBI-0004ki-9d; Tue, 09 Dec 2025 07:51:06 -0500
+ id 1vSxQS-0007xs-Vd; Tue, 09 Dec 2025 08:06:46 -0500
 Received: from qemu.weilnetz.de (qemu.weilnetz.de [188.68.58.204])
- by mail.v2201612906741603.powersrv.de (Postfix) with ESMTP id C758FDA0BCC;
- Tue, 09 Dec 2025 13:50:51 +0100 (CET)
+ by mail.v2201612906741603.powersrv.de (Postfix) with ESMTP id 226E2DA0776;
+ Tue, 09 Dec 2025 14:06:34 +0100 (CET)
 Authentication-Results: mail.v2201612906741603.powersrv.de; dkim=none;
  dmarc=fail reason="No valid SPF, No valid DKIM" header.from=weilnetz.de
- (policy=none); 
+ (policy=quarantine); 
  spf=softfail (mail.v2201612906741603.powersrv.de: 188.68.58.204 is neither
  permitted nor denied by domain of stefan@weilnetz.de)
  smtp.mailfrom=stefan@weilnetz.de
 Received: by qemu.weilnetz.de (Postfix, from userid 1000)
- id F0AB9460023; Tue, 09 Dec 2025 13:50:49 +0100 (CET)
-To: Peter Xu <peterx@redhat.com>,
-	Fabiano Rosas <farosas@suse.de>
+ id EE2AB460023; Tue, 09 Dec 2025 13:58:07 +0100 (CET)
+To: "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
 Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org,
  Stefan Weil <sw@weilnetz.de>
-Subject: [PATCH-for-10.2] Fix order of function arguments
-Date: Tue,  9 Dec 2025 13:50:49 +0100
-Message-ID: <20251209125049.764095-1-sw@weilnetz.de>
+Subject: [PATCH-for-10.2] Fix typo in documentation
+Date: Tue,  9 Dec 2025 13:57:59 +0100
+Message-ID: <20251209125759.764296-1-sw@weilnetz.de>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: v2201612906741603
-X-Rspamd-Queue-Id: C758FDA0BCC
-X-Spamd-Bar: ++
-X-Spamd-Result: default: False [2.10 / 12.00]; VIOLATED_DIRECT_SPF(3.50)[];
- BAYES_HAM(-3.00)[100.00%]; MID_CONTAINS_FROM(1.00)[];
+X-Rspamd-Queue-Id: 226E2DA0776
+X-Spamd-Bar: +++++
+X-Spamd-Result: default: False [5.50 / 12.00]; VIOLATED_DIRECT_SPF(3.50)[];
+ BAYES_HAM(-3.00)[100.00%];
+ DMARC_POLICY_QUARANTINE(1.50)[weilnetz.de : No valid SPF, No valid
+ DKIM,quarantine]; SUSPICIOUS_RECIPS(1.50)[];
+ MID_CONTAINS_FROM(1.00)[]; R_MISSING_CHARSET(0.50)[];
  FORGED_SENDER(0.30)[sw@weilnetz.de,stefan@weilnetz.de];
  ONCE_RECEIVED(0.20)[]; RCVD_NO_TLS_LAST(0.10)[];
- DMARC_POLICY_SOFTFAIL(0.10)[weilnetz.de : No valid SPF, No valid
- DKIM,quarantine,sampled_out]; MIME_GOOD(-0.10)[text/plain];
- TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; FROM_HAS_DN(0.00)[];
+ MIME_GOOD(-0.10)[text/plain];
  ASN(0.00)[asn:197540, ipnet:188.68.56.0/22, country:DE];
+ MIME_TRACE(0.00)[0:+]; RCVD_COUNT_ONE(0.00)[1];
+ TO_DN_SOME(0.00)[]; GREYLIST(0.00)[pass,body];
+ RCPT_COUNT_FIVE(0.00)[5]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  FROM_NEQ_ENVFROM(0.00)[sw@weilnetz.de,stefan@weilnetz.de];
- RCVD_COUNT_ONE(0.00)[1]; R_SPF_SOFTFAIL(0.00)[~all:c];
- R_DKIM_NA(0.00)[]; RCPT_COUNT_FIVE(0.00)[5]
+ FROM_HAS_DN(0.00)[]; TAGGED_RCPT(0.00)[];
+ R_SPF_SOFTFAIL(0.00)[~all]; R_DKIM_NA(0.00)[]; ARC_NA(0.00)[];
+ FREEMAIL_TO(0.00)[redhat.com,gmail.com];
+ FREEMAIL_ENVRCPT(0.00)[gmail.com]
 X-Rspamd-Action: no action
 Received-SPF: pass client-ip=37.120.169.71; envelope-from=stefan@weilnetz.de;
  helo=mail.v2201612906741603.powersrv.de
@@ -80,45 +84,24 @@ From:  Stefan Weil via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This fixes a compiler error when higher warning levels are enabled:
-
-../migration/postcopy-ram.c: In function ‘postcopy_temp_pages_setup’:
-../migration/postcopy-ram.c:1483:50: error: ‘g_malloc0_n’ sizes specified with ‘sizeof’ in the earlier argument and not in the later argument [-Werror=calloc-transposed-args]
- 1483 |     mis->postcopy_tmp_pages = g_malloc0_n(sizeof(PostcopyTmpPage), channels);
-      |                                                  ^~~~~~~~~~~~~~~
-../migration/postcopy-ram.c:1483:50: note: earlier argument should specify number of elements, later size of each element
-
-Avoid also a related int/unsigned mismatch by fixing the type of
-two local variables.
-
 Signed-off-by: Stefan Weil <sw@weilnetz.de>
 ---
- migration/postcopy-ram.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/hw/pci/pci.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
-index 3f98dcb6fd..8bef0192aa 100644
---- a/migration/postcopy-ram.c
-+++ b/migration/postcopy-ram.c
-@@ -1467,7 +1467,8 @@ retry:
- static int postcopy_temp_pages_setup(MigrationIncomingState *mis)
- {
-     PostcopyTmpPage *tmp_page;
--    int err, i, channels;
-+    int err;
-+    unsigned i, channels;
-     void *temp_page;
+diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+index 6bccb25ac2..b72e484500 100644
+--- a/include/hw/pci/pci.h
++++ b/include/hw/pci/pci.h
+@@ -751,7 +751,7 @@ int pci_iommu_register_iotlb_notifier(PCIDevice *dev, uint32_t pasid,
  
-     if (migrate_postcopy_preempt()) {
-@@ -1479,7 +1480,7 @@ static int postcopy_temp_pages_setup(MigrationIncomingState *mis)
-     }
- 
-     channels = mis->postcopy_channels;
--    mis->postcopy_tmp_pages = g_malloc0_n(sizeof(PostcopyTmpPage), channels);
-+    mis->postcopy_tmp_pages = g_malloc0_n(channels, sizeof(PostcopyTmpPage));
- 
-     for (i = 0; i < channels; i++) {
-         tmp_page = &mis->postcopy_tmp_pages[i];
+ /**
+  * pci_iommu_unregister_iotlb_notifier: unregister a notifier that has been
+- * registerd with pci_iommu_register_iotlb_notifier.
++ * registered with pci_iommu_register_iotlb_notifier.
+  *
+  * Returns 0 on success, or a negative errno otherwise.
+  *
 -- 
 2.47.3
 
