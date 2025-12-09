@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19369CB091B
-	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 17:31:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 776EBCB0914
+	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 17:30:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vT0bo-00081Z-4n; Tue, 09 Dec 2025 11:30:40 -0500
+	id 1vT0bj-0007EF-8A; Tue, 09 Dec 2025 11:30:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vT0aW-0006I7-RK
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vT0aW-0006I0-89
  for qemu-devel@nongnu.org; Tue, 09 Dec 2025 11:29:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vT0aV-00023A-9g
- for qemu-devel@nongnu.org; Tue, 09 Dec 2025 11:29:20 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vT0aT-00020w-RN
+ for qemu-devel@nongnu.org; Tue, 09 Dec 2025 11:29:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1765297757;
+ s=mimecast20190719; t=1765297753;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iJvrixXAQ7k8N9GTxkVJ0KMkCFWfL/ghfDmftEF0pz4=;
- b=PaNmpJr4+a+7GJU6QjAOa0RzNgDbQkvwhd2PU9SOebSYdVZdRG84/SdO/6dIwI48k5coAR
- vqJSuNzLpccpUtwN3EB/fFHzZ4GjgzsHIszo1/GISz7BIQz7cKD8L8k2IRBRY1rgHbJ7cs
- ngYMNndACzMVbjghzl/CqVk0IIOnyFA=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=GT8ILsN7D1OcqOm+bKXlh0KokTwS1VY6k4jMj1L4fKc=;
+ b=e20N9QoLw7iFgtgR98g9u4x7GiZu9qBb0U8HlGf7ZdFwNP6+Fr7REbI4+abPPNkkLp3gQw
+ rDa+JFDOaOrIkoWAKGnB7hHAN30anC1xQ3ahdaw9HG/XgprtiZBJyYJnOEUfoEE9/WOIe9
+ NLDzGR9tY8GxAlRHP+AhjzadhkiFtnI=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-513-jV0lkk8BNDu5-bwpsVmmjQ-1; Tue, 09 Dec 2025 11:29:11 -0500
-X-MC-Unique: jV0lkk8BNDu5-bwpsVmmjQ-1
-X-Mimecast-MFC-AGG-ID: jV0lkk8BNDu5-bwpsVmmjQ_1765297750
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-8823a371984so78088066d6.1
- for <qemu-devel@nongnu.org>; Tue, 09 Dec 2025 08:29:10 -0800 (PST)
+ us-mta-590-b9agDbH3OhqElkI9dFNwtQ-1; Tue, 09 Dec 2025 11:29:12 -0500
+X-MC-Unique: b9agDbH3OhqElkI9dFNwtQ-1
+X-Mimecast-MFC-AGG-ID: b9agDbH3OhqElkI9dFNwtQ_1765297752
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-880441e0f93so162772586d6.1
+ for <qemu-devel@nongnu.org>; Tue, 09 Dec 2025 08:29:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1765297750; x=1765902550; darn=nongnu.org;
+ d=redhat.com; s=google; t=1765297752; x=1765902552; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iJvrixXAQ7k8N9GTxkVJ0KMkCFWfL/ghfDmftEF0pz4=;
- b=crQif6qyOoPxpli3cKI5cZ7jOmM7ijFWV4OkjQ+2EEOOqGzPTYGKdeJZ3VR1jUcKVP
- 3EH9KOGsU7yd00Pn230qiwWpKZmnvPUusokZMTmNcfuKmEBIeNU3vJAOQU3Ev2p+VBwK
- KFshrnbUwX87//ddzbicbYkOQOozHxE9hYfKTnYzuRAVIS3aaqmY6KOEU8cDZO84vfEg
- Wv5v20cIKWplIpjmrmiohH2IBVN1WlrzeqQ6D5ErBOLjo+euGUaN3MxVz8PlOH95tm3S
- VxJ/wvg1y+5sx3h/AMvXJ28zwLaV/9zMrT5BN5kgYJs6xR0rR4+iA7bpx64BwRM4olF8
- Q5oQ==
+ bh=GT8ILsN7D1OcqOm+bKXlh0KokTwS1VY6k4jMj1L4fKc=;
+ b=EzMqqCRjUbc+3iC8mIg248XOsVKRave7l6yChHGKrFP5ByCdHrNBrQSkHQhV8zwjzX
+ HlLzDHiYuTovulDDt3oOs8zCB+jhhJ6vDmGLk/xa5oPJq45yMCxD0m9rYXoPwDnV8AyK
+ Ixz5N2hcP7ipb0m4B67NR+ukaV3OgJVYyKmkAejjMJl4c7N5UQlCL25Rik5wDkfrCC51
+ Jt6dLhMwQKYGMpRisGz4uZW5b7SxB7i62tilmsEmnt1Q3blegwT52TAeUvasA8JF+3eT
+ 0XWh//DZsj57DMhqaJQAtdEqY53CwsaHdwR5OG3x8DlOS+Aze1tPvrMdMpw4XUqwulW3
+ TUTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765297750; x=1765902550;
+ d=1e100.net; s=20230601; t=1765297752; x=1765902552;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=iJvrixXAQ7k8N9GTxkVJ0KMkCFWfL/ghfDmftEF0pz4=;
- b=igmTGT3/uDmNXhDx+rHloOWIuHPP339P15KfxWCfpRzYNiloP4KwpcPpev7RS4eJCk
- cQuyqWKcElZGC3wgaYGNxSK1nfkYAO5aez/syhCj50ISSKSKcCqNGY1UDYMmplqP8ApN
- 2mdAe4NXStA+ElkGxbEAbULa6Pq7IOTjytOfR6mEPEved1lXbUW8pZ85C/uYHTTzxll6
- NE5w5xARY4UVx2kbIyPLUsBRUNHaCowHI0rPzVkaTSV8vU9DakIF/e0JdIX1qY5Wjim9
- kP6Aqfc3ac9LWpybDmeOj/3FP2h1npbqLFHgDWx4W15ThqiHXZ1aC/Xci3cHrdyzQjmF
- hQHQ==
-X-Gm-Message-State: AOJu0YwpuWRPyI5/floRagaCmuDyAX84+RLQNcFAUlQb09qcn4S8F2yu
- E0qESkEXNsXSBiuPeAhlrE3qf4TDwWntPah2JUcvbRFH3kl3JVIXhQehrHbS8ZbXA9yytenZ/SS
- eHI7JiztKX7YndQeKdCikraos5wJxQbVhcgSldSnbNwpiU64zSM3lyzDnqFX4Vc12OOgq4Vuy/R
- /RRInyiLcfHDPvP3Ybh13P9Aawqitlc6bjwNH92Q==
-X-Gm-Gg: AY/fxX4RtgKNxECkZEI275eJrBEj0kpoLTEqASyFNf+YoVY0Jm0JLF1+pFGyG7TpT9z
- Md+pmxKsodrnkpoBjxyq9cC6RbQAKfql/Y2jCoNCpMqZflNrQNbRhAQmrx1oh7C7X74FpeIovHP
- x4xjg5D9EwXtDlOfmYTm89fIpJlxJviI7bJOaRZrMLCVQYUaxgWwXFB4QApU7Px559dWnj8PdgT
- zodsdRQjPSqCnkr5HgOxY+ugeUN8N+ErFonmnlGXgxz9KNr05AG8lYjMHiTixGFeXI18HRhzDNC
- UifnmkYRAXPG0Gd6KMTbZ6m0B9HKYMNpb130MyC7xTXNYxdBfXgOeHqlWYQru94lzoFIW8Zjaje
- Xpu0=
-X-Received: by 2002:a05:6214:8001:b0:888:57bd:8c82 with SMTP id
- 6a1803df08f44-88857bd9014mr52635456d6.0.1765297749996; 
- Tue, 09 Dec 2025 08:29:09 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEPbrLZBfZqSj3/2YP9h5bRvVljZZphNzgEsApv6a7P3ufgyeBlh67xcOJYbl8eX/VR7A24Ug==
-X-Received: by 2002:a05:6214:8001:b0:888:57bd:8c82 with SMTP id
- 6a1803df08f44-88857bd9014mr52634636d6.0.1765297749359; 
- Tue, 09 Dec 2025 08:29:09 -0800 (PST)
+ bh=GT8ILsN7D1OcqOm+bKXlh0KokTwS1VY6k4jMj1L4fKc=;
+ b=aHTzSBsf8fNHyaBmsb5erWLuQxJVmsjf6TxnD3Qsv7tiXRe2XuIPS5fQb7pXP81ffB
+ ufg8In9PYoImz1x+7S925txexKuj2xL8sItpZp67//noY5GBGqS5MXhHAhi3oW75zDpm
+ hKrLfpPku7GzefmxSfMN4EWd7GBsO7vUAtIsZWRxCu7Rguuy+wfXg2RlTyarnDkmHU4a
+ uncr5PeTwrKydC0A4+1LsRPqCF2MwVgD67PCY887rqd4fu7L2GvARvqXGFukhRH3rlHp
+ AnycRp+48Lcvd9swm0CsQ40uiVOzBZKtbVebZZBSXQlMuqxhK1Owxc4Fb/ZbTOqXXgzs
+ Vh0g==
+X-Gm-Message-State: AOJu0YwhuSoRsPu84SAjDnNiDFxMxu8QxKwnM0CrKToq/szH5m3Kn6mm
+ 6wngybgVHnaQEJ7uyBFJhiCdaBulm6f0XuDB+BWMsQOR4Z5F0jYPFi9HVxCrBqXm54Yep/yT1aQ
+ h+Szncl1c/Chx+7e3rqtIFr8VnAqP7zZgQk/5DQI1qY6z8a9BjfX++rFy0ICQJ5EVgmSOcRZMvQ
+ +iURB5F7MntqqZ9Uz3Wopi1Rz6jPMY6ZgvE7NgdA==
+X-Gm-Gg: AY/fxX6FZU1F7krii1m3YVMGkcLOuyovof+ocrLyTF4mPUCOPzte+nPJaTB+0dGUzsg
+ RaKDRQW4/ClNH97CVffMb4kVZk4KFYkwA2K1woVurDrM3Bcza0+ycjmXb7pGnfA8DQ0/nMVbqeT
+ z5vvAp5frW13ftHamvp/AVaiv+sngoaSXfCWNsmh0P3StjUtq6ewLWvhphzL30+T1Hp5DuLNqCR
+ KREBR2QfRZZqjnlY0+2KMsaJYLlJoVV93d9nkZ71EzzpxP02yIa5E2j+w81Bpa0XJSxAm8qTLp2
+ eJzrqYugTqmUiyO8qDw8TUFcQwIrlHLp3lTEdu69aXa1nWzu5OKwOVhTqqfR0PVmTTqkAu/04xi
+ A5Hg=
+X-Received: by 2002:ad4:5d67:0:b0:788:82e0:3a9 with SMTP id
+ 6a1803df08f44-8885c6f8c7bmr28438996d6.21.1765297751766; 
+ Tue, 09 Dec 2025 08:29:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFu4RgggDwK66ekvZpozBlw/LJU0gDvU2FVgPkg09ynmspyG6vpFqoxzEz0CUnC/vE/TcPYTA==
+X-Received: by 2002:ad4:5d67:0:b0:788:82e0:3a9 with SMTP id
+ 6a1803df08f44-8885c6f8c7bmr28438276d6.21.1765297751260; 
+ Tue, 09 Dec 2025 08:29:11 -0800 (PST)
 Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-88827f334d8sm131110256d6.10.2025.12.09.08.29.07
+ 6a1803df08f44-88827f334d8sm131110256d6.10.2025.12.09.08.29.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Dec 2025 08:29:08 -0800 (PST)
+ Tue, 09 Dec 2025 08:29:10 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Dr . David Alan Gilbert" <dave@treblig.org>,
@@ -100,25 +100,23 @@ Cc: "Dr . David Alan Gilbert" <dave@treblig.org>,
  Juraj Marcin <jmarcin@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, David Gibson <david@gibson.dropbear.id.au>,
- Michael Roth <michael.roth@amd.com>
-Subject: [PATCH RFC 05/10] confidential guest support: Inherit from
- TYPE_OBJECT_COMPAT
-Date: Tue,  9 Dec 2025 11:28:52 -0500
-Message-ID: <20251209162857.857593-6-peterx@redhat.com>
+ Eric Blake <eblake@redhat.com>
+Subject: [PATCH RFC 06/10] qom: Unexport object_apply_compat_props()
+Date: Tue,  9 Dec 2025 11:28:53 -0500
+Message-ID: <20251209162857.857593-7-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251209162857.857593-1-peterx@redhat.com>
 References: <20251209162857.857593-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -136,44 +134,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, only SEV uses it, but it shouldn't hurt either to make the root
-class (CONFIDENTIAL_GUEST_SUPPORT) to inherit from TYPE_OBJECT_COMPAT, so
-that it'll apply compat properties when object is initialized.  With it,
-drop the explicit call.
+Now all users switched to TYPE_OBJECT_COMPAT, we do not need to export this
+function anymore.  Instead, future objects should inherit from
+TYPE_OBJECT_COMPAT when compat properties are needed.
 
-Cc: David Gibson <david@gibson.dropbear.id.au>
-Cc: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- backends/confidential-guest-support.c | 2 +-
- target/i386/sev.c                     | 1 -
+ include/qom/object.h | 1 -
+ qom/object.c         | 2 +-
  2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/backends/confidential-guest-support.c b/backends/confidential-guest-support.c
-index 156dd15e66..855788fac0 100644
---- a/backends/confidential-guest-support.c
-+++ b/backends/confidential-guest-support.c
-@@ -19,7 +19,7 @@
- OBJECT_DEFINE_ABSTRACT_TYPE(ConfidentialGuestSupport,
-                             confidential_guest_support,
-                             CONFIDENTIAL_GUEST_SUPPORT,
--                            OBJECT)
-+                            OBJECT_COMPAT)
+diff --git a/include/qom/object.h b/include/qom/object.h
+index e5b3116ad5..6c7b8fdab1 100644
+--- a/include/qom/object.h
++++ b/include/qom/object.h
+@@ -707,7 +707,6 @@ void object_set_machine_compat_props(GPtrArray *compat_props);
+ void object_set_accelerator_compat_props(GPtrArray *compat_props);
+ void object_register_sugar_prop(const char *driver, const char *prop,
+                                 const char *value, bool optional);
+-void object_apply_compat_props(Object *obj);
  
- static bool check_support(ConfidentialGuestPlatformType platform,
-                          uint16_t platform_version, uint8_t highest_vtl,
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index fd2dada013..084264bc88 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -2865,7 +2865,6 @@ sev_guest_instance_init(Object *obj)
-                                    OBJ_PROP_FLAG_READWRITE);
-     object_property_add_uint32_ptr(obj, "policy", &sev_guest->policy,
-                                    OBJ_PROP_FLAG_READWRITE);
--    object_apply_compat_props(obj);
- 
-     sev_guest->legacy_vm_type = ON_OFF_AUTO_AUTO;
+ /**
+  * object_set_props:
+diff --git a/qom/object.c b/qom/object.c
+index 581c041b08..176b859f36 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -530,7 +530,7 @@ void object_set_accelerator_compat_props(GPtrArray *compat_props)
+     object_compat_props[0] = compat_props;
  }
+ 
+-void object_apply_compat_props(Object *obj)
++static void object_apply_compat_props(Object *obj)
+ {
+     int i;
+ 
 -- 
 2.50.1
 
