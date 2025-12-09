@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 776EBCB0914
-	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 17:30:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFDD9CB0920
+	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 17:31:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vT0bj-0007EF-8A; Tue, 09 Dec 2025 11:30:35 -0500
+	id 1vT0bj-000794-0J; Tue, 09 Dec 2025 11:30:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vT0aW-0006I0-89
- for qemu-devel@nongnu.org; Tue, 09 Dec 2025 11:29:22 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vT0aV-0006Ho-HG
+ for qemu-devel@nongnu.org; Tue, 09 Dec 2025 11:29:21 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vT0aT-00020w-RN
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vT0aT-00022w-RU
  for qemu-devel@nongnu.org; Tue, 09 Dec 2025 11:29:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1765297753;
+ s=mimecast20190719; t=1765297755;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GT8ILsN7D1OcqOm+bKXlh0KokTwS1VY6k4jMj1L4fKc=;
- b=e20N9QoLw7iFgtgR98g9u4x7GiZu9qBb0U8HlGf7ZdFwNP6+Fr7REbI4+abPPNkkLp3gQw
- rDa+JFDOaOrIkoWAKGnB7hHAN30anC1xQ3ahdaw9HG/XgprtiZBJyYJnOEUfoEE9/WOIe9
- NLDzGR9tY8GxAlRHP+AhjzadhkiFtnI=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=2AcrUG9/G/Q5aMS5M3ggKBjSnTnF15A94G53j7mYT0M=;
+ b=EXQIwvqaGCMUJRwTDsxZzuRG/Sbtb3q/kgnp10ho8jSHMXBYJUQtZ5k8iagtrezSnz75s3
+ ctjqhLuKreoQ9WHbLqaYfKJoTKq9ntkGQ/5tPiwP7W9Id+qMqd0dOSsRAVLk82CDJ7H3dj
+ Go3dZx2vwWw0pXx+sqjStxyMOQ+uuJE=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-590-b9agDbH3OhqElkI9dFNwtQ-1; Tue, 09 Dec 2025 11:29:12 -0500
-X-MC-Unique: b9agDbH3OhqElkI9dFNwtQ-1
-X-Mimecast-MFC-AGG-ID: b9agDbH3OhqElkI9dFNwtQ_1765297752
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-880441e0f93so162772586d6.1
- for <qemu-devel@nongnu.org>; Tue, 09 Dec 2025 08:29:12 -0800 (PST)
+ us-mta-616-tw9MTtxIOYCVu6bQPEVcNQ-1; Tue, 09 Dec 2025 11:29:14 -0500
+X-MC-Unique: tw9MTtxIOYCVu6bQPEVcNQ-1
+X-Mimecast-MFC-AGG-ID: tw9MTtxIOYCVu6bQPEVcNQ_1765297754
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-8b2e9b2608dso948953685a.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Dec 2025 08:29:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1765297752; x=1765902552; darn=nongnu.org;
+ d=redhat.com; s=google; t=1765297753; x=1765902553; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GT8ILsN7D1OcqOm+bKXlh0KokTwS1VY6k4jMj1L4fKc=;
- b=EzMqqCRjUbc+3iC8mIg248XOsVKRave7l6yChHGKrFP5ByCdHrNBrQSkHQhV8zwjzX
- HlLzDHiYuTovulDDt3oOs8zCB+jhhJ6vDmGLk/xa5oPJq45yMCxD0m9rYXoPwDnV8AyK
- Ixz5N2hcP7ipb0m4B67NR+ukaV3OgJVYyKmkAejjMJl4c7N5UQlCL25Rik5wDkfrCC51
- Jt6dLhMwQKYGMpRisGz4uZW5b7SxB7i62tilmsEmnt1Q3blegwT52TAeUvasA8JF+3eT
- 0XWh//DZsj57DMhqaJQAtdEqY53CwsaHdwR5OG3x8DlOS+Aze1tPvrMdMpw4XUqwulW3
- TUTQ==
+ bh=2AcrUG9/G/Q5aMS5M3ggKBjSnTnF15A94G53j7mYT0M=;
+ b=NgqWKAE1jvDJZLqnv7gRaa6Qg7D+01BRviJiKIxH02BYE0cTjlrevHytza0mTz6glV
+ Kgfe9aYXjOrckvXkEyJ9HsABMr+ZRp9m5KYeWCzV4NzKJxvI9QpM6fQtJngjE6+roeEF
+ EVHRdSsfLYmL1IJ1viWU7eFTwiRGgHbvNNGI/Q/KjK7FpoIZZFGbSTz84gFle8RD5VIU
+ hBW2E8TEiuaU+WFd38BPz77wvV5z/AhutcYhSv8yOGkfEJjWGgl58fAcnKkiKcSmD7iD
+ SXq7mf1b6skw/R+6Q+5KCukKkpiAV6V6R2wmnOW6NOBt3fRU2tCjf/BpVeDLeZ+wk/Xu
+ h+uA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765297752; x=1765902552;
+ d=1e100.net; s=20230601; t=1765297753; x=1765902553;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=GT8ILsN7D1OcqOm+bKXlh0KokTwS1VY6k4jMj1L4fKc=;
- b=aHTzSBsf8fNHyaBmsb5erWLuQxJVmsjf6TxnD3Qsv7tiXRe2XuIPS5fQb7pXP81ffB
- ufg8In9PYoImz1x+7S925txexKuj2xL8sItpZp67//noY5GBGqS5MXhHAhi3oW75zDpm
- hKrLfpPku7GzefmxSfMN4EWd7GBsO7vUAtIsZWRxCu7Rguuy+wfXg2RlTyarnDkmHU4a
- uncr5PeTwrKydC0A4+1LsRPqCF2MwVgD67PCY887rqd4fu7L2GvARvqXGFukhRH3rlHp
- AnycRp+48Lcvd9swm0CsQ40uiVOzBZKtbVebZZBSXQlMuqxhK1Owxc4Fb/ZbTOqXXgzs
- Vh0g==
-X-Gm-Message-State: AOJu0YwhuSoRsPu84SAjDnNiDFxMxu8QxKwnM0CrKToq/szH5m3Kn6mm
- 6wngybgVHnaQEJ7uyBFJhiCdaBulm6f0XuDB+BWMsQOR4Z5F0jYPFi9HVxCrBqXm54Yep/yT1aQ
- h+Szncl1c/Chx+7e3rqtIFr8VnAqP7zZgQk/5DQI1qY6z8a9BjfX++rFy0ICQJ5EVgmSOcRZMvQ
- +iURB5F7MntqqZ9Uz3Wopi1Rz6jPMY6ZgvE7NgdA==
-X-Gm-Gg: AY/fxX6FZU1F7krii1m3YVMGkcLOuyovof+ocrLyTF4mPUCOPzte+nPJaTB+0dGUzsg
- RaKDRQW4/ClNH97CVffMb4kVZk4KFYkwA2K1woVurDrM3Bcza0+ycjmXb7pGnfA8DQ0/nMVbqeT
- z5vvAp5frW13ftHamvp/AVaiv+sngoaSXfCWNsmh0P3StjUtq6ewLWvhphzL30+T1Hp5DuLNqCR
- KREBR2QfRZZqjnlY0+2KMsaJYLlJoVV93d9nkZ71EzzpxP02yIa5E2j+w81Bpa0XJSxAm8qTLp2
- eJzrqYugTqmUiyO8qDw8TUFcQwIrlHLp3lTEdu69aXa1nWzu5OKwOVhTqqfR0PVmTTqkAu/04xi
- A5Hg=
-X-Received: by 2002:ad4:5d67:0:b0:788:82e0:3a9 with SMTP id
- 6a1803df08f44-8885c6f8c7bmr28438996d6.21.1765297751766; 
- Tue, 09 Dec 2025 08:29:11 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFu4RgggDwK66ekvZpozBlw/LJU0gDvU2FVgPkg09ynmspyG6vpFqoxzEz0CUnC/vE/TcPYTA==
-X-Received: by 2002:ad4:5d67:0:b0:788:82e0:3a9 with SMTP id
- 6a1803df08f44-8885c6f8c7bmr28438276d6.21.1765297751260; 
- Tue, 09 Dec 2025 08:29:11 -0800 (PST)
+ bh=2AcrUG9/G/Q5aMS5M3ggKBjSnTnF15A94G53j7mYT0M=;
+ b=e78pz9bhuWQQAVylWatAQAThRBZoYACVvVcjE6WjMeIyzZYU+Y1seIUQzTZrPmt+vn
+ kGanBRhStMmHN8nmsT/TWwLO8avBjpvfkoo37SXPIA0Sy9atD4A3+TguN++kl3OQpj1G
+ tMOjuWnAlc5SBpzNlDX/GjnLdEypzIe+/btRF4uulMqz3Pkf7NBORdrnGmpqjiH/3qXa
+ hUVPcRGerucS3g3TdmO3qY0klYmTXdCKslD7Kpn2Aq9o2UDTF1baGfFYRvFP/kvrfqpi
+ gldUMysQtN6kM1gI1m3DuEnq32d9LV6Lh0Gw0y1Yp/ERY+bnN2wOlCyA65pemic47CQ9
+ T4LA==
+X-Gm-Message-State: AOJu0Yz8iy/oNl5NigRM1K4J69J5qOM2tr22P7uw11YDL7afIvs8E8uE
+ PL7BbB5RErUr8qRUSAW3aCYhFwykxDtQL6CQOK0hT4OXbaVtmDV/Juooasyg615SQYAcAcwEAxZ
+ cZUNxWDdne1OVAzpx+s6Nqbbzfo4SKcYjCS9hmMbWQygeIZELqzPWHiXmMmbRzicTsQjzrNlSgm
+ omJPLfGcZ6pXfrV+cetmW05NndnOvBgjSu5MT+qw==
+X-Gm-Gg: ASbGncvIsFvwdIZ2d4FZ4jJhwQpImh8jRG5J8PGMgPAOG+uNZg3GknylWUdBSvi45t0
+ R3UADIN/id2W7NQN7zLlk/7m9bwgnMSWvz5J2qt33jg1iOzHVw9WivIlvyOhlh4oam4SIKAEezQ
+ 5PqG0XulfO11npPZSUJozhyPDrYgZFkIUPzLJOxHNm8TbtMoecjMbFgRqk2Pz+BlsaYJt/dCh2e
+ a9RmgQRx/VGZnUG8iDi3uw+tegF/uH3EJzKJm/LKkGTmVSphZTnY3ArFYiGmx/xcX4xzdrWcEX4
+ XFwExVtqSN9eXbmCGzajGAd86CVJzFBnmxXWHEwRE7Rbesf46vBrlSIb/24FaMrx0Seet54kwm9
+ kfSg=
+X-Received: by 2002:a05:620a:28c9:b0:8b2:f090:b167 with SMTP id
+ af79cd13be357-8b6a24ff1e5mr1678457385a.24.1765297753482; 
+ Tue, 09 Dec 2025 08:29:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH7x/6p/JI/zPrZ5AOlKdYuWTJDwsemho/emnESwiVfnfgZROCSHYKsaZgkPj7vXY1jIX9bqQ==
+X-Received: by 2002:a05:620a:28c9:b0:8b2:f090:b167 with SMTP id
+ af79cd13be357-8b6a24ff1e5mr1678451385a.24.1765297752921; 
+ Tue, 09 Dec 2025 08:29:12 -0800 (PST)
 Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-88827f334d8sm131110256d6.10.2025.12.09.08.29.09
+ 6a1803df08f44-88827f334d8sm131110256d6.10.2025.12.09.08.29.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Dec 2025 08:29:10 -0800 (PST)
+ Tue, 09 Dec 2025 08:29:12 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Dr . David Alan Gilbert" <dave@treblig.org>,
@@ -101,9 +101,10 @@ Cc: "Dr . David Alan Gilbert" <dave@treblig.org>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eric Blake <eblake@redhat.com>
-Subject: [PATCH RFC 06/10] qom: Unexport object_apply_compat_props()
-Date: Tue,  9 Dec 2025 11:28:53 -0500
-Message-ID: <20251209162857.857593-7-peterx@redhat.com>
+Subject: [PATCH RFC 07/10] qdev: Pave way for exporting Property to be used in
+ non-qdev
+Date: Tue,  9 Dec 2025 11:28:54 -0500
+Message-ID: <20251209162857.857593-8-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251209162857.857593-1-peterx@redhat.com>
 References: <20251209162857.857593-1-peterx@redhat.com>
@@ -134,41 +135,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now all users switched to TYPE_OBJECT_COMPAT, we do not need to export this
-function anymore.  Instead, future objects should inherit from
-TYPE_OBJECT_COMPAT when compat properties are needed.
+Property itself is a well defined interface to either support smooth
+conversions to Object's properties, or supports global properties.  However
+currently it's tied to DeviceClass, aka, qdev. So non-qdev cannot use
+Property list.
+
+My current observation shows Property is almost ready to be used as a
+separated exported interface, except two small things that may need touch
+up internally:
+
+        qdev_prop_allow_set
+        qdev_prop_check_globals
+
+The 1st one currently checks against realize state (which is part of qdev
+attributes only).  The 2nd one checks for all global property being used in
+all non-pluggable qdevs.
+
+We can loose the check in both spots, keep the check if the driver is a
+qdev, otherwise we can safely whitelist non-qdev use cases of Property.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- include/qom/object.h | 1 -
- qom/object.c         | 2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ hw/core/qdev-properties.c | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
-diff --git a/include/qom/object.h b/include/qom/object.h
-index e5b3116ad5..6c7b8fdab1 100644
---- a/include/qom/object.h
-+++ b/include/qom/object.h
-@@ -707,7 +707,6 @@ void object_set_machine_compat_props(GPtrArray *compat_props);
- void object_set_accelerator_compat_props(GPtrArray *compat_props);
- void object_register_sugar_prop(const char *driver, const char *prop,
-                                 const char *value, bool optional);
--void object_apply_compat_props(Object *obj);
- 
- /**
-  * object_set_props:
-diff --git a/qom/object.c b/qom/object.c
-index 581c041b08..176b859f36 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -530,7 +530,7 @@ void object_set_accelerator_compat_props(GPtrArray *compat_props)
-     object_compat_props[0] = compat_props;
- }
- 
--void object_apply_compat_props(Object *obj)
-+static void object_apply_compat_props(Object *obj)
+diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
+index 422a486969..c8110ff0b8 100644
+--- a/hw/core/qdev-properties.c
++++ b/hw/core/qdev-properties.c
+@@ -30,8 +30,14 @@ void qdev_prop_set_after_realize(DeviceState *dev, const char *name,
+ static bool qdev_prop_allow_set(Object *obj, const char *name,
+                                 const PropertyInfo *info, Error **errp)
  {
-     int i;
+-    DeviceState *dev = DEVICE(obj);
++    DeviceState *dev;
++
++    if (!object_dynamic_cast(obj, TYPE_DEVICE)) {
++        /* Currently, non-qdev can always set Property anytime */
++        return true;
++    }
  
++    dev = DEVICE(obj);
+     if (dev->realized && !info->realized_set_allowed) {
+         qdev_prop_set_after_realize(dev, name, errp);
+         return false;
+@@ -987,6 +993,7 @@ int qdev_prop_check_globals(void)
+ 
+     for (i = 0; i < global_props()->len; i++) {
+         GlobalProperty *prop;
++        bool hotpluggable;
+         ObjectClass *oc;
+         DeviceClass *dc;
+ 
+@@ -995,15 +1002,25 @@ int qdev_prop_check_globals(void)
+             continue;
+         }
+         oc = object_class_by_name(prop->driver);
+-        oc = object_class_dynamic_cast(oc, TYPE_DEVICE);
++        oc = object_class_dynamic_cast(oc, TYPE_OBJECT_COMPAT);
+         if (!oc) {
+             warn_report("global %s.%s has invalid class name",
+                         prop->driver, prop->property);
+             ret = 1;
+             continue;
+         }
+-        dc = DEVICE_CLASS(oc);
+-        if (!dc->hotpluggable && !prop->used) {
++        oc = object_class_dynamic_cast(oc, TYPE_DEVICE);
++        if (oc) {
++            dc = DEVICE_CLASS(oc);
++            hotpluggable = dc->hotpluggable;
++        } else {
++            /*
++             * Currently, to be strict to assume all non-qdev are not
++             * hotpluggable (whoever will use -global).
++             */
++            hotpluggable = false;
++        }
++        if (!hotpluggable && !prop->used) {
+             warn_report("global %s.%s=%s not used",
+                         prop->driver, prop->property, prop->value);
+             ret = 1;
 -- 
 2.50.1
 
