@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 137BECB0FED
-	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 21:06:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A6EECB1002
+	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 21:06:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vT3yV-000151-C7; Tue, 09 Dec 2025 15:06:19 -0500
+	id 1vT3yb-0001CC-Ks; Tue, 09 Dec 2025 15:06:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vT3yR-00013D-E4
- for qemu-devel@nongnu.org; Tue, 09 Dec 2025 15:06:15 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vT3yZ-00018G-2a
+ for qemu-devel@nongnu.org; Tue, 09 Dec 2025 15:06:23 -0500
 Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vT3yP-0001JL-Tq
- for qemu-devel@nongnu.org; Tue, 09 Dec 2025 15:06:15 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vT3yX-0001Jc-Kv
+ for qemu-devel@nongnu.org; Tue, 09 Dec 2025 15:06:22 -0500
 Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-42b47f662a0so97715f8f.0
- for <qemu-devel@nongnu.org>; Tue, 09 Dec 2025 12:06:13 -0800 (PST)
+ ffacd0b85a97d-42e2e47be25so3076118f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 09 Dec 2025 12:06:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1765310772; x=1765915572; darn=nongnu.org;
+ d=linaro.org; s=google; t=1765310779; x=1765915579; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=c+XhViGePU7FVlwUFzwVc9jH+z21suBf3LC87dmzJlc=;
- b=w13Tu4tK8PuWEcRVtwPhkaFJEM8ikWbt6hSg+E6zPY75DIV4TSzlPx7HE7NbxWVYH3
- c8rjnqVzrdLT8SifGiMaA69hH7SlVxWds0J3Byrk4H6FYOO8nObYhfjr49/6/Aq2ycci
- eZCEWp+qLHWJAZJhKnaXxoT302GVp2vIYNOrRu5SU5T6ED9NTh8Xjw51moViNp9UOOxK
- /nP/HJrkCj2QvgIWp5rGQFQ6CDY915PlAI8irL6I8b8a1aMI79Isfb0x+XzZ/jZ7sR65
- KOa6VJ/5A6/eVFZNFNxKyi1IOOzC8OGSOgHcoS/Hyb4NDN1XrCPCjBHiPqLlnOqFLiLv
- Ly9w==
+ :reply-to; bh=mm7cQtcn5xkKQTNvHIWxJwwmJPuvh0n6grNa/WZuROg=;
+ b=Ux9q6JUSRviniacjq7AwtRTzhLrPv7PVKnRUHqt+UGTS7ZYSyk200I0ynBQtLzZp2o
+ etJL15E2tD9GS2A0X+jEWTk6IfYhj0KQz0layqg8hfu2tVe7cnR3A9kcAr1FqJtKbsHS
+ oojvpKrRqwVgsjXnJOStvYMwGeGb6P+AYCjpS3hEnYJRc5ug3b1+LjqWNNCV+KyzsCoi
+ VjdKsjnUxg6pPRt1yBRqmzPUFZOpiq6tJzg4g6ilJDWluJG9NJmGFx9JWqgTbJje+Dk/
+ EfLNOspOdodf11dQucTg7iX0ehm8AkMvEIUcenQZ3q89OkKH+aHDdOK19ES5AaEcSK9C
+ 33PQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765310772; x=1765915572;
+ d=1e100.net; s=20230601; t=1765310779; x=1765915579;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=c+XhViGePU7FVlwUFzwVc9jH+z21suBf3LC87dmzJlc=;
- b=JWoAhtVWc2iwM55AO3/dA5W1VO6FaM6/RFC6OTL53kJD/15sgP4jVVZn6RZFLF9yNr
- mADB5TjRTXcvrDVD2GKq+KpIl8r7XR5Vr2bC5OmeKEOMwYayYtKbfg/JISWSmVG5hFbm
- kJQ0mZBfBOku6r54sZU2k5YJDEnHhqBKqEuLwUQe76Fy/MEgJ2ZACJBXikgAb7G3EmcJ
- p7sDzxzjjBpiUZvK/Hc6rciHu9uqa++VJ09juNxsKM+XDsoGAjTgSf84BSo8P79VZfxy
- gUzW2L43VyUPrLOHQyqlfw+hQm+fmFhByhhHEpz3MPoibvKL46JN1pP7OlYEZKpNDtfs
- /6Qw==
-X-Gm-Message-State: AOJu0YzM72KbWu0fn+2JhcKV6ILwemGPWUnkJEna0n35HhgPYQLr0P0C
- 2nqPcn8FbHVIJthkeT9U9X5AYWVuTy9vdIPQV10H+EufqXPUmacNdcnFeEvu0ISH0gHRNLB47M0
- J7320cek=
-X-Gm-Gg: AY/fxX62d5l6TQ0/F1A3OuVD+AI5vGQrhechLgW4luoe5YWxU3tKvK8WrVvBMVPBQKz
- hzht88JEa7r+ju3VsyniEo9w+wKp6oXhlGlwUSrl/VNvyzIUhjvI0CHWSbTHSo0pChBCZhNXLDl
- ATdBQaEb4ZzBAH1jYwA0uZu2Psc1Nnjqw8RLrGYt+vVKJqmkZ8gugnOdgXEZX4ZpCkBEe1yJAzC
- dMqTV4ghRAhTFjtMkmA6rw1CJsln5/QQge6VPHmSGgghUBM9nUVl8eLcVEO31XPj6h5C1MRFCNM
- 02ew/Fzw7FxWK5Ec2eHxep1YcY9hYdLiOvYPPMcXvySNvYz1Lm8NpmhHJncPLHnEzJ5Hlg+n1wF
- yDWXnvynKINdAbJk6QMAF6rTb76/17vZXktdOqUB0/Nzt4R8Tx/vfej+oFz4HQX3phoniI9G7Z7
- ynSXyEZwHdsHNG9ND/xsoLipOZk8F+yd/rp6ZgdA/LG1LbNeD6tbYxqEFWCQ5ADRm51Md52ws=
-X-Google-Smtp-Source: AGHT+IF68cz2tJEYTPejxUXhpefjvTppK7MvtvwBwc64fE9WIGCZu9QmP31Ud0GJDrQgsbohPimqFw==
-X-Received: by 2002:a05:6000:1a86:b0:429:d253:8619 with SMTP id
- ffacd0b85a97d-42fa071b78fmr3645039f8f.5.1765310771909; 
- Tue, 09 Dec 2025 12:06:11 -0800 (PST)
+ bh=mm7cQtcn5xkKQTNvHIWxJwwmJPuvh0n6grNa/WZuROg=;
+ b=PxEu+Kn1HNUnznGHotwmBdooSdDIQQVp2BhMq1HOb//WjYYFBb0V1aeWUQGKyE3dHx
+ v636O85mkKQRVlILSr05fEO50oQAWrw6wK7jlB9WkR3XC2LD5L8M6o+vc7qPQn/JVaxn
+ fsNLFLfZYZxj7oI03LSAdDXHqqPtyb72OBgzPKEi5cW65dYXcOX4Kcjp6xV/fZfoh9f4
+ KzLiTlEjpNs1LHP9mCQrkcUDTgBvcLj9phWHXbrYZEfaJdWgsfIkxgPSRcijPYJcxf6P
+ vUxMYd57tET0L8ot7qm1Al/JJsSNX7LFExhS68T4Qj/UZKMu+R55fEdcC5Y1NDRRat20
+ nLUg==
+X-Gm-Message-State: AOJu0YzCDBbfD1rPcfz6LF0HbxsghYucC2iv4EKg6LEtnvoIb4jayp9s
+ gkAcP3DsDE4sd1J5qn5y70JzsNF3rvT3vcp+2KPAq10nhddJfLKmkNQvXAUe4L2x9o1SBn2K0Li
+ 7UvTM/Ho=
+X-Gm-Gg: AY/fxX4RDQ3tBfsmzbtGBXFfjGliwdybtQgnwVpVSIGT52g+RNVt6mY4KKVVFkcR8l5
+ O0iJ1Uau2dbI+GWJCQhYBTMMyAsGkfZX+n9OHmZOwgewEg3u7ZLZYaDaOYgdKElI4Ui/cZZLeEN
+ BeTdmA/UUkyctNpXpwkQpPTnUIblh3JNt4IGVdok+KkJPPjtsfI4d4a49AmyWdTBwZJ+isDHUPe
+ jMk+BqJfYKsJQah7GocxmMIKWvqB3Q/X/4WJZslcYx87Y13xuCyn8B7n64n48QwIgHRHp0TDz9P
+ I810ajE/e8QfdEpTpY3BI/N+UYiPAW+k3FuCNgRxqlcQL8824fbz8SLAOpUrksvc/9OQtbmoX8+
+ 2lZsOCgBsuzgyQPHHTo7PjkUvA5qGSJeIzLBaNcKxKG/mp3fZ34qlPs/KkrMGwMsdQz81aVgY5i
+ oKNypGi5DsrZ88DZOoVbGLk63Kto8hD6xrM8oFXpamHZImAdJe3gjrK8iU1WBu
+X-Google-Smtp-Source: AGHT+IGCcjDLKc1LXLzaeZIIAtfda9+zZCb/+juAMCDdJI4u6knVPBN8+V3lCZ3WxjkaS414aQwgNw==
+X-Received: by 2002:a05:6000:402c:b0:3e8:b4cb:c3dc with SMTP id
+ ffacd0b85a97d-42f89f0943fmr13001691f8f.3.1765310779483; 
+ Tue, 09 Dec 2025 12:06:19 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42f7d222506sm35630666f8f.28.2025.12.09.12.06.11
+ ffacd0b85a97d-42f7d22249esm33049671f8f.25.2025.12.09.12.06.17
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 09 Dec 2025 12:06:11 -0800 (PST)
+ Tue, 09 Dec 2025 12:06:18 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/10] migration: Fix order of function arguments
-Date: Tue,  9 Dec 2025 21:05:32 +0100
-Message-ID: <20251209200537.84097-6-philmd@linaro.org>
+Subject: [PULL 06/10] hw/pci: Fix typo in documentation
+Date: Tue,  9 Dec 2025 21:05:33 +0100
+Message-ID: <20251209200537.84097-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251209200537.84097-1-philmd@linaro.org>
 References: <20251209200537.84097-1-philmd@linaro.org>
@@ -99,52 +99,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stefan Weil <sw@weilnetz.de>
 
-This fixes a compiler error when higher warning levels are enabled:
-
-../migration/postcopy-ram.c: In function ‘postcopy_temp_pages_setup’:
-../migration/postcopy-ram.c:1483:50: error: ‘g_malloc0_n’ sizes specified with ‘sizeof’ in the earlier argument and not in the later argument [-Werror=calloc-transposed-args]
- 1483 |     mis->postcopy_tmp_pages = g_malloc0_n(sizeof(PostcopyTmpPage), channels);
-      |                                                  ^~~~~~~~~~~~~~~
-../migration/postcopy-ram.c:1483:50: note: earlier argument should specify number of elements, later size of each element
-
-Avoid also a related int/unsigned mismatch by fixing the type of
-two local variables.
-
 Signed-off-by: Stefan Weil <sw@weilnetz.de>
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20251209125049.764095-1-sw@weilnetz.de>
-[PMD: Replace g_malloc0_n() by g_new0()]
+Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+Message-ID: <20251209125759.764296-1-sw@weilnetz.de>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Peter Xu <peterx@redhat.com>
-Message-Id: <20251209195010.83219-1-philmd@linaro.org>
 ---
- migration/postcopy-ram.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/hw/pci/pci.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
-index 7c9fe61041f..715ef021a91 100644
---- a/migration/postcopy-ram.c
-+++ b/migration/postcopy-ram.c
-@@ -1467,7 +1467,8 @@ retry:
- static int postcopy_temp_pages_setup(MigrationIncomingState *mis)
- {
-     PostcopyTmpPage *tmp_page;
--    int err, i, channels;
-+    int err;
-+    unsigned i, channels;
-     void *temp_page;
+diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+index 6bccb25ac2f..b72e4845009 100644
+--- a/include/hw/pci/pci.h
++++ b/include/hw/pci/pci.h
+@@ -751,7 +751,7 @@ int pci_iommu_register_iotlb_notifier(PCIDevice *dev, uint32_t pasid,
  
-     if (migrate_postcopy_preempt()) {
-@@ -1479,7 +1480,7 @@ static int postcopy_temp_pages_setup(MigrationIncomingState *mis)
-     }
- 
-     channels = mis->postcopy_channels;
--    mis->postcopy_tmp_pages = g_malloc0_n(sizeof(PostcopyTmpPage), channels);
-+    mis->postcopy_tmp_pages = g_new0(PostcopyTmpPage, channels);
- 
-     for (i = 0; i < channels; i++) {
-         tmp_page = &mis->postcopy_tmp_pages[i];
+ /**
+  * pci_iommu_unregister_iotlb_notifier: unregister a notifier that has been
+- * registerd with pci_iommu_register_iotlb_notifier.
++ * registered with pci_iommu_register_iotlb_notifier.
+  *
+  * Returns 0 on success, or a negative errno otherwise.
+  *
 -- 
 2.51.0
 
