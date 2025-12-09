@@ -2,98 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC53CB103B
-	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 21:10:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 631A6CB10CC
+	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 21:48:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vT42X-0006rW-IR; Tue, 09 Dec 2025 15:10:29 -0500
+	id 1vT4ce-00049Z-Q3; Tue, 09 Dec 2025 15:47:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vT42P-0006p9-W9
- for qemu-devel@nongnu.org; Tue, 09 Dec 2025 15:10:22 -0500
-Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vT42O-00027I-1U
- for qemu-devel@nongnu.org; Tue, 09 Dec 2025 15:10:21 -0500
-Received: by mail-oo1-xc31.google.com with SMTP id
- 006d021491bc7-656de56ce7aso1950310eaf.3
- for <qemu-devel@nongnu.org>; Tue, 09 Dec 2025 12:10:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vT4cc-000496-Sv
+ for qemu-devel@nongnu.org; Tue, 09 Dec 2025 15:47:46 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vT4cb-0002Fl-7N
+ for qemu-devel@nongnu.org; Tue, 09 Dec 2025 15:47:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1765313263;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=lsJ0gRmrsTAhefHx3sWOjQ6vWt+RlN6/TnsAlicPJT0=;
+ b=dzz1rdgDhGTnlAJYVKaUHcL5VL78fB7T2PVZUY6QDEyueiBgFRsOGD0MtdYIPr6TZFXqp8
+ uE1ZT/Q9MvhPKFSQfFM4k/oXSgoT5NKkAc0xmpvVe8DIA6XHnZa7H1mCA9Ee7KRQ3bXo7j
+ GqNzhuYCpRGEOF3pQ6gx6uzpSogRaFM=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-627-x2EpOacaM0eYEWS43pM6Tg-1; Tue, 09 Dec 2025 15:47:37 -0500
+X-MC-Unique: x2EpOacaM0eYEWS43pM6Tg-1
+X-Mimecast-MFC-AGG-ID: x2EpOacaM0eYEWS43pM6Tg_1765313256
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-8b2e2342803so1383549485a.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Dec 2025 12:47:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1765311017; x=1765915817; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=j05eipSotYjHxurEXn1ovuSgQ/l1I6HNQmnbjvpQGGc=;
- b=swuwhg9I0VI+YKf0M3UxNAauUo9l8va6TaO4xMSUQZ6gK+he245ss4VjCPGmWWIVw8
- a2WAKnflgwGdvJNUdulUOC7Z5m9CCSLhVULuW4SrUBipKBv9+LbTDkggNhFP7CkcC2lF
- XH3ctrWppR+iqTU47MuGt2z9UGw34oOtq0IsSCQ9+mC/isUY6Q1jdkNV6GhKIY9SgUBk
- mZvZU6E3L34qhFwJJ/fKv2eIYsgFa+weCvNXcLAWSNfVOqgSAQJbp6QMM7PljQI/SGUq
- mol4AH9s5uvvS5+D5CWjyLgW/2ux0A6dqSxHcdPRkxweUy+GouyBoz5+r0JCW0CAwwAY
- lNnA==
+ d=redhat.com; s=google; t=1765313256; x=1765918056; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=lsJ0gRmrsTAhefHx3sWOjQ6vWt+RlN6/TnsAlicPJT0=;
+ b=Y/YiVAk1PTwLxDjyKGiMqNPGbNa321PV1vf3uxCXMMH9Gk8bX2ydn0CHDfFeulyZGM
+ bgSni9fFsOD4aXyAteC3MLl2Sbtep/R1YHqNkrJzvf1Nd3KItNmoAkyqHcpXOm2AB83R
+ GsYGhUrj0IIfBgsS2gJ/GZtbf4MFlQIkrgM+r5Q0cDYXKEkAFg56thzRsjhYZyKoS3uU
+ dINYABR5QlrHnN1uJv4XX/qIrsWG0LfeJ31zaecx/YAJMP65+4ALgDJ3Lswo/ZomBPPI
+ qrla7POcKvVgrQMUTStoFHlZTEuvq62rKKjfVwzt9LrIyVTpXhaFmaXtV+DyK3WGzrIo
+ x9zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765311017; x=1765915817;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=j05eipSotYjHxurEXn1ovuSgQ/l1I6HNQmnbjvpQGGc=;
- b=I2utduYTZSMPgnqsiU3WBlokhPU7Z0IzzM0CK/HYlz8Mb5WmPUnoANQEf83TA70+cO
- eaQtybHU1xIjIttl5XG5HFT29WMFgLZsyVE0Vs7th6WWnbZJQNoWeB4Q/5r1P+jEmebo
- 53gWW1A2g/JKOhUq2olzGXixqYlTm6hlhrYv92Hxx/cjEptDfSHraEJlDFh7MOgsFE7N
- BgEzYVA0Qq82WduQQATMhK87lTwR0o/O7CIBoPflvPJLD699TtTv2Q/X3N2w7k40og9t
- X0xSx2IWitxbwVZYRKzj4XYMMUuoWyB9G/GHyTslpAUBkyDFxvIBwv7mnWtyWn7M2vCg
- 2xrw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXDa+f4WUIOQY4G+A9miDhPIbuzvveKIjOv4xwertmGFu306CUCdmriWhrMYP1B2BpOHEqVkC2PFbfx@nongnu.org
-X-Gm-Message-State: AOJu0Yz+tsVyr8R4skZs+Sfiajr33dNjjcBGZyqnNk+bbaYAy1jla07O
- LWfYtwjiV9epxQUevWM9qGHQvtGTJQxGZD6F0JZ7gE1bkj7nEEn2v3m96ZVHrrRdFDcqLnFUVlW
- /wAO93ic=
-X-Gm-Gg: ASbGnctCheuje733smHbR1/iSmRYZMDV3xUcbFyMiOKdxmo8ueHctzAiEzLAskILwdK
- AbMHESrW82iLeUUcaG8gxLonEMCAlb4g8Ye6Qh0eGL0YUWmY2zbxlsAY5fxsQKvpR89X0w/OcV4
- 3jBRGvHEX+1IkPLvbwjss4wAdRJeKJld6YHc7lTaU79NZFohExQ3hs1V+PAh8inhH+dG8zinavd
- 65Y5dt5HDP0KBmfK40w+s6ZAkli60u6O3JJ1mOO8iy/CqEy8EyyNeKxwfNWKwAb8rzwkc1Cll4s
- rVkcrfqLHvMGdpIS2e79sOjgZbq+JDvZhYpqqELH2Ei1+ncPcAMDmICEkOcOYvYh/oWHVU+ZxFz
- +4xQK40Ji839qVraPHhPC4ZaTSboXpBOPiL1qm23BPcEWHBrgZ2+NqgkMXduVKNqdojmD6FOx02
- 4/DF4XQ0ylJmezt+0FID0bFMCx+kOq3dSUSn6mC1saXAyGuB5A3Tw=
-X-Google-Smtp-Source: AGHT+IFVjep0ck64+61rnGd7zelMnmOUrwLmnGdeAr5h0wNINIazhgs9LEmhRR1TaSSCxu4BjZIB9A==
-X-Received: by 2002:a05:6820:188e:b0:657:56ba:7455 with SMTP id
- 006d021491bc7-65b2abb3939mr73495eaf.1.1765311017287; 
- Tue, 09 Dec 2025 12:10:17 -0800 (PST)
-Received: from [10.152.62.227] ([172.58.182.152])
- by smtp.gmail.com with ESMTPSA id
- 006d021491bc7-6597ef0ca05sm8084585eaf.11.2025.12.09.12.10.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Dec 2025 12:10:16 -0800 (PST)
-Message-ID: <dd11ee38-13dd-4626-9a84-aff23bfdf365@linaro.org>
-Date: Tue, 9 Dec 2025 14:10:06 -0600
+ d=1e100.net; s=20230601; t=1765313256; x=1765918056;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=lsJ0gRmrsTAhefHx3sWOjQ6vWt+RlN6/TnsAlicPJT0=;
+ b=dn9lDyEi6vkO9pP7GZghPRJuMCP32vb0ST3OkaE5OQmyAdVIJCoWEkoqs05T4+or37
+ xIKxyfILJfjbZcIXqZXAJzyt2hiw5JBuA6eTcsu8Mto6zkU6eAD43mb1jB4HbzBqa1jK
+ WkvWy25BjogF1oIsmnCpqMCujQlZHt7Exq5paKmCYSRVvoGW/eGcKwVKfD7opJiimeAZ
+ qvMQqIJvMBZ9GfMnL9Osd/+7glS4vTEGKo8SK+33IPlRZN9OJKccOVbaqc6+KJ4AVbBe
+ XQPB25/bfdc8ny1cg8JvZNmOpGAZo53beGAejrr4TyVumUg+mMMUa1vJJam3uzyt2J+h
+ sgYg==
+X-Gm-Message-State: AOJu0YzRcyY+ygVwV1bp0zUy16i1L6OK4h7WwgRt4CF8Kd/NTnEr1mYQ
+ SnYuyfLldiQ7/ft0OAgOOE9/TQuGeyjZ6CO3iNOWmuPWNsPb+Y9KPvMlY+Y/gsT6MZ8sKZc99lt
+ 4e8aDv13c5tD9HIeozIwTbeRaQnDRStZpJsgCpE1QGbI01mWO3MKsrDQS
+X-Gm-Gg: ASbGnctYmnqJnYWjs1hpkS9E81capZVpDOeuP6ZIUewIhn4oBJyw1X1l2LXXBUaTvDz
+ 53DW+mS5XNJnQUNpJo9LY/ibCBR7oKmOfoMJ40wBcL/Fs15jVBUPOyWRgk8Jj7tgO37w7BMgSL2
+ vTmbUIaYt222cw+Bp8Zeuu1hqeGtyAFQJT4AhN4WiUeWDLNoXNQ81FIrfI09RmgBQVnD6oIi5pN
+ fhsoNxsM/6aoht4ZLo5oaCJ2poxfXzixB1Y9lx/FSQ3CuO9PlXiu5pfE4gJMbcN8fVhzRhvL0Ju
+ 9U9/ugBRkzgoeoV4u6Q1osyLhJn+E/BLIR7QZj8pamrbEi4TbgM01nLD715ATtvFa5ZKGa4KvDs
+ KKE0=
+X-Received: by 2002:a05:620a:461e:b0:8a3:1b83:1025 with SMTP id
+ af79cd13be357-8ba39f53438mr63242685a.73.1765313256565; 
+ Tue, 09 Dec 2025 12:47:36 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH86txVxEk/WFDkxz60kdt9b+evqGM8WnIP2OAk404+NZfPgwJOTIxsSCCHrJCybxU6FeQLtw==
+X-Received: by 2002:a05:620a:461e:b0:8a3:1b83:1025 with SMTP id
+ af79cd13be357-8ba39f53438mr63237985a.73.1765313256056; 
+ Tue, 09 Dec 2025 12:47:36 -0800 (PST)
+Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-8b6252b5235sm1359353085a.18.2025.12.09.12.47.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 09 Dec 2025 12:47:35 -0800 (PST)
+Date: Tue, 9 Dec 2025 15:47:34 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Chuang Xu <xuchuangxclwt@bytedance.com>
+Cc: qemu-devel@nongnu.org, mst@redhat.com, sgarzare@redhat.com,
+ richard.henderson@linaro.org, pbonzini@redhat.com, david@kernel.org,
+ philmd@linaro.org, farosas@suse.de, Jason Wang <jasowang@redhat.com>
+Subject: Re: [RFC v1 1/2] vhost: eliminate duplicate dirty_bitmap sync when
+ log shared by multiple devices
+Message-ID: <aTiK5opcOOrsFem9@x1.local>
+References: <20251208120952.37563-1-xuchuangxclwt@bytedance.com>
+ <20251208120952.37563-2-xuchuangxclwt@bytedance.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH-for-10.2? v2] tests/tcg: Skip syscall catchpoint test
- if pipe2() syscall not available
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Gustavo Romero <gustavo.romero@linaro.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-References: <20251203143755.65535-1-philmd@linaro.org>
- <eee34d92-3c8d-4ae9-93fc-66bff89d279f@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <eee34d92-3c8d-4ae9-93fc-66bff89d279f@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc31.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251208120952.37563-2-xuchuangxclwt@bytedance.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,87 +117,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/9/25 13:26, Philippe Mathieu-Daudé wrote:
-> ping?
+On Mon, Dec 08, 2025 at 08:09:51PM +0800, Chuang Xu wrote:
+> From: xuchuangxclwt <xuchuangxclwt@bytedance.com>
 > 
-> On 3/12/25 15:37, Philippe Mathieu-Daudé wrote:
->> Avoid the following errors testing i386 and ppc64:
->>
->>    $ make check-tcg
->>    ...
->>      TEST    hitting a syscall catchpoint on i386
->>    warning: File transfers from remote targets can be slow. Use "set sysroot" to access 
->> files locally instead.
->>    Traceback (most recent call last):
->>      File "tests/tcg/multiarch/gdbstub/catch-syscalls.py", line 53, in <module>
->>        main(run_test)
->>      File "tests/guest-debug/test_gdbstub.py", line 53, in main
->>        test()
->>      File "tests/tcg/multiarch/gdbstub/catch-syscalls.py", line 22, in run_test
->>        gdb.execute("catch syscall pipe2 read")
->>    gdb.error: Unknown syscall name 'pipe2'.
->>    qemu-i386: QEMU: Terminated via GDBstub
->>    ...
->>      TEST    hitting a syscall catchpoint on ppc64
->>    warning: File transfers from remote targets can be slow. Use "set sysroot" to access 
->> files locally instead.
->>    Traceback (most recent call last):
->>      File "tests/tcg/multiarch/gdbstub/catch-syscalls.py", line 53, in <module>
->>        main(run_test)
->>      File "tests/guest-debug/test_gdbstub.py", line 53, in main
->>        test()
->>      File "tests/tcg/multiarch/gdbstub/catch-syscalls.py", line 22, in run_test
->>        gdb.execute("catch syscall pipe2 read")
->>    gdb.error: Unknown syscall name 'pipe2'.
->>    qemu-ppc64: QEMU: Terminated via GDBstub
->>    ...
->>      TEST    hitting a syscall catchpoint on ppc64le
->>    warning: File transfers from remote targets can be slow. Use "set sysroot" to access 
->> files locally instead.
->>    Traceback (most recent call last):
->>      File "tests/tcg/multiarch/gdbstub/catch-syscalls.py", line 53, in <module>
->>        main(run_test)
->>      File "tests/guest-debug/test_gdbstub.py", line 53, in main
->>        test()
->>      File "tests/tcg/multiarch/gdbstub/catch-syscalls.py", line 22, in run_test
->>        gdb.execute("catch syscall pipe2 read")
->>    gdb.error: Unknown syscall name 'pipe2'.
->>    qemu-ppc64le: QEMU: Terminated via GDBstub
->>    make: Target 'check-tcg' not remade because of errors.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->> RFC because I have no clue whether SYS_pipe2 should be present
->>      on these targets, I just want the CI to pass full green.
->>
->> v2: Drop extraneous 'if'
->> ---
->>   tests/tcg/multiarch/gdbstub/catch-syscalls.py | 3 ++-
->>   1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/tests/tcg/multiarch/gdbstub/catch-syscalls.py b/tests/tcg/multiarch/ 
->> gdbstub/catch-syscalls.py
->> index ccce35902fb..79c8d532d1f 100644
->> --- a/tests/tcg/multiarch/gdbstub/catch-syscalls.py
->> +++ b/tests/tcg/multiarch/gdbstub/catch-syscalls.py
->> @@ -22,7 +22,8 @@ def run_test():
->>           gdb.execute("catch syscall pipe2 read")
->>       except gdb.error as exc:
->>           exc_str = str(exc)
->> -        if "not supported on this architecture" in exc_str:
->> +        if "not supported on this architecture" in exc_str \
->> +                or "Unknown syscall name 'pipe2'" in exc_str:
->>               print("SKIP: {}".format(exc_str))
->>               return
->>           raise
+> Although logs can now be shared among multiple vhost devices,
+> live migration still performs repeated vhost_log_sync for each
+> vhost device during bitmap_sync, which increases the time required
+> for bitmap_sync and makes it more difficult for dirty pages to converge.
 > 
+> Attempt to eliminate these duplicate sync.
+> 
+> Signed-off-by: Chuang Xu <xuchuangxclwt@bytedance.com>
+
+It looks reasonable from migration POV, but I don't know the details.
+
+Please remember to copy Jason (I added for this email) when repost.
+
+Thanks,
+
+> ---
+>  hw/virtio/vhost.c         | 30 ++++++++++++++++++++++--------
+>  include/hw/virtio/vhost.h |  1 +
+>  2 files changed, 23 insertions(+), 8 deletions(-)
+> 
+> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+> index 266a11514a..d397ca327f 100644
+> --- a/hw/virtio/vhost.c
+> +++ b/hw/virtio/vhost.c
+> @@ -268,14 +268,6 @@ static int vhost_sync_dirty_bitmap(struct vhost_dev *dev,
+>      return 0;
+>  }
+>  
+> -static void vhost_log_sync(MemoryListener *listener,
+> -                          MemoryRegionSection *section)
+> -{
+> -    struct vhost_dev *dev = container_of(listener, struct vhost_dev,
+> -                                         memory_listener);
+> -    vhost_sync_dirty_bitmap(dev, section, 0x0, ~0x0ULL);
+> -}
+> -
+>  static void vhost_log_sync_range(struct vhost_dev *dev,
+>                                   hwaddr first, hwaddr last)
+>  {
+> @@ -287,6 +279,27 @@ static void vhost_log_sync_range(struct vhost_dev *dev,
+>      }
+>  }
+>  
+> +static void vhost_log_sync(MemoryListener *listener,
+> +                          MemoryRegionSection *section)
+> +{
+> +    struct vhost_dev *dev = container_of(listener, struct vhost_dev,
+> +                                         memory_listener);
+> +    struct vhost_log *log = dev->log;
+> +
+> +    if (log && log->refcnt > 1) {
+> +        /*
+> +         * When multiple devices use same log, we implement the logic of
+> +         * vhost_log_sync just like what we do in vhost_log_put.
+> +         */
+> +        log->sync_cnt = (log->sync_cnt + 1) % log->refcnt;
+> +        if (!log->sync_cnt) {
+> +            vhost_log_sync_range(dev, 0, dev->log_size * VHOST_LOG_CHUNK - 1);
+> +        }
+> +    } else {
+> +        vhost_sync_dirty_bitmap(dev, section, 0x0, ~0x0ULL);
+> +    }
+> +}
+> +
+>  static uint64_t vhost_get_log_size(struct vhost_dev *dev)
+>  {
+>      uint64_t log_size = 0;
+> @@ -383,6 +396,7 @@ static struct vhost_log *vhost_log_get(VhostBackendType backend_type,
+>          ++log->refcnt;
+>      }
+>  
+> +    log->sync_cnt = 0;
+>      return log;
+>  }
+>  
+> diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+> index 08bbb4dfe9..43bf1c2150 100644
+> --- a/include/hw/virtio/vhost.h
+> +++ b/include/hw/virtio/vhost.h
+> @@ -50,6 +50,7 @@ typedef unsigned long vhost_log_chunk_t;
+>  struct vhost_log {
+>      unsigned long long size;
+>      int refcnt;
+> +    int sync_cnt;
+>      int fd;
+>      vhost_log_chunk_t *log;
+>  };
+> -- 
+> 2.20.1
 > 
 
-Seems reasonable.
+-- 
+Peter Xu
 
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
-
-
-r~
-s
 
