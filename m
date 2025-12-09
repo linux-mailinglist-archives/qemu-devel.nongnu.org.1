@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96FEECAE705
-	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 01:02:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07129CAE70D
+	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 01:03:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vSlB2-0007Gx-6F; Mon, 08 Dec 2025 19:02:00 -0500
+	id 1vSlBG-0007Nf-VK; Mon, 08 Dec 2025 19:02:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <38GY3aQYKCuslhOVamTbbTYR.PbZdRZh-QRiRYabaTah.beT@flex--yubinz.bounces.google.com>)
- id 1vSlAz-0007Bo-1j
- for qemu-devel@nongnu.org; Mon, 08 Dec 2025 19:01:57 -0500
-Received: from mail-pg1-x54a.google.com ([2607:f8b0:4864:20::54a])
+ <38mY3aQYKCu0njQXcoVddVaT.RdbfTbj-STkTacdcVcj.dgV@flex--yubinz.bounces.google.com>)
+ id 1vSlB1-0007HD-BJ
+ for qemu-devel@nongnu.org; Mon, 08 Dec 2025 19:01:59 -0500
+Received: from mail-pg1-x549.google.com ([2607:f8b0:4864:20::549])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <38GY3aQYKCuslhOVamTbbTYR.PbZdRZh-QRiRYabaTah.beT@flex--yubinz.bounces.google.com>)
- id 1vSlAx-0007T6-KH
- for qemu-devel@nongnu.org; Mon, 08 Dec 2025 19:01:56 -0500
-Received: by mail-pg1-x54a.google.com with SMTP id
- 41be03b00d2f7-b99dc8f439bso9911192a12.2
- for <qemu-devel@nongnu.org>; Mon, 08 Dec 2025 16:01:53 -0800 (PST)
+ <38mY3aQYKCu0njQXcoVddVaT.RdbfTbj-STkTacdcVcj.dgV@flex--yubinz.bounces.google.com>)
+ id 1vSlAz-0007Tf-GV
+ for qemu-devel@nongnu.org; Mon, 08 Dec 2025 19:01:59 -0500
+Received: by mail-pg1-x549.google.com with SMTP id
+ 41be03b00d2f7-bddf9ce4931so8715847a12.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Dec 2025 16:01:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1765238513; x=1765843313; darn=nongnu.org;
+ d=google.com; s=20230601; t=1765238515; x=1765843315; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=otXfzV3x3jmdu0ev4HSkq2G8k4KXSOIhZQ6dmB3c07g=;
- b=tHSZFQE8o22Nc7gkV/pwUNh+VROd/trkXX8Sxptwm56alCfHaFn+mG4RRd8iU8lNnc
- NKWKOOu2ikxOW3ePSUdGvq/N/687w1irq8tEIX6hS3KH/UeK5bUjSnVy04Pdy4YCb1qD
- RFOCP+CoKMd5FAOXjE294SOwosy97cVsjnNOLyfhh78J2BIlZKaNVQ+Oxlb9ZXuYVQIO
- 03VMV8rh1F8N3HU7o0XfJdZGh4OF37QVPpWjM8gpZrGCN+6S/qwkQxiVtKlNbv2lRmka
- 1JZ4eyQBKGuYVxaRQc3pwkf/6h7P1KfPdXCrV6eixa0/ilkJgjpiObckaUGtOh1XobIf
- 0s6w==
+ bh=bSakU68MOAqefQEVfQ70zw66AH6C0ci0Aetl72eSIF0=;
+ b=preq52qJEpKzkWQBgPDZWi0x0BA/cXkWmc1spTvXESZkT1+9ZsOCjJk+gU675oAmkP
+ MaEzozKwZ5+Ib42bDqhUTcNu9XlBAczr0Sb5duMbMFhS6aNHPK8eynpz4YjPRhPaJpv8
+ Fi3xAOIkim1oEA8NLoqnxhCeuENof2Cn9k5kfmCQMbSEA8Xa5gJRaaxX4niwy3cx5Pax
+ 8yJ7pncl8bNuqgezRyQ85vBlCaVDJdHAmXIKNk2+JSieNp9Dt/YWZ8mi18IeguX7YhvM
+ b73i+GEyilXa5N9/t1pCRXFOTV1ixFRGiPVoQtKs41YrH2kh30UTbAt/6oO/lpB132+u
+ S6Fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765238513; x=1765843313;
+ d=1e100.net; s=20230601; t=1765238515; x=1765843315;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=otXfzV3x3jmdu0ev4HSkq2G8k4KXSOIhZQ6dmB3c07g=;
- b=R+mfRictmr2G3VrESy2JSUQtyGJsPaK3LkU4vhmory1o8rl8Eba7Q56JV71X/Kk6kf
- uRYspTgCMX+ZQaQHrvk6Ra83ODVre9KWX71h/ZxoZUqfXCkI8Nk53J2vUgIFqmh/QEVB
- jsH6aafo4ZIJ7rwf+ubc2NqPfYTm1xEh5EiIlR+wLWsuFzKIQDFKOdtuL5Quh+r3VOJT
- kqmnc18nWVs67Rtw3jKszUaOUb4C4zJsY/XB9syLaFUztqaPC8ryJqZqHLHOl5nR4aNa
- qgYwzhjImp0DCPUEes3ggsbs8J7vg/WcJoO5HQY1Xh2WwgnN8zXcRnl0mKoD9mp1R+b3
- +pQA==
-X-Gm-Message-State: AOJu0YyAaQQ+xRNenzAHRgWaz3M9ERK/rwo8QJEFY8wszd+S0lThvCmk
- P3Dd5daDvvp242RqkKRqDSOmMbBAw6ZBUDA4nHgSyuXkNqWOSkwk/1Im/nZxCKIwzIczWUqEDno
- 2f4d8ahAL7Ymh7QuWWkF53CJuppKfrSO+7WoIdViN7BK5guS2C81iSwZYqp/N4cX1oPl/H08wsj
- EjCWhOaLFbeWzo6kk+ECGn+WAHSARwKahDnWc=
-X-Google-Smtp-Source: AGHT+IHW3z+q3GdQLsjhOzIktqrA/HPJHeruugQhUC1kIoFCNfbbRm7CFdSq4IdX37AW0pj/4rpbyL7ZwrU=
-X-Received: from dlbds7.prod.google.com ([2002:a05:7022:2507:b0:119:49ca:6b8b])
+ bh=bSakU68MOAqefQEVfQ70zw66AH6C0ci0Aetl72eSIF0=;
+ b=CkcJ8mpcSSvhKdGKGlfDdJy1klNwcPa+0swXnQ4xeB45KUxER+ya2Oo3SikfJyeK06
+ tIp4BUnAR4oK4FGvzsZ6VI4vxAlguw/icu1Dolfr5m1u4g3GkILaw/TEWjscXLCGLtWs
+ Rylz5BwNATnmowQI5Uux+6X+/TBCLKEYzv85f/jiSDJBYPhhZPeE57dtxnISkNZ+Qrd5
+ 8M5ZQBpsCfIJNYFqAFOh8Zb6QK9pekP8p1uE7a2tC0NpikmMeFjL/aZSj+3yG9sXTdl1
+ lv/GLckKoAUzVZERzsmbg6hKftMvnQkLZ8hM5CH83uZr1ieIdvgsDSa1bL0mNyVi7fZb
+ 0QZg==
+X-Gm-Message-State: AOJu0YwPLRMcZOtBujFNzqzFMm0+CzAulOjuY95cDKloaTIbE9FMCrHa
+ /OjEPgLMPxF/gy6V2B4XkcVeQFwW+tWPSMN6sxEbAtkonPWf1r8XnXcQgvSklRZ2D19gR/OGbgv
+ rUQDN7n14pQ59rAYjBDPkGpgqPIQuyeoLgqJTNqA0mkLxmYWzqsOClaAp54XBUQxml5ssZi/Z+0
+ LN6ag9at9/QzDuNUZ9Ays1Twfz6R25NcMWI1w=
+X-Google-Smtp-Source: AGHT+IGcEWK2DdmZDYWJ9PxoE2Ys63+L/6KxbVLv8vENRgQEEbRnGZTn+n7vejWygrn/OSNwjxq3hrqtqZc=
+X-Received: from dycai1.prod.google.com ([2002:a05:7300:fb01:b0:2a4:63df:76a5])
  (user=yubinz job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:492:b0:119:e569:fbb3
- with SMTP id a92af1059eb24-11e032bab02mr8030968c88.34.1765238512653; Mon, 08
- Dec 2025 16:01:52 -0800 (PST)
-Date: Tue, 09 Dec 2025 00:01:37 +0000
+ 2002:a05:7301:dd83:b0:2a4:63fb:c144
+ with SMTP id 5a478bee46e88-2abc7156465mr3649381eec.16.1765238514935; Mon, 08
+ Dec 2025 16:01:54 -0800 (PST)
+Date: Tue, 09 Dec 2025 00:01:38 +0000
 In-Reply-To: <20251209-aspeed-sgpio-v2-0-976e5f5790c2@google.com>
 Mime-Version: 1.0
 References: <20251209-aspeed-sgpio-v2-0-976e5f5790c2@google.com>
 X-Mailer: b4 0.14.2
-Message-ID: <20251209-aspeed-sgpio-v2-5-976e5f5790c2@google.com>
-Subject: [PATCH v2 5/6] hw/arm/aspeed_ast27x0: Wire SGPIO controller to
- AST2700 SoC
+Message-ID: <20251209-aspeed-sgpio-v2-6-976e5f5790c2@google.com>
+Subject: [PATCH v2 6/6] test/qtest: Add Unit test for Aspeed SGPIO
 From: Yubin Zou <yubinz@google.com>
 To: qemu-devel@nongnu.org
 Cc: "=?utf-8?q?C=C3=A9dric_Le_Goater?=" <clg@kaod.org>,
@@ -76,9 +75,9 @@ Cc: "=?utf-8?q?C=C3=A9dric_Le_Goater?=" <clg@kaod.org>,
  Nabih Estefan <nabihestefan@google.com>, qemu-arm@nongnu.org, 
  Yubin Zou <yubinz@google.com>
 Content-Type: text/plain; charset="utf-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::54a;
- envelope-from=38GY3aQYKCuslhOVamTbbTYR.PbZdRZh-QRiRYabaTah.beT@flex--yubinz.bounces.google.com;
- helo=mail-pg1-x54a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::549;
+ envelope-from=38mY3aQYKCu0njQXcoVddVaT.RdbfTbj-STkTacdcVcj.dgV@flex--yubinz.bounces.google.com;
+ helo=mail-pg1-x549.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -101,47 +100,188 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit integrates the Aspeed SGPIO controller into the AST2700
+This commit introduces a new qtest for the Aspeed SGPIO controller
+The test covers the following:
+  - Setting and clearing SGPIO output pins and verifying the pin state.
+  - Setting and clearing SGPIO input pins and verifying the pin state.
+  - Verifying that level-high interrupts are correctly triggered and cleared.
 
 Signed-off-by: Yubin Zou <yubinz@google.com>
 ---
- hw/arm/aspeed_ast27x0.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ tests/qtest/ast2700-sgpio-test.c | 152 +++++++++++++++++++++++++++++++++++++++
+ tests/qtest/meson.build          |   1 +
+ 2 files changed, 153 insertions(+)
 
-diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index e5f04bd16e80696e41005d9062a6df6d060b8088..787accadbecae376d0c747d054ec6372785375b1 100644
---- a/hw/arm/aspeed_ast27x0.c
-+++ b/hw/arm/aspeed_ast27x0.c
-@@ -519,6 +519,11 @@ static void aspeed_soc_ast2700_init(Object *obj)
-     snprintf(typename, sizeof(typename), "aspeed.gpio-%s", socname);
-     object_initialize_child(obj, "gpio", &s->gpio, typename);
- 
-+    snprintf(typename, sizeof(typename), "aspeed.sgpio-%s", socname);
-+    for (i = 0; i < sc->sgpio_num; i++) {
-+        object_initialize_child(obj, "sgpio[*]", &s->sgpiom[i], typename);
-+    }
+diff --git a/tests/qtest/ast2700-sgpio-test.c b/tests/qtest/ast2700-sgpio-test.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..fc52839c4b149a3010c6a035d8b29f9ad295930a
+--- /dev/null
++++ b/tests/qtest/ast2700-sgpio-test.c
+@@ -0,0 +1,152 @@
++/*
++ * QTest testcase for the ASPEED AST2700 GPIO Controller.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ * Copyright (C) 2025 Google LLC.
++ */
 +
-     object_initialize_child(obj, "rtc", &s->rtc, TYPE_ASPEED_RTC);
- 
-     snprintf(typename, sizeof(typename), "aspeed.sdhci-%s", socname);
-@@ -973,6 +978,17 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
-     sysbus_connect_irq(SYS_BUS_DEVICE(&s->gpio), 0,
-                        aspeed_soc_ast2700_get_irq(s, ASPEED_DEV_GPIO));
- 
-+    /* SGPIO */
-+    for (i = 0; i < sc->sgpio_num; i++) {
-+        if (!sysbus_realize(SYS_BUS_DEVICE(&s->sgpiom[i]), errp)) {
-+            return;
-+        }
-+        aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->sgpiom[i]), 0,
-+                        sc->memmap[ASPEED_DEV_SGPIOM0 + i]);
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&s->sgpiom[i]), 0,
-+                        aspeed_soc_ast2700_get_irq(s, ASPEED_DEV_SGPIOM0 + i));
-+    }
++#include "qemu/osdep.h"
++#include "qobject/qdict.h"
++#include "qemu/bitops.h"
++#include "qemu/timer.h"
++#include "qobject/qdict.h"
++#include "libqtest-single.h"
++#include "qemu/error-report.h"
++#include "hw/registerfields.h"
++#include "hw/gpio/aspeed_sgpio.h"
 +
-     /* RTC */
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->rtc), errp)) {
-         return;
++#define ASPEED_SGPIO_MAX_PIN_PAIR 256
++#define AST2700_SGPIO0_BASE 0x14C0C000
++#define AST2700_SGPIO1_BASE 0x14C0D000
++
++static void test_output_pins(const char *machine, const uint32_t base, int idx)
++{
++    QTestState *s = qtest_init(machine);
++    char name[16];
++    char qom_path[64];
++    uint32_t offset = 0;
++    uint32_t value = 0;
++    for (int i = 0; i < ASPEED_SGPIO_MAX_PIN_PAIR; i++) {
++        /* Odd index is output port */
++        sprintf(name, "sgpio%d", i * 2 + 1);
++        sprintf(qom_path, "/machine/soc/sgpio[%d]", idx);
++        offset = base + (R_SGPIO_0_CONTROL + i) * 4;
++        /* set serial output */
++        qtest_writel(s, offset, 0x00000001);
++        value = qtest_readl(s, offset);
++        g_assert_cmphex(SHARED_FIELD_EX32(value, SGPIO_SERIAL_OUT_VAL), ==, 1);
++        g_assert_cmphex(qtest_qom_get_bool(s, qom_path, name), ==, true);
++
++        /* clear serial output */
++        qtest_writel(s, offset, 0x00000000);
++        value = qtest_readl(s, offset);
++        g_assert_cmphex(SHARED_FIELD_EX32(value, SGPIO_SERIAL_OUT_VAL), ==, 0);
++        g_assert_cmphex(qtest_qom_get_bool(s, qom_path, name), ==, false);
++    }
++    qtest_quit(s);
++}
++
++static void test_input_pins(const char *machine, const uint32_t base, int idx)
++{
++    QTestState *s = qtest_init(machine);
++    char name[16];
++    char qom_path[64];
++    uint32_t offset = 0;
++    uint32_t value = 0;
++    for (int i = 0; i < ASPEED_SGPIO_MAX_PIN_PAIR; i++) {
++        /* Even index is input port */
++        sprintf(name, "sgpio%d", i * 2);
++        sprintf(qom_path, "/machine/soc/sgpio[%d]", idx);
++        offset = base + (R_SGPIO_0_CONTROL + i) * 4;
++        /* set serial input */
++        qtest_qom_set_bool(s, qom_path, name, true);
++        value = qtest_readl(s, offset);
++        g_assert_cmphex(SHARED_FIELD_EX32(value, SGPIO_SERIAL_IN_VAL), ==, 1);
++        g_assert_cmphex(qtest_qom_get_bool(s, qom_path, name), ==, true);
++
++        /* clear serial input */
++        qtest_qom_set_bool(s, qom_path, name, false);
++        value = qtest_readl(s, offset);
++        g_assert_cmphex(SHARED_FIELD_EX32(value, SGPIO_SERIAL_IN_VAL), ==, 0);
++        g_assert_cmphex(qtest_qom_get_bool(s, qom_path, name), ==, false);
++    }
++    qtest_quit(s);
++}
++
++static void test_irq_level_high(const char *machine,
++                                const uint32_t base, int idx)
++{
++    QTestState *s = qtest_init(machine);
++    char name[16];
++    char qom_path[64];
++    uint32_t ctrl_offset = 0;
++    uint32_t int_offset = 0;
++    uint32_t int_reg_idx = 0;
++    uint32_t int_bit_idx = 0;
++    uint32_t value = 0;
++    for (int i = 0; i < ASPEED_SGPIO_MAX_PIN_PAIR; i++) {
++        /* Even index is input port */
++        sprintf(name, "sgpio%d", i * 2);
++        sprintf(qom_path, "/machine/soc/sgpio[%d]", idx);
++        int_reg_idx = i / 32;
++        int_bit_idx = i % 32;
++        int_offset = base + (R_SGPIO_INT_STATUS_0 + int_reg_idx) * 4;
++        ctrl_offset = base + (R_SGPIO_0_CONTROL + i) * 4;
++
++        /* Enable the interrupt */
++        value = SHARED_FIELD_DP32(value, SGPIO_INT_EN, 1);
++        qtest_writel(s, ctrl_offset, value);
++
++        /* Set the interrupt type to level-high trigger */
++        value = SHARED_FIELD_DP32(qtest_readl(s, ctrl_offset),
++                                              SGPIO_INT_TYPE, 3);
++        qtest_writel(s, ctrl_offset, value);
++
++        /* Set serial input high */
++        qtest_qom_set_bool(s, qom_path, name, true);
++        value = qtest_readl(s, ctrl_offset);
++        g_assert_cmphex(SHARED_FIELD_EX32(value, SGPIO_SERIAL_IN_VAL), ==, 1);
++
++        /* Interrupt status is set */
++        value = qtest_readl(s, int_offset);
++        g_assert_cmphex(extract32(value, int_bit_idx, 1), ==, 1);
++
++        /* Clear Interrupt */
++        value = SHARED_FIELD_DP32(qtest_readl(s, ctrl_offset),
++                                              SGPIO_INT_STATUS, 1);
++        qtest_writel(s, ctrl_offset, value);
++        value = qtest_readl(s, int_offset);
++        g_assert_cmphex(extract32(value, int_bit_idx, 1), ==, 0);
++
++        /* Clear serial input */
++        qtest_qom_set_bool(s, qom_path, name, false);
++        value = qtest_readl(s, ctrl_offset);
++        g_assert_cmphex(SHARED_FIELD_EX32(value, SGPIO_SERIAL_IN_VAL), ==, 0);
++    }
++    qtest_quit(s);
++}
++
++static void test_2700_input_pins(void)
++{
++    test_input_pins("-machine ast2700-evb",
++                    AST2700_SGPIO0_BASE, 0);
++    test_input_pins("-machine ast2700-evb",
++                    AST2700_SGPIO1_BASE, 1);
++    test_output_pins("-machine ast2700-evb",
++                    AST2700_SGPIO0_BASE, 0);
++    test_output_pins("-machine ast2700-evb",
++                    AST2700_SGPIO1_BASE, 1);
++    test_irq_level_high("-machine ast2700-evb",
++                    AST2700_SGPIO0_BASE, 0);
++    test_irq_level_high("-machine ast2700-evb",
++                    AST2700_SGPIO1_BASE, 1);
++}
++
++int main(int argc, char **argv)
++{
++    g_test_init(&argc, &argv, NULL);
++
++    qtest_add_func("/ast2700/sgpio/input_pins", test_2700_input_pins);
++
++    return g_test_run();
++}
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 669d07c06bdedc6be0c69acadeba989dc15ddf3f..5c80b2ed6de1f453d2483db482c1b0e7801ba980 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -221,6 +221,7 @@ qtests_aspeed = \
+ qtests_aspeed64 = \
+   ['ast2700-gpio-test',
+    'ast2700-hace-test',
++   'ast2700-sgpio-test',
+    'ast2700-smc-test']
+ 
+ qtests_stm32l4x5 = \
 
 -- 
 2.52.0.223.gf5cc29aaa4-goog
