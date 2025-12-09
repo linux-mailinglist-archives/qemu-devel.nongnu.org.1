@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A24CB0FF0
-	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 21:06:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7AE1CB1017
+	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 21:07:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vT3yA-0000r0-Us; Tue, 09 Dec 2025 15:05:58 -0500
+	id 1vT3yN-0000wf-Nq; Tue, 09 Dec 2025 15:06:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vT3y7-0000qi-GC
- for qemu-devel@nongnu.org; Tue, 09 Dec 2025 15:05:55 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vT3yH-0000uM-Kk
+ for qemu-devel@nongnu.org; Tue, 09 Dec 2025 15:06:06 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vT3y6-0001Hk-1n
- for qemu-devel@nongnu.org; Tue, 09 Dec 2025 15:05:55 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-4779cb0a33fso80284935e9.0
- for <qemu-devel@nongnu.org>; Tue, 09 Dec 2025 12:05:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vT3yC-0001IP-Up
+ for qemu-devel@nongnu.org; Tue, 09 Dec 2025 15:06:05 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-42e2e52cc04so2199374f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 09 Dec 2025 12:06:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1765310752; x=1765915552; darn=nongnu.org;
+ d=linaro.org; s=google; t=1765310759; x=1765915559; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=2HB3vg2EkQ9yT72tK5H3rWvhcfCnwT+b44I6/a1Vbyo=;
- b=fg6yAhiTBqJ8y75iiMJex2HCXBasvqNQRWWmqk5+JIvYzyRPjsDxuXCBV/tDyXkbrV
- n7/uCb6Cf1p3AKM1UaPsXNt4EzcCLTkS/lAXimi6EgzA2WCZxOkLYbTCnp795bEmit7O
- aPkkqXb+GmNdZGofvaAVuo8QBSnyDvnnm2Z8N+EJ3GHr4phnconNfl7NrOjq7h+U04ls
- ehjc2g5GDkmtKvdFMV0bX89zupiR7dQ3oDDsHqpzopMFmvrv6Am8sdls107Gtz9cxaMN
- whAL05FIZKuT+eQ3xOAGCpHU4sOenhPryh6WSvgPZXZbxZI8F+cudD8mci3pC7tI/Ibt
- 5MRA==
+ :reply-to; bh=nV8HsfTtIPwCBLUDWBKBG2A2y3njTaM32r0hbYhDIlk=;
+ b=Ti6VwvMXohOaTe8DqlJzMmH5gPy41t1QDeLBsBgSkn5FAaYbG0WZiu8RksKO1qmLIe
+ M0LlbQGvaDUd6NxVK44uwGO4BJ0kSU0gjyRaDQ1gSlOpIZP+RXbSyeUJ6Y5uJ6yEbAly
+ DKI9z69WqJEzjvFts7Tw3K/FdoghIfIyaS+a1elyFs3rAOFRlGB0zXk7sEzeaFrUFa/Z
+ IuOp/dVvQdTar8/y4HIv1rcEG+PS8d1MbzVcp9ub1pddlHtjqtaeDBq33oB0wroanezS
+ DONmGQhg7sT66tRIUh+1K6HUGmTc7i7fiy10Id8GSVm2qNt5/Nw3zP8q+zwGHRkJc9vA
+ sAuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765310752; x=1765915552;
+ d=1e100.net; s=20230601; t=1765310759; x=1765915559;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=2HB3vg2EkQ9yT72tK5H3rWvhcfCnwT+b44I6/a1Vbyo=;
- b=QEjwD6HD5hstdrxy1LmnndXzDUj0FRdMt2LWN8f17uGJeHv0AHcbniu3ekf/8GvZGP
- 3xHNO32lKoRHeTF17zUWHJYjooWSnkKBm+Izq5ubihdxS1bSEnX7g/fCmv9NsDC5+9eX
- dL39lTe4ERW1QEganSOswxlJDZIKgKtVWFJkNBzUWPA4/iM8ENeIHy2E+RKq1fkbTeJK
- JlkrxG4LHYlFyrAZozeQSUw8bZ+sLzreAB1RfXIJ2zv5o9OXMIXJIml33WAHt16wyTq9
- 86ZRurcvw14lR5JnHapHnogQGb5BO/818nz6tKJfm8jKsI2jpXGgA1PZDbdsCOZDXVxS
- 4Ssg==
-X-Gm-Message-State: AOJu0YwkcUS8hfO3PyzLBh9FWgnuEKfP0S3BqZNTOi8JsGL1Bd+t1ztz
- /U6PIL0vylT/KU7tRRJBC/6O0/WW4W6amYYl5aKNlKtocjFsfZfPCEjpi0w5XMUbB0/KdbHOpe4
- mvmnqKk4=
-X-Gm-Gg: ASbGncufS/a5E4RZgGp2EA8nvEj2M+76hOk03SQE2SvfD3zwH6YQqnE8yAzB2pA6MBB
- Q41jXVLCWtsUwN9tkE8r6mulGptl1aHq0HLriZ+if7/UUc5OWo2Vd56HzbwkSgahplXdiyTQi92
- Nca7/ytZ69n9npsnoMrkvwdV8XZG6GMWXQG9qTiXADPQOkgDRjJo1nXGqb+nFfgI+N4aMzTYwx7
- uLi5CCGYoCzZHx61JERcAN97kR4LkVFtLCxFtlh/X853tfx9eqACzpSuyAozovSpEHzSm734Pgg
- YCmDL582jTkGK51R3+DmA/W1Z4a1sdSw5It5+ed3HlXxUYV5a7fNj3gzXW+exivrmRSQLTPBvAL
- Y2B1xerbvLSswNm0oz2VeWZ+LMRQH0723zgan4nGqngT6SGqPxBSxoBUAFRZp2UnvocpoN/gKJI
- wGgmT2CW15fBxNxdfJ5X43V56YDt4KBlq7Q4rqTwY6k4nktvJsyULGsXrnVpOA
-X-Google-Smtp-Source: AGHT+IEa6Iw5zchbaYwHB3IBTlt38CXAVaJIpbUXld5Wl842kKXvQK8l2M9aASaA5vL2wfAMLZXBOg==
-X-Received: by 2002:a05:600c:a48:b0:477:7cac:508d with SMTP id
- 5b1f17b1804b1-47a83814829mr697825e9.16.1765310752026; 
- Tue, 09 Dec 2025 12:05:52 -0800 (PST)
+ bh=nV8HsfTtIPwCBLUDWBKBG2A2y3njTaM32r0hbYhDIlk=;
+ b=V6AftGirizoztfiTj0cYLNWM+7mOelBb6dwssugb9shaz8a/y38YruXjgo/PaUdprP
+ 9dw7gAHn4NECF8w/sMULPMrSL0Y/qpVZOz2KkQyyDhIcpZVb76Y2ZVIeYhwo4IbmzFQG
+ JWfQ9MhgautznsmrpMV98RgGPKIFS1Flkqgwb0efG3c5l2QsxeU+0XaCV8PsO7AjLWYj
+ dvyRqmoq3MXnMeEp5Yd6dHpC+HHc4JTk2itrNpnFZUG++CUsdmM5sKwS2BP12Wx/hQiD
+ 1ThMY0UgTHTylkW42esfJ9MuI3fZ9vqL24Biqy1eLc7RX50jLLTkJQnS7OiP68Gkxzt7
+ C34A==
+X-Gm-Message-State: AOJu0YzsHsFmx1eqw7/9v8LyDc6Sgg/HBREfPo93/ODNTruXu99mPisx
+ cfR5GQhJZmL/OL96yuNXSDtj5h4OkGl71d1LDPzsy0hQ5O03SmMVHha/H8Jctu6EUsmpyXflVGM
+ WyC9BzeQ=
+X-Gm-Gg: AY/fxX6JxRbKgswyPfA9M0BLRmOEmX/nxiaM9Kw2S7LO78d3z0LHGS9X4HxAPGUgSFn
+ Dymn3+RDa9lNs1rbqQTmdbTnzkuYI6RC1H+nFemOWGrgjeGHNuFWgGPerTw3qyuYpEO9jtGZQFx
+ 8gT9uSlhMRaZyRKDYzCizsiP3nbSd/Wu9Xl7ipERLdUSyXAKnKrMuwKpi1shZI+Yo8t2NJ8sWg6
+ uYZJl7UclmJqK6Vaphz6uIqbqTtyY19SqU/NeklCAaj5ilEqCO3BU8XruXk52zPlhDSCO2XYp2A
+ 2vHH82BkuHizAsTtediKqyVL+lcVwaxRG9rfKFqmgBWso3vBuQI/o6T9vSGBiUKMYBcDz+ez5Ad
+ 3ai2VPbKoyGJo6vWW+95VQlbn15JUD6BNJelFrenNGZIcxmfLCYMWmN4YT5JRWZK0S9sggOROvD
+ 1uZ+/T5O9QhvTa9PTwYwKkhacdrp42YoWDcrAE097RO2SzxqSNkV5OsxD7Eaod
+X-Google-Smtp-Source: AGHT+IH2cw0I7SJ8QFCAtnolhyyiDtxvuDawq/k5wAma/6zi8x9yhItqbLibLU6a+hfr+0eSl4HBbg==
+X-Received: by 2002:a05:6000:2508:b0:42b:2ac7:7942 with SMTP id
+ ffacd0b85a97d-42f89f0fafcmr13391482f8f.5.1765310758675; 
+ Tue, 09 Dec 2025 12:05:58 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42f7cbe9032sm31371921f8f.1.2025.12.09.12.05.51
+ ffacd0b85a97d-42f7cbff320sm33805663f8f.18.2025.12.09.12.05.57
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 09 Dec 2025 12:05:51 -0800 (PST)
+ Tue, 09 Dec 2025 12:05:58 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 02/10] hw/9pfs: Correct typo
-Date: Tue,  9 Dec 2025 21:05:29 +0100
-Message-ID: <20251209200537.84097-3-philmd@linaro.org>
+Subject: [PULL 03/10] scripts: fix broken error path in modinfo-collect.py
+Date: Tue,  9 Dec 2025 21:05:30 +0100
+Message-ID: <20251209200537.84097-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251209200537.84097-1-philmd@linaro.org>
 References: <20251209200537.84097-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,32 +97,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alano Song <AlanoSong@163.com>
+From: "Denis V. Lunev" <den@openvz.org>
 
-Correct comment typo in xen_9pfs_bh()
+sys.stderr.print is dropped long ago and should not be used. Official
+replacement is sys.stderr.write
 
-Signed-off-by: Alano Song <AlanoSong@163.com>
-Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20251202132132.17636-1-AlanoSong@163.com>
+The problem has been found debugging building on some fancy platform
+derived from Debian.
+
+Signed-off-by: Denis V. Lunev <den@openvz.org>
+CC: John Snow <jsnow@redhat.com>
+CC: Cleber Rosa <crosa@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20251203220138.159656-1-den@openvz.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/9pfs/xen-9p-backend.c | 2 +-
+ scripts/modinfo-collect.py | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/9pfs/xen-9p-backend.c b/hw/9pfs/xen-9p-backend.c
-index 79359d911a7..ca0fff5fa9b 100644
---- a/hw/9pfs/xen-9p-backend.c
-+++ b/hw/9pfs/xen-9p-backend.c
-@@ -310,7 +310,7 @@ static void xen_9pfs_bh(void *opaque)
- 
- again:
-     wait = ring->co != NULL && qemu_coroutine_entered(ring->co);
--    /* paired with the smb_wmb barriers in xen_9pfs_init_in_iov_from_pdu */
-+    /* paired with the smp_wmb barriers in xen_9pfs_init_in_iov_from_pdu */
-     smp_rmb();
-     if (wait) {
-         cpu_relax();
+diff --git a/scripts/modinfo-collect.py b/scripts/modinfo-collect.py
+index 6ebaea989db..db78b16c1f5 100644
+--- a/scripts/modinfo-collect.py
++++ b/scripts/modinfo-collect.py
+@@ -41,7 +41,7 @@ def main(args):
+     for obj in args:
+         entry = compile_commands.get(obj, None)
+         if not entry:
+-            sys.stderr.print('modinfo: Could not find object file', obj)
++            sys.stderr.write(f'modinfo: Could not find object file {obj}')
+             sys.exit(1)
+         src = entry['file']
+         if not src.endswith('.c'):
 -- 
 2.51.0
 
