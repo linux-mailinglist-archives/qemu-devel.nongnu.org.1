@@ -2,95 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F27DCCB0902
-	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 17:30:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FF25CB08F5
+	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 17:29:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vT0Zy-00065Q-2e; Tue, 09 Dec 2025 11:28:46 -0500
+	id 1vT0Zz-00066x-1o; Tue, 09 Dec 2025 11:28:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vT0Zt-00064Q-6O
+ id 1vT0Zt-00064R-6d
  for qemu-devel@nongnu.org; Tue, 09 Dec 2025 11:28:41 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vT0Zm-0001qx-G7
+ id 1vT0Zn-0001rF-3A
  for qemu-devel@nongnu.org; Tue, 09 Dec 2025 11:28:38 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-47775fb6c56so50342085e9.1
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-4775e891b5eso29819985e9.2
  for <qemu-devel@nongnu.org>; Tue, 09 Dec 2025 08:28:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1765297713; x=1765902513; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=F7ZPSr670CbdoKMpCrNfLy9AGJjMvVPEo1SwtHgb68k=;
- b=mwnkcPY2kAZi1zj1p+2EiTVmH/2qriurGzPiFmPAAsD1vyICqmqU1p7oAx+eQBaYal
- LgHrULoxiLfPZRAPPIbjqvuhLgpcYjzIsDlavXKTSoQZrGmtUCkWhvlDa+DtI218kd79
- V0H6OM76mbD0R7GrJVbEpPQing66i37nEOvyBmWZ8PyPrI7tpyhoBrn0A5WwG+E+TnI1
- xvrL9vYH5av/kYf2sFF+HjlqjNptqngwipNCQcFMFjgP4FEJiagKGS4hMHzsFlXocdgO
- 07YAtoPBTrw/gE5VvRoXqZnRxvyotmyyDvoEX9/gQtfE9z9M15N1MGw3HebE0Babprw0
- GxTQ==
+ bh=orxGf9vqJHAjjzl/pLsxIBSrWtr0DnP/NmbqdtgUE7o=;
+ b=i12Ooo7HiwEvUbBevwS05vbspaMdzDWMNOEXsO+LF58RdyYAPgp/nif/N3/XB9AW8F
+ dFh3JPREtTyj8hnPOeqXXfyDPIdIBiINqD3E2Pq2FnKEbFPmlhAeK+NGvpYASEMgX7oZ
+ xJn8wrOFL4Tx1F8iC2gdjbqS+Ea2+Ae7H0OHl72IAG4vzfj0fj/m1SZMMhIR9JNe2Z01
+ gr9M8pZ5zwxzwMB3WGpWINJTCVsS/SdBDPRbhrH3ir7fOITNtKEVmhGhk0gt9o9ABw2k
+ TTYzTjqxJ75yF97a63NxrhQOdONHrfevoMNEJ/XDFYQKtFkReJjlI0d/PzF29bba+cTz
+ 8m6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1765297713; x=1765902513;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=F7ZPSr670CbdoKMpCrNfLy9AGJjMvVPEo1SwtHgb68k=;
- b=ouw2n8il2kHbo3EryhfBQy7XK8JEjMSmsVFCB25aCHNQ5ivmHAyVQ1RyRu4GNbaq1e
- m89TUEBMD8ssQ7jaGUQgPEgVLAZEWHgJ8T2SCogf9byI8tAD/fPO1/tjm8nmIJjoutrl
- DMQZlBhyO9yfYy9/uwZv9NjEnLOpJWBoI7qBdC+xEkvK9QgXA6H36uxNzSpUdYAX1urM
- GOewvzPpFAfdQKkDIagd0qookaGRP7GejfHFpUu75KG41qEz8DnI4CFRqqX1QoS6b/n6
- 5pFPoewbIlw9Ep72j+gF6XLYryqEFV9SUGB4z1J8PuT+HZ7RqhCtgNOesFjnh5Zs/83R
- ua+Q==
-X-Gm-Message-State: AOJu0YwPZ0TCNz1q1A4aTSjEcfHoSsO2rSHAfqOws22PX2snuExUhCfm
- rTjKevXgpqj1yIi7iw0MYF9D+8WvXptzFLn/7+SenyO+if3VmYXOXhXBSxfTm1ZMzqs=
-X-Gm-Gg: ASbGncutE5xklJ27B2NsSF1BME/0GYjBNj3KRp+cHRw6D+JP4jv0CEYBqjMHW0WpwPN
- LD91weTf2JLoEAbkerxVr2xp2sTvpSRdhmAAsFYQpTOevE9TUdUk15SbRrbo6ZgXdryip9HEG3g
- zqLELiwdg1L+ewlk8IAt87ZAJQwo7fyFDCxfLHcNGb8wgsQrd7bq5iNP/rTiEuMLfmBvMq/xjvN
- z4pmSegc2HGJg9LVrkzFD3dPOOAB7JOMHlUra0tywesSSQMHLsy66K6j/KfiGB2VeFuFY9QaA2c
- DP00+zsQ1JXnb6d6IQAlWbDFwFvzWtQYr2zfG9VZmSF35I1PNPRdFiiD5ijxUpHk7PFMItgGffa
- CjDxt51wputquokJ8IjnkGXyz3CFYWdmhiLYA4smnPdj4NV5ykhI54oNe6lQsk5vD2sWOOhCmei
- uAlS4/1l/Cgk8=
-X-Google-Smtp-Source: AGHT+IEwwHplRG4nMNYV1uuk4oBiM8T4QL1h2O8qaFfkORO4IAWJlmo+UStYjGgxfhN3p9Gz8mCiDA==
-X-Received: by 2002:a05:600c:350b:b0:45d:d1a3:ba6a with SMTP id
- 5b1f17b1804b1-47939e4039dmr107500245e9.33.1765297712889; 
- Tue, 09 Dec 2025 08:28:32 -0800 (PST)
+ bh=orxGf9vqJHAjjzl/pLsxIBSrWtr0DnP/NmbqdtgUE7o=;
+ b=U2u//icl4eUQN/skZ9bqGm78mlAz81e36iyHvv7DfI09n27xqTV1iwS7BUbbNq4vih
+ U/S49KywP6gqG4XViS8yvE8+5i4bDlKAl0N1KKZzne+sdVUKIW0y1Hvk031w/OCONsLY
+ /HV5NIF2ulkSK3GJ5aSlHWI8I/GY6nsaVJ7waJwEH7YOqoWWwPq1ayq0w+NBqtf2pQFE
+ 6RBGXzcs03keomBZdnFgkClXcpxFbqSFajN2uMWK7pndks/qbkkqct14VaAP/j8less2
+ gmTy0qFf0XXT7r32VFGZYsjhZyw+XvQxPJEI2Z1xaiVjcpeNYokaLQdoJxs+tltT+cRt
+ 8Gug==
+X-Gm-Message-State: AOJu0YxsQrGOiwg/9C9pKtVn3CAK1UpPNhJ0IYF2Q+UJ0vaeqTE8qa/i
+ TmNBDNE6CORikZ2HnvmS9/noaxro+JQiebDO3htKWzBNKsmzxIEHdcAtvqHkPbIc+W8=
+X-Gm-Gg: AY/fxX5nCSW3YbIRDCBU4wc1gNILSSedqwm7OmW4fodXvAP4p40xBGeRW0bKdTDZtHe
+ N/XjCukimNoU73RBz3ihA8Vu18u4A5AE02xSSOUUSGhUn3Sl6sD8IEgsejN9xmfwCNvqe1nr7OY
+ KI70ixOE7WkXrIA93CGjXrQ1ahVXoS2J7569Xfu5c66+FuuC88fYlpPJuQVAzN9L0/vnkvTHfyl
+ yOJ0A6zE+RqyArGiJG85Rsro8cqZ0NE3j/K22vLdCGQv/XdtDfQXTVtJ/230IHkXU9Wz3x1jG0r
+ +yiY2AXEDi4cw2rgI9vVu+puzdMjmrec363c9ZX4tVHnLeafH0x6dotIeGYIW/g1ATcB+oDIvqT
+ 28EyHjIX+xgRAGdqkw9OlEM418pxBMN+AAn+5ajRyRQjVmH4nvcqd4tBaIW4kzrrJf4cnugtaLw
+ GI/bnSjOZYghk=
+X-Google-Smtp-Source: AGHT+IFpeqFSFRZ+WdAMqTiKKsbd5C9blRgmZwm8adPxB8bexth6KqJm6E56vYwfVEWPjB2fY7W9Pg==
+X-Received: by 2002:a05:6000:40cb:b0:427:8c85:a4ac with SMTP id
+ ffacd0b85a97d-42f89f54bdbmr12554927f8f.47.1765297713459; 
+ Tue, 09 Dec 2025 08:28:33 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42f7d331092sm32819187f8f.30.2025.12.09.08.28.30
+ ffacd0b85a97d-42f7cbe90f0sm32753005f8f.9.2025.12.09.08.28.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 09 Dec 2025 08:28:31 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 134C85F892;
+ by draig.lan (Postfix) with ESMTP id 2A11F5F898;
  Tue, 09 Dec 2025 16:28:30 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alexander Graf <agraf@csgraf.de>, Mads Ynddal <mads@ynddal.dk>,
+ Jessica Clarke <jrtc27@jrtc27.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>,
  qemu-arm@nongnu.org (open list:ARM TCG CPUs)
-Subject: [PULL 3/4] target/arm: make HV_EXIT_REASON_CANCELED leave
- hvf_arch_vcpu_exec
-Date: Tue,  9 Dec 2025 16:28:28 +0000
-Message-ID: <20251209162829.1328559-4-alex.bennee@linaro.org>
+Subject: [PULL 4/4] target/arm: handle unaligned PC during tlb probe
+Date: Tue,  9 Dec 2025 16:28:29 +0000
+Message-ID: <20251209162829.1328559-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251209162829.1328559-1-alex.bennee@linaro.org>
 References: <20251209162829.1328559-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,27 +105,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Without this we can spin tightly in the main HVF dispatch loop and
-never release the lock long enough. As a result the HMP never gets to
-run and shutting down the system deadlocks.
+PC alignment faults have priority over instruction aborts and we have
+code to deal with this in the translation front-ends. However during
+tb_lookup we can see a potentially faulting probe which doesn't get a
+MemOp set. If the page isn't available this results in
+EC_INSNABORT (0x20) instead of EC_PCALIGNMENT (0x22).
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3228
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20251209092459.1058313-4-alex.bennee@linaro.org>
+As there is no easy way to set the appropriate MemOp in the
+instruction fetch probe path lets just detect it in
+arm_cpu_tlb_fill_align() ahead of the main alignment check. We also
+teach arm_deliver_fault to deliver the right syndrome for
+MMU_INST_FETCH alignment issues.
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3233
+Tested-by: Jessica Clarke <jrtc27@jrtc27.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20251209092459.1058313-5-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 8e2940217a6..8288b605299 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -2020,6 +2020,7 @@ static int hvf_handle_vmexit(CPUState *cpu, hv_vcpu_exit_t *exit)
-         break;
-     case HV_EXIT_REASON_CANCELED:
-         /* we got kicked, no exit to process */
-+        ret = -1;
-         break;
-     default:
-         g_assert_not_reached();
+diff --git a/target/arm/tcg/tlb_helper.c b/target/arm/tcg/tlb_helper.c
+index f1983a5732e..5c689d3b69f 100644
+--- a/target/arm/tcg/tlb_helper.c
++++ b/target/arm/tcg/tlb_helper.c
+@@ -250,7 +250,11 @@ void arm_deliver_fault(ARMCPU *cpu, vaddr addr,
+     fsr = compute_fsr_fsc(env, fi, target_el, mmu_idx, &fsc);
+ 
+     if (access_type == MMU_INST_FETCH) {
+-        syn = syn_insn_abort(same_el, fi->ea, fi->s1ptw, fsc);
++        if (fi->type == ARMFault_Alignment) {
++            syn = syn_pcalignment();
++        } else {
++            syn = syn_insn_abort(same_el, fi->ea, fi->s1ptw, fsc);
++        }
+         exc = EXCP_PREFETCH_ABORT;
+     } else {
+         bool gcs = regime_is_gcs(core_to_arm_mmu_idx(env, mmu_idx));
+@@ -346,11 +350,18 @@ bool arm_cpu_tlb_fill_align(CPUState *cs, CPUTLBEntryFull *out, vaddr address,
+     }
+ 
+     /*
+-     * Per R_XCHFJ, alignment fault not due to memory type has
+-     * highest precedence.  Otherwise, walk the page table and
+-     * and collect the page description.
++     * PC alignment faults should be dealt with at translation time
++     * but we also need to catch them while being probed.
++     *
++     * Then per R_XCHFJ, alignment fault not due to memory type take
++     * precedence. Otherwise, walk the page table and and collect the
++     * page description.
++     *
+      */
+-    if (address & ((1 << memop_alignment_bits(memop)) - 1)) {
++    if (access_type == MMU_INST_FETCH && !cpu->env.thumb &&
++        (address & 3)) {
++        fi->type = ARMFault_Alignment;
++    } else if (address & ((1 << memop_alignment_bits(memop)) - 1)) {
+         fi->type = ARMFault_Alignment;
+     } else if (!get_phys_addr(&cpu->env, address, access_type, memop,
+                               core_to_arm_mmu_idx(&cpu->env, mmu_idx),
 -- 
 2.47.3
 
