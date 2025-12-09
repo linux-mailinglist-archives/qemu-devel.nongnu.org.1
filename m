@@ -2,89 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A586CB1014
-	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 21:07:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1353CB1023
+	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 21:08:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vT3zU-0003bU-3a; Tue, 09 Dec 2025 15:07:20 -0500
+	id 1vT40C-0005gr-Mi; Tue, 09 Dec 2025 15:08:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vT3zR-0003VJ-Rd
- for qemu-devel@nongnu.org; Tue, 09 Dec 2025 15:07:17 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vT40B-0005co-S0
+ for qemu-devel@nongnu.org; Tue, 09 Dec 2025 15:08:03 -0500
 Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vT3zP-0001PQ-MP
- for qemu-devel@nongnu.org; Tue, 09 Dec 2025 15:07:17 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vT40A-0001TP-6l
+ for qemu-devel@nongnu.org; Tue, 09 Dec 2025 15:08:03 -0500
 Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4777771ed1aso50571475e9.2
- for <qemu-devel@nongnu.org>; Tue, 09 Dec 2025 12:07:15 -0800 (PST)
+ 5b1f17b1804b1-4779d47be12so54610255e9.2
+ for <qemu-devel@nongnu.org>; Tue, 09 Dec 2025 12:08:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1765310834; x=1765915634; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=linaro.org; s=google; t=1765310881; x=1765915681; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=VLbY6+YjBVJO4YeroQUa9sCygXP6wh/abFzZZm99xIc=;
- b=ygvpb7H7GocIkPD+BerttXdzOXdmmXhcB15UtxaDvXK5F0GXMGWIxk9KYNOuA7KSwe
- +exLc9lQ/CBMofECB+vqmsn9vLziKs4G9MDUXMRny7HlvxNtvK3lEHHn1PfDht1S8KuK
- N7EBE97pkEqrWW1kFv6y8Q+NYupwIw6lbwgyLabASQ1fqjtEH4SupoW9w5CXMH8p/kUa
- 8Lj96hrByZF47W3eZeLgDtiFiJSxBnPOdOQRs40DJbQH5JHbvHhTq3waZeF8bb0iiuBj
- 4jwlNGa1K5H1FNXSfCQ4DK+MJS7zFmZvROmHqpLApkNhYXoggSrFRydYj6aKj3Z/BBRN
- BxgA==
+ bh=5Dj/2XRkoHzovnFZPSCjdJXobTdNzLwo8MRe/JTlBu0=;
+ b=wyVyo3yWzV352cbI2n96xv3qLGRbbCIrZfxVZr9ZBpoBvu2nzgS2xoviSaLRipr3MU
+ gXtq1iZ/NBYoLHDExu7dNJ8a8OqpbAVb0ZrzOkRyW9tesIjLaKwujVKsPWT6tvDVMvJX
+ +Vg85R8ixELP9TXJisZGgL2IJsIcravQlAE05SycSSMHK5vl1v/nft+tsnygeGnz2Agm
+ d5eLC6bDjklmcbOJbqo3cEzuhvAFixAV8P4dJ2uZ/ycY3JhIE3KiuJ7UeRe/TqH24Gtu
+ UqYXysU64/3iCW2YF5GR/AqPHINAJM9yRQArRHaGdMaF37oE6L+znj/V+IdwuTaVUmPN
+ m4jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765310834; x=1765915634;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=1e100.net; s=20230601; t=1765310881; x=1765915681;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=VLbY6+YjBVJO4YeroQUa9sCygXP6wh/abFzZZm99xIc=;
- b=mO0nEfH+hcXfNQ+3brG5zOgopq0eEbAg/z2f/SBUFjC4bE8Eh215YMyiEVYAImbNtL
- FYYxcD40UyLAZZLf6MoEoJCSC+2KFf0GMD1nnT+cD5/XTE2NwjkHbiJU1E+/sAcob7yS
- EfkL1MMSYd2ArY5Xf3Vjc5V8J1oThy3FOuouWlqCRqcikphZOF2SDmhWTYxAVUNcNLe1
- hjo4hvQR2NsPL9+hk8YlZfiQLRioqXgAp+Ba4CYdsxdWJMPD62HFNdUEdYsOwNjiL0Lf
- rwDON/ko6n26Eov2bBdel26SHnhHzcPgSwgt2fieGOxXlFXADk9W1yXYIU0GxjcL0SVY
- im+w==
+ bh=5Dj/2XRkoHzovnFZPSCjdJXobTdNzLwo8MRe/JTlBu0=;
+ b=nT/xhIXXbO8Xo1OMrLCPKd2X5KeIo5iZMbzxu6B82x/Gd2rRW/PRqmy684XFoCEaFZ
+ 2i88AY64wIVgKxEw15XPK6PIGpvaV++KNDvIlfONXf0eSsguxSxzNlGxuRmF7wcUV0mB
+ NzBPHpGRxeT/NGxhIkAApiyegkZme8gu0rcfwdhrOuBojesWrmOEUXqZmenNU08CggXp
+ dvsVA5zZpaw6JjIiqbHIPbqWTn9B6Ad706UQCYMaPOLhdDEqGO76XmJAPBNaNEs3xneD
+ hIrPqjgJNCio1Le94Ev8zBuLHDZMC2GU0laaqXHAKOMXCuW/Hd7dy7xVJ2xFny4otk9y
+ nKxg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUDiz9NDTQ4sFbTrxfQtTO6ihicGJY9i0VRWGxPXG0P8zQBYVCdYWM6lH2bzTt+KBmD/Su0TGpdS+Hk@nongnu.org
-X-Gm-Message-State: AOJu0Yzd+iSP8doo5aOvq2CRTgRzYEt3qbbaHzCYupg++ZzaGajv6zvN
- 1Uqb5ZxgFlpTsc6jd3FfOaAYl8PgSsByesFYDyA+0prgtpbk7vjLvf9aR6orKo+R6NEvmFzCifh
- 3Nt9iChw=
-X-Gm-Gg: ASbGncuIofqNa9gUNJv3w1NLDCvcbzgkf2gVQVV/Ru1n/zZD2HrPjP0FHWyY+CyWnJX
- Dx/GyQo5xLJXJLx75xCE0IFPBjFjTGOcmjGZ1bZ4UiX7JkRKXjdepzaMkY2/Pfh5r72WC9Q/PnR
- A/ZgmoQbuNJ7KY+6VbTVV8xfBaw87NJPYfsf8+XwFEdBRqsV0y7XJjt/FWdwBwYXnh6qMUU+x7I
- hPu+mSLQ1rVOXVm3JiGn5T/0F6RqJnFYytE6sIfn5FqMqQlO8xm10A4+7+ZbIEwepv+yfkoGAUr
- 7b3lnMWwgb8tf0wQyHieW+yuBPE/AoV79tpHY8X8Gq9IIamTtkgq5f3FbVGDr7wOjjSw6eLuPeE
- msYTz3qT6E8vtX8P3lsEFt3PElm7EovVHgS96epjJGKo+I2NAj0CLGRXwIEEIxLejugOdogD+xe
- 0LrWrRi9A+KC8q89yrQ8cn+bj7AJVpcYNoNtgRDVJN5/zfQyiG3LCc5Q==
-X-Google-Smtp-Source: AGHT+IFuTa+2odf823au2Lar6gV0qyDcH4Tvtc9yYlGiMSVQswLYs3Xs03OypzExAv8piNhT/FskPw==
-X-Received: by 2002:a05:600c:a68a:b0:479:2f95:5179 with SMTP id
- 5b1f17b1804b1-47a8379de88mr647965e9.15.1765310834170; 
- Tue, 09 Dec 2025 12:07:14 -0800 (PST)
+ AJvYcCX7PJdxagqmnNK5lGga0CYAoMCzVCP6JLcr9qP3oOurKrQVhdFSwttUurz0fXuEuk3A7FBS2fsj1Ela@nongnu.org
+X-Gm-Message-State: AOJu0YyooaV5nbtd9t+zA6Is8WnLeQSZmhUFZ/45PUftgs60Wa3kklrZ
+ WfmDKv7O5rxOhYG+5gJzl77Og28kptF9+jgGUxn1cTBho9BQs6gUvI//MrjtN1RhvirSgtDJnmQ
+ NeUXficc=
+X-Gm-Gg: ASbGncu1p1aGhEA6yxuHU5N6xyggCS+mKmnboChewjAzGCYgj6C3lISArfZryN4mdrJ
+ hAFevA4ThAb79F7A656/e+Uh/qdWXyad8dtzUzM80aGENNQ3j2sNewQ8aWp9TSjhJedUhMANPUL
+ hEQw2B7zXbISl/yyjxi//mfDmQkLlIYSAWLHfZHKWs3wXtIZ7+l+MfBndoEnkbcJuBBoyJV9D2O
+ extWCKiqaByruknG242hkeHa8HrfqkLC8VdXg4vkKeg1dBrHj+c85kbFzzC36sa7/txZvoLACns
+ TsW61RpKphDba2LG9sCsykO1Rqe1VTve67CWuqG64tZAww64nE+OHyl6VwLIDvEzqXqKxNZ60QC
+ Dnf/T+dt3lMj/vztjzu+JIMVAiC9CVXxOfgDp7+JL6q5UiqoiqTcEk/33+HvVbBweSuL9UO+mkn
+ ai2CQFhXBse1N2NSk88oetrmlPwJbfIcg3Jq0Irr8sOPx9v1A7zI829Q==
+X-Google-Smtp-Source: AGHT+IExJrzXiz8GyXMvMP7E0Qxhnl4WAEwpBnI0SI8dLavQEE40k1pu8gbgtA+2RMpjrTQ0rxc9mw==
+X-Received: by 2002:a05:600c:4e8b:b0:46e:35a0:3587 with SMTP id
+ 5b1f17b1804b1-47a838586bbmr388875e9.27.1765310880703; 
+ Tue, 09 Dec 2025 12:08:00 -0800 (PST)
 Received: from [192.168.69.213] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47a838126f5sm917215e9.14.2025.12.09.12.07.12
+ 5b1f17b1804b1-47a7d99dabesm24847235e9.5.2025.12.09.12.07.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Dec 2025 12:07:13 -0800 (PST)
-Message-ID: <d0f06e40-27e1-43a6-9fed-3c1d0eaa16ad@linaro.org>
-Date: Tue, 9 Dec 2025 21:07:12 +0100
+ Tue, 09 Dec 2025 12:08:00 -0800 (PST)
+Message-ID: <7db0dde6-e839-4ffc-b39a-17c9dc115f6c@linaro.org>
+Date: Tue, 9 Dec 2025 21:07:59 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] Fix const qualifier build errors with recent glibc
+Subject: Re: [PULL 03/23] hw/net/virtio-net: make VirtIONet.vlans an array
+ instead of a pointer
 Content-Language: en-US
+To: Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org
+Cc: Michael Tokarev <mjt@tls.msk.ru>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, Lei Yang <leiyang@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
+References: <20251028074901.22062-1-philmd@linaro.org>
+ <20251028074901.22062-4-philmd@linaro.org>
+ <7798584d-e861-47b7-af52-2c2efb67a4de@proxmox.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
- Fam Zheng <fam@euphon.net>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Kostiantyn Kostiuk <kkostiuk@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Laurent Vivier <laurent@vivier.eu>
-References: <20251209174328.698774-1-clg@redhat.com>
- <788f9e4d-86c1-4830-8eda-dd70d8fec7c4@linaro.org>
-In-Reply-To: <788f9e4d-86c1-4830-8eda-dd70d8fec7c4@linaro.org>
+In-Reply-To: <7798584d-e861-47b7-af52-2c2efb67a4de@proxmox.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::334;
@@ -111,35 +107,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/12/25 20:17, Philippe Mathieu-Daudé wrote:
-> On 9/12/25 18:43, Cédric Le Goater wrote:
->> A recent change in glibc 2.42.9000 [1] changes the return type of
->> strstr() and other string functions to be 'const char *' when the
->> input is a 'const char *'.
->>
->> This breaks the build in various files with errors such as :
->>
->>    error: initialization discards 'const' qualifier from pointer 
->> target type [-Werror=discarded-qualifiers]
->>      208 |         char *pidstr = strstr(filename, "%");
->>          |                        ^~~~~~
->>
->> Fix this by changing the type of the variables that store the result
->> of these functions to 'const char *'.
->>
->> [1] https://sourceware.org/git/? 
->> p=glibc.git;a=commit;h=cd748a63ab1a7ae846175c532a3daab341c62690
->>
->> Signed-off-by: Cédric Le Goater <clg@redhat.com>
->> ---
->>
->>   Most changes are straight forward apart from vubr_parse_host_port.
-> 
-> Better keep the vubr_parse_host_port() change in a distinct patch (the
-> change isn't really what this commit describes).
-> 
-> For the others:
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Hi Fiona,
 
-Queued without the vubr_parse_host_port() change, thanks.
+On 9/12/25 13:15, Fiona Ebner wrote:
+> Hi,
+> 
+> Am 28.10.25 um 11:19 AM schrieb Philippe Mathieu-Daudé:
+>> From: Michael Tokarev <mjt@tls.msk.ru>
+>>
+>> This field is a fixed-size buffer (number of elements is MAX_VLAN,
+>> known at build time).  There's no need to allocate it dynamically,
+>> it can be made an integral part of VirtIONet structure.
+>>
+>> This field is the only user of VMSTATE_BUFFER_POINTER_UNSAFE() macro.
+>>
+>> Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+>> Tested-by: Lei Yang <leiyang@redhat.com>
+>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+>> Message-ID: <20251023135316.31128-2-mjt@tls.msk.ru>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> 
+> unfortunately, after this commit, loading a VM state taken with v10.1.2
+> or older doesn't work anymore:
+> 
+>> qemu-system-x86_64: Missing section footer for 0000:00:13.0/virtio-net
+>> qemu-system-x86_64: Section footer error, section_id: 41
+> 
+> Reproducer below [0].
+> 
+> 
+> Reverting
+> 
+>> 58341158d0 migration/vmstate: remove VMSTATE_BUFFER_POINTER_UNSAFE macro
+>> 3a9cd2a4a1 hw/net/virtio-net: make VirtIONet.vlans an array instead of a pointer
+> 
+> in current master makes it work again.
+
+Thanks for the report. Commits reverted.
+
+> 
+> 
+> I'm also seeing the following when a guest is actually running:
+> 
+>> kvm: VQ 1 size 0x100 < last_avail_idx 0x9 - used_idx 0x3e30
+>> kvm: load of migration failed: Operation not permitted: error while loading state for instance 0x0 of device '0000:00:13.0/virtio-net': Failed to load element of type virtio for virtio: -1
+> 
+> and here too a revert of the two commits seems to help :)
+> 
+> 
+> Best Regards,
+> Fiona
+> 
+> 
+> [0]:
+> 
+>> [I] root@pve9a1 ~# cat snapshot-virtio-net.sh
+>> #!/bin/bash
+>> rm /tmp/disk.qcow2
+>> args="
+>>    -netdev type=tap,id=net1,ifname=tap104i1,script=/usr/libexec/qemu-server/pve-bridge,downscript=/usr/libexec/qemu-server/pve-bridgedown,vhost=on
+>>    -device virtio-net-pci,mac=BC:24:11:32:3C:69,netdev=net1,bus=pci.0,addr=0x13,id=net1
+>>    -machine type=pc-i440fx-10.1
+>> "
+>> $1/qemu-img create -f qcow2 /tmp/disk.qcow2 1G
+>> $1/qemu-system-x86_64 --qmp stdio --blockdev qcow2,node-name=node0,file.driver=file,file.filename=/tmp/disk.qcow2 $args <<EOF
+>> {"execute": "qmp_capabilities"}
+>> {"execute": "snapshot-save", "arguments": { "job-id": "save0", "tag": "snap", "vmstate": "node0", "devices": ["node0"] } }
+>> {"execute": "quit"}
+>> EOF
+>> $2/qemu-system-x86_64 --qmp stdio --blockdev qcow2,node-name=node0,file.driver=file,file.filename=/tmp/disk.qcow2 $args -loadvm snap
+> 
+> 
+
 
