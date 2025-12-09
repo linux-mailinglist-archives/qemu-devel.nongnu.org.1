@@ -2,40 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A541CB01C3
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E84CCB01BB
 	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 14:55:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vSy9y-0000AQ-JZ; Tue, 09 Dec 2025 08:53:46 -0500
+	id 1vSyA9-0000Mt-IW; Tue, 09 Dec 2025 08:53:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vSy9X-00007l-Go
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vSy9X-00007h-F4
  for qemu-devel@nongnu.org; Tue, 09 Dec 2025 08:53:21 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vSy9T-0002cC-Qf
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vSy9U-0002cH-C7
  for qemu-devel@nongnu.org; Tue, 09 Dec 2025 08:53:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
- Message-Id:Date:Subject:From:Sender:Reply-To:Content-ID:Content-Description:
- Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
- In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ s=dkim; h=Cc:To:In-Reply-To:References:Message-Id:Content-Transfer-Encoding:
+ Content-Type:MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=wCPXVKRNgrsELABMxvbsZow+6lzooVlmJPoUmw/DF7Q=; b=sd5D6+1W/Pc+5Gw
- 2ckbcNwYX4cvDbp/2Y0Ltvv8ZpxBY6RCrwMBExNDWb+6A++W6XrkY2bueaJFTJG4ckPQEXSPww2vZ
- 4lYVwFzQMJZSIjXW3J0VF7C7H97KaCmouiifeLRI3JhNVlFvxbIfNOYhZTkrQZ08t4Z3nAA9OExDE
- uw=;
-Subject: [PATCH 0/7] single-binary: Drop TARGET_PHYS_ADDR_SPACE_BITS
-Date: Tue, 09 Dec 2025 14:56:01 +0100
-Message-Id: <20251209-phys_addr-v1-0-c387f3e72d77@rev.ng>
+ List-Help; bh=OsDi9MONRBDk+VTZpzbFMd5rjuhEpKkEACjoOpl9hdw=; b=I01CPQehsW6CVXm
+ DpP1zhl9l6z2/R9plCdtSXYJH3kjEBM3A0J8ljqODozjvq0U49U0jiVQQhJo6KRIXgQ2nGxiRgDLh
+ aVcNJRBWWbMK13gljnvQJ2BmDIRZHfWyLMMJLcR41Yujj5yzAbXRK70hl30GZYEGQNHScde9n7YnH
+ mw=;
+Date: Tue, 09 Dec 2025 14:56:02 +0100
+Subject: [PATCH 1/7] target/alpha: Introduce alpha_phys_addr_space_bits()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAHEqOGkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1NDQwMT3YKMyuL4xJSUIt0kgzQT89REYwNDk0QloPqCotS0zAqwWdGxtbU
- ANdXtvlsAAAA=
-X-Change-ID: 20251104-phys_addr-b0f47ea3014a
+Message-Id: <20251209-phys_addr-v1-1-c387f3e72d77@rev.ng>
+References: <20251209-phys_addr-v1-0-c387f3e72d77@rev.ng>
+In-Reply-To: <20251209-phys_addr-v1-0-c387f3e72d77@rev.ng>
 To: qemu-devel@nongnu.org
 Cc: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
  Richard Henderson <richard.henderson@linaro.org>
@@ -65,65 +63,73 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The target macro TARGET_PHYS_ADDR_SPACE_BITS is unused since commit
+In preparation for dropping TARGET_PHYS_ADDR_SPACE_BITS, add a
+a runtime function to correctly represent the size of the physical
+address space for EV4-6 based on the current CPU version.
 
-  2e8fe327eb6 ("accel/tcg: Simplify L1_MAP_ADDR_SPACE_BITS"),
-
-replace the handful of remaining uses with runtime functions or
-constants.
-
-For discussion see:
-
-  https://lore.kernel.org/qemu-devel/8f0db5c1-f20b-4b7a-8d6c-76ce7ec7b4e0@linaro.org/
-
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
-Anton Johansson (7):
-      target/alpha: Introduce alpha_phys_addr_space_bits()
-      target/hppa: Define PA[20|1X] physical address space size
-      target/i386: Drop physical address range checks
-      target/loongarch: Introduce loongarch_palen_mask()
-      hw/loongarch: Use loongarch_palen_mask()
-      hw/riscv: Fix IOMMU PAS capability to 56 bits
-      Drop TARGET_PHYS_ADDR_SPACE_BITS
+ linux-user/alpha/target_proc.h |  2 +-
+ target/alpha/cpu.h             |  1 +
+ target/alpha/helper.c          | 18 ++++++++++++++++++
+ 3 files changed, 20 insertions(+), 1 deletion(-)
 
- include/exec/cpu-defs.h           |  3 ---
- include/exec/poison.h             |  2 --
- include/hw/loongarch/boot.h       |  3 ++-
- linux-user/alpha/target_proc.h    |  2 +-
- target/alpha/cpu-param.h          |  3 ---
- target/alpha/cpu.h                |  1 +
- target/arm/cpu-param.h            |  2 --
- target/avr/cpu-param.h            |  1 -
- target/hexagon/cpu-param.h        |  1 -
- target/hppa/cpu-param.h           |  2 --
- target/i386/cpu-param.h           |  2 --
- target/i386/tcg/helper-tcg.h      |  2 --
- target/loongarch/cpu-mmu.h        |  1 +
- target/loongarch/cpu-param.h      |  1 -
- target/loongarch/internals.h      |  1 -
- target/m68k/cpu-param.h           |  1 -
- target/microblaze/cpu-param.h     |  2 --
- target/mips/cpu-param.h           |  2 --
- target/openrisc/cpu-param.h       |  1 -
- target/ppc/cpu-param.h            |  7 -------
- target/riscv/cpu-param.h          |  2 --
- target/rx/cpu-param.h             |  1 -
- target/s390x/cpu-param.h          |  1 -
- target/sh4/cpu-param.h            |  1 -
- target/sparc/cpu-param.h          |  2 --
- target/tricore/cpu-param.h        |  1 -
- target/xtensa/cpu-param.h         |  1 -
- hw/loongarch/boot.c               | 28 ++++++++++++++++------------
- hw/loongarch/virt.c               |  5 ++++-
- hw/riscv/riscv-iommu.c            | 12 +++++++++---
- target/alpha/helper.c             | 18 ++++++++++++++++++
- target/hppa/mem_helper.c          | 23 ++++++++++++++++++-----
- target/i386/cpu.c                 |  9 +++------
- target/i386/kvm/kvm.c             |  3 +--
- target/loongarch/cpu_helper.c     | 14 +++++++++++---
- target/loongarch/tcg/tlb_helper.c | 12 ++++++++----
- 36 files changed, 93 insertions(+), 80 deletions(-)
+diff --git a/linux-user/alpha/target_proc.h b/linux-user/alpha/target_proc.h
+index da437ee0e5..bcdd1e343c 100644
+--- a/linux-user/alpha/target_proc.h
++++ b/linux-user/alpha/target_proc.h
+@@ -57,7 +57,7 @@ static int open_cpuinfo(CPUArchState *cpu_env, int fd)
+             "L1 Dcache\t\t: n/a\n"
+             "L2 cache\t\t: n/a\n"
+             "L3 cache\t\t: n/a\n",
+-            model, TARGET_PAGE_SIZE, TARGET_PHYS_ADDR_SPACE_BITS,
++            model, TARGET_PAGE_SIZE, alpha_phys_addr_space_bits(cpu_env),
+             max_cpus, num_cpus, cpu_mask);
+ 
+     return 0;
+diff --git a/target/alpha/cpu.h b/target/alpha/cpu.h
+index 45944e46b5..9ee8d93b72 100644
+--- a/target/alpha/cpu.h
++++ b/target/alpha/cpu.h
+@@ -286,6 +286,7 @@ bool alpha_cpu_exec_interrupt(CPUState *cpu, int int_req);
+ hwaddr alpha_cpu_get_phys_page_debug(CPUState *cpu, vaddr addr);
+ #endif /* !CONFIG_USER_ONLY */
+ void alpha_cpu_dump_state(CPUState *cs, FILE *f, int flags);
++uint8_t alpha_phys_addr_space_bits(CPUAlphaState *env);
+ int alpha_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
+ int alpha_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
+ 
+diff --git a/target/alpha/helper.c b/target/alpha/helper.c
+index a9af52a928..0f0cf73bf3 100644
+--- a/target/alpha/helper.c
++++ b/target/alpha/helper.c
+@@ -523,6 +523,24 @@ void alpha_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+     qemu_fprintf(f, "\n");
+ }
+ 
++uint8_t alpha_phys_addr_space_bits(CPUAlphaState *env)
++{
++    switch (env->implver) {
++    case IMPLVER_2106x:
++        /* EV4 */
++        return 34;
++    case IMPLVER_21164:
++        /* EV5 */
++        return 40;
++    case IMPLVER_21264:
++    case IMPLVER_21364:
++        /* EV6 and EV7*/
++        return 44;
++    default:
++        g_assert_not_reached();
++    }
++}
++
+ /* This should only be called from translate, via gen_excp.
+    We expect that ENV->PC has already been updated.  */
+ G_NORETURN void helper_excp(CPUAlphaState *env, int excp, int error)
+
+-- 
+2.51.0
 
 
