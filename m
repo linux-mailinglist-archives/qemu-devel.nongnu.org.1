@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D26A6CB0DE0
-	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 19:44:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB072CB3410
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 16:06:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vT2gy-0000OO-6Z; Tue, 09 Dec 2025 13:44:08 -0500
+	id 1vTLl8-0003dz-0s; Wed, 10 Dec 2025 10:05:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vT2go-0000N6-AF
- for qemu-devel@nongnu.org; Tue, 09 Dec 2025 13:43:58 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vT2gm-0008W7-L6
- for qemu-devel@nongnu.org; Tue, 09 Dec 2025 13:43:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1765305836;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=exzAWHPQSqZT2+l+5h4Cv986A3Dg+mAFN3J91q7qk3E=;
- b=Db7DklL9RG0OVWvqn46Rgiq4lgrVziaGaeN/vioWwLl0GJZXO7wmS7LNS6+jC30Xjtsbi2
- 0kLufkQwlbsSJnuW5SaICTQE4rsykl9jOMhvL4+9nG/QbKuj5BICDa/uOXYqI3NRh8Y5we
- aPwCC1bLC83xujbrf8+iAytoXgEeql4=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-642-PgvL1AbhMq6pam3BMs5Avg-1; Tue,
- 09 Dec 2025 13:43:52 -0500
-X-MC-Unique: PgvL1AbhMq6pam3BMs5Avg-1
-X-Mimecast-MFC-AGG-ID: PgvL1AbhMq6pam3BMs5Avg_1765305832
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ED97D19560AD; Tue,  9 Dec 2025 18:43:51 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.7])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 629AC180045B; Tue,  9 Dec 2025 18:43:51 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 6410021E6A27; Tue, 09 Dec 2025 19:43:48 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, marcandre.lureau@redhat.com, qemu-rust@nongnu.org, 
- John Snow <jsnow@redhat.com>
-Subject: Re: [PATCH 13/19] scripts/qapi: add QAPISchemaIfCond.rsgen()
-In-Reply-To: <20251010151006.791038-14-pbonzini@redhat.com> (Paolo Bonzini's
- message of "Fri, 10 Oct 2025 17:09:58 +0200")
-References: <20251010151006.791038-1-pbonzini@redhat.com>
- <20251010151006.791038-14-pbonzini@redhat.com>
-Date: Tue, 09 Dec 2025 19:43:48 +0100
-Message-ID: <87ms3rbimz.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <liu.jaloo@gmail.com>)
+ id 1vTAFV-0005i3-Mv
+ for qemu-devel@nongnu.org; Tue, 09 Dec 2025 21:48:17 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <liu.jaloo@gmail.com>)
+ id 1vTAFU-0007la-3o
+ for qemu-devel@nongnu.org; Tue, 09 Dec 2025 21:48:17 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-29555415c5fso72745265ad.1
+ for <qemu-devel@nongnu.org>; Tue, 09 Dec 2025 18:48:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1765334894; x=1765939694; darn=nongnu.org;
+ h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=hMplGQ8TAlq5d2JpG55V/7VLf5BIxQHExdh5XTme4sg=;
+ b=IxGNfPEfqoiG72UaqZ6YVhsDkL1fcbToU7lIc3bQhBTKusxS1N7RbpwQcJ9km0+XSa
+ cA/BS11uByv9+1D9hcjYh1N57mG2k9emBxKuOuTJAYqOzGJQX8CkVLpGGWoxAra4UQ/n
+ uwJmmn4cF5tp58N3ugQ2jcNAipCaK/DEOJgRmsybtyfT3I/BZb+YXHQ/yg/bVCP6q7GQ
+ 6EwDjo6eglEOI4h1k9pcc4fSQMZy8OsW4Iz0pP17oQUHsZYOgJv/0hYulbB2KBk2YjZi
+ fLDFv4U5fUWPZjQ+zP+PliT7aGVWhPf9a1BxGLAYrLLibqwIJ1OloUABRtewnOSfJEx6
+ rx5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1765334894; x=1765939694;
+ h=to:subject:message-id:date:from:mime-version:x-gm-gg
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=hMplGQ8TAlq5d2JpG55V/7VLf5BIxQHExdh5XTme4sg=;
+ b=rc3cvqBsmwvLjdh8BHjLVYxoAorr5sxoatD1CdR8BAYLVvqxny/CAoxgGMmH2finqw
+ +ZXooFDJaNmaN3mQX/Tw66H7Rr3OnO068JUfs0gT9xZkT3xjyCEouLGVu/PXuTpZX8Ou
+ dlrcy295MbtMyQHh5tTu8dOX4Mx7apPCdhjj21ax+dSrh9fbgRvEcSGQv7ijT2BUwxsA
+ PC9O9COZL+NyIIImEq9W2CTv+wEYLxPc4vE9gY/kob4acYIxA+kXRmdr6iAtTM6+w2Bg
+ PwlxHQu25L1EQ12jPIWLk2JhizuMAPeFbRvRBtg8xCJ8qWPunJN+YJkPhz2ZXI35/nCt
+ qYbg==
+X-Gm-Message-State: AOJu0YzgFhciuTaYGB65t/LEOsGqtdyuNwyI2QrGq0HS3BDBqAiUuhWd
+ xRUiIPOuSJSKYVfwOJeXY5KHgfSTGlKbC+OsYy7A+gbQSxubm1TAHowgkY6DKCf6dd7iF8Kf5By
+ d0rJegGVW95MIHMJ7yDVcRIVCAMGzAu6FzCmYnKuatEg=
+X-Gm-Gg: ASbGnctrmaEHcHPGyi9ICayKdrdKP+wDBkC35be97kPwwL5+DVtRH1HCp1VAY5aUzrO
+ LUCSdJvfVw6sMc+0zgRjbAd2OuzBXJVnaTxo1Ydm+dm4SNJc1fHzFv5uI0lEBPEiJ8R2ZhAlur5
+ GGvhzF9UoGO/5c4vpoNQRN+7Prx5xHE28OCL8eh5nNKrQWtZZuCY6/Xczu+pxEoJ/vOvPqB1Lsd
+ 6aXHKHwjO0Dbs8sHpWvP/GYQuM/fJ5hmv47kr1RtWfYk8o1l2KPabM05v2xRWI0zirb6fu0DhNe
+ VhY585rrmE8kTAy+FaXwRWh4/to=
+X-Google-Smtp-Source: AGHT+IG6ZPLayUKo5SkMUhWASW8MGuC0pp5TqStWWtebBSedAoUQiWL4hRaJarOxnssIf7kDsJ0a2SXWVO36pcA6ziU=
+X-Received: by 2002:a05:6a20:918f:b0:366:14ac:e1d7 with SMTP id
+ adf61e73a8af0-366e31b504cmr842104637.61.1765334893654; Tue, 09 Dec 2025
+ 18:48:13 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+From: Liu Jaloo <liu.jaloo@gmail.com>
+Date: Wed, 10 Dec 2025 02:48:03 +0800
+X-Gm-Features: AQt7F2qIcotGGyEluxsW9kUWilYLp3rskbaHV0ckDPUI_YwOM6tGCp1iPVQZths
+Message-ID: <CAOYM0N3YdrkhOXrpxE6rzk5DbLOF0GzEVaThAHxnHfQYLk+pzQ@mail.gmail.com>
+Subject: make pxerom report error
+To: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="0000000000003ef4430645900f5f"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=liu.jaloo@gmail.com; helo=mail-pl1-x631.google.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 10 Dec 2025 10:05:38 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,157 +88,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Paolo Bonzini <pbonzini@redhat.com> writes:
+--0000000000003ef4430645900f5f
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
->
-> Generate Rust #[cfg(...)] guards from QAPI 'if' conditions.
+$ cd qemu
+$ git submodule update --init roms/ipxe
+$ cd roms
+$ make pxerom
 
-Please mention that this isn't used, yet.  I commonly write something
-like "The next commit will put it to use."
+report error like this:
 
-> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> Link: https://lore.kernel.org/r/20210907121943.3498701-15-marcandre.lurea=
-u@redhat.com
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  scripts/qapi/common.py | 16 ++++++++++++++++
->  scripts/qapi/schema.py |  4 ++++
->  2 files changed, 20 insertions(+)
->
-> diff --git a/scripts/qapi/common.py b/scripts/qapi/common.py
-> index d7c8aa3365c..f16b9568bb9 100644
-> --- a/scripts/qapi/common.py
-> +++ b/scripts/qapi/common.py
-> @@ -199,6 +199,22 @@ def guardend(name: str) -> str:
->                   name=3Dc_fname(name).upper())
->=20=20
->=20=20
-> +def rsgen_ifcond(ifcond: Optional[Union[str, Dict[str, Any]]]) -> str:
 
-This is the Rust-generating cousin of cgen_ifcond().
+> In file included from tests/bigint_test.c:38:
+> tests/bigint_test.c: In function =E2=80=98bigint_test_exec=E2=80=99:
+> tests/bigint_test.c:232:14: error: =E2=80=98result_raw=E2=80=99 may be us=
+ed uninitialized
+> [-Werror=3Dmaybe-uninitialized]
+>   232 |         ok ( memcmp ( result_raw, expected_raw,
+>       \
+>       |
+>  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>   233 |                       sizeof ( result_raw ) ) =3D=3D 0 );
+>       \
+>       |                       ~~~~~~~~~~~~~~~~~~~~~~~
+> include/ipxe/test.h:45:19: note: in definition of macro =E2=80=98okx=E2=
+=80=99
+>    45 |         test_ok ( success, file, line, #success )
+>       |                   ^~~~~~~
+> tests/bigint_test.c:232:9: note: in expansion of macro =E2=80=98ok=E2=80=
+=99
+>   232 |         ok ( memcmp ( result_raw, expected_raw,
+>       \
+>       |         ^~
+> tests/bigint_test.c:565:9: note: in expansion of macro =E2=80=98bigint_ad=
+d_ok=E2=80=99
+>   565 |         bigint_add_ok ( BIGINT ( 0x8a ),
+>       |         ^~~~~~~~~~~~~
+> In file included from tests/bigint_test.c:36:
+> include/string.h:32:19: note: by argument 1 of type =E2=80=98const void *=
+=E2=80=99 to
+> =E2=80=98memcmp=E2=80=99 declared here
+>    32 | extern int __pure memcmp ( const void *first, const void *second,
+>       |                   ^~~~~~
+> tests/bigint_test.c:213:17: note: =E2=80=98result_raw=E2=80=99 declared h=
+ere
+>   213 |         uint8_t result_raw[ sizeof ( expected_raw ) ];
+>      \
+>       |                 ^~~~~~~~~~
+> tests/bigint_test.c:565:9: note: in expansion of macro =E2=80=98bigint_ad=
+d_ok=E2=80=99
+>   565 |         bigint_add_ok ( BIGINT ( 0x8a ),
+>       |         ^~~~~~~~~~~~~
+> cc1: all warnings being treated as errors
+> make[1]: *** [Makefile.housekeeping:943: bin/bigint_test.o] Error 1
+> make[1]: Leaving directory '/home/jaloo/slackware/qemu/qemu/roms/ipxe/src=
+'
+> make: *** [Makefile:126: build-pxe-roms] Error 2
 
-The argument is None or a tree.  The tree's leaves are str, and its
-inner nodes look like
+--0000000000003ef4430645900f5f
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-    {'all': [sub-tree, ...]}
-    {'any': [sub-tree, ...]}
-    {'not': sub-tree}
+<div dir=3D"ltr"><div>$ cd qemu</div><div>$ git submodule update --init rom=
+s/ipxe<br>$ cd roms<br>$ make pxerom</div><div><br></div><div>report error =
+like this:</div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D=
+"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-le=
+ft:1ex">In file included from tests/bigint_test.c:38:<br>tests/bigint_test.=
+c: In function =E2=80=98bigint_test_exec=E2=80=99:<br>tests/bigint_test.c:2=
+32:14: error: =E2=80=98result_raw=E2=80=99 may be used uninitialized [-Werr=
+or=3Dmaybe-uninitialized]<br>=C2=A0 232 | =C2=A0 =C2=A0 =C2=A0 =C2=A0 ok ( =
+memcmp ( result_raw, expected_raw, =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 \<br>=C2=A0 =C2=A0 =C2=A0 | =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0^~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br>=C2=A0 233 | =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 sizeof ( result_raw ) =
+) =3D=3D 0 ); =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 \<br>=C2=A0 =C2=A0 =C2=A0 | =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ~~~~~~~~~~~~~~~~~~~~~~~<br>include/ipxe/=
+test.h:45:19: note: in definition of macro =E2=80=98okx=E2=80=99<br>=C2=A0 =
+=C2=A045 | =C2=A0 =C2=A0 =C2=A0 =C2=A0 test_ok ( success, file, line, #succ=
+ess )<br>=C2=A0 =C2=A0 =C2=A0 | =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 ^~~~~~~<br>tests/bigint_test.c:232:9: note: in expansi=
+on of macro =E2=80=98ok=E2=80=99<br>=C2=A0 232 | =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 ok ( memcmp ( result_raw, expected_raw, =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 \<br>=C2=A0 =C2=A0 =C2=
+=A0 | =C2=A0 =C2=A0 =C2=A0 =C2=A0 ^~<br>tests/bigint_test.c:565:9: note: in=
+ expansion of macro =E2=80=98bigint_add_ok=E2=80=99<br>=C2=A0 565 | =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 bigint_add_ok ( BIGINT ( 0x8a ),<br>=C2=A0 =C2=A0 =C2=
+=A0 | =C2=A0 =C2=A0 =C2=A0 =C2=A0 ^~~~~~~~~~~~~<br>In file included from te=
+sts/bigint_test.c:36:<br>include/string.h:32:19: note: by argument 1 of typ=
+e =E2=80=98const void *=E2=80=99 to =E2=80=98memcmp=E2=80=99 declared here<=
+br>=C2=A0 =C2=A032 | extern int __pure memcmp ( const void *first, const vo=
+id *second,<br>=C2=A0 =C2=A0 =C2=A0 | =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 ^~~~~~<br>tests/bigint_test.c:213:17: note: =E2=
+=80=98result_raw=E2=80=99 declared here<br>=C2=A0 213 | =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 uint8_t result_raw[ sizeof ( expected_raw ) ]; =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0\<br>=C2=A0 =C2=A0 =C2=A0 | =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ^~~~~~~~~~<br>tests=
+/bigint_test.c:565:9: note: in expansion of macro =E2=80=98bigint_add_ok=E2=
+=80=99<br>=C2=A0 565 | =C2=A0 =C2=A0 =C2=A0 =C2=A0 bigint_add_ok ( BIGINT (=
+ 0x8a ),<br>=C2=A0 =C2=A0 =C2=A0 | =C2=A0 =C2=A0 =C2=A0 =C2=A0 ^~~~~~~~~~~~=
+~<br>cc1: all warnings being treated as errors<br>make[1]: *** [Makefile.ho=
+usekeeping:943: bin/bigint_test.o] Error 1<br>make[1]: Leaving directory &#=
+39;/home/jaloo/slackware/qemu/qemu/roms/ipxe/src&#39;<br>make: *** [Makefil=
+e:126: build-pxe-roms] Error 2</blockquote></div>
 
-mypy doesn't do recursive types, so we approximate the tree as
-Union[str, Dict[str, Any]].
-
-> +
-> +    def cfg(ifcond: Union[str, Dict[str, Any]]) -> str:
-
-The argument's type is wrong.  It should be
-
-    Union[str, List[Dict[str, Any]], Dict[str, Any]]
-
-We'll see below why mypy doesn't complain, and where the List[...]
-comes from.
-
-The name @ifcond is misleading.  This isn't an if condition, it's the
-union of if condition and list of if conditions.
-
-I needed John Snow's help to figure this out.  Thanks, John!
-
-Case 1: the code for str, i.e. a tree leaf:
-
-> +        if isinstance(ifcond, str):
-> +            return ifcond
-
-Case 2: the code for List[Dict[str, Any]]:
-
-> +        if isinstance(ifcond, list):
-> +            return ', '.join([cfg(c) for c in ifcond])
-
-Case 3: the code for Dict[str, Any]:
-
-gen_ifcond() below has
-
-           assert isinstance(ifcond, dict) and len(ifcond) =3D=3D 1
-
-right here to make this crystal clear.
-
-> +        oper, operands =3D next(iter(ifcond.items()))
-
-Recall @ifcond is either
-
-    {'all': [sub-tree, ...]}
-    {'any': [sub-tree, ...]}
-    {'not': sub-tree}
-
-The next(...) wizardry returns the first element of the @ifcond
-dictionary.  Actually *the* element, since @ifcond has just one.
-
-Thus:
-
-    @oper is 'all', 'any', or 'not'
-
-    @operands is a sub-tree when @oper is 'not', else a [sub-tree, ...],
-    i.e. Dict[str, Any] or List[Dict[str, Any]]
-
-> +        operands =3D cfg(operands)
-
-We pass @operands to cfg().  That's where the List[...] comes from.
-
-> +        return f'{oper}({operands})'
-> +
-> +    if not ifcond:
-> +        return ''
-> +    return '#[cfg(%s)]' % cfg(ifcond)
-
-So, cfg(ifcond) returns the argument to interpolate into '#[cfg(%s)]'.
-
-When @ifcond is str, it's @ifcond itself.  This is case 1.
-
-When @ifcond is {'not': COND}, it's 'not(CC)', where CC is cfg(COND).
-This is case 3 and case 2 with a non-list argument.
-
-When @ifcond is {'all': [COND, ...]}, it's 'all(CC, ...)', where the CC
-are cfg(COND).  This is case 3 and case 2 with a list argument.
-
-Likewise for {'any': [COND, ...]}.
-
-Okay apart from the incorrect type hint and the misleading name.
-
-Less clever code would've saved me quite some review time.
-
-But why doesn't mypy scream?  Consider again
-
-           oper, operands =3D next(iter(ifcond.items()))
-
-@ifcond's static type is Dict[str, Any].  Therefore @oper's static type
-is str, and @operands is Any.  Any suppresses type checking!  The call
-cfg(operands) is therefore *not* checked, and we get away with passing a
-list to cfg() even though its type hint doesn't allow it.
-
-> +
-> +
->  def gen_ifcond(ifcond: Optional[Union[str, Dict[str, Any]]],
->                 cond_fmt: str, not_fmt: str,
->                 all_operator: str, any_operator: str) -> str:
-> diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-> index 8d88b40de2e..848a7401251 100644
-> --- a/scripts/qapi/schema.py
-> +++ b/scripts/qapi/schema.py
-> @@ -37,6 +37,7 @@
->      docgen_ifcond,
->      gen_endif,
->      gen_if,
-> +    rsgen_ifcond,
->  )
->  from .error import QAPIError, QAPISemError, QAPISourceError
->  from .expr import check_exprs
-> @@ -63,6 +64,9 @@ def gen_endif(self) -> str:
->      def docgen(self) -> str:
->          return docgen_ifcond(self.ifcond)
->=20=20
-> +    def rsgen(self) -> str:
-> +        return rsgen_ifcond(self.ifcond)
-> +
->      def is_present(self) -> bool:
->          return bool(self.ifcond)
-
+--0000000000003ef4430645900f5f--
 
