@@ -2,87 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1835CCB1005
-	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 21:07:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C9FDCB101D
+	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 21:07:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vT3z3-0002cI-Tm; Tue, 09 Dec 2025 15:06:53 -0500
+	id 1vT3yH-0000tL-Fw; Tue, 09 Dec 2025 15:06:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vT3z0-0002FA-LL
- for qemu-devel@nongnu.org; Tue, 09 Dec 2025 15:06:51 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vT3yy-0001Mh-VL
- for qemu-devel@nongnu.org; Tue, 09 Dec 2025 15:06:50 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4775895d69cso30834025e9.0
- for <qemu-devel@nongnu.org>; Tue, 09 Dec 2025 12:06:48 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vT3yE-0000sE-Qt
+ for qemu-devel@nongnu.org; Tue, 09 Dec 2025 15:06:03 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vT3yC-0001IE-PC
+ for qemu-devel@nongnu.org; Tue, 09 Dec 2025 15:06:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1765310758;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=qRGZXAeMQr5xJdTS2DMGGaafTDAdNTLf/yvbW0X0cl4=;
+ b=NhtPRsvesF6ZH+o+02zgok/MSf5nUnVoFZcvV+rco07RqUhZld7OIZiAS5eK5kj+yLL2Si
+ gaOy+m7dHod9Gt5c7oGLObMyisDCRSFCWGp9nzQOHtRod8aEdJ7Am+6IiLT7n8fvMTwLmj
+ YzuulkxIS6YX5opk9bKVQZklGHEd2Eg=
+Received: from mail-yx1-f71.google.com (mail-yx1-f71.google.com
+ [74.125.224.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-478--h3_Y9PBO12sr8pvHcz07w-1; Tue, 09 Dec 2025 15:05:55 -0500
+X-MC-Unique: -h3_Y9PBO12sr8pvHcz07w-1
+X-Mimecast-MFC-AGG-ID: -h3_Y9PBO12sr8pvHcz07w_1765310754
+Received: by mail-yx1-f71.google.com with SMTP id
+ 956f58d0204a3-63e35e48a1aso7542234d50.0
+ for <qemu-devel@nongnu.org>; Tue, 09 Dec 2025 12:05:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1765310807; x=1765915607; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=monw4Wg+E2ePG8KINi+zLSSpB7+yENlvRjgHjIT21Uk=;
- b=djiI/f/wzteaYOYg4zEDhaomnwilEZ802taIzXyDc6nX8J9iyoQGqrTGuF1G4eMbmT
- PtKRCDK/fYGBYiOEbJIEMOGOFrJ6iSaEPDWAvd6aqhymUv7Rt2hlXBdNs2+UgC0+9mjU
- yPVBo6uigpGmQWl4Xu3bYr+XTj6OQZfpIM5hFRtNYOAUgzOkbefhuC64aaKMEOXN9/op
- yNqEK1iQH6sJqsijRCJ0a1ZzhNH6UsHpDbLzfwRiwa8Tp9pgvyaGhtY1oi/z/IjO2LqT
- Em6Nw+J+pp+GaxOIp0zQGLLc2i4bCCbmTBL8HL74CK5zl/XmuzGXfraI0pVrWvAaUxKV
- zXzg==
+ d=redhat.com; s=google; t=1765310754; x=1765915554; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qRGZXAeMQr5xJdTS2DMGGaafTDAdNTLf/yvbW0X0cl4=;
+ b=clPrdJUQN7GgoeaaCJw0SDmkMOHqoVG7WYk7258rU/sAYWz3r01gv6zmbLm4LNsSPX
+ A8nZwC9aDgXUdh938mSTePbkBB7bsvU7oFYvvlNslhbDyKVVweS4mGAGElXD8l4ay/z0
+ 0uRgiCBgEEMzpUZjqlYygNERtZUvaFYUyQ2VO13Hit2IcgEX+9NINpTt5NYpqA+KWvpx
+ jLw1Vw9p9hhn2ZpNdyl7ygPyKRj1OfuULf5MBkmvWqw/0NrBz0d+Na1pn8rMC8u4gbNS
+ Hq3+sTGOSISoVEDHh4bum7Y6cWMpsU++ReO6zthaGDhdIu+KjJR4IMwhvdWHsuCQup4l
+ vggQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765310807; x=1765915607;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=monw4Wg+E2ePG8KINi+zLSSpB7+yENlvRjgHjIT21Uk=;
- b=mlruen/3HVPWPRyHzADmG0qJpGyhWcStsEQCitvzvPFc9fRBaMcGTSZdI2TT+dIlx2
- 32D41oM8scS1SSAhoh0e0CFYrQ3tQLyHJTXAciHvf3VboJ3F6p/IE1Vb3BhIGMN+Nzy+
- MetbOObQi1F1CuK+I+RC78eQ4FAMzBaULqOxBBHSIEaYHlTKhGQfVBTj7wax6kvlJDpK
- cE+j33IYF4EeLLiTMIO7IXRYzjHkPT0xtKnCyI54COYvow52iEdzArThQcPQ28uiB9aI
- +ff64d4AkXFCNW7h63D2Z1OazrYnPnWgMHqCcw80AFJBZ36CqEdFUtI6Vs6yuOGZl5zg
- pO8w==
-X-Gm-Message-State: AOJu0Yym/nGjRMmpUiDzPfj50uCl3gSs+UZA5QJVW31RfSiizrFC+fCk
- Txhl5WIe6y3w8iv46PVujDBFB6LUtmluiGQ1oKWYr/SeAp2jxpWI1UnsD/Na0teNrW1IAwB54h7
- eycL/QDw=
-X-Gm-Gg: ASbGncvEfXGSTIbpqKUN7NFUvpWKaOGdEgAXj8vk1mtcuGAHYOhSb5dPuq+Ln3orrjF
- HbjbcDh6a9PCh5sOGbhI9WAhAfMhQc/DRnOYdwpv59lNZCiSum+v4ybINzH76wtSL9GHZuCqjw9
- fIvE61HvfY3hs2CZaSL0mIIiMBl4Am6zeWcdryso9RCw6kTGXNymv8leRskr/gXdOlNr/F+JQWH
- f87aaKsLJywQZggNO41weI/8KCcaE4cZa3gPWuGLjCzctkD2G6D5ZRbyX9oHVeY5p23LUBwqnqH
- sv0esGvqsCaHECdF9deQI2l8jOhyYYnXc9AFiHdusknrTtUHmhdBfbsBbZZUGg6vCPBNWy7Uava
- 2IpxQVJSA7/LIBzVylHOPsmQRCBfrw9shXwv9AVf/6pLcbAohrMZtFPtATosT7nwaUtI39P7QnF
- S2IKOMZO5qkPUSi/8e13nqNjghzI+OerjpP1PVxjfz7zq9ea4hRH3CGUHuMQgs
-X-Google-Smtp-Source: AGHT+IEtrRjOzMoibLSmbu4TFXJhdwFMc6XNdC4mMZJMGTxczCyWOCVzX202+PqEqLi+Oxum1ZAKtA==
-X-Received: by 2002:a05:600c:64c9:b0:458:a7fa:211d with SMTP id
- 5b1f17b1804b1-47a837b9d3emr677935e9.29.1765310806859; 
- Tue, 09 Dec 2025 12:06:46 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47a7d3e6651sm24550505e9.7.2025.12.09.12.06.45
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 09 Dec 2025 12:06:45 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 10/10] Revert "hw/net/virtio-net: make VirtIONet.vlans an array
- instead of a pointer"
-Date: Tue,  9 Dec 2025 21:05:37 +0100
-Message-ID: <20251209200537.84097-11-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251209200537.84097-1-philmd@linaro.org>
-References: <20251209200537.84097-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1765310754; x=1765915554;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=qRGZXAeMQr5xJdTS2DMGGaafTDAdNTLf/yvbW0X0cl4=;
+ b=L6hkVn3W0XJNhGgzsDtir/k6SPTbBoPkHVRM7OKUQrcq9i140F2+tZNmaCn0OYDAQd
+ kSvH8WuXbS3EMtDXDQa44bQeICVVytWIyK0a39rTH7JyXW+2yeHoIXlsSj6/ISJeDk2j
+ 6hM2zZfuwWrOPnCHeq3g8XiYb1LR9R6tod5VmipsWXmjQykH7oJROSPCNAeeBxC2EKi5
+ g43kowSXkIfN8bKBr/pVWb/yPArDvSIgnp+xKK9qc1Dk9lqfW3yU0FQOldNHIZnQz2vv
+ SmwwHJ9W5C9xwpId6SUDzTKJkCWgl4fFOZw5k0OZfYefelidU6/Z6Gx9Vw6iM8cqt+Mr
+ k9Yw==
+X-Gm-Message-State: AOJu0YzUPmYT/71OsV10DrYCWfxjRdgb5LizmwMsc4AmU2J0cSTut06J
+ jjCoy/j9ufge9rsumtfx8U+HKULnRZtZSGoGgI9zfHRnw3FUovZCls41E+1FIIEXC5ltSn14WYe
+ BFCUSde1kfKCT9y4d0Kp91ZoE90Nh5JRU/08SEaIKu/LOevSCNvD1aZq7p9XcTjiKTKry1eg1wv
+ iQh4jsNDnKdNfXDCAWg3lk5omkkR5l10k=
+X-Gm-Gg: AY/fxX5+2HVLUwTOEKHe/ft5/g2A8rTSYr71L0D+bSB1MTngQhGGWxWfHe3j6r8mdLF
+ pjWMqNo0hLWkqiR7Fo+zb2EU20WErG4UQmkj4FVjUaEC+YvvSRgEKWb9LQKoG6ljEc8IWW5xpav
+ dnz/as1rEph7BzKXmQs9NmbIhCbgRbqFpXnKy6DXysKasYv6cCltz2QcqpRNzWUn4pVPkochLUN
+ WqLAIBXHTtVMjIkpiSrRmZ0Jw==
+X-Received: by 2002:a05:690e:dcd:b0:644:4986:4558 with SMTP id
+ 956f58d0204a3-6446eafb6c8mr98360d50.58.1765310754401; 
+ Tue, 09 Dec 2025 12:05:54 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGtuAedOQVMUaSED+cfnQPNIPB0OGcOX4qJ9RWRiEx0UVYBsefZ7KOGQ1S+3T7UPF2U1HcaFKRH0oitKn8wVso=
+X-Received: by 2002:a05:690e:dcd:b0:644:4986:4558 with SMTP id
+ 956f58d0204a3-6446eafb6c8mr98345d50.58.1765310753911; Tue, 09 Dec 2025
+ 12:05:53 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20251205060058.1503170-1-jsnow@redhat.com>
+ <aThVvP5vwfjVa-ka@redhat.com>
+ <CAFn=p-aw1+BDuB1znFBdq_Z+V_qiuO-Vh69UZsS7LZKWZpPTuw@mail.gmail.com>
+ <aTh8cnASuApmT9Xx@redhat.com>
+In-Reply-To: <aTh8cnASuApmT9Xx@redhat.com>
+From: John Snow <jsnow@redhat.com>
+Date: Tue, 9 Dec 2025 15:05:43 -0500
+X-Gm-Features: AQt7F2roloGedo33IlA3TgSkOMpkO2Vq5BBJQL5mViGG-XeaFU215hrc4EWtQ84
+Message-ID: <CAFn=p-ZXsHpht=Yz=b6rs4As5OMCpGfqCw68C5Z3OwQg3N-7kg@mail.gmail.com>
+Subject: Re: [PATCH v3 00/15] python: drop qemu.qmp from qemu.git tree
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, Cleber Rosa <crosa@redhat.com>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Li-Wen Hsu <lwhsu@freebsd.org>, 
+ Kevin Wolf <kwolf@redhat.com>, Qemu-block <qemu-block@nongnu.org>, 
+ Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>, 
+ Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Ed Maste <emaste@freebsd.org>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -7
+X-Spam_score: -0.8
+X-Spam_bar: /
+X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_BL_SPAMCOP_NET=1.347, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,98 +124,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Per https://lore.kernel.org/qemu-devel/7798584d-e861-47b7-af52-2c2efb67a4de@proxmox.com/:
+On Tue, Dec 9, 2025 at 2:46=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@re=
+dhat.com> wrote:
+>
+> On Tue, Dec 09, 2025 at 12:23:21PM -0500, John Snow wrote:
+> > On Tue, Dec 9, 2025, 12:00=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange=
+@redhat.com>
+> > wrote:
+> >
+> > > On Fri, Dec 05, 2025 at 01:00:42AM -0500, John Snow wrote:
+> > > > Hello!
+> > > >
+> > > > This series drops the in-tree version of our python-qemu-qmp packag=
+e
+> > > > ("qemu.qmp") in favor of the version hosted on PyPI, whose reposito=
+ry is
+> > > > located at https://gitlab.com/qemu-project/python-qemu-qmp.
+> > > >
+> > > > GitLab CI: https://gitlab.com/jsnow/qemu/-/pipelines/2197613036
+> > > >        (FreeBSD isn't my fault...!)
+> > > >
+> > > > The major effects of this patch series are:
+> > > >
+> > > > 1. qemu.qmp will be installed from PyPI or vendored packages instea=
+d of
+> > > >    being utilized directly from the qemu.git tree.
+> > >
+> > > This is not getting installed in enough scenarios IMHO.
+> > >
+> >
+> > It's hard to trigger an install when you don't use the build system,
+>
+> Well I am using the build system in the same way that I've always
+> used it with QEMU. IOW, the benchmark for this is the current way
+> things work with the python stuff in tree. The ideal would be to
+> match that behaviour with no workflow changes needed, if it is
+> practical to achieve that without major downsides.
 
-Loading a VM state taken with v10.1.2 or older doesn't work anymore,
-using the script [*] we get:
+I know, but if we add out-of-tree things, there's some fundamental
+things that change - we need to load that dependency somewhere,
+somewhen.
 
-  kvm: VQ 1 size 0x100 < last_avail_idx 0x9 - used_idx 0x3e30
-  kvm: load of migration failed: Operation not permitted: error while loading state for instance 0x0 of device '0000:00:13.0/virtio-net': Failed to load element of type virtio for virtio: -1
-  qemu-system-x86_64: Missing section footer for 0000:00:13.0/virtio-net
-  qemu-system-x86_64: Section footer error, section_id: 41
+>
+> > though... If you bypass make/meson/ninja entirely I'm not really sure w=
+hat
+> > I can do to bootstrap the test deps.
+>
+> Can we just do it unconditionally in configure / meson ? These aren't
+> big files to download, and we're already dealing other python stuff
+> for the build, and git submodules, and rust crates. Pulling in qemu.qmp
+> doesn't feel like it is a burden to do by default ?
 
-[*]:
+I definitely could, and I think it would be rather convenient; I only
+have some minor concerns about it:
 
-  #!/bin/bash
-  rm /tmp/disk.qcow2
-  args="
-    -netdev type=tap,id=net1,ifname=tap104i1,script=/usr/libexec/qemu-server/pve-bridge,downscript=/usr/libexec/qemu-server/pve-bridgedown,vhost=on
-    -device virtio-net-pci,mac=BC:24:11:32:3C:69,netdev=net1,bus=pci.0,addr=0x13,id=net1
-    -machine type=pc-i440fx-10.1
-  "
-  $1/qemu-img create -f qcow2 /tmp/disk.qcow2 1G
-  $1/qemu-system-x86_64 --qmp stdio --blockdev qcow2,node-name=node0,file.driver=file,file.filename=/tmp/disk.qcow2 $args <<EOF
-  {"execute": "qmp_capabilities"}
-  {"execute": "snapshot-save", "arguments": { "job-id": "save0", "tag": "snap", "vmstate": "node0", "devices": ["node0"] } }
-  {"execute": "quit"}
-  EOF
-  $2/qemu-system-x86_64 --qmp stdio --blockdev qcow2,node-name=node0,file.driver=file,file.filename=/tmp/disk.qcow2 $args -loadvm snap
+- We don't promise tests on all platforms that we promise builds on.
+We have definitely broken this in the past. It might work currently,
+but it's a line I want to be aware we are crossing. It may necessitate
+python3-wheel and python3-setuptools just to build in this case.
+That's probably not an issue on workstations, but it's more bricks on
+the wall that are actually not truly needed until you run tests (or
+prepare to run tests).
 
-This reverts commit 3a9cd2a4a1571266dea37398de04f650c2a72d86.
+- Configure will get slower by default. I can install the core test
+deps by default if people don't mind the additional delay time. It
+might be something like 2-4 seconds, depending. If you don't care, I
+don't.
 
-Reported-by: Fiona Ebner <f.ebner@proxmox.com>
-Suggested-by: Fiona Ebner <f.ebner@proxmox.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/hw/virtio/virtio-net.h | 2 +-
- hw/net/virtio-net.c            | 9 +++++----
- 2 files changed, 6 insertions(+), 5 deletions(-)
+- Things like functional tests are still going to require some kind of
+environment prep for all the extra stuff they require, I don't think
+it's reasonable to preload all of that stuff at configure time, and we
+never have. "make check-functional" is sufficient to pull those deps
+in, but if there are ways to engage the functional tests manually that
+people are using, I think another preparation step is unavoidable
+there.
 
-diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-net.h
-index f7083553068..5b8ab7bda79 100644
---- a/include/hw/virtio/virtio-net.h
-+++ b/include/hw/virtio/virtio-net.h
-@@ -202,7 +202,7 @@ struct VirtIONet {
-         uint8_t uni_overflow;
-         uint8_t *macs;
-     } mac_table;
--    uint32_t vlans[MAX_VLAN];
-+    uint32_t *vlans;
-     virtio_net_conf net_conf;
-     NICConf nic_conf;
-     DeviceState *qdev;
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index f5d93eb4005..ca813203d76 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -986,7 +986,7 @@ static void virtio_net_set_features(VirtIODevice *vdev,
-         virtio_has_feature_ex(vdev->guest_features_ex,
-                               VIRTIO_NET_F_CTRL_VLAN)) {
-         bool vlan = virtio_has_feature_ex(features, VIRTIO_NET_F_CTRL_VLAN);
--        memset(n->vlans, vlan ? 0 : 0xff, sizeof(n->vlans));
-+        memset(n->vlans, vlan ? 0 : 0xff, MAX_VLAN >> 3);
-     }
- 
-     if (virtio_has_feature_ex(features, VIRTIO_NET_F_STANDBY)) {
-@@ -3598,8 +3598,7 @@ static const VMStateDescription vmstate_virtio_net_device = {
-          * buffer; hold onto your endiannesses; it's actually used as a bitmap
-          * but based on the uint.
-          */
--        VMSTATE_BUFFER_UNSAFE(vlans, VirtIONet, 0,
--                              sizeof(typeof_field(VirtIONet, vlans))),
-+        VMSTATE_BUFFER_POINTER_UNSAFE(vlans, VirtIONet, 0, MAX_VLAN >> 3),
-         VMSTATE_WITH_TMP(VirtIONet, struct VirtIONetMigTmp,
-                          vmstate_virtio_net_has_vnet),
-         VMSTATE_UINT8(mac_table.multi_overflow, VirtIONet),
-@@ -4017,7 +4016,8 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
- 
-     n->mac_table.macs = g_malloc0(MAC_TABLE_ENTRIES * ETH_ALEN);
- 
--    memset(n->vlans, 0xff, sizeof(n->vlans));
-+    n->vlans = g_malloc0(MAX_VLAN >> 3);
-+    memset(n->vlans, 0xff, MAX_VLAN >> 3);
- 
-     nc = qemu_get_queue(n->nic);
-     nc->rxfilter_notify_enabled = 1;
-@@ -4066,6 +4066,7 @@ static void virtio_net_device_unrealize(DeviceState *dev)
-     n->netclient_type = NULL;
- 
-     g_free(n->mac_table.macs);
-+    g_free(n->vlans);
- 
-     if (n->failover) {
-         qobject_unref(n->primary_opts);
--- 
-2.51.0
+So, in addition to the "pyrun" wrapper I mailed in a separate reply
+(which I think is a good idea anyway, regardless of what direction we
+go here), I see two main paths that address your issues in differing
+amounts:
+
+(1) make configure prepare the test deps *by default*, adding a flag
+like --without-test-deps to disable it, or
+
+(2) Continue not prepping the test deps, but allow --with-test-deps to
+pre-load them.
+
+More or less the same solution, just with different defaults. I'm
+fairly ambivalent, my only personal "habit" here is "I am really
+reluctant to touch configure unless there is a strong consensus around
+it because I dislike having to make arguments at that level."
+
+>
+>
+> With regards,
+> Daniel
+> --
+> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberran=
+ge :|
+> |: https://libvirt.org         -o-            https://fstop138.berrange.c=
+om :|
+> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberran=
+ge :|
+>
 
 
