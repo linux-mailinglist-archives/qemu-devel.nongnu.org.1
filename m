@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFDD9CB0920
-	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 17:31:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DD7DCB0917
+	for <lists+qemu-devel@lfdr.de>; Tue, 09 Dec 2025 17:31:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vT0bj-000794-0J; Tue, 09 Dec 2025 11:30:35 -0500
+	id 1vT0bp-0008Gs-DG; Tue, 09 Dec 2025 11:30:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vT0aV-0006Ho-HG
- for qemu-devel@nongnu.org; Tue, 09 Dec 2025 11:29:21 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vT0aW-0006I2-OA
+ for qemu-devel@nongnu.org; Tue, 09 Dec 2025 11:29:22 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vT0aT-00022w-RU
- for qemu-devel@nongnu.org; Tue, 09 Dec 2025 11:29:19 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vT0aV-000236-97
+ for qemu-devel@nongnu.org; Tue, 09 Dec 2025 11:29:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1765297755;
+ s=mimecast20190719; t=1765297757;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2AcrUG9/G/Q5aMS5M3ggKBjSnTnF15A94G53j7mYT0M=;
- b=EXQIwvqaGCMUJRwTDsxZzuRG/Sbtb3q/kgnp10ho8jSHMXBYJUQtZ5k8iagtrezSnz75s3
- ctjqhLuKreoQ9WHbLqaYfKJoTKq9ntkGQ/5tPiwP7W9Id+qMqd0dOSsRAVLk82CDJ7H3dj
- Go3dZx2vwWw0pXx+sqjStxyMOQ+uuJE=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=oUhACeP27aeW8CqqEIeBeQbpx7grv2BnAZbCMpedjyM=;
+ b=Y9vzXUPzm1PDZLTBCqx5cdCG+pQv5iAE7XjXJ/Dw5ZTaPnTUpoxfYfJ1DgqGS8r1jdX8KB
+ FKL5Cu0nX2dOmm/M6CWwCD6J3KZw7IDginrFcEAc3A7AsLCy24EtYc/vHYHC3uj280nzt9
+ IX4idzniEUAiLHgMSizrP84Myexs+SM=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-616-tw9MTtxIOYCVu6bQPEVcNQ-1; Tue, 09 Dec 2025 11:29:14 -0500
-X-MC-Unique: tw9MTtxIOYCVu6bQPEVcNQ-1
-X-Mimecast-MFC-AGG-ID: tw9MTtxIOYCVu6bQPEVcNQ_1765297754
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-8b2e9b2608dso948953685a.3
- for <qemu-devel@nongnu.org>; Tue, 09 Dec 2025 08:29:14 -0800 (PST)
+ us-mta-100-TSeNg1cCPe-JTQSdWJ6gvg-1; Tue, 09 Dec 2025 11:29:16 -0500
+X-MC-Unique: TSeNg1cCPe-JTQSdWJ6gvg-1
+X-Mimecast-MFC-AGG-ID: TSeNg1cCPe-JTQSdWJ6gvg_1765297756
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-882380beb27so101387776d6.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Dec 2025 08:29:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1765297753; x=1765902553; darn=nongnu.org;
+ d=redhat.com; s=google; t=1765297755; x=1765902555; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2AcrUG9/G/Q5aMS5M3ggKBjSnTnF15A94G53j7mYT0M=;
- b=NgqWKAE1jvDJZLqnv7gRaa6Qg7D+01BRviJiKIxH02BYE0cTjlrevHytza0mTz6glV
- Kgfe9aYXjOrckvXkEyJ9HsABMr+ZRp9m5KYeWCzV4NzKJxvI9QpM6fQtJngjE6+roeEF
- EVHRdSsfLYmL1IJ1viWU7eFTwiRGgHbvNNGI/Q/KjK7FpoIZZFGbSTz84gFle8RD5VIU
- hBW2E8TEiuaU+WFd38BPz77wvV5z/AhutcYhSv8yOGkfEJjWGgl58fAcnKkiKcSmD7iD
- SXq7mf1b6skw/R+6Q+5KCukKkpiAV6V6R2wmnOW6NOBt3fRU2tCjf/BpVeDLeZ+wk/Xu
- h+uA==
+ bh=oUhACeP27aeW8CqqEIeBeQbpx7grv2BnAZbCMpedjyM=;
+ b=rBvyXpk7tcndQHFicQLFh6imTpsgzf8BRcOW9teRbo5mOxAYrdsEwao1angMNn290s
+ izCxdhp6+faFo23d8E5/d29HtUjS/izuL+1QieqzRamkxxGdm7vlWawuDW7gyxgQL1ul
+ 62FFsnZ7VIYL+hhe/E9j1YeWJ76bs8lLtGcOlD2bxR0aQIVgbQkWlZmAHTkRpWsLZvBV
+ AM6hsJ+2WDNTX1hKBUXWnw0mrxLx1v3gBj2KRovdUjfPiE7dRvx+1Fc79u+FQ6RFzmTA
+ /BSLuXYbq/PjlugEbgrrktsiOqaysvSd9Gs2DMS9dzk7mQeRnFPWVtHRVffoUI4uVvKu
+ pCwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765297753; x=1765902553;
+ d=1e100.net; s=20230601; t=1765297755; x=1765902555;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=2AcrUG9/G/Q5aMS5M3ggKBjSnTnF15A94G53j7mYT0M=;
- b=e78pz9bhuWQQAVylWatAQAThRBZoYACVvVcjE6WjMeIyzZYU+Y1seIUQzTZrPmt+vn
- kGanBRhStMmHN8nmsT/TWwLO8avBjpvfkoo37SXPIA0Sy9atD4A3+TguN++kl3OQpj1G
- tMOjuWnAlc5SBpzNlDX/GjnLdEypzIe+/btRF4uulMqz3Pkf7NBORdrnGmpqjiH/3qXa
- hUVPcRGerucS3g3TdmO3qY0klYmTXdCKslD7Kpn2Aq9o2UDTF1baGfFYRvFP/kvrfqpi
- gldUMysQtN6kM1gI1m3DuEnq32d9LV6Lh0Gw0y1Yp/ERY+bnN2wOlCyA65pemic47CQ9
- T4LA==
-X-Gm-Message-State: AOJu0Yz8iy/oNl5NigRM1K4J69J5qOM2tr22P7uw11YDL7afIvs8E8uE
- PL7BbB5RErUr8qRUSAW3aCYhFwykxDtQL6CQOK0hT4OXbaVtmDV/Juooasyg615SQYAcAcwEAxZ
- cZUNxWDdne1OVAzpx+s6Nqbbzfo4SKcYjCS9hmMbWQygeIZELqzPWHiXmMmbRzicTsQjzrNlSgm
- omJPLfGcZ6pXfrV+cetmW05NndnOvBgjSu5MT+qw==
-X-Gm-Gg: ASbGncvIsFvwdIZ2d4FZ4jJhwQpImh8jRG5J8PGMgPAOG+uNZg3GknylWUdBSvi45t0
- R3UADIN/id2W7NQN7zLlk/7m9bwgnMSWvz5J2qt33jg1iOzHVw9WivIlvyOhlh4oam4SIKAEezQ
- 5PqG0XulfO11npPZSUJozhyPDrYgZFkIUPzLJOxHNm8TbtMoecjMbFgRqk2Pz+BlsaYJt/dCh2e
- a9RmgQRx/VGZnUG8iDi3uw+tegF/uH3EJzKJm/LKkGTmVSphZTnY3ArFYiGmx/xcX4xzdrWcEX4
- XFwExVtqSN9eXbmCGzajGAd86CVJzFBnmxXWHEwRE7Rbesf46vBrlSIb/24FaMrx0Seet54kwm9
- kfSg=
-X-Received: by 2002:a05:620a:28c9:b0:8b2:f090:b167 with SMTP id
- af79cd13be357-8b6a24ff1e5mr1678457385a.24.1765297753482; 
- Tue, 09 Dec 2025 08:29:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH7x/6p/JI/zPrZ5AOlKdYuWTJDwsemho/emnESwiVfnfgZROCSHYKsaZgkPj7vXY1jIX9bqQ==
-X-Received: by 2002:a05:620a:28c9:b0:8b2:f090:b167 with SMTP id
- af79cd13be357-8b6a24ff1e5mr1678451385a.24.1765297752921; 
- Tue, 09 Dec 2025 08:29:12 -0800 (PST)
+ bh=oUhACeP27aeW8CqqEIeBeQbpx7grv2BnAZbCMpedjyM=;
+ b=vtQByx0IHL/N82czuexX250MN2ZTILBzxi19yNINDGAurBDQRKl8TAj4KpgddtnXXx
+ n8Twt3vzFUAywaB8KLa+3a1odfaO5D1IGvamQGs3PK+0XkkH/5DZM86F8PvpSnDc2yZX
+ TuJmQDkgb6tDXzQul4gOzNhXowMIx3gUNPE3zyrtVN81rqBngvyGX79s4QXWI7uCoOpZ
+ EmMzQFDmlQ7AyF7mrz9clX5kaOOWmmOnbaeM5h1tTsFUCYEbtOz0OShWxwosvvZBB9Hs
+ TxZ2NFIiY3KQl5iu6WPwheS59Smho7gTWgodR6VYlrgitErXd3SHH72D0boiNdCR2zS7
+ Z/qg==
+X-Gm-Message-State: AOJu0Yw2Mi8QTjy6YEF8eN3jNNFbsh9rhkT+gMngzwezJUKBHE6bXZQ8
+ d2CMPEq3nSgWZobmhFnz405PjU6/xu9kqPrMYWO8us64dpyFgvabo8hy3DOVFKMVa2bneVmcYYm
+ YovBgDMJx+ze6rZPBN9ps1Asfk83b0p5wCttjEIOLL7I1bb8KNjeCjm/zrqBmN8eFOiAhWjuiD0
+ HlgWBbYq8LdzVdLpZw4zf7JvK9lE75gMcC/sDHGA==
+X-Gm-Gg: AY/fxX63mUVKEdFNjvzGcT9v9YdzVyl4e7uWzH0dfkCWT2enUViV9kUR6E8s7pKNSIC
+ XbUCqTErIXd3wK292ySj6UvxtRaAmjmaI8qKcDBpOt+yo9XWED6mhE72P6IedptZNf7ktW/hRPx
+ 0yaf9sfPz+xCeQOyX32+SHwGTxz4fiHs7zBXdFqNQ69rUSVqRoCsLKm7SAyRPPYtqtIzE4AkoQA
+ RCax13HyPy7GDsZ21n8S3cAw70FfUxrbszyzlznS8T0c0Zb111A8YGqEw+SjZuyFiCyrx2Atp8p
+ +tMYnn3GRjwXd3THRyyF484DY+sLdGxArVsdfOrUA4McUEBlESPOD6mVEGeihsHoRfuUFMkAcwz
+ ciAQ=
+X-Received: by 2002:a05:6214:3308:b0:888:5890:2d55 with SMTP id
+ 6a1803df08f44-88858902f35mr48764256d6.47.1765297755171; 
+ Tue, 09 Dec 2025 08:29:15 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGIimkXcA13C2s8FkDttY4MZsc83WmSaJSpHpJjlTSIUCua7xIxn29bHPwDy9/qixwDQGOYSw==
+X-Received: by 2002:a05:6214:3308:b0:888:5890:2d55 with SMTP id
+ 6a1803df08f44-88858902f35mr48763466d6.47.1765297754667; 
+ Tue, 09 Dec 2025 08:29:14 -0800 (PST)
 Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-88827f334d8sm131110256d6.10.2025.12.09.08.29.11
+ 6a1803df08f44-88827f334d8sm131110256d6.10.2025.12.09.08.29.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Dec 2025 08:29:12 -0800 (PST)
+ Tue, 09 Dec 2025 08:29:14 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Dr . David Alan Gilbert" <dave@treblig.org>,
@@ -101,10 +101,9 @@ Cc: "Dr . David Alan Gilbert" <dave@treblig.org>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eric Blake <eblake@redhat.com>
-Subject: [PATCH RFC 07/10] qdev: Pave way for exporting Property to be used in
- non-qdev
-Date: Tue,  9 Dec 2025 11:28:54 -0500
-Message-ID: <20251209162857.857593-8-peterx@redhat.com>
+Subject: [PATCH RFC 08/10] qdev: Introduce helper object_apply_globals()
+Date: Tue,  9 Dec 2025 11:28:55 -0500
+Message-ID: <20251209162857.857593-9-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251209162857.857593-1-peterx@redhat.com>
 References: <20251209162857.857593-1-peterx@redhat.com>
@@ -135,87 +134,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Property itself is a well defined interface to either support smooth
-conversions to Object's properties, or supports global properties.  However
-currently it's tied to DeviceClass, aka, qdev. So non-qdev cannot use
-Property list.
-
-My current observation shows Property is almost ready to be used as a
-separated exported interface, except two small things that may need touch
-up internally:
-
-        qdev_prop_allow_set
-        qdev_prop_check_globals
-
-The 1st one currently checks against realize state (which is part of qdev
-attributes only).  The 2nd one checks for all global property being used in
-all non-pluggable qdevs.
-
-We can loose the check in both spots, keep the check if the driver is a
-qdev, otherwise we can safely whitelist non-qdev use cases of Property.
+The helper allows one object to apply anything from -global command lines
+to an object.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- hw/core/qdev-properties.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ include/hw/qdev-properties.h | 1 +
+ hw/core/qdev-properties.c    | 5 +++++
+ 2 files changed, 6 insertions(+)
 
+diff --git a/include/hw/qdev-properties.h b/include/hw/qdev-properties.h
+index 60b8133009..f064992ba3 100644
+--- a/include/hw/qdev-properties.h
++++ b/include/hw/qdev-properties.h
+@@ -226,6 +226,7 @@ const GlobalProperty *qdev_find_global_prop(Object *obj,
+                                             const char *name);
+ int qdev_prop_check_globals(void);
+ void qdev_prop_set_globals(DeviceState *dev);
++void object_apply_globals(Object *obj);
+ void error_set_from_qdev_prop_error(Error **errp, int ret, Object *obj,
+                                     const char *name, const char *value);
+ 
 diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-index 422a486969..c8110ff0b8 100644
+index c8110ff0b8..7d1a443266 100644
 --- a/hw/core/qdev-properties.c
 +++ b/hw/core/qdev-properties.c
-@@ -30,8 +30,14 @@ void qdev_prop_set_after_realize(DeviceState *dev, const char *name,
- static bool qdev_prop_allow_set(Object *obj, const char *name,
-                                 const PropertyInfo *info, Error **errp)
- {
--    DeviceState *dev = DEVICE(obj);
-+    DeviceState *dev;
+@@ -1036,6 +1036,11 @@ void qdev_prop_set_globals(DeviceState *dev)
+                               dev->hotplugged ? NULL : &error_fatal);
+ }
+ 
++void object_apply_globals(Object *obj)
++{
++    object_apply_global_props(obj, global_props(), &error_fatal);
++}
 +
-+    if (!object_dynamic_cast(obj, TYPE_DEVICE)) {
-+        /* Currently, non-qdev can always set Property anytime */
-+        return true;
-+    }
+ /* --- 64bit unsigned int 'size' type --- */
  
-+    dev = DEVICE(obj);
-     if (dev->realized && !info->realized_set_allowed) {
-         qdev_prop_set_after_realize(dev, name, errp);
-         return false;
-@@ -987,6 +993,7 @@ int qdev_prop_check_globals(void)
- 
-     for (i = 0; i < global_props()->len; i++) {
-         GlobalProperty *prop;
-+        bool hotpluggable;
-         ObjectClass *oc;
-         DeviceClass *dc;
- 
-@@ -995,15 +1002,25 @@ int qdev_prop_check_globals(void)
-             continue;
-         }
-         oc = object_class_by_name(prop->driver);
--        oc = object_class_dynamic_cast(oc, TYPE_DEVICE);
-+        oc = object_class_dynamic_cast(oc, TYPE_OBJECT_COMPAT);
-         if (!oc) {
-             warn_report("global %s.%s has invalid class name",
-                         prop->driver, prop->property);
-             ret = 1;
-             continue;
-         }
--        dc = DEVICE_CLASS(oc);
--        if (!dc->hotpluggable && !prop->used) {
-+        oc = object_class_dynamic_cast(oc, TYPE_DEVICE);
-+        if (oc) {
-+            dc = DEVICE_CLASS(oc);
-+            hotpluggable = dc->hotpluggable;
-+        } else {
-+            /*
-+             * Currently, to be strict to assume all non-qdev are not
-+             * hotpluggable (whoever will use -global).
-+             */
-+            hotpluggable = false;
-+        }
-+        if (!hotpluggable && !prop->used) {
-             warn_report("global %s.%s=%s not used",
-                         prop->driver, prop->property, prop->value);
-             ret = 1;
+ static void get_size(Object *obj, Visitor *v, const char *name, void *opaque,
 -- 
 2.50.1
 
