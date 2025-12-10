@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A66CB3C77
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 19:37:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58996CB3C8C
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 19:40:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTP3v-00017c-15; Wed, 10 Dec 2025 13:37:19 -0500
+	id 1vTP6m-0003yl-Ck; Wed, 10 Dec 2025 13:40:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vTP3r-00015Z-B9
- for qemu-devel@nongnu.org; Wed, 10 Dec 2025 13:37:15 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1vTP6g-0003iY-Pw
+ for qemu-devel@nongnu.org; Wed, 10 Dec 2025 13:40:12 -0500
+Received: from mail-yw1-x1133.google.com ([2607:f8b0:4864:20::1133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vTP3p-0002Sn-FK
- for qemu-devel@nongnu.org; Wed, 10 Dec 2025 13:37:14 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-42e2d5e119fso18323f8f.2
- for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 10:37:13 -0800 (PST)
+ id 1vTP6e-00032H-Im
+ for qemu-devel@nongnu.org; Wed, 10 Dec 2025 13:40:10 -0500
+Received: by mail-yw1-x1133.google.com with SMTP id
+ 00721157ae682-786a822e73aso1454757b3.3
+ for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 10:40:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1765391832; x=1765996632; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=rmuruirWl2Hf5ekYVz4hPWVOUqfIMTyLIVh2I054+1w=;
- b=lPf1ng1m+syMAWv97M961lmlISdr0FiIEk0KTMWAzZTDmT4/2GVlGauTE+IcI8mfkf
- ttDFhpju8A8nWM0BbeqooV2RSL87OlQ640hGgDKLu4xmp5Z1NbTIHpU+SZ3uvU2bBiKI
- ZBOl+nVn+NuSw4aY+SgYg/Zpk4fPu/drEEU08AtVMerHCBDjDZaKYCOLeKuEN5iQt18C
- qp9EcE4mWaVAVMcPPhf+6P3Gj6fUr+EEqYLMZXRnxRQYsrkmrmUtJZ/9IqCndL9ICN0K
- Y4Y4nEmZdK779+8YhkYwDrg6uUYrd+hRlj7Qy76HbegQUV3/odckKa8GDi39MksDIrmY
- cj0w==
+ d=linaro.org; s=google; t=1765392007; x=1765996807; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9cAvDBf/KnucMG5F1r4c+5gaiEktB6k54NaX7t7zsOE=;
+ b=tdBtjJwEcs7k0C5aKfeJIa5WCR9Y1ZnuVzLe0Ws90XqtW6jzpDjfymC4sdPASvXYC6
+ Lkl1qbpruud4NiI7qjReoDhUHRrOydtVHUCoZjm8cC/r0/Aax3AJs63APTg8/7pl1tFe
+ cUGYnn/BfM35fVnkJNTcpbY9hArDVqMWsX5kIC4Bbnzqc79FPxAR91QvZO5+IM/c/3uM
+ WHbDuqSs3NyZYKmPHDUI3ULMHJLoWGjoMZGXfqY5TVQAgpsvRUslfcpyGeZQ3WuusE6u
+ Q7wQxRXACUFUhzxUGjLL5c47UrjNOTVbeB6nwXdy+uoyaExJHCZTnhJBya3TYye0aaSb
+ WJ6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765391832; x=1765996632;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=rmuruirWl2Hf5ekYVz4hPWVOUqfIMTyLIVh2I054+1w=;
- b=Z/1m1sRJcv33gdrWWnJveoGhjCVVmcQFwJuEdNyAnRczv+TiS/sfLSJ+wc6HiROTZ7
- MssqIP0xhxRGYnFQeZhZp5abFWtJmuv5/XkWWoI/Vr1XgUkaFemERyavVMFK4ifkcJFP
- xx8e/AyBU+/WE+rmiPSJxrfUZ1kHMYlhxvaDusglTApoeqN0LoGDwHghhRcA6Lk09jkm
- kpaH+3GHQwuAR7WYkym23DRpdSZM4Mmbjd3X6QmjOLwT0yWPty6uDzyYosSc+co0GMLa
- pTLBGGFMz0IBNJkAXEsye0WIfC++P4fdjx/VMiJOug2GQpkhVOCs6E7KHPkbcQH0gAnk
- WzCg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVlw7qxJPd1S1QDv4cKGUqER1G15szphOUUsPU/KYhDdpgvg8d7x/rY+n5M3QGIOQP3t6zp2v2oyFid@nongnu.org
-X-Gm-Message-State: AOJu0YzHdmErfWlyCwAZZPZre5fevNN9trTV+4vG7NiCwyLg/VNFjItq
- SVD2XkfTC7iEoSiT7L49tH3CBlTfUR0PTWPDfolTYnaieofEirFSstLN3d0tzeK1xII=
-X-Gm-Gg: AY/fxX7fw+wGWKW65MzJRKxAvgPZ0IlZU4WTaTVv/gvm/UDWzifUM/BxJwoQWwXuQdd
- tde5PFKdUcchnZQXRxhoaBJORdIhPjsfcq+wFGRzkV7kAlQn+dOvtbF6lUbL711m7gCqbU9xt2O
- m5WNNf3HqBAmvojA2LL/NgTdTYo/KPFIYfF3f/rND3u17e+jk41Wpmdso8CZRHm7rHGyLlopAK8
- 3Rm9nS6Beuljbzvajs+B69tjst4AKRt8shDjIHf98yo3fg5UGSfw+AfBJIgMTZDapEYX5s0LWq2
- yapouLrso81WwlehEvwL2d576dUORVg+Mkt42NAVGtgXyeSPeDbpR5sZRwZ0K0HjfCjiW2L42Ab
- oHGWiaJ1ywCbtOW54CQ6Pb/GZMwjqi4MD6Eis0RVVgo08kJqHVLbZx2SmHKlHShNsF5Sy4JQebc
- Wuh8xhskvNf1D/DJDM
-X-Google-Smtp-Source: AGHT+IH1iyn5x17R9K9rC7H+NaITv97PoyAn08Em0f2NKaqGMEXqVLZSE34ATuLzYc85qXZ4UwQfig==
-X-Received: by 2002:a05:6000:2509:b0:42b:3131:5433 with SMTP id
- ffacd0b85a97d-42fa3ada434mr3916195f8f.26.1765391831880; 
- Wed, 10 Dec 2025 10:37:11 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42fa8a7044csm477702f8f.15.2025.12.10.10.37.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Dec 2025 10:37:11 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH for-11.0 7/7] hw/arm/omap1: Remove omap_badwidth_*
- implementations
-Date: Wed, 10 Dec 2025 18:37:00 +0000
-Message-ID: <20251210183700.3446237-8-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251210183700.3446237-1-peter.maydell@linaro.org>
-References: <20251210183700.3446237-1-peter.maydell@linaro.org>
+ d=1e100.net; s=20230601; t=1765392007; x=1765996807;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=9cAvDBf/KnucMG5F1r4c+5gaiEktB6k54NaX7t7zsOE=;
+ b=uV64/Txv4UyhDxpC2BiUsh19i6G7lUI1/JUOh8328XdXuFttRdPWz5E0/UwrqIQsDX
+ lT9FdbhsV8g0LBmNHh8C+Jr/3t8Hzf0OjrsbVM9LdR8YB5Hb/zxugGZpupQeXM13O8At
+ E+Eo8QVpXtnAFqDUhXx/1nwOaHdlimYQiG310VzMHfbIP64zlNZqMdS6D6/yRmIv6iIO
+ 0nU3JlK2Cc624E/A4Dy8twiArgDobNzKWm92SYuEIzwFw+fcBLSEIkrmQXCZNyHxOwnr
+ nc8KnFStzItD8kmT922pPgxmWQ+HFOS3t4JGR65AM/iZPb+Ku2pN83fjPkFI9+z0khd/
+ 2LjA==
+X-Gm-Message-State: AOJu0YxASYEsVYdeSkAOD1+P42XpA76TCZboncWFza6r6YdHJet/3yg6
+ Zr1isXywYVdNXA9FqXMHd0+6yKQRREgs2btuXkgvDZsapXhyt6lkC5I3bKd8jgLpbONNsNNy4an
+ FFzxZkAU74Ja6qoRW4OskseXXYLFl81+k1xtxhKzjCw==
+X-Gm-Gg: AY/fxX6q28BV89XL5hN7x3ZsK4+UllL7WD1WSsHUCfqPu3tvDqGIMq+Euq14TOzSOjv
+ MzurceesbJwEXvoqCcOpes+u9F65x+Xo+Yn14VkzJb3vwB/lP135a2C+7Hk3tqRhW/B8MDbKSea
+ P/NiKyLZNvh8X+C9DIklZv0ESBdIvo9zzEG13BpA78NXxpR1wb9goyO8eMmzs/DgwZOP7XVYKhJ
+ 8UzLxMVNZV1S5lILzSl1eXYeIHCh++Pb+fpoLhlhviOEs3MKRiAU9ckMAEQQdWseYfoBIllSdjR
+ ++91SIE=
+X-Google-Smtp-Source: AGHT+IFHI3OfUG7BLLsx4DfZdVtGqiLnbRJbbQA1e5Yx06Zd9kuhcFAeK9/12+OQz5QBuz1hllLxqyw8ww6nYtzAX1Y=
+X-Received: by 2002:a05:690c:3806:b0:784:957a:16a1 with SMTP id
+ 00721157ae682-78c9d787325mr26724027b3.56.1765392007079; Wed, 10 Dec 2025
+ 10:40:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+References: <20251210181306.926334-1-clg@redhat.com>
+ <20251210181306.926334-2-clg@redhat.com>
+In-Reply-To: <20251210181306.926334-2-clg@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 10 Dec 2025 18:39:55 +0000
+X-Gm-Features: AQt7F2oZcKl_X2QJ5Zv8AJ_U0WhPZGoUCLPrI8YX_lEr3T_j0u9IMj8YwKXLObA
+Message-ID: <CAFEAcA_YcPvLhsnbJy1e2ua8+dBBv_9a7izhxWXbjwN4pieUKw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] i386: Fix const qualifier build errors with recent
+ glibc
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1133;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,107 +98,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now there are no callsites for the omap_badwidth_* family
-of functions we can remove their implementations.
+On Wed, 10 Dec 2025 at 18:13, C=C3=A9dric Le Goater <clg@redhat.com> wrote:
+>
+> A recent change in glibc 2.42.9000 [1] changes the return type of
+> strstr() and other string functions to be 'const char *' when the
+> input is a 'const char *'. This breaks the build in :
+>
+>   ../hw/i386/x86-common.c:827:11: error: assignment discards =E2=80=98con=
+st=E2=80=99 qualifier from pointer target type [-Werror=3Ddiscarded-qualifi=
+ers]
+>   827 |     vmode =3D strstr(kernel_cmdline, "vga=3D");
+>       |           ^
+>
+> Fix this by changing the type of the variables that store the result
+> of these functions to 'const char *'.
+>
+> [1] https://sourceware.org/git/?p=3Dglibc.git;a=3Dcommit;h=3Dcd748a63ab1a=
+7ae846175c532a3daab341c62690
+>
+> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
+> ---
+>  hw/i386/x86-common.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
+> index c844749900a30c9c9c284c529e93c84c9457b128..f77e2e63046ff56d079363e41=
+1a9ee0eca365291 100644
+> --- a/hw/i386/x86-common.c
+> +++ b/hw/i386/x86-common.c
+> @@ -654,7 +654,7 @@ void x86_load_linux(X86MachineState *x86ms,
+>      uint8_t header[8192], *setup, *kernel;
+>      hwaddr real_addr, prot_addr, cmdline_addr, initrd_addr =3D 0;
+>      FILE *f;
+> -    char *vmode;
+> +    const char *vmode;
+>      MachineState *machine =3D MACHINE(x86ms);
+>      struct setup_data *setup_data;
+>      const char *kernel_filename =3D machine->kernel_filename;
+> --
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- include/hw/arm/omap.h | 10 --------
- hw/arm/omap1.c        | 59 -------------------------------------------
- 2 files changed, 69 deletions(-)
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-diff --git a/include/hw/arm/omap.h b/include/hw/arm/omap.h
-index bdb2e887e47..66a435a3d72 100644
---- a/include/hw/arm/omap.h
-+++ b/include/hw/arm/omap.h
-@@ -673,16 +673,6 @@ struct omap_mpu_state_s {
- struct omap_mpu_state_s *omap310_mpu_init(MemoryRegion *sdram,
-                 const char *core);
- 
--uint32_t omap_badwidth_read8(void *opaque, hwaddr addr);
--void omap_badwidth_write8(void *opaque, hwaddr addr,
--                uint32_t value);
--uint32_t omap_badwidth_read16(void *opaque, hwaddr addr);
--void omap_badwidth_write16(void *opaque, hwaddr addr,
--                uint32_t value);
--uint32_t omap_badwidth_read32(void *opaque, hwaddr addr);
--void omap_badwidth_write32(void *opaque, hwaddr addr,
--                uint32_t value);
--
- void omap_mpu_wakeup(void *opaque, int irq, int req);
- 
- #define OMAP_BAD_REG(paddr)        \
-diff --git a/hw/arm/omap1.c b/hw/arm/omap1.c
-index cfa4e1f677c..8fa4195a5fa 100644
---- a/hw/arm/omap1.c
-+++ b/hw/arm/omap1.c
-@@ -44,65 +44,6 @@
- #include "target/arm/cpu-qom.h"
- #include "trace.h"
- 
--static inline void omap_log_badwidth(const char *funcname, hwaddr addr, int sz)
--{
--    qemu_log_mask(LOG_GUEST_ERROR, "%s: %d-bit register %#08" HWADDR_PRIx "\n",
--                  funcname, 8 * sz, addr);
--}
--
--/* Should signal the TCMI/GPMC */
--uint32_t omap_badwidth_read8(void *opaque, hwaddr addr)
--{
--    uint8_t ret;
--
--    omap_log_badwidth(__func__, addr, 1);
--    cpu_physical_memory_read(addr, &ret, 1);
--    return ret;
--}
--
--void omap_badwidth_write8(void *opaque, hwaddr addr,
--                uint32_t value)
--{
--    uint8_t val8 = value;
--
--    omap_log_badwidth(__func__, addr, 1);
--    cpu_physical_memory_write(addr, &val8, 1);
--}
--
--uint32_t omap_badwidth_read16(void *opaque, hwaddr addr)
--{
--    uint16_t ret;
--
--    omap_log_badwidth(__func__, addr, 2);
--    cpu_physical_memory_read(addr, &ret, 2);
--    return ret;
--}
--
--void omap_badwidth_write16(void *opaque, hwaddr addr,
--                uint32_t value)
--{
--    uint16_t val16 = value;
--
--    omap_log_badwidth(__func__, addr, 2);
--    cpu_physical_memory_write(addr, &val16, 2);
--}
--
--uint32_t omap_badwidth_read32(void *opaque, hwaddr addr)
--{
--    uint32_t ret;
--
--    omap_log_badwidth(__func__, addr, 4);
--    cpu_physical_memory_read(addr, &ret, 4);
--    return ret;
--}
--
--void omap_badwidth_write32(void *opaque, hwaddr addr,
--                uint32_t value)
--{
--    omap_log_badwidth(__func__, addr, 4);
--    cpu_physical_memory_write(addr, &value, 4);
--}
--
- /* MPU OS timers */
- struct omap_mpu_timer_s {
-     MemoryRegion iomem;
--- 
-2.43.0
-
+thanks
+-- PMM
 
