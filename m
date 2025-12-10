@@ -2,153 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6882CB30E1
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 14:42:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5934CB30CF
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 14:41:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTKQH-0007ws-Mh; Wed, 10 Dec 2025 08:40:05 -0500
+	id 1vTKRO-0002IL-Sn; Wed, 10 Dec 2025 08:41:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <skolothumtho@nvidia.com>)
- id 1vTKPv-0007hK-6Z; Wed, 10 Dec 2025 08:39:43 -0500
-Received: from mail-centralusazlp170100005.outbound.protection.outlook.com
- ([2a01:111:f403:c111::5] helo=DM1PR04CU001.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1vTKRL-000218-JC
+ for qemu-devel@nongnu.org; Wed, 10 Dec 2025 08:41:11 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <skolothumtho@nvidia.com>)
- id 1vTKPs-0001Ss-78; Wed, 10 Dec 2025 08:39:42 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pFhisAL7O/+EDKMaiNBeDyG1USjjI2WyBJGA8y2xaLFuN9IvA00dmB8lrgZjk8hVxDIzgw9A/GvU3GxlYKLh+lWA4S1XxDVVour2SgYbwyqHWVAUjlNjgKxJwPAo8KTwIYBWVzJp4RoDBsTfz0SLfW2V6o10YHeT+Eprv2oLTZtb9mZwBFFGAjvDwmxmG5ryGgv8QUSYtY3x37RgIbV2Vfjg6JkOQNkLm3O6tVfOSZr4ql89ZrSlgsp+LvFPV2ZjoSLiiJbitGxOeXsYfS7KTeJYgZ86g6Luf+mpSD3gMz/JusWI558lO0eoSmd/uhmlJdqq3XWzkww3ELhAOjZtPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aBsByYqOh5Lq6NJTlVHkkUFV6ULfIDML0Aiid/GVCjI=;
- b=c5kzyAisoYzq+X7/uhBkcTqohQXI17pKeTFyVq6g05dDzvekXlEWphLHQKDv6ZeCkj5VUG/yw2odrYnX/inPXB8thoo45YbCfN4QCrLaMYqOF10abRUE71SjXovVbRd4zKL8XdnKN0La7WKOufi1Km17dGnsDk5xr3tRYdkiuGAJg5ZJi/h+3NRDggwBiV2oTgnLHbHdU6ilQdJAM82QiUqVR53imkrwWvzI5gzsR5RuWAEzD1KaxknRLH9CBXkbIYrDf4uZehWFmirQmqOHy3UlBS/BOZD5QhkPfuHrTwvQncRBYcbbwTFQfNXECFl62k2lUOtVjwRP9drMii1oAQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aBsByYqOh5Lq6NJTlVHkkUFV6ULfIDML0Aiid/GVCjI=;
- b=XeQwCKoCe3Wr4BKn4meAWj/YednmXXsmCG6njsxNcgPC7hDVQkMjDcE+RVz2LdiCB+f0PEU9WZnrMQ/Bpa8WtwJ3ceQ3oTmqJwOu1z+Dt7bxBWEzg2bIuYO8O1qHybHxkJp2OTOrlf/B5r2lDyLDSTeViQNMTEv7FTum+RqSWjQ10WqEw4dEkNsvnrzMTcpCSvMksbr3ah/3tmrCpXEkoRaA9hnBeSkAags3JuADPBNpP6m9xdMttBhiEKkQrHQ8/frl00vsoBJWr2Skx87r+Zapz7SjGI25SN8qP6hXhYZC2LOinaNuK+Ofyo/chyNUiLoTk+uo92riNqD9L3WGJw==
-Received: from BY5PR17CA0006.namprd17.prod.outlook.com (2603:10b6:a03:1b8::19)
- by IA0PR12MB8424.namprd12.prod.outlook.com (2603:10b6:208:40c::15)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.9; Wed, 10 Dec
- 2025 13:39:34 +0000
-Received: from CO1PEPF000075F2.namprd03.prod.outlook.com
- (2603:10b6:a03:1b8:cafe::a3) by BY5PR17CA0006.outlook.office365.com
- (2603:10b6:a03:1b8::19) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9412.8 via Frontend Transport; Wed,
- 10 Dec 2025 13:39:34 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CO1PEPF000075F2.mail.protection.outlook.com (10.167.249.41) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9388.8 via Frontend Transport; Wed, 10 Dec 2025 13:39:33 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 10 Dec
- 2025 05:39:17 -0800
-Received: from NV-2Y5XW94.nvidia.com (10.126.230.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 10 Dec
- 2025 05:39:14 -0800
-From: Shameer Kolothum <skolothumtho@nvidia.com>
-To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
-CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>,
- <nicolinc@nvidia.com>, <nathanc@nvidia.com>, <mochs@nvidia.com>,
- <jgg@nvidia.com>, <jonathan.cameron@huawei.com>, <zhangfei.gao@linaro.org>,
- <zhenzhong.duan@intel.com>, <kjaju@nvidia.com>
-Subject: [RFC PATCH 16/16] hw/arm/smmuv3: Add tegra241-cmdqv property for
- SMMUv3 device
-Date: Wed, 10 Dec 2025 13:37:37 +0000
-Message-ID: <20251210133737.78257-17-skolothumtho@nvidia.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251210133737.78257-1-skolothumtho@nvidia.com>
-References: <20251210133737.78257-1-skolothumtho@nvidia.com>
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1vTKRF-0001tG-HR
+ for qemu-devel@nongnu.org; Wed, 10 Dec 2025 08:41:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1765374062;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Zb3h/yOe4FOOg1SjP81ys586cauCEduISxf/OpQdpyM=;
+ b=MTKoG8eOKv6OqWAPZdeMTGoXmpfudbBqVNKYgTX8jz/5mZ3CgGavwgSWQpSmmt7Q0GgeVI
+ ZHIN/U9BBx3CYys+iwyYUM3FTO5qeRQcSL0B3tqffeOHur3RjmIgtmw5pu3PhgZks5JjWJ
+ 0WI/MPHuTn5ddR5S2UGTxX0oRiazz6U=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-572-yh7vLgiONmyTDZ6J3rP7Qg-1; Wed, 10 Dec 2025 08:41:01 -0500
+X-MC-Unique: yh7vLgiONmyTDZ6J3rP7Qg-1
+X-Mimecast-MFC-AGG-ID: yh7vLgiONmyTDZ6J3rP7Qg_1765374060
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-42b3c965ce5so5617954f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 05:41:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=redhat.com; s=google; t=1765374060; x=1765978860; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Zb3h/yOe4FOOg1SjP81ys586cauCEduISxf/OpQdpyM=;
+ b=lInEiA27xH5v1C/C+mKdWetxNv0knzoV384izPeC6JtL3nuJbMO79tEGXswG9NM17u
+ eFl7Jo8PDYGarGvk1NTmARlXD2IDhuq2BekeabiBLEUTpyJnwtImgL6bj9hD0X8wQv71
+ kqWxSke2hq9JlgdBj6oyVw5hZrMaSNQndjIMXeanIHeOhTyjQPgfB+5Zgwtensj0jiHw
+ DkIlAGn4ZlNFjYue7ZQzUzEI7RpqaLTEWS7z9y6dw0wqeSJLo2uH4Cabt/ayBl5bLViV
+ qQfqy5U3nzL2TyDBtkW5Van7SaGfg3CT4DrGYe2guzV+5kthNPGpfToJsuU6B6Tln8Wx
+ +cSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1765374060; x=1765978860;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=Zb3h/yOe4FOOg1SjP81ys586cauCEduISxf/OpQdpyM=;
+ b=EjxgQhMLPNLKt6Rhwjfsmoy6hHh7dE0v5pJIbyOWiaqOU+Aqpwnn/scJvVXZDBX74u
+ yLQy9ttcFV+UjLm0hfRGEAWPdUTRcJGjO+3MbhUPmbqod5yF/25hdv+ZLQHjWcNl7AQu
+ xuq2Co3EKO8adBW1g2q6WXd5y0ftMUGxpAAcfL3bCU4zcSc7D7kDbHZi8ziPT62ml1rN
+ bcWvn9dpxNK8hNNmNZG4q9U2dn1gk3fFZvhUOL6ByoOQy1TfD41UN1SSoE5o9ukG1+Tp
+ mDIEVbWGmSlCKEn1NhgLuzEi/0dUxEpN4dmbBMp6HR42KekxtGcCXXxrjCP4HTtQxbl4
+ X/Ag==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUpA8o9wAeMdh6TiFAHFdwi41pEudpqpDAUd7XROCP85EkkfhOH8Tm46HRaZ/UJSTKA128s+V302qwm@nongnu.org
+X-Gm-Message-State: AOJu0YykrLR0DZexzmZ6656WAovCHAUMPWWzkasVdG0gg2OQ4E6Q3Nb9
+ mGHs+LzTv0NxwdeuibrYvjBHUwQ6NTXQr6nAlH2YO9iYsZLRVNUV2F952hQLFx0IR6KWM8961OY
+ M3UoZVFv547u3wmww73x+b3IXIWHxZkN1PhJJj79bTNiiy5S2bYiuHFV8
+X-Gm-Gg: AY/fxX5jLEOMWsaZSJFT3VodEX6LiWYXkyXhTQsKbPFOkrjUtP6Yso18FCPCAly6dba
+ 72svD77dWPaDOfVURaG3lCsgBsi8YP91bgvA1/Sfvu/AxjAQra81OOkwydVSRuNMaeuZ7PddP4b
+ i1ftQF11YFwLcGxEbZAjznOP/iKqrBIzIGl+liYO9biU2Arxldq3BSvjP+cjxc5tNwoJQS1lvj4
+ wBqBA4DBaxtDf/FHbtVBMTh7+1Xi93Ws5EcMVXyAixuXxBm52q+oTZKmWAyJL6JZWpiYpjfLATX
+ lx8zI4OJIQjtCUsuRhg9dJQGI7TscIihR2u3BdOx2VQjSHTpuQC9CUsZIwOCDBqsUMMcoQ==
+X-Received: by 2002:a5d:5f52:0:b0:429:8a71:d57 with SMTP id
+ ffacd0b85a97d-42fa39db05dmr2891456f8f.27.1765374059948; 
+ Wed, 10 Dec 2025 05:40:59 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFZYZeixSrlivy6vXsXq2r+Ig30f6lToz9CZJJGDI1lxL4spxvkwM5lyCYk7mccjak+GzA08A==
+X-Received: by 2002:a5d:5f52:0:b0:429:8a71:d57 with SMTP id
+ ffacd0b85a97d-42fa39db05dmr2891424f8f.27.1765374059491; 
+ Wed, 10 Dec 2025 05:40:59 -0800 (PST)
+Received: from imammedo ([213.175.37.14]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-42f7cbe8fe8sm37733919f8f.2.2025.12.10.05.40.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 10 Dec 2025 05:40:59 -0800 (PST)
+Date: Wed, 10 Dec 2025 14:40:55 +0100
+From: Igor Mammedov <imammedo@redhat.com>
+To: Andrey Ryabinin <arbn@yandex-team.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, qemu-devel@nongnu.org, qemu-stable@nongnu.org
+Subject: Re: [PATCH] q35: Fix migration of SMRAM state
+Message-ID: <20251210144055.3351d435@imammedo>
+In-Reply-To: <20251203180851.6390-1-arbn@yandex-team.com>
+References: <20251203180851.6390-1-arbn@yandex-team.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.126.230.35]
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000075F2:EE_|IA0PR12MB8424:EE_
-X-MS-Office365-Filtering-Correlation-Id: d908f1a5-b0d7-4bee-abc1-08de37f18dbe
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|1800799024|36860700013|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?OHA1ZWQwcTJDcUN5bmhYMTlZekJMT1h6bTh0WkJCbDJGUWhVdXVBKzNjOGxM?=
- =?utf-8?B?U080V0RGRnh3S3I0dG5LMitqQVhXS29ETzlaYnlXT2U1am1IWVl4TlVoc3lt?=
- =?utf-8?B?Vmgzb0lodWNjd1JNSzQreC9JNnRwb3ZQUURIVVRWWU1ySGVKUk5YbUZTcEpV?=
- =?utf-8?B?eFQwUnZGQVlZTTJGejR3cTliZHBqM2I1dnpJYWcvekRBUWF5UDBBOXRlTkRy?=
- =?utf-8?B?L1VFOGdWZmVwbzI3Y1c3NkZFZVc1L0FoL0tpNkR0TE1taUNBQld0RlhPeFB2?=
- =?utf-8?B?R0ZodlowUVRpNlc3dWE0NXAyWmphT1NhQzRmc3Z2T2g2aEJVY2dGUm9CeGRC?=
- =?utf-8?B?MnM2OFZCeUJXSmJOQmt2WVhiRkZFemV4azBwUXJJSmVSeXBWd0s5M3Q2SkZi?=
- =?utf-8?B?aktXalhTV1UvRjY5bHRhV3hmS0MxQmIzakllckh3bU1paDRXdER1bGlNYndB?=
- =?utf-8?B?VDRSQkJ1RjBuUWVzTy9YVko0Y25HalUzQkkyZDBvSjdUSFE0YUVnTUluNFpn?=
- =?utf-8?B?azVZZ2s2UWN5SFdhdzdjc283Z2ljT1AvaUFKY1NObVpyYVRLQmt4aFVuTGp0?=
- =?utf-8?B?VTdGMExENmRFdTdIMSttMURlSC9OTkc3QVluQVlmNERuWkxDOGdWRnIyUVI1?=
- =?utf-8?B?c1l2MC9UYWdlOFJxZXZCVUFra0F6TjJjdjgxcXVHZXo1Y2xUVnNpUFFscWxp?=
- =?utf-8?B?WTBhRnh3L2daOEdBZTZXYk1PaVdKOSt4Mnlzakk1dTB1QUY5ZzhEZFA1Tm5K?=
- =?utf-8?B?U3VRdzU0anMyUTdYWWdyWEpNakhOMnlISVZSd1NUV3BaRkwxeXpjYjdpZStx?=
- =?utf-8?B?NFEyalYzNU9EMWpJbHF1eXZoWkFVTUJHNzYwMVhhTEIrV0xma3p5OWxmZlBF?=
- =?utf-8?B?alZWek1jUkFhRksxZGplYURReEJjbDMrbHhXVDhFYzlDTEpXelR5MUQ1ZENX?=
- =?utf-8?B?T0k5SXJIdFR6WGJRcXZJa2llakQ1NlNSVFV2eElON0crSmJsbUwweDdualpl?=
- =?utf-8?B?TG9TSlJlcnVZRlpoNkRZM1k4amNnMmNVUVF0QU5yWjAxM1NxVTdoZkNPeDJ1?=
- =?utf-8?B?U3ljcFhXU2NxQkxGbi92ajNteFR5a0l0N3lLMjlRQUZrak53NXB6dnl0Z0lL?=
- =?utf-8?B?OU1CVmgwUlNNdlBJM0pURGgwUERpNFY3dnphZHRTSFhlMVVTRkdjaUYrelQ2?=
- =?utf-8?B?Z2RBL1lqdzRwTjRYTU5rZU4wQXJ3NUUxL0Nhejh3dzV2TU9qNlFjNG9aOTds?=
- =?utf-8?B?bHRvNEc3V3lEalBxNWhmWGZrWXkxdEhqQzhDVDNwV0ZiOUg3QVBacDc0Uksr?=
- =?utf-8?B?dm90d1ZpUTJRWUtxa0VLbHNOdUJ2TUJjbnUwRStFem1Ib0JUaEFjQWROUDdt?=
- =?utf-8?B?bmlZR0V4aDRONU05NTN3eGd5SzdFRGdqVFArTWJ3NmdGenZDVlJhLzVSbkox?=
- =?utf-8?B?TVpOVWtWeGNRdlEwUW5zOXZsZDFXVWxCZXl3QlF5ZUV6VW9oZDBUYmZOUTdk?=
- =?utf-8?B?cllZeS9adTdvUlkzN28ybUJ2T05RelhsYzJnNkcrZUtzZ2RkaDlGZDdhN1NH?=
- =?utf-8?B?bDJITVJWcHZHNUhTR0tGUmJjRXNxdDFXVUZNeTIyclBrQVRJd1oza0RFeVIv?=
- =?utf-8?B?ZG5ZUTEvY1pQSGpCbmoyNXE3aENpeFNOS0laWWtLSThxQ3pPNFZLaGNpaXhZ?=
- =?utf-8?B?REdhOWpZMWJQcWRaMUp3a0VmaU15ODNOMGREWVhkQkUzK3pRUHM0eWE1SSs5?=
- =?utf-8?B?THVFSzdZTDFFdURqdllvbW5tZUp3bWZpeWVlSEhWb09UN1Blc29BVmRQTHd2?=
- =?utf-8?B?UDdDeUtlaHZZb2ZISWFpTTV3c00wZXlLL2dnR3Y2TXk1YndEbk8rQ1hGVDB6?=
- =?utf-8?B?NkUxY3FRVHJIQU1qdjlzU1UyUmIrdGQ5Vkw3RjJ4enFSSXdVM1RDT3VzbUVi?=
- =?utf-8?B?aHo4Y3VpZzF6UzJrSUVUZkVOOHlvN3B5VmFJUktwSk9DSHFiaFgzWEVGYUZJ?=
- =?utf-8?B?aVNOd2EzY3NBYkNiN1VBWDZ1cHBkc1lFcU9hYnNRVm9uVHRrNTlFODk0cElN?=
- =?utf-8?B?QmNxS3lqT0tIbEI0TzF2NVVsU2sxYUdiWndOc0huWXovalV3ekpPME5vaUZm?=
- =?utf-8?Q?Bpyg=3D?=
-X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(36860700013)(82310400026); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2025 13:39:33.6885 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d908f1a5-b0d7-4bee-abc1-08de37f18dbe
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000075F2.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8424
-Received-SPF: softfail client-ip=2a01:111:f403:c111::5;
- envelope-from=skolothumtho@nvidia.com;
- helo=DM1PR04CU001.outbound.protection.outlook.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FORGED_SPF_HELO=1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001,
- SPF_NONE=0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -164,60 +120,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce a “tegra241-cmdqv” property to enable Tegra241 CMDQV
-support. This is only enabled for accelerated SMMUv3 devices.
+On Wed,  3 Dec 2025 19:08:51 +0100
+Andrey Ryabinin <arbn@yandex-team.com> wrote:
 
-Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
----
- hw/arm/smmuv3.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+> mch_update_smbase_smram() essentially uses wmask[MCH_HOST_BRIDGE_F_SMBASE]
+> to track SMBASE area state. Since 'wmask' state is not migrated is not
+> migrated, the destination QEMU always sees
+>  wmask[MCH_HOST_BRIDGE_F_SMBASE] =3D=3D 0xff
+>=20
+> As a result, when mch_update() calls mch_update_smbase_smram() on the
+> destination, it resets ->config[MCH_HOST_BRIDGE_F_SMBASE] and disables
+> the smbase-window memory region=E2=80=94even if it was enabled on the sou=
+rce.
 
-diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-index ec8687d39a..58c35c2af3 100644
---- a/hw/arm/smmuv3.c
-+++ b/hw/arm/smmuv3.c
-@@ -1953,6 +1953,12 @@ static bool smmu_validate_property(SMMUv3State *s, Error **errp)
-         error_setg(errp, "accel=on support not compiled in");
-         return false;
+[...]
+
+> +static void mch_smbase_smram_post_load(MCHPCIState *mch)
+> +{
+> +    PCIDevice *pd =3D PCI_DEVICE(mch);
+> +    uint8_t *reg =3D pd->config + MCH_HOST_BRIDGE_F_SMBASE;
+> +
+> +    if (!mch->has_smram_at_smbase) {
+> +        return;
+> +    }
+> +
+> +    if (*reg =3D=3D MCH_HOST_BRIDGE_F_SMBASE_IN_RAM) {
+> +        pd->wmask[MCH_HOST_BRIDGE_F_SMBASE] =3D
+> +            MCH_HOST_BRIDGE_F_SMBASE_LCK;
+> +    } else if (*reg =3D=3D MCH_HOST_BRIDGE_F_SMBASE_LCK) {
+> +        pd->wmask[MCH_HOST_BRIDGE_F_SMBASE] =3D 0;
+> +    }
+> +}
+You are correctly pointing to the issue about non-migratable wmask controll=
+ing
+config[], it should be other way around.
+
+given reset already sets
+  wmask[MCH_HOST_BRIDGE_F_SMBASE] && config[MCH_HOST_BRIDGE_F_SMBASE]
+to default values, we don't need to do the same in mch_update_smbase_smram()
+so we can just drop it.
+
+Also I wouldn't introduce a dedicated mch_smbase_smram_post_load() though,
+since mch_post_load() already calls mch_update_smbase_smram() indirectly,
+I'd rather fix the later.
+
+Would following work for you:
+
+diff --git a/hw/pci-host/q35.c b/hw/pci-host/q35.c
+index a708758d36..7a85a349bd 100644
+--- a/hw/pci-host/q35.c
++++ b/hw/pci-host/q35.c
+@@ -431,31 +431,25 @@ static void mch_update_smbase_smram(MCHPCIState *mch)
+         return;
      }
-+#endif
-+#ifndef CONFIG_TEGRA241_CMDQ
-+    if (s->tegra241_cmdqv) {
-+        error_setg(errp, "tegra241_cmdqv=on support not compiled in");
-+        return false;
-+    }
- #endif
-     if (!s->accel) {
-         if (!s->ril) {
-@@ -1971,6 +1977,10 @@ static bool smmu_validate_property(SMMUv3State *s, Error **errp)
-             error_setg(errp, "pasid can only be enabled if accel=on");
-             return false;
-         }
-+        if (s->tegra241_cmdqv) {
-+            error_setg(errp, "tegra241_cmdqv can only be enabled if accel=on");
-+            return false;
-+        }
-         return true;
+=20
+-    if (*reg =3D=3D MCH_HOST_BRIDGE_F_SMBASE_QUERY) {
+-        pd->wmask[MCH_HOST_BRIDGE_F_SMBASE] =3D
+-            MCH_HOST_BRIDGE_F_SMBASE_LCK;
+-        *reg =3D MCH_HOST_BRIDGE_F_SMBASE_IN_RAM;
+-        return;
+-    }
+-
+     /*
+-     * default/reset state, discard written value
+-     * which will disable SMRAM balackhole at SMBASE
++     * reg value can come either from register write/reset/migration
++     * source, update wmask to be in sync with it regardless of source
+      */
+-    if (pd->wmask[MCH_HOST_BRIDGE_F_SMBASE] =3D=3D 0xff) {
+-        *reg =3D 0x00;
++    switch (*reg) {
++    case MCH_HOST_BRIDGE_F_SMBASE_QUERY:
++        pd->wmask[MCH_HOST_BRIDGE_F_SMBASE] =3D MCH_HOST_BRIDGE_F_SMBASE_L=
+CK;
++        *reg =3D MCH_HOST_BRIDGE_F_SMBASE_IN_RAM;
++        return;
++    case MCH_HOST_BRIDGE_F_SMBASE_LCK:
++        pd->wmask[MCH_HOST_BRIDGE_F_SMBASE] =3D 0;
++        break;
++    case MCH_HOST_BRIDGE_F_SMBASE_IN_RAM:
++        pd->wmask[MCH_HOST_BRIDGE_F_SMBASE] =3D MCH_HOST_BRIDGE_F_SMBASE_L=
+CK;
++        break;
      }
- 
-@@ -2109,6 +2119,7 @@ static const Property smmuv3_properties[] = {
-     DEFINE_PROP_BOOL("ats", SMMUv3State, ats, false),
-     DEFINE_PROP_UINT8("oas", SMMUv3State, oas, 44),
-     DEFINE_PROP_BOOL("pasid", SMMUv3State, pasid, false),
-+    DEFINE_PROP_BOOL("tegra241-cmdqv", SMMUv3State, tegra241_cmdqv, false),
- };
- 
- static void smmuv3_instance_init(Object *obj)
-@@ -2144,6 +2155,8 @@ static void smmuv3_class_init(ObjectClass *klass, const void *data)
-         "are 44 or 48 bits. Defaults to 44 bits");
-     object_class_property_set_description(klass, "pasid",
-         "Enable/disable PASID support (for accel=on)");
-+    object_class_property_set_description(klass, "tegra241-cmdqv",
-+        "Enable/disable Tegra241 CMDQ-Virtualisation support (for accel=on)");
- }
- 
- static int smmuv3_notify_flag_changed(IOMMUMemoryRegion *iommu,
--- 
-2.43.0
+=20
+     memory_region_transaction_begin();
+-    if (*reg & MCH_HOST_BRIDGE_F_SMBASE_LCK) {
+-        /* disable all writes */
+-        pd->wmask[MCH_HOST_BRIDGE_F_SMBASE] &=3D
+-            ~MCH_HOST_BRIDGE_F_SMBASE_LCK;
+-        *reg =3D MCH_HOST_BRIDGE_F_SMBASE_LCK;
+-        lck =3D true;
+-    } else {
+-        lck =3D false;
+-    }
++    lck =3D *reg & MCH_HOST_BRIDGE_F_SMBASE_LCK;
+     memory_region_set_enabled(&mch->smbase_blackhole, lck);
+     memory_region_set_enabled(&mch->smbase_window, lck);
+     memory_region_transaction_commit();
+
+>  static int mch_post_load(void *opaque, int version_id)
+>  {
+>      MCHPCIState *mch =3D opaque;
+> +
+> +    mch_smbase_smram_post_load(mch);
+>      mch_update(mch);
+>      return 0;
+>  }
 
 
