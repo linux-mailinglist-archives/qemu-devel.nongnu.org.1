@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71F4CCB3C7A
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 19:37:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E987CB3C89
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 19:39:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTP3s-00016C-Ml; Wed, 10 Dec 2025 13:37:16 -0500
+	id 1vTP3u-00017Y-Sk; Wed, 10 Dec 2025 13:37:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vTP3p-00012x-9c
- for qemu-devel@nongnu.org; Wed, 10 Dec 2025 13:37:13 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ id 1vTP3q-00014X-SR
+ for qemu-devel@nongnu.org; Wed, 10 Dec 2025 13:37:14 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vTP3n-0002Rp-0f
- for qemu-devel@nongnu.org; Wed, 10 Dec 2025 13:37:12 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-42e2e6aa22fso26377f8f.2
- for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 10:37:10 -0800 (PST)
+ id 1vTP3o-0002SE-FW
+ for qemu-devel@nongnu.org; Wed, 10 Dec 2025 13:37:14 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-477b1cc8fb4so733545e9.1
+ for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 10:37:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1765391829; x=1765996629; darn=nongnu.org;
+ d=linaro.org; s=google; t=1765391831; x=1765996631; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ZNi2Z4/gvQscPF42VGqB/Ys1+1b9Ayka2budxzuzvwc=;
- b=W3Mins6RLdDcHGikkGit+cj1DeHndBrZYS8c2Pzec/NGsm/PCP0PQIJiqubx8mA1if
- pzmjWsOJBQxcNNitbe9ulPvyGGsetZL2uut/sNUmNOZ+PG/0aFSvRsI9J/KlU4ZWGi5c
- ZSRdOoWYz2vyidPNMmShrZY4m82ng75obeKUcoBJznx1yw74vVe3p9wyxIPZDwYkuDko
- GHw/ow0lGAsTz1HMI5LPxWRtx0YpnTHsP7URM0v8xL0G2UHAX1JK7SRdjOOIXFl84frb
- Iw0DluQFPWwBkC/FEdO93QtDHTWV2VJRUPR+5oG4yfDCjVgxhiNRiZpEIjq4MZ7MZ1Vb
- 7khA==
+ :reply-to; bh=CBYAOqR6DQdV0opqI8zQoE/MhBB6IG5uZhpAhusYcwI=;
+ b=tGxGUXsi26i5/xor4IJMSHcrq4CzKSVr+RhTQVmhibfTTu50f89rJU8578MprhwW80
+ 1n9ucV53LWg09ToiKiX0s9c0iegAAv5QGPNLGpzZqCvTJH2lgc53NSNYx4B6rHbpu/OH
+ F40QGxhriatJj3W8pNUJq+g0L15T4lhkBIm0tdECpMD2Hydufh4SDdKKmYPyX3K/SBV+
+ qMYD0GFLsmhcyTwNtmzKAUMkvuI0MNz4Nw2kftCA6/TED6tXkGynmioBqZMWScTMRd2N
+ 8hgqlYtVGCL9Cn5236UDg1QhwB00mubZ+mAUUryfNMyfNfXBx97c+S2NfDDrW0RgDLkY
+ CKcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765391829; x=1765996629;
+ d=1e100.net; s=20230601; t=1765391831; x=1765996631;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=ZNi2Z4/gvQscPF42VGqB/Ys1+1b9Ayka2budxzuzvwc=;
- b=Pad/sXZH4oxgtjELmSMnrhdzhKMryvRFGLYP1jUQ+5oUxVU46NBZEgg/sWFOPsBR1D
- Oz0PsB21ubBhcP/71hUEXWeEMDnCOeDx++aAmmslqrAY8Lo9DR+tFiaEZncT/6mGimgl
- 8bd5W+/RrtBvX0UozqKFd+5iAYgG8lk00U+jkd6wYec3FY5O6huLoFjYh39WGQYLEHi+
- E5XK6MR9IyK2HQaPDFhcNNNsi0nvrWBOH5N6u5VPMXZHiyrrvSleC+DbM2lGTMLZZZCd
- ksXrjqLtIwuq+97IroGTaLS5H6JZH9b/Eq2qDgwzRXbXHfG5ohRXE8xiOb18qIgplwxA
- plXA==
+ bh=CBYAOqR6DQdV0opqI8zQoE/MhBB6IG5uZhpAhusYcwI=;
+ b=Xz6XzQaLwH39cjEpS0Xt+lHC9Egpyfan9x3mZT6H77w39+XTksDTbPNn61+OG3oKnq
+ EF/f6+QH7w/FvuPEefNAwXQGi2lRIpPkete1u+gciifqxG8EONgYHjh8FBi/pfv2w9Z6
+ VsXffMkcpartoKGHADIEes5AUtbejdTgz1ZADFf3WBdSfw1b2muOda9nTaPVfyXWavZk
+ B2sHH6lIgOTx7lOvqaLN1Uv7qhE2DfdJICiHMSWp3yH1+YFZENTh3RiSgcMJ75GFb1qA
+ SWFQtx1bOSOAlDP+gYtkKiqUDf9uB89sOnuaNWA9z5kfRx1n5J56LKcUCeUc2ngoe19f
+ qwhw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXl1hcaGboAe57Ooz5lVhUa+ZB7yRpldjCi5PIVXL2VWnt2bo67b22uFYh1LTy7I2Cskm/VyH+zEoWh@nongnu.org
-X-Gm-Message-State: AOJu0Yy2FEEX7626Ss+d8fqTWw/humOGFPFkEvHnEcuLxBguf1W+0xiU
- o659QXeIYUhw3cml8x67JCBpsPg7R00Dm9h5KqOB3Pqy+q883fq8u4TdNilZSksj/T0grJj0Vpc
- bl+O4
-X-Gm-Gg: AY/fxX6OwfisB4T/wYxAP7F9iMxg70OoWJGpDDgl4q64RBLtj2OYBnRvL+JqPzS6nhk
- cnUO8m2EHwBf932hG5Il6CjPE055WDJjk9c/ePvYcJ1EmQvsC+rBM8/T3mAtLnHZY3u5IniTRUe
- 89kE/YPMjsaOC/TcdjJCWy+Vd8vEgq9T3ZuFdN7BfoQkcWgphzNkJNMy1z2qPsx9QGAkwX3Bhvl
- 7kM4lFq1HKb5b/B05c49la3YVQOTOAUgWx8Xa1g9PSyCopDfCnNYnPHGIZ9Eg7W74AlyPObygl6
- 0leR+HInZq26cJ5nXCUsCr962UNBW1psFGd3FJEJ73VUJd0Ywpk3r9toCyqT62561Uun5ZqFB28
- 7twtrbx3pO04MJNl0BMqrM+BaIwDbgk548QPOnVanLb/Kvr7lQVP31HCF6wTH3sWUM8lpQaAxTa
- sfBikrCM6TrEJz7A2l
-X-Google-Smtp-Source: AGHT+IGtVjchF08HaTnFV0xRV/UeOIwfw3gpot5GT5ocYup5d0UFslziKABN+CtH/NDpZ/RxVVqQZQ==
-X-Received: by 2002:a05:6000:220b:b0:42f:9ff2:9086 with SMTP id
- ffacd0b85a97d-42fa3b0674dmr3572827f8f.48.1765391829480; 
- Wed, 10 Dec 2025 10:37:09 -0800 (PST)
+ AJvYcCVYwjJctWO7B1XOoR6Q5jpYwcH7EvktL5FpRVxVRlloDI7/WDTlQXqNqwiot+JRY0xboHSChm0G32z3@nongnu.org
+X-Gm-Message-State: AOJu0YznXBkr8QNZloG7PjFoPdogyOMskkpplKqF1O0wHHtQ5WWjG7pN
+ 9m/Hk84xAxaKndSZcVM6eeVyO4q6p9UMmgDZ31hYazQqnT0SVcKAMOs0ORi5ezYmcHapQ2JxrLr
+ rkIwE
+X-Gm-Gg: ASbGnctK/J715uphmwLrHx4/AmVjjAPueGv6pjw60AFNIw3STlAYurF7m28U6nSH8zd
+ E+sGtUkGKOMLMyG9bzn9DbdbYj8LFmVj0pR9PptoSFseakbD3VLfN+ht2StrAvkK9sANtGaoM4M
+ 6HsACiO6U7yFFjNIK3c0Zx7U+1brEhl2xmkcLMzOvajbN/LPow1tcp/iXlanp0/IkILGLwfcCJi
+ sGWJI/XMXE92225qYGm9/mBthb2q4JCyYwemxsGYAgul1Kfd6VVCXQVyn1x8do7iWbMRSes3ZAF
+ 3FpcB0AOGghPWM0zYFzZsLjav0sTpoc1eCNvBEw4/llAoB24/yhZrBI7w0RZc5a58+o8C+b9az+
+ r21i17IxZ+nlFut96r9uuvTaCyivD/jtVe29rYvupuKGmKBTOS8kHSsQzYN32CN+CxYNvjIIgCY
+ WxTMbb/jP4XMzn9Plr
+X-Google-Smtp-Source: AGHT+IGiNXYDZ4E5NusjbQ22dbl3SmP45MUzcyrZ/T4S8IOo6muLNwTZwxq5yX/EVYMFT3rYYgAdww==
+X-Received: by 2002:a05:600c:8210:b0:479:2651:3f9c with SMTP id
+ 5b1f17b1804b1-47a8377e72fmr34196405e9.14.1765391830632; 
+ Wed, 10 Dec 2025 10:37:10 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42fa8a7044csm477702f8f.15.2025.12.10.10.37.08
+ ffacd0b85a97d-42fa8a7044csm477702f8f.15.2025.12.10.10.37.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Dec 2025 10:37:08 -0800 (PST)
+ Wed, 10 Dec 2025 10:37:09 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH for-11.0 5/7] hw/arm/omap1: Remove omap_badwidth_read* calls
-Date: Wed, 10 Dec 2025 18:36:58 +0000
-Message-ID: <20251210183700.3446237-6-peter.maydell@linaro.org>
+Subject: [PATCH for-11.0 6/7] hw/arm/omap1: Remove omap_badwidth_write* calls
+Date: Wed, 10 Dec 2025 18:36:59 +0000
+Message-ID: <20251210183700.3446237-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251210183700.3446237-1-peter.maydell@linaro.org>
 References: <20251210183700.3446237-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,261 +100,235 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The omap_badwidth_read* and omap_badwidth_write* functions are
-used by various OMAP devices when the guest makes an access
-to registers with an invalid width; they do two things:
- - log a GUEST_ERROR for the access
- - call cpu_physical_memory_read() or cpu_physical_memory_write()
-   with the offset they are passed in
+Complete the conversion started in the previous commit by
+changing all the omap_badwidth_write* calls to open-coded
+log-and-ignore behaviour.
 
-The first of these produces an unhelpful log message because the
-function name that is printed is that of the omap-badwidth_*
-function, not that of the read or write function of the device that
-called it; this means you can't tell what device is involved.
-
-The second is wrong because the offset is an offset into the device
-but we use it as an absolute physical address, so we will access
-whatever is at low memory.  That happens to be the boot ROM, so we
-will ignore a write and return random garbage on a read.  This bug
-has been present since 2011, when we did the conversions to the
-MemoryRegion APIs, which involved changing all devices from working
-with absolute physical addresses to working with offsets within their
-MemoryRegions.  We must have missed updating these functions.
-
-Replace the uses of the omap_badwidth_read* functions in omap1.c with
-an open-coded call to qemu_log_mask() and RAZ/WI behaviour.
-We do just the reads here because there are a lot of callsites in
-omap1.c; the writes will be done in the next commit.
+We can delete a FIXME comment about an infinite loop, because that
+only looped infinitely back before 2011 when the device was still
+using absolute physical addresses.  Now that we are simply logging
+the error we can clearly see that there's no loop.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/omap1.c | 80 +++++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 60 insertions(+), 20 deletions(-)
+ hw/arm/omap1.c | 64 +++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 42 insertions(+), 22 deletions(-)
 
 diff --git a/hw/arm/omap1.c b/hw/arm/omap1.c
-index 74458fb7c69..a187672897e 100644
+index a187672897e..cfa4e1f677c 100644
 --- a/hw/arm/omap1.c
 +++ b/hw/arm/omap1.c
-@@ -208,7 +208,9 @@ static uint64_t omap_mpu_timer_read(void *opaque, hwaddr addr,
+@@ -234,7 +234,8 @@ static void omap_mpu_timer_write(void *opaque, hwaddr addr,
      struct omap_mpu_timer_s *s = opaque;
  
      if (size != 4) {
--        return omap_badwidth_read32(opaque, addr);
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: read at offset 0x%" HWADDR_PRIx
+-        omap_badwidth_write32(opaque, addr, value);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: write at offset 0x%" HWADDR_PRIx
 +                      " with bad width %d\n", __func__, addr, size);
-+        return 0;
+         return;
      }
  
-     switch (addr) {
-@@ -314,7 +316,9 @@ static uint64_t omap_wd_timer_read(void *opaque, hwaddr addr,
+@@ -343,7 +344,8 @@ static void omap_wd_timer_write(void *opaque, hwaddr addr,
      struct omap_watchdog_timer_s *s = opaque;
  
      if (size != 2) {
--        return omap_badwidth_read16(opaque, addr);
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: read at offset 0x%" HWADDR_PRIx
+-        omap_badwidth_write16(opaque, addr, value);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: write at offset 0x%" HWADDR_PRIx
 +                      " with bad width %d\n", __func__, addr, size);
-+        return 0;
+         return;
      }
  
-     switch (addr) {
-@@ -438,7 +442,9 @@ static uint64_t omap_os_timer_read(void *opaque, hwaddr addr,
+@@ -471,7 +473,8 @@ static void omap_os_timer_write(void *opaque, hwaddr addr,
      int offset = addr & OMAP_MPUI_REG_MASK;
  
      if (size != 4) {
--        return omap_badwidth_read32(opaque, addr);
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: read at offset 0x%" HWADDR_PRIx
+-        omap_badwidth_write32(opaque, addr, value);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: write at offset 0x%" HWADDR_PRIx
 +                      " with bad width %d\n", __func__, addr, size);
-+        return 0;
+         return;
      }
  
-     switch (offset) {
-@@ -539,7 +545,9 @@ static uint64_t omap_ulpd_pm_read(void *opaque, hwaddr addr,
-     uint16_t ret;
+@@ -618,7 +621,8 @@ static void omap_ulpd_pm_write(void *opaque, hwaddr addr,
+     uint16_t diff;
  
      if (size != 2) {
--        return omap_badwidth_read16(opaque, addr);
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: read at offset 0x%" HWADDR_PRIx
+-        omap_badwidth_write16(opaque, addr, value);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: write at offset 0x%" HWADDR_PRIx
 +                      " with bad width %d\n", __func__, addr, size);
-+        return 0;
+         return;
      }
  
-     switch (addr) {
-@@ -771,7 +779,9 @@ static uint64_t omap_pin_cfg_read(void *opaque, hwaddr addr,
+@@ -893,7 +897,8 @@ static void omap_pin_cfg_write(void *opaque, hwaddr addr,
+     uint32_t diff;
+ 
+     if (size != 4) {
+-        omap_badwidth_write32(opaque, addr, value);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: write at offset 0x%" HWADDR_PRIx
++                      " with bad width %d\n", __func__, addr, size);
+         return;
+     }
+ 
+@@ -1051,7 +1056,8 @@ static void omap_id_write(void *opaque, hwaddr addr,
+                           uint64_t value, unsigned size)
+ {
+     if (size != 4) {
+-        omap_badwidth_write32(opaque, addr, value);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: write at offset 0x%" HWADDR_PRIx
++                      " with bad width %d\n", __func__, addr, size);
+         return;
+     }
+ 
+@@ -1123,7 +1129,8 @@ static void omap_mpui_write(void *opaque, hwaddr addr,
      struct omap_mpu_state_s *s = opaque;
  
      if (size != 4) {
--        return omap_badwidth_read32(opaque, addr);
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: read at offset 0x%" HWADDR_PRIx
+-        omap_badwidth_write32(opaque, addr, value);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: write at offset 0x%" HWADDR_PRIx
 +                      " with bad width %d\n", __func__, addr, size);
-+        return 0;
+         return;
      }
  
-     switch (addr) {
-@@ -994,7 +1004,9 @@ static uint64_t omap_id_read(void *opaque, hwaddr addr,
-     struct omap_mpu_state_s *s = opaque;
- 
-     if (size != 4) {
--        return omap_badwidth_read32(opaque, addr);
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: read at offset 0x%" HWADDR_PRIx
-+                      " with bad width %d\n", __func__, addr, size);
-+        return 0;
-     }
- 
-     switch (addr) {
-@@ -1076,7 +1088,9 @@ static uint64_t omap_mpui_read(void *opaque, hwaddr addr,
-     struct omap_mpu_state_s *s = opaque;
- 
-     if (size != 4) {
--        return omap_badwidth_read32(opaque, addr);
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: read at offset 0x%" HWADDR_PRIx
-+                      " with bad width %d\n", __func__, addr, size);
-+        return 0;
-     }
- 
-     switch (addr) {
-@@ -1174,7 +1188,9 @@ static uint64_t omap_tipb_bridge_read(void *opaque, hwaddr addr,
+@@ -1220,7 +1227,8 @@ static void omap_tipb_bridge_write(void *opaque, hwaddr addr,
      struct omap_tipb_bridge_s *s = opaque;
  
      if (size < 2) {
--        return omap_badwidth_read16(opaque, addr);
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: read at offset 0x%" HWADDR_PRIx
+-        omap_badwidth_write16(opaque, addr, value);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: write at offset 0x%" HWADDR_PRIx
 +                      " with bad width %d\n", __func__, addr, size);
-+        return 0;
+         return;
      }
  
-     switch (addr) {
-@@ -1276,7 +1292,9 @@ static uint64_t omap_tcmi_read(void *opaque, hwaddr addr,
-     uint32_t ret;
- 
-     if (size != 4) {
--        return omap_badwidth_read32(opaque, addr);
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: read at offset 0x%" HWADDR_PRIx
-+                      " with bad width %d\n", __func__, addr, size);
-+        return 0;
-     }
- 
-     switch (addr) {
-@@ -1390,7 +1408,9 @@ static uint64_t omap_dpll_read(void *opaque, hwaddr addr,
-     struct dpll_ctl_s *s = opaque;
- 
-     if (size != 2) {
--        return omap_badwidth_read16(opaque, addr);
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: read at offset 0x%" HWADDR_PRIx
-+                      " with bad width %d\n", __func__, addr, size);
-+        return 0;
-     }
- 
-     if (addr == 0x00)   /* CTL_REG */
-@@ -1470,7 +1490,9 @@ static uint64_t omap_clkm_read(void *opaque, hwaddr addr,
+@@ -1331,7 +1339,8 @@ static void omap_tcmi_write(void *opaque, hwaddr addr,
      struct omap_mpu_state_s *s = opaque;
  
-     if (size != 2) {
--        return omap_badwidth_read16(opaque, addr);
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: read at offset 0x%" HWADDR_PRIx
+     if (size != 4) {
+-        omap_badwidth_write32(opaque, addr, value);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: write at offset 0x%" HWADDR_PRIx
 +                      " with bad width %d\n", __func__, addr, size);
-+        return 0;
+         return;
      }
  
-     switch (addr) {
-@@ -1763,7 +1785,9 @@ static uint64_t omap_clkdsp_read(void *opaque, hwaddr addr,
-     CPUState *cpu = CPU(s->cpu);
+@@ -1429,7 +1438,8 @@ static void omap_dpll_write(void *opaque, hwaddr addr,
+     int div, mult;
  
      if (size != 2) {
--        return omap_badwidth_read16(opaque, addr);
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: read at offset 0x%" HWADDR_PRIx
+-        omap_badwidth_write16(opaque, addr, value);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: write at offset 0x%" HWADDR_PRIx
 +                      " with bad width %d\n", __func__, addr, size);
-+        return 0;
+         return;
      }
  
-     switch (addr) {
-@@ -1955,7 +1979,9 @@ static uint64_t omap_mpuio_read(void *opaque, hwaddr addr,
-     uint16_t ret;
+@@ -1702,7 +1712,8 @@ static void omap_clkm_write(void *opaque, hwaddr addr,
+     };
  
      if (size != 2) {
--        return omap_badwidth_read16(opaque, addr);
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: read at offset 0x%" HWADDR_PRIx
+-        omap_badwidth_write16(opaque, addr, value);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: write at offset 0x%" HWADDR_PRIx
 +                      " with bad width %d\n", __func__, addr, size);
-+        return 0;
+         return;
      }
  
-     switch (offset) {
-@@ -2205,7 +2231,9 @@ static uint64_t omap_uwire_read(void *opaque, hwaddr addr, unsigned size)
+@@ -1832,7 +1843,8 @@ static void omap_clkdsp_write(void *opaque, hwaddr addr,
+     uint16_t diff;
+ 
+     if (size != 2) {
+-        omap_badwidth_write16(opaque, addr, value);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: write at offset 0x%" HWADDR_PRIx
++                      " with bad width %d\n", __func__, addr, size);
+         return;
+     }
+ 
+@@ -2042,7 +2054,8 @@ static void omap_mpuio_write(void *opaque, hwaddr addr,
+     int ln;
+ 
+     if (size != 2) {
+-        omap_badwidth_write16(opaque, addr, value);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: write at offset 0x%" HWADDR_PRIx
++                      " with bad width %d\n", __func__, addr, size);
+         return;
+     }
+ 
+@@ -2267,7 +2280,8 @@ static void omap_uwire_write(void *opaque, hwaddr addr,
      int offset = addr & OMAP_MPUI_REG_MASK;
  
      if (size != 2) {
--        return omap_badwidth_read16(opaque, addr);
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: read at offset 0x%" HWADDR_PRIx
+-        omap_badwidth_write16(opaque, addr, value);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: write at offset 0x%" HWADDR_PRIx
 +                      " with bad width %d\n", __func__, addr, size);
-+        return 0;
+         return;
      }
  
-     switch (offset) {
-@@ -2346,7 +2374,9 @@ static uint64_t omap_pwl_read(void *opaque, hwaddr addr, unsigned size)
+@@ -2396,7 +2410,8 @@ static void omap_pwl_write(void *opaque, hwaddr addr,
      int offset = addr & OMAP_MPUI_REG_MASK;
  
      if (size != 1) {
--        return omap_badwidth_read8(opaque, addr);
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: read at offset 0x%" HWADDR_PRIx
+-        omap_badwidth_write8(opaque, addr, value);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: write at offset 0x%" HWADDR_PRIx
 +                      " with bad width %d\n", __func__, addr, size);
-+        return 0;
+         return;
      }
  
-     switch (offset) {
-@@ -2439,7 +2469,9 @@ static uint64_t omap_pwt_read(void *opaque, hwaddr addr, unsigned size)
+@@ -2493,7 +2508,8 @@ static void omap_pwt_write(void *opaque, hwaddr addr,
      int offset = addr & OMAP_MPUI_REG_MASK;
  
      if (size != 1) {
--        return omap_badwidth_read8(opaque, addr);
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: read at offset 0x%" HWADDR_PRIx
+-        omap_badwidth_write8(opaque, addr, value);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: write at offset 0x%" HWADDR_PRIx
 +                      " with bad width %d\n", __func__, addr, size);
-+        return 0;
+         return;
      }
  
-     switch (offset) {
-@@ -2573,7 +2605,9 @@ static uint64_t omap_rtc_read(void *opaque, hwaddr addr, unsigned size)
-     uint8_t i;
+@@ -2690,7 +2706,8 @@ static void omap_rtc_write(void *opaque, hwaddr addr,
+     time_t ti[2];
  
      if (size != 1) {
--        return omap_badwidth_read8(opaque, addr);
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: read at offset 0x%" HWADDR_PRIx
+-        omap_badwidth_write8(opaque, addr, value);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: write at offset 0x%" HWADDR_PRIx
 +                      " with bad width %d\n", __func__, addr, size);
-+        return 0;
+         return;
      }
  
-     switch (offset) {
-@@ -3117,7 +3151,9 @@ static uint64_t omap_mcbsp_read(void *opaque, hwaddr addr,
-     uint16_t ret;
- 
-     if (size != 2) {
--        return omap_badwidth_read16(opaque, addr);
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: read at offset 0x%" HWADDR_PRIx
-+                      " with bad width %d\n", __func__, addr, size);
-+        return 0;
+@@ -3418,7 +3435,8 @@ static void omap_mcbsp_writew(void *opaque, hwaddr addr,
+         return;
      }
  
-     switch (offset) {
-@@ -3546,7 +3582,9 @@ static uint64_t omap_lpg_read(void *opaque, hwaddr addr, unsigned size)
+-    omap_badwidth_write16(opaque, addr, value);
++    qemu_log_mask(LOG_GUEST_ERROR, "%s: write at offset 0x%" HWADDR_PRIx
++                  " with bad width %d\n", __func__, addr, 4);
+ }
+ 
+ static void omap_mcbsp_write(void *opaque, hwaddr addr,
+@@ -3432,7 +3450,8 @@ static void omap_mcbsp_write(void *opaque, hwaddr addr,
+         omap_mcbsp_writew(opaque, addr, value);
+         break;
+     default:
+-        omap_badwidth_write16(opaque, addr, value);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: write at offset 0x%" HWADDR_PRIx
++                      " with bad width %d\n", __func__, addr, size);
+     }
+ }
+ 
+@@ -3606,7 +3625,8 @@ static void omap_lpg_write(void *opaque, hwaddr addr,
      int offset = addr & OMAP_MPUI_REG_MASK;
  
      if (size != 1) {
--        return omap_badwidth_read8(opaque, addr);
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: read at offset 0x%" HWADDR_PRIx
+-        omap_badwidth_write8(opaque, addr, value);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: write at offset 0x%" HWADDR_PRIx
 +                      " with bad width %d\n", __func__, addr, size);
-+        return 0;
+         return;
      }
  
-     switch (offset) {
-@@ -3627,7 +3665,9 @@ static uint64_t omap_mpui_io_read(void *opaque, hwaddr addr,
-                                   unsigned size)
+@@ -3680,8 +3700,8 @@ static uint64_t omap_mpui_io_read(void *opaque, hwaddr addr,
+ static void omap_mpui_io_write(void *opaque, hwaddr addr,
+                                uint64_t value, unsigned size)
  {
-     if (size != 2) {
--        return omap_badwidth_read16(opaque, addr);
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: read at offset 0x%" HWADDR_PRIx
-+                      " with bad width %d\n", __func__, addr, size);
-+        return 0;
-     }
+-    /* FIXME: infinite loop */
+-    omap_badwidth_write16(opaque, addr, value);
++    qemu_log_mask(LOG_GUEST_ERROR, "%s: write at offset 0x%" HWADDR_PRIx
++                  " with bad width %d\n", __func__, addr, size);
+ }
  
-     if (addr == OMAP_MPUI_BASE) /* CMR */
+ static const MemoryRegionOps omap_mpui_io_ops = {
 -- 
 2.43.0
 
