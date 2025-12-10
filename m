@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94C30CB4426
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 00:30:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADD72CB441B
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 00:30:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTTd0-00049Q-T5; Wed, 10 Dec 2025 18:29:50 -0500
+	id 1vTTd8-0004DH-NK; Wed, 10 Dec 2025 18:29:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3ZAI6aQYKCqEZVCJOaHPPHMF.DPNRFNV-EFWFMOPOHOV.PSH@flex--yubinz.bounces.google.com>)
- id 1vTTcw-00048E-E4
- for qemu-devel@nongnu.org; Wed, 10 Dec 2025 18:29:46 -0500
-Received: from mail-pg1-x54a.google.com ([2607:f8b0:4864:20::54a])
+ <3ZgI6aQYKCqMbXELQcJRRJOH.FRPTHPX-GHYHOQRQJQX.RUJ@flex--yubinz.bounces.google.com>)
+ id 1vTTcy-00049P-MU
+ for qemu-devel@nongnu.org; Wed, 10 Dec 2025 18:29:48 -0500
+Received: from mail-pg1-x549.google.com ([2607:f8b0:4864:20::549])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3ZAI6aQYKCqEZVCJOaHPPHMF.DPNRFNV-EFWFMOPOHOV.PSH@flex--yubinz.bounces.google.com>)
- id 1vTTct-0005ie-SC
- for qemu-devel@nongnu.org; Wed, 10 Dec 2025 18:29:45 -0500
-Received: by mail-pg1-x54a.google.com with SMTP id
- 41be03b00d2f7-c0bead25feeso294560a12.0
- for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 15:29:42 -0800 (PST)
+ <3ZgI6aQYKCqMbXELQcJRRJOH.FRPTHPX-GHYHOQRQJQX.RUJ@flex--yubinz.bounces.google.com>)
+ id 1vTTcu-0005j4-FT
+ for qemu-devel@nongnu.org; Wed, 10 Dec 2025 18:29:47 -0500
+Received: by mail-pg1-x549.google.com with SMTP id
+ 41be03b00d2f7-bc240cdb249so317897a12.3
+ for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 15:29:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1765409381; x=1766014181; darn=nongnu.org;
+ d=google.com; s=20230601; t=1765409383; x=1766014183; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=rHDieZbLHiYnj98/qORFPZurA2OWE7iBD9cPzEH+Dlw=;
- b=qW0eUJ/9U2Cng7fshZzExROpVD+VWyS0+i6ZA1S8QgDuWfOZ253UYS2Fn3xUQsa/Al
- YbYA/7rZU3p1CvVPIKopadHkqHYwp9kO+f2tS3w3DfA0Y5krahdc0VNcCEhjU4zh7+tg
- eHQTg2Gp3om2LQg05tack3HYlbZMYyNXhDge6M2ENiGrW9Aj1bOxHgKOjDJ9fCCS/Yax
- prZL9E6ftB0saXyd8lEGyC6KL5RNkrDrOXjd+dDEkQmCJckisHa/ZvXoQWeIMpQsJRJ+
- e7EUSazN+i2zTbMYIbEuxFYJA/BXgZtcpN0q1y8o8xwfX85KTc/bDO7wZxDhrUjHE3fL
- Y2LA==
+ bh=hqZ2qhWGGDuvHlPFLsB8stzNSOZI8NxOWfwLsS50KE0=;
+ b=RgPMNeWrdZtbnAztSu7g/QjCqyGRA3A4mA7+hHtWDVPESaXuFyCgkth1E94O73tWvJ
+ duSXeeqnCxuiPpS3HOK8DMHvvZKLCZt+13j2/aitnLot/E1tb2yBREi2duwiqTXG2c9X
+ NxT2BBmtNRSumZASJOV7mlDxiLhYJcz2IVVwNnJmjs1nGt5zV9P78WRFE1N9gS6Hvdj6
+ pjszupyJbVqA19to1l/M8Z7uLoMHd09a+rIJyz5+PUPBleYSM64+Ip5+8ggFSYscIyec
+ eA0r967dHBOBZfdx3GWPYrkdUyzO6U2BQil9dRmTLibegST9UcJhJnCvzV9Cyo+QY8dh
+ Bgpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765409381; x=1766014181;
+ d=1e100.net; s=20230601; t=1765409383; x=1766014183;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rHDieZbLHiYnj98/qORFPZurA2OWE7iBD9cPzEH+Dlw=;
- b=oJS9SAlSQ1m5JRTSdJICLxwcDii0/Otzzr5197SAuFiBVW0SwS8L0+38NBq806IcEG
- 6wglUr07rts053iGacyh3Lh6qvoaE6S4rshSY1r4n43uuJ/ueCW6iTaz3g3nmj8sgF9A
- 2sW41WtS3G8ulOWqGi1UMj6DYwcrZQtzTD8jP6y3ASNVqjV9kC+yK0ffvWVGsjA+WMY1
- AmZCvS8Xp+7Szx2GadEccEgYCU6rf7vbq8VuLG24zLG6rTWBMpD9c0gEFLWGZQvx8BwC
- QXPVdHUSGW6X1Ld4FAD/zewAeHqU76q72BHCWzEcpFr25420S865hqDhkY4xyycBTw8U
- 5UnQ==
-X-Gm-Message-State: AOJu0Yyw28FmZHFHq0EO8OPSCAbjexxgMWEB2ImOpamtPPdiCYb6i1kx
- ccX/074BM55GdxOMyMmAR0N6HWAuvj5depA5y0TUe4OfHF3DoL+iQ5s0JXn6UDf/O4sqYJ5bHz5
- SvjQmj+BqCdZQ0UooKeQK7qljfNJZv4IJVCad+F+vyD+zj2HzUtINlNPNATA/YdbhSF4vPQIUCK
- S29sU+BEnjD0d2Z1lvi9XINbCSUsCr8G+RTlA=
-X-Google-Smtp-Source: AGHT+IEL/IhlkELZonhzWn2r5xauTVadk1P/NM39jdyUjVUzYRXP0WE0ZVT9aDwGbQW9DU0mSpyy+Cyme94=
-X-Received: from dlbcq18.prod.google.com
- ([2002:a05:7022:2492:b0:11d:cf4c:62ab])
+ bh=hqZ2qhWGGDuvHlPFLsB8stzNSOZI8NxOWfwLsS50KE0=;
+ b=Cd5YiYZwozK+CWseu3D2qkKlr3y7TO39yTuogO8xPSZRkjhox5urvb7H0LocqjstzA
+ TGHZesRoI/bE1zSFXjMTzDH+1/JwVcr0DOGLssbz0JwB+SsyvFG96oFWtRbP9dGh/Xzk
+ ahBbxjFRVbaR1sLcFg7J/puoz1zxTDJZg+C4/q1FPJlyz+PHC3sQdZg4mVmODuKF5DRP
+ EULCtgsKtLdWbG1P086rBBTjjyPlAw+E+l6O8Cu2BbP7RL1lAU2Ngd8ljxEp97cfSva4
+ qAu4w2yMu6WLOL+C8PH2yEMQ5apNZYKCbIXRfCgXy4sxuqzfJU4Nc0SlgdbArIjvjdYs
+ mYPw==
+X-Gm-Message-State: AOJu0Yyef3rkTnX7KzgRIi0bSv0HZVwyBtJUOTaoMODAsIVnolPhrdF2
+ BvHydfb07K1pgy7jIrRTStka2jLeaJ5MJCUFUwSlsjzjVGv6t7C/lBvOv+6k14n1biG2qAgWYOK
+ QBMJYvzkd0BSvk0FWTBGmxbtJPPxjzUZvGdtJ0Ghsds5DvWL2HniXpN6ZgswnJ9n/bNgZkz37DI
+ yIP2cVXGPI/Yc/AJJGqVeVw1uHNmpAatdj9+k=
+X-Google-Smtp-Source: AGHT+IEn5a/inZouAECTkDQNNeEkn6ggqHKOx/PwjvTPQIlfd0iQs3c1dQXEPiI/UxHzNVgAzeSjxBSYxLo=
+X-Received: from dlbbu30.prod.google.com
+ ([2002:a05:7022:221e:b0:11d:fd0d:f00f])
  (user=yubinz job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:78f:b0:119:e55a:9c06
- with SMTP id a92af1059eb24-11f296d74cbmr3308649c88.34.1765409380954; Wed, 10
- Dec 2025 15:29:40 -0800 (PST)
-Date: Wed, 10 Dec 2025 23:29:15 +0000
+ 2002:a05:7022:fd0b:b0:11b:9386:a386
+ with SMTP id a92af1059eb24-11f296d7b96mr3265379c88.41.1765409382643; Wed, 10
+ Dec 2025 15:29:42 -0800 (PST)
+Date: Wed, 10 Dec 2025 23:29:16 +0000
 In-Reply-To: <20251210-aspeed-sgpio-v3-0-eb8b0cf3dd51@google.com>
 Mime-Version: 1.0
 References: <20251210-aspeed-sgpio-v3-0-eb8b0cf3dd51@google.com>
 X-Mailer: b4 0.14.2
-Message-ID: <20251210-aspeed-sgpio-v3-4-eb8b0cf3dd51@google.com>
-Subject: [PATCH v3 4/6] hw/arm/aspeed_soc: Update Aspeed SoC to support two
- SGPIO controllers
+Message-ID: <20251210-aspeed-sgpio-v3-5-eb8b0cf3dd51@google.com>
+Subject: [PATCH v3 5/6] hw/arm/aspeed_ast27x0: Wire SGPIO controller to
+ AST2700 SoC
 From: Yubin Zou <yubinz@google.com>
 To: qemu-devel@nongnu.org
 Cc: "=?utf-8?q?C=C3=A9dric_Le_Goater?=" <clg@kaod.org>,
@@ -77,9 +77,9 @@ Cc: "=?utf-8?q?C=C3=A9dric_Le_Goater?=" <clg@kaod.org>,
  Nabih Estefan <nabihestefan@google.com>, qemu-arm@nongnu.org, 
  Yubin Zou <yubinz@google.com>
 Content-Type: text/plain; charset="utf-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::54a;
- envelope-from=3ZAI6aQYKCqEZVCJOaHPPHMF.DPNRFNV-EFWFMOPOHOV.PSH@flex--yubinz.bounces.google.com;
- helo=mail-pg1-x54a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::549;
+ envelope-from=3ZgI6aQYKCqMbXELQcJRRJOH.FRPTHPX-GHYHOQRQJQX.RUJ@flex--yubinz.bounces.google.com;
+ helo=mail-pg1-x549.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -102,168 +102,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit updates the Aspeed SoC model to support two SGPIO
-controllers, reflecting the hardware capabilities of the AST2700
-
-The memory map and interrupt map are updated to include entries for
-two SGPIO controllers (SGPIOM0 and SGPIOM1). This change is a
-prerequisite for the full implementation of the SGPIO device model.
+This commit integrates the Aspeed SGPIO controller into the AST2700
 
 Signed-off-by: Yubin Zou <yubinz@google.com>
 ---
- include/hw/arm/aspeed_soc.h |  8 ++++++--
- hw/arm/aspeed_ast10x0.c     |  6 +++---
- hw/arm/aspeed_ast27x0.c     | 10 ++++++++++
- 3 files changed, 19 insertions(+), 5 deletions(-)
+ hw/arm/aspeed_ast27x0.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
-index 4b8e599f1a53bfb2e4d3196d5495cd316f799354..18ff961a38508c5df83b46e187f732d736443f20 100644
---- a/include/hw/arm/aspeed_soc.h
-+++ b/include/hw/arm/aspeed_soc.h
-@@ -32,6 +32,7 @@
- #include "hw/net/ftgmac100.h"
- #include "target/arm/cpu.h"
- #include "hw/gpio/aspeed_gpio.h"
-+#include "hw/gpio/aspeed_sgpio.h"
- #include "hw/sd/aspeed_sdhci.h"
- #include "hw/usb/hcd-ehci.h"
- #include "qom/object.h"
-@@ -46,6 +47,7 @@
- #define VBOOTROM_FILE_NAME  "ast27x0_bootrom.bin"
- 
- #define ASPEED_SPIS_NUM  3
-+#define ASPEED_SGPIO_NUM 2
- #define ASPEED_EHCIS_NUM 4
- #define ASPEED_WDTS_NUM  8
- #define ASPEED_CPUS_NUM  4
-@@ -89,6 +91,7 @@ struct AspeedSoCState {
-     AspeedMiiState mii[ASPEED_MACS_NUM];
-     AspeedGPIOState gpio;
-     AspeedGPIOState gpio_1_8v;
-+    AspeedSGPIOState sgpiom[ASPEED_SGPIO_NUM];
-     AspeedSDHCIState sdhci;
-     AspeedSDHCIState emmc;
-     AspeedLPCState lpc;
-@@ -106,7 +109,6 @@ struct AspeedSoCState {
-     UnimplementedDeviceState pwm;
-     UnimplementedDeviceState espi;
-     UnimplementedDeviceState udc;
--    UnimplementedDeviceState sgpiom;
-     UnimplementedDeviceState ltpi;
-     UnimplementedDeviceState jtag[ASPEED_JTAG_NUM];
-     AspeedAPB2OPBState fsi[2];
-@@ -166,6 +168,7 @@ struct AspeedSoCClass {
-     uint64_t secsram_size;
-     int pcie_num;
-     int spis_num;
-+    int sgpio_num;
-     int ehcis_num;
-     int wdts_num;
-     int macs_num;
-@@ -221,6 +224,8 @@ enum {
-     ASPEED_DEV_SDHCI,
-     ASPEED_DEV_GPIO,
-     ASPEED_DEV_GPIO_1_8V,
-+    ASPEED_DEV_SGPIOM0,
-+    ASPEED_DEV_SGPIOM1,
-     ASPEED_DEV_RTC,
-     ASPEED_DEV_TIMER1,
-     ASPEED_DEV_TIMER2,
-@@ -263,7 +268,6 @@ enum {
-     ASPEED_DEV_I3C,
-     ASPEED_DEV_ESPI,
-     ASPEED_DEV_UDC,
--    ASPEED_DEV_SGPIOM,
-     ASPEED_DEV_JTAG0,
-     ASPEED_DEV_JTAG1,
-     ASPEED_DEV_FSI1,
-diff --git a/hw/arm/aspeed_ast10x0.c b/hw/arm/aspeed_ast10x0.c
-index 7f49c13391be0b923e317409a0fccfa741f5e658..c141cc080422579ca6b6965369d84dfbe416247b 100644
---- a/hw/arm/aspeed_ast10x0.c
-+++ b/hw/arm/aspeed_ast10x0.c
-@@ -36,7 +36,7 @@ static const hwaddr aspeed_soc_ast1030_memmap[] = {
-     [ASPEED_DEV_ESPI]      = 0x7E6EE000,
-     [ASPEED_DEV_SBC]       = 0x7E6F2000,
-     [ASPEED_DEV_GPIO]      = 0x7E780000,
--    [ASPEED_DEV_SGPIOM]    = 0x7E780500,
-+    [ASPEED_DEV_SGPIOM0]   = 0x7E780500,
-     [ASPEED_DEV_TIMER1]    = 0x7E782000,
-     [ASPEED_DEV_UART1]     = 0x7E783000,
-     [ASPEED_DEV_UART2]     = 0x7E78D000,
-@@ -94,7 +94,7 @@ static const int aspeed_soc_ast1030_irqmap[] = {
-     [ASPEED_DEV_I2C]       = 110, /* 110 ~ 123 */
-     [ASPEED_DEV_KCS]       = 138, /* 138 -> 142 */
-     [ASPEED_DEV_UDC]       = 9,
--    [ASPEED_DEV_SGPIOM]    = 51,
-+    [ASPEED_DEV_SGPIOM0]   = 51,
-     [ASPEED_DEV_JTAG0]     = 27,
-     [ASPEED_DEV_JTAG1]     = 53,
- };
-@@ -427,7 +427,7 @@ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
-                                   sc->memmap[ASPEED_DEV_UDC], 0x1000);
-     aspeed_mmio_map_unimplemented(s->memory, SYS_BUS_DEVICE(&s->sgpiom),
-                                   "aspeed.sgpiom",
--                                  sc->memmap[ASPEED_DEV_SGPIOM], 0x100);
-+                                  sc->memmap[ASPEED_DEV_SGPIOM0], 0x100);
- 
-     aspeed_mmio_map_unimplemented(s->memory, SYS_BUS_DEVICE(&s->jtag[0]),
-                                   "aspeed.jtag",
 diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index c484bcd4e22fb49faf9c16992ae2cdfd6cd82da4..e5f04bd16e80696e41005d9062a6df6d060b8088 100644
+index e5f04bd16e80696e41005d9062a6df6d060b8088..787accadbecae376d0c747d054ec6372785375b1 100644
 --- a/hw/arm/aspeed_ast27x0.c
 +++ b/hw/arm/aspeed_ast27x0.c
-@@ -69,6 +69,8 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
-     [ASPEED_DEV_ADC]       =  0x14C00000,
-     [ASPEED_DEV_SCUIO]     =  0x14C02000,
-     [ASPEED_DEV_GPIO]      =  0x14C0B000,
-+    [ASPEED_DEV_SGPIOM0]   =  0x14C0C000,
-+    [ASPEED_DEV_SGPIOM1]   =  0x14C0D000,
-     [ASPEED_DEV_I2C]       =  0x14C0F000,
-     [ASPEED_DEV_INTCIO]    =  0x14C18000,
-     [ASPEED_DEV_PCIE_PHY2] =  0x14C1C000,
-@@ -122,6 +124,8 @@ static const int aspeed_soc_ast2700a0_irqmap[] = {
-     [ASPEED_DEV_KCS]       = 128,
-     [ASPEED_DEV_ADC]       = 130,
-     [ASPEED_DEV_GPIO]      = 130,
-+    [ASPEED_DEV_SGPIOM0]   = 130,
-+    [ASPEED_DEV_SGPIOM1]   = 130,
-     [ASPEED_DEV_I2C]       = 130,
-     [ASPEED_DEV_FMC]       = 131,
-     [ASPEED_DEV_WDT]       = 131,
-@@ -173,6 +177,8 @@ static const int aspeed_soc_ast2700a1_irqmap[] = {
-     [ASPEED_DEV_I2C]       = 194,
-     [ASPEED_DEV_ADC]       = 194,
-     [ASPEED_DEV_GPIO]      = 194,
-+    [ASPEED_DEV_SGPIOM0]   = 194,
-+    [ASPEED_DEV_SGPIOM1]   = 194,
-     [ASPEED_DEV_FMC]       = 195,
-     [ASPEED_DEV_WDT]       = 195,
-     [ASPEED_DEV_PWM]       = 195,
-@@ -214,6 +220,8 @@ static const int ast2700_gic130_gic194_intcmap[] = {
-     [ASPEED_DEV_I2C]        = 0,
-     [ASPEED_DEV_ADC]        = 16,
-     [ASPEED_DEV_GPIO]       = 18,
-+    [ASPEED_DEV_SGPIOM0]    = 21,
-+    [ASPEED_DEV_SGPIOM1]    = 24,
- };
+@@ -519,6 +519,11 @@ static void aspeed_soc_ast2700_init(Object *obj)
+     snprintf(typename, sizeof(typename), "aspeed.gpio-%s", socname);
+     object_initialize_child(obj, "gpio", &s->gpio, typename);
  
- /* GICINT 131 */
-@@ -1061,6 +1069,7 @@ static void aspeed_soc_ast2700a0_class_init(ObjectClass *oc, const void *data)
-     sc->sram_size    = 0x20000;
-     sc->pcie_num     = 0;
-     sc->spis_num     = 3;
-+    sc->sgpio_num    = 2;
-     sc->ehcis_num    = 2;
-     sc->wdts_num     = 8;
-     sc->macs_num     = 1;
-@@ -1089,6 +1098,7 @@ static void aspeed_soc_ast2700a1_class_init(ObjectClass *oc, const void *data)
-     sc->sram_size    = 0x20000;
-     sc->pcie_num     = 3;
-     sc->spis_num     = 3;
-+    sc->sgpio_num    = 2;
-     sc->ehcis_num    = 4;
-     sc->wdts_num     = 8;
-     sc->macs_num     = 3;
++    snprintf(typename, sizeof(typename), "aspeed.sgpio-%s", socname);
++    for (i = 0; i < sc->sgpio_num; i++) {
++        object_initialize_child(obj, "sgpio[*]", &s->sgpiom[i], typename);
++    }
++
+     object_initialize_child(obj, "rtc", &s->rtc, TYPE_ASPEED_RTC);
+ 
+     snprintf(typename, sizeof(typename), "aspeed.sdhci-%s", socname);
+@@ -973,6 +978,17 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+     sysbus_connect_irq(SYS_BUS_DEVICE(&s->gpio), 0,
+                        aspeed_soc_ast2700_get_irq(s, ASPEED_DEV_GPIO));
+ 
++    /* SGPIO */
++    for (i = 0; i < sc->sgpio_num; i++) {
++        if (!sysbus_realize(SYS_BUS_DEVICE(&s->sgpiom[i]), errp)) {
++            return;
++        }
++        aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(&s->sgpiom[i]), 0,
++                        sc->memmap[ASPEED_DEV_SGPIOM0 + i]);
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->sgpiom[i]), 0,
++                        aspeed_soc_ast2700_get_irq(s, ASPEED_DEV_SGPIOM0 + i));
++    }
++
+     /* RTC */
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->rtc), errp)) {
+         return;
 
 -- 
 2.52.0.239.gd5f0c6e74e-goog
