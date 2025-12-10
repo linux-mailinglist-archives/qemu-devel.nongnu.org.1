@@ -2,94 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25209CB432B
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 00:02:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D39CB4326
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 00:02:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTTB8-0006Df-D0; Wed, 10 Dec 2025 18:01:02 -0500
+	id 1vTTBB-0006Eh-Mh; Wed, 10 Dec 2025 18:01:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nabihestefan@google.com>)
- id 1vTTB6-0006Cz-5F
- for qemu-devel@nongnu.org; Wed, 10 Dec 2025 18:01:00 -0500
-Received: from mail-qt1-x82e.google.com ([2607:f8b0:4864:20::82e])
+ id 1vTTB9-0006EM-Ed
+ for qemu-devel@nongnu.org; Wed, 10 Dec 2025 18:01:03 -0500
+Received: from mail-qt1-x834.google.com ([2607:f8b0:4864:20::834])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <nabihestefan@google.com>)
- id 1vTTB4-0006Wx-GP
- for qemu-devel@nongnu.org; Wed, 10 Dec 2025 18:00:59 -0500
-Received: by mail-qt1-x82e.google.com with SMTP id
- d75a77b69052e-4edb8d6e98aso206231cf.0
- for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 15:00:58 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1765407657; cv=none;
+ id 1vTTB7-0006Xb-GL
+ for qemu-devel@nongnu.org; Wed, 10 Dec 2025 18:01:03 -0500
+Received: by mail-qt1-x834.google.com with SMTP id
+ d75a77b69052e-4ee243b98caso70861cf.1
+ for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 15:01:01 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1765407660; cv=none;
  d=google.com; s=arc-20240605;
- b=JJfxF9IUMCp+ykfp1m3Ngycmt4eOjfWocpIQZX9++CczPg+DoUUXwVNEU/vu3umTxz
- yCTwCIEYPxzAQNWp/IDboROciLeMeyWhEwtqcHjcFUQQ7qhIAWXkG41T1UYixVsKcARP
- fP9/ohaxK4cjWw7PQ3pJ2JlYyje7TFnpv9UjcSxAPjM6dNV7oL0pD1fgfYyPkZZY6crY
- m/IMQPqGAlbqf8bgY8YRcBqJ1uEXNEEsXo3gLgtQB6xCxmJudbul3qn/xFpkB+iBQUsw
- qc8Oqk2RBhNO7v7Iam5YLqsztIggcdTQd48PNtt8EAyp5U++nKaS3FF7gU0IRm16B3B3
- IdHg==
+ b=EFnBAkl6m0/Asrs1clogti6DrdD0H/WCz8CZbMK8Y/pgThlKH/p1ejYISYuzUi8ldY
+ pIQ/VVmVPaVIBW6a3hTLGs6gctguk/3+8WsqoDpQFHDiZcLidplCBVLEC4rmui1y+gV8
+ R+OS+ADBpr4nctlt+B20Qzs3pnIstNGmMAtyNa5zwjGQ5Y9pIU+ibe22lY//JkFzpePl
+ UylYmjmZtIcccO7pZpcbske4PKkO8c8oWZfkskWi6ytkR4wwwXY/mROkra5p1YDKCfYn
+ TCuPm2hd2a3i17KG9Z9wOr8lUbwJSDdgUD8uH0kYLrl4SiymDUN/TQxnlt4fuxs9pyrK
+ yc2Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
  s=arc-20240605; 
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:dkim-signature;
- bh=Hm0IOTG2G5675/h26bvJU6kW4LaWvamaY/sywK1kIGQ=;
- fh=i39rQfXxW83XsxmnZ6h4+yf1Ky8zS52VoSU+dKqlwio=;
- b=VW3NfeYOAnso7naK8ecsVCutuOV3FlytQ7Z/UTb1MSTLSF1T+pRFUWv8QY+kb1YksH
- NFA/dezyYxWz+9ftJc978HKNjub5F3q3iAlqD0i7/HUVKWa1OLisU4jBvn97ren9qSqj
- zZlFj8oZyNc1OTvnE/NjhdzXF5iMkBkdx1k+hXjRjyI4Lp06GArb4xUqBrow4FzjuMxB
- ysBnsyVV2ZRZWIplDKNp65oh/11U0JYh0e6z7mN+Hcts1qpOBJbbIk3epqNQ8f1OjO8v
- Bgy9nJ9fG0BcLUGtWCcpyGSZwTICAUrtYPG4oFm8sgVXcc0mTtr4BmSJ7TRKHcbN9MhI
- cinw==; darn=nongnu.org
+ bh=6OA7cpNAJ5AsM4oZAvpZYDOS5IeEq/217eSPSbDvfB8=;
+ fh=7xWSA3tkJC3K0osMI6A+ktwuGnKWS/HAYP8ypOStPZU=;
+ b=NLu9eosdBZYTipcBTqVxrhH5i+LoKu6FNfH8rzfxZT0G4rkbSnTzniKXUBSU8RIy/Y
+ 4m/HpFq6Pfpjg1s+Haxr8PLNoNaBgyomvIw7HVF3pFFAe7bmiUSBtn97mbukqEyGSXt4
+ bs0YBiWme0KbEtbbdPVDl1tbt8wDxINWrAfUnL5HxwTbdKe310k5BTUw4CuciHI6BYJM
+ 7HR40NbLmpC/G6LeKZVsBmb800v4B1rd2KAdTcUONMwIlMr/+BTLbXiwyVurkVn5WbFP
+ 18nz4WPdFej/qImB9Uu9ZgcXhfncT0aPpA9S/VT3SctJ7vwSoFBZmyKAH9x/k37z3F66
+ O/jg==; darn=nongnu.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1765407657; x=1766012457; darn=nongnu.org;
+ d=google.com; s=20230601; t=1765407660; x=1766012460; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Hm0IOTG2G5675/h26bvJU6kW4LaWvamaY/sywK1kIGQ=;
- b=a5mqwCw0hjI9noyUi37TEbx2yMkdlurAeXJmcY4CGbsz9N9CaM6ZuMPOFogIlDslbi
- dH51FI1kuKR1lkUH5zwP1Z/Ujbpnd4R8HnlQxyIuigCuQxCGpLdgPiyE43l4FJqDp+WW
- /KLnWEHs5Dyo8qC9taJyutk23uUm65BFtfoeuDx9umxp4p53rOjuDSsLenudAVZzx+/b
- iiKLgja5lMpPRvJhsaXhQgzEWWuhYSw1kbRHBW5hC6oIO20S8OaYyv0aQo2csr9aHrec
- HqTLzZ8NlPKEHni4gMpIChg5QoSLv/vBtabrW7mp2PQwLpRFwzfTGWgIbakKE7zM4nFz
- sh0A==
+ bh=6OA7cpNAJ5AsM4oZAvpZYDOS5IeEq/217eSPSbDvfB8=;
+ b=ZkoaDFGUATwInNyzS0EPY2upj9sFDxB4fFAhlGi3HOVmcOrWdls5bbmkIl09koYv8i
+ bEXUQXuuNs89ceCL25urIJkgMjyVDTElM+cDOkM5TPct5X1LnkTVKHagsL7ku6phpgkk
+ WJ0As8Hf44Okx6kblFl81I0j1XQoxYjeB9qyPpQkTrsiFwSonWgqPooCrMWKoIKRhV1F
+ ZwbqVSUxdoM+Y8ABXRQfLQFbt6o86zEd6uufqmW7mZZ5lwRIvpvkn+1V0Gz0uooOxeoV
+ c16RA78YIFGn65y7oKbuG4LZj4acZgJvMtUFvc9f+HqnFqE+atdtqCaZyYEpY9om1PW7
+ QEIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765407657; x=1766012457;
+ d=1e100.net; s=20230601; t=1765407660; x=1766012460;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=Hm0IOTG2G5675/h26bvJU6kW4LaWvamaY/sywK1kIGQ=;
- b=IoInKFZMFmuazz6yVuXjIi53jUW8OAcwOdXH6xQOJMkD9vtj3Lf2cJhRatH3/yxOYw
- yw/hdmThGio6K1Mz/ufDu1/Cd5obifLdYhoXGUfLWBHbjzGju/R7PPF+B21zKxHZloNb
- GFl9h6dF9nWe2pkC3BIcTN14SV11kmFLu20c0CqA9vlE4CXy2TLzLRfLvhG5gyI8Sgzh
- EshQFTv4IGOrDNTOHcpugax9q2AJucrC42BILRhMxx95Nztw2mU+oIeqzhab357FZn6A
- JKHM01FBxDnFsXCq8o7uFG7+fnWaPqJH5WfMpUFBdBzT0nad/niyJq6PPITfGWmKCkej
- Mb+Q==
+ bh=6OA7cpNAJ5AsM4oZAvpZYDOS5IeEq/217eSPSbDvfB8=;
+ b=rje0iazRM7gU35sd37qMOJtgtATsRy/tlabIucl9hLKxeh6vUIVpkQjTRp2YJeHcbW
+ 0XjtRWgrWi7q+xzwMKVwsmZZnnht07weTVIFQmfeQB8rLXv4lDw3duI5L/wikrdq5Wo7
+ yGtb51lmVVO3yEXAOAGCo1Lp5Ndv9uCr+9n+1QaxWT/kVKInTrXYGRMJ/VPLyg5MEUVd
+ x488sUZ6axIOtLwGF2SfyO+F+m76YjKD0Y8aGgKTeutWAcn0Zzl+A7cUH6oI9JJsYUEK
+ frk5TvgWDNZkBCHQYCnB8Iw9iw+Ro4R69L078pzfmFaC1tnWIFOVFbZZH/ZLs/u03ZdS
+ thYg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWJ6iYlcDRa5IJSa/zFofc1icMS1z/pXDqHT4nTSNx0vdhta1yzxCUG9ULu6tbytka51TayMgUNeMak@nongnu.org
-X-Gm-Message-State: AOJu0Yx/61L4vlB+SCUZk/qtULvXxRATx6bWNDWr8q4ObiDyrz5t8PRM
- khUHerIKxM0kovDjhL0yzRlk5XphVEWWr+0znrez7GzNBFQKdJa2KRBdYs5KYYX4ApwpsCwurRi
- 4LmFCGGXVqnjI3WcxgBqOy9rBx///F4hfvFigKFE3
-X-Gm-Gg: ASbGncsznLhAG9xW1WoqjOMxvtfH+eFfqds1VpxXyHE6tB++OCJ4BaWXvf+ACjMYyDN
- JpfUnlx1I/lK79wHJBkFjXqNqSv9u8eEjmXHjpgH5cQ2lCaWhf5IKOkO1MLULy6vSYwa2h4D977
- 6+/lx0rKrOuTQ8Pj8DAvpQYLPqQ8AfKIHHW4ekaG68L9AQ82IllAi/ppsd+FkLTc6oJ6KRfdwDD
- icilgBeyIUN0d4BiEy105NzxRFt9dnOHfPk3gg31ooNaBx77SZqB0C3VbghYJFkx0bp3+HAQ9Gu
- wwBF/w2ZSzMPC2i0Ux1kjcTqlkfl
-X-Google-Smtp-Source: AGHT+IEA7fWY7sNmSowmp8WZRO2yQuVguk6w54vs+u5TrvXYcWxnH7rEweMGjLtCrhhOza8w4a12c7Di2q3PBgEjjOw=
-X-Received: by 2002:a05:622a:341:b0:4ed:a65c:88d0 with SMTP id
- d75a77b69052e-4f1bd86ad85mr4074121cf.6.1765407657054; Wed, 10 Dec 2025
- 15:00:57 -0800 (PST)
+ AJvYcCXAjJ8wvZoCE5FjCd4Dogd4FcprooC0oUoqVGChu4n4hQ2dYYP3Cj+C72BMy6coKY4uvP8DDh97Rucr@nongnu.org
+X-Gm-Message-State: AOJu0YznJrBdQuiXWRcySiqAkgBld4OAw+Z1l8KSrkY/WRt17xs2chZk
+ g7OedrKkhebia24cqI5kWuXFYGk84os4cq2lQKzQJuPat4kHHNgXDCLpnixvu+yUHeT1en5bs5j
+ JRJyssNKkbCQbw8V5RJaBsBgKrWUumKAcBaKixPwb
+X-Gm-Gg: ASbGncveg3ag8NmMub/NcCg/jD1iZNI/fh3P6sU+c6FsRgteOXUK91qtikRoLwyk3wJ
+ 6t84YIF9Q8yok/zT24qh1Kbkp8uLVNWNa6peR2J8/9TlaiosFrRBEEfDE56lcxAk6UPmkUl78It
+ rPwmNATUVK6BKnFONFNPhJmUR4w+iEQNAYTp9pam4Dk4N83Uq0UzL8CZseJ+PAQIz7OVnXO16Ef
+ 0bpvG4F3v+jc/92Tzr6/JZvWjvhJsXuB8llriSsPAGU/GvgeVlyXU4XTgGUUx5MS0syQeaZWq41
+ O6mobeq6V6dgD7YsjIoejE0FF8tNi9lmYBj1hAQ=
+X-Google-Smtp-Source: AGHT+IG+iu8K8ihKFYKbtvYLhgeBPYOli2KpONWb6A632WvXNwxK9326Y2QhttR0FfbaTEaedxee5lMQrfHaAdIEDjk=
+X-Received: by 2002:ac8:5801:0:b0:4e8:b245:fba0 with SMTP id
+ d75a77b69052e-4f1bd931902mr4000021cf.14.1765407659899; Wed, 10 Dec 2025
+ 15:00:59 -0800 (PST)
 MIME-Version: 1.0
 References: <20251208074436.1871180-1-kane_chen@aspeedtech.com>
- <20251208074436.1871180-3-kane_chen@aspeedtech.com>
-In-Reply-To: <20251208074436.1871180-3-kane_chen@aspeedtech.com>
+ <20251208074436.1871180-4-kane_chen@aspeedtech.com>
+In-Reply-To: <20251208074436.1871180-4-kane_chen@aspeedtech.com>
 From: Nabih Estefan <nabihestefan@google.com>
-Date: Wed, 10 Dec 2025 15:00:44 -0800
-X-Gm-Features: AQt7F2ooJiX1we7OOLgJttgVpvA4KZOkNsGMqhVLiqcO5DEfyVxEYnPkhm_1S9o
-Message-ID: <CA+QoejW+YugMO=uCJJzPt3tSdk63+HpYPXmh=s9JKtPXHdB=dw@mail.gmail.com>
-Subject: Re: [PATCH v3 02/18] hw/arm/aspeed: Attach LTPI controller to AST27X0
- platform
+Date: Wed, 10 Dec 2025 15:00:48 -0800
+X-Gm-Features: AQt7F2pRlKYRopB_YP_Y7LE1qTwil4w-mCXpupXuD2uXlmtHjF2Nf5waGkT8UQs
+Message-ID: <CA+QoejUEHANyAgbZ7YhH+KuHLMthVurjUje1qPvNtavKr1b=Jg@mail.gmail.com>
+Subject: Re: [PATCH v3 03/18] hw/misc: Add basic Aspeed PWM model
 To: Kane Chen <kane_chen@aspeedtech.com>
 Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
  Peter Maydell <peter.maydell@linaro.org>,
@@ -101,8 +100,8 @@ Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
  troy_lee@aspeedtech.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82e;
- envelope-from=nabihestefan@google.com; helo=mail-qt1-x82e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::834;
+ envelope-from=nabihestefan@google.com; helo=mail-qt1-x834.google.com
 X-Spam_score_int: -175
 X-Spam_score: -17.6
 X-Spam_bar: -----------------
@@ -131,106 +130,252 @@ g> wrote:
 >
 > From: Kane-Chen-AS <kane_chen@aspeedtech.com>
 >
-> Connect the LTPI controller device (representing the AST1700 I/O
-> expander) to the AST27X0 SoC model. This patch sets up the memory
-> mapping and device registration according to the AST2700 SoC design,
-> where the LTPI controller is exposed at fixed MMIO regions.
->
-> This change only handles device instantiation and integration,
-> without implementing the controller's internal logic.
+> Add an initial PWM model for Aspeed SoCs, including device state,
+> register definitions, and basic initialization as a sysbus device.
 >
 > Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
 > ---
->  include/hw/arm/aspeed_soc.h |  5 +++++
->  hw/arm/aspeed_ast27x0.c     | 21 +++++++++++++++++++++
->  2 files changed, 26 insertions(+)
+>  include/hw/arm/aspeed_soc.h  |   3 +-
+>  include/hw/misc/aspeed_pwm.h |  31 +++++++++
+>  hw/misc/aspeed_pwm.c         | 121 +++++++++++++++++++++++++++++++++++
+
+checkpatch.pl complains that the new files don't fall under any of the
+existing MAINTAINERS clauses. Should we add a new one/update an
+existing one for this?
+
+>  hw/misc/meson.build          |   1 +
+>  hw/misc/trace-events         |   4 ++
+>  5 files changed, 159 insertions(+), 1 deletion(-)
+>  create mode 100644 include/hw/misc/aspeed_pwm.h
+>  create mode 100644 hw/misc/aspeed_pwm.c
 >
 > diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
-> index 18ff961a38..bca10c387b 100644
+> index bca10c387b..5b0680f319 100644
 > --- a/include/hw/arm/aspeed_soc.h
 > +++ b/include/hw/arm/aspeed_soc.h
-> @@ -43,6 +43,7 @@
->  #include "hw/fsi/aspeed_apb2opb.h"
->  #include "hw/char/serial-mm.h"
->  #include "hw/intc/arm_gicv3.h"
-> +#include "hw/misc/aspeed_ltpi.h"
->
->  #define VBOOTROM_FILE_NAME  "ast27x0_bootrom.bin"
->
-> @@ -55,6 +56,7 @@
->  #define ASPEED_UARTS_NUM 13
->  #define ASPEED_JTAG_NUM  2
->  #define ASPEED_PCIE_NUM  3
-> +#define ASPEED_IOEXP_NUM 2
->
->  struct AspeedSoCState {
->      DeviceState parent;
-> @@ -112,6 +114,7 @@ struct AspeedSoCState {
+> @@ -28,6 +28,7 @@
+>  #include "hw/misc/aspeed_hace.h"
+>  #include "hw/misc/aspeed_sbc.h"
+>  #include "hw/misc/aspeed_sli.h"
+> +#include "hw/misc/aspeed_pwm.h"
+>  #include "hw/watchdog/wdt_aspeed.h"
+>  #include "hw/net/ftgmac100.h"
+>  #include "target/arm/cpu.h"
+> @@ -108,7 +109,7 @@ struct AspeedSoCState {
+>      UnimplementedDeviceState video;
+>      UnimplementedDeviceState emmc_boot_controller;
+>      UnimplementedDeviceState dpmcu;
+> -    UnimplementedDeviceState pwm;
+> +    AspeedPWMState pwm;
+
+Should this be moved up so the UnimplementedDeviceStates are all at
+the bottom without interruption?
+
+>      UnimplementedDeviceState espi;
+>      UnimplementedDeviceState udc;
 >      UnimplementedDeviceState ltpi;
->      UnimplementedDeviceState jtag[ASPEED_JTAG_NUM];
->      AspeedAPB2OPBState fsi[2];
-> +    AspeedLTPIState ltpi_ctrl[ASPEED_IOEXP_NUM];
->  };
->
->  #define TYPE_ASPEED_SOC "aspeed-soc"
-> @@ -279,6 +282,8 @@ enum {
->      ASPEED_GIC_REDIST,
->      ASPEED_DEV_IPC0,
->      ASPEED_DEV_IPC1,
-> +    ASPEED_DEV_LTPI_CTRL1,
-> +    ASPEED_DEV_LTPI_CTRL2,
->  };
->
->  const char *aspeed_soc_cpu_type(const char * const *valid_cpu_types);
-> diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-> index 70be3871bb..341b53189b 100644
-> --- a/hw/arm/aspeed_ast27x0.c
-> +++ b/hw/arm/aspeed_ast27x0.c
-> @@ -88,6 +88,8 @@ static const hwaddr aspeed_soc_ast2700_memmap[] =3D {
->      [ASPEED_DEV_UART10]    =3D  0x14C33900,
->      [ASPEED_DEV_UART11]    =3D  0x14C33A00,
->      [ASPEED_DEV_UART12]    =3D  0x14C33B00,
-> +    [ASPEED_DEV_LTPI_CTRL1] =3D  0x14C34000,
-> +    [ASPEED_DEV_LTPI_CTRL2] =3D  0x14C35000,
->      [ASPEED_DEV_WDT]       =3D  0x14C37000,
->      [ASPEED_DEV_LTPI]      =3D  0x30000000,
->      [ASPEED_DEV_PCIE_MMIO0] =3D 0x60000000,
-> @@ -556,6 +558,11 @@ static void aspeed_soc_ast2700_init(Object *obj)
->          object_property_set_int(OBJECT(&s->pcie[i]), "id", i, &error_abo=
-rt);
->      }
->
-> +    for (i =3D 0; i < ASPEED_IOEXP_NUM; i++) {
-> +        object_initialize_child(obj, "ltpi-ctrl[*]",
-> +                                &s->ltpi_ctrl[i], TYPE_ASPEED_LTPI);
+> diff --git a/include/hw/misc/aspeed_pwm.h b/include/hw/misc/aspeed_pwm.h
+> new file mode 100644
+> index 0000000000..13dc3ea45b
+> --- /dev/null
+> +++ b/include/hw/misc/aspeed_pwm.h
+> @@ -0,0 +1,31 @@
+> +/*
+> + * ASPEED PWM Controller
+> + *
+> + * Copyright (C) 2017-2021 IBM Corp.
+> + *
+> + * This code is licensed under the GPL version 2 or later.  See
+> + * the COPYING file in the top-level directory.
+> + */
+> +
+> +#ifndef ASPEED_PWM_H
+> +#define ASPEED_PWM_H
+> +
+> +#include "hw/sysbus.h"
+> +
+> +#define TYPE_ASPEED_PWM "aspeed.pwm"
+> +#define ASPEED_PWM(obj) OBJECT_CHECK(AspeedPWMState, (obj), TYPE_ASPEED_=
+PWM)
+> +
+> +#define ASPEED_PWM_NR_REGS (0x10C >> 2)
+> +
+> +typedef struct AspeedPWMState {
+> +    /* <private> */
+> +    SysBusDevice parent;
+> +
+> +    /*< public >*/
+> +    MemoryRegion iomem;
+> +    qemu_irq irq;
+> +
+> +    uint32_t regs[ASPEED_PWM_NR_REGS];
+> +} AspeedPWMState;
+> +
+> +#endif /* _ASPEED_PWM_H_ */
+> diff --git a/hw/misc/aspeed_pwm.c b/hw/misc/aspeed_pwm.c
+> new file mode 100644
+> index 0000000000..de209274af
+> --- /dev/null
+> +++ b/hw/misc/aspeed_pwm.c
+> @@ -0,0 +1,121 @@
+> +/*
+> + * ASPEED PWM Controller
+> + *
+> + * Copyright (C) 2017-2021 IBM Corp.
+> + *
+> + * This code is licensed under the GPL version 2 or later.  See
+> + * the COPYING file in the top-level directory.
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "qemu/log.h"
+> +#include "qemu/error-report.h"
+> +#include "hw/misc/aspeed_pwm.h"
+> +#include "qapi/error.h"
+> +#include "migration/vmstate.h"
+> +
+> +#include "trace.h"
+> +
+> +static uint64_t aspeed_pwm_read(void *opaque, hwaddr addr,
+> +                                     unsigned int size)
+> +{
+> +    AspeedPWMState *s =3D ASPEED_PWM(opaque);
+> +    uint64_t val =3D 0;
+> +
+> +    addr >>=3D 2;
+> +
+> +    if (addr >=3D ASPEED_PWM_NR_REGS) {
+> +        qemu_log_mask(LOG_GUEST_ERROR,
+> +                      "%s: Out-of-bounds read at offset 0x%" HWADDR_PRIx=
+ "\n",
+> +                      __func__, addr << 2);
+> +    } else {
+> +        val =3D s->regs[addr];
 > +    }
 > +
->      object_initialize_child(obj, "dpmcu", &s->dpmcu,
->                              TYPE_UNIMPLEMENTED_DEVICE);
->      object_initialize_child(obj, "ltpi", &s->ltpi,
-> @@ -1047,6 +1054,20 @@ static void aspeed_soc_ast2700_realize(DeviceState=
- *dev, Error **errp)
->          return;
->      }
->
-> +    /* LTPI controller */
-> +    for (i =3D 0; i < ASPEED_IOEXP_NUM; i++) {
-> +        AspeedLTPIState *ltpi_ctrl;
-> +        hwaddr ltpi_base;
+> +    trace_aspeed_pwm_read(addr << 2, val);
 > +
-> +        ltpi_ctrl =3D ASPEED_LTPI(&s->ltpi_ctrl[i]);
-> +        ltpi_base =3D sc->memmap[ASPEED_DEV_LTPI_CTRL1 + i];
+> +    return val;
+> +}
 > +
-> +        if (!sysbus_realize(SYS_BUS_DEVICE(ltpi_ctrl), errp)) {
-> +            return;
-> +        }
-> +        aspeed_mmio_map(s->memory, SYS_BUS_DEVICE(ltpi_ctrl), 0, ltpi_ba=
-se);
+> +static void aspeed_pwm_write(void *opaque, hwaddr addr, uint64_t data,
+> +                              unsigned int size)
+> +{
+> +    AspeedPWMState *s =3D ASPEED_PWM(opaque);
+> +
+> +    trace_aspeed_pwm_write(addr, data);
+> +
+> +    addr >>=3D 2;
+> +
+> +    if (addr >=3D ASPEED_PWM_NR_REGS) {
+> +        qemu_log_mask(LOG_GUEST_ERROR,
+> +                      "%s: Out-of-bounds write at offset 0x%" HWADDR_PRI=
+x "\n",
+> +                      __func__, addr << 2);
+> +        return;
 > +    }
 > +
->      aspeed_mmio_map_unimplemented(s->memory, SYS_BUS_DEVICE(&s->dpmcu),
->                                    "aspeed.dpmcu",
->                                    sc->memmap[ASPEED_DEV_DPMCU],
+> +    s->regs[addr] =3D data;
+> +}
+> +
+> +static const MemoryRegionOps aspeed_pwm_ops =3D {
+> +    .read =3D aspeed_pwm_read,
+> +    .write =3D aspeed_pwm_write,
+> +    .endianness =3D DEVICE_LITTLE_ENDIAN,
+> +    .valid =3D {
+> +        .min_access_size =3D 1,
+> +        .max_access_size =3D 4,
+> +    },
+> +};
+> +
+> +static void aspeed_pwm_reset(DeviceState *dev)
+> +{
+> +    struct AspeedPWMState *s =3D ASPEED_PWM(dev);
+> +
+> +    memset(s->regs, 0, sizeof(s->regs));
+> +}
+> +
+> +static void aspeed_pwm_realize(DeviceState *dev, Error **errp)
+> +{
+> +    AspeedPWMState *s =3D ASPEED_PWM(dev);
+> +    SysBusDevice *sbd =3D SYS_BUS_DEVICE(dev);
+> +
+> +    sysbus_init_irq(sbd, &s->irq);
+> +
+> +    memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_pwm_ops, s,
+> +            TYPE_ASPEED_PWM, 0x1000);
+> +
+> +    sysbus_init_mmio(sbd, &s->iomem);
+> +}
+> +
+> +static const VMStateDescription vmstate_aspeed_pwm =3D {
+> +    .name =3D TYPE_ASPEED_PWM,
+> +    .version_id =3D 1,
+> +    .minimum_version_id =3D 1,
+> +    .fields =3D (VMStateField[]) {
+> +        VMSTATE_UINT32_ARRAY(regs, AspeedPWMState, ASPEED_PWM_NR_REGS),
+> +        VMSTATE_END_OF_LIST(),
+> +    }
+> +};
+> +
+> +static void aspeed_pwm_class_init(ObjectClass *klass, const void *data)
+> +{
+> +    DeviceClass *dc =3D DEVICE_CLASS(klass);
+> +
+> +    dc->realize =3D aspeed_pwm_realize;
+> +    device_class_set_legacy_reset(dc, aspeed_pwm_reset);
+> +    dc->desc =3D "Aspeed PWM Controller";
+> +    dc->vmsd =3D &vmstate_aspeed_pwm;
+> +}
+> +
+> +static const TypeInfo aspeed_pwm_info =3D {
+> +    .name =3D TYPE_ASPEED_PWM,
+> +    .parent =3D TYPE_SYS_BUS_DEVICE,
+> +    .instance_size =3D sizeof(AspeedPWMState),
+> +    .class_init =3D aspeed_pwm_class_init,
+> +};
+> +
+> +static void aspeed_pwm_register_types(void)
+> +{
+> +    type_register_static(&aspeed_pwm_info);
+> +}
+> +
+> +type_init(aspeed_pwm_register_types);
+> diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+> index 45b16e7797..7afe1d0009 100644
+> --- a/hw/misc/meson.build
+> +++ b/hw/misc/meson.build
+> @@ -137,6 +137,7 @@ system_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: fil=
+es(
+>    'aspeed_i3c.c',
+>    'aspeed_lpc.c',
+>    'aspeed_ltpi.c',
+> +  'aspeed_pwm.c',
+>    'aspeed_scu.c',
+>    'aspeed_sbc.c',
+>    'aspeed_sdmc.c',
+> diff --git a/hw/misc/trace-events b/hw/misc/trace-events
+> index eeb9243898..f7870babba 100644
+> --- a/hw/misc/trace-events
+> +++ b/hw/misc/trace-events
+> @@ -299,6 +299,10 @@ aspeed_i3c_write(uint64_t offset, uint64_t data) "I3=
+C write: offset 0x%" PRIx64
+>  aspeed_i3c_device_read(uint32_t deviceid, uint64_t offset, uint64_t data=
+) "I3C Dev[%u] read: offset 0x%" PRIx64 " data 0x%" PRIx64
+>  aspeed_i3c_device_write(uint32_t deviceid, uint64_t offset, uint64_t dat=
+a) "I3C Dev[%u] write: offset 0x%" PRIx64 " data 0x%" PRIx64
+>
+> +# aspeed_pwm.c
+> +aspeed_pwm_read(uint64_t offset, uint64_t data) "read: offset 0x%" PRIx6=
+4 " data 0x%" PRIx64
+> +aspeed_pwm_write(uint64_t offset, uint64_t data) "write: offset 0x%" PRI=
+x64 " data 0x%" PRIx64
+> +
+>  # aspeed_sdmc.c
+>  aspeed_sdmc_write(uint64_t reg, uint64_t data) "reg @0x%" PRIx64 " data:=
+ 0x%" PRIx64
+>  aspeed_sdmc_read(uint64_t reg, uint64_t data) "reg @0x%" PRIx64 " data: =
+0x%" PRIx64
 > --
 > 2.43.0
 >
