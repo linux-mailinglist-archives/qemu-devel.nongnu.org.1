@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 527A5CB45E8
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 01:51:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 765B0CB3891
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 17:56:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTUst-0003Qc-Eh; Wed, 10 Dec 2025 19:50:19 -0500
+	id 1vTNSs-0006G5-IL; Wed, 10 Dec 2025 11:54:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <liu.jaloo@gmail.com>)
- id 1vTUsp-0003QN-8C
- for qemu-devel@nongnu.org; Wed, 10 Dec 2025 19:50:15 -0500
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <liu.jaloo@gmail.com>)
- id 1vTUsn-0002sd-L0
- for qemu-devel@nongnu.org; Wed, 10 Dec 2025 19:50:15 -0500
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-3436d6bdce8so480868a91.3
- for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 16:50:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1765414212; x=1766019012; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Irbe/DQi/c6MSeXWBLxOf9NA3As39yeQLXlJ65EgBjo=;
- b=FIV2GTdmP0iKEKNRcQRw8+7bDO8w1nIBBeMtLLKk3YzJfiZvJlppA97sHFjLD1SSli
- rmRxNhUiVjCDTO4Q64U/iY4AVL6ElBYiJ/DbyraVJph+sdjhibMr5E3SffaFdJNJSbYV
- uXVK/51WJTWXxAZM18waDTnzH+tNSVvD0iAwHKyls3DH+qqDDS0+sCWg7zwVgPeLAeBO
- CTHAYvxkKOITVaZd8S/6WWSX2iI4jSNv4JkLZdhAI1zq+Q7JL3dWw1kLKqaaq6kBgYHZ
- HMVy/QYBMGQP5+FmgthDn2mHGnXCQOfJ0TeJHOTNRZ9vIkFN3HZTerRaulRnDOq+GXTq
- fnsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765414212; x=1766019012;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Irbe/DQi/c6MSeXWBLxOf9NA3As39yeQLXlJ65EgBjo=;
- b=VBZc26ijSQAVuqQgq7uJXe4BkJ5hQiLUx30ibSwoH/frMoRxtbvruK5XlJhGsCn6W4
- S+q9FJn0uBTNnnMzpO6McESFMd4kIA7rxsgLg9b7BfE6Rmw5q350USAa0u/t/dpIDkm+
- SnqnMz45zRHCQMaVvv4PgruFhm4OlhgB007Db8UmNtVnaXwPfCAIH54Z0Lwf2jmfXEuT
- wIWY4lnmZxg0m2rUvy7IQGyBupOUrUS7TP5ZruAqA0mvogbn/p50kxQx/yxYuKDqFm8E
- 8i41M5EvSAVVUQCd6lMZXUJREw1l+taAB/75Rv4xE6/B7ouGBSxY9eZDVITmt7p/NnKa
- US0A==
-X-Gm-Message-State: AOJu0YxshbUWEzWtRUETqSEkfJ7R7N/2ELEOQ9TKgh8dAqQg945izJLS
- B5yr4RRM8xoMrbBudDr8tZWxS3vZTLeY4w1ey032IWzyIc+QKupEzzJvwiQgUi3ih1Ai4GFr8wV
- pjMYNAGiW3A+u/WLdrybVL7e1RmjZEw==
-X-Gm-Gg: AY/fxX5TOKMt01SF2kJdMSiwFL8yV07E6QKkiwuOr3wURaUG7O7fVnVytLqQViUpsal
- 63UgUZ3eYWNxy1iJiPoPCvl/Dt+4Gicu4q2IvpFaKGrG1dTJFLmelAHmOMsugtRbvvkWXFRrsJ7
- +bNVDfU8xbqwdXzNaAVcyeQy68Lo+r4J466SPt/0PBnXVhvHi4rOevxq8RX1Z5fFMwrd5J3HMrL
- sR3twVY5gIHqiaNmpzBEcpFD0n5RHsLsxEOtv5T9faeyiHqR8RWpW8XQHkOUl2LZEgHd/CjR8EO
- Pqy41YZN2Uu43OQK+omVkxO79DeG
-X-Google-Smtp-Source: AGHT+IH/x1qpmKuWRxfjBQtZzsmj3IC9ep2kIOCXgy2xzGQK3kMBsZmuh2sPuXEQNT7YdTgCBgyNYW9mynjm4X5BAdI=
-X-Received: by 2002:a17:90b:584b:b0:33e:1acc:1799 with SMTP id
- 98e67ed59e1d1-34a728a1b73mr3777313a91.14.1765414211671; Wed, 10 Dec 2025
- 16:50:11 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vTNSp-0006Fg-VI
+ for qemu-devel@nongnu.org; Wed, 10 Dec 2025 11:54:56 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vTNSn-0008Bi-E8
+ for qemu-devel@nongnu.org; Wed, 10 Dec 2025 11:54:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1765385690;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=FusV5pkrbjy8J4fYQ81Jd5hTilUD2ATjfZj5RqT6wmc=;
+ b=eItmfnryom9m7vn9ORrjA34jmyXQwRHNhmIvj/p/ISuza3knR+IKgoRsomxaGvokrK80bN
+ 1o1EIfTXMBf7wOl1/Az4MAerhTHNeVpShzvFSyC4Em/QSfbu5UB6yj+hlyn113T915EXGH
+ vzguEgdZ03eRt+t64ImOd9mh1ozWzVw=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-397-sdiC_t4oO1qyHtL4K_mCmQ-1; Wed,
+ 10 Dec 2025 11:54:45 -0500
+X-MC-Unique: sdiC_t4oO1qyHtL4K_mCmQ-1
+X-Mimecast-MFC-AGG-ID: sdiC_t4oO1qyHtL4K_mCmQ_1765385684
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D491219560B2; Wed, 10 Dec 2025 16:54:43 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.162])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8125D30001A5; Wed, 10 Dec 2025 16:54:41 +0000 (UTC)
+Date: Wed, 10 Dec 2025 16:54:38 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Salil Mehta <salil.mehta@opnsrc.net>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org,
+ richard.henderson@linaro.org, Peter Maydell <peter.maydell@linaro.org>,
+ Vishnu Pajjuri OS <vishnu@os.amperecomputing.com>,
+ Vishnu Pajjuri <vishnu@amperemail.onmicrosoft.com>
+Subject: Re: FWD: [ATTENTION] Mails on qemu mailing list are disapapearing
+ making communication unreliable
+Message-ID: <aTmlzlAWK8BcGaEp@redhat.com>
+References: <CAJ7pxeY8dpK53ePE6YcXqHpmxD9B7e9tY49ij6HzgU450OgYLA@mail.gmail.com>
+ <20251209022028-mutt-send-email-mst@kernel.org>
+ <aTfpQO14axEvcOIT@redhat.com>
+ <CAJ7pxeYbd+yq9VXob2zTShBd5Ph598kmjLJTsKdKzFikCbVLLA@mail.gmail.com>
 MIME-Version: 1.0
-References: <CAOYM0N3YdrkhOXrpxE6rzk5DbLOF0GzEVaThAHxnHfQYLk+pzQ@mail.gmail.com>
- <03e5d5b2-2f3f-451e-93af-439348469967@redhat.com>
-In-Reply-To: <03e5d5b2-2f3f-451e-93af-439348469967@redhat.com>
-From: Liu Jaloo <liu.jaloo@gmail.com>
-Date: Thu, 11 Dec 2025 00:50:01 +0800
-X-Gm-Features: AQt7F2owEZOoXLK-pDLpBAr3ZXj0s84wfpEZ1HLzhF3Gi-3mZUOt4jW2_TYCN9Q
-Message-ID: <CAOYM0N3Kth=KfZtZLet7+3AYvzQg6V+w4dLWgLYT7OuNTvMsDg@mail.gmail.com>
-Subject: Re: make pxerom report error
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000f7dc8a0645a286b5"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
- envelope-from=liu.jaloo@gmail.com; helo=mail-pj1-x102f.google.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJ7pxeYbd+yq9VXob2zTShBd5Ph598kmjLJTsKdKzFikCbVLLA@mail.gmail.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 17
+X-Spam_score: 1.7
+X-Spam_bar: +
+X-Spam_report: (1.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_SBL_CSS=3.335,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ SUBJ_ATTENTION=0.5 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,100 +90,124 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000f7dc8a0645a286b5
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Thanks for your reply.
-
-$ cd roms/ipxe
-$ git checkout master
-
-It works well now.
-
-Maybe it's time to update the default ID of the ipxe submodule
-
-On Thu, Dec 11, 2025 at 2:46=E2=80=AFAM Thomas Huth <thuth@redhat.com> wrot=
-e:
-
-> On 09/12/2025 19.48, Liu Jaloo wrote:
-> > $ cd qemu
-> > $ git submodule update --init roms/ipxe
-> > $ cd roms
-> > $ make pxerom
+On Wed, Dec 10, 2025 at 01:20:26AM +0000, Salil Mehta wrote:
+> Hi Daniel & Michael,
+> 
+> Many thanks for replying.
+> 
+> On Tue, Dec 9, 2025 at 9:18 AM Daniel P. Berrangé <berrange@redhat.com> wrote:
 > >
-> > report error like this:
+> > On Tue, Dec 09, 2025 at 02:24:44AM -0500, Michael S. Tsirkin wrote:
+> > > Hi guys,
+> > > who has ability to contact the list admins? Can help Salil?
 > >
-> >     In file included from tests/bigint_test.c:38:
-> >     tests/bigint_test.c: In function =E2=80=98bigint_test_exec=E2=80=99=
-:
-> >     tests/bigint_test.c:232:14: error: =E2=80=98result_raw=E2=80=99 may=
- be used
-> >     uninitialized [-Werror=3Dmaybe-uninitialized]
-> >        232 |         ok ( memcmp ( result_raw, expected_raw,
->
-> >              \
-> >            |
->
->   Hi!
->
-> QEMU is just a user of the ipxe code, so if you want to get this fixed, I
-> think you have to report it to the ipxe project, see
-> https://ipxe.org/contact
->
->   HTH,
->    Thomas
->
->
+> > I'm not a list admin, but I have some observations below
+> >
+> > > ----- Forwarded message from Salil Mehta <salil.mehta@opnsrc.net> -----
+> > >
+> > > From: Salil Mehta <salil.mehta@opnsrc.net>
+> > > Date: Tue, 9 Dec 2025 00:44:04 +0000
+> > > To: "Michael S. Tsirkin" <mst@redhat.com>
+> > > Subject: [ATTENTION] Mails on qemu mailing list are disapapearing making communication unreliable
+> > > Message-ID: <CAJ7pxeY8dpK53ePE6YcXqHpmxD9B7e9tY49ij6HzgU450OgYLA@mail.gmail.com>
+> > >
+> > > Hi Michael,
+> > >
+> > > I hope you are doing well.
+> > >
+> > > I’ve noticed that some emails are going missing from the qemu-devel mailing
+> > > list. This has now happened multiple times, both with emails I have sent from my
+> > > official address and with emails from other contributors.
+> > >
+> > > Over the past three months, I have consistently observed emails disappearing
+> > > from the qemu-devel archives, which makes the mailing list communication highly
+> > > unreliable.
+> >
+> > I can see patches arriving in my INBOX via qemu-devel from salil.mehta@opnsrc.net
+> > but no patches from salil.mehta@huawei.com
+> >
+> > I do see some (non-patch) emails from salil.mehta@huawei.com, but the
+> > mailing list is re-writing this From address for DMARC countermeasures
+> >
+> >  Salil Mehta via <qemu-devel@nongnu.org>
+> >
+> >
+> > Recapping mail delivery policies, DMARC requires a pass for *either*
+> > SPF or DKIM checks.
+> >
+> > SPF checks will always fail for mails forwarded via any mailing list.
+> >
+> > DKIM checks should still succeed *provided* the mailing list does not
+> > modify the message content, or certain headers. QEMU mailing list
+> > behaves in this respect generally, and applies countermeasures when
+> > appropriate.
+> >
+> > I see no  DKIM records huawei.com, but I do see SPF records.
+> 
+> 
+> Thanks for identifying this.
+> 
+> When you say there are no DKIM records for huawei.com, do you mean
+> that my @huawei.com mails do not contain any DKIM-Signature header,
+> or that a DKIM-Signature is present but cannot be validated against
+> a published key?
 
---000000000000f7dc8a0645a286b5
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+I see no DKIM-Signature, and not DKIM DNS records with the
+default selector.
 
-<div dir=3D"ltr"><div>Thanks for your reply.=C2=A0</div><div><br></div><div=
->$ cd=C2=A0roms/ipxe</div><div>$ git checkout master</div><div><br></div><d=
-iv>It works well now.=C2=A0</div><div><br></div><div>Maybe it&#39;s time to=
- update the default ID of the ipxe submodule</div></div><br><div class=3D"g=
-mail_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On =
-Thu, Dec 11, 2025 at 2:46=E2=80=AFAM Thomas Huth &lt;<a href=3D"mailto:thut=
-h@redhat.com">thuth@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D=
-"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(2=
-04,204,204);padding-left:1ex">On 09/12/2025 19.48, Liu Jaloo wrote:<br>
-&gt; $ cd qemu<br>
-&gt; $ git submodule update --init roms/ipxe<br>
-&gt; $ cd roms<br>
-&gt; $ make pxerom<br>
-&gt; <br>
-&gt; report error like this:<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0In file included from tests/bigint_test.c:38:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0tests/bigint_test.c: In function =E2=80=98bigint_te=
-st_exec=E2=80=99:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0tests/bigint_test.c:232:14: error: =E2=80=98result_=
-raw=E2=80=99 may be used<br>
-&gt;=C2=A0 =C2=A0 =C2=A0uninitialized [-Werror=3Dmaybe-uninitialized]<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 232 | =C2=A0 =C2=A0 =C2=A0 =C2=A0 ok ( memc=
-mp ( result_raw, expected_raw,=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 <br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 \<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 <br>
-<br>
-=C2=A0 Hi!<br>
-<br>
-QEMU is just a user of the ipxe code, so if you want to get this fixed, I <=
-br>
-think you have to report it to the ipxe project, see <a href=3D"https://ipx=
-e.org/contact" rel=3D"noreferrer" target=3D"_blank">https://ipxe.org/contac=
-t</a><br>
-<br>
-=C2=A0 HTH,<br>
-=C2=A0 =C2=A0Thomas<br>
-<br>
-</blockquote></div>
+> If there are SPF/DKIM/DMARC logs on the list side, would it be
+> possible to see whether DKIM validation is failing for my messages?
 
---000000000000f7dc8a0645a286b5--
+We have no access to anything in the mailman service - we're just
+using the nongnu.org service for QEMU, run by the GNU project.
+
+> > This guarantees DMARC fail for any @huawei.com sender using any mailing
+> > list, however, the @huawei.com DMARC policy is only set to 'quarantine'.
+> 
+> Agreed. I will check with the IT department here about the DKIM
+> headers and whether the public key is being published correctly.
+
+I should have checked before, but I see there are other people
+using @huawei.com email addresses that are posting to qemu-devel
+successfully.
+
+That seems to suggest that the huawei mail is able to work with
+QEMU lists and nothing about SPF/DKIM/DMARC is a blocking problem
+
+> > I wonder how Salil is sending patches ? Some tool like git send-email
+> > or git-publish ?
+> 
+> Mails disappear or not appear in the mailing list even when I reply
+> via outlook and the same happens when I sometimes use git-send-mail.
+> 
+> check these:
+> https://lore.kernel.org/qemu-devel/20251001010127.3092631-1-salil.mehta@opnsrc.net/
+> 
+> AND
+> 
+> https://lore.kernel.org/qemu-devel/CAJ7pxea721f4EwqpDdcztgRoN-rsB2tqthf-_Kb+mmsRkK1GyQ@mail.gmail.com/
+> 
+> I'm replying to this broken link which existed but disappeared later.
+>  [not found] <20250930224037.224833-1-salil.mehta@huawei.com>
+
+
+> > If not, perhaps that is triggering some rule that discards the mails when
+> > sending is amperemail.onmicrosoft.com
+> 
+> Could be. Do we have access to the logs to verify the reason?
+
+Unfortunately we have no insight into operation of the mailman service
+as that's not run by QEMU.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
