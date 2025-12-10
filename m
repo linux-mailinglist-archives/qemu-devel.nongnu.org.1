@@ -2,106 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0F6CCB3008
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 14:19:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1854CB2FEE
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 14:18:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTK4t-000532-TX; Wed, 10 Dec 2025 08:17:59 -0500
+	id 1vTK4w-00055v-9Y; Wed, 10 Dec 2025 08:18:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vTK4R-0004sA-Ne
+ id 1vTK4S-0004sH-Gx
  for qemu-devel@nongnu.org; Wed, 10 Dec 2025 08:17:34 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vTK4O-0003OF-J1
- for qemu-devel@nongnu.org; Wed, 10 Dec 2025 08:17:30 -0500
+ id 1vTK4Q-0003PL-5r
+ for qemu-devel@nongnu.org; Wed, 10 Dec 2025 08:17:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1765372647;
+ s=mimecast20190719; t=1765372649;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=w13dSM8SN/G/eyeKhZHaUnvdET5uHotxh7kCkFaT+gs=;
- b=ZGnF+gsLfmi6d/86NOphslI7CwCGS4HnSLvccbkmyzq1eRZ/NipHCf6UnBw+7ragbRHGqw
- 3aVByDMp8QVAdf0Co9Qnptwr42W1rTuxNP0Odkreoi8JoVPFfAb2JvWWU41qTnGZiGjLS3
- yz7VyiFHMNOvrjb5xz0P8Db5R9GAIR0=
+ bh=T58pmygptBEW1S74SQK7LzWey5RYMiEFbwtFfeU0U9k=;
+ b=V4av+D4h0SBfw1AeXA10m5khPMaGq/6sC3B7ZKnLI9ZizHubrHB7xcKzbLvr8xfI1RFXe5
+ D+0eztcVQkyquKVEvbRfaFMUnP4+S/kep4Up1bpXyqg6eS1r59QdKJUNiFsUeNpQMZgYZq
+ OIhse7JtwxzpudfUz2tlPQwNyAWnRz8=
 Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
  [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-547-agA4M8gXP6yRbZSAG2-13w-1; Wed, 10 Dec 2025 08:17:26 -0500
-X-MC-Unique: agA4M8gXP6yRbZSAG2-13w-1
-X-Mimecast-MFC-AGG-ID: agA4M8gXP6yRbZSAG2-13w_1765372645
+ us-mta-658-9l25pSSeOfuS8lLkIPfhZg-1; Wed, 10 Dec 2025 08:17:28 -0500
+X-MC-Unique: 9l25pSSeOfuS8lLkIPfhZg-1
+X-Mimecast-MFC-AGG-ID: 9l25pSSeOfuS8lLkIPfhZg_1765372647
 Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-42f9ed47dd8so866914f8f.3
- for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 05:17:26 -0800 (PST)
+ ffacd0b85a97d-42f9e62b4feso489617f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 05:17:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1765372644; x=1765977444; darn=nongnu.org;
+ d=redhat.com; s=google; t=1765372646; x=1765977446; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=w13dSM8SN/G/eyeKhZHaUnvdET5uHotxh7kCkFaT+gs=;
- b=mbqNpdeTeRcMxUM3zx7APgvFheRof9b5W2vYvXQuQ0ypglArA8KIY59TFkYkyiQvPC
- Go33BN/sFwechA9XkSPjrf8tNIDPuciOLGPpQYcrOCf0Uop/bmQpXat9k9p16kf764cW
- yB6kXLf2etpWANYtuAqjXX+wORJ7aRogEXh1eLXU2YPOdOxbqBiuNwMUshxJIm802ZWe
- ZfAj6lO99JY/JKbXG2FmSAw6LIIteAdSJWQ4S8WQRu42CbkbZVj5xa1T9U0wvyUH0++2
- Za1d4LsupBWF+/kchEmE3eGpqN9S3dKPLbxPmlOaxe0egWr7hcjP/M2A+JImv2fyAn/5
- j62Q==
+ :reply-to; bh=T58pmygptBEW1S74SQK7LzWey5RYMiEFbwtFfeU0U9k=;
+ b=aQ5G/HFAwz96e74xPtbZv03cmfMfRBwut1TrkDRQ+3W4LGz8yhrZfYGkzZPrHnZVvW
+ WUm/hBKvwOq4XxySsHuBFHRKa7aV5ZHph0jjWeHCtfBpksSbRl89An0JYNX1ityypxOj
+ gzLL8TDK6HZSzIvxs1cKS6z6PChSV6wTjCokTJtDCFbK6mGsDbwCbvg3l27TY9+zWDFL
+ APt29t7tf5CXT4NLk4ZOcv/bNo8ZFuSpBPkVca5fJBsnbpJVEd85P8rj7C0KMs96V1xU
+ RqfLqiK7JSDPWDFRxRe588zXUkmKFWqVMLJF9BARXKTk1Wp6g45qqehF0uoHqdK5/ppz
+ c3+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765372644; x=1765977444;
+ d=1e100.net; s=20230601; t=1765372646; x=1765977446;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=w13dSM8SN/G/eyeKhZHaUnvdET5uHotxh7kCkFaT+gs=;
- b=CwOqkxgtlP3Ow7FlLph6YDUaFdMbKW48ya0WUmfrP2rnyeZsQzqZAORi5u9VaUPfLY
- zMk0CYxT+T3iGV9urNDGIe9Mc4xmPe/qpvrtyrMPXP8uJr9TnTy9DqZO44pBCyKHtElY
- Z005AMolf1VXtFr2VY55iGPSNSEOXCOvNTHIydI8ufEdcJ6Pd3uflpiwRN+X0zSeQbHL
- 1jLLIpEWFRKxgfBO69a976L+NjkSwW5etDRMTc6MVfp6GFrS50Qj10b5FqT0m9l6N1wI
- PGCxRoy4W+nxPQnMFEWWCR75jepfWrblqCYkllg+BsJ29zx+ueoAlKVBcPj2zQHKiePh
- 1zXg==
-X-Gm-Message-State: AOJu0YzYdCHdWeoCyTrKrdT80Esdrc5mUjp1l5DY/rhK2duSTc8S3+Pe
- CuEOqDmmhBcVZlBvJ06TiBiGOGFf/MiwUcKRRFRZOu/j5U7pRsMwB/sFFDT66eTKID/T+qOkhpJ
- gENlOfnZ5dmfgaTAkJT7t7ti522ebhCf9vmYZ4aD7/Vcea5c4qk0AhhkLe7ejjvfszUlKnwS9d2
- rZd3j+b//H5rQGWH/pjkq8S8cPmZXBTQ4vSIVBZVP8
-X-Gm-Gg: AY/fxX6HE6wkvCeU4srb71zp8O0pLKl2DmeAANViYoV2SlVcDbmLkI6OXawYnftJaIp
- vUr+ssnE3je8mT75zH8ol0vD5l86sG8KW1hL1f+o/yUT2f8Mewq/ydDZPNiQ8Xuwnk5GAd63YvC
- XNReMaXGTqU9fvzZLSbT3iB2EnQfJUjTXQrgIdq20Tpj9u2bz5vpZAZiyafkw4AtEaqXUD1c8jF
- 7VQVwu+BtjgsiOfTg15CQXYh2RcX40Dp5dO8C7+fZx66KVnP0BMQFJEgLJEJJyVydtS69ijInXS
- 68I0xiHMyV066WAxeYputDvNQRLKSpT4gsI36eNNABdyRxHnESzHk5VM6ntWqP1ejNAosQ1Q/Gc
- WntiQMqqcf5pYMSXsyWy8b2zRPxDTiaSAadgc5+xbO+6bm+uDq6Yr9+2l+oM3f6ECzNqgE8oF53
- gLbzrRCvLEqh+OGQk=
-X-Received: by 2002:a05:6000:144e:b0:42b:3cdf:9b6c with SMTP id
- ffacd0b85a97d-42fa39e0177mr2459589f8f.22.1765372644312; 
- Wed, 10 Dec 2025 05:17:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHDU3SIU8my1KO9Nbc3x/sb7nV2Z5c1EnU4Vza673+efX3CDwpcvxW5uo3Vo5R0IQYIlitu2g==
-X-Received: by 2002:a05:6000:144e:b0:42b:3cdf:9b6c with SMTP id
- ffacd0b85a97d-42fa39e0177mr2459550f8f.22.1765372643711; 
- Wed, 10 Dec 2025 05:17:23 -0800 (PST)
+ bh=T58pmygptBEW1S74SQK7LzWey5RYMiEFbwtFfeU0U9k=;
+ b=fMyo1CxOBmth5bwmFtpX/ZyhcAGQRJE3BlFu7YCuNapy0jwz5TcgQt/uoQGY8u3823
+ JN/OGjxzejYu2QtiUzCFIvyoIUtH/9LJ10pztvLrkiSBRcah64Of0g97Xo1uiCu0lum9
+ 5Vy619+k8xJWstChgGG3veB6DJkasWp9IjVw5LxC1Xsv/QrH5s5Ly5PSjocJGjPZTmy0
+ xoNQb3V8SjIUw0oiKSsGsakmnjB3CX55vPBYhM8HKrRRzMr81u9qHEfQLxitM5VzCH/0
+ wOq5N2r6XvtoLBo9Cb8xgesosjDdqUIXAOTIuVRyVSrZe+sYg4sBTLtMBsrRZEqEHSsf
+ dRCg==
+X-Gm-Message-State: AOJu0YwihvBIi+j94GnwabJqP3Y5TziL9yjwB8n4qzZ9hg7Cg22DeMyc
+ Kly5Z4UfOGp2AMqTUYGIA17mRXALwhM3DkNX2MeNHOXw8BRTYtvsS6nWVleGwxtF5OIv+8H8Xmz
+ bGdeaYkF8E03vJ44FhUi5GoZck0VduOgGwi0b9Y5jqIRW8+WduCTUTuP9pEWWULn1OP4bMU1XXN
+ bq04f5nRkU0+ZSkCeryh6mT0nmY/IwDzmuLHUn2QjQ
+X-Gm-Gg: AY/fxX7vALTEYt6xdAmFyA8/gIGtoXFTXZuI9iBCFe7sFfJXIXN+0lpghGxZGEUTFzN
+ d7m5zUeFCnwBms/spfCytggZsqKGgBXq8zG2hOtFCML1o4xAhQJgStTSB6wt6FSteb4kuUtRi+w
+ ravjcBslZr+SBoTq9ac2X33RkzoTGQFn5fGbmN/roSByGraISbcYuRyibjTUdlx3+Z93fEOTCKR
+ a8m1Oe3f0K++GWOQZgfy0gB92c76NFu4kl/d1vzD+K2BT64OofReiyE2g3rnnPVRD4Ol3iQj/Sd
+ VSC91tg7vWVE7axlPpuHpy/lmpjYv4p5yOOt9IX5KRqJb56P5FbOvnWFIFOgK98ZWfvJX8STm9Y
+ 3hrpuojr+WoJ6nvwWEV5+UISVq7nv1i2sBed5Raa86yodV5wm/KrJq/KAyPfimNhSRnPlD2cRaT
+ cl5ANRH5UKf/LCI6c=
+X-Received: by 2002:a05:6000:240f:b0:42f:8817:7ee with SMTP id
+ ffacd0b85a97d-42fa0872da8mr6469339f8f.31.1765372645829; 
+ Wed, 10 Dec 2025 05:17:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEs9Y47lAuZfMZNcrNi6UeA02rRHu5q5aUlw+v/5J6llmAv+4Fj1bHvuHGkXiTSgbP7vJhTuA==
+X-Received: by 2002:a05:6000:240f:b0:42f:8817:7ee with SMTP id
+ ffacd0b85a97d-42fa0872da8mr6469282f8f.31.1765372645000; 
+ Wed, 10 Dec 2025 05:17:25 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42f7d2226c5sm38288147f8f.23.2025.12.10.05.17.23
+ ffacd0b85a97d-42f7d331aeasm37524162f8f.37.2025.12.10.05.17.24
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Dec 2025 05:17:23 -0800 (PST)
+ Wed, 10 Dec 2025 05:17:24 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 17/18] target/i386/tcg: add a CCOp for SBB x,x
-Date: Wed, 10 Dec 2025 14:16:52 +0100
-Message-ID: <20251210131653.852163-18-pbonzini@redhat.com>
+Subject: [PATCH 18/18] target/i386/tcg: move fetch code out of translate.c
+Date: Wed, 10 Dec 2025 14:16:53 +0100
+Message-ID: <20251210131653.852163-19-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251210131653.852163-1-pbonzini@redhat.com>
 References: <20251210131653.852163-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -119,172 +119,628 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is more efficient both when generating code and when testing
-flags.
+Let translate.c only concern itself with TCG code generation.  Move everything
+that uses CPUX86State*, as well as gen_lea_modrm_0 now that it is only used
+to fill decode->mem, to decode-new.c.inc.
+
+While at it also rename gen_lea_modrm_0.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h           | 13 ++++++++++++-
- target/i386/cpu-dump.c      |  2 ++
- target/i386/tcg/cc_helper.c |  6 ++++++
- target/i386/tcg/translate.c | 13 +++++++++++++
- target/i386/tcg/emit.c.inc  | 33 ++++++---------------------------
- 5 files changed, 39 insertions(+), 28 deletions(-)
+ target/i386/tcg/translate.c      | 271 ------------------------------
+ target/i386/tcg/decode-new.c.inc | 277 ++++++++++++++++++++++++++++++-
+ 2 files changed, 274 insertions(+), 274 deletions(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index ecca38ed0b5..314e773a5d4 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -1515,7 +1515,18 @@ typedef enum {
-     CC_OP_POPCNTL__,
-     CC_OP_POPCNTQ__,
-     CC_OP_POPCNT = sizeof(target_ulong) == 8 ? CC_OP_POPCNTQ__ : CC_OP_POPCNTL__,
--#define CC_OP_LAST_BWLQ CC_OP_POPCNTQ__
-+
-+    /*
-+     * Note that only CC_OP_SBB_SELF (i.e. the one with MO_TL size)
-+     * is used or implemented, because the translation produces a
-+     * sign-extended CC_DST.
-+     */
-+    CC_OP_SBB_SELFB__, /* S/Z/C/A via CC_DST, O clear, P set.  */
-+    CC_OP_SBB_SELFW__,
-+    CC_OP_SBB_SELFL__,
-+    CC_OP_SBB_SELFQ__,
-+    CC_OP_SBB_SELF = sizeof(target_ulong) == 8 ? CC_OP_SBB_SELFQ__ : CC_OP_SBB_SELFL__,
-+#define CC_OP_LAST_BWLQ CC_OP_SBB_SELFQ__
- 
-     CC_OP_DYNAMIC, /* must use dynamic code to get cc_op */
- } CCOp;
-diff --git a/target/i386/cpu-dump.c b/target/i386/cpu-dump.c
-index 67bf31e0caa..20a3002f013 100644
---- a/target/i386/cpu-dump.c
-+++ b/target/i386/cpu-dump.c
-@@ -91,6 +91,8 @@ static const char * const cc_op_str[] = {
-     [CC_OP_BMILGQ] = "BMILGQ",
- 
-     [CC_OP_POPCNT] = "POPCNT",
-+
-+    [CC_OP_SBB_SELF] = "SBBx,x",
- };
- 
- static void
-diff --git a/target/i386/tcg/cc_helper.c b/target/i386/tcg/cc_helper.c
-index 2c4170b5b77..91e492196af 100644
---- a/target/i386/tcg/cc_helper.c
-+++ b/target/i386/tcg/cc_helper.c
-@@ -100,6 +100,9 @@ target_ulong helper_cc_compute_all(target_ulong dst, target_ulong src1,
-         return src1;
-     case CC_OP_POPCNT:
-         return dst ? 0 : CC_Z;
-+    case CC_OP_SBB_SELF:
-+	/* dst is either all zeros (--Z-P-) or all ones (-S-APC) */
-+        return (dst & (CC_Z|CC_A|CC_C|CC_S)) ^ (CC_P | CC_Z);
- 
-     case CC_OP_ADCX:
-         return compute_all_adcx(dst, src1, src2);
-@@ -326,6 +329,9 @@ target_ulong helper_cc_compute_c(target_ulong dst, target_ulong src1,
-     case CC_OP_MULQ:
-         return src1 != 0;
- 
-+    case CC_OP_SBB_SELF:
-+        return dst & 1;
-+
-     case CC_OP_ADCX:
-     case CC_OP_ADCOX:
-         return dst;
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index e91715af817..17ad4ccacaf 100644
+index 17ad4ccacaf..a905efdfbbd 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -304,6 +304,7 @@ static const uint8_t cc_op_live_[] = {
-     [CC_OP_ADOX] = USES_CC_SRC | USES_CC_SRC2,
-     [CC_OP_ADCOX] = USES_CC_DST | USES_CC_SRC | USES_CC_SRC2,
-     [CC_OP_POPCNT] = USES_CC_DST,
-+    [CC_OP_SBB_SELF] = USES_CC_DST,
- };
+@@ -1644,182 +1644,6 @@ static TCGv gen_shiftd_rm_T1(DisasContext *s, MemOp ot,
+     return cc_src;
+ }
  
- static uint8_t cc_op_live(CCOp op)
-@@ -938,6 +939,9 @@ static CCPrepare gen_prepare_eflags_c(DisasContext *s, TCGv reg)
-         size = cc_op_size(s->cc_op);
-         return gen_prepare_val_nz(cpu_cc_src, size, false);
- 
-+    case CC_OP_SBB_SELF:
-+        return (CCPrepare) { .cond = TCG_COND_NE, .reg = cpu_cc_dst };
-+
-     case CC_OP_ADCX:
-     case CC_OP_ADCOX:
-         return (CCPrepare) { .cond = TCG_COND_NE, .reg = cpu_cc_dst,
-@@ -999,6 +1003,7 @@ static CCPrepare gen_prepare_eflags_o(DisasContext *s, TCGv reg)
-     case CC_OP_ADCOX:
-         return (CCPrepare) { .cond = TCG_COND_NE, .reg = cpu_cc_src2,
-                              .no_setcond = true };
-+    case CC_OP_SBB_SELF:
-     case CC_OP_LOGICB ... CC_OP_LOGICQ:
-     case CC_OP_POPCNT:
-         return (CCPrepare) { .cond = TCG_COND_NEVER };
-@@ -1078,6 +1083,14 @@ static CCPrepare gen_prepare_cc(DisasContext *s, int b, TCGv reg)
-         }
-         break;
- 
-+    case CC_OP_SBB_SELF:
-+        /* checking for nonzero is usually the most efficient */
-+        if (jcc_op == JCC_L || jcc_op == JCC_B || jcc_op == JCC_S) {
-+            jcc_op = JCC_Z;
-+            inv = !inv;
-+        }
-+        goto slow_jcc;
-+
-     case CC_OP_LOGICB ... CC_OP_LOGICQ:
-         /* Mostly used for test+jump */
-         size = s->cc_op - CC_OP_LOGICB;
-diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index 8dac4d09da1..0fde3d669d9 100644
---- a/target/i386/tcg/emit.c.inc
-+++ b/target/i386/tcg/emit.c.inc
-@@ -3876,37 +3876,16 @@ static void gen_SBB(DisasContext *s, X86DecodedInsn *decode)
-         return;
-     }
- 
--    c_in = tcg_temp_new();
--    gen_compute_eflags_c(s, c_in);
+-#define X86_MAX_INSN_LENGTH 15
 -
--    /*
--     * Here the change is as follows:
--     * CC_SBB: src1 = T0, src2 = T0, src3 = c_in
--     * CC_SUB: src1 = 0, src2 = c_in (no src3)
--     *
--     * The difference also does not matter:
--     * - AF is bit 4 of dst^src1^src2, but bit 4 of src1^src2 is zero in both cases
--     *   therefore AF comes straight from dst (in fact it is c_in)
--     * - for OF, src1 and src2 have the same sign in both cases, meaning there
--     *   can be no overflow
--     */
-+    /* SBB x,x has its own CCOp so that's even easier.  */
-     if (decode->e.op2 != X86_TYPE_I && !decode->op[0].has_ea && decode->op[0].n == decode->op[2].n) {
--        if (s->cc_op == CC_OP_DYNAMIC) {
--            tcg_gen_neg_tl(s->T0, c_in);
--        } else {
--            /*
--             * Do not negate c_in because it will often be dead and only the
--             * instruction generated by negsetcond will survive.
--             */
--            gen_neg_setcc(s, JCC_B << 1, s->T0);
+-static uint64_t advance_pc(CPUX86State *env, DisasContext *s, int num_bytes)
+-{
+-    uint64_t pc = s->pc;
+-
+-    /* This is a subsequent insn that crosses a page boundary.  */
+-    if (s->base.num_insns > 1 &&
+-        !translator_is_same_page(&s->base, s->pc + num_bytes - 1)) {
+-        siglongjmp(s->jmpbuf, 2);
+-    }
+-
+-    s->pc += num_bytes;
+-    if (unlikely(cur_insn_len(s) > X86_MAX_INSN_LENGTH)) {
+-        /* If the instruction's 16th byte is on a different page than the 1st, a
+-         * page fault on the second page wins over the general protection fault
+-         * caused by the instruction being too long.
+-         * This can happen even if the operand is only one byte long!
+-         */
+-        if (((s->pc - 1) ^ (pc - 1)) & TARGET_PAGE_MASK) {
+-            (void)translator_ldub(env, &s->base,
+-                                  (s->pc - 1) & TARGET_PAGE_MASK);
 -        }
--        tcg_gen_movi_tl(s->cc_srcT, 0);
--        decode->cc_src = c_in;
--        decode->cc_dst = s->T0;
--        decode->cc_op = CC_OP_SUBB + ot;
-+        gen_neg_setcc(s, JCC_B << 1, s->T0);
-+        prepare_update1_cc(decode, s, CC_OP_SBB_SELF);
-         return;
+-        siglongjmp(s->jmpbuf, 1);
+-    }
+-
+-    return pc;
+-}
+-
+-static inline uint8_t x86_ldub_code(CPUX86State *env, DisasContext *s)
+-{
+-    return translator_ldub(env, &s->base, advance_pc(env, s, 1));
+-}
+-
+-static inline uint16_t x86_lduw_code(CPUX86State *env, DisasContext *s)
+-{
+-    return translator_lduw(env, &s->base, advance_pc(env, s, 2));
+-}
+-
+-static inline uint32_t x86_ldl_code(CPUX86State *env, DisasContext *s)
+-{
+-    return translator_ldl(env, &s->base, advance_pc(env, s, 4));
+-}
+-
+-#ifdef TARGET_X86_64
+-static inline uint64_t x86_ldq_code(CPUX86State *env, DisasContext *s)
+-{
+-    return translator_ldq(env, &s->base, advance_pc(env, s, 8));
+-}
+-#endif
+-
+-/* Decompose an address.  */
+-
+-static AddressParts gen_lea_modrm_0(CPUX86State *env, DisasContext *s,
+-                                    int modrm, bool is_vsib)
+-{
+-    int def_seg, base, index, scale, mod, rm;
+-    target_long disp;
+-    bool havesib;
+-
+-    def_seg = R_DS;
+-    index = -1;
+-    scale = 0;
+-    disp = 0;
+-
+-    mod = (modrm >> 6) & 3;
+-    rm = modrm & 7;
+-    base = rm | REX_B(s);
+-
+-    if (mod == 3) {
+-        /* Normally filtered out earlier, but including this path
+-           simplifies multi-byte nop, as well as bndcl, bndcu, bndcn.  */
+-        goto done;
+-    }
+-
+-    switch (s->aflag) {
+-    case MO_64:
+-    case MO_32:
+-        havesib = 0;
+-        if (rm == 4) {
+-            int code = x86_ldub_code(env, s);
+-            scale = (code >> 6) & 3;
+-            index = ((code >> 3) & 7) | REX_X(s);
+-            if (index == 4 && !is_vsib) {
+-                index = -1;  /* no index */
+-            }
+-            base = (code & 7) | REX_B(s);
+-            havesib = 1;
+-        }
+-
+-        switch (mod) {
+-        case 0:
+-            if ((base & 7) == 5) {
+-                base = -1;
+-                disp = (int32_t)x86_ldl_code(env, s);
+-                if (CODE64(s) && !havesib) {
+-                    base = -2;
+-                    disp += s->pc + s->rip_offset;
+-                }
+-            }
+-            break;
+-        case 1:
+-            disp = (int8_t)x86_ldub_code(env, s);
+-            break;
+-        default:
+-        case 2:
+-            disp = (int32_t)x86_ldl_code(env, s);
+-            break;
+-        }
+-
+-        /* For correct popl handling with esp.  */
+-        if (base == R_ESP && s->popl_esp_hack) {
+-            disp += s->popl_esp_hack;
+-        }
+-        if (base == R_EBP || base == R_ESP) {
+-            def_seg = R_SS;
+-        }
+-        break;
+-
+-    case MO_16:
+-        if (mod == 0) {
+-            if (rm == 6) {
+-                base = -1;
+-                disp = x86_lduw_code(env, s);
+-                break;
+-            }
+-        } else if (mod == 1) {
+-            disp = (int8_t)x86_ldub_code(env, s);
+-        } else {
+-            disp = (int16_t)x86_lduw_code(env, s);
+-        }
+-
+-        switch (rm) {
+-        case 0:
+-            base = R_EBX;
+-            index = R_ESI;
+-            break;
+-        case 1:
+-            base = R_EBX;
+-            index = R_EDI;
+-            break;
+-        case 2:
+-            base = R_EBP;
+-            index = R_ESI;
+-            def_seg = R_SS;
+-            break;
+-        case 3:
+-            base = R_EBP;
+-            index = R_EDI;
+-            def_seg = R_SS;
+-            break;
+-        case 4:
+-            base = R_ESI;
+-            break;
+-        case 5:
+-            base = R_EDI;
+-            break;
+-        case 6:
+-            base = R_EBP;
+-            def_seg = R_SS;
+-            break;
+-        default:
+-        case 7:
+-            base = R_EBX;
+-            break;
+-        }
+-        break;
+-
+-    default:
+-        g_assert_not_reached();
+-    }
+-
+- done:
+-    return (AddressParts){ def_seg, base, index, scale, disp };
+-}
+-
+ /* Compute the address, with a minimum number of TCG ops.  */
+ static TCGv gen_lea_modrm_1(DisasContext *s, AddressParts a, bool is_vsib)
+ {
+@@ -1904,79 +1728,6 @@ static void gen_st_modrm(DisasContext *s, X86DecodedInsn *decode, MemOp ot)
      }
+ }
  
-+    c_in = tcg_temp_new();
-+    gen_compute_eflags_c(s, c_in);
+-static target_ulong insn_get_addr(CPUX86State *env, DisasContext *s, MemOp ot)
+-{
+-    target_ulong ret;
+-
+-    switch (ot) {
+-    case MO_8:
+-        ret = x86_ldub_code(env, s);
+-        break;
+-    case MO_16:
+-        ret = x86_lduw_code(env, s);
+-        break;
+-    case MO_32:
+-        ret = x86_ldl_code(env, s);
+-        break;
+-#ifdef TARGET_X86_64
+-    case MO_64:
+-        ret = x86_ldq_code(env, s);
+-        break;
+-#endif
+-    default:
+-        g_assert_not_reached();
+-    }
+-    return ret;
+-}
+-
+-static inline uint32_t insn_get(CPUX86State *env, DisasContext *s, MemOp ot)
+-{
+-    uint32_t ret;
+-
+-    switch (ot) {
+-    case MO_8:
+-        ret = x86_ldub_code(env, s);
+-        break;
+-    case MO_16:
+-        ret = x86_lduw_code(env, s);
+-        break;
+-    case MO_32:
+-#ifdef TARGET_X86_64
+-    case MO_64:
+-#endif
+-        ret = x86_ldl_code(env, s);
+-        break;
+-    default:
+-        g_assert_not_reached();
+-    }
+-    return ret;
+-}
+-
+-static target_long insn_get_signed(CPUX86State *env, DisasContext *s, MemOp ot)
+-{
+-    target_long ret;
+-
+-    switch (ot) {
+-    case MO_8:
+-        ret = (int8_t) x86_ldub_code(env, s);
+-        break;
+-    case MO_16:
+-        ret = (int16_t) x86_lduw_code(env, s);
+-        break;
+-    case MO_32:
+-        ret = (int32_t) x86_ldl_code(env, s);
+-        break;
+-#ifdef TARGET_X86_64
+-    case MO_64:
+-        ret = x86_ldq_code(env, s);
+-        break;
+-#endif
+-    default:
+-        g_assert_not_reached();
+-    }
+-    return ret;
+-}
+-
+ static void gen_conditional_jump_labels(DisasContext *s, target_long diff,
+                                         TCGLabel *not_taken, TCGLabel *taken)
+ {
+@@ -2221,28 +1972,6 @@ static void gen_leave(DisasContext *s)
+     gen_op_mov_reg_v(s, a_ot, R_ESP, s->T1);
+ }
+ 
+-/* Similarly, except that the assumption here is that we don't decode
+-   the instruction at all -- either a missing opcode, an unimplemented
+-   feature, or just a bogus instruction stream.  */
+-static void gen_unknown_opcode(CPUX86State *env, DisasContext *s)
+-{
+-    gen_illegal_opcode(s);
+-
+-    if (qemu_loglevel_mask(LOG_UNIMP)) {
+-        FILE *logfile = qemu_log_trylock();
+-        if (logfile) {
+-            target_ulong pc = s->base.pc_next, end = s->pc;
+-
+-            fprintf(logfile, "ILLOPC: " TARGET_FMT_lx ":", pc);
+-            for (; pc < end; ++pc) {
+-                fprintf(logfile, " %02x", translator_ldub(env, &s->base, pc));
+-            }
+-            fprintf(logfile, "\n");
+-            qemu_log_unlock(logfile);
+-        }
+-    }
+-}
+-
+ /* an interrupt is different from an exception because of the
+    privilege checks */
+ static void gen_interrupt(DisasContext *s, uint8_t intno)
+diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
+index 9d17bae7e75..b4aa300ab47 100644
+--- a/target/i386/tcg/decode-new.c.inc
++++ b/target/i386/tcg/decode-new.c.inc
+@@ -279,6 +279,130 @@
+ 
+ #define UNKNOWN_OPCODE ((X86OpEntry) {})
+ 
++#define X86_MAX_INSN_LENGTH 15
 +
-     if (s->prefix & PREFIX_LOCK) {
-         tcg_gen_add_tl(s->T0, s->T1, c_in);
-         tcg_gen_neg_tl(s->T0, s->T0);
++static uint64_t advance_pc(CPUX86State *env, DisasContext *s, int num_bytes)
++{
++    uint64_t pc = s->pc;
++
++    /* This is a subsequent insn that crosses a page boundary.  */
++    if (s->base.num_insns > 1 &&
++        !translator_is_same_page(&s->base, s->pc + num_bytes - 1)) {
++        siglongjmp(s->jmpbuf, 2);
++    }
++
++    s->pc += num_bytes;
++    if (unlikely(cur_insn_len(s) > X86_MAX_INSN_LENGTH)) {
++        /* If the instruction's 16th byte is on a different page than the 1st, a
++         * page fault on the second page wins over the general protection fault
++         * caused by the instruction being too long.
++         * This can happen even if the operand is only one byte long!
++         */
++        if (((s->pc - 1) ^ (pc - 1)) & TARGET_PAGE_MASK) {
++            (void)translator_ldub(env, &s->base,
++                                  (s->pc - 1) & TARGET_PAGE_MASK);
++        }
++        siglongjmp(s->jmpbuf, 1);
++    }
++
++    return pc;
++}
++
++static inline uint8_t x86_ldub_code(CPUX86State *env, DisasContext *s)
++{
++    return translator_ldub(env, &s->base, advance_pc(env, s, 1));
++}
++
++static inline uint16_t x86_lduw_code(CPUX86State *env, DisasContext *s)
++{
++    return translator_lduw(env, &s->base, advance_pc(env, s, 2));
++}
++
++static inline uint32_t x86_ldl_code(CPUX86State *env, DisasContext *s)
++{
++    return translator_ldl(env, &s->base, advance_pc(env, s, 4));
++}
++
++#ifdef TARGET_X86_64
++static inline uint64_t x86_ldq_code(CPUX86State *env, DisasContext *s)
++{
++    return translator_ldq(env, &s->base, advance_pc(env, s, 8));
++}
++#endif
++
++static target_ulong insn_get_addr(CPUX86State *env, DisasContext *s, MemOp ot)
++{
++    target_ulong ret;
++
++    switch (ot) {
++    case MO_8:
++        ret = x86_ldub_code(env, s);
++        break;
++    case MO_16:
++        ret = x86_lduw_code(env, s);
++        break;
++    case MO_32:
++        ret = x86_ldl_code(env, s);
++        break;
++#ifdef TARGET_X86_64
++    case MO_64:
++        ret = x86_ldq_code(env, s);
++        break;
++#endif
++    default:
++        g_assert_not_reached();
++    }
++    return ret;
++}
++
++static inline uint32_t insn_get(CPUX86State *env, DisasContext *s, MemOp ot)
++{
++    uint32_t ret;
++
++    switch (ot) {
++    case MO_8:
++        ret = x86_ldub_code(env, s);
++        break;
++    case MO_16:
++        ret = x86_lduw_code(env, s);
++        break;
++    case MO_32:
++#ifdef TARGET_X86_64
++    case MO_64:
++#endif
++        ret = x86_ldl_code(env, s);
++        break;
++    default:
++        g_assert_not_reached();
++    }
++    return ret;
++}
++
++static target_long insn_get_signed(CPUX86State *env, DisasContext *s, MemOp ot)
++{
++    target_long ret;
++
++    switch (ot) {
++    case MO_8:
++        ret = (int8_t) x86_ldub_code(env, s);
++        break;
++    case MO_16:
++        ret = (int16_t) x86_lduw_code(env, s);
++        break;
++    case MO_32:
++        ret = (int32_t) x86_ldl_code(env, s);
++        break;
++#ifdef TARGET_X86_64
++    case MO_64:
++        ret = x86_ldq_code(env, s);
++        break;
++#endif
++    default:
++        g_assert_not_reached();
++    }
++    return ret;
++}
++
+ static uint8_t get_modrm(DisasContext *s, CPUX86State *env)
+ {
+     if (!s->has_modrm) {
+@@ -1883,6 +2007,130 @@ static void decode_root(DisasContext *s, CPUX86State *env, X86OpEntry *entry, ui
+     *entry = opcodes_root[*b];
+ }
+ 
++/* Decompose an address.  */
++static AddressParts decode_modrm_address(CPUX86State *env, DisasContext *s,
++                                         int modrm, bool is_vsib)
++{
++    int def_seg, base, index, scale, mod, rm;
++    target_long disp;
++    bool havesib;
++
++    def_seg = R_DS;
++    index = -1;
++    scale = 0;
++    disp = 0;
++
++    mod = (modrm >> 6) & 3;
++    rm = modrm & 7;
++    base = rm | REX_B(s);
++
++    if (mod == 3) {
++        /* Normally filtered out earlier, but including this path
++           simplifies multi-byte nop, as well as bndcl, bndcu, bndcn.  */
++        goto done;
++    }
++
++    switch (s->aflag) {
++    case MO_64:
++    case MO_32:
++        havesib = 0;
++        if (rm == 4) {
++            int code = x86_ldub_code(env, s);
++            scale = (code >> 6) & 3;
++            index = ((code >> 3) & 7) | REX_X(s);
++            if (index == 4 && !is_vsib) {
++                index = -1;  /* no index */
++            }
++            base = (code & 7) | REX_B(s);
++            havesib = 1;
++        }
++
++        switch (mod) {
++        case 0:
++            if ((base & 7) == 5) {
++                base = -1;
++                disp = (int32_t)x86_ldl_code(env, s);
++                if (CODE64(s) && !havesib) {
++                    base = -2;
++                    disp += s->pc + s->rip_offset;
++                }
++            }
++            break;
++        case 1:
++            disp = (int8_t)x86_ldub_code(env, s);
++            break;
++        default:
++        case 2:
++            disp = (int32_t)x86_ldl_code(env, s);
++            break;
++        }
++
++        /* For correct popl handling with esp.  */
++        if (base == R_ESP && s->popl_esp_hack) {
++            disp += s->popl_esp_hack;
++        }
++        if (base == R_EBP || base == R_ESP) {
++            def_seg = R_SS;
++        }
++        break;
++
++    case MO_16:
++        if (mod == 0) {
++            if (rm == 6) {
++                base = -1;
++                disp = x86_lduw_code(env, s);
++                break;
++            }
++        } else if (mod == 1) {
++            disp = (int8_t)x86_ldub_code(env, s);
++        } else {
++            disp = (int16_t)x86_lduw_code(env, s);
++        }
++
++        switch (rm) {
++        case 0:
++            base = R_EBX;
++            index = R_ESI;
++            break;
++        case 1:
++            base = R_EBX;
++            index = R_EDI;
++            break;
++        case 2:
++            base = R_EBP;
++            index = R_ESI;
++            def_seg = R_SS;
++            break;
++        case 3:
++            base = R_EBP;
++            index = R_EDI;
++            def_seg = R_SS;
++            break;
++        case 4:
++            base = R_ESI;
++            break;
++        case 5:
++            base = R_EDI;
++            break;
++        case 6:
++            base = R_EBP;
++            def_seg = R_SS;
++            break;
++        default:
++        case 7:
++            base = R_EBX;
++            break;
++        }
++        break;
++
++    default:
++        g_assert_not_reached();
++    }
++
++ done:
++    return (AddressParts){ def_seg, base, index, scale, disp };
++}
++
+ static int decode_modrm(DisasContext *s, CPUX86State *env,
+                         X86DecodedInsn *decode, X86DecodedOp *op)
+ {
+@@ -1895,8 +2143,8 @@ static int decode_modrm(DisasContext *s, CPUX86State *env,
+     } else {
+         op->has_ea = true;
+         op->n = -1;
+-        decode->mem = gen_lea_modrm_0(env, s, modrm,
+-                                      decode->e.vex_class == 12);
++        decode->mem = decode_modrm_address(env, s, get_modrm(s, env),
++                                           decode->e.vex_class == 12);
+     }
+     return modrm;
+ }
+@@ -2516,6 +2764,23 @@ illegal:
+     return false;
+ }
+ 
++static void dump_unknown_opcode(CPUX86State *env, DisasContext *s)
++{
++    if (qemu_loglevel_mask(LOG_UNIMP)) {
++        FILE *logfile = qemu_log_trylock();
++        if (logfile) {
++            target_ulong pc = s->base.pc_next, end = s->pc;
++
++            fprintf(logfile, "ILLOPC: " TARGET_FMT_lx ":", pc);
++            for (; pc < end; ++pc) {
++                fprintf(logfile, " %02x", translator_ldub(env, &s->base, pc));
++            }
++            fprintf(logfile, "\n");
++            qemu_log_unlock(logfile);
++        }
++    }
++}
++
+ /*
+  * Convert one instruction. s->base.is_jmp is set if the translation must
+  * be stopped.
+@@ -2902,5 +3167,11 @@ static void disas_insn(DisasContext *s, CPUState *cpu)
+     gen_illegal_opcode(s);
+     return;
+  unknown_op:
+-    gen_unknown_opcode(env, s);
++    /*
++     * Similarly, except that the assumption here is that we don't decode
++     * the instruction at all -- either a missing opcode, an unimplemented
++     * feature, or just a bogus instruction stream.
++     */
++    gen_illegal_opcode(s);
++    dump_unknown_opcode(env, s);
+ }
 -- 
 2.52.0
 
