@@ -2,93 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73DD8CB2FDC
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 14:18:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2DFDCB2FDB
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 14:18:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTK4G-0004og-0c; Wed, 10 Dec 2025 08:17:20 -0500
+	id 1vTK4F-0004o8-0f; Wed, 10 Dec 2025 08:17:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vTK44-0004m6-0g
- for qemu-devel@nongnu.org; Wed, 10 Dec 2025 08:17:08 -0500
+ id 1vTK46-0004mp-17
+ for qemu-devel@nongnu.org; Wed, 10 Dec 2025 08:17:11 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vTK42-0002ye-4Q
- for qemu-devel@nongnu.org; Wed, 10 Dec 2025 08:17:07 -0500
+ id 1vTK43-0002zf-OF
+ for qemu-devel@nongnu.org; Wed, 10 Dec 2025 08:17:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1765372625;
+ s=mimecast20190719; t=1765372627;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QH+Y8iuc84iMUyZHmPFJU0rIEXvwiqoYIaZMOnYdPHc=;
- b=Huql9+wGs9Vw4F7hVJxAGYoRg/2RK/bmqXkkF6qg2wXXB9clavG5Cut3SdlKitBExnMawn
- VFtBa8qXiFXQNMdr41cvYlKpPVMjc9gmPjbYmfWy2gsHPH1vhULoetnZpfJRcesIQuj4Ii
- io7WerTMbb1AOJETLw8X9wIopEc2p7I=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ByNPD+9j8EtkYKgJbFGTPkBTs1AUYDB++Ljp5NI1P9g=;
+ b=IGQ/JouqRuOr5FdKTukkr5xufKjcl42ok1T/2HXLOsmj9jzQSWGndGCR1Ps0RVmlj7jm6C
+ 1+fWNs1HEGxmBL4JewC8M5rb4VXf96JX88cDlz1JEJ97ZsAIM07QjUVzpVvZLy6cpsuGbN
+ OMvrP0D/4zKyCWNmb87c8r9AANE94gc=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-355-up0V7FkiMneITzidZcFSVA-1; Wed, 10 Dec 2025 08:17:03 -0500
-X-MC-Unique: up0V7FkiMneITzidZcFSVA-1
-X-Mimecast-MFC-AGG-ID: up0V7FkiMneITzidZcFSVA_1765372623
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-47910af0c8bso47638325e9.2
- for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 05:17:03 -0800 (PST)
+ us-mta-519-KQhFq4ECPmWH5iiVc6l-RA-1; Wed, 10 Dec 2025 08:17:05 -0500
+X-MC-Unique: KQhFq4ECPmWH5iiVc6l-RA-1
+X-Mimecast-MFC-AGG-ID: KQhFq4ECPmWH5iiVc6l-RA_1765372624
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-42e2e5ef669so5233650f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 05:17:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1765372622; x=1765977422; darn=nongnu.org;
+ d=redhat.com; s=google; t=1765372624; x=1765977424; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=QH+Y8iuc84iMUyZHmPFJU0rIEXvwiqoYIaZMOnYdPHc=;
- b=Ax0eMlfkbZ8aVd+WvwdkgEEb9WQ/QkFjkqmtn4ityNnANmDIwfBvYYbErC5O6Bty+i
- VC9k2YJuJc4p3EnZGBa87gTVceA9vVxf9IqngRFLxTpQf7riVHYgd6mEDJT0Msjtllpy
- SyYP0jzwyGjQ4wVafoNOURRhM9+2wpS7WuXmeojPLYM2Vc8dvTtos8H6p+1F/8tVlg5o
- XE+TM7bu/s1g8QwQKTUlJyiN0I8gw5auQJkRLNqdIHdrx8krW55G7Jwqr8AJWZBzfcVr
- 78ilMMdZf3rEGLjVw8b0MXOEMMuL2xgMP9eip+phnDN1z7M1nD03h6vBzOe0R0eX/1BX
- V83w==
+ :reply-to; bh=ByNPD+9j8EtkYKgJbFGTPkBTs1AUYDB++Ljp5NI1P9g=;
+ b=bxT/gFDlYRVihcI6yhXfTvJJtX1IBSf4TP4+PeMqN5Q5Ox/tVnPdRMTBObHSVO0Yt9
+ 8KPRwXiCibcG84PgSA4bhVZ/+3MOVMNfB6ZZnxgP3fdLib8M53dVqe2meaDZwkdBC+0g
+ Sb4/PpmI9hisjMo+n8foUISvTKGVnGXkHpliTFM6SkoBoTemUw2H16U69aze/SlM1Owi
+ 77Y3bRbS/kOLn1jlQowk/uCMu4sGMueS4Fuspg832AGFR6ALQeHbjqccIUICuSW3kImi
+ zurg/dxa3P29u2bINpR8lVbW30F7tPxKdh6Lp2+GSfhN1ahHq+twrilJ2lvwnlciVCh8
+ /Jyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765372622; x=1765977422;
+ d=1e100.net; s=20230601; t=1765372624; x=1765977424;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=QH+Y8iuc84iMUyZHmPFJU0rIEXvwiqoYIaZMOnYdPHc=;
- b=oD1NYrfyViVO+Dmzi42rXxogSqVsMK2QevVcvR7YgbNsMeoquTIKev+HSDQCsb9nr3
- CynLE3beUXNFxNoGAYVVT2tS6vd50khJbbXhyMOn+jp+QjzShU8Juk+963JfVAez4nlA
- dxX2hU1hNxm0Y/N9D2GQDHGYyLawzdbfGhbvBLEtugpCVNIG6e1Fh2mEQ07WMTgOlGrd
- XCzmV61xviMVsj5n/uo/CLbQZfm3hchRPvBCnn73UBuem6dXkKIZXQL//gO44739E8XH
- bftilu1Wcn0tfiZTQrYGK+QmKfKdVLvjiIoai4RVY8Wby9L1gzYMBdSUqqPbg9GrKxdw
- jeKg==
-X-Gm-Message-State: AOJu0YzOOS2UJXpa9y7xp2P0SQ7WR7v272QvhTam6YXStEBcEzC0Eob3
- 4Bs3f5UN7kfWw9eFia3hhWb2vPjWTTJQpFhH+QlvtVDEC+6JykIORHUe8mwkAvUks4PzRz4QLZ+
- KIZOkbeKu5/4IZFlXSKAJd0PN2GVlwhx4+wy825CX8W0vW1xHR8L4hrJTij9zlLfXcF5d8Ae3NK
- YeumTNton+fa8yTQVbJiBrp9dPkwxJqy3tqc2Vel52
-X-Gm-Gg: ASbGncstMwwmWiaZULuBS/p3RUelZ4WtAK3JYBme80PhyVHxtFbc5JG1+1V3YxCsrdA
- OQf6nFQSfz2vQzuQyc1E9dT9oCQNzvvnvaYpZy0XvxLwhRq/EYxqxu7QGmdMHKZPMc9xxFVg7J1
- fWRjDhtGyTKLggsknV9piyKOp2KHArN2yFblBplcQP3pA/CQamncIjPcUqnv+6xkL2dpifJUwCi
- yIwfyTBHrGaXbL5j0n7C7ZAdSSJxfLV15C4iAl5ID1sK4x6h7gvAJlzYx0dEaCTxrLcmTbGFrZi
- qvTc2BPIEqmG5fEOt82c4qMwhPjDIQTISLxbaizSb5J00fjSVjgSP2Ltd8TeeIj7FgbSDOiAzU1
- BIHyDj8k38pvrqBtzYznmpryxX9JvRp+cGgraEG//W2bIyoXQJQOvdwJNYU0bWgEDIl/BuOCNzA
- 8z1hQC/pXW//GoFc0=
-X-Received: by 2002:a05:600c:444a:b0:45b:7d77:b592 with SMTP id
- 5b1f17b1804b1-47a8380c62dmr26142415e9.12.1765372622174; 
- Wed, 10 Dec 2025 05:17:02 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEf+aV8DKFmOx+7sXtF15PevEzVJEZPKDusv9hK/HNPUaFFegu0cP/VEPsy+Rs7x4Msc7Q1LA==
-X-Received: by 2002:a05:600c:444a:b0:45b:7d77:b592 with SMTP id
- 5b1f17b1804b1-47a8380c62dmr26142035e9.12.1765372621590; 
- Wed, 10 Dec 2025 05:17:01 -0800 (PST)
+ bh=ByNPD+9j8EtkYKgJbFGTPkBTs1AUYDB++Ljp5NI1P9g=;
+ b=V2axlfQO5pC7mInDg5CLLY8P7fkmzV39B6QbYoKS8Z9i/hs987Bm5dowmve9gXIGMj
+ 23DbecQ189i9XOJTFKf+0+WvZz1lOnUUaZ14/TQmEXmHNa1BQwBKITepwHDEaxONElzP
+ urc73zt0gcO2vvCnSIL/gmfbWHUt4H97Vf+7EzSSjZ4VqQQJ9YP03ujDl5ob6RdO87pf
+ /slFfyUqIJbp9V976tt7O0fJ+Vq9yEJLOrZ7JwLuLufrz7p73mCiYZNPsRe6F6leDceA
+ WsnvIAOrjBlH7kzIYfvYc2QKSKCQjjZqEMGne8AyCgo3Uzc0qOfRLLpvA48vqwdcjGPH
+ RL+w==
+X-Gm-Message-State: AOJu0YxoXFKa7OfacAJYRPhI5UJtnHn40+OzVLjfBCgxIyn1bo6dauP+
+ SXcqRyyRqmeyIpUXd1pzMOwOXO4zsUJBTu1iySkkvV5uH8+GRSX+GbWHcPhPWWtKXjWxVqYSL4b
+ n5ndS6jTPYXRJfznItsAVDw0CSVvnd8ErQQZQ6BxsfD0L5pRNTwT+QjHy8FsBd2dP919ilytOXk
+ DmYLcL8RhYbSbv+3KLuuCHtdop4sIsESchgRCYBJFg
+X-Gm-Gg: AY/fxX4hf9CWVpncdY69xzejUtPAp1rQFmxJb+kaY/CJN6Vu5Cc8/8XzRkDmjOTZNgI
+ vOfQcKgeTKKjbEWAunIfHlSE9sfFQMBMlqgsR0euUJoUac+LWGZhPbbenpmCo3d+qCxDJSHq2LS
+ MsBJtX5GE5Aqq0DWcV/CR4stuH4qPbwNYVSd/vusxrXJZ1YafrLklManoVPqhci8XxWcAFMNpLJ
+ 0Nev6ijROIDtPNyIIFu0WZqIQ2SMgLID1qIuYLxN7adPho6gweWNG6IW0Rm1luhacYQ87ni/6Ba
+ qESlOHuoVoXxb+yJ2WPIDaBN9ccG0XnaTwvye3iP/2yPa3Ejm/vC1xG+optlV2v7zyi/ydPO8PH
+ m/9e4Rb2L5jA5wiWE/lpyYfctRJAIwRsj0P0pS8jr4W5rDOQSl2MGK1+AY3y+JRwgVdXVNlFsXD
+ hZzYyH1/13KfvwWz8=
+X-Received: by 2002:a05:6000:2dca:b0:42b:4185:e58a with SMTP id
+ ffacd0b85a97d-42fa39d4044mr2615606f8f.14.1765372623973; 
+ Wed, 10 Dec 2025 05:17:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHqkq4qRnapYcG4KqtU1jTToBQBEI21E5d/KPNZz6F6Lt3jTN7THSbi779k3ayfq1RsZdTF9Q==
+X-Received: by 2002:a05:6000:2dca:b0:42b:4185:e58a with SMTP id
+ ffacd0b85a97d-42fa39d4044mr2615577f8f.14.1765372623496; 
+ Wed, 10 Dec 2025 05:17:03 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47a7da2d3e9sm39401025e9.17.2025.12.10.05.16.59
+ ffacd0b85a97d-42f7d222506sm40271879f8f.28.2025.12.10.05.17.02
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Dec 2025 05:16:59 -0800 (PST)
+ Wed, 10 Dec 2025 05:17:02 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 03/18] target/i386/tcg: update cc_op after PUSHF
-Date: Wed, 10 Dec 2025 14:16:38 +0100
-Message-ID: <20251210131653.852163-4-pbonzini@redhat.com>
+Subject: [PATCH 04/18] target/i386/tcg: mark more instructions that are
+ invalid in 64-bit mode
+Date: Wed, 10 Dec 2025 14:16:39 +0100
+Message-ID: <20251210131653.852163-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251210131653.852163-1-pbonzini@redhat.com>
 References: <20251210131653.852163-1-pbonzini@redhat.com>
@@ -119,27 +120,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PUSHF needs to compute the full eflags, set the cc_op to
-CC_OP_EFLAGS.
-
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/emit.c.inc | 2 ++
- 1 file changed, 2 insertions(+)
+ target/i386/tcg/decode-new.c.inc | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index 1a7fab9333a..22e53f5b000 100644
---- a/target/i386/tcg/emit.c.inc
-+++ b/target/i386/tcg/emit.c.inc
-@@ -3250,6 +3250,8 @@ static void gen_PUSHF(DisasContext *s, X86DecodedInsn *decode)
-     gen_update_cc_op(s);
-     gen_helper_read_eflags(s->T0, tcg_env);
-     gen_push_v(s, s->T0);
-+    decode->cc_src = s->T0;
-+    decode->cc_op = CC_OP_EFLAGS;
- }
+diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
+index c9b4d5ffa32..213dbb9637c 100644
+--- a/target/i386/tcg/decode-new.c.inc
++++ b/target/i386/tcg/decode-new.c.inc
+@@ -1698,9 +1698,9 @@ static const X86OpEntry opcodes_root[256] = {
+     [0xD1] = X86_OP_GROUP1(group2, E,v),
+     [0xD2] = X86_OP_GROUP2(group2, E,b, 1,b), /* CL */
+     [0xD3] = X86_OP_GROUP2(group2, E,v, 1,b), /* CL */
+-    [0xD4] = X86_OP_ENTRY2(AAM, 0,w, I,b),
+-    [0xD5] = X86_OP_ENTRY2(AAD, 0,w, I,b),
+-    [0xD6] = X86_OP_ENTRYw(SALC, 0,b),
++    [0xD4] = X86_OP_ENTRY2(AAM, 0,w, I,b, chk(i64)),
++    [0xD5] = X86_OP_ENTRY2(AAD, 0,w, I,b, chk(i64)),
++    [0xD6] = X86_OP_ENTRYw(SALC, 0,b, chk(i64)),
+     [0xD7] = X86_OP_ENTRY1(XLAT, 0,b, zextT0), /* AL read/written */
  
- static MemOp gen_shift_count(DisasContext *s, X86DecodedInsn *decode,
+     [0xE0] = X86_OP_ENTRYr(LOOPNE, J,b), /* implicit: CX with aflag size */
+@@ -1834,7 +1834,7 @@ static const X86OpEntry opcodes_root[256] = {
+     [0xCB] = X86_OP_ENTRY0(RETF),
+     [0xCC] = X86_OP_ENTRY0(INT3),
+     [0xCD] = X86_OP_ENTRYr(INT, I,b,  chk(vm86_iopl)),
+-    [0xCE] = X86_OP_ENTRY0(INTO),
++    [0xCE] = X86_OP_ENTRY0(INTO, chk(i64)),
+     [0xCF] = X86_OP_ENTRY0(IRET,      chk(vm86_iopl) svm(IRET)),
+ 
+     /*
 -- 
 2.52.0
 
