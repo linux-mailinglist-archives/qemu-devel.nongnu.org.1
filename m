@@ -2,94 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 964E7CB402C
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 21:57:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA1EDCB4037
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 21:57:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTRDO-0004jW-Eq; Wed, 10 Dec 2025 15:55:14 -0500
+	id 1vTRDP-0004ka-FB; Wed, 10 Dec 2025 15:55:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1vTRDK-0004ho-Ih; Wed, 10 Dec 2025 15:55:10 -0500
+ id 1vTRDM-0004iE-2V; Wed, 10 Dec 2025 15:55:12 -0500
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1vTRDI-0000hw-NE; Wed, 10 Dec 2025 15:55:10 -0500
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BAILILL005894;
- Wed, 10 Dec 2025 20:55:07 GMT
+ id 1vTRDK-0000iR-Do; Wed, 10 Dec 2025 15:55:11 -0500
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BACm22i018045;
+ Wed, 10 Dec 2025 20:55:09 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=qADPa9eOmA7rIYvJ/
- wZ4uUQmvMRlJiCga7+UAXmGwK8=; b=j82DVwkAsrlAX+NNb3MF2RS7Mu9ryzALu
- 33Ew3OiWwp1fvGkQj3fMLHnRFpCA/US6t2/lH84brRQ/AfacrkvWc5rrGHwmQHmN
- KcCNGU9E6+WUh85o4+WsAfA3aEA+H0hHICitWbgYbuzTEq816+auho/jP2GStO9I
- 2PbiCPfPhpOgRGLL8dik+s4FBRYMt3lvJoVFxTE8f60UuXJodPFsut4vi4ne7Wfn
- Dr176nSNmNBd27+ZnbdQtlLtcZw7zEdG43GMITrIdj3P/D2a+HgcxafhHpv2uJ4I
- wPkcy+7aBNqNIEAn3DZr9ScoLrfU81vXDaj72iRDRz2wvn7PYLD6Q==
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4avc53kvsq-1
+ :mime-version:references:subject:to; s=pp1; bh=CBtmBBLLfTNE/9f79
+ 6wDBJIpSmXUfFmfJQHxNvnhsmc=; b=cJp1IzljWVLWU2q46/mizDx2Qe6bKCPVJ
+ LcIDlS35gcRV8WXVJwuZNZho3r8pbw/YvczSeV+Hn6zRJj/kInXV2MF3QPpmgJlW
+ 2yJdlVSvieHwDSV0gNkkCd2dJdqptLjqJ77JV7WAR+gYF3YApPxYCbUMV1oIitt7
+ qw94WLrzc6PaTxIIVgdQZ4f7LfdCv2/N9eAp5iy2UT6NF7PPT06/dHVPc62UnMU8
+ +un5HFn5iUMObMcaJ2o35cLebV9W0OAOdGwjpn2oK4UAmRQFR8Ext74QJHJqnX6x
+ ymtvu7k/kKJuDeq4/6hY2wR1KugLmg7biJBylS5pKSe/7Q+8hd4eQ==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4avawvc09h-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Dec 2025 20:55:07 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BAKCmFe002103;
- Wed, 10 Dec 2025 20:55:06 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4aw11jjma0-1
+ Wed, 10 Dec 2025 20:55:08 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BAK8adl012443;
+ Wed, 10 Dec 2025 20:55:08 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4aw0ak2r29-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Dec 2025 20:55:06 +0000
+ Wed, 10 Dec 2025 20:55:08 +0000
 Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
  [10.241.53.104])
- by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 5BAKt5Kw20120316
+ by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 5BAKt6ia16843408
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 10 Dec 2025 20:55:05 GMT
+ Wed, 10 Dec 2025 20:55:07 GMT
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5D9C758056;
- Wed, 10 Dec 2025 20:55:05 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id E043758056;
+ Wed, 10 Dec 2025 20:55:06 +0000 (GMT)
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AF15B58052;
- Wed, 10 Dec 2025 20:55:04 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 3DB7158052;
+ Wed, 10 Dec 2025 20:55:06 +0000 (GMT)
 Received: from t15.ibmuc.com (unknown [9.61.53.32])
  by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 10 Dec 2025 20:55:04 +0000 (GMT)
+ Wed, 10 Dec 2025 20:55:06 +0000 (GMT)
 From: jrossi@linux.ibm.com
 To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, thuth@redhat.com,
  mst@redhat.com
 Cc: jjherne@linux.ibm.com, alifm@linux.ibm.com, farman@linux.ibm.com,
  mjrosato@linux.ibm.com, jrossi@linux.ibm.com, zycai@linux.ibm.com
-Subject: [PATCH 08/10] s390x: Build IPLB for virtio-pci devices
-Date: Wed, 10 Dec 2025 15:54:47 -0500
-Message-ID: <20251210205449.2783111-9-jrossi@linux.ibm.com>
+Subject: [PATCH 09/10] hw: Add "loadparm" property to PCI devices for booting
+ on s390x
+Date: Wed, 10 Dec 2025 15:54:48 -0500
+Message-ID: <20251210205449.2783111-10-jrossi@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20251210205449.2783111-1-jrossi@linux.ibm.com>
 References: <20251210205449.2783111-1-jrossi@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDAyMCBTYWx0ZWRfX8JIqWcVv3VJp
- ldANk3U6DWgiQK3JZC0IVU6zTK3ZVt+vZ9AgE7RY3mLGuswgTtSqCZdm5rvBgZhWsFqPDIjEm2G
- 8hq5JExUqQn5EagcB3Ap4Pi7Sekqs3vj6TkczC194GENTs5FciEeSAS2R0KPvMdPLSXt27Cn/I4
- FUY2ufEdvoL61aVHdfNdaPSSwJir2i2UNW1paJ5X2+ZU04FunOrpq72p1jzM7434MgSA70NWzc0
- RwZSvmHT6L7VLf7/wtH1Ygw/OUSgXIlQJoEz+KwPkgH/zy/K+8aA6BwE3WvrTYBmW1DqBWu/wVy
- rV3cePlKsLeIuR6oK6uGWZpEKWkRqHM9eeoDOeG1N5yizcBMzcAPci7+s6WbRfKwUFpOLq6N6mx
- lGdh3lG1FBFhCPbUCrb41so4KGFuPw==
-X-Authority-Analysis: v=2.4 cv=S/DUAYsP c=1 sm=1 tr=0 ts=6939de2b cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+X-Proofpoint-GUID: h2E3c_Q3lrS8mjCKn9j8dRGnHbgqOId1
+X-Proofpoint-ORIG-GUID: h2E3c_Q3lrS8mjCKn9j8dRGnHbgqOId1
+X-Authority-Analysis: v=2.4 cv=aY9sXBot c=1 sm=1 tr=0 ts=6939de2c cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
  a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=FIndvaBErfhezouc_AYA:9
-X-Proofpoint-ORIG-GUID: DiDaOiqJCxsHW2fpNqsXy-6s3KDEALEZ
-X-Proofpoint-GUID: DiDaOiqJCxsHW2fpNqsXy-6s3KDEALEZ
+ a=vmHGOmvCPtFvCN_kkgEA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDAwNyBTYWx0ZWRfX6swBB76UubV2
+ OyUSdXJ5CTavTbJgM+t6kFDOnlad3me3JDxTQGIfwNIbDW5dfcLzBn1uf/GxAAMhQcsOS7jtu/4
+ nmn4d3zQMHLOSxUTsCD2QCKCpL5XOu0Cq0dnfxL6AciHg23o9kfSj1nG0Tlt61CtBXyk7hWTQiW
+ HLKDrZgzOs4HOqbB0xaNh6CBrJb/tiSbykN9VMckp6vAGGF51C00joRgUTVlztkAXioIzjTOzKr
+ zM+PuY8s88COGe1RecmTb3RtChGuur3yVhAeTwamvlzZJpEzsGwYyzt7iJVJIjkhwVccRATTlNz
+ rUIv0WJrqrqTHmmtRqFKxk0ijUD+R7mCgnGSqYNVZ+W+Izd7BTs2B7WmryTXjv/ba2YeBb6WwZ3
+ nMkQ6Ku1g/v0MiU+67xHG5EWByH9JQ==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-10_03,2025-12-09_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 clxscore=1015 impostorscore=0 suspectscore=0
- lowpriorityscore=0 adultscore=0 spamscore=0 bulkscore=0 priorityscore=1501
+ suspectscore=0 clxscore=1015 phishscore=0 lowpriorityscore=0 bulkscore=0
+ adultscore=0 impostorscore=0 malwarescore=0 priorityscore=1501 spamscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512060020
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512060007
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=jrossi@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -117,179 +118,133 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jared Rossi <jrossi@linux.ibm.com>
 
-Search for a corresponding S390PCIBusDevice and build an IPLB if a device has
-been indexed for boot but does not identify as a CCW device,
+The loadparm is required on s390x to pass the information to the boot loader
+such as which kernel should be started or whether the boot menu should be shown.
 
-PCI devices are not yet included in boot probing (they must have a boot index).
+Because PCI devices do not naturally allocate space for this, the property is
+added on an architecture specific basis.
 
 Signed-off-by: Jared Rossi <jrossi@linux.ibm.com>
 ---
- hw/s390x/ipl.h                  |  3 ++
- include/hw/s390x/s390-pci-bus.h |  2 ++
- hw/s390x/ipl.c                  | 56 ++++++++++++++++++++++++++++++---
- hw/s390x/s390-pci-bus.c         |  2 +-
- 4 files changed, 57 insertions(+), 6 deletions(-)
+ include/hw/pci/pci_device.h |  3 +++
+ hw/pci/pci.c                | 39 +++++++++++++++++++++++++++++++++++++
+ hw/s390x/ipl.c              | 11 +++++++++--
+ 3 files changed, 51 insertions(+), 2 deletions(-)
 
-diff --git a/hw/s390x/ipl.h b/hw/s390x/ipl.h
-index aec2244321..5396d4ed91 100644
---- a/hw/s390x/ipl.h
-+++ b/hw/s390x/ipl.h
-@@ -107,6 +107,7 @@ QEMU_BUILD_BUG_MSG(offsetof(S390IPLState, iplb) & 3, "alignment of iplb wrong");
- #define S390_IPLB_MIN_PV_LEN 148
- #define S390_IPLB_MIN_CCW_LEN 200
- #define S390_IPLB_MIN_FCP_LEN 384
-+#define S390_IPLB_MIN_PCI_LEN 376
- #define S390_IPLB_MIN_QEMU_SCSI_LEN 200
+diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
+index 88ccea5011..5cac6e1688 100644
+--- a/include/hw/pci/pci_device.h
++++ b/include/hw/pci/pci_device.h
+@@ -62,6 +62,9 @@ struct PCIDevice {
+     bool partially_hotplugged;
+     bool enabled;
  
- static inline bool iplb_valid_len(IplParameterBlock *iplb)
-@@ -179,6 +180,8 @@ static inline bool iplb_valid(IplParameterBlock *iplb)
-         return len >= S390_IPLB_MIN_FCP_LEN;
-     case S390_IPL_TYPE_CCW:
-         return len >= S390_IPLB_MIN_CCW_LEN;
-+    case S390_IPL_TYPE_PCI:
-+        return len >= S390_IPLB_MIN_PCI_LEN;
-     case S390_IPL_TYPE_QEMU_SCSI:
-     default:
-         return false;
-diff --git a/include/hw/s390x/s390-pci-bus.h b/include/hw/s390x/s390-pci-bus.h
-index f643e13057..6cbe26a0b8 100644
---- a/include/hw/s390x/s390-pci-bus.h
-+++ b/include/hw/s390x/s390-pci-bus.h
-@@ -402,6 +402,8 @@ S390PCIBusDevice *s390_pci_find_dev_by_fh(S390pciState *s, uint32_t fh);
- S390PCIBusDevice *s390_pci_find_dev_by_fid(S390pciState *s, uint32_t fid);
- S390PCIBusDevice *s390_pci_find_dev_by_target(S390pciState *s,
-                                               const char *target);
-+S390PCIBusDevice *s390_pci_find_dev_by_pci(S390pciState *s,
-+                                               PCIDevice *pci_dev);
- S390PCIBusDevice *s390_pci_find_next_avail_dev(S390pciState *s,
-                                                S390PCIBusDevice *pbdev);
- void s390_pci_ism_reset(void);
-diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
-index 3843d2a850..cf423ac764 100644
---- a/hw/s390x/ipl.c
-+++ b/hw/s390x/ipl.c
-@@ -22,12 +22,14 @@
- #include "hw/loader.h"
- #include "hw/qdev-properties.h"
- #include "hw/boards.h"
-+#include "hw/s390x/s390-pci-bus.h"
- #include "hw/s390x/virtio-ccw.h"
- #include "hw/s390x/vfio-ccw.h"
- #include "hw/s390x/css.h"
- #include "hw/s390x/ebcdic.h"
- #include "hw/scsi/scsi.h"
- #include "hw/virtio/virtio-net.h"
-+#include "hw/virtio/virtio-pci.h"
- #include "ipl.h"
- #include "qemu/error-report.h"
- #include "qemu/config-file.h"
-@@ -339,7 +341,8 @@ static void s390_ipl_set_boot_menu(S390IPLState *ipl)
-     ipl->qipl.boot_menu_timeout = cpu_to_be32(splash_time);
++    /* only for s390x */
++    char *loadparm;
++
+     /* PCI config space */
+     uint8_t *config;
+ 
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index b1eba348e0..1ea0d7c54c 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -36,6 +36,7 @@
+ #include "migration/qemu-file-types.h"
+ #include "migration/vmstate.h"
+ #include "net/net.h"
++#include "system/arch_init.h"
+ #include "system/numa.h"
+ #include "system/runstate.h"
+ #include "system/system.h"
+@@ -2825,6 +2826,43 @@ int pci_qdev_find_device(const char *id, PCIDevice **pdev)
+     return rc;
  }
  
--#define CCW_DEVTYPE_NONE        0x00
-+#define S390_DEVTYPE_NONE       0x00
-+
- #define CCW_DEVTYPE_VIRTIO      0x01
- #define CCW_DEVTYPE_VIRTIO_NET  0x02
- #define CCW_DEVTYPE_SCSI        0x03
-@@ -348,7 +351,7 @@ static void s390_ipl_set_boot_menu(S390IPLState *ipl)
- static CcwDevice *s390_get_ccw_device(DeviceState *dev_st, int *devtype)
- {
-     CcwDevice *ccw_dev = NULL;
--    int tmp_dt = CCW_DEVTYPE_NONE;
-+    int tmp_dt = S390_DEVTYPE_NONE;
- 
-     if (dev_st) {
-         VirtIONet *virtio_net_dev = (VirtIONet *)
-@@ -395,6 +398,31 @@ static CcwDevice *s390_get_ccw_device(DeviceState *dev_st, int *devtype)
-     return ccw_dev;
- }
- 
-+#define PCI_DEVTYPE_VIRTIO       0x05
-+
-+static S390PCIBusDevice *s390_get_pci_device(DeviceState *dev_st, int *devtype)
++static char *pci_qdev_property_get_loadparm(Object *obj, Error **errp)
 +{
-+    S390PCIBusDevice *pbdev = NULL;
-+    int tmp_dt = S390_DEVTYPE_NONE;
-+
-+    if (dev_st) {
-+        PCIDevice *pci_dev = (PCIDevice *)
-+            object_dynamic_cast(OBJECT(qdev_get_parent_bus(dev_st)->parent),
-+                                                           TYPE_PCI_DEVICE);
-+        if (pci_dev) {
-+            pbdev = s390_pci_find_dev_by_pci(s390_get_phb(), pci_dev);
-+            if (pbdev) {
-+                tmp_dt = PCI_DEVTYPE_VIRTIO;
-+            }
-+        }
-+    }
-+    if (devtype) {
-+        *devtype = tmp_dt;
-+    }
-+
-+    return pbdev;
++    return g_strdup(PCI_DEVICE(obj)->loadparm);
 +}
 +
- static uint64_t s390_ipl_map_iplb_chain(IplParameterBlock *iplb_chain)
++static void pci_qdev_property_set_loadparm(Object *obj, const char *value,
++                                       Error **errp)
++{
++    void *lp_str;
++
++    if (object_property_get_int(obj, "bootindex", NULL) < 0) {
++        error_setg(errp, "'loadparm' is only valid for boot devices");
++        return;
++    }
++
++    lp_str = g_malloc0(strlen(value) + 1);
++    if (!qdev_prop_sanitize_s390x_loadparm(lp_str, value, errp)) {
++        g_free(lp_str);
++        return;
++    }
++    PCI_DEVICE(obj)->loadparm = lp_str;
++}
++
++static void pci_qdev_property_add_specifics(DeviceClass *dc)
++{
++    ObjectClass *oc = OBJECT_CLASS(dc);
++
++    /* The loadparm property is only supported on s390x */
++    if (qemu_arch_available(QEMU_ARCH_S390X)) {
++        object_class_property_add_str(oc, "loadparm",
++                                      pci_qdev_property_get_loadparm,
++                                      pci_qdev_property_set_loadparm);
++        object_class_property_set_description(oc, "loadparm",
++                                              "load parameter (s390x only)");
++    }
++}
++
+ MemoryRegion *pci_address_space(PCIDevice *dev)
  {
-     S390IPLState *ipl = get_ipl_device();
-@@ -427,14 +455,12 @@ void s390_ipl_convert_loadparm(char *ascii_lp, uint8_t *ebcdic_lp)
- static bool s390_build_iplb(DeviceState *dev_st, IplParameterBlock *iplb)
- {
-     CcwDevice *ccw_dev = NULL;
-+    S390PCIBusDevice *pbdev = NULL;
-     SCSIDevice *sd;
+     return pci_get_bus(dev)->address_space_mem;
+@@ -2843,6 +2881,7 @@ static void pci_device_class_init(ObjectClass *klass, const void *data)
+     k->unrealize = pci_qdev_unrealize;
+     k->bus_type = TYPE_PCI_BUS;
+     device_class_set_props(k, pci_props);
++    pci_qdev_property_add_specifics(k);
+     object_class_property_set_description(
+         klass, "x-max-bounce-buffer-size",
+         "Maximum buffer size allocated for bounce buffers used for mapped "
+diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
+index cf423ac764..57f5a7a204 100644
+--- a/hw/s390x/ipl.c
++++ b/hw/s390x/ipl.c
+@@ -460,6 +460,7 @@ static bool s390_build_iplb(DeviceState *dev_st, IplParameterBlock *iplb)
      int devtype;
      uint8_t *lp;
      g_autofree void *scsi_lp = NULL;
++    g_autofree void *pci_lp = NULL;
  
--    /*
--     * Currently allow IPL only from CCW devices.
--     */
      ccw_dev = s390_get_ccw_device(dev_st, &devtype);
      if (ccw_dev) {
-         lp = ccw_dev->loadparm;
-@@ -484,6 +510,26 @@ static bool s390_build_iplb(DeviceState *dev_st, IplParameterBlock *iplb)
-         return true;
-     }
+@@ -512,6 +513,14 @@ static bool s390_build_iplb(DeviceState *dev_st, IplParameterBlock *iplb)
  
-+    pbdev = s390_get_pci_device(dev_st, &devtype);
-+    if (pbdev) {
-+        switch (devtype) {
-+        case PCI_DEVTYPE_VIRTIO:
-+            iplb->len = S390_IPLB_MIN_PCI_LEN;
-+            iplb->pbt = S390_IPL_TYPE_PCI;
-+            iplb->pci.fid = pbdev->fid;
-+            break;
-+        default:
-+            return false;
+     pbdev = s390_get_pci_device(dev_st, &devtype);
+     if (pbdev) {
++        pci_lp = object_property_get_str(OBJECT(pbdev->pdev), "loadparm", NULL);
++        if (pci_lp && strlen(pci_lp) > 0) {
++            lp = pci_lp;
++        } else {
++            /* Use machine loadparm as a place holder if PCI LP is unset */
++            lp = S390_CCW_MACHINE(qdev_get_machine())->loadparm;
 +        }
 +
-+        /* Per-device loadparm not yet supported for non-ccw IPL */
-+        lp = S390_CCW_MACHINE(qdev_get_machine())->loadparm;
-+        s390_ipl_convert_loadparm((char *)lp, iplb->loadparm);
-+        iplb->flags |= DIAG308_FLAGS_LP_VALID;
-+
-+        return true;
-+    }
-+
-     return false;
- }
+         switch (devtype) {
+         case PCI_DEVTYPE_VIRTIO:
+             iplb->len = S390_IPLB_MIN_PCI_LEN;
+@@ -522,8 +531,6 @@ static bool s390_build_iplb(DeviceState *dev_st, IplParameterBlock *iplb)
+             return false;
+         }
  
-diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
-index 52820894fa..615974851b 100644
---- a/hw/s390x/s390-pci-bus.c
-+++ b/hw/s390x/s390-pci-bus.c
-@@ -249,7 +249,7 @@ S390PCIBusDevice *s390_pci_find_dev_by_target(S390pciState *s,
-     return NULL;
- }
+-        /* Per-device loadparm not yet supported for non-ccw IPL */
+-        lp = S390_CCW_MACHINE(qdev_get_machine())->loadparm;
+         s390_ipl_convert_loadparm((char *)lp, iplb->loadparm);
+         iplb->flags |= DIAG308_FLAGS_LP_VALID;
  
--static S390PCIBusDevice *s390_pci_find_dev_by_pci(S390pciState *s,
-+S390PCIBusDevice *s390_pci_find_dev_by_pci(S390pciState *s,
-                                                   PCIDevice *pci_dev)
- {
-     S390PCIBusDevice *pbdev;
 -- 
 2.49.0
 
