@@ -2,82 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7026CB336E
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 15:51:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE24ACB340D
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 16:06:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTLWa-0007HN-W8; Wed, 10 Dec 2025 09:50:41 -0500
+	id 1vTLko-0003bW-QL; Wed, 10 Dec 2025 10:05:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jim.macarthur@linaro.org>)
- id 1vTLWG-0007DX-8z
- for qemu-devel@nongnu.org; Wed, 10 Dec 2025 09:50:22 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1vTLkm-0003aj-Lv
+ for qemu-devel@nongnu.org; Wed, 10 Dec 2025 10:05:20 -0500
+Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jim.macarthur@linaro.org>)
- id 1vTLWD-0003Cr-3D
- for qemu-devel@nongnu.org; Wed, 10 Dec 2025 09:50:20 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-477b198f4bcso59973075e9.3
- for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 06:50:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1vTLkl-0006Ni-2k
+ for qemu-devel@nongnu.org; Wed, 10 Dec 2025 10:05:20 -0500
+Received: by mail-ot1-x32c.google.com with SMTP id
+ 46e09a7af769-7c76d855ddbso2440015a34.3
+ for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 07:05:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1765378214; x=1765983014; darn=nongnu.org;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=7aOWTRiqUHiXIPgTQ0LjDGl3N7exU0erok9Ml327P8A=;
- b=w+CXp/dhrF7LaEb8Kq8Y+5xAbmEdwkv+ZXgRLb66DCCLV+hxtOw4dJ3g783L020lWA
- 6cNBhlncDBcqADrcY9PEiDZGveocRYkswpXxPHZFOj09R/SQlFK1iIiUbDTfGSJD4n3T
- 9ckc+fggZgTyj/cvPkjlFBagOSqAptH4WjK1IJ1TRlLQ4LF5hEeXu2LI+/dIm2ENvn1T
- ZaVwGWEKX4wse1EeMzWA8pfbcYavp/+QDUDdVDI4aQlqhindKVAjcZbWmpup+EIZlMYu
- sFonEdPmYNrCLDz/n2z2Kfm04djYfu1/CPAGA9+6SiLFSFxn68KKPInC/S47pNRM7yab
- dfRA==
+ d=linaro.org; s=google; t=1765379117; x=1765983917; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=sDINPTPGVlW2yvHPICN4ETrOtXvkA3kdVWReoU/2Fi0=;
+ b=ogB3WTYNbV2S36wfZN8FZWhOVe1hjpe7h4iSNuYvuqInRJx6xs/Cr746mMW3Y2R/S5
+ RSd1RtgtNOw5+jGBnvJA17ZXj8l8U1zv/jJsCQzWlnZoW/AernNQ9xrGxBQ0s9vOxXw9
+ GKjOORaWr7/oebf6Wq3pwuhkpf21kn6+XGVP8bS7GWS1p2d1HKAnKGBDnjuc5cdfBGcj
+ 5rIjOWOhv0KiuNOHQkA2bjD5ak5FwbzdT+cLC+4zGeuG5msuuHeBqXFQ3xdluSdkZAcq
+ H51P8c7aqXBu0mpQBJsqQdSFQL0V7ujIPHhj3Awtm4qODaiG7FZH6ftPAIkQQXrBzURZ
+ /fDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765378214; x=1765983014;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=7aOWTRiqUHiXIPgTQ0LjDGl3N7exU0erok9Ml327P8A=;
- b=OCbQO/W6bque+P2dWxL/n4TIs/bKoaDsv7CAHNjQMJ+yOcvhuBvXlOajyQ2wnKGM6N
- Tpo21CtqI1/3Y6tj/+6okrQk7IlWIXy9+nYGTbLDYdHDSkJwktthpnEeZ+PJHMAW+ldh
- WtX6Wa6lZjE5fjptoO1ZewwZ7sjXfVsB4/OqTAC9gjUv7Z38X2SwJmzsfZzGPcT9taMa
- B1aof0hbYbmmyXq8TRCvLZw+Ay1+n0Dy9jImqcjjH3gR2zV3q9f2YbDyApGwFs8wxQTl
- a9YDsEoDwmsyqRvrxsODlOLOFuXJnnqdhgQUaWTEvBKv53KLcXmTrWMaxA21HOqXMfXR
- vKMg==
-X-Gm-Message-State: AOJu0Yzt6cujtiudt6yoj0AZ+K8WFWWA7dHbA/hM3hheY30eBv2jY8Ws
- 7tYmvjcKXcpc+HF7DFYxVsKnyNgGWDxAGBsDtgZL6nWWwqgu/KCovTDU5hyuWplLMc4=
-X-Gm-Gg: ASbGncvun705lpgC/bXXZhofP75xXeyho7o7zNgsIBNkBv2qDLptcdDyLx6bs7DxdxQ
- 17XfVFagN4GWDbVbeJte8VNgp7FAe6LEd1zpndd7vv//VXZwJ99WN4q7zxd1nI56YipjInM5TJh
- GhNKFQI7Oglos0ayYig2ym2PhamEsMbR9i6leXZmR/objw8CyPijTsSy70w4rlPa3yLe1ZttdpZ
- 9AWf2+c8RJPl1hBeG82lfGMVgb57K2GLnG64AtHFVV32ciQWzKB0Nafq7FLs6c9rIGxJW6JkAr9
- 8rtMWjmfqCb6czrqdfJHzt1MYwWUhcMBjhufQw54r72LgK0/4LiVyVekYcsKSIVRqF0pFzvpnof
- 8uhg53vFML1N0CSMLImgUwMmjBkwJ3OyocuaMIsui5Xwu+PtaU1XHvUkVK6TBNgXo9H51i2hHMm
- 8wOKQZ3SneKk9RSQ==
-X-Google-Smtp-Source: AGHT+IGdOYsE+ov9xNHgL/iU5//0vXomMkv2q6fga5S2Nx5xdVUZgFoskCaEj3lrkGjh1V++ha3glA==
-X-Received: by 2002:a05:600c:444f:b0:477:7a78:3016 with SMTP id
- 5b1f17b1804b1-47a8374ce6bmr27835065e9.8.1765378214313; 
- Wed, 10 Dec 2025 06:50:14 -0800 (PST)
-Received: from [127.0.1.1] ([2a10:d582:31e:0:62e8:705f:f7a:c7b0])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47a82d7f778sm56595235e9.11.2025.12.10.06.50.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Dec 2025 06:50:14 -0800 (PST)
-From: Jim MacArthur <jim.macarthur@linaro.org>
-Date: Wed, 10 Dec 2025 14:50:14 +0000
-Subject: [PATCH v6 4/4] tests: Add test for ASID2 and write/read of feature
- bits
+ d=1e100.net; s=20230601; t=1765379117; x=1765983917;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=sDINPTPGVlW2yvHPICN4ETrOtXvkA3kdVWReoU/2Fi0=;
+ b=FMm0aao20YqLDcJsRDpHEi1A6lieFJ7/2lvG1Impdle/ME8oqVH3/PztWVvuzKNTJ/
+ h41CZLj4XHRo03jGhw0rjFxkq7QGpPk1ZMe12OIshX8mspA163XXw3KV2U/SedhJ5F48
+ /VYToKCaHOUqYqxRrlM0oDgXxy1YHLDRnDz29Y6lxHqIt38N+FpuCy9lDl2ZixdylHPy
+ SPfmTnjH679IGrQTkqbLANnZz6GeHf0mhpUGThE7WJSvuuwKlB2+dagM2fEdMbezWQRZ
+ w6KTTMqGfeD2uHHEQ87E8FuU8YkCaPs77SD+K5XQdht83PoZMTtB0581eXHfWr1AlQZH
+ zofw==
+X-Gm-Message-State: AOJu0YyxnvAJjvu2AJ5hwl5163HO0trEpGdZvNy0CVCftd+rPCTadj3k
+ BraC0zCPg9aVe2u05IJuvHIombrk7LQCQNqT28aodsHMdP9+TuT5Qx42fZR4t8abdRQ=
+X-Gm-Gg: ASbGnctIEcsvfnUtiwO8DFfAuRK7Eql17KOKpb0VkIYWuHX1Ku2Lm1Xd+VnvkzmjBGD
+ CPRVvx+DOsN2Zi2aOFxZmhnWD+T6uWaCxuKdvbluisFfEoDnsMxpN/ZK/lm0dCc2VW22+6qE3rm
+ VYKJq8YtbWcHVwfBCDzX0+mN2wf2URQMP5Kp7iSIPzQA24iNEqNPIg5l09qGR7piT3puW5VbZE3
+ hlINzpfzzjPWmYs7hgmqxc7XLsMbZnplUyNSN/Yr9lOtM3i9O2sKqdA90wkz7Efou5Jm1qgTvJS
+ BpMRpot4XQxKA6tDY0+OKCFQSIFoWdExSnfrdsQlEsa8bFDbL/ASDwfryvLudNCtQYHfW6NAlbv
+ ZDt2EmoaWtc6QmDnzC1Y/0rSfT5sGqUNlHdIFSOzBI2P0ugkJx1Ms2R/a2EHPktbCGDhX0qmTg0
+ V8LrcSMhsnS0Zq1A9S2CSM6liJsqmTsO2X+4/8AHEQhovrmkWhXbDQSAcE1iatrpGi
+X-Google-Smtp-Source: AGHT+IGsNNavdVp4Kp4evSbNBgu4fJktpL9t+KgdU2zICwDuNGnaIMPOSXM4XJF4HnwgYzsymmvdjA==
+X-Received: by 2002:a05:6830:6ec2:b0:7c7:32d:975d with SMTP id
+ 46e09a7af769-7cacec15265mr1685381a34.31.1765379117248; 
+ Wed, 10 Dec 2025 07:05:17 -0800 (PST)
+Received: from [192.168.4.112] (fixed-187-189-51-143.totalplay.net.
+ [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
+ 46e09a7af769-7c95a91d475sm14834639a34.7.2025.12.10.07.05.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 10 Dec 2025 07:05:16 -0800 (PST)
+Message-ID: <ef44f931-1f76-4cfb-a347-c6d5737d3adb@linaro.org>
+Date: Wed, 10 Dec 2025 09:05:14 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-10.2 v2] migration: Replace g_malloc0_n by g_new0
+ (fixes compiler warning)
+To: Stefan Weil <sw@weilnetz.de>, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Laurent Vivier <laurent@vivier.eu>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org
+References: <20251209210017.768535-1-sw@weilnetz.de>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20251209210017.768535-1-sw@weilnetz.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Message-Id: <20251210-jmac-asid2-v6-4-d3b3acab98c7@linaro.org>
-References: <20251210-jmac-asid2-v6-0-d3b3acab98c7@linaro.org>
-In-Reply-To: <20251210-jmac-asid2-v6-0-d3b3acab98c7@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Jim MacArthur <jim.macarthur@linaro.org>, 
- =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-X-Mailer: b4 0.13.0
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=jim.macarthur@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,100 +105,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Test for presence of ASID2; if it is, check FNG1, FNG0, and A2 are
-writable, and read value shows the update. If not present, check these
-read as RES0.
+On 12/9/25 15:00, Stefan Weil via wrote:
+> This fixes a compiler error when higher warning levels are enabled:
+> 
+> ../migration/postcopy-ram.c: In function ‘postcopy_temp_pages_setup’:
+> ../migration/postcopy-ram.c:1483:50: error: ‘g_malloc0_n’ sizes specified with ‘sizeof’ in the earlier argument and not in the later argument [-Werror=calloc-transposed-args]
+>   1483 |     mis->postcopy_tmp_pages = g_malloc0_n(sizeof(PostcopyTmpPage), channels);
+>        |                                                  ^~~~~~~~~~~~~~~
+> ../migration/postcopy-ram.c:1483:50: note: earlier argument should specify number of elements, later size of each element
+> 
+> Avoid also a related int/unsigned mismatch by fixing the type of
+> two local variables.
+> 
+> Signed-off-by: Stefan Weil <sw@weilnetz.de>
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Jim MacArthur <jim.macarthur@linaro.org>
----
- tests/tcg/aarch64/system/asid2.c | 76 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 76 insertions(+)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/tests/tcg/aarch64/system/asid2.c b/tests/tcg/aarch64/system/asid2.c
-new file mode 100644
-index 0000000000..7d5466af34
---- /dev/null
-+++ b/tests/tcg/aarch64/system/asid2.c
-@@ -0,0 +1,76 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ *
-+ * ASID2 Feature presence and enabled TCR2_EL1 bits test
-+ *
-+ * Copyright (c) 2025 Linaro Ltd
-+ *
-+ */
-+
-+#include <stdint.h>
-+#include <minilib.h>
-+
-+#define ID_AA64MMFR3_EL1 "S3_0_C0_C7_3"
-+#define ID_AA64MMFR4_EL1 "S3_0_C0_C7_4"
-+#define TCR2_EL1 "S3_0_C2_C0_3"
-+
-+int main()
-+{
-+    /*
-+     * Test for presence of ASID2 and three feature bits enabled by it:
-+     * https://developer.arm.com/documentation/109697/2025_09/Feature-descriptions/The-Armv9-5-architecture-extension
-+     * Bits added are FNG1, FNG0, and A2. These should be RES0 if A2 is
-+     * not enabled and read as the written value if A2 is enabled.
-+     */
-+
-+    uint64_t out;
-+    uint64_t idreg3;
-+    uint64_t idreg4;
-+    int tcr2_present;
-+    int asid2_present;
-+
-+    /* Mask is FNG1, FNG0, and A2 */
-+    const uint64_t feature_mask = (1ULL << 18 | 1ULL << 17 | 1ULL << 16);
-+    const uint64_t in = feature_mask;
-+
-+    asm("mrs %[idreg3], " ID_AA64MMFR3_EL1 "\n\t"
-+        : [idreg3] "=r" (idreg3));
-+
-+    tcr2_present = ((idreg3 & 0xF) != 0);
-+
-+    if (!tcr2_present) {
-+        ml_printf("TCR2 is not present, cannot perform test");
-+        return 0;
-+    }
-+
-+    asm("mrs %[idreg4], " ID_AA64MMFR4_EL1 "\n\t"
-+        : [idreg4] "=r" (idreg4));
-+
-+    asid2_present = ((idreg4 & 0xF00) != 0);
-+
-+    asm("msr " TCR2_EL1 ", %[x0]\n\t"
-+        "mrs %[x1], " TCR2_EL1 "\n\t"
-+        : [x1] "=r" (out)
-+        : [x0] "r" (in));
-+
-+    if (asid2_present) {
-+        if ((out & feature_mask) == in) {
-+            ml_printf("OK\n");
-+            return 0;
-+        } else {
-+            ml_printf("FAIL: ASID2 present, but read value %lx != "
-+                      "written value %lx\n",
-+                      out & feature_mask, in);
-+            return 1;
-+        }
-+    } else {
-+        if (out == 0) {
-+            ml_printf("TCR2_EL1 reads as RES0 as expected\n");
-+            return 0;
-+        } else {
-+            ml_printf("FAIL: ASID2, missing but read value %lx != 0\n",
-+                      out & feature_mask, in);
-+            return 1;
-+        }
-+    }
-+}
+r~
 
--- 
-2.43.0
+> ---
+> 
+> v2: Replace g_malloc0_n by g_new0.
+> 
+> Thanks for all comments and reviews.
+> 
+> Stefan
+> 
+> 
+>   migration/postcopy-ram.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
+> index 3f98dcb6fd..8bef0192aa 100644
+> --- a/migration/postcopy-ram.c
+> +++ b/migration/postcopy-ram.c
+> @@ -1467,7 +1467,8 @@ retry:
+>   static int postcopy_temp_pages_setup(MigrationIncomingState *mis)
+>   {
+>       PostcopyTmpPage *tmp_page;
+> -    int err, i, channels;
+> +    int err;
+> +    unsigned i, channels;
+>       void *temp_page;
+>   
+>       if (migrate_postcopy_preempt()) {
+> @@ -1479,7 +1480,7 @@ static int postcopy_temp_pages_setup(MigrationIncomingState *mis)
+>       }
+>   
+>       channels = mis->postcopy_channels;
+> -    mis->postcopy_tmp_pages = g_malloc0_n(sizeof(PostcopyTmpPage), channels);
+> +    mis->postcopy_tmp_pages = g_new0(PostcopyTmpPage, channels);
+>   
+>       for (i = 0; i < channels; i++) {
+>           tmp_page = &mis->postcopy_tmp_pages[i];
 
 
