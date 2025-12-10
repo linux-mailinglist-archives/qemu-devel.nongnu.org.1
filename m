@@ -2,92 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E741CB4019
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F17CB401D
 	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 21:56:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTRDB-0004X7-GY; Wed, 10 Dec 2025 15:55:01 -0500
+	id 1vTRDB-0004X6-CH; Wed, 10 Dec 2025 15:55:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1vTRD9-0004Vo-Fw; Wed, 10 Dec 2025 15:54:59 -0500
+ id 1vTRD9-0004Vm-Eq; Wed, 10 Dec 2025 15:54:59 -0500
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1vTRD7-0000Ug-J1; Wed, 10 Dec 2025 15:54:58 -0500
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BABUIAt008779;
- Wed, 10 Dec 2025 20:54:54 GMT
+ id 1vTRD7-0000Um-JA; Wed, 10 Dec 2025 15:54:58 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BAIIRgb014598;
+ Wed, 10 Dec 2025 20:54:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=pp1; bh=uVfTXenzHp2Vqd31K2PKeq7cZglQSRjZ1zwCJ+KGF
- nU=; b=hsnIpTtj06Set1QqMfk5r7eyCAWWGaWj7mnFyLbvYY09n5/jH4+Q38eXc
- e9pEcpaMXv8Hv8ffHfa/8ZUH7Qw+zFwfKyuE5yg1whJZD+TzoccfaGej4/1EombH
- 5QlIudxzDIXVToSgkfhpK6+5K772ISYJl1xtT4AXSb/uR4irSumUGQXPZVFJlSh5
- k2P1ydEP+BtckAlnTpdAeTsyGunWjNGupKAChN53IN8o3lgPTidNqWViSoIFJ1ST
- CD+c8k7ib8XzSfFciIkDOeMWALDJSyUC2aKKJWoWTBtXEOJt9EoYp5FZLw1fh87Y
- vgj+FFEbRts43m2eihcqXozlvBzDQ==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4avawvc08u-1
+ :content-transfer-encoding:date:from:in-reply-to:message-id
+ :mime-version:references:subject:to; s=pp1; bh=KY5zirasJ9FY74vVS
+ TTQ8U8kxNmnH9//OqaxEQVe7PY=; b=pNGutfvbtor/NfNxYQ72ZYmfsMsPk/QsF
+ iPreRDpWVYea4BqCMCSARLP70GwBgrV7XNVH9DLUIZPfOZ+YjZTxTvZaRllXlSLV
+ LWcF1iNqR4TNXh36bQktePigH6Et5zS1oIDU4AdFi5ErCTtd4JTx8vBi3QA3GQ7o
+ LaA3BYMs/+jZE2XZSKLRGbKAvzUSOnjImDwm7NaJPI8xP+vy9+PpkVCLbGW1ZyJ5
+ q+0GTsZgqH2VWdKXYNWR7TMzLw7hSKQ464MoqFsE4A/jmwz83Siu8VKD2SiFokDh
+ oQHrgSSnrPxMDmGuii44m6EFJAkY7NTdzkpgiBbEqlVFcaYtH7oJQ==
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4avc53kvs0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Dec 2025 20:54:54 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BAJseCW009026;
- Wed, 10 Dec 2025 20:54:53 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4avytn2t00-1
+ Wed, 10 Dec 2025 20:54:55 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BAJnqf0028102;
+ Wed, 10 Dec 2025 20:54:55 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4avy6y2wkc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Dec 2025 20:54:53 +0000
+ Wed, 10 Dec 2025 20:54:55 +0000
 Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
  [10.241.53.104])
- by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 5BAKsqiu26542692
+ by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 5BAKssDB16384622
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 10 Dec 2025 20:54:52 GMT
+ Wed, 10 Dec 2025 20:54:54 GMT
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 40B6F58056;
- Wed, 10 Dec 2025 20:54:52 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id E98AC58056;
+ Wed, 10 Dec 2025 20:54:53 +0000 (GMT)
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8B9AA58052;
- Wed, 10 Dec 2025 20:54:51 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 44EAA58052;
+ Wed, 10 Dec 2025 20:54:53 +0000 (GMT)
 Received: from t15.ibmuc.com (unknown [9.61.53.32])
  by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 10 Dec 2025 20:54:51 +0000 (GMT)
+ Wed, 10 Dec 2025 20:54:53 +0000 (GMT)
 From: jrossi@linux.ibm.com
 To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, thuth@redhat.com,
  mst@redhat.com
 Cc: jjherne@linux.ibm.com, alifm@linux.ibm.com, farman@linux.ibm.com,
  mjrosato@linux.ibm.com, jrossi@linux.ibm.com, zycai@linux.ibm.com
-Subject: [PATCH V2 0/10] s390x: Add support for virtio-blk-pci IPL device
-Date: Wed, 10 Dec 2025 15:54:39 -0500
-Message-ID: <20251210205449.2783111-1-jrossi@linux.ibm.com>
+Subject: [PATCH 01/10] pc-bios/s390-ccw: Fix misattributed function prototypes
+Date: Wed, 10 Dec 2025 15:54:40 -0500
+Message-ID: <20251210205449.2783111-2-jrossi@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20251210205449.2783111-1-jrossi@linux.ibm.com>
+References: <20251210205449.2783111-1-jrossi@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: tqWXsmL4fRPHVXOnvUpclGLRLo5lJG1l
-X-Proofpoint-ORIG-GUID: tqWXsmL4fRPHVXOnvUpclGLRLo5lJG1l
-X-Authority-Analysis: v=2.4 cv=aY9sXBot c=1 sm=1 tr=0 ts=6939de1e cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=2PI-BZlUfcLuvJe9EegA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDAwNyBTYWx0ZWRfX8B8asXGHQknj
- FpFQphJTorIpmxnJG69QUlvZ7BV8x19KRNVAxzHqfTfcxyk1kYAWSPg44oHBETmVB2g2tOcygOc
- CD5kZrCS8Ria4cnAxpagz697lxZNPqEvv6RTp9mcGu0KRfxZb66Z41R/ovKGKolRjrfa9L6Uutb
- asd/gsNdBibzB4/ylLhJLBvnZXv4NUxEzb6NYq+QxLxBm/CXxyIHAAwEVWLZSIIsV8txkUG8XUP
- grFFBdEcH2az4jJAvvonzGEBuvjUd9LnrxRQIne1gjqpFTctpxvNxbxiJ1ausYzUaIVXDHcKkoG
- /uBmoSNySG2p9A6HQuQJK5hfXCx4W+Xg8abDVaFEDfwXAmvCf/Vj1JW4aK+bKO/mxtuHS5qejV7
- RBdu+vfZSkNBOCXuS47Qp3U+0eS8mw==
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDAyMCBTYWx0ZWRfXxs4sAdwIZlrs
+ v8DbUUXL5T2//2KPrf0mUNnkrZfqqNQ2i+f7YUB6u6M/dI6ONB+0UlhoRJm/50oxC9ugiPUlPc9
+ kZNBzl9nmCT6gQoBu2n71FHSDm85Ln5/2DgPr9bhOOC2KXWyMldl60cvv7UvqRYKLaRKtBF7Gcs
+ pdVUlEfdPVLjaXZEdQ4+gjarmarckGYFllU+03Q8eejfwaoJhanzFu7G40536lwzCg+MCeDCXZD
+ U00izo9TLYxOWrj+LB3Gu3ntYIQHU7AK/kPzqHsFRnCevjo54PwuPYXtSst03/gmPW+Zg/hLXZ5
+ ZNpw63WykfGoY+uDVGYN5Mk8g7b/KCbgVuv5ytTXsfyLmjl+iCg9ttf04LrZTKRMUdaLyon2kmC
+ JYl1bKzzONgv3MmWRJnyeycRn3L0SA==
+X-Authority-Analysis: v=2.4 cv=S/DUAYsP c=1 sm=1 tr=0 ts=6939de1f cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8
+ a=HoESQQHAtyuLEXRXYhEA:9
+X-Proofpoint-ORIG-GUID: nwtJhOkF31sOVDz3dbzLZiq2NsuDjFHN
+X-Proofpoint-GUID: nwtJhOkF31sOVDz3dbzLZiq2NsuDjFHN
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-10_03,2025-12-09_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1011 phishscore=0 lowpriorityscore=0 bulkscore=0
- adultscore=0 impostorscore=0 malwarescore=0 priorityscore=1501 spamscore=0
+ malwarescore=0 phishscore=0 clxscore=1015 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 adultscore=0 spamscore=0 bulkscore=0 priorityscore=1501
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512060007
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512060020
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=jrossi@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -115,79 +117,82 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jared Rossi <jrossi@linux.ibm.com>
 
-This patch series introduces an IPLB subtype to support PCI devices, which may
-be built if a device has been assigned a boot index and is identified as a PCI
-device with a corresponding s390 PCI Bus device.
+The virtio-blkdev functions are incorrectly listed in s390-ccw.h as belonging to
+virtio.c.  Additionally, virtio_load_direct() has an unused subchan_id argument.
 
-Boot support is only added for virtio-blk-pci at this time and is limited to
-devices with an assigned bootindex.
+Remove the unused argument and move the prototypes to virtio.h so that they are
+independent from the CCW bus.
 
-A "loadparm" property is added to PCI boot devices on s390x.
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Jared Rossi <jrossi@linux.ibm.com>
+---
+ pc-bios/s390-ccw/s390-ccw.h      | 4 ----
+ pc-bios/s390-ccw/virtio.h        | 7 +++++++
+ pc-bios/s390-ccw/bootmap.c       | 2 +-
+ pc-bios/s390-ccw/virtio-blkdev.c | 2 +-
+ 4 files changed, 9 insertions(+), 6 deletions(-)
 
-A simple test to check basic functionality is added to the cdrom-tests in qtest.
-
-Changes v1 -> v2:
-- Store boot device type/bus as fields of VDev to reduce global variables
-- Move existing CLP definitions for easier use in BIOS
-- Define a constant for the configuration BAR rather than using a magic 15
-- Read BARs from configuration space rather than assuming BAR 4 is always used
-- Rework read/write logic to avoid potential buffer overflows
-- Create wrappers to do byte swapping as part of common read/writes
-- Add "loadparm" property to PCI boot devices on s390x
-
-Jared Rossi (10):
-  pc-bios/s390-ccw: Fix misattributed function prototypes
-  pc-bios/s390-ccw: Store boot device type and bus separately
-  pc-bios/s390-ccw: Split virtio-ccw and generic virtio
-  include/hw/s390x: Move CLP definitions for easier BIOS access
-  pc-bios/s390-ccw: Introduce CLP Architecture
-  pc-bios/s390-ccw: Introduce PCI device
-  pc-bios/s390-ccw: Add support for virtio-blk-pci IPL
-  s390x: Build IPLB for virtio-pci devices
-  hw: Add "loadparm" property to PCI devices for booting on s390x
-  tests/qtest: Add s390x PCI boot test to cdrom-test.c
-
- hw/s390x/ipl.h                            |   8 +-
- include/hw/pci/pci_device.h               |   3 +
- include/hw/s390x/ipl/qipl.h               |  17 +
- include/hw/s390x/{ => ipl}/s390-pci-clp.h |   0
- include/hw/s390x/s390-pci-bus.h           |   4 +-
- pc-bios/s390-ccw/clp.h                    |  24 ++
- pc-bios/s390-ccw/iplb.h                   |   4 -
- pc-bios/s390-ccw/pci.h                    |  88 ++++++
- pc-bios/s390-ccw/s390-ccw.h               |   7 -
- pc-bios/s390-ccw/virtio-ccw.h             |  24 ++
- pc-bios/s390-ccw/virtio-pci.h             |  79 +++++
- pc-bios/s390-ccw/virtio-scsi.h            |   2 +-
- pc-bios/s390-ccw/virtio.h                 |  15 +-
- hw/pci/pci.c                              |  39 +++
- hw/s390x/ipl.c                            |  63 +++-
- hw/s390x/s390-pci-bus.c                   |   2 +-
- hw/s390x/s390-pci-vfio.c                  |   2 +-
- pc-bios/s390-ccw/bootmap.c                |   2 +-
- pc-bios/s390-ccw/clp.c                    |  96 ++++++
- pc-bios/s390-ccw/main.c                   |  80 ++++-
- pc-bios/s390-ccw/netmain.c                |   2 +-
- pc-bios/s390-ccw/pci.c                    | 331 ++++++++++++++++++++
- pc-bios/s390-ccw/virtio-blkdev.c          |  59 ++--
- pc-bios/s390-ccw/virtio-ccw.c             | 242 +++++++++++++++
- pc-bios/s390-ccw/virtio-net.c             |   5 +-
- pc-bios/s390-ccw/virtio-pci.c             | 360 ++++++++++++++++++++++
- pc-bios/s390-ccw/virtio-scsi.c            |   6 +-
- pc-bios/s390-ccw/virtio.c                 | 239 +++-----------
- tests/qtest/cdrom-test.c                  |   7 +
- pc-bios/s390-ccw/Makefile                 |   3 +-
- 30 files changed, 1552 insertions(+), 261 deletions(-)
- rename include/hw/s390x/{ => ipl}/s390-pci-clp.h (100%)
- create mode 100644 pc-bios/s390-ccw/clp.h
- create mode 100644 pc-bios/s390-ccw/pci.h
- create mode 100644 pc-bios/s390-ccw/virtio-ccw.h
- create mode 100644 pc-bios/s390-ccw/virtio-pci.h
- create mode 100644 pc-bios/s390-ccw/clp.c
- create mode 100644 pc-bios/s390-ccw/pci.c
- create mode 100644 pc-bios/s390-ccw/virtio-ccw.c
- create mode 100644 pc-bios/s390-ccw/virtio-pci.c
-
+diff --git a/pc-bios/s390-ccw/s390-ccw.h b/pc-bios/s390-ccw/s390-ccw.h
+index b1dc35cded..47ea66bd4d 100644
+--- a/pc-bios/s390-ccw/s390-ccw.h
++++ b/pc-bios/s390-ccw/s390-ccw.h
+@@ -67,11 +67,7 @@ void sclp_get_loadparm_ascii(char *loadparm);
+ int sclp_read(char *str, size_t count);
+ 
+ /* virtio.c */
+-unsigned long virtio_load_direct(unsigned long rec_list1, unsigned long rec_list2,
+-                                 unsigned long subchan_id, void *load_addr);
+ bool virtio_is_supported(SubChannelId schid);
+-int virtio_blk_setup_device(SubChannelId schid);
+-int virtio_read(unsigned long sector, void *load_addr);
+ 
+ /* bootmap.c */
+ void zipl_load(void);
+diff --git a/pc-bios/s390-ccw/virtio.h b/pc-bios/s390-ccw/virtio.h
+index 5c5e808a50..597bd42358 100644
+--- a/pc-bios/s390-ccw/virtio.h
++++ b/pc-bios/s390-ccw/virtio.h
+@@ -277,7 +277,14 @@ int virtio_run(VDev *vdev, int vqid, VirtioCmd *cmd);
+ int virtio_reset(VDev *vdev);
+ int virtio_setup_ccw(VDev *vdev);
+ 
++/* virtio-net.c */
+ int virtio_net_init(void *mac_addr);
+ void virtio_net_deinit(void);
+ 
++/* virtio-blkdev.c */
++int virtio_blk_setup_device(SubChannelId schid);
++int virtio_read(unsigned long sector, void *load_addr);
++unsigned long virtio_load_direct(unsigned long rec_list1, unsigned long rec_list2,
++                                 void *load_addr);
++
+ #endif /* VIRTIO_H */
+diff --git a/pc-bios/s390-ccw/bootmap.c b/pc-bios/s390-ccw/bootmap.c
+index 0f8baa0198..420ee32eff 100644
+--- a/pc-bios/s390-ccw/bootmap.c
++++ b/pc-bios/s390-ccw/bootmap.c
+@@ -662,7 +662,7 @@ static int zipl_load_segment(ComponentEntry *entry)
+                  */
+                 break;
+             }
+-            address = virtio_load_direct(cur_desc[0], cur_desc[1], 0,
++            address = virtio_load_direct(cur_desc[0], cur_desc[1],
+                                          (void *)address);
+             if (!address) {
+                 puts("zIPL load segment failed");
+diff --git a/pc-bios/s390-ccw/virtio-blkdev.c b/pc-bios/s390-ccw/virtio-blkdev.c
+index 7b2d1e20f4..4b819dd80f 100644
+--- a/pc-bios/s390-ccw/virtio-blkdev.c
++++ b/pc-bios/s390-ccw/virtio-blkdev.c
+@@ -64,7 +64,7 @@ int virtio_read_many(unsigned long sector, void *load_addr, int sec_num)
+ }
+ 
+ unsigned long virtio_load_direct(unsigned long rec_list1, unsigned long rec_list2,
+-                                 unsigned long subchan_id, void *load_addr)
++                                 void *load_addr)
+ {
+     u8 status;
+     int sec = rec_list1;
 -- 
 2.49.0
 
