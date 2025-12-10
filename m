@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD7C9CB3372
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 15:51:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C1ECCB336B
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 15:51:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTLWa-0007GP-B4; Wed, 10 Dec 2025 09:50:40 -0500
+	id 1vTLWa-0007Gn-O0; Wed, 10 Dec 2025 09:50:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jim.macarthur@linaro.org>)
- id 1vTLWF-0007DU-Mu
+ id 1vTLWG-0007DV-8R
  for qemu-devel@nongnu.org; Wed, 10 Dec 2025 09:50:22 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jim.macarthur@linaro.org>)
- id 1vTLWD-0003Cc-23
- for qemu-devel@nongnu.org; Wed, 10 Dec 2025 09:50:18 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-477ba2c1ca2so90711585e9.2
- for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 06:50:14 -0800 (PST)
+ id 1vTLWD-0003Cg-9k
+ for qemu-devel@nongnu.org; Wed, 10 Dec 2025 09:50:19 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4779d47be12so62324665e9.2
+ for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 06:50:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1765378213; x=1765983013; darn=nongnu.org;
+ d=linaro.org; s=google; t=1765378214; x=1765983014; darn=nongnu.org;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=x5J6irympALxO9zFBVJN5fXnibixGLu4B+VHKb8EIcA=;
- b=BI071+g0bCApAFuwqvPL0KuDouYvXgDyXhcYvIk2gyqCbSbELxvAWaar+58NdpBbYz
- PruVbbEh0cqF62CE3kVbzbvygC1GYyv4R9bVvN8uVcPD6+ss2/XqdRJ1fA2yDxt6Dj4j
- 8UHD0NemQtRs10gD0TRJS+MEguWWW3CePncKPYSOwW99ojmhLkXkL6mAz/Ta8mOeMfB/
- hZBNkLvICo5/SmdizCLV2a2el7mSZQGzW8K++oZmRAox6MtjVE8sD7YxU+v0DKjjYQdT
- XR7l6e2xb1WoQVLLg8R/6g8xCeJenCapUOBHFhDdTReCjasfeWJ32q9DmsaJNogfn3R7
- 2ezA==
+ :reply-to; bh=39pxJpy6ZHXUTQRTHCJ6qo/oQbW8XDTa4280QEI5Oos=;
+ b=bH0sRNpi4/dFgwoeBb/09+S0r6lRdCAZXtOOAiLGZy2qtitDwk5aCb2MQAEU+z+8by
+ Rr8WgaJbbZ5Jfg89f8p8uXHTt0VkKhR4aZMohJvEdfjhJVEVbKger/XFbPafbf+IqEog
+ j6Z0wqS2D74YeLEeC+FKRDYfQATa3F0gVvcg2j9Q3/gMRVXxG+psMz37wMYTS3fxONJN
+ xs01+g2PWtAUcQdgXs6wOpgR0r811l3GvuyikLaFJNRmJEAbNYM0iiJ2lS7mSa39VOUM
+ oRxv0SYdbxktU0QQpsxQqqy6mHtAi3wcHYCV3/E5u6tQ2MmNgH8d9DESwJMYsFpymcW8
+ Ipyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765378213; x=1765983013;
+ d=1e100.net; s=20230601; t=1765378214; x=1765983014;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=x5J6irympALxO9zFBVJN5fXnibixGLu4B+VHKb8EIcA=;
- b=ISIe0WTYlabkOjNVxidcMy55oQdXqjh6ym2yc8F839SI/EnuswwaqGcseO7DyeMT/3
- wDz+mtabMXK30GNU3KDzjpTRxm4hldFc0ysWqf+O15u3JX2JcnurGAhr0y6Ri8eVCQRf
- ZWu9AvoEJ/6ImQ9ejZwjTXH8jCQq7+nAWn8RHoq6q0nzpbxVmp99111MJNM5SaStTtn0
- hdpRXGF6prX+MncPcP5flv/810t7i4FmF7wLiB7KvpA89Qzo39F9/o/fIyIWjwQMly9p
- 8CGIZeJdlEOlEvyua7jDpaOfTg5QyOG+MUadFEGRC4vG27vMKgWFk1BEGdXE6ZTRjuba
- GKQQ==
-X-Gm-Message-State: AOJu0YyL+PRS3bzFVd6Ou5N+t30EqZcoy6557GVhPetXxXK0fR6Sg235
- cxvhQWcSnxgwlz/jPnf+P0+7PGpOLeKtB8qAxtQMgKwzeKB54YzUXeiUzXCseoJT0NPnKSvh5yq
- xAgNEDRk=
-X-Gm-Gg: ASbGncuQucZAsiD84yokpUut04DnBcVGgrrR1mdygPdHIBtzHPB889SjUiA4/Tt1U4R
- iLkoz001EN74qz9KNW3ATy0q974YZf49C6EnDqebIH5itlnW7VOY7kNI3DKLiddPJ9VLpPYK885
- ETMInubN4dzLx+qrGvGSNtFvFU8+G5viDPtaz8kh3Vdv4cyxReKIfEqK6uU3adFbeUdlBmqCOph
- nguMZh56U6xdha8+PqOjMMDm5CDUt7P2RukoSbji79s6i2pTK6i7c5kp3To+BTOIlWoFa45qpwI
- cu7jiEW8xy8LKxiUeLpLRUQhYChG8F8qvmouM0rtZr1zKWRkY648zR+EB6A8E5jbIrh2P06hjFu
- j4/R3XjTS9VAo2zv4Yi1e7dsD++CTD6Sm8ZiOXnSo5iTtsi0wm/mXuF4McO0ZrVJd1xWeo34E0Z
- QGqYFmkc24KaU0Ug==
-X-Google-Smtp-Source: AGHT+IGeqoDcVYpC0KYM3jG6Gvmo5Fg8nlss0aJIIklrSfoGyHVDBYQ5mE2c2CZmulLzF089MiRJnA==
-X-Received: by 2002:a05:600c:3484:b0:477:9eb8:97d2 with SMTP id
- 5b1f17b1804b1-47a837fd285mr30295755e9.8.1765378213509; 
+ bh=39pxJpy6ZHXUTQRTHCJ6qo/oQbW8XDTa4280QEI5Oos=;
+ b=c2g7XofS98EcjLkpI700fbtECqfBDOMKj2vybxr/gpStfyR11WK86N3ovY8+pAxKXe
+ fQNZzeo/vnXLhxkmQPh0o5xqkiZRK6FD9Fth6OmMCJoGz0eZuHUFaXNAvIak2UO6oQaJ
+ HJq2yVHTv0D3GJ6mrqttCC/QCVKQ397OLmgMacT5IwCUPqOALQKMQPL51lxhDGe9KLot
+ OBmgC8+Eb3RgpCRnbHri+hhd250/Jb7s+qqmiLvmaoQD55dTdEsFmKmyG0J6tk6iabGP
+ vlka/4FfgrB4zlR8MBtiL5tc7WpsENP5KfH9j/nm2FV9th1CmoDcr7S6wsC/zfozBNCV
+ Nqtw==
+X-Gm-Message-State: AOJu0Yxy7+PZoAcHGMBP6vUZOOgIpaTpllSgL2rlvgg8dKY9INg0cM1h
+ 8RHZxnO/WNVdWDvK8R35t6c+nagYOHslHTnFFX4TnC5+KmOx0NXodRvcARkfJvuXHLIX4DPZ7n5
+ 8JyKK+ZU=
+X-Gm-Gg: ASbGncuBbi/YJOHN2KfDItPmbBRX9dk45Q3PucUOX3YyTUmR83zwwG9dH8uVNDvPu8C
+ o72pghy8YNKbRvL/DIOTkjuThfzmh9B6WBQ9b0hmLZmgD/uBRK3UOnjctCCKpUBdhxVFXf/8xfZ
+ XD9Sc+e9TU5VAbX1N7yKlXzjr1FHuR/LXfZASeyrT2FQgioY0xAHB7WuD+T5IMTMWCWf5Tk34S4
+ Rr/YwiIPrqtnQWN2kNKtdLle9A0N+JNnv83u8U1oK5wboG1LUP0Aw2W2+CW6cEY/XTUsChAQntc
+ CvM+1tRVl0A/flmywX/xVYv+eZNt2umQiyDL8CmBwnUq6tzZsVPA5AWVd+kOdrqvcohKCCjJR2k
+ 85+5XXkYii13SeglFEVW20iGnGYx3Y38Tuj0HScZ7C885tu2JuBOplh7Zzo283sDfYLiwPFKlG4
+ 38WOYsKg0VXCDUMQ==
+X-Google-Smtp-Source: AGHT+IH1enndv9zaNa8DYGZLVMXo+kLktjfddPsd9ZzDJZv+o5870wJYadATzR1+RgYf84uKt6jzPQ==
+X-Received: by 2002:a05:600c:a49:b0:477:7bca:8b2b with SMTP id
+ 5b1f17b1804b1-47a83814836mr28753665e9.15.1765378213933; 
  Wed, 10 Dec 2025 06:50:13 -0800 (PST)
 Received: from [127.0.1.1] ([2a10:d582:31e:0:62e8:705f:f7a:c7b0])
  by smtp.gmail.com with ESMTPSA id
@@ -64,19 +64,20 @@ Received: from [127.0.1.1] ([2a10:d582:31e:0:62e8:705f:f7a:c7b0])
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 10 Dec 2025 06:50:13 -0800 (PST)
 From: Jim MacArthur <jim.macarthur@linaro.org>
-Date: Wed, 10 Dec 2025 14:50:12 +0000
-Subject: [PATCH v6 2/4] target/arm: Allow writes to FNG1, FNG0, A2
+Date: Wed, 10 Dec 2025 14:50:13 +0000
+Subject: [PATCH v6 3/4] target/arm/tcg/cpu64.c: Enable ASID2 for cpu_max
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251210-jmac-asid2-v6-2-d3b3acab98c7@linaro.org>
+Message-Id: <20251210-jmac-asid2-v6-3-d3b3acab98c7@linaro.org>
 References: <20251210-jmac-asid2-v6-0-d3b3acab98c7@linaro.org>
 In-Reply-To: <20251210-jmac-asid2-v6-0-d3b3acab98c7@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Jim MacArthur <jim.macarthur@linaro.org>
+Cc: Jim MacArthur <jim.macarthur@linaro.org>, 
+ Gustavo Romero <gustavo.romero@linaro.org>
 X-Mailer: b4 0.13.0
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=jim.macarthur@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=jim.macarthur@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,118 +100,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This just allows read/write of three feature bits. ASID is still
-ignored. Any writes to TTBR0_EL0 and TTBR1_EL0, including changing
-the ASID, will still cause a complete flush of the TLB.
+docs/system/arm/emulation.rst: Add ASID2
 
+Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
 Signed-off-by: Jim MacArthur <jim.macarthur@linaro.org>
 ---
- target/arm/cpu-features.h |  7 +++++++
- target/arm/helper.c       | 28 ++++++++++++++++++++++------
- target/arm/internals.h    |  5 +++++
- 3 files changed, 34 insertions(+), 6 deletions(-)
+ docs/system/arm/emulation.rst | 1 +
+ target/arm/tcg/cpu64.c        | 4 ++++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-index 579fa8f8f4..d56bda9ce0 100644
---- a/target/arm/cpu-features.h
-+++ b/target/arm/cpu-features.h
-@@ -346,6 +346,8 @@ FIELD(ID_AA64MMFR3, SDERR, 52, 4)
- FIELD(ID_AA64MMFR3, ADERR, 56, 4)
- FIELD(ID_AA64MMFR3, SPEC_FPACC, 60, 4)
+diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
+index 31a5878a8f..3f30ea5a30 100644
+--- a/docs/system/arm/emulation.rst
++++ b/docs/system/arm/emulation.rst
+@@ -24,6 +24,7 @@ the following architecture extensions:
+ - FEAT_AIE (Memory Attribute Index Enhancement)
+ - FEAT_Armv9_Crypto (Armv9 Cryptographic Extension)
+ - FEAT_ASID16 (16 bit ASID)
++- FEAT_ASID2 (Concurrent use of two ASIDs)
+ - FEAT_ATS1A (Address Translation operations that ignore stage 1 permissions)
+ - FEAT_BBM at level 2 (Translation table break-before-make levels)
+ - FEAT_BF16 (AArch64 BFloat16 instructions)
+diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+index 6871956382..ef4c0c8d73 100644
+--- a/target/arm/tcg/cpu64.c
++++ b/target/arm/tcg/cpu64.c
+@@ -1334,6 +1334,10 @@ void aarch64_max_tcg_initfn(Object *obj)
+     t = FIELD_DP64(t, ID_AA64MMFR3, AIE, 1);      /* FEAT_AIE */
+     SET_IDREG(isar, ID_AA64MMFR3, t);
  
-+FIELD(ID_AA64MMFR4, ASID2, 8, 4)
++    t = GET_IDREG(isar, ID_AA64MMFR4);
++    t = FIELD_DP64(t, ID_AA64MMFR4, ASID2, 1);    /* FEAT_ASID2 */
++    SET_IDREG(isar, ID_AA64MMFR4, t);
 +
- FIELD(ID_AA64DFR0, DEBUGVER, 0, 4)
- FIELD(ID_AA64DFR0, TRACEVER, 4, 4)
- FIELD(ID_AA64DFR0, PMUVER, 8, 4)
-@@ -1369,6 +1371,11 @@ static inline bool isar_feature_aa64_aie(const ARMISARegisters *id)
-     return FIELD_EX64_IDREG(id, ID_AA64MMFR3, AIE) != 0;
- }
- 
-+static inline bool isar_feature_aa64_asid2(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64_IDREG(id, ID_AA64MMFR4, ASID2) != 0;
-+}
-+
- static inline bool isar_feature_aa64_mec(const ARMISARegisters *id)
- {
-     return FIELD_EX64_IDREG(id, ID_AA64MMFR3, MEC) != 0;
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index c20334fa65..534c783be9 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -428,6 +428,15 @@ int alle1_tlbmask(CPUARMState *env)
-             ARMMMUIdxBit_Stage2_S);
- }
- 
-+int alle2_tlbmask(void)
-+{
-+    return (ARMMMUIdxBit_E20_2 |
-+            ARMMMUIdxBit_E20_2_PAN |
-+            ARMMMUIdxBit_E20_2_GCS |
-+            ARMMMUIdxBit_E20_0 |
-+            ARMMMUIdxBit_E20_0_GCS);
-+}
-+
- static const ARMCPRegInfo cp_reginfo[] = {
-     /*
-      * Define the secure and non-secure FCSE identifier CP registers
-@@ -2802,12 +2811,7 @@ static void vmsa_tcr_ttbr_el2_write(CPUARMState *env, const ARMCPRegInfo *ri,
-      */
-     if (extract64(raw_read(env, ri) ^ value, 48, 16) &&
-         (arm_hcr_el2_eff(env) & HCR_E2H)) {
--        uint16_t mask = ARMMMUIdxBit_E20_2 |
--                        ARMMMUIdxBit_E20_2_PAN |
--                        ARMMMUIdxBit_E20_2_GCS |
--                        ARMMMUIdxBit_E20_0 |
--                        ARMMMUIdxBit_E20_0_GCS;
--        tlb_flush_by_mmuidx(env_cpu(env), mask);
-+        tlb_flush_by_mmuidx(env_cpu(env), alle2_tlbmask());
-     }
-     raw_write(env, ri, value);
- }
-@@ -6102,6 +6106,12 @@ static void tcr2_el1_write(CPUARMState *env, const ARMCPRegInfo *ri,
-     if (cpu_isar_feature(aa64_aie, cpu)) {
-         valid_mask |= TCR2_AIE;
-     }
-+    if (cpu_isar_feature(aa64_asid2, cpu)) {
-+        valid_mask |= TCR2_FNG1 | TCR2_FNG0 | TCR2_A2;
-+        if (((raw_read(env, ri) ^ value) & TCR2_A2) != 0) {
-+            tlb_flush_by_mmuidx(CPU(cpu), alle1_tlbmask(env));
-+        }
-+    }
-     value &= valid_mask;
-     raw_write(env, ri, value);
- }
-@@ -6121,6 +6131,12 @@ static void tcr2_el2_write(CPUARMState *env, const ARMCPRegInfo *ri,
-     if (cpu_isar_feature(aa64_mec, cpu)) {
-         valid_mask |= TCR2_AMEC0 | TCR2_AMEC1;
-     }
-+    if (cpu_isar_feature(aa64_asid2, cpu)) {
-+        valid_mask |= TCR2_FNG1 | TCR2_FNG0 | TCR2_A2;
-+        if (((raw_read(env, ri) ^ value) & TCR2_A2) != 0) {
-+            tlb_flush_by_mmuidx(CPU(cpu), alle2_tlbmask());
-+        }
-+    }
-     value &= valid_mask;
-     raw_write(env, ri, value);
- }
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 75677945af..db9cc1fd73 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -1891,6 +1891,11 @@ uint64_t gt_direct_access_timer_offset(CPUARMState *env, int timeridx);
-  * all EL1" scope; this covers stage 1 and stage 2.
-  */
- int alle1_tlbmask(CPUARMState *env);
-+/*
-+ * Return mask of ARMMMUIdxBit values corresponding to an "invalidate
-+ * all EL2&0" scope.
-+ */
-+int alle2_tlbmask(void);
- 
- /* Set the float_status behaviour to match the Arm defaults */
- void arm_set_default_fp_behaviours(float_status *s);
+     t = GET_IDREG(isar, ID_AA64ZFR0);
+     t = FIELD_DP64(t, ID_AA64ZFR0, SVEVER, 2);    /* FEAT_SVE2p1 */
+     t = FIELD_DP64(t, ID_AA64ZFR0, AES, 2);       /* FEAT_SVE_PMULL128 */
 
 -- 
 2.43.0
