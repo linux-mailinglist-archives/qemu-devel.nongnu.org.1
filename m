@@ -2,197 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D89DCB4225
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 23:11:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B344CB4331
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 00:02:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTSOu-0003rp-87; Wed, 10 Dec 2025 17:11:12 -0500
+	id 1vTTB3-0006Bp-QK; Wed, 10 Dec 2025 18:00:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bschubert@ddn.com>)
- id 1vTSOp-0003lf-95; Wed, 10 Dec 2025 17:11:07 -0500
-Received: from outbound-ip191b.ess.barracuda.com ([209.222.82.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bschubert@ddn.com>)
- id 1vTSOk-00013T-U2; Wed, 10 Dec 2025 17:11:07 -0500
-Received: from SN4PR0501CU005.outbound.protection.outlook.com
- (mail-southcentralusazon11021084.outbound.protection.outlook.com
- [40.93.194.84]) by mx-outbound20-251.us-east-2b.ess.aws.cudaops.com
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 10 Dec 2025 22:10:53 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WQeVLs/M0UxSQA7Ls6kIP2t/JGcmwo7H5Cm7KGTkfR7QWrtX7GnbjRnWfVKkD/rXEh0PsPHeZF3Nn+Wd4PTj7gHCnBwlEsWbxO88CMd2vtwoVC9Jc9rTbAAQxyQMd2mqFLlgRLKV8N1MtNTry/j4oVw2wb6jSCQjADe+Lw+z0DPyOG6lhizsNPdPNS0hynElnI+Rk/urxmMzHUJ0WCeqqtC/uFF125QEkxAgXWS1nsjrgCbBrAOL67PvMmQpi38Y/hGaDozOJ34pwVZYDd8mM2XZwsqHbWPxLwt0MzkNCjmCaa6rlaAa+FXqAKq8WqspqBjD0ZEgaNFULo4flhZ5Ow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yHpa1HhqdYTLqpQ9QJXJdurRMQ55DT3j6onswGQr4C8=;
- b=MBhSGAA9L1h7YMWRFagLKaC3nL8uCuguT1zMWnhfGnkxHsDZgNr4HY9WlOJ+7dn3yQgl3QUMjZVaLm9G43eIXOP/cIV9ydWzM/+f9BVehwjpC5P9WvqJG5fce2lFyXykR97JvE+zTm4a9g3uARblqISHutchQyFv+yU9yxDdL10OjkgW5EBQ1argzYU8Q+V5TzlzHFp2T2TYO1ihipfKsmoul52j/LxiI6UxbLzetPoNeniq06wF52RyPZFtXqzQgrD4rTBjr9J5Sx/rFPZDVzkcNstF2w6X/Hn2ZNP4MCV851zMC9ewYSY+w5jRQh/k0/ExvSuPVsEHF4DXlRhvmA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=ddn.com; dmarc=pass action=none header.from=ddn.com; dkim=pass
- header.d=ddn.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ddn.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yHpa1HhqdYTLqpQ9QJXJdurRMQ55DT3j6onswGQr4C8=;
- b=NxBj5UkDy7lxpXJC9k23blQCXVDGQEtMLOpvsEBMe/mbQN77DRAVWaXpvLxOcUf6xPKc5IcUnB9aEATfWGkkcsd9BOHjW8WZO/7lEo/D3LPwHhiudncQysXryNMoDFGSv+eUjUbj+0LJYbol4X/6XPqd+N/4a/ivLewxAOCizMA=
-Received: from CH2PR19MB3864.namprd19.prod.outlook.com (2603:10b6:610:93::21)
- by SN7PR19MB6972.namprd19.prod.outlook.com (2603:10b6:806:2a7::15)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.7; Wed, 10 Dec
- 2025 22:10:51 +0000
-Received: from CH2PR19MB3864.namprd19.prod.outlook.com
- ([fe80::abe1:8b29:6aaa:8f03]) by CH2PR19MB3864.namprd19.prod.outlook.com
- ([fe80::abe1:8b29:6aaa:8f03%5]) with mapi id 15.20.9412.005; Wed, 10 Dec 2025
- 22:10:51 +0000
-From: Bernd Schubert <bschubert@ddn.com>
-To: Brian Song <hibriansong@gmail.com>, "qemu-block@nongnu.org"
- <qemu-block@nongnu.org>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "armbru@redhat.com"
- <armbru@redhat.com>, "fam@euphon.net" <fam@euphon.net>, "hreitz@redhat.com"
- <hreitz@redhat.com>, "kwolf@redhat.com" <kwolf@redhat.com>,
- "stefanha@redhat.com" <stefanha@redhat.com>
-Subject: Re: [PATCH RFC 1/1] block/export: FUSE-over-io_uring Support for QEMU
- FUSE Exports
-Thread-Topic: [PATCH RFC 1/1] block/export: FUSE-over-io_uring Support for
- QEMU FUSE Exports
-Thread-Index: AQHb9oDe2/mwNJp7TkWecWngdBHPObUcVq0A
-Date: Wed, 10 Dec 2025 22:10:50 +0000
-Message-ID: <6ef9f104-3a04-4065-8e57-40dc3ace98cd@ddn.com>
-References: <20250716183824.216257-1-hibriansong@gmail.com>
- <20250716183824.216257-2-hibriansong@gmail.com>
-In-Reply-To: <20250716183824.216257-2-hibriansong@gmail.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-GB
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla Thunderbird
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=ddn.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH2PR19MB3864:EE_|SN7PR19MB6972:EE_
-x-ms-office365-filtering-correlation-id: de46fc42-970c-4a4c-e3b5-08de3838fac3
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|376014|10070799003|19092799006|1800799024|366016|38070700021; 
-x-microsoft-antispam-message-info: =?utf-8?B?cERXSytVRFB5ZUIzaGptTmRLVGhkaDIyaElWTjBpNG1KV1lBbEV0dmFvTTFT?=
- =?utf-8?B?eC9OSU5ZRWhVdTZPS3RUd1RjSkw0QjVMUk5TTCt4SWFkMXViMnNVUkl6THdo?=
- =?utf-8?B?c1VUK0g1SlA5dzQ4R2lKY1pKV0VHQzdzZ1lYL1U3Sm1kQmhVenNvTWFET0dE?=
- =?utf-8?B?TnpmWVVseDNCUHFFdHJmS21HNkx5R0JmUW5ZQlUrVUtjanlwQVFwS3QwaE5z?=
- =?utf-8?B?bk05bERaUlAxckJBQWZIVytXcTlRMWJyZXFqMW9iYWw0MGRGVjJYNDBvOWpT?=
- =?utf-8?B?ZUE0S21NYnloQXIxajVMcXRHRHRjV0N0WGFudVo0bTR1WG5pd0Y3ZS85aFU2?=
- =?utf-8?B?dzNydWtaWGhnc3J0SkhLdjI0K3praUZQMHVLa0IzcDMrOWs2b3VnZDFrVUNh?=
- =?utf-8?B?NStrdFBvUUV0Qk9LUDloa0g2N3M1ak4vRHd5VE1PSUI3bVYwTTQvOThmdG03?=
- =?utf-8?B?eGlvZWVzaGx4YnlqeXltMEFmMnkwMStMOVZmRW0vWDNtc2d0M1dSVmdJTmpM?=
- =?utf-8?B?eDkyL1JGelZZR09icXFGNHlyNEJxa2ZoSEQyTFBja0ljZXUzcnVsOHIzTzJu?=
- =?utf-8?B?NUxqQVRrOVVoRXpVWlRpa2dPQ1lYaVdqT016bkRoZ3hid3NnMTBzU210Z3Bv?=
- =?utf-8?B?eUh6ZFpKYmxncFVzUDREcTRHRVlKRWdUTlE1ZnRpYmpDbjQxQ05aZjhCYW5I?=
- =?utf-8?B?N1VJd0pNNlBtSXFyL0hqcHQxa0lYRVJISGJsbjRDS2NjK0QrVjdYaCs1Y1Vi?=
- =?utf-8?B?cGZES3lGR21mYzVxcy80K29uaXhlK3RXMFREcVdnUG42c1NFWnhFYm9DaWNh?=
- =?utf-8?B?ZzlZWUVpVGc4amEzTXl2aEd5dVhWdHNmWjFrZ0xseWxvQ3doNnd4OUhXOHlF?=
- =?utf-8?B?QVVFZDBxakVFdVFNYUZ4dXJlcEhLaW5wdVUrdDZTL1pRWXRXMWU1Tk1TL1J4?=
- =?utf-8?B?Y0xVUVdPUWlraEtGMWhReEFCcWp1YWwybUJJaHZnVWxkMGFUdlBXaCtlT1E2?=
- =?utf-8?B?WFFIY3c2d1g1T3pzbERscjVWUmF4VDFXTHc2aTFYOGtiTHhpVEVlVHZCRjdW?=
- =?utf-8?B?MmZ6enNORTN5UjFtd3VybTkvN3dCSmhWZmZPdmJwSEc1WkxIUnFtdE1KYk5M?=
- =?utf-8?B?RVZ3NGZLWFo2VHlwaVJ1c3Y0WkQxN0JSSjROaEJMb2FsYXhkczdzYmVOSEtO?=
- =?utf-8?B?S1I5dXpudlliR3pCRld3YlJHQVJ4R3NlSzFVaDdGN2lLQmVUaWJuajBuRU1L?=
- =?utf-8?B?MmhnUjkxZGtibmxwMTdHQUpiNkoyZjlwQ1VPN3V1akFNUC9CQjcyQlF2VTJq?=
- =?utf-8?B?SHZwSEZlTmtoOGEvakYxby8vSzg4dm1JY01oWlF3VTFLdXdsUGlMQnB6cW8x?=
- =?utf-8?B?Smc1RythN3RGaEdBTTRwMjhmcTN6OHlKUHFLQlRQNUp2S1YrUUFCMlVVRzBa?=
- =?utf-8?B?bldZTkFMWGVpZDVWWmFpRWVQUERjYnJQVzhHTHU3MFA3SnhkQVhjT1VMUzMw?=
- =?utf-8?B?MGIwWmE5M2RQMWdqUDE2cUg5QklGcWdUbTJ2VnB6UmlvOGdXSGlHMGhHaXBP?=
- =?utf-8?B?WEFQaHIzd25nMU1JTTNwcWtRVWxmb3JpUzNCdjZSM1VZU0hxemh3UEtNdFht?=
- =?utf-8?B?QlNiMG9sOWpCTEpIWTBnSURjdE4ycUxZOFpDbmFQdnVlakFjZG5uSlMwWWpo?=
- =?utf-8?B?R0VwTFZLWFB5bzEvc203ZWN0QlNYQnIwSFo0WWExTE1yemJrcnV4UTBSeGV4?=
- =?utf-8?B?NWYzTGJrNE1YWVA2RzZxTFF5N0FpWE9DWTQ2Vlp4T3BSMU5OREEyOVVEMGZW?=
- =?utf-8?B?QkdYR1NFVUJwT2pYM3VMOTFEUlNuckh5MXQ0TkZWQmlyUEZCbCt3VmRPYXlP?=
- =?utf-8?B?TmtxZTJ5TUFqQ0cxRHpBVmxtLzBJb0ZTbzNKZHYvZU5CWnpuRlEvTDdOMmdv?=
- =?utf-8?B?UnFKeFJxQThOTjdXSmxqTXZLNzBmWTVMN2ZXL2Ywc0dZWXVzMENOUC9qaS9E?=
- =?utf-8?B?OC9XYWlQZ2VBPT0=?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH2PR19MB3864.namprd19.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(10070799003)(19092799006)(1800799024)(366016)(38070700021);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?aGRDcGlOY0RBNWpyMUt6Wml1R2Z0bDkwTE9BRVY2VXF2Y0R5REkwV0lmc3dW?=
- =?utf-8?B?NFRkKzh1NDV3SG14WFFxajJES2VIQ2NKaFVJQXg3bnlaRm5GbHdvRVRHQmgv?=
- =?utf-8?B?VG9Ic2FpLzZMTTdGc0JkNHZZSllTbkYrZFVyc01LYlRvaWpSNkFTVXdoa0NE?=
- =?utf-8?B?VDlEOFRzRFpXekJqTGsxTGRKaFVtWWhTb0hxMUhkaC85Ykc2MkRwWkp3UEY0?=
- =?utf-8?B?MTRlMWxtZnQ0aVBpQm52VStwQk5uUmc3VFhkU09wYStGSGViV1FlaURwcVJH?=
- =?utf-8?B?UnVwZTlHZmZ4NnRpQW43TktOUS9jb1oyUURIREVpVHBLakpmYTN0a3g0VjA1?=
- =?utf-8?B?RkpNdG41ZjVQdk1HTzRqYlNkQWFzZGlnaytXRDVTQ2ViSXJoY0tmdVpQekY5?=
- =?utf-8?B?YmtlVkFncitORHlQMmUzbmRaN3R0b2xHL2dQcDc5RnVmdzAxdGZZSVhTMTkv?=
- =?utf-8?B?QXlyMlB5cDZBV3Zjckd4R3J2OVRWNExFb08rRnhlRG1GaHB1aTA1QXcvOUsr?=
- =?utf-8?B?c1dtZExmaWNMang5SmoxWGdTVUlkV1ZvT01idENpWHRJZFZGRTRvYjJOSVMr?=
- =?utf-8?B?OGhuOU12VWQvcFVtQkdPUlJWU3VQS09lUTdyKy9kUTJJM1VPaHRoVzlvbmFn?=
- =?utf-8?B?VXh4NkhDckFUNmpqVWR5S1Bkbzk0R1pXb0NKLzNHdkNYQmVUbm9TT3VlRWpW?=
- =?utf-8?B?Z3VzTFlKMHBUY1hGVHNCMDFodEZvZ3ptNllhcjBFcDNnZW04cENRVzFaalY3?=
- =?utf-8?B?Z2RadERTVUt2TkNRVlNSNVFsbnpzWEl5Qi9ONnNHRmRrQlZvMElhZ1JqYU5H?=
- =?utf-8?B?WFc0T2hscklpSW8rQ3htZHpBR2ZTazY5YXlmWkRJbU4xVUpzdVBicmlvUUtk?=
- =?utf-8?B?RkIxL2ZpMFYyeXM0SU1QdXcrektQWGxEcEdENVRhSE5tY0IyRW11bmVYcWFt?=
- =?utf-8?B?RVNLOWxYRWd1dFY3WnE0MDd3bUtzTkdlQWcxbmFacmZKaEdoa1diU016RnpS?=
- =?utf-8?B?N0ZPaG5MZTZKOHJDVzV0N3dRbkttbExlRHdLa3JsTzIxQytSNzVicGVvSlQr?=
- =?utf-8?B?aFdFUktkclJ1aWVIQ3RuTkVWVUcraVVvTDlzbVFLdHJ2NDlmcnFDSGFXTlpj?=
- =?utf-8?B?dVlWc2JlNXMyOEwxWUZKcVFyTEFWejFtb2RrMmd5TU1NT0RZOTFIWUVIdDda?=
- =?utf-8?B?ZXB5WFVCTUJCVW5aWUhFMnFEelZBY3RyZGdYMWR2VWdIVTlpbUJ4eUwwd2Vt?=
- =?utf-8?B?aW1uQ0t4cWdEMyszajhncmNBdTN0T3UvQ2ZJOEFkaE1LblFLMmZnWjZvRnJm?=
- =?utf-8?B?NVZsaFNRRUowUFI4dm9kV1BrK3pPenFmMC9MTjFvRStsSmJoLzRwNFlCZ0VB?=
- =?utf-8?B?Wk80c2MrZmhEbmFjZFZVZmZtRGpyakJuK0diV1NoWHo1dUg4YldrN0E5SDNG?=
- =?utf-8?B?SUhtZ2gwRUM2UTZ5Wjd5TFozTkdLZUNtaDl1Zk9Namp5TkFCY2hKbmxqcmpC?=
- =?utf-8?B?NHpRSWpuKzMxa053MS9nRTJkdk4rR0NiK1RiMWs2T3BCN0xTbytxY09uaDNL?=
- =?utf-8?B?ckJteGJkaHhVblBibjNyRC9yMk5EcDlWd1pXSGZEbUgrYytVbzdwWG9FNzZr?=
- =?utf-8?B?ays5ZGNRSE9lcXdqN3dXR0lpbU1VN3hPbXNRY1N0MC9OaytqZzJaZ3VjcGNj?=
- =?utf-8?B?NkVwM0hjNEFTRzY1VjJmUjg0YlpUY3YxT0tIcjhLcU00SGF3YlRQbXFUckt0?=
- =?utf-8?B?TW4zakFYZks2T2k1NFpGQXhMUHN6d0ZzOUszQlpKZzcvOFhDNWZlbDFIRVFR?=
- =?utf-8?B?Q2xraW5hTGZVek4vK0FuWG1SbVhmZFYrVHVRN3oxRDlmWElscCtvVldxWDEr?=
- =?utf-8?B?Q3V5YTBHM1l4OGI3ZldYMkpyL0ZSU1Zpa0JwNHoyWjFpNi9KcWs0NzR3bUhO?=
- =?utf-8?B?SjZpdmVUcmlsOCs5eWx6ZnVUYUhVcllmTDZhUHphalJvZ2lBeEo5L3EvdWtj?=
- =?utf-8?B?Y2tudHRyUUFNVlhiTE9wVkFadUxWd2tKU20zRFoxN0hXbENXa2RtL3hNKzJN?=
- =?utf-8?B?SysxU2VVZjhHTXBoNmZWbFJ3dGxWNlBpaklNQU5LY2F2bUxINHpITGVhaktC?=
- =?utf-8?B?MkJDWnB2cHVsZGhZVDdqVnFtNVJ2NDZERmMweklhTDh5dHdQQVd1eW1OQjJY?=
- =?utf-8?Q?2nAyg7qmKVEJYjklE7cXmCo=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <0EE031298EE1624C80D5DB7EECBEB40C@namprd19.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <nabihestefan@google.com>)
+ id 1vTTAx-0006Ag-Nn
+ for qemu-devel@nongnu.org; Wed, 10 Dec 2025 18:00:53 -0500
+Received: from mail-qt1-x834.google.com ([2607:f8b0:4864:20::834])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <nabihestefan@google.com>)
+ id 1vTTAt-0006Us-Ug
+ for qemu-devel@nongnu.org; Wed, 10 Dec 2025 18:00:49 -0500
+Received: by mail-qt1-x834.google.com with SMTP id
+ d75a77b69052e-4ed67a143c5so178661cf.0
+ for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 15:00:46 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1765407646; cv=none;
+ d=google.com; s=arc-20240605;
+ b=EuNIco0FXvQu5FSkLr6ERWDLR8TQY+H/eS3HQAk5XLhSZxtK56i344rtGVnackxt6E
+ 7K/ilC+YyZg5WVQt5g1+A8ELaBB4e07BYLCEMG0A2Dw4anw8nPSUu/ST0YZyq4jZlJNv
+ wKnkok0djQ3wkVM/2HtA+mMVmt8M61GFjlsrF3c77YKEV1tWvQ7dUi9iy1LmhRSg0BMf
+ aS1Q5U5dhVmIEa+wnDk3LtTZmKChocHR8c1mNGc0e/96EUreGO8qDD9htQtTr18eA9Yl
+ UxkysV7kXJCu8gEUoS0dPH8DhxwMYxEz+1eOU5h6WyHDzT2zFCcZvfx9/d96wLpAndD+
+ Z5Aw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
+ s=arc-20240605; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:dkim-signature;
+ bh=BXQY9YR5MCV3qoqwm7p+9vegnmEDn42tatiNVe+jV5Q=;
+ fh=Nq07GhmjElunXzvTOZhq+bqFeiSFcU+bpiuhJNr5wUA=;
+ b=aEBwBXn8Dd+d8xqSCDky24vP0NKzvkQragSiAKdfM3jov0dk8eqU1C/vlAyf3MnOV5
+ U5ZOWXAoP+e1Mp7woKlwgX2IO/Tgm3HajP6V5solbFBXcyzVGONjORDArSs1te6eLwHJ
+ FuYAagGOSAMScUOtTIcCCZ3Z3zvkBIifkWYVpj9jneHfZ/GGRJm9PAmz3PP9wFOfg8il
+ mdn3G7U1PHDXjG1PE7rPiykNZ1rSZR29oEpY4aQQb0H2yvEfkJ6JYNHp2D1yz6d/y0zy
+ XuD4FqdELEdSzdCnX0cZGUvZ5roHfMCCA2Jkj7ggeAqLeV+LJRIgBA3QAh8J8lWjRFp9
+ S+0A==; darn=nongnu.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1765407646; x=1766012446; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=BXQY9YR5MCV3qoqwm7p+9vegnmEDn42tatiNVe+jV5Q=;
+ b=ynCrfSOxEk1PUcHcEv001iyUoNWjEmXp6d4YjmDoUBFyNEN4lStQ/yhktwxdQ8s+JM
+ 29MOkx8Z+WKqM7ooK5HSmhRwZQOF8Siw4X4zHeDMoxb6jD3BxWmd5EIS5tnBBq4DR1R8
+ CKccAt7AVZqJqhdo3nhH5mtMaO9O6OT7N6Bz8H0PWD/vYma7Bx7yYzj93JR5W1Cpu8q3
+ 5y2LjvibVbBOBQStyABfi6kN26Hu8hKgvbtHPgMylpcrVbAay7DLxCliH3QnbVKL8PGz
+ NeNIkVlQWxLweI8eXAksE6S1LAGRT4jOyGbifEq8Vo1E7bT1nAgjBNZjkw/PxILNan75
+ DUDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1765407646; x=1766012446;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=BXQY9YR5MCV3qoqwm7p+9vegnmEDn42tatiNVe+jV5Q=;
+ b=NU4MYM/bu8Y+VbaZU4cde343R3w+NLnHFePlPiqf2yLxZvpAjVrZWS81nNpSO9GFZ9
+ eETyGUbvuXQag2N/hOS6fCU0dxDX/RAexHIB7Yl3gNWd1qcCRQq+mbCIZHpQ9MxJCws1
+ 9bCaloG3JIAje9w2Khp3ObpVRZ4oYnlh6M4rZ7oCkdvoeayPP6qG4xJsPwjBkTqOyLDs
+ ULgRYxefWMRIJ3Vy4GJMUxAqOP1CDeK3oJKpc63LhuttPJEnakXiE1miw42vJx3yu4DT
+ NqVnHD3tcxUPVGU+ea0WkOTO3Y/CgcgZ1BTNNSj7j+yjehwJtXnb8fNVUAg3oPRydR8Z
+ o6cQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWcarJQnIzTNRCOCpTr6wftqL0lb78PxyQpl9YS9+tEH7/pfpXP2Oj15Rg3KzLOwybJSdta0va7PjZl@nongnu.org
+X-Gm-Message-State: AOJu0YyPsG8+1qOEcpyFs0dMgvLN9lhWL10GFl+IBvg/qmtCAXcY8N8u
+ X1TsfVl3P8OIxjUX6w8rQNh05IsNAtf8hXPgeG/y5nrGTTrzD5ZGx08hJdTR6OOZ4kVy4WomsdC
+ Y9ktI1kaTlMVoY7lDg8nqpGiXjdvLLaibOc7oC02I
+X-Gm-Gg: ASbGnctYoFuCc7K6S3FIZjRAwo4EzrgeUiLfKoOcQvLp9rVh01KpgHf6D1MvGbsxBLD
+ wCiLtpPKYNKb8BffQI1QlvI8WrglpiutU48GcCtcXWq3LKOOkQsaDUrlfNK00MtHXdb6lGLeBf5
+ k8X+Z2Q/n1+K+sV/r2UrJB2r/8POvaWDE0ez/3D5mLFRttWnSzhdAMw9e4IWlzPqFbFb6DnJAkn
+ MAn4yqfMhJLuoR2kyG36zW44XjVmtZsL3XduUZgnSI/0q44laJ2qjTW9Be87RNIJ8ktbxdi6+xZ
+ 5pfa1JEWP4dzPTVQOeG1bqUm0aB3
+X-Google-Smtp-Source: AGHT+IGmuYHWSEd8ALpBgewk9y/yw/88NlqOgn+aunrdP+n+0XsgTCqHMHnSGqK7xMSd262u9qYunlN8vaBy1Fz+Z8g=
+X-Received: by 2002:a05:622a:34d:b0:4f1:a5f5:31d9 with SMTP id
+ d75a77b69052e-4f1bd878ac2mr3752201cf.6.1765407643893; Wed, 10 Dec 2025
+ 15:00:43 -0800 (PST)
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: AmSIHUaNdzJLEzDWpozoDd6JFyoXd8M+LGnDBrkY49Qhclk6X4VIOMavmJICMx4/fGoea5f907Z7UdbwkEJE8ngJQVv0CKGPFFSSJc1G3BLubR6GboGLj7gcVtrsFnPkPkInveWGzJ87lmCGOD8Hwo8gWW+T5ODxuYS32RyRDp/enefztpdL1xwxU/EMIdh7EYh3OyLgqBmwlYXNRIRe3T2doRUBFSDUYcQJghDUm+RxWXK/+kEJaNRkt2a4U+vfkxME3QpuizsqvSN0SFfsM9nQp3H95DEh2uAF7SMaebNI34JQOWRxTtEXFCYhSg6WkTenPey761rpVF5bHjnNwynCm3ZVcd5n/T/APahW2ZfLU8K3bLxc1vueCKpYkV5e2Yliun0XPN9XKXm34s30RDVismyMKhfzqofwSAqRRa+Ty0doZR9DVDoiH/qYANxPFvzETR4ZYkOaQcvGj1IyBcUd3WOApZMn1gyRIn8z/DbxH9j3KQyQLRYqf+cqd3TJuetGwr+qpBfK1y5BR8VS6DB75LaU0JafuhZ9Hi8/2abYhHkiWw3wQ0pjt4C2D3A9YvcQlmFmqQsjEkT5EdDSsLotWArlaq+5Ex/j6Z7zIJnKjTcmhE6Zomv5Mclz2Ht58pSs8dbwBwUwXwR+VYOjQg==
-X-OriginatorOrg: ddn.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR19MB3864.namprd19.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: de46fc42-970c-4a4c-e3b5-08de3838fac3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Dec 2025 22:10:50.9236 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 753b6e26-6fd3-43e6-8248-3f1735d59bb4
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 4OxuPxlShk+tAA+1OUcHZ4HkhOQ63KpHrWz5LaYGXYQcHdh/rHdjPhJ12Efm0wY+p08gVDJaKDqcyq/LdcCl0w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR19MB6972
-X-BESS-ID: 1765404653-105371-7674-14301-1
-X-BESS-VER: 2019.1_20251209.1901
-X-BESS-Apparent-Source-IP: 40.93.194.84
-X-BESS-Parts: H4sIAAAAAAACA4uuVkqtKFGyUioBkjpK+cVKVoYGphZAVgZQ0NjAzDgtLdnQNN
- nYwtDYzMIiJS3J1MLQwDzR0DjJxNxAqTYWANa6lWFBAAAA
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2,
- rules version 3.2.2.269571 [from 
- cloudscan13-190.us-east-2a.ess.aws.cudaops.com]
- Rule breakdown below
- pts rule name              description
- ---- ---------------------- --------------------------------
- 0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS124931 scores of
- KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-Received-SPF: pass client-ip=209.222.82.124; envelope-from=bschubert@ddn.com;
- helo=outbound-ip191b.ess.barracuda.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20251208074436.1871180-1-kane_chen@aspeedtech.com>
+ <20251208074436.1871180-2-kane_chen@aspeedtech.com>
+In-Reply-To: <20251208074436.1871180-2-kane_chen@aspeedtech.com>
+From: Nabih Estefan <nabihestefan@google.com>
+Date: Wed, 10 Dec 2025 15:00:32 -0800
+X-Gm-Features: AQt7F2p38QyRBWGEoZbDbchVpAkzoZDeKdiz5IWzha35FPl9VIyDM-YEUXlIYxY
+Message-ID: <CA+QoejUQQg7y5t3J18y=aEPFJGC=Od-HSNxh-+6Vupugb9QGSg@mail.gmail.com>
+Subject: Re: [PATCH v3 01/18] hw/misc: Add LTPI controller
+To: Kane Chen <kane_chen@aspeedtech.com>
+Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+ Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, 
+ Troy Lee <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>, 
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, 
+ "open list:ASPEED BMCs" <qemu-arm@nongnu.org>, 
+ "open list:All patches CC here" <qemu-devel@nongnu.org>,
+ troy_lee@aspeedtech.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::834;
+ envelope-from=nabihestefan@google.com; helo=mail-qt1-x834.google.com
+X-Spam_score_int: -175
+X-Spam_score: -17.6
+X-Spam_bar: -----------------
+X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -208,24 +125,298 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgQnJpYW4gZXQgYWwsDQoNCj4gK3N0YXRpYyB2b2lkIGZ1c2VfdXJpbmdfY3FlX2hhbmRsZXIo
-Q3FlSGFuZGxlciAqY3FlX2hhbmRsZXIpDQo+ICt7DQo+ICsgICAgRnVzZVJpbmdFbnQgKmVudCA9
-IGNvbnRhaW5lcl9vZihjcWVfaGFuZGxlciwgRnVzZVJpbmdFbnQsIGZ1c2VfY3FlX2hhbmRsZXIp
-Ow0KPiArICAgIEZ1c2VRdWV1ZSAqcSA9IGVudC0+cTsNCj4gKyAgICBDb3JvdXRpbmUgKmNvOw0K
-PiArICAgIEZ1c2VFeHBvcnQgKmV4cCA9IGVudC0+cS0+ZXhwOw0KPiArDQo+ICsgICAgaW50IGVy
-ciA9IGNxZV9oYW5kbGVyLT5jcWUucmVzOw0KPiArICAgIGlmIChlcnIgIT0gMCkgew0KPiArICAg
-ICAgICAvKiBUT0RPIGVuZF9jb25uIHN1cHBvcnQgKi8NCj4gKw0KPiArICAgICAgICAvKiAtRU5P
-VENPTk4gaXMgb2sgb24gdW1vdW50ICAqLw0KPiArICAgICAgICBpZiAoZXJyICE9IC1FSU5UUiAm
-JiBlcnIgIT0gLUVPUE5PVFNVUFAgJiYNCj4gKyAgICAgICAgICAgIGVyciAhPSAtRUFHQUlOICYm
-IGVyciAhPSAtRU5PVENPTk4pIHsNCj4gKyAgICAgICAgICAgIGZ1c2VfZXhwb3J0X2hhbHQoZXhw
-KTsNCg0KDQp3aGF0IGFjdHVhbGx5IGhhcHBlbmVkIHRvIHRoZXNlIHBhdGNoZXM/IEkgZG9uJ3Qg
-c2VlIGl0IG1lcmdlZCBpbiB0aGUgDQpxZW11IHJlcG8/IFRoZXJlIGlzIGFuIGlzc3VlIGhlcmUu
-IEkga25vdyB3ZSBoYWQgZGlzY3Vzc2VkIC1FQUdBSU4gYW5kIA0KLUVJTlRSLiBBY3R1YWxseSB0
-aGlzIG5lZWRzIHRvIGJlIHNwZWNpYWxseSBoYW5kbGVkLCBhdCBsZWFzdA0KRlVTRV9JT19VUklO
-R19DTURfUkVHSVNURVIsIGJlY2F1c2UgaXQgY2FuIGFycml2ZSBiZWZvcmUgRlVTRV9JTklUDQpp
-cyBwcm9jZXNzZWQgYW5kIHRoZW4ga2VybmVsIHdpbGwgcmV0dXJuIC1FQUdBSU4uDQoNCmh0dHBz
-Oi8vZ2l0aHViLmNvbS9saWJmdXNlL2xpYmZ1c2UvcHVsbC8xMzg3L2NvbW1pdHMvMzRmM2RlYzk3
-Y2NlNTA4NjQyNjc5Y2IxYjg3NGU5OWVkMzZkODE1OA0KDQpJIG5lZWQgdG8gc3BsaXQgdGhpcyB1
-cCBpdCBhbHNvIGluY2x1ZGVzIHNvbWUgb3RoZXIgcmVmYWN0b3JpbmcuDQoNCg0KVGhhbmtzLA0K
-QmVybmQNCg==
+On Sun, Dec 7, 2025 at 11:46=E2=80=AFPM Kane Chen via <qemu-devel@nongnu.or=
+g> wrote:
+>
+> From: Kane-Chen-AS <kane_chen@aspeedtech.com>
+>
+> LTPI (LVDS Tunneling Protocol & Interface) is defined in the OCP DC-SCM
+> 2.0 specification:
+> https://www.opencompute.org/documents/ocp-dc-scm-2-0-ltpi-ver-1-0-pdf
+>
+> LTPI is a protocol and physical interface for tunneling various low-speed
+> signals between the HPM and SCM. As shown in Figure 2, the AST27x0 (left)
+> integrates two LTPI controllers, allowing it to connect to up to two
+> extended boards.
+>
+> This commit introduces a simple device model for the ASPEED LTPI
+> controller in QEMU.
+>
+> The model includes basic MMIO read/write operations and sets default
+> register values during reset to emulate a link-up state.
+>
+> Implements register space with read/write callbacks.
+>
+> Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
+> ---
+>  include/hw/misc/aspeed_ltpi.h |  32 ++++++
+>  hw/misc/aspeed_ltpi.c         | 194 ++++++++++++++++++++++++++++++++++
+>  hw/misc/meson.build           |   1 +
+>  3 files changed, 227 insertions(+)
+>  create mode 100644 include/hw/misc/aspeed_ltpi.h
+>  create mode 100644 hw/misc/aspeed_ltpi.c
+>
+> diff --git a/include/hw/misc/aspeed_ltpi.h b/include/hw/misc/aspeed_ltpi.=
+h
+> new file mode 100644
+> index 0000000000..cb1a9f4bd8
+> --- /dev/null
+> +++ b/include/hw/misc/aspeed_ltpi.h
+> @@ -0,0 +1,32 @@
+> +/*
+> + * ASPEED LTPI Controller
+> + *
+> + * Copyright (C) 2025 ASPEED Technology Inc.
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +#ifndef ASPEED_LTPI_H
+> +#define ASPEED_LTPI_H
+> +
+> +#include "hw/sysbus.h"
+> +
+> +#define TYPE_ASPEED_LTPI "aspeed.ltpi-ctrl"
+> +OBJECT_DECLARE_SIMPLE_TYPE(AspeedLTPIState, ASPEED_LTPI)
+> +
+> +#define ASPEED_LTPI_CTRL_SIZE   0x200
+> +#define ASPEED_LTPI_PHY_SIZE    0x100
+> +#define ASPEED_LTPI_TOP_SIZE    0x100
+
+Is there any specific reason to has ASPEED_LTPI_TOTAL_SIZE declared in
+the header, but the rest of the sizes in the main file? More of a nit,
+but we should group them all together (probably in the header)
+
+> +
+> +struct AspeedLTPIState {
+> +    SysBusDevice parent;
+> +    MemoryRegion mmio;
+> +    MemoryRegion mmio_ctrl;
+> +    MemoryRegion mmio_phy;
+> +    MemoryRegion mmio_top;
+> +
+> +    uint32_t ctrl_regs[ASPEED_LTPI_CTRL_SIZE >> 2];
+> +    uint32_t phy_regs[ASPEED_LTPI_PHY_SIZE >> 2];
+> +    uint32_t top_regs[ASPEED_LTPI_TOP_SIZE >> 2];
+> +};
+> +
+> +#endif /* ASPEED_LTPI_H */
+> diff --git a/hw/misc/aspeed_ltpi.c b/hw/misc/aspeed_ltpi.c
+> new file mode 100644
+> index 0000000000..a94ed804a3
+> --- /dev/null
+> +++ b/hw/misc/aspeed_ltpi.c
+> @@ -0,0 +1,194 @@
+> +/*
+> + * ASPEED LTPI Controller
+> + *
+> + * Copyright (C) 2025 ASPEED Technology Inc.
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "qemu/log.h"
+> +#include "migration/vmstate.h"
+> +#include "hw/misc/aspeed_ltpi.h"
+> +
+> +#define ASPEED_LTPI_TOTAL_SIZE  0x900
+> +#define ASPEED_LTPI_CTRL_BASE   0x000
+> +#define ASPEED_LTPI_PHY_BASE    0x200
+> +#define ASPEED_LTPI_TOP_BASE    0x800
+> +
+> +#define LTPI_CTRL_LINK_MNG 0x42
+> +#define LTPI_PHY_MODE 0x0
+> +
+> +static uint64_t aspeed_ltpi_top_read(void *opaque, hwaddr offset, unsign=
+ed size)
+> +{
+> +    AspeedLTPIState *s =3D opaque;
+> +    uint32_t idx =3D offset >> 2;
+> +
+> +    return s->top_regs[idx];
+> +}
+> +
+> +static void aspeed_ltpi_top_write(void *opaque, hwaddr offset,
+> +                              uint64_t val, unsigned size)
+> +{
+> +    AspeedLTPIState *s =3D opaque;
+> +    uint32_t idx =3D offset >> 2;
+> +
+> +    switch (offset) {
+> +    default:
+> +        s->top_regs[idx] =3D (uint32_t)val;
+> +        break;
+> +    }
+> +}
+> +
+> +static const MemoryRegionOps aspeed_ltpi_top_ops =3D {
+> +    .read =3D aspeed_ltpi_top_read,
+> +    .write =3D aspeed_ltpi_top_write,
+> +    .endianness =3D DEVICE_LITTLE_ENDIAN,
+> +    .valid =3D {
+> +        .min_access_size =3D 1,
+> +        .max_access_size =3D 4,
+> +    },
+> +};
+> +
+> +static uint64_t aspeed_ltpi_phy_read(void *opaque, hwaddr offset, unsign=
+ed size)
+> +{
+> +    AspeedLTPIState *s =3D opaque;
+> +    uint32_t idx =3D offset >> 2;
+> +
+> +    return s->phy_regs[idx];
+> +}
+> +
+> +static void aspeed_ltpi_phy_write(void *opaque, hwaddr offset,
+> +                              uint64_t val, unsigned size)
+> +{
+> +    AspeedLTPIState *s =3D opaque;
+> +    uint32_t idx =3D offset >> 2;
+> +
+> +    switch (offset) {
+> +    default:
+> +        s->phy_regs[idx] =3D (uint32_t)val;
+> +        break;
+> +    }
+> +}
+> +
+> +static const MemoryRegionOps aspeed_ltpi_phy_ops =3D {
+> +    .read =3D aspeed_ltpi_phy_read,
+> +    .write =3D aspeed_ltpi_phy_write,
+> +    .endianness =3D DEVICE_LITTLE_ENDIAN,
+> +    .valid =3D {
+> +        .min_access_size =3D 1,
+> +        .max_access_size =3D 4,
+> +    },
+> +};
+> +
+> +static uint64_t aspeed_ltpi_ctrl_read(void *opaque,
+> +                                      hwaddr offset, unsigned size)
+> +{
+> +    AspeedLTPIState *s =3D opaque;
+> +    uint32_t idx =3D offset >> 2;
+> +
+> +    return s->ctrl_regs[idx];
+> +}
+> +
+> +static void aspeed_ltpi_ctrl_write(void *opaque, hwaddr offset,
+> +                              uint64_t val, unsigned size)
+> +{
+> +    AspeedLTPIState *s =3D opaque;
+> +    uint32_t idx =3D offset >> 2;
+> +
+> +    switch (offset) {
+> +    default:
+> +        s->ctrl_regs[idx] =3D (uint32_t)val;
+> +        break;
+> +    }
+> +}
+> +
+> +static const MemoryRegionOps aspeed_ltpi_ctrl_ops =3D {
+> +    .read =3D aspeed_ltpi_ctrl_read,
+> +    .write =3D aspeed_ltpi_ctrl_write,
+> +    .endianness =3D DEVICE_LITTLE_ENDIAN,
+> +    .valid =3D {
+> +        .min_access_size =3D 1,
+> +        .max_access_size =3D 4,
+> +    },
+> +};
+> +
+> +static void aspeed_ltpi_reset(DeviceState *dev)
+> +{
+> +    AspeedLTPIState *s =3D ASPEED_LTPI(dev);
+> +
+> +    memset(s->ctrl_regs, 0, sizeof(s->ctrl_regs));
+> +    memset(s->phy_regs, 0, sizeof(s->phy_regs));
+> +    memset(s->top_regs, 0, sizeof(s->top_regs));
+> +    /* set default values */
+> +    s->ctrl_regs[LTPI_CTRL_LINK_MNG] =3D 0x11900007;
+> +    s->phy_regs[LTPI_PHY_MODE] =3D 0x2;
+> +}
+> +
+> +
+> +static const VMStateDescription vmstate_aspeed_ltpi =3D {
+> +    .name =3D TYPE_ASPEED_LTPI,
+> +    .version_id =3D 1,
+> +    .minimum_version_id =3D 1,
+> +    .fields =3D (VMStateField[]) {
+> +        VMSTATE_UINT32_ARRAY(ctrl_regs, AspeedLTPIState,
+> +                             ASPEED_LTPI_CTRL_SIZE >> 2),
+> +        VMSTATE_UINT32_ARRAY(phy_regs, AspeedLTPIState,
+> +                             ASPEED_LTPI_PHY_SIZE >> 2),
+> +        VMSTATE_UINT32_ARRAY(top_regs, AspeedLTPIState,
+> +                             ASPEED_LTPI_TOP_SIZE >> 2),
+> +
+> +        VMSTATE_END_OF_LIST()
+> +    }
+> +};
+> +
+> +static void aspeed_ltpi_realize(DeviceState *dev, Error **errp)
+> +{
+> +    AspeedLTPIState *s =3D ASPEED_LTPI(dev);
+> +
+> +    memory_region_init(&s->mmio, OBJECT(s), TYPE_ASPEED_LTPI,
+> +                       ASPEED_LTPI_TOTAL_SIZE);
+> +
+> +    memory_region_init_io(&s->mmio_ctrl, OBJECT(s),
+> +                          &aspeed_ltpi_ctrl_ops, s,
+> +                          "aspeed-ltpi-ctrl", ASPEED_LTPI_CTRL_SIZE);
+> +
+> +    memory_region_init_io(&s->mmio_phy, OBJECT(s),
+> +                          &aspeed_ltpi_phy_ops, s,
+> +                          "aspeed-ltpi-phy", ASPEED_LTPI_PHY_SIZE);
+> +
+> +    memory_region_init_io(&s->mmio_top, OBJECT(s),
+> +                          &aspeed_ltpi_top_ops, s,
+> +                          "aspeed-ltpi-top", ASPEED_LTPI_TOP_SIZE);
+> +
+> +    memory_region_add_subregion(&s->mmio,
+> +                                ASPEED_LTPI_CTRL_BASE, &s->mmio_ctrl);
+> +    memory_region_add_subregion(&s->mmio,
+> +                                ASPEED_LTPI_PHY_BASE, &s->mmio_phy);
+> +    memory_region_add_subregion(&s->mmio,
+> +                                ASPEED_LTPI_TOP_BASE, &s->mmio_top);
+> +
+> +    sysbus_init_mmio(SYS_BUS_DEVICE(s), &s->mmio);
+> +}
+> +
+> +static void aspeed_ltpi_class_init(ObjectClass *klass, const void *data)
+> +{
+> +    DeviceClass *dc =3D DEVICE_CLASS(klass);
+> +    dc->realize =3D aspeed_ltpi_realize;
+> +    dc->vmsd =3D &vmstate_aspeed_ltpi;
+> +    device_class_set_legacy_reset(dc, aspeed_ltpi_reset);
+> +}
+> +
+> +static const TypeInfo aspeed_ltpi_info =3D {
+> +    .name          =3D TYPE_ASPEED_LTPI,
+> +    .parent        =3D TYPE_SYS_BUS_DEVICE,
+> +    .instance_size =3D sizeof(AspeedLTPIState),
+> +    .class_init    =3D aspeed_ltpi_class_init,
+> +};
+> +
+> +static void aspeed_ltpi_register_types(void)
+> +{
+> +    type_register_static(&aspeed_ltpi_info);
+> +}
+> +
+> +type_init(aspeed_ltpi_register_types);
+> diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+> index b1d8d8e5d2..45b16e7797 100644
+> --- a/hw/misc/meson.build
+> +++ b/hw/misc/meson.build
+> @@ -136,6 +136,7 @@ system_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: fil=
+es(
+>    'aspeed_hace.c',
+>    'aspeed_i3c.c',
+>    'aspeed_lpc.c',
+> +  'aspeed_ltpi.c',
+>    'aspeed_scu.c',
+>    'aspeed_sbc.c',
+>    'aspeed_sdmc.c',
+> --
+> 2.43.0
+>
+>
 
