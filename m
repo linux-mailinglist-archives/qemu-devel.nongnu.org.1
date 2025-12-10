@@ -2,93 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69850CB2FFF
+	by mail.lfdr.de (Postfix) with ESMTPS id 79813CB3000
 	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 14:19:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTK4t-00050U-Ha; Wed, 10 Dec 2025 08:17:59 -0500
+	id 1vTK4j-0004tf-MF; Wed, 10 Dec 2025 08:17:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vTK4M-0004rL-5V
+ id 1vTK4N-0004rQ-6c
  for qemu-devel@nongnu.org; Wed, 10 Dec 2025 08:17:30 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vTK4K-0003FI-IJ
- for qemu-devel@nongnu.org; Wed, 10 Dec 2025 08:17:25 -0500
+ id 1vTK4K-0003Is-TN
+ for qemu-devel@nongnu.org; Wed, 10 Dec 2025 08:17:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1765372642;
+ s=mimecast20190719; t=1765372644;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GKpMCAlv7ID015Tk0OkNs/f5DVZhlc+TdWNSgkE0ov8=;
- b=K7v59Z5tpmc+KnFfTLABde1JI9bcEvhWaq1VTgumFo+TjTcIZqfMUZ3seGLZ6RvIUK13ld
- sarYapnCe6MMy/9pFhNCGasSdKmHrFghKgpIjHIREJ6YPdLohaIWG3CQXMium87Zg2ZBPt
- 7ATphO/i0XRpD5ff16UfKTb5b/DdyIg=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=RvtC21VjrchOTPeGgasDp/iHcjTVMSPt2U0j8o6v3dI=;
+ b=Frndk6d4lB8M+MrJIHF27fEZaw/pxNfq87HyfpEt7TzHJvMB6VK49xZNjM4sutai1fT365
+ 8ieQVarF3U2Su2/k5ZQZSASBvDLZmcDbhjmt00LBqOzsFt6B4i/IWO61ZWnyUOIpVoPmea
+ 7UaiJ9GyB/L4HPgK/V07bcOE1S0Ucsk=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-259--O7sZKktP3S9dMEdfgYkpg-1; Wed, 10 Dec 2025 08:17:20 -0500
-X-MC-Unique: -O7sZKktP3S9dMEdfgYkpg-1
-X-Mimecast-MFC-AGG-ID: -O7sZKktP3S9dMEdfgYkpg_1765372639
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-42b3155274eso3345353f8f.0
- for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 05:17:20 -0800 (PST)
+ us-mta-231-RrZfLHVyNh2bl8h7VsPCLw-1; Wed, 10 Dec 2025 08:17:22 -0500
+X-MC-Unique: RrZfLHVyNh2bl8h7VsPCLw-1
+X-Mimecast-MFC-AGG-ID: RrZfLHVyNh2bl8h7VsPCLw_1765372641
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-47799717212so44551495e9.3
+ for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 05:17:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1765372639; x=1765977439; darn=nongnu.org;
+ d=redhat.com; s=google; t=1765372640; x=1765977440; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=GKpMCAlv7ID015Tk0OkNs/f5DVZhlc+TdWNSgkE0ov8=;
- b=Mz5vt3moEAi9eNK1371zyTxl3O3yHpuF35wFcc5L2mmDaAiQp+8vWKTai2E+FAPdbD
- enkNxSKyqIJCWx5g6AJNUK7QLzfl65zuvnkkeOVdBkx7cvt83qds8zRgxwR+WQ4+0gmE
- wd+aOTS4tMHpYvOA3Z4xR5p0Ytsk3gOIjQ9HfkmkXxGbel2Hy5FtzP2QB5UDpYokVd/B
- 7kVtOrWch27YX9u1zqr0q6aziDXP++dvYaMoQ4RlQwqzx/hhn7GbGVkFQIKHbvtmdYSg
- 0Y/4UnqmXPJ0oObitt1AtLNiMgOFJ7h/7yT9JsuNgzyhbBwlCkl31np6tI1TplGuWeF5
- 99LQ==
+ :reply-to; bh=RvtC21VjrchOTPeGgasDp/iHcjTVMSPt2U0j8o6v3dI=;
+ b=WN9TGySWJo51psMgf9CpTQ1VY/oiYYzO7RiQYJWCLBVPQ/EJJJHbe8kn6iQIaQ/Q4D
+ aDa0XNQhixqEZ5anoqRRSSbs1OSROdH7gv98wdY3cznfBRd89wcIR4hxdKmKThjIFzUn
+ oD/KxtP+qe8WwE/8SKkt/ICHDcQVK5J3Pry94EHWcCh2ul+aRji9R5dcVWDzgiUeidAc
+ 8iqM2abebPKHvHgBfgTWEq4Ki3aNL8tmU9n7j1ZUWbhCCOorrOf4Q3STjPaxyedCLVz9
+ C8QiCiedA0UKvPFCUXdZ3AnQCnQ1rBmlsKkQmyE9BvXSnyH05/0n0h4mhE6WcbQCsKLJ
+ sDyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765372639; x=1765977439;
+ d=1e100.net; s=20230601; t=1765372640; x=1765977440;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=GKpMCAlv7ID015Tk0OkNs/f5DVZhlc+TdWNSgkE0ov8=;
- b=m2jMp2UGQN6Ux0braACo6rl+xoQBDGbtdqhIdV0TxKkoHrzx2uyBolO0OQddVoJn+1
- Be/odYTIxb7UhR3RQpTIW/fjXH3NxLBpcqyQQI6GlpHvjDPgmKSt7ohvMEMBlYXoRQvs
- bjDhKUrqk64ZTYNXMa8GHUDCu9Dw4It09m5hw/7CL63uP1GEkKuef3bsmdnC6U29sdKM
- 4qNnSlfaUEcYd+hzUxkXjnYGIiaY7bf+ARvE16X4z88sisu7UlQPNDiroEGyRaHbrLKk
- dj/YqZs10z1utZkzF5b2Sb8sUllWWquj1V6MNlNwK6IdKwoB70rpbACXWEVN6r7bSrmp
- geHA==
-X-Gm-Message-State: AOJu0YyNx4TiCVMS9ZKMcLn6NDiDAyY0hkF/QXOmcrInobL8fr6Qqmoo
- wAh/0ozQFm/X5qvOkNVrtXunT5pQ9u6KPQYXQJY86QwIBEVCzXkLwrL5R3hVLSOa84DShRtRam2
- MGAK/Fy5Qe48KDbXBEfFTHqhGKnNQRUrDNODtvLQCXUGojm7/NSKbjcfQhU5mS40lnWiiEN4oad
- GTrZpsTCtTNqwvro5opJbeLM/hghhRBKU37pGWWiJ3
-X-Gm-Gg: AY/fxX6f0XyU4X0c/vp8E4Ft3NE9iNBkqtA5S8wGlL6y+3AyMpxuIt6XDAJOaY1Q7I0
- QrlR//HGCG1Um2rWXe4SJ1FZyqRDRKy03F8khyVrOyOqrwrThMRXgSYpKjR/lcSk8Kt+F8NdOZf
- +9BE4uK/Mdgco9irQwS2Xd/Fk0Y3CusmaTfMDY2x+G4hTJ5bgDOyUgDLf2TUebai0Mqsy3umVn+
- h86GnAfEdJXu0JDQv3NmxP/T3MNVhPJ2PJt1RHh9Juj7sn1b8ETmjX2UlABSkXWxkoEdFD9J9ng
- ENOn8sOOFQDEoFm1fsWUkYbKH6Sk2pUI1OGxz8YasEKTtL9bUrIMR884QaN/hVvuW/p+bROTgPU
- GxfV42i0cawbcG/6Cn0aRTn21ONrFG03PS67c88L/k8n8P/0gx0OGzLJQO5+jrQ4lN0p7aLC537
- z6Cg7Ly9ROlVDr9Pk=
-X-Received: by 2002:a5d:5f50:0:b0:427:6a3:e72f with SMTP id
- ffacd0b85a97d-42fa3af8c1dmr2179919f8f.34.1765372638435; 
- Wed, 10 Dec 2025 05:17:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGHlc21DmntPpgnCrl9kK9EEN0pm0mlwEzOvSAgvcrmC/asDS98u2A3oklU0bM6n84QIjFRKQ==
-X-Received: by 2002:a5d:5f50:0:b0:427:6a3:e72f with SMTP id
- ffacd0b85a97d-42fa3af8c1dmr2179890f8f.34.1765372637854; 
- Wed, 10 Dec 2025 05:17:17 -0800 (PST)
+ bh=RvtC21VjrchOTPeGgasDp/iHcjTVMSPt2U0j8o6v3dI=;
+ b=ltoSm9loBxoInMkIlZ847Y30WuYzDS/pW0mcNaBf3UPEpTzr7FeXX9SsJbpQ11K5Lb
+ hCMycgwxP9y3zkYrveAcl6gyS89B3RthyVV1THYKRP8gNgAoDgDYZbDcrBUKNVrlaWND
+ KYiXmcmBFY0L7xbiUBouIs9H/OG/kxNr0/xAISnt5BGRljlU5zhv1C2kJBBHfGcLMGZ3
+ QDr9tD9/5+fEbbgNWdtBalDRzRYTbYvEYblO3zcDYlXs5+wODJZsC0sPmBSYyr7oQAzJ
+ NIj33G6tPZj5gzbfBGu+O6oH30UvBFVD6rZl9Yogvits3rvFZ+hPmwDB0wUzR3zANSTU
+ znlQ==
+X-Gm-Message-State: AOJu0Yz7eWK2RoLusS0S/aNam0agEBFNop7bvcrLxZGZ//xna6uO4s8O
+ E1wiXxXIYhGjHDfzU7NqXFpLMqYfFOpjLntMps6iHHfa8uD8Ig0a69PdgmpbeZ07llh4MiQaKb/
+ 8eeKl6Gu5ZOc5irUq/RVQrZGcTcaprAAP0ZbYFlgIm0+3vVrOxSU/gP1HKfLTgzxHHRcjcsqezT
+ iLZIXXsxuP61oYiI0kGIwm9jMjg1mrCakew9ME/Qmx
+X-Gm-Gg: ASbGnctY9PKeougdGgzD6tlmwbPs3VLA4iHuwyEU0jk4DUuuNPI8lpOdzj69RXOxRwL
+ NX2YPTpn+1+IRIjjQ5XjWaYi4ps9iX/yAtrB954+Nqm4UkXuih7kLOOyOMQd6T9yi6RuSOZqLcO
+ ytd2V6nTWWXWZXDcsc/1seaaqfKkpwjpjJy0YleGjevFONESNVxD2maq2AeumHZliZHO4R82XMY
+ xOGfkNzvXDfVRiEb6Ni1boHpDRsoSP7r/C4fmyhs86Rii71UzZGiZ0tdzaJq9GnuxwmCe06QPAw
+ LILR0H+tzJM9X77yjSBbrxOrsPSFBzwL6i64OIW450jMwt+JPpq9F8KYiiJDbirWRe7NGXf86Rx
+ w+6DpWHDsUwXh2la6vRMk1mcdaCEG0Jt0qsCGEkGlwtxTwc64BLokg4mMwBDyl+45VoDfcvO0Hx
+ sNfYHqUfuFm0mlp0w=
+X-Received: by 2002:a05:600c:1389:b0:471:1765:839c with SMTP id
+ 5b1f17b1804b1-47a8383c89amr20949015e9.20.1765372640030; 
+ Wed, 10 Dec 2025 05:17:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGnpfO14dz0nm50LEguwmY8vBzq7CAa/MIB0feAPcZHqhZwvS2Zx7d3+0cRBZqyJ3QozzyZfQ==
+X-Received: by 2002:a05:600c:1389:b0:471:1765:839c with SMTP id
+ 5b1f17b1804b1-47a8383c89amr20948635e9.20.1765372639303; 
+ Wed, 10 Dec 2025 05:17:19 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42f7d331df0sm39033279f8f.36.2025.12.10.05.17.17
+ 5b1f17b1804b1-47a82d31cbcsm43715665e9.7.2025.12.10.05.17.18
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Dec 2025 05:17:17 -0800 (PST)
+ Wed, 10 Dec 2025 05:17:18 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 13/18] target/i386/tcg: unify more pop/no-pop x87 instructions
-Date: Wed, 10 Dec 2025 14:16:48 +0100
-Message-ID: <20251210131653.852163-14-pbonzini@redhat.com>
+Subject: [PATCH 14/18] target/i386/tcg: kill tmp1_i64
+Date: Wed, 10 Dec 2025 14:16:49 +0100
+Message-ID: <20251210131653.852163-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251210131653.852163-1-pbonzini@redhat.com>
 References: <20251210131653.852163-1-pbonzini@redhat.com>
@@ -121,114 +121,349 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 49 ++++++++++++++-----------------------
- 1 file changed, 18 insertions(+), 31 deletions(-)
+ target/i386/tcg/translate.c | 66 ++++++++++++++++++++--------------
+ target/i386/tcg/emit.c.inc  | 72 ++++++++++++++++++++++---------------
+ 2 files changed, 84 insertions(+), 54 deletions(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index f47bb5de8b3..8cd70456a51 100644
+index 8cd70456a51..108276f4008 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -2828,44 +2828,55 @@ static void gen_x87(DisasContext *s, X86DecodedInsn *decode)
+@@ -136,7 +136,6 @@ typedef struct DisasContext {
+ 
+     /* TCG local register indexes (only used inside old micro ops) */
+     TCGv_i32 tmp2_i32;
+-    TCGv_i64 tmp1_i64;
+ 
+     sigjmp_buf jmpbuf;
+     TCGOp *prev_insn_start;
+@@ -2365,14 +2364,18 @@ static void gen_jmp_rel_csize(DisasContext *s, int diff, int tb_num)
+ 
+ static inline void gen_ldq_env_A0(DisasContext *s, int offset)
+ {
+-    tcg_gen_qemu_ld_i64(s->tmp1_i64, s->A0, s->mem_index, MO_LEUQ);
+-    tcg_gen_st_i64(s->tmp1_i64, tcg_env, offset);
++    TCGv_i64 t = tcg_temp_new_i64();
++
++    tcg_gen_qemu_ld_i64(t, s->A0, s->mem_index, MO_LEUQ);
++    tcg_gen_st_i64(t, tcg_env, offset);
+ }
+ 
+ static inline void gen_stq_env_A0(DisasContext *s, int offset)
+ {
+-    tcg_gen_ld_i64(s->tmp1_i64, tcg_env, offset);
+-    tcg_gen_qemu_st_i64(s->tmp1_i64, s->A0, s->mem_index, MO_LEUQ);
++    TCGv_i64 t = tcg_temp_new_i64();
++
++    tcg_gen_ld_i64(t, tcg_env, offset);
++    tcg_gen_qemu_st_i64(t, s->A0, s->mem_index, MO_LEUQ);
+ }
+ 
+ static inline void gen_ldo_env_A0(DisasContext *s, int offset, bool align)
+@@ -2452,6 +2455,7 @@ static void gen_x87(DisasContext *s, X86DecodedInsn *decode)
+         TCGv ea = gen_lea_modrm_1(s, decode->mem, false);
+         TCGv last_addr = tcg_temp_new();
+         bool update_fdp = true;
++        TCGv_i64 t64;
+ 
+         tcg_gen_mov_tl(last_addr, ea);
+         gen_lea_v_seg(s, ea, decode->mem.def_seg, s->override);
+@@ -2472,9 +2476,10 @@ static void gen_x87(DisasContext *s, X86DecodedInsn *decode)
+             break;
+ 
+         case 0x20 ... 0x27: /* fxxxl */
+-            tcg_gen_qemu_ld_i64(s->tmp1_i64, s->A0,
++            t64 = tcg_temp_new_i64();
++            tcg_gen_qemu_ld_i64(t64, s->A0,
+                                 s->mem_index, MO_LEUQ);
+-            gen_helper_fldl_FT0(tcg_env, s->tmp1_i64);
++            gen_helper_fldl_FT0(tcg_env, t64);
+             gen_helper_fp_arith_ST0_FT0(op & 7);
+             break;
+ 
+@@ -2496,9 +2501,10 @@ static void gen_x87(DisasContext *s, X86DecodedInsn *decode)
+             gen_helper_fildl_ST0(tcg_env, s->tmp2_i32);
+             break;
+         case 0x28: /* fldl */
+-            tcg_gen_qemu_ld_i64(s->tmp1_i64, s->A0,
++            t64 = tcg_temp_new_i64();
++            tcg_gen_qemu_ld_i64(t64, s->A0,
+                                 s->mem_index, MO_LEUQ);
+-            gen_helper_fldl_ST0(tcg_env, s->tmp1_i64);
++            gen_helper_fldl_ST0(tcg_env, t64);
+             break;
+         case 0x38: /* filds */
+             tcg_gen_qemu_ld_i32(s->tmp2_i32, s->A0,
+@@ -2513,8 +2519,9 @@ static void gen_x87(DisasContext *s, X86DecodedInsn *decode)
+             gen_helper_fpop(tcg_env);
+             break;
+         case 0x29: /* fisttpll */
+-            gen_helper_fisttll_ST0(s->tmp1_i64, tcg_env);
+-            tcg_gen_qemu_st_i64(s->tmp1_i64, s->A0,
++            t64 = tcg_temp_new_i64();
++            gen_helper_fisttll_ST0(t64, tcg_env);
++            tcg_gen_qemu_st_i64(t64, s->A0,
+                                 s->mem_index, MO_LEUQ);
+             gen_helper_fpop(tcg_env);
+             break;
+@@ -2542,8 +2549,9 @@ static void gen_x87(DisasContext *s, X86DecodedInsn *decode)
              }
              break;
-         case 0x1d: /* fucomi */
-+        case 0x3d: /* fucomip */
-             if (!(s->cpuid_features & CPUID_CMOV)) {
+         case 0x2a: case 0x2b: /* fstl, fstpl */
+-            gen_helper_fstl_ST0(s->tmp1_i64, tcg_env);
+-            tcg_gen_qemu_st_i64(s->tmp1_i64, s->A0,
++            t64 = tcg_temp_new_i64();
++            gen_helper_fstl_ST0(t64, tcg_env);
++            tcg_gen_qemu_st_i64(t64, s->A0,
+                                 s->mem_index, MO_LEUQ);
+             if ((op & 7) == 3) {
+                 gen_helper_fpop(tcg_env);
+@@ -2611,13 +2619,15 @@ static void gen_x87(DisasContext *s, X86DecodedInsn *decode)
+             gen_helper_fpop(tcg_env);
+             break;
+         case 0x3d: /* fildll */
+-            tcg_gen_qemu_ld_i64(s->tmp1_i64, s->A0,
++            t64 = tcg_temp_new_i64();
++            tcg_gen_qemu_ld_i64(t64, s->A0,
+                                 s->mem_index, MO_LEUQ);
+-            gen_helper_fildll_ST0(tcg_env, s->tmp1_i64);
++            gen_helper_fildll_ST0(tcg_env, t64);
+             break;
+         case 0x3f: /* fistpll */
+-            gen_helper_fistll_ST0(s->tmp1_i64, tcg_env);
+-            tcg_gen_qemu_st_i64(s->tmp1_i64, s->A0,
++            t64 = tcg_temp_new_i64();
++            gen_helper_fistll_ST0(t64, tcg_env);
++            tcg_gen_qemu_st_i64(t64, s->A0,
+                                 s->mem_index, MO_LEUQ);
+             gen_helper_fpop(tcg_env);
+             break;
+@@ -2951,6 +2961,7 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+     int modrm = s->modrm;
+     MemOp ot;
+     int reg, rm, mod, op;
++    TCGv_i64 t64;
+ 
+     /* now check op code */
+     switch (b) {
+@@ -3142,9 +3153,10 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+                 || (s->prefix & (PREFIX_DATA | PREFIX_REPZ | PREFIX_REPNZ))) {
                  goto illegal_op;
              }
-             gen_update_cc_op(s);
-             gen_helper_fmov_FT0_STN(tcg_env, tcg_constant_i32(opreg));
-             gen_helper_fucomi_ST0_FT0(tcg_env);
-+            if (op >= 0x30) {
-+                gen_helper_fpop(tcg_env);
-+            }
-             assume_cc_op(s, CC_OP_EFLAGS);
++            t64 = tcg_temp_new_i64();
+             tcg_gen_trunc_tl_i32(s->tmp2_i32, cpu_regs[R_ECX]);
+-            gen_helper_xgetbv(s->tmp1_i64, tcg_env, s->tmp2_i32);
+-            tcg_gen_extr_i64_tl(cpu_regs[R_EAX], cpu_regs[R_EDX], s->tmp1_i64);
++            gen_helper_xgetbv(t64, tcg_env, s->tmp2_i32);
++            tcg_gen_extr_i64_tl(cpu_regs[R_EAX], cpu_regs[R_EDX], t64);
              break;
-         case 0x1e: /* fcomi */
-+        case 0x3e: /* fcomip */
-             if (!(s->cpuid_features & CPUID_CMOV)) {
+ 
+         case 0xd1: /* xsetbv */
+@@ -3156,10 +3168,11 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+             if (!check_cpl0(s)) {
+                 break;
+             }
+-            tcg_gen_concat_tl_i64(s->tmp1_i64, cpu_regs[R_EAX],
++            t64 = tcg_temp_new_i64();
++            tcg_gen_concat_tl_i64(t64, cpu_regs[R_EAX],
+                                   cpu_regs[R_EDX]);
+             tcg_gen_trunc_tl_i32(s->tmp2_i32, cpu_regs[R_ECX]);
+-            gen_helper_xsetbv(tcg_env, s->tmp2_i32, s->tmp1_i64);
++            gen_helper_xsetbv(tcg_env, s->tmp2_i32, t64);
+             /* End TB because translation flags may change.  */
+             s->base.is_jmp = DISAS_EOB_NEXT;
+             break;
+@@ -3319,18 +3332,20 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+             if (s->prefix & (PREFIX_DATA | PREFIX_REPZ | PREFIX_REPNZ)) {
                  goto illegal_op;
              }
-             gen_update_cc_op(s);
-             gen_helper_fmov_FT0_STN(tcg_env, tcg_constant_i32(opreg));
-             gen_helper_fcomi_ST0_FT0(tcg_env);
-+            if (op >= 0x30) {
-+                gen_helper_fpop(tcg_env);
-+            }
-             assume_cc_op(s, CC_OP_EFLAGS);
++            t64 = tcg_temp_new_i64();
+             tcg_gen_trunc_tl_i32(s->tmp2_i32, cpu_regs[R_ECX]);
+-            gen_helper_rdpkru(s->tmp1_i64, tcg_env, s->tmp2_i32);
+-            tcg_gen_extr_i64_tl(cpu_regs[R_EAX], cpu_regs[R_EDX], s->tmp1_i64);
++            gen_helper_rdpkru(t64, tcg_env, s->tmp2_i32);
++            tcg_gen_extr_i64_tl(cpu_regs[R_EAX], cpu_regs[R_EDX], t64);
              break;
-         case 0x28: /* ffree sti */
-+        case 0x38: /* ffreep sti, undocumented op */
-             gen_helper_ffree_STN(tcg_env, tcg_constant_i32(opreg));
-+            if (op >= 0x30) {
-+                gen_helper_fpop(tcg_env);
-+            }
-             break;
-         case 0x2a: /* fst sti */
--            gen_helper_fmov_STN_ST0(tcg_env, tcg_constant_i32(opreg));
--            break;
-         case 0x2b: /* fstp sti */
-         case 0x0b: /* fstp1 sti, undocumented op */
-         case 0x3a: /* fstp8 sti, undocumented op */
-         case 0x3b: /* fstp9 sti, undocumented op */
-             gen_helper_fmov_STN_ST0(tcg_env, tcg_constant_i32(opreg));
--            gen_helper_fpop(tcg_env);
-+            if (op != 0x2a) {
-+                gen_helper_fpop(tcg_env);
-+            }
-             break;
-         case 0x2c: /* fucom st(i) */
--            gen_helper_fmov_FT0_STN(tcg_env, tcg_constant_i32(opreg));
--            gen_helper_fucom_ST0_FT0(tcg_env);
--            break;
-         case 0x2d: /* fucomp st(i) */
-             gen_helper_fmov_FT0_STN(tcg_env, tcg_constant_i32(opreg));
-             gen_helper_fucom_ST0_FT0(tcg_env);
--            gen_helper_fpop(tcg_env);
-+            if (op == 0x2d) {
-+                gen_helper_fpop(tcg_env);
-+            }
-             break;
-         case 0x33: /* de/3 */
-             switch (rm) {
-@@ -2879,10 +2890,6 @@ static void gen_x87(DisasContext *s, X86DecodedInsn *decode)
+         case 0xef: /* wrpkru */
+             if (s->prefix & (PREFIX_DATA | PREFIX_REPZ | PREFIX_REPNZ)) {
                  goto illegal_op;
              }
+-            tcg_gen_concat_tl_i64(s->tmp1_i64, cpu_regs[R_EAX],
++            t64 = tcg_temp_new_i64();
++            tcg_gen_concat_tl_i64(t64, cpu_regs[R_EAX],
+                                   cpu_regs[R_EDX]);
+             tcg_gen_trunc_tl_i32(s->tmp2_i32, cpu_regs[R_ECX]);
+-            gen_helper_wrpkru(tcg_env, s->tmp2_i32, s->tmp1_i64);
++            gen_helper_wrpkru(tcg_env, s->tmp2_i32, t64);
              break;
--        case 0x38: /* ffreep sti, undocumented op */
--            gen_helper_ffree_STN(tcg_env, tcg_constant_i32(opreg));
--            gen_helper_fpop(tcg_env);
--            break;
-         case 0x3c: /* df/4 */
-             switch (rm) {
-             case 0:
-@@ -2894,26 +2901,6 @@ static void gen_x87(DisasContext *s, X86DecodedInsn *decode)
-                 goto illegal_op;
-             }
-             break;
--        case 0x3d: /* fucomip */
--            if (!(s->cpuid_features & CPUID_CMOV)) {
--                goto illegal_op;
--            }
--            gen_update_cc_op(s);
--            gen_helper_fmov_FT0_STN(tcg_env, tcg_constant_i32(opreg));
--            gen_helper_fucomi_ST0_FT0(tcg_env);
--            gen_helper_fpop(tcg_env);
--            assume_cc_op(s, CC_OP_EFLAGS);
--            break;
--        case 0x3e: /* fcomip */
--            if (!(s->cpuid_features & CPUID_CMOV)) {
--                goto illegal_op;
--            }
--            gen_update_cc_op(s);
--            gen_helper_fmov_FT0_STN(tcg_env, tcg_constant_i32(opreg));
--            gen_helper_fcomi_ST0_FT0(tcg_env);
--            gen_helper_fpop(tcg_env);
--            assume_cc_op(s, CC_OP_EFLAGS);
--            break;
-         case 0x10 ... 0x13: /* fcmovxx */
-         case 0x18 ... 0x1b:
-             {
+ 
+         CASE_MODRM_OP(6): /* lmsw */
+@@ -3722,7 +3737,6 @@ static void i386_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cpu)
+     dc->T1 = tcg_temp_new();
+     dc->A0 = tcg_temp_new();
+ 
+-    dc->tmp1_i64 = tcg_temp_new_i64();
+     dc->tmp2_i32 = tcg_temp_new_i32();
+     dc->cc_srcT = tcg_temp_new();
+ }
+diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
+index 131aefce53c..8dac4d09da1 100644
+--- a/target/i386/tcg/emit.c.inc
++++ b/target/i386/tcg/emit.c.inc
+@@ -521,10 +521,12 @@ static void gen_3dnow(DisasContext *s, X86DecodedInsn *decode)
+ 
+     gen_helper_enter_mmx(tcg_env);
+     if (fn == FN_3DNOW_MOVE) {
+-       tcg_gen_ld_i64(s->tmp1_i64, tcg_env, decode->op[1].offset);
+-       tcg_gen_st_i64(s->tmp1_i64, tcg_env, decode->op[0].offset);
++        TCGv_i64 t = tcg_temp_new_i64();
++
++        tcg_gen_ld_i64(t, tcg_env, decode->op[1].offset);
++        tcg_gen_st_i64(t, tcg_env, decode->op[0].offset);
+     } else {
+-       fn(tcg_env, OP_PTR0, OP_PTR1);
++        fn(tcg_env, OP_PTR0, OP_PTR1);
+     }
+ }
+ 
+@@ -2596,10 +2598,11 @@ static void gen_MOVQ(DisasContext *s, X86DecodedInsn *decode)
+ {
+     int vec_len = vector_len(s, decode);
+     int lo_ofs = vector_elem_offset(&decode->op[0], MO_64, 0);
++    TCGv_i64 t = tcg_temp_new_i64();
+ 
+-    tcg_gen_ld_i64(s->tmp1_i64, tcg_env, decode->op[2].offset);
++    tcg_gen_ld_i64(t, tcg_env, decode->op[2].offset);
+     if (decode->op[0].has_ea) {
+-        tcg_gen_qemu_st_i64(s->tmp1_i64, s->A0, s->mem_index, MO_LEUQ);
++        tcg_gen_qemu_st_i64(t, s->A0, s->mem_index, MO_LEUQ);
+     } else {
+         /*
+          * tcg_gen_gvec_dup_i64(MO_64, op0.offset, 8, vec_len, s->tmp1_64) would
+@@ -2610,7 +2613,7 @@ static void gen_MOVQ(DisasContext *s, X86DecodedInsn *decode)
+          * it disqualifies using oprsz < maxsz to emulate VEX128.
+          */
+         tcg_gen_gvec_dup_imm(MO_64, decode->op[0].offset, vec_len, vec_len, 0);
+-        tcg_gen_st_i64(s->tmp1_i64, tcg_env, lo_ofs);
++        tcg_gen_st_i64(t, tcg_env, lo_ofs);
+     }
+ }
+ 
+@@ -4505,10 +4508,12 @@ static void gen_VMASKMOVPS_st(DisasContext *s, X86DecodedInsn *decode)
+ 
+ static void gen_VMOVHPx_ld(DisasContext *s, X86DecodedInsn *decode)
+ {
++    TCGv_i64 t = tcg_temp_new_i64();
++
+     gen_ldq_env_A0(s, decode->op[0].offset + offsetof(XMMReg, XMM_Q(1)));
+     if (decode->op[0].offset != decode->op[1].offset) {
+-        tcg_gen_ld_i64(s->tmp1_i64, tcg_env, decode->op[1].offset + offsetof(XMMReg, XMM_Q(0)));
+-        tcg_gen_st_i64(s->tmp1_i64, tcg_env, decode->op[0].offset + offsetof(XMMReg, XMM_Q(0)));
++        tcg_gen_ld_i64(t, tcg_env, decode->op[1].offset + offsetof(XMMReg, XMM_Q(0)));
++        tcg_gen_st_i64(t, tcg_env, decode->op[0].offset + offsetof(XMMReg, XMM_Q(0)));
+     }
+ }
+ 
+@@ -4519,33 +4524,39 @@ static void gen_VMOVHPx_st(DisasContext *s, X86DecodedInsn *decode)
+ 
+ static void gen_VMOVHPx(DisasContext *s, X86DecodedInsn *decode)
+ {
++    TCGv_i64 t = tcg_temp_new_i64();
++
+     if (decode->op[0].offset != decode->op[2].offset) {
+-        tcg_gen_ld_i64(s->tmp1_i64, tcg_env, decode->op[2].offset + offsetof(XMMReg, XMM_Q(1)));
+-        tcg_gen_st_i64(s->tmp1_i64, tcg_env, decode->op[0].offset + offsetof(XMMReg, XMM_Q(1)));
++        tcg_gen_ld_i64(t, tcg_env, decode->op[2].offset + offsetof(XMMReg, XMM_Q(1)));
++        tcg_gen_st_i64(t, tcg_env, decode->op[0].offset + offsetof(XMMReg, XMM_Q(1)));
+     }
+     if (decode->op[0].offset != decode->op[1].offset) {
+-        tcg_gen_ld_i64(s->tmp1_i64, tcg_env, decode->op[1].offset + offsetof(XMMReg, XMM_Q(0)));
+-        tcg_gen_st_i64(s->tmp1_i64, tcg_env, decode->op[0].offset + offsetof(XMMReg, XMM_Q(0)));
++        tcg_gen_ld_i64(t, tcg_env, decode->op[1].offset + offsetof(XMMReg, XMM_Q(0)));
++        tcg_gen_st_i64(t, tcg_env, decode->op[0].offset + offsetof(XMMReg, XMM_Q(0)));
+     }
+ }
+ 
+ static void gen_VMOVHLPS(DisasContext *s, X86DecodedInsn *decode)
+ {
+-    tcg_gen_ld_i64(s->tmp1_i64, tcg_env, decode->op[2].offset + offsetof(XMMReg, XMM_Q(1)));
+-    tcg_gen_st_i64(s->tmp1_i64, tcg_env, decode->op[0].offset + offsetof(XMMReg, XMM_Q(0)));
++    TCGv_i64 t = tcg_temp_new_i64();
++
++    tcg_gen_ld_i64(t, tcg_env, decode->op[2].offset + offsetof(XMMReg, XMM_Q(1)));
++    tcg_gen_st_i64(t, tcg_env, decode->op[0].offset + offsetof(XMMReg, XMM_Q(0)));
+     if (decode->op[0].offset != decode->op[1].offset) {
+-        tcg_gen_ld_i64(s->tmp1_i64, tcg_env, decode->op[1].offset + offsetof(XMMReg, XMM_Q(1)));
+-        tcg_gen_st_i64(s->tmp1_i64, tcg_env, decode->op[0].offset + offsetof(XMMReg, XMM_Q(1)));
++        tcg_gen_ld_i64(t, tcg_env, decode->op[1].offset + offsetof(XMMReg, XMM_Q(1)));
++        tcg_gen_st_i64(t, tcg_env, decode->op[0].offset + offsetof(XMMReg, XMM_Q(1)));
+     }
+ }
+ 
+ static void gen_VMOVLHPS(DisasContext *s, X86DecodedInsn *decode)
+ {
+-    tcg_gen_ld_i64(s->tmp1_i64, tcg_env, decode->op[2].offset);
+-    tcg_gen_st_i64(s->tmp1_i64, tcg_env, decode->op[0].offset + offsetof(XMMReg, XMM_Q(1)));
++    TCGv_i64 t = tcg_temp_new_i64();
++
++    tcg_gen_ld_i64(t, tcg_env, decode->op[2].offset);
++    tcg_gen_st_i64(t, tcg_env, decode->op[0].offset + offsetof(XMMReg, XMM_Q(1)));
+     if (decode->op[0].offset != decode->op[1].offset) {
+-        tcg_gen_ld_i64(s->tmp1_i64, tcg_env, decode->op[1].offset + offsetof(XMMReg, XMM_Q(0)));
+-        tcg_gen_st_i64(s->tmp1_i64, tcg_env, decode->op[0].offset + offsetof(XMMReg, XMM_Q(0)));
++        tcg_gen_ld_i64(t, tcg_env, decode->op[1].offset + offsetof(XMMReg, XMM_Q(0)));
++        tcg_gen_st_i64(t, tcg_env, decode->op[0].offset + offsetof(XMMReg, XMM_Q(0)));
+     }
+ }
+ 
+@@ -4557,34 +4568,39 @@ static void gen_VMOVLHPS(DisasContext *s, X86DecodedInsn *decode)
+ static void gen_VMOVLPx(DisasContext *s, X86DecodedInsn *decode)
+ {
+     int vec_len = vector_len(s, decode);
++    TCGv_i64 t = tcg_temp_new_i64();
+ 
+-    tcg_gen_ld_i64(s->tmp1_i64, tcg_env, decode->op[2].offset + offsetof(XMMReg, XMM_Q(0)));
++    tcg_gen_ld_i64(t, tcg_env, decode->op[2].offset + offsetof(XMMReg, XMM_Q(0)));
+     tcg_gen_gvec_mov(MO_64, decode->op[0].offset, decode->op[1].offset, vec_len, vec_len);
+-    tcg_gen_st_i64(s->tmp1_i64, tcg_env, decode->op[0].offset + offsetof(XMMReg, XMM_Q(0)));
++    tcg_gen_st_i64(t, tcg_env, decode->op[0].offset + offsetof(XMMReg, XMM_Q(0)));
+ }
+ 
+ static void gen_VMOVLPx_ld(DisasContext *s, X86DecodedInsn *decode)
+ {
+     int vec_len = vector_len(s, decode);
++    TCGv_i64 t = tcg_temp_new_i64();
+ 
+-    tcg_gen_qemu_ld_i64(s->tmp1_i64, s->A0, s->mem_index, MO_LEUQ);
++    tcg_gen_qemu_ld_i64(t, s->A0, s->mem_index, MO_LEUQ);
+     tcg_gen_gvec_mov(MO_64, decode->op[0].offset, decode->op[1].offset, vec_len, vec_len);
+-    tcg_gen_st_i64(s->tmp1_i64, OP_PTR0, offsetof(ZMMReg, ZMM_Q(0)));
++    tcg_gen_st_i64(t, OP_PTR0, offsetof(ZMMReg, ZMM_Q(0)));
+ }
+ 
+ static void gen_VMOVLPx_st(DisasContext *s, X86DecodedInsn *decode)
+ {
+-    tcg_gen_ld_i64(s->tmp1_i64, OP_PTR2, offsetof(ZMMReg, ZMM_Q(0)));
+-    tcg_gen_qemu_st_i64(s->tmp1_i64, s->A0, s->mem_index, MO_LEUQ);
++    TCGv_i64 t = tcg_temp_new_i64();
++
++    tcg_gen_ld_i64(t, OP_PTR2, offsetof(ZMMReg, ZMM_Q(0)));
++    tcg_gen_qemu_st_i64(t, s->A0, s->mem_index, MO_LEUQ);
+ }
+ 
+ static void gen_VMOVSD_ld(DisasContext *s, X86DecodedInsn *decode)
+ {
+     TCGv_i64 zero = tcg_constant_i64(0);
++    TCGv_i64 t = tcg_temp_new_i64();
+ 
+-    tcg_gen_qemu_ld_i64(s->tmp1_i64, s->A0, s->mem_index, MO_LEUQ);
++    tcg_gen_qemu_ld_i64(t, s->A0, s->mem_index, MO_LEUQ);
+     tcg_gen_st_i64(zero, OP_PTR0, offsetof(ZMMReg, ZMM_Q(1)));
+-    tcg_gen_st_i64(s->tmp1_i64, OP_PTR0, offsetof(ZMMReg, ZMM_Q(0)));
++    tcg_gen_st_i64(t, OP_PTR0, offsetof(ZMMReg, ZMM_Q(0)));
+ }
+ 
+ static void gen_VMOVSS(DisasContext *s, X86DecodedInsn *decode)
 -- 
 2.52.0
 
