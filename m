@@ -2,103 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E31BCB3FA4
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 21:37:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E741CB4019
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 21:56:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTQvH-0001Zz-2g; Wed, 10 Dec 2025 15:36:31 -0500
+	id 1vTRDB-0004X7-GY; Wed, 10 Dec 2025 15:55:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vTQvD-0001ZM-6r
- for qemu-devel@nongnu.org; Wed, 10 Dec 2025 15:36:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
+ id 1vTRD9-0004Vo-Fw; Wed, 10 Dec 2025 15:54:59 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vTQv7-0005dZ-RF
- for qemu-devel@nongnu.org; Wed, 10 Dec 2025 15:36:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1765398977;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=pJ6uuNT/gXqoPaXvLTqo73XM4geXYs0iV//t6Fp5JJA=;
- b=Suhn2ZVM12sgjNfDUrReRwanhJ5L3aS8dzjZPlP01WUIAJ1uFHXtQUYVkxQw0YzCFkYj13
- Gc8/es84ECg+bp6abnMf+iGWlWsBmkMImImYYtF/6gJpcHsFPqeFtw1zkJdylSjrMhQY9S
- MS4EjqY7P74DQNTbWlNX+QSbBWsDx9U=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-685-8RQh_Z4CP2yRi5pJVWQ6rQ-1; Wed, 10 Dec 2025 15:36:15 -0500
-X-MC-Unique: 8RQh_Z4CP2yRi5pJVWQ6rQ-1
-X-Mimecast-MFC-AGG-ID: 8RQh_Z4CP2yRi5pJVWQ6rQ_1765398974
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-477563a0c75so993175e9.1
- for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 12:36:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1765398974; x=1766003774; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=pJ6uuNT/gXqoPaXvLTqo73XM4geXYs0iV//t6Fp5JJA=;
- b=mK+IGa6kbXb1wSa+XvO0O63UScagcFbfRK/XzaOss453mxDtxcCQTWTKQaBzq6DIpT
- sFL/d4+QZWkQnqQAtyAvATX1+2sz7dNuefJxUIm0xAMRqQqVyeGTxbRZW1YRk2lGZ6Ej
- EBXBPgZ8xV+GvEF6MxSddEc2Si5RagMGtpLIQMtojVIdCoVfY5u+LyNd4wP8DYSxU634
- eR1dt7YLth3l5ST52NdDiszoS5PX5i4NHzr2u9TRcXIeeweKRUrHUfRx8KV1mu2p/TJq
- OmmpnhQ9cyFk/tB0XhubdfyEFVv50o3gCUZPA6l3tkcxauCbK5b3qv/bB08AZE9sl5ME
- 8Fow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765398974; x=1766003774;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pJ6uuNT/gXqoPaXvLTqo73XM4geXYs0iV//t6Fp5JJA=;
- b=llj5i519OoMM34YDMuV30MgTaIS+Pb6K6i493s7yTI7b8YgZbalephwZiGXSH8VHZL
- aNMsaTyBpKDJU4YE7xXb3IxaZQ+3x8kz6t+oNlm6ZYVwOBsOjLNgEqYoNyZOJj21SZr5
- cj18oUpFzrcfSk5SSzgl0b59DtGBfPi5RZ4fncWHSzp0rb5X0a8h2lMDCfLXwrpAFKAv
- 360zEwKI7/2eeqMqDqcwQNEsYbR5lCxJu8xKaXcf123ADfSe5+lzwsbPBd3nh4bfmGGw
- gJWeev5Eplz5cwaBO39G5f2riYNGTLHY1VdLfCw08yRcyoN8EUIUJFAcQU08pY1BKDHN
- h3Uw==
-X-Gm-Message-State: AOJu0Yxf63i6dH3TvSroes7rUFxgo3wnQARUcpNk6wRBrYPc4R/GnKQM
- IQTiW4VvCiQBfFo09zS1+m1iJoYBew7PRhKyZuHW34gbfBQ13eBJC8ZGtGoGXo63wQi7k0j/lBE
- ww36L5ysK4YOr/3uOIc5tk1Rz/E8GlnqQKW/TV9Y7PY3tr9HxMwLRqVSwt5GwzlWoGde6Yc+CmJ
- wnMjOXSZofbTvPhircinpWKVzepp/Ao4U=
-X-Gm-Gg: ASbGncttqVsk7AlG3P/1t//uK2T7seCIFtSP5akfCAhHJqlutrH9iCRMhFUA+rNtLMv
- A4YyK9tE0Os/jSkmod7hkkYjsecZPbV1X5V53BfmxWWY0JhVYRyPfy1zKPStj/18zSMszB8YZ6l
- 153yEQmTX95cG2JXp/0R+qUPzBLCUJu7J4wZF9jCB6EIFXg606dHmJDsH1EDdwu1IcdJ9vcTqpU
- rnfUsM0P1sR9yFKH0bU+EfcJXngiWTJeHqeXfU22Fb+Ff1HMdM4YEFw2Zv2H1it2XjdLPY=
-X-Received: by 2002:a05:600c:8010:b0:479:3046:6bb3 with SMTP id
- 5b1f17b1804b1-47a837aca24mr32661875e9.23.1765398974249; 
- Wed, 10 Dec 2025 12:36:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF6TKgoJIREN449EA2b36kjFpim1Cd6rscCxoZyiY/6/sErcSwFaHuyE6TXfvzZbBdlaQzh5vS8KKy8MYh1ZPw=
-X-Received: by 2002:a05:600c:8010:b0:479:3046:6bb3 with SMTP id
- 5b1f17b1804b1-47a837aca24mr32661695e9.23.1765398973867; Wed, 10 Dec 2025
- 12:36:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
+ id 1vTRD7-0000Ug-J1; Wed, 10 Dec 2025 15:54:58 -0500
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BABUIAt008779;
+ Wed, 10 Dec 2025 20:54:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=uVfTXenzHp2Vqd31K2PKeq7cZglQSRjZ1zwCJ+KGF
+ nU=; b=hsnIpTtj06Set1QqMfk5r7eyCAWWGaWj7mnFyLbvYY09n5/jH4+Q38eXc
+ e9pEcpaMXv8Hv8ffHfa/8ZUH7Qw+zFwfKyuE5yg1whJZD+TzoccfaGej4/1EombH
+ 5QlIudxzDIXVToSgkfhpK6+5K772ISYJl1xtT4AXSb/uR4irSumUGQXPZVFJlSh5
+ k2P1ydEP+BtckAlnTpdAeTsyGunWjNGupKAChN53IN8o3lgPTidNqWViSoIFJ1ST
+ CD+c8k7ib8XzSfFciIkDOeMWALDJSyUC2aKKJWoWTBtXEOJt9EoYp5FZLw1fh87Y
+ vgj+FFEbRts43m2eihcqXozlvBzDQ==
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4avawvc08u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 10 Dec 2025 20:54:54 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BAJseCW009026;
+ Wed, 10 Dec 2025 20:54:53 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4avytn2t00-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 10 Dec 2025 20:54:53 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
+ [10.241.53.104])
+ by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 5BAKsqiu26542692
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 10 Dec 2025 20:54:52 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 40B6F58056;
+ Wed, 10 Dec 2025 20:54:52 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8B9AA58052;
+ Wed, 10 Dec 2025 20:54:51 +0000 (GMT)
+Received: from t15.ibmuc.com (unknown [9.61.53.32])
+ by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 10 Dec 2025 20:54:51 +0000 (GMT)
+From: jrossi@linux.ibm.com
+To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, thuth@redhat.com,
+ mst@redhat.com
+Cc: jjherne@linux.ibm.com, alifm@linux.ibm.com, farman@linux.ibm.com,
+ mjrosato@linux.ibm.com, jrossi@linux.ibm.com, zycai@linux.ibm.com
+Subject: [PATCH V2 0/10] s390x: Add support for virtio-blk-pci IPL device
+Date: Wed, 10 Dec 2025 15:54:39 -0500
+Message-ID: <20251210205449.2783111-1-jrossi@linux.ibm.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-References: <20251210160544.2265437-1-berrange@redhat.com>
-In-Reply-To: <20251210160544.2265437-1-berrange@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 10 Dec 2025 21:36:01 +0100
-X-Gm-Features: AQt7F2rhweN6Gcf01K8tiv0T8nY6ynJNyMLW50QmlA5AN9-Y7Y7n1Qn-li02grY
-Message-ID: <CABgObfakC_t5MdO3-+iJVOaTz4i=SjE2yd5AGdY0RNn02eEuMg@mail.gmail.com>
-Subject: Re: [PATCH] run: introduce a script for running devel commands
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, John Snow <jsnow@redhat.com>, 
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Content-Type: multipart/alternative; boundary="000000000000b97ec706459efaf5"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: tqWXsmL4fRPHVXOnvUpclGLRLo5lJG1l
+X-Proofpoint-ORIG-GUID: tqWXsmL4fRPHVXOnvUpclGLRLo5lJG1l
+X-Authority-Analysis: v=2.4 cv=aY9sXBot c=1 sm=1 tr=0 ts=6939de1e cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
+ a=2PI-BZlUfcLuvJe9EegA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDAwNyBTYWx0ZWRfX8B8asXGHQknj
+ FpFQphJTorIpmxnJG69QUlvZ7BV8x19KRNVAxzHqfTfcxyk1kYAWSPg44oHBETmVB2g2tOcygOc
+ CD5kZrCS8Ria4cnAxpagz697lxZNPqEvv6RTp9mcGu0KRfxZb66Z41R/ovKGKolRjrfa9L6Uutb
+ asd/gsNdBibzB4/ylLhJLBvnZXv4NUxEzb6NYq+QxLxBm/CXxyIHAAwEVWLZSIIsV8txkUG8XUP
+ grFFBdEcH2az4jJAvvonzGEBuvjUd9LnrxRQIne1gjqpFTctpxvNxbxiJ1ausYzUaIVXDHcKkoG
+ /uBmoSNySG2p9A6HQuQJK5hfXCx4W+Xg8abDVaFEDfwXAmvCf/Vj1JW4aK+bKO/mxtuHS5qejV7
+ RBdu+vfZSkNBOCXuS47Qp3U+0eS8mw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-10_03,2025-12-09_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 clxscore=1011 phishscore=0 lowpriorityscore=0 bulkscore=0
+ adultscore=0 impostorscore=0 malwarescore=0 priorityscore=1501 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512060007
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=jrossi@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,60 +113,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000b97ec706459efaf5
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: Jared Rossi <jrossi@linux.ibm.com>
 
-Il mer 10 dic 2025, 17:05 Daniel P. Berrang=C3=A9 <berrange@redhat.com> ha
-scritto:
+This patch series introduces an IPLB subtype to support PCI devices, which may
+be built if a device has been assigned a boot index and is identified as a PCI
+device with a corresponding s390 PCI Bus device.
 
-> Various aspects of the development workflow are complicated by the need
-> to set env variables ahead of time, or use specific paths. Introduce a
-> $BUILD_DIR/run script that will do a number of things
->
->  * Set $PATH to point to $BUILD_DIR/qemu-bundle/$PREFIX/$BIN_DIR
->  * Set $PYTHONPATH to point to $SRC_DIR/tests/functional
->  * Source $BUILD_DIR/pyvenv/bin/activate
->
+Boot support is only added for virtio-blk-pci at this time and is limited to
+devices with an assigned bootindex.
 
-Most of this should be obtainable with meson.add_devenv() (
-https://mesonbuild.com/Reference-manual_builtin_meson.html). Even
-activating the venv is just manipulating the VIRTUAL_ENV and PATH
-environment variables; for completeness you could also unset PYTHONHOME.
+A "loadparm" property is added to PCI boot devices on s390x.
 
-Then the script becomes just
+A simple test to check basic functionality is added to the cdrom-tests in qtest.
 
-exec @build_dir@/pyvenv/bin/meson devenv -- "$@"
+Changes v1 -> v2:
+- Store boot device type/bus as fields of VDev to reduce global variables
+- Move existing CLP definitions for easier use in BIOS
+- Define a constant for the configuration BAR rather than using a magic 15
+- Read BARs from configuration space rather than assuming BAR 4 is always used
+- Rework read/write logic to avoid potential buffer overflows
+- Create wrappers to do byte swapping as part of common read/writes
+- Add "loadparm" property to PCI boot devices on s390x
 
-Paolo
+Jared Rossi (10):
+  pc-bios/s390-ccw: Fix misattributed function prototypes
+  pc-bios/s390-ccw: Store boot device type and bus separately
+  pc-bios/s390-ccw: Split virtio-ccw and generic virtio
+  include/hw/s390x: Move CLP definitions for easier BIOS access
+  pc-bios/s390-ccw: Introduce CLP Architecture
+  pc-bios/s390-ccw: Introduce PCI device
+  pc-bios/s390-ccw: Add support for virtio-blk-pci IPL
+  s390x: Build IPLB for virtio-pci devices
+  hw: Add "loadparm" property to PCI devices for booting on s390x
+  tests/qtest: Add s390x PCI boot test to cdrom-test.c
 
---000000000000b97ec706459efaf5
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ hw/s390x/ipl.h                            |   8 +-
+ include/hw/pci/pci_device.h               |   3 +
+ include/hw/s390x/ipl/qipl.h               |  17 +
+ include/hw/s390x/{ => ipl}/s390-pci-clp.h |   0
+ include/hw/s390x/s390-pci-bus.h           |   4 +-
+ pc-bios/s390-ccw/clp.h                    |  24 ++
+ pc-bios/s390-ccw/iplb.h                   |   4 -
+ pc-bios/s390-ccw/pci.h                    |  88 ++++++
+ pc-bios/s390-ccw/s390-ccw.h               |   7 -
+ pc-bios/s390-ccw/virtio-ccw.h             |  24 ++
+ pc-bios/s390-ccw/virtio-pci.h             |  79 +++++
+ pc-bios/s390-ccw/virtio-scsi.h            |   2 +-
+ pc-bios/s390-ccw/virtio.h                 |  15 +-
+ hw/pci/pci.c                              |  39 +++
+ hw/s390x/ipl.c                            |  63 +++-
+ hw/s390x/s390-pci-bus.c                   |   2 +-
+ hw/s390x/s390-pci-vfio.c                  |   2 +-
+ pc-bios/s390-ccw/bootmap.c                |   2 +-
+ pc-bios/s390-ccw/clp.c                    |  96 ++++++
+ pc-bios/s390-ccw/main.c                   |  80 ++++-
+ pc-bios/s390-ccw/netmain.c                |   2 +-
+ pc-bios/s390-ccw/pci.c                    | 331 ++++++++++++++++++++
+ pc-bios/s390-ccw/virtio-blkdev.c          |  59 ++--
+ pc-bios/s390-ccw/virtio-ccw.c             | 242 +++++++++++++++
+ pc-bios/s390-ccw/virtio-net.c             |   5 +-
+ pc-bios/s390-ccw/virtio-pci.c             | 360 ++++++++++++++++++++++
+ pc-bios/s390-ccw/virtio-scsi.c            |   6 +-
+ pc-bios/s390-ccw/virtio.c                 | 239 +++-----------
+ tests/qtest/cdrom-test.c                  |   7 +
+ pc-bios/s390-ccw/Makefile                 |   3 +-
+ 30 files changed, 1552 insertions(+), 261 deletions(-)
+ rename include/hw/s390x/{ => ipl}/s390-pci-clp.h (100%)
+ create mode 100644 pc-bios/s390-ccw/clp.h
+ create mode 100644 pc-bios/s390-ccw/pci.h
+ create mode 100644 pc-bios/s390-ccw/virtio-ccw.h
+ create mode 100644 pc-bios/s390-ccw/virtio-pci.h
+ create mode 100644 pc-bios/s390-ccw/clp.c
+ create mode 100644 pc-bios/s390-ccw/pci.c
+ create mode 100644 pc-bios/s390-ccw/virtio-ccw.c
+ create mode 100644 pc-bios/s390-ccw/virtio-pci.c
 
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
-ner"><div dir=3D"ltr" class=3D"gmail_attr">Il mer 10 dic 2025, 17:05 Daniel=
- P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@redhat.com">berrange@redha=
-t.com</a>&gt; ha scritto:<br></div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
--left:1ex">Various aspects of the development workflow are complicated by t=
-he need<br>
-to set env variables ahead of time, or use specific paths. Introduce a<br>
-$BUILD_DIR/run script that will do a number of things<br>
-<br>
-=C2=A0* Set $PATH to point to $BUILD_DIR/qemu-bundle/$PREFIX/$BIN_DIR<br>
-=C2=A0* Set $PYTHONPATH to point to $SRC_DIR/tests/functional<br>
-=C2=A0* Source $BUILD_DIR/pyvenv/bin/activate<br></blockquote></div></div><=
-div dir=3D"auto"><br></div><div dir=3D"auto">Most of this should be obtaina=
-ble with meson.add_devenv() (<a href=3D"https://mesonbuild.com/Reference-ma=
-nual_builtin_meson.html">https://mesonbuild.com/Reference-manual_builtin_me=
-son.html</a>). Even activating the venv is just manipulating the VIRTUAL_EN=
-V and PATH environment variables; for completeness you could also unset PYT=
-HONHOME.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Then the script=
- becomes just</div><div dir=3D"auto"><br></div><div dir=3D"auto">exec @buil=
-d_dir@/pyvenv/bin/meson devenv -- &quot;$@&quot;</div><div dir=3D"auto"><br=
-></div><div dir=3D"auto">Paolo</div></div>
-
---000000000000b97ec706459efaf5--
+-- 
+2.49.0
 
 
