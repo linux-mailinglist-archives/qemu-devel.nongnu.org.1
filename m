@@ -2,86 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD9FFCB3C83
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 19:39:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9C48CB3C6C
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Dec 2025 19:37:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTP3m-0000zO-Eu; Wed, 10 Dec 2025 13:37:10 -0500
+	id 1vTP3n-00010S-2u; Wed, 10 Dec 2025 13:37:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vTP3k-0000yl-Py
+ id 1vTP3k-0000yn-Qm
  for qemu-devel@nongnu.org; Wed, 10 Dec 2025 13:37:08 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vTP3i-0002Pm-DF
+ id 1vTP3i-0002Pt-C1
  for qemu-devel@nongnu.org; Wed, 10 Dec 2025 13:37:08 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-42e2b80ab25so23821f8f.1
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-42f9ed40b8fso42649f8f.0
  for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 10:37:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1765391823; x=1765996623; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=hBVLNLzh2h7x+zlFBYT2iI+TEnUQJ8dUS09XaPFchj4=;
- b=qDlI3MR1+0AySMB6QlO7Ni0joy8LsWtx7xgDj2ychIuSSCprrU0AZOkdzkhSGsyUqT
- 8VSSyGuoyDKTaXsSi+RhJISWuIPWipacTfn+ekZjE7GCEdRsxMND+K75wE9pMqG7hZA8
- tNeRj/XNZpXePuOqSPwCH3iwyK5x0Wo9aAprGKHi8Hr6r7pVRV6mxsNRyAxkTcaKejUW
- gS0+bdZ65c+EKXm2yqxu1/V1H/H75uK+xCj3zzgvZi6jbtZ2fEz9hdkV77xKXrNvS6U4
- Dr6JgbfvG55yU5fXjO4+r4cxP9cJG3elNVDpiXEY0M7NhXYtv7hD6yEBmC9ovCxl48VY
- B4og==
+ d=linaro.org; s=google; t=1765391824; x=1765996624; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=OO+cLH1Fn44N6BJ+Ju5C9CU5XD8M5vZpp8/zUAFjH0k=;
+ b=y5P8rpNUYPCxoI42ITwGKEOZRr/ZeMMnZfWYJt7eF+xQOP/vvSpqr2ctMWEFaGvzbH
+ JkIcmzqxJqXXlYJ8ikTjmmzck3eaPOIee54jRQK6LRUdndb3R7s6Th41ayUySPRG3kDV
+ tLjU4uLnamaJdwqktFTMNGJxzScPqpptCFBYwSFAMqJQ4HlQD4OFc55aZamT/bosHIt7
+ hxs/71EpjMCnomY/gHPPSN/r+Ht9cU5Gl4vJ6+sAO9vEn7SQBgqkNOBM1cQGqURjSmXD
+ mQEYEGJmU7twSKOGX7UB1CUvTzVEJkHLVlno2WHTv+lSc9pPOhpeEJGlDk4wmVHdGZCL
+ aXyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765391823; x=1765996623;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=hBVLNLzh2h7x+zlFBYT2iI+TEnUQJ8dUS09XaPFchj4=;
- b=wQZxvyksI0BS2G1hAf4uSnWjh2c7hl8q1AvJYazs/o39terfdkwLpuk5blTyeo8vsT
- 23Jq+DAtfKJkoJRM8xlWeg+wizF/kWri817U3Jfoi92nd9jdOPP+TjfgbRWNFWOocsd4
- ZdRV695p6INLkUTFtQ+V8O23eZb6DjKNbweewRKVNY5jrTPHt1yvD3UgjslI3AlPEwzI
- fVC0goPYM5M4qkR+PbLGkPkn4RNHb01L5wXxu+OaIAW3ofUenazAf4D56ip0OlcXAcdq
- zlNC2XxayrsLbAP9T1/I3myckixDMjqYFmpQj6qIM8NGlO7tL4Zlr/JhpJnTXrkxlM8s
- SF0w==
+ d=1e100.net; s=20230601; t=1765391824; x=1765996624;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=OO+cLH1Fn44N6BJ+Ju5C9CU5XD8M5vZpp8/zUAFjH0k=;
+ b=tAJe0PodVvwm2Wo8htzR5FvgcNfFjf3mgz89kuKjqQffhOafADyFeEjZl1ij7+WKn5
+ 7aNsEabXuHP+fVLOqwsZ8U7RI/1x0B6vVMfMiGKwH5Fz90uVrHr5ZF2SJ5E5ag2DJVPH
+ Gso6ulwmIyDYiXb3yKQo/m4hlJ7f4Q0SMA6bjXnFU8ImlRXbLKtMvOhsSm3gWPVPU2ik
+ 1IL5RQwkoeR1R5wKDluAxuwUDJ6i66JYZyJ6d6S1cqxlKHHIDAMLyv++kgwfREmRI0+p
+ VKCCBuhCdblDWyVELEES3ufXo81dMNiuxUvDJYA6pNdatkAJAcL2E2MKirPTug/r9YaJ
+ JI2Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWc3bXkjJpx1u4chOg/MqcNkBnE5M/LpH19rZPJL+foNKUspgn72X4OYF7ES+sAxdg/eho280J6CjeZ@nongnu.org
-X-Gm-Message-State: AOJu0YyhgEvuhrmrpB0zBMWmJVVyuT9S/7pMjwkLzzEFbHIMcJMM3f2i
- Imdt7wv38/0Rgd4Y4jrHv/d+X0kK83Mp1CErW6XrPV2SVFG4MHE8w5OLafl67gIof0s=
-X-Gm-Gg: AY/fxX4Mp0s1wOl4aFW8kgRlNHTeABiZtGZEIwKgXlOjm6XRfCTFhdyfH2oGjyLri6o
- xwiB7+XAvJzsD5tf5Ml2aZbtscjsPdDKjdDdQLnvTnLqY4/1J+a0QSWn6ofQw8Abm5yp0kntcCa
- aodC2VVcM6Go3ZYkWTF6b56poKqSywqe2wX2YU5KYJ9fvhjSaK/aiEO8XdlFBPnX1aomcqJZDHE
- 1UPbW/cXntG17Bk5lBe66tHrWNMn1tWwMeP5el6+PbBtcgwANgZaI9wj5xpegD5LZ0bKwjVfyVw
- g/A7pUIQ0RJ2+NSMVg7+/TufhhMyVVkBLtJUzDZzlw+9JnDnd1sOyI8KEA5wkAppQ/J0SwKGcWS
- jyCkqwTR/zwUB/pqi2WHRkDWZPkjv1r9/vjXzDM6EvT5sYXMWp0oW2xRn7nqipt9UsiI84O4CZE
- ocNNPK9RfDwuPIgiNT
-X-Google-Smtp-Source: AGHT+IHGOwdWq9kScrnFx6XVXxXDXDMCl1pCnbxGkGhRFLFbQeqxl3pEFav3ZApMoEBCDV+OuI2CNg==
-X-Received: by 2002:a05:6000:208a:b0:42b:53ad:bbfa with SMTP id
- ffacd0b85a97d-42fa3b0651fmr4138323f8f.53.1765391823206; 
- Wed, 10 Dec 2025 10:37:03 -0800 (PST)
+ AJvYcCX0kgyPa3yp9pwpRSC1Kn9E5cdagNE1SqPArAtp0LI+hun+zQghodgjqM42qsThVtXlv+DYigb4tzpv@nongnu.org
+X-Gm-Message-State: AOJu0YxXs5f/0CmyDtjpB9U8scZ0wsh3ZEJIviHATLiY/BMsyaNuqs7t
+ vQ3o8bYeC+aiX0oRXffQbWaUGxDrcNnHQoUm12UYjoCwVA6+oGNcconWug9kBvNrH/8=
+X-Gm-Gg: AY/fxX6uuKbgK7urFy9mXMNSRngBwFBzOVqiJfs0SR2JZNgyi+SkaIxyc2Fle6KuISO
+ Inva4As0JoRsLO0Xz6TSUeW2AmTVnSKvI+hInm3zL39oGNUY6R+gSaxGH/8WhQCFTl7nxYp8tCv
+ 7EY3UbaR7emvd44l2lyMBPMyjPny5Pz8AvNfupELkS6PydjEN6ijyp0DoAOYk0yo27rNwsqu66r
+ wNoFkUTRpNaobBSM129x2QUbD2g0krXU9qqF0redM2mjHkMxjqoycgDS9NUobMc57UNlV5n3XdX
+ KfVYbm4tkmkvp+29TP7paA23aOigvpydjgYOLAF876RDdR4cugoNFl5+rd2vSSao5hUydQYu836
+ dh48lJKd+pdJTzrTe3QskvOh8rn5Zf6/ufYyXyHH4BwVyd0n4nFzpRguNDafEl8paRxtMtS/hXV
+ wzG+80/AvKaOhHe+jd
+X-Google-Smtp-Source: AGHT+IE3bolWOmvs2CMbvn221/S+x1oSCLq8dvScR2LMq1m7Off0r9p2KzEfsES25RlI+dek+JSabg==
+X-Received: by 2002:a5d:64e6:0:b0:42f:8816:a507 with SMTP id
+ ffacd0b85a97d-42fa3b1ef97mr3775327f8f.60.1765391824332; 
+ Wed, 10 Dec 2025 10:37:04 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42fa8a7044csm477702f8f.15.2025.12.10.10.37.01
+ ffacd0b85a97d-42fa8a7044csm477702f8f.15.2025.12.10.10.37.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Dec 2025 10:37:02 -0800 (PST)
+ Wed, 10 Dec 2025 10:37:03 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH for-11.0 0/7] hw/arm/omap: Remove omap_badwidth_* functions
-Date: Wed, 10 Dec 2025 18:36:53 +0000
-Message-ID: <20251210183700.3446237-1-peter.maydell@linaro.org>
+Subject: [PATCH for-11.0 1/7] hw/sd/omap_mmc: Remove omap_badwidth_* calls
+Date: Wed, 10 Dec 2025 18:36:54 +0000
+Message-ID: <20251210183700.3446237-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251210183700.3446237-1-peter.maydell@linaro.org>
+References: <20251210183700.3446237-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,13 +101,13 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 The omap_badwidth_read* and omap_badwidth_write* functions are
 used by various OMAP devices when the guest makes an access
-to registers with an invalid width. They do two things:
+to registers with an invalid width; they do two things:
  - log a GUEST_ERROR for the access
  - call cpu_physical_memory_read() or cpu_physical_memory_write()
    with the offset they are passed in
 
 The first of these produces an unhelpful log message because the
-function name that is printed is that of the omap_badwidth_*
+function name that is printed is that of the omap-badwidth_*
 function, not that of the read or write function of the device that
 called it; this means you can't tell what device is involved.
 
@@ -118,36 +120,39 @@ MemoryRegion APIs, which involved changing all devices from working
 with absolute physical addresses to working with offsets within their
 MemoryRegions.  We must have missed updating these functions.
 
-At this point it is unclear what the original intention was in feeding
-these bad accesses back into the memory system.  Rather than trying to
-make them do that again, this series replaces them with open-coded
-calls to qemu_log_mask() and RAZ/WI behaviour, and then removes
-the implementations.
+Replace the uses of these functions in omap_mmc.c with an
+open-coded call to qemu_log_mask() and RAZ/WI behaviour.
 
-The benefit of this is that we remove a callsite of
-cpu_physical_memory_read/write that was doing something badly
-wrong anyway.
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ hw/sd/omap_mmc.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-thanks
--- PMM
-
-Peter Maydell (7):
-  hw/sd/omap_mmc: Remove omap_badwidth_* calls
-  hw/i2c/omap_i2c: Remove omap_badwidth_* calls
-  hw/gpio/omap_gpio: Remove omap_badwidth_* calls
-  hw/dma/omap_dma: Remove omap_badwidth_* calls
-  hw/arm/omap1: Remove omap_badwidth_read* calls
-  hw/arm/omap1: Remove omap_badwidth_write* calls
-  hw/arm/omap1: Remove omap_badwidth_* implementations
-
- include/hw/arm/omap.h |  10 ---
- hw/arm/omap1.c        | 203 +++++++++++++++++++++---------------------
- hw/dma/omap_dma.c     |   7 +-
- hw/gpio/omap_gpio.c   |   7 +-
- hw/i2c/omap_i2c.c     |   7 +-
- hw/sd/omap_mmc.c      |   7 +-
- 6 files changed, 122 insertions(+), 119 deletions(-)
-
+diff --git a/hw/sd/omap_mmc.c b/hw/sd/omap_mmc.c
+index 5a1d25defaa..98c1c376ee1 100644
+--- a/hw/sd/omap_mmc.c
++++ b/hw/sd/omap_mmc.c
+@@ -335,7 +335,9 @@ static uint64_t omap_mmc_read(void *opaque, hwaddr offset, unsigned size)
+     OMAPMMCState *s = opaque;
+ 
+     if (size != 2) {
+-        return omap_badwidth_read16(opaque, offset);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: read at offset 0x%" HWADDR_PRIx
++                      " with bad width %d\n", __func__, offset, size);
++        return 0;
+     }
+ 
+     switch (offset) {
+@@ -428,7 +430,8 @@ static void omap_mmc_write(void *opaque, hwaddr offset,
+     OMAPMMCState *s = opaque;
+ 
+     if (size != 2) {
+-        omap_badwidth_write16(opaque, offset, value);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: write at offset 0x%" HWADDR_PRIx
++                      " with bad width %d\n", __func__, offset, size);
+         return;
+     }
+ 
 -- 
 2.43.0
 
