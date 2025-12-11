@@ -2,79 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50B24CB59EE
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 12:16:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B049CB5A1F
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 12:28:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTeee-0006X5-Ml; Thu, 11 Dec 2025 06:16:16 -0500
+	id 1vTepT-0000uM-Nn; Thu, 11 Dec 2025 06:27:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vTeeb-0006U1-Bv
- for qemu-devel@nongnu.org; Thu, 11 Dec 2025 06:16:13 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vTepR-0000tk-CR
+ for qemu-devel@nongnu.org; Thu, 11 Dec 2025 06:27:25 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vTeeY-00036H-I2
- for qemu-devel@nongnu.org; Thu, 11 Dec 2025 06:16:13 -0500
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vTepP-0004lx-O0
+ for qemu-devel@nongnu.org; Thu, 11 Dec 2025 06:27:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1765451768;
+ s=mimecast20190719; t=1765452441;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PGjKevl2KNgfC8tVMV5G7TSSLfkSd+O3wEhDxq6nPVM=;
- b=ejIAMV2xGKx9qasi1gfyFnRo/wDrnqz0NRgahswVdfmFYJBthEKgV2jAso0sWRuSoD1dVh
- cy+5T98slLAc3rNO2gZ3zISffdJnCjWUlJZhYIu3oG88DQbBXDBqaCEFhPEfeKCoHxoinI
- Sm0vvg+e6Ldbbe3sJKVlQ6VeLdJc7mY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-252-QTT-Q78QM-mQL3ppn45-qQ-1; Thu,
- 11 Dec 2025 06:16:05 -0500
-X-MC-Unique: QTT-Q78QM-mQL3ppn45-qQ-1
-X-Mimecast-MFC-AGG-ID: QTT-Q78QM-mQL3ppn45-qQ_1765451763
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1778C1956058; Thu, 11 Dec 2025 11:16:03 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.44.32.156])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 003FD1953984; Thu, 11 Dec 2025 11:16:01 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id A65161800608; Thu, 11 Dec 2025 12:15:59 +0100 (CET)
-Date: Thu, 11 Dec 2025 12:15:59 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Oliver Steffen <osteffen@redhat.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Joerg Roedel <joerg.roedel@amd.com>, kvm@vger.kernel.org,
- Zhao Liu <zhao1.liu@intel.com>, 
- Eduardo Habkost <eduardo@habkost.net>, Marcelo Tosatti <mtosatti@redhat.com>, 
- Luigi Leonardi <leonardi@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: Re: [PATCH v2 3/3] igvm: Fill MADT IGVM parameter field
-Message-ID: <h4256m67shwdq4aouxpqadb2zozhq2f5dfeo74c5jnet5f26kz@a3av5xjfyfow>
-References: <20251211103136.1578463-1-osteffen@redhat.com>
- <20251211103136.1578463-4-osteffen@redhat.com>
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=gBrU8wLRGJaohOWvQpXhP62E5v2WuU7czb0k825infYqI2yynmt6Z8/xsNUsb4ZbsbH2B6
+ LRfZNPVuCrFrsnxHdcufthbC2grXRTf6Y4cf5uYwtVH3ieGm2S+Whyh6AFDAezXxcQ/+z2
+ fP5d5dYG0AUdI6Ora7/X00DrQCZhlMI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-653-RxpHDhdFOvmKx3l3sdQWQw-1; Thu, 11 Dec 2025 06:27:20 -0500
+X-MC-Unique: RxpHDhdFOvmKx3l3sdQWQw-1
+X-Mimecast-MFC-AGG-ID: RxpHDhdFOvmKx3l3sdQWQw_1765452439
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-477c49f273fso6364945e9.3
+ for <qemu-devel@nongnu.org>; Thu, 11 Dec 2025 03:27:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=redhat.com; s=google; t=1765452438; x=1766057238; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=tHHJbstYB5pxj+AlcpwuN8UAcQXNS0iwgLQOL2SOk6pw5YK24rtiFikgoLUaj/FLow
+ C/Dtt5Ec/WH5yTQnoERW+2JxJAVsDlTo7J/m8VjdkIpte8ItXVsvxCkheXWzeYarkoAZ
+ Ve5VHecjQZl1rf7sJeyXhVOrXRxKJJXOfSsO9BvJnO6NC/JYurUGYZMKUIRhdGaDXEeo
+ m3Ob1QH4b4lw2xAkoiE7DU8AMDRT02eoq+d4pJaY0D14GLGdMXtJZhDFdBstnddaCQNG
+ WHU79Q4i1QQTAGLDdgN/hLdBzPRaWyex1pinqmQF+VWBEyDho3f3yKI4PEH0UaR/A693
+ 5r/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1765452438; x=1766057238;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=doqjwHtxE2xCDRBkWXgAVc6AUaAkdB+4F/J4iFhfrpwoZrbquP0OnkubF67iKPSLxA
+ it9N4SUL2j70AA1YjaMbXg9A6e003sIAkxdPVzl49QsYi2HDCrKYFlmyKVMUzuHkq3wr
+ 2eDLTxC/vqfwiDumbjjXL9/ZtOAvZQ2wjUAll2fhXzRwoDPW6WgAQpxuFSb9LwnHkgLo
+ wmrzEc6Jn+Ou17t+aylyOXGM9Bi6xl62vKVEJpmGlvMQBhoxrgx1kNaVyMhq0Kvj+UKb
+ zNqThiN8wiECjeNKujh/ryPn61bl3cpydfrJ6kVS1Q7KQsZd9t3X6G9kzrQOEq0obO09
+ EWGQ==
+X-Gm-Message-State: AOJu0YyCB6MnWRDCldeMa4t4vcv4ioazhOs1e6rEnykR/ufJT+TdVLq+
+ 0c6VZTz5afrlqDjgCffapFzgOpKLPTQdJ/A0Hzpw680ibr26f/l1yKwsZaNDqf/EUxAwX7ABEZc
+ ysxgptwvAhEG54UECdrokbqEMIUKsp3RzTjx95bNEpwOJTxMIJYIgclH6pj7108DY
+X-Gm-Gg: AY/fxX4ZRqAAw56BCWbmMR+VdfAdz35YiG4mwJ9TNWSgnNvjmHDFiZINVz+yTbtff5n
+ Gs7mNk8anJ3sGO41mjbsJTi+Rpp/pNp0nWeGjMUE6dMgueWrFkLF/At3L/4hrAOcY/J7yPDSDzw
+ VknvMFbLUtGE+WGmGWQIEHRnTjbIychuYNtXm+D4ImAWjzzn4cSZyA8OT5q3GXg8mmo+gPj/LVk
+ pZcqTrzB3fqkMR/YLvq2syhG7akq31A/tcdKL0ubUvSWXpGqpaSU3/j6YXRnZrXPHBWsC+cremH
+ /kW1cWdpxtM9xL8kG2ASQHJ9fT9PMDIUFjhiFHdlIBOuw6sg6vODcV7H7pUcsLnT3ZZzBG3e2L5
+ R+ACKjbLiEVGx2tjlwf7JRBayb4kBLvXaNZfHkW4RsJ3u1IftTef7UAkfIi5xEq6XLsMRAwSl5e
+ WfRYcpqpPIwHa97tw=
+X-Received: by 2002:a05:600c:46d2:b0:477:b642:9dc6 with SMTP id
+ 5b1f17b1804b1-47a838643d0mr52550335e9.34.1765452438140; 
+ Thu, 11 Dec 2025 03:27:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFd2qsDberuCLqBu8bmVBFHSIEONCx+C2w1AFr4UNeSmAyFmJ0VJWKPLYf9kefq2FUU0sI/9Q==
+X-Received: by 2002:a05:600c:46d2:b0:477:b642:9dc6 with SMTP id
+ 5b1f17b1804b1-47a838643d0mr52550115e9.34.1765452437748; 
+ Thu, 11 Dec 2025 03:27:17 -0800 (PST)
+Received: from [192.168.10.48] ([151.95.145.106])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-47a89dab141sm29868735e9.7.2025.12.11.03.27.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 11 Dec 2025 03:27:17 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH 0/2] i386/cpu: Correct comments for CPUID 0x1D and 0x1E
+Date: Thu, 11 Dec 2025 12:27:15 +0100
+Message-ID: <20251211112715.1133562-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251118080837.837505-1-zhao1.liu@intel.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251211103136.1578463-4-osteffen@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,55 +119,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  Hi,
+Queued, thanks.
 
-> +static int qigvm_initialization_madt(QIgvm *ctx,
-> +                                     const uint8_t *header_data, Error **errp)
-> +{
-> +    const IGVM_VHS_PARAMETER *param = (const IGVM_VHS_PARAMETER *)header_data;
-> +    QIgvmParameterData *param_entry;
-> +
-> +    if (ctx->madt == NULL) {
-> +        return 0;
-> +    }
-> +
-> +    /* Find the parameter area that should hold the device tree */
-
-cut+paste error in the comment.
-
-> +    QTAILQ_FOREACH(param_entry, &ctx->parameter_data, next)
-> +    {
-> +        if (param_entry->index == param->parameter_area_index) {
-
-Hmm, that is a pattern repeated a number of times already in the igvm
-code.  Should we factor that out into a helper function?
-
->  static int qigvm_supported_platform_compat_mask(QIgvm *ctx, Error **errp)
->  {
->      int32_t header_count;
-> @@ -892,7 +925,7 @@ IgvmHandle qigvm_file_init(char *filename, Error **errp)
->  }
->  
->  int qigvm_process_file(IgvmCfg *cfg, ConfidentialGuestSupport *cgs,
-> -                       bool onlyVpContext, Error **errp)
-> +                       bool onlyVpContext, GArray *madt, Error **errp)
-
-I'd like to see less parameters for this function, not more.
-
-I think sensible options here are:
-
-  (a) store the madt pointer in IgvmCfg, or
-  (b) pass MachineState instead of ConfidentialGuestSupport, so
-      we can use the MachineState here to generate the madt.
-
-Luigi, any opinion?  I think device tree support will need access to
-MachineState too, and I think both madt and dt should take the same
-approach here.
-
-Long-term I'd like to also get rid of the onlyVpContext parameter.
-That cleanup is something for another patch series though.
-
-take care,
-  Gerd
+Paolo
 
 
