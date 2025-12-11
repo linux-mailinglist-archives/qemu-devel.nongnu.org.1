@@ -2,76 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3410BCB59F8
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 12:18:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA5A3CB5B80
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 12:56:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTege-0007Qw-0V; Thu, 11 Dec 2025 06:18:20 -0500
+	id 1vTfFr-0005E0-JR; Thu, 11 Dec 2025 06:54:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vTegb-0007O0-Go
- for qemu-devel@nongnu.org; Thu, 11 Dec 2025 06:18:17 -0500
-Received: from mgamail.intel.com ([192.198.163.9])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1vTfFl-0005Df-Lz
+ for qemu-devel@nongnu.org; Thu, 11 Dec 2025 06:54:37 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vTegY-0003Hl-TU
- for qemu-devel@nongnu.org; Thu, 11 Dec 2025 06:18:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765451895; x=1796987895;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=/PavwmTPXgf2RFgfCgkbjsWUgrq8AQllM7S/czmU9N0=;
- b=n8cBTnCz0v/eqhxv09I/m1+pGhyC3MRs0B/jktfWvXJG1qGwjpjXzRtc
- 0Rm13Gj0BbwOIyplvVoVvfq7l1K9GdSxRJwPc+EiVW8LxQ+fbh7FSPDYS
- wSzO44a364iqFITVIGo6iNEGyZnqaPV67sWB0FRKg8THhFjByQhuXx3zJ
- QBSC/QO+XVxVIlK0RTFVzCSfuUuTKousORrBa5hJHRd/27s2TJcF4UZ6P
- qkLIZ8DHNzIiNDhI3uKoBG1+FRRySKVedL3FYCn/OwKhfsSuxB6/18LK2
- Glf826nH6wjyL4wzatO8VD5sGvi9HQrKrg/160RivYsVDAC4gKWIhn5RM A==;
-X-CSE-ConnectionGUID: LLrRCT89Q8m7D788sJM8TA==
-X-CSE-MsgGUID: 74/HNoJ8RvShYQD+Ep6WkA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="78135212"
-X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; d="scan'208";a="78135212"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Dec 2025 03:18:12 -0800
-X-CSE-ConnectionGUID: n7oOztxsS0C0JqrUfAh9tQ==
-X-CSE-MsgGUID: yNbwLSB4TqaHeCzHM6soxQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; d="scan'208";a="196384546"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa007.fm.intel.com with ESMTP; 11 Dec 2025 03:18:10 -0800
-Date: Thu, 11 Dec 2025 19:42:56 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org,
- "Chang S . Bae" <chang.seok.bae@intel.com>,
- Zide Chen <zide.chen@intel.com>, Xudong Hao <xudong.hao@intel.com>
-Subject: Re: [PATCH v2 0/9] i386/cpu: Support APX for KVM
-Message-ID: <aTquQJkiwKmuqCG2@intel.com>
-References: <20251211070942.3612547-1-zhao1.liu@intel.com>
- <16e0fc49-0cdf-4e54-b692-5f58e18c747b@redhat.com>
- <aTqMBtkOxx6mZhn+@intel.com>
- <df96afb2-f99c-48ae-81be-ccadf0fc3496@redhat.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1vTfFj-0002WX-Iw
+ for qemu-devel@nongnu.org; Thu, 11 Dec 2025 06:54:37 -0500
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id CAEA8596A08;
+ Thu, 11 Dec 2025 12:54:28 +0100 (CET)
+X-Virus-Scanned: amavis at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
+ id GK0xPWw1AU3n; Thu, 11 Dec 2025 12:54:26 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 7AA9D5969F7; Thu, 11 Dec 2025 12:54:26 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 7915F5969FF;
+ Thu, 11 Dec 2025 12:54:26 +0100 (CET)
+Date: Thu, 11 Dec 2025 12:54:26 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Chad Jablonski <chad@jablonski.xyz>
+cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH v3 00/11] ati-vga: Implement HOST_DATA transfers to
+In-Reply-To: <DEV1B7KO3P1T.1WB3D1SLTKAD4@jablonski.xyz>
+Message-ID: <fd3eb2a9-14df-b107-76e3-e0add2bff477@eik.bme.hu>
+References: <20251118154812.57861-1-chad@jablonski.xyz>
+ <DEV1B7KO3P1T.1WB3D1SLTKAD4@jablonski.xyz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <df96afb2-f99c-48ae-81be-ccadf0fc3496@redhat.com>
-Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,23 +63,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> No problem, I have done a quick pass with "sed" on the patches and reapplied
-> them.  I do ask you to respin the Diamond Rapids series though, on top of
-> the for-upstream tag of https://gitlab.com/bonzini/qemu (currently going
-> through CI).
-> 
-> Applied for 11.0!
+Hello,
 
-Thank you!
+On Wed, 10 Dec 2025, Chad Jablonski wrote:
+> Hey BALATON, just a friendly ping on the v3 HOST_DATA series. If there's
+> something I can take a look at as far as hardware validation or anything
+> else let me know! In the meantime I've been getting familiar with CCE and
+> poking at the microcode a bit.
 
-BTW, could you please have a look at this clean up on outdated SPR
-comments:
+I haven't missed it but I did not have time to test and review it yet. I 
+hoped somebody else could also help out but I still intend to review it 
+when I have more time. For the CCE I've restored the ticket I got about it 
+before here: https://codeberg.org/qmiga/pages/issues/3 which has the info 
+I've collected so far that may help but I could not find info on the 
+microcode of these older ATI cards, Only newer versions seem to be known 
+that are linked in the ticket. So unless you can find out how it works the 
+way to go may be to parse the packets directly the same way as Xenia 
+emulator does and not trying to run the microcode but it would be nice to 
+emulate the micro engine if the microcode can be reversed or understood 
+enough. Newer versions of the microcode appear to have short segments for 
+each packet type that do simple operations, mainly stuffing data in the 
+command FIFO so that FIFO may also need to be implemented first then 
+another possible improvement is to run the drawing engine in a separate 
+thread asynchronously fed through the command FIFO as it works on the real 
+chip.
 
-https://lore.kernel.org/qemu-devel/20251118080837.837505-1-zhao1.liu@intel.com/
-
-I feel it's better to clear SPR comments before DMR touches AMX.
-
-Thanks,
-Zhao
-
+Regards,
+BALATON Zoltan
 
