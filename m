@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0451CB4CC2
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 06:44:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA76BCB4CB0
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 06:44:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTZT8-0000fE-Sb; Thu, 11 Dec 2025 00:44:02 -0500
+	id 1vTZTB-0000hp-8o; Thu, 11 Dec 2025 00:44:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vTZT0-0000e0-P4
- for qemu-devel@nongnu.org; Thu, 11 Dec 2025 00:43:55 -0500
+ id 1vTZT3-0000ej-Lz
+ for qemu-devel@nongnu.org; Thu, 11 Dec 2025 00:43:57 -0500
 Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vTZSz-0001OC-51
- for qemu-devel@nongnu.org; Thu, 11 Dec 2025 00:43:54 -0500
+ id 1vTZT2-0001OC-3z
+ for qemu-devel@nongnu.org; Thu, 11 Dec 2025 00:43:57 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765431833; x=1796967833;
+ t=1765431836; x=1796967836;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=fJBFcQVoKmgeoUmwsBmvZdBtcnTJvhtd89N47vMSmQc=;
- b=jaC5OmT7DffCUReXu9G2D1kscOc9wBuvnjct0B57dvTpyJm5lYrds89Q
- 7WJherJSzMpwElt6lFb3JFMsfUTX/1oBbq8x76SduQs6gcDUFGaHRHfeI
- wyR57v7KU64CZp7/q9QIyms8Nqzd8vfoOpndkwYaioz727e9KUUYFc/IU
- sURDol72bd1xGr8mLJd3BRkV5ALJQhBBaT2kqV8N1ZSkFpVk9PxmJ3y4h
- MBk+83+TgS/FOU2/nDX+SrAa8xlCegrRjfG8W1F0yRUbJynLmzXlvNyJY
- mwMftL2rI2pwVKQltL/y2fIQw59W9b1VfQxV9TZ4+Yu94X/oi5kvQ2BeB w==;
-X-CSE-ConnectionGUID: z5OqIvHmQJKNH4rP6h/C6A==
-X-CSE-MsgGUID: 60Pdw4cHS1GNUQd7+CihAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="66409877"
-X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; d="scan'208";a="66409877"
+ bh=FovsNeUNQb3Mbfo6UFh8WpHvsMB68L7Ws+8KaJE9y0g=;
+ b=UcXA2q2DnkUyi8QH6Ak/HFJGCtmxdT42VKcmJb0wfqLrsHvxpkTX1qaH
+ 6o80sZcW5P0jTOJt1TPMZWobr/sX6owSSwhX5Ak9+udRb4OoKpzftLQWk
+ O9xoR0rL4QfRBK8U/SLUc72zL+8nKIcAw+YnHvBf8vTwU9VTatfOEXSyz
+ 2i+eKQ3i6kyl+Q3dZUtbmonrAmzAUlHiau4fVIQkYJ+Jyi+Az/+odAmoP
+ TVoOXFUAR/2dEQkKbxDM1jOfKH2vMKlpwgvMC7ACb8BVLCmy1/yITZHv3
+ EBaK5dWXUvfqvEHar1mWGyLcYMn8IznmUP21urzgTNwGWzziaHZn2yyuV g==;
+X-CSE-ConnectionGUID: WuFEFt9nQ5yCg6o1lcIkyg==
+X-CSE-MsgGUID: 3jAF0gsDTumRWijg5a4OUw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="66409887"
+X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; d="scan'208";a="66409887"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Dec 2025 21:43:52 -0800
-X-CSE-ConnectionGUID: BS+knNYIRRygEl7jo6PxpQ==
-X-CSE-MsgGUID: ZnWECnVlTcGvVPdkV8+UkQ==
+ 10 Dec 2025 21:43:55 -0800
+X-CSE-ConnectionGUID: JHbUU9LCTeSpZFIdC6bKkw==
+X-CSE-MsgGUID: WwYbV4ehQbOgFCvOn3sbzQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; d="scan'208";a="227366063"
+X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; d="scan'208";a="227366081"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa002.jf.intel.com with ESMTP; 10 Dec 2025 21:43:48 -0800
+ by orviesa002.jf.intel.com with ESMTP; 10 Dec 2025 21:43:52 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
@@ -51,9 +51,9 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
  Dapeng Mi <dapeng1.mi@intel.com>, Zide Chen <zide.chen@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
  Farrah Chen <farrah.chen@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v5 08/22] i386/cpu: Drop pmu check in CPUID 0x1C encoding
-Date: Thu, 11 Dec 2025 14:07:47 +0800
-Message-Id: <20251211060801.3600039-9-zhao1.liu@intel.com>
+Subject: [PATCH v5 09/22] i386/cpu: Fix supervisor xstate initialization
+Date: Thu, 11 Dec 2025 14:07:48 +0800
+Message-Id: <20251211060801.3600039-10-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251211060801.3600039-1-zhao1.liu@intel.com>
 References: <20251211060801.3600039-1-zhao1.liu@intel.com>
@@ -84,42 +84,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since CPUID_7_0_EDX_ARCH_LBR will be masked off if pmu is disabled,
-there's no need to check CPUID_7_0_EDX_ARCH_LBR feature with pmu.
+From: Chao Gao <chao.gao@intel.com>
+
+Arch lbr is a supervisor xstate, but its area is not covered in
+x86_cpu_init_xsave().
+
+Fix it by checking supported xss bitmap.
+
+In addition, drop the (uint64_t) type casts for supported_xcr0 since
+x86_cpu_get_supported_feature_word() returns uint64_t so that the cast
+is not needed. Then ensure line length is within 90 characters.
 
 Tested-by: Farrah Chen <farrah.chen@intel.com>
-Reviewed-by: Zide Chen <zide.chen@intel.com>
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/i386/cpu.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+Changes Since v3:
+ - Fix shift for CXRO high 32 bits.
+---
+ target/i386/cpu.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 56b4c57969c1..62769db3ebb7 100644
+index 62769db3ebb7..859cb889a37c 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -8273,11 +8273,16 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+@@ -9711,20 +9711,23 @@ static void x86_cpu_post_initfn(Object *obj)
+ static void x86_cpu_init_xsave(void)
+ {
+     static bool first = true;
+-    uint64_t supported_xcr0;
++    uint64_t supported_xcr0, supported_xss;
+     int i;
+ 
+     if (first) {
+         first = false;
+ 
+         supported_xcr0 =
+-            ((uint64_t) x86_cpu_get_supported_feature_word(NULL, FEAT_XSAVE_XCR0_HI) << 32) |
++            x86_cpu_get_supported_feature_word(NULL, FEAT_XSAVE_XCR0_HI) << 32 |
+             x86_cpu_get_supported_feature_word(NULL, FEAT_XSAVE_XCR0_LO);
++        supported_xss =
++            x86_cpu_get_supported_feature_word(NULL, FEAT_XSAVE_XSS_HI) << 32 |
++            x86_cpu_get_supported_feature_word(NULL, FEAT_XSAVE_XSS_LO);
+ 
+         for (i = XSTATE_SSE_BIT + 1; i < XSAVE_STATE_AREA_COUNT; i++) {
+             ExtSaveArea *esa = &x86_ext_save_areas[i];
+ 
+-            if (!(supported_xcr0 & (1 << i))) {
++            if (!((supported_xcr0 | supported_xss) & (1 << i))) {
+                 esa->size = 0;
+             }
          }
-         break;
-     }
--    case 0x1C:
--        if (cpu->enable_pmu && (env->features[FEAT_7_0_EDX] & CPUID_7_0_EDX_ARCH_LBR)) {
--            x86_cpu_get_supported_cpuid(0x1C, 0, eax, ebx, ecx, edx);
--            *edx = 0;
-+    case 0x1C: /* Last Branch Records Information Leaf */
-+        *eax = 0;
-+        *ebx = 0;
-+        *ecx = 0;
-+        *edx = 0;
-+        if (!(env->features[FEAT_7_0_EDX] & CPUID_7_0_EDX_ARCH_LBR)) {
-+            break;
-         }
-+        x86_cpu_get_supported_cpuid(0x1C, 0, eax, ebx, ecx, edx);
-+        *edx = 0; /* EDX is reserved. */
-         break;
-     case 0x1D: {
-         /* AMX TILE, for now hardcoded for Sapphire Rapids*/
 -- 
 2.34.1
 
