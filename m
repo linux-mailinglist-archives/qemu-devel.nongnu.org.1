@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA76BCB4CB0
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 06:44:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 759E2CB4CE9
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 06:46:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTZTB-0000hp-8o; Thu, 11 Dec 2025 00:44:05 -0500
+	id 1vTZTE-0000n2-AO; Thu, 11 Dec 2025 00:44:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vTZT3-0000ej-Lz
- for qemu-devel@nongnu.org; Thu, 11 Dec 2025 00:43:57 -0500
+ id 1vTZTB-0000j9-Vt
+ for qemu-devel@nongnu.org; Thu, 11 Dec 2025 00:44:06 -0500
 Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vTZT2-0001OC-3z
- for qemu-devel@nongnu.org; Thu, 11 Dec 2025 00:43:57 -0500
+ id 1vTZTA-0001bl-8w
+ for qemu-devel@nongnu.org; Thu, 11 Dec 2025 00:44:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765431836; x=1796967836;
+ t=1765431844; x=1796967844;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=FovsNeUNQb3Mbfo6UFh8WpHvsMB68L7Ws+8KaJE9y0g=;
- b=UcXA2q2DnkUyi8QH6Ak/HFJGCtmxdT42VKcmJb0wfqLrsHvxpkTX1qaH
- 6o80sZcW5P0jTOJt1TPMZWobr/sX6owSSwhX5Ak9+udRb4OoKpzftLQWk
- O9xoR0rL4QfRBK8U/SLUc72zL+8nKIcAw+YnHvBf8vTwU9VTatfOEXSyz
- 2i+eKQ3i6kyl+Q3dZUtbmonrAmzAUlHiau4fVIQkYJ+Jyi+Az/+odAmoP
- TVoOXFUAR/2dEQkKbxDM1jOfKH2vMKlpwgvMC7ACb8BVLCmy1/yITZHv3
- EBaK5dWXUvfqvEHar1mWGyLcYMn8IznmUP21urzgTNwGWzziaHZn2yyuV g==;
-X-CSE-ConnectionGUID: WuFEFt9nQ5yCg6o1lcIkyg==
-X-CSE-MsgGUID: 3jAF0gsDTumRWijg5a4OUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="66409887"
-X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; d="scan'208";a="66409887"
+ bh=DZ3sfvrb+qc8GsNdFeIp7NVIUjHrM1Kf/7Vu9/XqA3o=;
+ b=NoU0M0NXQt112mno62ojSJwj6qLi+/RQGhzZsZcW1d1I6GK7r12NHzIM
+ fvzWAO5XkiZRwseP8OGX5QmTENxcFdPX1VaQXrkaUhmDm+otsZ0EITSW4
+ XpJFIO4VM/uJhNlVSSZoKseYdALt6YWaYfCBvgxSNOlv8i+YTVv4ZC6LH
+ Cpx8DUToEuYqb1BqaBjRG6U/rxfJWKhpo0R31zuVEqK/sBqWsdVnyijFV
+ z1UuQNstWhB/8HpTf/v2ogoqkkjfYFQa+HclHw1KfZ1lmRySZH/Ud8BpY
+ mpMdEkbeMuGdCZfT/qKI93KqtZtbNHSnZ9ByiUQ4GXTzG9AtzlcuvpeBK Q==;
+X-CSE-ConnectionGUID: vPtfC1O8R+q1WSXW/6APMQ==
+X-CSE-MsgGUID: LTO+qNK1TuifJs93dH7Oww==
+X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="66409903"
+X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; d="scan'208";a="66409903"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Dec 2025 21:43:55 -0800
-X-CSE-ConnectionGUID: JHbUU9LCTeSpZFIdC6bKkw==
-X-CSE-MsgGUID: WwYbV4ehQbOgFCvOn3sbzQ==
+ 10 Dec 2025 21:44:03 -0800
+X-CSE-ConnectionGUID: QoC2Q5C0S7m/fEn5mdfr1g==
+X-CSE-MsgGUID: FcG2oCBHSzGtD+rfLRUnwg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; d="scan'208";a="227366081"
+X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; d="scan'208";a="227366094"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa002.jf.intel.com with ESMTP; 10 Dec 2025 21:43:52 -0800
+ by orviesa002.jf.intel.com with ESMTP; 10 Dec 2025 21:43:55 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
@@ -51,9 +51,9 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
  Dapeng Mi <dapeng1.mi@intel.com>, Zide Chen <zide.chen@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
  Farrah Chen <farrah.chen@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v5 09/22] i386/cpu: Fix supervisor xstate initialization
-Date: Thu, 11 Dec 2025 14:07:48 +0800
-Message-Id: <20251211060801.3600039-10-zhao1.liu@intel.com>
+Subject: [PATCH v5 10/22] i386/cpu: Add missing migratable xsave features
+Date: Thu, 11 Dec 2025 14:07:49 +0800
+Message-Id: <20251211060801.3600039-11-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251211060801.3600039-1-zhao1.liu@intel.com>
 References: <20251211060801.3600039-1-zhao1.liu@intel.com>
@@ -84,60 +84,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Chao Gao <chao.gao@intel.com>
+Xtile-cfg & xtile-data are both user xstates. Their xstates are cached
+in X86CPUState, and there's a related vmsd "vmstate_amx_xtile", so that
+it's safe to mark them as migratable.
 
-Arch lbr is a supervisor xstate, but its area is not covered in
-x86_cpu_init_xsave().
+Arch lbr xstate is a supervisor xstate, and it is save & load by saving
+& loading related arch lbr MSRs, which are cached in X86CPUState, and
+there's a related vmsd "vmstate_arch_lbr". So it should be migratable.
 
-Fix it by checking supported xss bitmap.
+PT is still unmigratable since KVM disabled it and there's no vmsd and
+no other emulation/simulation support.
 
-In addition, drop the (uint64_t) type casts for supported_xcr0 since
-x86_cpu_get_supported_feature_word() returns uint64_t so that the cast
-is not needed. Then ensure line length is within 90 characters.
+Note, though the migratable_flags get fixed,
+x86_cpu_enable_xsave_components() still overrides supported xstates
+bitmaps regardless the masking of migratable_flags. This is another
+issue, and would be fixed in follow-up refactoring.
 
 Tested-by: Farrah Chen <farrah.chen@intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Signed-off-by: Chao Gao <chao.gao@intel.com>
-Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
 Changes Since v3:
- - Fix shift for CXRO high 32 bits.
+ - Mark XSTATE_ARCH_LBR_MASK as migratable in FEAT_XSAVE_XSS_LO.
+ - Add TODO comment.
 ---
- target/i386/cpu.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ target/i386/cpu.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 62769db3ebb7..859cb889a37c 100644
+index 859cb889a37c..d2a89c03caec 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -9711,20 +9711,23 @@ static void x86_cpu_post_initfn(Object *obj)
- static void x86_cpu_init_xsave(void)
- {
-     static bool first = true;
--    uint64_t supported_xcr0;
-+    uint64_t supported_xcr0, supported_xss;
-     int i;
+@@ -1484,6 +1484,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+             .ecx = 1,
+             .reg = R_ECX,
+         },
++        .migratable_flags = XSTATE_ARCH_LBR_MASK,
+     },
+     [FEAT_XSAVE_XSS_HI] = {
+         .type = CPUID_FEATURE_WORD,
+@@ -1522,7 +1523,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+         .migratable_flags = XSTATE_FP_MASK | XSTATE_SSE_MASK |
+             XSTATE_YMM_MASK | XSTATE_BNDREGS_MASK | XSTATE_BNDCSR_MASK |
+             XSTATE_OPMASK_MASK | XSTATE_ZMM_Hi256_MASK | XSTATE_Hi16_ZMM_MASK |
+-            XSTATE_PKRU_MASK,
++            XSTATE_PKRU_MASK | XSTATE_XTILE_CFG_MASK | XSTATE_XTILE_DATA_MASK,
+     },
+     [FEAT_XSAVE_XCR0_HI] = {
+         .type = CPUID_FEATURE_WORD,
+@@ -2154,8 +2155,13 @@ static uint64_t x86_cpu_get_migratable_flags(X86CPU *cpu, FeatureWord w)
+     for (i = 0; i < 64; i++) {
+         uint64_t f = 1ULL << i;
  
-     if (first) {
-         first = false;
- 
-         supported_xcr0 =
--            ((uint64_t) x86_cpu_get_supported_feature_word(NULL, FEAT_XSAVE_XCR0_HI) << 32) |
-+            x86_cpu_get_supported_feature_word(NULL, FEAT_XSAVE_XCR0_HI) << 32 |
-             x86_cpu_get_supported_feature_word(NULL, FEAT_XSAVE_XCR0_LO);
-+        supported_xss =
-+            x86_cpu_get_supported_feature_word(NULL, FEAT_XSAVE_XSS_HI) << 32 |
-+            x86_cpu_get_supported_feature_word(NULL, FEAT_XSAVE_XSS_LO);
- 
-         for (i = XSTATE_SSE_BIT + 1; i < XSAVE_STATE_AREA_COUNT; i++) {
-             ExtSaveArea *esa = &x86_ext_save_areas[i];
- 
--            if (!(supported_xcr0 & (1 << i))) {
-+            if (!((supported_xcr0 | supported_xss) & (1 << i))) {
-                 esa->size = 0;
-             }
-         }
+-        /* If the feature name is known, it is implicitly considered migratable,
+-         * unless it is explicitly set in unmigratable_flags */
++        /*
++         * If the feature name is known, it is implicitly considered migratable,
++         * unless it is explicitly set in unmigratable_flags.
++         *
++         * TODO: Make the behavior of x86_cpu_enable_xsave_components() align
++         * with migratable_flags masking.
++         */
+         if ((wi->migratable_flags & f) ||
+             (wi->feat_names[i] && !(wi->unmigratable_flags & f))) {
+             r |= f;
 -- 
 2.34.1
 
