@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA7EDCB4CD5
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 06:45:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22FB1CB4CE3
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 06:46:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTZTr-0003dw-23; Thu, 11 Dec 2025 00:44:47 -0500
+	id 1vTZTt-0003tR-Bo; Thu, 11 Dec 2025 00:44:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vTZTn-0003Q5-1T
- for qemu-devel@nongnu.org; Thu, 11 Dec 2025 00:44:43 -0500
+ id 1vTZTq-0003iR-7C
+ for qemu-devel@nongnu.org; Thu, 11 Dec 2025 00:44:46 -0500
 Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vTZTl-0001fN-4z
- for qemu-devel@nongnu.org; Thu, 11 Dec 2025 00:44:42 -0500
+ id 1vTZTo-0001fx-Ak
+ for qemu-devel@nongnu.org; Thu, 11 Dec 2025 00:44:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765431881; x=1796967881;
+ t=1765431884; x=1796967884;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=+ZmFX9Wa38QCyJDA999eLfSD8lk8eMMUymD4mrIN4hM=;
- b=F7jjHCdkfLCsa/JQD134aSVwaAs4DtQyS7C7EwCgwGBn7ptPYxfYL9Gr
- Zh5jWdkLubssaZp57uYJ/z8bjQykzLlLHouf3KqXXLDbv8zpf7GannItH
- zKOox1P9cv/FUQh0P288vX1GKfp1TqMZjxzAZYGT0IW+epB667cH9ui07
- C8OeUpKhw5gJqKzi38ZiVF4qy2TuuVGiWUHtrVwrbbj7ikOLygrXximJw
- G+2qtImd2iJCMnhzVAzzpYBnz/vBbTWcKLDhcn8nhI2MWtZ/nT53RjMM5
- xNlVOVzBwR6CmMcAcQI0epAG0YHOQntgL1mhPAZOQQTQICk88zeW+4XWn A==;
-X-CSE-ConnectionGUID: p88gV2iRT1+mInG3STmkVQ==
-X-CSE-MsgGUID: /3panwXDRH+qvCvwrFSuIw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="66409960"
-X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; d="scan'208";a="66409960"
+ bh=kMqBy7CxyEmFl74t7tv9rzwXuI+1Gc0Y9duW9Lw4FqE=;
+ b=T2+EuGd/VLUrfCbp4elzBvM+WDtnU+qCO43o6Eo09XK39mt3eDarcJh2
+ ISlqKnbU67fCR7SQDhcLx4/ccfGuVCruyORAjJmCuoldALPhRmw96266y
+ 1tGK2D8VvIcuzCe98nXS+FjJ0oemkoXvhGF4HKpzPbgyRKcvqpJ34UGPS
+ oGfVljmV06A9RGPlEWtuw7zACSWVmrjEGE2D6bW62CqCCCm+e+0mhiN4o
+ v9qXHueV+MDj66r6V2eTolcGKnw2Q0T53pEjb3v4SQgn8+p6z4Y5/DWe5
+ DbMQuKWkq7ArNLlIYRrzWfWPAYifLVyIWgiSaN6UAjvblqIIUjz3/3uvw g==;
+X-CSE-ConnectionGUID: TUycfa8CQjSfeSBAfiuBpw==
+X-CSE-MsgGUID: ludb8ejVS/O8x9WflE1Sng==
+X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="66409970"
+X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; d="scan'208";a="66409970"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Dec 2025 21:44:29 -0800
-X-CSE-ConnectionGUID: TS62/0xTR5a67qTvb29dgA==
-X-CSE-MsgGUID: MGBlX1B5Q6qEzhBLIXLPYg==
+ 10 Dec 2025 21:44:33 -0800
+X-CSE-ConnectionGUID: npxRuo/bQYKxhgAEhk0r1A==
+X-CSE-MsgGUID: ULbuviDXShSRvC/7+CTZXw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; d="scan'208";a="227366216"
+X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; d="scan'208";a="227366231"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa002.jf.intel.com with ESMTP; 10 Dec 2025 21:44:25 -0800
+ by orviesa002.jf.intel.com with ESMTP; 10 Dec 2025 21:44:29 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
@@ -50,11 +50,10 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
  Babu Moger <babu.moger@amd.com>, Mathias Krause <minipli@grsecurity.net>,
  Dapeng Mi <dapeng1.mi@intel.com>, Zide Chen <zide.chen@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
- Farrah Chen <farrah.chen@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
- Yang Weijiang <weijiang.yang@intel.com>
-Subject: [PATCH v5 17/22] i386/machine: Add vmstate for cet-shstk and cet-ibt
-Date: Thu, 11 Dec 2025 14:07:56 +0800
-Message-Id: <20251211060801.3600039-18-zhao1.liu@intel.com>
+ Farrah Chen <farrah.chen@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v5 18/22] i386/cpu: Mark cet-u & cet-s xstates as migratable
+Date: Thu, 11 Dec 2025 14:07:57 +0800
+Message-Id: <20251211060801.3600039-19-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251211060801.3600039-1-zhao1.liu@intel.com>
 References: <20251211060801.3600039-1-zhao1.liu@intel.com>
@@ -85,97 +84,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yang Weijiang <weijiang.yang@intel.com>
+Cet-u and cet-s are supervisor xstates. Their states are saved/loaded by
+saving/loading related CET MSRs. And there're the "vmstate_cet" and
+"vmstate_pl0_ssp" to migrate these MSRs.
 
-Add vmstates for cet-shstk and cet-ibt
+Thus, it's safe to mark them as migratable.
 
 Tested-by: Farrah Chen <farrah.chen@intel.com>
-Signed-off-by: Yang Weijiang <weijiang.yang@intel.com>
-Co-developed-by: Chao Gao <chao.gao@intel.com>
-Signed-off-by: Chao Gao <chao.gao@intel.com>
-Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
 Changes Since v3:
- - Rename vmstate_ss to vmstate_shstk.
- - Split pl0_ssp into a seperate vmstate in another patch.
-
-Changes Since v2:
- - Split a subsection "vmstate_ss" since shstk is user-configurable.
+ - Add the flags in FEAT_XSAVE_XSS_LO.
 ---
- target/i386/machine.c | 52 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+ target/i386/cpu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/machine.c b/target/i386/machine.c
-index bf13f7f0f66e..57a968c30db3 100644
---- a/target/i386/machine.c
-+++ b/target/i386/machine.c
-@@ -1690,6 +1690,57 @@ static const VMStateDescription vmstate_pl0_ssp = {
-     }
- };
- 
-+static bool shstk_needed(void *opaque)
-+{
-+    X86CPU *cpu = opaque;
-+    CPUX86State *env = &cpu->env;
-+
-+    return !!(env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_CET_SHSTK);
-+}
-+
-+static const VMStateDescription vmstate_shstk = {
-+    .name = "cpu/cet_shstk",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = shstk_needed,
-+    .fields = (VMStateField[]) {
-+        /* pl0_ssp has been covered by vmstate_pl0_ssp. */
-+        VMSTATE_UINT64(env.pl1_ssp, X86CPU),
-+        VMSTATE_UINT64(env.pl2_ssp, X86CPU),
-+        VMSTATE_UINT64(env.pl3_ssp, X86CPU),
-+#ifdef TARGET_X86_64
-+        VMSTATE_UINT64(env.int_ssp_table, X86CPU),
-+#endif
-+        VMSTATE_UINT64(env.guest_ssp, X86CPU),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
-+static bool cet_needed(void *opaque)
-+{
-+    X86CPU *cpu = opaque;
-+    CPUX86State *env = &cpu->env;
-+
-+    return !!((env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_CET_SHSTK) ||
-+              (env->features[FEAT_7_0_EDX] & CPUID_7_0_EDX_CET_IBT));
-+}
-+
-+static const VMStateDescription vmstate_cet = {
-+    .name = "cpu/cet",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = cet_needed,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINT64(env.u_cet, X86CPU),
-+        VMSTATE_UINT64(env.s_cet, X86CPU),
-+        VMSTATE_END_OF_LIST()
-+    },
-+    .subsections = (const VMStateDescription * const []) {
-+        &vmstate_shstk,
-+        NULL,
-+    },
-+};
-+
- const VMStateDescription vmstate_x86_cpu = {
-     .name = "cpu",
-     .version_id = 12,
-@@ -1840,6 +1891,7 @@ const VMStateDescription vmstate_x86_cpu = {
-         &vmstate_arch_lbr,
-         &vmstate_triple_fault,
-         &vmstate_pl0_ssp,
-+        &vmstate_cet,
-         NULL
-     }
- };
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 4d29e784061c..848e3ccbb8e3 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1484,7 +1484,8 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+             .ecx = 1,
+             .reg = R_ECX,
+         },
+-        .migratable_flags = XSTATE_ARCH_LBR_MASK,
++        .migratable_flags = XSTATE_CET_U_MASK | XSTATE_CET_S_MASK |
++            XSTATE_ARCH_LBR_MASK,
+     },
+     [FEAT_XSAVE_XSS_HI] = {
+         .type = CPUID_FEATURE_WORD,
 -- 
 2.34.1
 
