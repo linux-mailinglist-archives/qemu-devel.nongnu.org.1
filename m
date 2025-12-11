@@ -2,114 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEB78CB52C7
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 09:47:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E7F9CB53C6
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 09:54:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTcJi-000147-Dr; Thu, 11 Dec 2025 03:46:30 -0500
+	id 1vTcRD-0002lW-8V; Thu, 11 Dec 2025 03:54:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1vTcJd-00013m-Li
- for qemu-devel@nongnu.org; Thu, 11 Dec 2025 03:46:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1vTcJa-0007Nu-Mg
- for qemu-devel@nongnu.org; Thu, 11 Dec 2025 03:46:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1765442780;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=TPUMXRO/jw+TRLjOlgLwUQu+W4zj0DlSLRqa6k2iv2I=;
- b=EtI0g9a0wHW1WuQinutFkKbCAOGiOqkJ5ILYlt6JTYm1FZk3XQfPfMjWdpMVIMBtRyi7+i
- rnOXVoLKovJBSQM0xF5X8v+1ftQxkJzpGcgiFccu1++nq3pb11HVK/lfk5tbvWXMpNMr6u
- wFbIJlwjlC8q3quFpbcmztMSWWJFYQ8=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-359-2nA20NPLNiWDOePR8FNQAw-1; Thu, 11 Dec 2025 03:46:19 -0500
-X-MC-Unique: 2nA20NPLNiWDOePR8FNQAw-1
-X-Mimecast-MFC-AGG-ID: 2nA20NPLNiWDOePR8FNQAw_1765442778
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-b7a29e6f9a0so78287966b.1
- for <qemu-devel@nongnu.org>; Thu, 11 Dec 2025 00:46:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1765442778; x=1766047578; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=TPUMXRO/jw+TRLjOlgLwUQu+W4zj0DlSLRqa6k2iv2I=;
- b=EiYpymAWY5b5CRxRz3N9DMV4dW8PrA7lrtzbgMORZNvtwsTR0vtDVHalVJF7ugYFnE
- 4VvBmDZ/8mH44Z+lq999p/2N/M191vVfHbzvg1KUU0EgL15ipPZpG2EGVbXpCi4T6ASL
- QFtsclWpwRMsEHNfUmwSy9g/2c/eu3RDyYXNJNhezmPpeFjlORSUaRUu0gQbyISohqsP
- nF6LdOOgdHzd+Bw3FOAtbq12fh1Xfn5Y+6w7geyDticDvKsqr6z+J15T6cOTUS3XB6uT
- KohUo5R1H427nD/LufgWs6SHEAOdModylEAM9W6Fa/y0Xm/RCW5O0OfOCYJswhU0YNoc
- rR1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765442778; x=1766047578;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TPUMXRO/jw+TRLjOlgLwUQu+W4zj0DlSLRqa6k2iv2I=;
- b=IQ8hMRcO9nUUdSrqhPZC+TwBrWbJjvDEz2M/EdHUCc3CTio+w/7qbxDN/Lr7T0Kwge
- rjF7uzev8i8WwqAHd6DDjAc8gCZ6Nbtr5f/gJV8uf/0ec9QOg3wowQFru4h16y8p62tG
- KsrV9cCGFELI8jM28SQukZlYNGbT+W4yrYEFEFHH5FNURODNk93RfzDGujp6ILVS0bMM
- 1OiWdOOaw9R8z/B7hwdf3y0kUoNlk3Ol6Pouit/D7aHeCC6CKz7a8Yf/n6CvxTM6bIVg
- UT9ULw2iZIYG6L2LQVWoi4yoSxb/XU+g1wlTDViUKi5CxlJ198B8y3B9dVqxMbqBXKgc
- EZmQ==
-X-Gm-Message-State: AOJu0YzQhSTRLg5jbQLHtU1G3fHAhNnLpQGS7SudBe+wUQF/Caj7mInh
- 9uQFFarBw3sn9mzi3XovhfWFQXpCbebRBMpROE3S5DpTPs+kL5W7E+hM+h8hemlcCNzKpdiYiQL
- SRLTstoOSSD5OY6JcE4Og0ggrn56qEDsGGsxnAnhIGg8Nxu/d9dSbxfB/
-X-Gm-Gg: AY/fxX7AM2VwpKLz6YpV2XopfkrdJIj8r6EWkmI4jxFIi/5VmmxhGkNlV/MdPSxyETY
- INer+Ny1MsSMDjGSjUrZlt1rmIhQGwJrP9dY42gJSypxC9KJPl686UJGoRbjO9Et8z24f6CT2eK
- JOMmBEgvAIXFqd/PZMH7YElexeu7NJp4sHjLVz64Wspe1BJUAqXrnNrP1swxIEoKxhOzFGknjDL
- 9w2UAS0Q/GUJY9dHJZQJnbtsjKL5Rs9QafNM9vGT4Ju0ueWU0tGzE0Wa7nO+vRBRIq5f5bjldl+
- O8nlhJZcdDkKQgRk3CkUH51hxDzzUcZNgMGc6d5dik7hVWQXRPjnGqmy7TDnLf0xHXpcf+30sXQ
- 4DVfNFUu9IuIZV661Bpsk9mQU2p+2F1vwPYawmwhOcscBFbp6RN3z9lOpPRriVg==
-X-Received: by 2002:a17:906:c148:b0:b6d:573d:bbc5 with SMTP id
- a640c23a62f3a-b7ce83c410cmr560153966b.37.1765442778007; 
- Thu, 11 Dec 2025 00:46:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGqgLL+tnOEFfhd7vsF3bDWS7giZs3MPN6uzgFnyKJZQJYkZQCQwhm1877AgMDHElkxPd0I7w==
-X-Received: by 2002:a17:906:c148:b0:b6d:573d:bbc5 with SMTP id
- a640c23a62f3a-b7ce83c410cmr560149666b.37.1765442777364; 
- Thu, 11 Dec 2025 00:46:17 -0800 (PST)
-Received: from sgarzare-redhat (host-87-12-139-91.business.telecomitalia.it.
- [87.12.139.91]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b7cfa5c9d22sm206613966b.61.2025.12.11.00.46.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Dec 2025 00:46:16 -0800 (PST)
-Date: Thu, 11 Dec 2025 09:46:11 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Oliver Steffen <osteffen@redhat.com>
-Cc: qemu-devel@nongnu.org, Joerg Roedel <joerg.roedel@amd.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Gerd Hoffmann <kraxel@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- kvm@vger.kernel.org, Richard Henderson <richard.henderson@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, 
- Eduardo Habkost <eduardo@habkost.net>, Ani Sinha <anisinha@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Luigi Leonardi <leonardi@redhat.com>, 
- Igor Mammedov <imammedo@redhat.com>
-Subject: Re: [PATCH 3/3] igvm: Fill MADT IGVM parameter field
-Message-ID: <26ptyaovy6mlbvuzri4v2ea3xhyvdc5elqsau34upvswarrbop@bhtzvxpb5aad>
-References: <20251211081517.1546957-1-osteffen@redhat.com>
- <20251211081517.1546957-4-osteffen@redhat.com>
+ (Exim 4.90_1) (envelope-from <tangtao1634@phytium.com.cn>)
+ id 1vTcRA-0002lH-5f; Thu, 11 Dec 2025 03:54:12 -0500
+Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net ([162.243.164.118])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <tangtao1634@phytium.com.cn>)
+ id 1vTcR7-0000qF-Bl; Thu, 11 Dec 2025 03:54:11 -0500
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+ by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwD31ySqhjpp_iFcAQ--.37074S2;
+ Thu, 11 Dec 2025 16:54:02 +0800 (CST)
+Received: from [10.31.62.13] (unknown [218.76.62.144])
+ by mail (Coremail) with SMTP id AQAAfwCH3+yfhjppoi0LAA--.21537S2;
+ Thu, 11 Dec 2025 16:53:58 +0800 (CST)
+Message-ID: <82e4571c-8511-44da-bc30-a8f0055a660f@phytium.com.cn>
+Date: Thu, 11 Dec 2025 16:53:50 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20251211081517.1546957-4-osteffen@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC RESEND v5 3/4] tests/qtest/libqos: Add SMMUv3 helper library
+To: eric.auger@redhat.com, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Chen Baozi <chenbaozi@phytium.com.cn>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Mostafa Saleh <smostafa@google.com>,
+ CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
+References: <20251126154547.1300748-1-tangtao1634@phytium.com.cn>
+ <20251126154547.1300748-4-tangtao1634@phytium.com.cn>
+ <9b2c0429-a8bb-4df4-ad95-492f463cf29f@linaro.org>
+ <b184c907-e073-43d0-87b9-cf8c6c23dbed@phytium.com.cn>
+ <a361b46f-2173-4c98-a5d3-6b4d2ac004af@linaro.org>
+ <41c33694-008e-4ee1-bbe2-1498e9b6c9c7@phytium.com.cn>
+ <5af3335d-632b-432a-80d8-80ca4d20d06a@redhat.com>
+From: Tao Tang <tangtao1634@phytium.com.cn>
+In-Reply-To: <5af3335d-632b-432a-80d8-80ca4d20d06a@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAfwCH3+yfhjppoi0LAA--.21537S2
+X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQABBWk51DEDpAAAsX
+Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=tangtao163
+ 4@phytium.com.cn;
+X-Coremail-Antispam: 1Uk129KBjvJXoW3WFWDWw15uFyDtr4rJFW8WFg_yoWfZrWxpF
+ y8JFW5trWUJr1rJr1UKw1UJryayr4xJw1UXr18WFn8Jr4qyr12gr1jqryq9r18Jr48Xr1j
+ vw1jgr13Zr15ArJanT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+ DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
+ UUUUU
+Received-SPF: pass client-ip=162.243.164.118;
+ envelope-from=tangtao1634@phytium.com.cn;
+ helo=zg8tmtyylji0my4xnjqumte4.icoremail.net
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,189 +83,230 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Dec 11, 2025 at 09:15:17AM +0100, Oliver Steffen wrote:
->Use the new acpi_build_madt_standalone() function to fill the MADT
->parameter field.
 
-The cover letter will not usually be part of the git history, so IMO it 
-is better to include also here the information that you have rightly 
-written there, explaining why we are adding this change.
+On 2025/12/11 02:40, Eric Auger wrote:
+> Hi Tao,
+>
+> On 12/6/25 6:27 AM, Tao Tang wrote:
+>> On 2025/12/6 01:19, Pierrick Bouvier wrote:
+>>> On 12/5/25 7:03 AM, Tao Tang wrote:
+>>>> Hi Pierrick,
+>>>>
+>>>> On 2025/12/5 07:53, Pierrick Bouvier wrote:
+>>>>> On 11/26/25 7:45 AM, Tao Tang wrote:
+>>>>>> Introduce qos-smmuv3, a reusable library for SMMUv3-related qtest
+>>>>>> operations. This module encapsulates common tasks like:
+>>>>>>
+>>>>>> - SMMUv3 initialization (enabling, configuring command/event queues)
+>>>>>> - Stream Table Entry (STE) and Context Descriptor (CD) setup
+>>>>>> - Multi-level page table construction (L0-L3 for 4KB granules)
+>>>>>> - Support for Stage 1, Stage 2, and nested translation modes
+>>>>>> - Could be easily extended to support multi-space testing
+>>>>>> infrastructure
+>>>>>>        (Non-Secure, Secure, Root, Realm)
+>>>>>>
+>>>>>> The library provides high-level abstractions that allow test code to
+>>>>>> focus on IOMMU behavior validation rather than low-level register
+>>>>>> manipulation and page table encoding. Key features include:
+>>>>>>
+>>>>>> - Automatic memory allocation for translation structures with proper
+>>>>>>        alignment
+>>>>>> - Helper functions to build valid STEs/CDs for different translation
+>>>>>>        scenarios
+>>>>>> - Page table walkers that handle address offset calculations per
+>>>>>>        security space
+>>>>>> - Command queue management for SMMU configuration commands
+>>>>>>
+>>>>>> This infrastructure is designed to be used by iommu-testdev-based
+>>>>>> tests
+>>>>>> and future SMMUv3 test suites, reducing code duplication and
+>>>>>> improving
+>>>>>> test maintainability.
+>>>>>>
+>>>>>> Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
+>>>>>> ---
+>>>>>>     tests/qtest/libqos/meson.build  |   3 +
+>>>>>>     tests/qtest/libqos/qos-smmuv3.c | 731
+>>>>>> ++++++++++++++++++++++++++++++++
+>>>>>>     tests/qtest/libqos/qos-smmuv3.h | 267 ++++++++++++
+>>>>>>     3 files changed, 1001 insertions(+)
+>>>>>>     create mode 100644 tests/qtest/libqos/qos-smmuv3.c
+>>>>>>     create mode 100644 tests/qtest/libqos/qos-smmuv3.h
+>>>>>>
+>>>>> ...
+>>>>>
+>>>>>> +
+>>>>>> +void qsmmu_single_translation(QSMMUTestContext *ctx)
+>>>>>> +{
+>>>>>> +    uint32_t config_result;
+>>>>>> +    uint32_t dma_result;
+>>>>>> +    bool test_passed;
+>>>>>> +
+>>>>>> +    /* Configure SMMU translation */
+>>>>>> +    config_result = qsmmu_setup_and_enable_translation(ctx);
+>>>>>> +    if (config_result != 0) {
+>>>>>> +        g_test_message("Configuration failed: mode=%u status=0x%x",
+>>>>>> +                       ctx->config.trans_mode, config_result);
+>>>>>> +        return;
+>>>>> Is that expected to silently return if we can't configure translation?
+>>>>
+>>>> No, it is not intended to silently return on a failed configuration.
+>>>> Maybe an assertion is a better choice:
+>>>>
+>>>>
+>>>> config_result = qsmmu_setup_and_enable_translation(ctx);
+>>>>
+>>>> g_assert_cmpuint(config_result, ==, 0);
+>>>>
+>>> Looks good. We should rely on exit code first, and then on verbose
+>>> log to find what is the problem.
+>>>
+>>>>>> +    }
+>>>>>> +
+>>>>>> +    /* Trigger DMA operation */
+>>>>>> +    dma_result = qsmmu_trigger_dma(ctx);
+>>>>>> +    if (dma_result != 0) {
+>>>>>> +        g_test_message("DMA failed: mode=%u result=0x%x",
+>>>>>> +                       ctx->config.trans_mode, dma_result);
+>>>>>> +    } else {
+>>>>>> +        g_test_message("-> DMA succeeded: mode=%u",
+>>>>>> ctx->config.trans_mode);
+>>>>>> +    }
+>>>>>> +
+>>>>>> +    /* Validate test result */
+>>>>>> +    test_passed = qsmmu_validate_test_result(ctx);
+>>>>>> +    g_assert_true(test_passed);
+>>>>>> +
+>>>>>> +    /* Clean up translation state to prepare for the next test */
+>>>>>> +    qsmmu_cleanup_translation(ctx);
+>>>>>> +}
+>>>>>> +
+>>>>>> +void qsmmu_translation_batch(const QSMMUTestConfig *configs, size_t
+>>>>>> count,
+>>>>>> +                             QTestState *qts, QPCIDevice *dev,
+>>>>>> +                             QPCIBar bar, uint64_t smmu_base)
+>>>>>> +{
+>>>>>> +    for (int i = 0; i < count; i++) {
+>>>>>> +        /* Initialize test memory */
+>>>>>> +        qtest_memset(qts, configs[i].dma_iova, 0x00,
+>>>>>> configs[i].dma_len);
+>>>>>> +        /* Execute each test configuration */
+>>>>>> +        QSMMUTestContext ctx = {
+>>>>>> +            .qts = qts,
+>>>>>> +            .dev = dev,
+>>>>>> +            .bar = bar,
+>>>>>> +            .smmu_base = smmu_base,
+>>>>>> +            .config = configs[i],
+>>>>>> +            .trans_status = 0,
+>>>>>> +            .dma_result = 0,
+>>>>>> +            .sid = dev->devfn,
+>>>>>> +            .tx_space = qsmmu_sec_sid_to_space(configs[i].sec_sid),
+>>>>>> +        };
+>>>>>> +
+>>>>>> +        qsmmu_single_translation(&ctx);
+>>>>>> +        g_test_message("--> Test %d completed: mode=%u sec_sid=%u "
+>>>>>> +                       "status=0x%x result=0x%x", i,
+>>>>>> configs[i].trans_mode,
+>>>>>> +                       configs[i].sec_sid, ctx.trans_status,
+>>>>>> ctx.dma_result);
+>>>>>> +    }
+>>>>>> +}
+>>>>> What is the reason for batching operations?
+>>>>> We are not in a performance critical scenario for running this test,
+>>>>> so it's probably better to have distinct calls to single_translation.
+>>>>
+>>>> As described in the previous thread [1] , I plan to split the tests so
+>>>> that each translation mode is exercised by its own qtest. With that
+>>>> split in place, there is no real need for a qsmmu_translation_batch()
+>>>> helper anymore, so I refactor it into a qsmmu_run_translation_case
+>>>> function and drop the inside for-loop.
+>>>>
+>>> All good, indeed removes the need for translation_batch.
+>>>
+>>>> [1]
+>>>> https://lore.kernel.org/qemu-devel/7370070a-c569-4b77-bd1e-6fc749ba9c90@phytium.com.cn/
+>>>>
+>>>>
+>>>>> ...
+>>>>>
+>>>>> For the rest of the patch, which is quite consequent, congrats. It's
+>>>>> hard to review all the setup phase here, but knowing it works with the
+>>>>> current smmuv3 implementation, that's a good proof that it's working
+>>>>> as expected.
+>>>>
+>>>> Yes, setting up all this infrastructure did take some time, especially
+>>>> getting the nested mode page tables right (and Secure state-related
+>>>> configuration which is still in my local repo).
+>>>>
+>>> Feel free to start with the current version, and then you'll add
+>>> secure state related changes as part of your other series.
+>>>
+>>>> I really appreciate that you ran the tests yourself and even checked
+>>>> with a coverage-enabled build to confirm that it exercises the smmuv3
+>>>> implementation. Thanks again for the thorough review.
+>>>>
+>>> In case someone else wants to reproduce:
+>>> $ export CFLAGS="--coverage"
+>>> $ ./configure --target-list=aarch64-softmmu
+>>> $ ninja -C build
+>>> $ QTEST_QEMU_BINARY=./build/qemu-system-aarch64 \
+>>>    ./build/tests/qtest/iommu-smmuv3-test
+>>> $ rm -rf build/coverage_html
+>>> $ mkdir build/coverage_html
+>>> $ gcovr \
+>>>        --gcov-ignore-parse-errors suspicious_hits.warn \
+>>>        --gcov-ignore-parse-errors negative_hits.warn \
+>>>        --merge-mode-functions=separate \
+>>>        --html-details build/coverage_html/index.html \
+>>>        --filter 'hw/arm/smmu*'
+>>> $ echo file://$(pwd)/build/coverage_html/index.html
+>>> # open this in browser by clicking on your terminal
+>>>
+>>> If useful for you, you can attach those instructions in your next
+>>> cover letter, so people can easily reproduce.
+> are you ready to maintain that code (esp the lib)? You shall add an
+> entry in the MAINTAINERS file for those new files I guess.
+>
+> Eric
 
->
->Signed-off-by: Oliver Steffen <osteffen@redhat.com>
->---
-> backends/igvm-cfg.c       |  8 +++++++-
-> backends/igvm.c           | 37 ++++++++++++++++++++++++++++++++++++-
-> include/system/igvm-cfg.h |  4 ++--
-> include/system/igvm.h     |  2 +-
-> target/i386/sev.c         |  2 +-
-> 5 files changed, 47 insertions(+), 6 deletions(-)
->
->diff --git a/backends/igvm-cfg.c b/backends/igvm-cfg.c
->index c1b45401f4..0a77f7b7a1 100644
->--- a/backends/igvm-cfg.c
->+++ b/backends/igvm-cfg.c
->@@ -17,6 +17,7 @@
-> #include "qom/object_interfaces.h"
-> #include "hw/qdev-core.h"
-> #include "hw/boards.h"
->+#include "hw/i386/acpi-build.h"
->
-> #include "trace.h"
->
->@@ -48,10 +49,15 @@ static void igvm_reset_hold(Object *obj, ResetType type)
-> {
->     MachineState *ms = MACHINE(qdev_get_machine());
->     IgvmCfg *igvm = IGVM_CFG(obj);
->+    GArray *madt = NULL;
->
->     trace_igvm_reset_hold(type);
->
->-    qigvm_process_file(igvm, ms->cgs, false, &error_fatal);
->+    madt = acpi_build_madt_standalone(ms);
->+
->+    qigvm_process_file(igvm, ms->cgs, false, madt, &error_fatal);
->+
->+    g_array_free(madt, true);
-> }
->
-> static void igvm_reset_exit(Object *obj, ResetType type)
->diff --git a/backends/igvm.c b/backends/igvm.c
->index a350c890cc..7e56b19b0a 100644
->--- a/backends/igvm.c
->+++ b/backends/igvm.c
->@@ -93,6 +93,7 @@ typedef struct QIgvm {
->     unsigned region_start_index;
->     unsigned region_last_index;
->     unsigned region_page_count;
->+    GArray *madt;
-> } QIgvm;
->
-> static int qigvm_directive_page_data(QIgvm *ctx, const uint8_t *header_data,
->@@ -120,6 +121,8 @@ static int qigvm_directive_snp_id_block(QIgvm *ctx, const uint8_t *header_data,
-> static int qigvm_initialization_guest_policy(QIgvm *ctx,
->                                        const uint8_t *header_data,
->                                        Error **errp);
->+static int qigvm_initialization_madt(QIgvm *ctx,
->+                                     const uint8_t *header_data, Error **errp);
->
-> struct QIGVMHandler {
->     uint32_t type;
->@@ -148,6 +151,8 @@ static struct QIGVMHandler handlers[] = {
->       qigvm_directive_snp_id_block },
->     { IGVM_VHT_GUEST_POLICY, IGVM_HEADER_SECTION_INITIALIZATION,
->       qigvm_initialization_guest_policy },
->+    { IGVM_VHT_MADT, IGVM_HEADER_SECTION_DIRECTIVE,
->+      qigvm_initialization_madt },
-> };
->
-> static int qigvm_handler(QIgvm *ctx, uint32_t type, Error **errp)
->@@ -764,6 +769,34 @@ static int qigvm_initialization_guest_policy(QIgvm *ctx,
->     return 0;
-> }
->
->+static int qigvm_initialization_madt(QIgvm *ctx,
->+                                     const uint8_t *header_data, Error **errp)
->+{
->+    const IGVM_VHS_PARAMETER *param = (const IGVM_VHS_PARAMETER *)header_data;
->+    QIgvmParameterData *param_entry;
->+
->+    if (ctx->madt == NULL) {
->+        return 0;
->+    }
->+
->+    /* Find the parameter area that should hold the device tree */
->+    QTAILQ_FOREACH(param_entry, &ctx->parameter_data, next)
->+    {
->+        if (param_entry->index == param->parameter_area_index) {
->+
->+            if (ctx->madt->len > param_entry->size) {
->+                error_setg(
->+                    errp,
->+                    "IGVM: MADT size exceeds parameter area defined in IGVM file");
->+                return -1;
->+            }
->+            memcpy(param_entry->data, ctx->madt->data, ctx->madt->len);
->+            break;
->+        }
->+    }
->+    return 0;
->+}
->+
-> static int qigvm_supported_platform_compat_mask(QIgvm *ctx, Error **errp)
-> {
->     int32_t header_count;
->@@ -892,7 +925,7 @@ IgvmHandle qigvm_file_init(char *filename, Error **errp)
-> }
->
-> int qigvm_process_file(IgvmCfg *cfg, ConfidentialGuestSupport *cgs,
->-                       bool onlyVpContext, Error **errp)
->+                       bool onlyVpContext, GArray *madt, Error **errp)
-> {
->     int32_t header_count;
->     QIgvmParameterData *parameter;
->@@ -915,6 +948,8 @@ int qigvm_process_file(IgvmCfg *cfg, ConfidentialGuestSupport *cgs,
->     ctx.cgs = cgs;
->     ctx.cgsc = cgs ? CONFIDENTIAL_GUEST_SUPPORT_GET_CLASS(cgs) : NULL;
->
->+    ctx.madt = madt;
->+
->     /*
->      * Check that the IGVM file provides configuration for the current
->      * platform
->diff --git a/include/system/igvm-cfg.h b/include/system/igvm-cfg.h
->index 7dc48677fd..1a04302beb 100644
->--- a/include/system/igvm-cfg.h
->+++ b/include/system/igvm-cfg.h
->@@ -42,8 +42,8 @@ typedef struct IgvmCfgClass {
->      *
->      * Returns 0 for ok and -1 on error.
->      */
 
-Should we update the documentation of this function now that we have a 
-new parameter, also explaining that it's optional.
+Yes, I'm ready to maintain this code, especially the new libqos helper. 
+Just to make sure I understood you correctly: were you thinking about
+something along the lines of the following?
 
->-    int (*process)(IgvmCfg *cfg, ConfidentialGuestSupport *cgs,
->-                   bool onlyVpContext, Error **errp);
->+    int (*process)(IgvmCfg *cfg, ConfidentialGuestSupport *cgs,
->+                   bool onlyVpContext, GArray *madt, Error **errp);
->
-> } IgvmCfgClass;
->
->diff --git a/include/system/igvm.h b/include/system/igvm.h
->index ec2538daa0..f2e580e4ee 100644
->--- a/include/system/igvm.h
->+++ b/include/system/igvm.h
->@@ -18,7 +18,7 @@
->
-> IgvmHandle qigvm_file_init(char *filename, Error **errp);
-> int qigvm_process_file(IgvmCfg *igvm, ConfidentialGuestSupport *cgs,
->-                      bool onlyVpContext, Error **errp);
->+                      bool onlyVpContext, GArray *madt, Error **errp);
->
-> /* x86 native */
-> int qigvm_x86_get_mem_map_entry(int index,
->diff --git a/target/i386/sev.c b/target/i386/sev.c
->index fd2dada013..ffeb9f52a2 100644
->--- a/target/i386/sev.c
->+++ b/target/i386/sev.c
->@@ -1892,7 +1892,7 @@ static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
->          */
->         if (x86machine->igvm) {
->             if (IGVM_CFG_GET_CLASS(x86machine->igvm)
->-                    ->process(x86machine->igvm, machine->cgs, true, errp) ==
->+                    ->process(x86machine->igvm, machine->cgs, true, NULL, errp) ==
 
-Why here we don't need to pass it?
+qtest
 
-Thanks,
-Stefano
+.....
 
->                 -1) {
->                 return -1;
->             }
->-- 
->2.52.0
->
+.....
+
+QTest SMMUv3 helpers
+M: Eric Auger <eric.auger@redhat.com>
+M: Tao Tang <tangtao1634@phytium.com.cn>
+L: qemu-arm@nongnu.org
+S: Maintained
+F: hw/misc/iommu-testdev.c
+F: include/hw/misc/iommu-testdev.h
+F: tests/qtest/libqos/qos-smmuv3.h
+F: tests/qtest/iommu-smmuv3-test.c
+F: tests/qtest/libqos/qos-smmuv3.c
+
+Device Fuzzing
+
+.....
+
+.....
+
+
+
+Alternatively, we could also keep iommu-testdev under your existing 
+SMMUv3 section and add a smaller "SMMUv3 qtest helpers" section with 
+only the qtest/libqos files and myself as maintainer.
+
+I'm happy to go with whichever layout you prefer.
+
+Best regards,
+Tao
 
 
