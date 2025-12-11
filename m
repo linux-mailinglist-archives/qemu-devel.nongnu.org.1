@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BE7ECB6D84
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 19:02:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46956CB6D90
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 19:02:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTkzC-0000mE-T0; Thu, 11 Dec 2025 13:01:54 -0500
+	id 1vTkz9-0000gi-4Z; Thu, 11 Dec 2025 13:01:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vTkz4-0000ff-Nw
+ id 1vTkz4-0000fc-NX
  for qemu-devel@nongnu.org; Thu, 11 Dec 2025 13:01:46 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vTkz0-00060y-Pj
+ id 1vTkyy-00060h-Sx
  for qemu-devel@nongnu.org; Thu, 11 Dec 2025 13:01:45 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-42b47f662a0so254984f8f.0
- for <qemu-devel@nongnu.org>; Thu, 11 Dec 2025 10:01:41 -0800 (PST)
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-4779cb0a33fso5360495e9.0
+ for <qemu-devel@nongnu.org>; Thu, 11 Dec 2025 10:01:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1765476100; x=1766080900; darn=nongnu.org;
+ d=linaro.org; s=google; t=1765476099; x=1766080899; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LidZloD1YOJfGlaIqFd+HDx8s5jEhhnCWmmrV/Nz338=;
- b=sHJT2tNbLdTH+q5xZL8JEPhhV0A2keyXRUNipY4lPl/KuZDlQ4Z5MST4xLmLwdUcGL
- 85xbdeN3dKjZnKcPpGdNGg+kjcds6f12vj9kQW5jWsesR4rTeUUPGBXhNFRUvde6Ws60
- Kvu3aXd2FRsDjljhFt5iZ772JDMqCKDMvtOrykOYp0cNZBS5HWnVNZACRM1sOTzvG8eA
- z2KXHAS6iqYKJ3yfcTolNG3VbgzheuVES5jvHc9qXhxMU5EPk5yIsGRocFTDxRujvAvF
- brDZx/UgJxIenK4uHjfnvGHW9D7Rjti9LTnbIv9l904+scKF9D7PfzENQQaEvYky5a3Q
- MFug==
+ bh=IlUfoKCtrzpDxxKvD3ZWXZavaxQbw25a3orNPzaQiEk=;
+ b=QjiJfidXd9/u1a5duBk2rOCnEBm3qF78LJj93Suq/VygM288gKTfS13MfaCazFHBND
+ 2EFXTW+2ytIBTPftJiVbqVwts+DOIMuChAJGiM2LC0S96TYfEE8UybeVULgl9z4o5d6a
+ LleMmQqvaPlUTsDhNGQ6qIbxaSS6Yr5IrflT83SjKZz34FqVo+yYYqJtg50Q3JZekYDY
+ k1gMYRkU28wEITmZRNe0XpTmESTqaaQmuokWEGDFsMkVzHA2bo3HmHxYncaVrjTkI5zK
+ TKUMbJF1ro8gLuLD++sBT75WTV7pvgzb1UfTNAamqU1AuloarMDZ6tcnj33yyuoGYRq7
+ 0IcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765476100; x=1766080900;
+ d=1e100.net; s=20230601; t=1765476099; x=1766080899;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=LidZloD1YOJfGlaIqFd+HDx8s5jEhhnCWmmrV/Nz338=;
- b=XgXInxLeobD0JTcfvlzJljheirtyFQWJDsBQcH/6Dp7HKcZPHWpOX49+khyPKNqzuZ
- MPxWwUaQu0vQIxhvR0EY6/7JMTwGgKilbSORrPhu7LrJy/i2fBUNT8b0MlMcDtPiZjmx
- xVrDd0nMYX8BNgrsVDhng2aAYuQRmlN/jVcPxDtXNmDWdlk5fewZgtugVaRp3sYikMJt
- zFTkpFaSCjorZV4Q8SR3O7YO4XbQgwzL7CpOjpeIhxHQBzb58zpnxxwJVPI+ZX1KNn3g
- xjpQ8Skjk6YBDZ8j6izxS/ZvFGvAkxCBx8E9fW34Av5CctSsyFIggECjGW+DocpHVB1Q
- jCyQ==
-X-Gm-Message-State: AOJu0YwUybj/oR/c6pIQqcANc+7G3oNClWMm7qj18TnNTlOU1jvO1+Y7
- fLB2M4K8sq0NPOLVlYJ0aRDWMPHyyUfM7mqIi9GMa1SH8+35SZlv36PpZvWoHrvPxvk=
-X-Gm-Gg: AY/fxX4xeuPK2DrEftTzUqXe+NlYC+1a41whP+3jSvUxQWPPptoW9GVEu78kGP1Y/Lc
- ojGQEjUN8/KBICKopLDQeReLwAT+bkTWx/fxFHH6Z4zeci78FQLLLCdDHp15Np+wDZhRy/vrLuq
- uBn28Y9bWbI4WpEYAF2YJl1p2UiV33hyu+TEljalhk78OVSJOcjnsAnT4Rp27usekeLgwdjBWXm
- wspdsauTOGdaG+ptivH/pBstPiU0XhcNHScVy02R2Ja1AeUYDgtWAhXA6COTx8F+xHpaubRSBpS
- lsKmrnJH1j1h1MbeUGV5h6InH77yBLDXFfhUmIAllCMSg19OnbWSXZFj4eLGExYz+DNA1L26kpy
- nqsuotC+nxz16AkMCDqXDhwh/ZuQTLLnLw4FAcc2c7wIaeRsgptBKiX/cl4jn7brMRTtNVhOtsh
- k8+sqE2oBPRWo=
-X-Google-Smtp-Source: AGHT+IFzdkqmGlzmCjDTC7QqrtJPRwCSWmgSvoFYb0mNxPz2tNOIee+DiLxvG3GJ2tvPAY2BNxGgzw==
-X-Received: by 2002:a5d:5f88:0:b0:42f:8817:7ee with SMTP id
- ffacd0b85a97d-42fab28c9b3mr4134595f8f.31.1765476098785; 
+ bh=IlUfoKCtrzpDxxKvD3ZWXZavaxQbw25a3orNPzaQiEk=;
+ b=OSYK9NLhIrdvxVA4cxA5uF2/x3CpdvUsHnWNJYPvg1xwLEiFByrh3UzAtmg0oP42hB
+ K6N8reI3Y3veoRhNVrbeMrDQDELashGZEPrX9Q0++FoLTOglPH0PuYE6LzsV+4oAZSBd
+ YpKx3tKaIEu/qPZXei5kH1jwqeJr31kjrai1YZNVFzd+DWCBMsJCgtGCo8BE7f7WbmyY
+ 77KxYzQ0cv6eekp2dBQkozQ6ynlKFBY3UMoLYBpDDqSg7Ii6pPop07qk2LMFkAls53TU
+ ZFkPcpxzQIOmxMYmGXAUZQ7MfzGg/Ut0eM9Vtb7TBQbkBi3dfVfPQ+TtQvvPZ6Li37u1
+ gkvQ==
+X-Gm-Message-State: AOJu0YwWyIB1sFCIt84EBHCGd998rPsI3aJ2Dmr2ApK5HIz0l06ZLWrJ
+ CkwX3ycxzMb4/1rId9D4Pc2U7Igh7IY6lPaYtYIiOD1CrNaDc8/fbMO7sh0w12EN12s=
+X-Gm-Gg: AY/fxX7Ioq1pggGjecedeue6x/ySgNLBMuLstcgRqhxiN7Qgt16ROXCGtxIsAF6F/gx
+ ULm/95rDbM7RuMt8UE5gOLXXljUvl5i87iNoOA9/tC9nW9TY/44CiRclPQaF+J41P1Guj4TSH2K
+ /P4AxIxn0GIK2r/01lbrwfZzmAA6CsEaCFhkvMbzFno3DWnQ/MJn4RMtGGiXqkD98Ha9vjtueds
+ dLEdxKCtI6CVBKf+Em5Of/VllFWVFm9Rs328kxtaEea+cenUAx/CgIbJ1qbEcv3Zs3F7becP0eE
+ rpCTv3031pQ9VDdFmnONDsDLqzPYMy9LnWsphF5+R7V8MuCMOYD5FJA5IeisRux995+0p9Vq1on
+ TITmhBxjE05/GyEvT6sUQv+eDXKU1/+by+dmWsOrL7eyAdHiZZ3hYpkKZPFiZ3SlyYm/agT10pd
+ 6A6njk6vUauUY=
+X-Google-Smtp-Source: AGHT+IFNNajq4jlOgpTAff0Bllofa3dLmQDGbeK90xVAxVciXlJC3XflfsI4+r0xjkMiMpN5RMx1xw==
+X-Received: by 2002:a05:600c:3151:b0:477:557b:691d with SMTP id
+ 5b1f17b1804b1-47a838586d6mr78631615e9.25.1765476098137; 
  Thu, 11 Dec 2025 10:01:38 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42fa8b9b259sm6863545f8f.41.2025.12.11.10.01.35
+ 5b1f17b1804b1-47a89f036a9sm49651595e9.12.2025.12.11.10.01.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 11 Dec 2025 10:01:36 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 53FD35F943;
+ by draig.lan (Postfix) with ESMTP id 6BB2C5F94A;
  Thu, 11 Dec 2025 18:01:33 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -71,18 +71,17 @@ Cc: Cleber Rosa <crosa@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  John Snow <jsnow@redhat.com>
-Subject: [RFC PATCH 8/9] scripts/get_maintainer.py: add support reading patch
- files
-Date: Thu, 11 Dec 2025 18:01:31 +0000
-Message-ID: <20251211180132.3186564-9-alex.bennee@linaro.org>
+Subject: [RFC PATCH 9/9] gitlab: add a check-maintainers task
+Date: Thu, 11 Dec 2025 18:01:32 +0000
+Message-ID: <20251211180132.3186564-10-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251211180132.3186564-1-alex.bennee@linaro.org>
 References: <20251211180132.3186564-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,91 +104,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Not so different from individual files, we just need to parse the
-patch looking for the files and add them to the list. As we can parse
-multiple patches we also need to ensure the final list of sections is
-unique so we don't repeat ourselves.
+Now we have a more flexible get_maintainer script we can use it to
+validate MAINTAINERS.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- scripts/get_maintainer.py | 47 ++++++++++++++++++++++++++++++++++-----
- 1 file changed, 42 insertions(+), 5 deletions(-)
+ .gitlab-ci.d/static_checks.yml | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/scripts/get_maintainer.py b/scripts/get_maintainer.py
-index bf45865438e..daeefecef64 100755
---- a/scripts/get_maintainer.py
-+++ b/scripts/get_maintainer.py
-@@ -15,6 +15,7 @@
- from pathlib import Path
- from enum import StrEnum, auto
- from re import compile as re_compile
-+from re import sub as re_sub
+diff --git a/.gitlab-ci.d/static_checks.yml b/.gitlab-ci.d/static_checks.yml
+index 61fe2fa39ab..c74698ad948 100644
+--- a/.gitlab-ci.d/static_checks.yml
++++ b/.gitlab-ci.d/static_checks.yml
+@@ -23,6 +23,15 @@ check-dco:
+   before_script:
+     - apk -U add git
  
- #
- # Subsystem MAINTAINER entries
-@@ -187,6 +188,29 @@ def read_maintainers(src):
- 
-     return entries
- 
-+#
-+# Helper functions for dealing with patch files
-+#
-+patchfile_re = re_compile(r"\+\+\+\s+(\S+)")
++check-maintainers:
++  extends: .base_job_template
++  stage: build
++  image: python:3.10-alpine
++  needs: []
++  script: scripts/get_maintainer.py --validate
++  variables:
++    GIT_DEPTH: 1
 +
-+#TODO: also return a list of keyword hits for K:?
-+def extract_filenames_from_patch(patchfile):
-+    """
-+    Read a patchfile and return a list of files which are modified by
-+    the patch.
-+    """
-+    file_list = []
-+
-+    with open(patchfile, 'r', encoding='utf-8') as f:
-+        for line in f:
-+            m = patchfile_re.match(line)
-+            if m:
-+                # strip leading [ab]/
-+                stripped = re_sub(r'^[^/]*/', '', m.group(1))
-+                as_path = Path(path.abspath(stripped))
-+                file_list.append(as_path)
-+
-+    return file_list
- 
- #
- # Helper functions for dealing with the source path
-@@ -305,14 +329,27 @@ def main():
-         print(f"loaded {len(maint_sections)} from MAINTAINERS")
-         exit(0)
- 
--    relevent_maintainers = None
-+    # Build array of Path objects representing the files
-+    files = []
- 
-     if args.file:
--        relevent_maintainers = [ms for ms in maint_sections if
--                                ms.is_file_covered(args.file)]
-+        files.append(args.file)
-+
-+    if args.patch:
-+        for p in args.patch:
-+            pfiles = extract_filenames_from_patch(p)
-+            files.extend(pfiles)
-+
-+    # unique set of maintainer sections
-+    maintained: set[MaintainerSection] = set()
-+
-+    for f in files:
-+        fmaint = [ms for ms in maint_sections if ms.is_file_covered(f)]
-+        for m in fmaint:
-+            maintained.add(m)
- 
--    for rm in relevent_maintainers:
--        print(rm)
-+    for rm in maintained:
-+        print(str(rm))
- 
- 
- if __name__ == '__main__':
+ check-python-minreqs:
+   extends: .base_job_template
+   stage: test
 -- 
 2.47.3
 
