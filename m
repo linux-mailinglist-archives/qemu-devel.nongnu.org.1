@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91E83CB6D85
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 19:02:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9506CB6D9F
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 19:02:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTkz0-0000dx-55; Thu, 11 Dec 2025 13:01:42 -0500
+	id 1vTkz4-0000fF-HX; Thu, 11 Dec 2025 13:01:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vTkyv-0000cL-VH
- for qemu-devel@nongnu.org; Thu, 11 Dec 2025 13:01:40 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1vTkyz-0000dM-6I
+ for qemu-devel@nongnu.org; Thu, 11 Dec 2025 13:01:41 -0500
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vTkyu-0005zr-Eb
- for qemu-devel@nongnu.org; Thu, 11 Dec 2025 13:01:37 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-4779cc419b2so4803825e9.3
- for <qemu-devel@nongnu.org>; Thu, 11 Dec 2025 10:01:35 -0800 (PST)
+ id 1vTkyu-0005zy-MV
+ for qemu-devel@nongnu.org; Thu, 11 Dec 2025 13:01:38 -0500
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-42b47f662a0so254936f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 11 Dec 2025 10:01:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1765476094; x=1766080894; darn=nongnu.org;
+ d=linaro.org; s=google; t=1765476095; x=1766080895; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cWQolvt16cWTZUVbyb/ELIWzQoLluK0PM6lqjSDIQio=;
- b=KVBbZ6dvgoYnZ66thjN6Ks8Mu5fIEgxypjBzlFB4SQ1MzFecjVFSXhQATJtPnxrVE6
- m+1l9yIcmR3QtnASlPPaJXTQn3qub7l4f0l5/8Z4KXkQGUUZpuTxeCo1dyZUkfdbMbZh
- pbztibhaVEPaBQ+Jjjre+2ltIyIUox76CtOPXu86MKy9p2TMSVy1ZLH6cbPdDY7skh4E
- c3iVLsYSV+DwtvFbgBKTGWg9cbaKJvussRGFNFhz2No326vLk2h3/+2+gVWY8vR2qvru
- qFqlpgXfKNssPJx9NJlbhV71QGpl7wdf3RgrIbgSlpL1azpKNl1BCmzzOqO0EmFVSIwz
- uYiQ==
+ bh=zqtmNswMbkYyEU+NhJq72TVMbc6kD4yPFILIwQaGzrE=;
+ b=gN6nwbrUHSULI6cfeRhrGby1w5S7SYDEHhaTjgbNVQGCmMDpzzClbYUhLlI8bGl61f
+ cKCzc8ZiGqrQ33vnB6hl5As846FIDVDqBFCgrH2j2QUdxbB4sSfuN0N7pzYsbnLdhnaJ
+ G3rUFgn7Elm4QAmEK/8Wb4iYRgPiPL1jVAlKVryDdQB76RCjGQbo0ooWvZbyz2vdnEKX
+ V88HTpxDUsCe2OlM2pWBPBmZqa16Aqf43jCWUy5r4H1yT4IMJhoKfl06rInDBzHH/4PU
+ vy1g8FIyLDx2V0zisO0XFuF8hNncvZT01lqZMbbYggITFWyFM3zS93H34k+ZZ+6reAb2
+ UuiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765476094; x=1766080894;
+ d=1e100.net; s=20230601; t=1765476095; x=1766080895;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=cWQolvt16cWTZUVbyb/ELIWzQoLluK0PM6lqjSDIQio=;
- b=VDOpxPiQXTD6WpQPsc3wlO17FsF1pdgAuA+UvHD2hU0tbQIOjLS2aOfsntBZFZBLPu
- BkcwSm1Z3R5oZAx9gZrDWud7aZfePrUeuTeJV9POO1XRQg8f6mH1yqoKPrMbf8hpMhbf
- lCzsDh0wp3OrIm7Lfr10CeEruKuBgcq6yiiLQTLZ1/JriU3FBybwFfZLpw6PN2idUTP+
- FqNQwEtX54V/KhDC36QueY3BeIDpVizobxiwRU+XpsXOZ+RdaSjxYOoDHUAbO2xk+q7d
- vcSIsMDyAZn2MlUJ15Pv9yQZU2Ldw2n01Fep9nH6isViG8rQ7kalkTqoFcxp/eSYkTcw
- 4x+w==
-X-Gm-Message-State: AOJu0Yyn6k9YRbVv/Z2AOsXIvQ8KC28/m8KpS/aO/lCGI90hLRd0Eaqa
- kLTAS315PjC8k44qXQVf91GN6sTvwoKBQXOqX+XWnp9uTNwq5Bw/aQUpigZ4uw4fsDo=
-X-Gm-Gg: AY/fxX540+LK9lRhUez625k0tSiX9g7bgwFbaRWhncu0SRLgS7/CyWx2lNDUIaDwV0p
- swjV7qBfoy5od9dqh1SlVFbwKg6qd7l80jmIn9hn5Q8KS6blNpN4i1e5oQ88ZtIU+5dhFHn8bXi
- 5hFgLrHxaAY/CH32sapqm+sqNiMYO4r6sP9pV0W2k+sXUi6YNd585YoTzxSFvrD5gWz/NfOI/Gt
- eZRNAbq7cvMDHnHlJTPjevDwCUW5TAN4r2R5IHSymRepu3W8j9dWGLvSxGuHSjj+8e0y8r5Ojec
- MX22cNLUTK2vRWO5+cV800CYElYCOpADn0TRbegf2h6mAYwB0ELB3AhQkvYI+MlKe1thto1NC+b
- vx5l5444kxIvfPb8YtiB2jF+5bvXUiy49aHHGRC79Z+US2emD4PbUrSbr1e71TqVwbn8E+oaVgs
- O105TWwQqLewama8LqY7vntg==
-X-Google-Smtp-Source: AGHT+IHwJ+i4OYZzT+YvN8YtMYtwn/SB5NPWYvtbE+Eg/70C4vzBzDaLSYFIf5T3mFlQ58HI+UMEtg==
-X-Received: by 2002:a05:600c:3f0f:b0:477:a978:3a7b with SMTP id
- 5b1f17b1804b1-47a8384333fmr68800735e9.22.1765476094429; 
- Thu, 11 Dec 2025 10:01:34 -0800 (PST)
+ bh=zqtmNswMbkYyEU+NhJq72TVMbc6kD4yPFILIwQaGzrE=;
+ b=FVDGYRtpxXU7IjfXfnDFKwXLjIFArxAPOt1+//Lk9RkB4zLTA5V6ATwU+HzulGDBGb
+ 9ZA258yZFIvx6gx+PzBpYiWKqsugGmbJ/hCAgh9zyLohp96rf58TTyVZXcgaJ4wnPYfx
+ yZRHjD1aGRKkv4eV2kq/VUj3/5W1oQ/8iGw4D+uaKTBoJAdcI9dKOJqxvXm67fPpQ5YL
+ y4aX+OYC7+Q3kOk7qnmQO8ZnkvitB7kUkPiP68KhldJ12jao/E2A5pcdOKume/ofxJvt
+ CyJYNXBe3DMTunUoth+dPhEslifwV+RAbKuy9NBSRmtbMUjaoTzadIY1xztSETWAQnHp
+ ue2g==
+X-Gm-Message-State: AOJu0YwllFOdz6VCqXIrmI8pIacwxK4EXzmrVak1Vqmc8zIW0pdbyl82
+ 3+SWJAkTDZ+vyn1RQ5SsCcTRUcpcj4v+68WKZZs/zYJckiOVN9LQmVAm20vDXaYCWXA=
+X-Gm-Gg: AY/fxX7xFxCmsCvDoxalipHkc5lF6uybO9pIma1hPEXR2Ryf3xZqRqWBo7YZkuhJy92
+ yzqDv8yarIcEGUcMbc1lJ585/CNdAs5vh5baDd8ngYIHG7TUyfrVFElZ60mlcHEOIS2VxowaV2D
+ NIaJu0KScHR4Sbc49rTZHGK4g2p0yyV+6kTLCLl1se5M7hbtx/aOyImDxR6P4MPWPVINCgl0bAu
+ cEyt1/7o9Ma30uG/x9kh7e5mgV0SPLioVmYgY8gJFNpVC+i7v6DUw46G4Z30j7U1F1E+Ofjt1sz
+ LnN9kFl2rNrIoG3rYzoXrfiqDZ1GL4UFYO8Q6O5H9eFMkGcc1DnfL6z6jMia5Zyf+SVOqeTbaha
+ UxzW/f+3tzXMnE0TUjFrIyMe2enYiZbMuYwEVGRcporVGdheJJWjpNIui6vKfJuUJivjkmrixX4
+ XJB5HpDMt3FsU=
+X-Google-Smtp-Source: AGHT+IFmb61jMTBPRLp0mm/VGiASOfskbtXklrhUS30Py39UYj786+iLBTtuHPoaWHlZpylwSiqouw==
+X-Received: by 2002:a05:6000:208a:b0:42b:2db2:159f with SMTP id
+ ffacd0b85a97d-42fab242bdamr3777340f8f.12.1765476095065; 
+ Thu, 11 Dec 2025 10:01:35 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47a89dac074sm45577045e9.8.2025.12.11.10.01.33
+ ffacd0b85a97d-42fa8b8a950sm7857530f8f.32.2025.12.11.10.01.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 11 Dec 2025 10:01:33 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id C07F95F87D;
+ by draig.lan (Postfix) with ESMTP id D75535F892;
  Thu, 11 Dec 2025 18:01:32 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -71,17 +71,17 @@ Cc: Cleber Rosa <crosa@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  John Snow <jsnow@redhat.com>
-Subject: [RFC PATCH 2/9] MAINTAINERS: fix libvirt entry
-Date: Thu, 11 Dec 2025 18:01:25 +0000
-Message-ID: <20251211180132.3186564-3-alex.bennee@linaro.org>
+Subject: [RFC PATCH 3/9] MAINTAINERS: regularise the status fields
+Date: Thu, 11 Dec 2025 18:01:26 +0000
+Message-ID: <20251211180132.3186564-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251211180132.3186564-1-alex.bennee@linaro.org>
 References: <20251211180132.3186564-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,26 +104,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We have a particular tag for lists so lets use it.
+Orphaned isn't a state, Orphan is. Likewise all the other "Odd Fixes"
+are capitalised so fix the ones that are not.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ MAINTAINERS | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 05b644cfc9b..a3fdc4ca911 100644
+index a3fdc4ca911..4488364c14e 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -4466,7 +4466,7 @@ F: gitdm.config
- F: contrib/gitdm/*
+@@ -2662,7 +2662,7 @@ F: hw/i2c/i2c_mux_pca954x.c
+ F: include/hw/i2c/i2c_mux_pca954x.h
  
- Incompatible changes
--R: devel@lists.libvirt.org
-+L: devel@lists.libvirt.org
- F: docs/about/deprecated.rst
+ pcf8574
+-S: Orphaned
++S: Orphan
+ F: hw/gpio/pcf8574.c
+ F: include/gpio/pcf8574.h
  
- Build System
+@@ -2884,7 +2884,7 @@ S390 3270 device
+ M: Halil Pasic <pasic@linux.ibm.com>
+ M: Christian Borntraeger <borntraeger@linux.ibm.com>
+ R: Collin Walling <walling@linux.ibm.com>
+-S: Odd fixes
++S: Odd Fixes
+ F: include/hw/s390x/3270-ccw.h
+ F: hw/char/terminal3270.c
+ F: hw/s390x/3270-ccw.c
+@@ -3795,7 +3795,7 @@ F: tests/unit/test-uuid.c
+ 
+ Yank feature
+ M: Lukas Straub <lukasstraub2@web.de>
+-S: Odd fixes
++S: Odd Fixes
+ F: util/yank.c
+ F: migration/yank_functions*
+ F: tests/unit/test-yank.c
 -- 
 2.47.3
 
