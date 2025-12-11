@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00503CB4C9E
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 06:44:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAA46CB4CB3
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 06:44:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTZSy-0000dB-4Y; Thu, 11 Dec 2025 00:43:52 -0500
+	id 1vTZT0-0000dc-3M; Thu, 11 Dec 2025 00:43:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vTZSp-0000bo-Oj
- for qemu-devel@nongnu.org; Thu, 11 Dec 2025 00:43:45 -0500
+ id 1vTZSs-0000cP-SW
+ for qemu-devel@nongnu.org; Thu, 11 Dec 2025 00:43:47 -0500
 Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vTZSo-0001OC-84
- for qemu-devel@nongnu.org; Thu, 11 Dec 2025 00:43:43 -0500
+ id 1vTZSr-0001OC-6f
+ for qemu-devel@nongnu.org; Thu, 11 Dec 2025 00:43:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765431822; x=1796967822;
+ t=1765431825; x=1796967825;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=c/VS1/2chdkAwU46yWRjXngVNYQ5YwGggg1BKVSm57Q=;
- b=Cxj4Ay6VeTDGMe8SmCJm857q/MgZ1Agmq28TYfvpVWW7/q9B1pWyetD0
- GKft6KcDlQ8R8/aiTaNxQ7LZDNE44jjwKOxeSWYCWojLRkgvpKgi182ZS
- ptMilJRJN4zbE7JP+dzoHAHsaGeb9D3+kc0ULfQ2ufZaISY7O1hRuwty4
- vEudsQN7queMNDa5kE49WEAsrIe9KOrwcV1S+WRktxBuPbjUUyLndzZDb
- C/Afc6n8de4kBqwO3/NNCiN1WDKRb6f5q2lIS/rzlzvYHcGiziz1F2rNA
- h/VTgramVtj/w48RMCulxWarDOMa5vRZlj8eB7yaRK0FoYJpK7/NWpr6M g==;
-X-CSE-ConnectionGUID: QEip/jjvTCaI7vZNBT8+Kg==
-X-CSE-MsgGUID: 6trea5+bQSiKGEdelfmcDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="66409851"
-X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; d="scan'208";a="66409851"
+ bh=6oiSLxx2zin740/NCyRplOfAx3FyLNTrt2eo2NqNpGA=;
+ b=GtbMjO2BzX3GvcqW+KxcykqZ8tmub/7rOla8axSe1NYhYnRIbdf6vzjR
+ sWE/SijdRScw/U/l2URMaDjODLivnH/HyeHQjGJAoGJTKgFuDrw+g0elK
+ 9qes9GBMy3tnuoxJ78EgFNQCHHXhjQpjnvaWhNjw8qaxqlhMvvu1obE0C
+ adsWCbVqMgBv8iHmU3XHwWeNOWs7ZT7IhADOXh2r/i2MWqQ7HQ8rGOQq6
+ ll9vG0fKQKkcwLcAKJgDe2hGPkeMnRcBZjXkJl0/iNxY5ePceeIDOFU/p
+ v576XLFxnSA3/gx2UTlWJNglNKhwdgO8Suf0mASlsyq5Uf0kN6NCVrkPx g==;
+X-CSE-ConnectionGUID: x3DmeCPuRGmu6nPjoyYPnA==
+X-CSE-MsgGUID: kdylc6qUS+qNsH6saEixKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="66409861"
+X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; d="scan'208";a="66409861"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Dec 2025 21:43:41 -0800
-X-CSE-ConnectionGUID: LL4fL7cESH+fVaf4NISmLQ==
-X-CSE-MsgGUID: 5+6778LAS42EFOp529m5Bw==
+ 10 Dec 2025 21:43:44 -0800
+X-CSE-ConnectionGUID: QhiEBwHTRwuV3cmxtIgpeA==
+X-CSE-MsgGUID: M4jIW4ehTxqoyGKyrI4PYQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; d="scan'208";a="227366032"
+X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; d="scan'208";a="227366043"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa002.jf.intel.com with ESMTP; 10 Dec 2025 21:43:37 -0800
+ by orviesa002.jf.intel.com with ESMTP; 10 Dec 2025 21:43:41 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
@@ -51,10 +51,10 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>,
  Dapeng Mi <dapeng1.mi@intel.com>, Zide Chen <zide.chen@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
  Farrah Chen <farrah.chen@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v5 05/22] i386/cpu: Add avx10 dependency for
- Opmask/ZMM_Hi256/Hi16_ZMM
-Date: Thu, 11 Dec 2025 14:07:44 +0800
-Message-Id: <20251211060801.3600039-6-zhao1.liu@intel.com>
+Subject: [PATCH v5 06/22] i386/cpu: Use x86_ext_save_areas[] for CPUID.0XD
+ subleaves
+Date: Thu, 11 Dec 2025 14:07:45 +0800
+Message-Id: <20251211060801.3600039-7-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251211060801.3600039-1-zhao1.liu@intel.com>
 References: <20251211060801.3600039-1-zhao1.liu@intel.com>
@@ -85,56 +85,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With feature array in ExtSaveArea, add avx10 as the second dependency
-for Opmask/ZMM_Hi256/Hi16_ZMM xsave components, and drop the special
-check in cpuid_has_xsave_feature().
+The x86_ext_save_areas[] is expected to be well initialized by
+accelerators and its xstate detail information cannot be changed by
+user. So use x86_ext_save_areas[] to encode CPUID.0XD subleaves directly
+without other hardcoding & masking.
+
+And for arch LBR, KVM fills its xstate in x86_ext_save_areas[] via
+host_cpuid(). The info obtained this way matches what would be retrieved
+from x86_cpu_get_supported_cpuid() (since KVM just fills CPUID with the
+host xstate info directly anyway). So just use the initialized
+x86_ext_save_areas[] instead of calling x86_cpu_get_supported_cpuid().
 
 Tested-by: Farrah Chen <farrah.chen@intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/i386/cpu.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+Changes Since v4:
+ - Update commit meesage to explain x86_cpu_get_supported_cpuid() is not
+   necessary.
+
+Changes Since v3:
+ - New commit.
+---
+ target/i386/cpu.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index e495e6d9b21c..70a282668f72 100644
+index 70a282668f72..f3bf7f892214 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -2054,18 +2054,21 @@ ExtSaveArea x86_ext_save_areas[XSAVE_STATE_AREA_COUNT] = {
-         .size = sizeof(XSaveOpmask),
-         .features = {
-             { FEAT_7_0_EBX,         CPUID_7_0_EBX_AVX512F },
-+            { FEAT_7_1_EDX,         CPUID_7_1_EDX_AVX10   },
-         },
-     },
-     [XSTATE_ZMM_Hi256_BIT] = {
-         .size = sizeof(XSaveZMM_Hi256),
-         .features = {
-             { FEAT_7_0_EBX,         CPUID_7_0_EBX_AVX512F },
-+            { FEAT_7_1_EDX,         CPUID_7_1_EDX_AVX10   },
-         },
-     },
-     [XSTATE_Hi16_ZMM_BIT] = {
-         .size = sizeof(XSaveHi16_ZMM),
-         .features = {
-             { FEAT_7_0_EBX,         CPUID_7_0_EBX_AVX512F },
-+            { FEAT_7_1_EDX,         CPUID_7_1_EDX_AVX10   },
-         },
-     },
-     [XSTATE_PKRU_BIT] = {
-@@ -8648,12 +8651,6 @@ static bool cpuid_has_xsave_feature(CPUX86State *env, const ExtSaveArea *esa)
+@@ -8188,20 +8188,17 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+             }
+         } else if (count == 0xf && cpu->enable_pmu
+                    && (env->features[FEAT_7_0_EDX] & CPUID_7_0_EDX_ARCH_LBR)) {
+-            x86_cpu_get_supported_cpuid(0xD, count, eax, ebx, ecx, edx);
++            const ExtSaveArea *esa = &x86_ext_save_areas[count];
++
++            *eax = esa->size;
++            *ebx = esa->offset;
++            *ecx = esa->ecx;
+         } else if (count < ARRAY_SIZE(x86_ext_save_areas)) {
+             const ExtSaveArea *esa = &x86_ext_save_areas[count];
+ 
+-            if (x86_cpu_xsave_xcr0_components(cpu) & (1ULL << count)) {
+-                *eax = esa->size;
+-                *ebx = esa->offset;
+-                *ecx = esa->ecx &
+-                       (ESA_FEATURE_ALIGN64_MASK | ESA_FEATURE_XFD_MASK);
+-            } else if (x86_cpu_xsave_xss_components(cpu) & (1ULL << count)) {
+-                *eax = esa->size;
+-                *ebx = 0;
+-                *ecx = 1;
+-            }
++            *eax = esa->size;
++            *ebx = esa->offset;
++            *ecx = esa->ecx;
          }
+         break;
      }
- 
--    if (esa->features[0].index == FEAT_7_0_EBX &&
--        esa->features[0].mask == CPUID_7_0_EBX_AVX512F &&
--        (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10)) {
--        return true;
--    }
--
-     return false;
- }
- 
 -- 
 2.34.1
 
