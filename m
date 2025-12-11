@@ -2,90 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 323C7CB4417
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 00:30:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E40CB4561
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Dec 2025 01:05:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vTTd8-0004Cv-2f; Wed, 10 Dec 2025 18:29:58 -0500
+	id 1vTU9n-0004qL-CA; Wed, 10 Dec 2025 19:03:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3aAI6aQYKCqUdZGNSeLTTLQJ.HTRVJRZ-IJaJQSTSLSZ.TWL@flex--yubinz.bounces.google.com>)
- id 1vTTd0-0004AG-Pz
- for qemu-devel@nongnu.org; Wed, 10 Dec 2025 18:29:50 -0500
-Received: from mail-pg1-x549.google.com ([2607:f8b0:4864:20::549])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3aAI6aQYKCqUdZGNSeLTTLQJ.HTRVJRZ-IJaJQSTSLSZ.TWL@flex--yubinz.bounces.google.com>)
- id 1vTTcy-0005jL-Da
- for qemu-devel@nongnu.org; Wed, 10 Dec 2025 18:29:49 -0500
-Received: by mail-pg1-x549.google.com with SMTP id
- 41be03b00d2f7-b471737e673so372613a12.1
- for <qemu-devel@nongnu.org>; Wed, 10 Dec 2025 15:29:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1765409384; x=1766014184; darn=nongnu.org;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=V/p7p5kZiMeVzqeCpGXZV3o/BNSDBxLa3oyslXCE1Sk=;
- b=f9hUcmNvCVDVI4969Bfa6rt1jhb+81inln16CRKyFHJ5NJfh1BBoXvLT8P2vd+Uo1J
- mTa/oxyeoS7HKxp70iFM3vHb8hggXGywZmsVK2TX65Y3a+jbEjrL/b+YxxWwqow7kknl
- GV1gPpoWodVH/bmog7KhQpPombRMSfIiZAI8eOdZe8ZEsE0NuCBDskdNWEM6cvedwTUy
- SYwJ7pqRwM0AZxoGO43eGdv+l3JeaoNeAEgADSEoZQ4q7rRthUO9Ms4lXmtuBDPjI5zL
- SmpANUjiPZF+pwdKkLnPF5RC7aexADWAwGjOmCSFy/JPBwZlD6ppGEcoJQLmSvo4a3qj
- r41g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765409384; x=1766014184;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=V/p7p5kZiMeVzqeCpGXZV3o/BNSDBxLa3oyslXCE1Sk=;
- b=wcPA9CZBrD5FchKDj7P7AmNYQOjJ4GhGTrNKePa6OjPw4VOgPuYG+RowwkPf9mtirx
- VxEgTCTAgtF3MhK0VlA6KxNryS/acKqs/pE3SX/ANbOcJUJ9vaelwHD6HUtq2JmMZ7kL
- T/4lhm3TNqJdgFZWlA2E92tNLz41oKg5ij6hmnTPyPFIphggSOVEukjvBoBk7BI3OBC0
- uDiTcLYWvu0pbjgKgxedsLio4sl+nQ+/qnpt7MGC0hj+c5hRT/f4lQOP6U5CU/13R4L6
- qGu9hsosq6V+Asv1yGIMFVakW7DDepESwI9e8dGn4uYq3sIL+wHCkoFZ+yXU6vRn0sob
- QlWg==
-X-Gm-Message-State: AOJu0YwoMvVnRnrDIhQhuvd0a5PmEeZWMk4S8Y4HWG3ZAY2TUUE02FQY
- veF7MHjbOD2Cd/eO2mC6oTHwq3PJLv2EqQTlSXkkqClAnf1biwC1bCrUoBD/jR7BulaoU1tbQI5
- nmXljMRUyozR9l4KrHXLxk1jcBaNq2a7a/LjNddRi6gkW5xY3T77mQNtJ5vvpgK2psMA/HzvOw5
- p79f0phVBtphEba9u24OiLT5xmW4c7/6DZdd8=
-X-Google-Smtp-Source: AGHT+IFnH1Uj5Zp6ckTavj8XiQlSDJn8c8GXpiFB4Kilp7a2eKpL0MER75YlbhZzBEKq2HvudOppQknKwWg=
-X-Received: from dlbrb20.prod.google.com
- ([2002:a05:7022:f014:b0:11b:a892:80ac])
- (user=yubinz job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:e21:b0:119:e569:f615
- with SMTP id a92af1059eb24-11f2963f1bamr3036459c88.14.1765409384218; Wed, 10
- Dec 2025 15:29:44 -0800 (PST)
-Date: Wed, 10 Dec 2025 23:29:17 +0000
-In-Reply-To: <20251210-aspeed-sgpio-v3-0-eb8b0cf3dd51@google.com>
-Mime-Version: 1.0
-References: <20251210-aspeed-sgpio-v3-0-eb8b0cf3dd51@google.com>
-X-Mailer: b4 0.14.2
-Message-ID: <20251210-aspeed-sgpio-v3-6-eb8b0cf3dd51@google.com>
-Subject: [PATCH v3 6/6] test/qtest: Add Unit test for Aspeed SGPIO
-From: Yubin Zou <yubinz@google.com>
-To: qemu-devel@nongnu.org
-Cc: "=?utf-8?q?C=C3=A9dric_Le_Goater?=" <clg@kaod.org>,
- Peter Maydell <peter.maydell@linaro.org>, 
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>, 
- Jamin Lin <jamin_lin@aspeedtech.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, 
- Joel Stanley <joel@jms.id.au>, Fabiano Rosas <farosas@suse.de>,
- Laurent Vivier <lvivier@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Kane-Chen-AS <kane_chen@aspeedtech.com>, 
- Nabih Estefan <nabihestefan@google.com>, qemu-arm@nongnu.org, 
- Yubin Zou <yubinz@google.com>
-Content-Type: text/plain; charset="utf-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::549;
- envelope-from=3aAI6aQYKCqUdZGNSeLTTLQJ.HTRVJRZ-IJaJQSTSLSZ.TWL@flex--yubinz.bounces.google.com;
- helo=mail-pg1-x549.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
+ (Exim 4.90_1) (envelope-from <me@linux.beauty>)
+ id 1vTU9k-0004q2-7X; Wed, 10 Dec 2025 19:03:40 -0500
+Received: from sender4-op-o12.zoho.com ([136.143.188.12])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <me@linux.beauty>)
+ id 1vTU9i-0006ST-Dc; Wed, 10 Dec 2025 19:03:39 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1765411387; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=b3lUoOFNRBzpuI+/qj010GMMaDMQ0oPk4pHNandeWMEO9VxE43aKK9BRuIZM29hQ8riIJjUlXuBRCdSlihhRYACJQJl4jyX7ZDgDdgjZhKvxP4Pen3S2V99cUIlrc8+YNAwCa1l+EG82aKIfusmnLobtB3Qceq3yU6b4ooQiCtc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1765411387;
+ h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=3zEjGOSn6g0n5qhXLIsKrGwfQAijgDoXpyq/W91ZZ1c=; 
+ b=QM5rpHkgw7XrJFsMLIo3yDlb7K3L2UB8NealqNSef4x4Lmbcplc/qqggqFzjuW3kIoRCvLZWwqPZrfrMqGrvy2DZ2hxQgyzQbeT748a2e4AyB6iExCZNmXXbzVPhwHrlSjjdBfNSJ4pZ/KsNOMnj96kqkjoF8lDzEytWnUnLoUA=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=linux.beauty;
+ spf=pass  smtp.mailfrom=me@linux.beauty;
+ dmarc=pass header.from=<me@linux.beauty>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1765411387; 
+ s=zmail; d=linux.beauty; i=me@linux.beauty;
+ h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=3zEjGOSn6g0n5qhXLIsKrGwfQAijgDoXpyq/W91ZZ1c=;
+ b=arMkrj+aitwMAc4r4aucjQm+TAOt4/e6AhKWkY4qeGjyiQo9Nl3H9iKhv5rDeBZa
+ Amlscom2gXVx34dc+rIQ6k3cGaP3TjpM6tif9OxyncnjxHU1ZzvMEw0oApKRAJopCFS
+ DkDOc2pqU7/54HYYjSyS1wxYaHtpckCzEXWPGmlE=
+Received: from mail.zoho.com by mx.zohomail.com
+ with SMTP id 1765411385875998.4473620910953;
+ Wed, 10 Dec 2025 16:03:05 -0800 (PST)
+Date: Thu, 11 Dec 2025 08:03:05 +0800
+From: Li Chen <me@linux.beauty>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: "Peter Maydell" <peter.maydell@linaro.org>,
+ "Shannon Zhao" <shannon.zhaosl@gmail.com>,
+ "Igor Mammedov" <imammedo@redhat.com>, "Ani Sinha" <anisinha@redhat.com>,
+ "Eduardo Habkost" <eduardo@habkost.net>,
+ "Marcel Apfelbaum" <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?=22Philippe_Mathieu-Daud=C3=A9=22?= <philmd@linaro.org>,
+ "Yanan Wang" <wangyanan55@huawei.com>,
+ "Zhao Liu" <zhao1.liu@intel.com>, "Song Gao" <gaosong@loongson.cn>,
+ "Jiaxun Yang" <jiaxun.yang@flygoat.com>,
+ "Sunil V L" <sunilvl@ventanamicro.com>,
+ "Palmer Dabbelt" <palmer@dabbelt.com>,
+ "Alistair Francis" <alistair.francis@wdc.com>,
+ "Weiwei Li" <liwei1518@gmail.com>, "qemu-arm" <qemu-arm@nongnu.org>,
+ "qemu-devel" <qemu-devel@nongnu.org>, "qemu-riscv" <qemu-riscv@nongnu.org>
+Message-ID: <19b0ab7f203.43fecb3b140213.6490567972995015069@linux.beauty>
+In-Reply-To: <20251210075237-mutt-send-email-mst@kernel.org>
+References: <20250528105404.457729-1-me@linux.beauty>
+ <20250528105404.457729-5-me@linux.beauty>
+ <20250714144303-mutt-send-email-mst@kernel.org>
+ <1981309e2fa.31709fd32611761.5900055972026140740@linux.beauty>
+ <20250716074207-mutt-send-email-mst@kernel.org>
+ <198131a686b.18fb34702623779.7633947002456257034@linux.beauty>
+ <1995f320053.73c58bde124269.3373604835167896043@linux.beauty>
+ <19b0837500d.2713ffb3821327.2786629512090065997@linux.beauty>
+ <20251210075237-mutt-send-email-mst@kernel.org>
+Subject: Re: [PATCH REPOST v4 4/4] acpi/virt: suppress UART device & SPCR
+ when guest has no serial hardware
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
+Received-SPF: pass client-ip=136.143.188.12; envelope-from=me@linux.beauty;
+ helo=sender4-op-o12.zoho.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,190 +99,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit introduces a new qtest for the Aspeed SGPIO controller
-The test covers the following:
-  - Setting and clearing SGPIO output pins and verifying the pin state.
-  - Setting and clearing SGPIO input pins and verifying the pin state.
-  - Verifying that level-high interrupts are correctly triggered and cleared.
+Hi Tsirkin,
 
-Signed-off-by: Yubin Zou <yubinz@google.com>
----
- tests/qtest/ast2700-sgpio-test.c | 152 +++++++++++++++++++++++++++++++++++++++
- tests/qtest/meson.build          |   1 +
- 2 files changed, 153 insertions(+)
+ ---- On Wed, 10 Dec 2025 20:53:01 +0800  Michael S. Tsirkin <mst@redhat.co=
+m> wrote ---=20
+ > On Wed, Dec 10, 2025 at 08:23:21PM +0800, Li Chen wrote:
+ > > Hi Michael,
+ > >=20
+ > >  ---- On Fri, 19 Sep 2025 07:38:56 +0800  Li Chen <me@linux.beauty> wr=
+ote ---=20
+ > >  > Hi Michael,
+ > >  >=20
+ > >  >  ---- On Wed, 16 Jul 2025 19:59:14 +0800  Li Chen <me@linux.beauty>=
+ wrote ---=20
+ > >  >  > Hi Michael,
+ > >  >  >=20
+ > >  >  >  ---- On Wed, 16 Jul 2025 19:42:42 +0800  Michael S. Tsirkin <ms=
+t@redhat.com> wrote ---=20
+ > >  >  >  > On Wed, Jul 16, 2025 at 07:41:11PM +0800, Li Chen wrote:
+ > >  >  >  > > Hi Michael,
+ > >  >  >  > >=20
+ > >  >  >  > > Thanks for your kind review! All issues below have been fix=
+ed in v5:
+ > >  >  >  > > https://lore.kernel.org/qemu-devel/20250716111959.404917-5-=
+me@linux.beauty/T/#m696cee9a95646add1b74b866c3d6761aa4c5c762
+ > >  >  >  >=20
+ > >  >  >  > Past soft freeze now: I tagged this but pls remind me after t=
+he release
+ > >  >  >  > to help make sure it's not lost.
+ > >  > =20
+ > >  > Gentle reminder: This patch is still missing from the latest master=
+ branch, but can apply without
+ > >  > any conflict. Can it be included in 10.2?
+ > >  >=20
+ > >  > Regards,
+ > >  > Li.
+ > >  >=20
+ > >  >=20
+ > >=20
+ > > Sorry for bothering again. But I'm still unable to find this patch in =
+the latest master branch, though it applies without conflicts now.=20
+ > >=20
+ > > Could it be merged now?
+ > >=20
+ > > Regards,
+ > > Li=E2=80=8B
+ >=20
+ > you still need to update loongarch, I think. otherwise these tests will
+ > fail.
 
-diff --git a/tests/qtest/ast2700-sgpio-test.c b/tests/qtest/ast2700-sgpio-test.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..fc52839c4b149a3010c6a035d8b29f9ad295930a
---- /dev/null
-+++ b/tests/qtest/ast2700-sgpio-test.c
-@@ -0,0 +1,152 @@
-+/*
-+ * QTest testcase for the ASPEED AST2700 GPIO Controller.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ * Copyright (C) 2025 Google LLC.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qobject/qdict.h"
-+#include "qemu/bitops.h"
-+#include "qemu/timer.h"
-+#include "qobject/qdict.h"
-+#include "libqtest-single.h"
-+#include "qemu/error-report.h"
-+#include "hw/registerfields.h"
-+#include "hw/gpio/aspeed_sgpio.h"
-+
-+#define ASPEED_SGPIO_MAX_PIN_PAIR 256
-+#define AST2700_SGPIO0_BASE 0x14C0C000
-+#define AST2700_SGPIO1_BASE 0x14C0D000
-+
-+static void test_output_pins(const char *machine, const uint32_t base, int idx)
-+{
-+    QTestState *s = qtest_init(machine);
-+    char name[16];
-+    char qom_path[64];
-+    uint32_t offset = 0;
-+    uint32_t value = 0;
-+    for (int i = 0; i < ASPEED_SGPIO_MAX_PIN_PAIR; i++) {
-+        /* Odd index is output port */
-+        sprintf(name, "sgpio%d", i * 2 + 1);
-+        sprintf(qom_path, "/machine/soc/sgpio[%d]", idx);
-+        offset = base + (R_SGPIO_0_CONTROL + i) * 4;
-+        /* set serial output */
-+        qtest_writel(s, offset, 0x00000001);
-+        value = qtest_readl(s, offset);
-+        g_assert_cmphex(SHARED_FIELD_EX32(value, SGPIO_SERIAL_OUT_VAL), ==, 1);
-+        g_assert_cmphex(qtest_qom_get_bool(s, qom_path, name), ==, true);
-+
-+        /* clear serial output */
-+        qtest_writel(s, offset, 0x00000000);
-+        value = qtest_readl(s, offset);
-+        g_assert_cmphex(SHARED_FIELD_EX32(value, SGPIO_SERIAL_OUT_VAL), ==, 0);
-+        g_assert_cmphex(qtest_qom_get_bool(s, qom_path, name), ==, false);
-+    }
-+    qtest_quit(s);
-+}
-+
-+static void test_input_pins(const char *machine, const uint32_t base, int idx)
-+{
-+    QTestState *s = qtest_init(machine);
-+    char name[16];
-+    char qom_path[64];
-+    uint32_t offset = 0;
-+    uint32_t value = 0;
-+    for (int i = 0; i < ASPEED_SGPIO_MAX_PIN_PAIR; i++) {
-+        /* Even index is input port */
-+        sprintf(name, "sgpio%d", i * 2);
-+        sprintf(qom_path, "/machine/soc/sgpio[%d]", idx);
-+        offset = base + (R_SGPIO_0_CONTROL + i) * 4;
-+        /* set serial input */
-+        qtest_qom_set_bool(s, qom_path, name, true);
-+        value = qtest_readl(s, offset);
-+        g_assert_cmphex(SHARED_FIELD_EX32(value, SGPIO_SERIAL_IN_VAL), ==, 1);
-+        g_assert_cmphex(qtest_qom_get_bool(s, qom_path, name), ==, true);
-+
-+        /* clear serial input */
-+        qtest_qom_set_bool(s, qom_path, name, false);
-+        value = qtest_readl(s, offset);
-+        g_assert_cmphex(SHARED_FIELD_EX32(value, SGPIO_SERIAL_IN_VAL), ==, 0);
-+        g_assert_cmphex(qtest_qom_get_bool(s, qom_path, name), ==, false);
-+    }
-+    qtest_quit(s);
-+}
-+
-+static void test_irq_level_high(const char *machine,
-+                                const uint32_t base, int idx)
-+{
-+    QTestState *s = qtest_init(machine);
-+    char name[16];
-+    char qom_path[64];
-+    uint32_t ctrl_offset = 0;
-+    uint32_t int_offset = 0;
-+    uint32_t int_reg_idx = 0;
-+    uint32_t int_bit_idx = 0;
-+    uint32_t value = 0;
-+    for (int i = 0; i < ASPEED_SGPIO_MAX_PIN_PAIR; i++) {
-+        /* Even index is input port */
-+        sprintf(name, "sgpio%d", i * 2);
-+        sprintf(qom_path, "/machine/soc/sgpio[%d]", idx);
-+        int_reg_idx = i / 32;
-+        int_bit_idx = i % 32;
-+        int_offset = base + (R_SGPIO_INT_STATUS_0 + int_reg_idx) * 4;
-+        ctrl_offset = base + (R_SGPIO_0_CONTROL + i) * 4;
-+
-+        /* Enable the interrupt */
-+        value = SHARED_FIELD_DP32(value, SGPIO_INT_EN, 1);
-+        qtest_writel(s, ctrl_offset, value);
-+
-+        /* Set the interrupt type to level-high trigger */
-+        value = SHARED_FIELD_DP32(qtest_readl(s, ctrl_offset),
-+                                              SGPIO_INT_TYPE, 3);
-+        qtest_writel(s, ctrl_offset, value);
-+
-+        /* Set serial input high */
-+        qtest_qom_set_bool(s, qom_path, name, true);
-+        value = qtest_readl(s, ctrl_offset);
-+        g_assert_cmphex(SHARED_FIELD_EX32(value, SGPIO_SERIAL_IN_VAL), ==, 1);
-+
-+        /* Interrupt status is set */
-+        value = qtest_readl(s, int_offset);
-+        g_assert_cmphex(extract32(value, int_bit_idx, 1), ==, 1);
-+
-+        /* Clear Interrupt */
-+        value = SHARED_FIELD_DP32(qtest_readl(s, ctrl_offset),
-+                                              SGPIO_INT_STATUS, 1);
-+        qtest_writel(s, ctrl_offset, value);
-+        value = qtest_readl(s, int_offset);
-+        g_assert_cmphex(extract32(value, int_bit_idx, 1), ==, 0);
-+
-+        /* Clear serial input */
-+        qtest_qom_set_bool(s, qom_path, name, false);
-+        value = qtest_readl(s, ctrl_offset);
-+        g_assert_cmphex(SHARED_FIELD_EX32(value, SGPIO_SERIAL_IN_VAL), ==, 0);
-+    }
-+    qtest_quit(s);
-+}
-+
-+static void test_2700_input_pins(void)
-+{
-+    test_input_pins("-machine ast2700-evb",
-+                    AST2700_SGPIO0_BASE, 0);
-+    test_input_pins("-machine ast2700-evb",
-+                    AST2700_SGPIO1_BASE, 1);
-+    test_output_pins("-machine ast2700-evb",
-+                    AST2700_SGPIO0_BASE, 0);
-+    test_output_pins("-machine ast2700-evb",
-+                    AST2700_SGPIO1_BASE, 1);
-+    test_irq_level_high("-machine ast2700-evb",
-+                    AST2700_SGPIO0_BASE, 0);
-+    test_irq_level_high("-machine ast2700-evb",
-+                    AST2700_SGPIO1_BASE, 1);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+
-+    qtest_add_func("/ast2700/sgpio/input_pins", test_2700_input_pins);
-+
-+    return g_test_run();
-+}
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 669d07c06bdedc6be0c69acadeba989dc15ddf3f..5c80b2ed6de1f453d2483db482c1b0e7801ba980 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -221,6 +221,7 @@ qtests_aspeed = \
- qtests_aspeed64 = \
-   ['ast2700-gpio-test',
-    'ast2700-hace-test',
-+   'ast2700-sgpio-test',
-    'ast2700-smc-test']
- 
- qtests_stm32l4x5 = \
+Yes, it seems that tap stdout is polluted by serial stdio.
 
--- 
-2.52.0.239.gd5f0c6e74e-goog
+I'll address the stdout pollution from -serial stdio by redirecting serial =
+output to /dev/null using -serial null in the next version.=20
+This will still create the serial device but prevent it from writing to the=
+ console.
+
+Regards,
+
+Li=E2=80=8B
 
 
