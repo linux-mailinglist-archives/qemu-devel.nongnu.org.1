@@ -2,101 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44AC7CB90EE
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Dec 2025 16:09:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99531CB90E5
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Dec 2025 16:08:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vU4iO-00042e-RX; Fri, 12 Dec 2025 10:05:52 -0500
+	id 1vU4j3-0005Ev-Js; Fri, 12 Dec 2025 10:06:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1vU4iM-00041A-F8
- for qemu-devel@nongnu.org; Fri, 12 Dec 2025 10:05:50 -0500
+ id 1vU4iX-0004Ue-GD
+ for qemu-devel@nongnu.org; Fri, 12 Dec 2025 10:06:04 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1vU4iK-0006Dc-Of
- for qemu-devel@nongnu.org; Fri, 12 Dec 2025 10:05:50 -0500
+ id 1vU4iT-0006QZ-H5
+ for qemu-devel@nongnu.org; Fri, 12 Dec 2025 10:06:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1765551948;
+ s=mimecast20190719; t=1765551956;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wH2S5VuWnDK8CB8klAkG6rsUPibcz9poRIKukfvIXkw=;
- b=XTQzfuIZ2fUx6mESRSy0ALSxERX+5mQjX9bdi30hQYh5UFY0NW4rFfJ487cPjXBGef5gYo
- CbRzvzcBZglJgKrp5aI2F5nXeoDqB1CK6vE0xq+X/SXayZiVv4J3q5F4R/XWKpxZTmzvkS
- MsmFG9DWwSouEK5ve6BSIkobZKSRWBg=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=A4vnbj5L7X5BAm2SsE/iQx+vqw+O4ovyAazkVrIup+Q=;
+ b=GdWRp5ktQZnEE0KSGMs72CQtVWFODkhL0QIbRdyFNnIloxuuzgG1h1LXX6O4fTtCpd2PyO
+ 3vmUjEYDYYTqnlsQhKkKmP634r71FsOJGZMZj3N+LsyvT5djAsPlp7A5ZF/IXtA1/NdA8N
+ NNLSxGQZQLEB9fbZfj/8aTUiDt09tcQ=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-490-ls_VKe9qNVyjAYQsXQuIag-1; Fri, 12 Dec 2025 10:05:47 -0500
-X-MC-Unique: ls_VKe9qNVyjAYQsXQuIag-1
-X-Mimecast-MFC-AGG-ID: ls_VKe9qNVyjAYQsXQuIag_1765551946
-Received: by mail-pl1-f198.google.com with SMTP id
- d9443c01a7336-29be4d2ef78so24297685ad.2
- for <qemu-devel@nongnu.org>; Fri, 12 Dec 2025 07:05:46 -0800 (PST)
+ us-mta-556-cFxeZ7kNPe-UTwYfbLd1RA-1; Fri, 12 Dec 2025 10:05:50 -0500
+X-MC-Unique: cFxeZ7kNPe-UTwYfbLd1RA-1
+X-Mimecast-MFC-AGG-ID: cFxeZ7kNPe-UTwYfbLd1RA_1765551949
+Received: by mail-pl1-f199.google.com with SMTP id
+ d9443c01a7336-295592eb5dbso25017855ad.0
+ for <qemu-devel@nongnu.org>; Fri, 12 Dec 2025 07:05:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1765551946; x=1766156746; darn=nongnu.org;
+ d=redhat.com; s=google; t=1765551949; x=1766156749; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wH2S5VuWnDK8CB8klAkG6rsUPibcz9poRIKukfvIXkw=;
- b=lLlMr0Pb5aMCnfRQjP8QPQpIPezO7pQ2Pw+KS1Sb56ncDc8omEYpei61Rg1Iz7ecv+
- Q4l6NMhqgVCLf/7r3bk7KRSS4n6HB+C7d/RZFlz4TjZb1ZaMg1F3kewzPrFhXCPYccNp
- r19/YPJQm4a9xAIv+jQpVtiohUp9nHJlqv/VE6bsyz6evbP8Fw9j4Mff0AKBiSEVHg2F
- 16YB0jRvvchQsK7XEDdEcb9vomksr6f+S4BPi1FKQoNvtVr1gMF+DR4wY1WRVvdmz2R+
- l4N5VlTdz9kXY6O4SeuqAnMFaHdtMr10tjZlM6gUwoh823q+vT8JRrOh3ucvujyJpKxv
- aYWw==
+ bh=A4vnbj5L7X5BAm2SsE/iQx+vqw+O4ovyAazkVrIup+Q=;
+ b=I/Y1uruQj+Pz7g8gYwogdrOTy3S5RahS+JrQ3kmcq7xET1Ejd3PyWpanDYQitgCZnR
+ 4zLu2G1s7ixME3UHvxjOEOtkX1dJDP0/7PYqbX/bzrf9l9wubeFkqchqq7A/PqOxZoeK
+ W68i+Clx+9ONL6JZZb3VXUE4ukxHEzYv/RaFXkeOoQ5aRfLEJyMU2QUUSMNndH6EgC/R
+ 6jybjYW/4QK/hOHBi8LhCInq6vS69k+gpLKM2dNQrVfgYvQfeFhF8r8LbKpuhqgDQBbi
+ ZL+qtaZPJU3NMJXhWbfgHTk48a9ZVm8cd0iPpHuobPt5A7GEEmKi81x88w7f0hOvdrvX
+ XK7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765551946; x=1766156746;
+ d=1e100.net; s=20230601; t=1765551949; x=1766156749;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=wH2S5VuWnDK8CB8klAkG6rsUPibcz9poRIKukfvIXkw=;
- b=j7wEdfbdE+ExNIM1U2mVqkhlX9hh8CR551axomN3FMx1w06vuMb47ns38ffYy8C4jL
- dAb526cwbPpD8kflVASw7RiRp3/dhlwj2UeBCgPRDRQbxSRk1bvVTXkQ80Gc8cBG0FfK
- AODLIxrvSau4eingSBB1Ohstj7guxFG3kL2RhT9LQLGPkqNiAewIqmTiML0m/FeQmmMz
- PToXbFypLrlM+AtdCp6xMoC+Xe2htIete4JIwiq3x6Rd2vBrFElga7G5K1QxUHlY7szr
- Ba1p2bGc+naM/bBzshTndfgLBi7+pdEBpBWLgZushxx0ctp/3DpWB8O1IWY42UXHkR1k
- 1s/Q==
+ bh=A4vnbj5L7X5BAm2SsE/iQx+vqw+O4ovyAazkVrIup+Q=;
+ b=Lw/d+AAKpPiX0PO3+94YOswN6Y/Gc8DUxL48wm5fZ2tG4p03Q7FcZcfq72WQ6l5dI8
+ POm9SjUfV43D65WHKa9qYS+36+yHf2jS4cgQCGqA4flY4anWRg+chErAKrWgLmjsuUql
+ bMg6CF8e8OGHnx/n1UvUdpDP1pVSHXeoUQ+aw3hcY2YKOXjKuRLgomFWI6kddeUNcCN+
+ 8hE8d8vnxbR9WV4JC+FewrPbfl+go87SD7TZh0w5HmQ4Smtq8JbTxzCOlfEhB/znO0rL
+ RyIzzw9n6oNfZd5ceztMwzzNMUg3fOAckS098IW8KpQTZMvGViuG5Xqr0o7me63tVSBl
+ 5rdA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXOaMMgueQQC2LgYQYHta83QO3NHPFGNlpQ5Fdx5YW5KuhYOFJv52lde+xQ3aqNcXNqGNNLc+mCWM5h@nongnu.org
-X-Gm-Message-State: AOJu0YwDWm0auFOXcnotep8FVZwrghouwo1yMFlKVgmYj87T2ihaw9Re
- btKQr6B6muISO6LpBRL47OlHMSxpAYUjfxCpHiZRtPgfm21KkO/uDD1XD9suaIvc1c2CTwO0a4L
- MiE5iu47uW3m1fDVQqae9uwkpT5YgDsWqygH0P/z2DHN/uDaHJ40U+jVk
-X-Gm-Gg: AY/fxX5ColXDeo2GxTyPn8IwZ5Hca5bKfSTiEFc8AG6a0BtwAtsteObjwoLpLxK6VgT
- Os5fu0v8oxYcYyZ2HMNaM9Im+PvfhYDFRkjxaJ+3y7hnf0kRMaP+eZ+ZWOL/6Hwu8oUscJSgokn
- yw3uU2mtuAZyQN11LD32hmAkpb9zxEtEwnwJB8YMthAv0gPPYxRD+cD7dA7SCv/Xxbq8acjCiIw
- CDsky9IMgODvX5wPdYz0MKiIizhHbZ+voCterf4RTOmk0sDTPcZdfbWlPSIUEzuXZX1VdahICk0
- 8VDOh9VAX0aMEQIa1wbXyiZZZUJU4Uf1Y7B5d9xhQCmKIULLTKk0966xQ8TqxfUWfPeH2O6sYUR
- uuikvVN879yVP38L3gYxArQxtbv6g52FxkltUulnlXBM=
-X-Received: by 2002:a17:903:2f82:b0:24e:3cf2:2453 with SMTP id
- d9443c01a7336-29f244d3b40mr22416065ad.61.1765551945603; 
- Fri, 12 Dec 2025 07:05:45 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEwQTlmTKf6GwCiZWdOxB8VVvz+2nCUW9OqKI7syxsRTHJrEXd1eetjt2ZbHS/ZpCh3A+Y8eA==
-X-Received: by 2002:a17:903:2f82:b0:24e:3cf2:2453 with SMTP id
- d9443c01a7336-29f244d3b40mr22413215ad.61.1765551941344; 
- Fri, 12 Dec 2025 07:05:41 -0800 (PST)
+ AJvYcCUQHcmMLB1n0fZdo9okGSQfDlOaN9vjjiZJrHif89FTyEQPzbl0e4GfwqWkL+qEANZahHQv8ujElHu8@nongnu.org
+X-Gm-Message-State: AOJu0YzT7ifRG1mkp+D34/Gj36cmCCh/PvuyoF3dAfaNwvflPtwpGEys
+ UveqDMhpeXacGOLsfPoh2zj+8MOA5DK4V1OTsAiJCh67HV+Qrq3B53d/+gmnvvWNtz2Zxv6Dp2v
+ +J4RDSFFWYjjxfySkdXkJyQZyigWbay7XGP91+WiAIGbJeidGMDp1zbLX
+X-Gm-Gg: AY/fxX6FtUnovm80dZeV8d8sa0p1mMKCv6twHBsB3auMoP24ILQjrX5+vxl01VbAQSC
+ T90u4oM/xY6A+XBwEdJlJj2SEo8F4NpLXyaaLVQfJt5yfaR2uj/CrLLXtoLKexynl6r2Zd7Uvs/
+ of7rRxkfCy2Ht4PmXXGmRNUGVSZOF4uP/xVh8L1dLvKBa4upLGYImzef4sgcDQ//8bJVZ+worPm
+ 7vq+AjlaNomMgbnER6Lrz2tVKIi+0H7IpbOCmowHTizW3xNMLfjyFVCjP8oFBCiSv9jH2/b1aPy
+ R2QhkkeuFwlyDjOtioeCQ3ZRnQhnPoeaAKZsMCPauVVUeGkleTnWmYJQxPhKbhjXLTVd2i+ryRt
+ BD3vr5SQIn58O1b7y48nq7elTV4W/7tZbdR0dpxIlroA=
+X-Received: by 2002:a17:902:ce0b:b0:297:ddb6:ef81 with SMTP id
+ d9443c01a7336-29f23b456cemr27551815ad.16.1765551948333; 
+ Fri, 12 Dec 2025 07:05:48 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEfAXYymCrcmJjczDyXrFRejWflzv3WP2N8ZZ8Jsj8XU3fNyM0JbSLVcod5dbiyzRghA0MAow==
+X-Received: by 2002:a17:902:ce0b:b0:297:ddb6:ef81 with SMTP id
+ d9443c01a7336-29f23b456cemr27551305ad.16.1765551947655; 
+ Fri, 12 Dec 2025 07:05:47 -0800 (PST)
 Received: from rhel9-box.lan ([122.172.173.62])
  by smtp.googlemail.com with ESMTPSA id
- d9443c01a7336-29ee9d38ad1sm57046655ad.29.2025.12.12.07.05.38
+ d9443c01a7336-29ee9d38ad1sm57046655ad.29.2025.12.12.07.05.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Dec 2025 07:05:40 -0800 (PST)
+ Fri, 12 Dec 2025 07:05:47 -0800 (PST)
 From: Ani Sinha <anisinha@redhat.com>
-To: David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Cc: vkuznets@redhat.com, kraxel@redhat.com, qemu-devel@nongnu.org,
- Ani Sinha <anisinha@redhat.com>
-Subject: [PATCH v1 24/28] kvm/xen_evtchn: add support for confidential guest
- reset
-Date: Fri, 12 Dec 2025 20:33:52 +0530
-Message-ID: <20251212150359.548787-25-anisinha@redhat.com>
+To: Bernhard Beschow <shentey@gmail.com>
+Cc: vkuznets@redhat.com, kraxel@redhat.com, pbonzini@redhat.com,
+ qemu-devel@nongnu.org, Ani Sinha <anisinha@redhat.com>, qemu-ppc@nongnu.org
+Subject: [PATCH v1 25/28] ppc/openpic: create a new openpic device and
+ reattach mem region on coco reset
+Date: Fri, 12 Dec 2025 20:33:53 +0530
+Message-ID: <20251212150359.548787-26-anisinha@redhat.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20251212150359.548787-1-anisinha@redhat.com>
 References: <20251212150359.548787-1-anisinha@redhat.com>
@@ -111,7 +106,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -127,193 +122,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As a part of the confidential guest reset, when the KVM VM file handle is
-changed, Xen event ports and kernel ports that were associated with the
-previous KVM file handle needs to be reassociated with the new handle. This is
-performed with the help of a callback handler that gets invoked during the
-confidential guest reset process when the KVM VM file fd changes.
+For confidential guests during the reset process, the old KVM VM file
+descriptor is closed and a new one is created. When a new file descriptor is
+created, a new openpic device needs to be created against this new KVM VM file
+descriptor as well. Additionally, existing memory region needs to be reattached
+to this new openpic device and proper CPU attributes set associating new file
+descriptor. This change makes this happen with the help of a callback handler
+that gets called when the KVM VM file descriptor changes as a part of the
+confidential guest reset process.
 
 Signed-off-by: Ani Sinha <anisinha@redhat.com>
 ---
- hw/i386/kvm/xen_evtchn.c | 100 +++++++++++++++++++++++++++++++++++++--
- 1 file changed, 97 insertions(+), 3 deletions(-)
+ hw/intc/openpic_kvm.c | 108 ++++++++++++++++++++++++++++++++----------
+ 1 file changed, 83 insertions(+), 25 deletions(-)
 
-diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
-index dd566c4967..ddacb26c44 100644
---- a/hw/i386/kvm/xen_evtchn.c
-+++ b/hw/i386/kvm/xen_evtchn.c
-@@ -133,6 +133,26 @@ struct pirq_info {
-     bool is_translated;
+diff --git a/hw/intc/openpic_kvm.c b/hw/intc/openpic_kvm.c
+index 673ea9ca05..1b7a1d0d00 100644
+--- a/hw/intc/openpic_kvm.c
++++ b/hw/intc/openpic_kvm.c
+@@ -49,6 +49,7 @@ struct KVMOpenPICState {
+     uint32_t fd;
+     uint32_t model;
+     hwaddr mapped;
++    NotifierWithReturn open_pic_vmfd_change_notifier;
  };
  
-+struct eventfds {
-+    uint16_t type;
-+    evtchn_port_t port;
-+    int fd;
-+    QLIST_ENTRY(eventfds) node;
-+};
-+
-+struct kernel_ports {
-+    uint16_t type;
-+    evtchn_port_t port;
-+    uint32_t vcpu_id;
-+    QLIST_ENTRY(kernel_ports) node;
-+};
-+
-+static QLIST_HEAD(, eventfds) eventfd_list =
-+    QLIST_HEAD_INITIALIZER(eventfd_list);
-+
-+static QLIST_HEAD(, kernel_ports) kernel_port_list =
-+    QLIST_HEAD_INITIALIZER(kernel_port_list);
-+
- struct XenEvtchnState {
-     /*< private >*/
-     SysBusDevice busdev;
-@@ -178,6 +198,7 @@ struct XenEvtchnState {
- #define pirq_inuse(s, pirq) (pirq_inuse_word(s, pirq) & pirq_inuse_bit(pirq))
+ static void kvm_openpic_set_irq(void *opaque, int n_IRQ, int level)
+@@ -114,6 +115,83 @@ static const MemoryRegionOps kvm_openpic_mem_ops = {
+     },
+ };
  
- struct XenEvtchnState *xen_evtchn_singleton;
-+static NotifierWithReturn xen_eventchn_notifier;
- 
- /* Top bits of callback_param are the type (HVM_PARAM_CALLBACK_TYPE_xxx) */
- #define CALLBACK_VIA_TYPE_SHIFT 56
-@@ -304,6 +325,52 @@ static void gsi_assert_bh(void *opaque)
-     }
- }
- 
-+static int xen_eventchn_handle_vmfd_change(NotifierWithReturn *notifier,
-+                                           void *data, Error **errp)
++static int create_open_pic_device(KVMOpenPICState *opp, Error **errp)
 +{
-+    struct eventfds *ef;
-+    struct kernel_ports *kp;
-+    struct kvm_xen_hvm_attr ha;
-+    CPUState *cpu;
++    int kvm_openpic_model;
++    struct kvm_create_device cd = {0};
++    KVMState *s = kvm_state;
 +    int ret;
 +
-+    QLIST_FOREACH(ef, &eventfd_list, node) {
-+        ha.type = KVM_XEN_ATTR_TYPE_EVTCHN;
-+        ha.u.evtchn.send_port = ef->port;
-+        ha.u.evtchn.type = ef->type;
-+        ha.u.evtchn.flags = 0;
-+        ha.u.evtchn.deliver.eventfd.port = 0;
-+        ha.u.evtchn.deliver.eventfd.fd = ef->fd;
++    switch (opp->model) {
++    case OPENPIC_MODEL_FSL_MPIC_20:
++        kvm_openpic_model = KVM_DEV_TYPE_FSL_MPIC_20;
++        break;
 +
-+        ret = kvm_vm_ioctl(kvm_state, KVM_XEN_HVM_SET_ATTR, &ha);
-+        if (ret < 0) {
-+            error_setg(errp, "KVM_XEN_HVM_SET_ATTR failed with %d", ret);
-+            return ret;
-+        }
++    case OPENPIC_MODEL_FSL_MPIC_42:
++        kvm_openpic_model = KVM_DEV_TYPE_FSL_MPIC_42;
++        break;
++
++    default:
++        error_setg(errp, "Unsupported OpenPIC model %" PRIu32, opp->model);
++        return -1;
 +    }
 +
-+    memset(&ha, 0, sizeof(ha));
-+
-+    QLIST_FOREACH(kp, &kernel_port_list, node) {
-+        cpu = qemu_get_cpu(kp->vcpu_id);
-+        ha.type = KVM_XEN_ATTR_TYPE_EVTCHN;
-+        ha.u.evtchn.send_port = kp->port;
-+        ha.u.evtchn.type = kp->type;
-+        ha.u.evtchn.flags = 0;
-+        ha.u.evtchn.deliver.port.port = kp->port;
-+        ha.u.evtchn.deliver.port.vcpu = kvm_arch_vcpu_id(cpu);
-+        ha.u.evtchn.deliver.port.priority =
-+            KVM_IRQ_ROUTING_XEN_EVTCHN_PRIO_2LEVEL;
-+
-+        ret = kvm_vm_ioctl(kvm_state, KVM_XEN_HVM_SET_ATTR, &ha);
-+        if (ret < 0) {
-+            error_setg(errp, "KVM_XEN_HVM_SET_ATTR failed with %d", ret);
-+            return ret;
-+        }
++    cd.type = kvm_openpic_model;
++    ret = kvm_vm_ioctl(s, KVM_CREATE_DEVICE, &cd);
++    if (ret < 0) {
++        error_setg(errp, "Can't create device %d: %s",
++                   cd.type, strerror(errno));
++        return -1;
 +    }
++    opp->fd = cd.fd;
++
 +    return 0;
 +}
 +
- void xen_evtchn_create(unsigned int nr_gsis, qemu_irq *system_gsis)
- {
-     XenEvtchnState *s = XEN_EVTCHN(sysbus_create_simple(TYPE_XEN_EVTCHN,
-@@ -350,6 +417,9 @@ void xen_evtchn_create(unsigned int nr_gsis, qemu_irq *system_gsis)
- 
-     /* Set event channel functions for backend drivers to use */
-     xen_evtchn_ops = &emu_evtchn_backend_ops;
++static int open_pic_vmfd_handle_vmfd_change(NotifierWithReturn *notifier,
++                                            void *data, Error **errp)
++{
++    KVMOpenPICState *opp = container_of(notifier, KVMOpenPICState,
++                                        open_pic_vmfd_change_notifier);
++    uint64_t reg_base;
++    struct kvm_device_attr attr;
++    CPUState *cs;
++    int ret;
 +
-+    xen_eventchn_notifier.notify = xen_eventchn_handle_vmfd_change;
-+    kvm_vmfd_add_change_notifier(&xen_eventchn_notifier);
- }
- 
- static void xen_evtchn_register_types(void)
-@@ -547,6 +617,7 @@ static void inject_callback(XenEvtchnState *s, uint32_t vcpu)
- static void deassign_kernel_port(evtchn_port_t port)
- {
-     struct kvm_xen_hvm_attr ha;
-+    struct kernel_ports *kp;
-     int ret;
- 
-     ha.type = KVM_XEN_ATTR_TYPE_EVTCHN;
-@@ -557,6 +628,12 @@ static void deassign_kernel_port(evtchn_port_t port)
-     if (ret) {
-         qemu_log_mask(LOG_GUEST_ERROR, "Failed to unbind kernel port %d: %s\n",
-                       port, strerror(ret));
-+    } else {
-+        QLIST_FOREACH(kp, &kernel_port_list, node) {
-+            if (kp->port == port) {
-+                QLIST_REMOVE(kp, node);
-+            }
++    /* close the old descriptor */
++    close(opp->fd);
++
++    if (create_open_pic_device(opp, errp) < 0) {
++        return -1;
++    }
++
++    if (!opp->mapped) {
++        return 0;
++    }
++
++    reg_base = opp->mapped;
++    attr.group = KVM_DEV_MPIC_GRP_MISC;
++    attr.attr = KVM_DEV_MPIC_BASE_ADDR;
++    attr.addr = (uint64_t)(unsigned long)&reg_base;
++
++    ret = ioctl(opp->fd, KVM_SET_DEVICE_ATTR, &attr);
++    if (ret < 0) {
++        fprintf(stderr, "%s: %s %" PRIx64 "\n", __func__,
++                strerror(errno), reg_base);
++        return -1;
++    }
++
++    CPU_FOREACH(cs) {
++        ret = kvm_vcpu_enable_cap(cs, KVM_CAP_IRQ_MPIC, 0, opp->fd,
++                                   kvm_arch_vcpu_id(cs));
++        if (ret < 0) {
++            return ret;
 +        }
-     }
- }
- 
-@@ -565,6 +642,8 @@ static int assign_kernel_port(uint16_t type, evtchn_port_t port,
- {
-     CPUState *cpu = qemu_get_cpu(vcpu_id);
-     struct kvm_xen_hvm_attr ha;
-+    g_autofree struct kernel_ports *kp = g_malloc0(sizeof(*kp));
-+    int ret;
- 
-     if (!cpu) {
-         return -ENOENT;
-@@ -578,12 +657,21 @@ static int assign_kernel_port(uint16_t type, evtchn_port_t port,
-     ha.u.evtchn.deliver.port.vcpu = kvm_arch_vcpu_id(cpu);
-     ha.u.evtchn.deliver.port.priority = KVM_IRQ_ROUTING_XEN_EVTCHN_PRIO_2LEVEL;
- 
--    return kvm_vm_ioctl(kvm_state, KVM_XEN_HVM_SET_ATTR, &ha);
-+    ret = kvm_vm_ioctl(kvm_state, KVM_XEN_HVM_SET_ATTR, &ha);
-+    if (ret == 0) {
-+        kp->type = type;
-+        kp->port = port;
-+        kp->vcpu_id = vcpu_id;
-+        QLIST_INSERT_HEAD(&kernel_port_list, kp, node);
 +    }
-+    return ret;
- }
- 
- static int assign_kernel_eventfd(uint16_t type, evtchn_port_t port, int fd)
++
++    return 0;
++}
++
+ static void kvm_openpic_region_add(MemoryListener *listener,
+                                    MemoryRegionSection *section)
  {
-     struct kvm_xen_hvm_attr ha;
-+    g_autofree struct eventfds *ef = g_malloc0(sizeof(*ef));
-+    int ret;
+@@ -197,37 +275,14 @@ static void kvm_openpic_realize(DeviceState *dev, Error **errp)
+     SysBusDevice *d = SYS_BUS_DEVICE(dev);
+     KVMOpenPICState *opp = KVM_OPENPIC(dev);
+     KVMState *s = kvm_state;
+-    int kvm_openpic_model;
+-    struct kvm_create_device cd = {0};
+-    int ret, i;
++    int i;
  
-     ha.type = KVM_XEN_ATTR_TYPE_EVTCHN;
-     ha.u.evtchn.send_port = port;
-@@ -592,7 +680,14 @@ static int assign_kernel_eventfd(uint16_t type, evtchn_port_t port, int fd)
-     ha.u.evtchn.deliver.eventfd.port = 0;
-     ha.u.evtchn.deliver.eventfd.fd = fd;
- 
--    return kvm_vm_ioctl(kvm_state, KVM_XEN_HVM_SET_ATTR, &ha);
-+    ret = kvm_vm_ioctl(kvm_state, KVM_XEN_HVM_SET_ATTR, &ha);
-+    if (ret == 0) {
-+        ef->type = type;
-+        ef->port = port;
-+        ef->fd = fd;
-+        QLIST_INSERT_HEAD(&eventfd_list, ef, node);
-+    }
-+    return ret;
- }
- 
- static bool valid_port(evtchn_port_t port)
-@@ -2391,4 +2486,3 @@ void hmp_xen_event_inject(Monitor *mon, const QDict *qdict)
-         monitor_printf(mon, "Delivered port %d\n", port);
+     if (!kvm_check_extension(s, KVM_CAP_DEVICE_CTRL)) {
+         error_setg(errp, "Kernel is lacking Device Control API");
+         return;
      }
- }
+ 
+-    switch (opp->model) {
+-    case OPENPIC_MODEL_FSL_MPIC_20:
+-        kvm_openpic_model = KVM_DEV_TYPE_FSL_MPIC_20;
+-        break;
 -
+-    case OPENPIC_MODEL_FSL_MPIC_42:
+-        kvm_openpic_model = KVM_DEV_TYPE_FSL_MPIC_42;
+-        break;
+-
+-    default:
+-        error_setg(errp, "Unsupported OpenPIC model %" PRIu32, opp->model);
+-        return;
+-    }
+-
+-    cd.type = kvm_openpic_model;
+-    ret = kvm_vm_ioctl(s, KVM_CREATE_DEVICE, &cd);
+-    if (ret < 0) {
+-        error_setg(errp, "Can't create device %d: %s",
+-                   cd.type, strerror(errno));
+-        return;
+-    }
+-    opp->fd = cd.fd;
++    create_open_pic_device(opp, errp);
+ 
+     sysbus_init_mmio(d, &opp->mem);
+     qdev_init_gpio_in(dev, kvm_openpic_set_irq, OPENPIC_MAX_IRQ);
+@@ -236,6 +291,9 @@ static void kvm_openpic_realize(DeviceState *dev, Error **errp)
+     opp->mem_listener.region_del = kvm_openpic_region_del;
+     opp->mem_listener.name = "openpic-kvm";
+     memory_listener_register(&opp->mem_listener, &address_space_memory);
++    opp->open_pic_vmfd_change_notifier.notify =
++        open_pic_vmfd_handle_vmfd_change;
++    kvm_vmfd_add_change_notifier(&opp->open_pic_vmfd_change_notifier);
+ 
+     /* indicate pic capabilities */
+     msi_nonbroken = true;
 -- 
 2.42.0
 
