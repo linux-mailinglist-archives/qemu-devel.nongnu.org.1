@@ -2,96 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C88DCB90F7
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Dec 2025 16:09:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEAC1CB90DF
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Dec 2025 16:08:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vU4iu-0004We-2Q; Fri, 12 Dec 2025 10:06:25 -0500
+	id 1vU4j2-0004zO-9s; Fri, 12 Dec 2025 10:06:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1vU4iS-0004Oy-Gh
- for qemu-devel@nongnu.org; Fri, 12 Dec 2025 10:05:56 -0500
+ id 1vU4iX-0004Ug-G7
+ for qemu-devel@nongnu.org; Fri, 12 Dec 2025 10:06:03 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1vU4iQ-0006Kq-C4
- for qemu-devel@nongnu.org; Fri, 12 Dec 2025 10:05:56 -0500
+ id 1vU4iT-0006QX-HM
+ for qemu-devel@nongnu.org; Fri, 12 Dec 2025 10:06:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1765551953;
+ s=mimecast20190719; t=1765551956;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MC5lbXLd3guV2ptWnUpo8dxa+q+3ySAOJ4x29/7bkmQ=;
- b=CdF/OJc+jhD4cnkMDXUICDOxkgRW23Bc1apaKrxoXYgOM0G6qfqoUJ3fOoZvZk9ZZ9S7bk
- 45LguYGfeUa8hDChOl8bpShmagRcrnHknKAkk0smh0p9SqRntrUXF1fam3HgwbOq1b3Xkn
- VjhNV9Lzb1FXe4QtFepIfmVNjQvkXAY=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=sZTC0TaeHDKR66aLqLlM3/y/CGbtg30ikDOryFdUyg4=;
+ b=DqLPhok86gywP164p3IXCtFjH5rY0Dk5K6Y/Q+/8uqEnXbhdGIkX8+wrn9TU+atO6F676O
+ pp1Zj/uFJr5RSsd+MBuqyhBFb06EsTK4rr2nMl9a+sxBTFXyTqNWZLIqo9rq1CcBF2inat
+ 6h0j52nzPynznS/plaW8a8hMYxvO5w8=
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
+ [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-518-D6dve7OdOoGsGWYlBGVlug-1; Fri, 12 Dec 2025 10:05:52 -0500
-X-MC-Unique: D6dve7OdOoGsGWYlBGVlug-1
-X-Mimecast-MFC-AGG-ID: D6dve7OdOoGsGWYlBGVlug_1765551951
-Received: by mail-pl1-f198.google.com with SMTP id
- d9443c01a7336-29f29ae883bso7084305ad.3
- for <qemu-devel@nongnu.org>; Fri, 12 Dec 2025 07:05:52 -0800 (PST)
+ us-mta-652-N0_O-kKQOCWZa8uawYoXsg-1; Fri, 12 Dec 2025 10:05:55 -0500
+X-MC-Unique: N0_O-kKQOCWZa8uawYoXsg-1
+X-Mimecast-MFC-AGG-ID: N0_O-kKQOCWZa8uawYoXsg_1765551955
+Received: by mail-pf1-f198.google.com with SMTP id
+ d2e1a72fcca58-7f66686710fso2122359b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 12 Dec 2025 07:05:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1765551951; x=1766156751; darn=nongnu.org;
+ d=redhat.com; s=google; t=1765551954; x=1766156754; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MC5lbXLd3guV2ptWnUpo8dxa+q+3ySAOJ4x29/7bkmQ=;
- b=LpEO3i1Ru6i6BiEUv2ml7OfRGc970gX/QzgZYCJBYgZWMwnwUK7OWNYJjBwMzWzyds
- aHXhcIqMs5Lr6pSTf3NuQUmIf+APArmt3dwBgWrsE2nuzAEsokcLpKgucckGR2meWAWq
- ofss1N7Ox3Lte7TnnqgSoZc8nxCqOzC62dp6kHunQ/4PSeEGegahUArOwq8mBgjH749n
- Rsc4JdDr9q+gGhkDQSkZIi02ckZkrXy2FaYKpjFRsI/xjWs6ti00DpzetwgtPTsNTRhL
- HKWceJ6o7OBk24DMLt+xvva7WhSplJ94WS/+LLhWJyIgUTUBcTJZrcjsipBMDv30tMa/
- BENQ==
+ bh=sZTC0TaeHDKR66aLqLlM3/y/CGbtg30ikDOryFdUyg4=;
+ b=Ldhe92w82q6jLQsz0VOMjfyzSMvtcTLCBkERkUYL1I7k/ubeGE6U0wMXpN0qnc9jnf
+ hRNinM6GZX1bifn8mJ9ARNF5oDKfgfKIqG0QaCiCskwctyRRu8DbZVVLel1NBt2NU/mb
+ 6fSQm7jy6nHMrwzz8fBIcYyaBVvks1i605urR+uoUznskvPQ0hsUwsQ0PLDBnX7A9LjC
+ qfnjvf3lW8h4k8y3Fznqezgs7HemPdVE/W0XDNudvdT4hq84d1J+oF+rtPPqabT2sFSJ
+ HXHsyZVMscjWQ+acJY5FFnZb6uI139q+cPGw2Jvv3ndeRYCGfZGaGKHCKQCNcSmL/nWd
+ +7MQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765551951; x=1766156751;
+ d=1e100.net; s=20230601; t=1765551954; x=1766156754;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=MC5lbXLd3guV2ptWnUpo8dxa+q+3ySAOJ4x29/7bkmQ=;
- b=aRq3SfZk28BGOQ9QOwYDw4gdqT2qjqN6na3zM/2fSOPoJTZVL5Q8H5tOb2z/BoC5lR
- 4pQobMaXpnt5efE++aEYFYeE92zH2zsC4GmlRZOGq7Z/m7CX4JL8+4A0EGwFswOZSIcd
- y3NPLNgNFQ7neQesqAVgPUZCCOBscEvgi05BTbjNiwEJoTFkYTnbT/GAfW1Jm23om/ty
- XP9gyn6qJcAJFNT3/BOejvEeUkWcgZm6lEQIj6VpJjcWVx+8PKcOI+BO9Dxcy7fuonuI
- T0pRb+YVr7U+jVhCKjnl9Tf8ChsGkTmI5tKkDMV9VeyTR4uUCuwL2lP8cQxMWfgRC2K5
- JgPg==
+ bh=sZTC0TaeHDKR66aLqLlM3/y/CGbtg30ikDOryFdUyg4=;
+ b=p0xpQn6vINzQfyAWW5BbKip1kRX6xU6hBWpi2yniEonv4j+7rwyRv59l0wwaDS4awR
+ kBuGMgZ0fubkVdtfwxrb8J85Zy+kV8eKRAlg4bNfo4GZkbsdInBfEQyMuzn3FagZzmek
+ n0Ss/S/4/IGxsOEsRcy7xkm35fkxdKlYQ7kMRbMY/ns//DJtq7yUvMFLM69tcFMgt5HQ
+ nX/tqy7eaTvxe4VemfbMWtVoVrfkDuQC1CpN5LLuAv4jKDi3WDVGlbgnDI2wceBZxOLU
+ rtmdOPuzJl0mL7oERX4fQp9PfTl4CIq02tFLpcIszIJUhUonWOcnf0a+9ToQ54eoeV3n
+ PIxw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUkFDjoQdP8strawO99d5x0ZFTQjK/P2MgNYpkCj2gp34+dTG/R5jwSdyiosHsJpJ0Bg5xu38ELrX/z@nongnu.org
-X-Gm-Message-State: AOJu0Yww8iSl5Z8cGXB6fYsHTifpn9PmoOMOf5O8nOh7jv3ZucRD/9mP
- 9ceM5L/6/DzSpTG1brMmN0EGkDZtUo62iIfTSyXXTinXGx12EQL4tWLWjZWgFmK2hXVdobFmirF
- PVhkk+e55vXcuZLytD9KkoKZ7/Hm+4Vv8AXwmUNbes5GYHTFzPLIg4eq1
-X-Gm-Gg: AY/fxX6zhbO96dq46kweRe9/syTY6EBpCf45HtnjuEdAQ6o/ljc+QPtDJlmVhrJgez6
- A2Cc3TdA7+5HITJFoPE3FaBHPasEt9Uu7QxrXQxkYi4i+Rl2uM7OuKiaa32m/0+8aUZo8DQTb24
- CtXhDzDjwHx93qFADtUywPY869CnBK5NHACm5H+iX79wW4hwxZQgnYWU/jhjwCoMmCWzL3Lk8h0
- KHfJVsdc9LWLXwvag7+pFwcaCRNblzpGXgqFqf+YdLc2Nn20q4crR5+RdPpgosE565E4imsjZ2C
- K0k544W49Ca5GLTrLKhlExytuMv1iqtHSb6oBjA/lSIX9SMY/Q09RKjOCo45+iLYyKyU2wWErED
- RBpmWbZ8OR8R69esGvSLfvu84bdZQkW/rjEa9WlUJNzg=
-X-Received: by 2002:a17:903:2ecc:b0:295:592e:7633 with SMTP id
- d9443c01a7336-29f26eb34ddmr23525605ad.29.1765551950898; 
- Fri, 12 Dec 2025 07:05:50 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFINyFysyaG3Z7M7nKx2uV1+TcX6mLN4/JurQM2jroBzGQCP/c1s4YHv6IamP+nxOelN0SRRw==
-X-Received: by 2002:a17:903:2ecc:b0:295:592e:7633 with SMTP id
- d9443c01a7336-29f26eb34ddmr23525245ad.29.1765551950285; 
- Fri, 12 Dec 2025 07:05:50 -0800 (PST)
+ AJvYcCXkJJdzVzxMYXdxRDBdUHDb7yKfF4U6AffdGEC5gSFkkm8ZSJ0RuchJIZCscgzHLCXKkYi13KTo8sIF@nongnu.org
+X-Gm-Message-State: AOJu0YwmzI9PqyC4vlzJ1bEETpFbDEh7x0oXYSXCvgGh6RxcBT2FX35t
+ 4FaE9mdg2oDxf0GWfaNd5KlOHR41reT8oYvrM6P4E3QMYGd6Fak2P+q/MliZV49pfnvOIHsAxGr
+ sqgDrhDBYQMn0aFW0bfz5SO9Ijv6JhgvR9k9DEW2EKUe7vvVaVLKoZq4tZBbasJXs8BE=
+X-Gm-Gg: AY/fxX47bT0wqqkankdmC/n6PJcUP/FHOPXJsvF99R6KgPYoE2vBLcDYUd5a70emohu
+ 3Gm7o9H03HXcI3boRJRNsm0CrYDJjVMiANmLhvbry4Idb9zuRRzGLuoZVtzpMMIwdNRJWVs6lCG
+ e2C8b/cBlSYmq0/SSkn3LWXMYBGq6dBXUn02jj9vHeUEYIi+W34bAYqPhTrwMhMPKTbn484vii9
+ Sfj2rqqdu4UVNOuW24CW8facpWNKclww1APoS7p4EkKx3Fw/LNRgiwuucfpavbNUrS+Ct3sBsMv
+ YsmAXheioqTVUknJmu/Hcvzag5nfATzDDdeM2pduJ4NNkquakKHfio/ixM8D8EBWdy1xxzn26Zp
+ NFIufmtiTSrmlBOlcZxGuIP+5KorCGPVwLjOIBiUn2ys=
+X-Received: by 2002:a05:6a20:a120:b0:2b1:c9dc:6da0 with SMTP id
+ adf61e73a8af0-369af8134aemr2332833637.46.1765551953962; 
+ Fri, 12 Dec 2025 07:05:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH2PTtPcc3NYxZK0sT8luDMiL41s5In2g2ebIkjZn5jtCNym8KLEOHcSdYDAvY7Kqir+RLKRg==
+X-Received: by 2002:a05:6a20:a120:b0:2b1:c9dc:6da0 with SMTP id
+ adf61e73a8af0-369af8134aemr2332793637.46.1765551953479; 
+ Fri, 12 Dec 2025 07:05:53 -0800 (PST)
 Received: from rhel9-box.lan ([122.172.173.62])
  by smtp.googlemail.com with ESMTPSA id
- d9443c01a7336-29ee9d38ad1sm57046655ad.29.2025.12.12.07.05.48
+ d9443c01a7336-29ee9d38ad1sm57046655ad.29.2025.12.12.07.05.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Dec 2025 07:05:50 -0800 (PST)
+ Fri, 12 Dec 2025 07:05:53 -0800 (PST)
 From: Ani Sinha <anisinha@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
 Cc: vkuznets@redhat.com, kraxel@redhat.com, qemu-devel@nongnu.org,
- Ani Sinha <anisinha@redhat.com>, kvm@vger.kernel.org
-Subject: [PATCH v1 26/28] kvm/vcpu: add notifiers to inform vcpu file
- descriptor change
-Date: Fri, 12 Dec 2025 20:33:54 +0530
-Message-ID: <20251212150359.548787-27-anisinha@redhat.com>
+ Ani Sinha <anisinha@redhat.com>
+Subject: [PATCH v1 27/28] kvm/i386/apic: set local apic after vcpu file
+ descriptors changed
+Date: Fri, 12 Dec 2025 20:33:55 +0530
+Message-ID: <20251212150359.548787-28-anisinha@redhat.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20251212150359.548787-1-anisinha@redhat.com>
 References: <20251212150359.548787-1-anisinha@redhat.com>
@@ -122,122 +126,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When new vcpu file descriptors are created and bound to the new kvm file
-descriptor as a part of the confidential guest reset mechanism, various
-subsystems needs to know about it. This change adds notifiers so that various
-subsystems can take appropriate actions when vcpu fds change by registering
-their handlers to this notifier.
-Subsequent changes will register specific handlers to this notifier.
+Once the vcpu file descriptors changed after confidential guest reset, the
+local apic needs to be reinitialized. This change adds a callback from the
+vcpu fd change notifiers to reinitialize local apic for kvm x86.
 
 Signed-off-by: Ani Sinha <anisinha@redhat.com>
 ---
- accel/kvm/kvm-all.c    | 27 ++++++++++++++++++++++++++-
- accel/stubs/kvm-stub.c | 10 ++++++++++
- include/system/kvm.h   | 17 +++++++++++++++++
- 3 files changed, 53 insertions(+), 1 deletion(-)
+ hw/i386/kvm/apic.c              | 13 +++++++++++++
+ include/hw/i386/apic_internal.h |  1 +
+ 2 files changed, 14 insertions(+)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 638f193626..7f9c0d454a 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -130,8 +130,10 @@ static NotifierWithReturnList register_vmfd_changed_notifiers =
- static NotifierWithReturnList register_vmfd_pre_change_notifiers =
-     NOTIFIER_WITH_RETURN_LIST_INITIALIZER(register_vmfd_pre_change_notifiers);
- 
--static int kvm_rebind_vcpus(Error **errp);
-+static NotifierWithReturnList register_vcpufd_changed_notifiers =
-+    NOTIFIER_WITH_RETURN_LIST_INITIALIZER(register_vcpufd_changed_notifiers);
- 
-+static int kvm_rebind_vcpus(Error **errp);
- static int map_kvm_run(KVMState *s, CPUState *cpu, Error **errp);
- static int map_kvm_dirty_gfns(KVMState *s, CPUState *cpu, Error **errp);
- static int vcpu_unmap_regions(KVMState *s, CPUState *cpu);
-@@ -2327,6 +2329,22 @@ void kvm_vmfd_remove_pre_change_notifier(NotifierWithReturn *n)
-     notifier_with_return_remove(n);
+diff --git a/hw/i386/kvm/apic.c b/hw/i386/kvm/apic.c
+index 82355f0463..f6f8ac2764 100644
+--- a/hw/i386/kvm/apic.c
++++ b/hw/i386/kvm/apic.c
+@@ -229,6 +229,16 @@ static void kvm_apic_reset(APICCommonState *s)
+     run_on_cpu(CPU(s->cpu), kvm_apic_put, RUN_ON_CPU_HOST_PTR(s));
  }
  
-+void kvm_vcpufd_add_change_notifier(NotifierWithReturn *n)
-+{
-+    notifier_with_return_list_add(&register_vcpufd_changed_notifiers, n);
++static int apic_vcpufd_change_handler(NotifierWithReturn *n,
++                                      void *data, Error** errp) {
++    APICCommonState *s = container_of(n, APICCommonState,
++                                      vcpufd_change_notifier);
++
++    run_on_cpu(CPU(s->cpu), kvm_apic_put, RUN_ON_CPU_HOST_PTR(s));
++
++    return 0;
 +}
 +
-+void kvm_vcpufd_remove_change_notifier(NotifierWithReturn *n)
-+{
-+    notifier_with_return_remove(n);
-+}
-+
-+static int kvm_vcpufd_change_notify(Error **errp)
-+{
-+    return notifier_with_return_list_notify(&register_vcpufd_changed_notifiers,
-+                                            &vmfd_notifier, errp);
-+}
-+
- static int kvm_vmfd_pre_change_notify(Error **errp)
+ static void kvm_apic_realize(DeviceState *dev, Error **errp)
  {
-     return notifier_with_return_list_notify(&register_vmfd_pre_change_notifiers,
-@@ -2847,6 +2865,13 @@ static int kvm_reset_vmfd(MachineState *ms)
-     }
-     assert(!err);
+     APICCommonState *s = APIC_COMMON(dev);
+@@ -238,6 +248,9 @@ static void kvm_apic_realize(DeviceState *dev, Error **errp)
  
-+    /* notify everyone that vcpu fd has changed. */
-+    ret = kvm_vcpufd_change_notify(&err);
-+    if (ret < 0) {
-+        return ret;
-+    }
-+    assert(!err);
+     assert(kvm_has_gsi_routing());
+     msi_nonbroken = true;
 +
-     /* these can be only called after ram_block_rebind() */
-     memory_listener_register(&kml->listener, &address_space_memory);
-     memory_listener_register(&kvm_io_listener, &address_space_io);
-diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
-index 7f4e3c4050..5b94f3dc3c 100644
---- a/accel/stubs/kvm-stub.c
-+++ b/accel/stubs/kvm-stub.c
-@@ -95,6 +95,16 @@ void kvm_vmfd_remove_change_notifier(NotifierWithReturn *n)
- {
++    s->vcpufd_change_notifier.notify = apic_vcpufd_change_handler;
++    kvm_vcpufd_add_change_notifier(&s->vcpufd_change_notifier);
  }
  
-+void kvm_vcpufd_add_change_notifier(NotifierWithReturn *n)
-+{
-+    return;
-+}
-+
-+void kvm_vcpufd_remove_change_notifier(NotifierWithReturn *n)
-+{
-+    return;
-+}
-+
- int kvm_irqchip_add_irqfd_notifier_gsi(KVMState *s, EventNotifier *n,
-                                        EventNotifier *rn, int virq)
- {
-diff --git a/include/system/kvm.h b/include/system/kvm.h
-index cb5db9ff67..bfd09e70a0 100644
---- a/include/system/kvm.h
-+++ b/include/system/kvm.h
-@@ -586,6 +586,23 @@ void kvm_vmfd_add_change_notifier(NotifierWithReturn *n);
-  */
- void kvm_vmfd_remove_change_notifier(NotifierWithReturn *n);
+ static void kvm_apic_unrealize(DeviceState *dev)
+diff --git a/include/hw/i386/apic_internal.h b/include/hw/i386/apic_internal.h
+index 4a62fdceb4..ffe5815e7f 100644
+--- a/include/hw/i386/apic_internal.h
++++ b/include/hw/i386/apic_internal.h
+@@ -189,6 +189,7 @@ struct APICCommonState {
+     hwaddr vapic_paddr; /* note: persistence via kvmvapic */
+     bool legacy_instance_id;
+     uint32_t extended_log_dest;
++    NotifierWithReturn vcpufd_change_notifier;
+ };
  
-+/**
-+ * kvm_vcpufd_add_change_notifier - register a notifier to get notified when
-+ * a KVM vcpu file descriptors changes as a part of the confidential guest
-+ * "reset" process. Various subsystems should use this mechanism to take
-+ * actions such as re-issuing vcpu ioctls as a part of setting up vcpu
-+ * features.
-+ * @n: notifier with return value.
-+ */
-+void kvm_vcpufd_add_change_notifier(NotifierWithReturn *n);
-+
-+/**
-+ * kvm_vcpufd_remove_change_notifier - de-register a notifer previously
-+ * registered with kvm_vcpufd_add_change_notifier call.
-+ * @n: notifier that was previously registered.
-+ */
-+void kvm_vcpufd_remove_change_notifier(NotifierWithReturn *n);
-+
- /**
-  * kvm_vmfd_add_pre_change_notifier - register a notifier to get notified when
-  * kvm vm file descriptor is about to be changed as a part of the confidential
+ typedef struct VAPICState {
 -- 
 2.42.0
 
