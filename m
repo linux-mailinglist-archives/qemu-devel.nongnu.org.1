@@ -2,97 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1E5CCB953D
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Dec 2025 17:45:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F121CB9573
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Dec 2025 17:47:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vU6FO-0006Mb-Vo; Fri, 12 Dec 2025 11:44:03 -0500
+	id 1vU6Hs-0007w5-09; Fri, 12 Dec 2025 11:46:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vU6FN-0006MJ-Gc
- for qemu-devel@nongnu.org; Fri, 12 Dec 2025 11:44:01 -0500
-Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vU6FM-0004Tq-2s
- for qemu-devel@nongnu.org; Fri, 12 Dec 2025 11:44:01 -0500
-Received: by mail-oa1-x2b.google.com with SMTP id
- 586e51a60fabf-3e7f68df436so1032141fac.1
- for <qemu-devel@nongnu.org>; Fri, 12 Dec 2025 08:43:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1765557839; x=1766162639; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
- :cc:subject:date:message-id:reply-to;
- bh=JF+1MLSb2rLoFv/0j9h1zh1U1uUTJwVnagOsFBmTXMU=;
- b=ORfn1JETEJO5BAnlwZzwLD5ZEsinEfPm25akoCVeKbuJQDIQaYzrSTa+CkI2k+XPJJ
- BJnt4PRRBelU4us70IsNxsvaULzJOnoKOzlhJKLRM4TL8pGb0VJcLq13DhJ8m+KflI7A
- JlBdBqB7vkWYoyHLvafv9L9i172f8ni6lBXFA5crGXjEFeKdiq0E9UXPyMug9JcsNYUG
- sfhmUxif/W99I1hHgaAYQGQQX80tvDl8vZzy3qnwy8BEehF0MlHIzQHYEo22fr8YwaG7
- 2Nq6quQYSrXygjzZKOj4ayvUnXs6OMato4E6NY8Z5IppAaGZ4orf7Qb+XK9hw9ppE8yL
- 8O9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765557839; x=1766162639;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JF+1MLSb2rLoFv/0j9h1zh1U1uUTJwVnagOsFBmTXMU=;
- b=fVFT8gfzr1H3dJAMQMO5kaRRTXeOlYsBVrgei8kHGsc8AskmEOOcaDW3HJs2lBbRtC
- mqMtzXTow8xUhCK0TmjMwOznl3OzByskj+YrEpsN4WVfhMjvnBIw507jbTlM3FtXV0Hb
- GrtiFeatx1qWw8xZ0+FIMMkHb0HxNlEZJL87ILfhIP1p5hkniPAJDmLx5MaO7HLF965p
- iK/USrDcEGfJcM2bRRLpjCyj0Kux02XXm3Dn3XaaWBOkjx/4tv31kBh/8C4fM7j9uOik
- Ge7aWDy0HZSa7i6iS091DnJE4ChpCw/uS1BmR0l25UH84w4Z1TZwcz57YwywHXPEPQlk
- /aHA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWS33kxE+F8wQhVn/XC3WzWGu3YNYFn1w8/E43BZGrhg7wpbNFFnVDsppwkfzdBRWpWbauQofNaezpl@nongnu.org
-X-Gm-Message-State: AOJu0YzCEkAoOdBCUQmHQfC0q8H5bS2znQKfI5E4R7R8LgyU8BLVXCda
- Y+ySYvFWys95rWRpKu/eHFhQCOM4TiBhJ0/vrcNRCLMM/MVa6pIted3i3LBd1S25q9E=
-X-Gm-Gg: AY/fxX7tqCIHh8TGDBMSdPQxz7gNkr6wtGYY9tLGVmQanEGEqZqFQFkbQnqceeplAVt
- SkKfKw14MDi8LFmaGVrkhOKYwYNBOF92f0uFpcBJVSMXv3ugjmkN4v7K8e8RBRXTo7KAEI9pz90
- pDYn3DNP1I+fouMMiJEVm92OWX9xuvuTYOMM7iKUOG5nfmGig162qIH0kJPOdfXGsbOADIN1pIP
- Xetu3C0XGbVNAPpH8pMRBt+pMlNzRAWqOxXVrz6jJIw/MgTqPunzkCIPnnuMHJ+boiuppgwt+9a
- UckiZgsbn9J8DkXYK3My7NsgZsr0gerAVFh7c0dVuiXSY6kYqS9GGsPMhXgIVBIc4UXgzj9OuRS
- 70F7rSsXjrJW18+xb3/0Rm6LDmBa6iZTPlDURVD/DsuQ+VOz7jxpolOLCtJaQXmfb+qay56sUV7
- iDgtmyHU7urNhLP2pJeJPMAXr1A4jO
-X-Google-Smtp-Source: AGHT+IGjQkHTO3MM0YD/sAtXFwRAp8C2Dz4LBJfu3IVSgRoVKvqjVHRAighW08+oL9FP/MT3C5O+SA==
-X-Received: by 2002:a05:6871:79aa:b0:3e0:bd2c:f459 with SMTP id
- 586e51a60fabf-3f5f95ba209mr1471128fac.12.1765557838597; 
- Fri, 12 Dec 2025 08:43:58 -0800 (PST)
-Received: from [10.229.62.227] ([187.217.227.247])
- by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-3f5fe287f66sm1282767fac.1.2025.12.12.08.43.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 12 Dec 2025 08:43:58 -0800 (PST)
-Message-ID: <ee4ebd4e-b475-4d76-8fd2-8b04c30b183c@linaro.org>
-Date: Fri, 12 Dec 2025 10:43:54 -0600
+ (Exim 4.90_1) (envelope-from <tangtao1634@phytium.com.cn>)
+ id 1vU6Hh-0007oM-Tq; Fri, 12 Dec 2025 11:46:26 -0500
+Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net ([162.243.164.118])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <tangtao1634@phytium.com.cn>)
+ id 1vU6Hf-0006Ki-Ib; Fri, 12 Dec 2025 11:46:25 -0500
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+ by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwAXHCTVRjxpIgpoAQ--.12832S2;
+ Sat, 13 Dec 2025 00:46:13 +0800 (CST)
+Received: from [192.168.31.152] (unknown [222.244.181.125])
+ by mail (Coremail) with SMTP id AQAAfwBnwe7IRjxpe6ULAA--.28134S2;
+ Sat, 13 Dec 2025 00:46:07 +0800 (CST)
+Message-ID: <ecfa9104-2864-48e0-8d3a-ac4f1540417f@phytium.com.cn>
+Date: Sat, 13 Dec 2025 00:45:59 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-11.0 v3 14/22] target/mips: Drop almask argument of
- HELPER_LD_ATOMIC() macro
-From: Richard Henderson <richard.henderson@linaro.org>
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
- Aurelien Jarno <aurelien@aurel32.net>, Jiaxun Yang
- <jiaxun.yang@flygoat.com>, Aleksandar Rikalo <arikalo@gmail.com>
-References: <20251126202200.23100-1-philmd@linaro.org>
- <20251126202200.23100-15-philmd@linaro.org>
- <b0ea5035-bbbe-43cf-aa29-8585c2662070@linaro.org>
-Content-Language: en-US
-In-Reply-To: <b0ea5035-bbbe-43cf-aa29-8585c2662070@linaro.org>
+Subject: Re: [PATCH] hw/arm/smmu: add memory regions as property for an SMMU
+ instance
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-arm@nongnu.org, Eric Auger <eric.auger@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Radoslaw Biernacki <rad@semihalf.com>
+References: <20251211221715.2206662-1-pierrick.bouvier@linaro.org>
+From: Tao Tang <tangtao1634@phytium.com.cn>
+In-Reply-To: <20251211221715.2206662-1-pierrick.bouvier@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2b;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-CM-TRANSID: AQAAfwBnwe7IRjxpe6ULAA--.28134S2
+X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQACBWk7JbIJugACsy
+Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=tangtao163
+ 4@phytium.com.cn;
+X-Coremail-Antispam: 1Uk129KBjvJXoW3Gr45KF1xGr48ur1kXw1rtFb_yoW3Wr45pF
+ Z5uFs5KrWxKF17JrZ3ZrsxuFy5Jw4vk3W5Kry7Cr97CF1UGr15Ar4jkw1jkr9rCrn5Aw17
+ ZF1q9Fs7Zw47t3DanT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+ DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
+ UUUUU
+Received-SPF: pass client-ip=162.243.164.118;
+ envelope-from=tangtao1634@phytium.com.cn;
+ helo=zg8tmtyylji0my4xnjqumte4.icoremail.net
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,34 +74,214 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/12/25 10:35, Richard Henderson wrote:
-> On 11/26/25 14:21, Philippe Mathieu-Daudé wrote:
->> HELPER_LD_ATOMIC() now has a MemOpIdx, from which we
->> can extract the MemOp size. Use it to check the address
->> alignment.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   target/mips/tcg/ldst_helper.c | 10 ++++++----
->>   1 file changed, 6 insertions(+), 4 deletions(-)
-> 
-> True, but adding MO_ALIGN to the MemOpIdx (and thus to the MemOp) might be more useful, 
-> allowing you to remove this explicit check.
+Hi Pierrick,
 
-Follow-up: You'd also reorg the function such that
-
-      env->llval = cpu_load(env, arg, oi, GETPC());                             \
-      env->CP0_LLAddr = cpu_mips_translate_address(env, arg, MMU_DATA_LOAD,     \
-                                                   GETPC());                    \
-      env->lladdr = arg;                                                        \
-      return env->llval;                                                        \
-
-so that lladdr and CP0_LLAddr do not get assigned when there is an alignment fault.
-
-Also, the cpu_load will have either faulted, or pulled in the translation to CPUTLB.  You 
-don't need the full PTW of cpu_mips_translate_address.  Using probe_access_full will 
-quickly grab the CPUTLBEntryFull, from which phys_addr is your required value.
+On 2025/12/12 06:17, Pierrick Bouvier wrote:
+> This will be used to access non-secure and secure memory. Secure support
+> and Granule Protection Check (for RME) for SMMU need to access secure
+> memory.
+>
+> As well, it allows to remove usage of global address_space_memory,
+> allowing different SMMU instances to have a specific view of memory.
 
 
-r~
+Thanks for the patch.
+
+I have to admit that in my earlier series I didn’t find a clean way to 
+model SMMU’s AddressSpace handling properly, so I ended up using weak 
+globals as a pragmatic workaround. Your approach is much cleaner and 
+fits QEMU’s usual memory model.
+
+>
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>   include/hw/arm/smmu-common.h |  4 ++++
+>   hw/arm/sbsa-ref.c            | 16 ++++++++++++----
+>   hw/arm/smmu-common.c         | 24 ++++++++++++++++++++++++
+>   hw/arm/virt.c                | 16 +++++++++++-----
+>   4 files changed, 51 insertions(+), 9 deletions(-)
+>
+> diff --git a/include/hw/arm/smmu-common.h b/include/hw/arm/smmu-common.h
+> index a6bdb67a983..0f08ae080c9 100644
+> --- a/include/hw/arm/smmu-common.h
+> +++ b/include/hw/arm/smmu-common.h
+> @@ -227,6 +227,10 @@ struct SMMUState {
+>       uint8_t bus_num;
+>       PCIBus *primary_bus;
+>       bool smmu_per_bus; /* SMMU is specific to the primary_bus */
+> +    MemoryRegion *memory;
+> +    AddressSpace as_memory;
+> +    MemoryRegion *secure_memory;
+> +    AddressSpace as_secure_memory;
+>   };
+>   
+>   struct SMMUBaseClass {
+> diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+> index 45d2e3e946d..840b1a216f4 100644
+> --- a/hw/arm/sbsa-ref.c
+> +++ b/hw/arm/sbsa-ref.c
+> @@ -616,7 +616,9 @@ static void create_xhci(const SBSAMachineState *sms)
+>       sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, qdev_get_gpio_in(sms->gic, irq));
+>   }
+>   
+> -static void create_smmu(const SBSAMachineState *sms, PCIBus *bus)
+> +static void create_smmu(const SBSAMachineState *sms, PCIBus *bus,
+> +                        MemoryRegion *sysmem,
+> +                        MemoryRegion *secure_sysmem)
+>   {
+>       hwaddr base = sbsa_ref_memmap[SBSA_SMMU].base;
+>       int irq =  sbsa_ref_irqmap[SBSA_SMMU];
+> @@ -628,6 +630,10 @@ static void create_smmu(const SBSAMachineState *sms, PCIBus *bus)
+>       object_property_set_str(OBJECT(dev), "stage", "nested", &error_abort);
+>       object_property_set_link(OBJECT(dev), "primary-bus", OBJECT(bus),
+>                                &error_abort);
+> +    object_property_set_link(OBJECT(dev), "memory", OBJECT(sysmem),
+> +                             &error_abort);
+> +    object_property_set_link(OBJECT(dev), "secure-memory", OBJECT(secure_sysmem),
+> +                             &error_abort);
+>       sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+>       sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
+>       for (i = 0; i < NUM_SMMU_IRQS; i++) {
+> @@ -636,7 +642,9 @@ static void create_smmu(const SBSAMachineState *sms, PCIBus *bus)
+>       }
+>   }
+>   
+> -static void create_pcie(SBSAMachineState *sms)
+> +static void create_pcie(SBSAMachineState *sms,
+> +                        MemoryRegion *sysmem,
+> +                        MemoryRegion *secure_sysmem)
+>   {
+>       hwaddr base_ecam = sbsa_ref_memmap[SBSA_PCIE_ECAM].base;
+>       hwaddr size_ecam = sbsa_ref_memmap[SBSA_PCIE_ECAM].size;
+> @@ -692,7 +700,7 @@ static void create_pcie(SBSAMachineState *sms)
+>   
+>       pci_create_simple(pci->bus, -1, "bochs-display");
+>   
+> -    create_smmu(sms, pci->bus);
+> +    create_smmu(sms, pci->bus, sysmem, secure_sysmem);
+>   }
+>   
+>   static void *sbsa_ref_dtb(const struct arm_boot_info *binfo, int *fdt_size)
+> @@ -831,7 +839,7 @@ static void sbsa_ref_init(MachineState *machine)
+>   
+>       create_xhci(sms);
+>   
+> -    create_pcie(sms);
+> +    create_pcie(sms, sysmem, secure_sysmem);
+>   
+>       create_secure_ec(secure_sysmem);
+>   
+> diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
+> index 66367adc2a4..5fbfe825fd0 100644
+> --- a/hw/arm/smmu-common.c
+> +++ b/hw/arm/smmu-common.c
+> @@ -1171,6 +1171,12 @@ static void smmu_base_realize(DeviceState *dev, Error **errp)
+>           return;
+>       }
+>   
+> +    g_assert(s->memory);
+> +    address_space_init(&s->as_memory, s->memory, "memory");
+> +    if (s->secure_memory) {
+> +        address_space_init(&s->as_secure_memory, s->secure_memory, "secure-memory");
+> +    }
+> +
+>       /*
+>        * We only allow default PCIe Root Complex(pcie.0) or pxb-pcie based extra
+>        * root complexes to be associated with SMMU.
+> @@ -1235,10 +1241,28 @@ static void smmu_base_class_init(ObjectClass *klass, const void *data)
+>       rc->phases.exit = smmu_base_reset_exit;
+>   }
+>   
+> +static void smmu_base_instance_init(Object *obj)
+> +{
+> +    SMMUState *s = ARM_SMMU(obj);
+> +
+> +    object_property_add_link(obj, "memory",
+> +                             TYPE_MEMORY_REGION,
+> +                             (Object **)&s->memory,
+> +                             qdev_prop_allow_set_link_before_realize,
+> +                             OBJ_PROP_LINK_STRONG);
+> +
+> +    object_property_add_link(obj, "secure-memory",
+> +                             TYPE_MEMORY_REGION,
+> +                             (Object **)&s->secure_memory,
+> +                             qdev_prop_allow_set_link_before_realize,
+> +                             OBJ_PROP_LINK_STRONG);
+> +}
+> +
+>   static const TypeInfo smmu_base_info = {
+>       .name          = TYPE_ARM_SMMU,
+>       .parent        = TYPE_SYS_BUS_DEVICE,
+>       .instance_size = sizeof(SMMUState),
+> +    .instance_init = smmu_base_instance_init,
+>       .class_data    = NULL,
+>       .class_size    = sizeof(SMMUBaseClass),
+>       .class_init    = smmu_base_class_init,
+> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> index 5d205eff3a1..d446c3349e9 100644
+> --- a/hw/arm/virt.c
+> +++ b/hw/arm/virt.c
+> @@ -1514,8 +1514,9 @@ static void create_smmuv3_dev_dtb(VirtMachineState *vms,
+>                              0x0, vms->iommu_phandle, 0x0, 0x10000);
+>   }
+>   
+> -static void create_smmu(const VirtMachineState *vms,
+> -                        PCIBus *bus)
+> +static void create_smmu(const VirtMachineState *vms, PCIBus *bus,
+> +                        MemoryRegion *sysmem,
+> +                        MemoryRegion *secure_sysmem)
+>   {
+>       VirtMachineClass *vmc = VIRT_MACHINE_GET_CLASS(vms);
+>       int irq =  vms->irqmap[VIRT_SMMU];
+> @@ -1549,6 +1550,10 @@ static void create_smmu(const VirtMachineState *vms,
+>       object_property_set_str(OBJECT(dev), "stage", stage, &error_fatal);
+
+This unchanged line doesn't seem to match the current master branch 
+code. It was actually modified last year by Peter in commit 8a934f1c4a 
+which changed the virt board's default stage. So I failed to apply this 
+patch. Anyway this discrepancy doesn't affect the core functionality of 
+the patch.
+
+
+Applying: hw/arm/smmu: add memory regions as property for an SMMU instance
+error: patch failed: hw/arm/virt.c:1549
+error: hw/arm/virt.c: patch does not apply
+Patch failed at 0001 hw/arm/smmu: add memory regions as property for an 
+SMMU instance
+hint: Use 'git am --show-current-patch=diff' to see the failed patch
+
+
+>       object_property_set_link(OBJECT(dev), "primary-bus", OBJECT(bus),
+>                                &error_abort);
+> +    object_property_set_link(OBJECT(dev), "memory", OBJECT(sysmem),
+> +                             &error_abort);
+
+I noticed when using info mtree: after applying the patch, I see two 
+address-space: memory which may confuse others. Is it necessary to 
+distinguish the names here?
+
+
+address-space: cpu-memory-0
+address-space: gicv3-its-sysmem
+address-space: memory
+address-space: memory
+   0000000000000000-ffffffffffffffff (prio 0, i/o): system
+     0000000000000000-0000000003ffffff (prio 0, romd): virt.flash0
+     0000000004000000-0000000007ffffff (prio 0, romd): virt.flash1
+     0000000008000000-000000000800ffff (prio 0, i/o): gicv3_dist
+
+
+For the functionality, based on this patch plus attachment #2 from the 
+earlier thread [1], the NS/S SMMU code path in smmu_get_address_space 
+works fine in my setup.
+
+
+[1] 
+https://lore.kernel.org/qemu-devel/db7fde79-85fa-4bd4-83ca-021ed3f09353@linaro.org/
+
+
+Thanks,
+
+Tao
+
 
