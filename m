@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C91BCB9667
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Dec 2025 18:03:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3922CB9661
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Dec 2025 18:03:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vU6X7-0000bJ-Rm; Fri, 12 Dec 2025 12:02:21 -0500
+	id 1vU6XF-00011q-VT; Fri, 12 Dec 2025 12:02:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vU6WB-0008Ow-Fu
- for qemu-devel@nongnu.org; Fri, 12 Dec 2025 12:01:24 -0500
-Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
+ id 1vU6XE-0000zf-CE
+ for qemu-devel@nongnu.org; Fri, 12 Dec 2025 12:02:28 -0500
+Received: from mail-oa1-x2d.google.com ([2001:4860:4864:20::2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vU6W8-0005gQ-IF
- for qemu-devel@nongnu.org; Fri, 12 Dec 2025 12:01:23 -0500
-Received: by mail-ot1-x32f.google.com with SMTP id
- 46e09a7af769-7c76f65feb5so1183190a34.0
- for <qemu-devel@nongnu.org>; Fri, 12 Dec 2025 09:01:19 -0800 (PST)
+ id 1vU6XB-00064Q-P9
+ for qemu-devel@nongnu.org; Fri, 12 Dec 2025 12:02:28 -0500
+Received: by mail-oa1-x2d.google.com with SMTP id
+ 586e51a60fabf-3ec96ee3dabso1045007fac.1
+ for <qemu-devel@nongnu.org>; Fri, 12 Dec 2025 09:02:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1765558879; x=1766163679; darn=nongnu.org;
+ d=linaro.org; s=google; t=1765558944; x=1766163744; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Icu3JHOaMqQk2xCgIvRyRxQGaqf2UrHfFzGWtywqEJo=;
- b=Pn06awi+/OYXhdESgEXUy9XadVjbbJbQleeRsGq9tzPlXUeb9n8Jnhzexzyga01858
- 0pQ8342mCn0JiHeXsRFws/VFFTEfnyDt3Z4FNT1sygHdSWFgw8+Sr6B1C06N61cPNHwM
- YGcrqMWwUIVC4awLEpZqnx/dU9wa9+E5gCQqaU6eeASL9LSqyIocshmQRGlv7TwqKNRY
- Gbxi6+AIjR24FBlT3jp43LiyQksvQD1xn1k38UZOgSiR90Tiw+E/98Po6y/kO01Reefi
- G6RfliFA2VlVCyalcb/P8ylS/ldq8Rwg18sfekXd13iT6Ix4nOcbuRKpTzh2AY6zpnP4
- xyCQ==
+ bh=kTGOkY+kEDWvUv3R37Kdx2A0DmfJLxklSU9TBT6kNts=;
+ b=qqyOp6QrtO9ZHQC2J+RNkH3Q4ZUDrKHaURF7qNqcaZnxloO5FxbuteVTKkCpd2HoZ6
+ xFZifUyvA4itJgRfqbj6zcM6F36sWIOcEIY0RxA0z+4TpJH83eSt4TUgUQgEfkbxB6YX
+ vOouuhY/BhLZ+jr/dIpLViN5BURXFB5ulTpbMdj/FPbXqLz2K834lzPcUJXy0Vb2086V
+ CIRn0kxXSSsxDlZVPwtYVSl26tFyuwgowrLVKorqMP3lAmbgjpSEubyYRuw6+komNW1t
+ 01/odSlBjYG1CsPaUJod43Voen2vHcpgPqXrnsImuzemFKqH0UaftaDdjiyPfdccK2Zx
+ usng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765558879; x=1766163679;
+ d=1e100.net; s=20230601; t=1765558944; x=1766163744;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Icu3JHOaMqQk2xCgIvRyRxQGaqf2UrHfFzGWtywqEJo=;
- b=d9ZJNMAUApaCGo57NjdEVH4DHhCgZuzd7J0TDldHg5CoJTwjyH0/y0EgD8vtU7i0TV
- Fz5dFdMm6KPLpjRmd6HBXAQZGkfmuSfvbm3640AK7SKbHL9J/+t/mKiFc3N7rMdnx0Z0
- nryYOSCFulPMcp4OgJXHQilgnrvMzjVyjwCPIBRbITfzYr4k3Agr7itrz0/zYmN++vNo
- /gNXItBLobbi8VWqLlTUizFU+6BOOBcOjk6v9d+GONF3Q2UXh+yoYvtCDCSRd9AK8Gme
- gMNUwbkkJBJg5kSu7HGse3uqCdvhWOXcdlUoRiOQ3ogf4FyrIfHrnNc7VJiGxOElla1l
- 27xg==
+ bh=kTGOkY+kEDWvUv3R37Kdx2A0DmfJLxklSU9TBT6kNts=;
+ b=Um9NE8ZoKmqLMYS7/XNLPQkQQvqoxRf4oURySM9tC+YdQ3Z1RWMCQNHebrwPLF96hj
+ wEqbJus/jczO5TwDZswAqk0HgisEbLJ9IbRSDcPt+tSXe8d4LOXmmu1P0ugfZ9XhfvNc
+ +oeJH5tSi8L5stxzkwJr/C1m22jtTQyaoMtdipVcQvGPiLVGYoZ7mY7mpzpPbVRD4vm8
+ 970CduQvU1bfMNhjl9gCeUcYKrExfs/xDRAkQ/tDSSxP1l+hz/RK1Tk16sCvJ3t9zUZ3
+ LISTxHy/KsUdO58kLXhtAYuAb999VgRHp7A91PRsLpKhiJcAvoWx/ID/YO0NNKlQZJpg
+ 5+jw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWAHhy3HlZ/lJkItvXlQJGb/quYnECODJnDuBNsQODK7DMwDwbxyJGvBb+iC5a7XdfKDwLXG22E92d6@nongnu.org
-X-Gm-Message-State: AOJu0YwHtf3jPeh4gP3wZi/OXiD2nA/L9066ct0kFct8wPoBUnlM82n5
- R313zB3QxLSCvX83969nDBTN++d38rwgc4nl6xQRXL/VYNfVvu9QEyGF9JRI9RhbagU=
-X-Gm-Gg: AY/fxX7nmJbrmrpbcsqjHBm7wasSXPDuo8J6vj3zK5yAqAkvbO7Wl+tNog1hdt7JvrN
- iPhbM5wZe2Wv7l8FooP02RNOrC0gId74IJAbhlDqs3iyyaosSzDzjLVwoksgbiQOOQSmOx/23SQ
- cy7wVXEUMJ7sTUeluK+DZIKy/Z7OnjdNHTt8nI8mTl2tIMp+jl9V0H9NaL0RdE7J1WZnI7am9or
- giD5JG4eDF7GParyZWpq+G66uFnXCjfG4legZZkjDvH28Za91vmSx/xecklOd5fUuQ578iKgF02
- uJmreg5TJULJwksnPL1XsgbKBBj0xYkjPek/YA4sjOaWhimcrm7f1ZCPKVeQmMyB2g2RQ0JJxbz
- du/dQrwArGhEi7K64XFtFScZCOJJH+pxAyxvd0joJwx5bLAlXzwhPsscZ+yWB6mtnZrPXli5PgG
- 7P+416fkjvxNywoX8t3NZPJ4pOqxff
-X-Google-Smtp-Source: AGHT+IG3Qq+ArewAMuQe5KidHxEdYo0gLoSbbPMqFxNqHrroQSyIKJpA4qq84S5uNEByXLRftPWsZg==
-X-Received: by 2002:a05:6830:438c:b0:7c7:2cd3:5baa with SMTP id
- 46e09a7af769-7cae8398948mr1556541a34.34.1765558878603; 
- Fri, 12 Dec 2025 09:01:18 -0800 (PST)
+ AJvYcCWhqpdHORnwd9AbDEl9hk4+ET2CO0EENeYUKAMqJ+B8nu0sBpDH2bBO1WlT4MyiuHj5xC9gnKsOD/nQ@nongnu.org
+X-Gm-Message-State: AOJu0YybGEpUPt6/nwd3GatAR8kbkHUJEipuB/EJIORgc2W1wMxb45CQ
+ 8Ai6dvHiy9Qn1q0BV9SRD4/Oya288gN0or8K4qijhQsMdvc5h1gPexzKTVSll0uSUH0=
+X-Gm-Gg: AY/fxX7pTVx4bXbOy4NzOpLrkw0GsF23BBmWRx8/uLHi9JOsNdAmd2zPjXIZiYTbDkt
+ B+Zhf1/mHDhy9f8nKbzlSoZ2/ThGVq5Yf1MXwQ1roptmc7tPB84MnCU9jhLQgTWOjqtZOeEYjC3
+ ZSeuJhrPsKqE38+4YDt2FuGEVZsE6qT78dCIHMrUYsj/TvshaC901SmNoQcgIefUJKgeJFYufV3
+ iriHAU+eAzzo+bDx+fDJbcm+Bk7Tbw4x5+2Cs9Ca7sANET0cy218corIXB79w5RDfiA0+dOkxas
+ 7e8EIoz0PqcA2IdISt799/IfvIFHNvvn5kb+6syA8GhaKfJlFTFPDNd6UhzrzE0QfeTwZ9sRRWd
+ A7JeLrbN6g5QYeyuyojS8EOyxKBSjckyWFoRjFSUBZ0AWYnZMFniRrrpVRiXAlArNzXC5AJ6sjw
+ l4JMMZ+WGd8/v+G6r613Y9ZWI6Ogn3
+X-Google-Smtp-Source: AGHT+IEKAvW6u/eHNREglt+DKvfGc6GgW3Z1f2U6msaxerOMx1CR0eH38ZoQZi2XxRaEA5Bg7MfC8w==
+X-Received: by 2002:a05:6820:2214:b0:659:9a49:8fbe with SMTP id
+ 006d021491bc7-65b452848f3mr1310234eaf.55.1765558943978; 
+ Fri, 12 Dec 2025 09:02:23 -0800 (PST)
 Received: from [10.229.62.227] ([187.217.227.247])
  by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-3f5fe285210sm1308117fac.3.2025.12.12.09.01.17
+ 006d021491bc7-65b35f2b589sm3128203eaf.1.2025.12.12.09.02.21
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 12 Dec 2025 09:01:17 -0800 (PST)
-Message-ID: <46a95197-4e21-4dda-8d1d-ea1c4e44c368@linaro.org>
-Date: Fri, 12 Dec 2025 11:01:14 -0600
+ Fri, 12 Dec 2025 09:02:22 -0800 (PST)
+Message-ID: <26ae9852-26ca-418d-becf-5e893a7ae5a3@linaro.org>
+Date: Fri, 12 Dec 2025 11:02:19 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-11.0 v3 20/22] target/ppc: Inline cpu_ldl_data_ra()
- calls in ICBI helper
+Subject: Re: [PATCH-for-11.0 v3 21/22] target/ppc: Simplify endianness
+ handling in Altivec opcodes
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
  Nicholas Piggin <npiggin@gmail.com>, Chinmay Rath <rathc@linux.ibm.com>
 References: <20251126202200.23100-1-philmd@linaro.org>
- <20251126202200.23100-21-philmd@linaro.org>
+ <20251126202200.23100-22-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-In-Reply-To: <20251126202200.23100-21-philmd@linaro.org>
+In-Reply-To: <20251126202200.23100-22-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32f;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32f.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,44 +108,16 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 11/26/25 14:21, Philippe Mathieu-Daudé wrote:
-> Inline the cpu_ldl_data_ra() call in preparation of
-> removing it. Since the returned value is discarded,
-> don't bother to set the access endianness.
+> Access the memory in big-endian order, swap bytes
+> when MSR.LE is set.
 > 
-
-Hah!  The previous patch could have used the same comment.
-Or maybe moving that hunk here.
-
-
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
 > ---
->   target/ppc/mem_helper.c | 8 ++++++--
->   1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/target/ppc/mem_helper.c b/target/ppc/mem_helper.c
-> index a43726d4223..cff385b6020 100644
-> --- a/target/ppc/mem_helper.c
-> +++ b/target/ppc/mem_helper.c
-> @@ -344,14 +344,18 @@ void helper_dcbzl(CPUPPCState *env, target_ulong addr)
->   
->   void helper_icbi(CPUPPCState *env, target_ulong addr)
->   {
-> +    unsigned mmu_idx = cpu_mmu_index(env_cpu(env), false);
-> +    MemOpIdx oi = make_memop_idx(MO_UL | MO_UNALN, mmu_idx);
-> +
->       addr &= ~(env->dcache_line_size - 1);
->       /*
->        * Invalidate one cache line :
->        * PowerPC specification says this is to be treated like a load
->        * (not a fetch) by the MMU. To be sure it will be so,
-> -     * do the load "by hand".
-> +     * do the load "by hand". As the returned data is not consumed,
-> +     * endianness is irrelevant.
->        */
-> -    cpu_ldl_data_ra(env, addr, GETPC());
-> +    cpu_ldl_mmu(env, addr, oi, GETPC());
->   }
->   
->   void helper_icbiep(CPUPPCState *env, target_ulong addr)
+>   target/ppc/mem_helper.c | 31 ++++++++++---------------------
+>   1 file changed, 10 insertions(+), 21 deletions(-)
 
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+
+r~
 
