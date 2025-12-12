@@ -2,115 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28B2FCB9764
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Dec 2025 18:32:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E583BCB976A
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Dec 2025 18:32:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vU700-0007s4-Iz; Fri, 12 Dec 2025 12:32:13 -0500
+	id 1vU70W-0008G6-NF; Fri, 12 Dec 2025 12:32:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vU6zw-0007qv-OT
- for qemu-devel@nongnu.org; Fri, 12 Dec 2025 12:32:08 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1vU6zs-0004xC-GL
- for qemu-devel@nongnu.org; Fri, 12 Dec 2025 12:32:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1765560719;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=oeM7VSRBvt+OYAhkYM+UA59+QjpCwloF9pSJ1ymONKc=;
- b=OCd8uPvA7Qi6eQss01s8rqWCwA8+Lj/BzbjW98lL/FLQ+W2+vljc98+zOzYVCP8r3ZLRYt
- VKpkTDMbTq6iMXO0u5d5L1Fi7TTZV+XHuG45BxQZHeCdrME0QZZADJYFJnNclAG8PQbicF
- g8g9K+QzElhC8BgGe21AAARxBIQnuSM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-654--P5Z8W8pM_uXKTkgP5RK1Q-1; Fri, 12 Dec 2025 12:31:57 -0500
-X-MC-Unique: -P5Z8W8pM_uXKTkgP5RK1Q-1
-X-Mimecast-MFC-AGG-ID: -P5Z8W8pM_uXKTkgP5RK1Q_1765560716
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4779da35d27so11303245e9.3
- for <qemu-devel@nongnu.org>; Fri, 12 Dec 2025 09:31:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1vU70V-0008FZ-1Q
+ for qemu-devel@nongnu.org; Fri, 12 Dec 2025 12:32:43 -0500
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1vU70S-00052D-EF
+ for qemu-devel@nongnu.org; Fri, 12 Dec 2025 12:32:42 -0500
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-7e2762ad850so1514796b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 12 Dec 2025 09:32:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1765560715; x=1766165515; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1765560759; x=1766165559; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=oeM7VSRBvt+OYAhkYM+UA59+QjpCwloF9pSJ1ymONKc=;
- b=eDID783eohTia8fvFARg8rqqAREBkXx0A7FL4obqKnE8axtrcv0X4UvMdFCx7mJrjr
- m67VF+9km0MY778rqpDgd2L/lLkKfDaDWkPSZqhOZUgva5svs2m9/snqS2j8Bk3Baxxi
- uaRPHlLmvNvi8AGVKq/JgwaR5j6B5SgLVxEzqB6abDcphZY0VatgHCfkT5LM4mYtiKWx
- hYQQL8Qx2Jt8zwiJriIDuiwzhVu/hKO8cpUGGRy78XrIu4/V0H/zmZsAbl5FL8oOr/H4
- a9hJbW1DCB8VdUo7ZY7T4f/x/Z5Kt/pIupo6CRD8spUmzIKugWaqo1Tc4m1NeB0x7TsZ
- IQBA==
+ bh=gB5BecI3gnCVhlQyJ77/xZNlKac92qpuR5XsE0e1e/Y=;
+ b=AKTzi79jBv9z32cC6nw6ryvcaKQ95m6qNC1D+QX2ZliIycbymLXNpKl1VUpHb+rrjY
+ FJF/mJqwPDiWKM62v4nR6VDpDh8gSwHozH6G5hI+5k07FxcLSheQy3+P3unLZna64peb
+ 34UKxfn/J0jPiV1SWzoiMP3o4pcKd7pqZJ3tlydG+2znYPcaKAK2kItRxN1N4Qf5I0p8
+ O4xXe4Jr5pGsi/9KRRohpUKgNidUJDp4ANC4PObJgDDe14zn0OZ3UF0BednPwmptHTXh
+ 3HyiPh0oxDPouhDRRur7spK40elTZLce8sOkqB/4L6K7SxK6XWa5TCTwDtWpe13LwiH+
+ Tcag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765560715; x=1766165515;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1765560759; x=1766165559;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=oeM7VSRBvt+OYAhkYM+UA59+QjpCwloF9pSJ1ymONKc=;
- b=lI3ESdlS3PtFfGwQ42rR1yN5RYuIHGQ16eRJwXmeSZGJT565h3uWBzN8JgCrjJ0zpg
- /zF0vgzj+ASmm9fOusD/1NFEvc4ZbYPiFzPsI83gYYOdwTCclUI60UEzPj1PLpjwu8o/
- JVn1DTua9SUiJC6DQIU3sFAVhgDz0lm31vBT+UTK5wb4xPpv4fnsXmigv/8x6Zty545V
- qpDpuxoT2zoz/OV3RIMHJefpruCjHeuzJxKD0aaFtrZ5HnW5lvM9cM/C7xB/MRhbxFFh
- GFS8G3eH/LvD+sUKgy95Zdze44jWa3hGIFvJilLxGCNYdlMRhxy3EwZpNLpI9ROGWAZA
- 5YWQ==
-X-Gm-Message-State: AOJu0YzQQIRICqYfjMs5Ao1X9c1X2GL+zbe1Mw26dtQlBJjKl8tI53Fu
- /li2e2ytlF9b52EmHKdFl2Ce+zbYHW5pHy/eEFgrviTxzUnV28f19Qj3+KRiuIhaN8mpTVD61ok
- LzrC96jiICopskEGf9vjv/e34YP+OMY5orJ8aPf2JQj1HbFnR9haLssjQGqulmmdB
-X-Gm-Gg: AY/fxX6emiWPTpIvOI7D4bJUy5sNBhbFBgoOuGiqCIH/izoA0szJbNWK6iLBvp9Lr/w
- jDSq4NMqlXwxePl6kitNCwyvNu2QULAB0MNkEYkj/OynDZbbMxNFb9wsMB5UDx351RIS5uN5dLJ
- Gapsjt9/TAiSIBhfFVMpE0yb5k4pCQMx+E7OIEtZTcf0KtgNNYMhF3vvkAXH1j03/ebG22RUD8U
- WaouNdRZy50dgOX11bLYwKSa4tK2dd5y5YPpzbAECw8YAHJLax/vqvuUeaxKNyEzhQLRLlc/ZZ/
- 4mZTnwlFJCXlffHlDSoY0e7+iIDSoVcHWwOUqNg6SV5vCB72FsVJF/UJ897OMReoiiXLpDwzRgj
- OAXrN+3hiCOQuzvNC3AISKcvuwQdudrkuo6Lj0RjexPw93iG98zdZFMkDdMmIcex5Q2ShXJ5pRY
- 6pQDGB15l64fiq/P5CPA9KUl+Epq+ZRpSAzw==
-X-Received: by 2002:a05:600c:444d:b0:476:84e9:b571 with SMTP id
- 5b1f17b1804b1-47a8f8c6828mr29727325e9.14.1765560715570; 
- Fri, 12 Dec 2025 09:31:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEX2g8DzPL7IlJCKhNAA7491aujfbFLjDMic4qC/EHD0xb7pZ8qmFYOFq6YJDQPIZeirH7mYw==
-X-Received: by 2002:a05:600c:444d:b0:476:84e9:b571 with SMTP id
- 5b1f17b1804b1-47a8f8c6828mr29727055e9.14.1765560715159; 
- Fri, 12 Dec 2025 09:31:55 -0800 (PST)
-Received: from ?IPV6:2003:cf:d717:1fba:423c:67:1f5d:bd5f?
- (p200300cfd7171fba423c00671f5dbd5f.dip0.t-ipconnect.de.
- [2003:cf:d717:1fba:423c:67:1f5d:bd5f])
+ bh=gB5BecI3gnCVhlQyJ77/xZNlKac92qpuR5XsE0e1e/Y=;
+ b=WVIMRX/MZvxQu3ES9jrXicTAlvWMqcJEUkTDDSEC4fYIJVmk3HbztaN7d/HmTNP/Ch
+ RkFrLb4POZPnC8shVtlQx6ve1b4FypwgX47QnYalnut95cGQEIjTUlIQXaqdTUbUQheh
+ BKCdayZ/XNaHcAthnNEgI1wD0EMosGuTip54T1xI4C8YmDOU9w3tZn6X9Sso+7RsIAyw
+ PIVCgUn2dc+PnxYMeOiCOUPEx95DUmdRBxx6syjSlE7YOzGz/PdhwQBfYgbt0+Su+HIc
+ +jXTctebny82CGHJD/fS9q4j5PXf80uV4vPichEVumsvVjCQQ9v4rFKaWw+v3vEa7Zzj
+ 3vog==
+X-Gm-Message-State: AOJu0YzcHM5Po4gpFbWWBsGoqYlATogUrwZRPcava58FqysmHZfG1Xd2
+ FagZMvEOeD2vfrJSj9D1EZzBLtfr6r0pRM9aqLZrNVdu2ZJGSh/Az7922HvmNtUjTnxaQ5D/zSv
+ JFeEkaGRQfg==
+X-Gm-Gg: AY/fxX5OHGrmrHO/z2QfMZVTlG3YLF/bCXeGNgNCXn7FmJTr9spUVZFBDA9RFrGJqBF
+ E7X6ak1tdKdajBW3Aoy3m6LxHixjzdxEWGfJjfMLGauSbagu3wKF1zW+aEm4Rjsx9lp1PeyjeuX
+ j3cZyn0DtWg2lg6YTY/cTvyYjJB4tixnfcVJh2e5jX6FhUIZbHnRb485lgxtLG2SmBkQ+pE9plm
+ 6hKMOk3GvXVOIJpGL3TYJf/qM4gBj/SuMLqSFktufQ2aD3+0Ap9kXFi5ctOAeUpE+BJCIHRFlYi
+ FuQ5hXFqmvR+aeJHUzYlHi7w7y/XNPwlfNEbNcOkQY9db8Nk9sFlMIsda5wWiMlUZsCQgNRK67q
+ 5HMWISk1uYrd4gQH3BzyO3VW1jT/7H1NelnSFLdTslytORi3GEKjym0i2GMOlHWjzhSIF6Nl5WM
+ T0OaxzFJ7tKDikZPvbBu2mxJXBwBUP0zs20flqKEDdQaa+DK5aN7fW8HvLKcvJn70UGw==
+X-Google-Smtp-Source: AGHT+IEV2N31FySvnPWADkx14+kbMaK+vVKC88FuSyaAplT+MQS2I91+M0e7vFVNCkTv0jeIDYej1A==
+X-Received: by 2002:a05:6a00:94f4:b0:7e8:4433:8fb7 with SMTP id
+ d2e1a72fcca58-7f66a07ce19mr2155508b3a.63.1765560758892; 
+ Fri, 12 Dec 2025 09:32:38 -0800 (PST)
+Received: from [192.168.1.87] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47a8f70509bsm16048485e9.6.2025.12.12.09.31.54
+ d2e1a72fcca58-7f4c4ab52aasm5757420b3a.38.2025.12.12.09.32.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 12 Dec 2025 09:31:54 -0800 (PST)
-Message-ID: <3165bbdb-b777-4a3e-b0a4-549af926da06@redhat.com>
-Date: Fri, 12 Dec 2025 18:31:52 +0100
+ Fri, 12 Dec 2025 09:32:38 -0800 (PST)
+Message-ID: <43ebfbb8-479c-420a-904e-5aba9532d823@linaro.org>
+Date: Fri, 12 Dec 2025 09:32:38 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-10.2] Revert "nvme: Fix coroutine waking"
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, =?UTF-8?B?THVrw6HFoSBEb2t0b3I=?=
- <ldoktor@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Fam Zheng <fam@euphon.net>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-stable@nongnu.org
-References: <20251212102522.38232-1-hreitz@redhat.com>
+Subject: Re: [PATCH v2 2/2] tcg tests: add a test to verify the syscall filter
+ plugin API
 Content-Language: en-US
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20251212102522.38232-1-hreitz@redhat.com>
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Ziyang Zhang <functioner@sjtu.edu.cn>
+Cc: qemu-devel <qemu-devel@nongnu.org>, Riku Voipio <riku.voipio@iki.fi>,
+ Laurent Vivier <laurent@vivier.eu>, Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Zhengwei Qi <qizhwei@sjtu.edu.cn>, Yun Wang <yunwang94@sjtu.edu.cn>,
+ Mingyuan Xia <xiamy@ultrarisc.com>, Kailiang Xu <xukl2019@sjtu.edu.cn>
+References: <20251212141541.1792111-1-functioner@sjtu.edu.cn>
+ <20251212141541.1792111-3-functioner@sjtu.edu.cn>
+ <87ldj7sn9k.fsf@draig.linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <87ldj7sn9k.fsf@draig.linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -126,55 +111,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12.12.25 11:25, Hanna Czenczek wrote:
-> This reverts commit 0f142cbd919fcb6cea7aa176f7e4939925806dd9.
->
-> Lukáš Doktor reported a simple single-threaded nvme test case hanging
-> and bisected it to this commit.  While we are still investigating, it is
-> best to revert the commit for now.
->
-> (This breaks multiqueue for nvme, but better to have single-queue
-> working than neither.)
->
-> Cc: qemu-stable@nongnu.org
-> Reported-by: Lukáš Doktor <ldoktor@redhat.com>
-> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-> ---
->   block/nvme.c | 56 +++++++++++++++++++++++++---------------------------
->   1 file changed, 27 insertions(+), 29 deletions(-)
->
-> diff --git a/block/nvme.c b/block/nvme.c
-> index 919e14cef9..c3d3b99d1f 100644
-> --- a/block/nvme.c
-> +++ b/block/nvme.c
+On 12/12/25 8:00 AM, Alex Bennée wrote:
+> Ziyang Zhang <functioner@sjtu.edu.cn> writes:
+> 
+>> Register a syscall filter callback in tests/tcg/plugins/sycall.c,
+>> returns a specific value for a magic system call number, and check
+>> it in tests/tcg/multiarch/test-plugin-syscall-filter.c.
+>>
+>> Signed-off-by: Ziyang Zhang <functioner@sjtu.edu.cn>
+>> Co-authored-by: Mingyuan Xia <xiamy@ultrarisc.com>
+>> ---
+>>   tests/tcg/multiarch/Makefile.target           |  4 +++-
+>>   .../multiarch/test-plugin-syscall-filter.c    | 20 +++++++++++++++++++
+>>   tests/tcg/plugins/syscall.c                   | 15 ++++++++++++++
+>>   3 files changed, 38 insertions(+), 1 deletion(-)
+>>   create mode 100644 tests/tcg/multiarch/test-plugin-syscall-filter.c
+>>
+>> diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
+>> index f5b4d2b813..4005e3a8a9 100644
+>> --- a/tests/tcg/multiarch/Makefile.target
+>> +++ b/tests/tcg/multiarch/Makefile.target
+>> @@ -202,8 +202,10 @@ run-plugin-test-plugin-mem-access-with-libmem.so: \
+>>   	CHECK_PLUGIN_OUTPUT_COMMAND= \
+>>   	$(SRC_PATH)/tests/tcg/multiarch/check-plugin-output.sh \
+>>   	$(QEMU) $<
+>> +run-plugin-test-plugin-syscall-filter-with-libsyscall.so:
+>>   
+>> -EXTRA_RUNS_WITH_PLUGIN += run-plugin-test-plugin-mem-access-with-libmem.so
+>> +EXTRA_RUNS_WITH_PLUGIN += run-plugin-test-plugin-mem-access-with-libmem.so \
+>> +			   			  run-plugin-test-plugin-syscall-filter-with-libsyscall.so
+>>   endif
+>>   
+>>   # Update TESTS
+>> diff --git a/tests/tcg/multiarch/test-plugin-syscall-filter.c b/tests/tcg/multiarch/test-plugin-syscall-filter.c
+>> new file mode 100644
+>> index 0000000000..cc694e0a71
+>> --- /dev/null
+>> +++ b/tests/tcg/multiarch/test-plugin-syscall-filter.c
+>> @@ -0,0 +1,20 @@
+>> +/*
+>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>> + *
+>> + * This test attempts to execute a magic syscall. The syscall test plugin
+>> + * should intercept this and returns an expected value.
+>> + */
+>> +
+>> +#include <stdint.h>
+>> +#include <stdio.h>
+>> +#include <stdlib.h>
+>> +#include <unistd.h>
+>> +
+>> +int main(int argc, char *argv[]) {
+>> +    long ret = syscall(0x66CCFF);
+>> +    if (ret != 0xFFCC66) {
+>> +        perror("ERROR: syscall returned unexpected value!!!");
+>> +        return EXIT_FAILURE;
+>> +    }
+>> +    return EXIT_SUCCESS;
+>> +}
+> 
+>    This breaks some arches:
+> 
+>    (gdb) r
+>    Starting program: /home/alex/lsrc/qemu.git/builds/sanitisers/qemu-arm -plugin tests/tcg/plugins/libsyscall.so -d plugin ./tests/tcg/arm-linux-user/test-plugin-syscall-filter
+>    [New Thread 0x7ffff37ff6c0 (LWP 63692)]
+>    qemu: uncaught target signal 4 (Illegal instruction) - core dumped
+>    syscall no.  calls  errors
+>    45           5      0
+>    338          1      1
+>    256          1      0
+>    191          1      0
+>    398          1      1
+>    125          1      0
+>    384          1      0
+>    332          1      0
+> 
+>    Thread 1 "qemu-arm" received signal SIGILL, Illegal instruction.
+>    Download failed: Invalid argument.  Continuing without source file ./nptl/../sysdeps/unix/sysv/linux/x86_64/syscall_cancel.S.
+>    __syscall_cancel_arch () at ../sysdeps/unix/sysv/linux/x86_64/syscall_cancel.S:56
+>    warning: 56     ../sysdeps/unix/sysv/linux/x86_64/syscall_cancel.S: No such file or directory
+>    (gdb) bt
+>    #0  __syscall_cancel_arch () at ../sysdeps/unix/sysv/linux/x86_64/syscall_cancel.S:56
+>    #1  0x00007ffff6a51668 in __internal_syscall_cancel (a1=<optimized out>, a2=a2@entry=8, a3=a3@entry=0, a4=a4@entry=0, a5=a5@entry=0, a6=a6@entry=0, nr=130)
+>        at ./nptl/cancellation.c:49
+>    #2  0x00007ffff6a516ad in __syscall_cancel (a1=<optimized out>, a2=a2@entry=8, a3=a3@entry=0, a4=a4@entry=0, a5=a5@entry=0, a6=a6@entry=0, nr=130)
+>        at ./nptl/cancellation.c:75
+>    #3  0x00007ffff6a0207d in __GI___sigsuspend (set=<optimized out>) at ../sysdeps/unix/sysv/linux/sigsuspend.c:26
+>    #4  0x0000555555a49b80 in die_with_signal (host_sig=4) at ../../linux-user/signal.c:807
+>    #5  0x0000555555a49ed0 in dump_core_and_abort (env=0x532000004300, target_sig=4) at ../../linux-user/signal.c:847
+>    #6  0x0000555555a4c969 in handle_pending_signal (cpu_env=0x532000004300, sig=4, k=0x5250000029d0) at ../../linux-user/signal.c:1306
+>    #7  0x0000555555a4d0e5 in process_pending_signals (cpu_env=0x532000004300) at ../../linux-user/signal.c:1386
+>    #8  0x0000555555873930 in cpu_loop (env=0x532000004300) at ../../linux-user/arm/cpu_loop.c:479
+>    #9  0x0000555555a3eca7 in main (argc=6, argv=0x7fffffffe588, envp=0x7fffffffe5c0) at ../../linux-user/main.c:1035
+>    (gdb)
+> 
+>> \ No newline at end of file
+>> diff --git a/tests/tcg/plugins/syscall.c b/tests/tcg/plugins/syscall.c
+>> index 42801f5c86..1323e18bc0 100644
+>> --- a/tests/tcg/plugins/syscall.c
+>> +++ b/tests/tcg/plugins/syscall.c
+>> @@ -170,6 +170,20 @@ static void vcpu_syscall_ret(qemu_plugin_id_t id, unsigned int vcpu_idx,
+>>       }
+>>   }
+>>   
+>> +static bool vcpu_syscall_filter(qemu_plugin_id_t id, unsigned int vcpu_index,
+>> +                                int64_t num, uint64_t a1, uint64_t a2,
+>> +                                uint64_t a3, uint64_t a4, uint64_t a5,
+>> +                                uint64_t a6, uint64_t a7, uint64_t a8,
+>> +                                uint64_t *ret)
+>> +{
+>> +    if (num == 0x66CCFF) {
+>> +        *ret = 0xFFCC66;
+>> +        qemu_plugin_outs("syscall 0x66CCFF filtered, ret=0xFFCC66\n");
+>> +        return true;
+>> +    }
+>> +    return false;
+>> +}
+>> +
+>>   static void print_entry(gpointer val, gpointer user_data)
+>>   {
+>>       SyscallStats *entry = (SyscallStats *) val;
+>> @@ -255,6 +269,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
+>>   
+>>       qemu_plugin_register_vcpu_syscall_cb(id, vcpu_syscall);
+>>       qemu_plugin_register_vcpu_syscall_ret_cb(id, vcpu_syscall_ret);
+>> +    qemu_plugin_register_vcpu_syscall_filter_cb(id, vcpu_syscall_filter);
+>>       qemu_plugin_register_atexit_cb(id, plugin_exit, NULL);
+>>       return 0;
+>>   }
+> 
 
-[...]
-
->   /* Put into NVMeRequest.cb, so runs in the BDS's main AioContext */
->   static void nvme_rw_cb(void *opaque, int ret)
->   {
-
-[...]
-
-> -        aio_co_wake(data->co);
-[...]
-> +    replay_bh_schedule_oneshot_event(data->ctx, nvme_rw_cb_bh, data);
->   }
-
- From testing, this bit seems to be the important one: The hang seems to 
-be caused by entering directly the coroutine directly instead of always 
-going through a BH.  Why that is, I haven’t yet found out, only that 
-s/aio_co_wake()/aio_co_schedule()/ seems to make it work.
-
-I’ll spend more time trying to find out why.
-
-(The only thing I know so far is that iscsi similarly should not use 
-aio_co_wake(), and for that we do have a documented reason: 
-https://gitlab.com/qemu-project/qemu/-/commit/8b9dfe9098 – in light of 
-that, it probably makes sense not to use aio_co_wake() for NFS either, 
-which was the third case in the original series where I replaced a 
-oneshot schedule by aio_co_wake().)
-
-Hanna
-
+Looks like a simple issue with 32 bits target.
 
