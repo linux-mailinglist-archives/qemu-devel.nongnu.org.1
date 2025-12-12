@@ -2,96 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93BD9CB9088
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Dec 2025 16:05:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE4F5CB90CA
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Dec 2025 16:07:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vU4i6-0002fq-U7; Fri, 12 Dec 2025 10:05:34 -0500
+	id 1vU4i6-0002dn-IT; Fri, 12 Dec 2025 10:05:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1vU4hr-0002Hc-KG
- for qemu-devel@nongnu.org; Fri, 12 Dec 2025 10:05:20 -0500
+ id 1vU4i0-0002JF-Kp
+ for qemu-devel@nongnu.org; Fri, 12 Dec 2025 10:05:30 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1vU4hp-00063a-6A
- for qemu-devel@nongnu.org; Fri, 12 Dec 2025 10:05:19 -0500
+ id 1vU4hv-00064N-BA
+ for qemu-devel@nongnu.org; Fri, 12 Dec 2025 10:05:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1765551915;
+ s=mimecast20190719; t=1765551920;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LsdNlrFz9EGrun/Uh+cGSSljZDj/Qg580O6DUWM5YJw=;
- b=VJXV0cbZ4/38EqgeSeyb0gkuzF2BT+BGmDEprqeguWGumngCklpwYgeRzmIN+2uWUj5JDm
- 7i0JeqUIqETTt/+SBhgywWL7m3+wFKS87D7hEh0moYyDD5CP46kOuO8NBjQsSYDXLnA/HK
- w7pp7vnS7/1EQ35fO1On4W1lZjRCV1I=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=W1D9QAx3RYKk+TBo6axZVKqP/pAZIQxzOmmqfA8IeuY=;
+ b=ZgBs001qoQ9x6yTw4wEv3j3LE5Rq6cPfOkJhgnYvZL4BtKBIFEPE9Xg13hgXxETkAAhTxA
+ cGk7IMjPBC0CuK1kf/wUbI1IGADtV2Vf8FLX4cFle4T0XabJadSKL/XBc5877HsRZwMZUW
+ SqMkp5K+L6aQNxdMj1kGMl3DqC45VpE=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-156-AzWvr069MVmNF5Sy5I2yaA-1; Fri, 12 Dec 2025 10:05:13 -0500
-X-MC-Unique: AzWvr069MVmNF5Sy5I2yaA-1
-X-Mimecast-MFC-AGG-ID: AzWvr069MVmNF5Sy5I2yaA_1765551912
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-29f2381ea85so12940605ad.0
- for <qemu-devel@nongnu.org>; Fri, 12 Dec 2025 07:05:13 -0800 (PST)
+ us-mta-326-sYbKolKEPW-hhHRXQ4CY3A-1; Fri, 12 Dec 2025 10:05:19 -0500
+X-MC-Unique: sYbKolKEPW-hhHRXQ4CY3A-1
+X-Mimecast-MFC-AGG-ID: sYbKolKEPW-hhHRXQ4CY3A_1765551917
+Received: by mail-pl1-f200.google.com with SMTP id
+ d9443c01a7336-295952a4dd6so13072185ad.1
+ for <qemu-devel@nongnu.org>; Fri, 12 Dec 2025 07:05:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1765551912; x=1766156712; darn=nongnu.org;
+ d=redhat.com; s=google; t=1765551917; x=1766156717; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LsdNlrFz9EGrun/Uh+cGSSljZDj/Qg580O6DUWM5YJw=;
- b=SU+ZPYuhXdw+MqNVgMyitUKU8nCXScT378V9GZoVow0DQlauU6YWgbRyogmUBq78GT
- 1aE1b7gMe6pXolkkmx4qt/M3WHgZCMpjNciMyEwZGUzCXnAQes+HWHfuN8GP9SmAwmKn
- TMlHPjV3wAIAqdSj/xay453lpvZ1yHeit447pdfe0wjizPEPH+l33hfSvTj1f87+ykgG
- MXIsjIEsApnM5dbyKNlDXU9/oagDywgcwnh5tm/DwNATMbzpErE0ZCYU2tsjj7vpUpOQ
- soeGf0eGuwETQzYWsuFxBnPotSmtAgQhG3oSzBMJUwsEAQqiqKI6iwG4GCz+RM+dgU6T
- AUAw==
+ bh=W1D9QAx3RYKk+TBo6axZVKqP/pAZIQxzOmmqfA8IeuY=;
+ b=mw+jVJ+/59YZHKLEoE0go91b6fWj8SPPzWrLiHxH5Ft1wrGreKJor/tZ2hwZw02/Fy
+ RcyqYcS9RcHZ3cNqo9SlsJe0amLywWhbMqvA+BlITApiJJDHpl4tNZ7xq2CazSGMZrkd
+ +jfDfUkfNxa8MtOPFXY1a5QRtZpjC72kDx/lh9B2BICZSiDDBXfAB8r9qhcSirc27Uss
+ +02DBF/NjUha3Md99baHt1tjXbQh/G92qVck+CUXAK3J1xCVXjmS/CG68uaheyckAAJ9
+ 1bwRXcc7SFBLc40olYx/64lGFbuxT2lQIVSyqStlh7tM28akNTG+Hk3wAsWc2psFby35
+ FF4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765551912; x=1766156712;
+ d=1e100.net; s=20230601; t=1765551917; x=1766156717;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=LsdNlrFz9EGrun/Uh+cGSSljZDj/Qg580O6DUWM5YJw=;
- b=rrIoag1Exuj3AUFaz/L5iTAp9B2mBMeDiMPU+s9VLF8RZbz039iy5cYft2j6Ia8x/B
- TlOlqDi6P23KigCQQmPfJ/t1E4jfphTk9PuLuWgEhscUG/I/vsp6EgcDe57hIAWfegyr
- 13DanQyQAOONrRYPAN1zl/GTnfk32iznCXvGT1fsOUxLsrwfqtTLzScC9LTy6NFJocXT
- AE2gYWgC68SWK4Q6PDcjnXXKAg/vs6v9S5qHPnMvwDBIdJkxzxPHB78VDIvNNEeghlJL
- nNfJjhD1z7Qje0TzA2KEKvZzqj/Dwuqguh5xr4TIHcinwopp6UMH05r5rslL6n7GDZtm
- jlaw==
+ bh=W1D9QAx3RYKk+TBo6axZVKqP/pAZIQxzOmmqfA8IeuY=;
+ b=egSW3hzH31/WflM4qlXcH8BjEBQ02D3gMzTawSJYpw1gy6LGzREKfOSmSwJFN9bXg/
+ L3NNMAlUD5C1osMRQcUW9Xd893J7NMps8drGbj7P+Eov7Ls80T7G3FQFF2lK6X+Jd69g
+ TWbE9eUdNXxF1ZBBQH21eajmbI6GBflZ6uTpy7v4TMjAnugz0TL1/005br8iETwO5Oqc
+ a1ydXN/A4z0zoQdLoNCn0Ec1ZA03thhjfzNggcrTXoXVW+vJ0TVCpUC2dvUHn5801mft
+ gJUxL+YUYSaI+DPkp5W1nrF8nWQzk03VjDb8Sms3ifg/60dYgIfhS8vQQLZzRUQJqQnf
+ LtTQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXqem+snMF6U6zU/0pPn49KtZ8XUklh6t5WMhALynvoTDTWES8kJDbdmMavETV0ttZdRcexPpPDETVL@nongnu.org
-X-Gm-Message-State: AOJu0Yyrkzepm/xeJvRK1ckN04wykM/ecxVOOHjeM66xB58Aqr7LRhBL
- E5Oly07b3r4ayX23t+j5AjSbPEDlPuVtsXahNY5gdnNpt8g5tKwU/No0rO/NhDl28Tw3eeuRWve
- Y8XUVYwFc5YPKWnKseoGvFPMvuADD5Yaz70WPb/qzf5rygNZEjgz3Hgqy
-X-Gm-Gg: AY/fxX6A2tF39Fq8pra2SjluL750cHheHwkhWhDHjdQ+RZgYyiJ4USzmsRB+IsBOzV0
- EUG8+YLitwPhqpUFGOOhU9Zzcvmt/lKSog/nfb2Pbd3V29pFsGEFoKHx2ynXHiWZb6nZqdILrzh
- 9N1x/mJTwMblpk5skn3pCEVpX6lKnCNra6O07M8D7GJ1TO+3VLU67ilfxor/rUGCmPNPnS2bII8
- 8h4H8gAgkMRzaaeAWXSzYF47Jr+N5JTvrx9lGuHs2bMnvcEp5WmyQ+FJYgTMfHR/ShLnffk7Fqq
- 8xOqWWpn1OJon/zK9L+Kavk8tg/TFfSO78iDz2qqAP9NElL1DgpPrtkyvjL4Tpph5FOW/geQtwb
- c/awkA9Je0eo22udEgSLW6P52cydLPy2ditk8gvxYo5E=
-X-Received: by 2002:a17:902:ebc2:b0:262:9c4:5470 with SMTP id
- d9443c01a7336-29f2404b199mr28726295ad.28.1765551911996; 
- Fri, 12 Dec 2025 07:05:11 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEkoxBLlDC0IBA4TUcGuzRYGD7mbavLzDucIBkcmhvL5++uimoBU2V3fxAkUHD3REawLNk6eg==
-X-Received: by 2002:a17:902:ebc2:b0:262:9c4:5470 with SMTP id
- d9443c01a7336-29f2404b199mr28725795ad.28.1765551911481; 
- Fri, 12 Dec 2025 07:05:11 -0800 (PST)
+ AJvYcCX5K+YkM4VIuCE52bBPrLDS34ekQVx/rlPa4fxz8v+xvQ2L/wyUmwkwZt9Z9nI3l+3aPqJUZ5FAyOSw@nongnu.org
+X-Gm-Message-State: AOJu0Yzl6l9EaOX3kUE/+q7XGJtmWjgfuSX/XOgFZdajRgwoKqC2Wzup
+ Mix6o/68PiAiGj0BVDG6agoldY3Az0ub7+YcyshGBA1tGkbvuiQt1B+kqTWkVPsjl7OWCElizbZ
+ yKnQ7BnnlWSV23CqizIE5k9yR5PGxAV690KZgCJbBCxbc7ommecTEk+saKpghHWeH
+X-Gm-Gg: AY/fxX56MJBCSi8EltYsT4Kt53Lri5PbJvPc5mV5MkMqKnVBXv6a+aRT2KDFh2x1UcL
+ jJoPGWa4iL8cboiStoksZWF3M/aF7EwSK2WyUqqbGbdAaz3OcR09hiO9xyf/958QAeyliIrSexv
+ wKr1qJ3sEUj01XkPl0GCcPMIOdtftZXgEe1fjt0nOeTE3RMYD5KIr5VU0pzNp0YrM1TxlcjKVAI
+ b5QfmvBqFDjmmFBYZBAZT6dFGGM8AhuiFdQKTy8Dg5PPkajXQ4G8PZBhVh48OivBw3rC2yWyNiy
+ S6HRxj3k11M23elyReW4/95VO4m5/vqTcA+cCoRriXtZQKpaMdmZAEJoKubWS1PX0KjXLxsuJi0
+ 77E6rjVde6MpBQFMS9sldQcV3fzAv8u/kBRvK1XJ6P/s=
+X-Received: by 2002:a17:902:d50f:b0:267:8b4f:df36 with SMTP id
+ d9443c01a7336-29eeec1e3edmr62250385ad.29.1765551916622; 
+ Fri, 12 Dec 2025 07:05:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IErKXvfIsf0XdT2uZ5tfa/p411BIgMfaEjii4Bb7zfmVemQkpUTySz8wUPcvpT+r2XZ3sY+qQ==
+X-Received: by 2002:a17:902:d50f:b0:267:8b4f:df36 with SMTP id
+ d9443c01a7336-29eeec1e3edmr62248315ad.29.1765551914504; 
+ Fri, 12 Dec 2025 07:05:14 -0800 (PST)
 Received: from rhel9-box.lan ([122.172.173.62])
  by smtp.googlemail.com with ESMTPSA id
- d9443c01a7336-29ee9d38ad1sm57046655ad.29.2025.12.12.07.05.08
+ d9443c01a7336-29ee9d38ad1sm57046655ad.29.2025.12.12.07.05.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Dec 2025 07:05:11 -0800 (PST)
+ Fri, 12 Dec 2025 07:05:14 -0800 (PST)
 From: Ani Sinha <anisinha@redhat.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
  Marcelo Tosatti <mtosatti@redhat.com>
 Cc: vkuznets@redhat.com, kraxel@redhat.com, qemu-devel@nongnu.org,
  Ani Sinha <anisinha@redhat.com>, kvm@vger.kernel.org
-Subject: [PATCH v1 15/28] i386/sev: add migration blockers only once
-Date: Fri, 12 Dec 2025 20:33:43 +0530
-Message-ID: <20251212150359.548787-16-anisinha@redhat.com>
+Subject: [PATCH v1 16/28] i386/sev: add notifiers only once
+Date: Fri, 12 Dec 2025 20:33:44 +0530
+Message-ID: <20251212150359.548787-17-anisinha@redhat.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20251212150359.548787-1-anisinha@redhat.com>
 References: <20251212150359.548787-1-anisinha@redhat.com>
@@ -122,79 +122,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-sev_launch_finish() and sev_snp_launch_finish() could be called multiple times
-if the confidential guest is capable of being reset/rebooted. The migration
-blockers should not be added multiple times, once per invocation. This change
-makes sure that the migration blockers are added only one time and not every
-time upon invocvation of launch_finish() calls.
+The vm state change notifier needs to be added only once and not every time
+upon sev state initialization. This is important when the SEV guest can be
+reset and the initialization needs to happen once per every reset.
 
 Signed-off-by: Ani Sinha <anisinha@redhat.com>
 ---
- target/i386/sev.c | 30 +++++++++++++++++++-----------
- 1 file changed, 19 insertions(+), 11 deletions(-)
+ target/i386/sev.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/target/i386/sev.c b/target/i386/sev.c
-index fd2dada013..9a3f488b24 100644
+index 9a3f488b24..1212acfaa1 100644
 --- a/target/i386/sev.c
 +++ b/target/i386/sev.c
-@@ -1409,6 +1409,7 @@ static void
- sev_launch_finish(SevCommonState *sev_common)
- {
-     int ret, error;
-+    static bool added_migration_blocker;
- 
-     trace_kvm_sev_launch_finish();
-     ret = sev_ioctl(sev_common->sev_fd, KVM_SEV_LAUNCH_FINISH, 0,
-@@ -1421,10 +1422,13 @@ sev_launch_finish(SevCommonState *sev_common)
- 
-     sev_set_guest_state(sev_common, SEV_STATE_RUNNING);
- 
--    /* add migration blocker */
--    error_setg(&sev_mig_blocker,
--               "SEV: Migration is not implemented");
--    migrate_add_blocker(&sev_mig_blocker, &error_fatal);
-+    if (!added_migration_blocker) {
-+        /* add migration blocker */
-+        error_setg(&sev_mig_blocker,
-+                   "SEV: Migration is not implemented");
-+        migrate_add_blocker(&sev_mig_blocker, &error_fatal);
-+        added_migration_blocker = true;
-+    }
- }
- 
- static int snp_launch_update_data(uint64_t gpa, void *hva, size_t len,
-@@ -1608,6 +1612,7 @@ sev_snp_launch_finish(SevCommonState *sev_common)
- {
-     int ret, error;
-     Error *local_err = NULL;
-+    static bool added_migration_blocker;
-     OvmfSevMetadata *metadata;
-     SevLaunchUpdateData *data;
-     SevSnpGuestState *sev_snp = SEV_SNP_GUEST(sev_common);
-@@ -1655,13 +1660,16 @@ sev_snp_launch_finish(SevCommonState *sev_common)
-     kvm_mark_guest_state_protected();
-     sev_set_guest_state(sev_common, SEV_STATE_RUNNING);
- 
--    /* add migration blocker */
--    error_setg(&sev_mig_blocker,
--               "SEV-SNP: Migration is not implemented");
--    ret = migrate_add_blocker(&sev_mig_blocker, &local_err);
--    if (local_err) {
--        error_report_err(local_err);
--        exit(1);
-+    if (!added_migration_blocker) {
-+        /* add migration blocker */
-+        error_setg(&sev_mig_blocker,
-+                   "SEV-SNP: Migration is not implemented");
-+        ret = migrate_add_blocker(&sev_mig_blocker, &local_err);
-+        if (local_err) {
-+            error_report_err(local_err);
-+            exit(1);
-+        }
-+        added_migration_blocker = true;
+@@ -1789,6 +1789,7 @@ static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+     int ret, fw_error, cmd;
+     uint32_t ebx;
+     uint32_t host_cbitpos;
++    static bool notifiers_added;
+     struct sev_user_data_status status = {};
+     SevCommonState *sev_common = SEV_COMMON(cgs);
+     SevCommonStateClass *klass = SEV_COMMON_GET_CLASS(cgs);
+@@ -1939,8 +1940,11 @@ static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+         return -1;
      }
- }
  
+-    qemu_add_vm_change_state_handler(sev_vm_state_change, sev_common);
+-
++    if (!notifiers_added) {
++        /* add notifiers only once */
++        qemu_add_vm_change_state_handler(sev_vm_state_change, sev_common);
++        notifiers_added = true;
++    }
+     cgs->ready = true;
+ 
+     return 0;
 -- 
 2.42.0
 
