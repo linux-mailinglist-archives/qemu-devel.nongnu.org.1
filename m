@@ -2,115 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56839CB974C
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Dec 2025 18:30:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8322ECB975E
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Dec 2025 18:32:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vU6xF-0006Mb-3e; Fri, 12 Dec 2025 12:29:21 -0500
+	id 1vU6zt-0007mr-1G; Fri, 12 Dec 2025 12:32:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
- id 1vU6xC-0006M2-5d; Fri, 12 Dec 2025 12:29:18 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
- id 1vU6x9-0004FB-Px; Fri, 12 Dec 2025 12:29:17 -0500
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BCA5Ar1029441;
- Fri, 12 Dec 2025 17:29:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:reply-to:subject:to; s=pp1;
- bh=IXdDhSkV76mJAxN076VOYm1w75SrlhthoaZK/DdcvhU=; b=PgiPKGPC98yW
- ogMtt3McjTy1jnKT2Vc6rSBh9j1hbNQdrACLD58A/uNnjKZZcZqvtm2lNqzxmEv9
- Wl40vhq1M+PLOD2IBTPh9j1VVfFBuP2Eifh/iJTKO8up4zR4Q1zWKwVXAJvzKMe3
- jP4aDp+ZIz5OJsnGDiwzSNlauXq2bQ39XJA/iu3jYkkVw1sS8v2odwkBm71hQHn7
- bO/RsTIhGuYnVj81Y688ckBKjpSDkdAPtZt0Hq7W9pgfOJ3I7LYTImVUSt5iXOl/
- TbL+PluQt0BCN9icyeqd/niVuRXbhiLOzhnfAt6uS3syFZcvEoPBaTIQhG3SMMZe
- U63LFRzRkQ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4avc7cep6x-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 12 Dec 2025 17:29:11 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BCHNAlv004002;
- Fri, 12 Dec 2025 17:29:11 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4avc7cep6s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 12 Dec 2025 17:29:11 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BCF0fYr002031;
- Fri, 12 Dec 2025 17:29:10 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4aw11jvyj8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 12 Dec 2025 17:29:10 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 5BCHT8gi9962110
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 12 Dec 2025 17:29:08 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6513C58058;
- Fri, 12 Dec 2025 17:29:08 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E59D558059;
- Fri, 12 Dec 2025 17:29:07 +0000 (GMT)
-Received: from mambor8.rchland.ibm.com (unknown [9.10.239.198])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 12 Dec 2025 17:29:07 +0000 (GMT)
-Message-ID: <9fa24dd11d17c8b8bfd5e05cdff99b90a5e86b96.camel@linux.ibm.com>
-Subject: Re: [PATCH 2/6] hw/ppc: Add pnv_spi vmstate support
-From: Miles Glenn <milesg@linux.ibm.com>
-To: Caleb Schlossin <calebs@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, npiggin@gmail.com, adityag@linux.ibm.com,
- alistair@alistair23.me, kowal@linux.ibm.com,
- chalapathi.v@linux.ibm.com, angeloj@linux.ibm.com
-Date: Fri, 12 Dec 2025 11:29:07 -0600
-In-Reply-To: <20251211220926.2865972-3-calebs@linux.ibm.com>
-References: <20251211220926.2865972-1-calebs@linux.ibm.com>
- <20251211220926.2865972-3-calebs@linux.ibm.com>
-Organization: IBM
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-27.el8_10) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: yJ1hQ1WWF_1EZPVewWEPUT1pEu3X6JJG
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDAyMCBTYWx0ZWRfX/H4jQVH8AHPc
- fym5JjWeOk6DvFuBDoNZTO+Glk2n8at+ItLkC6dMYQx1Cfj0aMMw6nl9t/yz3ZaEas7/1niFcZZ
- +0qFIrLtlnoL+EiEMbcQTNA9Cl2bCg+Xdvw+IaqVuMB15Rit1by5BwuGV9WCmiHgZJjAF70um/t
- 200N24LTjWGEfAA0JK6ZTic+JRU+YsIW3dXmAdxBdZvP077cKHsIZeivElvh5qns1bESG05yf6f
- ACejzkHKF9eViYsz7M4GO9YLKygF0tG0FZ8sOrb+wpYBtmo2PWpw/lLkKa0cZ8eTruK0m5FGSd+
- SgD8ZGLCvIqyJmqqzBxQLNrYRrSChMBqT0/4wjJq2q4vXFtfev9b06O5zVTn31Uf67pyrf36QjJ
- 9w97Rl84uI1qrfNcgK+aEYs07wWvag==
-X-Proofpoint-GUID: isSr2emYh6lyMPyVsaYhVZh2F3DAF1Mq
-X-Authority-Analysis: v=2.4 cv=FpwIPmrq c=1 sm=1 tr=0 ts=693c50e8 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=RYQ7Hoy1Khi-nIyfzpQA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-12_04,2025-12-11_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 bulkscore=0 spamscore=0 lowpriorityscore=0 suspectscore=0
- malwarescore=0 phishscore=0 clxscore=1015 adultscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512060020
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=milesg@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1vU6zl-0007lL-Ts
+ for qemu-devel@nongnu.org; Fri, 12 Dec 2025 12:31:58 -0500
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1vU6zh-0004vp-Ta
+ for qemu-devel@nongnu.org; Fri, 12 Dec 2025 12:31:57 -0500
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-7bab7c997eeso1749071b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 12 Dec 2025 09:31:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1765560709; x=1766165509; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=3ChmcBcWy61eXEeia5+NNGc+MBLcO15QuOD2fOByCE0=;
+ b=Z1wht6oLMdBjA+/rNZVEB7Znwf51asDqlqP/detbhIoOdOqN21xnL9PHSKVM+evSCd
+ Zc1uK7gSCLwSm416NS2/WM3YfiIihajL+INLHZXwZW2mS1zd9TLKnjqDwb5yUeiAhmWE
+ JaVc4N/iABgfG6c3PRLyzMB1I/y0sO+9VFufMUWGaLvCaVl1VRwae3ytaoVo8UMD+T+X
+ QSuABp0r+quGKEFJ03I+He2zxy6RWCOAWl/l/IR5oeXeb/lNZpNdHTuePs4XQ3+YfFE4
+ AbJSdZBwp3pZ1hnrTEul82+piEpss33JazA6PE27O/lW0vlRV6Uo2fE3M7HOlhu5ENlE
+ pQIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1765560709; x=1766165509;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3ChmcBcWy61eXEeia5+NNGc+MBLcO15QuOD2fOByCE0=;
+ b=Fc/awFBHpMrhk45/qvdERmKpiw9ih7vdkZ4SJUyri++ubVUbPWjTIgIGdBlZ2FcPhk
+ PVr7VhGH9qO8U8B+ZsLE/lsvCPLMrXyWcJQi4XRWNigV3NSP654GQywDCo7nw0VuCQAM
+ S72SHST5BdXCKFXlzL3JF63CVyp2p2BPnlPdpSJWWqpRRK9qc1PFHLiYyi0y7HSGfTMF
+ 5hSigZPmOdo4OdHMYc9PK1SzVsxW8bzCU01hdDmHubyHfJHnzIqAXIuKxnx2HWl65rxz
+ X7q1XpbvlVyw3MVyKT+ChR/z3cChlPLxOjW9GkdZhBu50LWCR/67xuouj2/aoTxLxnZJ
+ 7wBg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUGP39sLGdrowgqkaPrO4cx/k/duWDnyYTkmnibGRm2dwrDKbbiRxQ9zy9DpcXdWydKd6V48BRKa3Hg@nongnu.org
+X-Gm-Message-State: AOJu0YzGPc0+okI6qH68r2CgGrbbqyJuiW5gKrJ3YpqtLp/naonFCbm1
+ P+joENMoQ6OvvjJOOsEgF1kKWUwUXbo7NpHbi5IhdTb4bbuTTkUsGKvvFVupytG8gQU=
+X-Gm-Gg: AY/fxX6EnSVGxKernLHh0+awXH/JU/eFNLe2ENT2hM4zhhcv8df8LN8ExGE9I5ujBv+
+ qaO1Dly2bq8wktxXM3VjugWm11n2BRvTyxYR7vmGFOVCTpF2jGzRYBwqd/HkSciD6MirQmH0O8m
+ lDr7/VIU5h/JjKlwToW0pzxH6NYgmcPopTRGfouebzkY1EYtsZRsTp+vfWqwuJQ7xStFjxxj1f8
+ ihc3pox2Q7JCqhUAcOrXibb4sW5doaU7ZWFQ9sp+TPIujQpMf4Ajmzz0UiuVvbjQtGanHvH4iZk
+ uUeQlPFKIWHYrG6Lstul1/asSJ8prl/s+07pP5n2M+R45Vc9CrordBLN4MvHXljo/Tvjn/1hSBz
+ P/GJLizt7usCn8oIcjjmmQDz0F543cxbG3u/lG+ois9rYJf9+Xk6MKOKS+pql3+nJsmPLF/ibng
+ VK72+UJf3R/PF5X8eXIcXhYipqq0pYvjGD/aLBIMDrz4P+UBEvoxLkJ/g=
+X-Google-Smtp-Source: AGHT+IHm4ZxXgX7grhVSHSP8hmo2obCNe0iqU7nqDhpR9cGkuK0U7m8Dz7t0Z9gWybeTjlDdHEdNcA==
+X-Received: by 2002:a05:6a20:914c:b0:366:14ac:8c74 with SMTP id
+ adf61e73a8af0-369b05beea2mr2651309637.74.1765560709311; 
+ Fri, 12 Dec 2025 09:31:49 -0800 (PST)
+Received: from [192.168.1.87] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
+ by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-c0c2c1925bfsm5499380a12.31.2025.12.12.09.31.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 12 Dec 2025 09:31:48 -0800 (PST)
+Message-ID: <cf9403d5-229c-45b1-bb60-13bcf2d00411@linaro.org>
+Date: Fri, 12 Dec 2025 09:31:48 -0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/arm/smmu: add memory regions as property for an SMMU
+ instance
+Content-Language: en-US
+To: Tao Tang <tangtao1634@phytium.com.cn>, qemu-devel@nongnu.org
+Cc: Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-arm@nongnu.org, Eric Auger <eric.auger@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Radoslaw Biernacki <rad@semihalf.com>
+References: <20251211221715.2206662-1-pierrick.bouvier@linaro.org>
+ <ecfa9104-2864-48e0-8d3a-ac4f1540417f@phytium.com.cn>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <ecfa9104-2864-48e0-8d3a-ac4f1540417f@phytium.com.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -123,71 +107,229 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: milesg@linux.ibm.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
+On 12/12/25 8:45 AM, Tao Tang wrote:
+> Hi Pierrick,
+> 
+> On 2025/12/12 06:17, Pierrick Bouvier wrote:
+>> This will be used to access non-secure and secure memory. Secure support
+>> and Granule Protection Check (for RME) for SMMU need to access secure
+>> memory.
+>>
+>> As well, it allows to remove usage of global address_space_memory,
+>> allowing different SMMU instances to have a specific view of memory.
+> 
+> 
+> Thanks for the patch.
+> 
+> I have to admit that in my earlier series I didn’t find a clean way to
+> model SMMU’s AddressSpace handling properly, so I ended up using weak
+> globals as a pragmatic workaround. Your approach is much cleaner and
+> fits QEMU’s usual memory model.
+> 
+>>
+>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>> ---
+>>    include/hw/arm/smmu-common.h |  4 ++++
+>>    hw/arm/sbsa-ref.c            | 16 ++++++++++++----
+>>    hw/arm/smmu-common.c         | 24 ++++++++++++++++++++++++
+>>    hw/arm/virt.c                | 16 +++++++++++-----
+>>    4 files changed, 51 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/include/hw/arm/smmu-common.h b/include/hw/arm/smmu-common.h
+>> index a6bdb67a983..0f08ae080c9 100644
+>> --- a/include/hw/arm/smmu-common.h
+>> +++ b/include/hw/arm/smmu-common.h
+>> @@ -227,6 +227,10 @@ struct SMMUState {
+>>        uint8_t bus_num;
+>>        PCIBus *primary_bus;
+>>        bool smmu_per_bus; /* SMMU is specific to the primary_bus */
+>> +    MemoryRegion *memory;
+>> +    AddressSpace as_memory;
+>> +    MemoryRegion *secure_memory;
+>> +    AddressSpace as_secure_memory;
+>>    };
+>>    
+>>    struct SMMUBaseClass {
+>> diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+>> index 45d2e3e946d..840b1a216f4 100644
+>> --- a/hw/arm/sbsa-ref.c
+>> +++ b/hw/arm/sbsa-ref.c
+>> @@ -616,7 +616,9 @@ static void create_xhci(const SBSAMachineState *sms)
+>>        sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, qdev_get_gpio_in(sms->gic, irq));
+>>    }
+>>    
+>> -static void create_smmu(const SBSAMachineState *sms, PCIBus *bus)
+>> +static void create_smmu(const SBSAMachineState *sms, PCIBus *bus,
+>> +                        MemoryRegion *sysmem,
+>> +                        MemoryRegion *secure_sysmem)
+>>    {
+>>        hwaddr base = sbsa_ref_memmap[SBSA_SMMU].base;
+>>        int irq =  sbsa_ref_irqmap[SBSA_SMMU];
+>> @@ -628,6 +630,10 @@ static void create_smmu(const SBSAMachineState *sms, PCIBus *bus)
+>>        object_property_set_str(OBJECT(dev), "stage", "nested", &error_abort);
+>>        object_property_set_link(OBJECT(dev), "primary-bus", OBJECT(bus),
+>>                                 &error_abort);
+>> +    object_property_set_link(OBJECT(dev), "memory", OBJECT(sysmem),
+>> +                             &error_abort);
+>> +    object_property_set_link(OBJECT(dev), "secure-memory", OBJECT(secure_sysmem),
+>> +                             &error_abort);
+>>        sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+>>        sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
+>>        for (i = 0; i < NUM_SMMU_IRQS; i++) {
+>> @@ -636,7 +642,9 @@ static void create_smmu(const SBSAMachineState *sms, PCIBus *bus)
+>>        }
+>>    }
+>>    
+>> -static void create_pcie(SBSAMachineState *sms)
+>> +static void create_pcie(SBSAMachineState *sms,
+>> +                        MemoryRegion *sysmem,
+>> +                        MemoryRegion *secure_sysmem)
+>>    {
+>>        hwaddr base_ecam = sbsa_ref_memmap[SBSA_PCIE_ECAM].base;
+>>        hwaddr size_ecam = sbsa_ref_memmap[SBSA_PCIE_ECAM].size;
+>> @@ -692,7 +700,7 @@ static void create_pcie(SBSAMachineState *sms)
+>>    
+>>        pci_create_simple(pci->bus, -1, "bochs-display");
+>>    
+>> -    create_smmu(sms, pci->bus);
+>> +    create_smmu(sms, pci->bus, sysmem, secure_sysmem);
+>>    }
+>>    
+>>    static void *sbsa_ref_dtb(const struct arm_boot_info *binfo, int *fdt_size)
+>> @@ -831,7 +839,7 @@ static void sbsa_ref_init(MachineState *machine)
+>>    
+>>        create_xhci(sms);
+>>    
+>> -    create_pcie(sms);
+>> +    create_pcie(sms, sysmem, secure_sysmem);
+>>    
+>>        create_secure_ec(secure_sysmem);
+>>    
+>> diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
+>> index 66367adc2a4..5fbfe825fd0 100644
+>> --- a/hw/arm/smmu-common.c
+>> +++ b/hw/arm/smmu-common.c
+>> @@ -1171,6 +1171,12 @@ static void smmu_base_realize(DeviceState *dev, Error **errp)
+>>            return;
+>>        }
+>>    
+>> +    g_assert(s->memory);
+>> +    address_space_init(&s->as_memory, s->memory, "memory");
+>> +    if (s->secure_memory) {
+>> +        address_space_init(&s->as_secure_memory, s->secure_memory, "secure-memory");
+>> +    }
+>> +
+>>        /*
+>>         * We only allow default PCIe Root Complex(pcie.0) or pxb-pcie based extra
+>>         * root complexes to be associated with SMMU.
+>> @@ -1235,10 +1241,28 @@ static void smmu_base_class_init(ObjectClass *klass, const void *data)
+>>        rc->phases.exit = smmu_base_reset_exit;
+>>    }
+>>    
+>> +static void smmu_base_instance_init(Object *obj)
+>> +{
+>> +    SMMUState *s = ARM_SMMU(obj);
+>> +
+>> +    object_property_add_link(obj, "memory",
+>> +                             TYPE_MEMORY_REGION,
+>> +                             (Object **)&s->memory,
+>> +                             qdev_prop_allow_set_link_before_realize,
+>> +                             OBJ_PROP_LINK_STRONG);
+>> +
+>> +    object_property_add_link(obj, "secure-memory",
+>> +                             TYPE_MEMORY_REGION,
+>> +                             (Object **)&s->secure_memory,
+>> +                             qdev_prop_allow_set_link_before_realize,
+>> +                             OBJ_PROP_LINK_STRONG);
+>> +}
+>> +
+>>    static const TypeInfo smmu_base_info = {
+>>        .name          = TYPE_ARM_SMMU,
+>>        .parent        = TYPE_SYS_BUS_DEVICE,
+>>        .instance_size = sizeof(SMMUState),
+>> +    .instance_init = smmu_base_instance_init,
+>>        .class_data    = NULL,
+>>        .class_size    = sizeof(SMMUBaseClass),
+>>        .class_init    = smmu_base_class_init,
+>> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+>> index 5d205eff3a1..d446c3349e9 100644
+>> --- a/hw/arm/virt.c
+>> +++ b/hw/arm/virt.c
+>> @@ -1514,8 +1514,9 @@ static void create_smmuv3_dev_dtb(VirtMachineState *vms,
+>>                               0x0, vms->iommu_phandle, 0x0, 0x10000);
+>>    }
+>>    
+>> -static void create_smmu(const VirtMachineState *vms,
+>> -                        PCIBus *bus)
+>> +static void create_smmu(const VirtMachineState *vms, PCIBus *bus,
+>> +                        MemoryRegion *sysmem,
+>> +                        MemoryRegion *secure_sysmem)
+>>    {
+>>        VirtMachineClass *vmc = VIRT_MACHINE_GET_CLASS(vms);
+>>        int irq =  vms->irqmap[VIRT_SMMU];
+>> @@ -1549,6 +1550,10 @@ static void create_smmu(const VirtMachineState *vms,
+>>        object_property_set_str(OBJECT(dev), "stage", stage, &error_fatal);
+> 
+> This unchanged line doesn't seem to match the current master branch
+> code. It was actually modified last year by Peter in commit 8a934f1c4a
+> which changed the virt board's default stage. So I failed to apply this
+> patch. Anyway this discrepancy doesn't affect the core functionality of
+> the patch.
+> 
 
-On Thu, 2025-12-11 at 16:09 -0600, Caleb Schlossin wrote:
-> - Add support for needed PnvSpi structure variables
-> 
-> Signed-off-by: Caleb Schlossin <calebs@linux.ibm.com>
-> ---
->  hw/ssi/pnv_spi.c | 27 +++++++++++++++++++++++++++
->  1 file changed, 27 insertions(+)
-> 
-> diff --git a/hw/ssi/pnv_spi.c b/hw/ssi/pnv_spi.c
-> index f40e8836b9..389a2cca6b 100644
-> --- a/hw/ssi/pnv_spi.c
-> +++ b/hw/ssi/pnv_spi.c
-> @@ -13,6 +13,7 @@
->  #include "hw/ssi/pnv_spi.h"
->  #include "hw/ssi/pnv_spi_regs.h"
->  #include "hw/ssi/ssi.h"
-> +#include "migration/vmstate.h"
->  #include <libfdt.h>
->  #include "hw/irq.h"
->  #include "trace.h"
-> @@ -1199,6 +1200,31 @@ static int pnv_spi_dt_xscom(PnvXScomInterface *dev, void *fdt,
->      return 0;
->  }
+Sorry about it, it's a local (and personal) patch I have to override the 
+default stage, so it didn't apply cleanly on upstream/master. I'll fix 
+the conflict in next version.
+
 >  
-> +static const VMStateDescription pnv_spi_vmstate = {
-> +    .name = TYPE_PNV_SPI,
-> +    .version_id = 1,
-> +    .fields = (const VMStateField[]) {
-> +        VMSTATE_UINT8(fail_count, PnvSpi),
-> +        VMSTATE_UINT8(transfer_len, PnvSpi),
-> +        VMSTATE_UINT8(responder_select, PnvSpi),
-> +        VMSTATE_BOOL(shift_n1_done, PnvSpi),
-> +        VMSTATE_UINT8(loop_counter_1, PnvSpi),
-> +        VMSTATE_UINT8(loop_counter_2, PnvSpi),
-> +        VMSTATE_UINT8(N1_bits, PnvSpi),
-> +        VMSTATE_UINT8(N2_bits, PnvSpi),
-> +        VMSTATE_UINT8(N1_bytes, PnvSpi),
-> +        VMSTATE_UINT8(N2_bytes, PnvSpi),
-> +        VMSTATE_UINT8(N1_tx, PnvSpi),
-> +        VMSTATE_UINT8(N2_tx, PnvSpi),
-> +        VMSTATE_UINT8(N1_rx, PnvSpi),
-> +        VMSTATE_UINT8(N2_rx, PnvSpi),
-> +        VMSTATE_UINT64_ARRAY(regs, PnvSpi, PNV_SPI_REGS),
-> +        VMSTATE_UINT8_ARRAY(seq_op, PnvSpi, PNV_SPI_REG_SIZE),
-> +        VMSTATE_UINT64(status, PnvSpi),
-> +        VMSTATE_END_OF_LIST(),
-> +    },
-> +};
-> +
->  static void pnv_spi_class_init(ObjectClass *klass, const void *data)
->  {
->      DeviceClass *dc = DEVICE_CLASS(klass);
-> @@ -1209,6 +1235,7 @@ static void pnv_spi_class_init(ObjectClass *klass, const void *data)
->      dc->desc = "PowerNV SPI";
->      dc->realize = pnv_spi_realize;
->      device_class_set_legacy_reset(dc, do_reset);
-> +    dc->vmsd = &pnv_spi_vmstate;
->      device_class_set_props(dc, pnv_spi_properties);
->  }
->  
+> Applying: hw/arm/smmu: add memory regions as property for an SMMU instance
+> error: patch failed: hw/arm/virt.c:1549
+> error: hw/arm/virt.c: patch does not apply
+> Patch failed at 0001 hw/arm/smmu: add memory regions as property for an
+> SMMU instance
+> hint: Use 'git am --show-current-patch=diff' to see the failed patch
+> 
+> 
+>>        object_property_set_link(OBJECT(dev), "primary-bus", OBJECT(bus),
+>>                                 &error_abort);
+>> +    object_property_set_link(OBJECT(dev), "memory", OBJECT(sysmem),
+>> +                             &error_abort);
+> 
+> I noticed when using info mtree: after applying the patch, I see two
+> address-space: memory which may confuse others. Is it necessary to
+> distinguish the names here?
+> 
+> 
+> address-space: cpu-memory-0
+> address-space: gicv3-its-sysmem
+> address-space: memory
+> address-space: memory
+>     0000000000000000-ffffffffffffffff (prio 0, i/o): system
+>       0000000000000000-0000000003ffffff (prio 0, romd): virt.flash0
+>       0000000004000000-0000000007ffffff (prio 0, romd): virt.flash1
+>       0000000008000000-000000000800ffff (prio 0, i/o): gicv3_dist
+> 
+
+I thought about naming it smmu-memory, smmu-secure-memory, so your 
+remark tends to confirm it.
+@Peter, which name would be the best for you?
+
+> 
+> For the functionality, based on this patch plus attachment #2 from the
+> earlier thread [1], the NS/S SMMU code path in smmu_get_address_space
+> works fine in my setup.
+> 
+> 
+> [1]
+> https://lore.kernel.org/qemu-devel/db7fde79-85fa-4bd4-83ca-021ed3f09353@linaro.org/
+> 
+> 
+> Thanks,
+> 
+> Tao
+> 
 
 
