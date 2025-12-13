@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD50ACBA17E
+	by mail.lfdr.de (Postfix) with ESMTPS id B09D8CBA180
 	for <lists+qemu-devel@lfdr.de>; Sat, 13 Dec 2025 01:13:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vUDFd-0003xV-99; Fri, 12 Dec 2025 19:12:45 -0500
+	id 1vUDFl-00043T-SZ; Fri, 12 Dec 2025 19:12:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3da88aQoKChgAyF0ACF0CG4CC492.0CAE2AI-12J29BCB4BI.CF4@flex--marcmorcos.bounces.google.com>)
- id 1vUDFa-0003wW-Gr
- for qemu-devel@nongnu.org; Fri, 12 Dec 2025 19:12:42 -0500
-Received: from mail-pg1-x54a.google.com ([2607:f8b0:4864:20::54a])
+ <3eq88aQoKCh0F3K5FHK5HL9HH9E7.5HFJ7FN-67O7EGHG9GN.HK9@flex--marcmorcos.bounces.google.com>)
+ id 1vUDFj-000431-I6
+ for qemu-devel@nongnu.org; Fri, 12 Dec 2025 19:12:51 -0500
+Received: from mail-pj1-x104a.google.com ([2607:f8b0:4864:20::104a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3da88aQoKChgAyF0ACF0CG4CC492.0CAE2AI-12J29BCB4BI.CF4@flex--marcmorcos.bounces.google.com>)
- id 1vUDFZ-0006iw-1e
- for qemu-devel@nongnu.org; Fri, 12 Dec 2025 19:12:42 -0500
-Received: by mail-pg1-x54a.google.com with SMTP id
- 41be03b00d2f7-b630753cc38so2556474a12.1
- for <qemu-devel@nongnu.org>; Fri, 12 Dec 2025 16:12:39 -0800 (PST)
+ <3eq88aQoKCh0F3K5FHK5HL9HH9E7.5HFJ7FN-67O7EGHG9GN.HK9@flex--marcmorcos.bounces.google.com>)
+ id 1vUDFi-0006kH-05
+ for qemu-devel@nongnu.org; Fri, 12 Dec 2025 19:12:51 -0500
+Received: by mail-pj1-x104a.google.com with SMTP id
+ 98e67ed59e1d1-34566e62f16so2018401a91.1
+ for <qemu-devel@nongnu.org>; Fri, 12 Dec 2025 16:12:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1765584758; x=1766189558; darn=nongnu.org;
- h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=8tL7/RGN/sKACTO1/U808dKR26ztwxbHlqQIK/m5vG0=;
- b=u1bDAvUlFtZpWGyaMX+pcdcWTgu+y4hALGG1mvWKv066pcpbsZ5loIF3NjI1zGkHTH
- aAQ1r9aWoI2s3PyfeEY2OzfpkBRLaFGV1xrgPjw7GiXdPym5DC6LjLRkcV3gjtIRCIC9
- 9TxMZnpP9JMAZ0RquwltPc87kaHjJT1pfGtoycL8030DGmSK49Z4oQtUD5Ye01219V49
- rFlJmTX5HnSmPl9OewEzPY1QIUak1XPxUDqhQuiEVxz6dapV8HRk8KykmfePv2q8sQQW
- gm26MJbq2FNqtDQEQV+rz7mfEwRE6TPJFRi1/Fx9mE2leZH757Qk57pK2xuhtbL3xqh3
- e2+g==
+ d=google.com; s=20230601; t=1765584767; x=1766189567; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+ :date:from:to:cc:subject:date:message-id:reply-to;
+ bh=a9byHUhq171lB8iBLQB0kPeEXv2KRtdFiOEay6iUm0M=;
+ b=D5M2IGTi3P0mpBW9iH/dfdgNkxHzlNf6jDqLkk4EZESUiWA/TO0+Djb8tFzbqpfG6R
+ FdfijBFG0u3kcMujC1ZyNCu4YLxq16EHhfdUvr8GiR285VqrCsey3vNO/283COGjDZ+E
+ U+3i4NCldPUKvE+QlPSGU+T/WjBMSF3hz3uGPEHdcwNA75fjtQ1HmmTn31+1Y9HKck1K
+ JWdV8TriuK6tXqgA1Ln7dxmBhroFSmaA9zuBCDuTvYZNU2u5ZRTO1Hr7zoefrjNrdgHH
+ hQdT2mumo4AoZLKyyvQzIArXXhhP87sLcoI+LdGPVBSGMqO3PT2shy7FG3IIR63PvDDt
+ C8pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765584758; x=1766189558;
- h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=8tL7/RGN/sKACTO1/U808dKR26ztwxbHlqQIK/m5vG0=;
- b=m7eiHhWNb8Lv7FYWCL2e2G6jKgn8LsLl4AatK9cUNHB16vkYQSBqMtLDIXu/WWRjPx
- xEz2QpK/97ZuE1zScBlPQXIiLRJlxLyAF/xQ2VZkZkFnzqBUhmt3o2Cc1eXX0I8OA83J
- ScO4rBmcm5hUk2L6HFqcIIOiLaIt7ps2YXiS/tcglP9e3fYERZcS4sxCQzHAO7kDOSOJ
- w7C5ucsS0QoKOfYzA0tnQxcpgEPp1uN0pP0ytWMwHvJXMG3UKnXaD8v+Q0Qr2jHmxKD3
- YbGDoZYTTGF0zbCsw3VRznPHI0vcv2T3Gs9OhRZp+lXG80Nn7sa9Kak/eGid6zAbcFNs
- dwww==
+ d=1e100.net; s=20230601; t=1765584767; x=1766189567;
+ h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+ :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=a9byHUhq171lB8iBLQB0kPeEXv2KRtdFiOEay6iUm0M=;
+ b=b0l2iLk08NrQy3EtiPCyrsWhPJWFZszMyVLeKZTOvjfC691/EADnl8i/4PWSPUZg14
+ iTxl7ULrj0HmdBL4Hpq8j+aGWswvTR6E86PaI8qVgTJ3aCuQZG9J0tD7/IZy1r4wGOd3
+ OvsGfYVmwGx3FkPcMvdwfKsfUr3bcyHT4iMoL97W5XnZ3dHlGzlghaW1J22fnRgvxGQp
+ vc8hhRccDaUqN5X5+ru/BjflPVLUD5eXb1IxocKiiTAsSqDOZDpfLwzXOlPSEJ1VxTao
+ idUc+B/DIBsxbrDjNpvaB18J/AjqoMwHuIE8iXMBJ+PBSK+KQBnfGSrKQxV04iwdPOro
+ 4wOw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXzqGj9P53Mf8fywcsCL5z4Sm4MWOU8+QFh04Pq7XQTufuYL8T6CYc6uN/bewxsAzL5mhzR0fxPcfw9@nongnu.org
-X-Gm-Message-State: AOJu0Yyz9dSRQC0E0oi/I/Lqm4eFsA3a6ozQ6OfR1qejn2hkTsKq6jnz
- cf0PebC9ipF5lrQ3XS1pKAnIJ/hUtZzRMruB7sMuCs733UkPkvJnpETDFL1LQ8ESgvLFytTEdE1
- 7SQSjaS5dCDFaiqqNxRv4Fw==
-X-Google-Smtp-Source: AGHT+IFrNe+ETm2sb/OiT9RJHXK2L3myG/SdAJA19fKdPrT2yYE4RFe/z8pcSr8172xCreN5joLoEVTpj7rOkXUQ
-X-Received: from dlkk32.prod.google.com ([2002:a05:7022:60a0:b0:11d:cf7a:5407])
+ AJvYcCUniq4kJVrPOKOhKKqgeVJmQDJrNmAWHrqhiyIn2btwJ+KXjUVth1taihfX8jQlfr+J/KkETlV57Nol@nongnu.org
+X-Gm-Message-State: AOJu0YyMS9uFh+D0b2SesBn7le64j7vIOK8iGi19I6MaTvjAlh/V2t4h
+ LGkE1eD2bNX4inb3FPwXJDzaFxJYSrmKtuPRl0AaWaJKOIZkXynJCby3/FD2F6zOx378rO5XZro
+ Ts7/rmix/s5T6jkEV38A2KQ==
+X-Google-Smtp-Source: AGHT+IEjImOGnlHMiztl4z2ZlqTF3b9vjLnHL3vmRAV9t64A7B/mGpPOtYTnPz2l0lrHh3nOPkeYKOTQotEdpHPM
+X-Received: from dlbbk2.prod.google.com ([2002:a05:7022:4282:b0:11d:cfca:1df5])
  (user=marcmorcos job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:701b:220f:b0:11b:82b8:40ae with SMTP id
- a92af1059eb24-11f34bc7223mr2176784c88.18.1765584757819; 
- Fri, 12 Dec 2025 16:12:37 -0800 (PST)
-Date: Sat, 13 Dec 2025 00:12:30 +0000
+ 2002:a05:7022:f509:b0:11b:9386:8257 with SMTP id
+ a92af1059eb24-11f34c2628bmr1661310c88.44.1765584762064; 
+ Fri, 12 Dec 2025 16:12:42 -0800 (PST)
+Date: Sat, 13 Dec 2025 00:12:31 +0000
+In-Reply-To: <20251213001234.2039232-1-marcmorcos@google.com>
 Mime-Version: 1.0
+References: <20251213001234.2039232-1-marcmorcos@google.com>
 X-Mailer: git-send-email 2.52.0.239.gd5f0c6e74e-goog
-Message-ID: <20251213001234.2039232-1-marcmorcos@google.com>
-Subject: [PATCH 0/4] Clean up TSAN warnings
+Message-ID: <20251213001234.2039232-2-marcmorcos@google.com>
+Subject: [PATCH 1/4] apic: Resize APICBASE
 From: Marc Morcos <marcmorcos@google.com>
 To: maintainer_email_from_script@google.com
 Cc: cc_list_from_script@google.com, qemu-devel@nongnu.org, 
  Marc Morcos <marcmorcos@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::54a;
- envelope-from=3da88aQoKChgAyF0ACF0CG4CC492.0CAE2AI-12J29BCB4BI.CF4@flex--marcmorcos.bounces.google.com;
- helo=mail-pg1-x54a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::104a;
+ envelope-from=3eq88aQoKCh0F3K5FHK5HL9HH9E7.5HFJ7FN-67O7EGHG9GN.HK9@flex--marcmorcos.bounces.google.com;
+ helo=mail-pj1-x104a.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -91,23 +93,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When running several tests with tsan, thread races were detected when reading certain variables. This should allieviate the problem.
-Additionally, the apicbase member of APICCommonState has been updated to 64 bit to reflect its 36 bit contents.
+ APICBASE is 36-bits wide, so this commit resizes it to hold the full data.
 
-Marc Morcos (4):
-  apic: Resize APICBASE
-  thread-pool: Fix thread race
-  qmp: Fix thread race
-  apic: Make apicbase accesses atomic to fix data race
+Signed-off-by: Marc Morcos <marcmorcos@google.com>
+---
+ hw/intc/apic_common.c           | 4 ++--
+ include/hw/i386/apic_internal.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
- hw/i386/kvm/apic.c              | 12 ++++++++----
- hw/intc/apic_common.c           | 24 ++++++++++++++----------
- include/hw/i386/apic_internal.h |  2 +-
- monitor/monitor.c               | 11 ++++++++++-
- monitor/qmp.c                   |  6 ++++--
- util/thread-pool.c              | 30 ++++++++++++++++--------------
- 6 files changed, 53 insertions(+), 32 deletions(-)
-
+diff --git a/hw/intc/apic_common.c b/hw/intc/apic_common.c
+index ec9e978b0b..1e9aba2e48 100644
+--- a/hw/intc/apic_common.c
++++ b/hw/intc/apic_common.c
+@@ -233,7 +233,7 @@ static void apic_reset_common(DeviceState *dev)
+ {
+     APICCommonState *s = APIC_COMMON(dev);
+     APICCommonClass *info = APIC_COMMON_GET_CLASS(s);
+-    uint32_t bsp;
++    uint64_t bsp;
+ 
+     bsp = s->apicbase & MSR_IA32_APICBASE_BSP;
+     s->apicbase = APIC_DEFAULT_ADDRESS | bsp | MSR_IA32_APICBASE_ENABLE;
+@@ -363,7 +363,7 @@ static const VMStateDescription vmstate_apic_common = {
+     .post_load = apic_dispatch_post_load,
+     .priority = MIG_PRI_APIC,
+     .fields = (const VMStateField[]) {
+-        VMSTATE_UINT32(apicbase, APICCommonState),
++        VMSTATE_UINT64(apicbase, APICCommonState),
+         VMSTATE_UINT8(id, APICCommonState),
+         VMSTATE_UINT8(arb_id, APICCommonState),
+         VMSTATE_UINT8(tpr, APICCommonState),
+diff --git a/include/hw/i386/apic_internal.h b/include/hw/i386/apic_internal.h
+index 4a62fdceb4..c7ee65ce1d 100644
+--- a/include/hw/i386/apic_internal.h
++++ b/include/hw/i386/apic_internal.h
+@@ -158,7 +158,7 @@ struct APICCommonState {
+ 
+     MemoryRegion io_memory;
+     X86CPU *cpu;
+-    uint32_t apicbase;
++    uint64_t apicbase;
+     uint8_t id; /* legacy APIC ID */
+     uint32_t initial_apic_id;
+     uint8_t version;
 -- 
 2.52.0.239.gd5f0c6e74e-goog
 
