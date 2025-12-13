@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89845CBA595
-	for <lists+qemu-devel@lfdr.de>; Sat, 13 Dec 2025 06:43:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C945FCBA583
+	for <lists+qemu-devel@lfdr.de>; Sat, 13 Dec 2025 06:43:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vUIOG-000626-CN; Sat, 13 Dec 2025 00:42:00 -0500
+	id 1vUIOK-000644-8g; Sat, 13 Dec 2025 00:42:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vUIO8-00060L-EH
- for qemu-devel@nongnu.org; Sat, 13 Dec 2025 00:41:53 -0500
+ id 1vUIO7-000603-5r
+ for qemu-devel@nongnu.org; Sat, 13 Dec 2025 00:41:51 -0500
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vUIO5-0002ls-8c
- for qemu-devel@nongnu.org; Sat, 13 Dec 2025 00:41:52 -0500
+ id 1vUIO4-0002lp-9d
+ for qemu-devel@nongnu.org; Sat, 13 Dec 2025 00:41:50 -0500
 Received: from [10.200.7.128] (fs96f9c361.tkyc007.ap.nuro.jp [150.249.195.97])
  (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5BD5fMh6021206
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5BD5fMh7021206
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
  Sat, 13 Dec 2025 14:41:36 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=L0B9jhJeb3zKvYSXK8vray0X2b7UJO76FxjV/uZ6Yhg=; 
+DKIM-Signature: a=rsa-sha256; bh=KLJ9U5F9WNRfAMT6SfglS3+AJUlDHzM1cK+vRuTmtEo=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
  s=rs20250326; t=1765604496; v=1;
- b=ogIPCXzmnzswqlljplj+XGP90M8yT1krbtjc+kJGbBvl50owpp0rfRXHLNSbosMS
- pJzePFS4zpnWi18PTyp2VYlHANBxqFvxvgoKLQ7+e/EWL/H/wSEaF6dfsauisfUJ
- S0U4mvhGMPR1aHlV6mkefvdi/u+lErDqAZgR/1WrKsB436bgQEAqhxXcV0SboYYY
- F9OwTn0nmWOHgb4tTmigd8MtF5HhcUQXNjf2mUWFvbGche1qBdFkrqbxI1aqcWqh
- dyr9bnN1OIRteSUlz4WGBFf/S9t2FKCPlcshoK6Fsiyg9JHKFvkMgqi7PRMk9YQj
- Y0Bq5deikVDMlB1E/gShkw==
+ b=iUaz7fohT7m4PyJ1zdboG+atcbdHcvD6UYTJ3ZU/xNduXc8ZhBAFG9HtdgmQKJWz
+ oVULXcdttDhfpzhjrZaEbOotclaHGtPDt+M4JnkXdTcHX2LJo1hCJLqmVT8ZAt6y
+ ZuzibzLV3IFZ82UBURbS9ws4hduixvD3kd8oZifgXu6Cy7NY6TqyssYzXJFg2oOx
+ nP6ZSyvGaJYT3aEm4aL7a8+L8w6idGSJob7AzPvdeXOvgI1cz2wUDEYLUjfihUxs
+ hp87djwZxoXH69ntQjsiyOp0mrDQRzNhB3qi0AWHJ62b8xmXpvXlrKsZGrdnlcVH
+ F6TPHpHcjpWG/r3utclXow==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Sat, 13 Dec 2025 14:41:21 +0900
-Subject: [PATCH v2 2/6] futex: Add qemu_futex_timedwait()
+Date: Sat, 13 Dec 2025 14:41:22 +0900
+Subject: [PATCH v2 3/6] qemu-thread: Add qemu_event_timedwait()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251213-force_rcu-v2-2-1de1ca84c6d6@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20251213-force_rcu-v2-3-1de1ca84c6d6@rsg.ci.i.u-tokyo.ac.jp>
 References: <20251213-force_rcu-v2-0-1de1ca84c6d6@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20251213-force_rcu-v2-0-1de1ca84c6d6@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org, Dmitry Osipenko <dmitry.osipenko@collabora.com>
@@ -72,93 +72,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu_futex_timedwait() is equivalent to qemu_futex_wait(), except it has
-an absolute timeout.
+qemu_event_timedwait() is equivalent to qemu_event_wait(), except it has
+a relative timeout.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- include/qemu/futex.h | 34 +++++++++++++++++++++++++++++-----
- 1 file changed, 29 insertions(+), 5 deletions(-)
+ include/qemu/thread-posix.h | 11 +++++++++++
+ include/qemu/thread.h       |  8 +++++++-
+ util/event.c                | 28 +++++++++++++++++++++++-----
+ util/qemu-thread-posix.c    | 11 +----------
+ 4 files changed, 42 insertions(+), 16 deletions(-)
 
-diff --git a/include/qemu/futex.h b/include/qemu/futex.h
-index 607613eec835..5b48f79bf329 100644
---- a/include/qemu/futex.h
-+++ b/include/qemu/futex.h
-@@ -24,13 +24,19 @@
- #ifndef QEMU_FUTEX_H
- #define QEMU_FUTEX_H
+diff --git a/include/qemu/thread-posix.h b/include/qemu/thread-posix.h
+index 758808b705e4..11193b1580f8 100644
+--- a/include/qemu/thread-posix.h
++++ b/include/qemu/thread-posix.h
+@@ -36,4 +36,15 @@ struct QemuThread {
+     pthread_t thread;
+ };
  
-+#include "qemu/timer.h"
- #define HAVE_FUTEX
- 
- #ifdef CONFIG_LINUX
- #include <sys/syscall.h>
- #include <linux/futex.h>
-+#include <linux/time_types.h>
- 
-+#ifdef __NR_futex_time64
-+#define qemu_futex(...)              syscall(__NR_futex_time64, __VA_ARGS__)
++static inline clockid_t qemu_timedwait_clockid(void)
++{
++#ifdef CONFIG_PTHREAD_CONDATTR_SETCLOCK
++    return CLOCK_MONOTONIC;
 +#else
- #define qemu_futex(...)              syscall(__NR_futex, __VA_ARGS__)
++    return CLOCK_REALTIME;
 +#endif
- 
- static inline void qemu_futex_wake_all(void *f)
- {
-@@ -42,18 +48,28 @@ static inline void qemu_futex_wake_single(void *f)
-     qemu_futex(f, FUTEX_WAKE, 1, NULL, NULL, 0);
- }
- 
--static inline void qemu_futex_wait(void *f, unsigned val)
-+static inline bool qemu_futex_timedwait(void *f, unsigned val, int64_t ns)
- {
--    while (qemu_futex(f, FUTEX_WAIT, (int) val, NULL, NULL, 0)) {
-+    struct __kernel_timespec ts;
-+    uint32_t bitset = FUTEX_BITSET_MATCH_ANY;
++}
 +
-+    ts.tv_sec = ns / NANOSECONDS_PER_SECOND;
-+    ts.tv_nsec = ns % NANOSECONDS_PER_SECOND;
++void compute_abs_deadline(struct timespec *ts, int ms);
 +
-+    while (qemu_futex(f, FUTEX_WAIT_BITSET, (int) val, &ts, NULL, bitset)) {
-         switch (errno) {
-         case EWOULDBLOCK:
--            return;
-+            return true;
-         case EINTR:
-             break; /* get out of switch and retry */
-+        case ETIMEDOUT:
-+            return false;
-         default:
-             abort();
-         }
-     }
+ #endif
+diff --git a/include/qemu/thread.h b/include/qemu/thread.h
+index f0302ed01fdb..1b08b0bcb66a 100644
+--- a/include/qemu/thread.h
++++ b/include/qemu/thread.h
+@@ -201,7 +201,13 @@ void qemu_sem_destroy(QemuSemaphore *sem);
+ void qemu_event_init(QemuEvent *ev, bool init);
+ void qemu_event_set(QemuEvent *ev);
+ void qemu_event_reset(QemuEvent *ev);
+-void qemu_event_wait(QemuEvent *ev);
++void qemu_event_timedwait(QemuEvent *ev, int ms);
 +
-+    return true;
- }
- #elif defined(CONFIG_WIN32)
- #include <synchapi.h>
-@@ -68,12 +84,20 @@ static inline void qemu_futex_wake_single(void *f)
-     WakeByAddressSingle(f);
- }
++static inline void qemu_event_wait(QemuEvent *ev)
++{
++    qemu_event_timedwait(ev, INT_MAX);
++}
++
+ void qemu_event_destroy(QemuEvent *ev);
  
--static inline void qemu_futex_wait(void *f, unsigned val)
-+static inline bool qemu_futex_timedwait(void *f, unsigned val, int64_t ns)
+ void qemu_thread_create(QemuThread *thread, const char *name,
+diff --git a/util/event.c b/util/event.c
+index 5a8141cd0e46..cb26a0bfb952 100644
+--- a/util/event.c
++++ b/util/event.c
+@@ -33,7 +33,15 @@ void qemu_event_init(QemuEvent *ev, bool init)
  {
--    WaitOnAddress(f, &val, sizeof(val), INFINITE);
-+    DWORD duration = MIN((ns - get_clock()) / SCALE_MS, INFINITE);
-+    return WaitOnAddress(f, &val, sizeof(val), duration);
- }
- #else
- #undef HAVE_FUTEX
+ #ifndef HAVE_FUTEX
+     pthread_mutex_init(&ev->lock, NULL);
++#ifdef CONFIG_PTHREAD_CONDATTR_SETCLOCK
++    pthread_condattr_t attr;
++    pthread_condattr_init(&attr);
++    pthread_condattr_setclock(&attr, qemu_timedwait_clockid());
++    pthread_cond_init(&ev->cond, &attr);
++    pthread_condattr_destroy(&attr);
++#else
+     pthread_cond_init(&ev->cond, NULL);
++#endif
  #endif
  
-+#ifdef HAVE_FUTEX
-+static inline void qemu_futex_wait(void *f, unsigned val)
-+{
-+    qemu_futex_timedwait(f, val, INT64_MAX);
-+}
-+#endif
+     ev->value = (init ? EV_SET : EV_FREE);
+@@ -121,15 +129,17 @@ void qemu_event_reset(QemuEvent *ev)
+ #endif
+ }
+ 
+-void qemu_event_wait(QemuEvent *ev)
++void qemu_event_timedwait(QemuEvent *ev, int ms)
+ {
+     assert(ev->initialized);
+ 
+ #ifdef HAVE_FUTEX
++    int64_t deadline = get_clock() + (int64_t)ms * SCALE_MS;
 +
- #endif /* QEMU_FUTEX_H */
+     while (true) {
+         /*
+-         * qemu_event_wait must synchronize with qemu_event_set even if it does
+-         * not go down the slow path, so this load-acquire is needed that
++         * qemu_event_timedwait must synchronize with qemu_event_set even if it
++         * does not go down the slow path, so this load-acquire is needed that
+          * synchronizes with the first memory barrier in qemu_event_set().
+          */
+         unsigned value = qatomic_load_acquire(&ev->value);
+@@ -159,12 +169,20 @@ void qemu_event_wait(QemuEvent *ev)
+          * a smp_mb() pairing with the second barrier of qemu_event_set().
+          * The barrier is inside the FUTEX_WAIT system call.
+          */
+-        qemu_futex_wait(ev, EV_BUSY);
++        if (!qemu_futex_timedwait(ev, EV_BUSY, deadline)) {
++            break;
++        }
+     }
+ #else
++    struct timespec ts;
++
++    compute_abs_deadline(&ts, ms);
++
+     pthread_mutex_lock(&ev->lock);
+     while (qatomic_read(&ev->value) != EV_SET) {
+-        pthread_cond_wait(&ev->cond, &ev->lock);
++        if (pthread_cond_timedwait(&ev->cond, &ev->lock, &ts)) {
++            break;
++        }
+     }
+     pthread_mutex_unlock(&ev->lock);
+ #endif
+diff --git a/util/qemu-thread-posix.c b/util/qemu-thread-posix.c
+index ba725444ba63..f649bfa00015 100644
+--- a/util/qemu-thread-posix.c
++++ b/util/qemu-thread-posix.c
+@@ -44,16 +44,7 @@ static void error_exit(int err, const char *msg)
+     abort();
+ }
+ 
+-static inline clockid_t qemu_timedwait_clockid(void)
+-{
+-#ifdef CONFIG_PTHREAD_CONDATTR_SETCLOCK
+-    return CLOCK_MONOTONIC;
+-#else
+-    return CLOCK_REALTIME;
+-#endif
+-}
+-
+-static void compute_abs_deadline(struct timespec *ts, int ms)
++void compute_abs_deadline(struct timespec *ts, int ms)
+ {
+     clock_gettime(qemu_timedwait_clockid(), ts);
+     ts->tv_nsec += (ms % 1000) * 1000000;
 
 -- 
 2.52.0
