@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7E34CBA196
-	for <lists+qemu-devel@lfdr.de>; Sat, 13 Dec 2025 01:15:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05245CBA1A8
+	for <lists+qemu-devel@lfdr.de>; Sat, 13 Dec 2025 01:15:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vUDHm-0006en-9s; Fri, 12 Dec 2025 19:14:58 -0500
+	id 1vUDHn-0006g3-Rn; Fri, 12 Dec 2025 19:14:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3_K88aQoKCp8L9QBLNQBNRFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--marcmorcos.bounces.google.com>)
- id 1vUDHk-0006bz-8A
- for qemu-devel@nongnu.org; Fri, 12 Dec 2025 19:14:56 -0500
+ <3_a88aQoKCqAMARCMORCOSGOOGLE.COMQEMU-DEVELNONGNU.ORG@flex--marcmorcos.bounces.google.com>)
+ id 1vUDHl-0006eJ-KD
+ for qemu-devel@nongnu.org; Fri, 12 Dec 2025 19:14:57 -0500
 Received: from mail-pg1-x549.google.com ([2607:f8b0:4864:20::549])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3_K88aQoKCp8L9QBLNQBNRFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--marcmorcos.bounces.google.com>)
- id 1vUDHi-00078Y-Q8
- for qemu-devel@nongnu.org; Fri, 12 Dec 2025 19:14:55 -0500
+ <3_a88aQoKCqAMARCMORCOSGOOGLE.COMQEMU-DEVELNONGNU.ORG@flex--marcmorcos.bounces.google.com>)
+ id 1vUDHk-00078g-1V
+ for qemu-devel@nongnu.org; Fri, 12 Dec 2025 19:14:57 -0500
 Received: by mail-pg1-x549.google.com with SMTP id
- 41be03b00d2f7-bc0de474d4eso3042414a12.0
+ 41be03b00d2f7-bddf9ce4935so1474914a12.1
  for <qemu-devel@nongnu.org>; Fri, 12 Dec 2025 16:14:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1765584892; x=1766189692; darn=nongnu.org;
+ d=google.com; s=20230601; t=1765584894; x=1766189694; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=a9byHUhq171lB8iBLQB0kPeEXv2KRtdFiOEay6iUm0M=;
- b=VUGXfSMSpigtY9Ezy0Ze5tK8mpeLn49RAuyWaha4hhqJ01nKS3wMIiWhDQ2fn9zQMi
- UahaTIUAEsoy4oZlYviAYf9mpHP594an33wGt3LVbrMHyu/bcuYIcE05UAHmiENuxcD+
- yCf2JXT9WFVPWjngiSEN1NqEKiAWXti97AIv3FdrlqV9ovG3hVKIy6ZdAmQfSCJuFpQb
- 6e1XZQd2nPAGgPY383OOVu9rPb8EU2vlFkyrTALy0P8R6fvYEdKjsqWmBaonDfRDzXQA
- bkoEBjuuZHGBO64/z7cq0b8TbECbHcSjE8VBjrYLnKw3TUXg7mG+I5YNZZ3a2XRC/EXm
- BxFw==
+ bh=cIINZ9mAAnwnFIApNJGoEI7Ff32PcTgxuAaJihLVJeo=;
+ b=PygxctaSm8nfv8VxGpdPEYDynnK+v/SRFyGfCYO7QkLEPOOfBH3cn+qtlxMG+9uXpH
+ nFcmAZPfCO5VLiNfp59egfmo3qVisLn2XPezZ50fhCPvskH+z+ce/ileyMojmZCUw/5Y
+ 1kguiCal7wCK+s/BBRceoQxow1V/Pg4BjRLK61fgRrBYVq3yd9fVBbn/paQOYgsrZ6Cy
+ uHEqqqQRS7Feg+uYrnsdIso0ca6ay2U+SOXYI6EUyjpLH9aRk8ClEeSXsiSnk2ruylJx
+ rLo5l8yFyIpKmZvLgcCXPT3XzLQpNAkkK5Xy3rxUPGDpy8FSrR/MGOXAgVtIHaUcsUCz
+ QWaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765584892; x=1766189692;
+ d=1e100.net; s=20230601; t=1765584894; x=1766189694;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=a9byHUhq171lB8iBLQB0kPeEXv2KRtdFiOEay6iUm0M=;
- b=W1sllXKUGthDKuP7JWh8MVKawO/QPJeEwMvDV+/VThBXy1xdBhda9rYKv+aoLFZqkL
- +2RMP2f7XlkQOd4Y3TBdgTSCjDlnL4eE7GY7T7jVL7CDB5bAEQtScnoYodRzw7bNDbLO
- DgCdQzU9mPsHhfV0y7qUArZrvRv4u7hVuqwgs1DWfWOpU1QNvxtX8+wNmOMiJN+CVo1I
- EIp30gyziMXFbJ43ofksnUQ4MtLuNS++JuSj4gOogROUu55R2RdPasczTxIyFr0v72/V
- 4pp1+nj3dtO4WxJJGpm8tjr+hbEA34T/B+6Hv0gAv+2khv9ytAElYbOCmjGarKRjt3Vz
- EOXQ==
+ bh=cIINZ9mAAnwnFIApNJGoEI7Ff32PcTgxuAaJihLVJeo=;
+ b=f93JYhfTR6XKE6XGYZDfK0p3ZIWR7Z9wyvQgALNEQpEuwKHBFzECzovuyu2cWRNcBh
+ bNX7UGV6UUUyHGmvfx3g91QTGjlNg2UMBh5sf+4qBKVntIXga4ACVU/saihOa5H3jygl
+ uJ6FveFoH8iWSyon+iIkGVB4pbeNTMttkuyeYRbxhkojBKTQ+MvU4hvbNMdbIYn1unYy
+ oEXSRj790yDpLxOyceC2hm1Bt/A6Lc70x9g7Fi/tgiQN/nx8dIOL2hoxlDwjYppSFvcY
+ xru7jOLRt+y3wVdQOqkR2budyROT6uHfJ4ITN2k28y7yZ+Ep6E3vn2S2i3jVaPtvTCwS
+ Cwuw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUQW++pV/Bl5eC1HKvYaGQvJmBvfnnoy5wzwkWAyd3xZwERC4ZYs1GGQKEE6K5JWPzU3+PxabOWy43Z@nongnu.org
-X-Gm-Message-State: AOJu0YxY7r4l9MN8HIGpwGLxuB5meq+yAmG1CmWLk1HQSqF6QmlZFnse
- 8mrGEJhomgocRwxhA88J4vrDLkxBq+dwnVt+xvWJPMrkwvvr4ftV6XTnIzj+ohcTQepj5k16fot
- 6LUhUXWMZnu+utdr95SLhgA==
-X-Google-Smtp-Source: AGHT+IGcin5hyq+n2qr2rmLGMVgo9UOC9nitcjENNrPSfYURQhY4WzARb8mesPEMZ3bMottnA8mjRAjvdj3DTytt
-X-Received: from dyx19.prod.google.com ([2002:a05:693c:8213:b0:2a4:6ffc:87c9])
+ AJvYcCVa2kjIU0be+WC2cyKlreK8XBMwlfJtiskPwpjkqZRT9E+kcTociII8AX9PzwMv8QY8dqGVzZfoVJ6Y@nongnu.org
+X-Gm-Message-State: AOJu0YyJtALcddENP8GWw1BextzFLjdgtNsVVoZqrjhMUT3eY6JDg6t/
+ SRDb/pdI/UBcLfwil/INxOkmzxJKSlRfEjwsqqqs/qRfbyJd9d0WA7PEv3tR1hraNQjnn5Pv4Da
+ jixODYpEQOiL1/pwQLO454g==
+X-Google-Smtp-Source: AGHT+IERTu/TvouPTqzMqN3ZIas79v3Ibpzrcwkdq6SBy47/OiGEzsE9m49kedocAPClataQQ5xVjjJRVwvvkCtI
+X-Received: from dlg19.prod.google.com ([2002:a05:7022:793:b0:119:78ff:fe0f])
  (user=marcmorcos job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7300:8283:b0:2a4:4bce:309c with SMTP id
- 5a478bee46e88-2ac3025c82emr2257346eec.22.1765584892396; 
- Fri, 12 Dec 2025 16:14:52 -0800 (PST)
-Date: Sat, 13 Dec 2025 00:14:40 +0000
+ 2002:a05:7023:a85:b0:11a:fec5:d005 with SMTP id
+ a92af1059eb24-11f34bde202mr2623159c88.10.1765584893863; 
+ Fri, 12 Dec 2025 16:14:53 -0800 (PST)
+Date: Sat, 13 Dec 2025 00:14:41 +0000
 In-Reply-To: <20251213001443.2041258-1-marcmorcos@google.com>
 Mime-Version: 1.0
 References: <20251213001443.2041258-1-marcmorcos@google.com>
 X-Mailer: git-send-email 2.52.0.239.gd5f0c6e74e-goog
-Message-ID: <20251213001443.2041258-2-marcmorcos@google.com>
-Subject: [PATCH 1/4] apic: Resize APICBASE
+Message-ID: <20251213001443.2041258-3-marcmorcos@google.com>
+Subject: [PATCH 2/4] thread-pool: Fix thread race
 From: Marc Morcos <marcmorcos@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>, 
@@ -75,7 +75,7 @@ Cc: "Michael S . Tsirkin" <mst@redhat.com>,
  kvm@vger.kernel.org, Marc Morcos <marcmorcos@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Received-SPF: pass client-ip=2607:f8b0:4864:20::549;
- envelope-from=3_K88aQoKCp8L9QBLNQBNRFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--marcmorcos.bounces.google.com;
+ envelope-from=3_a88aQoKCqAMARCMORCOSGOOGLE.COMQEMU-DEVELNONGNU.ORG@flex--marcmorcos.bounces.google.com;
  helo=mail-pg1-x549.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
@@ -99,49 +99,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
- APICBASE is 36-bits wide, so this commit resizes it to hold the full data.
+Fix a data race occurred between `worker_thread()` writing and
+`thread_pool_completion_bh()` reading shared data in `util/thread-pool.c`.
 
 Signed-off-by: Marc Morcos <marcmorcos@google.com>
 ---
- hw/intc/apic_common.c           | 4 ++--
- include/hw/i386/apic_internal.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ util/thread-pool.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
-diff --git a/hw/intc/apic_common.c b/hw/intc/apic_common.c
-index ec9e978b0b..1e9aba2e48 100644
---- a/hw/intc/apic_common.c
-+++ b/hw/intc/apic_common.c
-@@ -233,7 +233,7 @@ static void apic_reset_common(DeviceState *dev)
- {
-     APICCommonState *s = APIC_COMMON(dev);
-     APICCommonClass *info = APIC_COMMON_GET_CLASS(s);
--    uint32_t bsp;
-+    uint64_t bsp;
+diff --git a/util/thread-pool.c b/util/thread-pool.c
+index d2ead6b728..1ced3bd371 100644
+--- a/util/thread-pool.c
++++ b/util/thread-pool.c
+@@ -18,6 +18,7 @@
+ #include "qemu/defer-call.h"
+ #include "qemu/queue.h"
+ #include "qemu/thread.h"
++#include "qemu/atomic.h"
+ #include "qemu/coroutine.h"
+ #include "trace.h"
+ #include "block/thread-pool.h"
+@@ -39,9 +40,13 @@ struct ThreadPoolElementAio {
+     ThreadPoolFunc *func;
+     void *arg;
  
-     bsp = s->apicbase & MSR_IA32_APICBASE_BSP;
-     s->apicbase = APIC_DEFAULT_ADDRESS | bsp | MSR_IA32_APICBASE_ENABLE;
-@@ -363,7 +363,7 @@ static const VMStateDescription vmstate_apic_common = {
-     .post_load = apic_dispatch_post_load,
-     .priority = MIG_PRI_APIC,
-     .fields = (const VMStateField[]) {
--        VMSTATE_UINT32(apicbase, APICCommonState),
-+        VMSTATE_UINT64(apicbase, APICCommonState),
-         VMSTATE_UINT8(id, APICCommonState),
-         VMSTATE_UINT8(arb_id, APICCommonState),
-         VMSTATE_UINT8(tpr, APICCommonState),
-diff --git a/include/hw/i386/apic_internal.h b/include/hw/i386/apic_internal.h
-index 4a62fdceb4..c7ee65ce1d 100644
---- a/include/hw/i386/apic_internal.h
-+++ b/include/hw/i386/apic_internal.h
-@@ -158,7 +158,7 @@ struct APICCommonState {
+-    /* Moving state out of THREAD_QUEUED is protected by lock.  After
+-     * that, only the worker thread can write to it.  Reads and writes
+-     * of state and ret are ordered with memory barriers.
++    /*
++     * Accessed with atomics.  Moving state out of THREAD_QUEUED is
++     * protected by pool->lock and only the worker thread can move
++     * the state from THREAD_ACTIVE to THREAD_DONE.
++     *
++     * When state is THREAD_DONE, ret must have been written already.
++     * Use acquire/release ordering when reading/writing ret as well.
+      */
+     enum ThreadState state;
+     int ret;
+@@ -105,15 +110,14 @@ static void *worker_thread(void *opaque)
  
-     MemoryRegion io_memory;
-     X86CPU *cpu;
--    uint32_t apicbase;
-+    uint64_t apicbase;
-     uint8_t id; /* legacy APIC ID */
-     uint32_t initial_apic_id;
-     uint8_t version;
+         req = QTAILQ_FIRST(&pool->request_list);
+         QTAILQ_REMOVE(&pool->request_list, req, reqs);
+-        req->state = THREAD_ACTIVE;
++        qatomic_set(&req->state, THREAD_ACTIVE);
+         qemu_mutex_unlock(&pool->lock);
+ 
+         ret = req->func(req->arg);
+ 
+         req->ret = ret;
+-        /* Write ret before state.  */
+-        smp_wmb();
+-        req->state = THREAD_DONE;
++        /* _release to write ret before state.  */
++        qatomic_store_release(&req->state, THREAD_DONE);
+ 
+         qemu_bh_schedule(pool->completion_bh);
+         qemu_mutex_lock(&pool->lock);
+@@ -180,7 +184,8 @@ static void thread_pool_completion_bh(void *opaque)
+ 
+ restart:
+     QLIST_FOREACH_SAFE(elem, &pool->head, all, next) {
+-        if (elem->state != THREAD_DONE) {
++        /* _acquire to read state before ret.  */
++        if (qatomic_load_acquire(&elem->state) != THREAD_DONE) {
+             continue;
+         }
+ 
+@@ -189,9 +194,6 @@ restart:
+         QLIST_REMOVE(elem, all);
+ 
+         if (elem->common.cb) {
+-            /* Read state before ret.  */
+-            smp_rmb();
+-
+             /* Schedule ourselves in case elem->common.cb() calls aio_poll() to
+              * wait for another request that completed at the same time.
+              */
+@@ -223,12 +225,12 @@ static void thread_pool_cancel(BlockAIOCB *acb)
+     trace_thread_pool_cancel_aio(elem, elem->common.opaque);
+ 
+     QEMU_LOCK_GUARD(&pool->lock);
+-    if (elem->state == THREAD_QUEUED) {
++    if (qatomic_read(&elem->state) == THREAD_QUEUED) {
+         QTAILQ_REMOVE(&pool->request_list, elem, reqs);
+         qemu_bh_schedule(pool->completion_bh);
+ 
+-        elem->state = THREAD_DONE;
+-        elem->ret = -ECANCELED;
++        qatomic_set(&elem->ret, -ECANCELED);
++        qatomic_store_release(&elem->state, THREAD_DONE);
+     }
+ 
+ }
 -- 
 2.52.0.239.gd5f0c6e74e-goog
 
