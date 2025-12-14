@@ -2,60 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70C66CBBC35
-	for <lists+qemu-devel@lfdr.de>; Sun, 14 Dec 2025 16:00:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A4ACBBB5D
+	for <lists+qemu-devel@lfdr.de>; Sun, 14 Dec 2025 15:12:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vUnZF-0003BP-3h; Sun, 14 Dec 2025 09:59:25 -0500
+	id 1vUmp8-0006Bl-Fg; Sun, 14 Dec 2025 09:11:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenwei.pi@linux.dev>)
- id 1vUi7n-000201-Nd
- for qemu-devel@nongnu.org; Sun, 14 Dec 2025 04:10:43 -0500
-Received: from out-170.mta0.migadu.com ([91.218.175.170])
+ (Exim 4.90_1) (envelope-from <functioner@sjtu.edu.cn>)
+ id 1vUmp2-0006Bb-G5
+ for qemu-devel@nongnu.org; Sun, 14 Dec 2025 09:11:40 -0500
+Received: from smtp232.sjtu.edu.cn ([202.120.2.232])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenwei.pi@linux.dev>)
- id 1vUi7k-00039E-NQ
- for qemu-devel@nongnu.org; Sun, 14 Dec 2025 04:10:43 -0500
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
- include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
- t=1765703438;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=YjccH9cASOhv8Xqy6ggla8HIcFFiQvPnmz2kFeaGjjw=;
- b=GE/rM1eyP6iMkeIurBP06z4wXr4YKlSPOEicEC6ZRHNO5eEFG6K+R8+cgYlNEcJdyh9Z4m
- xru7Jt2798iZsef0DV5sVSmW7eCuM0UZQ3Gk9TJD9VmDka8l2JiMTiRgN1JHD7Xz3LwkXp
- UD/rczU4Z8XaZIpWs/rzCILIMYM++NE=
-From: zhenwei pi <zhenwei.pi@linux.dev>
-To: qemu-devel@nongnu.org
-Cc: mst@redhat.com, arei.gonglei@huawei.com, nakamurajames123@gmail.com,
- qemu-security@nongnu.org, mcascell@redhat.com,
- zhenwei pi <zhenwei.pi@linux.dev>
-Subject: [PATCH 2/2] cryptodev-builtin: Limit the maximum size
-Date: Sun, 14 Dec 2025 17:09:39 +0800
-Message-ID: <20251214090939.408436-3-zhenwei.pi@linux.dev>
-In-Reply-To: <20251214090939.408436-1-zhenwei.pi@linux.dev>
-References: <20251214090939.408436-1-zhenwei.pi@linux.dev>
+ (Exim 4.90_1) (envelope-from <functioner@sjtu.edu.cn>)
+ id 1vUmoz-0001gV-DX
+ for qemu-devel@nongnu.org; Sun, 14 Dec 2025 09:11:39 -0500
+Received: from proxy188.sjtu.edu.cn (smtp188.sjtu.edu.cn [202.120.2.188])
+ by smtp232.sjtu.edu.cn (Postfix) with ESMTPS id D1127100AFE4A;
+ Sun, 14 Dec 2025 22:11:21 +0800 (CST)
+Received: from pc.. (unknown [202.120.40.100])
+ by proxy188.sjtu.edu.cn (Postfix) with ESMTPSA id A0AFA37C806;
+ Sun, 14 Dec 2025 22:11:20 +0800 (CST)
+From: Ziyang Zhang <functioner@sjtu.edu.cn>
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: Riku Voipio <riku.voipio@iki.fi>, Laurent Vivier <laurent@vivier.eu>,
+ Alex Bennee <alex.bennee@linaro.org>, Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Zhengwei Qi <qizhwei@sjtu.edu.cn>, Yun Wang <yunwang94@sjtu.edu.cn>,
+ Mingyuan Xia <xiamy@ultrarisc.com>, Kailiang Xu <xukl2019@sjtu.edu.cn>,
+ Ziyang Zhang <functioner@sjtu.edu.cn>
+Subject: [PATCH v3 0/2] linux-user: add plugin API to filter syscalls
+Date: Sun, 14 Dec 2025 22:10:20 +0800
+Message-Id: <20251214141022.173340-1-functioner@sjtu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-Received-SPF: pass client-ip=91.218.175.170; envelope-from=zhenwei.pi@linux.dev;
- helo=out-170.mta0.migadu.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=202.120.2.232;
+ envelope-from=functioner@sjtu.edu.cn; helo=smtp232.sjtu.edu.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Sun, 14 Dec 2025 09:59:22 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,44 +63,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This backend driver is used for demonstration purposes only, unlimited
-size leads QEMU OOM.
+We choose a smaller magic syscall number to avoid the illegal instruction
+exception [1] on qemu-arm.
 
-Fixes: 1653a5f3fc7 ("cryptodev: introduce a new cryptodev backend")
-Reported-by: AM 이재영 <nakamurajames123@gmail.com>
-Signed-off-by: zhenwei pi <zhenwei.pi@linux.dev>
----
- backends/cryptodev-builtin.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+PATCH v3:
+  1. Change to a smaller magic syscall number and add comments
+  2. Set register flags out of the for-loop
 
-diff --git a/backends/cryptodev-builtin.c b/backends/cryptodev-builtin.c
-index 0414c01e06..55a3fbd27b 100644
---- a/backends/cryptodev-builtin.c
-+++ b/backends/cryptodev-builtin.c
-@@ -53,6 +53,8 @@ typedef struct CryptoDevBackendBuiltinSession {
- 
- #define CRYPTODEV_BUITLIN_MAX_AUTH_KEY_LEN    512
- #define CRYPTODEV_BUITLIN_MAX_CIPHER_KEY_LEN  64
-+/* demonstration purposes only, use a limited size to avoid QEMU OOM */
-+#define CRYPTODEV_BUITLIN_MAX_REQUEST_SIZE  (1024 * 1024)
- 
- struct CryptoDevBackendBuiltin {
-     CryptoDevBackend parent_obj;
-@@ -98,12 +100,7 @@ static void cryptodev_builtin_init(
-                          1u << QCRYPTODEV_BACKEND_SERVICE_TYPE_MAC;
-     backend->conf.cipher_algo_l = 1u << VIRTIO_CRYPTO_CIPHER_AES_CBC;
-     backend->conf.hash_algo = 1u << VIRTIO_CRYPTO_HASH_SHA1;
--    /*
--     * Set the Maximum length of crypto request.
--     * Why this value? Just avoid to overflow when
--     * memory allocation for each crypto request.
--     */
--    backend->conf.max_size = LONG_MAX - sizeof(CryptoDevBackendOpInfo);
-+    backend->conf.max_size = CRYPTODEV_BUITLIN_MAX_REQUEST_SIZE;
-     backend->conf.max_cipher_key_len = CRYPTODEV_BUITLIN_MAX_CIPHER_KEY_LEN;
-     backend->conf.max_auth_key_len = CRYPTODEV_BUITLIN_MAX_AUTH_KEY_LEN;
-     cryptodev_builtin_init_akcipher(backend);
+PATCH v2:
+  1. Rebased on newest version of master
+
+PATCH v1:
+  1. Format the code
+
+RFC v2:
+  1. Simplify the syscall filter mechanism and remove fork-cpu
+  2. Add QEMU_PLUGIN_EV_VCPU_SYSCALL_FILTER enum
+
+RFC v1:
+  1. Add syscall filter registry
+  2. Add fork-cpu interface to re-enter cpu_loop when handling syscalls
+
+[1] https://lore.kernel.org/qemu-devel/20251212141541.1792111-1-functioner@sjtu.edu.cn/T/#m0e6809c5a894d64a8b7e67324a4b7cb414c644bf
+
+Ziyang Zhang (2):
+  linux-user: add plugin API to filter syscalls
+  tcg tests: add a test to verify the syscall filter plugin API
+
+ include/qemu/plugin-event.h                   |  1 +
+ include/qemu/plugin.h                         | 33 ++++++++++++-----
+ include/qemu/qemu-plugin.h                    | 32 ++++++++++++++++
+ include/user/syscall-trace.h                  | 17 +++++++++
+ linux-user/syscall.c                          |  7 +++-
+ plugins/api.c                                 |  7 ++++
+ plugins/core.c                                | 37 +++++++++++++++++++
+ tests/tcg/multiarch/Makefile.target           |  4 +-
+ .../multiarch/test-plugin-syscall-filter.c    | 35 ++++++++++++++++++
+ tests/tcg/plugins/syscall.c                   | 19 ++++++++++
+ 10 files changed, 180 insertions(+), 12 deletions(-)
+ create mode 100644 tests/tcg/multiarch/test-plugin-syscall-filter.c
+
 -- 
-2.43.0
+2.34.1
 
 
