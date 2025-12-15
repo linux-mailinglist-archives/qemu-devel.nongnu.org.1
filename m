@@ -2,102 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C322CC0146
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 23:04:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D2B9CC019A
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 23:06:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVGen-0005nc-94; Mon, 15 Dec 2025 17:03:05 -0500
+	id 1vVGeo-000653-3Z; Mon, 15 Dec 2025 17:03:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGeI-00050p-Qr
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:02:36 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGeO-0005Fe-Hm
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:02:40 -0500
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGeD-0002tH-EL
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:02:32 -0500
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGeM-0002vV-PR
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:02:40 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 4E8C93378B;
- Mon, 15 Dec 2025 22:02:02 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id E4EE25BD2A;
+ Mon, 15 Dec 2025 22:02:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1765836122; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1765836125; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Ejj8SHFCwe9/p1P7ixjeMELwlONdZ6cwRRvSelZ/Kp8=;
- b=vjkqTvTwlLGR322fM9DpyrulHPP/yvdZRbF14nYl6OHb5bf2PIN9hDpisE30kdvK1r+Rfm
- j82NqIkddsp8++sR7mLsU7ZVZRn7AQ8fN6dtVQviih9FaPV6W+qbYwErF/1g2PLfvbIJLO
- BmzPqHUHPFw1PdXFXyS5UJDfAjrz6DQ=
+ bh=p/nBXOIo2ZcXdwbvi4S1iTXg0TqbIwOv4w9aq2LbXy8=;
+ b=O2fh1C9kaAbYwuxW07erkF3+f7YSu9tjhUHP6vX+OD+0+QD/uJ7KlMYk3tmm+UfPQohF2a
+ 8/4cvTsWeVMMlxr/Mk6sbVF1G7zQNtuugjO/6nR5VhB5TD5BwuYmIDO4kzaFxHiiAAP8BY
+ R/uPMf9Pw8Co2aMo+mJ40rMed7mcYB0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1765836122;
+ s=susede2_ed25519; t=1765836125;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Ejj8SHFCwe9/p1P7ixjeMELwlONdZ6cwRRvSelZ/Kp8=;
- b=6mDCHHUZA/Xgm5cRMjCwrTW5c2+gy/NOpchLuoMY2DTJJHAzSUrU4HZxtKkDSCf6ghmeOZ
- VmrMR9R1R79x3VDA==
-Authentication-Results: smtp-out1.suse.de;
-	none
+ bh=p/nBXOIo2ZcXdwbvi4S1iTXg0TqbIwOv4w9aq2LbXy8=;
+ b=J2TNU8sFFw4HW+mR++FznoKXBdNo3wdnU7dt2hQTm0c24APcHpeiMfguLmOiyfi8c/uMg6
+ 4BbBptXSjg7+zoBA==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=MsOKkzsy;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=D0gMhVvE
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1765836122; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1765836124; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Ejj8SHFCwe9/p1P7ixjeMELwlONdZ6cwRRvSelZ/Kp8=;
- b=vjkqTvTwlLGR322fM9DpyrulHPP/yvdZRbF14nYl6OHb5bf2PIN9hDpisE30kdvK1r+Rfm
- j82NqIkddsp8++sR7mLsU7ZVZRn7AQ8fN6dtVQviih9FaPV6W+qbYwErF/1g2PLfvbIJLO
- BmzPqHUHPFw1PdXFXyS5UJDfAjrz6DQ=
+ bh=p/nBXOIo2ZcXdwbvi4S1iTXg0TqbIwOv4w9aq2LbXy8=;
+ b=MsOKkzsyE3h1I9/6zlZ7IBBE1PyMPYu/Y8KfGYFvmzZa0/K1hgkMltF0ue5chTnD+hYewT
+ P5QmWyWVp1QlPzGvtep604CXgdAxpSzt+6BHa1Msl0jprBgCTMPQN7L8P+paqc4ffz48OI
+ NJ05/MCAtduZj+vjaTK3u16F34pZwkM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1765836122;
+ s=susede2_ed25519; t=1765836124;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Ejj8SHFCwe9/p1P7ixjeMELwlONdZ6cwRRvSelZ/Kp8=;
- b=6mDCHHUZA/Xgm5cRMjCwrTW5c2+gy/NOpchLuoMY2DTJJHAzSUrU4HZxtKkDSCf6ghmeOZ
- VmrMR9R1R79x3VDA==
+ bh=p/nBXOIo2ZcXdwbvi4S1iTXg0TqbIwOv4w9aq2LbXy8=;
+ b=D0gMhVvEh38RWJD07wkCwi6HEEkQ6twSSef6SHMpGe/km6jaX4n+zl6wSObr9xEGFcU8pQ
+ elXZrvtWkFX3CkDQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 454F23EA63;
- Mon, 15 Dec 2025 22:02:00 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DA3243EA63;
+ Mon, 15 Dec 2025 22:02:02 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id YFbjAViFQGlrMQAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 15 Dec 2025 22:02:00 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 2A5hJlqFQGlrMQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 15 Dec 2025 22:02:02 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v3 29/51] tests/qtest/migration: Add config QDict
-Date: Mon, 15 Dec 2025 19:00:15 -0300
-Message-ID: <20251215220041.12657-30-farosas@suse.de>
+Subject: [PATCH v3 30/51] tests/qtest/migration: Add temporary code to toggle
+ usage of config
+Date: Mon, 15 Dec 2025 19:00:16 -0300
+Message-ID: <20251215220041.12657-31-farosas@suse.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251215220041.12657-1-farosas@suse.de>
 References: <20251215220041.12657-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.987];
- MIME_GOOD(-0.10)[text/plain];
- FUZZY_RATELIMITED(0.00)[rspamd.com];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; TO_DN_SOME(0.00)[];
+ R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+ FROM_HAS_DN(0.00)[]; ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[]; RCVD_TLS_ALL(0.00)[];
- R_RATELIMIT(0.00)[to_ip_from(RLjrdmmf3juheryardexw6jb95)];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_FIVE(0.00)[6];
- FROM_EQ_ENVFROM(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- RCVD_COUNT_TWO(0.00)[2];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email, suse.de:mid,
- imap1.dmz-prg2.suse.org:helo]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+ FUZZY_RATELIMITED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_FIVE(0.00)[6];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: E4EE25BD2A
+X-Spam-Score: -3.01
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -119,48 +126,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the config object to the MigrateCommon structure and allocate/free
-it in the wrappers that are used when dispatched every migration test.
+The tests are being refactored to pass migration options to QEMU using
+the new API of passing a JSON object as argument the migration
+commands instead of using several calls to the
+migrate_set_capabilities|parameters commands.
+
+Since multiple tests share common infrastructure (framework.c,
+migration-utils.c, migration-qmp.c), it's cumbersome to convert tests
+in small chunks, which would require changes to every common function
+to accept both the new and old ways.
+
+After some tinkering, an easier way to do this transition is to allow
+the tests to set a key in the config dict itself telling whether the
+config is supported. With this, the common functions can be fully
+altered to support the config object, as long as they check this
+temporary key and do the right thing.
+
+QEMU doesn't know about this hack, so some code is needed to hide it
+when issuing QMP commands with the config object.
+
+This will all be removed once tests are fully converted.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration/framework.h      | 2 ++
- tests/qtest/migration/migration-util.c | 2 ++
- 2 files changed, 4 insertions(+)
+ tests/qtest/migration/migration-qmp.h  |  1 -
+ tests/qtest/migration/migration-util.c |  1 +
+ tests/qtest/migration/migration-util.h | 34 ++++++++++++++++++++++++++
+ 3 files changed, 35 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/migration/framework.h b/tests/qtest/migration/framework.h
-index bf3492a59e..65c656e0d3 100644
---- a/tests/qtest/migration/framework.h
-+++ b/tests/qtest/migration/framework.h
-@@ -151,6 +151,8 @@ typedef struct {
-      * used for the deferred migrate_incoming call.
-      */
-     bool incoming_defer;
-+
-+    QDict *config;
- } MigrateStart;
- 
- typedef enum PostcopyRecoveryFailStage {
+diff --git a/tests/qtest/migration/migration-qmp.h b/tests/qtest/migration/migration-qmp.h
+index 940ffd5950..9a36a677ba 100644
+--- a/tests/qtest/migration/migration-qmp.h
++++ b/tests/qtest/migration/migration-qmp.h
+@@ -47,5 +47,4 @@ void migrate_recover(QTestState *who, const char *uri);
+ void migrate_cancel(QTestState *who);
+ void migrate_postcopy_start(QTestState *from, QTestState *to,
+                             QTestMigrationState *src_state);
+-
+ #endif /* MIGRATION_QMP_H */
 diff --git a/tests/qtest/migration/migration-util.c b/tests/qtest/migration/migration-util.c
-index c2462306a1..416dd10ef8 100644
+index 416dd10ef8..e702f00896 100644
 --- a/tests/qtest/migration/migration-util.c
 +++ b/tests/qtest/migration/migration-util.c
-@@ -243,6 +243,7 @@ static void migration_test_destroy(gpointer data)
- {
-     MigrationTest *test = (MigrationTest *)data;
- 
-+    qdict_unref(test->data->start.config);
-     g_free(test->data);
-     g_free(test->name);
-     g_free(test);
-@@ -253,6 +254,7 @@ static void migration_test_wrapper(const void *data)
-     MigrationTest *test = (MigrationTest *)data;
+@@ -255,6 +255,7 @@ static void migration_test_wrapper(const void *data)
  
      test->data = g_new0(MigrateCommon, 1);
-+    test->data->start.config = qdict_new();
+     test->data->start.config = qdict_new();
++    qdict_put_bool(test->data->start.config, "use-config", false);
  
      g_test_message("Running /%s%s", qtest_get_arch(), test->name);
      test->func(test->name, test->data);
+diff --git a/tests/qtest/migration/migration-util.h b/tests/qtest/migration/migration-util.h
+index e73d69bab0..3c3b5a8777 100644
+--- a/tests/qtest/migration/migration-util.h
++++ b/tests/qtest/migration/migration-util.h
+@@ -60,4 +60,38 @@ void migration_test_add_suffix(const char *path, const char *suffix,
+ char *migrate_get_connect_uri(QTestState *who);
+ void migrate_set_ports(QTestState *to, QList *channel_list);
+ 
++/*
++ * Scaffolding to allow the framework _common functions and _qmp
++ * functions to use the config object while some tests are still using
++ * migrate_set_*. Tests that have been converted will set use-config =
++ * true on the config dict.
++ */
++static bool has_key;
++static bool use_config;
++static inline QDict *config_load(QDict *config)
++{
++    if (!config) {
++        return NULL;
++    }
++
++    has_key = qdict_haskey(config, "use-config");
++    if (has_key) {
++        use_config = qdict_get_try_bool(config, "use-config", false);
++        qdict_del(config, "use-config");
++    }
++
++    if (use_config) {
++        return config;
++    }
++
++    return NULL;
++}
++
++static inline void config_put(QDict *config)
++{
++    if (config && has_key) {
++        qdict_put_bool(config, "use-config", use_config);
++    }
++}
++
+ #endif /* MIGRATION_UTIL_H */
 -- 
 2.51.0
 
