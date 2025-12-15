@@ -2,92 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE443CBF11C
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 17:57:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98088CBF0F2
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 17:56:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVBsw-0006Sn-II; Mon, 15 Dec 2025 11:57:22 -0500
+	id 1vVBqh-0004yS-Co; Mon, 15 Dec 2025 11:55:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <phind.uet@gmail.com>)
- id 1vVBsm-0006Rm-9C
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 11:57:13 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <phind.uet@gmail.com>)
- id 1vVBsj-0003LL-UG
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 11:57:11 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-2a0ac29fca1so15962725ad.2
- for <qemu-devel@nongnu.org>; Mon, 15 Dec 2025 08:57:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1765817828; x=1766422628; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=H4/GsjTwUGDM+K/KryRV+8rwc2Dd9RocmQUXhcfoTr8=;
- b=hXHL2mGMByqQm30BMsclKvsYMK1qZfllHvdVBq/d4xcFK12tCsvQzY4bRgnX+qdtv5
- XYz0bq6YMf6H/ksZof6shyopacsbUm/tiRJUbQpNdw9kebevI6SbD3hait6OiV8hsKsq
- rwNoNOOvXcFHWgOMiGqaXkxFQV9I2+iBVo9M38POejTGii9v+ZJjR+R3dLGaZ82oMuqj
- MB/on4aroTduvT0k3RvK48Fc+P4T1uZYNqr4FhkjfDb4YrpSYPH6BBoJNtwkZMOzhiOE
- Wxx2ZdM9fCocl3e+kHHdAJePfDQDmCmjvNjoPmNEm9yeBRrItU7oPl2zoWJJzsb+2Ot8
- mt6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765817828; x=1766422628;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=H4/GsjTwUGDM+K/KryRV+8rwc2Dd9RocmQUXhcfoTr8=;
- b=lQzlWyoewmariq9kROId9p7Xzhhl7Qd4aKsjINU3ONt+GmpDaNPnO64mbOT/nWd1KO
- EhiIAs+nuNe4Lm0fiHQOcmgLBN+KMozMwR37Xy8YQmPi5D40T1TBbYWoYsFfAQmns0el
- NhZsNt6FicLe2BthbvglkDC3nVy4TOHytN7RhTqWYIGUFZ34MO3lQFThovM9b4jOMQcn
- EdL7p5FNRL2nkw1/fDs23DIAepvBo5bW/iZSLDatVmMSPJjztE0Jo9MnVdQXLDBKGl/I
- 0SN473OVhmQ+D7Ulup7+3+YpFL40aumSi9FBo3CcS+9XqEIbz08lN0htesID5wBtMR55
- EWhw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVgP48AVkigatBqY7z5PIzACNz5b/EUOfqarHck4i8gnFHIr6qPBNh8/SY7UQEIDSWy63LVEY2xcRtx@nongnu.org
-X-Gm-Message-State: AOJu0YyocsBR6YTG0cv7pMYl61t81HQEXRgpZTTZVBf82ZxZ4fhavB+i
- Yt0cqPamlSjkZEZPl04b8v+lNKv+Qgn65e1PCim0tuotrdHAD8lrbpx9e5roBRYZ
-X-Gm-Gg: AY/fxX4bYggPzO6Qo31rkDlK/opCvpDlu5w+H22B2yojytH0AE4YxChNT2xpDrZrjNg
- AGrtpfV8hnuF17pXUlkkcNvd1lBjuojE4iGcpwZU644NtHZAKNuQjjNU+WG4V+QV7S2MWHJ0/0I
- MHPfNGl7CKnSlDMKYR3S7RXBs0VO38ITLgy9Jcw0u/sUkA2tOBmgWj8tQhNoRE14QmfG67+v6EE
- sYqbB7bTcJoLXdRODDboUAGDHJQRbQvCLUCr6j9JKF9qtsDMyNbZnjCKq4bzCy97lSo+jvCa9SY
- LYcTKeB7xCyeEZxs3dRDvAW2wYxE4Txna1y5oQC2gd8euj+b+W3rrdUE6HpwQg48nq+wfXcR//O
- 7FpyDs2Z8ZiC8u4ELY6FYgi6C4JimKJCkQfOCiD9vtA9T6sU6CaLB9LsJczIu0YlP9IBSkI6uVg
- fT8pZaOrWCMYfstBkQ8cvQ/3M=
-X-Google-Smtp-Source: AGHT+IEB0XnC54MH48uVLSN7aS46+++zYwFuj1f9rEoJIyp5HstTesNj3DtOeABvJceBaf2VvYNzZg==
-X-Received: by 2002:a17:903:90c:b0:297:d6c1:26e with SMTP id
- d9443c01a7336-29f23b1e1e4mr150181125ad.6.1765817828390; 
- Mon, 15 Dec 2025 08:57:08 -0800 (PST)
-Received: from localhost.localdomain ([116.86.160.247])
- by smtp.googlemail.com with ESMTPSA id
- d9443c01a7336-29ee9d38c74sm140084775ad.31.2025.12.15.08.57.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Dec 2025 08:57:08 -0800 (PST)
-From: phind.uet@gmail.com
-To: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Stefan Weil <sw@weilnetz.de>
-Cc: Nguyen Dinh Phi <phind.uet@gmail.com>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org
-Subject: [PATCH 2/2] util: Move qemu_ftruncate64 from block/file-win32.c to
- oslib-win32.c
-Date: Tue, 16 Dec 2025 00:45:12 +0800
-Message-ID: <20251215164512.322786-3-phind.uet@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251215164512.322786-1-phind.uet@gmail.com>
-References: <20251215164512.322786-1-phind.uet@gmail.com>
+ (Exim 4.90_1) (envelope-from <uwu@icenowy.me>) id 1vVBqM-0004xU-NU
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 11:54:42 -0500
+Received: from sender4-op-o15.zoho.com ([136.143.188.15])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <uwu@icenowy.me>) id 1vVBqJ-0001iV-IS
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 11:54:41 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1765817554; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=Tc53rykijguGng9yYKEEUVGC2Jb2qdgQtApnef1tbvc3RdpVvl/fXvEjzFrVMfkqajgnknvMz8FF7Tfh6BbpkpyfVFJ9j6UEJHuOqFCGoad2t7fOiIgvhfNci2WU6jJl5Nkj/OYmPnBrDpHo7xJ7tsJaZ38+rsa5Z42+op02MLE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1765817554;
+ h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=fhf/i3W922cwjDZzN+Aa9fovELFDhLsvX8mkJjuCJJM=; 
+ b=NmVj8ODn3GiqOuBXgQEJpLltc0E7KhG+GmDTa7Sv/dx8iEkh3pC3VamjYvQysmPHNmCphchCvK0Ks58/Vk4EmJSasqajA5eUbTkeh5PA7qguq/jBCpF2FJ6poU6qwBEo7H2dbsIpP3PIdstFMMkjhjkzQ6L5ffyq718z67pFXY0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=icenowy.me;
+ spf=pass  smtp.mailfrom=uwu@icenowy.me;
+ dmarc=pass header.from=<uwu@icenowy.me>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1765817554; 
+ s=zmail2; d=icenowy.me; i=uwu@icenowy.me;
+ h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
+ bh=fhf/i3W922cwjDZzN+Aa9fovELFDhLsvX8mkJjuCJJM=;
+ b=AWB58VYPxD1Fi2QiXwGt8AAAthX6GT+mpml9W+/NrYOeN6wwcfOauzcSNC3AcKcU
+ 5JF+PxNqP/boJXC0RtCLAIYoiR7IccqnJjMUtANfBGhgbJq9mhoS9zl6ZxlDctKm/h6
+ H/XIf0XeXBI4Hb+MLeHwmpqU3rBCTPZsA/6yYeXuubRLklTNJ3kXrXPhkhqYCHgkK/9
+ dAfTxwya1LUR+NyEzCIJzlmhfmqkWG9oRDXj9436pRx+tkAJfWsXJQeXmwLXuqPQHD6
+ ZnaddWHR25POBeooGp4EFQJv7/NraRuImzbqE9DtR58gm+9807SAv5w916k+yQwz7wJ
+ XXQy5lJtzw==
+Received: by mx.zohomail.com with SMTPS id 1765817552126861.6983322663837;
+ Mon, 15 Dec 2025 08:52:32 -0800 (PST)
+Message-ID: <70995759267010817b2005884979e57117006e7d.camel@icenowy.me>
+Subject: Re: [PATCH 5/7] Add termios2 support to ppc target
+From: Icenowy Zheng <uwu@icenowy.me>
+To: Luca Bonissi <qemu@bonslack.org>, Richard Henderson
+ <richard.henderson@linaro.org>, Laurent Vivier <laurent@vivier.eu>
+Cc: qemu-devel@nongnu.org
+Date: Tue, 16 Dec 2025 00:52:27 +0800
+In-Reply-To: <ab68ba71-acd1-4ef1-bdde-f72a9e8e3152@bonslack.org>
+References: <ab68ba71-acd1-4ef1-bdde-f72a9e8e3152@bonslack.org>
+Organization: Anthon Open-Source Community
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.44.4 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=phind.uet@gmail.com; helo=mail-pl1-x633.google.com
+X-ZohoMailClient: External
+Received-SPF: pass client-ip=136.143.188.15; envelope-from=uwu@icenowy.me;
+ helo=sender4-op-o15.zoho.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,104 +80,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nguyen Dinh Phi <phind.uet@gmail.com>
-
-qemu_ftruncate64() is utility function that may be used outside of the block 
-layer. Move it to util/oslib-win32.c where other Windows-specific utility 
-functions reside.
-
-Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
----
- block/file-win32.c | 32 --------------------------------
- util/oslib-win32.c | 34 ++++++++++++++++++++++++++++++++++
- 2 files changed, 34 insertions(+), 32 deletions(-)
-
-diff --git a/block/file-win32.c b/block/file-win32.c
-index af9aea631c..8a44853389 100644
---- a/block/file-win32.c
-+++ b/block/file-win32.c
-@@ -170,38 +170,6 @@ static BlockAIOCB *paio_submit(BlockDriverState *bs, HANDLE hfile,
-     return thread_pool_submit_aio(aio_worker, acb, cb, opaque);
- }
- 
--int qemu_ftruncate64(int fd, int64_t length)
--{
--    LARGE_INTEGER li;
--    DWORD dw;
--    LONG high;
--    HANDLE h;
--    BOOL res;
--
--    if ((GetVersion() & 0x80000000UL) && (length >> 32) != 0)
--        return -1;
--
--    h = (HANDLE)_get_osfhandle(fd);
--
--    /* get current position, ftruncate do not change position */
--    li.HighPart = 0;
--    li.LowPart = SetFilePointer (h, 0, &li.HighPart, FILE_CURRENT);
--    if (li.LowPart == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR) {
--        return -1;
--    }
--
--    high = length >> 32;
--    dw = SetFilePointer(h, (DWORD) length, &high, FILE_BEGIN);
--    if (dw == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR) {
--        return -1;
--    }
--    res = SetEndOfFile(h);
--
--    /* back to old position */
--    SetFilePointer(h, li.LowPart, &li.HighPart, FILE_BEGIN);
--    return res ? 0 : -1;
--}
--
- static int set_sparse(int fd)
- {
-     DWORD returned;
-diff --git a/util/oslib-win32.c b/util/oslib-win32.c
-index 839b8a4170..766c602172 100644
---- a/util/oslib-win32.c
-+++ b/util/oslib-win32.c
-@@ -899,3 +899,37 @@ int qemu_shm_alloc(size_t size, Error **errp)
-     error_setg(errp, "Shared memory is not supported.");
-     return -1;
- }
-+
-+int qemu_ftruncate64(int fd, int64_t length)
-+{
-+    LARGE_INTEGER li;
-+    DWORD dw;
-+    LONG high;
-+    HANDLE h;
-+    BOOL res;
-+
-+    if ((GetVersion()&0x80000000UL) && (length >> 32) != 0) {
-+        return -1;
-+    }
-+
-+    h = (HANDLE)_get_osfhandle(fd);
-+
-+    /* get current position, ftruncate do not change position */
-+    li.HighPart = 0;
-+    li.LowPart = SetFilePointer (h, 0, &li.HighPart, FILE_CURRENT);
-+    if (li.LowPart == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR) {
-+        return -1;
-+    }
-+
-+    high = length >> 32;
-+    dw = SetFilePointer(h, (DWORD) length, &high, FILE_BEGIN);
-+    if (dw == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR) {
-+        return -1;
-+    }
-+    res = SetEndOfFile(h);
-+
-+    /* back to old position */
-+    SetFilePointer(h, li.LowPart, &li.HighPart, FILE_BEGIN);
-+    return res ? 0 : -1;
-+}
-+
--- 
-2.43.0
+5ZyoIDIwMjUtMTAtMzHmmJ/mnJ/kupTnmoQgMTQ6MjYgKzAxMDDvvIxMdWNhIEJvbmlzc2nlhpnp
+gZPvvJoKPiA+IEZyb20gMmFhMGExM2RhMGRhNmUzYTgwNDM1OWYyNGNjMTI5OGI5N2NkYTQ1YyBN
+b24gU2VwIDE3IDAwOjAwOjAwCj4gPiAyMDAxCj4gRnJvbTogTHVjYSBCb25pc3NpIDxxZW11QGJv
+bnNsYWNrLm9yZz4KPiBEYXRlOiBGcmksIDMxIE9jdCAyMDI1IDEzOjMxOjM2ICswMTAwCj4gU3Vi
+amVjdDogW1BBVENIIDUvN10gQWRkIHRlcm1pb3MyIHN1cHBvcnQgdG8gcHBjIHRhcmdldAo+IAo+
+IFNpZ25lZC1vZmYtYnk6IEx1Y2EgQm9uaXNzaSA8cWVtdUBib25zbGFjay5vcmc+Cj4gLS0tCj4g
+wqBsaW51eC11c2VyL3BwYy90ZXJtYml0cy5oIHwgMjQgKysrKysrKysrKysrKysrKysrKysrKysr
+Cj4gwqAxIGZpbGUgY2hhbmdlZCwgMjQgaW5zZXJ0aW9ucygrKQo+IAo+IGRpZmYgLS1naXQgYS9s
+aW51eC11c2VyL3BwYy90ZXJtYml0cy5oIGIvbGludXgtdXNlci9wcGMvdGVybWJpdHMuaAo+IGlu
+ZGV4IGViMjI2ZTA5OTkuLmFlNmVlODg5N2MgMTAwNjQ0Cj4gLS0tIGEvbGludXgtdXNlci9wcGMv
+dGVybWJpdHMuaAo+ICsrKyBiL2xpbnV4LXVzZXIvcHBjL3Rlcm1iaXRzLmgKPiBAQCAtMjAsNiAr
+MjAsMjggQEAgc3RydWN0IHRhcmdldF90ZXJtaW9zIHsKPiDCoMKgwqDCoCB0YXJnZXRfc3BlZWRf
+dCBjX29zcGVlZDvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIC8qIG91dHB1dCBzcGVlZCAq
+Lwo+IMKgfTsKPiDCoAo+ICtzdHJ1Y3QgdGFyZ2V0X3Rlcm1pb3MyIHsKPiArwqDCoMKgIHRhcmdl
+dF90Y2ZsYWdfdCBjX2lmbGFnO8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgLyogaW5wdXQg
+bW9kZSBmbGFncyAqLwo+ICvCoMKgwqAgdGFyZ2V0X3RjZmxhZ190IGNfb2ZsYWc7wqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCAvKiBvdXRwdXQgbW9kZSBmbGFncyAqLwo+ICvCoMKgwqAgdGFy
+Z2V0X3RjZmxhZ190IGNfY2ZsYWc7wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAvKiBjb250
+cm9sIG1vZGUgZmxhZ3MgKi8KPiArwqDCoMKgIHRhcmdldF90Y2ZsYWdfdCBjX2xmbGFnO8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgLyogbG9jYWwgbW9kZSBmbGFncyAqLwo+ICvCoMKgwqAg
+dGFyZ2V0X2NjX3QgY19jY1tUQVJHRVRfTkNDU107wqDCoMKgwqDCoMKgwqDCoCAvKiBjb250cm9s
+IGNoYXJhY3RlcnMgKi8KPiArwqDCoMKgIHRhcmdldF9jY190IGNfbGluZTvCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAvKiBsaW5lIGRpc2NpcGxpbmUgKi8KPiArwqDCoMKg
+IHRhcmdldF9zcGVlZF90IGNfaXNwZWVkO8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgLyog
+aW5wdXQgc3BlZWQgKi8KPiArwqDCoMKgIHRhcmdldF9zcGVlZF90IGNfb3NwZWVkO8KgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAgLyogb3V0cHV0IHNwZWVkICovCj4gK307Cj4gKwo+ICtzdHJ1
+Y3QgdGFyZ2V0X2t0ZXJtaW9zIHsKPiArwqDCoMKgIHRhcmdldF90Y2ZsYWdfdCBjX2lmbGFnO8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgLyogaW5wdXQgbW9kZSBmbGFncyAqLwo+ICvCoMKg
+wqAgdGFyZ2V0X3RjZmxhZ190IGNfb2ZsYWc7wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAv
+KiBvdXRwdXQgbW9kZSBmbGFncyAqLwo+ICvCoMKgwqAgdGFyZ2V0X3RjZmxhZ190IGNfY2ZsYWc7
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAvKiBjb250cm9sIG1vZGUgZmxhZ3MgKi8KPiAr
+wqDCoMKgIHRhcmdldF90Y2ZsYWdfdCBjX2xmbGFnO8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgLyogbG9jYWwgbW9kZSBmbGFncyAqLwo+ICvCoMKgwqAgdGFyZ2V0X2NjX3QgY19jY1tUQVJH
+RVRfTkNDU107wqDCoMKgwqDCoMKgwqDCoCAvKiBjb250cm9sIGNoYXJhY3RlcnMgKi8KPiArwqDC
+oMKgIHRhcmdldF9jY190IGNfbGluZTvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCAvKiBsaW5lIGRpc2NpcGxpbmUgKi8KPiArwqDCoMKgIHRhcmdldF9zcGVlZF90IGNfaXNw
+ZWVkO8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgLyogaW5wdXQgc3BlZWQgKi8KPiArwqDC
+oMKgIHRhcmdldF9zcGVlZF90IGNfb3NwZWVkO8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
+Lyogb3V0cHV0IHNwZWVkICovCj4gK307Cj4gKwoKV2VsbCB5b3VyIHRoaXMgcGF0Y2ggc2VlbXMg
+dG8gYmUgaW50cm9kdWNpbmcgbm9uLW5lZWRlZCB0aGluZ3MgZm9yClBvd2VyUEM/CgpBbGwgMyBz
+dHJ1Y3R1cmVzIGFyZSB0aGUgc2FtZSBoZXJlLCBhbmQgUFBDIG5ldmVyIGhhcyBhIHRlcm1pb3My
+CmludGVyZmFjZSAoZXhjZXB0IGluc2lkZSB0aGUgaW50ZXJuYWwgb2YgZ2xpYmMpLgoKPiDCoC8q
+IGNfY2MgY2hhcmFjdGVyIG9mZnNldHMgKi8KPiDCoCNkZWZpbmUgVEFSR0VUX1ZJTlRSwqDCoMKg
+MAo+IMKgI2RlZmluZSBUQVJHRVRfVlFVSVTCoMKgwqAxCj4gQEAgLTIyNSw2ICsyNDcsOCBAQCBz
+dHJ1Y3QgdGFyZ2V0X3Rlcm1pb3Mgewo+IMKgI2RlZmluZSBUQVJHRVRfVElPQ1NCUkvCoMKgwqDC
+oMKgwqDCoMKgMHg1NDI3wqAgLyogQlNEIGNvbXBhdGliaWxpdHkgKi8KPiDCoCNkZWZpbmUgVEFS
+R0VUX1RJT0NDQlJLwqDCoMKgwqDCoMKgwqDCoDB4NTQyOMKgIC8qIEJTRCBjb21wYXRpYmlsaXR5
+ICovCj4gwqAjZGVmaW5lIFRBUkdFVF9USU9DR1NJRMKgwqDCoMKgwqDCoMKgwqAweDU0MjnCoCAv
+KiBSZXR1cm4gdGhlIHNlc3Npb24gSUQgb2YKPiBGRCAqLwo+ICsjZGVmaW5lIFRBUkdFVF9USU9D
+R1JTNDg1wqDCoMKgwqDCoMKgMHg1NDJlCj4gKyNkZWZpbmUgVEFSR0VUX1RJT0NTUlM0ODXCoMKg
+wqDCoMKgwqAweDU0MmYKCkkgZG9uJ3QgdGhpbmsgdGhlc2UgdHdvIElPQ1RMJ3MgYXJlIHJlbGF0
+ZWQgaGVyZS4KCldlbGwgdGhleSdyZSBtaXNzaW5nLCBidXQgdGhleSdyZSBub3QgaW1wbGVtZW50
+ZWQgZWl0aGVyLgoKPiDCoCNkZWZpbmUgVEFSR0VUX1RJT0NHUFROwqDCoMKgwqDCoMKgwqDCoFRB
+UkdFVF9JT1IoJ1QnLDB4MzAsIHVuc2lnbmVkIGludCkgLyoKPiBHZXQgUHR5IE51bWJlciAob2Yg
+cHR5LW11eCBkZXZpY2UpICovCj4gwqAjZGVmaW5lIFRBUkdFVF9USU9DU1BUTENLwqDCoMKgwqDC
+oMKgVEFSR0VUX0lPVygnVCcsMHgzMSwgaW50KcKgIC8qCj4gTG9jay91bmxvY2sgUHR5ICovCj4g
+wqAjZGVmaW5lIFRBUkdFVF9USU9DR1BUUEVFUsKgwqDCoMKgwqAgVEFSR0VUX0lPKCdUJywgMHg0
+MSkgLyogU2FmZWx5IG9wZW4KPiB0aGUgc2xhdmUgKi8KCg==
 
 
