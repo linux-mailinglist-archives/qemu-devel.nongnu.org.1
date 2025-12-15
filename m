@@ -2,60 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C7C4CBF3B9
+	by mail.lfdr.de (Postfix) with ESMTPS id 22227CBF3B6
 	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 18:27:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVCKy-00005q-7F; Mon, 15 Dec 2025 12:26:20 -0500
+	id 1vVCL2-00008C-4Y; Mon, 15 Dec 2025 12:26:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vVCKl-0008QD-Sh
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 12:26:07 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vVCKo-0008TG-SZ
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 12:26:12 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vVCKk-0005qQ-Bo
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 12:26:07 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1vVCKn-0005vr-7T
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 12:26:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1765819565;
+ s=mimecast20190719; t=1765819568;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rOwjMdfixca74WC5xawpgiSE6Pw1bhbT70o84yrgRTo=;
- b=G5rN9/fcuASVffjYaCrmWbc4Q2oVRW/sETqnDTQIptdV4HCzv3NRvjeUiv5y0T/a2/W4hL
- 0Bzkg+l5JoVz6nohtbu1phCY2F2AxZqkthayn5faor+pdYDljuLGX5/piStDlqAbZ9dyMA
- 263fonnpu+0ljovYxZSznyui++CCSBQ=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=3goVdkDsGTkKhMU3MU9FIj8mf5l+sLi4elvdbZrGq98=;
+ b=H1lVC80q6s9drvsR742RoQ/dCMtNkCH8qL32SBWfoty0k9d2h0V0KK0Bw7uSxiR8jfjNqA
+ xHqgqAzJts137gJWk9NQsBPHoAdzV1EtGwTyvhOGZRHXI1S+AQq2t3Lyf9bMwS83Wfg6I/
+ JCbAdUJertMN94qKAUYXTaYWqIDogiE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-483-LA1TmNCGNYeZsYLlf4eOZQ-1; Mon,
- 15 Dec 2025 12:26:01 -0500
-X-MC-Unique: LA1TmNCGNYeZsYLlf4eOZQ-1
-X-Mimecast-MFC-AGG-ID: LA1TmNCGNYeZsYLlf4eOZQ_1765819560
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-517-Hn9ETNCPNgm-YwtFi5P8Zg-1; Mon,
+ 15 Dec 2025 12:26:03 -0500
+X-MC-Unique: Hn9ETNCPNgm-YwtFi5P8Zg-1
+X-Mimecast-MFC-AGG-ID: Hn9ETNCPNgm-YwtFi5P8Zg_1765819562
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C2DA81800365; Mon, 15 Dec 2025 17:25:59 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0590D19560B1; Mon, 15 Dec 2025 17:26:02 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.44.32.188])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 49BFE19560A7; Mon, 15 Dec 2025 17:25:57 +0000 (UTC)
+ id 5B4F619560A7; Mon, 15 Dec 2025 17:26:00 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	richard.henderson@linaro.org,
 	qemu-devel@nongnu.org
-Subject: [PULL 1/2] tests/qemu-iotests: Fix check for existing file in
- _require_disk_usage()
-Date: Mon, 15 Dec 2025 18:25:52 +0100
-Message-ID: <20251215172553.467516-2-kwolf@redhat.com>
+Subject: [PULL 2/2] block: Fix BDS use after free during shutdown
+Date: Mon, 15 Dec 2025 18:25:53 +0100
+Message-ID: <20251215172553.467516-3-kwolf@redhat.com>
 In-Reply-To: <20251215172553.467516-1-kwolf@redhat.com>
 References: <20251215172553.467516-1-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
@@ -83,35 +81,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+During shutdown, blockdev_close_all_bdrv_states() drops any block node
+references that are still owned by the monitor (i.e. the user). However,
+in doing so, it forgot to also remove the node from monitor_bdrv_states
+(which qmp_blockdev_del() correctly does), which means that later calls
+of bdrv_first()/bdrv_next() will still return the (now stale) pointer to
+the node.
 
-Looks like the "$" has been forgotten here to get the contents of
-the FILENAME variable.
+Usually there is no such call after this point, but in some cases it can
+happen. In the reported case, there was an ongoing migration, and the
+migration thread wasn't shut down yet: migration_shutdown() called by
+qemu_cleanup() doesn't actually wait for the migration to be shut down,
+but may just move it to MIGRATION_STATUS_CANCELLING. The next time
+migration_iteration_finish() runs, it sees the status and tries to
+re-activate all block devices that migration may have previously
+inactivated. This is where bdrv_first()/bdrv_next() get called and the
+access to the already freed node happens.
 
-Fixes: c49dda7254d ("iotests: Filter out ZFS in several tests")
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20251208075320.35682-1-thuth@redhat.com>
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+It is debatable if migration_shutdown() should really return before
+migration has settled, but leaving a dangling pointer in the list of
+monitor-owned block nodes is clearly a bug either way and fixing it
+solves the immediate problem, so fix it.
+
+Cc: qemu-stable@nongnu.org
+Reported-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+Message-ID: <20251215150714.130214-1-kwolf@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- tests/qemu-iotests/common.rc | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ blockdev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/qemu-iotests/common.rc b/tests/qemu-iotests/common.rc
-index 10d83d8361b..c0f8f0f8dfa 100644
---- a/tests/qemu-iotests/common.rc
-+++ b/tests/qemu-iotests/common.rc
-@@ -1008,7 +1008,7 @@ _require_disk_usage()
-     else
-         FILENAME="$TEST_IMG_FILE"
-     fi
--    if [ -e "FILENAME" ]; then
-+    if [ -e "$FILENAME" ]; then
-         echo "unwilling to overwrite existing file"
-         exit 1
-     fi
+diff --git a/blockdev.c b/blockdev.c
+index dbd1d4d3e80..6e86c6262f9 100644
+--- a/blockdev.c
++++ b/blockdev.c
+@@ -686,6 +686,7 @@ void blockdev_close_all_bdrv_states(void)
+ 
+     GLOBAL_STATE_CODE();
+     QTAILQ_FOREACH_SAFE(bs, &monitor_bdrv_states, monitor_list, next_bs) {
++        QTAILQ_REMOVE(&monitor_bdrv_states, bs, monitor_list);
+         bdrv_unref(bs);
+     }
+ }
 -- 
 2.52.0
 
