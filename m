@@ -2,90 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1A11CBF1E3
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 18:07:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C3E6CBF358
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 18:18:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVC1o-0002qc-2k; Mon, 15 Dec 2025 12:06:32 -0500
+	id 1vVCDh-0002Uz-24; Mon, 15 Dec 2025 12:18:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vVC1H-0002mJ-H0
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 12:06:03 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vVC1F-0006Np-DE
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 12:05:59 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-4777771ed1aso28307785e9.2
- for <qemu-devel@nongnu.org>; Mon, 15 Dec 2025 09:05:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1765818354; x=1766423154; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=5dqEMUNpwCwHTOlA0/N2E0eE6wBHpfqJOJYF7Yrn5T4=;
- b=k3Y6BthuytoizW6KhtEKd6k2Ju36FRGSJjbNlXvb33dDsQbPkM7rfDx1/iVR3Eci7R
- 1z6F6jgc/7riBZKYcC/U//Kbmsaz1Rx52SabcUAGli7CoXXXEfMcWwTCJUn6KZuzU7YO
- KDgDTFKCWWf5xKR9huh/TT9r4PHdb/3mWwmXyyGKzBIhMtdrnOxTzDm3gOPtnP4JJVBW
- SDPShfm4Bhu7OkoIiQIgqxAg8ruro3BcjeVKtwwUPScbr5dQZENPOCDWPdvKwAQ+zxAw
- /Y71xmuMHs/qdo5eAfuTG4+Ul9lI4mZxAhsVf2D3bRmotQV6pSpWFGIbkHaMdGqYHLkE
- i+ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765818354; x=1766423154;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=5dqEMUNpwCwHTOlA0/N2E0eE6wBHpfqJOJYF7Yrn5T4=;
- b=b5WtHbm7ut5681KYkqcUpqhpWby2yWDAlHNxPalSl2iIrVCYmm6j5CqLgoYKLi1CEz
- JcFnx/OYbcpKDZWQJM5+HUgwfshClH9tQl+gAMP5XRAs4Ch/FoV7BrFtzy0q3V2cg6EH
- ZQAbhRowyAO1Yddunuc1joZ4cXSdKQd/SJPmt6v89y7nPVE0olOpTKAu4WiY/PWS21X/
- 8JLn1oX0zNkqVngyEEBsAahR+R0k+NvzyasZhicKDXIEKu/cekVQ+en7nXRx/YXoXcwV
- 7JFlhOSoujCC1RIWTlroRmTcL4Arb2JjimgYYjJk1K8r23PEzmVwOBKSmH7NM1B6W2d2
- dF/w==
-X-Gm-Message-State: AOJu0Yx7wLv6mPcXNdQWF13qRFqktdUCIxPK0XzgMTjrf6dkCldX/I7K
- F68PwW+uidDZIZY1hHZ6M8bAlpBHMsRQYGokMSmN/rPEjfBPuXpyz2Q1s8okqRrf76c=
-X-Gm-Gg: AY/fxX6xSunOXr+QM+8ZGRBFyVSPy2J3PkNQcW9EvvmNxxfpd/xViH9SovPnEdR8cJW
- vtucXfKPTJxapsx2EBfOrBjbtj3PfjT1uIt9DF88jlSC+ZCV0vcB/gnHwbYt8fmyYa6B1QG0c26
- ZxokYRKfS0RG+cIg7ptGP8lKqCIuiySjQuDA1MCg75zN5NRw0iruZ6QD2u2uWtR4hC69mjXsGp7
- vbfmNoTVewe8Ol0iGds1fSu5IZbnl1TlShnzzoFVT4vgrrpUk5ChsNf07qLiTQGLB8B5ijOybsJ
- Dm1j0zVvtu9IWserLgLv9+JhvMPJvG6xJcxhqn15bETuqan0sMQulA4YlWU3fxB/L6tLdOF3WZk
- xVs6wxljx3KIYcioOTmtKSQO3GwRemW7JyU/CSYGvpGEXruK30gWrmPNYs+HLkG/ujhzzFFWx1W
- IE5/doyhhllf61UX86WzozeA==
-X-Google-Smtp-Source: AGHT+IHFXArWI2TH85/gV1oVeEQJcXaIHNpjqJT0RSVFh2ZuoDUlpWnqog15JV1E3++Bes9P0342SQ==
-X-Received: by 2002:a05:600c:3ace:b0:46f:b32e:5094 with SMTP id
- 5b1f17b1804b1-47a8f915c57mr96998455e9.32.1765818353701; 
- Mon, 15 Dec 2025 09:05:53 -0800 (PST)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42fa8a66b1fsm32290177f8f.9.2025.12.15.09.05.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Dec 2025 09:05:52 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 272685F856;
- Mon, 15 Dec 2025 17:05:52 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
+ id 1vVCDP-000293-8N; Mon, 15 Dec 2025 12:18:39 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
+ id 1vVCDJ-0002gZ-Tu; Mon, 15 Dec 2025 12:18:30 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BFBm7no004481;
+ Mon, 15 Dec 2025 17:18:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=TP6+tWwfM0xS5x43f0hZAWrYtdGpRP4P4/0a+VTbb
+ F8=; b=S/ZQFFLcmlkH49bukkysoGTwPZbqkZAIY2yJzHJl9A8+VoAur/tqs6FXt
+ 2ZJF60f96poouRk7yoypLssYgGUmOM1bJI10YrhtQQTaEvM2r3UAcVZ5pyffOxnM
+ heKEMsbt97/UaQEYR13iucmRQ7q6DCCKAunOiI9JWG+92hp1SGQ/yE5bjc0xiEsW
+ ZjxW/xT2REtnRoF2XZe70PCTKwTGuxkeWHWAyaa+ZcTxa63SCvgiHAQzE7OeY69m
+ v1LHArkbRpTSOeWBBvUfgr09UTzHKspI8DkUDRwm2NxKY0+5sHShcVMRilEb1n33
+ tLrpj15smWmXeyNH+vVrtGEFeJGuQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0yn8b5xu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 15 Dec 2025 17:18:21 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BFHILNX024424;
+ Mon, 15 Dec 2025 17:18:21 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0yn8b5xp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 15 Dec 2025 17:18:20 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BFExYDx012800;
+ Mon, 15 Dec 2025 17:18:19 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4b1juxytvb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 15 Dec 2025 17:18:19 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
+ [10.241.53.102])
+ by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 5BFHIIvS4195018
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 15 Dec 2025 17:18:18 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 348285805A;
+ Mon, 15 Dec 2025 17:18:18 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A7FA558063;
+ Mon, 15 Dec 2025 17:18:17 +0000 (GMT)
+Received: from gfwr532.rchland.ibm.com (unknown [9.10.239.133])
+ by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 15 Dec 2025 17:18:17 +0000 (GMT)
+From: Caleb Schlossin <calebs@linux.ibm.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Jim MacArthur <jim.macarthur@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org (open list:ARM PrimeCell and...)
-Subject: [RFC PATCH] hw/misc: make the tz-ppc-port names more useful
-Date: Mon, 15 Dec 2025 17:05:48 +0000
-Message-ID: <20251215170548.2594651-1-alex.bennee@linaro.org>
+Cc: qemu-ppc@nongnu.org, npiggin@gmail.com, adityag@linux.ibm.com,
+ milesg@linux.ibm.com, alistair@alistair23.me, kowal@linux.ibm.com,
+ chalapathi.v@linux.ibm.com, calebs@linux.ibm.com, angeloj@linux.ibm.com
+Subject: [PATCH v2 0/7] hw/ppc: Snapshot support for several ppc devices
+Date: Mon, 15 Dec 2025 11:18:06 -0600
+Message-ID: <20251215171813.1670241-1-calebs@linux.ibm.com>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEzMDAxOCBTYWx0ZWRfX0r0aEMMQ2HpN
+ S21Viv/CRVfXG7rbSGFtu3o80Z/4oRoeywv9aGvDuIB8DqxK+Ut9BTlD/1f63fKfDtXl4sw3YSL
+ NKFpMGoK/edKTTZZDcklrjfXvEL8hsmpZV8Z8uH7XLn2MbfCBu6vre70wTpLteLo4fl8SMujmyq
+ nFWFnSI2/05SivpJcWYOlpMLi1LtZe51Aqe0qCJ9C4O/YluFNYEMtxR7OHtslIJJBqh4Sf5QZ99
+ 5E1tqxxV266divnir/IecFBy31YnJO+kEcqhuuPnAJProwM1+NUtzTIHfuYF9M9UTqzkYP9B9Ds
+ VhnLmmdIQPRM4JO+m3l6w8/n61rN/E13ZO+vCbTRHGu/hTZYnfEeCNwAt+GTDACKnccjgdrOyZB
+ +y2UskBkFq/gwR5tXRugQ4g+q4mX9w==
+X-Proofpoint-GUID: yfMQ7CXrgQezSljg43a72m_abK-cpyTU
+X-Proofpoint-ORIG-GUID: HXSSGDPCcgPSHAAbve6eI_PlhbRjHQ4V
+X-Authority-Analysis: v=2.4 cv=LbYxKzfi c=1 sm=1 tr=0 ts=694042dd cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=ne1qJFFQzzWKJjgbsqMA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-15_04,2025-12-15_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 spamscore=0 phishscore=0 clxscore=1015 suspectscore=0
+ adultscore=0 malwarescore=0 priorityscore=1501 lowpriorityscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
+ definitions=main-2512130018
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=calebs@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,113 +120,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The TrustZone peripheral protection controller (tz-ppc) sits between
-peripherals and the main system. However this results in "info mtree"
-looking at bit confusing, especially as the sequence numbers can
-overlap and miss steps:
+Addressing comments from V1 review:
 
-      0000000000000000-ffffffffffffffff (prio -2, i/o): system
-        0000000000000000-00000000003fffff (prio 0, i/o): tz-mpc-upstream
-        0000000000400000-00000000007fffff (prio 0, i/o): alias ssram-0-alias @tz-mpc-upstream 0000000000000000-00000000003fffff
-        0000000028000000-00000000281fffff (prio 0, i/o): tz-mpc-upstream
-        0000000028200000-00000000283fffff (prio 0, i/o): tz-mpc-upstream
-        0000000040080000-0000000040080fff (prio 0, i/o): iotkit-secctl-ns-regs
-        0000000040100000-0000000040100fff (prio 0, i/o): tz-ppc-port[1]
-        0000000040101000-0000000040101fff (prio 0, i/o): tz-ppc-port[2]
-        0000000040102000-0000000040102fff (prio 0, i/o): tz-ppc-port[3]
-        0000000040103000-0000000040103fff (prio 0, i/o): tz-ppc-port[4]
-        0000000040110000-0000000040110fff (prio 0, i/o): tz-ppc-port[0]
-        0000000040111000-0000000040111fff (prio 0, i/o): tz-ppc-port[1]
-        0000000040112000-0000000040112fff (prio 0, i/o): tz-ppc-port[2]
-        0000000040113000-0000000040113fff (prio 0, i/o): tz-ppc-port[3]
-        0000000040200000-0000000040200fff (prio 0, i/o): tz-ppc-port[5]
-        0000000040201000-0000000040201fff (prio 0, i/o): tz-ppc-port[6]
-        0000000040202000-0000000040202fff (prio 0, i/o): tz-ppc-port[7]
-        0000000040203000-0000000040203fff (prio 0, i/o): tz-ppc-port[8]
-        0000000040204000-0000000040204fff (prio 0, i/o): tz-ppc-port[9]
-        0000000040205000-0000000040205fff (prio 0, i/o): tz-ppc-port[0]
-        0000000040206000-0000000040206fff (prio 0, i/o): tz-ppc-port[1]
-        0000000040207000-0000000040207fff (prio 0, i/o): tz-ppc-port[10]
-        0000000040208000-0000000040208fff (prio 0, i/o): tz-ppc-port[11]
-        0000000040209000-0000000040209fff (prio 0, i/o): tz-ppc-port[2]
-        000000004020a000-000000004020afff (prio 0, i/o): tz-ppc-port[3]
-        000000004020b000-000000004020bfff (prio 0, i/o): tz-ppc-port[4]
-        000000004020c000-000000004020cfff (prio 0, i/o): tz-ppc-port[12]
-        000000004020d000-000000004020dfff (prio 0, i/o): tz-ppc-port[13]
-        0000000040300000-0000000040300fff (prio 0, i/o): tz-ppc-port[0]
-        0000000040301000-0000000040301fff (prio 0, i/o): tz-ppc-port[1]
-        0000000040302000-0000000040302fff (prio 0, i/o): tz-ppc-port[2]
-        0000000041000000-000000004113ffff (prio 0, i/o): tz-ppc-port[0]
-        0000000042000000-00000000420000ff (prio 0, i/o): tz-ppc-port[5]
-        0000000048007000-0000000048007fff (prio -1000, i/o): FPGA NS PC
-        0000000050080000-0000000050080fff (prio 0, i/o): iotkit-secctl-s-regs
-        0000000058007000-0000000058007fff (prio 0, i/o): tz-ppc-port[0]
-        0000000058008000-0000000058008fff (prio 0, i/o): tz-ppc-port[1]
-        0000000058009000-0000000058009fff (prio 0, i/o): tz-ppc-port[2]
-        0000000080000000-0000000080ffffff (prio 0, ram): mps.ram
+Updates in V2:
+- Added new patch set for PnvPsi support as it fits with the rest
+- Added vmstate support for Power8 and Power9 for LPC
+- Fixed pnv_core.c commit message
 
-So as a quality of life feature lets expose the name of the underlying
-region so we get something more useful:
+Tested:
+passed make check
 
-    0000000000000000-ffffffffffffffff (prio -2, i/o): system
-      0000000000000000-00000000003fffff (prio 0, i/o): tz-mpc-upstream
-      0000000000400000-00000000007fffff (prio 0, i/o): alias ssram-0-alias @tz-mpc-upstream 0000000000000000-00000000003fffff
-      0000000028000000-00000000281fffff (prio 0, i/o): tz-mpc-upstream
-      0000000028200000-00000000283fffff (prio 0, i/o): tz-mpc-upstream
-      0000000040080000-0000000040080fff (prio 0, i/o): iotkit-secctl-ns-regs
-      0000000040100000-0000000040100fff (prio 0, i/o): tz-ppc-port[gpio0]
-      0000000040101000-0000000040101fff (prio 0, i/o): tz-ppc-port[gpio1]
-      0000000040102000-0000000040102fff (prio 0, i/o): tz-ppc-port[gpio2]
-      0000000040103000-0000000040103fff (prio 0, i/o): tz-ppc-port[gpio3]
-      0000000040110000-0000000040110fff (prio 0, i/o): tz-ppc-port[pl080]
-      0000000040111000-0000000040111fff (prio 0, i/o): tz-ppc-port[pl080]
-      0000000040112000-0000000040112fff (prio 0, i/o): tz-ppc-port[pl080]
-      0000000040113000-0000000040113fff (prio 0, i/o): tz-ppc-port[pl080]
-      0000000040200000-0000000040200fff (prio 0, i/o): tz-ppc-port[uart]
-      0000000040201000-0000000040201fff (prio 0, i/o): tz-ppc-port[uart]
-      0000000040202000-0000000040202fff (prio 0, i/o): tz-ppc-port[uart]
-      0000000040203000-0000000040203fff (prio 0, i/o): tz-ppc-port[uart]
-      0000000040204000-0000000040204fff (prio 0, i/o): tz-ppc-port[uart]
-      0000000040205000-0000000040205fff (prio 0, i/o): tz-ppc-port[pl022]
-      0000000040206000-0000000040206fff (prio 0, i/o): tz-ppc-port[pl022]
-      0000000040207000-0000000040207fff (prio 0, i/o): tz-ppc-port[arm_sbcon_i2c]
-      0000000040208000-0000000040208fff (prio 0, i/o): tz-ppc-port[arm_sbcon_i2c]
-      0000000040209000-0000000040209fff (prio 0, i/o): tz-ppc-port[pl022]
-      000000004020a000-000000004020afff (prio 0, i/o): tz-ppc-port[pl022]
-      000000004020b000-000000004020bfff (prio 0, i/o): tz-ppc-port[pl022]
-      000000004020c000-000000004020cfff (prio 0, i/o): tz-ppc-port[arm_sbcon_i2c]
-      000000004020d000-000000004020dfff (prio 0, i/o): tz-ppc-port[arm_sbcon_i2c]
-      0000000040300000-0000000040300fff (prio 0, i/o): tz-ppc-port[mps2-scc]
-      0000000040301000-0000000040301fff (prio 0, i/o): tz-ppc-port[i2s-audio]
-      0000000040302000-0000000040302fff (prio 0, i/o): tz-ppc-port[mps2-fpgaio]
-      0000000041000000-000000004113ffff (prio 0, i/o): tz-ppc-port[gfx]
-      0000000042000000-00000000420000ff (prio 0, i/o): tz-ppc-port[lan9118-mmio]
-      0000000048007000-0000000048007fff (prio -1000, i/o): FPGA NS PC
-      0000000050080000-0000000050080fff (prio 0, i/o): iotkit-secctl-s-regs
-      0000000058007000-0000000058007fff (prio 0, i/o): tz-ppc-port[tz-mpc-regs]
-      0000000058008000-0000000058008fff (prio 0, i/o): tz-ppc-port[tz-mpc-regs]
-      0000000058009000-0000000058009fff (prio 0, i/o): tz-ppc-port[tz-mpc-regs]
-      0000000080000000-0000000080ffffff (prio 0, ram): mps.ram
+Thanks,
+Caleb
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Cc: Jim MacArthur <jim.macarthur@linaro.org>
----
- hw/misc/tz-ppc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Michael Kowal (2):
+  hw/ppc: Add VMSTATE information for LPC model
+  hw/ppc: Add VMSTATE information to PnvPsi
 
-diff --git a/hw/misc/tz-ppc.c b/hw/misc/tz-ppc.c
-index e4235a846d4..fd305f9f62f 100644
---- a/hw/misc/tz-ppc.c
-+++ b/hw/misc/tz-ppc.c
-@@ -273,7 +273,7 @@ static void tz_ppc_realize(DeviceState *dev, Error **errp)
-             continue;
-         }
- 
--        name = g_strdup_printf("tz-ppc-port[%d]", i);
-+        name = g_strdup_printf("tz-ppc-port[%s]", memory_region_name(port->downstream));
- 
-         port->ppc = s;
-         address_space_init(&port->downstream_as, port->downstream, name);
+Caleb Schlossin (2):
+  hw/ppc: Add pnv_spi vmstate support
+  hw/ppc: Add pnv_i2c vmstate support
+
+Angelo Jaramillo (3):
+  hw/ppc: pnv_adu.c added vmstate support
+  hw/ppc: pnv_core.c add vmstate support
+  hw/ppc: pnv_chiptod.c add vmstate support
+  
+
+ hw/ppc/pnv_adu.c             | 12 ++++++++++
+ hw/ppc/pnv_chiptod.c         | 38 +++++++++++++++++++++++++++++
+ hw/ppc/pnv_core.c            | 22 +++++++++++++++++
+ hw/ppc/pnv_i2c.c             | 11 +++++++++
+ hw/ppc/pnv_lpc.c             | 41 ++++++++++++++++++++++++++++++++
+ hw/ppc/pnv_psi.c             | 46 ++++++++++++++++++++++++++++++++++--
+ hw/ssi/pnv_spi.c             | 27 +++++++++++++++++++++
+ include/hw/ppc/pnv_chiptod.h |  2 ++
+ 8 files changed, 197 insertions(+), 2 deletions(-)
+
 -- 
 2.47.3
 
