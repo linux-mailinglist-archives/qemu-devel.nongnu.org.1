@@ -2,99 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1BE1CC013A
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 23:03:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86C2FCC0122
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 23:02:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVGdT-0002nC-JA; Mon, 15 Dec 2025 17:01:43 -0500
+	id 1vVGdZ-0002r6-Ke; Mon, 15 Dec 2025 17:01:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGdR-0002ml-DR
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:01:41 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGdW-0002q7-Mz
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:01:46 -0500
 Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGdP-0002hF-KQ
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:01:41 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGdV-0002i3-36
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:01:46 -0500
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 4EC6F5BDF9;
- Mon, 15 Dec 2025 22:01:22 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 5FAE15BE04;
+ Mon, 15 Dec 2025 22:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1765836082; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1765836084; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hyI3anxAzJoPsMnvfbHyVnv/o6qXg6b9/huSOQgQJJg=;
- b=qwovlhaw68T139HMefrkp7lYBUywAyM7DtbySus/+BSdGF2/WVXy5xK94I7auOLiYP3wdS
- Jve4QP6ENvSUXohRn941dSDQ2XKWEbO+cV1RgA+Ih6P/zmX2O5meAFsZCfvgBePBb0OqFv
- eGC/8hEzjljiI7aDR3vRcdLUf9E5pKg=
+ bh=BhUXtDDkw/wGate8Qf89Qn3ZQ5fMM5ydBQNPoWYb0uU=;
+ b=KJsxbSaFVJYgRQEuHBgX4ZLe/YL+hl2uJFeFILtgrveWbTO7xv5nrizryZWM8hPdKLSSN5
+ zNuwpc6Vr5EYb2oKdQI/1zJPdwAIbokzrdH29KKTlpyjP9RcclZurRcHqKDjnROW9bdNZd
+ 6iJqpSE2rj4Y/YU0R6MfFZlcweB7CjM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1765836082;
+ s=susede2_ed25519; t=1765836084;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hyI3anxAzJoPsMnvfbHyVnv/o6qXg6b9/huSOQgQJJg=;
- b=cqnVu59FLUK7YmnF3RhnnEv5h7ogQ3XAVBxaihprxDXBjitN9OCuMXWXFqRlqFyfHrxEfy
- mXgX3dClWeT6fDBg==
+ bh=BhUXtDDkw/wGate8Qf89Qn3ZQ5fMM5ydBQNPoWYb0uU=;
+ b=OmYr1ZaScy9roLkPodJytPbCuEIMFkPhmlf79FWb46d+526GxQ4TOMnIoLHy3tDUayg3Hi
+ SYgnhQHin6Shj4AQ==
 Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1765836082; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1765836084; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hyI3anxAzJoPsMnvfbHyVnv/o6qXg6b9/huSOQgQJJg=;
- b=qwovlhaw68T139HMefrkp7lYBUywAyM7DtbySus/+BSdGF2/WVXy5xK94I7auOLiYP3wdS
- Jve4QP6ENvSUXohRn941dSDQ2XKWEbO+cV1RgA+Ih6P/zmX2O5meAFsZCfvgBePBb0OqFv
- eGC/8hEzjljiI7aDR3vRcdLUf9E5pKg=
+ bh=BhUXtDDkw/wGate8Qf89Qn3ZQ5fMM5ydBQNPoWYb0uU=;
+ b=KJsxbSaFVJYgRQEuHBgX4ZLe/YL+hl2uJFeFILtgrveWbTO7xv5nrizryZWM8hPdKLSSN5
+ zNuwpc6Vr5EYb2oKdQI/1zJPdwAIbokzrdH29KKTlpyjP9RcclZurRcHqKDjnROW9bdNZd
+ 6iJqpSE2rj4Y/YU0R6MfFZlcweB7CjM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1765836082;
+ s=susede2_ed25519; t=1765836084;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hyI3anxAzJoPsMnvfbHyVnv/o6qXg6b9/huSOQgQJJg=;
- b=cqnVu59FLUK7YmnF3RhnnEv5h7ogQ3XAVBxaihprxDXBjitN9OCuMXWXFqRlqFyfHrxEfy
- mXgX3dClWeT6fDBg==
+ bh=BhUXtDDkw/wGate8Qf89Qn3ZQ5fMM5ydBQNPoWYb0uU=;
+ b=OmYr1ZaScy9roLkPodJytPbCuEIMFkPhmlf79FWb46d+526GxQ4TOMnIoLHy3tDUayg3Hi
+ SYgnhQHin6Shj4AQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 776603EA65;
- Mon, 15 Dec 2025 22:01:20 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D1CB33EA63;
+ Mon, 15 Dec 2025 22:01:22 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 8G4QDjCFQGlrMQAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 15 Dec 2025 22:01:20 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id GPpLJDKFQGlrMQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 15 Dec 2025 22:01:22 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
-Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>
-Subject: [PATCH v3 12/51] migration: Extract code to mark all parameters as
- present
-Date: Mon, 15 Dec 2025 18:59:58 -0300
-Message-ID: <20251215220041.12657-13-farosas@suse.de>
+Cc: berrange@redhat.com,
+	armbru@redhat.com,
+	Peter Xu <peterx@redhat.com>
+Subject: [PATCH v3 13/51] migration: Use QAPI_CLONE_MEMBERS in
+ query_migrate_parameters
+Date: Mon, 15 Dec 2025 18:59:59 -0300
+Message-ID: <20251215220041.12657-14-farosas@suse.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251215220041.12657-1-farosas@suse.de>
 References: <20251215220041.12657-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
 X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.989];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.986];
  MIME_GOOD(-0.10)[text/plain]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  FROM_HAS_DN(0.00)[]; ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
  R_RATELIMIT(0.00)[to_ip_from(RLjrdmmf3juheryardexw6jb95)];
  TO_DN_SOME(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email,suse.de:mid];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo];
  RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
  RCVD_COUNT_TWO(0.00)[2]; FUZZY_RATELIMITED(0.00)[rspamd.com];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCPT_COUNT_FIVE(0.00)[5]; RCVD_TLS_ALL(0.00)[]
+ RCPT_COUNT_THREE(0.00)[4]; RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -2.80
 Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
  envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -20
@@ -118,162 +119,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MigrationParameters needs to have all of its has_* fields marked as
-true when used as the return of query_migrate_parameters because the
-corresponding QMP command has all of its members non-optional by
-design, despite them being marked as optional in migration.json.
+QAPI_CLONE_MEMBERS is a better option than copying parameters one by
+one because it operates on the entire struct and follows pointers. It
+also avoids the need to alter this function every time a new parameter
+is added.
 
-Extract this code into a function and make it assert if any field is
-missing. With this we ensure future changes will not inadvertently
-leave any parameters missing.
+For this to work, the has_* fields of s->parameters need to be already
+set beforehand, so move migrate_mark_all_params_present() to the init
+routine.
 
-Note that the block-bitmap-mapping is a special case because the empty
-list is considered a valid value, so it has historically not been
-present in the command's output if it has never been set.
-
-CC: Kevin Wolf <kwolf@redhat.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/options.c | 89 ++++++++++++++++++++++++++++-----------------
- 1 file changed, 55 insertions(+), 34 deletions(-)
+ migration/options.c | 43 +++----------------------------------------
+ 1 file changed, 3 insertions(+), 40 deletions(-)
 
 diff --git a/migration/options.c b/migration/options.c
-index c72e63015c..aafd688f5c 100644
+index aafd688f5c..6b60003a32 100644
 --- a/migration/options.c
 +++ b/migration/options.c
-@@ -1018,6 +1018,44 @@ static void tls_opt_to_str(StrOrNull *opt)
-     opt->u.s = g_strdup("");
- }
+@@ -1058,47 +1058,9 @@ static void migrate_mark_all_params_present(MigrationParameters *p)
  
-+/*
-+ * query-migrate-parameters expects all members of MigrationParameters
-+ * to be present, but we cannot mark them non-optional in QAPI because
-+ * the structure is also used for migrate-set-parameters, which needs
-+ * the optionality. Force all parameters to be seen as present
-+ * now. Note that this depends on some form of default being set for
-+ * every member of MigrationParameters, currently done during qdev
-+ * init using migration_properties defined in this file. The TLS
-+ * options are a special case because they don't have a default and
-+ * need to be normalized before use.
-+ */
-+static void migrate_mark_all_params_present(MigrationParameters *p)
-+{
-+    int len, n_str_args = 3; /* tls-creds, tls-hostname, tls-authz */
-+    bool *has_fields[] = {
-+        &p->has_throttle_trigger_threshold, &p->has_cpu_throttle_initial,
-+        &p->has_cpu_throttle_increment, &p->has_cpu_throttle_tailslow,
-+        &p->has_max_bandwidth, &p->has_avail_switchover_bandwidth,
-+        &p->has_downtime_limit, &p->has_x_checkpoint_delay,
-+        &p->has_multifd_channels, &p->has_multifd_compression,
-+        &p->has_multifd_zlib_level, &p->has_multifd_qatzip_level,
-+        &p->has_multifd_zstd_level, &p->has_xbzrle_cache_size,
-+        &p->has_max_postcopy_bandwidth, &p->has_max_cpu_throttle,
-+        &p->has_announce_initial, &p->has_announce_max, &p->has_announce_rounds,
-+        &p->has_announce_step, &p->has_block_bitmap_mapping,
-+        &p->has_x_vcpu_dirty_limit_period, &p->has_vcpu_dirty_limit,
-+        &p->has_mode, &p->has_zero_page_detection, &p->has_direct_io,
-+        &p->has_cpr_exec_command,
-+    };
-+
-+    len = ARRAY_SIZE(has_fields);
-+    assert(len + n_str_args == MIGRATION_PARAMETER__MAX);
-+
-+    for (int i = 0; i < len; i++) {
-+        *has_fields[i] = true;
-+    }
-+}
-+
  MigrationParameters *qmp_query_migrate_parameters(Error **errp)
  {
-     MigrationParameters *params;
-@@ -1025,70 +1063,53 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
+-    MigrationParameters *params;
+     MigrationState *s = migrate_get_current();
+-
+-    /* TODO use QAPI_CLONE() instead of duplicating it inline */
+-    params = g_malloc0(sizeof(*params));
+-
+-    params->throttle_trigger_threshold = s->parameters.throttle_trigger_threshold;
+-    params->cpu_throttle_initial = s->parameters.cpu_throttle_initial;
+-    params->cpu_throttle_increment = s->parameters.cpu_throttle_increment;
+-    params->cpu_throttle_tailslow = s->parameters.cpu_throttle_tailslow;
+-    params->tls_creds = QAPI_CLONE(StrOrNull, s->parameters.tls_creds);
+-    params->tls_hostname = QAPI_CLONE(StrOrNull, s->parameters.tls_hostname);
+-    params->tls_authz = QAPI_CLONE(StrOrNull, s->parameters.tls_authz);
+-    params->max_bandwidth = s->parameters.max_bandwidth;
+-    params->avail_switchover_bandwidth = s->parameters.avail_switchover_bandwidth;
+-    params->downtime_limit = s->parameters.downtime_limit;
+-    params->x_checkpoint_delay = s->parameters.x_checkpoint_delay;
+-    params->multifd_channels = s->parameters.multifd_channels;
+-    params->multifd_compression = s->parameters.multifd_compression;
+-    params->multifd_zlib_level = s->parameters.multifd_zlib_level;
+-    params->multifd_qatzip_level = s->parameters.multifd_qatzip_level;
+-    params->multifd_zstd_level = s->parameters.multifd_zstd_level;
+-    params->xbzrle_cache_size = s->parameters.xbzrle_cache_size;
+-    params->max_postcopy_bandwidth = s->parameters.max_postcopy_bandwidth;
+-    params->max_cpu_throttle = s->parameters.max_cpu_throttle;
+-    params->announce_initial = s->parameters.announce_initial;
+-    params->announce_max = s->parameters.announce_max;
+-    params->announce_rounds = s->parameters.announce_rounds;
+-    params->announce_step = s->parameters.announce_step;
+-    params->x_vcpu_dirty_limit_period = s->parameters.x_vcpu_dirty_limit_period;
+-    params->vcpu_dirty_limit = s->parameters.vcpu_dirty_limit;
+-    params->mode = s->parameters.mode;
+-    params->zero_page_detection = s->parameters.zero_page_detection;
+-    params->direct_io = s->parameters.direct_io;
+-    params->cpr_exec_command = QAPI_CLONE(strList,
+-                                          s->parameters.cpr_exec_command);
+-    params->block_bitmap_mapping =
+-        QAPI_CLONE(BitmapMigrationNodeAliasList,
+-                   s->parameters.block_bitmap_mapping);
+-
+-    migrate_mark_all_params_present(params);
++    MigrationParameters *params = QAPI_CLONE(MigrationParameters,
++                                             &s->parameters);
  
-     /* TODO use QAPI_CLONE() instead of duplicating it inline */
-     params = g_malloc0(sizeof(*params));
--    params->has_throttle_trigger_threshold = true;
-+
-     params->throttle_trigger_threshold = s->parameters.throttle_trigger_threshold;
--    params->has_cpu_throttle_initial = true;
-     params->cpu_throttle_initial = s->parameters.cpu_throttle_initial;
--    params->has_cpu_throttle_increment = true;
-     params->cpu_throttle_increment = s->parameters.cpu_throttle_increment;
--    params->has_cpu_throttle_tailslow = true;
-     params->cpu_throttle_tailslow = s->parameters.cpu_throttle_tailslow;
-     params->tls_creds = QAPI_CLONE(StrOrNull, s->parameters.tls_creds);
-     params->tls_hostname = QAPI_CLONE(StrOrNull, s->parameters.tls_hostname);
-     params->tls_authz = QAPI_CLONE(StrOrNull, s->parameters.tls_authz);
--    params->has_max_bandwidth = true;
-     params->max_bandwidth = s->parameters.max_bandwidth;
--    params->has_avail_switchover_bandwidth = true;
-     params->avail_switchover_bandwidth = s->parameters.avail_switchover_bandwidth;
--    params->has_downtime_limit = true;
-     params->downtime_limit = s->parameters.downtime_limit;
--    params->has_x_checkpoint_delay = true;
-     params->x_checkpoint_delay = s->parameters.x_checkpoint_delay;
--    params->has_multifd_channels = true;
-     params->multifd_channels = s->parameters.multifd_channels;
--    params->has_multifd_compression = true;
-     params->multifd_compression = s->parameters.multifd_compression;
--    params->has_multifd_zlib_level = true;
-     params->multifd_zlib_level = s->parameters.multifd_zlib_level;
--    params->has_multifd_qatzip_level = true;
-     params->multifd_qatzip_level = s->parameters.multifd_qatzip_level;
--    params->has_multifd_zstd_level = true;
-     params->multifd_zstd_level = s->parameters.multifd_zstd_level;
--    params->has_xbzrle_cache_size = true;
-     params->xbzrle_cache_size = s->parameters.xbzrle_cache_size;
--    params->has_max_postcopy_bandwidth = true;
-     params->max_postcopy_bandwidth = s->parameters.max_postcopy_bandwidth;
--    params->has_max_cpu_throttle = true;
-     params->max_cpu_throttle = s->parameters.max_cpu_throttle;
--    params->has_announce_initial = true;
-     params->announce_initial = s->parameters.announce_initial;
--    params->has_announce_max = true;
-     params->announce_max = s->parameters.announce_max;
--    params->has_announce_rounds = true;
-     params->announce_rounds = s->parameters.announce_rounds;
--    params->has_announce_step = true;
-     params->announce_step = s->parameters.announce_step;
--
--    if (s->has_block_bitmap_mapping) {
--        params->has_block_bitmap_mapping = true;
--        params->block_bitmap_mapping =
--            QAPI_CLONE(BitmapMigrationNodeAliasList,
--                       s->parameters.block_bitmap_mapping);
--    }
--
--    params->has_x_vcpu_dirty_limit_period = true;
-     params->x_vcpu_dirty_limit_period = s->parameters.x_vcpu_dirty_limit_period;
--    params->has_vcpu_dirty_limit = true;
-     params->vcpu_dirty_limit = s->parameters.vcpu_dirty_limit;
--    params->has_mode = true;
-     params->mode = s->parameters.mode;
--    params->has_zero_page_detection = true;
-     params->zero_page_detection = s->parameters.zero_page_detection;
--    params->has_direct_io = true;
-     params->direct_io = s->parameters.direct_io;
--    params->has_cpr_exec_command = true;
-     params->cpr_exec_command = QAPI_CLONE(strList,
-                                           s->parameters.cpr_exec_command);
-+    params->block_bitmap_mapping =
-+        QAPI_CLONE(BitmapMigrationNodeAliasList,
-+                   s->parameters.block_bitmap_mapping);
-+
+     /*
+      * The block-bitmap-mapping breaks the expected API of
+@@ -1116,6 +1078,7 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
+ 
+ void migrate_params_init(MigrationParameters *params)
+ {
 +    migrate_mark_all_params_present(params);
-+
-+    /*
-+     * The block-bitmap-mapping breaks the expected API of
-+     * query-migrate-parameters of having all members present. To keep
-+     * compatibility, only emit this field if it's actually been
-+     * set. The empty list is a valid value.
-+     */
-+    if (!s->has_block_bitmap_mapping) {
-+        params->has_block_bitmap_mapping = false;
-+        qapi_free_BitmapMigrationNodeAliasList(params->block_bitmap_mapping);
-+    }
- 
-     return params;
  }
+ 
+ static void migrate_post_update_params(MigrationParameters *new, Error **errp)
 -- 
 2.51.0
 
