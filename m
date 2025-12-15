@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D788ACBCBCC
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 08:14:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C325CBCBE7
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 08:14:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vV2le-000362-1B; Mon, 15 Dec 2025 02:13:14 -0500
+	id 1vV2lc-00034M-E0; Mon, 15 Dec 2025 02:13:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vV2lY-00031U-V3
+ id 1vV2lY-00031W-V2
  for qemu-devel@nongnu.org; Mon, 15 Dec 2025 02:13:09 -0500
 Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vV2lW-0008DC-Dz
+ id 1vV2lW-0008DF-Dt
  for qemu-devel@nongnu.org; Mon, 15 Dec 2025 02:13:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1765782787; x=1797318787;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=+F1W5flgSC29AhZEjyUZFJ8828PLL7V8CxC1bXmkOf8=;
- b=iGUx2gZavG7uERD6OFgaBW3uPyFtkuQSBPwlLSRv2TUzlVmN0EyYOTi6
- 8xb1cE/ZgK9sTuQvLHjdFmT00zCNCkbVQBLxrgQQl7pW7QrqAWWcNTRFC
- DVU6G1/71JbEZ7Dxv+K2+LylwSuZ1vvrjr3Glotohxppi4FeZTjD3P1Bw
- 8oZg9BLZxL29eChWVAVzXYyxoiDK0GmH6AJgDplhw8Lz1RwINncHqMmex
- TX8ymjrReCxFuB7xw/VzoPFkvG6FEAJ+vpXpvWgX45yjVKXNKK5h5lQmS
- i+0c51agF0yYby/5359fqY9O03fEARkoNVh4ACknqNp7hw9SmFwt+rssN g==;
-X-CSE-ConnectionGUID: mGxWk9T4RguJY5wU+bknXQ==
-X-CSE-MsgGUID: sU9ws9ycTvedNO1nMq9zZQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11642"; a="90332233"
-X-IronPort-AV: E=Sophos;i="6.21,150,1763452800"; d="scan'208";a="90332233"
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=B5KsWLdeYBGnKB0r8a9UJrHbD4BabWmPHKGbGEUZ0Go=;
+ b=KmSF4lpUGvBs+DV6iDQLcQaGp9hRV8TgGRvzbrghs+zPj4mdihZT3P6T
+ 8HB1NJs7YJszyktfUm5Sbz/0fp+8hIr/jsDdlJ4Rco8i2jiCGNDjPh74H
+ 4t0w7xj1pNHZkgMCDlyL8Ckmbzrf4dGxUnRIQJE4fxQpPVGWHYGutWenl
+ T2dP2wOFWi2qh/kzSfCv7BxeiZwdOoR58bmuUzQGHJU1Y1oRtk4Sgcuuv
+ CvMBVp5OQuEdE6U/L133NQL9yXEN3YpomGo/1bkK8oo45SWgQAG/V9Wyh
+ UiU3tDmbMU3MjFrKXIPNHSawvVCCkC28yYwuHb5RjzEFvc+lv6fYFfslu g==;
+X-CSE-ConnectionGUID: 9IOrUwxsQpq/51gzCOSHJw==
+X-CSE-MsgGUID: ac2YUdeBQ7evqiTGxcELDw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11642"; a="90332235"
+X-IronPort-AV: E=Sophos;i="6.21,150,1763452800"; d="scan'208";a="90332235"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Dec 2025 23:13:03 -0800
-X-CSE-ConnectionGUID: wVo7qYCcQFuRnXXY7rqMiA==
-X-CSE-MsgGUID: 5s3UOpIeQb6UhKlgxTEQ2g==
+ 14 Dec 2025 23:13:04 -0800
+X-CSE-ConnectionGUID: SDz5MvHGTQyUzZBI1pDnFw==
+X-CSE-MsgGUID: tgJoFCkPTFSzBWpmIwqtfQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,150,1763452800"; d="scan'208";a="197265921"
+X-IronPort-AV: E=Sophos;i="6.21,150,1763452800"; d="scan'208";a="197265927"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa007.fm.intel.com with ESMTP; 14 Dec 2025 23:13:01 -0800
+ by fmviesa007.fm.intel.com with ESMTP; 14 Dec 2025 23:13:02 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org, Xudong Hao <xudong.hao@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 00/11] i386/cpu: Add new instructions & CPU model for Intel
- Diamond Rapids
-Date: Mon, 15 Dec 2025 15:37:32 +0800
-Message-Id: <20251215073743.4055227-1-zhao1.liu@intel.com>
+Subject: [PATCH v2 01/11] i386/cpu: Add support for MOVRS in CPUID enumeration
+Date: Mon, 15 Dec 2025 15:37:33 +0800
+Message-Id: <20251215073743.4055227-2-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251215073743.4055227-1-zhao1.liu@intel.com>
+References: <20251215073743.4055227-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
@@ -80,60 +81,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+MOVRS is a new set of instructions introduced in the Intel platform
+Diamond Rapids, to load instructions that carry a read-shared hint.
 
-This series addes new instrucions and CPU model support for Intel
-Diamond Rapids.
+Functionally, MOVRS family is equivalent to existing load instructions,
+but its read-shared hint indicates the source memory location is likely
+to become read-shared by multiple processors, i.e., read in the future
+by at least one other processor before it is written (assuming it is
+ever written in the future). It could optimize the behavior of the
+caches, especially shared caches, for this data for future reads by
+multiple processors. Additionally, MOVRS family also includes a software
+prefetch instruction, PREFETCHRST2, that carries the same read-shared
+hint. [*]
 
-This series mainly includes:
- * MOVRS CPUID
- * new AMX CPUIDs
- * AVX10.2 & AVX10_VNNI_INT
- * DMR CPU model & topology documentation
-   - The on-going cache-aware scheduling work could benefit such
-     topology:
-     https://lore.kernel.org/lkml/cover.1764801860.git.tim.c.chen@linux.intel.com/
+MOVRS family is enumerated by CPUID single-bit (0x7.0x1.EAX[bit 31]).
+Add its enumeration support.
 
-This series is based on https://gitlab.com/bonzini/qemu i386 branch at
-7c7e2f410b3d ("target/i386/tcg: mark APX as supported").
+[*]: Intel Architecture Instruction Set Extensions and Future Features
+     (rev.059).
 
-Compared with v1, v2 mainly did:
- * allow upsupported avx10 version when x-force-feature=on, for debug.
- * rename CPUID_7_1_EDX_APX to CPUID_7_1_EDX_APXF in DMR CPU model.
-
-
-One More Thing
-==============
-
-About the AVX10 model (patch 4), in principle, AVX10.1 should be allowed
-to run on an AVX10.2 host. For similar version drived features,
-introducing a model might be a preferable way. However, PMU doesn't
-serve as a good example here.
-
-
-Thanks for your review!
-
-Best Regards,
-Zhao
+Tested-by: Xudong Hao <xudong.hao@intel.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
-Zhao Liu (11):
-  i386/cpu: Add support for MOVRS in CPUID enumeration
-  i386/cpu: Add CPUID.0x1E.0x1 subleaf for AMX instructions
-  i386/cpu: Add support for AVX10_VNNI_INT in CPUID enumeration
-  i386/cpu: Support AVX10.2 with AVX10 feature models
-  i386/cpu: Add a helper to get host avx10 version
-  i386/cpu: Allow unsupported avx10_version with x-force-features
-  i386/cpu: Allow cache to be shared at thread level
-  i386/cpu: Add an option in X86CPUDefinition to control CPUID 0x1f
-  i386/cpu: Define dependency for VMX_VM_ENTRY_LOAD_IA32_FRED
-  i386/cpu: Add CPU model for Diamond Rapids
-  dosc/cpu-models-x86: Add documentation for DiamondRapids
+Reference link: https://cdrdv2.intel.com/v1/dl/getContent/865891
+---
+ target/i386/cpu.c | 2 +-
+ target/i386/cpu.h | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
- docs/system/cpu-models-x86.rst.inc |  20 ++
- target/i386/cpu.c                  | 462 +++++++++++++++++++++++++----
- target/i386/cpu.h                  |  27 ++
- 3 files changed, 456 insertions(+), 53 deletions(-)
-
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 64dbef0ee154..7efb628e17a7 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1266,7 +1266,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+             NULL, "fred", "lkgs", "wrmsrns",
+             NULL, "amx-fp16", NULL, "avx-ifma",
+             NULL, NULL, "lam", NULL,
+-            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, "movrs",
+         },
+         .cpuid = {
+             .eax = 7,
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index e405ec1dbc7e..0edba739c4e2 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -1045,6 +1045,8 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
+ #define CPUID_7_1_EAX_AVX_IFMA          (1U << 23)
+ /* Linear Address Masking */
+ #define CPUID_7_1_EAX_LAM               (1U << 26)
++/* MOVRS Instructions */
++#define CPUID_7_1_EAX_MOVRS             (1U << 31)
+ 
+ /* The immediate form of MSR access instructions */
+ #define CPUID_7_1_ECX_MSR_IMM           (1U << 5)
 -- 
 2.34.1
 
