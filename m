@@ -2,90 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF3FCCC0128
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 23:02:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C322CC0146
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 23:04:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVGeK-0004rN-GM; Mon, 15 Dec 2025 17:02:36 -0500
+	id 1vVGen-0005nc-94; Mon, 15 Dec 2025 17:03:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGe9-0004cH-KD
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:02:25 -0500
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGeI-00050p-Qr
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:02:36 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGe6-0002rO-69
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:02:25 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGeD-0002tH-EL
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:02:32 -0500
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id AEF9333703;
- Mon, 15 Dec 2025 22:01:59 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 4E8C93378B;
+ Mon, 15 Dec 2025 22:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1765836119; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1765836122; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rdixMlj90AdyJ9tT9OWwan6oz2SIpuQi3hevm35iFow=;
- b=ukHPY+Au+Y/vYQv0QNkiaZpu9hXoRfTANMHfjo1m2sE0gJkia3EIUDEDMZlYU2zxTpb7zZ
- HPqDAaNpFsmmJHU5J7hICkQ4usQaw0zSuWZpONHCvamd+w38Ao8EQiwQkTlBSKL4inkB0Q
- QDiYSnSu6HiHM1FnOv2tMtlqNjZDipw=
+ bh=Ejj8SHFCwe9/p1P7ixjeMELwlONdZ6cwRRvSelZ/Kp8=;
+ b=vjkqTvTwlLGR322fM9DpyrulHPP/yvdZRbF14nYl6OHb5bf2PIN9hDpisE30kdvK1r+Rfm
+ j82NqIkddsp8++sR7mLsU7ZVZRn7AQ8fN6dtVQviih9FaPV6W+qbYwErF/1g2PLfvbIJLO
+ BmzPqHUHPFw1PdXFXyS5UJDfAjrz6DQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1765836119;
+ s=susede2_ed25519; t=1765836122;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rdixMlj90AdyJ9tT9OWwan6oz2SIpuQi3hevm35iFow=;
- b=wjnclOgU8ql9SWpmPWHcnkpM44OJw3wQxXyHqv2bHH4D3RQlUY3+b4CfOWtFaO44tpLKzs
- 9YTU421ZT/Hqo4BQ==
+ bh=Ejj8SHFCwe9/p1P7ixjeMELwlONdZ6cwRRvSelZ/Kp8=;
+ b=6mDCHHUZA/Xgm5cRMjCwrTW5c2+gy/NOpchLuoMY2DTJJHAzSUrU4HZxtKkDSCf6ghmeOZ
+ VmrMR9R1R79x3VDA==
 Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1765836119; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1765836122; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rdixMlj90AdyJ9tT9OWwan6oz2SIpuQi3hevm35iFow=;
- b=ukHPY+Au+Y/vYQv0QNkiaZpu9hXoRfTANMHfjo1m2sE0gJkia3EIUDEDMZlYU2zxTpb7zZ
- HPqDAaNpFsmmJHU5J7hICkQ4usQaw0zSuWZpONHCvamd+w38Ao8EQiwQkTlBSKL4inkB0Q
- QDiYSnSu6HiHM1FnOv2tMtlqNjZDipw=
+ bh=Ejj8SHFCwe9/p1P7ixjeMELwlONdZ6cwRRvSelZ/Kp8=;
+ b=vjkqTvTwlLGR322fM9DpyrulHPP/yvdZRbF14nYl6OHb5bf2PIN9hDpisE30kdvK1r+Rfm
+ j82NqIkddsp8++sR7mLsU7ZVZRn7AQ8fN6dtVQviih9FaPV6W+qbYwErF/1g2PLfvbIJLO
+ BmzPqHUHPFw1PdXFXyS5UJDfAjrz6DQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1765836119;
+ s=susede2_ed25519; t=1765836122;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rdixMlj90AdyJ9tT9OWwan6oz2SIpuQi3hevm35iFow=;
- b=wjnclOgU8ql9SWpmPWHcnkpM44OJw3wQxXyHqv2bHH4D3RQlUY3+b4CfOWtFaO44tpLKzs
- 9YTU421ZT/Hqo4BQ==
+ bh=Ejj8SHFCwe9/p1P7ixjeMELwlONdZ6cwRRvSelZ/Kp8=;
+ b=6mDCHHUZA/Xgm5cRMjCwrTW5c2+gy/NOpchLuoMY2DTJJHAzSUrU4HZxtKkDSCf6ghmeOZ
+ VmrMR9R1R79x3VDA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A6CF13EA63;
- Mon, 15 Dec 2025 22:01:57 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 454F23EA63;
+ Mon, 15 Dec 2025 22:02:00 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id qGD2GVWFQGlrMQAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 15 Dec 2025 22:01:57 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id YFbjAViFQGlrMQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 15 Dec 2025 22:02:00 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v3 28/51] tests/qtest/migration: Stop invoking
- migrate_incoming from hooks
-Date: Mon, 15 Dec 2025 19:00:14 -0300
-Message-ID: <20251215220041.12657-29-farosas@suse.de>
+Subject: [PATCH v3 29/51] tests/qtest/migration: Add config QDict
+Date: Mon, 15 Dec 2025 19:00:15 -0300
+Message-ID: <20251215220041.12657-30-farosas@suse.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251215220041.12657-1-farosas@suse.de>
 References: <20251215220041.12657-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.989];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.987];
  MIME_GOOD(-0.10)[text/plain];
  FUZZY_RATELIMITED(0.00)[rspamd.com];
  TO_MATCH_ENVRCPT_ALL(0.00)[]; TO_DN_SOME(0.00)[];
@@ -97,15 +96,13 @@ X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  RCVD_COUNT_TWO(0.00)[2];
  DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email, suse.de:mid,
  imap1.dmz-prg2.suse.org:helo]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -122,223 +119,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that the listen_uri is being properly used, tests can stop calling
-migrate_incoming from their hooks. The _common functions and
-migrate_start should take care of that.
+Add the config object to the MigrateCommon structure and allocate/free
+it in the wrappers that are used when dispatched every migration test.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration/compression-tests.c |  6 ++++++
- tests/qtest/migration/framework.c         | 14 +++++++++++---
- tests/qtest/migration/precopy-tests.c     |  7 ++++---
- tests/qtest/migration/tls-tests.c         |  8 ++++++++
- 4 files changed, 29 insertions(+), 6 deletions(-)
+ tests/qtest/migration/framework.h      | 2 ++
+ tests/qtest/migration/migration-util.c | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/tests/qtest/migration/compression-tests.c b/tests/qtest/migration/compression-tests.c
-index eb0b7d6b4b..bed39dece0 100644
---- a/tests/qtest/migration/compression-tests.c
-+++ b/tests/qtest/migration/compression-tests.c
-@@ -33,6 +33,7 @@ migrate_hook_start_precopy_tcp_multifd_zstd(QTestState *from,
- 
- static void test_multifd_tcp_zstd(char *name, MigrateCommon *args)
- {
-+    args->listen_uri = "tcp:127.0.0.1:0";
-     args->start_hook = migrate_hook_start_precopy_tcp_multifd_zstd;
- 
-     args->start.incoming_defer = true;
-@@ -43,6 +44,7 @@ static void test_multifd_tcp_zstd(char *name, MigrateCommon *args)
- 
- static void test_multifd_postcopy_tcp_zstd(char *name, MigrateCommon *args)
- {
-+    args->listen_uri = "tcp:127.0.0.1:0";
-     args->start_hook = migrate_hook_start_precopy_tcp_multifd_zstd,
- 
-     args->start.incoming_defer = true;
-@@ -66,6 +68,7 @@ migrate_hook_start_precopy_tcp_multifd_qatzip(QTestState *from,
- 
- static void test_multifd_tcp_qatzip(char *name, MigrateCommon *args)
- {
-+    args->listen_uri = "tcp:127.0.0.1:0";
-     args->start_hook = migrate_hook_start_precopy_tcp_multifd_qatzip;
- 
-     args->start.incoming_defer = true;
-@@ -85,6 +88,7 @@ migrate_hook_start_precopy_tcp_multifd_qpl(QTestState *from,
- 
- static void test_multifd_tcp_qpl(char *name, MigrateCommon *args)
- {
-+    args->listen_uri = "tcp:127.0.0.1:0";
-     args->start_hook = migrate_hook_start_precopy_tcp_multifd_qpl;
- 
-     args->start.incoming_defer = true;
-@@ -104,6 +108,7 @@ migrate_hook_start_precopy_tcp_multifd_uadk(QTestState *from,
- 
- static void test_multifd_tcp_uadk(char *name, MigrateCommon *args)
- {
-+    args->listen_uri = "tcp:127.0.0.1:0";
-     args->start_hook = migrate_hook_start_precopy_tcp_multifd_uadk;
- 
-     args->start.incoming_defer = true;
-@@ -156,6 +161,7 @@ migrate_hook_start_precopy_tcp_multifd_zlib(QTestState *from,
- 
- static void test_multifd_tcp_zlib(char *name, MigrateCommon *args)
- {
-+    args->listen_uri = "tcp:127.0.0.1:0";
-     args->start_hook = migrate_hook_start_precopy_tcp_multifd_zlib;
- 
-     args->start.incoming_defer = true;
-diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-index e811945122..199e439263 100644
---- a/tests/qtest/migration/framework.c
-+++ b/tests/qtest/migration/framework.c
-@@ -820,6 +820,9 @@ int test_precopy_common(MigrateCommon *args)
-     QObject *out_channels = NULL;
- 
-     g_assert(!args->cpr_channel || args->connect_channels);
-+    if (args->start.incoming_defer) {
-+        g_assert(args->listen_uri || args->connect_channels);
-+    }
- 
-     if (migrate_start(&from, &to, args->listen_uri, &args->start)) {
-         return -1;
-@@ -829,6 +832,14 @@ int test_precopy_common(MigrateCommon *args)
-         data_hook = args->start_hook(from, to);
-     }
- 
-+    if (args->start.incoming_defer && !args->start.defer_target_connect) {
-+        if (args->connect_channels) {
-+            in_channels = qobject_from_json(args->connect_channels,
-+                                            &error_abort);
-+        }
-+        migrate_incoming_qmp(to, args->listen_uri, in_channels, "{}");
-+    }
+diff --git a/tests/qtest/migration/framework.h b/tests/qtest/migration/framework.h
+index bf3492a59e..65c656e0d3 100644
+--- a/tests/qtest/migration/framework.h
++++ b/tests/qtest/migration/framework.h
+@@ -151,6 +151,8 @@ typedef struct {
+      * used for the deferred migrate_incoming call.
+      */
+     bool incoming_defer;
 +
-     /* Wait for the first serial output from the source */
-     if (args->result == MIG_TEST_SUCCEED) {
-         wait_for_serial("src_serial");
-@@ -1060,9 +1071,6 @@ void *migrate_hook_start_precopy_tcp_multifd_common(QTestState *from,
-     migrate_set_parameter_str(from, "multifd-compression", method);
-     migrate_set_parameter_str(to, "multifd-compression", method);
++    QDict *config;
+ } MigrateStart;
  
--    /* Start incoming migration from the 1st socket */
--    migrate_incoming_qmp(to, "tcp:127.0.0.1:0", NULL, "{}");
--
-     return NULL;
- }
- 
-diff --git a/tests/qtest/migration/precopy-tests.c b/tests/qtest/migration/precopy-tests.c
-index d9c463dd0f..ab5789717f 100644
---- a/tests/qtest/migration/precopy-tests.c
-+++ b/tests/qtest/migration/precopy-tests.c
-@@ -239,9 +239,6 @@ static void *migrate_hook_start_fd(QTestState *from,
-                                  "  'arguments': { 'fdname': 'fd-mig' }}");
-     close(pair[0]);
- 
--    /* Start incoming migration from the 1st socket */
--    migrate_incoming_qmp(to, "fd:fd-mig", NULL, "{}");
--
-     /* Send the 2nd socket to the target */
-     qtest_qmp_fds_assert_success(from, &pair[1], 1,
-                                  "{ 'execute': 'getfd',"
-@@ -283,6 +280,7 @@ static void migrate_hook_end_fd(QTestState *from,
- static void test_precopy_fd_socket(char *name, MigrateCommon *args)
+ typedef enum PostcopyRecoveryFailStage {
+diff --git a/tests/qtest/migration/migration-util.c b/tests/qtest/migration/migration-util.c
+index c2462306a1..416dd10ef8 100644
+--- a/tests/qtest/migration/migration-util.c
++++ b/tests/qtest/migration/migration-util.c
+@@ -243,6 +243,7 @@ static void migration_test_destroy(gpointer data)
  {
-     args->connect_uri = "fd:fd-mig";
-+    args->listen_uri = "fd:fd-mig";
-     args->start_hook = migrate_hook_start_fd;
-     args->end_hook = migrate_hook_end_fd;
+     MigrationTest *test = (MigrationTest *)data;
  
-@@ -484,6 +482,7 @@ static void test_multifd_tcp_uri_none(char *name, MigrateCommon *args)
-      * everything will work alright even if guest page is changing.
-      */
-     args->live = true;
-+    args->listen_uri = "tcp:127.0.0.1:0";
++    qdict_unref(test->data->start.config);
+     g_free(test->data);
+     g_free(test->name);
+     g_free(test);
+@@ -253,6 +254,7 @@ static void migration_test_wrapper(const void *data)
+     MigrationTest *test = (MigrationTest *)data;
  
-     args->start.incoming_defer = true;
-     args->start.caps[MIGRATION_CAPABILITY_MULTIFD] = true;
-@@ -500,6 +499,7 @@ static void test_multifd_tcp_zero_page_legacy(char *name, MigrateCommon *args)
-      * everything will work alright even if guest page is changing.
-      */
-     args->live = true;
-+    args->listen_uri = "tcp:127.0.0.1:0";
+     test->data = g_new0(MigrateCommon, 1);
++    test->data->start.config = qdict_new();
  
-     args->start.incoming_defer = true;
-     args->start.caps[MIGRATION_CAPABILITY_MULTIFD] = true;
-@@ -516,6 +516,7 @@ static void test_multifd_tcp_no_zero_page(char *name, MigrateCommon *args)
-      * everything will work alright even if guest page is changing.
-      */
-     args->live = true;
-+    args->listen_uri = "tcp:127.0.0.1:0";
- 
-     args->start.incoming_defer = true;
-     args->start.caps[MIGRATION_CAPABILITY_MULTIFD] = true;
-diff --git a/tests/qtest/migration/tls-tests.c b/tests/qtest/migration/tls-tests.c
-index 166f27f478..f63f37132a 100644
---- a/tests/qtest/migration/tls-tests.c
-+++ b/tests/qtest/migration/tls-tests.c
-@@ -677,6 +677,7 @@ static void test_multifd_tcp_tls_psk_match(char *name, MigrateCommon *args)
- {
-     args->start_hook = migrate_hook_start_multifd_tcp_tls_psk_match;
-     args->end_hook = migrate_hook_end_tls_psk;
-+    args->listen_uri = "tcp:127.0.0.1:0";
- 
-     args->start.incoming_defer = true;
-     args->start.caps[MIGRATION_CAPABILITY_MULTIFD] = true;
-@@ -689,6 +690,7 @@ static void test_multifd_tcp_tls_psk_mismatch(char *name, MigrateCommon *args)
-     args->start_hook = migrate_hook_start_multifd_tcp_tls_psk_mismatch;
-     args->end_hook = migrate_hook_end_tls_psk;
-     args->result = MIG_TEST_FAIL;
-+    args->listen_uri = "tcp:127.0.0.1:0";
- 
-     args->start.hide_stderr = true;
-     args->start.incoming_defer = true;
-@@ -702,6 +704,7 @@ static void test_multifd_postcopy_tcp_tls_psk_match(char *name,
- {
-     args->start_hook = migrate_hook_start_multifd_tcp_tls_psk_match;
-     args->end_hook = migrate_hook_end_tls_psk;
-+    args->listen_uri = "tcp:127.0.0.1:0";
- 
-     args->start.incoming_defer = true;
-     args->start.caps[MIGRATION_CAPABILITY_MULTIFD] = true;
-@@ -716,6 +719,7 @@ static void test_multifd_tcp_tls_x509_default_host(char *name,
- {
-     args->start_hook = migrate_hook_start_multifd_tls_x509_default_host;
-     args->end_hook = migrate_hook_end_tls_x509;
-+    args->listen_uri = "tcp:127.0.0.1:0";
- 
-     args->start.incoming_defer = true;
-     args->start.caps[MIGRATION_CAPABILITY_MULTIFD] = true;
-@@ -728,6 +732,7 @@ static void test_multifd_tcp_tls_x509_override_host(char *name,
- {
-     args->start_hook = migrate_hook_start_multifd_tls_x509_override_host;
-     args->end_hook = migrate_hook_end_tls_x509;
-+    args->listen_uri = "tcp:127.0.0.1:0";
- 
-     args->start.incoming_defer = true;
-     args->start.caps[MIGRATION_CAPABILITY_MULTIFD] = true;
-@@ -754,6 +759,7 @@ static void test_multifd_tcp_tls_x509_mismatch_host(char *name,
-     args->start_hook = migrate_hook_start_multifd_tls_x509_mismatch_host;
-     args->end_hook = migrate_hook_end_tls_x509;
-     args->result = MIG_TEST_FAIL;
-+    args->listen_uri = "tcp:127.0.0.1:0";
- 
-     args->start.incoming_defer = true;
-     args->start.hide_stderr = true;
-@@ -767,6 +773,7 @@ static void test_multifd_tcp_tls_x509_allow_anon_client(char *name,
- {
-     args->start_hook = migrate_hook_start_multifd_tls_x509_allow_anon_client;
-     args->end_hook = migrate_hook_end_tls_x509;
-+    args->listen_uri = "tcp:127.0.0.1:0";
- 
-     args->start.incoming_defer = true;
-     args->start.caps[MIGRATION_CAPABILITY_MULTIFD] = true;
-@@ -780,6 +787,7 @@ static void test_multifd_tcp_tls_x509_reject_anon_client(char *name,
-     args->start_hook = migrate_hook_start_multifd_tls_x509_reject_anon_client;
-     args->end_hook = migrate_hook_end_tls_x509;
-     args->result = MIG_TEST_FAIL;
-+    args->listen_uri = "tcp:127.0.0.1:0";
- 
-     args->start.incoming_defer = true;
-     args->start.hide_stderr = true;
+     g_test_message("Running /%s%s", qtest_get_arch(), test->name);
+     test->func(test->name, test->data);
 -- 
 2.51.0
 
