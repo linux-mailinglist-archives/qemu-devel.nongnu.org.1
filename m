@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CF02CC01A6
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 23:06:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6570CC016D
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 23:05:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVGfQ-0001VT-N3; Mon, 15 Dec 2025 17:03:44 -0500
+	id 1vVGfS-000216-TR; Mon, 15 Dec 2025 17:03:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGf9-0001Dk-QH
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:03:28 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGfG-0001Nm-QI
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:03:36 -0500
 Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGf7-00039V-Dg
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:03:27 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGfD-0003Bd-Lv
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:03:33 -0500
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id D40515BDDD;
- Mon, 15 Dec 2025 22:02:49 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 744045BDE2;
+ Mon, 15 Dec 2025 22:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1765836169; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1765836172; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WnqpBZJU2474UbbWD0OquXynqcPEoAQXGMMMbY0+ih0=;
- b=blXWxjIGPA2dQRqrB2ogXXEqxLJY1ob1zesz8I1si1pZgzo5IzP9CGPx57wPiNXnRGDdzR
- lBI0treeYGdwr6+6zBeJccZVAS9CTWKy9fIQaQL92hq7Kd8XADuCsl4MMaNjD3bfXLSDHP
- av4PsgRR85EtSZpXzLMDkg/PrT+OCHA=
+ bh=TLzP0FP/GuIRsL62Nak4M/JkrfBmomudVQwI79vGZYw=;
+ b=fA8uPO85qrkM8gM2zfDHEuLTHWLLwo3+YYejBoN8TREvjgtrripd8VOm9X6pCgeKtDL39G
+ yy+srsd4Nw99dH80dsZk8UBB3SfQVznzrz+DCnlkzC4eMblVu5jzFsHbLJarSRWKyJ44t2
+ ThSR2ZdPMfsDXNIst5+uSip2Qkn7eko=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1765836169;
+ s=susede2_ed25519; t=1765836172;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WnqpBZJU2474UbbWD0OquXynqcPEoAQXGMMMbY0+ih0=;
- b=+fX7SZA7ZUCKJlv4LcwDINMfdwI+YrHzojujZD+4I9wze+Lrsf27j523LfyIqNVILVqU+u
- jtZ/37askLgFw5Aw==
+ bh=TLzP0FP/GuIRsL62Nak4M/JkrfBmomudVQwI79vGZYw=;
+ b=9n9WGj9SYPhGNfHGM2k42lVt76eOpWTJ5zpyI02itnZuBzwVLoLS5bRqBBtVpFxoLSFo6V
+ /GTYCOiJvNtSD+AQ==
 Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1765836169; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1765836172; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WnqpBZJU2474UbbWD0OquXynqcPEoAQXGMMMbY0+ih0=;
- b=blXWxjIGPA2dQRqrB2ogXXEqxLJY1ob1zesz8I1si1pZgzo5IzP9CGPx57wPiNXnRGDdzR
- lBI0treeYGdwr6+6zBeJccZVAS9CTWKy9fIQaQL92hq7Kd8XADuCsl4MMaNjD3bfXLSDHP
- av4PsgRR85EtSZpXzLMDkg/PrT+OCHA=
+ bh=TLzP0FP/GuIRsL62Nak4M/JkrfBmomudVQwI79vGZYw=;
+ b=fA8uPO85qrkM8gM2zfDHEuLTHWLLwo3+YYejBoN8TREvjgtrripd8VOm9X6pCgeKtDL39G
+ yy+srsd4Nw99dH80dsZk8UBB3SfQVznzrz+DCnlkzC4eMblVu5jzFsHbLJarSRWKyJ44t2
+ ThSR2ZdPMfsDXNIst5+uSip2Qkn7eko=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1765836169;
+ s=susede2_ed25519; t=1765836172;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WnqpBZJU2474UbbWD0OquXynqcPEoAQXGMMMbY0+ih0=;
- b=+fX7SZA7ZUCKJlv4LcwDINMfdwI+YrHzojujZD+4I9wze+Lrsf27j523LfyIqNVILVqU+u
- jtZ/37askLgFw5Aw==
+ bh=TLzP0FP/GuIRsL62Nak4M/JkrfBmomudVQwI79vGZYw=;
+ b=9n9WGj9SYPhGNfHGM2k42lVt76eOpWTJ5zpyI02itnZuBzwVLoLS5bRqBBtVpFxoLSFo6V
+ /GTYCOiJvNtSD+AQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CAD3B3EA65;
- Mon, 15 Dec 2025 22:02:47 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 61EC93EA63;
+ Mon, 15 Dec 2025 22:02:50 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id sFjPIoeFQGlrMQAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 15 Dec 2025 22:02:47 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id QCwwCYqFQGlrMQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 15 Dec 2025 22:02:50 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v3 47/51] tests/qtest/migration: Convert file tests to use
+Subject: [PATCH v3 48/51] tests/qtest/migration: Convert misc-tests to use
  config
-Date: Mon, 15 Dec 2025 19:00:33 -0300
-Message-ID: <20251215220041.12657-48-farosas@suse.de>
+Date: Mon, 15 Dec 2025 19:00:34 -0300
+Message-ID: <20251215220041.12657-49-farosas@suse.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251215220041.12657-1-farosas@suse.de>
 References: <20251215220041.12657-1-farosas@suse.de>
@@ -85,7 +85,7 @@ Content-Transfer-Encoding: 8bit
 X-Spam-Score: -2.80
 X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.990];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.989];
  MIME_GOOD(-0.10)[text/plain]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  FROM_HAS_DN(0.00)[]; ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
  R_RATELIMIT(0.00)[to_ip_from(RLjrdmmf3juheryardexw6jb95)];
@@ -120,290 +120,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert the file tests (including CPR) to use the config object.
-
-The 'events' line can be removed because the capability is always set
-in the config QDict in common code.
+Make the misc tests pass a config argument to migration QMP commands.
 
 Temporarily, set the use-config key to enable the new method.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration/cpr-tests.c  | 51 ++++++++++++++----------------
- tests/qtest/migration/file-tests.c | 39 ++++++++---------------
- tests/qtest/migration/framework.c  |  3 ++
- 3 files changed, 41 insertions(+), 52 deletions(-)
+ tests/qtest/migration/misc-tests.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/tests/qtest/migration/cpr-tests.c b/tests/qtest/migration/cpr-tests.c
-index 9883616cb5..a1b5a39f9f 100644
---- a/tests/qtest/migration/cpr-tests.c
-+++ b/tests/qtest/migration/cpr-tests.c
-@@ -21,14 +21,6 @@
+diff --git a/tests/qtest/migration/misc-tests.c b/tests/qtest/migration/misc-tests.c
+index c62fd1e3f9..7e38d26ab2 100644
+--- a/tests/qtest/migration/misc-tests.c
++++ b/tests/qtest/migration/misc-tests.c
+@@ -28,6 +28,9 @@ static void test_baddest(char *name, MigrateCommon *args)
  
- static char *tmpfs;
+     args->start.hide_stderr = true;
  
--static void *migrate_hook_start_mode_reboot(QTestState *from, QTestState *to)
--{
--    migrate_set_parameter_str(from, "mode", "cpr-reboot");
--    migrate_set_parameter_str(to, "mode", "cpr-reboot");
--
--    return NULL;
--}
--
- static void test_mode_reboot(char *name, MigrateCommon *args)
- {
-     g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
-@@ -36,21 +28,15 @@ static void test_mode_reboot(char *name, MigrateCommon *args)
++    /* temporary */
++    qdict_put_bool(args->start.config, "use-config", true);
++
+     if (migrate_start(&from, &to, "tcp:127.0.0.1:0", &args->start)) {
+         return;
+     }
+@@ -52,6 +55,9 @@ static void test_analyze_script(char *name, MigrateCommon *args)
+         return;
+     }
  
-     args->listen_uri = uri;
-     args->connect_uri = uri;
--    args->start_hook = migrate_hook_start_mode_reboot;
++    /* temporary */
++    qdict_put_bool(args->start.config, "use-config", true);
++
+     /* dummy url */
+     if (migrate_start(&from, &to, "tcp:127.0.0.1:0", &args->start)) {
+         return;
+@@ -62,8 +68,8 @@ static void test_analyze_script(char *name, MigrateCommon *args)
+      * vmstate to include subsections for them. The script needs to
+      * parse those subsections properly.
+      */
+-    migrate_set_capability(from, "validate-uuid", true);
+-    migrate_set_capability(from, "x-ignore-shared", true);
++    qdict_put_bool(args->start.config, "validate-uuid", true);
++    qdict_put_bool(args->start.config, "x-ignore-shared", true);
  
-     args->start.incoming_defer = true;
+     file = g_strdup_printf("%s/migfile", tmpfs);
+     uri = g_strdup_printf("exec:cat > %s", file);
+@@ -96,7 +102,11 @@ static void test_ignore_shared(char *name, MigrateCommon *args)
+     QTestState *from, *to;
+ 
      args->start.mem_type = MEM_TYPE_SHMEM;
 -    args->start.caps[MIGRATION_CAPABILITY_X_IGNORE_SHARED] = true;
- 
++
++    /* temporary */
++    qdict_put_bool(args->start.config, "use-config", true);
++
 +    qdict_put_bool(args->start.config, "x-ignore-shared", true);
-+    qdict_put_str(args->start.config, "mode", "cpr-reboot");
-     test_file_common(args, true);
- }
  
--static void *test_mode_transfer_start(QTestState *from, QTestState *to)
--{
--    migrate_set_parameter_str(from, "mode", "cpr-transfer");
--    return NULL;
--}
--
- /*
-  * cpr-transfer mode cannot use the target monitor prior to starting the
-  * migration, and cannot connect synchronously to the monitor, so defer
-@@ -94,13 +80,17 @@ static void test_mode_transfer_common(MigrateCommon *args)
-     args->listen_uri = uri;
-     args->connect_channels = connect_channels;
-     args->cpr_channel = cpr_channel;
--    args->start_hook = test_mode_transfer_start;
- 
-     args->start.opts_source = opts;
-     args->start.opts_target = opts_target;
-     args->start.defer_target_connect = true;
-     args->start.mem_type = MEM_TYPE_MEMFD;
- 
-+    qdict_put_str(args->start.config, "mode", "cpr-transfer");
-+
-+    /* temporary */
-+    qdict_put_bool(args->start.config, "use-config", true);
-+
-     if (test_precopy_common(args) < 0) {
-         close(cpr_sockfd);
-         unlink(cpr_path);
-@@ -119,6 +109,18 @@ static void test_mode_transfer_defer(char *name, MigrateCommon *args)
-     test_mode_transfer_common(args);
- }
- 
-+static void set_cpr_exec_command(QDict *config, char **strv)
-+{
-+    QList *list = qlist_new();
-+
-+    while (*strv) {
-+        qlist_append_str(list, *strv);
-+        strv++;
-+    }
-+
-+    qdict_put_obj(config, "cpr-exec-command", (QObject *)list);
-+}
-+
- static void set_cpr_exec_args(QTestState *who, MigrateCommon *args)
- {
-     g_autofree char *qtest_from_args = NULL;
-@@ -157,7 +159,7 @@ static void set_cpr_exec_args(QTestState *who, MigrateCommon *args)
-     exec_args = g_strconcat(qtest_qemu_binary(migration_get_env()->qemu_dst),
-                             " -incoming defer ", from_str, NULL);
-     argv = g_strsplit(exec_args, " ", -1);
--    migrate_set_parameter_strv(who, "cpr-exec-command", argv);
-+    set_cpr_exec_command(args->start.config, argv);
- }
- 
- static void wait_for_migration_event(QTestState *who, const char *waitfor)
-@@ -187,6 +189,9 @@ static void test_cpr_exec(MigrateCommon *args)
-                                                 FILE_TEST_FILENAME);
-     g_autofree char *channels = NULL;
+     if (migrate_start(&from, &to, uri, &args->start)) {
+         return;
+@@ -131,6 +141,9 @@ static void do_test_validate_uuid(MigrateStart *args, bool should_fail)
+     g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
+     QTestState *from, *to;
  
 +    /* temporary */
-+    qdict_put_bool(args->start.config, "use-config", true);
++    qdict_put_bool(args->config, "use-config", true);
 +
-     if (migrate_start(&from, NULL, args->listen_uri, &args->start)) {
+     if (migrate_start(&from, &to, uri, args)) {
          return;
      }
-@@ -200,7 +205,6 @@ static void test_cpr_exec(MigrateCommon *args)
+@@ -140,8 +153,8 @@ static void do_test_validate_uuid(MigrateStart *args, bool should_fail)
+      * migration is not interesting for us here. Thus, set huge downtime for
+      * very fast migration.
+      */
+-    migrate_set_parameter_int(from, "downtime-limit", 1000000);
+-    migrate_set_capability(from, "validate-uuid", true);
++    qdict_put_int(args->config, "downtime-limit", 1000000);
++    qdict_put_bool(args->config, "validate-uuid", true);
  
+     /* Wait for the first serial output from the source */
      wait_for_serial("src_serial");
-     set_cpr_exec_args(from, args);
--    migrate_set_capability(from, "events", true);
-     migrate_qmp(from, NULL, connect_uri, NULL, args->start.config, "{}");
-     wait_for_migration_event(from, "completed");
- 
-@@ -229,13 +233,6 @@ static void test_cpr_exec(MigrateCommon *args)
-     migrate_end(from, to, args->result == MIG_TEST_SUCCEED);
- }
- 
--static void *test_mode_exec_start(QTestState *from, QTestState *to)
--{
--    assert(!to);
--    migrate_set_parameter_str(from, "mode", "cpr-exec");
--    return NULL;
--}
--
- static void test_mode_exec(char *name, MigrateCommon *args)
- {
-     g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
-@@ -244,12 +241,12 @@ static void test_mode_exec(char *name, MigrateCommon *args)
- 
-     args->connect_uri = uri;
-     args->listen_uri = listen_uri;
--    args->start_hook = test_mode_exec_start;
- 
-     args->start.only_source = true;
-     args->start.opts_source = "-machine aux-ram-share=on -nodefaults";
-     args->start.mem_type = MEM_TYPE_MEMFD;
- 
-+    qdict_put_str(args->start.config, "mode", "cpr-exec");
-     test_cpr_exec(args);
- }
- 
-diff --git a/tests/qtest/migration/file-tests.c b/tests/qtest/migration/file-tests.c
-index 57117b2496..c7a4eb145b 100644
---- a/tests/qtest/migration/file-tests.c
-+++ b/tests/qtest/migration/file-tests.c
-@@ -118,8 +118,8 @@ static void test_precopy_file_mapped_ram_live(char *name, MigrateCommon *args)
-     args->listen_uri = uri;
- 
-     args->start.incoming_defer = true;
--    args->start.caps[MIGRATION_CAPABILITY_MAPPED_RAM] = true;
- 
-+    qdict_put_bool(args->start.config, "mapped-ram", true);
-     test_file_common(args, false);
- }
- 
-@@ -132,8 +132,8 @@ static void test_precopy_file_mapped_ram(char *name, MigrateCommon *args)
-     args->listen_uri = uri;
- 
-     args->start.incoming_defer = true;
--    args->start.caps[MIGRATION_CAPABILITY_MAPPED_RAM] = true;
- 
-+    qdict_put_bool(args->start.config, "mapped-ram", true);
-     test_file_common(args, true);
- }
- 
-@@ -145,9 +145,9 @@ static void test_multifd_file_mapped_ram_live(char *name, MigrateCommon *args)
-     args->listen_uri = uri;
- 
-     args->start.incoming_defer = true;
--    args->start.caps[MIGRATION_CAPABILITY_MULTIFD] = true;
--    args->start.caps[MIGRATION_CAPABILITY_MAPPED_RAM] = true;
- 
-+    qdict_put_bool(args->start.config, "multifd", true);
-+    qdict_put_bool(args->start.config, "mapped-ram", true);
-     test_file_common(args, false);
- }
- 
-@@ -160,38 +160,29 @@ static void test_multifd_file_mapped_ram(char *name, MigrateCommon *args)
-     args->listen_uri = uri;
- 
-     args->start.incoming_defer = true;
--    args->start.caps[MIGRATION_CAPABILITY_MULTIFD] = true;
--    args->start.caps[MIGRATION_CAPABILITY_MAPPED_RAM] = true;
- 
-+    qdict_put_bool(args->start.config, "multifd", true);
-+    qdict_put_bool(args->start.config, "mapped-ram", true);
-     test_file_common(args, true);
- }
- 
--static void *migrate_hook_start_multifd_mapped_ram_dio(QTestState *from,
--                                                       QTestState *to)
--{
--    migrate_set_parameter_bool(from, "direct-io", true);
--    migrate_set_parameter_bool(to, "direct-io", true);
--
--    return NULL;
--}
--
- static void test_multifd_file_mapped_ram_dio(char *name, MigrateCommon *args)
- {
-     g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
-                                            FILE_TEST_FILENAME);
-     args->connect_uri = uri;
-     args->listen_uri = uri;
--    args->start_hook = migrate_hook_start_multifd_mapped_ram_dio;
- 
-     args->start.incoming_defer = true;
--    args->start.caps[MIGRATION_CAPABILITY_MAPPED_RAM] = true;
--    args->start.caps[MIGRATION_CAPABILITY_MULTIFD] = true;
- 
-     if (!probe_o_direct_support(tmpfs)) {
-         g_test_skip("Filesystem does not support O_DIRECT");
-         return;
-     }
- 
-+    qdict_put_bool(args->start.config, "multifd", true);
-+    qdict_put_bool(args->start.config, "mapped-ram", true);
-+    qdict_put_bool(args->start.config, "direct-io", true);
-     test_file_common(args, true);
- }
- 
-@@ -230,9 +221,6 @@ static void *migrate_hook_start_multifd_mapped_ram_fdset_dio(QTestState *from,
-     fdset_add_fds(from, file, O_WRONLY, 2, true);
-     fdset_add_fds(to, file, O_RDONLY, 2, true);
- 
--    migrate_set_parameter_bool(from, "direct-io", true);
--    migrate_set_parameter_bool(to, "direct-io", true);
--
-     return NULL;
- }
- 
-@@ -258,9 +246,9 @@ static void test_multifd_file_mapped_ram_fdset(char *name, MigrateCommon *args)
-     args->end_hook = migrate_hook_end_multifd_mapped_ram_fdset;
- 
-     args->start.incoming_defer = true;
--    args->start.caps[MIGRATION_CAPABILITY_MAPPED_RAM] = true;
--    args->start.caps[MIGRATION_CAPABILITY_MULTIFD] = true;
- 
-+    qdict_put_bool(args->start.config, "multifd", true);
-+    qdict_put_bool(args->start.config, "mapped-ram", true);
-     test_file_common(args, true);
- }
- 
-@@ -276,14 +264,15 @@ static void test_multifd_file_mapped_ram_fdset_dio(char *name,
-     args->end_hook = migrate_hook_end_multifd_mapped_ram_fdset;
- 
-     args->start.incoming_defer = true;
--    args->start.caps[MIGRATION_CAPABILITY_MAPPED_RAM] = true;
--    args->start.caps[MIGRATION_CAPABILITY_MULTIFD] = true;
- 
-     if (!probe_o_direct_support(tmpfs)) {
-         g_test_skip("Filesystem does not support O_DIRECT");
-         return;
-     }
- 
-+    qdict_put_bool(args->start.config, "multifd", true);
-+    qdict_put_bool(args->start.config, "mapped-ram", true);
-+    qdict_put_bool(args->start.config, "direct-io", true);
-     test_file_common(args, true);
- }
- #endif /* !_WIN32 */
-diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-index 44ef80cf0c..6cf2bbf9cc 100644
---- a/tests/qtest/migration/framework.c
-+++ b/tests/qtest/migration/framework.c
-@@ -1056,6 +1056,9 @@ void test_file_common(MigrateCommon *args, bool stop_src)
-     void *data_hook = NULL;
-     bool check_offset = false;
- 
-+    /* temporary */
-+    qdict_put_bool(args->start.config, "use-config", true);
-+
-     if (migrate_start(&from, &to, args->listen_uri, &args->start)) {
-         return;
-     }
 -- 
 2.51.0
 
