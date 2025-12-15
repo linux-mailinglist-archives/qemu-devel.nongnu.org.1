@@ -2,100 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE47CC01AC
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 23:06:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A42CC012E
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 23:03:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVGdn-0003YA-5A; Mon, 15 Dec 2025 17:02:03 -0500
+	id 1vVGds-00040C-UN; Mon, 15 Dec 2025 17:02:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGdk-0003Iq-It
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:02:00 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGdp-0003tO-Sf
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:02:05 -0500
 Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGdg-0002ly-Ur
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:02:00 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGdo-0002ob-3P
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:02:05 -0500
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 9CFC35BE05;
- Mon, 15 Dec 2025 22:01:28 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id EB1225BDEF;
+ Mon, 15 Dec 2025 22:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1765836088; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1765836091; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Rv2kWoOoZ1W6ki7xl5d8pZ99rzFd7UPYEB3Nt7NaR2A=;
- b=zQUsqeDSv6taW+4xsxRyZt/f1amnkAlXUuxpROoh1qRZrBl0fuSURDMVDeW/+UtDsjVArP
- GfYICnqOFKBR7AE53dKs4kDK0LeYP/XpMA4c3dSZC7/G39ql2jaIyxmBEdXGPgigAb28eT
- JCDAmxfubVMpFfKAiYsgFytgtvxv1BU=
+ bh=PBzJkpOkkK0HoW8hl5SIwKzpENa8ip8NNhwNebfQdeQ=;
+ b=neDJY19ZQraqjlqh4jn+5vUdT8phTL8z903OQem8H9z3H5xLDNy8oEW57DDUyeTJGgEMuC
+ Uk6dmlVLymbN0jkxWVYl1wcMAhEkVSfV91N42JG/28PZ3rloKYyHDuDE4S/4MNmzapkjHf
+ Q/sO19DvjVJ0eKRDDfPvbpaTSpsyUro=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1765836088;
+ s=susede2_ed25519; t=1765836091;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Rv2kWoOoZ1W6ki7xl5d8pZ99rzFd7UPYEB3Nt7NaR2A=;
- b=h26BD9FIan1KM4n8+btKfUs7KCfgO1KquKgzmyT1H/ZgmlJl+0RiBDKEkE/o3Xy4WjDO4l
- gNWktX4+ANyU22Cg==
+ bh=PBzJkpOkkK0HoW8hl5SIwKzpENa8ip8NNhwNebfQdeQ=;
+ b=blHkOrCGLeG2XJ4qfT58FhBmzH4fwKE1s+IwN1ACYY4uZOMckK/Z/y/ZK4WXlcTVEi9vvz
+ YnY8w9HQGbcy7KCw==
 Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1765836088; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1765836090; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Rv2kWoOoZ1W6ki7xl5d8pZ99rzFd7UPYEB3Nt7NaR2A=;
- b=zQUsqeDSv6taW+4xsxRyZt/f1amnkAlXUuxpROoh1qRZrBl0fuSURDMVDeW/+UtDsjVArP
- GfYICnqOFKBR7AE53dKs4kDK0LeYP/XpMA4c3dSZC7/G39ql2jaIyxmBEdXGPgigAb28eT
- JCDAmxfubVMpFfKAiYsgFytgtvxv1BU=
+ bh=PBzJkpOkkK0HoW8hl5SIwKzpENa8ip8NNhwNebfQdeQ=;
+ b=AEIukR4IH+ynN8FQIKAVlUO6QuaUHVt7mel1xsb3GJ+bD6ygs6hGjB8Ove55JfP6Wjhrvl
+ jQky8dbf2uxvMfxBglbjbbVNo/TUAy04OwJgVtv9/aDrcydVFVxQV8hVcNVM/ctgiEkdle
+ SVRJz08+CUGVMDi7jG3URPTykT8k5Ow=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1765836088;
+ s=susede2_ed25519; t=1765836090;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Rv2kWoOoZ1W6ki7xl5d8pZ99rzFd7UPYEB3Nt7NaR2A=;
- b=h26BD9FIan1KM4n8+btKfUs7KCfgO1KquKgzmyT1H/ZgmlJl+0RiBDKEkE/o3Xy4WjDO4l
- gNWktX4+ANyU22Cg==
+ bh=PBzJkpOkkK0HoW8hl5SIwKzpENa8ip8NNhwNebfQdeQ=;
+ b=RCCI7oznM22hXdEvmWGUTVRrkiVN2PteAk7cVG7KreTJbBzYQU+nsSsBKJ61AlQz5vxsFk
+ Y/v563+7XBQAU7Cg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 17B7F3EA63;
- Mon, 15 Dec 2025 22:01:26 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2DAF23EA63;
+ Mon, 15 Dec 2025 22:01:28 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 2N4+LTaFQGlrMQAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 15 Dec 2025 22:01:26 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id CPK5NziFQGlrMQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 15 Dec 2025 22:01:28 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
-Cc: berrange@redhat.com,
-	armbru@redhat.com,
-	Peter Xu <peterx@redhat.com>
-Subject: [PATCH v3 15/51] migration: Use QAPI_CLONE_MEMBERS in
- migrate_params_apply
-Date: Mon, 15 Dec 2025 19:00:01 -0300
-Message-ID: <20251215220041.12657-16-farosas@suse.de>
+Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
+ Michael Roth <michael.roth@amd.com>
+Subject: [PATCH v3 16/51] qapi: Add QAPI_MERGE
+Date: Mon, 15 Dec 2025 19:00:02 -0300
+Message-ID: <20251215220041.12657-17-farosas@suse.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251215220041.12657-1-farosas@suse.de>
 References: <20251215220041.12657-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.988];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.995];
  MIME_GOOD(-0.10)[text/plain]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  FROM_HAS_DN(0.00)[]; ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
- R_RATELIMIT(0.00)[to_ip_from(RLjrdmmf3juheryardexw6jb95)];
  TO_DN_SOME(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo];
  RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
  RCVD_COUNT_TWO(0.00)[2]; FUZZY_RATELIMITED(0.00)[rspamd.com];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCPT_COUNT_THREE(0.00)[4]; RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -2.80
+ RCPT_COUNT_FIVE(0.00)[5]; RCVD_TLS_ALL(0.00)[]
 Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
  envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -20
@@ -119,183 +116,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of setting parameters one by one, use the temporary object,
-which already contains the current migration parameters plus the new
-ones and was just validated by migration_params_check(). Use cloning
-to overwrite it.
+The migration subsystem currently has code to merge two objects of the
+same type. It does so by checking which fields are present in a source
+object and overwriting the corresponding fields on the destination
+object. This leads to a lot of open-coded lines such as:
 
-This avoids the need to alter this function every time a new parameter
-is added.
+    if (src->has_foobar) {
+        dst->foobar = src->foobar;
+    }
+
+This pattern could be replaced by a copy using visitors. Implement a
+macro that extracts elements from a source object using an output
+visitor and merges it with a destination object using an input
+visitor.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/options.c | 134 ++++----------------------------------------
- 1 file changed, 12 insertions(+), 122 deletions(-)
+ include/qapi/type-helpers.h | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/migration/options.c b/migration/options.c
-index 2901b37228..03e63c918c 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -13,6 +13,7 @@
+diff --git a/include/qapi/type-helpers.h b/include/qapi/type-helpers.h
+index fc8352cdec..011716c6ad 100644
+--- a/include/qapi/type-helpers.h
++++ b/include/qapi/type-helpers.h
+@@ -10,6 +10,8 @@
+  */
  
- #include "qemu/osdep.h"
- #include "qemu/error-report.h"
-+#include "qemu/main-loop.h"
- #include "exec/target_page.h"
- #include "qapi/clone-visitor.h"
- #include "qapi/error.h"
-@@ -1379,132 +1380,21 @@ static void migrate_params_test_apply(MigrationParameters *params,
-     }
- }
+ #include "qapi/qapi-types-common.h"
++#include "qapi/qobject-input-visitor.h"
++#include "qapi/qobject-output-visitor.h"
  
+ HumanReadableText *human_readable_text_from_str(GString *str);
+ 
+@@ -20,3 +22,30 @@ HumanReadableText *human_readable_text_from_str(GString *str);
+  * cleanup.
+  */
+ char **strv_from_str_list(const strList *list);
++
 +/*
-+ * Caller must ensure all has_* fields of @params are true to ensure
-+ * all fields get copied and the pointer members don't dangle.
++ * Merge @src over @dst by copying deep clones of the present members
++ * from @src to @dst. Non-present on @src are left untouched on @dst.
 + */
- static void migrate_params_apply(MigrationParameters *params)
- {
-     MigrationState *s = migrate_get_current();
-+    MigrationParameters *cur = &s->parameters;
- 
--    /* TODO use QAPI_CLONE() instead of duplicating it inline */
-+    assert(bql_locked());
- 
--    if (params->has_throttle_trigger_threshold) {
--        s->parameters.throttle_trigger_threshold = params->throttle_trigger_threshold;
--    }
--
--    if (params->has_cpu_throttle_initial) {
--        s->parameters.cpu_throttle_initial = params->cpu_throttle_initial;
--    }
--
--    if (params->has_cpu_throttle_increment) {
--        s->parameters.cpu_throttle_increment = params->cpu_throttle_increment;
--    }
--
--    if (params->has_cpu_throttle_tailslow) {
--        s->parameters.cpu_throttle_tailslow = params->cpu_throttle_tailslow;
--    }
--
--    if (params->tls_creds) {
--        qapi_free_StrOrNull(s->parameters.tls_creds);
--        s->parameters.tls_creds = QAPI_CLONE(StrOrNull, params->tls_creds);
--    }
--
--    if (params->tls_hostname) {
--        qapi_free_StrOrNull(s->parameters.tls_hostname);
--        s->parameters.tls_hostname = QAPI_CLONE(StrOrNull,
--                                                params->tls_hostname);
--    }
--
--    if (params->tls_authz) {
--        qapi_free_StrOrNull(s->parameters.tls_authz);
--        s->parameters.tls_authz = QAPI_CLONE(StrOrNull, params->tls_authz);
--    }
--
--    if (params->has_max_bandwidth) {
--        s->parameters.max_bandwidth = params->max_bandwidth;
--    }
--
--    if (params->has_avail_switchover_bandwidth) {
--        s->parameters.avail_switchover_bandwidth = params->avail_switchover_bandwidth;
--    }
--
--    if (params->has_downtime_limit) {
--        s->parameters.downtime_limit = params->downtime_limit;
--    }
--
--    if (params->has_x_checkpoint_delay) {
--        s->parameters.x_checkpoint_delay = params->x_checkpoint_delay;
--    }
--
--    if (params->has_multifd_channels) {
--        s->parameters.multifd_channels = params->multifd_channels;
--    }
--    if (params->has_multifd_compression) {
--        s->parameters.multifd_compression = params->multifd_compression;
--    }
--    if (params->has_multifd_qatzip_level) {
--        s->parameters.multifd_qatzip_level = params->multifd_qatzip_level;
--    }
--    if (params->has_multifd_zlib_level) {
--        s->parameters.multifd_zlib_level = params->multifd_zlib_level;
--    }
--    if (params->has_multifd_zstd_level) {
--        s->parameters.multifd_zstd_level = params->multifd_zstd_level;
--    }
--    if (params->has_xbzrle_cache_size) {
--        s->parameters.xbzrle_cache_size = params->xbzrle_cache_size;
--    }
--    if (params->has_max_postcopy_bandwidth) {
--        s->parameters.max_postcopy_bandwidth = params->max_postcopy_bandwidth;
--    }
--    if (params->has_max_cpu_throttle) {
--        s->parameters.max_cpu_throttle = params->max_cpu_throttle;
--    }
--    if (params->has_announce_initial) {
--        s->parameters.announce_initial = params->announce_initial;
--    }
--    if (params->has_announce_max) {
--        s->parameters.announce_max = params->announce_max;
--    }
--    if (params->has_announce_rounds) {
--        s->parameters.announce_rounds = params->announce_rounds;
--    }
--    if (params->has_announce_step) {
--        s->parameters.announce_step = params->announce_step;
--    }
--
--    if (params->has_block_bitmap_mapping) {
--        qapi_free_BitmapMigrationNodeAliasList(
--            s->parameters.block_bitmap_mapping);
--
--        s->has_block_bitmap_mapping = true;
--        s->parameters.block_bitmap_mapping =
--            QAPI_CLONE(BitmapMigrationNodeAliasList,
--                       params->block_bitmap_mapping);
--    }
--
--    if (params->has_x_vcpu_dirty_limit_period) {
--        s->parameters.x_vcpu_dirty_limit_period =
--            params->x_vcpu_dirty_limit_period;
--    }
--    if (params->has_vcpu_dirty_limit) {
--        s->parameters.vcpu_dirty_limit = params->vcpu_dirty_limit;
--    }
--
--    if (params->has_mode) {
--        s->parameters.mode = params->mode;
--    }
--
--    if (params->has_zero_page_detection) {
--        s->parameters.zero_page_detection = params->zero_page_detection;
--    }
--
--    if (params->has_direct_io) {
--        s->parameters.direct_io = params->direct_io;
--    }
--
--    if (params->has_cpr_exec_command) {
--        qapi_free_strList(s->parameters.cpr_exec_command);
--        s->parameters.cpr_exec_command =
--            QAPI_CLONE(strList, params->cpr_exec_command);
--    }
-+    migrate_tls_opts_free(cur);
-+    qapi_free_BitmapMigrationNodeAliasList(cur->block_bitmap_mapping);
-+    qapi_free_strList(cur->cpr_exec_command);
-+    QAPI_CLONE_MEMBERS(MigrationParameters, cur, params);
- }
- 
- void qmp_migrate_set_parameters(MigrationParameters *params, Error **errp)
-@@ -1534,7 +1424,7 @@ void qmp_migrate_set_parameters(MigrationParameters *params, Error **errp)
-     }
- 
-     if (migrate_params_check(&tmp, errp)) {
--        migrate_params_apply(params);
-+        migrate_params_apply(&tmp);
-         migrate_post_update_params(params, errp);
-     }
- 
++#define QAPI_MERGE(type, dst_, src_)                                    \
++    ({                                                                  \
++        QObject *out_ = NULL;                                           \
++        Visitor *v_;                                                    \
++        /* read in from src */                                          \
++        v_ = qobject_output_visitor_new(&out_);                         \
++        visit_type_ ## type(v_, NULL, &src_, &error_abort);             \
++        visit_complete(v_, &out_);                                      \
++        visit_free(v_);                                                 \
++        /*                                                              \
++         * Write to dst but leave existing fields intact (except for    \
++         * has_* which will be updated according to their presence in   \
++         * src).                                                        \
++         */                                                             \
++        v_ = qobject_input_visitor_new(out_);                           \
++        visit_start_struct(v_, NULL, NULL, 0, &error_abort);            \
++        visit_type_ ## type ## _members(v_, dst_, &error_abort);        \
++        visit_check_struct(v_, &error_abort);                           \
++        visit_end_struct(v_, NULL);                                     \
++        visit_free(v_);                                                 \
++        qobject_unref(out_);                                            \
++    })
 -- 
 2.51.0
 
