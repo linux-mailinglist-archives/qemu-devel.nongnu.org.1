@@ -2,100 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79631CC011F
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 23:02:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E2ACC0113
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 23:02:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVGe8-0004Ll-0C; Mon, 15 Dec 2025 17:02:24 -0500
+	id 1vVGdY-0002qT-5c; Mon, 15 Dec 2025 17:01:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGe1-0004H6-Sb
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:02:17 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGdV-0002pm-Dx
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:01:45 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGdz-0002qT-26
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:02:17 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGdS-0002hu-Fr
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:01:45 -0500
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 6AA985BDDC;
- Mon, 15 Dec 2025 22:01:37 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 855FD3378B;
+ Mon, 15 Dec 2025 22:01:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1765836097; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1765836099; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=c3SKjC4+BiHTxLnD651fTkVFSrHjqHq6jFO/JjVfTHw=;
- b=K4gFWGcggH6meby2tS//wSVgMCY7TD285Vii57rQ5nEaAFzDx/pOS/6mEDKytfizPQUiB1
- xXIhBpIqGZZiAQGPUAp99czselopA+CSddAl4w6EpkI3uwcpdrjqdYxfKrZtiLXV0qSfot
- 7if408TCGjqOsZ8niAErma7SDf/1isY=
+ bh=YKPKJBkTp51hj6cCjBkLRwP50jjlnOW8s+DEvZSGbho=;
+ b=bNsqIdWW8ysiAd3MJ4NHvo86l9rnc3Qm5mUMrbLYg57dChxYlzlPNSYqtbMj7BJu5vG8ul
+ gEwuQ6vabfSpE2PX8Q5R7dzpe5PURXKKuy5YHGAksDKyFICQWrQabwTAit0epIMGQM0nGg
+ COuccVU20OmcxIGIcL0idKeyCenVmWw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1765836097;
+ s=susede2_ed25519; t=1765836099;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=c3SKjC4+BiHTxLnD651fTkVFSrHjqHq6jFO/JjVfTHw=;
- b=6nrLTn0PmZqZbL+cxXOZTNMgCsinlG/jXclq16ZUa3J+BQn4snAYiU21jHSRalCGo6srge
- VnkHb2TuqoTXGABw==
-Authentication-Results: smtp-out2.suse.de;
+ bh=YKPKJBkTp51hj6cCjBkLRwP50jjlnOW8s+DEvZSGbho=;
+ b=Y2fCjnD4udpO53L1eCJrakQLBJ6Qsx4Y6Uu9cmoZRPUFc1WxIbBdRHvxOShVgdjhtr8w7r
+ ebjkMFlsiMQIHQAw==
+Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1765836097; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1765836099; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=c3SKjC4+BiHTxLnD651fTkVFSrHjqHq6jFO/JjVfTHw=;
- b=K4gFWGcggH6meby2tS//wSVgMCY7TD285Vii57rQ5nEaAFzDx/pOS/6mEDKytfizPQUiB1
- xXIhBpIqGZZiAQGPUAp99czselopA+CSddAl4w6EpkI3uwcpdrjqdYxfKrZtiLXV0qSfot
- 7if408TCGjqOsZ8niAErma7SDf/1isY=
+ bh=YKPKJBkTp51hj6cCjBkLRwP50jjlnOW8s+DEvZSGbho=;
+ b=bNsqIdWW8ysiAd3MJ4NHvo86l9rnc3Qm5mUMrbLYg57dChxYlzlPNSYqtbMj7BJu5vG8ul
+ gEwuQ6vabfSpE2PX8Q5R7dzpe5PURXKKuy5YHGAksDKyFICQWrQabwTAit0epIMGQM0nGg
+ COuccVU20OmcxIGIcL0idKeyCenVmWw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1765836097;
+ s=susede2_ed25519; t=1765836099;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=c3SKjC4+BiHTxLnD651fTkVFSrHjqHq6jFO/JjVfTHw=;
- b=6nrLTn0PmZqZbL+cxXOZTNMgCsinlG/jXclq16ZUa3J+BQn4snAYiU21jHSRalCGo6srge
- VnkHb2TuqoTXGABw==
+ bh=YKPKJBkTp51hj6cCjBkLRwP50jjlnOW8s+DEvZSGbho=;
+ b=Y2fCjnD4udpO53L1eCJrakQLBJ6Qsx4Y6Uu9cmoZRPUFc1WxIbBdRHvxOShVgdjhtr8w7r
+ ebjkMFlsiMQIHQAw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A0C733EA63;
- Mon, 15 Dec 2025 22:01:35 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0919E3EA63;
+ Mon, 15 Dec 2025 22:01:37 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id UE4/GD+FQGlrMQAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 15 Dec 2025 22:01:35 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id KD8FL0GFQGlrMQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 15 Dec 2025 22:01:37 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
-Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
- Eric Blake <eblake@redhat.com>
-Subject: [PATCH v3 19/51] migration: Add capabilities into MigrationParameters
-Date: Mon, 15 Dec 2025 19:00:05 -0300
-Message-ID: <20251215220041.12657-20-farosas@suse.de>
+Cc: berrange@redhat.com,
+	armbru@redhat.com,
+	Peter Xu <peterx@redhat.com>
+Subject: [PATCH v3 20/51] migration: Remove s->capabilities
+Date: Mon, 15 Dec 2025 19:00:06 -0300
+Message-ID: <20251215220041.12657-21-farosas@suse.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251215220041.12657-1-farosas@suse.de>
 References: <20251215220041.12657-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
 X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.991];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.990];
  MIME_GOOD(-0.10)[text/plain]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  FROM_HAS_DN(0.00)[]; ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
  R_RATELIMIT(0.00)[to_ip_from(RLjrdmmf3juheryardexw6jb95)];
  TO_DN_SOME(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo];
  RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
  RCVD_COUNT_TWO(0.00)[2]; FUZZY_RATELIMITED(0.00)[rspamd.com];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCPT_COUNT_FIVE(0.00)[5]; RCVD_TLS_ALL(0.00)[]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+ RCPT_COUNT_THREE(0.00)[4]; RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -2.80
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -117,620 +118,813 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add capabilities to MigrationParameters. This structure will hold all
-migration options. Capabilities will go away in the next patch.
+Last patch added capabilities to s->parameters. Now we can replace all
+instances of s->capabilities with s->parameters:
 
-Also add capabilities to MigrationParameter as the enum needs to be
-kept in sync with MigrationParameters. This affects the parsing of
-migration HMP commands so make the necessary additions there too.
+- The -global properties now get set directly in s->parameters.
 
-(while here, also ensure MigrationParameter has their members in the
-same order relative to MigrationParameters)
+- Accessors from options.c now read from s->parameters.
 
-From this point on, both QMP and HMP versions of
-migrate-set-parameters and query-migrate-parameters gain the ability
-to work with capabilities.
+- migrate_caps_check() now takes a MigrationParameters object. The
+  function is still kept around because migrate-set-capabilities will
+  still use it.
 
-With MigrationParameters now having members for each capability, the
-migration capabilities commands (query-migrate-capabilities,
-migrate-set-capabilities) will soon be deprecated. Add a set of
-helpers to convert between the old MigrationCapability representation
-and the new representation as members of MigrationParameters.
+- The machinery for background-snapshot compatibility check goes
+  away. We can check each capability by name (if s->parameters.cap ...)
 
-Acked-by: Peter Xu <peterx@redhat.com>
+- savevm uses the helper functions introduced in the last patch to do
+  validation of capabilities found on the migration stream.
+
+Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/migration-hmp-cmds.c | 198 +++++++++++++++++++++++++++++++++
- migration/migration.c          |   8 ++
- migration/options.c            | 130 +++++++++++++++++++++-
- migration/options.h            |   5 +
- qapi/migration.json            | 140 ++++++++++++++++++++++-
- 5 files changed, 474 insertions(+), 7 deletions(-)
+ migration/migration.c |  22 +--
+ migration/migration.h |   1 -
+ migration/options.c   | 310 +++++++++++++++++-------------------------
+ migration/options.h   |  19 +--
+ migration/savevm.c    |   8 +-
+ 5 files changed, 140 insertions(+), 220 deletions(-)
 
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index 670ddb047b..28b48c34bf 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -492,6 +492,116 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
-     assert(params->has_cpr_exec_command);
-     monitor_print_cpr_exec_command(mon, params->cpr_exec_command);
- 
-+    PARAM_INFO(params->has_xbzrle,
-+               "%s: %s\n",
-+               MIGRATION_PARAMETER_XBZRLE,
-+               params->xbzrle ? "on" : "off");
-+
-+    PARAM_INFO(params->has_rdma_pin_all,
-+               "%s: %s\n",
-+               MIGRATION_PARAMETER_RDMA_PIN_ALL,
-+               params->rdma_pin_all ? "on" : "off");
-+
-+    PARAM_INFO(params->has_auto_converge,
-+               "%s: %s\n",
-+               MIGRATION_PARAMETER_AUTO_CONVERGE,
-+               params->auto_converge ? "on" : "off");
-+
-+    PARAM_INFO(params->has_zero_blocks,
-+               "%s: %s\n",
-+               MIGRATION_PARAMETER_ZERO_BLOCKS,
-+               params->zero_blocks ? "on" : "off");
-+
-+    PARAM_INFO(params->has_events,
-+               "%s: %s\n",
-+               MIGRATION_PARAMETER_EVENTS,
-+               params->events ? "on" : "off");
-+
-+    PARAM_INFO(params->has_postcopy_ram,
-+               "%s: %s\n",
-+               MIGRATION_PARAMETER_POSTCOPY_RAM,
-+               params->postcopy_ram ? "on" : "off");
-+
-+    PARAM_INFO(params->has_x_colo,
-+               "%s: %s\n",
-+               MIGRATION_PARAMETER_X_COLO,
-+               params->x_colo ? "on" : "off");
-+
-+    PARAM_INFO(params->has_release_ram,
-+               "%s: %s\n",
-+               MIGRATION_PARAMETER_RELEASE_RAM,
-+               params->release_ram ? "on" : "off");
-+
-+    PARAM_INFO(params->has_return_path,
-+               "%s: %s\n",
-+               MIGRATION_PARAMETER_RETURN_PATH,
-+               params->return_path ? "on" : "off");
-+
-+    PARAM_INFO(params->has_pause_before_switchover,
-+               "%s: %s\n",
-+               MIGRATION_PARAMETER_PAUSE_BEFORE_SWITCHOVER,
-+               params->pause_before_switchover ? "on" : "off");
-+
-+    PARAM_INFO(params->has_multifd,
-+               "%s: %s\n",
-+               MIGRATION_PARAMETER_MULTIFD,
-+               params->multifd ? "on" : "off");
-+
-+    PARAM_INFO(params->has_dirty_bitmaps,
-+               "%s: %s\n",
-+               MIGRATION_PARAMETER_DIRTY_BITMAPS,
-+               params->dirty_bitmaps ? "on" : "off");
-+
-+    PARAM_INFO(params->has_postcopy_blocktime,
-+               "%s: %s\n",
-+               MIGRATION_PARAMETER_POSTCOPY_BLOCKTIME,
-+               params->postcopy_blocktime ? "on" : "off");
-+
-+    PARAM_INFO(params->has_late_block_activate,
-+               "%s: %s\n",
-+               MIGRATION_PARAMETER_LATE_BLOCK_ACTIVATE,
-+               params->late_block_activate ? "on" : "off");
-+
-+    PARAM_INFO(params->has_x_ignore_shared,
-+               "%s: %s\n",
-+               MIGRATION_PARAMETER_X_IGNORE_SHARED,
-+               params->x_ignore_shared ? "on" : "off");
-+
-+    PARAM_INFO(params->has_validate_uuid,
-+               "%s: %s\n",
-+               MIGRATION_PARAMETER_VALIDATE_UUID,
-+               params->validate_uuid ? "on" : "off");
-+
-+    PARAM_INFO(params->has_background_snapshot,
-+               "%s: %s\n",
-+               MIGRATION_PARAMETER_BACKGROUND_SNAPSHOT,
-+               params->background_snapshot ? "on" : "off");
-+
-+    PARAM_INFO(params->has_zero_copy_send,
-+               "%s: %s\n",
-+               MIGRATION_PARAMETER_ZERO_COPY_SEND,
-+               params->zero_copy_send ? "on" : "off");
-+
-+    PARAM_INFO(params->has_postcopy_preempt,
-+               "%s: %s\n",
-+               MIGRATION_PARAMETER_POSTCOPY_PREEMPT,
-+               params->postcopy_preempt ? "on" : "off");
-+
-+    PARAM_INFO(params->has_switchover_ack,
-+               "%s: %s\n",
-+               MIGRATION_PARAMETER_SWITCHOVER_ACK,
-+               params->switchover_ack ? "on" : "off");
-+
-+    PARAM_INFO(params->has_dirty_limit,
-+               "%s: %s\n",
-+               MIGRATION_PARAMETER_DIRTY_LIMIT,
-+               params->dirty_limit ? "on" : "off");
-+
-+    PARAM_INFO(params->has_mapped_ram,
-+               "%s: %s\n",
-+               MIGRATION_PARAMETER_MAPPED_RAM,
-+               params->mapped_ram ? "on" : "off");
-+
-     qapi_free_MigrationParameters(params);
- }
- 
-@@ -792,6 +902,94 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
-         p->has_cpr_exec_command = true;
-         break;
-     }
-+    case MIGRATION_PARAMETER_XBZRLE:
-+        p->has_xbzrle = true;
-+        visit_type_bool(v, param, &p->xbzrle, &err);
-+        break;
-+    case MIGRATION_PARAMETER_RDMA_PIN_ALL:
-+        p->has_rdma_pin_all = true;
-+        visit_type_bool(v, param, &p->rdma_pin_all, &err);
-+        break;
-+    case MIGRATION_PARAMETER_AUTO_CONVERGE:
-+        p->has_auto_converge = true;
-+        visit_type_bool(v, param, &p->auto_converge, &err);
-+        break;
-+    case MIGRATION_PARAMETER_ZERO_BLOCKS:
-+        p->has_zero_blocks = true;
-+        visit_type_bool(v, param, &p->zero_blocks, &err);
-+        break;
-+    case MIGRATION_PARAMETER_EVENTS:
-+        p->has_events = true;
-+        visit_type_bool(v, param, &p->events, &err);
-+        break;
-+    case MIGRATION_PARAMETER_POSTCOPY_RAM:
-+        p->has_postcopy_ram = true;
-+        visit_type_bool(v, param, &p->postcopy_ram, &err);
-+        break;
-+    case MIGRATION_PARAMETER_X_COLO:
-+        p->has_x_colo = true;
-+        visit_type_bool(v, param, &p->x_colo, &err);
-+        break;
-+    case MIGRATION_PARAMETER_RELEASE_RAM:
-+        p->has_release_ram = true;
-+        visit_type_bool(v, param, &p->release_ram, &err);
-+        break;
-+    case MIGRATION_PARAMETER_RETURN_PATH:
-+        p->has_return_path = true;
-+        visit_type_bool(v, param, &p->return_path, &err);
-+        break;
-+    case MIGRATION_PARAMETER_PAUSE_BEFORE_SWITCHOVER:
-+        p->has_pause_before_switchover = true;
-+        visit_type_bool(v, param, &p->pause_before_switchover, &err);
-+        break;
-+    case MIGRATION_PARAMETER_MULTIFD:
-+        p->has_multifd = true;
-+        visit_type_bool(v, param, &p->multifd, &err);
-+        break;
-+    case MIGRATION_PARAMETER_DIRTY_BITMAPS:
-+        p->has_dirty_bitmaps = true;
-+        visit_type_bool(v, param, &p->dirty_bitmaps, &err);
-+        break;
-+    case MIGRATION_PARAMETER_POSTCOPY_BLOCKTIME:
-+        p->has_postcopy_blocktime = true;
-+        visit_type_bool(v, param, &p->postcopy_blocktime, &err);
-+        break;
-+    case MIGRATION_PARAMETER_LATE_BLOCK_ACTIVATE:
-+        p->has_late_block_activate = true;
-+        visit_type_bool(v, param, &p->late_block_activate, &err);
-+        break;
-+    case MIGRATION_PARAMETER_X_IGNORE_SHARED:
-+        p->has_x_ignore_shared = true;
-+        visit_type_bool(v, param, &p->x_ignore_shared, &err);
-+        break;
-+    case MIGRATION_PARAMETER_VALIDATE_UUID:
-+        p->has_validate_uuid = true;
-+        visit_type_bool(v, param, &p->validate_uuid, &err);
-+        break;
-+    case MIGRATION_PARAMETER_BACKGROUND_SNAPSHOT:
-+        p->has_background_snapshot = true;
-+        visit_type_bool(v, param, &p->background_snapshot, &err);
-+        break;
-+    case MIGRATION_PARAMETER_ZERO_COPY_SEND:
-+        p->has_zero_copy_send = true;
-+        visit_type_bool(v, param, &p->zero_copy_send, &err);
-+        break;
-+    case MIGRATION_PARAMETER_POSTCOPY_PREEMPT:
-+        p->has_postcopy_preempt = true;
-+        visit_type_bool(v, param, &p->postcopy_preempt, &err);
-+        break;
-+    case MIGRATION_PARAMETER_SWITCHOVER_ACK:
-+        p->has_switchover_ack = true;
-+        visit_type_bool(v, param, &p->switchover_ack, &err);
-+        break;
-+    case MIGRATION_PARAMETER_DIRTY_LIMIT:
-+        p->has_dirty_limit = true;
-+        visit_type_bool(v, param, &p->dirty_limit, &err);
-+        break;
-+    case MIGRATION_PARAMETER_MAPPED_RAM:
-+        p->has_mapped_ram = true;
-+        visit_type_bool(v, param, &p->mapped_ram, &err);
-+        break;
-     default:
-         g_assert_not_reached();
-     }
 diff --git a/migration/migration.c b/migration/migration.c
-index 2c8acd2ee1..f0e74cbf4b 100644
+index f0e74cbf4b..182dccd579 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -4196,6 +4196,14 @@ static bool migration_object_check(MigrationState *ms, Error **errp)
-         return false;
+@@ -262,9 +262,10 @@ static bool
+ migration_capabilities_and_transport_compatible(MigrationAddress *addr,
+                                                 Error **errp)
+ {
++    MigrationState *s = migrate_get_current();
++
+     if (addr->transport == MIGRATION_ADDRESS_TYPE_RDMA) {
+-        return migrate_rdma_caps_check(migrate_get_current()->capabilities,
+-                                       errp);
++        return migrate_rdma_caps_check(&s->parameters, errp);
      }
  
-+    /*
-+     * FIXME: Temporarily while -global capabilties are still using
-+     * s->capabilities. Will be gone by the end of the series.
-+     */
-+    for (int i = 0; i < MIGRATION_CAPABILITY__MAX; i++) {
-+        migrate_capability_set_compat(&ms->parameters, i, ms->capabilities[i]);
-+    }
-+
-     return migrate_caps_check(old_caps, ms->capabilities, errp);
+     return true;
+@@ -4189,22 +4190,7 @@ static void migration_instance_init(Object *obj)
+  */
+ static bool migration_object_check(MigrationState *ms, Error **errp)
+ {
+-    /* Assuming all off */
+-    bool old_caps[MIGRATION_CAPABILITY__MAX] = { 0 };
+-
+-    if (!migrate_params_check(&ms->parameters, errp)) {
+-        return false;
+-    }
+-
+-    /*
+-     * FIXME: Temporarily while -global capabilties are still using
+-     * s->capabilities. Will be gone by the end of the series.
+-     */
+-    for (int i = 0; i < MIGRATION_CAPABILITY__MAX; i++) {
+-        migrate_capability_set_compat(&ms->parameters, i, ms->capabilities[i]);
+-    }
+-
+-    return migrate_caps_check(old_caps, ms->capabilities, errp);
++    return migrate_params_check(&ms->parameters, errp);
  }
  
+ static const TypeInfo migration_type = {
+diff --git a/migration/migration.h b/migration/migration.h
+index 20802596fb..5fe5f8a23e 100644
+--- a/migration/migration.h
++++ b/migration/migration.h
+@@ -359,7 +359,6 @@ struct MigrationState {
+     int64_t downtime_start;
+     int64_t downtime;
+     int64_t expected_downtime;
+-    bool capabilities[MIGRATION_CAPABILITY__MAX];
+     int64_t setup_time;
+ 
+     /*
 diff --git a/migration/options.c b/migration/options.c
-index 36feaa5fe6..b23dcc15f9 100644
+index b23dcc15f9..d3bb65513b 100644
 --- a/migration/options.c
 +++ b/migration/options.c
-@@ -730,6 +730,111 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+@@ -82,9 +82,6 @@
+ #define DEFAULT_MIGRATE_ANNOUNCE_ROUNDS    5
+ #define DEFAULT_MIGRATE_ANNOUNCE_STEP    100
+ 
+-#define DEFINE_PROP_MIG_CAP(name, x)             \
+-    DEFINE_PROP_BOOL(name, MigrationState, capabilities[x], false)
+-
+ const PropertyInfo qdev_prop_StrOrNull;
+ #define DEFINE_PROP_STR_OR_NULL(_name, _state, _field)                  \
+     DEFINE_PROP(_name, _state, _field, qdev_prop_StrOrNull, StrOrNull *, \
+@@ -185,32 +182,42 @@ const Property migration_properties[] = {
+     DEFINE_PROP_ZERO_PAGE_DETECTION("zero-page-detection", MigrationState,
+                        parameters.zero_page_detection,
+                        ZERO_PAGE_DETECTION_MULTIFD),
+-
+-    /* Migration capabilities */
+-    DEFINE_PROP_MIG_CAP("x-xbzrle", MIGRATION_CAPABILITY_XBZRLE),
+-    DEFINE_PROP_MIG_CAP("x-rdma-pin-all", MIGRATION_CAPABILITY_RDMA_PIN_ALL),
+-    DEFINE_PROP_MIG_CAP("x-auto-converge", MIGRATION_CAPABILITY_AUTO_CONVERGE),
+-    DEFINE_PROP_MIG_CAP("x-zero-blocks", MIGRATION_CAPABILITY_ZERO_BLOCKS),
+-    DEFINE_PROP_MIG_CAP("x-events", MIGRATION_CAPABILITY_EVENTS),
+-    DEFINE_PROP_MIG_CAP("x-postcopy-ram", MIGRATION_CAPABILITY_POSTCOPY_RAM),
+-    DEFINE_PROP_MIG_CAP("x-postcopy-preempt",
+-                        MIGRATION_CAPABILITY_POSTCOPY_PREEMPT),
+-    DEFINE_PROP_MIG_CAP("postcopy-blocktime",
+-                        MIGRATION_CAPABILITY_POSTCOPY_BLOCKTIME),
+-    DEFINE_PROP_MIG_CAP("x-colo", MIGRATION_CAPABILITY_X_COLO),
+-    DEFINE_PROP_MIG_CAP("x-release-ram", MIGRATION_CAPABILITY_RELEASE_RAM),
+-    DEFINE_PROP_MIG_CAP("x-return-path", MIGRATION_CAPABILITY_RETURN_PATH),
+-    DEFINE_PROP_MIG_CAP("x-multifd", MIGRATION_CAPABILITY_MULTIFD),
+-    DEFINE_PROP_MIG_CAP("x-background-snapshot",
+-            MIGRATION_CAPABILITY_BACKGROUND_SNAPSHOT),
++    DEFINE_PROP_BOOL("x-xbzrle",
++                     MigrationState, parameters.xbzrle, false),
++    DEFINE_PROP_BOOL("x-rdma-pin-all",
++                     MigrationState, parameters.rdma_pin_all, false),
++    DEFINE_PROP_BOOL("x-auto-converge",
++                     MigrationState, parameters.auto_converge, false),
++    DEFINE_PROP_BOOL("x-zero-blocks",
++                     MigrationState, parameters.zero_blocks, false),
++    DEFINE_PROP_BOOL("x-events",
++                     MigrationState, parameters.events, false),
++    DEFINE_PROP_BOOL("x-postcopy-ram",
++                     MigrationState, parameters.postcopy_ram, false),
++    DEFINE_PROP_BOOL("x-postcopy-preempt",
++                     MigrationState, parameters.postcopy_preempt, false),
++    DEFINE_PROP_BOOL("postcopy-blocktime",
++                     MigrationState, parameters.postcopy_blocktime, false),
++    DEFINE_PROP_BOOL("x-colo",
++                     MigrationState, parameters.x_colo, false),
++    DEFINE_PROP_BOOL("x-release-ram",
++                     MigrationState, parameters.release_ram, false),
++    DEFINE_PROP_BOOL("x-return-path",
++                     MigrationState, parameters.return_path, false),
++    DEFINE_PROP_BOOL("x-multifd",
++                     MigrationState, parameters.multifd, false),
++    DEFINE_PROP_BOOL("x-background-snapshot",
++                     MigrationState, parameters.background_snapshot, false),
+ #ifdef CONFIG_LINUX
+-    DEFINE_PROP_MIG_CAP("x-zero-copy-send",
+-            MIGRATION_CAPABILITY_ZERO_COPY_SEND),
++    DEFINE_PROP_BOOL("x-zero-copy-send",
++                     MigrationState, parameters.zero_copy_send, false),
+ #endif
+-    DEFINE_PROP_MIG_CAP("x-switchover-ack",
+-                        MIGRATION_CAPABILITY_SWITCHOVER_ACK),
+-    DEFINE_PROP_MIG_CAP("x-dirty-limit", MIGRATION_CAPABILITY_DIRTY_LIMIT),
+-    DEFINE_PROP_MIG_CAP("mapped-ram", MIGRATION_CAPABILITY_MAPPED_RAM),
++    DEFINE_PROP_BOOL("x-switchover-ack",
++                     MigrationState, parameters.switchover_ack, false),
++    DEFINE_PROP_BOOL("x-dirty-limit",
++                     MigrationState, parameters.dirty_limit, false),
++    DEFINE_PROP_BOOL("mapped-ram",
++                     MigrationState, parameters.mapped_ram, false),
+ };
+ const size_t migration_properties_count = ARRAY_SIZE(migration_properties);
+ 
+@@ -285,7 +292,7 @@ bool migrate_auto_converge(void)
+ {
+     MigrationState *s = migrate_get_current();
+ 
+-    return s->capabilities[MIGRATION_CAPABILITY_AUTO_CONVERGE];
++    return s->parameters.auto_converge;
+ }
+ 
+ bool migrate_send_switchover_start(void)
+@@ -299,144 +306,142 @@ bool migrate_background_snapshot(void)
+ {
+     MigrationState *s = migrate_get_current();
+ 
+-    return s->capabilities[MIGRATION_CAPABILITY_BACKGROUND_SNAPSHOT];
++    return s->parameters.background_snapshot;
+ }
+ 
+ bool migrate_colo(void)
+ {
+     MigrationState *s = migrate_get_current();
+ 
+-    return s->capabilities[MIGRATION_CAPABILITY_X_COLO];
++    return s->parameters.x_colo;
+ }
+ 
+ bool migrate_dirty_bitmaps(void)
+ {
+     MigrationState *s = migrate_get_current();
+ 
+-    return s->capabilities[MIGRATION_CAPABILITY_DIRTY_BITMAPS];
++    return s->parameters.dirty_bitmaps;
+ }
+ 
+ bool migrate_dirty_limit(void)
+ {
+     MigrationState *s = migrate_get_current();
+ 
+-    return s->capabilities[MIGRATION_CAPABILITY_DIRTY_LIMIT];
++    return s->parameters.dirty_limit;
+ }
+ 
+ bool migrate_events(void)
+ {
+     MigrationState *s = migrate_get_current();
+ 
+-    return s->capabilities[MIGRATION_CAPABILITY_EVENTS];
++    return s->parameters.events;
+ }
+ 
+ bool migrate_mapped_ram(void)
+ {
+     MigrationState *s = migrate_get_current();
+ 
+-    return s->capabilities[MIGRATION_CAPABILITY_MAPPED_RAM];
++    return s->parameters.mapped_ram;
+ }
+ 
+ bool migrate_ignore_shared(void)
+ {
+     MigrationState *s = migrate_get_current();
+ 
+-    return s->capabilities[MIGRATION_CAPABILITY_X_IGNORE_SHARED];
++    return s->parameters.x_ignore_shared;
+ }
+ 
+ bool migrate_late_block_activate(void)
+ {
+     MigrationState *s = migrate_get_current();
+ 
+-    return s->capabilities[MIGRATION_CAPABILITY_LATE_BLOCK_ACTIVATE];
++    return s->parameters.late_block_activate;
+ }
+ 
+ bool migrate_multifd(void)
+ {
+     MigrationState *s = migrate_get_current();
+ 
+-    return s->capabilities[MIGRATION_CAPABILITY_MULTIFD];
++    return s->parameters.multifd;
+ }
+ 
+ bool migrate_pause_before_switchover(void)
+ {
+     MigrationState *s = migrate_get_current();
+ 
+-    return s->capabilities[MIGRATION_CAPABILITY_PAUSE_BEFORE_SWITCHOVER];
++    return s->parameters.pause_before_switchover;
+ }
+ 
+ bool migrate_postcopy_blocktime(void)
+ {
+     MigrationState *s = migrate_get_current();
+ 
+-    return s->capabilities[MIGRATION_CAPABILITY_POSTCOPY_BLOCKTIME];
++    return s->parameters.postcopy_blocktime;
+ }
+ 
+ bool migrate_postcopy_preempt(void)
+ {
+     MigrationState *s = migrate_get_current();
+ 
+-    return s->capabilities[MIGRATION_CAPABILITY_POSTCOPY_PREEMPT];
++    return s->parameters.postcopy_preempt;
+ }
+ 
+ bool migrate_postcopy_ram(void)
+ {
+     MigrationState *s = migrate_get_current();
+ 
+-    return s->capabilities[MIGRATION_CAPABILITY_POSTCOPY_RAM];
++    return s->parameters.postcopy_ram;
+ }
+ 
+ bool migrate_rdma_pin_all(void)
+ {
+     MigrationState *s = migrate_get_current();
+ 
+-    return s->capabilities[MIGRATION_CAPABILITY_RDMA_PIN_ALL];
++    return s->parameters.rdma_pin_all;
+ }
+ 
+ bool migrate_release_ram(void)
+ {
+     MigrationState *s = migrate_get_current();
+ 
+-    return s->capabilities[MIGRATION_CAPABILITY_RELEASE_RAM];
++    return s->parameters.release_ram;
+ }
+ 
+ bool migrate_return_path(void)
+ {
+     MigrationState *s = migrate_get_current();
+ 
+-    return s->capabilities[MIGRATION_CAPABILITY_RETURN_PATH];
++    return s->parameters.return_path;
+ }
+ 
+ bool migrate_switchover_ack(void)
+ {
+     MigrationState *s = migrate_get_current();
+ 
+-    return s->capabilities[MIGRATION_CAPABILITY_SWITCHOVER_ACK];
++    return s->parameters.switchover_ack;
+ }
+ 
+ bool migrate_validate_uuid(void)
+ {
+     MigrationState *s = migrate_get_current();
+ 
+-    return s->capabilities[MIGRATION_CAPABILITY_VALIDATE_UUID];
++    return s->parameters.validate_uuid;
+ }
+ 
+ bool migrate_xbzrle(void)
+ {
+     MigrationState *s = migrate_get_current();
+ 
+-    return s->capabilities[MIGRATION_CAPABILITY_XBZRLE];
++    return s->parameters.xbzrle;
+ }
+ 
+ bool migrate_zero_copy_send(void)
+ {
+     MigrationState *s = migrate_get_current();
+ 
+-    return s->capabilities[MIGRATION_CAPABILITY_ZERO_COPY_SEND];
++    return s->parameters.zero_copy_send;
+ }
+ 
+-/* pseudo capabilities */
+-
+ bool migrate_multifd_flush_after_each_section(void)
+ {
+     MigrationState *s = migrate_get_current();
+@@ -481,44 +486,6 @@ WriteTrackingSupport migrate_query_write_tracking(void)
+     return WT_SUPPORT_COMPATIBLE;
+ }
+ 
+-/* Migration capabilities set */
+-struct MigrateCapsSet {
+-    int size;                       /* Capability set size */
+-    MigrationCapability caps[];     /* Variadic array of capabilities */
+-};
+-typedef struct MigrateCapsSet MigrateCapsSet;
+-
+-/* Define and initialize MigrateCapsSet */
+-#define INITIALIZE_MIGRATE_CAPS_SET(_name, ...)   \
+-    MigrateCapsSet _name = {    \
+-        .size = sizeof((int []) { __VA_ARGS__ }) / sizeof(int), \
+-        .caps = { __VA_ARGS__ } \
+-    }
+-
+-/* Background-snapshot compatibility check list */
+-static const
+-INITIALIZE_MIGRATE_CAPS_SET(check_caps_background_snapshot,
+-    MIGRATION_CAPABILITY_POSTCOPY_RAM,
+-    MIGRATION_CAPABILITY_DIRTY_BITMAPS,
+-    MIGRATION_CAPABILITY_POSTCOPY_BLOCKTIME,
+-    MIGRATION_CAPABILITY_LATE_BLOCK_ACTIVATE,
+-    MIGRATION_CAPABILITY_RETURN_PATH,
+-    MIGRATION_CAPABILITY_MULTIFD,
+-    MIGRATION_CAPABILITY_PAUSE_BEFORE_SWITCHOVER,
+-    MIGRATION_CAPABILITY_AUTO_CONVERGE,
+-    MIGRATION_CAPABILITY_RELEASE_RAM,
+-    MIGRATION_CAPABILITY_RDMA_PIN_ALL,
+-    MIGRATION_CAPABILITY_XBZRLE,
+-    MIGRATION_CAPABILITY_X_COLO,
+-    MIGRATION_CAPABILITY_VALIDATE_UUID,
+-    MIGRATION_CAPABILITY_ZERO_COPY_SEND);
+-
+-/* Snapshot compatibility check list */
+-static const
+-INITIALIZE_MIGRATE_CAPS_SET(check_caps_savevm,
+-                            MIGRATION_CAPABILITY_MULTIFD,
+-);
+-
+ static bool migrate_incoming_started(void)
+ {
+     return !!migration_incoming_get_current()->transport_data;
+@@ -527,34 +494,28 @@ static bool migrate_incoming_started(void)
+ bool migrate_can_snapshot(Error **errp)
+ {
+     MigrationState *s = migrate_get_current();
+-    int i;
+ 
+-    for (i = 0; i < check_caps_savevm.size; i++) {
+-        int incomp_cap = check_caps_savevm.caps[i];
+-
+-        if (s->capabilities[incomp_cap]) {
+-            error_setg(errp,
+-                       "Snapshots are not compatible with %s",
+-                       MigrationCapability_str(incomp_cap));
+-            return false;
+-        }
++    if (migrate_capability_get_compat(
++            &s->parameters, MIGRATION_CAPABILITY_MULTIFD)) {
++        error_setg(errp,
++                   "Snapshots are not compatible with multifd");
++        return false;
+     }
+ 
      return true;
  }
  
-+static bool *migrate_capability_get_addr(MigrationParameters *params, int i)
-+{
-+    bool *cap_addr = NULL;
-+
-+    switch (i) {
-+    case MIGRATION_CAPABILITY_XBZRLE:
-+        cap_addr = &params->xbzrle;
-+        break;
-+    case MIGRATION_CAPABILITY_RDMA_PIN_ALL:
-+        cap_addr = &params->rdma_pin_all;
-+        break;
-+    case MIGRATION_CAPABILITY_AUTO_CONVERGE:
-+        cap_addr = &params->auto_converge;
-+        break;
-+    case MIGRATION_CAPABILITY_ZERO_BLOCKS:
-+        cap_addr = &params->zero_blocks;
-+        break;
-+    case MIGRATION_CAPABILITY_EVENTS:
-+        cap_addr = &params->events;
-+        break;
-+    case MIGRATION_CAPABILITY_POSTCOPY_RAM:
-+        cap_addr = &params->postcopy_ram;
-+        break;
-+    case MIGRATION_CAPABILITY_X_COLO:
-+        cap_addr = &params->x_colo;
-+        break;
-+    case MIGRATION_CAPABILITY_RELEASE_RAM:
-+        cap_addr = &params->release_ram;
-+        break;
-+    case MIGRATION_CAPABILITY_RETURN_PATH:
-+        cap_addr = &params->return_path;
-+        break;
-+    case MIGRATION_CAPABILITY_PAUSE_BEFORE_SWITCHOVER:
-+        cap_addr = &params->pause_before_switchover;
-+        break;
-+    case MIGRATION_CAPABILITY_MULTIFD:
-+        cap_addr = &params->multifd;
-+        break;
-+    case MIGRATION_CAPABILITY_DIRTY_BITMAPS:
-+        cap_addr = &params->dirty_bitmaps;
-+        break;
-+    case MIGRATION_CAPABILITY_POSTCOPY_BLOCKTIME:
-+        cap_addr = &params->postcopy_blocktime;
-+        break;
-+    case MIGRATION_CAPABILITY_LATE_BLOCK_ACTIVATE:
-+        cap_addr = &params->late_block_activate;
-+        break;
-+    case MIGRATION_CAPABILITY_X_IGNORE_SHARED:
-+        cap_addr = &params->x_ignore_shared;
-+        break;
-+    case MIGRATION_CAPABILITY_VALIDATE_UUID:
-+        cap_addr = &params->validate_uuid;
-+        break;
-+    case MIGRATION_CAPABILITY_BACKGROUND_SNAPSHOT:
-+        cap_addr = &params->background_snapshot;
-+        break;
-+    case MIGRATION_CAPABILITY_ZERO_COPY_SEND:
-+        cap_addr = &params->zero_copy_send;
-+        break;
-+    case MIGRATION_CAPABILITY_POSTCOPY_PREEMPT:
-+        cap_addr = &params->postcopy_preempt;
-+        break;
-+    case MIGRATION_CAPABILITY_SWITCHOVER_ACK:
-+        cap_addr = &params->switchover_ack;
-+        break;
-+    case MIGRATION_CAPABILITY_DIRTY_LIMIT:
-+        cap_addr = &params->dirty_limit;
-+        break;
-+    case MIGRATION_CAPABILITY_MAPPED_RAM:
-+        cap_addr = &params->mapped_ram;
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+
-+    return cap_addr;
-+}
-+
-+/* Compatibility for code that reads capabilities in a loop */
-+bool migrate_capability_get_compat(MigrationParameters *params, int i)
-+{
-+    return *(migrate_capability_get_addr(params, i));
-+}
-+
-+/* Compatibility for code that writes capabilities in a loop */
-+void migrate_capability_set_compat(MigrationParameters *params, int i, bool val)
-+{
-+    *(migrate_capability_get_addr(params, i)) = val;
-+}
-+
-+/*
-+ * Set capabilities for compatibility with the old
-+ * migrate-set-capabilities command.
-+ */
-+void migrate_capabilities_set_compat(MigrationParameters *params,
-+                                     MigrationCapabilityStatusList *caps)
-+{
-+    MigrationCapabilityStatusList *cap;
-+
-+    for (cap = caps; cap; cap = cap->next) {
-+        migrate_capability_set_compat(params, cap->value->capability,
-+                                      cap->value->state);
-+    }
-+}
-+
- MigrationCapabilityStatusList *qmp_query_migrate_capabilities(Error **errp)
+-
+-bool migrate_rdma_caps_check(bool *caps, Error **errp)
++bool migrate_rdma_caps_check(MigrationParameters *params, Error **errp)
  {
-     MigrationCapabilityStatusList *head = NULL, **tail = &head;
-@@ -771,6 +876,8 @@ void qmp_migrate_set_capabilities(MigrationCapabilityStatusList *params,
-     for (cap = params; cap; cap = cap->next) {
-         s->capabilities[cap->value->capability] = cap->value->state;
+-    if (caps[MIGRATION_CAPABILITY_XBZRLE]) {
++    if (params->xbzrle) {
+         error_setg(errp, "RDMA and XBZRLE can't be used together");
+         return false;
      }
+-    if (caps[MIGRATION_CAPABILITY_MULTIFD]) {
++    if (params->multifd) {
+         error_setg(errp, "RDMA and multifd can't be used together");
+         return false;
+     }
+-    if (caps[MIGRATION_CAPABILITY_POSTCOPY_RAM]) {
++    if (params->postcopy_ram) {
+         error_setg(errp, "RDMA and postcopy-ram can't be used together");
+         return false;
+     }
+@@ -562,26 +523,19 @@ bool migrate_rdma_caps_check(bool *caps, Error **errp)
+     return true;
+ }
+ 
+-/**
+- * @migration_caps_check - check capability compatibility
+- *
+- * @old_caps: old capability list
+- * @new_caps: new capability list
+- * @errp: set *errp if the check failed, with reason
+- *
+- * Returns true if check passed, otherwise false.
+- */
+-bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
++bool migrate_caps_check(MigrationParameters *new, Error **errp)
+ {
+-    ERRP_GUARD();
++    MigrationState *s = migrate_get_current();
+     MigrationIncomingState *mis = migration_incoming_get_current();
++    bool postcopy_already_on = s->parameters.postcopy_ram;
++    ERRP_GUARD();
+ 
+-    if (new_caps[MIGRATION_CAPABILITY_ZERO_BLOCKS]) {
++    if (new->zero_blocks) {
+         warn_report("zero-blocks capability is deprecated");
+     }
+ 
+ #ifndef CONFIG_REPLICATION
+-    if (new_caps[MIGRATION_CAPABILITY_X_COLO]) {
++    if (new->x_colo) {
+         error_setg(errp, "QEMU compiled without replication module"
+                    " can't enable COLO");
+         error_append_hint(errp, "Please enable replication before COLO.\n");
+@@ -589,27 +543,27 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+     }
+ #endif
+ 
+-    if (new_caps[MIGRATION_CAPABILITY_POSTCOPY_RAM]) {
++    if (new->postcopy_ram) {
+         /* This check is reasonably expensive, so only when it's being
+          * set the first time, also it's only the destination that needs
+          * special support.
+          */
+-        if (!old_caps[MIGRATION_CAPABILITY_POSTCOPY_RAM] &&
++        if (!postcopy_already_on &&
+             runstate_check(RUN_STATE_INMIGRATE) &&
+             !postcopy_ram_supported_by_host(mis, errp)) {
+             error_prepend(errp, "Postcopy is not supported: ");
+             return false;
+         }
+ 
+-        if (new_caps[MIGRATION_CAPABILITY_X_IGNORE_SHARED]) {
++        if (new->x_ignore_shared) {
+             error_setg(errp, "Postcopy is not compatible with ignore-shared");
+             return false;
+         }
+     }
+ 
+-    if (new_caps[MIGRATION_CAPABILITY_BACKGROUND_SNAPSHOT]) {
++    if (new->background_snapshot) {
+         WriteTrackingSupport wt_support;
+-        int idx;
 +
-+    migrate_capabilities_set_compat(&s->parameters, params);
+         /*
+          * Check if 'background-snapshot' capability is supported by
+          * host kernel and compatible with guest memory configuration.
+@@ -625,41 +579,45 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+             return false;
+         }
+ 
+-        /*
+-         * Check if there are any migration capabilities
+-         * incompatible with 'background-snapshot'.
+-         */
+-        for (idx = 0; idx < check_caps_background_snapshot.size; idx++) {
+-            int incomp_cap = check_caps_background_snapshot.caps[idx];
+-            if (new_caps[incomp_cap]) {
+-                error_setg(errp,
+-                        "Background-snapshot is not compatible with %s",
+-                        MigrationCapability_str(incomp_cap));
+-                return false;
+-            }
++        if (new->postcopy_ram ||
++            new->dirty_bitmaps ||
++            new->postcopy_blocktime ||
++            new->late_block_activate ||
++            new->return_path ||
++            new->multifd ||
++            new->pause_before_switchover ||
++            new->auto_converge ||
++            new->release_ram ||
++            new->rdma_pin_all ||
++            new->xbzrle ||
++            new->x_colo ||
++            new->validate_uuid ||
++            new->zero_copy_send) {
++            error_setg(errp,
++                       "Background-snapshot is not compatible with "
++                       "currently set capabilities");
++            return false;
+         }
+     }
+ 
+ #ifdef CONFIG_LINUX
+-    if (new_caps[MIGRATION_CAPABILITY_ZERO_COPY_SEND] &&
+-        (!new_caps[MIGRATION_CAPABILITY_MULTIFD] ||
+-         new_caps[MIGRATION_CAPABILITY_XBZRLE] ||
+-         migrate_multifd_compression() ||
+-         migrate_tls())) {
++    if (new->zero_copy_send &&
++        (!new->multifd || new->xbzrle ||
++         migrate_multifd_compression() || migrate_tls())) {
+         error_setg(errp,
+                    "Zero copy only available for non-compressed non-TLS multifd migration");
+         return false;
+     }
+ #else
+-    if (new_caps[MIGRATION_CAPABILITY_ZERO_COPY_SEND]) {
++    if (new->zero_copy_send) {
+         error_setg(errp,
+                    "Zero copy currently only available on Linux");
+         return false;
+     }
+ #endif
+ 
+-    if (new_caps[MIGRATION_CAPABILITY_POSTCOPY_PREEMPT]) {
+-        if (!new_caps[MIGRATION_CAPABILITY_POSTCOPY_RAM]) {
++    if (new->postcopy_preempt) {
++        if (!new->postcopy_ram) {
+             error_setg(errp, "Postcopy preempt requires postcopy-ram");
+             return false;
+         }
+@@ -671,22 +629,22 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+         }
+     }
+ 
+-    if (new_caps[MIGRATION_CAPABILITY_MULTIFD]) {
++    if (new->multifd) {
+         if (!migrate_multifd() && migrate_incoming_started()) {
+             error_setg(errp, "Multifd must be set before incoming starts");
+             return false;
+         }
+     }
+ 
+-    if (new_caps[MIGRATION_CAPABILITY_SWITCHOVER_ACK]) {
+-        if (!new_caps[MIGRATION_CAPABILITY_RETURN_PATH]) {
++    if (new->switchover_ack) {
++        if (!new->return_path) {
+             error_setg(errp, "Capability 'switchover-ack' requires capability "
+                              "'return-path'");
+             return false;
+         }
+     }
+-    if (new_caps[MIGRATION_CAPABILITY_DIRTY_LIMIT]) {
+-        if (new_caps[MIGRATION_CAPABILITY_AUTO_CONVERGE]) {
++    if (new->dirty_limit) {
++        if (new->auto_converge) {
+             error_setg(errp, "dirty-limit conflicts with auto-converge"
+                        " either of then available currently");
+             return false;
+@@ -699,21 +657,21 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+         }
+     }
+ 
+-    if (new_caps[MIGRATION_CAPABILITY_MULTIFD]) {
+-        if (new_caps[MIGRATION_CAPABILITY_XBZRLE]) {
++    if (new->multifd) {
++        if (new->xbzrle) {
+             error_setg(errp, "Multifd is not compatible with xbzrle");
+             return false;
+         }
+     }
+ 
+-    if (new_caps[MIGRATION_CAPABILITY_MAPPED_RAM]) {
+-        if (new_caps[MIGRATION_CAPABILITY_XBZRLE]) {
++    if (new->mapped_ram) {
++        if (new->xbzrle) {
+             error_setg(errp,
+                        "Mapped-ram migration is incompatible with xbzrle");
+             return false;
+         }
+ 
+-        if (new_caps[MIGRATION_CAPABILITY_POSTCOPY_RAM]) {
++        if (new->postcopy_ram) {
+             error_setg(errp,
+                        "Mapped-ram migration is incompatible with postcopy");
+             return false;
+@@ -724,7 +682,7 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+      * On destination side, check the cases that capability is being set
+      * after incoming thread has started.
+      */
+-    if (migrate_rdma() && !migrate_rdma_caps_check(new_caps, errp)) {
++    if (migrate_rdma() && !migrate_rdma_caps_check(new, errp)) {
+         return false;
+     }
+     return true;
+@@ -845,39 +803,37 @@ MigrationCapabilityStatusList *qmp_query_migrate_capabilities(Error **errp)
+     for (i = 0; i < MIGRATION_CAPABILITY__MAX; i++) {
+         caps = g_malloc0(sizeof(*caps));
+         caps->capability = i;
+-        caps->state = s->capabilities[i];
++        caps->state = migrate_capability_get_compat(&s->parameters, i);
+         QAPI_LIST_APPEND(tail, caps);
+     }
+ 
+     return head;
+ }
+ 
+-void qmp_migrate_set_capabilities(MigrationCapabilityStatusList *params,
++void qmp_migrate_set_capabilities(MigrationCapabilityStatusList *capabilities,
+                                   Error **errp)
+ {
+     MigrationState *s = migrate_get_current();
+-    MigrationCapabilityStatusList *cap;
+-    bool new_caps[MIGRATION_CAPABILITY__MAX];
++    g_autoptr(MigrationParameters) params = NULL;
+ 
+     if (migration_is_running() || migration_in_colo_state()) {
+         error_setg(errp, "There's a migration process in progress");
+         return;
+     }
+ 
+-    memcpy(new_caps, s->capabilities, sizeof(new_caps));
+-    for (cap = params; cap; cap = cap->next) {
+-        new_caps[cap->value->capability] = cap->value->state;
+-    }
++    /*
++     * Capabilities validation needs to first copy from s->parameters
++     * in case the incoming capabilities have a capability that
++     * conflicts with another that's already set.
++     */
++    params = QAPI_CLONE(MigrationParameters, &s->parameters);
++    migrate_capabilities_set_compat(params, capabilities);
+ 
+-    if (!migrate_caps_check(s->capabilities, new_caps, errp)) {
++    if (!migrate_caps_check(params, errp)) {
+         return;
+     }
+ 
+-    for (cap = params; cap; cap = cap->next) {
+-        s->capabilities[cap->value->capability] = cap->value->state;
+-    }
+-
+-    migrate_capabilities_set_compat(&s->parameters, params);
++    migrate_capabilities_set_compat(&s->parameters, capabilities);
  }
  
  /* parameters */
-@@ -1047,7 +1154,15 @@ static void migrate_mark_all_params_present(MigrationParameters *p)
-         &p->has_announce_step, &p->has_block_bitmap_mapping,
-         &p->has_x_vcpu_dirty_limit_period, &p->has_vcpu_dirty_limit,
-         &p->has_mode, &p->has_zero_page_detection, &p->has_direct_io,
--        &p->has_cpr_exec_command,
-+        &p->has_cpr_exec_command, &p->has_xbzrle, &p->has_rdma_pin_all,
-+        &p->has_auto_converge, &p->has_zero_blocks, &p->has_events,
-+        &p->has_postcopy_ram, &p->has_x_colo, &p->has_release_ram,
-+        &p->has_return_path, &p->has_pause_before_switchover, &p->has_multifd,
-+        &p->has_dirty_bitmaps, &p->has_postcopy_blocktime,
-+        &p->has_late_block_activate, &p->has_x_ignore_shared,
-+        &p->has_validate_uuid, &p->has_background_snapshot,
-+        &p->has_zero_copy_send, &p->has_postcopy_preempt,
-+        &p->has_switchover_ack, &p->has_dirty_limit, &p->has_mapped_ram,
-     };
+@@ -938,9 +894,8 @@ bool migrate_direct_io(void)
+      * isolated to the main migration thread while multifd channels
+      * process the aligned data with O_DIRECT enabled.
+      */
+-    return s->parameters.direct_io &&
+-        s->capabilities[MIGRATION_CAPABILITY_MAPPED_RAM] &&
+-        s->capabilities[MIGRATION_CAPABILITY_MULTIFD];
++    return s->parameters.direct_io && s->parameters.mapped_ram &&
++        s->parameters.multifd;
+ }
  
-     len = ARRAY_SIZE(has_fields);
-@@ -1320,6 +1435,19 @@ void qmp_migrate_set_parameters(MigrationParameters *params, Error **errp)
+ uint64_t migrate_downtime_limit(void)
+@@ -1373,6 +1328,10 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
+         return false;
+     }
+ 
++    if (!migrate_caps_check(params, errp)) {
++        return false;
++    }
++
+     return true;
+ }
+ 
+@@ -1435,19 +1394,6 @@ void qmp_migrate_set_parameters(MigrationParameters *params, Error **errp)
      tls_opt_to_str(params->tls_hostname);
      tls_opt_to_str(params->tls_authz);
  
-+    /*
-+     * FIXME: Temporarily while migrate_caps_check is not
-+     * converted to look at s->parameters. Will be gone the end of
-+     * the series.
-+     */
-+    bool new_caps[MIGRATION_CAPABILITY__MAX] = { 0 };
-+    for (int i = 0; i < MIGRATION_CAPABILITY__MAX; i++) {
-+        new_caps[i] = migrate_capability_get_compat(&s->parameters, i);
-+    }
-+    if (!migrate_caps_check(s->capabilities, new_caps, errp)) {
-+        return;
-+    }
-+
+-    /*
+-     * FIXME: Temporarily while migrate_caps_check is not
+-     * converted to look at s->parameters. Will be gone the end of
+-     * the series.
+-     */
+-    bool new_caps[MIGRATION_CAPABILITY__MAX] = { 0 };
+-    for (int i = 0; i < MIGRATION_CAPABILITY__MAX; i++) {
+-        new_caps[i] = migrate_capability_get_compat(&s->parameters, i);
+-    }
+-    if (!migrate_caps_check(s->capabilities, new_caps, errp)) {
+-        return;
+-    }
+-
      migrate_params_merge(tmp, params);
  
      /*
 diff --git a/migration/options.h b/migration/options.h
-index 25fb316420..794cf23870 100644
+index 794cf23870..ceb12b0ff0 100644
 --- a/migration/options.h
 +++ b/migration/options.h
-@@ -93,4 +93,9 @@ ZeroPageDetection migrate_zero_page_detection(void);
+@@ -1,5 +1,5 @@
+ /*
+- * QEMU migration capabilities
++ * QEMU migration options
+  *
+  * Copyright (c) 2012-2023 Red Hat Inc
+  *
+@@ -23,8 +23,6 @@
+ extern const Property migration_properties[];
+ extern const size_t migration_properties_count;
+ 
+-/* capabilities */
+-
+ bool migrate_auto_converge(void);
+ bool migrate_colo(void);
+ bool migrate_dirty_bitmaps(void);
+@@ -43,22 +41,12 @@ bool migrate_validate_uuid(void);
+ bool migrate_xbzrle(void);
+ bool migrate_zero_copy_send(void);
+ 
+-/*
+- * pseudo capabilities
+- *
+- * These are functions that are used in a similar way to capabilities
+- * check, but they are not a capability.
+- */
+-
+ bool migrate_multifd_flush_after_each_section(void);
+ bool migrate_postcopy(void);
+ bool migrate_rdma(void);
+ bool migrate_tls(void);
+ 
+-/* capabilities helpers */
+-
+-bool migrate_rdma_caps_check(bool *caps, Error **errp);
+-bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp);
++bool migrate_rdma_caps_check(MigrationParameters *config, Error **errp);
+ bool migrate_can_snapshot(Error **errp);
+ 
+ /* parameters */
+@@ -88,8 +76,6 @@ const char *migrate_tls_hostname(void);
+ uint64_t migrate_xbzrle_cache_size(void);
+ ZeroPageDetection migrate_zero_page_detection(void);
+ 
+-/* parameters helpers */
+-
  bool migrate_params_check(MigrationParameters *params, Error **errp);
  void migrate_params_init(MigrationParameters *params);
  void migrate_tls_opts_free(MigrationParameters *params);
-+bool migrate_capability_get_compat(MigrationParameters *params, int i);
-+void migrate_capability_set_compat(MigrationParameters *params, int i,
-+                                   bool val);
-+void migrate_capabilities_set_compat(MigrationParameters *params,
-+                                     MigrationCapabilityStatusList *caps);
+@@ -98,4 +84,5 @@ void migrate_capability_set_compat(MigrationParameters *params, int i,
+                                    bool val);
+ void migrate_capabilities_set_compat(MigrationParameters *params,
+                                      MigrationCapabilityStatusList *caps);
++bool migrate_caps_check(MigrationParameters *new, Error **errp);
  #endif
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 201dedd982..fcbb699a47 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -832,15 +832,22 @@
-            'multifd-channels',
-            'xbzrle-cache-size', 'max-postcopy-bandwidth',
-            'max-cpu-throttle', 'multifd-compression',
--           'multifd-zlib-level', 'multifd-zstd-level',
--           'multifd-qatzip-level',
-+           'multifd-zlib-level', 'multifd-qatzip-level', 'multifd-zstd-level',
-            'block-bitmap-mapping',
-            { 'name': 'x-vcpu-dirty-limit-period', 'features': ['unstable'] },
-            'vcpu-dirty-limit',
-            'mode',
-            'zero-page-detection',
-            'direct-io',
--           'cpr-exec-command'] }
-+           'cpr-exec-command',
-+           'xbzrle', 'rdma-pin-all', 'auto-converge',
-+           'zero-blocks', 'events', 'postcopy-ram', 'x-colo',
-+           'release-ram', 'return-path', 'pause-before-switchover',
-+           'multifd', 'dirty-bitmaps', 'postcopy-blocktime',
-+           'late-block-activate', 'x-ignore-shared',
-+           'validate-uuid', 'background-snapshot',
-+           'zero-copy-send', 'postcopy-preempt',
-+           'switchover-ack', 'dirty-limit', 'mapped-ram' ] }
- 
- ##
- # @migrate-set-parameters:
-@@ -1016,10 +1023,109 @@
- #     is @cpr-exec.  The first list element is the program's filename,
- #     the remainder its arguments.  (Since 10.2)
- #
-+# @xbzrle: Migration supports xbzrle (Xor Based Zero Run Length
-+#     Encoding).  This feature allows us to minimize migration traffic
-+#     for certain work loads, by sending compressed difference of the
-+#     pages
-+#
-+# @rdma-pin-all: Controls whether or not the entire VM memory
-+#     footprint is mlock()'d on demand or all at once.  Refer to
-+#     docs/rdma.txt for usage.  Disabled by default.  (since 2.0)
-+#
-+# @zero-blocks: During storage migration encode blocks of zeroes
-+#     efficiently.  This essentially saves 1MB of zeroes per block on
-+#     the wire.  Enabling requires source and target VM to support
-+#     this feature.  To enable it is sufficient to enable the
-+#     capability on the source VM.  The feature is disabled by
-+#     default.  (since 1.6)
-+#
-+# @events: Generate events for each migration state change.
-+#     (since 2.4)
-+#
-+# @auto-converge: If enabled, QEMU will automatically throttle down
-+#     the guest to speed up convergence of RAM migration.  (since 1.6)
-+#
-+# @postcopy-ram: Start executing on the migration target before all of
-+#     RAM has been migrated, pulling the remaining pages along as
-+#     needed.  The capacity must have the same setting on both source
-+#     and target or migration will not even start.  **Note:** If the
-+#     migration fails during postcopy the VM will fail.  (since 2.6)
-+#
-+# @x-colo: If enabled, migration will never end, and the state of the
-+#     VM on the primary side will be migrated continuously to the VM
-+#     on secondary side, this process is called COarse-Grain LOck
-+#     Stepping (COLO) for Non-stop Service.  (since 2.8)
-+#
-+# @release-ram: If enabled, QEMU will free the migrated ram pages on
-+#     the source during postcopy-ram migration.  (since 2.9)
-+#
-+# @return-path: If enabled, migration will use the return path even
-+#     for precopy.  (since 2.10)
-+#
-+# @pause-before-switchover: Pause outgoing migration before
-+#     serialising device state and before disabling block IO.
-+#     (since 2.11)
-+#
-+# @multifd: Use more than one fd for migration.  (since 4.0)
-+#
-+# @dirty-bitmaps: If enabled, QEMU will migrate named dirty bitmaps.
-+#     (since 2.12)
-+#
-+# @postcopy-blocktime: Calculate downtime for postcopy live migration.
-+#     (since 3.0)
-+#
-+# @late-block-activate: If enabled, the destination will not activate
-+#     block devices (and thus take locks) immediately at the end of
-+#     migration.  (since 3.0)
-+#
-+# @x-ignore-shared: If enabled, QEMU will not migrate shared memory
-+#     that is accessible on the destination machine.  (since 4.0)
-+#
-+# @validate-uuid: Send the UUID of the source to allow the destination
-+#     to ensure it is the same.  (since 4.2)
-+#
-+# @background-snapshot: If enabled, the migration stream will be a
-+#     snapshot of the VM exactly at the point when the migration
-+#     procedure starts.  The VM RAM is saved with running VM.
-+#     (since 6.0)
-+#
-+# @zero-copy-send: Controls behavior on sending memory pages on
-+#     migration.  When true, enables a zero-copy mechanism for sending
-+#     memory pages, if host supports it.  Requires that QEMU be
-+#     permitted to use locked memory for guest RAM pages.  (since 7.1)
-+#
-+# @postcopy-preempt: If enabled, the migration process will allow
-+#     postcopy requests to preempt precopy stream, so postcopy
-+#     requests will be handled faster.  This is a performance feature
-+#     and should not affect the correctness of postcopy migration.
-+#     (since 7.1)
-+#
-+# @switchover-ack: If enabled, migration will not stop the source VM
-+#     and complete the migration until an ACK is received from the
-+#     destination that it's OK to do so.  Exactly when this ACK is
-+#     sent depends on the migrated devices that use this feature.  For
-+#     example, a device can use it to make sure some of its data is
-+#     sent and loaded in the destination before doing switchover.
-+#     This can reduce downtime if devices that support this capability
-+#     are present.  'return-path' capability must be enabled to use
-+#     it.  (since 8.1)
-+#
-+# @dirty-limit: If enabled, migration will throttle vCPUs as needed to
-+#     keep their dirty page rate within @vcpu-dirty-limit.  This can
-+#     improve responsiveness of large guests during live migration,
-+#     and can result in more stable read performance.  Requires KVM
-+#     with accelerator property "dirty-ring-size" set.  (Since 8.1)
-+#
-+# @mapped-ram: Migrate using fixed offsets in the migration file for
-+#     each RAM page.  Requires a migration URI that supports seeking,
-+#     such as a file.  (since 9.0)
-+#
- # Features:
- #
--# @unstable: Members @x-checkpoint-delay and
--#     @x-vcpu-dirty-limit-period are experimental.
-+# @unstable: Members @x-checkpoint-delay, @x-vcpu-dirty-limit-period,
-+#     @x-colo and @x-ignore-shared are experimental.
-+# @deprecated: Member @zero-blocks is deprecated as being part of
-+#     block migration which was already removed.
- #
- # Since: 2.4
- ##
-@@ -1055,7 +1161,29 @@
-             '*mode': 'MigMode',
-             '*zero-page-detection': 'ZeroPageDetection',
-             '*direct-io': 'bool',
--            '*cpr-exec-command': [ 'str' ]} }
-+            '*cpr-exec-command': [ 'str' ],
-+            '*xbzrle': 'bool',
-+            '*rdma-pin-all': 'bool',
-+            '*auto-converge': 'bool',
-+            '*zero-blocks': { 'type': 'bool', 'features': [ 'deprecated' ] },
-+            '*events': 'bool',
-+            '*postcopy-ram': 'bool',
-+            '*x-colo': { 'type': 'bool', 'features': [ 'unstable' ] },
-+            '*release-ram': 'bool',
-+            '*return-path': 'bool',
-+            '*pause-before-switchover': 'bool',
-+            '*multifd': 'bool',
-+            '*dirty-bitmaps': 'bool',
-+            '*postcopy-blocktime': 'bool',
-+            '*late-block-activate': 'bool',
-+            '*x-ignore-shared': { 'type': 'bool', 'features': [ 'unstable' ] },
-+            '*validate-uuid': 'bool',
-+            '*background-snapshot': 'bool',
-+            '*zero-copy-send': 'bool',
-+            '*postcopy-preempt': 'bool',
-+            '*switchover-ack': 'bool',
-+            '*dirty-limit': 'bool',
-+            '*mapped-ram': 'bool' } }
- 
- ##
- # @query-migrate-parameters:
+diff --git a/migration/savevm.c b/migration/savevm.c
+index 62cc2ce25c..d61d266902 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -291,7 +291,8 @@ static uint32_t get_validatable_capabilities_count(void)
+     uint32_t result = 0;
+     int i;
+     for (i = 0; i < MIGRATION_CAPABILITY__MAX; i++) {
+-        if (should_validate_capability(i) && s->capabilities[i]) {
++        if (should_validate_capability(i) &&
++            migrate_capability_get_compat(&s->parameters, i)) {
+             result++;
+         }
+     }
+@@ -313,7 +314,8 @@ static int configuration_pre_save(void *opaque)
+     state->capabilities = g_renew(MigrationCapability, state->capabilities,
+                                   state->caps_count);
+     for (i = j = 0; i < MIGRATION_CAPABILITY__MAX; i++) {
+-        if (should_validate_capability(i) && s->capabilities[i]) {
++        if (should_validate_capability(i) &&
++            migrate_capability_get_compat(&s->parameters, i)) {
+             state->capabilities[j++] = i;
+         }
+     }
+@@ -363,7 +365,7 @@ static bool configuration_validate_capabilities(SaveState *state)
+             continue;
+         }
+         source_state = test_bit(i, source_caps_bm);
+-        target_state = s->capabilities[i];
++        target_state = migrate_capability_get_compat(&s->parameters, i);
+         if (source_state != target_state) {
+             error_report("Capability %s is %s, but received capability is %s",
+                          MigrationCapability_str(i),
 -- 
 2.51.0
 
