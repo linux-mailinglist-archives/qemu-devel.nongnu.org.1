@@ -2,44 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5A73CBF927
+	by mail.lfdr.de (Postfix) with ESMTPS id E531DCBF92F
 	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 20:40:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVEQM-00016L-8L; Mon, 15 Dec 2025 14:40:02 -0500
+	id 1vVEQM-00017s-OB; Mon, 15 Dec 2025 14:40:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vVEQJ-00012g-4z
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vVEQI-00012a-Vs
  for qemu-devel@nongnu.org; Mon, 15 Dec 2025 14:39:59 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vVEQG-0006XC-02
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vVEQG-0006XD-2l
  for qemu-devel@nongnu.org; Mon, 15 Dec 2025 14:39:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
- Message-Id:Date:Subject:From:Sender:Reply-To:Content-ID:Content-Description:
- Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
- In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ s=dkim; h=Cc:To:In-Reply-To:References:Message-Id:Content-Transfer-Encoding:
+ Content-Type:MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=GLiSwyDMzvhykDe1MatEcJw/QAWYhhb6rQB38+9jfw8=; b=Cz225Nij3C2qFwv
- 6cbKoZnYgA3O+N0rayjQSUeQNecOU3YYZkGAJAUM3yd1XoRDAlg6RED3h/f4um++hDljyvJw0zLFP
- Xaglu14kJy6P4lkRUT4dnrop556e1YeZ3TRXcGdTdlWiht2HuqbjqylBl1WdIF7hHu5Ujl26QCCWU
- F0=;
-Subject: [PATCH v2 0/7] single-binary: Drop TARGET_PHYS_ADDR_SPACE_BITS
-Date: Mon, 15 Dec 2025 20:42:49 +0100
-Message-Id: <20251215-phys_addr-v2-0-633aa1d922cd@rev.ng>
+ List-Help; bh=Sl9uDZgG/YOVTATFnr0+sDvBRh8u9n6793uBQguCpQ4=; b=E3LoXV7lTePv57j
+ 2LFQ8eyH7kHm3poowHlyshVjqwvPcFfnYT01kR3oZc5Ab5H/hGiqulT74D57PFhBpBTe3go6UVGl3
+ 5aNwBj1V3473LbtJogjHai16UPI4g/iew7cDpR5zLrNy8TH0yxBqFIdYwzJWhQqx3l56Gr+SDbLq1
+ 1E=;
+Date: Mon, 15 Dec 2025 20:42:50 +0100
+Subject: [PATCH v2 1/7] target/alpha: Introduce
+ alpha_phys_addr_space_bits()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIALlkQGkC/03OTQrCMBCG4auUWRuZ/EjUlfeQIrGZNLNpSyLBU
- nJ3Y924fD+Gh9kgU2LKcO02SFQ48zy1UIcOhuimkQT71qBQnaREI5a45ofzPoknBmPJaZTGQbt
- fEgV+79a9bx05v+a07nSR3/WnKLz8KUUKFIM+26DJKm/trb1xnEboa60fthYSXJ8AAAA=
-X-Change-ID: 20251104-phys_addr-b0f47ea3014a
+Message-Id: <20251215-phys_addr-v2-1-633aa1d922cd@rev.ng>
+References: <20251215-phys_addr-v2-0-633aa1d922cd@rev.ng>
+In-Reply-To: <20251215-phys_addr-v2-0-633aa1d922cd@rev.ng>
 To: qemu-devel@nongnu.org
 Cc: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Brian Cain <brian.cain@oss.qualcomm.com>
+ Richard Henderson <richard.henderson@linaro.org>
 Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
  helo=rev.ng
 X-Spam_score_int: -20
@@ -66,69 +64,58 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The target macro TARGET_PHYS_ADDR_SPACE_BITS is unused since commit
+In preparation for dropping TARGET_PHYS_ADDR_SPACE_BITS, add a
+a runtime function to correctly represent the size of the physical
+address space for EV4-6 based on the current CPU version.
 
-  2e8fe327eb6 ("accel/tcg: Simplify L1_MAP_ADDR_SPACE_BITS"),
-
-replace the handful of remaining uses with runtime functions or
-constants.
-
-For discussion see:
-
-  https://lore.kernel.org/qemu-devel/8f0db5c1-f20b-4b7a-8d6c-76ce7ec7b4e0@linaro.org/
-
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
-Changes in v2:
-- Move alpha_phys_addr_space_bits() to linux-user/alpha/target_proc.h
-  (Richard);
-- Link to v1: https://lore.kernel.org/qemu-devel/20251209-phys_addr-v1-0-c387f3e72d77@rev.ng
+ linux-user/alpha/target_proc.h | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
----
-Anton Johansson (7):
-      target/alpha: Introduce alpha_phys_addr_space_bits()
-      target/hppa: Define PA[20|1X] physical address space size
-      target/i386: Drop physical address range checks
-      target/loongarch: Introduce loongarch_palen_mask()
-      hw/loongarch: Use loongarch_palen_mask()
-      hw/riscv: Fix IOMMU PAS capability to 56 bits
-      Drop TARGET_PHYS_ADDR_SPACE_BITS
+diff --git a/linux-user/alpha/target_proc.h b/linux-user/alpha/target_proc.h
+index da437ee0e5..6b491ffa3a 100644
+--- a/linux-user/alpha/target_proc.h
++++ b/linux-user/alpha/target_proc.h
+@@ -6,6 +6,27 @@
+ #ifndef ALPHA_TARGET_PROC_H
+ #define ALPHA_TARGET_PROC_H
+ 
++#include "qemu/osdep.h"
++#include "target/alpha/cpu.h"
++
++static uint8_t alpha_phys_addr_space_bits(CPUAlphaState *env)
++{
++    switch (env->implver) {
++    case IMPLVER_2106x:
++        /* EV4 */
++        return 34;
++    case IMPLVER_21164:
++        /* EV5 */
++        return 40;
++    case IMPLVER_21264:
++    case IMPLVER_21364:
++        /* EV6 and EV7*/
++        return 44;
++    default:
++        g_assert_not_reached();
++    }
++}
++
+ static int open_cpuinfo(CPUArchState *cpu_env, int fd)
+ {
+     int max_cpus = sysconf(_SC_NPROCESSORS_CONF);
+@@ -57,7 +78,7 @@ static int open_cpuinfo(CPUArchState *cpu_env, int fd)
+             "L1 Dcache\t\t: n/a\n"
+             "L2 cache\t\t: n/a\n"
+             "L3 cache\t\t: n/a\n",
+-            model, TARGET_PAGE_SIZE, TARGET_PHYS_ADDR_SPACE_BITS,
++            model, TARGET_PAGE_SIZE, alpha_phys_addr_space_bits(cpu_env),
+             max_cpus, num_cpus, cpu_mask);
+ 
+     return 0;
 
- include/exec/cpu-defs.h           |  3 ---
- include/exec/poison.h             |  2 --
- include/hw/loongarch/boot.h       |  3 ++-
- linux-user/alpha/target_proc.h    | 23 ++++++++++++++++++++++-
- target/alpha/cpu-param.h          |  3 ---
- target/arm/cpu-param.h            |  2 --
- target/avr/cpu-param.h            |  1 -
- target/hexagon/cpu-param.h        |  1 -
- target/hppa/cpu-param.h           |  2 --
- target/i386/cpu-param.h           |  2 --
- target/i386/tcg/helper-tcg.h      |  2 --
- target/loongarch/cpu-mmu.h        |  1 +
- target/loongarch/cpu-param.h      |  1 -
- target/loongarch/internals.h      |  1 -
- target/m68k/cpu-param.h           |  1 -
- target/microblaze/cpu-param.h     |  2 --
- target/mips/cpu-param.h           |  2 --
- target/openrisc/cpu-param.h       |  1 -
- target/ppc/cpu-param.h            |  7 -------
- target/riscv/cpu-param.h          |  2 --
- target/rx/cpu-param.h             |  1 -
- target/s390x/cpu-param.h          |  1 -
- target/sh4/cpu-param.h            |  1 -
- target/sparc/cpu-param.h          |  2 --
- target/tricore/cpu-param.h        |  1 -
- target/xtensa/cpu-param.h         |  1 -
- hw/loongarch/boot.c               | 28 ++++++++++++++++------------
- hw/loongarch/virt.c               |  5 ++++-
- hw/riscv/riscv-iommu.c            | 12 +++++++++---
- target/hppa/mem_helper.c          | 23 ++++++++++++++++++-----
- target/i386/cpu.c                 |  9 +++------
- target/i386/kvm/kvm.c             |  3 +--
- target/loongarch/cpu_helper.c     | 14 +++++++++++---
- target/loongarch/tcg/tlb_helper.c | 12 ++++++++----
- 34 files changed, 95 insertions(+), 80 deletions(-)
+-- 
+2.51.0
 
 
