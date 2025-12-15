@@ -2,108 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08662CC0170
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 23:05:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C80CACC014F
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 23:04:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVGf0-0007pW-12; Mon, 15 Dec 2025 17:03:18 -0500
+	id 1vVGf6-0000OK-GI; Mon, 15 Dec 2025 17:03:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGex-0007Xs-NY
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:03:15 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGf3-0008TU-Et
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:03:21 -0500
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGev-00033A-O2
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:03:15 -0500
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGf1-000359-8b
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:03:21 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 1DD555BDDC;
- Mon, 15 Dec 2025 22:02:39 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id A4FA45BD2A;
+ Mon, 15 Dec 2025 22:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1765836159; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1765836161; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=m3EAAXF/t2Le8CLhlGe+/S/F1KCweg+ZNh6980ehknw=;
- b=pu1fH6XzT/bwjoYyHRsqCqkjJS0fj0uMeBbLrwqlqzeHpkzrLBVwk7+pL+m/+YqM2gudHn
- qND3kyMt+IzdamRaCkXYAxMUADwxHQsOkezsyQ47UC113K+q4L6ZzIWjqn+DQyUt+/muw/
- eum/I3O8qdeM4y9drlzB+DU/UUdv3KQ=
+ bh=Asv0nckwgRbIXiiEg8gYC5OI3TeaKDkPOJPdSQRaX6o=;
+ b=TvVaBPYBkZIuR70fiDUeSMGEVJ81atnZ62IS81kPJbbrsNrqWToshtfaR3XMC6RXa9ijM1
+ ClzvrIsWgb13klFNaIQecYxiPl/zkbGp4xq5uTWt6piyyLkOLJHwxYPNZshOyo2nbTTk+h
+ 13JRRNa14bmnJjvFgYJ5FLFMWnjt3i8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1765836159;
+ s=susede2_ed25519; t=1765836161;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=m3EAAXF/t2Le8CLhlGe+/S/F1KCweg+ZNh6980ehknw=;
- b=z+M0yXay1/id/ssi0USQXhI4QvTA1ASJY0kEn4EzTayjGvlFQAHV9Cu5Fez3YATmR/mg8e
- Bfxq8I2Gu0+6kICw==
+ bh=Asv0nckwgRbIXiiEg8gYC5OI3TeaKDkPOJPdSQRaX6o=;
+ b=j18vZwMASWffzbvzG2rKKvs+IMJnO/kUIlgl+b0WOP8ZuHJNyugG7IF4wwwqF3WOo6KBkE
+ c2kAb8folbWnjcBQ==
 Authentication-Results: smtp-out2.suse.de;
-	none
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=TvVaBPYB;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=j18vZwMA
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1765836159; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1765836161; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=m3EAAXF/t2Le8CLhlGe+/S/F1KCweg+ZNh6980ehknw=;
- b=pu1fH6XzT/bwjoYyHRsqCqkjJS0fj0uMeBbLrwqlqzeHpkzrLBVwk7+pL+m/+YqM2gudHn
- qND3kyMt+IzdamRaCkXYAxMUADwxHQsOkezsyQ47UC113K+q4L6ZzIWjqn+DQyUt+/muw/
- eum/I3O8qdeM4y9drlzB+DU/UUdv3KQ=
+ bh=Asv0nckwgRbIXiiEg8gYC5OI3TeaKDkPOJPdSQRaX6o=;
+ b=TvVaBPYBkZIuR70fiDUeSMGEVJ81atnZ62IS81kPJbbrsNrqWToshtfaR3XMC6RXa9ijM1
+ ClzvrIsWgb13klFNaIQecYxiPl/zkbGp4xq5uTWt6piyyLkOLJHwxYPNZshOyo2nbTTk+h
+ 13JRRNa14bmnJjvFgYJ5FLFMWnjt3i8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1765836159;
+ s=susede2_ed25519; t=1765836161;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=m3EAAXF/t2Le8CLhlGe+/S/F1KCweg+ZNh6980ehknw=;
- b=z+M0yXay1/id/ssi0USQXhI4QvTA1ASJY0kEn4EzTayjGvlFQAHV9Cu5Fez3YATmR/mg8e
- Bfxq8I2Gu0+6kICw==
+ bh=Asv0nckwgRbIXiiEg8gYC5OI3TeaKDkPOJPdSQRaX6o=;
+ b=j18vZwMASWffzbvzG2rKKvs+IMJnO/kUIlgl+b0WOP8ZuHJNyugG7IF4wwwqF3WOo6KBkE
+ c2kAb8folbWnjcBQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 187B23EA63;
- Mon, 15 Dec 2025 22:02:36 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9FBB23EA63;
+ Mon, 15 Dec 2025 22:02:39 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id ECfIMnyFQGlrMQAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 15 Dec 2025 22:02:36 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id SDg1GH+FQGlrMQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 15 Dec 2025 22:02:39 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v3 43/51] tests/qtest/migration: Convert postcopy tests to use
+Subject: [PATCH v3 44/51] tests/qtest/migration: Convert TLS PSK tests to use
  config
-Date: Mon, 15 Dec 2025 19:00:29 -0300
-Message-ID: <20251215220041.12657-44-farosas@suse.de>
+Date: Mon, 15 Dec 2025 19:00:30 -0300
+Message-ID: <20251215220041.12657-45-farosas@suse.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251215220041.12657-1-farosas@suse.de>
 References: <20251215220041.12657-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.987];
- MIME_GOOD(-0.10)[text/plain]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- FROM_HAS_DN(0.00)[]; ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
- R_RATELIMIT(0.00)[to_ip_from(RLjrdmmf3juheryardexw6jb95)];
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:email,suse.de:dkim,suse.de:mid];
+ MIME_TRACE(0.00)[0:+]; FROM_HAS_DN(0.00)[]; ARC_NA(0.00)[];
  TO_DN_SOME(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email,suse.de:mid];
- RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- RCVD_COUNT_TWO(0.00)[2]; FUZZY_RATELIMITED(0.00)[rspamd.com];
+ R_RATELIMIT(0.00)[to_ip_from(RLi3368pnyb3ujpcs6u1hud8b3)];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ FROM_EQ_ENVFROM(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCPT_COUNT_FIVE(0.00)[6]; RCVD_TLS_ALL(0.00)[]
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ FUZZY_RATELIMITED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_FIVE(0.00)[6];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: A4FA45BD2A
+X-Spam-Score: -3.01
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -120,154 +128,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make the postcopy tests (including TLS) pass a config argument to
-migration QMP commands.
+Replace calls to migrate_set_parameters and the usage of args.caps
+with the new config object API.
+
+The multifd tests are now the same as the "precopy" tests, only
+setting some multifd options, so reuse the precopy code.
 
 Temporarily, set the use-config key to enable the new method.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration/framework.c      | 10 ++++++++--
- tests/qtest/migration/postcopy-tests.c | 10 +++++-----
- tests/qtest/migration/tls-tests.c      | 14 +++++++++-----
- 3 files changed, 22 insertions(+), 12 deletions(-)
+ tests/qtest/migration/tls-tests.c | 72 +++++++++----------------------
+ 1 file changed, 20 insertions(+), 52 deletions(-)
 
-diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-index ecfeee570e..8f179ea2fa 100644
---- a/tests/qtest/migration/framework.c
-+++ b/tests/qtest/migration/framework.c
-@@ -582,8 +582,8 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
-     QObject *channels;
- 
-     /* set postcopy capabilities */
--    args->start.caps[MIGRATION_CAPABILITY_POSTCOPY_BLOCKTIME] = true;
--    args->start.caps[MIGRATION_CAPABILITY_POSTCOPY_RAM] = true;
-+    qdict_put_bool(args->start.config, "postcopy-blocktime", true);
-+    qdict_put_bool(args->start.config, "postcopy-ram", true);
- 
-     if (migrate_start(&from, &to, "defer", &args->start)) {
-         return -1;
-@@ -652,6 +652,9 @@ void test_postcopy_common(MigrateCommon *args)
- {
-     QTestState *from, *to;
- 
-+    /* temporary */
-+    qdict_put_bool(args->start.config, "use-config", true);
-+
-     if (migrate_postcopy_prepare(&from, &to, args)) {
-         return;
-     }
-@@ -785,6 +788,9 @@ void test_postcopy_recovery_common(MigrateCommon *args)
-     QTestState *from, *to;
-     g_autofree char *uri = NULL;
- 
-+    /* temporary */
-+    qdict_put_bool(args->start.config, "use-config", true);
-+
-     /*
-      * Always enable OOB QMP capability for recovery tests, migrate-recover is
-      * executed out-of-band
-diff --git a/tests/qtest/migration/postcopy-tests.c b/tests/qtest/migration/postcopy-tests.c
-index 7ae4d765d7..5136a26abd 100644
---- a/tests/qtest/migration/postcopy-tests.c
-+++ b/tests/qtest/migration/postcopy-tests.c
-@@ -34,7 +34,7 @@ static void test_postcopy_suspend(char *name, MigrateCommon *args)
- 
- static void test_postcopy_preempt(char *name, MigrateCommon *args)
- {
--    args->start.caps[MIGRATION_CAPABILITY_POSTCOPY_PREEMPT] = true;
-+    qdict_put_bool(args->start.config, "postcopy-preempt", true);
- 
-     test_postcopy_common(args);
- }
-@@ -62,7 +62,7 @@ static void test_postcopy_recovery_fail_reconnect(char *name,
- 
- static void test_postcopy_preempt_recovery(char *name, MigrateCommon *args)
- {
--    args->start.caps[MIGRATION_CAPABILITY_POSTCOPY_PREEMPT] = true;
-+    qdict_put_bool(args->start.config, "postcopy-preempt", true);
- 
-     test_postcopy_recovery_common(args);
- }
-@@ -80,15 +80,15 @@ static void migration_test_add_postcopy_smoke(MigrationTestEnv *env)
- 
- static void test_multifd_postcopy(char *name, MigrateCommon *args)
- {
--    args->start.caps[MIGRATION_CAPABILITY_MULTIFD] = true;
-+    qdict_put_bool(args->start.config, "multifd", true);
- 
-     test_postcopy_common(args);
- }
- 
- static void test_multifd_postcopy_preempt(char *name, MigrateCommon *args)
- {
--    args->start.caps[MIGRATION_CAPABILITY_MULTIFD] = true;
--    args->start.caps[MIGRATION_CAPABILITY_POSTCOPY_PREEMPT] = true;
-+    qdict_put_bool(args->start.config, "multifd", true);
-+    qdict_put_bool(args->start.config, "postcopy-preempt", true);
- 
-     test_postcopy_common(args);
- }
 diff --git a/tests/qtest/migration/tls-tests.c b/tests/qtest/migration/tls-tests.c
-index 5f561bc602..abd6bf9281 100644
+index abd6bf9281..68304a7af3 100644
 --- a/tests/qtest/migration/tls-tests.c
 +++ b/tests/qtest/migration/tls-tests.c
-@@ -131,6 +131,8 @@ static void test_postcopy_tls_psk_common(MigrateCommon *args,
+@@ -73,9 +73,6 @@ static void *migrate_hook_start_tls_psk_common(QTestState *from,
+                              "                 'dir': %s } }",
+                              args->mismatch ? workdiralt : workdir);
+ 
+-    migrate_set_parameter_str(from, "tls-creds", "tlscredspsk0");
+-    migrate_set_parameter_str(to, "tls-creds", "tlscredspsk0");
+-
+     return NULL;
+ }
+ 
+@@ -121,6 +118,11 @@ static void test_precopy_tls_psk_common(MigrateCommon *args,
  {
      TestMigrateTLSPSKData *data = g_new0(TestMigrateTLSPSKData, 1);
  
++    /* temporary */
++    qdict_put_bool(args->start.config, "use-config", true);
++
 +    qdict_put_str(args->start.config, "tls-creds", "tlscredspsk0");
 +
      migrate_tls_psk_init(args, test_args, data);
-     test_postcopy_common(args);
+     test_precopy_common(args);
      migrate_tls_psk_cleanup(data);
-@@ -141,6 +143,8 @@ static void test_postcopy_recovery_tls_psk_common(MigrateCommon *args,
+@@ -497,18 +499,11 @@ static void test_precopy_tcp_tls_psk_mismatch(char *name, MigrateCommon *args)
+     test_precopy_tls_psk_common(args, &tls_psk_mismatch);
+ }
+ 
+-static void *migrate_hook_start_no_tls(QTestState *from, QTestState *to)
+-{
+-    migrate_set_parameter_null(from, "tls-creds");
+-    migrate_set_parameter_null(to, "tls-creds");
+-
+-    return NULL;
+-}
+-
+ static void test_precopy_tcp_no_tls(char *name, MigrateCommon *args)
  {
-     TestMigrateTLSPSKData *data = g_new0(TestMigrateTLSPSKData, 1);
- 
-+    qdict_put_str(args->start.config, "tls-creds", "tlscredspsk0");
+     args->listen_uri = "tcp:127.0.0.1:0";
+-    args->start_hook = migrate_hook_start_no_tls;
 +
-     migrate_tls_psk_init(args, test_args, data);
-     test_postcopy_recovery_common(args);
-     migrate_tls_psk_cleanup(data);
-@@ -382,7 +386,7 @@ static void test_postcopy_preempt_tls_psk(char *name, MigrateCommon *args)
-     args->start_hook_full = migrate_hook_start_tls_psk_common;
-     args->start_hook_data = &tls_psk_match;
++    qdict_put_null(args->start.config, "tls-creds");
  
--    args->start.caps[MIGRATION_CAPABILITY_POSTCOPY_PREEMPT] = true;
-+    qdict_put_bool(args->start.config, "postcopy-preempt", true);
- 
-     test_postcopy_tls_psk_common(args, &tls_psk_match);
+     test_precopy_common(args);
  }
-@@ -401,7 +405,7 @@ static void test_multifd_postcopy_recovery_tls_psk(char *name,
-     args->start_hook_full = migrate_hook_start_tls_psk_common;
-     args->start_hook_data = &tls_psk_match;
+@@ -614,29 +609,7 @@ static void test_precopy_tcp_tls_x509_reject_anon_client(char *name,
  
+     test_precopy_tls_x509_common(args, &tls_x509_reject_anon_client);
+ }
+-#endif /* CONFIG_TASN1 */
+ 
+-static void *
+-migrate_hook_start_multifd_tcp_tls_psk_match(QTestState *from,
+-                                             QTestState *to)
+-{
+-    migrate_set_parameter_str(from, "multifd-compression", "none");
+-    migrate_set_parameter_str(to, "multifd-compression", "none");
+-
+-    return migrate_hook_start_tls_psk_common(from, to, &tls_psk_match);
+-}
+-
+-static void *
+-migrate_hook_start_multifd_tcp_tls_psk_mismatch(QTestState *from,
+-                                                QTestState *to)
+-{
+-    migrate_set_parameter_str(from, "multifd-compression", "none");
+-    migrate_set_parameter_str(to, "multifd-compression", "none");
+-
+-    return migrate_hook_start_tls_psk_common(from, to, &tls_psk_mismatch);
+-}
+-
+-#ifdef CONFIG_TASN1
+ static void *
+ migrate_hook_start_multifd_tls_x509_default_host(QTestState *from,
+                                                  QTestState *to)
+@@ -694,39 +667,34 @@ migrate_hook_start_multifd_tls_x509_reject_anon_client(QTestState *from,
+ 
+ static void test_multifd_tcp_tls_psk_match(char *name, MigrateCommon *args)
+ {
+-    args->start_hook = migrate_hook_start_multifd_tcp_tls_psk_match;
+-    args->listen_uri = "tcp:127.0.0.1:0";
+-
+     args->start.incoming_defer = true;
 -    args->start.caps[MIGRATION_CAPABILITY_MULTIFD] = true;
+ 
+-    test_precopy_tls_psk_common(args, &tls_psk_match);
++    qdict_put_str(args->start.config, "multifd-compression", "none");
 +    qdict_put_bool(args->start.config, "multifd", true);
- 
-     test_postcopy_recovery_tls_psk_common(args, &tls_psk_match);
++
++    test_precopy_tcp_tls_psk_match(name, args);
  }
-@@ -412,7 +416,7 @@ static void test_postcopy_preempt_all(char *name, MigrateCommon *args)
-     args->start_hook_full = migrate_hook_start_tls_psk_common;
-     args->start_hook_data = &tls_psk_match;
  
--    args->start.caps[MIGRATION_CAPABILITY_POSTCOPY_PREEMPT] = true;
-+    qdict_put_bool(args->start.config, "postcopy-preempt", true);
- 
-     test_postcopy_recovery_tls_psk_common(args, &tls_psk_match);
- }
-@@ -423,8 +427,8 @@ static void test_multifd_postcopy_preempt_recovery_tls_psk(char *name,
-     args->start_hook_full = migrate_hook_start_tls_psk_common;
-     args->start_hook_data = &tls_psk_match;
- 
+ static void test_multifd_tcp_tls_psk_mismatch(char *name, MigrateCommon *args)
+ {
+-    args->start_hook = migrate_hook_start_multifd_tcp_tls_psk_mismatch;
+-    args->result = MIG_TEST_FAIL;
+-    args->listen_uri = "tcp:127.0.0.1:0";
+-
+-    args->start.hide_stderr = true;
+     args->start.incoming_defer = true;
 -    args->start.caps[MIGRATION_CAPABILITY_MULTIFD] = true;
--    args->start.caps[MIGRATION_CAPABILITY_POSTCOPY_PREEMPT] = true;
-+    qdict_put_bool(args->start.config, "multifd", true);
-+    qdict_put_bool(args->start.config, "postcopy-preempt", true);
  
-     test_postcopy_recovery_tls_psk_common(args, &tls_psk_match);
+-    test_precopy_tls_psk_common(args, &tls_psk_mismatch);
++    qdict_put_str(args->start.config, "multifd-compression", "none");
++    qdict_put_bool(args->start.config, "multifd", true);
++
++    test_precopy_tcp_tls_psk_mismatch(name, args);
  }
+ 
+ static void test_multifd_postcopy_tcp_tls_psk_match(char *name,
+                                                     MigrateCommon *args)
+ {
+-    args->start_hook = migrate_hook_start_multifd_tcp_tls_psk_match;
+-    args->listen_uri = "tcp:127.0.0.1:0";
+-
+     args->start.incoming_defer = true;
+-    args->start.caps[MIGRATION_CAPABILITY_MULTIFD] = true;
+-    args->start.caps[MIGRATION_CAPABILITY_POSTCOPY_RAM] = true;
+ 
+-    test_precopy_tls_psk_common(args, &tls_psk_match);
++    qdict_put_str(args->start.config, "multifd-compression", "none");
++    qdict_put_bool(args->start.config, "multifd", true);
++    qdict_put_bool(args->start.config, "postcopy-ram", true);
++
++    test_precopy_tcp_tls_psk_match(name, args);
+ }
+ 
+ #ifdef CONFIG_TASN1
 -- 
 2.51.0
 
