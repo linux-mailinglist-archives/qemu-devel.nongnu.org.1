@@ -2,95 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5919CBCD8E
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 08:51:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BCC2CBCD84
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 08:51:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vV3Ly-0000ek-Rw; Mon, 15 Dec 2025 02:50:49 -0500
+	id 1vV3MA-0000lF-J6; Mon, 15 Dec 2025 02:50:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vV3LX-0000bA-Bh
+ id 1vV3Lb-0000bt-Is
  for qemu-devel@nongnu.org; Mon, 15 Dec 2025 02:50:23 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vV3LV-0000lq-OI
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 02:50:19 -0500
+ id 1vV3La-0000mU-3F
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 02:50:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1765785017;
+ s=mimecast20190719; t=1765785021;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TlW7wtP3S7BSZhssQjq1auHlBWMlcMZTjjKdz6k84jU=;
- b=QMlh0PMWdx82Vju6uCF0llhVAXos+2j8fT3QuMZJ9f5nojz6/ftSU8Hm1GJ6aFWx5qhRM6
- bT8uZ8wjxUjjAEOLk7tDPHLSUp/9hztXCHeY0yVudi9gWtlQ0Do+qmb0tSmZ1i2tFn9BLj
- uDFF6CH1sciTZgtOUs0nnHDVcqFzlJc=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=DPzOYGOdSS2nqdUVmE3Appt8FioAsNxMPjypO5wkIkE=;
+ b=FyrEag3K3VF4p1wAuyPulpAdgG8pa4nL68QeIJzPfyrXj9e+wuyetKY9dvEn3MPkeZ9nyp
+ 4E4gHbgCt1pQrL4cvkVzfR7a4ZdGTmSnto5X473UM1D8Us48xioTSNS1e4A+Pqn2ki+rtV
+ leXril7HOBKM4Lmy4tJt2u4Dz6ggu6U=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-122-8O-r0KKEO7aUTPtVe0GSdg-1; Mon, 15 Dec 2025 02:50:15 -0500
-X-MC-Unique: 8O-r0KKEO7aUTPtVe0GSdg-1
-X-Mimecast-MFC-AGG-ID: 8O-r0KKEO7aUTPtVe0GSdg_1765785014
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-47777158a85so38084575e9.3
- for <qemu-devel@nongnu.org>; Sun, 14 Dec 2025 23:50:15 -0800 (PST)
+ us-mta-140--hFRVLgJMPm3PP2Q3GUCdw-1; Mon, 15 Dec 2025 02:50:19 -0500
+X-MC-Unique: -hFRVLgJMPm3PP2Q3GUCdw-1
+X-Mimecast-MFC-AGG-ID: -hFRVLgJMPm3PP2Q3GUCdw_1765785018
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-430fcb6b2ebso414461f8f.2
+ for <qemu-devel@nongnu.org>; Sun, 14 Dec 2025 23:50:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1765785014; x=1766389814; darn=nongnu.org;
+ d=redhat.com; s=google; t=1765785016; x=1766389816; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TlW7wtP3S7BSZhssQjq1auHlBWMlcMZTjjKdz6k84jU=;
- b=nrRu3HcdHueJP3RG+5SrO3bFnp3GKAItDMKM2jwLHuA53ETXGxiSucbaf/cRHWec7p
- kaOLQJXVQnfX0rFswD6/h+6cyhaC6y5DlAtDPgqgSuccZFBUrDveaz70TU4RUDgXL4Wb
- U9VtoOn7DXl5J4OKnTn+ib4bhugYAyKLekt3VxkrWNht97I+EeZD5yJNxPcrwPM5mUGm
- Y2zRIYTy1atNlMwscFeDcnFZyDIHJCC9QnxVnnlfxWq8JnW+13NnK1udPL63OI52X4fU
- cggfeP7uTXDMfn2VGhqezBldQQSwzWclvv3vn9VWgaMKbgcpzCggvVTq1A3H2JQrU9gQ
- v0Yg==
+ bh=DPzOYGOdSS2nqdUVmE3Appt8FioAsNxMPjypO5wkIkE=;
+ b=YMs/Fg4jUGRm87fgou4XR/Bhrrleyr1EP8Xv3B2BcnY4oXeLfgNSpFpk/OHr9wHz6q
+ SQ4BHFNujcWzeyFquq+xc54K7IlN2qqwfDvucnm+Os7n+D+WKeQB8kw/wGd2qu/IGyDI
+ /hEsPNTzUNCf75sLMCBH5xihMnHF1OXN+L+DB7DiqlQ2H+i+tHLdeOnuSslotreFjno2
+ kLNHTP3LpVD5JF0VMljsDo2rHBH9NkL+W3Um2ZCE6ze5fPWftbLT8wEMWv2rayVIqRN3
+ wsbOpDlxkTrFVSRC+x2w5rUZEGKvxv80WqQquADqMZKl+Nlh0rywPYb7fS4xMgm0CDX4
+ HSBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765785014; x=1766389814;
+ d=1e100.net; s=20230601; t=1765785016; x=1766389816;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=TlW7wtP3S7BSZhssQjq1auHlBWMlcMZTjjKdz6k84jU=;
- b=JtIblzRD8v6hA7UyZ6hfT27W/y1RLm7DvhdbRf/WcfucI4YKNYLBPx2osUqAuTK5fm
- 27SPYo6KqvSSp7UJ0VP6cmJJAcJtfk0ApAHKOZVQWBtKuXkQQmqIUJZCjXL+oYUuuRb+
- xy/OFF3XqSiTndwsaR17jJCJ4/Je2R2Yv8I0eOSpjsXAwyjbOwvhkcA8aUtXoJJSJSra
- RNIo2W/nJ4tIXzGQwHPRavHFaxP385SO1sdAtq6iDkR8VgbUL0rfdkp1+aUh9XoHCB6r
- gafKvCxc4UjfRyy3FMBKhbsAL0R9pxJL3/tDsy+CKGmRSt2wn96YXKs4IcAfsBP4B+0x
- 7tPA==
-X-Gm-Message-State: AOJu0YxUoM/rM4DsLtSD2jxaEMavc54m88N4uZ/xM65iuTe+LLDZbfwZ
- o/UFCjwIWNPHCHDmWxCC+VSXzjkHIczlaJgP98CNCvfpC2NS6ssJBRjxf6D0d8aikjDBVcW/fBt
- 9aAdledS2u595JmLCBW9KEg4O3O0MTcqt5H0BN5nVqzEFfeDqNbZV3Zj5xhMtYcVCMNwmCFZ0Fr
- TLF0dAtzVcGa+Sk+Wdx0CeM+6xI3OTn2CFDjLs9huk
-X-Gm-Gg: AY/fxX61EdLBN3ypPJ1N5R9BwyzNlyW5Wr9iItj9hO7fB4LTEX0OD+Mlzvml2Rju1sq
- CvwnjRXItys60vVN+bv5E5TbIYMixb9TN3civKdehiIlmSqnJ91hYM4mPloAXKamZoDr2UkCV4l
- G/lHKUdhHV8qgT71bATPNYgTZ4j8ZukmGq4UpA4cj7sPqtLrEdlQVM3rP6UWF6HFUsxU4z4MvY4
- S4AeH1IEH/qIaabtAeKAFJeXe1Qqli7UI14oDXWw6i2d+GD39PUMfbf9xpXyGsSk6yzmkHTI7l4
- Aw1Be6G4m2xg9c3VSu0yHSgpLg5cKoAjNZhLabrhNV7cGUc1wDo19GKwszk+btL6F5Ozx3VUaiI
- QEbVOEezyb9owhu66YJvV7sLAU6H1pte0pzdp3AYQD8CVZBTRf0Bjeqsgnf+xNplCPBN2ldp+hT
- yxQKd4v+rp09c118s=
-X-Received: by 2002:a05:600c:4e91:b0:477:c37:2ea7 with SMTP id
- 5b1f17b1804b1-47a8f904609mr104987875e9.21.1765785013747; 
- Sun, 14 Dec 2025 23:50:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHjNGTw3rR71LFrJggoEPZa2W3FOLAe6o0RAXtCN9YS+s1RCdf7zA9dPxCtSG8SqIKOWz8MFw==
-X-Received: by 2002:a05:600c:4e91:b0:477:c37:2ea7 with SMTP id
- 5b1f17b1804b1-47a8f904609mr104987625e9.21.1765785013256; 
- Sun, 14 Dec 2025 23:50:13 -0800 (PST)
+ bh=DPzOYGOdSS2nqdUVmE3Appt8FioAsNxMPjypO5wkIkE=;
+ b=h0g/gP05axahD3W825pT6fz5iVavfEoLtrZWkGSp1y2OsJHeEo9y/Qly50PZkAULDE
+ WALsdT4gONdMAxRB1nUSzeu+qjCvuf7jmH61LYdQuBspjC/n3TcYiMKEGXA/0MBZVg47
+ W8vd2o1J1crBhdRegxmWbguVEEmPuGnNVvunAPyowcbQrd5Jcljw0MLW5ZEp0zc/tp0K
+ RUBzqbGrMfD+W1XtH3a+/5J/+d/WrIhhOW/MsuSkDCfEfx8PdkW5fGnnJfhjFAuSJNNx
+ KER3DbDQw7Ov2c6iLr76FV+k+9L1WmouOFlv17WgGenj1KoipdeakRW2ZShn1ZgjGfv5
+ ciiw==
+X-Gm-Message-State: AOJu0Ywl3F5Qq1AyQiNwBBpYbZKgFuQt0mpOBTuCqOCd2R7Q+s5Eqy3i
+ s19h2wt7/gJXLDB/47AnSo0xmdEEk+pTpvat+jl/FlJY5LLetK/QsaGQ0VTr7LspyHZVlb1rqqV
+ Iywk4KfdrU/+UbiO6F2g/b4OPPpvc06SBa0k+JY+KmdAXkBaUEc2ysd9CnFci/3gWx/fv6hUUz+
+ 67AWx0r9QxW1NXgne0GfQtJRsCAqGqaNqXufDEARam
+X-Gm-Gg: AY/fxX6M5V/A2v7uomLEbfPv8A2Fs9jZiBot3VTdFiAENUfpMe66cdggEwURpi8qoA7
+ lMKxPkIiYZ1bbaUAiG1zkbBL/ow2cxfYm4AsYtwt2QKKmvpVY9kZWfQYYvNi9ko8CIv1RjpA8OP
+ y65G8bPw2ZKTc3GgiUasimgZlKHu9/0KGjBAtUdH+xeOE2cRq+o7HpP1DzPcwHrjhcPkQJbsvEu
+ ZKyarFiDcidlRNRUQ1oijc4qDO/eMmfV1ZCZ5AgdKedyW06I1HKWpK0rBIh+iZQvIpABNMQc9M7
+ ZV4Gch+dMeG93kdvYnDG4gwHyOzRqTpXBPPTe92WXGypH4PZ2NELlsDW6Y4l+VwOunwsLp/MKkE
+ +YavDWw2uoHYZjWGM/8Q6kGj3e0NJGOXD9Sk/YfK7YgmIEd43k5v7w69IbY7i7qlz/YD8gJ3eK2
+ JBTt6OnrynZ3WdVQA=
+X-Received: by 2002:a5d:5f91:0:b0:431:53:1f49 with SMTP id
+ ffacd0b85a97d-431005325c2mr859102f8f.41.1765785016244; 
+ Sun, 14 Dec 2025 23:50:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEVf+fWNJzbUzqsCwn5/tL5jAU1Nzlfoy2ugnNqNplrJxc7rJ26wxp+hA28DEWucIkVMS2sQQ==
+X-Received: by 2002:a5d:5f91:0:b0:431:53:1f49 with SMTP id
+ ffacd0b85a97d-431005325c2mr859076f8f.41.1765785015766; 
+ Sun, 14 Dec 2025 23:50:15 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47a8f4f424bsm173496925e9.10.2025.12.14.23.50.12
+ ffacd0b85a97d-430f268d459sm12450206f8f.32.2025.12.14.23.50.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 14 Dec 2025 23:50:12 -0800 (PST)
+ Sun, 14 Dec 2025 23:50:14 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org, marcandre.lureau@redhat.com,
- Martin Kletzander <mkletzan@redhat.com>
-Subject: [PATCH 04/11] rust: Do not link qemuutil into Rust rlibs
-Date: Mon, 15 Dec 2025 08:49:53 +0100
-Message-ID: <20251215075000.335043-5-pbonzini@redhat.com>
+Cc: qemu-rust@nongnu.org,
+	marcandre.lureau@redhat.com
+Subject: [PATCH 05/11] rust: only link the Rust part of the code into devices
+Date: Mon, 15 Dec 2025 08:49:54 +0100
+Message-ID: <20251215075000.335043-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251215075000.335043-1-pbonzini@redhat.com>
 References: <20251215075000.335043-1-pbonzini@redhat.com>
@@ -121,102 +121,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Martin Kletzander <mkletzan@redhat.com>
+Do not include libqemuutil in the device crates for the same
+reason as in the previous commit.  Static libraries like qemuutil
+are sensitive to their position on the command line and rustc does not
+always get it right.
 
-Commit de037ab8d83d removed qemuutil dependency from chardev and util
-rust crates.  However it stayed in the _util_rs static library.  The
-dependency is also defined as `link_with`, which is fine for C targets,
-where the resulting archive gets linked as another parameter on the
-command line when it is a static library.
+If rustc places the library too early on the command line, the stubs
+are included in the final link product, which results in duplicate
+symbols.
 
-However, when a C library is linked into a Rust rlib, rustc remembers
-the dependency into the metadata and adds the library to the linker
-command line.
-
-Unfortunately, static libraries are sensitive to their
-position on the command line and rustc does not always get it right.
-Fortunately, simply removing it from dependencies of any rust libraries
-and instead adding them into the dependencies of executables and
-doctests fixes the behaviour.
-
-Without this patch the error I get is:
-
-  FAILED: [code=1] rust/tests/rust-integration
-  ...
-  = note: rust-lld: error: unable to find library -l:libqemuutil.a
-          rust-lld: error: unable to find library -l:libvhost-user-glib.a
-          rust-lld: error: unable to find library -l:libvhost-user.a
-          rust-lld: error: unable to find library -l:libqemuutil.a
-          rust-lld: error: unable to find library -l:libvhost-user-glib.a
-          rust-lld: error: unable to find library -l:libvhost-user.a
-          rust-lld: error: unable to find library -l:libqemuutil.a
-          rust-lld: error: unable to find library -l:libvhost-user-glib.a
-          rust-lld: error: unable to find library -l:libvhost-user.a
-          rust-lld: error: unable to find library -l:libqemuutil.a
-          rust-lld: error: unable to find library -l:libvhost-user-glib.a
-          rust-lld: error: unable to find library -l:libvhost-user.a
-          rust-lld: error: unable to find library -l:libqemuutil.a
-          rust-lld: error: unable to find library -l:libvhost-user-glib.a
-          rust-lld: error: unable to find library -l:libvhost-user.a
-          rust-lld: error: unable to find library -l:libqemuutil.a
-          rust-lld: error: unable to find library -l:libvhost-user-glib.a
-          rust-lld: error: unable to find library -l:libvhost-user.a
-          collect2: error: ld returned 1 exit status
-
-Meson could work around it itself by never adding these static libraries
-to the rlibs (after all, Meson tracks the transitive dependencies already
-and knows how to add them to dependents of those rlibs); at least for now,
-do it in QEMU: never link C libraries into Rust rlibs, and add them to the
-final build products only.
-
-Signed-off-by: Martin Kletzander <mkletzan@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/chardev/meson.build | 2 +-
- rust/qom/meson.build     | 2 +-
- rust/util/meson.build    | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ rust/hw/char/pl011/meson.build | 18 ++++++++++--------
+ rust/hw/timer/hpet/meson.build | 18 +++++++++---------
+ 2 files changed, 19 insertions(+), 17 deletions(-)
 
-diff --git a/rust/chardev/meson.build b/rust/chardev/meson.build
-index 54bb2962528..2e4f4670bd8 100644
---- a/rust/chardev/meson.build
-+++ b/rust/chardev/meson.build
-@@ -38,4 +38,4 @@ _chardev_rs = static_library(
-   dependencies: [glib_sys_rs, common_rs, qemu_macros],
- )
- 
--chardev_rs = declare_dependency(link_with: [_chardev_rs], dependencies: [chardev])
-+chardev_rs = declare_dependency(link_with: [_chardev_rs], dependencies: [chardev, qemuutil])
-diff --git a/rust/qom/meson.build b/rust/qom/meson.build
-index 551c4f0bf5f..dda26c3f981 100644
---- a/rust/qom/meson.build
-+++ b/rust/qom/meson.build
-@@ -30,7 +30,7 @@ _qom_rs = static_library(
-   dependencies: [common_rs, glib_sys_rs, qemu_macros],
- )
- 
--qom_rs = declare_dependency(link_with: [_qom_rs], dependencies: [qemu_macros, qom])
-+qom_rs = declare_dependency(link_with: [_qom_rs], dependencies: [qemu_macros, qom, qemuutil])
- 
- # Doctests are essentially integration tests, so they need the same dependencies.
- # Note that running them requires the object files for C code, so place them
-diff --git a/rust/util/meson.build b/rust/util/meson.build
-index 95b44f7c670..98629394afb 100644
---- a/rust/util/meson.build
-+++ b/rust/util/meson.build
-@@ -39,10 +39,10 @@ _util_rs = static_library(
-     ],
-     {'.': _util_bindings_inc_rs}
+diff --git a/rust/hw/char/pl011/meson.build b/rust/hw/char/pl011/meson.build
+index 33b91f21911..9c0e8290e9a 100644
+--- a/rust/hw/char/pl011/meson.build
++++ b/rust/hw/char/pl011/meson.build
+@@ -28,20 +28,22 @@ _libpl011_rs = static_library(
    ),
--  dependencies: [anyhow_rs, libc_rs, foreign_rs, glib_sys_rs, common_rs, qom, qemuutil],
-+  dependencies: [anyhow_rs, libc_rs, foreign_rs, glib_sys_rs, common_rs],
+   override_options: ['rust_std=2021', 'build.rust_std=2021'],
+   rust_abi: 'rust',
++  link_with: [
++    _util_rs,
++    _migration_rs,
++    _bql_rs,
++    _qom_rs,
++    _chardev_rs,
++    _system_rs,
++    _hwcore_rs,
++    _trace_rs
++  ],
+   dependencies: [
+     bilge_rs,
+     bilge_impl_rs,
+     bits_rs,
+     common_rs,
+     glib_sys_rs,
+-    util_rs,
+-    migration_rs,
+-    bql_rs,
+-    qom_rs,
+-    chardev_rs,
+-    system_rs,
+-    hwcore_rs,
+-    trace_rs
+   ],
  )
  
--util_rs = declare_dependency(link_with: [_util_rs])
-+util_rs = declare_dependency(link_with: [_util_rs], dependencies: [qemuutil, qom])
+diff --git a/rust/hw/timer/hpet/meson.build b/rust/hw/timer/hpet/meson.build
+index 9a3dd62caa3..3bb7ce2a6ca 100644
+--- a/rust/hw/timer/hpet/meson.build
++++ b/rust/hw/timer/hpet/meson.build
+@@ -3,16 +3,16 @@ _libhpet_rs = static_library(
+   files('src/lib.rs'),
+   override_options: ['rust_std=2021', 'build.rust_std=2021'],
+   rust_abi: 'rust',
+-  dependencies: [
+-    common_rs,
+-    util_rs,
+-    migration_rs,
+-    bql_rs,
+-    qom_rs,
+-    system_rs,
+-    hwcore_rs,
+-    trace_rs,
++  link_with: [
++    _util_rs,
++    _migration_rs,
++    _bql_rs,
++    _qom_rs,
++    _system_rs,
++    _hwcore_rs,
++    _trace_rs,
+   ],
++  dependencies: [common_rs],
+ )
  
- rust.test('rust-util-tests', _util_rs,
-           dependencies: [qemuutil, qom],
+ rust_devices_ss.add(when: 'CONFIG_X_HPET_RUST', if_true: [declare_dependency(
 -- 
 2.52.0
 
