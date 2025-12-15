@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC138CBF6DA
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 19:27:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0258ECBF5EF
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 19:15:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVDGp-0003g6-2g; Mon, 15 Dec 2025 13:26:07 -0500
+	id 1vVD5h-0008TS-Pv; Mon, 15 Dec 2025 13:14:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vVDGm-0003bx-0b
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 13:26:04 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vVD5U-0008JW-FY
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 13:14:27 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vVDGk-0001X2-Ak
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 13:26:03 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-477a1c28778so42887865e9.3
- for <qemu-devel@nongnu.org>; Mon, 15 Dec 2025 10:26:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vVD5Q-00050P-Ai
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 13:14:22 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4779ce2a624so42078735e9.2
+ for <qemu-devel@nongnu.org>; Mon, 15 Dec 2025 10:14:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1765823160; x=1766427960; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1765822455; x=1766427255; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
  bh=K3dzsXqkHvwqoBXvxlu95nqIsRk0MCO35JmcU23X3QE=;
- b=nBtili/PKexAvP+nlDiEsqxpoWSRVWyOusQX7Ygku9b0bkgn0e2DTb4mYVv7Ij1/nN
- ulDubpXq3KFs05ll3XV/yYWZfZPULLg7RtMeSGOezk8EOH6A/6HHmNobBPBJvzTnF4AE
- EFjvQY7HCS7v2GeyGGyI6beAEP/tqseOagIIhxCS4t6ekrrWPHbvCU5MZw247o30YWmX
- jkTrSBU7/lngMopoeZO+Ur4Vki3QZpCHN3TUaEWFbhnae2o8EhXh2v5LQJIBMY6jDgIY
- 97XrF5NvzZJUhcao4/JlexYE9LKt2yhT3z7wpGn80OPNCvofaFSPzMMlN5tQ/M9mEXIe
- KbZA==
+ b=SO2lVVt0KgOlqK6ymM3Y7zioqkrtDZrLXJEKeIaq5y0sQulfBAf2xJnWgSXNmGRvb0
+ vUzylYnkDWBa2n8NVxjahCyNEByaMIsKKgZOz8ULOYYXnhrHGfaDPMgpLHPBLvSJ1LB7
+ oxfX5JwB0NvhoI4gPnkL7eXkoC2zURS9VP7RVMqIPre2jMSuH8/LcvDjlmg8eIjXnNgj
+ JB00qV1+HP8kgxJLxwnRv6RdeNeT7TnCn0lPc0suwiIOTy+GQlz1OgRMm8vdO9B/xZv/
+ BZbji37tVjPkLaGqKSvjwcfO+rzsYRXuVPy3K+3DYTJn8qW7udKM0uGIbPWAsKdQD2gn
+ qAAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765823160; x=1766427960;
+ d=1e100.net; s=20230601; t=1765822455; x=1766427255;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
  bh=K3dzsXqkHvwqoBXvxlu95nqIsRk0MCO35JmcU23X3QE=;
- b=OBWPcdhawieWTvBuMH+CQkwrVZD4vQuAj5Mpu9EWzKiYVdTmTD5/AormxkDnYj+OjF
- aWE6PjwuzPKDFBGyyrjMQxsZZolhVawjpZJ3DY7TAgbe0zWdLn/KAKxegySVDB8kmude
- RBLDAbcBVRHSqOnSs8oi7vWc9vy7O1/F+uAi7OIUiMXefez3HLF2v5soq+WSKyDv/lb8
- f3y/gz3ePWoJ/mzqQBuvDV6lHk4oOOOgdpZAVrhItM37I7Ac+tIso/NP5ffwswLgvcn0
- LGBp9BHnY7Tc076s87xlTAUTyp+lU8+1koO+oymZ3qxUkRLrjLP3pqE2biXNIdCdK21E
- ZpSg==
-X-Gm-Message-State: AOJu0YyqQty1flQXsh3UUTPvYIXRrpYi8DPrvCFe87yhN4Z/nntd9eFp
- PUKtivBTifnnvFOCQ2cq+3aCfQsnS9A/PF3SlV6S9TrbKr3ZrnfoLnKIvfTMrA==
-X-Gm-Gg: AY/fxX497SG/7VWKHdGBfLpLGC43SxAMXqIR8U+gizrP8AHFnIRYkPLC7OPSAceNLgm
- dZsddhwuUachOZD7gNMkwkFbahAO2N63jWJ8WniatjyB02w7JwntS5FYM7pDkyqKFzKvY49En7I
- Pb020di72gZ/41opX/C/bFTqOxdbFKhpMLi/fhg5C9ssiHy4tV+g4vbMOObx8nN6erOzVzrxDgu
- urBPJfq62Y/cCISuord7OowHA3o+kyLFFdfAKkM2O2PfvMyMVGeZA5Cc5KMXnwpZOsYfApgSA0e
- g1fqRFhiHt353fltVli+bVyjXvUmDVc2vVs7S7mujQv6zXj0iSo9cZHcFlCuMUbh4n7JCN9Fr8H
- ZKvUZOinTm3kuz0E/IRWbQ+K4QmcUvpsvFOrL5esvOfFFtcHvxx3vLnGwU32eYuhkyCM9bz5yMf
- WCE1xUBjAMsJVM6szUOp/BOcQNJg8ZpTbQb9zGOi+jDyNM9SKDfov0hWrwoS1VsbhoNZHFRZ6Ub
- I8msOhn
-X-Google-Smtp-Source: AGHT+IEuuyFXZI/d8Zz3t8+fTMtoxBZo/9Em/gcRx0DHhv79J6i7UbWhh4gPW9YHpzza6x8/rVUpfQ==
-X-Received: by 2002:a5d:5d0e:0:b0:430:f40f:61bb with SMTP id
- ffacd0b85a97d-430f40f656cmr9971579f8f.15.1765823160072; 
- Mon, 15 Dec 2025 10:26:00 -0800 (PST)
+ b=PSFkrIqfLgP3BMTJaSwAQTbFLQzrYYcYDR8FQ33UeBpcv29L5ffBzW5aOnHHWW6N5g
+ LYw+i+jOqytiUQGOQUcoz3BkiF03lnVdU5qj5Dreq2KADk/D0zFpT1Ev6FBPJf4/Yx4S
+ 7SvZ/DnLenakeCuPcS1ZEMJa5aEPFdd1h9vCk0DAXk7vxtRx2xwfz6jkpC7V4N5GWMFB
+ igGCEb02UeuN5rrkJfCiNxuRb+v9n4eMgxnWo9eWf5X7BfUFE+1vAK6/S8AqhcBAsO5H
+ A8vd81rTsZnJM6kqt8elAtjtaXRUZe9YR2nwLk64uEYc1XVpXem9ql1IT5MNHmXnGU4q
+ t1OA==
+X-Gm-Message-State: AOJu0YwCz2dUJs4MEdMQwE5GbHcXeCM9wbiZvXg+d5yEFk6iQFMRU1rb
+ I4ZNp2bQLHzEsIRtIxtUchNlPu3SIzIuv7o4gYp9YuVcf62Wmz3ChAetpSSerg==
+X-Gm-Gg: AY/fxX7fbRp2N3WIiMJPWPJmSTvCTQnZVhneTF0UckkDZ9S2ObksIPbq8mbhOZLVmif
+ GGHoQLinKeY79gQYKBGvktPT/SkH8IoSeEeLlIw40DWhNdRufEaWzXSZ7h75rBGoRrWSMXxAXVL
+ REbv2ggq6mLFSTPhHGbm5+AX8z1OQqYytXXjkhtD06UtH59DN4DmEYtr5AveOq+UfiN55etzkIp
+ EM9g5fnTNzTpI6Rbpkco0LeuNdY4N7vn4ybtZdMMcRZCQYOo4u/tN0NORLvTjlfD+Iy5Z7wfKI+
+ FTUGZ7g+vE4BanZCEuiqVqgr3hOZA7n9tubTTXZv5cWsAFqjFIKSf9X/vLs0bfiP2lyGBz3P3ss
+ djffnZdYrkgKMlkla8F/GFT9JkqaDquTFx2u3XyAsw1YkX6XB7N7U1W6qE3v/OG1M6PJcGulv3/
+ ENOXByjbPxdPv7duw1t6Lq+0t10eGoNlOlMTXc+dxwknU525oKsn6V55R+x4SF/ZmRi+rD/fDt9
+ awqvBFf
+X-Google-Smtp-Source: AGHT+IGYTTi/mdmsTZs5noFQjWVVIts/LpkOPrQYKtmoxitQKDC/vqt8DwTQLhEeY0q52gFGs3+cCw==
+X-Received: by 2002:a05:600c:19c6:b0:477:5c45:8100 with SMTP id
+ 5b1f17b1804b1-47a8f906decmr118865955e9.24.1765822454752; 
+ Mon, 15 Dec 2025 10:14:14 -0800 (PST)
 Received: from ehlo.thunderbird.net
  (p200300faaf27140000b3712bc8ea4066.dip0.t-ipconnect.de.
  [2003:fa:af27:1400:b3:712b:c8ea:4066])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-42fa8a66b1fsm32649407f8f.9.2025.12.15.10.25.59
+ 5b1f17b1804b1-47a8f74b17bsm202810515e9.2.2025.12.15.10.14.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 15 Dec 2025 10:25:59 -0800 (PST)
+ Mon, 15 Dec 2025 10:14:14 -0800 (PST)
 Date: Mon, 15 Dec 2025 18:14:12 +0000
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org, Marc Kleine-Budde <mkl@pengutronix.de>,
@@ -81,15 +81,15 @@ MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=shentey@gmail.com; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
