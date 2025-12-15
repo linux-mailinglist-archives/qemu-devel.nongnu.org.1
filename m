@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4063BCBCBE1
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 08:14:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5AA4CBCBED
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 08:14:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vV2lk-0003AC-9Z; Mon, 15 Dec 2025 02:13:20 -0500
+	id 1vV2ll-0003BB-O8; Mon, 15 Dec 2025 02:13:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vV2lh-00038n-Jh
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 02:13:17 -0500
+ id 1vV2li-00039p-IN
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 02:13:18 -0500
 Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vV2lf-0008FQ-LM
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 02:13:17 -0500
+ id 1vV2lh-0008DF-0o
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 02:13:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765782796; x=1797318796;
+ t=1765782797; x=1797318797;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=DQKY+pMsXXbbU9Xz9iV7D6PsC8YZn6Qa+YVZAqB1vuU=;
- b=Q9By7wea7ArqLAlN+11WlDjVTzc6g2YwIO/zZFx4KqDrn7mQXqzCB2ux
- N0lRhbWB+kns6fPGViGPNu2ic5xXrQoxxiSJfDcrSUO/ko+gBTygbVkQm
- U5e9SsG1JSfzpBuxHGcfeHWErSA8MvLCTUa1370vv6D56Fn9/rtgCN5/2
- s38dtQGK4vQccBA+m53ZFm4Qt65fSTEc3htuu+1gM5ItWPv49rFX+gE5L
- T6dnry8GdBTRz88D7vw9569lzjYV3U4WvRMmfUJ9j+BROCE2g1L0Wnj4s
- 9zh0sADHdBApoEUlgPD/0Y7Uzzy58ONfjUPcHTc/IzcXg7/UGfZB027ZA A==;
-X-CSE-ConnectionGUID: gK2qEReaRPK09De4Wz67yA==
-X-CSE-MsgGUID: BCB3mejtS+aiWd+a+brb0w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11642"; a="90332259"
-X-IronPort-AV: E=Sophos;i="6.21,150,1763452800"; d="scan'208";a="90332259"
+ bh=Od7MH3p6ChJmtLWUaAsLaiPAZLqzLKYPw3Ayr328ah8=;
+ b=ZzBdHMDD3d0YARqfx22BJOMxLJKzCK+eZ3nRDqzrligcx8hp4I1wZhMA
+ Dxz0z29uDUqisogo/+T9O4DhfFa9t0u0E2VmgORvOp1vnUrRKdqj6SdR5
+ 25oRjqZcxrjfLRdhjDeGJIRItqEaP6xe4LniiXd2gZOXBsOamlPP2sWHE
+ 8w+yldskP2U/W7kFxaMUcNrQGDqg2W5kNeK6qX49mtL33VPMUoFBZqaGb
+ qBX0vWA+/uML+DwXML3L48lhm3/uslVNUyRYAFdE95s497IS4dHXHHOYF
+ SIN9NM3LaZKAr2TZWpoypTPnBVFgYFPbTv4Mqel4dc50uCxXrRUQmatl9 w==;
+X-CSE-ConnectionGUID: JD+1utEdR5uU+Xvz4tQesg==
+X-CSE-MsgGUID: +TZO43qAS4WdwkE13HGk8g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11642"; a="90332262"
+X-IronPort-AV: E=Sophos;i="6.21,150,1763452800"; d="scan'208";a="90332262"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Dec 2025 23:13:15 -0800
-X-CSE-ConnectionGUID: 9bs0c17PTFqjuUWkkFEI9w==
-X-CSE-MsgGUID: v/Z/DRMxQjqrdzQ+K9ibpA==
+ 14 Dec 2025 23:13:17 -0800
+X-CSE-ConnectionGUID: 2x8ehcjzTTeBTiiJTHLyeQ==
+X-CSE-MsgGUID: i42Pdx5xTwq/NAlLeqtxvQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,150,1763452800"; d="scan'208";a="197265963"
+X-IronPort-AV: E=Sophos;i="6.21,150,1763452800"; d="scan'208";a="197265970"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa007.fm.intel.com with ESMTP; 14 Dec 2025 23:13:13 -0800
+ by fmviesa007.fm.intel.com with ESMTP; 14 Dec 2025 23:13:15 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org, Xudong Hao <xudong.hao@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 08/11] i386/cpu: Add an option in X86CPUDefinition to
- control CPUID 0x1f
-Date: Mon, 15 Dec 2025 15:37:40 +0800
-Message-Id: <20251215073743.4055227-9-zhao1.liu@intel.com>
+Subject: [PATCH v2 09/11] i386/cpu: Define dependency for
+ VMX_VM_ENTRY_LOAD_IA32_FRED
+Date: Mon, 15 Dec 2025 15:37:41 +0800
+Message-Id: <20251215073743.4055227-10-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251215073743.4055227-1-zhao1.liu@intel.com>
 References: <20251215073743.4055227-1-zhao1.liu@intel.com>
@@ -82,51 +82,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Many Intel CPUs enable CPUID 0x1f by default to encode CPU topology
-information.
-
-Add the "cpuid_0x1f" option to X86CPUDefinition to allow named CPU
-models to configure CPUID 0x1f from the start, thereby forcing 0x1f
-to be present for guest.
-
-With this option, there's no need to explicitly add v1 model to an
-unversioned CPU model for explicitly enabling the x-force-cpuid-0x1f
-property.
+VMX_VM_ENTRY_LOAD_IA32_FRED depends on FRED. Define this dependency
+relationship.
 
 Tested-by: Xudong Hao <xudong.hao@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/i386/cpu.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ target/i386/cpu.c | 4 ++++
+ target/i386/cpu.h | 1 +
+ 2 files changed, 5 insertions(+)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 1deed542561c..6998c900b1dc 100644
+index 6998c900b1dc..07ece8878542 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -2313,6 +2313,12 @@ typedef struct X86CPUDefinition {
-     int model;
-     int stepping;
-     uint8_t avx10_version;
-+    /*
-+     * Whether to present CPUID 0x1f by default.
-+     * If true, encode CPU topology in 0x1f leaf even if there's no
-+     * extended topology levels.
-+     */
-+    bool cpuid_0x1f;
-     FeatureWordArray features;
-     const char *model_id;
-     const CPUCaches *const cache_info;
-@@ -8014,6 +8020,10 @@ static void x86_cpu_load_model(X86CPU *cpu, const X86CPUModel *model)
-                                  def->avx10_version, &error_abort);
-     }
+@@ -2036,6 +2036,10 @@ static FeatureDep feature_dependencies[] = {
+         .from = { FEAT_7_1_EDX,             CPUID_7_1_EDX_AVX10 },
+         .to = { FEAT_24_1_ECX,              ~0ull },
+     },
++    {
++        .from = { FEAT_7_1_EAX,             CPUID_7_1_EAX_FRED },
++        .to = { FEAT_VMX_ENTRY_CTLS,        VMX_VM_ENTRY_LOAD_IA32_FRED },
++    },
+ };
  
-+    if (def->cpuid_0x1f) {
-+        object_property_set_bool(OBJECT(cpu), "x-force-cpuid-0x1f",
-+                                 def->cpuid_0x1f, &error_abort);
-+    }
-     x86_cpu_apply_version_props(cpu, model);
+ typedef struct X86RegisterInfo32 {
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 2546463fd6fe..d341e9835716 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -1441,6 +1441,7 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
+ #define VMX_VM_ENTRY_LOAD_IA32_RTIT_CTL             0x00040000
+ #define VMX_VM_ENTRY_LOAD_CET                       0x00100000
+ #define VMX_VM_ENTRY_LOAD_IA32_PKRS                 0x00400000
++#define VMX_VM_ENTRY_LOAD_IA32_FRED                 0x00800000
  
-     /*
+ /* Supported Hyper-V Enlightenments */
+ #define HYPERV_FEAT_RELAXED             0
 -- 
 2.34.1
 
