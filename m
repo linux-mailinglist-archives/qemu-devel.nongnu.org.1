@@ -2,116 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6626CC0110
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 23:02:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C859CC00FC
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 23:01:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVGcs-0002Yu-Oh; Mon, 15 Dec 2025 17:01:06 -0500
+	id 1vVGcz-0002Zx-7s; Mon, 15 Dec 2025 17:01:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGcr-0002Yj-Oe
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:01:05 -0500
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGcy-0002Zn-6N
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:01:12 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGcq-0002Xa-5E
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:01:05 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGcw-0002bT-Jl
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:01:11 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id CB06B337EB;
- Mon, 15 Dec 2025 22:00:58 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id DE8CE3378B;
+ Mon, 15 Dec 2025 22:01:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1765836058; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1765836061; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aqSKHKXB35q61IRFyw+5V3cDKa/OP0Of9fa6aeAlz2A=;
- b=DeLBIqFNiTl5WZPt6zS1R0D1iJuQTqYNfLKO9ge63Tf4/LuRRQUVcluyw4NsdgMy40iqbJ
- Mr3GeWeOnzwv0mTv+kZR9ctXLleciAVhnzcDeP12aoa9LFrbFTUfczcHi0W24o+E3iEhXb
- E6yTvd6dsJXM/j/8m8/d366gk/zbMSE=
+ bh=LHyH1wi1BDyLIvGvjJgSYDkoyZ9MRoI9THVPAKUCfYE=;
+ b=FJ5E9FSRJk8BkeezYpia4TkQQgvd2rETsLyJHpO8pVQ5z6AwGCPs2W6XjL+saeDBEQ8mSq
+ cEfdjPjYXKoC+uakyrmIbz0lihlSRMlSsY8LsEQq7CkyUqt9+I3XhUrumFSUpWIgfb6jZO
+ ovnHSpx6L5z+uYjJ/Yew9arcJf7KTUo=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1765836058;
+ s=susede2_ed25519; t=1765836061;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aqSKHKXB35q61IRFyw+5V3cDKa/OP0Of9fa6aeAlz2A=;
- b=bWT4pb9iQDaI07HzxA2ladNeJI9mIPqTodelPw1Gc/ABJrBg2etXykkvf8UkiDMF8dch9U
- wu3RNLkJUnNtqMAw==
+ bh=LHyH1wi1BDyLIvGvjJgSYDkoyZ9MRoI9THVPAKUCfYE=;
+ b=OBP+Hg/ONQr28qpNkI5pGxCBMkBF0OoEJcJ9moee/ZhYxXCOIMiJpryjunjbmBXfXGOgEj
+ uNBzsPi5BMBxSOAQ==
 Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DeLBIqFN;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bWT4pb9i
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1765836058; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1765836060; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aqSKHKXB35q61IRFyw+5V3cDKa/OP0Of9fa6aeAlz2A=;
- b=DeLBIqFNiTl5WZPt6zS1R0D1iJuQTqYNfLKO9ge63Tf4/LuRRQUVcluyw4NsdgMy40iqbJ
- Mr3GeWeOnzwv0mTv+kZR9ctXLleciAVhnzcDeP12aoa9LFrbFTUfczcHi0W24o+E3iEhXb
- E6yTvd6dsJXM/j/8m8/d366gk/zbMSE=
+ bh=LHyH1wi1BDyLIvGvjJgSYDkoyZ9MRoI9THVPAKUCfYE=;
+ b=mALyZqfATZsDI/IndyPAJsLB3CrQOha9KoFXY8Csb1iZjHZica7GJY1rBSzc0aG8khBqLn
+ ElhmpHg9rJn6jxKnfbxkCnV5OeglpyMltSGyumfApps7juJU5tDpdWUVZfL3ATwviYSvUC
+ pL9MJZy/toFXjNkr0SLUDmML56XJ2nQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1765836058;
+ s=susede2_ed25519; t=1765836060;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aqSKHKXB35q61IRFyw+5V3cDKa/OP0Of9fa6aeAlz2A=;
- b=bWT4pb9iQDaI07HzxA2ladNeJI9mIPqTodelPw1Gc/ABJrBg2etXykkvf8UkiDMF8dch9U
- wu3RNLkJUnNtqMAw==
+ bh=LHyH1wi1BDyLIvGvjJgSYDkoyZ9MRoI9THVPAKUCfYE=;
+ b=vqvkh9ZjtXYooMj7h4XI+mY9aSC+KHLeA+Bvl84vJBhnVZ6DV53YY4CoA+auPOcMtdUduU
+ pqXPQTJMOIeJSdCw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3DD343EA63;
- Mon, 15 Dec 2025 22:00:57 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5B7023EA63;
+ Mon, 15 Dec 2025 22:00:59 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id aJdaABmFQGlrMQAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 15 Dec 2025 22:00:57 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 2FCTBxuFQGlrMQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 15 Dec 2025 22:00:59 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com,
 	armbru@redhat.com,
 	Peter Xu <peterx@redhat.com>
-Subject: [PATCH v3 02/51] migration: Fix leak of cpr_exec_command
-Date: Mon, 15 Dec 2025 18:59:48 -0300
-Message-ID: <20251215220041.12657-3-farosas@suse.de>
+Subject: [PATCH v3 03/51] migration: Add a qdev property for StrOrNull
+Date: Mon, 15 Dec 2025 18:59:49 -0300
+Message-ID: <20251215220041.12657-4-farosas@suse.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251215220041.12657-1-farosas@suse.de>
 References: <20251215220041.12657-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:email,suse.de:dkim,suse.de:mid];
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.988];
+ MIME_GOOD(-0.10)[text/plain]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  FROM_HAS_DN(0.00)[]; ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ TO_DN_SOME(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo];
  RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; FUZZY_RATELIMITED(0.00)[rspamd.com];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_RATELIMITED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
- RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: CB06B337EB
-X-Spam-Score: -3.01
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ RCPT_COUNT_THREE(0.00)[4]; RCVD_TLS_ALL(0.00)[]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -128,23 +117,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The MigrationState is a QOM object with TYPE_DEVICE as a parent. This
+was done about eight years ago so the migration code could make use of
+qdev properties to define the defaults for the migration parameters
+and to be able to expose migration knobs for debugging via the
+'-global migration' command line option.
+
+Due to unrelated historical reasons, three of the migration parameters
+(TLS options) received different types when used via the
+query-migrate-parameters QMP command than with the
+migrate-set-parameters command. This has created a lot of duplication
+in the migration code and in the QAPI documentation because the whole
+of MigrationParameters had to be duplicated as well.
+
+The migration code is now being fixed to remove the duplication and
+for that to happen the offending fields need to be reconciled into a
+single type. The StrOrNull type is going to be used.
+
+To keep the command line compatibility, the parameters need to
+continue being exposed via qdev properties accessible from the command
+line. Introduce a qdev property StrOrNull just for that.
+
+Note that this code is being kept in migration/options.c as this
+version of StrOrNull doesn't need to handle QNULL because it was never
+a valid option in the previous command line, which took a string.
+
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/migration.c | 1 +
- 1 file changed, 1 insertion(+)
+ migration/options.c | 67 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 67 insertions(+)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index c2e1dedf93..92c84c3177 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -4148,6 +4148,7 @@ static void migration_instance_finalize(Object *obj)
-     MigrationState *ms = MIGRATION_OBJ(obj);
+diff --git a/migration/options.c b/migration/options.c
+index e78324b80c..5f387437d1 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -83,6 +83,11 @@
+ #define DEFINE_PROP_MIG_CAP(name, x)             \
+     DEFINE_PROP_BOOL(name, MigrationState, capabilities[x], false)
  
-     qapi_free_BitmapMigrationNodeAliasList(ms->parameters.block_bitmap_mapping);
-+    qapi_free_strList(ms->parameters.cpr_exec_command);
-     qemu_mutex_destroy(&ms->error_mutex);
-     qemu_mutex_destroy(&ms->qemu_file_lock);
-     qemu_sem_destroy(&ms->wait_unplug_sem);
++const PropertyInfo qdev_prop_StrOrNull;
++#define DEFINE_PROP_STR_OR_NULL(_name, _state, _field)                  \
++    DEFINE_PROP(_name, _state, _field, qdev_prop_StrOrNull, StrOrNull *, \
++                .set_default = true)
++
+ #define DEFAULT_MIGRATE_VCPU_DIRTY_LIMIT_PERIOD     1000    /* milliseconds */
+ #define DEFAULT_MIGRATE_VCPU_DIRTY_LIMIT            1       /* MB/s */
+ 
+@@ -206,6 +211,68 @@ const Property migration_properties[] = {
+ };
+ const size_t migration_properties_count = ARRAY_SIZE(migration_properties);
+ 
++static void get_StrOrNull(Object *obj, Visitor *v, const char *name,
++                          void *opaque, Error **errp)
++{
++    const Property *prop = opaque;
++    StrOrNull **ptr = object_field_prop_ptr(obj, prop);
++    StrOrNull *str_or_null = *ptr;
++
++    if (!str_or_null) {
++        str_or_null = g_new0(StrOrNull, 1);
++        str_or_null->type = QTYPE_QSTRING;
++        str_or_null->u.s = g_strdup("");
++    } else {
++        /* the setter doesn't allow QNULL */
++        assert(str_or_null->type != QTYPE_QNULL);
++    }
++    visit_type_str(v, name, &str_or_null->u.s, errp);
++}
++
++static void set_StrOrNull(Object *obj, Visitor *v, const char *name,
++                          void *opaque, Error **errp)
++{
++    const Property *prop = opaque;
++    StrOrNull **ptr = object_field_prop_ptr(obj, prop);
++    StrOrNull *str_or_null = g_new0(StrOrNull, 1);
++
++    /*
++     * Only str to keep compatibility, QNULL was never used via
++     * command line.
++     */
++    str_or_null->type = QTYPE_QSTRING;
++    if (!visit_type_str(v, name, &str_or_null->u.s, errp)) {
++        return;
++    }
++
++    qapi_free_StrOrNull(*ptr);
++    *ptr = str_or_null;
++}
++
++static void release_StrOrNull(Object *obj, const char *name, void *opaque)
++{
++    const Property *prop = opaque;
++    qapi_free_StrOrNull(*(StrOrNull **)object_field_prop_ptr(obj, prop));
++}
++
++static void set_default_value_tls_opt(ObjectProperty *op, const Property *prop)
++{
++    object_property_set_default_str(op, "");
++}
++
++/*
++ * String property like qdev_prop_string, except it's backed by a
++ * StrOrNull instead of a char *.  This is intended for
++ * TYPE_MIGRATION's TLS options.
++ */
++const PropertyInfo qdev_prop_StrOrNull = {
++    .type  = "StrOrNull",
++    .get = get_StrOrNull,
++    .set = set_StrOrNull,
++    .release = release_StrOrNull,
++    .set_default_value = set_default_value_tls_opt,
++};
++
+ bool migrate_auto_converge(void)
+ {
+     MigrationState *s = migrate_get_current();
 -- 
 2.51.0
 
