@@ -2,69 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66FDFCBF1AA
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 18:05:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE601CBF128
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 17:57:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVC0B-00022Z-Ja; Mon, 15 Dec 2025 12:04:52 -0500
+	id 1vVBsk-0006Qm-4d; Mon, 15 Dec 2025 11:57:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <uwu@icenowy.me>) id 1vVBys-0001Sa-Rx
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 12:03:38 -0500
-Received: from sender4-op-o15.zoho.com ([136.143.188.15])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <uwu@icenowy.me>) id 1vVByd-00055I-H7
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 12:03:18 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1765817085; cv=none; 
- d=zohomail.com; s=zohoarc; 
- b=gqXxSN//NUeCyw2LJMc9OqOcrIIjDL1l6/YEYLTkxJHLPp1ry3qNYHikYYNp19uDJE8R82ArWr4PSe++tO0ECU/DimZzxuDNWnu+cltsHTgn+9JDhHZo/kehCMx3mHCrvFptBoi6/yAYE0dOgEyrAf4v/m+WERNgpLVMh1H3gV4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1765817085;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=Okhcb+mHrLdZfC5AndPe1wxJVN/L8ZIWn1v3Pzb4PJA=; 
- b=Zg50GKEXJ6oUTgYvl5UKB1H9N/v0G4G6xbnrZikGG+KpxnJxfSsMHxyJiDB7qI6GKAr0K0p5dHh50SF8mGuW8GU00BFir9u1M9CBJh84a1N5tkoJq4HIG0FBGolzrce7Xi/uOCQHrMuKspqfxxUmWUrtdvhdDUDS4VKTL8h0gVI=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
- dkim=pass  header.i=icenowy.me;
- spf=pass  smtp.mailfrom=uwu@icenowy.me;
- dmarc=pass header.from=<uwu@icenowy.me>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1765817085; 
- s=zmail2; d=icenowy.me; i=uwu@icenowy.me;
- h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
- bh=Okhcb+mHrLdZfC5AndPe1wxJVN/L8ZIWn1v3Pzb4PJA=;
- b=E/2gzbB4lOP8Gt1p3lCTYBK6x5MQh3YKlhFuC/C799wCJRIVQwB9M3xqJ71c6M0B
- QfvqCjBiizsbkeD7y/Xb5LUpVWA15YXfgDGz9hR1u8YgbwIYRHPLgECgJ+UsXUmw3v5
- 9SNw42WPGGH3AM6l0Op7RTe6ESn0BMcdCx+iesc75as88OESppRHH4tQ7SvqjjY6zre
- eEOKroOO5RDXOQytaUjeUFSmS+qbdoO4718AGmNHRc0jD7NKSjKD3Ule54f0dwUHMzh
- dL9XsGGSNmTcfsxGo5KFydpHf+davs1+H65wWD8kY+POTZ+LdEmQLZrY1uMzynrWtEd
- XI2UdLg0ww==
-Received: by mx.zohomail.com with SMTPS id 1765817082294461.754019425539;
- Mon, 15 Dec 2025 08:44:42 -0800 (PST)
-Message-ID: <c496ed9e43adb46c59352baee4507357b6c1d97e.camel@icenowy.me>
-Subject: Re: [PATCH 1/7] Add termios2 support to linux-user
-From: Icenowy Zheng <uwu@icenowy.me>
-To: Luca Bonissi <qemu@bonslack.org>, Richard Henderson
- <richard.henderson@linaro.org>, Laurent Vivier <laurent@vivier.eu>
-Cc: qemu-devel@nongnu.org
-Date: Tue, 16 Dec 2025 00:44:38 +0800
-In-Reply-To: <745f18b6-ee62-4903-9a56-dcb903b610cf@bonslack.org>
-References: <745f18b6-ee62-4903-9a56-dcb903b610cf@bonslack.org>
-Organization: Anthon Open-Source Community
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 
+ (Exim 4.90_1) (envelope-from <phind.uet@gmail.com>)
+ id 1vVBsh-0006QX-0G
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 11:57:07 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <phind.uet@gmail.com>)
+ id 1vVBse-0003IQ-Qj
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 11:57:06 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-29efd139227so45020655ad.1
+ for <qemu-devel@nongnu.org>; Mon, 15 Dec 2025 08:57:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1765817823; x=1766422623; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2D/M9pS4tQzD+gT2u2FtxZqrTAXQBgjnmRFagEtchos=;
+ b=RqSzS7saCoOpYmWpAayzDsDkNz0Kt97fuC0JeBNQX73LXxaKrVGTU3LRHhs/VMpEt+
+ IK2S4MD5mZXnnXpFxjKYiF5mt7Asaaj1HLmA93P2NyIs5qQsS/+3DZLfrZKf9TYSQaup
+ 3IQII53udqxWqChC6RSq78PHXT0V2AQQrop7BgOr2Qr37vKqenripCCcyPsO+mItqxpm
+ 5ITyI4psOcX+uoiyLNHCmesz2ICR85DE6XXIITJh1Sz75l/aBx8dvIPyQwbvVvnayrkF
+ 1znPAjgPtw1m1lDNFJoDjRXTvdMAnSL3rklmCQ9wW7nTVGFeDXuGIO7sqtJS+eBVvD70
+ mwlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1765817823; x=1766422623;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2D/M9pS4tQzD+gT2u2FtxZqrTAXQBgjnmRFagEtchos=;
+ b=socH/22Ocl351rQlEi+9zfZMyDxuBraDAvsB4CDHVF9tZfNFaLg1SV0aeAVhf+VxOZ
+ 8Wp8d41Q7B3YbZFSMN1GKbxE1wQMrvPLZl44bnd+icsmqJq8HV63NCCMtURARLPIFyZN
+ A8QkPPqS+QFR3bRzpG3Fo6RXkl3JNaMOduY+KFUpcMD8sxfBTgRFW/QZcdzpxdgRtbQE
+ iGgbDoEDY/VGglV9TCBfz7syzq2KY2tEtelmrmtzqn9sVZul0V/TMDa32rUqbuIlvH/y
+ scC7bQ7ZmgV77N/w2NGsaTxi+zfhbu2omGp6E1acGicBVBoH7XBDQFWElqyID2iLT8+t
+ cynw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVk8XnefTyyhPFl35PtQxnCnMEjAGqw5ZhMuNtLOSC5EbQy8Y4mrKZW4JvrZRy12pzTucJ7tFo57zDo@nongnu.org
+X-Gm-Message-State: AOJu0YxBPyPsDFZCdHz4XSs7OmDyQysve5zAIfgFXYdL3csAP6BioNA3
+ ccsOXYFA0Qt+vdqptIKxBUUbDp7GwkWdoi0f2eW5OmSqeGGmuxvfQLqv
+X-Gm-Gg: AY/fxX4Cb4W7iHYS1pTUOKUJOKsvnwuFMd0fmrKGxdoo5RZM9FEoJyQ+a9lxm8C9qeI
+ kG4GWUzGOoz3ll+5Q4qx0vBvFhwQFvB/7/eAasfOG7k1VwSJqMVqqllmPbkXI4R09p+6YfuzqZ/
+ Ll9UKYI689MHyaplVzCg/VeTQXNl8xu35QA+5ond1I808GZidawZdOGKk/TnOYgsbOqkAPvdfJr
+ 4M1X7mNpSDopb/08CeQwSRBHfrPgI6qogok6G5oWlIRg0ywDtyUHuzfz7MsWUST1bz/5a9OLa16
+ FcaxF5T1Crgo8cf/Wgry8KTev9DBMA3dtYHtW1iBft5L8u085Upf6sdTE09IIZELFNVxsI00qlW
+ il329M0oV4og6La/Xt1285mwG9izqPhonlDdI9JU86AI/1/ZBZHRUA0W9Db8NKbFO6BJfyhSgxp
+ A6vGFzTGtMkBN5AacQPSTZMb4=
+X-Google-Smtp-Source: AGHT+IEG7fFsd6FuD4aqNqTPCuKt4+9h6ymiCV6U1oEYyGEDrSJbTbN0Y1t26g09rRuCDdM99fyDdw==
+X-Received: by 2002:a17:903:1b4c:b0:29e:9e97:ca70 with SMTP id
+ d9443c01a7336-29f23b93498mr128236885ad.25.1765817822793; 
+ Mon, 15 Dec 2025 08:57:02 -0800 (PST)
+Received: from localhost.localdomain ([116.86.160.247])
+ by smtp.googlemail.com with ESMTPSA id
+ d9443c01a7336-29ee9d38c74sm140084775ad.31.2025.12.15.08.56.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 15 Dec 2025 08:57:02 -0800 (PST)
+From: phind.uet@gmail.com
+To: Paolo Bonzini <pbonzini@redhat.com>, marcandre.lureau@redhat.com,
+ berrange@redhat.com, philmd@linaro.org,
+ Kostiantyn Kostiuk <kkostiuk@redhat.com>,
+ Michael Roth <michael.roth@amd.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Stefan Weil <sw@weilnetz.de>
+Cc: Nguyen Dinh Phi <phind.uet@gmail.com>, qemu-block@nongnu.org,
+ qemu-devel@nongnu.org
+Subject: [PATCH 0/2] Fix Windows build issues with newer MinGW
+Date: Tue, 16 Dec 2025 00:45:10 +0800
+Message-ID: <20251215164512.322786-1-phind.uet@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-ZohoMailClient: External
-Received-SPF: pass client-ip=136.143.188.15; envelope-from=uwu@icenowy.me;
- helo=sender4-op-o15.zoho.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=phind.uet@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,19 +102,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-=E5=9C=A8 2025-10-31=E6=98=9F=E6=9C=9F=E4=BA=94=E7=9A=84 14:23 +0100=EF=BC=
-=8CLuca Bonissi=E5=86=99=E9=81=93=EF=BC=9A
-> > From 6ddab7d3ba1035b5e2a6016bde4776436267c18b Mon Sep 17 00:00:00
-> > 2001
-> From: Luca Bonissi <qemu@bonslack.org>
-> Date: Fri, 31 Oct 2025 13:29:19 +0100
-> Subject: [PATCH 1/7] Add termios2 support to linux-user
+From: Nguyen Dinh Phi <phind.uet@gmail.com>
 
-By the way, please add a v3 tag in your subject (like [PATCH v3 1/7])
-when resending this patchset again.
+This series fixes build issues when compiling QEMU on Windows with
+newer MinGW-w64 toolchains.
 
-I failed to differienate two revisions of your patchset.
+Patch 1 addresses a redefinition error for ConvertStringToBSTR(),
+which is now provided by newer MinGW versions in <comutil.h>.
 
->=20
-> Signed-off-by: Luca Bonissi <qemu@bonslack.org>
+Patch 2 relocates qemu_ftruncate64() to a more appropriate location.
+
+Nguyen Dinh Phi (2):
+  qga/vss-win32: Fix ConvertStringToBSTR redefinition with newer MinGW
+  util: Move qemu_ftruncate64 from block/file-win32.c to oslib-win32.c
+
+ block/file-win32.c        | 32 --------------------------------
+ meson.build               | 12 ++++++++++++
+ qga/vss-win32/install.cpp |  2 ++
+ util/oslib-win32.c        | 34 ++++++++++++++++++++++++++++++++++
+ 4 files changed, 48 insertions(+), 32 deletions(-)
+
+-- 
+2.43.0
+
 
