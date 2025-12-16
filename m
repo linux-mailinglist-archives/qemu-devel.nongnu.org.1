@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C953CCC3959
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Dec 2025 15:30:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5DCCCC395F
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Dec 2025 15:30:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVW3F-0005WH-Nh; Tue, 16 Dec 2025 09:29:25 -0500
+	id 1vVW3j-0005e0-PJ; Tue, 16 Dec 2025 09:29:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vVW36-0005Vq-KU
- for qemu-devel@nongnu.org; Tue, 16 Dec 2025 09:29:12 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vVW39-0005WF-BR
+ for qemu-devel@nongnu.org; Tue, 16 Dec 2025 09:29:18 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vVW2z-0002wY-P7
- for qemu-devel@nongnu.org; Tue, 16 Dec 2025 09:29:10 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vVW32-0002wi-Tj
+ for qemu-devel@nongnu.org; Tue, 16 Dec 2025 09:29:12 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1765895336;
+ s=mimecast20190719; t=1765895337;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6LpOpgbxfx+w1pTyw2YSS9mQcixGb8olJKivMdY6hWk=;
- b=Op8m6ooErE45ap2+jq9VfRU9yIWFrHDnz6ZM07ZB9XBFPbekc3K9DZg8SSQWEph8ioQv/q
- 9Ub44jV/PfD2nJC7XdYZY8A8St8e9uAUJxrJwKifNqWzgiThBX27GjnayBwiEhC96Zfl/6
- uSPhLP9f04ydm+U3x5fd6Q5hsMFNv54=
+ bh=Hhvtml6jjvFmeQn1jiKdFKJeyj25+hrS8UKpojuJCQY=;
+ b=gmgpdB2kF51/Ks38dODxJEjs0ylO9Zjin3t7Vl2fuzbFz7H4CJaWoyr6OQS5pIakDQl25y
+ ACIxI4O3TmF4tiBkEPWbiUy3ilCIAgoulyNQc/XlGeVAdMqeAntHtjEnURran0pvVBhbpA
+ j7jUkKUdGMMpRvjvudHVLYyvQ1jRsfo=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-201-hBAo-KvAOPqZV6-4_uZHuw-1; Tue,
- 16 Dec 2025 09:28:50 -0500
-X-MC-Unique: hBAo-KvAOPqZV6-4_uZHuw-1
-X-Mimecast-MFC-AGG-ID: hBAo-KvAOPqZV6-4_uZHuw_1765895329
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-319-Gy9hK1YiN5OeScmVxhbHNg-1; Tue,
+ 16 Dec 2025 09:28:53 -0500
+X-MC-Unique: Gy9hK1YiN5OeScmVxhbHNg-1
+X-Mimecast-MFC-AGG-ID: Gy9hK1YiN5OeScmVxhbHNg_1765895332
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8C9971800358; Tue, 16 Dec 2025 14:28:49 +0000 (UTC)
+ id 2EA1E18011DF; Tue, 16 Dec 2025 14:28:52 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.62])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B3DFD1953960; Tue, 16 Dec 2025 14:28:47 +0000 (UTC)
+ id 0C62019560A7; Tue, 16 Dec 2025 14:28:49 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 1/4] i386: Fix const qualifier build errors with recent glibc
-Date: Tue, 16 Dec 2025 15:28:40 +0100
-Message-ID: <20251216142843.519084-2-clg@redhat.com>
+ Peter Maydell <peter.maydell@linaro.org>,
+ Yodel Eldar <yodel.eldar@yodel.dev>, Thomas Huth <thuth@redhat.com>
+Subject: [PULL 2/4] tests/vhost-user-bridge.c: Fix const qualifier build
+ errors with recent glibc
+Date: Tue, 16 Dec 2025 15:28:41 +0100
+Message-ID: <20251216142843.519084-3-clg@redhat.com>
 In-Reply-To: <20251216142843.519084-1-clg@redhat.com>
 References: <20251216142843.519084-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -87,36 +88,48 @@ A recent change in glibc 2.42.9000 [1] changes the return type of
 strstr() and other string functions to be 'const char *' when the
 input is a 'const char *'. This breaks the build in :
 
-  ../hw/i386/x86-common.c:827:11: error: assignment discards ‘const’ qualifier from pointer target type [-Werror=discarded-qualifiers]
-  827 |     vmode = strstr(kernel_cmdline, "vga=");
-      |           ^
+../tests/vhost-user-bridge.c: In function ‘vubr_parse_host_port’:
+../tests/vhost-user-bridge.c:749:15: error: initialization discards ‘const’ qualifier from pointer target type [-Werror=discarded-qualifiers]
+  749 |     char *p = strchr(buf, ':');
+      |               ^~~~~~
 
-Fix this by changing the type of the variables that store the result
-of these functions to 'const char *'.
+Fix this by using the glib g_strsplit() routine instead of strdup().
 
 [1] https://sourceware.org/git/?p=glibc.git;a=commit;h=cd748a63ab1a7ae846175c532a3daab341c62690
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Link: https://lore.kernel.org/qemu-devel/20251215101937.281722-2-clg@redhat.com
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Acked-by: Yodel Eldar <yodel.eldar@yodel.dev>
+Tested-by: Yodel Eldar <yodel.eldar@yodel.dev>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Link: https://lore.kernel.org/qemu-devel/20251215101937.281722-3-clg@redhat.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/i386/x86-common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/vhost-user-bridge.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
-index c844749900a30c9c9c284c529e93c84c9457b128..f77e2e63046ff56d079363e411a9ee0eca365291 100644
---- a/hw/i386/x86-common.c
-+++ b/hw/i386/x86-common.c
-@@ -654,7 +654,7 @@ void x86_load_linux(X86MachineState *x86ms,
-     uint8_t header[8192], *setup, *kernel;
-     hwaddr real_addr, prot_addr, cmdline_addr, initrd_addr = 0;
-     FILE *f;
--    char *vmode;
-+    const char *vmode;
-     MachineState *machine = MACHINE(x86ms);
-     struct setup_data *setup_data;
-     const char *kernel_filename = machine->kernel_filename;
+diff --git a/tests/vhost-user-bridge.c b/tests/vhost-user-bridge.c
+index a5c711b1de8e9c164dd1614f4329b8e3c05d0402..ce4c3426d3938a0b54195f3e95bb1f1c3c4ae823 100644
+--- a/tests/vhost-user-bridge.c
++++ b/tests/vhost-user-bridge.c
+@@ -746,14 +746,12 @@ vubr_run(VubrDev *dev)
+ static int
+ vubr_parse_host_port(const char **host, const char **port, const char *buf)
+ {
+-    char *p = strchr(buf, ':');
+-
+-    if (!p) {
++    g_auto(GStrv) tokens = g_strsplit(buf, ":", 2);
++    if (!tokens[0] || !tokens[1]) {
+         return -1;
+     }
+-    *p = '\0';
+-    *host = strdup(buf);
+-    *port = strdup(p + 1);
++    *host = g_steal_pointer(&tokens[0]);
++    *port = g_steal_pointer(&tokens[1]);
+     return 0;
+ }
+ 
 -- 
 2.52.0
 
