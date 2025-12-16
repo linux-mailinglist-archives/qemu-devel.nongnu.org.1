@@ -2,101 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44764CC3DAC
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Dec 2025 16:15:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C4C9CC3D99
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Dec 2025 16:15:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVWkp-0006qq-Hs; Tue, 16 Dec 2025 10:14:23 -0500
+	id 1vVWkq-0006rO-U2; Tue, 16 Dec 2025 10:14:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
- id 1vVWkn-0006pP-9t; Tue, 16 Dec 2025 10:14:21 -0500
+ id 1vVWko-0006qL-Fg; Tue, 16 Dec 2025 10:14:22 -0500
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
- id 1vVWkl-0006xz-AF; Tue, 16 Dec 2025 10:14:21 -0500
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BG7hmMD022380;
- Tue, 16 Dec 2025 15:14:16 GMT
+ id 1vVWkm-00070H-T4; Tue, 16 Dec 2025 10:14:22 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BGDCLau022048;
+ Tue, 16 Dec 2025 15:14:18 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=vakf4KS5jvKAayUTj
- S8UDZ/c6IzELYhdEzAawdQnx2c=; b=RN1Lw+prQ2SoFxlYeovFZwshu2NIvY398
- nxCLSHTXJxDHdkLvkmFGSPFmwms+n2HQ8VhQqDk9iLzet/FZ7stL78M/DOMslhlr
- c2kKvC7E4x0zpYn0+irI1rnczVr8sYlVc2TY1LN4tP6AX08dIIyE5/jOa7q66HxE
- CVah66KcmuUGtpGPvSLf9hi+eaGKq0r5zCoM4FLj6ouHotQK8xjBTPhJFP/gou9A
- 1md7Lyo7dLE66dL5vqWRKZGZePr+d00OIRZOn81B0e/9YvdZ3ddjGkWivlbIvsdN
- K30pwi9CHpSR21CV/sI6R/QBJX0QZ6TGrTpyGK+frHIftYmmqhwRw==
+ :mime-version:references:subject:to; s=pp1; bh=jcAN7q4Px4l/w7XdI
+ +IIyXW1K41nZmGak05mxyr+J5o=; b=mji73KhfeoeELysJIjWQJm9LTXUnyLiRU
+ xPkXNzfgxUhcRrkbXT7DYdpHAx22u+21/AnCDwI1PwMO3YtdKGhWM31fkgToHzsb
+ Wumj1VLTHE/Xc2n+TNWDv229cAdzWaiFli+YD5V6KJHnr0lZIT4EptVJUIKpJSUH
+ A+zTnb7ABAwNTGm8EmEnJADYtOqBC3gFg3bImFOk8LvlKPdTj9J6Vmayfimk6ABI
+ 7vSTAWmLH09iW/xY/bH98t9N7YBIbtRcr43k3Dge4MomVQglWVOQlTcc4uvH3mIR
+ W4DSFDv7eT6D1LLnoa31myzSGm2PFg9WfZih1JHEuPrhXpZDClZGA==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0xjky6e9-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0yt1f2fv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 Dec 2025 15:14:16 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BGFDoRg012862;
- Tue, 16 Dec 2025 15:14:15 GMT
+ Tue, 16 Dec 2025 15:14:18 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BGF8kLO008542;
+ Tue, 16 Dec 2025 15:14:17 GMT
 Received: from ppma21.wdc07v.mail.ibm.com
  (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0xjky6e7-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0yt1f2ft-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 Dec 2025 15:14:15 +0000 (GMT)
+ Tue, 16 Dec 2025 15:14:17 +0000 (GMT)
 Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BGDq3H7002752;
- Tue, 16 Dec 2025 15:14:15 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4b1kfn4run-1
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BGDvu2C002755;
+ Tue, 16 Dec 2025 15:14:17 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4b1kfn4rur-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 Dec 2025 15:14:15 +0000
+ Tue, 16 Dec 2025 15:14:17 +0000
 Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
  [10.39.53.232])
- by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 5BGFEEie30474848
+ by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 5BGFEFvU29426338
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 16 Dec 2025 15:14:14 GMT
+ Tue, 16 Dec 2025 15:14:15 GMT
 Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EB5C85805D;
- Tue, 16 Dec 2025 15:14:13 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id C28F258059;
+ Tue, 16 Dec 2025 15:14:15 +0000 (GMT)
 Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2448258043;
- Tue, 16 Dec 2025 15:14:13 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id F04E858053;
+ Tue, 16 Dec 2025 15:14:14 +0000 (GMT)
 Received: from gfwr532.rchland.ibm.com (unknown [9.10.239.133])
  by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 16 Dec 2025 15:14:13 +0000 (GMT)
+ Tue, 16 Dec 2025 15:14:14 +0000 (GMT)
 From: Caleb Schlossin <calebs@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, npiggin@gmail.com, adityag@linux.ibm.com,
  milesg@linux.ibm.com, alistair@alistair23.me, kowal@linux.ibm.com,
  chalapathi.v@linux.ibm.com, calebs@linux.ibm.com, angeloj@linux.ibm.com
-Subject: [PATCH v3 5/7] hw/ppc: pnv_core.c add vmstate support
-Date: Tue, 16 Dec 2025 09:13:57 -0600
-Message-ID: <20251216151359.418708-6-calebs@linux.ibm.com>
+Subject: [PATCH v3 6/7] hw/ppc: pnv_chiptod.c add vmstate support
+Date: Tue, 16 Dec 2025 09:13:58 -0600
+Message-ID: <20251216151359.418708-7-calebs@linux.ibm.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251216151359.418708-1-calebs@linux.ibm.com>
 References: <20251216151359.418708-1-calebs@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: jkQx_cBFs1o6JYsrfdYp74ExDtNKTtkt
-X-Authority-Analysis: v=2.4 cv=CLgnnBrD c=1 sm=1 tr=0 ts=69417748 cx=c_pps
+X-Proofpoint-GUID: bnpxc4dKcoyN5D4c4v10WcvetApakY8S
+X-Proofpoint-ORIG-GUID: Ao0LF4S04T-Pid1S_uH-87X6I4GMIzzt
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEzMDAyMyBTYWx0ZWRfX1P5zR6lPSfeN
+ dl3HdLiDawOhpGBoM+Rgsat40pfq21qabrGdxk3G7Kgb/3In/u7+51Xr5Ka31aRCSm/HWPb5oLt
+ CWPDiAx+p6jangbk8CtRZMGk4s1+hmwPx8lFQA1wqZcJ4Il3kTPN8Ec1WS+YO5tyK7Lecbk7cX2
+ XdRqFcJiBHmyXEQkJhnkSFP6ElocSHej+WumFddcWcFenNPfvqhHTQbUPWwo+74ST0AX+saHN/7
+ HTIFthl9yeE6q2LWh8N5nGn9OX7X/NH2dIZyvG80E5Bx5rFKaDJZSM+h7lkRqkdcobEhZwX/wSy
+ 98RagEbX1FGoec+ljYAbb8JFHQY2TI/eAUcowkCyLAl2exIpAbdBAuWDwqe54B+R5jFFvqbYUnm
+ 3r4964G5G5AsKBLXC3fLsIAxWa8mdQ==
+X-Authority-Analysis: v=2.4 cv=L/MQguT8 c=1 sm=1 tr=0 ts=6941774a cx=c_pps
  a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
  a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=QXuC7XpKZ5phjoL22fcA:9
-X-Proofpoint-GUID: aWuacPAutrUul9NLcNOZx6pGlCdAWC8I
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEzMDAwOSBTYWx0ZWRfX3oFFSTKcjiMt
- nNP3Zr/WZMbfTur0YVLo1mtL3Y74qZHv8JeVTvcr/SgFHbIkRPDwrc1RTG1dKgFEks6VuanwMiK
- TLBfJcTjS5av1yjDaTs6DCM/pxfFvhSSKhWjRva+qKu6aIrzAl0r9D+MRW8GPw0RJnD7lsOfI//
- wgExO8oiPkvzoiVOiXDGx3G4X38xlTGL4u1vC5+Tq8P8rKqHECDdqAHZxoW54k4bAX5vVDdHfbj
- FEqpcOAsS21V0KCXwanbEBQnLcdJteSFGSIpD22X50UJB5/rWIBa2KTsghenGVlvUlcTwygJ8Dp
- KJlbwXjOzKRCzbDrZMPXNj4JXiB/G10WyHVoT3YQ73XfCdhg58dKZMVEq4N+AKP/NuBU9WuGuul
- P6SbYdBT6fTJKmdqD8ogwotk7t8lDw==
+ a=2tKvrj9r5tddppBGlX0A:9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-16_02,2025-12-16_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0 suspectscore=0
- phishscore=0 priorityscore=1501 bulkscore=0 impostorscore=0 adultscore=0
+ impostorscore=0 phishscore=0 malwarescore=0 adultscore=0 priorityscore=1501
+ clxscore=1015 lowpriorityscore=0 bulkscore=0 spamscore=0 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512130009
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512130023
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=calebs@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -122,75 +122,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-- Add vmstate support PnvCore and PnvQuad capturing scratch
-registers and special wakeup registers
+- Added pre_save and post_load methods to handle slave_pc_target and tod_state
 
 Signed-off-by: Angelo Jaramillo <angelo.jaramillo@linux.ibm.com>
 Signed-off-by: Caleb Schlossin <calebs@linux.ibm.com>
 ---
- hw/ppc/pnv_core.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ hw/ppc/pnv_chiptod.c         | 38 ++++++++++++++++++++++++++++++++++++
+ include/hw/ppc/pnv_chiptod.h |  2 ++
+ 2 files changed, 40 insertions(+)
 
-diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-index fb2dfc7ba2..03b64f0013 100644
---- a/hw/ppc/pnv_core.c
-+++ b/hw/ppc/pnv_core.c
-@@ -31,6 +31,7 @@
- #include "hw/ppc/xics.h"
- #include "hw/qdev-properties.h"
- #include "helper_regs.h"
+diff --git a/hw/ppc/pnv_chiptod.c b/hw/ppc/pnv_chiptod.c
+index f887a18cde..9dc5942ca0 100644
+--- a/hw/ppc/pnv_chiptod.c
++++ b/hw/ppc/pnv_chiptod.c
+@@ -37,6 +37,7 @@
+ #include "hw/ppc/pnv_core.h"
+ #include "hw/ppc/pnv_xscom.h"
+ #include "hw/ppc/pnv_chiptod.h"
 +#include "migration/vmstate.h"
+ #include "trace.h"
  
- static const char *pnv_core_cpu_typename(PnvCore *pc)
- {
-@@ -478,6 +479,15 @@ static void pnv_core_power11_class_init(ObjectClass *oc, const void *data)
-     pnv_core_power10_class_init(oc, data);
+ #include <libfdt.h>
+@@ -341,6 +342,8 @@ static void pnv_chiptod_xscom_write(void *opaque, hwaddr addr,
+                           " TOD_TX_TTYPE_CTRL_REG val 0x%" PRIx64
+                           " invalid slave address\n", val);
+         }
++        /* Write slave_pc_target to a uint64_t variable for vmstate support. */
++        chiptod->tx_ttype_ctrl = val;
+         break;
+     case TOD_ERROR_REG:
+         chiptod->tod_error &= ~val;
+@@ -613,6 +616,40 @@ static void pnv_chiptod_unrealize(DeviceState *dev)
+     qemu_unregister_reset(pnv_chiptod_reset, chiptod);
  }
  
-+static const VMStateDescription pnv_core_vmstate = {
-+    .name = TYPE_PNV_CORE,
++static int vmstate_pnv_chiptod_pre_save(void *opaque)
++{
++    PnvChipTOD *chiptod = PNV_CHIPTOD(opaque);
++    chiptod->tod_state_val = (uint8_t)chiptod->tod_state;
++    return 0;
++}
++
++static int vmstate_pnv_chiptod_post_load(void *opaque)
++{
++    PnvChipTOD *chiptod = PNV_CHIPTOD(opaque);
++    if (chiptod->tx_ttype_ctrl != 0) {
++        pnv_chiptod_xscom_write(chiptod, TOD_TX_TTYPE_CTRL_REG << 3,
++                                chiptod->tx_ttype_ctrl, 8);
++    }
++    chiptod->tod_state = (enum tod_state)chiptod->tod_state_val;
++    return 0;
++}
++
++static const VMStateDescription pnv_chiptod_vmstate = {
++    .name = TYPE_PNV_CHIPTOD,
 +    .version_id = 1,
++    .pre_save = vmstate_pnv_chiptod_pre_save,
++    .pre_load = vmstate_pnv_chiptod_post_load,
 +    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT64_ARRAY(scratch, PnvCore, 8),
++        VMSTATE_BOOL(primary, PnvChipTOD),
++        VMSTATE_BOOL(secondary, PnvChipTOD),
++        VMSTATE_UINT64(tod_error, PnvChipTOD),
++        VMSTATE_UINT64(pss_mss_ctrl_reg, PnvChipTOD),
++        VMSTATE_UINT64(tx_ttype_ctrl, PnvChipTOD),
++        VMSTATE_UINT8(tod_state_val, PnvChipTOD),
 +        VMSTATE_END_OF_LIST(),
 +    },
 +};
 +
- static void pnv_core_class_init(ObjectClass *oc, const void *data)
+ static void pnv_chiptod_class_init(ObjectClass *klass, const void *data)
  {
-     DeviceClass *dc = DEVICE_CLASS(oc);
-@@ -486,6 +496,7 @@ static void pnv_core_class_init(ObjectClass *oc, const void *data)
-     dc->unrealize = pnv_core_unrealize;
-     device_class_set_props(dc, pnv_core_properties);
+     DeviceClass *dc = DEVICE_CLASS(klass);
+@@ -621,6 +658,7 @@ static void pnv_chiptod_class_init(ObjectClass *klass, const void *data)
+     dc->unrealize = pnv_chiptod_unrealize;
+     dc->desc = "PowerNV ChipTOD Controller";
      dc->user_creatable = false;
-+    dc->vmsd = &pnv_core_vmstate;
++    dc->vmsd = &pnv_chiptod_vmstate;
  }
  
- #define DEFINE_PNV_CORE_TYPE(family, cpu_model) \
-@@ -737,12 +748,23 @@ static void pnv_quad_power11_class_init(ObjectClass *oc, const void *data)
-     pnv_quad_power10_class_init(oc, data);
- }
+ static const TypeInfo pnv_chiptod_type_info = {
+diff --git a/include/hw/ppc/pnv_chiptod.h b/include/hw/ppc/pnv_chiptod.h
+index 466b06560a..3e5e3b02b2 100644
+--- a/include/hw/ppc/pnv_chiptod.h
++++ b/include/hw/ppc/pnv_chiptod.h
+@@ -41,6 +41,8 @@ struct PnvChipTOD {
+     uint64_t tod_error;
+     uint64_t pss_mss_ctrl_reg;
+     PnvCore *slave_pc_target;
++    uint64_t tx_ttype_ctrl;
++    uint8_t tod_state_val;
+ };
  
-+static const VMStateDescription pnv_quad_vmstate = {
-+    .name = TYPE_PNV_QUAD,
-+    .version_id = 1,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_BOOL(special_wakeup_done, PnvQuad),
-+        VMSTATE_BOOL_ARRAY(special_wakeup, PnvQuad, 4),
-+        VMSTATE_END_OF_LIST(),
-+    },
-+};
-+
- static void pnv_quad_class_init(ObjectClass *oc, const void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(oc);
- 
-     device_class_set_props(dc, pnv_quad_properties);
-     dc->user_creatable = false;
-+    dc->vmsd = &pnv_quad_vmstate;
- }
- 
- static const TypeInfo pnv_quad_infos[] = {
+ struct PnvChipTODClass {
 -- 
 2.47.3
 
