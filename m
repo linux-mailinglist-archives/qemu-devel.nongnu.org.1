@@ -2,106 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 170BDCC0185
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Dec 2025 23:05:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DE9BCC04A6
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Dec 2025 01:02:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVGfY-0002kP-9k; Mon, 15 Dec 2025 17:03:52 -0500
+	id 1vVIVX-0008C4-CJ; Mon, 15 Dec 2025 19:01:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGfV-0002Ww-Rn
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:03:49 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1vVIVV-0008B2-Ai
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 19:01:37 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVGfT-0003OG-3M
- for qemu-devel@nongnu.org; Mon, 15 Dec 2025 17:03:49 -0500
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 583BC33748;
- Mon, 15 Dec 2025 22:03:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1765836180; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wS1Se1O16cm5p8znhF1rexTm8ckxpPn3WO6AAmjcCME=;
- b=pORvknywWNso6vZMFl1PTv7DwWRtC97CgQ4fQUg2IosCdbqzd925sDSyOq2j9tbGO0P/jP
- XNSTlwcojXkXrhOjJc4cfKyxBN4EuV1cQ3ZYiyfYA71yVlQqkkOSHD5n4ZHkL8oVlsY2SH
- J0ntCrF3FRdmfqA2GQpuB8qqZcxk4s4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1765836180;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wS1Se1O16cm5p8znhF1rexTm8ckxpPn3WO6AAmjcCME=;
- b=QEjkd0UqOi3D/8HvyGueu7NiDx9Lc4xI0Ou/1dwQ3AJXUrwJnJ1zcwMRF8DFI9EnBG1VcP
- 2nIhoFfyze3NsjAg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1765836180; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wS1Se1O16cm5p8znhF1rexTm8ckxpPn3WO6AAmjcCME=;
- b=pORvknywWNso6vZMFl1PTv7DwWRtC97CgQ4fQUg2IosCdbqzd925sDSyOq2j9tbGO0P/jP
- XNSTlwcojXkXrhOjJc4cfKyxBN4EuV1cQ3ZYiyfYA71yVlQqkkOSHD5n4ZHkL8oVlsY2SH
- J0ntCrF3FRdmfqA2GQpuB8qqZcxk4s4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1765836180;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wS1Se1O16cm5p8znhF1rexTm8ckxpPn3WO6AAmjcCME=;
- b=QEjkd0UqOi3D/8HvyGueu7NiDx9Lc4xI0Ou/1dwQ3AJXUrwJnJ1zcwMRF8DFI9EnBG1VcP
- 2nIhoFfyze3NsjAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 471F83EA63;
- Mon, 15 Dec 2025 22:02:58 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id KPl3ApKFQGlrMQAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 15 Dec 2025 22:02:58 +0000
-From: Fabiano Rosas <farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1vVIVS-0002HT-8a
+ for qemu-devel@nongnu.org; Mon, 15 Dec 2025 19:01:37 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-2a0ac29fca1so19350655ad.2
+ for <qemu-devel@nongnu.org>; Mon, 15 Dec 2025 16:01:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1765843291; x=1766448091; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=fkFXL27/vO6rPF9XJikLFrhlDyxaIrdk7FdCvb5lKGw=;
+ b=OItXTErI2s8z6fhuGMne2TA/gryBve7YC1flG/2R/8qA4fbZkRriqA3bxFjYCyVvFa
+ EgekkeCI4+gUe02E3TEHO1Be7D8mLMl724hZ0G556OEt74MOMjigMnbjSVjdDwEpXWEV
+ cUTjR1DxlQbZfmW62l9o2M7T9axhZEmibTe7b/VIKseorwq3Cb9ikgWrVsfV3GVkAY0T
+ EOzjRsP8LAH4u24G/IauQXeF2FTVkjG/liK8fPsC9BLip8XvtN8tvxw22NDdZ/45TSrn
+ 0XK6adFBvNAceUJtsvGWLNzP4iKJDfepNhi6ZVFXWBYTkgoEyKIh5KXCdWkx5rFzt96Y
+ XCBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1765843291; x=1766448091;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=fkFXL27/vO6rPF9XJikLFrhlDyxaIrdk7FdCvb5lKGw=;
+ b=hWDpeogjjKkPd3suSQAB4fr/BVmIohoEQkJmwL73aEICU6KDpHfwa/XEfsw4tAmuEO
+ MLE0chAL/46eaa4LljlXI46JIhcQgi8zchhnQRAcIrff+328nlAHntZz5AoSmcYmhBtd
+ Mf5rNMwSNczSzh3a9U6sfjHfGAauS8/x4YJLrgsljMu9LjhQ19mfKNSvmIGGoLuk/N01
+ 03xwDOj+nWG9//cL8jzNLTpNuCs5Kr1p+Hf+LaQqEAnfoQD9vAyAMRQVy6HzNpvC7haY
+ i0HMFLEvzcECv6xr+0AA4T15119tmLryeGeWXCGsFj7doBOPU0/+Q8cdjzIT8OkBsOKT
+ Oadg==
+X-Gm-Message-State: AOJu0Yy8cIMHDtc+PLBt6z/ernVW0GFcilgMtDfWfJUNmbdyT4p6vbr5
+ 5U1p/qFxkzmoVkrYflKk/ZMk3O62kvhixiMkNxr0p3OTtqkrDIusExDG9x+Rbm8XImLS3m8MbIA
+ cicQJEdo=
+X-Gm-Gg: AY/fxX7Z+BfIaUR+ECWPIz0pJ12PTA4YXgv21rQGoYWJzOTMa84T7/6g0W5wQzjvWS6
+ t3Y5nK2Utq0hWgGTL3bh/KSzoP4Alkexfjy5Fw3dfqvYjyjvBllV3/Qas7hhfv67l2s6OxLjgkR
+ JpB73uoOc7MStdo62ny9Z4ZbMkT+egzYfZgbVTNcyt4w0Q/JHiXOBT0ZlXtRbiUAu5hLVubMi5r
+ ru3nYJVs4nHHKO1vtHIjC6v7wyytbpZRqcm3fxkm6i3O+t9n6l+Aq5uDO+o2z/f4B1sbE9MA1Q4
+ AyTKpAR1mh2BoTX+5LThIdgHpYIJkmiJhGYINl4/E/0ki8sEr5b8Vl3H4Zd+22BBbVxkvzb3aBQ
+ /HFQgQPwriIktkkQqCRAIcYJE3OV382N5zxA+YFXnPqstPkKxKCqgOwAmgOO/WxEhKJ6tiMH37P
+ UO5Kv7sHRHweEswnOYQ3kDMUKRJyjceJwckyfOBqU80fUkfUIqA5khvaIDf+sD9PM=
+X-Google-Smtp-Source: AGHT+IF/q6BhU7z0qzoinfuuOaUDWex1w5dUCEIKRwNnMP43Rcmtj8JCbiyvbvlY1ZV7ecBMWzotYw==
+X-Received: by 2002:a17:902:f682:b0:2a0:9028:11af with SMTP id
+ d9443c01a7336-2a0902814c0mr92509175ad.59.1765843290349; 
+ Mon, 15 Dec 2025 16:01:30 -0800 (PST)
+Received: from pc.taild8403c.ts.net (216-71-219-44.dyn.novuscom.net.
+ [216.71.219.44]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2a0e96df1c9sm44882915ad.39.2025.12.15.16.01.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 15 Dec 2025 16:01:29 -0800 (PST)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v3 51/51] tests/qtest/migration: Further simplify TLS tests
-Date: Mon, 15 Dec 2025 19:00:37 -0300
-Message-ID: <20251215220041.12657-52-farosas@suse.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251215220041.12657-1-farosas@suse.de>
-References: <20251215220041.12657-1-farosas@suse.de>
+Cc: Tao Tang <tangtao1634@phytium.com.cn>, qemu-arm@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Auger <eric.auger@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 0/2] target/arm: make granule_protection_check usable from
+ SMMU
+Date: Mon, 15 Dec 2025 16:01:20 -0800
+Message-ID: <20251216000122.763264-1-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.47.3
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.990];
- MIME_GOOD(-0.10)[text/plain]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- FROM_HAS_DN(0.00)[]; ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
- R_RATELIMIT(0.00)[to_ip_from(RLjrdmmf3juheryardexw6jb95)];
- TO_DN_SOME(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo];
- RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- RCVD_COUNT_TWO(0.00)[2]; FUZZY_RATELIMITED(0.00)[rspamd.com];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCPT_COUNT_FIVE(0.00)[6]; RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -2.80
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,254 +103,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that the TLS hooks were simplified, many test functions are using
-the same hook, but passing a different data pointer. Since the data
-pointer is already an argument for the _common function, stop setting
-the hook & data in the test function and do it instead in the init
-routine.
+This series prepare granule_protection_check to be usable from SMMU, for
+implementing RME feature.
+It's based on Tao's commit [1] extracting ARMSecuritySpace from cpu.h header for
+convenience.
 
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- tests/qtest/migration/tls-tests.c | 60 +++++--------------------------
- 1 file changed, 8 insertions(+), 52 deletions(-)
+[1] https://lore.kernel.org/qemu-devel/20251012150701.4127034-5-tangtao1634@phytium.com.cn/
 
-diff --git a/tests/qtest/migration/tls-tests.c b/tests/qtest/migration/tls-tests.c
-index aa5482b823..da8b3e42fe 100644
---- a/tests/qtest/migration/tls-tests.c
-+++ b/tests/qtest/migration/tls-tests.c
-@@ -80,6 +80,11 @@ static void migrate_tls_psk_init(MigrateCommon *args,
-                                  TestMigrateTLSPSK *test_args,
-                                  TestMigrateTLSPSKData *data)
- {
-+    qdict_put_str(args->start.config, "tls-creds", "tlscredspsk0");
+To demonstrate the purpose, this is the (wip) change to use that from SMMU:
+
+diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+index 80f48df3dda..1acff3bbd66 100644
+--- a/hw/arm/smmuv3.c
++++ b/hw/arm/smmuv3.c
+@@ -1055,12 +1056,36 @@ static SMMUTranslationStatus smmuv3_do_translate(SMMUv3State *s, hwaddr addr,
+     }
+
+     cached_entry = smmu_translate(bs, cfg, addr, flag, &ptw_info);
+     if (desc_s2_translation) {
+         cfg->asid = asid;
+         cfg->stage = stage;
+     }
+
++    if (cached_entry) {
++        /* The fields in SMMU_ROOT_GPT_BASE_CFG are the same as for GPCCR_EL3,
++         * except there is no copy of GPCCR_EL3.GPC. See SMMU_ROOT_CR0.GPCEN. */
++        const bool gpc_enabled = FIELD_EX32(s->root.cr0, ROOT_CR0, GPCEN);
++        if (gpc_enabled) {
++            hwaddr paddress = CACHED_ENTRY_TO_ADDR(cached_entry, addr);
++            ARMSecuritySpace pspace = sec_sid_to_security_space(cfg->sec_sid);
++            ARMSecuritySpace ss = ARMSS_Root;
++            ARMMMUFaultInfo fi;
 +
-+    args->start_hook_full = migrate_hook_start_tls_psk_common;
-+    args->start_hook_data = test_args;
++            ARMGranuleProtectionConfig config = {
++                .gpccr = s->root.gpt_base_cfg,
++                .gptbr = s->root.gpt_base >> 12,
++                .parange = 6, /* 52 bits */
++                .support_sel2 = false,
++                .gpt_as = &s->smmu_state.as_secure_memory
++            };
++            if (!arm_granule_protection_check(config, paddress,
++                                              pspace, ss, &fi)) {
++                printf("ERROR: fi.type=%d fi.gpcf=%d\n", fi.type, fi.gpcf);
++                g_assert_not_reached();
++            }
++        }
++    }
 +
-     data->workdir = g_strdup_printf("%s/tlscredspsk0", tmpfs);
-     data->pskfile = g_strdup_printf("%s/%s", data->workdir,
-                                     QCRYPTO_TLS_CREDS_PSKFILE);
-@@ -118,8 +123,6 @@ static void test_precopy_tls_psk_common(MigrateCommon *args,
- {
-     TestMigrateTLSPSKData *data = g_new0(TestMigrateTLSPSKData, 1);
- 
--    qdict_put_str(args->start.config, "tls-creds", "tlscredspsk0");
--
-     migrate_tls_psk_init(args, test_args, data);
-     test_precopy_common(args);
-     migrate_tls_psk_cleanup(data);
-@@ -130,8 +133,6 @@ static void test_postcopy_tls_psk_common(MigrateCommon *args,
- {
-     TestMigrateTLSPSKData *data = g_new0(TestMigrateTLSPSKData, 1);
- 
--    qdict_put_str(args->start.config, "tls-creds", "tlscredspsk0");
--
-     migrate_tls_psk_init(args, test_args, data);
-     test_postcopy_common(args);
-     migrate_tls_psk_cleanup(data);
-@@ -142,8 +143,6 @@ static void test_postcopy_recovery_tls_psk_common(MigrateCommon *args,
- {
-     TestMigrateTLSPSKData *data = g_new0(TestMigrateTLSPSKData, 1);
- 
--    qdict_put_str(args->start.config, "tls-creds", "tlscredspsk0");
--
-     migrate_tls_psk_init(args, test_args, data);
-     test_postcopy_recovery_common(args);
-     migrate_tls_psk_cleanup(data);
-@@ -283,6 +282,9 @@ static void migrate_tls_x509_init(MigrateCommon *args,
-                                   TestMigrateTLSX509 *test_args,
-                                   TestMigrateTLSX509Data *data)
- {
-+    args->start_hook_full = migrate_hook_start_tls_x509_common;
-+    args->start_hook_data = test_args;
-+
-     data->workdir = g_strdup_printf("%s/tlscredsx5090", tmpfs);
-     data->keyfile = g_strdup_printf("%s/key.pem", data->workdir);
- 
-@@ -390,17 +392,11 @@ static void test_precopy_tls_x509_common(MigrateCommon *args,
- 
- static void test_postcopy_tls_psk(char *name, MigrateCommon *args)
- {
--    args->start_hook_full = migrate_hook_start_tls_psk_common;
--    args->start_hook_data = &tls_psk_match;
--
-     test_postcopy_tls_psk_common(args, &tls_psk_match);
- }
- 
- static void test_postcopy_preempt_tls_psk(char *name, MigrateCommon *args)
- {
--    args->start_hook_full = migrate_hook_start_tls_psk_common;
--    args->start_hook_data = &tls_psk_match;
--
-     qdict_put_bool(args->start.config, "postcopy-preempt", true);
- 
-     test_postcopy_tls_psk_common(args, &tls_psk_match);
-@@ -408,18 +404,12 @@ static void test_postcopy_preempt_tls_psk(char *name, MigrateCommon *args)
- 
- static void test_postcopy_recovery_tls_psk(char *name, MigrateCommon *args)
- {
--    args->start_hook_full = migrate_hook_start_tls_psk_common;
--    args->start_hook_data = &tls_psk_match;
--
-     test_postcopy_recovery_tls_psk_common(args, &tls_psk_match);
- }
- 
- static void test_multifd_postcopy_recovery_tls_psk(char *name,
-                                                    MigrateCommon *args)
- {
--    args->start_hook_full = migrate_hook_start_tls_psk_common;
--    args->start_hook_data = &tls_psk_match;
--
-     qdict_put_bool(args->start.config, "multifd", true);
- 
-     test_postcopy_recovery_tls_psk_common(args, &tls_psk_match);
-@@ -428,9 +418,6 @@ static void test_multifd_postcopy_recovery_tls_psk(char *name,
- /* This contains preempt+recovery+tls test altogether */
- static void test_postcopy_preempt_all(char *name, MigrateCommon *args)
- {
--    args->start_hook_full = migrate_hook_start_tls_psk_common;
--    args->start_hook_data = &tls_psk_match;
--
-     qdict_put_bool(args->start.config, "postcopy-preempt", true);
- 
-     test_postcopy_recovery_tls_psk_common(args, &tls_psk_match);
-@@ -439,9 +426,6 @@ static void test_postcopy_preempt_all(char *name, MigrateCommon *args)
- static void test_multifd_postcopy_preempt_recovery_tls_psk(char *name,
-                                                            MigrateCommon *args)
- {
--    args->start_hook_full = migrate_hook_start_tls_psk_common;
--    args->start_hook_data = &tls_psk_match;
--
-     qdict_put_bool(args->start.config, "multifd", true);
-     qdict_put_bool(args->start.config, "postcopy-preempt", true);
- 
-@@ -454,8 +438,6 @@ static void test_precopy_unix_tls_psk(char *name, MigrateCommon *args)
- 
-     args->connect_uri = uri;
-     args->listen_uri = uri;
--    args->start_hook_full = migrate_hook_start_tls_psk_common;
--    args->start_hook_data = &tls_psk_match;
- 
-     test_precopy_tls_psk_common(args, &tls_psk_match);
- }
-@@ -468,8 +450,6 @@ static void test_precopy_unix_tls_x509_default_host(char *name,
- 
-     args->connect_uri = uri;
-     args->listen_uri = uri;
--    args->start_hook_full = migrate_hook_start_tls_x509_common;
--    args->start_hook_data = &tls_x509_default_host;
-     args->result = MIG_TEST_FAIL_DEST_QUIT_ERR;
- 
-     args->start.hide_stderr = true;
-@@ -484,8 +464,6 @@ static void test_precopy_unix_tls_x509_override_host(char *name,
- 
-     args->connect_uri = uri;
-     args->listen_uri = uri;
--    args->start_hook_full = migrate_hook_start_tls_x509_common;
--    args->start_hook_data = &tls_x509_override_host;
- 
-     test_precopy_tls_x509_common(args, &tls_x509_override_host);
- }
-@@ -494,8 +472,6 @@ static void test_precopy_unix_tls_x509_override_host(char *name,
- static void test_precopy_tcp_tls_psk_match(char *name, MigrateCommon *args)
- {
-     args->listen_uri = "tcp:127.0.0.1:0";
--    args->start_hook_full = migrate_hook_start_tls_psk_common;
--    args->start_hook_data = &tls_psk_match;
- 
-     test_precopy_tls_psk_common(args, &tls_psk_match);
- }
-@@ -503,8 +479,6 @@ static void test_precopy_tcp_tls_psk_match(char *name, MigrateCommon *args)
- static void test_precopy_tcp_tls_psk_mismatch(char *name, MigrateCommon *args)
- {
-     args->listen_uri = "tcp:127.0.0.1:0";
--    args->start_hook_full = migrate_hook_start_tls_psk_common;
--    args->start_hook_data = &tls_psk_mismatch;
-     args->result = MIG_TEST_FAIL;
- 
-     args->start.hide_stderr = true;
-@@ -524,8 +498,6 @@ static void test_precopy_tcp_no_tls(char *name, MigrateCommon *args)
- static void test_precopy_tcp_tls_no_hostname(char *name, MigrateCommon *args)
- {
-     args->listen_uri = "tcp:127.0.0.1:0";
--    args->start_hook_full = migrate_hook_start_tls_x509_common;
--    args->start_hook_data = &tls_x509_no_host;
-     args->result = MIG_TEST_FAIL_DEST_QUIT_ERR;
- 
-     args->start.hide_stderr = true;
-@@ -538,8 +510,6 @@ static void test_precopy_tcp_tls_x509_default_host(char *name,
-                                                    MigrateCommon *args)
- {
-     args->listen_uri = "tcp:127.0.0.1:0";
--    args->start_hook_full = migrate_hook_start_tls_x509_common;
--    args->start_hook_data = &tls_x509_default_host;
- 
-     test_precopy_tls_x509_common(args, &tls_x509_default_host);
- }
-@@ -548,8 +518,6 @@ static void test_precopy_tcp_tls_x509_override_host(char *name,
-                                                     MigrateCommon *args)
- {
-     args->listen_uri = "tcp:127.0.0.1:0";
--    args->start_hook_full = migrate_hook_start_tls_x509_common;
--    args->start_hook_data = &tls_x509_override_host;
- 
-     test_precopy_tls_x509_common(args, &tls_x509_override_host);
- }
-@@ -558,8 +526,6 @@ static void test_precopy_tcp_tls_x509_mismatch_host(char *name,
-                                                     MigrateCommon *args)
- {
-     args->listen_uri = "tcp:127.0.0.1:0";
--    args->start_hook_full = migrate_hook_start_tls_x509_common;
--    args->start_hook_data = &tls_x509_mismatch_host;
-     args->result = MIG_TEST_FAIL_DEST_QUIT_ERR;
- 
-     args->start.hide_stderr = true;
-@@ -571,8 +537,6 @@ static void test_precopy_tcp_tls_x509_friendly_client(char *name,
-                                                       MigrateCommon *args)
- {
-     args->listen_uri = "tcp:127.0.0.1:0";
--    args->start_hook_full = migrate_hook_start_tls_x509_common;
--    args->start_hook_data = &x509_friendly_client;
- 
-     test_precopy_tls_x509_common(args, &x509_friendly_client);
- }
-@@ -581,8 +545,6 @@ static void test_precopy_tcp_tls_x509_hostile_client(char *name,
-                                                      MigrateCommon *args)
- {
-     args->listen_uri = "tcp:127.0.0.1:0";
--    args->start_hook_full = migrate_hook_start_tls_x509_common;
--    args->start_hook_data = &tls_x509_hostile_client;
-     args->result = MIG_TEST_FAIL;
- 
-     args->start.hide_stderr = true;
-@@ -594,8 +556,6 @@ static void test_precopy_tcp_tls_x509_allow_anon_client(char *name,
-                                                         MigrateCommon *args)
- {
-     args->listen_uri = "tcp:127.0.0.1:0";
--    args->start_hook_full = migrate_hook_start_tls_x509_common;
--    args->start_hook_data = &tls_x509_allow_anon_client;
- 
-     test_precopy_tls_x509_common(args, &tls_x509_allow_anon_client);
- }
-@@ -604,8 +564,6 @@ static void test_precopy_tcp_tls_x509_reject_anon_client(char *name,
-                                                          MigrateCommon *args)
- {
-     args->listen_uri = "tcp:127.0.0.1:0";
--    args->start_hook_full = migrate_hook_start_tls_x509_common;
--    args->start_hook_data = &tls_x509_reject_anon_client;
-     args->result = MIG_TEST_FAIL;
- 
-     args->start.hide_stderr = true;
-@@ -679,8 +637,6 @@ static void test_multifd_tcp_tls_x509_mismatch_host(char *name,
-      * to load migration state, and thus just aborts the migration
-      * without exiting.
-      */
--    args->start_hook_full = migrate_hook_start_tls_x509_common;
--    args->start_hook_data = &tls_x509_mismatch_host;
-     args->result = MIG_TEST_FAIL;
-     args->listen_uri = "tcp:127.0.0.1:0";
- 
+     if (!cached_entry) {
+         /* All faults from PTW has S2 field. */
+         event->u.f_walk_eabt.s2 = (ptw_info.stage == SMMU_STAGE_2);
+
+v2
+--
+
+- remove extra boilerplate/include/line from arm-security.h
+- use local var gpccr instead of config.gpccr
+- extract GPC enable check out of arm_granule_protection_check
+- rename as_secure in gpt_as
+- use arm_addresspace to retrieve gpt address space
+
+Pierrick Bouvier (1):
+  target/arm/ptw: make granule_protection_check usable without a cpu
+
+Tao Tang (1):
+  target/arm: Move ARMSecuritySpace to a common header
+
+ include/hw/arm/arm-security.h | 37 ++++++++++++++++++++++
+ target/arm/cpu.h              | 59 +++++++++++++++++++++--------------
+ target/arm/ptw.c              | 59 ++++++++++++++++++++++-------------
+ 3 files changed, 110 insertions(+), 45 deletions(-)
+ create mode 100644 include/hw/arm/arm-security.h
+
 -- 
-2.51.0
+2.47.3
 
 
