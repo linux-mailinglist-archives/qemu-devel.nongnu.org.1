@@ -2,112 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27A63CC3D90
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Dec 2025 16:15:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36E17CC3EA3
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Dec 2025 16:26:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVWkv-0006t6-93; Tue, 16 Dec 2025 10:14:29 -0500
+	id 1vVWvq-00045f-Fs; Tue, 16 Dec 2025 10:25:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
- id 1vVWkt-0006sL-3V; Tue, 16 Dec 2025 10:14:27 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <dave@stgolabs.net>) id 1vVWvV-000422-FE
+ for qemu-devel@nongnu.org; Tue, 16 Dec 2025 10:25:30 -0500
+Received: from shrimp.cherry.relay.mailchannels.net ([23.83.223.164])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
- id 1vVWkq-000719-Fx; Tue, 16 Dec 2025 10:14:26 -0500
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BG54Q19011903;
- Tue, 16 Dec 2025 15:14:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=CwHtwHqF9QeIHgO8O
- lLt6uppBDL9NUgMv9GjjLAy+/o=; b=BzIGwXovIcfAEJykIDH00z63gef8KAuuc
- KhG2g1sCEkq/YYlN9fn2lguhQHxprdZ2o4dJ1Mw1tIX5RuKEcNVj0wCb4Cx96Vcz
- 1FROT/S2HZFb9vlk5wwinpYT3OevzLBL6x8B+lkUGZqCivNotAWE1ymbuaKmJBLH
- WQg3Hzb//lVpHBOE6iZO7wBesCqiFmCkYY81cu5kOY6UcBMJbHaxx4PRrohF0UQ5
- qN88ijlurMoI930pwTpS1cUhUBnhcZZ3v2i7iNvSQSk7DPgGc+QQ1HW8n6AdJvkT
- eljs40UlatgQXuz7wejRDg7Fbq5Q4E974bdv1OAwfDKe6j+SA+bBw==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0yn8fvru-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 Dec 2025 15:14:20 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BGF8q72011811;
- Tue, 16 Dec 2025 15:14:20 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0yn8fvrr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 Dec 2025 15:14:20 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BGDGxku012783;
- Tue, 16 Dec 2025 15:14:19 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4b1juy4x6j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 Dec 2025 15:14:19 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 5BGFEHQo33620592
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 16 Dec 2025 15:14:18 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AE18058043;
- Tue, 16 Dec 2025 15:14:17 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DB1CE58053;
- Tue, 16 Dec 2025 15:14:16 +0000 (GMT)
-Received: from gfwr532.rchland.ibm.com (unknown [9.10.239.133])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 16 Dec 2025 15:14:16 +0000 (GMT)
-From: Caleb Schlossin <calebs@linux.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, npiggin@gmail.com, adityag@linux.ibm.com,
- milesg@linux.ibm.com, alistair@alistair23.me, kowal@linux.ibm.com,
- chalapathi.v@linux.ibm.com, calebs@linux.ibm.com, angeloj@linux.ibm.com
-Subject: [PATCH v3 7/7] hw/ppc: Add VMSTATE information to PnvPsi
-Date: Tue, 16 Dec 2025 09:13:59 -0600
-Message-ID: <20251216151359.418708-8-calebs@linux.ibm.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251216151359.418708-1-calebs@linux.ibm.com>
-References: <20251216151359.418708-1-calebs@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <dave@stgolabs.net>) id 1vVWvL-0002ZV-NA
+ for qemu-devel@nongnu.org; Tue, 16 Dec 2025 10:25:22 -0500
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+ by relay.mailchannels.net (Postfix) with ESMTP id AF794161525;
+ Tue, 16 Dec 2025 15:24:59 +0000 (UTC)
+Received: from pdx1-sub0-mail-a258.dreamhost.com
+ (100-103-169-129.trex-nlb.outbound.svc.cluster.local [100.103.169.129])
+ (Authenticated sender: dreamhost)
+ by relay.mailchannels.net (Postfix) with ESMTPA id 63F60161D72;
+ Tue, 16 Dec 2025 15:24:58 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
+ t=1765898698;
+ b=+FFLEATeKvtx9uMf9WDlQWZtIoThhsuW/cWSWMuCxj5SiBj8vsgteVG/RH5R5stEsWgmCe
+ YxddGBLB8BpHpRPwBnXjtZgEJxUQHvT9hxgu93EZxLqvtRPMMjr8sdrzvpB371vwiY/tT7
+ Es8EmECoCWXaMOpVue7XH/AerJIrZ+zcbTs/bbZwp1g/fxBolEDvCl8caloKUwMY6gztzp
+ A6nOJFm/5ZS0zGSzz27e+2hdMgQie4iLzhw6ywdQ+eDWe9enQKvvT9zVisXNH+v+dSx8gM
+ oq5zKpL5mVvviZHCIiDAYc9i3SJUeYI/Fw1FhjzCJiy22m/DbfByk6r3wgjcZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net; s=arc-2022; t=1765898698;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references:dkim-signature;
+ bh=V6cZ6hVfzbwD0/szhv0n+m7UeoPuCzz7r4RjXAaVA5g=;
+ b=jzCK7ZJYdIxar32KGty6fkRgG2GaT+mG2GpnM9NPH76nniidV02O1IeynuNweZeT2ITnGi
+ JOqiWDVuLGS01kdiE/fhIGsw2nd75OSmyXdoMqbG1Dzwa7mnbi2Sdf7FzxGl/7UrLGjc5b
+ tvpnAzcWBF4kpmmtQr3YyePHrI5mfvruvD4uy7MgGu0IGO3OGR4IkioTH8ZE/3E+7VgvD2
+ V4+ZSqZIS+ZBtCLboh7AB2tNTHQuJ6gMSeq3FjF1G2Ze6YdRcbjYr5wiVm1Gmlsr5sj4nQ
+ 3piE1nfFSLHHbXpa9J3N0cgr4CnkgHPXUzMEw0dCK1UHm6g4DQFXdq8VKwdlVw==
+ARC-Authentication-Results: i=1; rspamd-659888d77d-4crmn;
+ auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Attack-Bubble: 55f6989866ea5fff_1765898699456_3183201204
+X-MC-Loop-Signature: 1765898699456:1131494184
+X-MC-Ingress-Time: 1765898699455
+Received: from pdx1-sub0-mail-a258.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+ by 100.103.169.129 (trex/7.1.3); Tue, 16 Dec 2025 15:24:59 +0000
+Received: from offworld (unknown [205.220.129.21])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ (Authenticated sender: dave@stgolabs.net)
+ by pdx1-sub0-mail-a258.dreamhost.com (Postfix) with ESMTPSA id 4dW11s0lfqz1066;
+ Tue, 16 Dec 2025 07:24:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+ s=dreamhost; t=1765898698;
+ bh=V6cZ6hVfzbwD0/szhv0n+m7UeoPuCzz7r4RjXAaVA5g=;
+ h=Date:From:To:Cc:Subject:Content-Type;
+ b=q3xv1VoSocvjp4cr4gvq5+vyjvzd+7Ko1SItkU5jmyG1MbobTMVeJzpfdNo76kZCT
+ IKUtI8f63uMp4LlD3I1OYcz9Gp1xGDiWjjQ+B3h8AjEtV3wazdr3VEKsp2Vha2rn4E
+ orPZOQLSZYC2cGbrfYC4+lkTtEx+BLMPLxXATHHzQzvmonABo+ry8RCP+3yr9t4Y23
+ BgL3duuy0cyRivj5/IHUl/Ep2VDuVy1a7w/XygS0AAowlMPGERhPimKB2BrzZPqYSe
+ 2Xt7Q8WeJ2ugh1n4ZGqU1R3JM0hJHAARigCjl0fNCYhoeY5OUBwx5jyjb3Wq+vxVQQ
+ NOQE/lmweNlfw==
+Date: Tue, 16 Dec 2025 07:24:11 -0800
+From: Davidlohr Bueso <dave@stgolabs.net>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: jonathan.cameron@huawei.com, ira.weiny@intel.com, alucerop@amd.com,
+ a.manzanares@samsung.com, dongjoo.seo1@samsung.com, mst@redhat.com,
+ marcel.apfelbaum@gmail.com, linux-cxl@vger.kernel.org,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v4 -qemu 0/5] hw/cxl: Support Back-Invalidate
+Message-ID: <20251216152411.mlx5tgsdwnjss7ku@offworld>
+References: <20251103195209.1319917-1-dave@stgolabs.net>
+ <87cy4esysa.fsf@pond.sub.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEzMDAxOCBTYWx0ZWRfX8K2aFOWhnkoE
- I9Gkvjj3SioiDKNfZ+4RLa36FaHtwTrnmYu4Te6qR7Q7biZZFSK+3W1UB3VAn69y6k/AWL7fjZ7
- 3XnMwqTxbPzwwrVHTSaExz1o60fvNQQqcSXED3y/TsgULZw3sXQKd3Q9wN/9YiwjaZrE24NUkmQ
- D3C6JCuaOerRQ47Q4kS5H5VNO7whBPn+7zgxNv7rDhBxuz5T4dkYtzuCmSzff8+Yt7BARsSH932
- BiCbvJRU0EsbIFv38zafy+lse2/OeRzd/0ceZEWdCw+KOr4cX4ZQZ0dV9lEk1ynaOF/uO3jbR1W
- YjBfSj3IqwAONg81++u0NoVUHAeqBYEyyerHXN3bys71ZghUytJVzpb0ewikTlcVAFpve39SUZT
- R4xtPlqej380O7rIf6lRzvYl5VJkmw==
-X-Proofpoint-GUID: RwfimJuFqmEnWK5lYJh5aQp8Ae9jiPcA
-X-Proofpoint-ORIG-GUID: lOvrLQ6UCrFPqLISahYGcMi71yNQ8U9l
-X-Authority-Analysis: v=2.4 cv=LbYxKzfi c=1 sm=1 tr=0 ts=6941774c cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=oruG57yO5g4gZiaFByIA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-16_02,2025-12-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0 phishscore=0 clxscore=1015 suspectscore=0
- adultscore=0 malwarescore=0 priorityscore=1501 lowpriorityscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
- definitions=main-2512130018
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=calebs@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <87cy4esysa.fsf@pond.sub.org>
+User-Agent: NeoMutt/20220429
+Received-SPF: softfail client-ip=23.83.223.164; envelope-from=dave@stgolabs.net;
+ helo=shrimp.cherry.relay.mailchannels.net
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_SOFTFAIL=0.665 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -123,89 +113,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PnvPsi needs to be able to save/load snapshots.  Add VMSTATE information
-to the device class and a post_load() method to restore dynamic data items and
-memory region mappings.
+On Tue, 16 Dec 2025, Markus Armbruster wrote:
 
-Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
-Signed-off-by: Caleb Schlossin <calebs@linux.ibm.com>
----
- hw/ppc/pnv_psi.c | 36 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 34 insertions(+), 2 deletions(-)
+>Davidlohr Bueso <dave@stgolabs.net> writes:
+>
+>> The following allows support for component basic back invalidation discovery
+>> and config, by exposing the BI routing table and decoder registers. Instead
+>> of going the type2[0] route, this series proposes adding support for type3
+>> hdm-db, which allows a more direct way of supporting BI in qemu.
+>
+>[...]
+>
+>> Applies against branch 'origin/cxl-2025-10-03-draft' from Jonathan's repository.
+>
+>URL?
 
-diff --git a/hw/ppc/pnv_psi.c b/hw/ppc/pnv_psi.c
-index 5d947d8b52..67bc911e4b 100644
---- a/hw/ppc/pnv_psi.c
-+++ b/hw/ppc/pnv_psi.c
-@@ -25,6 +25,7 @@
- #include "qemu/module.h"
- #include "system/reset.h"
- #include "qapi/error.h"
-+#include "migration/vmstate.h"
- 
- 
- #include "hw/ppc/fdt.h"
-@@ -130,12 +131,11 @@ static void pnv_psi_set_bar(PnvPsi *psi, uint64_t bar)
- {
-     PnvPsiClass *ppc = PNV_PSI_GET_CLASS(psi);
-     MemoryRegion *sysmem = get_system_memory();
--    uint64_t old = psi->regs[PSIHB_XSCOM_BAR];
- 
-     psi->regs[PSIHB_XSCOM_BAR] = bar & (ppc->bar_mask | PSIHB_BAR_EN);
- 
-     /* Update MR, always remove it first */
--    if (old & PSIHB_BAR_EN) {
-+    if (memory_region_is_mapped(&psi->regs_mr)) {
-         memory_region_del_subregion(sysmem, &psi->regs_mr);
-     }
- 
-@@ -919,6 +919,37 @@ static const TypeInfo pnv_psi_power9_info = {
-     },
- };
- 
-+static int vmstate_pnv_psi_post_load(void *opaque, int version_id)
-+{
-+    PnvPsi *psi = PNV_PSI(opaque);
-+    Pnv9Psi *psi9 = PNV9_PSI(psi);
-+    MemoryRegion   *sysmem = get_system_memory();
-+    uint64_t esb_bar;
-+    hwaddr esb_addr;
-+
-+    /* Set the ESB MMIO mapping */
-+    esb_bar = psi->regs[PSIHB_REG(PSIHB9_ESB_CI_BASE)];
-+
-+    if (esb_bar & PSIHB9_ESB_CI_VALID) {
-+        esb_addr = esb_bar & PSIHB9_ESB_CI_ADDR_MASK;
-+        memory_region_add_subregion(sysmem, esb_addr,
-+                                    &psi9->source.esb_mmio);
-+    }
-+
-+    return 0;
-+}
-+
-+static const VMStateDescription vmstate_pnv_psi = {
-+    .name = TYPE_PNV_PSI,
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .post_load = vmstate_pnv_psi_post_load,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT64_ARRAY(regs, PnvPsi, PSIHB_XSCOM_MAX),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- static void pnv_psi_power10_class_init(ObjectClass *klass, const void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-@@ -926,6 +957,7 @@ static void pnv_psi_power10_class_init(ObjectClass *klass, const void *data)
-     static const char compat[] = "ibm,power10-psihb-x\0ibm,psihb-x";
- 
-     dc->desc    = "PowerNV PSI Controller POWER10";
-+    dc->vmsd = &vmstate_pnv_psi;
- 
-     ppc->xscom_pcba = PNV10_XSCOM_PSIHB_BASE;
-     ppc->xscom_size = PNV10_XSCOM_PSIHB_SIZE;
--- 
-2.47.3
+That would be:
+      https://gitlab.com/jic23/qemu/-/commits/cxl-2025-10-03-draft
 
 
