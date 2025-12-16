@@ -2,95 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65A1BCC56BA
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 00:01:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C95ADCC5858
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 00:52:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVe25-0007zN-KN; Tue, 16 Dec 2025 18:00:41 -0500
+	id 1vVenA-0001DY-46; Tue, 16 Dec 2025 18:49:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vVe21-0007yA-NB
- for qemu-devel@nongnu.org; Tue, 16 Dec 2025 18:00:38 -0500
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vVe20-0002Zs-0g
- for qemu-devel@nongnu.org; Tue, 16 Dec 2025 18:00:37 -0500
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-7fc0c1d45a4so987169b3a.0
- for <qemu-devel@nongnu.org>; Tue, 16 Dec 2025 15:00:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1765926034; x=1766530834; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=51PBnHcGWlDlgUAtaOIDRyrY122NrKUym3Eg85RU+Jk=;
- b=SBcOV+gx9HjowPmw7+oheNCv3Eg+/prmR3RqjQPiHm2MLnl7fsWSwnlJ1vi1fQLaza
- j2auz2asZUYCowd7C849ERmE9bYGRl9E48LXr4CUda8hZBwtrQPT540tXXyf7PO+LZ0N
- JFpuSbJZ99QJIL3rmB+5VEl1TIV/psk9ZI1e3/6kDOmeAmeOyi+f2CIy7vVDbTQSQwCD
- huStgGB0E349MGwoDagcB6eswD/9SdSxkAIdzQIxQOrDHPtNkhr8RvHfbbJkBQLvbqIi
- svolNQMCRr4PcXf20I3QzawybfxP4P7puZeP9NxkbKMMiALsx5Ir3UHHSo726jfussLj
- EF2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765926034; x=1766530834;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=51PBnHcGWlDlgUAtaOIDRyrY122NrKUym3Eg85RU+Jk=;
- b=nB9bpq2LTQ3Xc9gTQ9xLGXe5WRaTKebKO+zwlxE4nAq6cHQVec6Th7Vfc0IagnRMQy
- XDJbxOCMyQ4mSp0FKLrGgq5piB5ccgTYQMTBdBNNvVg84mfMHQuLKRzaEEDkjOt25dap
- 354goA9pyPXkaO245oz10mlOgZva7qKw6nid7o+DW+4NhQkjlljMBIlZ72QY9xapph5G
- E/o7qt/uy9uY7mkMabfE4DU1DWa7A1Fl6I+6r/6YrCXrbq9by7oG6T3DtGo2fZ8MM/TF
- PYslAWgYR26cbs618Z5DkoZ99PayfWeRPLaRAQcnOnPi1qdXvN23kOqZLlGKnG1RrlrQ
- nYnQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVKd6/QNxlwgbMhfVcPva2iMX/Er/6ZqzWc4u/2Tg9nZfmTGHOzyHuLlQfN5W2E4bAwGwx+qF666bMU@nongnu.org
-X-Gm-Message-State: AOJu0YwksrmhQgplUI2+avo9Rf4TOhoqgWy3jstDvXGOg9oC21OGcQ4x
- ILJXuM08Ls5Dxdp1cU7gjcjXP24mVycI1SGco0jRe7637WJXHll7pzr1Wup0Sz8P7Q4=
-X-Gm-Gg: AY/fxX57poEjGXa5cYgcNtWRCI2lwqQYydeFToOBw7A8MFvOcfjIqUl6rQG+vZsGgSa
- b1kcOcuelo3WlUx38oPcKO0BZN+zsooa3G7d6gpr0HadIZB3YB4YX2h4pi2kYR6SxUXwvsMZ6fm
- LTtWqPOw3MOBGvt5OxdGxkqfB0LfVEDjrg3AZBF1sQjDAKDNCcI5tdVWRpv4vmCIqDW6qwSysSG
- FQtZTDrLoMjkTkTuogTSN0hDBTtZXU00/cbkna3qqaNCWLGHG+XrloUS/cVzBNdEhP9ieKhtXew
- CGAw2oa1KIvYOvqZ8hOcELqBkADAVPQnUtr6IPyqpgNYNHs8tuEfCUfqzOd7DpWn1sEqMMBU2IV
- CBkNrnrqQLfjCr1y2hD4dFW3qBmKHBPvID5RFLzo4yeonN0s9bZfrGK75RR4OCTD726gfZgNBT3
- t4c3+vPpRIjUJ/W7z+jvuno6SslHziJKNUGyPUkKE4WmF8BKkCz4aHhFKqqzSWwUlYjw==
-X-Google-Smtp-Source: AGHT+IFZ3oBslqXPrBXTjANNrvugLOCrMJTIq/pheSF9RAQf6Q7kSy2TL35fZdajqBWGbNtFZI59Iw==
-X-Received: by 2002:a05:6a00:b483:b0:7c2:7365:767b with SMTP id
- d2e1a72fcca58-7f66f9f2f5dmr15099827b3a.3.1765926033912; 
- Tue, 16 Dec 2025 15:00:33 -0800 (PST)
-Received: from [192.168.1.87] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7fcbb11e265sm607210b3a.33.2025.12.16.15.00.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 16 Dec 2025 15:00:33 -0800 (PST)
-Message-ID: <345bee9e-4b3d-411c-9f45-eba47a72366e@linaro.org>
-Date: Tue, 16 Dec 2025 15:00:32 -0800
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vVemy-0001Ao-UT
+ for qemu-devel@nongnu.org; Tue, 16 Dec 2025 18:49:10 -0500
+Received: from rev.ng ([94.130.142.21])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vVemw-0006l7-Q5
+ for qemu-devel@nongnu.org; Tue, 16 Dec 2025 18:49:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+ Message-Id:Date:Subject:From:Sender:Reply-To:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
+ List-Help; bh=c5p5dn3cbGy/fxxOEt11IGsmgf8nHj3mgDVrs6ZSIlI=; b=hfGizBNJqT/VdY4
+ BiXt3sNfG5eR6xlJxkwPO7pIaF6Ww7staGdG1tBHQWl6yqxeCG+txvkHuh07J4udDvwFkxZeo+nN5
+ 5aS3FI0RNK+v6RCthGrSP9EX6rWMWCPjapQA46XARYkzdsJKAEfIZl6a0jF+gWV4wPfCmq//IVDt8
+ VQ=;
+Subject: [PATCH 00/14] single-binary: Compile hw/riscv once
+Date: Wed, 17 Dec 2025 00:51:05 +0100
+Message-Id: <20251217-hw-riscv-cpu-int-v1-0-d24a4048d3aa@rev.ng>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] util: Move qemu_ftruncate64 from block/file-win32.c
- to oslib-win32.c
-Content-Language: en-US
-To: phind.uet@gmail.com, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Stefan Weil <sw@weilnetz.de>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org
-References: <20251215164512.322786-1-phind.uet@gmail.com>
- <20251215164512.322786-3-phind.uet@gmail.com>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20251215164512.322786-3-phind.uet@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x431.google.com
+X-B4-Tracking: v=1; b=H4sIAGnwQWkC/x3MOwqAMBBF0a3I1A4kEcW4FbGQ+DTTREn8gbh3g
+ +Up7n0oIQoSdcVDEackWUOGLgtyfgwLWKZsMsrU2mjF/uIoyZ3stoMl7KwatIC2sJWinG0Rs9z
+ /sh/e9wP8HLoeYgAAAA==
+X-Change-ID: 20251210-hw-riscv-cpu-int-06e8ee19e930
+To: qemu-devel@nongnu.org
+Cc: Anton Johansson <anjo@rev.ng>, philmd@linaro.org, 
+ pierrick.bouvier@linaro.org, palmer@dabbelt.com, alistair.francis@wdc.com
+Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
+ helo=rev.ng
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,21 +60,89 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/15/25 8:45 AM, phind.uet@gmail.com wrote:
-> From: Nguyen Dinh Phi <phind.uet@gmail.com>
-> 
-> qemu_ftruncate64() is utility function that may be used outside of the block
-> layer. Move it to util/oslib-win32.c where other Windows-specific utility
-> functions reside.
-> 
-> Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
-> ---
->   block/file-win32.c | 32 --------------------------------
->   util/oslib-win32.c | 34 ++++++++++++++++++++++++++++++++++
->   2 files changed, 34 insertions(+), 32 deletions(-)
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Compiles hw/riscv a single time for both qemu-system-riscv32 and
+qemu-system-riscv64 by adopting the TargetInfo API and by moving
+machine definitions to generic QOM interfaces. This is the same approach
+as taken by Philippe in
+
+    "single-binary: Make hw/arm/ common"
+    (20251021205741.57109-1-philmd@linaro.org).
+
+All in all, the number of compilation when building both
+riscv[32|64]-softmmu is reduced by 11, and the binary size of
+qemu-system-riscv[32|64] is increased by 0.14% and 0.11% respectively
+(corresponding to 73k and 57k bytes).
+
+This patches is based on the following patchsets, applied in descending
+order:
+
+    - "single-binary: Make riscv cpu.h target partially independent"
+      (20251103033713.904455-1-alistair.francis@wdc.com);
+
+    - "single-binary: Make riscv cpu.h target independent"
+      (20251210132130.14465-1-anjo@rev.ng);
+
+    - "hw/riscv: Treat kernel_start_addr as vaddr"
+      (20251103171208.24355-1-anjo@rev.ng);
+
+    - "single-binary: Drop TARGET_PHYS_ADDR_SPACE_BITS"
+      (20251209-phys._5Faddr-v1-0-c387f3e72d77@rev.ng).
+
+Branch passing CI can be found here:
+
+  https://gitlab.com/AntonJohansson/qemu/-/pipelines/2215536778
+
+Signed-off-by: Anton Johansson <anjo@rev.ng>
+---
+Anton Johansson (14):
+      hw/riscv: Register generic riscv[32|64] QOM interfaces
+      hw/riscv: Add macros and globals for simplifying machine definitions
+      hw/riscv: Filter machine types for qemu-system-riscv32/64 binaries
+      hw/core: Add riscv[32|64] to "none" machine
+      configs/target: Implement per-binary TargetInfo structure for riscv
+      target-info: Add target_riscv64()
+      target/riscv: Replace TYPE_RISCV_CPU_BASE
+      target/riscv: Remove ifdefs in cpu.h
+      target/riscv: Replace TARGET_LONG_BITS in header exposed to common code
+      target/riscv: Move riscv_pmu_read_ctr() to internal csr.h header
+      target/riscv: Make pmu.h target-agnostic
+      target/riscv: Stub out kvm functions
+      hw/riscv: Define SiFive E/U CPUs using runtime conditions
+      hw/riscv: Compile once
+
+ include/hw/riscv/machines-qom.h   | 46 +++++++++++++++++++++++++++++++++++++++
+ include/hw/riscv/sifive_cpu.h     | 26 ++++++++++++++++------
+ include/hw/riscv/virt.h           | 11 ++++++++++
+ include/qemu/target-info.h        |  7 ++++++
+ target/riscv/cpu.h                | 42 +++++++----------------------------
+ target/riscv/cpu_bits.h           |  2 +-
+ target/riscv/csr.h                |  3 +++
+ target/riscv/pmu.h                |  4 +---
+ configs/targets/riscv32-softmmu.c | 26 ++++++++++++++++++++++
+ configs/targets/riscv64-softmmu.c | 26 ++++++++++++++++++++++
+ hw/core/null-machine.c            |  3 +++
+ hw/riscv/microblaze-v-generic.c   |  6 +++--
+ hw/riscv/microchip_pfsoc.c        |  2 ++
+ hw/riscv/opentitan.c              |  2 ++
+ hw/riscv/shakti_c.c               |  2 ++
+ hw/riscv/sifive_e.c               |  4 +++-
+ hw/riscv/sifive_u.c               |  6 +++--
+ hw/riscv/spike.c                  |  5 ++++-
+ hw/riscv/virt.c                   |  5 ++++-
+ hw/riscv/xiangshan_kmh.c          |  2 ++
+ target-info-qom.c                 |  9 ++++++++
+ target-info.c                     |  5 +++++
+ target/riscv/kvm/kvm-stub.c       | 23 ++++++++++++++++++++
+ target/riscv/machine.c            | 17 +++++++++++++++
+ target/riscv/pmu.c                |  9 +++++---
+ configs/targets/meson.build       |  1 +
+ hw/riscv/meson.build              | 32 +++++++++++++--------------
+ target/riscv/kvm/meson.build      |  1 +
+ 28 files changed, 256 insertions(+), 71 deletions(-)
 
 
