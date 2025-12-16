@@ -2,94 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 293A3CC5246
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Dec 2025 22:02:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78564CC5106
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Dec 2025 21:07:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVcA7-0001RV-DD; Tue, 16 Dec 2025 16:00:51 -0500
+	id 1vVbJA-0006gy-EO; Tue, 16 Dec 2025 15:06:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cyril.leclerc@subnoto.com>)
- id 1vVb3Y-0004Kr-Va
- for qemu-devel@nongnu.org; Tue, 16 Dec 2025 14:50:02 -0500
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVbJ8-0006gj-4X
+ for qemu-devel@nongnu.org; Tue, 16 Dec 2025 15:06:06 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cyril.leclerc@subnoto.com>)
- id 1vVb3W-0007MV-29
- for qemu-devel@nongnu.org; Tue, 16 Dec 2025 14:50:00 -0500
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-b79e7112398so992452166b.3
- for <qemu-devel@nongnu.org>; Tue, 16 Dec 2025 11:49:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=subnoto-com.20230601.gappssmtp.com; s=20230601; t=1765914594; x=1766519394;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=YtFSQzS8+7Iy+4YrT1DbnI6bk/rrIAZ1H9KtkCUzPUM=;
- b=WJZoQvN3DEADdnygLnjtOqLctfdVSjdTcgjT+l8mNtXYpi6ZdfWDC+btIxsuwhb2yg
- GBppja8fTHhuM01fCy53ux49rwcnMje0V5V/ea/TEC6cAxDdKLyzBnxk0zvs7QttbeEq
- Q1BS7egkjwFDxqulkeqYUVfD7t+kGNk61xzMk1peiofmep/EZLb/DFW5BiBQmmHRxdP7
- eGWh85wHsHA3UpNd2CjlMWYyoBlT2eIm5YbCE0MGlWrcEng9XrWDTfNISch/1wjj8bQf
- XPAOgCB7ZL55nqKcMVKv/w12mliQt0Or22oQBKihNtReJCo01A6ERPbsWRUsCOpxwOka
- 2cqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765914594; x=1766519394;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=YtFSQzS8+7Iy+4YrT1DbnI6bk/rrIAZ1H9KtkCUzPUM=;
- b=I36AJxHkHnN2xQ2Dx0i4FRvOjO7VsMJjauOHKO1GAJL2Wamt5fOX7+wX3iepZe7T+N
- 0mIqYizd62gMWig87VN+ZgIsR9fxppM0jaUrYbgOyVDl38+MpcvG5k64tKxu4iEInpvV
- myVZ9VugJhAMzROewzY5Sw5QW9Jb8hmCSv9WwBSYmFvilDzpuWP66/GhBpEn0rPjZZ3a
- w09kDzE7AmNjFMDwBEpmYT8m1vMJGftKuZqSNhEfDwaSm3q/AQ3j99qBZ3xojYs7grQN
- RcKm1vK4wx6qCzEX3ci9Sb4bvmHbMknk345vHp3RNRs8iyWQD7bFBV7vmrrRJWMJuYI6
- Ff6w==
-X-Gm-Message-State: AOJu0YyRaK2J9H8dMvcYO/G7uVKveiTnkkVCKqyr2EuBIM/f0faTvSx4
- IgEboPKT0rVUtOh6CEKsMTJPR0hT0LiL8OFbKGs10W0eOu59YuklMcT9ZHpzna12drsJQnieNfH
- RMEMf
-X-Gm-Gg: AY/fxX5nUbNWwf2CL51gzUROlXoQP9NZWys4tMyFY4cihm/ElACHItz7j+afm37RHms
- M8ouJ/cOUB2vCgZ99Ab6jqwQed2Zm2jSSQ/MKFtrE6khRv1vS3bTN04M7RRFV+xuceNstAi13N4
- E5qYqFsjlSCP+PgDkgi+VjWolhNopwM6sjtk4cvr1vtGsgPFeK0hSr/iROQAddj4niIFYc1dSa7
- EZlpTl6lfw+U+2PRRrVy9UcxBuQUpOO3KpqF37SWAtWn10Fzcxofj6YKJ8T7Qx0Anp3weMcPYBo
- NWosX1+1CgsS7ZvtN0OqEmp1gkSzHpelRzShNgLZ888vgKktSm6M8dnr4rjdgeaqbriTZDllBIR
- xGadSXSWLOH6tnQZrRJrKSUg9OegcPvunil1OBiSXJNbg5WP/E0MofeHqVNUIagcdXwJK3ub8c7
- 0zkH3lYTqoZxqehDVC4DnPGDwHrJ4whGl8TXmmj/X5EbU1urtCyIfQvUvvKbN4SqzIGbka0/dYE
- 1e7IipY+XHibnMgumS88GUf4QVz+UF3NONEeTJLF27zq46NUdC5g32aiXC+RjFzmyOHALiunmBC
- ugeLQw==
-X-Google-Smtp-Source: AGHT+IE6as294FLHdBuDb+RV+hYfSc+6vjSeLol4cTEkAMmtVNwCKfyKdZqUDVZ3mdaenuKTiVDUBw==
-X-Received: by 2002:a17:907:969e:b0:b71:cec2:d54 with SMTP id
- a640c23a62f3a-b7d23a80cdcmr1448843866b.57.1765914594250; 
- Tue, 16 Dec 2025 11:49:54 -0800 (PST)
-Received: from
- coder-e3a4a9b1-8b67-433d-8bfa-83dcda1c6c7d-85f799c49c-trc2n.coder.svc.cluster.local
- (195-154-137-126.rev.poneytelecom.eu. [195.154.137.126])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b7cfa5d1e89sm1748574266b.69.2025.12.16.11.49.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Dec 2025 11:49:54 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVbJ5-0002ec-Ub
+ for qemu-devel@nongnu.org; Tue, 16 Dec 2025 15:06:05 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 391125BCD3;
+ Tue, 16 Dec 2025 20:06:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1765915560; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=YyStftDYXwUDmLSQO+FtK7Qt7Q1mbbcghIZZJNGW1ws=;
+ b=CmnoTB9myPD9l+GzR4DyM6DtSCX3cjBzud3QeJDaA1Jr9ulhZj3TYs3SahMXX1uqEoH+gm
+ PJsBdDZDZN+DbzMWv7gmYEyhaUDxkPXXVPX18U/lGJAU/DjWPmbZvzlKKCZwcA9O0LldHL
+ wjz8t2IpLXvaFDhCFXeQJYVjV+saJt4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1765915560;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=YyStftDYXwUDmLSQO+FtK7Qt7Q1mbbcghIZZJNGW1ws=;
+ b=sKDRvMygqIgLBf12O59JM7qeHc/1XgfIKjvTqSprtJIy4qtKQIpK78A86noVVKA21k7EYk
+ kImBgs5uy/tUpqDA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1765915560; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=YyStftDYXwUDmLSQO+FtK7Qt7Q1mbbcghIZZJNGW1ws=;
+ b=CmnoTB9myPD9l+GzR4DyM6DtSCX3cjBzud3QeJDaA1Jr9ulhZj3TYs3SahMXX1uqEoH+gm
+ PJsBdDZDZN+DbzMWv7gmYEyhaUDxkPXXVPX18U/lGJAU/DjWPmbZvzlKKCZwcA9O0LldHL
+ wjz8t2IpLXvaFDhCFXeQJYVjV+saJt4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1765915560;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=YyStftDYXwUDmLSQO+FtK7Qt7Q1mbbcghIZZJNGW1ws=;
+ b=sKDRvMygqIgLBf12O59JM7qeHc/1XgfIKjvTqSprtJIy4qtKQIpK78A86noVVKA21k7EYk
+ kImBgs5uy/tUpqDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 558693EA63;
+ Tue, 16 Dec 2025 20:05:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id etYEBaa7QWmuewAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 16 Dec 2025 20:05:58 +0000
+From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sergio Lopez <slp@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- Cyril Leclerc <cyril.leclerc@subnoto.com>
-Subject: [PATCH] hw/i386/microvm: account for SEV c-bit in 64 bit PCI MMIO hole
-Date: Tue, 16 Dec 2025 19:49:53 +0000
-Message-ID: <20251216194953.1183260-1-cyril.leclerc@subnoto.com>
-X-Mailer: git-send-email 2.47.3
+Cc: alex.bennee@linaro.org, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH] tests/functional: Allow tests to be run individually
+Date: Tue, 16 Dec 2025 17:05:55 -0300
+Message-ID: <20251216200555.4374-1-farosas@suse.de>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=cyril.leclerc@subnoto.com; helo=mail-ej1-x62c.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.995];
+ MIME_GOOD(-0.10)[text/plain]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ FROM_HAS_DN(0.00)[]; ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
+ TO_DN_SOME(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[testcase.py:url,imap1.dmz-prg2.suse.org:helo,test_pseries.py:url,suse.de:email,suse.de:mid];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; FUZZY_RATELIMITED(0.00)[rspamd.com];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ RCPT_COUNT_FIVE(0.00)[5]; RCVD_TLS_ALL(0.00)[]
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 16 Dec 2025 16:00:37 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,52 +106,80 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Cyril Leclerc <cyril.leclerc@subnoto.com>
-From:  Cyril Leclerc via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-microvm places the 64-bit PCI MMIO hole at the top of the physical
-address space. With SEV, the c-bit reduces the usable address space,
-so the MMIO hole ends up at addresses the guest cannot reach (the
-guest always strips the c-bit on MMIO accesses).
+The functional tests currently don't allow a single test to be
+selected for execution by dotted name, e.g:
 
-Fix by placing the MMIO hole within the sev guest addressable range.
+../tests/functional/ppc64/test_pseries.py PseriesMachine.test_ppc64_linux_boot
+                                          ^
+The issue is that the testcase.py main function passes the test
+module's name as the second argument to unittest.main(), which makes
+it ignore all other positional arguments (presumably because the
+module is already the superset of all tests).
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3245
+After commit cac08383f0 ("tests/functional: expose sys.argv to
+unittest.main"), the situation improves by passing the rest of the
+argv from the command line invocation into unittest.main(), but it
+still doesn't fix the issue. The short form options are now accepted,
+so the -k option could be used to filter for a pattern, which is
+useful, but not the same as listing the test names.
 
-Tested-by: Cyril Leclerc <cyril.leclerc@subnoto.com>
-Signed-off-by: Cyril Leclerc <cyril.leclerc@subnoto.com>
+Fix this by passing the test module name via the "module" argument to
+unittest.main() and stop touching argv. The ways of invoking tests are
+now as per unittests documentation (-k still works):
+
+  Examples:
+    test_pseries.py                           - run default set of tests
+    test_pseries.py MyTestSuite               - run suite 'MyTestSuite'
+    test_pseries.py MyTestCase.testSomething  - run MyTestCase.testSomething
+    test_pseries.py MyTestCase                - run all 'test*' test methods in MyTestCase
+
+Note that ever since we've been programatically passing the module
+name to unittest.main(), the usage 'test_pseries.py test_pseries' was
+never valid. It used to "work" just the same as 'test_pseries.py
+foobar' would. After this patch, that usage results in an error.
+
+Also note that testcase.py:main() pertains to running the test module
+that invoked it via QemuSystemTest.main(), i.e. module == __main__. So
+the 'discover' usage of unittest doesn't apply here, the module is
+already discovered because that's where this code was called from to
+begin with. This patch could just as well call unittest.main() instead
+of unittest.main(test_module), but the latter provides nicer error
+messages prefixed with the module name.
+
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- hw/i386/microvm.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tests/functional/qemu_test/testcase.py | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
-index 94d22a232a..cb43a399ff 100644
---- a/hw/i386/microvm.c
-+++ b/hw/i386/microvm.c
-@@ -36,6 +36,7 @@
- #include "hw/i386/microvm.h"
- #include "hw/i386/x86.h"
- #include "target/i386/cpu.h"
-+#include "target/i386/sev.h"
- #include "hw/intc/i8259.h"
- #include "hw/timer/i8254.h"
- #include "hw/rtc/mc146818rtc.h"
-@@ -230,7 +231,11 @@ static void microvm_devices_init(MicrovmMachineState *mms)
+diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
+index 58f2740100..fa100d9632 100644
+--- a/tests/functional/qemu_test/testcase.py
++++ b/tests/functional/qemu_test/testcase.py
+@@ -249,17 +249,16 @@ def main():
+         warnings.simplefilter("default")
+         os.environ["PYTHONWARNINGS"] = "default"
  
-     if (x86_machine_is_acpi_enabled(x86ms) && mms->pcie == ON_OFF_AUTO_ON) {
-         /* use topmost 25% of the address space available */
--        hwaddr phys_size = (hwaddr)1 << X86_CPU(first_cpu)->phys_bits;
-+        int phys_bits = X86_CPU(first_cpu)->phys_bits;
-+        if (sev_enabled()) {
-+            phys_bits -= sev_get_reduced_phys_bits();
-+        }
-+        hwaddr phys_size = (hwaddr)1 << phys_bits;
-         if (phys_size > 0x1000000ll) {
-             mms->gpex.mmio64.size = phys_size / 4;
-             mms->gpex.mmio64.base = phys_size - mms->gpex.mmio64.size;
+-        path = os.path.basename(sys.argv[0])[:-3]
++        test_module = os.path.basename(sys.argv[0])[:-3]
+ 
+         cache = os.environ.get("QEMU_TEST_PRECACHE", None)
+         if cache is not None:
+-            Asset.precache_suites(path, cache)
++            Asset.precache_suites(test_module, cache)
+             return
+ 
+         tr = pycotap.TAPTestRunner(message_log = pycotap.LogMode.LogToError,
+                                    test_output_log = pycotap.LogMode.LogToError)
+-        res = unittest.main(module = None, testRunner = tr, exit = False,
+-                            argv=[sys.argv[0], path] + sys.argv[1:])
++        res = unittest.main(test_module, testRunner = tr, exit = False)
+         failed = {}
+         for (test, _message) in res.result.errors + res.result.failures:
+             if hasattr(test, "log_filename") and not test.id() in failed:
 -- 
-2.47.3
+2.51.0
 
 
