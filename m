@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92430CC5855
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 00:52:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E883CCC5835
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 00:50:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVenI-0001Ge-1C; Tue, 16 Dec 2025 18:49:28 -0500
+	id 1vVenE-0001E7-Li; Tue, 16 Dec 2025 18:49:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vVen5-0001CU-DT
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vVen6-0001CZ-I2
  for qemu-devel@nongnu.org; Tue, 16 Dec 2025 18:49:18 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vVen3-0006m4-J3
- for qemu-devel@nongnu.org; Tue, 16 Dec 2025 18:49:15 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vVen4-0006mH-Fs
+ for qemu-devel@nongnu.org; Tue, 16 Dec 2025 18:49:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Cc:To:In-Reply-To:References:Message-Id:Content-Transfer-Encoding:
  Content-Type:MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=FzpOcrVYjNzEtYgsWqtDXWI5lGWknI6VeBb0xQgmtOw=; b=QnxwhycABv+XnoF
- 8pDtw0Ukid1fVaNi9wKNJ1CeGDuLXrRG1eyiijDiHejGl4cY4X7rrhi0h079q+9P5WD8mdRz+WX6c
- OJAKzWSEY79NgWBCwpiF0ezOuX9PUShivvIGmkQZdUx+D39Aq0UJ6j7w5sRCLAfVuJx4QENuVXYD8
- v8=;
-Date: Wed, 17 Dec 2025 00:51:15 +0100
-Subject: [PATCH 10/14] target/riscv: Move riscv_pmu_read_ctr() to internal
- csr.h header
+ List-Help; bh=vaTs1VnbsgKYFk8rZjeEaioTtQMT1eDTmwJ9+Jy4GbM=; b=xD8La5KHboaFf6w
+ feyOhLUO5Ak7i2g4F+3wNeICCx7Beu+BWfDH5nI/iKoS9/j9fvIz3oS9WHumiC38WtpCfK6cAFMjh
+ zzsEircaNsYkCyFt3aYK3k5CGTDxEUn5Fsbi0Qt2fuABXnu7VL8s7AedmuEL79SHPjRdnfCnqjdUg
+ fo=;
+Date: Wed, 17 Dec 2025 00:51:16 +0100
+Subject: [PATCH 11/14] target/riscv: Make pmu.h target-agnostic
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251217-hw-riscv-cpu-int-v1-10-d24a4048d3aa@rev.ng>
+Message-Id: <20251217-hw-riscv-cpu-int-v1-11-d24a4048d3aa@rev.ng>
 References: <20251217-hw-riscv-cpu-int-v1-0-d24a4048d3aa@rev.ng>
 In-Reply-To: <20251217-hw-riscv-cpu-int-v1-0-d24a4048d3aa@rev.ng>
 To: qemu-devel@nongnu.org
@@ -64,53 +63,58 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The function depends on target_ulong and is via the pmu.h header exposed
-to hw/riscv, this function is only used internally in pmu.c and csr.c,
-so move it to the internal csr.h header.
-
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- target/riscv/csr.h | 3 +++
- target/riscv/pmu.h | 2 --
- target/riscv/pmu.c | 1 +
- 3 files changed, 4 insertions(+), 2 deletions(-)
+ target/riscv/pmu.h | 2 +-
+ target/riscv/pmu.c | 8 +++++---
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/target/riscv/csr.h b/target/riscv/csr.h
-index 3752a0ef43..e6a6f2e85f 100644
---- a/target/riscv/csr.h
-+++ b/target/riscv/csr.h
-@@ -90,4 +90,7 @@ void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
-                        target_ulong val);
- target_ulong pmpaddr_csr_read(CPURISCVState *env, uint32_t addr_index);
- 
-+/* PMU CSRs */
-+RISCVException riscv_pmu_read_ctr(CPURISCVState *env, target_ulong *val,
-+                                  bool upper_half, uint32_t ctr_idx);
- #endif /* RISCV_CSR_H */
 diff --git a/target/riscv/pmu.h b/target/riscv/pmu.h
-index 3853d0e262..ca40cfeed6 100644
+index ca40cfeed6..273d8f3f94 100644
 --- a/target/riscv/pmu.h
 +++ b/target/riscv/pmu.h
-@@ -36,7 +36,5 @@ int riscv_pmu_setup_timer(CPURISCVState *env, uint64_t value,
+@@ -34,7 +34,7 @@ int riscv_pmu_incr_ctr(RISCVCPU *cpu, enum riscv_pmu_event_idx event_idx);
+ void riscv_pmu_generate_fdt_node(void *fdt, uint32_t cmask, char *pmu_name);
+ int riscv_pmu_setup_timer(CPURISCVState *env, uint64_t value,
                            uint32_t ctr_idx);
- void riscv_pmu_update_fixed_ctrs(CPURISCVState *env, target_ulong newpriv,
+-void riscv_pmu_update_fixed_ctrs(CPURISCVState *env, target_ulong newpriv,
++void riscv_pmu_update_fixed_ctrs(CPURISCVState *env, privilege_mode_t newpriv,
                                   bool new_virt);
--RISCVException riscv_pmu_read_ctr(CPURISCVState *env, target_ulong *val,
--                                  bool upper_half, uint32_t ctr_idx);
  
  #endif /* RISCV_PMU_H */
 diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
-index 708f2ec7aa..9701c8cba6 100644
+index 9701c8cba6..d818c2f8f6 100644
 --- a/target/riscv/pmu.c
 +++ b/target/riscv/pmu.c
-@@ -22,6 +22,7 @@
- #include "qemu/timer.h"
- #include "cpu.h"
- #include "pmu.h"
-+#include "target/riscv/csr.h"
- #include "exec/icount.h"
- #include "system/device_tree.h"
+@@ -115,7 +115,8 @@ static bool riscv_pmu_counter_enabled(RISCVCPU *cpu, uint32_t ctr_idx)
+  *  new priv and new virt values are passed in as arguments.
+  */
+ static void riscv_pmu_icount_update_priv(CPURISCVState *env,
+-                                         target_ulong newpriv, bool new_virt)
++                                         privilege_mode_t newpriv,
++                                         bool new_virt)
+ {
+     uint64_t *snapshot_prev, *snapshot_new;
+     uint64_t current_icount;
+@@ -155,7 +156,8 @@ static void riscv_pmu_icount_update_priv(CPURISCVState *env,
+ }
  
+ static void riscv_pmu_cycle_update_priv(CPURISCVState *env,
+-                                        target_ulong newpriv, bool new_virt)
++                                        privilege_mode_t newpriv,
++                                        bool new_virt)
+ {
+     uint64_t *snapshot_prev, *snapshot_new;
+     uint64_t current_ticks;
+@@ -190,7 +192,7 @@ static void riscv_pmu_cycle_update_priv(CPURISCVState *env,
+     counter_arr[env->priv] += delta;
+ }
+ 
+-void riscv_pmu_update_fixed_ctrs(CPURISCVState *env, target_ulong newpriv,
++void riscv_pmu_update_fixed_ctrs(CPURISCVState *env, privilege_mode_t newpriv,
+                                  bool new_virt)
+ {
+     riscv_pmu_cycle_update_priv(env, newpriv, new_virt);
 
 -- 
 2.51.0
