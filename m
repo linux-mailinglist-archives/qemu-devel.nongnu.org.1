@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E883CCC5835
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F84CC5834
 	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 00:50:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVenE-0001E7-Li; Tue, 16 Dec 2025 18:49:26 -0500
+	id 1vVenI-0001HE-KT; Tue, 16 Dec 2025 18:49:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vVen6-0001CZ-I2
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vVen5-0001CW-Un
  for qemu-devel@nongnu.org; Tue, 16 Dec 2025 18:49:18 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vVen4-0006mH-Fs
- for qemu-devel@nongnu.org; Tue, 16 Dec 2025 18:49:16 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vVen4-0006mF-CW
+ for qemu-devel@nongnu.org; Tue, 16 Dec 2025 18:49:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Cc:To:In-Reply-To:References:Message-Id:Content-Transfer-Encoding:
  Content-Type:MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=vaTs1VnbsgKYFk8rZjeEaioTtQMT1eDTmwJ9+Jy4GbM=; b=xD8La5KHboaFf6w
- feyOhLUO5Ak7i2g4F+3wNeICCx7Beu+BWfDH5nI/iKoS9/j9fvIz3oS9WHumiC38WtpCfK6cAFMjh
- zzsEircaNsYkCyFt3aYK3k5CGTDxEUn5Fsbi0Qt2fuABXnu7VL8s7AedmuEL79SHPjRdnfCnqjdUg
- fo=;
-Date: Wed, 17 Dec 2025 00:51:16 +0100
-Subject: [PATCH 11/14] target/riscv: Make pmu.h target-agnostic
+ List-Help; bh=R75J3pf9cXFNs6ESiMpqWKuQgrceG7VdVOtBGjF5oLs=; b=U6e4PruOUtd/hIZ
+ GDTqMOXDS5sh+ZSxpmgi9m4WSMNUT/r9wIzaEwsHJSdUwagRbQEjFgVtktmSwzGB8bBfm1waLn6Mz
+ RNabpDoGZfzWsgNFvrJvPsQCfPkulB+VUJJVOWf9+v8NTzcmwGEg5O0+E9o06nawMAeXXBb0QpgbN
+ J8=;
+Date: Wed, 17 Dec 2025 00:51:17 +0100
+Subject: [PATCH 12/14] target/riscv: Stub out kvm functions
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251217-hw-riscv-cpu-int-v1-11-d24a4048d3aa@rev.ng>
+Message-Id: <20251217-hw-riscv-cpu-int-v1-12-d24a4048d3aa@rev.ng>
 References: <20251217-hw-riscv-cpu-int-v1-0-d24a4048d3aa@rev.ng>
 In-Reply-To: <20251217-hw-riscv-cpu-int-v1-0-d24a4048d3aa@rev.ng>
 To: qemu-devel@nongnu.org
@@ -63,58 +63,51 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Functions used externally by hw/riscv are stubbed out for non-kvm
+configurations, allowing a single compilation of hw/riscv.
+
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- target/riscv/pmu.h | 2 +-
- target/riscv/pmu.c | 8 +++++---
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ target/riscv/kvm/kvm-stub.c  | 23 +++++++++++++++++++++++
+ target/riscv/kvm/meson.build |  1 +
+ 2 files changed, 24 insertions(+)
 
-diff --git a/target/riscv/pmu.h b/target/riscv/pmu.h
-index ca40cfeed6..273d8f3f94 100644
---- a/target/riscv/pmu.h
-+++ b/target/riscv/pmu.h
-@@ -34,7 +34,7 @@ int riscv_pmu_incr_ctr(RISCVCPU *cpu, enum riscv_pmu_event_idx event_idx);
- void riscv_pmu_generate_fdt_node(void *fdt, uint32_t cmask, char *pmu_name);
- int riscv_pmu_setup_timer(CPURISCVState *env, uint64_t value,
-                           uint32_t ctr_idx);
--void riscv_pmu_update_fixed_ctrs(CPURISCVState *env, target_ulong newpriv,
-+void riscv_pmu_update_fixed_ctrs(CPURISCVState *env, privilege_mode_t newpriv,
-                                  bool new_virt);
- 
- #endif /* RISCV_PMU_H */
-diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
-index 9701c8cba6..d818c2f8f6 100644
---- a/target/riscv/pmu.c
-+++ b/target/riscv/pmu.c
-@@ -115,7 +115,8 @@ static bool riscv_pmu_counter_enabled(RISCVCPU *cpu, uint32_t ctr_idx)
-  *  new priv and new virt values are passed in as arguments.
-  */
- static void riscv_pmu_icount_update_priv(CPURISCVState *env,
--                                         target_ulong newpriv, bool new_virt)
-+                                         privilege_mode_t newpriv,
-+                                         bool new_virt)
- {
-     uint64_t *snapshot_prev, *snapshot_new;
-     uint64_t current_icount;
-@@ -155,7 +156,8 @@ static void riscv_pmu_icount_update_priv(CPURISCVState *env,
- }
- 
- static void riscv_pmu_cycle_update_priv(CPURISCVState *env,
--                                        target_ulong newpriv, bool new_virt)
-+                                        privilege_mode_t newpriv,
-+                                        bool new_virt)
- {
-     uint64_t *snapshot_prev, *snapshot_new;
-     uint64_t current_ticks;
-@@ -190,7 +192,7 @@ static void riscv_pmu_cycle_update_priv(CPURISCVState *env,
-     counter_arr[env->priv] += delta;
- }
- 
--void riscv_pmu_update_fixed_ctrs(CPURISCVState *env, target_ulong newpriv,
-+void riscv_pmu_update_fixed_ctrs(CPURISCVState *env, privilege_mode_t newpriv,
-                                  bool new_virt)
- {
-     riscv_pmu_cycle_update_priv(env, newpriv, new_virt);
+diff --git a/target/riscv/kvm/kvm-stub.c b/target/riscv/kvm/kvm-stub.c
+new file mode 100644
+index 0000000000..64e39c96d8
+--- /dev/null
++++ b/target/riscv/kvm/kvm-stub.c
+@@ -0,0 +1,23 @@
++/*
++ * QEMU RISCV specific KVM stubs
++ *
++ *  Copyright (c) rev.ng Labs Srl.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "target/riscv/kvm/kvm_riscv.h"
++
++void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
++                          uint64_t aia_irq_num, uint64_t aia_msi_num,
++                          uint64_t aplic_base, uint64_t imsic_base,
++                          uint64_t guest_num)
++{
++    g_assert_not_reached();
++}
++
++uint64_t kvm_riscv_get_timebase_frequency(RISCVCPU *cpu)
++{
++    g_assert_not_reached();
++}
+diff --git a/target/riscv/kvm/meson.build b/target/riscv/kvm/meson.build
+index 7e92415091..d3f395f431 100644
+--- a/target/riscv/kvm/meson.build
++++ b/target/riscv/kvm/meson.build
+@@ -1 +1,2 @@
++riscv_ss.add(when: 'CONFIG_KVM', if_false: files('kvm-stub.c'))
+ riscv_ss.add(when: 'CONFIG_KVM', if_true: files('kvm-cpu.c'))
 
 -- 
 2.51.0
