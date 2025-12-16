@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C10A1CC5849
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 00:50:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2262ECC585E
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 00:53:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVenK-0001JI-Fh; Tue, 16 Dec 2025 18:49:30 -0500
+	id 1vVenI-0001Gf-1R; Tue, 16 Dec 2025 18:49:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vVen1-0001BN-0i
- for qemu-devel@nongnu.org; Tue, 16 Dec 2025 18:49:14 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vVen0-0001BP-VW
+ for qemu-devel@nongnu.org; Tue, 16 Dec 2025 18:49:13 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vVemy-0006lT-KP
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vVemy-0006lX-KO
  for qemu-devel@nongnu.org; Tue, 16 Dec 2025 18:49:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Cc:To:In-Reply-To:References:Message-Id:Content-Transfer-Encoding:
@@ -22,16 +22,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=SbulELr7fvQ/Mas+GWwU/UakpuILoL/WSUAL/5qfqFY=; b=Kn9nBieUSeZErcA
- BqlXnj6h34Uz9WeOof2dTsLttUoEJRHEFGmMonzcs9uvLLcmVaNhJZNlLDH68Tiijdk68Msw8U2M2
- C0hEt2lQiSJmCLw/gvrHwfI4uyJJUCnmB062Y9cuch9j2QYY/fIQ0XeSVHXzc6qDEeo7Hdv+bpao9
- cY=;
-Date: Wed, 17 Dec 2025 00:51:09 +0100
-Subject: [PATCH 04/14] hw/core: Add riscv[32|64] to "none" machine
+ List-Help; bh=a3U+ZaBuXfpA0G4zxktPBWyoxo5yyQM9fwBSNf9EjgA=; b=dfifWosGclhWLdq
+ 96/iaOU8zt72AswHw0KWC8XbAc+oWnwSeDNImjvMpBsP86XjTAXYjV41n6emALjWSRDbOnMWPxrah
+ UEpLnOif+HuQ66Lrnfkl8IrdNRzX8oXWpjQWRZ9AGpe3NB0D6zJBvOpHKhH9xDltpONAFy3mVtbFU
+ Xs=;
+Date: Wed, 17 Dec 2025 00:51:10 +0100
+Subject: [PATCH 05/14] configs/target: Implement per-binary TargetInfo
+ structure for riscv
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251217-hw-riscv-cpu-int-v1-4-d24a4048d3aa@rev.ng>
+Message-Id: <20251217-hw-riscv-cpu-int-v1-5-d24a4048d3aa@rev.ng>
 References: <20251217-hw-riscv-cpu-int-v1-0-d24a4048d3aa@rev.ng>
 In-Reply-To: <20251217-hw-riscv-cpu-int-v1-0-d24a4048d3aa@rev.ng>
 To: qemu-devel@nongnu.org
@@ -63,30 +64,90 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Defines TargetInfo for 32- and 64-bit riscv binaries.
+
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- hw/core/null-machine.c | 3 +++
- 1 file changed, 3 insertions(+)
+ configs/targets/riscv32-softmmu.c | 26 ++++++++++++++++++++++++++
+ configs/targets/riscv64-softmmu.c | 26 ++++++++++++++++++++++++++
+ configs/targets/meson.build       |  1 +
+ 3 files changed, 53 insertions(+)
 
-diff --git a/hw/core/null-machine.c b/hw/core/null-machine.c
-index 67b769bd3e..77e4ed60e6 100644
---- a/hw/core/null-machine.c
-+++ b/hw/core/null-machine.c
-@@ -17,6 +17,7 @@
- #include "system/address-spaces.h"
- #include "hw/core/cpu.h"
- #include "hw/arm/machines-qom.h"
+diff --git a/configs/targets/riscv32-softmmu.c b/configs/targets/riscv32-softmmu.c
+new file mode 100644
+index 0000000000..897c93594b
+--- /dev/null
++++ b/configs/targets/riscv32-softmmu.c
+@@ -0,0 +1,26 @@
++/*
++ * QEMU binary/target API (qemu-system-riscv32)
++ *
++ *  Copyright (c) rev.ng Labs Srl.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/target-info-impl.h"
 +#include "hw/riscv/machines-qom.h"
- 
- static void machine_none_init(MachineState *mch)
- {
-@@ -59,4 +60,6 @@ static void machine_none_machine_init(MachineClass *mc)
- DEFINE_MACHINE_WITH_INTERFACES("none", machine_none_machine_init,
-                                { TYPE_TARGET_AARCH64_MACHINE },
-                                { TYPE_TARGET_ARM_MACHINE },
-+                               { TYPE_TARGET_RISCV32_MACHINE },
-+                               { TYPE_TARGET_RISCV64_MACHINE },
-                                { })
++#include "target/riscv/cpu-qom.h"
++
++static const TargetInfo target_info_riscv32_system = {
++    .target_name = "riscv32",
++    .target_arch = SYS_EMU_TARGET_RISCV32,
++    .long_bits = 32,
++    .cpu_type = TYPE_RISCV_CPU,
++    .machine_typename = TYPE_TARGET_RISCV32_MACHINE,
++    .endianness = ENDIAN_MODE_LITTLE,
++};
++
++const TargetInfo *target_info(void)
++{
++    return &target_info_riscv32_system;
++}
+diff --git a/configs/targets/riscv64-softmmu.c b/configs/targets/riscv64-softmmu.c
+new file mode 100644
+index 0000000000..d2e4520d76
+--- /dev/null
++++ b/configs/targets/riscv64-softmmu.c
+@@ -0,0 +1,26 @@
++/*
++ * QEMU binary/target API (qemu-system-riscv64)
++ *
++ *  Copyright (c) rev.ng Labs Srl.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/target-info-impl.h"
++#include "hw/riscv/machines-qom.h"
++#include "target/riscv/cpu-qom.h"
++
++static const TargetInfo target_info_riscv64_system = {
++    .target_name = "riscv64",
++    .target_arch = SYS_EMU_TARGET_RISCV64,
++    .long_bits = 64,
++    .cpu_type = TYPE_RISCV_CPU,
++    .machine_typename = TYPE_TARGET_RISCV64_MACHINE,
++    .endianness = ENDIAN_MODE_LITTLE,
++};
++
++const TargetInfo *target_info(void)
++{
++    return &target_info_riscv64_system;
++}
+diff --git a/configs/targets/meson.build b/configs/targets/meson.build
+index cca2514eb5..2ab4d27eaf 100644
+--- a/configs/targets/meson.build
++++ b/configs/targets/meson.build
+@@ -1,5 +1,6 @@
+ foreach target : [
+       'arm-softmmu', 'aarch64-softmmu',
++      'riscv32-softmmu', 'riscv64-softmmu'
+   ]
+   config_target_info += {target : files(target + '.c')}
+ endforeach
 
 -- 
 2.51.0
