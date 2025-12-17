@@ -2,92 +2,122 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24585CC95E1
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 20:09:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5F86CC9617
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 20:13:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVwu0-0004kh-92; Wed, 17 Dec 2025 14:09:36 -0500
+	id 1vVwvy-0005dI-UB; Wed, 17 Dec 2025 14:11:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vVwtz-0004kV-Aw
- for qemu-devel@nongnu.org; Wed, 17 Dec 2025 14:09:35 -0500
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vVwtx-0000Yx-Mk
- for qemu-devel@nongnu.org; Wed, 17 Dec 2025 14:09:34 -0500
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-7f651586be1so482239b3a.1
- for <qemu-devel@nongnu.org>; Wed, 17 Dec 2025 11:09:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1765998572; x=1766603372; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=0gcgUFcIy0Rl998fbvewGR5lW7JgEQupnjBQ1p4RVng=;
- b=iJvexFMdMGNIJTwidlT8CfEbASM3+0EfLhT/mf2JEZTFlfPtcPHqcaC4EB3RfqiQxP
- 4l9OaP7/5zWGYunizGrlbcO7pp47GNyDe7c8XyKnng+FjNl++SfFkcL/lWUq4SAbShdY
- gGNKElWApFiw4nROlcGX1yt1TZyV417K3lcjfgNWH+ST63rUJNlNVXxUCCq4uwUWe0Bp
- FkJ3XNjj7nQT0xdx/0pObbJulnF51Y5Hl1gek5oIL20TaYgyo4uxF4om6b5/s3uWEeyf
- cJacWbhZTCjp4PgxxYqF08gjTGutGuBY62K07MJbE8wF/GgtKVc2hQLubMBRxMAbrAwb
- Lwhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765998572; x=1766603372;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0gcgUFcIy0Rl998fbvewGR5lW7JgEQupnjBQ1p4RVng=;
- b=G2OaTVbjjuIc6iwVkdQ/k2ePzAx3viqAfPvzKMlsW631OEKte99rsW8mwsJ+qyN1la
- ki89/xlv9puhcAgF7qAuyD5LFgALkh9bD+luHtQbpthXA/ha0xKmPwvWtysVtf/gACAQ
- l/eL390MiFbuQ9XNYE0SEJILdBxAyIF9rrYtK5lj+65YdP/dAgs5WV/+d7N7THeL4F+E
- 83MXxpCKF5odaaCSQyONuPmvL58EVCZuI+i5fMryRYavAES81L9EK217Ufr4oIhXbOjX
- pMySzViGvXQ3rAZ18ZizfmLcS+xUaBLY9+BnXWVnoS4NebTsFlEN0SlqGLl6gAWAQwqo
- j0RA==
-X-Gm-Message-State: AOJu0Yw7WnIWhYDX95TXVeWymTVsn9llUROWXgK7ty8cJ26AveTeS5Bs
- FeEGKCfX2hwasH8mtf63YBxpnmrvkJ2tocs7mhW1ApHjAXDuymmF+JngSfhIMNrog9CL/PyH+L+
- utXRADJI=
-X-Gm-Gg: AY/fxX4Y9+n5zmJtVNaqvmRJfdYQZNB4iozumITPFp4L0fdU+KnNOzBQhn4hF1gRU11
- mWjBZ5N/aYQQSXZGKYB/eUs/mAS0ey0Y1jk6onUZSAMfimjr7N9n496CdvFtcX/zA9HzJ1vanzh
- 7n3GPTsWByBDBMj3RoVWo8DDDoqhlAU4vUSsskJriBO+T+jkAqyndm3t00/AUBCx/XN/ioMzXZT
- N6LAzCF7PmG0CKU666vwdA2ekLWx9jbB96ZcmbXojbXHqbbQHIfWcEG21oANPCEVP4n+/sQZWHG
- n9KCz0s3bmmN1VVvOyBHDrP6gpZliKZOqftd+y4giuD7GzgzKfgGZYsy9ODnqun5zzIpviutiEP
- mpp15omneOgO6+AWYba41+c2EOLgU4ZOST7ZjzypvKOhmbel3Q07YiIw7W8Mx+7PY8eDxiq7S3V
- dQhqF7ntttrCrGu6oQrmh2lAITlj2myA==
-X-Google-Smtp-Source: AGHT+IGw9upkc8rGJFXChsj/SHkJJwIpWWumE3Wx12jx0p8M1YG+6UzpO3a8bzF/I038tmdwu5xJig==
-X-Received: by 2002:a05:6a00:2295:b0:7ab:242b:95c6 with SMTP id
- d2e1a72fcca58-7fe0b73a291mr425067b3a.6.1765998572060; 
- Wed, 17 Dec 2025 11:09:32 -0800 (PST)
-Received: from [192.168.10.140] ([180.233.125.245])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7fe1456d417sm196556b3a.58.2025.12.17.11.09.30
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Dec 2025 11:09:31 -0800 (PST)
-Message-ID: <50046687-efa9-4dee-814f-31234bee9cb5@linaro.org>
-Date: Thu, 18 Dec 2025 06:09:27 +1100
+ (Exim 4.90_1) (envelope-from <patrick@stwcx.xyz>)
+ id 1vVwvv-0005bw-Jq; Wed, 17 Dec 2025 14:11:35 -0500
+Received: from fout-a8-smtp.messagingengine.com ([103.168.172.151])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <patrick@stwcx.xyz>)
+ id 1vVwvt-00013K-LH; Wed, 17 Dec 2025 14:11:35 -0500
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+ by mailfout.phl.internal (Postfix) with ESMTP id D3BD1EC004F;
+ Wed, 17 Dec 2025 14:11:30 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+ by phl-compute-05.internal (MEProxy); Wed, 17 Dec 2025 14:11:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stwcx.xyz; h=cc
+ :cc:content-transfer-encoding:content-type:content-type:date
+ :date:from:from:in-reply-to:message-id:mime-version:reply-to
+ :subject:subject:to:to; s=fm3; t=1765998690; x=1766085090; bh=qf
+ ImsTZgWyi8Wv+VrPK1hOHx30Est5+jvVOTcygWZ8w=; b=CAItpBGB3bxgKRfKok
+ Lwm61EzkG4NbIZib+MKU/USufKdex9W6cwyW5D/qiXpRbxVuMdQYfG34tzysHQcS
+ lzaYztlA41ZaAIjBUNjvjgEkp8rgqKKbiKw/APjCXvJvQS1mHJoBCJT0Ybt9aByz
+ vqhZ941Bjjfx1MQKZGB19yWKDYCYUbpX1mTTUfYDjtVf8nAsDyI1VmQMp28BmcOc
+ me/kCMFUMLDveYLhSyHhtJ3gBTNuT3POCCGSn7UX/r07Zn/pXnTMpXMcbBRtNt/8
+ kSy9trHYfRajhwS50ZsXcozJMfmDp2v/tancdTie6TeUNi01FL8zPnTjPCOFUiMj
+ jH4Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:message-id:mime-version:reply-to:subject
+ :subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+ fm1; t=1765998690; x=1766085090; bh=qfImsTZgWyi8Wv+VrPK1hOHx30Es
+ t5+jvVOTcygWZ8w=; b=O3Iu3a5sW/Fr7A47Pyuxktkyy4W6OjOBFfu6Wwo0LTBs
+ djx9yi+f35o+9Fb77BjOmcd0DluHZxosaU6uIkrCJkMJM4sFHV6w0FpvAZVqDk0f
+ XKHsmaMZrANFKz6RtqK0tL8r3bbycD49NFEdzfGc4eRVqBuj/BOwJPi4yuAG6pCW
+ P3GHB2qDAlT71t8vrAFEaEX9BVUUtVU/Bp29HnXgQUeTkh5attEDxZnk5sNUAvCL
+ Sg161edAp+UwH/75I4SfLY8Gd93S3Ah506DA4J8yc1ZuQ3tmEreCZVIGrlCCB9WI
+ VuY5PeBMdm/Pfc07q8PCKh7FlRAQ71w5v4V2So26yw==
+X-ME-Sender: <xms:YQBDafzN0d21Y98zsFdqQdW1Cj0JWRliokkYULoA51Obzd7N5juuHg>
+ <xme:YQBDaaUdKo7iEIBQiYnIpL7NqcJWt0QhsFgpkbOLKO2CWQClBhrI_868zl2nE96ZG
+ GcRcXw6mcIvSjGsuWIzDBUAPXMnc08tvDgBf4_KuPwiRKrifZC5RQ>
+X-ME-Received: <xmr:YQBDaT-1yiTy7i3-QK0WLZgXJe4ILlneye0MCRHQwmWeApMIALSBR5k8p2M>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdegfeefjecutefuodetggdotefrod
+ ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+ ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfghrlh
+ cuvffnffculdejtddmnecujfgurhephffufffkgggtgffvvefosehtjeertdertdejnecu
+ hfhrohhmpefrrghtrhhitghkucghihhllhhirghmshcuoehprghtrhhitghksehsthiftg
+ igrdighiiiqeenucggtffrrghtthgvrhhnpeefuddvfeehhffgveelheejheefvdfhtdet
+ ieelgfehtedtgeekleejhffffedvleenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+ grmhepmhgrihhlfhhrohhmpehprghtrhhitghksehsthiftgigrdighiiipdhnsggprhgt
+ phhtthhopedutddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphgrthhrihgtkh
+ esshhtfigtgidrgiihiidprhgtphhtthhopehpvghtvghrrdhmrgihuggvlhhlsehlihhn
+ rghrohdrohhrghdprhgtphhtthhopehsthgvvhgvnhgplhgvvgesrghsphgvvgguthgvtg
+ hhrdgtohhmpdhrtghpthhtohepqhgvmhhuqdgrrhhmsehnohhnghhnuhdrohhrghdprhgt
+ phhtthhopehjrghmihhnpghlihhnsegrshhpvggvughtvggthhdrtghomhdprhgtphhtth
+ hopegrnhgurhgvfiestghouggvtghonhhsthhruhgtthdrtghomhdrrghupdhrtghpthht
+ oheplhgvvghtrhhohiesghhmrghilhdrtghomhdprhgtphhtthhopehqvghmuhdquggvvh
+ gvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepjhhovghlsehjmhhsrdhiugdrrghu
+X-ME-Proxy: <xmx:YQBDaVs9PFowb0jwukMYS2pIIGY8V3ADVtXriqAMgM-ZPqHBBAz-ug>
+ <xmx:YQBDab1Kapjk-oL_CrIxDjAl5db-grzFThjNZRJrTHwflPthD4ISUQ>
+ <xmx:YQBDaSSxFfP4PDZ2VNRz2DOmr4TqjcT-81PzGVt_qhLA0uvd0tlC3Q>
+ <xmx:YQBDaXeGDQwJSDz6lZWz4zhc69AwIhy6o3jHOP7XYZtR3Q2Q5OePHg>
+ <xmx:YgBDaUKogbRlfX1ETbzb0XW3h-2HW3AnrQcfxaZ59_-s40sKINieyd7t>
+Feedback-ID: i68a1478a:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 17 Dec 2025 14:11:29 -0500 (EST)
+From: Patrick Williams <patrick@stwcx.xyz>
+Subject: [PATCH 00/11] hw/arm/aspeed: catalina: add eeproms images
+Date: Wed, 17 Dec 2025 14:11:27 -0500
+Message-Id: <20251217-catalina-eeproms-v1-0-dc7b276efd57@stwcx.xyz>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/14] system/physmem: Inline and remove leul_to_cpu()
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAF8AQ2kC/x3MQQqAIBBA0avIrBPUsLKrRAupqQZKRSMC8e5Jy
+ 7f4P0PCSJhgZBkiPpTIuwrZMFgO63bktFaDEkpLJXu+2Nue5CxHDNFfiSut10GItjNGQs1CxI3
+ efznNpXx9qiNMYgAAAA==
+X-Change-ID: 20251217-catalina-eeproms-255d80036991
 To: qemu-devel@nongnu.org
-References: <20251217143150.94463-1-philmd@linaro.org>
- <20251217143150.94463-6-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20251217143150.94463-6-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Cc: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+ Peter Maydell <peter.maydell@linaro.org>, 
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>, 
+ Jamin Lin <jamin_lin@aspeedtech.com>, 
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, 
+ qemu-arm@nongnu.org, Patrick Williams <patrick@stwcx.xyz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3244; i=patrick@stwcx.xyz;
+ h=from:subject:message-id;
+ bh=fXOOrFT2puVO0ueEXyGoaTqM8WhIlRDA/MI35QjYPEI=;
+ b=owEBbQKS/ZANAwAIAasDR8wtAMEZAcsmYgBpQwBfYCxzBQ9hQUbquMkUsNnFuYrypC7guo3lV
+ +/3NZd7ln6JAjMEAAEIAB0WIQQEYP2KLgsT1w1uokGrA0fMLQDBGQUCaUMAXwAKCRCrA0fMLQDB
+ GTNIEACY/FdGSrZG1LzGWVWz82dpLvSQlhJxEdeTnr0rGzRP34yeZ8f37yaq8j2/fAoSS9yCJd2
+ BnDFwZlVtm7q4zvtRJWQGLZApoJiEgAfLYkWuLfUzX9coESZRWCCpbXZHSnjKbziXg1N2MNROMn
+ Sx1ICV5+0MJ8KJ4I/64BnvidNFb2EIeulcbMkvGPXiLHbjZ/lOA0NfEOcZ7D1b54LI8zfBYcB/i
+ MP4qKqzI4WeTyLj2Q0f2/w7uwyOU5+2yWxz6tPS6/iTn3A5jmwVjn0291+EMJKvSkjfRcun7brZ
+ bN1IIS3aZcuGxbjccMwVVRsSREUVsoaUGUGeL8CrJO7A/qJyYZNyRPczNOCVC1tFtRZZDUfZwuy
+ nY7Vc7NoQDuhVz4ZfMwWYeYbIUzkCthilYewEUhU0dkuGIR6NmL0iM4Rfg28LCc5BG4HoSvCyQy
+ o6o3PcwoyLcbfEliilM5cuBXgbKzWDlwDjtYy9kTlbmrGTQ92Jkw84sTrjgOrDd0MpvNI+P/7m2
+ Pwl+XkxA9TsbhywZlA8mUZFxrQYkJN5qCSfWdvWcEbGLdvvCYsPQYRUN/nnOGqgSDJ5VCto3V0m
+ k6FMGxFV9dPHxbr0ZFtVutJ+sfG+a+r+EsEEemR6W2+FQoMwTfxUCQwz4qPcWXU9+ZzqZNvzdv9
+ JMGiKuvpMrI2ETA==
+X-Developer-Key: i=patrick@stwcx.xyz; a=openpgp;
+ fpr=0460FD8A2E0B13D70D6EA241AB0347CC2D00C119
+Received-SPF: pass client-ip=103.168.172.151; envelope-from=patrick@stwcx.xyz;
+ helo=fout-a8-smtp.messagingengine.com
+X-Spam_score_int: 17
+X-Spam_score: 1.7
+X-Spam_bar: +
+X-Spam_report: (1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FROM_SUSPICIOUS_NTLD=0.498,
+ FROM_SUSPICIOUS_NTLD_FP=1.997, PDS_OTHER_BAD_TLD=1.997, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,19 +133,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/18/25 01:31, Philippe Mathieu-Daudé wrote:
-> leul_to_cpu() is only used within physmem.c: inline it
-> and remove.
-> Since @bitmap is of 'unsigned long' type, use its size
-> with ldn_le_p() instead of using HOST_LONG_BITS.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> ---
->   include/qemu/bswap.h | 11 -----------
->   system/physmem.c     |  5 +++--
->   2 files changed, 3 insertions(+), 13 deletions(-)
+Since Catalina is a server, made up of a number of FRUs, there are
+a number of EEPROMs that would contain IPMI-format FRU data.  On
+OpenBMC, these EEPROMs are parsed by `entity-manager` to determine
+which devices are physically present in the server (and which variants
+of those devices).
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Add EEPROM images for every FRU in the Catalina server.  There is a
+utility `frugen` which can take a JSON representation of the IPMI
+fields and generate a binary image from that.  Use this to create
+sanitized EEPROM images for every FRU and add the rom-init calls to
+the appropriate locations in the Catalina model.  I left the JSON
+source as comments along-side each EEPROM image so they can be updated
+or recreated as necessary.
 
-r~
+Tested by loading the latest version of OpenBMC's Catalina image and
+confirming the FRUs are detected appropriately by entity-manager.
+
+```
+root@catalina:~# busctl tree xyz.openbmc_project.EntityManager | grep "board/[^/]*$"
+          |- /xyz/openbmc_project/inventory/system/board/BMC_Storage_Module
+          |- /xyz/openbmc_project/inventory/system/board/Catalina_FIO
+          |- /xyz/openbmc_project/inventory/system/board/Catalina_HDD_Carrier
+          |- /xyz/openbmc_project/inventory/system/board/Catalina_HDD_NVMe
+          |- /xyz/openbmc_project/inventory/system/board/Catalina_OSFP_Carrier
+          |- /xyz/openbmc_project/inventory/system/board/Catalina_PDB
+          |- /xyz/openbmc_project/inventory/system/board/Catalina_SCM
+          |- /xyz/openbmc_project/inventory/system/board/NVIDIA_Cable_Cartridge_0
+          |- /xyz/openbmc_project/inventory/system/board/NVIDIA_Cable_Cartridge_2
+          |- /xyz/openbmc_project/inventory/system/board/NVIDIA_GB200_0
+          |- /xyz/openbmc_project/inventory/system/board/NVIDIA_GB200_1
+          |- /xyz/openbmc_project/inventory/system/board/NVIDIA_GB200_IO_Board_29
+          |- /xyz/openbmc_project/inventory/system/board/NVIDIA_GB200_IO_Board_41
+          |- /xyz/openbmc_project/inventory/system/board/NVIDIA_HMC
+          |- /xyz/openbmc_project/inventory/system/board/OCP_CX7_NIC_10
+          `- /xyz/openbmc_project/inventory/system/board/OCP_CX7_NIC_15
+```
+
+This result matches the expected results when running the image on a
+physical Catalina device.
+
+Signed-off-by: Patrick Williams <patrick@stwcx.xyz>
+---
+Patrick Williams (11):
+      hw/arm/aspeed: catalina: add BSM FRU EEPROM
+      hw/arm/aspeed: catalina: add DC-SCM FRU EEPROM
+      hw/arm/aspeed: catalina: add PDB FRU EEPROM
+      hw/arm/aspeed: catalina: add OSFP FRU EEPROM
+      hw/arm/aspeed: catalina: add FIO FRU EEPROM
+      hw/arm/aspeed: catalina: add HDD FRU EEPROM
+      hw/arm/aspeed: catalina: add GB200 FRU EEPROM
+      hw/arm/aspeed: catalina: add GB200-IO FRU EEPROM
+      hw/arm/aspeed: catalina: add HMC FRU EEPROM
+      hw/arm/aspeed: catalina: add NIC FRU EEPROM
+      hw/arm/aspeed: catalina: add Cable Cartridge FRU EEPROM
+
+ hw/arm/aspeed_ast2600_catalina.c | 473 +++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 457 insertions(+), 16 deletions(-)
+---
+base-commit: 7154e4df40468012fccb6687ecd2b288c56a4a2d
+change-id: 20251217-catalina-eeproms-255d80036991
+
+Best regards,
+-- 
+Patrick Williams
+
 
