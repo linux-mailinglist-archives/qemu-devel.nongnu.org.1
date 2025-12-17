@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5F86CC9617
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 20:13:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93418CC960B
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 20:13:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVwvy-0005dI-UB; Wed, 17 Dec 2025 14:11:38 -0500
+	id 1vVww3-0005gn-P6; Wed, 17 Dec 2025 14:11:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <patrick@stwcx.xyz>)
- id 1vVwvv-0005bw-Jq; Wed, 17 Dec 2025 14:11:35 -0500
+ id 1vVwvw-0005cC-Tn; Wed, 17 Dec 2025 14:11:36 -0500
 Received: from fout-a8-smtp.messagingengine.com ([103.168.172.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <patrick@stwcx.xyz>)
- id 1vVwvt-00013K-LH; Wed, 17 Dec 2025 14:11:35 -0500
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
- by mailfout.phl.internal (Postfix) with ESMTP id D3BD1EC004F;
- Wed, 17 Dec 2025 14:11:30 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
- by phl-compute-05.internal (MEProxy); Wed, 17 Dec 2025 14:11:30 -0500
+ id 1vVwvu-00013r-7E; Wed, 17 Dec 2025 14:11:36 -0500
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+ by mailfout.phl.internal (Postfix) with ESMTP id 29877EC00CD;
+ Wed, 17 Dec 2025 14:11:32 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+ by phl-compute-04.internal (MEProxy); Wed, 17 Dec 2025 14:11:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stwcx.xyz; h=cc
  :cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:message-id:mime-version:reply-to
- :subject:subject:to:to; s=fm3; t=1765998690; x=1766085090; bh=qf
- ImsTZgWyi8Wv+VrPK1hOHx30Est5+jvVOTcygWZ8w=; b=CAItpBGB3bxgKRfKok
- Lwm61EzkG4NbIZib+MKU/USufKdex9W6cwyW5D/qiXpRbxVuMdQYfG34tzysHQcS
- lzaYztlA41ZaAIjBUNjvjgEkp8rgqKKbiKw/APjCXvJvQS1mHJoBCJT0Ybt9aByz
- vqhZ941Bjjfx1MQKZGB19yWKDYCYUbpX1mTTUfYDjtVf8nAsDyI1VmQMp28BmcOc
- me/kCMFUMLDveYLhSyHhtJ3gBTNuT3POCCGSn7UX/r07Zn/pXnTMpXMcbBRtNt/8
- kSy9trHYfRajhwS50ZsXcozJMfmDp2v/tancdTie6TeUNi01FL8zPnTjPCOFUiMj
- jH4Q==
+ :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to; s=fm3; t=1765998692;
+ x=1766085092; bh=dMd/y3Y5/WTdOzBUvcXNDNceEaE1rJrJapd+W6yOSMo=; b=
+ lFz4HRe1eyVUZd1cUcG9G/L2mojhFSQDuiIH3KE8d+b7i6kGYAm7z3qx0G1Y4z7I
+ cPpEAW+e3SIAG8dyaYgHVV8asGy7VEqPAK77jy8wEi0Q86/DXOdNgLrdnUfzPYsz
+ /eVT1fjO3/9TgUkdwGPL3Qkwb4A6cfOeb+F/NYl7ckzPw+0zeae2e48dwjz4AyMe
+ Nk3ntUFwTM4CzpARZR62Bn9AuSJORQEcpy9BI5VJpfXkrZufh8dDdWVTABJ1hOgW
+ D4aJV5q+pAcAbnml8obeb1Q05xEm0+fEQOyNUW3rshtCMMViJ3deDPIFLnjCS1zx
+ p3MExpzLF8oFhjL7jPx2NQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:message-id:mime-version:reply-to:subject
- :subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm1; t=1765998690; x=1766085090; bh=qfImsTZgWyi8Wv+VrPK1hOHx30Es
- t5+jvVOTcygWZ8w=; b=O3Iu3a5sW/Fr7A47Pyuxktkyy4W6OjOBFfu6Wwo0LTBs
- djx9yi+f35o+9Fb77BjOmcd0DluHZxosaU6uIkrCJkMJM4sFHV6w0FpvAZVqDk0f
- XKHsmaMZrANFKz6RtqK0tL8r3bbycD49NFEdzfGc4eRVqBuj/BOwJPi4yuAG6pCW
- P3GHB2qDAlT71t8vrAFEaEX9BVUUtVU/Bp29HnXgQUeTkh5attEDxZnk5sNUAvCL
- Sg161edAp+UwH/75I4SfLY8Gd93S3Ah506DA4J8yc1ZuQ3tmEreCZVIGrlCCB9WI
- VuY5PeBMdm/Pfc07q8PCKh7FlRAQ71w5v4V2So26yw==
-X-ME-Sender: <xms:YQBDafzN0d21Y98zsFdqQdW1Cj0JWRliokkYULoA51Obzd7N5juuHg>
- <xme:YQBDaaUdKo7iEIBQiYnIpL7NqcJWt0QhsFgpkbOLKO2CWQClBhrI_868zl2nE96ZG
- GcRcXw6mcIvSjGsuWIzDBUAPXMnc08tvDgBf4_KuPwiRKrifZC5RQ>
-X-ME-Received: <xmr:YQBDaT-1yiTy7i3-QK0WLZgXJe4ILlneye0MCRHQwmWeApMIALSBR5k8p2M>
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1765998692; x=
+ 1766085092; bh=dMd/y3Y5/WTdOzBUvcXNDNceEaE1rJrJapd+W6yOSMo=; b=q
+ Mdiq2nQlLDprS8kyV5i/AXEpqHhiUWgpYKdryBIq+X26Vk2jnqUVb3rvLLA5HQE8
+ UrO0libS5NnPr9b3JiRae8gwHkDjnoc+l/4OFu9Z8teWPhWaeoeLlnyBkMhdtXuW
+ Mhh72VJfVCJ2kc6o+cTlZ2Cr+0Er1j8sc74GjYnelOrKrhG4YPlNm6MpYoKoAduz
+ Lp8jPUMIttqu9dU+5sXl67M2JLINVApAAkgsIyx1Efs+ddUmAmcxv3bBJH1c/zLu
+ WaaBcga2uNc4r9O5MgbWxdzfeHGJxUc90mfUUOSdD0AaD3fJmkZ1hoje4eeLVRKp
+ XVx5rvGtbbxo2wSgSpNow==
+X-ME-Sender: <xms:YwBDaXm5YrioUMwUF6ab2S8lxZtkg9UQTzs3b7oO-qB_Ru0Ns1QMYQ>
+ <xme:YwBDad6vrE48_K29P6y3ClwUHylm1Vfd5Zolu6K0-E--ACzf_jbVNUrPNvVQroEaJ
+ Df-zZBtOM_7IbAA81MT7waZ1dp4hs74ObHRNcMuoHDh8z6cmxcflvc>
+X-ME-Received: <xmr:YwBDaYQtTqYQEvCvALs4r6-TxULp9KpFBagPzTkghMxYqumaSgo1EuKi76I>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdegfeefjecutefuodetggdotefrod
  ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
  ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfghrlh
- cuvffnffculdejtddmnecujfgurhephffufffkgggtgffvvefosehtjeertdertdejnecu
- hfhrohhmpefrrghtrhhitghkucghihhllhhirghmshcuoehprghtrhhitghksehsthiftg
- igrdighiiiqeenucggtffrrghtthgvrhhnpeefuddvfeehhffgveelheejheefvdfhtdet
- ieelgfehtedtgeekleejhffffedvleenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
- grmhepmhgrihhlfhhrohhmpehprghtrhhitghksehsthiftgigrdighiiipdhnsggprhgt
- phhtthhopedutddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphgrthhrihgtkh
- esshhtfigtgidrgiihiidprhgtphhtthhopehpvghtvghrrdhmrgihuggvlhhlsehlihhn
- rghrohdrohhrghdprhgtphhtthhopehsthgvvhgvnhgplhgvvgesrghsphgvvgguthgvtg
- hhrdgtohhmpdhrtghpthhtohepqhgvmhhuqdgrrhhmsehnohhnghhnuhdrohhrghdprhgt
- phhtthhopehjrghmihhnpghlihhnsegrshhpvggvughtvggthhdrtghomhdprhgtphhtth
- hopegrnhgurhgvfiestghouggvtghonhhsthhruhgtthdrtghomhdrrghupdhrtghpthht
- oheplhgvvghtrhhohiesghhmrghilhdrtghomhdprhgtphhtthhopehqvghmuhdquggvvh
- gvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepjhhovghlsehjmhhsrdhiugdrrghu
-X-ME-Proxy: <xmx:YQBDaVs9PFowb0jwukMYS2pIIGY8V3ADVtXriqAMgM-ZPqHBBAz-ug>
- <xmx:YQBDab1Kapjk-oL_CrIxDjAl5db-grzFThjNZRJrTHwflPthD4ISUQ>
- <xmx:YQBDaSSxFfP4PDZ2VNRz2DOmr4TqjcT-81PzGVt_qhLA0uvd0tlC3Q>
- <xmx:YQBDaXeGDQwJSDz6lZWz4zhc69AwIhy6o3jHOP7XYZtR3Q2Q5OePHg>
- <xmx:YgBDaUKogbRlfX1ETbzb0XW3h-2HW3AnrQcfxaZ59_-s40sKINieyd7t>
+ cuvffnffculdejtddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdej
+ necuhfhrohhmpefrrghtrhhitghkucghihhllhhirghmshcuoehprghtrhhitghksehsth
+ iftgigrdighiiiqeenucggtffrrghtthgvrhhnpeehjeejhfektedtuedtgfegjeekvdej
+ gfehveelhedtfffhudevjeeikeehgfeltdenucevlhhushhtvghrufhiiigvpedtnecurf
+ grrhgrmhepmhgrihhlfhhrohhmpehprghtrhhitghksehsthiftgigrdighiiipdhnsggp
+ rhgtphhtthhopedutddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphgrthhrih
+ gtkhesshhtfigtgidrgiihiidprhgtphhtthhopehpvghtvghrrdhmrgihuggvlhhlsehl
+ ihhnrghrohdrohhrghdprhgtphhtthhopehsthgvvhgvnhgplhgvvgesrghsphgvvgguth
+ gvtghhrdgtohhmpdhrtghpthhtohepqhgvmhhuqdgrrhhmsehnohhnghhnuhdrohhrghdp
+ rhgtphhtthhopehjrghmihhnpghlihhnsegrshhpvggvughtvggthhdrtghomhdprhgtph
+ htthhopegrnhgurhgvfiestghouggvtghonhhsthhruhgtthdrtghomhdrrghupdhrtghp
+ thhtoheplhgvvghtrhhohiesghhmrghilhdrtghomhdprhgtphhtthhopehqvghmuhdqug
+ gvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepjhhovghlsehjmhhsrdhiugdr
+ rghu
+X-ME-Proxy: <xmx:YwBDabxw4FKxL4POhtbe65A0rCbl2IKU-Nk4Aw7JyLJeowkJzOoMWA>
+ <xmx:YwBDaQpR6Xcbv33gqmcx9MLcsDRfB6oisFiF283NYJcAy9AQrZAL_Q>
+ <xmx:YwBDae2N0NC8poKUWzd5EQ8p3AV_QiyFAwtYupQ73iNFQRLQOC53Pw>
+ <xmx:YwBDaQweRi75Xjk8lflNSyKRc4al1TaqHzNxM-g1bWiCiFMyMId4OA>
+ <xmx:ZABDaeeXlP1G2CGklwdIaQwb6uafYugRbqk96CYtAnUy1WjgJ0ZHs8hr>
 Feedback-ID: i68a1478a:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 17 Dec 2025 14:11:29 -0500 (EST)
+ 17 Dec 2025 14:11:31 -0500 (EST)
 From: Patrick Williams <patrick@stwcx.xyz>
-Subject: [PATCH 00/11] hw/arm/aspeed: catalina: add eeproms images
-Date: Wed, 17 Dec 2025 14:11:27 -0500
-Message-Id: <20251217-catalina-eeproms-v1-0-dc7b276efd57@stwcx.xyz>
+Date: Wed, 17 Dec 2025 14:11:28 -0500
+Subject: [PATCH 01/11] hw/arm/aspeed: catalina: add BSM FRU EEPROM
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAF8AQ2kC/x3MQQqAIBBA0avIrBPUsLKrRAupqQZKRSMC8e5Jy
- 7f4P0PCSJhgZBkiPpTIuwrZMFgO63bktFaDEkpLJXu+2Nue5CxHDNFfiSut10GItjNGQs1CxI3
- efznNpXx9qiNMYgAAAA==
-X-Change-ID: 20251217-catalina-eeproms-255d80036991
+Message-Id: <20251217-catalina-eeproms-v1-1-dc7b276efd57@stwcx.xyz>
+References: <20251217-catalina-eeproms-v1-0-dc7b276efd57@stwcx.xyz>
+In-Reply-To: <20251217-catalina-eeproms-v1-0-dc7b276efd57@stwcx.xyz>
 To: qemu-devel@nongnu.org
 Cc: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
  Peter Maydell <peter.maydell@linaro.org>, 
@@ -91,31 +91,31 @@ Cc: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
  Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, 
  qemu-arm@nongnu.org, Patrick Williams <patrick@stwcx.xyz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3244; i=patrick@stwcx.xyz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2680; i=patrick@stwcx.xyz;
  h=from:subject:message-id;
- bh=fXOOrFT2puVO0ueEXyGoaTqM8WhIlRDA/MI35QjYPEI=;
- b=owEBbQKS/ZANAwAIAasDR8wtAMEZAcsmYgBpQwBfYCxzBQ9hQUbquMkUsNnFuYrypC7guo3lV
- +/3NZd7ln6JAjMEAAEIAB0WIQQEYP2KLgsT1w1uokGrA0fMLQDBGQUCaUMAXwAKCRCrA0fMLQDB
- GTNIEACY/FdGSrZG1LzGWVWz82dpLvSQlhJxEdeTnr0rGzRP34yeZ8f37yaq8j2/fAoSS9yCJd2
- BnDFwZlVtm7q4zvtRJWQGLZApoJiEgAfLYkWuLfUzX9coESZRWCCpbXZHSnjKbziXg1N2MNROMn
- Sx1ICV5+0MJ8KJ4I/64BnvidNFb2EIeulcbMkvGPXiLHbjZ/lOA0NfEOcZ7D1b54LI8zfBYcB/i
- MP4qKqzI4WeTyLj2Q0f2/w7uwyOU5+2yWxz6tPS6/iTn3A5jmwVjn0291+EMJKvSkjfRcun7brZ
- bN1IIS3aZcuGxbjccMwVVRsSREUVsoaUGUGeL8CrJO7A/qJyYZNyRPczNOCVC1tFtRZZDUfZwuy
- nY7Vc7NoQDuhVz4ZfMwWYeYbIUzkCthilYewEUhU0dkuGIR6NmL0iM4Rfg28LCc5BG4HoSvCyQy
- o6o3PcwoyLcbfEliilM5cuBXgbKzWDlwDjtYy9kTlbmrGTQ92Jkw84sTrjgOrDd0MpvNI+P/7m2
- Pwl+XkxA9TsbhywZlA8mUZFxrQYkJN5qCSfWdvWcEbGLdvvCYsPQYRUN/nnOGqgSDJ5VCto3V0m
- k6FMGxFV9dPHxbr0ZFtVutJ+sfG+a+r+EsEEemR6W2+FQoMwTfxUCQwz4qPcWXU9+ZzqZNvzdv9
- JMGiKuvpMrI2ETA==
+ bh=pR+VRcSuXRhGmNKjk9xnzpQCKRPt529MoAxMrx7lqzY=;
+ b=owEBbQKS/ZANAwAIAasDR8wtAMEZAcsmYgBpQwBgIW9ovf3wxSEFEIsF6MoyMmy4A2TMJunbz
+ PVEpWlohuaJAjMEAAEIAB0WIQQEYP2KLgsT1w1uokGrA0fMLQDBGQUCaUMAYAAKCRCrA0fMLQDB
+ GeccD/4386x6ZgQ9Gx+m4q20CzS8StORbgyvlRLCaiqiUHQQ588EnSEeYkDCun0EydGovkleYXw
+ 1WnXhnWF2UkJzOtugdtZFPzck7kh4aXfTV5Joe8pAHxhSCVD+H5Xvd4HeW28Uj6D6slYDeCmdaw
+ s8FXZxLtgwrNFGrplg0ty22a6Nsx64Sj1oWayMMzrN9wkKcaMXRjUNB+IjI8ZKMnbl3aF/jkRgd
+ BrIReAE8LBKRw6rTjr4Dl8gwIM1ujy/igrzNY0ARF/5fBLTX8gDVEXnSxfeB15RVid3iEjg3b/K
+ z/SqsJtTarSsxuzec5UzDekVyWBKb5DpbR2mi/JsnoBVSHByt2/VZSyb9+Or4AdO+JrrtHMziXm
+ 8w6748Mu//WuUFuKfwThFDmMX8db7esTKdug6413gMXgddEWrcATbrbTkpZ8svsOUZt+uJWSuVl
+ ZkcUIX016sJdRknYfVnCRDgF7QEde20YfSqanZO2a6RgejQaFQ+WVhsUBcmencic7XCFZS4xnt4
+ X6a/HlFQ3f8szlRx2UQKR3YLf9MVn92SdYc9gb6aZS7IPDbvjw0IaRu1xOxMte3wZccfmsGrjAZ
+ G3cU0mJCBCi0l3mJe7SMoeZ06H6UD6Iuvo6Zv4xQXuLtSvRCbxOmZcb3HhtIwchmWxwqY1zBG6E
+ jp/j6rdXlgmzaeQ==
 X-Developer-Key: i=patrick@stwcx.xyz; a=openpgp;
  fpr=0460FD8A2E0B13D70D6EA241AB0347CC2D00C119
 Received-SPF: pass client-ip=103.168.172.151; envelope-from=patrick@stwcx.xyz;
  helo=fout-a8-smtp.messagingengine.com
-X-Spam_score_int: 17
-X-Spam_score: 1.7
-X-Spam_bar: +
-X-Spam_report: (1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FROM_SUSPICIOUS_NTLD=0.498,
- FROM_SUSPICIOUS_NTLD_FP=1.997, PDS_OTHER_BAD_TLD=1.997, RCVD_IN_DNSWL_LOW=-0.7,
+X-Spam_score_int: -2
+X-Spam_score: -0.3
+X-Spam_bar: /
+X-Spam_report: (-0.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FROM_SUSPICIOUS_NTLD=0.498, PDS_OTHER_BAD_TLD=1.997, RCVD_IN_DNSWL_LOW=-0.7,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
@@ -133,69 +133,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since Catalina is a server, made up of a number of FRUs, there are
-a number of EEPROMs that would contain IPMI-format FRU data.  On
-OpenBMC, these EEPROMs are parsed by `entity-manager` to determine
-which devices are physically present in the server (and which variants
-of those devices).
-
-Add EEPROM images for every FRU in the Catalina server.  There is a
-utility `frugen` which can take a JSON representation of the IPMI
-fields and generate a binary image from that.  Use this to create
-sanitized EEPROM images for every FRU and add the rom-init calls to
-the appropriate locations in the Catalina model.  I left the JSON
-source as comments along-side each EEPROM image so they can be updated
-or recreated as necessary.
-
-Tested by loading the latest version of OpenBMC's Catalina image and
-confirming the FRUs are detected appropriately by entity-manager.
-
-```
-root@catalina:~# busctl tree xyz.openbmc_project.EntityManager | grep "board/[^/]*$"
-          |- /xyz/openbmc_project/inventory/system/board/BMC_Storage_Module
-          |- /xyz/openbmc_project/inventory/system/board/Catalina_FIO
-          |- /xyz/openbmc_project/inventory/system/board/Catalina_HDD_Carrier
-          |- /xyz/openbmc_project/inventory/system/board/Catalina_HDD_NVMe
-          |- /xyz/openbmc_project/inventory/system/board/Catalina_OSFP_Carrier
-          |- /xyz/openbmc_project/inventory/system/board/Catalina_PDB
-          |- /xyz/openbmc_project/inventory/system/board/Catalina_SCM
-          |- /xyz/openbmc_project/inventory/system/board/NVIDIA_Cable_Cartridge_0
-          |- /xyz/openbmc_project/inventory/system/board/NVIDIA_Cable_Cartridge_2
-          |- /xyz/openbmc_project/inventory/system/board/NVIDIA_GB200_0
-          |- /xyz/openbmc_project/inventory/system/board/NVIDIA_GB200_1
-          |- /xyz/openbmc_project/inventory/system/board/NVIDIA_GB200_IO_Board_29
-          |- /xyz/openbmc_project/inventory/system/board/NVIDIA_GB200_IO_Board_41
-          |- /xyz/openbmc_project/inventory/system/board/NVIDIA_HMC
-          |- /xyz/openbmc_project/inventory/system/board/OCP_CX7_NIC_10
-          `- /xyz/openbmc_project/inventory/system/board/OCP_CX7_NIC_15
-```
-
-This result matches the expected results when running the image on a
-physical Catalina device.
+Use ipmitool/frugen tool to generate a BSM image based on a
+sanitized set of data from a real device EEPROM.
 
 Signed-off-by: Patrick Williams <patrick@stwcx.xyz>
 ---
-Patrick Williams (11):
-      hw/arm/aspeed: catalina: add BSM FRU EEPROM
-      hw/arm/aspeed: catalina: add DC-SCM FRU EEPROM
-      hw/arm/aspeed: catalina: add PDB FRU EEPROM
-      hw/arm/aspeed: catalina: add OSFP FRU EEPROM
-      hw/arm/aspeed: catalina: add FIO FRU EEPROM
-      hw/arm/aspeed: catalina: add HDD FRU EEPROM
-      hw/arm/aspeed: catalina: add GB200 FRU EEPROM
-      hw/arm/aspeed: catalina: add GB200-IO FRU EEPROM
-      hw/arm/aspeed: catalina: add HMC FRU EEPROM
-      hw/arm/aspeed: catalina: add NIC FRU EEPROM
-      hw/arm/aspeed: catalina: add Cable Cartridge FRU EEPROM
+ hw/arm/aspeed_ast2600_catalina.c | 40 +++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 39 insertions(+), 1 deletion(-)
 
- hw/arm/aspeed_ast2600_catalina.c | 473 +++++++++++++++++++++++++++++++++++++--
- 1 file changed, 457 insertions(+), 16 deletions(-)
----
-base-commit: 7154e4df40468012fccb6687ecd2b288c56a4a2d
-change-id: 20251217-catalina-eeproms-255d80036991
+diff --git a/hw/arm/aspeed_ast2600_catalina.c b/hw/arm/aspeed_ast2600_catalina.c
+index 91977a4d3c..0f229f4dc6 100644
+--- a/hw/arm/aspeed_ast2600_catalina.c
++++ b/hw/arm/aspeed_ast2600_catalina.c
+@@ -26,6 +26,44 @@
+ #define TYPE_TMP421 "tmp421"
+ #define TYPE_DS1338 "ds1338"
+ 
++/*
++ * "BMC Storage Module" FRU data.  Generated with frugen.
++ *
++ *    {
++ *      "board": {
++ *        "mfg": "Quanta",
++ *        "pname": "BMC Storage Module (QEMU)",
++ *        "pn": "00000000000",
++ *        "serial": "00000000000000",
++ *        "date": "01/12/2025 00:00",
++ *        "custom": ["09-100183"]
++ *      },
++ *      "product": {
++ *        "mfg": "Quanta",
++ *        "pname": "CI-Catalina",
++ *        "pn": "10000000001",
++ *        "ver": "MP",
++ *        "serial": "10000000000000",
++ *        "atag": "QEMU"
++ *      }
++ *    }
++ */
++static const uint8_t bsm_eeprom[] = {
++    0x01, 0x00, 0x00, 0x01, 0x0a, 0x00, 0x00, 0xf4, 0x01, 0x09, 0x19, 0x8c,
++    0x19, 0xf0, 0xc6, 0x51, 0x75, 0x61, 0x6e, 0x74, 0x61, 0xd9, 0x42, 0x4d,
++    0x43, 0x20, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x20, 0x4d, 0x6f,
++    0x64, 0x75, 0x6c, 0x65, 0x20, 0x28, 0x51, 0x45, 0x4d, 0x55, 0x29, 0x8b,
++    0x10, 0x04, 0x41, 0x10, 0x04, 0x41, 0x10, 0x04, 0x41, 0x10, 0x04, 0x89,
++    0x10, 0x04, 0x41, 0x10, 0x04, 0x41, 0x10, 0x04, 0x01, 0xc0, 0x87, 0x50,
++    0xd6, 0x44, 0x10, 0x14, 0x61, 0x13, 0xc1, 0x59, 0x01, 0x07, 0x19, 0xc6,
++    0x51, 0x75, 0x61, 0x6e, 0x74, 0x61, 0xcb, 0x43, 0x49, 0x2d, 0x43, 0x61,
++    0x74, 0x61, 0x6c, 0x69, 0x6e, 0x61, 0x89, 0x11, 0x04, 0x41, 0x10, 0x04,
++    0x41, 0x10, 0x14, 0x01, 0x82, 0x2d, 0x0c, 0x8b, 0x11, 0x04, 0x41, 0x10,
++    0x04, 0x41, 0x10, 0x04, 0x41, 0x10, 0x04, 0x83, 0x71, 0xd9, 0xd6, 0xc0,
++    0xc1, 0x00, 0x00, 0x37
++};
++static const size_t bsm_eeprom_len = sizeof(bsm_eeprom);
++
+ static void catalina_bmc_i2c_init(AspeedMachineState *bmc)
+ {
+     /* Reference from v6.16-rc2 aspeed-bmc-facebook-catalina.dts */
+@@ -147,7 +185,7 @@ static void catalina_bmc_i2c_init(AspeedMachineState *bmc)
+     /* eeprom@50 */
+     at24c_eeprom_init(i2c[9], 0x50, 8 * KiB);
+     /* eeprom@56 */
+-    at24c_eeprom_init(i2c[9], 0x56, 8 * KiB);
++    at24c_eeprom_init_rom(i2c[9], 0x56, 8 * KiB, bsm_eeprom, bsm_eeprom_len);
+ 
+     /* &i2c10 */
+     /* temperature-sensor@1f - tpm421 */
 
-Best regards,
 -- 
-Patrick Williams
+2.51.2
 
 
