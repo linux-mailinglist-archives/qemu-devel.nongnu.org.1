@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11766CC95F6
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 20:12:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB9BACC9602
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 20:13:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVww7-0005ld-EN; Wed, 17 Dec 2025 14:11:47 -0500
+	id 1vVww8-0005lm-AG; Wed, 17 Dec 2025 14:11:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <patrick@stwcx.xyz>)
- id 1vVww1-0005gC-I4; Wed, 17 Dec 2025 14:11:41 -0500
+ id 1vVww2-0005gh-IJ; Wed, 17 Dec 2025 14:11:42 -0500
 Received: from fhigh-a1-smtp.messagingengine.com ([103.168.172.152])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <patrick@stwcx.xyz>)
- id 1vVww0-00016x-0E; Wed, 17 Dec 2025 14:11:41 -0500
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
- by mailfhigh.phl.internal (Postfix) with ESMTP id 259B91400171;
- Wed, 17 Dec 2025 14:11:39 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
- by phl-compute-03.internal (MEProxy); Wed, 17 Dec 2025 14:11:39 -0500
+ id 1vVww0-00017E-VI; Wed, 17 Dec 2025 14:11:42 -0500
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+ by mailfhigh.phl.internal (Postfix) with ESMTP id 0DCAF1400153;
+ Wed, 17 Dec 2025 14:11:40 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+ by phl-compute-02.internal (MEProxy); Wed, 17 Dec 2025 14:11:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stwcx.xyz; h=cc
  :cc:content-transfer-encoding:content-type:content-type:date
  :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm3; t=1765998699;
- x=1766085099; bh=1yxv9VgjYUFC3WhMhsCWJn77lXJ2rnty7VmsWWQT5+U=; b=
- ek7NUxIXgGuqqW0zRELO1xDYmxlu7hwiFxVoxQE1LZBVVQwvjvJf+yKxyDN1kgXj
- Drp8fLNqhH8TbxN8N2amv7E3UhZm3Pxm7ZdmraVlY2+ULQN/AfnhYnvzrGI93ybg
- xnyh8SlpEKMaGh+Eoe9wgNMUIpYthrQLLGlll/oJTi+WojzvTMVdibTD554zkQWU
- xykfvRT6LyC94KaDahxIzzF3+G7A84B2No4eZ4y/EwiugJoVFk29ByalUiPmf4dh
- CJj1oz7GJ5TSlYrwT70hJmDK70VT0x3GrmIm/UMDJvAXidXiiw7TqMW+4F0WH2Q1
- BZO639RuvdTeWCs6MFQYzg==
+ :references:reply-to:subject:subject:to:to; s=fm3; t=1765998700;
+ x=1766085100; bh=trdvBtKEUmPko8wZZZRCAPQSdqmLgmNhs+xnFYm/J7A=; b=
+ p6x6aS1vj9Rks5K9YhVeeNY8BlCo9pe0ub47lnylV0ESQxno3RTy1qHdWdWxNMpL
+ DojaDosvg/GDe6uxAO4odmWxpSH54lErrnwGHJOiTw7fhl20/MWIZY7lAdZpWsbR
+ IrftXsRzmA5IWXM6cbEHWLZ3vC2AqnkAN4R1jMupFYpE70vwByGgZGi8+kfOI5Zs
+ Z9TAoYkj7iw1Igj5soJF/7OcP5pOT4HJPvKxyDXi8aKYhAZqyHehQsEj6shWWzl5
+ 5qoof24KnVexdzKgtdwmQUBrjj384OXfmrqqGohqe8VJUVQIhU+ppaChQyLjLLQL
+ 0/lkULVhKGo0bEpZPQQTjw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
  :from:from:in-reply-to:in-reply-to:message-id:mime-version
  :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1765998699; x=
- 1766085099; bh=1yxv9VgjYUFC3WhMhsCWJn77lXJ2rnty7VmsWWQT5+U=; b=T
- 0T6eEJxbP34MC+v00bjXTxcNl1tA7idMRrEM+ZQgafhRzAlRuQixYsL3nf3Cuj96
- 0JvjWyGqmjSsORjoVWo12n5IoMezrG58Jcp9QDu5xC2ljCnfAoZk1j+/Mo2YyE7t
- tE7TZ+Om+ugKm5B9uUJISQY6wtnkJCUGWeTi9lSwabdOfMZvsGg6kpA1TyJ5SNqf
- n7mE9MLTmXukQV/64wDyDt1qn752Vavmga6K/YNd+8/NXAnY2useWSNX9ta2caJQ
- JLVBwsZlZ9TwZ/TVzsQwAze5G9K5PhHHeEALHyjI2YjpNBPbU+qqLYKxtI+GxQJe
- dL4QJRgCxiYx/tModCHAg==
-X-ME-Sender: <xms:awBDabOb7WZlF0wWhWkB_FbTj3oz9SlbfifEnjqQRGATttkzDDdGzg>
- <xme:awBDaZAeh0DBIlSpG4zHIWccGfzsehUp5DXDvn23NEiX0bNn0kVKR_kfQ2y6Q4z-0
- lf09_dr9-mEpiLpHisFNVQA7yRujPpXTR1blP3SagP6E-8-pDBkrVc>
-X-ME-Received: <xmr:awBDaU4720e_3KrwVYxCk-jSYossdtq2g3NB-vDN1_P1LWu3Qg86rzclU9E>
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1765998700; x=
+ 1766085100; bh=trdvBtKEUmPko8wZZZRCAPQSdqmLgmNhs+xnFYm/J7A=; b=i
+ DGK+MSUoU6SV+/QP9TiiLVQpGPLZy+3S8lnuqhNDUmfUa+zZoymFa4GDiFAGG8hH
+ kIiIZJnUoPYZSx2ph3FWfL2dPwR3BlW9k9XWaQs7Ykbg0piNqYZADFaQ8m8pBxx0
+ lolAdtWfXdwTlhk+YTQR3zq2I/qcOHkRNZa2VKs9zNXTIpH2EAGZUsLyMDPPRw0g
+ XVRazf0i062MIY6ERXEFsaVRrGA7bC/VVElM7QHodHuiuLZOzzSYd8IpKwKWrKNQ
+ V//z3X9VT2rX1L8zGMRoQqHL3YQkhMbX39WCaGyYbCoFNPq18W9+XH6suE9EKH4s
+ Y9ka5QJG5xeZq/uHPJ/Sg==
+X-ME-Sender: <xms:awBDafps-HNqo3NvVI4kTQ0jXWGxYPm3kNtGnsIgeHmKk0v6mZmHEw>
+ <xme:awBDacsDnAXqJZ-375ycrRsC_1vfoFzXPzYaA4OcEmqDsDBNinUHX5sEYzLbUIHF4
+ xuD2hk8oNbNHtCwhkuqlSN1wlE7DGG3soRt88VENsGLGlnDG4FXfSo>
+X-ME-Received: <xmr:awBDaW3XF3QGZBt2BX668UWOBsTLz3ACmGZRrU-kDT8vNT6TK_NW6sN9z_E>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdegfeefjecutefuodetggdotefrod
  ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
  ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfghrlh
  cuvffnffculdejtddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdej
  necuhfhrohhmpefrrghtrhhitghkucghihhllhhirghmshcuoehprghtrhhitghksehsth
  iftgigrdighiiiqeenucggtffrrghtthgvrhhnpeehjeejhfektedtuedtgfegjeekvdej
- gfehveelhedtfffhudevjeeikeehgfeltdenucevlhhushhtvghrufhiiigvpedunecurf
+ gfehveelhedtfffhudevjeeikeehgfeltdenucevlhhushhtvghrufhiiigvpedtnecurf
  grrhgrmhepmhgrihhlfhhrohhmpehprghtrhhitghksehsthiftgigrdighiiipdhnsggp
  rhgtphhtthhopedutddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphgrthhrih
  gtkhesshhtfigtgidrgiihiidprhgtphhtthhopehpvghtvghrrdhmrgihuggvlhhlsehl
@@ -66,21 +66,21 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdegfeefjecutefuodetgg
  thhtoheplhgvvghtrhhohiesghhmrghilhdrtghomhdprhgtphhtthhopehqvghmuhdqug
  gvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepjhhovghlsehjmhhsrdhiugdr
  rghu
-X-ME-Proxy: <xmx:awBDab7LirjDQhEGR2YXsgZZkl5OyWU6ydz8Kem0dIzcrxJL3fnVZw>
- <xmx:awBDaeTcDXFQMwhOlsPAgLe7udv4ZkgaqkkJkFKAoVvWg72BVM-QfQ>
- <xmx:awBDab_1_bO9ubk7POi69QGcy1d8YTMin5B3dYvM4pDXZhwNSfUWsA>
- <xmx:awBDaXb-eYWaBCAmezNjwmJTfsymlU6y2Wu0fg3N1exezRJXSdaH4A>
- <xmx:awBDaXHsHHPJ2MOITabnFFgKdYTOM_C56-oQEb6oUzWMYlZxCkuDDBS->
+X-ME-Proxy: <xmx:awBDafEeMdGsvcLQt06MH8YYRK0QovdxELxOhUiGEvwuyOQy4VE2TQ>
+ <xmx:awBDaZsbo0vC4bgwerPMiFE5wieE0tl_UsJONH2_1xDR1knx9Iw52w>
+ <xmx:awBDaaoTll4kqpntf9aPYH6_CHUiDJNhB2UXiKrxDpbRAmp7Xj9Yzg>
+ <xmx:awBDaYXdwzEHvWI6-i6MDhyQZQVS1sVOsUNsPQIO40rl5AgzikBxHA>
+ <xmx:bABDabCEKevFNWVtVfrp6iD_ObF5E6xmPLhD07K8PATRWEvuavEtoIum>
 Feedback-ID: i68a1478a:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 17 Dec 2025 14:11:38 -0500 (EST)
+ 17 Dec 2025 14:11:39 -0500 (EST)
 From: Patrick Williams <patrick@stwcx.xyz>
-Date: Wed, 17 Dec 2025 14:11:36 -0500
-Subject: [PATCH 09/11] hw/arm/aspeed: catalina: add HMC FRU EEPROM
+Date: Wed, 17 Dec 2025 14:11:37 -0500
+Subject: [PATCH 10/11] hw/arm/aspeed: catalina: add NIC FRU EEPROM
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251217-catalina-eeproms-v1-9-dc7b276efd57@stwcx.xyz>
+Message-Id: <20251217-catalina-eeproms-v1-10-dc7b276efd57@stwcx.xyz>
 References: <20251217-catalina-eeproms-v1-0-dc7b276efd57@stwcx.xyz>
 In-Reply-To: <20251217-catalina-eeproms-v1-0-dc7b276efd57@stwcx.xyz>
 To: qemu-devel@nongnu.org
@@ -91,21 +91,21 @@ Cc: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
  Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, 
  qemu-arm@nongnu.org, Patrick Williams <patrick@stwcx.xyz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2970; i=patrick@stwcx.xyz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3292; i=patrick@stwcx.xyz;
  h=from:subject:message-id;
- bh=3qON4J0qifGjcPDpqFfp57Z6rI2eYsG2QGpKgDuLtQE=;
- b=owEBbQKS/ZANAwAIAasDR8wtAMEZAcsmYgBpQwBgE8QnMCJblomUppvgqnpd/H4tecQ2/u21z
- ArsZp6PfqqJAjMEAAEIAB0WIQQEYP2KLgsT1w1uokGrA0fMLQDBGQUCaUMAYAAKCRCrA0fMLQDB
- GWsDEACiBuMsxFAcklCKwrUb0m2rdgBt+5Czc90F7JReGzoPWGNZmqmBuXOKzoVR8AB1Ev9yCL5
- rAAYgxFaZBHe542ndrXdZNxzxbcnxrRKtob2l1gzueSxCtr2LY0Uqvca3gIDHFhfyptYOYenv5i
- Xd1E0fxr1eAmSXc+eU7t5dO5txzC+ZGuAnEMO04kdXiOkInT/1Se5Zo4QgCv7sPsI+X0rWUMmA/
- G677XmfCeuH9G75Y/baXVJOgGt5ZVM/6j65KWuuAf9bRfWkvekucDpO4wfB2CaXwjtyoRUNDkTJ
- jxMUzBq8IciTRH6aqAj5NJy8/RNsudQhmIyrlHQFEKTg0PjiByj432gEZup4EVSEufiRdMCbjL+
- H9+D0OLHQhn7Zmh4wc/imod6nQeiBdBpytStW2f72ix2pr1OCyEM9y+WlPq81/+SjK+HsufzfYx
- /tEX3JuMUYn1R75P5afk8mxCxUUgGQN7ZWxShgTFQIrV5AY1m3t+cVfjvWLDkhN1fKqxU9onk0k
- M2VlRJZhC+MgOH+ER7VdtXLyR1HEHvkMnMFiR118nUAJdfpEA8+EwrZ/kvCt95Fm5yhQgobP8nT
- RvqZMykyLytfUr3c0IQ7/OIkZD6Wrz8nBsgK9JB7LKLgw9XUg0p5Ll64346d2Iqk6C18sQyr76M
- rzMw3eunjsG3gTQ==
+ bh=AqK7FC2aq6QrbLuNqpsdQ9FZzJn2q1br67zuerRR6nU=;
+ b=owEBbQKS/ZANAwAIAasDR8wtAMEZAcsmYgBpQwBgeHMkfYMSr6BTFoN7LnM9f/kteb5pZya0U
+ NrPmsgoil2JAjMEAAEIAB0WIQQEYP2KLgsT1w1uokGrA0fMLQDBGQUCaUMAYAAKCRCrA0fMLQDB
+ GT23D/911R58tATUBEdSNMy0X7ZFgE+F7NAy0G9WU2Em+CLTrIxFa8usDHswsniitcSzcKrP+pq
+ LlCdcpX6MPCn+qhuYC1gAxwwit35qAtBsv6mCGgOaxyXUvbCwEXl5eyWtjG+LzAKTfb7yugAJt9
+ t3U3G8k8q3CmcZJ7XnCUiWJ8w1SGHMUwaeVCPg9k2TFKLDSv/EUH5XjddmzV9CB35HjtN8qPAmA
+ LqPVrq4fl/Z9L28V1gan+XIOiTVqtZVBoVlhdskNFsoOJPtu1PBJA8LJziaZ4FUDotIOY1UANsc
+ LGA92448ll4EwIfC0oNdxu9D+pn28YmJGAaLl2rPAFHrGvnf37ce5LonFxbGO1V4w2RXQ7352kO
+ 4crTra9ZFTC4W/YzBvOqA/14exlgZVRtxH0GrHbdxD0/uFDL50gJo4uPa6dFYKVSpdBG2YlqGTL
+ aO7BzIO/VVtJBLSUQ3zuxeX4dJYEaHSXVj3y42kd3tEHtCI8UMh4WLsqIlZBsRVwxD3CFJ3YK6J
+ WlXMZfF8YPWgWvEcqpwpo+bBsng8fsCg9X7GhzkwR02u7vNqGGZzz/SegkZMRh4u94FUiqbeT0e
+ CM8OdAc/40hTc+yZwBenXl+3oUC/V+SS+1bXNWtOKA6DKJRUyfNkgLWkYTBLE7RQxwjvxmuL+/J
+ LiPNBlcE7+1ykcA==
 X-Developer-Key: i=patrick@stwcx.xyz; a=openpgp;
  fpr=0460FD8A2E0B13D70D6EA241AB0347CC2D00C119
 Received-SPF: pass client-ip=103.168.172.152; envelope-from=patrick@stwcx.xyz;
@@ -133,74 +133,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use ipmitool/frugen tool to generate a HMC image based on a
+Use ipmitool/frugen tool to generate a CX-7 NIC image based on a
 sanitized set of data from a real device EEPROM.
 
 Signed-off-by: Patrick Williams <patrick@stwcx.xyz>
 ---
- hw/arm/aspeed_ast2600_catalina.c | 42 +++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 41 insertions(+), 1 deletion(-)
+ hw/arm/aspeed_ast2600_catalina.c | 42 ++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 40 insertions(+), 2 deletions(-)
 
 diff --git a/hw/arm/aspeed_ast2600_catalina.c b/hw/arm/aspeed_ast2600_catalina.c
-index 37f0e1b65e..2c9b4b6fff 100644
+index 2c9b4b6fff..5044441f38 100644
 --- a/hw/arm/aspeed_ast2600_catalina.c
 +++ b/hw/arm/aspeed_ast2600_catalina.c
-@@ -341,6 +341,46 @@ static const uint8_t gb200io_eeprom[] = {
+@@ -381,6 +381,44 @@ static const uint8_t hmc_eeprom[] = {
  };
- static const size_t gb200io_eeprom_len = sizeof(gb200io_eeprom);
+ static const size_t hmc_eeprom_len = sizeof(hmc_eeprom);
  
 +/*
-+ * HMC ("HGX Management Controller") FRU data. Generated with frugen.
++ * CX-7 NIC FRU data. Generated with frugen.
 + *
 + *    {
 + *        "board": {
-+ *            "mfg": "NVIDIA",
-+ *            "pname": "P4764-A02 (QEMU)",
-+ *            "pn": "000-00000-0000-000",
-+ *            "serial": "0000000000000",
-+ *            "date": "01/12/2025 00:00",
-+ *            "custom": ["Version: G", "Rework: R0"]
++ *            "mfg": "Nvidia",
++ *            "pname": "Nvidia ConnectX-7 OCP3.0 (QEMU)",
++ *            "pn": "CX70000000-000_00",
++ *            "serial": "000000000000",
++ *            "date": "01/12/2025 00:00"
 + *        },
 + *        "product": {
-+ *            "mfg": "NVIDIA",
-+ *            "pname": "HMC for GB200 NVL72",
-+ *            "pn": "100-00000-0000-001",
-+ *            "ver": "A1",
-+ *            "serial": "1000000000001",
++ *            "mfg": "Nvidia",
++ *            "pname": "Nvidia ConnectX-7 OCP3.0",
++ *            "pn": "CX71000000-000_01",
++ *            "ver": "A7",
++ *            "serial": "100000000001",
 + *            "atag": "QEMU"
 + *        }
 + *    }
 + */
-+static const uint8_t hmc_eeprom[] = {
-+    0x01, 0x00, 0x00, 0x01, 0x0b, 0x00, 0x00, 0xf3, 0x01, 0x0a, 0x19, 0x8c,
-+    0x19, 0xf0, 0x85, 0xae, 0x9d, 0x92, 0x69, 0x08, 0x8c, 0x30, 0x75, 0x59,
-+    0x54, 0x13, 0x42, 0x12, 0x80, 0xc4, 0x65, 0x5b, 0x27, 0x8a, 0x10, 0x04,
-+    0x41, 0x10, 0x04, 0x41, 0x10, 0x04, 0x41, 0x10, 0x8e, 0x10, 0x04, 0x35,
-+    0x10, 0x04, 0x41, 0x50, 0x03, 0x41, 0x10, 0xd4, 0x40, 0x10, 0x04, 0xc0,
-+    0xca, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x3a, 0x20, 0x47, 0xca,
-+    0x52, 0x65, 0x77, 0x6f, 0x72, 0x6b, 0x3a, 0x20, 0x52, 0x30, 0xc1, 0x00,
-+    0x00, 0x00, 0x00, 0x81, 0x01, 0x09, 0x19, 0x85, 0xae, 0x9d, 0x92, 0x69,
-+    0x08, 0xd3, 0x48, 0x4d, 0x43, 0x20, 0x66, 0x6f, 0x72, 0x20, 0x47, 0x42,
-+    0x32, 0x30, 0x30, 0x20, 0x4e, 0x56, 0x4c, 0x37, 0x32, 0x8e, 0x11, 0x04,
-+    0x35, 0x10, 0x04, 0x41, 0x50, 0x03, 0x41, 0x10, 0xd4, 0x40, 0x50, 0x04,
-+    0x82, 0x61, 0x04, 0x8a, 0x11, 0x04, 0x41, 0x10, 0x04, 0x41, 0x10, 0x04,
-+    0x41, 0x11, 0x83, 0x71, 0xd9, 0xd6, 0xc0, 0xc1, 0x00, 0x00, 0x00, 0x00,
-+    0x00, 0x00, 0x00, 0x65
++static const uint8_t nic_eeprom[] = {
++    0x01, 0x00, 0x00, 0x01, 0x0a, 0x00, 0x00, 0xf4, 0x01, 0x09, 0x19, 0x8c,
++    0x19, 0xf0, 0xc6, 0x4e, 0x76, 0x69, 0x64, 0x69, 0x61, 0xdf, 0x4e, 0x76,
++    0x69, 0x64, 0x69, 0x61, 0x20, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74,
++    0x58, 0x2d, 0x37, 0x20, 0x4f, 0x43, 0x50, 0x33, 0x2e, 0x30, 0x20, 0x28,
++    0x51, 0x45, 0x4d, 0x55, 0x29, 0x89, 0x10, 0x04, 0x41, 0x10, 0x04, 0x41,
++    0x10, 0x04, 0x41, 0x8d, 0x23, 0x7e, 0x41, 0x10, 0x04, 0x41, 0x10, 0xd4,
++    0x40, 0x10, 0xf4, 0x43, 0x10, 0xc0, 0xc1, 0xc3, 0x01, 0x09, 0x19, 0xc6,
++    0x4e, 0x76, 0x69, 0x64, 0x69, 0x61, 0xd8, 0x4e, 0x76, 0x69, 0x64, 0x69,
++    0x61, 0x20, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x58, 0x2d, 0x37,
++    0x20, 0x4f, 0x43, 0x50, 0x33, 0x2e, 0x30, 0x8d, 0x23, 0x7e, 0x45, 0x10,
++    0x04, 0x41, 0x10, 0xd4, 0x40, 0x10, 0xf4, 0x43, 0x11, 0x82, 0xe1, 0x05,
++    0x89, 0x11, 0x04, 0x41, 0x10, 0x04, 0x41, 0x10, 0x04, 0x45, 0x83, 0x71,
++    0xd9, 0xd6, 0xc0, 0xc1, 0x00, 0x00, 0x00, 0xf3
 +};
-+static const size_t hmc_eeprom_len = sizeof(hmc_eeprom);
++static const size_t nic_eeprom_len = sizeof(nic_eeprom);
 +
  static void catalina_bmc_i2c_init(AspeedMachineState *bmc)
  {
      /* Reference from v6.16-rc2 aspeed-bmc-facebook-catalina.dts */
-@@ -493,7 +533,7 @@ static void catalina_bmc_i2c_init(AspeedMachineState *bmc)
-     /* eeprom@55 */
-     at24c_eeprom_init(i2c[13], 0x55, 256);
-     /* eeprom@57 */
--    at24c_eeprom_init(i2c[13], 0x57, 256);
-+    at24c_eeprom_init_rom(i2c[13], 0x57, 256, hmc_eeprom, hmc_eeprom_len);
+@@ -514,7 +552,7 @@ static void catalina_bmc_i2c_init(AspeedMachineState *bmc)
+     /* temperature-sensor@1f - tpm421 */
+     i2c_slave_create_simple(i2c[10], TYPE_TMP421, 0x1f);
+     /* eeprom@50 */
+-    at24c_eeprom_init(i2c[10], 0x50, 8 * KiB);
++    at24c_eeprom_init_rom(i2c[10], 0x50, 8 * KiB, nic_eeprom, nic_eeprom_len);
  
-     /* &i2c14 */
-     /* io_expander9 - pca9555@10 */
+     /* &i2c11 */
+     /* ssif-bmc@10 - no model */
+@@ -553,7 +591,7 @@ static void catalina_bmc_i2c_init(AspeedMachineState *bmc)
+     /* temperature-sensor@1f - tmp421 */
+     i2c_slave_create_simple(i2c[15], TYPE_TMP421, 0x1f);
+     /* eeprom@52 */
+-    at24c_eeprom_init(i2c[15], 0x52, 8 * KiB);
++    at24c_eeprom_init_rom(i2c[15], 0x52, 8 * KiB, nic_eeprom, nic_eeprom_len);
+ }
+ 
+ static void aspeed_machine_catalina_class_init(ObjectClass *oc,
 
 -- 
 2.51.2
