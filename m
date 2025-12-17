@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7DF1CC8367
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 15:34:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB4FDCC8385
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 15:34:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVsaR-0001lg-WF; Wed, 17 Dec 2025 09:33:08 -0500
+	id 1vVsaX-0001zf-9X; Wed, 17 Dec 2025 09:33:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vVsa0-0001cs-AM
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vVsa3-0001d7-RF
  for qemu-devel@nongnu.org; Wed, 17 Dec 2025 09:32:45 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vVsZu-00077C-83
- for qemu-devel@nongnu.org; Wed, 17 Dec 2025 09:32:37 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-477a2ab455fso62288745e9.3
- for <qemu-devel@nongnu.org>; Wed, 17 Dec 2025 06:32:33 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vVsa1-00078s-7Q
+ for qemu-devel@nongnu.org; Wed, 17 Dec 2025 09:32:42 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-430f9ffd4e8so363607f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 17 Dec 2025 06:32:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1765981951; x=1766586751; darn=nongnu.org;
+ d=linaro.org; s=google; t=1765981959; x=1766586759; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KntzN84E4rzQNF1VjNRRJJcnloDQTOOHWlgvhj9Q7tw=;
- b=VWkuVG6WKOP0u0MG2u5MISu6YYeCGVYrI3RCuYc3g1IYScwMVMpsQ742MasKzgItbH
- A+EAAJ6BYoK1RVf3VD9xxDHvA9whGzJG/XxznZGOwLLklFQHr9yQqTXlrUDZ+u5AH+KN
- WWewDqscsJK2fDgrK/K+DK44V+yL35bUpSKmTdwcYierTdy6uznFDRSUYD9ZuJopCPgO
- Y4qsoFmH4XE5WKYUK2iRgLdQJfZoTPia8AYiV7UyKpjxx6WzaPCpUH6wIxT5xUNU1ZYa
- U9R3/KIzZaeFbTcBUIO3fRZ3w4GKGkBUIFA6bM3PO5Loy+WUkylqACXRZFnYYpUwXF5N
- YJ8Q==
+ bh=1fwsgtFaKbQAG4JXp0styAfpJOXTnc0HrVyb3kjNSp4=;
+ b=ElsVR5X1T7ByU3o0QD90UPFcvxdoYjQ66pZJUgOJEr/qH4HgNAnwze3vHaixQtScsT
+ wAyk1OLw0mvxkrkTDXKburMAmppp8fJMPQA76WAlS813xMSXA4vjUl1xK6PW+cO9owj8
+ FH9rB+NxtoEnaSDNdHjyJZ6eqw3jxjDua3lTBTxpOt36yqXuVA1+Iz2+zkdDoYNzv9ib
+ 2F6mprjiOtfgPZkXuiI0gRHuIH5ZTtsSPd99OnHNgMYC3HOG+J2bMGHMzFcwKvY4uICo
+ KIR1wq5QpWusF2oszK4o7vwwp8blK+N2r0pldiMcFXx11Uj7vRSx1MgpYLJgka7gpyF3
+ O/fA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765981951; x=1766586751;
+ d=1e100.net; s=20230601; t=1765981959; x=1766586759;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=KntzN84E4rzQNF1VjNRRJJcnloDQTOOHWlgvhj9Q7tw=;
- b=Y5Xm3I/BIsyrb6Af0PROAqa2o1P9zZzIeqo+5HyArPM8WdPWk+iAJkYS70DcS5xAFY
- MBTSFK4WtUXrKZqCOKG6nWodwX3K8wqSjIoIAfWpSr3yEDrXEIiFpqVC0zklW0UOVMdd
- JOSAO0IccEKTVgXR9m5bn+TabKN0zwNtu8LhXxbg9gL7hvWxd2EfLGPOqNN3W9UVoZwv
- /ePLES59GE25h+l9cwdtj18C4h8fcdGZNx8f0sYtgPu0Mt7BqaQ8KduMSWLsC3Bwqzah
- DC4KMPKp8ocROYIGp0+s7TLWW/KGGIDLTHQJuqocPgH9EdZGJoDqD4tOAwjCI/hwYc0+
- HqvQ==
-X-Gm-Message-State: AOJu0YzjQpjYKf16zIZBpC3Y4gD3RtFH+CBqr4I547w7QRd3FqDh7Xew
- nZtYs/eRbbS/L+k0t+ci2afO6T59LB2t/OWvHPCjHuckp2m7L5xd62gSXeHtogAZO8Luhs+UL3b
- 5E2l5qTbXZQ==
-X-Gm-Gg: AY/fxX5OP/s9RLnfWWBP1HnuAfLAG4+PGOyx7B9R9EIsSRR3GeKwnjuWaWvjhNLlO2f
- Bj8VYsWWo7zG4EYI73PYomVdHRKO9RYziD/wGUWrwQz83S+V0BJroDm6d4gqud01XBISxISKn6S
- x2BKwp6zqXeAVcZXONREZ6O6WLn5uQbyi284sPGabOYsOOA66wwpAzMFvuE/zKf4UjWN2L7JZ7J
- gVA9r0soAv+avxJhhZdaFbKrnChSLiDq4KeT8A3Yl8a0ENSfd6g4IpTJIDfgJgCFu7OV/h5NwoJ
- sNuYU3/PkBYYsYngzTCKyZlP06u8DDnwhXGiUlmg0Gfm48FJKf1VhWpqxFhQZXFQ2NAAuaH2bnf
- LL84bT5hkIPn81lXEgNjLodh486bH2osxhCcTuIcXbxvkvPCj/CyzB2qWmaZta+TWfC0b1wH8Ci
- yqKXxpWbfq8PelpJdiH8Y1UzF7i7194KWsYbV5totBU6omYuYCQFlRlNzrDXVK
-X-Google-Smtp-Source: AGHT+IHrmxo58cjk+Ja06ElhCpkbSBp2FLjbJkIVoKszjZU6CJuvhE8j6Kof7/fmcIJtOA46T/2vyw==
-X-Received: by 2002:a05:600c:4e09:b0:477:9976:9e1a with SMTP id
- 5b1f17b1804b1-47a8f89bc6cmr199436695e9.6.1765981951134; 
- Wed, 17 Dec 2025 06:32:31 -0800 (PST)
+ bh=1fwsgtFaKbQAG4JXp0styAfpJOXTnc0HrVyb3kjNSp4=;
+ b=VbaC3+DE/WpohuhADbdZyJBFkltuJlc/Z0zm3nWfGV+wUagXiQyqoyTbfO/pR94iif
+ p809/uoJcVdtpgYIJ/5S3KmWCVraBf3zil0wc7OOZky2MSpRjRv2jXwW7Erk4XW8j1p5
+ xMI0XL6Wh5PlzyJa3PIq5G/uK+OPk0riqVSuAT27vvvTaX4gcvbUOclpxUjXEYT4oOEg
+ yYsfoP5WPDudwQvuUzqqzy7xoq2Odfh/+uGs6UdMVvfebk8tOpR86qY5CTQ7s3KNEN4j
+ GxpSWxtNM/jFFEoYrqQVzM4qbvpQpxUAv5gtyD8Nm8lpqA93f+xvmHJnIeMboIafr8sG
+ XE4w==
+X-Gm-Message-State: AOJu0YxGYf7up62EQVIT6IoI8AL6mtDa4tBJr920nkKsLWooJz7iF+xM
+ hclAsl1Lzf9mmTMVruUxnBl+1ObhLu8861DLPGbLk7oGx9xgXQy2ls/d/5xtiwHKsslRMILsRzq
+ W+0SUzrocEg==
+X-Gm-Gg: AY/fxX5Pv4hFJ7tCeyhdo3dwD+KaKw37FbEEXW7568uw1H/r9lIHSTyuNkiJ7/X40Bx
+ uxopPAsK5scdoe6to3F+spsRbusXf3Eap6gM3/ez4enNCglW+aaT8g5MUUN0q0AOM9hsSgQDNIX
+ pEGXP+g6PpPwQyTc7Dslimm24bTCxlT45xc311WuJ5QUstYg1bUUSQjXKW/hUYA4uKHQnQqI5Zl
+ iA87F1d2qwp73Fmeb2v2IH/XhtLOrsfX80ytGwGMKEpZhcosVewJlj1DIcE121eIkug/qA7hR5P
+ 0+6q0lfOzDdYBkEQEFBFs5E9iRR/g4cWFB7Be8y5iebjxQj7vPIiGeC477YvCCO4uaXZHj8h8+a
+ 9W0rSU3uSx0jB/usmY2vudIQQaiuxsVdYvJoAifJBhLAVnhcaqoJfQo08A1G4npIO5+RlZMh5G5
+ zqs/asnQjf2U5hYNbXJ8kVDcPZfnAaPrW+yyOMoib4Fph9s2YIZwIQCW3p5edZ
+X-Google-Smtp-Source: AGHT+IE0XGXOlrf3bv1/geEBCvD/Tg4G7Dha3GeGD1NXZX2t+fKUE4k3RXS7jdypqPcRBJUj3mvC+w==
+X-Received: by 2002:a5d:5d09:0:b0:42f:7686:5693 with SMTP id
+ ffacd0b85a97d-42fb3eb87d2mr25060054f8f.16.1765981958541; 
+ Wed, 17 Dec 2025 06:32:38 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47bdc1d991fsm43795515e9.5.2025.12.17.06.32.29
+ ffacd0b85a97d-4310ade8072sm5311445f8f.25.2025.12.17.06.32.36
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 17 Dec 2025 06:32:29 -0800 (PST)
+ Wed, 17 Dec 2025 06:32:37 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -71,17 +71,18 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Artyom Tarasenko <atar4qemu@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  David Hildenbrand <david@kernel.org>, Peter Xu <peterx@redhat.com>
-Subject: [PATCH 05/14] system/physmem: Inline and remove leul_to_cpu()
-Date: Wed, 17 Dec 2025 15:31:41 +0100
-Message-ID: <20251217143150.94463-6-philmd@linaro.org>
+Subject: [PATCH 06/14] system/physmem: Use explicit endianness in
+ subpage_ops::read/write()
+Date: Wed, 17 Dec 2025 15:31:42 +0100
+Message-ID: <20251217143150.94463-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251217143150.94463-1-philmd@linaro.org>
 References: <20251217143150.94463-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,62 +105,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-leul_to_cpu() is only used within physmem.c: inline it
-and remove.
-Since @bitmap is of 'unsigned long' type, use its size
-with ldn_le_p() instead of using HOST_LONG_BITS.
+Replace the ldn_p/stn_p() calls by their explicit endianness
+variants. Duplicate the MemoryRegionOps, replacing the single
+DEVICE_NATIVE_ENDIAN entry by a pair of LITTLE and BIG ones.
+Select the proper MemoryRegionOps in subpage_init().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/qemu/bswap.h | 11 -----------
- system/physmem.c     |  5 +++--
- 2 files changed, 3 insertions(+), 13 deletions(-)
+ system/physmem.c | 81 ++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 64 insertions(+), 17 deletions(-)
 
-diff --git a/include/qemu/bswap.h b/include/qemu/bswap.h
-index 39ba64046a6..65a1b3634f4 100644
---- a/include/qemu/bswap.h
-+++ b/include/qemu/bswap.h
-@@ -375,17 +375,6 @@ static inline void stq_be_p(void *ptr, uint64_t v)
-     stq_he_p(ptr, be_bswap(v, 64));
- }
- 
--static inline unsigned long leul_to_cpu(unsigned long v)
--{
--#if HOST_LONG_BITS == 32
--    return le_bswap(v, 32);
--#elif HOST_LONG_BITS == 64
--    return le_bswap(v, 64);
--#else
--# error Unknown sizeof long
--#endif
--}
--
- /* Store v to p as a sz byte value in host order */
- #define DO_STN_LDN_P(END) \
-     static inline void stn_## END ## _p(void *ptr, int sz, uint64_t v)  \
 diff --git a/system/physmem.c b/system/physmem.c
-index c9869e4049f..1292f49095f 100644
+index 1292f49095f..d8465f085bd 100644
 --- a/system/physmem.c
 +++ b/system/physmem.c
-@@ -1254,7 +1254,8 @@ uint64_t physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
+@@ -2896,8 +2896,8 @@ static MemTxResult flatview_write(FlatView *fv, hwaddr addr, MemTxAttrs attrs,
+ static bool flatview_access_valid(FlatView *fv, hwaddr addr, hwaddr len,
+                                   bool is_write, MemTxAttrs attrs);
  
-             for (k = 0; k < nr; k++) {
-                 if (bitmap[k]) {
--                    unsigned long temp = leul_to_cpu(bitmap[k]);
-+                    unsigned long temp = ldn_le_p(&bitmap[k],
-+                                                  sizeof(bitmap[k]));
+-static MemTxResult subpage_read(void *opaque, hwaddr addr, uint64_t *data,
+-                                unsigned len, MemTxAttrs attrs)
++static MemTxResult subpage_read_le(void *opaque, hwaddr addr, uint64_t *data,
++                                   unsigned len, MemTxAttrs attrs)
+ {
+     subpage_t *subpage = opaque;
+     uint8_t buf[8];
+@@ -2911,12 +2911,32 @@ static MemTxResult subpage_read(void *opaque, hwaddr addr, uint64_t *data,
+     if (res) {
+         return res;
+     }
+-    *data = ldn_p(buf, len);
++    *data = ldn_le_p(buf, len);
+     return MEMTX_OK;
+ }
  
-                     nbits = ctpopl(temp);
-                     qatomic_or(&blocks[DIRTY_MEMORY_VGA][idx][offset], temp);
-@@ -1301,7 +1302,7 @@ uint64_t physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
-          */
-         for (i = 0; i < len; i++) {
-             if (bitmap[i] != 0) {
--                c = leul_to_cpu(bitmap[i]);
-+                c = ldn_le_p(&bitmap[i], sizeof(bitmap[i]));
-                 nbits = ctpopl(c);
-                 if (unlikely(global_dirty_tracking & GLOBAL_DIRTY_DIRTY_RATE)) {
-                     total_dirty_pages += nbits;
+-static MemTxResult subpage_write(void *opaque, hwaddr addr,
+-                                 uint64_t value, unsigned len, MemTxAttrs attrs)
++static MemTxResult subpage_read_be(void *opaque, hwaddr addr, uint64_t *data,
++                                   unsigned len, MemTxAttrs attrs)
++{
++    subpage_t *subpage = opaque;
++    uint8_t buf[8];
++    MemTxResult res;
++
++#if defined(DEBUG_SUBPAGE)
++    printf("%s: subpage %p len %u addr " HWADDR_FMT_plx "\n", __func__,
++           subpage, len, addr);
++#endif
++    res = flatview_read(subpage->fv, addr + subpage->base, attrs, buf, len);
++    if (res) {
++        return res;
++    }
++    *data = ldn_be_p(buf, len);
++    return MEMTX_OK;
++}
++
++static MemTxResult subpage_write_le(void *opaque, hwaddr addr,
++                                    uint64_t value, unsigned len,
++                                    MemTxAttrs attrs)
+ {
+     subpage_t *subpage = opaque;
+     uint8_t buf[8];
+@@ -2926,7 +2946,23 @@ static MemTxResult subpage_write(void *opaque, hwaddr addr,
+            " value %"PRIx64"\n",
+            __func__, subpage, len, addr, value);
+ #endif
+-    stn_p(buf, len, value);
++    stn_le_p(buf, len, value);
++    return flatview_write(subpage->fv, addr + subpage->base, attrs, buf, len);
++}
++
++static MemTxResult subpage_write_be(void *opaque, hwaddr addr,
++                                    uint64_t value, unsigned len,
++                                    MemTxAttrs attrs)
++{
++    subpage_t *subpage = opaque;
++    uint8_t buf[8];
++
++#if defined(DEBUG_SUBPAGE)
++    printf("%s: subpage %p len %u addr " HWADDR_FMT_plx
++           " value %"PRIx64"\n",
++           __func__, subpage, len, addr, value);
++#endif
++    stn_be_p(buf, len, value);
+     return flatview_write(subpage->fv, addr + subpage->base, attrs, buf, len);
+ }
+ 
+@@ -2944,15 +2980,26 @@ static bool subpage_accepts(void *opaque, hwaddr addr,
+                                  len, is_write, attrs);
+ }
+ 
+-static const MemoryRegionOps subpage_ops = {
+-    .read_with_attrs = subpage_read,
+-    .write_with_attrs = subpage_write,
+-    .impl.min_access_size = 1,
+-    .impl.max_access_size = 8,
+-    .valid.min_access_size = 1,
+-    .valid.max_access_size = 8,
+-    .valid.accepts = subpage_accepts,
+-    .endianness = DEVICE_NATIVE_ENDIAN,
++static const MemoryRegionOps subpage_ops[2] = {
++    [0 ... 1] = {
++        .impl = {
++            .min_access_size = 1,
++            .max_access_size = 8,
++        },
++        .valid = {
++            .min_access_size = 1,
++            .max_access_size = 8,
++            .accepts = subpage_accepts,
++        },
++    },
++
++    [0].endianness = DEVICE_LITTLE_ENDIAN,
++    [0].read_with_attrs = subpage_read_le,
++    [0].write_with_attrs = subpage_write_le,
++
++    [1].endianness = DEVICE_BIG_ENDIAN,
++    [1].read_with_attrs = subpage_read_be,
++    [1].write_with_attrs = subpage_write_be,
+ };
+ 
+ static int subpage_register(subpage_t *mmio, uint32_t start, uint32_t end,
+@@ -2983,8 +3030,8 @@ static subpage_t *subpage_init(FlatView *fv, hwaddr base)
+     mmio = g_malloc0(sizeof(subpage_t) + TARGET_PAGE_SIZE * sizeof(uint16_t));
+     mmio->fv = fv;
+     mmio->base = base;
+-    memory_region_init_io(&mmio->iomem, NULL, &subpage_ops, mmio,
+-                          NULL, TARGET_PAGE_SIZE);
++    memory_region_init_io(&mmio->iomem, NULL, &subpage_ops[target_big_endian()],
++                          mmio, NULL, TARGET_PAGE_SIZE);
+     mmio->iomem.subpage = true;
+ #if defined(DEBUG_SUBPAGE)
+     printf("%s: %p base " HWADDR_FMT_plx " len %08x\n", __func__,
 -- 
 2.52.0
 
