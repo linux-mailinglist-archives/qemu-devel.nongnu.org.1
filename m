@@ -2,122 +2,132 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7AE4CC95EA
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 20:12:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5378FCC9672
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 20:20:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVww6-0005jX-Ag; Wed, 17 Dec 2025 14:11:46 -0500
+	id 1vVx3K-000431-C2; Wed, 17 Dec 2025 14:19:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <patrick@stwcx.xyz>)
- id 1vVww3-0005hJ-Ff; Wed, 17 Dec 2025 14:11:43 -0500
-Received: from fout-a8-smtp.messagingengine.com ([103.168.172.151])
+ (Exim 4.90_1) (envelope-from <daniel.barboza@oss.qualcomm.com>)
+ id 1vVx1q-0003xW-CC
+ for qemu-devel@nongnu.org; Wed, 17 Dec 2025 14:17:52 -0500
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <patrick@stwcx.xyz>)
- id 1vVww1-00017S-Np; Wed, 17 Dec 2025 14:11:43 -0500
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
- by mailfout.phl.internal (Postfix) with ESMTP id D00E3EC0148;
- Wed, 17 Dec 2025 14:11:40 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
- by phl-compute-02.internal (MEProxy); Wed, 17 Dec 2025 14:11:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stwcx.xyz; h=cc
- :cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm3; t=1765998700;
- x=1766085100; bh=gKj1H52jdX4JqTyoIYt0DUYRT70Xq/RB6Gg3pGSwHsI=; b=
- iDtLO1uubR9dXuLDOYdwwwGNiqR+4CUhKSKp9WbVNeTxSAGhrDaEfjS/wkIGF836
- eP2xtlaSZ7ECO6oxxQoVfAMjfYWF4wpiqB3VQ9r9uboa5ioS90EaHPXDVOChRbD6
- l80HeymAGJF59nm1cz0sR9EidbAMxn2r8BsLRWJ0QWzgn1V4Tbmj/0rt3/vklcV1
- UlumeOxSgZCrNYGZqTuzYHHRkTKJmxNDQTbOQ/SDTTnbs0chFFe/dr+ULhgBidO0
- mocTneBobRGReVmTe5lQl6CFIGHEjk0AyFk66oUuSE+2P4b50K8QyicQutA8XTUz
- mP6ilV4wVhcq+VQZ3fuhGQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1765998700; x=
- 1766085100; bh=gKj1H52jdX4JqTyoIYt0DUYRT70Xq/RB6Gg3pGSwHsI=; b=S
- UtVEfT327TigzX6VNsKPfY5ZUU6MLx4mFPDxry7JQp+hZmndVgiCKVqG316BOS8G
- I3Mycw7YDhq0E1GhDLsShkS5nvv1Fl40zh2/UbeigP6P24M5HRkcSHxbYPyTTY6i
- uKsavvCTUYSb8ZQwtGMRQezJxn6edpGEE+O6GXQtVKmEGZBDLDnhxo4Pm3Dw+wsI
- /CccLv3b+D+wZd6Aa14PllH3S40mpHNBYC5m62Bw6lLZhbAIMileDzD0ZSMe1FGi
- PY1VAcJtHXuAFtg9BAXl5tHQAhAGIWk2SXQ+tonaStk4UIIM60Qw3g+ErdSdkkAf
- Sn4bmFARHAlpExkwH1e2g==
-X-ME-Sender: <xms:bABDaX6XeRShzcvBrvRRicMzxGBjvb8uvnlq_zIOvFR-2tGvB5CkHw>
- <xme:bABDaf-1fRKN4eJAjWElUDKYDZ0iobgc9zG9QAEi0Hpwzl1k6vWVOwcnIEih9jfok
- cxbAiTIQcW3xNgdkmX-PZ-E2f6vRg3t84a74d9n_VDSjPxupFhQIR_d>
-X-ME-Received: <xmr:bABDaZFvOxbTtdCZVlcY_-29nbIu_G_mUbf6NDz7fzJUYzfGu4eQF0U0pf8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdegfeefjecutefuodetggdotefrod
- ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
- ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfghrlh
- cuvffnffculdejtddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdej
- necuhfhrohhmpefrrghtrhhitghkucghihhllhhirghmshcuoehprghtrhhitghksehsth
- iftgigrdighiiiqeenucggtffrrghtthgvrhhnpeehjeejhfektedtuedtgfegjeekvdej
- gfehveelhedtfffhudevjeeikeehgfeltdenucevlhhushhtvghrufhiiigvpedtnecurf
- grrhgrmhepmhgrihhlfhhrohhmpehprghtrhhitghksehsthiftgigrdighiiipdhnsggp
- rhgtphhtthhopedutddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphgrthhrih
- gtkhesshhtfigtgidrgiihiidprhgtphhtthhopehpvghtvghrrdhmrgihuggvlhhlsehl
- ihhnrghrohdrohhrghdprhgtphhtthhopehsthgvvhgvnhgplhgvvgesrghsphgvvgguth
- gvtghhrdgtohhmpdhrtghpthhtohepqhgvmhhuqdgrrhhmsehnohhnghhnuhdrohhrghdp
- rhgtphhtthhopehjrghmihhnpghlihhnsegrshhpvggvughtvggthhdrtghomhdprhgtph
- htthhopegrnhgurhgvfiestghouggvtghonhhsthhruhgtthdrtghomhdrrghupdhrtghp
- thhtoheplhgvvghtrhhohiesghhmrghilhdrtghomhdprhgtphhtthhopehqvghmuhdqug
- gvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepjhhovghlsehjmhhsrdhiugdr
- rghu
-X-ME-Proxy: <xmx:bABDaUU-OU5DDFy29X_ir2x3kOJi1PawuX0HsI52t-RIhFX8uqJS-g>
- <xmx:bABDaV_qrY0YNCsG7JJsiKUF4CEnovFe5K1A_vHX8CE13NSdc6d-lw>
- <xmx:bABDaR41pMfXU1JmSyeYe-G4gOSbicjS944LoC0DgY3iT0C4ybAqMw>
- <xmx:bABDaelTxg3QdIhInxvHdVIHzALJaUik1Gmyo4nB_s7_k3Vjxzzm_Q>
- <xmx:bABDaVQYHHvS914_YhDUk2ATfBaSWWPQjThTDMGZN4TuS97D4QBnCU5P>
-Feedback-ID: i68a1478a:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 17 Dec 2025 14:11:40 -0500 (EST)
-From: Patrick Williams <patrick@stwcx.xyz>
-Date: Wed, 17 Dec 2025 14:11:38 -0500
-Subject: [PATCH 11/11] hw/arm/aspeed: catalina: add Cable Cartridge FRU EEPROM
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251217-catalina-eeproms-v1-11-dc7b276efd57@stwcx.xyz>
-References: <20251217-catalina-eeproms-v1-0-dc7b276efd57@stwcx.xyz>
-In-Reply-To: <20251217-catalina-eeproms-v1-0-dc7b276efd57@stwcx.xyz>
+ (Exim 4.90_1) (envelope-from <daniel.barboza@oss.qualcomm.com>)
+ id 1vVx1l-0002Vb-QI
+ for qemu-devel@nongnu.org; Wed, 17 Dec 2025 14:17:39 -0500
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
+ 5BHJBAER1221181
+ for <qemu-devel@nongnu.org>; Wed, 17 Dec 2025 19:17:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+ cc:content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=qcppdkim1; bh=Z1jPnr6atA5Bimlw2rcG7lbr8G0TJD2fJSE
+ hqbmv84M=; b=Pp+w8XjbX35NTJNEpWp99M84/TA3wFSufcaT+E1HxznkvcFL5n6
+ H8SDN+x/Kxczk09h7w1FAGznEUNtKJnJ6pAk5J/0c0cl27sFJow2eQv4N2m8rfhX
+ gkWYTiCWvGbiQTZdChSNIvqfT4LV7qzAflnUf9bsacumhcCmuPbZKY484l88dLWm
+ 9WpPcGAEbMYiHhKcLCQPhsk+gfVaB0dbHH61vl/ejnqVIN/skWl66zuybGNOUZUD
+ XHuG4F0G/M3cgbZGjHi2Ev5vPIF/Musj7w68m6u9skIPg32rbmx/CGivRmhG7r3p
+ UDb2I1NNGQCWwmfll5g9afX8VfMt3aBtjtg==
+Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com
+ [74.125.82.198])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b3t8e1scf-1
+ (version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+ for <qemu-devel@nongnu.org>; Wed, 17 Dec 2025 19:17:32 +0000 (GMT)
+Received: by mail-dy1-f198.google.com with SMTP id
+ 5a478bee46e88-2ac34c4b41fso862699eec.1
+ for <qemu-devel@nongnu.org>; Wed, 17 Dec 2025 11:17:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oss.qualcomm.com; s=google; t=1765999052; x=1766603852; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Z1jPnr6atA5Bimlw2rcG7lbr8G0TJD2fJSEhqbmv84M=;
+ b=WqVO7giZ8uG9zZxE0A7E2mklRo1KT/l/RLouG1WQBOagKEoKif6lBgT+CW73wGH11S
+ KK1UCeo/n472nndUNQpgyOQAkuUh6WpaeSfOwcYJYm8JB3oYnps5NW1yiLI3ejrT0vus
+ hsASvZXhacY4bRXQ4tsrLvMUXahx/U+pTBC/krH0Nrx6Zcljq1fF1CEd0K6qT8oObMx+
+ N6lDrg+P1g4KJVtXC/2PNa0Oeh5PUXE8ZTcWvZAE+DT69x1USQRMWtbOrcHhTR3lQBq6
+ mSE03cWjh9h7n4lhoR1VmQgsCuws1lenT8ujmsn2PbE8hiMM6LGRjvWDnliAN6ASOWQ0
+ oa/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1765999052; x=1766603852;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Z1jPnr6atA5Bimlw2rcG7lbr8G0TJD2fJSEhqbmv84M=;
+ b=bPdL7z27rRfuHJ+py24WaaWMQSKUT4RzYD31i7ug/FlDz29ibzQnDjonNuR1m1Yj6t
+ OKETDA/bvP/YiAlT26oj/HkvDlc+70S6juAFKus1i2HIlBqf/GccUqrRorX6KN3gAhs6
+ UPaKIW8B6mW2SKpUV5JVwHYg9E2UXB7QeNvXky214BKG81t8R9fvdpcKXzJvObD0W2od
+ vPe9M6MXvaO4Pm35Q5tO+Gp9UhnIQf9PDvXWr90EpM/dD6+GnhXTA7kUPWShWi9MZjXv
+ sKOVkfCHSKFIkJbjw6cPzqBqbBVvLNhImP5EdgMlV+oGkCUC5fLFQJRUQCF5mWN/u4Ad
+ l8Pg==
+X-Gm-Message-State: AOJu0YzYk9xeI4IHQTLxbN3cHdG8KAOjBAkTv3r7rMwlWfDOwg64jM2+
+ ooKKppGJy/pGYX0CuZv4o7Ysnkiuoec3vWHQCy+o6c0J/dXzbT00Pq8VLcNNmZ24BdwnNg+2eAk
+ OZo/Wras1GO694DOF07eWeCUXjnE+NyULjmLnMH2CD4AvAJYUOoahOvFuBIAPzZoFQJ9fzMI=
+X-Gm-Gg: AY/fxX4iIADkSGIHfKQlJtTAY8E6uM92j0aYv2fi5r35R1NaaQO8yxTeBbg07G58agN
+ j8n6gRpXtAFaZyay6OCTl5LIBKDg126v1kMZy82uopNH/thPBp63UZBsAa328QaygeVoLCSgvou
+ mOJDziimSslo5GgK8ShFRekcWxLJou9lWO1udubaRE4agL9pygcXbpUQy9pEM2ZIW6jaqmb/yLu
+ qnTL+oVgcxfvVsZPeyW0lpfSljIJCilDflwgJFuh/59fNS9MDu6Xt8dHeSkS/wiRApVoZyfMMJf
+ RAHaH/cjvCb7VWX9pj8Yxq7zPQkJv8r+bnHaIPdhu8xe6pUrrWqS9Qvya/ksKvKCHvp/Q4PtYrc
+ ZjeiR5zcXbBaQYXNiZKOWuiNlyLw8h0E=
+X-Received: by 2002:a05:7022:670d:b0:119:e569:f84d with SMTP id
+ a92af1059eb24-120619279c2mr484519c88.4.1765999051669; 
+ Wed, 17 Dec 2025 11:17:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE9QLX8Hnj+pEC3QRKNJk+/mynUxrBE/GbbyyoHp/V2kWnJUzEqZJbopBkmh+kPAt3+3WM9eQ==
+X-Received: by 2002:a05:7022:670d:b0:119:e569:f84d with SMTP id
+ a92af1059eb24-120619279c2mr484492c88.4.1765999051050; 
+ Wed, 17 Dec 2025 11:17:31 -0800 (PST)
+Received: from QCOM-UWl2o8bcGT.qualcomm.com ([179.193.8.167])
+ by smtp.gmail.com with ESMTPSA id
+ a92af1059eb24-12061fceec2sm339744c88.13.2025.12.17.11.17.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 17 Dec 2025 11:17:30 -0800 (PST)
+From: Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>
 To: qemu-devel@nongnu.org
-Cc: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
- Peter Maydell <peter.maydell@linaro.org>, 
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>, 
- Jamin Lin <jamin_lin@aspeedtech.com>, 
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, 
- qemu-arm@nongnu.org, Patrick Williams <patrick@stwcx.xyz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3469; i=patrick@stwcx.xyz;
- h=from:subject:message-id;
- bh=UAIHiNVWOoGfAlUZ/SDuOB3pVwIMyRegj1WLMWCJoQw=;
- b=owEBbQKS/ZANAwAIAasDR8wtAMEZAcsmYgBpQwBg57zDXncJHIO4HkF2wmtnKsBJtVOX4NHtK
- z8MzuoZmCKJAjMEAAEIAB0WIQQEYP2KLgsT1w1uokGrA0fMLQDBGQUCaUMAYAAKCRCrA0fMLQDB
- GcI0D/96Ld8yBdDY7kmFwS9WZv0UNNCpcOsvXqqUq3PalNCtrE+ZGYNX1bLmw2O28EtGrncCwYo
- F7mtGLhO3MqS1Yy0ssbRRLl7TCVKpZCBRpI4XrtHRQ17GGtz2zf8pTQzEHavzmpvtY5aowmpRQ6
- fg09QNxw8owA3GsGpj0Mfvs7Znwvb1elzbzNXaHx++msJuPISethlSEVzSKIECG+jBDCWBVv+sy
- HpLFLlyTYvOc1TBgZ5BBTlF9qwmCo0venrIuwSyCB/tsL16CJ2ghJqNq4Dga61E72xMF38S7Z50
- Gow84VzIRJkq+DGvLRJ/rjer0E6WShLHj5M1p9ptUvDzdvzm23tL1wkdGO1FId9ok6voaZ+pQoX
- WN7a3mak/F4fAFsS760ecF+gp6DmhWiIxFJmycPfLEE7QdtfMPQNxFZu6xvyyUKadllz9Gte2nY
- T4h+aGTGAAhVxuhH6T6X9YU/QmfVS1rOJe1Wu0GMdKZb9NCFdgmHDTcTlsiTYNupihX+MTAqXfM
- uvEIVLI6NSmO83EqhU7+r72xmuKn/2VtQmG/8597TZzZBMWn0ropGDzXZuwurL65G8h172yAII0
- vSHQcRRywZERGWFIjF4g/S1L29VTP2RlwqBc00Yt/TF2KYPYaDpzuapsUfwizDZD4I6LM/9CJw+
- oRDCxvyxNTbnP+Q==
-X-Developer-Key: i=patrick@stwcx.xyz; a=openpgp;
- fpr=0460FD8A2E0B13D70D6EA241AB0347CC2D00C119
-Received-SPF: pass client-ip=103.168.172.151; envelope-from=patrick@stwcx.xyz;
- helo=fout-a8-smtp.messagingengine.com
-X-Spam_score_int: -2
-X-Spam_score: -0.3
-X-Spam_bar: /
-X-Spam_report: (-0.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, liwei1518@gmail.com,
+ zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com,
+ Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>
+Subject: [PATCH] MAINTAINERS: update my email
+Date: Wed, 17 Dec 2025 16:17:26 -0300
+Message-ID: <20251217191726.194767-1-daniel.barboza@oss.qualcomm.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE3MDE1MyBTYWx0ZWRfX9lfJBoxCl84K
+ /fX7AzuJwU4Y1PCsoFqu/AzY8PuYiY01eVKIDVYk8Z2/GRUCUbRw9WMokdbGfU38e2GWkXmodn3
+ E3zjqrBdWDCpmW6uOyxs5FEy+4GMwiqbhjvvNmCjXG33x1w+fJ72p+3KsJr/Z3Oun7RhB+20+lI
+ Eg6Q+f6lS1Ph4WmK9+XN4AOAjdrzWyu+mMhN97OexaaZWSyxFkKzNdSTFT2EIGRAWvU4FiFOy6d
+ gt1Y+3z6CN7wdJXmo/h1k+7XpJtIO2ovV/KqKTGTg75HzbjJ4UILb/8Y87vUyhgp1v8eFagxYxH
+ EJuO6XIuNCmdZ5Rr0yuonHE5xTr48jgAIVbWVZG3QY7oaCXhIi1Wd+PgUiV7a+dMZOhyknrESPU
+ 2/QkHDcrBnWQkbjh3JueIYluVknS1Q==
+X-Proofpoint-GUID: -DjTVhC27ke2bRFzvAEmqhZoKFCVQvFJ
+X-Proofpoint-ORIG-GUID: -DjTVhC27ke2bRFzvAEmqhZoKFCVQvFJ
+X-Authority-Analysis: v=2.4 cv=EsHfbCcA c=1 sm=1 tr=0 ts=694301cc cx=c_pps
+ a=wEP8DlPgTf/vqF+yE6f9lg==:117 a=PgdE4ROMVEJNTRX5P8gU4Q==:17
+ a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=EUspDBNiAAAA:8 a=_O3DOGVWAAAA:8 a=JF9118EUAAAA:8 a=pGLkceISAAAA:8
+ a=bDdBU3oEAAAA:8 a=SRrdq9N9AAAA:8 a=69wJf7TsAAAA:8 a=3YaQ9OB9uBDa7B75xg4A:9
+ a=bBxd6f-gb0O0v-kibOvt:22 a=2TKV-7w1aU1AVAwN0oqT:22 a=xVlTc564ipvMDusKsbsT:22
+ a=DN7SgORnOiO7RqxRx1GC:22 a=Fg1AiH1G6rFz08G2ETeA:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-17_03,2025-12-17_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 bulkscore=0 priorityscore=1501 suspectscore=0 impostorscore=0
+ clxscore=1011 lowpriorityscore=0 phishscore=0 spamscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512170153
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=daniel.barboza@oss.qualcomm.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FROM_SUSPICIOUS_NTLD=0.498, PDS_OTHER_BAD_TLD=1.997, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -133,88 +143,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use ipmitool/frugen tool to generate a Cable Cart image based on a
-sanitized set of data from a real device EEPROM.  The EEPROM
-bus/address did not match device tree for one of the EEPROMs so move
-it from bus 13 / 55 to bus 12 / 54.
+Also add myself as a "RISC-V TCG target" reviewer.
 
-Signed-off-by: Patrick Williams <patrick@stwcx.xyz>
+Signed-off-by: Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>
 ---
- hw/arm/aspeed_ast2600_catalina.c | 46 +++++++++++++++++++++++++++++++++++++---
- 1 file changed, 43 insertions(+), 3 deletions(-)
+ MAINTAINERS | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/hw/arm/aspeed_ast2600_catalina.c b/hw/arm/aspeed_ast2600_catalina.c
-index 5044441f38..4edb30bb16 100644
---- a/hw/arm/aspeed_ast2600_catalina.c
-+++ b/hw/arm/aspeed_ast2600_catalina.c
-@@ -419,6 +419,44 @@ static const uint8_t nic_eeprom[] = {
- };
- static const size_t nic_eeprom_len = sizeof(nic_eeprom);
- 
-+/*
-+ * Cable Cartridge FRU data. Generated with frugen.
-+ *
-+ *    {
-+ *        "board": {
-+ *            "mfg": "Nvidia",
-+ *            "pname": "18x1RU CBL Cartridge (QEMU)",
-+ *            "pn": "000-0000-000",
-+ *            "serial": "0000000000000",
-+ *            "date": "01/12/2025 00:00"
-+ *        },
-+ *        "product": {
-+ *            "mfg": "Nvidia",
-+ *            "pname": "18x1RU CBL Cartridge",
-+ *            "pn": "100-00000-0000-001",
-+ *            "ver": "E.4",
-+ *            "serial": "1000000000001",
-+ *            "atag": "QEMU"
-+ *        }
-+ *    }
-+ */
-+static const uint8_t cable_eeprom[] = {
-+    0x01, 0x00, 0x00, 0x01, 0x0a, 0x00, 0x00, 0xf4, 0x01, 0x09, 0x19, 0x8c,
-+    0x19, 0xf0, 0xc6, 0x4e, 0x76, 0x69, 0x64, 0x69, 0x61, 0xdb, 0x31, 0x38,
-+    0x78, 0x31, 0x52, 0x55, 0x20, 0x43, 0x42, 0x4c, 0x20, 0x43, 0x61, 0x72,
-+    0x74, 0x72, 0x69, 0x64, 0x67, 0x65, 0x20, 0x28, 0x51, 0x45, 0x4d, 0x55,
-+    0x29, 0x8a, 0x10, 0x04, 0x41, 0x10, 0x04, 0x41, 0x10, 0x04, 0x41, 0x10,
-+    0x89, 0x10, 0x04, 0x35, 0x10, 0x04, 0x41, 0x0d, 0x04, 0x41, 0xc0, 0xc1,
-+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xb1, 0x01, 0x09, 0x19, 0xc6,
-+    0x4e, 0x76, 0x69, 0x64, 0x69, 0x61, 0xd4, 0x31, 0x38, 0x78, 0x31, 0x52,
-+    0x55, 0x20, 0x43, 0x42, 0x4c, 0x20, 0x43, 0x61, 0x72, 0x74, 0x72, 0x69,
-+    0x64, 0x67, 0x65, 0x8e, 0x11, 0x04, 0x35, 0x10, 0x04, 0x41, 0x50, 0x03,
-+    0x41, 0x10, 0xd4, 0x40, 0x50, 0x04, 0x83, 0xa5, 0x43, 0x01, 0x8a, 0x11,
-+    0x04, 0x41, 0x10, 0x04, 0x41, 0x10, 0x04, 0x41, 0x11, 0x83, 0x71, 0xd9,
-+    0xd6, 0xc0, 0xc1, 0x00, 0x00, 0x00, 0x00, 0x25
-+};
-+static const size_t cable_eeprom_len = sizeof(cable_eeprom);
-+
- static void catalina_bmc_i2c_init(AspeedMachineState *bmc)
- {
-     /* Reference from v6.16-rc2 aspeed-bmc-facebook-catalina.dts */
-@@ -561,15 +599,17 @@ static void catalina_bmc_i2c_init(AspeedMachineState *bmc)
-     /* eeprom@50 */
-     at24c_eeprom_init_rom(i2c[12], 0x50, 8 * KiB,
-                           gb200_eeprom, gb200_eeprom_len);
-+    /* eeprom@54 */
-+    at24c_eeprom_init_rom(i2c[12], 0x54, 256,
-+                          cable_eeprom, cable_eeprom_len);
- 
-     /* &i2c13 */
-     /* eeprom@50 */
-     at24c_eeprom_init_rom(i2c[13], 0x50, 8 * KiB,
-                           gb200_eeprom, gb200_eeprom_len);
-     /* eeprom@54 */
--    at24c_eeprom_init(i2c[13], 0x54, 256);
--    /* eeprom@55 */
--    at24c_eeprom_init(i2c[13], 0x55, 256);
-+    at24c_eeprom_init_rom(i2c[13], 0x54, 256,
-+                          cable_eeprom, cable_eeprom_len);
-     /* eeprom@57 */
-     at24c_eeprom_init_rom(i2c[13], 0x57, 256, hmc_eeprom, hmc_eeprom_len);
- 
-
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 63e9ba521b..35dd77c819 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -319,7 +319,7 @@ RISC-V TCG CPUs
+ M: Palmer Dabbelt <palmer@dabbelt.com>
+ M: Alistair Francis <alistair.francis@wdc.com>
+ R: Weiwei Li <liwei1518@gmail.com>
+-R: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
++R: Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>
+ R: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+ L: qemu-riscv@nongnu.org
+ S: Supported
+@@ -4058,6 +4058,7 @@ F: tcg/ppc/
+ RISC-V TCG target
+ M: Palmer Dabbelt <palmer@dabbelt.com>
+ M: Alistair Francis <Alistair.Francis@wdc.com>
++R: Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>
+ L: qemu-riscv@nongnu.org
+ S: Maintained
+ F: tcg/riscv/
 -- 
-2.51.2
+2.43.0
 
 
