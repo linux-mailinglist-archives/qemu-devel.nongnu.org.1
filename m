@@ -2,89 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE682CC9953
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 22:22:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CB30CC998E
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 22:24:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVyxR-0000C1-8X; Wed, 17 Dec 2025 16:21:17 -0500
+	id 1vVz0d-000466-Fb; Wed, 17 Dec 2025 16:24:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1vVyxM-00007M-MO
- for qemu-devel@nongnu.org; Wed, 17 Dec 2025 16:21:12 -0500
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1vVyxL-0004dq-0j
- for qemu-devel@nongnu.org; Wed, 17 Dec 2025 16:21:12 -0500
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-7acd9a03ba9so7097583b3a.1
- for <qemu-devel@nongnu.org>; Wed, 17 Dec 2025 13:21:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vVz0Z-00045W-O6
+ for qemu-devel@nongnu.org; Wed, 17 Dec 2025 16:24:31 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vVz0Y-0005FH-Bs
+ for qemu-devel@nongnu.org; Wed, 17 Dec 2025 16:24:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1766006669;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=wgj1dawEeivXaJjJ9Pzseu96y1Jb90RbsHQDqi2NZtg=;
+ b=OJdZETXakU9NFFIWnjzP29fKEShbK3NZ0F98wio+W0d/38nFG7g9Wongmk4gF3zzPB7L9a
+ jJQGTdpwA8/8SUKVUR3NuRTENFbsaR11DV65PR8utGB6/p40/2+XXly6qFt4iipTEMpahm
+ 6pcRflT4zfvegsIRz1RcALunFCJpFBk=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-140-JHJqBGhMOOCeHiRJqiCp2Q-1; Wed, 17 Dec 2025 16:24:27 -0500
+X-MC-Unique: JHJqBGhMOOCeHiRJqiCp2Q-1
+X-Mimecast-MFC-AGG-ID: JHJqBGhMOOCeHiRJqiCp2Q_1766006667
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-8b2ea3d12fcso1549476385a.0
+ for <qemu-devel@nongnu.org>; Wed, 17 Dec 2025 13:24:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766006469; x=1766611269; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uL2mCK6rnb99hwd+Wqz4LI6bREO75gA3FJH4GnyvXvQ=;
- b=blbz8FkqBdFUHzFdtzUlxBkAAGig06krgmO2BcQOGDQBsBChagwg61w9oTDHJffOkY
- x7q/o74lIrhbvmdYWTpUeRuzhXAGea836f2MzfC5i3hg+TVLVXi1W+o0XrrSr4svHpun
- hL+JTSv90oscokIbJoiNZuXOby0r+rCC7zYycwTzSxEUAnBPA3+HtqfSwRESPckDiV9H
- Dh4ZprX2TII+8nQ6rzCnwFU4lo6J13Cr7qYAc8LUfWSTFcSFRQkzgPe9mh7K94v2SoMb
- 190Ob67//TKfL4jQxedKFWpi5Oe+xm4NkEnka0kDmJ5WjGEQvpMF4K1sLldDw9NO2ja6
- A9hw==
+ d=redhat.com; s=google; t=1766006667; x=1766611467; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=wgj1dawEeivXaJjJ9Pzseu96y1Jb90RbsHQDqi2NZtg=;
+ b=ZYfpPIErBM00kSGblEPG6AuJxO/EftirLkWSsuA1a9zvibygJOTGOA1CMrxHVr2VYK
+ 7wUiYa3u2u23mqb0mO3YHY7ZvViHdL7+QBjRM89p8nnD6KtksjtfVxNFnwejodKQlo9l
+ dzCrlDpEZ86I53+ObXM1wWfDwck8geg2K2gQmuhTTZHgWOkKmouNWIh0fGnSUN3uk5wS
+ jRW9f3kCYwyV6nr6M4EItrqd5x5PekJlx7UDHdAFDT17GOPV00zAGo+gUf2cridEgiiC
+ VwcFtF64kIoDunNsUxO53x4Q5QXhECUqn1/TfMKQPSVb4VSDGGJ7n0GAFLgAdr4/7K2B
+ fKvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766006469; x=1766611269;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=uL2mCK6rnb99hwd+Wqz4LI6bREO75gA3FJH4GnyvXvQ=;
- b=BvGDKsjctHgSHX1QoUFqww4rjoTJlDqYZbXtoBRGrX0sUBCUZBMklWJVaKB/Nls/U3
- nTGK4eg/39lw7LMjuHWpwJi1+D8Lc6zRuPk248fu7r8fS/VkH9xWKce0ignW0yDeY4Wt
- K85ZyE7WkTmywJES8/zawkPf2cZ39wvYMfqIYkQXDG2RKt2zI9TSu6OxWjHRyzdBBx2F
- G/TMKlbqYHlN1YYdYfSmOZMQ+Ge/2r64v/dJ7J7DZDVln3QIBF7eEuZTmJJhF/HlUb49
- gV3Cws6A55o9zuYp9fAxCTCqrClNxd/DoSgJrwa3Y4EsEu+dXlxn3LgCn0Ef5rt1RwEF
- N9dA==
-X-Gm-Message-State: AOJu0YweRkEQ291T5lDw3h+WVJMZqx6aOD8p5jdy9E27offnHyZcWHIa
- ncgwmyk0EfUbx7kiQvI8dMjbR1AH1u8zlXdypvkWKsl7DtAvRzSs/XQfe38AztfvVAsXvMDH2gJ
- 0d9gL
-X-Gm-Gg: AY/fxX7njvjtf5LREzMwQ6rKgvSUWitBXM2gRXiyQdJIpHhFQ+BdrmQLRZaf+3ndWlH
- Ss/R12Cr2YLuEMj0sw9C6Zou/oy2pPVMbeqn4RN+I3OIYgvov1gff8BNtT+iUY3o4/fdrVwKwnn
- dUiCAfF2AM/h2Zb4/CtpfO2u5qi9Uzk1A+kAeN3MWIFCO3/O18JgZfIl+447+Jv/6tcmGfS34d5
- bBFcfeci8luRf6WEL4PpnTqjpmjjIw0eanV71HHFE1oB2aM+Ryr5iu4USRul11UHfTNZQf+Rf9Q
- fqddShXmbsGk5yzcafal4iJWOtCVTfbCNrxOsTaLbMPSY029XqouU4yKaQPyQzsym8wGse0IA9I
- Uk9JtJLf11x6J2n0KGao/WloJcXdeNj323IcTfpY3sIITSX3hj3/iSC9TMenvFbfh9JHrj5SVyK
- nJTO47dLVmCFzyIlmqvwi55BcNHQ==
-X-Google-Smtp-Source: AGHT+IG72lzChL8ifKR0ow59YOMJO8E+H2l9V6i5v8SneILZwhDj+kBGORNmvP48etxnHFShnT/big==
-X-Received: by 2002:a05:701b:2714:b0:119:e56b:9596 with SMTP id
- a92af1059eb24-11f34c4b478mr11234849c88.27.1766006469324; 
- Wed, 17 Dec 2025 13:21:09 -0800 (PST)
-Received: from gromero0.. ([191.8.216.160]) by smtp.gmail.com with ESMTPSA id
- a92af1059eb24-12061ef3383sm1852476c88.0.2025.12.17.13.21.07
+ d=1e100.net; s=20230601; t=1766006667; x=1766611467;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wgj1dawEeivXaJjJ9Pzseu96y1Jb90RbsHQDqi2NZtg=;
+ b=efsdXArwa7L3XYFnL3folNWzmiG9b1U5tF3ZYp5jpt4eVHJ3vnXK+HCn1yDlHei5e5
+ GFGCs7wwQ21WUgCRzYXPda33bbZTmBhsgwB0SSYUu775J4FSgBl9WPB4WhQzpDoiAjVP
+ Fa8OJsTCedAQwHWzyJkCLxU37uGbu+ejna5ULPcQ1Cj++eLLX0KSKSKXIddPlxbuj+KC
+ kweqtDf9NukhZVBzRYSM/eTXX9LuWjl9tZCOQ90jH49VopjwMbpvszuq2zPD4ZL+x822
+ AndaHLUXnBpYoacRGboDCZBH0l41x1F/Az/JA3bLKW1mL3bUNfxR91cpZ0NwbWxaXNJ7
+ LsmA==
+X-Gm-Message-State: AOJu0YxFi8z7UxLp/T6jkNrI6d4BYoDlX4HgY6DZoyPfnIXbX6IR2wF/
+ BDYamLqfjWzkHC7Uwm3T4+KhAp1hgWWzmZO9LkSFucuUUGzXLONiZ3h2XRUC6zsSQxWbN5mpTDM
+ q1yf05hSzhbYMNugrrP9ATpfAxSN/M+jKd5RqQQOFk55oalaq5gb6zv5I
+X-Gm-Gg: AY/fxX64oNHM+z6TlLtvNSW5nqRsMfc0WEhxdlwJ6WrPHiV8qotnL1MEEEm6b8AZKjd
+ i5rEluL3FGVYn/ffjNF8B7uv8D/IM4CnGOWQZrSatvY3OazN7V/hWVwihtXhy8n8vxGoTVTLkVO
+ BqXix7ebSYFdEvi7buQ30/Jn+fkYL9HQMDNeO9myks6Q+IKFFes2Q4yOR+TJI+fduiwYHy795z2
+ QzHI+KzvwgfdlJpdgQChLHem6mqbdPTRkk/KqykNtOMaseQb2va4J3yJ/4s5BO0Zb81jT1vY4m8
+ o9Kc3GKAawmlvxuRQnyJ+gmRqYVktmyop8Ag5h3gbM/MtTrqPvlmpx9i9+EE97a1qfaiWPTIINL
+ Hk2U=
+X-Received: by 2002:a05:620a:818e:b0:8bb:ac44:bd34 with SMTP id
+ af79cd13be357-8bbac44e574mr1524351485a.4.1766006666936; 
+ Wed, 17 Dec 2025 13:24:26 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEnrD4HfJzNXjYSRH19JVBRTqJdg+PgIqb2BXNkfzrEVZ/yrV+OjS0QwWsMvIM5jpCxGK/h3A==
+X-Received: by 2002:a05:620a:818e:b0:8bb:ac44:bd34 with SMTP id
+ af79cd13be357-8bbac44e574mr1524349485a.4.1766006666356; 
+ Wed, 17 Dec 2025 13:24:26 -0800 (PST)
+Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-8beeb5c3d2fsm30904385a.10.2025.12.17.13.24.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 Dec 2025 13:21:09 -0800 (PST)
-From: Gustavo Romero <gustavo.romero@linaro.org>
-To: qemu-devel@nongnu.org, qemu-arm@nongnu.org, richard.henderson@linaro.org,
- alex.bennee@linaro.org, philmd@linaro.org, peter.maydell@linaro.org
-Cc: gustavo.romero@linaro.org
-Subject: [PATCH v2 6/6] system/physmem: Use cpu_address_space_init to set
- cpu->num_ases
-Date: Wed, 17 Dec 2025 18:20:18 -0300
-Message-Id: <20251217212018.93320-7-gustavo.romero@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251217212018.93320-1-gustavo.romero@linaro.org>
-References: <20251217212018.93320-1-gustavo.romero@linaro.org>
+ Wed, 17 Dec 2025 13:24:26 -0800 (PST)
+Date: Wed, 17 Dec 2025 16:24:25 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 28/51] tests/qtest/migration: Stop invoking
+ migrate_incoming from hooks
+Message-ID: <aUMfiWy3yPFRf-SF@x1.local>
+References: <20251215220041.12657-1-farosas@suse.de>
+ <20251215220041.12657-29-farosas@suse.de>
+ <aUMR699ZHbiF7_lh@x1.local> <87ecos2514.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pf1-x432.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87ecos2514.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,87 +117,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the new cpu_address_space_init function to set the total number of
-ASes in a CPU instead of directly setting it via cpu->num_ases.
+On Wed, Dec 17, 2025 at 06:05:11PM -0300, Fabiano Rosas wrote:
+> > E.g. test_mode_transfer_common() used different things to specify incoming
+> > channels (cpr_channel, opts_target, connect_channels).  We should clean
+> > them up at some point..
+> 
+> Yes, although it's a good test that the various ways of passing channels
+> are working
 
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
----
- system/cpus.c                    |  4 ++--
- target/arm/cpu.c                 | 10 +---------
- target/i386/kvm/kvm-cpu.c        |  3 ++-
- target/i386/tcg/system/tcg-cpu.c |  2 +-
- 4 files changed, 6 insertions(+), 13 deletions(-)
+Yes.  Said that, ideally IMHO we should only specify the channels, e.g. in
+MigrationAddress format (for both main and cpr), then test code should be
+able to convert it into either JSON (in form of "channels") or URIs.  I
+recall we have had some discussion before on that.  We can leave that for
+later.
 
-diff --git a/system/cpus.c b/system/cpus.c
-index fa9deafa29..54be6a3faf 100644
---- a/system/cpus.c
-+++ b/system/cpus.c
-@@ -718,8 +718,8 @@ void qemu_init_vcpu(CPUState *cpu)
-         /* If the target cpu hasn't set up any address spaces itself,
-          * give it the default one.
-          */
--        cpu->num_ases = 1;
--        cpu_address_space_add(cpu, 0, "cpu-memory", cpu->memory);
-+        cpu_address_space_init(cpu, 1 /* Number of ASes */);
-+        cpu_address_space_add(cpu, 0 /* AS index */, "cpu-memory", cpu->memory);
-     }
- 
-     /* accelerators all implement the AccelOpsClass */
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 1902c510f9..67ad6f0a6e 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -2148,15 +2148,7 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
-     unsigned int smp_cpus = ms->smp.cpus;
-     bool has_secure = cpu->has_el3 || arm_feature(env, ARM_FEATURE_M_SECURITY);
- 
--    /*
--     * We must set cs->num_ases to the final value before
--     * the first call to cpu_address_space_init.
--     */
--    if (cpu->tag_memory != NULL) {
--        cs->num_ases = 3 + has_secure;
--    } else {
--        cs->num_ases = 1 + has_secure;
--    }
-+    cpu_address_space_init(cs, ARMASIdx_MAX);
- 
-     cpu_address_space_add(cs, ARMASIdx_NS, "cpu-memory", cs->memory);
- 
-diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
-index a6d94d0620..dbb04ef051 100644
---- a/target/i386/kvm/kvm-cpu.c
-+++ b/target/i386/kvm/kvm-cpu.c
-@@ -92,13 +92,14 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
-         kvm_set_guest_phys_bits(cs);
-     }
- 
-+    cpu_address_space_init(cs, X86ASIdx_MAX);
-+
-     /*
-      * When SMM is enabled, there is 2 address spaces. Otherwise only 1.
-      *
-      * Only initialize address space 0 here, the second one for SMM is
-      * initialized at register_smram_listener() after machine init done.
-      */
--    cs->num_ases = x86_machine_is_smm_enabled(X86_MACHINE(current_machine)) ? 2 : 1;
-     cpu_address_space_add(cs, X86ASIdx_MEM, "cpu-memory", cs->memory);
- 
-     return true;
-diff --git a/target/i386/tcg/system/tcg-cpu.c b/target/i386/tcg/system/tcg-cpu.c
-index 231a4bdf55..ab72c5ff7b 100644
---- a/target/i386/tcg/system/tcg-cpu.c
-+++ b/target/i386/tcg/system/tcg-cpu.c
-@@ -73,7 +73,7 @@ bool tcg_cpu_realizefn(CPUState *cs, Error **errp)
-     memory_region_add_subregion_overlap(cpu->cpu_as_root, 0, cpu->cpu_as_mem, 0);
-     memory_region_set_enabled(cpu->cpu_as_mem, true);
- 
--    cs->num_ases = 2;
-+    cpu_address_space_init(cs, X86ASIdx_MAX);
-     cpu_address_space_add(cs, X86ASIdx_MEM, "cpu-memory", cs->memory);
-     cpu_address_space_add(cs, X86ASIdx_SMM, "cpu-smm", cpu->cpu_as_root);
- 
 -- 
-2.34.1
+Peter Xu
 
 
