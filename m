@@ -2,103 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50D85CC8D3E
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 17:41:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9170ACC8DC2
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 17:47:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVuZW-00031c-D5; Wed, 17 Dec 2025 11:40:18 -0500
+	id 1vVufp-0004Q3-2A; Wed, 17 Dec 2025 11:46:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVuZT-000305-6e
- for qemu-devel@nongnu.org; Wed, 17 Dec 2025 11:40:15 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVuf8-0004GC-HM
+ for qemu-devel@nongnu.org; Wed, 17 Dec 2025 11:46:13 -0500
 Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVuZR-0005BY-Bi
- for qemu-devel@nongnu.org; Wed, 17 Dec 2025 11:40:14 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vVuf0-00078c-T1
+ for qemu-devel@nongnu.org; Wed, 17 Dec 2025 11:46:01 -0500
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 4CCFB5BD35;
- Wed, 17 Dec 2025 16:40:10 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 594325BCD3;
+ Wed, 17 Dec 2025 16:45:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1765989611; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Nins76EGNPs0hv/EmKdjPjAqiYqtTLTolDhuNeLBsWo=;
- b=xfB3VHjzl36va070j5sAg6Kjm1i49/WHTEjVmtDSPGn6GFbrzvnoI9+JzQ9IKyDu98RmZF
- 96oVQxYHNb8NjEYzX+aZsI0uj6UK/OHwdlkj+gMfTkAm0/xk9CaU5YgOyBenw4X+Fw3HEI
- +p02W3ssOqljbtl5N3yYA1vfiqlSFIA=
+ t=1765989954; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=GflHCo7RBYrYhtZvzABS0DCrAarF1iGNGJd1Mhf/Vpw=;
+ b=r8WD+01BtYLz8r9MXeQOJVRZS30R73WjbXy1yP5zZS0jFIXke9vYLURJAP376os3S1WAWc
+ KZBKIwI7reeiIhWYysj+YZwZujrfB+jnCnn5mHipBlsEo39/++whrq1g1j6Ka9y4zppk19
+ kgSKJXu2vbJ1J4ch3nJ7SSEhTTGTCIw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1765989611;
+ s=susede2_ed25519; t=1765989954;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Nins76EGNPs0hv/EmKdjPjAqiYqtTLTolDhuNeLBsWo=;
- b=buGcQwF/GNJn/K7Ziuona+SMGzZUtBq0m5FzZ+bEXMvuRHgDxK7bHZo6bMuJnSf97bojQo
- W/K3kb4H94mjiIDw==
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=GflHCo7RBYrYhtZvzABS0DCrAarF1iGNGJd1Mhf/Vpw=;
+ b=us8GxZPjN5hBGltUg8gDJecuHmGapmMscdEmZQ5ERU1xotsjKSIk4gUIj9P2cJ2DwbvBag
+ hISxlvux8JJ9HNCg==
 Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nQ85UaKU;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jzvj4JUE
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rIdvvbSl;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=cdUTv5bC
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1765989610; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Nins76EGNPs0hv/EmKdjPjAqiYqtTLTolDhuNeLBsWo=;
- b=nQ85UaKUOtJyJ3hoCBKIRlJiLOD+2IybE/dhdnc+J8GRHfL+vsN6El7OLDdrihOOJnW7i1
- gRAXrE1Y0oeizSNpE3J5GTaL0VzYAByRzfvsCbw1LX1743pjZLnDRgOB1kHLPcJx7ykKVY
- 5W3VVvW7g/8TS6QXZmHjN3/JCajUYaE=
+ t=1765989953; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=GflHCo7RBYrYhtZvzABS0DCrAarF1iGNGJd1Mhf/Vpw=;
+ b=rIdvvbSlozVIYZyRyoCPtZGYKpp1X4ZqztuAgf/sp/gtaQlOz33P99R1J8XAj3MjiVfdlm
+ b0q/c7GkHc5VFmAeIlbGZummGwXwti5IAx3zIG7fMaJVIpHkhqx2Gp8fxq/73qFrW+PLlv
+ it8NmoMIULuUwYfPjqeqIiCaXL60fFw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1765989610;
+ s=susede2_ed25519; t=1765989953;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Nins76EGNPs0hv/EmKdjPjAqiYqtTLTolDhuNeLBsWo=;
- b=jzvj4JUEDr0TFPTjIRwJAYnb9Y9J4f93KsarQ0m6grdhy6BZlzQiXERFL+ii+VuD0rbfK9
- derLmegZR6WGxoCA==
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=GflHCo7RBYrYhtZvzABS0DCrAarF1iGNGJd1Mhf/Vpw=;
+ b=cdUTv5bCu800mgLKKOQdcYf6yRCgdqTHZgKFLIaVafRpzhwTI095VGq+P4/2gSjQ6EwzWm
+ lAji2I0yb/qfLXDg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BE4F93EA63;
- Wed, 17 Dec 2025 16:40:09 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 143C83EA63;
+ Wed, 17 Dec 2025 16:45:51 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 0hBRH+ncQmkYCAAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 17 Dec 2025 16:40:09 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 9xGIMT/eQmlyDQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 17 Dec 2025 16:45:51 +0000
 From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com, Eric
- Blake <eblake@redhat.com>
-Subject: Re: [PATCH v3 05/51] migration: Normalize tls arguments
-In-Reply-To: <aUGVxIHNbVDba2dc@x1.local>
-References: <20251215220041.12657-1-farosas@suse.de>
- <20251215220041.12657-6-farosas@suse.de> <aUGVxIHNbVDba2dc@x1.local>
-Date: Wed, 17 Dec 2025 13:40:06 -0300
-Message-ID: <87ldj112qh.fsf@suse.de>
+To: qemu-devel@nongnu.org
+Cc: thuth@redhat.com,
+	peterx@redhat.com
+Subject: [PATCH v2 0/2] ppc: Fix migration issue with quiesced state
+Date: Wed, 17 Dec 2025 13:45:46 -0300
+Message-ID: <20251217164549.4311-1-farosas@suse.de>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -4.51
-X-Rspamd-Queue-Id: 4CCFB5BD35
-X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[];
  R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- RCVD_TLS_ALL(0.00)[]; MISSING_XM_UA(0.00)[];
- TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
+ MX_GOOD(-0.01)[]; TO_DN_NONE(0.00)[]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_HAS_DN(0.00)[];
  SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ MIME_TRACE(0.00)[0:+]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  FUZZY_RATELIMITED(0.00)[rspamd.com];
- MID_RHS_MATCH_FROM(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.com:url,suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- RCPT_COUNT_FIVE(0.00)[5]; RCVD_COUNT_TWO(0.00)[2];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:dkim,suse.de:email];
+ FROM_EQ_ENVFROM(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
  DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 594325BCD3
+X-Spam-Score: -3.01
 Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
  helo=smtp-out2.suse.de
 X-Spam_score_int: -43
@@ -124,76 +117,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+A while back, Fabian reported two issues with migration on ppc64le,
+one of which was already fixed. There remains this one from the
+previous series:
 
-> On Mon, Dec 15, 2025 at 06:59:51PM -0300, Fabiano Rosas wrote:
->> The migration parameters tls_creds, tls_authz and tls_hostname
->> currently have a non-uniform handling. When used as arguments to
->> migrate-set-parameters, their type is StrOrNull and when used as
->> return value from query-migrate-parameters their type is a plain
->> string.
->> 
->> Not only having to convert between the types is cumbersome, but it
->> also creates the issue of requiring two different QAPI types to be
->> used, one for each command. MigrateSetParameters is used for
->> migrate-set-parameters with the TLS arguments as StrOrNull while
->> MigrationParameters is used for query-migrate-parameters with the TLS
->> arguments as str.
->> 
->> Since StrOrNull could be considered a superset of str, change the type
->> of the TLS arguments in MigrationParameters to StrOrNull. Also ensure
->> that QTYPE_QNULL is never used.
->> 
->> 1) migrate-set-parameters will always write QTYPE_QSTRING to
->>   s->parameters, either an empty or non-empty string.
->> 
->> 2) query-migrate-parameters will always return a QTYPE_QSTRING, either
->>   empty or non-empty.
->> 
->> 3) the migrate_tls_* helpers will always return a non-empty string or
->>   NULL, for the internal migration code's consumption.
->> 
->> Points (1) and (2) above help simplify the parameters validation and
->> the query command handling because s->parameters is already kept in
->> the format that query-migrate-parameters (and info migrate_paramters)
->> expect. Point (3) is so people don't need to care about StrOrNull in
->> migration code.
->> 
->> This will allow the type duplication to be removed in the next
->> patches.
->> 
->> Note that the type of @tls_creds, @tls-hostname, @tls-authz changes
->> from str to StrOrNull in introspection of the query-migrate-parameters
->> command. We accept this imprecision to enable de-duplication.
->> 
->> There's no need to free the TLS options in
->> migration_instance_finalize() because they're freed by the qdev
->> properties .release method.
->> 
->> Temporary in this patch:
->> migrate_params_test_apply() copies s->parameters into a temporary
->> structure, so it's necessary to drop the references to the TLS options
->> if they were not set by the user to avoid double-free. This is fixed
->> in the next patches.
->> 
->> Acked-by: Markus Armbruster <armbru@redhat.com>
->> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->
-> [...]
->
->> @@ -403,6 +403,9 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
->>          monitor_printf(mon, "%s: %" PRIu64 " bytes\n",
->>              MigrationParameter_str(MIGRATION_PARAMETER_XBZRLE_CACHE_SIZE),
->>              params->xbzrle_cache_size);
->> +        monitor_printf(mon, "%s: %" PRIu64 "\n",
->> +            MigrationParameter_str(MIGRATION_PARAMETER_MAX_POSTCOPY_BANDWIDTH),
->> +            params->max_postcopy_bandwidth);
->>  
->>          if (params->has_block_bitmap_mapping) {
->>              const BitmapMigrationNodeAliasList *bmnal;
->
-> This chunk seems to be introduced by accident and removed in patch 18..
->
+pseries migration causes a guest hang after migration due to a new
+variable used to track the stopped state of vcpus, which is not
+migrated. Fix is to migrate the new variable. To avoid breaking
+backward migration, a compat property is added. For forward migration,
+a heuritics based on the known QEMU code is used.
 
-Yes, rebase mistake. Thanks.
+Thanks
+
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/2220496446
+
+v1:
+https://lore.kernel.org/r/20250819223905.2247-1-farosas@suse.de
+
+Fabiano Rosas (2):
+  target/ppc: Fix env->quiesced migration
+  tests/functional: Add a OS level migration test for pseries
+
+ hw/ppc/spapr.c                           |  6 +++
+ target/ppc/cpu.h                         |  1 +
+ target/ppc/cpu_init.c                    |  7 +++
+ target/ppc/machine.c                     | 63 ++++++++++++++++++++++++
+ tests/functional/ppc64/test_migration.py | 12 +++++
+ tests/functional/ppc64/test_pseries.py   | 35 +++++++++++++
+ 6 files changed, 124 insertions(+)
+
+-- 
+2.51.0
+
 
