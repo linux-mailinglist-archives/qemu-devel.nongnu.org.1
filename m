@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D843DCC8378
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 15:34:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87890CC8363
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 15:34:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVsaM-0001kp-16; Wed, 17 Dec 2025 09:33:02 -0500
+	id 1vVsaC-0001ed-Ew; Wed, 17 Dec 2025 09:32:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vVsZM-0001Y1-Rm
- for qemu-devel@nongnu.org; Wed, 17 Dec 2025 09:32:02 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vVsZU-0001ZU-Ox
+ for qemu-devel@nongnu.org; Wed, 17 Dec 2025 09:32:12 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vVsZI-00072D-Vz
- for qemu-devel@nongnu.org; Wed, 17 Dec 2025 09:31:59 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-42fbc544b09so3226660f8f.1
- for <qemu-devel@nongnu.org>; Wed, 17 Dec 2025 06:31:55 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vVsZP-000733-Mp
+ for qemu-devel@nongnu.org; Wed, 17 Dec 2025 09:32:05 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-47775fb6cb4so41239245e9.0
+ for <qemu-devel@nongnu.org>; Wed, 17 Dec 2025 06:32:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1765981914; x=1766586714; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=bm1lEufkdD0ycuNfJSZZcU6UUrZFUPztcWLPFzlXpEU=;
- b=p56s5zlm3TiNXtKaquw2cShcc4w0lqco86Sm57uovKOjXYiLGPK8cMoPlxyWfjiz+9
- vG+hvAYiP+3lcvxwEzUU57STasu6s6krUUrYesG6UxqgHDLcxe1DZK1+QcXoH6AsuoSy
- UfxroqOdk3g9RmV7XzmHYjPskensVF9MofOHeYdfgZC6L5k9NdG4/T7IW56d34B2/3Jk
- BLk0/MA91MlkpeG6bvrk9LlQTbsminVOUGHYQUN3JItzRO048ImvTZqvV593lVOtz6Z5
- FPwsLfzxN38yXV2FkcLBTVMwGGYJbJ0IkkxxtHrCMfa1tbZrvlBV78BNE2PK5LT73PUr
- wVOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765981914; x=1766586714;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1765981921; x=1766586721; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bm1lEufkdD0ycuNfJSZZcU6UUrZFUPztcWLPFzlXpEU=;
- b=OTdeY4JwO3HHPv+1kGImkwukBKZUb7aMk+aUAtrABUGdt6C20GlRGN+bWa+T2enOj3
- Ey/H+rQIkyEO4he1k7aoZZdoPvyajT7yiWPgc9v/kQm5uXGpdWPfFw39qtIIXcH1TBNp
- K7CrH6+JGsMXPr4X7fKI3x+ezWxUj755PWCKgvHoV0bWJUyx+n1w84d0eulL3g22cKux
- tTf76B34yzOaBNbopx3WC7tS3O5zhUjR9Swtma75cc1m7odGz63mx6YtvbLxyfY/9NYD
- 3adJrdcqsptgKpTirRDX1cD7i91bwILLccdw2L031JIT59K/eDd6zS5sZsNE9RnXgoRD
- m6dQ==
-X-Gm-Message-State: AOJu0Yxzmjh2wdgUeF2sBC2cd4IOl4HEl4RRGZPFuiTQEkha6uR6dYOV
- i1sSgaWNnbxYpXkjJqjNETHuG7J27c4qkYdJWlQhLNMKnjSEO0Tt39GEkQVT8/u77eiTVVxGuhm
- Z8syauwLtTA==
-X-Gm-Gg: AY/fxX7+p9eNDWEbvFu35EaMYEHotC4KBV+d2p0XR5bbhg8eY3xcyo0ig81F8YHwB6Y
- Z093eXSddkkGy/8XPlvSxhEL7BM4ktUxKfOLRox7Ni5hM7sUrm+XKKmgAjc5+a2Bix8c6vQ+Szk
- kdVHIowedBfaHxbOBIoVRTyUSzCfBBD0iaUVJw/WkXUISKBPGVQ1TUmYa2CjvtpyjcvPyd3G8aN
- z2yLMY64CjrjxtIMidHrst9l8dsxgrB7Usj48z0LG60x41jQiJ2ztb5mbQtXfYkDiCY7tLy9yhP
- 6XUD5UYIrXgKYX4Ag0M0x2Gup9isDXw43rBmgjFbCanNdI8Wv9NJOh8hh7X877nY27KmOWiazGn
- ercFmMB36krDQRMtb2kdotCYoVa9/VXTl/RBB3j1+t3pI45HgUhqBAAzYtHJ1ZWqwQLrg386AjS
- LYh/2Ef/fZb8fAVSvq7p5Vok2LiwpxcyaBP/SWjoD6qZD71ldn3dDgPmg30f6Z
-X-Google-Smtp-Source: AGHT+IFuVHQ3i+yvTmtxvFbhb0Wo9uSXQh1cUms4j24KV4ia2in7c/HSvCKOSXg1WDf4F6vVsFaGiw==
-X-Received: by 2002:a05:6000:310f:b0:430:f7dc:7e96 with SMTP id
- ffacd0b85a97d-430f7dc80f6mr12890259f8f.48.1765981913476; 
- Wed, 17 Dec 2025 06:31:53 -0800 (PST)
+ bh=TCPuc4QcdE6GiCVIeNAYDq7shfJ0MvEj0ABczq5KTuo=;
+ b=p4Q7xiEWtlM0PEn4TiQpWFY6+E60Xq4uNPJLHjtEBiLKdufSPpFudDATHsho43Z7/D
+ d9vzWgStL01cOQmpd5C3baBxmE4F9SckG06/9CVcGKZj5aniEo848w681dY1ilSwxT2E
+ oetFf0Kv3yfVulqXoYpxn/O79mKbHOAWnQPkHWtsOdikmohjil+95Lp0rkRqvfIZ9Zpc
+ lP9z+LJttr2NPzeNmdAb6dE38YGStOk1z1eakL3tj2MTvKot2qwf6OLOT1wUKiLhNbLe
+ e06XdmcsHjfebNsUWH0+titeujjxXYNV4bNo/O4FvEpWK64VGFfAoIgTFa6atMgzWW9N
+ 4HNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1765981921; x=1766586721;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=TCPuc4QcdE6GiCVIeNAYDq7shfJ0MvEj0ABczq5KTuo=;
+ b=g+LuRX9hI7kTcVC5RH502IfAUqkimHL5Qy3yFteHzS4K2gJ0U8O3UOm/kAbtwsP0Vs
+ +kw8aYYfaT5aoMIvcsSHhwRNcmbLKpebVERvTMNLPcVrck3c2KKfntia1xqZgO6DqUWy
+ lQyHWjlfoUs/O5g6/gkXobOj2Vk/AwmoABRz0eWpMfOncfuxAJZa9RiOcQX3dAfW3r6O
+ CDFIdTIKfI93QWXAK2HG3XG9nfTInlmjVUVHqoFSRkIqhPUmYmW7uqo+md+uvFLvmCJe
+ EW4gVFibCEi+GGozPGJ7TW5wor622KkWTOSEuEdLCtKKRIkV0YT4JMxQ3fWmlaEjDJpZ
+ k7yg==
+X-Gm-Message-State: AOJu0YxHvf/JTxLujdfAkczFCuwpRLYOk6oL/SOb8rzW278tCJ1VEflK
+ N9znxgHph9RJiZa1oytGTQ6AeXXwlpoF4DbsCN4ZvTbbtyIlw0LGoEgHGZZHGfBVgUT+pLK0gv3
+ HUtknJuHsHg==
+X-Gm-Gg: AY/fxX6NZLliBbwgo6PhjKy1SWau3sDgf9hauFEM3IYGsT8OaMsksO2KifJJG8j/Z9Q
+ rR2gX9rk/tjImEFHlSEpg/soz1CIwopiJEHgENjFnq6+FSN5OBuf32W5hjfw1+MINlTQQFY60rZ
+ YJ5NK4kTCakNLFLej3lNptMGLI/fj1c/tFDom5yc7FarymRZ685y6y59Y2YWbesVHruPyW97A6C
+ HDVAg98mB1NNzeNDA6o7YukwnoIwyfjoiqFzBC01vhXFE0XpqtQt7qLB3hNTL9jCy4RolJzu8dH
+ 35Gl+NAPeZZ7DKANwq98ZF8CyhZl9lV/QuJdtREZNIhAt2tikktqNL+4YFg1NWhJj6JZHh2Tb3m
+ 3s+gPh3QdpvMPfBNrWm9QZyX/TdyBw1ImQovLsW9N/UxpEJO3lGMo3zmIBcuOyOZJ/2zWLoUWzR
+ GnAAMPHwJmpd2C2rfAKGrkxH8y8NXTo+Qq6tVsaltO3Qx2ZquD0wQu9paFOf8x
+X-Google-Smtp-Source: AGHT+IHtPK5F59Ai6OYigl+XGD/2e1KWSwOW9iwSmzj8g138QmguzhRd4e3qCseNG7m/FhMdj7FYtw==
+X-Received: by 2002:a05:600c:6912:b0:479:3a88:de5d with SMTP id
+ 5b1f17b1804b1-47a8f91dac4mr201159925e9.36.1765981921014; 
+ Wed, 17 Dec 2025 06:32:01 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4310adf6fc1sm4619619f8f.40.2025.12.17.06.31.51
+ 5b1f17b1804b1-47bdc1edd26sm40165355e9.13.2025.12.17.06.31.59
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 17 Dec 2025 06:31:52 -0800 (PST)
+ Wed, 17 Dec 2025 06:31:59 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -69,24 +70,26 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Artyom Tarasenko <atar4qemu@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>,
- David Hildenbrand <david@kernel.org>, Peter Xu <peterx@redhat.com>
-Subject: [PATCH 00/14] system/memory: Clean ups around address_space_ldst()
- endian variants
-Date: Wed, 17 Dec 2025 15:31:36 +0100
-Message-ID: <20251217143150.94463-1-philmd@linaro.org>
+ David Hildenbrand <david@kernel.org>, Peter Xu <peterx@redhat.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH 01/14] target/i386: Remove x86_stl_phys_notdirty() leftover
+Date: Wed, 17 Dec 2025 15:31:37 +0100
+Message-ID: <20251217143150.94463-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251217143150.94463-1-philmd@linaro.org>
+References: <20251217143150.94463-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,66 +105,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Last use of x86_stl_phys_notdirty() was removed in commit 4a1e9d4d11c
+("target/i386: Use atomic operations for pte updates"), let's remove.
 
-This series is preliminary on unifying endianness for the
-single binary. The goal is to have a clean API ready for
-harder refactor.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/i386/cpu.h    |  1 -
+ target/i386/helper.c | 10 ----------
+ 2 files changed, 11 deletions(-)
 
-First we remove the _notdirty() and leul_to_cpu() helpers,
-then we prepare the subpage_ops[] MemoryRegionOps to handle
-distinct endianness in the same binary, and finally we add
-a pair of ldm()/stm() variants to directly infer the access
-size and endianness from a MemOp argument.
-
-(As a bonus we also moved MemoryRegionCache out of memory.h).
-
-Please review,
-
-Phil.
-
-Philippe Mathieu-Daudé (14):
-  target/i386: Remove x86_stl_phys_notdirty() leftover
-  target/sparc: Update MMU page table using stl_phys()
-  hw/arm: Update bootloader generated with '-kernel' using stl_phys()
-  system/memory: Remove address_space_stl_notdirty and stl_phys_notdirty
-  system/physmem: Inline and remove leul_to_cpu()
-  system/physmem: Use explicit endianness in subpage_ops::read/write()
-  system/memory: Split MemoryRegionCache API to 'memory_cached.h'
-  system/memory: Inline address_space_stq_internal()
-  system/memory: Define address_space_ldst[W] endian variants via
-    template
-  system/memory: Define address_space_ldst[L] endian variants via
-    template
-  system/memory: Define address_space_ldst[Q] endian variants via
-    template
-  system/memory: Factor address_space_ldst[M]_internal() helper out
-  system/memory: Pass device_endian argument as MemOp bit
-  system/memory: Sort methods in memory_ldst.c.inc file
-
- MAINTAINERS                                  |   3 +
- include/hw/virtio/virtio-access.h            |   1 +
- include/qemu/bswap.h                         |  11 -
- include/system/memory.h                      | 191 -------
- include/system/memory_cached.h               | 207 ++++++++
- target/i386/cpu.h                            |   1 -
- include/exec/memory_ldst.h.inc               |  52 +-
- include/exec/memory_ldst_phys.h.inc          | 111 +---
- include/system/memory_ldst_endian.h.inc      |  33 ++
- include/system/memory_ldst_phys_endian.h.inc |  57 ++
- hw/arm/aspeed.c                              |   3 +-
- hw/arm/boot.c                                |   6 +-
- system/physmem.c                             |  87 +++-
- target/i386/helper.c                         |  10 -
- target/sparc/mmu_helper.c                    |   2 +-
- system/memory_ldst.c.inc                     | 514 ++++---------------
- system/memory_ldst_endian.c.inc              |  64 +++
- 17 files changed, 546 insertions(+), 807 deletions(-)
- create mode 100644 include/system/memory_cached.h
- create mode 100644 include/system/memory_ldst_endian.h.inc
- create mode 100644 include/system/memory_ldst_phys_endian.h.inc
- create mode 100644 system/memory_ldst_endian.c.inc
-
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index cee1f692a1c..4c0579a5678 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2623,7 +2623,6 @@ uint32_t x86_lduw_phys(CPUState *cs, hwaddr addr);
+ uint32_t x86_ldl_phys(CPUState *cs, hwaddr addr);
+ uint64_t x86_ldq_phys(CPUState *cs, hwaddr addr);
+ void x86_stb_phys(CPUState *cs, hwaddr addr, uint8_t val);
+-void x86_stl_phys_notdirty(CPUState *cs, hwaddr addr, uint32_t val);
+ void x86_stw_phys(CPUState *cs, hwaddr addr, uint32_t val);
+ void x86_stl_phys(CPUState *cs, hwaddr addr, uint32_t val);
+ void x86_stq_phys(CPUState *cs, hwaddr addr, uint64_t val);
+diff --git a/target/i386/helper.c b/target/i386/helper.c
+index 72b2e195a31..d14f14e0d4d 100644
+--- a/target/i386/helper.c
++++ b/target/i386/helper.c
+@@ -690,16 +690,6 @@ void x86_stb_phys(CPUState *cs, hwaddr addr, uint8_t val)
+     address_space_stb(as, addr, val, attrs, NULL);
+ }
+ 
+-void x86_stl_phys_notdirty(CPUState *cs, hwaddr addr, uint32_t val)
+-{
+-    X86CPU *cpu = X86_CPU(cs);
+-    CPUX86State *env = &cpu->env;
+-    MemTxAttrs attrs = cpu_get_mem_attrs(env);
+-    AddressSpace *as = cpu_addressspace(cs, attrs);
+-
+-    address_space_stl_notdirty(as, addr, val, attrs, NULL);
+-}
+-
+ void x86_stw_phys(CPUState *cs, hwaddr addr, uint32_t val)
+ {
+     X86CPU *cpu = X86_CPU(cs);
 -- 
 2.52.0
 
