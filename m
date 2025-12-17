@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD112CC960E
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 20:13:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31FECCC9608
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 20:13:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVww3-0005gg-Na; Wed, 17 Dec 2025 14:11:43 -0500
+	id 1vVww5-0005iL-8z; Wed, 17 Dec 2025 14:11:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <patrick@stwcx.xyz>)
- id 1vVwvz-0005ex-Tv; Wed, 17 Dec 2025 14:11:39 -0500
-Received: from fhigh-a1-smtp.messagingengine.com ([103.168.172.152])
+ id 1vVww1-0005fq-2H; Wed, 17 Dec 2025 14:11:41 -0500
+Received: from fout-a8-smtp.messagingengine.com ([103.168.172.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <patrick@stwcx.xyz>)
- id 1vVwvy-00016H-8p; Wed, 17 Dec 2025 14:11:39 -0500
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
- by mailfhigh.phl.internal (Postfix) with ESMTP id 63CCA140014F;
- Wed, 17 Dec 2025 14:11:37 -0500 (EST)
+ id 1vVwvz-00016a-5S; Wed, 17 Dec 2025 14:11:40 -0500
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+ by mailfout.phl.internal (Postfix) with ESMTP id 4289FEC016D;
+ Wed, 17 Dec 2025 14:11:38 -0500 (EST)
 Received: from phl-frontend-03 ([10.202.2.162])
- by phl-compute-01.internal (MEProxy); Wed, 17 Dec 2025 14:11:37 -0500
+ by phl-compute-03.internal (MEProxy); Wed, 17 Dec 2025 14:11:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stwcx.xyz; h=cc
  :cc:content-transfer-encoding:content-type:content-type:date
  :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm3; t=1765998697;
- x=1766085097; bh=qfeYsXVWAamQv+Ll4jDPpTtSNBLztoYOt1G2d/WxGMw=; b=
- ESm4D5MflflwbPYfpx039023JlPMGl0mcfzK8q04182ZONcUjhOLsB9uGqZmwOfa
- VK5QROVFOVkYjWLSJK4n+jYwXwAmJPURnsbAPKlX9ClvXMx69GXs5LpnrfjRa858
- 4AvVQ0CEr+e1U2avSZxpt7//mp1umQmH5abLNhNS18B7aWyk67HpQ6t1xwrj6VHd
- wOuQYY/zbZbk8+v2BmwXvPSUQYcDEKIRkFDwOzWu18BCrL4VFW5Pb9t1QALggkVI
- W5XFB22cUwOaQ03GPU94/DfO+//j3HJQgGjVQ6erTO45RIXiUBE9R759VL7Uz5fu
- S30tEZIRP2JnOiElr6IHqA==
+ :references:reply-to:subject:subject:to:to; s=fm3; t=1765998698;
+ x=1766085098; bh=e3tdTU5FgZzFrFyCe8/22sGzfbLFpKr2Ary/1eiPI3g=; b=
+ hlXDYetzk/FXTDHwV8/7dpSZUkp7S7Ixzh6YaVh922XlIre16Z52B3ccADUsGOeC
+ wgxoOeSrcrQYFsifku1rnvzdMlqrlAoQMHgcVKAPgKQROJ59saXGRnfxLDSiajnT
+ ByCVZQJ5C4HnU1+NeQmJL7QW33Yu71AeLebGyi1zvNFNtLPz0rVc9qFfiQuXZorz
+ rGI1GEIqz7+W5vRurul7aaBcFlf5xReZvrplSgrWLRTWYtNBrhEfpiZb3d3kLqMp
+ REYRkZ4b7URgr239MQD6ujnEzHIVqEkwZ5XBGwH77/fEHvUoVDjPlmUecSOvpZQ9
+ 4qPehObggeJJAdVsH3hj3Q==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
  :from:from:in-reply-to:in-reply-to:message-id:mime-version
  :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1765998697; x=
- 1766085097; bh=qfeYsXVWAamQv+Ll4jDPpTtSNBLztoYOt1G2d/WxGMw=; b=A
- LWKsjBqtV0etHttVzo3KFtufdWi+qElNvi3E88Hubi/AQYT8glKDUAo8XMdXkXo6
- S+K6P5CSFEaSFM0bkQULAfItJAnivYrm85ctiMLLEJlZy+n/tP1J8dKwIu/lligD
- Q/MzFd3pdknpBnh9/qu0uRehBxt2650PXnKyOxwbJTtzR/Ocm6dRGHEUshkoVfZv
- XdaqAcQdeaCMUPUoG0ZulNi+C0IrYYbYD0XzJyjlwKzWd1mYbz4Wgujdkdz0tghR
- UNGnbXD081Vj5bZWcNr7kteGAGGwWsu/gXFU92xoeC3k/Q9qvsqcoLw8FRWCwQAD
- ToVqysCxlAwVRP8J4efDQ==
-X-ME-Sender: <xms:aQBDaSmuabNT_oUXMWHCuRng_QMzUpxvtIq8BuljxKQunvU672EcHg>
- <xme:aQBDac7-uKL8v4Mr0PAojdeybnU_MhPKRgT9YbRwsQjGz68_7jOxSqCiTv8xmRTAd
- rRd3tAaU4CqpkMLL3x_hsgsOqNIZ6JNfUO1V3HMJnN7KUlGFkQluKes>
-X-ME-Received: <xmr:aQBDabRpt2P2UPXG6uacURhyVHIOqV3cuhdKHLkItLzWQVoTghIcA5c-uLo>
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1765998698; x=
+ 1766085098; bh=e3tdTU5FgZzFrFyCe8/22sGzfbLFpKr2Ary/1eiPI3g=; b=L
+ 2TwPYtb2E1ytbo8H3Akr6N+luFipztkgVN/4QVDrVNTwNu714mUBcDRP994yeuYZ
+ ujRV1tDJtv/VJ++xIfP/8dY3Yw5tE1cvhTAS8qjS2WA0SNSRWbT8N9esf+DTzinW
+ +PTPWCpkZK/Yc85pMsxslUrbFvpPnDFMSxLSyXgYfcboyqbL2aXiipLytkxDUzFO
+ ExWP3KEsxlPSwZK03HPA71kYXDTJLusQHW8lEUS55JlKU4pVv3aY2/kWvAXyXcsg
+ KpKsCcjDVtZkKAiZ5++YQeD/ed7+U+IB8PvVf1fqWY58e8cAZFNqpF7uieKvF3tY
+ gSnQHA4QsBcXHOUm88sKw==
+X-ME-Sender: <xms:agBDaUYqj82IBmje1XzjCaVuiiz3QOLi55ESLQwbSZWaJgnkWSWC3g>
+ <xme:agBDaSfl7AJo0me5ywHWrcuyqzL3_xNxaWvmBlhL_La0dhl14dSSOkS4N9FHX0vHT
+ w61trDNRdfP5S780YoF7qUBFxT6C9L6zWVsB0hLrN6IKc5mbw-nhPY>
+X-ME-Received: <xmr:agBDaZlz0IJkOnK6ZFLyVWhL6isiWs16bC5E0UDEwWg46NE45uBZ0pKZ_40>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdegfeefjecutefuodetggdotefrod
  ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
  ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfghrlh
  cuvffnffculdejtddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdej
  necuhfhrohhmpefrrghtrhhitghkucghihhllhhirghmshcuoehprghtrhhitghksehsth
  iftgigrdighiiiqeenucggtffrrghtthgvrhhnpeehjeejhfektedtuedtgfegjeekvdej
- gfehveelhedtfffhudevjeeikeehgfeltdenucevlhhushhtvghrufhiiigvpedtnecurf
+ gfehveelhedtfffhudevjeeikeehgfeltdenucevlhhushhtvghrufhiiigvpedunecurf
  grrhgrmhepmhgrihhlfhhrohhmpehprghtrhhitghksehsthiftgigrdighiiipdhnsggp
  rhgtphhtthhopedutddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphgrthhrih
  gtkhesshhtfigtgidrgiihiidprhgtphhtthhopehpvghtvghrrdhmrgihuggvlhhlsehl
@@ -66,21 +66,21 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdegfeefjecutefuodetgg
  thhtoheplhgvvghtrhhohiesghhmrghilhdrtghomhdprhgtphhtthhopehqvghmuhdqug
  gvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepjhhovghlsehjmhhsrdhiugdr
  rghu
-X-ME-Proxy: <xmx:aQBDaSwxAqH6uAAY3MlDZYW088uSCMbooPZ3ddB400z32aBqRf2NCg>
- <xmx:aQBDabrgbJb3QSPJHf372zj3z2rkOAdaEgTk_iKPYg4pom6tFNqwKw>
- <xmx:aQBDad3bLBgGYeN3ZxyuVaJSQubwiBBgp5iV6pC3qD6vi0rLxgjlpQ>
- <xmx:aQBDaTzt2HfuWFaEIEnH_oMmiws_Mlxq8L8kPjeV2hoWSw1bH5Qhtg>
- <xmx:aQBDaXmwXbVTxzfIW86YNaPdmyYJKNPXCNVR8fiYYurCRCVzCMG918k9>
+X-ME-Proxy: <xmx:agBDaa0lqxLwOT8nN9dseJrvq-lE0OGp-IvbKZOBOXUWaIHQfTlLKg>
+ <xmx:agBDaafh9Atec16eq8F445Eh6WlSibekExG1dxOlMr7g8ClQX9Btxw>
+ <xmx:agBDacYuZrTjwGbLPM1o3uhMBUMlOvTXFMWuHJDoHD-SnFgaoP8c7w>
+ <xmx:agBDaXGQivlFxTB8C4KaYkHH8sPZ18o50_d3PnT34ttRkX8ISJad1A>
+ <xmx:agBDaVybdAjfkN_vbQVmk8vceFXcaEbkrOao8ForUzHUerZxBnIbTlA0>
 Feedback-ID: i68a1478a:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 17 Dec 2025 14:11:36 -0500 (EST)
+ 17 Dec 2025 14:11:37 -0500 (EST)
 From: Patrick Williams <patrick@stwcx.xyz>
-Date: Wed, 17 Dec 2025 14:11:34 -0500
-Subject: [PATCH 07/11] hw/arm/aspeed: catalina: add GB200 FRU EEPROM
+Date: Wed, 17 Dec 2025 14:11:35 -0500
+Subject: [PATCH 08/11] hw/arm/aspeed: catalina: add GB200-IO FRU EEPROM
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251217-catalina-eeproms-v1-7-dc7b276efd57@stwcx.xyz>
+Message-Id: <20251217-catalina-eeproms-v1-8-dc7b276efd57@stwcx.xyz>
 References: <20251217-catalina-eeproms-v1-0-dc7b276efd57@stwcx.xyz>
 In-Reply-To: <20251217-catalina-eeproms-v1-0-dc7b276efd57@stwcx.xyz>
 To: qemu-devel@nongnu.org
@@ -91,25 +91,25 @@ Cc: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
  Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, 
  qemu-arm@nongnu.org, Patrick Williams <patrick@stwcx.xyz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3130; i=patrick@stwcx.xyz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3520; i=patrick@stwcx.xyz;
  h=from:subject:message-id;
- bh=JSq4Zf5ecxblPDZJopak/nNSkZ7TP5kw4S/wVk7Xn+I=;
- b=owEBbQKS/ZANAwAIAasDR8wtAMEZAcsmYgBpQwBg1Cxzk5WdrFOAW4SAbefiXgygHvdAYdhXr
- o8hGGexiA2JAjMEAAEIAB0WIQQEYP2KLgsT1w1uokGrA0fMLQDBGQUCaUMAYAAKCRCrA0fMLQDB
- GdFlD/45Thcd2ccfOvRpeq8AVnjEvCdGDz/JwtZhDgVq2Mf51qkjY6ZDV9u19J0u6pJsj+VTmYz
- AbxfMXpz/EgdvGR40d2ltqWq6ECIGn6AJrk7g2eLI2EO0AzzLtB+WmLh3jDETFEGejjmfQ1VXHx
- VkJtngO2rUj347cFAtLd5xDG5IXCztXwJ9OYKD8N7PkaP7gtJYhLCOX4UA/qnGMdvRoSXfAE4Lw
- XaMNwYJqjwMTR4ErYkarVpbL970naW/nBF+rIig5HOshSkMY3PLE3N3czwcTL+uHQiS089DlrWl
- /F/Jg1OU/6PhVjyxW31Hdc3/BWbCwZJZnr6uy8c23Cr1mTTnC8L9VNokamFvp38Wu3SoqBTnapK
- nthVw7aMx85/PjXHWVdqD18p+Mdj6rgjtBzqjmp30ScsjTeotYjoowMbYORT8f+CR/FsZWJvizD
- 0iJkOGRKEh0vyU7DodX3B6yBUnuS/1j9JaE7Nl32whEVsCCjE1bfSe6RTua1XKvU7nDQ4PmUntM
- Kc00zhNbrV7SrYlZUD11tAiE9DiQorFs8XaihxUXB4ZUO/WW9GJBJ/9o9dCweALIjq1nCYqBc0S
- MgHYjugE18akhtQhTwfNZ5tkaQOVhTRLdgdlJOYWjdsDg0Naufh1Ac8E5vYQOvNPovfnxNOXCQe
- fJ+yu1CfHsuR3FA==
+ bh=YEYbZFVnyrAhmT/IuKuOMQN6c9X+TkUpscRK8pFOgIQ=;
+ b=owEBbQKS/ZANAwAIAasDR8wtAMEZAcsmYgBpQwBgbY1yG2MQ4rM3BakqeQFFpB1CYAPVLmZW8
+ 8LTONm9moyJAjMEAAEIAB0WIQQEYP2KLgsT1w1uokGrA0fMLQDBGQUCaUMAYAAKCRCrA0fMLQDB
+ GYXtD/9BztB5h8j++KXt3mg5quP0TgmrndTnvrgZ3wEDxa5+RCmPYucVmS2vcmapPnnptqFKEY9
+ cNl63VdO4q4m5/T17+bnz7ip/l8avBk/ldSjQ58Tu4txpQm+pcrWOSr7/cRbAaADzJLzzzbtJV8
+ trRX5maZIVoTQcOm9lVt4nnsgh88eX42XZPtKvj+yrymGawlKfGLemJlSD46fT8MtqNIyxEKibr
+ zFiUCtW3NOcffcyHXdVPN4zXEr7CjHjzH5OWhxhBSi0cRBVr7MEoi3UdmzA7JisPvl3zE9INhUl
+ UFk+3ZUl/DGQ28EUr5ujVs2Xqnk2MqtA13DOOyuBHVGQhQhV3hyRcfjtchvcgFc4Pbf8d0KF4+W
+ Awo8Trd7FwxWUfQ0Tk/8Z0Fb6r/57ohS1peOLfJiEg2UmHWuoFEKG6afioiX8ozdTG98wSY1EDA
+ HhwrEEZhpV6UIkUmBSws4/XTwDd8HhE1Rkm1IA6qnqpWS1clAbRQ7zvDhy1bJPS4Z0tCnGMH/2n
+ VhT8V4ty2rXoMf2ud0xdXNlUDPFNH7Xm0c+RKMZznfNCH+cLCYmRDfblRihBaogsXEheYQgwYot
+ u2c7SvQxqAPk4CICSSdWpdTzK12Jb9EqE7L5Cp/6+DUaNl1lGHmBfvHjWJ//Yd/l9TtLTiCOgG1
+ ZOnj2Nep/ExhrqA==
 X-Developer-Key: i=patrick@stwcx.xyz; a=openpgp;
  fpr=0460FD8A2E0B13D70D6EA241AB0347CC2D00C119
-Received-SPF: pass client-ip=103.168.172.152; envelope-from=patrick@stwcx.xyz;
- helo=fhigh-a1-smtp.messagingengine.com
+Received-SPF: pass client-ip=103.168.172.151; envelope-from=patrick@stwcx.xyz;
+ helo=fout-a8-smtp.messagingengine.com
 X-Spam_score_int: -2
 X-Spam_score: -0.3
 X-Spam_bar: /
@@ -133,80 +133,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use ipmitool/frugen tool to generate a GB200 image based on a
+Use ipmitool/frugen tool to generate a GB200-IO image based on a
 sanitized set of data from a real device EEPROM.
 
 Signed-off-by: Patrick Williams <patrick@stwcx.xyz>
 ---
- hw/arm/aspeed_ast2600_catalina.c | 45 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 43 insertions(+), 2 deletions(-)
+ hw/arm/aspeed_ast2600_catalina.c | 43 ++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 41 insertions(+), 2 deletions(-)
 
 diff --git a/hw/arm/aspeed_ast2600_catalina.c b/hw/arm/aspeed_ast2600_catalina.c
-index 4cfde870af..4dd72c615d 100644
+index 4dd72c615d..37f0e1b65e 100644
 --- a/hw/arm/aspeed_ast2600_catalina.c
 +++ b/hw/arm/aspeed_ast2600_catalina.c
-@@ -265,6 +265,45 @@ static const uint8_t hdd_eeprom[] = {
+@@ -304,6 +304,43 @@ static const uint8_t gb200_eeprom[] = {
  };
- static const size_t hdd_eeprom_len = sizeof(hdd_eeprom);
+ static const size_t gb200_eeprom_len = sizeof(gb200_eeprom);
  
 +/*
-+ * GB200 CPU/GPU Board FRU data. Generated with frugen.
++ * GB200 IO Board FRU data. Generated with frugen.
 + *
 + *    {
 + *        "board": {
-+ *            "mfg": "NVIDIA",
-+ *            "pname": "PG548 (QEMU)",
++ *            "mfg": "Nvidia",
++ *            "pname": "2x ConnectX-7 Mezz (QEMU)",
 + *            "pn": "000-00000-0000-000",
-+ *            "serial": "0000000000000",
-+ *            "date": "01/12/2025 00:00",
-+ *            "custom": ["Version: A", "Rework:"]
++ *            "serial": "000000000000",
++ *            "date": "01/12/2025 00:00"
 + *        },
 + *        "product": {
-+ *            "mfg": "NVIDIA",
-+ *            "pname": "GB200 1CPU:1GPU Board PC",
++ *            "mfg": "Nvidia",
++ *            "pname": "2x ConnectX-7 Mezz",
 + *            "pn": "100-00000-0000-001",
-+ *            "ver": "E01",
-+ *            "serial": "1000000000001",
++ *            "ver": "A1",
++ *            "serial": "100000000001",
 + *            "atag": "QEMU"
 + *        }
 + *    }
 + */
-+static const uint8_t gb200_eeprom[] = {
++static const uint8_t gb200io_eeprom[] = {
 +    0x01, 0x00, 0x00, 0x01, 0x0a, 0x00, 0x00, 0xf4, 0x01, 0x09, 0x19, 0x8c,
-+    0x19, 0xf0, 0x85, 0xae, 0x9d, 0x92, 0x69, 0x08, 0x89, 0xf0, 0x59, 0x51,
-+    0x18, 0x80, 0xc4, 0x65, 0x5b, 0x27, 0x8a, 0x10, 0x04, 0x41, 0x10, 0x04,
-+    0x41, 0x10, 0x04, 0x41, 0x10, 0x8e, 0x10, 0x04, 0x35, 0x10, 0x04, 0x41,
-+    0x50, 0x03, 0x41, 0x10, 0xd4, 0x40, 0x10, 0x04, 0xc0, 0xca, 0x56, 0x65,
-+    0x72, 0x73, 0x69, 0x6f, 0x6e, 0x3a, 0x20, 0x41, 0xc7, 0x52, 0x65, 0x77,
-+    0x6f, 0x72, 0x6b, 0x3a, 0xc1, 0x00, 0x00, 0x37, 0x01, 0x09, 0x19, 0x85,
-+    0xae, 0x9d, 0x92, 0x69, 0x08, 0xd8, 0x47, 0x42, 0x32, 0x30, 0x30, 0x20,
-+    0x31, 0x43, 0x50, 0x55, 0x3a, 0x31, 0x47, 0x50, 0x55, 0x20, 0x42, 0x6f,
-+    0x61, 0x72, 0x64, 0x20, 0x50, 0x43, 0x8e, 0x11, 0x04, 0x35, 0x10, 0x04,
-+    0x41, 0x50, 0x03, 0x41, 0x10, 0xd4, 0x40, 0x50, 0x04, 0x83, 0x25, 0x14,
-+    0x01, 0x8a, 0x11, 0x04, 0x41, 0x10, 0x04, 0x41, 0x10, 0x04, 0x41, 0x11,
-+    0x83, 0x71, 0xd9, 0xd6, 0xc0, 0xc1, 0x00, 0x17
++    0x19, 0xf0, 0xc6, 0x4e, 0x76, 0x69, 0x64, 0x69, 0x61, 0xd9, 0x32, 0x78,
++    0x20, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x58, 0x2d, 0x37, 0x20,
++    0x4d, 0x65, 0x7a, 0x7a, 0x20, 0x28, 0x51, 0x45, 0x4d, 0x55, 0x29, 0x89,
++    0x10, 0x04, 0x41, 0x10, 0x04, 0x41, 0x10, 0x04, 0x41, 0x8e, 0x10, 0x04,
++    0x35, 0x10, 0x04, 0x41, 0x50, 0x03, 0x41, 0x10, 0xd4, 0x40, 0x10, 0x04,
++    0xc0, 0xc1, 0x00, 0x00, 0x00, 0x00, 0x00, 0x8e, 0x01, 0x08, 0x19, 0xc6,
++    0x4e, 0x76, 0x69, 0x64, 0x69, 0x61, 0xd2, 0x32, 0x78, 0x20, 0x43, 0x6f,
++    0x6e, 0x6e, 0x65, 0x63, 0x74, 0x58, 0x2d, 0x37, 0x20, 0x4d, 0x65, 0x7a,
++    0x7a, 0x8e, 0x11, 0x04, 0x35, 0x10, 0x04, 0x41, 0x50, 0x03, 0x41, 0x10,
++    0xd4, 0x40, 0x50, 0x04, 0x82, 0x61, 0x04, 0x89, 0x11, 0x04, 0x41, 0x10,
++    0x04, 0x41, 0x10, 0x04, 0x45, 0x83, 0x71, 0xd9, 0xd6, 0xc0, 0xc1, 0x04
 +};
-+static const size_t gb200_eeprom_len = sizeof(gb200_eeprom);
++static const size_t gb200io_eeprom_len = sizeof(gb200io_eeprom);
 +
  static void catalina_bmc_i2c_init(AspeedMachineState *bmc)
  {
      /* Reference from v6.16-rc2 aspeed-bmc-facebook-catalina.dts */
-@@ -403,11 +442,13 @@ static void catalina_bmc_i2c_init(AspeedMachineState *bmc)
- 
-     /* &i2c12 */
+@@ -329,7 +366,8 @@ static void catalina_bmc_i2c_init(AspeedMachineState *bmc)
+     i2c_slave_create_simple(pca954x_i2c_get_bus(i2c_mux, 1),
+                             TYPE_PCA9552, 0x20);
      /* eeprom@50 */
--    at24c_eeprom_init(i2c[12], 0x50, 8 * KiB);
-+    at24c_eeprom_init_rom(i2c[12], 0x50, 8 * KiB,
-+                          gb200_eeprom, gb200_eeprom_len);
+-    at24c_eeprom_init(pca954x_i2c_get_bus(i2c_mux, 1), 0x50, 8 * KiB);
++    at24c_eeprom_init_rom(pca954x_i2c_get_bus(i2c_mux, 1), 0x50, 8 * KiB,
++                          gb200io_eeprom, gb200io_eeprom_len);
  
-     /* &i2c13 */
+     /* i2c-mux@73 (PCA9546) on i2c0 */
+     i2c_slave_create_simple(i2c[0], TYPE_PCA9546, 0x73);
+@@ -345,7 +383,8 @@ static void catalina_bmc_i2c_init(AspeedMachineState *bmc)
+     i2c_slave_create_simple(pca954x_i2c_get_bus(i2c_mux, 1),
+                             TYPE_PCA9552, 0x21);
      /* eeprom@50 */
--    at24c_eeprom_init(i2c[13], 0x50, 8 * KiB);
-+    at24c_eeprom_init_rom(i2c[13], 0x50, 8 * KiB,
-+                          gb200_eeprom, gb200_eeprom_len);
-     /* eeprom@54 */
-     at24c_eeprom_init(i2c[13], 0x54, 256);
-     /* eeprom@55 */
+-    at24c_eeprom_init(pca954x_i2c_get_bus(i2c_mux, 1), 0x50, 8 * KiB);
++    at24c_eeprom_init_rom(pca954x_i2c_get_bus(i2c_mux, 1), 0x50, 8 * KiB,
++                          gb200io_eeprom, gb200io_eeprom_len);
+ 
+     /* i2c-mux@77 (PCA9546) on i2c0 */
+     i2c_slave_create_simple(i2c[0], TYPE_PCA9546, 0x77);
 
 -- 
 2.51.2
