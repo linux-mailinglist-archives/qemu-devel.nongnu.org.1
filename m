@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1B05CC94D9
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 19:40:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F34FCC94D3
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Dec 2025 19:39:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vVwQI-0006i5-R7; Wed, 17 Dec 2025 13:38:54 -0500
+	id 1vVwQZ-0006ot-19; Wed, 17 Dec 2025 13:39:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vVwQC-0006a4-A5
- for qemu-devel@nongnu.org; Wed, 17 Dec 2025 13:38:50 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1vVwQT-0006oK-QS
+ for qemu-devel@nongnu.org; Wed, 17 Dec 2025 13:39:06 -0500
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vVwQ8-0007o7-Ax
- for qemu-devel@nongnu.org; Wed, 17 Dec 2025 13:38:47 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-2a09757004cso54828415ad.3
- for <qemu-devel@nongnu.org>; Wed, 17 Dec 2025 10:38:42 -0800 (PST)
+ id 1vVwQS-00084P-6V
+ for qemu-devel@nongnu.org; Wed, 17 Dec 2025 13:39:05 -0500
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-7e2762ad850so6443262b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 17 Dec 2025 10:39:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1765996722; x=1766601522; darn=nongnu.org;
+ d=linaro.org; s=google; t=1765996742; x=1766601542; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=seABeKHpcn3xEvoXlJNdpC7YVLBGOeOifIAM39GElZU=;
- b=csguFCS+Wo6Y8sHY34zE4hQXDT9q/ZOKrwtirJQK7EMJS18spW9HG2d39mD6KOWmgi
- r9/MbgAOyReDacmVN8c8Zs9RC6MLw63HY3NnvsatEK1Si3dyo33mNFmcvBWS8kGTdl+T
- O10m5uT2Mqi0JQ4SCo8b+bJSQOG+YNAggtQBeGn2hGaqhf7MBXJ6Q6uDsqepV6uLFKX0
- qs7iXx03aiOjmfUeimC2c8nsxD/jNJVrej5+IF2jjL1KLPI3fkP2I+F+lH3Z8/pyGbfO
- JLk2uEi66wNJAZ9EidBwpU8BI+bAQ100MgJPVjKtFR2zVi2QgM0fG+7hTw6ZfcpeU1IC
- cOwg==
+ bh=aLXBZqeM83JX6Q6lKvbnYKIy5amhV1PWF7k/1u72xNA=;
+ b=TeDAM00IgF6M/YtB8995olk8SIAY6SFXABKE5IrHsXTHgoI9p7AVxdOwrKlJCMEc08
+ gEV7f98T+V80rRex3QFYM4r8P1LIIk3kWFQx6md5bnPs7FXZtO8HPKuhrAb6cxE7JJKC
+ rt9S/5xJKDcLQCDVnhMu2KxUSOPlbu63GjQvVe4tcyRxODlwA1N/JFRyCE2o6iyIlxZe
+ lEuN+AKXBhBajLsubsBCHbeRF9WhpH/E+ErBD7+5tCENaK8b48UDMxnzRFVvuL2zfqQf
+ +u/AkLAwHIR/ulQyqPRkaeXmLwBAYmRrAGm3PUBZdIjx2e5srLoxxBWIXrSQpXbR7E7l
+ p1vA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1765996722; x=1766601522;
+ d=1e100.net; s=20230601; t=1765996742; x=1766601542;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=seABeKHpcn3xEvoXlJNdpC7YVLBGOeOifIAM39GElZU=;
- b=rfN2jWKwwVbY921JrZmpLc+Tn/WqrN9nKKdIsYYdj1DhnKvUAsSF6GGWh7fHCKgDcg
- 0UFr3WLsXP+3VXeyf9W/IxeOhHa/uMd/qMHb3jsge0Atm8jscMNOGsDP+IrsCN2qVXGa
- ZbpCOgc174pZoVqJ8qf8SsdVnC/WgafSWanR4gNnkvOZVhftVCIUjy+WuS0VP4xHKNR9
- gOVbLQhrmEe8NFdBKlHpwueXs/YUTK5Kbu26J9hrMrdADkKbHY7PXM5tREfqd0J5ryTi
- /4gsy01Gb0L0vUwkD07SuRw03Ft3aqiDTn106ZOW13Bubtm+dScR3kgNorYqGab3RtvF
- dRLQ==
+ bh=aLXBZqeM83JX6Q6lKvbnYKIy5amhV1PWF7k/1u72xNA=;
+ b=Xbi+aOIfbYkQCU8h8vyn4uVnhW3jJiZoX8nY1J5HRLm2VZxYpk7xHaZuxrQ4hOI2MF
+ SnUc9E30y0WBvbA4xlDUR6uDPWEUiSHp0URxJQM2zP0APGCabFFu2GoS4kP8KsL4B6I0
+ dEMMhiu+qDABPUpduVblQboR5W5lYASBmIwL3fF/9t77FePu8LW7SOQd+Ejmq28RgLH6
+ 041GAwGJNaxgT5KXf5V46gro9Njk8/WgBFR8DDM6j7vYH8OdFLRpZr7krjHZ8kINEH8k
+ fzGhHCjTvcX0LP/9zD9zyrt+5pfu07iUghkDQNNOMOH3HK3kBCDSBYHfn5HoQ7TieyOR
+ 4HwA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV5nDcvIXEPzPWERWRYyFDdc7nGuYaIPl9MmPlNY1ipmzfxx8zRDnE1V1rijjuwGuugv2jDp//ctTOC@nongnu.org
-X-Gm-Message-State: AOJu0YwEIwZfLVvWndBfG8EnZDMAU7UCcU/ft/PMwYJysc2fpWo8hbg/
- nEOB9bHwDonkRGV/ws40h6u36Raap3Qg/lte90rrscIxIclKrgBMBMcCfVdyPrigtm0=
-X-Gm-Gg: AY/fxX6BDEwb2Yyu+S/Q4yoZnZVn1UvZV+FoRoHIKYrlHxCCSbGzlkBfXNGHLsIQkUj
- nXGf0CZjBsmEIHtxQS0zjwatDcSXsFhYkgy2oRagHV3YRVWOhadfM+5/YhgNpNZKhlayE5D3Q3j
- PKBBNysGrs3i/dedUo+GXSXnHT+V8TcUQLS3RFTJ1ClC038VD41YmvkoH9H6wVpVXmZNPtk2VxN
- uPXj5rNcTaXXDh7tVPxumv2K8ZVF5s1SI319HqZV2nSTjlQeWdlFhTk6E8g+HjKp5rXlJUAoQA1
- 75rt4Pj5hVHCYxeQj1mfnUps4qcosgKqtauzGz5YWOEdi3Eb5IdQGIPSUOVuJxH7qiw0rO/k+Dr
- sA3wzpIg7eLRV3pP/izj+uUZQlNm94uchdWacpg4CLlnKyMTJCXI8etmaT7ITCoKRJvjzBsvPK9
- lCfDc39K5JNycGXiWJLfX79mM/OQQRTTFuHQVItNA8vWOwxboBDvJnwRs=
-X-Google-Smtp-Source: AGHT+IEVhglo+Hr2QPGO23r8JcmASMupGhNaTkRzw+hYZgeeYWBybC/0N79C+m0PeIHwcHPmzz6+MA==
-X-Received: by 2002:a17:903:3843:b0:2a0:d403:a2e3 with SMTP id
- d9443c01a7336-2a0d403a5cemr135330545ad.37.1765996721541; 
- Wed, 17 Dec 2025 10:38:41 -0800 (PST)
+ AJvYcCW5svdztFmZteYzqhXstf3/zJN1bywHu7pJGOQprw/j5Fllg/oF0G37b4XodF+ZLrLbM1gD2amjRBzr@nongnu.org
+X-Gm-Message-State: AOJu0Yw0VtmhSwjjDuTrcZsalOpJabdp4zEJ1uysK6lQl08Gby/CMP57
+ 6FDxRQjwU/H6XTf/X9ZzTPiXxls6/+50UvtE9uaaY5+lgm5Cet7i7XuUmBM7UKGh6FI=
+X-Gm-Gg: AY/fxX4eMg0mrMdDvClg5xA9HVkELDEmm8pausvl0B9a12fkU6n+tYs5YWIWQeRmdQZ
+ EFCzSdoAT5lF4f6yvmb0g7O002bcMfmvSKxqdGytbGvyuYgfIFLuBaz8kM4mmttNjYlXiuhLV1z
+ EtxVF/P4NKZpP7o7j6M/Dcsy6KreGVr1yxVdDs8yaNirj9OxH2Crt8339H2LkGArti1NHMczTOz
+ QIbLW3rIPc55nDcDdSTk7OZay3to9WPeYgasodDZVFFmR4k8ugcswuszym+M2pk7XC+0gQLWgra
+ 0+i3hVuWvWBMpQeUOAhVifhLxEiEKuzHHDxXJEQ4/tuXuLVnWk8fWN1Be2bWktjXrdN/L/0f3KA
+ BsvU1LvTVZBA96IxaFpEsUaoh3xy06am6EghcqxdsWDt+pWQ7afNmteyQp8zUW/ONHOj39gkWQ1
+ df+WKoj883Vby8CREjhjRgzU5IDNjBmsy3NoBuxpdonuGddnjimBvNEWjtpGxsJMhTlQ==
+X-Google-Smtp-Source: AGHT+IHU6SqWE8cwIJ19HS2nfY6s1wv3lTEm4wtqXTeAJw1kFf+JpHynIF3Wfoeg2anUnXx2cUNZ9Q==
+X-Received: by 2002:a05:6a00:bb84:b0:7e8:4433:8fb4 with SMTP id
+ d2e1a72fcca58-7f66a07d2d5mr16822380b3a.60.1765996742346; 
+ Wed, 17 Dec 2025 10:39:02 -0800 (PST)
 Received: from [192.168.1.87] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a2d19269f0sm208365ad.79.2025.12.17.10.38.40
+ d2e1a72fcca58-7fe13d851bbsm155588b3a.34.2025.12.17.10.39.01
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Dec 2025 10:38:41 -0800 (PST)
-Message-ID: <c5f0b0f1-cd02-47fe-aae9-1da25c91f6f0@linaro.org>
-Date: Wed, 17 Dec 2025 10:38:40 -0800
+ Wed, 17 Dec 2025 10:39:02 -0800 (PST)
+Message-ID: <fb91eb8c-be4f-40fe-8376-e7a2c43ee578@linaro.org>
+Date: Wed, 17 Dec 2025 10:39:01 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/14] target/i386: Remove x86_stl_phys_notdirty() leftover
+Subject: Re: [PATCH 02/14] target/sparc: Update MMU page table using stl_phys()
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -79,23 +79,22 @@ Cc: Anton Johansson <anjo@rev.ng>, qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Artyom Tarasenko <atar4qemu@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>,
- David Hildenbrand <david@kernel.org>, Peter Xu <peterx@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>
+ David Hildenbrand <david@kernel.org>, Peter Xu <peterx@redhat.com>
 References: <20251217143150.94463-1-philmd@linaro.org>
- <20251217143150.94463-2-philmd@linaro.org>
+ <20251217143150.94463-3-philmd@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20251217143150.94463-2-philmd@linaro.org>
+In-Reply-To: <20251217143150.94463-3-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,14 +111,14 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/17/25 6:31 AM, Philippe Mathieu-Daudé wrote:
-> Last use of x86_stl_phys_notdirty() was removed in commit 4a1e9d4d11c
-> ("target/i386: Use atomic operations for pte updates"), let's remove.
+> stl_phys_notdirty() is supposed to do an optimized CODE
+> path store. Here we update the page table via the DATA
+> path, so can use the normal stl_phys() helper.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   target/i386/cpu.h    |  1 -
->   target/i386/helper.c | 10 ----------
->   2 files changed, 11 deletions(-)
+>   target/sparc/mmu_helper.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
 
