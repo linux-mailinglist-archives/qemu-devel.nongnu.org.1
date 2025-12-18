@@ -2,104 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1D5ACCD15D
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 19:06:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 347CCCCD243
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 19:21:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWIMl-0002vE-4s; Thu, 18 Dec 2025 13:04:43 -0500
+	id 1vWIaq-0006Oc-Jv; Thu, 18 Dec 2025 13:19:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vWIMj-0002v5-8g
- for qemu-devel@nongnu.org; Thu, 18 Dec 2025 13:04:41 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vWIMh-0006fT-Sj
- for qemu-devel@nongnu.org; Thu, 18 Dec 2025 13:04:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766081078;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HMm5PPGmJbbaFEUe0uI/zJ77u3Ca5KRWh3EGewiRCN4=;
- b=RP1EJiObc29bjluIbOWi3tKB0INJtX+F2+wiDwPa0IuAfyjXP1xFN88d0GC+mX45kdXLxm
- ucW9NilTugE/8HkAIwtDScxDssXInxmxURb+yX8ajbbL/1YnCrNgYwOoV+vo6ThAu9aSXY
- sOnOIHCbISeY2Pm9LXz47sfDfyUVoX8=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-622-NB_KD_2bOSK31Xnq8Q6qAA-1; Thu, 18 Dec 2025 13:04:35 -0500
-X-MC-Unique: NB_KD_2bOSK31Xnq8Q6qAA-1
-X-Mimecast-MFC-AGG-ID: NB_KD_2bOSK31Xnq8Q6qAA_1766081074
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-430fc153d50so615515f8f.1
- for <qemu-devel@nongnu.org>; Thu, 18 Dec 2025 10:04:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWIa2-0006NT-5L
+ for qemu-devel@nongnu.org; Thu, 18 Dec 2025 13:18:28 -0500
+Received: from mail-wm1-x343.google.com ([2a00:1450:4864:20::343])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWIZw-0002xV-LF
+ for qemu-devel@nongnu.org; Thu, 18 Dec 2025 13:18:23 -0500
+Received: by mail-wm1-x343.google.com with SMTP id
+ 5b1f17b1804b1-4775ae5684fso4102665e9.1
+ for <qemu-devel@nongnu.org>; Thu, 18 Dec 2025 10:18:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766081074; x=1766685874; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HMm5PPGmJbbaFEUe0uI/zJ77u3Ca5KRWh3EGewiRCN4=;
- b=Vx8yE3+sddgOaMMdtSU8n/K48bTJ4xl2QMEX6W8hNOAeNuML70rYFaT/Fc1Z2/o3b8
- 5EznpEMbLS/1FFDvAVKl9Q9uaSBPQu5riAmBhk2WlPsPTn3aQO8qe+ZxnixOVWpGq6+P
- n/cu2oA1DUC3bbFIKWmuVbi7MJOlWgocPuSfKUW+bm2qeP8Z3W5oeJCi5ZSU+W6JmEyv
- tIN7kfv0hwsotP7mRnfKOK+jjP4z/q5nw2te+FYuxnIstEaqLY+Zr1Ze/Dy3Xq8rFh3c
- kJUODlrw/UlGNE+Vzg1ha3xzvzNR8YAJIdZ8OI8TnpI0q/ydRgf7vM9jMWs1hOOzqxP2
- YX7Q==
+ d=linaro.org; s=google; t=1766081894; x=1766686694; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Dw4q2naf2RC86eEOqnqVmtV2ZylVV7dCJMCaQlNiUTI=;
+ b=WTElRp1LJ+wUfftgpajnndb1Q6hyDi8gXhatIXsV4Xxr53xuIVdQasX/d9TILlf6DG
+ RD3MrauZP04VUvyLANb2NxacKZocnLeYfQ4eCfEH3SYA77S0ShTWuSQw0/iAE+z1CK6l
+ k9TlGbNxGJlw++IfuMsx+f9kbQPwpsyuU5Qxi4wgPjcU5eF1UYxnccpxWs1+p2/H4RoJ
+ MC0KvVrkXZMmpWuJCtWeQacES5SJ4hm6p6hWJt2L/dCteREO0RsvnFyI0g1zcVo61tYY
+ b3FRAO6zIeHcgiFEFDqR70yxePbvE5buZoKHN4iB/6zIDzLg8gEkRAPckJXAUvcXAs1V
+ M0xA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766081074; x=1766685874;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=HMm5PPGmJbbaFEUe0uI/zJ77u3Ca5KRWh3EGewiRCN4=;
- b=P+VY6DY+h++AmBvdAjMhP9YVhB8wDMQYUeTediCNhhlH3bDQssC+1WTpGsZ0v76mY7
- QkggSfdRgt8GR5msniY7XPeGpi/E6oaXvj/U8Qa+5rvzGYjAEQhTmixAbIsl0xpep7+c
- fLjnpL55SWs4YDkAMfjuv/qinq7Fjbu95tjsF04z3ImAoRw4691136yt9ZV/MdZH5Bns
- GEbSrNewW//zVrTcAAlKMb/sk8i7Hwa0wdWOvnANtwzkRnDPQ5141GhCd8cR6KPn6aON
- 37KLY1Q1p+EE2gzJdsAN95H/VpkXlaXFnQFiSSFne15RBmIvsyYU3d/xsFB7xpQMMJ8N
- nREQ==
-X-Gm-Message-State: AOJu0YxP4fX4m9Ycss0obQ6xlKDAodN+2u3ljOhNmbp4cpn2JpYl5bIR
- bAfH4H/N2/8wPxLgL4dOIuxuY7zyN/8yMMX2/PZXBbuME4GTTF8Vf5o+RzBQIdOtP3tcU1TrLxS
- saqmVdpCfMxXIOV3ZtsSLQHAsDv4P9uiBqRqOLggWROrBi0On8Jx2kQRV9k2VuwLJo5XX4JZpf8
- WmCa5lZbmPN5KKOaKE1DieYz2x5ezN4CSLVr6FBZ52CQ==
-X-Gm-Gg: AY/fxX7fmEBJBBgNLDTcZSbRCVi6u31BaQT9CHAuqY4DX17vWSyz2MOl/5lrlkd4REK
- 18lXj4n3wIcvmcJ5yzlTtrkOd/g2xV0bOpl2SJ1SLU06n1TfiKAd70vfoRd0o6p5mpZi5gUmz/w
- QhDkk4GKUnL9jSFMX7kb7xHt3S3nMal+I6iogSAoFo64l8KZTXrr0NWm32nxjkwCHezyvuP47l1
- fZ6FSB+Iqttd9QgDdmRkIi//hoz3Q3uB16+QW1sclFaXYC/Ci5o9rBIqM2+ugwVsMoO
-X-Received: by 2002:a05:6000:610:b0:430:f68f:ee96 with SMTP id
- ffacd0b85a97d-4324e4fd793mr412119f8f.36.1766081073799; 
- Thu, 18 Dec 2025 10:04:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGi8GHbl1YyaqRg777H/lPlJqIeY349J5VWsFjFxLdhVKg7szJncPjBFq6YLyBqsBQ7McYLpbzjHH5gJ0nFr9Q=
-X-Received: by 2002:a05:6000:610:b0:430:f68f:ee96 with SMTP id
- ffacd0b85a97d-4324e4fd793mr412088f8f.36.1766081073378; Thu, 18 Dec 2025
- 10:04:33 -0800 (PST)
+ d=1e100.net; s=20230601; t=1766081894; x=1766686694;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Dw4q2naf2RC86eEOqnqVmtV2ZylVV7dCJMCaQlNiUTI=;
+ b=dNEf+l3DWPTtYHtl66ohC3VjDYAqpTw47dPLGzL7MuPEFa7XrGByqCKoOKuZuP4oU6
+ i6SHnqWmbi8tw0p8nNySggpvt9W/IEgBV+3Yj1IT5sF2VbD53nVbeEpUeXe6rGdN8qUv
+ AjHk2FnkB2CFm9Gu7cW+arjZvgugcRf2eJ9A54xmz9955WQKWuPbHzcdN+/SqIwZe4ln
+ sNbDPIhamShoXZwdsHQnnMKERtn96zZAh73YfuGjh4L7OnyL/xYz5pnpeMg9kLPN8rle
+ 6AegIHNYImYe9Qoc5LJ/i1F7HiL5c0ZFx/DYQXcNXXBwHAwaPooomoUgPhT3CisVFAsC
+ MMjg==
+X-Gm-Message-State: AOJu0YyHt8nMZ6D7XyTeAsO0JcOxbs/yHMtAebEiCod9FTB6HmpLH416
+ lqZ2y7YUc5wll40+3i0iRhUlYf4hN9msNpwb+KC5t43xo8XBj2Bu38LTrL0bVED4SHpU4le5TQf
+ dBp7emWw=
+X-Gm-Gg: AY/fxX7TUqr6eNN8L813X9L9Tk0m1cRbU1ZcI6Ql1ueJyPFWdLkGIVH6SqE7Ahq8D+q
+ EQs9yku0gBXO1CdR2iTSz0rHQx8bIWAF1CTJ2s1IbhP+L1SJMNjNe//TO4Yp/RccugwJ7/MtUFO
+ Ll1YLSc1n5bnzQtXOuodLu1QmoczoCA+wKmBPzf+rCcIOXkQr3/gbKJnPzRJphZZKzszzVDYv8N
+ GY1VVF3RtNhJFhAleU5FMss1u7X7cC3Vk798VNbdRR7eB2SRF3ePcFa3i+GLM8bXZ1Fzm9sNYQ4
+ cXryjug+VdXsG+WFTpS6ctOkf03FUwk+p56TV4FeFuOeKcC8wuNOe+3G6BKy/1471TMehQnXUsh
+ NrmvREMn1oVIyFjCjCEFYTyjwPtjgh6sCr1Wu9VstVbKpUD/XNtEkIPcAh1WDV57oRQC2hfcvIO
+ QxbKfDBkmiAmLJmxzoOKMOXRQfVyUq7KybPcuFqxUnmQm/KmFvxq5yys4XEASv
+X-Google-Smtp-Source: AGHT+IFt3I/PPxUr2BEmKrZ7ygpqyt2KZOxFv9uczbyIybgLHrJfKrapY8KpeMlDkyMUJ89/CJOvFA==
+X-Received: by 2002:a05:600c:3b9d:b0:459:db7b:988e with SMTP id
+ 5b1f17b1804b1-47d19555e07mr1067575e9.13.1766081894494; 
+ Thu, 18 Dec 2025 10:18:14 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-4324eaa64cesm200859f8f.35.2025.12.18.10.18.12
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 18 Dec 2025 10:18:13 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Max Filippov <jcmvbkbc@gmail.com>,
+ qemu-arm@nongnu.org, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-rust@nongnu.org,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/6] hw: Preparatory cleanups previous to remove
+ DEVICE_NATIVE_ENDIAN
+Date: Thu, 18 Dec 2025 19:18:05 +0100
+Message-ID: <20251218181812.58363-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-References: <20251205164125.2122504-1-alex.bennee@linaro.org>
- <20251205164125.2122504-5-alex.bennee@linaro.org>
-In-Reply-To: <20251205164125.2122504-5-alex.bennee@linaro.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 18 Dec 2025 19:04:21 +0100
-X-Gm-Features: AQt7F2oc1YM8rUGVllhHbp1g1Znhs4_WjciF4X55mrimAcqZxXqA0vrvdDWGR6k
-Message-ID: <CABgObfa=pNuy7WeEM0ziavDH6r8XhjakJYr3fzJtqSJpiK3CGw@mail.gmail.com>
-Subject: Re: [PULL 04/14] tests/tcg: honour the available QEMU binaries when
- running check-tcg
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::343;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x343.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,37 +102,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Dec 5, 2025 at 5:41=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@linaro=
-.org> wrote:
->  if test "$tcg" =3D "enabled"; then
-> -    echo "TCG_TESTS_TARGETS=3D$tcg_tests_targets" >> $config_host_mak
-> +    echo "TCG_TESTS_WITH_COMPILERS=3D$tcg_tests_with_compilers" >> $conf=
-ig_host_mak
->  fi
->
->  if test "$skip_meson" =3D no; then
-> diff --git a/tests/Makefile.include b/tests/Makefile.include
-> index d4dfbf3716d..7728098981d 100644
-> --- a/tests/Makefile.include
-> +++ b/tests/Makefile.include
-> @@ -37,6 +37,15 @@ export SRC_PATH
->
->  SPEED =3D quick
->
-> +
-> +# TCG_TESTS_WITH_COMPILERS represents the test targets we have cross com=
-piler
-> +# support for, CONFIGURED_TEST_TARGETS it what meson has finally
-> +# configured having rejected stuff we can't build.
-> +CONFIGURED_TCG_TARGETS=3D$(patsubst %-config-target.h, %, $(wildcard *-c=
-onfig-target.h))
+We want to remove the bogus DEVICE_NATIVE_ENDIAN definition,
+by making it explicit (either big or little).
 
-Please use something like
+I'll follow with one series for each architecture. These
+devices seem used by more than one, so I took them apart.
 
-   echo "TARGET_DIRS=3D$target_list" >> $config_host_mak
+Also remove from rust API ASAP.
 
-instead.  Using $(wildcard) risks picking stale files.
+Philippe Mathieu-Daudé (6):
+  hw/char/serial: Let compiler pick serial_mm_ops[] array length
+  hw/net/opencores: Clarify MMIO read/write handlers expect 32-bit
+    access
+  hw/display/ati: Access host memory as little-endian
+  hw/timer/hpet: Mark implementation as being little-endian
+  hw/char/pl011: Mark implementation as being little-endian
+  rust/system: Stop exposing bogus DEVICE_NATIVE_ENDIAN symbol
 
-Paolo
+ hw/char/pl011.c                  |  2 +-
+ hw/char/serial-mm.c              |  2 +-
+ hw/display/ati_2d.c              |  2 +-
+ hw/net/opencores_eth.c           | 15 +++++++++------
+ hw/timer/hpet.c                  |  2 +-
+ rust/hw/char/pl011/src/device.rs |  2 +-
+ rust/hw/timer/hpet/src/device.rs |  2 +-
+ rust/system/src/memory.rs        |  6 ------
+ 8 files changed, 15 insertions(+), 18 deletions(-)
+
+-- 
+2.52.0
 
 
