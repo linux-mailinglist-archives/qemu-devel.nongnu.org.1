@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94FA2CCA759
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 07:28:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9106ACCA75E
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 07:28:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vW7Ty-0003Kx-TR; Thu, 18 Dec 2025 01:27:26 -0500
+	id 1vW7U1-0003LQ-K1; Thu, 18 Dec 2025 01:27:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vW7Tx-0003KW-6A
- for qemu-devel@nongnu.org; Thu, 18 Dec 2025 01:27:25 -0500
+ id 1vW7Ty-0003Kt-EO
+ for qemu-devel@nongnu.org; Thu, 18 Dec 2025 01:27:26 -0500
 Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vW7Tu-00015T-Ld
- for qemu-devel@nongnu.org; Thu, 18 Dec 2025 01:27:24 -0500
+ id 1vW7Tw-00014o-I7
+ for qemu-devel@nongnu.org; Thu, 18 Dec 2025 01:27:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766039242; x=1797575242;
+ t=1766039244; x=1797575244;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=QdZ1ubBQIL/oXabO9On2Or1ttJr/IWvuDU6xXkUi2/c=;
- b=fakLYqLJ6McWm7+Zvj3vJAGoRJOkzFUNrIoniKyT7cG8ALoir6oNTGNI
- sNK2YlXs6BnfBqEKstHkgfwPPXgnNx7VhdOaLQrHddG/n3aw8hEl3SCr+
- UppmLldpgWDCXYbBw6ma6Zpt0F4sJlGMlDmdhpqaLP/6gF9BUL2Q+FxT3
- Tp176jR8g9IOGbytztnwC00nuviJg1+BfSl5cEmj0BOadxqmsFRgxiZKM
- XYYBfmvdw5lk5ikORctUjhY2l4HEbuL/qQ3ASlo6OppnHcwbK9Yumvbhr
- nsATVJb0zMzQ+f2VNaYDd78jEBrqvgbIrgpYkoTmKXMgfnURL0SA4Hqu+ Q==;
-X-CSE-ConnectionGUID: i9aX1W84SzSJTbEQy+a9ug==
-X-CSE-MsgGUID: ZsqwsqvnT9ypMw+5mPZHKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="68028499"
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; d="scan'208";a="68028499"
+ bh=2RmlAOwmak+jh/vEC9lQi7dmQiq57S7kEx9cPD7O4Y4=;
+ b=fP8HEZvw4m1DCU41woRtdgv7/e5MSbJwTtBGEoZ+MtpoV0FkB+7daiW1
+ LmDlCh4IiA3wXSCCm7io63OkxbvjPGHHQWA4FtyzUX9y+vE6SP1totg64
+ EyxwXokJ91xVrkNdWtSoBYZOhwAcVq9JsmRZXxshO1X+ei9apCmrlZm+K
+ sxWCrfxyKDHYnC2ggtl5bO/Klor7/EgzGVgtKCXF7db42b8zyPKhzYSpH
+ LAzf9tRxMwcepA1jrud+/+pQhB8NlZdGaDTQ7S7qh7NTeQ8WSZd1PmpY7
+ dszB/ctciU1ZuZMTlUa1vkhpfpNO0yA0q6z2jeW/QmowhKUk/Cq6TmSf/ Q==;
+X-CSE-ConnectionGUID: JfOxL8HHQTWs9hoE9UN3Aw==
+X-CSE-MsgGUID: GK0LWO6rQxKWCoZBmrkCgg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="68028506"
+X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; d="scan'208";a="68028506"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2025 22:27:19 -0800
-X-CSE-ConnectionGUID: cXArXbc+SiC75uqlxnMlpg==
-X-CSE-MsgGUID: /C2ySSYGSJ2hfn6gDv+L7Q==
+ 17 Dec 2025 22:27:23 -0800
+X-CSE-ConnectionGUID: iwyPK4GtRXyityKfcGC8rA==
+X-CSE-MsgGUID: mlbfKuN/Q7enNesuARylYA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; d="scan'208";a="203569840"
+X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; d="scan'208";a="203569851"
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2025 22:27:17 -0800
+ 17 Dec 2025 22:27:20 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex@shazbot.org, clg@redhat.com, mst@redhat.com, jasowang@redhat.com,
@@ -52,10 +52,9 @@ Cc: alex@shazbot.org, clg@redhat.com, mst@redhat.com, jasowang@redhat.com,
  xudong.hao@intel.com, giovanni.cabiddu@intel.com, rohith.s.r@intel.com,
  mark.gross@intel.com, arjan.van.de.ven@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v6 1/9] vfio/iommufd: Add framework code to support getting
- dirty bitmap before unmap
-Date: Thu, 18 Dec 2025 01:26:22 -0500
-Message-ID: <20251218062643.624796-2-zhenzhong.duan@intel.com>
+Subject: [PATCH v6 2/9] vfio/iommufd: Query dirty bitmap before DMA unmap
+Date: Thu, 18 Dec 2025 01:26:23 -0500
+Message-ID: <20251218062643.624796-3-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20251218062643.624796-1-zhenzhong.duan@intel.com>
 References: <20251218062643.624796-1-zhenzhong.duan@intel.com>
@@ -87,12 +86,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently we support device and iommu dirty tracking, device dirty tracking
-is preferred.
+When an existing mapping is unmapped, there could already be dirty bits
+which need to be recorded before unmap.
 
-Add the framework code in iommufd_cdev_unmap() to choose either device or
-iommu dirty tracking, just like vfio_legacy_dma_unmap_one().
+If query dirty bitmap fails, we still need to do unmapping or else there
+is stale mapping and it's risky to guest.
 
+Co-developed-by: Joao Martins <joao.m.martins@oracle.com>
+Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Yi Liu <yi.l.liu@intel.com>
@@ -100,59 +101,46 @@ Tested-by: Xudong Hao <xudong.hao@intel.com>
 Tested-by: Giovannio Cabiddu <giovanni.cabiddu@intel.com>
 Tested-by: Rohith S R <rohith.s.r@intel.com>
 ---
- hw/vfio/iommufd.c | 34 +++++++++++++++++++++++++++++++---
- 1 file changed, 31 insertions(+), 3 deletions(-)
+ hw/vfio/iommufd.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
 diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index ca8a6b7029..b527c7d1eb 100644
+index b527c7d1eb..75e1bde2dd 100644
 --- a/hw/vfio/iommufd.c
 +++ b/hw/vfio/iommufd.c
-@@ -61,14 +61,42 @@ static int iommufd_cdev_unmap(const VFIOContainer *bcontainer,
-                               IOMMUTLBEntry *iotlb, bool unmap_all)
- {
-     const VFIOIOMMUFDContainer *container = VFIO_IOMMU_IOMMUFD(bcontainer);
-+    IOMMUFDBackend *be = container->be;
-+    uint32_t ioas_id = container->ioas_id;
-+    bool need_dirty_sync = false;
-+    Error *local_err = NULL;
-+    int ret;
+@@ -65,7 +65,7 @@ static int iommufd_cdev_unmap(const VFIOContainer *bcontainer,
+     uint32_t ioas_id = container->ioas_id;
+     bool need_dirty_sync = false;
+     Error *local_err = NULL;
+-    int ret;
++    int ret, unmap_ret;
  
      if (unmap_all) {
          size = UINT64_MAX;
-     }
+@@ -74,8 +74,21 @@ static int iommufd_cdev_unmap(const VFIOContainer *bcontainer,
+     if (iotlb && vfio_container_dirty_tracking_is_started(bcontainer)) {
+         if (!vfio_container_devices_dirty_tracking_is_supported(bcontainer) &&
+             bcontainer->dirty_pages_supported) {
+-            /* TODO: query dirty bitmap before DMA unmap */
+-            return iommufd_backend_unmap_dma(be, ioas_id, iova, size);
++            ret = vfio_container_query_dirty_bitmap(bcontainer, iova, size,
++                                                    iotlb->translated_addr,
++                                                    &local_err);
++            if (ret) {
++                error_report_err(local_err);
++            }
++            /* Unmap stale mapping even if query dirty bitmap fails */
++            unmap_ret = iommufd_backend_unmap_dma(be, ioas_id, iova, size);
++
++            /*
++             * If dirty tracking fails, return the failure to VFIO core to
++             * fail the migration, or else there will be dirty pages missed
++             * to be migrated.
++             */
++            return unmap_ret ? : ret;
+         }
  
--    /* TODO: Handle dma_unmap_bitmap with iotlb args (migration) */
--    return iommufd_backend_unmap_dma(container->be,
--                                     container->ioas_id, iova, size);
-+    if (iotlb && vfio_container_dirty_tracking_is_started(bcontainer)) {
-+        if (!vfio_container_devices_dirty_tracking_is_supported(bcontainer) &&
-+            bcontainer->dirty_pages_supported) {
-+            /* TODO: query dirty bitmap before DMA unmap */
-+            return iommufd_backend_unmap_dma(be, ioas_id, iova, size);
-+        }
-+
-+        need_dirty_sync = true;
-+    }
-+
-+    ret = iommufd_backend_unmap_dma(be, ioas_id, iova, size);
-+    if (ret) {
-+        return ret;
-+    }
-+
-+    if (need_dirty_sync) {
-+        ret = vfio_container_query_dirty_bitmap(bcontainer, iova, size,
-+                                                iotlb->translated_addr,
-+                                                &local_err);
-+        if (ret) {
-+            error_report_err(local_err);
-+            return ret;
-+        }
-+    }
-+
-+    return 0;
- }
- 
- static bool iommufd_cdev_kvm_device_add(VFIODevice *vbasedev, Error **errp)
+         need_dirty_sync = true;
 -- 
 2.47.1
 
