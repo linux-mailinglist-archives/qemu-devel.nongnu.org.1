@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F2F9CCD238
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 19:21:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D358ECCD228
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 19:20:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWIb1-0006Vj-DF; Thu, 18 Dec 2025 13:19:27 -0500
+	id 1vWIaz-0006Va-6M; Thu, 18 Dec 2025 13:19:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWIab-0006Pa-EZ
- for qemu-devel@nongnu.org; Thu, 18 Dec 2025 13:19:05 -0500
-Received: from mail-wm1-x344.google.com ([2a00:1450:4864:20::344])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWIae-0006Q2-D8
+ for qemu-devel@nongnu.org; Thu, 18 Dec 2025 13:19:07 -0500
+Received: from mail-wm1-x342.google.com ([2a00:1450:4864:20::342])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWIaU-00032n-Vd
- for qemu-devel@nongnu.org; Thu, 18 Dec 2025 13:18:56 -0500
-Received: by mail-wm1-x344.google.com with SMTP id
- 5b1f17b1804b1-47a8195e515so8194375e9.0
- for <qemu-devel@nongnu.org>; Thu, 18 Dec 2025 10:18:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWIab-00034D-Hj
+ for qemu-devel@nongnu.org; Thu, 18 Dec 2025 13:19:03 -0500
+Received: by mail-wm1-x342.google.com with SMTP id
+ 5b1f17b1804b1-477b198f4bcso7247995e9.3
+ for <qemu-devel@nongnu.org>; Thu, 18 Dec 2025 10:19:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766081931; x=1766686731; darn=nongnu.org;
+ d=linaro.org; s=google; t=1766081938; x=1766686738; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nPZZBApwFpp2aCgUR9OuXCPmOWKQbdSQ4X0mg+cAPjw=;
- b=WLCZZEGI2NADo2tgC9tk64WwusxKT7tjZaLNOb+ubDqSSJZ6sbUMUkX6h9e2Hsoy7u
- vJv7NJL7NTS+EQm8a62JflefeHTFmTXRUoaQHpI2Rvz/qw87v027jFCu0vQ0hkeLUgyr
- efX5zGpwXVQRusYt4v37l6tOvXAmxnEk69aYte+qFWqHWZnzLk3TUrj06sMzAgZBFCta
- mYPHguyByFFmpK2NoURK7xgoRAW3OSTvmwGOAqOwF2xkOT60TaA0pjGf/tLUHTNy5LqE
- 0o79p418BcOU+ABmLwr3cdUGHbcbuVWLF3chp3gR6eQhWBlQ8wPSleVcYqyNG0pzYUt9
- 39mQ==
+ bh=KVD7KeNHSoZXyk7/Vq+5GFFpep3i4V4TnIDs7GSc+Ig=;
+ b=PJ1fLip4iN0iWvuoPWWWMS76ALLXbphvsg/5iZeBJMvco/8GFsIYnio2t2Bi1V5w0c
+ 7HCtowB8DoTUxsYOacbGnBdIcWXOfHvsxUap/UfeqmhPNhxAM6hs8poQ/LvZirhuiLva
+ lcyC44ERb3iEpRqOUvJiii8VVN+UmQQXO/Y0kd6fQFzyLHGtE8+1bt5/4M2BpSBfoJzs
+ u3KnGApmVjc4Q/vruH23SAIu4MR6yAYRl9vDbSDvuydretMBQ8IVKb0VHjkTN05oW1Re
+ lwgdIc60ejwgKtxFh1c1SzJmo62DzOZdCFBbZBGs4H1Gh32NLTLkeeT5X7o1OZkO7GM6
+ 9muA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766081931; x=1766686731;
+ d=1e100.net; s=20230601; t=1766081938; x=1766686738;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=nPZZBApwFpp2aCgUR9OuXCPmOWKQbdSQ4X0mg+cAPjw=;
- b=hSjsx7Ma4+j86LJXqfOMgTwFlHy9KQGbQ0ZxaRhYcM/dAw9tgZJufzS6mMhxvJLvGv
- xOBEl+KpBgVDqvjEHhUBCwVnOMUrEwwEnyflunalc5x/CNYhgXEpU48NcgzVsk1kxa5f
- AcmU/cNDsHryXpMbdLJudPBb2/4AqsbtHBJ3tOP70GICBmTZpNTuiVfShL1TMDcvSfIq
- cdS2yCS78y070tx1ORwSOaMGig6trFdRfgpqTt8it/4Foesls+tC+Fh/80a8usdJvHIT
- hQ6B1Zjet5ADPLy/U8v3l9g+ZsxgWOMchZhPgUNAJsxL9DxAqt+SL8AeP3zq9hRdyQVb
- QEEw==
-X-Gm-Message-State: AOJu0YwgK1bmgsZd4XKuAfHzBIjtofQmn7Kz6YMJlKOBBedDvp5e+K8j
- 8/JEkt8o7GZZ9oBehQAAW/t52ej/qc9rHsC0F7EqUwCwfNR5MP1v3Jmc1f3voPTzqLWyoFljWDL
- /1zCYT6g=
-X-Gm-Gg: AY/fxX4B/XhprY6XFxR1MlOG4frzAix/g/nLsf5cpIBDoQZsIWc8pzJgizQAAjkjUO+
- 9tX3CI78aDI5263rgifGHqxCklmnv/D1ZyJhyGoW8pv8W79ngOyvJxV1jDwj9bkP1/Pq30bgVrZ
- PYSv7dmgbdygej4N2Y1sffNYQuUDYY2MdIxEoAkL5qSNvsk/+zlQjh0tjEOH5cW8ovtKcskrTVf
- d5SLh0CA0Tih19IOvskB9gOZvMvnluZngZ09fXsOYqWaWif9lTK/W6IhXZ1z6GYyi9WXrbLV/8c
- 3Vo4a2h0SzN1SOTq3ovP2X4reGAS/e5A7uV2AqHJpwl3/zQWMGsojtQyYS1mTsfXmHxCn769uKZ
- 2qpFIdDJhScEXWu0ZWIqiNvV3LpOneWauAbE8ZAZM18C/9ytAK7RnQLWgECBP/uVkfOU5Jzprt4
- QRm3kJGm628M1c9TmqKCtIu9Ji2xKHedm4ggPKaRgRlnHrDsNG+quJ2HFvUsd2
-X-Google-Smtp-Source: AGHT+IFj2uRd8hrdtFhyZ94nB8aVUnwZ0Rq4l/D4sNg/vSmct55uTd7IilnKbP4atxOhX0aO7Lktog==
-X-Received: by 2002:a05:600c:1c29:b0:46e:37a7:48d1 with SMTP id
- 5b1f17b1804b1-47d1959d4bamr851815e9.34.1766081931339; 
- Thu, 18 Dec 2025 10:18:51 -0800 (PST)
+ bh=KVD7KeNHSoZXyk7/Vq+5GFFpep3i4V4TnIDs7GSc+Ig=;
+ b=U+GotEJayVhPYzEv2Vr9QQRQcuYRokuhVc9/2eae/HXJq0oZrmJvaucWidqCzG3p/C
+ +CiKuxPElVzj65KdK6y2AcKcfDjWdeJO7FjIYUu2ndC9d5u1dg+zsXCiMKROZdWUrQUI
+ ryWX60Avubd2/PB+yIQ5T8zRU8z//FGPs0fz/DyOYub+lnR678e+YClHDr4s9Glju4Re
+ HsAtClY7OFkk8ebxRD8NyqwPQFrwUfcJyfm03v759fexsxz+Cfb0XoI3P7QMvm5Q2Uu4
+ M8gMnXO/Ov1CUwQZudLVkSsReLrItQ4x33Aad9rmT+yzQSX3RHhpJWYzb2ycW+2S6dyS
+ kFvw==
+X-Gm-Message-State: AOJu0YyHEuN37I5Y96W5hJJfqLlMC/ueexem6RKa3sEu4UZAxK1jdRaz
+ AHdHC06U3HHuSQX//R9fyCgb5s5VhW0YzelD3X0Wr5SFSDdi+W1vdvLk6nvykFbAbqrnz+8/1u0
+ O/VsvEmg=
+X-Gm-Gg: AY/fxX5Rj4mb/ExTBb1CSq7sJBJWHL4CyYpXSVivHvYikEF8efWFTdLfwoWrP70+ULD
+ /5eMoN++If4AdB93DQRjRg8nO5gkb+CKt1GcHgSF+KGqInnK7dSEYWncY4ZeESNsrNCjGMGjJqS
+ XGvIdW7aMGvX7gpWWFgCyIzFPKgzl2HN73fxOfxFr+0awOrjpddiKXpYg77vYBMrDq8R498Dw1P
+ lg3fnENm04W4YFW3k5W/igC6+MgyXPUspA6lN5MqsobGG3FF1KCB9Gc9m0xzoUyuLCNT8rcfTsY
+ J2AKoXcSZ+TAxUwRfoACm2eVgD95DPliOJBsL6z7pN8dlZQzfcCBfv0mTFYLhgm++j9aPlHyIpC
+ z18g+LZ0+5MqYvGVRIXWEDLkBfVn1HEWClWFB++6JciTFo+QYy/Ds90siYubTdvP/12bPMFO1fi
+ m/pmlZYu2+Nd8c0/AE/gs0PILIEj8oxiUUpDnpt0WUvQrrVhILxcy8kiyhbK0M
+X-Google-Smtp-Source: AGHT+IEQS04J5k9ys7VUrixvOqoIfqYL77w/GAjeUbl8nGYnPKg+ydshN38AfVjuXuWkE2AFDKoNcw==
+X-Received: by 2002:a05:600c:3489:b0:479:2a09:9262 with SMTP id
+ 5b1f17b1804b1-47d1953dabamr1379125e9.9.1766081938576; 
+ Thu, 18 Dec 2025 10:18:58 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47be27b749esm53916305e9.14.2025.12.18.10.18.49
+ 5b1f17b1804b1-47be2723d19sm62333055e9.2.2025.12.18.10.18.57
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 18 Dec 2025 10:18:50 -0800 (PST)
+ Thu, 18 Dec 2025 10:18:57 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -71,17 +71,18 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  qemu-rust@nongnu.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 5/6] hw/char/pl011: Mark implementation as being little-endian
-Date: Thu, 18 Dec 2025 19:18:10 +0100
-Message-ID: <20251218181812.58363-6-philmd@linaro.org>
+Subject: [PATCH 6/6] rust/system: Stop exposing bogus DEVICE_NATIVE_ENDIAN
+ symbol
+Date: Thu, 18 Dec 2025 19:18:11 +0100
+Message-ID: <20251218181812.58363-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251218181812.58363-1-philmd@linaro.org>
 References: <20251218181812.58363-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::344;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x344.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::342;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x342.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,44 +105,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The PL011 component is only built / used by ARM targets, which
-are only built in little endianness. Thus we only ever built
-as little endian, never testing the big-endian possibility of
-the DEVICE_NATIVE_ENDIAN definition. Simplify by only keeping
-the little endian variant.
+We want to remove the bogus DEVICE_NATIVE_ENDIAN definition
+(by only having it explicit, either big or little one). Stop
+exposing it to rust devices to avoid it spreading further.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/char/pl011.c                  | 2 +-
- rust/hw/char/pl011/src/device.rs | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ rust/system/src/memory.rs | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/hw/char/pl011.c b/hw/char/pl011.c
-index 01335d9437d..97cd9bd4c54 100644
---- a/hw/char/pl011.c
-+++ b/hw/char/pl011.c
-@@ -538,7 +538,7 @@ static void pl011_clock_update(void *opaque, ClockEvent event)
- static const MemoryRegionOps pl011_ops = {
-     .read = pl011_read,
-     .write = pl011_write,
--    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-     .impl.min_access_size = 4,
-     .impl.max_access_size = 4,
- };
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index 04155dabe1a..a6227a99f30 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -495,7 +495,7 @@ unsafe fn init(mut this: ParentInit<Self>) {
-         static PL011_OPS: MemoryRegionOps<PL011State> = MemoryRegionOpsBuilder::<PL011State>::new()
-             .read(&PL011State::read)
-             .write(&PL011State::write)
--            .native_endian()
-+            .little_endian()
-             .impl_sizes(4, 4)
-             .build();
+diff --git a/rust/system/src/memory.rs b/rust/system/src/memory.rs
+index 4b3316bf767..4e06c16a0b5 100644
+--- a/rust/system/src/memory.rs
++++ b/rust/system/src/memory.rs
+@@ -78,12 +78,6 @@ pub const fn little_endian(mut self) -> Self {
+         self
+     }
  
+-    #[must_use]
+-    pub const fn native_endian(mut self) -> Self {
+-        self.0.endianness = device_endian::DEVICE_NATIVE_ENDIAN;
+-        self
+-    }
+-
+     #[must_use]
+     pub const fn valid_sizes(mut self, min: u32, max: u32) -> Self {
+         self.0.valid.min_access_size = min;
 -- 
 2.52.0
 
