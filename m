@@ -2,74 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A096CCA91E
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 08:03:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13EBDCCAAAE
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 08:33:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vW81b-00061k-Rr; Thu, 18 Dec 2025 02:02:11 -0500
+	id 1vW8Uq-0000t9-TY; Thu, 18 Dec 2025 02:32:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vW81Y-00061G-FM; Thu, 18 Dec 2025 02:02:08 -0500
-Received: from mgamail.intel.com ([192.198.163.19])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1vW8Uk-0000sa-Nh; Thu, 18 Dec 2025 02:32:18 -0500
+Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vW81W-0005Ua-Ny; Thu, 18 Dec 2025 02:02:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766041327; x=1797577327;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=SVgM/n1v4fzCKsePS0J3ggBaXEGDmRcBzlKaAToDQEk=;
- b=C1CQaCYFwwl899G0eqBn7oXtRVdyuvqlBJtRbQaEStu7jsCDooS7sqmG
- PHGcdH1a1vLtpFU/0iWV69cAJ9lZSEesHNj0IMNkEYv9UTQXVKM0rGtkX
- /l2O86sb1i0J1bRMUBj5u0VkEMqNARuAOIv2wh8U6wX0qHWtJQ24rMke2
- YC0Kz1cLVXtPelYN/cMu1FIS4MOr+CvVY+JHvXpGI1G/9Tm9mi0WowpYs
- gEttlnMg+0u9ofJ/EuSADJtQYzSqiRw9wwKL+oPjlTY0MxXfj3d5gJsKM
- i9+EyZRvmBY2g+o5NQLYYWvicoRbXKsXolYiU7W2uzarDVkYGCa1Jd3bm w==;
-X-CSE-ConnectionGUID: UDhoMSTaThWiXBQ1pzr1Fw==
-X-CSE-MsgGUID: HVIQKW8FThO8kzJYKN3cCQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="66985008"
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; d="scan'208";a="66985008"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2025 23:02:03 -0800
-X-CSE-ConnectionGUID: 0SOkLFsIRGixo+JhvcoTfg==
-X-CSE-MsgGUID: Gtsie+lBTvCsnmsxYn6+OQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; d="scan'208";a="235918890"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa001.jf.intel.com with ESMTP; 17 Dec 2025 23:02:00 -0800
-Date: Thu, 18 Dec 2025 15:26:50 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Anton Johansson <anjo@rev.ng>, qemu-arm@nongnu.org,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- David Hildenbrand <david@kernel.org>, Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH 01/14] target/i386: Remove x86_stl_phys_notdirty() leftover
-Message-ID: <aUOsuvGfQbA61n26@intel.com>
-References: <20251217143150.94463-1-philmd@linaro.org>
- <20251217143150.94463-2-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1vW8Ui-0004Xf-AO; Thu, 18 Dec 2025 02:32:18 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id E6D0C176664;
+ Thu, 18 Dec 2025 10:31:49 +0300 (MSK)
+Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id DE5F6338A50;
+ Thu, 18 Dec 2025 10:32:10 +0300 (MSK)
+Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
+ id CE3B3702C7; Thu, 18 Dec 2025 10:32:10 +0300 (MSK)
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: Michael Tokarev <mjt@tls.msk.ru>,
+	qemu-trivial@nongnu.org
+Subject: [PATCH] qemu-options.hx: use KiB, MiB, GiB for power-of-2 units
+Date: Thu, 18 Dec 2025 10:32:05 +0300
+Message-ID: <20251218073208.160482-1-mjt@tls.msk.ru>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251217143150.94463-2-philmd@linaro.org>
-Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,21 +57,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 17, 2025 at 03:31:37PM +0100, Philippe Mathieu-Daudé wrote:
-> Date: Wed, 17 Dec 2025 15:31:37 +0100
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH 01/14] target/i386: Remove x86_stl_phys_notdirty() leftover
-> X-Mailer: git-send-email 2.52.0
-> 
-> Last use of x86_stl_phys_notdirty() was removed in commit 4a1e9d4d11c
-> ("target/i386: Use atomic operations for pte updates"), let's remove.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->  target/i386/cpu.h    |  1 -
->  target/i386/helper.c | 10 ----------
->  2 files changed, 11 deletions(-)
+Use MiB &Co instead of MB &Co when the talk is about
+power-of-two-based sizes, in qemu-options.hx.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3222
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+---
+ qemu-options.hx | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/qemu-options.hx b/qemu-options.hx
+index fca2b7bc74f..65d50a81cb1 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -303,9 +303,9 @@ SRST
+         with break-before-make sequences are considerable and also if guest
+         workloads are read intensive. The size here specifies how many pages
+         to break at a time and needs to be a valid block size which is
+-        1GB/2MB/4KB, 32MB/16KB and 512MB/64KB for 4KB/16KB/64KB PAGE_SIZE
+-        respectively. Be wary of specifying a higher size as it will have an
+-        impact on the memory. By default, this feature is disabled
++        1GiB/2MiB/4KiB, 32MiB/16KiB and 512MiB/64KiB for 4KiB/16KiB/64KiB
++        PAGE_SIZE respectively. Be wary of specifying a higher size as it will
++        have an impact on the memory. By default, this feature is disabled
+         (eager-split-size=0).
+ 
+     ``notify-vmexit=run|internal-error|disable,notify-window=n``
+@@ -562,7 +562,7 @@ SRST
+ 
+     lat is latency value in nanoseconds. bw is bandwidth value, the
+     possible value and units are NUM[M\|G\|T], mean that the bandwidth
+-    value are NUM byte per second (or MB/s, GB/s or TB/s depending on
++    value are NUM byte per second (or MiB/s, GiB/s or TiB/s depending on
+     used suffix). Note that if latency or bandwidth value is 0, means
+     the corresponding latency or bandwidth information is not provided.
+ 
+@@ -577,10 +577,10 @@ SRST
+     For example, the following options describe 2 NUMA nodes. Node 0 has
+     2 cpus and a ram, node 1 has only a ram. The processors in node 0
+     access memory in node 0 with access-latency 5 nanoseconds,
+-    access-bandwidth is 200 MB/s; The processors in NUMA node 0 access
++    access-bandwidth is 200 MiB/s; The processors in NUMA node 0 access
+     memory in NUMA node 1 with access-latency 10 nanoseconds,
+-    access-bandwidth is 100 MB/s. And for memory side cache information,
+-    NUMA node 0 and 1 both have 1 level memory cache, size is 10KB,
++    access-bandwidth is 100 MiB/s. And for memory side cache information,
++    NUMA node 0 and 1 both have 1 level memory cache, size is 10KiB,
+     policy is write-back, the cache Line size is 8 bytes:
+ 
+     ::
+@@ -737,8 +737,8 @@ SRST
+     amount of memory. Note that maxmem must be aligned to the page size.
+ 
+     For example, the following command-line sets the guest startup RAM
+-    size to 1GB, creates 3 slots to hotplug additional memory and sets
+-    the maximum memory the guest can reach to 4GB:
++    size to 1GiB, creates 3 slots to hotplug additional memory and sets
++    the maximum memory the guest can reach to 4GiB:
+ 
+     .. parsed-literal::
+ 
+@@ -1694,7 +1694,7 @@ SRST
+         Specify bandwidth throttling limits in bytes per second, either
+         for all request types or for reads or writes only. Small values
+         can lead to timeouts or hangs inside the guest. A safe minimum
+-        for disks is 2 MB/s.
++        for disks is 2 MiB/s.
+ 
+     ``bps_max=bm,bps_rd_max=rm,bps_wr_max=wm``
+         Specify bursts in bytes per second, either for all request types
+-- 
+2.47.3
 
 
