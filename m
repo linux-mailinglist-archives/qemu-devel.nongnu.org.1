@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D01DCCA776
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 07:29:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC65CCA755
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 07:28:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vW7UH-0003NO-0k; Thu, 18 Dec 2025 01:27:45 -0500
+	id 1vW7UI-0003Nr-AN; Thu, 18 Dec 2025 01:27:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vW7UC-0003N2-6j
- for qemu-devel@nongnu.org; Thu, 18 Dec 2025 01:27:40 -0500
+ id 1vW7UD-0003NN-RV
+ for qemu-devel@nongnu.org; Thu, 18 Dec 2025 01:27:42 -0500
 Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vW7UA-00018G-Dk
- for qemu-devel@nongnu.org; Thu, 18 Dec 2025 01:27:39 -0500
+ id 1vW7UC-000176-8f
+ for qemu-devel@nongnu.org; Thu, 18 Dec 2025 01:27:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766039258; x=1797575258;
+ t=1766039260; x=1797575260;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=8pHmfZaBwbWLgM/IjiqWNY/mA7gOe1aG5iy7P69PVJA=;
- b=Sf6ijzydBgiArtM1g9DGLZEvRZuLy0caBrNpspRyLcZhhrl0Ob/gBBot
- pWc0kisJxLLkbmULgTsQ1OoAUMVnTtTQGDyW/rJXeXOPxszRRcCYe01C0
- dtcw6/vitzojKoDxo5nmJnenAjRltZH6dQMgC2+OULb2CHhMqCAWn7Qgx
- DKaxtrFrsOt4HaM7Di3NEp1Ce0zlEyg336Dw+yjLhwtp4H/cpBEHJF58/
- gzpedSCRnJO4nRQCmso0UiCM/9XWhL1scWx237bFRgeFH/vhQIVWCeWDb
- EYQ42KSN9ys5v2ho75YL47iGRJgWAqnwMot/gUI2GcXYV3bf73KzMU2J0 g==;
-X-CSE-ConnectionGUID: +SAvyB0zSp2wS52q9aJUjA==
-X-CSE-MsgGUID: UCRi5kOjQW6EKwWgWKxDBA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="68028539"
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; d="scan'208";a="68028539"
+ bh=70TY9FcSVSzvfgLc9xmiUg5o1saVK6Fm05MtLWcPp/Q=;
+ b=PoFsqDndw8Ori6XkU1V3MbT87TKuwTwjh0XcpkgMVK0onzesj7FoGSoj
+ 7Wr0UaEtb6oTp4csW2ZH9UfVgrwW6VbmHRDhMGEXFRXvgtC4vsaYKGyrN
+ b+Egy2V80WE5kegtbTNMF6DYa6Smb2eUs2c6X153X0837IkBAYvPLbKSX
+ EWa/TEAH7HqF/ZaldX2BdMPn2TkDms/puWUDv6qBs7TiCYDZXJFtF3M5q
+ 1RHFIo6RHNxuEAdqqTHoLIlUpcHk79AAppFjOBiA9jEsx3M8VgXnicE4j
+ tzzxx0IaRYUj1AaLfWdm6tyksjo2J1jXbQ6FVj5XqhGZWiqcTl40A0SaW Q==;
+X-CSE-ConnectionGUID: ZvqHIlvvR/GZLcvNifWjBw==
+X-CSE-MsgGUID: JSCzp98gRzCEUnoQq2SjEA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="68028552"
+X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; d="scan'208";a="68028552"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2025 22:27:35 -0800
-X-CSE-ConnectionGUID: /hWPKtPdQi20cxkh9I19lQ==
-X-CSE-MsgGUID: FJsvAo1aQtWgjcunhR3Cfw==
+ 17 Dec 2025 22:27:39 -0800
+X-CSE-ConnectionGUID: QvEc0k+dSvKhnQo4QYbF6Q==
+X-CSE-MsgGUID: eV6gh4XVT+mob4bcVoTHYg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; d="scan'208";a="203569894"
+X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; d="scan'208";a="203569898"
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2025 22:27:32 -0800
+ 17 Dec 2025 22:27:36 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex@shazbot.org, clg@redhat.com, mst@redhat.com, jasowang@redhat.com,
@@ -52,15 +52,14 @@ Cc: alex@shazbot.org, clg@redhat.com, mst@redhat.com, jasowang@redhat.com,
  xudong.hao@intel.com, giovanni.cabiddu@intel.com, rohith.s.r@intel.com,
  mark.gross@intel.com, arjan.van.de.ven@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v6 5/9] vfio/iommufd: Add IOMMU_HWPT_GET_DIRTY_BITMAP_NO_CLEAR
- flag support
-Date: Thu, 18 Dec 2025 01:26:26 -0500
-Message-ID: <20251218062643.624796-6-zhenzhong.duan@intel.com>
+Subject: [PATCH v6 6/9] intel_iommu: Fix unmap_bitmap failure with legacy VFIO
+ backend
+Date: Thu, 18 Dec 2025 01:26:27 -0500
+Message-ID: <20251218062643.624796-7-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20251218062643.624796-1-zhenzhong.duan@intel.com>
 References: <20251218062643.624796-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.18;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
@@ -87,99 +86,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pass IOMMU_HWPT_GET_DIRTY_BITMAP_NO_CLEAR when doing the last dirty
-bitmap query right before unmap, no PTEs flushes. This accelerates the
-query without issue because unmap will tear down the mapping anyway.
+If a VFIO device in guest switches from IOMMU domain to block domain,
+vtd_address_space_unmap() is called to unmap whole address space.
 
-Co-developed-by: Joao Martins <joao.m.martins@oracle.com>
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+If that happens during migration, migration fails with legacy VFIO
+backend as below:
+
+Status: failed (vfio_container_dma_unmap(0x561bbbd92d90, 0x100000000000, 0x100000000000) = -7 (Argument list too long))
+
+Because legacy VFIO limits maximum bitmap size to 256MB which maps to 8TB on
+4K page system, when 16TB sized UNMAP notification is sent, unmap_bitmap
+ioctl fails. Normally such large UNMAP notification come from IOVA range
+rather than system memory.
+
+Apart from that, vtd_address_space_unmap() sends UNMAP notification with
+translated_addr = 0, because there is no valid translated_addr for unmapping
+a whole iommu memory region. This breaks dirty tracking no matter which VFIO
+backend is used.
+
+Fix them all by iterating over DMAMap list to unmap each range with active
+mapping when global_dirty_tracking is active. global_dirty_tracking is
+protected by BQL, so it's safe to reference it directly. If it's not active,
+unmapping the whole address space in one go is optimal.
+
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Tested-by: Xudong Hao <xudong.hao@intel.com>
 Tested-by: Giovannio Cabiddu <giovanni.cabiddu@intel.com>
 Tested-by: Rohith S R <rohith.s.r@intel.com>
 ---
- include/system/iommufd.h | 2 +-
- backends/iommufd.c       | 5 +++--
- hw/vfio/iommufd.c        | 5 +++--
- backends/trace-events    | 2 +-
- 4 files changed, 8 insertions(+), 6 deletions(-)
+ hw/i386/intel_iommu.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
-diff --git a/include/system/iommufd.h b/include/system/iommufd.h
-index a659f36a20..767a8e4cb6 100644
---- a/include/system/iommufd.h
-+++ b/include/system/iommufd.h
-@@ -64,7 +64,7 @@ bool iommufd_backend_set_dirty_tracking(IOMMUFDBackend *be, uint32_t hwpt_id,
- bool iommufd_backend_get_dirty_bitmap(IOMMUFDBackend *be, uint32_t hwpt_id,
-                                       uint64_t iova, ram_addr_t size,
-                                       uint64_t page_size, uint64_t *data,
--                                      Error **errp);
-+                                      uint64_t flags, Error **errp);
- bool iommufd_backend_invalidate_cache(IOMMUFDBackend *be, uint32_t id,
-                                       uint32_t data_type, uint32_t entry_len,
-                                       uint32_t *entry_num, void *data,
-diff --git a/backends/iommufd.c b/backends/iommufd.c
-index fdfb7c9d67..086bd67aea 100644
---- a/backends/iommufd.c
-+++ b/backends/iommufd.c
-@@ -361,7 +361,7 @@ bool iommufd_backend_get_dirty_bitmap(IOMMUFDBackend *be,
-                                       uint32_t hwpt_id,
-                                       uint64_t iova, ram_addr_t size,
-                                       uint64_t page_size, uint64_t *data,
--                                      Error **errp)
-+                                      uint64_t flags, Error **errp)
- {
-     int ret;
-     struct iommu_hwpt_get_dirty_bitmap get_dirty_bitmap = {
-@@ -371,11 +371,12 @@ bool iommufd_backend_get_dirty_bitmap(IOMMUFDBackend *be,
-         .length = size,
-         .page_size = page_size,
-         .data = (uintptr_t)data,
-+        .flags = flags,
-     };
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index 7220a3d9f4..7c72fbaa52 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -4764,6 +4764,43 @@ static uint64_t vtd_get_viommu_flags(void *opaque)
+     return flags;
+ }
  
-     ret = ioctl(be->fd, IOMMU_HWPT_GET_DIRTY_BITMAP, &get_dirty_bitmap);
-     trace_iommufd_backend_get_dirty_bitmap(be->fd, hwpt_id, iova, size,
--                                           page_size, ret ? errno : 0);
-+                                           flags, page_size, ret ? errno : 0);
-     if (ret) {
-         error_setg_errno(errp, errno,
-                          "IOMMU_HWPT_GET_DIRTY_BITMAP (iova: 0x%"HWADDR_PRIx
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 7eaa8b3372..63f8442865 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -74,7 +74,8 @@ static int iommufd_cdev_unmap(const VFIOContainer *bcontainer,
-     if (iotlb && vfio_container_dirty_tracking_is_started(bcontainer)) {
-         if (!vfio_container_devices_dirty_tracking_is_supported(bcontainer) &&
-             bcontainer->dirty_pages_supported) {
--            ret = vfio_container_query_dirty_bitmap(bcontainer, iova, size, 0,
-+            ret = vfio_container_query_dirty_bitmap(bcontainer, iova, size,
-+                                                    IOMMU_HWPT_GET_DIRTY_BITMAP_NO_CLEAR,
-                                                     iotlb->translated_addr,
-                                                     &local_err);
-             if (ret) {
-@@ -231,7 +232,7 @@ static int iommufd_query_dirty_bitmap(const VFIOContainer *bcontainer,
-         if (!iommufd_backend_get_dirty_bitmap(container->be, hwpt->hwpt_id,
-                                               iova, size, page_size,
-                                               (uint64_t *)vbmap->bitmap,
--                                              errp)) {
-+                                              backend_flag, errp)) {
-             return -EINVAL;
-         }
-     }
-diff --git a/backends/trace-events b/backends/trace-events
-index 56132d3fd2..e1992ba12f 100644
---- a/backends/trace-events
-+++ b/backends/trace-events
-@@ -19,5 +19,5 @@ iommufd_backend_alloc_ioas(int iommufd, uint32_t ioas) " iommufd=%d ioas=%d"
- iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id, uint32_t pt_id, uint32_t flags, uint32_t hwpt_type, uint32_t len, uint64_t data_ptr, uint32_t out_hwpt_id, int ret) " iommufd=%d dev_id=%u pt_id=%u flags=0x%x hwpt_type=%u len=%u data_ptr=0x%"PRIx64" out_hwpt=%u (%d)"
- iommufd_backend_free_id(int iommufd, uint32_t id, int ret) " iommufd=%d id=%d (%d)"
- iommufd_backend_set_dirty(int iommufd, uint32_t hwpt_id, bool start, int ret) " iommufd=%d hwpt=%u enable=%d (%d)"
--iommufd_backend_get_dirty_bitmap(int iommufd, uint32_t hwpt_id, uint64_t iova, uint64_t size, uint64_t page_size, int ret) " iommufd=%d hwpt=%u iova=0x%"PRIx64" size=0x%"PRIx64" page_size=0x%"PRIx64" (%d)"
-+iommufd_backend_get_dirty_bitmap(int iommufd, uint32_t hwpt_id, uint64_t iova, uint64_t size, uint64_t flags, uint64_t page_size, int ret) " iommufd=%d hwpt=%u iova=0x%"PRIx64" size=0x%"PRIx64" flags=0x%"PRIx64" page_size=0x%"PRIx64" (%d)"
- iommufd_backend_invalidate_cache(int iommufd, uint32_t id, uint32_t data_type, uint32_t entry_len, uint32_t entry_num, uint32_t done_num, uint64_t data_ptr, int ret) " iommufd=%d id=%u data_type=%u entry_len=%u entry_num=%u done_num=%u data_ptr=0x%"PRIx64" (%d)"
++/*
++ * There is no valid translated_addr for unmapping a whole iommu memory region.
++ * When dirty tracking is enabled, we need it to set dirty bitmaps. Iterate
++ * over DMAMap list to unmap each range with active mapping and translated_addr
++ * value.
++ */
++static void vtd_address_space_unmap_in_dirty_tracking(VTDAddressSpace *as,
++                                                      IOMMUNotifier *n)
++{
++    const DMAMap *map;
++    const DMAMap target = {
++        .iova = n->start,
++        .size = n->end,
++    };
++    IOVATree *tree = as->iova_tree;
++
++    /*
++     * DMAMap is created during IOMMU page table sync, it's either 4KB or huge
++     * page size and always a power of 2 in size. So the range of DMAMap could
++     * be used for UNMAP notification directly.
++     */
++    while ((map = iova_tree_find(tree, &target))) {
++        IOMMUTLBEvent event;
++
++        event.type = IOMMU_NOTIFIER_UNMAP;
++        event.entry.iova = map->iova;
++        event.entry.addr_mask = map->size;
++        event.entry.target_as = &address_space_memory;
++        event.entry.perm = IOMMU_NONE;
++        /* This field is needed to set dirty bigmap */
++        event.entry.translated_addr = map->translated_addr;
++        memory_region_notify_iommu_one(n, &event);
++
++        iova_tree_remove(tree, *map);
++    }
++}
++
+ /* Unmap the whole range in the notifier's scope. */
+ static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
+ {
+@@ -4773,6 +4810,11 @@ static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
+     IntelIOMMUState *s = as->iommu_state;
+     DMAMap map;
+ 
++    if (global_dirty_tracking) {
++        vtd_address_space_unmap_in_dirty_tracking(as, n);
++        return;
++    }
++
+     /*
+      * Note: all the codes in this function has a assumption that IOVA
+      * bits are no more than VTD_MGAW bits (which is restricted by
 -- 
 2.47.1
 
