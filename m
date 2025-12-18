@@ -2,103 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D464BCCD777
+	by mail.lfdr.de (Postfix) with ESMTPS id 16800CCD76E
 	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 21:05:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWKEe-0005R9-Kh; Thu, 18 Dec 2025 15:04:28 -0500
+	id 1vWKEP-0005P2-UB; Thu, 18 Dec 2025 15:04:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
- id 1vWKEI-0005NO-QR; Thu, 18 Dec 2025 15:04:09 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1vWKEL-0005Nk-CM; Thu, 18 Dec 2025 15:04:09 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
- id 1vWKEH-00084G-6f; Thu, 18 Dec 2025 15:04:06 -0500
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BIJm2cG009899;
- Thu, 18 Dec 2025 20:04:04 GMT
+ id 1vWKEJ-00084Y-Ig; Thu, 18 Dec 2025 15:04:09 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BIJmDLU013642;
+ Thu, 18 Dec 2025 20:04:06 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=QCHr7wh/M1pwrrHRP
- PKSET60zsQsctfyDm+VTTG/IZg=; b=p64s9UybvnyydznL4NAtgYUc3aEzrj5D6
- 3R4e1LM7GATzDaPrxXSkEUfnZK145TrKRrumle4Ph3l2bDXnM2I47UlAPCpznoS2
- xzlHo0YnDQDKs7EnkIfk4ze3HmEqwEcqrF95khQhCNkFHeJHSXIGn4d3k2GWP1n4
- N0qpZpqwe/ZA9w+7Fy1FauRpJTbxxJAh3OMPHcMouezK/GKrUU5FPu6yK4/kC8vg
- Ifc5VwUPP58EVnKikb1hKp+ax3YVPhVQcjE1bon4B2sHba1Vzw+sONAzTsHBTL0v
- u89Tg/W4wbhgL0pX3G5ZttMeyfkxsBjBSyWycS+YblKtoeEBL9GnA==
+ :mime-version:references:subject:to; s=pp1; bh=ESB1n2O+xezp6BQfw
+ vXDc3+88LCIxrbhKdRqD7Cg14s=; b=cBsw5BOoOOIEsJSZqNkJxd6AhwkV7zuye
+ AVZ0AhHtS6Znl0yN5WZKlrKDfzhEeLseHND6FKvCSrvP968tewbH6U3oXuRx08wm
+ VtxMrwfS4UppW7NuyttrCaloJA/Jyv5dV8MxP95mztm3XBeBdqUnrpQ8xYahpbGZ
+ av+fExVS9jUCVX/VQQhc017x++Q1iho4zznMIrVCn84Ma7o0y4JcQeeFDxeTyBXK
+ ZXKWrrqHqPTQ5rbVybXSV/gwHTQnEx74Z+xyhWHAUjNj3gNFVMI/8ZB5vRM0A91i
+ FuO9ivZtxViwgc2y9qvbAEInpS8nNJBlVkpCBK44zngGsu0uCP7AA==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b4r3b02y9-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b4r3d02tb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Dec 2025 20:04:03 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BIK0bio004152;
- Thu, 18 Dec 2025 20:04:03 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b4r3b02y5-1
+ Thu, 18 Dec 2025 20:04:05 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BIK3Gu9012626;
+ Thu, 18 Dec 2025 20:04:05 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b4r3d02t7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Dec 2025 20:04:03 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BIJXsbo006164;
- Thu, 18 Dec 2025 20:04:02 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4b4qvqg4kw-1
+ Thu, 18 Dec 2025 20:04:05 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BIJY8IT031521;
+ Thu, 18 Dec 2025 20:04:04 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4b4qvu84ew-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Dec 2025 20:04:02 +0000
+ Thu, 18 Dec 2025 20:04:04 +0000
 Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
  [10.241.53.105])
- by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 5BIK3jJK31654456
+ by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 5BIK424658458574
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 18 Dec 2025 20:03:45 GMT
+ Thu, 18 Dec 2025 20:04:03 GMT
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5A32958043;
- Thu, 18 Dec 2025 20:04:01 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id B696E58055;
+ Thu, 18 Dec 2025 20:04:02 +0000 (GMT)
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E69A658055;
- Thu, 18 Dec 2025 20:04:00 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 57A4E58043;
+ Thu, 18 Dec 2025 20:04:02 +0000 (GMT)
 Received: from gfwr532.rchland.ibm.com (unknown [9.10.239.133])
  by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 18 Dec 2025 20:04:00 +0000 (GMT)
+ Thu, 18 Dec 2025 20:04:02 +0000 (GMT)
 From: Caleb Schlossin <calebs@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, npiggin@gmail.com, adityag@linux.ibm.com,
  milesg@linux.ibm.com, chalapathi.v@linux.ibm.com, calebs@linux.ibm.com
-Subject: [PATCH 2/4] ppc/pnv: Support for SECURITY_SWITCH XSCOM register access
-Date: Thu, 18 Dec 2025 14:03:51 -0600
-Message-ID: <20251218200353.301866-3-calebs@linux.ibm.com>
+Subject: [PATCH 3/4] ppc/pnv: Add unimplemented quad and core regs
+Date: Thu, 18 Dec 2025 14:03:52 -0600
+Message-ID: <20251218200353.301866-4-calebs@linux.ibm.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251218200353.301866-1-calebs@linux.ibm.com>
 References: <20251218200353.301866-1-calebs@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE4MDE2NCBTYWx0ZWRfX/EExGydf+EWK
- LKETNLIoPjvpiCwJmC7aHyAhWLngCtng9irVl+iFaUKdnsdanqnp+7/qa/oDuMRKIJZNVy7SW28
- UdecgM5XhD8UMeciJ90mlYzTrhGs9FHQhoXQVxya9XqPPAt+9bECna2lPfLRNjXf0MhiddukoAP
- wfBA4swjSYRZtiPinQsarWAprlPnpm+IyYpA+51OxUZJ8KPxPjhnpTv+QyV1E/hWAr7zS8Kjw7A
- u1ryx248sCoYHCZUZVQySWrKl9tdkroDdvpk3ajzLTfKaOvy+XsaLD3pNpk3LFu6F7MNjZwQXPV
- hHjKntzzm3gLc9pNOV79AzHBjEG+UMnk+ePL4HqSy+g4moml3q6Vj1sVU2EpKNb/aMVSkVluqUv
- wWSLqbGcFUcZrkcJrDuiMblZ7q9KDVZ8X5uolUWLmnBwMr6TqZsGFleLC2/pBumHPtdLLIVnEp+
- yjzIgk0btNoAPD2kCMQ==
-X-Proofpoint-ORIG-GUID: 7-9nNQMoEOU-3Rz9jjfjPHTIhHw_5pWY
-X-Proofpoint-GUID: rYoutBMcZJvB0V3wTZoYKvpmp_1rwLyF
-X-Authority-Analysis: v=2.4 cv=KqJAGGWN c=1 sm=1 tr=0 ts=69445e33 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+X-Authority-Analysis: v=2.4 cv=WYkBqkhX c=1 sm=1 tr=0 ts=69445e35 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
  a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=_ttvAf2Y2UeZ28-z6QkA:9 a=ZXulRonScM0A:10 a=zZCYzV9kfG8A:10
+ a=eGgGPLgfgt7bj44kCrMA:9
+X-Proofpoint-GUID: 7P-v4ENDoYtEEJF_0Vr8EZtrPXloX0Se
+X-Proofpoint-ORIG-GUID: 5P90RbLfR4VIRYCO8e5McVWl2Lq4avHV
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE4MDE2NCBTYWx0ZWRfX0LCqe4/1eF7c
+ IhPrQdBHI//cszTSDjY/CThCVll/uf8b7r0TS15FymT17z2+gfNh3nZbcODvgYui2XiC5XJNj5u
+ 2IhbQPnAs9ABWL0NwGhXuZl0k0UvQ7mrvguHopDrK8tCSJrU4ag2fkMUy2piMa/KaGaGogs56ML
+ WvU6rs0RCUiQxIXYotmEE+IaBd19gy32e54tnjzRVH7DOr1tES2xoBNu7rChzTpnsRH9wSHwl7L
+ QDD6SdrG+Wdu9G4jziJf6o7sQe3D96tRvUgR6IruD+EegCWXlT712uxcrw2n/rKVKSTsl3ivOU8
+ 4TD710pTzPzRgku0MivNjj1AKWCUW1X2lumUm2P2kI4a90mDgBCRQ3rGCtY7oWhcRYNNbcgZ+yB
+ ZsP5Z3CW0MB+XHC4KowK/tBt2gklpm2MMWjjU6eWy2t1CtdZ2ZOquff1KFMXwGmq7Nd7BTnM18N
+ 1+Se2THeZP0uMuzPDvA==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-18_03,2025-12-17_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 clxscore=1015 phishscore=0 malwarescore=0 bulkscore=0
- adultscore=0 impostorscore=0 lowpriorityscore=0 suspectscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2512180164
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=calebs@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ lowpriorityscore=0 adultscore=0 impostorscore=0 priorityscore=1501
+ bulkscore=0 malwarescore=0 spamscore=0 phishscore=0 clxscore=1015
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2512120000
+ definitions=main-2512180164
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=calebs@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -122,30 +123,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Power Hypervisor code requires access to the SECURITY_SWITCH
-XSCOM register at MMIO address 0x80028 (scom address 0x10005).
-Adding basic read support for now so that is doesn't cause
-error messages to be posted.
+This commit adds the read/write functionality for few core and
+quad registers.
 
-Signed-off-by: Glenn Miles <milesg@linux.ibm.com>
+Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
 Signed-off-by: Caleb Schlossin <calebs@linux.ibm.com>
 ---
- hw/ppc/pnv_xscom.c | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/ppc/pnv_core.c | 81 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 81 insertions(+)
 
-diff --git a/hw/ppc/pnv_xscom.c b/hw/ppc/pnv_xscom.c
-index fbfec829d5..308430def7 100644
---- a/hw/ppc/pnv_xscom.c
-+++ b/hw/ppc/pnv_xscom.c
-@@ -61,6 +61,8 @@ static uint32_t pnv_xscom_pcba(PnvChip *chip, uint64_t addr)
- static uint64_t xscom_read_default(PnvChip *chip, uint32_t pcba)
- {
-     switch (pcba) {
-+    case 0x10005:       /* SECURITY SWITCH */
+diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
+index fb2dfc7ba2..84a2fa6364 100644
+--- a/hw/ppc/pnv_core.c
++++ b/hw/ppc/pnv_core.c
+@@ -184,10 +184,18 @@ static const MemoryRegionOps pnv_core_power9_xscom_ops = {
+  * POWER10 core controls
+  */
+ 
++#define PNV10_XSCOM_EC_IMA_EVENT_MASK       0x400
+ #define PNV10_XSCOM_EC_CORE_THREAD_STATE    0x412
+ #define PNV10_XSCOM_EC_CORE_THREAD_INFO     0x413
++#define PNV10_XSCOM_EC_CORE_FIRMASK         0x443
++#define PNV10_XSCOM_EC_CORE_FIRMASK_AND     0x444
++#define PNV10_XSCOM_EC_CORE_FIRMASK_OR      0x445
+ #define PNV10_XSCOM_EC_CORE_DIRECT_CONTROLS 0x449
+ #define PNV10_XSCOM_EC_CORE_RAS_STATUS      0x454
++#define PNV10_XSCOM_EC_SPATTN_OR            0x497
++#define PNV10_XSCOM_EC_SPATTN_AND           0x498
++#define PNV10_XSCOM_EC_SPATTN               0x499
++#define PNV10_XSCOM_EC_SPATTN_MASK          0x49A
+ 
+ static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
+                                            unsigned int width)
+@@ -223,6 +231,19 @@ static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
+             }
+         }
+         break;
++    case PNV10_XSCOM_EC_IMA_EVENT_MASK:
++    case PNV10_XSCOM_EC_CORE_FIRMASK:
 +        return 0;
-     case 0xf000f:
-         return PNV_CHIP_GET_CLASS(chip)->chip_cfam_id;
-     case 0x18002:       /* ECID2 */
++    case PNV10_XSCOM_EC_CORE_FIRMASK_OR:
++    case PNV10_XSCOM_EC_CORE_FIRMASK_AND:
++    case PNV10_XSCOM_EC_SPATTN_OR:
++    case PNV10_XSCOM_EC_SPATTN_AND:
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Write only register, ignoring "
++                              "xscom read at 0x%08x\n", __func__, offset);
++        break;
++    case PNV10_XSCOM_EC_SPATTN:
++    case PNV10_XSCOM_EC_SPATTN_MASK:
++        return 0;
+     default:
+         qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
+                       offset);
+@@ -283,6 +304,15 @@ static void pnv_core_power10_xscom_write(void *opaque, hwaddr addr,
+         }
+         break;
+ 
++    case PNV10_XSCOM_EC_IMA_EVENT_MASK:
++    case PNV10_XSCOM_EC_CORE_FIRMASK:
++    case PNV10_XSCOM_EC_CORE_FIRMASK_OR:
++    case PNV10_XSCOM_EC_CORE_FIRMASK_AND:
++    case PNV10_XSCOM_EC_SPATTN_OR:
++    case PNV10_XSCOM_EC_SPATTN_AND:
++    case PNV10_XSCOM_EC_SPATTN:
++    case PNV10_XSCOM_EC_SPATTN_MASK:
++        break;
+     default:
+         qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
+                       offset);
+@@ -568,6 +598,23 @@ static const MemoryRegionOps pnv_quad_power9_xscom_ops = {
+  * POWER10 Quads
+  */
+ 
++#define P10_XSCOM_EQ3_MODE_REG1         0x1160a
++#define P10_XSCOM_EQ3_NCU_SPEC_BAR_REG  0x11650
++#define P10_XSCOM_EQ3_HTM_MODE          0x11680
++#define P10_XSCOM_EQ3_HTM_IMA_PDBAR     0x1168b
++#define P10_XSCOM_EQ2_MODE_REG1         0x1260a
++#define P10_XSCOM_EQ2_NCU_SPEC_BAR_REG  0x12650
++#define P10_XSCOM_EQ2_HTM_MODE          0x12680
++#define P10_XSCOM_EQ2_HTM_IMA_PDBAR     0x1268b
++#define P10_XSCOM_EQ1_MODE_REG1         0x1460a
++#define P10_XSCOM_EQ1_NCU_SPEC_BAR_REG  0x14650
++#define P10_XSCOM_EQ1_HTM_MODE          0x14680
++#define P10_XSCOM_EQ1_HTM_IMA_PDBAR     0x1468b
++#define P10_XSCOM_EQ0_MODE_REG1         0x1860a
++#define P10_XSCOM_EQ0_NCU_SPEC_BAR_REG  0x18650
++#define P10_XSCOM_EQ0_HTM_MODE          0x18680
++#define P10_XSCOM_EQ0_HTM_IMA_PDBAR     0x1868b
++
+ static uint64_t pnv_quad_power10_xscom_read(void *opaque, hwaddr addr,
+                                             unsigned int width)
+ {
+@@ -575,6 +622,23 @@ static uint64_t pnv_quad_power10_xscom_read(void *opaque, hwaddr addr,
+     uint64_t val = -1;
+ 
+     switch (offset) {
++    case P10_XSCOM_EQ0_MODE_REG1:
++    case P10_XSCOM_EQ0_NCU_SPEC_BAR_REG:
++    case P10_XSCOM_EQ0_HTM_MODE:
++    case P10_XSCOM_EQ0_HTM_IMA_PDBAR:
++    case P10_XSCOM_EQ1_MODE_REG1:
++    case P10_XSCOM_EQ1_NCU_SPEC_BAR_REG:
++    case P10_XSCOM_EQ1_HTM_MODE:
++    case P10_XSCOM_EQ1_HTM_IMA_PDBAR:
++    case P10_XSCOM_EQ2_MODE_REG1:
++    case P10_XSCOM_EQ2_NCU_SPEC_BAR_REG:
++    case P10_XSCOM_EQ2_HTM_MODE:
++    case P10_XSCOM_EQ2_HTM_IMA_PDBAR:
++    case P10_XSCOM_EQ3_MODE_REG1:
++    case P10_XSCOM_EQ3_NCU_SPEC_BAR_REG:
++    case P10_XSCOM_EQ3_HTM_MODE:
++    case P10_XSCOM_EQ3_HTM_IMA_PDBAR:
++        return 0;
+     default:
+         qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
+                       offset);
+@@ -589,6 +653,23 @@ static void pnv_quad_power10_xscom_write(void *opaque, hwaddr addr,
+     uint32_t offset = addr >> 3;
+ 
+     switch (offset) {
++    case P10_XSCOM_EQ0_MODE_REG1:
++    case P10_XSCOM_EQ0_NCU_SPEC_BAR_REG:
++    case P10_XSCOM_EQ0_HTM_MODE:
++    case P10_XSCOM_EQ0_HTM_IMA_PDBAR:
++    case P10_XSCOM_EQ1_MODE_REG1:
++    case P10_XSCOM_EQ1_NCU_SPEC_BAR_REG:
++    case P10_XSCOM_EQ1_HTM_MODE:
++    case P10_XSCOM_EQ1_HTM_IMA_PDBAR:
++    case P10_XSCOM_EQ2_MODE_REG1:
++    case P10_XSCOM_EQ2_NCU_SPEC_BAR_REG:
++    case P10_XSCOM_EQ2_HTM_MODE:
++    case P10_XSCOM_EQ2_HTM_IMA_PDBAR:
++    case P10_XSCOM_EQ3_MODE_REG1:
++    case P10_XSCOM_EQ3_NCU_SPEC_BAR_REG:
++    case P10_XSCOM_EQ3_HTM_MODE:
++    case P10_XSCOM_EQ3_HTM_IMA_PDBAR:
++        break;
+     default:
+         qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
+                       offset);
 -- 
 2.47.3
 
