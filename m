@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A63CCD225
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 19:20:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04DDBCCD237
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 19:21:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWIas-0006TT-G8; Thu, 18 Dec 2025 13:19:18 -0500
+	id 1vWIb1-0006WL-4R; Thu, 18 Dec 2025 13:19:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWIaM-0006OX-2Y
- for qemu-devel@nongnu.org; Thu, 18 Dec 2025 13:18:52 -0500
-Received: from mail-wr1-x442.google.com ([2a00:1450:4864:20::442])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWIaP-0006P1-J6
+ for qemu-devel@nongnu.org; Thu, 18 Dec 2025 13:19:01 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWIaB-0002zQ-0x
- for qemu-devel@nongnu.org; Thu, 18 Dec 2025 13:18:39 -0500
-Received: by mail-wr1-x442.google.com with SMTP id
- ffacd0b85a97d-42fb0fc5aa4so821471f8f.1
- for <qemu-devel@nongnu.org>; Thu, 18 Dec 2025 10:18:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWIaJ-00030E-OQ
+ for qemu-devel@nongnu.org; Thu, 18 Dec 2025 13:18:46 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-47aa03d3326so6014575e9.3
+ for <qemu-devel@nongnu.org>; Thu, 18 Dec 2025 10:18:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766081909; x=1766686709; darn=nongnu.org;
+ d=linaro.org; s=google; t=1766081916; x=1766686716; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Q2jzZ6rMbXeUMPOwWK0Noq7Cc0GkvQldGamqYQfCrH0=;
- b=FBhttFlhM5kfbnIfdiW/hsoU6NC6lCOgkK8XjF0Ayu5gxiF2f55OzKwLT/4tfc3ktO
- Wu21vY4FDDvCXntT1SvCO/KoqcvnmXaNOdUU5ENjnyZS+f+ERxah5xKEjMYlfiKDnGNf
- e5ol+3uHcv8rdRqIpz2+1X5KzV67uteJvetuyEB44nQwY5y5iJFAdBDp74NchyUJr+mf
- JL57oo2iQ8AILMY5jDZLbj8Iyva6YBrL/G3rMPUkmuadE14WF/RUolvjN8KLuqCCKxCP
- 5GS1v25HEEbWLuxRRyIlQE/GkOj7he9vS56DO0YGD7WOF2iFFpyxcs4JNFsQRrPvneVj
- ApLQ==
+ bh=ek0ZqoV7lcVrfafX0nJ7A9JZOJmPGubRBeO+HIeHC5Q=;
+ b=ptCwowZOyQLojZP2vZ8h6hKy4P6jhHsp35Q1ANQ2V113B7Oi9cSPjBoD15rYSy0V6q
+ DfyZIq7G9QC5F1SmxE0NE5pV8sP5JWstpHABig1ltMSfrkzaHOC48shSgQxtmGFSeWVs
+ FIhTKFU6HHPDqoj2+eKqTsEna2EJGdw4VI9hE1cUB+U/SYC8x1g8GN5Mnqx3G5xGYV8j
+ CTFwjAeK6rDVhhkBaU9AtDgWoh0rpXA8CTk1tNWWgETeCkwxHjRlm2MEwK35fIjebsWv
+ 7RNczGAQFHFOEhttB3UP9TVjZXiwIQP7BQHKEScIsXFO8jrVwRX1WN4PAiUxHjS/S/2R
+ VMfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766081909; x=1766686709;
+ d=1e100.net; s=20230601; t=1766081916; x=1766686716;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=Q2jzZ6rMbXeUMPOwWK0Noq7Cc0GkvQldGamqYQfCrH0=;
- b=rXlsdwZhHyqShhaG3dbt2UD4m0cdPuAnLvLFejzfkt7tEUkvpvC98uX0QHbp654GwX
- N6CaHOeNA5boduvX8s+p7BOEfVu4t1/oK185mf17/99+kqI3vJpdOCx/HtPY9amn/7JI
- 513ZIJrPfPl4Ck0pq+BYoDgL75Cx8KrIipNrDhgy1+KIw+1ui0ECGr/cyiSuD/gyYgvX
- YAsE6U/Bj3rU9H+3Jwu0FdgSzRJR8IbhIPbwmUYnndouyNRvsb6A1rPnLzhCkA7dZjKA
- uVVEK3Y/zP0sBRckajvrXFbhMJsF9v2+L+ylT0wsGXAX6Qehyl+urGgVhyINZcRsUfFM
- gIUA==
-X-Gm-Message-State: AOJu0YzirPS49shcMeXO6Hca4unUKDbUDumJMpZWcN96vYe7rtaKTrD3
- qlBXkJke9mZzrUo0dahT10Vo8+l8WCfHGLT+RqaS1rmDe9aIAmuEahVempSqPFILLLrrsNkWy0d
- Unq9zhJMHPA==
-X-Gm-Gg: AY/fxX6QFqPVbgcK97njsjhhuILMIQW0kRvj/oOc5N/d4ifdpb8oa5lf0ujl+QPbTZg
- kVGqCfLPc8HmjXcaJKHIC5DZQhZbVBpJXBNyJdhZBe9qnk2PHvMOv9X9xfnxHxoDV7k/xHbyFBE
- DGKFgjFTOSWPL/z+4upOOSIqNuIfqphD8VoCZCRxsokV0GuU6kTNrRw91tT/8gf9GzGZ6HwEOW/
- OFGnYxawX8Exbx4TohxIIFXiocyYLcMU19tF5KUncf5TQCqpX8aPXCFEeN5h9cgAvqlgIBivi/O
- kXm4NTg6XYWTx4Mdb0zXMgFzGAzQezDKq/RSN1V+cOSWQ+HyetiboXzROAlE6CWsZ7nSgc8vVIu
- 7AnmMfLM1zqYRgJPwTloDRBDOkxOyf2q2rqAirJB+UWZCV1BMeNbhA5JtK6a2sCiPA1C9pRq9Zs
- fxwOJ4rASPgeygrvmr6Vzc2fG/nq9d/+xd25ShWizBlw5XwxAMEvPaI7Eum9ZV
-X-Google-Smtp-Source: AGHT+IEAW5huNZELbZIqdkHfWdDcXAGjayFL02oMUq8eWGUy3O/rAQUyNE/GfTGxZLtaQgaaZuRg6w==
-X-Received: by 2002:a5d:5d0e:0:b0:430:f58d:40df with SMTP id
- ffacd0b85a97d-4324e4c7132mr487404f8f.10.1766081908907; 
- Thu, 18 Dec 2025 10:18:28 -0800 (PST)
+ bh=ek0ZqoV7lcVrfafX0nJ7A9JZOJmPGubRBeO+HIeHC5Q=;
+ b=pjmWey81CJC+fGjf978eSl9sK3wP2iYPaWH8leXSQku+lauCYHvric3mdeYCth+QRv
+ 9n8PPm5UAQ8ulYezra+hcz2wsrjQxaH+NLCg2U63EupxqFOTAqLSpOkLYqMX2/ZfhGWk
+ CDtRRzVZp3+b7vpLAr+sHvXGH45igCSydkQRI+UoqMddfID+4y6JfDqezfazWe0jnjda
+ CKFT25b4sO3rLzpKRHbUP2yExBlGVeAbvrqB3m+A3j6LoXdtOIATtY51BBUMBn8qc7vU
+ kszQ2T0fAxJsNXmAdLpJleeEVcn3PnHkfCRlQdGhzZRaInfcqRhcjAYy5ejghXmIj6S2
+ Rz9g==
+X-Gm-Message-State: AOJu0YxvLKYi/jNiv5UfAMkRKqgJeHsu7GhoVkkYQjwAu1VaGdZd52uM
+ HxUiZZWj23yV87XrVIEkXbLCz7CDGPb9iTTII0/WhA0TnYmpa2PUHX9/XsY2U97zkkIv5X0FzO2
+ 8lbrV1js=
+X-Gm-Gg: AY/fxX5v6qBR2kxWRyA18df0VeqZh9koiq/8C3pYq0tzqIqsOM7kZ4P+2qfbE6Wu9D8
+ PQ2N8ctVOG5hPOXMXI0jUV0FhP5RLax3EPF+Lgk6S5iEx7L9KARnl/wnG5sAaCyk0EXAaTJUIVW
+ +JnKjw5QO6Ly0FkATa5A77VzEXu+/13Wh1dl00ry+MDt3SjQtYbfA9kdPaVulJktB04xxvrnlj3
+ kyrXdy1NhLoUF/ZNdRAWPk6nPddB9INHIERw5K3np9yBDnwnKeT7IDGBJtZFYaOH2uiJSDm02yM
+ CyCg86/lHxM8xBpcwf00hX9RW3qk4EI9xE1YyqalAiymY6mOx7Z08uNVSBoYpoMVvc9mRLZ3AIr
+ kTTdGSo9C5Xc1j7MjvC6IBYvtloxO6iXxlMeODH1GhUAf+nBJPidyGdw/XDyee+8JpeHohxuFG5
+ 0dDDzjL/HWBkv7hwPxccaTZHSLFASAwlcjIU/4rht6lifmyXgXzcUc9OvBahZY
+X-Google-Smtp-Source: AGHT+IG3rBj8MLgy5ArgGS6tuUNGiYQve0lqqiTO86Ek4KJMvYwdpNN/K3yJIGq4tWTBYEXioVJH2g==
+X-Received: by 2002:a05:600c:8208:b0:46e:33b2:c8da with SMTP id
+ 5b1f17b1804b1-47d1958d960mr769485e9.32.1766081916568; 
+ Thu, 18 Dec 2025 10:18:36 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324eab2a94sm185691f8f.43.2025.12.18.10.18.27
+ 5b1f17b1804b1-47be279c5f8sm52622545e9.9.2025.12.18.10.18.34
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 18 Dec 2025 10:18:27 -0800 (PST)
+ Thu, 18 Dec 2025 10:18:35 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -71,18 +71,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  qemu-rust@nongnu.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/6] hw/net/opencores: Clarify MMIO read/write handlers expect
- 32-bit access
-Date: Thu, 18 Dec 2025 19:18:07 +0100
-Message-ID: <20251218181812.58363-3-philmd@linaro.org>
+Subject: [PATCH 3/6] hw/display/ati: Access host memory as little-endian
+Date: Thu, 18 Dec 2025 19:18:08 +0100
+Message-ID: <20251218181812.58363-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251218181812.58363-1-philmd@linaro.org>
 References: <20251218181812.58363-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::442;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x442.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,70 +104,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The read/write handlers access array of 32-bit register by index:
-
- 277 struct OpenEthState {
-  ..
- 287     uint32_t regs[REG_MAX];
-  ..
- 291 };
-
- 546 static uint64_t open_eth_reg_read(void *opaque,
- 547                                   hwaddr addr, unsigned int size)
- 548 {
-  ..
- 551     OpenEthState *s = opaque;
- 552     unsigned idx = addr / 4;
-  ..
- 559             v = s->regs[idx];
-  ..
- 563     return v;
- 564 }
-
-This is a 32-bit implementation. Make that explicit in the
-MemoryRegionOps structure (this doesn't change the maximum
-access size, which -- being unset -- is 64-bit).
-
-Move the structure just after the handlers to ease code review.
+ati_2d.c is part of the ATI_VGA component, being built with
+the hw/display/ati.c file. Commit 339534d4025 ("ati-vga: Fix
+indexed access to video memory") made access to host memory
+using little-endian order. Assume the same order is used for
+the 2D component.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/net/opencores_eth.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ hw/display/ati_2d.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/net/opencores_eth.c b/hw/net/opencores_eth.c
-index 7e955c01322..bc4565a9a49 100644
---- a/hw/net/opencores_eth.c
-+++ b/hw/net/opencores_eth.c
-@@ -682,6 +682,15 @@ static void open_eth_reg_write(void *opaque,
-     }
- }
- 
-+static const MemoryRegionOps open_eth_reg_ops = {
-+    .read = open_eth_reg_read,
-+    .write = open_eth_reg_write,
-+    .impl = {
-+        .min_access_size = 4,
-+        .max_access_size = 4,
-+    },
-+};
-+
- static uint64_t open_eth_desc_read(void *opaque,
-         hwaddr addr, unsigned int size)
- {
-@@ -705,12 +714,6 @@ static void open_eth_desc_write(void *opaque,
-     open_eth_check_start_xmit(s);
- }
- 
--
--static const MemoryRegionOps open_eth_reg_ops = {
--    .read = open_eth_reg_read,
--    .write = open_eth_reg_write,
--};
--
- static const MemoryRegionOps open_eth_desc_ops = {
-     .read = open_eth_desc_read,
-     .write = open_eth_desc_write,
+diff --git a/hw/display/ati_2d.c b/hw/display/ati_2d.c
+index 309bb5ccb6c..72fde6b8008 100644
+--- a/hw/display/ati_2d.c
++++ b/hw/display/ati_2d.c
+@@ -221,7 +221,7 @@ void ati_2d_blt(ATIVGAState *s)
+             for (y = 0; y < s->regs.dst_height; y++) {
+                 i = dst_x * bypp + (dst_y + y) * dst_pitch;
+                 for (x = 0; x < s->regs.dst_width; x++, i += bypp) {
+-                    stn_he_p(&dst_bits[i], bypp, filler);
++                    stn_le_p(&dst_bits[i], bypp, filler);
+                 }
+             }
+         }
 -- 
 2.52.0
 
