@@ -2,105 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C845CCDC32
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 23:15:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B5CBCCDC35
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 23:15:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWMGe-0001H8-A3; Thu, 18 Dec 2025 17:14:40 -0500
+	id 1vWMH4-0001Nn-Gb; Thu, 18 Dec 2025 17:15:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vWMGW-0001Gp-IG
- for qemu-devel@nongnu.org; Thu, 18 Dec 2025 17:14:33 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vWMGR-0006QG-IV
- for qemu-devel@nongnu.org; Thu, 18 Dec 2025 17:14:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766096064;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=bwDdH66VM5JfgZgulo57HsWJKPt71NnK+/2ffC8Jha4=;
- b=Z6jPVFylxEtkrdkMwnsdSDjIHzOeRo932MTnN6OQXCyhqji51aaCD7qStiYr0hlW0qJM6d
- y2Yws3NuV/+xnNlcIYSjwrhJO1pmitnAM2/1v0fwYFCiRePu0fWqHjV+fAy1vyHlbKFhUN
- smX2n4cP1TPE9iHUAPtirrZ9ctZd1mw=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-633-PaQbW5ltN9iMZ0_bWQCB9Q-1; Thu, 18 Dec 2025 17:14:22 -0500
-X-MC-Unique: PaQbW5ltN9iMZ0_bWQCB9Q-1
-X-Mimecast-MFC-AGG-ID: PaQbW5ltN9iMZ0_bWQCB9Q_1766096062
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-4ee16731ceaso21136191cf.2
- for <qemu-devel@nongnu.org>; Thu, 18 Dec 2025 14:14:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWMH3-0001NB-5F
+ for qemu-devel@nongnu.org; Thu, 18 Dec 2025 17:15:05 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWMH1-0006cp-BR
+ for qemu-devel@nongnu.org; Thu, 18 Dec 2025 17:15:04 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-47796a837c7so8819175e9.0
+ for <qemu-devel@nongnu.org>; Thu, 18 Dec 2025 14:15:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766096062; x=1766700862; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=bwDdH66VM5JfgZgulo57HsWJKPt71NnK+/2ffC8Jha4=;
- b=fb4GwqA3XO7/N8D4H9Aw6Sf0duKZa12fuVBEx13GDL2IhLShjjc4vi1t96PVyk4Ixv
- LIzPpr37EqUXtkjVpvZWp4I/DNFP/ZtpyVHa5OSAHPRuxharOOdOqf16nP0yWMvNTxBi
- 4yaBuu19UDD6RhssSv1DS7PSdUyUz76OdrxbVJ9D9EqT/UpZS6gtog6UGPBVkN5JzAA5
- Fl42qiSYKcV8gDQ7IQJdo0HOpmFeLD4S1K87Ovu09V7hYIQflcmpekA7738miVUSvAyU
- mfQ9oUlSgZxwovkOmT1cHhHanVrxBuaOOVJZOf2UX5yKlD3PlIAPYGj4THJ3xrqfBARO
- KAeg==
+ d=linaro.org; s=google; t=1766096101; x=1766700901; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=VqKZLpa34/2mHsZkdi0oHv6jhbZhkwrYLZ5O570SEnU=;
+ b=NkS6TzrLVI8u/f+qvyCv7y5O5vj2uqYxyDGtk685dVYl1z1wxEj6MPhQXqggubVQBD
+ 9P/zIJw0QxAz2NzxwWJsWOIOsoy4C78AUa3Sj9McWTmlBBk31K/9IAI8iI6IBPsHOu9b
+ jEzwP5f+YYr/9vIBW+8ZW0dZHhDMg3hlM9YcRg32n0fnsMRNMkblLlCoc7VY1/Ywc1c6
+ BJoMFdVp3wCwQdJ19tGXtg8ikLVz9LIgMpKejvuOBJuwRNIn62oB/1u3i8r9icHt+M0c
+ jF87wJFvxA494H6hAJ9IZYDm75+UZcYAE00Nygtk3pg4F2BdG2U2gNFcj+BduVV6qqx8
+ rHsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766096062; x=1766700862;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bwDdH66VM5JfgZgulo57HsWJKPt71NnK+/2ffC8Jha4=;
- b=JZBfvF5KyCmgMsGr1PSOQlnHlTE4t6IdJky+u9Htlm4KpRPaxN/szo0UkPTYXaTlaV
- pyXAlpBcwiZA5tVAdkemEx4Fli5rAwO39YYxjbejPJB0iSSnY/ha2JeYmNsTzerTZND7
- W4iveaxoyJ2zNTnxAOxj4CNm1ungT6+gj460LlynxfqkM7TioRSiXrXgNQZtXMLj+B3w
- AOSRInrALY29xF2CIkp2Fp3FWORVD2psC9O32OtviQcILf6bSY8aWq7Eie9FV6VoK1zI
- EQK9CrArqUZlHyDGZVG5b0rP/dUwJG8crJYvXVyLT5T+BVL809IxjVtRCoU9zXRV3yHK
- VrYQ==
-X-Gm-Message-State: AOJu0Yyiw20hnwBAcGstbXevpPLtnwwVZwH4IDyt2kuKuxiLMLB4SgKs
- vCpDnMSu3nnF/oybWnkPN7hqdZBYB4Ptu74uJdvCfrOKSkLW3CqioAHc6AVwwzPiiMnGl52y0P6
- /Ygr42smD6Tl8zm0bHpPNInm1NAv0194yl1p+1WCR3w6WTGEKnLjkF6O0
-X-Gm-Gg: AY/fxX7cUISAf/XHsTYdcGNFPde84kzz34SrI8p/I2moflqlk/tW2fQ0NVFaM9n/UTb
- RtyP6bVbsGmC+Uz48pbIORdlAZOy0HBvP9gYGzajOalXn5ITWYVHwbK0qduW17QE/XbqqV3Y6c1
- CIpnuZ8xKuk2fv8adIdO/HhmFTSrtzwHSF66/wD0YXKNLO8MkkfhEwfaKSAlb2lXfMmn2wj/Yps
- eRWbJHiHKP1HgtvFrIOwxCJwuaWf/dujI/ywBzGbTvHkrHy0kWYPyv1WUfhgIjesDfxcoeK62Jg
- D6fsLGR8KVqwduVujEc1gv4/RcPBHTlt+iWB/S9/dnTypc1gJreNY0x245PZ+S9Mwb0kHhj1ixu
- on+Q=
-X-Received: by 2002:a05:622a:24f:b0:4f1:ddda:9a26 with SMTP id
- d75a77b69052e-4f4abd122a3mr12901211cf.35.1766096061903; 
- Thu, 18 Dec 2025 14:14:21 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGVq3SvTVAAiSaf2QCb1Gy1diAxvb8RrlP8A31mm9X567yblJIfqG1CCwCLV/XTFXXAukGw0A==
-X-Received: by 2002:a05:622a:24f:b0:4f1:ddda:9a26 with SMTP id
- d75a77b69052e-4f4abd122a3mr12900851cf.35.1766096061375; 
- Thu, 18 Dec 2025 14:14:21 -0800 (PST)
-Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4f4ac62fa56sm3364421cf.17.2025.12.18.14.14.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Dec 2025 14:14:20 -0800 (PST)
-Date: Thu, 18 Dec 2025 17:14:19 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v3 44/51] tests/qtest/migration: Convert TLS PSK tests to
- use config
-Message-ID: <aUR8u53VV3ezfFE0@x1.local>
-References: <20251215220041.12657-1-farosas@suse.de>
- <20251215220041.12657-45-farosas@suse.de>
+ d=1e100.net; s=20230601; t=1766096101; x=1766700901;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=VqKZLpa34/2mHsZkdi0oHv6jhbZhkwrYLZ5O570SEnU=;
+ b=FS8KHjB17drGYRn4PJvnZNqKjrBjjBda+FKtrfBPqIM6BLaCf8AtlCfZwkj8qhcRrT
+ HpdYvBampcNy4sA4/hErjk7RarO0FqJZZVnDpIyWNBC4UaajF/O1ietp+flQ6xI0tMUh
+ 1JLaJPBHly+la//xpQYf6LsKiwltKEqmAJraEOfyUJRoRdhHwdDzzt4wC6hCw6UEoizW
+ p1Eve3wPqHaSleDuyRoC5QRimER3V89zlEQLWVAS2QZkbySE32WuhL17E75l2sNU0sg/
+ NrftqRZZeQTDvDU/CzN7K2YxIvLL1XCKlHCuDP7Uffr5bqlpnHhxbhrzIu+Thg4QQLrO
+ WF1g==
+X-Gm-Message-State: AOJu0YyErQD+Kki6WFAIJqU0/pYEPCGr0M4+McZ5JeWVpvPiHHnnSuIc
+ SqyHHWsB3jZrBWpfqSBdxsNHWnFauSCyeX7D97rBBJ0w9uH/WmyPbzLQ4X5gt53NojOvz3/yEeW
+ 9quaO0qM=
+X-Gm-Gg: AY/fxX5ihBo8hAO/CfTdBz1EJmSxAhBp4ijGrF8Q1W2RefkbyTVj+BTMRRhpF5irSPP
+ IJWrB3wmEyIQAnnJsttc5q32tjwL618cl7pdbMn7DTcuq26dHLvOKHa9NK2PbfHKlZMdVHe1rK0
+ RsH6ArnUKhahRYcW37cm6nguKhXqgaqyTYGaw8Cyf/ItGglAeOTrsMy/60wCJTA5nSEDTDqA610
+ jEBwL7cjbYPLIPj30gle/MLaRopFmpa1HbQJy445T95k/m251vL+NwSqXuyh+9Wr7usmhrO0XDz
+ ySO3xpg+vHnPUCIWugYGiEnHCltTfW/hLBd+A0Ji9C/k8l4UENrR0nYBl1ACNfi77CzDJXMlI10
+ mb4AyO8uGyj5Wu0rzPgQJ8hfoQ6QCrparPmAhkc8VAlPBmvQUHhHGNsqufWYT6knFN4qizDqHHV
+ U+CADaV+ajOgwqM1buANWhsfpTM2H5XgQPoVYLVMEcV2amrlVPoQI4gJWLo4iuSEc+Kh4X+YI=
+X-Google-Smtp-Source: AGHT+IESMvCE1Ej4aQ7AtJ7LoIDsrE9sfOCIIdXmfyUHSJqgJ70leuT4j6VrdteZp4o4TiPV8brx6g==
+X-Received: by 2002:a05:600c:4e8f:b0:477:df7:b020 with SMTP id
+ 5b1f17b1804b1-47d1957da79mr6151865e9.18.1766096101050; 
+ Thu, 18 Dec 2025 14:15:01 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-4324eaa0908sm1204507f8f.31.2025.12.18.14.14.58
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 18 Dec 2025 14:14:59 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Anton Johansson <anjo@rev.ng>,
+ Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
+ =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Frederic Konrad <konrad.frederic@yahoo.fr>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/6] target/sparc64: Stop using the legacy native-endian APIs
+Date: Thu, 18 Dec 2025 23:14:51 +0100
+Message-ID: <20251218221457.73341-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251215220041.12657-45-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,159 +103,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 15, 2025 at 07:00:30PM -0300, Fabiano Rosas wrote:
-> Replace calls to migrate_set_parameters and the usage of args.caps
-> with the new config object API.
-> 
-> The multifd tests are now the same as the "precopy" tests, only
-> setting some multifd options, so reuse the precopy code.
-> 
-> Temporarily, set the use-config key to enable the new method.
-> 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->  tests/qtest/migration/tls-tests.c | 72 +++++++++----------------------
->  1 file changed, 20 insertions(+), 52 deletions(-)
-> 
-> diff --git a/tests/qtest/migration/tls-tests.c b/tests/qtest/migration/tls-tests.c
-> index abd6bf9281..68304a7af3 100644
-> --- a/tests/qtest/migration/tls-tests.c
-> +++ b/tests/qtest/migration/tls-tests.c
-> @@ -73,9 +73,6 @@ static void *migrate_hook_start_tls_psk_common(QTestState *from,
->                               "                 'dir': %s } }",
->                               args->mismatch ? workdiralt : workdir);
->  
-> -    migrate_set_parameter_str(from, "tls-creds", "tlscredspsk0");
-> -    migrate_set_parameter_str(to, "tls-creds", "tlscredspsk0");
-> -
->      return NULL;
->  }
->  
-> @@ -121,6 +118,11 @@ static void test_precopy_tls_psk_common(MigrateCommon *args,
->  {
->      TestMigrateTLSPSKData *data = g_new0(TestMigrateTLSPSKData, 1);
->  
-> +    /* temporary */
-> +    qdict_put_bool(args->start.config, "use-config", true);
-> +
-> +    qdict_put_str(args->start.config, "tls-creds", "tlscredspsk0");
-> +
->      migrate_tls_psk_init(args, test_args, data);
->      test_precopy_common(args);
->      migrate_tls_psk_cleanup(data);
-> @@ -497,18 +499,11 @@ static void test_precopy_tcp_tls_psk_mismatch(char *name, MigrateCommon *args)
->      test_precopy_tls_psk_common(args, &tls_psk_mismatch);
->  }
->  
-> -static void *migrate_hook_start_no_tls(QTestState *from, QTestState *to)
-> -{
-> -    migrate_set_parameter_null(from, "tls-creds");
-> -    migrate_set_parameter_null(to, "tls-creds");
-> -
-> -    return NULL;
-> -}
-> -
->  static void test_precopy_tcp_no_tls(char *name, MigrateCommon *args)
->  {
->      args->listen_uri = "tcp:127.0.0.1:0";
-> -    args->start_hook = migrate_hook_start_no_tls;
-> +
-> +    qdict_put_null(args->start.config, "tls-creds");
->  
->      test_precopy_common(args);
->  }
-> @@ -614,29 +609,7 @@ static void test_precopy_tcp_tls_x509_reject_anon_client(char *name,
->  
->      test_precopy_tls_x509_common(args, &tls_x509_reject_anon_client);
->  }
-> -#endif /* CONFIG_TASN1 */
->  
-> -static void *
-> -migrate_hook_start_multifd_tcp_tls_psk_match(QTestState *from,
-> -                                             QTestState *to)
-> -{
-> -    migrate_set_parameter_str(from, "multifd-compression", "none");
-> -    migrate_set_parameter_str(to, "multifd-compression", "none");
-> -
-> -    return migrate_hook_start_tls_psk_common(from, to, &tls_psk_match);
-> -}
-> -
-> -static void *
-> -migrate_hook_start_multifd_tcp_tls_psk_mismatch(QTestState *from,
-> -                                                QTestState *to)
-> -{
-> -    migrate_set_parameter_str(from, "multifd-compression", "none");
-> -    migrate_set_parameter_str(to, "multifd-compression", "none");
-> -
-> -    return migrate_hook_start_tls_psk_common(from, to, &tls_psk_mismatch);
-> -}
-> -
-> -#ifdef CONFIG_TASN1
->  static void *
->  migrate_hook_start_multifd_tls_x509_default_host(QTestState *from,
->                                                   QTestState *to)
-> @@ -694,39 +667,34 @@ migrate_hook_start_multifd_tls_x509_reject_anon_client(QTestState *from,
->  
->  static void test_multifd_tcp_tls_psk_match(char *name, MigrateCommon *args)
->  {
-> -    args->start_hook = migrate_hook_start_multifd_tcp_tls_psk_match;
-> -    args->listen_uri = "tcp:127.0.0.1:0";
-> -
->      args->start.incoming_defer = true;
-> -    args->start.caps[MIGRATION_CAPABILITY_MULTIFD] = true;
->  
-> -    test_precopy_tls_psk_common(args, &tls_psk_match);
-> +    qdict_put_str(args->start.config, "multifd-compression", "none");
-> +    qdict_put_bool(args->start.config, "multifd", true);
-> +
-> +    test_precopy_tcp_tls_psk_match(name, args);
->  }
->  
->  static void test_multifd_tcp_tls_psk_mismatch(char *name, MigrateCommon *args)
->  {
-> -    args->start_hook = migrate_hook_start_multifd_tcp_tls_psk_mismatch;
-> -    args->result = MIG_TEST_FAIL;
-> -    args->listen_uri = "tcp:127.0.0.1:0";
-> -
-> -    args->start.hide_stderr = true;
->      args->start.incoming_defer = true;
-> -    args->start.caps[MIGRATION_CAPABILITY_MULTIFD] = true;
->  
-> -    test_precopy_tls_psk_common(args, &tls_psk_mismatch);
-> +    qdict_put_str(args->start.config, "multifd-compression", "none");
+SPARC64 is always big-endian, so use the '_be' suffix to
+select the big-endian variant of the load/store helper.
+Simplify gdbstub using ldn(TARGET_LONG_BITS...).
 
-Why do we need to start set multifd-compression=none all the time
-(including all below tests)?  Isn't that the default anyway?
+Philippe Mathieu-Daudé (6):
+  hw/sparc: Use explicit big-endian LD/ST API
+  target/sparc: Simplify gdbstub sparc_cpu_gdb_write_register()
+  target/sparc: Inline translator_ldl()
+  target/sparc: Use address_space_ld/st[n]_be() in ld/st_asi helpers
+  target/sparc: Use explicit big-endian LD/ST API
+  configs/targets: Forbid SPARC64 to use legacy native endianness API
 
-> +    qdict_put_bool(args->start.config, "multifd", true);
-> +
-> +    test_precopy_tcp_tls_psk_mismatch(name, args);
->  }
->  
->  static void test_multifd_postcopy_tcp_tls_psk_match(char *name,
->                                                      MigrateCommon *args)
->  {
-> -    args->start_hook = migrate_hook_start_multifd_tcp_tls_psk_match;
-> -    args->listen_uri = "tcp:127.0.0.1:0";
-> -
->      args->start.incoming_defer = true;
-> -    args->start.caps[MIGRATION_CAPABILITY_MULTIFD] = true;
-> -    args->start.caps[MIGRATION_CAPABILITY_POSTCOPY_RAM] = true;
->  
-> -    test_precopy_tls_psk_common(args, &tls_psk_match);
-> +    qdict_put_str(args->start.config, "multifd-compression", "none");
-> +    qdict_put_bool(args->start.config, "multifd", true);
-> +    qdict_put_bool(args->start.config, "postcopy-ram", true);
-> +
-> +    test_precopy_tcp_tls_psk_match(name, args);
->  }
->  
->  #ifdef CONFIG_TASN1
-> -- 
-> 2.51.0
-> 
+ configs/targets/sparc64-softmmu.mak |  1 -
+ hw/sparc/leon3.c                    | 42 +++++++++++-----------
+ hw/sparc/sun4m.c                    |  6 ++--
+ hw/sparc64/sun4u.c                  |  6 ++--
+ target/sparc/gdbstub.c              | 12 ++-----
+ target/sparc/ldst_helper.c          | 54 ++++++-----------------------
+ target/sparc/mmu_helper.c           | 30 ++++++++--------
+ target/sparc/translate.c            |  2 +-
+ 8 files changed, 56 insertions(+), 97 deletions(-)
 
 -- 
-Peter Xu
+2.52.0
 
 
