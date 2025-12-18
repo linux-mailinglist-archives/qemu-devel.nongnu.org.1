@@ -2,96 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DEA8CCB062
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AC61CCB061
 	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 09:56:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vW9nG-0003q5-3A; Thu, 18 Dec 2025 03:55:30 -0500
+	id 1vW9nJ-0003sb-4r; Thu, 18 Dec 2025 03:55:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phind.uet@gmail.com>)
- id 1vW9n9-0003no-TT
- for qemu-devel@nongnu.org; Thu, 18 Dec 2025 03:55:23 -0500
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1vW9nG-0003rT-47
+ for qemu-devel@nongnu.org; Thu, 18 Dec 2025 03:55:30 -0500
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phind.uet@gmail.com>)
- id 1vW9n8-0004vX-4q
- for qemu-devel@nongnu.org; Thu, 18 Dec 2025 03:55:23 -0500
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-7b9c17dd591so362613b3a.3
- for <qemu-devel@nongnu.org>; Thu, 18 Dec 2025 00:55:21 -0800 (PST)
+ id 1vW9nE-000571-I5
+ for qemu-devel@nongnu.org; Thu, 18 Dec 2025 03:55:29 -0500
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-7aae5f2633dso462695b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 18 Dec 2025 00:55:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1766048120; x=1766652920; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1766048127; x=1766652927; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IbCZM5/yo0/xTboRWK9DLsnxsWBmAYOPq/HX6Y7FFcM=;
- b=ELdYtPII6TngSJcVuu44eZfT7LS7GononvMqtku/kJK9JW7hqpghM4eWW3JLR2Kzud
- DrWViMjAzieXftTNDr3e9QgZVnruD1MOoVPw31allONWDt2mIRUfTkyfQgxFAsYL0PYh
- 4fLJ5IyP2me0Qho8m1fKoiQ322rsn3y3FnSz2sZ8uyrPxHJN+1ZjL4nMMQdiZoFPdR0/
- xV56Reft79nn0BExNyF/YI3mx0guD+p4ojMt3sRjDqkX7MrueUsR1Tgb+sFYMCbEI96u
- BJkkPu38Nl215Nc5XztLPQ1KXeMG+f5N/cgzkCBe4Ze4h+Q22c27BY0wWDPwTwEYPKNM
- alJA==
+ bh=wBlyXOWb/KMcPwA7yvb0AbdJKytBhHprjnVY2HHlTkI=;
+ b=mEoKnPKzLr/q9cWjl/S0KtOtutg/ih3i/av17N2LTSkVq4Z+1A+tMd+YDBMUNPzcd0
+ e39vqcHGsljHNPNLVJnGJerXDfeSI2IzGF9ZY7/VTfzy4gLDBXtcVAIpir5YLXW1P35F
+ 21uVdp+ES0DkK9imQcGQvfiOn0IJ367ehBZH9I4rZml/aoSwkgHMiXjM7OVC+KI74IC4
+ Rz/GWa2gZ5wxYS0F0/g4DILSSdXFeZ8uoshuWY+dFIUZiSH7ZC4dmRUwaSWWBKU6eF3H
+ uGddDxUBUfykqmM86+tSs4rwXq3dYnxx20XXIiGtp/Fn+GIDmNRv3dZliRZIR993Jdwf
+ lMiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766048120; x=1766652920;
+ d=1e100.net; s=20230601; t=1766048127; x=1766652927;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=IbCZM5/yo0/xTboRWK9DLsnxsWBmAYOPq/HX6Y7FFcM=;
- b=OD+9EeVJapM6VUkbEpDUPpBvcYRLNRaP1VB/fGmPDIoE0lt4tq2IkCqJX3EslSUaee
- HePYG0OgYG5GJlzS5LvtWekDvP+22CnRTxkvIoBFPLBQHInAR7gtIiwNuZdcSKO0ArZv
- fSCguq8N/lGjUj6Ia/cm4JNEpayBwr7wY/edNfkIsXVsKSzZ8oq4Y8S/shNhF90fMq6A
- PHQe4ZopEQxMUh58hfGUJ+wcz8RLK1o8g+YrACPPZhWnIX2qBOJ2TyF4zgdZRYURd3he
- J5mCuK1tWqVdXTdVgURQH4hI+RnCNgXQzp1nb3aVXyMPLlr+qhgJ6xU0sastYYWGH31a
- cidQ==
+ bh=wBlyXOWb/KMcPwA7yvb0AbdJKytBhHprjnVY2HHlTkI=;
+ b=VXrFXWYrgM3bsW415zxcSafegDe++rJJVoucMp/tfnCj1OzUT2OyvVgBW9L/Gsrdxg
+ fS3BkqelriCRqcDVS2z0PAiI+HrdvzWVnNxVaDGENRVTHUS8MBpI3ZFoG5hFDeAJHhFI
+ YjLj3Xv4BJpy2/SrcOXol3pXyP5NxZ+dKQOkJqj5k7vm6drgJDgFu6awT1QJceAvhEO9
+ iuYnM6kKd7cBLt4JbXf3f8NI2XGAFFXtj1C5co7XjfAuqvAWwyewCN/yripfFNZgsGko
+ boI2G5PwdGmOYk3rPb6yr8hybHIzHSyz+HbbPpP8VXj29ppvrbZuZjIbm7cAHmnpvrjK
+ hRXQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX8tXgKR0gJtLYTgW9nVTvO2OPORtyOpLNygKFvPQCwFQ6+W0ApRrbTbaDkN82cDSj6c3cTEIJs1+qd@nongnu.org
-X-Gm-Message-State: AOJu0YxekBPW2xqHj9VjumSqP6OhPXHoucacat+HMQVKplGAPq+M5aRv
- GYCGQpO3D9dFVxBaFjhd7SNEOeMKA5wD/W5Ai4T67TcdMQ3M9aWfoX/P+UDCKQ==
-X-Gm-Gg: AY/fxX7yUULw2N/wWwTKhJY+GgAMupnpatW8SdO1bz5QHnBNrVkV+HRwIqPvBaw/lS2
- Zjuqm0SXpdO+g0rNzgdSpen9h2RBPNDee5w0EH2uuCZe0GD0yKW7l/KPcIXi+u+bfXuEXty/OBl
- hr69hENUl0F7Y/nwu/HUSveFDAuxVmw8sglTNWM/4pTGyo9sd7oFQbFqiymhjsAxysBRV7YgiR5
- kV4xs2VQvYCJpJrgvfoDMrcZihFvL2LCjDcMeehHDspIIR8nD6G+MG0K6Gc1wONPJDU6AOlF+yj
- ClpGR+OqB2WezioOSkSB5hfqbeVGvtdq9oX9niD567EId4xvpsZt1CVnNOfvC7kAbEU2EQ6JTM3
- ZZsVzGSkYiuk+DEVNKA6lK5QEFtb576HAtXi94r7CY0KFaHtNxmIoEsPORl8DUOyuWUpPzl/IrU
- r5EFVdAnEc4w9NDeQAyCvT8ZzIIGVs4BNOYg==
-X-Google-Smtp-Source: AGHT+IEhj72ITgxNK5M7rvRlDqQUxPqtFgxXUB4uDdwfkrHzmWmm778xrmh2iRJ2vPmbx3Eb90TX1Q==
-X-Received: by 2002:a05:6a00:1bcd:b0:7e8:4587:e8ca with SMTP id
- d2e1a72fcca58-7f669d83f78mr18430291b3a.61.1766048120516; 
- Thu, 18 Dec 2025 00:55:20 -0800 (PST)
+ AJvYcCXnOURPSDRwyiRkRcU7AkOeWlPyrY8IU/NJds62xMsMPquYdILRjJCzUT+3gT0+hQgx0PIsg/S5N6xS@nongnu.org
+X-Gm-Message-State: AOJu0Yz41SM1f+K1NTRzwA2MVZryasgG24LzL+2LwET5eZuSPKzDbA4m
+ 9TiUQL4W/I95BN6tjrOepsQ1mzMbUDLyNJre2MltauPHVIwiltS2FyZW
+X-Gm-Gg: AY/fxX5fo1oL2nGbYVZnli7/aeJG6S3v4ylU6104ekHYa7iYKdSAA4rg+19cwEJJIbO
+ CJMbHEBhg+Mv5abmD6iApN9G863qX6gATAKFQGf8XpcYaKWwmg3X6TaxhzDsHNcZFAbVDbX9484
+ l25rQw+b/+J+klDjNcmlinYTNZTz1Ongj1HMn0gbtba05k5B51y777ES+qOukyeSrXsI+byoxfV
+ iM0UdmI0I7+l+aNq8V0oKBLOMHq3Hi8B3bI/grIAezQNnllyIUkN1o9kdDqrJ9G/Jgsr7svrGFh
+ eE7L3IsgcmRnxcxYHUVIBQ5yp8L+JcDclkn6tNbx+HtAg/4WqkqelDGdztZakGJfqDz/G8caHy4
+ pmD6FX5F0cyGU/MvjJoN3ntobg2fP4+HCPzD/f8ZucOQCz82XUP/g2jQQ8Y6ohNH6bI4zkX6QIO
+ PPvWLsksVOyll/O5+RqgmYR3g=
+X-Google-Smtp-Source: AGHT+IHbT9YOQdX3ThNpiyotAQ3FTMdosOz+gS66I7NiTVvEUG03SGviKHw3v/Vpa0AnOqMlOcJe/w==
+X-Received: by 2002:aa7:81c5:0:b0:7e8:450c:61b8 with SMTP id
+ d2e1a72fcca58-7f67156b7ffmr13729050b3a.40.1766048126992; 
+ Thu, 18 Dec 2025 00:55:26 -0800 (PST)
 Received: from localhost.localdomain ([116.86.160.247])
  by smtp.googlemail.com with ESMTPSA id
- d2e1a72fcca58-7fe12128ea4sm1926218b3a.27.2025.12.18.00.55.17
+ d2e1a72fcca58-7fe12128ea4sm1926218b3a.27.2025.12.18.00.55.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Dec 2025 00:55:20 -0800 (PST)
+ Thu, 18 Dec 2025 00:55:26 -0800 (PST)
 From: phind.uet@gmail.com
-To: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Kostiantyn Kostiuk <kkostiuk@redhat.com>,
- Michael Roth <michael.roth@amd.com>
-Cc: Nguyen Dinh Phi <phind.uet@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Subject: [PATCH v2 1/2] qga/vss-win32: Fix ConvertStringToBSTR redefinition
- with newer MinGW
-Date: Thu, 18 Dec 2025 16:54:45 +0800
-Message-ID: <20251218085446.462827-2-phind.uet@gmail.com>
+To: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Stefan Weil <sw@weilnetz.de>
+Cc: Nguyen Dinh Phi <phind.uet@gmail.com>, qemu-block@nongnu.org,
+ qemu-devel@nongnu.org
+Subject: [PATCH v2 2/2] util: Move qemu_ftruncate64 from block/file-win32.c to
+ oslib-win32.c
+Date: Thu, 18 Dec 2025 16:54:46 +0800
+Message-ID: <20251218085446.462827-3-phind.uet@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251218085446.462827-1-phind.uet@gmail.com>
 References: <20251218085446.462827-1-phind.uet@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=phind.uet@gmail.com; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=phind.uet@gmail.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,64 +105,101 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nguyen Dinh Phi <phind.uet@gmail.com>
 
-Newer versions of MinGW-w64 provide ConvertStringToBSTR() in the
-_com_util namespace via <comutil.h>. This causes a redefinition
-error when building qemu-ga on Windows with these toolchains.
-
-Add a meson check to detect whether ConvertStringToBSTR is already
-available, and conditionally compile our fallback implementation
-only when the system does not provide one.
+qemu_ftruncate64() is a general-purpose utility function that may be
+used outside of the block layer. Move it to util/oslib-win32.c where
+other Windows-specific utility functions reside.
 
 Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
-Suggested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- meson.build               | 12 ++++++++++++
- qga/vss-win32/install.cpp |  2 ++
- 2 files changed, 14 insertions(+)
+ block/file-win32.c | 32 --------------------------------
+ util/oslib-win32.c | 34 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 34 insertions(+), 32 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index c5710a6a47..5a0f407d6f 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3299,6 +3299,18 @@ endif
- # Detect host pointer size for the target configuration loop.
- host_long_bits = cc.sizeof('void *') * 8
- 
-+# Detect if ConvertStringToBSTR has been defined in _com_util namespace
-+if host_os == 'windows'
-+  has_convert_string_to_bstr = cxx.links('''
-+    #include <comutil.h>
-+    int main() {
-+        BSTR b = _com_util::ConvertStringToBSTR("test");
-+        return b ? 0 : 1;
-+    }
-+  ''')
-+  config_host_data.set('CONFIG_CONVERT_STRING_TO_BSTR', has_convert_string_to_bstr)
-+endif
-+
- ########################
- # Target configuration #
- ########################
-diff --git a/qga/vss-win32/install.cpp b/qga/vss-win32/install.cpp
-index 7b25d9098b..5b7a8e9bc5 100644
---- a/qga/vss-win32/install.cpp
-+++ b/qga/vss-win32/install.cpp
-@@ -549,6 +549,7 @@ STDAPI DllUnregisterServer(void)
- 
- 
- /* Support function to convert ASCII string into BSTR (used in _bstr_t) */
-+#ifndef CONFIG_CONVERT_STRING_TO_BSTR
- namespace _com_util
- {
-     BSTR WINAPI ConvertStringToBSTR(const char *ascii) {
-@@ -566,6 +567,7 @@ namespace _com_util
-         return bstr;
-     }
+diff --git a/block/file-win32.c b/block/file-win32.c
+index af9aea631c..8a44853389 100644
+--- a/block/file-win32.c
++++ b/block/file-win32.c
+@@ -170,38 +170,6 @@ static BlockAIOCB *paio_submit(BlockDriverState *bs, HANDLE hfile,
+     return thread_pool_submit_aio(aio_worker, acb, cb, opaque);
  }
-+#endif
  
- /* Stop QGA VSS provider service using Winsvc API  */
- STDAPI StopService(void)
+-int qemu_ftruncate64(int fd, int64_t length)
+-{
+-    LARGE_INTEGER li;
+-    DWORD dw;
+-    LONG high;
+-    HANDLE h;
+-    BOOL res;
+-
+-    if ((GetVersion() & 0x80000000UL) && (length >> 32) != 0)
+-        return -1;
+-
+-    h = (HANDLE)_get_osfhandle(fd);
+-
+-    /* get current position, ftruncate do not change position */
+-    li.HighPart = 0;
+-    li.LowPart = SetFilePointer (h, 0, &li.HighPart, FILE_CURRENT);
+-    if (li.LowPart == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR) {
+-        return -1;
+-    }
+-
+-    high = length >> 32;
+-    dw = SetFilePointer(h, (DWORD) length, &high, FILE_BEGIN);
+-    if (dw == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR) {
+-        return -1;
+-    }
+-    res = SetEndOfFile(h);
+-
+-    /* back to old position */
+-    SetFilePointer(h, li.LowPart, &li.HighPart, FILE_BEGIN);
+-    return res ? 0 : -1;
+-}
+-
+ static int set_sparse(int fd)
+ {
+     DWORD returned;
+diff --git a/util/oslib-win32.c b/util/oslib-win32.c
+index 839b8a4170..766c602172 100644
+--- a/util/oslib-win32.c
++++ b/util/oslib-win32.c
+@@ -899,3 +899,37 @@ int qemu_shm_alloc(size_t size, Error **errp)
+     error_setg(errp, "Shared memory is not supported.");
+     return -1;
+ }
++
++int qemu_ftruncate64(int fd, int64_t length)
++{
++    LARGE_INTEGER li;
++    DWORD dw;
++    LONG high;
++    HANDLE h;
++    BOOL res;
++
++    if ((GetVersion()&0x80000000UL) && (length >> 32) != 0) {
++        return -1;
++    }
++
++    h = (HANDLE)_get_osfhandle(fd);
++
++    /* get current position, ftruncate do not change position */
++    li.HighPart = 0;
++    li.LowPart = SetFilePointer (h, 0, &li.HighPart, FILE_CURRENT);
++    if (li.LowPart == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR) {
++        return -1;
++    }
++
++    high = length >> 32;
++    dw = SetFilePointer(h, (DWORD) length, &high, FILE_BEGIN);
++    if (dw == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR) {
++        return -1;
++    }
++    res = SetEndOfFile(h);
++
++    /* back to old position */
++    SetFilePointer(h, li.LowPart, &li.HighPart, FILE_BEGIN);
++    return res ? 0 : -1;
++}
++
 -- 
 2.43.0
 
