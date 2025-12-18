@@ -2,95 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B32B4CCAA1C
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 08:24:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30830CCABCB
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 08:52:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vW8N2-0005cd-Tz; Thu, 18 Dec 2025 02:24:20 -0500
+	id 1vW8mh-0005Ya-I3; Thu, 18 Dec 2025 02:50:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vW8N0-0005bt-Hm; Thu, 18 Dec 2025 02:24:18 -0500
-Received: from mgamail.intel.com ([198.175.65.17])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vW8My-0002Ec-PG; Thu, 18 Dec 2025 02:24:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766042657; x=1797578657;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=7DwI0Qs8ZZROCxgks932LOqBfATLVNdCypOv4og2tA4=;
- b=LM2DOk0UNm7pkuByOF6hohpXy4V/D18Cgi5FA2DvLDVji1xwEsmVwl9V
- MozKuJ60R0YIENc9/y/KZJ6+fRc79wCp1wE86LcI1q1WK4kDJYQMiqZNj
- QNyegzmueElo8A1WuF7cyu2aPtqCbafm7fSFDAmq3ilQPpuwFjMD2zP7y
- Tgw+pWYd8yAJZaRdAjeCYV7zP3PiL7Li6VCAn0qzXdbO7jXB0qTSbfUY7
- oYnzR6SqeTK9b3fMGW0tXxsexzCKBfVq5Oums1OJEPdJA7cDIBz7szt3S
- H6vP+ytWComBVuIg+kEsc63bOU0I7Dqa/HmvG4hr9c1jKV0Kgtygo/FWr Q==;
-X-CSE-ConnectionGUID: NbO/Ua8YS5aUt+bL2g+g0A==
-X-CSE-MsgGUID: FJ3spxspQsGfmtNTmfU2jw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="67960035"
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; d="scan'208";a="67960035"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2025 23:24:14 -0800
-X-CSE-ConnectionGUID: sxbUkqeGSCCx2CAtSkrTbQ==
-X-CSE-MsgGUID: oV8BMOWXTn2tBLC3VqwuDw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; d="scan'208";a="202898882"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa005.fm.intel.com with ESMTP; 17 Dec 2025 23:24:06 -0800
-Date: Thu, 18 Dec 2025 15:48:55 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- devel@lists.libvirt.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org,
- qemu-arm@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Sergio Lopez <slp@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Yi Liu <yi.l.liu@intel.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Weiwei Li <liwei1518@gmail.com>, Amit Shah <amit@kernel.org>,
- Xiaoyao Li <xiaoyao.li@intel.com>,
- Yanan Wang <wangyanan55@huawei.com>, Helge Deller <deller@gmx.de>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- =?iso-8859-1?Q?Cl=E9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Huacai Chen <chenhuacai@kernel.org>, Jason Wang <jasowang@redhat.com>,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>,
- BALATON Zoltan <balaton@eik.bme.hu>, Peter Krempa <pkrempa@redhat.com>,
- Jiri Denemark <jdenemar@redhat.com>
-Subject: Re: [PATCH v5 07/28] tests/acpi: Update DSDT tables for pc machine
-Message-ID: <aUOx5wor+ysd2lNo@intel.com>
-References: <20251202162835.3227894-1-zhao1.liu@intel.com>
- <20251202162835.3227894-8-zhao1.liu@intel.com>
- <20251217151627.3ee7bf07@imammedo>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vW8md-0005Y7-Q3
+ for qemu-devel@nongnu.org; Thu, 18 Dec 2025 02:50:48 -0500
+Received: from mail-wr1-x443.google.com ([2a00:1450:4864:20::443])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vW8ma-00044f-I8
+ for qemu-devel@nongnu.org; Thu, 18 Dec 2025 02:50:46 -0500
+Received: by mail-wr1-x443.google.com with SMTP id
+ ffacd0b85a97d-431048c4068so154549f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 17 Dec 2025 23:50:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1766044243; x=1766649043; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=BNuBMvcfRMJftO6hvS2QM/ySAK+YceG+Do76sWoYe0o=;
+ b=BtIQ0N2s6GmdMwlx4WHBvMbrEbJnSRhjjilIUn3GAWZ8lq9Ok2bn0qaTJQaRVIaXIQ
+ 8LPtp1vF5P0rfMlgWV/F4vA8Mcuc7ATg98M4I5qxSP3zEBw0vRZS38noY7HMruaFxB0k
+ kSE4FxO8BQvGfK8tQ2wSbgBk7IrKNnDmgEz2sWgwLqyhuWuL4+i9X3kHp8RhT4FJXBJz
+ QqiY0tjk3LFzs4Xw7JTp493H+0W+blmVl0x15MSqXNVo+PRJuYgjFF506khICm17kTHj
+ WTIWnvy4THp/0QweH1YP+t/cRYeIvzModeJjSICwt1zpSakhtHrEWCGGaMv5/X/qrHoS
+ 1aLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1766044243; x=1766649043;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=BNuBMvcfRMJftO6hvS2QM/ySAK+YceG+Do76sWoYe0o=;
+ b=FfZuTtj0JU7ZsCTG9bHL+2ouMyH3xWyq/ka5Udt3+lLtpWTOZKBtQndNqrEIP+pUj2
+ kRmbqg4RzPItAL7oEEOZQh71KZ2/C0ymv1cDDkNwLAfRdzcLZKBFUDUVn43cxuYvaf3I
+ 9bNVqBCFK1aAx4CWYE+SkQpFAwmMOk//x8r4DIcOCy6/nzXqTL8YOFqpMd0IIjYugrnI
+ XzcCSTuqBetafQ7RnsGTDfsm3N5LTgBqCwG++A7qQ30ih7QExtgVmcMBq3bfUai+khBO
+ 0JSz9BO7bvqujvooLNuAR4tUKO1Frh/hTNK/AYmGbzhPSQ2fv3BW0I37fyaKH04iyHu6
+ JPaQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWjyyIvJvYfXpbEm69HpHyPjo1Ih+aJq2HMOz7Ri8oLAryZVecTBaNrLzjxSiilXsQQH5HLsp5bRGLa@nongnu.org
+X-Gm-Message-State: AOJu0YwdZX5gnTRibJMe0pR8cPKcO16cZUQEawqzf+xOV8CWyrdIzhM1
+ d5sZ9mVZphPuwwdFUasEq4y/YvkEkUdytcVr8jzrtb45aFbMoQ2mrAK/LJsQ1jD3wmM=
+X-Gm-Gg: AY/fxX51rNmZzdaqfU7G6svjPLFpwCvHH6OY5O3r2PLPhYg5Ekh55PUqJh0yz7JWO+x
+ 6xiHiWf+ViarBCppGoQD33sMAzIq11rmIrmIniWEWIyTcBpDcSUZAaty3xmTx8DbUhbA2C2K+Ye
+ AZdYAzgcieHRMH+YrnQOqzVvl/mqoyHsWGoStP1eR/Q9P9SPGweIqfHpw3V/QRidjoIKFyhf33d
+ KL64us4nK7I/Zf9oGi0NbuOPSdYIYBRnAxqzmUJGr5jnfnnopc+L+vKSIXzsKtw0IjjXKeC4+YV
+ x+B8HiYu4WiDUnK8NF7F137bn/tCVpyCMOU2nCJ6t2yZChxaCCyk8P4AtmFyLLVsbHX02hPcYz0
+ FscGaDAvqQvNGW5ZAwhZ4Y0FhJRDTeeHFnyxHQYDD38eMgvBD3drBOSx5fUvoqCiZZr1wb39Eqc
+ SUJ/oJYFeEulIAAEGHih248h1JELeHBsr9jvgtGvgmSK+yoq8PKcdmEQ==
+X-Google-Smtp-Source: AGHT+IE/sk/Zaxi6Kn05S/nIUD/VoHHTMkLi7wP2/3qnhVmfuSDi3wxqB+seCrnUYZruKllxei1iRQ==
+X-Received: by 2002:adf:e588:0:b0:431:1c7:f967 with SMTP id
+ ffacd0b85a97d-432447ac138mr2019724f8f.17.1766044242575; 
+ Wed, 17 Dec 2025 23:50:42 -0800 (PST)
+Received: from [192.168.69.202] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-4324493fd7esm3574073f8f.10.2025.12.17.23.50.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 17 Dec 2025 23:50:40 -0800 (PST)
+Message-ID: <ae1c0c21-a464-4893-ac11-c0e831056df9@linaro.org>
+Date: Thu, 18 Dec 2025 08:50:39 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251217151627.3ee7bf07@imammedo>
-Received-SPF: pass client-ip=198.175.65.17; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] qemu-options.hx: use KiB, MiB, GiB for power-of-2 units
+Content-Language: en-US
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org
+References: <20251218073208.160482-1-mjt@tls.msk.ru>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20251218073208.160482-1-mjt@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::443;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x443.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,41 +101,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 17, 2025 at 03:16:27PM +0100, Igor Mammedov wrote:
-> Date: Wed, 17 Dec 2025 15:16:27 +0100
-> From: Igor Mammedov <imammedo@redhat.com>
-> Subject: Re: [PATCH v5 07/28] tests/acpi: Update DSDT tables for pc machine
-> X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+On 18/12/25 08:32, Michael Tokarev wrote:
+> Use MiB &Co instead of MB &Co when the talk is about
+> power-of-two-based sizes, in qemu-options.hx.
 > 
-> On Wed,  3 Dec 2025 00:28:14 +0800
-> Zhao Liu <zhao1.liu@intel.com> wrote:
-> 
-> > Now the legacy cpu hotplug way has gone away, and there's no _INIT
-> > method in DSDT table for modern cpu hotplug support.
-> > 
-> > Update DSDT tables for pc machine.
-> > 
-> > The following diff changes show only _INIT methods are removed from DSDT
-> > tables.
-> > 
-> 
-> below diff in commit message confuses git am,
-> I'd suggests to point out only what's deleted  
-> and skip the rest, aka.
-> removed section in x86 DSDTs:
->   -
->   -            Method (_INI, 0, Serialized)  // _INI: Initialize
->   -            {
->   -                CSEL = Zero
->   -            }
-> 
-> ditto for blurb in the next patch
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3222
+> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+> ---
+>   qemu-options.hx | 20 ++++++++++----------
+>   1 file changed, 10 insertions(+), 10 deletions(-)
 
-Yes, good idea. Indeed, this nearly duplicated information makes the
-commit message quite lengthy, so I had to split it into two patches.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Will merge these 2 patches (this patch and next patch).
-
-Thanks,
-Zhao
 
