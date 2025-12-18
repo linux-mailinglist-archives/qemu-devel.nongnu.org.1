@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F12BCCA9F1
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 08:22:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B32B4CCAA1C
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 08:24:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vW8KC-0004NF-90; Thu, 18 Dec 2025 02:21:24 -0500
+	id 1vW8N2-0005cd-Tz; Thu, 18 Dec 2025 02:24:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vW8Jc-0004E7-L2; Thu, 18 Dec 2025 02:20:48 -0500
-Received: from mgamail.intel.com ([192.198.163.19])
+ id 1vW8N0-0005bt-Hm; Thu, 18 Dec 2025 02:24:18 -0500
+Received: from mgamail.intel.com ([198.175.65.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vW8JY-0000ak-B8; Thu, 18 Dec 2025 02:20:45 -0500
+ id 1vW8My-0002Ec-PG; Thu, 18 Dec 2025 02:24:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766042444; x=1797578444;
+ t=1766042657; x=1797578657;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=WJEIgxu3+zm1akya5uEapVzOpJ64gXw/82xWr1E4ihU=;
- b=CbxUNgg9L4yKL/BvK4mo/CuQF7nUDrPiDIEVb8fx57kcZPHSGwGlMLsR
- 1nu+rX9872cTP0o8dTeBLhCtXXV+FZFJCunbo9MrzCNx7owq3friTPoAW
- GPpJqJen9Km4u0JBM4CT/clyycJ84Z5tO83FKpZgJs0WGKGGBi02z/tno
- sy1IMTVJ2rM95hbLyc01XS6m8w5CjN5lYjEJHBS2qgZI+CesslmbDUqFr
- c2X46vjjKYP/v+tHWpGZtoA3/IFrtkUN0+tmynHtydKTl4q0y3w6yCK+2
- A/mbHcx5OKy43xXD80p5twxNwlKyke77lR94Ztdmb74BW3+q3P2jQx8O4 A==;
-X-CSE-ConnectionGUID: RAoOdFC+RVqOKrAjtI9I8Q==
-X-CSE-MsgGUID: bOCPdOwLQ1ue11vgpjcqww==
-X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="66986693"
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; d="scan'208";a="66986693"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2025 23:20:30 -0800
-X-CSE-ConnectionGUID: Wvc3fFGoR+mxeHpJsuEI3A==
-X-CSE-MsgGUID: L6Cpx68PQoy7+Y2uTiOR7Q==
+ mime-version:in-reply-to;
+ bh=7DwI0Qs8ZZROCxgks932LOqBfATLVNdCypOv4og2tA4=;
+ b=LM2DOk0UNm7pkuByOF6hohpXy4V/D18Cgi5FA2DvLDVji1xwEsmVwl9V
+ MozKuJ60R0YIENc9/y/KZJ6+fRc79wCp1wE86LcI1q1WK4kDJYQMiqZNj
+ QNyegzmueElo8A1WuF7cyu2aPtqCbafm7fSFDAmq3ilQPpuwFjMD2zP7y
+ Tgw+pWYd8yAJZaRdAjeCYV7zP3PiL7Li6VCAn0qzXdbO7jXB0qTSbfUY7
+ oYnzR6SqeTK9b3fMGW0tXxsexzCKBfVq5Oums1OJEPdJA7cDIBz7szt3S
+ H6vP+ytWComBVuIg+kEsc63bOU0I7Dqa/HmvG4hr9c1jKV0Kgtygo/FWr Q==;
+X-CSE-ConnectionGUID: NbO/Ua8YS5aUt+bL2g+g0A==
+X-CSE-MsgGUID: FJ3spxspQsGfmtNTmfU2jw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="67960035"
+X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; d="scan'208";a="67960035"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Dec 2025 23:24:14 -0800
+X-CSE-ConnectionGUID: sxbUkqeGSCCx2CAtSkrTbQ==
+X-CSE-MsgGUID: oV8BMOWXTn2tBLC3VqwuDw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; d="scan'208";a="203582897"
+X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; d="scan'208";a="202898882"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by orviesa005.jf.intel.com with ESMTP; 17 Dec 2025 23:20:21 -0800
-Date: Thu, 18 Dec 2025 15:45:10 +0800
+ by fmviesa005.fm.intel.com with ESMTP; 17 Dec 2025 23:24:06 -0800
+Date: Thu, 18 Dec 2025 15:48:55 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Igor Mammedov <imammedo@redhat.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -73,17 +73,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>,
  BALATON Zoltan <balaton@eik.bme.hu>, Peter Krempa <pkrempa@redhat.com>,
  Jiri Denemark <jdenemar@redhat.com>
-Subject: Re: [PATCH v5 16/28] hw/i386: Remove linuxboot.bin
-Message-ID: <aUOxBg3bVii1HAOx@intel.com>
+Subject: Re: [PATCH v5 07/28] tests/acpi: Update DSDT tables for pc machine
+Message-ID: <aUOx5wor+ysd2lNo@intel.com>
 References: <20251202162835.3227894-1-zhao1.liu@intel.com>
- <20251202162835.3227894-17-zhao1.liu@intel.com>
- <20251217155530.3353e904@imammedo>
+ <20251202162835.3227894-8-zhao1.liu@intel.com>
+ <20251217151627.3ee7bf07@imammedo>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251217155530.3353e904@imammedo>
-Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20251217151627.3ee7bf07@imammedo>
+Received-SPF: pass client-ip=198.175.65.17; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -108,39 +107,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 17, 2025 at 03:55:30PM +0100, Igor Mammedov wrote:
-> Date: Wed, 17 Dec 2025 15:55:30 +0100
+On Wed, Dec 17, 2025 at 03:16:27PM +0100, Igor Mammedov wrote:
+> Date: Wed, 17 Dec 2025 15:16:27 +0100
 > From: Igor Mammedov <imammedo@redhat.com>
-> Subject: Re: [PATCH v5 16/28] hw/i386: Remove linuxboot.bin
+> Subject: Re: [PATCH v5 07/28] tests/acpi: Update DSDT tables for pc machine
 > X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 > 
-> On Wed,  3 Dec 2025 00:28:23 +0800
+> On Wed,  3 Dec 2025 00:28:14 +0800
 > Zhao Liu <zhao1.liu@intel.com> wrote:
 > 
-> > From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> > Now the legacy cpu hotplug way has gone away, and there's no _INIT
+> > method in DSDT table for modern cpu hotplug support.
 > > 
-> > All machines now use the linuxboot_dma.bin binary, so it's safe to
-> > remove the non-DMA version (linuxboot.bin).
+> > Update DSDT tables for pc machine.
+> > 
+> > The following diff changes show only _INIT methods are removed from DSDT
+> > tables.
+> > 
 > 
-> after applying this patch:
+> below diff in commit message confuses git am,
+> I'd suggests to point out only what's deleted  
+> and skip the rest, aka.
+> removed section in x86 DSDTs:
+>   -
+>   -            Method (_INI, 0, Serialized)  // _INI: Initialize
+>   -            {
+>   -                CSEL = Zero
+>   -            }
 > 
-> git grep linuxboot.bin
-> 
->     option_rom[nb_option_roms].bootindex = 0;                                    
->     option_rom[nb_option_roms].name = "linuxboot.bin";                           
->     if (fw_cfg_dma_enabled(fw_cfg)) {                                            
->         option_rom[nb_option_roms].name = "linuxboot_dma.bin";                   
->     }        
-> 
-> perhaps it should be fixed in previous patch
+> ditto for blurb in the next patch
 
-Thanks, I find this change was included in the previous patch (patch 15).
+Yes, good idea. Indeed, this nearly duplicated information makes the
+commit message quite lengthy, so I had to split it into two patches.
 
-And I have a GitLab branch and hopefully it could help apply and review:
+Will merge these 2 patches (this patch and next patch).
 
-https://gitlab.com/zhao.liu/qemu/-/commits/remove-2.6-and-2.7-pc-v5-11-26-2025
-
-Regards,
+Thanks,
 Zhao
-
 
