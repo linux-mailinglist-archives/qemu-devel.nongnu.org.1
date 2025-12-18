@@ -2,105 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B59B6CCDB29
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 22:33:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52DE5CCDB23
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 22:32:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWLc0-0004pc-5B; Thu, 18 Dec 2025 16:32:40 -0500
+	id 1vWLc6-00056h-Jl; Thu, 18 Dec 2025 16:32:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vWLbB-0004j8-Om
- for qemu-devel@nongnu.org; Thu, 18 Dec 2025 16:31:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vWLbA-0000VW-3s
- for qemu-devel@nongnu.org; Thu, 18 Dec 2025 16:31:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766093506;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=fVSAPn4EfWqfBr22z9YSMw1q2F1WSwVXyG71Y88IAyc=;
- b=eGcoDqesIvIuoDS4bm+4yMDow1SFtKL5lgbELKKcLikK8cbPVYnj7Fpabzih4LN62nxFbL
- KqIb4eVimwUndMN3nTQ+IgHTWKVbAGDH2yTNFfd8HXUNgdu4BuOINULSDCfLfhkVqExrJs
- 8Ij+Mpl688Nz8dVkxkbHFbC6YR4lZO0=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-202-m-Fsw7voOFWkluuuvfjFTg-1; Thu, 18 Dec 2025 16:31:44 -0500
-X-MC-Unique: m-Fsw7voOFWkluuuvfjFTg-1
-X-Mimecast-MFC-AGG-ID: m-Fsw7voOFWkluuuvfjFTg_1766093504
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-8824292911cso42905676d6.1
- for <qemu-devel@nongnu.org>; Thu, 18 Dec 2025 13:31:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWLbw-0004qX-2y
+ for qemu-devel@nongnu.org; Thu, 18 Dec 2025 16:32:37 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWLbu-0000bs-Fy
+ for qemu-devel@nongnu.org; Thu, 18 Dec 2025 16:32:35 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-47755de027eso6874155e9.0
+ for <qemu-devel@nongnu.org>; Thu, 18 Dec 2025 13:32:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766093504; x=1766698304; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=fVSAPn4EfWqfBr22z9YSMw1q2F1WSwVXyG71Y88IAyc=;
- b=oUXvJXBZoBtiuHfGe3/tiGzMp5WOUcmj+x5xJfyVe8I81C2eTJl6ErPhvoIRGOk2Uf
- et+pYViU5CG+fo94JNHeO6UdfyUTGyhKOdgd6qQLGLYFIqEShV2jhAcVYDcNgrjYNSLW
- 6HeYhEyq7xp7/8sfitD1Z5TfHH6yLx4QJeI6DnDERj78IPmxIMuiVtsc2l2CMeIi/rAn
- vlT7IA6ByglNU0b+r3TLSxgAE9uOH0YvL7S3CnX8IaIArzuvp5/4g+eujvNoGb+uzJRm
- UvjVX8hf84li8mBHYPOruYCXtUEKvCHU9CDCBtzWBD6R9bgV1zhpcehKxJw9HFKwnb+s
- sp9Q==
+ d=linaro.org; s=google; t=1766093552; x=1766698352; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=54KYr2e+XgR3khgSV11sMu/Z5RVOcSDXb+i3+37ZTyg=;
+ b=NKe2S1pHz3BYRS3j0nfx9cODAKG9U62I6j0wczTtX+IchXOcSQjv7aHP/Vz91r5h1D
+ K/bIm6S0i4bPEC2DEDBUeMB/vptkG2z1yJsalQ0w5TV2YjLRYsM3vljNMNTXPOMUpWAu
+ 8O6ilyTkR9tvPlNVcjVMvq3hG34yIbOsVzToyi9ni9ZCKD4sCUGeht6nw29WmMz1ATxG
+ /zVbsEVe/wECbb6LcEE1nrq6uHe0tUYCE2lq077yvD20m0eVLGYLbY035t3FAAInsXU8
+ Z1Nd9epAzI+8ARM1TUipNoRO7GeqTfau48uEl0IgQAgRuvKRYnGcGzKp6ciowMWxjFFq
+ 9neQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766093504; x=1766698304;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=fVSAPn4EfWqfBr22z9YSMw1q2F1WSwVXyG71Y88IAyc=;
- b=H/07hN1XipNBc9c8y/OSThrDUx/k+qgNXJvjBLAHbnjmlq4gOXbrmHnu4sfpVmmwcJ
- HRiXKkAc3G8A/+yCr5LP4y2qFHRJ3xvaaqSGbuq1zfq5RwTlRYSpFFONIilGnNkPIODb
- f0/FFo6pdpQ/uCt+hpMQgxlKDXtshAOgFaNXof4bmUA/9Ps0fdSyyWPmy4JvqQyutpSQ
- ed48holFv89c2dMHTId4eLOBwAvKjPZurN0vqAsFR6GEQ1Fgv1Y1RY0LEUZwxyLRAFAA
- SdVx/vuwOTOjEQEhG+BX8c4pURgsupnNgSpEhxFYA5hH8pfleMF7Ad8+o7Tjmb0ea2U3
- +k1Q==
-X-Gm-Message-State: AOJu0YyNHtWtNhbLp26gHHwCxrWb3p2UXb3RNfIHKEo1LU6zoTqVjgoO
- X1iYVRCVqDHAkwKmVzpyrFZ0vz7erIXaloHRTKU1FrHiUUGGvV6klN57JzaDDEfgJ4SmA0vJRsq
- 2FXJcfpvzNRs0jv1YMCR/8Jjrp3n0fRbaOUVHlD56SJSKDLOb5U66BsMb
-X-Gm-Gg: AY/fxX6OxI4eVzh5ruMV6gPWY9vmv0htgUeWzGGmwuJNuoBt4Im90Q1TbFkBx1d7cXc
- w+Z7K0O0XuKOBFTV9Qh8men5fhK0BSXkJA80HaXFTYAgqgUlO2XQui+oCRyxHiVPgWNir7iMbHk
- sxHHHaVy4HoSPTK+eaK08uu31b4vZQERMwFvUar3BJhB3pqP7khOlXRbzaHQZJBshAgkFoHr6HF
- VfbSL5D+aRnVPazfyEmmwiaTHgUUbFPtWR1MeEmfzHuAxvvyKLJzoldJr0+MJSMlalV4NX5eaQj
- wP6nUrTORWVJ0xn31QWNbjcO+FOjskGUEJrN8gA/76/3Dh4xUXLxVxgGfqW6naQK/+mq9IDoHDf
- /558=
-X-Received: by 2002:a05:6214:4686:b0:880:4cfb:ab57 with SMTP id
- 6a1803df08f44-88d83c64e72mr15308326d6.25.1766093504237; 
- Thu, 18 Dec 2025 13:31:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IETvacSvZ/O26d5ZSg8RI/ssJtH7cJGxQAKOQH4VF61tHbb/qCbv2/iuh22PggqJj3dvsk/3w==
-X-Received: by 2002:a05:6214:4686:b0:880:4cfb:ab57 with SMTP id
- 6a1803df08f44-88d83c64e72mr15307956d6.25.1766093503758; 
- Thu, 18 Dec 2025 13:31:43 -0800 (PST)
-Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-88d997ada77sm4474106d6.37.2025.12.18.13.31.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Dec 2025 13:31:42 -0800 (PST)
-Date: Thu, 18 Dec 2025 16:31:41 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v3 39/51] tests/qtest/migration: TLS x509: Add
- init/cleanup routines
-Message-ID: <aURyvVMQuoXBrUbg@x1.local>
-References: <20251215220041.12657-1-farosas@suse.de>
- <20251215220041.12657-40-farosas@suse.de>
+ d=1e100.net; s=20230601; t=1766093552; x=1766698352;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=54KYr2e+XgR3khgSV11sMu/Z5RVOcSDXb+i3+37ZTyg=;
+ b=QiC4lDutdgH1SRgUv3jGj5Dy34UvlBZysK2pI9nj5GM4kuRXrXgNqNmjGPHrHqDiak
+ kRdWcp9+ADTbhx2rhp7MSN/gqiXH2CpKInVb6MvAGU9KIJUM+xUn9qe5ezhq4N43ORQI
+ zz72P+6fyBd4J2g733WNuMzJOaiH1Eshu4Z8SP/JEbfEmMiNMdwaKxoLcRo71cVx2IeE
+ 6t7ioKbOnuo+SCbetU4vXKT5M6SMMOMuiKjDyX5rZ75q0vE6JPCzHOTgg7wmGmKAsR3L
+ OGe9XYUxBW8ehwN71WJrCK+hHBuf4VlNkwQI6I28TFMx531Z4nj6bjU9MmtxUMVrv9o4
+ KELA==
+X-Gm-Message-State: AOJu0Yz9IJCq6TjpgAnQVMrgs2waxhmDkdVWRf2LqNuO6bZ8Hsf7M+lu
+ XhnnF/T9SWNZaQ8yUPl+5tYbVvKb12zQ1g3Q9/FBabwvwnkCPOH4TX9KUolg7qTLwmsNz94Nktb
+ qPQxMzuc=
+X-Gm-Gg: AY/fxX4iXVzC6ujiEVAT+t7UZYe6s6xLtObi/8deZby3scXbLfm+BOLG1Kbt1bvQwsg
+ S2QerlCKmhPdrnzHah5Ly9E6IvVsoki3MKbgGCxnBbdJYSxwnLBxgCCngaXUayQmWwzvNJNknEi
+ Rrcmcl/fUHd5V+3/xKTuwIuTDrRO0pO11S8Aea22pTUEe99DioC3UJlbG0uZv7+AkD7v/bquFy9
+ 8Z1EFQHj0xXmrlVNshUEh9H8IjPKXiRWTwJKjqqrLMdMBkpznZVDmSJHwQTBg5Mr0mgAq+c1gwj
+ +VtpaiJptrCqOIGntQ5URhCPRw7NnJmlEBiz8b6fW6oNpZJCa4gT/ZzpUU8Ki2e2JAv5Nl9yNZt
+ Uum3Y6yU9b7NlWcIYzkkS1FEa/Ic71iYyC9EexEK53SSwYi9rnXm2tYxvYWkpNM66D0T6ANqIJp
+ Fnl5Lma+squ1dj7VurRsDzXvtvViXbSZ8BItiwESYuSBDVpb8fh2AALsfZm81l
+X-Google-Smtp-Source: AGHT+IFItfB9ednsh59ka105DR7F4sPUc6RVsxH2ryECRaHXMK5nRiOMNauinYgsgMixCF+i25rU6w==
+X-Received: by 2002:a05:600c:5246:b0:477:54cd:2030 with SMTP id
+ 5b1f17b1804b1-47d1957f707mr5481475e9.21.1766093552411; 
+ Thu, 18 Dec 2025 13:32:32 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-4324eaa2beasm981143f8f.33.2025.12.18.13.32.30
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 18 Dec 2025 13:32:30 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Anton Johansson <anjo@rev.ng>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/3] target/tricore: Stop using the legacy native-endian APIs
+Date: Thu, 18 Dec 2025 22:32:26 +0100
+Message-ID: <20251218213229.61854-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251215220041.12657-40-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,55 +100,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 15, 2025 at 07:00:25PM -0300, Fabiano Rosas wrote:
-> Split the TLS x509 hooks by moving out of them any code that doesn't
-> need to access the QTestState.
-> 
-> Aside from making the code harder to follow for no practical reason,
-> having extra code in the hooks will soon get in the way of converting
-> the tests to use a new API that, unlike
-> migrate_set_parameters|capabilities, doesn't require the QEMU instance
-> to be already live.
-> 
-> Move the QTestState-independent code into a normal function and leave
-> the hooks only for operations that need the guest machine.
-> 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+The TriCore is always little-endian, making the conversion easy.
 
-I think I see what you want to do, this looks ok,
+Philippe Mathieu-Daudé (3):
+  target/tricore: Use little-endian variant of cpu_ld/st_data*()
+  target/tricore: Inline translator_lduw()
+  configs/targets: Forbid TriCore to use legacy native endianness API
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
-
-One trivial thing to mention below,
-
-> ---
->  tests/qtest/migration/tls-tests.c | 155 +++++++++++++++---------------
->  1 file changed, 75 insertions(+), 80 deletions(-)
-> 
-> diff --git a/tests/qtest/migration/tls-tests.c b/tests/qtest/migration/tls-tests.c
-> index 8da95dc92a..6a858b766f 100644
-> --- a/tests/qtest/migration/tls-tests.c
-> +++ b/tests/qtest/migration/tls-tests.c
-> @@ -210,15 +210,57 @@ migrate_hook_start_tls_x509_common(QTestState *from,
->                                     void *opaque)
->  {
->      TestMigrateTLSX509 *args = opaque;
-> -    TestMigrateTLSX509Data *data = g_new0(TestMigrateTLSX509Data, 1);
-> +    const char *workdir = g_strdup_printf("%s/tlscredsx5090", tmpfs);
-
-This introduces a string duplicate with the init() function.
-
-Quick change is we can at least make it a macro so use it in both places
-just to be clear that they must match.
-
-Logically we can also make the opaque to be TestMigrateTLSX509Data*
-instead, which can add a pointer pointing to TestMigrateTLSX509 (the "Data"
-struct is per-test, "non-Data" is a setup, which can be shared).
-
-Either way (the latter will need separate patch), or keep it as-is, you can
-keep my R-b.
+ configs/targets/tricore-softmmu.mak |   1 -
+ target/tricore/op_helper.c          | 152 ++++++++++++++--------------
+ target/tricore/translate.c          |   9 +-
+ 3 files changed, 81 insertions(+), 81 deletions(-)
 
 -- 
-Peter Xu
+2.52.0
 
 
