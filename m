@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3B1ECCD500
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 20:02:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7256FCCD50F
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 20:03:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWJG9-0006Gf-BG; Thu, 18 Dec 2025 14:02:00 -0500
+	id 1vWJHF-0006rg-9U; Thu, 18 Dec 2025 14:03:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vWJEp-0005ps-5q
- for qemu-devel@nongnu.org; Thu, 18 Dec 2025 14:00:42 -0500
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1vWJFK-00065L-1x
+ for qemu-devel@nongnu.org; Thu, 18 Dec 2025 14:01:11 -0500
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vWJEf-000114-I2
- for qemu-devel@nongnu.org; Thu, 18 Dec 2025 14:00:29 -0500
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-7bc0cd6a13aso641002b3a.0
- for <qemu-devel@nongnu.org>; Thu, 18 Dec 2025 11:00:25 -0800 (PST)
+ id 1vWJF7-0001Ab-Gp
+ for qemu-devel@nongnu.org; Thu, 18 Dec 2025 14:00:57 -0500
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-7aa2170adf9so852028b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 18 Dec 2025 11:00:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766084424; x=1766689224; darn=nongnu.org;
+ d=linaro.org; s=google; t=1766084451; x=1766689251; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=kXwuZWgX1qLHCChO8eo2XcgVStKZKjX6dmnvvioUo8Y=;
- b=nU8k0waM4JVSzv5G57ftKBYb0qcL4RhYC5b2gVJf2L+tQRPkP3urfKnRaqYPWQHurN
- GQJErvs/2VXn0Y+pXIYW7b7sM2VTtd0SDG62EhFF9K20ig3JvS3DeO6NshaMU1QymE3h
- UygUVctxd5mpbWU80wkWJu71TH2THEyCZIvrCmnlSVMlU5berIBqAW7Cx16/lCpFrmAV
- HatWPgYnXwdk19cIHhaYN7/5z8TPkuuvBfN2FME42CAE11/uWH3qJvNKBmFFn7a9hteB
- vESVTxP/kp8Hn/cLIBGMKX1+RwuifP5aa9PiZMmhTYCoTi/ZSX/YnyCr27+dkiUuHQk1
- iBOA==
+ bh=Qux5kJlnf4yLb4Jal/b5IDnLE2fgj2b9cmP/92c4XpU=;
+ b=Y5WWrmV0hvM2FW9EVecs8hr0tUuFcDPyAEtSZnarTokY1Cr9//lt2wrx6fc9B0Y3Bl
+ GuooXbPhk5F02m5iCAUmCZ0J5qHveVjreCtcq+OcmCRU6vHbE6r54izq7igNrmRvjz7i
+ 1EKrAxwvbRjtasHQbs0zymBWowsNS+gua1PF29kAQoIPeq7lxK3vaWgTZo4DCSdYABm3
+ MJ9MwGANgxH5j+EX0eoa4UXRa+ksDsZB+bJMACMAH3qVetoa2aEd06H6gKOACCpuUr+3
+ Wv9TlQaO4yvRRslb1HfyYTHoFvD0Zk1Zlhk9AfiY/u53JBEFTGxDGKWkOa8LrxoM7LNs
+ 9f/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766084424; x=1766689224;
+ d=1e100.net; s=20230601; t=1766084451; x=1766689251;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=kXwuZWgX1qLHCChO8eo2XcgVStKZKjX6dmnvvioUo8Y=;
- b=viPwVZryf552QJ+Db1P3TYE5kSmaVXFVlf5gn45SarubLIYFqDCqZ7WisvU0bkqmsy
- BPZhz7Y9gTwtUmyNaCwyuPW4v4G8BCOzQNAkyREJLqKYlQ8GfUrCmkNmSoOgS6EXD3jS
- 8VoMAsmB81k1LxhPeLUmHjIiV2V8kToHCivxYFxwR6mw52JrC9LMaZ0s8m0CUrNs9Xuo
- TvngacXq6dfLpB7G0XvjoVkdHBAvsi0ZF51bd3/Mfsb5JBauDZY1ykpD39WOxl+sz5CX
- gk5d/6798AmVIAc5unh+FbobpgWgLExnzU2OqpbHvi9aHGAUasUaj5U4kYZazCsV2LUf
- iDag==
-X-Gm-Message-State: AOJu0YwD6dBNV2Q7IrJJsd6XON9R8VCSmDHDgPqeikd4019ElDXFfnJc
- mNXuIzJ8TVyN73grp8IREpibQdF4nVeptHX9dwanxNZhA6uNpA1CKQ0WrRgGXuLbFOPVeTTy99f
- D6s0WmbU=
-X-Gm-Gg: AY/fxX7nSB/fr9clp78rcggIsvHW/draa1z4migjYf3Bv9yzPu1hCHBEt9vfGxDkySV
- bAgJujcsTT5+M+YLx9o5Kb4cqFNSwvo4jBu9RO7QqYnyYWccncZka9lFp3IzbNK/H/PR6u2S+iJ
- bj93PW8txsPAza9vAAAopdsFaNcsLO3ncY56adxmGXa4uca5bn0HRAJi1BFrK290UNEksfIU6Kf
- zovKzThCMt8AfLAN40WueGTzGxN3hxLYfZRuqsjs2YWI59D0fKUNcnCPy0e8SER6qqFHsk6GWUN
- cjqbXV/r/QGFF8JK8VDlfIMP3RdoCfwT40IBTTHsknJys6213OBTedhjMgR637G956FxEjQoikn
- xOjaY0qglpndPRrB5WeD1miw/SVqxCG6tMw/GaualET3ygEpJ8A9RBGTogYXnkN/VREt7JHXSmy
- aGoKtrFGalL86iSp5S2AJSCo44rdoipw==
-X-Google-Smtp-Source: AGHT+IH1P55pS1wdDf+JfUbByPvCx1HMjEt5ixz00odrcsz98LHGrBykirY1vPaXwxNxEYj2QAMEAg==
-X-Received: by 2002:a05:6a00:7415:b0:77d:c625:f5d3 with SMTP id
- d2e1a72fcca58-7fe0b73a4e8mr2650109b3a.1.1766084423421; 
- Thu, 18 Dec 2025 11:00:23 -0800 (PST)
+ bh=Qux5kJlnf4yLb4Jal/b5IDnLE2fgj2b9cmP/92c4XpU=;
+ b=Qq24/OvWkFrdxi98AdJr9ccAIXUv0gXQo6dhOoLTt1ooeqmcYVZpsZsbQSiHYAQrZE
+ rMPf/iUHIiufZFy70TWs9Yov6hJVC3qV0DpslE4DwgcDmae955yx/nGQR7CYgZZ7QG47
+ 5Emrfnw1ixY1BHVxa3g7VGLa8TdCgd58F8AYUiQq3ZRagne08U6Cn6jBO4/DxoDlbelB
+ SRH7TTRC5uIzsv0DRt2f5+i3+kQpAr2ygpTsTmCpJD0dWlMbB21tQk1ZfRGleNLIkb96
+ DHU5DYWpMay8TVVjIZgCYOYiFQKQn/1ZlKVQCePyqktCid8lr8WQ6SO7vc++7dy6Gv6G
+ 1LOw==
+X-Gm-Message-State: AOJu0YzARVyqsoGUm10VXohR6aEv91lq3Y07Cu4HiVohIMmNqCfxCeEw
+ /vpH8XRC0uRiuKP+U+sn35LsQk/4xfim04lw19/N3idMmOTCDd+4ofhnoOwgTJ5QRoN3cMS4hse
+ aKZhXJbA=
+X-Gm-Gg: AY/fxX6q1WF0Ma6dFpdrRKlZov43Ps0vWNwYEcPPBb1oVfhbND5Vhatsu8GiR6S95u3
+ BbTNozL+8FmyijUO6AN/3TtVCei/xjj884VYgM0Xo+3LH7KDvDSgKRXzz3RbOhkcsGweJZ4/kxC
+ 6S7NGb7OFFsgvPFzrh/1OClNfh1VUJefsDrBOFzy4PUmGu2Z+z2U83yCflsftCjpTEAi9ucLSOT
+ wHLrje3p5l45rzZemnpPZiPGeZhTesKEiJmQhR4EDZbEhROlDQs/8+ZXx689NAZUD66/6rl69dx
+ gJftzfhJPUXL1PJrkP0tzv/8v2Dv64kuPqnhJHDQzZiHS1NMSzrC45FTzQQAOALTD9QPvHTJmWf
+ 2dEsAtqvquHygqg1oSEmrUDCfk2qTeudbWFG2/YQURZn5hDMBuOwSUaPpA/65OfbXEVADhNQ3IY
+ 7wNIoyt+MRlY1WaDoottF1hMy/IK0gAA==
+X-Google-Smtp-Source: AGHT+IEbAaCsu0/IwMZ7+h540uBODo0mrx/hQIyFmsKGceWsPX8gfsuoIe2tFSrUuVxmT4D7rWoZWA==
+X-Received: by 2002:a05:6a20:7346:b0:32d:b925:4a8 with SMTP id
+ adf61e73a8af0-376a75e7805mr440781637.3.1766084451314; 
+ Thu, 18 Dec 2025 11:00:51 -0800 (PST)
 Received: from [192.168.10.140] ([180.233.125.245])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7ff7e197983sm44523b3a.33.2025.12.18.11.00.21
+ 98e67ed59e1d1-34e9223aab0sm184110a91.13.2025.12.18.11.00.49
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 18 Dec 2025 11:00:22 -0800 (PST)
-Message-ID: <7b229cd4-a961-421a-932b-c6c60893d188@linaro.org>
-Date: Fri, 19 Dec 2025 06:00:18 +1100
+ Thu, 18 Dec 2025 11:00:50 -0800 (PST)
+Message-ID: <986dcd82-c915-460c-a91d-5d466e5e1af1@linaro.org>
+Date: Fri, 19 Dec 2025 06:00:46 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/6] hw/timer/hpet: Mark implementation as being
+Subject: Re: [PATCH 5/6] hw/char/pl011: Mark implementation as being
  little-endian
 To: qemu-devel@nongnu.org
 References: <20251218181812.58363-1-philmd@linaro.org>
- <20251218181812.58363-5-philmd@linaro.org>
+ <20251218181812.58363-6-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-In-Reply-To: <20251218181812.58363-5-philmd@linaro.org>
+In-Reply-To: <20251218181812.58363-6-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,7 +105,7 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/19/25 05:18, Philippe Mathieu-Daudé wrote:
-> The HPET component is only built / used by X86 targets, which
+> The PL011 component is only built / used by ARM targets, which
 > are only built in little endianness. Thus we only ever built
 > as little endian, never testing the big-endian possibility of
 > the DEVICE_NATIVE_ENDIAN definition. Simplify by only keeping
@@ -113,36 +113,36 @@ On 12/19/25 05:18, Philippe Mathieu-Daudé wrote:
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/timer/hpet.c                  | 2 +-
->   rust/hw/timer/hpet/src/device.rs | 2 +-
+>   hw/char/pl011.c                  | 2 +-
+>   rust/hw/char/pl011/src/device.rs | 2 +-
 >   2 files changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
-> index 1acba4fa9db..bfad626d5e1 100644
-> --- a/hw/timer/hpet.c
-> +++ b/hw/timer/hpet.c
-> @@ -648,7 +648,7 @@ static const MemoryRegionOps hpet_ram_ops = {
->           .min_access_size = 4,
->           .max_access_size = 8,
->       },
+> diff --git a/hw/char/pl011.c b/hw/char/pl011.c
+> index 01335d9437d..97cd9bd4c54 100644
+> --- a/hw/char/pl011.c
+> +++ b/hw/char/pl011.c
+> @@ -538,7 +538,7 @@ static void pl011_clock_update(void *opaque, ClockEvent event)
+>   static const MemoryRegionOps pl011_ops = {
+>       .read = pl011_read,
+>       .write = pl011_write,
 > -    .endianness = DEVICE_NATIVE_ENDIAN,
 > +    .endianness = DEVICE_LITTLE_ENDIAN,
+>       .impl.min_access_size = 4,
+>       .impl.max_access_size = 4,
 >   };
+> diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+> index 04155dabe1a..a6227a99f30 100644
+> --- a/rust/hw/char/pl011/src/device.rs
+> +++ b/rust/hw/char/pl011/src/device.rs
+> @@ -495,7 +495,7 @@ unsafe fn init(mut this: ParentInit<Self>) {
+>           static PL011_OPS: MemoryRegionOps<PL011State> = MemoryRegionOpsBuilder::<PL011State>::new()
+>               .read(&PL011State::read)
+>               .write(&PL011State::write)
+> -            .native_endian()
+> +            .little_endian()
+>               .impl_sizes(4, 4)
+>               .build();
 >   
->   static void hpet_reset(DeviceState *d)
-> diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
-> index 3564aa79c6e..4f4be84115e 100644
-> --- a/rust/hw/timer/hpet/src/device.rs
-> +++ b/rust/hw/timer/hpet/src/device.rs
-> @@ -708,7 +708,7 @@ unsafe fn init(mut this: ParentInit<Self>) {
->               MemoryRegionOpsBuilder::<HPETState>::new()
->                   .read(&HPETState::read)
->                   .write(&HPETState::write)
-> -                .native_endian()
-> +                .little_endian()
->                   .valid_sizes(4, 8)
->                   .impl_sizes(4, 8)
->                   .build();
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
