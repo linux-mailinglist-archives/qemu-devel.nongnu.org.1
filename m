@@ -2,96 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 438F0CCAA69
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 08:29:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B0E7CCABF6
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Dec 2025 08:58:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vW8Qu-0007NS-Bx; Thu, 18 Dec 2025 02:28:20 -0500
+	id 1vW8sX-0007w9-F8; Thu, 18 Dec 2025 02:56:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vW8Ql-0007Md-Gm; Thu, 18 Dec 2025 02:28:11 -0500
-Received: from mgamail.intel.com ([198.175.65.15])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vW8Qh-00032K-G0; Thu, 18 Dec 2025 02:28:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766042888; x=1797578888;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=hWNeVMjmF8yETmL2iScc7y+Xsno1MZFc4t4eczNLXrY=;
- b=QsdMLGBdBHXysHo0X1nqIlHeNF1yV3Cx0e4xAnlXcy2MlohTRm/baMGj
- k/CrxK2538yEOsYDHMSiVfzyaGQ8o5rWYLjtniQ4GRAaaPcYckHX65ni5
- JxQKXELvh5JRUv3OstzVGMikuTcO6c9vyxxHNIP4pNfja/LxpTA7HhZB6
- bQ2PpmdlBX+UQpsAys2EQ5D4g7TkUuXSeJ6m7G3GLvvxzXOf4JthBtYSC
- lGBqBLwzm1O0zS4wWzI5Qn/3mWOvyjjC7PlSLbkjPm/y8OACBYF0cFfEt
- B7Id0h+5rYSJlMZ3+XtS+ScIxZUpD6LIOhUfSJtSfDdD/h6cNk4hkVoWx w==;
-X-CSE-ConnectionGUID: 3C8WZCnUSsOjbEVI02Vetw==
-X-CSE-MsgGUID: zpVkJJ+BT5iVY/WPpUxDyQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="71622090"
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; d="scan'208";a="71622090"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2025 23:28:04 -0800
-X-CSE-ConnectionGUID: v88tZuomTSO56nWrPX/fYg==
-X-CSE-MsgGUID: ulShamx1RQqj9xlNDkLIiQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; d="scan'208";a="229575059"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa001.fm.intel.com with ESMTP; 17 Dec 2025 23:27:55 -0800
-Date: Thu, 18 Dec 2025 15:52:45 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- devel@lists.libvirt.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org,
- qemu-arm@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Sergio Lopez <slp@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Yi Liu <yi.l.liu@intel.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Weiwei Li <liwei1518@gmail.com>, Amit Shah <amit@kernel.org>,
- Xiaoyao Li <xiaoyao.li@intel.com>,
- Yanan Wang <wangyanan55@huawei.com>, Helge Deller <deller@gmx.de>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- =?iso-8859-1?Q?Cl=E9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Huacai Chen <chenhuacai@kernel.org>, Jason Wang <jasowang@redhat.com>,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>,
- BALATON Zoltan <balaton@eik.bme.hu>, Peter Krempa <pkrempa@redhat.com>,
- Jiri Denemark <jdenemar@redhat.com>
-Subject: Re: [PATCH v5 03/28] pc: Start with modern CPU hotplug interface by
- default
-Message-ID: <aUOyzVHm+mt1pCfL@intel.com>
-References: <20251202162835.3227894-1-zhao1.liu@intel.com>
- <20251202162835.3227894-4-zhao1.liu@intel.com>
- <20251217143237.7829af2e@imammedo>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vW8sS-0007v5-BL
+ for qemu-devel@nongnu.org; Thu, 18 Dec 2025 02:56:48 -0500
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vW8sN-00071t-89
+ for qemu-devel@nongnu.org; Thu, 18 Dec 2025 02:56:46 -0500
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-42f9ece6387so81060f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 17 Dec 2025 23:56:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1766044601; x=1766649401; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=viVVRNYaSV8s8DB/EGOJ01v/32csXHNsv58hPF9w6oM=;
+ b=M9dvwlzcURKb37WWjs9duHYURjfrBblqLFbZbfBCAJzId0rWkLEyoDw/EtbvBkyPaB
+ LmQnqNCTlWd75QnHoTYDBqqVO8wNGR9jU+08+e9pncbyrK/L9GVQgJ+trKtUM+lNAit0
+ 2b+Kimq4wPTcbEZVrNVCYLRrE7g/H4vUvRNO24HXxklGe+g1pGE+9iscQXu2HAdne5iz
+ SCNTANdchfpved8bz730Vqnw+iGxL0InCd3TM1usWvM07UwPcC21rFdxExBKX5qxzj8X
+ s0WMT98wTlw1t661Dob37POCH3OX7JmTYGvUF51hP96z5ieiUkCj7NKQjz+pwm/UeFH0
+ NQJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1766044601; x=1766649401;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=viVVRNYaSV8s8DB/EGOJ01v/32csXHNsv58hPF9w6oM=;
+ b=ovAqpO93kjs8m3EC0PMKt21NcW0inx/ghqNThD5k2ASrxk3AL/ebz3ZAntnDI2IlAw
+ udkr5HF8p181Rd/Iq0usx7ZbN5MJgqLAAvGkagPjjlvjXrmOLTzLrAwD36SvZBOrmOFg
+ PPO+cvcRZGhILzXyKHAMhDfqFgqgWdiK+CpVJnXl8GBsh0Veu6fpDGcj8SRIre/7/KaQ
+ 4muarFM5I1EO5Qv4g1Us5OntinA6a2gvWLdD+1FNSLi/+0EyMUD04EIOkCuxEcClJ4hu
+ RSspqdwJj4Uw8N6xPp/+weiuEE8KqWViAH5iLP0K+1IApnLtFIYfpq/U576Vj9PPvbvB
+ drfQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXrvEdVP7UgFtP+hpd5542nCjNZGSYc/77nFFmeVkdsRqpRgo9NtK2qU9D4WusTbyizInhjNG31kpJD@nongnu.org
+X-Gm-Message-State: AOJu0Yyu6lwiI5Mf6rWBbf9X+cA/3IH0RGV2rAGFe6j7KpBF553kOaMU
+ KE0WRNPfHr+l5ZC+jnIf6VeHTqjTgQErAD321c0rRfeX6wwncMKCha4gj28Fc8GOxDg=
+X-Gm-Gg: AY/fxX7jDUEV3+R7JNbZz+H3Z6WzSn4oGVgqHMDvI9LH5t1YXjqGqsF2aFoNuIDK6Lk
+ GQ0wANIK27xU2S6FbnuuFbeOgi4Bk1gE3RC0Ysr+FfLlyfrAyqj9twCtkrbF1IOU/dauaKaPczt
+ LuqgAWdI421WGMMjkkdgAgjrAJqlWo4QIf+uYa/WQCMbNh8tVQXfdobXRUu/pPChqaFv2+aOPIT
+ rCt/B4uS/9sjk8bNIVWg/cU9qQDvnJ/jL68Q82IKd6xhBTPw3FyQk5auxiQodtKK8kdr97cDihp
+ N807vxO6U66LHMaFaI4hruUNOfnohgJneoInODtNgH8tUOYCaOgQj/0+qO2HzBh9MBI9tWfyJxK
+ B2jon+Tc5lLZavt2Nr8YFa5sQFsZCIMNQYGxUthjsthHdAvstRwomr08MqtgUkU+qpSuTRuJVH3
+ 7+b1EXBP5/mIAqrlGS0P3zwWLp8erCHLsCsHAi095Si0AS2BtEvWTaUA==
+X-Google-Smtp-Source: AGHT+IFgj/y0UoncA2SuYLgOPW7V1fLfBWf8573vUy7UWdePFeIpdejWYbssVGau/O3VrPw0WnzfWw==
+X-Received: by 2002:a05:6000:2404:b0:431:4fb:34cc with SMTP id
+ ffacd0b85a97d-43104fb4e66mr9908819f8f.39.1766044600873; 
+ Wed, 17 Dec 2025 23:56:40 -0800 (PST)
+Received: from [192.168.69.202] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-43244998ed5sm3207497f8f.35.2025.12.17.23.56.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 17 Dec 2025 23:56:40 -0800 (PST)
+Message-ID: <80397b14-160b-4a87-a0cf-d828f2974c85@linaro.org>
+Date: Thu, 18 Dec 2025 08:56:39 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251217143237.7829af2e@imammedo>
-Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs/devel: Remove stale comments related to iommufd
+ dirty tracking
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex@shazbot.org, clg@redhat.com, eric.auger@redhat.com,
+ yi.l.liu@intel.com, joao.m.martins@oracle.com
+References: <20251218065042.639777-1-zhenzhong.duan@intel.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20251218065042.639777-1-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,59 +103,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 17, 2025 at 02:32:37PM +0100, Igor Mammedov wrote:
-> Date: Wed, 17 Dec 2025 14:32:37 +0100
-> From: Igor Mammedov <imammedo@redhat.com>
-> Subject: Re: [PATCH v5 03/28] pc: Start with modern CPU hotplug interface
->  by default
-> X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
-> 
-> On Wed,  3 Dec 2025 00:28:10 +0800
-> Zhao Liu <zhao1.liu@intel.com> wrote:
-> 
-> > From: Igor Mammedov <imammedo@redhat.com>
-> ^^^
-> given you resplit original patch, it's better to replace this with you,
-> keeping my SoB is sufficient
+On 18/12/25 07:50, Zhenzhong Duan wrote:
+> IOMMUFD dirty tracking support had be merged
 
-Thank you! Will re-organize these signatures
+[in merge commit dd4bc5f1cfe?]
 
-> > For compatibility reasons PC/Q35 will start with legacy CPU hotplug
-> > interface by default but with new CPU hotplug AML code since 2.7
-> > machine type (in commit 679dd1a957df ("pc: use new CPU hotplug interface
-> > since 2.7 machine type")). In that way, legacy firmware that doesn't use
-> > QEMU generated ACPI tables was able to continue using legacy CPU hotplug
-> > interface.
-> > 
-> > While later machine types, with firmware supporting QEMU provided ACPI
-> > tables, generate new CPU hotplug AML, which will switch to new CPU
-> > hotplug interface when guest OS executes its _INI method on ACPI tables
-> > loading.
-> > 
-> > Since 2.6 machine type is now gone, and consider that the legacy BIOS
-> > (based on QEMU ACPI prior to v2.7) should be no longer in use, previous
-> > compatibility requirements are no longer necessary. So initialize
-> > 'modern' hotplug directly from the very beginning for PC/Q35 machines
-> > with cpu_hotplug_hw_init(), and drop _INIT method.
-> > 
-> > Additionally, remove the checks and settings around cpu_hotplug_legacy
-> > in cpuhp VMState (for piix4 & ich9), to eliminate the risk of
-> > segmentation faults, as gpe_cpu no longer has the opportunity to be
-> > initialized. This is safe because all hotplug now start with the modern
-> > way, and it's impossible to switch to legacy way at runtime (even the
-> > "cpu-hotplug-legacy" properties does not allow it either).
-> > 
-> > Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+, the stale comments could
+> be dropped.
 > 
-> tested ping pong cross version (master vs master+this patch) migration
-> with 10.1 machine type, nothing is broken, hence
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>   docs/devel/vfio-iommufd.rst | 12 ------------
+>   1 file changed, 12 deletions(-)
 > 
-> Acked-by: Igor Mammedov <imammedo@redhat.com>
-
-Thanks for your test and review!
-
-Regards,
-Zhao
+> diff --git a/docs/devel/vfio-iommufd.rst b/docs/devel/vfio-iommufd.rst
+> index 3d1c11f175..b37098e1b6 100644
+> --- a/docs/devel/vfio-iommufd.rst
+> +++ b/docs/devel/vfio-iommufd.rst
+> @@ -127,18 +127,6 @@ Supports x86, ARM and s390x currently.
+>   Caveats
+>   =======
+>   
+> -Dirty page sync
+> ----------------
+> -
+> -Dirty page sync with iommufd backend is unsupported yet, live migration is
+> -disabled by default. But it can be force enabled like below, low efficient
+> -though.
+> -
+> -.. code-block:: bash
+> -
+> -    -object iommufd,id=iommufd0
+> -    -device vfio-pci,host=0000:02:00.0,iommufd=iommufd0,enable-migration=on
+> -
+>   P2P DMA
+>   -------
+>   
 
 
