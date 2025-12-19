@@ -2,89 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2256BCCEB6E
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 08:06:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B4A7CCECDF
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 08:41:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWUXo-00042N-Rt; Fri, 19 Dec 2025 02:04:56 -0500
+	id 1vWV5Z-0007m6-NQ; Fri, 19 Dec 2025 02:39:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3D_lEaQYKCmYcYFMRdKSSKPI.GSQUIQY-HIZIPRSRKRY.SVK@flex--yubinz.bounces.google.com>)
- id 1vWUXm-0003wx-Qh
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 02:04:54 -0500
-Received: from mail-pg1-x54a.google.com ([2607:f8b0:4864:20::54a])
+ (Exim 4.90_1) (envelope-from <chao.liu.zevorn@gmail.com>)
+ id 1vWV5Y-0007lx-4b
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 02:39:48 -0500
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3D_lEaQYKCmYcYFMRdKSSKPI.GSQUIQY-HIZIPRSRKRY.SVK@flex--yubinz.bounces.google.com>)
- id 1vWUXj-0001k1-7j
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 02:04:54 -0500
-Received: by mail-pg1-x54a.google.com with SMTP id
- 41be03b00d2f7-b5edecdf94eso2551921a12.2
- for <qemu-devel@nongnu.org>; Thu, 18 Dec 2025 23:04:49 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <chao.liu.zevorn@gmail.com>)
+ id 1vWV5W-0003n3-B8
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 02:39:47 -0500
+Received: by mail-pf1-x441.google.com with SMTP id
+ d2e1a72fcca58-7bb710d1d1dso2356895b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 18 Dec 2025 23:39:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1766127888; x=1766732688; darn=nongnu.org;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=oHDRDOqYpkKjKejrjXjhauncK/XJBUAP2DgWEeIg1RQ=;
- b=Bc4YhuDZi/vtNzKMz022YUDjg0jCoMfkweS55JA2sqfiwHDQRtnkuFQ1U12w1RcaGU
- QWXf0aPOz36Sau+9TtcpwZ8eAxgEpiQFaxmfLJjWmcqdxdxIuRDSZB71M2aOpBHSX1gZ
- TAbRr7FW2gaGm32wArfvBTmrc+JYHzDrzORyofrhp4tS/jz0ixMTcQOS+J2TGqmVq8BX
- HHrddEU9ISmNggkBY58f280g+/oYR5bJwIpI2cKw3UVRKGvHLXy1qFDfBBCQ/oOrtcJI
- 5j/EzJtnE6ehQghQoMJmYb8NyDGQbqqj1r7uLrom03kzGAbXmSKHXauR+ZweOp+WTGG8
- 8+xg==
+ d=gmail.com; s=20230601; t=1766129983; x=1766734783; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:subject:references:cc:to
+ :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=g1R3txfV5umEDebIavAWkdMvbkrb6tm0YQK/N40boXc=;
+ b=NPK8sUUza+aE1cCacRfcyUjEFBVyM+tB15dfYxkCBHm2G6qD/8H/cK6pG2hnPvkyUc
+ y+WypemEO/r8krAfPe7x64x7incsMDHZyN6UU+hl8ztYnoBUYLDcDo9MUN8tfF7b8nLa
+ a6T1mGvBPID9QImnsiwSvYCbfLPN02YZZaKV84xqma5K/oEGt238WrD7b8VpxG4q9IHD
+ 1lBTyf2WkebrQOtKgzMDNTQHiBAB2PJrrwIgVqHlwPJSDdxHfNCaJQYBx9ica+KBLYLW
+ AAc+nOxryIVJaNc4LW/BdH+on1VsUYi3HOaOilxRp+4xk6S4HTfQLcVZL/ThdxSM0zil
+ C2Pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766127888; x=1766732688;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oHDRDOqYpkKjKejrjXjhauncK/XJBUAP2DgWEeIg1RQ=;
- b=E2ATPvYM+PNJMEZhLlveeJxV3LIx/ixP0s8mnffqGVUoSOpcRlnI9M9tPO3VfgjQCX
- e7yTRxeEXFlIKwdoCQrqAjOl+k3IXd8g+rewtQkr/XKwg/Nvrj5ovWLBcVGyastGnXba
- fF6P7MHKRlncjDrHhxN8Zzv4FWhE55yQ7k3eZgUNHB5f6eDokay/fDn520/vFcDCoKTM
- tQz68g1xaSZszto4DxfMAWEzLJQhipjrd2gO1pDKXjw0X2iA8MlAhZLQmlBVi7DpNo9m
- 7MlgN+ioxcrKkjfjlv7TpSqZDwgsqdjensD0FEpTgRmMOGsJzfBN5+W23LR7q3R2fsLE
- yPug==
-X-Gm-Message-State: AOJu0YzYETRNKxP0VIB05xa35DVFPpHeRP+p1j8A72T7nsOWgJT2aDJf
- LZzZT84IQY3ceM39qfjV6C/pjfVwX5pvXHKZ1R34L2BR/omimutT4jl4UEZsKyfCRTxppSt+boo
- 3T8pkX0IVsJAeg0xIAclvb2XnJpMrd/NR/OrQXwW9GD9w3xCz5QgwH2nT5ixdyfa5LIQJxYir0M
- YSliFjDdtYjT3KdaE6KsM4s4RnjrrSV6b11J8=
-X-Google-Smtp-Source: AGHT+IFCdANWyDLHMdIGZ7AMDeW9wvvBUmAM0nylH1FzibGZule8+w2XFmfbG48uF4nukcLQ+xQAtbFK+EI=
-X-Received: from dlbsw5.prod.google.com ([2002:a05:7022:3a85:b0:11b:b064:f5dc])
- (user=yubinz job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:3c88:b0:11a:6424:f40f
- with SMTP id a92af1059eb24-121722fd1e7mr1630420c88.36.1766127887918; Thu, 18
- Dec 2025 23:04:47 -0800 (PST)
-Date: Fri, 19 Dec 2025 07:04:19 +0000
-In-Reply-To: <20251219-aspeed-sgpio-v5-0-fd5593178144@google.com>
-Mime-Version: 1.0
-References: <20251219-aspeed-sgpio-v5-0-fd5593178144@google.com>
-X-Mailer: b4 0.14.2
-Message-ID: <20251219-aspeed-sgpio-v5-6-fd5593178144@google.com>
-Subject: [PATCH v5 6/6] test/qtest: Add Unit test for Aspeed SGPIO
-From: Yubin Zou <yubinz@google.com>
-To: qemu-devel@nongnu.org
-Cc: "=?utf-8?q?C=C3=A9dric_Le_Goater?=" <clg@kaod.org>,
- Peter Maydell <peter.maydell@linaro.org>, 
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>, 
- Jamin Lin <jamin_lin@aspeedtech.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, 
- Joel Stanley <joel@jms.id.au>, Fabiano Rosas <farosas@suse.de>,
- Laurent Vivier <lvivier@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Kane-Chen-AS <kane_chen@aspeedtech.com>, 
- Nabih Estefan <nabihestefan@google.com>, qemu-arm@nongnu.org, 
- Yubin Zou <yubinz@google.com>
-Content-Type: text/plain; charset="utf-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::54a;
- envelope-from=3D_lEaQYKCmYcYFMRdKSSKPI.GSQUIQY-HIZIPRSRKRY.SVK@flex--yubinz.bounces.google.com;
- helo=mail-pg1-x54a.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ d=1e100.net; s=20230601; t=1766129983; x=1766734783;
+ h=content-transfer-encoding:in-reply-to:from:subject:references:cc:to
+ :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=g1R3txfV5umEDebIavAWkdMvbkrb6tm0YQK/N40boXc=;
+ b=JYwAwaxYZtBt0GkC4ofBG9bzJzewt3Cq9h5sMjo0yjbQfdhMf3zJJopBRfmKJtbSu3
+ Wt5HQsc6arS+tHIuUftH422Mdzj3rHd44Z3+jkV66GuaNwcEvc0vJ5roeNMqMJJD7wCy
+ UZDprYPWhglTViug8FR7QXn6u3Y4vftdYz5VisxmvfcICHq1+1beIMQqq6rJkSbMF9vg
+ 5QN1UeRcdFv3paB8LJaSmWQtPlgdiN3DC0IrqbaeANI/Hmo9cMPGIkaB4h9rTZ6/eedh
+ CZHD59v3rGB1SbbMdqT5rqEw/IZYW+DaLxPAssuVT5Fxb0lNMtICvDgd30KAU4jw9xMJ
+ EoWQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXBB215g5yQ5tz3kaPAdIoiebq6GJjkUx9AjdBCb6+h1kgfjsqtKuBMtejv/1Xhujp+OfF+C9cz2kou@nongnu.org
+X-Gm-Message-State: AOJu0YzUGRvcXGDfNIsGD2uedycr/ZMOIXrhSNM52bUdfmVI6TToA/v6
+ Z6TkN68jQdKaeFXF1clTiuCwggw57NXYg6INRYRuDU4pg7gH6Ho+PgkG
+X-Gm-Gg: AY/fxX7+6i6TD8gy3NjIbQPqpueVtBaDm/NRar1h1ko8TY826hkS8ra04F28eHunA37
+ DCHWB5GA+hYnao9nF1M+OiWWUw+kjCYyB5KOYu5gyFgTxrbTcav1QMPhKPRh03qIhcgroyMusM7
+ VkLv2kmVdnbznaSUDXH9LDfMdrKKF+e0XcrAihiWRL9XkDEI1p0ogM2D0bgvU72pdGhUwvj8UcH
+ QkIgKTxJGdcE4RWq8B+tMk+fu9Ff5zArunPUCant6xdvvQYy0p5Vc/0WSf+VAtbISsPkLSmkvu4
+ MEBk80i4kaYDuvwmqKuXY2ufk5c4PxxcWTVDijnuaZdVznLPrWqC9UkmcLgxOxymrtoXX8n7Bfz
+ /tJe13Y0OqQ7QRSH+Vqx8i5m0qs6OX5VXOkuHHAbt/8QpX49Clcv4PspRnl2cv5nwuisvhCskwZ
+ e3s+nt6NT0AN6DXDymVUPChfi3n9dH1gF5a5hfjw==
+X-Google-Smtp-Source: AGHT+IFxGaCEZEb0DIy9o9ViW8PkLFtswNs8Z6dH3DE1ZIuLZFXV4Eai5N2TNmH8pksGMPI+dRpvmg==
+X-Received: by 2002:a05:6a00:1d16:b0:7b8:bab9:5794 with SMTP id
+ d2e1a72fcca58-7ff64cd8d51mr2076591b3a.26.1766129982913; 
+ Thu, 18 Dec 2025 23:39:42 -0800 (PST)
+Received: from [127.0.0.1] ([218.81.29.112]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7ff7e589b0csm1509577b3a.56.2025.12.18.23.39.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 18 Dec 2025 23:39:42 -0800 (PST)
+Message-ID: <18b5ec30-2a35-49e8-86ee-c0d4d7e149cf@gmail.com>
+Date: Fri, 19 Dec 2025 15:39:36 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: sergeev0xef@gmail.com
+Cc: halip0503@gmail.com, qemu-devel@nongnu.org
+References: <20251218183122.408690-6-sergeev0xef@gmail.com>
+Subject: Re: [RFC PATCH 5/6] target/riscv: Add PMU events implementation for
+ `virt`
+From: Chao Liu <chao.liu.zevorn@gmail.com>
+In-Reply-To: <20251218183122.408690-6-sergeev0xef@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::441;
+ envelope-from=chao.liu.zevorn@gmail.com; helo=mail-pf1-x441.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,203 +101,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit introduces a new qtest for the Aspeed SGPIO controller
-The test covers the following:
-  - Setting and clearing SGPIO output pins and verifying the pin state.
-  - Setting and clearing SGPIO input pins and verifying the pin state.
-  - Verifying that level-high interrupts are correctly triggered and cleared.
+On Thu, 18 Dec 2025 21:31:20 +0300, Aleksandr Sergeev wrote:
+>diff --git a/hw/misc/virt_pmu.c b/hw/misc/virt_pmu.c
+>new file mode 100644
+>index 0000000000..afba06de0e
+>--- /dev/null
+>+++ b/hw/misc/virt_pmu.c
+>@@ -0,0 +1,142 @@
+>+/*
+>+ * RISC-V Virt machine PMU emulation.
+>+ *
+>+ * Copyright (c) 2025 Syntacore.
+>+ *
+>+ * This program is free software; you can redistribute it and/or modify it
+>+ * under the terms and conditions of the GNU General Public License,
+>+ * version 2 or later, as published by the Free Software Foundation.
+>+ *
+>+ * This program is distributed in the hope it will be useful, but WITHOUT
+>+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+>+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+>+ * more details.
+>+ *
+>+ * You should have received a copy of the GNU General Public License along with
+>+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+>+ */
+>
+The virt_pmu.c requires 'SPDX-License-Identifier: GPL-2.0-or-later'
 
-Signed-off-by: Yubin Zou <yubinz@google.com>
----
- tests/qtest/ast2700-sgpio-test.c | 165 +++++++++++++++++++++++++++++++++++++++
- tests/qtest/meson.build          |   1 +
- 2 files changed, 166 insertions(+)
+...
 
-diff --git a/tests/qtest/ast2700-sgpio-test.c b/tests/qtest/ast2700-sgpio-test.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..14fa4084dad3daedcf78815b05b1282c284f0783
---- /dev/null
-+++ b/tests/qtest/ast2700-sgpio-test.c
-@@ -0,0 +1,165 @@
-+/*
-+ * QTest testcase for the ASPEED AST2700 SGPIO Controller.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ * Copyright (C) 2025 Google LLC.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/bitops.h"
-+#include "qobject/qdict.h"
-+#include "libqtest-single.h"
-+#include "hw/registerfields.h"
-+#include "hw/gpio/aspeed_sgpio.h"
-+
-+#define AST2700_SGPIO0_BASE 0x14C0C000
-+#define AST2700_SGPIO1_BASE 0x14C0D000
-+
-+static void test_output_pins(const char *machine, const uint32_t base, int idx)
-+{
-+    QTestState *s = qtest_init(machine);
-+    char name[16];
-+    char qom_path[64];
-+    uint32_t offset = 0;
-+    uint32_t value = 0;
-+    for (int i = 0; i < ASPEED_SGPIO_MAX_PIN_PAIR; i++) {
-+        /* Odd index is output port */
-+        sprintf(name, "sgpio%03d", i * 2 + 1);
-+        sprintf(qom_path, "/machine/soc/sgpio[%d]", idx);
-+        offset = base + (R_SGPIO_0_CONTROL + i) * 4;
-+        /* set serial output */
-+        qtest_writel(s, offset, 0x00000001);
-+        value = qtest_readl(s, offset);
-+        g_assert_cmphex(SHARED_FIELD_EX32(value, SGPIO_SERIAL_OUT_VAL), ==, 1);
-+        g_assert_cmphex(qtest_qom_get_bool(s, qom_path, name), ==, true);
-+
-+        /* clear serial output */
-+        qtest_writel(s, offset, 0x00000000);
-+        value = qtest_readl(s, offset);
-+        g_assert_cmphex(SHARED_FIELD_EX32(value, SGPIO_SERIAL_OUT_VAL), ==, 0);
-+        g_assert_cmphex(qtest_qom_get_bool(s, qom_path, name), ==, false);
-+    }
-+    qtest_quit(s);
-+}
-+
-+static void test_input_pins(const char *machine, const uint32_t base, int idx)
-+{
-+    QTestState *s = qtest_init(machine);
-+    char name[16];
-+    char qom_path[64];
-+    uint32_t offset = 0;
-+    uint32_t value = 0;
-+    for (int i = 0; i < ASPEED_SGPIO_MAX_PIN_PAIR; i++) {
-+        /* Even index is input port */
-+        sprintf(name, "sgpio%03d", i * 2);
-+        sprintf(qom_path, "/machine/soc/sgpio[%d]", idx);
-+        offset = base + (R_SGPIO_0_CONTROL + i) * 4;
-+        /* set serial input */
-+        qtest_qom_set_bool(s, qom_path, name, true);
-+        value = qtest_readl(s, offset);
-+        g_assert_cmphex(SHARED_FIELD_EX32(value, SGPIO_SERIAL_IN_VAL), ==, 1);
-+        g_assert_cmphex(qtest_qom_get_bool(s, qom_path, name), ==, true);
-+
-+        /* clear serial input */
-+        qtest_qom_set_bool(s, qom_path, name, false);
-+        value = qtest_readl(s, offset);
-+        g_assert_cmphex(SHARED_FIELD_EX32(value, SGPIO_SERIAL_IN_VAL), ==, 0);
-+        g_assert_cmphex(qtest_qom_get_bool(s, qom_path, name), ==, false);
-+    }
-+    qtest_quit(s);
-+}
-+
-+static void test_irq_level_high(const char *machine,
-+                                const uint32_t base, int idx)
-+{
-+    QTestState *s = qtest_init(machine);
-+    char name[16];
-+    char qom_path[64];
-+    uint32_t ctrl_offset = 0;
-+    uint32_t int_offset = 0;
-+    uint32_t int_reg_idx = 0;
-+    uint32_t int_bit_idx = 0;
-+    uint32_t value = 0;
-+    for (int i = 0; i < ASPEED_SGPIO_MAX_PIN_PAIR; i++) {
-+        /* Even index is input port */
-+        sprintf(name, "sgpio%03d", i * 2);
-+        sprintf(qom_path, "/machine/soc/sgpio[%d]", idx);
-+        int_reg_idx = i / 32;
-+        int_bit_idx = i % 32;
-+        int_offset = base + (R_SGPIO_INT_STATUS_0 + int_reg_idx) * 4;
-+        ctrl_offset = base + (R_SGPIO_0_CONTROL + i) * 4;
-+
-+        /* Enable the interrupt */
-+        value = SHARED_FIELD_DP32(value, SGPIO_INT_EN, 1);
-+        qtest_writel(s, ctrl_offset, value);
-+
-+        /* Set the interrupt type to level-high trigger */
-+        value = SHARED_FIELD_DP32(qtest_readl(s, ctrl_offset),
-+                                              SGPIO_INT_TYPE, 3);
-+        qtest_writel(s, ctrl_offset, value);
-+
-+        /* Set serial input high */
-+        qtest_qom_set_bool(s, qom_path, name, true);
-+        value = qtest_readl(s, ctrl_offset);
-+        g_assert_cmphex(SHARED_FIELD_EX32(value, SGPIO_SERIAL_IN_VAL), ==, 1);
-+
-+        /* Interrupt status is set */
-+        value = qtest_readl(s, int_offset);
-+        g_assert_cmphex(extract32(value, int_bit_idx, 1), ==, 1);
-+
-+        /* Clear Interrupt */
-+        value = SHARED_FIELD_DP32(qtest_readl(s, ctrl_offset),
-+                                              SGPIO_INT_STATUS, 1);
-+        qtest_writel(s, ctrl_offset, value);
-+        value = qtest_readl(s, int_offset);
-+        g_assert_cmphex(extract32(value, int_bit_idx, 1), ==, 0);
-+
-+        /* Clear serial input */
-+        qtest_qom_set_bool(s, qom_path, name, false);
-+        value = qtest_readl(s, ctrl_offset);
-+        g_assert_cmphex(SHARED_FIELD_EX32(value, SGPIO_SERIAL_IN_VAL), ==, 0);
-+    }
-+    qtest_quit(s);
-+}
-+
-+static void test_ast_2700_sgpio_input(void)
-+{
-+    test_input_pins("-machine ast2700-evb",
-+                    AST2700_SGPIO0_BASE, 0);
-+    test_input_pins("-machine ast2700-evb",
-+                    AST2700_SGPIO1_BASE, 1);
-+}
-+
-+static void test_ast_2700_sgpio_output(void)
-+{
-+    test_output_pins("-machine ast2700-evb",
-+                    AST2700_SGPIO0_BASE, 0);
-+    test_output_pins("-machine ast2700-evb",
-+                    AST2700_SGPIO1_BASE, 1);
-+    test_irq_level_high("-machine ast2700-evb",
-+                    AST2700_SGPIO0_BASE, 0);
-+    test_irq_level_high("-machine ast2700-evb",
-+                    AST2700_SGPIO1_BASE, 1);
-+}
-+
-+static void test_ast_2700_sgpio_irq(void)
-+{
-+    test_irq_level_high("-machine ast2700-evb",
-+                    AST2700_SGPIO0_BASE, 0);
-+    test_irq_level_high("-machine ast2700-evb",
-+                    AST2700_SGPIO1_BASE, 1);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+
-+    qtest_add_func("/ast2700/sgpio/ast_2700_sgpio_input",
-+                   test_ast_2700_sgpio_input);
-+    qtest_add_func("/ast2700/sgpio/ast_2700_sgpio_output",
-+                   test_ast_2700_sgpio_output);
-+    qtest_add_func("/ast2700/sgpio/ast_2700_sgpio_irq",
-+                   test_ast_2700_sgpio_irq);
-+
-+    return g_test_run();
-+}
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 669d07c06bdedc6be0c69acadeba989dc15ddf3f..5c80b2ed6de1f453d2483db482c1b0e7801ba980 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -221,6 +221,7 @@ qtests_aspeed = \
- qtests_aspeed64 = \
-   ['ast2700-gpio-test',
-    'ast2700-hace-test',
-+   'ast2700-sgpio-test',
-    'ast2700-smc-test']
- 
- qtests_stm32l4x5 = \
+>--- /dev/null
+>+++ b/include/hw/misc/virt_pmu.h
+>@@ -0,0 +1,91 @@
+>+/*
+>+ * RISC-V Virt machine PMU header file.
+>+ * Copyright (C) 2025, Syntacore Ltd.
+>+ *
+>+ * This program is free software; you can redistribute it and/or
+>+ * modify it under the terms of the GNU General Public License
+>+ * as published by the Free Software Foundation; either version 2
+>+ * of the License, or (at your option) any later version.
+>+ *
+>+ * This program is distributed in the hope that it will be useful,
+>+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+>+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+>+ * GNU General Public License for more details.
+>+ *
+>+ * You should have received a copy of the GNU General Public License
+>+ * along with this program; if not, write to the Free Software
+>+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+>+ * Also add information on how to contact you by electronic and paper mail.
+>+ */
+>+
+The virt_pmu.h requires 'SPDX-License-Identifier: GPL-2.0-or-later'
 
--- 
-2.52.0.351.gbe84eed79e-goog
+>+#ifndef RISCV_VIRT_PMU_H
+>+#define RISCV_VIRT_PMU_H
+>+
+...
 
+Additionally, some code lines exceed 80 columns in length. It is recommended
+to run `./scripts/checkpatch.pl` for further checks.
+
+P.S. The file virt_pmu.c is a new addition. Does the MAINTAINERS file need
+to be updated? :)
+
+Thanks,
+Chao
 
