@@ -2,94 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32A8DCD0D8E
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 17:23:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C297CD0D65
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 17:22:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWdFq-0005f2-1C; Fri, 19 Dec 2025 11:22:58 -0500
+	id 1vWdF0-0001u5-Ez; Fri, 19 Dec 2025 11:22:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdFj-0005Ug-Sm
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:22:52 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdEv-0001JA-8J
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:22:01 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdFi-0006UP-GK
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:22:51 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-477a1c28778so21555475e9.3
- for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 08:22:50 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdEs-0006KB-Ll
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:22:00 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-430f3ef2d37so1432525f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 08:21:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766161369; x=1766766169; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hP3KYcHy9nGJ+Swo6FkNiFvQDfCIc+8Wts9KydhYuNA=;
- b=BTcrXE7IKZMoi4RNIEHQqOllP9sZJoVtaXK1R2A3hRxdKLOIRo77DzstnYplTg52I8
- ZDhOarQHX7PNhfDP/s0oBFAXL/YBneIYQKahEWq3r2lZTWTag8Bo7muLOerGoLhmclO+
- 5ejzZjUWb5tliYn8Wuxw0nTKjdTNaMLlI7shBrkVizB9rTuXPOrAeXllCTt9cZiU7aFN
- LnRHUI8lbBkUWJmPfQKy2nD1ylZsgJPAz6QuuqZSig+Op2XIG4v3MdwCCu3fNhGpY9NV
- wko8HKtERsZw9/6KjGbJKqsBvSIoaEI+SDyo71Y+tKcDV6Hd8woWk4lBMp0sVPLIeZal
- F1yA==
+ d=linaro.org; s=google; t=1766161317; x=1766766117; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=joj8i0fNR24LPYYr+YaX/7y5L4NeOssFigh3GN1Oyo8=;
+ b=W9prVp9+7o1e28qEB7G3rdW2BNTaT4uDoXRWvrYkh0Upwmq+awWYSqjNoN/YL+m7j+
+ vFK0wkG00vcN9ynMLCQUjxElwOZucpC4BIJ28uyX7qOViM8ZJ4SmM02GvRr/YI1RVx5b
+ XKLN3QfZcRfMIZYTvHvmKr+syj9JFTawP0R5LxmexbfSktxWxojLzdDIYouxxJUl/KXP
+ HxcDQFMVg4z2INjXgWSNQPDM7IYlNFM5QBZrWcRdLJftEag/OoLmnfwKHqkkc8jGZVxX
+ UvJWymFMkjBrnZtd8iSmSTUaweqplfnHUsBwy5jDKaSJKx76zX7Z21H5vh73Jeu6vinb
+ omaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766161369; x=1766766169;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=hP3KYcHy9nGJ+Swo6FkNiFvQDfCIc+8Wts9KydhYuNA=;
- b=M6PRXDU+xHroC5mzs3mYkWwx0M3uRkUDf9S6aGCRvY9x3+LTMeV75k8KTtLmLgNjhd
- 7KQfxoYLQ4eC1NeSjy3I82r9gcJL0IrwVwQP5Va1abJnslHNel07hPKq7yiVuQlASOzH
- VAxCKgZaso0QWQxpuHKcC3XTB6Qu2DwaDo5c4f633cX5uTpV+gvRZ4vExkrFjJV+gpLj
- DlmXp0lnD+bl/3Ytf4sMqLKJQDCWDh7qiO7tGPp7dUHhVUhtQuwtfcbqcQSLXGHwtW38
- iqpHQ3XpW+V4Rqnk0cvyzpwMdjA6X8+R5s9Sv7vVCaqGcaDto2DTHVyJBDeGA2wsHMey
- Ou2A==
-X-Gm-Message-State: AOJu0YzhlVqTHK4iiLdsHMRtC6d+OXmd/OAAAqCGzTyyWXVRjQWo6nCZ
- OU7lGc4Cw9ZaS3Fu2spIVEjqKY9Gj6mDLis9waY8F6T0p3IWNlXI/cPcvEwOalhCnNs92rvW4Dr
- CZaII0JQ=
-X-Gm-Gg: AY/fxX7T1yC7yedPNViPTKuK+U0JAdBwcg0sN+zPPpAnek2IeDk2VPAEMtA+UXwDpJX
- u/9jVsKcKzDJ1GxKYkFJlkfN2NN4zNpO2rehqFwB2FyQKXFZxi2yBQt9lhrOdtNKLzRnvyO0NrJ
- B9Eks/H9OzenpgkO0cYbl9dQEQcLjkazu92lHou0Sa8EVXgNBoD7IxkcUFxKrcZYdZw0seMA3Yu
- Z7iOY54lrU2tu1UqEYVKoKtM+bMhqcJ3vsHy0QKSefmusVdBrwwoj1DGNzNGtHomnDLuvMXgU7V
- Le1cGR1MuMjXO0TmNFy4/Sk12G1u0L3610MyCMSP1k4TLoHGJM5JcESi6OJC6JyE/6qHVMA+yS5
- E5MsT1PEYX8TbRyCiJMrgD2WMwlgN8Gqm4aUxM8nQ7EX0ZZzgYloSJuBLcJSLgiKqdBHLBf7ukk
- PLCpbfCCBLvvqZZi/aEtazf2XDglg4Bj+ceLxcjMtzRZw/nz/afIXa3yOABHNv
-X-Google-Smtp-Source: AGHT+IEsDY5GSpN/zj5C28b7mr/pRFn+cB0p9rKKhMBQVv5bpQ0dM5nmKG5V0lU1c+384zO9Id/H7g==
-X-Received: by 2002:a05:600c:4fd4:b0:477:7bca:8b34 with SMTP id
- 5b1f17b1804b1-47d1955b744mr31676515e9.6.1766161368699; 
- Fri, 19 Dec 2025 08:22:48 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1766161317; x=1766766117;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=joj8i0fNR24LPYYr+YaX/7y5L4NeOssFigh3GN1Oyo8=;
+ b=D1MJ11rKBCL4Wgu63ElrzdV0RWIIOPVNy98OOOGQNNCXOk8bx5+LMAoQFRQ9hWVCoR
+ MvxgidAQXQ8JM9Pv0Zlodg/96GaABAc1j5KOnKwZ2SrhxXADXrP97t8xbn5FYBO0yNJJ
+ UZlgB9nE6W6DVGd8sg0+2ZkbzNbODbuNuxHGTev+BF9FF5BXM1wlhg5x+v5uztqgR7hs
+ EYuRr5yrNHEQTics8070y7ZYJ2DQYX+UCvFC0tw6AwndSvS1M/uZxfVXsuoDDIMCdw5w
+ 6r+wAfy8Bk8y/J0RYmxjN89usuGbfyaDF1i5MjMOdEV7483nLPT2Yd9yFsTOnrAM+rwa
+ WM/w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVBZqb5VNY5XiaHV1GkHRp7Qg4PCwRKhPA7IPw7hYAXec7AwSEGj89YOmT0vMnyTvr9t3j3/Jhe5MjT@nongnu.org
+X-Gm-Message-State: AOJu0Yy31kqrYS4NGKCbmwLB3J0e8eDggFGEN9nFk1Uo3fUVR6DAUBOS
+ yNSqGY0IY0x8iRirNDXhaHUYEKDkqolFmz20cyD/AgcEI9mztzSaUDUfihkOBhghQZU=
+X-Gm-Gg: AY/fxX4GhqSvSBsaW5qLTDHha2G36rbwluCA0JzMYPYL29gr1ZBC3tT80Sk1pCXjG58
+ 7L+O0gCQ7iW2fq9B9ahzGsQnugzLA2PAx+5diW5+OMsH/SlX4KYt5ebySkusewGL/Fefmmg27Vx
+ PJcjEdIy+mkWYoFm9m2/U8+mQ8oy+6zL7LItVX23Fu91z2GynsQ84b2ieyRl3VtAo+i9qPpJcJA
+ K2CXxmBD0/0oOhcEmeeDiq2J8AKAs/PVXBRJs0JCuqQFuMdSIDPi3LI3ppHZ7zde/QpZKYSSHC8
+ I3VxTdWU1R/DtrmWp6Ht2I9L/gBJxd4JX17VrYecCy/WbJppzuBSCj5JiWhdUyYtusi7J80mf/h
+ mzS12wi60hXeVM5wBmj3SMKTkGKG4eSGg/hPKlM67qeWDPED19VcsdZY+xHggPDTI9RVzBSNAQe
+ JoXHCtH4xMonzZyktzGcANdx2o5SGznAeT83/lF2Vh5wUm+B91xo316X/1nSX5ypy7
+X-Google-Smtp-Source: AGHT+IF1J9ionw+GAqgeIPhVOr2K5m8jNtF/sjDWSd4IRG5EyhFKTEphDUwm/6WHogI9A4dwoJ3k9w==
+X-Received: by 2002:a05:6000:2305:b0:430:f5ab:dc82 with SMTP id
+ ffacd0b85a97d-4324e4c38c8mr4361857f8f.3.1766161317038; 
+ Fri, 19 Dec 2025 08:21:57 -0800 (PST)
+Received: from [192.168.69.202] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47be3aa9971sm37161985e9.13.2025.12.19.08.22.47
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 19 Dec 2025 08:22:48 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Anton Johansson <anjo@rev.ng>, David Hildenbrand <david@kernel.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 24/24] system/memory: Restrict legacy DEVICE_NATIVE_ENDIAN
- definition
-Date: Fri, 19 Dec 2025 17:19:51 +0100
-Message-ID: <20251219161953.72724-25-philmd@linaro.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251219161953.72724-1-philmd@linaro.org>
-References: <20251219161953.72724-1-philmd@linaro.org>
+ ffacd0b85a97d-4324ea1aef7sm5619208f8f.7.2025.12.19.08.21.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 19 Dec 2025 08:21:56 -0800 (PST)
+Message-ID: <0c3e13e1-0aeb-47f9-9c44-5af8f3f47055@linaro.org>
+Date: Fri, 19 Dec 2025 17:21:55 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/1] util/vfio-helper: Fix endianess when enabling Bus
+ Master
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Farhan Ali <alifm@linux.ibm.com>, qemu-devel@nongnu.org,
+ qemu-s390x@nongnu.org
+Cc: mjrosato@linux.ibm.com, thuth@redhat.com, stefanha@redhat.com,
+ kwolf@redhat.com, fam@euphon.net, alex@shazbot.org
+References: <20251217184253.1520-1-alifm@linux.ibm.com>
+ <4d7e4040-349e-4772-bdf9-43d4f8a6f771@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <4d7e4040-349e-4772-bdf9-43d4f8a6f771@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,49 +106,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Guard the native endian definition we want to remove by surrounding
-them with TARGET_USE_LEGACY_NATIVE_ENDIAN_API #ifdef'ry.
+On 19/12/25 15:51, Cédric Le Goater wrote:
+> Hello,
+> 
+> On 12/17/25 19:42, Farhan Ali wrote:
+>> The VFIO pread/pwrite functions use little-endian data format.
+>> When enabling the Bus Master bit, the value must be correctly converted
+>> from the CPU's native endianess to little-endian format.
+> 
+> How did you find the issue ?
 
-Once a target gets cleaned we'll unset the definition in the target
-config, then the target won't be able to use the legacy API anymore.
+I presumed using VFIO on s390x hosts...
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/exec/cpu-common.h | 2 ++
- system/memory-internal.h  | 2 ++
- 2 files changed, 4 insertions(+)
-
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index e0be4ee2b8f..104d2619473 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -39,7 +39,9 @@ void tcg_iommu_init_notifier_list(CPUState *cpu);
- void tcg_iommu_free_notifier_list(CPUState *cpu);
- 
- enum device_endian {
-+#ifdef TARGET_USE_LEGACY_NATIVE_ENDIAN_API
-     DEVICE_NATIVE_ENDIAN,
-+#endif
-     DEVICE_BIG_ENDIAN,
-     DEVICE_LITTLE_ENDIAN,
- };
-diff --git a/system/memory-internal.h b/system/memory-internal.h
-index 46f758fa7e4..d781d437642 100644
---- a/system/memory-internal.h
-+++ b/system/memory-internal.h
-@@ -41,9 +41,11 @@ void mtree_print_dispatch(struct AddressSpaceDispatch *d,
- /* returns true if end is big endian. */
- static inline bool devend_big_endian(enum device_endian end)
- {
-+#ifdef TARGET_USE_LEGACY_NATIVE_ENDIAN_API
-     if (end == DEVICE_NATIVE_ENDIAN) {
-         return target_big_endian();
-     }
-+#endif
-     return end == DEVICE_BIG_ENDIAN;
- }
- 
--- 
-2.52.0
+> 
+> Thanks,
+> 
+> C.
+> 
+> 
+>> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+>> ---
+>>   util/vfio-helpers.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/util/vfio-helpers.c b/util/vfio-helpers.c
+>> index fdff042ab4..3c8284284f 100644
+>> --- a/util/vfio-helpers.c
+>> +++ b/util/vfio-helpers.c
+>> @@ -443,7 +443,7 @@ static int qemu_vfio_init_pci(QEMUVFIOState *s, 
+>> const char *device,
+>>       if (ret) {
+>>           goto fail;
+>>       }
+>> -    pci_cmd |= PCI_COMMAND_MASTER;
+>> +    pci_cmd = cpu_to_le16(le16_to_cpu(pci_cmd) | PCI_COMMAND_MASTER);
+>>       ret = qemu_vfio_pci_write_config(s, &pci_cmd, sizeof(pci_cmd), 
+>> PCI_COMMAND);
+>>       if (ret) {
+>>           goto fail;
+> 
+> 
+> 
 
 
