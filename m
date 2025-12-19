@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB11ACD164D
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 19:41:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 795FACD169B
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 19:44:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWfOO-0003AB-G9; Fri, 19 Dec 2025 13:39:56 -0500
+	id 1vWfSL-0007Wv-AI; Fri, 19 Dec 2025 13:44:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <bT.horvf1th2k03hy3=eebysjnebmei=e6liisoimp5l8j@em483429.getutm.app>)
- id 1vWfOL-00039s-Um
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 13:39:53 -0500
-Received: from a2i327.smtp2go.com ([103.47.205.71])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <bT.horvf1th2k03hy3=eebysjnebmei=e6liisoimp5l8j@em483429.getutm.app>)
- id 1vWfOK-0007xN-BX
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 13:39:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=smtpservice.net; s=mad0l0.a1-4.dyn; x=1766170477; h=Feedback-ID:
- X-Smtpcorp-Track:Message-ID:Date:Subject:To:From:Reply-To:Sender:
- List-Unsubscribe:List-Unsubscribe-Post;
- bh=rAWT498IGawnHLiuDp1wiQjNXziO++mZAeG8x9+lDQI=; b=tLK+9UqmGlHKyEcwvQ0YxUHoS4
- tcnyQhqHCt/oYtZ1AxVjvV7EXDAZznF8Fy4O18uKKUDuqXFAEB6YBiotmbJ3ItDf9C9ukntxQxCxV
- 7aUoU8Ndxrd9zQJ2jnbHvXCqYW4Z8pC79TprspQ1UYyEXYGe9plTnzbtO8NyUM55H/mpLR6qGDb9E
- eKYF7TXMxo4gbFLeM11PFJ8Evw+rgoJupRb3IPab/qvmz9jy4bqwu+GjLSmCQSrfKK0pKmT6JAtrC
- KRc8Hugks0qGwEl5J2JoXEJn2toCocEEVT12GmEiJpIcMVahLmu3FqxtwAEAIWwyfJkmcoJYGM88g
- Ne0NzZmw==;
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=getutm.app;
- i=@getutm.app; q=dns/txt; s=s483429; t=1766169577; h=from : subject :
- to : message-id : date;
- bh=rAWT498IGawnHLiuDp1wiQjNXziO++mZAeG8x9+lDQI=;
- b=i8+N6hLJYb0HApqQwEjn5e0FJ8LSrJXzKAV1PoarAMVLbwNPgee+2VFljVPyUAJRzVIrw
- 8slaL2FXdMSCjVrjafEfJO7iuHLEk4fLVAKo8hhhucEwqLPxG+p4sa2gsaWFlwoCPiwD8nI
- eaGZlP0fBMt1JrMsxgC8nLQNoQFN572kQp2IUdkpUTBsInCVkqIKabHMbDmmx8Fyxbbn+hw
- vve8iZm83ofQtlKiYh0IAVPq/ZpbLrJV3gDlilMKIZW6qiu6Ou3X7VtdB61zMmVNzYuT0PU
- rG/FHiSHY2b29390qYokiwtHA7La71Qvp4FTEbnl+YkkHFyngDr9xtegdzxA==
-Received: from [10.172.234.246] (helo=SmtpCorp) by smtpcorp.com with esmtpsa
- (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
- (Exim 4.94.2-S2G) (envelope-from <j@getutm.app>)
- id 1vWfO4-pH9S01-SL; Fri, 19 Dec 2025 18:39:36 +0000
-Received: from [10.159.238.187] (helo=localhost.localdomain)
- by smtpcorp.com with esmtpsa
- (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA512__CHACHA20_POLY1305:256)
- (Exim 4.98.1-S2G) (envelope-from <j@getutm.app>)
- id 1vWfO3-AIkwcC8uKAK-EyS3; Fri, 19 Dec 2025 18:39:36 +0000
-From: Joelle van Dyne <j@getutm.app>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWfSE-0007WU-Vp
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 13:43:56 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWfSA-0000yA-Vy
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 13:43:53 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-477a219dbcaso18632805e9.3
+ for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 10:43:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1766169828; x=1766774628; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=sQvEBkRJhOB9T8OAo7Ghxbc4t59uZfawKd6nFdcJ67I=;
+ b=TBbDvc7vTsdi/KS44QGPArzMZNp/17Wk93WzyA0q9JLleSKDAZztQtasALgl4j0QMW
+ 4RxqmVJ2+2W8CpNpeyPB+GrDqDE+Se2OQPjTg4nwZBrslmcixZxAhHyCFpc8R48NQHBi
+ VuNudDH3jvghrEJkSkePLEDvcrmyOE43RcrsFGuUTn6E2Qzje3rEycCYcdvbx1uZ3ypj
+ r2fw1YXTLOW/6u+WN/tKKRiXXj2HHSZFFRfKqkBQFg0ly9S1Xa7TKOILthb9H2vPGA3J
+ 6TzHtwMBPdDj1ILwA4D/hLsO1UcJhT0odikhKUWF62qpPjfIuFKLPbbMe9BW3TIcz7T8
+ SWJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1766169828; x=1766774628;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=sQvEBkRJhOB9T8OAo7Ghxbc4t59uZfawKd6nFdcJ67I=;
+ b=qCnfHaSZ1ULc446HCSXPZZQuY7Mb7JjAxD9QPmH6Vnc05qC7ALhQfBef9tJspHG+by
+ qf81OlOV2/vKKUN9aiyg8MSZvYXHuCVp7F4OnJh5GPjPwvGSENJCmAIWPg+LmC59F3F3
+ SSTFxmXRWxEbXv8MwfI/nrH42W/o89MHxjzLisx/0akK4X8Er0/Osj5MNhlGxrcJtzC2
+ UTcl5hII7qqhhyiMA0f0K9uSOwvaygGqq2m3Es1MlCqgQHPuamZhc0Jju3rTGhIODcmq
+ nqU7+K6DUTSPOG2ivjC6ih1vtH2zDahrXWDrr8IAGSxA3nVT4FIGp+HKwZaVex7ftakF
+ fWOQ==
+X-Gm-Message-State: AOJu0Yxn8uY1GULwwbKxH6Y0AxTQNme+0H7sgSRwlG7sA5a+z1wyAA03
+ M0cmlpYyiqQlXiOB3yodftcH4mlvMKTvKwqi3aQa17fihz8Aq6KBasXKk2D0sopRca9iBpyqhAb
+ I+AFgOHw=
+X-Gm-Gg: AY/fxX4DMECjS3mNmG+6P/DTYurdbALMd34kk6q0y/+68pa7LMMmPHv+mXHA2ic2Egr
+ qBpsIWJS32AF7z0mc9gZtbnlS5qDMdHZOjS8uQHSJR/9lYkYjQ2gzLWohSKgtPvBhr1kK0kC9aQ
+ A0gUeovoQdE3q5zyqMF2SdBOTSfU7U7YX5WgkYjv+F0kdpgrIbCpHwSPM3IloTUvyCfqYynMZ2+
+ DzU0AUFbuvLOZnH7r9aT2HkKY8y+xX203G/SD0lhY4YKzhAQJg311du2hmm8SpqDLbMEW4AvUwW
+ 7ckEtO8qmFaSt7XjhR+LbNGIC8Q2qKKnvEdYrTBPV/45A0nxWbtLQMPJqeDbceAd3d+k21Vjppx
+ rXtBh6W8WFP75xKdeIqtmt5tVH3ffbQneSC9zxYy7D/7xdwW8uR7GJ9gRnj0jWv/Yf9HPvai3J7
+ QFHpcPWX0FLAgiuKX9OzIqFLdOABGHglA39WShuOUUKAcQ3LHbIX0upBolfCSq
+X-Google-Smtp-Source: AGHT+IH7f4IpUdRAkH/EhttUC8xAbtH8hCtRp5zGeBQzAeMNF+gOX84sROWxQjlzrxUwnvjUqcEufw==
+X-Received: by 2002:a05:600c:5249:b0:479:1ac2:f9b8 with SMTP id
+ 5b1f17b1804b1-47d19595e32mr41990385e9.21.1766169827843; 
+ Fri, 19 Dec 2025 10:43:47 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-47be272eaf8sm108332165e9.5.2025.12.19.10.43.46
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 19 Dec 2025 10:43:47 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Joelle van Dyne <j@getutm.app>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Anton Johansson <anjo@rev.ng>, Taylor Simpson <ltaylorsimpson@gmail.com>,
+ Laurent Vivier <laurent@vivier.eu>,
+ Brian Cain <brian.cain@oss.qualcomm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH RFC v2 6/6] virtio-gpu-virgl: add support for native blob
- scanout
-Date: Fri, 19 Dec 2025 10:38:52 -0800
-Message-ID: <20251219183853.4426-7-j@getutm.app>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20251219183853.4426-1-j@getutm.app>
-References: <20251219183853.4426-1-j@getutm.app>
+Subject: [PATCH 0/3] target/hexagon: Stop using the legacy native-endian APIs
+Date: Fri, 19 Dec 2025 19:43:42 +0100
+Message-ID: <20251219184345.96786-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Smtpcorp-Track: RWLY3qsDmsQv.gqyUcfvK__Ql.IcEMJQeNepB
-Feedback-ID: 483429m:483429abrvJvs:483429sGAFVcKRIz
-X-Report-Abuse: Please forward a copy of this message, including all headers, 
- to <abuse-report@smtp2go.com>
-Received-SPF: pass client-ip=103.47.205.71;
- envelope-from=bT.horvf1th2k03hy3=eebysjnebmei=e6liisoimp5l8j@em483429.getutm.app;
- helo=a2i327.smtp2go.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,121 +99,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On macOS we do not have dmabuf and so we use MTLTexture as our scanout
-source. For blob scanout, the buffer is untyped and so we cannot get a
-MTLTexture until we pass more information to virglrenderer (surface size,
-pixel format, etc). The new API to do this is currently unstable so we
-need to define `VIRGL_RENDERER_UNSTABLE_APIS`. This should be removed after
-the ABI becomes stable.
+Hexagon is always little-endian, making the conversion easy.
 
-Signed-off-by: Joelle van Dyne <j@getutm.app>
----
- meson.build                   |  5 +++
- hw/display/virtio-gpu-virgl.c | 60 +++++++++++++++++++++++++++++++++++
- 2 files changed, 65 insertions(+)
+Besides a lot of preliminary cleanup are already merged:
 
-diff --git a/meson.build b/meson.build
-index 05bad663764..8917aff044c 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2549,6 +2549,11 @@ config_host_data.set('CONFIG_VNC', vnc.found())
- config_host_data.set('CONFIG_VNC_JPEG', jpeg.found())
- config_host_data.set('CONFIG_VNC_SASL', sasl.found())
- if virgl.found()
-+  config_host_data.set('HAVE_VIRGL_RENDERER_NATIVE_SCANOUT',
-+                        cc.has_function('virgl_renderer_create_handle_for_scanout',
-+                                        args: '-DVIRGL_RENDERER_UNSTABLE_APIS',
-+                                        prefix: '#include <virglrenderer.h>',
-+                                        dependencies: virgl))
-   config_host_data.set('VIRGL_VERSION_MAJOR', virgl.version().split('.')[0])
- endif
- config_host_data.set('CONFIG_VIRTFS', have_virtfs)
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index c01587bd25c..18404be5892 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -22,6 +22,7 @@
- 
- #include "ui/egl-helpers.h"
- 
-+#define VIRGL_RENDERER_UNSTABLE_APIS
- #include <virglrenderer.h>
- 
- #define NATIVE_HANDLE_SUPPORT_VERSION (1)
-@@ -834,6 +835,59 @@ static void virgl_cmd_resource_unmap_blob(VirtIOGPU *g,
-     }
- }
- 
-+#if defined(HAVE_VIRGL_RENDERER_NATIVE_SCANOUT)
-+static void virgl_scanout_native_blob_cleanup(ScanoutTextureNative *native)
-+{
-+    assert(native->type == SCANOUT_TEXTURE_NATIVE_TYPE_METAL);
-+    virgl_renderer_release_handle_for_scanout(VIRGL_NATIVE_HANDLE_METAL_TEXTURE,
-+                                              native->u.metal_texture);
-+}
-+
-+static bool virgl_scanout_native_blob(VirtIOGPU *g,
-+                                      struct virtio_gpu_set_scanout_blob *ss)
-+{
-+    struct virtio_gpu_scanout *scanout = &g->parent_obj.scanout[ss->scanout_id];
-+    enum virgl_renderer_native_handle_type type;
-+    virgl_renderer_native_handle handle;
-+    ScanoutTextureNative native;
-+
-+    type = virgl_renderer_create_handle_for_scanout(ss->resource_id,
-+                                                    ss->width,
-+                                                    ss->height,
-+                                                    ss->format,
-+                                                    ss->padding,
-+                                                    ss->strides[0],
-+                                                    ss->offsets[0],
-+                                                    &handle);
-+#ifdef CONFIG_METAL
-+    if (type == VIRGL_NATIVE_HANDLE_METAL_TEXTURE) {
-+        native = (ScanoutTextureNative){
-+            .type = SCANOUT_TEXTURE_NATIVE_TYPE_METAL,
-+            .u.metal_texture = handle,
-+        };
-+        qemu_console_resize(scanout->con,
-+                            ss->r.width, ss->r.height);
-+        dpy_gl_scanout_texture(
-+            scanout->con, 0,
-+            false,
-+            ss->width, ss->height,
-+            ss->r.x, ss->r.y, ss->r.width, ss->r.height,
-+            native, virgl_scanout_native_blob_cleanup);
-+        scanout->resource_id = ss->resource_id;
-+
-+        return true;
-+    }
-+#endif
-+
-+    /* don't leak memory if handle type is unknown */
-+    if (type != VIRGL_NATIVE_HANDLE_NONE) {
-+        virgl_renderer_release_handle_for_scanout(type, handle);
-+    }
-+
-+    return false;
-+}
-+#endif
-+
- static void virgl_cmd_set_scanout_blob(VirtIOGPU *g,
-                                        struct virtio_gpu_ctrl_command *cmd)
- {
-@@ -872,6 +926,12 @@ static void virgl_cmd_set_scanout_blob(VirtIOGPU *g,
-         return;
-     }
- 
-+#if defined(HAVE_VIRGL_RENDERER_NATIVE_SCANOUT)
-+    if (virgl_scanout_native_blob(g, &ss)) {
-+        return;
-+    }
-+#endif
-+
-     res = virtio_gpu_virgl_find_resource(g, ss.resource_id);
-     if (!res) {
-         qemu_log_mask(LOG_GUEST_ERROR, "%s: resource does not exist %d\n",
+. beb38fda0f0 target/hexagon: Replace MO_TE -> MO_LE
+. fdcb7483ae0 target/hexagon: Explode MO_TExx -> MO_TE | MO_xx
+
+Philippe Mathieu-Daudé (3):
+  target/hexagon: Inline translator_ldl()
+  target/hexagon: Use little-endian variant of cpu_ld/st_data*()
+  configs/targets: Forbid Hexagon to use legacy native endianness API
+
+ configs/targets/hexagon-linux-user.mak |  1 -
+ target/hexagon/op_helper.c             |  6 +++---
+ target/hexagon/translate.c             | 11 +++++++----
+ 3 files changed, 10 insertions(+), 8 deletions(-)
+
 -- 
-2.50.1 (Apple Git-155)
+2.52.0
 
 
