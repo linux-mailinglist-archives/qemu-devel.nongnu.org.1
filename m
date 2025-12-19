@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE6FECD0D0D
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 17:20:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 089C3CD0D0F
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 17:20:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWdCz-0005pn-Mk; Fri, 19 Dec 2025 11:20:01 -0500
+	id 1vWdD6-0005ul-Vs; Fri, 19 Dec 2025 11:20:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdCy-0005pB-Al
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:20:00 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdD5-0005uX-5x
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:20:07 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdCw-0005i4-6Z
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:19:59 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-47796a837c7so14700805e9.0
- for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 08:19:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdD3-0005v1-ED
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:20:06 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-47798ded6fcso13852075e9.1
+ for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 08:20:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766161196; x=1766765996; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=V7ACHFvuX/8sW66cXL3ukkJ8Tx6VRQ3+OAZ8npieBSY=;
- b=w3ge7FAUSSGijxEtTuAojLdf6NcK7VMVwXbXbSv/163Irwn3qx/O2BQ3HQQSlwPjbO
- zJyFH3ANhuW6E1CjUOxXMEGwnPVVrRxKoI9Eg409vJhuUTRhhkP9XKrex6dXL8V0W8RO
- VH4bZYq6pjE6F7LKZVQa3LT3LFzqBWyYKb1Jqe5FTOl6F2PA6vboUc8hNqXWerSp+plA
- YbRASqhJbarwQaT/udqHawaDnuiJv8S1FFjseVpV86FGB6EhLrjbh3157nujcYCNLtA2
- rtwZ+TRIeLumMhYVutX6rvxwNKHrXwWkD1gIeivFMSeqFbLlpFopcPqArrY6Bbu+LX08
- 3mZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766161196; x=1766765996;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1766161203; x=1766766003; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=V7ACHFvuX/8sW66cXL3ukkJ8Tx6VRQ3+OAZ8npieBSY=;
- b=ojpI+DMfhVblFtnDcVEpWB/fPcn60CnvVuUUypJmIcSCXALcxVWPuuGiy1YzV+HJlc
- LHWHcOa0uEEFOp/R+GI42kJmPf1peieMyDYFIZpybysqeUt144W79vfKWwjQL7c9MM2J
- QajJB7niy93uEhkbIS0orNYSx+/7bmEpfeycOYf0gqh16EWX5EzRlAOvUyFNSBAwoV8B
- mOJmrnjAVa2JWcIIaUKYsClIFng8UHpRpgUdBQi/Lb5I3h9rcP7rUpSd6gYW3LC/bQlQ
- +DK0fZ3h53Gn645ipQe6SAAlcflEYzr3Epba+nXl+COsZyIQ/NrX/w/o7OfA8e/nQ/CB
- aRXw==
-X-Gm-Message-State: AOJu0YwvGHFm9uzid0YXFEUxHpqRpi6V1p01rtGNZC+QL0k9y8jxlhJv
- JzBJEqt0WnZC+8XQcM3oho/tVy+o8zAAKOD1hb8qrgQ/Fp+THYhFwjWjZVmIO18NGqaFvgB1VOT
- kAwzS8wY=
-X-Gm-Gg: AY/fxX7lJvoBzBGTak/EwzK0JJNF68UFtaNYbEOn6QIfvYxPnvs/hiT8ocBZJFZiWP1
- CwHuiPjWm7yLar+ILgfj7R2p7prZzIbFkVLqBsmqn13QNDa7SqxUVRKYpqgCo2hQXWnHmGes3lI
- alSOG7KY48q3Z+5gM7uE9GJ6GMk2La51c0GlTVJgDkAlYEjxE5XHth+hGp2KHyZgdRMPeByEQAH
- MKvoX8G0tyzs3wT39xrcDJQoqt0O8hWJPYigHjGKDP0ft+4SriI3+8Qm3IKWaRTF9tCVP6cGjBh
- YooeGJ6uV7WVXEH+N05fOTI9DNXTEFyMXv5/rIwTzBocjwjJCMkPLHwejwC5xDSSdjTKImZZuyv
- z0USaW3DPDDWHwuopqdhvE4gN3PSFr7AjwHEoyHs4KEn1+r1hA2Cw/i5w+GHjQvOij03GvGyWWK
- Ge8uM2My6O0AOArBBYaXYGyilfVC7ZMbhw6WQOEXIYC5Ml7uQLXXAEBbbmn8Xh
-X-Google-Smtp-Source: AGHT+IGjVL3TpOhWAM6CXEmFiQjV6RSo9fRs0VulsaqD59GYoDa+FY5Ky06EQEMtYpJ2ZH/ISRpejg==
-X-Received: by 2002:a05:600c:474d:b0:477:97ca:b727 with SMTP id
- 5b1f17b1804b1-47d1957d7e6mr31391745e9.19.1766161196059; 
- Fri, 19 Dec 2025 08:19:56 -0800 (PST)
+ bh=B1b6x18riFiHnFkkcqn+CtPN4j8BBN9191Tesnu/1k0=;
+ b=f3N0CabHvpoiw0njnD9n/uLXbhMdrO1hgm3rRVSby9Oe6SrAVifjQUjbhdMQeKxFgS
+ jLs87ZxmpWH+KjO/kmdGKTI9AesbxQfvJFBhdbc3FVGL8qbrqLdldGdoL3NptSQH8ckX
+ VHTAP3gRPsyymSRVZcMAImHUWkov0YeF6Y4ThTgcCdQO2EmUwAhpNQ41HoQMZjxAmLJn
+ rhUgYLyLwCwoco013gg/977CM6CCyQHNlCXyw8WaZJGQDcW0tBahJE/1bIzuSmq1UqiT
+ VEoGHXB5BFDrbaBZLN1M/uM6s+/FNus2xskgikS8BFzgVUZ3DEzjYeo9wNfnZzZQGUz6
+ BjMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1766161203; x=1766766003;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=B1b6x18riFiHnFkkcqn+CtPN4j8BBN9191Tesnu/1k0=;
+ b=ZoQJ1ExWblpBSy/KejJ60wFLbp2a6ecgQ7vj/9shw4qjc5akbEnWlBWI+yQt2kl4NS
+ XUvHSmKh86sl1oDJ4p2NorLHskX+Zottm9ulrWYmIp6XbqZIx2w0aUH4H0s3VipWIEAt
+ Pv9W5x+TpLz/3MVp4r2DgzN45bnB8aOwWAAXJSAClm71wdOjReJvwpOY+7LBKM5mgvEL
+ c5geMyqbytdXTof4GpJix7cntPMnjXGBKxwkKCFC57gH7tyPAuYuLOEteVkMF0dwCggT
+ pmVFNjn6TneuBvIRSsGAw6jhkC6gWO0SrTJWXzc0ttshkRF+cGs5Q6UfBt616Hjcccam
+ yB6w==
+X-Gm-Message-State: AOJu0YxpQyM4EDISOCYeyRG2pqVFlp1IHmjX3qi/ygVsyMxE7GTrjyde
+ q7zZWGP7Wc006FCRS5qSY/g3gYWSwmKGZ2PRlwewuc7w9U/1YOnYEbZycyYblt6Z1uE3r7aKpyu
+ CxxCB/to=
+X-Gm-Gg: AY/fxX72YCUDMxu4XVsCrvyYT8E/+/FzM/ocdluJQAEjruh+bqJJ7uYk2kcvt/QTzPo
+ gZhf1hLDN9m7xo5rjHWI/W+zCiBa2vIYuLjm6HVPDz2tVsIuOnLzzb7QHbPGp/Eg3X3N5L2MSKM
+ xLj9V8RozS41UyBvsy3La0iwhGgfiJQgSVfvpsSgOQJpLPN27W032qojLcXsMZBSMLf1OPmKFkb
+ eGAu6gy8rv5MFb0z3FV+CcBe0RvcFBj+Y8rdzo9/3PLBw0osfueQzcf1meJ8AR+Alr1m9UDsgOj
+ KvpweuHhwqWCVpg6ztW6Us8pugYm6Yeqe+W735nCkpFH0RHrTkbPkqII3ME/JLN7wpqIH/gBVzF
+ hYpXiWpjGzgps3COAqH1H185njmzmK7nyFuPUAEF2G+sMLMkGABWLKLXRhN0oOgVjZrnivGwiAI
+ m/GxOFVZvxPxTl8GwNVIf1ria0TaTVXSalOws6oM6rtRMNyioigVjP7K3C6WDh
+X-Google-Smtp-Source: AGHT+IHiV9J9OBvlD0VK7/nkj3/FIHnq9Fv/Yio9jlsaZFwAZWOV9tqpf+UehcDxROdnJCwCT4NgzQ==
+X-Received: by 2002:a05:600c:1caa:b0:475:daba:d03c with SMTP id
+ 5b1f17b1804b1-47d19545aaemr31183775e9.13.1766161203486; 
+ Fri, 19 Dec 2025 08:20:03 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324eab33f5sm5901519f8f.41.2025.12.19.08.19.54
+ 5b1f17b1804b1-47be3af6dbdsm38161245e9.19.2025.12.19.08.20.01
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 19 Dec 2025 08:19:55 -0800 (PST)
+ Fri, 19 Dec 2025 08:20:02 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
@@ -70,16 +71,18 @@ Cc: Peter Xu <peterx@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Anton Johansson <anjo@rev.ng>, David Hildenbrand <david@kernel.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 00/24] system/memory: Clean ups around address_space_ldst()
- endian variants
-Date: Fri, 19 Dec 2025 17:19:27 +0100
-Message-ID: <20251219161953.72724-1-philmd@linaro.org>
+Subject: [PATCH v2 01/24] system/memory: Remove address_space_stl_notdirty and
+ stl_phys_notdirty
+Date: Fri, 19 Dec 2025 17:19:28 +0100
+Message-ID: <20251219161953.72724-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251219161953.72724-1-philmd@linaro.org>
+References: <20251219161953.72724-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,164 +105,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+stl_phys_notdirty() was added in commit 8df1cd076cc ("physical memory
+access functions") as a (premature?) optimisation for the CODE path.
+Meanwhile 20 years passed, we might never have understood / used it
+properly; the code evolved and now the recommended way to access the
+CODE path is via the cpu_ld/st_mmu*() API.
 
-(The motivation is the single-binary project).
+Remove both address_space_stl_notdirty() and stl_phys_notdirty()
+leftovers.
 
-This series is preliminary on unifying endianness for the
-single binary. The goal is to have a clean API ready for
-harder refactor.
+Suggested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ include/system/memory.h        |  6 ------
+ include/exec/memory_ldst.h.inc |  2 --
+ system/memory_ldst.c.inc       | 39 ----------------------------------
+ 3 files changed, 47 deletions(-)
 
-First part, we remove the _notdirty() and leul_to_cpu() helpers,
-then we prepare the subpage_ops[] MemoryRegionOps to handle
-distinct endianness in the same binary, and finally we add
-a pair of ldn()/stn() variants to directly infer the access
-size and endianness from a MemOp argument.
-
-Second part we let all targets set the
-TARGET_USE_LEGACY_NATIVE_ENDIAN_API definition, then restrict
-our headers to only expose legacy "native" endian declarations
-when this definition exists.
-This will allow us to gradually clean the repository,
-eventually removing the legacy API.
-
-Please review,
-
-Phil.
-
-Philippe Mathieu-Daudé (24):
-  system/memory: Remove address_space_stl_notdirty and stl_phys_notdirty
-  system/physmem: Inline and remove leul_to_cpu()
-  system/physmem: Convert DEBUG_SUBPAGE printf() to trace events
-  system/physmem: Use explicit endianness in subpage_ops::read/write()
-  system/memory: Split MemoryRegionCache API to 'memory_cached.h'
-  system/memory: Move *ldst* headers from exec/ to system/ namespace
-  system/memory: Inline address_space_stq_internal()
-  system/memory: Define address_space_ldst[W] endian variants via
-    template
-  system/memory: Define address_space_ldst[L] endian variants via
-    template
-  system/memory: Define address_space_ldst[Q] endian variants via
-    template
-  system/memory: Factor address_space_ldst[M]_internal() helper out
-  system/memory: Pass device_endian argument as MemOp bit
-  system/memory: Directly call address_space_ldst[M]_internal() helper
-  system/memory: Introduce LD/ST helpers with @n suffix (variable size)
-  system/memory: Use explicit endianness in ram_device::read/write()
-  configs/targets: Introduce TARGET_USE_LEGACY_NATIVE_ENDIAN_API
-  system/memory: Restrict legacy ld/st_phys() 'native-endian' API
-  system/memory: Restrict legacy ld/st_he() 'native-endian' API
-  system/memory: Restrict legacy address_space_ldst() 'native-endian'
-    API
-  system/memory: Restrict legacy cpu_ld/st() 'native-endian' API
-  system/memory: Restrict legacy translator_ld() 'native-endian' API
-  system/memory: Restrict legacy tswap() 'native-endian' API
-  system/memory: Restrict legacy MO_TE 'native-endian' definitions
-  system/memory: Restrict legacy DEVICE_NATIVE_ENDIAN definition
-
- MAINTAINERS                                   |   4 +
- docs/devel/loads-stores.rst                   |  10 +-
- configs/targets/aarch64-bsd-user.mak          |   1 +
- configs/targets/aarch64-linux-user.mak        |   1 +
- configs/targets/aarch64-softmmu.mak           |   1 +
- configs/targets/aarch64_be-linux-user.mak     |   1 +
- configs/targets/alpha-linux-user.mak          |   1 +
- configs/targets/alpha-softmmu.mak             |   1 +
- configs/targets/arm-bsd-user.mak              |   1 +
- configs/targets/arm-linux-user.mak            |   1 +
- configs/targets/arm-softmmu.mak               |   1 +
- configs/targets/armeb-linux-user.mak          |   1 +
- configs/targets/avr-softmmu.mak               |   1 +
- configs/targets/hexagon-linux-user.mak        |   1 +
- configs/targets/hppa-linux-user.mak           |   1 +
- configs/targets/hppa-softmmu.mak              |   1 +
- configs/targets/i386-bsd-user.mak             |   1 +
- configs/targets/i386-linux-user.mak           |   1 +
- configs/targets/i386-softmmu.mak              |   1 +
- configs/targets/loongarch64-linux-user.mak    |   1 +
- configs/targets/loongarch64-softmmu.mak       |   1 +
- configs/targets/m68k-linux-user.mak           |   1 +
- configs/targets/m68k-softmmu.mak              |   1 +
- configs/targets/microblaze-linux-user.mak     |   1 +
- configs/targets/microblaze-softmmu.mak        |   1 +
- configs/targets/microblazeel-linux-user.mak   |   1 +
- configs/targets/microblazeel-softmmu.mak      |   1 +
- configs/targets/mips-linux-user.mak           |   1 +
- configs/targets/mips-softmmu.mak              |   1 +
- configs/targets/mips64-linux-user.mak         |   1 +
- configs/targets/mips64-softmmu.mak            |   1 +
- configs/targets/mips64el-linux-user.mak       |   1 +
- configs/targets/mips64el-softmmu.mak          |   1 +
- configs/targets/mipsel-linux-user.mak         |   1 +
- configs/targets/mipsel-softmmu.mak            |   1 +
- configs/targets/mipsn32-linux-user.mak        |   1 +
- configs/targets/mipsn32el-linux-user.mak      |   1 +
- configs/targets/or1k-linux-user.mak           |   1 +
- configs/targets/or1k-softmmu.mak              |   1 +
- configs/targets/ppc-linux-user.mak            |   1 +
- configs/targets/ppc-softmmu.mak               |   1 +
- configs/targets/ppc64-linux-user.mak          |   1 +
- configs/targets/ppc64-softmmu.mak             |   1 +
- configs/targets/ppc64le-linux-user.mak        |   1 +
- configs/targets/riscv32-linux-user.mak        |   1 +
- configs/targets/riscv32-softmmu.mak           |   1 +
- configs/targets/riscv64-bsd-user.mak          |   1 +
- configs/targets/riscv64-linux-user.mak        |   1 +
- configs/targets/riscv64-softmmu.mak           |   1 +
- configs/targets/rx-softmmu.mak                |   1 +
- configs/targets/s390x-linux-user.mak          |   1 +
- configs/targets/s390x-softmmu.mak             |   1 +
- configs/targets/sh4-linux-user.mak            |   1 +
- configs/targets/sh4-softmmu.mak               |   1 +
- configs/targets/sh4eb-linux-user.mak          |   1 +
- configs/targets/sh4eb-softmmu.mak             |   1 +
- configs/targets/sparc-linux-user.mak          |   1 +
- configs/targets/sparc-softmmu.mak             |   1 +
- configs/targets/sparc32plus-linux-user.mak    |   1 +
- configs/targets/sparc64-linux-user.mak        |   1 +
- configs/targets/sparc64-softmmu.mak           |   1 +
- configs/targets/tricore-softmmu.mak           |   1 +
- configs/targets/x86_64-bsd-user.mak           |   1 +
- configs/targets/x86_64-linux-user.mak         |   1 +
- configs/targets/x86_64-softmmu.mak            |   1 +
- configs/targets/xtensa-linux-user.mak         |   1 +
- configs/targets/xtensa-softmmu.mak            |   1 +
- configs/targets/xtensaeb-linux-user.mak       |   1 +
- configs/targets/xtensaeb-softmmu.mak          |   1 +
- include/accel/tcg/cpu-ldst.h                  |   2 +
- include/exec/cpu-common.h                     |   2 +
- include/exec/memop.h                          |   4 +
- include/exec/translator.h                     |   2 +-
- include/exec/tswap.h                          |   2 +
- include/hw/virtio/virtio-access.h             |   1 +
- include/qemu/bswap.h                          |  16 +-
- include/system/memory.h                       | 195 +------
- include/system/memory_cached.h                | 209 ++++++++
- system/memory-internal.h                      |   2 +
- include/exec/memory_ldst.h.inc                |  67 ---
- include/exec/memory_ldst_phys.h.inc           | 144 ------
- include/system/memory_ldst.h.inc              |  41 ++
- .../{exec => system}/memory_ldst_cached.h.inc |   0
- include/system/memory_ldst_endian.h.inc       |  37 ++
- include/system/memory_ldst_phys.h.inc         |  47 ++
- include/system/memory_ldst_phys_endian.h.inc  |  57 ++
- system/memory.c                               |  68 ++-
- system/physmem.c                              | 111 ++--
- system/memory_ldst.c.inc                      | 488 ++----------------
- system/memory_ldst_endian.c.inc               |  84 +++
- scripts/make-config-poison.sh                 |   1 +
- system/trace-events                           |   6 +
- 92 files changed, 744 insertions(+), 923 deletions(-)
- create mode 100644 include/system/memory_cached.h
- delete mode 100644 include/exec/memory_ldst.h.inc
- delete mode 100644 include/exec/memory_ldst_phys.h.inc
- create mode 100644 include/system/memory_ldst.h.inc
- rename include/{exec => system}/memory_ldst_cached.h.inc (100%)
- create mode 100644 include/system/memory_ldst_endian.h.inc
- create mode 100644 include/system/memory_ldst_phys.h.inc
- create mode 100644 include/system/memory_ldst_phys_endian.h.inc
- create mode 100644 system/memory_ldst_endian.c.inc
-
+diff --git a/include/system/memory.h b/include/system/memory.h
+index 3bd5ffa5e0d..e69171de05a 100644
+--- a/include/system/memory.h
++++ b/include/system/memory.h
+@@ -2850,12 +2850,6 @@ MemTxResult address_space_write_rom(AddressSpace *as, hwaddr addr,
+ #define ARG1_DECL    AddressSpace *as
+ #include "exec/memory_ldst.h.inc"
+ 
+-static inline void stl_phys_notdirty(AddressSpace *as, hwaddr addr, uint32_t val)
+-{
+-    address_space_stl_notdirty(as, addr, val,
+-                               MEMTXATTRS_UNSPECIFIED, NULL);
+-}
+-
+ #define SUFFIX
+ #define ARG1         as
+ #define ARG1_DECL    AddressSpace *as
+diff --git a/include/exec/memory_ldst.h.inc b/include/exec/memory_ldst.h.inc
+index 7270235c600..173164fee3a 100644
+--- a/include/exec/memory_ldst.h.inc
++++ b/include/exec/memory_ldst.h.inc
+@@ -25,8 +25,6 @@ uint32_t glue(address_space_ldl, SUFFIX)(ARG1_DECL,
+     hwaddr addr, MemTxAttrs attrs, MemTxResult *result);
+ uint64_t glue(address_space_ldq, SUFFIX)(ARG1_DECL,
+     hwaddr addr, MemTxAttrs attrs, MemTxResult *result);
+-void glue(address_space_stl_notdirty, SUFFIX)(ARG1_DECL,
+-    hwaddr addr, uint32_t val, MemTxAttrs attrs, MemTxResult *result);
+ void glue(address_space_stw, SUFFIX)(ARG1_DECL,
+     hwaddr addr, uint16_t val, MemTxAttrs attrs, MemTxResult *result);
+ void glue(address_space_stl, SUFFIX)(ARG1_DECL,
+diff --git a/system/memory_ldst.c.inc b/system/memory_ldst.c.inc
+index 333da209d1a..b45bfecd137 100644
+--- a/system/memory_ldst.c.inc
++++ b/system/memory_ldst.c.inc
+@@ -261,45 +261,6 @@ uint16_t glue(address_space_lduw_be, SUFFIX)(ARG1_DECL,
+                                        DEVICE_BIG_ENDIAN);
+ }
+ 
+-/* warning: addr must be aligned. The ram page is not masked as dirty
+-   and the code inside is not invalidated. It is useful if the dirty
+-   bits are used to track modified PTEs */
+-void glue(address_space_stl_notdirty, SUFFIX)(ARG1_DECL,
+-    hwaddr addr, uint32_t val, MemTxAttrs attrs, MemTxResult *result)
+-{
+-    uint8_t *ptr;
+-    MemoryRegion *mr;
+-    hwaddr l = 4;
+-    hwaddr addr1;
+-    MemTxResult r;
+-    uint8_t dirty_log_mask;
+-    bool release_lock = false;
+-
+-    RCU_READ_LOCK();
+-    mr = TRANSLATE(addr, &addr1, &l, true, attrs);
+-    if (l < 4 || !memory_access_is_direct(mr, true, attrs)) {
+-        release_lock |= prepare_mmio_access(mr);
+-
+-        r = memory_region_dispatch_write(mr, addr1, val, MO_32, attrs);
+-    } else {
+-        ptr = qemu_map_ram_ptr(mr->ram_block, addr1);
+-        stl_p(ptr, val);
+-
+-        dirty_log_mask = memory_region_get_dirty_log_mask(mr);
+-        dirty_log_mask &= ~(1 << DIRTY_MEMORY_CODE);
+-        physical_memory_set_dirty_range(memory_region_get_ram_addr(mr) + addr,
+-                                            4, dirty_log_mask);
+-        r = MEMTX_OK;
+-    }
+-    if (result) {
+-        *result = r;
+-    }
+-    if (release_lock) {
+-        bql_unlock();
+-    }
+-    RCU_READ_UNLOCK();
+-}
+-
+ /* warning: addr must be aligned */
+ static inline void glue(address_space_stl_internal, SUFFIX)(ARG1_DECL,
+     hwaddr addr, uint32_t val, MemTxAttrs attrs,
 -- 
 2.52.0
 
