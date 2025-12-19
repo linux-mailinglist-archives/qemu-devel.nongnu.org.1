@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE613CCF2CD
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 10:42:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CA02CCF5B8
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 11:26:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWX09-0005G4-7R; Fri, 19 Dec 2025 04:42:21 -0500
+	id 1vWXf6-0005PP-VB; Fri, 19 Dec 2025 05:24:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vWX07-0005FY-Mg; Fri, 19 Dec 2025 04:42:19 -0500
-Received: from mgamail.intel.com ([198.175.65.13])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vWXf4-0005OY-PP
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 05:24:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vWX06-0003RR-6d; Fri, 19 Dec 2025 04:42:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766137338; x=1797673338;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=64FUL1fuC4qQa2vjdkbCW1X0ZULlfKcE0RzA6/SGYnU=;
- b=CMdwZ4NQXUNm+g7DysTIYpjV6bRdChXuYVmf3O6mgjQm8U6H+SPKkflI
- IFknhwbQhPTs1meHrbIMV/Bp8pIsrh9PhYWs66DCdlXCWSBE4elis2sIn
- z6W0EOyHsoV+bPqX1wyLo4l8VGPn2exr/UQgXXMFZKjS1fTUUZgESEoto
- NfUxMFOej+HcRemdMp1vC8ReN04VcIag7EYafB/1ekTMO5iOh2VcIFop9
- 6Cn3QOmP8LYuIcMENOc2zzb9bTJVwe1JYW9ElIdQDKi0xcfZHjNdOFCZl
- pnfU8Yzt+vSQFHByLpNxWCwbENP1Ghk/39CnLX74istcRiGyBahyltL0U g==;
-X-CSE-ConnectionGUID: aWsbQhb3TYm995kIlT5ItQ==
-X-CSE-MsgGUID: lUXdh/45Q/eFulvsYOmJ/Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="79218379"
-X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; d="scan'208";a="79218379"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Dec 2025 01:41:10 -0800
-X-CSE-ConnectionGUID: 5Tpuv2WOSvempHeSLYuQGg==
-X-CSE-MsgGUID: d7b3Kn8bTouuPBcl8v8SCw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; d="scan'208";a="198833056"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa007.jf.intel.com with ESMTP; 19 Dec 2025 01:41:07 -0800
-Date: Fri, 19 Dec 2025 18:05:57 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org, Igor Mammedov <imammedo@redhat.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, qemu-riscv@nongnu.org,
- qemu-arm@nongnu.org, Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: Re: [PATCH-for-11.0 v6 08/13] hw/sparc64/sun4u: Use
- fw_cfg_init_io_nodma()
-Message-ID: <aUUjhXq6+rftKQN5@intel.com>
-References: <20251203060942.57851-1-philmd@linaro.org>
- <20251203060942.57851-9-philmd@linaro.org>
- <aTBccn2LIv7puGzR@intel.com>
- <05f92a77-7587-4441-a252-01e4705a6892@linaro.org>
- <c03820b8-7745-4b8e-8e69-a37c872257f8@ilande.co.uk>
- <aUPAysAYqTPAfgzD@intel.com>
- <7d238d0d-df26-43fd-bfac-a7d94064d486@linaro.org>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vWXf3-0006QG-Ce
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 05:24:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1766139876;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=GqaMyG+Qvhgdrf9U4MZFl0mO4Cc7YlHRoSRawsfUobk=;
+ b=bX+6h/lqa4tNAMlrj1VJtlKWcLE/NeglLlObp4iXnJ/gk99m2465xuDJ30xIWai5fsWQae
+ fcoeENnSS4mmnyG5Ge6nY0nShBFNemnF/gdB/9EgO4EeCH8efQ/uy+i2hY8woEPQIVfHUW
+ c0vxbl0UVPRGCEh3qGHI8cC0Kf3bXrk=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-665-kjR5RGTYMGOaXS7pmCXhbA-1; Fri,
+ 19 Dec 2025 05:24:31 -0500
+X-MC-Unique: kjR5RGTYMGOaXS7pmCXhbA-1
+X-Mimecast-MFC-AGG-ID: kjR5RGTYMGOaXS7pmCXhbA_1766139869
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5F0481800637; Fri, 19 Dec 2025 10:24:29 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.7])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E36FF180045B; Fri, 19 Dec 2025 10:24:28 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 90E8721E6A27; Fri, 19 Dec 2025 11:24:26 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Jackson Donaldson <jackson88044@gmail.com>,  qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org
+Subject: Re: Machine max78000fthr not compiled in?
+In-Reply-To: <19c5ae56-35ba-42fe-a330-fec28aad6999@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Fri, 19 Dec 2025 10:00:27
+ +0100")
+References: <875xa27ss1.fsf@pond.sub.org>
+ <19c5ae56-35ba-42fe-a330-fec28aad6999@linaro.org>
+Date: Fri, 19 Dec 2025 11:24:26 +0100
+Message-ID: <87ms3e6a79.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7d238d0d-df26-43fd-bfac-a7d94064d486@linaro.org>
-Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,15 +87,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> fw_cfg is per guest, and there can only be once instance of it; so IMHO it
-> makes sense to use the machine as parent. I should have posted a better
-> commit description upfront, sorry.
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-You're welcome. It looks like most issues with the another series for
-removing v2.6 & 2.7 pc have been resolved, so I'm trying to help clarify
-this part to move things forward a bit.
+> On 19/12/25 09:57, Markus Armbruster wrote:
+>> docs/system/arm/max78000.rst advises to use
+>>
+>>    $ qemu-system-arm -machine max78000fthr -kernel max78000.bin -device =
+loader,file=3Dmax78000.bin,addr=3D0x10000000
+>>
+>> My locally built qemu-system-arm rejects this with
+>>
+>>      qemu-system-arm: unsupported machine type: "max78000fthr"
+>>      Use -machine help to list supported machines
+>>
+>> What's going wrong here?
+>
+> See the fix:
+>
+> https://lore.kernel.org/qemu-devel/20251218214306.63667-1-philmd@linaro.o=
+rg/
 
-Regards,
-Zhao
+With that, it complains about max78000.bin, which I don't have.  Thank
+you!
 
 
