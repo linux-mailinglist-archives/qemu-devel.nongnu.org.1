@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2481CD0E96
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 17:38:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38FD1CD0E87
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 17:38:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWdUR-0004AK-OE; Fri, 19 Dec 2025 11:38:03 -0500
+	id 1vWdUS-0004Ej-0n; Fri, 19 Dec 2025 11:38:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdUI-0003sh-1l
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:37:56 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdUN-00046f-S5
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:38:00 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdUG-0000XG-HB
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:37:53 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-477563e28a3so13041105e9.1
- for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 08:37:51 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdUM-0000Y8-Dz
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:37:59 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-477563e28a3so13041945e9.1
+ for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 08:37:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766162269; x=1766767069; darn=nongnu.org;
+ d=linaro.org; s=google; t=1766162276; x=1766767076; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yCWaAKr9HKDQPOGDVeV4ELgBSGxrVu16jLOCiFl1Ing=;
- b=m7MyR4wigTY6kksUbDZu83wAT1LxTCEmOXNetFq/vXMuVHwA8Sf2jKR/ODPCjbBbF+
- YkuwShgPtGDIvN1iP6WR7OQql6f5rt4VcvS1uo0fkJjRPXRE9K0aO6IjuGbA09n1ggOb
- RPgjNsfZejwP9H5Ff9Nq6BYU3a6l7ccCqrBkBdLjVFv0MD8MArssJVvSWfxQ0WB7DQou
- chTUNRyEVox2XCfOeqtCPgWxmSkof+5ciQKA+cjwmXqlTBjK0d7SWJ6Fu3SB9+AVvN6G
- dDzHfk0F2e33GzLoOpF6vb8xzr3xhtB4sAP7r4y1haPoiiFxF2yH/BlX2NHmug1UeBDy
- e+Jg==
+ bh=Uc7q1S3ew+wCXif1tbZ7lUtNiynYGdMogszF2B2DxFI=;
+ b=QNjwHW4x6QJBLSJuPIe0H2l3YBnyyvQJOlfB/DNGGzvJQ7UKiD+XIBz7w4O3jhcoAW
+ rD6+HHHF6Yg/6ba9gMT2b4LYDucwsWH+q13bwEhSrkdK03rj+8cqE1cmC6qPO+YdWsN4
+ CbgjCcQNq+vgKJIoqelA4XsN4aEo3bxmtA5PTQxzXcSa826XRS2owN6sL4QheZJdEm1m
+ 4X2rukHkdxKjhpaK9YykZcHgT0Dy5yOw33ruxW0CRXoorOAeCLofQH6QGC8jSCillink
+ xvT1xQdH8fxU+EBM5CaBY+KzXHzqPn69IovLjzWtvPd13xqZAvoObftVjleStEAtzyi8
+ pRcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766162269; x=1766767069;
+ d=1e100.net; s=20230601; t=1766162276; x=1766767076;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=yCWaAKr9HKDQPOGDVeV4ELgBSGxrVu16jLOCiFl1Ing=;
- b=v0Vst58Su+mXfRoyfzJc92G6CNRqAAC+YAV9k7JKkgDgWJR/PDhqRnx52W7rMdL5IB
- RnsPKZB0iC9CStv7P/VbX5CtvaokGNGSfRpQ+tixMLlZ5pHLQceu1ZG07cfPus8H4HFu
- +m8bB+Qz+7CBLFL6lg/pqoOkSIsJsCJ9roCIvJGj8BplnWvxIY1LIg4wblWIGUh9P/H6
- 02rwtny8NKNOAWWeWKVGheUTZvGXR7ahNGBSXOL4JbWlwDSwdWeCxV9YuYeIaWJLI8jg
- +UxAC3nHiQ8bE1ao500Sr/Ku3eLWfSGq5nYIpbu6HGI9gNVKIvfvqifoilNb1ki/jtMN
- Lvrw==
-X-Gm-Message-State: AOJu0YwsOzo26ddjf5TzZZ6DEmarYgv7JKtt5w9DVSNGI8f3iGjpNxDb
- cekxtTnsvarRjuaIepEBmNtVOX2HfDxHkJv88TQRleQvF4C6axf3gUAfWZmZSKWgtn0n2C3iEh7
- yZ/58sJw=
-X-Gm-Gg: AY/fxX5QCuo7rIK5UwjcZG9puyXdsi0C5xkW4weV6MSa/f2kiUdtGD989Nig+VfbmOw
- XExiVvHgewCrmC1I1OE/KfN/HME0WO197VdFPpuhW4IbU6B3Y3u5wU+4zcw/Kgy5llNs/rggPzX
- nMr6DrL3LfxUvIT/qSZu7WlPdFyk6T1h/A0nZvRyNHX93hQvNPfKenrE2puoOlRYijbYgma37k3
- BXfoeVPxviIH9E3OtvF5n1OhqUC6YOICoMT2DXlvXKmLSDCMiKesp5z6WGLlq3byr43XmKd8E31
- UT2Axj0+SccCk1qVP7BLnehgx8u/dowiB9mxehHBU7sGiLaj6OQPeAtP3gQ6URJmhaPb8bJzn2I
- edYRuL1a023jvNqBlVv5Q8Qanj6V7Si54IHFI3jo9pjGme5DnxGeywgSVwAdzUlIk5tgNAbvxKb
- PuiltczZb17Hv+380kFYktJk2DPharZdCbPc73Nn+yFg1U6ymVXrdZXs1D799l
-X-Google-Smtp-Source: AGHT+IHS3o2ne2jByPhxFqzTUpZuP1OM+2Lt2dFxexatKapa1bDWoGL/OS0cQYAiHj2a1vDa3NmVcg==
+ bh=Uc7q1S3ew+wCXif1tbZ7lUtNiynYGdMogszF2B2DxFI=;
+ b=dhw06vhRT3KB0ROL1WgxAj4jJ8WgzkXZybyPn9uznp7kivgmu7HaxqzlqX06USPaE9
+ 17MTrSxf+wBxylwcC+F036p8eTKVAIe7bkKxZQyovasukY6Dm4UL0MxLoI44yVf6bU3o
+ L6/7MrktixsrdIaW/VJWlFc3LUzh/a7MztguuFrfpRmdqfRcIdF7eWhZne+29H0DrJIr
+ EKjTt7K5ceESA1EZPj6rQCddx5732qsAtiSC7mvkZEPekJlqwu4KjOyTEWqYPvO8YtVz
+ 4MpyNRtzUBdoQvc3UE9i+BFDnJ3Q8UnQ/dvceviOsd5/zfyd0EYifPM9zlWHMM7fdVx1
+ PIxQ==
+X-Gm-Message-State: AOJu0YwYeUdg+cYf1GR0IdsGMd1wqeukkZdctiiULwGKAGVzvi1KhC0u
+ eP3uuicKKvYWq5GiO1gOxoeZJUSKpzvlhF43a9tK6pNZyZ7kKh3Mp8laGwdEtxvNzPAybIVZ791
+ OVYy5tTQ=
+X-Gm-Gg: AY/fxX4DnRYe6nNSjuvgMassZksuV2tX+TzSnmRx23OpMQwbaq5OunTlm3B5xoeA0kN
+ l63DmZqrJBYY2bf8zF/An468/k7mdgV4/zZCvP2tRtExR6uJib2zFjugWeg4qId/6QKxVhLG3Lf
+ 93FyrA6i/Scjc05x2lO7mwvo6V9EVCu0pvo1xNiXH8B0PTQmRs0i8Lg3+xroTc+3NxgyCUi5ijm
+ KYoo6TI4ah/TzNmF6XlDBa4wW0KUDaVGnczQBi3my+rCrxqPa5oR9g6KCEgth8RYDLyDzx8CfW9
+ t84UHnzh9ZC/Gc2ZhJxsJ3RmmhgP6yHE/t8btMtLpGaBLlrCHCC7IRQIPYhhPP39uOKZjW8rpMx
+ TX1q4xI53dQ5sQeid64ndP+gIWHy/x/2wio+XLvkob5in5rHOB48nZ47v6IisMLEgp2Gn6gHJzv
+ ZSf9KrGJi3qZWSZEMC3WYw4s4RuZKH+YmZ+x8pAA2lfXrQTYWEpmqux5prJCZY
+X-Google-Smtp-Source: AGHT+IFH+phVPTG8P2oE5tgqdSSZZF/QyWXM4iwzJJIMsAj6r1BFpwGUxf7TilAqEx/WQY/l5leamQ==
 X-Received: by 2002:a05:600c:4e05:b0:479:13e9:3d64 with SMTP id
- 5b1f17b1804b1-47d18be1546mr36811585e9.15.1766162269385; 
- Fri, 19 Dec 2025 08:37:49 -0800 (PST)
+ 5b1f17b1804b1-47d18be1546mr36815175e9.15.1766162276261; 
+ Fri, 19 Dec 2025 08:37:56 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d193cba81sm50782315e9.10.2025.12.19.08.37.48
+ 5b1f17b1804b1-47d193d5372sm54447795e9.14.2025.12.19.08.37.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 19 Dec 2025 08:37:48 -0800 (PST)
+ Fri, 19 Dec 2025 08:37:55 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
@@ -72,18 +72,18 @@ Cc: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 8/9] target/sparc: Simplify gdbstub
- sparc_cpu_gdb_write_register()
-Date: Fri, 19 Dec 2025 17:36:48 +0100
-Message-ID: <20251219163650.74303-9-philmd@linaro.org>
+Subject: [PATCH v2 9/9] configs/targets: Forbid SPARC to use legacy native
+ endianness APIs
+Date: Fri, 19 Dec 2025 17:36:49 +0100
+Message-ID: <20251219163650.74303-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251219163650.74303-1-philmd@linaro.org>
 References: <20251219163650.74303-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,59 +106,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rather than ldtul_p() which uses the underlying 'unsigned
-long' size, use the ldn() variant, passing the access size
-as argument (evaluating TARGET_LONG_BITS / 8).
-
-No need to use #ifdef'ry to check for TARGET_ABI32, since
-it is 64-bit:
-
-  $ git grep -E '(ABI32|LONG_BITS)' configs/targets/sparc*
-  configs/targets/sparc-linux-user.mak:5:TARGET_LONG_BITS=32
-  configs/targets/sparc-softmmu.mak:4:TARGET_LONG_BITS=32
-  configs/targets/sparc32plus-linux-user.mak:2:TARGET_ABI32=y
-  configs/targets/sparc32plus-linux-user.mak:8:TARGET_LONG_BITS=64
-  configs/targets/sparc64-linux-user.mak:8:TARGET_LONG_BITS=64
-  configs/targets/sparc64-softmmu.mak:6:TARGET_LONG_BITS=64
-
-Directly expand to the big-endian variant (with the '_be' suffix)
-since we only build the SPARC targets as big-endian.
+All SPARC-related binaries are buildable without a single use
+of the legacy "native endian" API. Unset the transitional
+TARGET_USE_LEGACY_NATIVE_ENDIAN_API definition to forbid
+further uses of the legacy API.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/sparc/gdbstub.c | 12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
+ configs/targets/sparc-linux-user.mak       | 1 -
+ configs/targets/sparc-softmmu.mak          | 1 -
+ configs/targets/sparc32plus-linux-user.mak | 1 -
+ configs/targets/sparc64-linux-user.mak     | 1 -
+ configs/targets/sparc64-softmmu.mak        | 1 -
+ 5 files changed, 5 deletions(-)
 
-diff --git a/target/sparc/gdbstub.c b/target/sparc/gdbstub.c
-index 134617fb232..d265681f6d2 100644
---- a/target/sparc/gdbstub.c
-+++ b/target/sparc/gdbstub.c
-@@ -112,15 +112,7 @@ int sparc_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
- {
-     SPARCCPU *cpu = SPARC_CPU(cs);
-     CPUSPARCState *env = &cpu->env;
--#if defined(TARGET_ABI32)
--    uint32_t tmp;
--
--    tmp = ldl_p(mem_buf);
--#else
--    target_ulong tmp;
--
--    tmp = ldtul_p(mem_buf);
--#endif
-+    uint64_t tmp = ldn_be_p(mem_buf, TARGET_LONG_BITS / 8);
- 
-     if (n < 8) {
-         /* g0..g7 */
-@@ -170,7 +162,7 @@ int sparc_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
- #else
-     else if (n < 64) {
-         /* f0-f31 */
--        tmp = ldl_p(mem_buf);
-+        tmp = ldl_be_p(mem_buf);
-         if (n & 1) {
-             env->fpr[(n - 32) / 2].l.lower = tmp;
-         } else {
+diff --git a/configs/targets/sparc-linux-user.mak b/configs/targets/sparc-linux-user.mak
+index 1b4ee80fe17..4ff4b7287d2 100644
+--- a/configs/targets/sparc-linux-user.mak
++++ b/configs/targets/sparc-linux-user.mak
+@@ -3,4 +3,3 @@ TARGET_SYSTBL_ABI=common,32
+ TARGET_SYSTBL=syscall.tbl
+ TARGET_BIG_ENDIAN=y
+ TARGET_LONG_BITS=32
+-TARGET_USE_LEGACY_NATIVE_ENDIAN_API=y
+diff --git a/configs/targets/sparc-softmmu.mak b/configs/targets/sparc-softmmu.mak
+index f02bacb8bbf..57801faf1fc 100644
+--- a/configs/targets/sparc-softmmu.mak
++++ b/configs/targets/sparc-softmmu.mak
+@@ -1,4 +1,3 @@
+ TARGET_ARCH=sparc
+ TARGET_BIG_ENDIAN=y
+ TARGET_LONG_BITS=32
+-TARGET_USE_LEGACY_NATIVE_ENDIAN_API=y
+diff --git a/configs/targets/sparc32plus-linux-user.mak b/configs/targets/sparc32plus-linux-user.mak
+index 75c3a600bf0..7a16934fd17 100644
+--- a/configs/targets/sparc32plus-linux-user.mak
++++ b/configs/targets/sparc32plus-linux-user.mak
+@@ -6,4 +6,3 @@ TARGET_SYSTBL_ABI=common,32
+ TARGET_SYSTBL=syscall.tbl
+ TARGET_BIG_ENDIAN=y
+ TARGET_LONG_BITS=64
+-TARGET_USE_LEGACY_NATIVE_ENDIAN_API=y
+diff --git a/configs/targets/sparc64-linux-user.mak b/configs/targets/sparc64-linux-user.mak
+index 1b75d276426..7c2ecb7be06 100644
+--- a/configs/targets/sparc64-linux-user.mak
++++ b/configs/targets/sparc64-linux-user.mak
+@@ -6,4 +6,3 @@ TARGET_SYSTBL=syscall.tbl
+ TARGET_BIG_ENDIAN=y
+ TARGET_XML_FILES=gdb-xml/sparc64-core.xml
+ TARGET_LONG_BITS=64
+-TARGET_USE_LEGACY_NATIVE_ENDIAN_API=y
+diff --git a/configs/targets/sparc64-softmmu.mak b/configs/targets/sparc64-softmmu.mak
+index bfa1bcfb427..d9d51d21e59 100644
+--- a/configs/targets/sparc64-softmmu.mak
++++ b/configs/targets/sparc64-softmmu.mak
+@@ -3,4 +3,3 @@ TARGET_BASE_ARCH=sparc
+ TARGET_BIG_ENDIAN=y
+ TARGET_XML_FILES=gdb-xml/sparc64-core.xml
+ TARGET_LONG_BITS=64
+-TARGET_USE_LEGACY_NATIVE_ENDIAN_API=y
 -- 
 2.52.0
 
