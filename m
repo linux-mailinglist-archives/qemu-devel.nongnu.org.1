@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73D1ECD0E9C
+	by mail.lfdr.de (Postfix) with ESMTPS id 2694BCD0E99
 	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 17:38:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWdTw-0003bv-QN; Fri, 19 Dec 2025 11:37:32 -0500
+	id 1vWdUO-0003hV-JS; Fri, 19 Dec 2025 11:38:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdTu-0003bm-UG
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:37:30 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdU3-0003cK-2E
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:37:39 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdTt-0000S0-Fk
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:37:30 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-42fbbc3df8fso988955f8f.2
- for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 08:37:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdU0-0000Vj-UK
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:37:38 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-477a219dbcaso17667285e9.3
+ for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 08:37:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766162248; x=1766767048; darn=nongnu.org;
+ d=linaro.org; s=google; t=1766162255; x=1766767055; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pCt5072MT4D8iFZ64nwix4KP4RCAdARcnrd2MW5vRvU=;
- b=pyPwbp/MMQkae5gT66xnaS3voGopHr3RQ2EMwB2fllYlsP136rj2LJfq/KtGCtKICo
- 952gwZ93k2R4XiQxPHPm7koNP+e/9PmfSkSZyn6bIC9CUA8Gf4l3RhfbrgWVth0YGOpg
- kqAIKyPxXhit9sKss0u2MSC2eYpf1tw64gtH8ixv+q1rQmZWEzR075lar1yjN9Ug2EGx
- XUOQtGM8OJGjicL3il7GvX/5vD07c98SGfCWofluF5YFiEuSIZgeGomM6onHiFX1TaJU
- nm/KSc5y6UnQZ2xB2uJAq2A05O5NUH2j3d5p3npdUtbEQ2+7dqxSCjB22RMXDUyCogQz
- 7BIw==
+ bh=gvU8IjxyyWGbnt0TpIestxRQYownf9I7RuEDkGDxUZg=;
+ b=FviF48zk64weObPMn1tKb0LLuymJjlpZOOSxPKE4Mt9NHePiYx8FtIQ9oVwcV13ki9
+ 4mBMAPLBmG96T4Ly0pcCDYt5vVKBwIiBBuGR89ft5eo5WTyZNTbg8P3PKaRTqGXYie5x
+ a7Z3+KWQcVIeo7l0EvmwfmgK3Ap0pQOAL7bd+iSZavHRdxxLLghVtdHjEHXmc7Py9r72
+ EOATK9pBUm6AQaz5lP2iz1etkidIIym5MkzHva6AdI/Z2wYSe9kz9/eI2g63hNFXJNkJ
+ LBcA1qR/cSHei2GfNHiRtLkJIRKtkSGWg7CcTY+6yIG6M6aUXjy2Wkgesd5H5RleHryO
+ 856Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766162248; x=1766767048;
+ d=1e100.net; s=20230601; t=1766162255; x=1766767055;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=pCt5072MT4D8iFZ64nwix4KP4RCAdARcnrd2MW5vRvU=;
- b=B/cSCIvt2PDWQvUQofGhEVlI7odds14cha+Nwc6K/B7VA4KUH7MTnp1T/C8S3a7sTt
- wGVJqIeSJ6Ay+5onE+6AxQOxenjY3YKOA3LnoyeLMYP/aRoJ3zsHkeO5JncD1pNTGr1z
- LS14vTXjGqCBAO/4RuC/tHWBhm9ZN5hpvJZA6lCgt+Y/7Zd0YKkMQDfjCSNzT52/cJrC
- FGNZmNWsYmkEGtgIKoFLT+rxRP5JIMvDFc6gyIaJFSsCRTRo4HyrDkZUUAm7M3BbOI2A
- YLE/S0q3r1YTcZvxFHsqrsvrJoryUZ4XNE+5B7NMIJOdJjRRop+jo3kSPUR7A5jYwef3
- BL2A==
-X-Gm-Message-State: AOJu0YxbSpFm/nSgk7Jfia2A5raoCRBmbFuPOup1uARxNW/0e3RueTlV
- t0JzlUwbvQnwUQTVtmyRRALhCsXq3T3GZefA70JLt8vP8zppapeFzpjfgXzXD24abO72Oo4TmvU
- JvRCGMKU=
-X-Gm-Gg: AY/fxX7tZIQMqdeh/no0v7KlBi3c4KF9jmdUSpg+hnF3or2dO/m5/j6n8pvHvO4bcMg
- mzP7rEKXxV9jj1m8bit94DxI+gA7aEh76CbFUaFTWwTRJQD6D5K1rrKiLj0kMqqUCWbQB1i2FiT
- 4FtJ4Y3aQWIUe2ABcrdrocxkfZGPKVHefOKdHETJI6U7B47ACsM2FyOnkRPEsIn8/Fy5PO0s5jF
- qKQYwk2B6oVhkdBoEVHUmxr4iMSZSVXMitXR7UT06xj/dhlNMpl6R13jyyQ6kH1nz8bxx4VEp/b
- UkFwDDFC4vGXRiLMdqB8Exmek4kqBC9J041USgb7rR6PY5mjCyRn6IAYD4TWIhIX1rUsAuiEJWK
- LnKDMxReG+/oHnMVAafImpvNk1mZVM/GGgwx5y73Qi0E+ykIj8M2yg4kKfzxN3LZ75egZCnsidS
- J4yxLCZuSQZ+WH6MuMDL8IX2zX+YQwqPxJfmLO7GO1m0gktdzqYfLl25iKm7Op
-X-Google-Smtp-Source: AGHT+IH2/KwdCJjnVZ8WS/K+hnlCRy1ArMX7mZub37twLzNoXbZGIMlwCZKZP+cFSvUmc8YNGpMrvg==
-X-Received: by 2002:a05:6000:24c9:b0:430:fc63:8d3 with SMTP id
- ffacd0b85a97d-4324e4fe005mr3763347f8f.30.1766162247653; 
- Fri, 19 Dec 2025 08:37:27 -0800 (PST)
+ bh=gvU8IjxyyWGbnt0TpIestxRQYownf9I7RuEDkGDxUZg=;
+ b=AIvyIxwLmfQwQrhq2psW9Gl+tMfPWU+iLoDx1fJ0DhG966jlws/MKSCy7zuaSecrix
+ 9SL86OhJjhZv7AYzetHsfx6Lqk7pqTAbumWUcuxfVU2vRCKhfZs4YcPgMlv1maDL4/gw
+ 9CyMCO6GZdyMLdZF7l1vvRvyCkMQTa790yPKnUa3g+Vp+Axk0L+58f3hAQyTx4a67QwT
+ 9uJwuWP+4QsLEsT/WYhr9JaTy77T4/8WTiqaMxtviyi8HNW79U4V7JGnG4qcThRlj4T/
+ rOk8E10q9rP5NEcBOYUB2Mh2Yab2auMtW8KJz5yjuvzRs5j98f1Dn7zLgHNVpFvVYDaR
+ wbSg==
+X-Gm-Message-State: AOJu0Yzbdfr7pz8PXM+pJzNWSozU8OLetf90L/dKyoRMpKtbnec1VCjp
+ KF1EoPzJIKAt6thhwbLbyx0PA0bwuS4bKvTFUFiLQ3NMzehNdTRf1hIua9z+TBTXKoNQ2j+dPm9
+ xhRT+yac=
+X-Gm-Gg: AY/fxX7aRjiRGED7SiRcMnyLaV7apKjkWqSXHKzsZq/y4hbrqasF0PZxjB/JxaZH9MR
+ ZzPpGyzVJrQpE/tNE6CUcPQe9vgq+mmH2GoTnwKaepa/KriuWVZ8MSq9ZYEcC8kNYewIOr6/pLP
+ VUDbgiCBvRijx7CJ6XXJhHclKEmFoMINQlFWbnWYi+CF1pX1sQs1YBQh02roscEF19ckqughiTG
+ +m4i1upriNcRLy9YoaplFH2kwhL0/uMp3T0QaSJGLeW+a7WXNAa8/ClD/uY+tEa03iWhrD6du4Q
+ VHSzT4bqC65oPPzedytFpu/KhiKwlf35uWq32/QMqfx4kW15h3b1aD0J/J0G8qAwQS6Z/bHDnaq
+ U6ee25SZzkBqcS8SJ2+zW+6R9GT6Op1RpfhpwnLABYHCNvZ1ucQENAi1U+9RlbH2QOnD2Tllmpm
+ hRaBqNtotx5BAoroMkCwp6vSYXK7agDVnUwiXInIbmPEHGzr0T6fj6KGjDJS6Z49pJAO8fORY=
+X-Google-Smtp-Source: AGHT+IFJFYK2I28ZaGAcicQ6d93jyoU5+SdGerlfByXSHGE7xscJVttx8WMqXH4AoyycDRQ/fTjW1Q==
+X-Received: by 2002:a05:600c:3b0e:b0:477:b0b9:3129 with SMTP id
+ 5b1f17b1804b1-47d1955b7d1mr30755685e9.3.1766162255139; 
+ Fri, 19 Dec 2025 08:37:35 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324ea1b1bdsm5622615f8f.8.2025.12.19.08.37.26
+ 5b1f17b1804b1-47be3a6c6ebsm40481015e9.4.2025.12.19.08.37.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 19 Dec 2025 08:37:26 -0800 (PST)
+ Fri, 19 Dec 2025 08:37:34 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
@@ -72,18 +72,17 @@ Cc: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 5/9] target/sparc: Use big-endian variant of
- cpu_ld/st_data*()
-Date: Fri, 19 Dec 2025 17:36:45 +0100
-Message-ID: <20251219163650.74303-6-philmd@linaro.org>
+Subject: [PATCH v2 6/9] target/sparc: Inline translator_ldl()
+Date: Fri, 19 Dec 2025 17:36:46 +0100
+Message-ID: <20251219163650.74303-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251219163650.74303-1-philmd@linaro.org>
 References: <20251219163650.74303-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,52 +105,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We only build the SPARC targets using big endianness order,
-therefore the cpu_ld/st_data*() definitions expand to the big
-endian declarations. Use the explicit big-endian variants.
+translator_ldl() is defined in "exec/translator.h" as:
 
-Mechanical change running:
+  198 static inline uint32_t
+  199 translator_ldl(CPUArchState *env, DisasContextBase *db, vaddr pc)
+  200 {
+  201     return translator_ldl_end(env, db, pc, MO_TE);
+  202 }
 
-  $ tgt=sparc; \
-    end=be; \
-    for op in data mmuidx_ra; do \
-      for ac in uw sw l q; do \
-        sed -i -e "s/cpu_ld${ac}_${op}/cpu_ld${ac}_${end}_${op}/" \
-                  $(git grep -l cpu_ target/${tgt}/); \
-      done;
-      for ac in w l q; do \
-        sed -i -e "s/cpu_st${ac}_${op}/cpu_st${ac}_${end}_${op}/" \
-                  $(git grep -l cpu_ target/${tgt}/); \
-      done;
-    done
+Directly use the inlined form, expanding MO_TE -> MO_BE
+since we only build the SPARC targets as big-endian.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/ldst_helper.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ target/sparc/translate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/sparc/ldst_helper.c b/target/sparc/ldst_helper.c
-index 043711f11dc..d879ce4e262 100644
---- a/target/sparc/ldst_helper.c
-+++ b/target/sparc/ldst_helper.c
-@@ -1194,13 +1194,13 @@ uint64_t helper_ld_asi(CPUSPARCState *env, target_ulong addr,
-             ret = cpu_ldub_data(env, addr);
-             break;
-         case 2:
--            ret = cpu_lduw_data(env, addr);
-+            ret = cpu_lduw_be_data(env, addr);
-             break;
-         case 4:
--            ret = cpu_ldl_data(env, addr);
-+            ret = cpu_ldl_be_data(env, addr);
-             break;
-         case 8:
--            ret = cpu_ldq_data(env, addr);
-+            ret = cpu_ldq_be_data(env, addr);
-             break;
-         default:
-             g_assert_not_reached();
+diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+index 23079697f52..57b50ff8b9a 100644
+--- a/target/sparc/translate.c
++++ b/target/sparc/translate.c
+@@ -5743,7 +5743,7 @@ static void sparc_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
+     DisasContext *dc = container_of(dcbase, DisasContext, base);
+     unsigned int insn;
+ 
+-    insn = translator_ldl(cpu_env(cs), &dc->base, dc->pc);
++    insn = translator_ldl_end(cpu_env(cs), &dc->base, dc->pc, MO_BE);
+     dc->base.pc_next += 4;
+ 
+     if (!decode(dc, insn)) {
 -- 
 2.52.0
 
