@@ -2,89 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD5DCCCEEBF
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 09:14:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C34E9CCEEB9
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 09:14:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWVbm-0006QQ-4X; Fri, 19 Dec 2025 03:13:06 -0500
+	id 1vWVbl-0006QM-WA; Fri, 19 Dec 2025 03:13:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1vWVbi-0006Pu-3p
+ id 1vWVbi-0006Q1-BY
  for qemu-devel@nongnu.org; Fri, 19 Dec 2025 03:13:02 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1vWVbg-0005JJ-6j
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 03:13:01 -0500
+ id 1vWVbg-0005LU-Bq
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 03:13:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766131978;
+ s=mimecast20190719; t=1766131979;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4esfwqmnp6Yj7iH0lv6nCVR9ijz7TDmc5LP+PUle+1U=;
- b=S54FdaqbD3129eR+RIdEqYoV8rB1fP51igHn/Abufqr+stzOiEOQErB7FfquGjSB2wmXtP
- YkOTsMA1SuIYEgJRwC/SGcU3shDrXM1ZoOxq0LCEQyCzttvXCPeMfaXIm3UG0QKx6u8ANJ
- NGhYE5RnH3qIYGxsuQMFZ3YuprJ98g4=
-Received: from mail-yx1-f71.google.com (mail-yx1-f71.google.com
- [74.125.224.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mH4SEylnCH6UbDa9blTl8ZdCiihIaIWOrvbFr9UerHo=;
+ b=ZkeIczjfmghpga1HZI2FefQw7xAvRySoJcQ+wn68HmIGV02nMj78TmXskxhDMc9NWZpjDJ
+ ZDXSCkNaYH0VRbNP3IF7xKvFihj9RDRi9i92VeJiS3qcwBsKd2G/4F/VUr2MHVoxbSWqUe
+ Nj79WIxHouDDxgimlNuFz4FIPSAO0EM=
+Received: from mail-yx1-f69.google.com (mail-yx1-f69.google.com
+ [74.125.224.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-443-ESTK59XMPty0kuMTVQATHg-1; Fri, 19 Dec 2025 03:12:54 -0500
-X-MC-Unique: ESTK59XMPty0kuMTVQATHg-1
-X-Mimecast-MFC-AGG-ID: ESTK59XMPty0kuMTVQATHg_1766131974
-Received: by mail-yx1-f71.google.com with SMTP id
- 956f58d0204a3-63e324b2fd0so2927638d50.2
- for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 00:12:54 -0800 (PST)
+ us-mta-671-KH3IHwH5PNWly4OwNR9TyA-1; Fri, 19 Dec 2025 03:12:58 -0500
+X-MC-Unique: KH3IHwH5PNWly4OwNR9TyA-1
+X-Mimecast-MFC-AGG-ID: KH3IHwH5PNWly4OwNR9TyA_1766131977
+Received: by mail-yx1-f69.google.com with SMTP id
+ 956f58d0204a3-6445cf02fcbso1761845d50.2
+ for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 00:12:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766131972; x=1766736772; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766131977; x=1766736777; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4esfwqmnp6Yj7iH0lv6nCVR9ijz7TDmc5LP+PUle+1U=;
- b=mcHU69GpbHi8MNz90WyM/ALCsDL1OG5kdXEjo952/f5RTQ4ahdxz0RxbcO4X6I1XP1
- VQvTsmhKnLQ8I7JTckkzvErfpVBPDpyDFF/2acIDGpb9xEIwxpTUn9U9D8HtsgvWYR1N
- 48EB7kxhP4OuWusDrP/INyNlaBXxKOpdwT/fG7P6KRO8wZZxh/6jTqQPJC7r1o3gBJx9
- 5NBEjM455/1+qv5dpg5/cllo80sP91A0vkl2oGikXXEsGB7L1FDldqK8aBidTgxhWYz+
- 7iD8EfjSZgRAuE4/4ORYMA+yA4hkO/xl19LOBx9Zu6tsHXEO6MGS/aQxhemFCzp/XDxt
- h6Fw==
+ bh=mH4SEylnCH6UbDa9blTl8ZdCiihIaIWOrvbFr9UerHo=;
+ b=AF5ZA4UvufDh4BbUBRj+S3+7ViADgezdmo/FFtg6PrJTpjdjAx3UUfKe608DTGdaSk
+ fGGTwmZsK5C0hleniJ9q0ZhQg/9Z1BnAZdbd3j9/U5kTneGiLBNSAvsD8JLLv6mEq8ge
+ eAY4Swo86/zKmn/LUHhPzqXF8YAK4sn8qVXZdtXy2tf2gPnBwhxVtNGbhnIcPIY378yu
+ kFNCloAHBt2mRdMU3tPJwdPkMVqWK9Frx+M8Qo0hWcKlLl1Wl20Zmn4KgQsfgwdsDoeo
+ KatzdMbeqLm7wRRvRmepdYTlR+EboQqFEfBTI8oWtE4KyZal8HRsUQLCR06UNfarCLcV
+ gMlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766131972; x=1766736772;
+ d=1e100.net; s=20230601; t=1766131977; x=1766736777;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=4esfwqmnp6Yj7iH0lv6nCVR9ijz7TDmc5LP+PUle+1U=;
- b=SXza89jgkHmDMq5CCpXIVpu99h+0dLOG+mSa6dbOAv0dRyU+mQ1JyYGPZbYgmYSdD3
- C5Ub7zuaEqJXy/tPuTxi8NVrmUwFtsqAl1yjtH8Wy/bWKRL3h5DjTjI4D0irJsw2Soa4
- 26FCq4oq5JurL5PlVGJNxTgLbKvz5p33eZABVgIOyoyiqG9n221wPstfjUeVh97aSXUj
- nmmyod7CHmzdYefitQmg6hXFAYwzaFtx0wFCuF5XF8EPtAYop1GcO8VN1WNqp7/nTwkJ
- 8BL31/Y2C5QBlO3rR6sBJYlG3OM7v+KdBYRBA3gYyKXIBWclleXlGOs7g5xjiZhl91T7
- 1aAw==
+ bh=mH4SEylnCH6UbDa9blTl8ZdCiihIaIWOrvbFr9UerHo=;
+ b=Ez7xdj0P5vaPbhAp/Y60iPrbo624pp7UbT4sCAV/KgWJPPsfOZf1i7wSrmhOKaT2Ba
+ 42gMrR8gaav12SF5mCLE5aygsi+bMymKdRf3MY+JekrsFA5X4mdt90mVvINQr3BP/uNB
+ pgPrjenly3BJEbpAOLgl4p+BBykffdtDdxoemMv3+FjEahRdhw447+26eZDqK2QJItbM
+ /7ohnkEJhXRfUFaT25zHWLS6CtLl4J3vYvvhNvSAfwIVBEUmJjfNO8jqD2uLleAsTHJh
+ AuGGoPkjcx371S8zXxq+aPMX3poiRx2gsA9DV1dETsOnMUzSwUEkOXrLkLlMEeKCIV/1
+ gbyQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVj4qeGcUET4BPE9HfJiyz/njBd3cVQfU+4QiFPvaLDNkh+Fbmc9hfxsqWqodrht9/ni6sZFau+pye3@nongnu.org
-X-Gm-Message-State: AOJu0YwbexzZCQllReVl3Lec3/wJ21Yfv9kA3ENevm/6hlriDc5idHFP
- Ia//3LoPz8wSSimIAZNuXnYyaqmG+3pDszbzZnzgqWggPpazw9EG7EPEV89/N8siat/YWr3BrZc
- Nr+RCpivve1rU+QeQ8nWYCxxb4iMSe/b+/8CK7Q2WdY6r9Iu5vYcYv/XXnLqmDPbl+pcikUMcOS
- NTDN1WdDI2xpiLKCXKlRk7sFYxVFImaF+49FD4mJs=
-X-Gm-Gg: AY/fxX7/KqFY6NvUQZx6wwEOMn22QAJQpUkDfGpKfOh6ZUJ/03l9DhPQyYvkVBBYGRn
- uY3Owsa3LeS6TegRd1TOyoq13wtacOz5wfwVwL8/SiQdKabdWRbE/jzKndi4lrolUZHkyo0iGyk
- 0Tn5SMliQMg2paGfGK2SPY2DIQ8D/RP11SDdS50jPgc/DFp6c7xL/rJQdQGqB8mJWZVCY=
-X-Received: by 2002:a53:ed90:0:b0:645:53d0:2d1f with SMTP id
- 956f58d0204a3-6466a834cf8mr1327499d50.6.1766131972202; 
- Fri, 19 Dec 2025 00:12:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IExQzmkn+NMbFa3KzBmeOdjSfpGCK4eXIglomR92lnijzn9qzGVo6XM/POWNXyN9VXtgnflz8NUw8QWLFP0Tsg=
-X-Received: by 2002:a53:ed90:0:b0:645:53d0:2d1f with SMTP id
- 956f58d0204a3-6466a834cf8mr1327482d50.6.1766131971535; Fri, 19 Dec 2025
- 00:12:51 -0800 (PST)
+ AJvYcCXf0cz6oqV51ufhT65qq/wPHqWoKBwi1ATMNaxH6P2IInJJDiFyj6EvNvh0arlU1N12PYhy0E7b7nvp@nongnu.org
+X-Gm-Message-State: AOJu0YxkRb5f99IY9a8Q/0DALubRPZ/QbfuxGjggEw1nYzS80O0iC7nv
+ wNYQ7ot7hIgT29dQB1tDbKn93eMRbAEdNvJM1Uu3jDCzGpXfzxKd+TPJt09bmNPmMQ3U1HSLemc
+ 3uplOs9QQ3Xydd05QKHDwJae9DFcjMndKyUT2pXbAay63NUaqOFVIRbd0EVWRqf8H8qYmKgPfdO
+ wnvOBwFasTzWzvY6sE1folW5YMy5Zrgyfh7axgcec=
+X-Gm-Gg: AY/fxX7P8nSEccfHqfGdy5XYTNTYCIutfjPyTqnCuEeSRjUl3Wl14HyDrQauhlYcNJv
+ 4AUnAdC581zP38RQoMt8XsYpapo2xBTsX/Nk4JnKxiBGEJAc/nz2wJfkenveFczp4f7drKsrfxL
+ 4D8SmvnjWxLVfN/fL+wIA88MxZvfKRLBYqJMNrvzaTXqVzsjLuKbhyEMNg6NwdATY/0C4=
+X-Received: by 2002:a05:690c:c4ce:b0:78f:bc2b:83f5 with SMTP id
+ 00721157ae682-78fbc2b8fd3mr5740747b3.20.1766131977214; 
+ Fri, 19 Dec 2025 00:12:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHsV7tFr4oroeZRI5hlBnlpoAb8TMLcOW//pp7ZHA8+zNJErlMNiRYEX0zbQ5wTkuW56XDgTK5IeB/KG427oDw=
+X-Received: by 2002:a05:690c:c4ce:b0:78f:bc2b:83f5 with SMTP id
+ 00721157ae682-78fbc2b8fd3mr5740437b3.20.1766131976855; Fri, 19 Dec 2025
+ 00:12:56 -0800 (PST)
 MIME-Version: 1.0
-References: <20251216015416.6418-1-wafer@jaguarmicro.com>
-In-Reply-To: <20251216015416.6418-1-wafer@jaguarmicro.com>
+References: <20251216015451.6479-1-wafer@jaguarmicro.com>
+In-Reply-To: <20251216015451.6479-1-wafer@jaguarmicro.com>
 From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Fri, 19 Dec 2025 09:12:14 +0100
-X-Gm-Features: AQt7F2o0fAgbU98VI_CTc6RSnqKBof5Sgc-uoK1DZHwquhY4jepc8XTPJM1Ot04
-Message-ID: <CAJaqyWfNFrSDb3wk5oMpB6Lc4aTkUnbaQ-sy875+cO9jGk7Vaw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] Add Split indirect descriptors for SVQ
+Date: Fri, 19 Dec 2025 09:12:19 +0100
+X-Gm-Features: AQt7F2pT-OFeizpmY30rbz6tfx0MujNSdDFWV8tq6lZQYEOw4MY1O82kbviHV1o
+Message-ID: <CAJaqyWcB1C=6Eo54pjiokEDfb0=eXYnii9Vc1NyAQxKaCwtGrA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/4] vhost: add data structure of virtio indirect
+ descriptors in SVQ
 To: Wafer Xie <wafer@jaguarmicro.com>
 Cc: mst@redhat.com, jasowang@redhat.com, qemu-devel@nongnu.org, 
  leiyang@redhat.com, sgarzare@redhat.com, angus.chen@jaguarmicro.com
@@ -116,193 +117,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Dec 16, 2025 at 2:54=E2=80=AFAM Wafer Xie <wafer@jaguarmicro.com> w=
+On Tue, Dec 16, 2025 at 2:55=E2=80=AFAM Wafer Xie <wafer@jaguarmicro.com> w=
 rote:
 >
 > From: wafer Xie <wafer@jaguarmicro.com>
 >
-> This patch series adds support for VIRTIO split indirect descriptors.
-> The feature is VIRTIO_RING_F_INDIRECT_DESC.
+> Using multiple statically allocated buffers to store virtio indirect desc=
+riptors
 >
-> Eugenio hs submitted a patch: vhost: accept indirect descriptors in shado=
-w virtqueue
-> https://lists.nongnu.org/archive/html/qemu-devel/2025-12/msg00056.html
-> Therefore, this patch must be applied first.
+> Signed-off-by: wafer Xie <wafer@jaguarmicro.com>
+> ---
+>  hw/virtio/vhost-shadow-virtqueue.h | 46 ++++++++++++++++++++++++++++++
+>  1 file changed, 46 insertions(+)
 >
-> The current svq implementation can read the indirect descriptors provided=
- by the driver,
-> but it cannot use indirect descriptors when interacting with the backend =
-device.
-> However, if a backend device implements indirect descriptors and wants to=
- use QEMU
-> to validate its indirect descriptor support,
-> then QEMU needs to fully support indirect descriptors in this path.
-> This series is intended to provide that full support,
-> so that such backend devices can be properly tested and validated via QEM=
-U.
+> diff --git a/hw/virtio/vhost-shadow-virtqueue.h b/hw/virtio/vhost-shadow-=
+virtqueue.h
+> index 9c273739d6..b0f236f049 100644
+> --- a/hw/virtio/vhost-shadow-virtqueue.h
+> +++ b/hw/virtio/vhost-shadow-virtqueue.h
+> @@ -23,6 +23,13 @@ typedef struct SVQDescState {
+>       * guest's
+>       */
+>      unsigned int ndescs;
+> +
+> +    /*
+> +     * Index into the indirect descriptor
+> +     * buffer (0 to SVQ_NUM_INDIRECT_BUFS - 1) if using indirect.
+> +     * -1 if not using indirect descriptors.
+> +     */
+> +    int indirect_buf_idx;
+>  } SVQDescState;
 >
-> Multiple buffers are used to store indirect descriptors, and each buffer =
-has a size of ring.num * 4.
-> Each buffer has two states: FREED and FREEING.
+>  typedef struct VhostShadowVirtqueue VhostShadowVirtqueue;
+> @@ -46,6 +53,32 @@ typedef struct VhostShadowVirtqueueOps {
+>      VirtQueueAvailCallback avail_handler;
+>  } VhostShadowVirtqueueOps;
 >
-> When adding elements to the virtio available ring,
-> descriptors can only be allocated from buffers in the FREED state.
-> If the current buffer does not have enough FREED descriptors,
-> its state is changed to FREEING,
-> and descriptors are then allocated from another buffer in the FREED state=
-.
->
-> When retrieving entries from the virtio used ring,
-> descriptors are returned to the buffer indicated
-> by the buffer index associated with the element.
-> If all descriptors in a buffer have been reclaimed,
-> the buffer=E2=80=99s state is changed back to FREED.
->
->
-> Performance (pps) was evaluated using testpmd, comparing three scenarios:
-> 1) fully indirect descriptors(apply this path series, indirect_desc=3Don)
-> guset<--------indirect desc-----SVQ-------indirect desc----->device
->
->
-> 2) hybrid mode with indirect plus chained descriptors(only apply VIRTIO_R=
-ING_F_INDIRECT_DESC, indirect_desc=3Don)
-> guset<--------indirect desc-----SVQ-------chain desc----->device
->
->
-> 3) fully chained descriptor mode(don't apply any patch,indirect_desc=3Dof=
-f).
-> guset<--------chain desc-----SVQ-------chain desc----->device
->
->
-> The results show that the fully indirect descriptor mode achieves approxi=
-mately 5%~10% higher performance than the indirect + chained descriptor mod=
-e,
-> and approximately 12%~17% higher performance than the fully chained descr=
-iptor mode.
->
->
+> +/**
+> + * State of an indirect descriptor buffer
+> + */
+> +typedef enum SVQIndirectBufState {
+> +    SVQ_INDIRECT_BUF_FREED,    /* Buffer is free and can be used */
+> +    SVQ_INDIRECT_BUF_FREEING,  /* Buffer is being freed */
+> +} SVQIndirectBufState;
+> +
+> +/**
+> + * Pre-allocated indirect descriptor buffer
+> + * Each SVQ has two of these buffers for double-buffering
 
-Sounds very good! The series is aimed but I have a few comments on it,
-let me know what you think!
+What does the double buffering improve here compared to just doubling the s=
+ize?
 
+
+> + */
+> +typedef struct SVQIndirectDescBuf {
+> +    vring_desc_t *desc;         /* Descriptor table size =3D num_descs) =
+*/
+> +    hwaddr iova;                /* IOVA of the descriptor table */
+> +    size_t size;                /* Size of the mmap'd region */
+> +    SVQIndirectBufState state;  /* Current state of this buffer */
+> +    uint16_t num_descs;         /* Total number of descs (N * vring.num)=
+ */
+> +    uint16_t freed_descs;       /* Number of descriptors available for u=
+se */
+> +    uint16_t freeing_descs;     /* Number of descs being freed from used=
+ ring */
+> +    uint16_t freed_head;        /* Next free descriptor index in this bu=
+ffer */
+> +} SVQIndirectDescBuf;
+> +
+> +/* Number of indirect descriptor buffers per SVQ for double-buffering */
+> +#define SVQ_NUM_INDIRECT_BUFS 2
+> +
+>  /* Shadow virtqueue to relay notifications */
+>  typedef struct VhostShadowVirtqueue {
+>      /* Shadow vring */
+> @@ -96,6 +129,19 @@ typedef struct VhostShadowVirtqueue {
+>      /* Caller callbacks opaque */
+>      void *ops_opaque;
 >
-> The raw testpmd output is provided below.
->
-> testpmd configuration:
-> 1) set txonly; set txpkts 2048,1024;set burst 8
->
->   fully indirect descriptors:
->   ######################## NIC statistics for port 0  ###################=
-#####
->   RX-packets: 256        RX-missed: 0          RX-bytes:  491520
->   RX-errors: 0
->   RX-nombuf:  0
->   TX-packets: 74700761   TX-errors: 0          TX-bytes:  307543211008
->
->   Throughput (since last show)
->   Rx-pps:            0          Rx-bps:            0
->   Tx-pps:       745609          Tx-bps:  18324096544
->   #######################################################################=
-#####
->
->
->   hybrid mode with indirect plus chained descriptors
->   ######################## NIC statistics for port 0  ###################=
-#####
->   RX-packets: 256        RX-missed: 0          RX-bytes:  491520
->   RX-errors: 0
->   RX-nombuf:  0
->   TX-packets: 44153053   TX-errors: 0          TX-bytes:  202580423680
->
->   Throughput (since last show)
->   Rx-pps:            0          Rx-bps:            0
->   Tx-pps:       674954          Tx-bps:  16587671544
->   #######################################################################=
-#####
->
->
->
->   fully chained descriptor mode:
->   ######################## NIC statistics for port 0  ###################=
-#####
->   RX-packets: 256        RX-missed: 0          RX-bytes:  491520
->   RX-errors: 0
->   RX-nombuf:  0
->   TX-packets: 48458913   TX-errors: 0          TX-bytes:  212695989248
->
->   Throughput (since last show)
->   Rx-pps:            0          Rx-bps:            0
->   Tx-pps:       665493          Tx-bps:  16355164120
->   #######################################################################=
-#####
->
->
-> 2) set txonly; set txpkts 2048,2048,1024;set burst 8
->
->    fully indirect descriptors:
->   ######################## NIC statistics for port 0  ###################=
-#####
->   RX-packets: 0          RX-missed: 0          RX-bytes:  0
->   RX-errors: 0
->   RX-nombuf:  0
->   TX-packets: 18193774   TX-errors: 0          TX-bytes:  93152122880
->
->   Throughput (since last show)
->   Rx-pps:            0          Rx-bps:            0
->   Tx-pps:       683537          Tx-bps:  27997687072
->   #######################################################################=
-#####
->
->
->
->    hybrid mode with indirect plus chained descriptors
->   ######################## NIC statistics for port 0  ###################=
-#####
->   RX-packets: 0          RX-missed: 0          RX-bytes:  0
->   RX-errors: 0
->   RX-nombuf:  0
->   TX-packets: 18948021   TX-errors: 0          TX-bytes:  97013867520
->
->   Throughput (since last show)
->   Rx-pps:            0          Rx-bps:            0
->   Tx-pps:       646147          Tx-bps:  26466218232
->   #######################################################################=
-#####
->
->
->
->    fully chained descriptor mode:
->   ######################## NIC statistics for port 0  ###################=
-#####
->   RX-packets: 0          RX-missed: 0          RX-bytes:  0
->   RX-errors: 0
->   RX-nombuf:  0
->   TX-packets: 15944245   TX-errors: 0          TX-bytes:  81634534400
->
->   Throughput (since last show)
->   Rx-pps:            0          Rx-bps:            0
->   Tx-pps:       583981          Tx-bps:  23919889848
->   #######################################################################=
-#####
->
-> -----
-> Changes in v3:
->  -Fix code formatting issues
->
-> Changes in v2:
->  -Use a static allocated buffer for the indirect descriptors
->
->
-> wafer Xie (4):
->   vhost: add data structure of virtio indirect descriptors in SVQ
->   vdpa: implement a statically allocated buffer for SVQ
->   vhost: SVQ get the indirect descriptors from used ring
->   vhost: SVQ add the indirect descriptors to available ring
->
->  hw/virtio/vhost-shadow-virtqueue.c | 325 ++++++++++++++++++++++++++---
->  hw/virtio/vhost-shadow-virtqueue.h |  46 ++++
->  hw/virtio/vhost-vdpa.c             | 163 ++++++++++++++-
->  3 files changed, 507 insertions(+), 27 deletions(-)
+> +    /*
+> +     * Pre-allocated indirect descriptor buffers for double-buffering.
+> +     * These are allocated when SVQ starts if VIRTIO_RING_F_INDIRECT_DES=
+C
+> +     * is negotiated.
+> +     */
+> +    SVQIndirectDescBuf indirect_bufs[SVQ_NUM_INDIRECT_BUFS];
+> +
+> +    /* Index of the current active indirect buffer, -1 if not using */
+> +    int current_indirect_buf;
+> +
+> +    /* Whether indirect descriptors are enabled */
+> +    bool indirect_enabled;
+> +
+>      /* Next head to expose to the device */
+>      uint16_t shadow_avail_idx;
 >
 > --
 > 2.48.1
