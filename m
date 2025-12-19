@@ -2,42 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 800C9CD0F66
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ECCBCD0F65
 	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 17:46:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWdbi-0001SM-Bq; Fri, 19 Dec 2025 11:45:34 -0500
+	id 1vWdbo-0001Ts-IS; Fri, 19 Dec 2025 11:45:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vWdbS-0001Og-V3
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:45:19 -0500
-Received: from 4.mo548.mail-out.ovh.net ([188.165.42.229])
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vWdbb-0001RW-6B
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:45:27 -0500
+Received: from 10.mo552.mail-out.ovh.net ([87.98.187.244])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vWdbQ-00023h-VZ
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:45:18 -0500
-Received: from mxplan5.mail.ovh.net (unknown [10.110.0.171])
- by mo548.mail-out.ovh.net (Postfix) with ESMTPS id 4dXtgR4b36z5xTn;
- Fri, 19 Dec 2025 16:45:07 +0000 (UTC)
-Received: from kaod.org (37.59.142.113) by DAG3EX1.mxp5.local (172.16.2.21)
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vWdbZ-00025f-7h
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:45:26 -0500
+Received: from mxplan5.mail.ovh.net (unknown [10.109.254.158])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4dXtgh3H1Rz5x8x;
+ Fri, 19 Dec 2025 16:45:20 +0000 (UTC)
+Received: from kaod.org (37.59.142.105) by DAG3EX1.mxp5.local (172.16.2.21)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.61; Fri, 19 Dec
- 2025 17:45:05 +0100
+ 2025 17:45:19 +0100
 Authentication-Results: garm.ovh; auth=pass
- (GARM-113S007c62588af-500d-4ccd-b0c9-6cbe07855e82,
+ (GARM-105G006f7628f75-cf3e-4ef4-934c-44610e89775c,
  13AF5B8175AA3308F51DC8C03696883D036152F7) smtp.auth=clg@kaod.org
 X-OVh-ClientIp: 82.64.250.170
-Message-ID: <b1a3dced-6757-47b3-9ca2-50669c32a5b6@kaod.org>
-Date: Fri, 19 Dec 2025 17:45:04 +0100
+Message-ID: <d7c18b54-3d53-4204-8dc1-3c1bc4fe4cb4@kaod.org>
+Date: Fri, 19 Dec 2025 17:45:18 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/11] hw/arm/aspeed: catalina: add eeproms images
-To: Patrick Williams <patrick@stwcx.xyz>, <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v5 0/6] hw/gpio/aspeed_sgpio: Add Aspeed Serial GPIO
+ (SGPIO) controller model
+To: Yubin Zou <yubinz@google.com>, <qemu-devel@nongnu.org>
 CC: Peter Maydell <peter.maydell@linaro.org>, Steven Lee
  <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>, Jamin Lin
  <jamin_lin@aspeedtech.com>, Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>, <qemu-arm@nongnu.org>
-References: <20251217-catalina-eeproms-v1-0-dc7b276efd57@stwcx.xyz>
+ Joel Stanley <joel@jms.id.au>, Fabiano Rosas <farosas@suse.de>, Laurent
+ Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Kane-Chen-AS <kane_chen@aspeedtech.com>, Nabih Estefan
+ <nabihestefan@google.com>, <qemu-arm@nongnu.org>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+References: <20251219-aspeed-sgpio-v5-0-fd5593178144@google.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Autocrypt: addr=clg@kaod.org; keydata=
@@ -82,27 +87,27 @@ Autocrypt: addr=clg@kaod.org; keydata=
  3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
  ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
  KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20251217-catalina-eeproms-v1-0-dc7b276efd57@stwcx.xyz>
+In-Reply-To: <20251219-aspeed-sgpio-v5-0-fd5593178144@google.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [37.59.142.113]
-X-ClientProxiedBy: DAG6EX1.mxp5.local (172.16.2.51) To DAG3EX1.mxp5.local
+X-Originating-IP: [37.59.142.105]
+X-ClientProxiedBy: DAG4EX2.mxp5.local (172.16.2.32) To DAG3EX1.mxp5.local
  (172.16.2.21)
-X-Ovh-Tracer-GUID: fe5fc284-3a03-4b29-a7c4-a88cf418ecf8
-X-Ovh-Tracer-Id: 9300214707669076783
+X-Ovh-Tracer-GUID: d097085f-bbbc-4dca-8399-cdc900165e2e
+X-Ovh-Tracer-Id: 9304436832663931777
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTETJr33RvjRyhNTZtJeo0YtF3QxSg9qvVmWEf+5xmnLV4GFtfTyPV16O3SfOJZ7VEYws/H9YqWf0kfYc3Yz2hM2HaEnX13TuK86adX+rpzZUKPqY+4w9GNdu9uHgx34pBx7o1dAPE2s4dXlEdDoSPY18dnCeTfB+jGVk3SlS+n8pQz1KkMFAEzhTPdQ2BQjXCsKs59rg6TuNHXaGEiycJXTNDohF85m/bTqFMr7C65F9JF8va5BlCgrBkIqJVoJiPrHwsVTXUHGhCg6dt8HVIseVhwnHmuL5BTjS4ZlEnDOv188hvY5tFOwSvZjxCG8k+DkO6mOOjNdjlWu+1Mi38VBBqYFvFW2vZEGTR9FjjLBdvyixj4dTRcpff66423BRfLv60x4kT8s+vnZks+9ANEB6zEAqw/kqKFJyDY0N74hlu6YdFtwWmOok+bzZqrJ0dIi69x1FDRyMN1h+bEFM2/s2zF4Eu06IaXTeJbw7NtcT/zJfSG9MpBMdh+pOurScZZ/KFF/rcqwEX+XThcG8q9vmkVLaQWzsrlqQZq+3OreDeFjwfWqy3DJh9whv9djsTMe2rxyTXLX836pHxuBFDIzMh0rjDlbBIH1j6L4Un3c+3F7lkLat2kPfxnwrSuvfbuzTx4BM1r5Oc9ItoSuGkCNPz8wxs8mPLSp8q0z6/Thrg
-DKIM-Signature: a=rsa-sha256; bh=PU5uzUPoqgp/NFmgsVWgjTEtaMYoQ41hjg808QleiKM=; 
+X-VR-SPAMCAUSE: dmFkZTFgoksgUP8+ymXtERTAqiaijetLKzgDiqYu1iPQB9Ru7iWmD9TYoc8mFB6XH5ZL32qPYEIoO3Iaz/fOqYZcGIvOuVfIkh/5kYvxDFA0uINmfJ6FmqvtD9ygJhIUzz6gw7/giaV5Vk0daKudaRADXjeNPuG/XAvrVVw6maLEfEEwXaF9Lh4ykXX3BVJHS5bXklnq3ABw7MxrCkb/2KXk+BAhDFHp4mu3GJO6cIjNxt6SkkdqX6LYxnMlxsRdDb4RDgeYGmlowZh1zqqCrfJtZgrIMquTWOzLgJl0rPZhSJGyDlEbUly0+NvgjcFZD1baA71sS9ceiZdZ+akOEnMyJDMHp0I1M3T8hDlUoxfMcA3TmRyXSzYx68NuVJvBPMX2OFEBTcjX7YZqRvdOfiTEOkdssxrOVfeGAy4+Q3MOGlZZvN+jMt2K7bGpTVgC+SKy9Y3/eRUfo8qAiuG4CZYXklZ0z1dm0gTr2h6b3d+B7ohOOdJI8nKsl+Z24wt6dMXY/ky1OwExW40tlOO6nuQk3/vT5T4fyYQIBNNfNnoZ6NOKX3rvHCWLGpmWYu36QtqL+sV7Z+DJablmh8V5RhQmstVQ3BFglbu+Ur6wY4RN/OTUmsmlPMTu/queqRyuGX9cbqEVF2vBfjthOQaHEsOxzRuis/F45HC4p65TxXZ4N6kPZw
+DKIM-Signature: a=rsa-sha256; bh=z0g3H2Upviv+uTWy8jS8O4FeUGQp8YAm/pxa3/ZIAcI=; 
  c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1766162707; v=1;
- b=vIhmdAu11hSz36o3o7XLpTlciejIWvowRupJdgS6rLo3HE1Jmu9C68R7p5TmPwRiWyxSnaHM
- leoDrobD7xO6bbMGBKx8Pl0JniPegY8MpMpSIs7YcrXzjxFbCBkD4YobDc6lO6kKY9pVsYEfYpX
- yjYDW4qutP9vgXaG+VFtVvp80tl36NDjavebafBP/QnzSeNpZiANfg8382QRozx6PlcrNmzhhvk
- 2qn6aVCLrLkTWrm3UQa9zTn8jZbfMiRvi4BhxDcChNuHFbTEtwKpL3QOhfV7+mbaKXANy6sac3R
- AGX6ITGUAbHfJ5Q2JcvcmiK59VHd0nxIdBOQY4BUukH8A==
-Received-SPF: pass client-ip=188.165.42.229; envelope-from=clg@kaod.org;
- helo=4.mo548.mail-out.ovh.net
+ t=1766162722; v=1;
+ b=IZ0l4EJ8fuJGBZiVDhnEkfnB7vbKXEA+t327mkX6n46VrdoF+Y0m7rQybgitZRTzDd9Qciv6
+ o7J7uY6JKvrAp/0v+uegA86luddpwdq+18DezkaUiZ2K1CJ+ZZ8+8rvHdB+twD7a7NrgkNuazkP
+ RiXSMgUYccW7biHvN/Ild2Wd/SDqaBCV4mHByQIugeB2AlbdVpsRO2YQ3WDH70Vo6HvmLSFJACM
+ aN7hx9SEIuFEu3ZbMn6V4j/vh49m39a2uXYVbuDKvJqAafw6uz7Rmn9uPPagFDvrWeYwltCmj4I
+ 15rVg1GYjoZyhfJq+Ra6KYamqEjTJ2j7DgIapjPAna7MQ==
+Received-SPF: pass client-ip=87.98.187.244; envelope-from=clg@kaod.org;
+ helo=10.mo552.mail-out.ovh.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -126,67 +131,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/17/25 20:11, Patrick Williams wrote:
-> Since Catalina is a server, made up of a number of FRUs, there are
-> a number of EEPROMs that would contain IPMI-format FRU data.  On
-> OpenBMC, these EEPROMs are parsed by `entity-manager` to determine
-> which devices are physically present in the server (and which variants
-> of those devices).
+On 12/19/25 08:04, Yubin Zou wrote:
+> This series introduces a model for the Aspeed Serial GPIO (SGPIO) controller,
+> commonly found on Aspeed SoCs such as the AST2700. The SGPIO peripheral
+> provides a large number of GPIO pins that can be controlled and monitored
+> serially.
 > 
-> Add EEPROM images for every FRU in the Catalina server.  There is a
-> utility `frugen` which can take a JSON representation of the IPMI
-> fields and generate a binary image from that.  Use this to create
-> sanitized EEPROM images for every FRU and add the rom-init calls to
-> the appropriate locations in the Catalina model.  I left the JSON
-> source as comments along-side each EEPROM image so they can be updated
-> or recreated as necessary.
+> Improvement to QEMU:
+> These patches enhance QEMU's hardware emulation capabilities for platforms
+> using Aspeed SoCs, particularly for BMC simulations. By modeling the SGPIO
+> controller, QEMU can more accurately represent the hardware, allowing for
+> better development and testing of firmware and software that relies on these
+> GPIOs for various functions like sensor monitoring, presence detect, and
+> system control signals.
 > 
-> Tested by loading the latest version of OpenBMC's Catalina image and
-> confirming the FRUs are detected appropriately by entity-manager.
+> Impact (Before/After):
 > 
-> ```
-> root@catalina:~# busctl tree xyz.openbmc_project.EntityManager | grep "board/[^/]*$"
->            |- /xyz/openbmc_project/inventory/system/board/BMC_Storage_Module
->            |- /xyz/openbmc_project/inventory/system/board/Catalina_FIO
->            |- /xyz/openbmc_project/inventory/system/board/Catalina_HDD_Carrier
->            |- /xyz/openbmc_project/inventory/system/board/Catalina_HDD_NVMe
->            |- /xyz/openbmc_project/inventory/system/board/Catalina_OSFP_Carrier
->            |- /xyz/openbmc_project/inventory/system/board/Catalina_PDB
->            |- /xyz/openbmc_project/inventory/system/board/Catalina_SCM
->            |- /xyz/openbmc_project/inventory/system/board/NVIDIA_Cable_Cartridge_0
->            |- /xyz/openbmc_project/inventory/system/board/NVIDIA_Cable_Cartridge_2
->            |- /xyz/openbmc_project/inventory/system/board/NVIDIA_GB200_0
->            |- /xyz/openbmc_project/inventory/system/board/NVIDIA_GB200_1
->            |- /xyz/openbmc_project/inventory/system/board/NVIDIA_GB200_IO_Board_29
->            |- /xyz/openbmc_project/inventory/system/board/NVIDIA_GB200_IO_Board_41
->            |- /xyz/openbmc_project/inventory/system/board/NVIDIA_HMC
->            |- /xyz/openbmc_project/inventory/system/board/OCP_CX7_NIC_10
->            `- /xyz/openbmc_project/inventory/system/board/OCP_CX7_NIC_15
-> ```
+> Before:
+> QEMU lacked a model for the Aspeed SGPIO controller. Any guest software
+> attempting to interact with the SGPIO register space would find no device.
+> Firmware features depending on SGPIO pin states or interrupts could not be
+> tested in QEMU.
 > 
-> This result matches the expected results when running the image on a
-> physical Catalina device.
+> After:
+> QEMU emulates the Aspeed SGPIO controller on supported machines (e.g.,
+> ast2700-evb).
+> - Guest firmware can configure SGPIO pins, set output values, and read input
+>    values through the memory-mapped registers.
+> - External entities (like test scripts or other QEMU components) can interact
+>    with the pins via QOM properties (e.g., to simulate external signal changes).
+>    Path example: /machine/soc/sgpio[0]/sgpio0
+> - The model generates interrupts based on input pin transitions, according to
+>    the configured mode (level/edge), enabling testing of interrupt handlers.
 > 
-> Signed-off-by: Patrick Williams <patrick@stwcx.xyz>
+> Signed-off-by: Yubin Zou <yubinz@google.com>
 > ---
-> Patrick Williams (11):
->        hw/arm/aspeed: catalina: add BSM FRU EEPROM
->        hw/arm/aspeed: catalina: add DC-SCM FRU EEPROM
->        hw/arm/aspeed: catalina: add PDB FRU EEPROM
->        hw/arm/aspeed: catalina: add OSFP FRU EEPROM
->        hw/arm/aspeed: catalina: add FIO FRU EEPROM
->        hw/arm/aspeed: catalina: add HDD FRU EEPROM
->        hw/arm/aspeed: catalina: add GB200 FRU EEPROM
->        hw/arm/aspeed: catalina: add GB200-IO FRU EEPROM
->        hw/arm/aspeed: catalina: add HMC FRU EEPROM
->        hw/arm/aspeed: catalina: add NIC FRU EEPROM
->        hw/arm/aspeed: catalina: add Cable Cartridge FRU EEPROM
+> Changes in v5:
+> - Fix logging, typo and indentation in 1/6.
+> - Fix typo and empty line in 3/6.
+> - Fix duplicate definition in 6/6.
+> - Link to v4: https://lore.kernel.org/qemu-devel/20251217-aspeed-sgpio-v4-0-28bbb8dcab30@google.com
 > 
->   hw/arm/aspeed_ast2600_catalina.c | 473 +++++++++++++++++++++++++++++++++++++--
->   1 file changed, 457 insertions(+), 16 deletions(-)
+> Changes in v4:
+> - Fix indentation issue, replace SysBusDevice by SysBusDeviceClass,
+>    remove unused function in 1/6.
+> - Fix g_autofree usage in 2/6.
+> - Switch to use  %03d in unit test, remove unused headers in 6/6.
+> - Link to v3: https://lore.kernel.org/qemu-devel/20251210-aspeed-sgpio-v3-0-eb8b0cf3dd51@google.com
+> 
+> Changes in v3:
+> - Fix commit message typo and address several review feedback in
+>    commit 2/6.
+> - Switch to use g_autofree and drop g_free.
+> - Use "%03d" instead of "%d".
+> - Link to v2: https://lore.kernel.org/qemu-devel/20251209-aspeed-sgpio-v2-0-976e5f5790c2@google.com
+> 
+> Changes in v2:
+> Split the v1 into smaller commits and reorder it for better review:
+> - Link to v1: https://lore.kernel.org/qemu-devel/20251106-aspeed-sgpio-v1-0-b026093716fa@google.com
+> 
 > ---
-> base-commit: 7154e4df40468012fccb6687ecd2b288c56a4a2d
-> change-id: 20251217-catalina-eeproms-255d80036991
+> Yubin Zou (6):
+>        hw/gpio/aspeed_sgpio: Add basic device model for Aspeed SGPIO
+>        hw/gpio/aspeed_sgpio: Add QOM property accessors for SGPIO pins
+>        hw/gpio/aspeed_sgpio: Implement SGPIO interrupt handling
+>        hw/arm/aspeed_soc: Update Aspeed SoC to support two SGPIO controllers
+>        hw/arm/aspeed_ast27x0: Wire SGPIO controller to AST2700 SoC
+>        test/qtest: Add Unit test for Aspeed SGPIO
+> 
+>   include/hw/arm/aspeed_soc.h      |   8 +-
+>   include/hw/gpio/aspeed_sgpio.h   |  68 ++++++++
+>   hw/arm/aspeed_ast10x0.c          |   6 +-
+>   hw/arm/aspeed_ast27x0.c          |  26 +++
+>   hw/gpio/aspeed_sgpio.c           | 346 +++++++++++++++++++++++++++++++++++++++
+>   tests/qtest/ast2700-sgpio-test.c | 165 +++++++++++++++++++
+>   hw/gpio/meson.build              |   1 +
+>   tests/qtest/meson.build          |   1 +
+>   8 files changed, 616 insertions(+), 5 deletions(-)
+> ---
+> base-commit: 917ac07f9aef579b9538a81d45f45850aba42906
+> change-id: 20251105-aspeed-sgpio-1d49de6cea66
 > 
 > Best regards,
 
