@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D430CD0E7E
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 17:38:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 234C6CD0E81
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 17:38:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWdTk-0003ae-Qk; Fri, 19 Dec 2025 11:37:21 -0500
+	id 1vWdTr-0003bK-78; Fri, 19 Dec 2025 11:37:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdTj-0003aJ-3T
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:37:19 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdTo-0003b5-Ts
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:37:24 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdTh-0000Q3-Ki
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:37:18 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-477a2ab455fso19209135e9.3
- for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 08:37:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdTm-0000Qh-PW
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:37:24 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-43246af170aso1152665f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 08:37:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766162233; x=1766767033; darn=nongnu.org;
+ d=linaro.org; s=google; t=1766162241; x=1766767041; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TY+NKK5QrerogI70RsrGnC20hTX4QQeP/jfJOPR/wec=;
- b=gvBv1xrY0QScZkc1faTe2pgbKFN4CQvDaXMgStLmVLkzBAwuVWfNlPMGIXLubvw11S
- DOxKKQQyjxPRyJ+pDx8U+CUWEBlsVKCNs6jOPdBmxWPGcYnHsFemdsvZ42Sv7BOKsWN+
- XLOf3vVQchS9RqTMZdpcbRtxYV9HdijRRM4g4gi6EA9xhpddsM2V01DlS0kd52cmKyAw
- N5GwGZjWvtqdhH5o6fg+zHUAbnHncDyxIknEn6/2EBoSQNzC04LyUVvFIqhK5ESa65m7
- 748nrZ9p0oWGBLeeKJV+CLqj3qAN7KVFEn9Bs9CrfkbUmPVBQ/Ej0ifjrvhRzshX/ggU
- WwiQ==
+ bh=F9motHBrqMt24s1IQyPulB1xIC/+4lJ6JZJS5crr6M0=;
+ b=owDoJChSXD8wFdrhCINEtXevmP6BLHcAVK3G32wUsIgYPZjRxJYulZrO6oNAp6itTT
+ N5VU4CUxhXe1aX2s5mt0RU1ar6X+SfCIgtjy/0Rsig/nJlZSUunmcX60Fzf53KcvpMOb
+ zCr9H4fwwQkoyYHie7/rOdkFQEuTRMDaI2wdIJj0OExJOxo7Jk0cAvsjM4UULB1qUEVa
+ jSfNa5fexRC6I0y6vTBxrg/xxDKKxxWIacTQjqXYdg7zsmowwOJjtjgt+Onq7qISE7xU
+ ZQjybnNLVUaDPrN6I1CzEIdLKbwIqP8Rtp3ooJ5wK2OpQcQ2CL9CKSwO1vYlDOeW5Aaz
+ 69ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766162233; x=1766767033;
+ d=1e100.net; s=20230601; t=1766162241; x=1766767041;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=TY+NKK5QrerogI70RsrGnC20hTX4QQeP/jfJOPR/wec=;
- b=YhxGc1gJIkStwRmxSgZwDdTPW2QQHWj1kTqTEl2YEYozh7MR5nlhyiNoTSnrUDfWBk
- g6tYKUIY0khC1VpzXmBlFO3ge7qgkwwQ6LjDgdYPYDS3Xl9AmP34K5n8BhL6zzP+SpG5
- jJ8Be1YXihtWKH/NHq1QfGMaKYabRznKXZEgnByTkgRK+Cdt8cKiGqpzrl2CfYCTgk0s
- 2HeMfXr+jDuLVHESR5+Lt7/7mezlchPyC5cQccYIR4EAj1N35uugq4KgBm+wo8gmUFHl
- HU2mGceUFhN9FYG8eeYjumGutaIMM0yd1VKGZN1O4xG9K9bxZyReVx1NafBmSi9dO+h3
- ypcg==
-X-Gm-Message-State: AOJu0YycZ5VcfZHjAYqSa0UOgLwZ/6tEj3WIspm0DHEzrUkosed2kWGq
- PRKi1q5gMCJRm95YsUwUYJ3VYNemo2/PS39n1umItieiPtZZz1nk/nqasWgmaNA/FE32pdvl1iv
- ik13RR8g=
-X-Gm-Gg: AY/fxX6IfCSCFsYLgwfsHXLfGIq8XBjeqdWNQCTxPgD8h3UF6rvs5ee0JlfZ1bJU31V
- io9xgULUN2HYH4/UKHXC0M7a1Yfp9WlPIyzk1LP1FAr1mN/bMEkhB7EEEoGa244yMPcwFwtz8BI
- HVmuTIeYJmgKvneyOg5g+g6iZIaOsllvfFvFNMwKJ9BS/nU6kn+TOrPnY5D5Cu2rkRn1E0pIcGN
- RyP2MCrX5fOzY8YuEupwPepvbU6Lci8Ze+exmWLjgiNVv2zz+WO8K6X7jp00T1Quw7u8nDaqKHr
- h0DEQBEYROFiEr6h5zs446xpFjen48MM3XdtbHjP5/TC2UOixIvVHlsCw4nNRN19BmbztjSG8i8
- di5PYc1TWuk930z5i6onK/GB21SG7O3gp9T9adLtnQrLoL18ufBoanlJwslP1dYXxqcJ0qEgOuG
- b+B6LvZ5KJgOgNOZaXz2J3B+m9Yje3Yv1NrHohj72AOFqPybimlGyATJiReDKd
-X-Google-Smtp-Source: AGHT+IEcLPlqf7J+bzderohbYPYsunZArQQqGrvtwE2ok8qIrAqefFxt3a1S3zG4+zC2SyUPD1VOIA==
-X-Received: by 2002:a05:600c:c08a:b0:46e:1abc:1811 with SMTP id
- 5b1f17b1804b1-47d197f67edmr24265185e9.27.1766162233572; 
- Fri, 19 Dec 2025 08:37:13 -0800 (PST)
+ bh=F9motHBrqMt24s1IQyPulB1xIC/+4lJ6JZJS5crr6M0=;
+ b=sQp5PA/tWQVBfRTQ+0tq7Ot2E9Wq1B67yyTr/CDI9CdZX5ySygfYrTh0qjZNXZ08Oz
+ uL0DFiMkHZ03Ih+j1KCloGT1t5HdJ5pImSGvS1JErsc8Wjng0nitXlKEnPjPVzEY61iS
+ 2WWNVenKhJX+S9TIONpQz+cj0fNcv7p9v1SsCL0tYXzS/rCiuw2X+jizFtZLYHwQjG0F
+ jAyRKgXzbJMXecmPvbdePmywM7o175PoORwNUoj4E1EdF+0biKEOJoBbsAsDlq/2jGKQ
+ rLch2fiG7HcFSo1Ma9c09lt3H6qPXDu8cwTDM442TfWGigbWjV9n5fQ1S+vBQu7R2Lmt
+ LUxg==
+X-Gm-Message-State: AOJu0YyRgf7CnZOBBuAY9wFg8JNF02etVkdT3RgT+wIcUUq/1q7NS+7K
+ sFA+lF70S6dvbwd0NOyrzLi4uzdgCGjoEU7fU1cLFPGlg5/RV0eKEg2kyXVG2wSSxy08HwYffQP
+ o/QePZ7M=
+X-Gm-Gg: AY/fxX6p8w4yISumKvHetHqe+FOgPIrWJL5ZcLJsox27fPRvl+NskARQW+rFKqsBrq9
+ GAjWGI9e3EJx+oiUHt0VQEGEPCERq/GqzGyul+4F00V5qqjw2v+9v2EHZmoxrmVDryRxNudF46n
+ C+DiB7BLt+voX1M/OBxwMDpfnaHedh0zQ35ItNo9I31fgKMAw83Tv4qoqrKmAcRcmw/4Bbu0S66
+ q23fm2sgoUj7SRBbtqcCmC2uWSKpi+DeGvAsfC0zs7sUCzi/PmCrNdvQNZiNa4iAohR0+9RHzZ1
+ ZOrDpiMbMHnDNpB/IOBEzm+DG6pwtODkeCmiOzCdvb9r9T2AFgTQkwujBDW8oa85g3lnOjAch5F
+ ihpFaCfGjA4RZxTP/hQAE6XbDkD5n2gdX9/o9OlR1bcCqvrAKnswyRu4Ek8A7w4NuRKuQ1tguzb
+ dzVeLWCtF1wSJPJMTu+cI113bwBFvWldqLIij14idnGdOah8wdHzmhfundeqBi
+X-Google-Smtp-Source: AGHT+IEDKYBb5hqGU3m6BnshX3o8kMw/6OG8EE6/usnEsCwVia3TUyOkv0X9alMc8plV1loP0KULZg==
+X-Received: by 2002:a05:6000:26c3:b0:430:fd37:ef89 with SMTP id
+ ffacd0b85a97d-432447959a1mr8026923f8f.6.1766162240547; 
+ Fri, 19 Dec 2025 08:37:20 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d1936d220sm53976365e9.8.2025.12.19.08.37.12
+ ffacd0b85a97d-4324ea2267fsm5741288f8f.12.2025.12.19.08.37.19
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 19 Dec 2025 08:37:12 -0800 (PST)
+ Fri, 19 Dec 2025 08:37:19 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
@@ -72,18 +72,17 @@ Cc: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 3/9] target/sparc: Use address_space_ld/st[n]_be() in
- ld/st_asi helpers
-Date: Fri, 19 Dec 2025 17:36:43 +0100
-Message-ID: <20251219163650.74303-4-philmd@linaro.org>
+Subject: [PATCH v2 4/9] target/sparc: Use explicit big-endian LD/ST API
+Date: Fri, 19 Dec 2025 17:36:44 +0100
+Message-ID: <20251219163650.74303-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251219163650.74303-1-philmd@linaro.org>
 References: <20251219163650.74303-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,76 +105,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not open-code address_space_{ld,st}n(), use it passing
-the access size as argument. Directly expand to the big-endian
-variant (with the '_be' suffix) since we only build the SPARC
-targets as big-endian.
+The SPARC architecture uses big endianness. Directly use
+the big-endian LD/ST API.
+
+Mechanical change running:
+
+  $ for a in uw w l q; do \
+      sed -i -e "s/ld${a}_p(/ld${a}_be_p(/" \
+        $(git grep -wlE '(ld|st)u?[wlq]_p' target/sparc/);
+    done
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/sparc/ldst_helper.c | 42 ++++----------------------------------
- 1 file changed, 4 insertions(+), 38 deletions(-)
+ target/sparc/ldst_helper.c | 12 ++++++------
+ target/sparc/mmu_helper.c  | 32 +++++++++++++++++---------------
+ 2 files changed, 23 insertions(+), 21 deletions(-)
 
 diff --git a/target/sparc/ldst_helper.c b/target/sparc/ldst_helper.c
-index a87a0b3eee0..e9139814c26 100644
+index e9139814c26..043711f11dc 100644
 --- a/target/sparc/ldst_helper.c
 +++ b/target/sparc/ldst_helper.c
-@@ -701,25 +701,8 @@ uint64_t helper_ld_asi(CPUSPARCState *env, target_ulong addr,
-         MemTxResult result;
-         hwaddr access_addr = (hwaddr)addr | ((hwaddr)(asi & 0xf) << 32);
+@@ -861,10 +861,10 @@ void helper_st_asi(CPUSPARCState *env, target_ulong addr, uint64_t val,
+                 MemTxResult result;
+                 hwaddr access_addr = (env->mxccregs[0] & 0xffffffffULL) + 8 * i;
  
--        switch (size) {
--        case 1:
--            ret = address_space_ldub(cs->as, access_addr,
--                                     MEMTXATTRS_UNSPECIFIED, &result);
--            break;
--        case 2:
--            ret = address_space_lduw(cs->as, access_addr,
--                                     MEMTXATTRS_UNSPECIFIED, &result);
--            break;
--        default:
--        case 4:
--            ret = address_space_ldl(cs->as, access_addr,
--                                    MEMTXATTRS_UNSPECIFIED, &result);
--            break;
--        case 8:
--            ret = address_space_ldq(cs->as, access_addr,
--                                    MEMTXATTRS_UNSPECIFIED, &result);
--            break;
--        }
-+        ret = address_space_ldn_be(cs->as, access_addr, size,
+-                env->mxccdata[i] = address_space_ldq(cs->as,
+-                                                     access_addr,
+-                                                     MEMTXATTRS_UNSPECIFIED,
+-                                                     &result);
++                env->mxccdata[i] = address_space_ldq_be(cs->as,
++                                                        access_addr,
++                                                        MEMTXATTRS_UNSPECIFIED,
++                                                        &result);
+                 if (result != MEMTX_OK) {
+                     /* TODO: investigate whether this is the right behaviour */
+                     sparc_raise_mmu_fault(cs, access_addr, false, false,
+@@ -889,8 +889,8 @@ void helper_st_asi(CPUSPARCState *env, target_ulong addr, uint64_t val,
+                 MemTxResult result;
+                 hwaddr access_addr = (env->mxccregs[1] & 0xffffffffULL) + 8 * i;
+ 
+-                address_space_stq(cs->as, access_addr, env->mxccdata[i],
+-                                  MEMTXATTRS_UNSPECIFIED, &result);
++                address_space_stq_be(cs->as, access_addr, env->mxccdata[i],
++                                     MEMTXATTRS_UNSPECIFIED, &result);
+ 
+                 if (result != MEMTX_OK) {
+                     /* TODO: investigate whether this is the right behaviour */
+diff --git a/target/sparc/mmu_helper.c b/target/sparc/mmu_helper.c
+index 46bf500ea83..5a58239d65e 100644
+--- a/target/sparc/mmu_helper.c
++++ b/target/sparc/mmu_helper.c
+@@ -102,7 +102,8 @@ static int get_physical_address(CPUSPARCState *env, CPUTLBEntryFull *full,
+     /* SPARC reference MMU table walk: Context table->L1->L2->PTE */
+     /* Context base + context number */
+     pde_ptr = (env->mmuregs[1] << 4) + (env->mmuregs[2] << 2);
+-    pde = address_space_ldl(cs->as, pde_ptr, MEMTXATTRS_UNSPECIFIED, &result);
++    pde = address_space_ldl_be(cs->as, pde_ptr,
++                               MEMTXATTRS_UNSPECIFIED, &result);
+     if (result != MEMTX_OK) {
+         return 4 << 2; /* Translation fault, L = 0 */
+     }
+@@ -117,8 +118,8 @@ static int get_physical_address(CPUSPARCState *env, CPUTLBEntryFull *full,
+         return 4 << 2;
+     case 1: /* L0 PDE */
+         pde_ptr = ((address >> 22) & ~3) + ((pde & ~3) << 4);
+-        pde = address_space_ldl(cs->as, pde_ptr,
+-                                MEMTXATTRS_UNSPECIFIED, &result);
++        pde = address_space_ldl_be(cs->as, pde_ptr,
 +                                   MEMTXATTRS_UNSPECIFIED, &result);
- 
          if (result != MEMTX_OK) {
-             sparc_raise_mmu_fault(cs, access_addr, false, false, false,
-@@ -1066,25 +1049,8 @@ void helper_st_asi(CPUSPARCState *env, target_ulong addr, uint64_t val,
-             MemTxResult result;
-             hwaddr access_addr = (hwaddr)addr | ((hwaddr)(asi & 0xf) << 32);
- 
--            switch (size) {
--            case 1:
--                address_space_stb(cs->as, access_addr, val,
--                                  MEMTXATTRS_UNSPECIFIED, &result);
--                break;
--            case 2:
--                address_space_stw(cs->as, access_addr, val,
--                                  MEMTXATTRS_UNSPECIFIED, &result);
--                break;
--            case 4:
--            default:
--                address_space_stl(cs->as, access_addr, val,
--                                  MEMTXATTRS_UNSPECIFIED, &result);
--                break;
--            case 8:
--                address_space_stq(cs->as, access_addr, val,
--                                  MEMTXATTRS_UNSPECIFIED, &result);
--                break;
--            }
-+            address_space_stn_be(cs->as, access_addr, val, size,
-+                                 MEMTXATTRS_UNSPECIFIED, &result);
+             return (1 << 8) | (4 << 2); /* Translation fault, L = 1 */
+         }
+@@ -131,8 +132,8 @@ static int get_physical_address(CPUSPARCState *env, CPUTLBEntryFull *full,
+             return (1 << 8) | (4 << 2);
+         case 1: /* L1 PDE */
+             pde_ptr = ((address & 0xfc0000) >> 16) + ((pde & ~3) << 4);
+-            pde = address_space_ldl(cs->as, pde_ptr,
+-                                    MEMTXATTRS_UNSPECIFIED, &result);
++            pde = address_space_ldl_be(cs->as, pde_ptr,
++                                       MEMTXATTRS_UNSPECIFIED, &result);
              if (result != MEMTX_OK) {
-                 sparc_raise_mmu_fault(cs, access_addr, true, false, false,
-                                       size, GETPC());
+                 return (2 << 8) | (4 << 2); /* Translation fault, L = 2 */
+             }
+@@ -145,8 +146,8 @@ static int get_physical_address(CPUSPARCState *env, CPUTLBEntryFull *full,
+                 return (2 << 8) | (4 << 2);
+             case 1: /* L2 PDE */
+                 pde_ptr = ((address & 0x3f000) >> 10) + ((pde & ~3) << 4);
+-                pde = address_space_ldl(cs->as, pde_ptr,
+-                                        MEMTXATTRS_UNSPECIFIED, &result);
++                pde = address_space_ldl_be(cs->as, pde_ptr,
++                                           MEMTXATTRS_UNSPECIFIED, &result);
+                 if (result != MEMTX_OK) {
+                     return (3 << 8) | (4 << 2); /* Translation fault, L = 3 */
+                 }
+@@ -189,7 +190,7 @@ static int get_physical_address(CPUSPARCState *env, CPUTLBEntryFull *full,
+         if (is_dirty) {
+             pde |= PG_MODIFIED_MASK;
+         }
+-        stl_phys(cs->as, pde_ptr, pde);
++        stl_be_phys(cs->as, pde_ptr, pde);
+     }
+ 
+     /* the page can be put in the TLB */
+@@ -276,7 +277,8 @@ target_ulong mmu_probe(CPUSPARCState *env, target_ulong address, int mmulev)
+     /* Context base + context number */
+     pde_ptr = (hwaddr)(env->mmuregs[1] << 4) +
+         (env->mmuregs[2] << 2);
+-    pde = address_space_ldl(cs->as, pde_ptr, MEMTXATTRS_UNSPECIFIED, &result);
++    pde = address_space_ldl_be(cs->as, pde_ptr,
++                               MEMTXATTRS_UNSPECIFIED, &result);
+     if (result != MEMTX_OK) {
+         return 0;
+     }
+@@ -292,8 +294,8 @@ target_ulong mmu_probe(CPUSPARCState *env, target_ulong address, int mmulev)
+             return pde;
+         }
+         pde_ptr = ((address >> 22) & ~3) + ((pde & ~3) << 4);
+-        pde = address_space_ldl(cs->as, pde_ptr,
+-                                MEMTXATTRS_UNSPECIFIED, &result);
++        pde = address_space_ldl_be(cs->as, pde_ptr,
++                                   MEMTXATTRS_UNSPECIFIED, &result);
+         if (result != MEMTX_OK) {
+             return 0;
+         }
+@@ -310,8 +312,8 @@ target_ulong mmu_probe(CPUSPARCState *env, target_ulong address, int mmulev)
+                 return pde;
+             }
+             pde_ptr = ((address & 0xfc0000) >> 16) + ((pde & ~3) << 4);
+-            pde = address_space_ldl(cs->as, pde_ptr,
+-                                    MEMTXATTRS_UNSPECIFIED, &result);
++            pde = address_space_ldl_be(cs->as, pde_ptr,
++                                       MEMTXATTRS_UNSPECIFIED, &result);
+             if (result != MEMTX_OK) {
+                 return 0;
+             }
+@@ -328,8 +330,8 @@ target_ulong mmu_probe(CPUSPARCState *env, target_ulong address, int mmulev)
+                     return pde;
+                 }
+                 pde_ptr = ((address & 0x3f000) >> 10) + ((pde & ~3) << 4);
+-                pde = address_space_ldl(cs->as, pde_ptr,
+-                                        MEMTXATTRS_UNSPECIFIED, &result);
++                pde = address_space_ldl_be(cs->as, pde_ptr,
++                                           MEMTXATTRS_UNSPECIFIED, &result);
+                 if (result != MEMTX_OK) {
+                     return 0;
+                 }
 -- 
 2.52.0
 
