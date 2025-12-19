@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96173CD2191
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 23:26:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 834EBCD2193
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 23:26:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWiub-0001kg-CJ; Fri, 19 Dec 2025 17:25:25 -0500
+	id 1vWiub-0001kd-72; Fri, 19 Dec 2025 17:25:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruslichenko.r@gmail.com>)
- id 1vWiuR-0001h1-JG
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 17:25:16 -0500
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ id 1vWiuV-0001iS-G8
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 17:25:19 -0500
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ruslichenko.r@gmail.com>)
- id 1vWiuP-0004zt-HZ
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 17:25:15 -0500
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-64b7a38f07eso2786835a12.0
- for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 14:25:13 -0800 (PST)
+ id 1vWiuT-00051C-S6
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 17:25:19 -0500
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-64b791b5584so2981889a12.0
+ for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 14:25:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1766183112; x=1766787912; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1766183115; x=1766787915; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CdRLm5zMkoDQZ5YxMVTuMYcF0Rw/N9qJIqQIdpP+JoM=;
- b=RFlEJvV9GRtn4DBinPrxojjn7Ftyst3IEmDf0zvFyCxvaVVfY74xmjTDodbWVhMNGs
- 9AyFcn8hOPj7GmJiDZSYLaOuD7gl0qJSxRjlT41mxn/rdnnr+/kjqPQczuB0LKYNGEfl
- pKePNU05TbBNjCMaP7C7lDtBeBFJlVWeCikRxB3hscSXaE6KdcIbSQDp2XIeRuN360J6
- HeFW+vppHgzeAIbBnpFfqUHrwqNuT4GNRm+dLC9+G7Cthutr2JvXXz9GZYR7hbE/DtId
- E4uhWUBui/AaTe9LJPtWfqXydtLjOlK0BXALCeWsdG8drSL6zydS0oza9aFMNH0jDpSu
- 1gLw==
+ bh=UqDoOAlFV55o0N/7MAws8QXpn6Zj682/72I65EubJ2E=;
+ b=K2CmBoYZYW0Ulgqcnan0iSKn3zxuxtYv71sthbEqrYplhRmxVpQ6HpHVOdzYkq22jW
+ BV3C4sbfRSKCanoW0cqs+0/BE0NEqTPXRYlBoVAYszPXZTwUOhSL1KDnnJIF60KdS+SB
+ QBw8uSOFEm/JMXmcnqInAvepImqvXLTPrCWoeSrvlx81WglpLmqQSpiezuefXTB8vRjL
+ FefIITbIDj3ubz6Hswmz3YivZHC/Hyt+hCRCXA4wLjL0z61u82SaBmPkv8D+MOTstUWM
+ n+gmhGvtO1Ik5PKyazZyDRKVAI0Lr9tJabsqYgPBkefQi9UsL2I3g1br/mvw3zcZqcnz
+ 93+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766183112; x=1766787912;
+ d=1e100.net; s=20230601; t=1766183115; x=1766787915;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=CdRLm5zMkoDQZ5YxMVTuMYcF0Rw/N9qJIqQIdpP+JoM=;
- b=NQeBv0yYiRiRen22Ex8uCY848MgqSORMVPUC5XgKZSsGncAoWDDbXQ/4Cy1UvBEIQd
- tPS/FBst5rov968yb3acmGlw7Lwv+FiofDUFTayiXTYu5Pz7gQPGliKNRfNTokXkJQ74
- IK3sV+XIb9V6/61vOSlRUQZfqU3s3PyMe7yL4bU2d3K0qnpgGdonsCSGksr6dJi1EN0q
- po66uMzHTbSKgbsew9e9dJRYmf4h7objwG6hED5xdSv9tPKuvwVLmAXGe4j4AupcBav1
- u4Oq2gYsT3BMuNtDISQHAJUqsGa1WV2S9VzYbiBtSNgfZCTzXcbcuDCCSM/p6Qi+vhyI
- cvAg==
-X-Gm-Message-State: AOJu0YxabtSqNmWg+08pjlFBUZO/v6eCnjcE1w/jylXUD4lREW1graM3
- pTawITgQeOBzIf92ZVAPDCoywbvsXMQlhTqHFde11g8Sh1Jd5PZb+yTaXO6kyRGp
-X-Gm-Gg: AY/fxX6QCG4BMVPT12WOTLezUgYDtBXQd6TcEjYs60FqeXuHh53Z+ZeZE5kBFNZR4uG
- B7KYai3u/z6kJQ8102Ag9s3WWjKiloxWmWZLZbYeUjGvSVa7TJUz4dVAP0QoZizvxCQ12nF23d0
- iozFzgFtzu+bC5Crdw3jEFqxcrAcy7xfyTcHWtWmnq+mGwLE/8QK1XPbvjjowPgGrfxxMUJ7V1j
- hM2hZPfJVj1CB8gnvTOLz0JFFuhWIxXqbbSgFFDFkhGb1ryN2sFLdhwuiIDnh9uT4bIB+FVa63L
- gQzd6A+nCrPV9+UXLxdHSHU/+Q47Wjg5VZ/9SEnRuoMhgoHcFJnwkhTOnD9m82gof8Pi8sk9WPw
- A3V9UN063tzmTpei6vUokz+RNuyfnyBPepyuBQtjQAK1TwXTsS2uCFNwapTKLxvMzEFgYPiOuUg
- 8Se/DFaTe/pTHO6HCBVUTlnAQRbZloHv5s+UUQAQDtKlhMJothUWpCk5mcKufm+w==
-X-Google-Smtp-Source: AGHT+IHr0AmTgpAnzoj0Q9cG/4FZY8tcc0Y9PnzO3WK3MfPQDbIeV0ejj5Eb2eji2Sz/4N+0y+daKg==
-X-Received: by 2002:a05:6402:1ec8:b0:647:5518:8c35 with SMTP id
- 4fb4d7f45d1cf-64b8ea60f47mr4189440a12.6.1766183111682; 
- Fri, 19 Dec 2025 14:25:11 -0800 (PST)
+ bh=UqDoOAlFV55o0N/7MAws8QXpn6Zj682/72I65EubJ2E=;
+ b=VyV9GabwGtTzwCWpcoZYCg760uLfLQwIsTza9Eca2SM5eTS+R34uIIfkg220u8xoJU
+ wCbEq1KMBol1aGMNnkfQ+TU1lPDgOUgIdWiR91GaEEywOXXh+YGiir73yMzfNTvCa88K
+ 6o3XEkdD5hgqrCtPt3f3Iils5/ITD2lySZ/UwECuW3/Ool7TLMP2nUTxVkf+Re9I2Xpe
+ tVcWuUdlCYPQqX7v2hzD59srN15EjkU0/flzhgClOh6BlR3XCZepJnfc96e1BfASfT2v
+ zQ1ERqH8IJVM5MBzGZMko4Mbci5GQuSwlTKAKylryHMHB/984XmPbpJUYO8pmlEWbBsP
+ S8Rw==
+X-Gm-Message-State: AOJu0Yxaqs0z2Dt3aJx9Hv1f0SYVLTfRaDFJ+pXsXenjJ+sXXWOnfiFY
+ yVO2WV33CoJB64QTzSO8gSuc5bWByWQBGI53VXNEadBbEmZSfobTmtbtkUUBV1Zg
+X-Gm-Gg: AY/fxX5fnyTSwk18BNLZ2/yTBx5lSt+YxipfG8vsKRKZslcnhXCXPT+v8mbj/gW3zw8
+ 8ns+2cJFmqoB/oZCDBmi6Xh+KtZ6FxUNnipxOf3fNFFM6SMWofl48+Tv+3ou22RzbtdtElF3VgY
+ VaV2xXH8utUKdI+G6DM+zfVWG+Xr3ZTdrPOaKFZf8xtz5v784SwOIfxwbSS55PcMqSqjimOtWsd
+ L4/VbVpewDKBOQEtAsqnnsb39nTOQckiBAQ2ho4yXqbVWTjDRE5DhE9mUvz6pTN03zcagNORVf9
+ gxO86RsNV+m/mIYJAdbXS/feUS+11SPQ1Ni7Ul6dJj0bf76GcDRFF1RwDUzCGuXIqX5rKbVVbsl
+ 5ahqJP+rD1Sm07/YnuaAILI50BmnNH0G169cwiCppg/khNPjRR4ma1JGAiovct72aziIsoAx/pc
+ poYdNM8gsB2bwh0USqJw0WnmG60FrBiMogGwyeAKnPSVHpvdQrX0eii9hlgaH3Pg==
+X-Google-Smtp-Source: AGHT+IHCSJ68JlIiCkR4N+C2CQsrlR8kL9XgW7EDKXkNwbHbgrlLnNEQ8YzAQeNeQSHeDYNnB0hLHg==
+X-Received: by 2002:a05:6402:51cc:b0:64b:a1e6:8018 with SMTP id
+ 4fb4d7f45d1cf-64ba1e6832dmr2536582a12.31.1766183115262; 
+ Fri, 19 Dec 2025 14:25:15 -0800 (PST)
 Received: from thinkpad-t470s.. (93-138-210-222.adsl.net.t-com.hr.
  [93.138.210.222]) by smtp.googlemail.com with ESMTPSA id
- 4fb4d7f45d1cf-64b91599605sm3237440a12.23.2025.12.19.14.25.09
+ 4fb4d7f45d1cf-64b91599605sm3237440a12.23.2025.12.19.14.25.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 Dec 2025 14:25:10 -0800 (PST)
+ Fri, 19 Dec 2025 14:25:13 -0800 (PST)
 From: ruslichenko.r@gmail.com
 X-Google-Original-From: ruslan_ruslichenko@epam.com
 To: qemu-devel@nongnu.org
 Cc: ruslan_ruslichenko@epam.com, artem_mygaiev@epam.com,
- volodymyr_babchuk@epam.com, Mirsad Ostrakovic <mirsad_ostrakovic@epam.com>,
- Ruslan Ruslichenko <Ruslan_Ruslichenko@epam.com>
-Subject: [RFC PATCH 3/6] hw/arm/virt: create smmu for sysbus
-Date: Fri, 19 Dec 2025 23:24:36 +0100
-Message-ID: <20251219222439.2497195-4-ruslan_ruslichenko@epam.com>
+ volodymyr_babchuk@epam.com, Dmytro Terletskyi <dmytro_terletskyi@epam.com>
+Subject: [RFC PATCH 4/6] hw/virtio: add SMMUv3 support and stream ID handling
+ for virtio-mmio devices
+Date: Fri, 19 Dec 2025 23:24:37 +0100
+Message-ID: <20251219222439.2497195-5-ruslan_ruslichenko@epam.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251219222439.2497195-1-ruslan_ruslichenko@epam.com>
 References: <20251219222439.2497195-1-ruslan_ruslichenko@epam.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=ruslichenko.r@gmail.com; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=ruslichenko.r@gmail.com; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,197 +101,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mirsad Ostrakovic <mirsad_ostrakovic@epam.com>
+From: Dmytro Terletskyi <dmytro_terletskyi@epam.com>
 
-Create new smmu device for sysbus.
-Add memory region for SMMU to memory map.
+This commit extends the ARM virt machine to support attaching virtio-mmio
+devices to an SMMUv3 controller.
 
-Signed-off-by: Mirsad Ostrakovic <mirsad_ostrakovic@epam.com>
-Signed-off-by: Ruslan Ruslichenko <Ruslan_Ruslichenko@epam.com>
+Key changes:
+ - Implemented virtio_mmio_get_dma_as() callback, invoked from get_dma_as()
+   when a device is behind an SMMUv3.
+ - Added stream ID support for virtio-mmio devices registered with the SMMU.
+
+With these changes, virtio-mmio devices can perform DMA through SMMUv3,
+enabling proper address translation and isolation in ARM virt platforms.
+
+Signed-off-by: Dmytro Terletskyi <dmytro_terletskyi@epam.com>
 ---
- hw/arm/virt-acpi-build.c |  4 +-
- hw/arm/virt.c            | 84 +++++++++++++++++++++++++++++++++-------
- include/hw/arm/virt.h    |  4 +-
- 3 files changed, 75 insertions(+), 17 deletions(-)
+ hw/virtio/virtio-mmio.c         | 29 +++++++++++++++++++++++++++++
+ include/hw/virtio/virtio-mmio.h |  3 +++
+ 2 files changed, 32 insertions(+)
 
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index 200e2a1da7..2d7e2e2725 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -334,8 +334,8 @@ static int populate_smmuv3_legacy_dev(GArray *sdev_blob)
-      */
-     g_array_sort(sdev.rc_smmu_idmaps, iort_idmap_compare);
- 
--    sdev.base = vms->memmap[VIRT_SMMU].base;
--    sdev.irq = vms->irqmap[VIRT_SMMU] + ARM_SPI_BASE;
-+    sdev.base = vms->memmap[VIRT_SMMU_PCIE].base;
-+    sdev.irq = vms->irqmap[VIRT_SMMU_PCIE] + ARM_SPI_BASE;
-     g_array_append_val(sdev_blob, sdev);
-     return sdev.rc_smmu_idmaps->len;
- }
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index d9d7b982b3..ad609bc651 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -187,13 +187,14 @@ static const MemMapEntry base_memmap[] = {
-     [VIRT_FW_CFG] =             { 0x09020000, 0x00000018 },
-     [VIRT_GPIO] =               { 0x09030000, 0x00001000 },
-     [VIRT_UART1] =              { 0x09040000, 0x00001000 },
--    [VIRT_SMMU] =               { 0x09050000, SMMU_IO_LEN },
--    [VIRT_PCDIMM_ACPI] =        { 0x09070000, MEMORY_HOTPLUG_IO_LEN },
--    [VIRT_ACPI_GED] =           { 0x09080000, ACPI_GED_EVT_SEL_LEN },
--    [VIRT_NVDIMM_ACPI] =        { 0x09090000, NVDIMM_ACPI_IO_LEN},
--    [VIRT_PVTIME] =             { 0x090a0000, 0x00010000 },
--    [VIRT_SECURE_GPIO] =        { 0x090b0000, 0x00001000 },
--    [VIRT_ACPI_PCIHP] =         { 0x090c0000, ACPI_PCIHP_SIZE },
-+    [VIRT_SMMU_PCIE] =          { 0x09050000, SMMU_IO_LEN },
-+    [VIRT_SMMU_SYSBUS] =        { 0x09070000, SMMU_IO_LEN },
-+    [VIRT_PCDIMM_ACPI] =        { 0x09090000, MEMORY_HOTPLUG_IO_LEN },
-+    [VIRT_ACPI_GED] =           { 0x090a0000, ACPI_GED_EVT_SEL_LEN },
-+    [VIRT_NVDIMM_ACPI] =        { 0x090b0000, NVDIMM_ACPI_IO_LEN},
-+    [VIRT_PVTIME] =             { 0x090c0000, 0x00010000 },
-+    [VIRT_SECURE_GPIO] =        { 0x090d0000, 0x00001000 },
-+    [VIRT_ACPI_PCIHP] =         { 0x090e0000, ACPI_PCIHP_SIZE },
-     [VIRT_MMIO] =               { 0x0a000000, 0x00000200 },
-     /* ...repeating for a total of NUM_VIRTIO_TRANSPORTS, each of that size */
-     [VIRT_PLATFORM_BUS] =       { 0x0c000000, 0x02000000 },
-@@ -247,7 +248,8 @@ static const int a15irqmap[] = {
-     [VIRT_ACPI_GED] = 9,
-     [VIRT_MMIO] = 16, /* ...to 16 + NUM_VIRTIO_TRANSPORTS - 1 */
-     [VIRT_GIC_V2M] = 48, /* ...to 48 + NUM_GICV2M_SPIS - 1 */
--    [VIRT_SMMU] = 74,    /* ...to 74 + NUM_SMMU_IRQS - 1 */
-+    [VIRT_SMMU_PCIE] = 74, /* ...to 74 + NUM_SMMU_IRQS - 1 */
-+    [VIRT_SMMU_SYSBUS] = 78, /* ...to 78 + NUM_SMMU_IRQS - 1 */
-     [VIRT_PLATFORM_BUS] = 112, /* ...to 112 + PLATFORM_BUS_NUM_IRQS -1 */
- };
- 
-@@ -1514,14 +1516,14 @@ static void create_smmuv3_dev_dtb(VirtMachineState *vms,
-                            0x0, vms->iommu_phandle, 0x0, 0x10000);
- }
- 
--static void create_smmu(const VirtMachineState *vms,
-+static void create_smmu_pcie(const VirtMachineState *vms,
-                         PCIBus *bus)
+diff --git a/hw/virtio/virtio-mmio.c b/hw/virtio/virtio-mmio.c
+index c05c00bcd4..8f19492e3f 100644
+--- a/hw/virtio/virtio-mmio.c
++++ b/hw/virtio/virtio-mmio.c
+@@ -31,6 +31,7 @@
+ #include "system/kvm.h"
+ #include "system/replay.h"
+ #include "hw/virtio/virtio-mmio.h"
++#include "system/address-spaces.h"
+ #include "qemu/error-report.h"
+ #include "qemu/log.h"
+ #include "trace.h"
+@@ -775,6 +776,7 @@ static void virtio_mmio_realizefn(DeviceState *d, Error **errp)
  {
-     VirtMachineClass *vmc = VIRT_MACHINE_GET_CLASS(vms);
--    int irq =  vms->irqmap[VIRT_SMMU];
-+    int irq =  vms->irqmap[VIRT_SMMU_PCIE];
-     int i;
--    hwaddr base = vms->memmap[VIRT_SMMU].base;
--    hwaddr size = vms->memmap[VIRT_SMMU].size;
-+    hwaddr base = vms->memmap[VIRT_SMMU_PCIE].base;
-+    hwaddr size = vms->memmap[VIRT_SMMU_PCIE].size;
-     DeviceState *dev;
+     VirtIOMMIOProxy *proxy = VIRTIO_MMIO(d);
+     SysBusDevice *sbd = SYS_BUS_DEVICE(d);
++    static uint32_t stream_id = VIRTIO_MMIO_STREAM_ID_OFFSET;
  
-     if (vms->iommu != VIRT_IOMMU_SMMUV3 || !vms->iommu_phandle) {
-@@ -1533,7 +1535,7 @@ static void create_smmu(const VirtMachineState *vms,
-     if (!vmc->no_nested_smmu) {
-         object_property_set_str(OBJECT(dev), "stage", "nested", &error_fatal);
+     qbus_init(&proxy->bus, sizeof(proxy->bus), TYPE_VIRTIO_MMIO_BUS, d, NULL);
+     sysbus_init_irq(sbd, &proxy->irq);
+@@ -784,6 +786,8 @@ static void virtio_mmio_realizefn(DeviceState *d, Error **errp)
+         proxy->flags &= ~VIRTIO_IOMMIO_FLAG_USE_IOEVENTFD;
      }
--    object_property_set_link(OBJECT(dev), "primary-bus", OBJECT(bus),
-+    object_property_set_link(OBJECT(dev), "pci-primary-bus", OBJECT(bus),
-                              &error_abort);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
-@@ -1544,6 +1546,58 @@ static void create_smmu(const VirtMachineState *vms,
-     create_smmuv3_dt_bindings(vms, base, size, irq);
+ 
++    proxy->stream_id = stream_id++;
++
+     if (proxy->legacy) {
+         memory_region_init_io(&proxy->iomem, OBJECT(d),
+                               &virtio_legacy_mem_ops, proxy,
+@@ -867,6 +871,27 @@ static void virtio_mmio_vmstate_change(DeviceState *d, bool running)
+     }
  }
  
-+static void create_smmu_sysbus(VirtMachineState *vms)
++static AddressSpace *virtio_mmio_get_dma_as(DeviceState *parent)
 +{
-+    VirtMachineClass *vmc = VIRT_MACHINE_GET_CLASS(vms);
-+    char *node;
-+    const char compat[] = "arm,smmu-v3";
-+    int irq =  vms->irqmap[VIRT_SMMU_SYSBUS];
-+    int i;
-+    hwaddr base = vms->memmap[VIRT_SMMU_SYSBUS].base;
-+    hwaddr size = vms->memmap[VIRT_SMMU_SYSBUS].size;
-+    const char irq_names[] = "eventq\0priq\0cmdq-sync\0gerror";
-+    DeviceState *dev;
-+    MachineState *ms = MACHINE(vms);
++    // BusState *iommu_bus = qdev_get_parent_bus(parent);
++    BusState *iommu_bus = sysbus_get_default();
++    VirtIOMMIOProxy *proxy = VIRTIO_MMIO(parent);
++    AddressSpace *as = NULL;
 +
-+    vms->sysbus_iommu_phandle = qemu_fdt_alloc_phandle(ms->fdt);
-+
-+    dev = qdev_new(TYPE_ARM_SMMUV3);
-+
-+    if (!vmc->no_nested_smmu) {
-+        object_property_set_str(OBJECT(dev), "stage", "nested", &error_fatal);
-+    }
-+    object_property_set_link(OBJECT(dev), "generic-primary-bus", 
-+                             OBJECT(sysbus_get_default()), &error_abort);
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-+    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
-+    for (i = 0; i < NUM_SMMU_IRQS; i++) {
-+        sysbus_connect_irq(SYS_BUS_DEVICE(dev), i,
-+                           qdev_get_gpio_in(vms->gic, irq + i));
++    if (iommu_bus && iommu_bus->iommu_ops) {
++        as = iommu_bus->iommu_ops->get_address_space(
++            iommu_bus, iommu_bus->iommu_opaque, proxy->stream_id);
 +    }
 +
-+    node = g_strdup_printf("/smmuv3@%" PRIx64, base);
-+    qemu_fdt_add_subnode(ms->fdt, node);
-+    qemu_fdt_setprop(ms->fdt, node, "compatible", compat, sizeof(compat));
-+    qemu_fdt_setprop_sized_cells(ms->fdt, node, "reg", 2, base, 2, size);
-+
-+    qemu_fdt_setprop_cells(ms->fdt, node, "interrupts",
-+            GIC_FDT_IRQ_TYPE_SPI, irq    , GIC_FDT_IRQ_FLAGS_EDGE_LO_HI,
-+            GIC_FDT_IRQ_TYPE_SPI, irq + 1, GIC_FDT_IRQ_FLAGS_EDGE_LO_HI,
-+            GIC_FDT_IRQ_TYPE_SPI, irq + 2, GIC_FDT_IRQ_FLAGS_EDGE_LO_HI,
-+            GIC_FDT_IRQ_TYPE_SPI, irq + 3, GIC_FDT_IRQ_FLAGS_EDGE_LO_HI);
-+
-+    qemu_fdt_setprop(ms->fdt, node, "interrupt-names", irq_names,
-+                     sizeof(irq_names));
-+
-+    qemu_fdt_setprop(ms->fdt, node, "dma-coherent", NULL, 0);
-+
-+    qemu_fdt_setprop_cell(ms->fdt, node, "#iommu-cells", 1);
-+
-+    qemu_fdt_setprop_cell(ms->fdt, node, "phandle", vms->sysbus_iommu_phandle);
-+
-+    g_free(node);
++    return as ? as : &address_space_memory;
 +}
 +
- static void create_virtio_iommu_dt_bindings(VirtMachineState *vms)
- {
-     const char compat[] = "virtio,pci-iommu\0pci1af4,1057";
-@@ -1692,7 +1746,7 @@ static void create_pcie(VirtMachineState *vms)
- 
-         switch (vms->iommu) {
-         case VIRT_IOMMU_SMMUV3:
--            create_smmu(vms, vms->bus);
-+            create_smmu_pcie(vms, vms->bus);
-             if (!vms->default_bus_bypass_iommu) {
-                 qemu_fdt_setprop_cells(ms->fdt, nodename, "iommu-map",
-                                        0x0, vms->iommu_phandle, 0x0, 0x10000);
-@@ -2509,6 +2563,8 @@ static void machvirt_init(MachineState *machine)
-     create_pcie(vms);
-     create_cxl_host_reg_region(vms);
- 
-+    create_smmu_sysbus(vms);
++static bool virtio_mmio_iommu_enabled(DeviceState *parent)
++{
++    AddressSpace *as = virtio_mmio_get_dma_as(parent);
++    return as == &address_space_memory;
++}
 +
-     if (aarch64 && firmware_loaded && virt_is_acpi_enabled(vms)) {
-         vms->acpi_dev = create_acpi_ged(vms);
-         vms->generic_error_notifier.notify = virt_generic_error_req;
-diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-index c77a33f6df..00b276ecf0 100644
---- a/include/hw/arm/virt.h
-+++ b/include/hw/arm/virt.h
-@@ -63,7 +63,8 @@ enum {
-     VIRT_GIC_VCPU,
-     VIRT_GIC_ITS,
-     VIRT_GIC_REDIST,
--    VIRT_SMMU,
-+    VIRT_SMMU_PCIE,
-+    VIRT_SMMU_SYSBUS,
-     VIRT_UART0,
-     VIRT_MMIO,
-     VIRT_RTC,
-@@ -168,6 +169,7 @@ struct VirtMachineState {
-     uint32_t gic_phandle;
-     uint32_t msi_phandle;
-     uint32_t iommu_phandle;
-+    uint32_t sysbus_iommu_phandle;
-     int psci_conduit;
-     hwaddr highest_gpa;
-     DeviceState *gic;
+ static void virtio_mmio_bus_class_init(ObjectClass *klass, const void *data)
+ {
+     BusClass *bus_class = BUS_CLASS(klass);
+@@ -884,6 +909,10 @@ static void virtio_mmio_bus_class_init(ObjectClass *klass, const void *data)
+     k->pre_plugged = virtio_mmio_pre_plugged;
+     k->vmstate_change = virtio_mmio_vmstate_change;
+     k->has_variable_vring_alignment = true;
++
++   k->get_dma_as = virtio_mmio_get_dma_as;
++   k->iommu_enabled = virtio_mmio_iommu_enabled;
++
+     bus_class->max_dev = 1;
+     bus_class->get_dev_path = virtio_mmio_bus_get_dev_path;
+ }
+diff --git a/include/hw/virtio/virtio-mmio.h b/include/hw/virtio/virtio-mmio.h
+index aa49262022..f0a1a5e3ab 100644
+--- a/include/hw/virtio/virtio-mmio.h
++++ b/include/hw/virtio/virtio-mmio.h
+@@ -53,6 +53,8 @@ typedef struct VirtIOMMIOQueue {
+ #define VIRTIO_IOMMIO_FLAG_USE_IOEVENTFD \
+         (1 << VIRTIO_IOMMIO_FLAG_USE_IOEVENTFD_BIT)
+ 
++#define VIRTIO_MMIO_STREAM_ID_OFFSET 0x50
++
+ struct VirtIOMMIOProxy {
+     /* Generic */
+     SysBusDevice parent_obj;
+@@ -67,6 +69,7 @@ struct VirtIOMMIOProxy {
+     /* virtio-bus */
+     VirtioBusState bus;
+     bool format_transport_address;
++    uint32_t stream_id;
+     /* Fields only used for non-legacy (v2) devices */
+     uint32_t guest_features[2];
+     VirtIOMMIOQueue vqs[VIRTIO_QUEUE_MAX];
 -- 
 2.43.0
 
