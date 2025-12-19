@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1717CD0E70
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 17:37:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24B80CD0E73
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 17:37:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWdTO-0003XR-Ce; Fri, 19 Dec 2025 11:36:58 -0500
+	id 1vWdTX-0003Yo-FY; Fri, 19 Dec 2025 11:37:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdTM-0003XA-UD
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:36:56 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdTU-0003YF-7b
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:37:04 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdTL-0000Nn-9I
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:36:56 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-47775fb6c56so14703985e9.1
- for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 08:36:54 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdTS-0000OX-KV
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:37:03 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4779aa4f928so18789055e9.1
+ for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 08:37:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766162213; x=1766767013; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Idoopkne2XoD7/e2z+6W5PLbLmqN2coild025VrEoYo=;
- b=KM/0FkQZZYCyZnJOo6Zty+MlqRF8+kD7q8Z2somCSHCF6GmEP5Ge/aYZ8h4/A2G9rs
- 26tSkuEUDihy996GXC5XBv1WDBJwhIIJ8du/b9hUU7SAPC0Cx3r/W/Z9wIItq7ytOUmL
- pjZz+O24mflLGOGYevVj1jn5g5yqloLe4BSRfID2aodJiYTDzAsbh5MKebOenXtRhr3h
- Yewg45ZjTTuEvPjxjyMdeY7PWLC3XGwdBMM6fCmBNTnJ6gejv9r+nja7mqrJMesfwt8i
- c26f3vOIIVuHqNCHLOElPhu6TVooRysSt+SdJospWq+YmYrxvDCEb7n0lnFhhKex7PJv
- 67+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766162213; x=1766767013;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1766162219; x=1766767019; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Idoopkne2XoD7/e2z+6W5PLbLmqN2coild025VrEoYo=;
- b=KX2VNRJnLCvDwSrKLkOV5EesZPeDVwk53zoW3cIFRpnAfvEG4ZnWefYvnn+awD4Vgb
- I5NEv4bhsmv2XabQCOUjoCm5THtx8fWbTwydrBBn4qTXwm/Lp/FEN+ITX4FFqDUG3SmA
- gnlme6A8fr56JNX/Us6q0sE7gnK44mQh7b5PXaMgflM6ILn5Z8aVZva2LXWXo3WpawTu
- wsbaOOz9YzSJgjFxQEvpIqKJoEaJwNxYnnlWWZxbofCUrqZ/HpkxOdrOFoxiONPhgoQu
- v9ChcFDsH4aPFVZH5VlRjVVsbAZ84ION/gq6iRnoDF1QRLJTVrC+vG4cM5jrVEJELJSa
- 2qgA==
-X-Gm-Message-State: AOJu0Yz4XV//1ThwZ2nC4J0U5wacKdN0a94ny4FraToRgIfMTSZ1JKcG
- REkcjCEKVWWf6vXP35LEbvD7a4GhoCZloPobeoMfjZO+NZ+DXUdyTFV/Kdk3Fh43712l4nWHmBP
- m4hUvWRU=
-X-Gm-Gg: AY/fxX7eaij/80cr2VVj44A9kKuNA7QxZ0++TA6wlTHeubidhK9WpDObLS4LUTsQpk1
- tlzQzPBXXb8wC9CzZl/gXprls60eJzcJgM+FACrG8mQY8q8svv86BQWra5FpHLYTvz/WJ5gDp+4
- 4Rl8Yvweq+/NVi24XMTfxkpWrG5LF9vaqABWSd4bZ/1TwCM0+WcKEU28RGlhT8HAoJf7Mls8EHi
- HsVst+EqZ+8mxOUl5kkC2F+YcCJrnB6iEl7MdTjc/xXGhtaeAdRCspnamEAqCAdTidEVYSx9plx
- q/vTmR2qWosBZfgxw8M0vaGLpxLnDCx21S8akGC2axm/rajhWgIMRLhiPDyrzp7wPDpG9rOXbzZ
- +eJZ0/0mlsf42bL6uHVIWW8hOXpLjUW3FJZ+halcKDtYaGrtxSpwZekRs++i5pURxT5Zu+CdBts
- BJykEAK2+EHg0+zqV/EL/C+/mSd2gnX/9LRq2Cw/Bj8RXevOw/TU35Rb4EpM7m
-X-Google-Smtp-Source: AGHT+IEkxnTJcJ9oAUxuC6v68WLP5ktyzJwu7Ct9ZyyhuJMNnqjisS7YudX611Di/S7IBEnVqKhAxw==
-X-Received: by 2002:a05:600d:108:20b0:477:9986:5e6b with SMTP id
- 5b1f17b1804b1-47d1c038664mr20285055e9.28.1766162212543; 
- Fri, 19 Dec 2025 08:36:52 -0800 (PST)
+ bh=9A1gr5CJUaSQgBXQcHovtENYxaFT/E0t2tXqegO2h5o=;
+ b=O6jPT5kgvehHU5ayCeMO3BVV1/S8HmV769ujK4hZy5//ver7ont1KItVmUIre50Zlh
+ tJvQW9paC+0s5y6ywGimzRuXye5fbaTQJcopE1G5Hjw4WUn9ACbF1ihLdFT/ivCBjJL4
+ 7HwaQy1JdWFVidh2YA3+87xLHO/fWgizPTXQQf8mjUOqVER4QmHIeDms9BerBwhaiYdq
+ TncNbfXApoxh7vFValaSHfuu+2oF6zIFEpi9GhUZM1ccQ8EulhvOclrrtQtBPUl1DmcX
+ pBrbpvHfsPra/wjnUGyJlQHI+ngp8BopOGawg0Fm7tnCP7Bf687wui8cJb7D3ZAg5eIz
+ E0Xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1766162219; x=1766767019;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=9A1gr5CJUaSQgBXQcHovtENYxaFT/E0t2tXqegO2h5o=;
+ b=lVyox+f9o84mEEuDKkLx+MYUzQZMfzLEvKigLzk7wV4wXloZHb17wyBbX10Tu144KP
+ kLctULn5J9JDiHnNjEINr4xbz0Et1Rp66cgWiwPCH0eQNc2FC5MiYzv2eR6T07IQ5IF6
+ 35emukjjh9yDGFb1tseQLGgYwvgT7dWFI8Ksq8meDJEsFkMw8NkNPLN9C+k8nOT+kaVq
+ ho9NJGVYWDOs9s5VxPVVEsulMiIb1BiAyB7dp93H21ICi4Sb+xnFjvEado/CeJjjPxhc
+ qaqBAi2QuuIuaMML5oF0k9xHG2RhEoNAeTJ2u8lZm6CMNuQBHWMNdkJR71p7yVpZnE09
+ JJ3Q==
+X-Gm-Message-State: AOJu0Yy7fofpsEk9AZdeXpEgfa6gEhVwfsg8W3iK489hugxin+e5QvDB
+ U2hDzTQWAtxEGvMwiHfyVRrbaPfx4/vIkoJRGz6Pe2lqxihbRA5Dqa+PDFuR1tpCzP1HdAqrTMs
+ TkWeEqyg=
+X-Gm-Gg: AY/fxX6zrtJdsG+oFgZjfev7VeY3NzzYSpq8j//bxmG6JhoYcHzj0hsHlqsoccfuKed
+ O8xqIpMdOtO48p0ZX72p0B/feaBfhY5zcK7OU5oXrDKDd5+nzNJ0QcGU+MrbRNHBcVH1NsasS88
+ KI3XK0L7aWPfSTOPY2D3IFZrRdGgDUa4q3UqQoNW2tSjQoAxiHlchvBVpzHJiBrTof0LivcpBIj
+ ORlpQao/99T18aO4Gt/wGQvuG+BqotY1aBZ2ijsFK8tEsQveObu1UYV5EN+8MgfF1ox4gbFFflE
+ UB/f8KutRSVhgGRmbJNmMynOSTbrgwqJbgG87OubHtmIXA0KvMtgZeR/fAdjob3LmaiLGJYf3nU
+ Mb8y0hS9WUTj9mqFQhhVD7XjuGNNxVBFCAQhtN66ZvA9V54SchibirJB3nHjJCyGH4MZSv1fKzK
+ PJY506BhC717b9OI4Zn8gpflgcQiimombaTkkP0E/LDUG42zdloFZL5IQXFh0j
+X-Google-Smtp-Source: AGHT+IHqfPjEiCUzly+R6Ir7twXbDm4Ht/xvz7hKR8Sd7YghV0bPZiuSrvkWK6dc79ozNsMX7BAjpQ==
+X-Received: by 2002:a05:600c:1d1d:b0:477:9eb8:97d2 with SMTP id
+ 5b1f17b1804b1-47d1953b8acmr34176285e9.8.1766162219499; 
+ Fri, 19 Dec 2025 08:36:59 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d193cbe58sm50901345e9.9.2025.12.19.08.36.51
+ 5b1f17b1804b1-47d19362345sm50113335e9.6.2025.12.19.08.36.58
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 19 Dec 2025 08:36:51 -0800 (PST)
+ Fri, 19 Dec 2025 08:36:58 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
@@ -71,15 +72,17 @@ Cc: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 0/9] target/sparc: Stop using the legacy native-endian APIs
-Date: Fri, 19 Dec 2025 17:36:40 +0100
-Message-ID: <20251219163650.74303-1-philmd@linaro.org>
+Subject: [PATCH v2 1/9] hw/sparc: Use explicit big-endian LD/ST API
+Date: Fri, 19 Dec 2025 17:36:41 +0100
+Message-ID: <20251219163650.74303-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251219163650.74303-1-philmd@linaro.org>
+References: <20251219163650.74303-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,39 +105,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SPARC is always big-endian, so use the '_be' suffix to
-select the big-endian variant of the load/store helper.
+The SPARC architecture uses big endianness. Directly use
+the big-endian LD/ST API.
 
-Simplify gdbstub using ldn(TARGET_LONG_BITS...).
+Mechanical change running:
 
-Based-on: <20251219161953.72724-1-philmd@linaro.org> and more.
+  $ for a in uw w l q; do \
+      sed -i -e "s/ld${a}_p(/ld${a}_be_p(/" \
+        $(git grep -wlE '(ld|st)u?[wlq]_p' hw/sparc*/);
+    done
 
-Philippe Mathieu-Daudé (9):
-  hw/sparc: Use explicit big-endian LD/ST API
-  target/sparc: Replace MO_TE -> MO_BE
-  target/sparc: Use address_space_ld/st[n]_be() in ld/st_asi helpers
-  target/sparc: Use explicit big-endian LD/ST API
-  target/sparc: Use big-endian variant of cpu_ld/st_data*()
-  target/sparc: Inline translator_ldl()
-  target/sparc: Inline cpu_ldl_code() call in cpu_do_interrupt()
-  target/sparc: Simplify gdbstub sparc_cpu_gdb_write_register()
-  configs/targets: Forbid SPARC to use legacy native endianness APIs
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Chigot Clément <chigot@adacore.com>
+---
+ hw/sparc/leon3.c   | 42 +++++++++++++++++++++---------------------
+ hw/sparc/sun4m.c   |  6 +++---
+ hw/sparc64/sun4u.c |  6 +++---
+ 3 files changed, 27 insertions(+), 27 deletions(-)
 
- configs/targets/sparc-linux-user.mak       |  1 -
- configs/targets/sparc-softmmu.mak          |  1 -
- configs/targets/sparc32plus-linux-user.mak |  1 -
- configs/targets/sparc64-linux-user.mak     |  1 -
- configs/targets/sparc64-softmmu.mak        |  1 -
- hw/sparc/leon3.c                           | 42 +++++++-------
- hw/sparc/sun4m.c                           |  6 +-
- hw/sparc64/sun4u.c                         |  6 +-
- target/sparc/gdbstub.c                     | 12 +---
- target/sparc/int32_helper.c                |  4 +-
- target/sparc/ldst_helper.c                 | 66 ++++++----------------
- target/sparc/mmu_helper.c                  | 32 ++++++-----
- target/sparc/translate.c                   | 60 ++++++++++----------
- 13 files changed, 95 insertions(+), 138 deletions(-)
-
+diff --git a/hw/sparc/leon3.c b/hw/sparc/leon3.c
+index 631c6113b5c..0414e9df573 100644
+--- a/hw/sparc/leon3.c
++++ b/hw/sparc/leon3.c
+@@ -78,21 +78,21 @@ typedef struct ResetData {
+ 
+ static uint32_t *gen_store_u32(uint32_t *code, hwaddr addr, uint32_t val)
+ {
+-    stl_p(code++, 0x82100000); /* mov %g0, %g1                */
+-    stl_p(code++, 0x84100000); /* mov %g0, %g2                */
+-    stl_p(code++, 0x03000000 +
++    stl_be_p(code++, 0x82100000); /* mov %g0, %g1             */
++    stl_be_p(code++, 0x84100000); /* mov %g0, %g2             */
++    stl_be_p(code++, 0x03000000 +
+       extract32(addr, 10, 22));
+                                /* sethi %hi(addr), %g1        */
+-    stl_p(code++, 0x82106000 +
++    stl_be_p(code++, 0x82106000 +
+       extract32(addr, 0, 10));
+                                /* or %g1, addr, %g1           */
+-    stl_p(code++, 0x05000000 +
++    stl_be_p(code++, 0x05000000 +
+       extract32(val, 10, 22));
+                                /* sethi %hi(val), %g2         */
+-    stl_p(code++, 0x8410a000 +
++    stl_be_p(code++, 0x8410a000 +
+       extract32(val, 0, 10));
+                                /* or %g2, val, %g2            */
+-    stl_p(code++, 0xc4204000); /* st %g2, [ %g1 ]             */
++    stl_be_p(code++, 0xc4204000); /* st %g2, [ %g1 ]          */
+ 
+     return code;
+ }
+@@ -112,13 +112,13 @@ static void write_bootloader(void *ptr, hwaddr kernel_addr)
+ 
+     /* If we are running on a secondary CPU, jump directly to the kernel.  */
+ 
+-    stl_p(p++, 0x85444000); /* rd %asr17, %g2      */
+-    stl_p(p++, 0x8530a01c); /* srl  %g2, 0x1c, %g2 */
+-    stl_p(p++, 0x80908000); /* tst  %g2            */
++    stl_be_p(p++, 0x85444000); /* rd %asr17, %g2      */
++    stl_be_p(p++, 0x8530a01c); /* srl  %g2, 0x1c, %g2 */
++    stl_be_p(p++, 0x80908000); /* tst  %g2            */
+     /* Filled below.  */
+     sec_cpu_branch_p = p;
+-    stl_p(p++, 0x0BADC0DE); /* bne xxx             */
+-    stl_p(p++, 0x01000000); /* nop */
++    stl_be_p(p++, 0x0BADC0DE); /* bne xxx             */
++    stl_be_p(p++, 0x01000000); /* nop */
+ 
+     /* Initialize the UARTs                                        */
+     /* *UART_CONTROL = UART_RECEIVE_ENABLE | UART_TRANSMIT_ENABLE; */
+@@ -133,17 +133,17 @@ static void write_bootloader(void *ptr, hwaddr kernel_addr)
+     p = gen_store_u32(p, 0x80000318, 3);
+ 
+     /* Now, the relative branch above can be computed.  */
+-    stl_p(sec_cpu_branch_p, 0x12800000
+-          + (p - sec_cpu_branch_p));
++    stl_be_p(sec_cpu_branch_p, 0x12800000
++             + (p - sec_cpu_branch_p));
+ 
+     /* JUMP to the entry point                                     */
+-    stl_p(p++, 0x82100000); /* mov %g0, %g1 */
+-    stl_p(p++, 0x03000000 + extract32(kernel_addr, 10, 22));
+-                            /* sethi %hi(kernel_addr), %g1 */
+-    stl_p(p++, 0x82106000 + extract32(kernel_addr, 0, 10));
+-                            /* or kernel_addr, %g1 */
+-    stl_p(p++, 0x81c04000); /* jmp  %g1 */
+-    stl_p(p++, 0x01000000); /* nop */
++    stl_be_p(p++, 0x82100000); /* mov %g0, %g1 */
++    stl_be_p(p++, 0x03000000 + extract32(kernel_addr, 10, 22));
++                               /* sethi %hi(kernel_addr), %g1 */
++    stl_be_p(p++, 0x82106000 + extract32(kernel_addr, 0, 10));
++                               /* or kernel_addr, %g1 */
++    stl_be_p(p++, 0x81c04000); /* jmp  %g1 */
++    stl_be_p(p++, 0x01000000); /* nop */
+ }
+ 
+ static void leon3_cpu_reset(void *opaque)
+diff --git a/hw/sparc/sun4m.c b/hw/sparc/sun4m.c
+index 53d7ae08ae9..52ca9586001 100644
+--- a/hw/sparc/sun4m.c
++++ b/hw/sparc/sun4m.c
+@@ -268,9 +268,9 @@ static unsigned long sun4m_load_kernel(const char *kernel_filename,
+         if (*initrd_size > 0) {
+             for (i = 0; i < 64 * TARGET_PAGE_SIZE; i += TARGET_PAGE_SIZE) {
+                 ptr = rom_ptr(KERNEL_LOAD_ADDR + i, 24);
+-                if (ptr && ldl_p(ptr) == 0x48647253) { /* HdrS */
+-                    stl_p(ptr + 16, INITRD_LOAD_ADDR);
+-                    stl_p(ptr + 20, *initrd_size);
++                if (ptr && ldl_be_p(ptr) == 0x48647253) { /* HdrS */
++                    stl_be_p(ptr + 16, INITRD_LOAD_ADDR);
++                    stl_be_p(ptr + 20, *initrd_size);
+                     break;
+                 }
+             }
+diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
+index 82c3e7c855b..e83c82fc9ae 100644
+--- a/hw/sparc64/sun4u.c
++++ b/hw/sparc64/sun4u.c
+@@ -206,9 +206,9 @@ static uint64_t sun4u_load_kernel(const char *kernel_filename,
+         if (*initrd_size > 0) {
+             for (i = 0; i < 64 * TARGET_PAGE_SIZE; i += TARGET_PAGE_SIZE) {
+                 ptr = rom_ptr(*kernel_addr + i, 32);
+-                if (ptr && ldl_p(ptr + 8) == 0x48647253) { /* HdrS */
+-                    stl_p(ptr + 24, *initrd_addr + *kernel_addr);
+-                    stl_p(ptr + 28, *initrd_size);
++                if (ptr && ldl_be_p(ptr + 8) == 0x48647253) { /* HdrS */
++                    stl_be_p(ptr + 24, *initrd_addr + *kernel_addr);
++                    stl_be_p(ptr + 28, *initrd_size);
+                     break;
+                 }
+             }
 -- 
 2.52.0
 
