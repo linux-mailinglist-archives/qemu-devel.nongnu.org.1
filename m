@@ -2,96 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09D27CD14C0
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 19:09:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC482CD15BD
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 19:28:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWety-0002Uw-Jo; Fri, 19 Dec 2025 13:08:30 -0500
+	id 1vWfC5-0006vG-LK; Fri, 19 Dec 2025 13:27:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWetw-0002Tc-Pg
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 13:08:29 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWfC2-0006uu-5A
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 13:27:10 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWetu-0006cj-W8
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 13:08:28 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-47d1d8a49f5so5515325e9.3
- for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 10:08:26 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWfC0-0005Ub-KS
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 13:27:09 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-47a95efd2ceso17768005e9.2
+ for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 10:27:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766167704; x=1766772504; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=qoSP6v8NafZhzOwZDwhrjmnlUi45k1UXZkX2sFqRtvw=;
- b=OjvHFyJQJLgeD2O3Wke+bmHx2424OUsJM6PZdGZk9youE3D2f8Vans/Znfu98UDw3W
- eec3g0IQc/IZt/5ykTYveZahX9TraDjJd2PKBm0u6FqrUtSwYqBxef58TszQ1qduauJj
- un8OU2kBXhhvXCX/F6yQxvPKnu1zk1Ajpn0K9ue4l4Z50Y6OCtgqwuoFD9vdgdBEgHsu
- S0VOKD1TDn7ivZJYwOM7Z1Gf67M+EWLoGrLAvWpgT8tsUf8fN2pDUVBBK0H5iZZLKg5l
- QEkJgmbIICEQF8rfQmQ+tYfQyfZitLBDxYYwcCedyU2ZQrJ3ms0Kac8zD4iE6G5/vt7B
- dLzg==
+ d=linaro.org; s=google; t=1766168827; x=1766773627; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=L9GiWOmfyMyj5ciUSgqFfyjuX4l2YQUMTA4v3u2DnUw=;
+ b=Dd60tmh+hK1WEIO9X0jzGa9zb0kNRaJA4hCq6ti3PdGLuDX1485+6ozMAeWFS1gEpS
+ H+Bc36+GF7c2/1jMUUErMLDVkrdGwrQO+HxfSLAQHdqTipDNbStJ9+s5C1zwJahcJnA8
+ EBOQPVxu4CpJig+5CGOwUasaDe2Y3s67SGWsd9zdbdhxREhnxKMkdIJSAk9Xe6S3lfsg
+ GYPej6hyAvxiTMih1EC+hqao3OVnvS7N1r6bDEuteU+Wtilr2TmBUrMqic0cvaa3hudh
+ iKF/1skPKUcOe2Hu2htqZ17iEzcMrP5JQpldwJ+aeaD9C1euM+HgqogxJJVR5YPeo/y+
+ 6rcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766167704; x=1766772504;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=qoSP6v8NafZhzOwZDwhrjmnlUi45k1UXZkX2sFqRtvw=;
- b=Q6Lyc8/8ARbb6+EoEP8p/SeamxhqO2tDuEZpW9w95YX7PipYpS2fQLTfkvVmMcgGS6
- /90AM2/wH0/JQD/o3zcmqupbtL4vBL820azT9Yfg51HI8QNsL/LMX98mQ5bpQ6pQ6bpK
- el1UuVuxJX9QKpFxWG70VwYI2g6DFVyV9DSfYArWTQp376A5wybFKHI7q+WmGrPAll5p
- /93bh8i+tLYMD8GPY39c7yMJO77yZqaqV71x8TkhK0e0rxe1EcJ7jzfoMpuSF9Oa/ygd
- Tb2BV/w6Zx8RnDGZkiQX2REHP6GmZRb2AhV3/t0QMmbwxc3uqfOG89gkCdp9b10pFVy+
- fSrQ==
-X-Gm-Message-State: AOJu0Yyv8U3hulPkCxIMGs97yp6FFmxJtiwCNiTnEGg1Ts/pWdrMY+vZ
- /1Q5MBU329nEoAeEws3q/GgoEirVbdrk/IRy8uhOoamyYlVSEYOcN4GhImFS2JPfR15Q8H/DmGN
- e/k/slC0=
-X-Gm-Gg: AY/fxX4vFhrCdL2xEy8MlyEIoKhV1fPkaRAMZai2qw7NjFyDcS1w6Pf+WbBerCmwc0w
- hnCHfnvUHVrttUEn43yFH2zrFIdzVrKK1T5JbW2akpU57nP+bDvDPQKlJBvujwBNUaq5xyEPsuo
- mzbnuVr+hXVDJNC9xygNMYR3Fm/bBpzC/gflNG7hdhwoPynbb9Cp5seP3secc2Hkt2W3rpbOuWk
- GEYhyi6yiX5RKQZxLEa8tSq0LZmGqBgr5zLTa9kRolyqc+WfLXcgz3EUbM0b74bPWdpde0IUT7L
- 7tbKfUZLRPFYGAqZXJ0kejLTgbe7ToyAceIRQ20BXBipi4LxKoOT5b3C/XIAiwqKXd+X3eLQNBl
- hZ7wwwcO7JLRvQ0lk0OnAn+pRac0lmbFSL0qtooSzsnZm7p5cW8p6YhFn5IuKSjzbZjNw+sNE5a
- HBTjELdVRUTSxWO5WuTwhBwTv09D5wWm9gbzlyg56xPEdMHtyImOPjLA==
-X-Google-Smtp-Source: AGHT+IEjG3RwBsP24SJX6TNgXjyPzMbRuA0LWS7Zs5AMcys9/AOCrXSOdRW/05B210gdYH/h4wYzvw==
-X-Received: by 2002:a05:600c:3b2a:b0:477:b734:8c22 with SMTP id
- 5b1f17b1804b1-47d1953bd29mr32333965e9.8.1766167704306; 
- Fri, 19 Dec 2025 10:08:24 -0800 (PST)
-Received: from [192.168.69.202] (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1766168827; x=1766773627;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=L9GiWOmfyMyj5ciUSgqFfyjuX4l2YQUMTA4v3u2DnUw=;
+ b=f50ssQoz2w2pP8Jlf9NT/QwW0MwMxGWgbLq+vgiBOF4Qj0+AXzIg+GBwBWAVV0qkL8
+ /AubfIZFVvgvwdV6x2vg/tVbmwngcMblZcaPrQB5+r9m+n9hFTsvOhdix+oQB24B7GAj
+ m6UwQuevLOGprAdWGO3VTIpCk/RbWis+WGwwbLzhmEGhkc1eEvcADzEbZCCKQmdyDU09
+ LHfjAU7nbE3zuqCV6fK4oYceb5XjRsUokYuxPVECNuiAOX/UyUgfrndPaWgDFBgdzPSa
+ WujoQyMjE/8z1i3+hVUW+463T0HtVwTvZ9BSLhJB4Z7BhHctuDfFggh+dp76sPT6EIls
+ Kz3Q==
+X-Gm-Message-State: AOJu0YxbfVk7VXnQAxtBuRPRbbwg1ZBaahbyJ4M9bd/D6Lb2M3AkhDAt
+ 0pzoE5n8YKV1mDNr21FWU2IeK3bMNE+Uo5U84GCUhkpQBAxjUwlPcmo9WT+Wpf9VyDNMMbhIbAh
+ QA/RZLa0=
+X-Gm-Gg: AY/fxX7gfVfVfrzpt4dL202i1xZtHiYUb+w7GT+cp1v9VqFHCqsUqOPTRMU/cPvr6oY
+ +x2hs6xgwxeuxzzl5GcfgqcSSZsKlWdpZBL0a37FXssAcS8rQUfFT8HXorV4hkUBPFKMq60rpp7
+ w8ZpaGvlE5dPDw7mLl1rS4T03HVVPs90dmeFbITHVzydUSSUHg1961FrF9pSGKJe3tk552liJcH
+ ADW2j9mLUxRdqZF9yGJNdlm0iB2moYYCGaZ8aqPd+b+YUSF5iPLyNUmf1GKTGjgQT7JdUtHR2jD
+ 2L8DxhtXD0gpjqaTmNIi5VfRPfID2u82t+h5vuNAjXoi/Z19vunp/MAnLn05ALnxts9rKdae7SN
+ jE8oIf8bbFpS4z2kGkbzAetj3w6H4oh8dXjY8H6aFsZ/9juhVgpvsc1rG75xYpVeg526bN9ed0g
+ agPCHsG+TFZVgF6AxdAp8NbTdFtl9RqKDpNE9rtl3iSMKD3LWkIK1nR37MFYYK+nV1hGZzUis=
+X-Google-Smtp-Source: AGHT+IEqzlF4651WH8TDQ+UI2HzmBKNYlU2FMDPhzcD8SeijsOe1YEQEdo0l5tAs8khViogG4udQlA==
+X-Received: by 2002:a05:600c:1d1d:b0:477:9c73:267f with SMTP id
+ 5b1f17b1804b1-47d195aa4bfmr42191985e9.33.1766168826443; 
+ Fri, 19 Dec 2025 10:27:06 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324eaa477bsm6313250f8f.36.2025.12.19.10.08.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 Dec 2025 10:08:23 -0800 (PST)
-Message-ID: <5efeb676-4e14-4586-b721-80a8d900adcd@linaro.org>
-Date: Fri, 19 Dec 2025 19:08:22 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 16/24] configs/targets: Introduce
- TARGET_USE_LEGACY_NATIVE_ENDIAN_API
-Content-Language: en-US
+ 5b1f17b1804b1-47be3a0fb9asm42124425e9.2.2025.12.19.10.27.05
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 19 Dec 2025 10:27:05 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, Anton Johansson
- <anjo@rev.ng>, David Hildenbrand <david@kernel.org>,
- Warner Losh <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>,
- Laurent Vivier <laurent@vivier.eu>, Zhao Liu <zhao1.liu@intel.com>,
- Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
- <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- qemu-riscv@nongnu.org
-References: <20251219161953.72724-1-philmd@linaro.org>
- <20251219161953.72724-17-philmd@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251219161953.72724-17-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Stafford Horne <shorne@gmail.com>, Laurent Vivier <laurent@vivier.eu>,
+ Anton Johansson <anjo@rev.ng>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/3] target/openrisc: Stop using the legacy native-endian APIs
+Date: Fri, 19 Dec 2025 19:27:01 +0100
+Message-ID: <20251219182704.95564-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.52.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -114,91 +99,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/12/25 17:19, Philippe Mathieu-Daudé wrote:
-> TARGET_USE_LEGACY_NATIVE_ENDIAN_API is a definition that will
-> let us gradually remove legacy APIs related to "native" endianness.
-> 
-> Set it to all our targets, taking care to not poison it.
+OpenRISC is always big-endian, making the conversion easy.
 
+Besides a lot of preliminary cleanup are already merged:
 
-Mechanical set it to all our targets running:
+. 5b67dbf1dc3 target/openrisc: Replace target_ulong -> uint32_t
+. 500708331e3 target/openrisc: Inline tcg_gen_trunc_i64_tl()
+. 4f6c60683f2 target/openrisc: Replace MO_TE -> MO_BE
+. 73cd283e58d target/openrisc: Introduce mo_endian() helper
+. 2f737e19a4d target/openrisc: Conceal MO_TE within do_store()
+. 22c36c0a20c target/openrisc: Conceal MO_TE within do_load()
+. ef797ac0025 target/openrisc: Explode MO_TExx -> MO_TE | MO_xx
+. 81e2fb236b7 target/openrisc: Remove 'TARGET_LONG_BITS != 32' dead code
+. 9dc4862dc4a target/openrisc: Use vaddr type for $pc jumps
+. 2367c94cbb1 target/openrisc: Remove target_ulong use in raise_mmu_exception()
+. 1843e89bec5 target/openrisc: Remove unused cpu_openrisc_map_address_*() handlers
+. a3c4facd395 target/openrisc: Do not use target_ulong for @mr in MTSPR helper
+. 2795bc52af4 target/openrisc: Replace VMSTATE_UINTTL() -> VMSTATE_UINT32()
 
-   $ for t in configs/targets/*.mak; do \
-       echo TARGET_USE_LEGACY_NATIVE_ENDIAN_API=y >> $t;
-     done
+Philippe Mathieu-Daudé (3):
+  target/openrisc: Use explicit big-endian LD/ST API
+  target/openrisc: Inline translator_ldl()
+  configs/targets: Forbid OpenRISC to use legacy native endianness APIs
 
-then taking care manually to not poison it.
+ configs/targets/or1k-linux-user.mak | 1 -
+ configs/targets/or1k-softmmu.mak    | 1 -
+ target/openrisc/gdbstub.c           | 2 +-
+ target/openrisc/translate.c         | 3 ++-
+ 4 files changed, 3 insertions(+), 4 deletions(-)
 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   configs/targets/aarch64-bsd-user.mak        | 1 +
->   configs/targets/aarch64-linux-user.mak      | 1 +
->   configs/targets/aarch64-softmmu.mak         | 1 +
->   configs/targets/aarch64_be-linux-user.mak   | 1 +
->   configs/targets/alpha-linux-user.mak        | 1 +
->   configs/targets/alpha-softmmu.mak           | 1 +
->   configs/targets/arm-bsd-user.mak            | 1 +
->   configs/targets/arm-linux-user.mak          | 1 +
->   configs/targets/arm-softmmu.mak             | 1 +
->   configs/targets/armeb-linux-user.mak        | 1 +
->   configs/targets/avr-softmmu.mak             | 1 +
->   configs/targets/hexagon-linux-user.mak      | 1 +
->   configs/targets/hppa-linux-user.mak         | 1 +
->   configs/targets/hppa-softmmu.mak            | 1 +
->   configs/targets/i386-bsd-user.mak           | 1 +
->   configs/targets/i386-linux-user.mak         | 1 +
->   configs/targets/i386-softmmu.mak            | 1 +
->   configs/targets/loongarch64-linux-user.mak  | 1 +
->   configs/targets/loongarch64-softmmu.mak     | 1 +
->   configs/targets/m68k-linux-user.mak         | 1 +
->   configs/targets/m68k-softmmu.mak            | 1 +
->   configs/targets/microblaze-linux-user.mak   | 1 +
->   configs/targets/microblaze-softmmu.mak      | 1 +
->   configs/targets/microblazeel-linux-user.mak | 1 +
->   configs/targets/microblazeel-softmmu.mak    | 1 +
->   configs/targets/mips-linux-user.mak         | 1 +
->   configs/targets/mips-softmmu.mak            | 1 +
->   configs/targets/mips64-linux-user.mak       | 1 +
->   configs/targets/mips64-softmmu.mak          | 1 +
->   configs/targets/mips64el-linux-user.mak     | 1 +
->   configs/targets/mips64el-softmmu.mak        | 1 +
->   configs/targets/mipsel-linux-user.mak       | 1 +
->   configs/targets/mipsel-softmmu.mak          | 1 +
->   configs/targets/mipsn32-linux-user.mak      | 1 +
->   configs/targets/mipsn32el-linux-user.mak    | 1 +
->   configs/targets/or1k-linux-user.mak         | 1 +
->   configs/targets/or1k-softmmu.mak            | 1 +
->   configs/targets/ppc-linux-user.mak          | 1 +
->   configs/targets/ppc-softmmu.mak             | 1 +
->   configs/targets/ppc64-linux-user.mak        | 1 +
->   configs/targets/ppc64-softmmu.mak           | 1 +
->   configs/targets/ppc64le-linux-user.mak      | 1 +
->   configs/targets/riscv32-linux-user.mak      | 1 +
->   configs/targets/riscv32-softmmu.mak         | 1 +
->   configs/targets/riscv64-bsd-user.mak        | 1 +
->   configs/targets/riscv64-linux-user.mak      | 1 +
->   configs/targets/riscv64-softmmu.mak         | 1 +
->   configs/targets/rx-softmmu.mak              | 1 +
->   configs/targets/s390x-linux-user.mak        | 1 +
->   configs/targets/s390x-softmmu.mak           | 1 +
->   configs/targets/sh4-linux-user.mak          | 1 +
->   configs/targets/sh4-softmmu.mak             | 1 +
->   configs/targets/sh4eb-linux-user.mak        | 1 +
->   configs/targets/sh4eb-softmmu.mak           | 1 +
->   configs/targets/sparc-linux-user.mak        | 1 +
->   configs/targets/sparc-softmmu.mak           | 1 +
->   configs/targets/sparc32plus-linux-user.mak  | 1 +
->   configs/targets/sparc64-linux-user.mak      | 1 +
->   configs/targets/sparc64-softmmu.mak         | 1 +
->   configs/targets/tricore-softmmu.mak         | 1 +
->   configs/targets/x86_64-bsd-user.mak         | 1 +
->   configs/targets/x86_64-linux-user.mak       | 1 +
->   configs/targets/x86_64-softmmu.mak          | 1 +
->   configs/targets/xtensa-linux-user.mak       | 1 +
->   configs/targets/xtensa-softmmu.mak          | 1 +
->   configs/targets/xtensaeb-linux-user.mak     | 1 +
->   configs/targets/xtensaeb-softmmu.mak        | 1 +
->   scripts/make-config-poison.sh               | 1 +
->   68 files changed, 68 insertions(+)
+-- 
+2.52.0
 
 
