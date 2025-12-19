@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2694BCD0E99
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 17:38:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 939EACD0E8A
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 17:38:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWdUO-0003hV-JS; Fri, 19 Dec 2025 11:38:00 -0500
+	id 1vWdUQ-00044w-Rr; Fri, 19 Dec 2025 11:38:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdU3-0003cK-2E
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:37:39 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdUA-0003hl-6K
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:37:49 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdU0-0000Vj-UK
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:37:38 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-477a219dbcaso17667285e9.3
- for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 08:37:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWdU8-0000Wb-O0
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 11:37:45 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-47d1d8a49f5so4933025e9.3
+ for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 08:37:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766162255; x=1766767055; darn=nongnu.org;
+ d=linaro.org; s=google; t=1766162262; x=1766767062; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gvU8IjxyyWGbnt0TpIestxRQYownf9I7RuEDkGDxUZg=;
- b=FviF48zk64weObPMn1tKb0LLuymJjlpZOOSxPKE4Mt9NHePiYx8FtIQ9oVwcV13ki9
- 4mBMAPLBmG96T4Ly0pcCDYt5vVKBwIiBBuGR89ft5eo5WTyZNTbg8P3PKaRTqGXYie5x
- a7Z3+KWQcVIeo7l0EvmwfmgK3Ap0pQOAL7bd+iSZavHRdxxLLghVtdHjEHXmc7Py9r72
- EOATK9pBUm6AQaz5lP2iz1etkidIIym5MkzHva6AdI/Z2wYSe9kz9/eI2g63hNFXJNkJ
- LBcA1qR/cSHei2GfNHiRtLkJIRKtkSGWg7CcTY+6yIG6M6aUXjy2Wkgesd5H5RleHryO
- 856Q==
+ bh=LTDf6gXgcB1jO6b/88BcaLI6db2PR4zQsgUSxotS1SE=;
+ b=OOoR3EIAwGQsPsayI7xVn+azQV3bLNj7iJ8T6wVvykBDsZD4SGiWPL2AByQFjIGBeT
+ CApuizXHkerGXbcdlc1ZxwpKD3umJxp/L6nh/83httrvwj4S/FBkL+0NDt6iWfWmu/lU
+ +GcYunxCqgO4GpWKzMvo6m1szklIAMygqfl4xsbOydx2jTQ/AP6GsdQFrKGKOx1Hno6F
+ A95bAvNhTuVhCawHHlg5URLqBovHO5QRRtsyTHELNi823zOiq7jfZtAU03NbS9mfYSHi
+ 0WVZOjG94n6JDmfVF1yP4kOZWePJdD7pPq25Qz47QkXyNtwzvaU0iX28oGio8jD3DnZf
+ w5Zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766162255; x=1766767055;
+ d=1e100.net; s=20230601; t=1766162262; x=1766767062;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=gvU8IjxyyWGbnt0TpIestxRQYownf9I7RuEDkGDxUZg=;
- b=AIvyIxwLmfQwQrhq2psW9Gl+tMfPWU+iLoDx1fJ0DhG966jlws/MKSCy7zuaSecrix
- 9SL86OhJjhZv7AYzetHsfx6Lqk7pqTAbumWUcuxfVU2vRCKhfZs4YcPgMlv1maDL4/gw
- 9CyMCO6GZdyMLdZF7l1vvRvyCkMQTa790yPKnUa3g+Vp+Axk0L+58f3hAQyTx4a67QwT
- 9uJwuWP+4QsLEsT/WYhr9JaTy77T4/8WTiqaMxtviyi8HNW79U4V7JGnG4qcThRlj4T/
- rOk8E10q9rP5NEcBOYUB2Mh2Yab2auMtW8KJz5yjuvzRs5j98f1Dn7zLgHNVpFvVYDaR
- wbSg==
-X-Gm-Message-State: AOJu0Yzbdfr7pz8PXM+pJzNWSozU8OLetf90L/dKyoRMpKtbnec1VCjp
- KF1EoPzJIKAt6thhwbLbyx0PA0bwuS4bKvTFUFiLQ3NMzehNdTRf1hIua9z+TBTXKoNQ2j+dPm9
- xhRT+yac=
-X-Gm-Gg: AY/fxX7aRjiRGED7SiRcMnyLaV7apKjkWqSXHKzsZq/y4hbrqasF0PZxjB/JxaZH9MR
- ZzPpGyzVJrQpE/tNE6CUcPQe9vgq+mmH2GoTnwKaepa/KriuWVZ8MSq9ZYEcC8kNYewIOr6/pLP
- VUDbgiCBvRijx7CJ6XXJhHclKEmFoMINQlFWbnWYi+CF1pX1sQs1YBQh02roscEF19ckqughiTG
- +m4i1upriNcRLy9YoaplFH2kwhL0/uMp3T0QaSJGLeW+a7WXNAa8/ClD/uY+tEa03iWhrD6du4Q
- VHSzT4bqC65oPPzedytFpu/KhiKwlf35uWq32/QMqfx4kW15h3b1aD0J/J0G8qAwQS6Z/bHDnaq
- U6ee25SZzkBqcS8SJ2+zW+6R9GT6Op1RpfhpwnLABYHCNvZ1ucQENAi1U+9RlbH2QOnD2Tllmpm
- hRaBqNtotx5BAoroMkCwp6vSYXK7agDVnUwiXInIbmPEHGzr0T6fj6KGjDJS6Z49pJAO8fORY=
-X-Google-Smtp-Source: AGHT+IFJFYK2I28ZaGAcicQ6d93jyoU5+SdGerlfByXSHGE7xscJVttx8WMqXH4AoyycDRQ/fTjW1Q==
-X-Received: by 2002:a05:600c:3b0e:b0:477:b0b9:3129 with SMTP id
- 5b1f17b1804b1-47d1955b7d1mr30755685e9.3.1766162255139; 
- Fri, 19 Dec 2025 08:37:35 -0800 (PST)
+ bh=LTDf6gXgcB1jO6b/88BcaLI6db2PR4zQsgUSxotS1SE=;
+ b=YuhDqwYw4zah/5ZdhlhbVQq2W/mpzvyNWXhG9r+g+WXvSPlgRwp0WtFsAgdZuvSQtj
+ BqQ71xgcAeUP3rTl3piZblezGgTlNUIKjmwW3wzjuiqTMFsUp4tg7jcrCWF8NlpCx599
+ k0YUg1x/jvBPE+FTMDKG/qhqwvA1ezyIr/rxjO+ZLh2rardiq9Wy9Q/g9+4uaBBxMf1j
+ n0NlSY/LA0kigC9ETCmMI9OuzG3ey0o/e7rq8uOFhPgzJpqiitk+AQfqm0aT72npMG2n
+ roi5VPM0AS7/lPTuLqRF+09OSrddJb7oU8cR8EXD4JMyPVgL3qNlnKmGJkNkPKYc2mwR
+ S9bQ==
+X-Gm-Message-State: AOJu0Yz97/2HNGN6yWov3me8v08RvKBsxZ2dtU+QfQcZU+BM22++/Qyk
+ UHJWNJTNxMOIg29etR5SVS6AciYUfxAOUugVn38dj5ohtYtTIOjEiooALSWcKoIll21A2aQmjP6
+ Ghd4LTpg=
+X-Gm-Gg: AY/fxX6JG+NtI3arU5PY7SG/jpH/StAvm4clyNTqhFbdceeXq8NzNJM2OvXmJnTppLt
+ lp4dnw0SU6Mu424lVeuYwxE2jEWs8HEdpWIKd1VCgERFk9+jh6dMhUpPNO7dOS1UTlOEkuXJ9ym
+ xhRTF4f+L0D0q+QjymDmj1zZuBpZw/3s8mKaIt7/vwYs9ntsGZluAeuQ/rPCF5ac9GH+GzDfLtx
+ e7EZQkkf3XUngNt/XC2QsxEYdWrvtGs680T4U3E4HKBtxdpdrxRXRomoYXOSxiU6T6qSteMwyph
+ PZHOC95SED++hu54eVeudiJSSDlZi51I/bjamUtc+53mdSyBD6OMKnvGMfUs1T6QbFCUSGXFFEj
+ Po7UX2tVsBhG6CINDxHTVvZvQqny+n2O1qSIlLcILbgbjsgc3anJpXt+4ZwMLHhQo05K+SsfW0n
+ mR8llbfERi2IIdMkruG9JqJoPX+IOSZ/4T/fUyahb/XpyQGgP8HfBeaQigI7TC
+X-Google-Smtp-Source: AGHT+IGVn0ryBojkRANNbMa0by1PAI80OdH4kFiFgu7XXa6cp5auA1Lqw7bFrQtJ+VKdG9RLjZ0CCA==
+X-Received: by 2002:a05:600c:4447:b0:477:9a28:b0a4 with SMTP id
+ 5b1f17b1804b1-47d194c6a2fmr28339435e9.0.1766162262332; 
+ Fri, 19 Dec 2025 08:37:42 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47be3a6c6ebsm40481015e9.4.2025.12.19.08.37.33
+ ffacd0b85a97d-4324ea82feasm5885047f8f.24.2025.12.19.08.37.40
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 19 Dec 2025 08:37:34 -0800 (PST)
+ Fri, 19 Dec 2025 08:37:41 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
@@ -72,17 +72,18 @@ Cc: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 6/9] target/sparc: Inline translator_ldl()
-Date: Fri, 19 Dec 2025 17:36:46 +0100
-Message-ID: <20251219163650.74303-7-philmd@linaro.org>
+Subject: [PATCH v2 7/9] target/sparc: Inline cpu_ldl_code() call in
+ cpu_do_interrupt()
+Date: Fri, 19 Dec 2025 17:36:47 +0100
+Message-ID: <20251219163650.74303-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251219163650.74303-1-philmd@linaro.org>
 References: <20251219163650.74303-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,35 +106,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-translator_ldl() is defined in "exec/translator.h" as:
+In preparation of removing the cpu_ldl_code wrapper, inline it.
 
-  198 static inline uint32_t
-  199 translator_ldl(CPUArchState *env, DisasContextBase *db, vaddr pc)
-  200 {
-  201     return translator_ldl_end(env, db, pc, MO_TE);
-  202 }
-
-Directly use the inlined form, expanding MO_TE -> MO_BE
-since we only build the SPARC targets as big-endian.
+Since SPARC instructions are always stored in big-endian order,
+replace MO_TE -> MO_BE.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/sparc/translate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/sparc/int32_helper.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 23079697f52..57b50ff8b9a 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -5743,7 +5743,7 @@ static void sparc_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
-     unsigned int insn;
- 
--    insn = translator_ldl(cpu_env(cs), &dc->base, dc->pc);
-+    insn = translator_ldl_end(cpu_env(cs), &dc->base, dc->pc, MO_BE);
-     dc->base.pc_next += 4;
- 
-     if (!decode(dc, insn)) {
+diff --git a/target/sparc/int32_helper.c b/target/sparc/int32_helper.c
+index b29f693a6bf..d6bb3fa1e54 100644
+--- a/target/sparc/int32_helper.c
++++ b/target/sparc/int32_helper.c
+@@ -149,9 +149,11 @@ void sparc_cpu_do_interrupt(CPUState *cs)
+          * mimic delayed trap delivery as if by the subsequent insn.
+          */
+         if (!env->fsr_qne) {
++            MemOpIdx oi = make_memop_idx(MO_BEUL, cpu_mmu_index(cs, true));
++
+             env->fsr_qne = FSR_QNE;
+             env->fq.s.addr = env->pc;
+-            env->fq.s.insn = cpu_ldl_code(env, env->pc);
++            env->fq.s.insn = cpu_ldl_code_mmu(env, env->pc, oi, 0);
+         }
+         env->pc = env->npc;
+         env->npc = env->npc + 4;
 -- 
 2.52.0
 
