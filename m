@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90DB3CD174C
+	by mail.lfdr.de (Postfix) with ESMTPS id 339DBCD1749
 	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 19:51:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWfYg-0002o4-VC; Fri, 19 Dec 2025 13:50:34 -0500
+	id 1vWfYu-0002ob-DY; Fri, 19 Dec 2025 13:50:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWfYe-0002na-Ll
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 13:50:32 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWfYm-0002oG-Fp
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 13:50:41 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWfYc-0002gf-2o
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 13:50:31 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-47774d3536dso17625475e9.0
- for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 10:50:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vWfYk-0002hc-BR
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 13:50:39 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-47775fb6c56so15429385e9.1
+ for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 10:50:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766170228; x=1766775028; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=UJ2aqjupyxC2xcUJwXce3FiO2FjBmXdNqReGGc14jhM=;
- b=bubbGvo9JZv7AGdxy7fOby3q2N84NQXpnZ7RBToN1a/h81xKBFnOx5SSXtzJYwRf4d
- QtIOvT6gB6GqW2E/scf5i0b8Itj0F2qtV7j9c8MW4RdryjrDg2GbtDWWGomw24TyUPVB
- bxMIQtTV90N8SvrRecbQYcjS5IuF8hqWkDx03PQbXpaQqpbnrZ2oHN89X2Yd7XiKf9Wq
- xzbLKyU+F9pQr9LyF8b6Tg0gUDcphzvqdsGxI5asCOMk/KOqRfS4mkzLzOrNX18CmgX3
- wIWORVbBX9MCa3TDlbsERmd8VIARw99qDqtLuUSeg5XxE6ZE2gH8g6RiMLTYuwoYpOg3
- rn5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766170228; x=1766775028;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1766170234; x=1766775034; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UJ2aqjupyxC2xcUJwXce3FiO2FjBmXdNqReGGc14jhM=;
- b=KqVfFAF5ZUH63KysmsEvvJjv9IK/YV6moSL1fybxmiNsuuxMYbhGcFssq+Bgagd6R4
- uwnbgMEbvAsu8Up4ogflJZsdm/aJKMV8rtOBhEvk1V/YItihOPUbBwNfkfCrsmGNybgl
- B64oReV5z5bdpQ+BQDrM4/BPRXWvn4JjCx1jxsFltwCNBf+eKM9xKdG29ysvCeSo39K/
- tk9kbLT4f9QoQFx/wCPGRPxW3PvOh1gypm9bhJAMiqgfXRbDdCbvLwGF7Ba+O127+hUq
- 0OzdmUFKaZue0LUdtw7Q6FbgoyrV5AlSeAlGzvNNMRKX6VSQlReyPZuTF+1kMAhjCrIR
- dJlQ==
-X-Gm-Message-State: AOJu0YwEJ2Ohdr11M28RFPyNnU6beC7nOUyidDSQFj8HKET9is0RTfKX
- 9JNz4p/rcCuhOL1hYu7WC9m43WqxGvqNuqB6vx4UOtVfSw8TA2ZuQPxZHrOzngysD7dV4QXTyTX
- gP4HhSQ8=
-X-Gm-Gg: AY/fxX4Vg3shfv3tBySGaSZx9zj2LL7dnK2ZRffyEEZ3CCT2Ss9U7R352+l0eqoy1da
- Lb28Zj/w6KgxKNx0rIL7wPfmyRfY2ifzg1CMwoqmhiGbY0KWGNPkqyMdE/9M7zmcwBBK0MCbJhe
- dcN/CWiCAIbmuh8YI2x76q7rTnokuXlRo1DYTxXoQ3goEmii0FIJFKhDmWSO0j/OsgcInS5HnGA
- g9UXK4y0r5kofrNBiCJYqZzacp0rVnnxFGzfSqTziIAwTc25v0x7sYcPy6TDmSzleb/GZ4XnuDd
- nqiqKzMuA7p4RQYq1A7v6mC7gOzKraxwsriBcenj+vqHeEMbqSF3DndUTxpD0xvCSK/AYDw6ufH
- NXu+LJTCXCZQR+qoq+tI+5VLOj6XlDFARfRIPAyrsh7e6OlkYf7TjmEtSwKO5kRntOnIYZIGrGW
- DJ+qbVwC7qiA7jU+Zn5jcCow+kL8by22bzqDDZeUcFvkIZCPj17mU1X4ptngCg
-X-Google-Smtp-Source: AGHT+IGclccwu0zavK0u49gMex4Cx3WK/MX62dYaGF8PPW1Gmh7u6A5CwsG3Zb6Td6fJdOrHT2AbYA==
-X-Received: by 2002:a05:600c:608e:b0:46f:a2ba:581f with SMTP id
- 5b1f17b1804b1-47d18be1812mr44618005e9.16.1766170227607; 
- Fri, 19 Dec 2025 10:50:27 -0800 (PST)
+ bh=ytV7sRjMhiZ+N36QlRegSL9F2KH4Bl+JY5tBc1NaTPk=;
+ b=iXVnuoVbbTp1ys9zVX5YSiWQy6VewtHikpvRsm8XUjnCWMppM6A4KPEATr/WMyX9gY
+ 4tFkS1Z7dGy5AVv0Wivws55FPh1O8hJuErRFUvFxQg2s2c3iRJ7NPWrSAKoVxTl4H4DP
+ 4djwUClnokYvJsCY5KtB2ytmfHKuR1QyiIr1pzPLN3AwU4f+S/Jr5COzSwOiU4M1GU3o
+ dicUVqF6rQR5pf7hDJYF+vDNUKu93vUomlkbERMTTEFC3oKEpQtUJCJVGn99O1Z4Gi/9
+ xl8VsWsyfxjjesKoZu9W06zQdF+mbQ7uzp9zuzm0X5GOFYR3yeho2NkQVYnxJbvdmPqm
+ TyzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1766170234; x=1766775034;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=ytV7sRjMhiZ+N36QlRegSL9F2KH4Bl+JY5tBc1NaTPk=;
+ b=mtFiWs1XvXBD1bbjtSR8PSAl1IlFxWitCTZdUJNZGdcGwJRNSTABK871I6jPGiI3hW
+ aCzOzfvumZlLwqcWAfj9PXz2x/e5Bdls6xmiPGYp7jotVKnJaq9Bgj+MWZYV4VjEocfI
+ xgVmq+LjV/QnhPeqzORkWjpsrsKmMbLitR46RnpzQjf/ZHWyhTsNFvIGwYDBDAeIwFoO
+ PVAph8gvUxaYofoO9FaKJIkO0zbSbGNpcFrg4lroMgsaea/gAr0uark2KQnQyW6cMlbS
+ 5bIyBzy8gxd5/71yUFuYnq+h5mW3896y+Dl+P8PfiKpHCKJahvy/KgCZ4UDue1rD6wl1
+ 4M1w==
+X-Gm-Message-State: AOJu0Yw+iBU0hSbDJvUUDU67pT8iHFbkKi6DZjayhLwpdipZcsv0Sezp
+ OLFFfazB0w2WVlGXTbuj2bSXJOqVMUTiOMd6BDxwafdh23uygBIWIEBapC8yHP6nOupqWPRBlMY
+ xR/d+0Gw=
+X-Gm-Gg: AY/fxX6DMKXJbv2FNDimHyLuWHHV+mHM34pkHvj1nuLQ5xv6txyZC9qv7gZMrC33x/c
+ fW45gYqlwcyWDS1Ct2cBHSBudKF0d6d83+nVVYzGktqf0pD5hjDLi3lwGKqRaf9RA1tgD6IMmYr
+ bjFdRXZp4ymkVztDQLPgAGAA/TQliC0FX9ZzpcbT4ukGmPTAGzkNS8r81brZzMbH9jSVWRX5Wrv
+ XGieBA0Pj810/nQRX6yWd32HeUKxTDLPc2aza76g1cwh7CdNK6yAuezHAfy04zsWaKEn7BGVREa
+ LpcrQK37w4P0BLruAN3DgQfGw+yYOIM+hX6p0IM1i8m+aTiRD/iT57JF6Ka1Y+cymXZf18TntMz
+ kvtfO15F8ww/pMbWIvNOTxE69w7exzpNPtO5P5dc16xiD8aTekccNdxL3NZLrnpt/jPJ61Mzf7N
+ +wG7F7yNJCCGcKpUS57Og/3hH4kHwf+T+etSwBN/wWZ309Ls5tAs4vyHuYwIy9
+X-Google-Smtp-Source: AGHT+IE5XV49ii2lrZyHGFMU+c13tmmtGc+XTdQTA0fULgrQ9H9/DATWMwiUSntspkjMRGFT5z6iGg==
+X-Received: by 2002:a05:600c:4ed2:b0:475:e067:f23d with SMTP id
+ 5b1f17b1804b1-47d1959eaaemr39063745e9.25.1766170234461; 
+ Fri, 19 Dec 2025 10:50:34 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d1936d220sm59749035e9.8.2025.12.19.10.50.26
+ 5b1f17b1804b1-47be279d6d8sm108821205e9.10.2025.12.19.10.50.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 19 Dec 2025 10:50:27 -0800 (PST)
+ Fri, 19 Dec 2025 10:50:33 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -68,16 +69,17 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Taylor Simpson <ltaylorsimpson@gmail.com>,
  Brian Cain <brian.cain@oss.qualcomm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 0/3] target/hexagon: Stop using the legacy native-endian
- APIs
-Date: Fri, 19 Dec 2025 19:50:22 +0100
-Message-ID: <20251219185025.97318-1-philmd@linaro.org>
+Subject: [PATCH v2 1/3] target/hexagon: Inline translator_ldl()
+Date: Fri, 19 Dec 2025 19:50:23 +0100
+Message-ID: <20251219185025.97318-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251219185025.97318-1-philmd@linaro.org>
+References: <20251219185025.97318-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,21 +102,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v2: patch #2 was incomplete
+translator_ldl() is defined in "exec/translator.h" as:
 
-Hexagon is always little-endian, making the conversion easy.
+  198 static inline uint32_t
+  199 translator_ldl(CPUArchState *env, DisasContextBase *db, vaddr pc)
+  200 {
+  201     return translator_ldl_end(env, db, pc, MO_TE);
+  202 }
 
-Philippe Mathieu-Daudé (3):
-  target/hexagon: Inline translator_ldl()
-  target/hexagon: Use little-endian variant of cpu_ld/st_data*()
-  configs/targets: Forbid Hexagon to use legacy native endianness API
+Directly use the inlined form, expanding MO_TE -> MO_LE
+since Hexagon use little-endian order.
 
- configs/targets/hexagon-linux-user.mak |  1 -
- target/hexagon/macros.h                |  6 +++---
- target/hexagon/op_helper.c             |  6 +++---
- target/hexagon/translate.c             | 11 +++++++----
- 4 files changed, 13 insertions(+), 11 deletions(-)
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/hexagon/translate.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
+diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
+index 8fce219c0de..c37035c4774 100644
+--- a/target/hexagon/translate.c
++++ b/target/hexagon/translate.c
+@@ -203,8 +203,9 @@ static int read_packet_words(CPUHexagonState *env, DisasContext *ctx,
+     memset(words, 0, PACKET_WORDS_MAX * sizeof(uint32_t));
+     for (nwords = 0; !found_end && nwords < PACKET_WORDS_MAX; nwords++) {
+         words[nwords] =
+-            translator_ldl(env, &ctx->base,
+-                           ctx->base.pc_next + nwords * sizeof(uint32_t));
++            translator_ldl_end(env, &ctx->base,
++                               ctx->base.pc_next + nwords * sizeof(uint32_t),
++                               MO_LE);
+         found_end = is_packet_end(words[nwords]);
+     }
+     if (!found_end) {
+@@ -966,8 +967,10 @@ static bool pkt_crosses_page(CPUHexagonState *env, DisasContext *ctx)
+     int nwords;
+ 
+     for (nwords = 0; !found_end && nwords < PACKET_WORDS_MAX; nwords++) {
+-        uint32_t word = translator_ldl(env, &ctx->base,
+-                            ctx->base.pc_next + nwords * sizeof(uint32_t));
++        uint32_t word = translator_ldl_end(env, &ctx->base,
++                                           ctx->base.pc_next
++                                           + nwords * sizeof(uint32_t),
++                                           MO_LE);
+         found_end = is_packet_end(word);
+     }
+     uint32_t next_ptr =  ctx->base.pc_next + nwords * sizeof(uint32_t);
 -- 
 2.52.0
 
