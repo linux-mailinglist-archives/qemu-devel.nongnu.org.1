@@ -2,97 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 969D4CD0E93
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 17:38:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 819F9CD0F67
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 17:46:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWdUR-00049e-FN; Fri, 19 Dec 2025 11:38:03 -0500
+	id 1vWdbc-0001Qt-4b; Fri, 19 Dec 2025 11:45:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1vWdUG-0003nf-OX; Fri, 19 Dec 2025 11:37:55 -0500
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>)
+ id 1vWdbQ-0001L6-Ao; Fri, 19 Dec 2025 11:45:17 -0500
+Received: from 2.mo548.mail-out.ovh.net ([178.33.255.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1vWdUD-0000Wf-Kq; Fri, 19 Dec 2025 11:37:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID;
- bh=LyWKVr8B8dmK057lFIEaA7TomUAuORPw4LkU84UqZv0=; b=f4mssKbhSYxPIUFGPTg7ljLu5s
- vknbVKez509O1OxL5358hnUgMdwebU+XRosrvUMMwkLEk/k/LG/Uc3HLA/oPZ7MJKcQW4JFJ2YD0o
- JyTd8vGwctt9S23bFc+wFEe+uz3cUgRV25ttaBurM3lEwO7VhphOFa8UseMPPkyOyvoT2BxLlmGQx
- iMUbTVyRcToXusxTKFMe1C5tgPra2WYh1HrdTg81wfdJhyXYhLL7KVB2YQqN/mkFmMIeN+tctcfGw
- ZeHfT/2obUQ5bzVC2tajQ4DN7Nmove2/efA30XauBVBR+FkCIA1qam25G4MfuqL4MUO+j5YAVyXgb
- rn4ZGznFNooBjQiFU8qeqtyiFqAXP4u0BgtzvL9OuJ+Hz7ErVPSniX4ZUcshTiu0B9ysVSayag51K
- 1n9iMdIDrVnW3cvBqGu2zE2Q8H+raixrbITBeJ8TeKw9bNNlosgFWihq/FIA4ytqvNnXOUK6DEklk
- VmqXLuJvZifipEvZXUD+Imu0XDAdhYhfd9qIo0LXLElUkckjk4t4c/ilcbMSBn4TVHnBsl9jUUIAs
- lO16HZbuhttMCetWKQqCHwy7/vYJo2bezqzAHS5FVZtTBsRPp80GtS5bLKHrK3SlkscH/AlN9qYIF
- HbiNo2p2X3/9+89xSl0MSeXDjwUyDACBM9Y/GVMD4=;
-Received: from [217.155.175.48] (helo=[10.8.0.10])
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1vWdRc-0009mx-4M; Fri, 19 Dec 2025 16:35:08 +0000
-Message-ID: <a07a15ce-3d18-4bb5-8e63-9576907e1f1c@ilande.co.uk>
-Date: Fri, 19 Dec 2025 16:37:38 +0000
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>)
+ id 1vWdbN-00023f-W0; Fri, 19 Dec 2025 11:45:16 -0500
+Received: from mxplan5.mail.ovh.net (unknown [10.110.0.171])
+ by mo548.mail-out.ovh.net (Postfix) with ESMTPS id 4dXtgP5B92z5w1c;
+ Fri, 19 Dec 2025 16:45:05 +0000 (UTC)
+Received: from kaod.org (37.59.142.113) by DAG3EX1.mxp5.local (172.16.2.21)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.61; Fri, 19 Dec
+ 2025 17:45:04 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-113S0074fb417e3-955a-4214-a165-351b0e6e5bd7,
+ 13AF5B8175AA3308F51DC8C03696883D036152F7) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Message-ID: <68041580-c434-45ec-bdd3-b20f7c4fed43@kaod.org>
+Date: Fri, 19 Dec 2025 17:45:03 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- Igor Mammedov <imammedo@redhat.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
- Artyom Tarasenko <atar4qemu@gmail.com>
-References: <20251203060942.57851-1-philmd@linaro.org>
- <20251203060942.57851-9-philmd@linaro.org> <aTBccn2LIv7puGzR@intel.com>
- <05f92a77-7587-4441-a252-01e4705a6892@linaro.org>
- <c03820b8-7745-4b8e-8e69-a37c872257f8@ilande.co.uk>
- <aUPAysAYqTPAfgzD@intel.com>
- <7d238d0d-df26-43fd-bfac-a7d94064d486@linaro.org>
-Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <7d238d0d-df26-43fd-bfac-a7d94064d486@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 217.155.175.48
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH-for-11.0 v6 08/13] hw/sparc64/sun4u: Use
- fw_cfg_init_io_nodma()
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+Subject: Re: [SPAM] [PATCH v2 00/12] hw/arm/aspeed: Add AST1060 SoC and EVB
+ support
+To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
+ Stanley <joel@jms.id.au>, Alistair Francis <alistair@alistair23.me>, Kevin
+ Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, "open list:ASPEED
+ BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
+ <qemu-devel@nongnu.org>, "open list:Block layer core" <qemu-block@nongnu.org>
+CC: <troy_lee@aspeedtech.com>, <kane_chen@aspeedtech.com>
+References: <20251112030553.291734-1-jamin_lin@aspeedtech.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <20251112030553.291734-1-jamin_lin@aspeedtech.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.113]
+X-ClientProxiedBy: DAG6EX1.mxp5.local (172.16.2.51) To DAG3EX1.mxp5.local
+ (172.16.2.21)
+X-Ovh-Tracer-GUID: ecdb76dd-8a19-4b23-95b4-1dff68397a78
+X-Ovh-Tracer-Id: 9299933231506295614
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: dmFkZTFObtiDUkSl+Op618lcoGwzIaJkiIExq90CcZ+FvNr2XymBYIhsqCPflsizVwTVbOGwf5ObuRc4j+r3t+E8Xyr5tHiNkOnBaRIsxLtlx5GSOB6BHGRex9je2DppBxOYppaCjUvpv8EWhCaCsMkCL9Ralh2GndiP+quHScwyfinFXfkYHJQmfmc1g6tR3tGstP0IvQCWjfMTZ0tZwpGbLsBkp4UZZaT8zb28h8Oz8hu3IRLLeCRJ5CoZW4mpsAKKukQNUTIuTlHZDkEzlrNyICIGfWww9ZyXoZa0PgQeV5oEbUlmruTmnLL4KkXvVHD7ltOSxHgd1Mf1ZIlpU2hN506ik4/LexWXXWxvIIeddm5C4AA4v0N9QkQslcQP+NwyGmsxqScTeIEr0Gvgu4PzTzX76hBRRsO+THEme3lY6uvt0IxE8NbfALN5ooT4pMo9fYdEQIlonIZjGFJEJSzfk0JJ4xRW+Lk5wJ2aV7O4KKY8ASqFRZQRfMA9GRvkUqzqA4DIx9x7ax8WfkugrzGefUi+1kXsiRIgUs0iVaKrg0i4y4pBy1kOYx8Os3Ajfj6wdVSgfFyKlqmh+dGIWS10PI7GX8uHtQnOOEvrbzWUUM6MfChrl0BmABjeEnwnL3A6aoV/MyZfyX8ouSqAmZ8KYey/wZ+kGID1lYXCSkpIQE/D2w
+DKIM-Signature: a=rsa-sha256; bh=BQEaoPeic6Zn3kVCdEkLXGiT1snUl+zVVzwMZ99eNyY=; 
+ c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
+ t=1766162707; v=1;
+ b=AA2Hrue/ORRGvpjXkgcFoyVzK3Wxc6Dj8vkdye/z7xR4Jkx9HNvV2PAL2bZzar28liuY8xCb
+ NCe/n8/pC+BhIMgbszZX9k3qPgHifcAg9/yXroeG/PZrnNLvf+mXNJnbyogZwECD8XZgSdZu6iA
+ nT+UoaaJ2uqTtdjGwlFd207DYpNTOc7GD+IvqMUXcmSsymIFRcpziA0zOgvTkYqBpFXhHejVcFJ
+ jm5jlnEHgrdrHOY0L+DjaiQqtSI0siBUZ/2E9EQlbZyHd+7PHlkW6Rbz+DLXXurYhmwPRsRm+LO
+ EapZjQrm85Gh1wrx4tC8ZNMBmvoeCxWq/IB8Dun0dFvPg==
+Received-SPF: pass client-ip=178.33.255.19; envelope-from=clg@kaod.org;
+ helo=2.mo548.mail-out.ovh.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -109,55 +130,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/12/2025 11:22, Philippe Mathieu-Daudé wrote:
-
-> On 18/12/25 09:52, Zhao Liu wrote:
->>>>> I think maybe one reason to use `ebus` is because...
->>>>>
->>>>>> -    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
->>>>>> -    memory_region_add_subregion(pci_address_space_io(ebus), BIOS_CFG_IOPORT,
->>>>>                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
->>>>> ... because the parent region is managed by ebus.
->>>>>
->>>>> Perhaps we should add another argument: Object *parent?
->>>>
->>>> I thought about it but don't think so, all instances but this one use
->>>> the machine container.
->>>>
->>>> I'll improve the description.
->>>
->>> The reason that the fw_cfg device lives under ebus on sun4u is because the
->>> ebus device is effectively a PCI-ISA bridge, and the fw_cfg port is mapped
->>> into I/O address space along with other ISA devices. I'm not sure that
->>> setting the parent to the machine is the right thing to do here.
->>
->> Thanks Philippe and Mark, IIUC, ebus doesn't have the hotplug use case,
->> so it lives long enough like the sun4u/v machine, therefore replacing
->> the parent object "ebus" with machine is safe.
->>
->> And it might be better to explicitly set ebus as not supporting hotplug
->> (via dc->hotpluggable = false).
->>
->> Adding a "parent" argument to the generic interface fw_cfg_init_io_nodma()
->> doesn't seem necessary at the moment, since using the default machine as
->> parent seems enough to meet all current needs in QEMU.
->>
->> What do you think?
+On 11/12/25 04:05, Jamin Lin wrote:
+> v1:
+>    1. Add SFDP table for Winbond W25Q02JVM flash
+>    2. Add AST1060 SoC and EVB support
+>    3. Fix missing SPI IRQ connection causing DMA interrupt failure
+>    4. Fix the revision ID cannot be set in the SOC layer for AST2600 and AST1030
 > 
-> fw_cfg is per guest, and there can only be once instance of it; so IMHO it
-> makes sense to use the machine as parent. I should have posted a better
-> commit description upfront, sorry.
+> v2:
+>    1. Fix review issue.
+>    2. Use "Platform Root of Trust" instead of "PFR"
+> 
+> Jamin Lin (12):
+>    hw/arm/aspeed: Fix missing SPI IRQ connection causing DMA interrupt
+>      failure
+>    hw/block/m25p80: Add SFDP table for Winbond W25Q02JVM flash
+>    hw/misc/aspeed_scu: Fix the revision ID cannot be set in the SOC layer
+>      for AST2600 and AST1030
+>    hhw/misc/aspeed_scu: Add AST1060 A2 silicon revision definition
+>    hw/arm/aspeed_ast10x0: Add common init function for AST10x0 SoCs
+>    hw/arm/aspeed_ast10x0: Add common realize function for AST10x0 SoCs
+>    hw/arm/aspeed_ast10x0: Pass SoC name to common init for AST10x0 family
+>      reuse
+>    hw/arm/aspeed_ast10x0: Add AST1060 SoC support
+>    hw/arm/aspeed_ast10x0_evb: Add AST1060 EVB machine support
+>    tests/functional/arm/test_aspeed_ast1060: Add functional tests for
+>      Aspeed AST1060 SoC
+>    docs/system/arm/aspeed: Update Aspeed and 2700 family boards list
+>    docs/system/arm/aspeed: Update Aspeed MiniBMC section to include
+>      AST1060 processor
+> 
+>   docs/system/arm/aspeed.rst                  |  27 +--
+>   hw/block/m25p80_sfdp.h                      |   1 +
+>   include/hw/misc/aspeed_scu.h                |   1 +
+>   hw/arm/aspeed_ast10x0.c                     | 209 +++++++++++++-------
+>   hw/arm/aspeed_ast10x0_evb.c                 |  23 +++
+>   hw/arm/aspeed_ast2600.c                     |   2 +
+>   hw/arm/aspeed_ast27x0.c                     |   2 +
+>   hw/block/m25p80.c                           |   2 +
+>   hw/block/m25p80_sfdp.c                      |  36 ++++
+>   hw/misc/aspeed_scu.c                        |   5 +-
+>   tests/functional/arm/meson.build            |   1 +
+>   tests/functional/arm/test_aspeed_ast1060.py |  52 +++++
+>   12 files changed, 278 insertions(+), 83 deletions(-)
+>   create mode 100644 tests/functional/arm/test_aspeed_ast1060.py
+> 
 
-That's true, but the I/O is mapped to the ISA bus and so if the ISA bus does not 
-exist, it is impossible to access the device even if it exists on the machine.
+Applied to aspeed-next.
 
-Following on from this: at some point should we not be aiming for a qdev bus to have 
-its devices as QOM children? Assigning fw_cfg directly to the machine would also be 
-wrong in this scenario.
+Thanks,
 
-
-ATB,
-
-Mark.
-
+C.
 
