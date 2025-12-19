@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 632AFCD10A4
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 18:05:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04390CD10B9
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 18:06:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWduo-0002I0-OW; Fri, 19 Dec 2025 12:05:19 -0500
+	id 1vWdv2-0002R3-QB; Fri, 19 Dec 2025 12:05:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vWduT-0002Ez-RR
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 12:04:58 -0500
-Received: from 1.mo552.mail-out.ovh.net ([178.32.96.117])
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>)
+ id 1vWduf-0002Kk-Av; Fri, 19 Dec 2025 12:05:11 -0500
+Received: from 7.mo552.mail-out.ovh.net ([188.165.59.253])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vWduR-0007sE-Qo
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 12:04:57 -0500
-Received: from mxplan5.mail.ovh.net (unknown [10.109.231.159])
- by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4dXv6C5cbRz5xp3;
- Fri, 19 Dec 2025 17:04:51 +0000 (UTC)
-Received: from kaod.org (37.59.142.97) by DAG3EX1.mxp5.local (172.16.2.21)
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>)
+ id 1vWduc-0007uT-Gn; Fri, 19 Dec 2025 12:05:09 -0500
+Received: from mxplan5.mail.ovh.net (unknown [10.109.254.179])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4dXv6Q0RrGz5yNx;
+ Fri, 19 Dec 2025 17:05:02 +0000 (UTC)
+Received: from kaod.org (37.59.142.98) by DAG3EX1.mxp5.local (172.16.2.21)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.61; Fri, 19 Dec
- 2025 18:04:50 +0100
+ 2025 18:05:01 +0100
 Authentication-Results: garm.ovh; auth=pass
- (GARM-97G002a184ac4e-57c3-4222-8405-e2f65dc0b55d,
+ (GARM-98R002c3642f3f-6234-4304-8c5a-df1dc7368d99,
  13AF5B8175AA3308F51DC8C03696883D036152F7) smtp.auth=clg@kaod.org
 X-OVh-ClientIp: 82.64.250.170
-Message-ID: <e359f9ec-157c-492a-88ec-79a9e14a2ac1@kaod.org>
-Date: Fri, 19 Dec 2025 18:04:50 +0100
+Message-ID: <8f02ab07-d936-4528-a1d2-aebada40b639@kaod.org>
+Date: Fri, 19 Dec 2025 18:05:00 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [SPAM] [PATCH v3 08/18] hw/arm/aspeed: Attach UART device to
+Subject: Re: [SPAM] [PATCH v3 09/18] hw/arm/aspeed: Attach SRAM device to
  AST1700 model
 To: Kane Chen <kane_chen@aspeedtech.com>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
@@ -41,7 +41,7 @@ To: Kane Chen <kane_chen@aspeedtech.com>, Peter Maydell
  <qemu-devel@nongnu.org>
 CC: <troy_lee@aspeedtech.com>
 References: <20251208074436.1871180-1-kane_chen@aspeedtech.com>
- <20251208074436.1871180-9-kane_chen@aspeedtech.com>
+ <20251208074436.1871180-10-kane_chen@aspeedtech.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Autocrypt: addr=clg@kaod.org; keydata=
@@ -86,27 +86,27 @@ Autocrypt: addr=clg@kaod.org; keydata=
  3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
  ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
  KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20251208074436.1871180-9-kane_chen@aspeedtech.com>
+In-Reply-To: <20251208074436.1871180-10-kane_chen@aspeedtech.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.97]
-X-ClientProxiedBy: DAG6EX1.mxp5.local (172.16.2.51) To DAG3EX1.mxp5.local
+X-Originating-IP: [37.59.142.98]
+X-ClientProxiedBy: DAG2EX1.mxp5.local (172.16.2.11) To DAG3EX1.mxp5.local
  (172.16.2.21)
-X-Ovh-Tracer-GUID: 5eae52bd-c89a-45a9-a004-2ce63f3cb247
-X-Ovh-Tracer-Id: 9634044031628708786
+X-Ovh-Tracer-GUID: 5c3a6513-b694-4e72-ba03-f28603dd42a8
+X-Ovh-Tracer-Id: 9636858779595279282
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTFUHFYyqFYSZaiVmQc6JeVweeElSW8tn8ugBul7VD+3bEFL5dEQkrrFVf9x+iavraUedMbZZoIzTO4+5BGoLjvjSSnFrma85o/E4eBdfzVqXfW6SO2x2LKScK1Vj3LgdSVn5ObKPtRXWH3HnWXSAUxp0QxjgRAeXX3be6LoDcUAabxD9vhOB5z8LlNivoN44STB97M81FwMfgCkD14glUC4UqtKaaTC5lpYVYHK5nFH7poXNd8WEiMb7khomSAd9VFBO60lnfy+ImbMeJL+tfBibH9/6S3bjrl/FpfRUVc1F6HHfCKfidTHQ2I3WiH/t8GyBf4Law3cn89E8/IcyFUedr0txTXwICv5mB4TAyMJO5IkzBbgtTfvfsBRgzLm6E5BPeqFM2gk8x+k+fX3suslnMPo3SC49+zKTSPzQQsB1U4M07Tyq2EzsbMiLgq17rAUJepuzVuNU8xWCFE1F5PioenHmqM1dEWRsfQW0FbWW837PLG0H8dae2eu8LQkDNCOZclBEj0NBSA9YsMu3g3aCsuvmNj3MfS/NF0aYDRFuU/2v7JjQ51lc4Co8kZJ+QR61vqsw7m4Zg5ZNpX5T8f2xWPXgPDczNU3u05Yld15k7IuvKI6S+bQ5leqgcLXw+A5mLNLFGLm4I8HQbx+Aba5vR0BxwABSoIhThy3sFtLSg
-DKIM-Signature: a=rsa-sha256; bh=1OV5pPg7RBxbsrZ7G60DZyQ2Ntq1/mr+HnD1iRls3OY=; 
+X-VR-SPAMCAUSE: dmFkZTGHo5DNLkvEtf89+Zf74t4xUyNZKrQjyIxcA9vLxs6rihyxKBSREpm9CHPUpRtXXqteoHnZqTw07uqp0SdIzI92txXhfQMfVpbNRkD+ntAEq+ivbgsd7FMNNbZElWQu7QTV8HF3Y14vzls3fdLkV9wnH1YkOIKhA3Fx3I8TGs78EcGU4nnjMwKTiizz4oh6uRLFH1fWI7Gw21peGR84KcGhF76cMk2McYPsBo/jTPkvBWmyWaXH3fiZ7qGENdGy/iKM02qXuvoq9GryChHboc4j6wHr7W8FJkyTh04Mk3h5gOR5s+XnZhFevZxFq0J6QUzr/eQpW83a2A88ziR/mJ9/SeCYEn5kcDoPJYSeVSuXr0Xnzbh6dK+Okm2XdMH8MCE/g4Rd8oBd8yx8vLsPUly3Meaic6Xw4Xfn1md/oiTFDz27Zcsx56xBGCM3tXZ71kSpWJ2n7351rwUEOjZaSkVgEUyipb2JKK28h5HB6oXTJyG9zUmpNTiP8JnS5/JxeBOt7BuFcCB/5kNjmE/j1ht3hhUN5JaVr0oRwAoQxw0+Z0x0aEn2xSiL+JO2CEBA6HzJ3PjAAdX4O6FBoU1vZAN2QBIk9v2fO3jHjKpY9kNEygkbMX04pc4ep96Kc7fye1vqfEitVmj2qlFX/IP9F1BGktAZ51dxdialZiieuB6utQ
+DKIM-Signature: a=rsa-sha256; bh=sDzol6wg/E467ZKR3d222WUDBXhbG4tp5VkjAbMTpHk=; 
  c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1766163892; v=1;
- b=kTTrnmLYiilS8RF3TsF+LFaMVwc0NgO8OedlZWw1RPGkYsX6uMQk2TXd7CLOADBNhp5uUn0s
- XrourVBLT35WWRGDXkWdq5DF3MmSBPFfXWCCDldllYlBBHVIJPFWo7gsrBgUjdHHmUv65dztw0d
- HeD5TezkDSaFAFWRXhS+mvbL6zgjbTgqUlGVHj0wnTOixEJ2OEJLRWYQMMylUtkh18PAymrGW0R
- XdrAAqRyDga9b8mQJt3uHIKlc9Wi56aaFXImgk+iemgWnGz8V1vVii9H4tBvuZLKLwLVQNYFz/y
- W69JYCaah1b5z+Yf5I67/OfTjf1QHaGdY6gRCNAWXrrmw==
-Received-SPF: pass client-ip=178.32.96.117; envelope-from=clg@kaod.org;
- helo=1.mo552.mail-out.ovh.net
+ t=1766163902; v=1;
+ b=aVWiP7TjsezaGluv/PZ24BDAonJP9iEfgQY6cLCqjNjoNLdkVWCPmZHKfjp7tjT8yGLYfviE
+ TqXnvpqaXmXOZ3VQgCliQQk8mCq5a+EyMAXS3OSn60owHCej/gA80EdrzZ/ppTkwoBQhyTRUeMB
+ fpC7bk6FdN9l1ASIWgrsJRf90DtN6wTMN2JSaoKfbijmJT/OE9+ca/cmY4d5xLN1nEi/PBYNRT1
+ 9K5MIbe7UOps0Q8UioCOfWBwHiRamY/TjEwxqEZEt5tAbuebTe3k0Qr37mt+bo1joNhgrAKyp0l
+ bkk3sjC37qzdCkToaP/66gFdXpcCV9V20mnxHRi+GpL6g==
+Received-SPF: pass client-ip=188.165.59.253; envelope-from=clg@kaod.org;
+ helo=7.mo552.mail-out.ovh.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -114,7 +114,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -133,14 +133,14 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 12/8/25 08:44, Kane Chen wrote:
 > From: Kane-Chen-AS <kane_chen@aspeedtech.com>
 > 
-> Connect the UART controller to the AST1700 model by mapping its MMIO
-> region.
+> Map the SRAM device to AST1700 model
 > 
 > Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
 > ---
 >   include/hw/arm/aspeed_ast1700.h |  2 ++
->   hw/arm/aspeed_ast1700.c         | 18 ++++++++++++++++++
->   2 files changed, 20 insertions(+)
+>   hw/arm/aspeed_ast1700.c         | 17 +++++++++++++++++
+>   hw/arm/aspeed_ast27x0.c         |  1 +
+>   3 files changed, 20 insertions(+)
 
 
 
@@ -152,78 +152,94 @@ Thanks,
 C.
 
 
-
+> 
 > diff --git a/include/hw/arm/aspeed_ast1700.h b/include/hw/arm/aspeed_ast1700.h
-> index b9ee4952d0..a0d6b3ae44 100644
+> index a0d6b3ae44..23588f7a81 100644
 > --- a/include/hw/arm/aspeed_ast1700.h
 > +++ b/include/hw/arm/aspeed_ast1700.h
-> @@ -10,6 +10,7 @@
+> @@ -20,9 +20,11 @@ struct AspeedAST1700SoCState {
+>       SysBusDevice parent_obj;
 >   
->   #include "hw/sysbus.h"
->   #include "hw/misc/aspeed_ltpi.h"
-> +#include "hw/char/serial-mm.h"
->   
->   #define TYPE_ASPEED_AST1700 "aspeed.ast1700"
->   
-> @@ -21,6 +22,7 @@ struct AspeedAST1700SoCState {
 >       MemoryRegion iomem;
+> +    uint8_t board_idx;
 >   
 >       AspeedLTPIState ltpi;
-> +    SerialMM uart;
+>       SerialMM uart;
+> +    MemoryRegion sram;
 >   };
 >   
 >   #endif /* ASPEED_AST1700_H */
 > diff --git a/hw/arm/aspeed_ast1700.c b/hw/arm/aspeed_ast1700.c
-> index 5255bd0daa..f88052ec8a 100644
+> index f88052ec8a..8e93a8857a 100644
 > --- a/hw/arm/aspeed_ast1700.c
 > +++ b/hw/arm/aspeed_ast1700.c
-> @@ -10,15 +10,18 @@
->   #include "hw/boards.h"
->   #include "hw/qdev-core.h"
->   #include "qom/object.h"
-> +#include "hw/qdev-properties.h"
+> @@ -14,13 +14,16 @@
 >   #include "hw/arm/aspeed_ast1700.h"
 >   
 >   #define AST2700_SOC_LTPI_SIZE        0x01000000
+> +#define AST1700_SOC_SRAM_SIZE        0x00040000
 >   
 >   enum {
-> +    ASPEED_AST1700_DEV_UART12,
+> +    ASPEED_AST1700_DEV_SRAM,
+>       ASPEED_AST1700_DEV_UART12,
 >       ASPEED_AST1700_DEV_LTPI_CTRL,
 >   };
 >   
 >   static const hwaddr aspeed_ast1700_io_memmap[] = {
-> +    [ASPEED_AST1700_DEV_UART12]    =  0x00C33B00,
+> +    [ASPEED_AST1700_DEV_SRAM]      =  0x00BC0000,
+>       [ASPEED_AST1700_DEV_UART12]    =  0x00C33B00,
 >       [ASPEED_AST1700_DEV_LTPI_CTRL] =  0x00C34000,
 >   };
+> @@ -29,12 +32,21 @@ static void aspeed_ast1700_realize(DeviceState *dev, Error **errp)
+>   {
+>       AspeedAST1700SoCState *s = ASPEED_AST1700(dev);
+>       SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
+> +    char dev_name[32];
 >   
-> @@ -32,6 +35,17 @@ static void aspeed_ast1700_realize(DeviceState *dev, Error **errp)
+>       /* Occupy memory space for all controllers in AST1700 */
+>       memory_region_init(&s->iomem, OBJECT(s), TYPE_ASPEED_AST1700,
 >                          AST2700_SOC_LTPI_SIZE);
 >       sysbus_init_mmio(sbd, &s->iomem);
 >   
-> +    /* UART */
-> +    qdev_prop_set_uint8(DEVICE(&s->uart), "regshift", 2);
-> +    qdev_prop_set_uint32(DEVICE(&s->uart), "baudbase", 38400);
-> +    qdev_prop_set_uint8(DEVICE(&s->uart), "endianness", DEVICE_LITTLE_ENDIAN);
-> +    if (!sysbus_realize(SYS_BUS_DEVICE(&s->uart), errp)) {
-> +        return;
-> +    }
+> +    /* SRAM */
+> +    snprintf(dev_name, sizeof(dev_name), "aspeed.ioexp-sram.%d", s->board_idx);
+> +    memory_region_init_ram(&s->sram, OBJECT(s), dev_name,
+> +                           AST1700_SOC_SRAM_SIZE, errp);
 > +    memory_region_add_subregion(&s->iomem,
-> +                        aspeed_ast1700_io_memmap[ASPEED_AST1700_DEV_UART12],
-> +                        sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->uart), 0));
+> +                            aspeed_ast1700_io_memmap[ASPEED_AST1700_DEV_SRAM],
+> +                            &s->sram);
 > +
->       /* LTPI controller */
->       if (!sysbus_realize(SYS_BUS_DEVICE(&s->ltpi), errp)) {
->           return;
-> @@ -45,6 +59,10 @@ static void aspeed_ast1700_instance_init(Object *obj)
->   {
->       AspeedAST1700SoCState *s = ASPEED_AST1700(obj);
+>       /* UART */
+>       qdev_prop_set_uint8(DEVICE(&s->uart), "regshift", 2);
+>       qdev_prop_set_uint32(DEVICE(&s->uart), "baudbase", 38400);
+> @@ -69,11 +81,16 @@ static void aspeed_ast1700_instance_init(Object *obj)
+>       return;
+>   }
 >   
-> +    /* UART */
-> +    object_initialize_child(obj, "uart[*]", &s->uart,
-> +                            TYPE_SERIAL_MM);
+> +static const Property aspeed_ast1700_props[] = {
+> +    DEFINE_PROP_UINT8("board-idx", AspeedAST1700SoCState, board_idx, 0),
+> +};
 > +
->       /* LTPI controller */
->       object_initialize_child(obj, "ltpi-ctrl",
->                               &s->ltpi, TYPE_ASPEED_LTPI);
+>   static void aspeed_ast1700_class_init(ObjectClass *klass, const void *data)
+>   {
+>       DeviceClass *dc = DEVICE_CLASS(klass);
+>   
+>       dc->realize = aspeed_ast1700_realize;
+> +    device_class_set_props(dc, aspeed_ast1700_props);
+>   }
+>   
+>   static const TypeInfo aspeed_ast1700_info = {
+> diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
+> index 33800dffc5..66c877a6a4 100644
+> --- a/hw/arm/aspeed_ast27x0.c
+> +++ b/hw/arm/aspeed_ast27x0.c
+> @@ -1096,6 +1096,7 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+>   
+>       /* IO Expander */
+>       for (i = 0; i < sc->ioexp_num; i++) {
+> +        qdev_prop_set_uint8(DEVICE(&s->ioexp[i]), "board-idx", i);
+>           if (!sysbus_realize(SYS_BUS_DEVICE(&s->ioexp[i]), errp)) {
+>               return;
+>           }
 
 
