@@ -2,79 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 895EFCD218E
+	by mail.lfdr.de (Postfix) with ESMTPS id DC3F4CD2192
 	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 23:26:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWiuH-0001cB-JV; Fri, 19 Dec 2025 17:25:05 -0500
+	id 1vWiuZ-0001gs-Rr; Fri, 19 Dec 2025 17:25:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruslichenko.r@gmail.com>)
- id 1vWiuG-0001Z4-AR
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 17:25:04 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ id 1vWiuL-0001fs-2d
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 17:25:10 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ruslichenko.r@gmail.com>)
- id 1vWiuE-0004ku-R5
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 17:25:04 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-64b7b737eddso2320854a12.1
- for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 14:25:02 -0800 (PST)
+ id 1vWiuJ-0004xN-Dw
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 17:25:08 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-64b608ffca7so2685137a12.3
+ for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 14:25:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1766183100; x=1766787900; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=+nO01E4MIADXT/2dtH7ndROwg87mD1wMVfQOgnul++k=;
- b=io+dfbhOL7RtC5CnCm94Du5OM4Wh1gZRy32EVV3VOm/fTNnbj0aoFpfPRc6NdNAi1m
- c7zgTbkAytloVq3uAB5JzOTnrNKlLJ7nePZpQFhfMOi141MEl0mDTtPv15VHLh6RhYXW
- bNUmHm6YctTWUw/VQre6YIsYhpjn2Y3PKMJq3+A9kFKRC/xa/VuV3NSwU1uCUv7nkvBS
- /lMehgaLGo3re4aeatWnnGhjuu2ojf7fs85xNTnKNbKUQwLZ2oCrbbyPL55YYJd4taOb
- PpJe+ZuUS14q8dvJPAcywYb+12IG9riDqQNrSI3pvyAXG7buRb8DGAflPxWTe7h1lMCM
- +oTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766183100; x=1766787900;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1766183105; x=1766787905; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+nO01E4MIADXT/2dtH7ndROwg87mD1wMVfQOgnul++k=;
- b=sFApylCUOX2SkVr0TPzajIR6KdZZX3PbGsvCtVOsBZR3RjFqWoHp0gTfDXTRucrLWb
- V3X9k5GJbBlERztJI0jqu3GGidDhUW61fl5hFQEVjMeuR14qdOMd3DpFrroVIiqV4rLq
- Fon+71J40rhelXioIi+fTIMFif7+/as/MEBfUE+J2IZc0wxvZmOS5gCTKKnN0+h3nJYf
- eaUFh5zSNOgLOFHX+1n/5pG/JzPAJdysl2fYwnxl79i2fPtN4+G629PSt78g7pamMujC
- 2W/Zb9jjtEcFbO1GweaYZ5Xodj5zciz2zuvfjmjOkgnwqV/I6npb4o8/x//AK+HXc0b1
- ygYQ==
-X-Gm-Message-State: AOJu0Yyvq+1kY1gVINdY+60uLhT8vScsfG6raTNitdTkMvgfUbP73mtf
- aL5xPMQPrxhN77MdcajIGFXd7CEQ7mJlliSvMmiWkHYE2w5Rzl6FW91Rei3+uoMk
-X-Gm-Gg: AY/fxX4baslKwUlvkYQ37VZAa+h7ckj4eC0/dGpmglbffNuHN7zZi5AFS0NQiUe41Sk
- Bk0vG2KAuWbn+LQupmrb2kS7Rq7uxYUEKS9/wuJgY5Zl0sEOXVF+MxOceoiQMvk5UJv/HeVZgyj
- diJ0jcAra6fDc353UFYy4YecXxqn4Sr03TXiRa8Gk02zJoE/tCkJnZHbpGlMXIuoRdOeUlx1PsR
- ThFLaQORItL0eg9ApFSRA6vmMSrr8BGT7ipPPXI8R62SYag95Ti0R9HYKgktBUSSA8FR+Nx5/13
- I4zxC8Orct8ywVUdhsy5R9aaUZBB79dcb442+XHzAPcQynfpAJGRDsRGOabV6E50bQmrlvscASu
- kmUNDM4wQOhHrtphj+5ryFOhzZXCC2t85yocVh8ADW+YcXFAY7ilQU6TpQ7Jia8MQdl9cUDV+xD
- 1Aym748bO61mW3eQwsyUCilotng9+6SQYxH0ASEj2zLlMzkpBkkTayM3C9CddIOw==
-X-Google-Smtp-Source: AGHT+IE7wnvl5gi101Uak0L2Lm65OyLDDOCkirf7zKkarEIygrpJ3MVQq14yHDAsi08vGIs4oxbjuQ==
-X-Received: by 2002:a05:6402:27c8:b0:64d:1a1:9dee with SMTP id
- 4fb4d7f45d1cf-64d01a1a07cmr974935a12.16.1766183099501; 
- Fri, 19 Dec 2025 14:24:59 -0800 (PST)
+ bh=MejsQZQjfmF8E8MVD9Zf65G1EJeaO/noNkfID1o3ciw=;
+ b=Dt2nzoXbVefh8IQb90IrIFPV5172waFynTKYeAKLwpob5z/AmdzjY2MOHZATc3hGKj
+ NtpbdLAvw9fZgUcvWl/Vro2JKFO2xWijfNZ2OlwADhF2XmpujI8W/4o1yND/Ww5QTzAs
+ Hw1LqDkP+M5BanrKLrdUXfmBYFmEC7No2qsmnXGcyR92PFqwAP+TB74QGFb3o9vUtgzn
+ +sIzXm2GB8WSd8JUqoCL4n2oPx4KrFWiuNAeSOtkNS3FRJkTt5Ht8DUIFpjhCO657wf7
+ 1E9AmSLlSFQ02KLSywPNhEdYCJcJ6YthrI9dD0l33KBvZguGjtHm80Nm7jiDkOPBSUws
+ ZRrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1766183105; x=1766787905;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=MejsQZQjfmF8E8MVD9Zf65G1EJeaO/noNkfID1o3ciw=;
+ b=hOibLBYGc7gO+pGHhZz/g+MUOsAr6g27+5vP9R4OuKDn56GFAp3HuMfUSVJHeRxgYs
+ NEmub2hQ/Eg+JSqXVeKZjWzMfCNN266x4VEeyRO1NR/VtCesp/Ihl5BBtQVkWG6+h9Ld
+ feKBZgAKKe8wiOzM/lzyd8ekD5PbROPVw4MG3YMCmpPUj5StboLVxDsAk1ZifkVZzbVx
+ 2h1OB4oHguRbhFTGV/cIKWlkhiynI5zk0o8D023vbCyzSO/sz1nrVm4mZSDMFBo6OBRf
+ js9om6yXWrvqJk8qJsVXLPN5nYzhvzvYeskLhkhuz/sCJBshqKlLhY4CGyq0767ywb9R
+ t/Fg==
+X-Gm-Message-State: AOJu0YzF+Tn1CSgpQgay4/I1oaMMlFnY5YwO7CWCYQ6NuRsD7up/nbw/
+ SnqmnBYSWtzSsxzSCahSZlwjH+yNTJnvgLsodkyumQwInYW11iY3+2qo4CY2tVr+
+X-Gm-Gg: AY/fxX533XRudMk26HuCQ2Zhj9/lr6BwDwVTIkiHQU7YbWgN4taOv8dlXiB1pv+caSq
+ /Td1nMBs7CFnYU8eSxOKK6ZRZ6P64q/qL4rKjD8fQkxFI1j6CNAQQQMnTCCbtjjeFxOhiMdS6z5
+ Vt9tDqKIkWqn6bvUg9KHiMeLdjEZ3PeF7kMqjm2q8FFWHowUnE92kDU4efq69xo4Y7Qk3KijpOP
+ 8Jcd7g0t28bbmpBE2cy6q/wavuf7GQe+0PKlrnRs4mlg0EHGfoiOfahU9rEiQYBLdaukExGHS4C
+ Oh9QsWVz91/OQI6cacugXkamzomvzkWGXPybLDAmbFPauqZqoU+OzEZn893bfhBs6DdD6RtVhG7
+ lTEwgwPQhuzuVp3zAMUKpgEJMat4ldeCAF4zwe+AumakesGNHX673W6TWAnFrz+217psdkZwYzm
+ 2RqVoELWkXjDImubFwZl2EzYRXBHvC4pMKrS0mcdjOU4yx3WHXO7GFyKijVhR9GA==
+X-Google-Smtp-Source: AGHT+IF2NJk/peIrFsaWn6AilLOlXpCYNUpQyDhmIG2QknoLmhlgZnEFPY6UaiiCkw1HqJyZ9hrPPg==
+X-Received: by 2002:a05:6402:1d48:b0:64d:cf9:a79b with SMTP id
+ 4fb4d7f45d1cf-64d0cf9ab8dmr189505a12.26.1766183105291; 
+ Fri, 19 Dec 2025 14:25:05 -0800 (PST)
 Received: from thinkpad-t470s.. (93-138-210-222.adsl.net.t-com.hr.
  [93.138.210.222]) by smtp.googlemail.com with ESMTPSA id
- 4fb4d7f45d1cf-64b91599605sm3237440a12.23.2025.12.19.14.24.57
+ 4fb4d7f45d1cf-64b91599605sm3237440a12.23.2025.12.19.14.25.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 Dec 2025 14:24:58 -0800 (PST)
+ Fri, 19 Dec 2025 14:25:04 -0800 (PST)
 From: ruslichenko.r@gmail.com
 X-Google-Original-From: ruslan_ruslichenko@epam.com
 To: qemu-devel@nongnu.org
 Cc: ruslan_ruslichenko@epam.com, artem_mygaiev@epam.com,
- volodymyr_babchuk@epam.com
-Subject: [RFC PATCH 0/6] hw/arm/smmuv3: Add SMMUv3 sysbus support
-Date: Fri, 19 Dec 2025 23:24:33 +0100
-Message-ID: <20251219222439.2497195-1-ruslan_ruslichenko@epam.com>
+ volodymyr_babchuk@epam.com, Mirsad Ostrakovic <mirsad_ostrakovic@epam.com>,
+ Ruslan Ruslichenko <Ruslan_Ruslichenko@epam.com>
+Subject: [RFC PATCH 1/6] hw/sysbus: add IOMMU ops support to simple bus
+Date: Fri, 19 Dec 2025 23:24:34 +0100
+Message-ID: <20251219222439.2497195-2-ruslan_ruslichenko@epam.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251219222439.2497195-1-ruslan_ruslichenko@epam.com>
+References: <20251219222439.2497195-1-ruslan_ruslichenko@epam.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=ruslichenko.r@gmail.com; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=ruslichenko.r@gmail.com; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,19 +101,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-By SMMUv3 specification it can be attached either to PCIe Root
-Complex or regular IO bus devices. However, current
-implementation only allow to associate with PCI bus.
+From: Mirsad Ostrakovic <mirsad_ostrakovic@epam.com>
 
-This patch series add support to use SMMU for sysbus devices.
+In preparation for IOMMU support for simple bus,
+add new BusIOMMUOps structure which need to be
+used by devices to get translated memory.
 
-One usage example implemented for virtio-mmio, which allow
-devices to perform DMA operations SMMUv3 with address translation
-and isolation.
+Signed-off-by: Mirsad Ostrakovic <mirsad_ostrakovic@epam.com>
+Signed-off-by: Ruslan Ruslichenko <Ruslan_Ruslichenko@epam.com>
+---
+ include/hw/qdev-core.h | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-The patchset has a basic support to create multiple SMMU's on sysbus.
-The next step would probably to add qemu-option to create
-arm-smmuv3 devices similarly to PCIe logic, e.g.:
-	'-device arm-smmuv3,generic-bus=id'.
-This is not implemented yet.
+diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
+index 2caa0cbd26..e3862279da 100644
+--- a/include/hw/qdev-core.h
++++ b/include/hw/qdev-core.h
+@@ -366,6 +366,26 @@ typedef struct BusChild {
+ typedef QTAILQ_HEAD(, BusChild) BusChildHead;
+ typedef QLIST_ENTRY(BusState) BusStateEntry;
+ 
++/**
++ * struct BusIOMMUOps: callbacks structure for specific IOMMU handlers
++ * of a bus
++ */
++typedef struct BusIOMMUOps {
++    /**
++     * @get_address_space: get the address space for a set of devices
++     * on a bus.
++     *
++     * Mandatory callback which returns a pointer to an #AddressSpace
++     *
++     * @bus: the #Bus being accessed.
++     *
++     * @opaque: the data passed to bus_setup_iommu().
++     *
++     * @devif: device identification number
++     */
++    AddressSpace * (*get_address_space)(BusState *bus, void *opaque, int devid);
++} BusIOMMUOps;
++
+ /**
+  * struct BusState:
+  * @obj: parent object
+@@ -376,6 +396,8 @@ typedef QLIST_ENTRY(BusState) BusStateEntry;
+  * @realized: is the bus itself realized?
+  * @full: is the bus full?
+  * @num_children: current number of child buses
++ * @iommu_ops: TODO
++ * @iommu_opaque: TODO
+  */
+ struct BusState {
+     /* private: */
+@@ -388,6 +410,8 @@ struct BusState {
+     bool realized;
+     bool full;
+     int num_children;
++    const BusIOMMUOps *iommu_ops;
++    void *iommu_opaque;
+ 
+     /**
+      * @children: an RCU protected QTAILQ, thus readers must use RCU
+-- 
+2.43.0
+
 
