@@ -2,71 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A639CD162C
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 19:39:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4997FCD1638
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Dec 2025 19:40:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWfMz-0002YL-1e; Fri, 19 Dec 2025 13:38:29 -0500
+	id 1vWfO4-00034j-0m; Fri, 19 Dec 2025 13:39:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <bT.k1so4a3w5m3rck1=p87iyfidqkxo=yqm6opo5m62z1l@em483429.getutm.app>)
- id 1vWfMp-0002Xo-8A
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 13:38:20 -0500
+ <bT.4pwzoyzyxitt747=6z56s619hh12=dpz44wxocupzg0@em483429.getutm.app>)
+ id 1vWfO2-00033m-1c
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 13:39:34 -0500
 Received: from a2i327.smtp2go.com ([103.47.205.71])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <bT.k1so4a3w5m3rck1=p87iyfidqkxo=yqm6opo5m62z1l@em483429.getutm.app>)
- id 1vWfMm-0007f9-Dz
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 13:38:18 -0500
+ <bT.4pwzoyzyxitt747=6z56s619hh12=dpz44wxocupzg0@em483429.getutm.app>)
+ id 1vWfO0-0007t5-G9
+ for qemu-devel@nongnu.org; Fri, 19 Dec 2025 13:39:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=smtpservice.net; s=mad0l0.a1-4.dyn; x=1766170385; h=Feedback-ID:
+ d=smtpservice.net; s=mad0l0.a1-4.dyn; x=1766170458; h=Feedback-ID:
  X-Smtpcorp-Track:Message-ID:Date:Subject:To:From:Reply-To:Sender:
  List-Unsubscribe:List-Unsubscribe-Post;
- bh=kvTUUaMn+jLgW1Zko42A5PWt3BGWZ2R66E4H4FDBLzc=; b=jTEJoNVnf6N/zo3ax4jUpxt+TM
- rUJGim5vvyOlG9meFDV3ixZJdW43/cWawr0GUd1k71h7p1lVo4RN4Eou7aJSmx4lBs/MQQ9O6RmxS
- oErm+odnknT8LzNQ8+SqQIZNbIEYkYSsvaVdQQDA2RkLUjrZHEuq32Z/6QG9Ab1PnI+p5oxtAPQ/t
- clzsQUBsv1gKuGBUYtDn0myFL0l8tvdJLerqh6nLrcvq6Pdo1cbn1jHhCPBEBqXF/F/Q0tEPSPHS8
- r19FFK5mCrx0fjuDpR+mqExfUUQH2YmDX8uKPn7VmM9yCCpxaSccbKH8Yi9lwdTROX1nUosJ0u3fZ
- 5GthZebw==;
+ bh=PJzM4nf57ZQ9qxDn+Kf5e75CJldile08LH1lAJ48S24=; b=VWMrmklstwWh9p/vt7XQcjmA10
+ dDXrLkYRO89DTbSyBL3TDLZyAyy6rQHWaGctwWlTZtnj7gI+IfbcOThScQRgSff//4B4c8hmziGtT
+ I6sv5K0t3l8ME+ETMYi0eAfDpJAtGmfgZd3h+8BhrDoQvxGlwQV3XbsK0QB7xryxm5NcgLs1p7cJN
+ sbbBvYZV/f6CfuEsBPVKtXO02CaicXZ9OYHk8aAMZ2ou3o5Kf2kcFslXgr9/Vcfiqunb5H1HuldP/
+ 9DzzDY1/0EAKuF6f1nUWR9Me3tIKdf4QS74WD6Bmrhi38PSypnMuVU9cVKECr1D0Ie5Wtq3NUPuqS
+ PP2YL//Q==;
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=getutm.app;
- i=@getutm.app; q=dns/txt; s=s483429; t=1766169485; h=from : subject :
+ i=@getutm.app; q=dns/txt; s=s483429; t=1766169557; h=from : subject :
  to : message-id : date;
- bh=kvTUUaMn+jLgW1Zko42A5PWt3BGWZ2R66E4H4FDBLzc=;
- b=FZ3dC9BtFbQgx8DfzpVw4RxgqYvZh0aoK2Ih8UravJKBu//t13GqFeJqMWUxoQ2QtFbfk
- W0fI0akWnzIkuDzrCkYtKCTZiVDW9a75FSlvviHlrFbc0xGuA3yU67OlLFB8E3v2lxN7sLQ
- s1jq6Rb8FZS+H27wTmfDaD+kcS2FmWtSlK1fhojguzCrbEo2W3RLOf7vi+n1fTE/YboK7+3
- z6Efh0eX8fTMWUEUxfu1L0YqyRCmtEA+mfq0Xo1S05b3YONL+aUkgHfiOJtsVnQ4n7bbqDs
- 2wmnFl/y2qOlcApJ1CwUIz8VuBLsEFYZM5bQ1+42Os2SNRee9Xmu+kJZ3TXg==
+ bh=PJzM4nf57ZQ9qxDn+Kf5e75CJldile08LH1lAJ48S24=;
+ b=aZPAs7UPBxSQWNbgYtnPRLBTvHdao/zx4pUKVp5BTYx5J7JFZ5rwEzljQqjXccKuRsWlg
+ jwyAhCzc94CQjZytCuuunojWcx/2d2Ns9q1V8C0fpuihHbIoty2wsQD52zvWhADhMI4bteZ
+ Q+86aLsi+L0z/vB9vLtvi3hgHvHYuWi4TcyYNQEJbcTVsCKQKTDE0pPuYZ7/ft8Y4MSCLLZ
+ Kyrd9014Vp6uoXLCEt5zWqcDbfb1egdJF5wSy+eVq5Dl+/d4Sj+61lUXWfpi84aBayXF2Jo
+ gSOvRYp1KXHBhOvReAHgnfxGJbCwZQqJPTldaQ/CCz2sUL+NzTGVwtj8+pQg==
 Received: from [10.172.234.246] (helo=SmtpCorp) by smtpcorp.com with esmtpsa
  (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
  (Exim 4.94.2-S2G) (envelope-from <j@getutm.app>)
- id 1vWfMX-pH9Upe-B9; Fri, 19 Dec 2025 18:38:01 +0000
+ id 1vWfNl-pH9R0x-7w; Fri, 19 Dec 2025 18:39:17 +0000
 Received: from [10.159.238.187] (helo=localhost.localdomain)
  by smtpcorp.com with esmtpsa
  (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA512__CHACHA20_POLY1305:256)
  (Exim 4.98.1-S2G) (envelope-from <j@getutm.app>)
- id 1vWfMV-AIkwcC8uj9p-5OS2; Fri, 19 Dec 2025 18:37:59 +0000
+ id 1vWfNk-AIkwcC8uKAK-Diyw; Fri, 19 Dec 2025 18:39:16 +0000
 From: Joelle van Dyne <j@getutm.app>
 To: qemu-devel@nongnu.org
-Cc: Joelle van Dyne <j@getutm.app>, Cameron Esfahani <dirty@apple.com>,
- Roman Bolshakov <rbolshakov@ddn.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>, Mads Ynddal <mads@ynddal.dk>,
- Alexander Graf <agraf@csgraf.de>, Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org (open list:ARM TCG CPUs)
-Subject: [PATCH] hvf: support changing IPA granule size
-Date: Fri, 19 Dec 2025 10:37:15 -0800
-Message-ID: <20251219183716.4379-1-j@getutm.app>
+Cc: Joelle van Dyne <j@getutm.app>
+Subject: [PATCH RFC v2 0/6] virtio-gpu-virgl: introduce Venus support for macOS
+Date: Fri, 19 Dec 2025 10:38:46 -0800
+Message-ID: <20251219183853.4426-1-j@getutm.app>
 X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Smtpcorp-Track: AuI25QJCS2cQ.MbuHYUEL1UXI.mnnaVQEFPy8
-Feedback-ID: 483429m:483429abrvJvs:483429sngI8vWHXA
+X-Smtpcorp-Track: nThZuHukaXrl.aybCKsLiu9jX.TfkJngOsz4Z
+Feedback-ID: 483429m:483429abrvJvs:483429s_mgBqpXZX
 X-Report-Abuse: Please forward a copy of this message, including all headers, 
  to <abuse-report@smtp2go.com>
 Received-SPF: pass client-ip=103.47.205.71;
- envelope-from=bT.k1so4a3w5m3rck1=p87iyfidqkxo=yqm6opo5m62z1l@em483429.getutm.app;
+ envelope-from=bT.4pwzoyzyxitt747=6z56s619hh12=dpz44wxocupzg0@em483429.getutm.app;
  helo=a2i327.smtp2go.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -91,220 +87,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The IPA granule is the smallest page size hv_vm_map() support. For Venus, we
-need to support 4KiB pages. macOS 26 introduces a public API for setting
-the granule size. We can only use this when compiled with macOS 26 SDK and
-run on macOS 26+. Otherwise, we fall back to an older, private, API which
-achieves the same purpose.
+This brings Vulkan guest paravirtualization to macOS hosts. The bulk of the work
+is being submitted to the virglrenderer project so this is a RFC for now.
 
-Signed-off-by: Joelle van Dyne <j@getutm.app>
----
- include/system/hvf_int.h |  4 +++-
- accel/hvf/hvf-all.c      | 42 ++++++++++++++++++++++++++++++++-
- target/arm/hvf/hvf.c     | 50 +++++++++++++++++++++++++++++++++++++++-
- target/i386/hvf/hvf.c    | 10 +++++++-
- 4 files changed, 102 insertions(+), 4 deletions(-)
+In addition to Vulkan, we also introduce Metal texture scanout for GLES guests
+as well. We also added Metal texture rendering in the Cocoa backend but that
+builds upon the GLES work by Akihiko Odaki which is not currently upstream.
 
-diff --git a/include/system/hvf_int.h b/include/system/hvf_int.h
-index 1d2616595cd..881e16e31b6 100644
---- a/include/system/hvf_int.h
-+++ b/include/system/hvf_int.h
-@@ -63,6 +63,7 @@ struct HVFState {
- 
-     hvf_vcpu_caps *hvf_caps;
-     uint64_t vtimer_offset;
-+    uint32_t ipa_granule_size;
-     QTAILQ_HEAD(, hvf_sw_breakpoint) hvf_sw_breakpoints;
- };
- extern HVFState *hvf_state;
-@@ -82,7 +83,8 @@ void assert_hvf_ok_impl(hv_return_t ret, const char *file, unsigned int line,
- #define assert_hvf_ok(EX) assert_hvf_ok_impl((EX), __FILE__, __LINE__, #EX)
- const char *hvf_return_string(hv_return_t ret);
- int hvf_arch_init(void);
--hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t pa_range);
-+hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t pa_range,
-+                               uint32_t ipa_granule_size);
- hvf_slot *hvf_find_overlap_slot(uint64_t, uint64_t);
- void hvf_kick_vcpu_thread(CPUState *cpu);
- 
-diff --git a/accel/hvf/hvf-all.c b/accel/hvf/hvf-all.c
-index a898359777c..7ebfc9bbe58 100644
---- a/accel/hvf/hvf-all.c
-+++ b/accel/hvf/hvf-all.c
-@@ -17,6 +17,8 @@
- #include "system/hvf_int.h"
- #include "hw/core/cpu.h"
- #include "hw/boards.h"
-+#include "qapi/error.h"
-+#include "qapi/visitor.h"
- #include "trace.h"
- 
- bool hvf_allowed;
-@@ -152,6 +154,10 @@ static void hvf_set_phys_mem(MemoryRegionSection *section, bool add)
-         }
-     }
- 
-+    if (hvf_state->ipa_granule_size) {
-+        page_size = hvf_state->ipa_granule_size;
-+    }
-+
-     if (!QEMU_IS_ALIGNED(int128_get64(section->size), page_size) ||
-         !QEMU_IS_ALIGNED(section->offset_within_address_space, page_size)) {
-         if (add) {
-@@ -316,7 +322,7 @@ static int hvf_accel_init(AccelState *as, MachineState *ms)
-         }
-     }
- 
--    ret = hvf_arch_vm_create(ms, (uint32_t)pa_range);
-+    ret = hvf_arch_vm_create(ms, (uint32_t)pa_range, s->ipa_granule_size);
-     if (ret == HV_DENIED) {
-         error_report("Could not access HVF. Is the executable signed"
-                      " with com.apple.security.hypervisor entitlement?");
-@@ -340,6 +346,34 @@ static int hvf_gdbstub_sstep_flags(AccelState *as)
-     return SSTEP_ENABLE | SSTEP_NOIRQ;
- }
- 
-+static void hvf_get_ipa_granule_size(Object *obj, Visitor *v,
-+                                    const char *name, void *opaque,
-+                                    Error **errp)
-+{
-+    HVFState *s = HVF_STATE(obj);
-+    uint32_t value = s->ipa_granule_size;
-+
-+    visit_type_uint32(v, name, &value, errp);
-+}
-+
-+static void hvf_set_ipa_granule_size(Object *obj, Visitor *v,
-+                                     const char *name, void *opaque,
-+                                     Error **errp)
-+{
-+    HVFState *s = HVF_STATE(obj);
-+    uint32_t value;
-+
-+    if (!visit_type_uint32(v, name, &value, errp)) {
-+        return;
-+    }
-+    if (value & (value - 1)) {
-+        error_setg(errp, "ipa-granule-size must be a power of two.");
-+        return;
-+    }
-+
-+    s->ipa_granule_size = value;
-+}
-+
- static void hvf_accel_class_init(ObjectClass *oc, const void *data)
- {
-     AccelClass *ac = ACCEL_CLASS(oc);
-@@ -347,6 +381,12 @@ static void hvf_accel_class_init(ObjectClass *oc, const void *data)
-     ac->init_machine = hvf_accel_init;
-     ac->allowed = &hvf_allowed;
-     ac->gdbstub_supported_sstep_flags = hvf_gdbstub_sstep_flags;
-+
-+    object_class_property_add(oc, "ipa-granule-size", "uint32",
-+        hvf_get_ipa_granule_size, hvf_set_ipa_granule_size,
-+        NULL, NULL);
-+    object_class_property_set_description(oc, "ipa-granule-size",
-+        "Size of a single guest page");
- }
- 
- static const TypeInfo hvf_accel_type = {
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index de1e8fb8a05..7c44325ca64 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -12,6 +12,9 @@
- #include "qemu/osdep.h"
- #include "qemu/error-report.h"
- #include "qemu/log.h"
-+#include <dlfcn.h>
-+#include <AvailabilityMacros.h>
-+#include <TargetConditionals.h>
- 
- #include "system/runstate.h"
- #include "system/hvf.h"
-@@ -880,7 +883,45 @@ void hvf_arch_vcpu_destroy(CPUState *cpu)
-     assert_hvf_ok(ret);
- }
- 
--hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t pa_range)
-+static hv_return_t hvf_set_ipa_granule(hv_vm_config_t config,
-+                                uint32_t ipa_granule_size)
-+{
-+    static hv_return_t (*set_ipa_granule)(hv_vm_config_t, uint32_t);
-+    uint64_t page_size = qemu_real_host_page_size();
-+
-+    /* macOS 26 introduces a public API for setting granule size */
-+#if defined(MAC_OS_X_VERSION_MAX_ALLOWED) && defined(MAC_OS_VERSION_26_0) && \
-+    MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_VERSION_26_0
-+    if (__builtin_available(macOS 26, *)) {
-+        hv_ipa_granule_t granule = HV_IPA_GRANULE_16KB;
-+
-+        if (ipa_granule_size == 4096) {
-+            granule = HV_IPA_GRANULE_4KB;
-+        } else if (ipa_granule_size != 16384) {
-+            error_report("Unsupported granule size: 0x%x", ipa_granule_size);
-+            return HV_UNSUPPORTED;
-+        }
-+
-+        return hv_vm_config_set_ipa_granule(config, granule);
-+    }
-+#endif
-+
-+    /* older macOS need to use a private API */
-+    if (!set_ipa_granule) {
-+        set_ipa_granule = dlsym(RTLD_NEXT, "_hv_vm_config_set_ipa_granule");
-+    }
-+    if (set_ipa_granule) {
-+        return set_ipa_granule(config, ipa_granule_size);
-+    } else if (ipa_granule_size != page_size) {
-+        error_report("Failed to find _hv_vm_config_set_ipa_granule");
-+        return HV_UNSUPPORTED;
-+    }
-+
-+    return HV_SUCCESS;
-+}
-+
-+hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t pa_range,
-+                               uint32_t ipa_granule_size)
- {
-     hv_return_t ret;
-     hv_vm_config_t config = hv_vm_config_create();
-@@ -891,6 +932,13 @@ hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t pa_range)
-     }
-     chosen_ipa_bit_size = pa_range;
- 
-+    if (ipa_granule_size) {
-+        ret = hvf_set_ipa_granule(config, ipa_granule_size);
-+        if (ret != HV_SUCCESS) {
-+            goto cleanup;
-+        }
-+    }
-+
-     ret = hv_vm_create(config);
- 
- cleanup:
-diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-index 16febbac48f..395e13f467e 100644
---- a/target/i386/hvf/hvf.c
-+++ b/target/i386/hvf/hvf.c
-@@ -225,8 +225,16 @@ int hvf_arch_init(void)
-     return 0;
- }
- 
--hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t pa_range)
-+hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t pa_range,
-+                               uint32_t ipa_granule_size)
- {
-+    uint64_t page_size = qemu_real_host_page_size();
-+
-+    if (ipa_granule_size != 0 && ipa_granule_size != page_size) {
-+        error_report("Only supported IPA granule size: 0x%llx", page_size);
-+        return HV_UNSUPPORTED;
-+    }
-+
-     return hv_vm_create(HV_VM_DEFAULT);
- }
- 
+Fork with all dependent changes:
+  https://github.com/utmapp/qemu/tree/submit/macos-venus
+Instructions for building and testing with all related projects:
+  https://gist.github.com/osy/a8f705050eed1c8421ad1a0855a8faa9
+
+v2:
+- Removed "virtio-gpu-virgl: check page alignment of blob mapping"
+- Fixed build on Linux
+- Restored check on blob resources
+- Renamed new structs in console.c
+
+Joelle van Dyne (6):
+  egl-helpers: store handle to native device
+  console: rename `d3d_tex2d` to `native`
+  virtio-gpu-virgl: update virglrenderer defines
+  virtio-gpu-virgl: support scanout of Metal textures
+  console: add cleanup callback for ScanoutTexture
+  virtio-gpu-virgl: add support for native blob scanout
+
+ meson.build                   |   9 +++
+ include/ui/console.h          |  31 +++++++++-
+ include/ui/egl-helpers.h      |   2 +-
+ include/ui/gtk.h              |   4 +-
+ include/ui/sdl2.h             |   2 +-
+ hw/display/virtio-gpu-virgl.c | 112 +++++++++++++++++++++++++++++++---
+ hw/display/virtio-gpu.c       |  10 ++-
+ ui/console.c                  |  60 +++++++++++++++---
+ ui/dbus-console.c             |   2 +-
+ ui/dbus-listener.c            |   8 +--
+ ui/egl-headless.c             |   4 +-
+ ui/egl-helpers.c              |   4 +-
+ ui/gtk-egl.c                  |   4 +-
+ ui/gtk-gl-area.c              |   4 +-
+ ui/sdl2-gl.c                  |   2 +-
+ ui/spice-display.c            |   2 +-
+ 16 files changed, 220 insertions(+), 40 deletions(-)
+
 -- 
 2.50.1 (Apple Git-155)
 
