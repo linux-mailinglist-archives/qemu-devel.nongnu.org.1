@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 673EECD3139
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Dec 2025 15:53:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAF4BCD3C38
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 07:30:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWyJD-0005j0-4V; Sat, 20 Dec 2025 09:51:51 -0500
+	id 1vXCwU-000476-7G; Sun, 21 Dec 2025 01:29:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jackson88044@gmail.com>)
- id 1vWyJA-0005iO-8r
- for qemu-devel@nongnu.org; Sat, 20 Dec 2025 09:51:48 -0500
-Received: from mail-oi1-x234.google.com ([2607:f8b0:4864:20::234])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jackson88044@gmail.com>)
- id 1vWyJ8-0004f2-QD
- for qemu-devel@nongnu.org; Sat, 20 Dec 2025 09:51:48 -0500
-Received: by mail-oi1-x234.google.com with SMTP id
- 5614622812f47-4507605e19aso1741861b6e.2
- for <qemu-devel@nongnu.org>; Sat, 20 Dec 2025 06:51:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1766242305; x=1766847105; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=T5u18xbeTgr335iXaFkYWNpW8fyie7mGSXz+0RaVF6E=;
- b=aIo0sPN9yh/gn0m/Z+Tej2gMzPrTOnrpM2cO/oQI+wkkcbLVWzFLTZkHgaze3VflyU
- qTRFhCOZ12Qm9j0uXLQY4di/6w+pOuCQTRD8FW8wkg+aXAAj/S7gZX6YlSXr8Ct3KvOf
- 2ECQumx1o5LMVDYy4CkcJW3PQQe0KCGlyTVT1J1uZdqpgHRp+V4P2WzGonJLjgdb86on
- I8rC7ZY50ye+8eoCym/GgypLLBRR1O7zq4D0iS7KKAEATq1U2A2wb8aiiPD1aTGubQSp
- D4h7OOwgyyUoZmcviKl+ulsV7vnH8Ys2cAUijQn6LTE+vQucVNqQim53jhNIjaadmU/K
- oskA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766242305; x=1766847105;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=T5u18xbeTgr335iXaFkYWNpW8fyie7mGSXz+0RaVF6E=;
- b=Ry9BtL0QuWCh1OHkhqhyNh3s3Xq9kmm9noY6vn1+PWW2c0527EG5+OweMcnCIOhY/o
- 71W/vfmY2Tr4+JXDrproXFgV02hRrT/JFiayB/ythGTmTbzYVCBPLBsF4bufjEZi8nKM
- Hnf/njiZzEczI/N8Ak/b7xtVC1j7OXbzNwAd8v7uD6XKwWbP4ouqofyS+eTLbEIqB+aT
- w6BlXf9hT/ICBfCRNoZoJbbvdTsZSPhkBo3S5htuzADQpMBjYEp95AyrbMbs3LWL1JUx
- Hpc3a8fxXp9LlPjo0uHJelrn6ysLBsgPEA4g6cLidYWE1JsVjkeGS/MYLq1vAZF0rG7J
- QyRw==
-X-Gm-Message-State: AOJu0YyQfhSZmKz5iUceYYGlK2veR0uCWfECL/2bHmp1DAgsgZq2y/B+
- Xe9xI0VLdTnOsH6Qux4QFmsnuTN36TTBoVZhG8DbVDyAuleOEXCGTdFpqRBpWm0JGHujC98bOiv
- 5GsHCIl+gyayz84K5FJMo7sZChbQfvBA=
-X-Gm-Gg: AY/fxX4fah7hSH4FS3ze1Cu82JDLzMzoCnISLcZbrnQRGcP1Si1PIz1SS3W3tYJx0CC
- JbfwWQ9zZw9KCmy7qq0/QFgv0aOOPYnliaCKRo8KSzFGPn2m34WQxqXUYg2+zTReAP4vG6CM1SM
- PvJi/W0/901zMmJg4nyXGLT+Sj3MZWnhFYDPd/GC7RW5BuRo2IeLpmlvEE8/9YSaE32fku6b4Ow
- uvSZRKaxKbd2mgM9rDa725mVqfG5k/chk3mYfVWsx+ccQMySALp+OdHVFFgXJ5Kv6LApU6sx/vw
- SOVrOciybg2tGqPQ2rpul/WnUgtV
-X-Google-Smtp-Source: AGHT+IEtiH2+MGB2j5VKQP7tvnCfIkOySrqNHKk81Ein3natHTxbpyqfJ4OZvyiS+yaOgQd5hMp50bMex6qQ2+gBeks=
-X-Received: by 2002:a05:6820:658c:b0:659:9a49:8f63 with SMTP id
- 006d021491bc7-65d0ea9a76dmr1700863eaf.40.1766242305162; Sat, 20 Dec 2025
- 06:51:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vXCwH-00046X-GO
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 01:29:10 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vXCwG-0000jD-74
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 01:29:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1766298546;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:resent-to:
+ resent-from:resent-message-id:in-reply-to:in-reply-to:  references:references; 
+ bh=XrwdbM1I8LaUz/OxGrju4LcD9H8PlOhkitEzhoq86Gk=;
+ b=Up5CzsHIKcXFHyM5g4HGJTOMjIE3a3lye7lYspRb1kpNDh0T4vB46EZrvaGTfUkad64aB9
+ 3ucqQDkT6Uebt58bxu62JPEKMpIszrtLKswxQCKzIi5yz9LcKp+xMsVoRTVgdBupzF5NKr
+ 2c1DlkmC4c54J43lWMFIIxpYJ2FAyvw=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-328-rfR-X3RJPKGP0AoLgwqc8g-1; Sun,
+ 21 Dec 2025 01:29:02 -0500
+X-MC-Unique: rfR-X3RJPKGP0AoLgwqc8g-1
+X-Mimecast-MFC-AGG-ID: rfR-X3RJPKGP0AoLgwqc8g_1766298541
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BE8D41800451; Sun, 21 Dec 2025 06:29:00 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.4])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 441B130001A2; Sun, 21 Dec 2025 06:29:00 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id D388821E6A27; Sun, 21 Dec 2025 07:28:57 +0100 (CET)
+Resent-To: jackson88044@gmail.com, alex.bennee@linaro.org,
+ qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Resent-From: Markus Armbruster <armbru@redhat.com>
+Resent-Date: Sun, 21 Dec 2025 07:28:57 +0100
+Resent-Message-ID: <87pl88xs9i.fsf@pond.sub.org>
+From: Markus Armbruster <armbru@redhat.com>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org,  thuth@redhat.com,  berrange@redhat.com,  Jackson
+ Donaldson <jackson88044@gmail.com>,  qemu-arm@nongnu.org
+Subject: Re: [PATCH 4/4] MAINTAINERS: Add MAX78000FTHR section as orphan
+In-Reply-To: <87ike1z930.fsf@draig.linaro.org> ("Alex =?utf-8?Q?Benn=C3=A9?=
+ =?utf-8?Q?e=22's?= message of "Sat, 20 Dec 2025 11:28:03 +0000")
+References: <20251220072416.3745923-1-armbru@redhat.com>
+ <20251220072416.3745923-5-armbru@redhat.com>
+ <87ike1z930.fsf@draig.linaro.org>
+Date: Sat, 20 Dec 2025 18:28:08 +0100
+Message-ID: <87ecopysev.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-References: <87ike27ucd.fsf@pond.sub.org>
- <CAMyd1rQ6CLN2FPic=4pNpZtcw46io2xftkBDSLfd8V9S+Jyu0A@mail.gmail.com>
- <878qex3ac7.fsf@pond.sub.org>
-In-Reply-To: <878qex3ac7.fsf@pond.sub.org>
-From: Jackson Donaldson <jackson88044@gmail.com>
-Date: Sat, 20 Dec 2025 09:51:34 -0500
-X-Gm-Features: AQt7F2oObooRwahswLNDL-Yvu5u5nuy50z9KGrNHMUPYcJzWPRA_Nw7tVxvmHRQ
-Message-ID: <CAMyd1rR9HLwn-fzWfgqu=ZdtOq_Ae6Den-0oCmZpXAjxbup87A@mail.gmail.com>
-Subject: Re: MAX78000 machine needs a maintainer
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: multipart/alternative; boundary="0000000000002fc08e06466355c6"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::234;
- envelope-from=jackson88044@gmail.com; helo=mail-oi1-x234.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Lines: 11
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,23 +93,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000002fc08e06466355c6
-Content-Type: text/plain; charset="UTF-8"
+Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
 
->  Out of curiosity, what was your motivation to add the machine?
+> Markus Armbruster <armbru@redhat.com> writes:
+>
+>> This machine was contributed by Jackson Donaldson a couple of months
+>> ago.  Its RISC-V core is not implemented.  Unfortunately, Jackson
+>> isn't able to serve as maintainer at this time, so add it as orphan.
+>
+> Commit message doesn't match contents.
 
-I wrote the implementation for my university team in the 2025 MITRE
-embedded capture the flag challenge
+Good catch!  I messed up the submission somehow.
 
---0000000000002fc08e06466355c6
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr">&gt;=C2=A0
-Out of curiosity, what was your motivation to add the machine?</div><div di=
-r=3D"ltr"><br></div><div>I wrote the implementation for my university team =
-in the 2025 MITRE embedded capture the flag challenge</div><br><div class=
-=3D"gmail_quote gmail_quote_container"><br></div></div>
-
---0000000000002fc08e06466355c6--
 
