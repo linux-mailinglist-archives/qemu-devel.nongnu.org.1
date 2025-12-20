@@ -2,83 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF45DCD3C41
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 07:31:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 061FCCD348E
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Dec 2025 18:46:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vXCwx-0004kq-D1; Sun, 21 Dec 2025 01:29:51 -0500
+	id 1vX11Z-0005Oa-Nj; Sat, 20 Dec 2025 12:45:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vXCwv-0004j1-Nt
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 01:29:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1vX11U-0005OI-1u; Sat, 20 Dec 2025 12:45:44 -0500
+Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vXCwu-000130-16
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 01:29:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766298587;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:resent-to:
- resent-from:resent-message-id:in-reply-to:in-reply-to:  references:references; 
- bh=i2I7FTNAKZ0oH8a6pQ3+PVpYyiKeajoOBeFFfw0GuKs=;
- b=O2mvz1QFXqZKc/lMogJcz/h5OYgnjPK87lWL0exQHN7xC2jIWIIQ+xNmzo85JCr9pbJo+L
- kAMAg78EeC4s6PHwefvmkljAj+7TZv3cQNDB25YkBzQJZS+1byI6DNUay0yA52Je98/oIl
- +VqH3YZuuxgtukRqnpw2W/oUWoT8a6M=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-690-dVA1D0oROJarg-EvwBsNQg-1; Sun,
- 21 Dec 2025 01:29:43 -0500
-X-MC-Unique: dVA1D0oROJarg-EvwBsNQg-1
-X-Mimecast-MFC-AGG-ID: dVA1D0oROJarg-EvwBsNQg_1766298582
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 64F4219560B2; Sun, 21 Dec 2025 06:29:42 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.4])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E8A691955F1A; Sun, 21 Dec 2025 06:29:41 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id A010021E6741; Sun, 21 Dec 2025 07:29:39 +0100 (CET)
-Resent-To: alex.bennee@linaro.org, qemu-devel@nongnu.org
-Resent-From: Markus Armbruster <armbru@redhat.com>
-Resent-Date: Sun, 21 Dec 2025 07:29:39 +0100
-Resent-Message-ID: <87cy48xs8c.fsf@pond.sub.org>
-X-From-Line: armbru@redhat.com  Sat Dec 20 18:33:36 2025
-X-Original-To: armbru
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4A83121E66C2; Sat, 20 Dec 2025 18:33:36 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: thuth@redhat.com,
-	berrange@redhat.com,
-	alex.bennee@linaro.org
-Subject: [PATCH v2 2/4] MAINTAINERS: Fix coverage of meson.build in
- tests/functional
-Date: Sat, 20 Dec 2025 18:33:34 +0100
-Message-ID: <20251220173336.3781377-3-armbru@redhat.com>
-In-Reply-To: <20251220173336.3781377-1-armbru@redhat.com>
-References: <20251220173336.3781377-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1vX11R-0004mP-Mw; Sat, 20 Dec 2025 12:45:43 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 740631771FF;
+ Sat, 20 Dec 2025 20:45:00 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id BAFEF339CF4;
+ Sat, 20 Dec 2025 20:45:25 +0300 (MSK)
+Message-ID: <fee3939c-078a-4e87-99fc-5ce970f37e4d@tls.msk.ru>
+Date: Sat, 20 Dec 2025 20:45:25 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] hw/virtio/virtio-crypto: verify asym request size
+To: zhenwei pi <zhenwei.pi@linux.dev>, qemu-devel@nongnu.org
+Cc: mst@redhat.com, arei.gonglei@huawei.com, nakamurajames123@gmail.com,
+ qemu-security@nongnu.org, mcascell@redhat.com
+References: <20251214090939.408436-1-zhenwei.pi@linux.dev>
+ <20251214090939.408436-2-zhenwei.pi@linux.dev>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <20251214090939.408436-2-zhenwei.pi@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Lines: 116
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,120 +103,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Of the 29 meson.build wihin tests/functional, only 8 are covered.  Add
-the architecture-independent ones to "Functional testing framework",
-and the remainder to "$arcg general architecture support" when
-available, else to "$arch TCG CPUs".
+On 12/14/25 12:09, zhenwei pi wrote:
+> The total lenght of request is limited by cryptodev config, verify it
+> to avoid unexpected request from guest.
+> 
+> Fixes: 0e660a6f90a ("crypto: Introduce RSA algorithm")
+> Reported-by: AM 이재영 <nakamurajames123@gmail.com>
+> Signed-off-by: zhenwei pi <zhenwei.pi@linux.dev>
+> ---
+>   hw/virtio/virtio-crypto.c | 7 +++++++
+>   1 file changed, 7 insertions(+)
+> 
+> diff --git a/hw/virtio/virtio-crypto.c b/hw/virtio/virtio-crypto.c
+> index 517f2089c5..94dbf9d92d 100644
+> --- a/hw/virtio/virtio-crypto.c
+> +++ b/hw/virtio/virtio-crypto.c
+> @@ -767,11 +767,18 @@ virtio_crypto_handle_asym_req(VirtIOCrypto *vcrypto,
+>       uint32_t len;
+>       uint8_t *src = NULL;
+>       uint8_t *dst = NULL;
+> +    uint64_t max_len;
+>   
+>       asym_op_info = g_new0(CryptoDevBackendAsymOpInfo, 1);
+>       src_len = ldl_le_p(&req->para.src_data_len);
+>       dst_len = ldl_le_p(&req->para.dst_data_len);
+>   
+> +    max_len = src_len + dst_len;
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- MAINTAINERS | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+I believe this can be overflown when calculating the sum, while
+both args are uint32_t.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index fcb60c0c02..746cca7ae9 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -133,6 +133,7 @@ S: Odd Fixes
- K: ^Subject:.*(?i)mips
- F: docs/system/target-mips.rst
- F: configs/targets/mips*
-+F: tests/functional/mips*/meson.build
- 
- X86 general architecture support
- M: Paolo Bonzini <pbonzini@redhat.com>
-@@ -200,6 +201,8 @@ L: qemu-arm@nongnu.org
- S: Maintained
- F: target/arm/
- F: target/arm/tcg/
-+F: tests/functional/aarch64/meson.build
-+F: tests/functional/arm/meson.build
- F: tests/tcg/arm/
- F: tests/tcg/aarch64/
- F: tests/qtest/arm-cpu-features.c
-@@ -261,6 +264,7 @@ M: Song Gao <gaosong@loongson.cn>
- S: Maintained
- F: target/loongarch/
- F: tests/tcg/loongarch64/
-+F: tests/functional/loongarch64/meson.build
- F: tests/functional/loongarch64/test_virt.py
- 
- M68K TCG CPUs
-@@ -268,6 +272,7 @@ M: Laurent Vivier <laurent@vivier.eu>
- S: Maintained
- F: target/m68k/
- F: disas/m68k.c
-+F: tests/functional/m68k/meson.build
- F: tests/tcg/m68k/
- 
- MicroBlaze TCG CPUs
-@@ -277,6 +282,7 @@ F: target/microblaze/
- F: hw/microblaze/
- F: disas/microblaze.c
- F: tests/docker/dockerfiles/debian-microblaze-cross.d/build-toolchain.sh
-+F: tests/functional/microblaze*/meson.build
- 
- MIPS TCG CPUs
- M: Philippe Mathieu-Daudé <philmd@linaro.org>
-@@ -296,6 +302,7 @@ F: docs/system/openrisc/cpu-features.rst
- F: target/openrisc/
- F: hw/openrisc/
- F: include/hw/openrisc/
-+F: tests/functional/or1k/meson.build
- F: tests/tcg/openrisc/
- 
- PowerPC TCG CPUs
-@@ -313,6 +320,7 @@ F: configs/devices/ppc*
- F: docs/system/ppc/embedded.rst
- F: docs/system/target-ppc.rst
- F: tests/tcg/ppc*/*
-+F: tests/functional/ppc*/meson.build
- F: tests/functional/ppc/test_74xx.py
- 
- RISC-V TCG CPUs
-@@ -361,6 +369,7 @@ RENESAS RX CPUs
- R: Yoshinori Sato <yoshinori.sato@nifty.com>
- S: Orphan
- F: target/rx/
-+F: tests/functional/rx/meson.build
- 
- S390 TCG CPUs
- M: Richard Henderson <richard.henderson@linaro.org>
-@@ -380,6 +389,7 @@ F: target/sh4/
- F: hw/sh4/
- F: disas/sh4.c
- F: include/hw/sh4/
-+F: tests/functional/sh4*/meson.build
- F: tests/tcg/sh4/
- 
- SPARC TCG CPUs
-@@ -391,6 +401,7 @@ F: hw/sparc/
- F: hw/sparc64/
- F: include/hw/sparc/sparc64.h
- F: disas/sparc.c
-+F: tests/functional/sparc*/meson.build
- F: tests/tcg/sparc64/
- 
- X86 TCG CPUs
-@@ -412,6 +423,7 @@ W: http://wiki.osll.ru/doku.php?id=etc:users:jcmvbkbc:qemu-target-xtensa
- S: Maintained
- F: target/xtensa/
- F: hw/xtensa/
-+F: tests/functional/xtensa/meson.build
- F: tests/tcg/xtensa/
- F: tests/tcg/xtensaeb/
- F: disas/xtensa.c
-@@ -4431,6 +4443,8 @@ R: Daniel P. Berrange <berrange@redhat.com>
- S: Maintained
- F: docs/devel/testing/functional.rst
- F: scripts/clean_functional_cache.py
-+F: tests/functional/meson.build
-+F: tests/functional/generic/meson.build
- F: tests/functional/qemu_test/
- 
- Windows Hosted Continuous Integration
--- 
-2.49.0
+       max_len = (uint64_t)src_len + dst_len;
 
+might be better.  This is what's used in other places in this
+file too.
 
+I wonder if modern compilers can warn about such overflow
+possibilities, and what's the better way to write such
+expressions.  Something like
+
+    max_len = src_len; max_len += dst_len
+
+maybe? :)
+
+> +    if (unlikely(max_len > vcrypto->conf.max_size)) {
+> +        virtio_error(vdev, "virtio-crypto asym too big length");
+
+"virtio-crypto asym request is too large" ?
+
+Thanks,
+
+/mjt
 
