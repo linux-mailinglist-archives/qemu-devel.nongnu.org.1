@@ -2,97 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6429CD331C
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Dec 2025 17:05:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A270DCD2844
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Dec 2025 06:53:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vWzR4-0001s7-6r; Sat, 20 Dec 2025 11:04:02 -0500
+	id 1vWpsa-0005Ni-Pa; Sat, 20 Dec 2025 00:51:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <guodong@riscstar.com>)
- id 1vWonC-00055X-Je
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 23:42:10 -0500
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <guodong@riscstar.com>)
- id 1vWonA-0003id-GO
- for qemu-devel@nongnu.org; Fri, 19 Dec 2025 23:42:10 -0500
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-7b80fed1505so2622283b3a.3
- for <qemu-devel@nongnu.org>; Fri, 19 Dec 2025 20:42:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=riscstar-com.20230601.gappssmtp.com; s=20230601; t=1766205726; x=1766810526;
- darn=nongnu.org; 
- h=cc:to:message-id:content-transfer-encoding:mime-version:subject
- :date:from:from:to:cc:subject:date:message-id:reply-to;
- bh=k6b46huaaVKN8mknPD7v5SyJ09/0QNYrXwXxhdCaQH4=;
- b=WkDe/4SqMGrQuOad6vUV7AlHfPri8GQiE6JkTZtpEYOUFYe70p5HXonm4T+66XaipT
- xWwWU4TBSQQ4Elu90ssxteVnpAGaZWwqHYyD/LUQdqu4POrJ3pw/DMAiq4OGqZmcBgeJ
- ldcOhhifzSb+GKiCFaGli76uisF4VfWXwWg1q/p16vChLzaZvy7LZOXFwZZ5/aK3G/aM
- NO3MKmKunthqVlqrrvcH8Hq8DD/lq9J8zQ0XsqH3bmYUerIxWsDNuTVmfEIW7fyGJ6iE
- bpvRWXFheAOubf0vzVmFsifo4sqW0ZTUsCaSSrADQ+flwTgx2JoS0+8hu+D25caSGOZM
- 64+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766205726; x=1766810526;
- h=cc:to:message-id:content-transfer-encoding:mime-version:subject
- :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=k6b46huaaVKN8mknPD7v5SyJ09/0QNYrXwXxhdCaQH4=;
- b=Y01YY4BGiLDjYSGZ0+LnAcns5a5Qx7UL6QSIhg075tK0maUpOIgyXgZDlZfyDn7gDU
- +IOA8Wi7fnSmMm+UcwBZbLweCdtFK+Y2h25ewBjHjjideVMX/wsi7cMihq27IGJndIgX
- jQoC7TADtkOuZg0PhPF4jbunporgemk9RoZar3mFWONbKl/WVYWv7xGyUuqXEUJVvBsV
- nB82srBaKAgc84monxODU/8BgyelWKi0ImXxOOOh9N+kjA8WHMlTVJJC6y50Hz1J6Saw
- IZsBOsHLFWHwjsxZ/WcR2guuriqAOyevLASz/imn5B0C3XRtmX5fiHAE576e0Du40kTW
- hyXg==
-X-Gm-Message-State: AOJu0YxtoBzJoho4/+p5asI62rK5Kv+drIEFGYhKlJ2opZVpHnDuv+lV
- nQPBva99qe8BWmvjo2NGG41p6s5n8CWSQjL348NJBUFnA3h5DK0N1IChcvKkJkc7m3E=
-X-Gm-Gg: AY/fxX7j00hMiQSwAHrNOy6+eHHbr6Ionj03sjhkNtnMn6T0fFBxO0zlhv20dFOm+On
- Z06FB0jAPHRSfDt+pLO8gzSvC9gLo2Zrg69zYNV1eac0CvIo7Mpx0J8/+EaBNHzybfpK/xvvxwI
- R/6Kw1fstR6h6IuqYceg1Ck2qYFOHx9YJ4/AyGfBMgftDckyavsufM5F7xPs1KRG21UN7T3QIR5
- I0WzeG0hJX3gUonPit5K/eDX/1Ey6B7UiczzBkwQHlrf7gsn+3SvayMwLXrIdiE+2Y5NXStA/dW
- p+H111tHnC2BIPMNr1uDIxLHPbHFxf0F20o8kgUdzMByNFB5GpyUs11VluG6QuIU6axl+HYcBEz
- fgBZrVDqZGPQPGkFPCuQrgcSATwiXid/C+sxt4eczdiZJGdd8vYVY4zFgFajnNiQCttN07GwD/W
- iCX0UgEphyblABDYh5IhZJ7bOFOxtJceY=
-X-Google-Smtp-Source: AGHT+IHWzevY/YyjSknJjnUqud1XFnpQf8O8YQJ2cv88pbTyynWm1r/nuGdXMlMcff7SR6DF/a4vQA==
-X-Received: by 2002:a05:6a00:4197:b0:7e8:4398:b357 with SMTP id
- d2e1a72fcca58-7ff66079e35mr4806674b3a.42.1766205726191; 
- Fri, 19 Dec 2025 20:42:06 -0800 (PST)
-Received: from [127.0.1.1] ([2a12:a305:4::302f])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7ff7b423b9asm3901686b3a.28.2025.12.19.20.42.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 Dec 2025 20:42:05 -0800 (PST)
-From: Guodong Xu <guodong@riscstar.com>
-Date: Sat, 20 Dec 2025 12:39:32 +0800
-Subject: [PATCH] target/riscv: put sha and shcounterenw in alphabetical order
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251220-sha-v1-1-56b1b8b6ef79@riscstar.com>
-X-B4-Tracking: v=1; b=H4sIAIMoRmkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1NDIyMD3eKMRF1LszTD5FTDNGNjY3MloMqCotS0zAqwKdGxtbUAk7EqCVU
- AAAA=
-X-Change-ID: 20251220-sha-96f1ce1f3337
-To: qemu-devel@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>, 
- Weiwei Li <liwei1518@gmail.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- Heinrich Schuchardt <heinrich.schuchardt@canonical.com>, 
- qemu-riscv@nongnu.org, Guodong Xu <guodong@riscstar.com>
-X-Mailer: b4 0.14.2
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=guodong@riscstar.com; helo=mail-pf1-x434.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
+ id 1vWpsS-0005Ly-UX
+ for qemu-devel@nongnu.org; Sat, 20 Dec 2025 00:51:41 -0500
+Received: from p-east3-cluster4-host7-snip4-9.eps.apple.com ([57.103.84.72]
+ helo=outbound.qs.icloud.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
+ id 1vWpsL-0006Ke-LG
+ for qemu-devel@nongnu.org; Sat, 20 Dec 2025 00:51:37 -0500
+Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
+ by p00-icloudmta-asmtp-us-east-2d-10-percent-0 (Postfix) with ESMTPS id
+ C18D43000092; Sat, 20 Dec 2025 05:51:28 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
+ s=sig1; bh=oP/Oc4m6kB5S3pWvoaZMt3sV0vBDz4Ty68HSqzKfyos=;
+ h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme;
+ b=Swu/RhDRs5MoLo7DKQRuFGmxt9J4H/Ki0HByyxlT04y1ViBfdxmjxLCiJi78QC2iLFUTirPeIxVaVjj6CeYXXGHQoA5WDaQP98bTHGvYorRZ+dAlksQnE67Fi9CUrsiIDyZ/pdYorbgv0TogKRvRHD0TxrXb2BSF9b5A5uriYE5h5Y4KP99KrtFiB5jHsm5SyG1V1ZBoZmL6tvqwoVZaOZpf4Ce56DRgwG9cuKk4HY7pGj3A3KstzLOOXoQ4cemZNT+E1+Yw8BrRSXq4NDfTwwhLmAagJwZzWj+u2xhkTNkm9MJ3G7YqaPiUNegG7iDZDJagGquSFaIEEPbS6EBmgA==
+mail-alias-created-date: 1752046281608
+Received: from smtpclient.apple (unknown [17.57.155.37])
+ by p00-icloudmta-asmtp-us-east-2d-10-percent-0 (Postfix) with ESMTPSA id
+ 92E963000106; Sat, 20 Dec 2025 05:51:26 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
+Subject: Re: [PATCH] hvf: support changing IPA granule size
+From: Mohamed Mediouni <mohamed@unpredictable.fr>
+In-Reply-To: <1C0540B1-1D8F-470B-8719-34CF03A93573@unpredictable.fr>
+Date: Sat, 20 Dec 2025 06:51:14 +0100
+Cc: qemu-devel@nongnu.org, Cameron Esfahani <dirty@apple.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>, Mads Ynddal <mads@ynddal.dk>,
+ Alexander Graf <agraf@csgraf.de>, Peter Maydell <peter.maydell@linaro.org>,
+ "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <1F07D7C2-791A-4ED5-8813-92B952274848@unpredictable.fr>
+References: <20251219183716.4379-1-j@getutm.app>
+ <1C0540B1-1D8F-470B-8719-34CF03A93573@unpredictable.fr>
+To: Joelle van Dyne <j@getutm.app>
+X-Mailer: Apple Mail (2.3864.300.41.1.7)
+X-Authority-Info: v=2.4 cv=Ic+KmGqa c=1 sm=1 tr=0 ts=69463961 cx=c_apl:c_pps
+ a=bsP7O+dXZ5uKcj+dsLqiMw==:117 a=bsP7O+dXZ5uKcj+dsLqiMw==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=0bx1jPMI5ibwf_58FhwA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: DER-vi1Tb8A8rgXNKTXPfnP0fk-_5cTh
+X-Proofpoint-GUID: DER-vi1Tb8A8rgXNKTXPfnP0fk-_5cTh
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjIwMDA0MiBTYWx0ZWRfX7La68Uwg/V4g
+ mMut78p6nk59myk3YUnpKXOaKlhg458bDGYT5lpfRqPbXdgTX4mPTXLG0O+t70Nl1KcIqhA456u
+ njLF6bhuo5dtuTzOe30sZVbuAwru+QVqnw9i7Md8x9a7kRUBzAvYhOpMpERUB8nOqiaDGXvJIap
+ VIFbYjUjT+dlSppf99fSvTrLHiCJfSX9nNErTCoy+5pfGVYvmSUc5bwR9rzUNZ3s7pA20pvhPHd
+ rE7pPdGSHuuCoLilBlvAkjMacT7X4HXR7aHdoRq93Nit0xynrwuoSX2Qk487ap40WXpnL0rp9vc
+ yz5/qghWy74MJYQShmU
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-19_08,2025-12-19_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=595
+ clxscore=1030 bulkscore=0 malwarescore=0
+ phishscore=0 spamscore=0
+ adultscore=0 suspectscore=0 mlxscore=0 classifier=spam authscore=0 adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512200042
+X-JNJ: AAAAAAABcSHweMVIgRGA4eJ3tG41GWT7/MP9ETBPsNnisfvYYTHHXbjlOmEVYjKwM8EiGdvHShFnJulYsurnufGyef+EjKHJsiG9l9i2fqFDL4JkjrXaIwEXijMkDA4amyuvnYdRpbzNVlKvRGebp2zfPpoHRL2QisfZ66iz97Niw9txCvsssXQMMvrO8M+lY2Wq4QAwXRTVvZg7JJX7v6G+XHaiQSnlxfHEm+Tv9AOcrG0sJKsdi8LAh/FSiaoGHWzI0Bjje74v2dlyHNZJoVBdVHnJOaeESpV8UkOkbvFnaquBr3cOdU5yNATy2vCaTacCnluqauGgIa+JiSnIfQr2z8A8g9p8ngHU8Beqk8ksapM8/Wc/31M9j4bx5NdooVyrM34B41ujIyPMPZ4vuz3O6Tn+xWH2J6W9IGu1OWrHfDqd2LCuF9O+1eM+AZM+4LGfxJPE3hkMKmT7qAx7TzKK2m3aSFN1zlfDXbFBmvf8ovQZk8A6u8EMRmSNDahEKA/938KOQVR4rpXFGj1J9XFdDcTJkggNf1aZ5kjOrvRFUm2k//h/+85gibBrUnMFYOR7g3dQbHCLmxc4Dkv88g4SjOVT2KS6sF6oeh8XPMbOfomRgT/stPM+u6KPOCY8AsVHCFD57+aWe4xhdvaLcMvags5n0Yi6HfssFYceyfd5rKd9AT7QCnZltTivKcHGZqNB7tc=
+Received-SPF: pass client-ip=57.103.84.72;
+ envelope-from=mohamed@unpredictable.fr; helo=outbound.qs.icloud.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Sat, 20 Dec 2025 11:03:59 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,47 +93,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ordering rule 3 preceding the isa_edata_arr[] array requires alphabetical
-ordering of standard supervisor-level extensions.
 
-The sha extension needs to be placed before shcounterenw. This change also
-corrects the riscv,isa string generated for cpus which includes them,
-such as rva23s64.
 
-Verified by
-  qemu-system-riscv64 \
-    -machine virt,acpi=off \
-    -cpu rva23s64 \
-    ...
+> On 19. Dec 2025, at 19:46, Mohamed Mediouni <mohamed@unpredictable.fr> =
+wrote:
+>=20
+> Hello,
+>=20
+>> On 19. Dec 2025, at 19:37, Joelle van Dyne <j@getutm.app> wrote:
+>>=20
+>> The IPA granule is the smallest page size hv_vm_map() support. For =
+Venus, we
+>> need to support 4KiB pages. macOS 26 introduces a public API for =
+setting
+>> the granule size. We can only use this when compiled with macOS 26 =
+SDK and
+>> run on macOS 26+. Otherwise, we fall back to an older, private, API =
+which
+>> achieves the same purpose.
+>>=20
+>=20
+> Let=E2=80=99s have an HVF_NO_PRIVATE_API define (or the opposite) to =
+have a single toggle to disable all private API use at build time
+>=20
+>> +
+>> +    /* older macOS need to use a private API */
+>> +    if (!set_ipa_granule) {
+>> +        set_ipa_granule =3D dlsym(RTLD_NEXT, =
+"_hv_vm_config_set_ipa_granule");
+>> +    }
+>> +    if (set_ipa_granule) {
+>> +        return set_ipa_granule(config, ipa_granule_size);
+>> +    } else if (ipa_granule_size !=3D page_size) {
+>> +        error_report("Failed to find =
+_hv_vm_config_set_ipa_granule");
+>> +        return HV_UNSUPPORTED;
+>> +    }
+>> +
+>> +    return HV_SUCCESS;
+>> +}
+>> +
+>> +hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t pa_range,
+>> +                               uint32_t ipa_granule_size)
+>> {
+>>    hv_return_t ret;
+>>    hv_vm_config_t config =3D hv_vm_config_create();
+>> @@ -891,6 +932,13 @@ hv_return_t hvf_arch_vm_create(MachineState *ms, =
+uint32_t pa_range)
+>>    }
+>>    chosen_ipa_bit_size =3D pa_range;
+>>=20
+> The PA range is actually different depending on the IPA granule size.
+>=20
+> An example from M4 Max:
+>=20
+> % sysctl -a | grep ipa
+> kern.hv.ipa_size_16k: 4398046511104
+> kern.hv.ipa_size_4k: 1099511627776
+>=20
+Looks like the Apple APIs will always return the smallest supported IPA =
+space size instead of the current one
+so this is actually ok - but doesn=E2=80=99t provide access to the =
+bigger IPA space the hardware supports unless explicitly queried via =
+sysctl=E2=80=A6
 
-/proc/device-tree/cpus/cpu@0 # cat riscv,isa
-
-Signed-off-by: Guodong Xu <guodong@riscstar.com>
----
- target/riscv/cpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 73d4280d7c84a9d4c7cecd3e067d312adc13b035..e24f32978f645d71d149e0f06c31ce848876f636 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -190,8 +190,8 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zhinx, PRIV_VERSION_1_12_0, ext_zhinx),
-     ISA_EXT_DATA_ENTRY(zhinxmin, PRIV_VERSION_1_12_0, ext_zhinxmin),
-     ISA_EXT_DATA_ENTRY(sdtrig, PRIV_VERSION_1_12_0, debug),
--    ISA_EXT_DATA_ENTRY(shcounterenw, PRIV_VERSION_1_12_0, has_priv_1_12),
-     ISA_EXT_DATA_ENTRY(sha, PRIV_VERSION_1_12_0, ext_sha),
-+    ISA_EXT_DATA_ENTRY(shcounterenw, PRIV_VERSION_1_12_0, has_priv_1_12),
-     ISA_EXT_DATA_ENTRY(shgatpa, PRIV_VERSION_1_12_0, has_priv_1_12),
-     ISA_EXT_DATA_ENTRY(shtvala, PRIV_VERSION_1_12_0, has_priv_1_12),
-     ISA_EXT_DATA_ENTRY(shvsatpa, PRIV_VERSION_1_12_0, has_priv_1_12),
-
----
-base-commit: bb7fc1543fa45bebe7eded8115f25441a9fee76e
-change-id: 20251220-sha-96f1ce1f3337
-
-Best regards,
--- 
-Guodong Xu <guodong@riscstar.com>
+Something else to add as private API use I guess...
+>>  +    if (ipa_granule_size) {
+>> +        ret =3D hvf_set_ipa_granule(config, ipa_granule_size);
+>> +        if (ret !=3D HV_SUCCESS) {
+>> +            goto cleanup;
+>> +        }
+>> +    }
+>> +
+>>    ret =3D hv_vm_create(config);
+>>=20
+>=20
+>=20
 
 
