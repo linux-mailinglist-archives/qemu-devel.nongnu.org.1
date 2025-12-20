@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5208CD3C3E
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 07:30:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF45DCD3C41
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 07:31:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vXCwv-0004ge-7R; Sun, 21 Dec 2025 01:29:49 -0500
+	id 1vXCwx-0004kq-D1; Sun, 21 Dec 2025 01:29:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vXCws-0004fr-WB
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 01:29:47 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vXCwv-0004j1-Nt
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 01:29:49 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vXCwr-00010y-M0
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 01:29:46 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vXCwu-000130-16
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 01:29:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766298585;
+ s=mimecast20190719; t=1766298587;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:resent-to:
  resent-from:resent-message-id:in-reply-to:in-reply-to:  references:references; 
- bh=Fv3UzrJ8N1pYCKcJX0PvUaFdwaXL9wHokY2mFKXOyoU=;
- b=VUB7MY5xNQZ/p8GeRJUS7xkMBjSR/cIsWd0pUeGtXn2yXrjHEAC2faVqQOPIr/6VZ8+HdM
- ywS+rOwhkv8ll+7zVWe+DHiMHGnKlC51brq/Zqy0xmxwnrzJLu6LOddH87fRIaf8tNsPyf
- vZVfiJVYQbRB94mNY1LI0vZ2gsnZBoU=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=i2I7FTNAKZ0oH8a6pQ3+PVpYyiKeajoOBeFFfw0GuKs=;
+ b=O2mvz1QFXqZKc/lMogJcz/h5OYgnjPK87lWL0exQHN7xC2jIWIIQ+xNmzo85JCr9pbJo+L
+ kAMAg78EeC4s6PHwefvmkljAj+7TZv3cQNDB25YkBzQJZS+1byI6DNUay0yA52Je98/oIl
+ +VqH3YZuuxgtukRqnpw2W/oUWoT8a6M=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-118-tP06vHnUPxuGRojSh1wZng-1; Sun,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-690-dVA1D0oROJarg-EvwBsNQg-1; Sun,
  21 Dec 2025 01:29:43 -0500
-X-MC-Unique: tP06vHnUPxuGRojSh1wZng-1
-X-Mimecast-MFC-AGG-ID: tP06vHnUPxuGRojSh1wZng_1766298582
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+X-MC-Unique: dVA1D0oROJarg-EvwBsNQg-1
+X-Mimecast-MFC-AGG-ID: dVA1D0oROJarg-EvwBsNQg_1766298582
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 751021956088; Sun, 21 Dec 2025 06:29:42 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 64F4219560B2; Sun, 21 Dec 2025 06:29:42 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.4])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 099B61800664; Sun, 21 Dec 2025 06:29:42 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E8A691955F1A; Sun, 21 Dec 2025 06:29:41 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 9340621E6935; Sun, 21 Dec 2025 07:29:39 +0100 (CET)
+ id A010021E6741; Sun, 21 Dec 2025 07:29:39 +0100 (CET)
 Resent-To: alex.bennee@linaro.org, qemu-devel@nongnu.org
 Resent-From: Markus Armbruster <armbru@redhat.com>
 Resent-Date: Sun, 21 Dec 2025 07:29:39 +0100
-Resent-Message-ID: <87h5tkxs8c.fsf@pond.sub.org>
+Resent-Message-ID: <87cy48xs8c.fsf@pond.sub.org>
 X-From-Line: armbru@redhat.com  Sat Dec 20 18:33:36 2025
 X-Original-To: armbru
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 46B6F21E6935; Sat, 20 Dec 2025 18:33:36 +0100 (CET)
+ id 4A83121E66C2; Sat, 20 Dec 2025 18:33:36 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: thuth@redhat.com,
 	berrange@redhat.com,
 	alex.bennee@linaro.org
-Subject: [PATCH v2 1/4] MAINTAINERS: Fix coverage of
- tests/functional/acpi-bits/
-Date: Sat, 20 Dec 2025 18:33:33 +0100
-Message-ID: <20251220173336.3781377-2-armbru@redhat.com>
+Subject: [PATCH v2 2/4] MAINTAINERS: Fix coverage of meson.build in
+ tests/functional
+Date: Sat, 20 Dec 2025 18:33:34 +0100
+Message-ID: <20251220173336.3781377-3-armbru@redhat.com>
 In-Reply-To: <20251220173336.3781377-1-armbru@redhat.com>
 References: <20251220173336.3781377-1-armbru@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Lines: 26
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Lines: 116
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -93,28 +94,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The pattern tests/functional/acpi-bits/* covers files in
-acpi-bits/ (there are none), but not the files in its
-subdirectories (there are five).  Drop the *.
+Of the 29 meson.build wihin tests/functional, only 8 are covered.  Add
+the architecture-independent ones to "Functional testing framework",
+and the remainder to "$arcg general architecture support" when
+available, else to "$arch TCG CPUs".
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ MAINTAINERS | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 63e9ba521b..fcb60c0c02 100644
+index fcb60c0c02..746cca7ae9 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -2183,7 +2183,7 @@ ACPI/FUNCTIONAL/BIOSBITS
- M: Ani Sinha <anisinha@redhat.com>
- M: Michael S. Tsirkin <mst@redhat.com>
- S: Supported
--F: tests/functional/acpi-bits/*
-+F: tests/functional/acpi-bits/
- F: tests/functional/x86_64/test_acpi_bits.py
- F: docs/devel/testing/acpi-bits.rst
+@@ -133,6 +133,7 @@ S: Odd Fixes
+ K: ^Subject:.*(?i)mips
+ F: docs/system/target-mips.rst
+ F: configs/targets/mips*
++F: tests/functional/mips*/meson.build
  
+ X86 general architecture support
+ M: Paolo Bonzini <pbonzini@redhat.com>
+@@ -200,6 +201,8 @@ L: qemu-arm@nongnu.org
+ S: Maintained
+ F: target/arm/
+ F: target/arm/tcg/
++F: tests/functional/aarch64/meson.build
++F: tests/functional/arm/meson.build
+ F: tests/tcg/arm/
+ F: tests/tcg/aarch64/
+ F: tests/qtest/arm-cpu-features.c
+@@ -261,6 +264,7 @@ M: Song Gao <gaosong@loongson.cn>
+ S: Maintained
+ F: target/loongarch/
+ F: tests/tcg/loongarch64/
++F: tests/functional/loongarch64/meson.build
+ F: tests/functional/loongarch64/test_virt.py
+ 
+ M68K TCG CPUs
+@@ -268,6 +272,7 @@ M: Laurent Vivier <laurent@vivier.eu>
+ S: Maintained
+ F: target/m68k/
+ F: disas/m68k.c
++F: tests/functional/m68k/meson.build
+ F: tests/tcg/m68k/
+ 
+ MicroBlaze TCG CPUs
+@@ -277,6 +282,7 @@ F: target/microblaze/
+ F: hw/microblaze/
+ F: disas/microblaze.c
+ F: tests/docker/dockerfiles/debian-microblaze-cross.d/build-toolchain.sh
++F: tests/functional/microblaze*/meson.build
+ 
+ MIPS TCG CPUs
+ M: Philippe Mathieu-Daudé <philmd@linaro.org>
+@@ -296,6 +302,7 @@ F: docs/system/openrisc/cpu-features.rst
+ F: target/openrisc/
+ F: hw/openrisc/
+ F: include/hw/openrisc/
++F: tests/functional/or1k/meson.build
+ F: tests/tcg/openrisc/
+ 
+ PowerPC TCG CPUs
+@@ -313,6 +320,7 @@ F: configs/devices/ppc*
+ F: docs/system/ppc/embedded.rst
+ F: docs/system/target-ppc.rst
+ F: tests/tcg/ppc*/*
++F: tests/functional/ppc*/meson.build
+ F: tests/functional/ppc/test_74xx.py
+ 
+ RISC-V TCG CPUs
+@@ -361,6 +369,7 @@ RENESAS RX CPUs
+ R: Yoshinori Sato <yoshinori.sato@nifty.com>
+ S: Orphan
+ F: target/rx/
++F: tests/functional/rx/meson.build
+ 
+ S390 TCG CPUs
+ M: Richard Henderson <richard.henderson@linaro.org>
+@@ -380,6 +389,7 @@ F: target/sh4/
+ F: hw/sh4/
+ F: disas/sh4.c
+ F: include/hw/sh4/
++F: tests/functional/sh4*/meson.build
+ F: tests/tcg/sh4/
+ 
+ SPARC TCG CPUs
+@@ -391,6 +401,7 @@ F: hw/sparc/
+ F: hw/sparc64/
+ F: include/hw/sparc/sparc64.h
+ F: disas/sparc.c
++F: tests/functional/sparc*/meson.build
+ F: tests/tcg/sparc64/
+ 
+ X86 TCG CPUs
+@@ -412,6 +423,7 @@ W: http://wiki.osll.ru/doku.php?id=etc:users:jcmvbkbc:qemu-target-xtensa
+ S: Maintained
+ F: target/xtensa/
+ F: hw/xtensa/
++F: tests/functional/xtensa/meson.build
+ F: tests/tcg/xtensa/
+ F: tests/tcg/xtensaeb/
+ F: disas/xtensa.c
+@@ -4431,6 +4443,8 @@ R: Daniel P. Berrange <berrange@redhat.com>
+ S: Maintained
+ F: docs/devel/testing/functional.rst
+ F: scripts/clean_functional_cache.py
++F: tests/functional/meson.build
++F: tests/functional/generic/meson.build
+ F: tests/functional/qemu_test/
+ 
+ Windows Hosted Continuous Integration
 -- 
 2.49.0
 
