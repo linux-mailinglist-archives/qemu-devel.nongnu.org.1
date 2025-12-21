@@ -2,56 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B32EFCD39CC
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 03:45:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55787CD3C35
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 07:29:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vX9QN-0002a6-9t; Sat, 20 Dec 2025 21:43:59 -0500
+	id 1vXCvb-0003r5-HZ; Sun, 21 Dec 2025 01:28:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenwei.pi@linux.dev>)
- id 1vX9QK-0002Zg-T8
- for qemu-devel@nongnu.org; Sat, 20 Dec 2025 21:43:56 -0500
-Received: from out-180.mta0.migadu.com ([2001:41d0:1004:224b::b4])
+ (Exim 4.90_1) (envelope-from <alanosong@163.com>) id 1vXCvX-0003qo-6X
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 01:28:23 -0500
+Received: from m16.mail.163.com ([220.197.31.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenwei.pi@linux.dev>)
- id 1vX9QJ-000470-Cc
- for qemu-devel@nongnu.org; Sat, 20 Dec 2025 21:43:56 -0500
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
- include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
- t=1766285028;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=dmP6Wvk0KETdBC34SFuuuEpsYY5VRmQDyspL0DmBLGA=;
- b=bdnP6y7/N29p2vHUeAbE3WPHfhy9BAWEs1jzkj8RYxRVb/uMoyvnEdorJFCoPhurP4xlDc
- E7Dz+4lByNjdCJsdZA9sgfKeU9OPRXaAv/sqYAN36MCOIPpUhVrZQfS8CDA+diL7TJH3y+
- Tz9zJtp75uolczxPG2BofeKWSJzQuis=
-From: zhenwei pi <zhenwei.pi@linux.dev>
+ (Exim 4.90_1) (envelope-from <alanosong@163.com>) id 1vXCvU-0000bU-W2
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 01:28:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Mi
+ oDPCbOUNRhBZrsBihTau5yza+HqvX7L3FNZI1Tnw0=; b=GSPsUge9sIrwYYbV8b
+ xefR0ZuIARYRuSSWWOMZQp0ZM0Qlt7UUERrvVra2K5noAQW44VuQSHaFYLarfdpV
+ nUWkYSMzo057QEHhCG+vTBhXm0Lb2w16BrIsOECjDXWpICcJYj4NN+3IQgMIP2pb
+ EY8YpCeTVhAILaM3yEW+uygWI=
+Received: from alano.. (unknown [])
+ by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id
+ _____wAnZxJXk0dp_jcXBg--.4436S2; 
+ Sun, 21 Dec 2025 14:27:37 +0800 (CST)
+From: AlanoSong@163.com
 To: qemu-devel@nongnu.org
-Cc: mst@redhat.com, arei.gonglei@huawei.com, mcascell@redhat.com,
- nakamurajames123@gmail.com, zhenwei pi <pizhenwei@tensorfer.com>,
- zhenwei pi <zhenwei.pi@linux.dev>
-Subject: [PATCH v2 2/2] cryptodev-builtin: Limit the maximum size
-Date: Sun, 21 Dec 2025 10:43:21 +0800
-Message-ID: <20251221024321.143196-3-zhenwei.pi@linux.dev>
-In-Reply-To: <20251221024321.143196-1-zhenwei.pi@linux.dev>
-References: <20251221024321.143196-1-zhenwei.pi@linux.dev>
+Cc: cminyard@mvista.com, peter.maydell@linaro.org,
+ strahinjapjankovic@gmail.com, Alano Song <AlanoSong@163.com>
+Subject: [PATCH] hw/i2c/allwinner: Add missing state data
+Date: Sun, 21 Dec 2025 14:27:34 +0800
+Message-ID: <20251221062734.100559-1-AlanoSong@163.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-Received-SPF: pass client-ip=2001:41d0:1004:224b::b4;
- envelope-from=zhenwei.pi@linux.dev; helo=out-180.mta0.migadu.com
+X-CM-TRANSID: _____wAnZxJXk0dp_jcXBg--.4436S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrKFW8uw1UWry5WF4fWF4UArb_yoW3WFg_uw
+ n5Cw18Wr95K3WagF4rZa48ur4Ivw18Krn7Ja1xJF4xCr1kG3s8G39rKFZ5WayxXrs5KFnr
+ C34UuFyYgr9rKjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+ 9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRd-BCPUUUUU==
+X-Originating-IP: [240e:36a:140a:ca00:8783:3fbb:4dfd:5dd0]
+X-CM-SenderInfo: xdod00pvrqwqqrwthudrp/xtbC9hknO2lHk1nzEwAA33
+Received-SPF: pass client-ip=220.197.31.2; envelope-from=alanosong@163.com;
+ helo=m16.mail.163.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,46 +69,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: zhenwei pi <pizhenwei@tensorfer.com>
-
-This backend driver is used for demonstration purposes only, unlimited
-size leads QEMU OOM.
-
-Fixes: CVE-2025-14876
-Fixes: 1653a5f3fc7 ("cryptodev: introduce a new cryptodev backend")
-Reported-by: 이재영 <nakamurajames123@gmail.com>
-Signed-off-by: zhenwei pi <zhenwei.pi@linux.dev>
+Signed-off-by: Alano Song <AlanoSong@163.com>
 ---
- backends/cryptodev-builtin.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ hw/i2c/allwinner-i2c.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/backends/cryptodev-builtin.c b/backends/cryptodev-builtin.c
-index 0414c01e06..55a3fbd27b 100644
---- a/backends/cryptodev-builtin.c
-+++ b/backends/cryptodev-builtin.c
-@@ -53,6 +53,8 @@ typedef struct CryptoDevBackendBuiltinSession {
- 
- #define CRYPTODEV_BUITLIN_MAX_AUTH_KEY_LEN    512
- #define CRYPTODEV_BUITLIN_MAX_CIPHER_KEY_LEN  64
-+/* demonstration purposes only, use a limited size to avoid QEMU OOM */
-+#define CRYPTODEV_BUITLIN_MAX_REQUEST_SIZE  (1024 * 1024)
- 
- struct CryptoDevBackendBuiltin {
-     CryptoDevBackend parent_obj;
-@@ -98,12 +100,7 @@ static void cryptodev_builtin_init(
-                          1u << QCRYPTODEV_BACKEND_SERVICE_TYPE_MAC;
-     backend->conf.cipher_algo_l = 1u << VIRTIO_CRYPTO_CIPHER_AES_CBC;
-     backend->conf.hash_algo = 1u << VIRTIO_CRYPTO_HASH_SHA1;
--    /*
--     * Set the Maximum length of crypto request.
--     * Why this value? Just avoid to overflow when
--     * memory allocation for each crypto request.
--     */
--    backend->conf.max_size = LONG_MAX - sizeof(CryptoDevBackendOpInfo);
-+    backend->conf.max_size = CRYPTODEV_BUITLIN_MAX_REQUEST_SIZE;
-     backend->conf.max_cipher_key_len = CRYPTODEV_BUITLIN_MAX_CIPHER_KEY_LEN;
-     backend->conf.max_auth_key_len = CRYPTODEV_BUITLIN_MAX_AUTH_KEY_LEN;
-     cryptodev_builtin_init_akcipher(backend);
+diff --git a/hw/i2c/allwinner-i2c.c b/hw/i2c/allwinner-i2c.c
+index fe887e1c6a..728b7e622f 100644
+--- a/hw/i2c/allwinner-i2c.c
++++ b/hw/i2c/allwinner-i2c.c
+@@ -419,10 +419,12 @@ static const VMStateDescription allwinner_i2c_vmstate = {
+         VMSTATE_UINT8(xaddr, AWI2CState),
+         VMSTATE_UINT8(data, AWI2CState),
+         VMSTATE_UINT8(cntr, AWI2CState),
++        VMSTATE_UINT8(stat, AWI2CState),
+         VMSTATE_UINT8(ccr, AWI2CState),
+         VMSTATE_UINT8(srst, AWI2CState),
+         VMSTATE_UINT8(efr, AWI2CState),
+         VMSTATE_UINT8(lcr, AWI2CState),
++        VMSTATE_BOOL(irq_clear_inverted, AWI2CState),
+         VMSTATE_END_OF_LIST()
+     }
+ };
 -- 
 2.43.0
 
