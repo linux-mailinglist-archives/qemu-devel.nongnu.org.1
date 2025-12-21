@@ -2,51 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B99CD411D
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 15:21:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 832CACD4144
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 15:24:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vXKJS-0003LB-O1; Sun, 21 Dec 2025 09:21:35 -0500
+	id 1vXKLL-0000yQ-9D; Sun, 21 Dec 2025 09:23:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vXKIZ-0002uS-0R
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:20:41 -0500
-Received: from rev.ng ([94.130.142.21])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vXKIX-0000Zk-7a
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:20:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=Cc:To:In-Reply-To:References:Message-Id:Content-Transfer-Encoding:
- Content-Type:MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=8097dukWnvTT3/VxU0zUohkkc4v9T/kFeA1Gcj/Pgvg=; b=rZhq7pJHk2iT6zL
- dAImlSzyH/pmN8zBFBoMhGKmblp6sIhEw/yoPMFS9IydmA1p3uk/ze+rkGqnyOXN8fmzJUOdB4FbE
- m+d4RnfPKvxMyQ7PG9udXgqfLP+tHUGzVSwvUjGQfB8K0QwuXczfd40DCoJb9Yxp7EXCbDTbgccTz
- kA=;
-Date: Sun, 21 Dec 2025 15:23:07 +0100
-Subject: [PATCH v2 03/14] hw/riscv: Filter machine types for
- qemu-system-riscv32/64 binaries
+ (Exim 4.90_1) (envelope-from <soumyajyotisarkar23@gmail.com>)
+ id 1vXKLJ-0000xu-7P
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:23:29 -0500
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <soumyajyotisarkar23@gmail.com>)
+ id 1vXKLH-0001HH-SJ
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:23:28 -0500
+Received: by mail-pf1-x443.google.com with SMTP id
+ d2e1a72fcca58-7f0db5700b2so2925864b3a.0
+ for <qemu-devel@nongnu.org>; Sun, 21 Dec 2025 06:23:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1766327006; x=1766931806; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=BU0OmwMUtLRHOgUboEg+bahM1H9b5s2L6i2Kd1bJBh0=;
+ b=GfLa3FFW1jO/kJy45MnD2CFmRWIqdLoxWL+0vSuZxGvwSsVT61MPBRGSkQ23aphlu5
+ +10FKOVBGzZ2bUx2BHMyyC09CWf4ALF897Rd17A4XY9RyxFVrms+0kKzoQXNUnU/F5BQ
+ M/P8xkGOxlXTcjDNkJuONAAdeEEwYpNapf8xG16rfar8L214ojuFJtZpGpkuI/7Cqt/l
+ /aqbIhgoEjU7/nh7E3WPANnfC2EVu/LcHB+Y1jjMJVW6JalTbn95pDZn22yQDXgzh1VU
+ NzhGBtljO5U8cjV0D9QkNkIEGFz8NlUj5XVhYku4zgQhv8lnaUj6peGXo0x0B4AulHwM
+ eW1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1766327006; x=1766931806;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=BU0OmwMUtLRHOgUboEg+bahM1H9b5s2L6i2Kd1bJBh0=;
+ b=JWnOVL9foYwfi9/UWb5XD0P9sOhy8+3dqfm/iEJ3S5FiLdCFPKsQF8ZS2KcubvQ4SI
+ WJIj9JxLgNltyAxdjERChAVigmSNHjP31G+mnjVELmNpgfzPt7M4EL4CdUb12WYcgiBL
+ 9CMubbKupzafOWXZwvvv9QD9lRX6T7QL90hRgYsSts2conduJPqtmSTbC2T1nrPyzdX3
+ jM6NNa1Heof8BkVYIBkdHl3woboiYYvfJWSmGgpKMUXcoIlVXrBtL6Bak3kvf0STMOg0
+ 3I9YTV0px+9LJD1fADzIVbelYnaDSBsryDzoQqzYcQk/6wQU8nsSraPYiru6ilhtskT0
+ vX8g==
+X-Gm-Message-State: AOJu0Yz5yPlWZ6DfCLOnmr5HMpXcHTgxOqXvrQktCSDCrVED5FRG0G3i
+ iU5/YDns18ARBYhTjDW/7os9/J2whKSIPsak/XE2i25w+JB8iir0r+y9OQdHz//NZ8M=
+X-Gm-Gg: AY/fxX5cnno5z26daFPuX/1qZU4blH1HoiMu4OODN5c32hagaW8uC/QJXdKyyyLM0jP
+ K/2h4+8d6M/c/dqeTJxqGoKV6qKQv203loNp48uDnLccZInR6+87f+nORZneVUNjjMPxVsca9Na
+ 3t5frmceodyWNm5tF5syfZoN/z5a6Z22aHHVf96uFhibvqxWK68cm/oJ0tdWMIU8MYVaSuuQoxm
+ XdCPpRPhU6LwnzMcVymQqdxnLhDLiQtM5vUxfKsSszb/K1CiytBKfJRcHTNTtLwkfpX27p4ife9
+ g5GYbCx7huITDvD4YfQZ/s0HPfA+DOryQSRfIQiqOLsj492XnSUpq4ckeIvz7aw/+qQSusP1NB4
+ vNRnVMhQBO4Vy801+1jkH7BCm+FNALwff0h6+QWuaQlMfXR6iwTIi+MCNl82taYeRLSPjRr/ZTf
+ 6SDNYfvtOV4U+oWXDYEu8=
+X-Google-Smtp-Source: AGHT+IEb/Mt4ckukNcGnYaloX47doF7ZK15R/8y8FTB6MtG6vJdVxRIxKLbdSH9LkstE+0nLd5tgeg==
+X-Received: by 2002:a05:6a00:e11:b0:7b8:8d43:fcd1 with SMTP id
+ d2e1a72fcca58-7ff64215183mr6682163b3a.9.1766327006096; 
+ Sun, 21 Dec 2025 06:23:26 -0800 (PST)
+Received: from fedora.. ([118.151.210.82]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7ff7e48f258sm7590449b3a.47.2025.12.21.06.23.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 21 Dec 2025 06:23:25 -0800 (PST)
+From: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
+To: qemu-devel@nongnu.org, deller@gmx.de, sarkarsoumyajyoti23@gmail.com,
+ mark.cave-ayland@ilande.co.uk, richard.henderson@linaro.org
+Cc: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
+Subject: [PATCH 01/10] scsi:ncr710: Add null pointer checks
+Date: Sun, 21 Dec 2025 19:53:08 +0530
+Message-ID: <20251221142317.266293-2-soumyajyotisarkar23@gmail.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20251221142317.266293-1-soumyajyotisarkar23@gmail.com>
+References: <20251221142317.266293-1-soumyajyotisarkar23@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251221-hw-riscv-cpu-int-v2-3-eb49d72c5b2f@rev.ng>
-References: <20251221-hw-riscv-cpu-int-v2-0-eb49d72c5b2f@rev.ng>
-In-Reply-To: <20251221-hw-riscv-cpu-int-v2-0-eb49d72c5b2f@rev.ng>
-To: qemu-devel@nongnu.org
-Cc: Anton Johansson <anjo@rev.ng>, philmd@linaro.org, 
- pierrick.bouvier@linaro.org, palmer@dabbelt.com, alistair.francis@wdc.com
-Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
- helo=rev.ng
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::443;
+ envelope-from=soumyajyotisarkar23@gmail.com; helo=mail-pf1-x443.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,209 +96,53 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Register machines able to run in qemu-system-riscv32,
-qemu-system-riscv64, or both.
+Add nullpointer safety checks in ncr710_request_free() &
+ncr710_request_cancelled() to prevent crashed while handing invalid req
+structures
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Signed-off-by: Anton Johansson <anjo@rev.ng>
+Added to preventing memory corruption, which occured during device
+initialization
+
+Signed-off-by: Soumyajyotii Ssarkar<soumyajyotisarkar23@gmail.com>
 ---
- hw/riscv/microblaze-v-generic.c | 3 ++-
- hw/riscv/microchip_pfsoc.c      | 2 ++
- hw/riscv/opentitan.c            | 2 ++
- hw/riscv/shakti_c.c             | 2 ++
- hw/riscv/sifive_e.c             | 2 ++
- hw/riscv/sifive_u.c             | 2 ++
- hw/riscv/spike.c                | 2 ++
- hw/riscv/virt.c                 | 3 +++
- hw/riscv/xiangshan_kmh.c        | 2 ++
- 9 files changed, 19 insertions(+), 1 deletion(-)
+ hw/scsi/ncr53c710.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/hw/riscv/microblaze-v-generic.c b/hw/riscv/microblaze-v-generic.c
-index e863c50cbc..0df276f9fb 100644
---- a/hw/riscv/microblaze-v-generic.c
-+++ b/hw/riscv/microblaze-v-generic.c
-@@ -25,6 +25,7 @@
- #include "system/address-spaces.h"
- #include "hw/char/xilinx_uartlite.h"
- #include "hw/misc/unimp.h"
-+#include "hw/riscv/machines-qom.h"
+diff --git a/hw/scsi/ncr53c710.c b/hw/scsi/ncr53c710.c
+index 47a6983491..bab2ea7210 100644
+--- a/hw/scsi/ncr53c710.c
++++ b/hw/scsi/ncr53c710.c
+@@ -737,6 +737,12 @@ static void ncr710_add_msg_byte(NCR710State *s, uint8_t data)
  
- #define LMB_BRAM_SIZE (128 * KiB)
- #define MEMORY_BASEADDR 0x80000000
-@@ -186,4 +187,4 @@ static void mb_v_generic_machine_init(MachineClass *mc)
-     mc->default_cpus = 1;
+ static void ncr710_request_free(NCR710State *s, NCR710Request *p)
+ {
++    if (!p) {
++        return;
++    }
++    if (p->req && p->req->hba_private == p) {
++        p->req->hba_private = NULL;
++    }
+     if (p == s->current) {
+         s->current = NULL;
+     }
+@@ -747,8 +753,11 @@ void ncr710_request_cancelled(SCSIRequest *req)
+ {
+     NCR710State *s = ncr710_from_scsi_bus(req->bus);
+     NCR710Request *p = (NCR710Request *)req->hba_private;
+-    req->hba_private = NULL;
+-    ncr710_request_free(s, p);
++    if (p) {
++        req->hba_private = NULL;
++        p->req = NULL;
++        ncr710_request_free(s, p);
++    }
+     scsi_req_unref(req);
  }
  
--DEFINE_MACHINE("amd-microblaze-v-generic", mb_v_generic_machine_init)
-+DEFINE_MACHINE_RISCV32_64("amd-microblaze-v-generic", mb_v_generic_machine_init)
-diff --git a/hw/riscv/microchip_pfsoc.c b/hw/riscv/microchip_pfsoc.c
-index bc4f409c19..51b53121c5 100644
---- a/hw/riscv/microchip_pfsoc.c
-+++ b/hw/riscv/microchip_pfsoc.c
-@@ -49,6 +49,7 @@
- #include "hw/misc/unimp.h"
- #include "hw/riscv/boot.h"
- #include "hw/riscv/riscv_hart.h"
-+#include "hw/riscv/machines-qom.h"
- #include "hw/riscv/microchip_pfsoc.h"
- #include "hw/intc/riscv_aclint.h"
- #include "hw/intc/sifive_plic.h"
-@@ -748,6 +749,7 @@ static const TypeInfo microchip_icicle_kit_machine_typeinfo = {
-     .class_init = microchip_icicle_kit_machine_class_init,
-     .instance_init = microchip_icicle_kit_machine_instance_init,
-     .instance_size = sizeof(MicrochipIcicleKitState),
-+    .interfaces = riscv64_machine_interfaces,
- };
- 
- static void microchip_icicle_kit_machine_init_register_types(void)
-diff --git a/hw/riscv/opentitan.c b/hw/riscv/opentitan.c
-index d369a8a7dc..e8c6829365 100644
---- a/hw/riscv/opentitan.c
-+++ b/hw/riscv/opentitan.c
-@@ -26,6 +26,7 @@
- #include "hw/boards.h"
- #include "hw/misc/unimp.h"
- #include "hw/riscv/boot.h"
-+#include "hw/riscv/machines-qom.h"
- #include "qemu/units.h"
- #include "system/system.h"
- #include "system/address-spaces.h"
-@@ -335,6 +336,7 @@ static const TypeInfo open_titan_types[] = {
-         .parent         = TYPE_MACHINE,
-         .instance_size  = sizeof(OpenTitanState),
-         .class_init     = opentitan_machine_class_init,
-+        .interfaces     = riscv32_machine_interfaces,
-     }
- };
- 
-diff --git a/hw/riscv/shakti_c.c b/hw/riscv/shakti_c.c
-index 3e7f441172..d4cf72de3e 100644
---- a/hw/riscv/shakti_c.c
-+++ b/hw/riscv/shakti_c.c
-@@ -19,6 +19,7 @@
- #include "qemu/osdep.h"
- #include "hw/boards.h"
- #include "hw/riscv/shakti_c.h"
-+#include "hw/riscv/machines-qom.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "hw/intc/sifive_plic.h"
-@@ -92,6 +93,7 @@ static const TypeInfo shakti_c_machine_type_info = {
-     .class_init = shakti_c_machine_class_init,
-     .instance_init = shakti_c_machine_instance_init,
-     .instance_size = sizeof(ShaktiCMachineState),
-+    .interfaces = riscv64_machine_interfaces,
- };
- 
- static void shakti_c_machine_type_info_register(void)
-diff --git a/hw/riscv/sifive_e.c b/hw/riscv/sifive_e.c
-index 7baed1958e..7ed419cf69 100644
---- a/hw/riscv/sifive_e.c
-+++ b/hw/riscv/sifive_e.c
-@@ -40,6 +40,7 @@
- #include "hw/riscv/riscv_hart.h"
- #include "hw/riscv/sifive_e.h"
- #include "hw/riscv/boot.h"
-+#include "hw/riscv/machines-qom.h"
- #include "hw/char/sifive_uart.h"
- #include "hw/intc/riscv_aclint.h"
- #include "hw/intc/sifive_plic.h"
-@@ -167,6 +168,7 @@ static const TypeInfo sifive_e_machine_typeinfo = {
-     .class_init = sifive_e_machine_class_init,
-     .instance_init = sifive_e_machine_instance_init,
-     .instance_size = sizeof(SiFiveEState),
-+    .interfaces = riscv32_64_machine_interfaces,
- };
- 
- static void sifive_e_machine_init_register_types(void)
-diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
-index 2d27e925e8..2ff2059bb9 100644
---- a/hw/riscv/sifive_u.c
-+++ b/hw/riscv/sifive_u.c
-@@ -51,6 +51,7 @@
- #include "hw/riscv/riscv_hart.h"
- #include "hw/riscv/sifive_u.h"
- #include "hw/riscv/boot.h"
-+#include "hw/riscv/machines-qom.h"
- #include "hw/char/sifive_uart.h"
- #include "hw/intc/riscv_aclint.h"
- #include "hw/intc/sifive_plic.h"
-@@ -742,6 +743,7 @@ static const TypeInfo sifive_u_machine_typeinfo = {
-     .class_init = sifive_u_machine_class_init,
-     .instance_init = sifive_u_machine_instance_init,
-     .instance_size = sizeof(SiFiveUState),
-+    .interfaces = riscv32_64_machine_interfaces,
- };
- 
- static void sifive_u_machine_init_register_types(void)
-diff --git a/hw/riscv/spike.c b/hw/riscv/spike.c
-index ce190f6c62..69eb3dfc24 100644
---- a/hw/riscv/spike.c
-+++ b/hw/riscv/spike.c
-@@ -33,6 +33,7 @@
- #include "hw/riscv/spike.h"
- #include "hw/riscv/boot.h"
- #include "hw/riscv/numa.h"
-+#include "hw/riscv/machines-qom.h"
- #include "hw/char/riscv_htif.h"
- #include "hw/intc/riscv_aclint.h"
- #include "chardev/char.h"
-@@ -374,6 +375,7 @@ static const TypeInfo spike_machine_typeinfo = {
-     .class_init = spike_machine_class_init,
-     .instance_init = spike_machine_instance_init,
-     .instance_size = sizeof(SpikeState),
-+    .interfaces = riscv32_64_machine_interfaces,
- };
- 
- static void spike_machine_init_register_types(void)
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index aa4dd91325..f42fffb223 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -36,6 +36,7 @@
- #include "hw/riscv/riscv-iommu-bits.h"
- #include "hw/riscv/virt.h"
- #include "hw/riscv/boot.h"
-+#include "hw/riscv/machines-qom.h"
- #include "hw/riscv/numa.h"
- #include "kvm/kvm_riscv.h"
- #include "hw/firmware/smbios.h"
-@@ -1989,6 +1990,8 @@ static const TypeInfo virt_machine_typeinfo = {
-     .instance_size = sizeof(RISCVVirtState),
-     .interfaces = (const InterfaceInfo[]) {
-          { TYPE_HOTPLUG_HANDLER },
-+         { TYPE_TARGET_RISCV32_MACHINE },
-+         { TYPE_TARGET_RISCV64_MACHINE },
-          { }
-     },
- };
-diff --git a/hw/riscv/xiangshan_kmh.c b/hw/riscv/xiangshan_kmh.c
-index a95fd6174f..4d7e191098 100644
---- a/hw/riscv/xiangshan_kmh.c
-+++ b/hw/riscv/xiangshan_kmh.c
-@@ -41,6 +41,7 @@
- #include "hw/riscv/boot.h"
- #include "hw/riscv/xiangshan_kmh.h"
- #include "hw/riscv/riscv_hart.h"
-+#include "hw/riscv/machines-qom.h"
- #include "system/system.h"
- 
- static const MemMapEntry xiangshan_kmh_memmap[] = {
-@@ -211,6 +212,7 @@ static const TypeInfo xiangshan_kmh_machine_info = {
-     .parent = TYPE_MACHINE,
-     .instance_size = sizeof(XiangshanKmhState),
-     .class_init = xiangshan_kmh_machine_class_init,
-+    .interfaces = riscv64_machine_interfaces,
- };
- 
- static void xiangshan_kmh_machine_register_types(void)
-
 -- 
-2.51.0
+2.49.0
 
 
