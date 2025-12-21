@@ -2,89 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2096FCD415F
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 15:25:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC970CD413B
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 15:22:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vXKM7-0001T2-NY; Sun, 21 Dec 2025 09:24:20 -0500
+	id 1vXKJt-0004MO-AL; Sun, 21 Dec 2025 09:22:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <soumyajyotisarkar23@gmail.com>)
- id 1vXKLY-0001IZ-Ki
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:23:48 -0500
-Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <soumyajyotisarkar23@gmail.com>)
- id 1vXKLX-0001JP-6a
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:23:44 -0500
-Received: by mail-pf1-x444.google.com with SMTP id
- d2e1a72fcca58-7fbbb84f034so2390688b3a.0
- for <qemu-devel@nongnu.org>; Sun, 21 Dec 2025 06:23:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1766327021; x=1766931821; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XdPuLFFZ3D4mmgZaO7d+HZBZoL5op64qzVNSL0sChe4=;
- b=CBISeN9A9j5z91qrwGP4+j/5+NF520twVOkjpR16f2PRQoy1oz29ozKreQHajlIlBR
- 9ci5pzcVonqr1muFXAP9H0AqhrfO3grYP/cKnhz8jXDSqxL34gAHucRRV7p+iL8mUyxh
- hsbnYIGjYbvHfjRVMktdDH7n8Br5yTnq036CemldiahB/XR5q6EsguwMg9YQ5ovqQA08
- V6WMGcXQuVkbfkexAhkXPz7/ToroWbZz/MJ+3CosnJ3WffoMe9+W55OQy0FjqPVylcvT
- MGKFoI+2AnnSZINxDUUb/qBrPq4Kv1IN7QZaTvn5lYVLTOccNnfJix6x7kNgbAkMZhLX
- OgQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766327021; x=1766931821;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=XdPuLFFZ3D4mmgZaO7d+HZBZoL5op64qzVNSL0sChe4=;
- b=iCOjMONayg1lPippgZ9wT/g0Xe0m6DA4qSeBx/YFx8ySf6Inb/e8WOTyEbsJjF+anI
- u9quB5Nn76qXFpdw3dkYBIjrm+5IJZfcjQ83zOFJDmS4TARwf78zGnykWpx6ugwQnrFG
- oVoFcdQJaGEyDCkjvMFbjGzbWD+h4mo5QEAUREdM4SMxrWK+rswQasw1iaI4iYxoCJlE
- zTb2r7ybig+acltsLmy4HhQkGf3HY5N1qd0mDi5ornM2wbriWV+BPg/83A5PbEqQskVW
- 4wOEwxMlRa/1symgEwi7iO6hlSNo7h8jnBuPbi3659K1X5HuLN4PXtzi9oKQvESs4HiE
- AGgw==
-X-Gm-Message-State: AOJu0Yyi4x5ukJlO7jCIwK7Ejt3IHx5jfyB+wfn9KIpARJ97qHZLVhj9
- 8E1IKO9Z+I8qNCMG7A+1/TsLoNm7SEBq5BnqQXlhLqkcjCGMkJ75bb0jXz0h0qWU2+k=
-X-Gm-Gg: AY/fxX7kQN18scyyMQmuRF4r+N5/VVMBKWYuTuDSDzfHSKwgEH78SIWoQga3NuuNAED
- CpGUotmGWeiL5CdU0rUH3oXwzAXq1eEIXO3dJJsV44eFaxkstzXZ/eWiDnfV8Viv+81jf+F6EFm
- UlRh8b/wpOPpB6nV/7M++oV1uW05ltaQkaD9uhcbH5XyUlhgzBaENgxhtTgdbtZlFTgjX3XlWhH
- 61tUbllhZCJUv371AYyYqypB5T/hu3t4JmV5IOag+ELcBRSW9yi/2iBT4E8nk0wtuC6c2dlfGxK
- C4hneJ9n18rWMzrrek+UBE9Vs+fT2Hs4KtpS3/32f9x1hmfO6/b6RaACh0aPno8cvplR0NgqTrB
- vzr6MfpSFMD3COj3p0LS+P2ZOf9ojaktpFqavpy6DRfvG9WwyJ4bH4XY1apgwvVluQy5ZyEShgf
- dt8y09H3raH6jCDxI4z48=
-X-Google-Smtp-Source: AGHT+IG28diYGF80RZ0QtpeanFRL2g6gItmMNsqtmbusPT3zdERd0iLHnEsiU7RtEdteUkFqcFVx+Q==
-X-Received: by 2002:a05:6a00:1ca2:b0:7e8:4471:8e2 with SMTP id
- d2e1a72fcca58-7ff66f569e7mr7616635b3a.67.1766327021542; 
- Sun, 21 Dec 2025 06:23:41 -0800 (PST)
-Received: from fedora.. ([118.151.210.82]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7ff7e48f258sm7590449b3a.47.2025.12.21.06.23.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 21 Dec 2025 06:23:41 -0800 (PST)
-From: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
-To: qemu-devel@nongnu.org, deller@gmx.de, sarkarsoumyajyoti23@gmail.com,
- mark.cave-ayland@ilande.co.uk, richard.henderson@linaro.org
-Cc: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
-Subject: [PATCH 06/10] scsi:ncr710:Mark command complete in status phase and
- fix disconnect
-Date: Sun, 21 Dec 2025 19:53:13 +0530
-Message-ID: <20251221142317.266293-7-soumyajyotisarkar23@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20251221142317.266293-1-soumyajyotisarkar23@gmail.com>
-References: <20251221142317.266293-1-soumyajyotisarkar23@gmail.com>
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vXKJ0-0003GM-UX
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:21:10 -0500
+Received: from rev.ng ([94.130.142.21])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vXKIy-0000gn-Pv
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:21:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=Cc:To:In-Reply-To:References:Message-Id:Content-Transfer-Encoding:
+ Content-Type:MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
+ List-Help; bh=74zb+FExjdJPJZXYLz9xpbv7g8TXAM20uG6m9dgRS/Q=; b=n0pZA9GmBa0p6t1
+ SpsITi2CKhxhaqGk5bi9y1w9VW9+2dGUbvGlwsVpop2ioaLw+bbH9nCOOpz5Sdrpywq+Z/9xlhuRW
+ yR74gLcXnpLjrEnXgpgZMqHds4s2xFSaVlfzTEK4Nmc1835foNWMJwZTj4y+k0wEE4+GAJ3KN0pMY
+ G4=;
+Date: Sun, 21 Dec 2025 15:23:13 +0100
+Subject: [PATCH v2 09/14] target/riscv: Replace TARGET_LONG_BITS in header
+ exposed to common code
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::444;
- envelope-from=soumyajyotisarkar23@gmail.com; helo=mail-pf1-x444.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251221-hw-riscv-cpu-int-v2-9-eb49d72c5b2f@rev.ng>
+References: <20251221-hw-riscv-cpu-int-v2-0-eb49d72c5b2f@rev.ng>
+In-Reply-To: <20251221-hw-riscv-cpu-int-v2-0-eb49d72c5b2f@rev.ng>
+To: qemu-devel@nongnu.org
+Cc: Anton Johansson <anjo@rev.ng>, philmd@linaro.org, 
+ pierrick.bouvier@linaro.org, palmer@dabbelt.com, alistair.francis@wdc.com
+Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
+ helo=rev.ng
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,39 +59,118 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Set command_complete flag after status_phase and use_phase_clearing,
-instead of full disconnect during message processing
+IRQ_LOCAL_GUEST_MAX depends on TARGET_LONG_BITS and is used in
+hw/intc/riscv_imsic.c.  The macro is replaced by a field in RISCVCPUDef
+initialized in riscv_cpu_class_base_init().
 
-Signed-off-by: Soumyajyotii Ssarkar<soumyajyotisarkar23@gmail.com>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- hw/scsi/ncr53c710.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ target/riscv/cpu.h      |  1 +
+ target/riscv/cpu_bits.h |  2 --
+ hw/intc/riscv_imsic.c   |  4 +++-
+ target/riscv/cpu.c      | 14 ++++++++++++--
+ 4 files changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/hw/scsi/ncr53c710.c b/hw/scsi/ncr53c710.c
-index 4b42fab754..3d7318c12e 100644
---- a/hw/scsi/ncr53c710.c
-+++ b/hw/scsi/ncr53c710.c
-@@ -997,6 +997,7 @@ static void ncr710_do_status(NCR710State *s)
-     ncr710_set_phase(s, PHASE_MI);
-     s->msg_action = NCR710_MSG_ACTION_DISCONNECT;
-     ncr710_add_msg_byte(s, 0); /* COMMAND COMPLETE */
-+    s->command_complete = NCR710_CMD_COMPLETE;
- }
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 946665d9ed..3573581f0c 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -563,6 +563,7 @@ typedef struct RISCVCPUDef {
+     int32_t vext_spec;
+     RISCVCPUConfig cfg;
+     bool bare;
++    uint8_t irq_local_guest_max;
+     const RISCVCSR *custom_csrs;
+ } RISCVCPUDef;
  
- static void ncr710_do_msgin(NCR710State *s)
-@@ -1041,7 +1042,7 @@ static void ncr710_do_msgin(NCR710State *s)
-         ncr710_set_phase(s, PHASE_CO);
-         break;
-     case NCR710_MSG_ACTION_DISCONNECT:
--        ncr710_disconnect(s);
-+        s->sstat2 &= ~PHASE_MASK;
-         break;
-     case NCR710_MSG_ACTION_DATA_OUT:
-         ncr710_set_phase(s, PHASE_DO);
+diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
+index b62dd82fe7..13e052bce2 100644
+--- a/target/riscv/cpu_bits.h
++++ b/target/riscv/cpu_bits.h
+@@ -809,8 +809,6 @@ typedef enum RISCVException {
+ #define IRQ_S_GEXT                         12
+ #define IRQ_PMU_OVF                        13
+ #define IRQ_LOCAL_MAX                      64
+-/* -1 is due to bit zero of hgeip and hgeie being ROZ. */
+-#define IRQ_LOCAL_GUEST_MAX                (TARGET_LONG_BITS - 1)
+ 
+ /* RNMI causes */
+ #define RNMI_MAX                           16
+diff --git a/hw/intc/riscv_imsic.c b/hw/intc/riscv_imsic.c
+index 9274a1e842..3d32198468 100644
+--- a/hw/intc/riscv_imsic.c
++++ b/hw/intc/riscv_imsic.c
+@@ -453,13 +453,15 @@ DeviceState *riscv_imsic_create(hwaddr addr, uint32_t hartid, bool mmode,
+ {
+     DeviceState *dev = qdev_new(TYPE_RISCV_IMSIC);
+     CPUState *cpu = cpu_by_arch_id(hartid);
++    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(RISCV_CPU(cpu));
+     uint32_t i;
+ 
+     assert(!(addr & (IMSIC_MMIO_PAGE_SZ - 1)));
+     if (mmode) {
+         assert(num_pages == 1);
+     } else {
+-        assert(num_pages >= 1 && num_pages <= (IRQ_LOCAL_GUEST_MAX + 1));
++        assert(num_pages >= 1 &&
++               num_pages <= (mcc->def->irq_local_guest_max + 1));
+     }
+     assert(IMSIC_MIN_ID <= num_ids);
+     assert(num_ids <= IMSIC_MAX_ID);
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 7a8b8d736e..dd58e63ecd 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1019,6 +1019,7 @@ void riscv_add_satp_mode_properties(Object *obj)
+ 
+ static void riscv_cpu_set_irq(void *opaque, int irq, int level)
+ {
++    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(opaque);
+     RISCVCPU *cpu = RISCV_CPU(opaque);
+     CPURISCVState *env = &cpu->env;
+ 
+@@ -1053,7 +1054,7 @@ static void riscv_cpu_set_irq(void *opaque, int irq, int level)
+         default:
+             g_assert_not_reached();
+         }
+-    } else if (irq < (IRQ_LOCAL_MAX + IRQ_LOCAL_GUEST_MAX)) {
++    } else if (irq < (IRQ_LOCAL_MAX + mcc->def->irq_local_guest_max)) {
+         /* Require H-extension for handling guest local interrupts */
+         if (!riscv_has_ext(env, RVH)) {
+             g_assert_not_reached();
+@@ -1100,7 +1101,7 @@ static void riscv_cpu_init(Object *obj)
+ 
+ #ifndef CONFIG_USER_ONLY
+     qdev_init_gpio_in(DEVICE(obj), riscv_cpu_set_irq,
+-                      IRQ_LOCAL_MAX + IRQ_LOCAL_GUEST_MAX);
++                      IRQ_LOCAL_MAX + mcc->def->irq_local_guest_max);
+     qdev_init_gpio_in_named(DEVICE(cpu), riscv_cpu_set_nmi,
+                             "riscv.cpu.rnmi", RNMI_MAX);
+ #endif /* CONFIG_USER_ONLY */
+@@ -2791,6 +2792,15 @@ static void riscv_cpu_class_base_init(ObjectClass *c, const void *data)
+         mcc->def = g_new0(RISCVCPUDef, 1);
+     }
+ 
++    /*
++     * RISCVCPUDef::irq_local_guest_max is initialized to 
++     * `target_long_bits()-1` due to bit zero of hgeip and hgeie
++     * being ROZ.
++     *
++     * This value does not vary between CPU types.
++     */
++    mcc->def->irq_local_guest_max = target_long_bits() - 1;
++
+     if (data) {
+         const RISCVCPUDef *def = data;
+         mcc->def->bare |= def->bare;
+
 -- 
-2.49.0
+2.51.0
 
 
