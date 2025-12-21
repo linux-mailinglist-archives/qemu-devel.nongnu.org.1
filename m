@@ -2,59 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55787CD3C35
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 07:29:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EFDDCD4186
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 15:45:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vXCvb-0003r5-HZ; Sun, 21 Dec 2025 01:28:27 -0500
+	id 1vXKgg-0008IM-Rb; Sun, 21 Dec 2025 09:45:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alanosong@163.com>) id 1vXCvX-0003qo-6X
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 01:28:23 -0500
-Received: from m16.mail.163.com ([220.197.31.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alanosong@163.com>) id 1vXCvU-0000bU-W2
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 01:28:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
- s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Mi
- oDPCbOUNRhBZrsBihTau5yza+HqvX7L3FNZI1Tnw0=; b=GSPsUge9sIrwYYbV8b
- xefR0ZuIARYRuSSWWOMZQp0ZM0Qlt7UUERrvVra2K5noAQW44VuQSHaFYLarfdpV
- nUWkYSMzo057QEHhCG+vTBhXm0Lb2w16BrIsOECjDXWpICcJYj4NN+3IQgMIP2pb
- EY8YpCeTVhAILaM3yEW+uygWI=
-Received: from alano.. (unknown [])
- by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id
- _____wAnZxJXk0dp_jcXBg--.4436S2; 
- Sun, 21 Dec 2025 14:27:37 +0800 (CST)
-From: AlanoSong@163.com
+ (Exim 4.90_1) (envelope-from <buenocalvachejoel@gmail.com>)
+ id 1vXH4P-0007Or-OB
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 05:53:49 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <buenocalvachejoel@gmail.com>)
+ id 1vXH4O-0002nC-Ak
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 05:53:49 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-47a9567bcd9so2577215e9.2
+ for <qemu-devel@nongnu.org>; Sun, 21 Dec 2025 02:53:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1766314426; x=1766919226; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=gFNfnwGU97xGHPfd21mpBWZF7bSVs2VdgP/4QhHxwu4=;
+ b=ixgnoYfN3pkdkHCqAC14ubVcxAwGAy3vyEPCJok8cxTyhHrMjxOp9/oPPiI07Ztl3c
+ CDCaI1jc7crhYQJV89484HEcr0H+mXQ7/f1mMKAoaq+VlPSNxIJyuaWMAhATRfAdQYoO
+ vP0tzxfXlve4JY+d4cUAu6ovUuXUSoPtAeA7vm2D9RwDfMIxEANzoDPRAwoWmtVtkwLt
+ jklfwxbHmFW9bcijDmSP1g3yPbcDjfCaEv5SJysMEGAs2akRU1BlW+VOnUlGtqpKBLOo
+ C6gQQb3vpEQPWe7T8VyLMyykjFr8/H82BVPStopiEwhh8rlCLSdsNy9eaJjvEggscoaO
+ bz9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1766314426; x=1766919226;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=gFNfnwGU97xGHPfd21mpBWZF7bSVs2VdgP/4QhHxwu4=;
+ b=Yx2lO/JupZcnyzmGLnKeCDeH/MSP5YJGXuLHZl69fNljFcegl+ttuEd934u1cPYbiD
+ YQ6OG7f2o0XHsNVjXEWnittpp2Fopyp5WtOt63p4gah0Eh7ZGm2sw4ZH3oX2dOSgzvlm
+ 3alHRhtbDO6UO7n6pt1Cl5/rYTv8s+tX8M7g15Q8nIQPPYacvjpHOqjgPxlg3wabFNL0
+ qiQqP8NpXOEvVy/vTUr5wUa0lof6S80SY/z5UFMV9uuKaSFmiJA/u8sA5mKEroKy8D4m
+ KqOvngsbRiFbHgXC/PCmxiKBT6E4h/joqOs2SW1Ik55sY3Pk82fa9DgzvE7po+qbxi6R
+ /+pA==
+X-Gm-Message-State: AOJu0YxkXXpb6cOqLUkW7qIcfkDIsFaGffhZRA0qaQqXiOIjZjm//Clw
+ MVX3vZZAn16rJWgNFdWuBeZWYfOvQcW5xlrGjsxw1waeevJQRzRWHrxOB3V4+IIc
+X-Gm-Gg: AY/fxX5oUSDOUAD5gBCaG16nqP3lG7jsfbX8QDydM1+iFFsC5Jwikc3HBcLXlC1XLFj
+ krq0CA6RxT6YmjV4zwOnIU6b7VOVT7iv4PmItBFk2rmdGOeCCc8cHeacPtYbu5+4rXA9PCjtxYH
+ 9IqM4d/q9oxAraoqaO3LNzLOwR5d7swQ1NW5q5+Kx4K4TzgnJ53QwAsZrNZBfiNRvRqQIVwNXBk
+ OURjZLmsEpPmynvk/AF3ZH5YMAa1CMGJYKE0jndwjbraIL63g2BuScuCIjqKFvGFvKmGAG85hwi
+ vamtDIjYbCm8r0nNwaKioIw25x1trdHS6tCy8vS4g/csrxETCuSELwrY05CBSjhQuPwpAK/uS8x
+ aEDFV8c+YlFoSfmfvwhfJ6vq++C2TG05eVrw/ZKkS2cMwpaIhr4S0r6r5Q5fJxCdOJV/N4JdXJT
+ z7257Mi6Plhj8+hRpGrUQWq5k=
+X-Google-Smtp-Source: AGHT+IHLz6CeEF07ibBuiRm1GJspg2vB3lxTSSBT8EeQqtmV+P1qLw/31CgS4737ol8YkzVw5q+wlQ==
+X-Received: by 2002:a05:6000:1867:b0:42b:55a1:214d with SMTP id
+ ffacd0b85a97d-4324e4bf4c4mr5220329f8f.1.1766314425492; 
+ Sun, 21 Dec 2025 02:53:45 -0800 (PST)
+Received: from LT-1H84393QV6 ([79.117.168.132])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-4324eaa2bdfsm15879557f8f.32.2025.12.21.02.53.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 21 Dec 2025 02:53:45 -0800 (PST)
+From: Joel Bueno <buenocalvachejoel@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: cminyard@mvista.com, peter.maydell@linaro.org,
- strahinjapjankovic@gmail.com, Alano Song <AlanoSong@163.com>
-Subject: [PATCH] hw/i2c/allwinner: Add missing state data
-Date: Sun, 21 Dec 2025 14:27:34 +0800
-Message-ID: <20251221062734.100559-1-AlanoSong@163.com>
-X-Mailer: git-send-email 2.43.0
+Cc: Joel Bueno <buenocalvachejoel@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org (open list:Block layer core)
+Subject: [PATCH] hw/block/m25p80: Fix Winbond Fast Read dummy cycles
+Date: Sun, 21 Dec 2025 11:53:39 +0100
+Message-ID: <20251221105340.2699327-1-buenocalvachejoel@gmail.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: _____wAnZxJXk0dp_jcXBg--.4436S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrKFW8uw1UWry5WF4fWF4UArb_yoW3WFg_uw
- n5Cw18Wr95K3WagF4rZa48ur4Ivw18Krn7Ja1xJF4xCr1kG3s8G39rKFZ5WayxXrs5KFnr
- C34UuFyYgr9rKjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
- 9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRd-BCPUUUUU==
-X-Originating-IP: [240e:36a:140a:ca00:8783:3fbb:4dfd:5dd0]
-X-CM-SenderInfo: xdod00pvrqwqqrwthudrp/xtbC9hknO2lHk1nzEwAA33
-Received-SPF: pass client-ip=220.197.31.2; envelope-from=alanosong@163.com;
- helo=m16.mail.163.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=buenocalvachejoel@gmail.com; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Sun, 21 Dec 2025 09:45:02 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,29 +99,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Alano Song <AlanoSong@163.com>
----
- hw/i2c/allwinner-i2c.c | 2 ++
- 1 file changed, 2 insertions(+)
+The Fast Read (0Bh) instruction requires 8 dummy clock cycles
+according to Winbond datasheets (e.g., W25Q256JV Section 8.2.12).
+However, the current code adds 8 to needed_bytes, which represents
+bytes, not clock cycles. Since 8 clock cycles equals 1 byte in SPI
+communication (1 bit per clock edge), this results in 64 dummy
+clock cycles instead of 8.
 
-diff --git a/hw/i2c/allwinner-i2c.c b/hw/i2c/allwinner-i2c.c
-index fe887e1c6a..728b7e622f 100644
---- a/hw/i2c/allwinner-i2c.c
-+++ b/hw/i2c/allwinner-i2c.c
-@@ -419,10 +419,12 @@ static const VMStateDescription allwinner_i2c_vmstate = {
-         VMSTATE_UINT8(xaddr, AWI2CState),
-         VMSTATE_UINT8(data, AWI2CState),
-         VMSTATE_UINT8(cntr, AWI2CState),
-+        VMSTATE_UINT8(stat, AWI2CState),
-         VMSTATE_UINT8(ccr, AWI2CState),
-         VMSTATE_UINT8(srst, AWI2CState),
-         VMSTATE_UINT8(efr, AWI2CState),
-         VMSTATE_UINT8(lcr, AWI2CState),
-+        VMSTATE_BOOL(irq_clear_inverted, AWI2CState),
-         VMSTATE_END_OF_LIST()
-     }
- };
+Change the Winbond case to add 1 byte (8 clocks) instead of 8 bytes
+(64 clocks), matching the existing implementation for SST flash and
+the datasheet specifications.
+
+Signed-off-by: Joel Bueno <buenocalvachejoel@gmail.com>
+---
+ hw/block/m25p80.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hw/block/m25p80.c b/hw/block/m25p80.c
+index a5336d92ff..21c2118b33 100644
+--- a/hw/block/m25p80.c
++++ b/hw/block/m25p80.c
+@@ -1001,7 +1001,7 @@ static void decode_fast_read_cmd(Flash *s)
+         s->needed_bytes += 1;
+         break;
+     case MAN_WINBOND:
+-        s->needed_bytes += 8;
++        s->needed_bytes += 1;
+         break;
+     case MAN_NUMONYX:
+         s->needed_bytes += numonyx_extract_cfg_num_dummies(s);
 -- 
-2.43.0
+2.51.0
 
 
