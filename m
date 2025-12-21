@@ -2,88 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8406CD4150
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 15:24:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3602FCD412F
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 15:22:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vXKMC-00024V-C6; Sun, 21 Dec 2025 09:24:24 -0500
+	id 1vXKJX-0003pY-Qe; Sun, 21 Dec 2025 09:21:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <soumyajyotisarkar23@gmail.com>)
- id 1vXKLk-0001Lb-SD
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:23:59 -0500
-Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <soumyajyotisarkar23@gmail.com>)
- id 1vXKLi-0001Q9-Tq
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:23:56 -0500
-Received: by mail-pf1-x441.google.com with SMTP id
- d2e1a72fcca58-7e1651ae0d5so2475560b3a.1
- for <qemu-devel@nongnu.org>; Sun, 21 Dec 2025 06:23:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1766327033; x=1766931833; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rwo1mKiMyT/GajHYoh8G0G2szHYZLyV9nC1hl1YqUaw=;
- b=PM/5GLtR6KotrkG4T2Vv6XRsChCJbpB2eEYCqJuKQc7HM5zVUQ+f3VrSlZvNPmljEn
- GfNJdVdj05b8huTo09efwGv9pg+1XBxqlKR8EAqEGB9dYgTbBYwJV4ZInSXUvh9dw+xA
- MroY+EvtE0mGLVun21TDnL46kf7UQCeLpJ6I8WmW8hNNgW9t5JGe8p9zrRa7OXYiDCnk
- GoVT+5ocNc4f9a6881HTRmBF4oSIxJvIh6xKKt4BMgWHpYCXr79JzaTHjOA55mcx1enp
- LAgoTSbx2v8CrE/1PwK9igKHr5wquUaKqgx7GmQL+LZMJKZgnG7N4N/7pKSp10XGiHxe
- Rqww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766327033; x=1766931833;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=rwo1mKiMyT/GajHYoh8G0G2szHYZLyV9nC1hl1YqUaw=;
- b=CPaxUOmkgpLMEBoioNMdyeW+FSjYgD9/z2ukAKWGzNdj3eWzN0arhAKfSwdrP05eGM
- Mta4tLSRKMXd3VAzOrnHe97NLf8yA6dNiiCz5T3I2xydG31sGhNdQ/B9Zk0YC5yhdvRV
- j/mbV1Ap5/9goO0TidYnZeBhmEh+HAJPCP0xeNcqm5ey2PoDDnWfveQJ8xRI+zmoT22n
- kdCjZj+sgFABmbUuDxCXFGF5bFxHmNOBZIqPrpGMKEFNrH02KyIvI7COtcvwFSq6A3pW
- wF6rc45DaeWEvcTxwlH92cz4KZ8n/8ufuHlSZyeQGUV9wHinoFG7yJTrK2pCazR8EFnl
- 3LQA==
-X-Gm-Message-State: AOJu0YwPNo5ouBKnvN7FAjyTJ0kJgDy8d+wAPK8HD+URDUA3wpO47cRS
- dbn/JNPQOATHEZZ3YyvFmXFZj5uKwdQIOpkVp+KmcrhPt8ZV17Xl5k7GwAvNhh1w01o=
-X-Gm-Gg: AY/fxX5Fb/KAN2lPJJjVThwqTAxvCrofhm+/LnaY4s5CCwgmoULzpSOntyiCFOSDIyr
- 78UF/BLIO7BEk+AdHKAnCCtdoY5xG0a0CA0kLLx9j3LjyW114TupyIph/UQjj8YVCSjQACxC7HA
- mB4wX8uFsjDQLTInEa1rZhlwXBIpngpU7tSZJqh4qUjqbUQmCIgIcMjFXzlL/Y8jxdTQh2eWq7m
- 7effpUu/79k0Z4Cg3oam/MOofOo18gbAq7wQPi694M14/60vTa0OSdArL7zNs/+yq/Yfzpix5vS
- Mpnfpu95OphUKKcyFBIfv5Sq+RPTamH/70U9qEN5nX1ke6ED8EsR1kGFQ6MB+CoCOTSsQORzJoZ
- J7Car7EdzSYcDXhfiT4oV6qQlL7+/djqUR3CzsKO9ZDszUo78zadbTdZC5vUK6okOGQJAxrBGrV
- ohHm6PFl7hlmAKR/xZ+7k=
-X-Google-Smtp-Source: AGHT+IFv6dh3tArYH7aFS/i++7JDH2y/UAX/tNgQgqrvomDz5RTgLpU2OTYZQzXVEFJLu9g9AZi6+A==
-X-Received: by 2002:a05:6a00:1d23:b0:7e8:4587:e8b9 with SMTP id
- d2e1a72fcca58-7ff65f7907cmr7696060b3a.44.1766327033330; 
- Sun, 21 Dec 2025 06:23:53 -0800 (PST)
-Received: from fedora.. ([118.151.210.82]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7ff7e48f258sm7590449b3a.47.2025.12.21.06.23.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 21 Dec 2025 06:23:52 -0800 (PST)
-From: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
-To: qemu-devel@nongnu.org, deller@gmx.de, sarkarsoumyajyoti23@gmail.com,
- mark.cave-ayland@ilande.co.uk, richard.henderson@linaro.org
-Cc: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
-Subject: [PATCH 10/10] scsi:ncr710: Fix CTEST FIFO status
-Date: Sun, 21 Dec 2025 19:53:17 +0530
-Message-ID: <20251221142317.266293-11-soumyajyotisarkar23@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20251221142317.266293-1-soumyajyotisarkar23@gmail.com>
-References: <20251221142317.266293-1-soumyajyotisarkar23@gmail.com>
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vXKJV-0003hv-5k
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:21:37 -0500
+Received: from rev.ng ([94.130.142.21])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vXKJT-0000jV-0Z
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:21:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=Cc:To:In-Reply-To:References:Message-Id:Content-Transfer-Encoding:
+ Content-Type:MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
+ List-Help; bh=3NZIUDzncXS/ABiVLpfXYHfk+qKOZAkW4KHzDEB9STE=; b=aM04ImAjtBwdH1l
+ XT6fyDOO2coZe+bK09vMISEaT1m4+iW/WU3YiFIFkJlAdIOaxkzoBOsxoyTiJoAiQR+dmk22QKOqG
+ SDmRphFBPK7tAKDi4qWfrnDB1y3qi3pgvt4OGFh7P0DpSy8HePGMV2lXYc/4jKL3erZlJHGlQABqm
+ f0=;
+Date: Sun, 21 Dec 2025 15:23:17 +0100
+Subject: [PATCH v2 13/14] hw/riscv: Define SiFive E/U CPUs using runtime
+ conditions
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::441;
- envelope-from=soumyajyotisarkar23@gmail.com; helo=mail-pf1-x441.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Message-Id: <20251221-hw-riscv-cpu-int-v2-13-eb49d72c5b2f@rev.ng>
+References: <20251221-hw-riscv-cpu-int-v2-0-eb49d72c5b2f@rev.ng>
+In-Reply-To: <20251221-hw-riscv-cpu-int-v2-0-eb49d72c5b2f@rev.ng>
+To: qemu-devel@nongnu.org
+Cc: Anton Johansson <anjo@rev.ng>, philmd@linaro.org, 
+ pierrick.bouvier@linaro.org, palmer@dabbelt.com, alistair.francis@wdc.com
+Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
+ helo=rev.ng
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,34 +59,134 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update CTEST1 FIFO status when CTEST8 is written, setting to 0xFF when
-FIFO is flushed, otherwise clear to 0x00
+Macros are removed and replaced with inlined ternary statements.  The
+now empty sifive_cpu.h header is then removed.
 
-Signed-off-by: Soumyajyotii Ssarkar<soumyajyotisarkar23@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- hw/scsi/ncr53c710.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/hw/riscv/sifive_cpu.h | 31 -------------------------------
+ include/hw/riscv/sifive_e.h   |  1 -
+ include/hw/riscv/sifive_u.h   |  1 -
+ hw/riscv/sifive_e.c           |  3 ++-
+ hw/riscv/sifive_u.c           |  7 +++++--
+ 5 files changed, 7 insertions(+), 36 deletions(-)
 
-diff --git a/hw/scsi/ncr53c710.c b/hw/scsi/ncr53c710.c
-index 0ea1fc43a3..cdc365478c 100644
---- a/hw/scsi/ncr53c710.c
-+++ b/hw/scsi/ncr53c710.c
-@@ -2161,7 +2161,11 @@ static void ncr710_reg_writeb(NCR710State *s, int offset, uint8_t val)
-         if (val & 0x04) {
-             ncr710_scsi_fifo_init(&s->scsi_fifo);
-             s->dstat |= NCR710_DSTAT_DFE;
-+            s->ctest1 = 0xFF;
-+        } else if (s->ctest8 & 0x04) {
-+            s->ctest1 = 0x00;
-         }
-+        s->ctest8 = val;
-         break;
-     case NCR710_LCRC_REG: /* LCRC */
-         s->lcrc = val;
+diff --git a/include/hw/riscv/sifive_cpu.h b/include/hw/riscv/sifive_cpu.h
+deleted file mode 100644
+index 136799633a..0000000000
+--- a/include/hw/riscv/sifive_cpu.h
++++ /dev/null
+@@ -1,31 +0,0 @@
+-/*
+- * SiFive CPU types
+- *
+- * Copyright (c) 2017 SiFive, Inc.
+- * Copyright (c) 2019 Bin Meng <bmeng.cn@gmail.com>
+- *
+- * This program is free software; you can redistribute it and/or modify it
+- * under the terms and conditions of the GNU General Public License,
+- * version 2 or later, as published by the Free Software Foundation.
+- *
+- * This program is distributed in the hope it will be useful, but WITHOUT
+- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+- * more details.
+- *
+- * You should have received a copy of the GNU General Public License along with
+- * this program.  If not, see <http://www.gnu.org/licenses/>.
+- */
+-
+-#ifndef HW_SIFIVE_CPU_H
+-#define HW_SIFIVE_CPU_H
+-
+-#if defined(TARGET_RISCV32)
+-#define SIFIVE_E_CPU TYPE_RISCV_CPU_SIFIVE_E31
+-#define SIFIVE_U_CPU TYPE_RISCV_CPU_SIFIVE_U34
+-#elif defined(TARGET_RISCV64)
+-#define SIFIVE_E_CPU TYPE_RISCV_CPU_SIFIVE_E51
+-#define SIFIVE_U_CPU TYPE_RISCV_CPU_SIFIVE_U54
+-#endif
+-
+-#endif /* HW_SIFIVE_CPU_H */
+diff --git a/include/hw/riscv/sifive_e.h b/include/hw/riscv/sifive_e.h
+index 31180a680e..ff42ca9c9c 100644
+--- a/include/hw/riscv/sifive_e.h
++++ b/include/hw/riscv/sifive_e.h
+@@ -20,7 +20,6 @@
+ #define HW_SIFIVE_E_H
+ 
+ #include "hw/riscv/riscv_hart.h"
+-#include "hw/riscv/sifive_cpu.h"
+ #include "hw/gpio/sifive_gpio.h"
+ #include "hw/misc/sifive_e_aon.h"
+ #include "hw/boards.h"
+diff --git a/include/hw/riscv/sifive_u.h b/include/hw/riscv/sifive_u.h
+index 0696f85942..5a735bd128 100644
+--- a/include/hw/riscv/sifive_u.h
++++ b/include/hw/riscv/sifive_u.h
+@@ -24,7 +24,6 @@
+ #include "hw/dma/sifive_pdma.h"
+ #include "hw/net/cadence_gem.h"
+ #include "hw/riscv/riscv_hart.h"
+-#include "hw/riscv/sifive_cpu.h"
+ #include "hw/gpio/sifive_gpio.h"
+ #include "hw/misc/sifive_u_otp.h"
+ #include "hw/misc/sifive_u_prci.h"
+diff --git a/hw/riscv/sifive_e.c b/hw/riscv/sifive_e.c
+index 7ed419cf69..20433ac6ce 100644
+--- a/hw/riscv/sifive_e.c
++++ b/hw/riscv/sifive_e.c
+@@ -151,7 +151,8 @@ static void sifive_e_machine_class_init(ObjectClass *oc, const void *data)
+     mc->desc = "RISC-V Board compatible with SiFive E SDK";
+     mc->init = sifive_e_machine_init;
+     mc->max_cpus = 1;
+-    mc->default_cpu_type = SIFIVE_E_CPU;
++    mc->default_cpu_type = (target_riscv64()) ? TYPE_RISCV_CPU_SIFIVE_E51
++                                              : TYPE_RISCV_CPU_SIFIVE_E31;
+     mc->default_ram_id = "riscv.sifive.e.ram";
+     mc->default_ram_size = sifive_e_memmap[SIFIVE_E_DEV_DTIM].size;
+ 
+diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
+index 2ff2059bb9..b3b739bc37 100644
+--- a/hw/riscv/sifive_u.c
++++ b/hw/riscv/sifive_u.c
+@@ -723,7 +723,8 @@ static void sifive_u_machine_class_init(ObjectClass *oc, const void *data)
+     mc->init = sifive_u_machine_init;
+     mc->max_cpus = SIFIVE_U_MANAGEMENT_CPU_COUNT + SIFIVE_U_COMPUTE_CPU_COUNT;
+     mc->min_cpus = SIFIVE_U_MANAGEMENT_CPU_COUNT + 1;
+-    mc->default_cpu_type = SIFIVE_U_CPU;
++    mc->default_cpu_type = (target_riscv64()) ? TYPE_RISCV_CPU_SIFIVE_U54
++                                              : TYPE_RISCV_CPU_SIFIVE_U34;
+     mc->default_cpus = mc->min_cpus;
+     mc->default_ram_id = "riscv.sifive.u.ram";
+     mc->auto_create_sdcard = true;
+@@ -756,6 +757,8 @@ type_init(sifive_u_machine_init_register_types)
+ static void sifive_u_soc_instance_init(Object *obj)
+ {
+     SiFiveUSoCState *s = RISCV_U_SOC(obj);
++    const char *e_cpu_type = (target_riscv64()) ? TYPE_RISCV_CPU_SIFIVE_E51
++                                                : TYPE_RISCV_CPU_SIFIVE_E31;
+ 
+     object_initialize_child(obj, "e-cluster", &s->e_cluster, TYPE_CPU_CLUSTER);
+     qdev_prop_set_uint32(DEVICE(&s->e_cluster), "cluster-id", 0);
+@@ -764,7 +767,7 @@ static void sifive_u_soc_instance_init(Object *obj)
+                             TYPE_RISCV_HART_ARRAY);
+     qdev_prop_set_uint32(DEVICE(&s->e_cpus), "num-harts", 1);
+     qdev_prop_set_uint32(DEVICE(&s->e_cpus), "hartid-base", 0);
+-    qdev_prop_set_string(DEVICE(&s->e_cpus), "cpu-type", SIFIVE_E_CPU);
++    qdev_prop_set_string(DEVICE(&s->e_cpus), "cpu-type", e_cpu_type);
+     qdev_prop_set_uint64(DEVICE(&s->e_cpus), "resetvec", 0x1004);
+ 
+     object_initialize_child(obj, "u-cluster", &s->u_cluster, TYPE_CPU_CLUSTER);
+
 -- 
-2.49.0
+2.51.0
 
 
