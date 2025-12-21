@@ -2,51 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DC56CD4138
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 15:22:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D6FCCD415C
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 15:24:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vXKJu-0004Xh-Pj; Sun, 21 Dec 2025 09:22:02 -0500
+	id 1vXKMB-0001wu-JW; Sun, 21 Dec 2025 09:24:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vXKJ6-0003LU-4S
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:21:17 -0500
-Received: from rev.ng ([94.130.142.21])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vXKJ4-0000hd-K1
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:21:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=Cc:To:In-Reply-To:References:Message-Id:Content-Transfer-Encoding:
- Content-Type:MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=9V+zSRmfapyIIdsQiy/9w4+DSrY3i+wfbXF4IxIKDGQ=; b=vBbOqFwXv/2AxyP
- 3NjfN7TZXiJI6HVZZoO92elsynfl4QWoEIsIkUlJEWrabvB/DqDBwTHptvpr+taHyBEzBd6pt2A57
- /F9bM2Dk9NOoEaXkcy3ltWKIYK7Tffb3Ja2Jt8DmEu01Oy99BrAvRZ1dQcwgXTgRMGKDXRNORzkqH
- ao=;
-Date: Sun, 21 Dec 2025 15:23:14 +0100
-Subject: [PATCH v2 10/14] target/riscv: Move riscv_pmu_read_ctr() to
- internal csr.h header
+ (Exim 4.90_1) (envelope-from <soumyajyotisarkar23@gmail.com>)
+ id 1vXKLe-0001JG-BJ
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:23:54 -0500
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <soumyajyotisarkar23@gmail.com>)
+ id 1vXKLc-0001Js-UB
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:23:50 -0500
+Received: by mail-pf1-x443.google.com with SMTP id
+ d2e1a72fcca58-7f651586be1so1489200b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 21 Dec 2025 06:23:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1766327027; x=1766931827; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+XD/BsROiENdr8y/iTNL+8rSfBE9xfwKYoALONG2xb4=;
+ b=OLsiUa4xy7Bxwoy2cD6UXQPE6JEcCVnzHLLowUKS+pvGhMsrv/+AJlTA2Pkqymc0Nr
+ ZOfHBIjWr4GoCPZS5ho7oRGwxscmPRhKeOkHAcnl3QDVlvUufxAxZzoeY9+gBAkcQeqd
+ gxW3BIz8RFywSI4gUzs2kLucezSEiA13VPRg05QZZvG9CPIR6DvCtHk+0ZNKuYY8pj6Q
+ bx7113zZkskWi/QrXIwWhkyKXkqaHnWrnhybP72GT8WErURYHoNNupldryrXJSVG/PZz
+ aYklIxoioxpVjI/0V/RAi2pFDRKvJ3UQbhQdUoKHt3b6iiPVRP9ug3Ah1Lv1uwh3k1k8
+ InUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1766327027; x=1766931827;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=+XD/BsROiENdr8y/iTNL+8rSfBE9xfwKYoALONG2xb4=;
+ b=TKstD8YQLCPziXV/c0xXzrWmk6O+Bhqoy8Ib9mLsPaUjyD3LexlwiilNFr72Qd+zeq
+ SudxmUWaJJF5Vj1YazzB3bnxqhMzPRKOTKSbpCbzEvg7QB/tPfgiOIL8wJo+zxZRBRay
+ TeGoatSP83ReA+SP9ahRFHBQxxqBjHlOMKwz0E9Tx/DvHg6utb1cIsJGNROEF5CL+6Qb
+ CCsLRhCtwv5wie30s5H5auuxDm8jeiNUirJcWXBSo2A+/wFyWw9ICUOQUTlmg0HCRl3w
+ 9JYnS5b1p3/qCi5TVZ2BXJnJ8W9g7bQNrkU3RuGUGUg7ei0AwTpaSZWA6I458xREStO0
+ R1fw==
+X-Gm-Message-State: AOJu0YyhR7p6JZUdhE/+AtjqWajrYTIXjQRk/ELPRS4DX3o1dA2J/nlI
+ k/suZHg1yIPJMwo4UsVYg+wZqim5v4X9gSCoIF2757xSz2H7iVzBd87bAXrpjdxFRC0=
+X-Gm-Gg: AY/fxX7uf2Xtri83AYRpSJ5bEd12WmM4PXY5015t8WIAqG2NpP72XN+AW75X37KONoP
+ JuL5LiGn/n4N6amONGRJpY48giHJGkqfNky6EP5J6si0cpoBdwjnK3u6IHw/3IIVuC/Ga5fez8L
+ E/V7U0wDsA2+3QgA60H+GPzSq3O+pI3JbI4xQ/QSGrrqgH0gaW+yaZrCkXGWHpDHGEl8+ueocp+
+ 0HU+eZT8CEbxXH9R4y7FqhkJCS/PJVOBMV2v/ItHMQAxFZ1b8srYPgZ/0XxJRxvpvY4MFvrCseS
+ oA9H8xRR38Nw0BSfe/9LexbdurRJSaorWiT0UVMdKByYwehVbr1OQAL4gqjEZyiN0IacFuXjRiI
+ ik+9A7iN5BZ6slXGn6I+aFIcdVQyjaw5QC1Vp1uCD319QY59c/AiW2/Ski9WwtYvemY2KoGeOuQ
+ z6VVCmPr5GW8nU1mrZWeg=
+X-Google-Smtp-Source: AGHT+IEQlWnTY8GRCL0pTDpnbTWuCxP2kE8I43+GuNrZBQ+0tDnZ3FTmWlgUB2sssrF0ItHkUNpoSw==
+X-Received: by 2002:aa7:9903:0:b0:7e8:3fcb:9b0b with SMTP id
+ d2e1a72fcca58-7fe0e8319bfmr8133826b3a.33.1766327027336; 
+ Sun, 21 Dec 2025 06:23:47 -0800 (PST)
+Received: from fedora.. ([118.151.210.82]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7ff7e48f258sm7590449b3a.47.2025.12.21.06.23.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 21 Dec 2025 06:23:46 -0800 (PST)
+From: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
+To: qemu-devel@nongnu.org, deller@gmx.de, sarkarsoumyajyoti23@gmail.com,
+ mark.cave-ayland@ilande.co.uk, richard.henderson@linaro.org
+Cc: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
+Subject: [PATCH 08/10] scsi:ncr710: Simplify disconnect handling
+Date: Sun, 21 Dec 2025 19:53:15 +0530
+Message-ID: <20251221142317.266293-9-soumyajyotisarkar23@gmail.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20251221142317.266293-1-soumyajyotisarkar23@gmail.com>
+References: <20251221142317.266293-1-soumyajyotisarkar23@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251221-hw-riscv-cpu-int-v2-10-eb49d72c5b2f@rev.ng>
-References: <20251221-hw-riscv-cpu-int-v2-0-eb49d72c5b2f@rev.ng>
-In-Reply-To: <20251221-hw-riscv-cpu-int-v2-0-eb49d72c5b2f@rev.ng>
-To: qemu-devel@nongnu.org
-Cc: Anton Johansson <anjo@rev.ng>, philmd@linaro.org, 
- pierrick.bouvier@linaro.org, palmer@dabbelt.com, alistair.francis@wdc.com
-Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
- helo=rev.ng
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::443;
+ envelope-from=soumyajyotisarkar23@gmail.com; helo=mail-pf1-x443.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,61 +96,33 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The function depends on target_ulong and is via the pmu.h header exposed
-to hw/riscv, this function is only used internally in pmu.c and csr.c,
-so move it to the internal csr.h header.
+Simplify disconnect instruction by unconditionally clearing waiting
+statements when command completes
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Signed-off-by: Anton Johansson <anjo@rev.ng>
+Signed-off-by: Soumyajyotii Ssarkar<soumyajyotisarkar23@gmail.com>
 ---
- target/riscv/csr.h | 3 +++
- target/riscv/pmu.h | 2 --
- target/riscv/pmu.c | 1 +
- 3 files changed, 4 insertions(+), 2 deletions(-)
+ hw/scsi/ncr53c710.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/target/riscv/csr.h b/target/riscv/csr.h
-index 3752a0ef43..e6a6f2e85f 100644
---- a/target/riscv/csr.h
-+++ b/target/riscv/csr.h
-@@ -90,4 +90,7 @@ void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
-                        target_ulong val);
- target_ulong pmpaddr_csr_read(CPURISCVState *env, uint32_t addr_index);
- 
-+/* PMU CSRs */
-+RISCVException riscv_pmu_read_ctr(CPURISCVState *env, target_ulong *val,
-+                                  bool upper_half, uint32_t ctr_idx);
- #endif /* RISCV_CSR_H */
-diff --git a/target/riscv/pmu.h b/target/riscv/pmu.h
-index 3853d0e262..ca40cfeed6 100644
---- a/target/riscv/pmu.h
-+++ b/target/riscv/pmu.h
-@@ -36,7 +36,5 @@ int riscv_pmu_setup_timer(CPURISCVState *env, uint64_t value,
-                           uint32_t ctr_idx);
- void riscv_pmu_update_fixed_ctrs(CPURISCVState *env, target_ulong newpriv,
-                                  bool new_virt);
--RISCVException riscv_pmu_read_ctr(CPURISCVState *env, target_ulong *val,
--                                  bool upper_half, uint32_t ctr_idx);
- 
- #endif /* RISCV_PMU_H */
-diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
-index 708f2ec7aa..9701c8cba6 100644
---- a/target/riscv/pmu.c
-+++ b/target/riscv/pmu.c
-@@ -22,6 +22,7 @@
- #include "qemu/timer.h"
- #include "cpu.h"
- #include "pmu.h"
-+#include "target/riscv/csr.h"
- #include "exec/icount.h"
- #include "system/device_tree.h"
- 
-
+diff --git a/hw/scsi/ncr53c710.c b/hw/scsi/ncr53c710.c
+index 277aa2c3d3..dd453991e0 100644
+--- a/hw/scsi/ncr53c710.c
++++ b/hw/scsi/ncr53c710.c
+@@ -1469,9 +1469,7 @@ again:
+                 if (s->command_complete != NCR710_CMD_PENDING) {
+                     s->scntl1 &= ~NCR710_SCNTL1_CON;
+                     s->istat &= ~NCR710_ISTAT_CON;
+-                    if (s->waiting == NCR710_WAIT_RESELECT) {
+-                        s->waiting = NCR710_WAIT_NONE;
+-                    }
++                    s->waiting = NCR710_WAIT_NONE;
+                 } else {
+                     if (s->current) {
+                         s->current->resume_offset = s->dsp;
 -- 
-2.51.0
+2.49.0
 
 
