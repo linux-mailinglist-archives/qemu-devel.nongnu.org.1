@@ -2,88 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F0EECD4156
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 15:24:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AC19CD4135
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 15:22:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vXKM9-0001pY-UV; Sun, 21 Dec 2025 09:24:22 -0500
+	id 1vXKJw-0004ib-3u; Sun, 21 Dec 2025 09:22:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <soumyajyotisarkar23@gmail.com>)
- id 1vXKLi-0001LH-CX
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:23:58 -0500
-Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <soumyajyotisarkar23@gmail.com>)
- id 1vXKLg-0001Lj-Bs
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:23:53 -0500
-Received: by mail-pf1-x442.google.com with SMTP id
- d2e1a72fcca58-7f0db5700b2so2926011b3a.0
- for <qemu-devel@nongnu.org>; Sun, 21 Dec 2025 06:23:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1766327030; x=1766931830; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0L51uaKTVgxyKMIF4vldQB1dPrYARBcQxc3sUNPphHw=;
- b=eX/KbLvfS2VDdxqiwi2+U9cYWvhZ+uW4cXrftu83xrg3CYJ9eWkmsjqD8PeAXWFG+N
- kUL89+85TXvoHKrKo8cKB/iYLVCOebSBAswpxw36Du+qujaEAhQ3591kyqiRa1OwKiBJ
- 5vl8aW1e1XMwG2ABMkyAP9dxjh/bAFXeU+s7DH/qhwvsMp2kMC3Es7FtHwCIbH8VKFZ2
- NM6HlRG1BtW/OURgA5misTgXCi+TOwBdn6SbYJ6ZbHShyKImEM0iBgTcf4KLv5jVwjPD
- bnoVRsszmHlrO0miMxjHjTsr+kzyLuc4ff7D7lhAB7jr3Ne6md2HJa1MPqQEand19UA8
- EumQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766327030; x=1766931830;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=0L51uaKTVgxyKMIF4vldQB1dPrYARBcQxc3sUNPphHw=;
- b=TGjuteJVcR98T5Qqd9jTctSUXKBSgEuRmTSRFnm9QzqelhUbMF2chukypgW6cykHmb
- reqK8FikxKpY7ZuHBpDBhNQhAqfkfboKQYaDW8ROkXusg6//g4q2/47xZlhJ6NGvyRrU
- 6t45+YfCwV1Sc3dZrUd0dXPH0DlRZVdwFAmgOQgAW79DfgSVDBuZv5n8FuSo71EQAU/C
- V3l7zGz8pWvBoJc8r3AHeg39jTz2pNOzoX7x0AbIcG2VYASYxJOM/bkWEmsvhuo6GX6Q
- OmoxeJe4Af6t/AINFF0w/R/0HTwPvvuQqfAPzapaYwXuMdGqR92H8DH9XgMdpTZhsWvw
- eevw==
-X-Gm-Message-State: AOJu0YzRBHBhIrqUJgBb3HG+AZp8Bv/gquJGxK1bWot87AyIM9JGctmr
- 7L90JjT/WsdGACzTfbEL+SFLQALp4khm4ESy2bzXO8e0EDjjHrKIQB5R6RvxbgxGtV4=
-X-Gm-Gg: AY/fxX7SLNiou/z51E//ygcVFroj1Yebqz6thlVbAL4cpzgofEyPTTehu6x6auSzUq1
- ZuP0IVFROl0NeNkmONvxrwD6jPUf7IOFMlUbZWw+pSI52V9zl9tw9PvHIaodmx0uJE2a7IXTAu6
- EHlI+Z+f3RP/c/IE4+R3zh6yrjVDKDYEyg1KuJRgpe4tf11ph2wuFbsAmeNtu6iJoq3+4wTrP7K
- WNSC3S+yxR9fcHhSCYSQa/nGPX2fInWYVMwxEG25EuhAvQBAvGlS6DNa93zmwa6IiKhnaevPccg
- D0xpT9tTCpAjz6iuymNKEWTgwu6HQx4U/gt8xod9txYVu6cPtIV0WiFcuKKZHqMLEQsyliha2n9
- 68eJFuqzyog4y/AOsv6RwLfWCCMMeVhl//C3dg9P1JfRpZZhHivAM/a5nRPaZlFd+CW3oB8XTmX
- +yWnr1fQhTEpiOLf626g4=
-X-Google-Smtp-Source: AGHT+IEiLRToAUJMCSGTEtKUnhhjPHenbVqSZ+B/6+bNpjDbZ9IJHVMCRTVNFQNEqa1kfMsAUPp3HQ==
-X-Received: by 2002:a05:6a00:451a:b0:7fc:da5:f85c with SMTP id
- d2e1a72fcca58-7ff6607b30dmr7547030b3a.38.1766327030412; 
- Sun, 21 Dec 2025 06:23:50 -0800 (PST)
-Received: from fedora.. ([118.151.210.82]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7ff7e48f258sm7590449b3a.47.2025.12.21.06.23.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 21 Dec 2025 06:23:49 -0800 (PST)
-From: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
-To: qemu-devel@nongnu.org, deller@gmx.de, sarkarsoumyajyoti23@gmail.com,
- mark.cave-ayland@ilande.co.uk, richard.henderson@linaro.org
-Cc: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
-Subject: [PATCH 09/10] scsi:ncr710: Fix DSA register
-Date: Sun, 21 Dec 2025 19:53:16 +0530
-Message-ID: <20251221142317.266293-10-soumyajyotisarkar23@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20251221142317.266293-1-soumyajyotisarkar23@gmail.com>
-References: <20251221142317.266293-1-soumyajyotisarkar23@gmail.com>
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vXKJU-0003fD-P1
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:21:36 -0500
+Received: from rev.ng ([94.130.142.21])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vXKJQ-0000jN-7e
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:21:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=Cc:To:In-Reply-To:References:Message-Id:Content-Transfer-Encoding:
+ Content-Type:MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
+ List-Help; bh=5Peh03QySBNfkwz8iiPWltK4cB9vV/x1+Lk9JHpw06A=; b=i5PqFbK+BygYrXQ
+ SS5zhV4WUENTIu+Yinds4NbmnSzChx0BmoOtzUHOjgmfoHn57WsnZVPNwcVu7+Uz/N714Lv21HQym
+ ZcioAqQpi4j0+Q7ccQsCj/PDmEBB0b6Tl+j5NyZ3Gx9cRFbWEglEQ+x38YODFFCcDOG1G0xx26nTl
+ cI=;
+Date: Sun, 21 Dec 2025 15:23:16 +0100
+Subject: [PATCH v2 12/14] target/riscv: Stub out kvm functions
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::442;
- envelope-from=soumyajyotisarkar23@gmail.com; helo=mail-pf1-x442.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251221-hw-riscv-cpu-int-v2-12-eb49d72c5b2f@rev.ng>
+References: <20251221-hw-riscv-cpu-int-v2-0-eb49d72c5b2f@rev.ng>
+In-Reply-To: <20251221-hw-riscv-cpu-int-v2-0-eb49d72c5b2f@rev.ng>
+To: qemu-devel@nongnu.org
+Cc: Anton Johansson <anjo@rev.ng>, philmd@linaro.org, 
+ pierrick.bouvier@linaro.org, palmer@dabbelt.com, alistair.francis@wdc.com
+Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
+ helo=rev.ng
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,45 +58,59 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement byte wise write handling for DSA register instead of using
-the macro, as NetBSD driver accesses it byte by byte
+Functions used externally by hw/riscv are stubbed out for non-kvm
+configurations, allowing a single compilation of hw/riscv.
 
-Signed-off-by: Soumyajyotii Ssarkar<soumyajyotisarkar23@gmail.com>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- hw/scsi/ncr53c710.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ target/riscv/kvm/kvm-stub.c  | 23 +++++++++++++++++++++++
+ target/riscv/kvm/meson.build |  1 +
+ 2 files changed, 24 insertions(+)
 
-diff --git a/hw/scsi/ncr53c710.c b/hw/scsi/ncr53c710.c
-index dd453991e0..0ea1fc43a3 100644
---- a/hw/scsi/ncr53c710.c
-+++ b/hw/scsi/ncr53c710.c
-@@ -2078,7 +2078,21 @@ static void ncr710_reg_writeb(NCR710State *s, int offset, uint8_t val)
-         /* Linux writes to these readonly registers on startup */
-         return;
- 
--    CASE_SET_REG32(dsa, NCR710_DSA_REG)
-+    case NCR710_DSA_REG:
-+        s->dsa &= 0xffffff00;
-+        s->dsa |= val;
-+        break;
-+    case NCR710_DSA_REG + 1:
-+        s->dsa &= 0xffff00ff;
-+        s->dsa |= val << 8;
-+        break;
-+    case NCR710_DSA_REG + 2:
-+        s->dsa &= 0xff00ffff;
-+        s->dsa |= val << 16;
-+        break;
-+    case NCR710_DSA_REG + 3:
-+        s->dsa &= 0x00ffffff;
-+        s->dsa |= val << 24;
-         break;
- 
-     case NCR710_CTEST0_REG: /* CTEST0 */
+diff --git a/target/riscv/kvm/kvm-stub.c b/target/riscv/kvm/kvm-stub.c
+new file mode 100644
+index 0000000000..64e39c96d8
+--- /dev/null
++++ b/target/riscv/kvm/kvm-stub.c
+@@ -0,0 +1,23 @@
++/*
++ * QEMU RISCV specific KVM stubs
++ *
++ *  Copyright (c) rev.ng Labs Srl.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "target/riscv/kvm/kvm_riscv.h"
++
++void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
++                          uint64_t aia_irq_num, uint64_t aia_msi_num,
++                          uint64_t aplic_base, uint64_t imsic_base,
++                          uint64_t guest_num)
++{
++    g_assert_not_reached();
++}
++
++uint64_t kvm_riscv_get_timebase_frequency(RISCVCPU *cpu)
++{
++    g_assert_not_reached();
++}
+diff --git a/target/riscv/kvm/meson.build b/target/riscv/kvm/meson.build
+index 7e92415091..d3f395f431 100644
+--- a/target/riscv/kvm/meson.build
++++ b/target/riscv/kvm/meson.build
+@@ -1 +1,2 @@
++riscv_ss.add(when: 'CONFIG_KVM', if_false: files('kvm-stub.c'))
+ riscv_ss.add(when: 'CONFIG_KVM', if_true: files('kvm-cpu.c'))
+
 -- 
-2.49.0
+2.51.0
 
 
