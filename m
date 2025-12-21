@@ -2,51 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC970CD413B
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 15:22:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A33B1CD414D
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 15:24:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vXKJt-0004MO-AL; Sun, 21 Dec 2025 09:22:01 -0500
+	id 1vXKM8-0001ct-HD; Sun, 21 Dec 2025 09:24:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vXKJ0-0003GM-UX
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:21:10 -0500
-Received: from rev.ng ([94.130.142.21])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vXKIy-0000gn-Pv
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:21:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=Cc:To:In-Reply-To:References:Message-Id:Content-Transfer-Encoding:
- Content-Type:MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=74zb+FExjdJPJZXYLz9xpbv7g8TXAM20uG6m9dgRS/Q=; b=n0pZA9GmBa0p6t1
- SpsITi2CKhxhaqGk5bi9y1w9VW9+2dGUbvGlwsVpop2ioaLw+bbH9nCOOpz5Sdrpywq+Z/9xlhuRW
- yR74gLcXnpLjrEnXgpgZMqHds4s2xFSaVlfzTEK4Nmc1835foNWMJwZTj4y+k0wEE4+GAJ3KN0pMY
- G4=;
-Date: Sun, 21 Dec 2025 15:23:13 +0100
-Subject: [PATCH v2 09/14] target/riscv: Replace TARGET_LONG_BITS in header
- exposed to common code
+ (Exim 4.90_1) (envelope-from <soumyajyotisarkar23@gmail.com>)
+ id 1vXKLb-0001Io-Hj
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:23:53 -0500
+Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <soumyajyotisarkar23@gmail.com>)
+ id 1vXKLa-0001Jf-10
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:23:47 -0500
+Received: by mail-pf1-x442.google.com with SMTP id
+ d2e1a72fcca58-7b89c1ce9easo3654752b3a.2
+ for <qemu-devel@nongnu.org>; Sun, 21 Dec 2025 06:23:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1766327024; x=1766931824; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bsRWI5gndwtWwttnMKZAc/IN3m1275AuEyjWfFtSTCA=;
+ b=TmFL8a9pK3CZugTQY3V3EKee2UBv+fNEmcP4Z7bup98dYwt6YFpUzE2ElXpB1zJNYX
+ l6IGafeYC6SB0ZUk+1ARZsKWf61xKh85keAyEcoN65R3Ew0bSVv2raTsNg8HzqqFRu9O
+ x/gyfKMjrN1/5qPhwAOMKnhNEPhX7UWgjflPfuU+WzfjmiUuE9ZIi8k8CtW9mPlIn15o
+ 5B4vAav3QtccUpIYKrgbfblRvt88u2kMRbBbRHqjkcERke/YrPXRfTVICjYHaoErNNom
+ lmBNokRfPPt7uDfHdrDLCg+nDw+eh/516E2cn9v+WxA8YYgqUbHXMytWQ85wwWeUKYCS
+ t9LQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1766327024; x=1766931824;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=bsRWI5gndwtWwttnMKZAc/IN3m1275AuEyjWfFtSTCA=;
+ b=G167fKv9CDn2DpjjsMqmSfLwTkrcN0gIjU1fmClztCsy1CnVSLl8QGLhc/R1B9PvSc
+ SR841WV+fsEMIBl/QpF6hbhj4aV5SDWyWBABTGHgCyvClHsWhpqUV2Qff5WrQm+Fwqf0
+ eCwCNCHHrSJutTbwHLUzZmrmG6U5mWq8NaCoWxV15VxkfqOZ/Db64AzkcbarrvvBWSLY
+ VkDEsF9eUAxpeTGOaoc6mvDrWT4GC8NAbOaugUdAXgRHyxMdSTFf0Tir6Wl6raIzLefp
+ T9GUratEQUsyeLUfW4UpZrOJS7lYTQOAhqLK04S829TawYl/LQ3q/RJE5K+PNs/R0Ayu
+ HlpA==
+X-Gm-Message-State: AOJu0YzlL4c3A9c3Uq+eGhk/KjxYg9ybJG+vsB/ZdHxWEGoNMh5talcm
+ XkJLPWpK7mBEqAWyRZZTCqFnblnW9rrP6+VxpfavQ0rE+RcMFezSCPdH7xURL0N9naA=
+X-Gm-Gg: AY/fxX4eXMCEa+tW/0T6KulMWt5LEEC4wFz3kAesyzLdL9CF1S//4t1Hd1Ae9zUG12b
+ Rzd5F80qXOaYK/VUDZFeLvDsTpLkVm6V1VoPegE9jOLq0Q5BmHa5Cc+AoMpsBYbPSsdlmZUgTv7
+ MYdRICWriFETLe1sUC4IcyHZ+n5eM+M3ZZb/ZRbAyIJK237RC3mcw9P4weMHr/zzaI6hQgK+OHX
+ zO7eEz8JCwvDSuxDTpf9KBN4FDBK3WgWLIWCJhiuB1WTAX9k2j3jW6aAHHMqzpPmiiLJ8rw3eGE
+ TtbsZU2c8yL9Oz8rCAa9LEtcDGmayiq1uwPd4tm3TD1KEoDwqIajC0xretSFJau+pkJTUPTmWcN
+ ZZdw8yLgCva/zNW1FxrMgxFnr/1CuYDy6DuJzRbs+bQrze1uivaGDU5ecF79FM27KW+6zXIG2jL
+ FTUJNdsc0FgoO+HLRoeWY=
+X-Google-Smtp-Source: AGHT+IGdc+xTBvozWdC+Gkz1WeNdvswNO5j6t4X6U4VfklluPQ/i4AFgioBPV7IDG6asSp5NucGj6w==
+X-Received: by 2002:a05:6a00:1f17:b0:7f1:fad7:2ce with SMTP id
+ d2e1a72fcca58-7ff679669d1mr8994532b3a.48.1766327024417; 
+ Sun, 21 Dec 2025 06:23:44 -0800 (PST)
+Received: from fedora.. ([118.151.210.82]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7ff7e48f258sm7590449b3a.47.2025.12.21.06.23.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 21 Dec 2025 06:23:44 -0800 (PST)
+From: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
+To: qemu-devel@nongnu.org, deller@gmx.de, sarkarsoumyajyoti23@gmail.com,
+ mark.cave-ayland@ilande.co.uk, richard.henderson@linaro.org
+Cc: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
+Subject: [PATCH 07/10] scsi:ncr53c710: Add LUN scanning
+Date: Sun, 21 Dec 2025 19:53:14 +0530
+Message-ID: <20251221142317.266293-8-soumyajyotisarkar23@gmail.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20251221142317.266293-1-soumyajyotisarkar23@gmail.com>
+References: <20251221142317.266293-1-soumyajyotisarkar23@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251221-hw-riscv-cpu-int-v2-9-eb49d72c5b2f@rev.ng>
-References: <20251221-hw-riscv-cpu-int-v2-0-eb49d72c5b2f@rev.ng>
-In-Reply-To: <20251221-hw-riscv-cpu-int-v2-0-eb49d72c5b2f@rev.ng>
-To: qemu-devel@nongnu.org
-Cc: Anton Johansson <anjo@rev.ng>, philmd@linaro.org, 
- pierrick.bouvier@linaro.org, palmer@dabbelt.com, alistair.francis@wdc.com
-Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
- helo=rev.ng
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::442;
+ envelope-from=soumyajyotisarkar23@gmail.com; helo=mail-pf1-x442.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,118 +96,53 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-IRQ_LOCAL_GUEST_MAX depends on TARGET_LONG_BITS and is used in
-hw/intc/riscv_imsic.c.  The macro is replaced by a field in RISCVCPUDef
-initialized in riscv_cpu_class_base_init().
+Add multi-lun support by scanning all 8 luns when ANT bit is set
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Signed-off-by: Anton Johansson <anjo@rev.ng>
+Signed-off-by: Soumyajyotii Ssarkar<soumyajyotisarkar23@gmail.com>
 ---
- target/riscv/cpu.h      |  1 +
- target/riscv/cpu_bits.h |  2 --
- hw/intc/riscv_imsic.c   |  4 +++-
- target/riscv/cpu.c      | 14 ++++++++++++--
- 4 files changed, 16 insertions(+), 5 deletions(-)
+ hw/scsi/ncr53c710.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 946665d9ed..3573581f0c 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -563,6 +563,7 @@ typedef struct RISCVCPUDef {
-     int32_t vext_spec;
-     RISCVCPUConfig cfg;
-     bool bare;
-+    uint8_t irq_local_guest_max;
-     const RISCVCSR *custom_csrs;
- } RISCVCPUDef;
- 
-diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index b62dd82fe7..13e052bce2 100644
---- a/target/riscv/cpu_bits.h
-+++ b/target/riscv/cpu_bits.h
-@@ -809,8 +809,6 @@ typedef enum RISCVException {
- #define IRQ_S_GEXT                         12
- #define IRQ_PMU_OVF                        13
- #define IRQ_LOCAL_MAX                      64
--/* -1 is due to bit zero of hgeip and hgeie being ROZ. */
--#define IRQ_LOCAL_GUEST_MAX                (TARGET_LONG_BITS - 1)
- 
- /* RNMI causes */
- #define RNMI_MAX                           16
-diff --git a/hw/intc/riscv_imsic.c b/hw/intc/riscv_imsic.c
-index 9274a1e842..3d32198468 100644
---- a/hw/intc/riscv_imsic.c
-+++ b/hw/intc/riscv_imsic.c
-@@ -453,13 +453,15 @@ DeviceState *riscv_imsic_create(hwaddr addr, uint32_t hartid, bool mmode,
- {
-     DeviceState *dev = qdev_new(TYPE_RISCV_IMSIC);
-     CPUState *cpu = cpu_by_arch_id(hartid);
-+    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(RISCV_CPU(cpu));
-     uint32_t i;
- 
-     assert(!(addr & (IMSIC_MMIO_PAGE_SZ - 1)));
-     if (mmode) {
-         assert(num_pages == 1);
-     } else {
--        assert(num_pages >= 1 && num_pages <= (IRQ_LOCAL_GUEST_MAX + 1));
-+        assert(num_pages >= 1 &&
-+               num_pages <= (mcc->def->irq_local_guest_max + 1));
-     }
-     assert(IMSIC_MIN_ID <= num_ids);
-     assert(num_ids <= IMSIC_MAX_ID);
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 7a8b8d736e..dd58e63ecd 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1019,6 +1019,7 @@ void riscv_add_satp_mode_properties(Object *obj)
- 
- static void riscv_cpu_set_irq(void *opaque, int irq, int level)
- {
-+    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(opaque);
-     RISCVCPU *cpu = RISCV_CPU(opaque);
-     CPURISCVState *env = &cpu->env;
- 
-@@ -1053,7 +1054,7 @@ static void riscv_cpu_set_irq(void *opaque, int irq, int level)
-         default:
-             g_assert_not_reached();
-         }
--    } else if (irq < (IRQ_LOCAL_MAX + IRQ_LOCAL_GUEST_MAX)) {
-+    } else if (irq < (IRQ_LOCAL_MAX + mcc->def->irq_local_guest_max)) {
-         /* Require H-extension for handling guest local interrupts */
-         if (!riscv_has_ext(env, RVH)) {
-             g_assert_not_reached();
-@@ -1100,7 +1101,7 @@ static void riscv_cpu_init(Object *obj)
- 
- #ifndef CONFIG_USER_ONLY
-     qdev_init_gpio_in(DEVICE(obj), riscv_cpu_set_irq,
--                      IRQ_LOCAL_MAX + IRQ_LOCAL_GUEST_MAX);
-+                      IRQ_LOCAL_MAX + mcc->def->irq_local_guest_max);
-     qdev_init_gpio_in_named(DEVICE(cpu), riscv_cpu_set_nmi,
-                             "riscv.cpu.rnmi", RNMI_MAX);
- #endif /* CONFIG_USER_ONLY */
-@@ -2791,6 +2792,15 @@ static void riscv_cpu_class_base_init(ObjectClass *c, const void *data)
-         mcc->def = g_new0(RISCVCPUDef, 1);
-     }
- 
-+    /*
-+     * RISCVCPUDef::irq_local_guest_max is initialized to 
-+     * `target_long_bits()-1` due to bit zero of hgeip and hgeie
-+     * being ROZ.
-+     *
-+     * This value does not vary between CPU types.
-+     */
-+    mcc->def->irq_local_guest_max = target_long_bits() - 1;
-+
-     if (data) {
-         const RISCVCPUDef *def = data;
-         mcc->def->bare |= def->bare;
-
+diff --git a/hw/scsi/ncr53c710.c b/hw/scsi/ncr53c710.c
+index 3d7318c12e..277aa2c3d3 100644
+--- a/hw/scsi/ncr53c710.c
++++ b/hw/scsi/ncr53c710.c
+@@ -1422,8 +1422,30 @@ again:
+                         s->dsp = s->dnad;
+                         break;
+                     }
+-                } else if (!scsi_device_find(&s->bus, 0, idbitstonum(id), 0)) {
++                }
++                bool device_exists = false;
++                if (insn & (1 << 24)) {
++                    /* ATN set - scan all LUNs for this target */
++                    for (int lun = 0; lun < 8; lun++) {
++                        SCSIDevice *dev = scsi_device_find(&s->bus, 0,
++                                                           idbitstonum(id),
++                                                           lun);
++                        if (dev) {
++                            device_exists = true;
++                            break;
++                        }
++                    }
++                } else {
++                    /* No ATN - check only LUN 0 */
++                    SCSIDevice *dev = scsi_device_find(&s->bus, 0,
++                                                       idbitstonum(id), 0);
++                    device_exists = dev != NULL;
++                }
++                if (!device_exists) {
+                     ncr710_bad_selection(s, id);
++                    if (!(insn & (1 << 24)) && addr != 0) {
++                        s->dsp = addr;
++                    }
+                     break;
+                 } else {
+                     /*
 -- 
-2.51.0
+2.49.0
 
 
