@@ -2,68 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC1CFCD4189
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 15:46:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4202ACD4118
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 15:20:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vXKgl-0008Uk-Cq; Sun, 21 Dec 2025 09:45:40 -0500
+	id 1vXKHW-0002Zt-O8; Sun, 21 Dec 2025 09:19:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <me@ziyao.cc>) id 1vXIVb-000678-Pp
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 07:25:59 -0500
-Received: from mail90.out.titan.email ([209.209.25.243])
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vXKHN-0002Zc-Mf
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:19:26 -0500
+Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <me@ziyao.cc>) id 1vXIVV-0002eI-3a
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 07:25:54 -0500
-Received: from localhost (localhost [127.0.0.1])
- by smtp-out.flockmail.com (Postfix) with ESMTP id 4dZ0qL14Rfz9rw1;
- Sun, 21 Dec 2025 12:25:50 +0000 (UTC)
-DKIM-Signature: a=rsa-sha256; bh=iTN5dMOrifzbia4Ch2o7mKlW8qudrJgZQ0ZwkJO7TV0=; 
- c=relaxed/relaxed; d=ziyao.cc;
- h=from:subject:message-id:date:mime-version:to:cc:from:to:cc:subject:date:message-id:in-reply-to:reply-to:references;
- q=dns/txt; s=titan1; t=1766319950; v=1;
- b=H++cY+pjIkNJnP7F2a+Z+fvvXLen5YNHmn6KEvMz78hI9rD99FhB1G01xP360HAT8WlATC2F
- 8IoddGWGMxlx3gAWrSSYDQHQnv4XcJHJ2w7HIiIsAfmthHSqOe9Ovqmt2x4eDmStYSz8FDP7Zwk
- kCd6ItLM5jxN5KdVOIV4v/2Q=
-Received: from ketchup (unknown [117.171.66.90])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by smtp-out.flockmail.com (Postfix) with ESMTPSA id 4dZ0qJ1r6Tz9rvR;
- Sun, 21 Dec 2025 12:25:48 +0000 (UTC)
-Feedback-ID: :me@ziyao.cc:ziyao.cc:flockmailId
-From: Yao Zi <me@ziyao.cc>
-To: Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: qemu-devel@nongnu.org,
-	Yao Zi <me@ziyao.cc>
-Subject: [PATCH] hw/loongarch/virt: Don't abort on access to unimplemented
- IOCSR
-Date: Sun, 21 Dec 2025 12:25:12 +0000
-Message-ID: <20251221122511.56544-2-me@ziyao.cc>
-X-Mailer: git-send-email 2.51.2
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vXKHK-00008p-St
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:19:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc:
+ To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
+ List-Help; bh=WQ98TkzobVimMQoi/lkf046CuMEdeeKPobxJL4R4MVg=; b=s9QAXuoGtxWEPX0
+ Amgiv5wG/LAhR+xSOJxX+EnU6TMggtqNLeQY3ez3IsPaT3sUreb021Dr/ujUABTDShZIpsd+k8AZw
+ gugp547a6GsYGQv1oeZW+9JhCJuE3BossepJ/pN72QQ2dNY1E49iXhK/RsdQ0jhE+JBkm5v7kDomk
+ rs=;
+To: qemu-devel@nongnu.org
+Cc: brian.cain@oss.qualcomm.com,
+	Anton Johansson <anjo@rev.ng>
+Subject: [PATCH] target/hexagon: Widen MemLog::width to 32 bits
+Date: Sun, 21 Dec 2025 15:22:32 +0100
+Message-ID: <20251221142232.22738-1-anjo@rev.ng>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-F-Verdict: SPFVALID
-X-Titan-Src-Out: 1766319950000112861.21635.7776584213408663727@prod-use1-smtp-out1003.
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.4 cv=a8/K9VSF c=1 sm=1 tr=0 ts=6947e74e
- a=rBp+3XZz9uO5KTvnfbZ58A==:117 a=rBp+3XZz9uO5KTvnfbZ58A==:17
- a=MKtGQD3n3ToA:10 a=1oJP67jkp3AA:10 a=CEWIc4RMnpUA:10
- a=x6NrL3YJSzhxXpqj1ScA:9 a=3z85VNIBY5UIEeAh_hcH:22
- a=NWVoK91CQySWRX1oVYDe:22
-Received-SPF: pass client-ip=209.209.25.243; envelope-from=me@ziyao.cc;
- helo=mail90.out.titan.email
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
+ helo=rev.ng
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Sun, 21 Dec 2025 09:45:02 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,64 +55,139 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reading/writing unimplemented IOCSR on real LoongArch hardware doesn't
-trigger any exceptions, instead, reading always results in zero and
-writing is simply ignored.
+MemLog::width is a uint8_t value mapped to a TCGv (32 bit), the only
+reason this currently works is because MemLog::width is padded to 32
+bits.  Widen the field to uint32_t and fix the size of the TCGv
+operations as well.  Use uint8_t when passing around the
+field as an immediate to retain previous truncation behaviour.
 
-Real-world applications, like memtest86plus, depend on the behavior to
-run. However, since commit f2e61edb2946 ("hw/loongarch/virt: Use
-MemTxAttrs interface for misc ops") which adds a call to
-g_assert_not_reached() in the path of handling unimplemented IOCSRs,
-QEMU would abort in the case.
-
-Replace the assertion with qemu_log_mask(LOG_UNIMP, ...), so these
-applications could run. It's still possible to examine unimplemented
-IOCSR access through "-d unimp" command line arguments.
-
-Fixes: f2e61edb2946 ("hw/loongarch/virt: Use MemTxAttrs interface for misc ops")
-Signed-off-by: Yao Zi <me@ziyao.cc>
+Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- hw/loongarch/virt.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ target/hexagon/cpu.h       | 2 +-
+ target/hexagon/op_helper.h | 4 ++--
+ target/hexagon/translate.h | 2 +-
+ target/hexagon/genptr.c    | 6 +++---
+ target/hexagon/op_helper.c | 4 ++--
+ target/hexagon/translate.c | 4 ++--
+ 6 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 49434ad1828b..8d7da5fac550 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -46,6 +46,7 @@
- #include "hw/block/flash.h"
- #include "hw/virtio/virtio-iommu.h"
- #include "qemu/error-report.h"
-+#include "qemu/log.h"
- #include "kvm/kvm_loongarch.h"
+diff --git a/target/hexagon/cpu.h b/target/hexagon/cpu.h
+index 43a854f517..9d3df84ee6 100644
+--- a/target/hexagon/cpu.h
++++ b/target/hexagon/cpu.h
+@@ -46,7 +46,7 @@
  
- static void virt_get_dmsi(Object *obj, Visitor *v, const char *name,
-@@ -622,7 +623,9 @@ static MemTxResult virt_iocsr_misc_write(void *opaque, hwaddr addr,
-                           features, attrs, NULL);
-         break;
-     default:
--        g_assert_not_reached();
-+        qemu_log_mask(LOG_UNIMP, "%s: Unimplemented IOCSR 0x%" HWADDR_PRIx "\n",
-+                      __func__, addr);
-+        break;
-     }
+ typedef struct {
+     target_ulong va;
+-    uint8_t width;
++    uint32_t width;
+     uint32_t data32;
+     uint64_t data64;
+ } MemLog;
+diff --git a/target/hexagon/op_helper.h b/target/hexagon/op_helper.h
+index 66119cf3d4..ff65a94d57 100644
+--- a/target/hexagon/op_helper.h
++++ b/target/hexagon/op_helper.h
+@@ -20,8 +20,8 @@
  
-     return MEMTX_OK;
-@@ -680,7 +683,9 @@ static MemTxResult virt_iocsr_misc_read(void *opaque, hwaddr addr,
-         }
-         break;
-     default:
--        g_assert_not_reached();
-+        qemu_log_mask(LOG_UNIMP, "%s: Unimplemented IOCSR 0x%" HWADDR_PRIx "\n",
-+                      __func__, addr);
-+        break;
-     }
+ /* Misc functions */
+ void log_store64(CPUHexagonState *env, target_ulong addr,
+-                 int64_t val, int width, int slot);
++                 int64_t val, uint8_t width, int slot);
+ void log_store32(CPUHexagonState *env, target_ulong addr,
+-                 target_ulong val, int width, int slot);
++                 target_ulong val, uint8_t width, int slot);
  
-     *data = ret;
+ #endif
+diff --git a/target/hexagon/translate.h b/target/hexagon/translate.h
+index d251e2233f..9e8f54edb5 100644
+--- a/target/hexagon/translate.h
++++ b/target/hexagon/translate.h
+@@ -271,7 +271,7 @@ extern TCGv hex_pred[NUM_PREGS];
+ extern TCGv hex_slot_cancelled;
+ extern TCGv hex_new_value_usr;
+ extern TCGv hex_store_addr[STORES_MAX];
+-extern TCGv hex_store_width[STORES_MAX];
++extern TCGv_i32 hex_store_width[STORES_MAX];
+ extern TCGv hex_store_val32[STORES_MAX];
+ extern TCGv_i64 hex_store_val64[STORES_MAX];
+ extern TCGv hex_llsc_addr;
+diff --git a/target/hexagon/genptr.c b/target/hexagon/genptr.c
+index cecaece4ae..9c66ca181a 100644
+--- a/target/hexagon/genptr.c
++++ b/target/hexagon/genptr.c
+@@ -401,10 +401,10 @@ static TCGv gen_slotval(DisasContext *ctx)
+ }
+ #endif
+ 
+-void gen_store32(TCGv vaddr, TCGv src, int width, uint32_t slot)
++void gen_store32(TCGv vaddr, TCGv src, uint8_t width, uint32_t slot)
+ {
+     tcg_gen_mov_tl(hex_store_addr[slot], vaddr);
+-    tcg_gen_movi_tl(hex_store_width[slot], width);
++    tcg_gen_movi_i32(hex_store_width[slot], width);
+     tcg_gen_mov_tl(hex_store_val32[slot], src);
+ }
+ 
+@@ -444,7 +444,7 @@ void gen_store4i(TCGv_env tcg_env, TCGv vaddr, int32_t src, uint32_t slot)
+ void gen_store8(TCGv_env tcg_env, TCGv vaddr, TCGv_i64 src, uint32_t slot)
+ {
+     tcg_gen_mov_tl(hex_store_addr[slot], vaddr);
+-    tcg_gen_movi_tl(hex_store_width[slot], 8);
++    tcg_gen_movi_i32(hex_store_width[slot], 8);
+     tcg_gen_mov_i64(hex_store_val64[slot], src);
+ }
+ 
+diff --git a/target/hexagon/op_helper.c b/target/hexagon/op_helper.c
+index e2e80ca7ef..823307696d 100644
+--- a/target/hexagon/op_helper.c
++++ b/target/hexagon/op_helper.c
+@@ -52,7 +52,7 @@ G_NORETURN void HELPER(raise_exception)(CPUHexagonState *env, uint32_t excp)
+ }
+ 
+ void log_store32(CPUHexagonState *env, target_ulong addr,
+-                 target_ulong val, int width, int slot)
++                 target_ulong val, uint8_t width, int slot)
+ {
+     env->mem_log_stores[slot].va = addr;
+     env->mem_log_stores[slot].width = width;
+@@ -60,7 +60,7 @@ void log_store32(CPUHexagonState *env, target_ulong addr,
+ }
+ 
+ void log_store64(CPUHexagonState *env, target_ulong addr,
+-                 int64_t val, int width, int slot)
++                 int64_t val, uint8_t width, int slot)
+ {
+     env->mem_log_stores[slot].va = addr;
+     env->mem_log_stores[slot].width = width;
+diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
+index 8fce219c0d..6151bdd4a6 100644
+--- a/target/hexagon/translate.c
++++ b/target/hexagon/translate.c
+@@ -51,7 +51,7 @@ TCGv hex_pred[NUM_PREGS];
+ TCGv hex_slot_cancelled;
+ TCGv hex_new_value_usr;
+ TCGv hex_store_addr[STORES_MAX];
+-TCGv hex_store_width[STORES_MAX];
++TCGv_i32 hex_store_width[STORES_MAX];
+ TCGv hex_store_val32[STORES_MAX];
+ TCGv_i64 hex_store_val64[STORES_MAX];
+ TCGv hex_llsc_addr;
+@@ -1079,7 +1079,7 @@ void hexagon_translate_init(void)
+             store_addr_names[i]);
+ 
+         snprintf(store_width_names[i], NAME_LEN, "store_width_%d", i);
+-        hex_store_width[i] = tcg_global_mem_new(tcg_env,
++        hex_store_width[i] = tcg_global_mem_new_i32(tcg_env,
+             offsetof(CPUHexagonState, mem_log_stores[i].width),
+             store_width_names[i]);
+ 
 -- 
-2.51.2
+2.51.0
 
 
