@@ -2,88 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0544CD4153
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 15:24:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 781C2CD4129
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 15:22:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vXKLV-0001DF-8h; Sun, 21 Dec 2025 09:23:41 -0500
+	id 1vXKJU-0003VZ-9d; Sun, 21 Dec 2025 09:21:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <soumyajyotisarkar23@gmail.com>)
- id 1vXKLS-0001Bn-Nf
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:23:38 -0500
-Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <soumyajyotisarkar23@gmail.com>)
- id 1vXKLR-0001Ii-AO
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:23:38 -0500
-Received: by mail-pf1-x443.google.com with SMTP id
- d2e1a72fcca58-7fbbb84f034so2390663b3a.0
- for <qemu-devel@nongnu.org>; Sun, 21 Dec 2025 06:23:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1766327016; x=1766931816; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=dG0Amvc2GaV3WxbJOBLx9QPvcppOVvNkAdmdXpA0Nyk=;
- b=WDLwNhsOYIBO6frA4q+/itGRwkirhN3aADw2WyeGWXHUzOZIYy0sOpWluDbWDXdOlJ
- C/NoyeC3ROSrGuGStWj6Yqp216YPp57uYsqs1hOfoPohILEPNSBxWkcUd2GyJdAxnZ9p
- aQb4WKPo4KhtXu01YMHacpwwuuBEe0MG1s2v0uC+/H6D3PL0QO2UlLD2e7DMzhSkYg3C
- 81NpHRBqZVrEYc3E/UbR4ngC6k0F2OlGrN531ov7rI3q4meUmeQZN5gAOzjtoehyZUIw
- glFjelzxD21dk4ekEfnvBojPMSbAgrO9/B2kvro5mmRhD6XN3uJREwO/iQHWj7bP/LpN
- 7Y0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766327016; x=1766931816;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=dG0Amvc2GaV3WxbJOBLx9QPvcppOVvNkAdmdXpA0Nyk=;
- b=Km6neG6f8Bcbsoq70i7VSD1MESS8QWDXL5diryu/z4EJ2chEoq3abuBnBjbS6JW7GF
- FRrlf+7tNmC4HXHL1dMIDC1zn0FZaIns4ojB8/YbRH4zm6OnXywR/2+kk2D7GgeuyG1f
- pkSoSGLLfpQoMty1YkVIb4kvkwTy1Ud7H9+a8OcRnDD+UUotykdNrv4wgQARSagsM1tU
- /KB/L+AGfrSARZ4JNOnzLxKtja3CBEEB9sZtwIjntBkgIik4BriC0xZ81gU0aYCQplez
- VZK3BxfKnCsOzy85xT5qBOB8qVxCWrTw28QwEdLnKuDZtMvtsyMu92a6me9Kh4blHA8k
- mmwg==
-X-Gm-Message-State: AOJu0YzYdsbIqii2nRRteJhsUAr1yTbdnw9tMiV1f7TAXvhBejX8/063
- XZRd0sMrVz3+b9FjKcwgpu0AtAG6Ily3heOVlyK7orcFwHSuFh1cW+EaXZFOTrsh4hQ=
-X-Gm-Gg: AY/fxX7iR8Jo6waF8/MS2fvnewC81FS56wP7Z4RtIG/e9b4wuoAEMwaw6nJSTSXcBHh
- la7CkgTlyYoN1uSr7jBtOAnlbDjodUVpSS5HU4JqZtjI7xHIpbqpN9OiOmWc/oau2miqkHNI2rK
- tSxR68U+g/44s8GE2RBWAI2RAQJn65+zpdYqKoRZVqV9WbbmuhJqUxmUkfor5kCWVdUQ6d4uqs/
- idLkPfVuhNpHYdWWUcWo+/HRPgwPvov0+SsOB4Kf8LDZ3pCJwQEzHZ1VfUI+TfwNWRGysU1BktF
- BOERUdFrCxyaLUOITq9r+3NkJzN8vn/O73QAIx+YHidW5SvGio3mZo2np91dVRxtUiT9SkuIx/x
- FxH94WkRh2Y3ruJuNO7P+PhuFihTPRJh32IpePkDV1+kj60afNJzHmTCel+tgyZK1FaeqVJ6E4H
- bsk+5a3p15vU7NhEGLGns=
-X-Google-Smtp-Source: AGHT+IED4Ncpo7Kw2eNcQW3k+JW8ba6mTgULtCIVBkBnXn1AioMPUgQYq2c5P8SHeUgzNaQV9rzDYQ==
-X-Received: by 2002:a05:6a00:90a2:b0:7e8:4471:8ce with SMTP id
- d2e1a72fcca58-7ff6687188amr7091817b3a.47.1766327015728; 
- Sun, 21 Dec 2025 06:23:35 -0800 (PST)
-Received: from fedora.. ([118.151.210.82]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7ff7e48f258sm7590449b3a.47.2025.12.21.06.23.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 21 Dec 2025 06:23:34 -0800 (PST)
-From: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
-To: qemu-devel@nongnu.org, deller@gmx.de, sarkarsoumyajyoti23@gmail.com,
- mark.cave-ayland@ilande.co.uk, richard.henderson@linaro.org
-Cc: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
-Subject: [PATCH 04/10] scsi:ncr710: Fix DMA State machine and flow control
-Date: Sun, 21 Dec 2025 19:53:11 +0530
-Message-ID: <20251221142317.266293-5-soumyajyotisarkar23@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20251221142317.266293-1-soumyajyotisarkar23@gmail.com>
-References: <20251221142317.266293-1-soumyajyotisarkar23@gmail.com>
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vXKIx-0003Ff-1d
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:21:07 -0500
+Received: from rev.ng ([94.130.142.21])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vXKIu-0000da-Th
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:21:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=Cc:To:In-Reply-To:References:Message-Id:Content-Transfer-Encoding:
+ Content-Type:MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
+ List-Help; bh=y5j9o9DZeXk+MlQUoUTC22j4617/r2LDymh+t/2Dljs=; b=O+n+s9ecKUZ3zIy
+ OVTakJCB+GPBtE39QgJtifh8a3AvPPKAvWBMns/iM/FeriyXw2PAARhN+nqS35Pmu+GzzA6ZU+kHm
+ TX8UDJEBh9Zhu4SUaxLVHHu1d2j8PgtnHqJUy3eZ6GTNd5c+erg6Ak+EmhlI9gpXfY4UTqZ5iwTsG
+ dU=;
+Date: Sun, 21 Dec 2025 15:23:12 +0100
+Subject: [PATCH v2 08/14] target/riscv: Remove ifdefs in cpu.h
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::443;
- envelope-from=soumyajyotisarkar23@gmail.com; helo=mail-pf1-x443.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251221-hw-riscv-cpu-int-v2-8-eb49d72c5b2f@rev.ng>
+References: <20251221-hw-riscv-cpu-int-v2-0-eb49d72c5b2f@rev.ng>
+In-Reply-To: <20251221-hw-riscv-cpu-int-v2-0-eb49d72c5b2f@rev.ng>
+To: qemu-devel@nongnu.org
+Cc: Anton Johansson <anjo@rev.ng>, philmd@linaro.org, 
+ pierrick.bouvier@linaro.org, palmer@dabbelt.com, alistair.francis@wdc.com
+Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
+ helo=rev.ng
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,32 +58,126 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Set waiting state and return after scsi_req_continue() to prevent
-re entrancy when DMA transfer completes.
+KVM fields of CPURISCVState are now always exposed as CONFIG_KVM cannot
+be used in common code.
 
-Signed-off-by: Soumyajyotii Ssarkar<soumyajyotisarkar23@gmail.com>
+riscv_cpu_mxl() is changed to return CPURISCVState::misa_mxl
+unconditionally, as use of target_riscv64() would result in an extra
+load and compare with TargetInfo::target_arch.  We might as well just
+perform a single load.  Likewise, for cpu_recompute_xl(),
+cpu_address_xl(), and riscv_cpu_sxl(), we opt for returning the
+corresponding CPURISCVState field with ifdefs for system mode adding
+extra conditions.
+
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- hw/scsi/ncr53c710.c | 2 ++
- 1 file changed, 2 insertions(+)
+ target/riscv/cpu.h | 36 ++++++++----------------------------
+ 1 file changed, 8 insertions(+), 28 deletions(-)
 
-diff --git a/hw/scsi/ncr53c710.c b/hw/scsi/ncr53c710.c
-index 0b7734a129..e17d1f3fb8 100644
---- a/hw/scsi/ncr53c710.c
-+++ b/hw/scsi/ncr53c710.c
-@@ -718,7 +718,9 @@ static void ncr710_do_dma(NCR710State *s, int out)
-     if (s->current->dma_len == 0) {
-         s->current->dma_buf = NULL;
-         s->current->pending = 0;
-+        s->waiting = NCR710_WAIT_DMA;
-         scsi_req_continue(s->current->req);
-+        return;
-     } else {
-         s->current->dma_buf += count;
-         s->waiting = NCR710_WAIT_NONE;
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index da2bc554d3..946665d9ed 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -497,14 +497,12 @@ struct CPUArchState {
+     hwaddr kernel_addr;
+     hwaddr fdt_addr;
+ 
+-#ifdef CONFIG_KVM
+     /* kvm timer */
+     bool kvm_timer_dirty;
+     uint64_t kvm_timer_time;
+     uint64_t kvm_timer_compare;
+     uint64_t kvm_timer_state;
+     uint64_t kvm_timer_frequency;
+-#endif /* CONFIG_KVM */
+ 
+     /* RNMI */
+     uint64_t mnscratch;
+@@ -703,14 +701,10 @@ FIELD(TB_FLAGS, BCFI_ENABLED, 28, 1)
+ FIELD(TB_FLAGS, PM_PMM, 29, 2)
+ FIELD(TB_FLAGS, PM_SIGNEXTEND, 31, 1)
+ 
+-#ifdef TARGET_RISCV32
+-#define riscv_cpu_mxl(env)  ((void)(env), MXL_RV32)
+-#else
+ static inline RISCVMXL riscv_cpu_mxl(CPURISCVState *env)
+ {
+     return env->misa_mxl;
+ }
+-#endif
+ #define riscv_cpu_mxl_bits(env) (1UL << (4 + riscv_cpu_mxl(env)))
+ 
+ static inline const RISCVCPUConfig *riscv_cpu_cfg(CPURISCVState *env)
+@@ -754,9 +748,6 @@ static inline RISCVMXL cpu_get_xl(CPURISCVState *env, privilege_mode_t mode)
+ }
+ #endif
+ 
+-#if defined(TARGET_RISCV32)
+-#define cpu_recompute_xl(env)  ((void)(env), MXL_RV32)
+-#else
+ static inline RISCVMXL cpu_recompute_xl(CPURISCVState *env)
+ {
+ #if !defined(CONFIG_USER_ONLY)
+@@ -765,43 +756,32 @@ static inline RISCVMXL cpu_recompute_xl(CPURISCVState *env)
+     return env->misa_mxl;
+ #endif
+ }
+-#endif
+ 
+-#if defined(TARGET_RISCV32)
+-#define cpu_address_xl(env)  ((void)(env), MXL_RV32)
+-#else
+ static inline RISCVMXL cpu_address_xl(CPURISCVState *env)
+ {
+-#ifdef CONFIG_USER_ONLY
+-    return env->xl;
+-#else
+-    int mode = cpu_address_mode(env);
+-
+-    return cpu_get_xl(env, mode);
++#ifndef CONFIG_USER_ONLY
++    if (target_riscv64()) {
++        int mode = cpu_address_mode(env);
++        return cpu_get_xl(env, mode);
++    }
+ #endif
++    return env->xl;
+ }
+-#endif
+ 
+ static inline int riscv_cpu_xlen(CPURISCVState *env)
+ {
+     return 16 << env->xl;
+ }
+ 
+-#ifdef TARGET_RISCV32
+-#define riscv_cpu_sxl(env)  ((void)(env), MXL_RV32)
+-#else
+ static inline RISCVMXL riscv_cpu_sxl(CPURISCVState *env)
+ {
+-#ifdef CONFIG_USER_ONLY
+-    return env->misa_mxl;
+-#else
++#ifndef CONFIG_USER_ONLY
+     if (env->misa_mxl != MXL_RV32) {
+         return get_field(env->mstatus, MSTATUS64_SXL);
+     }
+ #endif
+-    return MXL_RV32;
++    return env->misa_mxl;
+ }
+-#endif
+ 
+ static inline bool riscv_cpu_allow_16bit_insn(const RISCVCPUConfig *cfg,
+                                               uint32_t priv_ver,
+
 -- 
-2.49.0
+2.51.0
 
 
