@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1B41CD4120
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 15:22:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B92B8CD413E
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Dec 2025 15:23:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vXKJa-0003sC-25; Sun, 21 Dec 2025 09:21:47 -0500
+	id 1vXKJr-0004A8-No; Sun, 21 Dec 2025 09:21:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vXKIr-0003EK-4b
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:21:02 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vXKIu-0003Ej-96
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:21:04 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vXKIp-0000c3-6o
- for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:20:56 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vXKIs-0000cg-MY
+ for qemu-devel@nongnu.org; Sun, 21 Dec 2025 09:21:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Cc:To:In-Reply-To:References:Message-Id:Content-Transfer-Encoding:
  Content-Type:MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=WbyOiaXCpm1ubMiid7BC1+Tr0lTeWlfX5vcGqtUGyMo=; b=NMXCNP/w4qxGMED
- UeRlxsm1PgHLz9GvPOL9bHmC3x+NI6erTdyTerUSn2PDg9ySOfmzWBO/bP78ZWQ7nBu7eDrr8uBpY
- 8GpD6foIFnF2DLfhYeglJYiuxsRFOM6FfAJvqLiCSg1wq1Kf+yWcIRVVVmgGG2Lz1gTMldm4dGY0S
- c0=;
-Date: Sun, 21 Dec 2025 15:23:10 +0100
-Subject: [PATCH v2 06/14] target-info: Add target_riscv64()
+ List-Help; bh=Yuqz5F8k2afpuMuB2VmoqlA/DV3peZ8kzfMWUl+iSUk=; b=EyWb6kiREgPewz7
+ SExfhmoaSklvlf7EDCc17BN1K/m0ccSQvYFAAKQFaRguK1KGG/U9T+mKqIHZ4bhVQkIpoP3EiR3sR
+ UdNeapUQcAdNUrVZYcs15zR+G6jjtaAUYekniAj7MRBYL45izKzTtbtJVjwhsqD+qkSDikjnM4Ieo
+ 4g=;
+Date: Sun, 21 Dec 2025 15:23:11 +0100
+Subject: [PATCH v2 07/14] target/riscv: Replace TYPE_RISCV_CPU_BASE
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251221-hw-riscv-cpu-int-v2-6-eb49d72c5b2f@rev.ng>
+Message-Id: <20251221-hw-riscv-cpu-int-v2-7-eb49d72c5b2f@rev.ng>
 References: <20251221-hw-riscv-cpu-int-v2-0-eb49d72c5b2f@rev.ng>
 In-Reply-To: <20251221-hw-riscv-cpu-int-v2-0-eb49d72c5b2f@rev.ng>
 To: qemu-devel@nongnu.org
@@ -63,45 +63,120 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adds a helper function to tell if the binary is targeting riscv64 or
-not.
+TYPE_RISCV_CPU_BASE is used only to initialize the correct default
+machine for 3 machines. Replace it with a runtime check.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- include/qemu/target-info.h | 7 +++++++
- target-info.c              | 5 +++++
- 2 files changed, 12 insertions(+)
+ include/hw/riscv/virt.h         | 11 +++++++++++
+ target/riscv/cpu.h              |  6 ------
+ hw/riscv/microblaze-v-generic.c |  3 ++-
+ hw/riscv/spike.c                |  3 ++-
+ hw/riscv/virt.c                 |  2 +-
+ 5 files changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/include/qemu/target-info.h b/include/qemu/target-info.h
-index 6235962223..a4853ad4bb 100644
---- a/include/qemu/target-info.h
-+++ b/include/qemu/target-info.h
-@@ -71,4 +71,11 @@ bool target_arm(void);
-  */
- bool target_aarch64(void);
+diff --git a/include/hw/riscv/virt.h b/include/hw/riscv/virt.h
+index 7b4c2c8b7d..3a17641078 100644
+--- a/include/hw/riscv/virt.h
++++ b/include/hw/riscv/virt.h
+@@ -19,6 +19,7 @@
+ #ifndef HW_RISCV_VIRT_H
+ #define HW_RISCV_VIRT_H
  
-+/**
-+ * target_riscv64:
-+ *
-+ * Returns whether the target architecture is riscv64
-+ */
-+bool target_riscv64(void);
-+
- #endif
-diff --git a/target-info.c b/target-info.c
-index 24696ff411..6cc78e25c8 100644
---- a/target-info.c
-+++ b/target-info.c
-@@ -73,3 +73,8 @@ bool target_aarch64(void)
- {
-     return target_arch() == SYS_EMU_TARGET_AARCH64;
- }
-+
-+bool target_riscv64(void)
++#include "qemu/target-info.h"
+ #include "hw/boards.h"
+ #include "hw/riscv/riscv_hart.h"
+ #include "hw/sysbus.h"
+@@ -137,6 +138,16 @@ bool virt_is_iommu_sys_enabled(RISCVVirtState *s);
+ void virt_acpi_setup(RISCVVirtState *vms);
+ uint32_t imsic_num_bits(uint32_t count);
+ 
++static inline const char *virt_default_cpu_type(void)
 +{
-+    return target_arch() == SYS_EMU_TARGET_RISCV64;
++    if (target_riscv64()) {
++        return TYPE_RISCV_CPU_BASE64;
++    } else {
++        return TYPE_RISCV_CPU_BASE32;
++    }
 +}
++
++
+ /*
+  * The virt machine physical address space used by some of the devices
+  * namely ACLINT, PLIC, APLIC, and IMSIC depend on number of Sockets,
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 616406f07f..da2bc554d3 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -39,12 +39,6 @@ typedef struct CPUArchState CPURISCVState;
+ 
+ #define CPU_RESOLVING_TYPE TYPE_RISCV_CPU
+ 
+-#if defined(TARGET_RISCV32)
+-# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE32
+-#elif defined(TARGET_RISCV64)
+-# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE64
+-#endif
+-
+ /*
+  * b0: Whether a instruction always raise a store AMO or not.
+  */
+diff --git a/hw/riscv/microblaze-v-generic.c b/hw/riscv/microblaze-v-generic.c
+index 0df276f9fb..0222ff0c06 100644
+--- a/hw/riscv/microblaze-v-generic.c
++++ b/hw/riscv/microblaze-v-generic.c
+@@ -26,6 +26,7 @@
+ #include "hw/char/xilinx_uartlite.h"
+ #include "hw/misc/unimp.h"
+ #include "hw/riscv/machines-qom.h"
++#include "hw/riscv/virt.h"
+ 
+ #define LMB_BRAM_SIZE (128 * KiB)
+ #define MEMORY_BASEADDR 0x80000000
+@@ -183,7 +184,7 @@ static void mb_v_generic_machine_init(MachineClass *mc)
+     mc->init = mb_v_generic_init;
+     mc->min_cpus = 1;
+     mc->max_cpus = 1;
+-    mc->default_cpu_type = TYPE_RISCV_CPU_BASE;
++    mc->default_cpu_type = virt_default_cpu_type();
+     mc->default_cpus = 1;
+ }
+ 
+diff --git a/hw/riscv/spike.c b/hw/riscv/spike.c
+index 69eb3dfc24..7d1a642a78 100644
+--- a/hw/riscv/spike.c
++++ b/hw/riscv/spike.c
+@@ -34,6 +34,7 @@
+ #include "hw/riscv/boot.h"
+ #include "hw/riscv/numa.h"
+ #include "hw/riscv/machines-qom.h"
++#include "hw/riscv/virt.h"
+ #include "hw/char/riscv_htif.h"
+ #include "hw/intc/riscv_aclint.h"
+ #include "chardev/char.h"
+@@ -351,7 +352,7 @@ static void spike_machine_class_init(ObjectClass *oc, const void *data)
+     mc->init = spike_board_init;
+     mc->max_cpus = SPIKE_CPUS_MAX;
+     mc->is_default = true;
+-    mc->default_cpu_type = TYPE_RISCV_CPU_BASE;
++    mc->default_cpu_type = virt_default_cpu_type();
+     mc->possible_cpu_arch_ids = riscv_numa_possible_cpu_arch_ids;
+     mc->cpu_index_to_instance_props = riscv_numa_cpu_index_to_props;
+     mc->get_default_cpu_node_id = riscv_numa_get_default_cpu_node_id;
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index f42fffb223..6f6164e05d 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -1922,7 +1922,7 @@ static void virt_machine_class_init(ObjectClass *oc, const void *data)
+     mc->desc = "RISC-V VirtIO board";
+     mc->init = virt_machine_init;
+     mc->max_cpus = VIRT_CPUS_MAX;
+-    mc->default_cpu_type = TYPE_RISCV_CPU_BASE;
++    mc->default_cpu_type = virt_default_cpu_type();
+     mc->block_default_type = IF_VIRTIO;
+     mc->no_cdrom = 1;
+     mc->pci_allow_0_address = true;
 
 -- 
 2.51.0
