@@ -2,72 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 262C8CD578F
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Dec 2025 11:10:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5449ACD8F96
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 11:54:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vXcr6-0003qQ-P5; Mon, 22 Dec 2025 05:09:32 -0500
+	id 1vY00K-0005bw-K8; Tue, 23 Dec 2025 05:52:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1vXcqt-0003ny-Ap
- for qemu-devel@nongnu.org; Mon, 22 Dec 2025 05:09:21 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1vXcqq-0005RT-Iu
- for qemu-devel@nongnu.org; Mon, 22 Dec 2025 05:09:19 -0500
-Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8DxHvDDGElph+oBAA--.6695S3;
- Mon, 22 Dec 2025 18:09:07 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
- by front1 (Coremail) with SMTP id qMiowJDxjcLBGElpz1sDAA--.7509S3;
- Mon, 22 Dec 2025 18:09:07 +0800 (CST)
-Subject: Re: [PATCH 1/1] target/loongarch: Fix some exception need't update
- CSR_BADV
-To: gaosong <gaosong@loongson.cn>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org, jiaxun.yang@flygoat.com,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20251117075042.1831667-1-gaosong@loongson.cn>
- <dceb9402-e84b-f40b-20fe-58b474b526e5@loongson.cn>
- <11575e6d-a542-9f81-2e3d-909c13447796@loongson.cn>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <94f79cab-7026-fd17-9eaf-ab2f1882190c@loongson.cn>
-Date: Mon, 22 Dec 2025 18:06:32 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <chalapathi.v@inux.ibm.com>)
+ id 1vY00J-0005bc-5j; Tue, 23 Dec 2025 05:52:35 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <chalapathi.v@inux.ibm.com>)
+ id 1vY00H-0006zH-Jp; Tue, 23 Dec 2025 05:52:34 -0500
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BLJFNx2002926;
+ Mon, 22 Dec 2025 10:43:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=hZnG8v
+ tQxH8gqWcWmYqmMjQ7DQM27p8b9g13b9M2IBE=; b=H+rimTjPCxJRYRPDBbsH7e
+ dLGQUBKRVgmjXudh9aSIrS2o0KfydG+hVipT2e+caw3pc6QteaYBc0dacxQ/XBIR
+ kMBmlOo7DF6BfZiaNqSYxm0lhAJpCHTZGHEfHK2oDQa5FZYEYEmnqjvs17W4CB+u
+ LhX6t2AJIQXp+ByKl/OnP82zncivdRWcABe/fzqEMjmVpGmuKBDpw/fuy5HphpJs
+ jsSufPuCt/Q0MwkUJwkbXG/qV5g24pqkGtq0IrC7HCvhLZwwrXAQQUeIJ3jFtL+L
+ MigsXtlq1QINSqEvaMkXwJOGRrU+iJ2VZ4W0HkzufXnER2GwBVh2EsEiLYbAwMbw
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b5kh47hca-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 Dec 2025 10:43:35 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BMAhZNl024818;
+ Mon, 22 Dec 2025 10:43:35 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b5kh47hc7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 Dec 2025 10:43:35 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BM8wF4q001098;
+ Mon, 22 Dec 2025 10:43:34 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4b664s5qus-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 Dec 2025 10:43:34 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 5BMAhGTC19006026
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 22 Dec 2025 10:43:16 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5105458058;
+ Mon, 22 Dec 2025 10:43:32 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9363058057;
+ Mon, 22 Dec 2025 10:43:29 +0000 (GMT)
+Received: from [9.43.97.98] (unknown [9.43.97.98])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 22 Dec 2025 10:43:29 +0000 (GMT)
+Message-ID: <e9ae1f87-abda-4d77-be62-226d6fd5e2a7@inux.ibm.com>
+Date: Mon, 22 Dec 2025 16:13:28 +0530
 MIME-Version: 1.0
-In-Reply-To: <11575e6d-a542-9f81-2e3d-909c13447796@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/ssi/pnv_spi: Fix fifo8 memory leak on unrealize
+To: Caleb Schlossin <calebs@linux.ibm.com>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, npiggin@gmail.com, adityag@linux.ibm.com,
+ milesg@linux.ibm.com, alistair@alistair23.me, chalapathi.v@linux.ibm.com
+References: <20251216154503.2263755-1-calebs@linux.ibm.com>
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJDxjcLBGElpz1sDAA--.7509S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxWr17AFyxurykJF13WFyUJwc_yoW5ZF1xpF
- n2kay5JryrKw1kJryxJw4UXryUWr4UAa1UJr1Yqa48JF4Iyr1jgr40qr4qgr17Xr48J3yU
- ZF43t3y3ZF45JrXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUU9ab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
- 67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C2
- 67AKxVWUXVWUAwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI
- 8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWU
- CwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r
- 1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsG
- vfC2KfnxnUUI43ZEXa7IU8PCzJUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.354,
+From: Chalapathi V <chalapathi.v@inux.ibm.com>
+In-Reply-To: <20251216154503.2263755-1-calebs@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=bulBxUai c=1 sm=1 tr=0 ts=694920d7 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8 a=CJKrucV5HHBk1qxaKX0A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: P-5w_e8fMIWHkEZ0dCzlm4Z2g5FwyVaZ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjIyMDA5MyBTYWx0ZWRfX9MLmE6AMweIP
+ Tib4zXeT426n1cZLmes8AuNMG6XdbgfU5H2kyl40idIdfWM9odUjb2IKHBWeEKfT2f/uD65Mhgx
+ 8BQQiGvqLhl7UlOIMvdLJyWVeKx8z9K121jtMVcn/3G7lQwml1WCXMjD9J2meY/wSI5TY/Awtfb
+ lSm4R1V/QFIeuT4SiEDuTCiQbrIfcBpZn6foQbOjA+ML1SkSjfZ85V1aHr1HM270yqikj2B3/oN
+ Fa1hqvcBFZ+Q+/L8nOiHjofTjpzRwxUpWuhcObE9GIOlaXy/DmZ2+ctWF3gA+nJtbesC7FtLbfH
+ MsFh11caEQpdS+GfF2KFPZ+kGWoe19vSbTWjHYxmu994QtnHeAJJ5aEA042iqB/ZWz2Dkuhx3Dp
+ MJ4GSMJvY7z4zMubYqvABMORSy7MBa/M6DNDmt6I4udnKd7I6EkLwZ6Lhd8viKFBXhohXIfmyOf
+ YvuaMSye+XXyhX8l/cg==
+X-Proofpoint-GUID: 7klp1qRqgPHVRPwCnruNB7GiL7_OgTrE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-21_05,2025-12-19_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 suspectscore=0 clxscore=1034 lowpriorityscore=0
+ priorityscore=1501 spamscore=0 malwarescore=0 bulkscore=0 phishscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2512120000
+ definitions=main-2512220093
+Received-SPF: none client-ip=148.163.156.1;
+ envelope-from=chalapathi.v@inux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,99 +126,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Reviewed-by: Chalapathi V<chalapathi.v@linux.ibm.com>
 
-
-On 2025/12/22 下午5:57, gaosong wrote:
-> 在 2025/11/17 下午6:29, Bibo Mao 写道:
->>
->>
->> On 2025/11/17 下午3:50, Song Gao wrote:
->>> According to Volume 1 Manual 7.4.8, certain exceptions require 
->>> setting CSR_BADV,
->>> but the code does not match.this patch correct it. and the exception 
->>> PIL,PIS,PIF,
->>> PME,PNR, PNX, PPI already update on raise_mmu_exception(),these are 
->>> need't update.
->>>
->>> Signed-off-by: Song Gao <gaosong@loongson.cn>
->>> ---
->>>   target/loongarch/tcg/tcg_cpu.c | 24 +++++++++++++-----------
->>>   1 file changed, 13 insertions(+), 11 deletions(-)
->>>
->>> diff --git a/target/loongarch/tcg/tcg_cpu.c 
->>> b/target/loongarch/tcg/tcg_cpu.c
->>> index 9d077c56d9..7f94c183c4 100644
->>> --- a/target/loongarch/tcg/tcg_cpu.c
->>> +++ b/target/loongarch/tcg/tcg_cpu.c
->>> @@ -109,10 +109,22 @@ static void loongarch_cpu_do_interrupt(CPUState 
->>> *cs)
->>>           }
->>>           QEMU_FALLTHROUGH;
->>>       case EXCCODE_PIF:
->>> -    case EXCCODE_ADEF:
->>>           cause = cs->exception_index;
->>>           update_badinstr = 0;
->>>           break;
->>> +    case EXCCODE_ADEF:
->>> +        update_badinstr = 0;
->>> +        QEMU_FALLTHROUGH;
->>> +    case EXCCODE_BCE:
->>> +    case EXCCODE_ADEM:
->>> +        env->CSR_BADV = env->pc;
->>> +        QEMU_FALLTHROUGH;
->> With EXCCODE_BCE exception, CSR_BADV comes from its pc. However with 
->> EXCCODE_ADEM exception, CSR_BADV should not come from its pc value.
->>
-> how  about  update the BADV  on loongarch_cpu_do_transaction_failed()
-> 
-> --- a/target/loongarch/tcg/tcg_cpu.c
-> +++ b/target/loongarch/tcg/tcg_cpu.c
-> @@ -225,6 +225,7 @@ static void 
-> loongarch_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
->   {
->       CPULoongArchState *env = cpu_env(cs);
-> 
-> +    env->CSR_BADV = addr;
->       if (access_type == MMU_INST_FETCH) {
->           do_raise_exception(env, EXCCODE_ADEF, retaddr);
->       } else {
-> 
-This should work fine.
-
-Regards
-Bibo Mao
-> Thanks.
-> Song Gao.
->> Regards
->> Bibo Mao
->>> +    case EXCCODE_PNR:
->>> +    case EXCCODE_PNX:
->>> +    case EXCCODE_PPI:
->>> +    case EXCCODE_PIL:
->>> +    case EXCCODE_PIS:
->>> +    case EXCCODE_PME:
->>>       case EXCCODE_SYS:
->>>       case EXCCODE_BRK:
->>>       case EXCCODE_INE:
->>> @@ -121,16 +133,6 @@ static void loongarch_cpu_do_interrupt(CPUState 
->>> *cs)
->>>       case EXCCODE_FPE:
->>>       case EXCCODE_SXD:
->>>       case EXCCODE_ASXD:
->>> -        env->CSR_BADV = env->pc;
->>> -        QEMU_FALLTHROUGH;
->>> -    case EXCCODE_BCE:
->>> -    case EXCCODE_ADEM:
->>> -    case EXCCODE_PIL:
->>> -    case EXCCODE_PIS:
->>> -    case EXCCODE_PME:
->>> -    case EXCCODE_PNR:
->>> -    case EXCCODE_PNX:
->>> -    case EXCCODE_PPI:
->>>           cause = cs->exception_index;
->>>           break;
->>>       default:
->>>
->>
-
+On 16/12/25 9:15 pm, Caleb Schlossin wrote:
+> unrealize should free the fifo8 memory that was allocated by realize.
+>
+> Fixes: 17befecda85 ("hw/ssi/pnv_spi: Replace PnvXferBuffer with Fifo8 structure")
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> Signed-off-by: Caleb Schlossin <calebs@linux.ibm.com>
+> ---
+>   hw/ssi/pnv_spi.c | 8 ++++++++
+>   1 file changed, 8 insertions(+)
+>
+> diff --git a/hw/ssi/pnv_spi.c b/hw/ssi/pnv_spi.c
+> index f40e8836b9..5db440be9a 100644
+> --- a/hw/ssi/pnv_spi.c
+> +++ b/hw/ssi/pnv_spi.c
+> @@ -1176,6 +1176,13 @@ static void pnv_spi_realize(DeviceState *dev, Error **errp)
+>                             s, "xscom-spi", PNV10_XSCOM_PIB_SPIC_SIZE);
+>   }
+>   
+> +static void pnv_spi_unrealize(DeviceState *dev)
+> +{
+> +    PnvSpi *s = PNV_SPI(dev);
+> +    fifo8_destroy(&s->tx_fifo);
+> +    fifo8_destroy(&s->rx_fifo);
+> +}
+> +
+>   static int pnv_spi_dt_xscom(PnvXScomInterface *dev, void *fdt,
+>                                int offset)
+>   {
+> @@ -1208,6 +1215,7 @@ static void pnv_spi_class_init(ObjectClass *klass, const void *data)
+>   
+>       dc->desc = "PowerNV SPI";
+>       dc->realize = pnv_spi_realize;
+> +    dc->unrealize = pnv_spi_unrealize;
+>       device_class_set_legacy_reset(dc, do_reset);
+>       device_class_set_props(dc, pnv_spi_properties);
+>   }
 
