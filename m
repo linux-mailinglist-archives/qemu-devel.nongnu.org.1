@@ -2,152 +2,117 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2860CD6C0C
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Dec 2025 18:04:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E3B8CD90A0
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 12:12:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vXjIk-00085d-M3; Mon, 22 Dec 2025 12:02:30 -0500
+	id 1vY0I4-0001jc-VC; Tue, 23 Dec 2025 06:10:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vXjHo-0007ds-8R
- for qemu-devel@nongnu.org; Mon, 22 Dec 2025 12:01:41 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
+ id 1vY0I2-0001jF-D0; Tue, 23 Dec 2025 06:10:54 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vXjHl-0005Qx-Uk
- for qemu-devel@nongnu.org; Mon, 22 Dec 2025 12:01:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766422886;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=ALIGATKrzI5pnjC+gVMvURVoLNH7RTAfk+IJuULXVbA=;
- b=PXsyamzTd+80GF0Az+bmsWEKez9s4Ts2g6p4fsNOa8f5NIsd7rBDuCsRQf7nUt/Yolsl3D
- hmil8/YnVeSTqYCLIMNW6rHcXcDc0yqYWcwepSjHBP5chimvdrsQcYbVOPj5eR73p+m7EY
- uHc8GNFRhdJsHn9dOfpFQ80/Fcdk284=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-16-EE-AtwAZNTuxKZkAgDqyXg-1; Mon, 22 Dec 2025 12:01:24 -0500
-X-MC-Unique: EE-AtwAZNTuxKZkAgDqyXg-1
-X-Mimecast-MFC-AGG-ID: EE-AtwAZNTuxKZkAgDqyXg_1766422883
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-477a0ddd1d4so39999165e9.0
- for <qemu-devel@nongnu.org>; Mon, 22 Dec 2025 09:01:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766422883; x=1767027683; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=ALIGATKrzI5pnjC+gVMvURVoLNH7RTAfk+IJuULXVbA=;
- b=ps8mclLkonVspX5vaL7MZQgHpkGhwGf+RXNbYGQHFI+w8KVt/kz9G6OdknrqgzbwaI
- EWUFFCrPJwnTsyr8AA37PdnlbJnqkvVC5NA4pubk40/RW7hGBWVAn8Kv3CkLhSMSeDWf
- mhWXK9BEmjIkOU65cBwEmgjk/oH0racvaKxEpWxsaYKAiKmkPLpudteQgCgKlIngB2IT
- y/U9xTUJRIwd/XVCFx4wG7eCumil2+TjDTict2yMklDjeG1UgpHM6gG0l/Hw+jyQMCr8
- xOMWvQTXAvP8e2WNjc+qlJlZEvNhlt6vL5IM5XVmGNwXKNAqvdBHoWyF3s0LR2o6MG7I
- urgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766422883; x=1767027683;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ALIGATKrzI5pnjC+gVMvURVoLNH7RTAfk+IJuULXVbA=;
- b=G6a0077bHX4VVHVvUJPzNlOM8Bc7PtddUXcXb8oBn/BpCusF4u6OCzb4Om4z0yT+Fh
- CLqDcunCatiZfkhpLVz+jcTAfbPLBLe1fnfEumJYvHsx8Ch+i4BoF/kBe+XdaZS/5quq
- L9KWYEIlG89/BncU1StLfQpFgVqUU/Kluj1c7G3w7NIcvhGrk+OHKTcbu1UQQCfvD/3i
- CB98XaxvEab2FnJ+yLnt75YAyx6owNnyAXzFm5aOtCPUeCMqEcbixQAUt4p+3s06JzQ4
- hmRlRxvSvxgPFgwUQ/Tde+1J2I4b01JXNN2d2hJWZ7FBUEZPPWYmxb/ZczSIl71O7vxU
- rTIA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVbpNowqHZwUPknMyTYXF8BEhIEmFoN7ffFW4BflylQZVdxSWCJmAF6TVjt3wckOL1utWqgb3aAAfKR@nongnu.org
-X-Gm-Message-State: AOJu0Yw9LDmoc15BT+j4iz3IwhiXJMV1uG4wgdn36Vld2tAkD64bd0xr
- YV31aTlLzuxlGgtEtqesVbFqr2pHr+Y4HbUEfyeYpPnl0gUge3T1p+Wav4pSA4efs6VW25K9Txm
- TStI/2sOVE+ynAiVWmbP4PAIm9vlCvLQBpm5P/Ewwl1+4H9VFnqEudSc3
-X-Gm-Gg: AY/fxX6viM/X64QAIoJuaLS0mEQf13my9M5RZW2VGO+aqJfkCHVTJ/1Sk8gQRSf8Eb0
- TxCWgtaFJvgHupB7N97LkZ0EeMoWQadaWvUR87LhUqKf8jRbUl4I5zJ/etT8qgRjvCKidgguR0a
- oZ4WEo9hehw3bFIC5J+qH08E1jI5w/UOWr+jpZAY8Z6DmFmw6Hpe6wa00iTGRakKa+LDgKkLCbI
- hjRh4Eu+Jz0Yxtdh8qRMeCOPCWQu+7d44QTMKRTpJwl+5Esr4fK0Jo+xHo3c6oirc4rlLkpE/vV
- ov9KmYCALhnzAuh85De4T+4diGaxg/9lp/uwFOzWz55xjPMvJJ+o3TLcp+w8C20Pj3DjtEXreHp
- c7PTzy+azq8CruoZ1WniOvsjAFXl0WwPAWiWLZYM12kjY60xMuaUOWXx5Axtym/Li1BuSar/ZKM
- tJ6PxIz3bwncpACZg=
-X-Received: by 2002:a05:6000:22c8:b0:431:104:6db2 with SMTP id
- ffacd0b85a97d-4324e4c7440mr13084575f8f.3.1766422882702; 
- Mon, 22 Dec 2025 09:01:22 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEdm7rE8eBD9ODnhSO63+XZoUxSlcMdA4MvMEpUKGYw+rdqO9kMrUKYrEXfygoEMl+CatQyjQ==
-X-Received: by 2002:a05:6000:22c8:b0:431:104:6db2 with SMTP id
- ffacd0b85a97d-4324e4c7440mr13084415f8f.3.1766422880775; 
- Mon, 22 Dec 2025 09:01:20 -0800 (PST)
-Received: from [192.168.10.48] ([151.95.145.106])
- by smtp.googlemail.com with ESMTPSA id
- ffacd0b85a97d-4324e9ba877sm22684770f8f.0.2025.12.22.09.01.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Dec 2025 09:01:20 -0800 (PST)
-Message-ID: <1bf91b9f-19ce-4bdb-a403-e4fdd2cd943a@redhat.com>
-Date: Mon, 22 Dec 2025 18:01:13 +0100
+ (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
+ id 1vY0I0-0000i5-Fo; Tue, 23 Dec 2025 06:10:54 -0500
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BMClGjb002030;
+ Mon, 22 Dec 2025 18:19:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=T/KvmA
+ /FPAr1FPX6v5vOrhg4f/dukDPVCEjLmEwlTIc=; b=hUU2CP1JYeTHI1da8ypZbF
+ xf0IJM8NxzDYZArknhviTSnZHubxLzK5s9MQD+2B4QJCWdmUVmitTg5baID5QORh
+ T3vuFwl/mHoqZEJHmUufTnhNXiLP2F1H8J4FLLcSuGpQrdDGFi7jo2aWLPiEq0JP
+ IEMa9st4R5+nHT6+9G+14NCnMVi3FKs14x6E9F3qPX+2FG31trSWn2lBh8ScBuNW
+ gkT0qfFpFdsS0KadlreQ0Lh+prCSHDqBXQyOFY9Z0l9RqjheDIFNEuHCgKIVO8vR
+ bM6EuOTLhWe/vx//L76JlrIytFx+1w8SX5t6YugZSW5cL4jRzq5tfPeChNGXUNqg
+ ==
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b5kh49hfc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 Dec 2025 18:19:29 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BMGIGne004200;
+ Mon, 22 Dec 2025 18:19:28 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4b674mqgmp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 Dec 2025 18:19:28 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
+ [10.39.53.231])
+ by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 5BMIJSJL40632832
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 22 Dec 2025 18:19:28 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0158058054;
+ Mon, 22 Dec 2025 18:19:28 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D87E558052;
+ Mon, 22 Dec 2025 18:19:26 +0000 (GMT)
+Received: from [9.61.250.126] (unknown [9.61.250.126])
+ by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 22 Dec 2025 18:19:26 +0000 (GMT)
+Message-ID: <b485a60c-11f0-4747-8295-8eb98c88b86a@linux.ibm.com>
+Date: Mon, 22 Dec 2025 10:19:26 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] run: introduce a script for running devel commands
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- John Snow <jsnow@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20251222113859.182395-1-berrange@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v1 1/1] util/vfio-helper: Fix endianess when enabling Bus
+ Master
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ qemu-devel@nongnu.org, qemu-s390x@nongnu.org
+Cc: mjrosato@linux.ibm.com, thuth@redhat.com, stefanha@redhat.com,
+ kwolf@redhat.com, fam@euphon.net, alex@shazbot.org
+References: <20251217184253.1520-1-alifm@linux.ibm.com>
+ <4d7e4040-349e-4772-bdf9-43d4f8a6f771@redhat.com>
+ <0c3e13e1-0aeb-47f9-9c44-5af8f3f47055@linaro.org>
+ <970d3a1a-408f-4bf3-b6da-784f8e6bd66a@redhat.com>
+ <f23ec136-5b6f-45b2-a6f1-1668e58a4030@linux.ibm.com>
+ <e219df64-1712-4ace-8358-d825de26fc1a@redhat.com>
+ <9e07d4e0-c407-448c-ac5c-10d153a1a11a@linaro.org>
 Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20251222113859.182395-1-berrange@redhat.com>
+From: Farhan Ali <alifm@linux.ibm.com>
+In-Reply-To: <9e07d4e0-c407-448c-ac5c-10d153a1a11a@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=bulBxUai c=1 sm=1 tr=0 ts=69498bb1 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=4Iy7-pb0WIcoN9B4EIwA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: bgpJ9-u3pAKzCGF5uknfXHvm61gzqP2f
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjIyMDE2OCBTYWx0ZWRfX2loAbqciew/E
+ baOWncaqSB+NDkuUp3EjYgsyjK33oXGCexSDaDjQhAc3ABTcruK04zforONP7FkAE0mXyDiEqwW
+ AretVh69z87ATIfS9OVJpntaMeAISUCo3fo3ZSz0f5WPsgglcyyVZAR/X8Iq/JKEgV3gdmiGW8L
+ MBlANZhMeoGbTwScM41Yr08bH1IWrAxRXteQnUlBLRCFYwW0g1eI7eiMNbeDtXcf53WN2QkrLDS
+ 9W/NogDH4CxB8Dw9aLNpvICiBrWyYMjN1XFOcpx7sX/oiby3Ftz9CV+s1A8eolHnQsLNqP3f1gh
+ uAzBfCE+gpCvIXK3tSRZKoYmgMm9hi1WYOZIPlAczLZFalLmCpZpvFI04RxbO/U/iQOXO+DcixH
+ wAbmxqrwHlkm1mqGoSd5mz2mydcOIlMhgp2/nCLABhGgy/VTqOfOJErgUV5/qJORDYfHbGuW6oZ
+ NhjzJZTdSy2I9bkopvA==
+X-Proofpoint-GUID: bgpJ9-u3pAKzCGF5uknfXHvm61gzqP2f
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-22_02,2025-12-22_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0
+ priorityscore=1501 spamscore=0 malwarescore=0 bulkscore=0 phishscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2512120000
+ definitions=main-2512220168
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=alifm@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -163,197 +128,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/22/25 12:38, Daniel P. Berrangé wrote:
-> Various aspects of the development workflow are complicated by the need
-> to set env variables ahead of time, or use specific paths. Meson
-> provides a 'devenv' command that can be used to launch a command with a
-> number of appropriate project specific environment variables preset.
-> 
-> By default it will modify $PATH to point to any build directory that
-> contains a binary built by the project.
-> 
-> This further augments that to replicate the venv 'activate' script:
-> 
->   * Add $BUILD_DIR/pyvenv/bin to $PATH
->   * Set VIRTUAL_ENV to $BUILD_DIR/pyvenv
-> 
-> And then makes functional tests more easily executable
-> 
->   * Add $SRC_DIR/tests/functional and $SRC_DIR/python to $PYTHONPATH
-> 
-> To see the benefits of this consider this command:
-> 
->    $ source ./build/pyvenv/bin/activate
->    $ ./scripts/qmp/qmp-shell-wrap ./build/qemu-system-x86_64
-> 
-> which is now simplified to
-> 
->    $ ./build/run ./scripts/qmp/qmp-shell-wrap qemu-system-x86_64 [args..]
-> 
-> This avoids the need repeat './build' several times and avoids polluting
-> the current terminal's environment and/or avoids errors from forgetting
-> to source the venv settings.
-> 
-> As another example running functional tests
-> 
->    $ export PYTHONPATH=./python:./tests/functional
->    $ export QEMU_TEST_QEMU_BINARY=./build/qemu-system-x86_64
->    $ build/pyvenv/bin/python3 ./tests/functional/x86_64/test_virtio_version.py
-> 
-> which is now simplified to
-> 
->    $ export QEMU_TEST_QEMU_BINARY=qemu-system-x86_64
->    $ ./build/run ./tests/functional/x86_64/test_virtio_version.py
-> 
-> This usefulness of this will be further enhanced with the pending
-> removal of the QEMU python APIs from git, as that will require the use
-> of the python venv in even more scenarios that today.
-> 
-> The 'run' script does not let 'meson devenv' directly launch the command
-> to be run because it always requires $BUILD_DIR as the current working
-> directory. It is desired that 'run' script always honour the current
-> working directory of the terminal that invokes is. Thus the '--dump'
-> flag is used to export the devenv variables into the 'run' script's
-> shell.
-> 
-> This takes the liberty to assign 'run.in' to the "Build system" section
-> in the MAINTAINERS file, given that it leverages meson's 'devenv'
-> feature.
-> 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
-> 
-> Changed in v2:
-> 
->   * Switch to use meson's  "devenv" framework
->   * Fix some typos
-> 
->   MAINTAINERS                       |  1 +
->   docs/devel/build-system.rst       | 12 ++++++++++++
->   docs/devel/testing/functional.rst | 17 ++++++++---------
->   meson.build                       | 16 ++++++++++++++--
->   run.in                            |  6 ++++++
->   5 files changed, 41 insertions(+), 11 deletions(-)
->   create mode 100644 run.in
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 63e9ba521b..f21b2927a8 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -4479,6 +4479,7 @@ R: Philippe Mathieu-Daudé <philmd@linaro.org>
->   S: Maintained
->   F: meson.build
->   F: meson_options.txt
-> +F: run.in
->   F: scripts/check_sparse.py
->   F: scripts/symlink-install-tree.py
->   
-> diff --git a/docs/devel/build-system.rst b/docs/devel/build-system.rst
-> index 6204aa6a72..b9797a374c 100644
-> --- a/docs/devel/build-system.rst
-> +++ b/docs/devel/build-system.rst
-> @@ -515,6 +515,18 @@ generates ``Makefile`` from ``Makefile.in``.
->   
->   Built by configure:
->   
-> +``run``
-> +  Used to run commands / scripts from the git checkout. Sets ``$PATH``
-> +  to point to locally built binaries, and activates the python venv
-> +  before running the requested command. Pass the command to run as
-> +  args, for example::
-> +
-> +    $ ./build/run ./script/qmp/qmp-shell-wrap qemu-system-x86_64
-> +
-> +  will use the ``python3`` binary and site-packages from the local
-> +  venv to run ``qmp-shell-wrap`` and spawn the QEMU emulator from
-> +  the build directory.
-> +
->   ``config-host.mak``
->     When configure has determined the characteristics of the build host it
->     will write the paths to various tools to this file, for use in ``Makefile``
-> diff --git a/docs/devel/testing/functional.rst b/docs/devel/testing/functional.rst
-> index fdeaebaadc..1978f96eba 100644
-> --- a/docs/devel/testing/functional.rst
-> +++ b/docs/devel/testing/functional.rst
-> @@ -53,15 +53,14 @@ the following line will only run the tests for the x86_64 target:
->     make check-functional-x86_64
->   
->   To run a single test file without the meson test runner, you can also
-> -execute the file directly by specifying two environment variables first,
-> -the PYTHONPATH that has to include the python folder and the tests/functional
-> -folder of the source tree, and QEMU_TEST_QEMU_BINARY that has to point
-> -to the QEMU binary that should be used for the test. The current working
-> -directory should be your build folder. For example::
-> -
-> -  $ export PYTHONPATH=../python:../tests/functional
-> -  $ export QEMU_TEST_QEMU_BINARY=$PWD/qemu-system-x86_64
-> -  $ pyvenv/bin/python3 ../tests/functional/test_file.py
-> +execute the file directly by specifying the name of the emulator target
-> +binary as an env variable.
-> +
-> +Assuming the current working directory is the top level source checkout
-> +and the build directory is './build'::
-> +
-> +  $ export QEMU_TEST_QEMU_BINARY=qemu-system-x86_64
-> +  $ ./build/run tests/functional/x86_64/test_virtio_version.py
->   
->   The test framework will automatically purge any scratch files created during
->   the tests. If needing to debug a failed test, it is possible to keep these
-> diff --git a/meson.build b/meson.build
-> index d9293294d8..320fecf372 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -3,8 +3,6 @@ project('qemu', ['c'], meson_version: '>=1.5.0',
->                             'b_staticpic=false', 'stdsplit=false', 'optimization=2', 'b_pie=true'],
->           version: files('VERSION'))
->   
-> -meson.add_devenv({ 'MESON_BUILD_ROOT' : meson.project_build_root() })
-> -
->   add_test_setup('quick', exclude_suites: ['slow', 'thorough'], is_default: true,
->                  env: ['RUST_BACKTRACE=1'])
->   add_test_setup('slow', exclude_suites: ['thorough'],
-> @@ -3507,6 +3505,20 @@ endif
->   config_host_h = configure_file(output: 'config-host.h', configuration: config_host_data)
->   genh += config_host_h
->   
-> +devenv = environment()
-> +devenv.set('MESON_BUILD_ROOT', meson.project_build_root())
-> +devenv.set('VIRTUAL_ENV', meson.project_build_root() / 'pyvenv')
-> +devenv.prepend('PATH', meson.project_build_root() / 'pyvenv'/ 'bin')
-> +devenv.prepend('PYTHONPATH', meson.current_source_dir() / 'tests' / 'functional')
-> +devenv.prepend('PYTHONPATH', meson.current_source_dir() / 'python')
-> +meson.add_devenv(devenv)
-> +
-> +run_config = configuration_data({'build_dir': meson.current_build_dir()})
-> +run = configure_file(input: 'run.in',
-> +                     output: 'run',
-> +                     configuration: run_config)
-> +run_command('chmod', 'a+x', meson.current_build_dir() / 'run', check: true)
-> +
->   hxtool = find_program('scripts/hxtool')
->   shaderinclude = find_program('scripts/shaderinclude.py')
->   qapi_gen = find_program('scripts/qapi-gen.py')
-> diff --git a/run.in b/run.in
-> new file mode 100644
-> index 0000000000..cf4821311d
-> --- /dev/null
-> +++ b/run.in
-> @@ -0,0 +1,6 @@
-> +#!/bin/bash
-> +# SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +eval $(meson devenv -C @build_dir@ --dump --dump-format export)
 
-This should use @build_dir@/pyvenv/bin/meson, because the system meson 
-is not necessarily able to read the devenv setup from meson's 
-pickle-format dumps.
+On 12/22/2025 12:35 AM, Philippe Mathieu-Daudé wrote:
+> On 22/12/25 09:17, Cédric Le Goater wrote:
+>> Hello Farhan,
+>>
+>> On 12/19/25 18:30, Farhan Ali wrote:
+>>>
+>>> On 12/19/2025 8:30 AM, Cédric Le Goater wrote:
+>>>> On 12/19/25 17:21, Philippe Mathieu-Daudé wrote:
+>>>>> On 19/12/25 15:51, Cédric Le Goater wrote:
+>>>>>> Hello,
+>>>>>>
+>>>>>> On 12/17/25 19:42, Farhan Ali wrote:
+>>>>>>> The VFIO pread/pwrite functions use little-endian data format.
+>>>>>>> When enabling the Bus Master bit, the value must be correctly 
+>>>>>>> converted
+>>>>>>> from the CPU's native endianess to little-endian format.
+>>>>>>
+>>>>>> How did you find the issue ?
+>>>>>
+>>>>> I presumed using VFIO on s390x hosts...
+>>>>
+>>>> yes. I have been using a nvme drive for over 2y in an s390x VM and 
+>>>> never
+>>>> saw any issue.
+>>>>
+>>>> C.
+>>>>
+>>> Hi Cedric,
+>>>
+>>> I have recently been experimenting with QEMU NVMe userspace driver 
+>>> and PCI instructions from userspace [1]. On some of our test systems 
+>>> I noticed the driver being hung. After some investigation we 
+>>> realized it was due to this issue.
+>>
+>> Do you think you could provide a test case for it ?
 
-And while at it, we can also change it to use -w "$PWD" instead:
+@Cedric,
 
-exec @build_dir@/pyvenv/bin/meson devenv -C @build_dir@ -w "$PWD" "$@"
+Just wanted to understand what you had in mind here? The test case would 
+use VFIO and would need an NVMe device, looking through QEMU testcases I 
+couldn't find an example of using VFIO. If there are examples or other 
+frameworks that is used to test this could you point me to them?
 
-I'll do this and apply the patch, thanks!
 
-Paolo
+>>
+>> Also, I think the LE conversion should be done in routines
+>> qemu_vfio_pci_read_config() and qemu_vfio_pci_write_config().
+>
+> These config routines take a void buffer, so have no clue of endianness
+> size.
+
+Yup, exactly.
+
+>
+> Maybe we want intermediary qemu_vfio_pci_ld16_config() and
+> qemu_vfio_pci_st16_config() helpers?
+>
+I did think of adding in additional helper functions. But 
+since qemu_vfio_pci_read_config()/qemu_vfio_pci_write_config() is only 
+called in this one place, wasn't sure if it made sense in adding them.
+
+Another approach I thought of was limiting reads/writes to 32 bit 
+similar to vfio_pci_write_config()/vfio_pci_read_config() does today. 
+Can we do this here as well?
+
+Thanks
+
+Farhan
 
 
