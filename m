@@ -2,73 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D233ACD63CF
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Dec 2025 14:51:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8621CCD608B
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Dec 2025 13:47:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vXgJG-0004a3-Fa; Mon, 22 Dec 2025 08:50:54 -0500
+	id 1vXfJ2-0006Sq-1d; Mon, 22 Dec 2025 07:46:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ilia.levi@intel.com>)
- id 1vXf9B-00049m-F6
- for qemu-devel@nongnu.org; Mon, 22 Dec 2025 07:36:26 -0500
-Received: from mgamail.intel.com ([192.198.163.17])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ilia.levi@intel.com>)
- id 1vXf99-0005Jv-NO
- for qemu-devel@nongnu.org; Mon, 22 Dec 2025 07:36:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766406979; x=1797942979;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=HrWlpf7UH0Y4M2UvrzFMqrHquRK6NcZu5BxapdR0Bew=;
- b=D0q1xfrZQiKUajmyyJj1JjUeyIdCnwsg2xvD1q/t5S6IAywEgscTklJO
- DjFEULOoyuJRUdIIAdSjNGc+5+dCZY+2GjmQCUOjSfqQiSRFC3jdmQVMC
- 3pFxqB4usF4/Q/0nTrQ48hS1OBq1/cq/1PA4Sd/E8DKprzipF+Lx/599x
- 0COkNJQmfep/YN352ztnDM8k9yZvDfGY4h/M/bkp+AzOyK1wtYqn6JjxM
- 4V9YVfZVTt73ruoFacZrtc/Eefa7BPgnw9J4pmWAolJppiOcTG+2F5Vak
- Cg36+ABGCXhHTexmHrebqXvfX7HmAXxzQaOcqaHOA9rv30njW4pedHxbw w==;
-X-CSE-ConnectionGUID: 5MfsW4f+RdyOLw443ynQjg==
-X-CSE-MsgGUID: PMdRDkJKTG2YmEesWbarXw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11649"; a="68142504"
-X-IronPort-AV: E=Sophos;i="6.21,168,1763452800"; d="scan'208";a="68142504"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Dec 2025 04:36:19 -0800
-X-CSE-ConnectionGUID: QiAzCzhbT2OYtpQD18gBZg==
-X-CSE-MsgGUID: g04tMp7RTXytzRIfSPZKcg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,168,1763452800"; d="scan'208";a="200408080"
-Received: from unknown (HELO ilevi-mobl.intel.com) ([10.13.220.47])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Dec 2025 04:36:17 -0800
-From: Ilia Levi <ilia.levi@intel.com>
-To: qemu-devel@nongnu.org
-Cc: ilia.levi@intel.com, jeuk20.kim@samsung.com, farosas@suse.de,
- lvivier@redhat.com, pbonzini@redhat.com
-Subject: [PATCH 2/2] tests/qtest/ufs-test: Add test for mcq completion queue
- wraparound
-Date: Mon, 22 Dec 2025 14:35:59 +0200
-Message-ID: <20251222123559.3387-3-ilia.levi@intel.com>
-X-Mailer: git-send-email 2.49.1
-In-Reply-To: <20251222123559.3387-1-ilia.levi@intel.com>
-References: <20251222123559.3387-1-ilia.levi@intel.com>
+ (Exim 4.90_1) (envelope-from <tangtao1634@phytium.com.cn>)
+ id 1vXfIR-0006J8-Dx; Mon, 22 Dec 2025 07:45:56 -0500
+Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net ([209.97.181.73])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <tangtao1634@phytium.com.cn>)
+ id 1vXfIO-00073N-Af; Mon, 22 Dec 2025 07:45:55 -0500
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+ by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwAHDpp2PUlpX+wsBA--.149S2;
+ Mon, 22 Dec 2025 20:45:42 +0800 (CST)
+Received: from phytium.com.cn (unknown [218.76.62.144])
+ by mail (Coremail) with SMTP id AQAAfwBXr+xyPUlpieINAA--.25982S3;
+ Mon, 22 Dec 2025 20:45:39 +0800 (CST)
+From: Tao Tang <tangtao1634@phytium.com.cn>
+To: Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>, Eric Auger <eric.auger@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Chen Baozi <chenbaozi@phytium.com.cn>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Mostafa Saleh <smostafa@google.com>,
+ CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>,
+ Tao Tang <tangtao1634@phytium.com.cn>
+Subject: [RFC v7 0/7] hw/misc: Introduce a generalized IOMMU test framework
+Date: Mon, 22 Dec 2025 20:45:10 +0800
+Message-Id: <20251222124517.3948679-1-tangtao1634@phytium.com.cn>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.17; envelope-from=ilia.levi@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+X-CM-TRANSID: AQAAfwBXr+xyPUlpieINAA--.25982S3
+X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQAMBWlIVJoHZQAAsF
+Authentication-Results: hzbj-icmmx-7; spf=neutral smtp.mail=tangtao163
+ 4@phytium.com.cn;
+X-Coremail-Antispam: 1Uk129KBjvJXoW3XF1DWFyxWF45Xw15AF1fWFg_yoWDJw4fpa
+ 93G3sxKF48JF1fArn3Aw40vFy5ta1kJa17Zr17Gw1Fv398Ary8tr45KFyrKFyDJrWkZF47
+ Za18tF1Uur4FvrJanT9S1TB71UUUUjUqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+ DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
+ UUUUU
+Received-SPF: pass client-ip=209.97.181.73;
+ envelope-from=tangtao1634@phytium.com.cn;
+ helo=zg8tmja5ljk3lje4ms43mwaa.icoremail.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 22 Dec 2025 08:50:03 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,184 +76,234 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Added a test that sends 32 NOP Out commands asynchronously. Since the CQ
-has 31 entries by default, this tests the scenario where CQ processing
-needs to wait for space to become available.
+This is v7 of the IOMMU test framework. Compared to v6, v7 splits the
+smmuv3-common.h work into smaller patches, adds MAINTAINERS entries for
+iommu-testdev and the qos-smmuv3 helpers, updates the DMA test pattern to
+0x12345678, and switches the qtest PCI enumeration to qpci_device_foreach().
 
-Additionally, added two minor fixes to existing tests:
-* advance CQ head after reading from CQ
-* initialize command descriptor slots bitmap in ufs_init()
+I plan to invest long-term in maintaining iommu-testdev and qos-smmuv3, so
+I added two entries in MAINTAINERS. This is my first time touching the
+MAINTAINERS file; I read docs/devel/maintainers.rst and made changes
+accordingly, but I am still unsure if this follows the expected rules.
+Feedback is welcome: should we add additional maintainer(s) for these
+entries?
 
-Signed-off-by: Ilia Levi <ilia.levi@intel.com>
----
- tests/qtest/ufs-test.c | 125 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 125 insertions(+)
+Also, qos-smmuv3 currently contains a large amount of page-table building
+code. If there is a better splitting strategy, I am happy to rework it.
 
-diff --git a/tests/qtest/ufs-test.c b/tests/qtest/ufs-test.c
-index 4867ccf08a..a5f5243886 100644
---- a/tests/qtest/ufs-test.c
-+++ b/tests/qtest/ufs-test.c
-@@ -166,6 +166,7 @@ __ufs_send_transfer_request_mcq(QUfs *ufs, uint8_t lun,
-     cqhp = ufs_rreg(ufs, ufs->cqdao[TEST_QID]);
-     cqentry_addr = ufs->cqlba[TEST_QID] + cqhp;
-     qtest_memread(ufs->dev.bus->qts, cqentry_addr, &cqentry, sizeof(cqentry));
-+    cqhp = (cqhp + sizeof(UfsCqEntry)) % (QUEUE_SIZE * sizeof(UfsCqEntry));
-     ufs_wreg(ufs, ufs->cqdao[TEST_QID], cqhp);
- 
-     return cqentry.status;
-@@ -208,6 +209,80 @@ static enum UtpOcsCodes ufs_send_nop_out(QUfs *ufs, UtpUpiuRsp *rsp_out)
-     return ret;
- }
- 
-+static bool ufs_mcq_sq_has_space(QUfs *ufs)
-+{
-+    uint32_t sqhp = ufs_rreg(ufs, ufs->sqdao[TEST_QID]);
-+    uint32_t sqtp = ufs_rreg(ufs, ufs->sqdao[TEST_QID] + 0x4);
-+    uint32_t next_sqtp = (sqtp + sizeof(UfsSqEntry)) %
-+                         (QUEUE_SIZE * sizeof(UfsSqEntry));
-+    return next_sqtp != sqhp;
-+}
-+
-+static void __ufs_send_transfer_request_mcq_async(QUfs *ufs, uint8_t lun,
-+                                const UtpTransferReqDesc *utrd)
-+{
-+    uint32_t sqtp;
-+    uint64_t utrd_addr;
-+
-+    /* Wait for SQ space */
-+    while (!ufs_mcq_sq_has_space(ufs)) {
-+        qtest_clock_step(ufs->dev.bus->qts, 100);
-+    }
-+
-+    sqtp = ufs_rreg(ufs, ufs->sqdao[TEST_QID] + 0x4);
-+    utrd_addr = ufs->sqlba[TEST_QID] + sqtp;
-+    qtest_memwrite(ufs->dev.bus->qts, utrd_addr, utrd, sizeof(*utrd));
-+    sqtp = (sqtp + sizeof(UfsSqEntry)) % (QUEUE_SIZE * sizeof(UfsSqEntry));
-+    ufs_wreg(ufs, ufs->sqdao[TEST_QID] + 0x4, sqtp);
-+}
-+
-+static int ufs_mcq_send_nop_out_async(QUfs *ufs)
-+{
-+    int cmd_desc_slot = alloc_cmd_desc_slot(ufs);
-+    uint64_t req_upiu_addr =
-+        ufs->cmd_desc_addr + cmd_desc_slot * UTP_COMMAND_DESCRIPTOR_SIZE;
-+
-+    /* Build up request upiu */
-+    UtpUpiuReq req_upiu = { 0 };
-+    req_upiu.header.trans_type = UFS_UPIU_TRANSACTION_NOP_OUT;
-+    req_upiu.header.task_tag = cmd_desc_slot;
-+    qtest_memwrite(ufs->dev.bus->qts, req_upiu_addr, &req_upiu,
-+                   sizeof(req_upiu));
-+
-+    /* Build up utp transfer request descriptor */
-+    UtpTransferReqDesc utrd =
-+        ufs_build_req_utrd(req_upiu_addr, UFS_UTP_NO_DATA_TRANSFER, 0);
-+
-+    /* Send Transfer Request */
-+    __ufs_send_transfer_request_mcq_async(ufs, 0, &utrd);
-+
-+    return cmd_desc_slot;
-+}
-+
-+static int ufs_mcq_poll_cq(QUfs *ufs, UfsCqEntry *cqe, uint16_t n_cqe)
-+{
-+    uint32_t cqhp, cqtp;
-+    uint64_t cqe_addr;
-+    int ix = 0;
-+
-+    cqhp = ufs_rreg(ufs, ufs->cqdao[TEST_QID]);
-+    cqtp = ufs_rreg(ufs, ufs->cqdao[TEST_QID] + 0x4);
-+
-+    while (cqhp != cqtp && ix < n_cqe) {
-+        /* read completion entry */
-+        cqe_addr = ufs->cqlba[TEST_QID] + cqhp;
-+        qtest_memread(ufs->dev.bus->qts, cqe_addr, &cqe[ix], sizeof(cqe[ix]));
-+
-+        /* advance completion queue head pointer */
-+        cqhp = (cqhp + sizeof(UfsCqEntry)) % (QUEUE_SIZE * sizeof(UfsCqEntry));
-+        ix++;
-+    }
-+
-+    ufs_wreg(ufs, ufs->cqdao[TEST_QID], cqhp);
-+
-+    return ix;
-+}
-+
- static enum UtpOcsCodes ufs_send_query(QUfs *ufs, uint8_t query_function,
-                                        uint8_t query_opcode, uint8_t idn,
-                                        uint8_t index, uint8_t selector,
-@@ -416,6 +491,7 @@ static void ufs_init(QUfs *ufs, QGuestAllocator *alloc)
-     ufs_wreg(ufs, A_UTRIACR, 0);
- 
-     /* Enable transfer request */
-+    bitmap_zero(ufs->cmd_desc_bitmap, UFS_MAX_CMD_DESC);
-     ufs->cmd_desc_addr =
-         guest_alloc(alloc, UFS_MAX_CMD_DESC * UTP_COMMAND_DESCRIPTOR_SIZE);
-     ufs->data_buffer_addr =
-@@ -679,6 +755,53 @@ static void ufstest_read_write(void *obj, void *data, QGuestAllocator *alloc)
-     ufs_exit(ufs, alloc);
- }
- 
-+static void ufstest_mcq_cq_wraparound(void *obj, void *data,
-+                                      QGuestAllocator *alloc)
-+{
-+    QUfs *ufs = obj;
-+    UfsCqEntry cqe[QUEUE_SIZE];
-+    const int num_requests = QUEUE_SIZE;
-+    int i, completed = 0;
-+
-+    ufs_init(ufs, alloc);
-+
-+    /* Ensure MCQ is supported */
-+    g_assert_true(ufs->support_mcq);
-+
-+    for (i = 0; i < num_requests; ++i) {
-+        ufs_mcq_send_nop_out_async(ufs);
-+    }
-+
-+    while (completed != num_requests) {
-+        int n_cqe = ufs_mcq_poll_cq(ufs, cqe, ARRAY_SIZE(cqe));
-+        if (!n_cqe) {
-+            break;
-+        }
-+
-+        for (i = 0; i < n_cqe; ++i) {
-+            uint64_t ucdba;
-+            uint64_t rsp_upiu_addr;
-+            UtpUpiuRsp rsp_upiu;
-+            uint8_t tag;
-+
-+            g_assert_cmpuint(cqe[i].status, ==, UFS_OCS_SUCCESS);
-+
-+            ucdba = le64_to_cpu(cqe[i].utp_addr) & MAKE_64BIT_MASK(7, 57);
-+            rsp_upiu_addr = ucdba + UTP_RESPONSE_UPIU_OFFSET;
-+            qtest_memread(ufs->dev.bus->qts, rsp_upiu_addr, &rsp_upiu,
-+                          sizeof(rsp_upiu));
-+
-+            tag = rsp_upiu.header.task_tag;
-+            release_cmd_desc_slot(ufs, tag);
-+        }
-+
-+        completed += n_cqe;
-+    }
-+
-+    g_assert_cmpint(completed, ==, num_requests);
-+    ufs_exit(ufs, alloc);
-+}
-+
- static void ufstest_query_flag_request(void *obj, void *data,
-                                        QGuestAllocator *alloc)
- {
-@@ -1129,6 +1252,8 @@ static void ufs_register_nodes(void)
-     qos_add_test("init", "ufs", ufstest_init, NULL);
-     qos_add_test("legacy-read-write", "ufs", ufstest_read_write, &io_test_opts);
-     qos_add_test("mcq-read-write", "ufs", ufstest_read_write, &mcq_test_opts);
-+    qos_add_test("mcq-cq-wraparound", "ufs", ufstest_mcq_cq_wraparound,
-+                 &mcq_test_opts);
-     qos_add_test("query-flag", "ufs", ufstest_query_flag_request,
-                  &io_test_opts);
-     qos_add_test("query-attribute", "ufs", ufstest_query_attr_request,
+Motivation
+----------
+
+Currently, thoroughly testing IOMMU emulation (e.g., ARM SMMUv3) requires
+a significant software stack. We need to boot a full guest operating
+system (like Linux) with the appropriate drivers (e.g., IOMMUFD) and rely
+on firmware (e.g., ACPI with IORT tables or Hafnium) to correctly
+configure the IOMMU and orchestrate DMA from a peripheral device.
+
+This dependency on a complex software stack presents several challenges:
+
+* High Barrier to Entry: Writing targeted tests for specific IOMMU
+    features (like fault handling, specific translation regimes, etc.)
+    becomes cumbersome.
+
+* Difficult to Debug: It's hard to distinguish whether a bug originates
+    from the IOMMU emulation itself, the guest driver, the firmware
+    tables, or the guest kernel's configuration.
+
+* Slow Iteration: The need to boot a full guest OS slows down the
+    development and testing cycle.
+
+The primary goal of this work is to create a lightweight, self-contained
+testing environment that allows us to exercise the IOMMU's core logic
+directly at the qtest level, removing the need for any guest-side software.
+
+Our Approach: A Dedicated Test Framework
+-----------------------------------------
+
+To achieve this, we introduce three main components:
+
+* A minimal hardware device: iommu-testdev
+* A reusable IOMMU helper library: libqos/qos-smmuv3
+* A comprehensive qtest suite: iommu-smmuv3-test
+
+The iommu-testdev is intentionally not a conformant, general-purpose PCIe
+or platform device. It is a purpose-built, highly simplified "DMA engine"
+designed to be analogous to a minimal PCIe Root Complex that bypasses the
+full, realistic topology (Host Bridges, Switches, Endpoints) to provide a
+direct, programmable path for a DMA request to reach the IOMMU. Its sole
+purpose is to trigger a DMA transaction when its registers are written to,
+making it perfectly suited for direct control from a test environment like
+qtest.
+
+The Qtest Framework
+-------------------
+
+The new qtest (iommu-smmuv3-test.c) serves as the "bare-metal driver"
+for both the IOMMU and the iommu-testdev. It leverages the libqos helper
+library to manually perform all the setup that would typically be handled
+by the guest kernel and firmware, but in a completely controlled and
+predictable manner:
+
+1.  IOMMU Configuration: It directly initializes the SMMU's registers to a
+    known state using helper functions from qos-smmuv3.
+
+2.  Translation Structure Setup: It uses the libqos library to construct
+    the necessary translation structures in memory, including Stream Table
+    Entries (STEs), Context Descriptors (CDs), and Page Tables (PTEs).
+
+3.  DMA Trigger: It programs the iommu-testdev to initiate a DMA operation
+    targeting a specific IOVA with configurable attributes.
+
+4.  Verification: It waits for the transaction to complete and verifies
+    that the memory was accessed correctly after address translation by
+    the IOMMU.
+
+This framework provides a solid and extensible foundation for validating
+the IOMMU's core translation paths. The current test suite covers:
+
+- Stage 1 only translation (VA -> PA via CD page tables)
+- Stage 2 only translation (IPA -> PA via STE S2 tables)
+- Nested translation (VA -> IPA -> PA, Stage 1 + Stage 2)
+
+The infrastructure is designed to be extended to support additional
+security spaces and IOMMU features.
+
+
+Testing:
+--------
+QTEST_QEMU_BINARY=./build/qemu-system-aarch64 \
+  ./build/tests/qtest/iommu-smmuv3-test --tap -k
+
+
+If you want to check coverage report, please follow instructions below
+which are shared by Pierrick in previous review [1]
+
+# install gcovr if not already installed, `sudo apt install gcovr`
+# on ubuntu for example
+$ export CFLAGS="--coverage"
+$ ./configure --target-list=aarch64-softmmu
+$ ninja -C build
+$ QTEST_QEMU_BINARY=./build/qemu-system-aarch64 \
+  ./build/tests/qtest/iommu-smmuv3-test
+$ rm -rf build/coverage_html
+$ mkdir build/coverage_html
+$ gcovr \
+      --gcov-ignore-parse-errors suspicious_hits.warn \
+      --gcov-ignore-parse-errors negative_hits.warn \
+      --merge-mode-functions=separate \
+      --html-details build/coverage_html/index.html \
+      --filter 'hw/arm/smmu*'
+# check the version of gcovr if meeting some unsupported options error.
+# Upgrading to 8.4 version may resolve the error.
+$ gcovr --version
+$ pip install --user --upgrade gcovr
+$ echo file://$(pwd)/build/coverage_html/index.html
+# open this in browser by clicking on your terminal
+
+[1] https://lore.kernel.org/qemu-devel/a361b46f-2173-4c98-a5d3-6b4d2ac004af@linaro.org/
+
+
+Major Changes from v6 to v7:
+-----------------------------
+  - Split the smmuv3-common.h work into smaller patches
+    (registerfields conversion, NSCFG bits, helper setters)
+  - Add MAINTAINERS entries for iommu-testdev and qos-smmuv3 helpers
+  - Tighten documentation wording and update the DMA test pattern value
+  - Simplify qtest PCI device discovery and rename QSMMU_IOVA constant
+  - This series is also saved in github repo [4]
+
+[4] https://github.com/hnusdr/qemu/tree/iommu-testdev-v7-community
+
+
+Major Changes from v5 to v6:
+-----------------------------
+  - Split batch testing into individual test cases per translation mode
+  - Removed cleanup functions and related codes or comments
+  - Improved error handling with explicit assertions
+  - Add coverage build and test instructions shared by Pierrick
+  - Keep Reviewed-by and Tested-by from Pierrick's review
+  - This series is also saved in github repo [2]
+
+[2] https://github.com/hnusdr/qemu/tree/iommu-testdev-v6-community
+
+
+Major Changes from v4 to v5:
+-----------------------------
+ - Remove a duplicated patch that was accidentally included in v4.
+
+
+Major Changes from v3 to v4:
+-----------------------------
+
+1. Added shared smmuv3-common.h so both the device and libqos consume the same
+   STE/CD/register definitions as Alex suggested [3]
+2. Slimmed iommu-testdev down to a pure DMA trigger with a tighter MMIO
+   contract (new doorbell helper, simplified attributes/errors).
+3. Updated `qos-smmuv3` and the qtest so they include the common header,
+   honor per-test expected results, and rely solely on the streamlined device
+   interface.
+4. Compacted changes of v2 to v3.
+
+[3] https://lore.kernel.org/qemu-devel/87zf8jk244.fsf@draig.linaro.org/
+
+
+Major Changes from v2 to v3:
+-----------------------------
+
+1. Generalization/Renaming: rebranded `smmu-testdev` → `iommu-testdev` (code,
+   headers, docs) to reflect the broadened scope.
+2. Separation of concerns: iommu-testdev is now a pure DMA trigger; all
+   SMMUv3-specific setup (STE/CD/page tables, multi-mode support, space offsets)
+   lives in `qos-smmuv3.{c,h}` and is consumed by the new qtest.
+3. Improved modularity & coverage: the stacked design (device + helper + qtest)
+   made it straightforward to add S1/S2/Nested tests, a cleaner config system,
+   and clearer validation logic.
+4. Code/documentation quality: added tracepoints, better error handling/naming,
+   and refreshed `docs/specs/iommu-testdev.rst` with the new layout.
+
+Future Work
+-----------
+
+The current implementation focuses on basic translation path validation
+in the Non-Secure address space. Future extensions could include:
+
+* Multi-space testing (Secure, Root, Realm) for SMMUv3
+* Support for other IOMMU types (Intel VT-d, AMD-Vi, RISC-V IOMMU)
+
+Tao Tang (7):
+  hw/arm/smmuv3: Extract common definitions to smmuv3-common.h
+  hw/arm/smmuv3-common: Define STE/CD fields via registerfields
+  hw/misc: Introduce iommu-testdev for bare-metal IOMMU testing
+  hw/arm/smmuv3-common: Add NSCFG bit definition for CD
+  hw/arm/smmuv3-common: Add STE/CD set helpers for repeated field setup
+  tests/qtest/libqos: Add SMMUv3 helper library
+  tests/qtest: Add SMMUv3 bare-metal test using iommu-testdev
+
+ MAINTAINERS                     |  13 +
+ docs/specs/index.rst            |   1 +
+ docs/specs/iommu-testdev.rst    | 112 ++++++
+ hw/arm/smmuv3-internal.h        | 255 +------------
+ hw/misc/Kconfig                 |   5 +
+ hw/misc/iommu-testdev.c         | 271 ++++++++++++++
+ hw/misc/meson.build             |   1 +
+ hw/misc/trace-events            |  10 +
+ include/hw/arm/smmuv3-common.h  | 423 +++++++++++++++++++++
+ include/hw/misc/iommu-testdev.h |  68 ++++
+ tests/qtest/iommu-smmuv3-test.c | 121 ++++++
+ tests/qtest/libqos/meson.build  |   3 +
+ tests/qtest/libqos/qos-smmuv3.c | 632 ++++++++++++++++++++++++++++++++
+ tests/qtest/libqos/qos-smmuv3.h | 256 +++++++++++++
+ tests/qtest/meson.build         |   1 +
+ 15 files changed, 1918 insertions(+), 254 deletions(-)
+ create mode 100644 docs/specs/iommu-testdev.rst
+ create mode 100644 hw/misc/iommu-testdev.c
+ create mode 100644 include/hw/arm/smmuv3-common.h
+ create mode 100644 include/hw/misc/iommu-testdev.h
+ create mode 100644 tests/qtest/iommu-smmuv3-test.c
+ create mode 100644 tests/qtest/libqos/qos-smmuv3.c
+ create mode 100644 tests/qtest/libqos/qos-smmuv3.h
+
 -- 
-2.49.1
+2.34.1
 
 
