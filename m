@@ -2,49 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF875CDAB53
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 22:51:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C61DCDAB47
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 22:51:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vYAGd-0002rg-4K; Tue, 23 Dec 2025 16:50:07 -0500
+	id 1vYAGf-0002st-5R; Tue, 23 Dec 2025 16:50:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vYAGb-0002rQ-90
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 16:50:05 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ id 1vYAGd-0002sJ-2j
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 16:50:07 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vYAGZ-0006sE-Bx
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 16:50:04 -0500
+ id 1vYAGZ-0006sP-BT
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 16:50:06 -0500
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 20CF0596A0A;
- Tue, 23 Dec 2025 22:49:59 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 2002E596A0E;
+ Tue, 23 Dec 2025 22:50:00 +0100 (CET)
 X-Virus-Scanned: amavis at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id XQJD2YBg3dbH; Tue, 23 Dec 2025 22:49:57 +0100 (CET)
+ id MT1E4ZRimBNP; Tue, 23 Dec 2025 22:49:58 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 0EBE85969FA; Tue, 23 Dec 2025 22:49:57 +0100 (CET)
-Message-ID: <b5ee6f4c7b34f44a91aa91bf60e1f2df8db7b65c.1766525089.git.balaton@eik.bme.hu>
+ id 1B080596A07; Tue, 23 Dec 2025 22:49:58 +0100 (CET)
+Message-ID: <c648e425d67ec3a7ebf51e40c2d149beb553569c.1766525089.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1766525089.git.balaton@eik.bme.hu>
 References: <cover.1766525089.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 1/6] memory: Add internal memory_region_set_ops helper function
+Subject: [PATCH 2/6] memory: Factor out common ram region initialization
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  Paolo Bonzini <pbonzini@redhat.com>, Michael S. Tsirkin <mst@redhat.com>,
  philmd@linaro.org
-Date: Tue, 23 Dec 2025 22:49:57 +0100 (CET)
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
+Date: Tue, 23 Dec 2025 22:49:58 +0100 (CET)
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,68 +59,237 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a common operation used at multiple places, add a helper
-function for it.
+Introduce internal memory_region_do_init_ram() function to remove
+duplicated code from different memory_region_init_*ram functions.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- system/memory.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ system/memory.c | 147 +++++++++++++++++-------------------------------
+ 1 file changed, 53 insertions(+), 94 deletions(-)
 
 diff --git a/system/memory.c b/system/memory.c
-index 8b84661ae3..a003095632 100644
+index a003095632..87c8e78662 100644
 --- a/system/memory.c
 +++ b/system/memory.c
-@@ -1559,6 +1559,15 @@ MemTxResult memory_region_dispatch_write(MemoryRegion *mr,
-     }
+@@ -1579,29 +1579,12 @@ void memory_region_init_io(MemoryRegion *mr,
+     memory_region_set_ops(mr, ops, opaque);
  }
  
-+static void memory_region_set_ops(MemoryRegion *mr,
-+                                  const MemoryRegionOps *ops,
-+                                  void *opaque)
+-bool memory_region_init_ram_nomigrate(MemoryRegion *mr,
+-                                      Object *owner,
+-                                      const char *name,
+-                                      uint64_t size,
+-                                      Error **errp)
+-{
+-    return memory_region_init_ram_flags_nomigrate(mr, owner, name,
+-                                                  size, 0, errp);
+-}
+-
+-bool memory_region_init_ram_flags_nomigrate(MemoryRegion *mr,
+-                                            Object *owner,
+-                                            const char *name,
+-                                            uint64_t size,
+-                                            uint32_t ram_flags,
+-                                            Error **errp)
++static bool memory_region_do_init_ram(MemoryRegion *mr,
++                                      Error *err, Error **errp)
+ {
+-    Error *err = NULL;
+-    memory_region_init(mr, owner, name, size);
+     mr->ram = true;
+     mr->terminates = true;
+     mr->destructor = memory_region_destructor_ram;
+-    mr->ram_block = qemu_ram_alloc(size, ram_flags, mr, &err);
+     if (err) {
+         mr->size = int128_zero();
+         object_unparent(OBJECT(mr));
+@@ -1611,6 +1594,25 @@ bool memory_region_init_ram_flags_nomigrate(MemoryRegion *mr,
+     return true;
+ }
+ 
++bool memory_region_init_ram_flags_nomigrate(MemoryRegion *mr, Object *owner,
++                                            const char *name, uint64_t size,
++                                            uint32_t ram_flags, Error **errp)
 +{
-+    mr->ops = ops ?: &unassigned_mem_ops;
-+    mr->opaque = opaque;
-+    mr->terminates = true;
++    Error *err = NULL;
++
++    memory_region_init(mr, owner, name, size);
++    mr->ram_block = qemu_ram_alloc(size, ram_flags, mr, &err);
++    return memory_region_do_init_ram(mr, err, errp);
 +}
 +
- void memory_region_init_io(MemoryRegion *mr,
-                            Object *owner,
-                            const MemoryRegionOps *ops,
-@@ -1567,9 +1576,7 @@ void memory_region_init_io(MemoryRegion *mr,
-                            uint64_t size)
++bool memory_region_init_ram_nomigrate(MemoryRegion *mr, Object *owner,
++                                      const char *name, uint64_t size,
++                                      Error **errp)
++{
++    return memory_region_init_ram_flags_nomigrate(mr, owner, name, size, 0,
++                                                  errp);
++}
++
+ bool memory_region_init_resizeable_ram(MemoryRegion *mr,
+                                        Object *owner,
+                                        const char *name,
+@@ -1622,108 +1624,66 @@ bool memory_region_init_resizeable_ram(MemoryRegion *mr,
+                                        Error **errp)
  {
+     Error *err = NULL;
++
      memory_region_init(mr, owner, name, size);
--    mr->ops = ops ? ops : &unassigned_mem_ops;
--    mr->opaque = opaque;
+-    mr->ram = true;
 -    mr->terminates = true;
-+    memory_region_set_ops(mr, ops, opaque);
+-    mr->destructor = memory_region_destructor_ram;
+-    mr->ram_block = qemu_ram_alloc_resizeable(size, max_size, resized,
+-                                              mr, &err);
+-    if (err) {
+-        mr->size = int128_zero();
+-        object_unparent(OBJECT(mr));
+-        error_propagate(errp, err);
+-        return false;
+-    }
+-    return true;
++    mr->ram_block = qemu_ram_alloc_resizeable(size, max_size, resized, mr,
++                                              &err);
++    return memory_region_do_init_ram(mr, err, errp);
  }
  
- bool memory_region_init_ram_nomigrate(MemoryRegion *mr,
-@@ -1710,10 +1717,8 @@ void memory_region_init_ram_device_ptr(MemoryRegion *mr,
+ #if defined(CONFIG_POSIX) && !defined(EMSCRIPTEN)
+-bool memory_region_init_ram_from_file(MemoryRegion *mr,
+-                                      Object *owner,
+-                                      const char *name,
+-                                      uint64_t size,
+-                                      uint64_t align,
+-                                      uint32_t ram_flags,
+-                                      const char *path,
+-                                      ram_addr_t offset,
++bool memory_region_init_ram_from_file(MemoryRegion *mr, Object *owner,
++                                      const char *name, uint64_t size,
++                                      uint64_t align, uint32_t ram_flags,
++                                      const char *path, ram_addr_t offset,
+                                       Error **errp)
+ {
+     Error *err = NULL;
++
+     memory_region_init(mr, owner, name, size);
+-    mr->ram = true;
+     mr->readonly = !!(ram_flags & RAM_READONLY);
+-    mr->terminates = true;
+-    mr->destructor = memory_region_destructor_ram;
+     mr->align = align;
+-    mr->ram_block = qemu_ram_alloc_from_file(size, mr, ram_flags, path,
+-                                             offset, &err);
+-    if (err) {
+-        mr->size = int128_zero();
+-        object_unparent(OBJECT(mr));
+-        error_propagate(errp, err);
+-        return false;
+-    }
+-    return true;
++    mr->ram_block = qemu_ram_alloc_from_file(size, mr, ram_flags, path, offset,
++                                             &err);
++    return memory_region_do_init_ram(mr, err, errp);
+ }
+ 
+-bool memory_region_init_ram_from_fd(MemoryRegion *mr,
+-                                    Object *owner,
+-                                    const char *name,
+-                                    uint64_t size,
+-                                    uint32_t ram_flags,
+-                                    int fd,
+-                                    ram_addr_t offset,
+-                                    Error **errp)
++bool memory_region_init_ram_from_fd(MemoryRegion *mr, Object *owner,
++                                    const char *name, uint64_t size,
++                                    uint32_t ram_flags, int fd,
++                                    ram_addr_t offset, Error **errp)
+ {
+     Error *err = NULL;
++
+     memory_region_init(mr, owner, name, size);
+-    mr->ram = true;
+     mr->readonly = !!(ram_flags & RAM_READONLY);
+-    mr->terminates = true;
+-    mr->destructor = memory_region_destructor_ram;
+     mr->ram_block = qemu_ram_alloc_from_fd(size, size, NULL, mr, ram_flags, fd,
+                                            offset, false, &err);
+-    if (err) {
+-        mr->size = int128_zero();
+-        object_unparent(OBJECT(mr));
+-        error_propagate(errp, err);
+-        return false;
+-    }
+-    return true;
++    return memory_region_do_init_ram(mr, err, errp);
+ }
+ #endif
+ 
+-void memory_region_init_ram_ptr(MemoryRegion *mr,
+-                                Object *owner,
+-                                const char *name,
+-                                uint64_t size,
+-                                void *ptr)
++void memory_region_init_ram_ptr(MemoryRegion *mr, Object *owner,
++                                const char *name, uint64_t size, void *ptr)
  {
      memory_region_init(mr, owner, name, size);
-     mr->ram = true;
+-    mr->ram = true;
 -    mr->terminates = true;
-     mr->ram_device = true;
--    mr->ops = &ram_device_mem_ops;
--    mr->opaque = mr;
-+    memory_region_set_ops(mr, &ram_device_mem_ops, mr);
-     mr->destructor = memory_region_destructor_ram;
- 
+-    mr->destructor = memory_region_destructor_ram;
+-
      /* qemu_ram_alloc_from_ptr cannot fail with ptr != NULL.  */
-@@ -1759,9 +1764,7 @@ bool memory_region_init_rom_device_nomigrate(MemoryRegion *mr,
+     assert(ptr != NULL);
+     mr->ram_block = qemu_ram_alloc_from_ptr(size, ptr, mr, &error_abort);
++    memory_region_do_init_ram(mr, NULL, NULL);
+ }
+ 
+-void memory_region_init_ram_device_ptr(MemoryRegion *mr,
+-                                       Object *owner,
+-                                       const char *name,
+-                                       uint64_t size,
++void memory_region_init_ram_device_ptr(MemoryRegion *mr, Object *owner,
++                                       const char *name, uint64_t size,
+                                        void *ptr)
+ {
+     memory_region_init(mr, owner, name, size);
+-    mr->ram = true;
+-    mr->ram_device = true;
+     memory_region_set_ops(mr, &ram_device_mem_ops, mr);
+-    mr->destructor = memory_region_destructor_ram;
+-
+     /* qemu_ram_alloc_from_ptr cannot fail with ptr != NULL.  */
+     assert(ptr != NULL);
+     mr->ram_block = qemu_ram_alloc_from_ptr(size, ptr, mr, &error_abort);
++    memory_region_do_init_ram(mr, NULL, NULL);
++    mr->ram_device = true;
+ }
+ 
+ void memory_region_init_alias(MemoryRegion *mr,
+@@ -1762,19 +1722,18 @@ bool memory_region_init_rom_device_nomigrate(MemoryRegion *mr,
+                                              Error **errp)
+ {
      Error *err = NULL;
++    bool ret;
++
      assert(ops);
      memory_region_init(mr, owner, name, size);
--    mr->ops = ops;
--    mr->opaque = opaque;
--    mr->terminates = true;
-+    memory_region_set_ops(mr, ops, opaque);
-     mr->rom_device = true;
-     mr->destructor = memory_region_destructor_ram;
+     memory_region_set_ops(mr, ops, opaque);
+-    mr->rom_device = true;
+-    mr->destructor = memory_region_destructor_ram;
      mr->ram_block = qemu_ram_alloc(size, 0, mr, &err);
+-    if (err) {
+-        mr->size = int128_zero();
+-        object_unparent(OBJECT(mr));
+-        error_propagate(errp, err);
+-        return false;
++    ret = memory_region_do_init_ram(mr, err, errp);
++    if (ret) {
++        mr->ram = false;
++        mr->rom_device = true;
+     }
+-    return true;
++    return ret;
+ }
+ 
+ void memory_region_init_iommu(void *_iommu_mr,
 -- 
 2.41.3
 
