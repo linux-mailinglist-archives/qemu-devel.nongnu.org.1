@@ -2,92 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A6D4CD8CAC
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 11:27:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C4D2CD912E
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 12:19:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vXzaa-0005eV-Sa; Tue, 23 Dec 2025 05:26:00 -0500
+	id 1vY0PJ-0003bX-TK; Tue, 23 Dec 2025 06:18:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jay.chang@sifive.com>)
- id 1vXzaX-0005e3-7R
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 05:25:57 -0500
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jay.chang@sifive.com>)
- id 1vXzaV-0001Or-Q5
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 05:25:56 -0500
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-34c27d14559so3857583a91.2
- for <qemu-devel@nongnu.org>; Tue, 23 Dec 2025 02:25:55 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1vY0PB-0003a2-6B
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 06:18:17 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1vY0P9-0002lO-C4
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 06:18:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1766488693;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=1JYnpgPBaJRiVeyTd2Kg/nue1JcmuXDwX31okD4swp4=;
+ b=e9+gCFG4/mmHppStN9lOpNbZ06dPTFQ0GWxTdxFv+XV977p/5JPSYDeu0J0bpmu0Z5XbOJ
+ xe9bkioZ8DyllV93fYnriO1Huo8eA3ya0XYv6eytKwgHexS396g4Cq6c4fNFhTaNc1dZHc
+ KMR5iozDMndvdPefs9Mpc6jkWNk8S2U=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-90-vQhQ2WN0Njy_maTgELTByA-1; Tue, 23 Dec 2025 06:18:12 -0500
+X-MC-Unique: vQhQ2WN0Njy_maTgELTByA-1
+X-Mimecast-MFC-AGG-ID: vQhQ2WN0Njy_maTgELTByA_1766488691
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4779b3749a8so35490455e9.1
+ for <qemu-devel@nongnu.org>; Tue, 23 Dec 2025 03:18:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1766485554; x=1767090354; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=QDCxx6NDtAwpvWyiilDOnh/wGCIkqTuPNgAK4XZWLvA=;
- b=DDUhmA4bkVjrVF6knRGRMQ20Abbf3Mw0begmeRD1SE/vKeDjcDUkOBq4KDBmrk7TWe
- Tf87vtC5sbTymT/7yb076nPhmSLWnGXVCmnmdkz2NV4cFHg94I/eZfpgP2hXPod/MA+e
- qGTpZJgZmBz9LLAtI+5mxM8Kjdh/AHOe8RwyzF4jO/GREyHpN/0tblYtA0vwH2zawq8t
- H0xvEmYCYsjTmqEiHM+iEo4jdOjc0zqzJvO8vI7aH2SSN7ZpGnBMHO49kbLh3aKnN6gD
- XpbC31B7D4tlRhtPHiX/x/igI2/3w8crBR/+BWZAD389uYwR3A5Th7nbrvCuM/ADNtwg
- 1KBg==
+ d=redhat.com; s=google; t=1766488691; x=1767093491; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=1JYnpgPBaJRiVeyTd2Kg/nue1JcmuXDwX31okD4swp4=;
+ b=T8ehqjc1ZsIE62BReW3x/K1KIeF0UtyzmPYOkI5YYPTTtN/xLUDLWa3GgbEf/AcaHv
+ JBg2b8mutUFiZ4ddQ0Lu6ejBieZZV1lzG6bRcST2n15gp7rMm8BsKyuiL2/mDUeBRzXu
+ 34yrwLGW57t4L/qIAAUtAimr0Zt3Yy2frkOw7ItKrCr7JAzV7OWE5dLXZLAqkUZHu0Ep
+ L1HRgB8IW9rFrcI0p8OwRlm/ZDYsYKLq/1HI/yhq2L24ehzKbGxS8aAV3+1bIpnvuQh0
+ q2MfJuFLRregmYfeCUtHFkzDAZmNHARfItNpWoJrYgoRd6YWZyRBJD3DVTnteB6lYIsR
+ 6gVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766485554; x=1767090354;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=1e100.net; s=20230601; t=1766488691; x=1767093491;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QDCxx6NDtAwpvWyiilDOnh/wGCIkqTuPNgAK4XZWLvA=;
- b=arIioRu6Qelg8wML8uC24LesqLFkHGhtXki4la2ZZO8S4iIh3+h9rcAV63b4aK0Y+h
- 8HMrP1sXnbXD8R0j6CwuSic04HSR7Sy4n4DiFK8KuJZV6qbA92iznAMyOGNKwX+nisqL
- gnKDrCeeFmBAnquGFB3m2KkxpGfAvJ/LoCbmH+C9QUdoVh4v9f+ENhxh6/LBf9opt3c+
- I5dfT1FQQflgB5AeUcqIas3ouS40RO6hi7+OJayK0M/3aIq3PKYTm3ftVC9kWO0Ip9Jg
- CDBumFwKb1Q6h0EUAEFZHcPUY5/VIKUV/9f9w7YZ1hSfWgRf1FVsKnkn2ExMEI1gDVNd
- A28w==
-X-Gm-Message-State: AOJu0YxkKtTJRTPLTIcAczHYJoMVeOrWh/+fukAWmqImSP/7ONgeGnT/
- hIjKmDgxB2ANuRlIxflZnpC3Tqt9xHelMbfpbQh9GENjZwvqYdTkLwvRNHzxOnJMVplePpjp8Vc
- 10hJgY3O2mstFjNy4eUMtOUfPwl1dOSOiHeyRCticduin6nXB1YbtxChJlDIMufwfUZTOB+hif3
- kM2nWlqucCjan+JVjvVaCRNkXPRu9e/bwVHte/wm5l8N8=
-X-Gm-Gg: AY/fxX60Hsj9VtVhCWOQu3MtK7RXBw2oydJlCqiXtfAKzRwa/blnUAgoNkN8rShDyHJ
- 5iUDrvzn2N8GFd0C+Uojo7VqX5IIBNpyLZXawcSfHgDvtJwm2ceSM6INbb9L/IXTmV1oZM+EvrR
- 0DpYOZz9lXU166KpTO90X/euJxWkE1DZZIcn/w28GacBrAQMEQnDQDNFEGoKscqz4GhkgAU0xeB
- 3e0RCqOEGeG/vGm9dcAUocABD74zdTQDf2+GT8TnYXVP74pqGW/Z6HN2c+jocK7GeMTnDQh7uk1
- N7N1GbCaK032ZsdkWSODyB6M5D6sDEwSNHk+4uyEwX3YIEL2mAzuMRU9MCBDk32W3b+f8j8P4M5
- 7m6B3CCpN172HiWj06n2vQqx8LPQOurUG1VnEyMGljI7s9p7h2d0mpp1qg9oBXamTnIkL2VDjsr
- vfRsILJChOU3KI3m3oxGSeEhqwzUJOBPM+hNL7/uOffObmEQLo1Q==
-X-Google-Smtp-Source: AGHT+IE6oUrMIYO/whVjpays1JmUG7g7sluWk76HAMGB5UwKdClbUMlLiW9s34JlyCsadOI54917xA==
-X-Received: by 2002:a17:90b:548c:b0:341:124f:474f with SMTP id
- 98e67ed59e1d1-34e921e8a0fmr10036038a91.32.1766485553571; 
- Tue, 23 Dec 2025 02:25:53 -0800 (PST)
-Received: from jchang-1875.internal.sifive.com ([136.226.240.181])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-c1e7bc69728sm12092834a12.19.2025.12.23.02.25.51
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 23 Dec 2025 02:25:53 -0800 (PST)
-From: Jay Chang <jay.chang@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Jay Chang <jay.chang@sifive.com>, Frank Chang <frank.chang@sifive.com>
-Subject: [PATCH] target/riscv: Align pmp size to pmp-granularity
-Date: Tue, 23 Dec 2025 18:25:47 +0800
-Message-ID: <20251223102547.13337-1-jay.chang@sifive.com>
-X-Mailer: git-send-email 2.48.1
+ bh=1JYnpgPBaJRiVeyTd2Kg/nue1JcmuXDwX31okD4swp4=;
+ b=AjNIpxfHd9YGgMgbg65ynz1tfl9UW3GOaJx0ZpUs7WWO5GBBxj4ZzRXLWxYoH9qLqz
+ nAep2bHlyoxa3rNliQD9JAqGlS15y7daRuZQ5xi+UEZW1wGjyJcLj9QRDlPylSEvtoUc
+ iJxVzTP3mDeQxsH/0oux2x8xWBSe7ttq1ELQBhvy94+6ay41Oq3xLp1R0dhfpL9CM3X1
+ vdUZ00dToKPEazYdlXU6nDLKg2O/ZeCMCo1S4K3s2v+fay3R0Ld9aXctvyggKjtFPQsv
+ dae3Jk5fj7Fe3KBAsVxhax6Xoh7neE931yNzXRLmb9oxyOMEFM/saN9vTR7MFRBB5oBD
+ xYjw==
+X-Gm-Message-State: AOJu0Yy6ATlUE8sOMHQHEvQA9T2lZWlqLh2RtFQp4bFKkJe7gLyk2CNb
+ /jQbIcpop3p7sD6h6vrp1C7lBKrmQpEy9LHSaDNzJBeYu83wPMuPrCq4q4Xh/nOZwelzeRswUrj
+ 3uvHnYsgMh4RwG+4cEZIXrP9V1x+CsvCWHKcmOGHepkU39+jK18gVIFuOngHLPmV2YPuYyd4OAM
+ RrlUuo9Do4t0ROc5UY4/YLEaDTNb8kXmo=
+X-Gm-Gg: AY/fxX58Bc0I8un0TCZTzWQBjXgg1uvPrT5Zj+qRObt4xDctXaB+WKSGVw+pTq/saJP
+ 4h/Tllat+n454X6fE2HaVDR8572RtpGMUJHMqMvgLGYiclFkoIuV1pn4bnRxQ4vTNcLRpYPDDAN
+ qmUrATp31sK9YiSUXCvJuZ8NF8MhtRYvWIJOFR/bQC2OOjDC46cS1vz8mnSa38ZKI3mcWI
+X-Received: by 2002:a05:600c:4e0d:b0:47b:df60:8a14 with SMTP id
+ 5b1f17b1804b1-47d195495d4mr138877225e9.9.1766488690915; 
+ Tue, 23 Dec 2025 03:18:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF9TY5uWP/Cc6PbXavmdUqCI+9VY4mxSGHM4Znu24xSKWrpg38pix5ypVok8aBLtXH1uIy5bTOnBoXiJJBsBxo=
+X-Received: by 2002:a05:600c:4e0d:b0:47b:df60:8a14 with SMTP id
+ 5b1f17b1804b1-47d195495d4mr138877005e9.9.1766488690503; Tue, 23 Dec 2025
+ 03:18:10 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=jay.chang@sifive.com; helo=mail-pj1-x102d.google.com
+References: <20251222114822.327623-1-ppandit@redhat.com>
+ <87h5tilhcq.fsf@suse.de>
+In-Reply-To: <87h5tilhcq.fsf@suse.de>
+From: Prasad Pandit <ppandit@redhat.com>
+Date: Tue, 23 Dec 2025 16:47:53 +0530
+X-Gm-Features: AQt7F2oXqKEpNPkYMtIeTneUV1asezl-1-VkXLMehy92l6KhPukZZbm-HvnG2Ec
+Message-ID: <CAE8KmOweak15R4Ji6F50b_za67q=un_GDSEMGCRTYeQKod7zQA@mail.gmail.com>
+Subject: Re: [PATCH] migration: introduce MIGRATION_STATUS_FAILING
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, 
+ Prasad Pandit <pjp@fedoraproject.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=ppandit@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,48 +111,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When configuring pmpcfg (TOR, NA4, or NAPOT) and pmpaddr, if the
-value is smaller than the PMP granularity, it automatically aligned
-to the PMP granularity.
+Hello Fabiano,
 
-Signed-off-by: Jay Chang <jay.chang@sifive.com>
-Reviewed-by: Frank Chang <frank.chang@sifive.com>
+* Thanks so much for the quick comments.
+
+On Mon, 22 Dec 2025 at 20:00, Fabiano Rosas <farosas@suse.de> wrote:
+> This doesn't look like it's caused by set-capabilities. Seems like:
+> Please clarify, there might be some other bug lurking around, such as a
+> locking issue with qemu_file_lock or even the BQL.
+>
+> Also, if possible provide an upstream backtrace, or at least mention the
+> code path based on upstream code. It's ok to keep the downstream
+> backtrace, but point that out in the commit message.
+
+* Right, migrate_fd_cleanup was renamed to migration_cleanup() in
+    -> https://gitlab.com/qemu-project/qemu/-/commit/4bbadfc55e6ec608df75911b4360e6e995daa28c
+===
+libvirtd(8) 19:03:07.260+0000: 396587: error :
+qemuMigrationJobCheckStatus:2056 : operation failed: job 'migration
+out' failed: Unable to write to socket: Connection reset by peer
+libvirtd(8) 19:03:07.261+0000: 396587: info : qemuMonitorSend:836 :
+QEMU_MONITOR_SEND_MSG: mon=0xffffa000e010
+msg={"execute":"migrate-set-capabilities","arguments":
+
+
+qemu-system-aarch64:initiating migration
+qemu-system-aarch64: migrate_fd_cleanup: to_dst_file: 1: 0xaaaaccce0110
+qemu-system-aarch64: migrate_fd_cleanup: before multifd_send_shutdown:
+0   <== multifd disabled
+qemu-system-aarch64: migrate_fd_cleanup: to_dst_file: 2: (nil)
+qemu-system-aarch64: Unable to write to socket: Connection reset by peer
+qemu-system-aarch64: ../util/yank.c:107: yank_unregister_instance:
+Assertion `QLIST_EMPTY(&entry->yankfns)' failed.
+qemu-system-aarch64:shutting down, reason=crashed
+===
+* As seen above, when connection is reset
+     1) libvirtd(8) sends the migrate-set-capabilities command to QEMU
+to reset the migration options to false(0). This leads to resetting of
+s->capabilities[MIGRATION_CAPABILITY_MULTIFD]  to false.
+     2) When migration_cleanup (earlier migrate_fd_cleanup) is called
+after above reset
+          migration_cleanup
+           -> multifd_send_shutdown
+            -> if (!migrate_multifd()) {
+                     return;   <== returns because _CAPABILITY_MULTIFD
+is reset to false(0).
+                }
+         when _CAPABILITY_MULTIFD is reset to false,
+multifd_send_shutdown() returns without really doing its multifd
+cleanup, ie. multifd objects still stay alive, are not freed.
+
+* And that leads to the said assert(3) failure in
+     migration_cleanup()
+     {
+         ...
+         multifd_send_shutdown()  <== does not cleanup
+         ...
+         yank_unregister_instance(MIGRATION_YANK_INSTANCE);   <==
+assert(3) failure
+     }
+
+> I'm fine with the general idea:
+>
+> i) FAILED and CANCELLED are terminal states. It makes sense to not have
+> work happen after they're set.
+>
+> ii) Using an intermediate state, assuming locking/atomic are correct is
+> a suitable fix for the issue.
+>
+> iii) Using a FAILING status seems appropriate.
+>
+> However,
+>
+> It would be great if we could stop exposing implementation details via
+> QAPI. Does the user really need to see events for CANCELLING and
+> FAILING?
+
+* Not really; libvirtd(8)/user only needs to know about the success OR
+failure and appropriate reasons.
+
+> This is a good example where having MigrationStatus makes the code more
+> complicated. This could be exiting=true, running=false, etc. It
+> shouldn't matter why this routine failed.
+
+* True, it is rather complicated. Though currently we have 17-18
+migration states defined, going by the functions
+migration_is_running(), migration_is_active(), and
+migration_has_failed(), migration process really has only 3-4 states:
+      0 -> stopped (non-active, not-started-yet)
+      1 -> running/active (sending-receive migration data)
+      2 -> paused/active (not-running, not-send-recv-migration-data)
+      3 -> stopped/failed/completed (non-active, not-running)
+Other interim states of initiating/setting connections OR
+cancelling/failing etc. could be tracked differently.
+
+
+Thank you.
 ---
- target/riscv/pmp.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-index 3ef62d26ad..01b337f529 100644
---- a/target/riscv/pmp.c
-+++ b/target/riscv/pmp.c
-@@ -167,11 +167,12 @@ static bool pmp_write_cfg(CPURISCVState *env, uint32_t pmp_index, uint8_t val)
-             uint8_t a_field = pmp_get_a_field(val);
-             /*
-              * When granularity g >= 1 (i.e., granularity > 4 bytes),
--             * the NA4 (Naturally Aligned 4-byte) mode is not selectable
-+             * the NA4 (Naturally Aligned 4-byte) mode is not selectable.
-+             * In this case, an NA4 setting is reinterpreted as a NAPOT mode.
-              */
-             if ((riscv_cpu_cfg(env)->pmp_granularity >
-                 MIN_RISCV_PMP_GRANULARITY) && (a_field == PMP_AMATCH_NA4)) {
--                    return false;
-+                    val |= PMP_AMATCH;
-             }
-             env->pmp_state.pmp[pmp_index].cfg_reg = val;
-             pmp_update_rule_addr(env, pmp_index);
-@@ -251,6 +252,11 @@ void pmp_update_rule_addr(CPURISCVState *env, uint32_t pmp_index)
-         break;
- 
-     case PMP_AMATCH_NAPOT:
-+        /* Align to pmp_granularity */
-+        if (g >= 2) {
-+            this_addr |= ((1ULL << (g - 1ULL)) - 1ULL);
-+        }
-+
-         pmp_decode_napot(this_addr, &sa, &ea);
-         break;
- 
--- 
-2.48.1
+  - Prasad
 
 
