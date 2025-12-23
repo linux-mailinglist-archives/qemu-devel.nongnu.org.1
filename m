@@ -2,98 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CADFCDABC4
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 23:13:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D67BDCDAC0D
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 23:28:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vYAbk-0002rA-L7; Tue, 23 Dec 2025 17:11:56 -0500
+	id 1vYAqW-0005XY-LR; Tue, 23 Dec 2025 17:27:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <patrick@stwcx.xyz>) id 1vYAbj-0002qi-Im
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 17:11:55 -0500
-Received: from fhigh-b1-smtp.messagingengine.com ([202.12.124.152])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <patrick@stwcx.xyz>) id 1vYAbg-0000aR-T1
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 17:11:54 -0500
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
- by mailfhigh.stl.internal (Postfix) with ESMTP id 19EEC7A0112;
- Tue, 23 Dec 2025 17:11:50 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
- by phl-compute-01.internal (MEProxy); Tue, 23 Dec 2025 17:11:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stwcx.xyz; h=cc
- :cc:content-type:content-type:date:date:from:from:in-reply-to
- :in-reply-to:message-id:mime-version:references:reply-to:subject
- :subject:to:to; s=fm3; t=1766527909; x=1766614309; bh=eBkvmrnhQv
- xN06kDe/pPmb7sXtJ43MGpYNvRd10Oiao=; b=iAgEaiHg48wRaZWoesf/5knGdm
- QHCX2AgDVj+wz53Po4Pu/e5RiCxrjJCyj+xw63+r2tSuMB7zb24ic2DqGt2ZMV1c
- PC9XS2By9aYoDTgwEQ2AngIcfIQS8NMSRvyJ9atprXKSCWZam/0DzkZYd2CmYj5I
- /KkKzCmNRla/uL7f2rbgWFz0gCZ6lDJZvHH3YQOxlIn+G/kkvaI8DjMS3Q11oGLb
- zJsUGfpnKbvUlaCUHdrLYBq+UbeXGTma66pXBfa+qhu9Agk8JMJE9BWQLxSTJK67
- O44EMq9F/4UrbtRBcgZSJ0J+IjJ8uNeKpVOHzyV38pdyHG5BGjXFrpWVClbw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:subject:subject:to
- :to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
- 1766527909; x=1766614309; bh=eBkvmrnhQvxN06kDe/pPmb7sXtJ43MGpYNv
- Rd10Oiao=; b=YQtSyQLlyjw0EoAVT6iwtTdDxHg3bidOuo9k3W+g0w35oNKdLYu
- gPYcKt++Vq+PnWaLBdCCDCn+40VSrghO74HOGX9y7nnj20+bt7cmS/WKNuX87j1b
- rIwvGj+9LGr+LBOG0D04TvqbyR4pnG7XFQ/p8tsEQsN4AewPcHkmTCrRtzVeZkgA
- SbhjdX8udzfLVqYS/yEZTpbMu5NIPw2OICm7rRntCl0YExLQsUCdJnSwRVczov3W
- 71uXjKaEmVC9ZTAGspy+ptMWq1FUEGSkMKaAmXvY+hTXUGq8ZOik0WGFlwlAQHI6
- a/CIvQYc6SSDdZONCT+/nA73M5xb3LKVAdQ==
-X-ME-Sender: <xms:pRNLac5or0DBfwIRjV1df87FQShTEY5OknbhlJrN1Rh3goxCdCt3qw>
- <xme:pRNLaZUBV7MaUcZZN1m0Bs4NyCU44CZDDFbbAQwOpLsa0Nk_kzUrvKnJx7cL8aYrH
- rrd2Y2eA4F8h7NVHg2bbT_79IkO1aS8Ll_XVTmYKti-ltJjjTFe>
-X-ME-Received: <xmr:pRNLae-dvrpe4pYlPlWmHS8_7l10ABcO_sJXMrhTBWa2KPjHuu2cPLZqfOM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeitdelkecutefuodetggdotefrod
- ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
- ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfghrlh
- cuvffnffculdefhedmnecujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtuden
- ucfhrhhomheprfgrthhrihgtkhcuhghilhhlihgrmhhsuceophgrthhrihgtkhesshhtfi
- gtgidrgiihiieqnecuggftrfgrthhtvghrnhepgfekgfdvveegueekvdeggedtvdejveeg
- tdffvdefieduhfetledvgfdvudduffejnecuffhomhgrihhnpehgihhthhhusgdrtghomh
- enucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehprght
- rhhitghksehsthiftgigrdighiiipdhnsggprhgtphhtthhopeehpdhmohguvgepshhmth
- hpohhuthdprhgtphhtthhopegtlhhgsehrvgguhhgrthdrtghomhdprhgtphhtthhopehq
- vghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepthhhuhhthhesrh
- gvughhrghtrdgtohhmpdhrtghpthhtohepphhhihhlmhgusehlihhnrghrohdrohhrghdp
- rhgtphhtthhopegvthgrnhhouhhssehnvhhiughirgdrtghomh
-X-ME-Proxy: <xmx:pRNLaVnfjrqOzmVgd6Js4ku1tqMzn-JSQNVnlAq942Px94D4bHmo-g>
- <xmx:pRNLacWhnYI11PMtIyTGVBjqUhCKv1naWz71WoFRXSXPD4QS4XOndg>
- <xmx:pRNLaSEJsrlc9PeXhmDKPiU5b2v07hLxNJZkq_YpEBeocGC9ZbH8zQ>
- <xmx:pRNLaQdGg0LpRzlxEhw65klKFi3ShKtg8-lGr6ZmKFpe6NyAxWGI8g>
- <xmx:pRNLaSAyENxR5aVT0QUzR-qt3BgY-UroBOuH_IoTkMjtI3ugwZmUftZ6>
-Feedback-ID: i68a1478a:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 23 Dec 2025 17:11:49 -0500 (EST)
-Date: Tue, 23 Dec 2025 17:11:48 -0500
-From: Patrick Williams <patrick@stwcx.xyz>
-To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Ed Tanous <etanous@nvidia.com>
-Subject: Re: [PATCH] tests/functional: Fix URL of gb200nvl-bmc image
-Message-ID: <aUsTpG0EGPh29pUL@heinlein>
-References: <20251222073351.166720-1-clg@redhat.com>
- <100505ae-4d33-4bd4-800b-6ab21b99738a@redhat.com>
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1vYAqT-0005W1-KT
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 17:27:09 -0500
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1vYAqR-0007NM-TH
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 17:27:09 -0500
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-2a110548cdeso75875815ad.0
+ for <qemu-devel@nongnu.org>; Tue, 23 Dec 2025 14:27:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1766528826; x=1767133626; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=jBQO1Wn5o0tb2+FAZqnUEHdgyZgxt4AJ1DumNER1BHI=;
+ b=XfBW9rQ80cu1PgBIFx54dCg/Mp55rnUJF992xqypCTbVtcvKL/rySSOanQXo7+MIeL
+ O5VkU72xq/Aep6mlu5aZ7+JHCCLixcEkdXS7q6uw/16b559tov6jTKqZifkjmXN9YPda
+ /lwVTboNNMdZ399PH14ZQimH+6W7cwjb/vNGkTw5opsoSyuAAEvokc0BL3koAdg/4kzM
+ HVSgtXx8SxM/ih5fg/oZorC+Ctz0NPqrQvppEixXGaP7JRV0dWq/u3OTIr8ISGeami0H
+ a0C7kJWR3MA75vhvfQlLLwlzYXfp0nua2nKYGaagh80sZ/iv2/mRxhUGqUIaTAGn5p72
+ mbRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1766528826; x=1767133626;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jBQO1Wn5o0tb2+FAZqnUEHdgyZgxt4AJ1DumNER1BHI=;
+ b=RzBNEIlzFQ2In9TnulHbr21c4/L+S/3NhYhu3p54nCvlwUa07luEJexx0hsabY4m5G
+ YKqt2XawQ/EddFkc4n5TByPgYHM0bOoLwKVp261NZWxiTWkbCVArqAJuhYk3dkt7Q0wK
+ JCUQcvGsNwgUscRbMp2sZZtUETPP2Z1SnZfXb7P6RvsFPpkRVdnkofhQVe/A9CwHjsBS
+ LOjrOAvok2rSJ6MrFhtUsBxhY/gZz+v5Gsh66tHW3yjBCvYzj1gLqyOhWMztU41Nmppj
+ B58DXnraiLNkBgoPBF8q1J5bhlPSRTpp5xU1ZB9Jvux07PBAeVgu47pAHOaQgtzNi7En
+ Wh4A==
+X-Gm-Message-State: AOJu0YyYgmHkhoOSQw44HTtyGy81ITSDARqqnJ+OT6swLl5GkVFKSpv6
+ n5/30MBQbsLPtrH7xyRk11lBmWiVMZqIOIdNEnmuscNgK0MLf/Y3Rbql3s+Fw9jRcvPbimga0bE
+ xoVqr
+X-Gm-Gg: AY/fxX6PbgZC4tPpl7QjfTgT+SwqkXZpb3tlilSE2sVAAtoPc3RcTrBFUNbXAzidxn6
+ e6DzRHD12AaXmKPhl0VAzxUSmY1SyBhvOXg1UO7YO6miKH2YsFub7cBGQmGHSFrvkk+G1IcyeIC
+ A5yrAIdWUMz0yoOItU+rZ2XRXtDz4MHplcldMDTiJuGAeZE0pBPaLbH5o6ecS+R4ebOWhnd4I06
+ QK4TpucsdyGRZdqnnxbom1RAXqcdbrz+gcXTLnDKv0lpDphlwGvvpXEUTSb8fkO2eARslbPt7Qc
+ O/N4M1cTq6vzcSkisQtD4nd3ZEcsR4dMmP6QmtMRjgTwsj1GwvcU49Mb7YijF6YL8Ndcr6RXGvf
+ lEZxK3QrvGwgr1AKJfxVZQ/y7YsQJT8S9tYPEfyABjuj1/Ihbr1+zNuaUBRjUpYvgdBbJKaIB4o
+ BLYI2kP52nXC/As0/i
+X-Google-Smtp-Source: AGHT+IGj+3kVenhyap2+XdBLRVNS+MWPW2IBBdZyQ+O3opeZ98oNucyuOtn+CPPoWUy3BpMch4YpqA==
+X-Received: by 2002:a05:7023:903:b0:119:e569:fbb2 with SMTP id
+ a92af1059eb24-12172300472mr19012141c88.33.1766528825740; 
+ Tue, 23 Dec 2025 14:27:05 -0800 (PST)
+Received: from gromero0.. ([179.93.129.179]) by smtp.gmail.com with ESMTPSA id
+ a92af1059eb24-1217243bbe3sm62803123c88.0.2025.12.23.14.27.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 23 Dec 2025 14:27:05 -0800 (PST)
+From: Gustavo Romero <gustavo.romero@linaro.org>
+To: qemu-devel@nongnu.org, qemu-arm@nongnu.org, richard.henderson@linaro.org,
+ alex.bennee@linaro.org, philmd@linaro.org, peter.maydell@linaro.org
+Cc: gustavo.romero@linaro.org
+Subject: [PATCH v3 0/4] system/physmem: Enhance the Address Space API
+Date: Tue, 23 Dec 2025 19:26:45 -0300
+Message-Id: <20251223222649.187935-1-gustavo.romero@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="a6IdNjDPsXD+WBgv"
-Content-Disposition: inline
-In-Reply-To: <100505ae-4d33-4bd4-800b-6ab21b99738a@redhat.com>
-Received-SPF: pass client-ip=202.12.124.152; envelope-from=patrick@stwcx.xyz;
- helo=fhigh-b1-smtp.messagingengine.com
-X-Spam_score_int: -2
-X-Spam_score: -0.3
-X-Spam_bar: /
-X-Spam_report: (-0.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x634.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FROM_SUSPICIOUS_NTLD=0.498, PDS_OTHER_BAD_TLD=1.997, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,56 +97,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The proposal in v2 was to allocate all defined address spaces
+(CPUAddressSpace structs) statically, modifying the Address Space (AS)
+API by renaming cpu_address_space_init() to cpu_address_space_add() and
+by introducing a new cpu_address_space_init() meant to be used to set
+the total number of address spaces in a CPU (instead of setting the
+cpu->num_ases invariant directly, as we currently do).
 
---a6IdNjDPsXD+WBgv
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+However, Phil said that what he actually had in mind was to set
+cpu->num_ases automatically in the CPUClass, hence without the need to
+set cpu->num_ases using any AS API function, burying the details of
+initializing cpu->num_ases within the CPUClass. This way, the
+initialization of the ASes is reduced to the simple and unique use of
+cpu_address_space_init().
 
-On Mon, Dec 22, 2025 at 01:52:19PM +0100, C=E9dric Le Goater wrote:
-> On 12/22/25 08:33, C=E9dric Le Goater wrote:
-> >       ASSET_GB200_FLASH =3D Asset(
-> > -        'https://github.com/legoater/qemu-aspeed-boot/raw/refs/heads/m=
-aster/images/gb200nvl-obmc/obmc-phosphor-image-gb200nvl-obmc-20250702182348=
-=2Estatic.mtd.xz',
-> > +        'https://github.com/legoater/qemu-aspeed-boot/raw/refs/heads/m=
-aster/images/gb200nvl-bmc/openbmc-20250702182348/obmc-phosphor-image-gb200n=
-vl-obmc-20250702182348.static.mtd.xz',
-> >           'b84819317cb3dc762895ad507705978ef000bfc77c50c33a63bdd37921db=
-0dbc')
+This version (v3) is essentially based on what Phil proposed in the v2
+review, but I removed the re-setting of cs->num_ases to 1 in
+x86_cpu_realizefn(), avoiding changes to num_ases beyond the CPUClass
+instantiation.
 
-Should we make these commits or tags rather than `master`?  Right now it
-seems only Catalina uses a permalink where as all the others appear to
-use `master` references.
+First, it will become inconsistent as new ASes are added. Second, it
+risks causing confusion about the new AS API semantics, which require
+using cpu_address_space_init on demand, as ASes are required by the
+target, without modifying num_ases elsewhere in the code beyond CPUClass
+instantiation.
 
-functional/arm/test_aspeed_catalina.py
-14:        'https://github.com/legoater/qemu-aspeed-boot/raw/a866feb5ef8124=
-5b4827a214584bf6bcc72939f6/images/catalina-bmc/obmc-phosphor-image-catalina=
--20250619123021.static.mtd.xz',
+I hope that now we have a strong candidate to be merged that enhances
+the current situation, allowing adding new address spaces in the target
+quite easily.
+
+CI results:
+https://gitlab.com/gusbromero/qemu/-/pipelines/2228868887
+
+v1:
+https://mail.gnu.org/archive/html/qemu-devel/2025-11/msg04406.html
+
+v2:
+https://mail.gnu.org/archive/html/qemu-devel/2025-12/msg02298.html
 
 
---=20
-Patrick Williams
+Cheers,
+Gustavo
 
---a6IdNjDPsXD+WBgv
-Content-Type: application/pgp-signature; name=signature.asc
+Gustavo Romero (3):
+  target/arm: Initialize AS 0 first
+  target/i386: Add a _MAX sentinel to X86ASIdx enum
+  target/arm: Add a _MAX sentinel to ARMASIdx enum
 
------BEGIN PGP SIGNATURE-----
+Philippe Mathieu-Daudé (1):
+  cpus: Define total number of address spaces in CPUClass
 
-iQIzBAABCAAdFiEEBGD9ii4LE9cNbqJBqwNHzC0AwRkFAmlLE6IACgkQqwNHzC0A
-wRmssQ//WcrnZbksSpSC1L0xx/4/0wcb24d2TbC9QuFwv67XEVtmpgZEjd2TLk0L
-jfhTsmCbUuG6bpBdcxYI76jP7Wy5PVfLhQ0gESWLPUIVEKPJ8//+3efoQORwv4TZ
-+c56brHjFR5/aiqr9wu1+pRZMfXg1LjOczR3rD0XxUeiWoJQSHUHGhO7r1k2f89h
-ZB3QZQka+Xisg1nnu9KdeR3D6Uk5wVIr8zsTt+OqmKGYwvdrGc0lhx2SGVCtpi5f
-zSjBCXxRKqLBVBrZuLyqohhn73e5UQ08SjIsIOs8s1C740zgN0dzlSljoTkVkGOK
-tnwgGqd7PcKAUy0I6UyxTku83XJG6P6w7byhuHWSo5yUFxpgdAbn2QXPrZEqsO7v
-kpncPCUCgKV1l59JtysT39ZVP48P2hjX9ezM6/pnSVwWXN+D2NzO0cEiW3AX2M/5
-FOrCS9QGByx9MInpx2YWxC0Qx/PMrnwh2tSY1dYWToWhzpv/tw4tONJr/6mqZ+Pr
-jJhInArrnVEwG6fDvHnQdW/osz7cDgN4PL5OQgFPn7Un6Wn3PyEaj96BxGsTcjJz
-ziXQUm3bcn+ebn/yVoqpM5rxGmpvzVAer7aJR7gLJr3QgHx2X5/VIPvcbgfleWcb
-7K7mdMje1AtqJ7YVD5+6z0oj31IoHaZnEF95MUuleK1JH03e9mo=
-=a3gI
------END PGP SIGNATURE-----
+ hw/core/cpu-common.c      |  2 +-
+ hw/core/cpu-system.c      |  6 ------
+ include/hw/core/cpu.h     |  3 +++
+ system/cpus.c             |  7 ++++---
+ system/physmem.c          | 22 ++++++++++++++++------
+ target/arm/cpu.c          |  5 +++--
+ target/arm/cpu.h          |  2 ++
+ target/i386/cpu.c         |  1 +
+ target/i386/cpu.h         |  2 ++
+ target/i386/kvm/kvm-cpu.c |  1 -
+ 10 files changed, 32 insertions(+), 19 deletions(-)
 
---a6IdNjDPsXD+WBgv--
+-- 
+2.34.1
+
 
