@@ -2,61 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C99CBCD9DBD
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 16:52:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA99CD9E36
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 17:02:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vY4fS-0000KJ-QQ; Tue, 23 Dec 2025 10:51:24 -0500
+	id 1vY4pL-0001KM-N2; Tue, 23 Dec 2025 11:01:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vY4fC-00008R-Oi
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 10:51:08 -0500
-Received: from tor.source.kernel.org ([172.105.4.254])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vY4fB-0005Us-9E
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 10:51:06 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by tor.source.kernel.org (Postfix) with ESMTP id 17C3860143;
- Tue, 23 Dec 2025 15:51:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 048CAC116C6;
- Tue, 23 Dec 2025 15:51:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1766505063;
- bh=DjWpiI5N5cWwn+jQ86+vd53iDYlr5d2zwhULpb1iG0s=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=T9VAMNRCrTRNlbJ1XWGaiqHrQKfI3D4OsBvQZorj9eQyECChHpUgN1fXmv7Q9V9kl
- Nyv8z4/QRZRmyemdZPK5AOxGhTs58b1d9ZJqsjOkvpxecOzFIC+Dcbgz3SF0+gZcS1
- r0JH0pOAXRFHB6P2gzaxa0v6WDMq4iuuCN2hfr9h0+8k4bdWY3q2od0ay1YDfdg2/v
- G7i3zBKvnQaF6g737HSZuP/nn+KBmwuDkMke0gTGIIsCskevuDpA+/xFbFdSqt7ezj
- ejdxJqU69Hn3rCxkqDBTNjrheINDtHPj1Rmwf6V+M9bDNwL3xx7qy1tJ9mXzWoJlos
- aT7RCJh+iuVJA==
-From: deller@kernel.org
-To: qemu-devel@nongnu.org
-Cc: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Helge Deller <deller@gmx.de>,
- Sven Schnelle <svens@stackframe.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Fam Zheng <fam@euphon.net>
-Subject: [PULL 12/12] target/hppa: add 64 bit support to gdbstub
-Date: Tue, 23 Dec 2025 16:50:31 +0100
-Message-ID: <20251223155031.7110-13-deller@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251223155031.7110-1-deller@kernel.org>
-References: <20251223155031.7110-1-deller@kernel.org>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vY4oz-0001DI-OQ
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 11:01:14 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vY4oy-0000XW-2g
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 11:01:13 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id DD314336EE;
+ Tue, 23 Dec 2025 16:01:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1766505669; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Lpwr5DduYQpuyEFaIElokkyEUbM7eaGUyr5o/9ZS0Ws=;
+ b=sv+lV4KxAebZ2DXiC0P1HuhPgJo5PyRilM269Fs0Bu4Q3yIvjyme6NOBX00+Gy0IDoNJos
+ g70R7yozs+1vxU1NgmyPtwJ/uauLEeAVwxDtJx47nfr/gFnljjOdH71VsrttTAktZqBnPj
+ 306HOJ5cYyAj+Ugm4W+VU7SGBcRXqes=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1766505669;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Lpwr5DduYQpuyEFaIElokkyEUbM7eaGUyr5o/9ZS0Ws=;
+ b=oxGppU52HOAPVkrP8Ryso+dgP/xspnStanmeKPG9sxOy+NIutBPODKLwRQajKvtW3+wXcE
+ 4FsOUvMlu4QeNdAw==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=14s6FDeb;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=r5sZZCfC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1766505667; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Lpwr5DduYQpuyEFaIElokkyEUbM7eaGUyr5o/9ZS0Ws=;
+ b=14s6FDebjHD3X2X3YkRROA921/DL7PG5AHXPyRbTLzpx1kGtTb50H44+e2xN1ivDHkhU8J
+ S0DwzSltYnx+mww+kzo23vw6fRD+Ys/OCd+JdLaZvffyp5FrI453GhbrgV4JnBpizc7pWX
+ rlWFR2Cqfz0M7mrGel/eZ2esl75s0MM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1766505667;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Lpwr5DduYQpuyEFaIElokkyEUbM7eaGUyr5o/9ZS0Ws=;
+ b=r5sZZCfCn+Tb+PD6Vko/T2OGoT20U7RnuyBYBuYg11uR/SyTHflihpzY4LkwSuWbSblXZh
+ /2aKpRiYxGG7iHDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 55F3A3EA63;
+ Tue, 23 Dec 2025 16:01:07 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 1ClcBsO8SmntCQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 23 Dec 2025 16:01:07 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: Prasad Pandit <ppandit@redhat.com>, qemu-devel@nongnu.org, Prasad Pandit
+ <pjp@fedoraproject.org>
+Subject: Re: [PATCH] migration: introduce MIGRATION_STATUS_FAILING
+In-Reply-To: <aUq1oA73W9rAdCgG@x1.local>
+References: <20251222114822.327623-1-ppandit@redhat.com>
+ <87h5tilhcq.fsf@suse.de> <aUq1oA73W9rAdCgG@x1.local>
+Date: Tue, 23 Dec 2025 13:01:03 -0300
+Message-ID: <877budkx1c.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=172.105.4.254; envelope-from=deller@kernel.org;
- helo=tor.source.kernel.org
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; FUZZY_RATELIMITED(0.00)[rspamd.com];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ MIME_TRACE(0.00)[0:+]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ ARC_NA(0.00)[]; TO_DN_SOME(0.00)[]; MISSING_XM_UA(0.00)[];
+ RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
+ RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim,suse.de:mid];
+ DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: DD314336EE
+X-Spam-Score: -4.51
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,121 +124,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sven Schnelle <svens@stackframe.org>
+Peter Xu <peterx@redhat.com> writes:
 
-Signed-off-by: Sven Schnelle <svens@stackframe.org>
-Reviewed-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
----
- target/hppa/gdbstub.c | 62 ++++++++++++++++++++++++++++---------------
- 1 file changed, 41 insertions(+), 21 deletions(-)
+> On Mon, Dec 22, 2025 at 11:29:57AM -0300, Fabiano Rosas wrote:
+>> I'm fine with the general idea:
+>> 
+>> i) FAILED and CANCELLED are terminal states. It makes sense to not have
+>> work happen after they're set.
+>> 
+>> ii) Using an intermediate state, assuming locking/atomic are correct is
+>> a suitable fix for the issue.
+>> 
+>> iii) Using a FAILING status seems appropriate.
+>> 
+>> However,
+>> 
+>> It would be great if we could stop exposing implementation details via
+>> QAPI. Does the user really need to see events for CANCELLING and
+>> FAILING?
+>> 
+>> It would probably be easier if we kept MigrationStatus as QAPI only and
+>> used a separate mechanism to track the internal states.
+>> 
+>> That said, we could merge this as is to fix the bug and think about that
+>> later.
+>
+> This bug looks to be there for a long time, IMHO we don't need to rush
+> fixing it if we risk adding a new status and revert it quickly...  Let's
+> discuss it here, and it's a valid question indeed.
+>
+> One thing good about exposing such status via QAPI is, it can help us
+> diagnose issues by seeing CANCELLING / FAILING even looking at
+> query-migrate results (as normally when bug happens we can't see the
+> internal status..), so that we know either it's explicitly cancelled, or
+> something went wrong.
+>
+> If it's a completely hidden / internal status, we may see ACTIVE even if
+> something wrong happened..
+>
 
-diff --git a/target/hppa/gdbstub.c b/target/hppa/gdbstub.c
-index 0daa52f7af..777f4a48b9 100644
---- a/target/hppa/gdbstub.c
-+++ b/target/hppa/gdbstub.c
-@@ -21,16 +21,25 @@
- #include "cpu.h"
- #include "gdbstub/helpers.h"
- 
--/*
-- * GDB 15 only supports PA1.0 via the remote protocol, and ignores
-- * any provided xml.  Which means that any attempt to provide more
-- * data results in "Remote 'g' packet reply is too long".
-- */
-+static int hppa_num_regs(CPUHPPAState *env)
-+{
-+    return hppa_is_pa20(env) ? 96 : 128;
-+}
-+
-+static int hppa_reg_size(CPUHPPAState *env)
-+{
-+    return hppa_is_pa20(env) ? 8 : 4;
-+}
- 
- int hppa_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
- {
--    CPUHPPAState *env = cpu_env(cs);
--    uint32_t val;
-+    HPPACPU *cpu = HPPA_CPU(cs);
-+    CPUHPPAState *env = &cpu->env;
-+    target_ulong val;
-+
-+    if (n >= hppa_num_regs(env)) {
-+        return 0;
-+    }
- 
-     switch (n) {
-     case 0:
-@@ -133,24 +142,35 @@ int hppa_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
-         val = env->cr[30];
-         break;
-     case 64 ... 127:
--        val = extract64(env->fr[(n - 64) / 2], (n & 1 ? 0 : 32), 32);
--        break;
--    default:
--        if (n < 128) {
--            val = 0;
-+        if (hppa_is_pa20(env)) {
-+            val = env->fr[n - 64];
-         } else {
--            return 0;
-+            val = extract64(env->fr[(n - 64) / 2], (n & 1 ? 0 : 32), 32);
-         }
-         break;
-+    default:
-+        val = 0;
-+        break;
-     }
- 
--    return gdb_get_reg32(mem_buf, val);
-+    if (hppa_is_pa20(env)) {
-+        return gdb_get_reg64(mem_buf, val);
-+    } else {
-+        return gdb_get_reg32(mem_buf, val);
-+    }
- }
- 
- int hppa_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
- {
--    CPUHPPAState *env = cpu_env(cs);
--    uint32_t val = ldl_p(mem_buf);
-+    HPPACPU *cpu = HPPA_CPU(cs);
-+    CPUHPPAState *env = &cpu->env;
-+    target_ulong val;
-+
-+    if (n >= hppa_num_regs(env)) {
-+        return 0;
-+    }
-+
-+    val = ldn_p(mem_buf, hppa_reg_size(env));
- 
-     switch (n) {
-     case 0:
-@@ -267,16 +287,16 @@ int hppa_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
-         cpu_hppa_loaded_fr0(env);
-         break;
-     case 65 ... 127:
--        {
-+        if (hppa_is_pa20(env)) {
-+            env->fr[n - 64] = val;
-+        } else {
-             uint64_t *fr = &env->fr[(n - 64) / 2];
-             *fr = deposit64(*fr, (n & 1 ? 0 : 32), 32, val);
-         }
-         break;
-     default:
--        if (n >= 128) {
--            return 0;
--        }
-         break;
-     }
--    return 4;
-+
-+    return hppa_reg_size(env);
- }
--- 
-2.52.0
+On the other hand, we could have more fine-grained statuses and track
+them with tracepoints.
 
+> My current hope is any mgmt should normally by default ignore new migration
+> states..  If that's always achieved, it looks to me adding FAILING directly
+> into migration status would still have some benefits on debugging.
+>
+
+Maybe for FAILING it's ok, as we already have CANCELLING and FAILED is
+currently mismatched.
+
+> [...]
+>
+>> > @@ -2907,7 +2914,7 @@ fail_closefb:
+>> >      qemu_fclose(fb);
+>> >  fail:
+>> >      if (ms->state != MIGRATION_STATUS_CANCELLING) {
+>> > -        migrate_set_state(&ms->state, ms->state, MIGRATION_STATUS_FAILED);
+>> > +        migrate_set_state(&ms->state, ms->state, MIGRATION_STATUS_FAILING);
+>> >      }
+>> 
+>> This is a good example where having MigrationStatus makes the code more
+>> complicated. This could be exiting=true, running=false, etc. It
+>> shouldn't matter why this routine failed. If we reach
+>> migration_cleanup() and, at the very end, state is CANCELLING, then we
+>> know the cancel command has caused this and set the state to
+>> CANCELLED. If the state was something else, then it's unintended and we
+>> set FAILED.
+>
+> If it'll be an internal status, we'll still need to identify if someone
+> already have cancelled it, right?
+>
+
+I was thinking of keeping CANCELLING, since it's already in the API.
+
+> Assuming we introduce stop_reason flag, making it:
+>
+> enum {
+>     MIG_STOP_REASON_CANCEL,
+>     MIG_STOP_REASON_FAIL,
+> } MigrationStopReason;
+>
+> Then we can switch to CANCELLED / FAILED when cleanup from those reasons.
+>
+> Then here, logically we also need logic like:
+>
+>     if (stop_reason != MIG_STOP_REASON_CANCEL) {
+>         stop_reason = MIG_STOP_REASON_FAIL;
+>     }
+>
+> Because we want to make sure when the user already triggered cancel, it
+> won't show FAILED but only show CANCELLED at last?
 
