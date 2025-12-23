@@ -2,48 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6682DCDAB44
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 22:51:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51AC6CDAB4D
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 22:51:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vYAGd-0002sS-Mb; Tue, 23 Dec 2025 16:50:07 -0500
+	id 1vYAGd-0002sK-Gh; Tue, 23 Dec 2025 16:50:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vYAGc-0002rk-He
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 16:50:06 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1vYAGb-0002rR-96
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 16:50:05 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vYAGZ-0006t1-CT
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 16:50:06 -0500
+ id 1vYAGZ-0006tn-By
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 16:50:05 -0500
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 23192596A0B;
- Tue, 23 Dec 2025 22:50:01 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 32627596A03;
+ Tue, 23 Dec 2025 22:50:02 +0100 (CET)
 X-Virus-Scanned: amavis at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id Ku661s1qJXSz; Tue, 23 Dec 2025 22:49:59 +0100 (CET)
+ id ZoGEs03-kd50; Tue, 23 Dec 2025 22:50:00 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 27F37596A0D; Tue, 23 Dec 2025 22:49:59 +0100 (CET)
-Message-ID: <6a6918fb8b1e1f207485ea25fd8bc9161fe5c32b.1766525089.git.balaton@eik.bme.hu>
+ id 33007596A07; Tue, 23 Dec 2025 22:50:00 +0100 (CET)
+Message-ID: <5b4c9ebe17612ae45e6df24ba1d510f4b4e3b98d.1766525089.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1766525089.git.balaton@eik.bme.hu>
 References: <cover.1766525089.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 3/6] memory: Factor out more common ram region initialization
+Subject: [PATCH 4/6] memory: Shorten memory_region_init_rom_nomigrate
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  Paolo Bonzini <pbonzini@redhat.com>, Michael S. Tsirkin <mst@redhat.com>,
  philmd@linaro.org
-Date: Tue, 23 Dec 2025 22:49:59 +0100 (CET)
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Date: Tue, 23 Dec 2025 22:50:00 +0100 (CET)
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,53 +60,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce internal memory_region_do_init_ram_ptr() function to remove
-duplicated code from different memory_region_init_ram_*ptr functions.
+Use the shortcut memory_region_init_ram_nomigrate as we have no flags
+to pass and remove some extra line breaks to make the function occupy
+less lines. Also shorten some other function prototypes.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- system/memory.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ system/memory.c | 30 ++++++++++--------------------
+ 1 file changed, 10 insertions(+), 20 deletions(-)
 
 diff --git a/system/memory.c b/system/memory.c
-index 87c8e78662..3d538fb9af 100644
+index 3d538fb9af..bff9677f7a 100644
 --- a/system/memory.c
 +++ b/system/memory.c
-@@ -1663,26 +1663,29 @@ bool memory_region_init_ram_from_fd(MemoryRegion *mr, Object *owner,
- }
- #endif
- 
--void memory_region_init_ram_ptr(MemoryRegion *mr, Object *owner,
--                                const char *name, uint64_t size, void *ptr)
-+static void memory_region_do_init_ram_ptr(MemoryRegion *mr, uint64_t size,
-+                                          void *ptr)
- {
--    memory_region_init(mr, owner, name, size);
-     /* qemu_ram_alloc_from_ptr cannot fail with ptr != NULL.  */
-     assert(ptr != NULL);
-     mr->ram_block = qemu_ram_alloc_from_ptr(size, ptr, mr, &error_abort);
-     memory_region_do_init_ram(mr, NULL, NULL);
+@@ -1568,12 +1568,9 @@ static void memory_region_set_ops(MemoryRegion *mr,
+     mr->terminates = true;
  }
  
-+void memory_region_init_ram_ptr(MemoryRegion *mr, Object *owner,
-+                                const char *name, uint64_t size, void *ptr)
-+{
-+    memory_region_init(mr, owner, name, size);
-+    memory_region_do_init_ram_ptr(mr, size, ptr);
-+}
-+
- void memory_region_init_ram_device_ptr(MemoryRegion *mr, Object *owner,
-                                        const char *name, uint64_t size,
-                                        void *ptr)
+-void memory_region_init_io(MemoryRegion *mr,
+-                           Object *owner,
+-                           const MemoryRegionOps *ops,
+-                           void *opaque,
+-                           const char *name,
+-                           uint64_t size)
++void memory_region_init_io(MemoryRegion *mr, Object *owner,
++                           const MemoryRegionOps *ops, void *opaque,
++                           const char *name, uint64_t size)
  {
      memory_region_init(mr, owner, name, size);
-     memory_region_set_ops(mr, &ram_device_mem_ops, mr);
--    /* qemu_ram_alloc_from_ptr cannot fail with ptr != NULL.  */
--    assert(ptr != NULL);
--    mr->ram_block = qemu_ram_alloc_from_ptr(size, ptr, mr, &error_abort);
--    memory_region_do_init_ram(mr, NULL, NULL);
-+    memory_region_do_init_ram_ptr(mr, size, ptr);
+     memory_region_set_ops(mr, ops, opaque);
+@@ -1689,30 +1686,23 @@ void memory_region_init_ram_device_ptr(MemoryRegion *mr, Object *owner,
      mr->ram_device = true;
+ }
+ 
+-void memory_region_init_alias(MemoryRegion *mr,
+-                              Object *owner,
+-                              const char *name,
+-                              MemoryRegion *orig,
+-                              hwaddr offset,
+-                              uint64_t size)
++void memory_region_init_alias(MemoryRegion *mr, Object *owner,
++                              const char *name, MemoryRegion *orig,
++                              hwaddr offset, uint64_t size)
+ {
+     memory_region_init(mr, owner, name, size);
+     mr->alias = orig;
+     mr->alias_offset = offset;
+ }
+ 
+-bool memory_region_init_rom_nomigrate(MemoryRegion *mr,
+-                                      Object *owner,
+-                                      const char *name,
+-                                      uint64_t size,
++bool memory_region_init_rom_nomigrate(MemoryRegion *mr, Object *owner,
++                                      const char *name, uint64_t size,
+                                       Error **errp)
+ {
+-    if (!memory_region_init_ram_flags_nomigrate(mr, owner, name,
+-                                                size, 0, errp)) {
+-         return false;
++    if (!memory_region_init_ram_nomigrate(mr, owner, name, size, errp)) {
++        return false;
+     }
+     mr->readonly = true;
+-
+     return true;
  }
  
 -- 
