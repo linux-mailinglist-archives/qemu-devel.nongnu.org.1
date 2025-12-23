@@ -2,131 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75DF7CD927B
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 12:55:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41EB4CD98A4
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 15:03:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vY0yB-0002At-EX; Tue, 23 Dec 2025 06:54:27 -0500
+	id 1vY2yZ-0005G2-4R; Tue, 23 Dec 2025 09:03:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <daniel.barboza@oss.qualcomm.com>)
- id 1vY0y9-00028t-Qo
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 06:54:25 -0500
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ (Exim 4.90_1) (envelope-from <ashish.a6@samsung.com>)
+ id 1vY16Q-0005L7-6x
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 07:02:58 -0500
+Received: from mailout2.samsung.com ([203.254.224.25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <daniel.barboza@oss.qualcomm.com>)
- id 1vY0y6-0007yZ-LC
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 06:54:23 -0500
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
- 5BNADLMl1889626
- for <qemu-devel@nongnu.org>; Tue, 23 Dec 2025 11:54:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
- cc:content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=qcppdkim1; bh=Bwp+Jnp+eWAvIVi5GPsvMNIFuKvdi9pns1E
- DD3DL9dw=; b=Ccgln5Sqb9nsNEDM0PyibccX42sfm7m+2rqqr12PrzPV+Tqk3a8
- PeFIzK1SfI/AEtIAwD3RAuxoy6sdk8fwjvYTFAxwqenK9Eqzz0jsT+MSTgwtgmYa
- sJXVN0xrjd1LETDFtwuvrGRwopVR4Z0Jp+75tJEqH/r9cpvIq/kKSJKsLogYhdp/
- DPoMXIy/ZunKZM81yeFjLAOvvjYgY6tFnblN4vt61mcLxELGe3P1rNR5Vf6odniv
- 9yWBXW/tbV9V078aSz8heI4sGebmxAT+HNOsm0AL/woY5da/Hd+yhrcCNrKxYCfN
- awSv/cH0gX9qse4MowD8+sj6kRpE7LbBOew==
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b770aker4-1
- (version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Tue, 23 Dec 2025 11:54:20 +0000 (GMT)
-Received: by mail-pg1-f200.google.com with SMTP id
- 41be03b00d2f7-bc0de474d4eso10559795a12.0
- for <qemu-devel@nongnu.org>; Tue, 23 Dec 2025 03:54:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oss.qualcomm.com; s=google; t=1766490859; x=1767095659; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Bwp+Jnp+eWAvIVi5GPsvMNIFuKvdi9pns1EDD3DL9dw=;
- b=SZ7r+7lwi/ZGhcygJBHrclNQtWZsgvXzz+GHTRtcKoIWFaEuz3UyoGW8Tqh5cUuYSZ
- 73VF5X4WJVM3C9xWn3bTh/Z9/ED6lwucFQ0ukIU6pCu/vsvTZAi0ra2DvmxJq+UOnMiK
- //15/EpgeZ7q7IKBaqAfkCPTOvoaume6wcem8alTpNASg1kLj5pxTVod0vFoTNJ8NRzT
- fyx3RDMbrZdftGwZSGl8d3OtgxyQ4sG9H51gwLZ8A8wN851Yo6oGC+4Nfw/oS6D1WtZ1
- CYXkuoSkee7Ms+mbMI7bDeF/44hlayixO0lh1V6jUhrnWQK/YywtJs9R452YMrFUC0+2
- nwtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766490859; x=1767095659;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Bwp+Jnp+eWAvIVi5GPsvMNIFuKvdi9pns1EDD3DL9dw=;
- b=HcYsS56Doqg4gwuwrqVwLXIsNLZM3uhD1hV31ww6nMvPRfSUkXsKxpjc1hdT2yavjz
- swmTgVOEbmmvjH5KEcve5hrqoF6HhkBoWC2IE3WhqRcCWsz3fN5Dfnmfxt9HedJOWZDC
- dnRCX0R6oACxk5au3zdxg1u3As/gyiu6OpVpQNgmObSmfJTBsJhDah9JPrYWojPVxGgt
- 7rog2Bhi+CpHcx83t848CNtnTLPmukLqHGQ3N84ojAwONYqT0MioG9HO/JpZMOwYykAA
- 886kMe3tQqEmFkblYgH/GTKw9WXZwC5GqS3cXXxnac9CBBvAuiHUoWsRylWhKYojVuui
- QjUA==
-X-Gm-Message-State: AOJu0YyplCCuLJLG7+0Av3gKVWbQc2/aXNvLv4j38aZm5POvtqp7N3RR
- RLJULThfAddAVJqd80yIWUp0Lyg1b5Yua6Km7OIzhjJoAlDIskQ2cQS3h4jFT/9GftOPBInBCgi
- CGuFr45QUXjLbed/AqMjwcDMtfN5/n2jYaxSiN3bUsGuhLIm2cE2zAfFQNmAMLN4zwg==
-X-Gm-Gg: AY/fxX4zPAnq+Rlv6/lx8L87oe3nIlz2hijsmBnnOhSSLIFP0t4rURyAbXvh7KPp+tQ
- j1FFz+2PIBeVhES1S6M4hBJSGDAEjTcg/ZK1lpGwy0DYAxAH2Il98g56gNApveCilVrPz8yglYo
- YFXQY6XISmxOAyBY8/bOoYL+PEcZ4dpXrCqFA9Bz1l8lVayx9pi2cilzM31hWleYTLdI+twGWRJ
- 0pTW2I0tGugkQHsFoFBuPqvGkeWwtpZANjr2mhMwQsB4BpSywfDmcgWJYuwEFzvM5Cxgq1iaadN
- r8ddJh+V4VLKbJhcBjLE4Uz9V/hotNLUO40Gou4SsHtQOJaS9bPgG+GwP5RnxzNOwm7sJ3khM86
- wc9Mfz+4OXvGzpH5og/Hy8WVZ7LKjewGcKoRhX2ZNM7lvOAo=
-X-Received: by 2002:a05:7300:50e2:b0:2af:cd0a:ef8c with SMTP id
- 5a478bee46e88-2b05ec9162dmr15289165eec.36.1766490858825; 
- Tue, 23 Dec 2025 03:54:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHNzE0mFlagRutwYcf+e7VGPfW+aqJlZbQn4k8xQbG3WYROilYfkmid56p15VwFDx4gLzoF0A==
-X-Received: by 2002:a05:7300:50e2:b0:2af:cd0a:ef8c with SMTP id
- 5a478bee46e88-2b05ec9162dmr15289137eec.36.1766490858238; 
- Tue, 23 Dec 2025 03:54:18 -0800 (PST)
-Received: from grind.dc1.ventanamicro.com ([187.101.184.177])
- by smtp.gmail.com with ESMTPSA id
- 5a478bee46e88-2b05ff8634csm36428044eec.3.2025.12.23.03.54.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Dec 2025 03:54:17 -0800 (PST)
-From: Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>
+ (Exim 4.90_1) (envelope-from <ashish.a6@samsung.com>)
+ id 1vY16L-00028g-NV
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 07:02:57 -0500
+Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
+ by mailout2.samsung.com (KnoxPortal) with ESMTP id
+ 20251223120244epoutp024397366f2793b9c97be4368d7ed2e543~D1olVyIiv1773417734epoutp02W
+ for <qemu-devel@nongnu.org>; Tue, 23 Dec 2025 12:02:44 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com
+ 20251223120244epoutp024397366f2793b9c97be4368d7ed2e543~D1olVyIiv1773417734epoutp02W
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1766491364;
+ bh=+jIeGwIatjkyU4t7V93SrU6AI+YxYI+n5AFl/dB/Tsg=;
+ h=From:To:Cc:Subject:Date:References:From;
+ b=dZSgEBbkRnz+wANoz2IL0vTpkCURglkL0mYCZvqeogQ++sM6Qt/JOADVJeE/3c3gs
+ aL2QQ/kwm8Vuv9kXLsMxQ2S4NPnmy9dCzfI/hPI3891B42U9VJYCplzIogfgFIrIuZ
+ woy7bxfcxPQk8KvuVYT7FZ996elca+eXdxkQlhVA=
+Received: from epsnrtp04.localdomain (unknown [182.195.42.156]) by
+ epcas5p4.samsung.com (KnoxPortal) with ESMTPS id
+ 20251223120243epcas5p4fac8c002c8f443f8a716510b0865da50~D1olDvkCi1846618466epcas5p4m;
+ Tue, 23 Dec 2025 12:02:43 +0000 (GMT)
+Received: from epcas5p4.samsung.com (unknown [182.195.38.88]) by
+ epsnrtp04.localdomain (Postfix) with ESMTP id 4dbDCk6m0Lz6B9m5; Tue, 23 Dec
+ 2025 12:02:42 +0000 (GMT)
+Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
+ epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
+ 20251223120242epcas5p44b454df5afd0d517a4562a545ad11218~D1ojhtPZe1846618466epcas5p4i;
+ Tue, 23 Dec 2025 12:02:42 +0000 (GMT)
+Received: from test-System-Product-Name.samsungds.net (unknown
+ [107.99.41.85]) by epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+ 20251223120240epsmtip12d23c4881f6573367aa14d8cdc9b0a04~D1ohk4nw03164831648epsmtip19;
+ Tue, 23 Dec 2025 12:02:39 +0000 (GMT)
+From: Ashish Anand <ashish.a6@samsung.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, liwei1518@gmail.com,
- zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com,
- Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>
-Subject: [PATCH] target/riscv/tcg: allow vendor CPUs to enable extensions
-Date: Tue, 23 Dec 2025 08:54:11 -0300
-Message-ID: <20251223115411.1292566-1-daniel.barboza@oss.qualcomm.com>
-X-Mailer: git-send-email 2.51.1
+Cc: peter.maydell@linaro.org, qemu-arm@nongnu.org, y.kaushal@samsung.com,
+ vishwa.mg@samsung.com, ashish.anand202@gmail.com, "ashish.a6"
+ <ashish.a6@samsung.com>
+Subject: [PATCH] target/arm: Implement WFE, SEV and SEVONPEND for Cortex-M
+Date: Tue, 23 Dec 2025 17:30:12 +0530
+Message-ID: <20251223120012.541777-1-ashish.a6@samsung.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjIzMDA5NiBTYWx0ZWRfXx2y4YJj7ZmOR
- 90U+PLVTBHIuaIE93v2gBPCeZyo5k7uMHiUlrlyRiJAU31jP6MDd2xnPqBfHh/LkDf/XG3pSfAh
- rCmRwpeCi3JOa97sKOuty/HNUq4IOBIMgnW6UbtbxORrXYJO2YjMqLZsN4VC9qkBh54rc0tDpvL
- eAfi41dUey2WIIrwJkPAR3hvOWdxuMexjNMxgAAwFeFVso39EHUmp/4scZ17lDI/Lsow0U/wD/2
- 0kFYy9HMIyvrJH73v7XjYCwC6Fv2wF7kCGfJza6oRjBIuVhm3Kpi0Ed7ke2Nsx7NcqLOI23anJl
- X0Aca5nsgkf2aGyasCUy2xpTlWRFp+qshisjFPJokAhOif9I4aLpHdOxC9Z5Q5UGmNSPOI8MYeM
- dOg2/Z/IdHHEukuTyISEVEPiIlG4eM0wJSq0OaLa6XHot2C+NtbbgnU1bRnZzn5JY7cNDHDSqKd
- dUT9JkbGjtRXgEddPjg==
-X-Authority-Analysis: v=2.4 cv=VqAuwu2n c=1 sm=1 tr=0 ts=694a82ec cx=c_pps
- a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=cW5wcbexNO3A0Ml9TiDm9w==:17
- a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=ps5dUtS__jMTQjSizQMA:9 a=3WC7DwWrALyhR5TkjVHa:22
-X-Proofpoint-GUID: LPtt5IlFYo5kU75GR9Cdgx4LBEqcylfg
-X-Proofpoint-ORIG-GUID: LPtt5IlFYo5kU75GR9Cdgx4LBEqcylfg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-23_03,2025-12-22_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0 impostorscore=0 malwarescore=0 adultscore=0
- priorityscore=1501 phishscore=0 clxscore=1015 lowpriorityscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2512230096
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=daniel.barboza@oss.qualcomm.com; helo=mx0b-0031df01.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-CMS-MailID: 20251223120242epcas5p44b454df5afd0d517a4562a545ad11218
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20251223120242epcas5p44b454df5afd0d517a4562a545ad11218
+References: <CGME20251223120242epcas5p44b454df5afd0d517a4562a545ad11218@epcas5p4.samsung.com>
+Received-SPF: pass client-ip=203.254.224.25;
+ envelope-from=ashish.a6@samsung.com; helo=mailout2.samsung.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 23 Dec 2025 09:01:09 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -141,69 +91,360 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I went through a situation where a developer attempted to enable an
-extension X when using a vendor CPU, and he got shutdown by the "<name>
-CPU does not allow enabling extensions" message. I explained that he
-couldn't run this simple test using a vendor CPU because, by doing so,
-the vendor CPU is no longer the vendor CPU. As a reply I got "yes, I am
-aware of that, I am explicitly adding X to it in the command line". I
-then elaborated that an alternative would be to use rv64i and add each
-CPU extension manually in the cmd line, or maybe use 'rv64' or 'max' CPU
-and enable/disable a bunch of stuff to match the vendor CPU + X. And I
-felt annoyed by my own explanation.
+From: "ashish.a6" <ashish.a6@samsung.com>
 
-The distinction between vendor CPU and generic CPUs goes back 3-4 years.
-Back then every new extension added in QEMU was also being enabled in
-the 'rv64' CPU, along with validation logic to enable more extensions as
-dependencies, and vendor CPUs of that time were being affected by it.
-Guardrails were added to prevent vendor CPUs from changing due to the
-influx of new exts added in rv64.
+    Currently, QEMU implements the 'Wait For Event' (WFE) instruction as a
+    a simple yield. This causes high host CPU usage because Guest
+    RTOS idle loops effectively become busy-wait loops.
 
-The code is more mature and stable now and I believe the concept of
-vendor vs generic CPUs is no longer needed. We could get rid of the
-distinction altogether, treat rv64 as a vendor CPU with all its current
-extensions enabled by default, and every CPU can do anything. Users can
-then have full control of the CPU they want to use and we'll have less
-code to deal with.
+    To improve efficiency, this patch transitions WFE to use the architectural
+    'Halt' state (EXCP_HLT) for M-profile CPUs. This allows the host thread
+    to sleep when the guest is idle.
 
-A lot of refactor and code juggling will be required before making that
-happen though. For now let's allow vendor CPUs to enable extensions.
-We're keeping all other restrictions in place (pmp, mmu, vlen, block
-sizes ...) because each restriction lifted can have side effects and
-should be handled separately.
+    To support this transition, we implement the full architectural behavior
+    required for WFE, specifically the 'Event Register' and 'SEVONPEND' logic
+    defined in the ARMv7-M specification. This ensures that the CPU correctly
+    identifies wakeup conditions as defined by the architecture.
 
-Signed-off-by: Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>
+    Changes include:
+    1.  target/arm/cpu.h: Added 'event_register' to the v7m state struct.
+    2.  target/arm/cpu.c: Ensured event_register is cleared on reset and
+        updated arm_cpu_has_work() to check the event register state.
+    3.  target/arm/machine.c: Added VMState subsection for migration compatibility.
+    4.  hw/intc/armv7m_nvic.h: Added was_pending flag, to check for SEVONPEND logic.
+    5.  hw/intc/armv7m_nvic.c: Implemented SEVONPEND logic in :
+        nvic_recompute_state() and nvic_recompute_state_secure().
+        This sets the event register and kicks the CPU when a new interrupt
+        becomes pending.
+    6.  target/arm/tcg/helper.h: Declare the new helper_sev function.
+    7.  target/arm/tcg/op_helper.c:
+        - Update HELPER(wfe) to use EXCP_HLT for M-profile CPUs.
+        - Implement HELPER(sev) to set the event register and kick all vCPUs.
+    8.  target/arm/tcg/t16.decode / t32.decode: Enable decoding of the SEV
+        instruction in Thumb/Thumb-2 mode.
+    9.  target/arm/tcg/translate.c: Implement trans_SEV using inline
+        TCG generation to ensure system-wide visibility.
+
+    This patch enables resource-efficient idle emulation for Cortex-M.
+
+    Signed-off-by: Ashish Anand ashish.a6@samsung.com
 ---
- target/riscv/tcg/tcg-cpu.c | 8 --------
- 1 file changed, 8 deletions(-)
+Testing Notes:
+- Performance Test: Monitored host CPU usage while the guest was in an 
+  idle loop. Usage dropped from 100% (busy-yield) to <5% (EXCP_HALT).
+- Functional Test: Verified SEVONPEND logic using a bare-metal test 
+  case on Cortex-M. Confirmed that pending interrupts correctly 
+  trigger a wakeup when SEVONPEND is enabled, as per Armv7-M spec.
+- Regression Test: 'make check' passes for all ARM targets.
+- Note: 4 x86-specific test cases (lpc-ich9, e1000e) failed, but 
+  I confirmed these also fail on a clean master branch.
 
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index d3968251fa..122b8b52a7 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -1478,7 +1478,6 @@ static void cpu_set_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
+ hw/intc/armv7m_nvic.c         | 22 ++++++++++++++++-
+ include/hw/intc/armv7m_nvic.h |  1 +
+ target/arm/cpu.c              |  7 ++++++
+ target/arm/cpu.h              |  1 +
+ target/arm/machine.c          | 19 +++++++++++++++
+ target/arm/tcg/helper.h       |  1 +
+ target/arm/tcg/op_helper.c    | 45 +++++++++++++++++++++++++++++------
+ target/arm/tcg/t16.decode     |  2 +-
+ target/arm/tcg/t32.decode     |  2 +-
+ target/arm/tcg/translate.c    | 20 ++++++++++++----
+ 10 files changed, 106 insertions(+), 14 deletions(-)
+
+diff --git a/hw/intc/armv7m_nvic.c b/hw/intc/armv7m_nvic.c
+index 7c78961040..a60990c71f 100644
+--- a/hw/intc/armv7m_nvic.c
++++ b/hw/intc/armv7m_nvic.c
+@@ -16,6 +16,7 @@
+ #include "migration/vmstate.h"
+ #include "qemu/timer.h"
+ #include "hw/intc/armv7m_nvic.h"
++#include "hw/arm/armv7m.h"
+ #include "hw/irq.h"
+ #include "hw/qdev-properties.h"
+ #include "system/tcg.h"
+@@ -232,6 +233,8 @@ static void nvic_recompute_state_secure(NVICState *s)
+     int pend_irq = 0;
+     bool pending_is_s_banked = false;
+     int pend_subprio = 0;
++    ARMv7MState *armv7m = container_of(s, ARMv7MState, nvic);
++    ARMCPU *cpu = armv7m->cpu;
+ 
+     /* R_CQRV: precedence is by:
+      *  - lowest group priority; if both the same then
+@@ -259,6 +262,14 @@ static void nvic_recompute_state_secure(NVICState *s)
+                 targets_secure = !exc_is_banked(i) && exc_targets_secure(s, i);
+             }
+ 
++            if (!vec->was_pending && vec->pending) {
++                if (cpu->env.v7m.scr[bank] & R_V7M_SCR_SEVONPEND_MASK) {
++                    cpu->env.v7m.event_register = 1;
++                    qemu_cpu_kick(CPU(cpu));
++                }
++            }
++            vec->was_pending = vec->pending;
++
+             prio = exc_group_prio(s, vec->prio, targets_secure);
+             subprio = vec->prio & ~nvic_gprio_mask(s, targets_secure);
+             if (vec->enabled && vec->pending &&
+@@ -293,6 +304,8 @@ static void nvic_recompute_state(NVICState *s)
+     int pend_prio = NVIC_NOEXC_PRIO;
+     int active_prio = NVIC_NOEXC_PRIO;
+     int pend_irq = 0;
++    ARMv7MState *armv7m = container_of(s, ARMv7MState, nvic);
++    ARMCPU *cpu = armv7m->cpu;
+ 
+     /* In theory we could write one function that handled both
+      * the "security extension present" and "not present"; however
+@@ -316,6 +329,13 @@ static void nvic_recompute_state(NVICState *s)
+         if (vec->active && vec->prio < active_prio) {
+             active_prio = vec->prio;
+         }
++        if (!vec->was_pending && vec->pending) {
++            if (cpu->env.v7m.scr[M_REG_NS] & R_V7M_SCR_SEVONPEND_MASK) {
++                cpu->env.v7m.event_register = 1;
++                qemu_cpu_kick(CPU(cpu));
++            }
++        }
++        vec->was_pending = vec->pending;
+     }
+ 
+     if (active_prio > 0) {
+@@ -1657,7 +1677,7 @@ static void nvic_writel(NVICState *s, uint32_t offset, uint32_t value,
+         }
+         /* We don't implement deep-sleep so these bits are RAZ/WI.
+          * The other bits in the register are banked.
+-         * QEMU's implementation ignores SEVONPEND and SLEEPONEXIT, which
++         * QEMU's implementation ignores SLEEPONEXIT, which
+          * is architecturally permitted.
+          */
+         value &= ~(R_V7M_SCR_SLEEPDEEP_MASK | R_V7M_SCR_SLEEPDEEPS_MASK);
+diff --git a/include/hw/intc/armv7m_nvic.h b/include/hw/intc/armv7m_nvic.h
+index 7b9964fe7e..305eaf6e6a 100644
+--- a/include/hw/intc/armv7m_nvic.h
++++ b/include/hw/intc/armv7m_nvic.h
+@@ -32,6 +32,7 @@ typedef struct VecInfo {
+     uint8_t pending;
+     uint8_t active;
+     uint8_t level; /* exceptions <=15 never set level */
++    bool was_pending;
+ } VecInfo;
+ 
+ struct NVICState {
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 39292fb9bc..0a044f7254 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -143,6 +143,12 @@ static bool arm_cpu_has_work(CPUState *cs)
  {
-     const RISCVCPUMultiExtConfig *multi_ext_cfg = opaque;
-     RISCVCPU *cpu = RISCV_CPU(obj);
--    bool vendor_cpu = riscv_cpu_is_vendor(obj);
-     bool prev_val, value;
+     ARMCPU *cpu = ARM_CPU(cs);
  
-     if (!visit_type_bool(v, name, &value, errp)) {
-@@ -1493,13 +1492,6 @@ static void cpu_set_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
-         return;
++    if (arm_feature(&cpu->env, ARM_FEATURE_M)) {
++        if (cpu->env.v7m.event_register) {
++            return true;
++        }
++    }
++
+     return (cpu->power_state != PSCI_OFF)
+         && cpu_test_interrupt(cs,
+                CPU_INTERRUPT_FIQ | CPU_INTERRUPT_HARD
+@@ -480,6 +486,7 @@ static void arm_cpu_reset_hold(Object *obj, ResetType type)
+             ~(R_V7M_FPCCR_LSPEN_MASK | R_V7M_FPCCR_S_MASK);
+         env->v7m.control[M_REG_S] |= R_V7M_CONTROL_FPCA_MASK;
+ #endif
++        env->v7m.event_register = 0;
      }
  
--    if (value && vendor_cpu) {
--        g_autofree char *cpuname = riscv_cpu_get_name(cpu);
--        error_setg(errp, "'%s' CPU does not allow enabling extensions",
--                   cpuname);
--        return;
--    }
--
-     if (value) {
-         cpu_bump_multi_ext_priv_ver(&cpu->env, multi_ext_cfg->offset);
+     /* M profile requires that reset clears the exclusive monitor;
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 39f2b2e54d..44433a444c 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -639,6 +639,7 @@ typedef struct CPUArchState {
+         uint32_t nsacr;
+         uint32_t ltpsize;
+         uint32_t vpr;
++        uint32_t event_register;
+     } v7m;
+ 
+     /* Information associated with an exception about to be taken:
+diff --git a/target/arm/machine.c b/target/arm/machine.c
+index 0befdb0b28..acc79188f2 100644
+--- a/target/arm/machine.c
++++ b/target/arm/machine.c
+@@ -508,6 +508,24 @@ static const VMStateDescription vmstate_m_mve = {
+     },
+ };
+ 
++static bool m_event_needed(void *opaque)
++{
++    ARMCPU *cpu = opaque;
++    /* Only save the state if the event register is set (non-zero) */
++    return cpu->env.v7m.event_register != 0;
++}
++
++static const VMStateDescription vmstate_m_event = {
++    .name = "cpu/m/event",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = m_event_needed,
++    .fields = (const VMStateField[]) {
++        VMSTATE_UINT32(env.v7m.event_register, ARMCPU),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
+ static const VMStateDescription vmstate_m = {
+     .name = "cpu/m",
+     .version_id = 4,
+@@ -535,6 +553,7 @@ static const VMStateDescription vmstate_m = {
+         &vmstate_m_v8m,
+         &vmstate_m_fp,
+         &vmstate_m_mve,
++        &vmstate_m_event,
+         NULL
      }
+ };
+diff --git a/target/arm/tcg/helper.h b/target/arm/tcg/helper.h
+index 4636d1bc03..5a10a9fba3 100644
+--- a/target/arm/tcg/helper.h
++++ b/target/arm/tcg/helper.h
+@@ -60,6 +60,7 @@ DEF_HELPER_1(yield, void, env)
+ DEF_HELPER_1(pre_hvc, void, env)
+ DEF_HELPER_2(pre_smc, void, env, i32)
+ DEF_HELPER_1(vesb, void, env)
++DEF_HELPER_1(sev, void, env)
+ 
+ DEF_HELPER_3(cpsr_write, void, env, i32, i32)
+ DEF_HELPER_2(cpsr_write_eret, void, env, i32)
+diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
+index 4fbd219555..ad79724778 100644
+--- a/target/arm/tcg/op_helper.c
++++ b/target/arm/tcg/op_helper.c
+@@ -469,16 +469,47 @@ void HELPER(wfit)(CPUARMState *env, uint64_t timeout)
+ #endif
+ }
+ 
++void HELPER(sev)(CPUARMState *env)
++{
++    CPUState *cs = env_cpu(env);
++    CPU_FOREACH(cs) {
++        ARMCPU *target_cpu = ARM_CPU(cs);
++        if (arm_feature(&target_cpu->env, ARM_FEATURE_M)) {
++            target_cpu->env.v7m.event_register = 1;
++        }
++        qemu_cpu_kick(cs);
++    }
++}
++
+ void HELPER(wfe)(CPUARMState *env)
+ {
+-    /* This is a hint instruction that is semantically different
+-     * from YIELD even though we currently implement it identically.
+-     * Don't actually halt the CPU, just yield back to top
+-     * level loop. This is not going into a "low power state"
+-     * (ie halting until some event occurs), so we never take
+-     * a configurable trap to a different exception level.
++    /*
++     * WFE (Wait For Event) is a hint instruction.
++     * For Cortex-M (M-profile), we implement the strict architectural behavior:
++     * 1. Check the Event Register (set by SEV or SEVONPEND).
++     * 2. If set, clear it and continue (consume the event).
+      */
+-    HELPER(yield)(env);
++    if (arm_feature(env, ARM_FEATURE_M)) {
++        CPUState *cs = env_cpu(env);
++
++        if (env->v7m.event_register) {
++            env->v7m.event_register = 0;
++            return;
++        }
++
++        cs->exception_index = EXCP_HLT;
++        cs->halted = 1;
++        cpu_loop_exit(cs);
++    } else {
++        /*
++         * For A-profile and others, we rely on the existing "yield" behavior.
++         * Don't actually halt the CPU, just yield back to top
++         * level loop. This is not going into a "low power state"
++         * (ie halting until some event occurs), so we never take
++         * a configurable trap to a different exception level
++         */
++        HELPER(yield)(env);
++    }
+ }
+ 
+ void HELPER(yield)(CPUARMState *env)
+diff --git a/target/arm/tcg/t16.decode b/target/arm/tcg/t16.decode
+index 646c74929d..ac6e24ac14 100644
+--- a/target/arm/tcg/t16.decode
++++ b/target/arm/tcg/t16.decode
+@@ -229,7 +229,7 @@ REVSH           1011 1010 11 ... ...            @rdm
+     WFI         1011 1111 0011 0000
+ 
+     # TODO: Implement SEV, SEVL; may help SMP performance.
+-    # SEV       1011 1111 0100 0000
++    SEV         1011 1111 0100 0000
+     # SEVL      1011 1111 0101 0000
+ 
+     # The canonical nop has the second nibble as 0000, but the whole of the
+diff --git a/target/arm/tcg/t32.decode b/target/arm/tcg/t32.decode
+index d327178829..59b0edf63f 100644
+--- a/target/arm/tcg/t32.decode
++++ b/target/arm/tcg/t32.decode
+@@ -370,7 +370,7 @@ CLZ              1111 1010 1011 ---- 1111 .... 1000 ....      @rdm
+         WFI      1111 0011 1010 1111 1000 0000 0000 0011
+ 
+         # TODO: Implement SEV, SEVL; may help SMP performance.
+-        # SEV    1111 0011 1010 1111 1000 0000 0000 0100
++        SEV      1111 0011 1010 1111 1000 0000 0000 0100
+         # SEVL   1111 0011 1010 1111 1000 0000 0000 0101
+ 
+         ESB      1111 0011 1010 1111 1000 0000 0001 0000
+diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
+index 63735d9789..bfe2691884 100644
+--- a/target/arm/tcg/translate.c
++++ b/target/arm/tcg/translate.c
+@@ -3241,14 +3241,25 @@ static bool trans_YIELD(DisasContext *s, arg_YIELD *a)
+     return true;
+ }
+ 
++static bool trans_SEV(DisasContext *s, arg_SEV *a)
++{
++    gen_update_pc(s, curr_insn_len(s));
++    gen_helper_sev(tcg_env);
++    tcg_gen_exit_tb(NULL, 0);
++    s->base.is_jmp = DISAS_NORETURN;
++    return true;
++}
++
+ static bool trans_WFE(DisasContext *s, arg_WFE *a)
+ {
+     /*
+      * When running single-threaded TCG code, use the helper to ensure that
+-     * the next round-robin scheduled vCPU gets a crack.  In MTTCG mode we
+-     * just skip this instruction.  Currently the SEV/SEVL instructions,
+-     * which are *one* of many ways to wake the CPU from WFE, are not
+-     * implemented so we can't sleep like WFI does.
++     * the next round-robin scheduled vCPU gets a crack.
++     *
++     * For Cortex-M, we implement the architectural WFE behavior (sleeping
++     * until an event occurs or the Event Register is set).
++     * For other profiles, we currently treat this as a NOP or yield,
++     * to preserve existing performance characteristics.
+      */
+     if (!(tb_cflags(s->base.tb) & CF_PARALLEL)) {
+         gen_update_pc(s, curr_insn_len(s));
+@@ -6807,6 +6818,7 @@ static void arm_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
+             break;
+         case DISAS_WFE:
+             gen_helper_wfe(tcg_env);
++            tcg_gen_exit_tb(NULL, 0);
+             break;
+         case DISAS_YIELD:
+             gen_helper_yield(tcg_env);
 -- 
-2.51.1
+2.43.0
 
 
