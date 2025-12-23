@@ -2,92 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 933E9CD9A6D
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 15:31:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BBC3CD9AC1
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 15:33:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vY3Pv-00024w-NY; Tue, 23 Dec 2025 09:31:15 -0500
+	id 1vY3Ps-0001lN-JP; Tue, 23 Dec 2025 09:31:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vY3P2-000156-VU
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 09:30:21 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vY3P6-00016D-Ag
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 09:30:32 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vY3P0-0003jc-T4
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 09:30:20 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vY3P3-0003kT-2U
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 09:30:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766500218;
+ s=mimecast20190719; t=1766500220;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cEFBdIohS4062D+O/J++uj/ToEv6MawI3RRAwg3mQ+g=;
- b=ce3dK+rUXqYi3sUAj8KJ7zGAdZT39mNMPjIvKBAs1UXleqiOwttNNl0E6jKLdeB8atv71d
- rDUdDLfg/M5WxLjKYmQqA27DJ2upsjLiKBYXWr1ccPIZJ5jN2TIlajG9hr+7Y6YOOVLUYH
- ApXionGBNEbO0Q/ECWUIsLYVaiTuyjk=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kmQKTS4RxbULYzKokjP4wuLqRecQ06kRVOLasrUMPN8=;
+ b=QiYlzKON5/TepLrmNSoLrTPlSdn9tzfmeTbkn4hq6CMTZVgGK2HatBjxTH+bvXWF768VYm
+ aMzHiyluVVeXScchdvXu0AQ8vSB7wpNIyJbPi22397D0+z6/t7Xy18ag7dy5g6MwxLCaRZ
+ bNPjgCN/2i2sJ7Mrv5xXjJ+efOYtyuM=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-542-abAEsoRcMpWc9fTLno0Yyw-1; Tue, 23 Dec 2025 09:30:16 -0500
-X-MC-Unique: abAEsoRcMpWc9fTLno0Yyw-1
-X-Mimecast-MFC-AGG-ID: abAEsoRcMpWc9fTLno0Yyw_1766500216
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-8b22d590227so628686085a.1
- for <qemu-devel@nongnu.org>; Tue, 23 Dec 2025 06:30:16 -0800 (PST)
+ us-mta-558-LRr1FgdPMPGsi6Qbe7CWKQ-1; Tue, 23 Dec 2025 09:30:18 -0500
+X-MC-Unique: LRr1FgdPMPGsi6Qbe7CWKQ-1
+X-Mimecast-MFC-AGG-ID: LRr1FgdPMPGsi6Qbe7CWKQ_1766500218
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-8b2f0be2cf0so1789630285a.0
+ for <qemu-devel@nongnu.org>; Tue, 23 Dec 2025 06:30:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766500215; x=1767105015; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766500217; x=1767105017; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cEFBdIohS4062D+O/J++uj/ToEv6MawI3RRAwg3mQ+g=;
- b=seUqBs90/ZmFgY2bzSQpLvAXH++1PXZtT5uxKQQLrmmQtYQHpTVzdwMCIfD8uGwGeJ
- md/9sTUlgSt0PkpCsa7UpusLVXWj5my5DUIabY21yqY7ZXvM9D89R5MDyy1vwd1R0lV+
- /eE3PiGNlkcVzhX0SxTHy++O7LMx9Q1iLRDfZx9DNrNvh1Q0t5acdlwXy3h90Q7mRnM4
- ImOTMGbE2Z053uI+VE0b0fSvFUbl1n+Pams3fLyYAqgj4fYJYVfRABJPwM585TXmsDVr
- HAjTMLbEAI4LfYLyhSRPMBgZH5tWbLghtbgdcyXOqZXrtllv9LYVjnnRY3RemR6SZAKK
- P5/A==
+ bh=kmQKTS4RxbULYzKokjP4wuLqRecQ06kRVOLasrUMPN8=;
+ b=IQC5uroaERwWG4X9w2R2bYrL4w7z5UqWrJ/yjCnrNZfpDSccKFXJT6SBOsJt4czh6u
+ MJZfODTQf/IQzVb4xjk07GnjbKWZJhn8WauArKHck3YJVav7LmuF1VvyzXRtpO+sHEOt
+ h4QAluMOZvAhiX+QJbhh4ZlpaHPUrz/j3lToMeqilWBS2aQyRJjpDI8SFVIc/yPi//S2
+ JAaGRp5Izgrjg+QCoku6MUgHubhD5LpyqB7LOzIJT/tvJm0KTVQvFjYGzwKCIQbByUSq
+ Z2TeyYK2PWeIouklq+07UD3XwmNzhBsySYVriRUiWZblh8L6YMmxdtr+bj7BuftjVLQ5
+ 74lA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766500215; x=1767105015;
+ d=1e100.net; s=20230601; t=1766500217; x=1767105017;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=cEFBdIohS4062D+O/J++uj/ToEv6MawI3RRAwg3mQ+g=;
- b=stkSkfNyrL/SiL3b3CLniNKpSzyKFLTv0Z9MlDopMYzhhpT6PDYGwlQXlK6GXc+KwI
- 2Ot6Pd/NiUJ4U2wpwvoFR0q72KuRDsGdoYeXNQhR7rD5x/je5sjbtwvemwEQ6oOf8++w
- 6hIg9AGKIrAqKNZ2zH+niHv6tDK/N72kh0XhfjHIsESUwCjMbKdh5Whti53TyYveYaE0
- UWtxB1RFC5f22YoDorfAQW+RTcO9jk1pjtAKoax8ROlDTZGPLhvkY/yR65pKx2cpv4Dp
- PH4Ee6IrAg4//xWoimWo4uYkdpzfydMl9JiY+Ae8rlRPIPfsVokSO4uaScmo9oTLeB2A
- 4isw==
-X-Gm-Message-State: AOJu0Yx8JdoFX4r6Eae4n9uByEwgfL2mHxtpyME8Ao2wbD6tfRNV/S2W
- k+TLXl19I+5xzWO3qBbgw5X5NeMDBHVdXAsNbGgNrEAvTAa9YOoKQ+56hYcCA8olqjDjcOJJ7CY
- r8xZZdbbSAYNnNzI4vy+JcgVAkPz7Tp7UWso+eFcVgmZ43c/j/DT9tkLQ2jucFGmaIAaLbESdhP
- LP7MchA37FBK5o9Dtuwu3HYcvAJ7FJE0T/Bae3Kw==
-X-Gm-Gg: AY/fxX7kfBddmPeXdETDtKanLHSguw0e7SCcCYweQNWYYyigmzBR3P46o6OC1pGNg/h
- 1o4sHlylGZYuKg8nV2HZaY0ir5JWYkG2z8a1uf32L5ewnN1DNnzl0PrgFdcc9zkMegSZ6IFb4Er
- +4Axbk0d0NhLc6fAZvwfiTud7xBx4Neb4hT4tTy86LKJBBJTHwbOhAbGX0Kk5Pk6nYvLVEDLbTy
- w4BI9kpHm1JZQsJCKyCDwNwrRBpEZDQzstl80a9L/PjnpvlW55y1+c41bT7w5vEc6TrfewUiZQR
- USiM9eW5ehBcbnuOFIbtaN4wjKW/B4+0PPWubu9zV49Ux6dArb+F+AbvyYSJ8/X46BJBiiXRXM1
- 9KF4=
-X-Received: by 2002:a05:620a:4149:b0:8b2:4b6:22d4 with SMTP id
- af79cd13be357-8c09002816emr2306246785a.84.1766500215194; 
+ bh=kmQKTS4RxbULYzKokjP4wuLqRecQ06kRVOLasrUMPN8=;
+ b=N9dghieHtUCQ5CGrRZ6v4tAXq74OZpzv8heTuq1CSXqwSj/2T/z7/5NmW1NlyXa/yI
+ lzCq1itOVSWZa2KYkZjdKqvtLlzG4ilxKaJBx7tcCvm1p0a1xC5eTzIV8IElWoX/gN+M
+ qmleYKQqIT/tSMmDEWj4F/O3edN1aqNptCNXTk2FMeivcRKOVsyyJ1QdQAtrCgzzNj8G
+ e6S5RTWua6ft4wg3dOaVLXPtTRmoCGcBsTyLV+tLoxRPUbhfMmLGQaxEnQ2tE8HOLRXj
+ zk1WctmuNZRUzut7ERCrzPAG0Q1yd2sKT+d83TAa6MZFzVun3kywQLWo9z1BNwwU7339
+ 8k5A==
+X-Gm-Message-State: AOJu0YwnU+2qlzN+huL9QG7HpYNL2xBtGkk1VnIT9+vYjRpi38aIihSS
+ h6tRyZCpy9CPdPLwJoJt1w2sBovusXT2lRzUZud+qknm2ei6BqbkV9tj2gR6Quoae1Lt8EK4aFk
+ rY5u2EajrVGlvNWhR18ICay6MchqVicBJeoMs+6vc9v8S2t5GU1lMXpQ1fG9rWTzY6qIZ/k8Q7S
+ oBQjN7u5WDOgZZ7Gf6cl1mKL9zriMsE31HyCCVpQ==
+X-Gm-Gg: AY/fxX5fQcHM+blBzGgxFH3YHwX35QqoF3NWbRqkNUkfQDb9YJ/pYywMBq6fIyXlyfw
+ nD/RPDI5Eo5MWUtEIbmempNQ2KI0cC0ZwLloWJVbkXs5QOrP0dyRHWwgDY7yubLunI0vN6QDTD6
+ ZWKUJvSk2XB+3mJdTU3Rt+W7b4TilPtu4DeAZwwGlkBWKV5EdUtbK9d3rigZl66GNKxx/qQpm+V
+ Sn6Tgjfnpmn0OGl76WrB36nRcMj88z0qkU8rnxIvs9JSo4sRO2sD9I44U3pQdOtkc+9T8S2Bhes
+ c0fzkLwr4rcOzPWwOau/LrTaFLM4Gueps6QzfqEAkD7oPsTxVru56qVDFw8CjY4E+/tyfzW85Er
+ hDq8=
+X-Received: by 2002:a05:620a:1a0c:b0:8b2:e565:50b5 with SMTP id
+ af79cd13be357-8c08fd03785mr2016594785a.60.1766500217176; 
+ Tue, 23 Dec 2025 06:30:17 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGfqMkI1u8ajrkHquPRnsQRlB8duYpnaYMEmb+rOzjCbf0eHiw55aFLlKBbRw/fxdcCQgTl7Q==
+X-Received: by 2002:a05:620a:1a0c:b0:8b2:e565:50b5 with SMTP id
+ af79cd13be357-8c08fd03785mr2016573585a.60.1766500215560; 
  Tue, 23 Dec 2025 06:30:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH9zCst7YcBgDo7sAKqu/hFO3OAETyOpzVWg+oqVNLEzBIzmVXoSV5ED7/pGRXdXoknLsrupA==
-X-Received: by 2002:a05:620a:4149:b0:8b2:4b6:22d4 with SMTP id
- af79cd13be357-8c09002816emr2306234285a.84.1766500214441; 
- Tue, 23 Dec 2025 06:30:14 -0800 (PST)
 Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-8c096787536sm1096163285a.4.2025.12.23.06.30.13
+ af79cd13be357-8c096787536sm1096163285a.4.2025.12.23.06.30.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Dec 2025 06:30:13 -0800 (PST)
+ Tue, 23 Dec 2025 06:30:15 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
  Markus Armbruster <armbru@redhat.com>
-Subject: [PULL 10/31] migration: Make multifd_recv_terminate_threads() own the
- error
-Date: Tue, 23 Dec 2025 09:29:38 -0500
-Message-ID: <20251223142959.1460293-11-peterx@redhat.com>
+Subject: [PULL 11/31] migration: Replace migrate_set_error() with
+ migrate_error_propagate()
+Date: Tue, 23 Dec 2025 09:29:39 -0500
+Message-ID: <20251223142959.1460293-12-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251223142959.1460293-1-peterx@redhat.com>
 References: <20251223142959.1460293-1-peterx@redhat.com>
@@ -118,54 +118,383 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make multifd_recv_terminate_threads() take ownership of the error always.
-Paving way for making migrate_set_error() to take ownership.
+migrate_set_error() currently doesn't take ownership of the error being
+passed in.  It's not aligned with the error API and meanwhile it also
+makes most of the caller free the error explicitly.
+
+Change the API to take the ownership of the Error object instead.  This
+should save a lot of error_copy() invocations.
 
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Link: https://lore.kernel.org/r/20251201194510.1121221-7-peterx@redhat.com
+Link: https://lore.kernel.org/r/20251201194510.1121221-8-peterx@redhat.com
+[peterx: break line for qemu_savevm_send_packaged, per markus]
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/multifd.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ migration/migration.h            |  2 +-
+ migration/cpr-exec.c             |  5 ++--
+ migration/migration.c            | 44 +++++++++++++++-----------------
+ migration/multifd-device-state.c |  5 +---
+ migration/multifd.c              | 19 +++++++-------
+ migration/postcopy-ram.c         |  5 ++--
+ migration/ram.c                  |  4 +--
+ migration/savevm.c               | 17 +++++-------
+ 8 files changed, 44 insertions(+), 57 deletions(-)
 
+diff --git a/migration/migration.h b/migration/migration.h
+index 213b33fe6e..e4b4f25deb 100644
+--- a/migration/migration.h
++++ b/migration/migration.h
+@@ -525,7 +525,7 @@ void migration_incoming_process(void);
+ 
+ bool  migration_has_all_channels(void);
+ 
+-void migrate_set_error(MigrationState *s, const Error *error);
++void migrate_error_propagate(MigrationState *s, Error *error);
+ bool migrate_has_error(MigrationState *s);
+ 
+ void migration_connect(MigrationState *s, Error *error_in);
+diff --git a/migration/cpr-exec.c b/migration/cpr-exec.c
+index 0b8344a86f..da287d8031 100644
+--- a/migration/cpr-exec.c
++++ b/migration/cpr-exec.c
+@@ -158,8 +158,9 @@ static void cpr_exec_cb(void *opaque)
+ 
+     error_report_err(error_copy(err));
+     migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
+-    migrate_set_error(s, err);
+-    error_free(err);
++
++    migrate_error_propagate(s, err);
++    /* We must reset the error because it'll be reused later */
+     err = NULL;
+ 
+     /* Note, we can go from state COMPLETED to FAILED */
+diff --git a/migration/migration.c b/migration/migration.c
+index 0ff8b31a88..70813e5006 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -914,9 +914,7 @@ process_incoming_migration_co(void *opaque)
+ fail:
+     migrate_set_state(&mis->state, MIGRATION_STATUS_ACTIVE,
+                       MIGRATION_STATUS_FAILED);
+-    migrate_set_error(s, local_err);
+-    error_free(local_err);
+-
++    migrate_error_propagate(s, local_err);
+     migration_incoming_state_destroy();
+ 
+     if (mis->exit_on_error) {
+@@ -1548,14 +1546,20 @@ static void migration_cleanup_bh(void *opaque)
+     migration_cleanup(opaque);
+ }
+ 
+-void migrate_set_error(MigrationState *s, const Error *error)
++/*
++ * Propagate the Error* object to migration core.  The caller mustn't
++ * reference the error pointer after the function returned, because the
++ * Error* object might be freed.
++ */
++void migrate_error_propagate(MigrationState *s, Error *error)
+ {
+     QEMU_LOCK_GUARD(&s->error_mutex);
+-
+     trace_migrate_error(error_get_pretty(error));
+ 
+     if (!s->error) {
+-        s->error = error_copy(error);
++        s->error = error;
++    } else {
++        error_free(error);
+     }
+ }
+ 
+@@ -1601,8 +1605,7 @@ static void migration_connect_error_propagate(MigrationState *s, Error *error)
+     }
+ 
+     migrate_set_state(&s->state, current, next);
+-    migrate_set_error(s, error);
+-    error_free(error);
++    migrate_error_propagate(s, error);
+ }
+ 
+ void migration_cancel(void)
+@@ -2014,8 +2017,7 @@ void qmp_migrate_pause(Error **errp)
+ 
+         /* Tell the core migration that we're pausing */
+         error_setg(&error, "Postcopy migration is paused by the user");
+-        migrate_set_error(ms, error);
+-        error_free(error);
++        migrate_error_propagate(ms, error);
+ 
+         qemu_mutex_lock(&ms->qemu_file_lock);
+         if (ms->to_dst_file) {
+@@ -2647,8 +2649,7 @@ static void *source_return_path_thread(void *opaque)
+ 
+ out:
+     if (err) {
+-        migrate_set_error(ms, err);
+-        error_free(err);
++        migrate_error_propagate(ms, err);
+         trace_source_return_path_thread_bad_end();
+     }
+ 
+@@ -3094,12 +3095,10 @@ static void migration_completion(MigrationState *s)
+ 
+ fail:
+     if (qemu_file_get_error_obj(s->to_dst_file, &local_err)) {
+-        migrate_set_error(s, local_err);
+-        error_free(local_err);
++        migrate_error_propagate(s, local_err);
+     } else if (ret) {
+         error_setg_errno(&local_err, -ret, "Error in migration completion");
+-        migrate_set_error(s, local_err);
+-        error_free(local_err);
++        migrate_error_propagate(s, local_err);
+     }
+ 
+     if (s->state != MIGRATION_STATUS_CANCELLING) {
+@@ -3326,8 +3325,7 @@ static MigThrError migration_detect_error(MigrationState *s)
+     }
+ 
+     if (local_error) {
+-        migrate_set_error(s, local_error);
+-        error_free(local_error);
++        migrate_error_propagate(s, local_error);
+     }
+ 
+     if (state == MIGRATION_STATUS_POSTCOPY_ACTIVE && ret) {
+@@ -3522,7 +3520,7 @@ static MigIterateState migration_iteration_run(MigrationState *s)
+         if (must_precopy <= s->threshold_size &&
+             can_switchover && qatomic_read(&s->start_postcopy)) {
+             if (postcopy_start(s, &local_err)) {
+-                migrate_set_error(s, local_err);
++                migrate_error_propagate(s, error_copy(local_err));
+                 error_report_err(local_err);
+             }
+             return MIG_ITERATE_SKIP;
+@@ -3819,8 +3817,7 @@ static void *migration_thread(void *opaque)
+      * devices to unplug. This to preserve migration state transitions.
+      */
+     if (ret) {
+-        migrate_set_error(s, local_err);
+-        error_free(local_err);
++        migrate_error_propagate(s, local_err);
+         migrate_set_state(&s->state, MIGRATION_STATUS_ACTIVE,
+                           MIGRATION_STATUS_FAILED);
+         goto out;
+@@ -3944,8 +3941,7 @@ static void *bg_migration_thread(void *opaque)
+      * devices to unplug. This to preserve migration state transitions.
+      */
+     if (ret) {
+-        migrate_set_error(s, local_err);
+-        error_free(local_err);
++        migrate_error_propagate(s, local_err);
+         migrate_set_state(&s->state, MIGRATION_STATUS_ACTIVE,
+                           MIGRATION_STATUS_FAILED);
+         goto fail_setup;
+@@ -4127,7 +4123,7 @@ void migration_connect(MigrationState *s, Error *error_in)
+     return;
+ 
+ fail:
+-    migrate_set_error(s, local_err);
++    migrate_error_propagate(s, error_copy(local_err));
+     if (s->state != MIGRATION_STATUS_CANCELLING) {
+         migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
+     }
+diff --git a/migration/multifd-device-state.c b/migration/multifd-device-state.c
+index db3239fef5..91d5d81556 100644
+--- a/migration/multifd-device-state.c
++++ b/migration/multifd-device-state.c
+@@ -143,8 +143,6 @@ static int multifd_device_state_save_thread(void *opaque)
+     Error *local_err = NULL;
+ 
+     if (!data->hdlr(data, &local_err)) {
+-        MigrationState *s = migrate_get_current();
+-
+         /*
+          * Can't call abort_device_state_save_threads() here since new
+          * save threads could still be in process of being launched
+@@ -158,8 +156,7 @@ static int multifd_device_state_save_thread(void *opaque)
+          * In case of multiple save threads failing which thread error
+          * return we end setting is purely arbitrary.
+          */
+-        migrate_set_error(s, local_err);
+-        error_free(local_err);
++        migrate_error_propagate(migrate_get_current(), local_err);
+     }
+ 
+     return 0;
 diff --git a/migration/multifd.c b/migration/multifd.c
-index 651ea3d14b..52e4d25857 100644
+index 52e4d25857..bf6da85af8 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -1068,6 +1068,7 @@ static void multifd_recv_terminate_threads(Error *err)
+@@ -428,8 +428,9 @@ static void multifd_send_error_propagate(Error *err)
+ 
      if (err) {
          MigrationState *s = migrate_get_current();
-         migrate_set_error(s, err);
-+        error_free(err);
+-        migrate_set_error(s, err);
+-        error_free(err);
++
++        migrate_error_propagate(s, err);
++
+         if (s->state == MIGRATION_STATUS_SETUP ||
+             s->state == MIGRATION_STATUS_PRE_SWITCHOVER ||
+             s->state == MIGRATION_STATUS_DEVICE ||
+@@ -588,8 +589,7 @@ void multifd_send_shutdown(void)
+         Error *local_err = NULL;
+ 
+         if (!multifd_send_cleanup_channel(p, &local_err)) {
+-            migrate_set_error(migrate_get_current(), local_err);
+-            error_free(local_err);
++            migrate_error_propagate(migrate_get_current(), local_err);
+         }
+     }
+ 
+@@ -962,8 +962,7 @@ bool multifd_send_setup(void)
+         p->write_flags = 0;
+ 
+         if (!multifd_new_send_channel_create(p, &local_err)) {
+-            migrate_set_error(s, local_err);
+-            error_free(local_err);
++            migrate_error_propagate(s, local_err);
+             ret = -1;
+         }
+     }
+@@ -987,8 +986,7 @@ bool multifd_send_setup(void)
+ 
+         ret = multifd_send_state->ops->send_setup(p, &local_err);
+         if (ret) {
+-            migrate_set_error(s, local_err);
+-            error_free(local_err);
++            migrate_error_propagate(s, local_err);
+             goto err;
+         }
+         assert(p->iov);
+@@ -1067,8 +1065,9 @@ static void multifd_recv_terminate_threads(Error *err)
+ 
+     if (err) {
+         MigrationState *s = migrate_get_current();
+-        migrate_set_error(s, err);
+-        error_free(err);
++
++        migrate_error_propagate(s, err);
++
          if (s->state == MIGRATION_STATUS_SETUP ||
              s->state == MIGRATION_STATUS_ACTIVE) {
              migrate_set_state(&s->state, s->state,
-@@ -1434,7 +1435,6 @@ static void *multifd_recv_thread(void *opaque)
- 
+diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
+index 715ef021a9..3623ab9dab 100644
+--- a/migration/postcopy-ram.c
++++ b/migration/postcopy-ram.c
+@@ -1928,8 +1928,7 @@ postcopy_preempt_send_channel_done(MigrationState *s,
+                                    QIOChannel *ioc, Error *local_err)
+ {
      if (local_err) {
-         multifd_recv_terminate_threads(local_err);
+-        migrate_set_error(s, local_err);
 -        error_free(local_err);
++        migrate_error_propagate(s, local_err);
+     } else {
+         migration_ioc_register_yank(ioc);
+         s->postcopy_qemufile_src = qemu_file_new_output(ioc);
+@@ -2163,7 +2162,7 @@ static void *postcopy_listen_thread(void *opaque)
+              * exit depending on if postcopy-exit-on-error is true, but the
+              * migration cannot be recovered.
+              */
+-            migrate_set_error(migr, local_err);
++            migrate_error_propagate(migr, error_copy(local_err));
+             error_report_err(local_err);
+             migrate_set_state(&mis->state, mis->state, MIGRATION_STATUS_FAILED);
+             goto out;
+diff --git a/migration/ram.c b/migration/ram.c
+index 117957da91..ecd81601e2 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -4748,9 +4748,7 @@ static void ram_mig_ram_block_resized(RAMBlockNotifier *n, void *host,
+          * Abort and indicate a proper reason.
+          */
+         error_setg(&err, "RAM block '%s' resized during precopy.", rb->idstr);
+-        migrate_set_error(migrate_get_current(), err);
+-        error_free(err);
+-
++        migrate_error_propagate(migrate_get_current(), err);
+         migration_cancel();
      }
  
-     rcu_unregister_thread();
-@@ -1535,7 +1535,7 @@ void multifd_recv_new_channel(QIOChannel *ioc, Error **errp)
-     if (use_packets) {
-         id = multifd_recv_initial_packet(ioc, &local_err);
-         if (id < 0) {
--            multifd_recv_terminate_threads(local_err);
-+            multifd_recv_terminate_threads(error_copy(local_err));
-             error_propagate_prepend(errp, local_err,
-                                     "failed to receive packet"
-                                     " via multifd channel %d: ",
-@@ -1551,7 +1551,7 @@ void multifd_recv_new_channel(QIOChannel *ioc, Error **errp)
-     if (p->c != NULL) {
-         error_setg(&local_err, "multifd: received id '%d' already setup'",
-                    id);
--        multifd_recv_terminate_threads(local_err);
-+        multifd_recv_terminate_threads(error_copy(local_err));
-         error_propagate(errp, local_err);
-         return;
+diff --git a/migration/savevm.c b/migration/savevm.c
+index 638e9b364f..470c9ef0f7 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -1125,13 +1125,13 @@ void qemu_savevm_send_open_return_path(QEMUFile *f)
+ int qemu_savevm_send_packaged(QEMUFile *f, const uint8_t *buf, size_t len)
+ {
+     uint32_t tmp;
+-    MigrationState *ms = migrate_get_current();
+     Error *local_err = NULL;
+ 
+     if (len > MAX_VM_CMD_PACKAGED_SIZE) {
+         error_setg(&local_err, "%s: Unreasonably large packaged state: %zu",
+                      __func__, len);
+-        migrate_set_error(ms, local_err);
++        migrate_error_propagate(migrate_get_current(),
++                                error_copy(local_err));
+         error_report_err(local_err);
+         return -1;
      }
+@@ -1373,7 +1373,7 @@ int qemu_savevm_state_setup(QEMUFile *f, Error **errp)
+         if (se->vmsd && se->vmsd->early_setup) {
+             ret = vmstate_save(f, se, vmdesc, errp);
+             if (ret) {
+-                migrate_set_error(ms, *errp);
++                migrate_error_propagate(ms, error_copy(*errp));
+                 qemu_file_set_error(f, ret);
+                 break;
+             }
+@@ -1681,7 +1681,7 @@ int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
+ 
+         ret = vmstate_save(f, se, vmdesc, &local_err);
+         if (ret) {
+-            migrate_set_error(ms, local_err);
++            migrate_error_propagate(ms, error_copy(local_err));
+             error_report_err(local_err);
+             qemu_file_set_error(f, ret);
+             return ret;
+@@ -1858,7 +1858,6 @@ void qemu_savevm_live_state(QEMUFile *f)
+ 
+ int qemu_save_device_state(QEMUFile *f)
+ {
+-    MigrationState *ms = migrate_get_current();
+     Error *local_err = NULL;
+     SaveStateEntry *se;
+ 
+@@ -1876,7 +1875,8 @@ int qemu_save_device_state(QEMUFile *f)
+         }
+         ret = vmstate_save(f, se, NULL, &local_err);
+         if (ret) {
+-            migrate_set_error(ms, local_err);
++            migrate_error_propagate(migrate_get_current(),
++                                    error_copy(local_err));
+             error_report_err(local_err);
+             return ret;
+         }
+@@ -2826,8 +2826,6 @@ static int qemu_loadvm_load_thread(void *thread_opaque)
+     Error *local_err = NULL;
+ 
+     if (!data->function(data->opaque, &mis->load_threads_abort, &local_err)) {
+-        MigrationState *s = migrate_get_current();
+-
+         /*
+          * Can't set load_threads_abort here since processing of main migration
+          * channel data could still be happening, resulting in launching of new
+@@ -2840,8 +2838,7 @@ static int qemu_loadvm_load_thread(void *thread_opaque)
+          * In case of multiple load threads failing which thread error
+          * return we end setting is purely arbitrary.
+          */
+-        migrate_set_error(s, local_err);
+-        error_free(local_err);
++        migrate_error_propagate(migrate_get_current(), local_err);
+     }
+ 
+     return 0;
 -- 
 2.50.1
 
