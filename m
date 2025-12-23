@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED72ECD9DAE
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 16:51:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 214A4CD9DC7
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 16:52:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vY4fM-0000HG-JS; Tue, 23 Dec 2025 10:51:16 -0500
+	id 1vY4fU-0000PD-Tr; Tue, 23 Dec 2025 10:51:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vY4fB-00008D-GL
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 10:51:05 -0500
-Received: from sea.source.kernel.org ([172.234.252.31])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vY4fC-00008Q-O2
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 10:51:08 -0500
+Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vY4f6-0005Ta-Ad
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 10:51:03 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vY4fB-0005UD-8S
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 10:51:06 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sea.source.kernel.org (Postfix) with ESMTP id 6E06A43C30;
+ by sea.source.kernel.org (Postfix) with ESMTP id A886D40DD0;
+ Tue, 23 Dec 2025 15:51:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD523C113D0;
  Tue, 23 Dec 2025 15:50:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8276FC113D0;
- Tue, 23 Dec 2025 15:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1766505059;
- bh=CfUuSdb/wHb4Teg1yVC5iVuinJ5jN2VElcPx4w8WaD8=;
+ s=k20201202; t=1766505061;
+ bh=CSOduKJZsEP2Kp7t2StaP9LitgZ64zGhAlx63dao0n0=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=FuJk7dOkPXOuN8k0m0TX8TtOGhttoB2zueiFODbjDbjfc67HqWdm8vC/DoS4T12BJ
- A0fJm/cyQZUZPkX/qACmdi8oFA7fyvVKAlbmLiQFpNqu67dgVgHR1V67Pfmj5NceI3
- hoW+0HLn1Bea8lJVqpO+DVHMaoc+xZLA8Ux5SqXg25YTR1UUiF3D/bOXd1j5fv8Njz
- iTtIKJH96NzIC6DWUjrjZJ9+JxpwvcugBu+0NPjooNWiQKClyh9DopantSFJPGpLKA
- 1AXWPQG16PjBVpRClWHh6zLxaW7XOAMisxuFo7AW8tJ5pZN3OVC1cqfd6PE5kNVWiV
- SqY0NdU0MBG1Q==
+ b=kfu3Cuyz1BkI3bkgrz1MpnzmaJpXUEEdq3wp6ERpeBeUhvhSIYSmsz57FjKoUeMgx
+ 3ndfd/uWM6m459Yll/fATQqeE16bMGZja2sQLCrqo/EywDrAP6mtzbiBubjL4jOR9S
+ 74DNf4GZrJXyj25jRfUPVsuarQ7B/b8KQ3WBhwSzbSdqA/TmmqVpP4cORTVAyjQ6PJ
+ 0DmubIAoJgjiktn5BSfsh0DhBR/j1xoml0Fz/vVuIIq55FsEapXv4BQb2rKWE1eHom
+ OVbWkQ2h/pitBaXkZUrfkOWuf+jBQ/61lrvbKiaccVZvssLvk++FWZlrFbmBUhqE8e
+ LfU0gp1Q8rfyg==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>,
@@ -39,22 +39,21 @@ Cc: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Fam Zheng <fam@euphon.net>
-Subject: [PULL 10/12] scsi: ncr710: Fix DSA register
-Date: Tue, 23 Dec 2025 16:50:29 +0100
-Message-ID: <20251223155031.7110-11-deller@kernel.org>
+Subject: [PULL 11/12] scsi: ncr710: Fix CTEST FIFO status
+Date: Tue, 23 Dec 2025 16:50:30 +0100
+Message-ID: <20251223155031.7110-12-deller@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251223155031.7110-1-deller@kernel.org>
 References: <20251223155031.7110-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=172.234.252.31; envelope-from=deller@kernel.org;
- helo=sea.source.kernel.org
+Received-SPF: pass client-ip=2600:3c0a:e001:78e:0:1991:8:25;
+ envelope-from=deller@kernel.org; helo=sea.source.kernel.org
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,43 +72,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
 
-Implement bytewise write handling for DSA register instead of using
-the macro, as NetBSD driver accesses it byte by byte.
+Update CTEST1 FIFO status when CTEST8 is written, setting to 0xFF when
+FIFO is flushed, otherwise clear to 0x00.
 
 Signed-off-by: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
 Tested-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- hw/scsi/ncr53c710.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ hw/scsi/ncr53c710.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/hw/scsi/ncr53c710.c b/hw/scsi/ncr53c710.c
-index dd453991e0..0ea1fc43a3 100644
+index 0ea1fc43a3..cdc365478c 100644
 --- a/hw/scsi/ncr53c710.c
 +++ b/hw/scsi/ncr53c710.c
-@@ -2078,7 +2078,21 @@ static void ncr710_reg_writeb(NCR710State *s, int offset, uint8_t val)
-         /* Linux writes to these readonly registers on startup */
-         return;
- 
--    CASE_SET_REG32(dsa, NCR710_DSA_REG)
-+    case NCR710_DSA_REG:
-+        s->dsa &= 0xffffff00;
-+        s->dsa |= val;
-+        break;
-+    case NCR710_DSA_REG + 1:
-+        s->dsa &= 0xffff00ff;
-+        s->dsa |= val << 8;
-+        break;
-+    case NCR710_DSA_REG + 2:
-+        s->dsa &= 0xff00ffff;
-+        s->dsa |= val << 16;
-+        break;
-+    case NCR710_DSA_REG + 3:
-+        s->dsa &= 0x00ffffff;
-+        s->dsa |= val << 24;
+@@ -2161,7 +2161,11 @@ static void ncr710_reg_writeb(NCR710State *s, int offset, uint8_t val)
+         if (val & 0x04) {
+             ncr710_scsi_fifo_init(&s->scsi_fifo);
+             s->dstat |= NCR710_DSTAT_DFE;
++            s->ctest1 = 0xFF;
++        } else if (s->ctest8 & 0x04) {
++            s->ctest1 = 0x00;
+         }
++        s->ctest8 = val;
          break;
- 
-     case NCR710_CTEST0_REG: /* CTEST0 */
+     case NCR710_LCRC_REG: /* LCRC */
+         s->lcrc = val;
 -- 
 2.52.0
 
