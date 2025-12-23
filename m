@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 040CACD9DAF
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E4B1CD9DB4
 	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 16:51:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vY4f6-000066-I8; Tue, 23 Dec 2025 10:51:00 -0500
+	id 1vY4fQ-0000I1-R9; Tue, 23 Dec 2025 10:51:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vY4ez-0008WN-0k
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 10:50:54 -0500
-Received: from tor.source.kernel.org ([172.105.4.254])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vY4f4-00006V-T8
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 10:51:00 -0500
+Received: from tor.source.kernel.org ([2600:3c04:e001:324:0:1991:8:25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vY4ex-0005RK-6j
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 10:50:52 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vY4ez-0005S8-Ds
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 10:50:54 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by tor.source.kernel.org (Postfix) with ESMTP id 9C0766013D;
+ by tor.source.kernel.org (Postfix) with ESMTP id D74F16013F;
+ Tue, 23 Dec 2025 15:50:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5060C113D0;
  Tue, 23 Dec 2025 15:50:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A3A4C116C6;
- Tue, 23 Dec 2025 15:50:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1766505050;
- bh=L0YXx2FHn1M1+9urKytakexkVLHdg/o0WnZJ/wbJyC4=;
+ s=k20201202; t=1766505052;
+ bh=5FzNu8IeWuDtcit4v9ou0ulH/u3t1RfgDbfDB9+rASc=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=rmunOenXhgMDqUkj3h7/T6LJmlBX0fzRSfrK3+V0TypUomoZqCxZTJt0PlIx3arbo
- RnGTQsfgEnG47SVX00BXl+76rwGxCEG3CLx8DLAxtf+TtzhzhMiwi/YUwdWZ4AVqMX
- lyvY0CgRMgCgpVuOap2phBizXKEPYXY7jWgbgfRpNh5xaWZJZ7jEn2unfAfU1qRSmL
- uaLST91xKfPNuu3zaEtm5IJhcvk+GqIozSg92NdTX6kW7a0GD7kNNUG4/mM9mvDgWf
- ghbCCGQslz/5pq+UehwcwnnesQzWzgxEFKY7wewR97jPKBimkxlPLuoM8tHZAlI32K
- xC57DqD0ZSFew==
+ b=HAXAyakDGwmnVezmTgohrgtlijB0M2+GWORl3r+cEKrWWIIZ08lPkMlFkBoTijYPw
+ 4dI0ixhjpsGnJMxdAe/1SiMpHpC+ekkmTaKTS9oub7g7Bo38vQNK8z6aLuO8R0nt6F
+ d7AXtz0CtV7XMBZ/k0Fx8i2XMW0lLRhpjt+HAuFPKXasJCi/DadWJfZc6clK8cpn/J
+ qAc6aSSIncYVeKlppphLivAd/sQmrUM9tvI72BCBUDL1raeBjOCqPG6pkCig7DE6F4
+ F+O2tAGJCfGfPr42sGhdi9uJKIfZ186RniJnmiECil1bCCmGKTfATb0u4DlY+qFZQL
+ rtMUDj0i9FBgw==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>,
@@ -39,22 +39,22 @@ Cc: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Fam Zheng <fam@euphon.net>
-Subject: [PULL 06/12] scsi: ncr710: Fix table indirect addressing endianness
-Date: Tue, 23 Dec 2025 16:50:25 +0100
-Message-ID: <20251223155031.7110-7-deller@kernel.org>
+Subject: [PULL 07/12] scsi: ncr710: Mark command complete in status phase and
+ fix disconnect
+Date: Tue, 23 Dec 2025 16:50:26 +0100
+Message-ID: <20251223155031.7110-8-deller@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251223155031.7110-1-deller@kernel.org>
 References: <20251223155031.7110-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=172.105.4.254; envelope-from=deller@kernel.org;
- helo=tor.source.kernel.org
+Received-SPF: pass client-ip=2600:3c04:e001:324:0:1991:8:25;
+ envelope-from=deller@kernel.org; helo=tor.source.kernel.org
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,34 +73,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
 
-Correct the endianness conversion for table indirect addressing and
-use be32_to_cpu() instead of cpu_to_le32().
-
-This fix descriptor table parsing when using indirect addressing modes
-in SCRIPTS.
+Set command_complete flag after status_phase and use_phase_clearing,
+instead of full disconnect during message processing.
 
 Signed-off-by: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
 Reviewed-by: Helge Deller <deller@gmx.de>
+Tested-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- hw/scsi/ncr53c710.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/scsi/ncr53c710.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/hw/scsi/ncr53c710.c b/hw/scsi/ncr53c710.c
-index e17d1f3fb8..4b42fab754 100644
+index 4b42fab754..3d7318c12e 100644
 --- a/hw/scsi/ncr53c710.c
 +++ b/hw/scsi/ncr53c710.c
-@@ -1355,8 +1355,8 @@ again:
-             offset = sextract32(addr, 0, 24);
-             ncr710_dma_read(s, s->dsa + offset, buf, 8);
-             /* byte count is stored in bits 0:23 only */
--            s->dbc = cpu_to_le32(buf[0]) & 0xffffff;
--            addr = cpu_to_le32(buf[1]);
-+            s->dbc = be32_to_cpu(buf[0]) & 0xffffff;
-+            addr = be32_to_cpu(buf[1]);
-         }
-         /* Check phase match for block move instructions */
-         if ((s->sstat2 & PHASE_MASK) != ((insn >> 24) & 7)) {
+@@ -997,6 +997,7 @@ static void ncr710_do_status(NCR710State *s)
+     ncr710_set_phase(s, PHASE_MI);
+     s->msg_action = NCR710_MSG_ACTION_DISCONNECT;
+     ncr710_add_msg_byte(s, 0); /* COMMAND COMPLETE */
++    s->command_complete = NCR710_CMD_COMPLETE;
+ }
+ 
+ static void ncr710_do_msgin(NCR710State *s)
+@@ -1041,7 +1042,7 @@ static void ncr710_do_msgin(NCR710State *s)
+         ncr710_set_phase(s, PHASE_CO);
+         break;
+     case NCR710_MSG_ACTION_DISCONNECT:
+-        ncr710_disconnect(s);
++        s->sstat2 &= ~PHASE_MASK;
+         break;
+     case NCR710_MSG_ACTION_DATA_OUT:
+         ncr710_set_phase(s, PHASE_DO);
 -- 
 2.52.0
 
