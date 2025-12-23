@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3EA9CD9DCD
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 16:52:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09E15CD9DBA
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 16:51:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vY4ev-0008Ul-CM; Tue, 23 Dec 2025 10:50:49 -0500
+	id 1vY4ex-0008VE-2Q; Tue, 23 Dec 2025 10:50:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vY4er-0008TP-P1
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 10:50:45 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vY4es-0008Tf-Bq
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 10:50:47 -0500
 Received: from tor.source.kernel.org ([2600:3c04:e001:324:0:1991:8:25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vY4eq-0005Op-85
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 10:50:45 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vY4er-0005PD-0Y
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 10:50:46 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by tor.source.kernel.org (Postfix) with ESMTP id A4C4460139;
+ by tor.source.kernel.org (Postfix) with ESMTP id DF6976013A;
+ Tue, 23 Dec 2025 15:50:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1E6C113D0;
  Tue, 23 Dec 2025 15:50:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DFEDC113D0;
- Tue, 23 Dec 2025 15:50:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1766505041;
- bh=ZbScq6ApZmYfAJAyYzPEfZNaXIoiZr9Ogb8TMMT9ors=;
+ s=k20201202; t=1766505043;
+ bh=6Hs5Xpfju4NFUCsUbYBJkDYqwqK5L0Tna0ewspw/aEo=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=UOLyZcrKWBnCF5yxb2mnksyhxrgEY7nHKOQ1IRHwNXk98sMlT5wkYc6J6qpnKe3Tm
- 0sME81KpRWurHlZqunMRrbp3B5Z2EpzCXxmKRZIzGTDMX0ns7EDR68/Z4H0u0MsofE
- lw2HmJLttARL8X/d7OF6QS5p+qhneKcg6MEDe88c3VriiycQq3CiGd/o9qPHU9h/vr
- QqtZJy01UrKK0+oYauVj0diRAfl7PpyVZo7VU3BnG8OZ2a8wcF0PQadB0S9tAX7U2K
- aRX6fSaDM8xWA9lfF84KdAvgkKSVPDBisWIpfaOjdIJwumE6w3+T/5jtFEgntudeB+
- pB2K4ZhaCk46w==
+ b=RTABkSpBuXeH4L/WWeiOw5z2wUA+S3MwZ79I9+YoGcV0PY6U7SXU1ikB0JbvoiRq/
+ cBp3B9LuK6z9aYxMN2mBYJvTEK1zf6Corx5mgG3RGJLJptVGgziKSXXwdIkfi7qVQp
+ 1rYTXudju/ADsceIO0WF9of8/5hB3JSGacOR4Wxi1/Nm6w/jsZlTNOFw4t31UOEaiY
+ SACeeXrRCqMPn0C5/Mcrf3/ckhz3KvQiNBCHyRiZaVPscpZ6R9sRtXciQQyeoJ8ecB
+ yi16cl34mlUAcJ6DmhdRpG/MhftOHc4BWBm65Rij18xC8xr9txs/eCinztw4CmsPSj
+ 6opRtCfo/PmsQ==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>,
@@ -39,9 +39,9 @@ Cc: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Fam Zheng <fam@euphon.net>
-Subject: [PULL 02/12] scsi: ncr710: Add null pointer checks
-Date: Tue, 23 Dec 2025 16:50:21 +0100
-Message-ID: <20251223155031.7110-3-deller@kernel.org>
+Subject: [PULL 03/12] scsi: ncr710: Fix use after free in command_complete
+Date: Tue, 23 Dec 2025 16:50:22 +0100
+Message-ID: <20251223155031.7110-4-deller@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251223155031.7110-1-deller@kernel.org>
 References: <20251223155031.7110-1-deller@kernel.org>
@@ -72,50 +72,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
 
-Add nullpointer safety checks in ncr710_request_free() and
-ncr710_request_cancelled() to prevent crashed while handing invalid req
-structures.
+Add proper hba_private pointer cleanup in ncr710_command_complete.
+This prevents use after free errors from occuring.
 
-Added to preventing memory corruption, which occured during device
-initialization.
+This was causing memory corruption in NetBSD device initialization
+when commands complete and the request structures were freed while
+still being referenced.
 
 Signed-off-by: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
 Reviewed-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- hw/scsi/ncr53c710.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ hw/scsi/ncr53c710.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/hw/scsi/ncr53c710.c b/hw/scsi/ncr53c710.c
-index 47a6983491..bab2ea7210 100644
+index bab2ea7210..ac1ca4cef8 100644
 --- a/hw/scsi/ncr53c710.c
 +++ b/hw/scsi/ncr53c710.c
-@@ -737,6 +737,12 @@ static void ncr710_add_msg_byte(NCR710State *s, uint8_t data)
+@@ -798,7 +798,13 @@ void ncr710_command_complete(SCSIRequest *req, size_t resid)
  
- static void ncr710_request_free(NCR710State *s, NCR710Request *p)
- {
-+    if (!p) {
-+        return;
-+    }
-+    if (p->req && p->req->hba_private == p) {
-+        p->req->hba_private = NULL;
-+    }
-     if (p == s->current) {
-         s->current = NULL;
-     }
-@@ -747,8 +753,11 @@ void ncr710_request_cancelled(SCSIRequest *req)
- {
-     NCR710State *s = ncr710_from_scsi_bus(req->bus);
-     NCR710Request *p = (NCR710Request *)req->hba_private;
--    req->hba_private = NULL;
--    ncr710_request_free(s, p);
+     ncr710_set_phase(s, PHASE_ST);
+ 
+-    if (req->hba_private == s->current) {
 +    if (p) {
 +        req->hba_private = NULL;
-+        p->req = NULL;
-+        ncr710_request_free(s, p);
-+    }
-     scsi_req_unref(req);
- }
++        if (p == s->current) {
++            p->req = NULL;
++        } else {
++            ncr710_request_free(s, p);
++        }
+         scsi_req_unref(req);
+     }
  
 -- 
 2.52.0
