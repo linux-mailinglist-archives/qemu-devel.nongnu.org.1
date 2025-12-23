@@ -2,91 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85121CD9A79
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 15:32:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FF3BCD9A8E
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 15:32:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vY3Px-0002FX-24; Tue, 23 Dec 2025 09:31:17 -0500
+	id 1vY3Q0-0002Sg-AZ; Tue, 23 Dec 2025 09:31:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vY3P6-00016F-Bx
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 09:30:32 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vY3PC-00016l-2c
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 09:30:39 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vY3P3-0003kf-9h
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 09:30:23 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vY3P8-0003lz-0t
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 09:30:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766500220;
+ s=mimecast20190719; t=1766500224;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JqwNvMrsGtX06aW/fAOs3pT2SsT5wFnHsxM699N92Tk=;
- b=RmUSied+uZ8lAOpZN2S/UqrbwTWeWIQpvSE95tH/4IVrDZTHqIKPiizCiak/YY6NPxQFnd
- VRm2btSn3gb0Hs78IUPJ6jmwdAFDAMYYiB2vnKLAX1V6Feg2H2W3ohAiHzClPFB5Z4BIWs
- zP84QY6POIksf5kPnxtAWu6R5P6VBWE=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mF+Ha4mX5K/3Q9gfAi2xtogfcDdAXHrzxjz+aiuLiLI=;
+ b=faPkL6H5td7xVuDBYgYDEEOTU+Y8rRviJAxVbligj559V9DbeVVpn3A8WR37hAHcA0dvf4
+ gWrV4uJgsFn8CQyP7I7xRcuhy39ZKTKUsib28jgFUYwtAron/E9DhGycrMixt3DD08XhN2
+ EYJlVjnEWu7rftSMBgD7rot0Ib6v1uI=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-342-Pl_F6EIeOnCKJPX-pk-MeA-1; Tue, 23 Dec 2025 09:30:19 -0500
-X-MC-Unique: Pl_F6EIeOnCKJPX-pk-MeA-1
-X-Mimecast-MFC-AGG-ID: Pl_F6EIeOnCKJPX-pk-MeA_1766500219
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-8b22ab98226so1731633485a.2
- for <qemu-devel@nongnu.org>; Tue, 23 Dec 2025 06:30:19 -0800 (PST)
+ us-mta-92-qB-bA6EaNi-w9T0m_EZAyg-1; Tue, 23 Dec 2025 09:30:22 -0500
+X-MC-Unique: qB-bA6EaNi-w9T0m_EZAyg-1
+X-Mimecast-MFC-AGG-ID: qB-bA6EaNi-w9T0m_EZAyg_1766500222
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-8b2e235d4d2so1801978085a.3
+ for <qemu-devel@nongnu.org>; Tue, 23 Dec 2025 06:30:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766500218; x=1767105018; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766500221; x=1767105021; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JqwNvMrsGtX06aW/fAOs3pT2SsT5wFnHsxM699N92Tk=;
- b=hrwc2bqVfIJ/Y6jFNkw114rVewAgflqqSNN6Xc+9PHmDzk5s7aSPhy/B5euCpMkMA1
- uKgSVI9UzxvIROqsAsFYN7CFh8h8cQhCUhYy2MMiXh1p79dxCNCihdSqPSCC3go/t6Ys
- xaJVzDCNVwnxis77eT26M784eWD4vshO9F4r864sQ1k2Giwj4P5Mq6b3D7V+gS5gOgur
- SSix3XlQ76ajGR5vLbQBCEfSIbqSr7POiYByNwn227DhSkI4j7QR5U7gO6pNrCELP91b
- gi1NYI1+mqMX0CDoQmPaKZDsoEZYSnK+kZjY0IvE0aya3NmuOS6oUU9thFSzIPiiAg14
- AMgg==
+ bh=mF+Ha4mX5K/3Q9gfAi2xtogfcDdAXHrzxjz+aiuLiLI=;
+ b=bXKHgqEIoGcsQf/I7PyI3clXOuIL2V9wWhEO6zYlg6l7shkOOjLJBuN0WZbPMf/SEj
+ 88ImpA5zxTaw8Eyyh1pOKS5ir5JV7490VjT9+XIL+4GQihize9A2A5fa7u16vI8LTCKe
+ CNHzurngM68q1+W+QRZcMNHUe0ltMQ7GNbEPks+Xthzn+DaDjfw8ZbaUPJO66pYNncaJ
+ QM8bUeykVSbzAiZv5W9kAgFqcwt987SRC47MbEAn7RdIWlhU64DimYzhnTpo/hCuf8zQ
+ G2sEtjmwmL7G5W4vJNRdbHBn1iG6QlpbF5KJ6WT80BPMuBrsPmUIUOpMgprVBwYqAm6u
+ 8kpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766500218; x=1767105018;
+ d=1e100.net; s=20230601; t=1766500221; x=1767105021;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=JqwNvMrsGtX06aW/fAOs3pT2SsT5wFnHsxM699N92Tk=;
- b=tN1Zga3wXlGoMxldiq2NKvgMfiAdAi3OVxQ/WOtmQOvpgMGa3M84bMtPUtvlKL0YPH
- gwaT2drWXBJzJqY5ut4lWrEw5FS79eJJ793lL71Tegtf3TqvyxPySA3HsTDez4+NsCiN
- tBBH/zQX+pzeORQ+PNVPOnrk16rgp0A4mZQRwmMbf8TzdjxMxLw0oRQnsDBEwEUhP5vB
- P0L1Qm8ew3Ng+52MqeqGDPbXHxagjhsHtQBTXGeeb2Rw8etj7UujXA3brCXHaUrwbm1c
- ZvGRp0Pr4+lphZ+6n3boiuMSVXZ8dUyLLWOpZxusBDOKTP6/zeGlbbzXnIxnqZtIqRU6
- dprA==
-X-Gm-Message-State: AOJu0Ywby9eR9InpWSssropAZRA7DKK2fbw6nGTYZC/6k2ilncJ8hT2x
- J5wcnHEN05hSvRpT/dN5pGSTWKOjFvJ6l5pR2nFJqT9w1KlhLXN8WPvxObm9+nYCpi8+HeqjCJc
- mfASl5K2V6nI0vKFgPvqPGYyXp8PlHYDfvm46EI7JK3j3fQRIawHNYNezXdBp/FYrkU7xlEcaHP
- J/KxgbCkKcbQRwtV5XV52c0e0Cuda0PtQfIH8ysg==
-X-Gm-Gg: AY/fxX5+LQv7q2vCGyYs2KS+msPLwR+t1vAkw+W33q4DC3tfG9TilEMQnkfd6v25KvA
- yY1A3HkvoiCyog0V5AKnFWMK1Qq/y+lU1xEXhy3dcuNkJOeZs+2oLEprq7MpgbuSoAFCRRwX+yw
- OeNnDL7/ijYsnkYDKU4XPjAdjZSuXlQ4+SDvhmJiCgl8/AJG+sHyg1SOX9iheHyjM+zE0v0mc9r
- Av0sTFOAPltvSognAiCoMD68/qNO8r2moO7ajbMGaY5+wQRGfxbpTRbBAnbP3TTR/usf9yJmMn9
- omYXSJkFuhpEym1VAVpEr4v7g4XccjgQd9pIQLGSr7g/Q3gUSlV2eBxXy7w5pbu7RitX8SDHzm1
- aHv8=
-X-Received: by 2002:a05:620a:1a0b:b0:8b2:ea5a:4152 with SMTP id
- af79cd13be357-8c08fd1a9c1mr2461004485a.87.1766500217984; 
- Tue, 23 Dec 2025 06:30:17 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGjxGaf7w9uh/GvaOsOYiM62EG0AViskxAhyQmRS6Oc59z3kaGetqAFIlJlRoG082tOT1nTow==
-X-Received: by 2002:a05:620a:1a0b:b0:8b2:ea5a:4152 with SMTP id
- af79cd13be357-8c08fd1a9c1mr2460996885a.87.1766500217433; 
- Tue, 23 Dec 2025 06:30:17 -0800 (PST)
+ bh=mF+Ha4mX5K/3Q9gfAi2xtogfcDdAXHrzxjz+aiuLiLI=;
+ b=rIhsf7/bSBv3YyAyvGTMl4Y5CsRQSI01pz0mlEoNqV1bQitVbcdNSv1pbrdZlKOId/
+ yinJ7wXZ6PigURuAb9FrF8cK/wA76IspCg2nvkGjUWGQXBRWbDUDdbjBJXIoNbEZbecp
+ SCVn1twxZh0nMlVauVRtxmq4sWS3d6PU5n8G2rJFbrZ/NpOq8tRKjMENwV0btdSDNGiA
+ CSO/4tROdTI46JQsoxbdak9By0oSsIBih3abYepmFyDaMouVn1HDbgZ7y6FpwZPtN6YN
+ mg4u4QlEq1nd0gpRyO2tkOThbL9WEWJsqsFQ0pFO8LX5KeFFxGMI67ZEStoWSbbmVZt+
+ nciw==
+X-Gm-Message-State: AOJu0YzYaDlBJHJgacSqn0h+xJ72t6ozrOtxFwFPcGgFTkxdKHh7QdtX
+ 7rmMBgwHYoUTCQ8Xtf9cnVjbQVedkEI9xYlVcFoAIsplxmkobZ5Evr6qxhNM1FmrNTZ9QKfS8H6
+ Tc4qE1NtzLtqFqNiyhmJ6lvNHe28U42WNW4qlm6talLto8Gqjbxt5nVvm1Vi64k4Y8rIKaMukBr
+ DyIy9JP0qirptq8GBL+8+DX2jdQM00+GU6NcrPgA==
+X-Gm-Gg: AY/fxX5+hW3qraKcN0NNQuYOE5ElOjowZ1p7vju0OSVMxbs0P4VIu8cZ2WDigzS8r5w
+ Nw9ip8CG+eEMiaX9T+QfvlGwnyCDpucw9D2VKVpbpA8eY9+tqcKjVuzsVLoshv0Lm0Eo5fxFsRf
+ 2PKHy7D01WssjqtjhG3PRbpAnqoeKisq0fd3IXE/9HPJMYLLJu6t0AVUDBFg9rbGg8o9BXhBwj5
+ nrvJOYU3QBLr0jxj+/aLBL9ZZTpJNsUkvlCg783slpG594UIquqPh8rWNr3cjnUXobSD63mYRSz
+ EwBg8OIwYRHZlHWDOg5+ekIjl5225a58pgqB92nnYs2fmgzZGvLm5kchQTZGFKPCDggrCPoFcvu
+ 9TG4=
+X-Received: by 2002:a05:620a:4611:b0:84a:d3ce:c749 with SMTP id
+ af79cd13be357-8c08fab8868mr2314761785a.64.1766500221226; 
+ Tue, 23 Dec 2025 06:30:21 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGvjyHgsym9CWFi6Si3slgwmLo0ybW1mP0myTpfxbJANDdjFEcaMC7B3bozcKU1z98psjD2SA==
+X-Received: by 2002:a05:620a:4611:b0:84a:d3ce:c749 with SMTP id
+ af79cd13be357-8c08fab8868mr2314724385a.64.1766500218720; 
+ Tue, 23 Dec 2025 06:30:18 -0800 (PST)
 Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-8c096787536sm1096163285a.4.2025.12.23.06.30.16
+ af79cd13be357-8c096787536sm1096163285a.4.2025.12.23.06.30.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Dec 2025 06:30:17 -0800 (PST)
+ Tue, 23 Dec 2025 06:30:18 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>,
-	Peter Xu <peterx@redhat.com>
-Subject: [PULL 13/31] migration/options: Add x-ignore-shared
-Date: Tue, 23 Dec 2025 09:29:41 -0500
-Message-ID: <20251223142959.1460293-14-peterx@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
+ Ben Chaney <bchaney@akamai.com>
+Subject: [PULL 14/31] MAINTAINERS: Update reviewers for CPR
+Date: Tue, 23 Dec 2025 09:29:42 -0500
+Message-ID: <20251223142959.1460293-15-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251223142959.1460293-1-peterx@redhat.com>
 References: <20251223142959.1460293-1-peterx@redhat.com>
@@ -117,30 +117,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This aids scriptings only.
+From: Ben Chaney <bchaney@akamai.com>
 
+Signed-off-by: Ben Chaney <bchaney@akamai.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20251205172054.288909-1-peterx@redhat.com
-[peterx: make the property x-ignore-shared to match, per cedric]
-[peterx: fix over-80 line]
+Link: https://lore.kernel.org/r/20251210143624.416697-1-bchaney@akamai.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/options.c | 2 ++
+ MAINTAINERS | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/migration/options.c b/migration/options.c
-index e78324b80c..ea19b2c7cd 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -203,6 +203,8 @@ const Property migration_properties[] = {
-                         MIGRATION_CAPABILITY_SWITCHOVER_ACK),
-     DEFINE_PROP_MIG_CAP("x-dirty-limit", MIGRATION_CAPABILITY_DIRTY_LIMIT),
-     DEFINE_PROP_MIG_CAP("mapped-ram", MIGRATION_CAPABILITY_MAPPED_RAM),
-+    DEFINE_PROP_MIG_CAP("x-ignore-shared",
-+                        MIGRATION_CAPABILITY_X_IGNORE_SHARED),
- };
- const size_t migration_properties_count = ARRAY_SIZE(migration_properties);
- 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 63e9ba521b..dc6235e174 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3118,6 +3118,8 @@ T: git https://gitlab.com/vsementsov/qemu.git block
+ CheckPoint and Restart (CPR)
+ R: Peter Xu <peterx@redhat.com>
+ R: Fabiano Rosas <farosas@suse.de>
++R: Mark Kanda <mark.kanda@oracle.com>
++R: Ben Chaney <bchaney@akamai.com>
+ S: Supported
+ F: hw/vfio/cpr*
+ F: include/hw/vfio/vfio-cpr.h
 -- 
 2.50.1
 
