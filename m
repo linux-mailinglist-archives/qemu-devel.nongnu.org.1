@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C42F5CD9DB7
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 16:51:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 609A0CD9DC3
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Dec 2025 16:52:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vY4f0-0008Vq-RQ; Tue, 23 Dec 2025 10:50:54 -0500
+	id 1vY4f6-00006W-MI; Tue, 23 Dec 2025 10:51:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vY4ev-0008V5-7H
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 10:50:49 -0500
-Received: from tor.source.kernel.org ([172.105.4.254])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vY4ex-0008Vr-PE
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 10:50:52 -0500
+Received: from sea.source.kernel.org ([172.234.252.31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vY4es-0005Q5-RM
- for qemu-devel@nongnu.org; Tue, 23 Dec 2025 10:50:48 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1vY4ev-0005QX-9B
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 10:50:51 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by tor.source.kernel.org (Postfix) with ESMTP id 283046013B;
+ by sea.source.kernel.org (Postfix) with ESMTP id 3C767412ED;
+ Tue, 23 Dec 2025 15:50:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F952C113D0;
  Tue, 23 Dec 2025 15:50:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12795C113D0;
- Tue, 23 Dec 2025 15:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1766505045;
- bh=/kho4iJSwPdyrQjonMXqdwVBKPpnh7EN0GcAHb9z6aI=;
+ s=k20201202; t=1766505048;
+ bh=sCLFamuuDl92TRhJeTQHcwK22XOZ3l6BNKExuSaT7Zo=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=o0m/bdrarmHuXizlgihQAx2Mha0dqhNWJYeXzfLUmwWvPaPFknUGLOAUorSdP6ZTN
- PQB2PP44jqq7P1D+mS/ShTJJS+0SSQXyAazr4ou1ylSWhsVgP8CeV3+rxtQO6vx2VI
- awcyOefayfEQDSBTsRlc7APReBLd9eBH8SdkUXepLfMDFPR1X/t3iTkLKNFXK9puzE
- rxlTVInpH3WvKvABBWKDDPwitfirkkJV6x/ubABtBnKAyC+GARsSJi889goHaOKlax
- l1E1dx1HWDH5wDXsePT1W2IjamCUK08dAOSMv2WX3oHk5QVI731sxHZxxUcZcMASPm
- ESctC3cmkgBpQ==
+ b=A/1fhgtrQkMdAbv+W0CSUE2BiAKtUA57+xpPd5rvFf8Kkh+kA14Of1Fuyx4J9txkq
+ /FIrDOH/OwSWUzm5E6VQ5p8L+IUqZelT4y4sOxeqRs0Qurv6p4HYnxHicGB4j12IOK
+ oMhrkH6xEO4KsvQ/VN7ObvhrkaOLtYQ26IABlA6z3ZqVCZE+xalLfUMovJEY2n0T/O
+ eY0FqkYuozE+jhZkmdAQJi95EI7Y9LPki/E/fpn9ucBKfQBMQpaR8XT38jaz3e6L8K
+ d9Ju+3SoMi6P2C9PQP/fmELHFdSQG150no5QEUXzTC48tAWM8P3/Y/EzoXwtkKydq9
+ Z4cKjtYwVmnCg==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>,
@@ -39,16 +39,16 @@ Cc: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Fam Zheng <fam@euphon.net>
-Subject: [PULL 04/12] scsi: ncr710: Fix interrupt related register handing
-Date: Tue, 23 Dec 2025 16:50:23 +0100
-Message-ID: <20251223155031.7110-5-deller@kernel.org>
+Subject: [PULL 05/12] scsi: ncr710: Fix DMA State machine and flow control
+Date: Tue, 23 Dec 2025 16:50:24 +0100
+Message-ID: <20251223155031.7110-6-deller@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251223155031.7110-1-deller@kernel.org>
 References: <20251223155031.7110-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=172.105.4.254; envelope-from=deller@kernel.org;
- helo=tor.source.kernel.org
+Received-SPF: pass client-ip=172.234.252.31; envelope-from=deller@kernel.org;
+ helo=sea.source.kernel.org
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -73,76 +73,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
 
-These fixes ensure proper interrupt signaling and status
-register behavior during SCSI operations:
-- Mask DFE bit in ncr710_update_irq()
-- Remove manual ISTAT_DIP clearing, let ncr710_update_irq()
-  handle it consistently
-- Fix SSTAT0 read to clear unconditionally when non zero
-- Fix SSTAT2 read was returning DSTAT instead
-- Preserve DFE status bit when clearing DSTAT
+Set waiting state and return after scsi_req_continue() to prevent
+re entrancy when DMA transfer completes.
 
 Signed-off-by: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
-Tested-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- hw/scsi/ncr53c710.c | 15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+ hw/scsi/ncr53c710.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/hw/scsi/ncr53c710.c b/hw/scsi/ncr53c710.c
-index ac1ca4cef8..0b7734a129 100644
+index 0b7734a129..e17d1f3fb8 100644
 --- a/hw/scsi/ncr53c710.c
 +++ b/hw/scsi/ncr53c710.c
-@@ -593,7 +593,7 @@ static void ncr710_update_irq(NCR710State *s)
- {
-     int level = 0;
- 
--    if (s->dstat) {
-+    if (s->dstat & ~NCR710_DSTAT_DFE) {
-         if (s->dstat & s->dien) {
-             level = 1;
-         }
-@@ -1785,7 +1785,6 @@ static uint8_t ncr710_reg_readb(NCR710State *s, int offset)
-         }
-         s->dstat = 0;  /* Clear all DMA interrupt status bits */
-         s->dstat |= NCR710_DSTAT_DFE;
--        s->istat &= ~NCR710_ISTAT_DIP;
-         ncr710_update_irq(s);
- 
-         if (s->waiting == NCR710_WAIT_RESELECT && s->current &&
-@@ -1811,7 +1810,7 @@ static uint8_t ncr710_reg_readb(NCR710State *s, int offset)
-         return ret;
-     case NCR710_SSTAT0_REG: /* SSTAT0 */
-         ret = s->sstat0;
--        if (s->sstat0 != 0 && !(s->sstat0 & NCR710_SSTAT0_STO)) {
-+        if (s->sstat0 != 0) {
-             s->sstat0 = 0;
-             s->istat &= ~NCR710_ISTAT_SIP;
-             ncr710_update_irq(s);
-@@ -1824,14 +1823,7 @@ static uint8_t ncr710_reg_readb(NCR710State *s, int offset)
-         ret = s->sstat0;
-         break;
-     case NCR710_SSTAT2_REG: /* SSTAT2 */
--        ret = s->dstat;
--
--        if (s->dstat & NCR710_DSTAT_SIR) {
--            /* SIR bit processing */
--        }
--        s->dstat = 0;
--        s->istat &= ~NCR710_ISTAT_DIP;
--        ncr710_update_irq(s);
-+        ret = s->sstat2;
-         break;
-         CASE_GET_REG32(dsa, NCR710_DSA_REG)
-         break;
-@@ -1902,7 +1894,6 @@ static uint8_t ncr710_reg_readb(NCR710State *s, int offset)
-         if (s->dsps == GOOD_STATUS_AFTER_STATUS &&
-             (s->dstat & NCR710_DSTAT_SIR)) {
-             s->dstat &= ~NCR710_DSTAT_SIR;
--            s->istat &= ~NCR710_ISTAT_DIP;
-             ncr710_update_irq(s);
-         }
-         break;
+@@ -718,7 +718,9 @@ static void ncr710_do_dma(NCR710State *s, int out)
+     if (s->current->dma_len == 0) {
+         s->current->dma_buf = NULL;
+         s->current->pending = 0;
++        s->waiting = NCR710_WAIT_DMA;
+         scsi_req_continue(s->current->req);
++        return;
+     } else {
+         s->current->dma_buf += count;
+         s->waiting = NCR710_WAIT_NONE;
 -- 
 2.52.0
 
