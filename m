@@ -2,53 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE23CDC672
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 14:49:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 473C1CDC7F9
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 15:20:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vYPDR-0006Np-Vk; Wed, 24 Dec 2025 08:47:51 -0500
+	id 1vYPhM-000867-Lf; Wed, 24 Dec 2025 09:18:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vYPD8-0006Jw-8l
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 08:47:32 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1vYPD4-0003iC-F2
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 08:47:28 -0500
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 47721596A0B;
- Wed, 24 Dec 2025 14:47:22 +0100 (CET)
-X-Virus-Scanned: amavis at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id wt3wnJuyeV6l; Wed, 24 Dec 2025 14:47:20 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 4BB91596A07; Wed, 24 Dec 2025 14:47:20 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 49FCE596A03;
- Wed, 24 Dec 2025 14:47:20 +0100 (CET)
-Date: Wed, 24 Dec 2025 14:47:20 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
- philmd@linaro.org
-Subject: Re: [PATCH 0/6] Implement memory_region_new_* functions
-In-Reply-To: <3a1bf99d-e011-4589-b7e9-662107befdc1@rsg.ci.i.u-tokyo.ac.jp>
-Message-ID: <a9a43db6-1a1f-58f1-39c8-06213e9e610e@eik.bme.hu>
-References: <cover.1766525089.git.balaton@eik.bme.hu>
- <3a1bf99d-e011-4589-b7e9-662107befdc1@rsg.ci.i.u-tokyo.ac.jp>
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1vYPgf-00083l-Dw
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 09:18:03 -0500
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1vYPga-0004Ur-QB
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 09:17:58 -0500
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-b735e278fa1so1050467466b.0
+ for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 06:17:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1766585874; x=1767190674; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8BofzCtlTo6EXsov+Akxy7dn+iBdVlGsxF8E/Y2EvEQ=;
+ b=kPNFMBEyVwMqY07141Tj0aO8fN9Sx8ZNiaCV2Hj5Jlg7jJUKEbqUBEqnrvQvRoddTS
+ CO6u293urAKr2sPNweMBEPgow0gAs54xDrGWeCDqZc++jgInSbcqFKD1KvelxKzwxSYJ
+ mjWUNaQUgC2XPjZKhLB5LdK5zGBcOyRq1QmDfbSqpOelvJaiBWH2Xd8gavocP0izfK4g
+ HZDsdWbIyShvlH/6v4h3eTdQv87dI1RjuZuTMkHG6H029LK9krqde0TmcVecUiytK9Mb
+ h1X3byDcL88bTExGPPDi6aJLqfsqJiyH2EREHsBRHZEGlFOQqLRPiiCmD/JlNnuUfMLR
+ flAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1766585874; x=1767190674;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=8BofzCtlTo6EXsov+Akxy7dn+iBdVlGsxF8E/Y2EvEQ=;
+ b=QHJx0n0xatEa0tWSuu0FvQ3BdUv6BzW3ifnslLC7dzcdA9yW9AkZpTOxpB2uyr2BbB
+ GBYwoJc2xmAkSM3RXRoCKe8OYDr7iN9WqfXqykDUy6XrbBo2gqt0MugDNKP/c9f88Ut/
+ C6TIqAmrBCQtPeSYtrtxPdFCIJJNQIKtr1FowuRAvLLd1W6Og4GCUGPMnEVR7Mp7EDYe
+ dCalVqFCloT9YUuBWDAH5tcqwa94uKyGpG5KjISXTPc1XDT+R64jTj34c5Bn4Jkbw+/L
+ Q9WHUKy9gLgH0VRZWCEKk3Y4G+0znuv8Ads7aVvOkqcmbTCfZuOw5JCBttgDuCfuqenK
+ bImA==
+X-Gm-Message-State: AOJu0Ywc5MB+Wwl1O9M31l59nt5LS0PuHgXBbBN+n4bvBDb7n5U4yJiL
+ AXEHqPdOFrOcEJa2SLhQcum2trEZQZ4gsvwDI5RssQ21x9dFmJfzP4eRdJUKV09OPQirQsoIPab
+ 6GhYu+QXWa+qUZKPgELX19Oi4QDSMfhXWmYq1ied+Mw==
+X-Gm-Gg: AY/fxX4MwPqzo+5H3exD7QytWekyOjAGtXPYrf+fYVDnBohnAvwIcL3a56kPQs1chsI
+ jidkY1vEdZAGlIcBpNDAHJAEbeJwSWMdVPlBJwDOGvbBvw3wFLA8Ti4bI18KLNqHmP16a/vyUWy
+ 9ZskFsHNjO7/JQQ85AaASnpm4Kzp+CSvTDaImqZ72i2nWq2tLogsKkD3s99JKtVWq5ZzuAKxnAA
+ UU8aXsARHBvM+Uy9VVnHaSLPLq98R6d4kUvcMxffPAg40xUB0EE7tSYToeqKKqcZ/EmJ4I=
+X-Google-Smtp-Source: AGHT+IE6nKGTsnjtptHBkEZrl2AihkM/8lMOUFGqb4KqS39HpCZLk35Nk/8R2lNyqApyK/SnAHSplW+c1ExZOH/iE4o=
+X-Received: by 2002:a17:907:8686:b0:b7c:e5d6:2462 with SMTP id
+ a640c23a62f3a-b8036f60923mr1967065766b.28.1766585874202; Wed, 24 Dec 2025
+ 06:17:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+References: <20251224133949.85136-1-philmd@linaro.org>
+ <20251224133949.85136-2-philmd@linaro.org>
+In-Reply-To: <20251224133949.85136-2-philmd@linaro.org>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Date: Wed, 24 Dec 2025 16:17:28 +0200
+X-Gm-Features: AQt7F2r6DDVzx2oFi2SpbZmG1L_0xHyXq5IHFHmy4uCCFdOa_x9z7IUokzbU3JA
+Message-ID: <CAAjaMXZ8yZBXnKxUyhyNJ=ZyF852ZzXj-Zh0GeT3-2F39atBTw@mail.gmail.com>
+Subject: Re: [PATCH 1/6] monitor/hmp: Replace target_ulong -> vaddr in
+ hmp_gva2gpa()
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, "Dr. David Alan Gilbert" <dave@treblig.org>, 
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, Anton Johansson <anjo@rev.ng>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x634.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -65,30 +95,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 24 Dec 2025, Akihiko Odaki wrote:
-> On 2025/12/24 6:49, BALATON Zoltan wrote:
->> Our documentation says that memory regions are automatically freed
->> when the owner dies and the reference counting to do this is also
->> implemented. However this relies on the QOM free funtion that can only
->> be set by creating objects with object_new but memory API only
->> provides constructors that call object_initialize which clears the
->> free function that prevents QOM to manage the memory region lifetime.
->> Implement corresponding memory_region_new_* functions that do the same
->> as the memory_region_init_* functions but create the memory region
->> with object_new so the lifetime can be automatically managed by QOM as
->> documented.
+On Wed, Dec 24, 2025 at 3:40=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
+<philmd@linaro.org> wrote:
 >
-> The documentation explains the existing functions so the discrepancy between 
-> them you see should be fixed by updating them, not adding new ones.
+> cpu_get_phys_page_debug() takes a vaddr type since commit
+> 00b941e581b ("cpu: Turn cpu_get_phys_page_debug() into a CPUClass
+> hook").
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
 
-Do you mean replacing memory_region_init_* with these memory_region_new_* 
-functions? The memory_region_init_* is still useful for embedded memory 
-regions that are managed by some other way which is also mentioned in the 
-documentation as an alternative so I think both of them are useful for 
-different cases. If you mean we need to update docs to refer to 
-memory_region_new instead of memory_region_init at some places then I 
-think you're right, the docs may also need to be updated or clarified.
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-Regards,
-BALATON Zoltan
+>  monitor/hmp-cmds-target.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/monitor/hmp-cmds-target.c b/monitor/hmp-cmds-target.c
+> index e9820611466..2976f986d35 100644
+> --- a/monitor/hmp-cmds-target.c
+> +++ b/monitor/hmp-cmds-target.c
+> @@ -301,7 +301,7 @@ void hmp_gpa2hva(Monitor *mon, const QDict *qdict)
+>
+>  void hmp_gva2gpa(Monitor *mon, const QDict *qdict)
+>  {
+> -    target_ulong addr =3D qdict_get_int(qdict, "addr");
+> +    vaddr addr =3D qdict_get_int(qdict, "addr");
+>      CPUState *cs =3D mon_get_cpu(mon);
+>      hwaddr gpa;
+>
+> --
+> 2.52.0
+>
 
