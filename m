@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA9ACDD046
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 20:05:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E31CCDD079
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 20:13:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vYUAk-0002u1-QN; Wed, 24 Dec 2025 14:05:22 -0500
+	id 1vYUGr-0005oY-Bb; Wed, 24 Dec 2025 14:11:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1vYUAi-0002tT-DS
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 14:05:20 -0500
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ id 1vYUGo-0005o9-Lh
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 14:11:38 -0500
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1vYUAg-000490-Do
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 14:05:20 -0500
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-b734fcbf1e3so1232229666b.3
- for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 11:05:17 -0800 (PST)
+ id 1vYUGm-0004yK-WA
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 14:11:38 -0500
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-64dfb22c7e4so715513a12.1
+ for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 11:11:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766603116; x=1767207916; darn=nongnu.org;
+ d=linaro.org; s=google; t=1766603495; x=1767208295; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/3LrPdmwZQ2IQevPWFlsOlCRpY6OrwN7Txb/bOm3K54=;
- b=azz0G0hOoxwkoGcQVc80bzJxgPXAxbmSDKZ899hsMl+zqf/m2BynYBmPkUCNudHaGg
- x9Wv5Hr8Bgq5pJozJSd1002FjuGeYI337/5qI8ia1Ro8svI7ucV4FQTwd180nouPfRFR
- SCicoL/3Gk6+hwK9xcLacENKzwhqZnBWp1wtlm/17E/PmTONHni2yr9KAG+6YeZ08XMo
- o7lwVGs2anuaJKeeY1FHoMoCwLs4GFNj5854zUZ7cpF3zC7DdtlY0wiaOwryU8n7MVvh
- QfETjeO/+Pu7zvkmXil2zqeEUpqQrppviRHim9kR5CoRVbEoQ1nZpDG41F6A8EuaZXBT
- xqJw==
+ bh=gsMugTANubwzO8+MQNcvXEyznuIm+0njVtKa2TEcCHk=;
+ b=Qvb+dmQB9XZuWh8XIjRQzM19+paKv4QOFkJqWkjdjt7NwPGD21+CV8coeX0qHL8ibd
+ kgLgPwYv8fWqv+lFaQJjYhk3pnWYHMeGUwPI4weeiCmzxLf+Owt0J/mS482tvNwmUoIR
+ +Os1QyC0gxQ8PefU0f+Jukr9dEq37KLOwhNf01N9HTk5a0TQYS+kjLAKfuDSdY1AqZbs
+ xIGtdZl6M224VC41x6i/ZDy1vxEVCwSYyk+mK7zDpBuDZaMb6x/2RuMzA4nR35e5Fd+0
+ TwQa607v3kt3vk3Day3cV+oEV6IAhAYYPvX+UBR597LbUp07yABxgkbhPcL21YFhJVbv
+ b60g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766603116; x=1767207916;
+ d=1e100.net; s=20230601; t=1766603495; x=1767208295;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=/3LrPdmwZQ2IQevPWFlsOlCRpY6OrwN7Txb/bOm3K54=;
- b=s6aQltExJnPxeK/HnzHcZ6Ax7vZZqx74FI09freztxx8bijHIcrLwqpqNI8N813T13
- htBuyre/I9MJB3BW3jsQM1kwmpxQwK9ZRnl8tfrRHNYgzqBknEFyUIdlpfB9maXXkx/f
- kP2QM7egeksf+s2slIB31TgVSpRc90sSft53wA/IQppPQ5LcxhNLNF/Kab2U54U89fsH
- 0J/Ag7uY/bv8x4olfhTPOBDkrIxm/eoYoHr93Z9iGDiS44+vIvFr8Wf52WX1CpBQlJpw
- saKSfHrP/4RBfO0I6GnQoDGrd0uzvCIa6gbHdEBMu+eLaVjpIzCbZrgmZ8fJoJZF4i1q
- zYag==
-X-Gm-Message-State: AOJu0YxfoUBaO16yMU/S5N1R1BEmHZbh1rcYFvQdnqZl80Nb5HG0D27G
- zz85ZE0KTUed+pzYN0d5Y6Scy/DF9HPrxj7Q0Ip9yC1m/RJ07ApCYn30w2tez+jCIC9h5BngAPM
- o2yIYR0p1SvgUVXNu8pzZVbSOXH62cu3Ys81Hn1gYnw==
-X-Gm-Gg: AY/fxX6lEDW7xwO5K5zGSJVgr5kNF7ChJU5w/9obELWT7w+yKsyuK+hu9acRKqFzQNw
- Y0XWMBotB8I2AeuWmF2ZuI7u9k+5Tg4XMQ+cxz3rHeu9MapJ3b3y4XMbtG49BSSd18045C6fDnL
- BU+t/7vdA3MMt2ZewKSvOdJIb4dCrflJhDUDKfySdsi8LdHVO5XprN5a0mK2QaK4a+wrl/RNjLp
- dBbwI6vFRNrsSYO6iaBkX9+RgeZ85rmp1NTw/RSHZPzlKfBCeNwvBHqxUnkG0UyugvrB/0=
-X-Google-Smtp-Source: AGHT+IHTEM0Fp5x822N93qOeIGDe0if+eL5WTlA6J1GbAReP86/8dbkdVK/1xPKRPqc5paGXKZKZSzFfHXVX3s1PRCk=
-X-Received: by 2002:a17:907:9447:b0:b71:df18:9fb6 with SMTP id
- a640c23a62f3a-b8036f5bb39mr1976463066b.26.1766603115785; Wed, 24 Dec 2025
- 11:05:15 -0800 (PST)
+ bh=gsMugTANubwzO8+MQNcvXEyznuIm+0njVtKa2TEcCHk=;
+ b=qzKoQ8js05Jf11wX1c4Gqeo0XfL2RH+R8mlfSFkPdY8qy+NxPuZZUtCpxL8C5mCou9
+ Ya0yho/61x1DJP+W3rH16kBd8Bos/dLctusdAL6OFARwd7axEJ+RywfcTErF/G7dz+Xr
+ ig4y6HzErXD+y/KLb5WjdR93RymH6+h/wAqaVEor2txY/RFJRGKNGAWnEGn/MEiwktjb
+ 0iS0d+N+/FpJyyUJ79U82kVFMo7HsYehSphjBQ6qjFyAykluOSoIKSWcXKSDpOm04aFQ
+ kPIJOuep+2S6YUn5CTfhBZwFBLMrSjqYaHg+FGkOmOlewt4Vy99LAy1ijOWVmo+AQTQ8
+ Ju7A==
+X-Gm-Message-State: AOJu0YzrSuDs5txJ09cAD7c11A/TPfdW30miaJEfoqhjMUap4JRmTcqt
+ ivc613SM8Qff1twC6VhMBwkad5866Hwm8GvQVp8J8U6wOq/Vb1BWjYtU1J56j/eaZRuh/3jJZiS
+ q9SCBDob4ntiuZQzNXfvgc66W4ZfyueObZaJZuuS7eg==
+X-Gm-Gg: AY/fxX7qWUIwOp6nX0oBwswvuHXVjWCxvpAmzJYcQtkTJim079cahk9DZvQjhDR0g/x
+ lqYVDLpeeFZJz2gh55njBcZ26X68rb/TCsO8SjGp+JRoBs9ln4jD5gGnCWWPLcoT0qlkf7fmN0T
+ D0rlWKGIZNunCwN3PJD43lcveOgrfeUhpv0ICopC5TyvoTx7UT4D6ZcbPbMYzNkLjpKpO091dsu
+ oeezZhnkXQYpn4pa0Z5aYqzTHAENY9xYcJ7gBJzu5SZtRhlHOXaUTzKS5aqtXUcnQKB9Bc=
+X-Google-Smtp-Source: AGHT+IHFIlUMxbJJsl0dIa8zCxLr0rtRwTDV/jMGvqbgJBfCo0YXKdfYQVpJSBzOQLBpy5oHbvjWJD/X1F0Sx+22qAA=
+X-Received: by 2002:a17:907:fdc1:b0:b7d:266a:772c with SMTP id
+ a640c23a62f3a-b803574c34fmr2003485966b.21.1766603494895; Wed, 24 Dec 2025
+ 11:11:34 -0800 (PST)
 MIME-Version: 1.0
 References: <20251224152210.87880-1-philmd@linaro.org>
- <20251224152210.87880-6-philmd@linaro.org>
-In-Reply-To: <20251224152210.87880-6-philmd@linaro.org>
+ <20251224152210.87880-16-philmd@linaro.org>
+In-Reply-To: <20251224152210.87880-16-philmd@linaro.org>
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Wed, 24 Dec 2025 21:04:49 +0200
-X-Gm-Features: AQt7F2rTDphEmD9a-S-zSYImdklqI_N3fsH068SLhL_mFEzC5oh4Ju5BmUEA7hc
-Message-ID: <CAAjaMXb3SZJswpMMVq_oN6Ow5XYMpHY1srHAbYiRgMx6AyjjaA@mail.gmail.com>
-Subject: Re: [PATCH v3 05/25] system/memory: Move *ldst* headers from exec/ to
- system/ namespace
+Date: Wed, 24 Dec 2025 21:11:08 +0200
+X-Gm-Features: AQt7F2oEpvBr1J4aYzWHwGpLVlw2TJd7YgV5K8frX8bnn93TQZXTDyPmCFrcKBg
+Message-ID: <CAAjaMXYAfB=LXd0OAtJugTJ=vQvfkLFt2HAd-9Ar+qptN+QEfA@mail.gmail.com>
+Subject: Re: [PATCH v3 15/25] system: Allow restricting the legacy
+ ld/st_phys() 'native-endian' API
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, Peter Xu <peterx@redhat.com>, 
@@ -73,8 +73,8 @@ Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  David Hildenbrand <david@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x629.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,116 +97,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 24, 2025 at 5:23=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
+On Wed, Dec 24, 2025 at 5:24=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
 <philmd@linaro.org> wrote:
 >
-> Keep all system memory APIs under the system/ namespace.
+> Guard the native endian APIs we want to remove by surrounding
+> them with TARGET_NOT_USING_LEGACY_NATIVE_ENDIAN_API #ifdef'ry.
+>
+> Since all targets can check the definition, do not poison it.
+>
+> Once a target gets cleaned we'll set the definition in the
+> target config, then the target won't be able to use the legacy
+> API anymore.
 >
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
 
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-
->  MAINTAINERS                                       |  1 +
->  include/system/memory.h                           |  4 ++--
->  include/system/memory_cached.h                    | 10 +++++-----
->  include/{exec =3D> system}/memory_ldst.h.inc        |  0
->  include/{exec =3D> system}/memory_ldst_cached.h.inc |  0
->  include/{exec =3D> system}/memory_ldst_phys.h.inc   |  0
->  6 files changed, 8 insertions(+), 7 deletions(-)
->  rename include/{exec =3D> system}/memory_ldst.h.inc (100%)
->  rename include/{exec =3D> system}/memory_ldst_cached.h.inc (100%)
->  rename include/{exec =3D> system}/memory_ldst_phys.h.inc (100%)
+>  include/system/memory_ldst_phys.h.inc | 2 ++
+>  scripts/make-config-poison.sh         | 1 +
+>  2 files changed, 3 insertions(+)
 >
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index c299b84d418..f984891ac2b 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3255,6 +3255,7 @@ S: Supported
->  F: include/system/ioport.h
->  F: include/exec/memop.h
->  F: include/system/memory.h
-> +F: include/system/memory_ldst*
->  F: include/system/memory_cached.h
->  F: include/system/physmem.h
->  F: include/system/ram_addr.h
-> diff --git a/include/system/memory.h b/include/system/memory.h
-> index 692c2f67dd3..2a966397931 100644
-> --- a/include/system/memory.h
-> +++ b/include/system/memory.h
-> @@ -2848,13 +2848,13 @@ MemTxResult address_space_write_rom(AddressSpace =
-*as, hwaddr addr,
->  #define SUFFIX
->  #define ARG1         as
->  #define ARG1_DECL    AddressSpace *as
-> -#include "exec/memory_ldst.h.inc"
-> +#include "system/memory_ldst.h.inc"
->
->  #ifndef TARGET_NOT_USING_LEGACY_LDST_PHYS_API
->  #define SUFFIX
->  #define ARG1         as
->  #define ARG1_DECL    AddressSpace *as
-> -#include "exec/memory_ldst_phys.h.inc"
-> +#include "system/memory_ldst_phys.h.inc"
->  #endif
->
->  void address_space_flush_icache_range(AddressSpace *as, hwaddr addr, hwa=
-ddr len);
-> diff --git a/include/system/memory_cached.h b/include/system/memory_cache=
-d.h
-> index 1a07774b6ad..587e8a1453a 100644
-> --- a/include/system/memory_cached.h
-> +++ b/include/system/memory_cached.h
-> @@ -52,7 +52,7 @@ struct MemoryRegionCache {
->  #define SUFFIX       _cached_slow
->  #define ARG1         cache
->  #define ARG1_DECL    MemoryRegionCache *cache
-> -#include "exec/memory_ldst.h.inc"
-> +#include "system/memory_ldst.h.inc"
->
->  /* Inline fast path for direct RAM access.  */
->  static inline uint8_t address_space_ldub_cached(MemoryRegionCache *cache=
-,
-> @@ -78,18 +78,18 @@ static inline void address_space_stb_cached(MemoryReg=
-ionCache *cache,
+> diff --git a/include/system/memory_ldst_phys.h.inc b/include/system/memor=
+y_ldst_phys.h.inc
+> index f4c91dc7a91..66bbd3061c2 100644
+> --- a/include/system/memory_ldst_phys.h.inc
+> +++ b/include/system/memory_ldst_phys.h.inc
+> @@ -31,8 +31,10 @@ static inline void glue(stb_phys, SUFFIX)(ARG1_DECL, h=
+waddr addr, uint8_t val)
+>                                      MEMTXATTRS_UNSPECIFIED, NULL);
 >  }
 >
+> +#ifndef TARGET_NOT_USING_LEGACY_NATIVE_ENDIAN_API
 >  #define ENDIANNESS
-> -#include "exec/memory_ldst_cached.h.inc"
-> +#include "system/memory_ldst_cached.h.inc"
+>  #include "system/memory_ldst_phys_endian.h.inc"
+> +#endif /* TARGET_NOT_USING_LEGACY_NATIVE_ENDIAN_API */
 >
->  #define ENDIANNESS   _le
-> -#include "exec/memory_ldst_cached.h.inc"
-> +#include "system/memory_ldst_cached.h.inc"
->
->  #define ENDIANNESS   _be
-> -#include "exec/memory_ldst_cached.h.inc"
-> +#include "system/memory_ldst_cached.h.inc"
->
->  #define SUFFIX       _cached
->  #define ARG1         cache
->  #define ARG1_DECL    MemoryRegionCache *cache
-> -#include "exec/memory_ldst_phys.h.inc"
-> +#include "system/memory_ldst_phys.h.inc"
->
->  /**
->   * address_space_cache_init: prepare for repeated access to a physical
-> diff --git a/include/exec/memory_ldst.h.inc b/include/system/memory_ldst.=
-h.inc
-> similarity index 100%
-> rename from include/exec/memory_ldst.h.inc
-> rename to include/system/memory_ldst.h.inc
-> diff --git a/include/exec/memory_ldst_cached.h.inc b/include/system/memor=
-y_ldst_cached.h.inc
-> similarity index 100%
-> rename from include/exec/memory_ldst_cached.h.inc
-> rename to include/system/memory_ldst_cached.h.inc
-> diff --git a/include/exec/memory_ldst_phys.h.inc b/include/system/memory_=
-ldst_phys.h.inc
-> similarity index 100%
-> rename from include/exec/memory_ldst_phys.h.inc
-> rename to include/system/memory_ldst_phys.h.inc
+>  #define ENDIANNESS  _le
+>  #include "system/memory_ldst_phys_endian.h.inc"
+> diff --git a/scripts/make-config-poison.sh b/scripts/make-config-poison.s=
+h
+> index 937357b3531..b4d61e8bc9e 100755
+> --- a/scripts/make-config-poison.sh
+> +++ b/scripts/make-config-poison.sh
+> @@ -11,6 +11,7 @@ exec sed -n \
+>    -e '/CONFIG_USER_ONLY/d' \
+>    -e '/CONFIG_SOFTMMU/d' \
+>    -e '/TARGET_NOT_USING_LEGACY_LDST_PHYS_API/d' \
+> +  -e '/TARGET_NOT_USING_LEGACY_NATIVE_ENDIAN_API/d' \
+>    -e '/^#define / {' \
+>    -e    's///' \
+>    -e    's/ .*//' \
 > --
 > 2.52.0
 >
