@@ -2,86 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 946C7CDCCA4
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 17:02:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09098CDCCB9
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 17:03:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vYRJ7-0006kS-KI; Wed, 24 Dec 2025 11:01:49 -0500
+	id 1vYRL3-0000Nn-Pd; Wed, 24 Dec 2025 11:03:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYRJ0-0006eY-EB
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:01:44 -0500
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYRKz-00005h-Bw
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:03:45 -0500
+Received: from mail-ed1-x544.google.com ([2a00:1450:4864:20::544])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYRIu-0006Ru-9b
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:01:41 -0500
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-b7277324054so978763766b.0
- for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 08:01:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYRKv-0006oM-Vu
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:03:43 -0500
+Received: by mail-ed1-x544.google.com with SMTP id
+ 4fb4d7f45d1cf-64b9cb94ff5so6616293a12.2
+ for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 08:03:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766592093; x=1767196893; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=DTI6luMu/GoW8moMtBb4PmT7PmqiDrNPT7xR87KpTns=;
- b=rqoYZ7SlaETRQSof+G6LGyc4u7dUGhDAxOq0bl/IeUYCl8/Jdm1Ui33wWMO1PoZp6K
- FcBOWfbtexmmVsnp8FZuQOAQ0Gq31Fukb5trtcveuDTfPgeoAQFEi8RucJxWUdBmZsd/
- r2Hx5EtG6waiVOS0VrdEL8dZVn6JnBcEWr+fj9WpPqqOdhOdGKEAeVgOKoburc+V962N
- m1MFRmXgryHgemD5eg6IA6JkP10VBv0NOOIa0bSi4P8Mpl5Fx4N9N4NTInroN+ZtDQEo
- 8/f4Jv+l8IbDI2I0EsGkq9aOLF2BgEJpAgnaBF4zdrsCrwFmk12wT57X5IhTSSZ1wYT1
- 56+A==
+ d=linaro.org; s=google; t=1766592219; x=1767197019; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=yEFClUQnG51buyM+ju9uelB76RT0TfFm5HzdvjTTca0=;
+ b=FpTwIC+3iY7CjuyA7w8DR2xbBxqc+0qYisHflOcdKKZcogLhjrX+f47yZLQzV22rFa
+ avKRxLfYRM6DPLnO4p/PbIy9DFAG9VXyqqdlLk3B2QbRz0SGhoZ24tgNvqsTss/F2JRU
+ ttWAyvn5UZkU+SBFz59wsXO6UIIBgtoWfDZWnfLVIU5yFwOlCSwz7pZhYoWLOI8CO3PG
+ G/OE+/jIe5YhATciv8L2H5a7Y0zfNrcLZNunK9rEGpwptXKiBYOhhJ2/kkpZqupq1sBs
+ eTE8QAX1qCUJXr4A+izqlUPpw8zi2MMUs8STZclt2VujGgutcmDBQhzA8yj2Y4nHiNuF
+ 8w5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766592093; x=1767196893;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=DTI6luMu/GoW8moMtBb4PmT7PmqiDrNPT7xR87KpTns=;
- b=H1tPqIuH7Tqsh8QobtopfZQim4cFD/jWXX90r4i3Z7fvZHVrQsU8aeBkQ7QGARunSq
- DhhZExwQIDGJE5Jpp8xAmKASAdApRiNEjYCExRy8phAwhd8Q/Dj0/j7TrcLuRTjbTbLs
- 2OHYjfuM1e+PMAg/46xKIi9h9RInhtNoT/X0IMfIODpOHk4MwF94KZ0/Klmf4ykNKt3c
- bMYP17epb8REtB6hsd13rHgq5SvtKs2j2QZq6bqm4teZC8jg4f94QlRCOw9FNWQXRPvb
- yv/x7LmR2pOhSZeoRyuvHBy4ayNOAuXOvjxoYBbBIUcNgeJruPYngF66mRTsqU/6FxwU
- xVEw==
-X-Gm-Message-State: AOJu0YyKW3sYPbQ+vcb3NAFso3lakHIGjR//nRb2Wj8X3HE7z6WQGaCe
- 3kmEYf4BELu5fc9EvvMUskrHEONbNPUlpoISm1mdFB2x1yWtAZA18seS8pc4jEyMeI54KM6SCev
- by7PC4W4=
-X-Gm-Gg: AY/fxX6GlsCOuJanGvUcPyPj/Gl2ot2ntUsk5dDUL5VpmYZdNl3tnVznX/KVwcSvPXl
- nI7oR/urcElW29ZdbRAGlZsWkdlzjj2E7v2Zgy7Lt61MZsPP/EYz5OBL1PqH3UHLZXbYWKcwpEY
- x4CdT35M9SDVsqLFdE42+/O3Fk+7nYOYsWWeDazsuwz6psqyMf94fqeAsbWwvieFK3g4Zczbv+T
- LcIjrIJu9pyPu/yLVBkkdBED7S4UbwsLG/21u49WPjhdQZ5mTIAT7WkHOgE0+l2hFS9ivmTjVb9
- weIdulOkmA5LTUKKtKleNgOe7Czo/BSCddl95yMdqX8MZFmJ3HKrZf9OOSA5oNZ6tC9jV/iK1Sm
- BS7bb1SDS7bUaiEdmRf/0FvpHgRX4CDAjOy/hd1ZwxUi0eeUa5Ki6puGoKDFBagdUkfGWJJv04M
- 5ULDbHpKZhxYX0xfhknqOzcJoIEMMaBhAFK5PPTkK/BYMsSbnj0SLtWK0=
-X-Google-Smtp-Source: AGHT+IGSLzLhCvqEQm4B2ZOpM4WJ5t1Fze/9IEYqjvatj7Jtdr2wK6XAkqu6aRImnQ9U4d6Av+hsIw==
-X-Received: by 2002:a17:907:3fa8:b0:b7a:1b3:5e52 with SMTP id
- a640c23a62f3a-b8036f60918mr1802560866b.17.1766592093275; 
- Wed, 24 Dec 2025 08:01:33 -0800 (PST)
+ d=1e100.net; s=20230601; t=1766592219; x=1767197019;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yEFClUQnG51buyM+ju9uelB76RT0TfFm5HzdvjTTca0=;
+ b=TdZDgEVrWZlQtwZof67Qgefu9GHNutLjuR2anfrySjG5Ecv12Buiv0kT3SuqFegQCm
+ luCAZzMgWOlIsRhljokGGPAUvXPtbNwoeoLYvPqfK0mfrx/K8iziuy4I++a+tNl5AD9t
+ aiAQdQ4ztuFId9i6JxDBD8RvQ4MEOyNRjjeRAMszn2G6H7vUW4GVPjo0VIFa0K/HchiL
+ +r/loSpHkFf4p7DYTZY2ITOnBR3oAziZeMWmZLK/o5F6o8pKd10UPRUt3WmoGnysqTJO
+ UFvr6QaIt8lYTpSvUZBc+jIyvH6gD6Kw2ysDi+OHVk8Px7p8aPO7MAwHGpn6r2SqkyUd
+ ggVA==
+X-Gm-Message-State: AOJu0Yx2OI3f/wnOXdnA7cfC2n8MbdB/ELJQnOH6g5nu+UPlNjrp9Sot
+ y+brUEJB75vOYalu2a1ngFsx04ROt1L56uI4KS6FPptIVEK89GE7nwwvRunpCCJ7hHKv/BjOGfY
+ K3JjxmMM=
+X-Gm-Gg: AY/fxX6lCpdkLKsobNGH4PRU6f8z9RetqmEdZU509Xy3rsG3ogNVE5QfTVxTOuef/Mx
+ i4aGdwQg+YdKc40bOO61/tQqt3ipswiWvje8RchXdVjLfr0qrmTj5RSycrj5lfZ3Gd2IT0pKegM
+ /O2Pulpi7EMssHm0kgpKCLEKX7KzjWtNr9iI4s0qhgWAihl3rZBarPdppJUqddRjPhEXoSl+PEB
+ CLmFoLUxW6kt/gEKgV3Bh5/D/7IguD8CeYgK3Rb8SulqIsbbfzUzxrSTseZy5YNRO4JSOlxxdOq
+ 3wzM+vOj1GBvHHaMttPUf99As9HNB6CucSlFtAk77bOwNxqU4WQf9CyV4LxALFyzzbejvq4SwCk
+ GoBtQW2xAyP35ykBqsJJD/IuRtmsbF+y+xCreLFnhOPwo5GqlEulo5Xx4/4H/CKFeZhH4O9+oyI
+ kHHsbs72TqmF2b8uDnG32O7c7hzdKop194v0tuqwwYSAIdhoBx9FuWR28=
+X-Google-Smtp-Source: AGHT+IHiTXXYpF0eQZ6taAGHw9YtKTW6r+jAyo3qO2EjeFtDPWxfLEW7eN/3baQHoX3ZekV1SXODwA==
+X-Received: by 2002:a17:907:7f21:b0:b79:a827:4d47 with SMTP id
+ a640c23a62f3a-b8036a8d6e4mr1793097466b.0.1766592219233; 
+ Wed, 24 Dec 2025 08:03:39 -0800 (PST)
 Received: from localhost.localdomain (188.171.88.92.rev.sfr.net.
  [92.88.171.188]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b8044f4acdbsm1651790466b.22.2025.12.24.08.01.31
+ 4fb4d7f45d1cf-64b91494c03sm17293910a12.18.2025.12.24.08.03.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 24 Dec 2025 08:01:32 -0800 (PST)
+ Wed, 24 Dec 2025 08:03:38 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+Cc: Anton Johansson <anjo@rev.ng>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>,
- Richard Henderson <richard.henderson@linaro.org>,
- Anton Johansson <anjo@rev.ng>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Michael Rolnik <mrolnik@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 6/6] target/alpha: Replace legacy ld_phys() ->
- address_space_ld()
-Date: Wed, 24 Dec 2025 17:00:39 +0100
-Message-ID: <20251224160040.88612-7-philmd@linaro.org>
+Subject: [PATCH 0/3] target/avr: Use explicit little-endian LD/ST API
+Date: Wed, 24 Dec 2025 17:03:32 +0100
+Message-ID: <20251224160335.88861-1-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251224160040.88612-1-philmd@linaro.org>
-References: <20251224160040.88612-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::544;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x544.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,109 +100,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Prefer the address_space_ld/st API over the legacy ld_phys()
-because it allow checking for bus access fault.
+AVR is little-endian. Use the explicit 'little'
+endianness instead of the 'native' one.
+Forbid further uses of legacy APIs.
 
-Since we removed the last legacy uses of the legacy ldst_phys()
-API, set the TARGET_NOT_USING_LEGACY_LDST_PHYS_API variable to
-hide the legacy API to alpha binaries, avoiding further API uses
-to creep in.
+tag: https://gitlab.com/philmd/qemu/-/tags/endian_avr-v1
+CI: https://gitlab.com/philmd/qemu/-/pipelines/2231223066
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- configs/targets/alpha-linux-user.mak |  1 +
- configs/targets/alpha-softmmu.mak    |  1 +
- target/alpha/helper.c                | 29 ++++++++++++++++------------
- 3 files changed, 19 insertions(+), 12 deletions(-)
+Philippe Mathieu-Daudé (3):
+  hw/avr: Mark AVR-specific peripherals as little-endian
+  target/avr: Inline translator_lduw()
+  configs/targets: Forbid AVR to use legacy native endianness API
 
-diff --git a/configs/targets/alpha-linux-user.mak b/configs/targets/alpha-linux-user.mak
-index ee505e16ef4..2f1312f0362 100644
---- a/configs/targets/alpha-linux-user.mak
-+++ b/configs/targets/alpha-linux-user.mak
-@@ -4,3 +4,4 @@ TARGET_SYSTBL=syscall.tbl
- TARGET_LONG_BITS=64
- TARGET_XML_FILES= gdb-xml/alpha-core.xml
- TARGET_NOT_USING_LEGACY_NATIVE_ENDIAN_API=y
-+TARGET_NOT_USING_LEGACY_LDST_PHYS_API=y
-diff --git a/configs/targets/alpha-softmmu.mak b/configs/targets/alpha-softmmu.mak
-index 22fbbf0cb08..5c6af0eafc1 100644
---- a/configs/targets/alpha-softmmu.mak
-+++ b/configs/targets/alpha-softmmu.mak
-@@ -2,3 +2,4 @@ TARGET_ARCH=alpha
- TARGET_LONG_BITS=64
- TARGET_XML_FILES= gdb-xml/alpha-core.xml
- TARGET_NOT_USING_LEGACY_NATIVE_ENDIAN_API=y
-+TARGET_NOT_USING_LEGACY_LDST_PHYS_API=y
-diff --git a/target/alpha/helper.c b/target/alpha/helper.c
-index 80542cb0665..126a53c829b 100644
---- a/target/alpha/helper.c
-+++ b/target/alpha/helper.c
-@@ -169,6 +169,7 @@ static int get_physical_address(CPUAlphaState *env, target_ulong addr,
-                                 int prot_need, int mmu_idx,
-                                 target_ulong *pphys, int *pprot)
- {
-+    const MemTxAttrs attrs = MEMTXATTRS_UNSPECIFIED;
-     CPUState *cs = env_cpu(env);
-     target_long saddr = addr;
-     target_ulong phys = 0;
-@@ -176,6 +177,7 @@ static int get_physical_address(CPUAlphaState *env, target_ulong addr,
-     target_ulong pt, index;
-     int prot = 0;
-     int ret = MM_K_ACV;
-+    MemTxResult txres;
- 
-     /* Handle physical accesses.  */
-     if (mmu_idx == MMU_PHYS_IDX) {
-@@ -214,18 +216,13 @@ static int get_physical_address(CPUAlphaState *env, target_ulong addr,
- 
-     pt = env->ptbr;
- 
--    /*
--     * TODO: rather than using ldq_phys_le() to read the page table we should
--     * use address_space_ldq() so that we can handle the case when
--     * the page table read gives a bus fault, rather than ignoring it.
--     * For the existing code the zero data that ldq_phys_le will return for
--     * an access to invalid memory will result in our treating the page
--     * table as invalid, which may even be the right behaviour.
--     */
--
-     /* L1 page table read.  */
-     index = (addr >> (TARGET_PAGE_BITS + 20)) & 0x3ff;
--    L1pte = ldq_phys_le(cs->as, pt + index * 8);
-+    L1pte = address_space_ldq_le(cs->as, pt + index * 8, attrs, &txres);
-+    if (txres != MEMTX_OK) {
-+        /* bus fault */
-+        goto exit;
-+    }
- 
-     if (unlikely((L1pte & PTE_VALID) == 0)) {
-         ret = MM_K_TNV;
-@@ -238,7 +235,11 @@ static int get_physical_address(CPUAlphaState *env, target_ulong addr,
- 
-     /* L2 page table read.  */
-     index = (addr >> (TARGET_PAGE_BITS + 10)) & 0x3ff;
--    L2pte = ldq_phys_le(cs->as, pt + index * 8);
-+    L2pte = address_space_ldq_le(cs->as, pt + index * 8, attrs, &txres);
-+    if (txres != MEMTX_OK) {
-+        /* bus fault */
-+        goto exit;
-+    }
- 
-     if (unlikely((L2pte & PTE_VALID) == 0)) {
-         ret = MM_K_TNV;
-@@ -251,7 +252,11 @@ static int get_physical_address(CPUAlphaState *env, target_ulong addr,
- 
-     /* L3 page table read.  */
-     index = (addr >> TARGET_PAGE_BITS) & 0x3ff;
--    L3pte = ldq_phys_le(cs->as, pt + index * 8);
-+    L3pte = address_space_ldq_le(cs->as, pt + index * 8, attrs, &txres);
-+    if (txres != MEMTX_OK) {
-+        /* bus fault */
-+        goto exit;
-+    }
- 
-     phys = L3pte >> 32 << TARGET_PAGE_BITS;
-     if (unlikely((L3pte & PTE_VALID) == 0)) {
+ configs/targets/avr-softmmu.mak | 1 +
+ hw/char/avr_usart.c             | 2 +-
+ hw/misc/avr_power.c             | 2 +-
+ hw/timer/avr_timer16.c          | 6 +++---
+ target/avr/helper.c             | 4 ++--
+ target/avr/translate.c          | 2 +-
+ 6 files changed, 9 insertions(+), 8 deletions(-)
+
 -- 
 2.52.0
 
