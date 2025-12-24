@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEBA3CDCCB0
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 17:02:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02427CDCCA7
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 17:02:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vYRJ5-0006ii-JA; Wed, 24 Dec 2025 11:01:47 -0500
+	id 1vYRJ4-0006i0-Mb; Wed, 24 Dec 2025 11:01:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYRIe-0006an-BB
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYRIi-0006b2-Jx
  for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:01:38 -0500
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+Received: from mail-ed1-x541.google.com ([2a00:1450:4864:20::541])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYRIZ-0006Lw-BX
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:01:18 -0500
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-b7cee045187so1079213766b.0
- for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 08:01:11 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYRIe-0006NB-3y
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:01:21 -0500
+Received: by mail-ed1-x541.google.com with SMTP id
+ 4fb4d7f45d1cf-64d0d41404cso5887434a12.0
+ for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 08:01:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766592070; x=1767196870; darn=nongnu.org;
+ d=linaro.org; s=google; t=1766592078; x=1767196878; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=y7LlkqUnSiDvgUOMZirWuDEM7gLUdON5nHRETaU0k+Y=;
- b=HLgqlOBmkLLhc6sppzY4+cvIkx8U2n2GILkaaUMCXs36JxSyngg1PZcY1p2s+NHgiO
- LRAEp5YA0nSTEeljrt6bA1RVf6hvzeOCwRU/Iv6grsWXbgZVPRawKAM2nUIOD72YlY58
- mQc/Hh/G01pQBfcBsoJK6KYcj+r1/20sYNIac0mivALNj+fz5kKka+Pdas6ovh6SVrGl
- SzMbv6oHt//M9W/iluZsfPjlx+LjztLmdQiGkn1oYyCC985UoBqgfjc91LARgIdAIHVz
- ekc/AOsOejsnIaiEDQb1bfZ/w2X+xXGQF2Dm48hsF3H2Av3aeiycBLeYJBtBM6ozMY7b
- QUXg==
+ bh=1emzPSC3gusnZjhr/h3A8H4qzJRX881GxPIgVK4nvpA=;
+ b=vy3+LJDzz1Sm6vazUeYigjV/fDgxJlMt7FE/zeWyTZbFDsuaWadrhEPZ608qIXxulH
+ +c+8ij9MVka9YwXHTNdoFg8eTzTvAeXPWIksQ/7G1jxKIna8hZWPDTeYgEfZbR0tb4/0
+ KuDS360CxvOxkWYK3oAHkjCDziDelKRaE68ydsJE2OGmSJYWEqiNd2WbCbyhOFCcrpYM
+ dX6+ldCRAZzUcQF0a0FOJxtnVxI8wCVNGJqEeJ0Z1Gfa8BHu0yvlEsHr6EmZjwLopSDr
+ pighFvdEKU+MtUa9fXdk8qjvtO6mnfte0mPIElX1o/9pKvLMZ3HWowR9kq007QJkpk1f
+ fWsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766592070; x=1767196870;
+ d=1e100.net; s=20230601; t=1766592078; x=1767196878;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=y7LlkqUnSiDvgUOMZirWuDEM7gLUdON5nHRETaU0k+Y=;
- b=MvOVAGsgvayHFRrycM/upQ2/YsljQvdE2+HqYsWxwWD031BzhjX/xh9lF+03EOtR23
- r596ABNSd1d3p6vhaO1+FI424GPLCRGBIDRDFUeWrcJWl5bega9TISjzxBM4u5RC/+YD
- wNctbWNpPowMA7SmWyp8exxmXVdpvW+4RF6vjRaYWtJH3x0lYqWHA3v4+tWJd0+/zhMr
- kPyEM42N9JQeYSz/k3zxWfD3Qz//rzQUbhxytxanWYgk5iZ/CiCHvyQiOel4BiDLLFfC
- 0GjRDg85Hn7Wn3dbnSyDZ8OaI7TZuD1pdwLIzkKKrJmGFPTn6d1cBx7vBmRgOFqkmXLW
- /9tg==
-X-Gm-Message-State: AOJu0YxM4ComnT1C7VxUyUfW1XLhh5HG2GKHu0k12D9yEeaXQiSISfCA
- Lqj347KnUa4WqwrbuSrAThY+L6DITQvXDcgKZYj2jVC2O+WQ8Y2PtDcvIniRB60AcSP7cflYRRs
- fDIJjSnU=
-X-Gm-Gg: AY/fxX7Yv/Amz+WQwmP6okme9qz1QivS9LYonYs+/b8Ezv8f3GFIUI4Ox1/itmh6F59
- wuKSRusDs2NLjFu3b4dc1EANknXg9MWO6r6uPy5ERpnGdfFaWrtyOj7g/oMXGpIIKLQ8ovo6cDd
- sTgwSEaWNRiiXLT9ZRcc7ERqdiChQQj06uO6WSRUfS6QCcH1UKo7vc/2Pa51zeypZD4n1Ou6uaz
- HEBwok02fyhNApkE1sYfHvyfxLqDAwaJRijA24r5TLpz8OXrjVW6rkjqAcc5id6rIvzf7BJQ/K9
- 28I6a0Hj6dNzpO+TxrWwkSYnoE6t5KBqps61R1chk7M7dIZ0AkmGlFp3pygzz9HKxcTlVayT5rn
- bp/iG2Zaxzt4TX3tc+l5OHKSl6uOpWp+5SMyhWjBeFgZ5hybmO2OcZI9iqwN3APz8CL5cUIdsNT
- uy1eZF5krn5GNhPeAUgXPsXHdh0qNT0v0buIyXO/9nMLelJ9Jy4ny+5AQ=
-X-Google-Smtp-Source: AGHT+IHDW+02wxJfJV4idVw0Baj3VFK3rcdn1mUbF5kHj7M5lMaoXVEIqxKPeC/Ai8Q0o/88v1mnkw==
-X-Received: by 2002:a17:907:948a:b0:b79:ea1b:f13d with SMTP id
- a640c23a62f3a-b80355b7986mr2380994666b.2.1766592070246; 
- Wed, 24 Dec 2025 08:01:10 -0800 (PST)
+ bh=1emzPSC3gusnZjhr/h3A8H4qzJRX881GxPIgVK4nvpA=;
+ b=caWi9thmTvykjJxMdf5V4YOQnd1nh9DuWgKLvD6hIC3vYTgprkSKwL4EezwfQSEjkP
+ hxxHAVRezPCQiUIEPTXtWKOAn5OKqT3h1dH1oEKyhB18gGS1/FkklJCqFsHvnGA00ZrG
+ WbmgqBUWfjCHiU6hZ1JWNaObapiDDov0G9HCYouAgz4gf0n+YMiRo8DQD3GmEuPGx3cb
+ MDxHK+dPVLK0k+Cb/zrFS+k/GRaDYn+oRzglwi0JsJiZ0jFuGMTEYq9rqzBXcGcSyS56
+ meMLxRuCE5ZmOG2CxzYBvzscFdzdyRpqpSFbz7BokDtKuE7eK+vDaWzvX3glVcaFGVHr
+ yLAQ==
+X-Gm-Message-State: AOJu0YxFVf+wWuLEXPnuE94Wte0D/Z5dIw9sqGd268d4p2uz++ss7zQi
+ w59A58E63SUU1EMLDUW5gsR3OKn/cDKOVt5sqw2NPja1iOjwoI2fG8ZqUoWKUEW7fbnTAhEVfzU
+ gUxTIw2Q=
+X-Gm-Gg: AY/fxX5k2v11XkQq39t9yTTNMEmB++I7U7w4HyKA9if0Z1XtMbo/LAiWOC/4+qduHyx
+ lom7ZZfKK6hqLeNkIZIeQUW2jLu7DFpp8P0rVFrFZ/W+eKhDXmzWiraNjC+E5J69loTAGcVi+ao
+ osmKAxW/YLie5/dweRogmQR5WTtoRQbk1a9KItJd8bD8F8oifT3qbYw4qnWjQyem+2ERXudwO1Y
+ wBfwhG+Zv3mRyU3fmoHuSY2/a7rj18D5z+JiIvJKU0hsMuNRkSnYVrYinAwG1Lo6tHE1ZsJknLo
+ 5HbCzvWvQTFyLPvZaKTPfVLB/1UpVVJVwJH7rQHE036m1aqSJLRL/ZOIJ03vSK0kQATzVwqGhH6
+ whAMFn6nEBGkCHYIhgKQQ0AepVkOXMKmS1VexvJI/hRZdOFI91Msr9aZxhEoAIEPL8wWcBDwthI
+ KmAoKOcS9h+gK0EXsIFMiuXPt6qEvohhoCi/LOJkCkDZS1ci5IFvtf+a0=
+X-Google-Smtp-Source: AGHT+IGrmT47y0Tgu3x29eGCCLLf68kqVtHqncd25SuAU86IXXHvsZ2PvybVFWXBH7Rqa3Ry9PxR4Q==
+X-Received: by 2002:a05:6402:51cb:b0:64b:3eeb:80b1 with SMTP id
+ 4fb4d7f45d1cf-64b8ec6cb05mr15828835a12.22.1766592077771; 
+ Wed, 24 Dec 2025 08:01:17 -0800 (PST)
 Received: from localhost.localdomain (188.171.88.92.rev.sfr.net.
  [92.88.171.188]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b8037ad83dasm1857633966b.25.2025.12.24.08.01.07
+ 4fb4d7f45d1cf-64b91056731sm17083232a12.8.2025.12.24.08.01.16
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 24 Dec 2025 08:01:09 -0800 (PST)
+ Wed, 24 Dec 2025 08:01:17 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
@@ -70,18 +70,17 @@ Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 3/6] target/alpha: Inline cpu_ldl_code() call in
- do_unaligned_access()
-Date: Wed, 24 Dec 2025 17:00:36 +0100
-Message-ID: <20251224160040.88612-4-philmd@linaro.org>
+Subject: [PATCH 4/6] target/alpha: Inline translator_ldl()
+Date: Wed, 24 Dec 2025 17:00:37 +0100
+Message-ID: <20251224160040.88612-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251224160040.88612-1-philmd@linaro.org>
 References: <20251224160040.88612-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::541;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x541.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,38 +103,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation of removing the cpu_ldl_code wrapper, inline it.
-Use the return address argument.
+translator_ldl() is defined in "exec/translator.h" as:
 
-Since Alpha instructions are always stored in little-endian
-order, replace MO_TE -> MO_LE.
+  198 static inline uint32_t
+  199 translator_ldl(CPUArchState *env, DisasContextBase *db, vaddr pc)
+  200 {
+  201     return translator_ldl_end(env, db, pc, MO_TE);
+  202 }
+
+Directly use the inlined form, expanding MO_TE -> MO_LE
+since Alpha use little-endian order.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/alpha/mem_helper.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ target/alpha/translate.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/alpha/mem_helper.c b/target/alpha/mem_helper.c
-index 2113fe33ae2..572ea9cb418 100644
---- a/target/alpha/mem_helper.c
-+++ b/target/alpha/mem_helper.c
-@@ -24,13 +24,15 @@
- 
- static void do_unaligned_access(CPUAlphaState *env, vaddr addr, uintptr_t retaddr)
+diff --git a/target/alpha/translate.c b/target/alpha/translate.c
+index b1d8a4eb80a..48ac50a7cdf 100644
+--- a/target/alpha/translate.c
++++ b/target/alpha/translate.c
+@@ -2904,8 +2904,8 @@ static void alpha_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
+ static void alpha_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
  {
-+    CPUState *cs = env_cpu(env);
-+    MemOpIdx oi = make_memop_idx(MO_LEUL, cpu_mmu_index(cs, true));
-     uint64_t pc;
-     uint32_t insn;
+     DisasContext *ctx = container_of(dcbase, DisasContext, base);
+-    uint32_t insn = translator_ldl(cpu_env(cpu), &ctx->base,
+-                                   ctx->base.pc_next);
++    uint32_t insn = translator_ldl_end(cpu_env(cpu), &ctx->base,
++                                       ctx->base.pc_next, MO_LE);
  
-     cpu_restore_state(env_cpu(env), retaddr);
- 
-     pc = env->pc;
--    insn = cpu_ldl_code(env, pc);
-+    insn = cpu_ldl_code_mmu(env, pc, oi, retaddr);
- 
-     env->trap_arg0 = addr;
-     env->trap_arg1 = insn >> 26;                /* opcode */
+     ctx->base.pc_next += 4;
+     ctx->base.is_jmp = translate_one(ctx, insn);
 -- 
 2.52.0
 
