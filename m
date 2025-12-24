@@ -2,99 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4358ACDD02F
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 19:38:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC56CDD042
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 20:03:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vYTkm-0002ZE-Aj; Wed, 24 Dec 2025 13:38:32 -0500
+	id 1vYU8C-00024d-D8; Wed, 24 Dec 2025 14:02:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1vYTki-0002TD-27
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 13:38:28 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ id 1vYU8A-00024C-Db
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 14:02:42 -0500
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1vYTke-0005Fy-S2
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 13:38:27 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-64c893f3a94so6227853a12.0
- for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 10:38:24 -0800 (PST)
+ id 1vYU88-0003jz-FV
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 14:02:42 -0500
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-b7ffa421f1bso1229727166b.0
+ for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 11:02:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766601503; x=1767206303; darn=nongnu.org;
+ d=linaro.org; s=google; t=1766602958; x=1767207758; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=v9xCD7U7/dSlIZeeZ/6BGMZARlgT8coK9qlYuTEfKCw=;
- b=s0Gv8CY1P7ePWbg6ci5csNU1W24mHFk/pDQDmaK/ATy6IziTqje9w/vlycvqpvgWmI
- UquBWC87YGufcTP1PWgjP2hEwYPKi0p6mIJCHqcBqAtmHFlU29LnkRL3pBAWnDYQEErz
- DA7EVHC7EhIJF74+RG080IZVKlHimOCVehY1GllX4ZvTpI4VwVGUfv2qe8o4YywBiQZK
- FkXPshJsUhXvWZfKg3VFokA6Hi2xbX41zQ2+eTPfXDOYuNOdzCpaZy1UbPholnaoEc2h
- zpQzIClVWbxUWngtPloaz+vBSgoCE9qOCgKgdNDYWnz3xBvHna+FzmwR9Envi3MZHNsx
- EO4Q==
+ bh=Ef+FuyNNamUO0dRYQj6L/qYxkfhgwJJe9wxGcjCTN4g=;
+ b=MY2H/ohuwpfK9xTdRuukEclmAvBRJEPowFYcN8UeoWCxr1EoGfEfX2e7Tj58VFOASo
+ uLlNcod7cbkgqL0E5ghMFGEAEIlL2p6ARfYNcxM2JkhwF1DWA9kidyf1uyrrMonLiQ+i
+ +x92xLt3fP6++Dh6Hol7Z6FZyiXwdmz2r7sg7oy6x7twFT5ZyiXaoPA/75PU2EihfIP0
+ 2uVPYABs6hUy5r0zGUomzAm57Xj8gIJbC0xoZFxMw//N1O9e++f1xsxpLjOUwROgi8n7
+ brxBluavrtHmYhMt9NDfOSXj+CPPpG83tnn1dzV9xKJsygoL46Fbk+1DdP+zFZsyODg4
+ npSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766601503; x=1767206303;
+ d=1e100.net; s=20230601; t=1766602958; x=1767207758;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=v9xCD7U7/dSlIZeeZ/6BGMZARlgT8coK9qlYuTEfKCw=;
- b=XlDfDMaShutTW4UKZWBCjwoXsDFwUOI/0duPuCUmEX9L9lI4YhBqUT2Be5O6zV3Ys+
- 53PXV1wTcX13JJWOC9VavBVinT6rPTXO9yLYf5TiYcgZWQ8Qwday1zLDwe7Qw0a/Db6k
- eqs3y4X+BcCvhfgFGUp6Gg9N08KBLLUE4Krks69zPDey3cd2cs2Vhx8Of2GtTqR0OwpR
- +lPYU1ks5NFtTYxhmXTMT2nxZ0evWBZ8erxczxOHezfqVxH3/LVHePEAozWoLHN/9662
- T7NTg7Zm7nSDukd4k7x5aimYvb40OabZ2pTsOW4KO78P1IPsxumusUZqTZWf95ssRa/i
- wKfw==
-X-Gm-Message-State: AOJu0YzYhBwe9+lyOQLHAag7C9+ecSRu7x+NZRywwWJPuJ6uemordNbQ
- 3SB5Dy3SaNwWlnZuS0clGNi+tTXhO3AGxDRgOI+Z/mkECHQiU238sVl0s6rAcCs+DoqRMY9tLVQ
- ji1T83OKLny4wkllTW5HrAgWN7mn0XVD73hQYRHZPvg==
-X-Gm-Gg: AY/fxX6agwXyVHjHAYFNs2IoyaBlov87FAwNHRVI2+eC3AcmCF0/V2W+B4wmzGL+id+
- A5PjcQDv6WVC965GTobhZN5ir3yg5pOr4fXGvdbwjQKDmzL3DgRUstOqJuYFBM209r1tGMprHye
- fSFpJVgpcDa29gCHkhOIYG6O4xkC3Alhc0jLECV47p+M2Tsvjsj2T/jC0XB9EMTrJFRFEhLV91X
- 9y7UYGNO+6diBwnbzjU/+paY13knrZ1io9GvZwfztW8ReghtsxG9/383RJrald7WtBzvMQ=
-X-Google-Smtp-Source: AGHT+IGPsjnHq0hIUa1OSg+yf340C5m78uKM/aPgpEm1hRL4pDJEvguORboZ36NCm4bv8Sg/xFAy30qcclXUWd8ckD0=
-X-Received: by 2002:a17:906:fe0d:b0:b70:d1ea:2748 with SMTP id
- a640c23a62f3a-b802043fd32mr2546139366b.11.1766601503098; Wed, 24 Dec 2025
- 10:38:23 -0800 (PST)
+ bh=Ef+FuyNNamUO0dRYQj6L/qYxkfhgwJJe9wxGcjCTN4g=;
+ b=A1JugzHSAFZb8z2CBcKKXw0pqHkt8LEBsE1M5JRAKeFbEE3R8kG69V9WYUqEX5lU1S
+ 8PvkH0agv2U5ELwPA+rfH+ydmAZYNHuBzP8uAUmbpnPESETfxWo0adJoG8uy2ltaj8dV
+ PekUmahPbVRTx6v/QpgFimR7y5n4HmDnWAVjsONdvxy2EeF2i3khZ1wnai9prLxeqhRn
+ MGaAFqipmlJog6olredptF7R1QaS6RcqXthE8Uxyky79aY/QgugBpASn1MKvalNefmyc
+ LE1gmC2auIbxgwcRCq/zDYINjhpDoVebLYXzNHZB5jeuyzro7ju33vZMKq/LBOFCbQmW
+ pdzA==
+X-Gm-Message-State: AOJu0Ywx1toszyK+/fR1efKGrdQeTRILpf9LzINvK/cK87PmGPvwvgea
+ EkAUr+8I+Vo06wn88aEstCH/2X+cUhmU6nlbJpU9oXOgR98+NuDLGSJpZXZnpGl8eF4GJi5sIb8
+ mch1QZwjaQJ8fAZJ38WeJwKI38Dj7JrvxC/fhQNj6Qw==
+X-Gm-Gg: AY/fxX7AZGYB3N/M9QEPt6+df/BnzrVS2F7GkepI8iLPR80ETlpA5TQlVp+onYF+vEP
+ BuZKikQrVPd5oWOMOUFxQ02PpY6Z4cD5OMbL9M6ITGfLrPrH0ZZ77BrSdBLH5C4xHm4lfVQa0CK
+ fRSNZyhpegTx5Uqoig0JPLKUa+eJ92rNy1vYMgUd7+G+k2ngUci9rUwhl99UK8hFKYGRTPEVP1w
+ 4BIJwFClw6LxJd+ViKZEFMJLW6YUBJiVUOKy2p+13gO17POl+6B7dgbBzzFLAUMpvMxuk8=
+X-Google-Smtp-Source: AGHT+IH4zDc6YZwervhsWvcLZ8QY7wSmC7Y/nUBZw566KunpQZcH1nRQmZ6jpMnlpGXvDRHw1DJcmN8Xs5uIJBqQmgk=
+X-Received: by 2002:a17:907:8688:b0:b80:456d:bd99 with SMTP id
+ a640c23a62f3a-b80456dc544mr1804062966b.19.1766602958190; Wed, 24 Dec 2025
+ 11:02:38 -0800 (PST)
 MIME-Version: 1.0
-References: <20251224151351.86733-1-philmd@linaro.org>
- <20251224151351.86733-10-philmd@linaro.org>
-In-Reply-To: <20251224151351.86733-10-philmd@linaro.org>
+References: <20251224152210.87880-1-philmd@linaro.org>
+ <20251224152210.87880-3-philmd@linaro.org>
+In-Reply-To: <20251224152210.87880-3-philmd@linaro.org>
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Wed, 24 Dec 2025 20:37:57 +0200
-X-Gm-Features: AQt7F2rxur4AuRuJCQLzN5yRKQWL7uU37JCgGTvn_3KurxuMPh85EjxdqtydxA0
-Message-ID: <CAAjaMXZf2kxQD4nxKLiSy92drd1VNbyPYNr92s=np_boSOOj6w@mail.gmail.com>
-Subject: Re: [PATCH 9/9] configs/targets: Mark targets not using legacy
- ldst_phys() API
+Date: Wed, 24 Dec 2025 21:02:12 +0200
+X-Gm-Features: AQt7F2ruccuonUS4_QZBePYQ5ZNheMPkPF9USOlloHzDzve5lJ1vyqNMrcVuexg
+Message-ID: <CAAjaMXak2pQRVi=XFu2e1OMj1EzvpZtCnHH8Es3bHO4GWa0gxg@mail.gmail.com>
+Subject: Re: [PATCH v3 02/25] system/physmem: Convert DEBUG_SUBPAGE printf()
+ to trace events
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Andrew Jeffery <andrew@codeconstruct.com.au>,
- qemu-arm@nongnu.org, 
- Peter Xu <peterx@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
- Weiwei Li <liwei1518@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, Anton Johansson <anjo@rev.ng>, 
- David Hildenbrand <david@kernel.org>, qemu-riscv@nongnu.org, 
- Steven Lee <steven_lee@aspeedtech.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Troy Lee <leetroy@gmail.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Zhao Liu <zhao1.liu@intel.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Peter Maydell <peter.maydell@linaro.org>, 
- Artyom Tarasenko <atar4qemu@gmail.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
- Alistair Francis <alistair.francis@wdc.com>, Joel Stanley <joel@jms.id.au>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, Peter Xu <peterx@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, Anton Johansson <anjo@rev.ng>,
+ David Hildenbrand <david@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,155 +97,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 24, 2025 at 5:15=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
+On Wed, Dec 24, 2025 at 5:22=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
 <philmd@linaro.org> wrote:
 >
-> These targets were only using the legacy ldst_phys() API
-> via the virtio load/store helpers, which got cleaned up.
+> Defining DEBUG_SUBPAGE allows to use raw printf() statements to
+> print information about some events; convert these to tracepoints.
 >
-> Mark them not using the legacy ldst_phys() API to avoid
-> further use, allowing to eventually remove it.
->
+> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
 
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-Nice cleanup!
 
->  configs/targets/mips-softmmu.mak     | 1 +
->  configs/targets/mips64-softmmu.mak   | 1 +
->  configs/targets/mips64el-softmmu.mak | 1 +
->  configs/targets/mipsel-softmmu.mak   | 1 +
->  configs/targets/or1k-softmmu.mak     | 1 +
->  configs/targets/riscv32-softmmu.mak  | 1 +
->  configs/targets/riscv64-softmmu.mak  | 1 +
->  configs/targets/sh4-softmmu.mak      | 1 +
->  configs/targets/sh4eb-softmmu.mak    | 1 +
->  configs/targets/sparc64-softmmu.mak  | 1 +
->  configs/targets/xtensa-softmmu.mak   | 1 +
->  configs/targets/xtensaeb-softmmu.mak | 1 +
->  12 files changed, 12 insertions(+)
+>  system/physmem.c    | 29 ++++++-----------------------
+>  system/trace-events |  6 ++++++
+>  2 files changed, 12 insertions(+), 23 deletions(-)
 >
-> diff --git a/configs/targets/mips-softmmu.mak b/configs/targets/mips-soft=
-mmu.mak
-> index c9588066b8d..95397af9442 100644
-> --- a/configs/targets/mips-softmmu.mak
-> +++ b/configs/targets/mips-softmmu.mak
-> @@ -1,3 +1,4 @@
->  TARGET_ARCH=3Dmips
->  TARGET_BIG_ENDIAN=3Dy
->  TARGET_LONG_BITS=3D32
-> +TARGET_NOT_USING_LEGACY_LDST_PHYS_API=3Dy
-> diff --git a/configs/targets/mips64-softmmu.mak b/configs/targets/mips64-=
-softmmu.mak
-> index 7202655fcac..f9cc41b9ed4 100644
-> --- a/configs/targets/mips64-softmmu.mak
-> +++ b/configs/targets/mips64-softmmu.mak
-> @@ -2,3 +2,4 @@ TARGET_ARCH=3Dmips64
->  TARGET_BASE_ARCH=3Dmips
->  TARGET_BIG_ENDIAN=3Dy
->  TARGET_LONG_BITS=3D64
-> +TARGET_NOT_USING_LEGACY_LDST_PHYS_API=3Dy
-> diff --git a/configs/targets/mips64el-softmmu.mak b/configs/targets/mips6=
-4el-softmmu.mak
-> index 3ebeadb29ea..4e7dedc5f30 100644
-> --- a/configs/targets/mips64el-softmmu.mak
-> +++ b/configs/targets/mips64el-softmmu.mak
-> @@ -1,3 +1,4 @@
->  TARGET_ARCH=3Dmips64
->  TARGET_BASE_ARCH=3Dmips
->  TARGET_LONG_BITS=3D64
-> +TARGET_NOT_USING_LEGACY_LDST_PHYS_API=3Dy
-> diff --git a/configs/targets/mipsel-softmmu.mak b/configs/targets/mipsel-=
-softmmu.mak
-> index 90e09bdc3e5..b0fba8a9d0a 100644
-> --- a/configs/targets/mipsel-softmmu.mak
-> +++ b/configs/targets/mipsel-softmmu.mak
-> @@ -1,2 +1,3 @@
->  TARGET_ARCH=3Dmips
->  TARGET_LONG_BITS=3D32
-> +TARGET_NOT_USING_LEGACY_LDST_PHYS_API=3Dy
-> diff --git a/configs/targets/or1k-softmmu.mak b/configs/targets/or1k-soft=
-mmu.mak
-> index 0e47d9878b0..89f81b75bf7 100644
-> --- a/configs/targets/or1k-softmmu.mak
-> +++ b/configs/targets/or1k-softmmu.mak
-> @@ -3,3 +3,4 @@ TARGET_BIG_ENDIAN=3Dy
->  # needed by boot.c and all boards
->  TARGET_NEED_FDT=3Dy
->  TARGET_LONG_BITS=3D32
-> +TARGET_NOT_USING_LEGACY_LDST_PHYS_API=3Dy
-> diff --git a/configs/targets/riscv32-softmmu.mak b/configs/targets/riscv3=
-2-softmmu.mak
-> index db55275b868..7476e596082 100644
-> --- a/configs/targets/riscv32-softmmu.mak
-> +++ b/configs/targets/riscv32-softmmu.mak
-> @@ -4,3 +4,4 @@ TARGET_XML_FILES=3D gdb-xml/riscv-32bit-cpu.xml gdb-xml/r=
-iscv-32bit-fpu.xml gdb-xm
->  # needed by boot.c
->  TARGET_NEED_FDT=3Dy
->  TARGET_LONG_BITS=3D32
-> +TARGET_NOT_USING_LEGACY_LDST_PHYS_API=3Dy
-> diff --git a/configs/targets/riscv64-softmmu.mak b/configs/targets/riscv6=
-4-softmmu.mak
-> index 2bdd4a62cd2..f836f08c5b9 100644
-> --- a/configs/targets/riscv64-softmmu.mak
-> +++ b/configs/targets/riscv64-softmmu.mak
-> @@ -5,3 +5,4 @@ TARGET_XML_FILES=3D gdb-xml/riscv-64bit-cpu.xml gdb-xml/r=
-iscv-32bit-fpu.xml gdb-xm
->  # needed by boot.c
->  TARGET_NEED_FDT=3Dy
->  TARGET_LONG_BITS=3D64
-> +TARGET_NOT_USING_LEGACY_LDST_PHYS_API=3Dy
-> diff --git a/configs/targets/sh4-softmmu.mak b/configs/targets/sh4-softmm=
-u.mak
-> index 787d349b501..e0b51f8108d 100644
-> --- a/configs/targets/sh4-softmmu.mak
-> +++ b/configs/targets/sh4-softmmu.mak
-> @@ -1,2 +1,3 @@
->  TARGET_ARCH=3Dsh4
->  TARGET_LONG_BITS=3D32
-> +TARGET_NOT_USING_LEGACY_LDST_PHYS_API=3Dy
-> diff --git a/configs/targets/sh4eb-softmmu.mak b/configs/targets/sh4eb-so=
-ftmmu.mak
-> index cdea2c61c58..7850dac8191 100644
-> --- a/configs/targets/sh4eb-softmmu.mak
-> +++ b/configs/targets/sh4eb-softmmu.mak
-> @@ -1,3 +1,4 @@
->  TARGET_ARCH=3Dsh4
->  TARGET_BIG_ENDIAN=3Dy
->  TARGET_LONG_BITS=3D32
-> +TARGET_NOT_USING_LEGACY_LDST_PHYS_API=3Dy
-> diff --git a/configs/targets/sparc64-softmmu.mak b/configs/targets/sparc6=
-4-softmmu.mak
-> index d9d51d21e59..8ee6d057682 100644
-> --- a/configs/targets/sparc64-softmmu.mak
-> +++ b/configs/targets/sparc64-softmmu.mak
-> @@ -3,3 +3,4 @@ TARGET_BASE_ARCH=3Dsparc
->  TARGET_BIG_ENDIAN=3Dy
->  TARGET_XML_FILES=3Dgdb-xml/sparc64-core.xml
->  TARGET_LONG_BITS=3D64
-> +TARGET_NOT_USING_LEGACY_LDST_PHYS_API=3Dy
-> diff --git a/configs/targets/xtensa-softmmu.mak b/configs/targets/xtensa-=
-softmmu.mak
-> index 2a9797338a6..6aad751e2ba 100644
-> --- a/configs/targets/xtensa-softmmu.mak
-> +++ b/configs/targets/xtensa-softmmu.mak
-> @@ -1,2 +1,3 @@
->  TARGET_ARCH=3Dxtensa
->  TARGET_LONG_BITS=3D32
-> +TARGET_NOT_USING_LEGACY_LDST_PHYS_API=3Dy
-> diff --git a/configs/targets/xtensaeb-softmmu.mak b/configs/targets/xtens=
-aeb-softmmu.mak
-> index 5204729af8b..537407e11ae 100644
-> --- a/configs/targets/xtensaeb-softmmu.mak
-> +++ b/configs/targets/xtensaeb-softmmu.mak
-> @@ -1,3 +1,4 @@
->  TARGET_ARCH=3Dxtensa
->  TARGET_BIG_ENDIAN=3Dy
->  TARGET_LONG_BITS=3D32
-> +TARGET_NOT_USING_LEGACY_LDST_PHYS_API=3Dy
+> diff --git a/system/physmem.c b/system/physmem.c
+> index 1292f49095f..7e914ecf648 100644
+> --- a/system/physmem.c
+> +++ b/system/physmem.c
+> @@ -91,8 +91,6 @@
+>
+>  #include "memory-internal.h"
+>
+> -//#define DEBUG_SUBPAGE
+> -
+>  /* ram_list is read under rcu_read_lock()/rcu_read_unlock().  Writes
+>   * are protected by the ramlist lock.
+>   */
+> @@ -2903,10 +2901,7 @@ static MemTxResult subpage_read(void *opaque, hwad=
+dr addr, uint64_t *data,
+>      uint8_t buf[8];
+>      MemTxResult res;
+>
+> -#if defined(DEBUG_SUBPAGE)
+> -    printf("%s: subpage %p len %u addr " HWADDR_FMT_plx "\n", __func__,
+> -           subpage, len, addr);
+> -#endif
+> +    trace_subpage_read(subpage, len, addr);
+>      res =3D flatview_read(subpage->fv, addr + subpage->base, attrs, buf,=
+ len);
+>      if (res) {
+>          return res;
+> @@ -2921,11 +2916,7 @@ static MemTxResult subpage_write(void *opaque, hwa=
+ddr addr,
+>      subpage_t *subpage =3D opaque;
+>      uint8_t buf[8];
+>
+> -#if defined(DEBUG_SUBPAGE)
+> -    printf("%s: subpage %p len %u addr " HWADDR_FMT_plx
+> -           " value %"PRIx64"\n",
+> -           __func__, subpage, len, addr, value);
+> -#endif
+> +    trace_subpage_write(subpage, len, addr, value);
+>      stn_p(buf, len, value);
+>      return flatview_write(subpage->fv, addr + subpage->base, attrs, buf,=
+ len);
+>  }
+> @@ -2935,10 +2926,8 @@ static bool subpage_accepts(void *opaque, hwaddr a=
+ddr,
+>                              MemTxAttrs attrs)
+>  {
+>      subpage_t *subpage =3D opaque;
+> -#if defined(DEBUG_SUBPAGE)
+> -    printf("%s: subpage %p %c len %u addr " HWADDR_FMT_plx "\n",
+> -           __func__, subpage, is_write ? 'w' : 'r', len, addr);
+> -#endif
+> +
+> +    trace_subpage_accepts(subpage, is_write ? 'w' : 'r', len, addr);
+>
+>      return flatview_access_valid(subpage->fv, addr + subpage->base,
+>                                   len, is_write, attrs);
+> @@ -2964,10 +2953,7 @@ static int subpage_register(subpage_t *mmio, uint3=
+2_t start, uint32_t end,
+>          return -1;
+>      idx =3D SUBPAGE_IDX(start);
+>      eidx =3D SUBPAGE_IDX(end);
+> -#if defined(DEBUG_SUBPAGE)
+> -    printf("%s: %p start %08x end %08x idx %08x eidx %08x section %d\n",
+> -           __func__, mmio, start, end, idx, eidx, section);
+> -#endif
+> +    trace_subpage_register(mmio, start, end, idx, eidx, section);
+>      for (; idx <=3D eidx; idx++) {
+>          mmio->sub_section[idx] =3D section;
+>      }
+> @@ -2986,10 +2972,7 @@ static subpage_t *subpage_init(FlatView *fv, hwadd=
+r base)
+>      memory_region_init_io(&mmio->iomem, NULL, &subpage_ops, mmio,
+>                            NULL, TARGET_PAGE_SIZE);
+>      mmio->iomem.subpage =3D true;
+> -#if defined(DEBUG_SUBPAGE)
+> -    printf("%s: %p base " HWADDR_FMT_plx " len %08x\n", __func__,
+> -           mmio, base, TARGET_PAGE_SIZE);
+> -#endif
+> +    trace_subpage_init(mmio, base, TARGET_PAGE_SIZE);
+>
+>      return mmio;
+>  }
+> diff --git a/system/trace-events b/system/trace-events
+> index 82856e44f2e..6d29a823f04 100644
+> --- a/system/trace-events
+> +++ b/system/trace-events
+> @@ -35,6 +35,12 @@ find_ram_offset_loop(uint64_t size, uint64_t candidate=
+, uint64_t offset, uint64_
+>  ram_block_discard_range(const char *rbname, void *hva, size_t length, bo=
+ol need_madvise, bool need_fallocate, int ret) "%s@%p + 0x%zx: madvise: %d =
+fallocate: %d ret: %d"
+>  qemu_ram_alloc_shared(const char *name, size_t size, size_t max_size, in=
+t fd, void *host) "%s size %zu max_size %zu fd %d host %p"
+>
+> +subpage_register(void *subpage, uint32_t start, uint32_t end, int idx, i=
+nt eidx, uint16_t section) "subpage %p start 0x%08x end 0x%08x idx 0x%08x e=
+idx 0x%08x section %u"
+> +subpage_init(void *subpage, uint64_t base, uint64_t len) "subpage %p bas=
+e 0x%08" PRIx64 " len 0x%08" PRIx64
+> +subpage_accepts(void *subpage, char access, unsigned len, uint64_t addr)=
+ "subpage %p %c len %u addr 0x%" PRIx64
+> +subpage_read(void *subpage, unsigned len, uint64_t addr) "subpage %p len=
+ %u addr 0x%" PRIx64
+> +subpage_write(void *subpage, unsigned len, uint64_t addr, uint64_t value=
+) "subpage %p len %u addr 0x%" PRIx64 " value 0x%" PRIx64
+> +
+>  # cpus.c
+>  vm_stop_flush_all(int ret) "ret %d"
+>
 > --
 > 2.52.0
 >
