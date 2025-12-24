@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC13DCDC645
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 14:47:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7438DCDC642
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 14:47:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vYPCw-0006CQ-Cp; Wed, 24 Dec 2025 08:47:18 -0500
+	id 1vYPD4-0006GG-2s; Wed, 24 Dec 2025 08:47:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYPCh-00069Q-Br
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 08:47:04 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYPCn-0006Bo-Pz
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 08:47:10 -0500
+Received: from mail-wm1-x343.google.com ([2a00:1450:4864:20::343])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYPCc-0003fU-8r
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 08:47:01 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-42fbc544b09so4512997f8f.1
- for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 05:46:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYPCl-0003gI-2D
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 08:47:09 -0500
+Received: by mail-wm1-x343.google.com with SMTP id
+ 5b1f17b1804b1-47d3ba3a4deso5406665e9.2
+ for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 05:47:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766584016; x=1767188816; darn=nongnu.org;
+ d=linaro.org; s=google; t=1766584025; x=1767188825; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/HatAXwMGekb8ws77keU2ufaJzveuprS4Y82gBiI7wk=;
- b=uphasc+o/gWoU+YqAUTLLHUJV/ROVbxETmn/3Dqe23EjyMpNPc5UtsLhASkAsw+lYN
- pyGSeWAN/CM2OAWYzw0ZIP2H4ZfbcqvErYApN6nXZzYY6Z+XO/vH1k78OY3k1xZe3LC7
- l/35jx0qbUVgZSw5u4srs6WvrReTyufMU6b5COyMaglyDcQCmsIv3ykWtji9fe2Y2KVn
- d6g6YzINnTfPKJG3AKx1kcpDFW4OfPMNTbaeVHMVdk8b7YUq6jhQKXuzzrEUNhqovsFC
- 7ul4r9BWugJZRJPBzGEyO0vd1hkR0lRiGFR60bxBujVh0scm3Cs+CEqGVn68vzCXlPfW
- IyFA==
+ bh=shYbRzGh4HeszhizU55hQ7lgJiMr3GPlgmdmv3H0HN8=;
+ b=b6PZUvik0LmIw6/ONyrVP+VUzAqGPz+K3sXMrBdyrzGb8A7YOmzF4/nl9DuGXFobts
+ 5snFjeyGK2J+Adr6U8fTiXByxsPzsMJBLFgFnY/ubAvPHDO+7pFrnuwPwTrcHvcz1C9B
+ xDiuVzPFLyMxtu++aHUpIXCMGYKCLKyEk9LKcIkdmqabDj8Nfnf9q+pJiHmgCvXEyBmj
+ NT1YjffhEVcRt8G0qouXMPsQulhHQV4aRg6T4ONqn9P8q4V2pe/pkp0cxg3T5Yl1G3JK
+ X+jbiElWKa4QYH6Ue41g5dSY2Ijb73zsmBDTcpCozHOfDS+2+Ot+y8TLxLoIwbMBEIkP
+ WeBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766584016; x=1767188816;
+ d=1e100.net; s=20230601; t=1766584025; x=1767188825;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=/HatAXwMGekb8ws77keU2ufaJzveuprS4Y82gBiI7wk=;
- b=BuKcOuKdN9ZWez3W7hCzLRBc8rzYN7/rGEyzeI5KM7/UdnpcTMCLC7WZGndHuNtnXi
- nljmHlB7J6cNTDiVy8jN1A9BRgVlJW3WA+ZNJDictceRssccVMsb2sEjUfljdPM03xXD
- v1DwJ6m1nRA/94j7AbItCPXbCs3I+9KoSSZw8REcfqJEr+OOebAefp0VkmD09lSs9hFb
- gbrZxX+Aideh+uX/i2gJcP2YAoMHTYJdUJ0c10/49Ap9o9nM9vvJEoGy9yKEqS688wuI
- 9WcK0i7TRkM53BWDZbcOB11NWj3+MbJa4CN+//wCnKiL5tNabRBRIsFjZj26dZ8fJerO
- +Qgw==
-X-Gm-Message-State: AOJu0Yya2AX+RvpmFUChsKSVLykX/cmFPv2OIYpQ5Lyhy9GIlputj4pQ
- JXzLbnVeCSvyZaP8mPpPK37Gbw+cSrsgiRqbgpgeVON4BiLQ7eR4L1YDCwauHn3jaTruUfAHM3s
- PGCWQEEQ=
-X-Gm-Gg: AY/fxX4549jUKG7HQ0Thg2P6HO390attkfcmAInstptMgwKGCdW9hmjzem1pTrZvGyQ
- Lqom6FGdo4wf3iMhRkqeQ1uAaCcVJuE091FLjyCmjQrSh3L/ysOJZLzS51nFc2F9ULSUB7tt6v6
- QmxjlXRZcRsgi0vza+IkoRliR4KGqzy5u+2U0s3//Jpl/8ZWkrdxn8QqynxcTrsnukM9JB4TxfB
- tH14WyEpQzRou3+u1YdO8aR1wTqg57lULt6j2+FXVYT7e14BqhMmkjQ3W05AmevenImmKWTlNUY
- dlKIoXx7SkKa6KVmCsmw38lfsJUbgPkXmIh5djXcwm0fFj1JdMOQtdktw+74TiU6y6qZ91DwWiq
- lG6KE4nIWjDaDWFUFmGaS9mCw5TVCZ+47evBaiGxgiDE6gvsa5LHlgGvBntFCF7jo0PvhPsKt+y
- TvG+6+cJ+CzWltSMH+eTGFjarP7dlfC3NI06JszKdWpz2M5S9IP8BXpN+yx7Jyw5wYvwfiMhI=
-X-Google-Smtp-Source: AGHT+IFImcLyhNm02bS1bcJPwE+B5F0pKDwOtrfRI74UcvtYUim28G8m3NZ44HEdlcfeOhDjUMMsXw==
-X-Received: by 2002:a05:6000:26c3:b0:42f:b581:c69a with SMTP id
- ffacd0b85a97d-4324e4c3e13mr19199452f8f.5.1766584016267; 
- Wed, 24 Dec 2025 05:46:56 -0800 (PST)
+ bh=shYbRzGh4HeszhizU55hQ7lgJiMr3GPlgmdmv3H0HN8=;
+ b=fYn2hddVBGz0xRLxZqS+xmLDTvz/7Dz1rtkHQs0/Cr4TwVjZPmBDW+Vgc26UhvsEi4
+ VGU0xJ8f0jqSMJ8CRGCwlqfPyFMuB6IJzPxfiflQeejj97Y8P9M3ecuDVQ2SM/1KlqFh
+ j5fFD7igCH5AFyQCVWYRS5z5EEAZ0tHvS4Hs06HFdREJouF8weQYC/ZwFaDiWcVm8qiG
+ /sOq2toy0YSuxJ8skyA+xJAsWH6yaTH7F1SKXkLgyoG5EjhBoV8fO7mxPFfNo9cik2rH
+ BOmDFW755R4s7K39spYueXzzyqo8BWDQT0/81cSLP9ih/jaSVDuf1JLBwhTLEGNMhyHg
+ D2Dw==
+X-Gm-Message-State: AOJu0Yw69aJHGQ47pvizLPa9hbNfV/V2zTx5Om9898rmrSt351+es71t
+ XoK9c4TLcXVR7/WNxhZvShjlhiE/VczK1pct8y/ZzLqkNNIM1XCvq+sNYt3Y1qY+NbqH0ULPn4U
+ WJUAkMXmtBg==
+X-Gm-Gg: AY/fxX5WgyFMhRtYD7Hajcmo21EpxlD1XWqZQMAXZ0zoTl4P+hyc/yFYlVuB9mkqCIm
+ ionG5fvpO8+ktMEAH8IzdcsAHAZMj/j510e8BscZBycqbq65ynzBO70uz2Zn3kO9dFBEMGtXzJ5
+ 6Z+Rct0lNm0UkXOGk13YniSCcx4lTO+Uft7Da+xR/gT3aAqfqkOmUS5/+Ufzw9CRpv1A92jU/4m
+ 9WRoaCO3uUIo1Ig+B8zXoqWIU+j1vuyhSs1Fg+mWPKQv0OHsAabUoa0QOYe+rbo0w6nLIyx/k+v
+ ZkPl1Mckp53W2DBVWH6SCxNQgQhH1ndUU4SxY4WvduRvIWX8okq0JXr0M+xQKECdnSNx5TtOBTh
+ oPWFVwteUyVmmaMzHAuDoJpTwJMefsnN48spcalK7jR094GzNtmhWZ3X6BawGVjyO/hcPzbDVfP
+ 477HQ0Z0Heaz+mWLacRCQE8XplSLGhY7UMEMbHAYHZlOMwqY1QrwrmHwQm28uOHQ2MuExiTSM=
+X-Google-Smtp-Source: AGHT+IG7/tDrxlL+g7K6TNhz0Uhw+nty/m6CTU7wnXp0QM+lfW92jSz33OPGh4QmDAoNuzxKGRobXw==
+X-Received: by 2002:a05:600c:8b6d:b0:475:dd8d:2f52 with SMTP id
+ 5b1f17b1804b1-47d1959d1d8mr188420915e9.32.1766584024910; 
+ Wed, 24 Dec 2025 05:47:04 -0800 (PST)
 Received: from localhost.localdomain (218.170.88.92.rev.sfr.net.
  [92.88.170.218]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4327778e27bsm1073363f8f.12.2025.12.24.05.46.54
+ 5b1f17b1804b1-47be3964226sm150434825e9.0.2025.12.24.05.47.02
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 24 Dec 2025 05:46:55 -0800 (PST)
+ Wed, 24 Dec 2025 05:47:04 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>, qemu-rust@nongnu.org,
@@ -73,25 +73,26 @@ Cc: Jason Wang <jasowang@redhat.com>, qemu-rust@nongnu.org,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v2 1/8] hw/arm/Kconfig: Have FSL_IMX6UL SoC select IMX_USBPHY
-Date: Wed, 24 Dec 2025 14:46:37 +0100
-Message-ID: <20251224134644.85582-2-philmd@linaro.org>
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH v2 2/8] hw/net/opencores: Clarify MMIO read/write handlers
+ expect 32-bit access
+Date: Wed, 24 Dec 2025 14:46:38 +0100
+Message-ID: <20251224134644.85582-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251224134644.85582-1-philmd@linaro.org>
 References: <20251224134644.85582-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::343;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x343.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,44 +108,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit 17372bd812d, the SoC used by the mcimx6ul-evk
-machine requires the IMX USB PHY component.
-As this component is only used by 2 machines, do not select
-it by default (it will be automatically  selected when
-necessary).
+The read/write handlers access array of 32-bit register by index:
 
-Fixes: 17372bd812d ("hw/arm/fsl-imx6ul: Wire up USB controllers")
+ 277 struct OpenEthState {
+  ..
+ 287     uint32_t regs[REG_MAX];
+  ..
+ 291 };
+
+ 546 static uint64_t open_eth_reg_read(void *opaque,
+ 547                                   hwaddr addr, unsigned int size)
+ 548 {
+  ..
+ 551     OpenEthState *s = opaque;
+ 552     unsigned idx = addr / 4;
+  ..
+ 559             v = s->regs[idx];
+  ..
+ 563     return v;
+ 564 }
+
+This is a 32-bit implementation. Make that explicit in the
+MemoryRegionOps structure (this doesn't change the maximum
+access size, which -- being unset -- is 64-bit).
+
+Move the structure just after the handlers to ease code review.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/arm/Kconfig | 1 +
- hw/usb/Kconfig | 1 -
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ hw/net/opencores_eth.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 78775063840..97d747e2062 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -638,6 +638,7 @@ config FSL_IMX6UL
-     select IMX
-     select IMX_FEC
-     select IMX_I2C
-+    select IMX_USBPHY
-     select WDT_IMX2
-     select SDHCI
-     select USB_CHIPIDEA
-diff --git a/hw/usb/Kconfig b/hw/usb/Kconfig
-index 69c663be52f..de95686720c 100644
---- a/hw/usb/Kconfig
-+++ b/hw/usb/Kconfig
-@@ -132,7 +132,6 @@ config USB_CANOKEY
+diff --git a/hw/net/opencores_eth.c b/hw/net/opencores_eth.c
+index 7e955c01322..bc4565a9a49 100644
+--- a/hw/net/opencores_eth.c
++++ b/hw/net/opencores_eth.c
+@@ -682,6 +682,15 @@ static void open_eth_reg_write(void *opaque,
+     }
+ }
  
- config IMX_USBPHY
-     bool
--    default y
-     depends on USB
++static const MemoryRegionOps open_eth_reg_ops = {
++    .read = open_eth_reg_read,
++    .write = open_eth_reg_write,
++    .impl = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
++};
++
+ static uint64_t open_eth_desc_read(void *opaque,
+         hwaddr addr, unsigned int size)
+ {
+@@ -705,12 +714,6 @@ static void open_eth_desc_write(void *opaque,
+     open_eth_check_start_xmit(s);
+ }
  
- config USB_DWC3
+-
+-static const MemoryRegionOps open_eth_reg_ops = {
+-    .read = open_eth_reg_read,
+-    .write = open_eth_reg_write,
+-};
+-
+ static const MemoryRegionOps open_eth_desc_ops = {
+     .read = open_eth_desc_read,
+     .write = open_eth_desc_write,
 -- 
 2.52.0
 
