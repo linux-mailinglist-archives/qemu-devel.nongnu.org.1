@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7E76CDCA68
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 16:16:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8877ECDCA5A
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 16:16:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vYQak-0003pE-KV; Wed, 24 Dec 2025 10:15:58 -0500
+	id 1vYQai-0003TA-Ue; Wed, 24 Dec 2025 10:15:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYQZc-0002Pp-HS
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 10:14:53 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYQZn-0002Ul-H5
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 10:14:59 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYQZZ-00033x-4E
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 10:14:46 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-64bea6c5819so6260199a12.3
- for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 07:14:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYQZl-00035A-2b
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 10:14:59 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-42fb2314eb0so4447863f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 07:14:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766589283; x=1767194083; darn=nongnu.org;
+ d=linaro.org; s=google; t=1766589295; x=1767194095; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=B1b6x18riFiHnFkkcqn+CtPN4j8BBN9191Tesnu/1k0=;
- b=spiv030viaOWA6OU7NT5FMY9cfOHxzGiyYsqM6HS/MrDgkUyKWHVm9HxVodg0m2Xm1
- Z6zJOTKboOmT01s+izUb7CmXi+1rCeBiy2pfnVt/soR43I+sES+O0oEYcgug5aDZMK35
- DHVvVSzj6YE0ImVwI5Di3bQQLC/6KNIJyRloMxCEAMioTyN9/kr3DsT2Ry4XvKIr5O1k
- S+o9VYR+bl0MFlb0QAvqNDESYS4Mqnqmtm7+X7n695cuLCYjs/aY/y1TUlk/A7fQGdZJ
- qddpJXTcq9WrMDd7Ke+6N3bfdVkPOjaeEeZJGMsE+88QEkj5EsBUv6l/vDzF7GVRAT3l
- 9YZg==
+ bh=qSSsRmh/IQkwpJa4M1tD2tu2lq9WIQnOoGphHntAkAQ=;
+ b=WJ21aNVgDuJSSp3q7jCAHeYA1Er2OP3ix0rNLaORUL7TaWq9DHmYCXYCNVE2Fn51Lm
+ 7qYvlo3dpfjg9n3SfX8jHqsO7L4zKASc8I+n/oLRXgd9Rld8caIargmZYkx+AignFmBF
+ 4bUYRXWvpjjTMuBgRmDDW6zQw9GiBkSc5cc1tt49jlfGC9ZrotDFpah4r97v5naWxYw2
+ Icg10AQpybSyVMgOJgq25lClJEPzd8vyxEwJAm3l6Jh5dKs12uTQsNHdEQCbLn1OLNVb
+ 2bzyfUs04iYSS/NZHEB7egNnwPJtJHs6zrffXaDnh5a5OGffIR89gJF/19PgGqJABt+v
+ bPBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766589283; x=1767194083;
+ d=1e100.net; s=20230601; t=1766589295; x=1767194095;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=B1b6x18riFiHnFkkcqn+CtPN4j8BBN9191Tesnu/1k0=;
- b=YkrRZsn8Lgsbwn7Y+e6t1aLwxStuc88JY2JmOVBv+9m68heWBQwtbrjA5UNmWr3TN4
- IfFILyum0EqNFpv1lDsvPg3Hih8SD9lhOUl+ubKcgA6NS/HXbC72Nu+iclSWy9dGssen
- RgvjB4ciFAxEq6anaITLIOMNKBzkTvkj6+Jf70xjKT3pqOoE7bjOeS/buZZWwWcMJ9w2
- lOwZgYZ0PG4k8bLVY43TkGZpPVigUZIbfOf8d19G0AOab0ct/XFE3d9+AxZobg/vxJdB
- kL83/FKx3iy9j/VEOrZld+BcowjAcMJiYuyrYtlIQzBhgP0oC4ztrQIE308fYc53t3N+
- w0xw==
-X-Gm-Message-State: AOJu0Yxw6d2zODMHC+SO3caVF2YLKvtBkhrZ+QlBgqmeKXQrwRu7sFmT
- AuKwF6l9V8x5RCApirSaIXQQdYcCvBXuQqGqvREgtQOSvIZ1c8K4tdFxePechE3Q1bu+6Y3co0B
- BLCPn/qE=
-X-Gm-Gg: AY/fxX7lQOQEqbqFb91t4EafEPcFBLutTHwEt7rfL9C1ggP3JhGuTxzcw8iuFxVJut/
- tBCD0Q8a9TXKxpW/YEVtqssm8mUrsvT+tl7EkjnxhvefBT/o/HYAtfUIneGXF9+eY8xhR546FkL
- 47GWhHBCTBA3NtcNa3QCh0vSsi0LF+j22OBZu2lzd0zfdwPik0t23FeV6apIuqbNj/mtVXrnV68
- 0wFhqMmb610t7IZfOKfi2kgSmlW1qOtt2K8J+kHD8mBuekwB2e5qbjmMHzuZ4osNARYUKUxpgFA
- 69lJ4Zh6ZR7rpS7CMYXkAcfRDdT20ATxToGYvUra8duJTpPBBE2hA30PLY95Of5qAMEJqPFIFe6
- /rjfgJ87K19nmKtk+mII1rJMtiT2kDfR36moYOqruWiY/pWIa/R5VawiWmtW9KOAw6KcD8wc/Zn
- O+GrlZfNWncIHFAR9mcFSDqq44eQUSpIJHHy3idgTBkKh0YsA67b4OwDU=
-X-Google-Smtp-Source: AGHT+IGTA1F9pGUvnOxUvBAxEuM5CajhpP2d4b0KJNCfBuEsjq+HRDLQvm8HHAx9wQXKy+k4QHriRw==
-X-Received: by 2002:a17:906:c109:b0:b80:325d:99e2 with SMTP id
- a640c23a62f3a-b803705ddb6mr1961657066b.33.1766589283089; 
- Wed, 24 Dec 2025 07:14:43 -0800 (PST)
+ bh=qSSsRmh/IQkwpJa4M1tD2tu2lq9WIQnOoGphHntAkAQ=;
+ b=cfG3fv4bVfEDPuCOyMiS5DX/vgMhRL7+2V96uAu5htliZeFE8OGjx/GdEXudD5dzLd
+ eov/xW2e7qZf6Vl5IoqP+dYUADGJLu3oLfa3V93UQBNQMxrka0u7gILzy8EHF5zkEARu
+ hf3d/ton5mL+6O8Ldr4R+uLljdCSjQMrqfxdxz2m/JfLAWNDYfNoJQvXbWLCXTP3UWmT
+ ZVuLnLswdvPj6kdtIFiglaZvB/NoBvGcIcwAqz2qANisvWxpL7YyKiFAfdCcYJZ0kQBQ
+ v5YYGKJpnYK7adfuyLC3PNs3vRtuJRM5wnZO2ScupRzBtz2FqLYgNEg2tqCbz13Zxg/O
+ tvAQ==
+X-Gm-Message-State: AOJu0Yyt5iyKrWSRKiZbA86m0v2ysL/W86Hde0kXfLYdf1w9EK85gu6o
+ VAt18BHj65EmUQVjlcUaz+dpfAOKx+OpKWD4mhx7yESzvAHZDD/TDfTXxcUGEqhHDZc5t7cRZF3
+ zZ8bO8/Q=
+X-Gm-Gg: AY/fxX4f2ydw60aH5/cvLDINuGQeAfYLIFQw+TDhjQP7/Pb6YjIXM2FGkdSiC0VRENt
+ oTr+V3Pana7OyTIHLRO1F1f+a8Nsi4dRKOCglvb30bY22slWp3I73UqbhuNbbbfXkKcbI15MHUS
+ 4zF8edi5dcfQ6KaOBhYfGaNbDhHHtQggl3waYi+Ja03Lj0sLfJyFWu/UIRvXdju/8o3mS41M8Wb
+ JYCk350jb7ZbId5wCChkC76qJLlYIcQ+AfLnkbM1ZR/CseSD6ZKq3khU7gKhX3jI32bbPh5VxPm
+ 7/AIX5eyEDayfxH3Kwjvrkx17LF6dC7p4WKFC+kDIYVFBxT9dD3Sjhm9JfHcHNU3LgzpSWBHPXc
+ 65vt15jXnjKEWPbhQiXfeWVWv4iNPjI4WcIJE0+/tpUWkVPEFO8Sp0vL/PXPcwsOCgTV6fmt1ET
+ u4EVPnXkGZAcBqE8B++EYVIsa/B2M4HifLH1BorccUdD01pz29+p9qax4=
+X-Google-Smtp-Source: AGHT+IH/1qWHjLejlt1atDrHHy69+lHW4Qc4qS7vIzk9OOR+3COYvxQGXxooLC/KYi/aV2P/u2q0/A==
+X-Received: by 2002:a05:6000:22c8:b0:42f:f627:3a90 with SMTP id
+ ffacd0b85a97d-4324e4fd938mr21508015f8f.32.1766589294877; 
+ Wed, 24 Dec 2025 07:14:54 -0800 (PST)
 Received: from localhost.localdomain (188.171.88.92.rev.sfr.net.
  [92.88.171.188]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b8080e2177csm782017566b.68.2025.12.24.07.14.40
+ ffacd0b85a97d-4324ea1b1b1sm34391670f8f.3.2025.12.24.07.14.50
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 24 Dec 2025 07:14:42 -0800 (PST)
+ Wed, 24 Dec 2025 07:14:54 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
@@ -81,27 +81,26 @@ Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Artyom Tarasenko <atar4qemu@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Alistair Francis <alistair.francis@wdc.com>, Joel Stanley <joel@jms.id.au>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH 4/9] system/memory: Remove address_space_stl_notdirty and
- stl_phys_notdirty
-Date: Wed, 24 Dec 2025 16:13:45 +0100
-Message-ID: <20251224151351.86733-5-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 5/9] system/memory: Allow restricting legacy ldst_phys() API
+ usage
+Date: Wed, 24 Dec 2025 16:13:46 +0100
+Message-ID: <20251224151351.86733-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251224151351.86733-1-philmd@linaro.org>
 References: <20251224151351.86733-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,105 +116,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-stl_phys_notdirty() was added in commit 8df1cd076cc ("physical memory
-access functions") as a (premature?) optimisation for the CODE path.
-Meanwhile 20 years passed, we might never have understood / used it
-properly; the code evolved and now the recommended way to access the
-CODE path is via the cpu_ld/st_mmu*() API.
+Commit 500131154d6 ("exec.c: Add new address_space_ld*/st*
+functions") added a new API to fix a shortcoming of the
+ld/st*_phys() API, which does blind bus access, not reporting
+failure (and it also allow to provide transaction attributes).
 
-Remove both address_space_stl_notdirty() and stl_phys_notdirty()
-leftovers.
+Later commit 42874d3a8c6 ("Switch non-CPU callers from ld/st*_phys
+to address_space_ld/st*") automatically converted the legacy uses
+to the new API, not precising transaction attributes
+(MEMTXATTRS_UNSPECIFIED) and ignoring the transation result (passing
+NULL pointer as MemTxResult).
+
+While this is a faithful replacement, without any logical change,
+we later realized better is to not use MEMTXATTRS_UNSPECIFIED or
+NULL MemTxResult, and adapt each call site on a pair basis, looking
+at the device model datasheet to do the correct behavior (which is
+unlikely to ignore transaction failures).
+
+Since this is quite some work, we defer that to device model
+maintainers. Meanwhile we introduce a definition, to allow a
+target which removed all legacy API call to prohibit further
+legacy API uses, named "TARGET_NOT_USING_LEGACY_LDST_PHYS_API".
+
+Since all targets should be able to check this definition, we
+take care to not poison it.
 
 Suggested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/system/memory.h        |  6 ------
- include/exec/memory_ldst.h.inc |  2 --
- system/memory_ldst.c.inc       | 39 ----------------------------------
- 3 files changed, 47 deletions(-)
+ include/system/memory.h       | 2 ++
+ scripts/make-config-poison.sh | 1 +
+ 2 files changed, 3 insertions(+)
 
 diff --git a/include/system/memory.h b/include/system/memory.h
-index 3bd5ffa5e0d..e69171de05a 100644
+index e69171de05a..d5c248f1794 100644
 --- a/include/system/memory.h
 +++ b/include/system/memory.h
-@@ -2850,12 +2850,6 @@ MemTxResult address_space_write_rom(AddressSpace *as, hwaddr addr,
+@@ -2850,10 +2850,12 @@ MemTxResult address_space_write_rom(AddressSpace *as, hwaddr addr,
  #define ARG1_DECL    AddressSpace *as
  #include "exec/memory_ldst.h.inc"
  
--static inline void stl_phys_notdirty(AddressSpace *as, hwaddr addr, uint32_t val)
--{
--    address_space_stl_notdirty(as, addr, val,
--                               MEMTXATTRS_UNSPECIFIED, NULL);
--}
--
++#ifndef TARGET_NOT_USING_LEGACY_LDST_PHYS_API
  #define SUFFIX
  #define ARG1         as
  #define ARG1_DECL    AddressSpace *as
-diff --git a/include/exec/memory_ldst.h.inc b/include/exec/memory_ldst.h.inc
-index 7270235c600..173164fee3a 100644
---- a/include/exec/memory_ldst.h.inc
-+++ b/include/exec/memory_ldst.h.inc
-@@ -25,8 +25,6 @@ uint32_t glue(address_space_ldl, SUFFIX)(ARG1_DECL,
-     hwaddr addr, MemTxAttrs attrs, MemTxResult *result);
- uint64_t glue(address_space_ldq, SUFFIX)(ARG1_DECL,
-     hwaddr addr, MemTxAttrs attrs, MemTxResult *result);
--void glue(address_space_stl_notdirty, SUFFIX)(ARG1_DECL,
--    hwaddr addr, uint32_t val, MemTxAttrs attrs, MemTxResult *result);
- void glue(address_space_stw, SUFFIX)(ARG1_DECL,
-     hwaddr addr, uint16_t val, MemTxAttrs attrs, MemTxResult *result);
- void glue(address_space_stl, SUFFIX)(ARG1_DECL,
-diff --git a/system/memory_ldst.c.inc b/system/memory_ldst.c.inc
-index 333da209d1a..b45bfecd137 100644
---- a/system/memory_ldst.c.inc
-+++ b/system/memory_ldst.c.inc
-@@ -261,45 +261,6 @@ uint16_t glue(address_space_lduw_be, SUFFIX)(ARG1_DECL,
-                                        DEVICE_BIG_ENDIAN);
- }
+ #include "exec/memory_ldst_phys.h.inc"
++#endif
  
--/* warning: addr must be aligned. The ram page is not masked as dirty
--   and the code inside is not invalidated. It is useful if the dirty
--   bits are used to track modified PTEs */
--void glue(address_space_stl_notdirty, SUFFIX)(ARG1_DECL,
--    hwaddr addr, uint32_t val, MemTxAttrs attrs, MemTxResult *result)
--{
--    uint8_t *ptr;
--    MemoryRegion *mr;
--    hwaddr l = 4;
--    hwaddr addr1;
--    MemTxResult r;
--    uint8_t dirty_log_mask;
--    bool release_lock = false;
--
--    RCU_READ_LOCK();
--    mr = TRANSLATE(addr, &addr1, &l, true, attrs);
--    if (l < 4 || !memory_access_is_direct(mr, true, attrs)) {
--        release_lock |= prepare_mmio_access(mr);
--
--        r = memory_region_dispatch_write(mr, addr1, val, MO_32, attrs);
--    } else {
--        ptr = qemu_map_ram_ptr(mr->ram_block, addr1);
--        stl_p(ptr, val);
--
--        dirty_log_mask = memory_region_get_dirty_log_mask(mr);
--        dirty_log_mask &= ~(1 << DIRTY_MEMORY_CODE);
--        physical_memory_set_dirty_range(memory_region_get_ram_addr(mr) + addr,
--                                            4, dirty_log_mask);
--        r = MEMTX_OK;
--    }
--    if (result) {
--        *result = r;
--    }
--    if (release_lock) {
--        bql_unlock();
--    }
--    RCU_READ_UNLOCK();
--}
--
- /* warning: addr must be aligned */
- static inline void glue(address_space_stl_internal, SUFFIX)(ARG1_DECL,
-     hwaddr addr, uint32_t val, MemTxAttrs attrs,
+ struct MemoryRegionCache {
+     uint8_t *ptr;
+diff --git a/scripts/make-config-poison.sh b/scripts/make-config-poison.sh
+index 2b36907e239..937357b3531 100755
+--- a/scripts/make-config-poison.sh
++++ b/scripts/make-config-poison.sh
+@@ -10,6 +10,7 @@ exec sed -n \
+   -e' /CONFIG_TCG/d' \
+   -e '/CONFIG_USER_ONLY/d' \
+   -e '/CONFIG_SOFTMMU/d' \
++  -e '/TARGET_NOT_USING_LEGACY_LDST_PHYS_API/d' \
+   -e '/^#define / {' \
+   -e    's///' \
+   -e    's/ .*//' \
 -- 
 2.52.0
 
