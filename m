@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AF08CDC5D3
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 14:41:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81E20CDC5DC
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 14:41:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vYP5w-0002Js-BG; Wed, 24 Dec 2025 08:40:04 -0500
+	id 1vYP61-0002Pp-CD; Wed, 24 Dec 2025 08:40:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYP5o-0002Jd-VA
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 08:39:56 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYP5w-0002Ng-Jj
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 08:40:04 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYP5n-0002KJ-5a
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 08:39:56 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-47a8195e515so39679255e9.0
- for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 05:39:54 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYP5v-0002LZ-2C
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 08:40:04 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-4779cc419b2so47169805e9.3
+ for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 05:40:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766583593; x=1767188393; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=dxY3HPB7rRZjFZATDxR6GWgzcoKAUIYF6yFOCpX50IQ=;
- b=TTI54bfudZMG8Pju9WK2G1V8Uloysr8UxeMSwz71DiOSpNfF2o240OH3HL/mGltLr/
- U8gzmYbVBCzbnUzmHgWZMZHcgNPgrrRAGmcn3c3CmsJ2DkfxMbESj4RpOwCVLLdKHyiJ
- hEmx00km6qWolb8UF7wLCuSo1f5QKtFML4KmllV6bsEojyJlK4bxdrKuBDdhMzOSoI/A
- Hs8wmjeSvk1cVizySWPzYa8EYxfJtQn2tASmfaX4lHanOym2izhWFnvtm5GgyRob9y7s
- UBilJLCHVouAhLo9DL1mu1BR2WS6HdbsedjdIpwUbcAgoq/Kj6K2jDNVHyvc/vvNy5Q4
- GLwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766583593; x=1767188393;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1766583601; x=1767188401; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dxY3HPB7rRZjFZATDxR6GWgzcoKAUIYF6yFOCpX50IQ=;
- b=KrLAtgFjcz5+jn2vEZkIR/nDgl3BH/bHn+j5nmPoXKgsk50aAnsFj9nf793f7TLYOY
- ni7YdyoBBCSImPH0xx3U6C6n6w9Vqi0n3SRhkPpseOYKRSOS5E3zQxQKm2nop/O0HIHu
- SbzvcJVQ8ljzXCdi8ozgn8HJ3fgt7cjyP9JhsuHqVY1KkuSJUQcPUb3Y7ZrFBAwmBZpk
- 6L6Ml3747TVS7h5ZP4takhqMGjnDaKjn2PNWHHTEjsFd13bCHViurG10IpQRzPRMA9Lj
- uSwYCLrkU6rmsdTooS8kBtZAvzZHVxFvmwTfMH5pIXb7xmnroU8Z4xi12phQQ/AxM+vT
- 59eQ==
-X-Gm-Message-State: AOJu0YzBGMz2cHw4r+GrJNv6Rn5HBx/BjW3wmLmh+rKZFx9duZJbOKeh
- 6mkIjhS1+WRUmerP6MZB//5X88EecUOX6+PTm8JGFWmUiqiAyKlimG7Ep1fZinpxdenEMwvVR+6
- yO9n/S8A=
-X-Gm-Gg: AY/fxX7N56a7nXeUUV0ikTCW9tMuVsAwTuu93AAUF89B62Gu4eGCbSRu2DyfCPYXRDG
- YohTRrlLC2l1hgBh+1cFaHho7aDJPYDrEf7cwMIufcHEBrdmLyBy5SahrKauZtM4cd9oCrBIMr2
- 1Wc9/+Mhlmbq2IVrVG8amTSiq1AsGZC9lYWIG1oohNgeqnooGh0axutYwGslzubx3RN12Ce6rqr
- a5MKxEmt3MQKlFw2jdiMYxVuUZuo8AgSi/XpGAu4Cxp8yHJ384+Wn8XdODi9MJKLgfSlA7I0nKc
- sc7I1ee+eo+rJUbQpeeWJnlE10bbeuUrhtmf3KKS395J9hlgI9iktltk4E84IvPs272gJ6/mCV6
- IRwYYO80spB5j0GgvcNSQ1HKWRkGXvWqZJtuBT1HgSJgwK1jfoEssbn9Ox0K7uIO0xRlHFNYw6Q
- iPp4oqdOexT1PH7MCXxFIpu5s+kAoLFSkIukpGEI9rVb/0sI3W1nY5b5g1R9BR
-X-Google-Smtp-Source: AGHT+IHrmo8Ih956Mv/7/Yii6h90TKwlPN5baqC8gVFgQPN8SlMveZIOQpVu2nqxq0Bfk5TkMaOY0g==
-X-Received: by 2002:a05:600c:6096:b0:479:3a88:de5f with SMTP id
- 5b1f17b1804b1-47d1959d6eemr181181905e9.36.1766583592960; 
- Wed, 24 Dec 2025 05:39:52 -0800 (PST)
+ bh=npTLL+HNAjuRrR3R9RZSM7yLL2ZqtYn4UMz3SJMLrrI=;
+ b=nz4n3U8GEH0lmsQFY+CavQ+EVCUDLgvQKS3Y1pSAwWp+oKTiz3Rk1t5kB+Rbc8c38g
+ ciFHFS1l57EMLhu2CsDotJeacdeQbpV+wqh9KrRr+5F8q1JbnribYaFqY7xrHZhaTgsO
+ LCJZBEOte1LTVZvxbDrwDUs36is/JqOpvH1b64rq+OwEbD6ibr9jYhEk3LL/tDlUdHj0
+ 8E0BVEkc1MUDgUsPEuYGxA8AQghLQxz254GP1sQrsYmChiZ9xsARjHLd8RX+0zZgzhLz
+ HJDDx1xjSwBT5tC8IpduEQAvCHYNncJ9+ypaZvaMZ64zp361WbphwgMTKkl8pxg6SGUB
+ egzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1766583601; x=1767188401;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=npTLL+HNAjuRrR3R9RZSM7yLL2ZqtYn4UMz3SJMLrrI=;
+ b=Dm7vtObJyrndwq0cYwIgubn/U/p7RW6tTPXdpjyQqfcWw6HSIoaRK8NsSsiWn7L+QV
+ Cs/Fm4rtMbhNQuT2UExICpAxaiyiLehJH1rSRHO7gJKxf3BMFWCdbiX6Z74Jplqb8ShG
+ P0YJ5T+YorwYswJNjbMd4V6N475L22dwZRqSccEeI83YdUoMG7eBuzdKKlFaJlymq5h+
+ ZyNk7jZSMt4/E2vUb+83TSIc0NbLbOetTsvDzg7NqqE1wmRXb/Nuf29dxc6WhgTlEdpu
+ tc4B/R4scePKCv0OiopFSiFizXveo6P+7tQJviK7lWXkGjFOIGKL2bi1jxfi3vcPb0AR
+ dAmw==
+X-Gm-Message-State: AOJu0Yxac+CpDXbrZFqlFL872kiVW9CCWVgR+nNR6e0XXSGx3cKw/5yr
+ HRN33AcWKjq8qT4GVlWY+c54uNw1IcXKHyh/f4KIrFeKL9ynvNJt0yJ0zqCZVlEVnn4FA5gRBY7
+ 3UGua3tQ=
+X-Gm-Gg: AY/fxX5D1FCjtl2nKhdtLAt09Vb+nDY0tNJexUF8UWKforn8HcqQN2/fQmeWfwnBhMi
+ USMj5T6wvcD02/hLYEN/1BD9hAf8DVhXpdVzl1iMBnUWS4u0AxQPxH4Yx3w7/LLwntUlGp3C9On
+ kSeLh94kds00gD3+QR7kBdM18lbzcT+KSjvXuccKhKkGXnwlDjOeWFMdJvu8UzGban583rdr+Hf
+ 7sW5XRadEsF2ke2ijtO/ZYFdItd4o00YzQbAi5ERtXvpmOxty/4jdbWq4zlroGOaea2+UIPwQAd
+ KOtpwy1jOLv8T87RWsEvAWCMU12Q5WuoHrHUF5YDeaWK4Wib+LiuQdzKCeeGsZFjWJO+eTeg8ba
+ CM9oFo3x6qmQE9YczjGTKc0YyityvATk5rEdJwICtOlAh3+RPTRRDNEWmmfBsP7hbbCJzwyP+iZ
+ iA3Xn4hc7h130M4d0qBUIdTu90nA6ofV0aOiSfx0mLwRBV71SsVp06j2Wi937n
+X-Google-Smtp-Source: AGHT+IGDh5UlHu/Ogt4V7UIVyWzH8BgS4jMIYR7F99WKAJuofh9mtCpHdmJkC4l1sJn1r8Xt4RBBBQ==
+X-Received: by 2002:a05:600c:3b9d:b0:459:db7b:988e with SMTP id
+ 5b1f17b1804b1-47d19555e07mr222050455e9.13.1766583601206; 
+ Wed, 24 Dec 2025 05:40:01 -0800 (PST)
 Received: from localhost.localdomain (218.170.88.92.rev.sfr.net.
  [92.88.170.218]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324eaa64cesm34432951f8f.35.2025.12.24.05.39.51
+ 5b1f17b1804b1-47be3aac6d9sm144306225e9.4.2025.12.24.05.39.59
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 24 Dec 2025 05:39:52 -0800 (PST)
+ Wed, 24 Dec 2025 05:40:00 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
@@ -68,15 +69,18 @@ Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/6] monitor: Merge hmp-cmds-target.c within hmp-cmds.c
-Date: Wed, 24 Dec 2025 14:39:43 +0100
-Message-ID: <20251224133949.85136-1-philmd@linaro.org>
+Subject: [PATCH 1/6] monitor/hmp: Replace target_ulong -> vaddr in
+ hmp_gva2gpa()
+Date: Wed, 24 Dec 2025 14:39:44 +0100
+Message-ID: <20251224133949.85136-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251224133949.85136-1-philmd@linaro.org>
+References: <20251224133949.85136-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,27 +103,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Requiered for single-binary work, remove target-specific
-parts of hmp-cmds-target.c, eventually allowing to merge
-within hmp-cmds.c.
+cpu_get_phys_page_debug() takes a vaddr type since commit
+00b941e581b ("cpu: Turn cpu_get_phys_page_debug() into a CPUClass
+hook").
 
-tag: https://gitlab.com/philmd/qemu/-/tags/endian_hmp-v1
-CI: https://gitlab.com/philmd/qemu/-/pipelines/2231223066
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ monitor/hmp-cmds-target.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Philippe Mathieu-Daudé (6):
-  monitor/hmp: Replace target_ulong -> vaddr in hmp_gva2gpa()
-  monitor/hmp: Use plain uint64_t @addr argument in memory_dump()
-  monitor/hmp: Remove target_long uses in memory_dump()
-  monitor/hmp: Inline ld[uw,l,q]_p() calls in memory_dump()
-  monitor/hmp: Fix coding style in hmp-cmds-target.c
-  monitor/hmp: Merge hmp-cmds-target.c within hmp-cmds.c
-
- monitor/hmp-cmds-target.c | 381 --------------------------------------
- monitor/hmp-cmds.c        | 354 +++++++++++++++++++++++++++++++++++
- monitor/meson.build       |   2 +-
- 3 files changed, 355 insertions(+), 382 deletions(-)
- delete mode 100644 monitor/hmp-cmds-target.c
-
+diff --git a/monitor/hmp-cmds-target.c b/monitor/hmp-cmds-target.c
+index e9820611466..2976f986d35 100644
+--- a/monitor/hmp-cmds-target.c
++++ b/monitor/hmp-cmds-target.c
+@@ -301,7 +301,7 @@ void hmp_gpa2hva(Monitor *mon, const QDict *qdict)
+ 
+ void hmp_gva2gpa(Monitor *mon, const QDict *qdict)
+ {
+-    target_ulong addr = qdict_get_int(qdict, "addr");
++    vaddr addr = qdict_get_int(qdict, "addr");
+     CPUState *cs = mon_get_cpu(mon);
+     hwaddr gpa;
+ 
 -- 
 2.52.0
 
