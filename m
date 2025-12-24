@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0439CCDB188
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 02:44:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DD69CDB1B5
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 02:45:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vYDuJ-0001jB-8y; Tue, 23 Dec 2025 20:43:20 -0500
+	id 1vYDuI-0001g6-7s; Tue, 23 Dec 2025 20:43:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1vYDuB-0001YC-3I; Tue, 23 Dec 2025 20:43:12 -0500
+ id 1vYDuD-0001ag-Cx; Tue, 23 Dec 2025 20:43:13 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1vYDu9-00058k-KR; Tue, 23 Dec 2025 20:43:10 -0500
+ id 1vYDuB-00058k-Sy; Tue, 23 Dec 2025 20:43:13 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 24 Dec
@@ -32,9 +32,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
 CC: <troy_lee@aspeedtech.com>, <nabihestefan@google.com>, Kane-Chen-AS
  <kane_chen@aspeedtech.com>, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?=
  <clg@redhat.com>
-Subject: [PATCH v4 12/19] hw/arm/aspeed: Attach SCU device to AST1700 model
-Date: Wed, 24 Dec 2025 09:41:51 +0800
-Message-ID: <20251224014203.756264-13-kane_chen@aspeedtech.com>
+Subject: [PATCH v4 13/19] hw/arm/aspeed: Attach GPIO device to AST1700 model
+Date: Wed, 24 Dec 2025 09:41:52 +0800
+Message-ID: <20251224014203.756264-14-kane_chen@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251224014203.756264-1-kane_chen@aspeedtech.com>
 References: <20251224014203.756264-1-kane_chen@aspeedtech.com>
@@ -68,112 +68,98 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Kane-Chen-AS <kane_chen@aspeedtech.com>
 
-Connect the SCU device to AST1700 model.
+Connect the GPIO controller to the AST1700 model by mapping its MMIO
+region and wiring its interrupt line.
 
 Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/arm/aspeed_ast1700.h |  3 +++
- hw/arm/aspeed_ast1700.c         | 17 +++++++++++++++++
- hw/arm/aspeed_ast27x0.c         |  2 ++
- 3 files changed, 22 insertions(+)
+ include/hw/arm/aspeed_ast1700.h |  2 ++
+ hw/arm/aspeed_ast1700.c         | 14 ++++++++++++++
+ hw/arm/aspeed_ast27x0.c         |  4 ++++
+ 3 files changed, 20 insertions(+)
 
 diff --git a/include/hw/arm/aspeed_ast1700.h b/include/hw/arm/aspeed_ast1700.h
-index 0c1216c4ba..12c57145c6 100644
+index 12c57145c6..7ea6ff4c1a 100644
 --- a/include/hw/arm/aspeed_ast1700.h
 +++ b/include/hw/arm/aspeed_ast1700.h
-@@ -9,6 +9,7 @@
- #define ASPEED_AST1700_H
- 
+@@ -11,6 +11,7 @@
  #include "hw/sysbus.h"
-+#include "hw/misc/aspeed_scu.h"
+ #include "hw/misc/aspeed_scu.h"
  #include "hw/adc/aspeed_adc.h"
++#include "hw/gpio/aspeed_gpio.h"
  #include "hw/misc/aspeed_ltpi.h"
  #include "hw/ssi/aspeed_smc.h"
-@@ -23,12 +24,14 @@ struct AspeedAST1700SoCState {
- 
-     MemoryRegion iomem;
-     uint8_t board_idx;
-+    uint32_t silicon_rev;
- 
-     AspeedLTPIState ltpi;
-     SerialMM uart;
-     MemoryRegion sram;
+ #include "hw/char/serial-mm.h"
+@@ -32,6 +33,7 @@ struct AspeedAST1700SoCState {
      AspeedSMCState spi;
      AspeedADCState adc;
-+    AspeedSCUState scu;
+     AspeedSCUState scu;
++    AspeedGPIOState gpio;
  };
  
  #endif /* ASPEED_AST1700_H */
 diff --git a/hw/arm/aspeed_ast1700.c b/hw/arm/aspeed_ast1700.c
-index e4d206045f..6494a5c4eb 100644
+index 6494a5c4eb..9a6019908e 100644
 --- a/hw/arm/aspeed_ast1700.c
 +++ b/hw/arm/aspeed_ast1700.c
-@@ -20,6 +20,7 @@ enum {
-     ASPEED_AST1700_DEV_SPI0,
+@@ -21,6 +21,7 @@ enum {
      ASPEED_AST1700_DEV_SRAM,
      ASPEED_AST1700_DEV_ADC,
-+    ASPEED_AST1700_DEV_SCU,
+     ASPEED_AST1700_DEV_SCU,
++    ASPEED_AST1700_DEV_GPIO,
      ASPEED_AST1700_DEV_UART12,
      ASPEED_AST1700_DEV_LTPI_CTRL,
      ASPEED_AST1700_DEV_SPI0_MEM,
-@@ -29,6 +30,7 @@ static const hwaddr aspeed_ast1700_io_memmap[] = {
-     [ASPEED_AST1700_DEV_SPI0]      =  0x00030000,
+@@ -31,6 +32,7 @@ static const hwaddr aspeed_ast1700_io_memmap[] = {
      [ASPEED_AST1700_DEV_SRAM]      =  0x00BC0000,
      [ASPEED_AST1700_DEV_ADC]       =  0x00C00000,
-+    [ASPEED_AST1700_DEV_SCU]       =  0x00C02000,
+     [ASPEED_AST1700_DEV_SCU]       =  0x00C02000,
++    [ASPEED_AST1700_DEV_GPIO]      =  0x00C0B000,
      [ASPEED_AST1700_DEV_UART12]    =  0x00C33B00,
      [ASPEED_AST1700_DEV_LTPI_CTRL] =  0x00C34000,
      [ASPEED_AST1700_DEV_SPI0_MEM]  =  0x04000000,
-@@ -86,6 +88,16 @@ static void aspeed_ast1700_realize(DeviceState *dev, Error **errp)
-                         aspeed_ast1700_io_memmap[ASPEED_AST1700_DEV_ADC],
-                         sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->adc), 0));
+@@ -98,6 +100,14 @@ static void aspeed_ast1700_realize(DeviceState *dev, Error **errp)
+                         aspeed_ast1700_io_memmap[ASPEED_AST1700_DEV_SCU],
+                         sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->scu), 0));
  
-+    /* SCU */
-+    qdev_prop_set_uint32(DEVICE(&s->scu), "silicon-rev",
-+                         s->silicon_rev);
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->scu), errp)) {
++    /* GPIO */
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s->gpio), errp)) {
 +        return;
 +    }
 +    memory_region_add_subregion(&s->iomem,
-+                        aspeed_ast1700_io_memmap[ASPEED_AST1700_DEV_SCU],
-+                        sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->scu), 0));
++                        aspeed_ast1700_io_memmap[ASPEED_AST1700_DEV_GPIO],
++                        sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->gpio), 0));
 +
      /* LTPI controller */
      if (!sysbus_realize(SYS_BUS_DEVICE(&s->ltpi), errp)) {
          return;
-@@ -111,6 +123,10 @@ static void aspeed_ast1700_instance_init(Object *obj)
-     object_initialize_child(obj, "ioexp-adc[*]", &s->adc,
-                             "aspeed.adc-ast2700");
+@@ -127,6 +137,10 @@ static void aspeed_ast1700_instance_init(Object *obj)
+     object_initialize_child(obj, "ioexp-scu[*]", &s->scu,
+                             TYPE_ASPEED_2700_SCU);
  
-+    /* SCU */
-+    object_initialize_child(obj, "ioexp-scu[*]", &s->scu,
-+                            TYPE_ASPEED_2700_SCU);
++    /* GPIO */
++    object_initialize_child(obj, "ioexp-gpio[*]", &s->gpio,
++                            "aspeed.gpio-ast2700");
 +
      /* LTPI controller */
      object_initialize_child(obj, "ltpi-ctrl",
                              &s->ltpi, TYPE_ASPEED_LTPI);
-@@ -120,6 +136,7 @@ static void aspeed_ast1700_instance_init(Object *obj)
- 
- static const Property aspeed_ast1700_props[] = {
-     DEFINE_PROP_UINT8("board-idx", AspeedAST1700SoCState, board_idx, 0),
-+    DEFINE_PROP_UINT32("silicon-rev", AspeedAST1700SoCState, silicon_rev, 0),
- };
- 
- static void aspeed_ast1700_class_init(ObjectClass *klass, const void *data)
 diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index 84ff8b5557..6b9ad328dc 100644
+index 6b9ad328dc..d998326536 100644
 --- a/hw/arm/aspeed_ast27x0.c
 +++ b/hw/arm/aspeed_ast27x0.c
-@@ -573,6 +573,8 @@ static void aspeed_soc_ast2700_init(Object *obj)
-         /* AST1700 IOEXP */
-         object_initialize_child(obj, "ioexp[*]", &s->ioexp[i],
-                                 TYPE_ASPEED_AST1700);
-+        qdev_prop_set_uint32(DEVICE(&s->ioexp[i]), "silicon-rev",
-+                             sc->silicon_rev);
+@@ -1124,6 +1124,10 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+         sysbus_connect_irq(SYS_BUS_DEVICE(&s->ioexp[i].adc), 0,
+                            aspeed_soc_ast2700_get_irq(s, ASPEED_DEV_ADC));
+ 
++        /* GPIO */
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->ioexp[i].gpio), 0,
++                           aspeed_soc_ast2700_get_irq(s, ASPEED_DEV_GPIO));
++
      }
  
-     object_initialize_child(obj, "dpmcu", &s->dpmcu,
+     aspeed_mmio_map_unimplemented(s->memory, SYS_BUS_DEVICE(&s->dpmcu),
 -- 
 2.43.0
 
