@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F2FDCDC660
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 14:48:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 432EACDC67C
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 14:49:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vYPDI-0006Jx-JI; Wed, 24 Dec 2025 08:47:41 -0500
+	id 1vYPDZ-0006Ze-Is; Wed, 24 Dec 2025 08:47:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYPD3-0006Gp-PT
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 08:47:25 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYPDB-0006Kh-P4
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 08:47:34 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYPD1-0003i4-F6
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 08:47:25 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-42fbc3056afso3207486f8f.2
- for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 05:47:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYPD9-0003jJ-DG
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 08:47:33 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-477b198f4bcso38874915e9.3
+ for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 05:47:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766584041; x=1767188841; darn=nongnu.org;
+ d=linaro.org; s=google; t=1766584049; x=1767188849; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wYWAkKrgLGKLEJzBNF2mvdemi8iXnGeEWzBQwxd6OM4=;
- b=qe4MMcACgyp19BAGesYEO1eojGdxgZqAA283DX/gzrLy95CU/DyisRd60j7HIIhAUh
- vfbcqhm9uTNlcPSWkMfW9mce7z1wM05fr8T7NGmmtfuJokVXx2LK/dsSBxe2RZ0KWb3v
- tbv0h9PsRNw0Msop40aSzTQbQ0Bv5qblM2nfLPiyXd68OUyq0gKey1ELEVIvXDeJIyhM
- 8e5+OLdrRpgTZ8Ngt/Wb7mfRRIGfN3PXYTxDoKrCxqOr6LpXchSLa5nxb55LSqedeCTa
- cN7XYMcWjDvV05pv9IvtdvY6eUQlQE48bil3Ku30jb6NOl8qszu6pGP3AQARybZlXFVN
- w3Vw==
+ bh=vEDW4pEiOQF8aZTfRkTnnN7IXm4k0EgK0HcgihEUm50=;
+ b=XrhVX0ttzGoUcaMV8zurqxZEZ16jNyjqtSICZY9/hwZ3yvcb0ILHRhvNqNEMPc5OZn
+ 1GQY2TIA2CbWlc2WkCf6AWKtnoVUsP/Oc8AGQTvDK0TuISCkma/sqWoHygRxWhXFCnHv
+ MGr6Y1zeoELCsSu1+e1rex4GJuO+wEFM5YzhehTqeVeCAWhz++x9JTJMz9uQ1mbPmvGS
+ iFSHDB6JmPyRGBw5N0XlUdIB1FR0BjkzFJGix4jxY0SqGMNgETjtdBeTU2OLi37WF4jB
+ QtFvCHsKUtWuI58vLpiAyWJRdnKTy17MbISxQPYXBW0/v7vbmhni1xGZF9iHjpBKYA4/
+ HxRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766584041; x=1767188841;
+ d=1e100.net; s=20230601; t=1766584049; x=1767188849;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=wYWAkKrgLGKLEJzBNF2mvdemi8iXnGeEWzBQwxd6OM4=;
- b=Q7c8X5AFH3WXpiAyzyBNX830M2HD5dRLMapsWCSUpH/nJB60nVqFptk40q2NlMEc8a
- hBGd3cd5XfhprR1FQogE+5ddMMjosz8QCU/xJpYO0MDn5m5M5FZ4+CiMG4YH3+BGlOrK
- v/m1NbQeqQZctHD4ulqQZMXOzwwsYeew0VpYVoVKA3X+WFY63/0F07/nZZ8PSATHfMyU
- 3sA913d/IYA0mV5litG02BmFValgADUghrg2VTyNFYxFj2iANkGIwuqPMlhV32XHDyCt
- +V9oJXzQ9yQnNWk+TFcz6fSupR5Di3yGQ8Jp4DaDHxPAwcyN8yRZyCypi2T/gaTlr5uD
- xYLA==
-X-Gm-Message-State: AOJu0Yw5MrEnWDzZB7eNKZtC+enzi891LurypisQENpJvxWh3ZZBYG20
- B2dCLO9+PYfTDuOU6uilk4FN0KLOI1ZBziHoH+2tMEhiHO7DX14YsAsu/TWy/csabaIH7Io5W5/
- MTSU8Egk=
-X-Gm-Gg: AY/fxX5nvSotF1ClNoTbykg9u0FM1W7OCNIVGQV+8WT/DZtjPrCNaz4s1UH8jGGdSgO
- AUmMloOSmT5KCz1jTobLGDHkgES9Rbs2VBj9Jo4tY9L8oU/dBLTzfct79Lw6vw7ZNZcZvZe59ag
- 0hRE9o971h3WTHJautPn9jNGlIFopIlqLjlUgAdirQRK7dlBufutuZ641UKxAruvTNLHkqqPx2P
- IggQ0mMGhHI0z+lsi8tBn2ZEqNRYng63FwGLPNfsDRp2Z3CADRCg9fRj/09ZBFoKVyoZQwuhQ59
- ccxn39jyMvd76gpxsAl/5GgQj+6a6o0B0mWKruxw05fQXNyiEOEK/JjSWVDLgiTxv8cFseULm1N
- opK9pNBo++BGmndkYvUXuEoai4FEWmX1LTpzaw+9zIocR5nwDSjCvB3UfLrJKsxhij9xlMCSx1v
- Ghvi8TTi/2Lrjw+6s/ZIY++hR9fjC5abXieH5/kU3vzt9AwlZ4vyFPbo80pw3d
-X-Google-Smtp-Source: AGHT+IGpRKcg+SvCUKQRGP5OhocSibsnsK6aqxmEiszVTN8Sq1AhPQpiR+QXZPhejGYSZFJevKjHgg==
-X-Received: by 2002:a05:6000:2305:b0:431:316:920a with SMTP id
- ffacd0b85a97d-4324e4c1519mr17318370f8f.8.1766584041532; 
- Wed, 24 Dec 2025 05:47:21 -0800 (PST)
+ bh=vEDW4pEiOQF8aZTfRkTnnN7IXm4k0EgK0HcgihEUm50=;
+ b=Kpde9uTCmPJ65/nkTiTdD3PgqOaxMKxVHFf48/5NZLF8XfdyasFf2fmG7vHwpkgSku
+ /CG34FpMfsD2dDzzgx9udOTFv3X7xxpAX8AuCrDaxwiMMTx/3UZKAYH2lNwwtYqUJVSN
+ i8646rI1TiUooBN8dssFvIr+tr8f2jer9MvTEHPSGbnsTH++oFspT3qZ5HdHVmvoNQGZ
+ WhG+5CT7KCi/ZVQ41O4d3LOEd3XklWWfAAouKsP8/M+lTh8Xl6HZ0qRo403x59vZjaVO
+ 8Yev+wgOy6xqkph9tnjzYM1slpiJl/EZdfrRIyz79Xnfxq0EskBJlonYjWa8eR0cJhZE
+ yLxg==
+X-Gm-Message-State: AOJu0YyeysIfXjkSmgdRTnredEQ0mvJsL9iLf1+yG5IhEegaSiHhq4Gv
+ XSO/y8DTy5ykRcXM2Bv99o9Rv4dn3x9twbsxroA37iF6RkOTnluWw0XrmtF7nzqjHTTeGHdVn86
+ rqoZpdmM=
+X-Gm-Gg: AY/fxX793iIc/AsuepSgaBDuUYJnO8xlaXcqd3bcdC7DBpwuh8a053xri6MSMv1t62G
+ 40zWw/p76jUTR6hChVCvD11WdcXhgyjvt6IPg+xj6Rsb32GRUMBV02GC7LiwGMN7ivoZ1h061so
+ MQV6jlOcr8TcHLesSY88vDYl3KtZskRyMUAl2hOXGfWS9DMs0OjvVWdJoqH13r3+rcIWPZc3Yit
+ VBXl+bP0sNV/IWA60eP2QaSWUYF4dli1utvPvr+wRzJ4OS2uGeZmvt3mq1JYLEP/3qO1yX9QTpZ
+ yflfUd+d9JAi7UBZ+t2YpTwM/0P9Tk6/A9RRc2M9/IY4gD/Nw2ZglwVjwtxvxEuVRsHoBbmWmb/
+ Unnb48VFOLwrW9XYdQy2S1iby/ZRMgrZ/cfMiWoghbvpwE1GkL+wSJG5/hDLR88eLXlAvyyFZVr
+ YBk+plk6zz5VhPWS+HxvA3UCqF2+m6MhCkPxFpaDttmlRnVWXvM7dY5FR59nqP
+X-Google-Smtp-Source: AGHT+IHnqJsRELm10jBU2RIDVAqxKRtc3Jq/rf5twmbfPMauJFhpRv+bid2csAak0epOYGPiW2VxtQ==
+X-Received: by 2002:a05:600c:4ece:b0:477:6d96:b3c8 with SMTP id
+ 5b1f17b1804b1-47d19576da2mr172053595e9.23.1766584049207; 
+ Wed, 24 Dec 2025 05:47:29 -0800 (PST)
 Received: from localhost.localdomain (218.170.88.92.rev.sfr.net.
  [92.88.170.218]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324eab2ebfsm33933748f8f.40.2025.12.24.05.47.19
+ 5b1f17b1804b1-47d193cbc0bsm300874335e9.11.2025.12.24.05.47.27
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 24 Dec 2025 05:47:21 -0800 (PST)
+ Wed, 24 Dec 2025 05:47:28 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>, qemu-rust@nongnu.org,
@@ -72,18 +72,20 @@ Cc: Jason Wang <jasowang@redhat.com>, qemu-rust@nongnu.org,
  Brian Cain <brian.cain@oss.qualcomm.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 4/8] hw/misc/pvpanic: Expose MMIO interface as little-endian
-Date: Wed, 24 Dec 2025 14:46:40 +0100
-Message-ID: <20251224134644.85582-5-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH v2 5/8] hw/timer/hpet: Mark implementation as being
+ little-endian
+Date: Wed, 24 Dec 2025 14:46:41 +0100
+Message-ID: <20251224134644.85582-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251224134644.85582-1-philmd@linaro.org>
 References: <20251224134644.85582-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,27 +108,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make the PVPanic MMIO interface behave like the ISA and PCI
-variants: access it using little endianness.
+The HPET component is only built / used by X86 targets, which
+are only built in little endianness. Thus we only ever built
+as little endian, never testing the big-endian possibility of
+the DEVICE_NATIVE_ENDIAN definition. Simplify by only keeping
+the little endian variant.
 
-Fixes: a89607c4d0e ("hw/misc/pvpanic: Add MMIO interface")
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/misc/pvpanic.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/timer/hpet.c                  | 2 +-
+ rust/hw/timer/hpet/src/device.rs | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/misc/pvpanic.c b/hw/misc/pvpanic.c
-index c83247c4087..3e60b226e18 100644
---- a/hw/misc/pvpanic.c
-+++ b/hw/misc/pvpanic.c
-@@ -62,6 +62,7 @@ static void pvpanic_write(void *opaque, hwaddr addr, uint64_t val,
- }
- 
- static const MemoryRegionOps pvpanic_ops = {
+diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
+index 1acba4fa9db..bfad626d5e1 100644
+--- a/hw/timer/hpet.c
++++ b/hw/timer/hpet.c
+@@ -648,7 +648,7 @@ static const MemoryRegionOps hpet_ram_ops = {
+         .min_access_size = 4,
+         .max_access_size = 8,
+     },
+-    .endianness = DEVICE_NATIVE_ENDIAN,
 +    .endianness = DEVICE_LITTLE_ENDIAN,
-     .read = pvpanic_read,
-     .write = pvpanic_write,
-     .impl = {
+ };
+ 
+ static void hpet_reset(DeviceState *d)
+diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
+index 3564aa79c6e..4f4be84115e 100644
+--- a/rust/hw/timer/hpet/src/device.rs
++++ b/rust/hw/timer/hpet/src/device.rs
+@@ -708,7 +708,7 @@ unsafe fn init(mut this: ParentInit<Self>) {
+             MemoryRegionOpsBuilder::<HPETState>::new()
+                 .read(&HPETState::read)
+                 .write(&HPETState::write)
+-                .native_endian()
++                .little_endian()
+                 .valid_sizes(4, 8)
+                 .impl_sizes(4, 8)
+                 .build();
 -- 
 2.52.0
 
