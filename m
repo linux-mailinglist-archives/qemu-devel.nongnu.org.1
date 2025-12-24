@@ -2,86 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53ED5CDCD51
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 17:17:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4751DCDCD5C
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 17:18:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vYRXT-00034K-AD; Wed, 24 Dec 2025 11:16:39 -0500
+	id 1vYRZ1-0006fT-TN; Wed, 24 Dec 2025 11:18:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYRX6-0002jX-9o
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:16:21 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYRYz-0006ew-A4
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:18:13 -0500
+Received: from mail-wm1-x342.google.com ([2a00:1450:4864:20::342])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYRX4-0001dj-HF
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:16:15 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-42fb5810d39so3218376f8f.2
- for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 08:16:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYRYx-0002Al-Nd
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:18:13 -0500
+Received: by mail-wm1-x342.google.com with SMTP id
+ 5b1f17b1804b1-477632b0621so38311395e9.2
+ for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 08:18:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766592973; x=1767197773; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=q6gwBvmvKoTiZ5BGD5jUCL61MgQtrvFZ8I5LHCNGerU=;
- b=FEZT1swAaLSUWI6eYquSnP9i8U25mt1NeRcSw1VamDKQmRsstQBCi1H17fxd/DiER7
- 18CVqL3SumK7RFXziI1mQZG/GL3Ldgi1+VA8C5rtNB6Nc+CoRhbM+3Kw9UJcF6hCtWTE
- P59q6O9iwGpQztkEMXEwyPKobCwMASICgdzrAnAe7oRTppAchpJSsf92HEI/ZEgVfmKl
- Xx5VPZtTKh2u5nNSOEC11KNHXIBOSyHvzOZjXMRcXEsZ8Z6C5XK9Lw4u1YA9LaogeXqB
- dB86x2cAyZUvegxqG2A9zALrUiReV4rSwyM5A5dHK8JHrkZQLyR8PwrWvpaizdsDqain
- R++g==
+ d=linaro.org; s=google; t=1766593090; x=1767197890; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=m8mMgVc11pYrsHLl0g2yJzZBjiwVbSsCNzGfkR+dMbM=;
+ b=LkY3MzzkCCJ83II4WdQ8qk++PPfPR+/yzfEs0IIn5N9zwX7On5ElM13jv+Ebr3+nnC
+ l/Ujgrxuy0DHtwABKcdx1+A/AMV/HQXX83SyYD46vJiuIc80SxhRj6SS8V1Co+q8ZuzS
+ c5g0R9GGrz07cv3ABpJcPgxjdTA4It7jv+ijrJrHOibh7WFRAiteu+VV85IRhrxAEdur
+ plf3gCYavvKueYkWG4cFiBUwffineX13m5lfgwHMppFXSbidTEUM85RG0xcqRgvKM+U9
+ bU5rpkoX0YHLi3F55+cel//BZGmD6Tqd3vyVJjghkmksnRKF7E8xTOK40gmGQehXFdtF
+ D5Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766592973; x=1767197773;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=q6gwBvmvKoTiZ5BGD5jUCL61MgQtrvFZ8I5LHCNGerU=;
- b=abbdgt7vuX+Zbep8mFmb4g9jcY7QqON1W/yg306QMRioKck9yC5nxuJ1NryK/DYPOA
- md62G20Y9tQpe0aO3ouBBUVTl3kfIrLj5Wz8MyOCaHgA4ahHFDWTFRXakNrqKHc89MFN
- +zX9jeWVZ8oQyNMk5wxIii768p60ddgCvGJO16h0qeOtby/+F3hLvWoiDVLyFnivi1Zh
- hIbnNUumDgrNm3Ec3ahKaVr5BF9A1xekoZKhLkWhqXTSa9gtku1quoHTI7enCL7V8nFF
- KddX6kGbHbwcgZTa9eCjcUQkmKlxSWDU0e2MLEbfo4FhgFV8P2hCsuaZ84kCm3ZYRwCo
- LehA==
-X-Gm-Message-State: AOJu0YxmhPDS1FkBEFot5s9m6UyWNLJ/xOc4U2RdUMoWczW0KbPlFCU8
- 2/ThcKRakZSZqiVf8MkJmUtIoYaMfPy1Pgopr31bhWrcISzu4PFzkjyFB/Q8cSidtXy8cB0VcBz
- PHVTlIEQ=
-X-Gm-Gg: AY/fxX5ApSjgFzTHqbvbojSnS84WW8tFPGlp/syPmTtFb0eBtF4+1d0zsVhxh4i8boQ
- n2KhHNZKKdWHAkW0nia6vtmTZuX+4LuITE+l6zyxqujyRH2McMFJBFqXshoE0aYCH0jVLOJsg9r
- jDyGxOGHpZs7vUG1P9Vy/H3f6GY5FbbaMopJPMYWlpHdFeZtbVPWUNZQo+LRgYvhWjmx3NZrVzj
- HdzRbeKEiZL8zBCjFemTbWNlyyohCRPHr1EryIFwPXzoTCJeXEq5We66j92tIcA4pPVY9wsLRqF
- jaBW7w9AGLHi8vwqrvoXq5jDAVBn8Kq7w7771hQgdQ1bG2ST/Otwzy9+cZr0Gpzp8N1RJ9Nsecr
- Hzrq+hgYGVZWLY4pi8vkrNbzg8sabiMEGD8cgCAxbHTekT3Ow27miNJPsZWux5aD4K45m3bgbit
- FZIvpYLoGmwtnOAWNl5N0vh5RDOf1h0eA4zaYIvEHZVUnzwpzAO778tSNzYO94VWk+1g==
-X-Google-Smtp-Source: AGHT+IEYtK6N8mDzsq26QOi+N4o8wJTbTZz2+TxQH94SyRbYQy2Rs4jck/WT4ZKuJcSRmoAdyUIxpQ==
-X-Received: by 2002:a05:6000:2204:b0:431:a0:7dea with SMTP id
- ffacd0b85a97d-4324e4fcdd7mr17834399f8f.40.1766592972632; 
- Wed, 24 Dec 2025 08:16:12 -0800 (PST)
+ d=1e100.net; s=20230601; t=1766593090; x=1767197890;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=m8mMgVc11pYrsHLl0g2yJzZBjiwVbSsCNzGfkR+dMbM=;
+ b=lbPLS7Ff5DZqeKPnef0rn/QJ2im1edv3G1IVIhPTSCtMOWVMW8wjKCmMqrHT+HE1e1
+ 2D60ncOYrsOzQZMwNg0wyRPNzc5PxVfBr+SyzyYbJ1VVwkKvwMvzhNaMQ2b9NIGvVzzB
+ 6aw17Nkn6QMceUtg2oY+EZBVTxiPFUzmVgfij8Pzqgn1Ns7Q9S4OlFYa2JC61lk26ylz
+ N/UByutHcQoRo0t5QqK9hg61ehi65pEcpVO3+YkEq7z2z+tHp1mgwmvJt+1qamlseIYE
+ qGsEseREM7RkowLadjXsMuy60ABDoDlXodPxrpysSILm2kJnoH6kiC66jCgBVfJyInZR
+ 2Eow==
+X-Gm-Message-State: AOJu0Yy0pAmK4mZY4XJRfLnQK+djD8Cdz9XbTnT07r4oK/AdrTARHY7X
+ XC7Xu9Kl83AN8vngeX1ydSIZYJCohW75EGwuA6JjxTXweXT7OmsPCLZV7i9GrUtG1SdcAlx02OP
+ 0ampgRRs=
+X-Gm-Gg: AY/fxX4iRb7eA9TLZtNzNdlBODA0PpI7D1QP1EwEaN3blr1MwXvqlJXqLne+Q1Rzo0u
+ wVeU3HEcOChKC9P/akG/iB8lJIdub/tegvAdJg72De7ZhCngJ9cRuUp+IfKN7OLDFVzyvjB6wD3
+ Yn6/Def/UQmjTIB+hdpbjkMoc//XK7JDFG1EcxvtfiRHcmIAqxZL92DB8+z1yOEQt4N+CHKBvYA
+ dZvs7KD88yap/LKrB1L9+56DUudu6Q4mN6NsWvzMGIR/q+eDhmI1rGZmEYWUsYSyJ3p2RE0B6jJ
+ Jckzjxj/DRrxEoyCxnI+BhNVvG4j5JpYasFomeRxSVqisfR1O6rr17ymMiZPGUcCksVBAR/P1Ca
+ ek4yLiX7bCYliIzqDPYn+1E3P/mnAhX3NXcJzUln8wgjkYQMnQgEQqEKNHfl0GoVaskk4mOK6Pa
+ g9+4risupLgiqIW39mCrdh4CGN3UjseDoXp45QnHZcrgK0wuOW30s2XXo=
+X-Google-Smtp-Source: AGHT+IGDpBi7d61BCqBQ2oKQcZ4Q/gc0ivCWQwVMh0M2owjMfjcdqmB5vILSaOVGdKiOK5boaoRnfw==
+X-Received: by 2002:a05:600c:1394:b0:47d:3ead:7440 with SMTP id
+ 5b1f17b1804b1-47d3ed097f8mr23274565e9.32.1766593089803; 
+ Wed, 24 Dec 2025 08:18:09 -0800 (PST)
 Received: from localhost.localdomain (188.171.88.92.rev.sfr.net.
  [92.88.171.188]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324eaa477bsm35024487f8f.36.2025.12.24.08.16.11
+ 5b1f17b1804b1-47be2723b2bsm351652515e9.3.2025.12.24.08.18.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 24 Dec 2025 08:16:12 -0800 (PST)
+ Wed, 24 Dec 2025 08:18:09 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Bibo Mao <maobibo@loongson.cn>, Laurent Vivier <laurent@vivier.eu>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Song Gao <gaosong@loongson.cn>, Anton Johansson <anjo@rev.ng>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
+Cc: Jia Liu <proljc@gmail.com>, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Anton Johansson <anjo@rev.ng>, Laurent Vivier <laurent@vivier.eu>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Stafford Horne <shorne@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 8/8] configs/targets: Forbid LoongArch to use legacy native
- endianness APIs
-Date: Wed, 24 Dec 2025 17:14:56 +0100
-Message-ID: <20251224161456.89707-9-philmd@linaro.org>
+Subject: [PATCH 0/4] target/openrisc: Use explicit big-endian LD/ST API
+Date: Wed, 24 Dec 2025 17:18:00 +0100
+Message-ID: <20251224161804.90064-1-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251224161456.89707-1-philmd@linaro.org>
-References: <20251224161456.89707-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::342;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x342.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,35 +99,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All LoongArch-related binaries are buildable without a single
-use of the legacy "native endian" API. Unset the transitional
-TARGET_USE_LEGACY_NATIVE_ENDIAN_API definition to forbid
-further uses of the legacy API.
+OpenRISC is big-endian. Use the explicit 'big'
+endianness instead of the 'native' one.
+Forbid further uses of legacy APIs.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- configs/targets/loongarch64-linux-user.mak | 1 +
- configs/targets/loongarch64-softmmu.mak    | 1 +
- 2 files changed, 2 insertions(+)
+tag: https://gitlab.com/philmd/qemu/-/tags/endian_openrisc-v1
+CI: https://gitlab.com/philmd/qemu/-/pipelines/2231223066
 
-diff --git a/configs/targets/loongarch64-linux-user.mak b/configs/targets/loongarch64-linux-user.mak
-index 249a26a798c..4ea12794705 100644
---- a/configs/targets/loongarch64-linux-user.mak
-+++ b/configs/targets/loongarch64-linux-user.mak
-@@ -5,3 +5,4 @@ TARGET_XML_FILES=gdb-xml/loongarch-base64.xml gdb-xml/loongarch-fpu.xml gdb-xml/
- TARGET_SYSTBL=syscall.tbl
- TARGET_SYSTBL_ABI=common,64
- TARGET_LONG_BITS=64
-+TARGET_NOT_USING_LEGACY_NATIVE_ENDIAN_API=y
-diff --git a/configs/targets/loongarch64-softmmu.mak b/configs/targets/loongarch64-softmmu.mak
-index fc44c54233d..38c0f68ddbc 100644
---- a/configs/targets/loongarch64-softmmu.mak
-+++ b/configs/targets/loongarch64-softmmu.mak
-@@ -5,3 +5,4 @@ TARGET_XML_FILES= gdb-xml/loongarch-base32.xml gdb-xml/loongarch-base64.xml gdb-
- # all boards require libfdt
- TARGET_NEED_FDT=y
- TARGET_LONG_BITS=64
-+TARGET_NOT_USING_LEGACY_NATIVE_ENDIAN_API=y
+Philippe Mathieu-Daudé (4):
+  hw/intc: Mark OpenRISC-specific peripheral as big-endian
+  target/openrisc: Use explicit big-endian LD/ST API
+  target/openrisc: Inline translator_ldl()
+  configs/targets: Forbid OpenRISC to use legacy native endianness APIs
+
+ configs/targets/or1k-linux-user.mak | 1 +
+ configs/targets/or1k-softmmu.mak    | 1 +
+ hw/intc/ompic.c                     | 2 +-
+ target/openrisc/gdbstub.c           | 2 +-
+ target/openrisc/translate.c         | 3 ++-
+ 5 files changed, 6 insertions(+), 3 deletions(-)
+
 -- 
 2.52.0
 
