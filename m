@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97EE9CDCDC3
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 17:28:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5008ACDCDBF
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 17:28:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vYRiW-0008Ji-Uz; Wed, 24 Dec 2025 11:28:05 -0500
+	id 1vYRic-0000Fj-D0; Wed, 24 Dec 2025 11:28:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYRiP-00083T-Rg
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:28:00 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYRiX-0008Tu-L7
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:28:05 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYRiO-0003ss-BW
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:27:57 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-4779adb38d3so40403295e9.2
- for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 08:27:55 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYRiW-0003tc-2J
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:28:05 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-47d1d8a49f5so28515965e9.3
+ for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 08:28:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766593674; x=1767198474; darn=nongnu.org;
+ d=linaro.org; s=google; t=1766593682; x=1767198482; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yCWaAKr9HKDQPOGDVeV4ELgBSGxrVu16jLOCiFl1Ing=;
- b=Jy99smcdHIvvGn42gELTjl5hCN2ZXf63ODYW2/Z1eLKaoKF6tlj2IbtAKr2oqgFvMQ
- VjxBVBXbWoSB8U8jFQTe99Vi+jdQu0+Uwu0EZTqPnS2tbC1StMnPfIRMiC/Z8AAHEJVN
- 81DdTQJlg/5S7rK8cp/mrsvJZzkE5nu8VIGESJsdQZ6ppZjYRgUMDkwYxavs4TUHcLBt
- TEUDkss6R4kFosyfIo7c3FGeFY2K07+53XdaB6U9HUaA7G3ctoFiNJieU6KRfBy3TpFN
- 43Y0V0/DB8L9oyQkHYlt4auoocglk7XQiw6Nt+7LUsmkTybxdFU0xLwBZsPM0UQm5aSO
- 1P3A==
+ bh=UC3Yrm7h9DtMfXVQz3f10GYZ8/dRUZPiSUf8qPFazoU=;
+ b=i+c5n79crW6BjtmSQG5QgWRsp5Ba+9XbFhLaAwpVAt8I2FPPwLsnrEYlVWphCfTXte
+ UH8YQMSbQtd+ECeI8Kbw0iOxQtG7g9OEENJJ1GBvwsGDli9NmVwTLbMPPkUNMZikTuFM
+ wcmi32Gmyrvh0FNXbwbU6t7UITSCefLyi8Yons2XRP514EQWvfnhPOn+LeRMBW2+zxgy
+ IHNSmcnohTBuPubvj6P+nBX8MLA07ip7OApGljY1iqpHslYPGkA/5Ibs0huxJtCut+H/
+ I35DuaPCwn2DKrHTFM9V0oXVzz9WiZtfb9s2lLnqADs88mj9l75rJdNDT4WNvZ+Y34m5
+ m+4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766593674; x=1767198474;
+ d=1e100.net; s=20230601; t=1766593682; x=1767198482;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=yCWaAKr9HKDQPOGDVeV4ELgBSGxrVu16jLOCiFl1Ing=;
- b=ddFPxaW2ZCWuZCcPSuJD/AYknBkZ8QVV+ytfPISFez/SlNKUadC8G4dIzC162vSRFY
- krKx67/ihRDyhSe3Dd/p975bhwerijJfI8tVNLcUWqnsFCiQoSYEv8CL6s5C/NpTMBKp
- Yt7Cq2J0fNXUAaDt66lii/1AFWOcVKGxVSqHxgbUZt35s4D4AjmBRnolRnEMOAztuDip
- 7AZUnTPjrBjwlBbQL2WZI9KrvsolQ4hEjK2xw1phfaMhXrpZKYVB/jCWWQrtxGTodNhX
- ddYiGd7St7rEYxTQd+CATxpYIcvQe2AW/9f/P4DwrwPxIomgwOE7hL0hhhIbj0QmXACh
- LnIw==
-X-Gm-Message-State: AOJu0YyXwOk6f1kfmO7T96hqqa/lV7NOfk2pitsIDsxQrrJ74ZTKikP7
- zavNwiO+E2y6MluX9cmIxdis4L8TmpMSDrcEiMaQgy1ENmSsWe49i54P0U5OVMJgHhhibJX4yyl
- eDjLvM0k=
-X-Gm-Gg: AY/fxX4PymZ+RxwGbQnrtLcBL9BbvBOkaTlQV4r/KH5vsKi8w6m/dqIrANjVnS3l4JM
- 4Cs6QbdM24pHm72GF/NTMjh18ih2eDpVmbf8yyz7tZ1qEWIimAHFft+5OKlMR4SNJ+91Cy3R+sk
- SIPrDDgJmCjh7DzuG+shKJOrUnWLdv8RolzSNdeEX2VWKXnEEMXf52DrIW8KQZWyruXfulnYIEb
- OVF0X71Q8xm3RUmk7iildo+Bk1DpExG7s1y2KGpLuF6HDUz3Oiqw6gquCFMdk52OQou3unG3/So
- CUV9gQNMAy9fnOp7Z2NTbdLm9H40UlkxtYVBqPJK96Jcs71A2TO3Ttu3iOV/8OjKF20pYZkjN57
- 3KvbrBpBHoGOqqm408LSbi0RhoVLzC0QrjyQfztdxKfz9FmonRXzffdcDjVNvIMiFP2Q7rye9jo
- P1YpljhmjwJ43hJg+cJE4m8Y45SDXA0dSOpWyR1dMR7Tm8anpuBK+/ozk=
-X-Google-Smtp-Source: AGHT+IE7D25jXMwQKrHimj1fqfQKSy/l1W2QPXDK0tVQ14Rir4y+jRlrS0l5TKUvJrvLTcUEv6R6gw==
-X-Received: by 2002:a05:600c:1d1d:b0:471:d2f:7987 with SMTP id
- 5b1f17b1804b1-47d1958f9c5mr176679325e9.26.1766593674111; 
- Wed, 24 Dec 2025 08:27:54 -0800 (PST)
+ bh=UC3Yrm7h9DtMfXVQz3f10GYZ8/dRUZPiSUf8qPFazoU=;
+ b=DEpY7eLAPjPD+kcpFIef3liLRxeAOXXUjBnPN/hXEhLsvtxoJJKRZUqOwGyUYmpNfg
+ fifz51t3341XxUpETmuY8LEDj0ZPeyOAqszJJzx4cb7AK2QdCuX9crf+RGclD0IsKvAG
+ HsMVBTPReE2AD9hh05BLYUVp8sGIWO8ut+Wm8ISeTHLOkibumxWNxfUil4VwqC5vB6ua
+ jkh37ZgtzBAD0DWackji5xENlZCwoJ8oI53umFutQebIp7lBfiClA0DRLZWMZFoMFwkY
+ FRH8OoNaLtbJd8T4HcZfEEKSt2igXej2bS+LUwxsU/FKQXD9qjPSdHNYaDWqP7yEtr6G
+ F7sQ==
+X-Gm-Message-State: AOJu0YwH1W61heuZm/NHxp7woBOFNHvKuBonb3rHEqzDa2xGA5aOiv5X
+ Uok6w/jib2KlBkE39af/Gq/wK1n+YkiGWT5v15ct6/qeXBoNKd+RZ/mFHUh5kwt9S0+4zVaMz6P
+ SP6qFS44=
+X-Gm-Gg: AY/fxX5WAy2GYrUBFkhTajKa+SlnjvaOVBmWxFJOlknSoX0Sx4zMr8IkwQe5F9XdATx
+ YkAQxp14XaIszrM9y4qErBEiB7Rpl2TQINldJckc674Yo7kZERhVwLjDZuHv5DogB0cSbEgYnKk
+ WOKhL6OFN8CpTCK4DyDazT2kmkX7MqRM4LtjhgizwqvPpapmax9E0hfPpuo2H7JfNp3Xzij0p7+
+ s83hjnNzFSKTvZhv9HTDTo39oSFJT/DJMEFJzwVn0ZcyOlb6gpkyIHnLNI4pZnUJwn6VUqdwxB+
+ B83zHNUteMsx3bFgtQeLXgerp0OLHgHcH1qlJOfyLAPbx65NJNL+DTUCXQOA4rbCDNTjXqGSKgy
+ Ri4t3PBW5PKf77xvtu/dVv5K2aFDmZQhz6ySAKepe0sHHtztDc3CZ/0/JwKyzJgKgelYH0TkTSM
+ g6Moztyw67lYpN6J8l3uMITfGrcsbb5prexMSoYgj8WOFl2Ln2srHfMIM=
+X-Google-Smtp-Source: AGHT+IE+wbNJkINQSGVCULVimC39Zrsy+4A+dCtemnDW9V1HyQBXZqQaxqlMqnWwj9wFnRFvGcGuJA==
+X-Received: by 2002:a05:600c:b99:b0:479:3a86:dc1c with SMTP id
+ 5b1f17b1804b1-47d195a6369mr189503315e9.36.1766593682208; 
+ Wed, 24 Dec 2025 08:28:02 -0800 (PST)
 Received: from localhost.localdomain (188.171.88.92.rev.sfr.net.
  [92.88.171.188]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47be27c2260sm344952085e9.15.2025.12.24.08.27.52
+ ffacd0b85a97d-4324eab2ebfsm34660739f8f.40.2025.12.24.08.28.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 24 Dec 2025 08:27:53 -0800 (PST)
+ Wed, 24 Dec 2025 08:28:01 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -74,18 +74,18 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Frederic Konrad <konrad.frederic@yahoo.fr>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 8/9] target/sparc: Simplify gdbstub
- sparc_cpu_gdb_write_register()
-Date: Wed, 24 Dec 2025 17:26:40 +0100
-Message-ID: <20251224162642.90857-9-philmd@linaro.org>
+Subject: [PATCH v3 9/9] configs/targets: Forbid SPARC to use legacy native
+ endianness APIs
+Date: Wed, 24 Dec 2025 17:26:41 +0100
+Message-ID: <20251224162642.90857-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251224162642.90857-1-philmd@linaro.org>
 References: <20251224162642.90857-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,59 +108,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rather than ldtul_p() which uses the underlying 'unsigned
-long' size, use the ldn() variant, passing the access size
-as argument (evaluating TARGET_LONG_BITS / 8).
-
-No need to use #ifdef'ry to check for TARGET_ABI32, since
-it is 64-bit:
-
-  $ git grep -E '(ABI32|LONG_BITS)' configs/targets/sparc*
-  configs/targets/sparc-linux-user.mak:5:TARGET_LONG_BITS=32
-  configs/targets/sparc-softmmu.mak:4:TARGET_LONG_BITS=32
-  configs/targets/sparc32plus-linux-user.mak:2:TARGET_ABI32=y
-  configs/targets/sparc32plus-linux-user.mak:8:TARGET_LONG_BITS=64
-  configs/targets/sparc64-linux-user.mak:8:TARGET_LONG_BITS=64
-  configs/targets/sparc64-softmmu.mak:6:TARGET_LONG_BITS=64
-
-Directly expand to the big-endian variant (with the '_be' suffix)
-since we only build the SPARC targets as big-endian.
+All SPARC-related binaries are buildable without a single use
+of the legacy "native endian" API. Unset the transitional
+TARGET_USE_LEGACY_NATIVE_ENDIAN_API definition to forbid
+further uses of the legacy API.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/sparc/gdbstub.c | 12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
+ configs/targets/sparc-linux-user.mak       | 1 +
+ configs/targets/sparc-softmmu.mak          | 1 +
+ configs/targets/sparc32plus-linux-user.mak | 1 +
+ configs/targets/sparc64-linux-user.mak     | 1 +
+ configs/targets/sparc64-softmmu.mak        | 1 +
+ 5 files changed, 5 insertions(+)
 
-diff --git a/target/sparc/gdbstub.c b/target/sparc/gdbstub.c
-index 134617fb232..d265681f6d2 100644
---- a/target/sparc/gdbstub.c
-+++ b/target/sparc/gdbstub.c
-@@ -112,15 +112,7 @@ int sparc_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
- {
-     SPARCCPU *cpu = SPARC_CPU(cs);
-     CPUSPARCState *env = &cpu->env;
--#if defined(TARGET_ABI32)
--    uint32_t tmp;
--
--    tmp = ldl_p(mem_buf);
--#else
--    target_ulong tmp;
--
--    tmp = ldtul_p(mem_buf);
--#endif
-+    uint64_t tmp = ldn_be_p(mem_buf, TARGET_LONG_BITS / 8);
- 
-     if (n < 8) {
-         /* g0..g7 */
-@@ -170,7 +162,7 @@ int sparc_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
- #else
-     else if (n < 64) {
-         /* f0-f31 */
--        tmp = ldl_p(mem_buf);
-+        tmp = ldl_be_p(mem_buf);
-         if (n & 1) {
-             env->fpr[(n - 32) / 2].l.lower = tmp;
-         } else {
+diff --git a/configs/targets/sparc-linux-user.mak b/configs/targets/sparc-linux-user.mak
+index 4ff4b7287d2..d3f0716ca2d 100644
+--- a/configs/targets/sparc-linux-user.mak
++++ b/configs/targets/sparc-linux-user.mak
+@@ -3,3 +3,4 @@ TARGET_SYSTBL_ABI=common,32
+ TARGET_SYSTBL=syscall.tbl
+ TARGET_BIG_ENDIAN=y
+ TARGET_LONG_BITS=32
++TARGET_NOT_USING_LEGACY_NATIVE_ENDIAN_API=y
+diff --git a/configs/targets/sparc-softmmu.mak b/configs/targets/sparc-softmmu.mak
+index 57801faf1fc..272fd46f6db 100644
+--- a/configs/targets/sparc-softmmu.mak
++++ b/configs/targets/sparc-softmmu.mak
+@@ -1,3 +1,4 @@
+ TARGET_ARCH=sparc
+ TARGET_BIG_ENDIAN=y
+ TARGET_LONG_BITS=32
++TARGET_NOT_USING_LEGACY_NATIVE_ENDIAN_API=y
+diff --git a/configs/targets/sparc32plus-linux-user.mak b/configs/targets/sparc32plus-linux-user.mak
+index 7a16934fd17..3e6c72e793e 100644
+--- a/configs/targets/sparc32plus-linux-user.mak
++++ b/configs/targets/sparc32plus-linux-user.mak
+@@ -6,3 +6,4 @@ TARGET_SYSTBL_ABI=common,32
+ TARGET_SYSTBL=syscall.tbl
+ TARGET_BIG_ENDIAN=y
+ TARGET_LONG_BITS=64
++TARGET_NOT_USING_LEGACY_NATIVE_ENDIAN_API=y
+diff --git a/configs/targets/sparc64-linux-user.mak b/configs/targets/sparc64-linux-user.mak
+index 7c2ecb7be06..3bbd8495210 100644
+--- a/configs/targets/sparc64-linux-user.mak
++++ b/configs/targets/sparc64-linux-user.mak
+@@ -6,3 +6,4 @@ TARGET_SYSTBL=syscall.tbl
+ TARGET_BIG_ENDIAN=y
+ TARGET_XML_FILES=gdb-xml/sparc64-core.xml
+ TARGET_LONG_BITS=64
++TARGET_NOT_USING_LEGACY_NATIVE_ENDIAN_API=y
+diff --git a/configs/targets/sparc64-softmmu.mak b/configs/targets/sparc64-softmmu.mak
+index 8ee6d057682..8a0290c2093 100644
+--- a/configs/targets/sparc64-softmmu.mak
++++ b/configs/targets/sparc64-softmmu.mak
+@@ -4,3 +4,4 @@ TARGET_BIG_ENDIAN=y
+ TARGET_XML_FILES=gdb-xml/sparc64-core.xml
+ TARGET_LONG_BITS=64
+ TARGET_NOT_USING_LEGACY_LDST_PHYS_API=y
++TARGET_NOT_USING_LEGACY_NATIVE_ENDIAN_API=y
 -- 
 2.52.0
 
