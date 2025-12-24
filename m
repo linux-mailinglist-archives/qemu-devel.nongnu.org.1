@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC62CDCD50
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 17:17:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3049ACDCD43
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 17:17:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vYRWN-0002IO-6W; Wed, 24 Dec 2025 11:15:32 -0500
+	id 1vYRWR-0002Lc-RQ; Wed, 24 Dec 2025 11:15:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYRVy-0002Dy-QX
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:15:09 -0500
-Received: from mail-wr1-x441.google.com ([2a00:1450:4864:20::441])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYRW6-0002GN-4I
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:15:15 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYRVw-0001Gs-Or
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:15:06 -0500
-Received: by mail-wr1-x441.google.com with SMTP id
- ffacd0b85a97d-42fb5810d39so3217796f8f.2
- for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 08:15:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYRW3-0001VA-IT
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:15:13 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4775ae77516so54960675e9.1
+ for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 08:15:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766592901; x=1767197701; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=nVCfRdBdeH6qM5hKowFQ+CO0ZL9O+v5VwkCKX8eNtcs=;
- b=bZxxG6lfZAOcXoXncrmvFfbWPR2PuXeqUKMzGUG0qmDGAYWHLWJjN+I3ZMZCtXcH+b
- 7D4gyNr7pLQL5DvODlbncJjfG6gE5a5VObTiACsIR8HiEf4/2aL/42YdSmXBDgbF+htN
- kX7ZaGStM47v8CGt+AplCbKVFCiU1SCjqd25M2yTywlwtVCxC9IU0ERalmR+zFfZpDvJ
- nSlMBPQ/oem8Kf66qCzkorq7KQwOPQTWlw2hbCSjoBRuPcO55AMAv9ImeNUnoMhcrtk7
- lcXSe4HuO7w7V4ixcZy8xSzO2qMtSTZfzDxpCxoAOdF1p4t6RqSgtG5Bh/QFHYRdKHYu
- QZGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766592901; x=1767197701;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1766592910; x=1767197710; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nVCfRdBdeH6qM5hKowFQ+CO0ZL9O+v5VwkCKX8eNtcs=;
- b=AwTBLssxtZrqoGcnI2Hg/6FLdjyrVSZb2an+7qbv4b2HXSvFcZ+KqX16kd/17WG+ki
- 82zhXFIZXmF8JSMm9XYvHdkpAyI1PMnAnhtAGZgUnD/bIlThpakbUnc61PzSn5TLp/J5
- 0S0qn919/Z+bOqI5PUP40tGWkpkAqEezuyMgQ3t5XfJa1W7uRWGkguJCxhXJ21ol9ppL
- 4TrMM4NqAUsH0aFS13vgIgxaJBQK+MYRihbAA5A3E1aydYldPapNQ1NrSwvtOuCOjxOC
- VzUrRKOfgH6AgpTR2PPdEapdb1QYROG+c2u6VLASWq1rIteeCNXLyOSeIkTUxlBiJEP7
- xHMA==
-X-Gm-Message-State: AOJu0Ywax2PG5GOnGhEpVtpTNzqWeM7qiS/pjbzx3bTJo1gvMzA5W3b1
- SvISwq1Y6H1Ej0Ff/gF2biPE9H9ShCW+ay4NGQGxbkd2/D+UToMmr7warKX1Dxq5VzzmSFW9MkW
- 2LUlVuIw=
-X-Gm-Gg: AY/fxX7uRoopjaPqj/BT7s+x8kPCoZx+Bn8Z/G/umiSsNz1LZWCBaHhh6hcrx905D8n
- FNvkw/5U3T1PRxDg6jxYKweIoj6W7GQ0Oo1WD0TPhgpTKUfooUPrzejXXMuvi9v2X68zqJnvOPo
- gcRLQuMbgsUb3EGjJw7ObDqVtSatKUTKpFtkN+Jv0dzVE2v8m0FWlirD103YSNZujeVMFtS+qVP
- ivYWw49eOIXSEMOxgRLwm3IiPH6FXNdyKnZzg/9/OfhnS3+DcNmmRp5Jeo/tZnuSpQmCQ23YEoy
- DMHnPEL+OhbTl7n3ZCseGucuO4H4gedsR4tx94ODsbCt/OCzkT0J54re0XDJu8S3lSZo6sIypB7
- mBhnTsRBGPEkMlOqfzvVWbxfz5WtgadgeFp4flgU8uUNjWBexLRdGYhzFCLXxdQGMB7jyAhnq3b
- GaOJu+wgX2VKnO8QrQ/d/rkV5kyV7mvMw0Rk2HGikAV05sK5qtn8fmbS0ryp/dc/HcDw==
-X-Google-Smtp-Source: AGHT+IEwroF7v+zQQi4cW3FKtP659BnlEjnaJZ9x12eWEHP6HHFEYW2zRy32sbQYJTTnXFvH0jP6pw==
-X-Received: by 2002:a05:6000:2504:b0:431:5ca:c1b7 with SMTP id
- ffacd0b85a97d-4324e4cbcc1mr21725423f8f.23.1766592901056; 
- Wed, 24 Dec 2025 08:15:01 -0800 (PST)
+ bh=AuNDL5oqr1HBVF8J41qriSJKpqYUj2HAsQkBmVSSoO8=;
+ b=fssgFw921AWc8lALzKPjKYttlh0gmzkJ3La52V4vFwLsgsS8nt18MFhG0Tphh/ZVhL
+ L2ETFI6MD9QW1D/1BZ7S2oU8XvHaziUmX8lrIKeyQGmMPm2qy+vpsuAkC6sSeiHottgL
+ 2mCg05SG9a3hMc+1QDnefAC2/4CEmh3K+LLXznhS/S9cVZSwzIfDHOB8RDJxI3enWrrU
+ 8E/S8k5ooXOj6V0xZgN3vANr5AmUK3ZwAy5CH+z3oPRIdA8MtoNcX+YjsfmTzs9U9mjZ
+ zHgY///B2WAci1yvr+lMKuE6PZOvQAYTRfRGBHycqAUe7fKNPG2bqwHDAkC/skYt7MnJ
+ J8/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1766592910; x=1767197710;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=AuNDL5oqr1HBVF8J41qriSJKpqYUj2HAsQkBmVSSoO8=;
+ b=hkuGURL6RAjljIe14oVu32g2frgLnvSSlWTiYk8DBMeyqatg8VS2RN8TpOqX0oI3KM
+ 4pYq9eBziLl+tPcYWe9LYCbPQ3eB87gbX/6XFvDCjloQ8tYw8S0o0ectfgV82EJdKUHD
+ IUBkE2JJ8pQEzND726D+6AdHI8gaNtJxl8qesg07wmMefars8gsltTKe22kGMBWHu9W7
+ 1DXt9LlUWAjdxmJSP6Xta11b3KxqEMl5I3XSIiEpb3vV/u3+XvLRgJ+XrjOqOjSGJbvM
+ fg74IQn1C7v7j31mVMevn9swiMVQPJOAdOj2Yxc6pAYwKiBmDdj9uBReqZaezBqrwZGn
+ 0U2w==
+X-Gm-Message-State: AOJu0Yz6PPglq1gB4vV0qTyRbAl2m1rZ77xRx/+d6WSbHyj8lo6x4Rqu
+ P6xBtvCsh/ShsSrsXX7D1pakLT7XounrrPbc4XjHOrlkFteEdkg6FFiJXwr5qqwQFF43Xp+/ZCU
+ CIyKRE/s=
+X-Gm-Gg: AY/fxX6IyirHKrUiPaP/8xNwO6gwQ1QcCB0NTOuaXO0CU6bfdZy8O2rNJ15aCsU5qPm
+ u6F0NGBGl8KMxXKLrj75Attt7t5sWMDyTI+a3ZmV7IAdG71DiV3bfacgAzYU58UAaFSo0tJCLpW
+ /JseN42rsC7IrRrFuVutSZw6vNChMaF2ebCcGw5O3U2Bt0TPOJ0tBty1qEFjzFr7BMSSZURihS6
+ hpyghG489LbG9one3BtJdOoQ7IupRrjGYqOihuzmenTw4EeauNP9zbMg5a4iO9sl5926b386vlG
+ /zN/XPk6ZY+JVs9ohC86fD5XGkkRo81dl9OE1WWO/jvIY5rj/zMRxlWoQ/whjjFsP1YPMNy0xjU
+ dCrDYLUBqwwRvv2SdY56OjCqMFydsFv+NdNGC+pOJXh3lU28AGWZeprR9crxcmLG0NkcY3GGaXY
+ X6543B4lKPAu/Kcy/63SnOV5ohEzBF6RxQpx8XBLqdCmoZ+K9cUA56/CM=
+X-Google-Smtp-Source: AGHT+IEAuWV4OolmTdgfsQwUiDkpJ92iupFWAPYEPAG0cJivtefMBqzDS+haZyN+8NtkwTuozwc94A==
+X-Received: by 2002:a05:600c:1c1b:b0:477:9976:9e1a with SMTP id
+ 5b1f17b1804b1-47d1956e545mr199408825e9.6.1766592909642; 
+ Wed, 24 Dec 2025 08:15:09 -0800 (PST)
 Received: from localhost.localdomain (188.171.88.92.rev.sfr.net.
  [92.88.171.188]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324eab257asm35618470f8f.38.2025.12.24.08.14.58
+ 5b1f17b1804b1-47be272e46fsm346979985e9.4.2025.12.24.08.15.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 24 Dec 2025 08:15:00 -0800 (PST)
+ Wed, 24 Dec 2025 08:15:09 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Bibo Mao <maobibo@loongson.cn>, Laurent Vivier <laurent@vivier.eu>,
@@ -69,15 +70,17 @@ Cc: Bibo Mao <maobibo@loongson.cn>, Laurent Vivier <laurent@vivier.eu>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/8] target/loongarch: Use explicit little-endian LD/ST API
-Date: Wed, 24 Dec 2025 17:14:48 +0100
-Message-ID: <20251224161456.89707-1-philmd@linaro.org>
+Subject: [PATCH 1/8] hw/loongarch: Use explicit little-endian LD/ST API
+Date: Wed, 24 Dec 2025 17:14:49 +0100
+Message-ID: <20251224161456.89707-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251224161456.89707-1-philmd@linaro.org>
+References: <20251224161456.89707-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::441;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x441.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,39 +103,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-LoongArch is little-endian. Use the explicit 'little'
-endianness instead of the 'native' one.
-Remove some target_ulong uses. Forbid further uses of
-legacy APIs.
+The LoongArch architecture uses little endianness. Directly
+use the little-endian LD/ST API.
 
-tag: https://gitlab.com/philmd/qemu/-/tags/endian_loongarch-v1
-CI: https://gitlab.com/philmd/qemu/-/pipelines/2231223066
+Mechanical change using:
 
-Philippe Mathieu-Daudé (8):
-  hw/loongarch: Use explicit little-endian LD/ST API
-  target/loongarch: Replace target_ulong -> uint64_t for DMW and
-    TLBRBADV
-  target/loongarch: Use hwaddr type for physical addresses
-  target/loongarch: Replace MO_TE -> MO_LE
-  target/loongarch: Inline cpu_ldl_code() call in cpu_do_interrupt()
-  target/loongarch: Use explicit little-endian LD/ST API
-  target/loongarch: Inline translator_ldl()
-  configs/targets: Forbid LoongArch to use legacy native endianness APIs
+  $ end=le; \
+    for acc in uw w l q tul; do \
+      sed -i -e "s/ld${acc}_p(/ld${acc}_${end}_p(/" \
+             -e "s/st${acc}_p(/st${acc}_${end}_p(/" \
+        $(git grep -wlE '(ld|st)t?u?[wlq]_p' hw/loongarch/); \
+    done
 
- configs/targets/loongarch64-linux-user.mak    |  1 +
- configs/targets/loongarch64-softmmu.mak       |  1 +
- hw/loongarch/virt.c                           | 18 ++---
- target/loongarch/cpu_helper.c                 | 12 +--
- target/loongarch/tcg/iocsr_helper.c           | 24 +++---
- target/loongarch/tcg/tcg_cpu.c                |  4 +-
- target/loongarch/tcg/tlb_helper.c             | 10 ++-
- target/loongarch/tcg/translate.c              |  3 +-
- .../tcg/insn_trans/trans_atomic.c.inc         | 80 +++++++++----------
- .../tcg/insn_trans/trans_fmemory.c.inc        | 32 ++++----
- .../tcg/insn_trans/trans_memory.c.inc         | 64 +++++++--------
- .../loongarch/tcg/insn_trans/trans_vec.c.inc  | 16 ++--
- 12 files changed, 136 insertions(+), 129 deletions(-)
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/loongarch/virt.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index 49434ad1828..2a0e225d813 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -607,9 +607,9 @@ static MemTxResult virt_iocsr_misc_write(void *opaque, hwaddr addr,
+             lvms->misc_status |= BIT_ULL(IOCSRM_DMSI_EN);
+         }
+ 
+-        features = address_space_ldl(&lvms->as_iocsr,
+-                                     EXTIOI_VIRT_BASE + EXTIOI_VIRT_CONFIG,
+-                                     attrs, NULL);
++        features = address_space_ldl_le(&lvms->as_iocsr,
++                                        EXTIOI_VIRT_BASE + EXTIOI_VIRT_CONFIG,
++                                        attrs, NULL);
+         if (val & BIT_ULL(IOCSRM_EXTIOI_EN)) {
+             features |= BIT(EXTIOI_ENABLE);
+         }
+@@ -617,9 +617,9 @@ static MemTxResult virt_iocsr_misc_write(void *opaque, hwaddr addr,
+             features |= BIT(EXTIOI_ENABLE_INT_ENCODE);
+         }
+ 
+-        address_space_stl(&lvms->as_iocsr,
+-                          EXTIOI_VIRT_BASE + EXTIOI_VIRT_CONFIG,
+-                          features, attrs, NULL);
++        address_space_stl_le(&lvms->as_iocsr,
++                             EXTIOI_VIRT_BASE + EXTIOI_VIRT_CONFIG,
++                             features, attrs, NULL);
+         break;
+     default:
+         g_assert_not_reached();
+@@ -665,9 +665,9 @@ static MemTxResult virt_iocsr_misc_read(void *opaque, hwaddr addr,
+             break;
+         }
+ 
+-        features = address_space_ldl(&lvms->as_iocsr,
+-                                     EXTIOI_VIRT_BASE + EXTIOI_VIRT_CONFIG,
+-                                     attrs, NULL);
++        features = address_space_ldl_le(&lvms->as_iocsr,
++                                        EXTIOI_VIRT_BASE + EXTIOI_VIRT_CONFIG,
++                                        attrs, NULL);
+         if (features & BIT(EXTIOI_ENABLE)) {
+             ret |= BIT_ULL(IOCSRM_EXTIOI_EN);
+         }
 -- 
 2.52.0
 
