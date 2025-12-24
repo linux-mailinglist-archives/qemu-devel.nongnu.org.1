@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81E20CDC5DC
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 14:41:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50691CDC5D4
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 14:41:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vYP61-0002Pp-CD; Wed, 24 Dec 2025 08:40:09 -0500
+	id 1vYP6D-0002Qm-Ri; Wed, 24 Dec 2025 08:40:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYP5w-0002Ng-Jj
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 08:40:04 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYP65-0002QZ-1z
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 08:40:13 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYP5v-0002LZ-2C
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 08:40:04 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4779cc419b2so47169805e9.3
- for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 05:40:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYP62-0002Yf-Nr
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 08:40:12 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-47d3ffb0f44so1849185e9.3
+ for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 05:40:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766583601; x=1767188401; darn=nongnu.org;
+ d=linaro.org; s=google; t=1766583609; x=1767188409; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=npTLL+HNAjuRrR3R9RZSM7yLL2ZqtYn4UMz3SJMLrrI=;
- b=nz4n3U8GEH0lmsQFY+CavQ+EVCUDLgvQKS3Y1pSAwWp+oKTiz3Rk1t5kB+Rbc8c38g
- ciFHFS1l57EMLhu2CsDotJeacdeQbpV+wqh9KrRr+5F8q1JbnribYaFqY7xrHZhaTgsO
- LCJZBEOte1LTVZvxbDrwDUs36is/JqOpvH1b64rq+OwEbD6ibr9jYhEk3LL/tDlUdHj0
- 8E0BVEkc1MUDgUsPEuYGxA8AQghLQxz254GP1sQrsYmChiZ9xsARjHLd8RX+0zZgzhLz
- HJDDx1xjSwBT5tC8IpduEQAvCHYNncJ9+ypaZvaMZ64zp361WbphwgMTKkl8pxg6SGUB
- egzw==
+ bh=lnHAAvQ7KeLMZzzpATHJdXiQ9iksZ8WqgrEdFTW4jwI=;
+ b=TRWSQHUjnxdS3Zp7Q3v77XDkXBHJv4YUot5zS8Wv6x98HzeLKY2vFG0KiGfphlCPRW
+ dcG6jTUREVd7Y9MllpKGoTtvri4kOiSVPjpMCr+yEchx3bc6KpqjyfgMPqVS1khRO6v7
+ 0YBV/Px7IBGGojEkfy4fFCb0xOxFUXvokdq37Zlmuj3ts2/NHwSb0RUm5dbFzx10MJz2
+ TZa7ugrsQkYe6tgD8WORhBCM5r204NYY4ZDasHGmN2MLBI0fOr43/YWhj8zkH+bf/WIC
+ 5BviSYM+P9jmbGdynfw6KtetfVUsOL1OnLlqY6W4YKAlJfrehUWNNc4bH6q8po/COtvz
+ ae6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766583601; x=1767188401;
+ d=1e100.net; s=20230601; t=1766583609; x=1767188409;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=npTLL+HNAjuRrR3R9RZSM7yLL2ZqtYn4UMz3SJMLrrI=;
- b=Dm7vtObJyrndwq0cYwIgubn/U/p7RW6tTPXdpjyQqfcWw6HSIoaRK8NsSsiWn7L+QV
- Cs/Fm4rtMbhNQuT2UExICpAxaiyiLehJH1rSRHO7gJKxf3BMFWCdbiX6Z74Jplqb8ShG
- P0YJ5T+YorwYswJNjbMd4V6N475L22dwZRqSccEeI83YdUoMG7eBuzdKKlFaJlymq5h+
- ZyNk7jZSMt4/E2vUb+83TSIc0NbLbOetTsvDzg7NqqE1wmRXb/Nuf29dxc6WhgTlEdpu
- tc4B/R4scePKCv0OiopFSiFizXveo6P+7tQJviK7lWXkGjFOIGKL2bi1jxfi3vcPb0AR
- dAmw==
-X-Gm-Message-State: AOJu0Yxac+CpDXbrZFqlFL872kiVW9CCWVgR+nNR6e0XXSGx3cKw/5yr
- HRN33AcWKjq8qT4GVlWY+c54uNw1IcXKHyh/f4KIrFeKL9ynvNJt0yJ0zqCZVlEVnn4FA5gRBY7
- 3UGua3tQ=
-X-Gm-Gg: AY/fxX5D1FCjtl2nKhdtLAt09Vb+nDY0tNJexUF8UWKforn8HcqQN2/fQmeWfwnBhMi
- USMj5T6wvcD02/hLYEN/1BD9hAf8DVhXpdVzl1iMBnUWS4u0AxQPxH4Yx3w7/LLwntUlGp3C9On
- kSeLh94kds00gD3+QR7kBdM18lbzcT+KSjvXuccKhKkGXnwlDjOeWFMdJvu8UzGban583rdr+Hf
- 7sW5XRadEsF2ke2ijtO/ZYFdItd4o00YzQbAi5ERtXvpmOxty/4jdbWq4zlroGOaea2+UIPwQAd
- KOtpwy1jOLv8T87RWsEvAWCMU12Q5WuoHrHUF5YDeaWK4Wib+LiuQdzKCeeGsZFjWJO+eTeg8ba
- CM9oFo3x6qmQE9YczjGTKc0YyityvATk5rEdJwICtOlAh3+RPTRRDNEWmmfBsP7hbbCJzwyP+iZ
- iA3Xn4hc7h130M4d0qBUIdTu90nA6ofV0aOiSfx0mLwRBV71SsVp06j2Wi937n
-X-Google-Smtp-Source: AGHT+IGDh5UlHu/Ogt4V7UIVyWzH8BgS4jMIYR7F99WKAJuofh9mtCpHdmJkC4l1sJn1r8Xt4RBBBQ==
-X-Received: by 2002:a05:600c:3b9d:b0:459:db7b:988e with SMTP id
- 5b1f17b1804b1-47d19555e07mr222050455e9.13.1766583601206; 
- Wed, 24 Dec 2025 05:40:01 -0800 (PST)
+ bh=lnHAAvQ7KeLMZzzpATHJdXiQ9iksZ8WqgrEdFTW4jwI=;
+ b=X7COg6gC9MbaqCoU6uXgWTyfwqe5lA0XcReOiAM5OTuoYM1+0Cf3qpp2HUzFcTpYf5
+ b5uB9n+UCm8BCu/efkWnH/2ITBbpMZafeik/MorvPqpfe+E1CAZcRaGy01TDdI+GQ6D9
+ ddgKQPXpl22k4AN5oQZkG5FaGRB+NOAtM9IufO1gGLY9RqwE8w+6s3eaysMluKR3DZoU
+ 3WYxXtJ4dTg36uFPdl7VC+37ZmTSQy1+RWX/tsMdGyo9XW8VsfpuM4tD5buuCCSOdbNh
+ EFg3f+Ow+0MeMdHxYXxHX6m8Kp+H+SHiWDnRjTvCFfihqLdtAf9KRMZdK0tuotdE/v4T
+ exlw==
+X-Gm-Message-State: AOJu0YzHesAZCzV6uOEUGEp8c18flcUR3iR1uGa33r9ZtPzIgvIHyt7m
+ Z61q/qEEsN+9493t9NUu+LMk/GasPxmwM3VlSL4NmHKEvTQk6bKf+JIsGEsTpssxFQnQcnFY+Pn
+ bjs8R/wo=
+X-Gm-Gg: AY/fxX4Cq2pBDCH7wdnxXljGWwwtpnZuc0rYu8zJ4dclttdYn6jXGTC+gURVvQjbmpa
+ lVuHpZkiCjTEOwTMPkPqF9tacQcp6IP4vYpzS8us5vNnMaRnEDdNGYSPcSvMcqf83D2782TnO/9
+ MGT1W3qOE2rlsg+TeppdT7dcVTFNsoRI/w8yt079KYa51CuirKEYlMF6OjDo/mURXMMQ+QZXzPd
+ pIXmabf+1WEC6fLc9tOfXG8CR1gLLUZpfQIr6JlkZ4wR63Fi8neHIEzZb6+NVj3tiBG3WRUe09y
+ Sn0SCFW9nryofGE5/vFNcmPgQ7zRrtzJaCR4ayZevz5dLAFZu33GXtx3kwB9B9BJRUxAzXKiSLQ
+ DkfVIFavnrI/uuhA1ZWq7FPzjOQRE42B2qiOZOEl4UKUdYmUunmcugO4fhZbBlgXfxWhLoAd0Zw
+ +8/goTwmA1GW9ePK5bUfNhutq5WhP1k9eoyrzW6lzEmULX8pjNOcu5LQeGx1yi
+X-Google-Smtp-Source: AGHT+IG052qBOgBfV5wXTnonMj1M1LJCqcGYuRPnLNrDG1lFtBJPw8NAXfxg/BejGnAxtGHD5+RuHQ==
+X-Received: by 2002:a05:600c:8216:b0:47d:403e:9cd5 with SMTP id
+ 5b1f17b1804b1-47d403e9f61mr10353635e9.11.1766583608780; 
+ Wed, 24 Dec 2025 05:40:08 -0800 (PST)
 Received: from localhost.localdomain (218.170.88.92.rev.sfr.net.
  [92.88.170.218]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47be3aac6d9sm144306225e9.4.2025.12.24.05.39.59
+ 5b1f17b1804b1-47be272e46fsm341295395e9.4.2025.12.24.05.40.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 24 Dec 2025 05:40:00 -0800 (PST)
+ Wed, 24 Dec 2025 05:40:08 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
@@ -69,18 +69,18 @@ Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/6] monitor/hmp: Replace target_ulong -> vaddr in
- hmp_gva2gpa()
-Date: Wed, 24 Dec 2025 14:39:44 +0100
-Message-ID: <20251224133949.85136-2-philmd@linaro.org>
+Subject: [PATCH 2/6] monitor/hmp: Use plain uint64_t @addr argument in
+ memory_dump()
+Date: Wed, 24 Dec 2025 14:39:45 +0100
+Message-ID: <20251224133949.85136-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251224133949.85136-1-philmd@linaro.org>
 References: <20251224133949.85136-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,28 +103,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-cpu_get_phys_page_debug() takes a vaddr type since commit
-00b941e581b ("cpu: Turn cpu_get_phys_page_debug() into a CPUClass
-hook").
+memory_dump() takes either hwaddr or vaddr type, depending
+on the @is_physical argument. Simply use uint64_t type which
+is common to both.
+Pad address using field width formatting, removing the need
+for the target_ulong type.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- monitor/hmp-cmds-target.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ monitor/hmp-cmds-target.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
 diff --git a/monitor/hmp-cmds-target.c b/monitor/hmp-cmds-target.c
-index e9820611466..2976f986d35 100644
+index 2976f986d35..c00f75eab3c 100644
 --- a/monitor/hmp-cmds-target.c
 +++ b/monitor/hmp-cmds-target.c
-@@ -301,7 +301,7 @@ void hmp_gpa2hva(Monitor *mon, const QDict *qdict)
+@@ -122,12 +122,13 @@ void hmp_info_registers(Monitor *mon, const QDict *qdict)
+ }
  
- void hmp_gva2gpa(Monitor *mon, const QDict *qdict)
+ static void memory_dump(Monitor *mon, int count, int format, int wsize,
+-                        hwaddr addr, int is_physical)
++                        uint64_t addr, int is_physical)
  {
--    target_ulong addr = qdict_get_int(qdict, "addr");
-+    vaddr addr = qdict_get_int(qdict, "addr");
+     int l, line_size, i, max_digits, len;
+     uint8_t buf[16];
+     uint64_t v;
      CPUState *cs = mon_get_cpu(mon);
-     hwaddr gpa;
++    const unsigned int addr_width = is_physical ? 8 : (target_long_bits() * 2);
  
+     if (!cs && (format == 'i' || !is_physical)) {
+         monitor_printf(mon, "Can not dump without CPU\n");
+@@ -165,11 +166,7 @@ static void memory_dump(Monitor *mon, int count, int format, int wsize,
+     }
+ 
+     while (len > 0) {
+-        if (is_physical) {
+-            monitor_printf(mon, HWADDR_FMT_plx ":", addr);
+-        } else {
+-            monitor_printf(mon, TARGET_FMT_lx ":", (target_ulong)addr);
+-        }
++        monitor_printf(mon, "%0*" PRIx64 ":", addr_width, addr);
+         l = len;
+         if (l > line_size)
+             l = line_size;
 -- 
 2.52.0
 
