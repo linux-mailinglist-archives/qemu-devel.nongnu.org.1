@@ -2,97 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A2D3CDC696
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 14:51:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE23CDC672
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 14:49:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vYPGl-0008Nf-9x; Wed, 24 Dec 2025 08:51:27 -0500
+	id 1vYPDR-0006Np-Vk; Wed, 24 Dec 2025 08:47:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYPDf-0006hS-PN
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 08:48:07 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYPDc-0003mx-B8
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 08:48:02 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-47d3ba3a4deso5409695e9.2
- for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 05:47:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766584074; x=1767188874; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=T6TtjB4UQwqwRYPVMTfmB5PB+7achhP09+w7nxCkDKI=;
- b=wync6TykVjBatv8lpk39iwfBgbanM+e3A8BlCo/cxNCcZg6AkKq7+avI6XYftk9bgV
- TtkD3X0P5LIJ8rKcB994sJykLWcLKRuebc/6Rk8Yaqp+Zbr/1ICB7Uz3V8wSbbB+VYQV
- /14phIT6mGneeq3e+bVVmZiKrccc/JCnc1P+4leW8TzB7gTZbR28IGz50D9uVB0Mu98w
- TMC4rnG/rO2PYXYwJjymqpPkULvT/j+abcrZ+T+sj75EJ/xWGQBxbQuYq7hFpVpJNHa3
- trecqj7G8L7/UFj7VBcdpGxYS5wbWfyr+vcIAsdU8vPlvA5AhrmL1EdjO3YcpfK+jv0f
- /5ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766584074; x=1767188874;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=T6TtjB4UQwqwRYPVMTfmB5PB+7achhP09+w7nxCkDKI=;
- b=Z4wQMF/nXN5vJ1bIpDWlAHBcHv8eM1KXWLOuuByROLP1BpptkJnVAMYo6OoOGm/mgH
- UCOmgrjQn+wNseg2feVR1JxIJvctaYdQ1Qg0sJ/qrmN84ok0p1WcLaH6BtGrY2+Iz11+
- /zUNR6hF8AjdEbWnuoUNqPa8UQhYLCArBMmu/a59/Q/5QvMMytkcoM95bZ94R1+tlXhF
- xPNhGs8oZNVoPxuRM8pemMpvhlbhkXNqplZgp2ZnMlfAYaNF6ighKnzqirHm4viaw51o
- Dd9VxPKhG8gpAVC47Ul0qaX4/cF3qsH71MA4i7XKyW/q2fU5biPTLLrIJWDVoQmXIYrp
- DcZA==
-X-Gm-Message-State: AOJu0Ywc3SElyE+Bxex4kdoiSyOi85MS1Boq3SBOhbUdeuK/1/ERl8ex
- 9MJfVia9YlAT8uV4L2FGR7FDFQKFnTmNszPasxYodsnoqSZiD4MA8oXCS1ygycC06lUlyYjtijs
- NdYIvl14=
-X-Gm-Gg: AY/fxX5T/hVD+XsOOQWF489hMVcQvF2aVGYoiTu0P5ltpKAkhRXPJC1RCGncbhWGVEG
- kEfN6jUy6OAn8h0jkcZwGHbckO42t1/OAEu40IiCGsdXv6sEFLf9mmLhnyFlafnaZeB9RCZ4AL1
- RDJOvDGK1zNY3kZbGCUrosO3vlybfAq8Kn6rUj2a3D26WJfIO/zURVTvr68a4xrgBl1YUpgdKkV
- PluagKBhjBPEsl61Uu1Dt7hsuIeMB74XNwTTvXm0jOOTNwli3gIXyMgEyGYiQgBJi/ZL/rAFpwQ
- S6V93SXf/B+xXL1orhWR5u0VxUhuoQ0eNfsLsLYOzJPW6yUPGfYUb0ba7Fp5QpZ2EANdvWHaLJY
- iKlgn1KOjMU4mV6wRaGeLbilfc8EjL1sRmFa/Q1amWNJwGOpNBCBiYEfXYWeBoqEUe2UnJN+ExJ
- vlLj9qkDTtJ7nBRAVWQs8t04ZeEtLDgNTrwT4ry8AsNgAMPlytQ4AWnxr/xuVJ
-X-Google-Smtp-Source: AGHT+IEds8kkPJ6QqXB2zu5iwJshyd1rZwMcqEAQN6/5Dria6axRmI64nWzGYXLbhdl7T2C8ApkzLw==
-X-Received: by 2002:a05:600c:8b6d:b0:475:dd8d:2f52 with SMTP id
- 5b1f17b1804b1-47d1959d1d8mr188452035e9.32.1766584074039; 
- Wed, 24 Dec 2025 05:47:54 -0800 (PST)
-Received: from localhost.localdomain (218.170.88.92.rev.sfr.net.
- [92.88.170.218]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47be27b0d5asm352244165e9.13.2025.12.24.05.47.52
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 24 Dec 2025 05:47:53 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Jason Wang <jasowang@redhat.com>, qemu-rust@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>, Anton Johansson <anjo@rev.ng>,
- Max Filippov <jcmvbkbc@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Brian Cain <brian.cain@oss.qualcomm.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-arm@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Matheus Tavares Bernardino <matheus.bernardino@oss.qualcomm.com>
-Subject: [PATCH v2 8/8] target/hexagon: Include missing 'cpu.h' header in
- 'internal.h'
-Date: Wed, 24 Dec 2025 14:46:44 +0100
-Message-ID: <20251224134644.85582-9-philmd@linaro.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251224134644.85582-1-philmd@linaro.org>
-References: <20251224134644.85582-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1vYPD8-0006Jw-8l
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 08:47:32 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1vYPD4-0003iC-F2
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 08:47:28 -0500
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 47721596A0B;
+ Wed, 24 Dec 2025 14:47:22 +0100 (CET)
+X-Virus-Scanned: amavis at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
+ id wt3wnJuyeV6l; Wed, 24 Dec 2025 14:47:20 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 4BB91596A07; Wed, 24 Dec 2025 14:47:20 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 49FCE596A03;
+ Wed, 24 Dec 2025 14:47:20 +0100 (CET)
+Date: Wed, 24 Dec 2025 14:47:20 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ philmd@linaro.org
+Subject: Re: [PATCH 0/6] Implement memory_region_new_* functions
+In-Reply-To: <3a1bf99d-e011-4589-b7e9-662107befdc1@rsg.ci.i.u-tokyo.ac.jp>
+Message-ID: <a9a43db6-1a1f-58f1-39c8-06213e9e610e@eik.bme.hu>
+References: <cover.1766525089.git.balaton@eik.bme.hu>
+ <3a1bf99d-e011-4589-b7e9-662107befdc1@rsg.ci.i.u-tokyo.ac.jp>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,57 +65,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Both CPUHexagonState and TOTAL_PER_THREAD_REGS are defined
-in "cpu.h" which is luckily indirectly included. However when
-refactoring unrelated files we get:
+On Wed, 24 Dec 2025, Akihiko Odaki wrote:
+> On 2025/12/24 6:49, BALATON Zoltan wrote:
+>> Our documentation says that memory regions are automatically freed
+>> when the owner dies and the reference counting to do this is also
+>> implemented. However this relies on the QOM free funtion that can only
+>> be set by creating objects with object_new but memory API only
+>> provides constructors that call object_initialize which clears the
+>> free function that prevents QOM to manage the memory region lifetime.
+>> Implement corresponding memory_region_new_* functions that do the same
+>> as the memory_region_init_* functions but create the memory region
+>> with object_new so the lifetime can be automatically managed by QOM as
+>> documented.
+>
+> The documentation explains the existing functions so the discrepancy between 
+> them you see should be fixed by updating them, not adding new ones.
 
-  In file included from target/hexagon/helper.h:18,
-                   from include/exec/helper-proto.h.inc:56,
-                   from include/exec/helper-proto.h:13,
-                   from target/hexagon/op_helper.c:22:
-  target/hexagon/internal.h: At top level:
-  target/hexagon/internal.h:29:25: error: unknown type name ‘CPUHexagonState’; did you mean ‘CPUPluginState’?
-     29 | void hexagon_debug_vreg(CPUHexagonState *env, int regnum);
-        |                         ^~~~~~~~~~~~~~~
-        |                         CPUPluginState
-  target/hexagon/internal.h:30:25: error: unknown type name ‘CPUHexagonState’; did you mean ‘CPUPluginState’?
-     30 | void hexagon_debug_qreg(CPUHexagonState *env, int regnum);
-        |                         ^~~~~~~~~~~~~~~
-        |                         CPUPluginState
-  target/hexagon/internal.h:31:20: error: unknown type name ‘CPUHexagonState’; did you mean ‘CPUPluginState’?
-     31 | void hexagon_debug(CPUHexagonState *env);
-        |                    ^~~~~~~~~~~~~~~
-        |                    CPUPluginState
-  target/hexagon/internal.h:33:44: error: ‘TOTAL_PER_THREAD_REGS’ undeclared here (not in a function)
-     33 | extern const char * const hexagon_regnames[TOTAL_PER_THREAD_REGS];
-        |                                            ^~~~~~~~~~~~~~~~~~~~~
+Do you mean replacing memory_region_init_* with these memory_region_new_* 
+functions? The memory_region_init_* is still useful for embedded memory 
+regions that are managed by some other way which is also mentioned in the 
+documentation as an alternative so I think both of them are useful for 
+different cases. If you mean we need to update docs to refer to 
+memory_region_new instead of memory_region_init at some places then I 
+think you're right, the docs may also need to be updated or clarified.
 
-Fix that by including the missing header.
-
-We don't need the "qemu/log.h" since commit 0cb73cb5a02 ("target/hexagon:
-Remove HEX_DEBUG/HEX_DEBUG_LOG"): remove it.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Matheus Tavares Bernardino <matheus.bernardino@oss.qualcomm.com>
-Reviewed-by: Brian Cain <brian.cain@oss.qualcomm.com>
----
- target/hexagon/internal.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/target/hexagon/internal.h b/target/hexagon/internal.h
-index 32e96f00d97..5fc837ae229 100644
---- a/target/hexagon/internal.h
-+++ b/target/hexagon/internal.h
-@@ -18,7 +18,7 @@
- #ifndef HEXAGON_INTERNAL_H
- #define HEXAGON_INTERNAL_H
- 
--#include "qemu/log.h"
-+#include "target/hexagon/cpu.h"
- 
- int hexagon_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
- int hexagon_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
--- 
-2.52.0
-
+Regards,
+BALATON Zoltan
 
