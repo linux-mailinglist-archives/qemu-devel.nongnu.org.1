@@ -2,52 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62511CDB19D
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 02:44:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAB90CDB46B
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 04:45:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vYDvK-000481-5B; Tue, 23 Dec 2025 20:44:22 -0500
+	id 1vYFnM-000689-0P; Tue, 23 Dec 2025 22:44:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1vYDv8-0003u6-Cn; Tue, 23 Dec 2025 20:44:10 -0500
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1vYDv6-0006HF-JI; Tue, 23 Dec 2025 20:44:10 -0500
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 24 Dec
- 2025 09:42:11 +0800
-Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Wed, 24 Dec 2025 09:42:11 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>, Andrew Jeffery
- <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, "open
- list:ASPEED BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>
-CC: <troy_lee@aspeedtech.com>, <nabihestefan@google.com>, Kane-Chen-AS
- <kane_chen@aspeedtech.com>
-Subject: [PATCH v4 19/19] hw/arm/aspeed: Enable AST1700 IO expander support
-Date: Wed, 24 Dec 2025 09:41:58 +0800
-Message-ID: <20251224014203.756264-20-kane_chen@aspeedtech.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251224014203.756264-1-kane_chen@aspeedtech.com>
-References: <20251224014203.756264-1-kane_chen@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1vYFnJ-00067q-Tk
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 22:44:13 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1vYFnH-0006gX-8z
+ for qemu-devel@nongnu.org; Tue, 23 Dec 2025 22:44:13 -0500
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8DxOMKBYUtpQqYCAA--.8349S3;
+ Wed, 24 Dec 2025 11:44:01 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by front1 (Coremail) with SMTP id qMiowJDxquCBYUtpgR4EAA--.12420S2;
+ Wed, 24 Dec 2025 11:44:01 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: maobibo@loongson.cn
+Cc: qemu-devel@nongnu.org,
+	philmd@linaro.org,
+	jiaxun.yang@flygoat.com
+Subject: [PATCH v2 0/3] Fix some exception missing update CSR_BADV
+Date: Wed, 24 Dec 2025 11:19:26 +0800
+Message-Id: <20251224031929.2371837-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=kane_chen@aspeedtech.com; helo=TWMBX01.aspeed.com
+X-CM-TRANSID: qMiowJDxquCBYUtpgR4EAA--.12420S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,34 +59,28 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Kane Chen <kane_chen@aspeedtech.com>
-From:  Kane Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kane-Chen-AS <kane_chen@aspeedtech.com>
+Hi,
 
-Set ioexp_num to 2 to enable AST1700 IO expander support.
+This series fix some exception missing update CSR_BADV, such as
+ADEF/ADEM/BCE. and some exceptions are needn' update CSR_BADV.
+Exception BCE and ADEF CSR_BADV from env->pc. Exception ADEM CSR_BADV 
+from virtual address.
 
-Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
----
- hw/arm/aspeed_ast27x0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks.
+Song Gao
 
-diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index 0807481162..2eb857b8e0 100644
---- a/hw/arm/aspeed_ast27x0.c
-+++ b/hw/arm/aspeed_ast27x0.c
-@@ -1260,7 +1260,7 @@ static void aspeed_soc_ast2700a1_class_init(ObjectClass *oc, const void *data)
-     sc->macs_num     = 3;
-     sc->uarts_num    = 13;
-     sc->num_cpus     = 4;
--    sc->ioexp_num    = 0;
-+    sc->ioexp_num    = 2;
-     sc->uarts_base   = ASPEED_DEV_UART0;
-     sc->irqmap       = aspeed_soc_ast2700a1_irqmap;
-     sc->memmap       = aspeed_soc_ast2700_memmap;
+Song Gao (3):
+  target/loongach: Fix some exception need't upadate CSR_BADV
+  target/loongarch: Fix exception BCE missing update CSR_BADV
+  target/loongarch: Fix exception ADEF/ADEM missing update CSR_BADV
+
+ target/loongarch/tcg/tcg_cpu.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
 -- 
-2.43.0
+2.41.0
 
 
