@@ -2,86 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24FBECDCCBF
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 17:04:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A925CDCCC5
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Dec 2025 17:08:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vYRLM-0002oJ-Rf; Wed, 24 Dec 2025 11:04:08 -0500
+	id 1vYROl-0004rD-Ey; Wed, 24 Dec 2025 11:07:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYRLK-0002iG-Q5
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:04:06 -0500
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYROO-0004pr-5c
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:07:20 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYRLI-0006z6-Sc
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:04:06 -0500
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-b7a6e56193cso993375466b.3
- for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 08:04:04 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vYROM-0007pS-Mx
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 11:07:15 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-47d1d8a49f5so28443195e9.3
+ for <qemu-devel@nongnu.org>; Wed, 24 Dec 2025 08:07:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766592243; x=1767197043; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=z9eWKXFyC8Z6JuLmxA6QqxDs8eZFIhgPCVC+BmGyXEM=;
- b=yhoxI9AAOJrNkRCMrBqXUe3HM7M5zV6qXdUt5okbZQ80GdVz2cChKsuN8fPVRbgw6D
- xBapkVj6TIURDqR8CuJsDfERGBx1hUUWWrtGb2egaHfj2pzAPNB7ENjSWOez+RBPcYf2
- 2gw60+DjGRX/nCtOZ6fv4b5S64t8RjV8D1z98GIB/N6Sg9MVnphGy1jU78V9O29pEYyW
- Bw3vZPubHj0BYfQLXmnnFw9kkCRRpwfURC8pRkx/tnhksgYmokMZdggHxXaoxOuDSWTX
- 4VhhlgIcQURuI/Tp2sleFUjlhIO0lxm5XKM90mbheUQBqGCiK2wfEjHwFg8bWMROTymX
- Spwg==
+ d=linaro.org; s=google; t=1766592432; x=1767197232; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=PhSyOCHER6qNm8+jjtpExCMtcWqtOopfzHYlGbi2n00=;
+ b=FnzWMRQP7ZSiRzcvpIcUJLvJM7xW0KM3G9k9huRNeSglT18O9+IPWMOKbKD8p5SmG7
+ 8nN4gp9DIloMq9ZOk/o5+GfL38eLyu8KHxg42fYiuTslzo+K2KlrIGUReMIEoCipcOjb
+ 3Fzx/Ty0/AWs4M8YDmEnsd7CdDCqDWGkyR7ofJbmeomgxxoPvluCMS10NP0zuRcyzR5y
+ rGo5FqYzK74c6QchT3kKJ23unjMR7jM6YSeWkjClH/MHSDVs+zMBw/VByynQH9vn40pN
+ L0MkiSNVR3pSYtU0zB4r3OFcLrJvWluwsUpA3EoNUc2rzKe01Cc0U/lcuzNFU8GLshVn
+ pCRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766592243; x=1767197043;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=z9eWKXFyC8Z6JuLmxA6QqxDs8eZFIhgPCVC+BmGyXEM=;
- b=qCAnsNiA41gM0sUwxlkcVfEeEYuUofPEwJkiHOnvzwedAQTYc3P+QOKec0nxiGjbBG
- fJZrCi2FJJ7DyfPJVnDahsntHxBVvUHgubluDGRN4/4CBjD68NopYdNfnEmrM99bE2VX
- i3lSuoXhojsk3YU0sUEykOhXItwVOYweP/Qmxldml5vr4tmvz70g1TIISQIh6gpMy3Q+
- 25VMeq+bQjUT6WRaJqRUak60fIW6jtYp1sSdWyhIaCsO/ChzNKMyrlZOLxAfiQtwIuEd
- 8C+4X+2sovY0koiPLGq3T8Qq31AnYKPGKq7+KtOt0mQH98dvfLh/Rav03pi8GaEI7n8X
- eFqQ==
-X-Gm-Message-State: AOJu0YzW/LuhWWuF0rd2ly+gyEm5kFc6iHq3KpPbCEqxKL598DH7rF8J
- u5bYmrPrj+CjkciZLVavonitvdmCi2uVoli3KpsFwTpMe1k73tYhfEahnci7jZsPqitDrUaAdG4
- JB847asM=
-X-Gm-Gg: AY/fxX5uO0TScZUqy/or+91GBcs8fu7nTRKSxJrInje/IM5B0ygV3pqxU7xpO+6uQn0
- a0WQrZiKh1N5j/cypbwvWKzYzATIV8hgjt5QMk940icc4kDGrZzRJqDDRmqyaqFTfno2T/0cdwd
- iytfdbJHMT1QRUwtKYAj+ft60N0jR+ED5/ZyDIXdQlJ7vvRqfDEChKivEZjaqk4vClh4f3Fzn8I
- Sx7SsT29Ez2qeHkwXxMwtN5P88/GyOTRyDVu96+kA+Xn4CHacX3ARyzDO9yCMIPfD1HPJI9p1Xp
- XAuT66VeMZO+CTCRMScUMw6CnLwq/t26kN2MFiamjHarHSOwhHzCxDjJRmKpQ+1UOu0Vhp4RRuo
- SKpXFh9MnRuI2NcedqTd6Q/kV+K39QTzJAUB7jI/fOjwkdReuDwsqk08mtz4F4ixv7eV7E7XCO5
- ccifHUxvJZDJB4wueEMyGz9Y9o34plrCNUdt+eWv1zz3TIiNd5lVmX5WA=
-X-Google-Smtp-Source: AGHT+IFzeCX3q+4OHoG32ga2liHAjm/V1RFXHeNod4/8J2fm8rqy3TLYZNJ0msmosSm045UMgeNiUQ==
-X-Received: by 2002:a17:907:3c87:b0:b76:3476:a83c with SMTP id
- a640c23a62f3a-b80371d7dcbmr2019059466b.40.1766592242814; 
- Wed, 24 Dec 2025 08:04:02 -0800 (PST)
+ d=1e100.net; s=20230601; t=1766592432; x=1767197232;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=PhSyOCHER6qNm8+jjtpExCMtcWqtOopfzHYlGbi2n00=;
+ b=J27k/UiRbQgQsxgz37WvqOmHCKupcrHNpDSBQvXinS8Pf3Wa5w9cntaSU92sT1VWYF
+ 4HYCQRHgnUpnsXRrZIc79EkbjxjvYbJdPgS7f3zHcxpgkE0yh5NsICmLX7kCGc7AwkTf
+ sP5WLEW/BKhEdJSDDEeGWkgzLcyQM3cDb1J8gWtoMno9/HixioyGinmk/QN85Mt9fpqd
+ sG19pUlxumJhArsg91T5jY8hPJAVYi7BT3ej/Y+m5zvrDb5YIm4RhSwYsnptnf9u/U1i
+ P2cXVr5L/n59zYRZTJkgPt5M9XlPOsRzinx7nCnySfVycFRoDw++afJSTbE+Os+ublih
+ KCAw==
+X-Gm-Message-State: AOJu0YzKNV5C1lNlnxbvqgGP/XSGf276CbfK7/cCbp3quTGUTpwMn+dY
+ SACbWxwAra3r1DkjkPcU1lQBvBH2HKPIq2Grhbgq+XQNTDDQqBQ/Kuc5UsqEVYD892tfdx91Rvy
+ qYC1wcQY=
+X-Gm-Gg: AY/fxX7LvLficohaDZ5JaXuNW+iqpDLUD3N8tZWgo8ZLeRG7jR440B2jDqrC/veut8Z
+ 8gQyafnha18Ghq4f16d8/v21Mup0kDSnuIghnM+FFNgYOp5q6oQGr/K/A+msx7pVh0DWVP3Tin4
+ kI+vUqazdgQStCX3FJxPxPMG0lQA9RnlN2M/u58uI89HWzbH6mdgk1dxTEmmwS2oDtI5gHA+sU4
+ aiAE6nep5Rk2yTrbPE0Yv3zh+hiaIGsyVyq6829QhDkkiVKJIiIE1y7dJI4mpmYAeFaSGOWZUUa
+ zaz/Yv9+O0FmMbtImAJqTLj/SJzR3B5veTBEmd3EaoeBUZFqsoTlr4LEjNmrfhj6gAW9LyVPufq
+ WQfAD0u5RAu9zleGcmWXk1U/wrttHw5ksLIbdlbozob/zmJxf+I35W/OIqYr0P0LKXhZwO/26zY
+ DD9gT92iAYD4tDNBMiqSbN4FY9vs96cgbIOVugdqfjzJSeNq7LTxiI+QM=
+X-Google-Smtp-Source: AGHT+IHjwjqNrBZHhXSIBNSfXIuR5NX2DfoTU9vVfVCXlywywNX70/CGkRyXaD1ODdHXaRQVpaDEAw==
+X-Received: by 2002:a05:600c:4f4f:b0:46f:d682:3c3d with SMTP id
+ 5b1f17b1804b1-47d1955187fmr235595625e9.13.1766592431723; 
+ Wed, 24 Dec 2025 08:07:11 -0800 (PST)
 Received: from localhost.localdomain (188.171.88.92.rev.sfr.net.
  [92.88.171.188]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b8037f089fesm1794837366b.46.2025.12.24.08.04.01
+ 5b1f17b1804b1-47be3aa9971sm137676175e9.13.2025.12.24.08.07.10
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 24 Dec 2025 08:04:02 -0800 (PST)
+ Wed, 24 Dec 2025 08:07:11 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Anton Johansson <anjo@rev.ng>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Brian Cain <brian.cain@oss.qualcomm.com>, Anton Johansson <anjo@rev.ng>,
+ Laurent Vivier <laurent@vivier.eu>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Michael Rolnik <mrolnik@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 3/3] configs/targets: Forbid AVR to use legacy native
- endianness API
-Date: Wed, 24 Dec 2025 17:03:35 +0100
-Message-ID: <20251224160335.88861-4-philmd@linaro.org>
+Subject: [PATCH v3 0/3] target/hexagon: Use explicit little-endian LD/ST API
+Date: Wed, 24 Dec 2025 17:07:05 +0100
+Message-ID: <20251224160708.89085-1-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251224160335.88861-1-philmd@linaro.org>
-References: <20251224160335.88861-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,25 +99,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The qemu-system-avr binary is buildable without a single use
-of the legacy "native endian" API. Unset the transitional
-TARGET_USE_LEGACY_NATIVE_ENDIAN_API definition to forbid
-further uses of the legacy API.
+Hexagon is little-endian. Use the explicit 'little'
+endianness instead of the 'native' one.
+Forbid further uses of legacy APIs.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- configs/targets/avr-softmmu.mak | 1 +
- 1 file changed, 1 insertion(+)
+tag: https://gitlab.com/philmd/qemu/-/tags/endian_hexagon-v3
+CI: https://gitlab.com/philmd/qemu/-/pipelines/2231223066
 
-diff --git a/configs/targets/avr-softmmu.mak b/configs/targets/avr-softmmu.mak
-index baf20fb7f2f..154f58448ae 100644
---- a/configs/targets/avr-softmmu.mak
-+++ b/configs/targets/avr-softmmu.mak
-@@ -2,3 +2,4 @@ TARGET_ARCH=avr
- TARGET_XML_FILES= gdb-xml/avr-cpu.xml
- TARGET_LONG_BITS=32
- TARGET_NOT_USING_LEGACY_LDST_PHYS_API=y
-+TARGET_NOT_USING_LEGACY_NATIVE_ENDIAN_API=y
+Philippe Mathieu-Daudé (3):
+  target/hexagon: Inline translator_ldl()
+  target/hexagon: Use little-endian variant of cpu_ld/st_data*()
+  configs/targets: Forbid Hexagon to use legacy native endianness API
+
+ configs/targets/hexagon-linux-user.mak |  1 +
+ target/hexagon/macros.h                |  6 +++---
+ target/hexagon/op_helper.c             |  6 +++---
+ target/hexagon/translate.c             | 11 +++++++----
+ 4 files changed, 14 insertions(+), 10 deletions(-)
+
 -- 
 2.52.0
 
