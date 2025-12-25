@@ -2,64 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9851FCDD2A3
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Dec 2025 01:54:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94D43CDD2E9
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Dec 2025 02:42:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vYZbd-0000EN-Jt; Wed, 24 Dec 2025 19:53:31 -0500
+	id 1vYaLs-0000lN-It; Wed, 24 Dec 2025 20:41:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1vYZbW-0000Ds-FU
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 19:53:22 -0500
-Received: from mx.treblig.org ([2a00:1098:5b::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1vYZbT-0008No-VV
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 19:53:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
- ; s=bytemarkmx;
- h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
- :Subject; bh=30Y07OcjGBogwL93Zit92osnomxgi2nRkb2Wl5mHk6Q=; b=WYql1a5TZ/xdEYBS
- aoXGIvikzPAfY88qcBz63HAZ4cpr1RWSjdBCnFyRMrJPxkI6+QnfTow+iYxFvSWWr6k2g1pjcDHSH
- pbgiJ8F71JRlQeBUSrMScLz/vKTImFrTP1pQntIoFn0r5RC/ap1AWOZw5kbFgVo/tpxWicbDSbTjB
- LJZK5CJ3P9tM/MNq+rIRoT+lRym0N/enLXEuJI0FI5kJGbINp2fK/3IPbjDIPUZBghHS85zMi31N8
- vDsL6xVLvYac9yEjH+dkxYbUZWSlEZHvSO6nVMndF2BxxZ/NbhjK5WQ2vtWJXQhb5E77DN5/3CJhY
- 5HRASVKby4eOHnnH3Q==;
-Received: from dg by mx.treblig.org with local (Exim 4.98.2)
- (envelope-from <dg@treblig.org>) id 1vYZbR-0000000BFkY-0SFC;
- Thu, 25 Dec 2025 00:53:17 +0000
-Date: Thu, 25 Dec 2025 00:53:17 +0000
-From: "Dr. David Alan Gilbert" <dave@treblig.org>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Anton Johansson <anjo@rev.ng>
-Subject: Re: [PATCH 6/6] monitor/hmp: Merge hmp-cmds-target.c within hmp-cmds.c
-Message-ID: <aUyK_Qcb8-czgmXO@gallifrey>
-References: <20251224133949.85136-1-philmd@linaro.org>
- <20251224133949.85136-7-philmd@linaro.org>
- <CAAjaMXauqeKDJ84LowukGMHcDy+kyB8Y_pDoBCr_kSNyguSRPA@mail.gmail.com>
- <e36cb7e3-799e-4a3c-89c6-4b5242f57344@linaro.org>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1vYaLp-0000kx-Sw
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 20:41:13 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1vYaLl-0001Nh-Uy
+ for qemu-devel@nongnu.org; Wed, 24 Dec 2025 20:41:13 -0500
+Received: from loongson.cn (unknown [10.2.5.213])
+ by gateway (Coremail) with SMTP id _____8DxOMIvlkxp3_oCAA--.9361S3;
+ Thu, 25 Dec 2025 09:41:03 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+ by front1 (Coremail) with SMTP id qMiowJBxLMIulkxpM4kEAA--.11030S2;
+ Thu, 25 Dec 2025 09:41:03 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Song Gao <gaosong@loongson.cn>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	qemu-devel@nongnu.org
+Subject: [PATCH v2 0/2] hw/loongarch/virt: Add versioned machine type support
+Date: Thu, 25 Dec 2025 09:41:00 +0800
+Message-Id: <20251225014102.2666365-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <e36cb7e3-799e-4a3c-89c6-4b5242f57344@linaro.org>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.12.48+deb13-amd64 (x86_64)
-X-Uptime: 00:49:52 up 59 days, 26 min,  3 users,  load average: 0.00, 0.00,
- 0.00
-User-Agent: Mutt/2.2.13 (2024-03-09)
-Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
- helo=mx.treblig.org
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-CM-TRANSID: qMiowJBxLMIulkxpM4kEAA--.11030S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,56 +61,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-* Philippe Mathieu-Daudé (philmd@linaro.org) wrote:
-> On 24/12/25 15:24, Manos Pitsidianakis wrote:
-> > On Wed, Dec 24, 2025 at 3:40 PM Philippe Mathieu-Daudé
-> > <philmd@linaro.org> wrote:
-> > > 
-> > > hmp-cmds-target.c is no more target specific, move its code
-> > > in hmp-cmds.c, which is built once for all system binaries.
-> > > 
-> > > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> > > ---
-> > >   monitor/hmp-cmds-target.c | 383 --------------------------------------
-> > >   monitor/hmp-cmds.c        | 354 +++++++++++++++++++++++++++++++++++
-> > >   monitor/meson.build       |   2 +-
-> > >   3 files changed, 355 insertions(+), 384 deletions(-)
-> > >   delete mode 100644 monitor/hmp-cmds-target.c
-> 
-> 
-> > > diff --git a/monitor/meson.build b/monitor/meson.build
-> > > index a71523a1ce8..763fcaba6c5 100644
-> > > --- a/monitor/meson.build
-> > > +++ b/monitor/meson.build
-> > > @@ -9,4 +9,4 @@ system_ss.add(files(
-> > >   system_ss.add([spice_headers, files('qmp-cmds.c')])
-> > > 
-> > >   specific_ss.add(when: 'CONFIG_SYSTEM_ONLY',
-> > > -               if_true: [files( 'hmp-cmds-target.c', 'hmp-target.c'), spice])
-> > > +  if_true: [files('hmp-target.c'), spice])
-> > 
-> > Nit: Indentation?
-> 
-> We usually don't use tabs in meson.build files, and indent as 2 spaces,
-> but I couldn't find any documented style enforcement :/
+Now la464 CPU type feature is basically finished, versioned machine type
+is added here for compatibility support in future.
 
-Looking at ui/meson.build and audio/meson.build, it looks like if_true: on
-separate lines are generally aligned with the (
-(ish....)
+---
+v1 ... v2:
+  1. Change version machine from 10.2 to 11.0
+---
+Bibo Mao (2):
+  hw/loongarch/virt: Define virt machine type with type_init()
+  hw/loongarch/virt: Define versioned virt machine
 
-Dave
+ hw/loongarch/virt.c | 66 ++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 53 insertions(+), 13 deletions(-)
 
-> Paolo, Marc-André, any preference?
-> 
-> > 
-> > Otherwise
-> > 
-> > Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> 
-> Thanks!
+
+base-commit: 8dd5bceb2f9cc58481e9d22355a8d998220896de
 -- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+2.39.3
+
 
