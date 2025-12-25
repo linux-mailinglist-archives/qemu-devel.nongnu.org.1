@@ -2,72 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF72CCDD3BB
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Dec 2025 03:46:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F177BCDD48F
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Dec 2025 05:15:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vYbMF-00057s-H8; Wed, 24 Dec 2025 21:45:43 -0500
+	id 1vYcjb-0004O5-Du; Wed, 24 Dec 2025 23:13:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1vYbM8-00056B-QO
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 21:45:36 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1vYbM4-0007U3-Vf
- for qemu-devel@nongnu.org; Wed, 24 Dec 2025 21:45:35 -0500
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8AxjsNIpUxpwAIDAA--.10225S3;
- Thu, 25 Dec 2025 10:45:28 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by front1 (Coremail) with SMTP id qMiowJDx6+BFpUxpNo4EAA--.13624S3;
- Thu, 25 Dec 2025 10:45:27 +0800 (CST)
-Subject: Re: [PATCH v2 3/3] target/loongarch: Fix exception ADEF/ADEM missing
- update CSR_BADV
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org, jiaxun.yang@flygoat.com
-References: <20251224031929.2371837-1-gaosong@loongson.cn>
- <20251224031929.2371837-4-gaosong@loongson.cn>
- <06436084-251e-a233-490d-7944ed0f8f41@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <3f7e15e7-84a7-6ccb-2216-d6556533c28a@loongson.cn>
-Date: Thu, 25 Dec 2025 10:46:03 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
+ id 1vYcHj-0000H2-HF; Wed, 24 Dec 2025 22:45:07 -0500
+Received: from mail-a.sr.ht ([46.23.81.152])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
+ id 1vYcHh-0002R7-5g; Wed, 24 Dec 2025 22:45:07 -0500
+DKIM-Signature: a=rsa-sha256; bh=R5SE7ijkLWVtoR1GyJ0BYJJbbZJ8IL73XPO+lp/c9C0=; 
+ c=simple/simple; d=git.sr.ht;
+ h=From:Date:Subject:Reply-to:To:Cc; 
+ q=dns/txt; s=20240113; t=1766634301; v=1;
+ b=HGHwLfcmJEsCE0y1riVbwZfxAd3dA8pUwN+kG5Ea3TM+rRdQ/vgxdIUDTwTDvCYCHxsCdBul
+ uN6zVFw7nxwiqhjbfSkFjDgSvnFH5tFURXXjhWpY3Ig8LjaWGTHpR8DJmxDmlLcxS66jlDpL2n2
+ 2qr7RY0t0Z/DLqW19tkQ+/S9UtYOFrdcVz43VDH3B7qPOt4KfhyespcMi5rHSt7sYTaSbzDAL8O
+ HvjjzCohCN2XykFalwlP1HhuR9NgiYHQDECc4KgDaBEmetceuVt7+w8mwrCZ+wit9m0Sh5GT089
+ inPQxwY6+Ivfppv5kcdKAww92FYc2v9a4hkiQ+HXybP5g==
+Received: from git.sr.ht (unknown [46.23.81.155])
+ by mail-a.sr.ht (Postfix) with ESMTPSA id EBD6224690;
+ Thu, 25 Dec 2025 03:45:00 +0000 (UTC)
+From: ~emckean <emckean@git.sr.ht>
+Date: Wed, 24 Dec 2025 22:28:18 -0500
+Subject: [PATCH qemu] hw/arm/max78000: Fix num-irq to match hardware
+ specification
+Message-ID: <176663430090.23028.16926971585326050904-0@git.sr.ht>
+X-Mailer: git.sr.ht
+To: qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-In-Reply-To: <06436084-251e-a233-490d-7944ed0f8f41@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: qMiowJDx6+BFpUxpNo4EAA--.13624S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7tr18JFyrCFy7ZF18CrykWFX_yoW8AF17pr
- 97Ca4UJryFyr1kJw1xJw4UJFyUWr1UJw1UGr1Uta48Gr45Jry0qr40q3yqgr17Jw4rJw17
- Zr1UJr17ZFW7JrXCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
- 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AK
- xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
- AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
- 14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIx
- kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
- wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
- 4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8j-e5UU
- UUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.053,
+Received-SPF: pass client-ip=46.23.81.152; envelope-from=outgoing@sr.ht;
+ helo=mail-a.sr.ht
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, FREEMAIL_FORGED_REPLYTO=2.095,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 24 Dec 2025 23:13:52 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,58 +61,42 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ~emckean <emckean@protonmail.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-在 2025/12/24 下午5:42, Bibo Mao 写道:
->
->
-> On 2025/12/24 上午11:19, Song Gao wrote:
->> Exception ADEM/ADEF need update CSR_BADV, ADEF value from env->pc,
->> ADEM value from the virtual address.
->>
->> Signed-off-by: Song Gao <gaosong@loongson.cn>
->> ---
->>   target/loongarch/tcg/tcg_cpu.c | 5 ++++-
->>   1 file changed, 4 insertions(+), 1 deletion(-)
->>
->> diff --git a/target/loongarch/tcg/tcg_cpu.c 
->> b/target/loongarch/tcg/tcg_cpu.c
->> index c05a06eeb5..53e0970797 100644
->> --- a/target/loongarch/tcg/tcg_cpu.c
->> +++ b/target/loongarch/tcg/tcg_cpu.c
->> @@ -109,10 +109,12 @@ static void loongarch_cpu_do_interrupt(CPUState 
->> *cs)
->>           }
->>           QEMU_FALLTHROUGH;
->>       case EXCCODE_PIF:
->> -    case EXCCODE_ADEF:
->>           cause = cs->exception_index;
->>           update_badinstr = 0;
->>           break;
->> +    case EXCCODE_ADEF:
->> +        update_badinstr = 0;
->> +        QEMU_FALLTHROUGH;
-> I think this modification is unnecessary. CSR_BADV is already set with 
-> exception EXCCODE_ADEF/EXCCODE_ADEM.
->
-I will drop this.
+From: Ethan McKean <emckean@protonmail.com>
 
-Thanks.
-Song Gao
-> Regards
-> Bibo Mao
->>       case EXCCODE_BCE:
->>           env->CSR_BADV = env->pc;
->>           QEMU_FALLTHROUGH;
->> @@ -225,6 +227,7 @@ static void 
->> loongarch_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
->>   {
->>       CPULoongArchState *env = cpu_env(cs);
->>   +    env->CSR_BADV = addr;
->>       if (access_type == MMU_INST_FETCH) {
->>           do_raise_exception(env, EXCCODE_ADEF, retaddr);
->>       } else {
->>
+The MAX78000 user guide Section 5.2 and Table 5-1 specify 119 interrupt
+entries. The previous value of 120 was based on a misreading of the
+table which spans three pages, with entries 0-104 on pages 102-103 and
+the remaining entries 105-118 on page 104.
 
+Signed-off-by: Ethan McKean <emckean@protonmail.com>
+---
+ hw/arm/max78000_soc.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
+
+diff --git a/hw/arm/max78000_soc.c b/hw/arm/max78000_soc.c
+index 7f1856f5ba..1e2f66428d 100644
+--- a/hw/arm/max78000_soc.c
++++ b/hw/arm/max78000_soc.c
+@@ -88,13 +88,7 @@ static void max78000_soc_realize(DeviceState *dev_soc, Err=
+or **errp)
+=20
+     armv7m =3D DEVICE(&s->armv7m);
+=20
+-    /*
+-     * The MAX78000 user guide's Interrupt Vector Table section
+-     * suggests that there are 120 IRQs in the text, while only listing
+-     * 104 in table 5-1. Implement the more generous of the two.
+-     * This has not been tested in hardware.
+-     */
+-    qdev_prop_set_uint32(armv7m, "num-irq", 120);
++    qdev_prop_set_uint32(armv7m, "num-irq", 119);
+     qdev_prop_set_uint8(armv7m, "num-prio-bits", 3);
+     qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m4"));
+     qdev_prop_set_bit(armv7m, "enable-bitband", true);
+--=20
+2.49.1
 
