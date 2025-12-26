@@ -2,108 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF63ECDF095
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Dec 2025 22:22:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2F81CDF0A1
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Dec 2025 22:23:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZFE0-0001GE-7D; Fri, 26 Dec 2025 16:19:52 -0500
+	id 1vZFE0-0001H8-O6; Fri, 26 Dec 2025 16:19:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vZFDo-0001DJ-4k
- for qemu-devel@nongnu.org; Fri, 26 Dec 2025 16:19:44 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vZFDt-0001F6-Rm
+ for qemu-devel@nongnu.org; Fri, 26 Dec 2025 16:19:48 -0500
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vZFDm-0003Up-M1
- for qemu-devel@nongnu.org; Fri, 26 Dec 2025 16:19:39 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vZFDs-0003ZQ-CA
+ for qemu-devel@nongnu.org; Fri, 26 Dec 2025 16:19:45 -0500
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 39FB45BCC4;
- Fri, 26 Dec 2025 21:19:37 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id CFAA95BCCB;
+ Fri, 26 Dec 2025 21:19:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1766783977; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1766783978; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ws1VQpTNPQlwQt5+bAweu+kVb8iQHqA8cUAIMBvExFA=;
- b=DFk4Z+0hRrkH9QghGsYJjkYLTqVZ+VTlKKpnqJvgNJ0vgaOaDhBXDl0mnJQy6tAv+5tTSC
- 5q8ciCCyUHRZAnbBfpF2/+eJ+6R7OKHf3sRat5HUyCCA8sjCsL6ZEuuJ+mjy0EeCc4No+q
- xlRO6oiLm2OYLiZg1WSRfkBk8UhcnZw=
+ bh=4V5ewCNgJujiDbPtywT+kgNqorZmKMkIaCdHu6ewMs4=;
+ b=z08urxJ57XAViVGEWOIGzSOnSn19v/BZ2tW18pDch9gPUTwN11p1sETSzIqZ4AC8j+TGLc
+ yXwssbHwWgWXsxulXA0HgJDvs1a6iLLL6sDWp0KlcJypvUGo5+mX4amvh4Z5jilAemBgQD
+ thdL2E1j4FhjF9ReI5nkplLHgG+a2b4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1766783977;
+ s=susede2_ed25519; t=1766783978;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ws1VQpTNPQlwQt5+bAweu+kVb8iQHqA8cUAIMBvExFA=;
- b=OqcEYMYX7vK4KXyY9rtwrM+hAXoprjAozNuAl6CFoSUsvtAvU/1Bnl+CMW29BJ+BwKqKqV
- LhFJxM+qhVKue/DA==
+ bh=4V5ewCNgJujiDbPtywT+kgNqorZmKMkIaCdHu6ewMs4=;
+ b=unXtKC5i/B+3daFDEPQ4coSvmbocv8sONgPnA4NjaGw08LmL55Gw1+qJBdD721gqx/gTgz
+ yZnuLnCFVjwVFyAg==
 Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1766783977; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1766783978; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ws1VQpTNPQlwQt5+bAweu+kVb8iQHqA8cUAIMBvExFA=;
- b=DFk4Z+0hRrkH9QghGsYJjkYLTqVZ+VTlKKpnqJvgNJ0vgaOaDhBXDl0mnJQy6tAv+5tTSC
- 5q8ciCCyUHRZAnbBfpF2/+eJ+6R7OKHf3sRat5HUyCCA8sjCsL6ZEuuJ+mjy0EeCc4No+q
- xlRO6oiLm2OYLiZg1WSRfkBk8UhcnZw=
+ bh=4V5ewCNgJujiDbPtywT+kgNqorZmKMkIaCdHu6ewMs4=;
+ b=z08urxJ57XAViVGEWOIGzSOnSn19v/BZ2tW18pDch9gPUTwN11p1sETSzIqZ4AC8j+TGLc
+ yXwssbHwWgWXsxulXA0HgJDvs1a6iLLL6sDWp0KlcJypvUGo5+mX4amvh4Z5jilAemBgQD
+ thdL2E1j4FhjF9ReI5nkplLHgG+a2b4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1766783977;
+ s=susede2_ed25519; t=1766783978;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ws1VQpTNPQlwQt5+bAweu+kVb8iQHqA8cUAIMBvExFA=;
- b=OqcEYMYX7vK4KXyY9rtwrM+hAXoprjAozNuAl6CFoSUsvtAvU/1Bnl+CMW29BJ+BwKqKqV
- LhFJxM+qhVKue/DA==
+ bh=4V5ewCNgJujiDbPtywT+kgNqorZmKMkIaCdHu6ewMs4=;
+ b=unXtKC5i/B+3daFDEPQ4coSvmbocv8sONgPnA4NjaGw08LmL55Gw1+qJBdD721gqx/gTgz
+ yZnuLnCFVjwVFyAg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2FF143EA63;
- Fri, 26 Dec 2025 21:19:35 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C743D3EA63;
+ Fri, 26 Dec 2025 21:19:37 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 2F1QOOf7TmnwJwAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 26 Dec 2025 21:19:35 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id yMiYIen7TmnwJwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 26 Dec 2025 21:19:37 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com
-Subject: [RFC PATCH 02/25] migration: Fix state change at
- migration_channel_process_incoming
-Date: Fri, 26 Dec 2025 18:19:04 -0300
-Message-ID: <20251226211930.27565-3-farosas@suse.de>
+Subject: [RFC PATCH 03/25] migration/tls: Remove unused parameter
+Date: Fri, 26 Dec 2025 18:19:05 -0300
+Message-ID: <20251226211930.27565-4-farosas@suse.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251226211930.27565-1-farosas@suse.de>
 References: <20251226211930.27565-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
 X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.977];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.982];
  MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_TWO(0.00)[2];
  FUZZY_RATELIMITED(0.00)[rspamd.com]; ARC_NA(0.00)[];
  RCVD_VIA_SMTP_AUTH(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo];
- URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email,suse.de:mid];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo];
  FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
  MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
  TO_MATCH_ENVRCPT_ALL(0.00)[]; TO_DN_NONE(0.00)[];
  RCVD_TLS_ALL(0.00)[]
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+X-Spam-Score: -2.80
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -120,29 +116,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the incoming migration fails during the channel connection phase,
-the state transition to FAILED is currently being done in the
-MigrationState->state, but the MigrationIncomingState->state is the
-one that should be used.
+MigrationState is not used at migration_tls_channel_process_incoming().
+
+The last usage was removed by commit 3f461a0c0b ("migration: Drop
+unused parameter for migration_tls_get_creds()")
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/channel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ migration/channel.c | 3 +--
+ migration/tls.c     | 4 +---
+ migration/tls.h     | 4 +---
+ 3 files changed, 3 insertions(+), 8 deletions(-)
 
 diff --git a/migration/channel.c b/migration/channel.c
-index 92435fa7f7..4768c71455 100644
+index 4768c71455..b4ab676048 100644
 --- a/migration/channel.c
 +++ b/migration/channel.c
-@@ -48,7 +48,7 @@ void migration_channel_process_incoming(QIOChannel *ioc)
+@@ -32,7 +32,6 @@
+  */
+ void migration_channel_process_incoming(QIOChannel *ioc)
+ {
+-    MigrationState *s = migrate_get_current();
+     MigrationIncomingState *mis = migration_incoming_get_current();
+     Error *local_err = NULL;
  
-     if (local_err) {
-         error_report_err(local_err);
--        migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
-+        migrate_set_state(&mis->state, mis->state, MIGRATION_STATUS_FAILED);
-         if (mis->exit_on_error) {
-             exit(EXIT_FAILURE);
-         }
+@@ -40,7 +39,7 @@ void migration_channel_process_incoming(QIOChannel *ioc)
+         ioc, object_get_typename(OBJECT(ioc)));
+ 
+     if (migrate_channel_requires_tls_upgrade(ioc)) {
+-        migration_tls_channel_process_incoming(s, ioc, &local_err);
++        migration_tls_channel_process_incoming(ioc, &local_err);
+     } else {
+         migration_ioc_register_yank(ioc);
+         migration_ioc_process_incoming(ioc, &local_err);
+diff --git a/migration/tls.c b/migration/tls.c
+index 56b5d1cc90..1df31bdcbb 100644
+--- a/migration/tls.c
++++ b/migration/tls.c
+@@ -71,9 +71,7 @@ static void migration_tls_incoming_handshake(QIOTask *task,
+     object_unref(OBJECT(ioc));
+ }
+ 
+-void migration_tls_channel_process_incoming(MigrationState *s,
+-                                            QIOChannel *ioc,
+-                                            Error **errp)
++void migration_tls_channel_process_incoming(QIOChannel *ioc, Error **errp)
+ {
+     QCryptoTLSCreds *creds;
+     QIOChannelTLS *tioc;
+diff --git a/migration/tls.h b/migration/tls.h
+index 58b25e1228..7607cfe803 100644
+--- a/migration/tls.h
++++ b/migration/tls.h
+@@ -24,9 +24,7 @@
+ #include "io/channel.h"
+ #include "io/channel-tls.h"
+ 
+-void migration_tls_channel_process_incoming(MigrationState *s,
+-                                            QIOChannel *ioc,
+-                                            Error **errp);
++void migration_tls_channel_process_incoming(QIOChannel *ioc, Error **errp);
+ 
+ QIOChannelTLS *migration_tls_client_create(QIOChannel *ioc,
+                                            const char *hostname,
 -- 
 2.51.0
 
