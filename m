@@ -2,114 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2077FCDF068
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Dec 2025 22:21:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE352CDF10E
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Dec 2025 22:38:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZFFP-0004ch-Ur; Fri, 26 Dec 2025 16:21:20 -0500
+	id 1vZFUo-00085T-7V; Fri, 26 Dec 2025 16:37:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vZFFJ-0004CP-Bl
- for qemu-devel@nongnu.org; Fri, 26 Dec 2025 16:21:13 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vZFFH-0004My-Ba
- for qemu-devel@nongnu.org; Fri, 26 Dec 2025 16:21:13 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 548E15BCF1;
- Fri, 26 Dec 2025 21:20:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1766784017; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mqj7eIxmqSfwi0x0PViGUESmvgBn7IsXqDeDDlZ4qaY=;
- b=aHDkKWrMA3ccDmI6OvcET8D95OzTPprA7rKPbJexpFw00DZtKE0Z/AsX80ShLHixg5Lin+
- p71troD8mjsT5GYTZdSl0tSOcwrfFCoKVEr0Zw3+nGsFWWgH0G61TUVPzb8GVDyI5rayNN
- 6hxDatqEgcRhwDsygiPa0fs4pSz8Nb8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1766784017;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mqj7eIxmqSfwi0x0PViGUESmvgBn7IsXqDeDDlZ4qaY=;
- b=q3ZFK0LgRP8+ee9OVNx9kSWiJU0KVlsCsO+FG+qmeLid/XbOotbcxcM/YQ9WYfSkPMXo9e
- EVvuK30vwkdhK4Cg==
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=mWENP+7S;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=nsT+HCZB
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1766784016; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mqj7eIxmqSfwi0x0PViGUESmvgBn7IsXqDeDDlZ4qaY=;
- b=mWENP+7SYgYCxjbUdzFaLZGA97DfhRg9tprQuG1wXFXDVkkZXx7OzG7UftgPgWlrEQGouM
- 3HXK+oKw/mk+a+pSe6y3cKPSiRQbdZHIVFDd1+/uDbpBB6szKKfoKv6cgpcB6FtPNnVYNy
- EEAVLf3sbEjydNRyVjgKkKfHEGdhZZo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1766784016;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mqj7eIxmqSfwi0x0PViGUESmvgBn7IsXqDeDDlZ4qaY=;
- b=nsT+HCZBEggNW0txJAN8UC7IDK9XRgG57VVkpq5ShkH9FVTUrQfi51kwA60xygQnSWxCde
- 82O0PbZ6k6rT1zCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4B6C43EA63;
- Fri, 26 Dec 2025 21:20:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id CBFhAw/8TmnwJwAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 26 Dec 2025 21:20:15 +0000
-From: Fabiano Rosas <farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1vZFUm-00085G-Ob
+ for qemu-devel@nongnu.org; Fri, 26 Dec 2025 16:37:12 -0500
+Received: from mout.kundenserver.de ([212.227.126.135])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1vZFUl-0007Cq-1E
+ for qemu-devel@nongnu.org; Fri, 26 Dec 2025 16:37:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivier.eu;
+ s=s1-ionos; t=1766785028; x=1767389828; i=laurent@vivier.eu;
+ bh=QAQqEihj4nMTSUsATOWQ2IgxXdkpAiIMkGFxoNhuc8M=;
+ h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
+ MIME-Version:Content-Transfer-Encoding:cc:
+ content-transfer-encoding:content-type:date:from:message-id:
+ mime-version:reply-to:subject:to;
+ b=TwO84/dA1S8s3wsu+oxslMTAv4nXF0Ouu342AAqDijkS7koZrZm1e+du9ZfQcK8n
+ hhY1TPcP4m1FyNvObnlCbF6E7kFC3n+e/pblxe2Ilot1vXrAqc7RRFV3tWDREve1b
+ W34M0RbxV7Cvk0Yjkne4vPB+dnSGUFvy2eVz6yEi1+qc/wtJRyXxl2PQvh1J3xE4c
+ wHkQw7bhj6QvaF3CPygVcDuqmOol781gp0xlG7d3aMULsRJgTGPh8Dqn3GwjM3Pax
+ HBrl7zyugtV0NMtP0/+hwvICSfJiJ2jJmkx8lEkkMds5onRPKOPFO1X2TfcnNV1Tx
+ Yl/U1C5whleJ2cn4iQ==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from quad ([82.64.211.94]) by mrelayeu.kundenserver.de (mreue012
+ [212.227.15.167]) with ESMTPSA (Nemesis) id 1M91Tq-1vc1S62LO2-005h6u; Fri, 26
+ Dec 2025 22:37:08 +0100
+From: Laurent Vivier <laurent@vivier.eu>
 To: qemu-devel@nongnu.org
-Cc: peterx@redhat.com
-Subject: [RFC PATCH 25/25] migration: Remove qmp_migrate_finish
-Date: Fri, 26 Dec 2025 18:19:27 -0300
-Message-ID: <20251226211930.27565-26-farosas@suse.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251226211930.27565-1-farosas@suse.de>
-References: <20251226211930.27565-1-farosas@suse.de>
+Cc: Laurent Vivier <laurent@vivier.eu>
+Subject: [PATCH] m68k: fix CAS2 writeback when Dc1==Dc2
+Date: Fri, 26 Dec 2025 22:37:07 +0100
+Message-ID: <20251226213707.331741-1-laurent@vivier.eu>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; MIME_TRACE(0.00)[0:+];
- FUZZY_RATELIMITED(0.00)[rspamd.com];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
- RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- RCPT_COUNT_TWO(0.00)[2];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- RCVD_TLS_ALL(0.00)[]; TO_DN_NONE(0.00)[];
- RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 548E15BCF1
-X-Spam-Score: -3.01
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:BgZh4fArkLsX1kI/w3LXy6s+g61EUJt++GXLNdA8eEEIaJrqwkW
+ zG4YfD1hQzkyZ1AUGnF7qdTCU1YXbNCPGL/3K/T5WOmmSHT3NPua25jQfz6AbSOHKEl4jRR
+ rSCl/4tXhACgnmPCTHC2gNV77+NplVacDq/o5gpAfENLb9TY4KzZThfnbi9WHtxyDFU1wox
+ op3vPVYXVXD3usWWE7+qg==
+UI-OutboundReport: notjunk:1;M01:P0:m0H7JYxhAQM=;olG+EVAawZAqF5jdyaqRbMfN7ah
+ 7hF2QF6dwGBF/7IeIu32W/0f1my8ywv21Rmgo+gckNiZku5bWky+80ralRj4TQgk2D3DGBXk8
+ kMDIQZ2dVZTwZ9GmYCmm+nJw41ZGzb/AAIUukkxuQrI63YSIWicHFFM2wDbMQoDFUNLfHOmpu
+ CqasHrLcmr98FwbnRSLTPQ2LTPSmoFSv6LNuDF+niJszRyjUxSYKHUdA3JQYluOWCub2dSRvJ
+ cvHDelS6b3CyEGd2Il6bwCK40q62B0pwcaKCfLMcvgoWtS3coIl571TSIFkVmSkeqX9D+f3w1
+ zjqbNv/9lT+DmJDm55ZSdmfGKNLdqHlfUsQdqnFDeo7JTS9u2bNCRbYPMOu4pc/YfK5aHXVCm
+ JBIF6BLSDLWgdEalNgG5E9HDUuhvjPgtB5PiJnRVi3aiQ6fzCDXE0AtEpNafTt7CjxGUCOLw0
+ kXd/wkZquZo+CB5yai8df18AFjmwTXbe5i8VGk4OYFNksdeef/C6ZKK8qX0NImKeQiHymH/OD
+ DQsHR1os6LfRLaGa+69OPwxYNlSRuq83dAWpxizp6+X5B7w9U6PcZiHd+gcQXbCJrCh0wI7Rt
+ aKZG4uO37AB/bnvQxUmnfOUCYcKurgKVkGx431JXizdwLXzO46uNTLiAXplvMwNtk7Kpllbvv
+ OYxfKrSUQ7YhFzt12uu1Ff7gCwZqaLqfzPMu+GsnBNm1vex5Q9neUpiMMMDfcs2f/1VTdH+N+
+ HtRf6BJ//u4kwFyiskLV73BH4E9WzqkDbYAIULBNKuPH08C7S4y48LVbVMEtOpk6I3gzQ+F8z
+ RZG2SfBs6BbJxnuezCwCXwy/0fRHPvbaRzEM+UvWJ5Wz8exmvyYsuZskevZ9Lcb4Ji2hvmaRB
+ hHTL9xLAHrpUQOxnZhB56qH8NMv7x02TByfRrGmUgdAeGsbgkRtsfSEDsWkXnRY53LyS4vM2M
+ /YdZ4ryB8QWXr6fPBcv3ZezMbxZ7P4nhgI/ugN4dRy3PbIpf9thNGx6Z12ekCqsW3bWEBJRMo
+ o4kai86Q+K7cXzL/FNPe2hbqa+dGLbSDWrhLIgwDMKSzPUGFbqd+/MgEeRA5uJFYaoD/VYpf3
+ WM+VvFG7gtISckWbiOfdYPcpGXsQ2YoITrFMd6toUxL//DM7VNYEo56JlUAtClrhQP+UcQo5E
+ 4z1Lf0AbuWwJ+yOfX7p5SGSGYnfoU7fUO6OJ1S/fqg4vkFHEFjoI/H25ofSCbFlFQKFfmmUOd
+ wKYi2ycElL/uEediETTt5ObqnVzJAtZ+VzcmJv3xKMKZ/MuBqZLOMN4tQJv4DrP9E/q9K54KH
+ FG628uAmRSn4suidwKmM+nAkET08ioQR6b9HS0ndlSssaKB7An73iaqyCIuc4SkMAV5onwp/B
+ kcmJjGhrHjo0K2WTfRkM9QhIGLE7ZWX1yjKwwYqYamZzm7QF2od9q1bd9SsVWZFtmFatis8gg
+ mBFKiZ3f/kf5nVryAYzNeP3nKNE1xREcw4gHMlfzj960HNVViwMMFHQ6ZAI7x9j1+7dnqFQzP
+ 59QRZafOu8Q25bQ5chywZuKEgN6QDT1xBPb3zIXCuze/gBl3aowq3UH/uKuNVvX+UWGaz6bST
+ VHfOhapYRYDt4DavRh0MDBj/lnJe7J+64HMSd1us0AykiQCP3pbN19n2AyicWKza6RwYVcs02
+ rDbr7O66izuGY9r6VGB6wSEkMtdvJmMcBkcd/q7Y12+nBcULWwtZnUCo47X+6Dc/CGl0d3vcR
+ GFC40wgUTZ9WLAfKv9SSczWxrUYhmaqMvH5hWX2h8PTj6BPMrcIHWCFU=
+Received-SPF: pass client-ip=212.227.126.135; envelope-from=laurent@vivier.eu;
+ helo=mout.kundenserver.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,87 +97,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With recent cleanups, the qmp_migrate_finish() function has now become
-just a call to migration_connect_outgoing(), which makes sense because
-that's what the "second part of qmp_migrate" does. The
-qmp_migrate_finish is (in retrospect) too confusing because it never
-had a matching qmp_migrate_start. I think it's best to just remove
-this function and call migration_connect_outgoing() directly.
+According to Programmer's Reference Manual, if Dc1 and Dc2 specify the
+same data register and the comparison fails, memory operand 1 is stored
+in the data register.
 
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- migration/migration.c | 20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+The current helpers wrote Dc1 then Dc2, leaving operand 2 in the shared
+register.
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 15d8459a81..228e322de1 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1470,8 +1470,8 @@ void migration_cancel(void)
+Swap the writeback order for cas2w/cas2l so memory operand 1 wins.
+
+Signed-off-by: Laurent Vivier <laurent@vivier.eu>
+=2D--
+ target/m68k/op_helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/target/m68k/op_helper.c b/target/m68k/op_helper.c
+index e9c20a8e0322..10266b1e0e8b 100644
+=2D-- a/target/m68k/op_helper.c
++++ b/target/m68k/op_helper.c
+@@ -799,8 +799,8 @@ void HELPER(cas2w)(CPUM68KState *env, uint32_t regs, u=
+int32_t a1, uint32_t a2)
+         env->cc_v =3D c2;
      }
- 
-     /*
--     * If qmp_migrate_finish has not been called, then there is no path that
--     * will complete the cancellation.  Do it now.
-+     * If migration_connect_outgoing has not been called, then there
-+     * is no path that will complete the cancellation.  Do it now.
-      */
-     if (setup && !s->to_dst_file) {
-         migrate_set_state(&s->state, MIGRATION_STATUS_CANCELLING,
-@@ -2002,8 +2002,6 @@ static bool migrate_prepare(bool resume, Error **errp)
-     return true;
+     env->cc_op =3D CC_OP_CMPW;
+-    env->dregs[Dc1] =3D deposit32(env->dregs[Dc1], 0, 16, l1);
+     env->dregs[Dc2] =3D deposit32(env->dregs[Dc2], 0, 16, l2);
++    env->dregs[Dc1] =3D deposit32(env->dregs[Dc1], 0, 16, l1);
  }
- 
--static void qmp_migrate_finish(MigrationAddress *addr, Error **errp);
--
- static void migrate_hup_add(QIOChannel *ioc, GSourceFunc cb, void *opaque)
- {
-     MigrationState *s = migrate_get_current();
-@@ -2031,7 +2029,7 @@ static gboolean qmp_migrate_finish_cb(QIOChannel *channel,
-     MigrationAddress *addr = opaque;
-     Error *local_err = NULL;
- 
--    qmp_migrate_finish(addr, &local_err);
-+    migration_connect_outgoing(addr, &local_err);
- 
-     if (local_err) {
-         migration_connect_error_propagate(local_err);
-@@ -2086,18 +2084,19 @@ void qmp_migrate(const char *uri, bool has_channels,
-      * For cpr-transfer, the target may not be listening yet on the migration
-      * channel, because first it must finish cpr_load_state.  The target tells
-      * us it is listening by closing the cpr-state socket.  Wait for that HUP
--     * event before connecting in qmp_migrate_finish.
-+     * event before connecting in migration_connect_outgoing.
-      *
-      * The HUP could occur because the target fails while reading CPR state,
-      * in which case the target will not listen for the incoming migration
--     * connection, so qmp_migrate_finish will fail to connect, and then recover.
-+     * connection, so migration_connect_outgoing fail to connect, and
-+     * then recover.
-      */
-     if (migrate_mode() == MIG_MODE_CPR_TRANSFER) {
-         migrate_hup_add(cpr_state_ioc(), (GSourceFunc)qmp_migrate_finish_cb,
-                         QAPI_CLONE(MigrationAddress, main_ch->addr));
- 
-     } else {
--        qmp_migrate_finish(main_ch->addr, &local_err);
-+        migration_connect_outgoing(main_ch->addr, &local_err);
+=20
+ static void do_cas2l(CPUM68KState *env, uint32_t regs, uint32_t a1, uint3=
+2_t a2,
+@@ -861,8 +861,8 @@ static void do_cas2l(CPUM68KState *env, uint32_t regs,=
+ uint32_t a1, uint32_t a2,
+         env->cc_v =3D c2;
      }
- 
- out:
-@@ -2107,11 +2106,6 @@ out:
-     }
+     env->cc_op =3D CC_OP_CMPL;
+-    env->dregs[Dc1] =3D l1;
+     env->dregs[Dc2] =3D l2;
++    env->dregs[Dc1] =3D l1;
  }
- 
--static void qmp_migrate_finish(MigrationAddress *addr, Error **errp)
--{
--    migration_connect_outgoing(addr, errp);
--}
--
- void qmp_migrate_cancel(Error **errp)
- {
-     /*
--- 
-2.51.0
+=20
+ void HELPER(cas2l)(CPUM68KState *env, uint32_t regs, uint32_t a1, uint32_=
+t a2)
+=2D-=20
+2.52.0
 
 
