@@ -2,105 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5612CDF021
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Dec 2025 22:00:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EAD9CDF062
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Dec 2025 22:21:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZEuD-0005dS-Lk; Fri, 26 Dec 2025 15:59:25 -0500
+	id 1vZFE2-0001HJ-Gp; Fri, 26 Dec 2025 16:19:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vZEuA-0005dE-8j
- for qemu-devel@nongnu.org; Fri, 26 Dec 2025 15:59:22 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vZFDm-0001DE-Ra
+ for qemu-devel@nongnu.org; Fri, 26 Dec 2025 16:19:44 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vZEu8-0007c6-7f
- for qemu-devel@nongnu.org; Fri, 26 Dec 2025 15:59:21 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vZFDk-0003Rl-UF
+ for qemu-devel@nongnu.org; Fri, 26 Dec 2025 16:19:38 -0500
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 875883368B;
- Fri, 26 Dec 2025 20:59:18 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 177A03368B;
+ Fri, 26 Dec 2025 21:19:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1766782758; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=OfZG4BeYGWjLVZrlzuJB7kFahagDovSCMXns/qZ/EJ0=;
- b=Mt5M30xyd9dDBFC3RpCJQS4yA8BosDcyaLxnS5lkUa4PUwmG74uyGD9vlrs0Fw/kZMsY0K
- Sai69R3WsZCKtoQTpjg3g94NAMMJFZI9iOtYqboTgaTlvqa4lABw/PVBjTq5IDOX9RYp50
- YFl8z7kmB3UyNHuzaetT9P7Z5bj2DZM=
+ t=1766783975; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=FpDCzWxTu1Gv+zLOSQyylUWUMP9Ry+EHo8ZxSwH+bM4=;
+ b=HT6tqcNoWKMueuGR12rDJ3d/36nPIHo6D/85gw4NeuoH8M30TteAsPV9rVgW72AZ8DqBrJ
+ H81Ia49gS773JeeyJChxYqwS0ocTKUpFRkWc1oRj2bg/6UYSGMx8qYPhR96KQMu8rD1pZ9
+ P4Q9twe6VuSAPzbiZ8d5tbji9yUlyFA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1766782758;
+ s=susede2_ed25519; t=1766783975;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=OfZG4BeYGWjLVZrlzuJB7kFahagDovSCMXns/qZ/EJ0=;
- b=eyTgWQfr9REENNV5IXkD27QvcplSSLox04MUS4Hta7S6wFxwyIUbDF+s0NybGlwGtbU8qC
- Am4J1rNDJQsXzbBw==
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=FpDCzWxTu1Gv+zLOSQyylUWUMP9Ry+EHo8ZxSwH+bM4=;
+ b=J0ArVPaXr6rw08WBHD0uLdqhUIT5dA06Z1nlMS2+y0VooYQnjjyic5qIn6wui3hwA5exXa
+ Hp+E2HWEsalsReBg==
 Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1766782758; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=OfZG4BeYGWjLVZrlzuJB7kFahagDovSCMXns/qZ/EJ0=;
- b=Mt5M30xyd9dDBFC3RpCJQS4yA8BosDcyaLxnS5lkUa4PUwmG74uyGD9vlrs0Fw/kZMsY0K
- Sai69R3WsZCKtoQTpjg3g94NAMMJFZI9iOtYqboTgaTlvqa4lABw/PVBjTq5IDOX9RYp50
- YFl8z7kmB3UyNHuzaetT9P7Z5bj2DZM=
+ t=1766783974; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=FpDCzWxTu1Gv+zLOSQyylUWUMP9Ry+EHo8ZxSwH+bM4=;
+ b=2Q0qtq2xhFrpt6apuoFr6AUdBzcW1fUZJts55ImC0J6UtpgaofEUTqriEmO0ZezNMxLDjy
+ +ygYKoNBBQiF9wuzGj7RQJYos6MzK5Wb72KPKps7eMvRGc5UoaCa9cfkxICIjtzqwOQGp0
+ qrS8VE5TKEc2YSjPg3l+CvrAgdkWu40=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1766782758;
+ s=susede2_ed25519; t=1766783974;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=OfZG4BeYGWjLVZrlzuJB7kFahagDovSCMXns/qZ/EJ0=;
- b=eyTgWQfr9REENNV5IXkD27QvcplSSLox04MUS4Hta7S6wFxwyIUbDF+s0NybGlwGtbU8qC
- Am4J1rNDJQsXzbBw==
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=FpDCzWxTu1Gv+zLOSQyylUWUMP9Ry+EHo8ZxSwH+bM4=;
+ b=x67fQCVY8HMqD4RL9zC9a1zSpqzacycyxUzG2MYl9DNJuVpH4JieIN2nwzMegNTvbv1Jp4
+ tQ53WfqO+tSljtCA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 022093EA63;
- Fri, 26 Dec 2025 20:59:17 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 020AD3EA63;
+ Fri, 26 Dec 2025 21:19:32 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id wnvFLCX3TmnNJAAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 26 Dec 2025 20:59:17 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id WlTSLOT7TmnwJwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 26 Dec 2025 21:19:32 +0000
 From: Fabiano Rosas <farosas@suse.de>
-To: Jason Wang <jasowang@redhat.com>, jasowang@redhat.com,
- zhangckid@gmail.com, lizhijian@fujitsu.com
-Cc: qemu-devel@nongnu.org, lulu@redhat.com
-Subject: Re: [PATCH 2/2] tests/qtest: add test for filter-buffer interval
- change
-In-Reply-To: <20251225072442.36012-2-jasowang@redhat.com>
-References: <20251225072442.36012-1-jasowang@redhat.com>
- <20251225072442.36012-2-jasowang@redhat.com>
-Date: Fri, 26 Dec 2025 17:59:15 -0300
-Message-ID: <87tsxd7ye4.fsf@suse.de>
+To: qemu-devel@nongnu.org
+Cc: peterx@redhat.com
+Subject: [RFC PATCH 00/25] migration: Cleanup early connection code
+Date: Fri, 26 Dec 2025 18:19:02 -0300
+Message-ID: <20251226211930.27565-1-farosas@suse.de>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-0.999]; MIME_GOOD(-0.10)[text/plain];
- ARC_NA(0.00)[];
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.992];
+ MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_TWO(0.00)[2];
+ FUZZY_RATELIMITED(0.00)[rspamd.com]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
- FREEMAIL_TO(0.00)[redhat.com,gmail.com,fujitsu.com];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
- FUZZY_RATELIMITED(0.00)[rspamd.com];
- FREEMAIL_ENVRCPT(0.00)[gmail.com]; RCVD_TLS_ALL(0.00)[];
- MISSING_XM_UA(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_FIVE(0.00)[6];
- RCVD_COUNT_TWO(0.00)[2]; RCVD_VIA_SMTP_AUTH(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo,gitlab.com:url];
+ URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:helo,gitlab.com:url,suse.de:mid]; 
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; TO_DN_NONE(0.00)[];
+ RCVD_TLS_ALL(0.00)[]
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -117,234 +109,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Jason Wang <jasowang@redhat.com> writes:
+Based-on: <20251223142959.1460293-1-peterx@redhat.com>
 
-> Add test_change_interval_timer to verify that modifying the 'interval'
-> property of filter-buffer at runtime takes effect immediately.
->
-> The test uses socket backend and filter-redirector to verify timer behavior:
-> - Creates filter-buffer with a very long interval (1000 seconds)
-> - Sends a packet which gets buffered
-> - Advances virtual clock by 1 second, verifies packet is still buffered
-> - Changes interval to 1ms via qom-set (timer should be rescheduled)
-> - Advances virtual clock by 2ms, verifies packet is now released
-> - This proves the timer was rescheduled immediately when interval changed
->
-> The test uses filter-redirector to observe when packets are released
-> by filter-buffer, providing end-to-end verification of the timer
-> rescheduling behavior.
->
-> Signed-off-by: Jason Wang <jasowang@redhat.com>
-> ---
->  tests/qtest/meson.build          |   1 +
->  tests/qtest/test-filter-buffer.c | 169 +++++++++++++++++++++++++++++++
->  tests/qtest/test-netfilter.c     |   3 +
->  3 files changed, 173 insertions(+)
->  create mode 100644 tests/qtest/test-filter-buffer.c
->
-> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-> index 669d07c06b..ffa85ba984 100644
-> --- a/tests/qtest/meson.build
-> +++ b/tests/qtest/meson.build
-> @@ -46,6 +46,7 @@ qtests_cxl = \
->  #        for the availability of the default NICs in the tests
->  qtests_filter = \
->    (get_option('default_devices') and slirp.found() ? ['test-netfilter'] : []) + \
-> +  (get_option('default_devices') and host_os != 'windows' ? ['test-filter-buffer'] : []) + \
->    (get_option('default_devices') and host_os != 'windows' ? ['test-filter-mirror'] : []) + \
->    (get_option('default_devices') and host_os != 'windows' ? ['test-filter-redirector'] : [])
->  
-> diff --git a/tests/qtest/test-filter-buffer.c b/tests/qtest/test-filter-buffer.c
-> new file mode 100644
-> index 0000000000..441cbb975c
-> --- /dev/null
-> +++ b/tests/qtest/test-filter-buffer.c
-> @@ -0,0 +1,169 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +/*
-> + * QTest testcase for filter-buffer
-> + *
-> + * Copyright (c) 2025 Red Hat, Inc.
-> + * Author: Jason Wang <jasowang@redhat.com>
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "libqtest.h"
-> +#include "qobject/qdict.h"
-> +#include "qemu/iov.h"
-> +#include "qemu/sockets.h"
-> +
-> +/*
-> + * Test that changing interval at runtime affects packet release timing.
-> + *
-> + * Traffic flow with filter-buffer and filter-redirector:
-> + *
-> + * test side                        | qemu side
-> + *                                  |
-> + * +--------+                       | +---------+
-> + * |  send  +------------------------>| backend |
-> + * | sock[0]|                       | +----+----+
-> + * +--------+                       |      |
-> + *                                  | +----v----+
-> + *                                  | |  fbuf0  | filter-buffer (queue=tx)
-> + *                                  | +----+----+
-> + *                                  |      |
-> + *                                  | +----v----+  +----------+
-> + *                                  | |   rd0   +->| chardev0 |
-> + *                                  | +---------+  +----+-----+
-> + *                                  |                   |
-> + * +--------+                       |                   |
-> + * |  recv  |<--------------------------------------+
-> + * |  sock  |                       |
-> + * +--------+                       |
-> + *
-> + * The test verifies that when interval is changed via qom-set, the timer
-> + * is rescheduled immediately, causing buffered packets to be released
-> + * at the new interval rather than waiting for the old interval to elapse.
-> + */
-> +static void test_change_interval_timer(void)
-> +{
-> +    QTestState *qts;
-> +    QDict *response;
-> +    int backend_sock[2], recv_sock;
-> +    int ret;
-> +    char send_buf[] = "Hello filter-buffer!";
-> +    char recv_buf[128];
-> +    char sock_path[] = "filter-buffer-test.XXXXXX";
-> +    uint32_t size = sizeof(send_buf);
-> +    uint32_t len;
-> +
-> +    size = htonl(size);
-> +
-> +    ret = socketpair(PF_UNIX, SOCK_STREAM, 0, backend_sock);
-> +    g_assert_cmpint(ret, !=, -1);
-> +
-> +    ret = mkstemp(sock_path);
-> +    g_assert_cmpint(ret, !=, -1);
-> +
-> +    /*
-> +     * Start QEMU with:
-> +     * - socket backend connected to our socketpair
-> +     * - filter-buffer with a very long interval (1000 seconds)
-> +     * - filter-redirector to send released packets to a chardev socket
-> +     *
-> +     * queue=tx intercepts packets going from backend to the guest,
-> +     * i.e., data we send from the test side.
-> +     */
-> +    qts = qtest_initf(
-> +        "-nic socket,id=qtest-bn0,fd=%d "
-> +        "-chardev socket,id=chardev0,path=%s,server=on,wait=off "
-> +        "-object filter-buffer,id=fbuf0,netdev=qtest-bn0,"
-> +        "queue=tx,interval=1000000000 "
-> +        "-object filter-redirector,id=rd0,netdev=qtest-bn0,"
-> +        "queue=tx,outdev=chardev0",
-> +        backend_sock[1], sock_path);
-> +
-> +    /* Connect to the chardev socket to receive redirected packets */
-> +    recv_sock = unix_connect(sock_path, NULL);
-> +    g_assert_cmpint(recv_sock, !=, -1);
-> +
-> +    /* Send a QMP command to ensure chardev connection is established */
-> +    qtest_qmp_assert_success(qts, "{ 'execute' : 'query-status'}");
-> +
-> +    /*
-> +     * Send a packet from the test side.
-> +     * It should be buffered by filter-buffer.
-> +     */
-> +    struct iovec iov[] = {
-> +        {
-> +            .iov_base = &size,
-> +            .iov_len = sizeof(size),
-> +        }, {
-> +            .iov_base = send_buf,
-> +            .iov_len = sizeof(send_buf),
-> +        },
-> +    };
-> +
-> +    ret = iov_send(backend_sock[0], iov, 2, 0, sizeof(size) + sizeof(send_buf));
-> +    g_assert_cmpint(ret, ==, sizeof(send_buf) + sizeof(size));
-> +
-> +    /*
-> +     * Advance virtual clock by 1 second (1,000,000,000 ns).
-> +     * This is much less than the 1000 second interval, so the packet
-> +     * should still be buffered.
-> +     */
-> +    qtest_clock_step(qts, 1000000000LL);
-> +
-> +    /* Try to receive with non-blocking - should fail (packet still buffered) */
-> +    ret = recv(recv_sock, recv_buf, sizeof(recv_buf), MSG_DONTWAIT);
-> +    g_assert_cmpint(ret, ==, -1);
-> +    g_assert(errno == EAGAIN || errno == EWOULDBLOCK);
-> +
-> +    /*
-> +     * Now change the interval to 1000 us (1ms) via qom-set.
-> +     * This should reschedule the timer to fire in 1ms from now.
-> +     */
-> +    response = qtest_qmp(qts,
-> +                         "{'execute': 'qom-set',"
-> +                         " 'arguments': {"
-> +                         "   'path': 'fbuf0',"
-> +                         "   'property': 'interval',"
-> +                         "   'value': 1000"
-> +                         "}}");
-> +    g_assert(response);
-> +    g_assert(!qdict_haskey(response, "error"));
-> +    qobject_unref(response);
-> +
-> +    /*
-> +     * Advance virtual clock by 2ms (2,000,000 ns).
-> +     * This exceeds the new 1ms interval, so the timer should fire
-> +     * and release the buffered packet.
-> +     *
-> +     * If the interval change didn't take effect immediately, we would
-> +     * still be waiting for the original 1000 second interval to elapse,
-> +     * and the packet would not be released.
-> +     */
-> +    qtest_clock_step(qts, 2000000LL);
-> +
-> +    /*
-> +     * Now we should be able to receive the packet through the redirector.
-> +     * The packet was released by filter-buffer and sent to filter-redirector,
-> +     * which forwarded it to the chardev socket.
-> +     */
-> +    ret = recv(recv_sock, &len, sizeof(len), 0);
-> +    g_assert_cmpint(ret, ==, sizeof(len));
-> +    len = ntohl(len);
-> +    g_assert_cmpint(len, ==, sizeof(send_buf));
-> +
-> +    ret = recv(recv_sock, recv_buf, len, 0);
-> +    g_assert_cmpint(ret, ==, len);
-> +    g_assert_cmpstr(recv_buf, ==, send_buf);
-> +
-> +    close(recv_sock);
-> +    close(backend_sock[0]);
-> +    unlink(sock_path);
-> +    qtest_quit(qts);
-> +}
-> +
-> +int main(int argc, char **argv)
-> +{
-> +    g_test_init(&argc, &argv, NULL);
-> +    qtest_add_func("/netfilter/change_interval_timer",
-> +                   test_change_interval_timer);
-> +    return g_test_run();
-> +}
-> diff --git a/tests/qtest/test-netfilter.c b/tests/qtest/test-netfilter.c
-> index 326d4bd85f..b7271055d6 100644
-> --- a/tests/qtest/test-netfilter.c
-> +++ b/tests/qtest/test-netfilter.c
-> @@ -10,7 +10,10 @@
->  
->  #include "qemu/osdep.h"
->  #include "libqtest-single.h"
-> +#include "libqtest.h"
->  #include "qobject/qdict.h"
-> +#include "qemu/iov.h"
-> +#include "qemu/sockets.h"
->  
+[PULL 00/31] Next patches
+https://lore.kernel.org/r/20251223142959.1460293-1-peterx@redhat.com
+--
 
-Some extra changes here^
+Address some of the issues that make the early connection code a bit
+too idiosyncratic. By "early connection" I mean from
+qmp_migrate[_incoming] until the start of the migration
+thread|coroutine.
 
->  /* add a netfilter to a netdev and then remove it */
->  static void add_one_netfilter(void)
+(IOW, the whole dance of going into socket code, starting an async
+routine, calling back to migration code, checking TLS, going back
+again, coming back once more, etc. All while passing an error_in and
+hostname string that eventually gets (maybe) ignored in tls code,
+along with some is_resume checks along the way)
+
+This series is mostly inspired by the work Markus and Peter did
+recently in organizing some of the error handling code. The new
+migration_connect_error_propagate() function seems like a good place
+to centralize the error handling and call migration_cleanup() during
+this early connection phase when everything is still fairly
+linear. (apologies if I'm dirtying your design =)
+
+Aside from the initial patches that are a bit disruptive, most of the
+series is just refactoring to make the code easier to navigate, names
+more consistent and some general cleanups.
+
+- patches 1-8:
+
+General cleanups, could be applied standalone, although they are
+prerequisites for the rest of the series.
+
+- patches 9-12:
+
+Changes to allow calling migration_cleanup() from
+migration_connect_error_propagate().
+
+The idea here is to make sure error propagation and cleanup happen
+when the error is detected, without calling into non-error-path
+functions.
+
+This is the more risky change because it will cause cleanup to run in
+places where it didn't before.
+
+- patch 13 & 19:
+
+The main change of this series, simplifying the
+qmp-migrate --> migration_connect path. Stops calling the connection
+functions when an error happens in the transport code, adds
+clarification around which paths have asynchronous completion and
+makes the synchronous path return to their caller to start the
+migration instead of initiating it themselves.
+
+- patches 14-18, 20-22:
+
+Moves code out of migration.c and into channel.c. Now that the code is
+more compartmentalized, move it to a more appropriate source file.
+
+- patches 23-25:
+
+BONUS CONTENT, wrap the uri/channels parsing and move it to channel.c
+as well.
+
+- future work?
+
+I think we could move all QMP command functions to a QAPI-specific
+file, but I don't see any standardization in the tree, there's
+block/qapi.c, various instances of foo-qmp-cmds.c and many more just
+laying along with the rest of the code. So I left this for another
+moment.
+
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/2233810778
+
+Fabiano Rosas (25):
+  migration: Remove redundant state change
+  migration: Fix state change at migration_channel_process_incoming
+  migration/tls: Remove unused parameter
+  migration: Move multifd_recv_setup call
+  migration: Cleanup TLS handshake hostname passing
+  migration: Move postcopy_try_recover into migration_incoming_process
+  migration: Use migrate_mode() to query for cpr-transfer
+  migration: Free the error earlier in the resume case
+  migration: Move error reporting out of migration_cleanup
+  migration: Expand migration_connect_error_propagate to cover
+    cancelling
+  migration: yank: Move register instance earlier
+  migration: Fold migration_cleanup() into
+    migration_connect_error_propagate()
+  migration: Handle error in the early async paths
+  migration: Remove QEMUFile from channel.c
+  migration/channel: Rename migration_channel_connect
+  migration: Rename instances of start
+  migration: Move channel code to channel.c
+  migration: Move transport connection code into channel.c
+  migration/channel: Make synchronous calls evident
+  migration/channel: Use switch statements in outgoing code
+  migration/channel: Cleanup early passing of MigrationState
+  migration/channel: Merge both sides of the connection initiation code
+  migration: Move channel parsing to channel.c
+  migration: Move URI parsing to channel.c
+  migration: Remove qmp_migrate_finish
+
+ migration/channel.c      | 410 +++++++++++++++++++++++++----
+ migration/channel.h      |  36 ++-
+ migration/exec.c         |  10 +-
+ migration/exec.h         |   7 +-
+ migration/fd.c           |  14 +-
+ migration/fd.h           |   8 +-
+ migration/file.c         |  19 +-
+ migration/file.h         |   6 +-
+ migration/migration.c    | 540 ++++++++++-----------------------------
+ migration/migration.h    |  11 +-
+ migration/multifd.c      |  16 +-
+ migration/multifd.h      |   2 +-
+ migration/options.c      |   5 +
+ migration/postcopy-ram.c |   2 +-
+ migration/rdma.c         |  52 ++--
+ migration/rdma.h         |   5 +-
+ migration/socket.c       |  54 ++--
+ migration/socket.h       |   5 +-
+ migration/tls.c          |  39 +--
+ migration/tls.h          |  10 +-
+ migration/trace-events   |  20 +-
+ 21 files changed, 654 insertions(+), 617 deletions(-)
+
+-- 
+2.51.0
+
 
