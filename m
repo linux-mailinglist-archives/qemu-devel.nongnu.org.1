@@ -2,89 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A501BCDED3C
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Dec 2025 17:52:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDA5CCDED80
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Dec 2025 18:28:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZB2X-0001sr-0s; Fri, 26 Dec 2025 11:51:45 -0500
+	id 1vZBbB-0003ye-Md; Fri, 26 Dec 2025 12:27:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chao.liu.zevorn@gmail.com>)
- id 1vZB2U-0001sd-1a
- for qemu-devel@nongnu.org; Fri, 26 Dec 2025 11:51:42 -0500
-Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vZBb9-0003xx-CL
+ for qemu-devel@nongnu.org; Fri, 26 Dec 2025 12:27:31 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chao.liu.zevorn@gmail.com>)
- id 1vZB2S-0007zn-HM
- for qemu-devel@nongnu.org; Fri, 26 Dec 2025 11:51:41 -0500
-Received: by mail-pf1-x444.google.com with SMTP id
- d2e1a72fcca58-7f0da2dfeaeso7694775b3a.1
- for <qemu-devel@nongnu.org>; Fri, 26 Dec 2025 08:51:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1766767898; x=1767372698; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=i2ESE239HeFr5jeihk+EqITFM9KfJHH76phxmWGdRr0=;
- b=U07sj52MSDzORoHcnm/XfplMWO+svV9OzTRgGpAaBpu16zoCBcKHoQGCMJ/n/6BDjU
- kos1GTVMmsn5oaLHgzT+a3hfgrPDQ8xNzBiu8rYfrzjW2Or0kM6QhCQgs4tBeN5yKo7p
- 2Ko2nz4NaqhvbiNJAw4Nw4/MTxwCisUYnH2YWsm+mMmPF+33YWnhPT2uMS9SQVR8nQyv
- +vWyc3XFYJBw6fvuBZbA6r3Ny2uCoeCFBZ8K1mcNZxB+YP43LxI2FXOrJ6Co74FBZ8tc
- XlPDWTcnG06hK6dkbxnh8yRmvIRTfAtmau30fmuWT6hQwL6mlbiYG/X+tPPtHqg+E5ug
- DghA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766767898; x=1767372698;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=i2ESE239HeFr5jeihk+EqITFM9KfJHH76phxmWGdRr0=;
- b=rFCdH1gFXyoX6tP2j7sULrznlsF23Nyb7WFFwXeDV05kVX5eww4RIQU489zpzqrpml
- RUKWoaiDsb/1O9s4AXutjTStu1lBW+s+FCiO6RrjueCsTRSUgNZUjeY1xXvrPvSHGVt8
- pMABoeAK9PSp4BWbGtEgaT/m6osvkZvF2iOa2AolKLrkrF86n6hgezJRCW15euwhd7jY
- bL02A1A0Ax3TULV6QLIYS6ojI5XaSxPlvKxQOlJUzzlu+ScLOgA8DOFxAx4Woogf3xlY
- 9L2QO1st1aSlUd/v2++wWc25s7ohKnmvDZC2amXyeV1+fIlmug0P4gO8jyWGV4ROlzyz
- Yn+A==
-X-Gm-Message-State: AOJu0YzVCDWLDJG5GlU+ummVSMd3veBUITGiO6XnO3SoF+4SNy9D/jYy
- GLHVf5nv0RdA45C1UZ+/XLedYOT3fVSVB94FCEwkkh7h4lFxbXph/Yhp
-X-Gm-Gg: AY/fxX5Zw06IOB1CAiq+1v5XqUwuStQZjH01+YUHvcTj+XdFU9WmZ0Ll2QEaDKcV12W
- 72S476aNeC3H6D0yj3JUSEQCBPbqlyc1T4nLg1UEoBX1UOmibge1b1wUA9c/eNwYOUVhh1LtiUT
- Ow1yMV1QqqSxFPZicUAN+DHYgJfFz7dvAJYcVE+uUiXKAIK4dA5JU9oFgGT6+mwIYvRZtCkbFIa
- qpyU2pKJLKIJpv8Kt0uMlBQX4ieoiXJj5+KiP0LxYpq4pvJZQq2Tk1uKXX34bES86TOxUqi3Wf3
- mQg41gW9QpA4zehbAZVwkyAfGz+paY6t8pciUV2fLCfbv6rpEr/PqraezzRmxbmHSUZ8liua8lR
- KaL5RpHR4Xsz5t75yza4PHU1W/zmz0w41n+XG22teinSr6Kpw6LxyO2b3G5aM59SJtawF5rRfWr
- sR5fIEl5YwC1YedEs8XLfaCA64E77pNrBGOfGXAdIc
-X-Google-Smtp-Source: AGHT+IF+qI7CV7L5GcktMvTzaN2u15Ja7m813Q3O91PjBR/9t+TQdjX8q8pvVDKRcs8n/oiJFrl9DQ==
-X-Received: by 2002:a05:6a00:44cc:b0:7ef:1af8:8f2d with SMTP id
- d2e1a72fcca58-7ff66f590efmr25663397b3a.42.1766767898041; 
- Fri, 26 Dec 2025 08:51:38 -0800 (PST)
-Received: from ZEVORN-PC.localdomain ([114.88.97.170])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7ff7e48f300sm22522225b3a.54.2025.12.26.08.51.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Dec 2025 08:51:36 -0800 (PST)
-From: Chao Liu <chao.liu.zevorn@gmail.com>
-To: richard.henderson@linaro.org,
-	pbonzini@redhat.com
-Cc: qemu-devel@nongnu.org, hust-os-kernel-patches@googlegroups.com,
- Chao Liu <chao.liu.zevorn@gmail.com>
-Subject: [RFC PATCH v1 3/3] docs: add documentation for the tcg_gen_print
- helper to tcg-ops
-Date: Sat, 27 Dec 2025 00:51:21 +0800
-Message-ID: <82ed02136c45afca45a5706dac7a8544b88c6d12.1766767299.git.chao.liu.zevorn@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1766767299.git.chao.liu.zevorn@gmail.com>
-References: <cover.1766767299.git.chao.liu.zevorn@gmail.com>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vZBb6-0007AM-Cn
+ for qemu-devel@nongnu.org; Fri, 26 Dec 2025 12:27:29 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id D08DD5BCC1
+ for <qemu-devel@nongnu.org>; Fri, 26 Dec 2025 17:27:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1766770043; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=il5kEA+xTQRgbovyGOTeYq1mhdzbNnBlC8HeeISoKO0=;
+ b=XSwPKxjghG9fj7pnz6scVgMMPT8A9uVPdzphJnn1k+jh4E6C46H4I/eeTp7nqResxIpbox
+ lqaGLSnKWtb6RwZZAA8z69oU9U2clvP8vwBbV4QRejyKUpaxLm6MxZ//JrufVubcUf7vw6
+ GHGQO45xguAU5k4RruISCxcEFdwGqL8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1766770043;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=il5kEA+xTQRgbovyGOTeYq1mhdzbNnBlC8HeeISoKO0=;
+ b=OrjNNqZvtAi0VbpOfr+rPWxov/IVNyyoH37U5xufoeMGVnGFCKu1c/K8IK4Vmo17soDgWf
+ hg6VVDA99SQrfRCQ==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=iD+1viho;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=eK0WC0xu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1766770041; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=il5kEA+xTQRgbovyGOTeYq1mhdzbNnBlC8HeeISoKO0=;
+ b=iD+1vihowUsjacohmxAoD/LRvkB+VtdQWgWzLOi+JG8V00XecgeWmFiw+aYbvXTw3mz+1N
+ Tp1V6gOsBJMZ5ZOCIDptzizQaiFT/heo7xX9w3BITg7x7yKD80e9BXmU0vJASS8lG/Q3+V
+ sfKjqVi8WVI9tZUHYb2AqHuqzpQIvqA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1766770041;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=il5kEA+xTQRgbovyGOTeYq1mhdzbNnBlC8HeeISoKO0=;
+ b=eK0WC0xugDRdjlXeFfkPB9jfdPmDT4E2XrOLMgZiZhxMN0CcDk9f37f14kxkDW69j43ACc
+ fvLC71xlwfMv7UAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0C4723EA63
+ for <qemu-devel@nongnu.org>; Fri, 26 Dec 2025 17:27:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id gDHPLnjFTmmTAwAAD6G6ig
+ (envelope-from <farosas@suse.de>)
+ for <qemu-devel@nongnu.org>; Fri, 26 Dec 2025 17:27:20 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Subject: [PULL 0/1] QTest patches for 2025-12-26
+Date: Fri, 26 Dec 2025 14:27:17 -0300
+Message-ID: <20251226172718.12071-1-farosas@suse.de>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::444;
- envelope-from=chao.liu.zevorn@gmail.com; helo=mail-pf1-x444.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam-Score: -3.50
+X-Rspamd-Queue-Id: D08DD5BCC1
+X-Spamd-Result: default: False [-3.50 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.19)[-0.966]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; FUZZY_RATELIMITED(0.00)[rspamd.com];
+ ARC_NA(0.00)[]; RCPT_COUNT_ONE(0.00)[1];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
+ DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:mid];
+ TO_DN_NONE(0.00)[];
+ PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,56 +125,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Chao Liu <chao.liu.zevorn@gmail.com>
----
- docs/devel/tcg-ops.rst | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+The following changes since commit 8dd5bceb2f9cc58481e9d22355a8d998220896de:
 
-diff --git a/docs/devel/tcg-ops.rst b/docs/devel/tcg-ops.rst
-index f26b837a30..4b5ee3b560 100644
---- a/docs/devel/tcg-ops.rst
-+++ b/docs/devel/tcg-ops.rst
-@@ -924,6 +924,39 @@ a constant (e.g. addi for add, movi for mov).
- as some of them may not be available as "real" opcodes. Always use the
- function tcg_gen_xxx(args).
- 
-+Debug Print Helpers
-+--------------------
-+
-+When debugging decode logic or validating a freshly built TCG sequence, you can
-+insert a printf-style TCG operation via ``tcg_gen_print()``. The generated op
-+calls the ``tcg_print`` helper when the TB runs and forwards the formatted
-+string to ``qemu_printf``. This impacts performance, so enable it only during
-+local debugging or under controlled conditions.
-+
-+The first argument to ``tcg_gen_print`` is a ``printf``-style format string.
-+Each subsequent argument must be provided as a pair consisting of a
-+``TCGPrintArgType`` enum value (defined in ``tcg/tcg-print.h``) and a TCG
-+register or constant of the matching type, and the list ends with
-+``TCG_PRINT_ARG_END``. At most ``TCG_PRINT_MAX_ARGS`` (currently 5) dynamic
-+arguments are supported; use ``TCG_PRINT_ARG_PTR`` when printing pointers. For
-+literal numbers, first create a TCG constant via ``tcg_constant_i32`` or
-+``tcg_constant_i64`` before passing it in.
-+
-+.. code-block:: c
-+
-+    tcg_gen_print("rd=%d sum=0x%" PRId64 "\n",
-+                  TCG_PRINT_ARG_I32, tcg_constant_i32(1),
-+                  TCG_PRINT_ARG_I64, cpu_gpr[1],
-+                  TCG_PRINT_ARG_END);
-+
-+When the translated TB executes, the snippet above prints the destination
-+register number, and the value written back, which helps observe the runtime
-+values of TCG variables quickly.
-+
-+It is worth noting that ``tcg_gen_print()`` is only recommended for debugging
-+purposes. You must remove all instances of it from your patch before
-+submitting official code. The ``checkpatch.pl`` script will check your patch
-+for any usage of ``tcg_gen_print()`` and throw a warning if detected.
- 
- Backend
- =======
+  Open 11.0 development tree (2025-12-23 14:45:38 +1100)
+
+are available in the Git repository at:
+
+  https://gitlab.com/farosas/qemu.git tags/qtest-20251226-pull-request
+
+for you to fetch changes up to 9eef3854d30911d117f85253f1f2a154e4076adf:
+
+  tests/qtest: Do not use versioned pc-q35-5.0 machine anymore (2025-12-26 12:06:46 -0300)
+
+----------------------------------------------------------------
+Qtest pull request
+
+- Fix tests using deprecated machine versions
+
+----------------------------------------------------------------
+
+Philippe Mathieu-Daudé (1):
+  tests/qtest: Do not use versioned pc-q35-5.0 machine anymore
+
+ tests/qtest/fuzz-e1000e-test.c | 2 +-
+ tests/qtest/lpc-ich9-test.c    | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
 -- 
-2.52.0
+2.51.0
 
 
