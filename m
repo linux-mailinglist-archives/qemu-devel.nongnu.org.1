@@ -2,94 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 435A1CDF62D
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:24:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 177B3CDF624
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:24:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQRZ-000778-Vq; Sat, 27 Dec 2025 04:18:38 -0500
+	id 1vZQRb-0007KF-ET; Sat, 27 Dec 2025 04:18:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQRH-0006nc-Lf
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:20 -0500
+ id 1vZQRI-0006oB-Qe
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:22 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQRF-0003gH-L0
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:19 -0500
+ id 1vZQRG-0003gP-UD
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766827097;
+ s=mimecast20190719; t=1766827098;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FEQp1QeOCaVuElqN45AAQIvtGjAtReoau7wTk87mvLg=;
- b=RxXZcXM8OPrarMlQ2YoVwLeOJvAL+3MrQjCEzOaz6/ZyMSx4ki+fjDYYXvAghJ+dCLwB1O
- azBPnLvVHzXeujw4tchkeYgO0u5aTDx3uF69yaYNJHl9YswuhnAECBSH3dA4J4KOLkOUcw
- iMWENRJzybYm83EqmIJEZQrIe6l5Jmk=
+ bh=jkC95+QEJXnEvaNYkvGGuoEWgNXpEhyP0YGy73T68So=;
+ b=bp/WZAo5+QwNKcHYB7SptOtVRHhdyWyq9zJ8wR2pj5K1vG4NCiqFQ2E3NcnS5/I7FINV6H
+ DZz38gX4umZ+PrpSTiko0jJ/T158203PYV/ASlyRKFvgKaWrFVF5x/UiTD0zXlJfo1j+lv
+ EK6byUg0dovyUI/xDyceXfNIC/jCYmk=
 Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
  [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-250-92FXTLBdPjyNdWhjYtJESg-1; Sat, 27 Dec 2025 04:18:14 -0500
-X-MC-Unique: 92FXTLBdPjyNdWhjYtJESg-1
-X-Mimecast-MFC-AGG-ID: 92FXTLBdPjyNdWhjYtJESg_1766827093
+ us-mta-496-SZ6Wppi9NKCQc6bkiuuIag-1; Sat, 27 Dec 2025 04:18:16 -0500
+X-MC-Unique: SZ6Wppi9NKCQc6bkiuuIag-1
+X-Mimecast-MFC-AGG-ID: SZ6Wppi9NKCQc6bkiuuIag_1766827095
 Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-4327778efa9so1318090f8f.2
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:18:14 -0800 (PST)
+ ffacd0b85a97d-430fc83f58dso4347628f8f.2
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:18:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766827093; x=1767431893; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766827094; x=1767431894; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FEQp1QeOCaVuElqN45AAQIvtGjAtReoau7wTk87mvLg=;
- b=O2X7doFI/alP+e97FJzVfieaGXpKF6BmAaXIstdHS5PTwvrgxmrx/B7oCM8FoY6OVg
- mcGz87qP0effSXqASFKhg0sztE9DljoPsbXrPdyETpxcenAFe4u/f4vFznhjamoXZ0qR
- qYpncM2/j1VsVMtC92nSQX+6X/TjAFOXz+2ugNwKkf5f/EIjJHViEBJRH2tt4AoIDd8I
- UDC5fVVvMqR7K7uocDclTDe4zyThQqI938G7LGNj2rUcZbRN87dxibH65R0b2UaMWJG5
- y2goXk93fPVoS+TBS2tv3RHDcPAevpMTPZjTGzyE2/TR44c5DTpcsrzjQiQgPkiLJhiW
- Vr8w==
+ bh=jkC95+QEJXnEvaNYkvGGuoEWgNXpEhyP0YGy73T68So=;
+ b=rUp02qTZlUTnM1PRd8NbZ+BzewvCwqOy9mEiDKrO/sRKUi9WxIkuYUYgsfHKPC31bp
+ bWShAqRaLgaiozTqADEWgmU8QtU5EeqsndEax5sIvgt7mYarnuHi3I9RbCFIRBMkP8Kv
+ Co+7ZZVI31QCRjKLss+LyXq+/6UeyeeAlOYy1BiZksn/kvKgfgSMnMnotSkgritfvVR0
+ lHxKSRV9PfH5NC95RyvGdJj/KTyhGJswfVXc5Jeb0ZyM3tUDIchoGXXQsOo9ndT+n2Ta
+ OLGfCZpetpt8Cf9L0E6hG9TMIMiAeaA1kxlmL58nG2lWcwKV7u3qbDJmPdxwmUPQFbZ3
+ 4TUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766827093; x=1767431893;
+ d=1e100.net; s=20230601; t=1766827094; x=1767431894;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=FEQp1QeOCaVuElqN45AAQIvtGjAtReoau7wTk87mvLg=;
- b=S6TN/DByYOQ3dYBKBFpu+fJQuIQ2gym+xd2A+Mnq6eA0S/6PepxeYPJmuMmk3CMmuO
- 22Uw51ZQ64prUZvAWpTrXI75LSzGs/OXihU7QnE8sNIzm/UEZpLEQmivzdRERHCBorn0
- 1sUiW8KxfwhGDuYL5chlDWReGNEld17o7Uo6tGAa93VbpSaU1FeZ4JzZdwyxKtgiLP2M
- HrkbbvI6Jxk317Vtp/+OmhprM+QONNABEyJNLUqklcuXiat+KGUl/zVTe8SKk2GSoqlz
- zL48e11CD9YsJ3ooZ4w2BJU7JiWt20LMr3dGMWXwRmWifWunSGFCe2khM2mgJcfZ+5dL
- 0YpA==
-X-Gm-Message-State: AOJu0YzGlQAr1xaeXC+JYZAcPRLLpZwzI54be5DV55Mt1GKoiC2Mp4QG
- 1OaQiXl0jT0zehUrJOEMLNO5qxeaqS7A71FqVmVTbPlT1KLy3VBs2htoRqug6NkJmMeI9/+tlZg
- 8UTqIn06ddxGs5X3kJEENUYcjhOUgu7QrArfqBcFoYD34Wh3Kjxq+HUKvMQEXMoQRxrwAu9th2n
- N5h79qbbpmKJj97lI4Iaxn/FlavwyZbQqeTotIOYe3
-X-Gm-Gg: AY/fxX7p1GEmqPIc1v3vREnrvNFCrVyOXEvKNyMldVKKtsYkF3mpnyNtZy146LE6dqR
- YF3Mx3Xdz7HyxOR5O5GZ/SzPuoOYxVINujqhQPJuxkD2XojMAGIIigMx9Hfjy3kXxWBjNXpzhLO
- PwsSskI6H2pCyHcegziv1roMSGPvkWW4wSB/DKvkyfYESnnCS0dNFOiHtvGUWIeBnQ/JkOdhaVJ
- PvulDO2aPT9Hos4VbAZs9c6KSY+kOCtBbpXP4+hkIExca8LWfkd0GqWoyjKMjq+KrZtAQUa8U/o
- ipv85EXWLiDNvEJOgNQSmMUNiL5vYHaakiUZ69fllRTdD3X9xwI3h3xLCeMKSbwPtAWe05/Rb+R
- zkcBm+ALoQgQV/PwnbuU36pYaU5T10ulFKnuNodkTFAJih2wt3aDQzlWYpNABziuMzFH+BlHmUJ
- HQJAHkhB/OiIm45Z4=
-X-Received: by 2002:a05:6000:2285:b0:430:fafd:f1d2 with SMTP id
- ffacd0b85a97d-4324e4c6848mr32383803f8f.11.1766827092713; 
- Sat, 27 Dec 2025 01:18:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHO48PlqlieWihndh+EVkuTjcBEF8YXPXM6OWzbBD5XGzvQ6djlsm8DEl4voz3u8TsjR3UJBg==
-X-Received: by 2002:a05:6000:2285:b0:430:fafd:f1d2 with SMTP id
- ffacd0b85a97d-4324e4c6848mr32383771f8f.11.1766827092196; 
- Sat, 27 Dec 2025 01:18:12 -0800 (PST)
+ bh=jkC95+QEJXnEvaNYkvGGuoEWgNXpEhyP0YGy73T68So=;
+ b=tqgPT8Kd4slhyjcwcYfdrRcpMdgg7lv5Hg45D0RSi8+TYUhYL/FGWPbWak9CJOan8f
+ zw0RThzK48iRL1zALFor3vaZArB451nhw5owNi99nbYEwlLisWIockpdZDbu2O/ZX1I6
+ NyC6QIS0ZSVAuHpT+v4IDABRcQ1b1MBFZ5G2ycKtTWJTQ5NEc4lsGkYIdXaNpByCBlYz
+ kPV7D1rUGR8cGeUVoaYmmTKwkaabJI3XOEYl1vNK3813yo8n+4SM8yO539NLSEZVaRHP
+ KQgFgdtiELRKusQ5JDmocp2nfiifpzie32KQsNXZo5945Y31gEF+cHY+emt7r23gL0xA
+ F9XA==
+X-Gm-Message-State: AOJu0YweetGgPnCji2nDbBLireuOsWwom5nB8ujdOujP0DcX6BpKbN8X
+ yysV4Pn6wNxudHgc/pkpqOJ98dXlN0x39RWQhlxfZ1+PZ3ngOMfCe1VDiZ/PqnNrWJwxAhzmZ9a
+ 8QgHWDT5yQkk5K/x6Rp+OOsGHaHzLpfWrs2JU/eHjAYIR3lYsdWUQ7EWzh46iy2uH6mT3WNYSQ+
+ XR87TJeJiTqojCcpCaBD2i23Bay9WprNFF95mE1sVJ
+X-Gm-Gg: AY/fxX4Rpn9PeYxW/CMSVPveNmw4HVl0+8TQFDT4X0gYs6ZO0DJv1uKVfRsKRC0ldhd
+ Vl/3f3vrYH9UCcr67pIz1D2ByANZaftXqMxHzdZNIsRZfNVGk2WAsJIUH1iuUUJS2FYoroZv92F
+ t+TjrnqPk958JzsUYc6sMDM14OMAQDjVlT6TAR8CCcW44togarnmDaZqVWeamTaFM9V/W5Wiiot
+ nLGU3dueOxbIeDax/TSAJNfdcyNF3rscUA/Vtm/Akg72Hh7zXelwHAimkF5MoX90Xu2z8kVSsbG
+ PCoyQTUi6Vld6Jd5njgaGsPFjMd8/LtyPnDZ32jRivbxnr2+DhVLJVi2r//9nnjHBc5FTwlkGNj
+ +oatjmwhgQA0kwTCxvRteda3n/PCunxddyx/xl8E6bcI/W3yEomQE10hOxAoOq2lgqYghatwpsx
+ BIG7fc06m9LGOiTrE=
+X-Received: by 2002:a05:6000:25c8:b0:430:fdc8:8be3 with SMTP id
+ ffacd0b85a97d-4324e4f938fmr30133575f8f.29.1766827093796; 
+ Sat, 27 Dec 2025 01:18:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGzo3YNrl9fvsEexixfKvLP8kTB+O1gGU0JaiOoOOwBNUBxPnNeEofUdeB8W2QAZqdXXD2y3A==
+X-Received: by 2002:a05:6000:25c8:b0:430:fdc8:8be3 with SMTP id
+ ffacd0b85a97d-4324e4f938fmr30133543f8f.29.1766827093273; 
+ Sat, 27 Dec 2025 01:18:13 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324ea226d1sm50703204f8f.13.2025.12.27.01.18.09
+ ffacd0b85a97d-4324eaa08efsm50446158f8f.29.2025.12.27.01.18.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:18:09 -0800 (PST)
+ Sat, 27 Dec 2025 01:18:12 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 056/153] rust/hpet: Abstract HPETRegisters struct
-Date: Sat, 27 Dec 2025 10:14:43 +0100
-Message-ID: <20251227091622.20725-57-pbonzini@redhat.com>
+Subject: [PULL 057/153] rust/hpet: Make global register accessors as methods
+ of HPETRegisters
+Date: Sat, 27 Dec 2025 10:14:44 +0100
+Message-ID: <20251227091622.20725-58-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
@@ -122,278 +123,187 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Place all HPET (global) timer block registers in a HPETRegisters struct,
-and wrap the whole register struct with a BqlRefCell<>.
+Implement helper accessors as methods of HPETRegisters. Then
+HPETRegisters can be accessed without going through HPETState.
 
-This allows to elevate the Bql check from individual register access to
-register structure access, making the Bql check more coarse-grained. But
-in current step, just treat BqlRefCell as BqlCell while maintaining
-fine-grained BQL protection. This approach helps to use HPETRegisters
-struct clearly without introducing the "already borrowed" around
-BqlRefCell.
+In subsequent refactoring, coarser-grained BQL lock protection will be
+implemented. Specifically, BqlRefCell<HPETRegisters> will be borrowed
+only once during MMIO accesses, and the scope of borrowed `regs` will
+be extended to cover the entire MMIO access. Consequently, repeated
+borrow() attempts within function calls will no longer be allowed.
 
-HPETRegisters struct makes it possible to take a Mutex<> to replace
-BqlRefCell<>, like C side did.
+Therefore, refactor the accessors of HPETRegisters to bypass HPETState,
+which help to reduce borrow() in deep function calls.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20251113051937.4017675-13-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20251113051937.4017675-14-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/timer/hpet/src/device.rs | 116 +++++++++++++++++++------------
- 1 file changed, 70 insertions(+), 46 deletions(-)
+ rust/hw/timer/hpet/src/device.rs | 60 ++++++++++++++++++--------------
+ 1 file changed, 34 insertions(+), 26 deletions(-)
 
 diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
-index 8dc3cc59c98..bf9f4936718 100644
+index bf9f4936718..da938f356e9 100644
 --- a/rust/hw/timer/hpet/src/device.rs
 +++ b/rust/hw/timer/hpet/src/device.rs
-@@ -524,24 +524,29 @@ fn write(&mut self, target: TimerRegister, value: u64, shift: u32, len: u32) {
+@@ -280,7 +280,10 @@ fn get_state(&self) -> &HPETState {
      }
+ 
+     fn is_int_active(&self) -> bool {
+-        self.get_state().is_timer_int_active(self.index.into())
++        self.get_state()
++            .regs
++            .borrow()
++            .is_timer_int_active(self.index.into())
+     }
+ 
+     /// calculate next value of the general counter that matches the
+@@ -299,7 +302,7 @@ fn calculate_cmp64(&self, cur_tick: u64, target: u64) -> u64 {
+     }
+ 
+     fn get_int_route(&self) -> usize {
+-        if self.index <= 1 && self.get_state().is_legacy_mode() {
++        if self.index <= 1 && self.get_state().regs.borrow().is_legacy_mode() {
+             // If LegacyReplacement Route bit is set, HPET specification requires
+             // timer0 be routed to IRQ0 in NON-APIC or IRQ2 in the I/O APIC,
+             // timer1 be routed to IRQ8 in NON-APIC or IRQ8 in the I/O APIC.
+@@ -326,7 +329,7 @@ fn get_int_route(&self) -> usize {
+     fn set_irq(&self, set: bool) {
+         let route = self.get_int_route();
+ 
+-        if set && self.regs.is_int_enabled() && self.get_state().is_hpet_enabled() {
++        if set && self.regs.is_int_enabled() && self.get_state().regs.borrow().is_hpet_enabled() {
+             if self.regs.is_fsb_route_enabled() {
+                 // SAFETY:
+                 // the parameters are valid.
+@@ -425,7 +428,7 @@ fn set_tn_cfg_reg(&mut self, shift: u32, len: u32, val: u64) {
+             self.period = u64::from(self.period as u32); // truncate!
+         }
+ 
+-        if self.get_state().is_hpet_enabled() {
++        if self.get_state().regs.borrow().is_hpet_enabled() {
+             self.set_timer();
+         }
+     }
+@@ -456,7 +459,7 @@ fn set_tn_cmp_reg(&mut self, shift: u32, len: u32, val: u64) {
+         }
+ 
+         self.regs.clear_valset();
+-        if self.get_state().is_hpet_enabled() {
++        if self.get_state().regs.borrow().is_hpet_enabled() {
+             self.set_timer();
+         }
+     }
+@@ -540,6 +543,20 @@ pub struct HPETRegisters {
+     counter: u64,
  }
  
-+#[repr(C)]
-+#[derive(Default)]
-+pub struct HPETRegisters {
-+    // HPET block Registers: Memory-mapped, software visible registers
-+    /// General Capabilities and ID Register
-+    capability: u64,
-+    ///  General Configuration Register
-+    config: u64,
-+    /// General Interrupt Status Register
-+    #[doc(alias = "isr")]
-+    int_status: u64,
-+    /// Main Counter Value Register
-+    #[doc(alias = "hpet_counter")]
-+    counter: u64,
++impl HPETRegisters {
++    fn is_legacy_mode(&self) -> bool {
++        self.config & (1 << HPET_CFG_LEG_RT_SHIFT) != 0
++    }
++
++    fn is_hpet_enabled(&self) -> bool {
++        self.config & (1 << HPET_CFG_ENABLE_SHIFT) != 0
++    }
++
++    fn is_timer_int_active(&self, index: usize) -> bool {
++        self.int_status & (1 << index) != 0
++    }
 +}
 +
  /// HPET Event Timer Block Abstraction
  #[repr(C)]
  #[derive(qom::Object, hwcore::Device)]
- pub struct HPETState {
-     parent_obj: ParentField<SysBusDevice>,
-     iomem: MemoryRegion,
+@@ -587,18 +604,6 @@ const fn has_msi_flag(&self) -> bool {
+         self.flags & (1 << HPET_FLAG_MSI_SUPPORT_SHIFT) != 0
+     }
+ 
+-    fn is_legacy_mode(&self) -> bool {
+-        self.regs.borrow().config & (1 << HPET_CFG_LEG_RT_SHIFT) != 0
+-    }
 -
--    // HPET block Registers: Memory-mapped, software visible registers
--    /// General Capabilities and ID Register
--    capability: BqlCell<u64>,
--    ///  General Configuration Register
--    config: BqlCell<u64>,
--    /// General Interrupt Status Register
--    #[doc(alias = "isr")]
--    int_status: BqlCell<u64>,
--    /// Main Counter Value Register
--    #[doc(alias = "hpet_counter")]
--    counter: BqlCell<u64>,
-+    regs: BqlRefCell<HPETRegisters>,
- 
-     // Internal state
-     /// Capabilities that QEMU HPET supports.
-@@ -583,15 +588,15 @@ const fn has_msi_flag(&self) -> bool {
-     }
- 
-     fn is_legacy_mode(&self) -> bool {
--        self.config.get() & (1 << HPET_CFG_LEG_RT_SHIFT) != 0
-+        self.regs.borrow().config & (1 << HPET_CFG_LEG_RT_SHIFT) != 0
-     }
- 
-     fn is_hpet_enabled(&self) -> bool {
--        self.config.get() & (1 << HPET_CFG_ENABLE_SHIFT) != 0
-+        self.regs.borrow().config & (1 << HPET_CFG_ENABLE_SHIFT) != 0
-     }
- 
-     fn is_timer_int_active(&self, index: usize) -> bool {
--        self.int_status.get() & (1 << index) != 0
-+        self.regs.borrow().int_status & (1 << index) != 0
-     }
- 
+-    fn is_hpet_enabled(&self) -> bool {
+-        self.regs.borrow().config & (1 << HPET_CFG_ENABLE_SHIFT) != 0
+-    }
+-
+-    fn is_timer_int_active(&self, index: usize) -> bool {
+-        self.regs.borrow().int_status & (1 << index) != 0
+-    }
+-
      fn get_ticks(&self) -> u64 {
-@@ -631,22 +636,22 @@ fn init_timers(this: &mut MaybeUninit<Self>) {
+         ns_to_ticks(CLOCK_VIRTUAL.get_ns() + self.hpet_offset.get())
+     }
+@@ -608,13 +613,14 @@ fn get_ns(&self, tick: u64) -> u64 {
      }
  
-     fn update_int_status(&self, index: u32, level: bool) {
--        self.int_status
--            .set(self.int_status.get().deposit(index, 1, u64::from(level)));
-+        let mut regs = self.regs.borrow_mut();
-+        regs.int_status = regs.int_status.deposit(index, 1, u64::from(level));
-     }
- 
-     /// General Configuration Register
-     fn set_cfg_reg(&self, shift: u32, len: u32, val: u64) {
--        let old_val = self.config.get();
-+        let old_val = self.regs.borrow().config;
-         let mut new_val = old_val.deposit(shift, len, val);
- 
-         new_val = hpet_fixup_reg(new_val, old_val, HPET_CFG_WRITE_MASK);
--        self.config.set(new_val);
-+        self.regs.borrow_mut().config = new_val;
- 
-         if activating_bit(old_val, new_val, HPET_CFG_ENABLE_SHIFT) {
-             // Enable main counter and interrupt generation.
-             self.hpet_offset
--                .set(ticks_to_ns(self.counter.get()) - CLOCK_VIRTUAL.get_ns());
-+                .set(ticks_to_ns(self.regs.borrow().counter) - CLOCK_VIRTUAL.get_ns());
- 
-             for timer in self.timers.iter().take(self.num_timers) {
-                 let mut t = timer.borrow_mut();
-@@ -658,7 +663,7 @@ fn set_cfg_reg(&self, shift: u32, len: u32, val: u64) {
+     fn handle_legacy_irq(&self, irq: u32, level: u32) {
++        let regs = self.regs.borrow();
+         if irq == HPET_LEGACY_PIT_INT {
+-            if !self.is_legacy_mode() {
++            if !regs.is_legacy_mode() {
+                 self.irqs[0].set(level != 0);
              }
-         } else if deactivating_bit(old_val, new_val, HPET_CFG_ENABLE_SHIFT) {
-             // Halt main counter and disable interrupt generation.
--            self.counter.set(self.get_ticks());
-+            self.regs.borrow_mut().counter = self.get_ticks();
+         } else {
+             self.rtc_irq_level.set(level);
+-            if !self.is_legacy_mode() {
++            if !regs.is_legacy_mode() {
+                 self.irqs[RTC_ISA_IRQ].set(level != 0);
+             }
+         }
+@@ -697,7 +703,8 @@ fn set_int_status_reg(&self, shift: u32, _len: u32, val: u64) {
  
-             for timer in self.timers.iter().take(self.num_timers) {
-                 timer.borrow().del_timer();
-@@ -681,7 +686,7 @@ fn set_cfg_reg(&self, shift: u32, len: u32, val: u64) {
-     /// General Interrupt Status Register: Read/Write Clear
-     fn set_int_status_reg(&self, shift: u32, _len: u32, val: u64) {
-         let new_val = val << shift;
--        let cleared = new_val & self.int_status.get();
-+        let cleared = new_val & self.regs.borrow().int_status;
- 
-         for (index, timer) in self.timers.iter().take(self.num_timers).enumerate() {
-             if cleared & (1 << index) != 0 {
-@@ -701,8 +706,8 @@ fn set_counter_reg(&self, shift: u32, len: u32, val: u64) {
+     /// Main Counter Value Register
+     fn set_counter_reg(&self, shift: u32, len: u32, val: u64) {
+-        if self.is_hpet_enabled() {
++        let mut regs = self.regs.borrow_mut();
++        if regs.is_hpet_enabled() {
+             // HPET spec says that writes to this register should only be
+             // done while the counter is halted. So this is an undefined
+             // behavior. There's no need to forbid it, but when HPET is
+@@ -706,7 +713,6 @@ fn set_counter_reg(&self, shift: u32, len: u32, val: u64) {
              // not be changed as well).
              trace::trace_hpet_ram_write_counter_write_while_enabled();
          }
--        self.counter
--            .set(self.counter.get().deposit(shift, len, val));
-+        let mut regs = self.regs.borrow_mut();
-+        regs.counter = regs.counter.deposit(shift, len, val);
+-        let mut regs = self.regs.borrow_mut();
+         regs.counter = regs.counter.deposit(shift, len, val);
      }
  
-     unsafe fn init(mut this: ParentInit<Self>) {
-@@ -745,14 +750,12 @@ fn realize(&self) -> util::Result<()> {
-         self.hpet_id.set(HPETFwConfig::assign_hpet_id()?);
- 
-         // 64-bit General Capabilities and ID Register; LegacyReplacementRoute.
--        self.capability.set(
--            HPET_CAP_REV_ID_VALUE << HPET_CAP_REV_ID_SHIFT |
-+        self.regs.borrow_mut().capability = HPET_CAP_REV_ID_VALUE << HPET_CAP_REV_ID_SHIFT |
-             1 << HPET_CAP_COUNT_SIZE_CAP_SHIFT |
-             1 << HPET_CAP_LEG_RT_CAP_SHIFT |
-             HPET_CAP_VENDER_ID_VALUE << HPET_CAP_VENDER_ID_SHIFT |
-             ((self.num_timers - 1) as u64) << HPET_CAP_NUM_TIM_SHIFT | // indicate the last timer
--            (HPET_CLK_PERIOD * FS_PER_NS) << HPET_CAP_CNT_CLK_PERIOD_SHIFT, // 10 ns
--        );
-+            (HPET_CLK_PERIOD * FS_PER_NS) << HPET_CAP_CNT_CLK_PERIOD_SHIFT; // 10 ns
- 
-         self.init_gpio_in(2, HPETState::handle_legacy_irq);
-         self.init_gpio_out(from_ref(&self.pit_enabled));
-@@ -764,17 +767,23 @@ fn reset_hold(&self, _type: ResetType) {
-             timer.borrow_mut().reset();
-         }
- 
--        self.counter.set(0);
--        self.config.set(0);
-+        // pit_enabled.set(true) will call irq handler and access regs
-+        // again. We cannot borrow BqlRefCell twice at once. Minimize the
-+        // scope of regs to ensure it will be dropped before irq callback.
-+        {
-+            let mut regs = self.regs.borrow_mut();
-+            regs.counter = 0;
-+            regs.config = 0;
-+            HPETFwConfig::update_hpet_cfg(
-+                self.hpet_id.get(),
-+                regs.capability as u32,
-+                self.mmio_addr(0).unwrap(),
-+            );
-+        }
-+
-         self.pit_enabled.set(true);
-         self.hpet_offset.set(0);
- 
--        HPETFwConfig::update_hpet_cfg(
--            self.hpet_id.get(),
--            self.capability.get() as u32,
--            self.mmio_addr(0).unwrap(),
--        );
--
-         // to document that the RTC lowers its output on reset as well
-         self.rtc_irq_level.set(0);
-     }
-@@ -812,14 +821,14 @@ fn read(&self, addr: hwaddr, size: u32) -> u64 {
-         use GlobalRegister::*;
-         (match target {
-             Timer(timer, tn_target) => timer.borrow_mut().read(tn_target),
--            Global(CAP) => self.capability.get(), /* including HPET_PERIOD 0x004 */
--            Global(CFG) => self.config.get(),
--            Global(INT_STATUS) => self.int_status.get(),
-+            Global(CAP) => self.regs.borrow().capability, /* including HPET_PERIOD 0x004 */
-+            Global(CFG) => self.regs.borrow().config,
-+            Global(INT_STATUS) => self.regs.borrow().int_status,
+@@ -825,10 +831,11 @@ fn read(&self, addr: hwaddr, size: u32) -> u64 {
+             Global(CFG) => self.regs.borrow().config,
+             Global(INT_STATUS) => self.regs.borrow().int_status,
              Global(COUNTER) => {
-                 let cur_tick = if self.is_hpet_enabled() {
+-                let cur_tick = if self.is_hpet_enabled() {
++                let regs = self.regs.borrow();
++                let cur_tick = if regs.is_hpet_enabled() {
                      self.get_ticks()
                  } else {
--                    self.counter.get()
-+                    self.regs.borrow().counter
+-                    self.regs.borrow().counter
++                    regs.counter
                  };
  
                  trace::trace_hpet_ram_read_reading_counter((addr & 4) as u8, cur_tick);
-@@ -852,7 +861,7 @@ fn write(&self, addr: hwaddr, value: u64, size: u32) {
+@@ -860,8 +867,9 @@ fn write(&self, addr: hwaddr, value: u64, size: u32) {
+     }
  
      fn pre_save(&self) -> Result<(), migration::Infallible> {
-         if self.is_hpet_enabled() {
--            self.counter.set(self.get_ticks());
-+            self.regs.borrow_mut().counter = self.get_ticks();
+-        if self.is_hpet_enabled() {
+-            self.regs.borrow_mut().counter = self.get_ticks();
++        let mut regs = self.regs.borrow_mut();
++        if regs.is_hpet_enabled() {
++            regs.counter = self.get_ticks();
          }
  
          /*
-@@ -867,15 +876,16 @@ fn pre_save(&self) -> Result<(), migration::Infallible> {
-     fn post_load(&self, _version_id: u8) -> Result<(), migration::Infallible> {
-         for timer in self.timers.iter().take(self.num_timers) {
-             let mut t = timer.borrow_mut();
-+            let cnt = t.get_state().regs.borrow().counter;
+@@ -896,7 +904,7 @@ fn is_rtc_irq_level_needed(&self) -> bool {
+     }
  
--            t.cmp64 = t.calculate_cmp64(t.get_state().counter.get(), t.regs.cmp);
-+            t.cmp64 = t.calculate_cmp64(cnt, t.regs.cmp);
-             t.last = CLOCK_VIRTUAL.get_ns() - NANOSECONDS_PER_SECOND;
-         }
+     fn is_offset_needed(&self) -> bool {
+-        self.is_hpet_enabled() && self.hpet_offset_saved
++        self.regs.borrow().is_hpet_enabled() && self.hpet_offset_saved
+     }
  
-         // Recalculate the offset between the main counter and guest time
-         if !self.hpet_offset_saved {
-             self.hpet_offset
--                .set(ticks_to_ns(self.counter.get()) - CLOCK_VIRTUAL.get_ns());
-+                .set(ticks_to_ns(self.regs.borrow().counter) - CLOCK_VIRTUAL.get_ns());
-         }
- 
-         Ok(())
-@@ -966,6 +976,22 @@ impl ObjectImpl for HPETState {
- 
- const VALIDATE_TIMERS_NAME: &CStr = c"num_timers must match";
- 
-+// In fact, version_id and minimum_version_id for HPETRegisters are
-+// unrelated to HPETState's version IDs. Does not affect compatibility.
-+impl_vmstate_struct!(
-+    HPETRegisters,
-+    VMStateDescriptionBuilder::<HPETRegisters>::new()
-+        .name(c"hpet/regs")
-+        .version_id(1)
-+        .minimum_version_id(1)
-+        .fields(vmstate_fields! {
-+            vmstate_of!(HPETRegisters, config),
-+            vmstate_of!(HPETRegisters, int_status),
-+            vmstate_of!(HPETRegisters, counter),
-+        })
-+        .build()
-+);
-+
- const VMSTATE_HPET: VMStateDescription<HPETState> =
-     VMStateDescriptionBuilder::<HPETState>::new()
-         .name(c"hpet")
-@@ -974,9 +1000,7 @@ impl ObjectImpl for HPETState {
-         .pre_save(&HPETState::pre_save)
-         .post_load(&HPETState::post_load)
-         .fields(vmstate_fields! {
--            vmstate_of!(HPETState, config),
--            vmstate_of!(HPETState, int_status),
--            vmstate_of!(HPETState, counter),
-+            vmstate_of!(HPETState, regs),
-             vmstate_of!(HPETState, num_timers_save),
-             vmstate_validate!(HPETState, VALIDATE_TIMERS_NAME, HPETState::validate_num_timers),
-             vmstate_of!(HPETState, timers[0 .. num_timers_save], HPETState::validate_num_timers).with_version_id(0),
+     fn validate_num_timers(&self, _version_id: u8) -> bool {
 -- 
 2.52.0
 
