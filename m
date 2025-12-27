@@ -2,95 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55C64CDF691
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:49:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4616CCDF685
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:48:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQuA-00029V-HE; Sat, 27 Dec 2025 04:48:10 -0500
+	id 1vZQuC-00029q-BT; Sat, 27 Dec 2025 04:48:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQu8-00029H-L4
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:08 -0500
+ id 1vZQuA-00029e-5o
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:10 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQu6-0006qL-RK
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:08 -0500
+ id 1vZQu7-0006ql-Lt
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766828885;
+ s=mimecast20190719; t=1766828887;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7dZhd1TJrGMuB/APYTvzoI0KrpziUdotLVGl/UiitoY=;
- b=WamZ+MXqt0BerMVbVxlvaK7JcsOY7PbJdryh9WnhnaBKP5xgsaxbX70Sy/NT1LB3UlNKEM
- BeSvBt8GviEzLPe6hKunhIxF+2SRP9IhadNq1V4lpYf9Rna7xEF0zOdI960UPr0IsX+Q7D
- uJLiTUsq1+2fJRGIeqjiT+6p5fZHT9Q=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=vSz4mh7XiAmt4x7C6Gw7+a5fT7FbsBUAI34WJrGmG+Q=;
+ b=Vh2pphMQ1ov/9wctJqriFWua50Zpzn8cpIka2aPmygydD1wxx9G3HXjhtAkHKy/2Hai+2V
+ 538mAVKyMGRE/f3G+72GPJNJC1NwBKlBabouDWNU/k4yGGRlF0VGZRwii5Rvj7372LLxCZ
+ uQjTAC+4NZUbMTY9ztQhSGlOvq2WuuQ=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-184-bcAPrjScONal8lpWqDSoZA-1; Sat, 27 Dec 2025 04:48:03 -0500
-X-MC-Unique: bcAPrjScONal8lpWqDSoZA-1
-X-Mimecast-MFC-AGG-ID: bcAPrjScONal8lpWqDSoZA_1766828882
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4792bd2c290so73500055e9.1
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:48:03 -0800 (PST)
+ us-mta-342-7jKYbtOpNf6EWoS7aLROmg-1; Sat, 27 Dec 2025 04:48:05 -0500
+X-MC-Unique: 7jKYbtOpNf6EWoS7aLROmg-1
+X-Mimecast-MFC-AGG-ID: 7jKYbtOpNf6EWoS7aLROmg_1766828884
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-4325aa61c6bso2502543f8f.0
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:48:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766828882; x=1767433682; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766828883; x=1767433683; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7dZhd1TJrGMuB/APYTvzoI0KrpziUdotLVGl/UiitoY=;
- b=WCyBHNmzrZ94pheQjntz+bXwR/Gn2Q+DUrH3Yj3P3mzWJgp4xoCBpIQosJyVLykA7f
- aHoRmLBn2gC1E5e3OI6/fN/DH/K84BVQa+S6LvqUTpTifD4xGGyBvjmRTjxrh/mRL3NL
- TZo1Nwt+F7bQTnmcRJTkGBTJ4WXx+GoGLA9N1gfMPQhqc8Zu4Fl+oZDXFeOy8dVmuOd5
- zPrTNepHoRFI0kI6JESACige6pReuSvKXyUurUxW48cGSVGSLU893+pTTEqsWrqIeN9j
- d5xz7MAX85J9eSi35R4Em4lorzfvfibCRiZFiq8qB/rfXnncCPnVFzmfCXGFeeiRW+mT
- 5iNA==
+ bh=vSz4mh7XiAmt4x7C6Gw7+a5fT7FbsBUAI34WJrGmG+Q=;
+ b=j9/HeIFBarIMQya4fyzIshvhmgvd5mVpMRIc5iK7tyqjtPNT1cZ7CgCNECyOKRYvCm
+ 6VvWjypX9GD1XoFQxPBe/N8RB7DDVj7GXYH3EgkbkRJuEDXjnGdYOwJo4sUg0A27jLMW
+ Ch5pFXb4/EXSzA7uXTLQjWDuQog9ODB7UikTNnQWsfPcFeIfyGFqupQmPpa5t/gQC4ul
+ VwbwmTkXXIDAM1cxtH/oswMEUJgW8bBSUQy5dMfLoY1nVwk0yogMj62xzFM+ygC9gN+X
+ HYLErCrDMoMqC1UeDekc4jREZEP0dCL9meEIxYzQXIYuef+eEMxH5tMUiYC+1xFM+5Xd
+ 578w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766828882; x=1767433682;
+ d=1e100.net; s=20230601; t=1766828883; x=1767433683;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=7dZhd1TJrGMuB/APYTvzoI0KrpziUdotLVGl/UiitoY=;
- b=LgRLO7JFqPSIggi7GMnRbTXqJU1Yf8v4bAbayRa32GI87gNwPYDp19EDJTtZr4ETiC
- hVulJq3ik/9KqhY0Q1zAACP11V7nIBBxRM0HGLxe2pqCqo+/kWZu4v50C6U9X5kspm2T
- wyuOKbU3n0Lz+BAlH+VLWgkdeCYrWYj0yS1g4XgU2wZq7YZBezVuNo6YnXCI211gSzxR
- wQRxRlgFK+ydYSFS0fiZpRnZW63l67Zjr2EZz7QjyDe9X1KD+a52AaqvPWYOQG2rHw6r
- ntCUpVa1toHOTqaxGrWEiUigeqYqWn+AZHnDYSeEXPdGHXsd/QkfjbZ32K8dgWfwAVZU
- M49Q==
-X-Gm-Message-State: AOJu0YzXEf6gn5vXCIbS/TDZmIy0xAfNDfuYA3/8M8GEMPXYPshlVrC8
- XWrAP7ZaEqXPphHVVeIKJZBIMMvW9+BOcM6qZ/zqQhvj2LQJHK1pWF/a9UNWKs86IrwoYslmigS
- VE2SKekDYpM9RY3kPJgXEM/AcGN1D+LO/cg0saF61fXgEMIKRKrpu7FCg3jwnEUl7dq+GW/LcK8
- 6VMpHNuLCqA49L6h0QXRkFmSHi+n+XMq5HS7j4mkbT
-X-Gm-Gg: AY/fxX74a4uhTV1zlXpaeCtqDr49rKfH16e0QIOKShXzuOJRD4Ul5/hVii0OHZRylDr
- 0UF1rC2dFOrmQnLVxQHGQdJpeFkrSbNx/hORvknOMyFUKscGQ5aqi0ibAm4zhlQUqTTTzOwg8a2
- OmBNT56WqP5hJFoDDZ9ZX+RJYJOMDFbrTs4v0uKkAAsFWL43caMAMURV9qng/fUCI+KLTHLSJMb
- qjoGvgBXXntHPa19a449mV4kFvGodxLtUc3Nc59cRgCEv2Aab/69cxGb9eFsddt8wE/Cl+aKf4L
- SuewSmWelmWsjmxHYgWtZKCJx0hG6tEQquk3D5bE+/d4p/ZNNt0zlF0mdyQlP3xKcRZtd6ygZGs
- zd4wQEqxLX9MEm0Zcps01fJNAcUK2oINLvmTO9XUiauC89x7CVDLRGQ8V0RkPSylHgLWfYuMgP2
- qaNxZa2F2CzqzVjiI=
-X-Received: by 2002:a05:600c:4f94:b0:477:c71:1fc1 with SMTP id
- 5b1f17b1804b1-47d19595e3dmr274109605e9.19.1766828881746; 
- Sat, 27 Dec 2025 01:48:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFToZ968yGx9ycARSj2nZd0RxtA6xp/fE83aQxLcFTVABds3HwP7JhbbjX5YjFwA4h/LDJ2fA==
-X-Received: by 2002:a05:600c:4f94:b0:477:c71:1fc1 with SMTP id
- 5b1f17b1804b1-47d19595e3dmr274109345e9.19.1766828881171; 
- Sat, 27 Dec 2025 01:48:01 -0800 (PST)
+ bh=vSz4mh7XiAmt4x7C6Gw7+a5fT7FbsBUAI34WJrGmG+Q=;
+ b=vghQuMJjbENanS27ZcvX3/4ymKbpymxUQ+HfvHenxQ3MBVNLNjLe9nsv+AYL3vjIyU
+ 1PIUdtYDwTM0xPaY6mFnRAaidUN6DcQnMFAYPttaVupmQ9Xjmk4qPYfq9rLulej2gAPZ
+ 5bZqXBdy7bunUfzCm60kfkPbG7tHAlwCTkHRfPbbQEqGCOcQU/+ABQUyn6HXHxSq6OID
+ gTQWT75qwskqVJdt+qAkJS60/l5f2GCg0onuIJx/qCjRHeEDRTsWNPQt7fF0svmBJqko
+ r9LQd20VOwb3U4nPIKKn3pm5Fs13qYq1lFSe/rClivPb729ICDvVqJcKg5+hvDLy54S4
+ u73A==
+X-Gm-Message-State: AOJu0YyGHLdgBb0UPBhWuwpbK3xQDCJNloiiVZByvG2+WZqnyGiYhf8V
+ WxbWWpc2f+OFjAdgK/yVS+34CfFIrzGC6Wgg4IuP052oO2O/FyLEwfMDrEzlV/VZKBDl/KhUcYs
+ TSHdx9gjLztuAWdP/cjm15tHiyWfoXQWMk4fiGrKLOeCxfsG+db0NL0UqbMhdCcsEco50Tz1M1A
+ plfirPkyFPeL7RT3isYfiE9vvNbJjTYASwpIFF3ad2
+X-Gm-Gg: AY/fxX4D1XzqkmnjFsoNsycvNXdqLCjLndGnOKMOVXuaD+D6aeqUcyyqs98MiAvS4Sq
+ ZikghooeU3zZC9vLUVa5VTinsPLJooqDxP7xnwBFUg971mnNbGiQu4di7HzI6F3zMeM6Br5MYDt
+ tgLRHaeOIVbbr5JX4v7x4k7Cpj6sIIEMamllP5tJ6tzouY+U7eM1F6ZlkcJzHGC+NiryOOMIBez
+ WC91QQV8plcA0sgTw/qlbEmyW1wB4iFnwt9+FipOW/BMyvLBzbgKpEcqCVVZbDoTWCLlwA1d+0m
+ 9ZJiyiuxawpVXiKz9Xs1JsypxVFeyjS1rq0TfJ33NAKfKgLT6kCMVYuRjKTgeSiWzoIBC+IGRfT
+ ewf8HWQSAMnz5vuEwH/jqjgJUezOsHDRRPKblUvzbVAwS2g9rtqTZ97tAv75MwI6sumDdI570Eb
+ wHWfuCHz+VsrNSMb4=
+X-Received: by 2002:a05:6000:200c:b0:432:88c2:edb6 with SMTP id
+ ffacd0b85a97d-43288c2ee05mr1376438f8f.2.1766828883551; 
+ Sat, 27 Dec 2025 01:48:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEvLOTVoRp4qSL+k2jn2WYEN0FUCvbRBBZLPIYcM+7drxHvtSveqnmgx2dTWZn2GStnKtPV1Q==
+X-Received: by 2002:a05:6000:200c:b0:432:88c2:edb6 with SMTP id
+ ffacd0b85a97d-43288c2ee05mr1376416f8f.2.1766828883058; 
+ Sat, 27 Dec 2025 01:48:03 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324eaa08efsm50567011f8f.29.2025.12.27.01.48.00
+ ffacd0b85a97d-4324eaa08d9sm50885173f8f.30.2025.12.27.01.48.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:48:00 -0800 (PST)
+ Sat, 27 Dec 2025 01:48:02 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Farrah Chen <farrah.chen@intel.com>,
  Zide Chen <zide.chen@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 075/153] i386/cpu: Reorganize arch lbr structure definitions
-Date: Sat, 27 Dec 2025 10:46:40 +0100
-Message-ID: <20251227094759.35658-1-pbonzini@redhat.com>
+Subject: [PULL 076/153] i386/cpu: Make ExtSaveArea store an array of
+ dependencies
+Date: Sat, 27 Dec 2025 10:46:41 +0100
+Message-ID: <20251227094759.35658-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
@@ -123,97 +124,192 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-- Move ARCH_LBR_NR_ENTRIES macro and LBREntry definition before XSAVE
-  areas definitions.
-- Reorder XSavesArchLBR (area 15) between XSavePKRU (area 9) and
-  XSaveXTILECFG (area 17), and reorder the related QEMU_BUILD_BUG_ON
-  check to keep the same ordering.
+Some XSAVE components depend on multiple features. For example, Opmask/
+ZMM_Hi256/Hi16_ZMM depend on avx512f OR avx10, and for CET (which will
+be supported later), cet_u/cet_s will depend on shstk OR ibt.
 
-This makes xsave structures to be organized together and makes them
-clearer.
+Although previously there's the special check for the dependencies of
+AVX512F OR AVX10 on their respective XSAVE components (in
+cpuid_has_xsave_feature()), to make the code more general and avoid
+adding more special cases, make ExtSaveArea store a features array
+instead of a single feature, so that it can describe multiple
+dependencies.
 
 Tested-by: Farrah Chen <farrah.chen@intel.com>
-Reviewed-by: Zide Chen <zide.chen@intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20251211060801.3600039-4-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20251211060801.3600039-5-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h | 38 +++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+ target/i386/cpu.h |  9 +++++-
+ target/i386/cpu.c | 78 ++++++++++++++++++++++++++++++++++-------------
+ 2 files changed, 65 insertions(+), 22 deletions(-)
 
 diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index c95b772719c..a183394eca7 100644
+index a183394eca7..3d74afc5a8e 100644
 --- a/target/i386/cpu.h
 +++ b/target/i386/cpu.h
-@@ -1652,6 +1652,14 @@ typedef struct {
- 
- #define NB_OPMASK_REGS 8
- 
-+typedef struct {
-+    uint64_t from;
-+    uint64_t to;
-+    uint64_t info;
-+} LBREntry;
-+
-+#define ARCH_LBR_NR_ENTRIES 32
-+
- /* CPU can't have 0xFFFFFFFF APIC ID, use that value to distinguish
-  * that APIC ID hasn't been set yet
-  */
-@@ -1729,24 +1737,6 @@ typedef struct XSavePKRU {
-     uint32_t padding;
- } XSavePKRU;
- 
--/* Ext. save area 17: AMX XTILECFG state */
--typedef struct XSaveXTILECFG {
--    uint8_t xtilecfg[64];
--} XSaveXTILECFG;
--
--/* Ext. save area 18: AMX XTILEDATA state */
--typedef struct XSaveXTILEDATA {
--    uint8_t xtiledata[8][1024];
--} XSaveXTILEDATA;
--
--typedef struct {
--       uint64_t from;
--       uint64_t to;
--       uint64_t info;
--} LBREntry;
--
--#define ARCH_LBR_NR_ENTRIES            32
--
- /* Ext. save area 15: Arch LBR state */
- typedef struct XSaveArchLBR {
-     uint64_t lbr_ctl;
-@@ -1757,6 +1747,16 @@ typedef struct XSaveArchLBR {
-     LBREntry lbr_records[ARCH_LBR_NR_ENTRIES];
- } XSaveArchLBR;
- 
-+/* Ext. save area 17: AMX XTILECFG state */
-+typedef struct XSaveXTILECFG {
-+    uint8_t xtilecfg[64];
-+} XSaveXTILECFG;
-+
-+/* Ext. save area 18: AMX XTILEDATA state */
-+typedef struct XSaveXTILEDATA {
-+    uint8_t xtiledata[8][1024];
-+} XSaveXTILEDATA;
-+
- QEMU_BUILD_BUG_ON(sizeof(XSaveAVX) != 0x100);
- QEMU_BUILD_BUG_ON(sizeof(XSaveBNDREG) != 0x40);
- QEMU_BUILD_BUG_ON(sizeof(XSaveBNDCSR) != 0x40);
-@@ -1764,9 +1764,9 @@ QEMU_BUILD_BUG_ON(sizeof(XSaveOpmask) != 0x40);
- QEMU_BUILD_BUG_ON(sizeof(XSaveZMM_Hi256) != 0x200);
- QEMU_BUILD_BUG_ON(sizeof(XSaveHi16_ZMM) != 0x400);
- QEMU_BUILD_BUG_ON(sizeof(XSavePKRU) != 0x8);
-+QEMU_BUILD_BUG_ON(sizeof(XSaveArchLBR) != 0x328);
- QEMU_BUILD_BUG_ON(sizeof(XSaveXTILECFG) != 0x40);
+@@ -1769,9 +1769,16 @@ QEMU_BUILD_BUG_ON(sizeof(XSaveXTILECFG) != 0x40);
  QEMU_BUILD_BUG_ON(sizeof(XSaveXTILEDATA) != 0x2000);
--QEMU_BUILD_BUG_ON(sizeof(XSaveArchLBR) != 0x328);
  
  typedef struct ExtSaveArea {
-     uint32_t feature, bits;
+-    uint32_t feature, bits;
+     uint32_t offset, size;
+     uint32_t ecx;
++    /*
++     * The dependencies in the array work as OR relationships, which
++     * means having just one of those features is enough.
++     *
++     * At most two features are sharing the same xsave area.
++     * Number of features can be adjusted if necessary.
++     */
++    const FeatureMask features[2];
+ } ExtSaveArea;
+ 
+ #define XSAVE_STATE_AREA_COUNT (XSTATE_XTILE_DATA_BIT + 1)
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index de4e5c57746..367396a216e 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -2020,53 +2020,77 @@ static const X86RegisterInfo32 x86_reg_info_32[CPU_NB_REGS32] = {
+ ExtSaveArea x86_ext_save_areas[XSAVE_STATE_AREA_COUNT] = {
+     [XSTATE_FP_BIT] = {
+         /* x87 FP state component is always enabled if XSAVE is supported */
+-        .feature = FEAT_1_ECX, .bits = CPUID_EXT_XSAVE,
+         .size = sizeof(X86LegacyXSaveArea) + sizeof(X86XSaveHeader),
++        .features = {
++            { FEAT_1_ECX,           CPUID_EXT_XSAVE },
++        },
+     },
+     [XSTATE_SSE_BIT] = {
+         /* SSE state component is always enabled if XSAVE is supported */
+-        .feature = FEAT_1_ECX, .bits = CPUID_EXT_XSAVE,
+         .size = sizeof(X86LegacyXSaveArea) + sizeof(X86XSaveHeader),
++        .features = {
++            { FEAT_1_ECX,           CPUID_EXT_XSAVE },
++        },
+     },
+     [XSTATE_YMM_BIT] = {
+-        .feature = FEAT_1_ECX, .bits = CPUID_EXT_AVX,
+         .size = sizeof(XSaveAVX),
++        .features = {
++            { FEAT_1_ECX,           CPUID_EXT_AVX },
++        },
+     },
+     [XSTATE_BNDREGS_BIT] = {
+-        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_MPX,
+         .size = sizeof(XSaveBNDREG),
++        .features = {
++            { FEAT_7_0_EBX,         CPUID_7_0_EBX_MPX },
++        },
+     },
+     [XSTATE_BNDCSR_BIT] = {
+-        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_MPX,
+         .size = sizeof(XSaveBNDCSR),
++        .features = {
++            { FEAT_7_0_EBX,         CPUID_7_0_EBX_MPX },
++        },
+     },
+     [XSTATE_OPMASK_BIT] = {
+-        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
+         .size = sizeof(XSaveOpmask),
++        .features = {
++            { FEAT_7_0_EBX,         CPUID_7_0_EBX_AVX512F },
++        },
+     },
+     [XSTATE_ZMM_Hi256_BIT] = {
+-        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
+         .size = sizeof(XSaveZMM_Hi256),
++        .features = {
++            { FEAT_7_0_EBX,         CPUID_7_0_EBX_AVX512F },
++        },
+     },
+     [XSTATE_Hi16_ZMM_BIT] = {
+-        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
+         .size = sizeof(XSaveHi16_ZMM),
++        .features = {
++            { FEAT_7_0_EBX,         CPUID_7_0_EBX_AVX512F },
++        },
+     },
+     [XSTATE_PKRU_BIT] = {
+-        .feature = FEAT_7_0_ECX, .bits = CPUID_7_0_ECX_PKU,
+         .size = sizeof(XSavePKRU),
++        .features = {
++            { FEAT_7_0_ECX,         CPUID_7_0_ECX_PKU },
++        },
+     },
+     [XSTATE_ARCH_LBR_BIT] = {
+-        .feature = FEAT_7_0_EDX, .bits = CPUID_7_0_EDX_ARCH_LBR,
+         .size = sizeof(XSaveArchLBR),
++        .features = {
++            { FEAT_7_0_EDX,         CPUID_7_0_EDX_ARCH_LBR },
++        },
+     },
+     [XSTATE_XTILE_CFG_BIT] = {
+-        .feature = FEAT_7_0_EDX, .bits = CPUID_7_0_EDX_AMX_TILE,
+         .size = sizeof(XSaveXTILECFG),
++        .features = {
++            { FEAT_7_0_EDX,         CPUID_7_0_EDX_AMX_TILE },
++        },
+     },
+     [XSTATE_XTILE_DATA_BIT] = {
+-        .feature = FEAT_7_0_EDX, .bits = CPUID_7_0_EDX_AMX_TILE,
+         .size = sizeof(XSaveXTILEDATA),
++        .features = {
++            { FEAT_7_0_EDX,         CPUID_7_0_EDX_AMX_TILE },
++        },
+     },
+ };
+ 
+@@ -7131,16 +7155,24 @@ static inline void feat2prop(char *s)
+ static const char *x86_cpu_feature_name(FeatureWord w, int bitnr)
+ {
+     const char *name;
+-    /* XSAVE components are automatically enabled by other features,
++    /*
++     * XSAVE components are automatically enabled by other features,
+      * so return the original feature name instead
+      */
+     if (w == FEAT_XSAVE_XCR0_LO || w == FEAT_XSAVE_XCR0_HI) {
+         int comp = (w == FEAT_XSAVE_XCR0_HI) ? bitnr + 32 : bitnr;
+ 
+-        if (comp < ARRAY_SIZE(x86_ext_save_areas) &&
+-            x86_ext_save_areas[comp].bits) {
+-            w = x86_ext_save_areas[comp].feature;
+-            bitnr = ctz32(x86_ext_save_areas[comp].bits);
++        if (comp < ARRAY_SIZE(x86_ext_save_areas)) {
++            /*
++             * Present the first feature as the default.
++             * FIXME: select and present the one which is actually enabled
++             * among multiple dependencies.
++             */
++            const FeatureMask *fm = &x86_ext_save_areas[comp].features[0];
++            if (fm->mask) {
++                w = fm->index;
++                bitnr = ctz32(fm->mask);
++            }
+         }
+     }
+ 
+@@ -8610,11 +8642,15 @@ static bool cpuid_has_xsave_feature(CPUX86State *env, const ExtSaveArea *esa)
+         return false;
+     }
+ 
+-    if (env->features[esa->feature] & esa->bits) {
+-        return true;
++    for (int i = 0; i < ARRAY_SIZE(esa->features); i++) {
++        if (env->features[esa->features[i].index] & esa->features[i].mask) {
++            return true;
++        }
+     }
+-    if (esa->feature == FEAT_7_0_EBX && esa->bits == CPUID_7_0_EBX_AVX512F
+-        && (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10)) {
++
++    if (esa->features[0].index == FEAT_7_0_EBX &&
++        esa->features[0].mask == CPUID_7_0_EBX_AVX512F &&
++        (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10)) {
+         return true;
+     }
+ 
 -- 
 2.52.0
 
