@@ -2,94 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06528CDF59B
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:18:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 196D3CDF630
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:25:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQR9-000630-E2; Sat, 27 Dec 2025 04:18:11 -0500
+	id 1vZQRD-0006UO-L3; Sat, 27 Dec 2025 04:18:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQR5-0005so-TW
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:07 -0500
+ id 1vZQR8-00066N-7c
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:11 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQR4-0003bX-CF
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:07 -0500
+ id 1vZQR6-0003bo-GM
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766827085;
+ s=mimecast20190719; t=1766827088;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=H3JUmPJ/juui8+XKZjoKGDOzRk+FSkrjgG0mg8NiM70=;
- b=d2KVAsmzwfCuTfkyEVh7uzWPHnkhkmhlpPwpz+4wxVbgDSwmnxx6bULXn9rhhA9SmR6hMz
- fHhlGNWFnZRZVctn2QAjyv+gi1efucQuQXIoHHZt9DNyYH1Q8xl7+PbxJmuHHSw5MsC3/z
- nK4T0I+ncR1FgN0qwVvVb/weJDslJW4=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=BWG6/VJifV9TnZXwGu1QSP0yR2HgFAZn9IEMSAaLbOg=;
+ b=JUqGpeqJesdqmU7LbxFJsSCDe32FtgoIWAKH3ML2Po3YAJ3HpGwKdLOC+BglmUPlWrbFr5
+ uoE0AX1Ccz/LVpfkuUiJPKJSl4956Ctzd/2UdeleCSu1it/sLbKeUD4zDWg0g2GSPH89Ce
+ 5jutZUHGTcYX4VJQmsNVDPCjYLqTlWM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-692-pJFVjyihNS2Wpxt63MGOOg-1; Sat, 27 Dec 2025 04:18:03 -0500
-X-MC-Unique: pJFVjyihNS2Wpxt63MGOOg-1
-X-Mimecast-MFC-AGG-ID: pJFVjyihNS2Wpxt63MGOOg_1766827082
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4775e00b16fso19381075e9.2
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:18:03 -0800 (PST)
+ us-mta-118-CK-qF-28PpeJRLFlGiTCNg-1; Sat, 27 Dec 2025 04:18:05 -0500
+X-MC-Unique: CK-qF-28PpeJRLFlGiTCNg-1
+X-Mimecast-MFC-AGG-ID: CK-qF-28PpeJRLFlGiTCNg_1766827085
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-47d28e7960fso20576035e9.0
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:18:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766827081; x=1767431881; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766827083; x=1767431883; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=H3JUmPJ/juui8+XKZjoKGDOzRk+FSkrjgG0mg8NiM70=;
- b=ouRGWlQ1piwcJAbtZavaYz+kjIA3ogrAJaYOleUQmwH7dTgRvysXhrRIV83RwEZojP
- yqcC/b5mvT4oKgOpR2oMpWi63G5kRnCqkL7QwwpuVvz2uWj+8l9qzpHJFIzPNQL7nLfw
- HXmr1arY2klePLCBqHgyyPwcL0jRJXJwrGA4BC+nzd6d/J/VPY8YFZfmhdktqo8e/g+Z
- eTdv+DSezls6c4jYhq17e1WjD+sXSBLfeflN2nGFL4YaLJIDLHt13tLpEp4lDZWGedAZ
- HUB3AJ2l4EIaexhpRrNhwaqRdVVGGqWv1o6mXEkCTa61KU+ZtuAsjEn+r646zPJCz1P6
- NJpg==
+ bh=BWG6/VJifV9TnZXwGu1QSP0yR2HgFAZn9IEMSAaLbOg=;
+ b=XOeKFi28dKAmEiWtFd7S7gFe5mAJ+QURveHx91eLPM0n53kAnqQHWHUuqSw1Ad/wR/
+ gFiH/Ds7Vpm/+Y+HrSYcONtZ2q/BpcIqrBx7RsBEkHOxT0D80NCjRZcsRTbUXZSVq8D3
+ QBmZQ3btHJKDiDZ/ya/D5gz1SDWHrQj672Yw6XURceSmxKszU0G5Uh/BucemO+0Yv5K0
+ DcyxoAjBfJxHhlp2ULjp5QufI11hzdfwKWrTN2YoU7IxVIw7PrbnNfYiDcZmATvw+NMw
+ Cwi3pigRyhAzth70Kc9MQf0Z1BN8qBgek+8F5Vy8mqVKjKax0868+p9oGiZ1pyDPKggp
+ DpaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766827081; x=1767431881;
+ d=1e100.net; s=20230601; t=1766827083; x=1767431883;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=H3JUmPJ/juui8+XKZjoKGDOzRk+FSkrjgG0mg8NiM70=;
- b=GiK9uCPfF/8d3aPW+y0pkBRvlK3HgVjXcQJwIKIJ2UMyR5rv5mu1zEDpDo/x/nD5GH
- GdeqsNLwUmkgQzy3YjEd95rjgtxvxusOX36C3FlHHqFFW0YB8MFhd6IW7gmjZNYiMPPd
- /2r5b3wUsTjy8U2INzDQFNTuIDcWb/oDy2lNsjXZZ88EjTyjdwiCmacsa4ekVbtR29nw
- t4czxAdeXrLDyaaw5ItpAB8FDmTGvXQZO72lH8ygA81O4ys9tWyQk8Szj2KZyxwqqz/O
- KT79Wt85tTH8fQoOJm++qF6PPIf8DeFfwi+29ElEbeTgMD2CwP8K1HWsjNZ8jl/2zrxj
- FDbA==
-X-Gm-Message-State: AOJu0YznBpZeHFmUF3b2wTmhE0hmTDjeMH3ODpYQTM+5zAib8DMYa7pc
- qhXjUp6scP7SyRuTPco3GXeSA0T2Gul+o/7UekXMU0wVJJHBzTMYRWPVeU/MSMq6S3VjPKPSJ9G
- LjQbEiIw1pdF8jT5eXh4K5RbTVJYAt/gPQkzpj3+ldh7lEqP+ibcYb7CP3cdgMXkbNIt9ZBx0ih
- 64vUUkfgIlwfUn+S+MiBCICo+Ruk0UIbx0qUaJVWVc
-X-Gm-Gg: AY/fxX5Wk3mgQuinbJu2vcXqNntzwC1fDvI0/SVscjT0sRizaeSjUm7G1kwNzK7NWEH
- Z9FZO8iJIyJkuIJNOd6yXfzg8ZCh5WL1ODzFPlVyS14DDX/E0u/hp/PtCHWOK3HxKF6MVRl3Gqh
- phDvlFD+fxbZ9fFfEJADuVT2dfmiJ6fCWIGYBGB3vhrCaAqvAm1sqCk+nmjlVsxP0mKECZ5OsVY
- UmpV8AB0GAaUHfSA+dwibocWIL+YX/e3YAWJxieMtlD6rkXMnsSonaGeblnTUzc8qiECnwiMdaY
- yZ1UDq4jaj2j2kag1/2ZmoGwWL2XDJDGnLayF3j76UpT59BoPZHvb6nQ74NbYF9ULpr4oBqe28O
- igs4/7vMYnr/MLBoOt2YVAEyc5BaUr+nkM2/C0fjU8lRZPeQsjjgpsfuXrRja/GLQ2DILtMEBqj
- oR7KehNSAQQr3ZaNU=
-X-Received: by 2002:a05:600c:828d:b0:477:73cc:82c2 with SMTP id
- 5b1f17b1804b1-47d1954a14dmr283136685e9.9.1766827081338; 
- Sat, 27 Dec 2025 01:18:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFyIDXFhDPRix52DF5n3AOO1Tzo3X/E4Y6K4JSZAa/eVWW91cbhS6WBiNMkpChV5YOe3VUiLw==
-X-Received: by 2002:a05:600c:828d:b0:477:73cc:82c2 with SMTP id
- 5b1f17b1804b1-47d1954a14dmr283136435e9.9.1766827080960; 
- Sat, 27 Dec 2025 01:18:00 -0800 (PST)
+ bh=BWG6/VJifV9TnZXwGu1QSP0yR2HgFAZn9IEMSAaLbOg=;
+ b=clyBrALDpkxrv+DISgGvgubHiji6yVxr4fE3bRh1TEGDm/vaVyLvHjBR55zmwnme5v
+ z0vcRWRUlKwJj61C26rfEdca4Nptuge6K2QsjdOB1YMs1A0U+qM2KzFglA8dIII30GWd
+ VJs1EBEOKJtzgZ2xTTTZNrwIw5PAxVkc4BUFyb4WkNXk0HYMzG+B9BxbC3U4sCnqm8Uj
+ We/+gsA14C1344stjX8+tpPvirL7Ot4hw0m5rBytabDtKewZ0ZcGeb2dDbvXfOtBNHGP
+ U2/TmHmRWE0bgFD6jyJ7v8Ng6AUjCnhEN7rOQ+IvoRe4ujUd07E4C0sCKQQLhOc5PoKR
+ +MwA==
+X-Gm-Message-State: AOJu0Yy7WKVzlW4lqK62AiK80h8Omh4qN1HTZKsy3GZaB5U3gmrEUgbx
+ IHIT+cutkpyyc47gnLyme2hhpQ3txuRPDRIPb/hHmzDIElNm2JGPo1LTSze0gbsIADRC0TElmw4
+ 5AdiIZtA9SC5PIdfBtJ8zD7NPFLD2yGx1kceFSVwks3k714SsA2L8poVFe6aNzfjjO3V1WmF8d6
+ Ad7yp7U/xSiRZY3+6M5YxPflQR9v1FvcJ/ordb5tuN
+X-Gm-Gg: AY/fxX7XqT1SfOmkWc9inLiUOzBe7ldeqaU1ESf9AqRHzGX49CEZrBpEe7sLxwDUnN4
+ 4KsULUT3TIyfEQcca7l2z/3L8qw2XnEoKMXNuFZQp4GyOv4hNPN5bVgI1NRAMh+tAKEIvPURzSC
+ 2Yh516jJH/6e7kqABsqRa3bFq4q6bS1UjpUreKWVCKs2QpHH5KblmRghPu7G0sXQPwNJRxWOOiA
+ Fnf8eGU6mcYP8Ak7iCKG0vt4ey7AHfpuQ5kS7ilAml+1iAKyQIcyb7Hey2Q4f375Gj2N7cfuq/r
+ NcUbX/2hQcW+rOMgIO1OJmYnKOu9U6ZtgyuCTJ92LDVEFkwsYGtlCPlsUS+G+chHVtlyk7MtMZK
+ J9ArlreLgNwLLXPHkUN8ufNTER/xaELqEUgBQwgOypOfufENb08aw3dUfmD/nqICw/bc8kaT4g1
+ X59cbV6LTV/BbAQBs=
+X-Received: by 2002:a05:600c:8588:b0:47b:deb9:f8a with SMTP id
+ 5b1f17b1804b1-47d19975bb7mr226603785e9.30.1766827083511; 
+ Sat, 27 Dec 2025 01:18:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFZbqsddnCfiMEJEaKgtpOL3l8grZWLcC87/ARqLlB9vsfgcJQYQhi950J5di77SSmGojVfVw==
+X-Received: by 2002:a05:600c:8588:b0:47b:deb9:f8a with SMTP id
+ 5b1f17b1804b1-47d19975bb7mr226603585e9.30.1766827082979; 
+ Sat, 27 Dec 2025 01:18:02 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d19346e48sm423172875e9.2.2025.12.27.01.17.58
+ 5b1f17b1804b1-47be3a20af0sm187586365e9.4.2025.12.27.01.18.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:17:59 -0800 (PST)
+ Sat, 27 Dec 2025 01:18:02 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 051/153] rust/hpet: Reduce unnecessary mutable self argument
-Date: Sat, 27 Dec 2025 10:14:38 +0100
-Message-ID: <20251227091622.20725-52-pbonzini@redhat.com>
+Subject: [PULL 052/153] rust/hpet: Rename HPETRegister to DecodedRegister
+Date: Sat, 27 Dec 2025 10:14:39 +0100
+Message-ID: <20251227091622.20725-53-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
@@ -122,65 +122,106 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Methods of Timer and InterruptSource have been made as safe, so make the
-related methods of HPETTimer to accept immutable self reference.
+HPETRegister represents the layout of register spaces of HPET timer
+block and timer N, and is used to decode register address into register
+enumeration.
+
+To avoid confusion with the subsequently introduced HPETRegisters (that
+is used to maintain values of HPET registers), rename HPETRegister to
+DecodedRegister.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20251113051937.4017675-8-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20251113051937.4017675-9-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/timer/hpet/src/device.rs | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ rust/hw/timer/hpet/src/device.rs | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
-index a2c5b7d04c6..ddfdf5185ad 100644
+index ddfdf5185ad..3e8f5397fb2 100644
 --- a/rust/hw/timer/hpet/src/device.rs
 +++ b/rust/hw/timer/hpet/src/device.rs
-@@ -318,7 +318,7 @@ fn get_int_route(&self) -> usize {
-         }
-     }
+@@ -96,7 +96,7 @@
+ #[derive(common::TryInto)]
+ #[repr(u64)]
+ #[allow(non_camel_case_types)]
+-/// Timer registers, masked by 0x18
++/// Timer register enumerations, masked by 0x18
+ enum TimerRegister {
+     /// Timer N Configuration and Capability Register
+     CFG = 0,
+@@ -109,7 +109,7 @@ enum TimerRegister {
+ #[derive(common::TryInto)]
+ #[repr(u64)]
+ #[allow(non_camel_case_types)]
+-/// Global registers
++/// Global register enumerations
+ enum GlobalRegister {
+     /// General Capabilities and ID Register
+     CAP = 0,
+@@ -121,7 +121,7 @@ enum GlobalRegister {
+     COUNTER = 0xF0,
+ }
  
--    fn set_irq(&mut self, set: bool) {
-+    fn set_irq(&self, set: bool) {
-         let route = self.get_int_route();
+-enum HPETRegister<'a> {
++enum DecodedRegister<'a> {
+     /// Global register in the range from `0` to `0xff`
+     Global(GlobalRegister),
  
-         if set && self.is_int_enabled() && self.get_state().is_hpet_enabled() {
-@@ -344,7 +344,7 @@ fn set_irq(&mut self, set: bool) {
-         }
-     }
+@@ -136,7 +136,7 @@ enum HPETRegister<'a> {
+ struct HPETAddrDecode<'a> {
+     shift: u32,
+     len: u32,
+-    reg: HPETRegister<'a>,
++    reg: DecodedRegister<'a>,
+ }
  
--    fn update_irq(&mut self, set: bool) {
-+    fn update_irq(&self, set: bool) {
-         // If Timer N Interrupt Enable bit is 0, "the timer will
-         // still operate and generate appropriate status bits, but
-         // will not cause an interrupt"
-@@ -382,7 +382,7 @@ fn set_timer(&mut self) {
-         self.arm_timer(self.cmp64);
-     }
+ const fn hpet_next_wrap(cur_tick: u64) -> u64 {
+@@ -780,21 +780,21 @@ fn decode(&self, mut addr: hwaddr, size: u32) -> HPETAddrDecode<'_> {
  
--    fn del_timer(&mut self) {
-+    fn del_timer(&self) {
-         // Just remove the timer from the timer_list without destroying
-         // this timer instance.
-         self.qemu_timer.delete();
-@@ -656,7 +656,7 @@ fn set_cfg_reg(&self, shift: u32, len: u32, val: u64) {
-             self.counter.set(self.get_ticks());
- 
-             for timer in self.timers.iter().take(self.num_timers) {
--                timer.borrow_mut().del_timer();
-+                timer.borrow().del_timer();
+         addr &= !4;
+         let reg = if (0..=0xff).contains(&addr) {
+-            GlobalRegister::try_from(addr).map(HPETRegister::Global)
++            GlobalRegister::try_from(addr).map(DecodedRegister::Global)
+         } else {
+             let timer_id: usize = ((addr - 0x100) / 0x20) as usize;
+             if timer_id < self.num_timers {
+                 TimerRegister::try_from(addr & 0x18)
+-                    .map(|reg| HPETRegister::Timer(&self.timers[timer_id], reg))
++                    .map(|reg| DecodedRegister::Timer(&self.timers[timer_id], reg))
+             } else {
+                 trace::trace_hpet_timer_id_out_of_range(timer_id.try_into().unwrap());
+                 Err(addr)
              }
-         }
+         };
  
-@@ -680,7 +680,7 @@ fn set_int_status_reg(&self, shift: u32, _len: u32, val: u64) {
- 
-         for (index, timer) in self.timers.iter().take(self.num_timers).enumerate() {
-             if cleared & (1 << index) != 0 {
--                timer.borrow_mut().update_irq(false);
-+                timer.borrow().update_irq(false);
-             }
-         }
+-        // reg is now a Result<HPETRegister, hwaddr>
+-        // convert the Err case into HPETRegister as well
+-        let reg = reg.unwrap_or_else(HPETRegister::Unknown);
++        // reg is now a Result<DecodedRegister, hwaddr>
++        // convert the Err case into DecodedRegister as well
++        let reg = reg.unwrap_or_else(DecodedRegister::Unknown);
+         HPETAddrDecode { shift, len, reg }
      }
+ 
+@@ -804,7 +804,7 @@ fn read(&self, addr: hwaddr, size: u32) -> u64 {
+         let HPETAddrDecode { shift, reg, .. } = self.decode(addr, size);
+ 
+         use GlobalRegister::*;
+-        use HPETRegister::*;
++        use DecodedRegister::*;
+         (match reg {
+             Timer(timer, tn_reg) => timer.borrow_mut().read(tn_reg),
+             Global(CAP) => self.capability.get(), /* including HPET_PERIOD 0x004 */
+@@ -834,7 +834,7 @@ fn write(&self, addr: hwaddr, value: u64, size: u32) {
+         trace::trace_hpet_ram_write(addr, value);
+ 
+         use GlobalRegister::*;
+-        use HPETRegister::*;
++        use DecodedRegister::*;
+         match reg {
+             Timer(timer, tn_reg) => timer.borrow_mut().write(tn_reg, value, shift, len),
+             Global(CAP) => {} // General Capabilities and ID Register: Read Only
 -- 
 2.52.0
 
