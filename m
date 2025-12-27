@@ -2,110 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81563CDF728
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:53:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EF67CDF77C
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:55:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQw0-00007c-S1; Sat, 27 Dec 2025 04:50:04 -0500
+	id 1vZQw7-0000PF-Gp; Sat, 27 Dec 2025 04:50:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQvy-0008Sv-4r
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:50:02 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vZQw4-0000C9-8B
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:50:08 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQvw-00076c-MQ
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:50:01 -0500
+ id 1vZQw2-0007JK-NT
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:50:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766829000;
+ s=mimecast20190719; t=1766829004;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UMX6XGLgAoHmFfL2qR77G3yc1UxcsxwMbqixV2REwfU=;
- b=bgvqBUOHFp/VaEUfLUXiV0tw4eKWRivvlUyLh4UXm1kgqNfXHt1fznzGl+xoq4kctfuCZA
- e6rLQgS8iIQyzQmAorz6UHQLeypWb+kNG7gB/AmmgCQuTYXJvMG09bRoi1+mTQQ6NCtyCd
- ddQkXP70X0RrD+6PI6Vj5uZtzWntwJs=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=PkQKI9pL9QEKwisRnbeQa466UkPQngXQc9/Gw/kxCsU=;
+ b=EvpviqUy7ciLZQU5D7akS822TE1wHJD8+4JkFnSk69xHUBqTXbe+PGUqCtC1/Hl/dVeKNh
+ iSM28iKBM6m86AHv84aU/5ZBsIFpCC65h6MJZRmPz9pPxKUqwBPCzEq68qnxU7U5pBJeWH
+ Eg26441IhbWcOOTz8tmMZxEDzmPmDW0=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-168-_ZxInSJhOQeIzvKPudWkBg-1; Sat, 27 Dec 2025 04:49:59 -0500
-X-MC-Unique: _ZxInSJhOQeIzvKPudWkBg-1
-X-Mimecast-MFC-AGG-ID: _ZxInSJhOQeIzvKPudWkBg_1766828998
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-4325aa61c6bso2502834f8f.0
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:49:58 -0800 (PST)
+ us-mta-139-HAUPgw_eNPWKKPszY1iLgg-1; Sat, 27 Dec 2025 04:50:03 -0500
+X-MC-Unique: HAUPgw_eNPWKKPszY1iLgg-1
+X-Mimecast-MFC-AGG-ID: HAUPgw_eNPWKKPszY1iLgg_1766829002
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-47a97b785bdso55692735e9.3
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:50:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766828996; x=1767433796; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766829000; x=1767433800; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UMX6XGLgAoHmFfL2qR77G3yc1UxcsxwMbqixV2REwfU=;
- b=FgNAFFd8KIJhVShNTIrjXJ9DZnnEYjkXmHDtChYPGIaaXO8Y3hGCMWVNz27SG5VYiT
- Ny2RB0pc2feyw1VOxFsEN3w0a8YAdUyFIKDaLVqzXnYWt6Oy5pfO7IOTCyAc8RS0VZws
- 9hJQjxwTY4dZTwX6c8OFqR/rAZ2MAXW35s83m/BnaNOGj1wuWFpc1sO1VT/S8k2Cbt4u
- /fbOZDOqweJxfJw6Qy6S3nj4QqowjniKVEMUFVyeZfVJDP7XL+HFC1RFcZ6p5gFV6C/i
- e2GDu0uRMM+3s/hHOJkHIo9vMDFwu5XUixnt9axh4bTsLEh8Urm9wQ/liiqTZQo1vlyz
- i7gw==
+ bh=PkQKI9pL9QEKwisRnbeQa466UkPQngXQc9/Gw/kxCsU=;
+ b=ExrLAXbOBO6N1hLTCcdi+p8f1Cy6LIQNZTKhfbt+XFpcFyXFLYEhVf+obiko0yn5KU
+ zu22+mCe+RLagXjDIcGvLuL8JYS8I8+PX6EdXfyuyfstCG2zBIidG9wiwcOknNYTdshS
+ pSk/q+80r+elxwrJTE9eDA3slo3XM/gNUSKC3mJkebAfHpAe37yCZiYRN0KXE0cfT99o
+ 7SHNLEU0Gt6wvDMm7jCtrT+62RSJtZjHwLJgRGQ44m0BZ1Cv21T7ZRqJS9yhWU3fniK0
+ Pf1Had4P9tvPAUbnM8vLykDglkanwxGXA9267QfvDsacq+iRt8hBF+iCONBnIR2li8q9
+ f+eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766828996; x=1767433796;
+ d=1e100.net; s=20230601; t=1766829000; x=1767433800;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=UMX6XGLgAoHmFfL2qR77G3yc1UxcsxwMbqixV2REwfU=;
- b=OOFBsegW2JeMhnA3p0h4uIecACH+JoID+NDVqltcv3jlmoYuCXMKNrlkBAf3Wpp9Y3
- Dr8ncNuWCzDuOILa24jJNdfRSr0mRGb6TD/wbJqw2XFAGuRpTpBur7TfVOgQyGYhEObQ
- dqnckbb/bA+QLMfOtn6JPuEehL2F3M3DC2qHzY/zFxHnbAq3Ty92Vl6WLjb6fvIpOMAv
- pQhkgnj653XFe8DGFRJupf1M8ZDPHtC4Vt6Mayvhj5u23v83NtJeKuC1Ta3+UeDggjNx
- EJTad9g5Y1jdbZc4Pfj6KJOwy8nlTb/Vbiij0/o9T4kKxk6c1hEDbDeyxtEwPI6YNgP4
- Mj9w==
-X-Gm-Message-State: AOJu0Yw1QmcyJS1RVAl0xlHavFe6r7abjm3LFnkfyGk10Mti7WHAnfmE
- fkyQ5Lz/0MhdbP5WmmHHDn8lwNZNB6LB8qh3onOSMd8PPJPKjfk6KmXk2Q7FFEAuB+9B8oRUgSO
- mGUL7CK879UC+/vvr5CohjXtHc4OmryY+DMAIzLYag4ng5fBAljlv3VfmAQmnsBzOYuPUQ4mlEq
- joqL6co5z8Tg1Vs8+ohW47PKbuQrpQ8DEG7B2NhWyY
-X-Gm-Gg: AY/fxX44vReRQKo0+o6pAN2H68Z4UcTh4a8McQ6XAzvWrBKIRs1aY5gdOvUA3jobzLc
- fvZPFDXMfNVvU7oq/rxSPsDOi7JJjhzIVYt0u+NeOZWRvDD5lvErP5NkOYcUNR2CMmoXUfOw+X3
- DfxHnlGl4UqBSDPzTNVofgM9vnXPjQ/KmZKieaTaVPQ5obV3iJ/D6KTwb/TKVVYaBPP56cJ+10r
- ZLbhLi+Xm92j2bh8xmjzh/uQMmndDgmGyuptl5DHop/99FH1EGcsYIc1H2tOXCvQo6Wtw/RUedQ
- SGK6JWHu19QBJFcv3LkjWfJyHSd549Ypeoq3Af5/Nh+MwL+mGYZ0aubGuopaoTOBX0ObtX42uYg
- 6G24AxgyZm4kQoaaOkLAKvs2D3s6g1abGut5V4Vi5DXbh97GfOA9rzGAH5k5bP+k/I+BObEJcRR
- VonmbPQ9/LVwQhXKM=
-X-Received: by 2002:a05:6000:2301:b0:431:266:d134 with SMTP id
- ffacd0b85a97d-4324e50c2ccmr30009753f8f.53.1766828996390; 
- Sat, 27 Dec 2025 01:49:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEpQEWs0Nss3GVFySYRyf72A6ZT6AvrIt/x7fCJ6PP7FfQ8xxT0YsYqY2tF4t+/dbq5veA6IA==
-X-Received: by 2002:a05:6000:2301:b0:431:266:d134 with SMTP id
- ffacd0b85a97d-4324e50c2ccmr30009726f8f.53.1766828995912; 
- Sat, 27 Dec 2025 01:49:55 -0800 (PST)
+ bh=PkQKI9pL9QEKwisRnbeQa466UkPQngXQc9/Gw/kxCsU=;
+ b=dQtPe5T2gkVFT9ydHWV+D50v3L46DsFWCg1cfLw8mII3oMRf9nyKOrpY99aZUJ9UZy
+ vC//vmIEIACYSM/D2khvrcFISbUfL/4qqbavlevyjzZ/Nrgdkv6NM6YBuey2hJJClUnz
+ f03PMXnucgQesW33nVhAJfauBzqbkQg9gvlSgmC91QHT+op6wLWY1KH68QQO58LHpMfY
+ hZUK9REbUVWP9iFClqdtaPoO2N14b6I58aEI9/GoLBHPmBUnWz/UBYrZneXAMdSwixKb
+ YE3cKTXOGWrjBpVb+MGKIPxdcSQqGOdEQhMWV+lGbCHcL3MH4T+q9z9IeBycxfm7Vvb4
+ pjXQ==
+X-Gm-Message-State: AOJu0YxSFkhaaqfzuhx8TeCB+kgt15qXOZ42cayMUieE0+Ng1UIrdrsb
+ 1F7QoH0lTNFTC3FXRIrW/QmruYmyhzxHyTUH7UalGH7EUT5EMaudh7LIuiPEUjfpYG9NPU0m1Zj
+ NHDHw0SS0MitcXr+cAuUXiDmQp7JUPo+EHGve2wb0cm4wUD9lT71TUfeTRKU7uVQFrhbEdAmzZw
+ dqeSv1C7I1jek+v+F2ybQmCJ322QPgCFtI/9j59dBI
+X-Gm-Gg: AY/fxX7ptCIPsKg0tKsXEqKFZbFNN7Tc/y1sIZYOWi7EVlT9/vV5eUMHjyXcIWhhm5i
+ e6QvGXWzCgXwBZHXNl3YlLIs3MxvSr7fPY/eSYxaqq6plwWgBW47dTSKfhmJb5i+esC5bPx4cK/
+ fZ2Y9PDxXomFLBi22BMwWvhFE2YWbijEeGqOKuanqxaSGRDkDHh6qw7+EVJvWT9rxnaOUNNIu1h
+ xDS2OpysnHudCfDFm0SqbQYsOgXfaQfYraM8VC2TihACPiphPI4gQj77DG2gzMmACv4L7a/Ghl8
+ wXq6W9UvUG2Wrzxadc2eQRnjUFs78AEK4vioCdxOOqpuV+FWWmXTvmgYOVTNoAdyGeOPPaFCPIQ
+ aup9KQxYPNbmAHaO7rPPto6XpWhUhT3Vr2HfV8yk1kxWoueZpN31Ta215EJ0ZefBk8LIGFK5r+C
+ RAL5UriGLUjgFDoRI=
+X-Received: by 2002:a05:600c:444b:b0:477:561f:6fc8 with SMTP id
+ 5b1f17b1804b1-47d19549625mr246540175e9.5.1766829000370; 
+ Sat, 27 Dec 2025 01:50:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGC8ZN1aBo8QJMzQeftFctozI86cnqOWjj1zSFB2NRhjJkGrAwb8k242bCnrf3RwdEDvn4wxw==
+X-Received: by 2002:a05:600c:444b:b0:477:561f:6fc8 with SMTP id
+ 5b1f17b1804b1-47d19549625mr246539905e9.5.1766828999884; 
+ Sat, 27 Dec 2025 01:49:59 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324eab2ebfsm49665631f8f.40.2025.12.27.01.49.53
+ ffacd0b85a97d-4324ea830f3sm48761867f8f.22.2025.12.27.01.49.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:49:53 -0800 (PST)
+ Sat, 27 Dec 2025 01:49:57 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Farrah Chen <farrah.chen@intel.com>,
  Zide Chen <zide.chen@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 118/153] target/i386/tcg: mark more instructions that are
- invalid in 64-bit mode
-Date: Sat, 27 Dec 2025 10:47:23 +0100
-Message-ID: <20251227094759.35658-44-pbonzini@redhat.com>
+Subject: [PULL 119/153] target/i386/tcg: do not compute all flags for SAHF
+Date: Sat, 27 Dec 2025 10:47:24 +0100
+Message-ID: <20251227094759.35658-45-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -123,38 +122,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Only OF is needed, the others are overwritten.
+
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/decode-new.c.inc | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ target/i386/tcg/emit.c.inc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index dfaffec599e..8a1fb2855d5 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -1698,9 +1698,9 @@ static const X86OpEntry opcodes_root[256] = {
-     [0xD1] = X86_OP_GROUP1(group2, E,v),
-     [0xD2] = X86_OP_GROUP2(group2, E,b, 1,b), /* CL */
-     [0xD3] = X86_OP_GROUP2(group2, E,v, 1,b), /* CL */
--    [0xD4] = X86_OP_ENTRY2(AAM, 0,w, I,b),
--    [0xD5] = X86_OP_ENTRY2(AAD, 0,w, I,b),
--    [0xD6] = X86_OP_ENTRYw(SALC, 0,b),
-+    [0xD4] = X86_OP_ENTRY2(AAM, 0,w, I,b, chk(i64)),
-+    [0xD5] = X86_OP_ENTRY2(AAD, 0,w, I,b, chk(i64)),
-+    [0xD6] = X86_OP_ENTRYw(SALC, 0,b, chk(i64)),
-     [0xD7] = X86_OP_ENTRY1(XLAT, 0,b, zextT0), /* AL read/written */
- 
-     [0xE0] = X86_OP_ENTRYr(LOOPNE, J,b), /* implicit: CX with aflag size */
-@@ -1834,7 +1834,7 @@ static const X86OpEntry opcodes_root[256] = {
-     [0xCB] = X86_OP_ENTRY0(RETF),
-     [0xCC] = X86_OP_ENTRY0(INT3),
-     [0xCD] = X86_OP_ENTRYr(INT, I,b,  chk(vm86_iopl)),
--    [0xCE] = X86_OP_ENTRY0(INTO),
-+    [0xCE] = X86_OP_ENTRY0(INTO, chk(i64)),
-     [0xCF] = X86_OP_ENTRY0(IRET,      chk(vm86_iopl) svm(IRET)),
- 
-     /*
+diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
+index 22e53f5b000..131aefce53c 100644
+--- a/target/i386/tcg/emit.c.inc
++++ b/target/i386/tcg/emit.c.inc
+@@ -3778,7 +3778,7 @@ static void gen_SAHF(DisasContext *s, X86DecodedInsn *decode)
+         return gen_illegal_opcode(s);
+     }
+     tcg_gen_shri_tl(s->T0, cpu_regs[R_EAX], 8);
+-    gen_compute_eflags(s);
++    gen_neg_setcc(s, JCC_O << 1, cpu_cc_src);
+     tcg_gen_andi_tl(cpu_cc_src, cpu_cc_src, CC_O);
+     tcg_gen_andi_tl(s->T0, s->T0, CC_S | CC_Z | CC_A | CC_P | CC_C);
+     tcg_gen_or_tl(cpu_cc_src, cpu_cc_src, s->T0);
 -- 
 2.52.0
 
