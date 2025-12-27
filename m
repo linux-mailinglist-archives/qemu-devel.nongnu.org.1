@@ -2,94 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988BECDF66C
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:25:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA15ACDF5E3
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:20:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQRs-000150-Sk; Sat, 27 Dec 2025 04:18:56 -0500
+	id 1vZQRp-0000gV-Te; Sat, 27 Dec 2025 04:18:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQRq-0000kJ-49
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:54 -0500
+ id 1vZQRn-0000TV-Iu
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:51 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQRl-0004QZ-9R
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:53 -0500
+ id 1vZQRl-0004QV-16
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1766827128;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jIVwFjqTLfC18+H9AtLgQG96XLWQyMts/mwazionaPA=;
- b=bsrV6sFE5qNvRYdvmSWr6nr4PDnGHS17ePLnhwiwFidHx1mgFio90aA2Cs9gGMkdthgMrp
- /VT5RXRPUyqdy/0UG4FHK/zAinifc3Bv1Zd701TDFyAQF1ebS90NXGzh3IyBb46NmPDUm3
- tk31tvGZmJIZuzTI1Wbzf7qqyI0ORgg=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=q/vVrG06Rr5jifGh9xz0OwdmLw8dMRsZZ4hi+JD78cQ=;
+ b=Wf/4VmpNMY5j4TIUeZekBSnuqYi74Py3RF7JZQmBuUOAIUZhEotIYViw4h+5dXBYxyuI2m
+ UyyTq3skEZgbcccE2e7LY6vcFXr7KsAcBzuQbsiiszia+kP+fOkVdytHsXdKn6+K/gjFDG
+ itzzbbU4i7Dxp5vkrnqWu8PLw/y7Gd8=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-594-enrTY8cNPemk09euJcTXEQ-1; Sat, 27 Dec 2025 04:18:46 -0500
-X-MC-Unique: enrTY8cNPemk09euJcTXEQ-1
-X-Mimecast-MFC-AGG-ID: enrTY8cNPemk09euJcTXEQ_1766827125
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-4325cc15176so3153841f8f.1
+ us-mta-596-_oAY5Rt3OGCl9x54apX3fg-1; Sat, 27 Dec 2025 04:18:46 -0500
+X-MC-Unique: _oAY5Rt3OGCl9x54apX3fg-1
+X-Mimecast-MFC-AGG-ID: _oAY5Rt3OGCl9x54apX3fg_1766827125
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-477cf2230c8so77995135e9.0
  for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:18:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766827124; x=1767431924; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766827125; x=1767431925; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jIVwFjqTLfC18+H9AtLgQG96XLWQyMts/mwazionaPA=;
- b=iLT9eRAlFGF4aoF9TwiKuR9NLc2ttbukxog5RnAGovHhBRjN2T3m5vQLTKFxyGR3qN
- wuYpuOGsCo95oD/eRRm9qMWlwPEBe7oNcvq3DOj3RmUbE8NELHWoPhAhcZJw5UUBW+/E
- knsO8UQAPwp2XgS+Hdp4jD70izFkVWhad72EnFydUuklQIMXNzM6/cNTJ54ud6cUKJAG
- Ina4jKPBw/aHuPqqLehIZv+7VkQLOYfKWyYJVsLzsZ8loptSQTuKW73/c0Iy3DAhBSY9
- SsFIxA/4bB0iazkHpc8nwGSKLzymWKo9NZB3IdPMb8CmLTY+r5nkINrQQbM5Kcflgtwo
- 1RLw==
+ bh=q/vVrG06Rr5jifGh9xz0OwdmLw8dMRsZZ4hi+JD78cQ=;
+ b=ftmQDcLPk5X8gjdX94+AIjM4qQpZhrvVV4wKCJ8NxPRRJ1YFc6poiwyObYjjg2o6v+
+ eEFgDhlQl0npkcC5mvXVeIfWVXbTqYN/eFJcSCHP6MXW2Xef7XPxsffNADN2NDeoFrdG
+ 9wtRst/31edmY/XeJCo2rTja82LrqOacLAUGLKb+F6QgslUP/5Iv38I8o4FsW4qs2HSc
+ hpQwPzIItXv8eTq5AU520j/k/g1qf+2OY1d6LdbbzbCuzgvBUFHwXgzPj0NrtpqTraK5
+ xJymHsdYM2npV6ufDTf5R3B2jmepHpaOWLCPr9A39J5o4w14lFhDWaCstJv0+a+zRD8d
+ 4IZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766827124; x=1767431924;
+ d=1e100.net; s=20230601; t=1766827125; x=1767431925;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=jIVwFjqTLfC18+H9AtLgQG96XLWQyMts/mwazionaPA=;
- b=LOnhZL9m1MRjaMOj8g2WcseGwmBFsnb0Q9GdG2RKXb/J13Kc0PHmJRUlh2/f5oASDJ
- XAZ9k6vZ2kOZRB30uOyVAoW9kVX9PbehS74gRsN9/wd4I5HFKb4Z8TEhmFYs7B4V0IRJ
- u/5jp5yX+325SqFdD6FJoSBRkHP2A/VeTSPswTMUEYSK7jML86V9vIA0QhA11VTU8MJx
- iLqNsqGjR7B8XC9G70xEgD1xMBwQg3/rm22gCtDkr5uxKNnTnfAaQ5vL9KpM3oMuWNnJ
- zq0zJ/52bikJ4KmJbZHZ1x8YbdCt9pqGERKCgzjU5nOx8qoUfwIhXCK1T/O+6soB77jw
- sYHg==
-X-Gm-Message-State: AOJu0Yy0Wr19GOiPNNjtlr/O2N4qft8845inn87Sejq4K5e82vfASKn9
- ha8KxgrLQ374oJz/KST6hxZCQCezpDxyDFJjlRzZdEFf4+vR86mwMqbtfNkJC4tM89zOhnwGnEf
- oRtDWTma+5aff0aOpt5HQ8QiKeYUAgvDG4bSxLBiYFmF3rwUnWUVAHb5iPZFli/Q/MEHApxeJPR
- 8oxDnl5KWjOgD8THCXES1Z1qcG7yKAEwKDkyz2jKGC
-X-Gm-Gg: AY/fxX5N7DkvZRT49Nu+86kHfXBnjy1yqH01XXlsIoK2yCpVdvIMicjku+9lxyiPRH2
- qeNIY7ddwRMylKibFd/tuD1aC+4O+eUZ+54g4+2beqL1hA6RanPPBVGRN0mwpHifqQ0J4QR/Xzz
- tX2KsvLVza9To393REBfoX6StYxSWd1b0CEGAXRs5fEKhVggHaV86k5Wou+VKLsRDTY+6uZeGRr
- VcS+8yvqO61b14SVG+pbcFcjdpTP2cYG17Gb09R1yJgKLIk2JAwKQkTj9kGNuoTiq038qFhC+oO
- wkxAajvjsiiR+5VRPnGvfeIIqnRjshRf8XLJqRM2atjbZol8czwo244kIPQF8ySXhAx+W5SmAkM
- z7AuWWCuN9ns/JXlHo5Kb6x8bzK9uo0FPbBerFGYt9P5pkAIqLFyidl7VWvF8wCRq8twr7igsMj
- ySg7qXcAo3S2qYk84=
-X-Received: by 2002:a05:600c:3b2a:b0:477:7ab8:aba with SMTP id
- 5b1f17b1804b1-47d1953bd8bmr292017835e9.1.1766827123884; 
- Sat, 27 Dec 2025 01:18:43 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG/9gdwCW71KiHrIR54MMDYooyKuF/93UcGKhNW6c7qLMuA10WyrmjVTqKXv3Ur1LiQnXDGag==
-X-Received: by 2002:a05:600c:3b2a:b0:477:7ab8:aba with SMTP id
- 5b1f17b1804b1-47d1953bd8bmr292017515e9.1.1766827123325; 
- Sat, 27 Dec 2025 01:18:43 -0800 (PST)
+ bh=q/vVrG06Rr5jifGh9xz0OwdmLw8dMRsZZ4hi+JD78cQ=;
+ b=v3MB5rdKrF/38q5c0Nd/forJlbfVn1SrzR3NnfLVoQmhxP3+DfTT/msqnQ7gMKKyoL
+ CzxrM3s4LK6PP1zbAI+sCviSTnERtuxiswYpLDw6b997HNqDKH90WtTwLDx4fXnmgJ14
+ QTrqmlECp1o4r3jzQpMooH9p2JA5JUridYuGq1Z6hs1QP+6t43A5r1T47d/4NOwySRMR
+ yQfeCIT0Udp7RVrqR5AklCt45R18Q/fV/vEHUA4ljGeS413NihcFuKPxaYpnsQCJUBW2
+ f4OLVKI2Y9yMd8tcTA2KvTy0A7TA9Z4s75UKoXPXFsLxemTLbg38zV53PrUoGmZ1AOOi
+ kIPA==
+X-Gm-Message-State: AOJu0Yyw9Y+CvTfx1aiV7I9XIUUGxLmWPh5ePv554HHsuA3UiFJGVjGd
+ 4ptA550/M4Zj+g2c53wmECE/g6Khg1Ii5WTprRnQHNra5ZIU4FFGmvEHUvEYlOGIBLPXUeMGKod
+ C92bu/cu6kuIbWCqKoFh0sXQbw242Qd1Lv1TehoRMl7gI2BA3dIAPnTJHa7dBay0Un/bKv1fdWB
+ OyOam7Gq4Uo3l6052sP+AOGtfb2Yy8ROX2whgN5Uxt
+X-Gm-Gg: AY/fxX5ZHjDFTBphrOMsc0LR9WHtcjs8z05cNW3LEWcjpkcLURjn229u1dcvJXVTJ5Q
+ amkReP+D3wmcLPPL7Fnsv48HGCmvsp9FinHIwhF1351EtiArV89OD3gXSh1IiM9LpJWKy5JTny0
+ 74kLXVDZIpkRUz8dUmjbxhBAih2dDGHxi1nBY0f5r8a2K1Ay+Z42i5GWrcfJmdtu7CvkLY+M/fH
+ tta8XD7/PlCMQbMcA6y97fD/uos2oWy7oq4RKumSweLt2he3azoclXasHWDYmdDEf9u4HYybP9C
+ B5nw1HCK+Ucp2qlfqY59o5ycJuKFYexSsV8XGlXqqnZ9u6IBbq8LtRJEpkWoyxH80H8gApb0Ae8
+ zIKtxhK3ZHt2KYC0Vvs2RycfVHeL/fK6Iw1icfdUSyLXvkPZFsydWtw6stTLyKuTjBBaTZlEfo1
+ kpacY8LZv2HmEl0Fs=
+X-Received: by 2002:a05:600c:4e01:b0:477:9574:d641 with SMTP id
+ 5b1f17b1804b1-47d1957f712mr294941535e9.22.1766827124938; 
+ Sat, 27 Dec 2025 01:18:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFH7My0YJ6bXCTbKrST8rl6I8SJ6atVJZTu3q3CZYRAf3RAlVIHeJXxU7AQ4iNTDpUlseRgDA==
+X-Received: by 2002:a05:600c:4e01:b0:477:9574:d641 with SMTP id
+ 5b1f17b1804b1-47d1957f712mr294941295e9.22.1766827124444; 
+ Sat, 27 Dec 2025 01:18:44 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47be3a40a14sm209462795e9.2.2025.12.27.01.18.40
+ ffacd0b85a97d-4324ea1b36fsm49744289f8f.5.2025.12.27.01.18.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:18:40 -0800 (PST)
+ Sat, 27 Dec 2025 01:18:43 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 071/153] tracetool: add Rust DTrace/SystemTap SDT support
-Date: Sat, 27 Dec 2025 10:14:58 +0100
-Message-ID: <20251227091622.20725-72-pbonzini@redhat.com>
+Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Julian Andres Klode <jak@jak-linux.org>
+Subject: [PULL 072/153] qemu-options.hx: Document -M as -machine alias
+Date: Sat, 27 Dec 2025 10:14:59 +0100
+Message-ID: <20251227091622.20725-73-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
@@ -120,540 +121,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement DTrace/SystemTap SDT by emitting the following:
-- The probe crate's probe!() macro is used to emit a DTrace/SystemTap
-  SDT probe.
-- Every trace event gets a corresponding trace_<name>_enabled() -> bool
-  generated function that Rust code can use to avoid expensive
-  computation when a trace event is disabled. This API works for other
-  trace backends too.
+From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-`#[allow(dead_code)]` additions are necessary for QEMU's dstate in
-generated trace-<dir>.rs files since they are unused by the dtrace
-backend. `./configure --enable-trace-backends=` can enable multiple
-backends, so keep it simple and just silence the warning instead of
-trying to detect the condition when generating the dstate code can be
-skipped.
+-M is used heavily in documentation and scripts, but isn't actually
+documented anywhere.
 
-The tracetool tests are updated. Take a look at
-tests/tracetool/dtrace.rs to see what the new generated code looks like.
+Document it as equivalent to -machine, also moving to -machine the sole
+suboption that was documented under -M.
 
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Link: https://lore.kernel.org/r/20251119205200.173170-5-stefanha@redhat.com
+Reported-by: Julian Andres Klode <jak@jak-linux.org>
+Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
+Link: https://lore.kernel.org/r/20251203131511.153460-1-dave@treblig.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/Cargo.lock                     |  6 +++
- rust/trace/Cargo.toml               |  1 +
- rust/trace/meson.build              |  2 +-
- rust/trace/src/lib.rs               |  4 ++
- scripts/tracetool/__init__.py       |  1 +
- scripts/tracetool/backend/dtrace.py | 31 ++++++++++++++
- scripts/tracetool/format/rs.py      | 27 ++++++++++--
- tests/tracetool/dtrace.rs           | 64 +++++++++++++++++++++++++++++
- tests/tracetool/ftrace.rs           | 21 ++++++++++
- tests/tracetool/log.rs              | 21 ++++++++++
- tests/tracetool/simple.rs           | 21 ++++++++++
- tests/tracetool/syslog.rs           | 21 ++++++++++
- tests/tracetool/tracetool-test.py   |  2 +-
- 13 files changed, 216 insertions(+), 6 deletions(-)
- create mode 100644 tests/tracetool/dtrace.rs
+ qemu-options.hx | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/rust/Cargo.lock b/rust/Cargo.lock
-index f520597f25d..42ae857fe53 100644
---- a/rust/Cargo.lock
-+++ b/rust/Cargo.lock
-@@ -230,6 +230,10 @@ dependencies = [
-  "util",
- ]
+diff --git a/qemu-options.hx b/qemu-options.hx
+index fca2b7bc74f..ec92723f10d 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -44,6 +44,7 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
+ #endif
+     "                memory-backend='backend-id' specifies explicitly provided backend for main RAM (default=none)\n"
+     "                cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity]\n"
++    "                sgx-epc.0.memdev=memid,sgx-epc.0.node=numaid\n"
+     "                smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel\n",
+     QEMU_ARCH_ALL)
+ SRST
+@@ -179,6 +180,9 @@ SRST
  
-+[[package]]
-+name = "probe"
-+version = "0.5.2"
-+
- [[package]]
- name = "proc-macro-error"
- version = "1.0.4"
-@@ -388,6 +392,7 @@ dependencies = [
-  "migration",
-  "qom",
-  "system",
-+ "trace",
-  "util",
- ]
+             -machine cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.targets.1=cxl.1,cxl-fmw.0.size=128G,cxl-fmw.0.interleave-granularity=512
  
-@@ -430,6 +435,7 @@ name = "trace"
- version = "0.1.0"
- dependencies = [
-  "libc",
-+ "probe",
- ]
++    ``sgx-epc.0.memdev=@var{memid},sgx-epc.0.node=@var{numaid}``
++        Define an SGX EPC section.
++
+     ``smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel``
+         Define cache properties for SMP system.
  
- [[package]]
-diff --git a/rust/trace/Cargo.toml b/rust/trace/Cargo.toml
-index fc81bce5803..11e27f8d286 100644
---- a/rust/trace/Cargo.toml
-+++ b/rust/trace/Cargo.toml
-@@ -14,6 +14,7 @@ rust-version.workspace = true
+@@ -208,12 +212,10 @@ SRST
+ ERST
  
- [dependencies]
- libc = { workspace = true }
-+probe = "0.5"
+ DEF("M", HAS_ARG, QEMU_OPTION_M,
+-    "                sgx-epc.0.memdev=memid,sgx-epc.0.node=numaid\n",
+-    QEMU_ARCH_ALL)
+-
++    "-M              as -machine\n", QEMU_ARCH_ALL)
+ SRST
+-``sgx-epc.0.memdev=@var{memid},sgx-epc.0.node=@var{numaid}``
+-    Define an SGX EPC section.
++``-M``
++    as -machine.
+ ERST
  
- [lints]
- workspace = true
-diff --git a/rust/trace/meson.build b/rust/trace/meson.build
-index 1b3498f7fc1..0071a49cf72 100644
---- a/rust/trace/meson.build
-+++ b/rust/trace/meson.build
-@@ -11,7 +11,7 @@ _trace_rs = static_library(
-   'trace',             # Library name,
-   lib_rs,
-   trace_rs_targets,         # List of generated `.rs` custom targets
--  dependencies: [libc_rs],
-+  dependencies: [libc_rs, probe_rs],
- )
- 
- trace_rs = declare_dependency(link_with: _trace_rs)
-diff --git a/rust/trace/src/lib.rs b/rust/trace/src/lib.rs
-index e03bce43c47..c2abe430a52 100644
---- a/rust/trace/src/lib.rs
-+++ b/rust/trace/src/lib.rs
-@@ -6,6 +6,9 @@
- #[doc(hidden)]
- /// Re-exported item to avoid adding libc as a dependency everywhere.
- pub use libc::{syslog, LOG_INFO};
-+#[doc(hidden)]
-+/// Re-exported item to avoid adding probe as a dependency everywhere.
-+pub use probe::probe;
- 
- #[macro_export]
- /// Define the trace-points from the named directory (which should have slashes
-@@ -21,6 +24,7 @@ macro_rules! include_trace {
-         #[allow(
-             clippy::ptr_as_ptr,
-             clippy::cast_lossless,
-+            clippy::nonminimal_bool,
-             clippy::used_underscore_binding
-         )]
-         mod trace {
-diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init__.py
-index 74062d21a7c..61ba6f1ba8c 100644
---- a/scripts/tracetool/__init__.py
-+++ b/scripts/tracetool/__init__.py
-@@ -461,6 +461,7 @@ def formats(self):
- 
-     QEMU_TRACE               = "trace_%(name)s"
-     QEMU_TRACE_TCG           = QEMU_TRACE + "_tcg"
-+    QEMU_RUST_DSTATE         = "trace_%(name)s_enabled"
-     QEMU_DSTATE              = "_TRACE_%(NAME)s_DSTATE"
-     QEMU_BACKEND_DSTATE      = "TRACE_%(NAME)s_BACKEND_DSTATE"
-     QEMU_EVENT               = "_TRACE_%(NAME)s_EVENT"
-diff --git a/scripts/tracetool/backend/dtrace.py b/scripts/tracetool/backend/dtrace.py
-index b4af403025c..f0b58cc1585 100644
---- a/scripts/tracetool/backend/dtrace.py
-+++ b/scripts/tracetool/backend/dtrace.py
-@@ -70,3 +70,34 @@ def generate_h(event, group):
- def generate_h_backend_dstate(event, group):
-     out('    QEMU_%(uppername)s_ENABLED() || \\',
-         uppername=event.name.upper())
-+
-+
-+def generate_rs_begin(events, group):
-+    out('use std::cell::UnsafeCell;',
-+        '',
-+        'extern "C" {')
-+    # These are the Rust declarations of the .probes section semaphores
-+    # generated by dtrace(1) in its .o file output.
-+    for e in events:
-+        if 'disable' in e.properties:
-+            continue
-+        out('    #[allow(dead_code)]',
-+            f'    static qemu_{e.name}_semaphore: UnsafeCell<u16>;')
-+    out('}',
-+        '')
-+
-+
-+def generate_rs(event, group):
-+    args = event.args.rust_call_extern()
-+    if args:
-+        args = ', ' + args
-+
-+    out(f'    ::trace::probe!(qemu, {event.name}{args});')
-+
-+
-+def generate_rs_backend_dstate(event, group):
-+    # Rust does not have access to the <provider>_<name>_ENABLED() macro from
-+    # the dtrace(1) generated .h file. Use the matching semaphore declarations
-+    # generated by generate_rs_begin() instead.
-+    out('    (unsafe {qemu_%(n)s_semaphore.get().read_volatile()}) != 0 ||',
-+        n=event.name)
-diff --git a/scripts/tracetool/format/rs.py b/scripts/tracetool/format/rs.py
-index 32ac4e59770..7d9af7edfee 100644
---- a/scripts/tracetool/format/rs.py
-+++ b/scripts/tracetool/format/rs.py
-@@ -24,25 +24,43 @@ def generate(events, backend, group):
-         '#[allow(unused_imports)]',
-         'use util::bindings;',
-         '',
-+        '#[allow(dead_code)]',
-         '#[inline(always)]',
-         'fn trace_event_state_is_enabled(dstate: u16) -> bool {',
-         '    (unsafe { trace_events_enabled_count }) != 0 && dstate != 0',
-         '}',
-         '',
-         'extern "C" {',
-+        '    #[allow(dead_code)]',
-         '    static mut trace_events_enabled_count: u32;',
-         '}',)
- 
-     out('extern "C" {')
- 
-     for e in events:
--        out('    static mut %s: u16;' % e.api(e.QEMU_DSTATE))
--    out('}')
-+        out('    #[allow(dead_code)]',
-+            '    static mut %s: u16;' % e.api(e.QEMU_DSTATE))
-+    out('}',
-+        '')
- 
-     backend.generate_begin(events, group)
- 
-     for e in events:
--        out('',
-+        out('#[inline(always)]',
-+            '#[allow(dead_code)]',
-+            'pub fn %(api)s() -> bool',
-+            '{',
-+            api=e.api(e.QEMU_RUST_DSTATE))
-+
-+        if "disable" not in e.properties:
-+            backend.generate_backend_dstate(e, group)
-+            if backend.check_trace_event_get_state:
-+                out('    trace_event_state_is_enabled(unsafe { _%(event_id)s_DSTATE}) ||',
-+                    event_id = 'TRACE_' + e.name.upper())
-+
-+        out('    false',
-+            '}',
-+            '',
-             '#[inline(always)]',
-             '#[allow(dead_code)]',
-             'pub fn %(api)s(%(args)s)',
-@@ -59,6 +77,7 @@ def generate(events, backend, group):
-                     api=e.api())
-                 backend.generate(e, group, check_trace_event_get_state=True)
-                 out('    }')
--        out('}')
-+        out('}',
-+            '')
- 
-     backend.generate_end(events, group)
-diff --git a/tests/tracetool/dtrace.rs b/tests/tracetool/dtrace.rs
-new file mode 100644
-index 00000000000..3490fcb271a
---- /dev/null
-+++ b/tests/tracetool/dtrace.rs
-@@ -0,0 +1,64 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+// This file is @generated by tracetool, do not edit.
-+
-+#[allow(unused_imports)]
-+use std::ffi::c_char;
-+#[allow(unused_imports)]
-+use util::bindings;
-+
-+#[allow(dead_code)]
-+#[inline(always)]
-+fn trace_event_state_is_enabled(dstate: u16) -> bool {
-+    (unsafe { trace_events_enabled_count }) != 0 && dstate != 0
-+}
-+
-+extern "C" {
-+    #[allow(dead_code)]
-+    static mut trace_events_enabled_count: u32;
-+}
-+extern "C" {
-+    #[allow(dead_code)]
-+    static mut _TRACE_TEST_BLAH_DSTATE: u16;
-+    #[allow(dead_code)]
-+    static mut _TRACE_TEST_WIBBLE_DSTATE: u16;
-+}
-+
-+use std::cell::UnsafeCell;
-+
-+extern "C" {
-+    #[allow(dead_code)]
-+    static qemu_test_blah_semaphore: UnsafeCell<u16>;
-+    #[allow(dead_code)]
-+    static qemu_test_wibble_semaphore: UnsafeCell<u16>;
-+}
-+
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_blah_enabled() -> bool
-+{
-+    (unsafe {qemu_test_blah_semaphore.get().read_volatile()}) != 0 ||
-+    false
-+}
-+
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_blah(_context: *mut (), _filename: &std::ffi::CStr)
-+{
-+    ::trace::probe!(qemu, test_blah, _context, _filename.as_ptr());
-+}
-+
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_wibble_enabled() -> bool
-+{
-+    (unsafe {qemu_test_wibble_semaphore.get().read_volatile()}) != 0 ||
-+    false
-+}
-+
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_wibble(_context: *mut (), _value: std::ffi::c_int)
-+{
-+    ::trace::probe!(qemu, test_wibble, _context, _value);
-+}
-+
-diff --git a/tests/tracetool/ftrace.rs b/tests/tracetool/ftrace.rs
-index 07b9259cf29..34f66004902 100644
---- a/tests/tracetool/ftrace.rs
-+++ b/tests/tracetool/ftrace.rs
-@@ -6,19 +6,31 @@
- #[allow(unused_imports)]
- use util::bindings;
- 
-+#[allow(dead_code)]
- #[inline(always)]
- fn trace_event_state_is_enabled(dstate: u16) -> bool {
-     (unsafe { trace_events_enabled_count }) != 0 && dstate != 0
- }
- 
- extern "C" {
-+    #[allow(dead_code)]
-     static mut trace_events_enabled_count: u32;
- }
- extern "C" {
-+    #[allow(dead_code)]
-     static mut _TRACE_TEST_BLAH_DSTATE: u16;
-+    #[allow(dead_code)]
-     static mut _TRACE_TEST_WIBBLE_DSTATE: u16;
- }
- 
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_blah_enabled() -> bool
-+{
-+    trace_event_state_is_enabled(unsafe { _TRACE_TEST_BLAH_DSTATE}) ||
-+    false
-+}
-+
- #[inline(always)]
- #[allow(dead_code)]
- pub fn trace_test_blah(_context: *mut (), _filename: &std::ffi::CStr)
-@@ -29,6 +41,14 @@ pub fn trace_test_blah(_context: *mut (), _filename: &std::ffi::CStr)
-     }
- }
- 
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_wibble_enabled() -> bool
-+{
-+    trace_event_state_is_enabled(unsafe { _TRACE_TEST_WIBBLE_DSTATE}) ||
-+    false
-+}
-+
- #[inline(always)]
- #[allow(dead_code)]
- pub fn trace_test_wibble(_context: *mut (), _value: std::ffi::c_int)
-@@ -38,3 +58,4 @@ pub fn trace_test_wibble(_context: *mut (), _value: std::ffi::c_int)
-         unsafe {bindings::ftrace_write(format_string.as_ptr() as *const c_char, _context /* as *mut () */, _value /* as std::ffi::c_int */);}
-     }
- }
-+
-diff --git a/tests/tracetool/log.rs b/tests/tracetool/log.rs
-index c191895c8f8..770758611d1 100644
---- a/tests/tracetool/log.rs
-+++ b/tests/tracetool/log.rs
-@@ -6,19 +6,31 @@
- #[allow(unused_imports)]
- use util::bindings;
- 
-+#[allow(dead_code)]
- #[inline(always)]
- fn trace_event_state_is_enabled(dstate: u16) -> bool {
-     (unsafe { trace_events_enabled_count }) != 0 && dstate != 0
- }
- 
- extern "C" {
-+    #[allow(dead_code)]
-     static mut trace_events_enabled_count: u32;
- }
- extern "C" {
-+    #[allow(dead_code)]
-     static mut _TRACE_TEST_BLAH_DSTATE: u16;
-+    #[allow(dead_code)]
-     static mut _TRACE_TEST_WIBBLE_DSTATE: u16;
- }
- 
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_blah_enabled() -> bool
-+{
-+    trace_event_state_is_enabled(unsafe { _TRACE_TEST_BLAH_DSTATE}) ||
-+    false
-+}
-+
- #[inline(always)]
- #[allow(dead_code)]
- pub fn trace_test_blah(_context: *mut (), _filename: &std::ffi::CStr)
-@@ -31,6 +43,14 @@ pub fn trace_test_blah(_context: *mut (), _filename: &std::ffi::CStr)
-     }
- }
- 
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_wibble_enabled() -> bool
-+{
-+    trace_event_state_is_enabled(unsafe { _TRACE_TEST_WIBBLE_DSTATE}) ||
-+    false
-+}
-+
- #[inline(always)]
- #[allow(dead_code)]
- pub fn trace_test_wibble(_context: *mut (), _value: std::ffi::c_int)
-@@ -42,3 +62,4 @@ pub fn trace_test_wibble(_context: *mut (), _value: std::ffi::c_int)
-         }
-     }
- }
-+
-diff --git a/tests/tracetool/simple.rs b/tests/tracetool/simple.rs
-index 9ee39495e38..92f896ef178 100644
---- a/tests/tracetool/simple.rs
-+++ b/tests/tracetool/simple.rs
-@@ -6,19 +6,31 @@
- #[allow(unused_imports)]
- use util::bindings;
- 
-+#[allow(dead_code)]
- #[inline(always)]
- fn trace_event_state_is_enabled(dstate: u16) -> bool {
-     (unsafe { trace_events_enabled_count }) != 0 && dstate != 0
- }
- 
- extern "C" {
-+    #[allow(dead_code)]
-     static mut trace_events_enabled_count: u32;
- }
- extern "C" {
-+    #[allow(dead_code)]
-     static mut _TRACE_TEST_BLAH_DSTATE: u16;
-+    #[allow(dead_code)]
-     static mut _TRACE_TEST_WIBBLE_DSTATE: u16;
- }
- 
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_blah_enabled() -> bool
-+{
-+    trace_event_state_is_enabled(unsafe { _TRACE_TEST_BLAH_DSTATE}) ||
-+    false
-+}
-+
- #[inline(always)]
- #[allow(dead_code)]
- pub fn trace_test_blah(_context: *mut (), _filename: &std::ffi::CStr)
-@@ -29,6 +41,14 @@ pub fn trace_test_blah(_context: *mut (), _filename: &std::ffi::CStr)
-     }
- }
- 
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_wibble_enabled() -> bool
-+{
-+    trace_event_state_is_enabled(unsafe { _TRACE_TEST_WIBBLE_DSTATE}) ||
-+    false
-+}
-+
- #[inline(always)]
- #[allow(dead_code)]
- pub fn trace_test_wibble(_context: *mut (), _value: std::ffi::c_int)
-@@ -38,3 +58,4 @@ pub fn trace_test_wibble(_context: *mut (), _value: std::ffi::c_int)
-         unsafe { _simple_trace_test_wibble(_context, _value); }
-     }
- }
-+
-diff --git a/tests/tracetool/syslog.rs b/tests/tracetool/syslog.rs
-index 9d3675a0b57..378d03d34b2 100644
---- a/tests/tracetool/syslog.rs
-+++ b/tests/tracetool/syslog.rs
-@@ -6,19 +6,31 @@
- #[allow(unused_imports)]
- use util::bindings;
- 
-+#[allow(dead_code)]
- #[inline(always)]
- fn trace_event_state_is_enabled(dstate: u16) -> bool {
-     (unsafe { trace_events_enabled_count }) != 0 && dstate != 0
- }
- 
- extern "C" {
-+    #[allow(dead_code)]
-     static mut trace_events_enabled_count: u32;
- }
- extern "C" {
-+    #[allow(dead_code)]
-     static mut _TRACE_TEST_BLAH_DSTATE: u16;
-+    #[allow(dead_code)]
-     static mut _TRACE_TEST_WIBBLE_DSTATE: u16;
- }
- 
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_blah_enabled() -> bool
-+{
-+    trace_event_state_is_enabled(unsafe { _TRACE_TEST_BLAH_DSTATE}) ||
-+    false
-+}
-+
- #[inline(always)]
- #[allow(dead_code)]
- pub fn trace_test_blah(_context: *mut (), _filename: &std::ffi::CStr)
-@@ -29,6 +41,14 @@ pub fn trace_test_blah(_context: *mut (), _filename: &std::ffi::CStr)
-     }
- }
- 
-+#[inline(always)]
-+#[allow(dead_code)]
-+pub fn trace_test_wibble_enabled() -> bool
-+{
-+    trace_event_state_is_enabled(unsafe { _TRACE_TEST_WIBBLE_DSTATE}) ||
-+    false
-+}
-+
- #[inline(always)]
- #[allow(dead_code)]
- pub fn trace_test_wibble(_context: *mut (), _value: std::ffi::c_int)
-@@ -38,3 +58,4 @@ pub fn trace_test_wibble(_context: *mut (), _value: std::ffi::c_int)
-         unsafe {::trace::syslog(::trace::LOG_INFO, format_string.as_ptr() as *const c_char, _context /* as *mut () */, _value /* as std::ffi::c_int */);}
-     }
- }
-+
-diff --git a/tests/tracetool/tracetool-test.py b/tests/tracetool/tracetool-test.py
-index 786083ad7fb..30006a99190 100755
---- a/tests/tracetool/tracetool-test.py
-+++ b/tests/tracetool/tracetool-test.py
-@@ -14,7 +14,7 @@ def get_formats(backend):
-         "c",
-         "h",
-     ]
--    if backend in {"ftrace", "log", "simple", "syslog"}:
-+    if backend in {"dtrace", "ftrace", "log", "simple", "syslog"}:
-         formats += ["rs"]
-     if backend == "dtrace":
-         formats += [
+ DEF("cpu", HAS_ARG, QEMU_OPTION_cpu,
 -- 
 2.52.0
 
