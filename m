@@ -2,93 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56FAACDF5CD
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:20:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51072CDF5EB
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:21:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQPv-0002Q5-IJ; Sat, 27 Dec 2025 04:16:55 -0500
+	id 1vZQQ1-0002TG-Dx; Sat, 27 Dec 2025 04:17:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQPt-0002Ou-G7
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:16:53 -0500
+ id 1vZQPz-0002S7-Pr
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:16:59 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQPr-0002L8-Sh
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:16:53 -0500
+ id 1vZQPv-0002LX-Kw
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:16:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766827011;
+ s=mimecast20190719; t=1766827015;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=X6DgzKFCdB6q//TDsUK3aGBtKyBMMRnX/Ll7zdlPuRw=;
- b=hBBnOlaC0l3FP4A+7PRl/xDGSpAqJXcwhvDUegydvMVcWHlcrK8y0u2cot3ltwN1CNq8zC
- mYyEpDBXjQAchO8QhlXANE+ALF+eu0qYAvlNtGEsRtzZwkuD+bGswFrJvHsOr/5BfpJoHg
- k8NCycJRII9IJOMjMfnFv0J5VVVwtVw=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=lf1KMiLCtOj6IyyKYDltZnw6RPiVBMyOh5Y5hndcmd4=;
+ b=dXqLiGHFEI5eYp5NdhzLuKbxhbX23Ni6PN82s57PuzBxpde7vhfWL2SwXj7ekyMXsXLafb
+ rFMWi6WBEea6vCMCRmD08cD+wPmFOCayfwOuaOFXv/TBvjA6uwelP9Au614PsPxzDuo0LA
+ F9RPNn4PeZ+8Bmy9VjKFC50ImbRevrM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-690-PjYfIaLTM_6mFW-9_jHwxA-1; Sat, 27 Dec 2025 04:16:49 -0500
-X-MC-Unique: PjYfIaLTM_6mFW-9_jHwxA-1
-X-Mimecast-MFC-AGG-ID: PjYfIaLTM_6mFW-9_jHwxA_1766827008
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-47d17fff653so26705965e9.0
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:16:49 -0800 (PST)
+ us-mta-106-Ez5JyTx4M7u4OG7kVMf_xg-1; Sat, 27 Dec 2025 04:16:52 -0500
+X-MC-Unique: Ez5JyTx4M7u4OG7kVMf_xg-1
+X-Mimecast-MFC-AGG-ID: Ez5JyTx4M7u4OG7kVMf_xg_1766827011
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-47904cdb9bbso70683505e9.1
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:16:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766827008; x=1767431808; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766827011; x=1767431811; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=X6DgzKFCdB6q//TDsUK3aGBtKyBMMRnX/Ll7zdlPuRw=;
- b=ijphTIMq9geVnHlFcnq66F1mRW531HUJgz3WFRuWTGgi+4QlKe0+4QrZkmu2nBT/99
- 8F2iVxAQTFPdOpN6EWCh7nTw8W5hE7JZ2ffMHco9u9rj5poYA0wz+wNFxHez+NRK+pzP
- QkWpCzr770rQbJpAiR/X4QStx1nhSmeyH3XvsvOys8OM/QP1z7gfF0ki3VK0a5HPK3xS
- opUPw0z6Yx57iQDFmySxHbH+6la7S08Zq0+ec1jwkDBzNpzX5sNmL+nxwEG+c8j8bdSY
- irEYc/Zc16C8CkuclzZU9l7y2d2ad6+PyPARPnX0QmxnqX5VLmBdrgrRoectv0fBo2UL
- C5zw==
+ :reply-to; bh=lf1KMiLCtOj6IyyKYDltZnw6RPiVBMyOh5Y5hndcmd4=;
+ b=ew/sYYOZnv0478oMcXCCEMt3fe4efZVxWIhAHMi3Fp+CLKsnme1ZtPQCDAYHgqCPi4
+ wLh9pRjzVvqOMDF67iOc5ckvKR5WFLU7AYoi4rO0vn3EC+mhdAYJ+Drl5FkioY41sDNh
+ dxKt+FpFo8EYAXZ5KeRtcqDg1XDOvLxnCtyuAAnoKwXO+u7BND1cyphbGy+kKw5uSFrx
+ p+4RR7eLuroqqPI13YRcyAssQZXkOOS8bahlTTIfGzw9s2QW2HxeqptqzuTSjHC9k+J3
+ Kf6CZD3oIkZje9LcqnZQOTcqrqDW3rS0fX+y1qOSj6SaX7rJhzDZm+4q+lmMOTi5U7aR
+ QYPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766827008; x=1767431808;
+ d=1e100.net; s=20230601; t=1766827011; x=1767431811;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=X6DgzKFCdB6q//TDsUK3aGBtKyBMMRnX/Ll7zdlPuRw=;
- b=C/YnxXDpz/Ac+F4lMLCIJ7GGqw334A871/0mQqU6Cczy6st/Tzwr2REWPQtXH9+xlO
- PQW2Od0MZ/0jC5B5HjBUqSK8lc39CKHtCFBi/l1vtg53UnawHPkOhGMwiWG0NcGcE5Vq
- QjHylwysod28VvO9aeKC3gt3B34szcWLTvmmhWcR/xh7ybgz1bZlXzhWP0luWpbD4J+x
- xStoRBwkG4wxdi3zHOdPBM0UYu5jUbbncnuNPGFN769CxLfo/+3cw1lK8LFQ2H6/02Ac
- zy1HnSbKgap6ad60+E2RXD18TZYsy1Uwp0/q9kLkFQfxiZ+33JuLbgTe0DTUUdH2lLt+
- tKHQ==
-X-Gm-Message-State: AOJu0Yw6+etNoX+SRv5FwD5q0mzLcKSIPxaqIZ3nsCnLzYhUTs6stEd8
- ZQql7dx1NJgar+QZqPZIg68a2ZxjhGKBZbJXceLkJlwNgJ3vPTCPEQ8pqDAvYpFlr3jTWcWhuOW
- patsDjIBA5tVfVkT/BMD/IGo2eo4lnGwAQQsJouXz8kfDFFFq2K3MZ11W1Z0rx6vCo2XCMQ4RXi
- 8g37jUX4kC2+8LnnFDKC5FdkKTtwD+Gg4/89V3IvtS
-X-Gm-Gg: AY/fxX55cGboV9ZEIb9VU2fGEvYRtKlBG/wk0YcmC5gbuieIXbE4P+0BGvj1r2icA8q
- /zHKelc2gxSS1pM/od4IPxlrd59VIsYNWQEPNiEp2SbzgYgzyQ/Hdh7SkHHrXC+AcoKlxu+kqEr
- 9MtBDX5+XwyuopFwrmbXbd/W5MHGVD7PtcSWKhw8U/rmJVW2YVrwjYfo/rt2hHlpkPCFyRdqG6e
- jbXnlnuYohunnOPk4/FlXs53GiTTzgG9apbq70XhYIxY5qEd/UPM0rF/dHVjMX+JBwFI+Pk4Cvk
- 5t1BbyiTgMEAKJAzYETqTmayGkgRfcdPCcbae8Nl0SXyrmogztaSJE7M7ETeWK2H0dhTKMoggdT
- Ft64+NZtHweWui7IdB3gd/n+NYIujgT5pgGFUq00SN/n6GC7Ltn6+7yWTRdzaYRZqctW7/P5HYV
- +LSER4MXGt+r2GQJ0=
-X-Received: by 2002:a05:600c:3e0b:b0:477:2f7c:314f with SMTP id
- 5b1f17b1804b1-47d19555af8mr277089645e9.10.1766827007896; 
- Sat, 27 Dec 2025 01:16:47 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IElvbRjBJG8Wp+YFCtzTv7bUZRGOcEp4H//h0C8ZY6e0LbMrh9fgI8bmFC9jVvL8Y0qnFmoxA==
-X-Received: by 2002:a05:600c:3e0b:b0:477:2f7c:314f with SMTP id
- 5b1f17b1804b1-47d19555af8mr277089395e9.10.1766827007402; 
- Sat, 27 Dec 2025 01:16:47 -0800 (PST)
+ bh=lf1KMiLCtOj6IyyKYDltZnw6RPiVBMyOh5Y5hndcmd4=;
+ b=KIJvav7rVNgHHafT768NKujiIwJXOlXX3yOqKJVHMgsHSPyJ+56BLa0N1MhnR4b5G3
+ 23CG6CsZVPnbn5LH1Z2leXXmZ6RBWLhlFdk1saOQiHmGimWt+gzhq6JMFCcblQa/VtRg
+ JdhZSqwaCOxDqYaunB3eCND2g1lpm6oJnOxEvLkPkrwEr95KZBW2qM66E0mDn+r7nJR4
+ yOlAPer7bZukuJEd2zF85ajTPXypZHdnLIslE1RgQYmEGepBJWq5rOUqJIt2xRirGIJG
+ IwrV9KGUXKw6c7NIY5O62OTH5HkYR1qJk18L2q+CS+krlJjh97ueMf1zCperFDpdQ84W
+ gwug==
+X-Gm-Message-State: AOJu0YzwGIafwVDnnARyLEvQFqbB9ybFYY6gmUwoJvY5cfa9cJZO2bVS
+ bi1JxHSrYRrdj38aaWSBspYOFsNMOPwTIKYc6pCSiGJRIu19Wi9ItOLafOMjeL5AAWzMkoXyenb
+ IrLDichWUBva77eoVp8WZLfk91p+r9Afkl28f3lDfsGMZ6lVNO4Ocm20SEuvpVSvMEgGsAh2dMc
+ 7V6g6WpK24pU1Z/Lk+OASmJFydSuWpUk67pOP4/V6x
+X-Gm-Gg: AY/fxX5C3znqgoEDVQx70E3RiZkc3qck8uV++JbdBiR9muZ0bG73AOig6aVyC6R90hA
+ vZlyMHdHipuLouKR6IKzaOGk0dRBU+1U1e62XQB5ICFeOvWqKvu388ByNaPawqhoPq6Fuc7gjxN
+ x9W2kmJRHfUmLP0JudF3ItiYIfIhHYQhXNxgX4IEooPy+VsEFY1gspvselISW8jn0y5j3oR25x4
+ 5+ErKH8eSlCEW+nnTLCK11TCE6tuCCD0hVDiy35o6xXK3out/1Had25cfDuE2x1raOm2Eqmax8i
+ QZfa71y6soEVEDZixvNY8wUNAFcH+Htnzn5TG5LWLfxuaC+jjZplrcdVrDGwQOFFXUJI0ECbBAd
+ gJmmVmF4lpXnoi9dRGMy/zYHmh1o9laCg6eHid8EQfrIDOGt8FRH4FONuUXavcYLK+lTt2knIWh
+ cWcoANXW9wDPdHGlk=
+X-Received: by 2002:a05:600c:4f08:b0:475:d9de:952e with SMTP id
+ 5b1f17b1804b1-47d18b83218mr273739045e9.1.1766827010785; 
+ Sat, 27 Dec 2025 01:16:50 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHzzNI2gUtWLrAJchMNGrbsBhwNZc7fW6/i2j08lJfp+Zp2IXIrYH+SLZ1mY5YbWtUgCDOfoQ==
+X-Received: by 2002:a05:600c:4f08:b0:475:d9de:952e with SMTP id
+ 5b1f17b1804b1-47d18b83218mr273738795e9.1.1766827010088; 
+ Sat, 27 Dec 2025 01:16:50 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-432613f7e6esm38722375f8f.21.2025.12.27.01.16.46
+ 5b1f17b1804b1-47be2723b2bsm487157775e9.3.2025.12.27.01.16.48
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:16:46 -0800 (PST)
+ Sat, 27 Dec 2025 01:16:48 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 013/153] include: move hw/nmi.h to hw/core/
-Date: Sat, 27 Dec 2025 10:14:00 +0100
-Message-ID: <20251227091622.20725-14-pbonzini@redhat.com>
+Subject: [PULL 014/153] include: move hw/or-irq.h to hw/core/
+Date: Sat, 27 Dec 2025 10:14:01 +0100
+Message-ID: <20251227091622.20725-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
@@ -121,182 +121,350 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/hw/{ => core}/nmi.h | 0
- hw/core/nmi.c               | 2 +-
- hw/hppa/machine.c           | 2 +-
- hw/i386/x86.c               | 2 +-
- hw/intc/m68k_irqc.c         | 2 +-
- hw/ipmi/ipmi.c              | 2 +-
- hw/m68k/q800-glue.c         | 2 +-
- hw/misc/macio/gpio.c        | 2 +-
- hw/ppc/pnv.c                | 2 +-
- hw/ppc/spapr.c              | 2 +-
- hw/s390x/s390-virtio-ccw.c  | 2 +-
- hw/watchdog/watchdog.c      | 2 +-
- system/cpus.c               | 2 +-
- 13 files changed, 12 insertions(+), 12 deletions(-)
- rename include/hw/{ => core}/nmi.h (100%)
+ include/hw/arm/armsse.h              | 2 +-
+ include/hw/arm/bcm2835_peripherals.h | 2 +-
+ include/hw/arm/exynos4210.h          | 2 +-
+ include/hw/arm/fsl-imx6.h            | 2 +-
+ include/hw/arm/fsl-imx7.h            | 2 +-
+ include/hw/arm/fsl-imx8mp.h          | 2 +-
+ include/hw/arm/max78000_soc.h        | 2 +-
+ include/hw/arm/stm32f205_soc.h       | 2 +-
+ include/hw/arm/stm32f405_soc.h       | 2 +-
+ include/hw/arm/stm32l4x5_soc.h       | 2 +-
+ include/hw/arm/xlnx-zynqmp.h         | 2 +-
+ include/hw/{ => core}/or-irq.h       | 0
+ include/hw/intc/aspeed_intc.h        | 2 +-
+ include/hw/m68k/q800.h               | 2 +-
+ hw/arm/mps2-tz.c                     | 2 +-
+ hw/arm/mps2.c                        | 2 +-
+ hw/arm/mps3r.c                       | 2 +-
+ hw/arm/musicpal.c                    | 2 +-
+ hw/arm/stm32l4x5_soc.c               | 2 +-
+ hw/arm/xlnx-versal.c                 | 2 +-
+ hw/core/or-irq.c                     | 2 +-
+ hw/m68k/q800.c                       | 2 +-
+ hw/pci-host/raven.c                  | 2 +-
+ hw/ppc/pegasos.c                     | 2 +-
+ hw/sparc/sun4m.c                     | 2 +-
+ 25 files changed, 24 insertions(+), 24 deletions(-)
+ rename include/hw/{ => core}/or-irq.h (100%)
 
-diff --git a/include/hw/nmi.h b/include/hw/core/nmi.h
+diff --git a/include/hw/arm/armsse.h b/include/hw/arm/armsse.h
+index 04755ed1ec3..414e553600d 100644
+--- a/include/hw/arm/armsse.h
++++ b/include/hw/arm/armsse.h
+@@ -109,7 +109,7 @@
+ #include "hw/misc/armsse-mhu.h"
+ #include "hw/misc/armsse-cpu-pwrctrl.h"
+ #include "hw/misc/unimp.h"
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ #include "hw/core/clock.h"
+ #include "hw/core/split-irq.h"
+ #include "hw/cpu/cluster.h"
+diff --git a/include/hw/arm/bcm2835_peripherals.h b/include/hw/arm/bcm2835_peripherals.h
+index 1eeaeec9e0e..d46d892956d 100644
+--- a/include/hw/arm/bcm2835_peripherals.h
++++ b/include/hw/arm/bcm2835_peripherals.h
+@@ -17,7 +17,7 @@
+ #include "hw/char/bcm2835_aux.h"
+ #include "hw/display/bcm2835_fb.h"
+ #include "hw/dma/bcm2835_dma.h"
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ #include "hw/intc/bcm2835_ic.h"
+ #include "hw/misc/bcm2835_property.h"
+ #include "hw/misc/bcm2835_rng.h"
+diff --git a/include/hw/arm/exynos4210.h b/include/hw/arm/exynos4210.h
+index d33fe385865..fbe4370219d 100644
+--- a/include/hw/arm/exynos4210.h
++++ b/include/hw/arm/exynos4210.h
+@@ -24,7 +24,7 @@
+ #ifndef EXYNOS4210_H
+ #define EXYNOS4210_H
+ 
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ #include "hw/sysbus.h"
+ #include "hw/cpu/a9mpcore.h"
+ #include "hw/intc/exynos4210_gic.h"
+diff --git a/include/hw/arm/fsl-imx6.h b/include/hw/arm/fsl-imx6.h
+index 124bbd478fd..5520473ba0b 100644
+--- a/include/hw/arm/fsl-imx6.h
++++ b/include/hw/arm/fsl-imx6.h
+@@ -33,7 +33,7 @@
+ #include "hw/usb/chipidea.h"
+ #include "hw/usb/imx-usb-phy.h"
+ #include "hw/pci-host/designware.h"
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ #include "system/memory.h"
+ #include "cpu.h"
+ #include "qom/object.h"
+diff --git a/include/hw/arm/fsl-imx7.h b/include/hw/arm/fsl-imx7.h
+index aa7818c4999..710831c8bf5 100644
+--- a/include/hw/arm/fsl-imx7.h
++++ b/include/hw/arm/fsl-imx7.h
+@@ -36,7 +36,7 @@
+ #include "hw/net/imx_fec.h"
+ #include "hw/pci-host/designware.h"
+ #include "hw/usb/chipidea.h"
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ #include "cpu.h"
+ #include "qom/object.h"
+ #include "qemu/units.h"
+diff --git a/include/hw/arm/fsl-imx8mp.h b/include/hw/arm/fsl-imx8mp.h
+index d016f7d3371..1275df22f19 100644
+--- a/include/hw/arm/fsl-imx8mp.h
++++ b/include/hw/arm/fsl-imx8mp.h
+@@ -18,7 +18,7 @@
+ #include "hw/misc/imx8mp_analog.h"
+ #include "hw/misc/imx8mp_ccm.h"
+ #include "hw/net/imx_fec.h"
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ #include "hw/pci-host/designware.h"
+ #include "hw/pci-host/fsl_imx8m_phy.h"
+ #include "hw/sd/sdhci.h"
+diff --git a/include/hw/arm/max78000_soc.h b/include/hw/arm/max78000_soc.h
+index a203079ee9a..1a6cdb39495 100644
+--- a/include/hw/arm/max78000_soc.h
++++ b/include/hw/arm/max78000_soc.h
+@@ -9,7 +9,7 @@
+ #ifndef HW_ARM_MAX78000_SOC_H
+ #define HW_ARM_MAX78000_SOC_H
+ 
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ #include "hw/arm/armv7m.h"
+ #include "hw/misc/max78000_aes.h"
+ #include "hw/misc/max78000_gcr.h"
+diff --git a/include/hw/arm/stm32f205_soc.h b/include/hw/arm/stm32f205_soc.h
+index d3de6b94dab..745433b56c2 100644
+--- a/include/hw/arm/stm32f205_soc.h
++++ b/include/hw/arm/stm32f205_soc.h
+@@ -29,7 +29,7 @@
+ #include "hw/timer/stm32f2xx_timer.h"
+ #include "hw/char/stm32f2xx_usart.h"
+ #include "hw/adc/stm32f2xx_adc.h"
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ #include "hw/ssi/stm32f2xx_spi.h"
+ #include "hw/arm/armv7m.h"
+ #include "hw/core/clock.h"
+diff --git a/include/hw/arm/stm32f405_soc.h b/include/hw/arm/stm32f405_soc.h
+index 2eeada64ded..9fe40da9680 100644
+--- a/include/hw/arm/stm32f405_soc.h
++++ b/include/hw/arm/stm32f405_soc.h
+@@ -31,7 +31,7 @@
+ #include "hw/char/stm32f2xx_usart.h"
+ #include "hw/adc/stm32f2xx_adc.h"
+ #include "hw/misc/stm32f4xx_exti.h"
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ #include "hw/ssi/stm32f2xx_spi.h"
+ #include "hw/arm/armv7m.h"
+ #include "qom/object.h"
+diff --git a/include/hw/arm/stm32l4x5_soc.h b/include/hw/arm/stm32l4x5_soc.h
+index c2fae6e23fe..9c3d662bca9 100644
+--- a/include/hw/arm/stm32l4x5_soc.h
++++ b/include/hw/arm/stm32l4x5_soc.h
+@@ -26,7 +26,7 @@
+ 
+ #include "system/memory.h"
+ #include "hw/arm/armv7m.h"
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ #include "hw/misc/stm32l4x5_syscfg.h"
+ #include "hw/misc/stm32l4x5_exti.h"
+ #include "hw/misc/stm32l4x5_rcc.h"
+diff --git a/include/hw/arm/xlnx-zynqmp.h b/include/hw/arm/xlnx-zynqmp.h
+index a3117bd6c50..620b20d0e2a 100644
+--- a/include/hw/arm/xlnx-zynqmp.h
++++ b/include/hw/arm/xlnx-zynqmp.h
+@@ -37,7 +37,7 @@
+ #include "hw/dma/xlnx_csu_dma.h"
+ #include "hw/nvram/xlnx-bbram.h"
+ #include "hw/nvram/xlnx-zynqmp-efuse.h"
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ #include "hw/misc/xlnx-zynqmp-apu-ctrl.h"
+ #include "hw/misc/xlnx-zynqmp-crf.h"
+ #include "hw/timer/cadence_ttc.h"
+diff --git a/include/hw/or-irq.h b/include/hw/core/or-irq.h
 similarity index 100%
-rename from include/hw/nmi.h
-rename to include/hw/core/nmi.h
-diff --git a/hw/core/nmi.c b/hw/core/nmi.c
-index a7bce8a04a1..4b447e126ba 100644
---- a/hw/core/nmi.c
-+++ b/hw/core/nmi.c
-@@ -20,7 +20,7 @@
-  */
+rename from include/hw/or-irq.h
+rename to include/hw/core/or-irq.h
+diff --git a/include/hw/intc/aspeed_intc.h b/include/hw/intc/aspeed_intc.h
+index 51288384a56..6dd8effcd89 100644
+--- a/include/hw/intc/aspeed_intc.h
++++ b/include/hw/intc/aspeed_intc.h
+@@ -10,7 +10,7 @@
+ 
+ #include "hw/sysbus.h"
+ #include "qom/object.h"
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ 
+ #define TYPE_ASPEED_INTC "aspeed.intc"
+ #define TYPE_ASPEED_2700_INTC TYPE_ASPEED_INTC "-ast2700"
+diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
+index c92da2e2ac7..77551b9592e 100644
+--- a/include/hw/m68k/q800.h
++++ b/include/hw/m68k/q800.h
+@@ -31,7 +31,7 @@
+ #include "hw/misc/mac_via.h"
+ #include "hw/net/dp8393x.h"
+ #include "hw/char/escc.h"
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ #include "hw/scsi/esp.h"
+ #include "hw/block/swim.h"
+ #include "hw/nubus/mac-nubus-bridge.h"
+diff --git a/hw/arm/mps2-tz.c b/hw/arm/mps2-tz.c
+index a0d917f9a9e..c262a9c6795 100644
+--- a/hw/arm/mps2-tz.c
++++ b/hw/arm/mps2-tz.c
+@@ -53,7 +53,7 @@
+ #include "hw/arm/boot.h"
+ #include "hw/arm/armv7m.h"
+ #include "hw/arm/machines-qom.h"
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ #include "hw/core/boards.h"
+ #include "system/address-spaces.h"
+ #include "system/system.h"
+diff --git a/hw/arm/mps2.c b/hw/arm/mps2.c
+index bf5e07019ff..af3b0124891 100644
+--- a/hw/arm/mps2.c
++++ b/hw/arm/mps2.c
+@@ -32,7 +32,7 @@
+ #include "hw/arm/boot.h"
+ #include "hw/arm/armv7m.h"
+ #include "hw/arm/machines-qom.h"
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ #include "hw/core/boards.h"
+ #include "system/address-spaces.h"
+ #include "system/system.h"
+diff --git a/hw/arm/mps3r.c b/hw/arm/mps3r.c
+index b63002f4835..c64e103f599 100644
+--- a/hw/arm/mps3r.c
++++ b/hw/arm/mps3r.c
+@@ -32,7 +32,7 @@
+ #include "cpu.h"
+ #include "system/system.h"
+ #include "hw/core/boards.h"
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ #include "hw/qdev-clock.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/arm/boot.h"
+diff --git a/hw/arm/musicpal.c b/hw/arm/musicpal.c
+index 9852e8f7648..100a9f59b3f 100644
+--- a/hw/arm/musicpal.c
++++ b/hw/arm/musicpal.c
+@@ -28,7 +28,7 @@
+ #include "hw/i2c/i2c.h"
+ #include "hw/i2c/bitbang_i2c.h"
+ #include "hw/core/irq.h"
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ #include "hw/audio/wm8750.h"
+ #include "system/block-backend.h"
+ #include "system/runstate.h"
+diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
+index 64da5559c07..c28ce15e6bb 100644
+--- a/hw/arm/stm32l4x5_soc.c
++++ b/hw/arm/stm32l4x5_soc.c
+@@ -26,7 +26,7 @@
+ #include "qapi/error.h"
+ #include "system/address-spaces.h"
+ #include "system/system.h"
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ #include "hw/arm/stm32l4x5_soc.h"
+ #include "hw/char/stm32l4x5_usart.h"
+ #include "hw/gpio/stm32l4x5_gpio.h"
+diff --git a/hw/arm/xlnx-versal.c b/hw/arm/xlnx-versal.c
+index 81cb6294cfa..a0b2f18b551 100644
+--- a/hw/arm/xlnx-versal.c
++++ b/hw/arm/xlnx-versal.c
+@@ -40,7 +40,7 @@
+ #include "hw/rtc/xlnx-zynqmp-rtc.h"
+ #include "hw/misc/xlnx-versal-cfu.h"
+ #include "hw/misc/xlnx-versal-cframe-reg.h"
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ #include "hw/misc/xlnx-versal-crl.h"
+ #include "hw/intc/arm_gicv3_common.h"
+ #include "hw/intc/arm_gicv3_its_common.h"
+diff --git a/hw/core/or-irq.c b/hw/core/or-irq.c
+index 61006672ad6..bcc7ad1e444 100644
+--- a/hw/core/or-irq.c
++++ b/hw/core/or-irq.c
+@@ -24,7 +24,7 @@
  
  #include "qemu/osdep.h"
--#include "hw/nmi.h"
-+#include "hw/core/nmi.h"
- #include "qapi/error.h"
- #include "qemu/module.h"
- #include "monitor/monitor.h"
-diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index e877e6c4018..960aefc9e26 100644
---- a/hw/hppa/machine.c
-+++ b/hw/hppa/machine.c
-@@ -23,7 +23,7 @@
- #include "hw/intc/i8259.h"
- #include "hw/input/lasips2.h"
- #include "hw/net/lasi_82596.h"
--#include "hw/nmi.h"
-+#include "hw/core/nmi.h"
- #include "hw/usb/usb.h"
- #include "hw/pci/pci.h"
- #include "hw/pci/pci_device.h"
-diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-index f80533df1c5..c29856c810a 100644
---- a/hw/i386/x86.c
-+++ b/hw/i386/x86.c
-@@ -35,7 +35,7 @@
- #include "hw/i386/x86.h"
- #include "hw/i386/topology.h"
- 
--#include "hw/nmi.h"
-+#include "hw/core/nmi.h"
- #include "kvm/kvm_i386.h"
- 
- 
-diff --git a/hw/intc/m68k_irqc.c b/hw/intc/m68k_irqc.c
-index 2532322618a..67cb9acb418 100644
---- a/hw/intc/m68k_irqc.c
-+++ b/hw/intc/m68k_irqc.c
-@@ -11,7 +11,7 @@
- #include "cpu.h"
- #include "migration/vmstate.h"
- #include "hw/qdev-properties.h"
--#include "hw/nmi.h"
-+#include "hw/core/nmi.h"
- #include "hw/intc/intc.h"
- #include "hw/intc/m68k_irqc.h"
- 
-diff --git a/hw/ipmi/ipmi.c b/hw/ipmi/ipmi.c
-index b91e487e1b8..2a7bc667ec3 100644
---- a/hw/ipmi/ipmi.c
-+++ b/hw/ipmi/ipmi.c
-@@ -29,7 +29,7 @@
- #include "system/runstate.h"
- #include "qapi/error.h"
- #include "qemu/module.h"
--#include "hw/nmi.h"
-+#include "hw/core/nmi.h"
- 
- static uint32_t ipmi_current_uuid = 1;
- 
-diff --git a/hw/m68k/q800-glue.c b/hw/m68k/q800-glue.c
-index 94f47175ae5..84dd01459cd 100644
---- a/hw/m68k/q800-glue.c
-+++ b/hw/m68k/q800-glue.c
-@@ -25,7 +25,7 @@
- #include "hw/m68k/q800-glue.h"
- #include "hw/core/boards.h"
  #include "hw/core/irq.h"
--#include "hw/nmi.h"
-+#include "hw/core/nmi.h"
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
  #include "hw/qdev-properties.h"
  #include "migration/vmstate.h"
- 
-diff --git a/hw/misc/macio/gpio.c b/hw/misc/macio/gpio.c
-index 9fed4265676..77658cb6d02 100644
---- a/hw/misc/macio/gpio.c
-+++ b/hw/misc/macio/gpio.c
-@@ -29,7 +29,7 @@
- #include "hw/misc/macio/macio.h"
- #include "hw/misc/macio/gpio.h"
- #include "hw/core/irq.h"
--#include "hw/nmi.h"
-+#include "hw/core/nmi.h"
- #include "qemu/log.h"
  #include "qemu/module.h"
- #include "trace.h"
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index eb3197da9b1..8a50e9f0d85 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -39,7 +39,7 @@
- #include "hw/ppc/pnv.h"
- #include "hw/ppc/pnv_core.h"
- #include "hw/core/loader.h"
--#include "hw/nmi.h"
-+#include "hw/core/nmi.h"
- #include "qapi/visitor.h"
- #include "hw/intc/intc.h"
- #include "hw/ipmi/ipmi.h"
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index bad6918e6eb..7363e533e15 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -82,7 +82,7 @@
- #include "qemu/config-file.h"
- #include "qemu/error-report.h"
- #include "trace.h"
--#include "hw/nmi.h"
-+#include "hw/core/nmi.h"
- #include "hw/intc/intc.h"
- 
- #include "hw/ppc/spapr_cpu_core.h"
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 29d95be2c64..c5e0691a26d 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -35,7 +35,7 @@
- #include "hw/s390x/ap-bridge.h"
- #include "migration/register.h"
- #include "target/s390x/cpu_models.h"
--#include "hw/nmi.h"
-+#include "hw/core/nmi.h"
- #include "hw/qdev-properties.h"
- #include "hw/s390x/tod.h"
- #include "system/system.h"
-diff --git a/hw/watchdog/watchdog.c b/hw/watchdog/watchdog.c
-index 07213739488..0842fe373ae 100644
---- a/hw/watchdog/watchdog.c
-+++ b/hw/watchdog/watchdog.c
+diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+index 4c03455d6bd..6fe030e8c5d 100644
+--- a/hw/m68k/q800.c
++++ b/hw/m68k/q800.c
 @@ -28,7 +28,7 @@
- #include "qapi/qapi-events-run-state.h"
- #include "system/runstate.h"
- #include "system/watchdog.h"
--#include "hw/nmi.h"
-+#include "hw/core/nmi.h"
- #include "qemu/help_option.h"
- #include "trace.h"
+ #include "system/system.h"
+ #include "cpu.h"
+ #include "hw/core/boards.h"
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ #include "elf.h"
+ #include "hw/core/loader.h"
+ #include "ui/console.h"
+diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
+index 3032e0d6854..a587f16131b 100644
+--- a/hw/pci-host/raven.c
++++ b/hw/pci-host/raven.c
+@@ -33,7 +33,7 @@
+ #include "hw/qdev-properties.h"
+ #include "hw/intc/i8259.h"
+ #include "hw/core/irq.h"
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ #include "qom/object.h"
  
-diff --git a/system/cpus.c b/system/cpus.c
-index 0b1eabd3c4b..a0e1debfea8 100644
---- a/system/cpus.c
-+++ b/system/cpus.c
-@@ -39,7 +39,7 @@
- #include "qemu/plugin.h"
- #include "system/cpus.h"
- #include "qemu/guest-random.h"
--#include "hw/nmi.h"
-+#include "hw/core/nmi.h"
- #include "system/replay.h"
- #include "system/runstate.h"
- #include "system/cpu-timers.h"
+ #define TYPE_RAVEN_PCI_DEVICE "raven"
+diff --git a/hw/ppc/pegasos.c b/hw/ppc/pegasos.c
+index 11bf406ef77..2de80a5fae9 100644
+--- a/hw/ppc/pegasos.c
++++ b/hw/ppc/pegasos.c
+@@ -14,7 +14,7 @@
+ #include "hw/sysbus.h"
+ #include "hw/pci/pci_host.h"
+ #include "hw/core/irq.h"
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ #include "hw/pci-host/articia.h"
+ #include "hw/pci-host/mv64361.h"
+ #include "hw/isa/vt82c686.h"
+diff --git a/hw/sparc/sun4m.c b/hw/sparc/sun4m.c
+index b6256864582..fa524513036 100644
+--- a/hw/sparc/sun4m.c
++++ b/hw/sparc/sun4m.c
+@@ -50,7 +50,7 @@
+ #include "hw/misc/empty_slot.h"
+ #include "hw/misc/unimp.h"
+ #include "hw/core/irq.h"
+-#include "hw/or-irq.h"
++#include "hw/core/or-irq.h"
+ #include "hw/core/loader.h"
+ #include "elf.h"
+ #include "trace.h"
 -- 
 2.52.0
 
