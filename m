@@ -2,109 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E38B5CDF773
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:55:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61E81CDF75B
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:55:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQx6-0002R1-I3; Sat, 27 Dec 2025 04:51:12 -0500
+	id 1vZQx5-0002Dv-B9; Sat, 27 Dec 2025 04:51:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQwc-0001Sf-K4
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:50:44 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1vZQwY-0001OB-UJ
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:50:40 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQwY-0007NK-N8
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:50:41 -0500
+ id 1vZQwU-0007Mh-GX
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:50:35 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766829037;
+ s=mimecast20190719; t=1766829034;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XfTcb5DkM47QaQaWUoerV2EwCv6n/G+WapDxLoIPaQo=;
- b=JQFqYVA9LXE/afoEpBopgaH+L5Eqr89DjZO7bJn7HKf2KWhHnUbXbBc+CxMTcFeuP+u+/G
- i6f6c4PNlx0bXtHVlDvQQ9F+exYZ9KxX+6emNjq1RRDhuvL2iJJtJ+ZNGpx/Snew9b9jt8
- 5TB8f9Kg85wAhQQnzKHoVcuSYlj34ds=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=yAqc8N4nPFsDV6Po1paZbP4Wm2G773jg1VYzIMgqmbw=;
+ b=DA2njfMXkJXdLdwYucsWi+OgCH0X4mYomjtg2b25CZYZqAf7zi1g+K5CWq5gX91F7jCipx
+ 0ZNtrQfs3OB/bcinkmDE8BhN5AmQHh7aVPcpDoyIXEj6+X0AheZcTejTPRtuHr44I3JVdg
+ ouu3611KGLqfr6iPJZBH8BKMHAJcwu8=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-515-JSi9VhT_Nr67x3aw5jGzVg-1; Sat, 27 Dec 2025 04:50:28 -0500
-X-MC-Unique: JSi9VhT_Nr67x3aw5jGzVg-1
-X-Mimecast-MFC-AGG-ID: JSi9VhT_Nr67x3aw5jGzVg_1766829028
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-430fdaba167so4122725f8f.3
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:50:28 -0800 (PST)
+ us-mta-650-2huq74y0OwuDk5YEctgDXA-1; Sat, 27 Dec 2025 04:50:32 -0500
+X-MC-Unique: 2huq74y0OwuDk5YEctgDXA-1
+X-Mimecast-MFC-AGG-ID: 2huq74y0OwuDk5YEctgDXA_1766829031
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-47d1622509eso44630045e9.3
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:50:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766829027; x=1767433827; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766829031; x=1767433831; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XfTcb5DkM47QaQaWUoerV2EwCv6n/G+WapDxLoIPaQo=;
- b=m6OPlXfnU6wGR1qybhJAqqg6myHYsWBMfUrJMWrpLAEYGdYj+cMxuv6ga1ixzHOf99
- JXp2HXhthfdRIaLiW2qBuQA13GfZeKLq6hV+sdX3kvUgk6Fv0lUydBn2R1CLyY6PrOSI
- gv6TU6nEOiM96Y0XRMCZQ2WFtP2RR2uBqYW2yf4arJZLGCjF29fT4ZRqo3E6phWXF89w
- fe8WAhGKTTz7PMJxfuDiyNeoMTBDsBljltY/KtJACa3bNHhW2g4Rii/DeOJQQHowgmlo
- LXmXgSAup39PIt6De+kN7O6lIfleylAGcPT3fPd3ndg+WnzPLS43c+8ZjpeTuokgv5eV
- JDmg==
+ bh=yAqc8N4nPFsDV6Po1paZbP4Wm2G773jg1VYzIMgqmbw=;
+ b=MTyg91ipE0JikJuWdgScoXcUAb4dHGQQpNz4iaIJc+64TrBUPxkrOsSNyeIlujs331
+ 8+3/H/nzYFts9ShFw1jAFBUz/0TE0uGdEuKgDyUl1BhfUZaqfjD9jLKwgZys5v1t485k
+ R+lMyV+c31hk449TdEBt01B6eHP5qRM6E5/x21G18cT3w7HB14M+Ol39f2aXHb6TG4Sq
+ bCVrhQvIQ7zRyvkhjv6kqu+iAuL0/oPIxj9KL+SpczaRs4G3SbKmhuCyz2LN7KMQbgDB
+ kzX1a84sRJPFSzC6pM/J7A9u0iUpfmCH97JtSZyZoFE4KvrOqfjLne1vbklNqVWRhkVX
+ sjKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766829027; x=1767433827;
+ d=1e100.net; s=20230601; t=1766829031; x=1767433831;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=XfTcb5DkM47QaQaWUoerV2EwCv6n/G+WapDxLoIPaQo=;
- b=WP23aEZmmrNGuEuAKxT8oQc0Q67v239FU+dGwhRhoMuY8VmNeFZ9n6M68grj575ndr
- TzUkqaFwEfbRKA6IEH24cXVvYc+SpfrtN+hQBp76BrpdQ8K8jO2vHjAiWA/rImsGWfM8
- 65xoVJoSGMKM1fGfMLd2SB4UU6eygE4H6PwnN27t9zVzD5/O42CpurED7ysk27emKB3q
- a/gXbtahWuc1FaKGKw5AIO2M03ckF8W/V3sn3XwK12XS2AkNVBy42f4TGMyuXvogAJeH
- WpclqaPiwPc4tCZ19ovpvVf3lV53gcQirD6vBwzFrCNoY93iJ2s0xO8rdua2+eUIqWPT
- 8z2Q==
-X-Gm-Message-State: AOJu0Yzr8WRq5LZ4kHBoPPwVgzWSsiF7R5HXX3lq1jF9QLOV3H7c4dtE
- R42071iUkV1jnRWzRaiC27FwGwiyNEKkRVlWu5g6BgaD+KNThmcVGJkmqbEecj7xTc1SxDPWKRU
- TAth597q5wH2KN3T+oJz2KrnOF/3S7pFB5pPmjz24avGm1H8nPiiFG/nNYfgqBAdAbGhIhahe5Z
- KfIVWJtqY4aIOaKTBbzB/qr1w1qqahJDvJRNjEOpJl
-X-Gm-Gg: AY/fxX6SgRBmSoB6+BWWaCWR92XqwguklsRGNBR2s4Kl2Wr9u4HCI8EkwDdpF9YwAkC
- dH6l36Rf9gwwjVeJ+nHUSFmy4xynCCqhEE3TQ4Pm+F6Xk2BFzJ/U8xyxYYnt2orWmWL0h97z2uD
- fgdqnyOwElPKpZT8y1d2PwbWkS923PHNk9qC9rBus8ksk0TWY2wOhv7XsF/MbN4IUMHR6nLhdoT
- DQwmWE79Rs3PeISLQHMVcria5QvkDVeZTo5PsUkZr0aAeq1AEtx++fe3eGADkWk4CJSZ20H0ws0
- 6hIl6NKjxmgMQSTh3JeM19Y++SVKYujPNGdV3EewhwZJEf88vaTxG34q5CCm4m2vqp3xXaOzLBb
- fIw+WkSYmLJgDnlXumNxesDgj1vpwlGhjQBHNQSBESptSdKGWrfTFjL3aOmijg7VebGpXYVfdpn
- LPm6G3qAeo19OUUcQ=
-X-Received: by 2002:a5d:5887:0:b0:431:3bd:3781 with SMTP id
- ffacd0b85a97d-4324e4f935bmr31095525f8f.37.1766829026583; 
- Sat, 27 Dec 2025 01:50:26 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEYrl8cO+x5JXmJo+sTISWxRgHF5g9lJDGpWGrECTfWcTLZXttbEe8zX5Tx71JF0BLQn7vUbg==
-X-Received: by 2002:a5d:5887:0:b0:431:3bd:3781 with SMTP id
- ffacd0b85a97d-4324e4f935bmr31095493f8f.37.1766829026130; 
- Sat, 27 Dec 2025 01:50:26 -0800 (PST)
+ bh=yAqc8N4nPFsDV6Po1paZbP4Wm2G773jg1VYzIMgqmbw=;
+ b=Pvd7DqD6LY/5mvC1TDMaS4ewkaJnQPJ13XJvJ+8g/97UYzmXfIuVsp4/dNT/VKRX4L
+ tfROVQOtl43wVmg+5ZwjgcVAhCZXimmVIdHj9lLfbXdCDwgruYZ8kyQ5F0TuKhcr0uAf
+ wrFshg2nMJjX2bfkNZV60Wk1K7sS/O43KI1ircpIXY0qqS4OXpTvnf11cvtfalx5bNKK
+ 6+vGDr4ClLYUkY7wgTpkjn0sufUy2pnCmFExAk75mqWpAmusbJNOtJIIY6CJnQq57iwm
+ qmCNhrsxQ4FzueU85wgn4EONmD6bo1qhOqHvFBaemY5mdl2Httv8tLkmOoqtuu0RABXT
+ DOzA==
+X-Gm-Message-State: AOJu0YyU3flsUjsqdTcK+v80LPTqH3dhsoG62Jq9bWn1wUCj4NEaRBB5
+ Bxxp14ncKZbX+tUKG32ptkX9I/iK4lfeDVzCtVQFL5mDOnIQltANoMd7s5rZPBOcrDtVtqybCUY
+ 8KLOnai4Sg7+56t3C41hP4NxQF4U0qsfA5Ze4rX4xxRoG58wPYpfbZzEOW6VAmtgmm2OvViBWRH
+ 4bS5mcj43d0CZRB6pHjAXJRfCdapazaRLCGhLISEK9
+X-Gm-Gg: AY/fxX6P2noQ3nJwEJA5WpB4Qng94LV63ysf9LXglQ+Mbq8DUMzAivTdXswnUylITry
+ sQW0ChXP62EPjDXBOFbPrX+PMofhMhwTty1SpnJVHnNnWZjceYxAaXQo5ltP38P5n4Z2N7onyBs
+ U+V5WduYacueJ8BF62O7rpDV8N0JNJr7RJGacHwRnSlOa3VgJLyBSEdyxKF4xXAzbHN9zEyD/VG
+ XzGvTq0km7iUGBNmduiyhWquJ/Q07lg6BhRaYMAA6/p7DPXxepsarjVlQ3C9tSR0rdlS3hiGfzG
+ HYp/1NzcjZCDRV9H7hM3L23ZFFUr1Bb4llnBu86dYUIVfqkg42JEZtMRH3MCLlGQxD9cmsDz2lo
+ ULpBGLJGLCWEKEvStDco7COesvKkW9z4HUiNvzXnVLn0rXneuw74pHNxsC9RPa7PIpCMPJxcoNx
+ 5pRhU4y3BwYEUrbOs=
+X-Received: by 2002:a05:600c:5249:b0:456:1a69:94fa with SMTP id
+ 5b1f17b1804b1-47d1954a128mr286194275e9.13.1766829030424; 
+ Sat, 27 Dec 2025 01:50:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHfT+dEfD1BQJYQ3tYfI/0Xzcu6dnupwv6HNXXKDxnluPDvdhyrO0GUBqAMBoMzUhtkbkP0BA==
+X-Received: by 2002:a05:600c:5249:b0:456:1a69:94fa with SMTP id
+ 5b1f17b1804b1-47d1954a128mr286194065e9.13.1766829029986; 
+ Sat, 27 Dec 2025 01:50:29 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324ea1b1bdsm49214662f8f.8.2025.12.27.01.50.24
+ 5b1f17b1804b1-47d192e88f5sm428352625e9.0.2025.12.27.01.50.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:50:24 -0800 (PST)
+ Sat, 27 Dec 2025 01:50:27 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Farrah Chen <farrah.chen@intel.com>,
- Zide Chen <zide.chen@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 126/153] target/i386/tcg: reuse gen_helper_fp_arith_ST0_FT0 for
- undocumented fcom/fcomp variants
-Date: Sat, 27 Dec 2025 10:47:31 +0100
-Message-ID: <20251227094759.35658-52-pbonzini@redhat.com>
+ Zide Chen <zide.chen@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 127/153] target/i386/tcg: unify more pop/no-pop x87 instructions
+Date: Sat, 27 Dec 2025 10:47:32 +0100
+Message-ID: <20251227094759.35658-53-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -122,54 +122,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For 0x32 hack the op to be fcomp; for the others there isn't even anything special
-to do.
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ target/i386/tcg/translate.c | 54 ++++++++++++++++---------------------
+ 1 file changed, 23 insertions(+), 31 deletions(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 32a371e2d99..cf5e2c158cb 100644
+index cf5e2c158cb..bdaa436feac 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -2777,10 +2777,18 @@ static void gen_x87(DisasContext *s, X86DecodedInsn *decode)
-                 break;
+@@ -2831,46 +2831,62 @@ static void gen_x87(DisasContext *s, X86DecodedInsn *decode)
              }
              break;
-+            /* map to fcomp; op & 7 == 2 would not pop  */
-+            op = 0x03;
-+            /* fallthrough */
-         case 0x00 ... 0x07: /* fxxx st, sti */
-+        case 0x22 ... 0x23: /* fcom2 and fcomp3, undocumented ops */
-+        case 0x32: /* fcomp5, undocumented op */
-             gen_helper_fmov_FT0_STN(tcg_env,
-                                     tcg_constant_i32(opreg));
-             gen_helper_fp_arith_ST0_FT0(op & 7);
+         case 0x1d: /* fucomi */
++        case 0x3d: /* fucomip */
+             if (!(s->cpuid_features & CPUID_CMOV)) {
+                 goto illegal_op;
+             }
+             gen_update_cc_op(s);
+             gen_helper_fmov_FT0_STN(tcg_env, tcg_constant_i32(opreg));
+             gen_helper_fucomi_ST0_FT0(tcg_env);
++            if (op >= 0x30) {
++                gen_helper_fpop(tcg_env);
++            }
+             assume_cc_op(s, CC_OP_EFLAGS);
+             break;
+         case 0x1e: /* fcomi */
++        case 0x3e: /* fcomip */
+             if (!(s->cpuid_features & CPUID_CMOV)) {
+                 goto illegal_op;
+             }
+             gen_update_cc_op(s);
+             gen_helper_fmov_FT0_STN(tcg_env, tcg_constant_i32(opreg));
+             gen_helper_fcomi_ST0_FT0(tcg_env);
++            if (op >= 0x30) {
++                gen_helper_fpop(tcg_env);
++            }
+             assume_cc_op(s, CC_OP_EFLAGS);
+             break;
+         case 0x28: /* ffree sti */
++        case 0x38: /* ffreep sti, undocumented op */
+             gen_helper_ffree_STN(tcg_env, tcg_constant_i32(opreg));
 +            if (op >= 0x30) {
 +                gen_helper_fpop(tcg_env);
 +            }
              break;
- 
-         case 0x20: case 0x21: case 0x24 ... 0x27: /* fxxx sti, st */
-@@ -2790,16 +2798,6 @@ static void gen_x87(DisasContext *s, X86DecodedInsn *decode)
-                 gen_helper_fpop(tcg_env);
+         case 0x2a: /* fst sti */
+-            gen_helper_fmov_STN_ST0(tcg_env, tcg_constant_i32(opreg));
+-            break;
+         case 0x2b: /* fstp sti */
+         case 0x0b: /* fstp1 sti, undocumented op */
+         case 0x3a: /* fstp8 sti, undocumented op */
+         case 0x3b: /* fstp9 sti, undocumented op */
+             gen_helper_fmov_STN_ST0(tcg_env, tcg_constant_i32(opreg));
+-            gen_helper_fpop(tcg_env);
++            if (op != 0x2a) {
++                gen_helper_fpop(tcg_env);
++            }
+             break;
+         case 0x2c: /* fucom st(i) */
+-            gen_helper_fmov_FT0_STN(tcg_env, tcg_constant_i32(opreg));
+-            gen_helper_fucom_ST0_FT0(tcg_env);
+-            break;
+         case 0x2d: /* fucomp st(i) */
+             gen_helper_fmov_FT0_STN(tcg_env, tcg_constant_i32(opreg));
+             gen_helper_fucom_ST0_FT0(tcg_env);
+-            gen_helper_fpop(tcg_env);
++            if (op == 0x2d) {
++                gen_helper_fpop(tcg_env);
++            }
+             break;
+         case 0x33: /* de/3 */
++	    /*
++	     * TODO: does 0x32 also have the same limitation of requiring
++	     * rm == 1?  If so, worth bundling it here and switch the fcom
++	     * helper to gen_helper_fp_arith_ST0_FT0(op & 7).
++	     */
+             switch (rm) {
+             case 1: /* fcompp */
+                 gen_helper_fmov_FT0_STN(tcg_env, tcg_constant_i32(1));
+@@ -2882,10 +2898,6 @@ static void gen_x87(DisasContext *s, X86DecodedInsn *decode)
+                 goto illegal_op;
              }
              break;
--        case 0x22: /* fcom2, undocumented op */
--            gen_helper_fmov_FT0_STN(tcg_env, tcg_constant_i32(opreg));
--            gen_helper_fcom_ST0_FT0(tcg_env);
--            break;
--        case 0x23: /* fcomp3, undocumented op */
--        case 0x32: /* fcomp5, undocumented op */
--            gen_helper_fmov_FT0_STN(tcg_env, tcg_constant_i32(opreg));
--            gen_helper_fcom_ST0_FT0(tcg_env);
+-        case 0x38: /* ffreep sti, undocumented op */
+-            gen_helper_ffree_STN(tcg_env, tcg_constant_i32(opreg));
 -            gen_helper_fpop(tcg_env);
 -            break;
-         case 0x15: /* da/5 */
+         case 0x3c: /* df/4 */
              switch (rm) {
-             case 1: /* fucompp */
+             case 0:
+@@ -2897,26 +2909,6 @@ static void gen_x87(DisasContext *s, X86DecodedInsn *decode)
+                 goto illegal_op;
+             }
+             break;
+-        case 0x3d: /* fucomip */
+-            if (!(s->cpuid_features & CPUID_CMOV)) {
+-                goto illegal_op;
+-            }
+-            gen_update_cc_op(s);
+-            gen_helper_fmov_FT0_STN(tcg_env, tcg_constant_i32(opreg));
+-            gen_helper_fucomi_ST0_FT0(tcg_env);
+-            gen_helper_fpop(tcg_env);
+-            assume_cc_op(s, CC_OP_EFLAGS);
+-            break;
+-        case 0x3e: /* fcomip */
+-            if (!(s->cpuid_features & CPUID_CMOV)) {
+-                goto illegal_op;
+-            }
+-            gen_update_cc_op(s);
+-            gen_helper_fmov_FT0_STN(tcg_env, tcg_constant_i32(opreg));
+-            gen_helper_fcomi_ST0_FT0(tcg_env);
+-            gen_helper_fpop(tcg_env);
+-            assume_cc_op(s, CC_OP_EFLAGS);
+-            break;
+         case 0x10 ... 0x13: /* fcmovxx */
+         case 0x18 ... 0x1b:
+             {
 -- 
 2.52.0
 
