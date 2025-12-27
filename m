@@ -2,97 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84595CDF692
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:49:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD7A3CDF709
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:52:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQuq-0002kf-0O; Sat, 27 Dec 2025 04:48:52 -0500
+	id 1vZQus-000361-MR; Sat, 27 Dec 2025 04:48:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQug-0002JT-Au
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:43 -0500
+ id 1vZQui-0002O7-7P
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:45 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQuY-0006uH-PQ
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:38 -0500
+ id 1vZQud-0006uZ-C9
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766828913;
+ s=mimecast20190719; t=1766828916;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7kUTlFc/KJPLVMSA/F+IBTx3RR6lGmvUqShGXuIbKbE=;
- b=MJ29P42eqY6y6E94et2DoAtLhh5YamRYCIJmgJypeG1w9POhZZZYGwJeouVCorT+rS7Zwj
- LMdYtAFZS84oTE2omVVPPwtg5hQ7+YoZiJjiZHH3ov/nIeWEEZdzV0TxFt3HqDlHky1Vcf
- 0V5XSMkfJLX5gXj5g4LCgnbE2H+RyRU=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=B1NClWp8k93LnwznfnQ9F9fegAQxKZaohNu9b81EugQ=;
+ b=M62RSQuoIQBkxMckx0nbBdQjon5MJRz0cyT1LxXA31aj87gzFW97j+OcUSbpN0aqr9Nd5m
+ pXw2HDt68eTWR/ftcTRZaw+E1BEYhQMLPmeOsg902zZtQ0GSfrDsd0uHbe5+DHml74Ss+/
+ +8i7vTHp346Wxe+4/8scDhTrs7f+cMg=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-649-ItGvtA1iPr6XGiyd2aB90A-1; Sat, 27 Dec 2025 04:48:32 -0500
-X-MC-Unique: ItGvtA1iPr6XGiyd2aB90A-1
-X-Mimecast-MFC-AGG-ID: ItGvtA1iPr6XGiyd2aB90A_1766828911
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4779d8fd4ecso39606675e9.1
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:48:32 -0800 (PST)
+ us-mta-177-WvQ_x1cHOEac6ync84v1YQ-1; Sat, 27 Dec 2025 04:48:35 -0500
+X-MC-Unique: WvQ_x1cHOEac6ync84v1YQ-1
+X-Mimecast-MFC-AGG-ID: WvQ_x1cHOEac6ync84v1YQ_1766828914
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-43284edbbc8so552062f8f.0
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:48:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766828910; x=1767433710; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766828913; x=1767433713; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7kUTlFc/KJPLVMSA/F+IBTx3RR6lGmvUqShGXuIbKbE=;
- b=rB+k8Y9gZ8ItI4qGHfSNFQhIwhulwhf6fCei/ULRqqC2v7t0LDlkiE+h9otILIczIS
- yQjFInlZwYIBlAbfwXzvHHmcx7ELxWzEN+StxYTFrBcsNjlK2yBlbc6974f0YEx7sR8W
- ugRgQVjfFwB4JR3LzfZvfD2k/f34vIC0ly0RomMj87++RlC/M4YemSzM35p6Z+oSHd8T
- sgiu9u+/AA14oBliHGc0UnCzJ4ON8G6rZss7Oi4CX0BI/NH16dP+C5SgCUTpRhwAhLLi
- T67hk8QZDVkw4BmSUeVpt5rBCqjHtGfvJ5sb9lMF0uUq+eW39HO86xZbschd1tTAPkBU
- sIkQ==
+ bh=B1NClWp8k93LnwznfnQ9F9fegAQxKZaohNu9b81EugQ=;
+ b=fqIJgrse+35In4vMrfBPzECKXsAN6mshjvcNbOJmZ0Grr8Bh2kQLHd2WT+GXbmJXi5
+ lbuZL8v3zLajZBC5XvDGmNqwiCU+z9RV/Bjq2lUqAGoPfs6sZfiv1e+ERLedp74rEPAg
+ g5lV7WFO6bGWGczNQ3xrY28M1x35R6CDjKIvqfAbLWUZtsI07EqJfctHMTZIA9CrpvW0
+ SPeC3oDVClyhbM0Z3jTRvAjF/dyk5IoJjYltNCtqw6bCqU1KcdNdxRu7ntqJmVWgN6AL
+ UVkU8jZusDCFoJlez31Xy4MGajbw8ezNMmyRwCbLuvzMN/VWojf5TdJA65C9zwPlUUGA
+ j8eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766828910; x=1767433710;
+ d=1e100.net; s=20230601; t=1766828913; x=1767433713;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=7kUTlFc/KJPLVMSA/F+IBTx3RR6lGmvUqShGXuIbKbE=;
- b=KE5ZJKYQvTZnLTTNIBt/Fy0upHBwJ8mfYHmjJ7IdSZ9P1Xg2KuBAVFos51SM7dPikG
- 7b9gAb85uUQXpzaoeeuA3k66ekiwsE3jARSleWh4Ls5ob25L8AyC1Y1m35ljDUhcWFQh
- uMcmyt9EcIpP35UdeWPJjLAYkMBjpOZ8tu/i9P11Ej4GYhqw6uHDKlJ6yodGrcmJG4/P
- FAFWPRczIG74XC0WKm5Lg+eHbAW8tHQpg+RVYYBivXuI3q/CNdm5zNfGugkUr9HVrmYa
- LAH4gT8cUq1E/DDwBCvdjOrx56Cg1mzemQh1PLa/RLOJdxohrblXfwpifNeXnSxiLy3k
- Jyow==
-X-Gm-Message-State: AOJu0Yxf+YMcWeWSvzbT+5W6Y5emF4rxSQy/xdal5XG9iJd5QwZ8Ioyk
- A5jDA3lIt7U7LdOEUwU8zGxaITbje18oF/oQIGcMqFqByyjacJiEYlJYyyBV4jVAg4DIX7346rl
- MYsXsKHUZSHKfXqVv+nlBZVZUhtVjnqbwgodzYYnvdo4b8+jAghs3H6nTWycq/I3hTbEqGHonpS
- bo5wpJ4dGZMzdA1z2UY8EWcm2nFmHQeRB12QKYybwk
-X-Gm-Gg: AY/fxX449KFjc48ECj3HEpuNA8k/s2qgmD/UQGwj/CFNjHPLB59DqxmCDOwR18nZyZ8
- wq7HJ+rJ7Wmg3G0ZMY8Pp19b+dD483vjkRTFA9m/mx0e3NlcDQVTIFOHwCmvrMPm9Gg1/kxMvFS
- UwfoyO1P+jeXEMq5mZSIv19SrT9tcizAkjhtGEFBZcyavcINqr9pl4cvj2oUeSU1Wpwwk7DRnlV
- niNcALWbBPaxkG16UWvN6k9lwJJvTXO4zh/6IBfTWyDlm78nHi6TZ8ha1xzhfDHe0slLHOZaUPy
- QNbGIPhucF0yUxmNlV0TT4Cz0OZskzBIl0h050F/eBh5fUFsLHbVmky98v3JIz60M7A9J8dye6k
- TB2rckYOBAvQByg4sb0K8dj3taRccH61T3ljMMZdW4Iu0IT7NRQAFsvCDjHTlkXzyxLI4Ug29I1
- GYTKC851r6zueCArk=
-X-Received: by 2002:a05:600c:6749:b0:471:665:e688 with SMTP id
- 5b1f17b1804b1-47d18be89d5mr355281155e9.17.1766828910369; 
- Sat, 27 Dec 2025 01:48:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGbP2AxT+3667TzgfRbqvGgsFSYVTqZOkF4PeOGmaf9Tht4pzv7keNxhKWdJCMQ0OHwpwivZg==
-X-Received: by 2002:a05:600c:6749:b0:471:665:e688 with SMTP id
- 5b1f17b1804b1-47d18be89d5mr355280895e9.17.1766828909941; 
- Sat, 27 Dec 2025 01:48:29 -0800 (PST)
+ bh=B1NClWp8k93LnwznfnQ9F9fegAQxKZaohNu9b81EugQ=;
+ b=UwSQj8TG0hUb6nH2Kc/mES/u4w6m5OYB5ZBQAD9ahkrGc91fntI3YlxFWrMdkW5GpZ
+ fqNaog/a0k5uC5Zxwmcrvt8iRY1RpanREP670wOqxrFtxIO374YzrEl6gc1hotJGy1j0
+ joHmX8ZU8+DrJeQS4un/OkaNWbKOP38yb5IPdwatdmoqyUXUoTd0tZJ82i//ZVUoMoWe
+ vJv9mvbkLJu8xc0pECA2V80gw+5zBwetGsUv6PEmNNHTozskillecpDGWfgSwLUNTbYp
+ tj4L2jvKcAtovkb9cYCa88hwihkSRHRghVjYUmnN8spp97pF9A+S8Ho18RDkDzjqBQ7N
+ 7jgw==
+X-Gm-Message-State: AOJu0YzmdFPImNsW4R3A5hHwo1tHPlX1Ip0I71Jk2ITPxbMUbwOMqpLc
+ 3GvPBOPyqRkdoh5p5qE1AfjDDlhrH6YesGn/Axz9FkvSKqEeiCiF3m9HzaCDkAcUyXZA8m2Frvb
+ s74aicm4tbNh+Hej1muAn8C3KhXKYQCCiE1pTfYk6kWaS6rS7K49EByZkr6MfGNkK3Oev9wp6YH
+ vuJBQDd28Uo7YkNZOSJ6Wro3QtYq15HJV0r0Czm/+N
+X-Gm-Gg: AY/fxX70YCj25Rl8KJ5b3VvD94PsExTRjhgzgFczGvVulBpVl9jFTfkHC7N4I9yCqW2
+ RrDsFE4q3dtY4FU77iHT3r1ghRnUEHNuI/+Byhg/jjAHYOiJTO39aG7hPmG2Joh6cTA54z13fBf
+ 1lNQmAMSRKW4j4ImG+aU1HtHuYEuoLwRgXOr+8HUxWGqidTz+OXsFHX1zhWkaSPpTNaU9XyGutA
+ 1XGDs86vzGkQn0F6OluzU5+N7+iFnJYgTGCITc0bO2iAef0vbWojVqgMDcFeqWbmwuy7olzaACI
+ v6ooG7y5RqRuwGFlqI0gl9AZKvXmnj8dwOagbHl2ckaGCijoRd136bJmVS9iqPvJQ9HsIfYRjWS
+ iwv03kRSeaHCeICUinU1RxsskU2SNoh7gz/xJgnomBUTKSoN4/RGA68mneRwzJyTiNtmhP/DMOh
+ v73wOLpC/XjR41K+I=
+X-Received: by 2002:adf:b605:0:b0:432:7d2a:2be4 with SMTP id
+ ffacd0b85a97d-4327d2a2d3dmr7559583f8f.60.1766828912963; 
+ Sat, 27 Dec 2025 01:48:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFiV9bpbN4q8ShhY/lYm9lf1k9/TfLV68VC/9arPx+AxLNQKsN/4pdCOsCKwDeCUGUdNBb5hA==
+X-Received: by 2002:adf:b605:0:b0:432:7d2a:2be4 with SMTP id
+ ffacd0b85a97d-4327d2a2d3dmr7559559f8f.60.1766828912397; 
+ Sat, 27 Dec 2025 01:48:32 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324ea1aee5sm51008526f8f.4.2025.12.27.01.48.28
+ ffacd0b85a97d-4324ea227casm50084695f8f.15.2025.12.27.01.48.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:48:28 -0800 (PST)
+ Sat, 27 Dec 2025 01:48:31 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Farrah Chen <farrah.chen@intel.com>,
  Zide Chen <zide.chen@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- "Xin Li (Intel)" <xin@zytor.com>
-Subject: [PULL 088/153] i386/cpu: Migrate MSR_IA32_PL0_SSP for FRED and
- CET-SHSTK
-Date: Sat, 27 Dec 2025 10:46:53 +0100
-Message-ID: <20251227094759.35658-14-pbonzini@redhat.com>
+ Yang Weijiang <weijiang.yang@intel.com>, Chao Gao <chao.gao@intel.com>
+Subject: [PULL 089/153] i386/machine: Add vmstate for cet-shstk and cet-ibt
+Date: Sat, 27 Dec 2025 10:46:54 +0100
+Message-ID: <20251227094759.35658-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
@@ -123,63 +122,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Xin Li (Intel)" <xin@zytor.com>
+From: Yang Weijiang <weijiang.yang@intel.com>
 
-Both FRED and CET-SHSTK need MSR_IA32_PL0_SSP, so add the vmstate for
-this MSR.
-
-When CET-SHSTK is not supported, MSR_IA32_PL0_SSP keeps accessible, but
-its value doesn't take effect. Therefore, treat this vmstate as a
-subsection rather than a fix for the previous FRED vmstate.
+Add vmstates for cet-shstk and cet-ibt
 
 Tested-by: Farrah Chen <farrah.chen@intel.com>
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Signed-off-by: Yang Weijiang <weijiang.yang@intel.com>
+Co-developed-by: Chao Gao <chao.gao@intel.com>
+Signed-off-by: Chao Gao <chao.gao@intel.com>
 Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20251211060801.3600039-17-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20251211060801.3600039-18-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/machine.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ target/i386/machine.c | 52 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
 diff --git a/target/i386/machine.c b/target/i386/machine.c
-index 45b7cea80aa..bf13f7f0f66 100644
+index bf13f7f0f66..57a968c30db 100644
 --- a/target/i386/machine.c
 +++ b/target/i386/machine.c
-@@ -1668,6 +1668,28 @@ static const VMStateDescription vmstate_triple_fault = {
+@@ -1690,6 +1690,57 @@ static const VMStateDescription vmstate_pl0_ssp = {
      }
  };
  
-+static bool pl0_ssp_needed(void *opaque)
++static bool shstk_needed(void *opaque)
 +{
 +    X86CPU *cpu = opaque;
++    CPUX86State *env = &cpu->env;
 +
-+    /*
-+     * CPUID_7_1_EAX_FRED and CPUID_7_0_ECX_CET_SHSTK are checked because
-+     * if all of these bits are zero and the MSR will not be settable.
-+     */
-+    return !!(cpu->env.pl0_ssp);
++    return !!(env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_CET_SHSTK);
 +}
 +
-+static const VMStateDescription vmstate_pl0_ssp = {
-+    .name = "cpu/msr_pl0_ssp",
++static const VMStateDescription vmstate_shstk = {
++    .name = "cpu/cet_shstk",
 +    .version_id = 1,
 +    .minimum_version_id = 1,
-+    .needed = pl0_ssp_needed,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT64(env.pl0_ssp, X86CPU),
++    .needed = shstk_needed,
++    .fields = (VMStateField[]) {
++        /* pl0_ssp has been covered by vmstate_pl0_ssp. */
++        VMSTATE_UINT64(env.pl1_ssp, X86CPU),
++        VMSTATE_UINT64(env.pl2_ssp, X86CPU),
++        VMSTATE_UINT64(env.pl3_ssp, X86CPU),
++#ifdef TARGET_X86_64
++        VMSTATE_UINT64(env.int_ssp_table, X86CPU),
++#endif
++        VMSTATE_UINT64(env.guest_ssp, X86CPU),
 +        VMSTATE_END_OF_LIST()
 +    }
++};
++
++static bool cet_needed(void *opaque)
++{
++    X86CPU *cpu = opaque;
++    CPUX86State *env = &cpu->env;
++
++    return !!((env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_CET_SHSTK) ||
++              (env->features[FEAT_7_0_EDX] & CPUID_7_0_EDX_CET_IBT));
++}
++
++static const VMStateDescription vmstate_cet = {
++    .name = "cpu/cet",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = cet_needed,
++    .fields = (VMStateField[]) {
++        VMSTATE_UINT64(env.u_cet, X86CPU),
++        VMSTATE_UINT64(env.s_cet, X86CPU),
++        VMSTATE_END_OF_LIST()
++    },
++    .subsections = (const VMStateDescription * const []) {
++        &vmstate_shstk,
++        NULL,
++    },
 +};
 +
  const VMStateDescription vmstate_x86_cpu = {
      .name = "cpu",
      .version_id = 12,
-@@ -1817,6 +1839,7 @@ const VMStateDescription vmstate_x86_cpu = {
- #endif
+@@ -1840,6 +1891,7 @@ const VMStateDescription vmstate_x86_cpu = {
          &vmstate_arch_lbr,
          &vmstate_triple_fault,
-+        &vmstate_pl0_ssp,
+         &vmstate_pl0_ssp,
++        &vmstate_cet,
          NULL
      }
  };
