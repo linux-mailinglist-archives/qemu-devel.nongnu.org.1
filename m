@@ -2,108 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA15ACDF5E3
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:20:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AE6DCDF663
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:25:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQRp-0000gV-Te; Sat, 27 Dec 2025 04:18:53 -0500
+	id 1vZQRs-0000zg-5a; Sat, 27 Dec 2025 04:18:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQRn-0000TV-Iu
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vZQRp-0000i0-Lz
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQRl-0004QV-16
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:51 -0500
+ id 1vZQRn-0004Sm-QK
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766827128;
+ s=mimecast20190719; t=1766827131;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=q/vVrG06Rr5jifGh9xz0OwdmLw8dMRsZZ4hi+JD78cQ=;
- b=Wf/4VmpNMY5j4TIUeZekBSnuqYi74Py3RF7JZQmBuUOAIUZhEotIYViw4h+5dXBYxyuI2m
- UyyTq3skEZgbcccE2e7LY6vcFXr7KsAcBzuQbsiiszia+kP+fOkVdytHsXdKn6+K/gjFDG
- itzzbbU4i7Dxp5vkrnqWu8PLw/y7Gd8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=QLDG/mu3345byp5m3TmLYz4W6m4rlJhi1efMLR5uavA=;
+ b=WfWvrBKKoiRKjhqLzziS3ZxMtDVFCoPJmsCUySXDBUl4lehsaER+HXz25VaQmTLTSF6+/u
+ bco3sFNVr/rqWWjEuSba/zJ9RujSIL0b48rEum68eWuV64SZhbsuAIEsQpJyHe9qetteBo
+ AyGsPDbvwIWz3t8XIZDf+1JW6qjKUSI=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-596-_oAY5Rt3OGCl9x54apX3fg-1; Sat, 27 Dec 2025 04:18:46 -0500
-X-MC-Unique: _oAY5Rt3OGCl9x54apX3fg-1
-X-Mimecast-MFC-AGG-ID: _oAY5Rt3OGCl9x54apX3fg_1766827125
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-477cf2230c8so77995135e9.0
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:18:46 -0800 (PST)
+ us-mta-523-ZC1FiFcUN228m1Z-M_oWhA-1; Sat, 27 Dec 2025 04:18:49 -0500
+X-MC-Unique: ZC1FiFcUN228m1Z-M_oWhA-1
+X-Mimecast-MFC-AGG-ID: ZC1FiFcUN228m1Z-M_oWhA_1766827128
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4776079ada3so70687555e9.1
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:18:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766827125; x=1767431925; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766827127; x=1767431927; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=q/vVrG06Rr5jifGh9xz0OwdmLw8dMRsZZ4hi+JD78cQ=;
- b=ftmQDcLPk5X8gjdX94+AIjM4qQpZhrvVV4wKCJ8NxPRRJ1YFc6poiwyObYjjg2o6v+
- eEFgDhlQl0npkcC5mvXVeIfWVXbTqYN/eFJcSCHP6MXW2Xef7XPxsffNADN2NDeoFrdG
- 9wtRst/31edmY/XeJCo2rTja82LrqOacLAUGLKb+F6QgslUP/5Iv38I8o4FsW4qs2HSc
- hpQwPzIItXv8eTq5AU520j/k/g1qf+2OY1d6LdbbzbCuzgvBUFHwXgzPj0NrtpqTraK5
- xJymHsdYM2npV6ufDTf5R3B2jmepHpaOWLCPr9A39J5o4w14lFhDWaCstJv0+a+zRD8d
- 4IZQ==
+ bh=QLDG/mu3345byp5m3TmLYz4W6m4rlJhi1efMLR5uavA=;
+ b=Y4mdILSYdtLcCDEiEI7gAY6RTzNad790/492qD/FMPC8xHX3FTpGIoEf4NKX+v0Sf/
+ EZoTZKsfAL+Z8aEvKYlVqWcYxrPUMxER3Se7ALwndU6deV/v9+2vofV2B6h02skAqDLc
+ cK6Atebdg0fO9Mkw08KE2oVCs0IVh0Dwx6ThSvdCIJcugdh+EZ6o625BBUa1pNlThywH
+ bCGI7iTgY2LVPyeNESVZf/OLzRV/+hqScztIFyXFmSu9U/jhJ/9+eyi984Qh2sLpYALD
+ DN5BbqKMbZ/lW6akwoIj4q31McKbVpdBigmuTzw0Cb10Cxcm6aU4eKDvsASG5X3HiCkg
+ boRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766827125; x=1767431925;
+ d=1e100.net; s=20230601; t=1766827127; x=1767431927;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=q/vVrG06Rr5jifGh9xz0OwdmLw8dMRsZZ4hi+JD78cQ=;
- b=v3MB5rdKrF/38q5c0Nd/forJlbfVn1SrzR3NnfLVoQmhxP3+DfTT/msqnQ7gMKKyoL
- CzxrM3s4LK6PP1zbAI+sCviSTnERtuxiswYpLDw6b997HNqDKH90WtTwLDx4fXnmgJ14
- QTrqmlECp1o4r3jzQpMooH9p2JA5JUridYuGq1Z6hs1QP+6t43A5r1T47d/4NOwySRMR
- yQfeCIT0Udp7RVrqR5AklCt45R18Q/fV/vEHUA4ljGeS413NihcFuKPxaYpnsQCJUBW2
- f4OLVKI2Y9yMd8tcTA2KvTy0A7TA9Z4s75UKoXPXFsLxemTLbg38zV53PrUoGmZ1AOOi
- kIPA==
-X-Gm-Message-State: AOJu0Yyw9Y+CvTfx1aiV7I9XIUUGxLmWPh5ePv554HHsuA3UiFJGVjGd
- 4ptA550/M4Zj+g2c53wmECE/g6Khg1Ii5WTprRnQHNra5ZIU4FFGmvEHUvEYlOGIBLPXUeMGKod
- C92bu/cu6kuIbWCqKoFh0sXQbw242Qd1Lv1TehoRMl7gI2BA3dIAPnTJHa7dBay0Un/bKv1fdWB
- OyOam7Gq4Uo3l6052sP+AOGtfb2Yy8ROX2whgN5Uxt
-X-Gm-Gg: AY/fxX5ZHjDFTBphrOMsc0LR9WHtcjs8z05cNW3LEWcjpkcLURjn229u1dcvJXVTJ5Q
- amkReP+D3wmcLPPL7Fnsv48HGCmvsp9FinHIwhF1351EtiArV89OD3gXSh1IiM9LpJWKy5JTny0
- 74kLXVDZIpkRUz8dUmjbxhBAih2dDGHxi1nBY0f5r8a2K1Ay+Z42i5GWrcfJmdtu7CvkLY+M/fH
- tta8XD7/PlCMQbMcA6y97fD/uos2oWy7oq4RKumSweLt2he3azoclXasHWDYmdDEf9u4HYybP9C
- B5nw1HCK+Ucp2qlfqY59o5ycJuKFYexSsV8XGlXqqnZ9u6IBbq8LtRJEpkWoyxH80H8gApb0Ae8
- zIKtxhK3ZHt2KYC0Vvs2RycfVHeL/fK6Iw1icfdUSyLXvkPZFsydWtw6stTLyKuTjBBaTZlEfo1
- kpacY8LZv2HmEl0Fs=
-X-Received: by 2002:a05:600c:4e01:b0:477:9574:d641 with SMTP id
- 5b1f17b1804b1-47d1957f712mr294941535e9.22.1766827124938; 
- Sat, 27 Dec 2025 01:18:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFH7My0YJ6bXCTbKrST8rl6I8SJ6atVJZTu3q3CZYRAf3RAlVIHeJXxU7AQ4iNTDpUlseRgDA==
-X-Received: by 2002:a05:600c:4e01:b0:477:9574:d641 with SMTP id
- 5b1f17b1804b1-47d1957f712mr294941295e9.22.1766827124444; 
- Sat, 27 Dec 2025 01:18:44 -0800 (PST)
+ bh=QLDG/mu3345byp5m3TmLYz4W6m4rlJhi1efMLR5uavA=;
+ b=l0exxbPbbCnkdW1BtQY311sOxolqItQhrEq+Ayga6nyRINu9PZ6jFpb2WnqvZMBMlO
+ JpAwY64HopNaxT2cAKr3i2pp6nR7qoY1BVWLopBIG1cBw7q39dU+IiXW8FMZ8jG5Mzol
+ ngwuB0qKk0F385GeR1dvZNjsjuse1tcYcndfTztWkYpyeKorH3H6RdTILvw+7vFu0JNY
+ NxUgKEGLhyNTAmrV9ipi2w6Yfjt5iAsx+c48+N4UkQFjj1eazW5zEboVpz3IKWNwqW1K
+ MDRD/SsWkYdFz79j9VgLk4Nqii+W/oJqlKjSn7FBTTK3Bavjhzx7y32Q++bBuQVHwXo2
+ LuYQ==
+X-Gm-Message-State: AOJu0YzAGF7u85XY21h0KHh+wnGlvptZVAFQbbk6R1eAIP36b8Ne+Iq2
+ 49Vs68HtvQls14rYNOdUTjQytq0+M0TKnZdVyAWe18UjelkRcgTSYBei+gyIIw+H7BVR+8PalLf
+ CINqkl8fUkEFrgkDq/a93FKNOcRrx1W1sefU2V2Xkke9QyLVRjxuXQnDXhhPxCP3TGpQy7zG6LP
+ seFoNCF0YQOAn78ju2Hb0TaDxswGq7OZuSA+2geR5C
+X-Gm-Gg: AY/fxX5WvfC0Ky0jx8wSicGChBlx1Wry05/IpCsSVuZdNz+NGKiSmeeGI+W3H/cTzXM
+ W0F486oLKATGqXnSuipt/9BYSRcDUN9rM6E/pl1AGsqy9XKhUZz/e9gs658hBcfdhzafNGOE2MS
+ najUzZ9GIY61Sl9UiaO0Mw+1ECFmUBhim8Q3+7EZpPgDJmXQIUZrJ38Qa25xmpvWrJESb/1cGs4
+ UzqoyiOExKbjoKYHxquqYNzzd1TC1f5CzAWNV/315hxjrgRrJiw/CRBqH04bkp61psZR52Rl6we
+ 7bC5c/LFgMngTVFIHAtOqtRKEjBoLu7V+PBKYusthLc46+pIJbt6RRtzf6uwQeBaE7hNqHtEaPM
+ xK4FW8PINqKCYM7gfGxeoEkN26+Gn/NLpzb6UDa2MEFFxV0Buqf9ydhJdXuWg0uiksKR5+z6Img
+ d0n8+tO6YC5WaxTQQ=
+X-Received: by 2002:a05:600d:4453:10b0:47d:2093:649f with SMTP id
+ 5b1f17b1804b1-47d2093660fmr182024115e9.8.1766827127220; 
+ Sat, 27 Dec 2025 01:18:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHROktWE4utAdCy0tq+mXNPChgtU/N53C/k2gSXjy+OGJVISmWCDeT5VAAMQEhg4v8zH3O61g==
+X-Received: by 2002:a05:600d:4453:10b0:47d:2093:649f with SMTP id
+ 5b1f17b1804b1-47d2093660fmr182023915e9.8.1766827126727; 
+ Sat, 27 Dec 2025 01:18:46 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324ea1b36fsm49744289f8f.5.2025.12.27.01.18.43
+ 5b1f17b1804b1-47d193cba81sm426762775e9.10.2025.12.27.01.18.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:18:43 -0800 (PST)
+ Sat, 27 Dec 2025 01:18:45 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
- Julian Andres Klode <jak@jak-linux.org>
-Subject: [PULL 072/153] qemu-options.hx: Document -M as -machine alias
-Date: Sat, 27 Dec 2025 10:14:59 +0100
-Message-ID: <20251227091622.20725-73-pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>, Farrah Chen <farrah.chen@intel.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: [PULL 073/153] i386/cpu: Clean up indent style of x86_ext_save_areas[]
+Date: Sat, 27 Dec 2025 10:15:00 +0100
+Message-ID: <20251227091622.20725-74-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -121,60 +121,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Dr. David Alan Gilbert" <dave@treblig.org>
+From: Zhao Liu <zhao1.liu@intel.com>
 
--M is used heavily in documentation and scripts, but isn't actually
-documented anywhere.
+The indentation style in `x86_ext_save_areas[]` is extremely
+inconsistent. Clean it up to ensure a uniform style.
 
-Document it as equivalent to -machine, also moving to -machine the sole
-suboption that was documented under -M.
-
-Reported-by: Julian Andres Klode <jak@jak-linux.org>
-Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
-Link: https://lore.kernel.org/r/20251203131511.153460-1-dave@treblig.org
+Tested-by: Farrah Chen <farrah.chen@intel.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Link: https://lore.kernel.org/r/20251211060801.3600039-2-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- qemu-options.hx | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ target/i386/cpu.c | 58 +++++++++++++++++++++++++++--------------------
+ 1 file changed, 33 insertions(+), 25 deletions(-)
 
-diff --git a/qemu-options.hx b/qemu-options.hx
-index fca2b7bc74f..ec92723f10d 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -44,6 +44,7 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
- #endif
-     "                memory-backend='backend-id' specifies explicitly provided backend for main RAM (default=none)\n"
-     "                cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity]\n"
-+    "                sgx-epc.0.memdev=memid,sgx-epc.0.node=numaid\n"
-     "                smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel\n",
-     QEMU_ARCH_ALL)
- SRST
-@@ -179,6 +180,9 @@ SRST
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index fe52538723b..a1de82b92c7 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -2028,38 +2028,46 @@ ExtSaveArea x86_ext_save_areas[XSAVE_STATE_AREA_COUNT] = {
+         .feature = FEAT_1_ECX, .bits = CPUID_EXT_XSAVE,
+         .size = sizeof(X86LegacyXSaveArea) + sizeof(X86XSaveHeader),
+     },
+-    [XSTATE_YMM_BIT] =
+-          { .feature = FEAT_1_ECX, .bits = CPUID_EXT_AVX,
+-            .size = sizeof(XSaveAVX) },
+-    [XSTATE_BNDREGS_BIT] =
+-          { .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_MPX,
+-            .size = sizeof(XSaveBNDREG)  },
+-    [XSTATE_BNDCSR_BIT] =
+-          { .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_MPX,
+-            .size = sizeof(XSaveBNDCSR)  },
+-    [XSTATE_OPMASK_BIT] =
+-          { .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
+-            .size = sizeof(XSaveOpmask) },
+-    [XSTATE_ZMM_Hi256_BIT] =
+-          { .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
+-            .size = sizeof(XSaveZMM_Hi256) },
+-    [XSTATE_Hi16_ZMM_BIT] =
+-          { .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
+-            .size = sizeof(XSaveHi16_ZMM) },
+-    [XSTATE_PKRU_BIT] =
+-          { .feature = FEAT_7_0_ECX, .bits = CPUID_7_0_ECX_PKU,
+-            .size = sizeof(XSavePKRU) },
++    [XSTATE_YMM_BIT] = {
++        .feature = FEAT_1_ECX, .bits = CPUID_EXT_AVX,
++        .size = sizeof(XSaveAVX),
++    },
++    [XSTATE_BNDREGS_BIT] = {
++        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_MPX,
++        .size = sizeof(XSaveBNDREG),
++    },
++    [XSTATE_BNDCSR_BIT] = {
++        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_MPX,
++        .size = sizeof(XSaveBNDCSR),
++    },
++    [XSTATE_OPMASK_BIT] = {
++        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
++        .size = sizeof(XSaveOpmask),
++    },
++    [XSTATE_ZMM_Hi256_BIT] = {
++        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
++        .size = sizeof(XSaveZMM_Hi256),
++    },
++    [XSTATE_Hi16_ZMM_BIT] = {
++        .feature = FEAT_7_0_EBX, .bits = CPUID_7_0_EBX_AVX512F,
++        .size = sizeof(XSaveHi16_ZMM),
++    },
++    [XSTATE_PKRU_BIT] = {
++        .feature = FEAT_7_0_ECX, .bits = CPUID_7_0_ECX_PKU,
++        .size = sizeof(XSavePKRU),
++    },
+     [XSTATE_ARCH_LBR_BIT] = {
+-            .feature = FEAT_7_0_EDX, .bits = CPUID_7_0_EDX_ARCH_LBR,
+-            .offset = 0 /*supervisor mode component, offset = 0 */,
+-            .size = sizeof(XSavesArchLBR) },
++        .feature = FEAT_7_0_EDX, .bits = CPUID_7_0_EDX_ARCH_LBR,
++        .offset = 0 /*supervisor mode component, offset = 0 */,
++        .size = sizeof(XSavesArchLBR),
++    },
+     [XSTATE_XTILE_CFG_BIT] = {
+         .feature = FEAT_7_0_EDX, .bits = CPUID_7_0_EDX_AMX_TILE,
+         .size = sizeof(XSaveXTILECFG),
+     },
+     [XSTATE_XTILE_DATA_BIT] = {
+         .feature = FEAT_7_0_EDX, .bits = CPUID_7_0_EDX_AMX_TILE,
+-        .size = sizeof(XSaveXTILEDATA)
++        .size = sizeof(XSaveXTILEDATA),
+     },
+ };
  
-             -machine cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.targets.1=cxl.1,cxl-fmw.0.size=128G,cxl-fmw.0.interleave-granularity=512
- 
-+    ``sgx-epc.0.memdev=@var{memid},sgx-epc.0.node=@var{numaid}``
-+        Define an SGX EPC section.
-+
-     ``smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel``
-         Define cache properties for SMP system.
- 
-@@ -208,12 +212,10 @@ SRST
- ERST
- 
- DEF("M", HAS_ARG, QEMU_OPTION_M,
--    "                sgx-epc.0.memdev=memid,sgx-epc.0.node=numaid\n",
--    QEMU_ARCH_ALL)
--
-+    "-M              as -machine\n", QEMU_ARCH_ALL)
- SRST
--``sgx-epc.0.memdev=@var{memid},sgx-epc.0.node=@var{numaid}``
--    Define an SGX EPC section.
-+``-M``
-+    as -machine.
- ERST
- 
- DEF("cpu", HAS_ARG, QEMU_OPTION_cpu,
 -- 
 2.52.0
 
