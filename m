@@ -2,93 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFDE7CDF5AA
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:18:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC9B7CDF5A4
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:18:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQQK-0002Zx-Rt; Sat, 27 Dec 2025 04:17:20 -0500
+	id 1vZQQH-0002YZ-VF; Sat, 27 Dec 2025 04:17:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQQG-0002Y7-Fn
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:17:16 -0500
+ id 1vZQQF-0002XV-Lr
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:17:15 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQQC-0002Pp-1g
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:17:16 -0500
+ id 1vZQQC-0002Ps-7j
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:17:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1766827031;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EAPNHDeDnVTBZPtsdYZ4vNsLhPqjrTIxBmnpOYzbcEI=;
- b=I5rYKOTuiO8jglsQCNkb4z4oHtdrOPAxnoAvFX+owYOCvpaBVWepc2Ss2mMsvennkKSD13
- l6m2Ujl4xyPlivO6l8fqFahf1zG2sJEVacd7+TZWzeezR3HNpJgbMQn6+izLXk1oTqV3/y
- y7Csjwa2LkjS74OVvqkeuuut7vN0JOA=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=bivrVV7bo5oZF3dxfEhb6DoI+Vn3TCKqB0VgafCU4Bs=;
+ b=Qg+0UHncyMumpPoHkkHx3bIZpuh827z7K+MfBzXfxW8JJuQT+xlImtRb4zq29hLlMa5AlK
+ zzWIEEDviIJLkHB4S1hUakYrdVGc2Zde2FHqINRdpwQz1jGpnsNrLN9l1qH5zlILOtLlNk
+ xCLOwOWLI3qGHmlmN6Dc0ywdG2YS6wo=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-680-GEfQPRwEN_2Vd5mvd3U7JA-1; Sat, 27 Dec 2025 04:17:09 -0500
-X-MC-Unique: GEfQPRwEN_2Vd5mvd3U7JA-1
-X-Mimecast-MFC-AGG-ID: GEfQPRwEN_2Vd5mvd3U7JA_1766827028
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-47d3c4468d8so15091925e9.2
+ us-mta-264-yVZdGz5FNmevDNDV-94M0g-1; Sat, 27 Dec 2025 04:17:09 -0500
+X-MC-Unique: yVZdGz5FNmevDNDV-94M0g-1
+X-Mimecast-MFC-AGG-ID: yVZdGz5FNmevDNDV-94M0g_1766827028
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-431026b6252so7782809f8f.1
  for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:17:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=redhat.com; s=google; t=1766827027; x=1767431827; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=EAPNHDeDnVTBZPtsdYZ4vNsLhPqjrTIxBmnpOYzbcEI=;
- b=BNKHrVT58UoRXgRFLBYtiJBJHJ6jTC7RK6ySu630jLDfHH2fFaik75jM6Ceg/17838
- 24RdG8p24+tZBL5vykbJOzM5F/26eVVLCYdOEKFlAJlTO2srI2ju65PtnMq4ms6lHUzX
- 4S2EW3ZqKtxw8r/6Q3jmdS/u7iyk6ShjlABDSu1+ammLx0sNDEgNl6d8/m+Oh0l+Jbrd
- GH9BHRePM0gO2qBwDPsOb/myCzp5dzYTITj4jFRt2cfOL+KV3beJr4QnNqGpFpT8qUmx
- 4TpK9Sv6hydQ7ARws7LudOZV/hvYVdicgvhaJnu3VkkJQSO7QO7gHWpETPh0P4Ie0Uiq
- UWJw==
+ :reply-to; bh=bivrVV7bo5oZF3dxfEhb6DoI+Vn3TCKqB0VgafCU4Bs=;
+ b=mHhWVcgZ0wZLAONcl3oOkREFf+XV2T8ODq7k78+OcJmnFgDYVtxyBFB9GkfpRrO5Xc
+ aFzVjbcwELRSr9jhFnOxX6Vks3V2vXKZlsfOj7uVMSLjw/8lF77Afb6zct1dUwjvksAA
+ u9Z4QjuU7V+41wqSl1anItIZrnVjNyXms01Vjn853AA/0ZehQRkhKOwYmFlwTnAGA4kL
+ luhG/mEIqAR49xNF3rZ37h3BQMCxCJxRyIh0HitoH98Yscj0XUNTe4Kbd9hWlooQI5pc
+ JGLE5hb++ghqzHjNwYWFTkQpjNWL8j+wqh4yz08Rm/2LzigTrDSO1pbuti6OHb5AiMUn
+ X1aQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1766827027; x=1767431827;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=EAPNHDeDnVTBZPtsdYZ4vNsLhPqjrTIxBmnpOYzbcEI=;
- b=Vwuau8B6oQnuEiO3c92cCiK5JlNNSbdaLM9DVKCB1mOAhXDvdhOs6V6w4e6UdPpdF6
- DiWli88e6oFvNzLxsVVlETfkg6A7D4HBKZv8UQKp/vg4aQXh+a3pkIULma6XsQ05qrY4
- F6+x25ckPolmDmZrV+wdMqVGgx1W7rm9J0uZJ7jZDmSZGcO++cSumfbf30X8pXwaWvUA
- u1+1OMqzsMVATYcG/OxMIjHiigHkFU1DoZEDkVjvAfdDzA0awlChxtpop1X4trgf4n00
- ap74CODYf8YtsYMXq2fbKElkM1/X0vEEt0bNZevu7UbJvTEl4COpQ7vrdEtK8aJ6tMju
- 0O/w==
-X-Gm-Message-State: AOJu0YzwPWBkslmAR3MpvvegbYKXWbpyAoUegEpX6D8XyH/8nPMe5o2G
- B1ppG6Qk9fjrPFycDNpEMKXNxv7hevL0mLCmwYwn1lVhCMqyKNmg2elzl1Bx6LWBkvfd/UOmLvc
- r1Fn9d+vkzHh0Z93IM4B8xWQEDbVfHIy54CLE8UIdrvF8dMvYTY5tcPZTGiYvCeUZVSmj39gS9m
- CO5zjFw/oOGSnvV8UkBa4+8Z2Jmtbo9S1LXC5+q3oe
-X-Gm-Gg: AY/fxX7266mIx6y2umj3DXp0wHrxWATJGeSnO1UDQU+RKPZ9fjIYaQ1sf4h1t9Ot4Ay
- 4B+jY99TaeXWotm+71sh/zEpYjQPYJbsszGhdnoVqW96u3CVdYtOCRLlGfOwsyWrkGuvxzIOhYr
- IYkXjpIEXez1pGZseByoMoVvRBZAXByZ1qe9D+CGCCYtqa10EII7Mb/ldxyIuzMtqjkkV7Gv8G5
- 9KKKHkmqaTKvuRKxR6rtlMN/h3rbW3cktifV3DoaPSYPX6k70Gyu8WVTEVLBcCEow3u3ruPjmTv
- Yd7nZFsj67J1lGkrCPDvFUQixypBN15Jrc9KWzY+BF1dzGSPIvF0T39quBXM+GbfnTAmS/lZDsz
- gPRZ55XLXZHBSvu2b8BveXi3RJRTR/6TJ6/POyyzjVJf9IaHmDVp6aLrMh3WhA2Alph5P6zOAqF
- /kmYhsNa7WPDFQEYM=
-X-Received: by 2002:a05:600c:6388:b0:477:7b16:5f88 with SMTP id
- 5b1f17b1804b1-47d1953345cmr252589575e9.6.1766827026394; 
- Sat, 27 Dec 2025 01:17:06 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFff8IBSuSqPPNoQrZWDyEaTRSd77kDMKbRx8xzM/I0jdqdVgK38QqqXn0DQFJ/zw9cFFIfvg==
-X-Received: by 2002:a05:600c:6388:b0:477:7b16:5f88 with SMTP id
- 5b1f17b1804b1-47d1953345cmr252589295e9.6.1766827025481; 
- Sat, 27 Dec 2025 01:17:05 -0800 (PST)
+ bh=bivrVV7bo5oZF3dxfEhb6DoI+Vn3TCKqB0VgafCU4Bs=;
+ b=K0beE0wv9JJr6AorjBTKGwB24RBNgbjAgQrE+33ubLHTFCjRF4x24XI4cycIDgBVR+
+ q/vea25/YjEfPRgovHideWy13bywejO7HzI+0vwVvDLvoCdOBH9ZX85oP4zCnO4j+h5X
+ v0pTobin90AnmCjuBw5BCI01uh936d6cqHcbf/TruqceEr77tIDB6mNrs1ohacLNd5oG
+ cIrkzMeIKA9e8Duk3JVUI3aDOnn90BM/98458whgaj0/K/ECZw7RIfDTVr0vAkxGB0pw
+ E1lwAAFXEregev7rB3aOXrgvePhJlzjdCnAMVa6Bb0mBLsdwiIsRa3oNnYLhxoUoEuF3
+ 0nsQ==
+X-Gm-Message-State: AOJu0Yz5FdlytP4x59mxrVKtElIIKrsVQXq4WYOtisW0LLHxf+bxeTxS
+ /vTcBQ4psPNQ546xcIW58ZIStOnqR8ZehNZVDvRHV80ugiUNxnqoXMV4YGtvGZIoTR50py5eiJd
+ gq1Fgms6cgQfxrKu3YYpto0JLnr6ZwKCEkLIzyIRoZikuaL3GKOpHI5Bq5hx2RNOyXYcZHfebY4
+ epHn2iBygDp8fn6jznyh0S9j9kitOWWXKzNerzb1/E
+X-Gm-Gg: AY/fxX5dgnnIRynJ5BKs1DDabvK/BLF3HFK/G/HP5l/L+PdAKrNe/tc17Bydskg5Aoq
+ E49xrHcm7A5H2O9eGfbbdZRZN4uh3XGK5N/ZOWNE2K4cTvQpLxa1umYj3MRK2N5jNUUF6YPxGjn
+ zmaIaZlMU9EJ3g9uYtPCtNLHhPnuOZaEigM+DLAglLsoIu64jv/1AgOkgc/fD27cGDlRsDVGug3
+ XmMnhM8ZTNnLPcX4tb+9Zf3HEboGEEmbk13kKT4IC9OIKBv49/RMbeBPOJYN3Fcbc39Hx0ML6RE
+ XWy3OcFIy5JvmCxix9613lg6v60SxyT+AZas979aEt6KvdP7JhXDRpyYeIu98a4ov7TygJTEnTv
+ 1xlzgKXzspbrNk9gE3JnCAXjyyNlFso9MqiCUcXMbw6vSMotjkVEN9euGFl6W5Ygk9QNWqbji0z
+ LITwLGLRoS0jeXXa4=
+X-Received: by 2002:a05:6000:1a8e:b0:430:f68f:ee7d with SMTP id
+ ffacd0b85a97d-4324e50d9demr31585681f8f.47.1766827027569; 
+ Sat, 27 Dec 2025 01:17:07 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF6CCcTXCqFuWmLd+GdnOHv8EEzir1jdeFJkhQXbgxOsTaNN7TajTmHTbMVka7wAY8QL2Pdvg==
+X-Received: by 2002:a05:6000:1a8e:b0:430:f68f:ee7d with SMTP id
+ ffacd0b85a97d-4324e50d9demr31585651f8f.47.1766827027005; 
+ Sat, 27 Dec 2025 01:17:07 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47be3a4651bsm191146895e9.7.2025.12.27.01.17.04
+ ffacd0b85a97d-4324ea8311fsm50394695f8f.28.2025.12.27.01.17.05
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:17:05 -0800 (PST)
+ Sat, 27 Dec 2025 01:17:06 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 023/153] include: move hw/register.h to hw/core/
-Date: Sat, 27 Dec 2025 10:14:10 +0100
-Message-ID: <20251227091622.20725-24-pbonzini@redhat.com>
+Subject: [PULL 024/153] include: move hw/resettable.h to hw/core/
+Date: Sat, 27 Dec 2025 10:14:11 +0100
+Message-ID: <20251227091622.20725-25-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
@@ -121,672 +121,238 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- MAINTAINERS                                 | 2 +-
- include/hw/{ => core}/register.h            | 0
- include/hw/cxl/cxl_component.h              | 2 +-
- include/hw/cxl/cxl_device.h                 | 2 +-
- include/hw/dma/xlnx-zdma.h                  | 2 +-
- include/hw/dma/xlnx-zynq-devcfg.h           | 2 +-
- include/hw/dma/xlnx_csu_dma.h               | 2 +-
- include/hw/intc/xlnx-pmu-iomod-intc.h       | 2 +-
- include/hw/intc/xlnx-zynqmp-ipi.h           | 2 +-
- include/hw/misc/allwinner-a10-dramc.h       | 2 +-
- include/hw/misc/xlnx-versal-cframe-reg.h    | 2 +-
- include/hw/misc/xlnx-versal-cfu.h           | 2 +-
- include/hw/misc/xlnx-versal-crl.h           | 2 +-
- include/hw/misc/xlnx-versal-pmc-iou-slcr.h  | 2 +-
- include/hw/misc/xlnx-versal-trng.h          | 2 +-
- include/hw/misc/xlnx-versal-xramc.h         | 2 +-
- include/hw/misc/xlnx-zynqmp-apu-ctrl.h      | 2 +-
- include/hw/misc/xlnx-zynqmp-crf.h           | 2 +-
- include/hw/net/xlnx-versal-canfd.h          | 2 +-
- include/hw/net/xlnx-zynqmp-can.h            | 2 +-
- include/hw/nvram/xlnx-bbram.h               | 2 +-
- include/hw/nvram/xlnx-versal-efuse.h        | 2 +-
- include/hw/nvram/xlnx-zynqmp-efuse.h        | 2 +-
- include/hw/pci/pcie_doe.h                   | 2 +-
- include/hw/rtc/xlnx-zynqmp-rtc.h            | 2 +-
- include/hw/ssi/xlnx-versal-ospi.h           | 2 +-
- include/hw/usb/hcd-dwc3.h                   | 2 +-
- include/hw/usb/xlnx-usb-subsystem.h         | 2 +-
- include/hw/usb/xlnx-versal-usb2-ctrl-regs.h | 2 +-
- hw/core/register.c                          | 2 +-
- hw/dma/xlnx_csu_dma.c                       | 2 +-
- hw/intc/xlnx-pmu-iomod-intc.c               | 2 +-
- hw/intc/xlnx-zynqmp-ipi.c                   | 2 +-
- hw/misc/xlnx-versal-cframe-reg.c            | 2 +-
- hw/misc/xlnx-versal-cfu.c                   | 2 +-
- hw/misc/xlnx-versal-crl.c                   | 2 +-
- hw/misc/xlnx-versal-pmc-iou-slcr.c          | 2 +-
- hw/misc/xlnx-versal-xramc.c                 | 2 +-
- hw/misc/xlnx-zynqmp-apu-ctrl.c              | 2 +-
- hw/misc/xlnx-zynqmp-crf.c                   | 2 +-
- hw/net/can/xlnx-versal-canfd.c              | 2 +-
- hw/net/can/xlnx-zynqmp-can.c                | 2 +-
- hw/rtc/ls7a_rtc.c                           | 2 +-
- hw/rtc/xlnx-zynqmp-rtc.c                    | 2 +-
- hw/ssi/xilinx_spips.c                       | 2 +-
- hw/usb/hcd-dwc3.c                           | 2 +-
- hw/usb/xlnx-usb-subsystem.c                 | 2 +-
- hw/usb/xlnx-versal-usb2-ctrl-regs.c         | 2 +-
- 48 files changed, 47 insertions(+), 47 deletions(-)
- rename include/hw/{ => core}/register.h (100%)
+ MAINTAINERS                        | 2 +-
+ docs/devel/reset.rst               | 2 +-
+ include/hw/core/boards.h           | 2 +-
+ include/hw/core/qdev.h             | 2 +-
+ include/hw/{ => core}/resettable.h | 0
+ include/hw/virtio/virtio-balloon.h | 2 +-
+ include/hw/virtio/virtio-mem.h     | 2 +-
+ include/system/reset.h             | 2 +-
+ hw/core/reset.c                    | 2 +-
+ hw/core/resetcontainer.c           | 2 +-
+ hw/core/resettable.c               | 2 +-
+ hw/misc/xlnx-versal-crl.c          | 2 +-
+ hw/net/lan9118_phy.c               | 2 +-
+ hw/pci-host/fsl_imx8m_phy.c        | 2 +-
+ hw/rtc/rs5c372.c                   | 2 +-
+ system/runstate.c                  | 2 +-
+ target/s390x/cpu.c                 | 2 +-
+ 17 files changed, 16 insertions(+), 16 deletions(-)
+ rename include/hw/{ => core}/resettable.h (100%)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index e0904cc0cc7..b38215954a2 100644
+index b38215954a2..e241690bdce 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -3559,7 +3559,7 @@ Register API
- M: Alistair Francis <alistair@alistair23.me>
+@@ -3961,7 +3961,7 @@ F: docs/devel/clocks.rst
+ Reset framework
+ M: Peter Maydell <peter.maydell@linaro.org>
  S: Maintained
- F: hw/core/register.c
--F: include/hw/register.h
-+F: include/hw/core/register.h
- F: include/hw/core/registerfields.h
+-F: include/hw/resettable.h
++F: include/hw/core/resettable.h
+ F: include/hw/core/resetcontainer.h
+ F: include/system/reset.h
+ F: hw/core/reset.c
+diff --git a/docs/devel/reset.rst b/docs/devel/reset.rst
+index c02fe0a405c..91e8c21189e 100644
+--- a/docs/devel/reset.rst
++++ b/docs/devel/reset.rst
+@@ -4,7 +4,7 @@ Reset in QEMU: the Resettable interface
+ =======================================
  
- Rust
-diff --git a/include/hw/register.h b/include/hw/core/register.h
-similarity index 100%
-rename from include/hw/register.h
-rename to include/hw/core/register.h
-diff --git a/include/hw/cxl/cxl_component.h b/include/hw/cxl/cxl_component.h
-index 945ee6ffd04..b0f2aa79143 100644
---- a/include/hw/cxl/cxl_component.h
-+++ b/include/hw/cxl/cxl_component.h
-@@ -17,7 +17,7 @@
+ The reset of qemu objects is handled using the resettable interface declared
+-in ``include/hw/resettable.h``.
++in ``include/hw/core/resettable.h``.
  
- #include "qemu/range.h"
- #include "hw/cxl/cxl_cdat.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "qapi/error.h"
- 
- enum reg_type {
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index 89411c80936..165355baf9d 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -12,7 +12,7 @@
- 
- #include "hw/cxl/cxl_component.h"
- #include "hw/pci/pci_device.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "hw/cxl/cxl_events.h"
- 
- /*
-diff --git a/include/hw/dma/xlnx-zdma.h b/include/hw/dma/xlnx-zdma.h
-index 9c57c499102..2d2d4aeefab 100644
---- a/include/hw/dma/xlnx-zdma.h
-+++ b/include/hw/dma/xlnx-zdma.h
-@@ -30,7 +30,7 @@
- #define XLNX_ZDMA_H
- 
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "system/dma.h"
+ This interface allows objects to be grouped (on a tree basis); so that the
+ whole group can be reset consistently. Each individual member object does not
+diff --git a/include/hw/core/boards.h b/include/hw/core/boards.h
+index a48ed4f86a3..815845207b0 100644
+--- a/include/hw/core/boards.h
++++ b/include/hw/core/boards.h
+@@ -10,7 +10,7 @@
+ #include "qemu/module.h"
  #include "qom/object.h"
+ #include "hw/core/cpu.h"
+-#include "hw/resettable.h"
++#include "hw/core/resettable.h"
  
-diff --git a/include/hw/dma/xlnx-zynq-devcfg.h b/include/hw/dma/xlnx-zynq-devcfg.h
-index e4cf085d703..8d10553c22a 100644
---- a/include/hw/dma/xlnx-zynq-devcfg.h
-+++ b/include/hw/dma/xlnx-zynq-devcfg.h
-@@ -27,7 +27,7 @@
- #ifndef XLNX_ZYNQ_DEVCFG_H
- #define XLNX_ZYNQ_DEVCFG_H
+ #define TYPE_MACHINE_SUFFIX "-machine"
  
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "hw/sysbus.h"
+diff --git a/include/hw/core/qdev.h b/include/hw/core/qdev.h
+index f0ef2dc3aa8..e211d807e82 100644
+--- a/include/hw/core/qdev.h
++++ b/include/hw/core/qdev.h
+@@ -8,7 +8,7 @@
+ #include "qemu/rcu_queue.h"
  #include "qom/object.h"
- 
-diff --git a/include/hw/dma/xlnx_csu_dma.h b/include/hw/dma/xlnx_csu_dma.h
-index 85b6b64e0e3..63af4586dd9 100644
---- a/include/hw/dma/xlnx_csu_dma.h
-+++ b/include/hw/dma/xlnx_csu_dma.h
-@@ -22,7 +22,7 @@
- #define XLNX_CSU_DMA_H
- 
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "hw/core/ptimer.h"
- #include "hw/stream.h"
- 
-diff --git a/include/hw/intc/xlnx-pmu-iomod-intc.h b/include/hw/intc/xlnx-pmu-iomod-intc.h
-index ccc8bd272a2..e36b5e17629 100644
---- a/include/hw/intc/xlnx-pmu-iomod-intc.h
-+++ b/include/hw/intc/xlnx-pmu-iomod-intc.h
-@@ -26,7 +26,7 @@
- #define HW_INTC_XLNX_PMU_IOMOD_INTC_H
- 
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "qom/object.h"
- 
- #define TYPE_XLNX_PMU_IO_INTC "xlnx.pmu_io_intc"
-diff --git a/include/hw/intc/xlnx-zynqmp-ipi.h b/include/hw/intc/xlnx-zynqmp-ipi.h
-index 33eff1d4f68..53fc89084af 100644
---- a/include/hw/intc/xlnx-zynqmp-ipi.h
-+++ b/include/hw/intc/xlnx-zynqmp-ipi.h
-@@ -26,7 +26,7 @@
- #define XLNX_ZYNQMP_IPI_H
- 
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "qom/object.h"
- 
- #define TYPE_XLNX_ZYNQMP_IPI "xlnx.zynqmp_ipi"
-diff --git a/include/hw/misc/allwinner-a10-dramc.h b/include/hw/misc/allwinner-a10-dramc.h
-index b61fbecbe74..a1ae621e217 100644
---- a/include/hw/misc/allwinner-a10-dramc.h
-+++ b/include/hw/misc/allwinner-a10-dramc.h
-@@ -25,7 +25,7 @@
- 
- #include "qom/object.h"
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
+ #include "hw/core/hotplug.h"
+-#include "hw/resettable.h"
++#include "hw/core/resettable.h"
  
  /**
-  * @name Constants
-diff --git a/include/hw/misc/xlnx-versal-cframe-reg.h b/include/hw/misc/xlnx-versal-cframe-reg.h
-index 83f6a077446..fe8788a7453 100644
---- a/include/hw/misc/xlnx-versal-cframe-reg.h
-+++ b/include/hw/misc/xlnx-versal-cframe-reg.h
-@@ -18,7 +18,7 @@
- #define HW_MISC_XLNX_VERSAL_CFRAME_REG_H
+  * DOC: The QEMU Device API
+diff --git a/include/hw/resettable.h b/include/hw/core/resettable.h
+similarity index 100%
+rename from include/hw/resettable.h
+rename to include/hw/core/resettable.h
+diff --git a/include/hw/virtio/virtio-balloon.h b/include/hw/virtio/virtio-balloon.h
+index 0456c211c6e..79ac194ccec 100644
+--- a/include/hw/virtio/virtio-balloon.h
++++ b/include/hw/virtio/virtio-balloon.h
+@@ -16,7 +16,7 @@
+ #define QEMU_VIRTIO_BALLOON_H
  
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "hw/misc/xlnx-cfi-if.h"
- #include "hw/misc/xlnx-versal-cfu.h"
- #include "qemu/fifo32.h"
-diff --git a/include/hw/misc/xlnx-versal-cfu.h b/include/hw/misc/xlnx-versal-cfu.h
-index 3de3ee49231..3d7ca506de1 100644
---- a/include/hw/misc/xlnx-versal-cfu.h
-+++ b/include/hw/misc/xlnx-versal-cfu.h
-@@ -18,7 +18,7 @@
- #define HW_MISC_XLNX_VERSAL_CFU_APB_H
+ #include "standard-headers/linux/virtio_balloon.h"
+-#include "hw/resettable.h"
++#include "hw/core/resettable.h"
+ #include "hw/virtio/virtio.h"
+ #include "system/iothread.h"
+ #include "qom/object.h"
+diff --git a/include/hw/virtio/virtio-mem.h b/include/hw/virtio/virtio-mem.h
+index e0ab31b45a4..221cfd76bf9 100644
+--- a/include/hw/virtio/virtio-mem.h
++++ b/include/hw/virtio/virtio-mem.h
+@@ -14,7 +14,7 @@
+ #define HW_VIRTIO_MEM_H
  
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "hw/misc/xlnx-cfi-if.h"
- #include "qemu/fifo32.h"
+ #include "standard-headers/linux/virtio_mem.h"
+-#include "hw/resettable.h"
++#include "hw/core/resettable.h"
+ #include "hw/virtio/virtio.h"
+ #include "qapi/qapi-types-misc.h"
+ #include "system/hostmem.h"
+diff --git a/include/system/reset.h b/include/system/reset.h
+index 97131d94cfc..62e9977e3c2 100644
+--- a/include/system/reset.h
++++ b/include/system/reset.h
+@@ -27,7 +27,7 @@
+ #ifndef QEMU_SYSTEM_RESET_H
+ #define QEMU_SYSTEM_RESET_H
  
-diff --git a/include/hw/misc/xlnx-versal-crl.h b/include/hw/misc/xlnx-versal-crl.h
-index 49ed500acde..ace3d198bde 100644
---- a/include/hw/misc/xlnx-versal-crl.h
-+++ b/include/hw/misc/xlnx-versal-crl.h
-@@ -11,7 +11,7 @@
- #define HW_MISC_XLNX_VERSAL_CRL_H
+-#include "hw/resettable.h"
++#include "hw/core/resettable.h"
+ #include "qapi/qapi-events-run-state.h"
  
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "target/arm/cpu-qom.h"
- #include "hw/arm/xlnx-versal-version.h"
+ typedef void QEMUResetHandler(void *opaque);
+diff --git a/hw/core/reset.c b/hw/core/reset.c
+index 65f82fa43d9..e7230b49b70 100644
+--- a/hw/core/reset.c
++++ b/hw/core/reset.c
+@@ -25,7 +25,7 @@
  
-diff --git a/include/hw/misc/xlnx-versal-pmc-iou-slcr.h b/include/hw/misc/xlnx-versal-pmc-iou-slcr.h
-index 0c4a4fd66d9..d8f45bd94b2 100644
---- a/include/hw/misc/xlnx-versal-pmc-iou-slcr.h
-+++ b/include/hw/misc/xlnx-versal-pmc-iou-slcr.h
-@@ -55,7 +55,7 @@
- #define XLNX_VERSAL_PMC_IOU_SLCR_H
- 
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- 
- #define TYPE_XILINX_VERSAL_PMC_IOU_SLCR "xlnx.versal-pmc-iou-slcr"
- 
-diff --git a/include/hw/misc/xlnx-versal-trng.h b/include/hw/misc/xlnx-versal-trng.h
-index 4e516216dbe..8de29104048 100644
---- a/include/hw/misc/xlnx-versal-trng.h
-+++ b/include/hw/misc/xlnx-versal-trng.h
-@@ -28,7 +28,7 @@
- 
- #include "hw/core/irq.h"
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- 
- #define TYPE_XLNX_VERSAL_TRNG "xlnx.versal-trng"
- OBJECT_DECLARE_SIMPLE_TYPE(XlnxVersalTRng, XLNX_VERSAL_TRNG);
-diff --git a/include/hw/misc/xlnx-versal-xramc.h b/include/hw/misc/xlnx-versal-xramc.h
-index 35e4e8b91dd..e79941d8865 100644
---- a/include/hw/misc/xlnx-versal-xramc.h
-+++ b/include/hw/misc/xlnx-versal-xramc.h
-@@ -10,7 +10,7 @@
- #define XLNX_VERSAL_XRAMC_H
- 
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- 
- #define TYPE_XLNX_XRAM_CTRL "xlnx.versal-xramc"
- 
-diff --git a/include/hw/misc/xlnx-zynqmp-apu-ctrl.h b/include/hw/misc/xlnx-zynqmp-apu-ctrl.h
-index fbfe34aa7e5..c0315720053 100644
---- a/include/hw/misc/xlnx-zynqmp-apu-ctrl.h
-+++ b/include/hw/misc/xlnx-zynqmp-apu-ctrl.h
-@@ -12,7 +12,7 @@
- #define HW_MISC_XLNX_ZYNQMP_APU_CTRL_H
- 
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "target/arm/cpu-qom.h"
- 
- #define TYPE_XLNX_ZYNQMP_APU_CTRL "xlnx.apu-ctrl"
-diff --git a/include/hw/misc/xlnx-zynqmp-crf.h b/include/hw/misc/xlnx-zynqmp-crf.h
-index c746ae10397..df83034a988 100644
---- a/include/hw/misc/xlnx-zynqmp-crf.h
-+++ b/include/hw/misc/xlnx-zynqmp-crf.h
-@@ -9,7 +9,7 @@
- #define HW_MISC_XLNX_ZYNQMP_CRF_H
- 
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- 
- #define TYPE_XLNX_ZYNQMP_CRF "xlnx.zynqmp_crf"
- OBJECT_DECLARE_SIMPLE_TYPE(XlnxZynqMPCRF, XLNX_ZYNQMP_CRF)
-diff --git a/include/hw/net/xlnx-versal-canfd.h b/include/hw/net/xlnx-versal-canfd.h
-index 45cf0001c6b..7cadf3123b5 100644
---- a/include/hw/net/xlnx-versal-canfd.h
-+++ b/include/hw/net/xlnx-versal-canfd.h
-@@ -28,7 +28,7 @@
- #ifndef HW_CANFD_XILINX_H
- #define HW_CANFD_XILINX_H
- 
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "hw/core/ptimer.h"
- #include "net/can_emu.h"
- #include "hw/core/qdev-clock.h"
-diff --git a/include/hw/net/xlnx-zynqmp-can.h b/include/hw/net/xlnx-zynqmp-can.h
-index d272f40ea80..d23c1523caf 100644
---- a/include/hw/net/xlnx-zynqmp-can.h
-+++ b/include/hw/net/xlnx-zynqmp-can.h
-@@ -31,7 +31,7 @@
- #define XLNX_ZYNQMP_CAN_H
- 
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "net/can_emu.h"
- #include "net/can_host.h"
- #include "qemu/fifo32.h"
-diff --git a/include/hw/nvram/xlnx-bbram.h b/include/hw/nvram/xlnx-bbram.h
-index 63558dbc329..27423035d40 100644
---- a/include/hw/nvram/xlnx-bbram.h
-+++ b/include/hw/nvram/xlnx-bbram.h
-@@ -30,7 +30,7 @@
- #include "hw/core/qdev.h"
- #include "hw/core/irq.h"
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- 
- #define RMAX_XLNX_BBRAM ((0x4c / 4) + 1)
- 
-diff --git a/include/hw/nvram/xlnx-versal-efuse.h b/include/hw/nvram/xlnx-versal-efuse.h
-index 37d09da4809..07f1000a851 100644
---- a/include/hw/nvram/xlnx-versal-efuse.h
-+++ b/include/hw/nvram/xlnx-versal-efuse.h
-@@ -24,7 +24,7 @@
- 
- #include "hw/core/irq.h"
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "hw/nvram/xlnx-efuse.h"
- 
- #define XLNX_VERSAL_EFUSE_CTRL_R_MAX ((0x100 / 4) + 1)
-diff --git a/include/hw/nvram/xlnx-zynqmp-efuse.h b/include/hw/nvram/xlnx-zynqmp-efuse.h
-index 6eb3fea8fa2..d4886943860 100644
---- a/include/hw/nvram/xlnx-zynqmp-efuse.h
-+++ b/include/hw/nvram/xlnx-zynqmp-efuse.h
-@@ -24,7 +24,7 @@
- 
- #include "hw/core/irq.h"
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "hw/nvram/xlnx-efuse.h"
- 
- #define XLNX_ZYNQMP_EFUSE_R_MAX ((0x10fc / 4) + 1)
-diff --git a/include/hw/pci/pcie_doe.h b/include/hw/pci/pcie_doe.h
-index 9e1275db8ae..4bd49bb5ae6 100644
---- a/include/hw/pci/pcie_doe.h
-+++ b/include/hw/pci/pcie_doe.h
-@@ -11,7 +11,7 @@
- #define PCIE_DOE_H
- 
- #include "qemu/range.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
+ #include "qemu/osdep.h"
+ #include "system/reset.h"
+-#include "hw/resettable.h"
++#include "hw/core/resettable.h"
+ #include "hw/core/resetcontainer.h"
  
  /*
-  * Reference:
-diff --git a/include/hw/rtc/xlnx-zynqmp-rtc.h b/include/hw/rtc/xlnx-zynqmp-rtc.h
-index f0c6a2d78a8..a542b87cb89 100644
---- a/include/hw/rtc/xlnx-zynqmp-rtc.h
-+++ b/include/hw/rtc/xlnx-zynqmp-rtc.h
-@@ -27,7 +27,7 @@
- #ifndef HW_RTC_XLNX_ZYNQMP_RTC_H
- #define HW_RTC_XLNX_ZYNQMP_RTC_H
- 
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "hw/sysbus.h"
- #include "qom/object.h"
- 
-diff --git a/include/hw/ssi/xlnx-versal-ospi.h b/include/hw/ssi/xlnx-versal-ospi.h
-index 4ac975aa2fd..e8709208caa 100644
---- a/include/hw/ssi/xlnx-versal-ospi.h
-+++ b/include/hw/ssi/xlnx-versal-ospi.h
-@@ -52,7 +52,7 @@
- #ifndef XLNX_VERSAL_OSPI_H
- #define XLNX_VERSAL_OSPI_H
- 
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "hw/ssi/ssi.h"
- #include "qemu/fifo8.h"
- #include "hw/dma/xlnx_csu_dma.h"
-diff --git a/include/hw/usb/hcd-dwc3.h b/include/hw/usb/hcd-dwc3.h
-index dbdf12b21d7..e656532d6c0 100644
---- a/include/hw/usb/hcd-dwc3.h
-+++ b/include/hw/usb/hcd-dwc3.h
-@@ -26,7 +26,7 @@
- #ifndef HCD_DWC3_H
- #define HCD_DWC3_H
- 
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "hw/usb/hcd-xhci.h"
- #include "hw/usb/hcd-xhci-sysbus.h"
- 
-diff --git a/include/hw/usb/xlnx-usb-subsystem.h b/include/hw/usb/xlnx-usb-subsystem.h
-index 40f9e97e093..b22e5d065be 100644
---- a/include/hw/usb/xlnx-usb-subsystem.h
-+++ b/include/hw/usb/xlnx-usb-subsystem.h
-@@ -25,7 +25,7 @@
- #ifndef XLNX_USB_SUBSYSTEM_H
- #define XLNX_USB_SUBSYSTEM_H
- 
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "hw/sysbus.h"
- #include "hw/usb/xlnx-versal-usb2-ctrl-regs.h"
- #include "hw/usb/hcd-dwc3.h"
-diff --git a/include/hw/usb/xlnx-versal-usb2-ctrl-regs.h b/include/hw/usb/xlnx-versal-usb2-ctrl-regs.h
-index 6a502006b07..c1470da4758 100644
---- a/include/hw/usb/xlnx-versal-usb2-ctrl-regs.h
-+++ b/include/hw/usb/xlnx-versal-usb2-ctrl-regs.h
-@@ -26,7 +26,7 @@
- #ifndef XLNX_VERSAL_USB2_CTRL_REGS_H
- #define XLNX_VERSAL_USB2_CTRL_REGS_H
- 
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "hw/sysbus.h"
- 
- #define TYPE_XILINX_VERSAL_USB2_CTRL_REGS "xlnx.versal-usb2-ctrl-regs"
-diff --git a/hw/core/register.c b/hw/core/register.c
-index 81316d48597..c3f3c936e70 100644
---- a/hw/core/register.c
-+++ b/hw/core/register.c
-@@ -16,7 +16,7 @@
+diff --git a/hw/core/resetcontainer.c b/hw/core/resetcontainer.c
+index 5ff17002e75..ef84aa2374a 100644
+--- a/hw/core/resetcontainer.c
++++ b/hw/core/resetcontainer.c
+@@ -15,7 +15,7 @@
   */
  
  #include "qemu/osdep.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "qemu/log.h"
- #include "qemu/module.h"
+-#include "hw/resettable.h"
++#include "hw/core/resettable.h"
+ #include "hw/core/resetcontainer.h"
  
-diff --git a/hw/dma/xlnx_csu_dma.c b/hw/dma/xlnx_csu_dma.c
-index 650401614ed..ffe258cf31a 100644
---- a/hw/dma/xlnx_csu_dma.c
-+++ b/hw/dma/xlnx_csu_dma.c
-@@ -28,7 +28,7 @@
- #include "system/dma.h"
- #include "hw/core/ptimer.h"
- #include "hw/stream.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "hw/dma/xlnx_csu_dma.h"
- 
- /*
-diff --git a/hw/intc/xlnx-pmu-iomod-intc.c b/hw/intc/xlnx-pmu-iomod-intc.c
-index f3509efa0ab..b8bafe2f3f3 100644
---- a/hw/intc/xlnx-pmu-iomod-intc.c
-+++ b/hw/intc/xlnx-pmu-iomod-intc.c
-@@ -27,7 +27,7 @@
- #include "qemu/osdep.h"
- #include "hw/sysbus.h"
- #include "migration/vmstate.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "qemu/bitops.h"
- #include "qemu/log.h"
- #include "qemu/module.h"
-diff --git a/hw/intc/xlnx-zynqmp-ipi.c b/hw/intc/xlnx-zynqmp-ipi.c
-index 99566bc2e20..e69ea74ff74 100644
---- a/hw/intc/xlnx-zynqmp-ipi.c
-+++ b/hw/intc/xlnx-zynqmp-ipi.c
-@@ -28,7 +28,7 @@
- #include "qemu/osdep.h"
- #include "hw/sysbus.h"
- #include "migration/vmstate.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "qemu/bitops.h"
- #include "qemu/log.h"
- #include "qemu/module.h"
-diff --git a/hw/misc/xlnx-versal-cframe-reg.c b/hw/misc/xlnx-versal-cframe-reg.c
-index a5a5e41f3e3..efacbe83abb 100644
---- a/hw/misc/xlnx-versal-cframe-reg.c
-+++ b/hw/misc/xlnx-versal-cframe-reg.c
-@@ -10,7 +10,7 @@
- 
- #include "qemu/osdep.h"
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "hw/core/registerfields.h"
- #include "qemu/bitops.h"
- #include "qemu/log.h"
-diff --git a/hw/misc/xlnx-versal-cfu.c b/hw/misc/xlnx-versal-cfu.c
-index 13cd597da49..bdce0ce7475 100644
---- a/hw/misc/xlnx-versal-cfu.c
-+++ b/hw/misc/xlnx-versal-cfu.c
+ struct ResettableContainer {
+diff --git a/hw/core/resettable.c b/hw/core/resettable.c
+index 5cdb4a4f8d3..86e16c8c6e4 100644
+--- a/hw/core/resettable.c
++++ b/hw/core/resettable.c
 @@ -12,7 +12,7 @@
  
  #include "qemu/osdep.h"
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "hw/core/irq.h"
- #include "qemu/bitops.h"
- #include "qemu/log.h"
+ #include "qemu/module.h"
+-#include "hw/resettable.h"
++#include "hw/core/resettable.h"
+ #include "trace.h"
+ 
+ /**
 diff --git a/hw/misc/xlnx-versal-crl.c b/hw/misc/xlnx-versal-crl.c
-index b0baabc1adf..072d6d98591 100644
+index 072d6d98591..9bbf44def6b 100644
 --- a/hw/misc/xlnx-versal-crl.c
 +++ b/hw/misc/xlnx-versal-crl.c
-@@ -12,7 +12,7 @@
- #include "hw/core/qdev-properties.h"
+@@ -13,7 +13,7 @@
  #include "hw/sysbus.h"
  #include "hw/core/irq.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "hw/resettable.h"
+ #include "hw/core/register.h"
+-#include "hw/resettable.h"
++#include "hw/core/resettable.h"
  
  #include "target/arm/arm-powerctl.h"
-diff --git a/hw/misc/xlnx-versal-pmc-iou-slcr.c b/hw/misc/xlnx-versal-pmc-iou-slcr.c
-index 84d474c38fc..0246167a5e6 100644
---- a/hw/misc/xlnx-versal-pmc-iou-slcr.c
-+++ b/hw/misc/xlnx-versal-pmc-iou-slcr.c
-@@ -25,7 +25,7 @@
+ #include "target/arm/multiprocessing.h"
+diff --git a/hw/net/lan9118_phy.c b/hw/net/lan9118_phy.c
+index f0f6e55d807..2fc027d112c 100644
+--- a/hw/net/lan9118_phy.c
++++ b/hw/net/lan9118_phy.c
+@@ -16,7 +16,7 @@
+ #include "hw/net/lan9118_phy.h"
+ #include "hw/net/mii.h"
+ #include "hw/core/irq.h"
+-#include "hw/resettable.h"
++#include "hw/core/resettable.h"
+ #include "migration/vmstate.h"
+ #include "qemu/log.h"
+ #include "trace.h"
+diff --git a/hw/pci-host/fsl_imx8m_phy.c b/hw/pci-host/fsl_imx8m_phy.c
+index 04da3f99a07..0afa6167e0d 100644
+--- a/hw/pci-host/fsl_imx8m_phy.c
++++ b/hw/pci-host/fsl_imx8m_phy.c
+@@ -8,7 +8,7 @@
  
  #include "qemu/osdep.h"
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "hw/core/irq.h"
- #include "qemu/bitops.h"
- #include "qemu/log.h"
-diff --git a/hw/misc/xlnx-versal-xramc.c b/hw/misc/xlnx-versal-xramc.c
-index 6a86f6b5d48..f4f02c7680b 100644
---- a/hw/misc/xlnx-versal-xramc.c
-+++ b/hw/misc/xlnx-versal-xramc.c
+ #include "hw/pci-host/fsl_imx8m_phy.h"
+-#include "hw/resettable.h"
++#include "hw/core/resettable.h"
+ #include "migration/vmstate.h"
+ 
+ #define CMN_REG075 0x1d4
+diff --git a/hw/rtc/rs5c372.c b/hw/rtc/rs5c372.c
+index 58f12b836d3..20015dd6c1e 100644
+--- a/hw/rtc/rs5c372.c
++++ b/hw/rtc/rs5c372.c
 @@ -11,7 +11,7 @@
- #include "qapi/error.h"
+ #include "qemu/osdep.h"
+ #include "hw/i2c/i2c.h"
+ #include "hw/core/qdev-properties.h"
+-#include "hw/resettable.h"
++#include "hw/core/resettable.h"
  #include "migration/vmstate.h"
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "hw/core/qdev-properties.h"
- #include "hw/core/irq.h"
- #include "hw/misc/xlnx-versal-xramc.h"
-diff --git a/hw/misc/xlnx-zynqmp-apu-ctrl.c b/hw/misc/xlnx-zynqmp-apu-ctrl.c
-index 93f0bedc48e..957043f01b9 100644
---- a/hw/misc/xlnx-zynqmp-apu-ctrl.c
-+++ b/hw/misc/xlnx-zynqmp-apu-ctrl.c
-@@ -15,7 +15,7 @@
- #include "hw/core/qdev-properties.h"
- #include "hw/sysbus.h"
- #include "hw/core/irq.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- 
- #include "qemu/bitops.h"
- 
-diff --git a/hw/misc/xlnx-zynqmp-crf.c b/hw/misc/xlnx-zynqmp-crf.c
-index 841bce2231c..a2ebf6ce5d7 100644
---- a/hw/misc/xlnx-zynqmp-crf.c
-+++ b/hw/misc/xlnx-zynqmp-crf.c
-@@ -8,7 +8,7 @@
- 
- #include "qemu/osdep.h"
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "qemu/bitops.h"
- #include "qemu/log.h"
- #include "migration/vmstate.h"
-diff --git a/hw/net/can/xlnx-versal-canfd.c b/hw/net/can/xlnx-versal-canfd.c
-index 94d9178a540..3ceb1a8b912 100644
---- a/hw/net/can/xlnx-versal-canfd.c
-+++ b/hw/net/can/xlnx-versal-canfd.c
-@@ -33,7 +33,7 @@
- #include "qemu/osdep.h"
- #include "hw/sysbus.h"
- #include "hw/core/irq.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "qapi/error.h"
- #include "qemu/log.h"
- #include "hw/core/qdev-properties.h"
-diff --git a/hw/net/can/xlnx-zynqmp-can.c b/hw/net/can/xlnx-zynqmp-can.c
-index 533ac854a2f..6c583cab8f5 100644
---- a/hw/net/can/xlnx-zynqmp-can.c
-+++ b/hw/net/can/xlnx-zynqmp-can.c
-@@ -31,7 +31,7 @@
- 
- #include "qemu/osdep.h"
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "hw/core/irq.h"
- #include "qapi/error.h"
- #include "qemu/bitops.h"
-diff --git a/hw/rtc/ls7a_rtc.c b/hw/rtc/ls7a_rtc.c
-index 54943f60b80..b0c6588e098 100644
---- a/hw/rtc/ls7a_rtc.c
-+++ b/hw/rtc/ls7a_rtc.c
-@@ -8,7 +8,7 @@
- #include "qemu/osdep.h"
- #include "hw/sysbus.h"
- #include "hw/core/irq.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "qemu/timer.h"
- #include "system/system.h"
- #include "qemu/cutils.h"
-diff --git a/hw/rtc/xlnx-zynqmp-rtc.c b/hw/rtc/xlnx-zynqmp-rtc.c
-index 18849340d62..49d48dc6782 100644
---- a/hw/rtc/xlnx-zynqmp-rtc.c
-+++ b/hw/rtc/xlnx-zynqmp-rtc.c
-@@ -26,7 +26,7 @@
- 
- #include "qemu/osdep.h"
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "qemu/bitops.h"
- #include "qemu/log.h"
- #include "qemu/module.h"
-diff --git a/hw/ssi/xilinx_spips.c b/hw/ssi/xilinx_spips.c
-index e3c6035c169..a56a5e304dc 100644
---- a/hw/ssi/xilinx_spips.c
-+++ b/hw/ssi/xilinx_spips.c
+ #include "qemu/bcd.h"
+ #include "qom/object.h"
+diff --git a/system/runstate.c b/system/runstate.c
+index 89bbfe7fbf9..ed2db564806 100644
+--- a/system/runstate.c
++++ b/system/runstate.c
 @@ -32,7 +32,7 @@
- #include "qemu/bitops.h"
- #include "hw/ssi/xilinx_spips.h"
- #include "qapi/error.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "system/dma.h"
- #include "migration/blocker.h"
- #include "migration/vmstate.h"
-diff --git a/hw/usb/hcd-dwc3.c b/hw/usb/hcd-dwc3.c
-index 74dff39fda1..4018d70f02f 100644
---- a/hw/usb/hcd-dwc3.c
-+++ b/hw/usb/hcd-dwc3.c
-@@ -29,7 +29,7 @@
- 
- #include "qemu/osdep.h"
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "qemu/bitops.h"
- #include "qom/object.h"
- #include "migration/vmstate.h"
-diff --git a/hw/usb/xlnx-usb-subsystem.c b/hw/usb/xlnx-usb-subsystem.c
-index 7193dd4cd2c..e0dfdfdcbd1 100644
---- a/hw/usb/xlnx-usb-subsystem.c
-+++ b/hw/usb/xlnx-usb-subsystem.c
-@@ -24,7 +24,7 @@
- 
- #include "qemu/osdep.h"
- #include "hw/sysbus.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "qemu/bitops.h"
- #include "qom/object.h"
- #include "qapi/error.h"
-diff --git a/hw/usb/xlnx-versal-usb2-ctrl-regs.c b/hw/usb/xlnx-versal-usb2-ctrl-regs.c
-index eb946b5dbd9..33a7d7fbca0 100644
---- a/hw/usb/xlnx-versal-usb2-ctrl-regs.c
-+++ b/hw/usb/xlnx-versal-usb2-ctrl-regs.c
-@@ -30,7 +30,7 @@
- #include "qemu/osdep.h"
- #include "hw/sysbus.h"
- #include "hw/core/irq.h"
--#include "hw/register.h"
-+#include "hw/core/register.h"
- #include "qemu/bitops.h"
- #include "qom/object.h"
- #include "migration/vmstate.h"
+ #include "exec/cpu-common.h"
+ #include "gdbstub/syscalls.h"
+ #include "hw/core/boards.h"
+-#include "hw/resettable.h"
++#include "hw/core/resettable.h"
+ #include "migration/misc.h"
+ #include "migration/postcopy-ram.h"
+ #include "monitor/monitor.h"
+diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
+index da536fb30ed..6c4198eb1b1 100644
+--- a/target/s390x/cpu.c
++++ b/target/s390x/cpu.c
+@@ -32,7 +32,7 @@
+ #include "system/hw_accel.h"
+ #include "hw/core/qdev-properties.h"
+ #include "hw/core/qdev-properties-system.h"
+-#include "hw/resettable.h"
++#include "hw/core/resettable.h"
+ #include "fpu/softfloat-helpers.h"
+ #include "disas/capstone.h"
+ #include "system/tcg.h"
 -- 
 2.52.0
 
