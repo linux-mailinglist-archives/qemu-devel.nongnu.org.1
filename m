@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4924CDFE6B
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 16:40:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB267CDFE6E
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 16:42:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZWNs-0000cN-Lr; Sat, 27 Dec 2025 10:39:12 -0500
+	id 1vZWPo-0001OW-QC; Sat, 27 Dec 2025 10:41:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vZWNr-0000bu-2u
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 10:39:11 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vZWPm-0001HX-1w
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 10:41:10 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vZWNp-0003Rh-IY
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 10:39:10 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-47a80d4a065so39695065e9.2
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 07:39:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vZWPk-0003kg-7r
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 10:41:09 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-47755de027eso47119555e9.0
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 07:41:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766849947; x=1767454747; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=+rylR8S6mVmxXalL7IQ6x7wtN1d2wT5RvxNL9Ibi6fk=;
- b=V0p3gSQip6sEUs5nkqR4I9rv1yXlpe+9ILKN85SBF/QHCvKMFx739kUcn/O6bFS9JE
- K+eOPpSiNjFU+wzDKPMsqjK7uY3OrN/5w6A37SUmPl8FaDnRZ6vw7onEX4NwOo9Hm0sj
- kExjsN0nikR+TPNLn8pZMxmBCokyN1kLX0iEzt6p5V7D5Xl9qDz7hqhRCN03oyTRKsNs
- odyuPyeLKrid7zgKvZnqHD3rVphzyp1tcd6A/0C6iUY2cexeBHf+tfZoZ8vSALHVqZQb
- e9M/G4wSSGugCbaRN3pVavQsmd1ijrtMEz3YGEenDCMNGnwsJ+KGM/NPUKDUoHJqupqs
- JEqA==
+ d=linaro.org; s=google; t=1766850067; x=1767454867; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=1+ztlfd9wrwmAsNc2ze/59DQCS8/8L7BHQYzP5XHBNQ=;
+ b=Oa6DgGTNlkODnGmSYEwZSX8wD7F+9VL+0DvVNDs8XWBcPrpi4MlUjzTiTsgOdWjJ3y
+ dlI7LWXOfN1wFAbIEb1vBZan7N8hS6v4nOJL4gvSFU/GWUFWVYPD+3X4a+mIN82luZe2
+ mkBq6mFCstP63a1gmNHERhuD4oYtGhkpH3I/Q4rInuIr8HQR9O8EXHbh9v0UnK8AzZNp
+ d3kIg18FvggX3HQJt8mgybA30vipMXu4zCtf6nux3WzTeSFUYBy1CavC8EU1IPJGDdTo
+ jnIzDLbUJaw+HeeodWVUjA8yWcL18VK6kEountflc73FFLfQiq9YB0hr0oZAUM3tNPjD
+ +l1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766849947; x=1767454747;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1766850067; x=1767454867;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=+rylR8S6mVmxXalL7IQ6x7wtN1d2wT5RvxNL9Ibi6fk=;
- b=ofB3Of04K2VSJQ3OiLbF1Ziy/tBdM8l3xQNWisY71eMGIoivuaTF0fnyOAzWT2s2PU
- kNKF7tLHhSOGwNEXn5uJHB8QuzwZeXrgnvj8RpOkJDhcgV65Fgz4XBGZZFnfQj5TM4WV
- wMH7e0HUtQ/BwKvILfl48MQI5CI+NRJ+CmitxoOMk5g5U/TDzdByWtjnW74zkYlEi5cX
- U9ajza/SH52wU8vKhVl84BSqY5k9AgdkjS4qxUqO8nFHiI6YPEjzBOB3/6Zg4hU7DCi1
- gGhR8Y1XxhykrBJghMDBZc6Gd7hwgMqZD/f5kCJE7mTEGxj6GHO3XmGYPiryCKruTjy2
- FNTA==
+ bh=1+ztlfd9wrwmAsNc2ze/59DQCS8/8L7BHQYzP5XHBNQ=;
+ b=cqao9i0A6taqzT/644BNRwcRsV/AwmL7CR1hz1mtD6cfKhgMi2y5VxRv4cEZbXpm6X
+ 1+fkt4zKi+4l8Tc+djF1ATu3R3vtcD2ed7n87mZzRa8zaSRxdBj7fZPBxBQkSHlnVnc4
+ umAFpV/y3u1jOYAb+3dW1a288i9LyZDHLVECZoybjcTS90UfYJPKfCdebuY9WQD6QBxk
+ 9W+LA+RpkEeE67KbIQCLqb7KlRlzC7y2quGsVSFzsPXoMSZOA4Cy1tubswZ/NOeQEDmv
+ z8cdErwcfqI6podMaGiI0SbfOcNdr4EshFtHIRetNleLn86nUNLHGrtxCOFH/R0wmpGn
+ A8OA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVeclubCo4Kqcg+kp4nq/Km/lc2jLfnHIUU+DnUT3/YuiKDsolov6SIUM7Kai2+AIG4s3frtdoYGQA+@nongnu.org
-X-Gm-Message-State: AOJu0YwRVrG30Xf/O9usKICpxOFM+/OxEn1RL6XCI6g5ocC25Oacja0U
- iCyBn9WWrRt683dNjMpsVbh3o9Oo0I6sufb9Fsa6a9s3Pwf8bAuY9lL9DeGaTXy/4Vo=
-X-Gm-Gg: AY/fxX5pq9iIEhy4hUtePL9wa/h2y5zYP668DeuTKSC1z7m+piGXZouz3thYQBrxJuZ
- IaYF4rVM/15QgRKIv+3oKJVhx4u9vHqa6LIoAnNzwX5NMVj79Au3Jrmh5vgv6d7VuPL8Rq3FduF
- DH3nabRCwEMlgyUIciv9+TVYmLKiVn8nu8az+jUFGD80CHEQepywN9tSU/RczrcObwKM764oTp9
- 2p4lIaYDJMXuuycx+7hMYAVEEB90b8CGTzYL2XoCI7j6DsLSvk3ynSKtNNsi/16cEnhp8iGVXyy
- kNxHQ0IqB18+ehyInhaEajqSkRkS3AQHhIxILNpDhGyUuzzFn2hNc8QdY5/KjrtzDtAh0HQnjF/
- 7XvKlHeYNia2aiMOE6njMj9efXbVpXWtknrSiUCeLAyW62IGcd7bgut5HCxT35QeX7sZ3E+CD5v
- q5oZ1XoxCWCmB/dNF5jTb9r5znU/KaN/9C5g/oE24Ti0qO/wkUKypHCSGt0tLQMQ==
-X-Google-Smtp-Source: AGHT+IEkXZ2Js/9K6VC7V2WaZVqnkfhcwAHybMV/ijNK/MUY3Svm6lSmZoRrqa3ItgDpvmxP3Yaj5A==
-X-Received: by 2002:a05:600c:3489:b0:477:7ae0:cd6e with SMTP id
- 5b1f17b1804b1-47d206a9856mr247625985e9.5.1766849947066; 
- Sat, 27 Dec 2025 07:39:07 -0800 (PST)
+ AJvYcCXk/FH5lzhBNXj46+lpWfwsQ/mb0et+5K4TpS3uKfsm8U/2Hsduaylj6gA8qDSfmLOazfaAI1kMtWlR@nongnu.org
+X-Gm-Message-State: AOJu0YyegEtDKUS2tGPpeX+/Am4UdG59RA326+A04OKf3uQ10prOVA1n
+ AZUyjh+hbpfn8RMJxtKfshCxQaoxsQOpkeLspVzOtUTWVemupw0Jc3cdh0GM/Qa77HRW+BVhbM0
+ Q/r81
+X-Gm-Gg: AY/fxX5SQm2mhPNxi8RKJkC1Zj25C4f5BZtpJp4ai8c3MhBehknNotx2HUAZt+Aqg+5
+ COsOskL8o4O4tTm8noBC+RK8XhOivxU5SBygYl93A6f0OEQCqA1bCP9QXgJkBT7nIkjmng3Hv0M
+ +5kCPOFv21ZdqGkg5fmmzMwUs2JaILECzgwBE/4SbmnXZmb/4/NYIfUfdg2f3Uegw6aD+smU7V7
+ sZ6xhZjADRkTyd+MvehSzZ9SVDT9E0xQfeIQ2Bv2dVTjYX/EK/dGpqOWIDg/qSXmrO6fij4QXyE
+ VekPCMldyfwNZE9x/JCe/W2dK/S717EsY579OTgMemV5Eia9PdL2UvePMxbN/Tw6tdVKkyyg/ZK
+ VvO+oogt0hETDdDQ2rZevktxef+zzrdGiOzroGv/26HEP60wFU3klh/y/EJUxH38HebemPaJywk
+ kq35wB2aZc1JELFAVcq/9IPBv/3YJyt3ZmjGHEncspWa5Kh+FQS1zudObRv6HKcA==
+X-Google-Smtp-Source: AGHT+IFSnNHzK8jErOeGSNV3lqs5E+yWRKFE0o57egwAqy143zLYvJDjRqYZ1hTSrj22lHJDNYMWZA==
+X-Received: by 2002:a05:600c:4447:b0:47a:9560:ec22 with SMTP id
+ 5b1f17b1804b1-47d1954a2fdmr261090545e9.14.1766850066649; 
+ Sat, 27 Dec 2025 07:41:06 -0800 (PST)
 Received: from [192.168.1.15] (alyon-655-1-564-32.w80-9.abo.wanadoo.fr.
  [80.9.105.32]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47be3b3a80dsm206584465e9.7.2025.12.27.07.39.06
+ 5b1f17b1804b1-47d193cbe58sm447297765e9.9.2025.12.27.07.41.05
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 27 Dec 2025 07:39:06 -0800 (PST)
-Message-ID: <1b6349b2-c313-421c-ae89-6a094f6627ef@linaro.org>
-Date: Sat, 27 Dec 2025 16:39:05 +0100
+ Sat, 27 Dec 2025 07:41:06 -0800 (PST)
+Message-ID: <3395dd2c-0599-461b-8c44-f83850721c98@linaro.org>
+Date: Sat, 27 Dec 2025 16:41:05 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 003/153] include: name the MemReentrancyGuard struct
+Subject: Re: [PULL 004/153] include: move memory_ldst* to include/system
+Content-Language: en-US
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 References: <20251227091622.20725-1-pbonzini@redhat.com>
- <20251227091622.20725-4-pbonzini@redhat.com>
-Content-Language: en-US
+ <20251227091622.20725-5-pbonzini@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251227091622.20725-4-pbonzini@redhat.com>
+In-Reply-To: <20251227091622.20725-5-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,11 +103,21 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 27/12/25 10:13, Paolo Bonzini wrote:
+> These partial headers are only included via system/memory.h, so keep them in
+> the same directory.
+> 
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   include/hw/qdev-core.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   include/system/memory.h                           | 14 +++++++-------
+>   include/{exec => system}/memory_ldst.h.inc        |  0
+>   include/{exec => system}/memory_ldst_cached.h.inc |  0
+>   include/{exec => system}/memory_ldst_phys.h.inc   |  0
+>   4 files changed, 7 insertions(+), 7 deletions(-)
+>   rename include/{exec => system}/memory_ldst.h.inc (100%)
+>   rename include/{exec => system}/memory_ldst_cached.h.inc (100%)
+>   rename include/{exec => system}/memory_ldst_phys.h.inc (100%)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+Similar to
+https://lore.kernel.org/qemu-devel/20251219161953.72724-7-philmd@linaro.org/
+which also update MAINTAINERS accordingly.
 
