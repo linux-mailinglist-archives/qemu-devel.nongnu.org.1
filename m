@@ -2,96 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2244CDF6FE
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:52:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EF8CCDF755
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:55:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQvs-0007kx-UM; Sat, 27 Dec 2025 04:49:56 -0500
+	id 1vZQvu-0007sa-01; Sat, 27 Dec 2025 04:49:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQvp-0007Tb-Rs
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:49:53 -0500
+ id 1vZQvr-0007a9-BS
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:49:55 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQvn-00074i-UT
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:49:53 -0500
+ id 1vZQvp-00075A-PH
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:49:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766828991;
+ s=mimecast20190719; t=1766828993;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3jOxG/lOFaEuwFZnYy+B7I3hVFT1ihE0fudAiQRzeD0=;
- b=CTQ9Uwc+K+hi+aNK+Zwb7F5odCi+RCabOdbUmdw5cr5xrEKc2vKT+xqHX0JH0PFDrIVvew
- okqCxorLdIVHJ2/rP0h0ey1MAQw4YVgeV19dcm1vnd4s+fyIlEh3jnQRZd+a9fmXvhpcEU
- XHL3Fo1YuZ+xmPqJWT7GsaIF/5VleGA=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=gev2NNF2dqiftBJvy8sN3F/ml1DsaMn3F4NJUClQyYI=;
+ b=WIy/KOQhejQBxU9Gz5VyyL82wOK4ePYqbqNgzMBZJfUEDTkBdGhZ4AuXyNIOwDFkCTA7Ze
+ 1qg0vBsRAGg+3CnpViPP16hpLzAqcJdWPlG19gAIwaFAwSOMJhvyF4aRln1fNSnFcSSNH/
+ tSGYCJh/P3nW62yKqgLhJ7MJry81uaQ=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-300-ZdBaFzp1NiOPMGRBeRrw0A-1; Sat, 27 Dec 2025 04:49:49 -0500
-X-MC-Unique: ZdBaFzp1NiOPMGRBeRrw0A-1
-X-Mimecast-MFC-AGG-ID: ZdBaFzp1NiOPMGRBeRrw0A_1766828988
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-47918084ac1so65317465e9.2
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:49:49 -0800 (PST)
+ us-mta-554-kJwGelpNM8OwdIE0jJ1BuA-1; Sat, 27 Dec 2025 04:49:52 -0500
+X-MC-Unique: kJwGelpNM8OwdIE0jJ1BuA-1
+X-Mimecast-MFC-AGG-ID: kJwGelpNM8OwdIE0jJ1BuA_1766828991
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-430f527f5easo4798781f8f.1
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:49:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766828987; x=1767433787; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766828990; x=1767433790; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3jOxG/lOFaEuwFZnYy+B7I3hVFT1ihE0fudAiQRzeD0=;
- b=WvTYXNnEaHTlYnUlJY3Vue+5d56CM8OzBQ0u4xS+Nr4zqlJ9KO1/25by5oJCQ4n0Dr
- wcvkEtGeMVMlSlO7MBKKMbONJus7oSwWQYwDR/wkvcRo9rE9w8fRCKdTkVuz2IIa+jgb
- HUNf8sK1cKNT0RzzQtyciICpKZsLgD0hsDr+B9K9evFRwuplIMMmUXALjpUFs+LKZ9ty
- DdkInGPqE1s0eFjy8mXBJgmmN95K7YjgDTluBH20o9XpQk1pMwy5KFm6IWoVUiTeoo6l
- REpC60FUSn60hqf49ZyAJCN7KGC21sWAWpnS36CLVLstrI48Cc2ibg2ALjZoXyzVuTmi
- 24XA==
+ bh=gev2NNF2dqiftBJvy8sN3F/ml1DsaMn3F4NJUClQyYI=;
+ b=B6oBI3aJddpmq7kLN3eeX8Ikw6Ca5CWrCFybct/GZKyy53u6Ff+EXps3KvMYHWuVOT
+ KY83YHSysu7/DOiI5HIeF2YTalK9xFZgnxKgGgbUk3Y5jaRitfOYNhwg2ch/869Q348a
+ 9y2Ps1xTroS8syzNapaLny47jdgnemox/IhIovlOrH+3/j7IMeBc3nYPcnqqwT2TRdP8
+ +fPgXdms7IZuqQf+FfHuNY9kEYafHgOTkAQGbldzbboSK0teE90Xmv7DjbyDe3707LZY
+ 85ytMSDaDJY8lf7T6FHpESKsg+1KUKRIOrE4pC+dz+2MqLZoYg198Ng67Gu0NyoK4jmp
+ qZ5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766828987; x=1767433787;
+ d=1e100.net; s=20230601; t=1766828990; x=1767433790;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=3jOxG/lOFaEuwFZnYy+B7I3hVFT1ihE0fudAiQRzeD0=;
- b=ATvjY4HJOErvRNuC2BxYJAX3VMEUmOewV1ElLcjyZ27HqNMlR6iOAQDv83ZZkFnn+b
- RLQM6IdMKFoMDkaxJ8dYS4/oKlVjTYXab9efiY908hNsjb9LCs1kL4kFAVFhH4uDSPq5
- hzWfkQMqCtcpJ52BDa5JLZquDgFOGRKtYBGQgqdGTEAhWilJZRPKeI/HYIfTQ817Chzs
- /iRT6EiVa5czPeV5+shfHSLPuVHBi8P/CUtLM3K3Yf14Cm/mDsFKbNRZg3amHq0giRBR
- P5cznR1BQvkF9jn5JSz4jmZuQ+ccotDVXTN8JE73B+6Ox0sWWEqOSoW4PMYwaAn3I+j6
- 8gPw==
-X-Gm-Message-State: AOJu0YxRBnZ7r1ntGHuTA10QIQaxbeZDYhSOweTN+s5MfITJTh3EIo0o
- gmLeEC4x3ulAp2xPp+/M23Q1qP+M/G52+3/ZNdA48nx9wzkBw4B1AtPx3XEvzQi70Y3Got8qewK
- jdbM1c4EDouyaQuvq0v/zK5Cb6ON4fCdMhP0OHuD3jr0eo+wHOQJNxDxW0E8jaypdg2FJ0e+kge
- aXFluz//OBdGvuJnyYRZAAa753kIFmNn6dcs83W0r3
-X-Gm-Gg: AY/fxX4XDgzrAOVfSIu35tMHCPw61wp9sRRN+82+IP3ssMylyjXaOZIcpBIatvtnrCm
- jEN5fJHvikWTMqsj3h7FLgKnExjYv7HAL3RbgUTFxr2xLqwOnyuYiozN680w9aApBVBfz2bpnjo
- yPvqwv5UFPuAA1FjiINWn/sCRiprdwlPR02FQzOi6epR/wSeIvR16LdirIgDxYcm+KDUQiBtGv0
- 3GpZ4f+z1CmGN793gt1yzsZffsH+SLssWfg3fD4LJnQHdsx7sY0QODuk4D2luiO/PK+DlRtSTry
- bbV4oLCK7zcmSDk3Tqj8ksG7oiHGlK6YzmXZgy1c4xUx29SVskPX4opinGifPeQC7dF22ySzrUf
- hG0BTZUo08ulzMJb63iiwkrLSsW68eUV9Q3yJkbkjqJ7fwP4YpIfUmoP47hkCAI8bdTvpS3djVd
- OKEDX0BzZPfiyDvwc=
-X-Received: by 2002:a05:600c:4fd4:b0:46e:4a13:e6c6 with SMTP id
- 5b1f17b1804b1-47d1958a43fmr253930975e9.19.1766828987102; 
- Sat, 27 Dec 2025 01:49:47 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHlUtzGZB/fDzWHiJRtNB3M/iBhV0vvxyMtNC+pvM4WjUprd3LC0IhCS4uq9OAf6Qc6vBgz4w==
-X-Received: by 2002:a05:600c:4fd4:b0:46e:4a13:e6c6 with SMTP id
- 5b1f17b1804b1-47d1958a43fmr253930645e9.19.1766828986651; 
- Sat, 27 Dec 2025 01:49:46 -0800 (PST)
+ bh=gev2NNF2dqiftBJvy8sN3F/ml1DsaMn3F4NJUClQyYI=;
+ b=i+oJuRKdSEM/y1ZM98CD8GvjyH86+eD0ZY7EYOoOXr0gBz9g3PsAgw10HUqlL9+JSk
+ bEVxqFh2DvqwWSJF4ud8BTTg1unelOeaUlFgBE33W3lNvZsE+6eHFmqGYx/FQgHDn4vY
+ BSGho6Gmzhid624C3Zza6yHwNqmzBBv9MABOfjv21r6frwAxWhbM7lwsBveB1rtq3s8I
+ f+u2S0wgeaLCzfijk2S71nf0jMETVbcIX+tmJw5BdHZ/e4jdRH4we5PuMOuKBFBvlfUL
+ +aK3ThQ2JLuRc804Qr8PCZrswo9+EgaheLDkGJ51s0Ip0gcGuNG8dxGRsHMHzG9FK0gN
+ yi6g==
+X-Gm-Message-State: AOJu0YyAkcPxe1SOAoBymPRW27dpthOPDKbD/fU2LbHqGg0ClEzby3jT
+ 7em5bSMjdQkoMgSt7E6exbjou+lWdiksV7U6mIsAPwDALg4Iq6V+Ywkp+vUL4BgCKvpGg90bW21
+ z+Dl0FD85m6qgRq2QLmTsl09IvL3OAzK8KZDmUI9+i8pwiX1hBjusvvN60Q6LvgeLInKKtN07QE
+ rG294OxdTVBB2VJdnmGfNcehmOj2qbnuOb4OV2vURB
+X-Gm-Gg: AY/fxX4MHNKNCudGxpYT6e13LSLIh25wHZ3n9/Kg7AOGG962oL1ezM+ANQmv7Xpux0h
+ XfyaxafbLU32yg9Ij448InjZfVq5jVPogYOP8scrnuIZf5qZV4Abujsi1Z9b7w01pJWzKma4jdB
+ oulqViygyx9EYEVccqGi3mp3rFvvqRr3oGGZNMf5fWxFyBzgMSOiVGq37IjIAKdk8gkeDdnzflJ
+ irL/cxhmIgTiZQkeNn4RGmMGTRLUuBiLVjqdHOBnfEYpIEw7EEBDOGsYwDwNoZBiTLilGrGPoNk
+ YkfntapDu4TM9k8xPdw58siArj5BDL/hySJHoqv7Uf8DtwYjX9MdTvT4763bM+hdjZAQzPyhjZw
+ +7BBWFyyyp0oaQ3wlNp1CMopBv4Z4bvM5jwCrLYCGuPhc5CxWjFULRXXNfTfacLGZOJxuuDHRgy
+ UYx2jLCs2p2CDJv+0=
+X-Received: by 2002:a05:6000:2389:b0:430:fe6c:b1aa with SMTP id
+ ffacd0b85a97d-432448c9ddemr36031553f8f.26.1766828990142; 
+ Sat, 27 Dec 2025 01:49:50 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEleZCevkbjb051zoC+8Zgwj0IrR/HhCsUJ56HfpB8U4F03xMGoTf+8uWaRHJVjEPc+cTQaag==
+X-Received: by 2002:a05:6000:2389:b0:430:fe6c:b1aa with SMTP id
+ ffacd0b85a97d-432448c9ddemr36031527f8f.26.1766828989707; 
+ Sat, 27 Dec 2025 01:49:49 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324eab257asm50748292f8f.38.2025.12.27.01.49.45
+ ffacd0b85a97d-4324ea227casm50090292f8f.15.2025.12.27.01.49.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:49:45 -0800 (PST)
+ Sat, 27 Dec 2025 01:49:47 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Farrah Chen <farrah.chen@intel.com>,
  Zide Chen <zide.chen@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Andrew Cooper <andrew.cooper3@citrix.com>, qemu-stable@nongnu.org
-Subject: [PULL 115/153] target/i386: Fix #GP error code for INT instructions
-Date: Sat, 27 Dec 2025 10:47:20 +0100
-Message-ID: <20251227094759.35658-41-pbonzini@redhat.com>
+ qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 116/153] target/i386/tcg: ignore V3 in 32-bit mode
+Date: Sat, 27 Dec 2025 10:47:21 +0100
+Message-ID: <20251227094759.35658-42-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
@@ -122,43 +122,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Andrew Cooper <andrew.cooper3@citrix.com>
+From the manual: "In 64-bit mode all 4 bits may be used. [...]
+In 32-bit and 16-bit modes bit 6 must be 1 (if bit 6 is not 1, the
+2-byte VEX version will generate LDS instruction and the 3-byte VEX
+version will ignore this bit)."
 
-While the (intno << shift) expression is correct for indexing the IDT based on
-whether Long Mode is active, the error code itself was unchanged with AMD64,
-and is still the index with 3 bits of metadata in the bottom.
-
-Found when running a Xen unit test, all under QEMU.  The unit test objected to
-being told there was an error with IDT index 256 when INT $0x80 (128) was the
-problem instruction:
-
-  ...
-  Error: Unexpected fault 0x800d0802, #GP[IDT[256]]
-  ...
-
-Fixes: d2fd1af76777 ("x86_64 linux user emulation")
-Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Link: https://lore.kernel.org/r/20250312000603.3666083-1-andrew.cooper3@citrix.com
 Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3160
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/user/seg_helper.c | 2 +-
+ target/i386/tcg/decode-new.c.inc | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/tcg/user/seg_helper.c b/target/i386/tcg/user/seg_helper.c
-index 263f59937fe..28bbef1bbae 100644
---- a/target/i386/tcg/user/seg_helper.c
-+++ b/target/i386/tcg/user/seg_helper.c
-@@ -63,7 +63,7 @@ static void do_interrupt_user(CPUX86State *env, int intno, int is_int,
-         cpl = env->hflags & HF_CPL_MASK;
-         /* check privilege if software int */
-         if (dpl < cpl) {
--            raise_exception_err(env, EXCP0D_GPF, (intno << shift) + 2);
-+            raise_exception_err(env, EXCP0D_GPF, intno * 8 + 2);
+diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
+index 0f8c5d16938..dfaffec599e 100644
+--- a/target/i386/tcg/decode-new.c.inc
++++ b/target/i386/tcg/decode-new.c.inc
+@@ -2665,7 +2665,7 @@ static void disas_insn(DisasContext *s, CPUState *cpu)
+                     goto unknown_op;
+                 }
+             }
+-            s->vex_v = (~vex3 >> 3) & 0xf;
++            s->vex_v = (~vex3 >> 3) & (CODE64(s) ? 15 : 7);
+             s->vex_l = (vex3 >> 2) & 1;
+             s->prefix |= pp_prefix[vex3 & 3] | PREFIX_VEX;
          }
-     }
- 
 -- 
 2.52.0
 
