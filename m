@@ -2,93 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB864CDF5FD
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:24:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C579ACDF60C
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:24:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQQb-0004bi-DO; Sat, 27 Dec 2025 04:17:37 -0500
+	id 1vZQQd-0004o5-Is; Sat, 27 Dec 2025 04:17:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQQZ-0004Ot-LF
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:17:35 -0500
+ id 1vZQQb-0004bt-2s
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:17:37 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQQY-0002nP-8a
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:17:35 -0500
+ id 1vZQQZ-0002qP-GF
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:17:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766827053;
+ s=mimecast20190719; t=1766827055;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NGZ1x4J+t3Ww35ZOB0iffP3twL5jbSY9E6s3tqgBRTk=;
- b=Y6l8xxfBcu/5Wgzk2oQOI0YWscTKwaZg88N2IwbotcrUyE05JmYd93MmIqpRLbluV9LEQz
- 4XnuJZoeFnFqQ/rbmxRN6uVY+MKvl6bzco7qB9bA2/bshz48zBQs++b5/pKYfg3U9XNxDF
- dOqDS1gT1h+PcAFTA2JoRHSYhyn3zyw=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ah8JPPokp8PIS242o3ghPDmvg2Xy6nZa/QiTTUPeBrw=;
+ b=JrshS1yVt3bcrfIedLmlpfDcv/DtQRJ4z3vMzYMamH1iqlon732e1LL/BWPlreMLb/zskK
+ rbrtOVWBlNmZ2UvBt6/rHkbv+ZaObyj8wb2hC+4jsUsmZeryPXSJVEoiLZx0ZdPVq3UNZS
+ 7aPh0o2nUUSUju/vM2wGvAWKrLYfXzc=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-562-taSur1p7NDipgJVVESXCAg-1; Sat, 27 Dec 2025 04:17:31 -0500
-X-MC-Unique: taSur1p7NDipgJVVESXCAg-1
-X-Mimecast-MFC-AGG-ID: taSur1p7NDipgJVVESXCAg_1766827050
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-477cf2230c8so77990475e9.0
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:17:31 -0800 (PST)
+ us-mta-590-I5KM845oMQWzdSaGniXmxw-1; Sat, 27 Dec 2025 04:17:33 -0500
+X-MC-Unique: I5KM845oMQWzdSaGniXmxw-1
+X-Mimecast-MFC-AGG-ID: I5KM845oMQWzdSaGniXmxw_1766827052
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-430fdaba167so4115618f8f.3
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:17:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766827049; x=1767431849; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766827051; x=1767431851; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=NGZ1x4J+t3Ww35ZOB0iffP3twL5jbSY9E6s3tqgBRTk=;
- b=oVuvMqb01/bG97sVHrQlRiwJfHj5GvORET0X8F6bL2vNPst6RxNpc4eUVeyK+u9ENb
- rfgwbKzTbuBAz606wHqj001YZko2s21xVwWPjq8c1ysnYB19fq3ImdbGl6CPy4anV5rf
- ZU3Z/z6Mpd93vr4iKFbVQ0/gHfZCeIf+Hvp0xsmnLsuVGqkzWsRbp0g4IPDYsBL1vw7C
- vIAFMpfp1MtjZ2T43TV0MMQA3aggjHanKntnoxnC9w61ectMeJM8osZezzmkt8ReVmha
- oV2dk3iH4yblcP6D4IPgL3fqexpb6GFAQdpzt/8Lm8e7L2jsHALA+U+Rg9Kv+H8LIBBW
- LAhQ==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ah8JPPokp8PIS242o3ghPDmvg2Xy6nZa/QiTTUPeBrw=;
+ b=EwrGyLo98wRYrze4//IMPbAjDRm8VUdviMHN8mPMe4l+895OnhQCFryY2A3zJi31cJ
+ 1PzSNnFC5oRWi/PKTusq4OdhBdvcbs++Ap55NNnDHb/jjxYREU3caQ4PNPVw8XcpTVrZ
+ J4jt3b4rHHkXlGap0nvBC7reFKPUUe9ZhJKN9r9LFKEMOkgtVALT16NMiU3Adju0n3r7
+ iNZn2JyBaDhPTVdaC6D237BKIE9XftDUgOpKRUwMRFL26bAMpcqgDMbJ6tpt23mRIY+m
+ vbtL3H64TuN18UVwIdQnvaWVQ+DgmzHOpBALiKsoHjOoKsfjJpsR3uQdthVD1GnjBZcv
+ rROg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766827049; x=1767431849;
+ d=1e100.net; s=20230601; t=1766827051; x=1767431851;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=NGZ1x4J+t3Ww35ZOB0iffP3twL5jbSY9E6s3tqgBRTk=;
- b=NFKQ1dor5ERrksPTBlbuGkqxoYYSrF7qIzJ9r0e6Bp8a+/qW+w84KHw/+iwXI1OedR
- QWbbFhjKJLzywNRMtOU5bwXIwA8l1noJzh40UBf95e5RamhIko9pi5wGZAeI64kANwYz
- HbEGh/DbX/iieP6krKHvpWAG9tfBiLT26JfBici/nyQdpM2oFjXUldSM6LqO82S/DFeP
- zc5ZjDajrvVoltVhoEhTfNmiYD3FjoAP9RBh0Lt69M6g2/+50VSFw0d09vo3Cis8Hq5n
- TB8Duqd0Ej6Xf6Krr6MLb3CEgpVMgxFlL8bR7m2KAlrTzWGyAPj7xHVF8vequ7+yOlyE
- ppdQ==
-X-Gm-Message-State: AOJu0Yz+fmFjCH7M3xgqOl1MNyyA2VRnIp1QG+Aq7U6ARnkElITXkrBS
- qdmi4mW5wP+EdmdAA4mhMfmVu7mEFDx8tlTJkKQdV34bfunCs52oU9oJ1mfzg4qXm8jFS9VCsvJ
- SFIHN4tnbByrJl1FqcI4LWbSzYq8OZf6AN6GW40//DGkWtANEALzmdDtodKUupW/477dGA09086
- 3NyLZPd2WjmODHCrSf6gly4f0TY+5UpG57qlneuYHR
-X-Gm-Gg: AY/fxX4d1n/856BCO72GnXfhyF9QSQ5udhUruSEQBwlC2RkG62mG1DUcYkoDoDnefEc
- GdeWPVXugMPSO50Hr0fZbFK6ngAsJeB05DWqj4syQItqraQyZb20kA/prEA3izVg7Vexl1friHX
- /dQS+4ZKq75gWkYaLmmriclYgpPlEdk3y40pgXtxYQTcf23RzCytkPNZhePChztwo0RKKN+8suN
- Dlb2aeATM6VSyJKGM0RhrqrHl3DI/5m3+wvsb0Gb9bKqit/4yuBPUxWrmwPosm5Tm2lld2xwaY7
- mnQnDgtGIuYSqN8RsFDJ+vlw+RHZOF+I/YJ2qEvuavKyc/AvfFCv61QRVWNgENeWwLpW4uuambp
- K3MubhuBw9hM8qnUFcvl8tKs4K/0HbifZitHv6guj8nlwaLZPRM2BcBQ3iK0KAtdVdV6Ph81AQC
- Ib4eL0NY815/nMAPw=
-X-Received: by 2002:a05:600c:3b8f:b0:475:e09c:960e with SMTP id
- 5b1f17b1804b1-47d19593d0dmr357743335e9.32.1766827049545; 
- Sat, 27 Dec 2025 01:17:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGM6vMRwVYuFux8yxcs7iuPLGmeN2n6jZ+dzlHBjlkfJ/m3jUZi3s0mheRGifJYQeDoCvwRnA==
-X-Received: by 2002:a05:600c:3b8f:b0:475:e09c:960e with SMTP id
- 5b1f17b1804b1-47d19593d0dmr357743075e9.32.1766827049141; 
- Sat, 27 Dec 2025 01:17:29 -0800 (PST)
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=ah8JPPokp8PIS242o3ghPDmvg2Xy6nZa/QiTTUPeBrw=;
+ b=wqjuhpHMrZ1JFt1vdvOPFr42kXsj69hNdNc4oPFiqctym0L6YCNAfGch8P7XIjJDPT
+ aV6kyq7F4tR9zaO4j4vSYek9nTnVIrzxdXTXb3xoOtVNeWy5TXgCl8AVhlIVImqsAD+k
+ +ONWiZfWcP/KqWUNuSyz5r16AxfpjmsArJLDAmQMeCz9sUb95GsEZby06190vDgqKgk8
+ Vu2Ly3fjMrPb9bi7sFJVOsmq233opax50VSEbxIw5RiATTd8+1A1YDDkyErlJSQCWXc8
+ Y6ZuKorJf+M0FsRELG2jy5CTzLImFq15u9ItCTSBVXehGQeF+R58rMzuxQkVJ512mkxm
+ 6tiA==
+X-Gm-Message-State: AOJu0Yyy7AyEXHAvCftKIrKoqOAayV7evTxkTvfTyuU2wWrK8cS36xXP
+ wKWDs5GSxoyWEi7DJjKGf/h/26KsebpfyK4sNVMZHXZVBGVJx0E6DBGfLY/QMb/seHxoPedXjrN
+ JgChN7ZBTVJ7wDQVihjvOMqaAEAMjR6SYbrfOJxUYQJprU4XIU4j3/vMx03QUzUDki7ASirWvyb
+ ng7R8p4eYI0YmgI9v1I3/AOtdONBtS7CYmZZM1i9c/
+X-Gm-Gg: AY/fxX7JO53Hg4Hqr8j1j9N/gFNreUFA3y+SB0lU+z9sBSqQmWBxEvxImZofistGrSJ
+ llgbHfqb7QqlcuZa9Kxy8T1dZiM21qIoE/dk5mYVHhmA20cdf5FAVSE1PP+HTffilnY8fgljO/h
+ BbLYPQFeq+j7SwuzHI67fTQmogtzFrIKjCuVBCbM7VzcDzlonGMK7LIRBlu87w2nwS7tcHWmTWd
+ myuhsQ6C3cCuaQp3zmOTabIuoo5iA4VJc3zau1Q2sQVLSHpLVWB+sfhXc6FOy7zmqvWXma+vHe9
+ AVXp6T9Fwt5Z4wnznbCpvuxgzkDP88oYi9cIKyKR899OWk5+RJMYn6Kj54RZMCJQ0Xmi5oD9Bem
+ DxcoFKJ4wqR4A1s2gj1ivnnNjK5Ft/psLIFDLmd+PmHVEBkkWQ+8dSuU6B8b168y8PwQw56CRG6
+ O1ybcGUSCz/AUXlUQ=
+X-Received: by 2002:a5d:588c:0:b0:430:ff81:295d with SMTP id
+ ffacd0b85a97d-4324e4f9350mr30589213f8f.41.1766827051222; 
+ Sat, 27 Dec 2025 01:17:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHinHH6HAofe1h8KWEgYSLXrHsnp1RiKfQP3PCHdwQtKJQBy/v0i7xB7LuWLLl8EWkkEUdcvQ==
+X-Received: by 2002:a5d:588c:0:b0:430:ff81:295d with SMTP id
+ ffacd0b85a97d-4324e4f9350mr30589185f8f.41.1766827050758; 
+ Sat, 27 Dec 2025 01:17:30 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47be273e4d5sm493338065e9.6.2025.12.27.01.17.27
- for <qemu-devel@nongnu.org>
+ ffacd0b85a97d-4324ea227casm49960066f8f.15.2025.12.27.01.17.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:17:27 -0800 (PST)
+ Sat, 27 Dec 2025 01:17:29 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 034/153] rust: fix reference to MemoryRegion
-Date: Sat, 27 Dec 2025 10:14:21 +0100
-Message-ID: <20251227091622.20725-35-pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 035/153] rust: hide panicking default associated constants from
+ rustdoc
+Date: Sat, 27 Dec 2025 10:14:22 +0100
+Message-ID: <20251227091622.20725-36-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
@@ -119,33 +121,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the wrapper struct, not the C one.
+Work around rustdoc issue that panics while trying to evaluate
+the constants.
 
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/bql/src/cell.rs | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ rust/hw/core/src/qdev.rs      | 1 +
+ rust/migration/src/vmstate.rs | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/rust/bql/src/cell.rs b/rust/bql/src/cell.rs
-index 8ade7db629c..f4bfa697d32 100644
---- a/rust/bql/src/cell.rs
-+++ b/rust/bql/src/cell.rs
-@@ -41,10 +41,11 @@
- //! this rule is not flexible enough. Sometimes it is required to have multiple
- //! references to an object and yet mutate it. In particular, QEMU objects
- //! usually have their pointer shared with the "outside world very early in
--//! their lifetime", for example when they create their
--//! [`MemoryRegion`s](crate::bindings::MemoryRegion).  Therefore, individual
--//! parts of a  device must be made mutable in a controlled manner; this module
--//! provides the tools to do so.
-+//! their lifetime", for example when they create their [`MemoryRegion`s].
-+//! Therefore, individual parts of a  device must be made mutable in a
-+//! controlled manner; this module provides the tools to do so.
-+//!
-+//! [`MemoryRegion`s]: ../../system/memory/struct.MemoryRegion.html
- //!
- //! ## Cell types
- //!
+diff --git a/rust/hw/core/src/qdev.rs b/rust/hw/core/src/qdev.rs
+index 4e983da28b7..c2ca17f6ce0 100644
+--- a/rust/hw/core/src/qdev.rs
++++ b/rust/hw/core/src/qdev.rs
+@@ -132,6 +132,7 @@ pub trait ResettablePhasesImpl {
+ /// [`bindings::PropertyInfo`] pointer for the trait implementation to be safe.
+ pub unsafe trait QDevProp {
+     const BASE_INFO: *const bindings::PropertyInfo;
++    #[doc(hidden)] // https://github.com/rust-lang/rust/issues/149635
+     const BIT_INFO: *const bindings::PropertyInfo = {
+         panic!("invalid type for bit property");
+     };
+diff --git a/rust/migration/src/vmstate.rs b/rust/migration/src/vmstate.rs
+index 267f9c8e053..f9d9f335b98 100644
+--- a/rust/migration/src/vmstate.rs
++++ b/rust/migration/src/vmstate.rs
+@@ -101,6 +101,7 @@ pub unsafe trait VMState {
+     /// type for the length (i.e. if it is not `u8`, `u16`, `u32`), using it
+     /// in a call to [`vmstate_of!`](crate::vmstate_of) will cause a
+     /// compile-time error.
++    #[doc(hidden)] // https://github.com/rust-lang/rust/issues/149635
+     const VARRAY_FLAG: VMStateFlags = {
+         panic!("invalid type for variable-sized array");
+     };
 -- 
 2.52.0
 
