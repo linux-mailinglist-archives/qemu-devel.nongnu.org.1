@@ -2,96 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00345CDF6A9
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:49:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FFB0CDF6C8
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:51:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQup-0002dB-HQ; Sat, 27 Dec 2025 04:48:51 -0500
+	id 1vZQut-0003Ae-6r; Sat, 27 Dec 2025 04:48:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQum-0002Tv-0G
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:48 -0500
+ id 1vZQun-0002W6-RV
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:49 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQuj-0006vX-Rp
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:47 -0500
+ id 1vZQul-0006vy-K2
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766828924;
+ s=mimecast20190719; t=1766828926;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HvCNkrkwm5oju3Qltr+xjIhdiJ/CblJ6mMW0QdxQLnc=;
- b=Lm2YdwtwGSAVkX9GLaiyVzNor8zOmbHo//1IX2useh8bMbuCabdL209Syqpp4s4C3NGlJh
- Fg5a8x1Kr++cfCjnfL3CGjy6fPxOnPT263cVf7wAh3Tn/nAUvCuv3cpZLnIGq1JfCTiPn+
- fmXYiXPjYUyEweuonRbyXMxQaSfB8w4=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=xtYUxkEggFbHj5Y/79Ax3d/pR31qDvGvynv0eJHHmV4=;
+ b=UlQFbRuHS/ZY8UR44+yhzzJy0tzDk/Se2xE1ZvLBks6VMWuWStXpW/Vo0AzI5V52/EUP/V
+ m/8m4aWU3D8Iw7IK94EcF3rv7wUpTQZfMmpbOficC03279YUc1HsBoZVphv6g1G8/zAuYa
+ x/wn37qDnz2vQkBnZ+LKY2gvW8hPHcE=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-600-8LQ_bHqDP1uUBHqQ5CGS2A-1; Sat, 27 Dec 2025 04:48:42 -0500
-X-MC-Unique: 8LQ_bHqDP1uUBHqQ5CGS2A-1
-X-Mimecast-MFC-AGG-ID: 8LQ_bHqDP1uUBHqQ5CGS2A_1766828921
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-47a97b785bdso55687765e9.3
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:48:42 -0800 (PST)
+ us-mta-614-mVH7fOMvP6u-1icGR42qQA-1; Sat, 27 Dec 2025 04:48:44 -0500
+X-MC-Unique: mVH7fOMvP6u-1icGR42qQA-1
+X-Mimecast-MFC-AGG-ID: mVH7fOMvP6u-1icGR42qQA_1766828924
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-43101a351c7so6166618f8f.2
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:48:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766828920; x=1767433720; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766828923; x=1767433723; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HvCNkrkwm5oju3Qltr+xjIhdiJ/CblJ6mMW0QdxQLnc=;
- b=lG6Cr/GcA1P17KM0mJk6W2EpDG0vWI6VfdXNn3zogzCeGxZmt5Qy1JX8dfItZq1Wvy
- hLyKG5GXPi4oHG4fl5WipUrWQrGtTeqKi7HyDM6ZTvBMFquW9pipKMhf8jjDMKzhpvs2
- ih9rXKO6Y7+DqA9/HQwzRfFVJDkhcbU6DpQR9IucuAl0uiBXLPm0Q0Koa4EjWu7rpgv0
- oaErwPW5X0+sXYwvspBdJWfs2CEby5rz1cqNKuiOfr3dv7FL6f8aM+AHQjE6jeeSksIX
- Qnw9Xg7MtJ8T7aNcPtQ+jTh1OCU0sseEJkP0uqOiGMIgWhc2jadbRvlnhBcOQ1ampgu3
- /xgQ==
+ bh=xtYUxkEggFbHj5Y/79Ax3d/pR31qDvGvynv0eJHHmV4=;
+ b=TN7Gf+YQJuNxJMfsXI7rcePDNtB3xlPluqJLIf9/BbddWBtMiVmymnEYlUYjAs4hR6
+ 53UNOIXr8BeUcCuw21mNQicqyTgNKmMf7NVK4ydEFBW9OxF+zTA9s9tng+kLSADMRdHs
+ 74D2N0tPl8DgdRHl2+CXtr7wXz6yPaDDHKf16Xu+5wDf6UjzZ0cK4D1Pc3VRPTgI4wa0
+ 3o48NjuA21wWG6gnQ7QK+35WfxcU8e6LpWLMbYKHfsZRNQuhOmIYJY8q/8gK9Es3bWJc
+ HfgC4R53O0KkXpeeXQAtIlM/ZoDvC3nTvW1kDrK5UXV7bKaTTbkTIjWVilrEIdNrsyPQ
+ Z9KA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766828920; x=1767433720;
+ d=1e100.net; s=20230601; t=1766828923; x=1767433723;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=HvCNkrkwm5oju3Qltr+xjIhdiJ/CblJ6mMW0QdxQLnc=;
- b=vAedPtntfRmXs1POp44lQ2EE72Q7i4q0cz/MByuKoA2piG0k3lg5BFw7A9eTfJ9Nn6
- 9KprMWlDju6vx+TCfLUEcpJmLmis+b99Pdp7iVDaRuejiyOusRp178xjvYDtxgcNcREB
- 9fAfpdJB23mHYbFB3Pm9yuNiNTibE/1532xmee4HWlAYZ6ab/RO43cvLtBUa8XWXQPt8
- FwLkovicWmZBdBlMFxyeLsXOD+JFbq6qwVxYvmuE/NAvRv01G9R24rnHtLUifGyr7DtR
- 19I2XD1qGuvzl1QMjNLCVl3cxCw7N440HN6ILWQktT0/Q4h3JiSBQ9jEoPrcIiJ59LFD
- SSDw==
-X-Gm-Message-State: AOJu0YzXjAc3zDG5ekz6GNevUsX4bfuHTGjPZzMvajMWKF/4is6z6WSk
- BAokcx/UAKjagrGA52VF6WsmcCxL9ISkQ3x1efmMKZ7WZ390Qa9eZCg1rUidp0Uha0OrxipX1z7
- YFb5maSBP4b5nsnADMA8Umk4pYT/D28graYUAh/VCDH7yYr/jNtl4ylGVuu3wTO8rM3GydqpchU
- sSamhVa27UbrIaIAv1b1A/qL7uDSkisUNgLAbk0O80
-X-Gm-Gg: AY/fxX57AIgj5D0x4MGZ3hsj4y7mtRXM7b+QO8lvCOdQ/MBvzQkJCHRJ8RhVzbcTHhr
- 2UC0DdB8Q/J5JiJ7NlXgTVkCAfmIi2eSyOUxH92XVJ/8WgQW+Ti7UsF5vPFS7m0tOfLSGSCX51o
- DWjuZKUROcfoAyeQ372xd7C5ZP8CavRKrf0xDpdLH8MDIIE1vtC+6um2WeOoOKYMByJcwVe0Z6H
- RA7qSbXKnuYNgZZTyPsa32wp3rgdIGlaMFlF2RuBzClo6ixpvZBRvjiajhuCQB5wsmXUbHp7fhE
- ApgYXYm33IafkMqvCtDY8emnzTPUszKa2bQn0LOcixZGonRsxaTyM6qut2iNeQE7zGnt20dREZb
- g72YjCyZUhWpelrkRdfQ3RwcOaVMQLVM4Mcs3q17OJhVYQp5LHrOKhi/tfe3HMeVLaIXKUCDFtb
- lOyqSRbLFlujYmCyU=
-X-Received: by 2002:a05:600c:1d0b:b0:477:b0b9:312a with SMTP id
- 5b1f17b1804b1-47d195498a2mr244369575e9.7.1766828920639; 
- Sat, 27 Dec 2025 01:48:40 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFiy9XXrlexPv0yEZDohqAIwqWya6Hzo3VP8GdFEI5r0AyZCjKAk3AvMsBP6ZK2+Sc391nn5w==
-X-Received: by 2002:a05:600c:1d0b:b0:477:b0b9:312a with SMTP id
- 5b1f17b1804b1-47d195498a2mr244369455e9.7.1766828920267; 
- Sat, 27 Dec 2025 01:48:40 -0800 (PST)
+ bh=xtYUxkEggFbHj5Y/79Ax3d/pR31qDvGvynv0eJHHmV4=;
+ b=Zmb27DcPB4HmmGlunKusAu805ARkZxNGUtg6/7URy4v7AKcMkdEAtBu8FwDExyoFPL
+ v2A5GObpVagwGEqRSUnwk75OTlMWDe1rQ+ws0MaqhVpqNEDuAt/mesb7s1LQFtgnSBIW
+ hI0fbnElR0g4LBqdQbmeTu6BbE62Wvhs1NymWMn3qiCJ7DOH/5pyxWOkI2DzJo9R42m0
+ VjYrFJsSOtaKYGZ1RPf6ln00yv6XQ+co54BmJl84V3QETODmEgIFrIlb9tHv4rzHhh7o
+ AQEynY/cMbvI0KHi5K1+CcNjrDz80ND2/jd2fp0OvdDL/pL20P47wwwpxcJxwm5fiIMN
+ K+DQ==
+X-Gm-Message-State: AOJu0YzZKSageLwf2EkV2flZ/gxCbT1OnV99J6GzBc8qzRwoYKIKp5i+
+ IRxgzcJDFtYGV2XPyVMAQkr4MJqZFuopXvS1zN/+HfJV9QSLkNstlZ8AUTyypP+A6JMkaI2NWVa
+ YWSCDS7cqLFapWvfIX9sN1qDRKGQSTN6iYLAJ0dBDPmt+JXqC6L6D9gNQpPvRfYCmkPPsjpmiDk
+ nlIPERINcf6K2eAZjjtKHMcwVVxbvvmfBy0iv1hBh7
+X-Gm-Gg: AY/fxX4r1oQaOCiRF6Oie0wCHWgm5hhSRgs2+y0EIULKPmNGtrHxAZpcNje49d9EO48
+ P/exxMku78P6iGUxl0AWtoUlf1wAaYF1Y41UIf3ajsXspRvMNksOdOmFyDiOWVYRuJHLyLBzRWW
+ I97x1N+bXyoIL9fWTlCD2/lO7RNvHjIQuvtqUknVeZkocVidaDvOVkiNGFGWBaLQJX6Fbsowtqb
+ U/+aiWAXOQvahx1AgVgSqUp/RudcUneWKQuMqdvCReLUUaKxhkcHwPKUp+0f30CQQprB7idb50K
+ CXR23280y9yybtkW6dtjvcDaOHLLMB9lZIRsM8h6ysgPHCQm3sSD0LHL0eyHA3zEchSsTpdrXLI
+ 8HuVkPDZxIAsHtZN7VscSnMH415/3qn6USkz+Av5VmvzcjqEbv/0KgAuAb5WLlh3Gmua6sQBMcs
+ 8PwdQELQ4U8gSPauQ=
+X-Received: by 2002:a5d:58e5:0:b0:431:771:a51f with SMTP id
+ ffacd0b85a97d-4324e50ada8mr24088188f8f.49.1766828922827; 
+ Sat, 27 Dec 2025 01:48:42 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IECn7mIIMG7uvcp+0t9ppY/rvMthGSWFtHmi0Rp+hHxsiXiYBom11/zROU1DFq/AZgg5UiWxQ==
+X-Received: by 2002:a5d:58e5:0:b0:431:771:a51f with SMTP id
+ ffacd0b85a97d-4324e50ada8mr24088167f8f.49.1766828922351; 
+ Sat, 27 Dec 2025 01:48:42 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324ea830f3sm48756233f8f.22.2025.12.27.01.48.39
+ ffacd0b85a97d-4324eaa4749sm50761655f8f.37.2025.12.27.01.48.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:48:39 -0800 (PST)
+ Sat, 27 Dec 2025 01:48:41 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Farrah Chen <farrah.chen@intel.com>,
  Zide Chen <zide.chen@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 092/153] i386/cpu: Enable cet-ss & cet-ibt for supported CPU
- models
-Date: Sat, 27 Dec 2025 10:46:57 +0100
-Message-ID: <20251227094759.35658-18-pbonzini@redhat.com>
+Subject: [PULL 093/153] i386/tdx: Fix missing spaces in tdx_xfam_deps[]
+Date: Sat, 27 Dec 2025 10:46:58 +0100
+Message-ID: <20251227094759.35658-19-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
@@ -124,95 +123,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Add new versioned CPU models for Sapphire Rapids, Sierra Forest, Granite
-Rapids and Clearwater Forest, to enable shadow stack and indirect branch
-tracking.
+The checkpatch.pl always complains: "ERROR: space required after that
+close brace '}'".
+
+Fix this issue.
 
 Tested-by: Farrah Chen <farrah.chen@intel.com>
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20251211060801.3600039-21-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20251211060801.3600039-22-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 44 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ target/i386/kvm/tdx.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 4e0c5cf9997..a9f38f4020f 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -5166,6 +5166,17 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-                     { /* end of list */ },
-                 }
-             },
-+            {
-+                .version = 5,
-+                .note = "with cet-ss and cet-ibt",
-+                .props = (PropValue[]) {
-+                    { "cet-ss", "on" },
-+                    { "cet-ibt", "on" },
-+                    { "vmx-exit-save-cet", "on" },
-+                    { "vmx-entry-load-cet", "on" },
-+                    { /* end of list */ },
-+                }
-+            },
-             { /* end of list */ }
-         }
-     },
-@@ -5328,6 +5339,17 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-                     { /* end of list */ },
-                 }
-             },
-+            {
-+                .version = 4,
-+                .note = "with cet-ss and cet-ibt",
-+                .props = (PropValue[]) {
-+                    { "cet-ss", "on" },
-+                    { "cet-ibt", "on" },
-+                    { "vmx-exit-save-cet", "on" },
-+                    { "vmx-entry-load-cet", "on" },
-+                    { /* end of list */ },
-+                }
-+            },
-             { /* end of list */ },
-         },
-     },
-@@ -5482,6 +5504,17 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-                     { /* end of list */ },
-                 }
-             },
-+            {
-+                .version = 4,
-+                .note = "with cet-ss and cet-ibt",
-+                .props = (PropValue[]) {
-+                    { "cet-ss", "on" },
-+                    { "cet-ibt", "on" },
-+                    { "vmx-exit-save-cet", "on" },
-+                    { "vmx-entry-load-cet", "on" },
-+                    { /* end of list */ },
-+                }
-+            },
-             { /* end of list */ },
-         },
-     },
-@@ -5617,6 +5650,17 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-         .model_id = "Intel Xeon Processor (ClearwaterForest)",
-         .versions = (X86CPUVersionDefinition[]) {
-             { .version = 1 },
-+            {
-+                .version = 2,
-+                .note = "with cet-ss and cet-ibt",
-+                .props = (PropValue[]) {
-+                    { "cet-ss", "on" },
-+                    { "cet-ibt", "on" },
-+                    { "vmx-exit-save-cet", "on" },
-+                    { "vmx-entry-load-cet", "on" },
-+                    { /* end of list */ },
-+                }
-+            },
-             { /* end of list */ },
-         },
-     },
+diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+index dbf0fa2c918..a3444623657 100644
+--- a/target/i386/kvm/tdx.c
++++ b/target/i386/kvm/tdx.c
+@@ -520,15 +520,15 @@ typedef struct TdxXFAMDep {
+  * supported.
+  */
+ TdxXFAMDep tdx_xfam_deps[] = {
+-    { XSTATE_YMM_BIT,       { FEAT_1_ECX, CPUID_EXT_FMA }},
+-    { XSTATE_YMM_BIT,       { FEAT_7_0_EBX, CPUID_7_0_EBX_AVX2 }},
+-    { XSTATE_OPMASK_BIT,    { FEAT_7_0_ECX, CPUID_7_0_ECX_AVX512_VBMI}},
+-    { XSTATE_OPMASK_BIT,    { FEAT_7_0_EDX, CPUID_7_0_EDX_AVX512_FP16}},
+-    { XSTATE_PT_BIT,        { FEAT_7_0_EBX, CPUID_7_0_EBX_INTEL_PT}},
+-    { XSTATE_PKRU_BIT,      { FEAT_7_0_ECX, CPUID_7_0_ECX_PKU}},
+-    { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_BF16 }},
+-    { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_TILE }},
+-    { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_INT8 }},
++    { XSTATE_YMM_BIT,       { FEAT_1_ECX, CPUID_EXT_FMA } },
++    { XSTATE_YMM_BIT,       { FEAT_7_0_EBX, CPUID_7_0_EBX_AVX2 } },
++    { XSTATE_OPMASK_BIT,    { FEAT_7_0_ECX, CPUID_7_0_ECX_AVX512_VBMI } },
++    { XSTATE_OPMASK_BIT,    { FEAT_7_0_EDX, CPUID_7_0_EDX_AVX512_FP16 } },
++    { XSTATE_PT_BIT,        { FEAT_7_0_EBX, CPUID_7_0_EBX_INTEL_PT } },
++    { XSTATE_PKRU_BIT,      { FEAT_7_0_ECX, CPUID_7_0_ECX_PKU } },
++    { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_BF16 } },
++    { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_TILE } },
++    { XSTATE_XTILE_CFG_BIT, { FEAT_7_0_EDX, CPUID_7_0_EDX_AMX_INT8 } },
+ };
+ 
+ static struct kvm_cpuid_entry2 *find_in_supported_entry(uint32_t function,
 -- 
 2.52.0
 
