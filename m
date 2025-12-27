@@ -2,96 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51DFCCDF73A
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:54:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 941DCCDF6AC
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:49:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQvA-0004Xa-Ju; Sat, 27 Dec 2025 04:49:12 -0500
+	id 1vZQvF-0004eK-4z; Sat, 27 Dec 2025 04:49:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQv8-0004VY-VU
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:49:10 -0500
+ id 1vZQvD-0004bh-Fq
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:49:15 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQv7-0006zP-9q
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:49:10 -0500
+ id 1vZQvB-0006zf-Dw
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:49:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766828948;
+ s=mimecast20190719; t=1766828952;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tX8rMfJf3i4TUGuBky3KUxKbjgf7gMEJ2PzJvdcKBtc=;
- b=Tr2kG9fzG+6kI5E40PZl38lP1gxkOd2WV7467xTYUrgUsrEYQ8T+3fdRFll4g0ftxs8S6k
- UHx55HcPf7o2BphE5gxMm91a6uX4D7ODZ/h9IHvQjWa9vMdYmQdGvqMayAiE/aeJsDki73
- v8CgvSEyNEY8rdBSuj/SBwPL64LzbXQ=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=DCo0WW35FwlSIdHbwn+36kcSmEpNticlzRreJHisgYM=;
+ b=Sm1uaBYSa2zDgDDnwDRNaVFZ0yz1xww2dzX+eR0g02gwJJ7bxS2lqYZ/L6TFynbdXcNYBI
+ J95mLnzo79/vWwfFXw8RfRZ1niuMuqkU8UBwzlRg3DEG7+qVm1E+t7G8yN0TzW/l0raoyX
+ 2a5GI6oe26LI4oH6jwQx5Ea/m/MhAKg=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-547--U-gxSjPPvOw6zDhi1brcg-1; Sat, 27 Dec 2025 04:49:07 -0500
-X-MC-Unique: -U-gxSjPPvOw6zDhi1brcg-1
-X-Mimecast-MFC-AGG-ID: -U-gxSjPPvOw6zDhi1brcg_1766828946
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4792bd2c290so73503705e9.1
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:49:06 -0800 (PST)
+ us-mta-633-VkSZEnxoNFWzTUGzrp_FEw-1; Sat, 27 Dec 2025 04:49:11 -0500
+X-MC-Unique: VkSZEnxoNFWzTUGzrp_FEw-1
+X-Mimecast-MFC-AGG-ID: VkSZEnxoNFWzTUGzrp_FEw_1766828950
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-47a83800743so43407965e9.0
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:49:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766828944; x=1767433744; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766828949; x=1767433749; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tX8rMfJf3i4TUGuBky3KUxKbjgf7gMEJ2PzJvdcKBtc=;
- b=VMGv7EommblJjXh0gVM1OZ0+5/pNgxCfaysa7lPD2nTEWBlyVGdx0ibGrfDOfoUUfh
- 28YwBhRmAg+uOCFH6ZxNM43/r1OoPXpbn3grgHG7RJdpphSa18l3z2OwQZY2UOz4lrYC
- 1Ij6Ejgwpx/PVPtt2/X9aehuXqdhkgm107id/WZGTafgq74coNM88ihI1wJXPUvU9Mli
- 6XUdPMVd/ef/XZJlteLSBb9NK/NoPTCJ3bmbmsAunujpuGYaxte7rr4OQOBPVve7emLm
- /qGKWDSTAf0z/l4qPPSXK6YWpCIHNnMEu25gFJZSAK076UwkgUJPqCx1XxwEt8dcMpMy
- VDcQ==
+ bh=DCo0WW35FwlSIdHbwn+36kcSmEpNticlzRreJHisgYM=;
+ b=Jy8+Dl1maT6GrD6rHxv3J2oVJmSVwXasJj++udYhwGwQBlyPMGv46cnjTssOp2ACYA
+ RuFQBCYpsVSlDvD5ejJlB34BaK+sXZB6RVjYzdUBT5FCrjSHG/CoNwLACCDI8Y344ys4
+ 5S38KtFi/iuuLngRVV3Beoy+Dg87EP5ENDjD3krtGjN6iSpZ1jWgY1isKuKuO0+45qRT
+ KHbR1kd+knB8hYsMt6npvrnM3sdxCryZXloweGI06Zphsx+ef8DKtlIYKJxrqGc4x/Rq
+ bZ/6c1nY8BOkKHU4vHH4wIzE1Sr/EHAQ1TvC8vmDjOX061zqyH7DZh2A9gYFgpXXsS+k
+ EuRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766828944; x=1767433744;
+ d=1e100.net; s=20230601; t=1766828949; x=1767433749;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=tX8rMfJf3i4TUGuBky3KUxKbjgf7gMEJ2PzJvdcKBtc=;
- b=DNVXw35sMe3wpC5MCn8Wpl679r+b8HxEGg6qjP2o/q0cATg3vSro0THVkb6UKLrtCG
- Dge6Cn5Qi2ErAx1j0doovA6Brv1JRqh+Mihwwp02t0BO1aKV9zFR8V3H/kQvqKMoPzNO
- CHNbtq5wZpeKw3FGPqZBFgM/CAZAJij+raXTtDmQke/y6d0GzUM/p8Bynk+HIRPy+Mxi
- 5qI/l3sQik93el8OljgziShQtCxh8G2bjN1BKufuv9O5SwN9T8Oejo+aLd/t6BgJAUK+
- YNEMn6j0I43LWEGyuQbG0yCAjN4KUszsjrYsOVJXc6xSPkbYUdL3kZbBo0LQw3X7bjUR
- sqoA==
-X-Gm-Message-State: AOJu0Yxm1ClyaPd2Bzz/R+vqYf1yMJtyE/KlsntGgJXXKXiSkbtdTloo
- 55UTNNEWViWaL3dIneND5BF8olKae6bEeBdzH62vIPanlWF7BBZm7JdR0vuLoVpWof9auYHNwgv
- lmst/qVUbe/chqtZFjHnJFVs0Uoav5YD/DTnN2YRZhxv7d3STpnoDxiLKl/n271yUenr3YwCnJ1
- eHyrhchOR2PO7sMXwhG982oxULzKEvpsdJ7gp7RXGS
-X-Gm-Gg: AY/fxX5s6tcEBZy8iDM38+5IlJU/NdeG/c4tA/tco/aHf+y3Wep/a1zo37EjADAw2dE
- MOI9+suf8C4lh0+SIHbV2smhyvAKyu4jWFNceFQWZVF91ipdIptEgtbuIdfITLaB9w8/lJYpweL
- uvFIHEcvFqpuld5OImgz3oqCkWoHW1+//m6qVmpKkQ7OyedDoCXMe4HIQZL1WaRpV5Nt2J6ehvv
- 6KEcXGs4CIRtJUPTWGmZQmKv9SItgE2k49Q6RxzZb8kfOotXIMw+pKC/EdRZ3ngWXnXDss3Wc7o
- gdIZlkMUarixNJcEdww4oxemkHh07r+uAy0m7o6ONw29x8plOQrWhC2WO8prjDhU5DJ47oZVfhM
- hQEKzQ30IxWxznTa1+nkV7lJyqFIqdLkd9dsBrTrgs9SHSpTQJo6+CjkqBbwphBPPD2kvWT3ORj
- 2+/z/M+tY3j5WySNI=
-X-Received: by 2002:a05:600c:4f09:b0:477:7bca:8b2b with SMTP id
- 5b1f17b1804b1-47d195672d1mr274919605e9.15.1766828944078; 
- Sat, 27 Dec 2025 01:49:04 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFqCW1jNqtu1NSlWtDmTxZGatj49K6GWHWJz/AJUqh08cTySxz5I7JoicTxnq5eo+EE5DsOdQ==
-X-Received: by 2002:a05:600c:4f09:b0:477:7bca:8b2b with SMTP id
- 5b1f17b1804b1-47d195672d1mr274919415e9.15.1766828943666; 
- Sat, 27 Dec 2025 01:49:03 -0800 (PST)
+ bh=DCo0WW35FwlSIdHbwn+36kcSmEpNticlzRreJHisgYM=;
+ b=ZMo1POsB3FjeEGhb6EAVgGbg4QIBP5cghcq86WXiittwFKx1XtHtv40Orh+G7Yy5q9
+ cN2zHIHfRSO6TgPKsPxHOwHJONoRhO6ZI6Ohrp3ptWXm/SkYxkVRf3LRoUxqKds+hIXY
+ 8LHoqCsVXeGTVlkb+PJBHCyG+9MuwjX9iCLISLIL10sKj2LRqcBkpmwXE07cxba1X5Dp
+ /CrdubQ8sLu+T5ch144hWo41MLfDqLaCK8zCoGs4VKBiJevHa9SNhexBTEEwzuJY3RBe
+ cs3i/p9sK7Vud3arUS1RDo+ttyrLRQmtCxFpUDOEKob0qnBPcAfQfaQgrfEYpx3UFFv8
+ N2Vg==
+X-Gm-Message-State: AOJu0YyVR3/VgmuUdELHiyDCReWvrXuggNPgopWilCTGrGkm0O7A9sje
+ Lky3NCKnaxaANqI2YW24maVRA8v0NgH2NmzCsVnaDNoTg8SmfgWiofIGPa4DqXMkY5X5UWBQFcr
+ iItD/sfNW0mD4QVoZAaRr8yh9H+J5A6JVXbzeNqtipR29+dLJld4DMx162+u7ClNXLH1WC32bd4
+ 33J+3K1u42XRmVZCmIm0jgVQLLP4L/fbJsTVf1otPx
+X-Gm-Gg: AY/fxX5YL7HW7EQOmZv0ZZoUF2DwYP3o+LQCCGDSaVJmOsyu81CxzCV1rVt3ixDDK8K
+ imcxdIdRuY9+I9nK8vWNlT27P7FwC8xOHyWo3JbDXshBlbiPpQksJ1aFgn9YYEYvslfMgy3+sWt
+ O3VqPLSZscmleXlKl5GWDu545y3BRnVzZr4drzJfV3/9uAGmmD8C22qhDwaubNliysv6Uk22CFk
+ FFy+7PfVOjnq+BAixbSRKw1coCiRY1Q7JetlCEDAV0WmZ1gEoMmApP2yH/oHDuxRg8pLpyHuIm+
+ Iivs2Izin6THNP0cxWomV0PcJQJei5JW4BFvKxPNodpsr80AHOQ1XDNxo07H4FjxTQFFF3Pnfpf
+ rPNa9Up0vbvRgFW71HGbuQ8999K625Ro17PGZ3cCMR5PflSEWfKs6aO9Hhd6WEZ4k4R2YPLALyF
+ VCbt8NUC8IBnMrhpY=
+X-Received: by 2002:a05:600c:8b82:b0:47b:deb9:163d with SMTP id
+ 5b1f17b1804b1-47d18b99b99mr262142495e9.7.1766828948834; 
+ Sat, 27 Dec 2025 01:49:08 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IErKeyc4GIUQr2bEY7GdiO3LuoT+sQ2Qbc9eFpOCuNjKYa2268P8sjkr1sSqmHIwKDMMgweVA==
+X-Received: by 2002:a05:600c:8b82:b0:47b:deb9:163d with SMTP id
+ 5b1f17b1804b1-47d18b99b99mr262142305e9.7.1766828948414; 
+ Sat, 27 Dec 2025 01:49:08 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47be27b0d5asm490545865e9.13.2025.12.27.01.49.02
+ 5b1f17b1804b1-47be26a81b6sm499566245e9.0.2025.12.27.01.49.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:49:03 -0800 (PST)
+ Sat, 27 Dec 2025 01:49:04 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Farrah Chen <farrah.chen@intel.com>,
  Zide Chen <zide.chen@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Xudong Hao <xudong.hao@intel.com>
-Subject: [PULL 101/153] i386/cpu: Add APX migration support
-Date: Sat, 27 Dec 2025 10:47:06 +0100
-Message-ID: <20251227094759.35658-27-pbonzini@redhat.com>
+ Xudong Hao <xudong.hao@intel.com>, Peter Fang <peter.fang@intel.com>
+Subject: [PULL 102/153] i386/cpu: Support APX CPUIDs
+Date: Sat, 27 Dec 2025 10:47:07 +0100
+Message-ID: <20251227094759.35658-28-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
@@ -122,63 +122,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zide Chen <zide.chen@intel.com>
+From: Zhao Liu <zhao1.liu@intel.com>
 
-Add a VMStateDescription to migrate APX EGPRs.
+APX is enumerated by CPUID.(EAX=0x7, ECX=1).EDX[21]. And this feature
+bit also indicates the existence of dedicated CPUID leaf 0x29, called
+the Intel APX Advanced Performance Extensions Leaf.
+
+This new CPUID leaf now is populated with enumerations for a select
+set of Intel APX sub-features.
+
+CPUID.(EAX=0x29, ECX=0)
+ - EAX
+   * Maximum Subleaf CPUID.(EAX=0x29, ECX=0).EAX[31:0] = 0
+ - EBX
+   * Reserved CPUID.(EAX=0x29, ECX=0).EBX[31:1] = 0
+   * APX_NCI_NDD_NF CPUID.(EAX=0x29, ECX=0).EBX[0:0] = 1, which
+     enumerates the presence of New Conditional Instructions (NCIs),
+     explicit New Data Destination (NDD) controls, and explicit Flags
+     Suppression (NF) controls for select sets of EVEX-encoded Intel
+     APX instructions (present in EVEX map=4, and EVEX map=2 0x0F38).
+ - ECX
+   * Reserved CPUID.(EAX=0x29, ECX=0).ECX[31:0] = 0
+ - EDX
+   * Reserved CPUID.(EAX=0x29, ECX=0).EDX[31:0] = 0
+
+Note, APX_NCI_NDD_NF is documented as always enabled for Intel
+processors since APX spec (revision v7.0). Now any Intel processor
+that enumerates support for APX_F (CPUID.(EAX=0x7, ECX=1).EDX[21])
+will also enumerate support for APX_NCI_NDD_NF.
 
 Tested-by: Xudong Hao <xudong.hao@intel.com>
+Co-developed-by: Zide Chen <zide.chen@intel.com>
 Signed-off-by: Zide Chen <zide.chen@intel.com>
-Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
+Co-developed-by: Peter Fang <peter.fang@intel.com>
+Signed-off-by: Peter Fang <peter.fang@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20251211070942.3612547-8-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20251211070942.3612547-9-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/machine.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ target/i386/cpu.h |  8 ++++++++
+ target/i386/cpu.c | 40 +++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 47 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/machine.c b/target/i386/machine.c
-index 0882dc3eb09..c9139612813 100644
---- a/target/i386/machine.c
-+++ b/target/i386/machine.c
-@@ -1741,6 +1741,28 @@ static const VMStateDescription vmstate_cet = {
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 691ed974684..fc634883649 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -710,6 +710,7 @@ typedef enum FeatureWord {
+     FEAT_7_1_EDX,       /* CPUID[EAX=7,ECX=1].EDX */
+     FEAT_7_2_EDX,       /* CPUID[EAX=7,ECX=2].EDX */
+     FEAT_24_0_EBX,      /* CPUID[EAX=0x24,ECX=0].EBX */
++    FEAT_29_0_EBX,      /* CPUID[EAX=0x29,ECX=0].EBX */
+     FEATURE_WORDS,
+ } FeatureWord;
+ 
+@@ -1092,6 +1093,13 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
+                                          CPUID_24_0_EBX_AVX10_256 | \
+                                          CPUID_24_0_EBX_AVX10_512)
+ 
++/*
++ * New Conditional Instructions (NCIs), explicit New Data Destination (NDD)
++ * controls, and explicit Flags Suppression (NF) controls for select sets of
++ * EVEX-encoded Intel APX instructions
++ */
++#define CPUID_29_0_EBX_APX_NCI_NDD_NF         (1U << 0)
++
+ /* RAS Features */
+ #define CPUID_8000_0007_EBX_OVERFLOW_RECOV    (1U << 0)
+ #define CPUID_8000_0007_EBX_SUCCOR      (1U << 1)
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 3c9ed7cd5f7..c9efd3a9d46 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1036,6 +1036,7 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
+ #define TCG_SGX_12_0_EBX_FEATURES 0
+ #define TCG_SGX_12_1_EAX_FEATURES 0
+ #define TCG_24_0_EBX_FEATURES 0
++#define TCG_29_0_EBX_FEATURES 0
+ 
+ #if defined CONFIG_USER_ONLY
+ #define CPUID_8000_0008_EBX_KERNEL_FEATURES (CPUID_8000_0008_EBX_IBPB | \
+@@ -1301,7 +1302,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+             "amx-complex", NULL, "avx-vnni-int16", NULL,
+             NULL, NULL, "prefetchiti", NULL,
+             NULL, NULL, NULL, "avx10",
+-            NULL, NULL, NULL, NULL,
++            NULL, "apxf", NULL, NULL,
+             NULL, NULL, NULL, NULL,
+             NULL, NULL, NULL, NULL,
+         },
+@@ -1345,6 +1346,25 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+         },
+         .tcg_features = TCG_24_0_EBX_FEATURES,
      },
++    [FEAT_29_0_EBX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            "apx-nci-ndd-nf", NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .cpuid = {
++            .eax = 0x29,
++            .needs_ecx = true, .ecx = 0,
++            .reg = R_EBX,
++        },
++        .tcg_features = TCG_29_0_EBX_FEATURES,
++    },
+     [FEAT_8000_0007_EDX] = {
+         .type = CPUID_FEATURE_WORD,
+         .feat_names = {
+@@ -1996,6 +2016,10 @@ static FeatureDep feature_dependencies[] = {
+         .from = { FEAT_7_1_EDX,             CPUID_7_1_EDX_AVX10 },
+         .to = { FEAT_24_0_EBX,              ~0ull },
+     },
++    {
++        .from = { FEAT_7_1_EDX,             CPUID_7_1_EDX_APXF },
++        .to = { FEAT_29_0_EBX,              ~0ull },
++    },
  };
  
-+#ifdef TARGET_X86_64
-+static bool apx_needed(void *opaque)
-+{
-+    X86CPU *cpu = opaque;
-+    CPUX86State *env = &cpu->env;
-+
-+    return !!(env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_APXF);
-+}
-+
-+static const VMStateDescription vmstate_apx = {
-+    .name = "cpu/apx",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = apx_needed,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINTTL_SUB_ARRAY(env.regs, X86CPU, CPU_NB_REGS,
-+                                 CPU_NB_EREGS - CPU_NB_REGS),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+#endif
-+
- const VMStateDescription vmstate_x86_cpu = {
-     .name = "cpu",
-     .version_id = 12,
-@@ -1892,6 +1914,9 @@ const VMStateDescription vmstate_x86_cpu = {
-         &vmstate_triple_fault,
-         &vmstate_pl0_ssp,
-         &vmstate_cet,
-+#ifdef TARGET_X86_64
-+        &vmstate_apx,
-+#endif
-         NULL
+ typedef struct X86RegisterInfo32 {
+@@ -8411,6 +8435,15 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+         }
+         break;
      }
- };
++    case 0x29:
++        *eax = 0;
++        *ebx = 0;
++        *ecx = 0;
++        *edx = 0;
++        if ((env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_APXF) && count == 0) {
++            *ebx = env->features[FEAT_29_0_EBX];
++        }
++        break;
+     case 0x40000000:
+         /*
+          * CPUID code in kvm_arch_init_vcpu() ignores stuff
+@@ -9190,6 +9223,11 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
+             x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0x24);
+         }
+ 
++        /* Advanced Performance Extensions (APX) requires CPUID[0x29] */
++        if (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_APXF) {
++            x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0x29);
++        }
++
+         /* SVM requires CPUID[0x8000000A] */
+         if (env->features[FEAT_8000_0001_ECX] & CPUID_EXT3_SVM) {
+             x86_cpu_adjust_level(cpu, &env->cpuid_min_xlevel, 0x8000000A);
 -- 
 2.52.0
 
