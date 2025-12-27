@@ -2,106 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8196CDF640
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:25:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00CAACDF615
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:24:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQQr-0005NE-KC; Sat, 27 Dec 2025 04:17:53 -0500
+	id 1vZQQv-0005P8-By; Sat, 27 Dec 2025 04:17:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQQq-0005ME-D1
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:17:52 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vZQQs-0005O0-3q
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:17:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQQo-0003JI-Gy
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:17:52 -0500
+ id 1vZQQq-0003Mq-Ha
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:17:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766827069;
+ s=mimecast20190719; t=1766827071;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BcYiSMPHRhr9NPTHybSXLlaJL+NoJQyoxLhUprtUz0k=;
- b=RlcVOtRruyuO9h7fzSb8w6OXfQgBN0iz8MlYJTgw3pSxKdDGfWtIWlLHgmWP3TUqQk4kAx
- 5ndCHTft4DmV60v7YRPmcXfvDinnh+LSeFua+sxfEqTBAeIVBuyDqXIeTMkXB/L21WmZgX
- UZHVgqlBc18qkvEO+1znCvnXejGunOE=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Saf9PETHsvdIuPhzv3hNmYIifKozrOKriQHb+ziBQiU=;
+ b=goJEhM4X5HEYERcdHyhKo7DYw0oOdMJnBgw+mnoxQ3siG6IbthnQivcRMRwhKGqdqVCCw4
+ 1D1/ml5MMuakTcqwmW1JN9ve5+8hyfGdnSBR+3scoD9joSTtdscqkCmdgARTBQCsMSuXfB
+ eiTUNjoweI08ZpOhfy7xbXRwthlqCnE=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-582-nCbtgSXXO2yxqCbDMdlp8g-1; Sat, 27 Dec 2025 04:17:48 -0500
-X-MC-Unique: nCbtgSXXO2yxqCbDMdlp8g-1
-X-Mimecast-MFC-AGG-ID: nCbtgSXXO2yxqCbDMdlp8g_1766827067
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4779b3749a8so54867785e9.1
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:17:48 -0800 (PST)
+ us-mta-681-m-WjB_NaPVO6xIhky76RKg-1; Sat, 27 Dec 2025 04:17:50 -0500
+X-MC-Unique: m-WjB_NaPVO6xIhky76RKg-1
+X-Mimecast-MFC-AGG-ID: m-WjB_NaPVO6xIhky76RKg_1766827069
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-430f527f5easo4791414f8f.1
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:17:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766827066; x=1767431866; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766827068; x=1767431868; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=BcYiSMPHRhr9NPTHybSXLlaJL+NoJQyoxLhUprtUz0k=;
- b=DSBru235IAE0E5F5je+x1y9V+N6nSH5RtqhIwshWjZPyFW24tTXReJfxANCqL0Z3pe
- lMUtAqb+wdMCTjzqAL2jYuiEKI1TtJznjWBOiAxVOBitfYwWRzuYNONdvYszxnXKMag+
- hl1WaAysRxi4LKddMyEj4vwy4/uix9flVVSRbvnQO5ezksvujBO+s77moblIwjJ+3C76
- lcl7LzFom8wDF7jd03wWQYGtsGay/xoftG9DlsgenOpkiFierZY1mLX6H2Mv41q1uvE+
- aq/WFZS12hPQmnvtmGAOI61QZVpHSPjk9WIxvPNvdRzHzOkyzDARfz5i32hk+1bqic7F
- K7EQ==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Saf9PETHsvdIuPhzv3hNmYIifKozrOKriQHb+ziBQiU=;
+ b=b3AzFjEcJhNZ7IrRCdVsFhZBU5yIohVT82O8IuvsmJ+ycCqtPUxLfL3Lq4tbEUhL9a
+ YDQYGNtr25aKDEWI0w3sDmfaRgZBandVV3djN/1JtQb8Dh9pgR8+nyfqxrrs4x5mnM26
+ qPCfewyrJ0axLV1Z1IH/v9gG5Ps3TNsSCDqw4mrulsvzOU/lZYhvlv+U9Io4lTwAkGJL
+ JHHT1SKbp1897BGByorbe8VPzuqH0oubg0s8ft4Pcjp5v/Feb2ivxVcWj3RbLy53Ek++
+ vgHwJfaifqzx650JbR8sBjPqOEAk9pocSaRmey59JYkJiax4N1rith/QiG2DvU5zsQh7
+ yxoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766827066; x=1767431866;
+ d=1e100.net; s=20230601; t=1766827068; x=1767431868;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=BcYiSMPHRhr9NPTHybSXLlaJL+NoJQyoxLhUprtUz0k=;
- b=pFejA4MOTPFfV19Xkf7jIabw+FaZFDrs0m1/43gzZ72aEQ+nM/+vnRtqBgixI/4F5a
- PYfynNK8s9ryarmSQDfSxfjG1e8ae5L9l2e4jzrlUxGeYZHKVSH4n48G+/DOmMDzl5yA
- N5Naay1pgSHjkTxS8Hi0MMNSSqccNdOpY0EpYkax7/ynO+ldGp6KFNp8jAhtqciW0k9f
- nC1dxPt/vKHj+8za8lilk/a5peHMngMgtB1dUssle0LU6DWnE8kz7gddDOwv3KxVenk+
- al542Jj1kwqU+qylwGqkWM02n/+5wU+QOoxUF3FJumiSTcZYuJsSXYvpi5J4OqBQq2TM
- IrfQ==
-X-Gm-Message-State: AOJu0Yx7cE2Da3QJqUCJBgQ6PTXS7PTdOy2YlSTBt9JcAOl/b/qAiKuQ
- 6BoF3OrozrlemC7stUEIbAR1V4mYaERD3v22Uxy/fVnseGH3kgSVj9ajRPECt6RrBisxzdDxkZi
- mR6pnkvoOgYPz8PABXxgtMv9+8SLrVX0fSYr8SDFF1o6MBuRpBmUh5pp5a3+TGT4Srseqxx9uwE
- UJ8Ru/3tINulDFzPtR2VdJ00Jw4VrvkkBxNd+MvH9C
-X-Gm-Gg: AY/fxX6YtUOMRkfLdMI5klNwZGObWyKLgmLTCmvpL3SdyQHITwHTm949X7tpqYrrSFF
- k1Xkzmv9OYWgHpgKdEi31RNnv/OloOrO+rhnI+jaq1g3Njyi8c8CyTRwQZM7aZB4YKrPkRmiT9X
- ssdst/E+drbtneoc1FyIwZOfKrGoKU2rQQK1n07Cn7nIwbmgQjdDwAzpMejJEqC+7pbY431MB+1
- rgNYsmv7YHBtXbiC1v81oqwT5c45pa5aH0bvF2gch2F/OPMBA0+e/SbdyJ7z3g4MSDeyQKph6Do
- SZM+Mp+VnVDIg6RAw11BoDwv1qhj+d0LONgTbvr3Rhk1sB7n4SWQjn1NBBfG4gqFZS+34ORJWcS
- RLjl7nzLtixlDqH8f/W4Zm7TTc/hh5rIjf27mc6rUWSPAQTpCHy9QIEQjl1iX/wYY74FPPHvBiG
- rO7HBjIQKC7X0egiU=
-X-Received: by 2002:a05:600c:350b:b0:471:1774:3003 with SMTP id
- 5b1f17b1804b1-47d1958ef07mr248776275e9.29.1766827066321; 
- Sat, 27 Dec 2025 01:17:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGxcCvVmVgGt9VmZPiK/W01YxArFV57JKA7voZorMIDY+l6m815+h1YITbidc/sUZwGKmKN/Q==
-X-Received: by 2002:a05:600c:350b:b0:471:1774:3003 with SMTP id
- 5b1f17b1804b1-47d1958ef07mr248775995e9.29.1766827065826; 
- Sat, 27 Dec 2025 01:17:45 -0800 (PST)
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=Saf9PETHsvdIuPhzv3hNmYIifKozrOKriQHb+ziBQiU=;
+ b=U+ACRvjED/JTp+DF50TEkwwT2ARy7wkPj6U/iISfgt4LClr24gWkWBnzarSJn/Mrt7
+ xX/ol6rmR25tsvfd2UYMaacPQLdJCcqmpMuY+VQI1W97Ku5DMjvxK16Kl4O391lND8It
+ sKgSOLvKAs5ztcWR2D+TTmit+5GFVTjlsqMLVgZ9MR34Q55nCp4by7BCm2SPI6tmFyQl
+ 8sNoP6dVagXG6dzxtLA9HOUDXzBLM8vDKwjeQHNukrYuGe65kp4121c/ZNB378zKWshA
+ GNKZRG0tPBHvKI2NjYnhPpaP2oiYIcQthKrYTqP/6tVuHMtQa4VsjWcU7iAUce8ApAfC
+ CReg==
+X-Gm-Message-State: AOJu0YydNQyevH32N8S+M/6KnHBycfOjLUI4R0uhmjGuf3XfiPOt9D18
+ FBHvwaIDVG/wPWn84e4olvPHooNtgV5xpe09gRxRsU4eSbtrhRWENXfWAFcIjza96zOQFApnATK
+ JjBR7Q1C+npat5aaCRZl6S78YNLXMBmpExOrxmg2IoPb7eWWUGPetAOMNVp1xdjEAvkB27ohlEb
+ k9kst0PcSAh+1xJtYFq5VvDe7z//2zi9GGLhDPAa5j
+X-Gm-Gg: AY/fxX5A3ByN/LlW73+0kMzUJx2jJoKZwwyYvxwycqpWKf55V3l0uJXCTEdzjVHWW0B
+ pH3v1hXt2gXBIUyGK0M+FavhVxIs0NGB/2gS0b0Qjdb21ALbY/4nJhKEQwwJQmBZ6lOP0M4m4Au
+ SNXRRaKv9VPp1qEABYVTJm/Iv8bHK9c3ju+18M8EGRo14Gl/JuvTfjTRqY94AvCtlOBB8xbegjb
+ 7yObZwg8tdaJJk8+QE4FDlQhAR1dAWzztbRdMwpcdneMNFIhEe5PQqej/15hzJopbmmicfbKtwB
+ ZcX6l87FZZATasbJr8J9cSmwL5orh4ZrWUI3c+/U4VCeFuW5Wb2a+0GkMwY6uvcc3D1Dh/t+L91
+ DD3j62u6nnm+c0RdQTXaslrHZPr2PgDFukCqkoC4oJhUmTfYJGKw8AujTnghZaulX0H9MzdYXxj
+ GgxcfDuvTK/tBukXs=
+X-Received: by 2002:a05:600c:4f08:b0:475:d9de:952e with SMTP id
+ 5b1f17b1804b1-47d18b83218mr273763375e9.1.1766827068126; 
+ Sat, 27 Dec 2025 01:17:48 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEf36DEy3WgmEV+PRop4O1VCaEYDnttE/4kNKkHZerpkgnFKSo475+eyM2AGyHovOYeR1fMIg==
+X-Received: by 2002:a05:600c:4f08:b0:475:d9de:952e with SMTP id
+ 5b1f17b1804b1-47d18b83218mr273763095e9.1.1766827067629; 
+ Sat, 27 Dec 2025 01:17:47 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d193cba81sm426726835e9.10.2025.12.27.01.17.45
- for <qemu-devel@nongnu.org>
+ 5b1f17b1804b1-47be279d6d8sm483811885e9.10.2025.12.27.01.17.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:17:45 -0800 (PST)
+ Sat, 27 Dec 2025 01:17:46 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 044/153] qom: add more to the prelude
-Date: Sat, 27 Dec 2025 10:14:31 +0100
-Message-ID: <20251227091622.20725-45-pbonzini@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PULL 045/153] hpet: remove unused trace events
+Date: Sat, 27 Dec 2025 10:14:32 +0100
+Message-ID: <20251227091622.20725-46-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -119,97 +121,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Stefan Hajnoczi <stefanha@redhat.com>
+
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Link: https://lore.kernel.org/r/20251106215606.36598-2-stefanha@redhat.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs | 2 +-
- rust/hw/core/src/qdev.rs         | 2 +-
- rust/hw/core/src/sysbus.rs       | 2 +-
- rust/hw/core/tests/tests.rs      | 2 +-
- rust/hw/timer/hpet/src/device.rs | 2 +-
- rust/qom/src/prelude.rs          | 4 ++++
- 6 files changed, 9 insertions(+), 5 deletions(-)
+ hw/timer/trace-events | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index 0b1bb2d5a3b..9f5c4a34df0 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -9,7 +9,7 @@
- use common::prelude::*;
- use hwcore::{prelude::*, ClockEvent, IRQState};
- use migration::{self, prelude::*};
--use qom::{prelude::*, ObjectImpl, Owned, ParentField, ParentInit};
-+use qom::prelude::*;
- use system::prelude::*;
- use util::prelude::*;
+diff --git a/hw/timer/trace-events b/hw/timer/trace-events
+index 2bb51f95ea8..f3fca6fc9b1 100644
+--- a/hw/timer/trace-events
++++ b/hw/timer/trace-events
+@@ -112,7 +112,6 @@ sh_timer_write(uint64_t offset, uint64_t value) "tmu012_write 0x%" PRIx64 " 0x%0
  
-diff --git a/rust/hw/core/src/qdev.rs b/rust/hw/core/src/qdev.rs
-index c2ca17f6ce0..87232becbad 100644
---- a/rust/hw/core/src/qdev.rs
-+++ b/rust/hw/core/src/qdev.rs
-@@ -12,7 +12,7 @@
- use chardev::Chardev;
- use common::{callbacks::FnCall, Opaque};
- use migration::{impl_vmstate_c_struct, VMStateDescription};
--use qom::{prelude::*, ObjectClass, ObjectImpl, Owned, ParentInit};
-+use qom::{prelude::*, ObjectClass};
- use util::{Error, Result};
- 
- pub use crate::bindings::{ClockEvent, DeviceClass, Property, ResetType};
-diff --git a/rust/hw/core/src/sysbus.rs b/rust/hw/core/src/sysbus.rs
-index ec620639be5..071fccff1e6 100644
---- a/rust/hw/core/src/sysbus.rs
-+++ b/rust/hw/core/src/sysbus.rs
-@@ -8,7 +8,7 @@
- 
- pub use bindings::SysBusDeviceClass;
- use common::Opaque;
--use qom::{prelude::*, Owned};
-+use qom::prelude::*;
- use system::MemoryRegion;
- use util::{Error, Result};
- 
-diff --git a/rust/hw/core/tests/tests.rs b/rust/hw/core/tests/tests.rs
-index e60c9d018f5..115dd7a860d 100644
---- a/rust/hw/core/tests/tests.rs
-+++ b/rust/hw/core/tests/tests.rs
-@@ -7,7 +7,7 @@
- use bql::prelude::*;
- use hwcore::prelude::*;
- use migration::prelude::*;
--use qom::{prelude::*, ObjectImpl, ParentField};
-+use qom::prelude::*;
- use util::bindings::{module_call_init, module_init_type};
- 
- // Test that macros can compile.
-diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
-index c5cdb87b073..c82b27ddf15 100644
---- a/rust/hw/timer/hpet/src/device.rs
-+++ b/rust/hw/timer/hpet/src/device.rs
-@@ -14,7 +14,7 @@
- use common::prelude::*;
- use hwcore::prelude::*;
- use migration::{self, prelude::*};
--use qom::{prelude::*, ObjectImpl, ParentField, ParentInit};
-+use qom::prelude::*;
- use system::{
-     bindings::{address_space_memory, address_space_stl_le},
-     MEMTXATTRS_UNSPECIFIED,
-diff --git a/rust/qom/src/prelude.rs b/rust/qom/src/prelude.rs
-index 00a60959771..6a1ecaef2a7 100644
---- a/rust/qom/src/prelude.rs
-+++ b/rust/qom/src/prelude.rs
-@@ -6,7 +6,11 @@
- pub use crate::qom::ObjectCast;
- pub use crate::qom::ObjectClassMethods;
- pub use crate::qom::ObjectDeref;
-+pub use crate::qom::ObjectImpl;
- pub use crate::qom::ObjectMethods;
- pub use crate::qom::ObjectType;
-+pub use crate::qom::Owned;
-+pub use crate::qom::ParentField;
-+pub use crate::qom::ParentInit;
- 
- pub use crate::qom_isa;
+ # hpet.c
+ hpet_timer_id_out_of_range(uint8_t timer_id) "timer id out of range: 0x%" PRIx8
+-hpet_invalid_hpet_cfg(uint8_t reg_off) "invalid HPET_CFG + %u" PRIx8
+ hpet_ram_read(uint64_t addr) "enter hpet_ram_readl at 0x%" PRIx64
+ hpet_ram_read_reading_counter(uint8_t reg_off, uint64_t cur_tick) "reading counter + %" PRIu8 " = 0x%" PRIx64
+ hpet_ram_read_invalid(void) "invalid hpet_ram_readl"
+@@ -123,4 +122,3 @@ hpet_ram_write_tn_cmp(uint8_t reg_off) "hpet_ram_writel HPET_TN_CMP + %" PRIu8
+ hpet_ram_write_invalid_tn_cmp(void) "invalid HPET_TN_CMP + 4 write"
+ hpet_ram_write_invalid(void) "invalid hpet_ram_writel"
+ hpet_ram_write_counter_write_while_enabled(void) "Writing counter while HPET enabled!"
+-hpet_ram_write_counter_written(uint8_t reg_off, uint64_t value, uint64_t counter) "HPET counter + %" PRIu8 "written. crt = 0x%" PRIx64 " -> 0x%" PRIx64
 -- 
 2.52.0
 
