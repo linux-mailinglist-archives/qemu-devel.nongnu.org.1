@@ -2,95 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9244CDF61E
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:24:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45ECFCDF645
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:25:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQR1-0005XK-Qv; Sat, 27 Dec 2025 04:18:03 -0500
+	id 1vZQR1-0005VN-9p; Sat, 27 Dec 2025 04:18:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQQw-0005Q7-Ic
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:17:59 -0500
+ id 1vZQQz-0005U5-L2
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:02 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQQv-0003aI-6j
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:17:58 -0500
+ id 1vZQQy-0003ag-52
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766827076;
+ s=mimecast20190719; t=1766827079;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5r1dlz6k+9YSG4rC8cKOerFMsHuLeVrkakCHQYVz+64=;
- b=awXag1O0SoG2ECWrEJ2ANGe6lHQ2K+RPECR/KGgNX3V6XSkraektqOSyFGVv37AV9PpQjU
- Xpp64ZSQKuYOPj/kO4Fk76y9n4iL5BG9vVSnehw9C44xtKkvLkNQooN/fWoWdWEHADntol
- tL6uvclwPGv4HFW6mIzw4MvPdTPbCvw=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=L11krJYxRksBQg3D1YvlTwwy3hlxeTdJtIaYO5UeY6I=;
+ b=TpcGypjgM0sD2uGQAlk1eXwVv2FD//YHLyV5OoVq1Ep7/CXn75zRKiVS2ELln5KGWiqEdB
+ e1PvdBUQlUfc3oExvraRUjCNgtQW2MI1rKPogIVNRsEC4WMtNP+4HrkWqnsnpySGeJWxBH
+ pV2f7MzC5jWndTvIVKYTFCO4MVMmU58=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-515-6LNsBrPjMMKi6REZy6rU9A-1; Sat, 27 Dec 2025 04:17:54 -0500
-X-MC-Unique: 6LNsBrPjMMKi6REZy6rU9A-1
-X-Mimecast-MFC-AGG-ID: 6LNsBrPjMMKi6REZy6rU9A_1766827074
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-477964c22e0so53225145e9.0
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:17:54 -0800 (PST)
+ us-mta-519-1tqQM5a2PB2iNs0_HPjqdw-1; Sat, 27 Dec 2025 04:17:57 -0500
+X-MC-Unique: 1tqQM5a2PB2iNs0_HPjqdw-1
+X-Mimecast-MFC-AGG-ID: 1tqQM5a2PB2iNs0_HPjqdw_1766827076
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4775d110fabso65463925e9.1
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:17:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766827072; x=1767431872; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766827075; x=1767431875; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5r1dlz6k+9YSG4rC8cKOerFMsHuLeVrkakCHQYVz+64=;
- b=tqdOAEFivqipjfzuNz2zsOGH1I/EVOEyhF2IAEyQCXsSpNRp0vRwo7E+QxW7KlTV9Z
- W8RQVzGBXsV8xFt0ieu3t6/9fvLxezJs6CD0NYdhi6JCEgyVminfGYA3CtlNRwi3Z8wj
- 7kAjFHn/N+JU0X+niAFpq6hfQKUdk/Mex6AiLBBDzJV/qxZjG8Io5j2/CdP+977zbqxN
- mBBbDpp1xSLRGmyuEawj/qov14T9wloPCReERPoVoBb44otaUWfMLUheferd1e4bkV0s
- m9N713glgd+A+SQMUSVQRXyGIO9Ow5S9jOxqNrg6mV+qCWIaPi19jKwtzDa0RVFoPCsJ
- Bgxg==
+ bh=L11krJYxRksBQg3D1YvlTwwy3hlxeTdJtIaYO5UeY6I=;
+ b=TxZsYQNJHsQ9cE17VzUytRWDQyzAmvJUSXmPxKhA+DMNqccVoAwnheOP6VfrooHZrL
+ Lr4Gz+fCvdkC7uvu2R2dOHS9fGwr5Pt0jnLn9EhmyTblck2kIVc9DTHJZEJyAIgHsw49
+ le7ZPGtYFNo3xDLNS0MgUakZJSx7kJnctObvifkM5kOf+5J3kYYANHGRCpj9LddMLS/S
+ QTVT85VgZ2JvYPpeLGmm0CkrTKJjTMf1xFLZbVi72D6TKccrLOy0eTORxLgUoQe47fr8
+ yZioUXaoic1wMSs0+5vnayrAmBVPxDyfbL9cfSQzuYDm/ZeaSqsSD+GRyBz12lZsIZNa
+ tXhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766827072; x=1767431872;
+ d=1e100.net; s=20230601; t=1766827075; x=1767431875;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=5r1dlz6k+9YSG4rC8cKOerFMsHuLeVrkakCHQYVz+64=;
- b=ctPwngLn2V1PP8UyGwRF1la/Wt3zyQ+Ykc6d0yj/Z9K+ev48FnQ5NM/pS4qiYpjY1E
- c4bW3/CqWgq9r3xnwy/A9J2nW94VEQ1n6WN8WuoPgmyuO9VzG1PJLBt5k6CzfYZkVhZc
- D/KA+cLhav66XMwXluI5paAn08sMd06Je2UEvr9hvMM+1DN6MEzzl7H19K/zD40fhbaM
- Me7yD04+dBtGEO1TG2AXvHioiIcMmLQ/50+MAvnxOoObUfSbWQ1N/AfqkBOap6DmAE/W
- OOoKzJxVCyJCwQJP2J316CtXdOhtJqJoCP1gBhrlOGzI9IqbnqtI1s9sACRdY0Mt2ZmE
- LLYQ==
-X-Gm-Message-State: AOJu0YwVrGkn1yL1BCamsahhz2A8w1iKUMoBmtCuqLIzRIrdeGRV4sO8
- 396KhZ+gHDtbhtR2r1lieTb3xov8RaIYGz+kyOA6F+hpC4Hw6JqG2Ja+FswVYw4J626Hvgw84jg
- JmGaT+Cm9NlVpE3aT0/9izqy5dN2WN1i7Yu9kztI+pWnWkO3knZzf4tS1KN0VfEJnWHaAFjzyft
- g22tBkXVU5QHlAhv+0daFf5VHmUOJvKMPddPRVJo8A
-X-Gm-Gg: AY/fxX4xBeW/NJACaDWop+NS8ClWeOePO+t8GJRq4eBYRGXqFAl1AJWY0plQup6uta1
- 3P0TZKCK3EExPTRlMBRE4Y0kxzq9pa3rnLbCqxrOOGEqw5NfsxUeE6OPFoJyIQFjDhpxrsBqOV3
- nS8oGp+mz6C3uoEzYaNe1uZQZK0904vWomHC2zX5Y2uLcY4vrXQVkwCLeqRwLU9siuJexXeskUa
- ImFlrnD0N+oPyKsDkqHj9vRn8yLnQIKgQv9+8/Zhc6GNySdrwkVObPrhPXNaeuF0HPzt7Y0nTFH
- Iez+wbjjMxET7S/0H3PmAwQ5nTtEwetZt3GZgTtKUnvS1771ta/spXaiRGPrtP8wETR1eibBJ2V
- Exq5KOdZEsvxYQTv3GihPcK1cUDLMeYmuqz9lCEbzOJ1Jl+xGVOkNAkSvVAM0Gjd4Lj+vfPGyrA
- yDPzZNKEZVlTE1bWU=
-X-Received: by 2002:a05:600c:608e:b0:46f:a2ba:581f with SMTP id
- 5b1f17b1804b1-47d18be1812mr309056625e9.16.1766827072271; 
- Sat, 27 Dec 2025 01:17:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFIPcjVqkXNhoaFYL/RfB8+ABKIQEcXfngKAhmmox9EdSPEa3Os4sOuFvBqh4kM4rQ3ort1dw==
-X-Received: by 2002:a05:600c:608e:b0:46f:a2ba:581f with SMTP id
- 5b1f17b1804b1-47d18be1812mr309056395e9.16.1766827071912; 
- Sat, 27 Dec 2025 01:17:51 -0800 (PST)
+ bh=L11krJYxRksBQg3D1YvlTwwy3hlxeTdJtIaYO5UeY6I=;
+ b=HwxCBuEC85uRv/QFGQiMOOBjAxL2L4GTzM4hWXX8+/xjVVx9h/HGuyo+7NR02Ybt5/
+ ZH0lR5ZUMk1sJAxKYvnoaRWXfonmZr7dy5TXmiEHb6Sjkg6s2lJat7bXtzE3NbzkKX16
+ vCKjM7vflrMn+sAe2UOdIZQL1A2+2tnldVIxJjjhsP5667I87IkNcl1n+aOl2tMeb6KA
+ /DwYtsX8q4AZjNZec5Wztccw4MbfMp9rXfQ5X9+l5du0TgyjQiZu++M5D9sqfwQeIXLX
+ gyf/y76UNjJVnB/0GWJulK12DSjhf4MrlAyP/LA+4A01Mwtps+1G4hAgPUfsQvEwOk+t
+ WhYg==
+X-Gm-Message-State: AOJu0Yw27FwAC3LU6Humy87Vr3tm26ZovHLPmnWcdCo1kt4Xzozx7KPK
+ xVhUMw3gi21nOKOUp2tdDMZbK0lxmYCIV8YgurPdR5ZHmOKajzIKp1314Kg3PzZtF8ptLSi7M2i
+ kjgkMxoykHgS92A0kF6ghaaKGk5V0Y4TJZwqPAgZxGLUHExfEXOlUGK58nSl72zTyGPsyQ81ZzS
+ bqPPX88bj1SvINkbKDWmMNhlN2yabyJsWDTP7HW2cO
+X-Gm-Gg: AY/fxX5YeQoDvwyN4a74TITr5nwauazxru8Ux4XpVnJupA/IZmzdj3oE8weq0xM0Iox
+ F8PuxM2Opl0/a7ybvVSXhxftNQKP1rzgEkixd0vzH+E3Ux9baEl2N7kdH/W4F28cmNABnU2joPN
+ /y2QnFMNlFG3ODUm2/De4I/g25GLjC2yjPk93ky72WFov6pTfvdHADDog/Z/a7eflpEWLwOe6YQ
+ ll/O9YJMdg0DOQDB9IPlaB23lIBvr5aUrfmfk4sm9AF0YNJLmVouD4s4hRThC2ommlSLNqT2ujK
+ oZ8jLHmazG1gdmW267ZM5Ii/o5/jvfRdahxbXvUiXrBLBq382Chy8nhdeqeMW56MlGyDJpWnJW7
+ PGlADbSL+rnD9KePdKr+b/S13rA2dTRwddM5paEwLiQyt/4wNDsx9EkOdno6f8K/cH83vNXQgHQ
+ uB/PYXI+Dq7iKCi9g=
+X-Received: by 2002:a05:600c:828c:b0:479:3a87:2092 with SMTP id
+ 5b1f17b1804b1-47d19598e86mr220195585e9.36.1766827075411; 
+ Sat, 27 Dec 2025 01:17:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF9faMqUG7YfpBycBTmJ7aZzjfpOzMKiGs+1i7R9IBU7rOimRO7RqHvOV5P80WC1WfkdQRmvA==
+X-Received: by 2002:a05:600c:828c:b0:479:3a87:2092 with SMTP id
+ 5b1f17b1804b1-47d19598e86mr220195405e9.36.1766827074930; 
+ Sat, 27 Dec 2025 01:17:54 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d193d4f09sm442664075e9.12.2025.12.27.01.17.51
+ 5b1f17b1804b1-47be27c2260sm474525055e9.15.2025.12.27.01.17.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:17:51 -0800 (PST)
+ Sat, 27 Dec 2025 01:17:52 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 047/153] rust/migration: Add Sync implementation for
+Subject: [PULL 048/153] rust/migration: Fix missing name in the VMSD of
  Migratable<>
-Date: Sat, 27 Dec 2025 10:14:34 +0100
-Message-ID: <20251227091622.20725-48-pbonzini@redhat.com>
+Date: Sat, 27 Dec 2025 10:14:35 +0100
+Message-ID: <20251227091622.20725-49-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
@@ -123,33 +123,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-It's common to define MemoryRegionOps<T> and VMStateDescription<T> as
-static variables, and this requires T to implement Sync.
+The VMStateDescription of Migratable<T> missed the name field, and this
+casused segmentation fault in vmstate_save_state_v() when it tries to
+write name field by json_writer_str().
 
-Migratable<T> is usually embedded in device state, so it's necessary to
-implement Sync for Migratable<T>.
+Due to the limitation of const, a custom name based on type would be
+more difficult. Instead, a straightforward and simple approach is to
+have all Migratable<T> instances use the same VMSD name -
+"migratable-wrapper".
+
+This is availiable because Migratable<T> is always a field within a
+VMSD, and its parent VMSD should have a distinct name.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20251113051937.4017675-2-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20251113051937.4017675-3-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/migration/src/migratable.rs | 3 +++
- 1 file changed, 3 insertions(+)
+ rust/migration/src/migratable.rs | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/rust/migration/src/migratable.rs b/rust/migration/src/migratable.rs
-index ce603867502..5700554f7eb 100644
+index 5700554f7eb..02efe31d72c 100644
 --- a/rust/migration/src/migratable.rs
 +++ b/rust/migration/src/migratable.rs
-@@ -340,6 +340,9 @@ pub struct Migratable<T: ToMigrationStateShared> {
-     runtime_state: T,
- }
+@@ -421,7 +421,11 @@ impl<T: 'static + ToMigrationStateShared> Migratable<T> {
+         Migratable::<T>::FIELD
+     };
  
-+// SAFETY: the migration_state asserts via `BqlCell` that the BQL is taken.
-+unsafe impl<T: ToMigrationStateShared + Sync> Sync for Migratable<T> {}
-+
- impl<T: ToMigrationStateShared> std::ops::Deref for Migratable<T> {
-     type Target = T;
- 
++    // All Migratable<T> instances share the same name. This is fine because
++    // Migratable<T> is always a field within a VMSD. The parent VMSD has the
++    // different name to distinguish child Migratable<T>.
+     const VMSD: &'static bindings::VMStateDescription = VMStateDescriptionBuilder::<Self>::new()
++        .name(c"migratable-wrapper")
+         .version_id(1)
+         .minimum_version_id(1)
+         .pre_save(&Self::pre_save)
 -- 
 2.52.0
 
