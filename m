@@ -2,108 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45ECFCDF645
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:25:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3A7CCDF603
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:24:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQR1-0005VN-9p; Sat, 27 Dec 2025 04:18:03 -0500
+	id 1vZQR3-0005Zi-FH; Sat, 27 Dec 2025 04:18:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQQz-0005U5-L2
+ id 1vZQR0-0005Ur-KJ
  for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:02 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQQy-0003ag-52
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:01 -0500
+ id 1vZQQy-0003ak-So
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766827079;
+ s=mimecast20190719; t=1766827080;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=L11krJYxRksBQg3D1YvlTwwy3hlxeTdJtIaYO5UeY6I=;
- b=TpcGypjgM0sD2uGQAlk1eXwVv2FD//YHLyV5OoVq1Ep7/CXn75zRKiVS2ELln5KGWiqEdB
- e1PvdBUQlUfc3oExvraRUjCNgtQW2MI1rKPogIVNRsEC4WMtNP+4HrkWqnsnpySGeJWxBH
- pV2f7MzC5jWndTvIVKYTFCO4MVMmU58=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=sTcYZX9SZysc77qo1jI98QwZgsIEhfX2i6Ty2BfwHw8=;
+ b=BRzYXRZX5kWPDO6rjR7v4B6nfVOwROoPZe5QzRDCovimKT39THiKN0Z4tME7ZsFt+aiTk8
+ mfK+8ISCfgfXtGHzoeWzKVU6viqvdp5SFZYxaVLhiJi5CS2iKx1Bsy82ejC1M0yhkzWUgg
+ cQZVwcx8ifGemSTdn5tRYcOVVshaXcw=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-519-1tqQM5a2PB2iNs0_HPjqdw-1; Sat, 27 Dec 2025 04:17:57 -0500
-X-MC-Unique: 1tqQM5a2PB2iNs0_HPjqdw-1
-X-Mimecast-MFC-AGG-ID: 1tqQM5a2PB2iNs0_HPjqdw_1766827076
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4775d110fabso65463925e9.1
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:17:56 -0800 (PST)
+ us-mta-670-SuZXPxWfPHmY35c_SuZEOA-1; Sat, 27 Dec 2025 04:17:58 -0500
+X-MC-Unique: SuZXPxWfPHmY35c_SuZEOA-1
+X-Mimecast-MFC-AGG-ID: SuZXPxWfPHmY35c_SuZEOA_1766827077
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-477bf8c1413so46121465e9.1
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:17:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766827075; x=1767431875; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766827077; x=1767431877; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=L11krJYxRksBQg3D1YvlTwwy3hlxeTdJtIaYO5UeY6I=;
- b=TxZsYQNJHsQ9cE17VzUytRWDQyzAmvJUSXmPxKhA+DMNqccVoAwnheOP6VfrooHZrL
- Lr4Gz+fCvdkC7uvu2R2dOHS9fGwr5Pt0jnLn9EhmyTblck2kIVc9DTHJZEJyAIgHsw49
- le7ZPGtYFNo3xDLNS0MgUakZJSx7kJnctObvifkM5kOf+5J3kYYANHGRCpj9LddMLS/S
- QTVT85VgZ2JvYPpeLGmm0CkrTKJjTMf1xFLZbVi72D6TKccrLOy0eTORxLgUoQe47fr8
- yZioUXaoic1wMSs0+5vnayrAmBVPxDyfbL9cfSQzuYDm/ZeaSqsSD+GRyBz12lZsIZNa
- tXhQ==
+ bh=sTcYZX9SZysc77qo1jI98QwZgsIEhfX2i6Ty2BfwHw8=;
+ b=ArM2J9VI7Tl17k6cyomWAFy0jNaemPZzgbWKoUHOdw3udYbl8HFtuCttswgLsRWHrl
+ FhUK1XXcnzlxlL16QQvOYq0OQxdDD54NaUssWcXWcfVeCxRyDHDETDmuKM7RSs5zDN+C
+ zYaw4PZsfEAq6mGy8C1EhIWx1rGpzDr1dOCanHIFzZQLOeoqyhdTchm2j3rmeQPSrXb7
+ kWEgFShOiIR76hX1XyCkkIGjMknyesQah8mLYYwMvbTel0J+q1dvGpRea2HY0vzw16zw
+ Wsc+0xs4nCWgY7NAIGkPTXnlJA7aWL2txvKLKr0kSZD+rEnjWkyP9Wua1FuSPir0DE6j
+ qKBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766827075; x=1767431875;
+ d=1e100.net; s=20230601; t=1766827077; x=1767431877;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=L11krJYxRksBQg3D1YvlTwwy3hlxeTdJtIaYO5UeY6I=;
- b=HwxCBuEC85uRv/QFGQiMOOBjAxL2L4GTzM4hWXX8+/xjVVx9h/HGuyo+7NR02Ybt5/
- ZH0lR5ZUMk1sJAxKYvnoaRWXfonmZr7dy5TXmiEHb6Sjkg6s2lJat7bXtzE3NbzkKX16
- vCKjM7vflrMn+sAe2UOdIZQL1A2+2tnldVIxJjjhsP5667I87IkNcl1n+aOl2tMeb6KA
- /DwYtsX8q4AZjNZec5Wztccw4MbfMp9rXfQ5X9+l5du0TgyjQiZu++M5D9sqfwQeIXLX
- gyf/y76UNjJVnB/0GWJulK12DSjhf4MrlAyP/LA+4A01Mwtps+1G4hAgPUfsQvEwOk+t
- WhYg==
-X-Gm-Message-State: AOJu0Yw27FwAC3LU6Humy87Vr3tm26ZovHLPmnWcdCo1kt4Xzozx7KPK
- xVhUMw3gi21nOKOUp2tdDMZbK0lxmYCIV8YgurPdR5ZHmOKajzIKp1314Kg3PzZtF8ptLSi7M2i
- kjgkMxoykHgS92A0kF6ghaaKGk5V0Y4TJZwqPAgZxGLUHExfEXOlUGK58nSl72zTyGPsyQ81ZzS
- bqPPX88bj1SvINkbKDWmMNhlN2yabyJsWDTP7HW2cO
-X-Gm-Gg: AY/fxX5YeQoDvwyN4a74TITr5nwauazxru8Ux4XpVnJupA/IZmzdj3oE8weq0xM0Iox
- F8PuxM2Opl0/a7ybvVSXhxftNQKP1rzgEkixd0vzH+E3Ux9baEl2N7kdH/W4F28cmNABnU2joPN
- /y2QnFMNlFG3ODUm2/De4I/g25GLjC2yjPk93ky72WFov6pTfvdHADDog/Z/a7eflpEWLwOe6YQ
- ll/O9YJMdg0DOQDB9IPlaB23lIBvr5aUrfmfk4sm9AF0YNJLmVouD4s4hRThC2ommlSLNqT2ujK
- oZ8jLHmazG1gdmW267ZM5Ii/o5/jvfRdahxbXvUiXrBLBq382Chy8nhdeqeMW56MlGyDJpWnJW7
- PGlADbSL+rnD9KePdKr+b/S13rA2dTRwddM5paEwLiQyt/4wNDsx9EkOdno6f8K/cH83vNXQgHQ
- uB/PYXI+Dq7iKCi9g=
-X-Received: by 2002:a05:600c:828c:b0:479:3a87:2092 with SMTP id
- 5b1f17b1804b1-47d19598e86mr220195585e9.36.1766827075411; 
- Sat, 27 Dec 2025 01:17:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF9faMqUG7YfpBycBTmJ7aZzjfpOzMKiGs+1i7R9IBU7rOimRO7RqHvOV5P80WC1WfkdQRmvA==
-X-Received: by 2002:a05:600c:828c:b0:479:3a87:2092 with SMTP id
- 5b1f17b1804b1-47d19598e86mr220195405e9.36.1766827074930; 
- Sat, 27 Dec 2025 01:17:54 -0800 (PST)
+ bh=sTcYZX9SZysc77qo1jI98QwZgsIEhfX2i6Ty2BfwHw8=;
+ b=As8aRFAea0TFsqOsF0+tJzkWBGqzzZfANnOJ8dUiDm6m+Nsa+8+bpB/yuextbrC6kZ
+ leLXhMl+YsJoqb7J/p4eFk2X/fEENi1oqCwtxrSsjdsJtsjFmkqc5KPlfnm74QNYzn4q
+ gZ9H8A/GiwLkW8R2zJF0w+2tmW7bOGxeLrjBGFnDFnGsyEagXAp3YAOe9h8ASk8kn6Rg
+ MGjxLk9DMh/xYluN/9Esggo7l0NxrfHas5Otj4cXU1XPquzaWHubMOHhEcbASShxxJ7q
+ vdGcQ1CZquW/5JKyQvR4N2GFyKxfXKA4Ok5gfgs1qafrEpt7sDzD7i3rjzHWL/fctxqQ
+ o1oA==
+X-Gm-Message-State: AOJu0YwKwJrvfjeXI/VA++V5ypKeNiK607tcCcnSSmurdM/x5+hUPTk3
+ C4fRkYyDW1JAeJVf6DGxitMUUBR1dyRlzMaUHazmFjAZHvVE6pAT8nmV7WjkYIhkTAe9tIC2OKp
+ JboFPCgn7AtFAuw4zkIj03Q9lNT9BPI0ZQzhJOnuj3SQqzRCWTf0OMee9ZxIwtOadU0t2/aVCXl
+ clOZYHxT2WH1HxTOi/VkbnJdONN4W1/ZAIscRZUTEU
+X-Gm-Gg: AY/fxX4vS3hvG8nzwaGsqwkyWQ7fV0EP/7UxfKwzypf9w+yTJfL48x4gkuzi4halxz6
+ zUMyfcJ+PjuCzYrCmCM5PrBihPIgcxLGKvJlF9gNn/sk7sLpBx/Lak9O81hv6JjjxNVRFvz/zfx
+ hgla0CFil5fv8qvRNpt9xU+cFIC5rPZ3pB5QYwUz+0BZrMJUd1qZJBYo84geBd5cdkx+csuvuh5
+ oPnGFifBqYZrIUmDSeZTMlIyO/PJPTvGuvOMnhWTGa1HsoxgfZ0IN7UnRIWx3+m0YEI8D2H6nYQ
+ GPPviOnLmhmMDkKuALZdfelf3dpt9R5A9KVZwl0eiruIEW+yNpVKRVmOyCIC1j+J/85p7He07bw
+ 4ImJrkdxQ4uFHLmrF6W3Ld1TKz+g0/AEFrwIdIyUdj1WAMelvcrYQ/vg0L0H27gh+PI+qatR1cl
+ 6CWhpiDUVSmIZUcb0=
+X-Received: by 2002:a05:600c:1991:b0:477:7a78:3016 with SMTP id
+ 5b1f17b1804b1-47d1953318bmr266685865e9.8.1766827077041; 
+ Sat, 27 Dec 2025 01:17:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHk3+nhqts091f6gUJJWhmt6ZK4OSy4VKwWzucuKm/gpNrhgxYJSGib67M8ZDpz3CAcVLl3gA==
+X-Received: by 2002:a05:600c:1991:b0:477:7a78:3016 with SMTP id
+ 5b1f17b1804b1-47d1953318bmr266685725e9.8.1766827076632; 
+ Sat, 27 Dec 2025 01:17:56 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47be27c2260sm474525055e9.15.2025.12.27.01.17.52
+ 5b1f17b1804b1-47d193d4f09sm442666875e9.12.2025.12.27.01.17.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:17:52 -0800 (PST)
+ Sat, 27 Dec 2025 01:17:55 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 048/153] rust/migration: Fix missing name in the VMSD of
- Migratable<>
-Date: Sat, 27 Dec 2025 10:14:35 +0100
-Message-ID: <20251227091622.20725-49-pbonzini@redhat.com>
+Subject: [PULL 049/153] rust/migration: Check name field in
+ VMStateDescriptionBuilder
+Date: Sat, 27 Dec 2025 10:14:36 +0100
+Message-ID: <20251227091622.20725-50-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -123,41 +123,67 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-The VMStateDescription of Migratable<T> missed the name field, and this
-casused segmentation fault in vmstate_save_state_v() when it tries to
-write name field by json_writer_str().
+The name field is necessary for VMStateDescription, so that it's
+necessary to check if it is set when build VMStateDescription.
 
-Due to the limitation of const, a custom name based on type would be
-more difficult. Instead, a straightforward and simple approach is to
-have all Migratable<T> instances use the same VMSD name -
-"migratable-wrapper".
+Since is_null()/as_ref() become rustc v1.84 and pointer cannot cast to
+integer in const, use Option<> to check name with a new field in
+VMStateDescriptionBuilder instead.
 
-This is availiable because Migratable<T> is always a field within a
-VMSD, and its parent VMSD should have a distinct name.
+This can be simplified in future when QEMU bumps up rustc version.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20251113051937.4017675-3-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20251113051937.4017675-4-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/migration/src/migratable.rs | 4 ++++
- 1 file changed, 4 insertions(+)
+ rust/migration/src/vmstate.rs | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/rust/migration/src/migratable.rs b/rust/migration/src/migratable.rs
-index 5700554f7eb..02efe31d72c 100644
---- a/rust/migration/src/migratable.rs
-+++ b/rust/migration/src/migratable.rs
-@@ -421,7 +421,11 @@ impl<T: 'static + ToMigrationStateShared> Migratable<T> {
-         Migratable::<T>::FIELD
-     };
+diff --git a/rust/migration/src/vmstate.rs b/rust/migration/src/vmstate.rs
+index f9d9f335b98..595e7e9cd75 100644
+--- a/rust/migration/src/vmstate.rs
++++ b/rust/migration/src/vmstate.rs
+@@ -531,7 +531,11 @@ macro_rules! vmstate_subsections {
+ unsafe impl<T: Sync> Sync for VMStateDescription<T> {}
  
-+    // All Migratable<T> instances share the same name. This is fine because
-+    // Migratable<T> is always a field within a VMSD. The parent VMSD has the
-+    // different name to distinguish child Migratable<T>.
-     const VMSD: &'static bindings::VMStateDescription = VMStateDescriptionBuilder::<Self>::new()
-+        .name(c"migratable-wrapper")
-         .version_id(1)
-         .minimum_version_id(1)
-         .pre_save(&Self::pre_save)
+ #[derive(Clone)]
+-pub struct VMStateDescriptionBuilder<T>(bindings::VMStateDescription, PhantomData<fn(&T)>);
++pub struct VMStateDescriptionBuilder<T>(
++    bindings::VMStateDescription,
++    Option<*const std::os::raw::c_char>, // the name of VMStateDescription
++    PhantomData<fn(&T)>,
++);
+ 
+ #[derive(Debug)]
+ pub struct InvalidError;
+@@ -592,7 +596,7 @@ fn from(_value: InvalidError) -> Errno {
+ impl<T> VMStateDescriptionBuilder<T> {
+     #[must_use]
+     pub const fn name(mut self, name_str: &CStr) -> Self {
+-        self.0.name = ::std::ffi::CStr::as_ptr(name_str);
++        self.1 = Some(::std::ffi::CStr::as_ptr(name_str));
+         self
+     }
+ 
+@@ -718,13 +722,16 @@ pub const fn subsections(mut self, subs: &'static VMStateSubsections) -> Self {
+     }
+ 
+     #[must_use]
+-    pub const fn build(self) -> VMStateDescription<T> {
++    pub const fn build(mut self) -> VMStateDescription<T> {
++        // FIXME: is_null()/as_ref() become const since v1.84.
++        assert!(self.1.is_some(), "VMStateDescription requires name field!");
++        self.0.name = self.1.unwrap();
+         VMStateDescription::<T>(self.0, PhantomData)
+     }
+ 
+     #[must_use]
+     pub const fn new() -> Self {
+-        Self(bindings::VMStateDescription::ZERO, PhantomData)
++        Self(bindings::VMStateDescription::ZERO, None, PhantomData)
+     }
+ }
+ 
 -- 
 2.52.0
 
