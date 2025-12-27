@@ -2,96 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2609CDF731
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:54:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A75DCCDF6EF
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:52:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQxL-0003zc-UE; Sat, 27 Dec 2025 04:51:27 -0500
+	id 1vZQxS-00047F-PU; Sat, 27 Dec 2025 04:51:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQxJ-0003wf-UH
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:51:25 -0500
+ id 1vZQxO-00042B-6K
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:51:30 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQxI-0007U3-Az
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:51:25 -0500
+ id 1vZQxM-0007UT-Ll
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:51:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766829083;
+ s=mimecast20190719; t=1766829088;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FcJUvHmJ46TsExg3IDNJH3LUWy0R3ZpUqKzgmh9etUA=;
- b=WPDLPhMhtF/Nsao/SBKKGzxp2TSxWHvnCp0rfJTiDzfH+sB4tnHZhlhTTYEXoQx5eY58S3
- kbxI7MGQ+7P1PBfRalia07lctQBbjheyPuG6vwdnf6lokD3YWv3T3CUTzpzcGWc1lY7M6N
- sERLDUvMFkiG9LbKSjqr/KwOmAjltR4=
+ bh=NMfeC1qlGyQBU+oYdudT1wA8cDp85oJp5sp29r1hMGw=;
+ b=X5C99Zr+cjAmANcDSBX9e/5xi/qHOEVTXuk9Z+G0pPqtSS4qoWhd92VX0tOKDrg5zPbmfX
+ rou6tidbO5ttMvDIxIqRx3QXtIAbvrLLXyWaDs88Ygc4X2MygWXoMu8qN3y/I1rvrlXsvW
+ U3kOwAUmR8Ebkbd+OJb+/YWtNxuArg0=
 Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
  [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-387-V8D80GWmNF-jda9TqvLWRA-1; Sat, 27 Dec 2025 04:51:22 -0500
-X-MC-Unique: V8D80GWmNF-jda9TqvLWRA-1
-X-Mimecast-MFC-AGG-ID: V8D80GWmNF-jda9TqvLWRA_1766829081
+ us-mta-477-Xq9W42MgOr2b2o305_2TlA-1; Sat, 27 Dec 2025 04:51:26 -0500
+X-MC-Unique: Xq9W42MgOr2b2o305_2TlA-1
+X-Mimecast-MFC-AGG-ID: Xq9W42MgOr2b2o305_2TlA_1766829085
 Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-4325ddc5babso2697060f8f.0
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:51:22 -0800 (PST)
+ ffacd0b85a97d-430f57cd2caso7690434f8f.0
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:51:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766829080; x=1767433880; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766829084; x=1767433884; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FcJUvHmJ46TsExg3IDNJH3LUWy0R3ZpUqKzgmh9etUA=;
- b=NnEyg7Mv943j+JsDuFM+VDg2SC9T11eO8JmhVU8qvnGRZ265V3Sv5EcffSzEBfP8g1
- AjXXJhbxxBmG7ddQUto+Cq9lut0cwUjFkI8n3Mow/nTWKDING9PTaPp7UGOc5p/pyDms
- M6DEKCS4DxV0ILECoCVkh2Fj6ebbdIzbD31Qt7dTMkD5lnW3S3oQNzD2TmnF4NzL7UY+
- RLCTCbrfdS8Pd9XV8mzze+jVpjAuZWwCbKI/NByWk8eUz0z20FvKQPX5inQrfgZA/Bqx
- yT8wc5JAmxDkgOeKYmqqH2H+PC+KKEir9CEEZWPNLXCrynqPSjEoWv/tgt+9JwhYA1Lh
- Bz+w==
+ bh=NMfeC1qlGyQBU+oYdudT1wA8cDp85oJp5sp29r1hMGw=;
+ b=Flei8qsKhJOFSd1Nhzdo2s9rxBnDBFWDhDlPiCGVtiOe6+CGJT5oHGoy2pRoNBZkyF
+ vOO701HllRR0N8Mt7H+yXE5XeFGzACUIiVl6QJvR3uijSycaEWloHutIOy/5uig0wEU8
+ MJceTIF/B882An8x5dPBVWiKB36p/7xwNVzVBpCYzb9tTT/F1oUdi8qjqkVlnwIyip6N
+ LYdKKLdNs/Y+ikn4Zc7/Zywt46ESnhfuNVtIe9hDe7tCvDv8zMsyCB+DV13/FiaBjom1
+ JYznewkHK7oALEOFTC1cqNmplhdY5Vkm57psnDgaxZouQg7m4RdDmxHKLotTOaByUNbI
+ t/zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766829080; x=1767433880;
+ d=1e100.net; s=20230601; t=1766829084; x=1767433884;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=FcJUvHmJ46TsExg3IDNJH3LUWy0R3ZpUqKzgmh9etUA=;
- b=hWAZlpPdfWZvmnLgdN5z1Qd+Ep65WReEXANI0dLX0iiDV9NSq2rTYk8BwoyrsRV/H2
- mzL6TNynCXJQUjhkQpLZfdQWEKx5UlAaoEMNAKojZKf1B2buQh8V6QksdquRXH8fkG5L
- owS6xmjN5oIHe9xByJdmyc/uNZnIuNLbjyEUy1UAdbkjw80NZOLh57JfjhD+DXcQlVJk
- 6sXvEBGXVhsww2wLoVv9ztHpz+tF8onCHbQ/A8C+4vcKZ6geVvtn8wBV9KNCwE2ZVWJ5
- LRlcMUlBVXSmyT3sMqns8Hqabir5VbMo0JAZgMMTDvsyt96Srr11r9SgxWFFu565DyPt
- Y1ow==
-X-Gm-Message-State: AOJu0Yw58z5sO8+974MhTrETmjCcptlPTTn3II4katAunhL/a4rDchL7
- VfJhODXeqBwa6LJ4SVvIiT9NGjElTQzA2mBnQaG7EGaWAsN3TfAZfNsGwEs0E6MZ5y5phKoSMrk
- QACFh0nMCQy2f7g/5QI2lbck8nYg00E5Gf39QiV9faiIecbMuDlgNE2p+D5aQD2CfJ/ctinszDy
- hm1VZclyxRw7TDpd22x1NOeIYE63st2KtpAxCU/26O
-X-Gm-Gg: AY/fxX4yg8ZStfSLsBO+pu86hUOKj29EN83clIjjkljRUEuzqBdoUe7HDLelh+vBAVU
- ghHFe3WOrabA0zFQkhRQHMDF9jbSqod3kFYvop9J154OI80V3vg3tUuKR4n+lCyPmhTxOzGx4oS
- Wf8a+wWjHcMwwUQHJPJmQ51sNtqBWj1In6uncxj/CI7mJ8u4I3K9RXy43vgZ++nHhBxNaG8RerB
- ynAM4O5XXVSbMe4IIkf4UeXNAFp0izBet9MdtIg/R32AHucOknJJxVHCNo6wog6lNCNI5GpcmKk
- Oql11KCeC9Y2CD8NS54xZxyapkUhTH25HvMwP90ct8MR/j53NOPsEtpd9ErECkn9Jg1LG0MJ1qS
- 6ZVwYDQe3h/t5tJCMtP1FBui+CJjPDYjBTCQowdWpKvuoJAkrkJx7s6twJSc8u/ReNjbZSWrWtV
- gLjZvYFQSDUyrZVMk=
-X-Received: by 2002:a05:600c:4fd3:b0:477:a9e:859a with SMTP id
- 5b1f17b1804b1-47d1958443emr284469735e9.22.1766829080305; 
- Sat, 27 Dec 2025 01:51:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHH09QZu0KVvsdGTIx1iaGVQarb5V2wVlqvaPCn6AKzK13VObPh3WkEdnkeMGOW6fU0pTkgKQ==
-X-Received: by 2002:a05:600c:4fd3:b0:477:a9e:859a with SMTP id
- 5b1f17b1804b1-47d1958443emr284469555e9.22.1766829079913; 
- Sat, 27 Dec 2025 01:51:19 -0800 (PST)
+ bh=NMfeC1qlGyQBU+oYdudT1wA8cDp85oJp5sp29r1hMGw=;
+ b=U6rYBQ7AOkTFAjQIpqOY+JFJCoqKful9zDPzeaQQ9iM6PU1LHWeJEy4rpX5VMOIN81
+ fywpwCfEk5C87X6RR0g2lXIssem3qHdv5wxLutPHxRN8LXBLKvK66JTgb4Xd+N+eRx5C
+ dDVJxt2pulKLSdRpOM40Yc5FunOU0xuxB4wv0oc4+Jo4/bv2pR1NZGbCQI7TYO8SUxR5
+ qsrY6QKf7PvPm57y3mGE47E6yLRz5CSi4FS9HP6NBOh+DHPteMaZ/hByd0uDazl1Rond
+ sQQWHfTPds9MjZOhxTYDWuTiJW4iUmRFMxlq45NkkK1PaksP7NcqZt4Ftj4Qg6X6aViG
+ npOQ==
+X-Gm-Message-State: AOJu0YzSrBsClnudr5DtrhCHHs8eVgY5dzBcQF8RWdo2AOOna0kM33rS
+ tPhSxmoLsrXHuRBPGjUQSSTSeFQh3Tug8vK6OSwVMkChXRCINuWTl5VszcTTsBC963Pxs1lH0Y2
+ cWossHDYo3dkf8AiNVKV5CfhBApoxlQMGyD8jGVKeCVeDC1s+qQg+8tnjTEoCC5yh8SoOqbhTv4
+ ukg3oa/y2Amp3k/An8chRhntvv4GJREEBCIlDkEp6D
+X-Gm-Gg: AY/fxX4WctT2DvZf/0+jegb9AaZkR0uS5r2q01nqEmzXs72e1BQDoZ1UYmBQaCZMujp
+ 2HaTi4eGW84HscNUmVxZ4l0BroDCz+Et11HCO/CksR7oXYWs1HkICcYzG9q4KVUvYe67CdHg2h3
+ IB4D/kEgskbEYf0kDqmSIlFzruzFIEt9q7PnG3hZTL/trapV5fkMOiXv+ry18TtPM+Q8UDWUhdn
+ M8x1gGoRRKI1esg7KC87xs4hEHH17p0jNqlPHKnLnIvwRg+4rM2Hx1KPsEjHmU/xtO4Rce4Q1Mx
+ Uzf2/+VXzcYcXOk65hVxhDHWSXv1izu5/Q11qDFpIK0lDwVoVVNsOotj+lhCeXyA3Bk+9aeHiF+
+ CcDaXIvi2lZfsyQzFHY6Fs0wrLs/7JujoEc1qByBci57N+2i1TerMKRZ4xOhEDZxsQKC2SAmpvy
+ qeKByxZlL9wB8+R7I=
+X-Received: by 2002:a5d:58e9:0:b0:432:5b81:480 with SMTP id
+ ffacd0b85a97d-4325b810a80mr18706711f8f.24.1766829083870; 
+ Sat, 27 Dec 2025 01:51:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFd3Wt98qUIwz/sQy4OqXdV8R0vtPiYE39vdb56TeZqYjOLazBmxyoqQkgWex7kXwAciA1cHw==
+X-Received: by 2002:a5d:58e9:0:b0:432:5b81:480 with SMTP id
+ ffacd0b85a97d-4325b810a80mr18706693f8f.24.1766829083343; 
+ Sat, 27 Dec 2025 01:51:23 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47be2723d19sm522660055e9.2.2025.12.27.01.51.17
+ ffacd0b85a97d-4324eaa2beasm49032870f8f.33.2025.12.27.01.51.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:51:17 -0800 (PST)
+ Sat, 27 Dec 2025 01:51:21 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Farrah Chen <farrah.chen@intel.com>,
  Zide Chen <zide.chen@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
  Xudong Hao <xudong.hao@intel.com>
-Subject: [PULL 140/153] i386/cpu: Add a helper to get host avx10 version
-Date: Sat, 27 Dec 2025 10:47:45 +0100
-Message-ID: <20251227094759.35658-66-pbonzini@redhat.com>
+Subject: [PULL 141/153] i386/cpu: Allow unsupported avx10_version with
+ x-force-features
+Date: Sat, 27 Dec 2025 10:47:46 +0100
+Message-ID: <20251227094759.35658-67-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
@@ -124,60 +125,61 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Factor out a helper to get host avx10 version, to reduce duplicate
-codes.
+The "force_features" ("x-force-features" property) forces setting
+feature even if host doesn't support, but also reports the warning.
+
+Given its function, it's useful for debug, so even if the AVX10
+version is unsupported by host, force to set this AVX10 version if
+x-force-features=on.
 
 Tested-by: Xudong Hao <xudong.hao@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20251215073743.4055227-6-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20251215073743.4055227-7-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ target/i386/cpu.c | 27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 9c81e4e1f5a..c460e3bec7c 100644
+index c460e3bec7c..f62bd48d4b0 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -7757,6 +7757,13 @@ CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
- 
- #endif /* !CONFIG_USER_ONLY */
- 
-+static uint8_t x86_cpu_get_host_avx10_version(void)
-+{
-+    uint32_t eax, ebx, ecx, edx;
-+    x86_cpu_get_supported_cpuid(0x24, 0, &eax, &ebx, &ecx, &edx);
-+    return ebx & 0xff;
-+}
-+
- uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w)
- {
-     FeatureWordInfo *wi = &feature_word_info[w];
-@@ -9255,11 +9262,10 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
-         }
- 
-         if ((env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10) && !env->avx10_version) {
--            uint32_t eax, ebx, ecx, edx;
--            x86_cpu_get_supported_cpuid(0x24, 0, &eax, &ebx, &ecx, &edx);
-+            uint8_t version = x86_cpu_get_host_avx10_version();
- 
-             if (!object_property_set_uint(OBJECT(cpu), "avx10-version",
--                                          ebx & 0xff, errp)) {
-+                                          version, errp)) {
-                 return;
-             }
-         }
-@@ -9481,9 +9487,7 @@ static bool x86_cpu_filter_features(X86CPU *cpu, bool verbose)
-     have_filtered_features = x86_cpu_have_filtered_features(cpu);
- 
-     if (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10) {
--        x86_cpu_get_supported_cpuid(0x24, 0,
--                                    &eax_0, &ebx_0, &ecx_0, &edx_0);
--        uint8_t version = ebx_0 & 0xff;
-+        uint8_t version = x86_cpu_get_host_avx10_version();
+@@ -9490,16 +9490,27 @@ static bool x86_cpu_filter_features(X86CPU *cpu, bool verbose)
+         uint8_t version = x86_cpu_get_host_avx10_version();
  
          if (version < env->avx10_version) {
-             if (prefix) {
+-            if (prefix) {
+-                warn_report("%s: avx10.%d. Adjust to avx10.%d",
+-                            prefix, env->avx10_version, version);
+-            }
+             /*
+-             * Discrete feature bits have been checked and filtered based on
+-             * host support. So it's safe to change version without reverting
+-             * other feature bits.
++             * With x-force-features=on, CPUID_7_1_EDX_AVX10 will not be masked
++             * off, so there's no need to zero avx10 version.
+              */
+-            env->avx10_version = version;
++            if (!cpu->force_features) {
++                if (prefix) {
++                    warn_report("%s: avx10.%d. Adjust to avx10.%d",
++                                prefix, env->avx10_version, version);
++                }
++                /*
++                 * Discrete feature bits have been checked and filtered based
++                 * on host support. So it's safe to change version without
++                 * reverting other feature bits.
++                 */
++                env->avx10_version = version;
++            } else {
++                if (prefix) {
++                    warn_report("%s: avx10.%d.",
++                                prefix, env->avx10_version);
++                }
++            }
+             have_filtered_features = true;
+         }
+     } else if (env->avx10_version) {
 -- 
 2.52.0
 
