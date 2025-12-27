@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B097CDFE74
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 16:43:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0073ECDFE77
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 16:46:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZWRP-00032H-57; Sat, 27 Dec 2025 10:42:52 -0500
+	id 1vZWUR-00059w-WD; Sat, 27 Dec 2025 10:46:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vZWQz-0002v0-F8
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 10:42:25 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vZWUN-00059U-Br
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 10:45:55 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vZWQw-0004wT-9y
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 10:42:24 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-47a8195e515so49486595e9.0
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 07:42:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vZWUL-0007iU-Kv
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 10:45:55 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-42fed090e5fso3699592f8f.1
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 07:45:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766850141; x=1767454941; darn=nongnu.org;
+ d=linaro.org; s=google; t=1766850352; x=1767455152; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=XFZtsx8EUcb/JCrQCtg6lvaPnTWDTtVoj6XfYpU8ZPQ=;
- b=jKfIkc96lcvoYMUAMnLp2C8CQ4i+g3/R3P54ZoCoTk/4YsuEIFpofqTrOnDpkQs5kl
- pSWN1MjMip9NgFuiMgGKZCwV4l5ocb5jNhaudaYCakLbr2yZ1q/e8XfIOw04LYF+r64z
- efnbIYOzuEgYdTcGjLeAXzYstkSeApfJh4slibeqtcZuRLsIIGoxOULAACKEEXS76sAO
- 9ajfZFzVtvwa+r5fb3YMTiyOygY6A3ImETvrjrULrhi2UcTRLGGPnaFRSmY67+ThFipg
- CeEArjUCk1eJOs9OGGLcvFiEO0cWAMh2IZE91qqmqLRDoDKu3Y0zE+fS8M7UI0dExk0Q
- jKdg==
+ bh=fhUJ/Yk4QRjAoV7W75pmeUPDNM9P6XGiwppWO4+I1/U=;
+ b=ATCOQjc3xKhS5PuZuU15OGUeaK458N7VCn0ute0dCpcS1nvRiR+mx/ZoMiofhGnqh0
+ u7e59XGZAC8nF0HPMhPaWs893F9XScljJe60jb+qz9VFfeFMITK9YZMenm8LtbtJKnJq
+ CUv36mAaI0p9RwLvv8Eu3l+56KGJHQHoWzzZSIKDFSBNM62VRRJU3qnUpRUBbLYAl+Je
+ weDzzpvsDOuixmzKNXtkj4e9NnXcR5VWLeiVv61zXrtkFCEg97Ax217VfHeaqHUDs8na
+ mKF2lISqUJI+s6YpFnXlX9ab9JmyveZkGCgC7ywksOWNeEttG/95Jdsho+t9XrsXNMB6
+ PmYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766850141; x=1767454941;
+ d=1e100.net; s=20230601; t=1766850352; x=1767455152;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=XFZtsx8EUcb/JCrQCtg6lvaPnTWDTtVoj6XfYpU8ZPQ=;
- b=KLStgnlMG0CKtJMSnI29oSc7X/6et1Kma3vcx9oxFfVD0lSz7m8f1l0jbQxtdx/SBe
- kgQC8RsakD8yrbjzP5puArp7X8dLWRPDqaeWr9UCTFyhVnihhy8C7KQQzwGmBDDY1kgJ
- 7Hev3ul2IaElcOLF1xlOO8SDNMzfrWgP6Iqs6LnHRYfDor0Li+X99UB6rpfhlgvws6Ks
- bVwVF5tyLC6K5StiD/U2Z9u52bwZ5v9FSALM9/mXYXZAE75b8Tsm6u3lv/DR3tyeiU57
- Z9C0Ph3M8QnifFvHOX7Is72t6SSB1PytZoaEhVV9GXX7sJ/hzRFcX+FuFovIM3a2/znJ
- BGXA==
+ bh=fhUJ/Yk4QRjAoV7W75pmeUPDNM9P6XGiwppWO4+I1/U=;
+ b=R6GpOkQkC6xe9appHsIvVldCbBsz12LJdGuHfT1kS9YLdLwx08DMvhpc8WRMVe3X80
+ YRjksaaC6SlGN2z5jw0KnWmwtrEdbdeU6C9TMc7mAU2aAFFV7eWDfWK55G8Wv9bCeP4E
+ 0/dtgxY3QVzyJZSb0LrYfPkkSWZWhXp2VWT0Yw7sP7kq5r5astCBUbKGTQT2XKrQBxoW
+ VAHN+0l/GjcFs2B+ySFY4lRfYsFRWB3IKPSycmfrc9aYbtekZwzelTukrbCAgwXwblp3
+ UDSTqFxovt2g/2sQPm35gbsZZQvQUTXaKm+jN5dRn1fxPo0+W05fjNxTtEOtilA1oiSY
+ GehQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWKvG/wAs+ajGChGd+XU8hK3xKRknAhei+VGzdTnKnkx4O9H1BPv6GURRmFZBYqhySnSllPRU+eoDRT@nongnu.org
-X-Gm-Message-State: AOJu0YxDFe02iaOdiOI5UMUBno/j9deRinbVmEx+snAaH/NfGdhttDbq
- flpuR8aapjjkDwM1GzbjXPue0+HQsBpmLn1DTHu4q6p7u2Mxo2/looSNFxXEnyDTCdaCzMzPcgZ
- XAOGp
-X-Gm-Gg: AY/fxX7btRd7qpaKVvdjhmiJShie7048IzIMp8aATjP3ii44B9ZNtLTQLVejiBbB1jX
- XZuJsewoHX5/v97OJ15nuAyN7RAoJpmJL8CwmhM9YMlS2dHORZBd/NA0Uth8qrHNVw6Rx4+zdRi
- DqlbAUIiLEFn+YJdrNZqyWjHkibJUwXj/eWr1UVGy5YtpQFDWjkrVXCZKgcGFYKayCUFOWwtSj2
- /s3+5qxN4htDU6cROzT0aVIbC1h7Q/Ydn5HwsLxWvvuWgN5pWM294tdpsPyvt/zKAEUQby7oMsc
- pNT9avD1xgbPEYjjV8HXLIrnM24kwYB5vsMoSqhR2YPmGKH9OHxbIylK1aWy8LV0dkh4VseVpgp
- bVWwXXhfW4WvPZ7a+Deg7jhjM1sOu9dqGxerYpLcxK6VUNSLjfjRwv6DB8lPLh2m4VXjYDgJAch
- Cc5OK4imDhx3XXt0BOpNCV3KTWKFCxjzJUQXVtRPp5+yozCll3aPsC1GK1iDXTIw==
-X-Google-Smtp-Source: AGHT+IFbqHK8oqoGwdEEKEly102S8WTMxRiQsJ2/SXqi5/9vBxe1C0PUAHq6a/64W8cd7TnGxfGl+Q==
-X-Received: by 2002:a05:600c:1c29:b0:46e:37a7:48d1 with SMTP id
- 5b1f17b1804b1-47d1959d4bamr331519245e9.34.1766850140686; 
- Sat, 27 Dec 2025 07:42:20 -0800 (PST)
+ AJvYcCXoWl1J+44gvBamEbZ59QhENL5Ft8IRht+JEupOfxOHhFcsOsFJwtPcKK/FmTOV3Gom+7fL9KGTrNkR@nongnu.org
+X-Gm-Message-State: AOJu0YxhZEXn0L4PXnmzuhac4kUBbVNb1ayg4FimqxVwJ241g9PnVb1q
+ PudGNXuUDXuT9+WoEt3J39fszPseBxV6Ni5MSEmZZ5V0kfVhJAK8mj0TIGlwL30FfuE=
+X-Gm-Gg: AY/fxX6e1zE6qTs/g2viJZpv0q04CUt2RnQ17YQ1tg/60+0/g8mO5e1xOyCBgnaF5pG
+ z8erE7bpv+z2C9uvy8WvkxwJAFGXqVY5Dj9a3d9c9RbAv/EDi8vgQTF1L9Bgl/6gx2s7T7oCEZo
+ aNnpORyEcznFFCv7VoqcaFAY95S6NmNwhXCHmN1UC35tcBdsV7LxVJ5gbNssp8cs5js0GRCgCnI
+ Jpb11xfMB3Td2ZBmutt8ZDf6ivo0ArAyUtyCrXXtQMapsMQWRVo5l+JYxTTr19GeaHhcf5a8s5B
+ WEnS0VKDgH8Zly3fQiaJzfqhO8hiyRqh9WAHYme+btdbVXp4WZUUtPy6OP7IYjqm4TAsiMQxqP8
+ UGXON4xKhZa1mKFSW8Kl3HydARA5h/ct3v271ZW3700uFYN4IXPnyCSBFcei5xKFOBIL64Ji6YI
+ BRMB487Dnq3KJgKD371ibmlihB4YVcEDG5aJDpyHt0Z70/QOLJzXQWT/zmEbDnbg==
+X-Google-Smtp-Source: AGHT+IGpRzu6lROkV9M1vqOOrILtS4ToN8IdOrcE/LXInhyfDwe5xsQysujtSBqN2EMvFN8tpPxZqQ==
+X-Received: by 2002:a5d:5887:0:b0:431:3bd:3781 with SMTP id
+ ffacd0b85a97d-4324e4f935bmr32162947f8f.37.1766850351685; 
+ Sat, 27 Dec 2025 07:45:51 -0800 (PST)
 Received: from [192.168.1.15] (alyon-655-1-564-32.w80-9.abo.wanadoo.fr.
  [80.9.105.32]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d193d4f09sm457162175e9.12.2025.12.27.07.42.19
+ ffacd0b85a97d-4324eaa4749sm52318442f8f.37.2025.12.27.07.45.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 27 Dec 2025 07:42:20 -0800 (PST)
-Message-ID: <22723a85-0008-45c6-b301-260d3efb7f1a@linaro.org>
-Date: Sat, 27 Dec 2025 16:42:19 +0100
+ Sat, 27 Dec 2025 07:45:51 -0800 (PST)
+Message-ID: <f7dd1a94-c135-489f-857f-0b71f891e5fc@linaro.org>
+Date: Sat, 27 Dec 2025 16:45:49 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 013/153] include: move hw/nmi.h to hw/core/
+Subject: Re: [PULL 029/153] include: reorganize memory API headers
 Content-Language: en-US
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 References: <20251227091622.20725-1-pbonzini@redhat.com>
- <20251227091622.20725-14-pbonzini@redhat.com>
+ <20251227091622.20725-30-pbonzini@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20251227091622.20725-14-pbonzini@redhat.com>
+In-Reply-To: <20251227091622.20725-30-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,25 +101,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Paolo,
+
 On 27/12/25 10:14, Paolo Bonzini wrote:
+> Move RAMBlock functions out of ram_addr.h and cpu-common.h;
+> move memory API headers out of include/exec and into include/system.
+
+I know you want the good of the project and make it evolve,
+but TBH pushing your own unreviewed patches without looking
+at others work in the same area is really demotivating, it
+feel like you completely ignore us.
+
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   include/hw/{ => core}/nmi.h | 0
->   hw/core/nmi.c               | 2 +-
->   hw/hppa/machine.c           | 2 +-
->   hw/i386/x86.c               | 2 +-
->   hw/intc/m68k_irqc.c         | 2 +-
->   hw/ipmi/ipmi.c              | 2 +-
->   hw/m68k/q800-glue.c         | 2 +-
->   hw/misc/macio/gpio.c        | 2 +-
->   hw/ppc/pnv.c                | 2 +-
->   hw/ppc/spapr.c              | 2 +-
->   hw/s390x/s390-virtio-ccw.c  | 2 +-
->   hw/watchdog/watchdog.c      | 2 +-
->   system/cpus.c               | 2 +-
->   13 files changed, 12 insertions(+), 12 deletions(-)
->   rename include/hw/{ => core}/nmi.h (100%)
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>   MAINTAINERS                              |   2 +-
+>   include/exec/cpu-common.h                |  74 -----------
+>   include/exec/cputlb.h                    |   1 +
+>   include/exec/translation-block.h         |   2 +
+>   include/hw/core/qdev-properties-system.h |   1 +
+>   include/hw/i2c/smbus_eeprom.h            |   2 +-
+>   include/hw/xen/xen-hvm-common.h          |   1 +
+>   include/system/balloon.h                 |   2 +-
+>   include/system/block-ram-registrar.h     |   2 +-
+>   include/system/iommufd.h                 |   2 +-
+>   include/system/memory.h                  |  16 ++-
+>   include/system/memory_mapping.h          |   4 +-
+>   include/system/physmem.h                 |   2 +-
+>   include/system/ram_addr.h                | 136 +++----------------
+>   include/system/ramblock.h                | 160 ++++++++++++++++++++++-
+>   include/{exec => system}/ramlist.h       |  10 +-
+>   include/system/xen-mapcache.h            |   1 -
+>   include/system/xen.h                     |   3 +-
+>   migration/migration.h                    |   3 +-
+>   migration/ram.h                          |   1 +
+>   accel/mshv/mshv-all.c                    |   1 +
+>   accel/tcg/cputlb.c                       |   2 +-
+>   accel/tcg/tcg-accel-ops-mttcg.c          |   1 +
+>   backends/hostmem.c                       |   1 +
+>   block/blkio.c                            |   2 +-
+>   dump/dump.c                              |   1 +
+>   hw/acpi/ghes.c                           |   1 +
+>   hw/acpi/nvdimm.c                         |   1 +
+>   hw/acpi/vmgenid.c                        |   1 +
+>   hw/arm/omap1.c                           |   1 +
+>   hw/audio/marvell_88w8618.c               |   1 +
+>   hw/char/riscv_htif.c                     |   1 +
+>   hw/core/cpu-common.c                     |   1 +
+>   hw/core/machine-qmp-cmds.c               |   1 +
+>   hw/core/numa.c                           |   3 +-
+>   hw/display/exynos4210_fimd.c             |   1 +
+>   hw/display/omap_lcdc.c                   |   1 +
+>   hw/display/ramfb.c                       |   1 +
+>   hw/display/vga.c                         |   1 +
+>   hw/dma/i8257.c                           |   1 +
+>   hw/dma/omap_dma.c                        |   1 +
+>   hw/dma/rc4030.c                          |   1 +
+>   hw/dma/sifive_pdma.c                     |   1 +
+>   hw/hyperv/hyperv.c                       |   1 +
+>   hw/hyperv/syndbg.c                       |   1 +
+>   hw/hyperv/vmbus.c                        |   1 +
+>   hw/i386/kvm/clock.c                      |   1 +
+>   hw/i386/vapic.c                          |   1 +
+>   hw/intc/apic.c                           |   1 +
+>   hw/intc/xive2.c                          |   1 +
+>   hw/m68k/next-cube.c                      |   1 +
+>   hw/microblaze/boot.c                     |   1 +
+>   hw/misc/pc-testdev.c                     |   1 +
+>   hw/net/fsl_etsec/rings.c                 |   1 +
+>   hw/net/mcf_fec.c                         |   1 +
+>   hw/net/opencores_eth.c                   |   1 +
+>   hw/net/xgmac.c                           |   1 +
+>   hw/nvram/spapr_nvram.c                   |   1 +
+>   hw/ppc/amigaone.c                        |   1 +
+>   hw/ppc/e500.c                            |   1 +
+>   hw/ppc/pegasos.c                         |   1 +
+>   hw/ppc/pnv.c                             |   1 +
+>   hw/ppc/ppc440_uc.c                       |   1 +
+>   hw/ppc/spapr.c                           |   1 +
+>   hw/ppc/spapr_drc.c                       |   1 +
+>   hw/ppc/spapr_events.c                    |   1 +
+>   hw/ppc/spapr_hcall.c                     |   1 +
+>   hw/ppc/spapr_rtas.c                      |   1 +
+>   hw/ppc/spapr_tpm_proxy.c                 |   1 +
+>   hw/ppc/virtex_ml507.c                    |   1 +
+>   hw/remote/proxy-memory-listener.c        |   1 +
+>   hw/s390x/css.c                           |   1 +
+>   hw/s390x/ipl.c                           |   1 +
+>   hw/s390x/s390-pci-bus.c                  |   1 +
+>   hw/s390x/s390-stattrib.c                 |   1 +
+>   hw/s390x/virtio-ccw.c                    |   1 +
+>   hw/scsi/vmw_pvscsi.c                     |   1 +
+>   hw/sparc/leon3.c                         |   1 +
+>   hw/vfio-user/container.c                 |   1 +
+>   hw/vfio/container.c                      |   2 +-
+>   hw/vfio/helpers.c                        |   1 +
+>   hw/vfio/migration.c                      |   2 +-
+>   hw/virtio/vhost.c                        |   1 +
+>   hw/xen/xen-mapcache.c                    |   1 +
+>   hw/xen/xen_pt_graphics.c                 |   1 +
+>   hw/xtensa/xtfpga.c                       |   1 +
+>   migration/ram.c                          |   2 +-
+>   stubs/physmem.c                          |   2 +-
+>   stubs/ram-block.c                        |   4 +-
+>   system/ioport.c                          |   1 +
+>   system/memory.c                          |   2 +-
+>   system/physmem.c                         |   2 +-
+>   target/arm/kvm.c                         |   1 +
+>   target/i386/kvm/kvm.c                    |   1 +
+>   target/i386/sev.c                        |   1 +
+>   target/ppc/kvm.c                         |   2 +-
+>   target/s390x/kvm/kvm.c                   |   2 +-
+>   tests/qtest/fuzz/generic_fuzz.c          |   2 +-
+>   util/vfio-helpers.c                      |   2 +-
+>   rust/hw/char/pl011/src/bindings.rs       |   4 +-
+>   rust/hw/core/src/bindings.rs             |   2 +-
+>   rust/system/src/bindings.rs              |   5 +-
+>   102 files changed, 298 insertions(+), 234 deletions(-)
+>   rename include/{exec => system}/ramlist.h (94%)
 
 
