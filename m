@@ -2,93 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B08DCCDF5B7
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:19:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90967CDF5C4
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:20:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQQL-0002aF-An; Sat, 27 Dec 2025 04:17:21 -0500
+	id 1vZQQQ-0002xs-RN; Sat, 27 Dec 2025 04:17:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQQJ-0002ZU-8P
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:17:19 -0500
+ id 1vZQQN-0002hn-Sy
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:17:23 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQQH-0002X7-Qf
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:17:19 -0500
+ id 1vZQQL-0002e2-HX
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:17:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766827037;
+ s=mimecast20190719; t=1766827040;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sMZbrpL/sbY9nggcHojULDzfnocTCN6gHzY1sKeWxnM=;
- b=bAG/agJUiH4Gy5UaHTLKU1xb7efFeZMneDS1UIlecIUoCI09+VEkJMtOrtZ/NdaprVNLP3
- 62TKufcuybz11glfNa7kvDj/O/XvmAmlZq97P8Vcf+tQREsYpNRJ3oQe5yxEOZ38ZtZhpe
- qjTIC2/ELBPnQeEFS1FtJEA7VhdKzuw=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=cuvAaMnX4xWJ8l23niahbd4yVsP0RR+bqdzHgBOfz4M=;
+ b=R/UyAJVI77BzbXF5jlvswtrU8NQheTjaO24A2UR4m/HQxkOuvJZIImBdfW2BS2NpIDhvok
+ HgxybSMQU9d2dyZlohzkezB3g0TL5UjHpmqPif1gK2DtYXeBsj5FrpZ+R3ELyNKGYrxv94
+ g8RNSMf1g6y6Z+Am31IrtC6jx3BbWCc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-225-H4C-aD5kOYmXR9GZSrx0mQ-1; Sat, 27 Dec 2025 04:17:15 -0500
-X-MC-Unique: H4C-aD5kOYmXR9GZSrx0mQ-1
-X-Mimecast-MFC-AGG-ID: H4C-aD5kOYmXR9GZSrx0mQ_1766827034
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4779b3749a8so54866275e9.1
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:17:15 -0800 (PST)
+ us-mta-231-1tVeLkvHNYmElZbL1O-Myw-1; Sat, 27 Dec 2025 04:17:18 -0500
+X-MC-Unique: 1tVeLkvHNYmElZbL1O-Myw-1
+X-Mimecast-MFC-AGG-ID: 1tVeLkvHNYmElZbL1O-Myw_1766827037
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-47a97b719ccso46044865e9.2
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:17:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766827034; x=1767431834; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766827036; x=1767431836; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=sMZbrpL/sbY9nggcHojULDzfnocTCN6gHzY1sKeWxnM=;
- b=oM6aDL+7Dad/0GGUiufbjyGSsylzStyZdOl2RdVeUjzCqKFDgkLGoOcp2ZeJeNYURW
- 38DW9QB5iaYgyM+xcMZtcMNCrFLxXM+03iDNBiQA00703WntBzRAFIrxsSOZ51S+Nnba
- nu5ZEocHUEMqjhn1leoPfGXWZFE+GfsBPJGfwPigL7EPsyG1bCwHXKwN5RdtfI5LkOtA
- omoO4Ay8zfa7d1yCZzMheiL4+b5arA9OirGKKBCfc8KLLKgHLXw+WX44TSjcUjA9UrVv
- I85jhNzYknGwDQmT6ZZBSdxhhyxf7I3oX4NLvJco1l8tPzl1oAMbOyud/gfnIk1jH89y
- COMQ==
+ :reply-to; bh=cuvAaMnX4xWJ8l23niahbd4yVsP0RR+bqdzHgBOfz4M=;
+ b=tWoXZ+ac4rOdKAcqrohl/8UO1OdCeHNPG3YW5IzbKlOeBPFK2srht8VlodahOzN1BR
+ S5N5VSlChuNkQEwnqY25k5/bF0lwXo644BJMS8dswYXifcSWCtX0mLSDb8M4b5Q5nuNq
+ iI7sxhuolybpX8KNsGM3MGCvpT6xNBf7jabijqkDNAnOzXGzMBIZtC02sSbxQinT029D
+ nAhQ95HwHIQUBbiCJE7od9bKHfSApKfJT0CrTdj6Pu1K10OgaV6EsgW9hdK2eGrTB7nL
+ TOwtIlnLB6RL13SajPeDMgHwb/mBk3NE/fReu2OWT2vKXr24hUcCeaPsrE4klO52ayox
+ w5Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766827034; x=1767431834;
+ d=1e100.net; s=20230601; t=1766827036; x=1767431836;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=sMZbrpL/sbY9nggcHojULDzfnocTCN6gHzY1sKeWxnM=;
- b=T7Wq0D8irGHdJEKjTVgBSKFKypQnffs+UHDzWqmHDOw1K2QXq0vDKngl9lokx4wIDd
- sl+vhwqr9SGAh3JAney/WGnNvHUmHzC3Fy0ab74A1OwoHjRROgmnVG47mwKXF5g0WGUk
- pturOHQvIQsyFywZdiCszooVPL6yRlC45AMbXN2U/CveIPy/of6v50ArpJLYGA8l5GKE
- uqYHXJLAT1BrFJQNzTvWehzVw7ah6nsqiKM5olsJlV3ENHXtEp15y8FFg2UcPGquaBn9
- jBbLsjEvsWE8/Uat7R+pu4ekHADmb5zBJjqya5FK1byPuPEPD9SluJg09r9Gl1Pyzbmy
- NlQQ==
-X-Gm-Message-State: AOJu0YxfXe7OPeo1ZvxeQNhDjp/tya0vtlBg4D06EbQqkaOnFiZRQBcu
- ke/PhMacioPoqIDY1zrGmgwFhpD/o2ZbtCeNsKAsGcxz3pb6NytmTlzIfwekCeTaX5GcoNuI4Tg
- Xc9IMTtUhXEj1dfL2lYx2AITQoqnruWRCO/0B6H/qpGrEvqhcwOC4UYLpAkSzenOJ3/RKjqPOpS
- u73IKpdJFnLxuNlUlrpnPR62N6yek7ZzCA136qNyf6
-X-Gm-Gg: AY/fxX4rVdFXCpt//vD/lw1Yy2DpSc+Bqv+OzCWqSUdMktYZ99FsuMZUd0pLVGTIv9q
- 519Xsm1B2g80AsX6zFA6fB/1XX+qnb27ExcH7wNLxkvcwufPsgtRWmfbPk8WzPk4oUz14VUnd5D
- QQyq6yMQFZRQeQbclzXjJOLhS/tLOAz2z2NLynaNVbhm1Qspl5s1xLN0Ti7MuOQrYzdDW4anos9
- +pRWM1fk8mijA3NP396+ZGLEKC0FES0U23Wv1RUSRWYwwgLkjf0OhPcb5HFrFDL2qxjCpvA5pex
- IZWL+GtogeSD4mb5BBh8t4OT7HrsYAXTCC6hIfwzwQwi2v+FKMG1DREbcaiWcE8Shp+xrmo/H0v
- MnNHHkOLd55m7Ko6xShRYUF73l5DHisaT2jtv6OF42oEcvx0BYK6h3PzgPqhrbJlCODd1Fi357B
- ML5KgXJB44eTcwyBw=
-X-Received: by 2002:a05:600c:1d1d:b0:477:8ba7:fe0a with SMTP id
- 5b1f17b1804b1-47d1957da90mr278533715e9.24.1766827033820; 
- Sat, 27 Dec 2025 01:17:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFWOAWVregNtHZX0WsrdK0Z/nHD7fVFAyZVaEsnYXEEn9IABMduHdio9YHVuSR58nGkre4xJw==
-X-Received: by 2002:a05:600c:1d1d:b0:477:8ba7:fe0a with SMTP id
- 5b1f17b1804b1-47d1957da90mr278533405e9.24.1766827033228; 
- Sat, 27 Dec 2025 01:17:13 -0800 (PST)
+ bh=cuvAaMnX4xWJ8l23niahbd4yVsP0RR+bqdzHgBOfz4M=;
+ b=DWndTbJj8hffVmALhe3vELzsCF0vzfu27ldfK0hgrzuF0SSLVgWuyDMOX+N+KDMKxO
+ NSWVtLvHUFzj3Lg5vjxbv0eVHE1Q+5vSYf538ozlh/XhwGTX0ZFS10IkrjH+RoP/PKO7
+ s4Ti035Nr9P4rLYsg1Bos5XZSsg8F3gP7Su/zBWG2mql5XTGhql1Zubefxf3wboTuxwh
+ /fNd8tuNXyLVRkmW1+FPtvu5zvd3mFQGIWlPbvcC5fuKS98y4ObQZwHOdG1R7AA9rcX6
+ eu94BcaSXhTsUAMvcQo+axrzEw/LOtIPNQpOwhGzMXocAfNm1ayNmgjeGU40BeT6bwPi
+ o0uA==
+X-Gm-Message-State: AOJu0YzP40i+ccYw05bnh4ZZUk1t6QxoUCXtKR6T4G/dDykK10RRG8ir
+ +XKE6I4AZGN8uxSogNPAaUkudsHjLZete+rjmhI03P3UxSQTtOVqoOSGkdx+oFA7+pp7LgygGrU
+ Ayq0xGONiqE3C9BLl7Z9VvtdHt+e8du2x9wdpgVQKIIR3PU+I0U5Ura7uXrTvjVL1NWtVJC7j7W
+ G1NYQjRuHZZJP4ubmC0OlanjUY3sipLupxdaWwS2zu
+X-Gm-Gg: AY/fxX6Tf7KrY2MIW1hsmcTeE75oLm7SeueabuXmZ0dMVo+2RZREzCBBPezj2+hZtqd
+ OHsNm3BKF54y6rwA7NYWLKiHP8QMmYJcLm2QfvysVoUNYb2ZVzjU7ybHv7hrzLMuwga/2jJhKL4
+ QYT4uzu+brc6klSk8h+m3VZMaDJUWFlFsjKqLhgEK7Y1qFWy7q4HXwtSsN5hNro33Jup7GJMozP
+ w++SkNU/ucUK456H2F9rjEAhwMxdecPWM8TyasKqUmZ9jQB8Th6708lAblYvjILJlMZ8Tjsz5eb
+ Rx/iskFuf+RKN8ivs1gRM2BDoGIlfB+j0iQyZx9x/PAWJYa+3naw5lAiitbZqtAnkz+8XiVWCr4
+ n5uLo+HT38XB40zunoRkjMaTrSpT/Yot48BiENmotxPpwgRb3qY9b5zlPZqFHc83mspH1vfHW0D
+ BXfcijfUQKI3pR9lk=
+X-Received: by 2002:a05:600c:5248:b0:47a:8154:33e3 with SMTP id
+ 5b1f17b1804b1-47d1958958dmr271805265e9.28.1766827035703; 
+ Sat, 27 Dec 2025 01:17:15 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IElzgTTta4osiYoqBK8wOYy7VFSieJc6YFYhrGXpJXRe1GXyBO091VZV788ur+pL296avg6zw==
+X-Received: by 2002:a05:600c:5248:b0:47a:8154:33e3 with SMTP id
+ 5b1f17b1804b1-47d1958958dmr271804905e9.28.1766827034972; 
+ Sat, 27 Dec 2025 01:17:14 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d193cbe58sm433083535e9.9.2025.12.27.01.17.12
+ 5b1f17b1804b1-47be274e407sm482008065e9.8.2025.12.27.01.17.13
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:17:12 -0800 (PST)
+ Sat, 27 Dec 2025 01:17:13 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 027/153] include: move hw/vmstate-if.h to hw/core/
-Date: Sat, 27 Dec 2025 10:14:14 +0100
-Message-ID: <20251227091622.20725-28-pbonzini@redhat.com>
+Subject: [PULL 028/153] include: move hw/hw.h to hw/core/, rename
+Date: Sat, 27 Dec 2025 10:14:15 +0100
+Message-ID: <20251227091622.20725-29-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
@@ -119,72 +119,528 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Call it include/hw/core/hw-error.h since that is the only
+thing it contains.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- MAINTAINERS                        | 2 +-
- include/hw/{ => core}/vmstate-if.h | 0
- include/migration/register.h       | 2 +-
- include/migration/vmstate.h        | 2 +-
- hw/core/vmstate-if.c               | 2 +-
- 5 files changed, 4 insertions(+), 4 deletions(-)
- rename include/hw/{ => core}/vmstate-if.h (100%)
+ include/hw/{hw.h => core/hw-error.h} |  0
+ hw/arm/integratorcp.c                |  2 +-
+ hw/arm/omap1.c                       |  2 +-
+ hw/arm/xen-stubs.c                   |  2 +-
+ hw/audio/lm4549.c                    |  2 +-
+ hw/core/loader.c                     |  2 +-
+ hw/display/bcm2835_fb.c              |  2 +-
+ hw/display/exynos4210_fimd.c         |  2 +-
+ hw/display/g364fb.c                  |  2 +-
+ hw/dma/pl080.c                       |  2 +-
+ hw/dma/xilinx_axidma.c               |  2 +-
+ hw/i386/xen/xen-hvm.c                |  2 +-
+ hw/intc/exynos4210_combiner.c        |  2 +-
+ hw/misc/omap_clk.c                   |  2 +-
+ hw/net/e1000e.c                      |  2 +-
+ hw/net/igb.c                         |  2 +-
+ hw/net/igbvf.c                       |  2 +-
+ hw/net/vmxnet3.c                     |  2 +-
+ hw/net/xilinx_axienet.c              |  2 +-
+ hw/ppc/ppce500_spin.c                |  2 +-
+ hw/timer/a9gtimer.c                  |  2 +-
+ hw/timer/arm_mptimer.c               |  2 +-
+ hw/vfio/device.c                     |  2 +-
+ hw/vfio/helpers.c                    |  2 +-
+ hw/vfio/igd.c                        |  2 +-
+ hw/vfio/listener.c                   |  2 +-
+ hw/vfio/migration.c                  |  2 +-
+ hw/vfio/pci.c                        |  2 +-
+ hw/vfio/region.c                     |  2 +-
+ hw/vfio/spapr.c                      |  2 +-
+ hw/xen/xen-hvm-common.c              |  2 +-
+ system/cpus.c                        |  2 +-
+ target/ppc/kvm.c                     |  2 +-
+ target/ppc/mmu-hash64.c              |  2 +-
+ target/s390x/mmu_helper.c            |  2 +-
+ scripts/analyze-inclusions           | 10 +++++-----
+ 36 files changed, 39 insertions(+), 39 deletions(-)
+ rename include/hw/{hw.h => core/hw-error.h} (100%)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 44d84aa243a..5d33892c347 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3656,7 +3656,7 @@ M: Peter Xu <peterx@redhat.com>
- M: Fabiano Rosas <farosas@suse.de>
- S: Maintained
- F: hw/core/vmstate-if.c
--F: include/hw/vmstate-if.h
-+F: include/hw/core/vmstate-if.h
- F: include/migration/
- F: include/qemu/userfaultfd.h
- F: migration/
-diff --git a/include/hw/vmstate-if.h b/include/hw/core/vmstate-if.h
+diff --git a/include/hw/hw.h b/include/hw/core/hw-error.h
 similarity index 100%
-rename from include/hw/vmstate-if.h
-rename to include/hw/core/vmstate-if.h
-diff --git a/include/migration/register.h b/include/migration/register.h
-index ae79794cdd4..d0f37f5f438 100644
---- a/include/migration/register.h
-+++ b/include/migration/register.h
-@@ -14,7 +14,7 @@
- #ifndef MIGRATION_REGISTER_H
- #define MIGRATION_REGISTER_H
- 
--#include "hw/vmstate-if.h"
-+#include "hw/core/vmstate-if.h"
- 
- /**
-  * struct SaveVMHandlers: handler structure to finely control
-diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
-index a87a5efa428..ed9095a4661 100644
---- a/include/migration/vmstate.h
-+++ b/include/migration/vmstate.h
-@@ -27,7 +27,7 @@
- #ifndef QEMU_VMSTATE_H
- #define QEMU_VMSTATE_H
- 
--#include "hw/vmstate-if.h"
-+#include "hw/core/vmstate-if.h"
- 
- typedef struct VMStateInfo VMStateInfo;
- typedef struct VMStateField VMStateField;
-diff --git a/hw/core/vmstate-if.c b/hw/core/vmstate-if.c
-index bf453620fed..c39631c7586 100644
---- a/hw/core/vmstate-if.c
-+++ b/hw/core/vmstate-if.c
+rename from include/hw/hw.h
+rename to include/hw/core/hw-error.h
+diff --git a/hw/arm/integratorcp.c b/hw/arm/integratorcp.c
+index 118808f2dc7..0bf519b6bb8 100644
+--- a/hw/arm/integratorcp.c
++++ b/hw/arm/integratorcp.c
+@@ -23,7 +23,7 @@
+ #include "qemu/log.h"
+ #include "qemu/error-report.h"
+ #include "hw/char/pl011.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/core/irq.h"
+ #include "hw/sd/sd.h"
+ #include "qom/object.h"
+diff --git a/hw/arm/omap1.c b/hw/arm/omap1.c
+index f3d6be1e295..f5ff4b107ae 100644
+--- a/hw/arm/omap1.c
++++ b/hw/arm/omap1.c
+@@ -24,7 +24,7 @@
+ #include "qapi/error.h"
+ #include "cpu.h"
+ #include "system/address-spaces.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/core/irq.h"
+ #include "hw/core/qdev-properties.h"
+ #include "hw/arm/boot.h"
+diff --git a/hw/arm/xen-stubs.c b/hw/arm/xen-stubs.c
+index 6a830435533..00bc310252f 100644
+--- a/hw/arm/xen-stubs.c
++++ b/hw/arm/xen-stubs.c
 @@ -7,7 +7,7 @@
+ #include "qemu/osdep.h"
+ #include "qapi/qapi-commands-migration.h"
+ #include "system/xen.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/xen/xen-hvm-common.h"
+ #include "hw/xen/arch_hvm.h"
+ 
+diff --git a/hw/audio/lm4549.c b/hw/audio/lm4549.c
+index bf711c49c04..f85226d1ac5 100644
+--- a/hw/audio/lm4549.c
++++ b/hw/audio/lm4549.c
+@@ -14,7 +14,7 @@
   */
  
  #include "qemu/osdep.h"
--#include "hw/vmstate-if.h"
-+#include "hw/core/vmstate-if.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "qemu/log.h"
+ #include "qemu/audio.h"
+ #include "lm4549.h"
+diff --git a/hw/core/loader.c b/hw/core/loader.c
+index 40cb187a113..8252616fdd3 100644
+--- a/hw/core/loader.c
++++ b/hw/core/loader.c
+@@ -50,7 +50,7 @@
+ #include "qapi/type-helpers.h"
+ #include "qemu/units.h"
+ #include "trace.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "disas/disas.h"
+ #include "migration/cpr.h"
+ #include "migration/vmstate.h"
+diff --git a/hw/display/bcm2835_fb.c b/hw/display/bcm2835_fb.c
+index 8eec0dc600b..75d7c0f8499 100644
+--- a/hw/display/bcm2835_fb.c
++++ b/hw/display/bcm2835_fb.c
+@@ -25,7 +25,7 @@
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+ #include "hw/display/bcm2835_fb.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/core/irq.h"
+ #include "ui/console.h"
+ #include "framebuffer.h"
+diff --git a/hw/display/exynos4210_fimd.c b/hw/display/exynos4210_fimd.c
+index 7f841b88047..a97054132fb 100644
+--- a/hw/display/exynos4210_fimd.c
++++ b/hw/display/exynos4210_fimd.c
+@@ -24,7 +24,7 @@
  
- static const TypeInfo vmstate_if_info = {
-     .name = TYPE_VMSTATE_IF,
+ #include "qemu/osdep.h"
+ #include "hw/core/qdev-properties.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/core/irq.h"
+ #include "hw/core/sysbus.h"
+ #include "migration/vmstate.h"
+diff --git a/hw/display/g364fb.c b/hw/display/g364fb.c
+index 2eefafcaf67..50952e9934b 100644
+--- a/hw/display/g364fb.c
++++ b/hw/display/g364fb.c
+@@ -19,7 +19,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/units.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/core/irq.h"
+ #include "hw/core/qdev-properties.h"
+ #include "qapi/error.h"
+diff --git a/hw/dma/pl080.c b/hw/dma/pl080.c
+index 514206b7c31..3f8acb03deb 100644
+--- a/hw/dma/pl080.c
++++ b/hw/dma/pl080.c
+@@ -13,7 +13,7 @@
+ #include "qemu/log.h"
+ #include "qemu/module.h"
+ #include "hw/dma/pl080.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/core/irq.h"
+ #include "hw/core/qdev-properties.h"
+ #include "qapi/error.h"
+diff --git a/hw/dma/xilinx_axidma.c b/hw/dma/xilinx_axidma.c
+index 8488f125b5f..22dec8b3eb2 100644
+--- a/hw/dma/xilinx_axidma.c
++++ b/hw/dma/xilinx_axidma.c
+@@ -26,7 +26,7 @@
+ #include "hw/core/sysbus.h"
+ #include "qapi/error.h"
+ #include "qemu/timer.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/core/irq.h"
+ #include "hw/core/ptimer.h"
+ #include "hw/core/qdev-properties.h"
+diff --git a/hw/i386/xen/xen-hvm.c b/hw/i386/xen/xen-hvm.c
+index 591da26d453..a6e1683885a 100644
+--- a/hw/i386/xen/xen-hvm.c
++++ b/hw/i386/xen/xen-hvm.c
+@@ -15,7 +15,7 @@
+ #include "qapi/qapi-commands-migration.h"
+ #include "trace.h"
+ 
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/i386/pc.h"
+ #include "hw/core/irq.h"
+ #include "hw/i386/apic-msidef.h"
+diff --git a/hw/intc/exynos4210_combiner.c b/hw/intc/exynos4210_combiner.c
+index ec935a084db..e8cac331e4c 100644
+--- a/hw/intc/exynos4210_combiner.c
++++ b/hw/intc/exynos4210_combiner.c
+@@ -33,7 +33,7 @@
+ #include "qemu/module.h"
+ #include "hw/intc/exynos4210_combiner.h"
+ #include "hw/arm/exynos4210.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/core/irq.h"
+ #include "hw/core/qdev-properties.h"
+ #include "qom/object.h"
+diff --git a/hw/misc/omap_clk.c b/hw/misc/omap_clk.c
+index 37afef09903..e927ef22a09 100644
+--- a/hw/misc/omap_clk.c
++++ b/hw/misc/omap_clk.c
+@@ -20,7 +20,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/core/irq.h"
+ #include "hw/arm/omap.h"
+ 
+diff --git a/hw/net/e1000e.c b/hw/net/e1000e.c
+index 3d4683370c6..9faf0c74c3d 100644
+--- a/hw/net/e1000e.c
++++ b/hw/net/e1000e.c
+@@ -41,7 +41,7 @@
+ #include "qemu/module.h"
+ #include "qemu/range.h"
+ #include "system/system.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/net/mii.h"
+ #include "hw/pci/msi.h"
+ #include "hw/pci/msix.h"
+diff --git a/hw/net/igb.c b/hw/net/igb.c
+index d39eba9f64d..c076807e711 100644
+--- a/hw/net/igb.c
++++ b/hw/net/igb.c
+@@ -45,7 +45,7 @@
+ #include "qemu/module.h"
+ #include "qemu/range.h"
+ #include "system/system.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/net/mii.h"
+ #include "hw/pci/pci.h"
+ #include "hw/pci/pcie.h"
+diff --git a/hw/net/igbvf.c b/hw/net/igbvf.c
+index 9b0db8f8411..48d56e43aca 100644
+--- a/hw/net/igbvf.c
++++ b/hw/net/igbvf.c
+@@ -38,7 +38,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/net/mii.h"
+ #include "hw/pci/pci_device.h"
+ #include "hw/pci/pcie.h"
+diff --git a/hw/net/vmxnet3.c b/hw/net/vmxnet3.c
+index bae3a44cb0c..97156dd33b9 100644
+--- a/hw/net/vmxnet3.c
++++ b/hw/net/vmxnet3.c
+@@ -16,7 +16,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/pci/pci.h"
+ #include "hw/core/qdev-properties.h"
+ #include "net/tap.h"
+diff --git a/hw/net/xilinx_axienet.c b/hw/net/xilinx_axienet.c
+index 29c09b88ebf..d85f8bb23fe 100644
+--- a/hw/net/xilinx_axienet.c
++++ b/hw/net/xilinx_axienet.c
+@@ -23,7 +23,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/core/sysbus.h"
+ #include "qapi/error.h"
+ #include "qemu/log.h"
+diff --git a/hw/ppc/ppce500_spin.c b/hw/ppc/ppce500_spin.c
+index a066ada77ed..85bdcac43a1 100644
+--- a/hw/ppc/ppce500_spin.c
++++ b/hw/ppc/ppce500_spin.c
+@@ -30,7 +30,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/module.h"
+ #include "qemu/units.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/core/sysbus.h"
+ #include "system/hw_accel.h"
+ #include "hw/ppc/ppc.h"
+diff --git a/hw/timer/a9gtimer.c b/hw/timer/a9gtimer.c
+index a2363a89a5f..3a086915c81 100644
+--- a/hw/timer/a9gtimer.c
++++ b/hw/timer/a9gtimer.c
+@@ -21,7 +21,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/core/irq.h"
+ #include "hw/core/qdev-properties.h"
+ #include "hw/timer/a9gtimer.h"
+diff --git a/hw/timer/arm_mptimer.c b/hw/timer/arm_mptimer.c
+index 869db913d40..88158144b23 100644
+--- a/hw/timer/arm_mptimer.c
++++ b/hw/timer/arm_mptimer.c
+@@ -20,7 +20,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/core/irq.h"
+ #include "hw/core/ptimer.h"
+ #include "hw/core/qdev-properties.h"
+diff --git a/hw/vfio/device.c b/hw/vfio/device.c
+index 76869828fc8..19d1236ed75 100644
+--- a/hw/vfio/device.c
++++ b/hw/vfio/device.c
+@@ -23,7 +23,7 @@
+ 
+ #include "hw/vfio/vfio-device.h"
+ #include "hw/vfio/pci.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "trace.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
+index 23d13e5db5f..2cbc7b4964f 100644
+--- a/hw/vfio/helpers.c
++++ b/hw/vfio/helpers.c
+@@ -24,7 +24,7 @@
+ 
+ #include "system/kvm.h"
+ #include "hw/vfio/vfio-device.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "qapi/error.h"
+ #include "vfio-helpers.h"
+ 
+diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
+index cff413c16f5..6aacf27284f 100644
+--- a/hw/vfio/igd.c
++++ b/hw/vfio/igd.c
+@@ -16,7 +16,7 @@
+ #include "qapi/error.h"
+ #include "qapi/qmp/qerror.h"
+ #include "hw/core/boards.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/nvram/fw_cfg.h"
+ #include "pci.h"
+ #include "pci-quirks.h"
+diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
+index 2d7d3a46457..7af01075359 100644
+--- a/hw/vfio/listener.c
++++ b/hw/vfio/listener.c
+@@ -30,7 +30,7 @@
+ #include "hw/vfio/pci.h"
+ #include "system/address-spaces.h"
+ #include "system/memory.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "qemu/error-report.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/range.h"
+diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+index 4c06e3db936..fde343f06e3 100644
+--- a/hw/vfio/migration.c
++++ b/hw/vfio/migration.c
+@@ -30,7 +30,7 @@
+ #include "exec/ramlist.h"
+ #include "pci.h"
+ #include "trace.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "vfio-migration-internal.h"
+ 
+ /*
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index a0a66b105aa..c7344727214 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -23,7 +23,7 @@
+ #include <linux/vfio.h>
+ #include <sys/ioctl.h>
+ 
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/pci/msi.h"
+ #include "hw/pci/msix.h"
+ #include "hw/pci/pci_bridge.h"
+diff --git a/hw/vfio/region.c b/hw/vfio/region.c
+index b165ab0b937..ca75ab1be4d 100644
+--- a/hw/vfio/region.c
++++ b/hw/vfio/region.c
+@@ -23,7 +23,7 @@
+ 
+ #include "hw/vfio/vfio-region.h"
+ #include "hw/vfio/vfio-device.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "trace.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
+index 0f23681a3f9..a9f093c3570 100644
+--- a/hw/vfio/spapr.c
++++ b/hw/vfio/spapr.c
+@@ -16,7 +16,7 @@
+ #include "system/address-spaces.h"
+ 
+ #include "hw/vfio/vfio-container-legacy.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "qemu/error-report.h"
+ #include "qapi/error.h"
+ #include "trace.h"
+diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
+index 5d11b50db9c..59c73dfaeb5 100644
+--- a/hw/xen/xen-hvm-common.c
++++ b/hw/xen/xen-hvm-common.c
+@@ -7,7 +7,7 @@
+ #include "exec/target_page.h"
+ #include "trace.h"
+ 
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/pci/pci_host.h"
+ #include "hw/xen/xen-hvm-common.h"
+ #include "hw/xen/xen-bus.h"
+diff --git a/system/cpus.c b/system/cpus.c
+index a0e1debfea8..49deeb9468a 100644
+--- a/system/cpus.c
++++ b/system/cpus.c
+@@ -45,7 +45,7 @@
+ #include "system/cpu-timers.h"
+ #include "system/whpx.h"
+ #include "hw/core/boards.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "trace.h"
+ 
+ #ifdef CONFIG_LINUX
+diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
+index 43124bf1c78..2c96eca584e 100644
+--- a/target/ppc/kvm.c
++++ b/target/ppc/kvm.c
+@@ -34,7 +34,7 @@
+ 
+ #include "hw/ppc/spapr.h"
+ #include "hw/ppc/spapr_cpu_core.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/ppc/ppc.h"
+ #include "migration/qemu-file-types.h"
+ #include "system/watchdog.h"
+diff --git a/target/ppc/mmu-hash64.c b/target/ppc/mmu-hash64.c
+index dd337558aa6..d026abadd11 100644
+--- a/target/ppc/mmu-hash64.c
++++ b/target/ppc/mmu-hash64.c
+@@ -28,7 +28,7 @@
+ #include "kvm_ppc.h"
+ #include "mmu-hash64.h"
+ #include "exec/log.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "internal.h"
+ #include "mmu-book3s-v3.h"
+ #include "mmu-books.h"
+diff --git a/target/s390x/mmu_helper.c b/target/s390x/mmu_helper.c
+index 7a7b3810590..7063f1a905f 100644
+--- a/target/s390x/mmu_helper.c
++++ b/target/s390x/mmu_helper.c
+@@ -26,7 +26,7 @@
+ #include "system/memory.h"
+ #include "exec/page-protection.h"
+ #include "exec/target_page.h"
+-#include "hw/hw.h"
++#include "hw/core/hw-error.h"
+ #include "hw/s390x/storage-keys.h"
+ #include "hw/core/boards.h"
+ 
+diff --git a/scripts/analyze-inclusions b/scripts/analyze-inclusions
+index d2c566667df..50a7d95d9e7 100644
+--- a/scripts/analyze-inclusions
++++ b/scripts/analyze-inclusions
+@@ -46,7 +46,7 @@ grep_include() {
+ }
+ 
+ echo Found $(find . -name "*.d" | wc -l) object files
+-echo $(grep_include -F 'hw/hw.h') files include hw/hw.h
++echo $(grep_include -F 'hw/core/hw-error.h') files include hw/core/hw-error.h
+ echo $(grep_include 'target/[a-z0-9]*/cpu\.h') files include cpu.h
+ echo $(grep_include -F 'qapi-types.h') files include qapi-types.h
+ echo $(grep_include -F 'trace/generated-tracers.h') files include generated-tracers.h
+@@ -85,8 +85,8 @@ analyze() {
+ echo osdep.h:
+ analyze ../include/qemu/osdep.h
+ 
+-echo hw/hw.h:
+-analyze -include ../include/qemu/osdep.h ../include/hw/hw.h
++echo hw/core/hw-error.h:
++analyze -include ../include/qemu/osdep.h ../include/hw/core/hw-error.h
+ 
+ echo trace/generated-tracers.h:
+ analyze -include ../include/qemu/osdep.h trace/generated-tracers.h
+@@ -94,5 +94,5 @@ analyze -include ../include/qemu/osdep.h trace/generated-tracers.h
+ echo target/i386/cpu.h:
+ analyze -DCOMPILING_PER_TARGET -I../target/i386 -Ii386-softmmu -include ../include/qemu/osdep.h ../target/i386/cpu.h
+ 
+-echo hw/hw.h + COMPILING_PER_TARGET:
+-analyze -DCOMPILING_PER_TARGET -I../target/i386 -Ii386-softmmu -include ../include/qemu/osdep.h ../include/hw/hw.h
++echo hw/core/hw-error.h + COMPILING_PER_TARGET:
++analyze -DCOMPILING_PER_TARGET -I../target/i386 -Ii386-softmmu -include ../include/qemu/osdep.h ../include/hw/core/hw-error.h
 -- 
 2.52.0
 
