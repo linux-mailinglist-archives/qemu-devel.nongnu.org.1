@@ -2,108 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02BC5CDF6FA
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:52:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84FE9CDF716
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:53:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQvl-0006wi-GW; Sat, 27 Dec 2025 04:49:49 -0500
+	id 1vZQvo-0007Ev-KJ; Sat, 27 Dec 2025 04:49:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQvj-0006pF-IM
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:49:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vZQvm-00073N-EI
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:49:50 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQvh-00073o-VN
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:49:47 -0500
+ id 1vZQvk-00074C-RM
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:49:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766828985;
+ s=mimecast20190719; t=1766828988;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=c6horWdf4WOLTTFYACcVVUN9syUzKw8SDpdBCerOzuM=;
- b=Vf4qRBfFBH+rsouKlMatZcAyxGqa8V3IIBivWapOrzj2NNmSFRDmonMz/PCGLzPsQARd5U
- WJ0fBn2l9k5fULxFOVf4Ll2BgyHQuK+zOxEzxiyMbcSLiBYb3eHNjL33elYeEy+HgcEd/W
- Xx4bV0pfoC3w5BIwKOpn24DqCBshJHE=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=EH6Qg1VTw6AKfKDVywah0DcEUcfi1K/cKzxM043Y9m4=;
+ b=IHEAcOZ4PamSYJL4M7MKOOgcwKniPZ77s0JEFZpDiV8qIsqYZdvLtGczn5eIzSzLVOJ1zg
+ zyvLwuLmzLk+z6Icl5mRECCZUg9xZYzYW2idht0zmngg7i4Do5CnqtKoqHSFyp0gUmjMxT
+ qOGabcRaJ2OYD2J1sZZx8JOSiNX0JkA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-672-wjBOOtO6OMaABeu34GKOWA-1; Sat, 27 Dec 2025 04:49:44 -0500
-X-MC-Unique: wjBOOtO6OMaABeu34GKOWA-1
-X-Mimecast-MFC-AGG-ID: wjBOOtO6OMaABeu34GKOWA_1766828983
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-431026b6252so7793599f8f.1
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:49:43 -0800 (PST)
+ us-mta-435-aW-IDefcOpi27FnqufNiCQ-1; Sat, 27 Dec 2025 04:49:46 -0500
+X-MC-Unique: aW-IDefcOpi27FnqufNiCQ-1
+X-Mimecast-MFC-AGG-ID: aW-IDefcOpi27FnqufNiCQ_1766828985
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4779edba8f3so56181765e9.3
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:49:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766828982; x=1767433782; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766828984; x=1767433784; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=c6horWdf4WOLTTFYACcVVUN9syUzKw8SDpdBCerOzuM=;
- b=G2+LxT4y4bHNRdNGABLXETE9SlYfJRU9D8IAHzB3of1yjZs4AQIV8bFwEsrVVob6yd
- B9KN3AQjxZIghjAmL90qMtHN8hWmlElXp0Y7vgIZlF07hXhHZ5HLNaw1TjyuEiqsx+zl
- xALprHlsNLHkzc4K2l37p6/lRMNj6gC7FFVS9A4NlkDzD9K/gQr7DAsgN8q1X4bHtZpI
- IVnRJv8aKE3HPAHyY8dQ5QP71gZvziR6fJNQGKyS10VMK+gHx32i+r6jEJBT3cLNjD/h
- OO0OGfSnb5Ok+Z2NcMJxXun1KN60RXqW/6JcOd7rroAMCeP9NF1TFxl4drRuR8Pmj2sz
- xoZg==
+ bh=EH6Qg1VTw6AKfKDVywah0DcEUcfi1K/cKzxM043Y9m4=;
+ b=I31tIhaCLs6MALJaaEG9V+Gx4Cy7sCNNdrqrAS5Q8d5EjHFI5MKMd9otcAYMU28Lp7
+ aoAQPVC3ZCsx06vmSZ21uzDRm63cYqGZ+HgQUstf7An0dBJIDoydXtCJktC+MMezXKpg
+ N0QxKE268oFEgYPuRsTG1donb5WZVi8bbyoTNoje1p1DfLUdXzlXM2JEgoQ2K9mwyvCM
+ w9D/5kTpfUm0Srbg9CtKmhQ6GSgDihgV5V8Yeb/G4948bU9djSugjeR8oGLDmL6+xFbX
+ SxUJEV6mJCnzikusPjqk1eoVnS5j8ldiT/d3vzXEPc2GjYZCkOQF06w2zkZdIyZpKxVV
+ hhqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766828982; x=1767433782;
+ d=1e100.net; s=20230601; t=1766828984; x=1767433784;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=c6horWdf4WOLTTFYACcVVUN9syUzKw8SDpdBCerOzuM=;
- b=nXcuuQHq1dWTG70SXe92hq+d99jKn56ARTujOZATHDRzcQV3NhkmEarKwLgUT23F2t
- PWVbyQt1kEOAqwEnIyJyogGymlqPsjxnUtYDVK1p7FKgLl9t0iVIHSSViHKYD2UDjeAa
- ne/p3LVHZz/d4LFu7q6cRCDTxkQ8QQoVWMspUSJRy/zt3bUe7K3Vv7Q0LTQShoeoLjLL
- QinKS7jVOVi0pXXi8+e6l3FxfWPU837N9ScaFKxLO+nvdN7zfwnpKOTolucqD0QOZdk4
- HBWdkevly2tk8QC41X9meC/EfWyvOJKVNZ71HCya+Wy34hZQ1Oa8EJCJ6KyT753KWzQQ
- VznQ==
-X-Gm-Message-State: AOJu0Yzj9EsQ7T2dxP2pQdCVWyBrjN3GJb6lwn7S5aNf0FaING9CtPXy
- 649iCke7y67KQQnBjQmANbOXSjqYPaLVCLW3b7wgW67neRB0heOXdzbc8VFw7BIPJO/gGRp9Jm2
- vOJYtV0wyc7ug8biPNhoB8vusw8WMAB8DWwsxsGV/OvVusMPzb2AfUcL3pC9vIsVYYfslTAIfTK
- aZwKPkkl+HlNjOAlanZsRpgN1q/4UsnHZXOJHPPsqO
-X-Gm-Gg: AY/fxX7tds6zmuHnSt0PQRkEWMbGDpx7oH+z3d8IGSTDLL+m0sUOYsgx+gjHNyXhJxN
- 2ug8TOPzLMthOShRctW9jPCBZfQjq+HiMgAxQNlXbcfWcLfN+xD79I9HzCf3UFUqsM1dgpn3Ypj
- StDlTv5qoKpXt2rhuqJiPtbSjGvikdZl5lDL9rTdOstR9zJw8Wbo8CKVZbhFQZHtCt432AHwYsA
- OcXTAIN/Lyq6pr9oJ0EL4e7vZemcuOKDmj9Y9iArj3sxIzUnp5r0HXzGr5QyBV/JkzySmS/f30g
- aDQTmzKMUG0aHdfLBDOCiJCJEBknpocFhWxWCEF0XIaKBRc81Fvo3T3Ln7dw/cuzwo8WwdKv9Rf
- HOCQXVAss0aRNYmgBZ3uOQdy+ZKCr0ndW2vZQWRSkveyBuHvzvihHx7g5mSQVbsAEJKdjvly293
- OWmnV3HB5787yJ3Ho=
-X-Received: by 2002:a5d:51cc:0:b0:430:f7bc:4d0c with SMTP id
- ffacd0b85a97d-4324e4d5102mr22441229f8f.28.1766828981977; 
- Sat, 27 Dec 2025 01:49:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHHp0v+nlh2bn/w80acaEiwFahOktKmyib5jKkUZLpWcs1nnXwpzsWgyqyVv32cWYRHEpjJcg==
-X-Received: by 2002:a5d:51cc:0:b0:430:f7bc:4d0c with SMTP id
- ffacd0b85a97d-4324e4d5102mr22441214f8f.28.1766828981456; 
- Sat, 27 Dec 2025 01:49:41 -0800 (PST)
+ bh=EH6Qg1VTw6AKfKDVywah0DcEUcfi1K/cKzxM043Y9m4=;
+ b=S/6hXTbeKX4VCyTLD4iMFsw6PZMwvxSVcnQePc1XaPCyjAfVKlum4O0VFKhADYdEBQ
+ 3WXCV0xPL7hJSW1vOsnrYnHbdADqDVQy2N3QCsIy8Fxd3+h3XlSB3DdNgk1IT2LkS/ML
+ XpD1Yg12n6PX/7+1SFoId4VRDktDCtls6Gh115pIJ0wpntvHvdXmiwCi0W8m8dLmlua/
+ K+LsBeuf5Y/pLdoaUNMf57ItpjFxmDu/rkhE+1IcBsHkTj1qm32oVJsLkY7Q/ioPJBfz
+ frGkegp8Q+O3ez6gqTMrX9Ffoo6ZqErZV8VLS4TKPAnDLevezNU5XdSKm+MEqmTstnsj
+ jwyA==
+X-Gm-Message-State: AOJu0YwJSmRhU14gfQJlqMHJYVMHyN5EV3figDJNz9Hsx2LFf49h4C/d
+ W9ntfsFnpEYqFpJGT6KCixW4WoaVaDyrUsn6bc8AmDD2ApZwCOArxQVFRrV0yjtf4JlwrkgKHu6
+ 9IEfJrp4o3K9CH9zZBGrvy7OAPMrGcOedN3MbWc3Mmvp12ilqUW2ksfEOJG/LPpZlTfM8ApoMz3
+ jLqC7fZHwMwRgH01yBSp/J57Apmkqdi9beIyFEM9p/
+X-Gm-Gg: AY/fxX4lIwtrt+kEFd7sPTO++oO6AxL3qTdfms3M2GwZweAiFrjiVrSx86pMAD1W5BF
+ RaSVMRPmL/CMw0t5RSd7gfiz3Ez/xZCuQ47GdSAxXBChcva6+JdTVRBt7MybzGa3/4lYfJVtHNp
+ W7Y6vDYIz1jtuG/7mMehpJhovZkSdBbbXruEjPL8qzh8xm1R7tmN0Kgx68EjzXG820/nWVRQz/4
+ 6JRJ/xtKhBavl7N4KspvlP/BGYx7NQ33ugmmowE5itQK+v0aR9IRaKFei4+JksaOr8WVlSvb6j0
+ ES4lH5BTLgY02jjE2ZpAMkZdE7TP1MgMUsi/FrNBLZD6AEA9Do5uYlmZqSQL/sUb5pVqAB0D1nb
+ mQ/xuiesb5B9zG1bMQ1OFxSKfOpsrWxnx04hKzvEarF5vTFu6ogNDDBV04/yvImTTWht4GRnXIS
+ pf20m3RgeqY61qnDg=
+X-Received: by 2002:a05:600c:3ba7:b0:477:7af8:c88b with SMTP id
+ 5b1f17b1804b1-47d1953d798mr285457995e9.11.1766828984685; 
+ Sat, 27 Dec 2025 01:49:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHmNi0Dq1zPjCEZ+ZVOFhnCuvMg4/I4fpcMXbhlBzTkybkn/9sS9pv8N7KpmuZKspgLvGHn0Q==
+X-Received: by 2002:a05:600c:3ba7:b0:477:7af8:c88b with SMTP id
+ 5b1f17b1804b1-47d1953d798mr285457795e9.11.1766828984307; 
+ Sat, 27 Dec 2025 01:49:44 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324eaa2bdfsm51169621f8f.32.2025.12.27.01.49.40
+ 5b1f17b1804b1-47be27b0d5asm490570095e9.13.2025.12.27.01.49.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:49:40 -0800 (PST)
+ Sat, 27 Dec 2025 01:49:42 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Farrah Chen <farrah.chen@intel.com>,
  Zide Chen <zide.chen@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 113/153] i386/cpu: Drop incorrect comment for CPUID 0x1D
-Date: Sat, 27 Dec 2025 10:47:18 +0100
-Message-ID: <20251227094759.35658-39-pbonzini@redhat.com>
+Subject: [PULL 114/153] i386/cpu: Drop incorrect comment for CPUID 0x1E
+Date: Sat, 27 Dec 2025 10:47:19 +0100
+Message-ID: <20251227094759.35658-40-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -123,15 +123,17 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-The information in CPUID 0x1D.0x1 is for tile palette 1, and is not
-SPR-specific.
+The information (tmul_maxk and tmul_maxn) in CPUID 0x1E.0x0.EBX is
+defined for architecture, not for SPR.
 
 This is to say, these "hardcoded" values won't change in future. If
-the palette needs to be extended, a new tile palette (maybe in a new
-subleaf) will be introduced instead of changing current information of
-tile palette 1.
+the TMUL component needs to be extended for new palettes, there'll
+likely be the new TMUL instructions, or new types of AMX instructions
+that are _parallel_ to TMUL that operate in particular palettes,
+instead of changing current tmul_maxk and tmul_maxn fields in CPUID
+0x1E.0x0.EBX.
 
-Furthermore, the previous attempt [*] to make the 0x1D.0x1 fields
+Furthermore, the previous attempt [*] to make the 0x1E.0x0.EBX fields
 user-configurable is incorrect and unnecessary.
 
 Therefore, drop the incorrect and misleading comment.
@@ -140,33 +142,25 @@ Therefore, drop the incorrect and misleading comment.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Link: https://lore.kernel.org/r/20251118080837.837505-2-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20251118080837.837505-3-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ target/i386/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 0f618ffb03d..4421c458498 100644
+index 4421c458498..67769200d0d 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -8381,7 +8381,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         *edx = 0; /* EDX is reserved. */
+@@ -8403,7 +8403,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
          break;
-     case 0x1D: {
--        /* AMX TILE, for now hardcoded for Sapphire Rapids*/
-+        /* AMX TILE */
+     }
+     case 0x1E: {
+-        /* AMX TMUL, for now hardcoded for Sapphire Rapids */
++        /* AMX TMUL */
          *eax = 0;
          *ebx = 0;
          *ecx = 0;
-@@ -8394,6 +8394,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-             /* Highest numbered palette subleaf */
-             *eax = INTEL_AMX_TILE_MAX_SUBLEAF;
-         } else if (count == 1) {
-+            /* Tile palette 1 */
-             *eax = INTEL_AMX_TOTAL_TILE_BYTES |
-                    (INTEL_AMX_BYTES_PER_TILE << 16);
-             *ebx = INTEL_AMX_BYTES_PER_ROW | (INTEL_AMX_TILE_MAX_NAMES << 16);
 -- 
 2.52.0
 
