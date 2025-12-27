@@ -2,109 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD7A3CDF709
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:52:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CB1BCDF74C
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:54:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQus-000361-MR; Sat, 27 Dec 2025 04:48:54 -0500
+	id 1vZQuo-0002ZQ-Kp; Sat, 27 Dec 2025 04:48:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQui-0002O7-7P
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:45 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1vZQuk-0002PX-36
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:47 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQud-0006uZ-C9
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:43 -0500
+ id 1vZQug-0006uq-4U
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766828916;
+ s=mimecast20190719; t=1766828919;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=B1NClWp8k93LnwznfnQ9F9fegAQxKZaohNu9b81EugQ=;
- b=M62RSQuoIQBkxMckx0nbBdQjon5MJRz0cyT1LxXA31aj87gzFW97j+OcUSbpN0aqr9Nd5m
- pXw2HDt68eTWR/ftcTRZaw+E1BEYhQMLPmeOsg902zZtQ0GSfrDsd0uHbe5+DHml74Ss+/
- +8i7vTHp346Wxe+4/8scDhTrs7f+cMg=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=sxTxSluSeMR2sv+YqnYcIpwAfUPDvmouTbMC1Ijhc98=;
+ b=AJ0IL+oNQAcddvBP/Xj68G2vahcHuCCtokoVWSM/GYNwbpL44Se+MeDIQPzQl0AcaasC7C
+ 79ddPDZsDJ5LOvqG1/hG1mONDwEQKgKkxzc57zL6NCIAtbQcmKusqTumf1ak9flv3aTdHS
+ SRrj++18713sMnNP8PySZo50L7CSKX4=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-177-WvQ_x1cHOEac6ync84v1YQ-1; Sat, 27 Dec 2025 04:48:35 -0500
-X-MC-Unique: WvQ_x1cHOEac6ync84v1YQ-1
-X-Mimecast-MFC-AGG-ID: WvQ_x1cHOEac6ync84v1YQ_1766828914
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-43284edbbc8so552062f8f.0
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:48:34 -0800 (PST)
+ us-mta-580-Dd3VGsH0N52T1lJ7B35K2A-1; Sat, 27 Dec 2025 04:48:37 -0500
+X-MC-Unique: Dd3VGsH0N52T1lJ7B35K2A-1
+X-Mimecast-MFC-AGG-ID: Dd3VGsH0N52T1lJ7B35K2A_1766828916
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4779ecc3cc8so58139585e9.3
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:48:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766828913; x=1767433713; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766828916; x=1767433716; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=B1NClWp8k93LnwznfnQ9F9fegAQxKZaohNu9b81EugQ=;
- b=fqIJgrse+35In4vMrfBPzECKXsAN6mshjvcNbOJmZ0Grr8Bh2kQLHd2WT+GXbmJXi5
- lbuZL8v3zLajZBC5XvDGmNqwiCU+z9RV/Bjq2lUqAGoPfs6sZfiv1e+ERLedp74rEPAg
- g5lV7WFO6bGWGczNQ3xrY28M1x35R6CDjKIvqfAbLWUZtsI07EqJfctHMTZIA9CrpvW0
- SPeC3oDVClyhbM0Z3jTRvAjF/dyk5IoJjYltNCtqw6bCqU1KcdNdxRu7ntqJmVWgN6AL
- UVkU8jZusDCFoJlez31Xy4MGajbw8ezNMmyRwCbLuvzMN/VWojf5TdJA65C9zwPlUUGA
- j8eQ==
+ bh=sxTxSluSeMR2sv+YqnYcIpwAfUPDvmouTbMC1Ijhc98=;
+ b=A7sivJVsHJFcXCA1o3AUnnpO62VwGEw5XpmFfxpMb+hM90PdY1FttSOUE2WlfCSMeH
+ ThGzQRUOIyi1rPOqNXboAdyT99tSs3fWfMdZXPom2hD3YSAQNc2e6XSrytTC8gTZ/hHy
+ /+gayaQre3R07fq79wNjMqN4P5F0o5IEBgGo74CpVA+PA2qunn8uj0wneLjRqjRMgcP7
+ RZ1ySjAoUYCrRe7ajhr0kI841xuGkL5H3IRBDMZwXhy+R13MHKf9gx5ja870bSH/84RC
+ 0i2F+ovUXQlEZ7UWT7NtJk5qZVVZmhxJ5TrUNHx/mdEJXY2idLdypJPE4vgSmI0dLZBR
+ RhIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766828913; x=1767433713;
+ d=1e100.net; s=20230601; t=1766828916; x=1767433716;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=B1NClWp8k93LnwznfnQ9F9fegAQxKZaohNu9b81EugQ=;
- b=UwSQj8TG0hUb6nH2Kc/mES/u4w6m5OYB5ZBQAD9ahkrGc91fntI3YlxFWrMdkW5GpZ
- fqNaog/a0k5uC5Zxwmcrvt8iRY1RpanREP670wOqxrFtxIO374YzrEl6gc1hotJGy1j0
- joHmX8ZU8+DrJeQS4un/OkaNWbKOP38yb5IPdwatdmoqyUXUoTd0tZJ82i//ZVUoMoWe
- vJv9mvbkLJu8xc0pECA2V80gw+5zBwetGsUv6PEmNNHTozskillecpDGWfgSwLUNTbYp
- tj4L2jvKcAtovkb9cYCa88hwihkSRHRghVjYUmnN8spp97pF9A+S8Ho18RDkDzjqBQ7N
- 7jgw==
-X-Gm-Message-State: AOJu0YzmdFPImNsW4R3A5hHwo1tHPlX1Ip0I71Jk2ITPxbMUbwOMqpLc
- 3GvPBOPyqRkdoh5p5qE1AfjDDlhrH6YesGn/Axz9FkvSKqEeiCiF3m9HzaCDkAcUyXZA8m2Frvb
- s74aicm4tbNh+Hej1muAn8C3KhXKYQCCiE1pTfYk6kWaS6rS7K49EByZkr6MfGNkK3Oev9wp6YH
- vuJBQDd28Uo7YkNZOSJ6Wro3QtYq15HJV0r0Czm/+N
-X-Gm-Gg: AY/fxX70YCj25Rl8KJ5b3VvD94PsExTRjhgzgFczGvVulBpVl9jFTfkHC7N4I9yCqW2
- RrDsFE4q3dtY4FU77iHT3r1ghRnUEHNuI/+Byhg/jjAHYOiJTO39aG7hPmG2Joh6cTA54z13fBf
- 1lNQmAMSRKW4j4ImG+aU1HtHuYEuoLwRgXOr+8HUxWGqidTz+OXsFHX1zhWkaSPpTNaU9XyGutA
- 1XGDs86vzGkQn0F6OluzU5+N7+iFnJYgTGCITc0bO2iAef0vbWojVqgMDcFeqWbmwuy7olzaACI
- v6ooG7y5RqRuwGFlqI0gl9AZKvXmnj8dwOagbHl2ckaGCijoRd136bJmVS9iqPvJQ9HsIfYRjWS
- iwv03kRSeaHCeICUinU1RxsskU2SNoh7gz/xJgnomBUTKSoN4/RGA68mneRwzJyTiNtmhP/DMOh
- v73wOLpC/XjR41K+I=
-X-Received: by 2002:adf:b605:0:b0:432:7d2a:2be4 with SMTP id
- ffacd0b85a97d-4327d2a2d3dmr7559583f8f.60.1766828912963; 
- Sat, 27 Dec 2025 01:48:32 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFiV9bpbN4q8ShhY/lYm9lf1k9/TfLV68VC/9arPx+AxLNQKsN/4pdCOsCKwDeCUGUdNBb5hA==
-X-Received: by 2002:adf:b605:0:b0:432:7d2a:2be4 with SMTP id
- ffacd0b85a97d-4327d2a2d3dmr7559559f8f.60.1766828912397; 
- Sat, 27 Dec 2025 01:48:32 -0800 (PST)
+ bh=sxTxSluSeMR2sv+YqnYcIpwAfUPDvmouTbMC1Ijhc98=;
+ b=QSYjLCZwbThK2Fibl7nlazXCJAwM3TxA9aZvo09jgGLH0Z6nyK+YS64n9FNjLOf5sp
+ 5MRZ8sMVs8OPGb1AF72qAIiMkmnxB8hIG5DMkOM4PSVzJBigTmWqWvPZcrdF40nFtOKC
+ FXPdwST/7/O/hOiSHwZEuhRYshSE8/hUfnnjFpQ7F9+5LGGjD5jJzeletRR0VQx3yWnp
+ PDT4UGVzvy9dDuxvGNOnquND/A6jw7pwIXxsXRfJzM9m3eYieudrRdkJOKSBXBoUp2Qz
+ xm55+qSb3RkEElUl7TsTZGgE47RKw7Uu1qg9RTiAk9n59rmw2LjuJIsSiQxCJeVt37xl
+ bZLQ==
+X-Gm-Message-State: AOJu0YzNTur0KjUyUEwdP+BWfKvvM/3fRMg9WZ13oKR76J1iOzzXMuFD
+ N+WzyNRRX2S7sfmArie2EuV5wY99rrooICxLv9RzA4GlVficzKs0F6BLbh2F+hPpinWpA0BoxEB
+ 6Lp/Ch60OrS1dO3H560Pj7gooIOqN41ENkHABrSqh4ahNLOzECjlkg7P1ggL7vhv/mvowivLyH/
+ 0zXKGIyhKg4oGf0S8oeaegQEVVLz65qMJFV+nwRpZd
+X-Gm-Gg: AY/fxX5gax8CWBlBZYTYzmtn/Bxrleq8qs+XwttZp21ROtdwVHKKOKsDR52w74/dQTE
+ g4EgIxFYRx1/HpfTDF5XxdbIHeEgQzAcQS9ulde0+k5tKT2ZeVK7qiAHgHXWLHuMUkJzFRgIJ2I
+ uyaKH8SMGGJAXbH04SwG/oqPx7L9+Rbh344erlIx5ly4CsbXIg1ujO15YEoJg/qVyGFBnCDkPvA
+ tOwjQkb0qTSiHMhooWsG1IP6FvopC0fRO8UStN5rKKVB+RR60xXENXoHTvjSNpF4XBQ1zpYNOmi
+ e6v4IMR897KqIYJs2lVaLX12vuHZZiURaMbJiLZGdAsmh8mpNRwAwBb3uOSsITLunZ4JW51sB+N
+ owim2Nm9AjrWUTkvdsl4/imhl7zv67KNPUcJVJCoGLQcvs4fqpU+gollgz08ptC+c/KXsnYPMj8
+ UUUPym1RZT6towGPc=
+X-Received: by 2002:a05:600c:c091:b0:477:7b9a:bb07 with SMTP id
+ 5b1f17b1804b1-47d195a98d5mr228100385e9.35.1766828916178; 
+ Sat, 27 Dec 2025 01:48:36 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH1pFD6d6W+lX0Ky/BGS5ax30VL9itizGK8C73Flx07LBaDxGXpY8So32uWdlN0Cp0DjINA1A==
+X-Received: by 2002:a05:600c:c091:b0:477:7b9a:bb07 with SMTP id
+ 5b1f17b1804b1-47d195a98d5mr228100165e9.35.1766828915785; 
+ Sat, 27 Dec 2025 01:48:35 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324ea227casm50084695f8f.15.2025.12.27.01.48.30
+ ffacd0b85a97d-4324ea2278dsm50745961f8f.18.2025.12.27.01.48.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:48:31 -0800 (PST)
+ Sat, 27 Dec 2025 01:48:33 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Farrah Chen <farrah.chen@intel.com>,
- Zide Chen <zide.chen@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Yang Weijiang <weijiang.yang@intel.com>, Chao Gao <chao.gao@intel.com>
-Subject: [PULL 089/153] i386/machine: Add vmstate for cet-shstk and cet-ibt
-Date: Sat, 27 Dec 2025 10:46:54 +0100
-Message-ID: <20251227094759.35658-15-pbonzini@redhat.com>
+ Zide Chen <zide.chen@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: [PULL 090/153] i386/cpu: Mark cet-u & cet-s xstates as migratable
+Date: Sat, 27 Dec 2025 10:46:55 +0100
+Message-ID: <20251227094759.35658-16-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -122,92 +121,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yang Weijiang <weijiang.yang@intel.com>
+From: Zhao Liu <zhao1.liu@intel.com>
 
-Add vmstates for cet-shstk and cet-ibt
+Cet-u and cet-s are supervisor xstates. Their states are saved/loaded by
+saving/loading related CET MSRs. And there're the "vmstate_cet" and
+"vmstate_pl0_ssp" to migrate these MSRs.
+
+Thus, it's safe to mark them as migratable.
 
 Tested-by: Farrah Chen <farrah.chen@intel.com>
-Signed-off-by: Yang Weijiang <weijiang.yang@intel.com>
-Co-developed-by: Chao Gao <chao.gao@intel.com>
-Signed-off-by: Chao Gao <chao.gao@intel.com>
-Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20251211060801.3600039-18-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20251211060801.3600039-19-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/machine.c | 52 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+ target/i386/cpu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/machine.c b/target/i386/machine.c
-index bf13f7f0f66..57a968c30db 100644
---- a/target/i386/machine.c
-+++ b/target/i386/machine.c
-@@ -1690,6 +1690,57 @@ static const VMStateDescription vmstate_pl0_ssp = {
-     }
- };
- 
-+static bool shstk_needed(void *opaque)
-+{
-+    X86CPU *cpu = opaque;
-+    CPUX86State *env = &cpu->env;
-+
-+    return !!(env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_CET_SHSTK);
-+}
-+
-+static const VMStateDescription vmstate_shstk = {
-+    .name = "cpu/cet_shstk",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = shstk_needed,
-+    .fields = (VMStateField[]) {
-+        /* pl0_ssp has been covered by vmstate_pl0_ssp. */
-+        VMSTATE_UINT64(env.pl1_ssp, X86CPU),
-+        VMSTATE_UINT64(env.pl2_ssp, X86CPU),
-+        VMSTATE_UINT64(env.pl3_ssp, X86CPU),
-+#ifdef TARGET_X86_64
-+        VMSTATE_UINT64(env.int_ssp_table, X86CPU),
-+#endif
-+        VMSTATE_UINT64(env.guest_ssp, X86CPU),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
-+static bool cet_needed(void *opaque)
-+{
-+    X86CPU *cpu = opaque;
-+    CPUX86State *env = &cpu->env;
-+
-+    return !!((env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_CET_SHSTK) ||
-+              (env->features[FEAT_7_0_EDX] & CPUID_7_0_EDX_CET_IBT));
-+}
-+
-+static const VMStateDescription vmstate_cet = {
-+    .name = "cpu/cet",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = cet_needed,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINT64(env.u_cet, X86CPU),
-+        VMSTATE_UINT64(env.s_cet, X86CPU),
-+        VMSTATE_END_OF_LIST()
-+    },
-+    .subsections = (const VMStateDescription * const []) {
-+        &vmstate_shstk,
-+        NULL,
-+    },
-+};
-+
- const VMStateDescription vmstate_x86_cpu = {
-     .name = "cpu",
-     .version_id = 12,
-@@ -1840,6 +1891,7 @@ const VMStateDescription vmstate_x86_cpu = {
-         &vmstate_arch_lbr,
-         &vmstate_triple_fault,
-         &vmstate_pl0_ssp,
-+        &vmstate_cet,
-         NULL
-     }
- };
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index b1bbb099f33..6774f662342 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1484,7 +1484,8 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+             .ecx = 1,
+             .reg = R_ECX,
+         },
+-        .migratable_flags = XSTATE_ARCH_LBR_MASK,
++        .migratable_flags = XSTATE_CET_U_MASK | XSTATE_CET_S_MASK |
++            XSTATE_ARCH_LBR_MASK,
+     },
+     [FEAT_XSAVE_XSS_HI] = {
+         .type = CPUID_FEATURE_WORD,
 -- 
 2.52.0
 
