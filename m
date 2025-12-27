@@ -2,110 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E20B9CDF70C
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:53:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F23AACDFA74
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 13:25:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQyU-0007Oi-SX; Sat, 27 Dec 2025 04:52:41 -0500
+	id 1vZTLF-0000MN-1z; Sat, 27 Dec 2025 07:24:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQy1-0006oJ-5O
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:52:14 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQxy-0007Yt-SE
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:52:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766829123;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=eS1GeSZ0xe9AFhAHjPjntAzyLnEM9NmXyPjZRoek4o8=;
- b=GwEPylT59l+LbF2G3NDw5uZ9+2eEEQNgLhCAjMpHSBBoOWiJgpdLN0NzfR2zqHbV1e3ZDN
- tOnVRqyxhFuIWJMAdjOjuM5f879qxrIUhMV3PZYzI1nneuxf39ETUQhow655cb87MZ8iqS
- bcP2hdU/R5vVpm/Qu7aTlc235R5X/Gw=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-160-_qGNQqDzPsSPZtimfaB4hQ-1; Sat, 27 Dec 2025 04:52:01 -0500
-X-MC-Unique: _qGNQqDzPsSPZtimfaB4hQ-1
-X-Mimecast-MFC-AGG-ID: _qGNQqDzPsSPZtimfaB4hQ_1766829120
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-4325b81081aso3890525f8f.3
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:52:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1vZTLD-0000M4-1c
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 07:24:15 -0500
+Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1vZTL9-00053G-TO
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 07:24:13 -0500
+Received: by mail-pg1-x533.google.com with SMTP id
+ 41be03b00d2f7-c03ec27c42eso4405908a12.1
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 04:24:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766829118; x=1767433918; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eS1GeSZ0xe9AFhAHjPjntAzyLnEM9NmXyPjZRoek4o8=;
- b=ADjFiuA/6oIjwga3B86MTN0/ogeu3OsWNVXfXX6XY6rYs7ZfgphRgggrRxEZEBquiU
- 0+QoWSUQbYlo9FvKHQe5uWAxzCmfvoAKQsWVA0Ayasm3nueaHbXhqqK4qGrjpXuBUbP0
- mE22XUC7HZAxuLhCggI5h+IoKWljVqetJaM95LynYpBxF9RjEWxtYEkQW8Dha1P6hJbq
- r/aqfDXkHUnONXImNJIjdvmupDyZp8ANC/4W1p3UUHP2G7JLUJpdngk+dMWTPadD4c0v
- gOAIeCpeH6ItgwkPGEP+1hQrlQp5ISYo7ZkuU0A9X4ri/DwSvdb4Yhxo3tPFjjbgyryg
- RMGQ==
+ d=ventanamicro.com; s=google; t=1766838249; x=1767443049; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=m3byx562Ge6n/zPuFTbeCKoOBE0fsSDiJ5PL49daqF4=;
+ b=Fs6EGTROhCERCfOD6miOUgYX8aTLQjgF8N2yC7KzvoGsyJcgVm/L814HEXGYjpSSAG
+ YnF9c6IMMNiEHdZUAyVBLPnJPy/wvfxK7tUf4HLnMhLPtZ0wYcZmLUGV/nn86R4gyFbH
+ GJlt/BXILzrFvaUpN5+dWHUR3JJYtU7c27Mqs9BBT9aq59HPL4exoTKlUwJucZGaxu6Q
+ C9h8QtzCKJIlPl1iIMl0cFal4VQ+e0p7CqLRILolUYp9nniNhm+ByYeexlMKWR3iDs/h
+ UEPGhHLrJPjYiKYR0N7BSSl6UBy3jLGY69lmANtn5Ibl2z0/9XboYkIR+XtWvLRbcwjN
+ VTmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766829118; x=1767433918;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=eS1GeSZ0xe9AFhAHjPjntAzyLnEM9NmXyPjZRoek4o8=;
- b=g596A9k+PhVrp8m0M/pnh6h+IXvGlLxb4i90wSy3OTZsee3tlm5EFYiPcuhahxdFXi
- LyqGZviGnnNZTsFQKwfzOHsha4l4miJhH8VhD3w5bePdrQq4IqQA4a+IA1Vx8sBmPCgx
- dHa3FQdyZq7lGExDlEkYqhj8dUL99qxxucMbTdoqfHOx/NrckJU1XE2ltoQ7P+Z/DSJ6
- KUw8X01h/OTGP5aCb4ozUXpd12JJyJAFw+MBlHcc+TThj25Wyf2LMCBxMAkWe3o15ZTN
- JkTaSVgzSCf/kWVTKPAjdNlv7S0Zx/6cphc7iy9FlDtO/b/tvu8YMoTAwlBWyv+MG5Tj
- yJrg==
-X-Gm-Message-State: AOJu0YzVZu6hTYUxR+Oaaq16isd4NLiHQzgHCRZ9AcpdZQzpsWn0NfJG
- T/2XXBEOU2tWDpdpZcz3dhGzATzE8aii9I/o8zIG75MbJtdQ5UTDeUsSKVLk+rABpmdp6RKvK/b
- fYou0TiVwcZT/iXiSYZXShZ74Iyztafz2ijcFptfBA04/M+3BvHuipkSCII9wJZ+ICFsH63j0CS
- GYLT/rq/sRdK1A8SHktx3m98SZqifJ8SBzjJ8uAbUe
-X-Gm-Gg: AY/fxX54YXxbr8mVrpydmTf0gp0aHGAC1buX5W2ubnP4MoGfg/BEAdIFncQatjRDUga
- ghyiBhU3sHmVVzlSqklBpUdVSq7JLiaZOzoplg6+ErgPPlwwo4U6vG/jqyb5EJAexRjNGPYl42P
- dJ4OH+MNIdb+dzuaJ9IurI3d9R2/AyYkzp/5+9DULdpzt58I9tjlkmyE2XedPenvnSrcnM4V1z2
- OaCyZyBFHtf+09Wt3fe0ThZMsNUpXWec37iGSSqp6qv8NZrAZRjj16zZEEb3NAj5Bjc1jJvXTik
- pwIawQIwsfFXV+gpRGzY762Z5olaHUN+wXVm3R5k9mz1qk9oBCRcbY+vWK4TZjNcugRcu4au4vf
- xFQmNN+f3/5TQwglcV+DUryQhPBgzAAP9liTMHHAWOAfYyr0oNUuI0A/q7PgPAdjZfNFPfwtnq0
- 3lNqElz5u1fjrFRGI=
-X-Received: by 2002:a05:6000:420a:b0:431:864:d492 with SMTP id
- ffacd0b85a97d-4324e50600dmr28887764f8f.36.1766829118374; 
- Sat, 27 Dec 2025 01:51:58 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG0xA6nGHJ/NHqEKKKIymO+eyyOIqalkg235ZTkV0WAtD2zOJHU/uJwmCWxAZslhSf40Lt1wg==
-X-Received: by 2002:a05:6000:420a:b0:431:864:d492 with SMTP id
- ffacd0b85a97d-4324e50600dmr28887743f8f.36.1766829117942; 
- Sat, 27 Dec 2025 01:51:57 -0800 (PST)
-Received: from [192.168.10.48] ([151.95.145.106])
+ d=1e100.net; s=20230601; t=1766838249; x=1767443049;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=m3byx562Ge6n/zPuFTbeCKoOBE0fsSDiJ5PL49daqF4=;
+ b=UQbYEpQ90uMudj/9xSVl4rRU8vG71Xq3X+hT6ry0xB6/inir37mxlDxgPSxdz1zXhJ
+ CKjM+CGSgvJu3TlymXuC55IctO6WnSSdrVnOXwECsFraAYJVAjNO/oEn8+AUBth8duJs
+ YSPEjyiz9SGkYF/i7FPz/J8HI2Fjrd22wvJ0xT9g5k9SHaJJ6uR9f1Stzewc82i4PzU0
+ j8FjD//Cf0NqxuReuyQy+j2v+px2Z/yn7gzlc41MMd623HQZSI1jtoQyg78/S40+EgF+
+ 9wLiDFHeSz3cUCVO/8joUBV4hAtdrVn+gjpWPkT9DHeoBpz6t1QI/U9Vo56VdrbP6lC5
+ xQRw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXYVo8W6AURbnH8lj5q6KOw+wLL1jquZdz3h6x3JjbVJ/3qkLHh2jiKYnqCHsgmo1HPzFTBUczQG5xy@nongnu.org
+X-Gm-Message-State: AOJu0YxxKGI8/Zv8vh6rflFHHlHFZK46f9Lk0dgFbfyrgZkockjFk/DC
+ u1Gh2ukev2bDI+DVpeL3Z7h8REAaiEnRZGmrpiy0eeIf/DtATutbXGVzpomx/Q/aSkg=
+X-Gm-Gg: AY/fxX5/ssGQuugnVHnvY3/hJTeoMHvyavARFQ48YUn70Z4oe02ipDqrtxO++pg1aGG
+ jni2FUnqbA16WEYC87d403BMOIoYao3mMethyES5idLtQH8StvzOr+QBV3/PjCDRf7aYcBZXNTn
+ PIVmCVZiPY9X5g1fUrXCHcxgBKB7CZUX+BkK+CtSBa+QPyRQxZcgTpT40KRKSZgY+3ne49ELPIS
+ Ihh1/g7DhJpdoQop1qzD6jpmY6zRajOQETMGftqIVwKwP4qQi04/fI4brL5a7o9By8wHQm/gdtu
+ 7OQkU1+F/vt2iBWS315GK2ArNTrjy1hXXQS+RWRPYY86MEqqkYmfutf9qpORok2jjEM2COCPrMT
+ A03thbOxlwOz9uZpj5HrD98jKUr26zZFpMOlYWenZ/UqUaqbS5BMpgpmiH5NOveffGEjXIxS32Z
+ g3qm9iNJjfcgWA7O1Rzg76nHORyNA=
+X-Google-Smtp-Source: AGHT+IF6htDuxqqKA0KZ2RhupcSDB+Mcc0EFtDvkO/Way48VC9DrijCNmQy7C/BEUbg5bk2QTAF7EQ==
+X-Received: by 2002:a05:7022:6ab:b0:11c:ec20:ea1f with SMTP id
+ a92af1059eb24-121722e5acamr30542525c88.33.1766838249433; 
+ Sat, 27 Dec 2025 04:24:09 -0800 (PST)
+Received: from [192.168.68.110] ([187.101.184.177])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324eaa64cesm50754325f8f.35.2025.12.27.01.51.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:51:55 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>, Farrah Chen <farrah.chen@intel.com>,
- Zide Chen <zide.chen@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 153/153] block: rename block/aio-wait.h to qemu/aio-wait.h
-Date: Sat, 27 Dec 2025 10:47:58 +0100
-Message-ID: <20251227094759.35658-79-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
-References: <20251227091622.20725-1-pbonzini@redhat.com>
+ a92af1059eb24-121724cfd95sm94146455c88.1.2025.12.27.04.24.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 27 Dec 2025 04:24:08 -0800 (PST)
+Message-ID: <eb7fb1b5-f95c-423f-8bd0-b0ac22fcf919@ventanamicro.com>
+Date: Sat, 27 Dec 2025 09:24:04 -0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] hw/riscv: Don't insert DDT cache in Bare mode
+To: Jay Chang <jay.chang@sifive.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
+ <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Frank Chang <frank.chang@sifive.com>
+References: <20251211025611.99038-1-jay.chang@sifive.com>
+ <20251211025611.99038-2-jay.chang@sifive.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Content-Language: en-US
+In-Reply-To: <20251211025611.99038-2-jay.chang@sifive.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,188 +108,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-AIO_WAIT_WHILE is used even outside the block layer; move the header file
-out of block/ just like the implementation is in util/.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- MAINTAINERS                        | 2 +-
- include/block/block-io.h           | 2 +-
- include/{block => qemu}/aio-wait.h | 0
- block/io.c                         | 2 +-
- blockjob.c                         | 2 +-
- io/channel.c                       | 2 +-
- job.c                              | 2 +-
- net/colo-compare.c                 | 2 +-
- net/filter-mirror.c                | 2 +-
- util/aio-wait.c                    | 2 +-
- util/vhost-user-server.c           | 2 +-
- hw/display/apple-gfx-mmio.m        | 2 +-
- hw/display/apple-gfx.m             | 2 +-
- 13 files changed, 12 insertions(+), 12 deletions(-)
- rename include/{block => qemu}/aio-wait.h (100%)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index efceed9fe52..2f34b921784 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3072,7 +3072,7 @@ F: util/defer-call.c
- F: util/fdmon-*.c
- F: block/io.c
- F: include/qemu/aio.h
--F: include/block/aio-wait.h
-+F: include/qemu/aio-wait.h
- F: include/qemu/defer-call.h
- F: scripts/qemugdb/aio.py
- F: tests/unit/test-fdmon-epoll.c
-diff --git a/include/block/block-io.h b/include/block/block-io.h
-index 7925e2241e6..d34d846bb2a 100644
---- a/include/block/block-io.h
-+++ b/include/block/block-io.h
-@@ -25,7 +25,7 @@
- #define BLOCK_IO_H
- 
- #include "qemu/aiocb.h"
--#include "block/aio-wait.h"
-+#include "qemu/aio-wait.h"
- #include "block/block-common.h"
- #include "block/graph-lock.h"
- #include "qemu/coroutine.h"
-diff --git a/include/block/aio-wait.h b/include/qemu/aio-wait.h
-similarity index 100%
-rename from include/block/aio-wait.h
-rename to include/qemu/aio-wait.h
-diff --git a/block/io.c b/block/io.c
-index c4a43013210..cace297f226 100644
---- a/block/io.c
-+++ b/block/io.c
-@@ -25,7 +25,7 @@
- #include "qemu/osdep.h"
- #include "trace.h"
- #include "system/block-backend.h"
--#include "block/aio-wait.h"
-+#include "qemu/aio-wait.h"
- #include "block/blockjob.h"
- #include "block/blockjob_int.h"
- #include "block/block_int.h"
-diff --git a/blockjob.c b/blockjob.c
-index db7c3a69a0c..f3b11cc7a19 100644
---- a/blockjob.c
-+++ b/blockjob.c
-@@ -24,7 +24,7 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "block/aio-wait.h"
-+#include "qemu/aio-wait.h"
- #include "block/block.h"
- #include "block/blockjob_int.h"
- #include "block/block_int.h"
-diff --git a/io/channel.c b/io/channel.c
-index b7966abc4f0..cc02d997a4d 100644
---- a/io/channel.c
-+++ b/io/channel.c
-@@ -19,7 +19,7 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "block/aio-wait.h"
-+#include "qemu/aio-wait.h"
- #include "io/channel.h"
- #include "qapi/error.h"
- #include "qemu/main-loop.h"
-diff --git a/job.c b/job.c
-index 0653bc2ba69..e7479084726 100644
---- a/job.c
-+++ b/job.c
-@@ -28,7 +28,7 @@
- #include "qemu/job.h"
- #include "qemu/id.h"
- #include "qemu/main-loop.h"
--#include "block/aio-wait.h"
-+#include "qemu/aio-wait.h"
- #include "trace/trace-root.h"
- #include "qapi/qapi-events-job.h"
- 
-diff --git a/net/colo-compare.c b/net/colo-compare.c
-index 95018b47049..c356419d6a8 100644
---- a/net/colo-compare.c
-+++ b/net/colo-compare.c
-@@ -30,7 +30,7 @@
- #include "migration/colo.h"
- #include "util.h"
- 
--#include "block/aio-wait.h"
-+#include "qemu/aio-wait.h"
- #include "qemu/coroutine.h"
- 
- #define TYPE_COLO_COMPARE "colo-compare"
-diff --git a/net/filter-mirror.c b/net/filter-mirror.c
-index 8e01e98f405..d2bfde42e85 100644
---- a/net/filter-mirror.c
-+++ b/net/filter-mirror.c
-@@ -20,7 +20,7 @@
- #include "chardev/char-fe.h"
- #include "qemu/iov.h"
- #include "qemu/sockets.h"
--#include "block/aio-wait.h"
-+#include "qemu/aio-wait.h"
- 
- #define TYPE_FILTER_MIRROR "filter-mirror"
- typedef struct MirrorState MirrorState;
-diff --git a/util/aio-wait.c b/util/aio-wait.c
-index b5336cf5fd2..53913c4bd1b 100644
---- a/util/aio-wait.c
-+++ b/util/aio-wait.c
-@@ -24,7 +24,7 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/main-loop.h"
--#include "block/aio-wait.h"
-+#include "qemu/aio-wait.h"
- 
- AioWait global_aio_wait;
- 
-diff --git a/util/vhost-user-server.c b/util/vhost-user-server.c
-index 1dbe409f829..1536d97baf8 100644
---- a/util/vhost-user-server.c
-+++ b/util/vhost-user-server.c
-@@ -11,7 +11,7 @@
- #include "qemu/error-report.h"
- #include "qemu/main-loop.h"
- #include "qemu/vhost-user-server.h"
--#include "block/aio-wait.h"
-+#include "qemu/aio-wait.h"
- 
- /*
-  * Theory of operation:
-diff --git a/hw/display/apple-gfx-mmio.m b/hw/display/apple-gfx-mmio.m
-index 983fc1724a0..58beaadd1f1 100644
---- a/hw/display/apple-gfx-mmio.m
-+++ b/hw/display/apple-gfx-mmio.m
-@@ -14,7 +14,7 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/log.h"
--#include "block/aio-wait.h"
-+#include "qemu/aio-wait.h"
- #include "hw/core/sysbus.h"
- #include "hw/core/irq.h"
- #include "apple-gfx.h"
-diff --git a/hw/display/apple-gfx.m b/hw/display/apple-gfx.m
-index 174d56ae05b..e0a765fcb1f 100644
---- a/hw/display/apple-gfx.m
-+++ b/hw/display/apple-gfx.m
-@@ -17,7 +17,7 @@
- #include "qemu/log.h"
- #include "qapi/visitor.h"
- #include "qapi/error.h"
--#include "block/aio-wait.h"
-+#include "qemu/aio-wait.h"
- #include "system/address-spaces.h"
- #include "system/dma.h"
- #include "migration/blocker.h"
--- 
-2.52.0
+On 12/10/25 11:56 PM, Jay Chang wrote:
+> In Bare mode the IOMMU does not perform DDT look-ups, therefore
+> caching DDT entries is unnecessary.
+> 
+> Signed-off-by: Jay Chang <jay.chang@sifive.com>
+> Reviewed-by: Frank Chang <frank.chang@sifive.com>
+> ---
+
+Reviewed-by: Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>
+
+>   hw/riscv/riscv-iommu.c | 23 +++++++++++++++--------
+>   1 file changed, 15 insertions(+), 8 deletions(-)
+> 
+> diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
+> index 69852f4f13..79eee2e85e 100644
+> --- a/hw/riscv/riscv-iommu.c
+> +++ b/hw/riscv/riscv-iommu.c
+> @@ -1312,16 +1312,23 @@ static RISCVIOMMUContext *riscv_iommu_ctx(RISCVIOMMUState *s,
+>   
+>       int fault = riscv_iommu_ctx_fetch(s, ctx);
+>       if (!fault) {
+> -        if (g_hash_table_size(ctx_cache) >= LIMIT_CACHE_CTX) {
+> +        if (mode != RISCV_IOMMU_DDTP_MODE_BARE) {
+> +            if (g_hash_table_size(ctx_cache) >= LIMIT_CACHE_CTX) {
+> +                g_hash_table_unref(ctx_cache);
+> +                ctx_cache = g_hash_table_new_full(riscv_iommu_ctx_hash,
+> +                                                  riscv_iommu_ctx_equal,
+> +                                                  g_free, NULL);
+> +                g_hash_table_ref(ctx_cache);
+> +                g_hash_table_unref(qatomic_xchg(&s->ctx_cache, ctx_cache));
+> +            }
+> +
+> +            g_hash_table_add(ctx_cache, ctx);
+> +            *ref = ctx_cache;
+> +        } else {
+>               g_hash_table_unref(ctx_cache);
+> -            ctx_cache = g_hash_table_new_full(riscv_iommu_ctx_hash,
+> -                                              riscv_iommu_ctx_equal,
+> -                                              g_free, NULL);
+> -            g_hash_table_ref(ctx_cache);
+> -            g_hash_table_unref(qatomic_xchg(&s->ctx_cache, ctx_cache));
+> +            /* Remember ctx so it can be freed */
+> +            *ref = ctx;
+>           }
+> -        g_hash_table_add(ctx_cache, ctx);
+> -        *ref = ctx_cache;
+>           return ctx;
+>       }
+>   
 
 
