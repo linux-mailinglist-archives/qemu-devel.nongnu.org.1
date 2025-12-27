@@ -2,109 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EF57CDF6EE
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:52:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1442DCDF697
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:49:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQuP-0002C1-Eq; Sat, 27 Dec 2025 04:48:28 -0500
+	id 1vZQul-0002G8-SB; Sat, 27 Dec 2025 04:48:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQuH-0002Av-9j
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:17 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vZQuK-0002BV-LG
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:20 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQuE-0006rw-NE
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:16 -0500
+ id 1vZQuH-0006s8-EH
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766828894;
+ s=mimecast20190719; t=1766828896;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PDttGNujX8XIoiK6An9iT+1WmFacRAyCzD2veP1fHPg=;
- b=K/4UPGc+5ztnjocSpQMrpOBbSW8N37HeLjYGNaVTFmP/2CcBU11hHlktUIJOZFvfI1YG67
- XP0Eq+v+OlqQobZ01f/VXmJvJ3lub1O6rCnd3doZDKhPq8Kl/tmY7Gbd2XN+90E+TTppJB
- vOp5GSBQsikUXnBR2r+Ta3sIbxOSYWk=
+ bh=hG1FuwTjSde0jNlaSR5VRL/KDZZc2NyTCbowH+IvjH0=;
+ b=bFgt83sfLGWH6KgEGepXZnNRczYre5piDk6HAnGIhI8z8LVEzjDIJt0d4R1pSKOV+GLPT6
+ CGC77t3uaEBhYZhghB6W8WoJ3eawNbWz+Q5ngk3J+scaqlPo1W+wM9H6JK3OgmEGkwx0Ef
+ 9sKPJ/zkEjDIi32GuqKoHPAwKxeI7VA=
 Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
  [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-92-Jv1ztmSRO-uUXNaCyjnVoQ-1; Sat, 27 Dec 2025 04:48:12 -0500
-X-MC-Unique: Jv1ztmSRO-uUXNaCyjnVoQ-1
-X-Mimecast-MFC-AGG-ID: Jv1ztmSRO-uUXNaCyjnVoQ_1766828891
+ us-mta-453-SBhK835_Poyy_v2xxosg1g-1; Sat, 27 Dec 2025 04:48:14 -0500
+X-MC-Unique: SBhK835_Poyy_v2xxosg1g-1
+X-Mimecast-MFC-AGG-ID: SBhK835_Poyy_v2xxosg1g_1766828893
 Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-477964c22e0so53325355e9.0
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:48:12 -0800 (PST)
+ 5b1f17b1804b1-47788165c97so45472615e9.0
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:48:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766828891; x=1767433691; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766828892; x=1767433692; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PDttGNujX8XIoiK6An9iT+1WmFacRAyCzD2veP1fHPg=;
- b=rl06LkTSM03RwwJ2+ju2ggpC2nUWOqXy/3xSmjso6k2S4z3BbcW3k5R586+0AcrmjZ
- bffiMV7rbsViZuso8KgOVgN97n5sI5pobwOGPCQaYdtJQHHQgmufDIHY3fZpIX03hBgJ
- 9bZNz+zVFq6yIsufMMzkhowpybPMeZtX3iyJy6gTmH7FpxasfCeOb0YuRFZBUYcVFEYv
- EWU1ho5bOd9eSmQvGLQbJIMWLNYDCH8wiRGB7I9lpY3PoN6N2Uro9RA6NwuvjkHJIKJH
- W/Mf5Kgde7aDlHVUNJLJlDVWn/0Y+hqM3VzO+zEyIZ9EOSaBZQv0ShnUEkFacX/YTl2Y
- iUNg==
+ bh=hG1FuwTjSde0jNlaSR5VRL/KDZZc2NyTCbowH+IvjH0=;
+ b=iBpZjayI6fszSFiGX3BTvCLfcbD/YkQI7XmDg8sJwNGYhU/O3RHugm/KJzQ7m6Yayj
+ m3CZP/BTY7mOHYacaYinKtrHDa+Ql7CYUwjwJv1csYEvvZHRYPre5Ho7irHqQTKhH+G9
+ c2efBFr9QBbwK+N8236pep2fqNe3U6yf/TXDHzepjMH1wpxVHvQc4iEEd3aP2CbPJVFI
+ E2NCdc3k8cJSRlMJd6ijqm7kJF9jhjrCdilRdOlC51XZI0TrPErO7l+gqVLr6zJkqWde
+ WDvIzfs/qhJZMdBQKibu9iObq5ybBV1xYC0Q8jSubFzd/EOp6vXZoO9gVRleksvlt9pj
+ vY7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766828891; x=1767433691;
+ d=1e100.net; s=20230601; t=1766828892; x=1767433692;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=PDttGNujX8XIoiK6An9iT+1WmFacRAyCzD2veP1fHPg=;
- b=hjYl8wMvMIAgHtTi22jEFnFPfkegyeL1ZKPu3xSq+LmXjA124170KZpL9UnP4BeJxU
- h7M64pdAJRAHgO+gfBrpNB+WGvVFGhQn/0v2/8GgvF52m+6mVAA0oNzEnNibxCSl0ziA
- iTMpily2CX03Smv7Bjg57ql9J5I/gMXrGyH1tkkFkikXjGnUhu/FEVQvSt11EYKt++cQ
- 0kN+5N2xwBjkGixQjg4BXUJhXujkaV5eynrxRQcPgKgs0o1xhB25GVtq7JXJcwwHghGg
- /7zL+N042gxb3Nj3r+5Tak2YqH0nO7ZRpytomspaxOAj4hubawa+rXsz97UM7Wpo+x5q
- QXVA==
-X-Gm-Message-State: AOJu0YyNf768ZMYINzgS3PCQ5cGg6Sb6ctYcy2Ja/36mMRA+xisWU946
- sWZujAKmsMZmSSV3oruM5D+qWIGySr227s0ef6jbCZYEEKMVmoQgiyqVplXTbo0TCLDczi84NSg
- krUU8d+9yvYMaRD5m4DfhezmbpI74FGFMU2Z/BZooD06dW7h5d91SvvAJvQWTtOI4sVFgqw0/p7
- Hje6dF+Qzwmcek1bgJB70BlMdrdyAwoOSlryv4z9PW
-X-Gm-Gg: AY/fxX5VY/iQxRm2I7BZZyrdDWrVuHwIyXi0Hwg3p6GZQEuAJvlzLjMB3YMSN3FcoZ0
- rCh38CcrIN8Cvdo1cAGVQRPRWkpFNMNorVmNxZu5Naw3rQKTApM2hj9i5foNSketperZEoCBRLO
- Fne9cMAlMqwvI0auBGq42cQzt4vOGVk7SkjRe4ibppa2YeN9NOU6D2fMa6LnzbheUmj/Sv9bNPT
- Wc4VkEvkc28vvf3Gl4gGaJXyW3W5eaM11CZ/yDE8TVthiJXRyhZB1vO+VE4H0J3MY+WqdA2QQH1
- IUe1UUvyrL4pRbeYGWGT5XN2yGRpjuDXHWkDzJ6/bFxPOgJ8m+edPac2WmLj2t95iSI87E+Nwy1
- UQRkzWXY/vXltfvCBaLn4pKIu/4A2Px3TtZheDCmrEeZeIQLObS3qUcd1B+YY53XTuchMX6I3AI
- VMfeUbQMWDHlaG1HI=
-X-Received: by 2002:a05:600c:6749:b0:471:665:e688 with SMTP id
- 5b1f17b1804b1-47d18be89d5mr355272485e9.17.1766828890704; 
- Sat, 27 Dec 2025 01:48:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEy+YraYlQ4MrXFWSbixYhgiAVFEO+SZKARZzE6WmBX0m8dkllavEt62zDHysJK0IjL4fFHuw==
-X-Received: by 2002:a05:600c:6749:b0:471:665:e688 with SMTP id
- 5b1f17b1804b1-47d18be89d5mr355272145e9.17.1766828890078; 
- Sat, 27 Dec 2025 01:48:10 -0800 (PST)
+ bh=hG1FuwTjSde0jNlaSR5VRL/KDZZc2NyTCbowH+IvjH0=;
+ b=QJr0BcHRYkTSeuzDZTbiW17vGhDRA4zpXod9ysPVN7DPYNvjEix9ZXKXVJa+D9V5Dd
+ iUwdwS6Xkku1bZcO+COFeqqp+sF1VBXCWdkZ1g3Wojuet/HCtEJjw1y9XD5EeoOcwr4z
+ 0Z0qZURpfzZEg3a/4pYHlGmpIK/00cddssGWh5+fmzLwsAx4YsnMUoL18vwWai3dJr2e
+ DpultvyKPeVXnx2wjTxFzQ2WDZAYySn0MKhslUvSnr0H2n20dTNEzkNbZw6cZ03xJ2t6
+ 9a38A0rXZh3zV3uDTgC9yHqIq91P+/SjqqfPV9Wu42ZiKV/NPlqgyfOabC9r4W7Vxk/h
+ i3Xg==
+X-Gm-Message-State: AOJu0Yyh5B4DrX5ZZZb5JJnhZue1CBPgaTTZENT/2o+/+9HQX/Ka8Wbj
+ r886XrN2efMrIvSH2SWHjJmDmwipW2udjr1WErucjVQR8Fssjr6DkHg3E5Eb3/vGnV4QCVigCgs
+ oznXxXgbydtpXHFzI4Og+boYRCfz/0RhCAx6xY5WNQKDsPzo8XZF4q9X7deczYXMfjWP6jMiKCv
+ wFLdpHo20lEq1Gs+TLiPJsTmLx1Cvg7SEFDWq/U1ol
+X-Gm-Gg: AY/fxX6d4Ixhu94gXnCij5pkFOf/cN+fiYJvNT1XuZJ825oo/oRSVXem3NetKg23c0B
+ P9tgSNlUDxM6MmRPQ+IMAE3jZ0pqXy/+XIBvHFYrukunEuL82ySb3Bqf82XI10jxyljnoGFkjm0
+ XhcGf+KxOvbjj71ZB0c859HlU6t/FQCcv6nDhq6OlqjhYDByXdvKKjGpV7CbyxNd6OxOE7tN5la
+ meecga//Jyk5Wxyzx+cRfSlOK5btBlGTHE9GvOtbT95gZo/R9qxP5A0kW1q34EiExLCVfdqSEFv
+ fZT9FU2YEMkYLSzZt/NBtKWnXTBgVAlKf66Fi/6H4W2wmPM6y0FkXW0GrPKu40k3EpaYkTW9ux5
+ 4okY4SVwYsNY40lqUWbRBInQrD2b4lkkq9nWih26qlBTQPPTlEMdlm1vsLltEyNPMg2KCfOQ7YA
+ +fHWumMtopdl4GCwk=
+X-Received: by 2002:a05:600c:c105:b0:47d:3ffb:16c9 with SMTP id
+ 5b1f17b1804b1-47d3ffb184amr98888595e9.23.1766828892547; 
+ Sat, 27 Dec 2025 01:48:12 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHJPO5YIbLs/L/0BrEPGLittszu20oJnPceZMetavKkmAiRo7g/Q8ptMSdU3c7oqyd+hQBZAQ==
+X-Received: by 2002:a05:600c:c105:b0:47d:3ffb:16c9 with SMTP id
+ 5b1f17b1804b1-47d3ffb184amr98888375e9.23.1766828892074; 
+ Sat, 27 Dec 2025 01:48:12 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d1936d220sm474344535e9.8.2025.12.27.01.48.08
+ 5b1f17b1804b1-47be272e46fsm476080215e9.4.2025.12.27.01.48.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:48:08 -0800 (PST)
+ Sat, 27 Dec 2025 01:48:11 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Farrah Chen <farrah.chen@intel.com>,
  Zide Chen <zide.chen@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 079/153] i386/cpu: Reorganize dependency check for arch lbr
- state
-Date: Sat, 27 Dec 2025 10:46:44 +0100
-Message-ID: <20251227094759.35658-5-pbonzini@redhat.com>
+Subject: [PULL 080/153] i386/cpu: Drop pmu check in CPUID 0x1C encoding
+Date: Sat, 27 Dec 2025 10:46:45 +0100
+Message-ID: <20251227094759.35658-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -124,97 +123,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-The arch lbr state has 2 dependencies:
- * Arch lbr feature bit (CPUID 0x7.0x0:EDX[bit 19]):
+Since CPUID_7_0_EDX_ARCH_LBR will be masked off if pmu is disabled,
+there's no need to check CPUID_7_0_EDX_ARCH_LBR feature with pmu.
 
-   This bit also depends on pmu property. Mask it off if pmu is disabled
-   in x86_cpu_expand_features(), so that it is not needed to repeatedly
-   check whether this bit is set as well as pmu is enabled.
-
-   Note this doesn't need compat option, since even KVM hasn't support
-   arch lbr yet.
-
-   The supported xstate is constructed based such dependency in
-   cpuid_has_xsave_feature(), so if pmu is disabled and arch lbr bit is
-   masked off, then arch lbr state won't be included in supported
-   xstates.
-
-   Thus it's safe to drop the check on arch lbr bit in CPUID 0xD
-   encoding.
-
- * XSAVES feature bit (CPUID 0xD.0x1.EAX[bit 3]):
-
-   Arch lbr state is a supervisor state, which requires the XSAVES
-   feature support. Enumerate supported supervisor state based on XSAVES
-   feature bit in x86_cpu_enable_xsave_components().
-
-   Then it's safe to drop the check on XSAVES feature support during
-   CPUID 0XD encoding.
-
-Suggested-by: Zide Chen <zide.chen@intel.com>
 Tested-by: Farrah Chen <farrah.chen@intel.com>
 Reviewed-by: Zide Chen <zide.chen@intel.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20251211060801.3600039-8-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20251211060801.3600039-9-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 26 ++++++++++----------------
- 1 file changed, 10 insertions(+), 16 deletions(-)
+ target/i386/cpu.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index f4c0ae533d0..b53467eb997 100644
+index b53467eb997..5ba4d49dc35 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -8179,20 +8179,6 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-             *ebx = xsave_area_size(xstate, true);
-             *ecx = env->features[FEAT_XSAVE_XSS_LO];
-             *edx = env->features[FEAT_XSAVE_XSS_HI];
--            if (kvm_enabled() && cpu->enable_pmu &&
--                (env->features[FEAT_7_0_EDX] & CPUID_7_0_EDX_ARCH_LBR) &&
--                (*eax & CPUID_XSAVE_XSAVES)) {
--                *ecx |= XSTATE_ARCH_LBR_MASK;
--            } else {
--                *ecx &= ~XSTATE_ARCH_LBR_MASK;
--            }
--        } else if (count == 0xf && cpu->enable_pmu
--                   && (env->features[FEAT_7_0_EDX] & CPUID_7_0_EDX_ARCH_LBR)) {
--            const ExtSaveArea *esa = &x86_ext_save_areas[count];
--
--            *eax = esa->size;
--            *ebx = esa->offset;
--            *ecx = esa->ecx;
-         } else if (count < ARRAY_SIZE(x86_ext_save_areas)) {
-             const ExtSaveArea *esa = &x86_ext_save_areas[count];
- 
-@@ -8910,6 +8896,12 @@ static void x86_cpu_enable_xsave_components(X86CPU *cpu)
- 
-     mask = 0;
-     for (i = 0; i < ARRAY_SIZE(x86_ext_save_areas); i++) {
-+        /* Skip supervisor states if XSAVES is not supported. */
-+        if (CPUID_XSTATE_XSS_MASK & (1 << i) &&
-+            !(env->features[FEAT_XSAVE] & CPUID_XSAVE_XSAVES)) {
-+            continue;
-+        }
-+
-         const ExtSaveArea *esa = &x86_ext_save_areas[i];
-         if (cpuid_has_xsave_feature(env, esa)) {
-             mask |= (1ULL << i);
-@@ -9027,11 +9019,13 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
+@@ -8273,11 +8273,16 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
          }
+         break;
      }
- 
--    if (!cpu->pdcm_on_even_without_pmu) {
-+    if (!cpu->enable_pmu) {
-         /* PDCM is fixed1 bit for TDX */
--        if (!cpu->enable_pmu && !is_tdx_vm()) {
-+        if (!cpu->pdcm_on_even_without_pmu && !is_tdx_vm()) {
-             env->features[FEAT_1_ECX] &= ~CPUID_EXT_PDCM;
+-    case 0x1C:
+-        if (cpu->enable_pmu && (env->features[FEAT_7_0_EDX] & CPUID_7_0_EDX_ARCH_LBR)) {
+-            x86_cpu_get_supported_cpuid(0x1C, 0, eax, ebx, ecx, edx);
+-            *edx = 0;
++    case 0x1C: /* Last Branch Records Information Leaf */
++        *eax = 0;
++        *ebx = 0;
++        *ecx = 0;
++        *edx = 0;
++        if (!(env->features[FEAT_7_0_EDX] & CPUID_7_0_EDX_ARCH_LBR)) {
++            break;
          }
-+
-+        env->features[FEAT_7_0_EDX] &= ~CPUID_7_0_EDX_ARCH_LBR;
-     }
- 
-     for (i = 0; i < ARRAY_SIZE(feature_dependencies); i++) {
++        x86_cpu_get_supported_cpuid(0x1C, 0, eax, ebx, ecx, edx);
++        *edx = 0; /* EDX is reserved. */
+         break;
+     case 0x1D: {
+         /* AMX TILE, for now hardcoded for Sapphire Rapids*/
 -- 
 2.52.0
 
