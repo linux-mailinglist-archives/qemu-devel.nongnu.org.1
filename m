@@ -2,97 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75DCCDF6EF
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:52:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86A3FCDF770
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:55:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQxS-00047F-PU; Sat, 27 Dec 2025 04:51:34 -0500
+	id 1vZQxT-0004C7-D8; Sat, 27 Dec 2025 04:51:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQxO-00042B-6K
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:51:30 -0500
+ id 1vZQxS-000473-B8
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:51:34 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQxM-0007UT-Ll
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:51:29 -0500
+ id 1vZQxQ-0007V0-9h
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:51:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766829088;
+ s=mimecast20190719; t=1766829091;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NMfeC1qlGyQBU+oYdudT1wA8cDp85oJp5sp29r1hMGw=;
- b=X5C99Zr+cjAmANcDSBX9e/5xi/qHOEVTXuk9Z+G0pPqtSS4qoWhd92VX0tOKDrg5zPbmfX
- rou6tidbO5ttMvDIxIqRx3QXtIAbvrLLXyWaDs88Ygc4X2MygWXoMu8qN3y/I1rvrlXsvW
- U3kOwAUmR8Ebkbd+OJb+/YWtNxuArg0=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=hkizW9CIJa8Y7ebeAJUdAOMzr6q4+NzvoTNqdXU8uVk=;
+ b=d3kNY5xODoFakyyKguLG3Syxnee28osV/8MqWrIxDxaIT0rFsXiLyuALRo5vODqAHtdFCE
+ BlHSMWWK6tBLQtFYI1Sz8TOlJNL89lvujkepcmf6M77iW692LdSrmprzlv3/g132EI/v37
+ ksjrwm203GkQ4PDhxOQj4Op8+YtxB+Q=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-477-Xq9W42MgOr2b2o305_2TlA-1; Sat, 27 Dec 2025 04:51:26 -0500
-X-MC-Unique: Xq9W42MgOr2b2o305_2TlA-1
-X-Mimecast-MFC-AGG-ID: Xq9W42MgOr2b2o305_2TlA_1766829085
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-430f57cd2caso7690434f8f.0
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:51:26 -0800 (PST)
+ us-mta-215-dI3KJ3q9NVG0rvGeRF7g1Q-1; Sat, 27 Dec 2025 04:51:30 -0500
+X-MC-Unique: dI3KJ3q9NVG0rvGeRF7g1Q-1
+X-Mimecast-MFC-AGG-ID: dI3KJ3q9NVG0rvGeRF7g1Q_1766829089
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-4325ddc5babso2697081f8f.0
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:51:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766829084; x=1767433884; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766829088; x=1767433888; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NMfeC1qlGyQBU+oYdudT1wA8cDp85oJp5sp29r1hMGw=;
- b=Flei8qsKhJOFSd1Nhzdo2s9rxBnDBFWDhDlPiCGVtiOe6+CGJT5oHGoy2pRoNBZkyF
- vOO701HllRR0N8Mt7H+yXE5XeFGzACUIiVl6QJvR3uijSycaEWloHutIOy/5uig0wEU8
- MJceTIF/B882An8x5dPBVWiKB36p/7xwNVzVBpCYzb9tTT/F1oUdi8qjqkVlnwIyip6N
- LYdKKLdNs/Y+ikn4Zc7/Zywt46ESnhfuNVtIe9hDe7tCvDv8zMsyCB+DV13/FiaBjom1
- JYznewkHK7oALEOFTC1cqNmplhdY5Vkm57psnDgaxZouQg7m4RdDmxHKLotTOaByUNbI
- t/zw==
+ bh=hkizW9CIJa8Y7ebeAJUdAOMzr6q4+NzvoTNqdXU8uVk=;
+ b=WbaVvuZcfCn7tQpKerHlnAObCjBV0xzQmTTXcS8wq0REI9EY1TtgXjvQ0d1XFdhHUr
+ metI/bhhZJlB42UhcySC42FQZsqlDBQi5Gs71bq2RGpTmLWfrZ1/kMez5kschhFT61v1
+ KbolpJUlopmNGrbX5u4ApgA1XineGPl6mfGF0VeaJSzid2L2b3qv0CyjwNYz0OWEiAOu
+ klAfFQJt5T1mmzD5XdDPDy29nxbyT+V/Ljr10tLurUdD2Nfj3usfyoPgZkT+Zyz89+2N
+ jQLmRYWDuMYcatue8UURHvbfW5ugj5V/nPUFFa6koDyrJIMsH12HvkMUe5mfkqoTGBbI
+ X+tA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766829084; x=1767433884;
+ d=1e100.net; s=20230601; t=1766829088; x=1767433888;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=NMfeC1qlGyQBU+oYdudT1wA8cDp85oJp5sp29r1hMGw=;
- b=U6rYBQ7AOkTFAjQIpqOY+JFJCoqKful9zDPzeaQQ9iM6PU1LHWeJEy4rpX5VMOIN81
- fywpwCfEk5C87X6RR0g2lXIssem3qHdv5wxLutPHxRN8LXBLKvK66JTgb4Xd+N+eRx5C
- dDVJxt2pulKLSdRpOM40Yc5FunOU0xuxB4wv0oc4+Jo4/bv2pR1NZGbCQI7TYO8SUxR5
- qsrY6QKf7PvPm57y3mGE47E6yLRz5CSi4FS9HP6NBOh+DHPteMaZ/hByd0uDazl1Rond
- sQQWHfTPds9MjZOhxTYDWuTiJW4iUmRFMxlq45NkkK1PaksP7NcqZt4Ftj4Qg6X6aViG
- npOQ==
-X-Gm-Message-State: AOJu0YzSrBsClnudr5DtrhCHHs8eVgY5dzBcQF8RWdo2AOOna0kM33rS
- tPhSxmoLsrXHuRBPGjUQSSTSeFQh3Tug8vK6OSwVMkChXRCINuWTl5VszcTTsBC963Pxs1lH0Y2
- cWossHDYo3dkf8AiNVKV5CfhBApoxlQMGyD8jGVKeCVeDC1s+qQg+8tnjTEoCC5yh8SoOqbhTv4
- ukg3oa/y2Amp3k/An8chRhntvv4GJREEBCIlDkEp6D
-X-Gm-Gg: AY/fxX4WctT2DvZf/0+jegb9AaZkR0uS5r2q01nqEmzXs72e1BQDoZ1UYmBQaCZMujp
- 2HaTi4eGW84HscNUmVxZ4l0BroDCz+Et11HCO/CksR7oXYWs1HkICcYzG9q4KVUvYe67CdHg2h3
- IB4D/kEgskbEYf0kDqmSIlFzruzFIEt9q7PnG3hZTL/trapV5fkMOiXv+ry18TtPM+Q8UDWUhdn
- M8x1gGoRRKI1esg7KC87xs4hEHH17p0jNqlPHKnLnIvwRg+4rM2Hx1KPsEjHmU/xtO4Rce4Q1Mx
- Uzf2/+VXzcYcXOk65hVxhDHWSXv1izu5/Q11qDFpIK0lDwVoVVNsOotj+lhCeXyA3Bk+9aeHiF+
- CcDaXIvi2lZfsyQzFHY6Fs0wrLs/7JujoEc1qByBci57N+2i1TerMKRZ4xOhEDZxsQKC2SAmpvy
- qeKByxZlL9wB8+R7I=
-X-Received: by 2002:a5d:58e9:0:b0:432:5b81:480 with SMTP id
- ffacd0b85a97d-4325b810a80mr18706711f8f.24.1766829083870; 
- Sat, 27 Dec 2025 01:51:23 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFd3Wt98qUIwz/sQy4OqXdV8R0vtPiYE39vdb56TeZqYjOLazBmxyoqQkgWex7kXwAciA1cHw==
-X-Received: by 2002:a5d:58e9:0:b0:432:5b81:480 with SMTP id
- ffacd0b85a97d-4325b810a80mr18706693f8f.24.1766829083343; 
- Sat, 27 Dec 2025 01:51:23 -0800 (PST)
+ bh=hkizW9CIJa8Y7ebeAJUdAOMzr6q4+NzvoTNqdXU8uVk=;
+ b=bXfRCpHxxNXMu3Q5UpdCVE9F/9yZsMdev0GEALugnGTHLKwjSHytD/z8On8Rr3lQbu
+ wZ2JTC2tM7i7012cbXs3AnCtOYgmWNRfu2vCAGN/hmJ602yvDxVqlsYrL9cF3tOryJVH
+ B+WPdchvxgHeNOhOFpRDp8PaWlnGrBVQGmj5gnn/IXbiTOS+pbY8+y3o2X4PrCcV5WZe
+ Ualyz2O831WpzWLDUz3ouxp2+wj1ypErlM9iQISWqcC6o3wCPYWeC6k5C0B6L81B00fj
+ s9mPfoXoMJg/XiTmZR1GUl4EiGEWfsbQTDNH2qmlUNOzAVmbFumWe6O3T9pVLZ3r2cJu
+ U6iQ==
+X-Gm-Message-State: AOJu0YzduUVLYWPVbfmcb/lad3sTIHfot1nBKBA/cH+5m4ADv2eSTkUv
+ GhKF2cGHVJds/HsfOhNcaA4JykCSdxl2cK6a3+9FJcJC4CQt8fkPi115R/aImpmBzhF+1IMvkOM
+ MjT4kUWPpfH3hIQe/crqaF1xpkbMTejV1cSW2JupcfJACuxO4xkQOFevFIMhXnQpBwX7bWZIocT
+ 7KsCmLlxQ/hSoS1MZ//TjzeQOstOsRVruzRhFLpQqc
+X-Gm-Gg: AY/fxX7R3iILnOsJR7EfP6LeQ9Xh7vqfhDGZeBZrvNcA3EL8/MNfNbX3Rb8ylddrZ/A
+ gtku7EbXb/3uljiRRZD32vL1OP28GI26Ph3RI18V2dY/0aZTFqvZu8Ql0d2k2Cz+HXGr9SWzK4p
+ K/CudSArnH/N+Y3lF5MqwfqeVl7ITrdFC4Wr5MSm47f4KvfGNIG42eJWPPbfrb+JiDvDOB13fSd
+ 0GoLPfbsFzOFPzlFCeJDmB6vlDbZhO9vipm+OrgNxfQ4IpNR1duXZxriotKkIsVeZpAVCW5voGt
+ kllKXNrBAUWKa7FIkkPEjA5fv/aie/r/q4VNz5eoVj/ZnqUxZvBO7IGpOZkNYZMkTa1ZTkce+IB
+ 7JNJNTYBwZw8oLbHtG3HfOM0IH3jfSBxRXNcaA/9lPjtwGeHv0RIFxkFs43p+eX0D4t1UvxpQxd
+ GGG7Bv1v4jBMcjpQ4=
+X-Received: by 2002:a05:6000:1ac7:b0:432:84f9:9802 with SMTP id
+ ffacd0b85a97d-43284f99837mr4743816f8f.49.1766829087958; 
+ Sat, 27 Dec 2025 01:51:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGDAudvPclDrAayeF22lRCBKqgs/WFCCVLnOyuMv+2UEMvAZ/Cu2TraGkumcrFo94Za4/PUPw==
+X-Received: by 2002:a05:6000:1ac7:b0:432:84f9:9802 with SMTP id
+ ffacd0b85a97d-43284f99837mr4743788f8f.49.1766829087476; 
+ Sat, 27 Dec 2025 01:51:27 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324eaa2beasm49032870f8f.33.2025.12.27.01.51.20
+ ffacd0b85a97d-4324ea1aee5sm51028869f8f.4.2025.12.27.01.51.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:51:21 -0800 (PST)
+ Sat, 27 Dec 2025 01:51:24 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Farrah Chen <farrah.chen@intel.com>,
  Zide Chen <zide.chen@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
  Xudong Hao <xudong.hao@intel.com>
-Subject: [PULL 141/153] i386/cpu: Allow unsupported avx10_version with
- x-force-features
-Date: Sat, 27 Dec 2025 10:47:46 +0100
-Message-ID: <20251227094759.35658-67-pbonzini@redhat.com>
+Subject: [PULL 142/153] i386/cpu: Allow cache to be shared at thread level
+Date: Sat, 27 Dec 2025 10:47:47 +0100
+Message-ID: <20251227094759.35658-68-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
@@ -125,61 +124,116 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-The "force_features" ("x-force-features" property) forces setting
-feature even if host doesn't support, but also reports the warning.
+In CPUID 0x4 leaf, it's possible to make the cache privated at thread
+level when there's no HT within the core. In this case, while cache per
+thread and cache per core are essentially identical, their topology
+information differs in CPUID 0x4.
 
-Given its function, it's useful for debug, so even if the AVX10
-version is unsupported by host, force to set this AVX10 version if
-x-force-features=on.
+Diamond Rapids assigns the L1 i/d cache at the thread level. To allow
+accurate emulation of DMR cache topology, remove the cache-per-thread
+restriction in max_thread_ids_for_cache(), which enables CPUID 0x4 to
+support cache per thread topology.
+
+Given that after adding thread-level support, the topology offset
+information required by max_thread_ids_for_cache() can be sufficiently
+provided by apicid_offset_by_topo_level(), so it's straightforward to
+re-implement max_thread_ids_for_cache() based on
+apicid_offset_by_topo_level() to reduce redundant duplicate codes.
 
 Tested-by: Xudong Hao <xudong.hao@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20251215073743.4055227-7-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20251215073743.4055227-8-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ target/i386/cpu.c | 65 +++++++++++++++--------------------------------
+ 1 file changed, 21 insertions(+), 44 deletions(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index c460e3bec7c..f62bd48d4b0 100644
+index f62bd48d4b0..4ed7f4f1c99 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -9490,16 +9490,27 @@ static bool x86_cpu_filter_features(X86CPU *cpu, bool verbose)
-         uint8_t version = x86_cpu_get_host_avx10_version();
+@@ -304,33 +304,30 @@ static void encode_cache_cpuid2(X86CPU *cpu,
+                        ((t) == UNIFIED_CACHE) ? CACHE_TYPE_UNIFIED : \
+                        0 /* Invalid value */)
  
-         if (version < env->avx10_version) {
--            if (prefix) {
--                warn_report("%s: avx10.%d. Adjust to avx10.%d",
--                            prefix, env->avx10_version, version);
--            }
-             /*
--             * Discrete feature bits have been checked and filtered based on
--             * host support. So it's safe to change version without reverting
--             * other feature bits.
-+             * With x-force-features=on, CPUID_7_1_EDX_AVX10 will not be masked
-+             * off, so there's no need to zero avx10 version.
-              */
--            env->avx10_version = version;
-+            if (!cpu->force_features) {
-+                if (prefix) {
-+                    warn_report("%s: avx10.%d. Adjust to avx10.%d",
-+                                prefix, env->avx10_version, version);
-+                }
-+                /*
-+                 * Discrete feature bits have been checked and filtered based
-+                 * on host support. So it's safe to change version without
-+                 * reverting other feature bits.
-+                 */
-+                env->avx10_version = version;
-+            } else {
-+                if (prefix) {
-+                    warn_report("%s: avx10.%d.",
-+                                prefix, env->avx10_version);
-+                }
-+            }
-             have_filtered_features = true;
-         }
-     } else if (env->avx10_version) {
++static uint32_t apicid_offset_by_topo_level(X86CPUTopoInfo *topo_info,
++                                            enum CpuTopologyLevel topo_level)
++{
++    switch (topo_level) {
++    case CPU_TOPOLOGY_LEVEL_THREAD:
++        return 0;
++    case CPU_TOPOLOGY_LEVEL_CORE:
++        return apicid_core_offset(topo_info);
++    case CPU_TOPOLOGY_LEVEL_MODULE:
++        return apicid_module_offset(topo_info);
++    case CPU_TOPOLOGY_LEVEL_DIE:
++        return apicid_die_offset(topo_info);
++    case CPU_TOPOLOGY_LEVEL_SOCKET:
++        return apicid_pkg_offset(topo_info);
++    default:
++        g_assert_not_reached();
++    }
++    return 0;
++}
++
+ static uint32_t max_thread_ids_for_cache(X86CPUTopoInfo *topo_info,
+                                          enum CpuTopologyLevel share_level)
+ {
+-    uint32_t num_ids = 0;
+-
+-    switch (share_level) {
+-    case CPU_TOPOLOGY_LEVEL_CORE:
+-        num_ids = 1 << apicid_core_offset(topo_info);
+-        break;
+-    case CPU_TOPOLOGY_LEVEL_MODULE:
+-        num_ids = 1 << apicid_module_offset(topo_info);
+-        break;
+-    case CPU_TOPOLOGY_LEVEL_DIE:
+-        num_ids = 1 << apicid_die_offset(topo_info);
+-        break;
+-    case CPU_TOPOLOGY_LEVEL_SOCKET:
+-        num_ids = 1 << apicid_pkg_offset(topo_info);
+-        break;
+-    default:
+-        /*
+-         * Currently there is no use case for THREAD, so use
+-         * assert directly to facilitate debugging.
+-         */
+-        g_assert_not_reached();
+-    }
+-
+-    return num_ids - 1;
++    return (1 << apicid_offset_by_topo_level(topo_info, share_level)) - 1;
+ }
+ 
+ static uint32_t max_core_ids_in_package(X86CPUTopoInfo *topo_info)
+@@ -398,26 +395,6 @@ static uint32_t num_threads_by_topo_level(X86CPUTopoInfo *topo_info,
+     return 0;
+ }
+ 
+-static uint32_t apicid_offset_by_topo_level(X86CPUTopoInfo *topo_info,
+-                                            enum CpuTopologyLevel topo_level)
+-{
+-    switch (topo_level) {
+-    case CPU_TOPOLOGY_LEVEL_THREAD:
+-        return 0;
+-    case CPU_TOPOLOGY_LEVEL_CORE:
+-        return apicid_core_offset(topo_info);
+-    case CPU_TOPOLOGY_LEVEL_MODULE:
+-        return apicid_module_offset(topo_info);
+-    case CPU_TOPOLOGY_LEVEL_DIE:
+-        return apicid_die_offset(topo_info);
+-    case CPU_TOPOLOGY_LEVEL_SOCKET:
+-        return apicid_pkg_offset(topo_info);
+-    default:
+-        g_assert_not_reached();
+-    }
+-    return 0;
+-}
+-
+ static uint32_t cpuid1f_topo_type(enum CpuTopologyLevel topo_level)
+ {
+     switch (topo_level) {
 -- 
 2.52.0
 
