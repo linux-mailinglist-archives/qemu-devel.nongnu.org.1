@@ -2,109 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 675FFCDF6B2
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:50:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B15CFCDF719
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:53:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQuo-0002Wx-HB; Sat, 27 Dec 2025 04:48:50 -0500
+	id 1vZQuo-0002Ug-5F; Sat, 27 Dec 2025 04:48:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQuK-0002Ba-RK
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:20 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vZQuP-0002Dy-2P
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:25 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQuJ-0006sU-9m
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:20 -0500
+ id 1vZQuK-0006sh-Vt
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:48:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766828898;
+ s=mimecast20190719; t=1766828900;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NUmdt3r8IHKmZ332Dkfg2R3Sl1VyHZuITLUsOhOwT44=;
- b=FOgUj9vbnr0HJdZ1w3QZq/K9bnKgMmFx5cgurA1MMqe5V6uvC5RQlHhrbEecKyoxuNnEUG
- 5afItm1MSSL9tPrU9K9fKCZQB4fGKwNyiSQUQqWmJLADHQj0+I7T/mvujqMLIm56KJVC+M
- DB9SOOIsArC5wE13oN/9xIjTcp04c60=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=xT9y9UR3+zCEYdJU7EuhVDLHUDh0P/v0kAFoxiE1HTQ=;
+ b=a2HZiEW4RpoVsyPmeWgJkdY9XnqCAExMpTRzaKKrkOLlalOAIslPj69c2/50lPu/q7EELL
+ Q8j54O0s1CM2Mc1Hee0kzNwVrT0kdoEUasUnm4RGemalRrxTP6uwGK5HtiFlyH0YNJhkK2
+ kzbQLFEElmsBLRmjdkYkUE1D8j7VIHw=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-190-SiMoCMTUNiqKZYf0QPZVKw-1; Sat, 27 Dec 2025 04:48:16 -0500
-X-MC-Unique: SiMoCMTUNiqKZYf0QPZVKw-1
-X-Mimecast-MFC-AGG-ID: SiMoCMTUNiqKZYf0QPZVKw_1766828896
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-47918084ac1so65312025e9.2
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:48:16 -0800 (PST)
+ us-mta-595-6bAuzXDqO9KDnbBJhHBczQ-1; Sat, 27 Dec 2025 04:48:18 -0500
+X-MC-Unique: 6bAuzXDqO9KDnbBJhHBczQ-1
+X-Mimecast-MFC-AGG-ID: 6bAuzXDqO9KDnbBJhHBczQ_1766828898
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-430f8866932so6174272f8f.1
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:48:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766828895; x=1767433695; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766828897; x=1767433697; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NUmdt3r8IHKmZ332Dkfg2R3Sl1VyHZuITLUsOhOwT44=;
- b=D0n7mRwATbSrsH+ZsmFNm/S4K2Z6uTgY3rvx9Jp5gXtqNHcnsDoirBff04JkitDM2j
- XO19SLjNARFJzBN3G3LTWAIS4Fdp1P+i9FlTpb/l7TlFNTNUXHF13DXaGeUYQkMn94cK
- 1J9dnSP+GjivCv4fMYZaCensDZSTw9GZty0h1KDkOE7PxN8rwN5PvqcsHOsIaUFaWxJm
- ryH1bZSPZUEkVVk95DJ5ZV2t+A/CEM3VULCFxKe5vArkEVRnIjZR5o5prz7R+zdpd5l6
- eskTkfuwqsvOys6ndg7cHa0Ff3kx0IbhX1AK65W8foX5FwR/T7IqR3FLF42OEdvywVcc
- Wa0g==
+ bh=xT9y9UR3+zCEYdJU7EuhVDLHUDh0P/v0kAFoxiE1HTQ=;
+ b=rRwTRU9ebxMLclD7o0Em01IziPcOEbEb7A9QER0lC4rSDd+Mg5EkyoPhyP9PwnOSxR
+ AJQnE/ssSVklmLierGqqUBzx+nXuJigplbYxxrVCdQeB9cL/fTydEurlTtkYNToemPqr
+ tUWoaVdFfl12Z+GCbxp4LOWM72pnGQQ6eu7FtZwgNhdFpSMnLs60zsEWpkqbGWovz9u0
+ q4+7uTI31xbv9wmJtm7+iNusH6W6pTPs4MYPyPCU97kxXNyER77krw/9+1o6k530uigf
+ NyDHi4R0erZciNQhzSDaS0Q4l9d2ccPmBklrTXSbtrhIAOzPDhvg+xoMYjx3W8bNo+UK
+ 2Yhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766828895; x=1767433695;
+ d=1e100.net; s=20230601; t=1766828897; x=1767433697;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=NUmdt3r8IHKmZ332Dkfg2R3Sl1VyHZuITLUsOhOwT44=;
- b=kyRHY9ae0UDqrNiS5jTOsIkSF3ciLg+jp6jT79J5lrHgnUBQuZyQ0dXjKvBChaF9lZ
- PcUPO+G0hIQ91FPzQ6OlFtqgBH8Knta+dZQgHrns175YtePrpVqs2qfGd2BJwzwRN9Co
- j2i1n4JWyOuVy0TbEZNdgNnrB2Io3UOlSyDx/Haj71CQfi2tF2PtaWV7dFne8/dwy7+s
- TybW+D1SqvVOPPkT+Lw/yLUENqOrpQMCFjG8LhtOL5f3Wj7rDMUG9OMb1LffRhyGctva
- /ULmzjD7FUssPy0rA289FaVMB9p4wjElh8Lgk9yY6YPP4tAR3j1nVgId+3BcK4Jdtlb8
- Dopg==
-X-Gm-Message-State: AOJu0YzZ5nkXowdX2BqbT++vgWwsOReG2f91Qfr1N9y+ZpGBZDW+Xlr2
- ybcI+jsXbG5ZTqelpXzweM6x3xva3fHhkYQfOkDGi/JDOHk3fpvvOAnjEiE8nif1NNmrfYcbkCS
- +UV/y93FZiCUK+72ubtOEvXfLNR1uDMKmv4JAk4gcaxxhafV8BwSAF6SOiX/5A8yDyXoN6/Cdu8
- ocgIF6hit3047eC55S7wssqauaUj6gXtd9j600edAM
-X-Gm-Gg: AY/fxX7UaPCHjIEm1MUY0TG3fE9D4VZt8C+r9VMLjhCGEWjsHQbQGtrtJJkp0IGuL+p
- 3rDfyICnp84DT+oXEE73nInwrnHTMvHKWsvJyBAwwDIDrHlO2HwWh/4dwoBGF4L+su1xgQOBfnu
- UZ06Zpuh8MsH4EWwUL+5ibgEjqc69vs7pgOapkudRpRqlS89royqvgrO0dGhg6mPBL6ucy0AdnN
- ABkLBSvUDm83m38AQ5A5q3aPOOyI140wThojH5GtHnV0hrttY5hyVkaJ5OwWH7+om58EaichmUH
- slq+mW80xCtGaGpopZLdzEuJFW+Ms1+bUlILCvGgwbk8SAr9FZiyGd0PXxDTi1PnvoRB4+y+P9A
- HJTPGMKYfv7coFk7s/8J06/1L2iLcTZqZU3uz379dEx6h1+49VLVs+4HokzP78izM3aZRAgdyIi
- zEMqDpRLxDiq1I63Y=
-X-Received: by 2002:a05:600c:8b6d:b0:475:dd8d:2f52 with SMTP id
- 5b1f17b1804b1-47d1959d1d8mr293600565e9.32.1766828894858; 
- Sat, 27 Dec 2025 01:48:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG75u6NtmaI8Pu/ALi0DJ4JOaqu9ta7+mqjIETgaCOBkUlXHY/BIPN6V7gAa7dPx2w7IjGxgw==
-X-Received: by 2002:a05:600c:8b6d:b0:475:dd8d:2f52 with SMTP id
- 5b1f17b1804b1-47d1959d1d8mr293600285e9.32.1766828894449; 
- Sat, 27 Dec 2025 01:48:14 -0800 (PST)
+ bh=xT9y9UR3+zCEYdJU7EuhVDLHUDh0P/v0kAFoxiE1HTQ=;
+ b=ZGAmLtUCrXVvcG4AksDIBd19MWKT7Y3Z4z4/CD2dCYvqa4rFR7glmm/qaFuKoGOD5b
+ S2lxZlAyxKkHJE7la2G6OubUqdLKgyY+vwrFsyZS4eVrILlPj9yvYiedwlvGLxWz1eYy
+ Vr250OXy0Nzyi5pIlp4X4BQY50Wkmd+y1za0BvWNl2JOpfFa1vCHYjZ6wv2yiyo+8qnR
+ JV+InRWuvjCLLMQTfj1965X3LnMzZDgUeIgTNazyskU3FVCXzSTd61oz0+O0WvygAWGt
+ nt3lZZdMqkOJZdToKdDL8lE2YFTYLiHXVp0qcnY3PYyOe6KpsRG8nl7lZ1HDqP6Pj5kK
+ xBsQ==
+X-Gm-Message-State: AOJu0YzBrbieOAikJUSZPahmwp6cdh/ANe6hcW/pFK5K4a8g/wDEPRER
+ J5YHgmMthEZ+YPBU2EqPFLoZ3k5R0fBK/osj3+YI/IqxqgL4mFfdXOzaa5dFgXsn/oDwH5hnOoD
+ TI+57tSOuxnQA44M1jqEjFpNS6NN2uV8ZjYEwgHkf+zHr8Rccm5LnfQA4EK43kVdCm/q6cI9vmA
+ Meq1dxvZ7Ygt2VYc0EskXkcs9R1+NTaSAxERuV/1lS
+X-Gm-Gg: AY/fxX4zTA0aZS1sDddVipdIPhHN/9DkMMVBCbmspYKa55YufT/41eGU3UlzIeteOE1
+ aPSF88jFb4iM8fnIK41cciBRnb6ApvXHsMnW08ByDEfC96WIJrYY045hJHYHo/IQ6XBBiztgSz8
+ 5giu5H0o63Ehmo7XPA8s2SFU2aZxwYg7rgq4OqQB5sILpKENIBxdxwmbMB9k5NbxJU2lZQBee41
+ 7LDHbTGMwAWtoOT2WfR5JFL6Znr/qVrbvBR+mLRyKF+IWo0Z0Ix39WGFXmswdE+r2Vha5SLaPMX
+ TaWLluTUEqWm0J2++uV+XfImOhgnW1RC+YRVz/IS/PAFwLRGtw1qt7xPxkD1m3j++rQwUCSO5yw
+ DxQs4l40N6OAza8ZNrpIkKzwxIS2WROgpnojyWDNSTtzu8myVobfHM5vrp3/4ZmTif6q1LuOn+L
+ CNhTRPd8f1/yw3oXA=
+X-Received: by 2002:a05:6000:2302:b0:42f:bbc6:eda2 with SMTP id
+ ffacd0b85a97d-4324e5060b7mr27006219f8f.40.1766828896913; 
+ Sat, 27 Dec 2025 01:48:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG9NUnbVcMUSLBX1mQH9WXT0HeTT5BXcWe7AezcVJchpiqRlEGL/68ao44twU2Q55ssQDtFzw==
+X-Received: by 2002:a05:6000:2302:b0:42f:bbc6:eda2 with SMTP id
+ ffacd0b85a97d-4324e5060b7mr27006202f8f.40.1766828896471; 
+ Sat, 27 Dec 2025 01:48:16 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324ea830f3sm48754467f8f.22.2025.12.27.01.48.12
+ ffacd0b85a97d-4324ea1aee5sm51007182f8f.4.2025.12.27.01.48.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:48:13 -0800 (PST)
+ Sat, 27 Dec 2025 01:48:15 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Farrah Chen <farrah.chen@intel.com>,
- Zide Chen <zide.chen@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Chao Gao <chao.gao@intel.com>
-Subject: [PULL 081/153] i386/cpu: Fix supervisor xstate initialization
-Date: Sat, 27 Dec 2025 10:46:46 +0100
-Message-ID: <20251227094759.35658-7-pbonzini@redhat.com>
+ Zide Chen <zide.chen@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: [PULL 082/153] i386/cpu: Add missing migratable xsave features
+Date: Sat, 27 Dec 2025 10:46:47 +0100
+Message-ID: <20251227094759.35658-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -122,59 +121,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Chao Gao <chao.gao@intel.com>
+From: Zhao Liu <zhao1.liu@intel.com>
 
-Arch lbr is a supervisor xstate, but its area is not covered in
-x86_cpu_init_xsave().
+Xtile-cfg & xtile-data are both user xstates. Their xstates are cached
+in X86CPUState, and there's a related vmsd "vmstate_amx_xtile", so that
+it's safe to mark them as migratable.
 
-Fix it by checking supported xss bitmap.
+Arch lbr xstate is a supervisor xstate, and it is save & load by saving
+& loading related arch lbr MSRs, which are cached in X86CPUState, and
+there's a related vmsd "vmstate_arch_lbr". So it should be migratable.
 
-In addition, drop the (uint64_t) type casts for supported_xcr0 since
-x86_cpu_get_supported_feature_word() returns uint64_t so that the cast
-is not needed. Then ensure line length is within 90 characters.
+PT is still unmigratable since KVM disabled it and there's no vmsd and
+no other emulation/simulation support.
+
+Note, though the migratable_flags get fixed,
+x86_cpu_enable_xsave_components() still overrides supported xstates
+bitmaps regardless the masking of migratable_flags. This is another
+issue, and would be fixed in follow-up refactoring.
 
 Tested-by: Farrah Chen <farrah.chen@intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Signed-off-by: Chao Gao <chao.gao@intel.com>
-Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20251211060801.3600039-10-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20251211060801.3600039-11-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ target/i386/cpu.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 5ba4d49dc35..e9ef8b992fd 100644
+index e9ef8b992fd..8c00a3ad4df 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -9711,20 +9711,23 @@ static void x86_cpu_post_initfn(Object *obj)
- static void x86_cpu_init_xsave(void)
- {
-     static bool first = true;
--    uint64_t supported_xcr0;
-+    uint64_t supported_xcr0, supported_xss;
-     int i;
+@@ -1484,6 +1484,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+             .ecx = 1,
+             .reg = R_ECX,
+         },
++        .migratable_flags = XSTATE_ARCH_LBR_MASK,
+     },
+     [FEAT_XSAVE_XSS_HI] = {
+         .type = CPUID_FEATURE_WORD,
+@@ -1522,7 +1523,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+         .migratable_flags = XSTATE_FP_MASK | XSTATE_SSE_MASK |
+             XSTATE_YMM_MASK | XSTATE_BNDREGS_MASK | XSTATE_BNDCSR_MASK |
+             XSTATE_OPMASK_MASK | XSTATE_ZMM_Hi256_MASK | XSTATE_Hi16_ZMM_MASK |
+-            XSTATE_PKRU_MASK,
++            XSTATE_PKRU_MASK | XSTATE_XTILE_CFG_MASK | XSTATE_XTILE_DATA_MASK,
+     },
+     [FEAT_XSAVE_XCR0_HI] = {
+         .type = CPUID_FEATURE_WORD,
+@@ -2154,8 +2155,13 @@ static uint64_t x86_cpu_get_migratable_flags(X86CPU *cpu, FeatureWord w)
+     for (i = 0; i < 64; i++) {
+         uint64_t f = 1ULL << i;
  
-     if (first) {
-         first = false;
- 
-         supported_xcr0 =
--            ((uint64_t) x86_cpu_get_supported_feature_word(NULL, FEAT_XSAVE_XCR0_HI) << 32) |
-+            x86_cpu_get_supported_feature_word(NULL, FEAT_XSAVE_XCR0_HI) << 32 |
-             x86_cpu_get_supported_feature_word(NULL, FEAT_XSAVE_XCR0_LO);
-+        supported_xss =
-+            x86_cpu_get_supported_feature_word(NULL, FEAT_XSAVE_XSS_HI) << 32 |
-+            x86_cpu_get_supported_feature_word(NULL, FEAT_XSAVE_XSS_LO);
- 
-         for (i = XSTATE_SSE_BIT + 1; i < XSAVE_STATE_AREA_COUNT; i++) {
-             ExtSaveArea *esa = &x86_ext_save_areas[i];
- 
--            if (!(supported_xcr0 & (1 << i))) {
-+            if (!((supported_xcr0 | supported_xss) & (1 << i))) {
-                 esa->size = 0;
-             }
-         }
+-        /* If the feature name is known, it is implicitly considered migratable,
+-         * unless it is explicitly set in unmigratable_flags */
++        /*
++         * If the feature name is known, it is implicitly considered migratable,
++         * unless it is explicitly set in unmigratable_flags.
++         *
++         * TODO: Make the behavior of x86_cpu_enable_xsave_components() align
++         * with migratable_flags masking.
++         */
+         if ((wi->migratable_flags & f) ||
+             (wi->feat_names[i] && !(wi->unmigratable_flags & f))) {
+             r |= f;
 -- 
 2.52.0
 
