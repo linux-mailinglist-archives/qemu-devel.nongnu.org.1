@@ -2,97 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E0EBCDF776
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:55:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF47FCDF780
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:56:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQv7-0004CX-2p; Sat, 27 Dec 2025 04:49:09 -0500
+	id 1vZQv7-0004KT-SW; Sat, 27 Dec 2025 04:49:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQv4-0003za-OL
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:49:06 -0500
+ id 1vZQv6-00048G-0h
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:49:08 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQv3-0006yi-70
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:49:06 -0500
+ id 1vZQv4-0006yn-18
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:49:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766828944;
+ s=mimecast20190719; t=1766828945;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hIaH610boA68Cw25EB3fW2+vUx9RyZV3yzcJ036ng3M=;
- b=HF6hHLsExwOPTPcUnj4qwMfdKT+xQ+a4lLsZ3GHnHL1BKp5nVscKNJyAZMVgfZ8Oz1GeDp
- ORTXp5Be09EV8gNdBMJm09XA/RSFrkEt7AQtF99y/UpnBPsTIcntGdrFJZDn8sANUNAE2+
- iWOMvjEMdFl+JXDtkDN28n/eZZeGbmk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=DxnDfLQvdu3TSi/2oTj0ek4cmNNQ1H4hkvCMk+FPjfk=;
+ b=RzhCKZA7Pvir+nQPyJnLRJI/QpM0qZC6RIfK5QSxOIIPtc/q4Tziz4FpSx/HWVM4snIcSP
+ rKBJb8u8zPC0Z58uxDfYuELq3uEg2EP97e46Rml2qOWlJ9qqh4R1W0vWzKPCcKYZZQODHJ
+ 1PVoeJQ1RxmrVLQ7fZjZZ6fo0DlIgTg=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-122-AvYUGmFiPxqQzwsNXOAcpw-1; Sat, 27 Dec 2025 04:49:02 -0500
-X-MC-Unique: AvYUGmFiPxqQzwsNXOAcpw-1
-X-Mimecast-MFC-AGG-ID: AvYUGmFiPxqQzwsNXOAcpw_1766828941
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4775d110fabso65567095e9.1
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:49:01 -0800 (PST)
+ us-mta-20-Z6gY1cOROuOZjjZiB2FaPg-1; Sat, 27 Dec 2025 04:49:04 -0500
+X-MC-Unique: Z6gY1cOROuOZjjZiB2FaPg-1
+X-Mimecast-MFC-AGG-ID: Z6gY1cOROuOZjjZiB2FaPg_1766828943
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-4325ddc5babso2696575f8f.0
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:49:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766828940; x=1767433740; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766828942; x=1767433742; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hIaH610boA68Cw25EB3fW2+vUx9RyZV3yzcJ036ng3M=;
- b=nw1RqtDWxxk10uUurnY1bYJePt7mXn0wbL6iOIzkRZr7+p2BKkbo/Pi8HEmOywfv2H
- fCF1bosoI1v2Bp55umk1QeQCz98wQIMBNR8VfGXQ4p3S9VaFL0TBikQTY5e4mLw2IGQo
- qgmx+ZzDHw7+5ImyjGpV4AlF+JLY5AZ4qeax+cjDIF/jbkvCIzKKlbK67cGZPgZ4EtKv
- lnACfgJ8pbtGotS5KXKQCkmDcIv26JiAB1X8DzjbMWJIAc9xt7qmjKfbmjBiGNNoSkqs
- V8Dk7IWu84TTq7ml1xJ//x9lS+4QpXQAy82Pe4x9Ox6jTRbuaxQctajEK3OTuMIRn8jp
- 2O4g==
+ bh=DxnDfLQvdu3TSi/2oTj0ek4cmNNQ1H4hkvCMk+FPjfk=;
+ b=DmOwr7dVkcdS31O0oI35PFFuFiL9MnR2I+DFgq5RaC4XuW3it5hVohXcjJpK4h+MfP
+ G1mTL1w5JMsina8Tvs8p3LnKe9ek6cdFNZViELQgaLeBuH0EOQGmUs99UttjmeuQTQWt
+ /hYFDsdGxtuBFTZKjJnoCGaGrBi5to1pEnZ3u2lMtodlz2E3LApMIXqiMlm/OR8Ezifc
+ 8OmV5I1Z5pcITXzBw7YZfV0zoK31SMgiirTA4dPmEBboHo2bvqTftEByB+7PeI1o+XC0
+ bKtlwbpWeh6fesk4maernMhXojZwawa3v7E9P2Clpb/bsrRj8qAUj2pQOG5Z0cgYaFRN
+ kYtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766828940; x=1767433740;
+ d=1e100.net; s=20230601; t=1766828942; x=1767433742;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=hIaH610boA68Cw25EB3fW2+vUx9RyZV3yzcJ036ng3M=;
- b=PDnajlRsRgZnQ8/AGI2w8+QnhHSilFQpUCKcleZ7KttaS+et6ME775qKCe0FlncF3C
- eMoTur2T7NZ2wNqWEl9vWHybD/x/PjCxzAob0OgJbp3RCWs4W5Vdg9jLbqf0qj5cpoBz
- IVKyoisV05eE22sWE175O62II+Y/+uWcVpUzkYFoZnFcZe7JYldNdulDUjzh3GwIORCS
- EJC1+86pIjv0lGe5f1uXLhXTZxCE38PJsuyCuH8Z9bRN1m2uEqKH8+r1lEkGPRrfBhIz
- Vdxw6QxJ6WYsXwJrhsbIkFt3BwclFBDpovaCZgkZKWOSj78WXQUmlyZhQX04F8N6zzqr
- Be2g==
-X-Gm-Message-State: AOJu0YwWZeHdcK39F+YeClfa8gBm7e/LMgA1LF9pIY5s+JDiPj81OqHM
- NrOJ2EejfiekRL+Pde40PVhC68u9Cczr6WZ+1kTPx843O5tDyDmi8y6giJW/1sIHGSJLj7UEAqi
- I7XYTJHoh/uRHwDRX+VphVTJd/ZVfNDVmx45jCAjtjOBAa8vsVLxKtSxEhHTInBKWbkqRMSIGWu
- Sjqz4lQUoSmty2ZHQynn9d0nAeKQhTdKjiLoCGL22q
-X-Gm-Gg: AY/fxX5tIMzMlsC+ht+THpJ9pHyKInmZmH/DFA82/WZkpjylrOo6OmQwY53RjXY8lTu
- egUzR6FJIYS4vnxaQuNmfe72dA4dbYbR1RWvPDQBLHLICNR6Kx5cMQRcbfJDoQiF+bwysoHLLv7
- kAsRciL7roft1NOTTCqUI+aL8mOruHxTydIyoG0YJN5WSClYrezUv0GvFQ+r+P7sJT+R+zopsYM
- Md2bgWF1GXnr8mSxo7928gkAjIbmeugyFb+32zVfLZCMLAJO1xknx7tS4RkECUDcExmYM0IdMnz
- I4D2oJbJpXs9aVGorUzhjwzXUzwXtZsOHaF0fIAjfpDVEciizGhJwQawQMRwuyM0rCjQ7jWgC66
- iETBLykhzjm3gcgc49S8DQ5SeW/rLeMLsoUOrLlWgzxnu56zpDtWrK/+/FEY1f2s0nJypESVvKq
- L6ZqPGXgRQ/Z+s6jY=
-X-Received: by 2002:a05:600c:8107:b0:477:7f4a:44b0 with SMTP id
- 5b1f17b1804b1-47d1959441fmr284150325e9.33.1766828940110; 
- Sat, 27 Dec 2025 01:49:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH2hfAu96aEX0mwkZfxPViwFEbMDzY7xfr2oY7jQhh83oApdRpcTn+kl34I1reovWlz+REdxg==
-X-Received: by 2002:a05:600c:8107:b0:477:7f4a:44b0 with SMTP id
- 5b1f17b1804b1-47d1959441fmr284149895e9.33.1766828939113; 
- Sat, 27 Dec 2025 01:48:59 -0800 (PST)
+ bh=DxnDfLQvdu3TSi/2oTj0ek4cmNNQ1H4hkvCMk+FPjfk=;
+ b=q4+9uHFLyfHyoLsWGw1UdrRbOn+CA9On/wLF5wD7u9n4ZpHEdhKhNCJ8S2L2HJ1aJW
+ VFbJGJc36aLoK51o79Qvtf3tkCHWq633dDV769ocNHbx3KuvdQYeGj/NGRCLmxua+sNy
+ 5lzO/X5h4Cf5A7zFO9TOsBoMEQIc/s2yo2diULF9t5XibxxIjAtw7lsKukrlI3kO1yQA
+ 4onctgCWTQNIzDIFJ7iPo4KFAncuLDAb3wXx5HtZAyY32FdTRrV0r7s/oxP+WFqpPBvz
+ xw5oOe2upUxKL+zSDZQTcPVhnFsj0OR+4e7wVGxZ3HoOUmptM4FW5bZ3EWQ0n9B0BETM
+ 1G1A==
+X-Gm-Message-State: AOJu0YxsLVtrwPNh8x/B/FQPyRcdqw8hhdeRS2AG4gflM5gyMfu3+b4o
+ 3qoCVyh6dSsQBDcvVKZW2ZZ89COypS7wV0AMFXwF3wQ/Q91kS+JPLk5ik8vrv6Zo60YRbZejMCR
+ M24K4DvnH7ljSVVOJzC3BQY9nDe7Tm0tSN/n5pju+aiucZHUU0Tto6AP0Y+xRY9Gla3k6aVrziu
+ 4WbvLEdOennFf0fh80WGcIRzNoKyBzFSmMjnoAvz7g
+X-Gm-Gg: AY/fxX6C835IZk+pgsfqHmAf7TkcNe9QTr0CgZYxWgl8OmnNwezNYXdjsJ7AbVC1zV3
+ 0niToPZxRQixEgko38OQFO1HdHzUhLhwDnCyPPokujyDj7mFSKAYKZSZ2LiovBfX4+bD4V973cL
+ a2WrGiVoLXfDpFgxJOv9xOpGT9WY7VNISBlkrDCDFM823M2bkbgdfKLQv0mkhl3K2q0uts3sK6Z
+ AyIf50s8hiBXxLwMFkbbV86bOgX/wcjUiNpZq5DOF1hGgExnB/zFlIB75FqL0d532qjld33zW+2
+ CDBm7i3LB9LEJtP4oLzmgI+PQ9jI8toqjTPMoApgHhoDGVwA61GgyC9N0C9F0Z6SzCDuUm42UV/
+ h/85GQ4kFL5MExY/R7Lm3T5fn7mWjBkhrvu8ZTKRIIJ+qDWPsdyXL4JQAT5ICDtcVX8SqLntrG+
+ i29pjJlDmlTFlahfA=
+X-Received: by 2002:a05:6000:26d0:b0:430:fd84:3175 with SMTP id
+ ffacd0b85a97d-4324e503ec6mr30504327f8f.38.1766828942113; 
+ Sat, 27 Dec 2025 01:49:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEbnaaZNWBa9BENaOGla9HJ1J0/EyvKnGMH7WYRPVI7pELzCQQv7qM0RNNTIaNGpqjvcoE9CA==
+X-Received: by 2002:a05:6000:26d0:b0:430:fd84:3175 with SMTP id
+ ffacd0b85a97d-4324e503ec6mr30504308f8f.38.1766828941683; 
+ Sat, 27 Dec 2025 01:49:01 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-432613f7e6esm38863255f8f.21.2025.12.27.01.48.55
+ ffacd0b85a97d-4324ea1b36fsm49869093f8f.5.2025.12.27.01.49.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:48:55 -0800 (PST)
+ Sat, 27 Dec 2025 01:49:00 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Farrah Chen <farrah.chen@intel.com>,
  Zide Chen <zide.chen@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
  Xudong Hao <xudong.hao@intel.com>
-Subject: [PULL 099/153] i386/cpu-dump: Dump entended GPRs for APX supported
- guest
-Date: Sat, 27 Dec 2025 10:47:04 +0100
-Message-ID: <20251227094759.35658-25-pbonzini@redhat.com>
+Subject: [PULL 100/153] i386/monitor: Support EGPRs in hmp_print
+Date: Sat, 27 Dec 2025 10:47:05 +0100
+Message-ID: <20251227094759.35658-26-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
@@ -125,65 +124,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Dump EGPRs when guest supports APX.
+Add EGPRs in monitor_defs[] to allow HMP to access EGPRs.
+
+For example,
+
+(qemu) print $r16
+
+Since monitor_defs[] is used for read-only case, no need to consider
+xstate synchronization issues that might be caused by modifying EGPRs
+(like what gdbstub did).
 
 Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 Tested-by: Xudong Hao <xudong.hao@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20251211070942.3612547-6-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20251211070942.3612547-7-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu-dump.c | 30 +++++++++++++++++++++++++++---
- 1 file changed, 27 insertions(+), 3 deletions(-)
+ target/i386/monitor.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/target/i386/cpu-dump.c b/target/i386/cpu-dump.c
-index 67bf31e0caa..ed8fd363c6b 100644
---- a/target/i386/cpu-dump.c
-+++ b/target/i386/cpu-dump.c
-@@ -354,8 +354,7 @@ void x86_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-         qemu_fprintf(f, "RAX=%016" PRIx64 " RBX=%016" PRIx64 " RCX=%016" PRIx64 " RDX=%016" PRIx64 "\n"
-                      "RSI=%016" PRIx64 " RDI=%016" PRIx64 " RBP=%016" PRIx64 " RSP=%016" PRIx64 "\n"
-                      "R8 =%016" PRIx64 " R9 =%016" PRIx64 " R10=%016" PRIx64 " R11=%016" PRIx64 "\n"
--                     "R12=%016" PRIx64 " R13=%016" PRIx64 " R14=%016" PRIx64 " R15=%016" PRIx64 "\n"
--                     "RIP=%016" PRIx64 " RFL=%08x [%c%c%c%c%c%c%c] CPL=%d II=%d A20=%d SMM=%d HLT=%d\n",
-+                     "R12=%016" PRIx64 " R13=%016" PRIx64 " R14=%016" PRIx64 " R15=%016" PRIx64 "\n",
-                      env->regs[R_EAX],
-                      env->regs[R_EBX],
-                      env->regs[R_ECX],
-@@ -371,7 +370,32 @@ void x86_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-                      env->regs[12],
-                      env->regs[13],
-                      env->regs[14],
--                     env->regs[15],
-+                     env->regs[15]);
-+
-+        if (env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_APXF) {
-+            qemu_fprintf(f, "R16=%016" PRIx64 " R17=%016" PRIx64 " R18=%016" PRIx64 " R19=%016" PRIx64 "\n"
-+                         "R20=%016" PRIx64 " R21=%016" PRIx64 " R22=%016" PRIx64 " R23=%016" PRIx64 "\n"
-+                         "R24=%016" PRIx64 " R25=%016" PRIx64 " R26=%016" PRIx64 " R27=%016" PRIx64 "\n"
-+                         "R28=%016" PRIx64 " R29=%016" PRIx64 " R30=%016" PRIx64 " R31=%016" PRIx64 "\n",
-+                         env->regs[16],
-+                         env->regs[17],
-+                         env->regs[18],
-+                         env->regs[19],
-+                         env->regs[20],
-+                         env->regs[21],
-+                         env->regs[22],
-+                         env->regs[23],
-+                         env->regs[24],
-+                         env->regs[25],
-+                         env->regs[26],
-+                         env->regs[27],
-+                         env->regs[28],
-+                         env->regs[29],
-+                         env->regs[30],
-+                         env->regs[31]);
-+        }
-+
-+        qemu_fprintf(f, "RIP=%016" PRIx64 " RFL=%08x [%c%c%c%c%c%c%c] CPL=%d II=%d A20=%d SMM=%d HLT=%d\n",
-                      env->eip, eflags,
-                      eflags & DF_MASK ? 'D' : '-',
-                      eflags & CC_O ? 'O' : '-',
+diff --git a/target/i386/monitor.c b/target/i386/monitor.c
+index d2bb873d494..99b32cb7b0f 100644
+--- a/target/i386/monitor.c
++++ b/target/i386/monitor.c
+@@ -623,6 +623,22 @@ const MonitorDef monitor_defs[] = {
+     { "r13", offsetof(CPUX86State, regs[13]) },
+     { "r14", offsetof(CPUX86State, regs[14]) },
+     { "r15", offsetof(CPUX86State, regs[15]) },
++    { "r16", offsetof(CPUX86State, regs[16]) },
++    { "r17", offsetof(CPUX86State, regs[17]) },
++    { "r18", offsetof(CPUX86State, regs[18]) },
++    { "r19", offsetof(CPUX86State, regs[19]) },
++    { "r20", offsetof(CPUX86State, regs[20]) },
++    { "r21", offsetof(CPUX86State, regs[21]) },
++    { "r22", offsetof(CPUX86State, regs[22]) },
++    { "r23", offsetof(CPUX86State, regs[23]) },
++    { "r24", offsetof(CPUX86State, regs[24]) },
++    { "r25", offsetof(CPUX86State, regs[25]) },
++    { "r26", offsetof(CPUX86State, regs[26]) },
++    { "r27", offsetof(CPUX86State, regs[27]) },
++    { "r28", offsetof(CPUX86State, regs[28]) },
++    { "r29", offsetof(CPUX86State, regs[29]) },
++    { "r30", offsetof(CPUX86State, regs[30]) },
++    { "r31", offsetof(CPUX86State, regs[31]) },
+ #endif
+     { "eflags", offsetof(CPUX86State, eflags) },
+     { "eip", offsetof(CPUX86State, eip) },
 -- 
 2.52.0
 
