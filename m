@@ -2,108 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FE50CDF6BE
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:51:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DAFBCDF767
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:55:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQva-0006QZ-MZ; Sat, 27 Dec 2025 04:49:38 -0500
+	id 1vZQvd-0006VX-RS; Sat, 27 Dec 2025 04:49:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQvY-0006J9-Aa
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:49:36 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1vZQvb-0006U3-JF
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:49:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQvW-00072F-Sj
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:49:36 -0500
+ id 1vZQvZ-00072g-V2
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:49:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766828974;
+ s=mimecast20190719; t=1766828977;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DPzOYGOdSS2nqdUVmE3Appt8FioAsNxMPjypO5wkIkE=;
- b=RMWhCKRh1Z6VUlrcLCZzO5fUV1AbdoU2yA+yx4y2UmUDoN8dXSL23SDgQzsho2UTg9Z5M8
- zSuUCAPBlAMJ9P9kparXYXDj3efJFDAocEUDEMNIki8w2/alPpmsYYBM6HHpHPhzaCKlAe
- S8d++STp5f9TgVIiKz/O+iJ+SCe1+Lw=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+0bWfEi5YvsxXPan+R5X2P9dFKSiDKmgH0HJ5Od8B3k=;
+ b=gT3ZTZwc9NHbhRsK1mjuXqdhKfLPws7p4QW0XDARRR6YaeamPbePipJ73xyotRPuAw5lbi
+ 4yRQFT5D/QY38MJiO81qJW+6QaQqJszA7Fvb1SKRRHQzSx5nKEtaB7ZZuuHPCO4bRbNQHK
+ tyLXujuNFBYTpzYmA4sakb5wZyHt2z0=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-509-AwhGFw_dPq-GY6yKpSHJNg-1; Sat, 27 Dec 2025 04:49:32 -0500
-X-MC-Unique: AwhGFw_dPq-GY6yKpSHJNg-1
-X-Mimecast-MFC-AGG-ID: AwhGFw_dPq-GY6yKpSHJNg_1766828972
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-430ffa9fccaso6154212f8f.1
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:49:32 -0800 (PST)
+ us-mta-664-sdlLkZHLMhSoQbIEyZMIJg-1; Sat, 27 Dec 2025 04:49:35 -0500
+X-MC-Unique: sdlLkZHLMhSoQbIEyZMIJg-1
+X-Mimecast-MFC-AGG-ID: sdlLkZHLMhSoQbIEyZMIJg_1766828974
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-477cf2230c8so78151035e9.0
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:49:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766828971; x=1767433771; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766828973; x=1767433773; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DPzOYGOdSS2nqdUVmE3Appt8FioAsNxMPjypO5wkIkE=;
- b=EcVa91GColmydsUuSbcx1YTKCOxY0/dSJfev55Qkqp1McYffhaIlSLHWOTWG8VevC/
- AnZ5dizacZN9RCgDlbGiYa646ILcoYdYqxTe6mMksXuxp3tj+vYEbasDD0TpwmChowXf
- yNBngusC0f71qOfRn6FicL13IM7Inl1kse1EdlZPTnH8IUFaL2lc2kRPWxKp3DAcKR9I
- xfcl7evtBgrBQpA+97gx+Gt+qnTMXBaLCmDPtMF8Dim+XfmWg4+w/sZ5N+ORmi24L/Ja
- JzyA2ELdB/9GH5k8QXmTAr1FKzcEYOJJp+jOu7U4nRTTWlXvxn1947tQfXpOX3dfiiQv
- snKw==
+ bh=+0bWfEi5YvsxXPan+R5X2P9dFKSiDKmgH0HJ5Od8B3k=;
+ b=lEQyELETDjIgmUtCXxgvjCLREsh5kesG8YMrhYkhe4tNG7SXQFPf/g0u0FBfD+gOkr
+ ciIQm4OP6l+yqQ1K3dm+yAQ+AKSB0NL0ZSw5K7UvorYQjaFnW/vYhsln8Z2SqPb1EDrv
+ zhr4MB0CJNYQP6qtf1f8PGDmfG1JBmeWOxjFbw0HFdXg0zDE/GUk2gO3B0hSN7a8xC58
+ wUl4JjlYLnzlTLwBOYsWuiyRbOmCajbdVdiVUbRNN239AnqGS3B0JyrgYkigk5AT8w+0
+ emTWIUwYeQTPBSlNW7kSZK3NfecCG86ADkfH27wPVBS/1LM9RAbA5ZoHeB7RcXmx4I1g
+ JoWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766828971; x=1767433771;
+ d=1e100.net; s=20230601; t=1766828973; x=1767433773;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=DPzOYGOdSS2nqdUVmE3Appt8FioAsNxMPjypO5wkIkE=;
- b=AXgRNbbbZ+qk6UrUG/eosJ3etTod8SxpNfkSEY4u2HkoGnQBBlYkwMHTxaUv4xE+z6
- nJe1Sb3Ptk2S5Pgjb/uXwJIxkk3Topvs5Vr6efaFTi6TC0hMn5T+frh0rC6Nu/jM6ALF
- aShI9hRizAOASHL4a5T+0n3ZrrRjadqvZbu4D41yfnjCybIF9IOVBcXPnKwyD0BhEkw3
- S2bUqNH2o3z1fHmW0p5065+7qqUUtQ9wykpAcP2XVzKjBhJ6yca6ZvVC08yvlFBUNXTN
- 2RhSxbhKEePA4HHO8bdhT2r34ueGzoVJBRdmiavK/hllesnm4vQwAbJpwKKBroxU+MpS
- K+Vw==
-X-Gm-Message-State: AOJu0YxHDUNQIJGbvEtPHpxvjwZSAn7yzRVNnx4Z1RBq9Or0c4UAd/ug
- 8iEbOfR1JmwZMEJ++ARDKzxbYlqQQzhrcF6jdEgeWRnMrmNlJGLp9LPZl3cjpSqB3tJjBqor9Gf
- hV52cEmrVGQDwPPiyxBGWxytSO8Kp+aTfvnfbSJ5kfo75ugKO6+Ja9Kh5E5dSL0UThDid+86I5f
- ik7y7MQzqZn68tj1+FnodBUmQZcgQNJTvr4qsmiHZb
-X-Gm-Gg: AY/fxX7UDhi9TG8d2jUpVN1VplSFsCO1QfrdlMGemjEfLpMAcsjyLTTGB5vhcV74vE1
- xMNXj356t9IcvS+xM1tWyD3oo5h39o9om9U8a9gZaOBu1kGNN9fsT/p3C2lj1IIbGZFlXsgVlPb
- 3/uXH/9KOOLJfHE1JrZrg3+PAr+8szFtAwMMEYF0iTFZk0ry8WMkbcDs13PxpyeIJaxkCAIpYR1
- 9+JJUkN1hURT168nBdmvO/z81i1Aipj50gFAu7oAYMYKTwx+5C2QJYidQggsZKidEslRp8FzjVG
- hb8++E0pAD5dgsk3w0HdeaWcSixU5dJfh0CTIwla0JBmutF+ua+KHDkKyPoSTypelA85HJ3S0x4
- OFckYrB689LVrCTpVpNkM7XhRNXvf03Ycb5mrcBW9p6oRshYmQWQ4nStblL4MR0iQLKpPyDpfqp
- rNV6dt+n+EV3nuO4k=
-X-Received: by 2002:a05:6000:2907:b0:432:8504:f67a with SMTP id
- ffacd0b85a97d-4328504f681mr4683017f8f.20.1766828970638; 
- Sat, 27 Dec 2025 01:49:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGjk40KXb1wQn8A1xo5TRacyxCwhjiCnpqo3VSKY01UcG7TIWj068rCu672UAkhOwcHtjAYvw==
-X-Received: by 2002:a05:6000:2907:b0:432:8504:f67a with SMTP id
- ffacd0b85a97d-4328504f681mr4682990f8f.20.1766828970124; 
- Sat, 27 Dec 2025 01:49:30 -0800 (PST)
+ bh=+0bWfEi5YvsxXPan+R5X2P9dFKSiDKmgH0HJ5Od8B3k=;
+ b=paHMAaNQaRpG0gYGOQXt/DYbKPBV48Bpgw2HNxmdrwOpBwUQdcRJCLBIp3nXm6XFOQ
+ BtjB/d/Ch2wCvsWVb6t/dgksm6dnzcSu4F+SZSwDiOi7Fj78O2n4OrGkjLjrwIrAC3vb
+ 7Q5RLL9nEO/8ScJ/5Z04+qF5MN28kyHM73JlxuaSnQyc+2d4r7zfo1oD+y5q6C+0sdPt
+ PqIvLSXwH4rXMtvJlazRgLm12bFDb65y6BNHADBpa8A1PLPmyicnzyACJ6NGRPlw9sjP
+ cb5QGUBinr7qtfKNyb0mm19QEszeeH0UWAdAZOYUgM9YhekTOfPdDxsbW4SLe62gs2P8
+ B2pA==
+X-Gm-Message-State: AOJu0YwTL1pTrLKAOXU6dzDULfh/ThAnhwLtGRg60/QxzZYrB0JwhWMa
+ 1xMb/X8vu2FAFjbnlT7Ua4qr5OHDTC7oDamOUWRnOwJ1NEWn7zL4MsfquyjyeiW7h02FsixbfWI
+ u63GGvXdS1T1Sr9cDyvAH5YsWBw+lROl+s3tJIC7GZmgwoZ85Is2q2aAg0CVARBGwGmU00lwv+o
+ nJ86NJDMvpokhbKlpJb8eVMSimCO4SMZfLx9OdauO2
+X-Gm-Gg: AY/fxX5zxvgalgiyHT3zNemRBCEx5v4eWuiNG67BVkQjzP1Z6MqBcHxQneCmpqAhzCe
+ 1AFT199onLbT8ie7zcPaGC9x9+u4i+pyOZPNgoWnjxPAtkduqpvASnrmLyb4bRW3SXb+YovI3gf
+ gzmjoAwvho8nog8S1Chq5+9NgtnEUP1OJrflyPH8cgWESadeX2eH6SWkw8t/q/HgO4pS/Pef7Me
+ uvJTuR3oFsUDwXZPtH6gmUuibWrqeXrn0lBoFaE76msyyOO3IDypEOTeTgAC+bJZ3vUjX05ubKs
+ QEdprlid3OJ31KjHIkL8sIKnslxN+Ubu5yeCpUkS9XkPUX4cqW76Rq0S6GNgqHlF5nn7rBYfMtB
+ GBzlqSjcw6v3zgy2DRqllNTtI8h+YULUXT9vZQw0px7IPv9ZlSP3G8bdtjtq8b9okXCS7IPdt8+
+ 2O5UN2yBOZU+G9FSA=
+X-Received: by 2002:a05:6000:2303:b0:430:fdb8:8516 with SMTP id
+ ffacd0b85a97d-4324e506039mr30790673f8f.35.1766828973594; 
+ Sat, 27 Dec 2025 01:49:33 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGICzT7ij9aA5fzIIvS1TMixAA16ETdMeOCS2yKrIlr6Y139X5eiemr4rOmQdNohDKbEK2UPw==
+X-Received: by 2002:a05:6000:2303:b0:430:fdb8:8516 with SMTP id
+ ffacd0b85a97d-4324e506039mr30790652f8f.35.1766828973184; 
+ Sat, 27 Dec 2025 01:49:33 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324ea1aee5sm51014785f8f.4.2025.12.27.01.49.23
+ ffacd0b85a97d-4324ea1af20sm47315517f8f.2.2025.12.27.01.49.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:49:23 -0800 (PST)
+ Sat, 27 Dec 2025 01:49:31 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Farrah Chen <farrah.chen@intel.com>,
  Zide Chen <zide.chen@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 108/153] rust: only link the Rust part of the code into devices
-Date: Sat, 27 Dec 2025 10:47:13 +0100
-Message-ID: <20251227094759.35658-34-pbonzini@redhat.com>
+Subject: [PULL 109/153] lcitool: enable Rust for Windows cross targets
+Date: Sat, 27 Dec 2025 10:47:14 +0100
+Message-ID: <20251227094759.35658-35-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -121,86 +121,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not include libqemuutil in the device crates for the same
-reason as in the previous commit.  Static libraries like qemuutil
-are sensitive to their position on the command line and rustc does not
-always get it right.
-
-If rustc places the library too early on the command line, the stubs
-are included in the final link product, which results in duplicate
-symbols.
+The issue that is mentioned in the comment has been fixed.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/meson.build | 18 ++++++++++--------
- rust/hw/timer/hpet/meson.build | 18 +++++++++---------
- 2 files changed, 19 insertions(+), 17 deletions(-)
+ tests/docker/dockerfiles/fedora-win64-cross.docker | 2 ++
+ tests/lcitool/refresh                              | 5 +----
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/rust/hw/char/pl011/meson.build b/rust/hw/char/pl011/meson.build
-index 33b91f21911..9c0e8290e9a 100644
---- a/rust/hw/char/pl011/meson.build
-+++ b/rust/hw/char/pl011/meson.build
-@@ -28,20 +28,22 @@ _libpl011_rs = static_library(
-   ),
-   override_options: ['rust_std=2021', 'build.rust_std=2021'],
-   rust_abi: 'rust',
-+  link_with: [
-+    _util_rs,
-+    _migration_rs,
-+    _bql_rs,
-+    _qom_rs,
-+    _chardev_rs,
-+    _system_rs,
-+    _hwcore_rs,
-+    _trace_rs
-+  ],
-   dependencies: [
-     bilge_rs,
-     bilge_impl_rs,
-     bits_rs,
-     common_rs,
-     glib_sys_rs,
--    util_rs,
--    migration_rs,
--    bql_rs,
--    qom_rs,
--    chardev_rs,
--    system_rs,
--    hwcore_rs,
--    trace_rs
-   ],
- )
+diff --git a/tests/docker/dockerfiles/fedora-win64-cross.docker b/tests/docker/dockerfiles/fedora-win64-cross.docker
+index 4f743c00434..c5e1fcebf51 100644
+--- a/tests/docker/dockerfiles/fedora-win64-cross.docker
++++ b/tests/docker/dockerfiles/fedora-win64-cross.docker
+@@ -120,3 +120,5 @@ ARG USER
+ ARG UID
+ RUN if [ "${USER}" ]; then \
+   id ${USER} 2>/dev/null || useradd -u ${UID} -U ${USER}; fi
++
++ENV ENABLE_RUST 1
+diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
+index 9df607a55f8..01a71929542 100755
+--- a/tests/lcitool/refresh
++++ b/tests/lcitool/refresh
+@@ -291,10 +291,7 @@ try:
+                         project='qemu,qemu-win-installer',
+                         cross="mingw64",
+                         trailer=cross_build("x86_64-w64-mingw32-",
+-                                            "x86_64-softmmu"),
+-                        # linking with rust is buggy:
+-                        # https://github.com/mesonbuild/meson/pull/14991
+-                        enable_rust=False)
++                                            "x86_64-softmmu"))
  
-diff --git a/rust/hw/timer/hpet/meson.build b/rust/hw/timer/hpet/meson.build
-index 9a3dd62caa3..3bb7ce2a6ca 100644
---- a/rust/hw/timer/hpet/meson.build
-+++ b/rust/hw/timer/hpet/meson.build
-@@ -3,16 +3,16 @@ _libhpet_rs = static_library(
-   files('src/lib.rs'),
-   override_options: ['rust_std=2021', 'build.rust_std=2021'],
-   rust_abi: 'rust',
--  dependencies: [
--    common_rs,
--    util_rs,
--    migration_rs,
--    bql_rs,
--    qom_rs,
--    system_rs,
--    hwcore_rs,
--    trace_rs,
-+  link_with: [
-+    _util_rs,
-+    _migration_rs,
-+    _bql_rs,
-+    _qom_rs,
-+    _system_rs,
-+    _hwcore_rs,
-+    _trace_rs,
-   ],
-+  dependencies: [common_rs],
- )
- 
- rust_devices_ss.add(when: 'CONFIG_X_HPET_RUST', if_true: [declare_dependency(
+     # We also generate some docker files with minimal dependencies and
+     # as many cross-compilers as Debian will package for building TCG
 -- 
 2.52.0
 
