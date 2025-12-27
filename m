@@ -2,108 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE20BCDF5D6
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:20:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 096B9CDF60F
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Dec 2025 10:24:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZQRp-0000dV-33; Sat, 27 Dec 2025 04:18:53 -0500
+	id 1vZQRq-0000hk-2h; Sat, 27 Dec 2025 04:18:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQRm-0000IM-GN
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:50 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vZQRn-0000Rf-EY
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:51 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vZQRk-0004H4-8w
- for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:50 -0500
+ id 1vZQRk-0004MK-Ae
+ for qemu-devel@nongnu.org; Sat, 27 Dec 2025 04:18:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766827120;
+ s=mimecast20190719; t=1766827125;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FwyQTgzPobAZmx3kBA+jclwVD+zv80vSUor+sTPtx4s=;
- b=RNKrhmfrmg7jAAcYBTD4sAKuIEEjyoxcdsYhknfR3kCC+AJV7o6iYu5LYv9edoULLpMxKM
- ZFC+K4U7Af3RfV3jHXf3cG/i3pntRClXGb0ziMz5ioo68Khz9pqrngLl/AUEUYhbqqh5/T
- c2djDnIdNJqlQIf0RY9N/BCNXkutZXc=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ObGR5P7eTjQgNjfbpSHVJGhDzxLZp1RWBcBtzTbVYA0=;
+ b=dWYKaApuBsWpMPZhYBqNXZPme/Jgcqzu0HFbClpjt0UEVHz9t0jSYnJDGobsCOzR9UlwS/
+ Jjgbls7HIVG9+VujEwg1iwlf5kBXQHHMScG5+7y+6JxfiuRV3c6OLumkR8gsqm4RmPUL9F
+ ZLxOta8buy0gFLWy07NWm0l4TSYZ2m0=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-518-q3oZI9hlMoS1k0IpLxIKcg-1; Sat, 27 Dec 2025 04:18:39 -0500
-X-MC-Unique: q3oZI9hlMoS1k0IpLxIKcg-1
-X-Mimecast-MFC-AGG-ID: q3oZI9hlMoS1k0IpLxIKcg_1766827118
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-477964c22e0so53227935e9.0
- for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:18:39 -0800 (PST)
+ us-mta-77-BTREEH9pOPmExVTcGAh8QQ-1; Sat, 27 Dec 2025 04:18:41 -0500
+X-MC-Unique: BTREEH9pOPmExVTcGAh8QQ-1
+X-Mimecast-MFC-AGG-ID: BTREEH9pOPmExVTcGAh8QQ_1766827120
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-430ffa9fccaso6146228f8f.1
+ for <qemu-devel@nongnu.org>; Sat, 27 Dec 2025 01:18:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1766827117; x=1767431917; darn=nongnu.org;
+ d=redhat.com; s=google; t=1766827119; x=1767431919; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=FwyQTgzPobAZmx3kBA+jclwVD+zv80vSUor+sTPtx4s=;
- b=HUFHC0PFQPW0gJ7T5HnFhrmRTN/8IgTuTX2VYINCUH717FigSM0bZDdEAYDRyvX8X/
- SRWVrUGyAhwN03zsldrUmvt72BHVj1SM9/l9K+DSA4m94ajaPKwQJe5Xir6BoAZ1OHBd
- MMHoIimJuXcaRsNfoDoDhm+6jiHyg9nReuL/Q29lTTJG8ioIbK90bOt77/XLA+sEF0hI
- ytqtid1KPecSdmg5ymG9HtQeGc+rsNSfj1LIx8Wi/SWJg9Tp0cRRgMcihhp+LKVwpZGE
- ECgmQ2ePQRCAnK/1Xfdsg8ogUvEeshhZGnmSPr+XC2rUULC61X4m4SZgJKxamqTYK0QF
- Aa2w==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=ObGR5P7eTjQgNjfbpSHVJGhDzxLZp1RWBcBtzTbVYA0=;
+ b=nH9vqNbGjEGwvVZntOx2UF+7w0xwYI5aGb5gn8WFbQSHWBgsjG7egsUA9Se7dypeMb
+ s6epwAKl4R+5UqenH/23HuOtZ2NNbO0cyFxrjMxoq/QsOgKSofMOZ/3uTqxUfbWXrgwQ
+ 0r0gjPKw4T5/ybWIKzZLut55aJo6mvivLcZ+yKVhLCMtyw2m/MWdfYCUVYlIoDz0BBIB
+ bPbPJ8PKoQrmoAT8XWYnOwOowrQ0AWarur36/NifeAYREXMS6aaw0/hoVt3BX0XFdVGz
+ NhmwmDDxdzG24viBGIoJgIEak1WB3avB1U5j3snOl/7Ze27589HZYsris4jXxGSaRU7R
+ tloA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766827117; x=1767431917;
+ d=1e100.net; s=20230601; t=1766827119; x=1767431919;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=FwyQTgzPobAZmx3kBA+jclwVD+zv80vSUor+sTPtx4s=;
- b=Ai2yhHGPEj0HJUiEBBsipY+R3UFCoKTz+ln5sYgd9e0fsyOUNLQGSCL4NHoqfjtYMl
- LjKQ13a2zKh+jFK00CALfEFiuv6/DYjTmraH2Mgdmu2kjlJVTqJ1epyXbDomPqPBe71V
- 65o+XXCNyyYSEcdggVLSO5ww8/b1jyd5w95SKIce524A1vW/0cCnWU1UkFVzSW+gEybV
- z59/OcK8GWNR9SIc0qO20+P8h1R1ln5h9v8JoGB24D8SpMbOKJXrBcVBt7KKbWmiJ8oc
- L6d+IRVsbhKhYReQRQalnCT94luAauCuGFUuQgPSh1nD+UOzNxmEr5ubKZfC7MtUWnKd
- +Qng==
-X-Gm-Message-State: AOJu0YzsirSJl1yCMa1gZEL6zdRK0IRXB9uSI9Hyk3/EUKX663OVfdWM
- bs49v//Cdxb7NhGtlR+iboFMQAEHphnJVKX03irSTU7WbYwCQjaqwIYMKpkjlz6OLzDe2+B4Dv9
- eY3hABtdI00KNLyD96+5u7QQgAs6Dwl4nnrfhEfkZG0x9XOn0MqoMnJOUr3m/XhH5y9QIZySRCa
- qgfoiQE7OuMfX9yBtF2MIMTHV/Cf/KL/pHMpzdXT+S
-X-Gm-Gg: AY/fxX5n4uKljJh0AMzlJIxEfrByeqLfRgwO9Hcx/H8zb0g6DI0vys95wk1+0uattMD
- /CllxGSLFlGxdja1/FHZ1LEo6V0vJIqTDvUr9EJchUK0+alYf7BoDb1R2mQhysIfmsDp9tT1DAd
- X9AunZOrv6artMMLt/UH/yg45Z2nY4e8Tbgd7rLnpUT/uG9UyDXdp6USlorCiuemVocXOsWryfP
- y9pPH8fnaJJG0uuEcvqMp+EmQGEpH2vc0rdzFCfPVKLncm/V8swHe/ysDKmRNqVFeBvMQ5LYnuF
- dovHSNdjjJOA6UWgeVnkOl6hAwoFzdnMu8GEA6KyoOuVPo2AiIZCZtY1OC5TgMFoZqu+Dv2si2s
- vQJTJiI7MiVj+nSM2xROX6VWzdavYhOkbreP7hTsF3kWuZwBCEwQmtIoHQzxPCsawYkAi7Od1OK
- Ng+NloDMogywSxNXE=
-X-Received: by 2002:a05:600c:4d98:b0:475:d7fd:5c59 with SMTP id
- 5b1f17b1804b1-47be29f362amr218501555e9.16.1766827117112; 
- Sat, 27 Dec 2025 01:18:37 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGC2A9ttI2vvn2d4GyHD6Rm2yvmZXTPTwLyOpqnEL/0hWFXItsVEC66hL0FWlWsHa1RPwEDiw==
-X-Received: by 2002:a05:600c:4d98:b0:475:d7fd:5c59 with SMTP id
- 5b1f17b1804b1-47be29f362amr218501345e9.16.1766827116597; 
- Sat, 27 Dec 2025 01:18:36 -0800 (PST)
+ :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=ObGR5P7eTjQgNjfbpSHVJGhDzxLZp1RWBcBtzTbVYA0=;
+ b=soi0/5r9BmHONZKINFcnL2ip5eJfWn9z8HlXTNg2+ai+/J0BrlDGLRhaUPiRKX8Rwn
+ AfMcGhZFJgS7J0rLZAjOtA+aHkjBj47P61Uud5hA/1zMn/buuHVxPnVfKQTL0jTOZK0C
+ WEs6WK2tVbv4kxIBMVk4CRMro9ZbtmJcedZBmz5okpzWr/SGa9DWYApqfeEwCz85t93j
+ lIGPWe7l+5n4haavnAor5kz8ix5fBaRyo1Az11847mVebQe5gTdQaJmeiSuNU4w7dOd0
+ YtVqgn9TiXPtwZd3nUu7v7pYjs+puh3XfbJgfijgoqn00+fgGJlhLDpZUkcogAqpBKco
+ DmIQ==
+X-Gm-Message-State: AOJu0YxSceijn8NZv3c28uLr+LLfogynRXp2UkhmaEv+uZQAAeh0MbN2
+ 0RUi2hf/IR96/WOD3i1Wqn0UjFz81FGzUkEwFUtqKDJdmDbnT5p0SaYqQmXxattjF2Ilf0CB7Zx
+ JmmsOM1LJ0q5spE7Gr4EGuPm5GqN6+JUg9JsJiMxIR/rlDI/7XZUArT9FSjTOyUTwxK4qIsAP5n
+ 1Us0ljjn2+qkbRySqZZgxgfkbgosnsIyPiPeqkABo2
+X-Gm-Gg: AY/fxX6oK+0YHz57sRDTQ86+BDphM3uOLLa5arDRDco/NTY/FMwaTU2OIRF07iKL1Xa
+ Z8RpMBYAtAzWuu8kAsRlwigb8EfvtwQZ0qt90AsRrNNiPLUW28w874ZWJvik8ofq+/kkN4BQtBW
+ Shb8stKl6Jf0q1zQJ8o8aZ5RcPJQPs7oeVLIioIZQsr585K10ag64xGCH6Xn6OGCuSDMjWumfGJ
+ FQ/ftijOsB4TLHLFy7Tt28iYI86AM2bQLP25h8nuCILz4PqYINrUd5LMWCQOUMcOCmdhjbhvfLT
+ Fybq1rbnXToeDn3db5VKBALN84o7WPS1/us++QcqoUt882yanMpvMMX83KHMZT10Ah+8QbSuwqJ
+ 5+g61/5SzSOFGariM7kmPgE9GF9cIkYajAhn8VYlKm1akKzzjK6dFijrSjjXqskwupgCopo69H3
+ /DVlHWe0djP8p/OUo=
+X-Received: by 2002:a05:6000:1848:b0:432:851d:217e with SMTP id
+ ffacd0b85a97d-432851d21e9mr4731432f8f.44.1766827119456; 
+ Sat, 27 Dec 2025 01:18:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHp4G70cRqOwUzzRouwH/RfFU8lZ/fsjLcVDuwwhPTZe4VcF8kRCmyODWIqhtAArf6LjuRVFA==
+X-Received: by 2002:a05:6000:1848:b0:432:851d:217e with SMTP id
+ ffacd0b85a97d-432851d21e9mr4731403f8f.44.1766827118898; 
+ Sat, 27 Dec 2025 01:18:38 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.145.106])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324ea2278dsm50622918f8f.18.2025.12.27.01.18.35
+ ffacd0b85a97d-4324eaa2beasm48905304f8f.33.2025.12.27.01.18.37
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Dec 2025 01:18:35 -0800 (PST)
+ Sat, 27 Dec 2025 01:18:37 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 068/153] rust/hpet: Apply Migratable<> wrapper and
- ToMigrationState
-Date: Sat, 27 Dec 2025 10:14:55 +0100
-Message-ID: <20251227091622.20725-69-pbonzini@redhat.com>
+Subject: [PULL 069/153] rust/hpet: change wrap_flag to a bool
+Date: Sat, 27 Dec 2025 10:14:56 +0100
+Message-ID: <20251227091622.20725-70-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251227091622.20725-1-pbonzini@redhat.com>
 References: <20251227091622.20725-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -121,258 +119,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+This is more precise, and makes it possible to use bool::then_some().
 
-Before using Mutex<> to protect HPETRegisters, it's necessary to apply
-Migratable<> wrapper and ToMigrationState first since there's no
-pre-defined VMState for Mutex<>.
-
-In addition, this allows to move data from HPETRegisters' vmstate
-to HPETTimer's, so as to preserve the original migration format of the C
-implementation.  To do that, HPETTimer is wrapped with Migratable<>
-as well but the implementation of ToMigrationStateShared is
-hand-written.
-
-Note that even though the HPETRegistersMigration struct is
-generated by ToMigrationState macro, its VMState still needs to be
-implemented by hand.
-
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20251113051937.4017675-21-zhao1.liu@intel.com
-[Added HPETTimer implementation and restored compatible migration format. - Paolo]
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/timer/hpet/src/device.rs | 139 +++++++++++++++++++++++--------
- 1 file changed, 102 insertions(+), 37 deletions(-)
+ rust/hw/timer/hpet/src/device.rs | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
 diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
-index 375bea4c96b..a0c122d42bb 100644
+index a0c122d42bb..3166688e4e3 100644
 --- a/rust/hw/timer/hpet/src/device.rs
 +++ b/rust/hw/timer/hpet/src/device.rs
-@@ -13,7 +13,7 @@
- use bql::prelude::*;
- use common::prelude::*;
- use hwcore::prelude::*;
--use migration::{self, prelude::*};
-+use migration::{self, prelude::*, ToMigrationStateShared};
- use qom::prelude::*;
- use system::{
-     bindings::{address_space_memory, address_space_stl_le},
-@@ -176,7 +176,6 @@ fn timer_handler(t: &HPETTimer) {
-     t.callback(&mut hpet_regs.borrow_mut())
+@@ -193,7 +193,7 @@ pub struct HPETTimerRegisters {
+     period: u64,
+     /// timer pop will indicate wrap for one-shot 32-bit
+     /// mode. Next pop will be actual timer expiration.
+-    wrap_flag: u8,
++    wrap_flag: bool,
+     /// last value armed, to avoid timer storms
+     last: u64,
  }
+@@ -377,7 +377,7 @@ fn set_timer(&self, regs: &mut HPETRegisters) {
+         let cur_tick: u64 = regs.get_ticks();
+         let tn_regs = &mut regs.tn_regs[self.index as usize];
  
--#[repr(C)]
- #[derive(Debug, Default)]
- pub struct HPETTimerRegisters {
-     // Memory-mapped, software visible timer registers
-@@ -563,11 +562,13 @@ fn write(
-     }
- }
+-        tn_regs.wrap_flag = 0;
++        tn_regs.wrap_flag = false;
+         tn_regs.update_cmp64(cur_tick);
  
--#[repr(C)]
--#[derive(Default)]
-+#[derive(Default, ToMigrationState)]
- pub struct HPETRegisters {
-     // HPET block Registers: Memory-mapped, software visible registers
-     /// General Capabilities and ID Register
-+    ///
-+    /// Constant and therefore not migrated.
-+    #[migration_state(omit)]
-     capability: u64,
-     ///  General Configuration Register
-     config: u64,
-@@ -579,9 +580,15 @@ pub struct HPETRegisters {
-     counter: u64,
- 
-     /// HPET Timer N Registers
-+    ///
-+    /// Migrated as part of `Migratable<HPETTimer>`
-+    #[migration_state(omit)]
-     tn_regs: [HPETTimerRegisters; HPET_MAX_TIMERS],
- 
-     /// Offset of main counter relative to qemu clock.
-+    ///
-+    /// Migrated as a subsection and therefore snapshotted into [`HPETState`]
-+    #[migration_state(omit)]
-     pub hpet_offset: u64,
- }
- 
-@@ -613,7 +620,7 @@ fn is_timer_int_active(&self, index: usize) -> bool {
- pub struct HPETState {
-     parent_obj: ParentField<SysBusDevice>,
-     iomem: MemoryRegion,
--    regs: BqlRefCell<HPETRegisters>,
-+    regs: Migratable<BqlRefCell<HPETRegisters>>,
- 
-     // Internal state
-     /// Capabilities that QEMU HPET supports.
-@@ -639,7 +646,7 @@ pub struct HPETState {
- 
-     /// HPET timer array managed by this timer block.
-     #[doc(alias = "timer")]
--    timers: [HPETTimer; HPET_MAX_TIMERS],
-+    timers: [Migratable<HPETTimer>; HPET_MAX_TIMERS],
-     #[property(rename = "timers", default = HPET_MIN_TIMERS)]
-     num_timers: usize,
-     num_timers_save: BqlCell<u8>,
-@@ -674,9 +681,12 @@ fn init_timers(this: &mut MaybeUninit<Self>) {
- 
-             // Initialize in two steps, to avoid calling Timer::init_full on a
-             // temporary that can be moved.
--            let timer = timer.write(HPETTimer::new(index.try_into().unwrap(), state));
-+            let timer = timer.write(Migratable::new(HPETTimer::new(
-+                index.try_into().unwrap(),
-+                state,
-+            )));
-             // SAFETY: HPETState is pinned
--            let timer = unsafe { Pin::new_unchecked(timer) };
-+            let timer = unsafe { Pin::new_unchecked(&mut **timer) };
-             HPETTimer::init_timer(timer);
+         let mut next_tick: u64 = tn_regs.cmp64;
+@@ -385,7 +385,7 @@ fn set_timer(&self, regs: &mut HPETRegisters) {
+             // HPET spec says in one-shot 32-bit mode, generate an interrupt when
+             // counter wraps in addition to an interrupt with comparator match.
+             if !tn_regs.is_periodic() && tn_regs.cmp64 > hpet_next_wrap(cur_tick) {
+-                tn_regs.wrap_flag = 1;
++                tn_regs.wrap_flag = true;
+                 next_tick = hpet_next_wrap(cur_tick);
+             }
          }
+@@ -501,7 +501,7 @@ fn reset(&self, regs: &mut HPETRegisters) {
+         tn_regs.config |=
+             (u64::from(self.get_state().int_route_cap)) << HPET_TN_CFG_INT_ROUTE_CAP_SHIFT;
+         tn_regs.period = 0;
+-        tn_regs.wrap_flag = 0;
++        tn_regs.wrap_flag = false;
      }
-@@ -1001,47 +1011,102 @@ impl ObjectImpl for HPETState {
-         })
-         .build();
  
--impl_vmstate_struct!(
--    HPETTimerRegisters,
--    VMStateDescriptionBuilder::<HPETTimerRegisters>::new()
--        .name(c"hpet_timer/regs")
-+#[derive(Default)]
-+pub struct HPETTimerMigration {
-+    index: u8,
-+    config: u64,
-+    cmp: u64,
-+    fsb: u64,
-+    period: u64,
-+    wrap_flag: u8,
-+    qemu_timer: i64,
-+}
-+
-+impl ToMigrationState for HPETTimer {
-+    type Migrated = HPETTimerMigration;
-+
-+    fn snapshot_migration_state(
-+        &self,
-+        target: &mut Self::Migrated,
-+    ) -> Result<(), migration::InvalidError> {
-+        let state = self.get_state();
-+        let regs = state.regs.borrow_mut();
-+        let tn_regs = &regs.tn_regs[self.index as usize];
-+
-+        target.index = self.index;
-+        target.config = tn_regs.config;
-+        target.cmp = tn_regs.cmp;
-+        target.fsb = tn_regs.fsb;
-+        target.period = tn_regs.period;
-+        target.wrap_flag = tn_regs.wrap_flag;
-+        self.qemu_timer
-+            .snapshot_migration_state(&mut target.qemu_timer)?;
-+
-+        Ok(())
-+    }
-+
-+    fn restore_migrated_state_mut(
-+        &mut self,
-+        source: Self::Migrated,
-+        version_id: u8,
-+    ) -> Result<(), migration::InvalidError> {
-+        self.restore_migrated_state(source, version_id)
-+    }
-+}
-+
-+impl ToMigrationStateShared for HPETTimer {
-+    fn restore_migrated_state(
-+        &self,
-+        source: Self::Migrated,
-+        version_id: u8,
-+    ) -> Result<(), migration::InvalidError> {
-+        let state = self.get_state();
-+        let mut regs = state.regs.borrow_mut();
-+        let tn_regs = &mut regs.tn_regs[self.index as usize];
-+
-+        tn_regs.config = source.config;
-+        tn_regs.cmp = source.cmp;
-+        tn_regs.fsb = source.fsb;
-+        tn_regs.period = source.period;
-+        tn_regs.wrap_flag = source.wrap_flag;
-+        self.qemu_timer
-+            .restore_migrated_state(source.qemu_timer, version_id)?;
-+
-+        Ok(())
-+    }
-+}
-+
-+const VMSTATE_HPET_TIMER: VMStateDescription<HPETTimerMigration> =
-+    VMStateDescriptionBuilder::<HPETTimerMigration>::new()
-+        .name(c"hpet_timer")
-         .version_id(1)
-         .minimum_version_id(1)
-         .fields(vmstate_fields! {
--            vmstate_of!(HPETTimerRegisters, config),
--            vmstate_of!(HPETTimerRegisters, cmp),
--            vmstate_of!(HPETTimerRegisters, fsb),
--            vmstate_of!(HPETTimerRegisters, period),
--            vmstate_of!(HPETTimerRegisters, wrap_flag),
--        })
--        .build()
--);
--
--const VMSTATE_HPET_TIMER: VMStateDescription<HPETTimer> =
--    VMStateDescriptionBuilder::<HPETTimer>::new()
--        .name(c"hpet_timer")
--        .version_id(2)
--        .minimum_version_id(2)
--        .fields(vmstate_fields! {
--            vmstate_of!(HPETTimer, qemu_timer),
-+            vmstate_of!(HPETTimerMigration, index),
-+            vmstate_of!(HPETTimerMigration, config),
-+            vmstate_of!(HPETTimerMigration, cmp),
-+            vmstate_of!(HPETTimerMigration, fsb),
-+            vmstate_of!(HPETTimerMigration, period),
-+            vmstate_of!(HPETTimerMigration, wrap_flag),
-+            vmstate_of!(HPETTimerMigration, qemu_timer),
-         })
-         .build();
+     /// timer expiration callback
+@@ -519,13 +519,11 @@ fn callback(&self, regs: &mut HPETRegisters) {
+                 tn_regs.cmp = tn_regs.cmp64;
+             }
+             Some(tn_regs.cmp64)
+-        } else if tn_regs.wrap_flag != 0 {
+-            tn_regs.wrap_flag = 0;
+-            Some(tn_regs.cmp64)
+         } else {
+-            None
++            tn_regs.wrap_flag.then_some(tn_regs.cmp64)
+         };
  
--impl_vmstate_struct!(HPETTimer, VMSTATE_HPET_TIMER);
-+impl_vmstate_struct!(HPETTimerMigration, VMSTATE_HPET_TIMER);
++        tn_regs.wrap_flag = false;
+         if let Some(tick) = next_tick {
+             self.arm_timer(regs, tick);
+         }
+@@ -1038,7 +1036,7 @@ fn snapshot_migration_state(
+         target.cmp = tn_regs.cmp;
+         target.fsb = tn_regs.fsb;
+         target.period = tn_regs.period;
+-        target.wrap_flag = tn_regs.wrap_flag;
++        target.wrap_flag = u8::from(tn_regs.wrap_flag);
+         self.qemu_timer
+             .snapshot_migration_state(&mut target.qemu_timer)?;
  
- const VALIDATE_TIMERS_NAME: &CStr = c"num_timers must match";
+@@ -1068,7 +1066,7 @@ fn restore_migrated_state(
+         tn_regs.cmp = source.cmp;
+         tn_regs.fsb = source.fsb;
+         tn_regs.period = source.period;
+-        tn_regs.wrap_flag = source.wrap_flag;
++        tn_regs.wrap_flag = source.wrap_flag != 0;
+         self.qemu_timer
+             .restore_migrated_state(source.qemu_timer, version_id)?;
  
-+// HPETRegistersMigration is generated by ToMigrationState macro.
- impl_vmstate_struct!(
--    HPETRegisters,
--    VMStateDescriptionBuilder::<HPETRegisters>::new()
-+    HPETRegistersMigration,
-+    VMStateDescriptionBuilder::<HPETRegistersMigration>::new()
-         .name(c"hpet/regs")
-         .version_id(2)
-         .minimum_version_id(2)
-         .fields(vmstate_fields! {
--            vmstate_of!(HPETRegisters, config),
--            vmstate_of!(HPETRegisters, int_status),
--            vmstate_of!(HPETRegisters, counter),
--            vmstate_of!(HPETRegisters, tn_regs),
-+            vmstate_of!(HPETRegistersMigration, config),
-+            vmstate_of!(HPETRegistersMigration, int_status),
-+            vmstate_of!(HPETRegistersMigration, counter),
-         })
-         .build()
- );
-@@ -1049,8 +1114,8 @@ impl ObjectImpl for HPETState {
- const VMSTATE_HPET: VMStateDescription<HPETState> =
-     VMStateDescriptionBuilder::<HPETState>::new()
-         .name(c"hpet")
--        .version_id(3)
--        .minimum_version_id(3)
-+        .version_id(2)
-+        .minimum_version_id(2)
-         .pre_save(&HPETState::pre_save)
-         .post_load(&HPETState::post_load)
-         .fields(vmstate_fields! {
 -- 
 2.52.0
 
