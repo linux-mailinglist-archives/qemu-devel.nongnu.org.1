@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23084CE52B7
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Dec 2025 17:19:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECDD8CE52B4
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Dec 2025 17:19:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZtTu-0001lG-MY; Sun, 28 Dec 2025 11:18:58 -0500
+	id 1vZtU2-0001mF-Vy; Sun, 28 Dec 2025 11:19:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vZtTt-0001ky-5y
- for qemu-devel@nongnu.org; Sun, 28 Dec 2025 11:18:57 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vZtU1-0001lz-GV
+ for qemu-devel@nongnu.org; Sun, 28 Dec 2025 11:19:05 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vZtTr-0007B9-Ai
- for qemu-devel@nongnu.org; Sun, 28 Dec 2025 11:18:56 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-477632b0621so52836645e9.2
- for <qemu-devel@nongnu.org>; Sun, 28 Dec 2025 08:18:54 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vZtTz-0007Cb-7Q
+ for qemu-devel@nongnu.org; Sun, 28 Dec 2025 11:19:05 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-47d3ffa6720so27551795e9.0
+ for <qemu-devel@nongnu.org>; Sun, 28 Dec 2025 08:19:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766938733; x=1767543533; darn=nongnu.org;
+ d=linaro.org; s=google; t=1766938741; x=1767543541; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pjlSSs+Ox58K0ihK5K2mz8XcZnBVGiQErIpZp5+utX4=;
- b=ZKCQzvfYGShZjHNGNWPnX4MWYgA3miKJg+OZ3/dxma8x0ceNmE+rFY/A/eY+p7CBjM
- uyyFxWSBZhsu3iljxZ7mxs11X6wEtEuN5e2p87C+42B1MkDpP3JjjZjVc513AGlUaJnJ
- 4pLZlOvRDknfygAW6WzaCH1ZF0tu27FON1/Lv50wWnTdYcZQbzpEOP+CSFUGYyQEA8WG
- WEu+wh+8557C2ahDZ5dZ59+A/KE5i3KoahY0iwrBA9tlGvXQfbfg7qFAjHDDolnyZEzu
- g196e5MAEDesdsoECDzBppqhwBasR0KcVNkaU1o67kIbvG851suvxHFY536IZsX4QiSK
- p0SA==
+ bh=qu1YBUoHh92Khpt6AO2xZNSzadmpG/+fBfiKN74Yagg=;
+ b=SDZ8fqiykS17fWzNWBUbnbJIqjKxadoDe7taz8UgqwrFktRAxQLtSOOOJqcOYMsuNO
+ NzvpET4D4lzyndn7gYsFoZ38ACOYzGNMfjmHrcfRUXbFZIME7Nsq/v9N9ZOlwOrLfnlx
+ RjI8J9KDMtHkuuWTaSHFcvXbQixhWmQzIaTTFBod/p4WK+dhnJXFU2hP15OU6Gn5sObn
+ qBfbY1xW0PwPO48f+W7TGi86lb/TIGPZO/76zdHWnoNGDC2jgpl7qr4lXVeL9mOlnn7n
+ kfP4yic8raRG/8eY8TDPkzMUbvWFrf2aRwnpV34c9YtGuCAC+InX2WXVZnXgHbhWCRP9
+ YEJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766938733; x=1767543533;
+ d=1e100.net; s=20230601; t=1766938741; x=1767543541;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=pjlSSs+Ox58K0ihK5K2mz8XcZnBVGiQErIpZp5+utX4=;
- b=cQt0wGgWIMBR9LrgdWDMN0PnHxaoZtGr7wL9tzlSsG/fKZxU6gX+T/8F11u0qvrib/
- T4WDDM2Uc3O3OCslMXXeZUj0T49EHd/0MC5kG6FJs1h5GFbgJ0XWy/Kd0EamiSA8IhU+
- 7zQee0KjL4b1t/cslwsqRAleV+3FETTY8klcyD56BH16kgEavDwKeIvM28KFC+563uR/
- 6znVMyISov6ZmT1mMqQL0nemX3wCqCx5Nk9T7PJq98nrf3IFnWSGWsRxjZLg+cg8SKef
- 5Z1n9Wv28bHlbgFbbsiK/6Clm1JG+HhIqCAxH4k789/ElfxfnG+AnB5qptdxmUXbIxA8
- 5cew==
-X-Gm-Message-State: AOJu0YztegD2Umx9Loo+Wb0E8Ftwf059oSvmkRGVMP8yveyRuvMfafeU
- TThSstwS5WdGWm999mHhsOUkfRZYjAWMcY53FO2ZG6F28B7LU5zMm0akf4YbTa+eXTD4mScYVd4
- oYfB+
-X-Gm-Gg: AY/fxX7vOcOfwgmrRv9EDD/nYEVlcXaXgRsS1R5Izt5iEKUpRFzYx9thMdKII84kyCx
- 5vMN8esHWPQt70eopLHyvt5m1FqndNS6KwrelwEHlCP1YAPC47ouKNa4urSe+lfK/f9mIYIC6rP
- yR1YYBSaUGORvcXV6yYRthZxLsXZbTJNRvE4cgw/i4DCrBkILxwlqU5WDBNqeFR0AQTrcATY3PO
- vcQ/rdX8AdydRuwGNJgXkA32BzQ4mexvBUUnuF0Po7BREOnXv5n1oeshZ515RaLdBH3eXoai5w8
- JHH+Fv2oQFseZQLQvT+vgwMOFhprAlJUZEp18MDYQXjsaO1CW4H6BiuvkkQtnkqj/L6OeqgDgHt
- mWRlPAP2upC37mUi1lkrPGkX1KYVFRQSYxmohm4OZKT8UdngmaE3kksJUPAJMsJJQZ50OA0n4LD
- 51LO3n6tyA3ZBS2Icvyzbf2cC6zN0+oJpFH9tk/w41oOl3+vxDDc3HtHt8Kn9i55M=
-X-Google-Smtp-Source: AGHT+IES5Mk++6zOANMeCOIyNc41+4Ia3eve1/aQc1eydllDnMW2zJhbAjMTt80y6nIMKl7ZdfQ7Ug==
-X-Received: by 2002:a05:600c:4ed2:b0:477:af07:dd21 with SMTP id
- 5b1f17b1804b1-47d195b3c08mr330378905e9.25.1766938733523; 
- Sun, 28 Dec 2025 08:18:53 -0800 (PST)
+ bh=qu1YBUoHh92Khpt6AO2xZNSzadmpG/+fBfiKN74Yagg=;
+ b=Pau3h6kKM3oLXkJW9U0oY5I9nwtVkU4YymKNwkZUD1d/SUvwSVWklYY/PrbYIf50qJ
+ z7H43QYGBOw49LdxKTC4AxV4raLXnwgT8V3cY3yKdJ4N+fH5JXdTUOI2Ixg0znhFcuRW
+ JizEeh4fHUpMNd77Yl6lOomrk9flRvvGiU2UQ0dSqB+2Jv+bBXi4iJ55cbNgfaklTQel
+ Yn53Z9wSSubBli3Q76R9JlpBKr3T6p6gO4vQLwjZMT+b4XhzCZJD6pAvZHAH/YdQbxtA
+ tR1+mxj1BqhsggZkt6NqbOJtJiedFZSGSm+CuhnkUapsqSFQvmfKUp7t/0ZTEaSSh0pE
+ kDhg==
+X-Gm-Message-State: AOJu0YwTr1IENz9BclHpiCgxMVbt9uzMhK04qH5XgVqbBFDPw8zyeMYr
+ xnS+hV/LQaa5vMIM8c8xmsDn2NDLDOIfLXEohAB7EDWYaShBSZX3WwMr1CYnFdC1CRKbTG1//HE
+ 6nerD
+X-Gm-Gg: AY/fxX4k9VjOQZnzDXy0GoVrKWeG38sqZSjxQgg9wQ/g8xIV5wdWEHn5cKnv6pg5GBL
+ CPVYZFDngzhUbd7rk73c/0ItQpLoQEOYOJ9sx0J5SD0W0fj/qoQ1aOFi+nqjSzwe8cHeYDzQJyK
+ /8RVBDt5KO7KMdheUJ7+giqD6ViKiHe7c1d3ZRV5O4mEB16d0q2f/FpHKqFxs7A3D7onAp4TVWm
+ lDwESOyF0BA6zgkSmuPip3OTEEJ1bbTDmoEvoxZ6Jp28WJhLQpfXfLsy40AytbkDNtza/d7HRsY
+ vOS8t1lCFuTJFjgVg0jSzibikPB2Bq80yX4ebzfVOurxIREpG4AJXBME7QyJP7bEgKxyu8Y+cVw
+ zuzLeEEl57TY++o7PglqKOp7MT2VauznQiWToj+3Hf+J7odFX+zCL8OeqFs49oJkkxKCb4CgPt4
+ +LdHI1vYHEFAIuy9ANYEKaRGPRqhL2JcZ2mfteo1+yMgX46ZjbINrm
+X-Google-Smtp-Source: AGHT+IGvGOjw3iM+2Me6Mzuhs5Xj/m+qnrE3hYr+WAP7hWBy76iVsS7eQa5i1dLp8pdE+7ewB4KfhA==
+X-Received: by 2002:a05:600c:1389:b0:47d:403e:4eaf with SMTP id
+ 5b1f17b1804b1-47d403e4fd0mr145955075e9.10.1766938741404; 
+ Sun, 28 Dec 2025 08:19:01 -0800 (PST)
 Received: from m1.home (alyon-655-1-564-32.w80-9.abo.wanadoo.fr. [80.9.105.32])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324ea22674sm58910416f8f.10.2025.12.28.08.18.52
+ ffacd0b85a97d-4324eab257asm58081647f8f.38.2025.12.28.08.18.59
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 28 Dec 2025 08:18:52 -0800 (PST)
+ Sun, 28 Dec 2025 08:19:00 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -74,18 +74,17 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Jagannathan Raman <jag.raman@oracle.com>, Alexander Graf <agraf@csgraf.de>,
  Phil Dennis-Jordan <phil@philjordan.eu>, Jason Wang <jasowang@redhat.com>,
  qemu-ppc@nongnu.org
-Subject: [PATCH 2/3] system/memory: Extract 'qemu/memory_ldst_unaligned.h'
- header
-Date: Sun, 28 Dec 2025 17:18:35 +0100
-Message-ID: <20251228161837.12413-3-philmd@linaro.org>
+Subject: [PATCH 3/3] system/memory: Rename unaligned load/store API
+Date: Sun, 28 Dec 2025 17:18:36 +0100
+Message-ID: <20251228161837.12413-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251228161837.12413-1-philmd@linaro.org>
 References: <20251228161837.12413-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,298 +107,511 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Unaligned memcpy API is buried within 'qemu/bswap.h',
-supposed to be related to endianness swapping. Extract
-to a new header to clarify.
+Rename the API methods using the explicit 'unaligned'
+description instead of 'he' which stands for 'host
+endianness'.
 
-Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+Inspired-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/qemu/bswap.h                 | 62 +------------------------
- include/qemu/memory_ldst_unaligned.h | 67 ++++++++++++++++++++++++++++
- accel/tcg/translator.c               |  1 +
- hw/display/ati_2d.c                  |  1 +
- hw/display/sm501.c                   |  2 +-
- hw/remote/vfio-user-obj.c            |  1 +
- hw/vmapple/virtio-blk.c              |  1 +
- net/checksum.c                       |  1 +
- ui/vnc-enc-tight.c                   |  1 +
- util/bufferiszero.c                  |  2 +-
- 10 files changed, 76 insertions(+), 63 deletions(-)
- create mode 100644 include/qemu/memory_ldst_unaligned.h
+ include/qemu/bswap.h                 | 32 ++++++++++++++--------------
+ include/qemu/memory_ldst_unaligned.h | 16 +++++++-------
+ accel/tcg/translator.c               |  6 +++---
+ hw/display/ati_2d.c                  |  2 +-
+ hw/display/sm501.c                   | 19 ++++++++++-------
+ hw/remote/vfio-user-obj.c            |  4 ++--
+ hw/vmapple/virtio-blk.c              |  2 +-
+ net/checksum.c                       |  6 +++---
+ system/memory.c                      |  4 ++--
+ system/physmem.c                     |  8 +++----
+ ui/vnc-enc-tight.c                   |  2 +-
+ util/bufferiszero.c                  |  6 +++---
+ accel/tcg/ldst_atomicity.c.inc       | 10 ++++-----
+ 13 files changed, 60 insertions(+), 57 deletions(-)
 
 diff --git a/include/qemu/bswap.h b/include/qemu/bswap.h
-index b77ea955de5..e8b944988c3 100644
+index e8b944988c3..f7c806085fb 100644
 --- a/include/qemu/bswap.h
 +++ b/include/qemu/bswap.h
-@@ -1,6 +1,7 @@
- #ifndef BSWAP_H
- #define BSWAP_H
+@@ -237,82 +237,82 @@ static inline void stb_p(void *ptr, uint8_t v)
  
-+#include "qemu/memory_ldst_unaligned.h"
- #include "qemu/target-info.h"
- 
- #undef  bswap16
-@@ -173,8 +174,6 @@ CPU_CONVERT(le, 64, uint64_t)
- # define const_le16(_x) (_x)
- #endif
- 
--/* unaligned/endian-independent pointer access */
--
- /*
-  * the generic syntax is:
-  *
-@@ -201,7 +200,6 @@ CPU_CONVERT(le, 64, uint64_t)
-  *   q: 64 bits
-  *
-  * endian is:
-- *   he   : host endian
-  *   be   : big endian
-  *   le   : little endian
-  *   te   : target endian
-@@ -237,64 +235,6 @@ static inline void stb_p(void *ptr, uint8_t v)
-     *(uint8_t *)ptr = v;
- }
- 
--/*
-- * Any compiler worth its salt will turn these memcpy into native unaligned
-- * operations.  Thus we don't need to play games with packed attributes, or
-- * inline byte-by-byte stores.
-- * Some compilation environments (eg some fortify-source implementations)
-- * may intercept memcpy() in a way that defeats the compiler optimization,
-- * though, so we use __builtin_memcpy() to give ourselves the best chance
-- * of good performance.
-- */
--
--static inline int lduw_he_p(const void *ptr)
--{
--    uint16_t r;
--    __builtin_memcpy(&r, ptr, sizeof(r));
--    return r;
--}
--
--static inline int ldsw_he_p(const void *ptr)
--{
--    int16_t r;
--    __builtin_memcpy(&r, ptr, sizeof(r));
--    return r;
--}
--
--static inline void stw_he_p(void *ptr, uint16_t v)
--{
--    __builtin_memcpy(ptr, &v, sizeof(v));
--}
--
--static inline void st24_he_p(void *ptr, uint32_t v)
--{
--    __builtin_memcpy(ptr, &v, 3);
--}
--
--static inline int ldl_he_p(const void *ptr)
--{
--    int32_t r;
--    __builtin_memcpy(&r, ptr, sizeof(r));
--    return r;
--}
--
--static inline void stl_he_p(void *ptr, uint32_t v)
--{
--    __builtin_memcpy(ptr, &v, sizeof(v));
--}
--
--static inline uint64_t ldq_he_p(const void *ptr)
--{
--    uint64_t r;
--    __builtin_memcpy(&r, ptr, sizeof(r));
--    return r;
--}
--
--static inline void stq_he_p(void *ptr, uint64_t v)
--{
--    __builtin_memcpy(ptr, &v, sizeof(v));
--}
--
  static inline int lduw_le_p(const void *ptr)
  {
-     return (uint16_t)le_bswap(lduw_he_p(ptr), 16);
+-    return (uint16_t)le_bswap(lduw_he_p(ptr), 16);
++    return (uint16_t)le_bswap(lduw_unaligned_p(ptr), 16);
+ }
+ 
+ static inline int ldsw_le_p(const void *ptr)
+ {
+-    return (int16_t)le_bswap(lduw_he_p(ptr), 16);
++    return (int16_t)le_bswap(lduw_unaligned_p(ptr), 16);
+ }
+ 
+ static inline int ldl_le_p(const void *ptr)
+ {
+-    return le_bswap(ldl_he_p(ptr), 32);
++    return le_bswap(ldl_unaligned_p(ptr), 32);
+ }
+ 
+ static inline uint64_t ldq_le_p(const void *ptr)
+ {
+-    return le_bswap(ldq_he_p(ptr), 64);
++    return le_bswap(ldq_unaligned_p(ptr), 64);
+ }
+ 
+ static inline void stw_le_p(void *ptr, uint16_t v)
+ {
+-    stw_he_p(ptr, le_bswap(v, 16));
++    stw_unaligned_p(ptr, le_bswap(v, 16));
+ }
+ 
+ static inline void st24_le_p(void *ptr, uint32_t v)
+ {
+-    st24_he_p(ptr, le_bswap24(v));
++    st24_unaligned_p(ptr, le_bswap24(v));
+ }
+ 
+ static inline void stl_le_p(void *ptr, uint32_t v)
+ {
+-    stl_he_p(ptr, le_bswap(v, 32));
++    stl_unaligned_p(ptr, le_bswap(v, 32));
+ }
+ 
+ static inline void stq_le_p(void *ptr, uint64_t v)
+ {
+-    stq_he_p(ptr, le_bswap(v, 64));
++    stq_unaligned_p(ptr, le_bswap(v, 64));
+ }
+ 
+ static inline int lduw_be_p(const void *ptr)
+ {
+-    return (uint16_t)be_bswap(lduw_he_p(ptr), 16);
++    return (uint16_t)be_bswap(lduw_unaligned_p(ptr), 16);
+ }
+ 
+ static inline int ldsw_be_p(const void *ptr)
+ {
+-    return (int16_t)be_bswap(lduw_he_p(ptr), 16);
++    return (int16_t)be_bswap(lduw_unaligned_p(ptr), 16);
+ }
+ 
+ static inline int ldl_be_p(const void *ptr)
+ {
+-    return be_bswap(ldl_he_p(ptr), 32);
++    return be_bswap(ldl_unaligned_p(ptr), 32);
+ }
+ 
+ static inline uint64_t ldq_be_p(const void *ptr)
+ {
+-    return be_bswap(ldq_he_p(ptr), 64);
++    return be_bswap(ldq_unaligned_p(ptr), 64);
+ }
+ 
+ static inline void stw_be_p(void *ptr, uint16_t v)
+ {
+-    stw_he_p(ptr, be_bswap(v, 16));
++    stw_unaligned_p(ptr, be_bswap(v, 16));
+ }
+ 
+ static inline void st24_be_p(void *ptr, uint32_t v)
+ {
+-    st24_he_p(ptr, be_bswap24(v));
++    st24_unaligned_p(ptr, be_bswap24(v));
+ }
+ 
+ static inline void stl_be_p(void *ptr, uint32_t v)
+ {
+-    stl_he_p(ptr, be_bswap(v, 32));
++    stl_unaligned_p(ptr, be_bswap(v, 32));
+ }
+ 
+ static inline void stq_be_p(void *ptr, uint64_t v)
+ {
+-    stq_he_p(ptr, be_bswap(v, 64));
++    stq_unaligned_p(ptr, be_bswap(v, 64));
+ }
+ 
+ /* Store v to p as a sz byte value in host order */
 diff --git a/include/qemu/memory_ldst_unaligned.h b/include/qemu/memory_ldst_unaligned.h
-new file mode 100644
-index 00000000000..f6b64e8fe9c
---- /dev/null
+index f6b64e8fe9c..6b0cc3e2777 100644
+--- a/include/qemu/memory_ldst_unaligned.h
 +++ b/include/qemu/memory_ldst_unaligned.h
-@@ -0,0 +1,67 @@
-+/*
-+ * QEMU unaligned/endian-independent pointer access
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+*/
-+#ifndef QEMU_MEMORY_LDST_UNALIGNED_H
-+#define QEMU_MEMORY_LDST_UNALIGNED_H
-+
-+/*
-+ * Any compiler worth its salt will turn these memcpy into native unaligned
-+ * operations.  Thus we don't need to play games with packed attributes, or
-+ * inline byte-by-byte stores.
-+ * Some compilation environments (eg some fortify-source implementations)
-+ * may intercept memcpy() in a way that defeats the compiler optimization,
-+ * though, so we use __builtin_memcpy() to give ourselves the best chance
-+ * of good performance.
-+ */
-+
-+static inline int lduw_he_p(const void *ptr)
-+{
-+    uint16_t r;
-+    __builtin_memcpy(&r, ptr, sizeof(r));
-+    return r;
-+}
-+
-+static inline int ldsw_he_p(const void *ptr)
-+{
-+    int16_t r;
-+    __builtin_memcpy(&r, ptr, sizeof(r));
-+    return r;
-+}
-+
-+static inline void stw_he_p(void *ptr, uint16_t v)
-+{
-+    __builtin_memcpy(ptr, &v, sizeof(v));
-+}
-+
-+static inline void st24_he_p(void *ptr, uint32_t v)
-+{
-+    __builtin_memcpy(ptr, &v, 3);
-+}
-+
-+static inline int ldl_he_p(const void *ptr)
-+{
-+    int32_t r;
-+    __builtin_memcpy(&r, ptr, sizeof(r));
-+    return r;
-+}
-+
-+static inline void stl_he_p(void *ptr, uint32_t v)
-+{
-+    __builtin_memcpy(ptr, &v, sizeof(v));
-+}
-+
-+static inline uint64_t ldq_he_p(const void *ptr)
-+{
-+    uint64_t r;
-+    __builtin_memcpy(&r, ptr, sizeof(r));
-+    return r;
-+}
-+
-+static inline void stq_he_p(void *ptr, uint64_t v)
-+{
-+    __builtin_memcpy(ptr, &v, sizeof(v));
-+}
-+
-+#endif
+@@ -16,50 +16,50 @@
+  * of good performance.
+  */
+ 
+-static inline int lduw_he_p(const void *ptr)
++static inline int lduw_unaligned_p(const void *ptr)
+ {
+     uint16_t r;
+     __builtin_memcpy(&r, ptr, sizeof(r));
+     return r;
+ }
+ 
+-static inline int ldsw_he_p(const void *ptr)
++static inline int ldsw_unaligned_p(const void *ptr)
+ {
+     int16_t r;
+     __builtin_memcpy(&r, ptr, sizeof(r));
+     return r;
+ }
+ 
+-static inline void stw_he_p(void *ptr, uint16_t v)
++static inline void stw_unaligned_p(void *ptr, uint16_t v)
+ {
+     __builtin_memcpy(ptr, &v, sizeof(v));
+ }
+ 
+-static inline void st24_he_p(void *ptr, uint32_t v)
++static inline void st24_unaligned_p(void *ptr, uint32_t v)
+ {
+     __builtin_memcpy(ptr, &v, 3);
+ }
+ 
+-static inline int ldl_he_p(const void *ptr)
++static inline int ldl_unaligned_p(const void *ptr)
+ {
+     int32_t r;
+     __builtin_memcpy(&r, ptr, sizeof(r));
+     return r;
+ }
+ 
+-static inline void stl_he_p(void *ptr, uint32_t v)
++static inline void stl_unaligned_p(void *ptr, uint32_t v)
+ {
+     __builtin_memcpy(ptr, &v, sizeof(v));
+ }
+ 
+-static inline uint64_t ldq_he_p(const void *ptr)
++static inline uint64_t ldq_unaligned_p(const void *ptr)
+ {
+     uint64_t r;
+     __builtin_memcpy(&r, ptr, sizeof(r));
+     return r;
+ }
+ 
+-static inline void stq_he_p(void *ptr, uint64_t v)
++static inline void stq_unaligned_p(void *ptr, uint64_t v)
+ {
+     __builtin_memcpy(ptr, &v, sizeof(v));
+ }
 diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index 034f2f359ef..86cdd70c47f 100644
+index 86cdd70c47f..497128c96c5 100644
 --- a/accel/tcg/translator.c
 +++ b/accel/tcg/translator.c
-@@ -9,6 +9,7 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/bswap.h"
-+#include "qemu/memory_ldst_unaligned.h"
- #include "qemu/log.h"
- #include "qemu/error-report.h"
- #include "accel/tcg/cpu-ldst-common.h"
+@@ -342,14 +342,14 @@ static bool translator_ld(CPUArchState *env, DisasContextBase *db,
+     case 2:
+         if (QEMU_IS_ALIGNED(pc, 2)) {
+             uint16_t t = qatomic_read((uint16_t *)host);
+-            stw_he_p(dest, t);
++            stw_unaligned_p(dest, t);
+             return true;
+         }
+         break;
+     case 4:
+         if (QEMU_IS_ALIGNED(pc, 4)) {
+             uint32_t t = qatomic_read((uint32_t *)host);
+-            stl_he_p(dest, t);
++            stl_unaligned_p(dest, t);
+             return true;
+         }
+         break;
+@@ -357,7 +357,7 @@ static bool translator_ld(CPUArchState *env, DisasContextBase *db,
+     case 8:
+         if (QEMU_IS_ALIGNED(pc, 8)) {
+             uint64_t t = qatomic_read__nocheck((uint64_t *)host);
+-            stq_he_p(dest, t);
++            stq_unaligned_p(dest, t);
+             return true;
+         }
+         break;
 diff --git a/hw/display/ati_2d.c b/hw/display/ati_2d.c
-index 309bb5ccb6c..24a3c3e942f 100644
+index 24a3c3e942f..333d78d7455 100644
 --- a/hw/display/ati_2d.c
 +++ b/hw/display/ati_2d.c
-@@ -10,6 +10,7 @@
- #include "qemu/osdep.h"
- #include "ati_int.h"
- #include "ati_regs.h"
-+#include "qemu/memory_ldst_unaligned.h"
- #include "qemu/log.h"
- #include "ui/pixel_ops.h"
- #include "ui/console.h"
+@@ -222,7 +222,7 @@ void ati_2d_blt(ATIVGAState *s)
+             for (y = 0; y < s->regs.dst_height; y++) {
+                 i = dst_x * bypp + (dst_y + y) * dst_pitch;
+                 for (x = 0; x < s->regs.dst_width; x++, i += bypp) {
+-                    stn_he_p(&dst_bits[i], bypp, filler);
++                    stn_unaligned_p(&dst_bits[i], bypp, filler);
+                 }
+             }
+         }
 diff --git a/hw/display/sm501.c b/hw/display/sm501.c
-index bc091b3c9fb..51efe2ad41f 100644
+index 51efe2ad41f..776fedebb13 100644
 --- a/hw/display/sm501.c
 +++ b/hw/display/sm501.c
-@@ -28,6 +28,7 @@
- #include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "qemu/log.h"
-+#include "qemu/memory_ldst_unaligned.h"
- #include "qemu/module.h"
- #include "hw/usb/hcd-ohci.h"
- #include "hw/char/serial-mm.h"
-@@ -40,7 +41,6 @@
- #include "hw/display/i2c-ddc.h"
- #include "qemu/range.h"
- #include "ui/pixel_ops.h"
--#include "qemu/bswap.h"
- #include "trace.h"
- #include "qom/object.h"
- 
+@@ -768,7 +768,7 @@ static void sm501_2d_operation(SM501State *s)
+             for (y = 0; y < height; y++) {
+                 i = (dst_x + (dst_y + y) * dst_pitch) * bypp;
+                 for (x = 0; x < width; x++, i += bypp) {
+-                    stn_he_p(&d[i], bypp, ~ldn_he_p(&d[i], bypp));
++                    stn_unaligned_p(&d[i], bypp, ~ldn_unaligned_p(&d[i], bypp));
+                 }
+             }
+         } else if (!rop_mode && rop == 0x99) {
+@@ -781,8 +781,9 @@ static void sm501_2d_operation(SM501State *s)
+                 i = (dst_x + (dst_y + y) * dst_pitch) * bypp;
+                 j = (src_x + (src_y + y) * src_pitch) * bypp;
+                 for (x = 0; x < width; x++, i += bypp, j += bypp) {
+-                    stn_he_p(&d[i], bypp,
+-                             ~(ldn_he_p(&sp[j], bypp) ^ ldn_he_p(&d[i], bypp)));
++                    stn_unaligned_p(&d[i], bypp,
++                                    ~(ldn_unaligned_p(&sp[j], bypp)
++                                      ^ ldn_unaligned_p(&d[i], bypp)));
+                 }
+             }
+         } else if (!rop_mode && rop == 0xee) {
+@@ -795,8 +796,9 @@ static void sm501_2d_operation(SM501State *s)
+                 i = (dst_x + (dst_y + y) * dst_pitch) * bypp;
+                 j = (src_x + (src_y + y) * src_pitch) * bypp;
+                 for (x = 0; x < width; x++, i += bypp, j += bypp) {
+-                    stn_he_p(&d[i], bypp,
+-                             ldn_he_p(&sp[j], bypp) | ldn_he_p(&d[i], bypp));
++                    stn_unaligned_p(&d[i], bypp,
++                                    ldn_unaligned_p(&sp[j], bypp)
++                                    | ldn_unaligned_p(&d[i], bypp));
+                 }
+             }
+         } else {
+@@ -818,8 +820,9 @@ static void sm501_2d_operation(SM501State *s)
+             if (width == 1 && height == 1) {
+                 unsigned int si = (src_x + src_y * src_pitch) * bypp;
+                 unsigned int di = (dst_x + dst_y * dst_pitch) * bypp;
+-                stn_he_p(&s->local_mem[dst_base + di], bypp,
+-                         ldn_he_p(&s->local_mem[src_base + si], bypp));
++                stn_unaligned_p(&s->local_mem[dst_base + di], bypp,
++                                ldn_unaligned_p(&s->local_mem[src_base + si],
++                                                bypp));
+                 break;
+             }
+             /* If reverse blit do simple check for overlaps */
+@@ -917,7 +920,7 @@ static void sm501_2d_operation(SM501State *s)
+                 for (y = 0; y < height; y++) {
+                     i = (dst_x + (dst_y + y) * dst_pitch) * bypp;
+                     for (x = 0; x < width; x++, i += bypp) {
+-                        stn_he_p(&d[i], bypp, color);
++                        stn_unaligned_p(&d[i], bypp, color);
+                     }
+                 }
+             }
 diff --git a/hw/remote/vfio-user-obj.c b/hw/remote/vfio-user-obj.c
-index 216b4876e24..9c9ac8b0d92 100644
+index 9c9ac8b0d92..44adff10eb9 100644
 --- a/hw/remote/vfio-user-obj.c
 +++ b/hw/remote/vfio-user-obj.c
-@@ -49,6 +49,7 @@
- #include "qapi/error.h"
- #include "qapi/qapi-visit-sockets.h"
- #include "qapi/qapi-events-misc.h"
-+#include "qemu/memory_ldst_unaligned.h"
- #include "qemu/notify.h"
- #include "qemu/thread.h"
- #include "qemu/main-loop.h"
+@@ -392,7 +392,7 @@ static int vfu_object_mr_rw(MemoryRegion *mr, uint8_t *buf, hwaddr offset,
+         access_size = memory_access_size(mr, size, offset);
+ 
+         if (is_write) {
+-            val = ldn_he_p(ptr, access_size);
++            val = ldn_unaligned_p(ptr, access_size);
+ 
+             result = memory_region_dispatch_write(mr, offset, val,
+                                                   size_memop(access_size),
+@@ -402,7 +402,7 @@ static int vfu_object_mr_rw(MemoryRegion *mr, uint8_t *buf, hwaddr offset,
+                                                  size_memop(access_size),
+                                                  MEMTXATTRS_UNSPECIFIED);
+ 
+-            stn_he_p(ptr, access_size, val);
++            stn_unaligned_p(ptr, access_size, val);
+         }
+ 
+         if (release_lock) {
 diff --git a/hw/vmapple/virtio-blk.c b/hw/vmapple/virtio-blk.c
-index 9de9aaae0bf..f5e8e92df75 100644
+index f5e8e92df75..805bcbc9467 100644
 --- a/hw/vmapple/virtio-blk.c
 +++ b/hw/vmapple/virtio-blk.c
-@@ -19,6 +19,7 @@
- #include "hw/vmapple/vmapple.h"
- #include "hw/virtio/virtio-blk.h"
- #include "hw/virtio/virtio-pci.h"
-+#include "qemu/memory_ldst_unaligned.h"
- #include "qemu/log.h"
- #include "qemu/module.h"
- #include "qapi/error.h"
+@@ -79,7 +79,7 @@ static void vmapple_virtio_blk_get_config(VirtIODevice *vdev, uint8_t *config)
+     g_assert(dev->parent_obj.config_size >= endof(struct virtio_blk_config, zoned));
+ 
+     /* Apple abuses the field for max_secure_erase_sectors as type id */
+-    stl_he_p(&blkcfg->max_secure_erase_sectors, dev->apple_type);
++    stl_unaligned_p(&blkcfg->max_secure_erase_sectors, dev->apple_type);
+ }
+ 
+ static void vmapple_virtio_blk_class_init(ObjectClass *klass, const void *data)
 diff --git a/net/checksum.c b/net/checksum.c
-index 537457d89d0..18be31c26e5 100644
+index 18be31c26e5..56314f5e76d 100644
 --- a/net/checksum.c
 +++ b/net/checksum.c
-@@ -16,6 +16,7 @@
-  */
+@@ -110,7 +110,7 @@ void net_checksum_calculate(void *data, int length, int csum_flag)
  
- #include "qemu/osdep.h"
-+#include "qemu/memory_ldst_unaligned.h"
- #include "net/checksum.h"
- #include "net/eth.h"
+     /* Calculate IP checksum */
+     if (csum_flag & CSUM_IP) {
+-        stw_he_p(&ip->ip_sum, 0);
++        stw_unaligned_p(&ip->ip_sum, 0);
+         csum = net_raw_checksum((uint8_t *)ip, IP_HDR_GET_LEN(ip));
+         stw_be_p(&ip->ip_sum, csum);
+     }
+@@ -142,7 +142,7 @@ void net_checksum_calculate(void *data, int length, int csum_flag)
+         }
  
+         /* Set csum to 0 */
+-        stw_he_p(&tcp->th_sum, 0);
++        stw_unaligned_p(&tcp->th_sum, 0);
+ 
+         csum = net_checksum_tcpudp(ip_len, ip->ip_p,
+                                    (uint8_t *)&ip->ip_src,
+@@ -166,7 +166,7 @@ void net_checksum_calculate(void *data, int length, int csum_flag)
+         }
+ 
+         /* Set csum to 0 */
+-        stw_he_p(&udp->uh_sum, 0);
++        stw_unaligned_p(&udp->uh_sum, 0);
+ 
+         csum = net_checksum_tcpudp(ip_len, ip->ip_p,
+                                    (uint8_t *)&ip->ip_src,
+diff --git a/system/memory.c b/system/memory.c
+index 8b84661ae36..653d46e8e79 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -1365,7 +1365,7 @@ static uint64_t memory_region_ram_device_read(void *opaque,
+                                               hwaddr addr, unsigned size)
+ {
+     MemoryRegion *mr = opaque;
+-    uint64_t data = ldn_he_p(mr->ram_block->host + addr, size);
++    uint64_t data = ldn_unaligned_p(mr->ram_block->host + addr, size);
+ 
+     trace_memory_region_ram_device_read(get_cpu_index(), mr, addr, data, size);
+ 
+@@ -1379,7 +1379,7 @@ static void memory_region_ram_device_write(void *opaque, hwaddr addr,
+ 
+     trace_memory_region_ram_device_write(get_cpu_index(), mr, addr, data, size);
+ 
+-    stn_he_p(mr->ram_block->host + addr, size, data);
++    stn_unaligned_p(mr->ram_block->host + addr, size, data);
+ }
+ 
+ static const MemoryRegionOps ram_device_mem_ops = {
+diff --git a/system/physmem.c b/system/physmem.c
+index fb69cdb57d9..d62af6f2480 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -3284,7 +3284,7 @@ static MemTxResult flatview_write_continue_step(MemTxAttrs attrs,
+ 
+         /*
+          * Assure Coverity (and ourselves) that we are not going to OVERRUN
+-         * the buffer by following ldn_he_p().
++         * the buffer by following ldn_unaligned_p().
+          */
+ #ifdef QEMU_STATIC_ANALYSIS
+         assert((*l == 1 && len >= 1) ||
+@@ -3292,7 +3292,7 @@ static MemTxResult flatview_write_continue_step(MemTxAttrs attrs,
+                (*l == 4 && len >= 4) ||
+                (*l == 8 && len >= 8));
+ #endif
+-        val = ldn_he_p(buf, *l);
++        val = ldn_unaligned_p(buf, *l);
+         result = memory_region_dispatch_write(mr, mr_addr, val,
+                                               size_memop(*l), attrs);
+         if (release_lock) {
+@@ -3379,7 +3379,7 @@ static MemTxResult flatview_read_continue_step(MemTxAttrs attrs, uint8_t *buf,
+ 
+         /*
+          * Assure Coverity (and ourselves) that we are not going to OVERRUN
+-         * the buffer by following stn_he_p().
++         * the buffer by following stn_unaligned_p().
+          */
+ #ifdef QEMU_STATIC_ANALYSIS
+         assert((*l == 1 && len >= 1) ||
+@@ -3387,7 +3387,7 @@ static MemTxResult flatview_read_continue_step(MemTxAttrs attrs, uint8_t *buf,
+                (*l == 4 && len >= 4) ||
+                (*l == 8 && len >= 8));
+ #endif
+-        stn_he_p(buf, *l, val);
++        stn_unaligned_p(buf, *l, val);
+ 
+         if (release_lock) {
+             bql_unlock();
 diff --git a/ui/vnc-enc-tight.c b/ui/vnc-enc-tight.c
-index 9dfe6ae5a24..b645aebccef 100644
+index b645aebccef..62d825dc05f 100644
 --- a/ui/vnc-enc-tight.c
 +++ b/ui/vnc-enc-tight.c
-@@ -42,6 +42,7 @@
- #include <jpeglib.h>
- #endif
+@@ -912,7 +912,7 @@ static void tight_pack24(VncState *vs, uint8_t *buf, size_t count, size_t *ret)
+     }
  
-+#include "qemu/memory_ldst_unaligned.h"
- #include "qemu/bswap.h"
- #include "vnc.h"
- #include "vnc-enc-tight.h"
+     while (count--) {
+-        pix = ldl_he_p(buf8);
++        pix = ldl_unaligned_p(buf8);
+         *buf++ = (char)(pix >> rshift);
+         *buf++ = (char)(pix >> gshift);
+         *buf++ = (char)(pix >> bshift);
 diff --git a/util/bufferiszero.c b/util/bufferiszero.c
-index 522146dab97..9548dd3ad1b 100644
+index 9548dd3ad1b..d7775dc891d 100644
 --- a/util/bufferiszero.c
 +++ b/util/bufferiszero.c
-@@ -23,7 +23,7 @@
-  */
- #include "qemu/osdep.h"
- #include "qemu/cutils.h"
--#include "qemu/bswap.h"
-+#include "qemu/memory_ldst_unaligned.h"
- #include "host/cpuinfo.h"
+@@ -38,10 +38,10 @@ static bool buffer_is_zero_int_lt256(const void *buf, size_t len)
+      * the beginning and end of the buffer.
+      */
+     if (unlikely(len <= 8)) {
+-        return (ldl_he_p(buf) | ldl_he_p(buf + len - 4)) == 0;
++        return (ldl_unaligned_p(buf) | ldl_unaligned_p(buf + len - 4)) == 0;
+     }
  
- typedef bool (*biz_accel_fn)(const void *, size_t);
+-    t = ldq_he_p(buf) | ldq_he_p(buf + len - 8);
++    t = ldq_unaligned_p(buf) | ldq_unaligned_p(buf + len - 8);
+     p = QEMU_ALIGN_PTR_DOWN(buf + 8, 8);
+     e = QEMU_ALIGN_PTR_DOWN(buf + len - 1, 8);
+ 
+@@ -58,7 +58,7 @@ static bool buffer_is_zero_int_ge256(const void *buf, size_t len)
+      * Use unaligned memory access functions to handle
+      * the beginning and end of the buffer.
+      */
+-    uint64_t t = ldq_he_p(buf) | ldq_he_p(buf + len - 8);
++    uint64_t t = ldq_unaligned_p(buf) | ldq_unaligned_p(buf + len - 8);
+     const uint64_t *p = QEMU_ALIGN_PTR_DOWN(buf + 8, 8);
+     const uint64_t *e = QEMU_ALIGN_PTR_DOWN(buf + len - 1, 8);
+ 
+diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
+index c735add2615..eeb18c716c0 100644
+--- a/accel/tcg/ldst_atomicity.c.inc
++++ b/accel/tcg/ldst_atomicity.c.inc
+@@ -415,7 +415,7 @@ static uint16_t load_atom_2(CPUState *cpu, uintptr_t ra,
+     atmax = required_atomicity(cpu, pi, memop);
+     switch (atmax) {
+     case MO_8:
+-        return lduw_he_p(pv);
++        return lduw_unaligned_p(pv);
+     case MO_16:
+         /* The only case remaining is MO_ATOM_WITHIN16. */
+         if (!HAVE_al8_fast && (pi & 3) == 1) {
+@@ -512,7 +512,7 @@ static uint64_t load_atom_8(CPUState *cpu, uintptr_t ra,
+     }
+     switch (atmax) {
+     case MO_8:
+-        return ldq_he_p(pv);
++        return ldq_unaligned_p(pv);
+     case MO_16:
+         return load_atom_8_by_2(pv);
+     case MO_32:
+@@ -875,7 +875,7 @@ static void store_atom_2(CPUState *cpu, uintptr_t ra,
+ 
+     atmax = required_atomicity(cpu, pi, memop);
+     if (atmax == MO_8) {
+-        stw_he_p(pv, val);
++        stw_unaligned_p(pv, val);
+         return;
+     }
+ 
+@@ -928,7 +928,7 @@ static void store_atom_4(CPUState *cpu, uintptr_t ra,
+     atmax = required_atomicity(cpu, pi, memop);
+     switch (atmax) {
+     case MO_8:
+-        stl_he_p(pv, val);
++        stl_unaligned_p(pv, val);
+         return;
+     case MO_16:
+         store_atom_4_by_2(pv, val);
+@@ -996,7 +996,7 @@ static void store_atom_8(CPUState *cpu, uintptr_t ra,
+     atmax = required_atomicity(cpu, pi, memop);
+     switch (atmax) {
+     case MO_8:
+-        stq_he_p(pv, val);
++        stq_unaligned_p(pv, val);
+         return;
+     case MO_16:
+         store_atom_8_by_2(pv, val);
 -- 
 2.52.0
 
