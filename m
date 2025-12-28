@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 189D0CE52B5
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D812CE52B6
 	for <lists+qemu-devel@lfdr.de>; Sun, 28 Dec 2025 17:19:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZtTh-0001ji-P8; Sun, 28 Dec 2025 11:18:45 -0500
+	id 1vZtTn-0001kQ-IU; Sun, 28 Dec 2025 11:18:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vZtTg-0001jZ-8o
- for qemu-devel@nongnu.org; Sun, 28 Dec 2025 11:18:44 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vZtTl-0001k4-Ox
+ for qemu-devel@nongnu.org; Sun, 28 Dec 2025 11:18:49 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vZtTe-00078R-Pw
- for qemu-devel@nongnu.org; Sun, 28 Dec 2025 11:18:44 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-477ba2c1ca2so88789075e9.2
- for <qemu-devel@nongnu.org>; Sun, 28 Dec 2025 08:18:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vZtTk-00079l-Cf
+ for qemu-devel@nongnu.org; Sun, 28 Dec 2025 11:18:49 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-47775fb6c56so63862835e9.1
+ for <qemu-devel@nongnu.org>; Sun, 28 Dec 2025 08:18:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766938719; x=1767543519; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=EqIDVG4Vst2Askn3/wFwiTIG0UUnOigrKGotRr0ttlo=;
- b=NWY7NonLTIpQ/Ggj33LVZC2t3BYOaCIOTKgz/i0NI1Jnn6+H4o/PN5sHxUnV17lzxJ
- 4AapiIyuRXR/8JFeopAhyyw2+MPocg+G54Flrjslg2BBQLMwCg0shl9eAY4jYgRl1Zj0
- 6rDr8bRJQ0nJfDrDT6q/UZBl2FdTug1CCLC86nXuRUmBF4Mf9fsQsC2gfJg3byg6m0bC
- fRBfWXtdQtpw/VZZ8s94a9A1dkkzqjiKcRL1+cf9IqZOTYdMk1kJhSw2Aaiv3Y7VEIF1
- onv5LcIwJixFedYSRHJqpIb51xy/RCB+N4EAuivF504t/g6qWnw0LY9UYeX6w/QhskZL
- aNcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766938719; x=1767543519;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1766938726; x=1767543526; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EqIDVG4Vst2Askn3/wFwiTIG0UUnOigrKGotRr0ttlo=;
- b=woR7WLA/+jtJIrFUOUKnJu+syPR0O189lzEzwePJ3EZydbz3A7V356EmyggkAESQvr
- AjfV+IE5cP1SUQzTmaJEDXQfkYci/w4oA7fJNNLpljkmSeRRfyVW/nUrGgGQmIV0ds0t
- szRmHwaXWN8p0RBNhE3DZp97rnsuCJccMAhaLEowntpBcY6N4IyN+nym19dkTZUescn+
- K80Lvgt9ZlreeS82NOlTa1BeIVEPO/8u8WDuJBB++Gyz0S0k9i4hPJbJLBITw2kasUFN
- XY0l2IcYOQ9m0BNFqJb8obHoAw2+FAJzrl63zZTwspOi1cJLQSzbZxMc4c8JFmCTugBG
- nsNQ==
-X-Gm-Message-State: AOJu0Yw2BoQXy5Tvt71qCNtZvfdimGM7lznEzq/IsDOjJY/m5Jl5wAFY
- WArK4CwrPjbXhhYJUdCnGyeux0Y4FFRQ21dlrtrTlR/RX/O7quOVkQcYbZanx2Tgdxb0CLoNDVp
- +Dj61
-X-Gm-Gg: AY/fxX5vwfPD0o1ED5DbewK3rC4xtQwp0DkF70aHVlcoLfvEAcI8IAaNZ7Lvowpi88V
- f3WuAPr5UsmE+WqURzbrFPxAMadacIUCzWbDnP7318e2rDk0x+MGerum7NwB8zEFHM0VyyBJKqP
- tVndPgP4vddy+Fy6dirW+3AEqKcLtF0nwVhOognQTg/Yr3c9yYQ7H/Xx/+5w/wrvDhnxQGBzw7V
- O250UhPuwt7rCScULfptb4nZPF3tqo8RUw4lJSgjkZ0Kv+CW9aKZOht/+Ty4uyOFr5p9WQnBnY/
- l6O6hTVA33/LzwnxzzaSXO7oAtjDtUZwNbKD9YmbfH9jPdyE/ogrnwESRfNgjEL+84bvK97UWW9
- BNZkYS7kjaXSx7UROPJS6NPgKdtjWB5hlAmVoE2rsJNn0I2Ej/lMACCDJHeO4JEqXHu92pWswFv
- 4Za1cuqvGfhnKnFCsGZARVoGytpv7IkLz0ZT9PcuUvnYwOxMnZo5bd
-X-Google-Smtp-Source: AGHT+IG4u0MMCQQHNqISyFB5ZzBlcfnILcXTNDAy1c9eSwhqPijL64zxSqdmqcWa4tU8h5cfBqGJeg==
-X-Received: by 2002:a05:600c:4e49:b0:471:13dd:bae7 with SMTP id
- 5b1f17b1804b1-47d195911b8mr286892895e9.30.1766938718984; 
- Sun, 28 Dec 2025 08:18:38 -0800 (PST)
+ bh=GT54nZ9xmvP9oNeVAwz9xyAGQyRqv62EmxxVW6/IKg8=;
+ b=pP/5BuFYULjUJihWc/vR2Ix4g9StY5Vqk3boJyI/i8LnUzaaSPXlpe+gw+jkYa1Sqk
+ pMxnH9V3m6LYaPQPw1KqnmE06O1QtQ7WmfABdDUg+W6LkzxXeKzqx5WUtUb6HR3l5L0x
+ b3YouPrgZ7lXhk3dNLajn37kBxPrs73gim4PIEpg4HbfUaOvvac0TW5qQMjeUoBQ1ZnQ
+ zWOVYZe6i4/u47KUpUWw7lQlLCjN4M/9JwNXEEW6ViJLtKOMvCOvFq7fR/OPqOvmm/5Z
+ 6/KSYSpMEZuJTwbrgxzcZZ66oKuDPg0KyKYKApkllXFs0c4vyD4sHAZVMLHR3xJenXOB
+ QnYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1766938726; x=1767543526;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=GT54nZ9xmvP9oNeVAwz9xyAGQyRqv62EmxxVW6/IKg8=;
+ b=ibFYV3xH7qmlqt7JyXCzdHx7axweebQQIkLFhz+Eg9KKRdFaSqgALlhKJM7DKIks/l
+ BIvpApt95AVjJvBQDDkQ10iTfE7m32Mfhx2MZVapUL1S50MNTFrzs+srd6A6xCXEO0Hj
+ G3LLotVI8RHRjKhCXuNaUeDGNNQY32vx+n1BV+GcL0rWIUnnL0/uRssWxvS/LaIc1gjI
+ ipcCimG/mEnw6b7manO8jhY6ZS/txP4YsGiN1z0ZL1t5O8Nlzbpal/nN0bWs+meoTJLT
+ bm63+eK6X6P7+9lYEU9tNuJWXa2JvV3YsRmSB5Sb3Kpk1C7Eg3E+JVChv99xxq8uacnP
+ zSTw==
+X-Gm-Message-State: AOJu0YxZNM+8mQOaNooXXrslQHmw82ODUx04WUlaYwrODt7TjJwdJSkH
+ vHFtxIn2n5akpARu5XHMgXzPGCZGRVIhZtSNrUh5d6KLzDZ243J9aTF1I6YKohsA8I4VXdhEsdQ
+ /O+BL
+X-Gm-Gg: AY/fxX4Zu3vQBZopKiu+jXXC4gZkYZe22ZvW96ZRXJDNktwNuHDku9M22Jj781RoyWe
+ 2PBMEfF1Hr+UOWPmDnpBdIL+JrjrNHLzc2P1AOInq3ZfD3gEFW8z4ICIlXWVPhD2mWlFKSC8wKc
+ F2dhvBUoPvRp5ANRnjL51P5d6suefqlSRVTdwoj7GWgg4Wxl2X4ar5w1SyylSa3mCS9FlPquIEU
+ SfaxSpU0WzAgeQ2UR581pCZ9M6ynzD0lQTrwZRcdQSJQxjIOhISWRsn4n1oKRVExbvS7lVqEhay
+ zPawv0MQuA4G50f4L+r3FAna1s2r47OlGcicaSRHDdGzphp/38kZmceL9TjoZIldWU4Ey81kSJW
+ JDFMyVj8f4EiJmG/jzvedFA5Jm0Yy8S8qKefmLOB5LzJgU93Ymz3b9Laj5RaWB6JszDDziY0uwT
+ QOc3klY+bIuDYYN9Gza+YsU8/SYhROLRkGtAglCLEsPK7gIf57XfRZ
+X-Google-Smtp-Source: AGHT+IE5da6Nvd2Pe0jEZMKPwqDlROZ4wC/JSfLP/9njPuqrR2LmOlmsFbYeFe75zANT3LOnuGKinA==
+X-Received: by 2002:a05:600c:1d0a:b0:477:79c7:8994 with SMTP id
+ 5b1f17b1804b1-47d1959f72amr328931545e9.30.1766938726529; 
+ Sun, 28 Dec 2025 08:18:46 -0800 (PST)
 Received: from m1.home (alyon-655-1-564-32.w80-9.abo.wanadoo.fr. [80.9.105.32])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47be27b0d5asm554084565e9.13.2025.12.28.08.18.37
+ ffacd0b85a97d-43277b82a58sm23855256f8f.6.2025.12.28.08.18.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 28 Dec 2025 08:18:38 -0800 (PST)
+ Sun, 28 Dec 2025 08:18:46 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -68,15 +69,17 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  David Hildenbrand <david@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH 0/3] system/memory: Clarify unaligned load/store API
-Date: Sun, 28 Dec 2025 17:18:33 +0100
-Message-ID: <20251228161837.12413-1-philmd@linaro.org>
+Subject: [PATCH 1/3] system/memory: Remove ldn_he_p() and stn_he_p() helpers
+Date: Sun, 28 Dec 2025 17:18:34 +0100
+Message-ID: <20251228161837.12413-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251228161837.12413-1-philmd@linaro.org>
+References: <20251228161837.12413-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,31 +102,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I have been confused by the load/store 'host endian' API
-for years: this is just about unaligned loads/stores.
-Rename to clarify.
+ldn_he_p() and stn_he_p() helpers expand to a plain
+memcpy(), but in a convoluted way. We are not using
+them, just remove so we are not tempted to start to.
 
-Philippe Mathieu-Daudé (3):
-  system/memory: Remove ldn_he_p() and stn_he_p() helpers
-  system/memory: Extract 'qemu/memory_ldst_unaligned.h' header
-  system/memory: Rename unaligned load/store API
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/qemu/bswap.h | 1 -
+ 1 file changed, 1 deletion(-)
 
- include/qemu/bswap.h                 | 95 +++++-----------------------
- include/qemu/memory_ldst_unaligned.h | 67 ++++++++++++++++++++
- accel/tcg/translator.c               |  7 +-
- hw/display/ati_2d.c                  |  3 +-
- hw/display/sm501.c                   | 21 +++---
- hw/remote/vfio-user-obj.c            |  5 +-
- hw/vmapple/virtio-blk.c              |  3 +-
- net/checksum.c                       |  7 +-
- system/memory.c                      |  4 +-
- system/physmem.c                     |  8 +--
- ui/vnc-enc-tight.c                   |  3 +-
- util/bufferiszero.c                  |  8 +--
- accel/tcg/ldst_atomicity.c.inc       | 10 +--
- 13 files changed, 128 insertions(+), 113 deletions(-)
- create mode 100644 include/qemu/memory_ldst_unaligned.h
-
+diff --git a/include/qemu/bswap.h b/include/qemu/bswap.h
+index 65a1b3634f4..b77ea955de5 100644
+--- a/include/qemu/bswap.h
++++ b/include/qemu/bswap.h
+@@ -412,7 +412,6 @@ static inline void stq_be_p(void *ptr, uint64_t v)
+         }                                                               \
+     }
+ 
+-DO_STN_LDN_P(he)
+ DO_STN_LDN_P(le)
+ DO_STN_LDN_P(be)
+ 
 -- 
 2.52.0
 
