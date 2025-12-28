@@ -2,94 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB85FCE5788
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Dec 2025 22:28:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A7D5CE57CE
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Dec 2025 23:09:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZyHg-0000J3-OO; Sun, 28 Dec 2025 16:26:40 -0500
+	id 1vZywW-0001gZ-Nv; Sun, 28 Dec 2025 17:08:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vZyHc-0000EV-Sh
- for qemu-devel@nongnu.org; Sun, 28 Dec 2025 16:26:38 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1vZywV-0001gO-8e
+ for qemu-devel@nongnu.org; Sun, 28 Dec 2025 17:08:51 -0500
+Received: from mail-yw1-x112a.google.com ([2607:f8b0:4864:20::112a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vZyHb-0005sX-Cy
- for qemu-devel@nongnu.org; Sun, 28 Dec 2025 16:26:36 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-477a219dbcaso69597745e9.3
- for <qemu-devel@nongnu.org>; Sun, 28 Dec 2025 13:26:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1vZywT-00038P-PR
+ for qemu-devel@nongnu.org; Sun, 28 Dec 2025 17:08:51 -0500
+Received: by mail-yw1-x112a.google.com with SMTP id
+ 00721157ae682-78c66bdf675so73126537b3.2
+ for <qemu-devel@nongnu.org>; Sun, 28 Dec 2025 14:08:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766957193; x=1767561993; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1766959728; x=1767564528; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=yKI+C4ldvsZNoD/dy3z0rvdKNo8G0h0NOyVUYNo74uA=;
- b=NzEMdc3gKqVKL/6O/+20njEpSa68n44wZikN28oLPPeTjFp+Zp1RgGiycqimWcSGc2
- 7+y8XFCCH0E91gaDIrBCFKhPGMyiTPhltXKRKUFsQSfQCItNtzf5SniHkVR2kXMmlEEc
- ynVXnoE872q7js/DhJ7303MnBEOonM+Jd3LRXGc59oOr3DNrrHJfuHoLCGXqKRtTQxiV
- vxJbWCOLdeVyV2imeGGcPLIa9lOHLkB4Xe3Ti0hGjaFL1QLHW9gsmv7KjUDwhXFlkErJ
- Labq3jpizc8O9FWdvvoM6tHev5BwuSKBYrANY7sfQl8f4qPx1k78bNqauZ6kRBcVJuu+
- T/KA==
+ bh=uEBO00ROoMJWOpPzvMqUtrfif4OZf7PHSURJrTERtwc=;
+ b=R2yfIe3CbyUttFL4ff4LoIk4XKvhAuuWgaDN/zIX7tsNsNX9Rg04nF5nE4EEF7Rl9E
+ ErJ/H6sZgLhRvFT1A54rV1dEpDSRZJqBOog9XC2Wl/3KYxsVu9RzFVGmU/j6LGeTc6dz
+ pg8V47FQYGVMr+yF2h04RFIk71lV9RRPNFDR3Jl/BuKivNbcDcIwqMnnbMmvFq3W+Qce
+ E40Q4YveJL/09X7Iqw6O+0N3MPpnvCJEbd9RoBvKUoSc9Tu/d1BklFvyuOokx2KIQ75E
+ npBAglKVjp5zwrCQawWfdFLiVepZWuzmyLETdpqZd15uKpRZVxC0hAOjFCBXNMKSbPVv
+ ko+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766957193; x=1767561993;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1766959728; x=1767564528;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=yKI+C4ldvsZNoD/dy3z0rvdKNo8G0h0NOyVUYNo74uA=;
- b=JoIigHpVt2o50/9Y6QkF/dNhxOuE63hc0X9peb2o9xnuTb4l86W3OF4pw0cRqdVXiL
- I3R/0MfofZPlPmnY7s646woSpBc8qeJZagAxn9UPxMuEidzCiDM5kEepVdgtQBC/ozBZ
- IiCkryqMei+d3xHZfKSq8cNm2lHaflRq1iI9Cte2eWp9KsgmkrUiUS1ol109MSzubsAI
- Put9RrgxwNhdi4HnYcGEXkq0fHi6UWUE0lL5noer7E2v5MjAfbeDBjcZE4BXO5iOTEYL
- GFadmmfiGVvF/zXZEt3lc1V1U3gXpeXNi6nQbkMp3bS7a6shuC1vGC724eLocRnOjfdo
- A8hg==
-X-Gm-Message-State: AOJu0Ywd1ebb81H2YLPQb/vSu1hPdcot50eys9HCMg97PCRZfXLGVLSV
- V8Z83EJw7KPAE543yumg/PvniwMI3sAm/78AAorM78ALUE+MaqbIX7pp8B1e8t8uvCI=
-X-Gm-Gg: AY/fxX6t1Cb/x/dq08/FHsZTJ0w+8hyEhT1WZPPQM4JnI7LeJBs1qPUmT6QTNfhMZQF
- Af9LIccxFCW59VB0UXqB9Qxrtw7/irwAG9vFhTUivF4Q4RpDiWuzmikw7MWkcZypvIn1onQYqE6
- R+hCVcGDdCWbtgPchfjm/xRjG92PykhVJ3fJq5NjUbmveCNPu5uVZfaOtOuPb7IE03hdCYsoPDV
- MY84bBD7x1lnSL/5GSGf9kVBuVBKZvXBO/j3JcVsyQcYA77cdC1/2OH3Oo3A0lO5IkDqOVpTqqu
- bSRWSf/BcE0Yx0+pTmukSis0ATldwHz9QOeugWmds8Hh0vwypAR7X5dZXHEPMJsM/7snvKuBrMK
- 7vw3uLSL+1m3WT7tltzqDSVMTr+nJiHBZWPdYAXUs+cb+fC+jeDp1fadoYxIdOrk75qqYlULRgT
- OUGXE7yWK9jpIE04PaJudw0JSosNU2tp/ipwXuxqCD/cu9/z8dZ/gFWCmmbzWB9zgjJ2uKLsET
-X-Google-Smtp-Source: AGHT+IFGlP5JkuA7fc7oS18pZTqpw6ulZX5HOXTX52A+LzflvMNvoh7xDwa9o0k6HRqmqk3W77W5rg==
-X-Received: by 2002:a05:600c:4f94:b0:477:c71:1fc1 with SMTP id
- 5b1f17b1804b1-47d19595e3dmr323748255e9.19.1766957193287; 
- Sun, 28 Dec 2025 13:26:33 -0800 (PST)
-Received: from [192.168.1.15] (alyon-655-1-564-32.w80-9.abo.wanadoo.fr.
- [80.9.105.32]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47be27c2260sm546863665e9.15.2025.12.28.13.26.32
+ bh=uEBO00ROoMJWOpPzvMqUtrfif4OZf7PHSURJrTERtwc=;
+ b=CRj0j/ZixBbHD7kx3F9m36J/56pkZNviPgwszk4SIwxiUKbFXX4hLwJe+QP+LdurW8
+ HigvTGQWMtMmH/0sUuGvJba6+taHacUUij8eYY1WD/DxEK4+4gZcvpvyz1XKP9Y5HtmU
+ z8Zw7JKhz0YtggvXTt3xxVB3udxOEQIM+G3lUIpdJtcWGNXBYRqqQM0X8oatZtxU60XV
+ 64fbtuETpIZ9xa2bJ+oNFAdeHfGoOjELqccKGu3ns39kdvoN4jc0xnD9g47JHK8/9hsp
+ GdaKPFvjtsPb7oVS982FfPKxkMJHHYN1o8RzrGr05vkbgJWl2bFgUSmf9xseaN4DR+kW
+ fNjw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUGvLP0ZbyZuKJhyUDWPZe+nk6Z9kkAgNfHjeMsZqsZkrPeBALUQMIen8+G/28SYs8pt8DgBYaKoSx1@nongnu.org
+X-Gm-Message-State: AOJu0YxtqLxn5Kz3pLSG7N1b0djaY8MnOkfHkUtTUhvZCWgwfECYWVer
+ tTC//16FIq0FdHWzxiZrOB+I/LHJDptUqFUTgYG4kQH6ubKcJzdKI8oTEkOBOhTmDkA=
+X-Gm-Gg: AY/fxX55sWTS46fIY6OnhRo6CqC0v2gkk+ZK8o06vXdP2M5DgRqDwqsF9BAwasqtpgS
+ ln8G4sYgi8CCVUyFIx45uSo7X7U2g76oj6sZyOyBs5w9/H70VqjPF4RoEPPJwEGJS4MxFmrz9Qn
+ U/1ylVSlvzzOLzCQhKFwn1iU4p91xypngDKyxYgrzmvDO0bhI/ULy4zLmaPfIs/HOQcxg+glwX5
+ +yzARdYBVWqGUWXbzx3LYoyEVJ+2VZPrJsLUFrf1bvdEwvMRf5C6U4BfcM50CFQvkgoZHN6tKGg
+ PCjq2vMN9duc64VVCrW9k2FfADEhFu+q0ZZlKPN+yiJOCP/m4OCWXQltx6jd0yn7SZWyLTTFWu9
+ l8e8nk7+C5Uo2CfYZcPwQeQfTGhupD1o4swROC6zubLnRjKsI7vfUASYyDAcIbpMbOenZpQOZ1d
+ QsFOCkNZBr8P9PpspkF9/ME+l9IxwjoiyoLd8jcXLYcBTAWeTAFObx
+X-Google-Smtp-Source: AGHT+IFei1CpkgN5Bw4u/kRoFskoHon8cg6qWvfPqJOEF4uweMKj/SLle8WWTOS5kBVcQV0fXACn1g==
+X-Received: by 2002:a05:690c:700d:b0:788:b84:d4f9 with SMTP id
+ 00721157ae682-78fb419ac8fmr203563097b3.57.1766959727956; 
+ Sun, 28 Dec 2025 14:08:47 -0800 (PST)
+Received: from [10.212.166.227] ([172.59.192.106])
+ by smtp.gmail.com with ESMTPSA id
+ 00721157ae682-78fb43701c7sm108946207b3.8.2025.12.28.14.08.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 28 Dec 2025 13:26:32 -0800 (PST)
-Message-ID: <5795688b-5030-4446-b839-a257b74d1f63@linaro.org>
-Date: Sun, 28 Dec 2025 22:26:31 +0100
+ Sun, 28 Dec 2025 14:08:47 -0800 (PST)
+Message-ID: <0e791e7a-5c2c-4758-9786-b3dc01cf2b1c@linaro.org>
+Date: Mon, 29 Dec 2025 09:08:38 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] system/memory: Remove ldn_he_p() and stn_he_p()
- helpers
+Subject: Re: [PULL 00/31] Next patches
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>
+References: <20251223142959.1460293-1-peterx@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, Peter Xu <peterx@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- David Hildenbrand <david@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>
-References: <20251228161837.12413-1-philmd@linaro.org>
- <20251228161837.12413-2-philmd@linaro.org>
- <CABgObfYx8KsRB+6gdWx_U=pJgax8DE6wJMpXSstLDpLpsguu9A@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CABgObfYx8KsRB+6gdWx_U=pJgax8DE6wJMpXSstLDpLpsguu9A@mail.gmail.com>
+In-Reply-To: <20251223142959.1460293-1-peterx@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-yw1-x112a.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,19 +103,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/12/25 21:29, Paolo Bonzini wrote:
+On 12/24/25 01:29, Peter Xu wrote:
+> The following changes since commit 8dd5bceb2f9cc58481e9d22355a8d998220896de:
 > 
+>    Open 11.0 development tree (2025-12-23 14:45:38 +1100)
 > 
-> Il dom 28 dic 2025, 17:18 Philippe Mathieu-Daudé <philmd@linaro.org 
-> <mailto:philmd@linaro.org>> ha scritto:
+> are available in the Git repository at:
 > 
->     ldn_he_p() and stn_he_p() helpers expand to a plain
->     memcpy(), but in a convoluted way. We are not using
->     them, just remove so we are not tempted to start to.
+>    https://gitlab.com/peterx/qemu.git tags/next-pull-request
 > 
+> for you to fetch changes up to bcb411a005fdf39b76e99c14f3618c7b70f7774d:
 > 
-> I am confused, doesn't ati_2d.c use them? And in the future they could 
-> also be used by ram_device_ops etc.
+>    MAINTAINERS: remove David from "Memory API" section (2025-12-23 09:27:02 -0500)
+> 
+> ----------------------------------------------------------------
+> memory + migration pull
+> 
+> - Pawel's misc fixes to mapped-ram when x-ignore-share is enabled
+> - Peter's series to cleanup migration error reporting
+> - Peter's added debug property for x-ignore-shared
+> - Part of Fabiano's series on unify capabilities and parameters
+> - Chuang's log_clear optimization on unaligned ramblocks
+> - Maintainer file update from Ben (CPR++) and David (MemoryAPI-)
 
-Yeah sorry, this patch is crap, I should better get some rest.
+
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/11.0 as appropriate.
+
+r~
 
