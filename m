@@ -2,60 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 523CFCE58CE
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Dec 2025 00:29:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5765ACE58D3
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Dec 2025 00:29:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1va0BI-00043C-L6; Sun, 28 Dec 2025 18:28:13 -0500
+	id 1va0CI-0004Wt-Il; Sun, 28 Dec 2025 18:29:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
- id 1va0BH-00042o-26
- for qemu-devel@nongnu.org; Sun, 28 Dec 2025 18:28:11 -0500
+ id 1va0C8-0004JE-DX
+ for qemu-devel@nongnu.org; Sun, 28 Dec 2025 18:29:04 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
- id 1va0BE-0001b0-Cu
- for qemu-devel@nongnu.org; Sun, 28 Dec 2025 18:28:10 -0500
+ id 1va0C6-0001ey-TP
+ for qemu-devel@nongnu.org; Sun, 28 Dec 2025 18:29:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1766964486;
+ s=mimecast20190719; t=1766964541;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=tyBFLMwEpyVt2o13A0I2I1h4QE03nUmEAzIR/6tPSEM=;
- b=WpSK2ITYd9CCO/MFH6ma+3SkoZKXAdP9Jq1czkEQ70Cp8RAzklh9ynYoRaTTxAmlaaHDgb
- sbxtQ0ia/niOx4gWnD8/eFk6Zg9Z4AcHmG8VCo28BQ/tS0zd1ZGT/7KCxRe5fq9iprQmh5
- 8agRJImCrO2PkgGdVghTxBNeVJW9Kn0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=PHFO0Y/knymLK96ocWjL6NzNh/Mdevc69JPRd8u7Ils=;
+ b=igesJ2j6kq8hl7C0MxZxpFj9U/fq0Thj1Ru43rQasZhJwkZkMJUh2CJXCgdZHkJI1LAo59
+ bIWBL36Y02w0VF3RhhAFc1aM5HCAyOC5la3M3ZgyrK809Dkg1LpDj//5tFcxI/Ch6HEt0V
+ 7B/BJ7DxQIxiaYg8crGeM8tTag0JevY=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-683-gRiNfgtnNp2m7dE7RG0cdw-1; Sun,
- 28 Dec 2025 18:26:55 -0500
-X-MC-Unique: gRiNfgtnNp2m7dE7RG0cdw-1
-X-Mimecast-MFC-AGG-ID: gRiNfgtnNp2m7dE7RG0cdw_1766964414
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-587-3S60ctkCO1W6EQTut0MJww-1; Sun,
+ 28 Dec 2025 18:26:58 -0500
+X-MC-Unique: 3S60ctkCO1W6EQTut0MJww-1
+X-Mimecast-MFC-AGG-ID: 3S60ctkCO1W6EQTut0MJww_1766964418
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 90E2619560B2; Sun, 28 Dec 2025 23:26:54 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C33E918009C2; Sun, 28 Dec 2025 23:26:57 +0000 (UTC)
 Received: from harajuku.usersys.redhat.com.homenet.telecomitalia.it (unknown
  [10.45.224.19])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 78FDE19560AB; Sun, 28 Dec 2025 23:26:52 +0000 (UTC)
+ id 248A519560AB; Sun, 28 Dec 2025 23:26:54 +0000 (UTC)
 From: Andrea Bolognani <abologna@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Kashyap Chamarthy <kchamart@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>, Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH 0/2] docs/interop/firmware: Introduce extended syntax for
- FirmwareMappingMemory
-Date: Mon, 29 Dec 2025 00:26:47 +0100
-Message-ID: <20251228232649.1708400-1-abologna@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH 1/2] docs/interop/firmware: Rename FirmwareFormat to
+ FirmwareFlashFormat
+Date: Mon, 29 Dec 2025 00:26:48 +0100
+Message-ID: <20251228232649.1708400-2-abologna@redhat.com>
+In-Reply-To: <20251228232649.1708400-1-abologna@redhat.com>
+References: <20251228232649.1708400-1-abologna@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
@@ -84,25 +86,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is part of the ongoing effort to make Secure Boot for aarch64
-libvirt guests possible[1].
+We are about to introduce a new set of enums that will be used
+by FirmwareMappingMemory and that don't overlap with the formats
+that are supported for FirmwareMappingFlash, so we need to
+disambiguate things.
 
-I'd be happy to have the QAPI experts debunk my claim that there is
-no semantically-meaningful way to represent this; in the meantime,
-I'll be posting very shortly some libvirt patches that IMO prove that
-supporting what I'm proposing here does not impose a significant
-burden on consumers of the firmware descriptors.
+Signed-off-by: Andrea Bolognani <abologna@redhat.com>
+---
+ docs/interop/firmware.json | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-[1] https://issues.redhat.com/browse/RHEL-82645
-
-Andrea Bolognani (2):
-  docs/interop/firmware: Rename FirmwareFormat to FirmwareFlashFormat
-  docs/interop/firmware: Introduce extended syntax for
-    FirmwareMappingMemory
-
- docs/interop/firmware.json | 192 +++++++++++++++++++++++++++++++++++--
- 1 file changed, 184 insertions(+), 8 deletions(-)
-
+diff --git a/docs/interop/firmware.json b/docs/interop/firmware.json
+index da0362a2c0..ef9b976a34 100644
+--- a/docs/interop/firmware.json
++++ b/docs/interop/firmware.json
+@@ -233,7 +233,7 @@
+              'verbose-dynamic', 'verbose-static' ] }
+ 
+ ##
+-# @FirmwareFormat:
++# @FirmwareFlashFormat:
+ #
+ # Formats that are supported for firmware images.
+ #
+@@ -243,7 +243,7 @@
+ #
+ # Since: 3.0
+ ##
+-{ 'enum': 'FirmwareFormat',
++{ 'enum': 'FirmwareFlashFormat',
+   'data': [ 'raw', 'qcow2' ] }
+ 
+ ##
+@@ -265,7 +265,7 @@
+ ##
+ { 'struct' : 'FirmwareFlashFile',
+   'data'   : { 'filename' : 'str',
+-               'format'   : 'FirmwareFormat' } }
++               'format'   : 'FirmwareFlashFormat' } }
+ 
+ 
+ ##
 -- 
 2.52.0
 
