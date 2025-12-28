@@ -2,38 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1ADECE4A1F
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Dec 2025 09:15:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7DC3CE4A22
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Dec 2025 09:16:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZluT-0003fP-1y; Sun, 28 Dec 2025 03:13:53 -0500
+	id 1vZlx2-0004Ho-6I; Sun, 28 Dec 2025 03:16:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1vZluP-0003et-Tu
- for qemu-devel@nongnu.org; Sun, 28 Dec 2025 03:13:49 -0500
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1vZlwz-0004Gk-BR; Sun, 28 Dec 2025 03:16:29 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1vZluN-0005A1-Ql
- for qemu-devel@nongnu.org; Sun, 28 Dec 2025 03:13:49 -0500
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1vZlwx-0005rJ-RH; Sun, 28 Dec 2025 03:16:29 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C4EAA179940;
- Sun, 28 Dec 2025 11:12:51 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id CA702179943;
+ Sun, 28 Dec 2025 11:15:46 +0300 (MSK)
 Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 153EC342993;
- Sun, 28 Dec 2025 11:13:31 +0300 (MSK)
-Message-ID: <57b71277-e7ec-4282-869e-4870fe34663e@tls.msk.ru>
-Date: Sun, 28 Dec 2025 11:13:30 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 15E4B342998;
+ Sun, 28 Dec 2025 11:16:26 +0300 (MSK)
+Message-ID: <bb81eab2-b48f-449e-86e6-32da90236a05@tls.msk.ru>
+Date: Sun, 28 Dec 2025 11:16:25 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/arm/tcg/vfp_helper: Fix incorrect bit field
- deposition in rsqrte_f64
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Li-Hang Lin <lihang.lin@gmail.com>, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>
-References: <20251226064225.791454-1-lihang.lin@gmail.com>
- <4f617585-87d5-4e01-8f36-38f68bbec9dc@linaro.org>
+Subject: Re: [PATCH] target/riscv: Align pmp size to pmp-granularity
+To: Jay Chang <jay.chang@sifive.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
+ <liwei1518@gmail.com>, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Frank Chang <frank.chang@sifive.com>
+References: <20251223102547.13337-1-jay.chang@sifive.com>
 Content-Language: en-US, ru-RU
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
@@ -79,9 +80,9 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
  ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
  3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
-In-Reply-To: <4f617585-87d5-4e01-8f36-38f68bbec9dc@linaro.org>
+In-Reply-To: <20251223102547.13337-1-jay.chang@sifive.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -18
@@ -105,21 +106,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/26/25 18:19, Philippe Mathieu-Daudé wrote:
-> On 26/12/25 07:42, Li-Hang Lin wrote:
->> Fix an error in rsqrte_f64() where the sign bit was being
->> placed incorrectly. Specifically, ensure f64_sign is deposited
->> into bit 63.
->>
->> Additionally, update the comments regarding the exponent (exp) bit
->> width to reflect the correct double-precision specifications.
->>
-> 
-> Fixes: d719cbc7641 ("arm/helper.c: re-factor rsqrte and add rsqrte_f16")
+On 12/23/25 13:25, Jay Chang wrote:
+> When configuring pmpcfg (TOR, NA4, or NAPOT) and pmpaddr, if the
+> value is smaller than the PMP granularity, it automatically aligned
+> to the PMP granularity.
 
-That's.. 2.12, 2018 - not too far ago :)
+There's a verb missing here. It "should be"? "needs to be" aligned?
 
-Cc: qemu-stable@nongnu.org.
+Is it a qemu-stable material?
 
 /mjt
 
