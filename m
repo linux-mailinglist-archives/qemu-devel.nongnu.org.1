@@ -2,90 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D18ACE57D1
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Dec 2025 23:09:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E3C1CE57D4
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Dec 2025 23:10:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZywl-0001ha-F0; Sun, 28 Dec 2025 17:09:07 -0500
+	id 1vZywx-0001im-Tp; Sun, 28 Dec 2025 17:09:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vZywj-0001h9-7b
- for qemu-devel@nongnu.org; Sun, 28 Dec 2025 17:09:05 -0500
-Received: from mail-yw1-x1129.google.com ([2607:f8b0:4864:20::1129])
+ id 1vZyww-0001ic-6T
+ for qemu-devel@nongnu.org; Sun, 28 Dec 2025 17:09:18 -0500
+Received: from mail-yw1-x112f.google.com ([2607:f8b0:4864:20::112f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vZywh-00038q-Nn
- for qemu-devel@nongnu.org; Sun, 28 Dec 2025 17:09:05 -0500
-Received: by mail-yw1-x1129.google.com with SMTP id
- 00721157ae682-78fc7893c93so54471827b3.2
- for <qemu-devel@nongnu.org>; Sun, 28 Dec 2025 14:09:03 -0800 (PST)
+ id 1vZywu-00039C-PL
+ for qemu-devel@nongnu.org; Sun, 28 Dec 2025 17:09:17 -0500
+Received: by mail-yw1-x112f.google.com with SMTP id
+ 00721157ae682-786d1658793so74384417b3.1
+ for <qemu-devel@nongnu.org>; Sun, 28 Dec 2025 14:09:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766959742; x=1767564542; darn=nongnu.org;
+ d=linaro.org; s=google; t=1766959756; x=1767564556; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Q9AcDac+MmW6NxNnIlSv8XyAIxHc+6KyWU+PcV0DW8M=;
- b=gqXJlY9dmAetMLHogtG2rS7++GMU44jQr6pTyxYfEDKPlC+2i96tWo79dI+c8N00zv
- NtZWxCOu3jOFgIYXw5g+UPcZRUUwXO4cCIOsY4e2MLXhKPLAoJkwgh2WHfQF3Ir7m/gK
- PivgWNfp4bo/Mu0ftReEAz1jnpaHiBA1ufr4+ronDJGboVHV0IGs5eP9TpC7XtEldWqx
- e06hZjIXCsXRQKPjXtNzMfpdAiq02jh3hSZQtVjPB2zDzmdV4eRGcYFxyqUW2pJ9R284
- CS7uUUWPa44G9nLM5kC+Jr9FN+P+ZtDwsWg+vLtI7idBhVmyHl5ghLGkJZwD1KPfDJy1
- oGUg==
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=FXCmaCz6FSbA6E+lo0D8VAKHOhyPQbS1hMZB1R98wR0=;
+ b=NYrj8Cc0PCpIwwg8gd5HZF+T+nknjwu36HNxje15R0Q4XeJ3QzIOkujEI54h2oQnJh
+ rkD/9sLYSAF/cawdyRfIuA8EuMHyfceHxjQ5vPLpxcHJb5xb4XTG1cvEGR7P0YDtQoct
+ jWBuLxLaF9dsG37AGiwDiAPQRoMgJ676Quz6XGYUMCPBvPckazHNkQjY+HeeQhePskTq
+ VNCNo+HWLyPQcevI1vcENYVIDiWbqlBBAh7qX4UW9ytzJYBehfz73PtkLQh6ntYw0hQ/
+ WkHP5UkhVWK0XFf7LuJBIleQKlcs9wPXuPS24vilGn8TE7+NFe/RwWw9AG7kv8Ec7GQY
+ 7XrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766959742; x=1767564542;
+ d=1e100.net; s=20230601; t=1766959756; x=1767564556;
  h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Q9AcDac+MmW6NxNnIlSv8XyAIxHc+6KyWU+PcV0DW8M=;
- b=B0WvAm2GSExBUDdZTLo8pA7vmffpc0b5gm4nJM+wawC3LmikoJDR8k/BynWEQsnUXk
- V9VQoaq03fSUmWtABzW67yNAW2rTpMTIPcxN9mLnZ4tCdJEymn1ywDmfUIBTeGH1PhfS
- SUwYJ5K3SqNFfvMSqbKxAyvaRVMSrRncdp44BQdJaMtj4aAiE5sDHnqBqIt+st+XKoMv
- 8FSAv6wPfdJq/U8hr307H71fO6txu7byIcpCAa22+Eg8tcU2k3V8d/EO1bjiz0rSbjqd
- 38/UyfJl2Qdgvrf7js6iHI7nAJDvgBVdjuRbL+uI/Jhs7SS8mrEBozBKblEblw5bNWCV
- xDFQ==
+ bh=FXCmaCz6FSbA6E+lo0D8VAKHOhyPQbS1hMZB1R98wR0=;
+ b=Wr9xNWSIwXvBu7Zr7726KWrpIhizhwsE/Z57M0HLE2yV7c+62ajjRnYmpOgb8rQJRL
+ vqhc41oUKf79C5uYDMQELXFkOB3QdnTzb75oHSS1PpKNZgJnoMmTJHm3Gb9F9FkrPfWB
+ EO0pVT4wksyBgGNO9mvouhzxbfs+2v5uI8WUp/SmzBONKbshcjjRdk5GRHDR/w6+6eum
+ p+RRxrLZ+p8ernkAYECWey2dUfztlwQ3N0SuLWbChSxpfquUifJNi5yYzxqeRZy74+k9
+ YfToeJoRzSkV4KdjJElHcorhx067grx9kfURMR1tU/ojBZSjeLU6dHngNPe6ELTSCt2p
+ l/DQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW5eV/B7rXQ+KnOQ0zo0JSDZc0Azqz+SeoFR9d6JHU9KQzoFYixyR1s8MPpZ9Q5RVIEMMAy9647318J@nongnu.org
-X-Gm-Message-State: AOJu0YzuauCXiBDTv8IJ9uqgBw5FbVsyxDl/59khPPP6d9zKwoMfdy59
- bTgnsYouIHfCHsxSCkO70FKx+aQcVB6HuZMZNJImHxCaTt90ocFbwsyEZgppNSBuRbg4FL1Mk6G
- ZdtwV
-X-Gm-Gg: AY/fxX5DXtWd6ji1NFbdVuGIsIJIuWFTrwj5paOErqX5bGUWPtaWfgZcqYVFF75MTAr
- Zwn3/tSscTTFVrZShFLDcNfVBwUX5PeAsLC/3wp7rQyA03EtHsHHREMIEFVMiXqhMue7jLnw4ku
- oancq7AQhHbDwhPEBYo/ICGXa4nqvk1MkYtSpO4tnpBmMD95cvqbPhvE7MDUN7hCt5fJ/ca23TB
- DuABgjYWEBtRzXfPy2ojl94H/Jd1gXssgEwfoTpDFjYVaOKV1WekKMsuBr6LVvHLYWmuZ9CD7hC
- pXOaOZsbfFFAB4jDqkJipMKyGAEjEJdkNdBwiHhcEE+e6no6SDbBW+R6i22fED2ePEAS9E/YHI4
- jI+NBpjiNPz8XfPpJMhj5nxKv1HKBM3Ws/fEBWarym8ySiu24oldvQsCOVFHQIXfG20EsNKTLL5
- KfeG4IbeimEjzxRRlLyHQpTApFpBA2eej7qvc/k6T7aHtbieTKpCAX
-X-Google-Smtp-Source: AGHT+IEMAU3DcSPIZ7ghoepGldo4C8+J3hACHbcsAdjAWFTmkC6t/gpgno4vV5Eot3JITQ6PjznSBw==
-X-Received: by 2002:a05:690c:2606:b0:786:68da:26d6 with SMTP id
- 00721157ae682-78fb3efd2f6mr214495597b3.2.1766959742561; 
- Sun, 28 Dec 2025 14:09:02 -0800 (PST)
+ AJvYcCVHqwV30XvOkk/bZq0IjNczdKHxPjD5WjF2cRYt19Ljb1OI96T1WFZde8orWW744YC2nAyzh6iv+slX@nongnu.org
+X-Gm-Message-State: AOJu0Yw0dKROxBv+UfyrJBd6rT/eO2BIdqz30EwBXjEzNd7Mqgqj7GG2
+ QPBCiYjNV7iynFY49SvxBEKoLYbR0CVSec4ALSD0xSbSf0Wi0UmNl5PmXxBlQJLjBqPiisWxDPI
+ R6crN
+X-Gm-Gg: AY/fxX488YC1jcetnlieJ9rHi2NuOP00dgAbT3sD/v1fKVk6gO1eity1rN2CmVi8l5F
+ G6FE6sDL21X2GsCnN6W8dx+pE88Enq8ExyLkFd2Ct7py4uf4UsUir8bHBFTYM3oZwzB5KDesv1y
+ y48eOSOQHTVvjPe1aMhs7RSh7ceZtj/V7xIR+IwLXH859ZlYlIla9fBpaOK8TParHRhL97WukXI
+ WoOGQbodf0Bti1QVfd2KtY8JAzc9zPElmwYBl3IrJNpn1emqHqaZQfOWo2GfM3uQ0ZQZPV612me
+ 424h1gJCsLgvEBCrw5ScpqumcQA1SKHzGm9cN1z0W9QLkJUJJDuJlfSbAcEcYbubO+VeLewXdi7
+ AsQBYxYXsv17QuYJv4luX0UFnNqlfkhdmQVlRF81EEA4oJuNl96K1nRl+F8kXmq0tmmSKM0r/nc
+ Wy1SXoKCUhbMOkwTAN9RYtRDKGwsWs2jZhRd6kv2xGN/i6NHRZd8Qf
+X-Google-Smtp-Source: AGHT+IFtVmCJg2j2+kbr4XwvyCWKV3K57uMubySfsaNIef/mkaCPsp3e/8Wd44u1FlKy9PLjca4+eg==
+X-Received: by 2002:a05:690c:968b:b0:78c:69c9:d142 with SMTP id
+ 00721157ae682-78fb403b99emr550311457b3.44.1766959755589; 
+ Sun, 28 Dec 2025 14:09:15 -0800 (PST)
 Received: from [10.212.166.227] ([172.59.192.106])
  by smtp.gmail.com with ESMTPSA id
- 00721157ae682-78fb44f0d4csm108552307b3.37.2025.12.28.14.08.57
+ 956f58d0204a3-6466a92d94asm13975184d50.19.2025.12.28.14.09.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 28 Dec 2025 14:09:02 -0800 (PST)
-Message-ID: <6c3ffe8b-3dc1-47bf-b3d5-b21f34c02bb8@linaro.org>
-Date: Mon, 29 Dec 2025 09:08:54 +1100
+ Sun, 28 Dec 2025 14:09:15 -0800 (PST)
+Message-ID: <d40f6733-ea14-4d89-8fc8-37b812ca3f49@linaro.org>
+Date: Mon, 29 Dec 2025 09:09:09 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/12] Hppa updates qemu v11 patches
-To: deller@kernel.org, qemu-devel@nongnu.org
-Cc: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Helge Deller <deller@gmx.de>,
- Sven Schnelle <svens@stackframe.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Fam Zheng <fam@euphon.net>
-References: <20251223155031.7110-1-deller@kernel.org>
+Subject: Re: [PULL 0/1] QTest patches for 2025-12-26
+To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+References: <20251226172718.12071-1-farosas@suse.de>
 From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-In-Reply-To: <20251223155031.7110-1-deller@kernel.org>
+In-Reply-To: <20251226172718.12071-1-farosas@suse.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1129;
- envelope-from=richard.henderson@linaro.org; helo=mail-yw1-x1129.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-yw1-x112f.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -108,27 +103,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/24/25 02:50, deller@kernel.org wrote:
-> From: Helge Deller<deller@gmx.de>
-> 
+On 12/27/25 04:27, Fabiano Rosas wrote:
 > The following changes since commit 8dd5bceb2f9cc58481e9d22355a8d998220896de:
 > 
 >    Open 11.0 development tree (2025-12-23 14:45:38 +1100)
 > 
 > are available in the Git repository at:
 > 
->    https://github.com/hdeller/qemu-hppa.git tags/hppa-updates-qemu-v11-pull-request
+>    https://gitlab.com/farosas/qemu.git tags/qtest-20251226-pull-request
 > 
-> for you to fetch changes up to b2c2d00f48cc5f4486cfba33b505ff86d79cb137:
+> for you to fetch changes up to 9eef3854d30911d117f85253f1f2a154e4076adf:
 > 
->    target/hppa: add 64 bit support to gdbstub (2025-12-23 16:41:56 +0100)
+>    tests/qtest: Do not use versioned pc-q35-5.0 machine anymore (2025-12-26 12:06:46 -0300)
 > 
 > ----------------------------------------------------------------
-> Please pull fixes and updates for the parisc architecture:
+> Qtest pull request
 > 
-> - New SeaBIOS-hppa v21 mit fixes for 715 machine
-> - ncr710 fixes for NetBSD and HP-UX on 715 machine
-> - 64-bit gdb support
+> - Fix tests using deprecated machine versions
 
 
 Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/11.0 as appropriate.
