@@ -2,96 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECDD8CE52B4
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Dec 2025 17:19:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EB8ECE52C0
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Dec 2025 17:20:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vZtU2-0001mF-Vy; Sun, 28 Dec 2025 11:19:07 -0500
+	id 1vZtVb-0003f6-HB; Sun, 28 Dec 2025 11:20:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vZtU1-0001lz-GV
- for qemu-devel@nongnu.org; Sun, 28 Dec 2025 11:19:05 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vZtTz-0007Cb-7Q
- for qemu-devel@nongnu.org; Sun, 28 Dec 2025 11:19:05 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-47d3ffa6720so27551795e9.0
- for <qemu-devel@nongnu.org>; Sun, 28 Dec 2025 08:19:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vZtVa-0003eq-Cy
+ for qemu-devel@nongnu.org; Sun, 28 Dec 2025 11:20:42 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1vZtVY-0008Ex-As
+ for qemu-devel@nongnu.org; Sun, 28 Dec 2025 11:20:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1766938838;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=o33AJvkWyX2AZyLNFiTTGHT53sGDLKh+xd+jG+dlOwg=;
+ b=gIixj/+yck8fdgfWKrOMNO3TXJi7DE/uLUHqtgW52YKjOp6uPjUrtc8yINxxUWa4v67D4C
+ hvmrWAhNGVfeu4BcDyxasrNdrS16EE/tBCI+rZ94wKIuMrc3PQY9fyV4jKHdjrFHKfzpNd
+ nVafVLO+Ii16rJ1YON01hF2pPzZurI8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-335-NDQMrV-uNbKkaMSSOfdwnw-1; Sun, 28 Dec 2025 11:20:36 -0500
+X-MC-Unique: NDQMrV-uNbKkaMSSOfdwnw-1
+X-Mimecast-MFC-AGG-ID: NDQMrV-uNbKkaMSSOfdwnw_1766938836
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-47d28e7960fso27922355e9.0
+ for <qemu-devel@nongnu.org>; Sun, 28 Dec 2025 08:20:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1766938741; x=1767543541; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qu1YBUoHh92Khpt6AO2xZNSzadmpG/+fBfiKN74Yagg=;
- b=SDZ8fqiykS17fWzNWBUbnbJIqjKxadoDe7taz8UgqwrFktRAxQLtSOOOJqcOYMsuNO
- NzvpET4D4lzyndn7gYsFoZ38ACOYzGNMfjmHrcfRUXbFZIME7Nsq/v9N9ZOlwOrLfnlx
- RjI8J9KDMtHkuuWTaSHFcvXbQixhWmQzIaTTFBod/p4WK+dhnJXFU2hP15OU6Gn5sObn
- qBfbY1xW0PwPO48f+W7TGi86lb/TIGPZO/76zdHWnoNGDC2jgpl7qr4lXVeL9mOlnn7n
- kfP4yic8raRG/8eY8TDPkzMUbvWFrf2aRwnpV34c9YtGuCAC+InX2WXVZnXgHbhWCRP9
- YEJg==
+ d=redhat.com; s=google; t=1766938836; x=1767543636; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=o33AJvkWyX2AZyLNFiTTGHT53sGDLKh+xd+jG+dlOwg=;
+ b=CVAK3xzWhYVr0xjf9tWSzmuamiCxcDlBEJjfY8vlq3f+0nqc1gbuipgWo4PRpJeydl
+ 8Dym8iEu/ZdA35OJJzZ54KStB943wne+n9d7cDpD+Sr8APrqjgufTYjEceZZy/6+N2Jd
+ +htFqyblVn3/CjoK9CfPQp5Y2buLeankSkrRfzKdHcPUbCM2tVYMmdBXw1oA0EFdyN6V
+ Zmh0uBv51gUrU0K//sh9MyEv8EANP7h+CuOqyVOP2TjPi5M/xL25Ua6frB0PAdt+IpK6
+ p1IJ00Rc2XA33y7qVCVwIeUYAXDdQfnWlXT3b97rRJ8OZYNcXos30Jwv4j/RpdOAb/MQ
+ d0xQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766938741; x=1767543541;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=qu1YBUoHh92Khpt6AO2xZNSzadmpG/+fBfiKN74Yagg=;
- b=Pau3h6kKM3oLXkJW9U0oY5I9nwtVkU4YymKNwkZUD1d/SUvwSVWklYY/PrbYIf50qJ
- z7H43QYGBOw49LdxKTC4AxV4raLXnwgT8V3cY3yKdJ4N+fH5JXdTUOI2Ixg0znhFcuRW
- JizEeh4fHUpMNd77Yl6lOomrk9flRvvGiU2UQ0dSqB+2Jv+bBXi4iJ55cbNgfaklTQel
- Yn53Z9wSSubBli3Q76R9JlpBKr3T6p6gO4vQLwjZMT+b4XhzCZJD6pAvZHAH/YdQbxtA
- tR1+mxj1BqhsggZkt6NqbOJtJiedFZSGSm+CuhnkUapsqSFQvmfKUp7t/0ZTEaSSh0pE
- kDhg==
-X-Gm-Message-State: AOJu0YwTr1IENz9BclHpiCgxMVbt9uzMhK04qH5XgVqbBFDPw8zyeMYr
- xnS+hV/LQaa5vMIM8c8xmsDn2NDLDOIfLXEohAB7EDWYaShBSZX3WwMr1CYnFdC1CRKbTG1//HE
- 6nerD
-X-Gm-Gg: AY/fxX4k9VjOQZnzDXy0GoVrKWeG38sqZSjxQgg9wQ/g8xIV5wdWEHn5cKnv6pg5GBL
- CPVYZFDngzhUbd7rk73c/0ItQpLoQEOYOJ9sx0J5SD0W0fj/qoQ1aOFi+nqjSzwe8cHeYDzQJyK
- /8RVBDt5KO7KMdheUJ7+giqD6ViKiHe7c1d3ZRV5O4mEB16d0q2f/FpHKqFxs7A3D7onAp4TVWm
- lDwESOyF0BA6zgkSmuPip3OTEEJ1bbTDmoEvoxZ6Jp28WJhLQpfXfLsy40AytbkDNtza/d7HRsY
- vOS8t1lCFuTJFjgVg0jSzibikPB2Bq80yX4ebzfVOurxIREpG4AJXBME7QyJP7bEgKxyu8Y+cVw
- zuzLeEEl57TY++o7PglqKOp7MT2VauznQiWToj+3Hf+J7odFX+zCL8OeqFs49oJkkxKCb4CgPt4
- +LdHI1vYHEFAIuy9ANYEKaRGPRqhL2JcZ2mfteo1+yMgX46ZjbINrm
-X-Google-Smtp-Source: AGHT+IGvGOjw3iM+2Me6Mzuhs5Xj/m+qnrE3hYr+WAP7hWBy76iVsS7eQa5i1dLp8pdE+7ewB4KfhA==
-X-Received: by 2002:a05:600c:1389:b0:47d:403e:4eaf with SMTP id
- 5b1f17b1804b1-47d403e4fd0mr145955075e9.10.1766938741404; 
- Sun, 28 Dec 2025 08:19:01 -0800 (PST)
-Received: from m1.home (alyon-655-1-564-32.w80-9.abo.wanadoo.fr. [80.9.105.32])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324eab257asm58081647f8f.38.2025.12.28.08.18.59
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 28 Dec 2025 08:19:00 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- David Hildenbrand <david@kernel.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Jagannathan Raman <jag.raman@oracle.com>, Alexander Graf <agraf@csgraf.de>,
- Phil Dennis-Jordan <phil@philjordan.eu>, Jason Wang <jasowang@redhat.com>,
- qemu-ppc@nongnu.org
-Subject: [PATCH 3/3] system/memory: Rename unaligned load/store API
-Date: Sun, 28 Dec 2025 17:18:36 +0100
-Message-ID: <20251228161837.12413-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251228161837.12413-1-philmd@linaro.org>
-References: <20251228161837.12413-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1766938836; x=1767543636;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=o33AJvkWyX2AZyLNFiTTGHT53sGDLKh+xd+jG+dlOwg=;
+ b=iHu9dypZq4QO57Os1j/04pdkpsAXKoJ2xTXTQdtRa8+Z7/HyZwJGDQh384VS6xWwOw
+ z83M0ul/xYW1K4K17xH2fT5hpze2XnZB9qATafJd3FOja7H0ZxJnWYHCWI/r0/6dTEfH
+ uJHSa4lxtAmT8OQlgQWvG6d7QSgJf6z2IuAfqd7PZPC971FMj7xPFb3CoE6pv4Cg3dLC
+ AKF7UweEyZPi/dZJos1d29GBMD8YvmBFx7XJRD1Vqk6JOY4rAJ5BrAJvTVepymwdARsU
+ 1gsdaJ4PAlKXqxl1RZqhFCffPVaLugu4duf83W6WNHvqOwi4XSTl3XJY8DJHhtvsSvIg
+ dlbQ==
+X-Gm-Message-State: AOJu0YwzSspxb3JkuDP7eE13c9x8MlFWhwUFLBiAN+DWGiS2zfzrhlBl
+ Jl3p0xhCrTyKtOY1Q8HSSLvJaTK6JXLJ/5rsET28X97WE6YY01Z1cHyyo79IBoDdCIMglMgIU1o
+ W+CqOU9LEhPB1i22Iw2afEH4xdCJWeoHZHUh2PauUdp5JKCsubEN+Awt6IlhMcHbHwrHY7Aipbm
+ Q+tEpnIbiHRPGamiG6DF8L3eUQpGCPaU4=
+X-Gm-Gg: AY/fxX4e4DFrStcDM2FcfXf5Goosg6zsZ6HWZWpg9Hb1u2XElpBqIkOh6zJeeZwL5Lv
+ D7+mN3raeywGX82ZolSdD5QiPY81gUFkqc4r3dxbMUXNz/DONa4KBI5Unfu8TEOtuKBH2mF4vfg
+ 9WhANIinlksk+m0qHPgLtDl1TNUYHSbp56e7kY+/aDvBNOn+Pu/l9VY+dx2+CvO5xN7E4L6Xnru
+ GtZgfo5T3ZYlXRSnruVLAr034HxIJfyUNEB2uqim7y6jMO3B7Jjm36qKBspo99kFiGQHyg=
+X-Received: by 2002:a05:600c:19c8:b0:475:de68:3c30 with SMTP id
+ 5b1f17b1804b1-47d1955797amr328617895e9.16.1766938835604; 
+ Sun, 28 Dec 2025 08:20:35 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG22IMWFZjgFtxHVYUrgXSscHh/4pvaZjzqb1vPMlN/9L+5PMjqJpV4QXne4eTrMRnR2o0X4NYFvv2PFnQUwtM=
+X-Received: by 2002:a05:600c:19c8:b0:475:de68:3c30 with SMTP id
+ 5b1f17b1804b1-47d1955797amr328617665e9.16.1766938835156; Sun, 28 Dec 2025
+ 08:20:35 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+References: <20251224152210.87880-1-philmd@linaro.org>
+ <20251224152210.87880-17-philmd@linaro.org>
+ <CABgObfa9gHpK3CR8Aa6MA4YqfaMs3bn70pba58QQ2+32+xwxzQ@mail.gmail.com>
+ <e0b99887-934e-4587-9410-b090a4fcfdc8@linaro.org>
+ <5e44a3e7-5eb3-4220-9193-8eb86690535c@linaro.org>
+ <CABgObfaXgpdPe32ks+xkzOuNxvJMJhsfpvtjFobBJTueR1X24A@mail.gmail.com>
+ <913b7541-d8f0-47b9-8523-9e1389bf4f84@linaro.org>
+ <CABgObfYXW7RqZjqHVQd8T-RfZvy8oxb7-uWK0Au1W5VXzHVSNA@mail.gmail.com>
+ <1b73aeb0-fa3f-4ced-9c07-5f0accebc324@linaro.org>
+In-Reply-To: <1b73aeb0-fa3f-4ced-9c07-5f0accebc324@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Sun, 28 Dec 2025 17:20:23 +0100
+X-Gm-Features: AQt7F2rflyNEB_AvlGtd4gZVKqDuNDpIDfpEgCLXUhUBqFuj-w-Bv6xoz1BtHio
+Message-ID: <CABgObfbquY+4KqQn+o5nKhWPuFJnOB_LYTJzVCjF-GgH8VcQNg@mail.gmail.com>
+Subject: Re: [PATCH v3 16/25] system: Allow restricting the legacy ld/st_he()
+ 'native-endian' API
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel <qemu-devel@nongnu.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
+ Peter Xu <peterx@redhat.com>, Richard Henderson <richard.henderson@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Anton Johansson <anjo@rev.ng>
+Content-Type: multipart/alternative; boundary="0000000000009c1846064705812a"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,512 +123,162 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename the API methods using the explicit 'unaligned'
-description instead of 'he' which stands for 'host
-endianness'.
+--0000000000009c1846064705812a
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Inspired-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/qemu/bswap.h                 | 32 ++++++++++++++--------------
- include/qemu/memory_ldst_unaligned.h | 16 +++++++-------
- accel/tcg/translator.c               |  6 +++---
- hw/display/ati_2d.c                  |  2 +-
- hw/display/sm501.c                   | 19 ++++++++++-------
- hw/remote/vfio-user-obj.c            |  4 ++--
- hw/vmapple/virtio-blk.c              |  2 +-
- net/checksum.c                       |  6 +++---
- system/memory.c                      |  4 ++--
- system/physmem.c                     |  8 +++----
- ui/vnc-enc-tight.c                   |  2 +-
- util/bufferiszero.c                  |  6 +++---
- accel/tcg/ldst_atomicity.c.inc       | 10 ++++-----
- 13 files changed, 60 insertions(+), 57 deletions(-)
+Il dom 28 dic 2025, 17:00 Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> h=
+a
+scritto:
 
-diff --git a/include/qemu/bswap.h b/include/qemu/bswap.h
-index e8b944988c3..f7c806085fb 100644
---- a/include/qemu/bswap.h
-+++ b/include/qemu/bswap.h
-@@ -237,82 +237,82 @@ static inline void stb_p(void *ptr, uint8_t v)
- 
- static inline int lduw_le_p(const void *ptr)
- {
--    return (uint16_t)le_bswap(lduw_he_p(ptr), 16);
-+    return (uint16_t)le_bswap(lduw_unaligned_p(ptr), 16);
- }
- 
- static inline int ldsw_le_p(const void *ptr)
- {
--    return (int16_t)le_bswap(lduw_he_p(ptr), 16);
-+    return (int16_t)le_bswap(lduw_unaligned_p(ptr), 16);
- }
- 
- static inline int ldl_le_p(const void *ptr)
- {
--    return le_bswap(ldl_he_p(ptr), 32);
-+    return le_bswap(ldl_unaligned_p(ptr), 32);
- }
- 
- static inline uint64_t ldq_le_p(const void *ptr)
- {
--    return le_bswap(ldq_he_p(ptr), 64);
-+    return le_bswap(ldq_unaligned_p(ptr), 64);
- }
- 
- static inline void stw_le_p(void *ptr, uint16_t v)
- {
--    stw_he_p(ptr, le_bswap(v, 16));
-+    stw_unaligned_p(ptr, le_bswap(v, 16));
- }
- 
- static inline void st24_le_p(void *ptr, uint32_t v)
- {
--    st24_he_p(ptr, le_bswap24(v));
-+    st24_unaligned_p(ptr, le_bswap24(v));
- }
- 
- static inline void stl_le_p(void *ptr, uint32_t v)
- {
--    stl_he_p(ptr, le_bswap(v, 32));
-+    stl_unaligned_p(ptr, le_bswap(v, 32));
- }
- 
- static inline void stq_le_p(void *ptr, uint64_t v)
- {
--    stq_he_p(ptr, le_bswap(v, 64));
-+    stq_unaligned_p(ptr, le_bswap(v, 64));
- }
- 
- static inline int lduw_be_p(const void *ptr)
- {
--    return (uint16_t)be_bswap(lduw_he_p(ptr), 16);
-+    return (uint16_t)be_bswap(lduw_unaligned_p(ptr), 16);
- }
- 
- static inline int ldsw_be_p(const void *ptr)
- {
--    return (int16_t)be_bswap(lduw_he_p(ptr), 16);
-+    return (int16_t)be_bswap(lduw_unaligned_p(ptr), 16);
- }
- 
- static inline int ldl_be_p(const void *ptr)
- {
--    return be_bswap(ldl_he_p(ptr), 32);
-+    return be_bswap(ldl_unaligned_p(ptr), 32);
- }
- 
- static inline uint64_t ldq_be_p(const void *ptr)
- {
--    return be_bswap(ldq_he_p(ptr), 64);
-+    return be_bswap(ldq_unaligned_p(ptr), 64);
- }
- 
- static inline void stw_be_p(void *ptr, uint16_t v)
- {
--    stw_he_p(ptr, be_bswap(v, 16));
-+    stw_unaligned_p(ptr, be_bswap(v, 16));
- }
- 
- static inline void st24_be_p(void *ptr, uint32_t v)
- {
--    st24_he_p(ptr, be_bswap24(v));
-+    st24_unaligned_p(ptr, be_bswap24(v));
- }
- 
- static inline void stl_be_p(void *ptr, uint32_t v)
- {
--    stl_he_p(ptr, be_bswap(v, 32));
-+    stl_unaligned_p(ptr, be_bswap(v, 32));
- }
- 
- static inline void stq_be_p(void *ptr, uint64_t v)
- {
--    stq_he_p(ptr, be_bswap(v, 64));
-+    stq_unaligned_p(ptr, be_bswap(v, 64));
- }
- 
- /* Store v to p as a sz byte value in host order */
-diff --git a/include/qemu/memory_ldst_unaligned.h b/include/qemu/memory_ldst_unaligned.h
-index f6b64e8fe9c..6b0cc3e2777 100644
---- a/include/qemu/memory_ldst_unaligned.h
-+++ b/include/qemu/memory_ldst_unaligned.h
-@@ -16,50 +16,50 @@
-  * of good performance.
-  */
- 
--static inline int lduw_he_p(const void *ptr)
-+static inline int lduw_unaligned_p(const void *ptr)
- {
-     uint16_t r;
-     __builtin_memcpy(&r, ptr, sizeof(r));
-     return r;
- }
- 
--static inline int ldsw_he_p(const void *ptr)
-+static inline int ldsw_unaligned_p(const void *ptr)
- {
-     int16_t r;
-     __builtin_memcpy(&r, ptr, sizeof(r));
-     return r;
- }
- 
--static inline void stw_he_p(void *ptr, uint16_t v)
-+static inline void stw_unaligned_p(void *ptr, uint16_t v)
- {
-     __builtin_memcpy(ptr, &v, sizeof(v));
- }
- 
--static inline void st24_he_p(void *ptr, uint32_t v)
-+static inline void st24_unaligned_p(void *ptr, uint32_t v)
- {
-     __builtin_memcpy(ptr, &v, 3);
- }
- 
--static inline int ldl_he_p(const void *ptr)
-+static inline int ldl_unaligned_p(const void *ptr)
- {
-     int32_t r;
-     __builtin_memcpy(&r, ptr, sizeof(r));
-     return r;
- }
- 
--static inline void stl_he_p(void *ptr, uint32_t v)
-+static inline void stl_unaligned_p(void *ptr, uint32_t v)
- {
-     __builtin_memcpy(ptr, &v, sizeof(v));
- }
- 
--static inline uint64_t ldq_he_p(const void *ptr)
-+static inline uint64_t ldq_unaligned_p(const void *ptr)
- {
-     uint64_t r;
-     __builtin_memcpy(&r, ptr, sizeof(r));
-     return r;
- }
- 
--static inline void stq_he_p(void *ptr, uint64_t v)
-+static inline void stq_unaligned_p(void *ptr, uint64_t v)
- {
-     __builtin_memcpy(ptr, &v, sizeof(v));
- }
-diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index 86cdd70c47f..497128c96c5 100644
---- a/accel/tcg/translator.c
-+++ b/accel/tcg/translator.c
-@@ -342,14 +342,14 @@ static bool translator_ld(CPUArchState *env, DisasContextBase *db,
-     case 2:
-         if (QEMU_IS_ALIGNED(pc, 2)) {
-             uint16_t t = qatomic_read((uint16_t *)host);
--            stw_he_p(dest, t);
-+            stw_unaligned_p(dest, t);
-             return true;
-         }
-         break;
-     case 4:
-         if (QEMU_IS_ALIGNED(pc, 4)) {
-             uint32_t t = qatomic_read((uint32_t *)host);
--            stl_he_p(dest, t);
-+            stl_unaligned_p(dest, t);
-             return true;
-         }
-         break;
-@@ -357,7 +357,7 @@ static bool translator_ld(CPUArchState *env, DisasContextBase *db,
-     case 8:
-         if (QEMU_IS_ALIGNED(pc, 8)) {
-             uint64_t t = qatomic_read__nocheck((uint64_t *)host);
--            stq_he_p(dest, t);
-+            stq_unaligned_p(dest, t);
-             return true;
-         }
-         break;
-diff --git a/hw/display/ati_2d.c b/hw/display/ati_2d.c
-index 24a3c3e942f..333d78d7455 100644
---- a/hw/display/ati_2d.c
-+++ b/hw/display/ati_2d.c
-@@ -222,7 +222,7 @@ void ati_2d_blt(ATIVGAState *s)
-             for (y = 0; y < s->regs.dst_height; y++) {
-                 i = dst_x * bypp + (dst_y + y) * dst_pitch;
-                 for (x = 0; x < s->regs.dst_width; x++, i += bypp) {
--                    stn_he_p(&dst_bits[i], bypp, filler);
-+                    stn_unaligned_p(&dst_bits[i], bypp, filler);
-                 }
-             }
-         }
-diff --git a/hw/display/sm501.c b/hw/display/sm501.c
-index 51efe2ad41f..776fedebb13 100644
---- a/hw/display/sm501.c
-+++ b/hw/display/sm501.c
-@@ -768,7 +768,7 @@ static void sm501_2d_operation(SM501State *s)
-             for (y = 0; y < height; y++) {
-                 i = (dst_x + (dst_y + y) * dst_pitch) * bypp;
-                 for (x = 0; x < width; x++, i += bypp) {
--                    stn_he_p(&d[i], bypp, ~ldn_he_p(&d[i], bypp));
-+                    stn_unaligned_p(&d[i], bypp, ~ldn_unaligned_p(&d[i], bypp));
-                 }
-             }
-         } else if (!rop_mode && rop == 0x99) {
-@@ -781,8 +781,9 @@ static void sm501_2d_operation(SM501State *s)
-                 i = (dst_x + (dst_y + y) * dst_pitch) * bypp;
-                 j = (src_x + (src_y + y) * src_pitch) * bypp;
-                 for (x = 0; x < width; x++, i += bypp, j += bypp) {
--                    stn_he_p(&d[i], bypp,
--                             ~(ldn_he_p(&sp[j], bypp) ^ ldn_he_p(&d[i], bypp)));
-+                    stn_unaligned_p(&d[i], bypp,
-+                                    ~(ldn_unaligned_p(&sp[j], bypp)
-+                                      ^ ldn_unaligned_p(&d[i], bypp)));
-                 }
-             }
-         } else if (!rop_mode && rop == 0xee) {
-@@ -795,8 +796,9 @@ static void sm501_2d_operation(SM501State *s)
-                 i = (dst_x + (dst_y + y) * dst_pitch) * bypp;
-                 j = (src_x + (src_y + y) * src_pitch) * bypp;
-                 for (x = 0; x < width; x++, i += bypp, j += bypp) {
--                    stn_he_p(&d[i], bypp,
--                             ldn_he_p(&sp[j], bypp) | ldn_he_p(&d[i], bypp));
-+                    stn_unaligned_p(&d[i], bypp,
-+                                    ldn_unaligned_p(&sp[j], bypp)
-+                                    | ldn_unaligned_p(&d[i], bypp));
-                 }
-             }
-         } else {
-@@ -818,8 +820,9 @@ static void sm501_2d_operation(SM501State *s)
-             if (width == 1 && height == 1) {
-                 unsigned int si = (src_x + src_y * src_pitch) * bypp;
-                 unsigned int di = (dst_x + dst_y * dst_pitch) * bypp;
--                stn_he_p(&s->local_mem[dst_base + di], bypp,
--                         ldn_he_p(&s->local_mem[src_base + si], bypp));
-+                stn_unaligned_p(&s->local_mem[dst_base + di], bypp,
-+                                ldn_unaligned_p(&s->local_mem[src_base + si],
-+                                                bypp));
-                 break;
-             }
-             /* If reverse blit do simple check for overlaps */
-@@ -917,7 +920,7 @@ static void sm501_2d_operation(SM501State *s)
-                 for (y = 0; y < height; y++) {
-                     i = (dst_x + (dst_y + y) * dst_pitch) * bypp;
-                     for (x = 0; x < width; x++, i += bypp) {
--                        stn_he_p(&d[i], bypp, color);
-+                        stn_unaligned_p(&d[i], bypp, color);
-                     }
-                 }
-             }
-diff --git a/hw/remote/vfio-user-obj.c b/hw/remote/vfio-user-obj.c
-index 9c9ac8b0d92..44adff10eb9 100644
---- a/hw/remote/vfio-user-obj.c
-+++ b/hw/remote/vfio-user-obj.c
-@@ -392,7 +392,7 @@ static int vfu_object_mr_rw(MemoryRegion *mr, uint8_t *buf, hwaddr offset,
-         access_size = memory_access_size(mr, size, offset);
- 
-         if (is_write) {
--            val = ldn_he_p(ptr, access_size);
-+            val = ldn_unaligned_p(ptr, access_size);
- 
-             result = memory_region_dispatch_write(mr, offset, val,
-                                                   size_memop(access_size),
-@@ -402,7 +402,7 @@ static int vfu_object_mr_rw(MemoryRegion *mr, uint8_t *buf, hwaddr offset,
-                                                  size_memop(access_size),
-                                                  MEMTXATTRS_UNSPECIFIED);
- 
--            stn_he_p(ptr, access_size, val);
-+            stn_unaligned_p(ptr, access_size, val);
-         }
- 
-         if (release_lock) {
-diff --git a/hw/vmapple/virtio-blk.c b/hw/vmapple/virtio-blk.c
-index f5e8e92df75..805bcbc9467 100644
---- a/hw/vmapple/virtio-blk.c
-+++ b/hw/vmapple/virtio-blk.c
-@@ -79,7 +79,7 @@ static void vmapple_virtio_blk_get_config(VirtIODevice *vdev, uint8_t *config)
-     g_assert(dev->parent_obj.config_size >= endof(struct virtio_blk_config, zoned));
- 
-     /* Apple abuses the field for max_secure_erase_sectors as type id */
--    stl_he_p(&blkcfg->max_secure_erase_sectors, dev->apple_type);
-+    stl_unaligned_p(&blkcfg->max_secure_erase_sectors, dev->apple_type);
- }
- 
- static void vmapple_virtio_blk_class_init(ObjectClass *klass, const void *data)
-diff --git a/net/checksum.c b/net/checksum.c
-index 18be31c26e5..56314f5e76d 100644
---- a/net/checksum.c
-+++ b/net/checksum.c
-@@ -110,7 +110,7 @@ void net_checksum_calculate(void *data, int length, int csum_flag)
- 
-     /* Calculate IP checksum */
-     if (csum_flag & CSUM_IP) {
--        stw_he_p(&ip->ip_sum, 0);
-+        stw_unaligned_p(&ip->ip_sum, 0);
-         csum = net_raw_checksum((uint8_t *)ip, IP_HDR_GET_LEN(ip));
-         stw_be_p(&ip->ip_sum, csum);
-     }
-@@ -142,7 +142,7 @@ void net_checksum_calculate(void *data, int length, int csum_flag)
-         }
- 
-         /* Set csum to 0 */
--        stw_he_p(&tcp->th_sum, 0);
-+        stw_unaligned_p(&tcp->th_sum, 0);
- 
-         csum = net_checksum_tcpudp(ip_len, ip->ip_p,
-                                    (uint8_t *)&ip->ip_src,
-@@ -166,7 +166,7 @@ void net_checksum_calculate(void *data, int length, int csum_flag)
-         }
- 
-         /* Set csum to 0 */
--        stw_he_p(&udp->uh_sum, 0);
-+        stw_unaligned_p(&udp->uh_sum, 0);
- 
-         csum = net_checksum_tcpudp(ip_len, ip->ip_p,
-                                    (uint8_t *)&ip->ip_src,
-diff --git a/system/memory.c b/system/memory.c
-index 8b84661ae36..653d46e8e79 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -1365,7 +1365,7 @@ static uint64_t memory_region_ram_device_read(void *opaque,
-                                               hwaddr addr, unsigned size)
- {
-     MemoryRegion *mr = opaque;
--    uint64_t data = ldn_he_p(mr->ram_block->host + addr, size);
-+    uint64_t data = ldn_unaligned_p(mr->ram_block->host + addr, size);
- 
-     trace_memory_region_ram_device_read(get_cpu_index(), mr, addr, data, size);
- 
-@@ -1379,7 +1379,7 @@ static void memory_region_ram_device_write(void *opaque, hwaddr addr,
- 
-     trace_memory_region_ram_device_write(get_cpu_index(), mr, addr, data, size);
- 
--    stn_he_p(mr->ram_block->host + addr, size, data);
-+    stn_unaligned_p(mr->ram_block->host + addr, size, data);
- }
- 
- static const MemoryRegionOps ram_device_mem_ops = {
-diff --git a/system/physmem.c b/system/physmem.c
-index fb69cdb57d9..d62af6f2480 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -3284,7 +3284,7 @@ static MemTxResult flatview_write_continue_step(MemTxAttrs attrs,
- 
-         /*
-          * Assure Coverity (and ourselves) that we are not going to OVERRUN
--         * the buffer by following ldn_he_p().
-+         * the buffer by following ldn_unaligned_p().
-          */
- #ifdef QEMU_STATIC_ANALYSIS
-         assert((*l == 1 && len >= 1) ||
-@@ -3292,7 +3292,7 @@ static MemTxResult flatview_write_continue_step(MemTxAttrs attrs,
-                (*l == 4 && len >= 4) ||
-                (*l == 8 && len >= 8));
- #endif
--        val = ldn_he_p(buf, *l);
-+        val = ldn_unaligned_p(buf, *l);
-         result = memory_region_dispatch_write(mr, mr_addr, val,
-                                               size_memop(*l), attrs);
-         if (release_lock) {
-@@ -3379,7 +3379,7 @@ static MemTxResult flatview_read_continue_step(MemTxAttrs attrs, uint8_t *buf,
- 
-         /*
-          * Assure Coverity (and ourselves) that we are not going to OVERRUN
--         * the buffer by following stn_he_p().
-+         * the buffer by following stn_unaligned_p().
-          */
- #ifdef QEMU_STATIC_ANALYSIS
-         assert((*l == 1 && len >= 1) ||
-@@ -3387,7 +3387,7 @@ static MemTxResult flatview_read_continue_step(MemTxAttrs attrs, uint8_t *buf,
-                (*l == 4 && len >= 4) ||
-                (*l == 8 && len >= 8));
- #endif
--        stn_he_p(buf, *l, val);
-+        stn_unaligned_p(buf, *l, val);
- 
-         if (release_lock) {
-             bql_unlock();
-diff --git a/ui/vnc-enc-tight.c b/ui/vnc-enc-tight.c
-index b645aebccef..62d825dc05f 100644
---- a/ui/vnc-enc-tight.c
-+++ b/ui/vnc-enc-tight.c
-@@ -912,7 +912,7 @@ static void tight_pack24(VncState *vs, uint8_t *buf, size_t count, size_t *ret)
-     }
- 
-     while (count--) {
--        pix = ldl_he_p(buf8);
-+        pix = ldl_unaligned_p(buf8);
-         *buf++ = (char)(pix >> rshift);
-         *buf++ = (char)(pix >> gshift);
-         *buf++ = (char)(pix >> bshift);
-diff --git a/util/bufferiszero.c b/util/bufferiszero.c
-index 9548dd3ad1b..d7775dc891d 100644
---- a/util/bufferiszero.c
-+++ b/util/bufferiszero.c
-@@ -38,10 +38,10 @@ static bool buffer_is_zero_int_lt256(const void *buf, size_t len)
-      * the beginning and end of the buffer.
-      */
-     if (unlikely(len <= 8)) {
--        return (ldl_he_p(buf) | ldl_he_p(buf + len - 4)) == 0;
-+        return (ldl_unaligned_p(buf) | ldl_unaligned_p(buf + len - 4)) == 0;
-     }
- 
--    t = ldq_he_p(buf) | ldq_he_p(buf + len - 8);
-+    t = ldq_unaligned_p(buf) | ldq_unaligned_p(buf + len - 8);
-     p = QEMU_ALIGN_PTR_DOWN(buf + 8, 8);
-     e = QEMU_ALIGN_PTR_DOWN(buf + len - 1, 8);
- 
-@@ -58,7 +58,7 @@ static bool buffer_is_zero_int_ge256(const void *buf, size_t len)
-      * Use unaligned memory access functions to handle
-      * the beginning and end of the buffer.
-      */
--    uint64_t t = ldq_he_p(buf) | ldq_he_p(buf + len - 8);
-+    uint64_t t = ldq_unaligned_p(buf) | ldq_unaligned_p(buf + len - 8);
-     const uint64_t *p = QEMU_ALIGN_PTR_DOWN(buf + 8, 8);
-     const uint64_t *e = QEMU_ALIGN_PTR_DOWN(buf + len - 1, 8);
- 
-diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
-index c735add2615..eeb18c716c0 100644
---- a/accel/tcg/ldst_atomicity.c.inc
-+++ b/accel/tcg/ldst_atomicity.c.inc
-@@ -415,7 +415,7 @@ static uint16_t load_atom_2(CPUState *cpu, uintptr_t ra,
-     atmax = required_atomicity(cpu, pi, memop);
-     switch (atmax) {
-     case MO_8:
--        return lduw_he_p(pv);
-+        return lduw_unaligned_p(pv);
-     case MO_16:
-         /* The only case remaining is MO_ATOM_WITHIN16. */
-         if (!HAVE_al8_fast && (pi & 3) == 1) {
-@@ -512,7 +512,7 @@ static uint64_t load_atom_8(CPUState *cpu, uintptr_t ra,
-     }
-     switch (atmax) {
-     case MO_8:
--        return ldq_he_p(pv);
-+        return ldq_unaligned_p(pv);
-     case MO_16:
-         return load_atom_8_by_2(pv);
-     case MO_32:
-@@ -875,7 +875,7 @@ static void store_atom_2(CPUState *cpu, uintptr_t ra,
- 
-     atmax = required_atomicity(cpu, pi, memop);
-     if (atmax == MO_8) {
--        stw_he_p(pv, val);
-+        stw_unaligned_p(pv, val);
-         return;
-     }
- 
-@@ -928,7 +928,7 @@ static void store_atom_4(CPUState *cpu, uintptr_t ra,
-     atmax = required_atomicity(cpu, pi, memop);
-     switch (atmax) {
-     case MO_8:
--        stl_he_p(pv, val);
-+        stl_unaligned_p(pv, val);
-         return;
-     case MO_16:
-         store_atom_4_by_2(pv, val);
-@@ -996,7 +996,7 @@ static void store_atom_8(CPUState *cpu, uintptr_t ra,
-     atmax = required_atomicity(cpu, pi, memop);
-     switch (atmax) {
-     case MO_8:
--        stq_he_p(pv, val);
-+        stq_unaligned_p(pv, val);
-         return;
-     case MO_16:
-         store_atom_8_by_2(pv, val);
--- 
-2.52.0
+> On 28/12/25 16:38, Paolo Bonzini wrote:
+> >
+> >
+> > Il dom 28 dic 2025, 16:14 Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g
+> > <mailto:philmd@linaro.org>> ha scritto:
+> >
+> >      > Perhaps the source of the confusion is that they are in bswap.h
+> >     but they
+> >      > (quite obviously since it's host endianness) never swap?
+> >
+> >     Hmm, maybe not well named API then.
+> >
+> >
+> > The name is fine, the placement maybe a bit less; they could be moved
+> > out of bswap.h but it's not really necessary to do it now.
+>
+> Indeed not needed now, but already done to figure this API ;) This
+> helped me to understand what we don't need is "DO_STN_LDN_P(he)"
+> because this is a convoluted expansion to a plain memcpy().
+>
+
+Without having seen your code, I will note that the simple conversion to
+memcpy() only works for little endian hosts. On big endian, you also need
+to adjust the first byte, like
+
+   memcpy(p, ((uint8_t*)&val) + sizeof(val) - n, n);
+
+And likewise for ldn_he_p. (Apologize if you had noticed it, just trying to
+avoid a possible round trip over the holidays!)
+
+Paolo
+
+
+> >     OK. Let's consider the following patches removed then:
+> >
+> >     - 03/25 system: Use explicit endianness in subpage_ops::read/write(=
+)
+> >     - 14/25 system: Use explicit endianness in ram_device::read/write()
+> >     - 16/25 system: Allow restricting legacy ld/st_he() 'native-endian'
+> API
+> >
+> >     All the series I posted this week build fine without them.
+> >
+> >
+> > Great, the other change I suggested was about the handling of MO_BSWAP
+> > but it can be done separately.
+>
+> This request is not ignored, but I plan to address it on top to keep
+> current changes simple enough.
+>
+> >
+> > If you don't want to repost and prefer to drop patch 14, we will also
+> > remove DEVICE_NATIVE_ENDIAN from subpages in a second step, for example
+> > by using "HOST_BIG_ENDIAN ? DEVICE_BIG_ENDIAN : DEVICE_LITTLE_ENDIAN" a=
+s
+> > in the ram_device ops.
+>
+> Yeah, that would even be smth like "DEVICE_ENDIANNESS_IS_IRRELEVANT", as
+> we call directly the ld/st_unaligned helpers. I'll think about that later=
+.
+>
+>
+
+--0000000000009c1846064705812a
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><div class=3D"gmail_quote gmail_quote_container"><di=
+v dir=3D"ltr" class=3D"gmail_attr">Il dom 28 dic 2025, 17:00 Philippe Mathi=
+eu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro.org">philmd@linaro.org</a=
+>&gt; ha scritto:<br></div><blockquote class=3D"gmail_quote" style=3D"margi=
+n:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex=
+">On 28/12/25 16:38, Paolo Bonzini wrote:<br>
+&gt; <br>
+&gt; <br>
+&gt; Il dom 28 dic 2025, 16:14 Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"m=
+ailto:philmd@linaro.org" target=3D"_blank" rel=3D"noreferrer">philmd@linaro=
+.org</a> <br>
+&gt; &lt;mailto:<a href=3D"mailto:philmd@linaro.org" target=3D"_blank" rel=
+=3D"noreferrer">philmd@linaro.org</a>&gt;&gt; ha scritto:<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt; Perhaps the source of the confusion is that t=
+hey are in bswap.h<br>
+&gt;=C2=A0 =C2=A0 =C2=A0but they<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt; (quite obviously since it&#39;s host endianne=
+ss) never swap?<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0Hmm, maybe not well named API then.<br>
+&gt; <br>
+&gt; <br>
+&gt; The name is fine, the placement maybe a bit less; they could be moved =
+<br>
+&gt; out of bswap.h but it&#39;s not really necessary to do it now.<br>
+<br>
+Indeed not needed now, but already done to figure this API ;) This<br>
+helped me to understand what we don&#39;t need is &quot;DO_STN_LDN_P(he)&qu=
+ot;<br>
+because this is a convoluted expansion to a plain memcpy().<br></blockquote=
+></div></div><div dir=3D"auto"><br></div><div dir=3D"auto">Without having s=
+een your code, I will note that the simple conversion to memcpy() only work=
+s for little endian hosts. On big endian, you also need to adjust the first=
+ byte, like</div><div dir=3D"auto"><br></div><div dir=3D"auto">=C2=A0 =C2=
+=A0memcpy(p, ((uint8_t*)&amp;val) + sizeof(val) - n, n);</div><div dir=3D"a=
+uto"><br></div><div dir=3D"auto">And likewise for ldn_he_p. (Apologize if y=
+ou had noticed it, just trying to avoid a possible round trip over the holi=
+days!)</div><div dir=3D"auto"><br></div><div dir=3D"auto">Paolo</div><div d=
+ir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote gmail_quo=
+te_container"><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px=
+ 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+<br>
+&gt;=C2=A0 =C2=A0 =C2=A0OK. Let&#39;s consider the following patches remove=
+d then:<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0- 03/25 system: Use explicit endianness in subpage_=
+ops::read/write()<br>
+&gt;=C2=A0 =C2=A0 =C2=A0- 14/25 system: Use explicit endianness in ram_devi=
+ce::read/write()<br>
+&gt;=C2=A0 =C2=A0 =C2=A0- 16/25 system: Allow restricting legacy ld/st_he()=
+ &#39;native-endian&#39; API<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0All the series I posted this week build fine withou=
+t them.<br>
+&gt; <br>
+&gt; <br>
+&gt; Great, the other change I suggested was about the handling of MO_BSWAP=
+ <br>
+&gt; but it can be done separately.<br>
+<br>
+This request is not ignored, but I plan to address it on top to keep<br>
+current changes simple enough.<br>
+<br>
+&gt; <br>
+&gt; If you don&#39;t want to repost and prefer to drop patch 14, we will a=
+lso <br>
+&gt; remove DEVICE_NATIVE_ENDIAN from subpages in a second step, for exampl=
+e <br>
+&gt; by using &quot;HOST_BIG_ENDIAN ? DEVICE_BIG_ENDIAN : DEVICE_LITTLE_END=
+IAN&quot; as <br>
+&gt; in the ram_device ops.<br>
+<br>
+Yeah, that would even be smth like &quot;DEVICE_ENDIANNESS_IS_IRRELEVANT&qu=
+ot;, as<br>
+we call directly the ld/st_unaligned helpers. I&#39;ll think about that lat=
+er.<br>
+<br>
+</blockquote></div></div></div>
+
+--0000000000009c1846064705812a--
 
 
