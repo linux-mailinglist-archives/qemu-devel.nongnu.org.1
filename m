@@ -2,41 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74D3CCE75D5
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Dec 2025 17:19:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B800CE75D2
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Dec 2025 17:19:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vaFwY-000246-0P; Mon, 29 Dec 2025 11:18:02 -0500
+	id 1vaFwY-00025c-Nu; Mon, 29 Dec 2025 11:18:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1vaFwL-0001wl-02; Mon, 29 Dec 2025 11:17:49 -0500
+ id 1vaFwL-0001wm-0M; Mon, 29 Dec 2025 11:17:49 -0500
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1vaFwI-0005OL-Gq; Mon, 29 Dec 2025 11:17:48 -0500
+ id 1vaFwI-0005OJ-Gi; Mon, 29 Dec 2025 11:17:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
- Content-Type; bh=KWu6dgQsyiprW8vGaRrrJa32iLgci/iXzBGySqZ9RAY=; b=hOW+8s6nvSx0
- Vv/IJUFKxR5sCN7ZTb2QcygAwFNw783sN9OcaB9u1jTRE8aG2N0+GcxJ8BQWnruBbc432BjcXwtkQ
- 4juizmwwPQ5x0vZSvTP2Dfj7bQYUDe15tlzUbCZXI3tj6q5zV0w+3thvLq951bfO5HfJDnFEWkePO
- T9+MmijvG9s5dmQSRQCatJPBJ8V3WOSVhTI8R0sXqBShEjzR9vs/V4skwakrsNT684cbBeMGw8vFm
- GCiujCiN7ETd651vI0U3W1ijPFUh6RQXWBq95hFdQ6fd4HmOEQKOUaDG6lylciSkh6QSQ6bbK/gew
- N5xwGb+gAebvPKvGTsSQdA==;
+ Content-Type; bh=RHQ06Ay9ayNDOTQUjI5mQsuceKf7xehyCQI6bZPtdsc=; b=RW8FMCwC5VpR
+ dYwSz43w70zy7oPtzgsx83yk15U9jYxraNOalfXtQ7OLjoH+bXiM/hVbWNUeqt1i56k03P9YDoahy
+ sEIEGshESIkcFMPDDUGI3wwm4Ptv8UaY+uPKuGZPm1q5fpnyRpK7xHqLOPyMPcf9mulazMr9rFLfT
+ LzWOiFlr9hCCWtFWrVVY079YT00f53Sv61Ki/9g+96GODRsCys1PmAVVAsyu//kA8Y8I+su0uHv04
+ RXq2lS6DBNCE/W5GAkM2/JhHsoN9mKSJ3pKdq24mTmudeTAUSO5JswEzU/f8xtYd9zSjzro/MQPmG
+ JXGyvN5kPbi0rnqEGaiC/A==;
 Received: from [10.193.1.107] (helo=dev007.aci.vzint.dev)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1vaFvu-00Apz0-2A;
+ (envelope-from <den@openvz.org>) id 1vaFvu-00Apz0-2M;
  Mon, 29 Dec 2025 17:17:32 +0100
 To: qemu-block@nongnu.org,
 	qemu-devel@nongnu.org,
 	qemu-stable@nongnu.org
 Cc: den@openvz.org, Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>,
  Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-Subject: [PATCH 0/3] fix potential data loss in QEMU (missed flush)
-Date: Mon, 29 Dec 2025 19:07:42 +0300
-Message-ID: <20251229161740.758800-1-den@openvz.org>
+Subject: [PATCH 1/3] block: create bdrv_advance_flush_gen() helper
+Date: Mon, 29 Dec 2025 19:07:43 +0300
+Message-ID: <20251229161740.758800-2-den@openvz.org>
 X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20251229161740.758800-1-den@openvz.org>
+References: <20251229161740.758800-1-den@openvz.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: softfail client-ip=130.117.225.111; envelope-from=den@openvz.org;
@@ -65,34 +67,53 @@ From:  "Denis V. Lunev" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series is a followup to my previous patch sent under
-"qcow2: add very final sync on QCOW2 image closing". Could be considered
-as v2.
+The patch creates helper to advance flush generation.
 
-This series addresses two problems:
-1. bdrv_co_flush() at the end of bdrv_driver_pwritev() and
-   bdrv_co_do_pwrite_zeroes() could be effectively no op. The problem is
-   that bdrv_co_flush() is optimized internally this way to track real
-   requests which were making changes in the image and without such
-   requests from previous flush() do nothing. Requests are tracked using
-   write_gen on BDS. This field should be incremented after write is
-   completed but before flush is called.
-
-   This could be considered as potential data loss if caller relies on
-   BDRV_REQ_FUA flag which means that such requests are really lands on
-   the underlying device, which could not due to missed flush().
-
-2. qcow2_update_header() must actually write header with BDRV_REQ_FUA
-   flag as image processing on open relies on the fact that header is
-   actual and it is not possible to reorder header modifications and
-   image content modifications.
-
-Changes:
-    * added patches 1 & 2
+Right now there is the only place which handles bs->write_gen, but this
+is going to be changed in the next patches. Unfortunately we need to
+precisely control the moment of flush() when BDRV_REQ_FUA is passed
+as a request flag. Generic processing inside bdrv_co_write_req_finish()
+is too late.
 
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 CC: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 CC: Kevin Wolf <kwolf@redhat.com>
 CC: Hanna Reitz <hreitz@redhat.com>
+---
+ block/io.c                       | 2 +-
+ include/block/block_int-common.h | 5 +++++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/block/io.c b/block/io.c
+index d37da2e0ac5..f39ff862c11 100644
+--- a/block/io.c
++++ b/block/io.c
+@@ -2147,7 +2147,7 @@ bdrv_co_write_req_finish(BdrvChild *child, int64_t offset, int64_t bytes,
+ 
+     bdrv_check_request(offset, bytes, &error_abort);
+ 
+-    qatomic_inc(&bs->write_gen);
++    bdrv_advance_flush_gen(bs);
+ 
+     /*
+      * Discard cannot extend the image, but in error handling cases, such as
+diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
+index 80c54a6d09f..67552463dbe 100644
+--- a/include/block/block_int-common.h
++++ b/include/block/block_int-common.h
+@@ -1373,6 +1373,11 @@ int bdrv_check_qiov_request(int64_t offset, int64_t bytes,
+                             QEMUIOVector *qiov, size_t qiov_offset,
+                             Error **errp);
+ 
++static inline void bdrv_advance_flush_gen(BlockDriverState *bs)
++{
++    qatomic_inc(&bs->write_gen);
++}
++
+ bool cbw_filter_present(void);
+ 
+ #ifdef _WIN32
+-- 
+2.43.5
 
 
