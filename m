@@ -2,79 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECD54CE7320
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Dec 2025 16:20:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11995CE7335
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Dec 2025 16:23:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vaF1t-0001bP-7t; Mon, 29 Dec 2025 10:19:29 -0500
+	id 1vaF5U-0004Di-95; Mon, 29 Dec 2025 10:23:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1vaF1q-0001ZU-HU
- for qemu-devel@nongnu.org; Mon, 29 Dec 2025 10:19:26 -0500
-Received: from p-west1-cluster3-host9-snip4-4.eps.apple.com ([57.103.66.87]
- helo=outbound.pv.icloud.com)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vaF5S-0004DZ-Sq
+ for qemu-devel@nongnu.org; Mon, 29 Dec 2025 10:23:10 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1vaF1n-0004fB-Ba
- for qemu-devel@nongnu.org; Mon, 29 Dec 2025 10:19:26 -0500
-Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
- by p00-icloudmta-asmtp-us-west-1a-10-percent-1 (Postfix) with ESMTPS id
- 87933180059F; Mon, 29 Dec 2025 15:19:18 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=FNuw/1w+nGWHVOq38C1g66qh9K4tOBSity8k1sxxShU=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme;
- b=ToiMIoahNlipkaJm78I1AI0Md/uyZqC6ql1RZsbOxlQ2G4P/UoFVLaeed4I3NbjsTn4Sd1mRVJarhOsMl5Gw349zBibKwUZKm927JXd4mRmDNAVRIC2YmbyJrzqzbB8TWFnLWfCfanlkIEH/qP8R26UiO0Ob+ZUxL7ClAHn4lMqFpJUIDKCA8gLMYaLiH/XnZc+VbYChheZkVmJyxJVfcrmFtstY+d48h/iXPHo7nLae/iriP/SQutxRyxb6tHH08Q5cikrdlfPIEPbazr+vDh1PK/2Ej/pyeuSvqpCSOZDapjTxmB4SypqSR4p9AxemZ7DwCryps9tLDgjGc2LQfg==
-mail-alias-created-date: 1752046281608
-Received: from localhost.localdomain (unknown [17.56.9.36])
- by p00-icloudmta-asmtp-us-west-1a-10-percent-1 (Postfix) with ESMTPSA id
- 663EF180017E; Mon, 29 Dec 2025 15:19:15 +0000 (UTC)
-From: Mohamed Mediouni <mohamed@unpredictable.fr>
-To: qemu-devel@nongnu.org
-Cc: Roman Bolshakov <rbolshakov@ddn.com>, Mads Ynddal <mads@ynddal.dk>,
- Phil Dennis-Jordan <phil@philjordan.eu>, Alexander Graf <agraf@csgraf.de>,
- Peter Maydell <peter.maydell@linaro.org>,
- Cameron Esfahani <dirty@apple.com>, qemu-arm@nongnu.org,
- Mohamed Mediouni <mohamed@unpredictable.fr>
-Subject: [RFC v3 4/4] vmapple: apple-gfx: move legacy memory management APIs
- away from inline
-Date: Mon, 29 Dec 2025 16:18:50 +0100
-Message-ID: <20251229151850.96852-5-mohamed@unpredictable.fr>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20251229151850.96852-1-mohamed@unpredictable.fr>
-References: <20251229151850.96852-1-mohamed@unpredictable.fr>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vaF5M-0005Gj-Na
+ for qemu-devel@nongnu.org; Mon, 29 Dec 2025 10:23:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1767021780;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=M2exg5rLLyCD9sA0mNQ4cIKkHCkihxxzdA087LGVgFk=;
+ b=CIP1kERY2t2P0Rw9qETW6wpOlGWVn3f0/cH5D42lOPIDOeLOvx+pMBnX9jx8VgLMlCRwzz
+ LfsOu0jgcxik5lfAtZ8bNw0S4Q8dmprwC0zdUUpiW52bCuTtnPA8e7jjVhzLKFNUi/wNL+
+ sbxWNLSjdtmM4e7TOgkJnqpzVOl78l8=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-318-CF4-_sgIP2q2Wi5YNg3S2A-1; Mon, 29 Dec 2025 10:22:58 -0500
+X-MC-Unique: CF4-_sgIP2q2Wi5YNg3S2A-1
+X-Mimecast-MFC-AGG-ID: CF4-_sgIP2q2Wi5YNg3S2A_1767021778
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-4ee3dfe072dso243276301cf.2
+ for <qemu-devel@nongnu.org>; Mon, 29 Dec 2025 07:22:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=redhat.com; s=google; t=1767021778; x=1767626578; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=M2exg5rLLyCD9sA0mNQ4cIKkHCkihxxzdA087LGVgFk=;
+ b=DoTr4mLQLth7EX9LWLoUgmk9qpNZWm0ICCYBkoD764QP3mfWeGPlz1W9BpxdvLczE+
+ F5CZYwqeDErMAsX8Q94woWWrAJkRXEwUxPqKO3WylXngBx98QdMfTpqolySDKQ1p1vlp
+ eo3eWnGYR4Jkrbdwn3xSpBVsgm5v4Gqh0JIzP/auryrGzRTkqoUkcD29bwFtGBhcn4CJ
+ n2VYoUJxF0ZohftugYG2DtlUN8w8XNiA1H+1qTRzeUVGP9+l7KM8dPylFWkmY4hq4OnH
+ li6e6vMcfrEFixLZOMu+JeQhW9zbWG3jrgsAPBMp+NosNq9w1jAY5/sKRmndB38qtuP/
+ tWyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1767021778; x=1767626578;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=M2exg5rLLyCD9sA0mNQ4cIKkHCkihxxzdA087LGVgFk=;
+ b=IPa7aLr6ECb5u/SCCJxV4rf669Am9/sEVBBGdTah09AjBajwRz5PIOHyLqoKaCyrml
+ sbcoiX4u5MUfjkYD1gGA7fwx7YFOFvywrSu2YMICKq5Vj2m4iclda1XkDdjxMxzTWC74
+ Uys/vSRImh67cU2TCebvGULDAvDnRWR5+UWJXIR9K7pY1hIn74Llc8L11YxRMJDYwV8J
+ afYDf7l3T9P706Hoa/QyLqQSN7kREyE566rXsVlE3+5p0yI7J+E8HZr0Fa24igzOvU3n
+ zlJbaPhQQksDEeLTf2V9Sm40Gbi0f8qowZ/66IklkgIa7exmMgkHHkYFrzl4eK96eJAh
+ ZNQg==
+X-Gm-Message-State: AOJu0YxMP0GWseaun2W4AMIi8GS9yi0TVP0tgrir0GxMttYvUnJgLk4O
+ f9VO5hfO9Lqdm43v6ys8ye1t1VLsNqSrKo5bQ9lmhgUajo6MrH1FhJpBgjMN9saH/YrU9m13JAR
+ UYyMkAj20WKsRurcVDMxs1zE1Vag8gCmELRDVfewOkDknY29EHcqlMDPE
+X-Gm-Gg: AY/fxX7exn9gT2QFAmtTxlzUvwqk1vYBKg7pyovjHQfHQrzV8zrRPcEJZfQTe4XlZzr
+ mYGBykcslDPlef7t1BwGuQRCAHcWslnqrwxB+mwR0MtQUjh4roh543ZGY9gFCbzdzvB6HjsHR2q
+ v7Tol4eCVEkI2tbHcRml52RM986jxTUVWGeXwWf8C0VR+ezoxtMW2dw7n/DMkI4k7lItpFlZNgf
+ IfU0F6hn+HGQ5oOF1HcofK8Qh5GgCSTFPfaKrnGj0N50zqS2F3wjw2Qwg/BZRoopGZ8XJJUoGs0
+ 6/UZb4xOKjUCngPao2SmRItUSQkMAFS+Ng9vxCXPluwu6VaMswW8YefcPy4tgictTkY2VUZQI2A
+ 7gEA=
+X-Received: by 2002:ac8:5a4c:0:b0:4ed:6782:12c4 with SMTP id
+ d75a77b69052e-4f4abcf8dc8mr485360201cf.33.1767021777648; 
+ Mon, 29 Dec 2025 07:22:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE2mqos8U7PcC9Nz/aaDgObY7BBwzML+ORQrwFD0kS8cJX7+dxitGN5dOAsd+BJJIa662mdaQ==
+X-Received: by 2002:ac8:5a4c:0:b0:4ed:6782:12c4 with SMTP id
+ d75a77b69052e-4f4abcf8dc8mr485359701cf.33.1767021777059; 
+ Mon, 29 Dec 2025 07:22:57 -0800 (PST)
+Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-4f4ac5649c9sm212851921cf.14.2025.12.29.07.22.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 Dec 2025 07:22:56 -0800 (PST)
+Date: Mon, 29 Dec 2025 10:22:55 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [RFC PATCH 01/25] migration: Remove redundant state change
+Message-ID: <aVKcz4Kf57_KIsJc@x1.local>
+References: <20251226211930.27565-1-farosas@suse.de>
+ <20251226211930.27565-2-farosas@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI5MDE0MCBTYWx0ZWRfX71Ri1LYNKNOz
- uDFJB74T1xSXfjZ/NkVDbmmxxFfpYZEinBs//hgc8xMUbin2OcasFYhk81l2HmMwt5YRT9Fz9AI
- gAH948AzhNPn0GvHsvC5kTwiYYZ9MRHYfMNuDy3HVCrC+5qTOizq0thkM3pmJ1eWHR6Bilkdw/9
- 0mNAcMJT3PwYYQ0LcueUeZXOFw4Tam3YL1xjO6q4R4WjvbQKMqNjJGGt+gMKyKXmSlD1hD8WqJ3
- jWNlsdYIObBJg/xWJDRmTFwX8jL+Pi9egDTEr2FfDNn/bWSjLuCMylG/sIN2HA6vUim225Slo9f
- rDSuLUYv2HRz/VAyk5u
-X-Proofpoint-GUID: bY1_-ADT44DDryR-Mxtfl0iz4gVDaC9W
-X-Authority-Info: v=2.4 cv=d+b4CBjE c=1 sm=1 tr=0 ts=69529bf8 cx=c_apl:c_pps
- a=azHRBMxVc17uSn+fyuI/eg==:117 a=azHRBMxVc17uSn+fyuI/eg==:17
- a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=FpLd5HJXVXburdsqXX0A:9
-X-Proofpoint-ORIG-GUID: bY1_-ADT44DDryR-Mxtfl0iz4gVDaC9W
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-29_04,2025-12-29_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- malwarescore=0 suspectscore=0 bulkscore=0 spamscore=0 clxscore=1030
- adultscore=0 phishscore=0 mlxlogscore=873 classifier=spam authscore=0
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2512290140
-X-JNJ: AAAAAAABktGsXMBwZy3ujeKEHyvxF4hasdvONxMh7/iPdXA+oioWOe07sTjhLIqrKnx6B8Tbt0x38F93Vyn5P+4Dec/1qrWyEELLQt9y5TsyCm9V/620fDabeV3fGpoIrcmPHEz4HF2+MfYrag/MS33K5LyCXxcCyxwnTD/BXH8S4WNQOE6MRY/BFWWO/di6RnPEfvTt/k5x+tPXhY9YKlYmoPQ08rq0MR47PFWvPwmErMreHyrD4TG2k0a/0tEHxxt245Y3pUWiifZPua6U5pka2Lt4U/f8KQbigM9NT5Q/UqGmqQiYKeGFdFv0GccIjr54YKWROwNGpSwsX1CoLt9BhGuTxZ3HIqc+0kcfspp77aP8SNFNIWFVPlHuqYPOjR0YeAbVVWdfF1NXyt92CRlzFOzAB2gfraH61IH5FJAJti7SHiM751WCVwsfaI1hzmRKzNZjKPeH00X5v7n5Aae/24qtP8E6LCiokMVaWBbdfUCPujVtGnpb5yddg3shgA2H5ryrXQLSZoBUyyyb+h3fcWBE8nxEIvfXAl85mO6FF5K3iHoXHEujfMSvhX1T52xsRIej6ma4AOSmet2iQArqUf9tp1yfFM9F8ISSXmRMqTxQf4M+mxiU0/wNhuXv2tOlrt9pq0woutT+CCWax2HTscdrfLM2hIssP7OpoK+LtZmieiVAMtTxyUVdO9FFxr0jTCyBCr7rHjMe/E3XR2a51yg0jvjk2yBovv+glryNdg==
-Received-SPF: pass client-ip=57.103.66.87;
- envelope-from=mohamed@unpredictable.fr; helo=outbound.pv.icloud.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251226211930.27565-2-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,64 +114,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-They're not function pointers but blocks.
-Adding this to address review comments but I don't think it's worthwhile.
+On Fri, Dec 26, 2025 at 06:19:03PM -0300, Fabiano Rosas wrote:
+> If local_err is set, migration_connect_error_propagate() will be
+> called and that function already has a state transtion from SETUP to
+> FAILED.
+> 
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
-Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
----
- hw/display/apple-gfx-mmio.m | 31 ++++++++++++++++++-------------
- 1 file changed, 18 insertions(+), 13 deletions(-)
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-diff --git a/hw/display/apple-gfx-mmio.m b/hw/display/apple-gfx-mmio.m
-index 2031baceda..fa4362653b 100644
---- a/hw/display/apple-gfx-mmio.m
-+++ b/hw/display/apple-gfx-mmio.m
-@@ -188,6 +188,22 @@ static bool apple_gfx_mmio_unmap_surface_memory(void *ptr)
-     return true;
- }
- 
-+/* Legacy memory management API: Gone in macOS 15.4 and later. */
-+static bool (^apple_gfx_map_memory)
-+ (uint64_t phys, uint64_t len, bool ro, void **va, void *e, void *f)
-+ = ^bool(uint64_t phys, uint64_t len, bool ro, void **va, void *e, void *f){
-+    *va = apple_gfx_mmio_map_surface_memory(phys, len, ro);
-+
-+    trace_apple_gfx_iosfc_map_memory(phys, len, ro, va, e, f, *va);
-+
-+    return *va != NULL;
-+};
-+
-+static bool (^apple_gfx_unmap_memory)(void *va, void *b, void *c, void *d, void *e, void *f)
-+ = ^bool(void *va, void *b, void *c, void *d, void *e, void *f){
-+    return apple_gfx_mmio_unmap_surface_memory(va);
-+};
-+
- static PGIOSurfaceHostDevice *apple_gfx_prepare_iosurface_host_device(
-     AppleGFXMMIOState *s)
- {
-@@ -207,19 +223,8 @@ static bool apple_gfx_mmio_unmap_surface_memory(void *ptr)
-         iosfc_desc.mmioLength = 0x10000;
-         iosfc_desc.memoryMapDescriptor = memoryMapDescriptor;
-     } else {
--        iosfc_desc.mapMemory =
--            ^bool(uint64_t phys, uint64_t len, bool ro, void **va, void *e, void *f) {
--                *va = apple_gfx_mmio_map_surface_memory(phys, len, ro);
--
--                trace_apple_gfx_iosfc_map_memory(phys, len, ro, va, e, f, *va);
--
--                return *va != NULL;
--            };
--
--        iosfc_desc.unmapMemory =
--            ^bool(void *va, void *b, void *c, void *d, void *e, void *f) {
--                return apple_gfx_mmio_unmap_surface_memory(va);
--            };
-+        iosfc_desc.mapMemory = apple_gfx_map_memory;
-+        iosfc_desc.unmapMemory = apple_gfx_unmap_memory;
-     }
- 
-     iosfc_desc.raiseInterrupt = ^bool(uint32_t vector) {
 -- 
-2.50.1 (Apple Git-155)
+Peter Xu
 
 
