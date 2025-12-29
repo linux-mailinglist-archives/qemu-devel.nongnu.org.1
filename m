@@ -2,116 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C1BACE7EEC
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Dec 2025 19:51:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BD97CE7EC8
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Dec 2025 19:49:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vaIIm-0004Bx-5p; Mon, 29 Dec 2025 13:49:08 -0500
+	id 1vaIIy-0004p5-RC; Mon, 29 Dec 2025 13:49:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <daniel.barboza@oss.qualcomm.com>)
- id 1vaIHO-0003i3-BD
- for qemu-devel@nongnu.org; Mon, 29 Dec 2025 13:47:49 -0500
+ id 1vaIHR-0003ir-VI
+ for qemu-devel@nongnu.org; Mon, 29 Dec 2025 13:47:53 -0500
 Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <daniel.barboza@oss.qualcomm.com>)
- id 1vaIHM-0008Fu-Dr
- for qemu-devel@nongnu.org; Mon, 29 Dec 2025 13:47:42 -0500
+ id 1vaIHO-0008Go-VO
+ for qemu-devel@nongnu.org; Mon, 29 Dec 2025 13:47:45 -0500
 Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
  by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
- 5BTA97S43642171
- for <qemu-devel@nongnu.org>; Mon, 29 Dec 2025 18:47:39 GMT
+ 5BTAaeTY3707398
+ for <qemu-devel@nongnu.org>; Mon, 29 Dec 2025 18:47:42 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
  cc:content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=qcppdkim1; bh=0SfJ/yrK7FM
- 0cvB/DgDChYJxB5rSfnncLQR9ksHFvOg=; b=FYBcjTTQNxN1MkiWpYWxIp2sxra
- Ty3QKqkIE6f4XB3k9ZknuDmtSDBryzoczup4O3GbWt6F7k1JBJ73sM8DQOp+lXFp
- EEV5zjPd+aEaLlq4JsmtAEC9YffSTFByievIzs6wh2MIYVpGuR1Bec+unI3QiNOl
- yybg7y4fryIB9+RGb5n0fHDtuewzcB2omq9MasyaVu7dR6WMhsUhMqdO3QPfX2rQ
- QYHspEbJH8rlglrcmyvLl2bhrhBxfP1f5wxq9uZASdOq3EPZ64/z8rW3Vzbnd6hD
- niZXW7l/7dG4w1jsTdddLYb4RvejKH7/y1DoM6ad409mS4WR+LnfrQPn3+Q==
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ba6sg552u-1
+ :mime-version:references:subject:to; s=qcppdkim1; bh=jB7s287ImVQ
+ mlj6vQ16omhmtdA6siCilAT9/Kg/k5fQ=; b=VLtH81F7BmBUEb0lXrP0bnHkXw9
+ aYAfI+O/tUt4kTeltNqS9n99qkFrsysj5ETqyKTL073kQHpvsVQLixmWk9Tgalog
+ YixPmSD69Fkml0OFRjDaIoiLeYZpihOl5+HrkcLJZsn6jHaIGpfx6GjCZvd3YboH
+ JGVfpNt6L7k8j16XNbgMXTaHop9WGibdwODEf02QpmmE5w600ZcXLrtZ6xP6dmhC
+ AVoc/OzuzdccRBCHG1cFK50NoYFP6CumzVxi5ex2RMykeNhl1Fxbhp2Vg3oXk9GQ
+ juvUXpJVqrn2jcLn9uCGuaFeNtVg+2/Fkp6179FpG7aYFQwmt5lK5ubTv0w==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ba6sg552v-1
  (version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Mon, 29 Dec 2025 18:47:39 +0000 (GMT)
-Received: by mail-pl1-f198.google.com with SMTP id
- d9443c01a7336-2a0d43fcb2fso312899965ad.3
- for <qemu-devel@nongnu.org>; Mon, 29 Dec 2025 10:47:39 -0800 (PST)
+ for <qemu-devel@nongnu.org>; Mon, 29 Dec 2025 18:47:42 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id
+ d9443c01a7336-29f13989cd3so282592805ad.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Dec 2025 10:47:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oss.qualcomm.com; s=google; t=1767034058; x=1767638858; darn=nongnu.org;
+ d=oss.qualcomm.com; s=google; t=1767034061; x=1767638861; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0SfJ/yrK7FM0cvB/DgDChYJxB5rSfnncLQR9ksHFvOg=;
- b=dJLjlvgEcsnV2uDGfP0VScfivI0ss/WafOyLqYT1V9etex7W5MUHw0MzGFR2ztF6DM
- fMdF1KcCrvvAirRApgsoWEGuiUEm86MUv81J//1tdD3NCOVOFzFO5Psg05RZL8klLZHC
- sqxYOm0GUw/KQgTVU1vx62IVgRP8MgkL98TWGUjkRL4bHzuVy9K08qqUQVYC50060JHb
- j1bgIvaxm/hl8J+108qLPUC/4sWkC7Uv8gVxG8W7Akk9eN3ylGJGsyRrZUyVnbaw4W33
- d8/MLLzl7OKHhAt1VaXDTou53ffLWqN5EgkQ3ChGnzkXvrGznEUPaFkjHZcBB+Bk+7xs
- rhzQ==
+ bh=jB7s287ImVQmlj6vQ16omhmtdA6siCilAT9/Kg/k5fQ=;
+ b=RDK+df537Dgc6XVOm91UydirSyKAEVhoPM9jgo1vnwqdoD/uei2oU239qPs46ny1Zc
+ pUFVy6xPXycOV3NfjGuV8ejnp9BfavHfj54SEORHxcUmih9phm8Jd7pCSz6XpC1uwfq4
+ BKkETvUlYDtcBqhMiboFzM2rwbB60sEjGn5X5pQMmXrpVhloWaP0HT+6Pbg6GLczVXrx
+ tN5hZ6BoeXI5SiqWH3GDYZWsW2lLbPMOINsYtPeAvdDrygUlgW8vTvT7Ng2YKIu3K4u8
+ 21wbQVUSi2OjkZmTO6VBfAIBqSnAYv0jvNHcW4cKxwG7zikFnIYbqDUq7bNKXBG1+4im
+ KwRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767034058; x=1767638858;
+ d=1e100.net; s=20230601; t=1767034061; x=1767638861;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=0SfJ/yrK7FM0cvB/DgDChYJxB5rSfnncLQR9ksHFvOg=;
- b=V77eG761jNGii5RARFd97QWMkWCmtoUAyvbM4LlCtIVlaaNyzRthbINs3tYAmywk0F
- pq62TKPfduf5wBMCVKsy/QoDe5EhL4qImal+ng+BhpAHbM6ttE5U941K7ow1IGCjcmFY
- 2uGA+txgsgEAVQKsvwbtHBxOY9vpXWRhBCy006OAy4V+h3vX1jFP3eowVjdnTH+SLXE8
- 7a73C+2/khWqsljJv48eotyPlc+mGP1dHtOomX4QzBO+unbGDYU6PDPgHKy2a0awQP0+
- CEDoRBK2dpNVp52RVc7QsvrBZHMpr60gl3PjQweO845ZhD5HWJBJrGfFEfJpRO2Uu6E1
- iMRA==
-X-Gm-Message-State: AOJu0YwjngV08pZVaJrwGOrI2IgrdY10V52nToHU/CC2URaunOPkII7z
- KfuX1lprY9NixBtG9itohPfFxtaZkPusVqKTPdCQt9XlRDvAD0EBdGQym6gWEXjnuZwhwM15c/r
- XoDwjn0bReOkWXaF56g0wfeZTGPfTUBw1DqHzLuFRyPIGty+Cw47sQERKS6MSwqopEA==
-X-Gm-Gg: AY/fxX6thgMEf0I3gcgoFjxk0iH71Gn8vSthWn4krqQGPFqy2Bwp+/W9KueZUA3ioCs
- l6sRwFRpTSaiLaMRQCcVkVZD39nP15N0YKJ2dDWot4lCc0HDoLH0vSITIeoUXy9Ll+DapGitK23
- ishR9/3p98IneRVi94BKGorHLB7Ua0MkTtHJDTZaS7nAFWROLUaiPwwUiU3TxWN+WicL5CWOxq0
- IlLPkXdA7KXiv8m7IvBKyYg6P8A7PU0NisqzCv4Te6n3ncqARzEKkeCMpM+9hKYgZXY/n2GRcCz
- ElKErcEeHz5izYpRAadZMtQyjuaw3nQI2zDd2D38JP+v7csa5xlX0xIZhZODhq7eh0Ud+F0dazi
- WQBRM0o50NYZSoFKrDcaJPLcZ3WKPjJSniBChaSGinQDrRmA=
-X-Received: by 2002:a17:902:e747:b0:2a0:b02b:2114 with SMTP id
- d9443c01a7336-2a2f220697cmr307093015ad.11.1767034058179; 
- Mon, 29 Dec 2025 10:47:38 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHGxFPgFbZIcP8g2AqN/0ZC/0QlJdoERnhzHIOleGTAd1X2a6Icv02zGQb3L7pIfzIPJB07qA==
-X-Received: by 2002:a17:902:e747:b0:2a0:b02b:2114 with SMTP id
- d9443c01a7336-2a2f220697cmr307092835ad.11.1767034057697; 
- Mon, 29 Dec 2025 10:47:37 -0800 (PST)
+ bh=jB7s287ImVQmlj6vQ16omhmtdA6siCilAT9/Kg/k5fQ=;
+ b=f6h4eWYH/j0fbbwQcZVXmqcGWqoAsaFux8cocVtpc6ZKBXossEusKcKI690xhrrMq9
+ JbX+8ueGACbL8oBfaphTqU6/d3m7rTiOPZm5EAganif/RUvUHGiBPm5FOMANFPEhDjxj
+ 6QATeLhlfTyQ98Qk/KSY/vA87sGgUF/y6s31roJRhsF3GxAEoeamUFGzoFoaQ9bArhPN
+ watG3BwKuqjjBm83HafH/G2ubHQFEJT9YeW3v1+1/Wod0IbUef0/Lr+M7wwN0CWqEbxb
+ jciFWoiMFo+l1SoKDN5CwKpua7gDjL+8NEeQWBV9lHUIC2U3JzMLETHaGlRy+WFmwHh6
+ M+3A==
+X-Gm-Message-State: AOJu0YzQIrWiUftVZX7lfQ/YJkSruvRT1/BJ96iJPo41ePcNPiRNGKcC
+ gZg69JAsMryYspnTha5ofUUDCd6ZUQOhP54Ita8F0bgLV7LjqhOVDydBqCvYchlgbX1ZZ53YcWE
+ u8jgwLhYXbC6vKaI+EBYeBcW0FDjjrhiDLzsZpwtp28bSEJHno+RHbGluWsoEv2GvEg==
+X-Gm-Gg: AY/fxX5f8SNox/cu0VPf2t3ZJYcxChRMHswPRAPyAiBerTZvtj9V6/Ioh7DARkO++u7
+ xINAj/4BfHWQZZjEXaW0D5k9plrmfL6X9GXWbTlZBbmncobCbxSe7HP3oH/aKau+TKXFRjoGfT/
+ aiyIMwfr4r8H5brhp3FzKL8CHe62hb+tcx6dHr4tJifdlwC3tVQMAkDFD3A1e/VySHjImnqZ7GE
+ 1QDntss/f9aHAmJCiDT0+Qkffm+LPfvOEWcMrqX4KNSPSubh7IsQs3466wk4NKXp4BCAvhsGuP4
+ 27BLp4ycmkpnmukFUsMaA/4xduvh1vRSq0DPhv4zoeninhvXBSPQJfeBLfmWdZvnZQz7J2qnT6b
+ NUEDNh30voD169iyMPCx4KasQgAeOs9sGodZXx3l0AzzMzTE=
+X-Received: by 2002:a17:903:1a2b:b0:295:592f:94a3 with SMTP id
+ d9443c01a7336-2a2f2936a66mr293042965ad.48.1767034060851; 
+ Mon, 29 Dec 2025 10:47:40 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGG4PGjIDKZvISzv0K0Km/vcEOLU4R/VajQi0ba4hrtm6yR57YMPgHkWNtUaJOnw6VP5s4nag==
+X-Received: by 2002:a17:903:1a2b:b0:295:592f:94a3 with SMTP id
+ d9443c01a7336-2a2f2936a66mr293042755ad.48.1767034060332; 
+ Mon, 29 Dec 2025 10:47:40 -0800 (PST)
 Received: from grind.dc1.ventanamicro.com ([187.101.184.177])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a2f3c82aa8sm282198705ad.31.2025.12.29.10.47.35
+ d9443c01a7336-2a2f3c82aa8sm282198705ad.31.2025.12.29.10.47.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Dec 2025 10:47:37 -0800 (PST)
+ Mon, 29 Dec 2025 10:47:40 -0800 (PST)
 From: Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, liwei1518@gmail.com,
  zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com,
  Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>
-Subject: [PATCH v3 08/17] hw/riscv/trace-encoder: write e-trace packets to RAM
- sink
-Date: Mon, 29 Dec 2025 15:46:47 -0300
-Message-ID: <20251229184656.2224369-9-daniel.barboza@oss.qualcomm.com>
+Subject: [PATCH v3 09/17] test/qtest: add riscv-trace-test.c
+Date: Mon, 29 Dec 2025 15:46:48 -0300
+Message-ID: <20251229184656.2224369-10-daniel.barboza@oss.qualcomm.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251229184656.2224369-1-daniel.barboza@oss.qualcomm.com>
 References: <20251229184656.2224369-1-daniel.barboza@oss.qualcomm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: SWDALwAizKSOJ42WDtYGaMXvOGgvbPId
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI5MDE3MiBTYWx0ZWRfX18DV/xF8kCLo
- PAM5gO7kisMjLqCZMUjJqoyey/XjtWoGWQlGvjfYWybizrRh6R9+T0Vo6vo+FKQqSAC6ZanJCEZ
- I7TIvP6gJvcj217gjWeWUydUx7eA2uW9eq14ICl7SjwhL3tEICcSiK3Vp3w5cNCCskBhyXt7WJ+
- RXPusnzOOXK7HR0QmADwAeUoHHOujBwJwgoe6HL6M2gS9HgzcrFAUEcMTzG2xRy3rBzt0xZAt+I
- Nr7K3487uistH7HmTbzkL7ttguQpwpHlNzSsjSJ//zv3cAq9RspVqolELWoeFrd3N49rCokZ6nl
- WFui9vUFnQUW1SO2CiCW4xaXh5ZdJDhuwz5TkHilyydXd8xq/Jv9SzeV+W/rD3XQAwlsjXQi4T5
- WzNsrzPK7x2tmN3Cw8w55LgOR0looxYVkwJXJ3QYHcIvKWpoMGaPsqK5c3gENVsSkSP7mq5qNpK
- QrgrjyTe/bbd6H/psUA==
-X-Proofpoint-ORIG-GUID: SWDALwAizKSOJ42WDtYGaMXvOGgvbPId
-X-Authority-Analysis: v=2.4 cv=Y+L1cxeN c=1 sm=1 tr=0 ts=6952cccb cx=c_pps
- a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=cW5wcbexNO3A0Ml9TiDm9w==:17
+X-Proofpoint-GUID: XO6ygFyfLIIlN4QADxui6Zj7x2rGT9m6
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI5MDE3MiBTYWx0ZWRfX+YA4WliISv2d
+ i3HDO4mL0qjsjiyYHSDNINim5O3a4eENJiQqJG4n73+EoPe3FsSC15PNR1bePaMiUCMQKHxXYPZ
+ S5cBqAHOqfgpge0ZMwad5VQwUJ9l1SYiuWCL7ikiJ/sKl4nAbUSKK5ocF+idut5MwkLNuymFN+Y
+ FVY2JD8XiPBpkzAAKwux/pn8zfe5B0GW/r3dOjE/+fOwSmrqXzBfULuJRcEnFPFwbSeO7PHEU+6
+ q2jS8lNwouU+3hEYWixfbb6++8s/sRlHQd3zdjEYHu2NyaTe6n7fzyrXvuragjV1PO+ndkIEkpr
+ a0BV2s/l/TDxU5QvQOtVJWtVVBz2Y/f9i7hWgKIqKYjdX9aDsEiNPBLwx+oXmJN5DUQNRIHnjOf
+ vpXW27gAFaeBRdgAzlcHirCgbTcaDxf8ZRPLBycQU2q0ro7x+molzQ+9/GIRWeKPVVwCf4zxmTh
+ OM6MY8JulCOolD6IfPw==
+X-Proofpoint-ORIG-GUID: XO6ygFyfLIIlN4QADxui6Zj7x2rGT9m6
+X-Authority-Analysis: v=2.4 cv=Y+L1cxeN c=1 sm=1 tr=0 ts=6952ccce cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=cW5wcbexNO3A0Ml9TiDm9w==:17
  a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=R6bvkyUyvnGTYty0lT0A:9 a=GvdueXVYPmCkWapjIL-Q:22
+ a=EUspDBNiAAAA:8 a=cHopOgYuk8M715C2ZhYA:9 a=1OuFwYUASf3TG4hYMiVC:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-29_06,2025-12-29_01,2025-10-01_01
@@ -129,7 +128,7 @@ X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -145,195 +144,169 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We have the needed pieces to make the trace encoder write messages (or
-packets, in e-trace lingo) in its associated RAM sink.
-
-We'll start by writing a sync message that we're already able to fetch
-from the TCG instruction train. The trace encoder must be able to
-read/write TR_RAM_WP RAM sink regs to know where it is supposed to write
-packets, thus a handful of helpers are added to manipulate both the ram
-sink SMEM memory and relevant registers.
-
-The bulk of the work is done in trencoder_send_message_smem() where the
-trace encoder writes each trace packet. The 'wrap' mechanism is
-implemented to keep writing the RAM sink memory even after a SMEM
-workflow.  If we can't fit a full packet in the end of the ring buffer
-we're filling with NULLs and writing a new packet back to ramstart.
-
-In an overflow event we'll wrap the TR_RAM_WP_LOW WRAP bit and userspace
-is supposed to clear it after the wrapping was handled (i.e. userspace
-read the whole ring buffer back to the start).
-
-We're also allowing userspace to freely set ramsink and ramstart before
-the trace session begins, allowing for more freedom w.r.t where the SMEM
-will be written by the encoder. Note that this also means that userspace
-is responsible for setting at least TR_RAM_WP_LOW and TR_RAM_WP_HIGH
-before starting a trace session.
+Add a simple smoke test for the trace encoder/trace ram sink integration
+with the RISC-V 'virt' machine.
 
 Signed-off-by: Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>
 ---
- hw/riscv/trace-encoder.c | 121 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 121 insertions(+)
+ hw/riscv/virt.c                |   2 +-
+ tests/qtest/meson.build        |   2 +-
+ tests/qtest/riscv-trace-test.c | 120 +++++++++++++++++++++++++++++++++
+ 3 files changed, 122 insertions(+), 2 deletions(-)
+ create mode 100644 tests/qtest/riscv-trace-test.c
 
-diff --git a/hw/riscv/trace-encoder.c b/hw/riscv/trace-encoder.c
-index b6f0fc7e13..3ffe4dfe61 100644
---- a/hw/riscv/trace-encoder.c
-+++ b/hw/riscv/trace-encoder.c
-@@ -20,6 +20,34 @@
- #include "system/device_tree.h"
- #include "hw/register.h"
- #include "cpu.h"
-+#include "hw/riscv/trace-ram-sink.h"
-+#include "rv-trace-messages.h"
-+
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index 30e89a6c5a..fe49b1eda2 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -1711,7 +1711,7 @@ static void virt_machine_init(MachineState *machine)
+                                 hart_count, &error_abort);
+         sysbus_realize(SYS_BUS_DEVICE(&s->soc[i]), &error_fatal);
+ 
+-        if (tcg_enabled()) {
++        if (tcg_enabled()  || qtest_enabled()) {
+             virt_init_socket_trace_hw(s, i);
+         }
+ 
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 669d07c06b..07663c4836 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -281,7 +281,7 @@ qtests_s390x = \
+ qtests_riscv32 = \
+   (config_all_devices.has_key('CONFIG_SIFIVE_E_AON') ? ['sifive-e-aon-watchdog-test'] : [])
+ 
+-qtests_riscv64 = ['riscv-csr-test'] + \
++qtests_riscv64 = ['riscv-csr-test', 'riscv-trace-test'] + \
+   (unpack_edk2_blobs ? ['bios-tables-test'] : [])
+ 
+ qos_test_ss = ss.source_set()
+diff --git a/tests/qtest/riscv-trace-test.c b/tests/qtest/riscv-trace-test.c
+new file mode 100644
+index 0000000000..fe1cc85358
+--- /dev/null
++++ b/tests/qtest/riscv-trace-test.c
+@@ -0,0 +1,120 @@
 +/*
-+ * Size of header + payload since we're not sending
-+ * srcID and timestamp.
++ * Testcase for RISC-V Trace framework
++ *
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
 + */
-+#define TRACE_MSG_MAX_SIZE 32
 +
-+static TracePrivLevel trencoder_get_curr_priv_level(TraceEncoder *te)
++#include "qemu/osdep.h"
++
++#include "qemu/timer.h"
++#include "qemu/bitops.h"
++#include "libqtest.h"
++#include "hw/registerfields.h"
++
++/* taken from virt machine memmap */
++#define TE_BASE   0x3020000
++#define TRAM_BASE 0x6000000
++
++REG32(TR_TE_CONTROL, 0x0)
++    FIELD(TR_TE_CONTROL, ACTIVE, 0, 1)
++    FIELD(TR_TE_CONTROL, ENABLE, 1, 1)
++    FIELD(TR_TE_CONTROL, INST_TRACING, 2, 1)
++
++REG32(TR_RAM_START_LOW, 0x010)
++    FIELD(TR_RAM_START_LOW, ADDR, 0, 32)
++REG32(TR_RAM_START_HIGH, 0x014)
++    FIELD(TR_RAM_START_HIGH, ADDR, 0, 32)
++
++REG32(TR_RAM_LIMIT_LOW, 0x018)
++    FIELD(TR_RAM_LIMIT_LOW, ADDR, 0, 32)
++REG32(TR_RAM_LIMIT_HIGH, 0x01C)
++    FIELD(TR_RAM_LIMIT_HIGH, ADDR, 0, 32)
++
++REG32(TR_RAM_WP_LOW, 0x020)
++    FIELD(TR_RAM_WP_LOW, WRAP, 0, 1)
++    FIELD(TR_RAM_WP_LOW, ADDR, 0, 32)
++REG32(TR_RAM_WP_HIGH, 0x024)
++    FIELD(TR_RAM_WP_HIGH, ADDR, 0, 32)
++
++static uint32_t test_read_te_control(QTestState *qts)
 +{
-+    CPURISCVState *env = &te->cpu->env;
++    return qtest_readl(qts, TE_BASE + A_TR_TE_CONTROL);
++}
 +
-+    switch (env->priv) {
-+    case PRV_U:
-+        return env->virt_enabled ? VU : U;
-+    case PRV_S:
-+        return env->virt_enabled ? VS : S_HS;
-+    case PRV_M:
-+        return M;
-+    }
++static void test_write_te_control(QTestState *qts, uint32_t val)
++{
++    qtest_writel(qts, TE_BASE + A_TR_TE_CONTROL, val);
++}
++
++static uint64_t test_read_tram_ramstart(QTestState *qts)
++{
++    uint64_t reg = qtest_readl(qts, TRAM_BASE + A_TR_RAM_START_HIGH);
++
++    reg <<= 32;
++    reg += qtest_readl(qts, TRAM_BASE + A_TR_RAM_START_LOW);
++    return reg;
++}
++
++static uint64_t test_read_tram_writep(QTestState *qts)
++{
++    uint64_t reg = qtest_readl(qts, TRAM_BASE + A_TR_RAM_WP_HIGH);
++
++    reg <<= 32;
++    reg += qtest_readl(qts, TRAM_BASE + A_TR_RAM_WP_LOW);
++    return reg;
++}
++
++static void test_trace_simple(void)
++{
++    QTestState *qts = qtest_init("-machine virt -accel tcg");
++    double timeout_sec = 0.5;
++    uint64_t reg_tram_start, reg_tram_writep;
++    uint32_t reg;
++
++    reg = test_read_te_control(qts);
++    reg = FIELD_DP32(reg, TR_TE_CONTROL, ACTIVE, 1);
++    test_write_te_control(qts, reg);
++    reg = test_read_te_control(qts);
++    g_assert(1 == FIELD_EX32(reg, TR_TE_CONTROL, ACTIVE));
++
++    reg = FIELD_DP32(reg, TR_TE_CONTROL, ENABLE, 1);
++    test_write_te_control(qts, reg);
++    reg = test_read_te_control(qts);
++    g_assert(1 == FIELD_EX32(reg, TR_TE_CONTROL, ENABLE));
 +
 +    /*
-+     * Return a reserved value to signal an error.
-+     * TODO: handle Debug (D).
++     * Verify if RAM Sink write pointer is equal to
++     * ramstart before start tracing.
 +     */
-+    return RESERVED;
-+}
- 
- /*
-  * trTeControl register fields
-@@ -82,6 +110,41 @@ REG32(TR_TE_IMPL, 0x4)
- REG32(TR_TE_INST_FEATURES, 0x8)
-     FIELD(TR_TE_INST_FEATURES, NO_ADDR_DIFF, 0, 1)
- 
-+static uint32_t trencoder_read_reg(TraceEncoder *te, uint32_t reg_addr)
-+{
-+    hwaddr addr = te->dest_baseaddr + reg_addr;
-+    uint32_t val;
++    reg_tram_start = test_read_tram_ramstart(qts);
++    g_assert(reg_tram_start > 0);
++    reg_tram_writep = test_read_tram_writep(qts);
++    g_assert(reg_tram_writep == reg_tram_start);
 +
-+    cpu_physical_memory_read(addr, &val, sizeof(uint32_t));
-+    return val;
-+}
++    reg = FIELD_DP32(reg, TR_TE_CONTROL, INST_TRACING, 1);
++    test_write_te_control(qts, reg);
++    reg = test_read_te_control(qts);
++    g_assert(1 == FIELD_EX32(reg, TR_TE_CONTROL, INST_TRACING));
 +
-+static void trencoder_write_reg(TraceEncoder *te, uint32_t reg_addr,
-+                                uint32_t val)
-+{
-+    hwaddr addr = te->dest_baseaddr + reg_addr;
++    g_test_timer_start();
++    for (;;) {
++        reg_tram_writep = test_read_tram_writep(qts);
++        if (reg_tram_writep > reg_tram_start) {
++            break;
++        }
 +
-+    cpu_physical_memory_write(addr, &val, sizeof(uint32_t));
-+}
-+
-+static hwaddr trencoder_read_ramsink_writep(TraceEncoder *te)
-+{
-+    hwaddr ret = trencoder_read_reg(te, A_TR_RAM_WP_HIGH);
-+    ret <<= 32;
-+    ret += trencoder_read_reg(te, A_TR_RAM_WP_LOW);
-+
-+    return ret;
-+}
-+
-+static hwaddr trencoder_read_ramsink_ramlimit(TraceEncoder *te)
-+{
-+    hwaddr ret = trencoder_read_reg(te, A_TR_RAM_LIMIT_HIGH);
-+    ret <<= 32;
-+    ret += trencoder_read_reg(te, A_TR_RAM_LIMIT_LOW);
-+
-+    return ret;
-+}
-+
- static uint64_t trencoder_te_ctrl_set_hardwire_vals(uint64_t input)
- {
-     input = FIELD_DP32(input, TR_TE_CONTROL, INST_MODE, 0x6);
-@@ -171,6 +234,9 @@ static void trencoder_te_ctrl_postw(RegisterInfo *reg, uint64_t val)
-     if (!te->trace_running && trTeInstTracing) {
-         /* Starting trace. Ask the CPU for the first trace insn */
-         te->trace_next_insn = true;
-+
-+        te->ramsink_ramstart = trencoder_read_ramsink_writep(te);
-+        te->ramsink_ramlimit = trencoder_read_ramsink_ramlimit(te);
-     }
- 
-     te->trace_running = trTeInstTracing ? true : false;
-@@ -274,12 +340,67 @@ static void trencoder_realize(DeviceState *dev, Error **errp)
-     }
- }
- 
-+static void trencoder_update_ramsink_writep(TraceEncoder *te,
-+                                            hwaddr wp_val,
-+                                            bool wrapped)
-+{
-+    uint32_t wp_low = trencoder_read_reg(te, A_TR_RAM_WP_LOW);
-+
-+    wp_low = FIELD_DP32(wp_low, TR_RAM_WP_LOW, ADDR,
-+                        extract64(wp_val, 2, 30));
-+
-+    if (wrapped) {
-+        wp_low = FIELD_DP32(wp_low, TR_RAM_WP_LOW, WRAP, 1);
++        g_assert(g_test_timer_elapsed() <= timeout_sec);
 +    }
 +
-+    trencoder_write_reg(te, A_TR_RAM_WP_LOW, wp_low);
-+    trencoder_write_reg(te, A_TR_RAM_WP_HIGH, extract64(wp_val, 32, 32));
++    qtest_quit(qts);
 +}
 +
-+static void trencoder_send_message_smem(TraceEncoder *trencoder,
-+                                        uint8_t *msg, uint8_t msg_size)
++int main(int argc, char *argv[])
 +{
-+    hwaddr dest = trencoder_read_ramsink_writep(trencoder);
-+    bool wrapped = false;
-+
-+    msg_size = QEMU_ALIGN_UP(msg_size, 4);
-+
-+    /* clear trRamWrap before writing to SMEM */
-+    dest = FIELD_DP64(dest, TR_RAM_WP_LOW, WRAP, 0);
-+
-+    /*
-+     * Fill with null bytes if we can't fit the packet in
-+     * ramlimit, set wrap and write the packet in ramstart.
-+     */
-+    if (dest + msg_size > trencoder->ramsink_ramlimit) {
-+        g_autofree uint8_t *null_packet = NULL;
-+        uint8_t null_size = trencoder->ramsink_ramlimit - dest;
-+
-+        null_packet = g_malloc0(null_size);
-+        cpu_physical_memory_write(dest, null_packet, null_size);
-+
-+        dest = trencoder->ramsink_ramstart;
-+        wrapped = true;
-+    }
-+
-+    cpu_physical_memory_write(dest, msg, msg_size);
-+    dest += msg_size;
-+
-+    trencoder_update_ramsink_writep(trencoder, dest, wrapped);
++    g_test_init(&argc, &argv, NULL);
++    qtest_add_func("/riscv-trace-test/test-trace-simple",
++                   test_trace_simple);
++    return g_test_run();
 +}
-+
- void trencoder_set_first_trace_insn(Object *trencoder_obj, uint64_t pc)
- {
-     TraceEncoder *trencoder = TRACE_ENCODER(trencoder_obj);
-+    TracePrivLevel priv = trencoder_get_curr_priv_level(trencoder);
-+    g_autofree uint8_t *msg = g_malloc0(TRACE_MSG_MAX_SIZE);
-+    uint8_t msg_size;
- 
-     trencoder->first_pc = pc;
-     trace_trencoder_first_trace_insn(pc);
-+    msg_size = rv_etrace_gen_encoded_sync_msg(msg, pc, priv);
-+
-+    trencoder_send_message_smem(trencoder, msg, msg_size);
- }
- 
- static const Property trencoder_props[] = {
 -- 
 2.51.1
 
