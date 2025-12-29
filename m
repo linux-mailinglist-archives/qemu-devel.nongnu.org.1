@@ -2,103 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C23B6CE7421
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Dec 2025 16:52:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D3CCE75D5
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Dec 2025 17:19:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vaFWh-0001gP-4W; Mon, 29 Dec 2025 10:51:19 -0500
+	id 1vaFwY-000246-0P; Mon, 29 Dec 2025 11:18:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vaFWa-0001fR-Gz
- for qemu-devel@nongnu.org; Mon, 29 Dec 2025 10:51:12 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <den@openvz.org>)
+ id 1vaFwL-0001wl-02; Mon, 29 Dec 2025 11:17:49 -0500
+Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vaFWY-0008ST-71
- for qemu-devel@nongnu.org; Mon, 29 Dec 2025 10:51:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767023468;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=r5GB/jPnI0makKKh4NsjhAB7cxSNMwihLyQggccSU74=;
- b=an037FNk0QyS8uYNseaYlpJLDEfC2qEkoi41dG5uwf6RDb+UXFavmgnkgWqIeNcXK5g3DE
- dCnb7GP2rQ1HMw/lEUuPRe6tIP8dXw1U3jTdFtoOheR+s6qtJsExHFyKMHJl2ysbqmBLob
- YDedXR+eZcpn5dsBp+JeMs+syrq/AsU=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-78-mCyUoGxCPWuUOYjUUllrEA-1; Mon, 29 Dec 2025 10:51:06 -0500
-X-MC-Unique: mCyUoGxCPWuUOYjUUllrEA-1
-X-Mimecast-MFC-AGG-ID: mCyUoGxCPWuUOYjUUllrEA_1767023465
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-88a43d4cd2bso115610486d6.1
- for <qemu-devel@nongnu.org>; Mon, 29 Dec 2025 07:51:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1767023465; x=1767628265; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=r5GB/jPnI0makKKh4NsjhAB7cxSNMwihLyQggccSU74=;
- b=QvUfYwbxD3Sp7tm+zHU+fRtj7HycduXMyQNU5VSv6XpKfpH28B8bgQ6ZbThZp3AACX
- j8uUDU87rzauY7l5sGLFLDhfyoARZUsVtP42NY4r9BUi8b4VFa9w8V8WaXuY2hndwo1R
- +2nmgC1Afx4zdOyISNmC7bJE7CbrNd74cZoQF1R1gHWp6jdkTnPhotYxWesGA5B7muEM
- ByAOYbaw1F5yDIaKbt0+/C8m5fYiOMeH4KYuApzDSh2BCOpJSHCgpD7eGmPVqifPWaXI
- rp7RpqUtDih0H0ctBG6KvzMJOhzy+9RJI40oDsXYc62B1Bf3+U/p4U2KlRuvI3rT2UaO
- qK8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767023465; x=1767628265;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=r5GB/jPnI0makKKh4NsjhAB7cxSNMwihLyQggccSU74=;
- b=qobDjtS5bzAn7smQEBZgr+vNoeLJTwb1TfSvCpslapawya4b0XmgCFBBTWO5lOvWZ8
- Fgq7AkvafsrR+85l5ah2TLdj9zvjwsfgov8ETstXBA7488S+gqsiUgtGirMi5GM644o9
- pr0ZdCJa8wke+8lDlbATFDGib8VmAizlfEHF/aetMVwjbgqfuxB8BkGD2FJLF0wI0Q4L
- ZKHmgqr42XgB0g9P8RPHVqeFcRGHC3sxmszVIkXDRddjB0bQjpNk6pgCnD2ueyvsvWYx
- IP9n2823jeXaaQFSQs3SYSLGcl+0qPqybqnu+3tFs37de9bFZXRcsbArLh6BUnPdwq1N
- hjEQ==
-X-Gm-Message-State: AOJu0YwCs7r0vgKp3D6yfp7DX8THnMqAZLxpVpvg0umwWb3djG7iWAJN
- yxjMTR8TWse2f1EyRHalDGRinryhO8RFX6RyIPdrkA+pfZThJ9N74q+v9Gw2IGCgdacS4r966Ns
- MqA9LXvf2uo5rThDd7yvPrB03MVHuxaGsRM6heVCtn/K5P2KGmDEIcv6G
-X-Gm-Gg: AY/fxX4lGYoxwJOLxtIQ8WTYmJUSRfE57FF4U4/wQZSU0LteWevxhgG7qx2+GM9YlQh
- z2Z5w0pkw8NYPXNuJ226HxU34Ftx/jXmh7+sBHJ/r001UO/TpFuxNpkT6mIASFdO8hI1lMq5W6R
- sQAzgsN3Xuyj2soqiGqA632e7KK5Xi3PjV+VwQcAX7sCoiJ23aRoV5JCPCQsH2CO6P6JcL3KBLJ
- 8+DiKYQ4rwjXGUGWdB9DT7wXowDbYR5LjQFVJl03MIY3EBSH8IzEqLpbIZVuXhHmEb/kJ7WLTZD
- xyzpYwxAn3gB0yrL1j4RawQjuJB3QHBSFYFMh/DZFcaWl1+j1FHbg7fxU3m65EH3/C3A5I1cSUM
- p+TI=
-X-Received: by 2002:ad4:5d64:0:b0:88a:2d3d:7c30 with SMTP id
- 6a1803df08f44-88d83f573ecmr448259896d6.55.1767023465330; 
- Mon, 29 Dec 2025 07:51:05 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFjat2F31F6zyk/9akSEMxfRbcbwlzM315gEG/2pdygHd5ANFTQv6d8Kb5ul9poQQCJisQdmA==
-X-Received: by 2002:ad4:5d64:0:b0:88a:2d3d:7c30 with SMTP id
- 6a1803df08f44-88d83f573ecmr448259466d6.55.1767023464786; 
- Mon, 29 Dec 2025 07:51:04 -0800 (PST)
-Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-88d997addd5sm235401026d6.33.2025.12.29.07.51.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Dec 2025 07:51:04 -0800 (PST)
-Date: Mon, 29 Dec 2025 10:51:03 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [RFC PATCH 04/25] migration: Move multifd_recv_setup call
-Message-ID: <aVKjZyDWVH5ouvdV@x1.local>
-References: <20251226211930.27565-1-farosas@suse.de>
- <20251226211930.27565-5-farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <den@openvz.org>)
+ id 1vaFwI-0005OL-Gq; Mon, 29 Dec 2025 11:17:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
+ Content-Type; bh=KWu6dgQsyiprW8vGaRrrJa32iLgci/iXzBGySqZ9RAY=; b=hOW+8s6nvSx0
+ Vv/IJUFKxR5sCN7ZTb2QcygAwFNw783sN9OcaB9u1jTRE8aG2N0+GcxJ8BQWnruBbc432BjcXwtkQ
+ 4juizmwwPQ5x0vZSvTP2Dfj7bQYUDe15tlzUbCZXI3tj6q5zV0w+3thvLq951bfO5HfJDnFEWkePO
+ T9+MmijvG9s5dmQSRQCatJPBJ8V3WOSVhTI8R0sXqBShEjzR9vs/V4skwakrsNT684cbBeMGw8vFm
+ GCiujCiN7ETd651vI0U3W1ijPFUh6RQXWBq95hFdQ6fd4HmOEQKOUaDG6lylciSkh6QSQ6bbK/gew
+ N5xwGb+gAebvPKvGTsSQdA==;
+Received: from [10.193.1.107] (helo=dev007.aci.vzint.dev)
+ by relay.virtuozzo.com with esmtp (Exim 4.96)
+ (envelope-from <den@openvz.org>) id 1vaFvu-00Apz0-2A;
+ Mon, 29 Dec 2025 17:17:32 +0100
+To: qemu-block@nongnu.org,
+	qemu-devel@nongnu.org,
+	qemu-stable@nongnu.org
+Cc: den@openvz.org, Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
+Subject: [PATCH 0/3] fix potential data loss in QEMU (missed flush)
+Date: Mon, 29 Dec 2025 19:07:42 +0300
+Message-ID: <20251229161740.758800-1-den@openvz.org>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251226211930.27565-5-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: softfail client-ip=130.117.225.111; envelope-from=den@openvz.org;
+ helo=relay.virtuozzo.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_SOFTFAIL=0.665 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,76 +60,39 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  "Denis V. Lunev" <den@openvz.org>
+From:  "Denis V. Lunev" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Dec 26, 2025 at 06:19:06PM -0300, Fabiano Rosas wrote:
-> The multifd_recv_setup() call is currently in a place where it will be
-> called for every channel that appears. That doesn't make much
-> sense.
-> 
-> It seems it was moved when the channel discovery mechanism was added
-> back at commit 6720c2b327 (migration: check magic value for deciding
-> the mapping of channels, 2022-12-20). The original place was
-> migration_incoming_setup() which would run for just the main channel,
-> but it was discovered that the main channel might arrive after a
-> multifd channel.
-> 
-> Move the call back to a place where it will be called only once.
-> 
-> With respect to cleanup, this new location at
-> qemu_start_incoming_migration() has the same issue as the previous
-> callsite at migration_ioc_process_incoming(): no cleanup ever happens.
-> 
-> The error message goes from being emitted via error_report_err(), to
-> being returned to the qmp_migrate_incoming() incoming command, which
-> is arguably better, since this is setup code.
+This series is a followup to my previous patch sent under
+"qcow2: add very final sync on QCOW2 image closing". Could be considered
+as v2.
 
-This is not the only and real reason that you moved it, right?
+This series addresses two problems:
+1. bdrv_co_flush() at the end of bdrv_driver_pwritev() and
+   bdrv_co_do_pwrite_zeroes() could be effectively no op. The problem is
+   that bdrv_co_flush() is optimized internally this way to track real
+   requests which were making changes in the image and without such
+   requests from previous flush() do nothing. Requests are tracked using
+   write_gen on BDS. This field should be incremented after write is
+   completed but before flush is called.
 
-Neither should it be the reason that you want it to be called only exactly
-once; after all the function will be no-op in the 2nd+ calls.
+   This could be considered as potential data loss if caller relies on
+   BDRV_REQ_FUA flag which means that such requests are really lands on
+   the underlying device, which could not due to missed flush().
 
-I'll keep reading.. I'm guessing I'll find it later, but IMHO it'll always
-be good to mention the real motivation in the commit log.
+2. qcow2_update_header() must actually write header with BDRV_REQ_FUA
+   flag as image processing on open relies on the fact that header is
+   actual and it is not possible to reorder header modifications and
+   image content modifications.
 
-> 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->  migration/migration.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/migration/migration.c b/migration/migration.c
-> index 71efe945f6..974313944c 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -786,6 +786,10 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
->          return;
->      }
->  
-> +    if (multifd_recv_setup(errp) != 0) {
-> +        return;
-> +    }
-> +
->      if (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET) {
->          SocketAddress *saddr = &addr->u.socket;
->          if (saddr->type == SOCKET_ADDRESS_TYPE_INET ||
-> @@ -1065,10 +1069,6 @@ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
->          channel = CH_POSTCOPY;
->      }
->  
-> -    if (multifd_recv_setup(errp) != 0) {
-> -        return;
-> -    }
-> -
->      if (channel == CH_MAIN) {
->          f = qemu_file_new_input(ioc);
->          migration_incoming_setup(f);
-> -- 
-> 2.51.0
-> 
+Changes:
+    * added patches 1 & 2
 
--- 
-Peter Xu
+Signed-off-by: Denis V. Lunev <den@openvz.org>
+CC: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+CC: Kevin Wolf <kwolf@redhat.com>
+CC: Hanna Reitz <hreitz@redhat.com>
 
 
