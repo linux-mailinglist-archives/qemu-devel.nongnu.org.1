@@ -2,103 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F93BCE80D3
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Dec 2025 20:37:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BCAACE80D9
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Dec 2025 20:38:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vaJ3E-0002Jf-2x; Mon, 29 Dec 2025 14:37:08 -0500
+	id 1vaJ3v-0003OG-Ie; Mon, 29 Dec 2025 14:37:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vaJ2t-0001zS-Vj
- for qemu-devel@nongnu.org; Mon, 29 Dec 2025 14:36:53 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vaJ2n-0008Ps-Vj
- for qemu-devel@nongnu.org; Mon, 29 Dec 2025 14:36:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767037000;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=UcjaE1We6/D6i3bWdqH0Bn2loG4hR3iqGdbVqVDOZu8=;
- b=UvTLU3fWEMlKYvDIUEi6xeQsFrxA8TIzHblH0fvJDGfmjDUNJBOmVoUJTYC5F/e6/vgaGA
- YC7e0LTefX4SSaIFtS7CgBRlEtuVkKSR7btiwoeYRNjaFxpNyjExdO7IcUytSBzX0BnIcq
- JhI3M8koKJrvPTmmyjo67v109jiwq94=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-328-6DF2boGsNyWLME0prV0etw-1; Mon, 29 Dec 2025 14:36:38 -0500
-X-MC-Unique: 6DF2boGsNyWLME0prV0etw-1
-X-Mimecast-MFC-AGG-ID: 6DF2boGsNyWLME0prV0etw_1767036998
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-88a39993e5fso241113766d6.3
- for <qemu-devel@nongnu.org>; Mon, 29 Dec 2025 11:36:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <nabihestefan@google.com>)
+ id 1vaJ3p-00038P-30
+ for qemu-devel@nongnu.org; Mon, 29 Dec 2025 14:37:48 -0500
+Received: from mail-qt1-x82d.google.com ([2607:f8b0:4864:20::82d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <nabihestefan@google.com>)
+ id 1vaJ3k-0000Ab-Lp
+ for qemu-devel@nongnu.org; Mon, 29 Dec 2025 14:37:44 -0500
+Received: by mail-qt1-x82d.google.com with SMTP id
+ d75a77b69052e-4ee147baf7bso3867311cf.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Dec 2025 11:37:39 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1767037059; cv=none;
+ d=google.com; s=arc-20240605;
+ b=d/h0vo4P+tg4U8gQvheoHjQj0jACxe3cJImhjflhuv24vFDbyY4Ggb/cexQIdFaZ+f
+ KgKVeXeZpUQCB+U5EMfZUWKr8P02mcyX1Ps+sgF+c2bTwiyjxDdLyAp5tONuCKvlpKgt
+ Juki9/ReVEtuRXowEK6TwUn2OQSr/ja7/ng6mjN4eE+c0N8zN7MZi+O+CEOWqduTSi3z
+ Em5aAoKWZUB+jgNA6XyUfzXiJLBENeBLjSa0XJ7LZ+mG9RDcElWffV4TAnMGMHLyNB4i
+ xzaSRFPBXTamhtP5xnibowFR64YNCZCXM4TXZBoPMZOaCfJctDDRb6Bk6O7ou3W5WL3a
+ 2JMA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
+ s=arc-20240605; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:dkim-signature;
+ bh=rVMEy/BamA5mxoD6Wwf1mVSt7RfPRduBc+X7r9wWNkg=;
+ fh=oUZElo35k2lV8zAoO2Z0SnDNqX9ywWeToS1fe71U2Zo=;
+ b=WK+0y+6r5HeaVOMhSMeDw64y8v29TV/+7mCJuknZ7jgF/v0dapWwj0K4LYnhdxYYR1
+ fNO6KLuFBshGBk/22tcNhcndUqvqpd0twglEdwgEKiI5W4m2xtqlPj7VF7h1827F/Pvd
+ mGVVqt2s4K39UFmYVhWJ0G4nDSkDwj658A+R/HxhYy04nMorbtGrgM0cDDE23xKTm30v
+ e1uwHB1hNBkenWZ49/XBmS26r7gDF40A2M+ZpePD0uFk2WMsUn1iZthi+i5Ibc9HNns0
+ kgNtwCZNtWxmLrrAflwJRx0fAqS0NZkvWNrOZqWnUB/0mmQeps2oh+IOMVgbhVu/mgHc
+ 8NMg==; darn=nongnu.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1767036998; x=1767641798; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=UcjaE1We6/D6i3bWdqH0Bn2loG4hR3iqGdbVqVDOZu8=;
- b=su5NAwaZSfUDUBc5DjOc6ZElD31RclVElzyEPDvu8bJgk3kwOEKjqe7hZHFwwgeEr9
- qqKk5VmMQOcz5s5jkVGdXMz+AAu9Q/v/14qHWssCQMtzAfszbaAE/A3tq72NTwFcLIBg
- BFBJXuoSNI5RJCoe1pYI9w2zUGfsiR7DSfGWkwJ2b0rdzUm8jEdHgCQkBcaeYeMaUaA/
- iKbRHEGpHS7avQRKq2XUqH6P3rzufcdm3eZxTL4HeC+OyrHj1qhyti/O+jaExbvSm/V3
- s+dvVECJEVYA8DJBaQ4IP03mw9KR43ivL8qJt+dz+AwG+v/pE/jNdeDXloZb2nhfexga
- KswA==
+ d=google.com; s=20230601; t=1767037059; x=1767641859; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=rVMEy/BamA5mxoD6Wwf1mVSt7RfPRduBc+X7r9wWNkg=;
+ b=exyZ3RhHE9ZpnLWDOPQudzj0KOEe7fbmy/NQpdVbei1+Lyxgh1khJhXRtfNJ7lw/Jf
+ RYGYpwE7oLdyuGfxRgmQWxPUneavC/oZwx+1Fmcz2rV7Fonp7qSTmqASiK/MqChGDK+n
+ m2EkyR5Vns7vzDIdpMBJMebpJl12aikucPnZZDBQa5W+lIGMNTNCdZ+Xr230MngX11wS
+ /VmowpCd1xNfFe2XFpw9q/Y78lmOvbd8PbsxJoomYIVuaFsqsVIjayxI3NESomblGIga
+ iYq6Ehs2jHw9f4hlZskHhogFYiSWqYtRWMNAHpX1wAPoAYu+qoIUPh2yEwm9PBuKvR0c
+ hKXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767036998; x=1767641798;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UcjaE1We6/D6i3bWdqH0Bn2loG4hR3iqGdbVqVDOZu8=;
- b=sjSyBr/HRgciIuYRGEGmicOapxkbBRvptGT24P0W3IxAXhHn+ZWWHU6LceUFPpi0hZ
- fMxjMi0vg9CkdexvA+6PdWwDd8iWfmB32bDolK5HHfCchLy2jo4iLjSyiQZoAWFWnnN5
- noyi4EDCCyG8FX0Kx6Q876IU5WUJJt/4cwtDTH4Fad2xU4hIZXp2WY02sPgjnmazoOoD
- /3XiS8ecTgC+nmL8W0nSxIjDbDIxR05SPxyulz0dSWBgnZGxLkWKxUneqGy4CrG0svTx
- kYS+G+xEftKAtYCccJ7wfCdt9Z/i2+zn2qUGeRI5kpOWMYMiqa6q/cBfzfKvXmHDCblr
- iD1Q==
-X-Gm-Message-State: AOJu0YxiTvPC8ey1TTGmhoqIdP0kEqOkg+QYONdegF28bSqePPRcqovI
- g4mcI+w8oOe8YXbb+EJVQq7NNngPJ1//25qyhiH4O+zmb1slGwrv/CU1rpropNwU+jhXLfLvJcT
- VbuO5wZfI//R011zcc3B++1xfv+gA/217MS72nxr3rypNbasDy7seQFBiJdDOl6/u
-X-Gm-Gg: AY/fxX4l492POWHzVFHRMORGFtvSm73Wn6BHxZqyzXGuCaTPxhZ0UdFt2UMmxExWKcQ
- UoWVGhvs9jXh7DJf6GNCo6yVX2k5eDyB/yYy4P0Q+uqvcctPjqum7CXWULy8f+hIx9ZjikZ7kaf
- xqBNVFlCk89501BegKowoTqVbHMli00TZ+MLvunSJsiaTWQKp1J/gaz6N2e1RndMp21wa9dL8d8
- 18tM2oUSqqNZBGXHYO5e40WZsEmXFddAjnuK2jH3sZAxHAPECtrB0E4U6TZDqkyVTRttlP27E5l
- HVqAXYP5u3CIT818WcfiCmKof09pjECWVnM6MaGd6iLhs1xD0z62fhBkzNlsqoG8rDcNjhKMuA3
- OFv0=
-X-Received: by 2002:a05:6214:e48:b0:88a:4391:59cc with SMTP id
- 6a1803df08f44-88d868698f2mr498979546d6.50.1767036994100; 
- Mon, 29 Dec 2025 11:36:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHyil408Lq+ZL8Z7DNlWY2vHGEiQROygBVecRabiNBy4/qyau/z0ipcTe8TaI5uR1961zrR+g==
-X-Received: by 2002:a05:6214:e48:b0:88a:4391:59cc with SMTP id
- 6a1803df08f44-88d868698f2mr498979246d6.50.1767036993548; 
- Mon, 29 Dec 2025 11:36:33 -0800 (PST)
-Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-88d9a44fe52sm232667306d6.45.2025.12.29.11.36.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Dec 2025 11:36:33 -0800 (PST)
-Date: Mon, 29 Dec 2025 14:36:32 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Li Zhijian <lizhijian@fujitsu.com>
-Subject: Re: [RFC PATCH 14/25] migration: Remove QEMUFile from channel.c
-Message-ID: <aVLYQGQo2gSRs7Xm@x1.local>
-References: <20251226211930.27565-1-farosas@suse.de>
- <20251226211930.27565-15-farosas@suse.de>
+ d=1e100.net; s=20230601; t=1767037059; x=1767641859;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=rVMEy/BamA5mxoD6Wwf1mVSt7RfPRduBc+X7r9wWNkg=;
+ b=Zd0bdpnXAaUVPLBdkbt+7q21aIt3m1U9MKo4FQR+QroeW05JjPZRlv7qPnzWaFtO1p
+ u9VfE8QqxjF7UUlZjWpeMcikX3WslvW9wy89xzmda55u0nrHaYxLDlKnnw+4eZ7ItwTA
+ wYkbJ3yXKBh8WFAX5Hz+NiBb4iKpSprmuSKRkAzELI9w/Ior4NeiB/8S8+zattWAga6S
+ Ee70LLyilH6TRFbRQl5dCOt4vDyjRKgFf7Pw63M2w0NGU/qsTK/BpuU0k1AlLak065nG
+ PfBUCsC14HMC/NH6OUuG/i26lQdMYE7CWBGSe/u/x32sY4rAbfzm8ZjWa5uvPc3ElRyn
+ zaVA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXpWVarOq3KU5Vx3Tdfvw9OthdQNKArx4w7uOdtIb4Vn+8m4gQutVTxWYC2JdRRaecF12bwlzME2DwS@nongnu.org
+X-Gm-Message-State: AOJu0YxXN2t9/N3qUHjXv4O4fQdivHq4VO4ZNhOK/sNuGcg1IwbEEsN1
+ MO+16hNoI3PcL+EEdlqflJ6aiRk/fCxoVFufHiz/ebIRfrXZ9oCDFfP6gly+rDDtIdmW5XNWlng
+ cBbjLfCmf0H/CjMpaUL3twDsU7tnVHqDfBFHRDJjt
+X-Gm-Gg: AY/fxX6bh4UL32HMitoq+h65KbYtLEYHBvE9BnamLTMOsgD0oTATw5FL7sqjPFfibvz
+ kDGP7xVcp6qd6cq21auLkOjNpKQi2CqOxK8nB48Cf4bf38Z0m04H0Q/bt9XSJboPYA4ZUleBfGz
+ UKlvoMoemBSnYxEPQanCboKUYWIvA8kDTFRiW5Om2LYb2s3qCn74BdleQbYkbrJcNzuYxVTY6MN
+ kr3cpHcybV3wY6jAhSqQWZXYQwAmDrN/CxiSB/nM18ryCXRY9NjEodhP45kNncg8vGxIymv6/pB
+ AVGcguUSKqoXV7vR7T80ActUTg==
+X-Google-Smtp-Source: AGHT+IGgvXNbmoI60rasMpyPG1UeTlp1fun3FWKbwaF3Y8BvbwOhW6X7hJ/7q8g2B3mL/pHQnqFmi+FLf8lyRYL5jfk=
+X-Received: by 2002:a05:622a:249:b0:4e5:8707:d31 with SMTP id
+ d75a77b69052e-4f4e5f601e6mr30359311cf.7.1767037059041; Mon, 29 Dec 2025
+ 11:37:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251226211930.27565-15-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+References: <20251224014203.756264-1-kane_chen@aspeedtech.com>
+In-Reply-To: <20251224014203.756264-1-kane_chen@aspeedtech.com>
+From: Nabih Estefan <nabihestefan@google.com>
+Date: Mon, 29 Dec 2025 11:37:27 -0800
+X-Gm-Features: AQt7F2q5ZaT6AlSODsJXipGG7aPsafjafA1_28h_rk-Ud73cvt76P9b0qawMULM
+Message-ID: <CA+QoejUnF6UY2tQ2h9MvGUs1V9hhUbVan=smQzyizjbnO4SVmQ@mail.gmail.com>
+Subject: Re: [PATCH v4 00/19] hw/arm/aspeed: AST1700 LTPI support and device
+ hookups
+To: Kane Chen <kane_chen@aspeedtech.com>
+Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+ Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, 
+ Troy Lee <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>, 
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, 
+ "open list:ASPEED BMCs" <qemu-arm@nongnu.org>, 
+ "open list:All patches CC here" <qemu-devel@nongnu.org>,
+ troy_lee@aspeedtech.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82d;
+ envelope-from=nabihestefan@google.com; helo=mail-qt1-x82d.google.com
+X-Spam_score_int: -175
+X-Spam_score: -17.6
+X-Spam_bar: -----------------
+X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,395 +125,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Dec 26, 2025 at 06:19:16PM -0300, Fabiano Rosas wrote:
-> Make channel.c deal only with QIOChannel objects. Move any handling of
-> QEMUFile into migration.c. To achieve this in a clean way:
-> 
-> 1) Define a migration_outgoing_setup, analogous to
-> migration_incoming_setup, responsible for creating the QEMUFile from
-> the QIOChannel.
-> 
-> 2) Increase the scope of migration_incoming_setup to create not only
-> the main channel, but all the others as well. That is currently being
-> done at migration_ioc_process, so move the code.
-> 
-> 3) Adjust RDMA code to pass in the QIOChannel and remove some of the
-> usage of QEMUFile.
-> 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+On Tue, Dec 23, 2025 at 5:42=E2=80=AFPM Kane Chen <kane_chen@aspeedtech.com=
+> wrote:
+>
+> From: Kane-Chen-AS <kane_chen@aspeedtech.com>
+>
+> Hi all,
+>
+> LTPI (LVDS Tunneling Protocol & Interface) is defined in the OCP DC-SCM
+> 2.0 specification (see Figure 2):
+> https://www.opencompute.org/documents/ocp-dc-scm-2-0-ltpi-ver-1-0-pdf
+>
+> LTPI provides a protocol and physical interface for tunneling various
+> low-speed signals between the Host Processor Module (HPM) and the
+> Satellite Controller Module (SCM). In Figure 2 of the specification,
+> the AST27x0 SoC (left) integrates two LTPI controllers, allowing it to
+> connect to up to two AST1700 boards. On the other side, the AST1700
+> consolidates HPM FPGA functions and multiple peripheral interfaces
+> (GPIO, UART, I2C, I3C, etc.) onto a single board.
+>
+> Because the AST1700 exposes additional I/O interfaces (GPIO, I2C, I3C,
+> and others), it acts as an I/O expander. Once connected over LTPI,
+> the AST27x0 can control additional downstream devices through this link.
+>
+> This patch series is based on the SGPIO changes:
+> https://patchwork.kernel.org/project/qemu-devel/patch/20251219-aspeed-sgp=
+io-v5-1-fd5593178144@google.com/
+>
+> It introduces a basic LTPI controller model and wires it into the
+> AST27x0 SoC. The series also adds the AST1700-specific LTPI expander
+> device and incrementally connects common peripherals on the AST1700
+> model. For the I3C block, which may cause kernel crashes, its MMIO
+> region is modeled as an unimplemented device to reserve address space
+> and make the missing functionality explicit, ensuring stable guest
+> probing.
+>
+> In the official release images, the AST1700 functions are not included
+> by default. To test the AST1700-related functionality, please include
+> the following DTS files for probing:
+> https://github.com/AspeedTech-BMC/linux/blob/aspeed-master-v6.6/arch/arm6=
+4/boot/dts/aspeed/aspeed-ltpi0.dtsi
+> https://github.com/AspeedTech-BMC/linux/blob/aspeed-master-v6.6/arch/arm6=
+4/boot/dts/aspeed/aspeed-ltpi1.dtsi
+>
+> After including these DTS files in the BMC image, you can verify LTPI
+> functionality using the following scenarios:
+>
+> 1. In U-Boot:
+>    Run the ltpi command to trigger the LTPI connection and display the
+>    current connection status.
+> 2. In BMC Linux:
+>    Run i2cdetect -y <16-38> to scan and test the I2C buses exposed by
+>    the AST1700.
+>
+> Any feedback or suggestions are appreciated!
+>
+> Kane
+>
+
+Adding the explanation of the tested tag in every patch feels
+unnecessary since the tests applied equally to all patches. However, I
+didn't want to add the tag without any explanation, so I figured I
+might as well reply to the cover letter. I tested between patches to
+make sure all our internal tests passed and there was no unexpected
+breakages, and once the whole patchset landed tested against our
+internal ast2700 machines and was able to see the i2c buses and attach
+devices to them.
+
+
 > ---
->  migration/channel.c   | 21 ++++++-----
->  migration/migration.c | 88 ++++++++++++++++++++++---------------------
->  migration/migration.h |  6 ++-
->  migration/multifd.c   |  7 ++--
->  migration/multifd.h   |  2 +-
->  migration/rdma.c      | 28 ++++----------
->  6 files changed, 73 insertions(+), 79 deletions(-)
-> 
-> diff --git a/migration/channel.c b/migration/channel.c
-> index 7243b99108..af6c2cc76e 100644
-> --- a/migration/channel.c
-> +++ b/migration/channel.c
-> @@ -14,7 +14,6 @@
->  #include "channel.h"
->  #include "tls.h"
->  #include "migration.h"
-> -#include "qemu-file.h"
->  #include "trace.h"
->  #include "qapi/error.h"
->  #include "io/channel-tls.h"
-> @@ -34,6 +33,7 @@ void migration_channel_process_incoming(QIOChannel *ioc)
->  {
->      MigrationIncomingState *mis = migration_incoming_get_current();
->      Error *local_err = NULL;
-> +    uint8_t ch;
->  
->      trace_migration_set_incoming_channel(
->          ioc, object_get_typename(OBJECT(ioc)));
-> @@ -42,9 +42,16 @@ void migration_channel_process_incoming(QIOChannel *ioc)
->          migration_tls_channel_process_incoming(ioc, &local_err);
->      } else {
->          migration_ioc_register_yank(ioc);
-> -        migration_ioc_process_incoming(ioc, &local_err);
-> -    }
-> +        ch = migration_ioc_process_incoming(ioc, &local_err);
-> +        if (!ch) {
-> +            goto out;
-> +        }
->  
-> +        if (migration_incoming_setup(ioc, ch, &local_err)) {
-> +            migration_incoming_process();
-> +        }
-> +    }
-> +out:
->      if (local_err) {
->          error_report_err(local_err);
->          migrate_set_state(&mis->state, mis->state, MIGRATION_STATUS_FAILED);
-> @@ -75,14 +82,8 @@ void migration_channel_connect(MigrationState *s, QIOChannel *ioc)
->          return;
->      }
->  
-> -    QEMUFile *f = qemu_file_new_output(ioc);
-> -
->      migration_ioc_register_yank(ioc);
-> -
-> -    qemu_mutex_lock(&s->qemu_file_lock);
-> -    s->to_dst_file = f;
-> -    qemu_mutex_unlock(&s->qemu_file_lock);
-> -
-> +    migration_outgoing_setup(ioc);
->      migration_connect(s);
->  }
->  
-> diff --git a/migration/migration.c b/migration/migration.c
-> index 5c6c76f110..677581b5a5 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -92,7 +92,7 @@ enum mig_rp_message_type {
->  };
->  
->  /* Migration channel types */
-> -enum { CH_MAIN, CH_MULTIFD, CH_POSTCOPY };
-> +enum { CH_NONE, CH_MAIN, CH_MULTIFD, CH_POSTCOPY };
->  
->  /* When we add fault tolerance, we could have several
->     migrations at once.  For now we don't need to add
-> @@ -934,17 +934,48 @@ out:
->      migrate_incoming_unref_outgoing_state();
->  }
->  
-> -/**
-> - * migration_incoming_setup: Setup incoming migration
-> - * @f: file for main migration channel
-> - */
-> -static void migration_incoming_setup(QEMUFile *f)
-> +static bool migration_has_main_and_multifd_channels(void);
-> +
-> +bool migration_incoming_setup(QIOChannel *ioc, uint8_t channel, Error **errp)
->  {
->      MigrationIncomingState *mis = migration_incoming_get_current();
-> +    QEMUFile *f;
->  
-> -    assert(!mis->from_src_file);
-> -    mis->from_src_file = f;
-> -    qemu_file_set_blocking(f, false, &error_abort);
-> +    switch (channel) {
-> +    case CH_MAIN:
-> +        f = qemu_file_new_input(ioc);
-> +        assert(!mis->from_src_file);
-> +        mis->from_src_file = f;
-> +        qemu_file_set_blocking(f, false, &error_abort);
-> +        break;
-> +
-> +    case CH_MULTIFD:
-> +        if (!multifd_recv_new_channel(ioc, errp)) {
-> +            return false;
-> +        }
-> +        break;
-> +
-> +    case CH_POSTCOPY:
-> +        assert(!mis->postcopy_qemufile_dst);
-> +        f = qemu_file_new_input(ioc);
-> +        postcopy_preempt_new_channel(mis, f);
-> +        return false;
-> +
-> +    default:
-> +        g_assert_not_reached();
-> +    }
-> +
-> +    return migration_has_main_and_multifd_channels();
-> +}
-> +
-> +void migration_outgoing_setup(QIOChannel *ioc)
-> +{
-> +    MigrationState *s = migrate_get_current();
-> +    QEMUFile *f = qemu_file_new_output(ioc);
-> +
-> +    qemu_mutex_lock(&s->qemu_file_lock);
-> +    s->to_dst_file = f;
-> +    qemu_mutex_unlock(&s->qemu_file_lock);
->  }
->  
->  /* Returns true if recovered from a paused migration, otherwise false */
-> @@ -990,12 +1021,6 @@ void migration_incoming_process(void)
->      qemu_coroutine_enter(co);
->  }
->  
-> -void migration_fd_process_incoming(QEMUFile *f)
-> -{
-> -    migration_incoming_setup(f);
-> -    migration_incoming_process();
-> -}
-> -
->  static bool migration_has_main_and_multifd_channels(void)
->  {
->      MigrationIncomingState *mis = migration_incoming_get_current();
-> @@ -1012,12 +1037,10 @@ static bool migration_has_main_and_multifd_channels(void)
->      return true;
->  }
->  
-> -void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
-> +uint8_t migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
->  {
->      MigrationIncomingState *mis = migration_incoming_get_current();
-> -    Error *local_err = NULL;
-> -    QEMUFile *f;
-> -    uint8_t channel;
-> +    uint8_t channel = CH_NONE;
->      uint32_t channel_magic = 0;
->      int ret = 0;
->  
-> @@ -1036,7 +1059,7 @@ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
->              ret = migration_channel_read_peek(ioc, (void *)&channel_magic,
->                                                sizeof(channel_magic), errp);
->              if (ret != 0) {
-> -                return;
-> +                goto out;
->              }
->  
->              channel_magic = be32_to_cpu(channel_magic);
-> @@ -1051,7 +1074,6 @@ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
->                  channel = CH_MAIN;
->              } else {
->                  error_setg(errp, "unknown channel magic: %u", channel_magic);
-> -                return;
->              }
->          } else if (mis->from_src_file && migrate_multifd()) {
->              /*
-> @@ -1063,33 +1085,13 @@ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
->              channel = CH_MAIN;
->          } else {
->              error_setg(errp, "non-peekable channel used without multifd");
-> -            return;
->          }
->      } else {
->          assert(migrate_postcopy_preempt());
->          channel = CH_POSTCOPY;
->      }
-> -
-> -    if (channel == CH_MAIN) {
-> -        f = qemu_file_new_input(ioc);
-> -        migration_incoming_setup(f);
-> -    } else if (channel == CH_MULTIFD) {
-> -        /* Multiple connections */
-> -        multifd_recv_new_channel(ioc, &local_err);
-> -        if (local_err) {
-> -            error_propagate(errp, local_err);
-> -            return;
-> -        }
-> -    } else if (channel == CH_POSTCOPY) {
-> -        assert(!mis->postcopy_qemufile_dst);
-> -        f = qemu_file_new_input(ioc);
-> -        postcopy_preempt_new_channel(mis, f);
-> -        return;
-> -    }
-> -
-> -    if (migration_has_main_and_multifd_channels()) {
-> -        migration_incoming_process();
-> -    }
-> +out:
-> +    return channel;
->  }
->  
->  /**
-> diff --git a/migration/migration.h b/migration/migration.h
-> index f340cd518d..d2b82cf54f 100644
-> --- a/migration/migration.h
-> +++ b/migration/migration.h
-> @@ -526,8 +526,10 @@ struct MigrationState {
->  void migrate_set_state(MigrationStatus *state, MigrationStatus old_state,
->                         MigrationStatus new_state);
->  
-> -void migration_fd_process_incoming(QEMUFile *f);
-> -void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp);
-> +void migration_outgoing_setup(QIOChannel *ioc);
-> +bool migration_incoming_setup(QIOChannel *ioc, uint8_t channel, Error **errp);
-> +
-> +uint8_t migration_ioc_process_incoming(QIOChannel *ioc, Error **errp);
->  void migration_incoming_process(void);
->  
->  bool  migration_has_all_channels(void);
-> diff --git a/migration/multifd.c b/migration/multifd.c
-> index 3fb1a07ba9..c6639dbab5 100644
-> --- a/migration/multifd.c
-> +++ b/migration/multifd.c
-> @@ -1521,7 +1521,7 @@ bool multifd_recv_all_channels_created(void)
->   * Try to receive all multifd channels to get ready for the migration.
->   * Sets @errp when failing to receive the current channel.
->   */
-> -void multifd_recv_new_channel(QIOChannel *ioc, Error **errp)
-> +bool multifd_recv_new_channel(QIOChannel *ioc, Error **errp)
->  {
->      MultiFDRecvParams *p;
->      Error *local_err = NULL;
-> @@ -1536,7 +1536,7 @@ void multifd_recv_new_channel(QIOChannel *ioc, Error **errp)
->                                      "failed to receive packet"
->                                      " via multifd channel %d: ",
->                                      qatomic_read(&multifd_recv_state->count));
-> -            return;
-> +            return false;
->          }
->          trace_multifd_recv_new_channel(id);
->      } else {
-> @@ -1549,7 +1549,7 @@ void multifd_recv_new_channel(QIOChannel *ioc, Error **errp)
->                     id);
->          multifd_recv_terminate_threads(error_copy(local_err));
->          error_propagate(errp, local_err);
-> -        return;
-> +        return false;
->      }
->      p->c = ioc;
->      object_ref(OBJECT(ioc));
-> @@ -1558,4 +1558,5 @@ void multifd_recv_new_channel(QIOChannel *ioc, Error **errp)
->      qemu_thread_create(&p->thread, p->name, multifd_recv_thread, p,
->                         QEMU_THREAD_JOINABLE);
->      qatomic_inc(&multifd_recv_state->count);
-> +    return true;
->  }
-> diff --git a/migration/multifd.h b/migration/multifd.h
-> index 9b6d81e7ed..89a395aef2 100644
-> --- a/migration/multifd.h
-> +++ b/migration/multifd.h
-> @@ -42,7 +42,7 @@ int multifd_recv_setup(Error **errp);
->  void multifd_recv_cleanup(void);
->  void multifd_recv_shutdown(void);
->  bool multifd_recv_all_channels_created(void);
-> -void multifd_recv_new_channel(QIOChannel *ioc, Error **errp);
-> +bool multifd_recv_new_channel(QIOChannel *ioc, Error **errp);
->  void multifd_recv_sync_main(void);
->  int multifd_send_sync_main(MultiFDSyncReq req);
->  bool multifd_queue_page(RAMBlock *block, ram_addr_t offset);
-> diff --git a/migration/rdma.c b/migration/rdma.c
-> index 596a1aba0b..7bee871e2b 100644
-> --- a/migration/rdma.c
-> +++ b/migration/rdma.c
-> @@ -384,7 +384,6 @@ struct QIOChannelRDMA {
->      QIOChannel parent;
->      RDMAContext *rdmain;
->      RDMAContext *rdmaout;
-> -    QEMUFile *file;
->      bool blocking; /* XXX we don't actually honour this yet */
->  };
->  
-> @@ -3836,32 +3835,20 @@ static void qio_channel_rdma_register_types(void)
->  
->  type_init(qio_channel_rdma_register_types);
->  
-> -static QEMUFile *rdma_new_input(RDMAContext *rdma)
-> +static QIOChannel *rdma_new_ioc(RDMAContext *rdma)
->  {
->      QIOChannelRDMA *rioc = QIO_CHANNEL_RDMA(object_new(TYPE_QIO_CHANNEL_RDMA));
->  
-> -    rioc->file = qemu_file_new_input(QIO_CHANNEL(rioc));
-> -    rioc->rdmain = rdma;
-> -    rioc->rdmaout = rdma->return_path;
-> -
-> -    return rioc->file;
-> -}
-> -
-> -static QEMUFile *rdma_new_output(RDMAContext *rdma)
-> -{
-> -    QIOChannelRDMA *rioc = QIO_CHANNEL_RDMA(object_new(TYPE_QIO_CHANNEL_RDMA));
-> -
-> -    rioc->file = qemu_file_new_output(QIO_CHANNEL(rioc));
->      rioc->rdmaout = rdma;
->      rioc->rdmain = rdma->return_path;
-
-Likely it was overlooked rdmaout/rdmain was set in reverse order in these
-two functions.  I gave it a quick run on rdma and it was indeed broken
-starting from this patch.
-
-The goal of the change looks reasonable in general otherwise, said that,
-maybe there's way to split the patch somehow?
-
->  
-> -    return rioc->file;
-> +    return QIO_CHANNEL(rioc);
->  }
->  
->  static void rdma_accept_incoming_migration(void *opaque)
->  {
->      RDMAContext *rdma = opaque;
-> -    QEMUFile *f;
-> +    QIOChannel *ioc;
->  
->      trace_qemu_rdma_accept_incoming_migration();
->      if (qemu_rdma_accept(rdma) < 0) {
-> @@ -3875,15 +3862,16 @@ static void rdma_accept_incoming_migration(void *opaque)
->          return;
->      }
->  
-> -    f = rdma_new_input(rdma);
-> -    if (f == NULL) {
-> +    ioc = rdma_new_ioc(rdma);
-> +    if (!ioc) {
->          error_report("RDMA ERROR: could not open RDMA for input");
->          qemu_rdma_cleanup(rdma);
->          return;
->      }
->  
->      rdma->migration_started_on_destination = 1;
-> -    migration_fd_process_incoming(f);
-> +    migration_incoming_setup(ioc, 0, NULL);
-> +    migration_incoming_process();
->  }
->  
->  void rdma_start_incoming_migration(InetSocketAddress *host_port,
-> @@ -3995,8 +3983,8 @@ void rdma_start_outgoing_migration(void *opaque,
->  
->      trace_rdma_start_outgoing_migration_after_rdma_connect();
->  
-> -    s->to_dst_file = rdma_new_output(rdma);
->      s->rdma_migration = true;
-> +    migration_outgoing_setup(rdma_new_ioc(rdma));
->      migration_connect(s);
->      return;
->  return_path_err:
-> -- 
-> 2.51.0
-> 
-
--- 
-Peter Xu
-
+>
+> ChangeLog
+> ---------
+> v4:
+> - Add missing Signed-off-by
+> - Fix checkpatch.pl warnings
+> - Refine code structure
+> - Enable AST1700 support only after all devices are ready
+>
+> v3:
+> - Add PWM model
+> - Integrate the SGPIO model
+> - Fix I2C test case failure
+> - Refine code structure
+>
+> v2:
+> - Separate the AST1700 model into a standalone implementation
+> - Refine the mechanism for assigning the AST1700 board number
+>
+> v1:
+> - Initial version
+> ---
+>
+> Kane-Chen-AS (19):
+>   hw/misc: Add LTPI controller
+>   hw/arm/aspeed: Attach LTPI controller to AST27X0 platform
+>   hw/misc: Add basic Aspeed PWM model
+>   hw/arm/aspeed: Add AST1700 LTPI expander device model
+>   hw/arm/aspeed: Integrate AST1700 device into AST27X0
+>   hw/arm/aspeed: Integrate interrupt controller for AST1700
+>   hw/arm/aspeed: Attach LTPI controller to AST1700 model
+>   hw/arm/aspeed: Attach UART device to AST1700 model
+>   hw/arm/aspeed: Attach SRAM device to AST1700 model
+>   hw/arm/aspeed: Attach SPI device to AST1700 model
+>   hw/arm/aspeed: Attach ADC device to AST1700 model
+>   hw/arm/aspeed: Attach SCU device to AST1700 model
+>   hw/arm/aspeed: Attach GPIO device to AST1700 model
+>   hw/arm/aspeed: attach I2C device to AST1700 model
+>   hw/arm/aspeed: Attach WDT device to AST1700 model
+>   hw/arm/aspeed: Attach PWM device to AST1700 model
+>   hw/arm/aspeed: Attach SGPIOM device to AST1700 model
+>   hw/arm/aspeed: Model AST1700 I3C block as unimplemented device
+>   hw/arm/aspeed: Enable AST1700 IO expander support
+>
+>  include/hw/arm/aspeed_ast1700.h |  53 +++++++
+>  include/hw/arm/aspeed_soc.h     |  25 ++-
+>  include/hw/i2c/aspeed_i2c.h     |   1 +
+>  include/hw/intc/aspeed_intc.h   |   2 +
+>  include/hw/misc/aspeed_ltpi.h   |  33 ++++
+>  include/hw/misc/aspeed_pwm.h    |  31 ++++
+>  hw/arm/aspeed_ast1700.c         | 268 ++++++++++++++++++++++++++++++++
+>  hw/arm/aspeed_ast27x0.c         | 165 ++++++++++++++++++--
+>  hw/i2c/aspeed_i2c.c             |  19 ++-
+>  hw/intc/aspeed_intc.c           |  60 +++++++
+>  hw/misc/aspeed_ltpi.c           | 193 +++++++++++++++++++++++
+>  hw/misc/aspeed_pwm.c            | 121 ++++++++++++++
+>  hw/arm/meson.build              |   1 +
+>  hw/misc/meson.build             |   2 +
+>  hw/misc/trace-events            |   4 +
+>  15 files changed, 959 insertions(+), 19 deletions(-)
+>  create mode 100644 include/hw/arm/aspeed_ast1700.h
+>  create mode 100644 include/hw/misc/aspeed_ltpi.h
+>  create mode 100644 include/hw/misc/aspeed_pwm.h
+>  create mode 100644 hw/arm/aspeed_ast1700.c
+>  create mode 100644 hw/misc/aspeed_ltpi.c
+>  create mode 100644 hw/misc/aspeed_pwm.c
+>
+> --
+> 2.43.0
+>
 
