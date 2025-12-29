@@ -2,134 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFAE3CE7ED4
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Dec 2025 19:49:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB80FCE7F11
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Dec 2025 19:53:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vaIJ1-00055J-UX; Mon, 29 Dec 2025 13:49:23 -0500
+	id 1vaIJ1-00050T-5P; Mon, 29 Dec 2025 13:49:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <daniel.barboza@oss.qualcomm.com>)
- id 1vaII4-0003oL-An
- for qemu-devel@nongnu.org; Mon, 29 Dec 2025 13:48:28 -0500
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <daniel.barboza@oss.qualcomm.com>)
- id 1vaII0-0008J4-7i
- for qemu-devel@nongnu.org; Mon, 29 Dec 2025 13:48:23 -0500
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
- 5BT9TwBp3686954
- for <qemu-devel@nongnu.org>; Mon, 29 Dec 2025 18:48:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
- cc:content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=qcppdkim1; bh=iBQKhcie6Xc
- QkgkKwPbzsyYJiHSU8CdbCPTyhDneiPc=; b=O6fP6lnUp2fYVJHnB5smdi2za68
- XgDZN2XW7g27QetuNN2ia8Cf4S+g6iFzqJvb5Am/hT04P7f2Yx3s7y++lBXCSeQm
- b+iL4GcNHEdZmWRWAwplCDNP/8BcII+XxSFCZ2ahbNL8iRIUaByGIJKyCedtE7qI
- 6So1qPXplRSJvvs3iPDvguG+pgKo9AAlD3nZTRSgPePLBJSjY8bckjRE2dntxpRv
- MJ0qyiw2aq6kw3qOI5kLC9YsfjCpelpUWnVGlUqrTnRZ3eLeTa1gQ1cJQhuWC0E4
- yZe5JM5TYwwHfL4ReFLWuCWKCpxhtRcIyJQ+RXraGuqbSNXC7xKt1lnZntA==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ba7hsd5tu-1
- (version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Mon, 29 Dec 2025 18:48:03 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id
- d9443c01a7336-2a0c495fc7aso136180605ad.3
- for <qemu-devel@nongnu.org>; Mon, 29 Dec 2025 10:48:03 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1vaIHp-0003le-EW
+ for qemu-devel@nongnu.org; Mon, 29 Dec 2025 13:48:14 -0500
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1vaIHi-0008I5-Si
+ for qemu-devel@nongnu.org; Mon, 29 Dec 2025 13:48:07 -0500
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-7f1243792f2so6202582b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Dec 2025 10:47:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oss.qualcomm.com; s=google; t=1767034082; x=1767638882; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iBQKhcie6XcQkgkKwPbzsyYJiHSU8CdbCPTyhDneiPc=;
- b=EvAOgaPwKbGqyRKIyELk8Bhb5damrKGRFIky5Wuk4Dv4CIqlR5ksRomZw4WJ7GY+Ic
- d3e9DiAJU6SZVjH6usATki+2FwF7HJW9eDz2IBENbqOs1VnAlWFWdJ+kMMXUB/UNeH1o
- lPqZJvzd4LIhUpAr1gQZrw+sjq5Hhp0ox02ONCjjTrPQOV+CQ+YsllzoAcGVwiPBh45g
- n9R4e2sxmB/X5o2UjCBtmsYcsjaDKvaE+rmnHikAg49GdssSeyZJ5w/b5ZDsaYKUfWWu
- Pa5uH5c0I+JljRz4z+2WkInwPi2MXzgqE16D9VGwy0rsKKz8YtgU7LfpWra/hhzw2sEY
- LK9w==
+ d=linaro.org; s=google; t=1767034075; x=1767638875; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=HjlNaSuWDJGQZltEQ1Gr0JR+hacBIOSScxQel3kNd0c=;
+ b=rJ9tI3wFW/iSVfhuqIsRKZnq8NDRsXLrw92THsRCBWoBWzqqFL3GzVF3uoTkKi2r4D
+ J0FpLb4GXyimW1UpqzlJxP6tMCLqHR4kuyqt1Cofr94mJ2nHetfgOVQgltqQwPg6nKIY
+ 1i7bXqGklG1SPFHGNnDQgKg6t9TZRKYxbAWNVApCtWDqP6RtiMRKtZTtiGxk0BfAh3yL
+ MuFsbYfAJuC+gvdrE99ZJCAnoLjkG1vsNLU7wyQSPRfuiZZm+cjDjYarezCt7VZnsE40
+ ELpGYjuA2Tv44mOkdGbQyjWfw0f+D92OMiy5An2OW12J3YtkbhMsO6CylI812gS7Rrcq
+ kP4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767034082; x=1767638882;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=iBQKhcie6XcQkgkKwPbzsyYJiHSU8CdbCPTyhDneiPc=;
- b=IFcKTB1qX0JvJ7ETSZtuS3C9TfWZqNevC55ttdeiD/Z1g5aTqjRo0iuG6gMXzG4xFx
- Dvcu5XnPLkkp7YmH0u/7zCHPmgk6XGGN1AVIgU2Tbcu7xMcD6EExtxG/zsLPORSQM1Bo
- O4/StPDp5x0paSvMpIESzlqNnV6cqM8X0hs7YXEHWTRVgdX4HdmMrvwvHagbkj/D1GMD
- nHYN3lLYFt9bshDg6w1e9YnZtRN+XtEc9LQI5KKlhNWj9eeIFeotTb372JAXL8zJ23am
- 2qvkHeg/wgtuew4ShGCxQc2jnmHMep10NBhKTPo65JUumfyK9WxLp4arPZcVXEcZcwfR
- Lqrg==
-X-Gm-Message-State: AOJu0YyFxEeymlBe3YZyDWVTA4pZbcbmN4mQ5ykcZfylGrQmT4Yau1Fb
- jrAxLdyKFyOeTVZL6RyqDnsfDOKyw4OzzggDT4iNIs4LvE2j9W3/d2Hk5W82MCpXtixaK3GkWHw
- TVuJebI2+e5FEjivgTBPPdvpUGkEBLPZ8tvOIxbRW1GkqO/ZOpiaEMP7z/bFrC3anrA==
-X-Gm-Gg: AY/fxX7o7Q6P1hCdq9XH8FpAqPFLB2D1KL4r/usGKL/qh0U/nRP7xgCCHTC9zhRq1dr
- swsNaaeuc7a0trA2FFzyBHi1h9YZSqVuDlUwrPTMZnETpMHNjmV5JVskuZLfjFGgPyt8lr0Pvem
- FLgNewrqus3Lrx9MQ3Q85UaYQbIvxTBhnea4E5/tQQVR7oGbAf+Gg/vLd1Jq7DSjzUYqK72b8Tb
- p99+NIzeSWU9pfYxy8kumP0+OA2bMfm4Y02yJrTXUGnwXIcB8y2tCs6RPS5u3p3HM17Pm4u0HRU
- +yEmVU01Oiq5FcIPJ6vRswCee1gsDO7kGLYN1D7HrHjjTEqwDUiKYgaqtt7SV4Yx3Mtu9c2aS6r
- 2JzYXtPF7c2M3h30zAm91FTf6YUgyNLJmLPnQ+pG+ACKjSvE=
-X-Received: by 2002:a17:903:41c6:b0:2a1:360c:3659 with SMTP id
- d9443c01a7336-2a2f2a3d1f4mr264340665ad.58.1767034082484; 
- Mon, 29 Dec 2025 10:48:02 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFlLqj/xiI3/7508ZcOTRotsYxKvUNFXJJTdbO14H8F/vlMq3zw82izabfxwMoHnIec74AyVw==
-X-Received: by 2002:a17:903:41c6:b0:2a1:360c:3659 with SMTP id
- d9443c01a7336-2a2f2a3d1f4mr264340475ad.58.1767034082000; 
- Mon, 29 Dec 2025 10:48:02 -0800 (PST)
-Received: from grind.dc1.ventanamicro.com ([187.101.184.177])
+ d=1e100.net; s=20230601; t=1767034075; x=1767638875;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HjlNaSuWDJGQZltEQ1Gr0JR+hacBIOSScxQel3kNd0c=;
+ b=OQ6krWTydMQvONvaiTyeDINZOLUoXKIG5MzLbuiNEtvTSqFl8a6mw1dmuVv+C7Nwn3
+ rquNqA1KLjni4qhqZ/89pg3JaTVaaJgon0B8FmyGk76nAd2PHiyEWKFvbxQ5Ms5tUkXJ
+ TA6VM3uFi/E2pSm9M33/RbMlkhsWSBgOUDpGDo3SyYvdyTjCGVUoCkQyF/+IlGMrtKmw
+ zxb8UML4uGllBtgMxvpJf9bnllDCnqY0F+hREb0vOPPudqnXGb2RL7xCKeYEbaF8ihRf
+ rEt33cgNR4YnskBJlMco+3uMVQqUadB9EJutbUUjybk5o32suw4I2YW/FbaLQOUWoLnE
+ c0rg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWd4Pc0hF9/5TiTc2wzogPHTHL6PKFrSWie7y/Z3Uql3ohdRy3OCjMsh98HIrDcZxQFDz4Umhk1qOaD@nongnu.org
+X-Gm-Message-State: AOJu0Yx1TG1HwiMTfBHiqNM195LNYGx3rbjmO/hPjgKxafW/osBZ1tkM
+ 3NjUso7CeNr1uAD16DgLgLoLJ3oUXbjRzxogfqhh6uLmpCh4SoDuPBHIbedieBKdtAc=
+X-Gm-Gg: AY/fxX7DD5ELVcD0RxauadkWrF64nS38gyLDktZ/CFB/18gLaYYNm/Vh1Hw0uiD9gv3
+ qkpWaBaRs02/rlAtFRZPP1dqMKjf4NdzDKVjXGbJqYziC+shAx62u25mlDQSPmT1k8VXrRSq4zN
+ b20C39C1wF/4KTPioUW4a5zJ0UoBmsJvJpMpII8Q5zMVslGEVXQJVJjTF1X3Ln3mR1UskyquaLu
+ dAFwdnIvXgRx+OflG4Mvs/XmN7Osqbe92hm0aKVRPSnr1UHm66dC1lUZ/C+73CxVWoeY1NYFZdW
+ Qgg+OxNTt8JqzMKjwSdymMjN0JMO94+/VlN1MGkXwEhbROpyh+u2brKuB6GDpgOJActwaj07QG4
+ wzfT9fNEBCWzuu8vuZsqIP1/OKOt9JeyUQEJJAYc6o8ljWwErcDNq2Ifh/r3x5DXqpvcqAGwdtS
+ 5ml7fMnERGxlU89AAhb1AsWgUzBfH12A8Jra9PCojMs/XWxPUTf1PIvLIE
+X-Google-Smtp-Source: AGHT+IEUM+PySF9fE8H6bjy183pC3XDOTIMWhOvzxGMlStDSQ2Wun5rqsTGiiIaVABn6oh8OTNpFoA==
+X-Received: by 2002:a05:6a00:e11:b0:7a2:6c61:23fc with SMTP id
+ d2e1a72fcca58-7ff64ed12f8mr27507105b3a.10.1767034074553; 
+ Mon, 29 Dec 2025 10:47:54 -0800 (PST)
+Received: from [192.168.1.87] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a2f3c82aa8sm282198705ad.31.2025.12.29.10.47.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Dec 2025 10:48:01 -0800 (PST)
-From: Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, liwei1518@gmail.com,
- zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com,
- Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>
-Subject: [PATCH v3 17/17] hw/riscv/trace: update branch bit in sync messages
-Date: Mon, 29 Dec 2025 15:46:56 -0300
-Message-ID: <20251229184656.2224369-18-daniel.barboza@oss.qualcomm.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251229184656.2224369-1-daniel.barboza@oss.qualcomm.com>
-References: <20251229184656.2224369-1-daniel.barboza@oss.qualcomm.com>
+ d2e1a72fcca58-7ff7e0a19d8sm30113899b3a.42.2025.12.29.10.47.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 29 Dec 2025 10:47:54 -0800 (PST)
+Message-ID: <4344a029-90f1-4268-8822-779411de18ac@linaro.org>
+Date: Mon, 29 Dec 2025 10:47:53 -0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: Xg8LaK6a8kk_ok5d4h_VwRCkXdsImcn_
-X-Authority-Analysis: v=2.4 cv=O4o0fR9W c=1 sm=1 tr=0 ts=6952cce3 cx=c_pps
- a=IZJwPbhc+fLeJZngyXXI0A==:117 a=cW5wcbexNO3A0Ml9TiDm9w==:17
- a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=l-bS85s7JyIff80a6EEA:9 a=uG9DUKGECoFWVXl0Dc02:22
-X-Proofpoint-ORIG-GUID: Xg8LaK6a8kk_ok5d4h_VwRCkXdsImcn_
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI5MDE3MiBTYWx0ZWRfX8Lh0kNegHd2o
- yNPala3S30rlB5koWGRwCfl28MgHnVNOR29dg32RYA42dNYUIiGE4L90HWNqeKkFuS+H4SzsIGv
- e6sQj5bZjYCH/mr2ry2t0qDRU0xqgh0m35xo2pxS7fNbQU90+FivyiYeTbJ68Mb3Ua0mpUE4GWs
- ApeMeUF6nqHot6oX/1UU3R8+sTRD1dRuXH6tT1FYWqtbF/D8ifkk6Hg1KKZxS3YjnZZaa/K7Vww
- sC4YRKPa6kn7m50l+MK91y3GrIV6uD0mVoff2OHfvJxVZWtNsjCA89ROLv4jEbk24lPui/HhnL+
- Eaw/UWOtM9y/PkOxz1YlbZzklYOd6C1QsC2VsVGjmaKdd7/ZuMIcUS3iIqtj+7r9EvVmkfjQmum
- n7rQofjfWLZTvpxfvc0h/A7KmhYhheK3XmPH1NbYU7ZLC4U6smruOYZ9MNJxvgqu0FoBPGaXKcR
- 4yUR+Sk6NRE0XBOkuBA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-29_06,2025-12-29_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 spamscore=0 suspectscore=0
- lowpriorityscore=0 phishscore=0 bulkscore=0 clxscore=1015 adultscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2512120000
- definitions=main-2512290172
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=daniel.barboza@oss.qualcomm.com; helo=mx0b-0031df01.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 17/28] whpx: change memory management logic
+Content-Language: en-US
+To: Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-devel@nongnu.org
+Cc: Alexander Graf <agraf@csgraf.de>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Phil Dennis-Jordan <phil@philjordan.eu>, Zhao Liu <zhao1.liu@intel.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ kvm@vger.kernel.org, Roman Bolshakov <rbolshakov@ddn.com>,
+ Pedro Barbuda <pbarbuda@microsoft.com>, qemu-arm@nongnu.org,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ Yanan Wang <wangyanan55@huawei.com>, Peter Xu <peterx@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Ani Sinha <anisinha@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
+ Cameron Esfahani <dirty@apple.com>
+References: <20251228235422.30383-1-mohamed@unpredictable.fr>
+ <20251228235422.30383-18-mohamed@unpredictable.fr>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20251228235422.30383-18-mohamed@unpredictable.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -145,122 +122,152 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we have a working branch map update the branch bit in sync
-messages by checking if the sync address is a branch address that was
-taken (or not).
+On 12/28/25 3:54 PM, Mohamed Mediouni wrote:
+> This allows edk2 to work on Arm, although u-boot is still not functional.
+> 
+> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
+> ---
+>   accel/whpx/whpx-common.c | 97 +++++++++++++++-------------------------
+>   1 file changed, 36 insertions(+), 61 deletions(-)
+> 
+> diff --git a/accel/whpx/whpx-common.c b/accel/whpx/whpx-common.c
+> index 0d20b1d24c..e0db8ace4a 100644
+> --- a/accel/whpx/whpx-common.c
+> +++ b/accel/whpx/whpx-common.c
+> @@ -259,89 +259,64 @@ void whpx_vcpu_kick(CPUState *cpu)
+>    * Memory support.
+>    */
+>   
+> -static void whpx_update_mapping(hwaddr start_pa, ram_addr_t size,
+> -                                void *host_va, int add, int rom,
+> -                                const char *name)
+> +static void whpx_set_phys_mem(MemoryRegionSection *section, bool add)
+>   {
+>       struct whpx_state *whpx = &whpx_global;
+> +    MemoryRegion *area = section->mr;
+> +    bool writable = !area->readonly && !area->rom_device;
+> +    WHV_MAP_GPA_RANGE_FLAGS flags;
+> +    uint64_t page_size = qemu_real_host_page_size();
+> +    uint64_t gva = section->offset_within_address_space;
+> +    uint64_t size = int128_get64(section->size);
+>       HRESULT hr;
+> +    void *mem;
+>   
+> -    /*
+> -    if (add) {
+> -        printf("WHPX: ADD PA:%p Size:%p, Host:%p, %s, '%s'\n",
+> -               (void*)start_pa, (void*)size, host_va,
+> -               (rom ? "ROM" : "RAM"), name);
+> -    } else {
+> -        printf("WHPX: DEL PA:%p Size:%p, Host:%p,      '%s'\n",
+> -               (void*)start_pa, (void*)size, host_va, name);
+> -    }
+> -    */
+> -
+> -    if (add) {
+> -        hr = whp_dispatch.WHvMapGpaRange(whpx->partition,
+> -                                         host_va,
+> -                                         start_pa,
+> -                                         size,
+> -                                         (WHvMapGpaRangeFlagRead |
+> -                                          WHvMapGpaRangeFlagExecute |
+> -                                          (rom ? 0 : WHvMapGpaRangeFlagWrite)));
+> -    } else {
+> -        hr = whp_dispatch.WHvUnmapGpaRange(whpx->partition,
+> -                                           start_pa,
+> -                                           size);
+> -    }
+> -
+> -    if (FAILED(hr)) {
+> -        error_report("WHPX: Failed to %s GPA range '%s' PA:%p, Size:%p bytes,"
+> -                     " Host:%p, hr=%08lx",
+> -                     (add ? "MAP" : "UNMAP"), name,
+> -                     (void *)(uintptr_t)start_pa, (void *)size, host_va, hr);
+> +    if (!memory_region_is_ram(area)) {
+> +        if (writable) {
+> +            return;
+> +        } else if (!memory_region_is_romd(area)) {
+> +             add = false;
+> +        }
 
-Signed-off-by: Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>
----
- hw/riscv/rv-trace-messages.c |  6 +++---
- hw/riscv/rv-trace-messages.h |  3 ++-
- hw/riscv/trace-encoder.c     | 30 ++++++++++++++++++++++++++++--
- 3 files changed, 33 insertions(+), 6 deletions(-)
+ERROR: suspect code indent for conditional statements (8, 13)
+#48: FILE: accel/whpx/whpx-common.c:277:
++        } else if (!memory_region_is_romd(area)) {
++             add = false;
 
-diff --git a/hw/riscv/rv-trace-messages.c b/hw/riscv/rv-trace-messages.c
-index 7deaf25060..932f3ae499 100644
---- a/hw/riscv/rv-trace-messages.c
-+++ b/hw/riscv/rv-trace-messages.c
-@@ -126,11 +126,12 @@ static uint8_t rv_etrace_write_header(uint8_t *buf, RVTraceMessageHeader header)
- }
- 
- size_t rv_etrace_gen_encoded_sync_msg(uint8_t *buf, uint64_t pc,
--                                      TracePrivLevel priv_level)
-+                                      TracePrivLevel priv_level,
-+                                      bool pc_is_branch)
- {
-     RVTraceSyncPayload payload = {.format = 0b11,
-                                   .subformat = 0b00,
--                                  .branch = 1,
-+                                  .branch = pc_is_branch,
-                                   .privilege = priv_level,
-                                   .addressLow = extract64(pc, 0, 32),
-                                   .addressHigh = extract64(pc, 32, 32)};
-@@ -160,7 +161,6 @@ size_t rv_etrace_gen_encoded_trap_msg(uint8_t *buf, uint64_t trap_addr,
- {
-     RVTraceTrapPayload payload = {.format = 0b11,
-                                   .subformat = 0b01,
--                                  .branch = 1,
-                                   .privilege = priv_level,
-                                   .ecause = ecause,
-                                   .addressLow = extract64(trap_addr, 0, 32),
-diff --git a/hw/riscv/rv-trace-messages.h b/hw/riscv/rv-trace-messages.h
-index f8f1830852..6f700eac8e 100644
---- a/hw/riscv/rv-trace-messages.h
-+++ b/hw/riscv/rv-trace-messages.h
-@@ -20,7 +20,8 @@ typedef enum {
- } TracePrivLevel;
- 
- size_t rv_etrace_gen_encoded_sync_msg(uint8_t *buf, uint64_t pc,
--                                      TracePrivLevel priv_level);
-+                                      TracePrivLevel priv_level,
-+                                      bool pc_is_branch);
- size_t rv_etrace_gen_encoded_trap_msg(uint8_t *buf, uint64_t trap_addr,
-                                       TracePrivLevel priv_level,
-                                       uint8_t ecause,
-diff --git a/hw/riscv/trace-encoder.c b/hw/riscv/trace-encoder.c
-index c0f74887cf..55acb1f2ae 100644
---- a/hw/riscv/trace-encoder.c
-+++ b/hw/riscv/trace-encoder.c
-@@ -394,15 +394,38 @@ static void trencoder_send_message_smem(TraceEncoder *trencoder,
-     trencoder_update_ramsink_writep(trencoder, dest, wrapped);
- }
- 
-+static bool trencoder_addr_is_branch_taken(TraceEncoder *te, uint64_t addr)
-+{
-+    uint8_t last_branch;
-+
-+    if (te->branches == 0) {
-+        return false;
-+    }
-+
-+    if (te->last_branch_pc == addr) {
-+        last_branch = extract32(te->branches, te->branches - 1, 1);
-+
-+        /* 0: branch taken, 1: not taken*/
-+        if (last_branch == 0) {
-+            return true;
-+        }
-+    }
-+
-+    return false;
-+}
-+
- static void trencoder_send_sync_msg(Object *trencoder_obj, uint64_t pc)
- {
-     TraceEncoder *trencoder = TRACE_ENCODER(trencoder_obj);
-     TracePrivLevel priv = trencoder_get_curr_priv_level(trencoder);
-     g_autofree uint8_t *msg = g_malloc0(TRACE_MSG_MAX_SIZE);
-     uint8_t msg_size;
-+    bool is_branch_taken;
- 
-     trencoder->first_pc = pc;
--    msg_size = rv_etrace_gen_encoded_sync_msg(msg, pc, priv);
-+    is_branch_taken = trencoder_addr_is_branch_taken(trencoder, pc);
-+    msg_size = rv_etrace_gen_encoded_sync_msg(msg, pc, priv,
-+                                              is_branch_taken);
- 
-     trencoder_send_message_smem(trencoder, msg, msg_size);
- }
-@@ -440,6 +463,7 @@ void trencoder_set_first_trace_insn(Object *trencoder_obj, uint64_t pc)
-     TracePrivLevel priv = trencoder_get_curr_priv_level(trencoder);
-     g_autofree uint8_t *msg = g_malloc0(TRACE_MSG_MAX_SIZE);
-     uint8_t msg_size;
-+    bool is_branch_taken;
- 
-     if (trencoder->updiscon_pending) {
-         trencoder_send_updiscon(trencoder, pc);
-@@ -447,7 +471,9 @@ void trencoder_set_first_trace_insn(Object *trencoder_obj, uint64_t pc)
- 
-     trencoder->first_pc = pc;
-     trace_trencoder_first_trace_insn(pc);
--    msg_size = rv_etrace_gen_encoded_sync_msg(msg, pc, priv);
-+    is_branch_taken = trencoder_addr_is_branch_taken(trencoder, pc);
-+    msg_size = rv_etrace_gen_encoded_sync_msg(msg, pc, priv,
-+                                              is_branch_taken);
- 
-     trencoder_send_message_smem(trencoder, msg, msg_size);
- }
--- 
-2.51.1
+Seems like a false positive from checkpatch, easier to write a second if 
+to workaround this.
+
+>       }
+> -}
+> -
+> -static void whpx_process_section(MemoryRegionSection *section, int add)
+> -{
+> -    MemoryRegion *mr = section->mr;
+> -    hwaddr start_pa = section->offset_within_address_space;
+> -    ram_addr_t size = int128_get64(section->size);
+> -    unsigned int delta;
+> -    uint64_t host_va;
+>   
+> -    if (!memory_region_is_ram(mr)) {
+> -        return;
+> +    if (!QEMU_IS_ALIGNED(size, page_size) ||
+> +        !QEMU_IS_ALIGNED(gva, page_size)) {
+> +        /* Not page aligned, so we can not map as RAM */
+> +        add = false;
+>       }
+>   
+> -    delta = qemu_real_host_page_size() - (start_pa & ~qemu_real_host_page_mask());
+> -    delta &= ~qemu_real_host_page_mask();
+> -    if (delta > size) {
+> -        return;
+> -    }
+> -    start_pa += delta;
+> -    size -= delta;
+> -    size &= qemu_real_host_page_mask();
+> -    if (!size || (start_pa & ~qemu_real_host_page_mask())) {
+> +    if (!add) {
+> +        hr = whp_dispatch.WHvUnmapGpaRange(whpx->partition,
+> +                gva, size);
+> +        if (FAILED(hr)) {
+> +            error_report("WHPX: failed to unmap GPA range");
+> +            abort();
+> +        }
+>           return;
+>       }
+>   
+> -    host_va = (uintptr_t)memory_region_get_ram_ptr(mr)
+> -            + section->offset_within_region + delta;
+> +    flags = WHvMapGpaRangeFlagRead | WHvMapGpaRangeFlagExecute
+> +     | (writable ? WHvMapGpaRangeFlagWrite : 0);
+> +    mem = memory_region_get_ram_ptr(area) + section->offset_within_region;
+>   
+> -    whpx_update_mapping(start_pa, size, (void *)(uintptr_t)host_va, add,
+> -                        memory_region_is_rom(mr), mr->name);
+> +    hr = whp_dispatch.WHvMapGpaRange(whpx->partition,
+> +         mem, gva, size, flags);
+> +    if (FAILED(hr)) {
+> +        error_report("WHPX: failed to map GPA range");
+> +        abort();
+> +    }
+>   }
+>   
+>   static void whpx_region_add(MemoryListener *listener,
+>                              MemoryRegionSection *section)
+>   {
+> -    memory_region_ref(section->mr);
+> -    whpx_process_section(section, 1);
+> +    whpx_set_phys_mem(section, true);
+>   }
+>   
+>   static void whpx_region_del(MemoryListener *listener,
+>                              MemoryRegionSection *section)
+>   {
+> -    whpx_process_section(section, 0);
+> -    memory_region_unref(section->mr);
+> +    whpx_set_phys_mem(section, false);
+>   }
+>   
+>   static void whpx_transaction_begin(MemoryListener *listener)
 
 
