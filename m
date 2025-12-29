@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DEC9CE84D0
+	by mail.lfdr.de (Postfix) with ESMTPS id 669EFCE84D1
 	for <lists+qemu-devel@lfdr.de>; Mon, 29 Dec 2025 23:56:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vaM9t-0001tJ-90; Mon, 29 Dec 2025 17:56:13 -0500
+	id 1vaM9t-00025L-UA; Mon, 29 Dec 2025 17:56:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vaM9a-0001rI-EP
- for qemu-devel@nongnu.org; Mon, 29 Dec 2025 17:55:56 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vaM9g-0001sO-Q7
+ for qemu-devel@nongnu.org; Mon, 29 Dec 2025 17:56:01 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vaM9Y-0001Dp-3X
- for qemu-devel@nongnu.org; Mon, 29 Dec 2025 17:55:53 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-42fbc305882so4499937f8f.0
- for <qemu-devel@nongnu.org>; Mon, 29 Dec 2025 14:55:51 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vaM9f-0001Ej-DT
+ for qemu-devel@nongnu.org; Mon, 29 Dec 2025 17:56:00 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4775ae77516so94208425e9.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Dec 2025 14:55:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767048950; x=1767653750; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767048957; x=1767653757; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6wCOqNVpDIwgmrLQExYLyHGxt46hOYDrBPkO4R5DEaM=;
- b=pd7xStaAK7znUKXwhj6V0G9PXLT6rXMsXdDzXYojCFazgqSntuc6xQ7aAE59Bk78j2
- teGVKeL6LMZK4I2XVG3ykHbSq0les9gLj7Eb/tH7iOlLKQXKBrVWiRkCjmqcp2FuPHFv
- aMGXK8h8sxfCwhBL5W0591lord2mxD7sam0oYQnMySAThszZIAzH2tAuB7hrTMKXeFEQ
- HG/BoZxLf9xAY2RySMam9HdinDb8xVYldZokn4cmENcbHmmnU/F0bJFtR+k5oDkJRbeb
- KZpBZqKz5NkjFEMjK1mAyEioOZhQMmcm2lb6ykPSZ+0IsrU/Oyrv+ihVjz7QzgzBUBgS
- H9YQ==
+ bh=KoNDyCQE+9GYdY7JI1rLbViwKqxWNUa+Im9aqPwQSUg=;
+ b=KzxKwJbFrZet9JOI6bcDAMbCZJOf3mdfx1xqgsGJOs3+VrAyTUjJyRvxZTwPgQ+imX
+ 3GmnRjvGe3+Szdsc/SW2CAVP+3DZfMfYUPe21ZO8KuA5K3wlb4UbKkjMPHlLCJKFWEUr
+ 8y7mQZ20NE1nF5suGO9uVSHDXuYONDGna8gG1mzxPzBsOvkuShx/KaFgPVTs5el/MygH
+ +MMXSF/O3LUZooh7hW7J2j4KOxb8ZmvXPfguHJa6ey9wrd5ncDsMki0bAUsm5xX4IyeA
+ PYMzQqs7MlUnzjMVyxbAw83+JUZUNo/qdq+1YaoFfXaW1V5mzfriaONo4xngNzJbKE9p
+ BObg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767048950; x=1767653750;
+ d=1e100.net; s=20230601; t=1767048957; x=1767653757;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=6wCOqNVpDIwgmrLQExYLyHGxt46hOYDrBPkO4R5DEaM=;
- b=SubiOmE979pjijKjMnwWVjn6Q39MuNuPWtIN//RypwscEOG9v7JBYsVVddM7BVjOlf
- IfWVPTSFjlMIOvOR1E7ZRk8ppSONBTmCR4eBXQ8+kEXp5X+7Tz7LAPxN1VQj3a01RKp3
- Ik2DEc2OPYQrsOf23NdQE+N5A+9JFysYKbE0yQnnQUPW0lTBy2KZ0xaMA4obQ64ybnyV
- yHiUylDOz4l4gjRMc0ndKh7a5pBBIJ3DxrKQx37/i/tCmqtZHBBP9BLTJLcmJyLUVilL
- SzlyQ3zqVsNq+kpxepNbklEzfjqwpcjZBL2BDKat1KaRXEPgtg0w1RjV65iM7lzuKW1J
- cyYQ==
-X-Gm-Message-State: AOJu0Yx303Hr9xE3CaTEqNsnY5ubmyAL0U45VWmgWWoWeSpAHa8I3WYJ
- BaZ7Pv5r7uYtqFgpBMFrHrUR6MllpRSvExtPw74ID77Of8PeRIe5Wevjk+olZsgUJV/TZa6Vrzp
- uz1UYvbA=
-X-Gm-Gg: AY/fxX5t4+/Oty8Er+8XVChlxvB/0wHy9o+c1S/mBXhzVwZhrgffd5xFqrTQgyRmErM
- p8lL4H3cckAn+wnHcVevF8G+6LkfhICjITOVvj0zkyXFIxr9Z9MWjHrEIF918p5m8svan8/fjnH
- qhHb/+ZzV0DRc3L8Cs4IsG1RMELhG31p+ARp5EoLUfWDqu8S4bDwafrpaj4RbZu9NDju/SZLMev
- eloNXEWcwf+s5TYfWolTB72gNMnPFWGKaJmK4CebWSmoKsZybOmUvn0IIwYqjYADYJB+Ys0Bl2w
- Nopqoj5tlJEsVhtQUzFggrZsdr2MYUmj7QB5GugH7h9h9A58Z9o/vKfVqIWFTpzk/9LZlYq2Oaz
- lZkRqJ2kkZtfMsWJeuERELES17cdyraPl7civh6KrkW0oH8ba6QiQoPJxTW16j/P+AyRan3GGmz
- VgdSIuZ4KQbt7OAP5B5uQlqWIROvoyV/J2+hcGHOhH9dIXHtxlvh7xKR3P1R0N
-X-Google-Smtp-Source: AGHT+IHDy6NvahyIadSX0qjpJSjBJv8RSHm3L3GkFEgE7j+tl4ECh2MnfIT6yeFkpKBCquW6ecIIyg==
-X-Received: by 2002:a05:6000:4305:b0:430:fbe1:383c with SMTP id
- ffacd0b85a97d-4324e6f9f64mr41524553f8f.58.1767048950261; 
- Mon, 29 Dec 2025 14:55:50 -0800 (PST)
+ bh=KoNDyCQE+9GYdY7JI1rLbViwKqxWNUa+Im9aqPwQSUg=;
+ b=FSoS+TGUIeKbe89NbNy8rKQZq1giLDSo02TlixbdNlwvLsr4C34fBMnwCe86d1MN/U
+ 06IyNK++0K70ZzOtMoZqaSMwrHLhNSZajzUvtBh9GxJhGuRMYtNT8ffOtF4p9xvw7qbf
+ PWMWi/2rP+6E19SRQ8Kfl7Qrvgkh8iCuULvHdg6SCAuBHKgEghIS7sWjcaj3tfVMZzWN
+ HZqMZLNWads7JH6yFteYAJAcHFo1j+CmLLAQzXHxTT0xj5JAEmH4VH+wxx63hUdemNU0
+ idUGakt/e1Y7MijYN8gbWEZE4GbWsuJp0kjrUjWA/o7BHaDmHPDZmJPTXo9WM6jJLM00
+ bw/A==
+X-Gm-Message-State: AOJu0YywEk/38wjhXLyEVJ9P3CLAXw5SpBvXGViwey9MlsQwFC1nZRoi
+ RZWXTJsBKvV8ZNS9I5mjwo4ku3Qqk9uX35dP/bWkYzdOPkFxUUDSksZTZV7T0cXrRnVMYTBz4BQ
+ qYdjJ6eo=
+X-Gm-Gg: AY/fxX6uI95KPsY6ClheMsvnHsWQlRNnTJZuQ8hp/vvoOiiSybalmCqq0KLdBYzDR7L
+ ULRUfzDQqKcgCgu6K/HkxHXmH2zzPUrcdnRV2fkkOI0lvbDtnwI9jGw9UJhkMvB/0sX8ufCilmx
+ xhC8EwZxntn3nyMGDonfBbZMYKdfC9Ljr0pBzdIPKhV9kAaCwUHylQ36zs8Bp+146p7aR8zRhnF
+ FXvFBA9JFXHJrnv8HGa5WevPbA6CJ6BPCBh1yA42vRmia1DMDbyuZZk79zyj8ABEc04AbU6t5eh
+ c2HiA3Mim4tUz7kFcCx+Cg7B4loNWnG/eevxGsIayxhrzy/awVDe1Yg6uKTodokOy3Qecf2heP1
+ fYbunl6KP1HuuZ4pTUqJlEx4LbI1A2uZRcmzpTI2KLRLMYy3IfCyzF0RZ9eY6LtB1vveNfnwQvT
+ TAiIaBlE5jRm5dkYKv0bNXCF9/ebfyCg/JO6AJDKX6Xozta6iJsT51nWa59aER
+X-Google-Smtp-Source: AGHT+IHi4H6w6QiPbNVcBiI0hOr1Qgn5sL/NjCYooYqFbTD634rjvRxLC4kBIbx6jAKvXw8V0R/6/A==
+X-Received: by 2002:a05:600c:4fd3:b0:477:63b5:6f39 with SMTP id
+ 5b1f17b1804b1-47d195a702bmr311666965e9.19.1767048957460; 
+ Mon, 29 Dec 2025 14:55:57 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324eaa64cesm64943011f8f.35.2025.12.29.14.55.48
+ 5b1f17b1804b1-47d193621c8sm556014335e9.7.2025.12.29.14.55.56
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 29 Dec 2025 14:55:49 -0800 (PST)
+ Mon, 29 Dec 2025 14:55:57 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -71,17 +71,18 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Helge Deller <deller@gmx.de>, Laurent Vivier <laurent@vivier.eu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 4/5] target/hppa: Inline translator_ldl()
-Date: Mon, 29 Dec 2025 23:55:16 +0100
-Message-ID: <20251229225517.45078-5-philmd@linaro.org>
+Subject: [PATCH v2 5/5] configs/targets: Forbid HPPA to use legacy native
+ endianness APIs
+Date: Mon, 29 Dec 2025 23:55:17 +0100
+Message-ID: <20251229225517.45078-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229225517.45078-1-philmd@linaro.org>
 References: <20251229225517.45078-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,37 +105,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-translator_ldl() is defined in "exec/translator.h" as:
-
-  198 static inline uint32_t
-  199 translator_ldl(CPUArchState *env, DisasContextBase *db, vaddr pc)
-  200 {
-  201     return translator_ldl_end(env, db, pc, MO_TE);
-  202 }
-
-Directly use the inlined form, expanding MO_TE -> MO_BE
-since PA-RISC use big-endian order.
+All HPPA-related binaries are buildable without a single use
+of the legacy "native endian" API. Unset the transitional
+TARGET_USE_LEGACY_NATIVE_ENDIAN_API definition to forbid
+further uses of the legacy API.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- target/hppa/translate.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ configs/targets/hppa-linux-user.mak | 1 +
+ configs/targets/hppa-softmmu.mak    | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 853cba2ba4f..73c2cbdf5fc 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -4737,7 +4737,8 @@ static void hppa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
-     {
-         /* Always fetch the insn, even if nullified, so that we check
-            the page permissions for execute.  */
--        uint32_t insn = translator_ldl(env, &ctx->base, ctx->base.pc_next);
-+        uint32_t insn = translator_ldl_end(env, &ctx->base, ctx->base.pc_next,
-+                                           MO_BE);
- 
-         /*
-          * Set up the IA queue for the next insn.
+diff --git a/configs/targets/hppa-linux-user.mak b/configs/targets/hppa-linux-user.mak
+index 59190f63358..a0c7398d599 100644
+--- a/configs/targets/hppa-linux-user.mak
++++ b/configs/targets/hppa-linux-user.mak
+@@ -5,3 +5,4 @@ TARGET_SYSTBL=syscall.tbl
+ TARGET_BIG_ENDIAN=y
+ # Compromise to ease maintenance vs system mode
+ TARGET_LONG_BITS=64
++TARGET_NOT_USING_LEGACY_NATIVE_ENDIAN_API=y
+diff --git a/configs/targets/hppa-softmmu.mak b/configs/targets/hppa-softmmu.mak
+index ea331107a08..003f9f46dcc 100644
+--- a/configs/targets/hppa-softmmu.mak
++++ b/configs/targets/hppa-softmmu.mak
+@@ -1,3 +1,4 @@
+ TARGET_ARCH=hppa
+ TARGET_BIG_ENDIAN=y
+ TARGET_LONG_BITS=64
++TARGET_NOT_USING_LEGACY_NATIVE_ENDIAN_API=y
 -- 
 2.52.0
 
