@@ -2,168 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F9F7CE7103
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Dec 2025 15:36:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34D91CE7314
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Dec 2025 16:20:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vaEM7-0000gi-N2; Mon, 29 Dec 2025 09:36:19 -0500
+	id 1vaF1l-0001VA-6x; Mon, 29 Dec 2025 10:19:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
- id 1vaEM3-0000fX-4J; Mon, 29 Dec 2025 09:36:15 -0500
-Received: from mail-westeuropeazlp170100001.outbound.protection.outlook.com
- ([2a01:111:f403:c201::1] helo=AM0PR83CU005.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
+ id 1vaF1d-0001UA-Pn
+ for qemu-devel@nongnu.org; Mon, 29 Dec 2025 10:19:14 -0500
+Received: from p-west1-cluster5-host3-snip4-10.eps.apple.com ([57.103.66.161]
+ helo=outbound.pv.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
- id 1vaEM1-0005eC-3m; Mon, 29 Dec 2025 09:36:14 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g4ZlndFC2R7STACFn1BJiQpKxGWoCW8w6TPi8hDVpVfbRqOOpfCp/ijFfYGHHs7EEDYN+oR5xtmH0V4bvoKwynmKmv6stVT11ewPb/i65AlCc1+aklzbRmX1jrrCFhntYV+5Ck1um0b3WJb4IQwmjGE8AWgmiPs6B0iA9hrkJrBbWKhAGd3nV4vKwkeZq6TKIhRFO7MsBQrlaYvYdBDCm5y/8EUj+xCltGKYRset+1eVcYsagyvq+NvTlDOj+bF4r+4VODfxXbkxjaZjaR1+7uagbqie6NKh4UpDlMpj2MfRwCZXF8y07A9f35NSOw03Gwfj2jFUTJr5zi3TrXAW+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lxfo+Q+wc4Hkc55ZdSzJub1za4w118nDT6n/YjXQb+I=;
- b=flAV72EXgsAv0UV7miIEJy0yxCFieZqhpvfYaY/k2B8YGDbmyUvQ3a0ux7XNjvJ04AtJS1qniR70uDNpKfbQgjZeSFmuG9ufFtyvizwBJs5c0aqMRV1rWDNAC/L5RkejYfCAvrkJMwHY5Rqi4PjZBDFAAmrzYDWQcKnXxVNmFnyysCPE2SFzgIqqj6BX74GyfEKuvL3SNCxOIfnOGY/w3iuNRcOQBFj9ljebqrZdCKx65ovHOIqb7r1HdlI2KCEJ8Zd7BRrCa95qlspC6UM6BOGIW2Ilod3CPlFCA18nt+LjChiZb1/m7lk4aFKBNNY5S9mVRb8GUkDLzSus6YbPKw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lxfo+Q+wc4Hkc55ZdSzJub1za4w118nDT6n/YjXQb+I=;
- b=M3KHzKlwvGikiktn25wOLLDeq2z+8RCB/Dq6DERVEya0wDS34xdu24IRbXObl4kXMPi5mioDplZvkKBrTDVR6MXqJuwDqEYKmcwDTS4VvToFrrUjIaba3jz4tqD+JnGBsNrAUtv/NHUvT6GnivO98BJH9xWbQCf8O5T+2LKeLT/Bp5yPTATAh2Hp83BplqW8CzQuKPF5TH8vnZsZyYVOG+3iwMzXAyr++b0kanhtXokSaxo+T3fsdjQoJLlyxbRU6F9zvGJu9jIOvUerx87pchD0bSknJAibIGFmO/qn81piFEcJCB5IgDKHBZ3Y8mnOyFBoeXxAaWzJlLVvqEPyig==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from AM9PR08MB5892.eurprd08.prod.outlook.com (2603:10a6:20b:2dd::16)
- by GV2PR08MB8027.eurprd08.prod.outlook.com (2603:10a6:150:77::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9456.14; Mon, 29 Dec
- 2025 14:36:07 +0000
-Received: from AM9PR08MB5892.eurprd08.prod.outlook.com
- ([fe80::94bb:633f:1f55:4bbd]) by AM9PR08MB5892.eurprd08.prod.outlook.com
- ([fe80::94bb:633f:1f55:4bbd%7]) with mapi id 15.20.9456.013; Mon, 29 Dec 2025
- 14:36:07 +0000
-Message-ID: <e3003fb4-e18f-4181-a00f-b8901a8c0f76@virtuozzo.com>
-Date: Mon, 29 Dec 2025 15:36:06 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] qcow2: add very final sync on QCOW2 image closing -
- BDRV_REQ_FUA processing is broken
-From: "Denis V. Lunev" <den@virtuozzo.com>
-To: "Denis V. Lunev" <den@openvz.org>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-References: <20251219180813.1000884-1-den@openvz.org>
- <62286d8a-eb8b-4753-984e-1e294d96529b@virtuozzo.com>
-Content-Language: en-US
-In-Reply-To: <62286d8a-eb8b-4753-984e-1e294d96529b@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VE1PR03CA0011.eurprd03.prod.outlook.com
- (2603:10a6:802:a0::23) To AM9PR08MB5892.eurprd08.prod.outlook.com
- (2603:10a6:20b:2dd::16)
+ (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
+ id 1vaF1b-0004cr-Ro
+ for qemu-devel@nongnu.org; Mon, 29 Dec 2025 10:19:13 -0500
+Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
+ by p00-icloudmta-asmtp-us-west-1a-10-percent-1 (Postfix) with ESMTPS id
+ 60FEE1800164; Mon, 29 Dec 2025 15:19:06 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
+ s=sig1; bh=EqHRfZnrCznqFeQjrmgx45y9nqB0PoXMKIno3sbxnD0=;
+ h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version:x-icloud-hme;
+ b=WB6NoyQTfePJwNvL/LaPVSJ1tDBF2iHamGpYe1g/pBNj7ZagqNG/iCozsuzGbayejys95f4A1Nx8/aZmvj4dBfFVYuejzegfC7zL8hDk7NHZhR1Up99CGNBYUwDnaMdg+t0qDkf3uqd2Xzi7eQ5AGkn9JCUZlwizCjh0PwBRSAGH/TQGENDUW0jEYGWrFw6D9WxgidZBcXVN0Iqz57FxL5+81PowBKSr6DRBT2/cV/ra35BXq5r567HmGiIhg1SCuCAJVgkibnpFDyFgTxsD1xoktB4YRZu7D2UZWR7/FJ8azsKHmWtIshRFtBi7zRSw+jG7kQJJ3eSePedW0K01kg==
+mail-alias-created-date: 1752046281608
+Received: from localhost.localdomain (unknown [17.56.9.36])
+ by p00-icloudmta-asmtp-us-west-1a-10-percent-1 (Postfix) with ESMTPSA id
+ 678B41800948; Mon, 29 Dec 2025 15:19:04 +0000 (UTC)
+From: Mohamed Mediouni <mohamed@unpredictable.fr>
+To: qemu-devel@nongnu.org
+Cc: Roman Bolshakov <rbolshakov@ddn.com>, Mads Ynddal <mads@ynddal.dk>,
+ Phil Dennis-Jordan <phil@philjordan.eu>, Alexander Graf <agraf@csgraf.de>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Cameron Esfahani <dirty@apple.com>, qemu-arm@nongnu.org,
+ Mohamed Mediouni <mohamed@unpredictable.fr>
+Subject: [RFC v3 0/4] vmapple: making it work on the latest macOS host releases
+Date: Mon, 29 Dec 2025 16:18:46 +0100
+Message-ID: <20251229151850.96852-1-mohamed@unpredictable.fr>
+X-Mailer: git-send-email 2.50.1
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR08MB5892:EE_|GV2PR08MB8027:EE_
-X-MS-Office365-Filtering-Correlation-Id: 97c52e45-c187-4fdf-864f-08de46e79a3d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?V1Q4eWhhZlVxVW9RTCt0TDBTaHlZVWpLSFNxRXQ5UUtFdlB2Mmc0ZVF3SWpK?=
- =?utf-8?B?cGNaN3pwTElFaEVFaHhXbE1OQzNHcm1CQWl4T0NlTUhJdWZNRnhCNUhnZlpi?=
- =?utf-8?B?UnNOTkF1V01EeitKRnppMWNJOXZsV29hUFdxeDlUL08rL3JnUjM3d1RvR1ZC?=
- =?utf-8?B?UkN5TUhnaFVQcHlwM0xnQUtPSXFNdmFTM0c3MmxLVzRJQzJ1NVIyaVoySVNa?=
- =?utf-8?B?N0VTOVgrY00zWk5uQ1FMMWxiVVU4RzE1WDBoK1V6bHVuRUdxY3didzZINzla?=
- =?utf-8?B?QUpkdUxrQlc3TzV1a0FuZU1CNVR0OTdwS3NCaTQrQTRZbzdLM24yVHJlRWFn?=
- =?utf-8?B?dmdnNEVGUnRkb0xhK1I5aHFYQVBweW1qSm5KMG5YclU3Y0tUQnR1RjRORjhY?=
- =?utf-8?B?Q0lOc1plOUZpeE04TkRPdGlHM2tIa0RKTjBERDcxZEN4SnVlZzRpQkc5NTMw?=
- =?utf-8?B?dW1qSG84V08vUXhTQjZvb0FycDN1c21ZWHIyeHYxYzl3T3NkWVl3azRPM1JT?=
- =?utf-8?B?K1Z0NnRJNGliWTl2YngrekgrUCt5b2pUc0wrMzNhRWw3WE1PZkdMTm54K2VZ?=
- =?utf-8?B?UkxiaGpCTjZFWGZLNW54STJIQ0UyV1NMSlRoUHRlWGNlNnZOTCtHcHJhb25i?=
- =?utf-8?B?UWpYV2M5K3ZydU1GeU9wamFzeDRXTFhkR25CY2VCSnpoMCt1T1dZVlVGU3Vs?=
- =?utf-8?B?T2JYUnpnWkpJVGcvQ0h5a2h3T09rd3NWVnpYV2xTQkNQemFxbVhVYXlaZ3Qx?=
- =?utf-8?B?QmN0OHd0RlB0NUtWRUJCVE5NVTU4SzVNTklMZjZaYkt4UGdwaWVkMVZ1NnBJ?=
- =?utf-8?B?Tkt1cDNuVm9jZ0ZrNGphWEJFYWlnUE1uRnB5ZU1JN0dOT09RckMrTmhsN3dp?=
- =?utf-8?B?eEpVT2hsY2l6S0t4TnhSNDgvUWhSVTExSTc2cXRUZGd3dzhpSFUzdFV4Z1g1?=
- =?utf-8?B?Tm9ZMHNjdER5NkoxaG1wNDFEbjFNbE4yYkYyaXpOQnk2TGs3bEhocUdFWUxQ?=
- =?utf-8?B?akpQRUc2MEpjS3IvMnBHZHJMWXZqaGp1OURDVUs5ei9EOTU2TU9XMzBCS3Nq?=
- =?utf-8?B?VFcrZlRqM0lzay9BeDNEcEUzMElMcEs2WjRjRnBnaEFlZHErZFdlbURSZU0w?=
- =?utf-8?B?K2Q4TVNrT1l5NzNrWW1Icm5YNjVtUXRhYkJVK2QxRjVDNyt5NTRNejIrRHdL?=
- =?utf-8?B?U29vM25peVdsd2ZvVWdHTEVWekFYWHlld05lQkozbGNLd3g4OEJ0SU55bjdw?=
- =?utf-8?B?OTR0N05ZWm9UR3lUczF3YjNqT0pjY3NLdjJKY0ZtTXZEbUtGQlpkdjlaZEhP?=
- =?utf-8?B?NjFVNmRnL1BySnhCamJZbkJRNXZlcC9xRjNaRjBIN3pSWlRaKzlqL3h3bkVp?=
- =?utf-8?B?eG1oeUtyVFZuRXNiNHpXNUp6V21INm1SVnRseXppZnhoTWE5M3NSYWlXVEhy?=
- =?utf-8?B?SHpHeVAwSUNhWWRiVjVqeTlTcmpGZ1duQmxBQUs0QzlBSUUwVERpcGxsTnJH?=
- =?utf-8?B?OEIwbS9FMEpCTkFFckF0NFZIUWhXenowQ05EN3R0TWcrL2Yxb2tHYUNNUzlP?=
- =?utf-8?B?VlNHM0FGQ21ZUklYVnZaUU14RDhBS1g3RThoaExKZC9HQTBQbkhPckttMlpU?=
- =?utf-8?B?VWkyM00veXZBVW5pTGNWVFlMd0hnbDJmR0NTMndMajJWcFY0bHB6ZlFMdWNj?=
- =?utf-8?B?RzNaREo5Z0k1TUxyaGU2MXVnOUR4Uk1RSzVOSWI3VHBrOEt3eTFLRERWMHpa?=
- =?utf-8?B?bWFpaEJFZDdZR05qQXUrT2ZjcUJWSGNZT3hmQnpaSGpINFYvU2Q4RzdxSngw?=
- =?utf-8?B?TTBGeVVjQ1liendtcy84QkVPUFhpQWV1M2FieUFGOGVjUFdCamJDbjIyQ2w5?=
- =?utf-8?B?N1pMWDFaM1pmcTVJelZ6dlZNN0NBay9pZ0I4bUhsUmNjNTJFV09CdFg3dE1T?=
- =?utf-8?Q?0fxxrF9Snu69l0Fp7zoEoGWk6vIZouFq?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:AM9PR08MB5892.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(7053199007); DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RnZ6K01OcTNUQ1ZTT0RKQnBPUHpHWEdFanFEcm9EOVpBSEFaRGJwcElWeEFV?=
- =?utf-8?B?eG5CWGdrSDlYWnVxdmxrK3pweUJ0Vi9ZUERobFdIWnpES25BY3huR29jT0Fm?=
- =?utf-8?B?NlpHUmVsS2JGL0RDVkx3RmtnTUFTYlpYRmFSZmsyWGlBVXVHWld1Q2t1dmpF?=
- =?utf-8?B?LzNqNUZXc2wvMzJEaHZmdlVCbUhYbjFXUXZmbC82N2hNdnVUMTVuTEFYUTk0?=
- =?utf-8?B?VjlxMTV6NG1JbDh6OUFsREk3NjVxK2FxYy9sMXlOaVByUHd2OEFGNXlzSWx0?=
- =?utf-8?B?TVpuL1NzNWxEOWI5MWx0OGlPcXc2U0lQc0lSTlNKZ3JqNUZmeUMrVnJqTVIx?=
- =?utf-8?B?MFpNMW8xb2ZwUjltVVdxbWRnMDYvanlGUjVmdmh0RHpVaXZCNzVTaWdGTkNk?=
- =?utf-8?B?Q211di94TXdKeVJlL1ZCYlkzRmV4SE15MVdWWFk4TCtxT0N2b2tXOWRhWGxx?=
- =?utf-8?B?TE1TY0Fsa2d3dVB1TE1nQWJMck1lc2dQM2NPOC9HYllTWGxGUkVUV3RKTUlZ?=
- =?utf-8?B?ZXlyN2k0L0cxak5xVVczQzV6OUhpREN6SzR4Mk1iWnJpd2QxL2h3a2lCWjRL?=
- =?utf-8?B?eHFPUXl2RkZWTDFiSVU2dW1rMlRSVmp5MUZ1S1Y2bzNyQUFHenpRcDdHbnJx?=
- =?utf-8?B?anFhV2hQNlg2UTlIdmFKamJYOVNWVTVFTXo0NjBYYytWdDhOYThkcElNaVRV?=
- =?utf-8?B?ZlYvUStLdXJFZE9GRnZsODExaFloaUlZSEljOFo0cWZydDNacHUwT0FDU0xn?=
- =?utf-8?B?aVBqSHlSZUNmZjIyT2tMRWFkdi84bEJEcVJsNHMrNW16NVRZTkZEc3dlUXFo?=
- =?utf-8?B?S1RwUVJiSEN2QWhPTk5FTlhiRzVNdTNobHVQMmZSQ3F1NVFtcnZuTVpzd1cw?=
- =?utf-8?B?OCtPbll6TElUYi82a1BFei9GaFZpNjNQMS9HWDNlbExScjZFZXhJOXBNVmsx?=
- =?utf-8?B?MWJYK0x5YmZyaFVjUDU1TXJGd01UbVlTcGhYRzRYMlZEUFoyaHJFcVBub1lL?=
- =?utf-8?B?NW9iblhQdmNwRklPZ1I5c3ZkKzFOVVpMZUo1b0F4SnJDQ0xsSWdxSm02TXBy?=
- =?utf-8?B?TmY1aGlBK0hFWmx6ZjhNNXJZMjdkS1oxUFdSYWRiUS80NW9oa2hoUWt4VmdF?=
- =?utf-8?B?R0liczJ2Nzh6VXNHR3lpUlhqN3BGbDIyWGZKbnpYYStBbEtiYTBBZVNDSnVm?=
- =?utf-8?B?STBzakNtRlN0cExKVmMvOWlrcEZ0WXZqQzBob3Z1eGFFWDlJU1hKZFdxRXpP?=
- =?utf-8?B?NHgrWTFhSTk0M1pWZUg1aDdsK3ZqRFdPR09xM3d5T2wrQVdOWXZ2dENyTDdt?=
- =?utf-8?B?SDRmSDY2RWNZVVMwQmdzT0FEM3htVitpNkxJTVljTURoakkzZi8vSlV3dVNZ?=
- =?utf-8?B?WmJUNlhNeEVjYmIyZXBHeUM0M0YvUWdHTkFqbmc4bDlVMndkSG1IVWlRMnN6?=
- =?utf-8?B?bENXdTNKMjV4UGZCYkl3M2ZVQVpDRHA5YlNoUWlsVS9XM0N0SGZoYmVmZ0Z6?=
- =?utf-8?B?bUR6cDZaalM3dUxxM0NGWFA5d2xMZWkxcTFhMGlGNi9YTHJKSzhaOHVKQjQ0?=
- =?utf-8?B?VUFROHcwVHBla3JpbDdETEpmVTgzb011Zyt0T0lRbVQxZ0VaYWE5UVQ2UHA4?=
- =?utf-8?B?cDNSeVJsQkduYXhoMUpaNTlMbEk5aWFvcnRWNktQMURINm5VanhBU1FzUExO?=
- =?utf-8?B?Wkw5YmJDOFE0K280VHphamVDVm5QRTVTVjlNY1BmM2kzREphSHZ2WmJodUJi?=
- =?utf-8?B?UHFLck93RVFWeUxIV29QenExcVJTMkRQVzY5WXBCUE5pdjJFaXJSMzh5bEJ0?=
- =?utf-8?B?ajBqdmoxbU1CYk5NQkd5bUwxZFc3M3IxWVcwSnM5K1UvMDlpTkY2LzhJQTRN?=
- =?utf-8?B?YmlNZ0tLMy94ZlQzY1Rpd0VyeFZsWmJ3N2JScGJEQkV0akF0Y0xZQUtiYzJN?=
- =?utf-8?B?aHlYSUdsSTRaWGx6ejV1VzhTNkFyeEJ2cnBVaE9Vc1dvd2NFWityaEloZjB6?=
- =?utf-8?B?UzJwMXQ4M2ZPcmVBWkhLRmpEV0J1cGU2K3JYbkk2cEN6dzd1TWZ1dEJYTGJ3?=
- =?utf-8?B?LzJaeUdaekcxS2l4ZGdrSEVHenlWMll4U0FpelIrOXdXMU92ZWhDaHVjRzcr?=
- =?utf-8?B?Y1U3Qk5LemlmNXA0SFk3ZmVIWTBKMCtzTFVmSUZ0K3JlZ3R5SlJEQmNWdmZJ?=
- =?utf-8?B?QzdMV1JxTE91YW1DZUpjQ09wTzdFQjE2M0w3bVJHeG9FakRqOHBNZXd1ck81?=
- =?utf-8?B?UWREMHdYeFU2TkVBL2FQWmNDK2UrVkN4NkYyemdzaTBlWWRpelJVWFlldVE1?=
- =?utf-8?B?T2ZqRGZSVklaR3VOTjVRWERiRlRRcitvUWhHU1NaK3hOQVBwVnZJZz09?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 97c52e45-c187-4fdf-864f-08de46e79a3d
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR08MB5892.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Dec 2025 14:36:07.3400 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hefRRqN4Wa6MX0wZNW9Qv4pFyyOGjze6p3yN7I4GuxEC7bLJtg2YSjC44vgUwhaS9phqHW9PXTXJXHYcS3UbiQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR08MB8027
-Received-SPF: pass client-ip=2a01:111:f403:c201::1;
- envelope-from=den@virtuozzo.com;
- helo=AM0PR83CU005.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI5MDE0MCBTYWx0ZWRfX8Qf2WiZChv5G
+ K5kp2id2Qljc74Of/a7muqPkJ2oF3mp0hUCIdHnmyMDPeN5viDY0HwZKlhTMlcA1Zs+Z+rtpN6K
+ 2Ya37GN/L0L03byHPJmqUkWv0mkK2GWPvEvSHZFTUFOI6iMG8O4IMMBSb/eFxcgat+YUiEqxHsk
+ is9H0uRNlvtGU4pUybdvYjkzN7nl6zch9/RnNmUeO0t7F+ZhjVvNtSQUipQLj4OhHvJFpUwfwo9
+ ujL9DkPseEJ/VhwlZZqy2zTuOvpFvqYbcEhx/9Vzn5jEsVl/16COdY0q40QU8Qq5r1WjZJYFzsT
+ 34CyBF9KEbTtthYjWCz
+X-Proofpoint-GUID: _uDmYanV6DjdQ_4eYYpn43y0vVMYz4JH
+X-Authority-Info: v=2.4 cv=GMoF0+NK c=1 sm=1 tr=0 ts=69529bec cx=c_apl:c_pps
+ a=azHRBMxVc17uSn+fyuI/eg==:117 a=azHRBMxVc17uSn+fyuI/eg==:17
+ a=PWwuWOSklEzM4Y2Y:21 a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=_2RhaUPNESQhlGQwPh0A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: _uDmYanV6DjdQ_4eYYpn43y0vVMYz4JH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-29_04,2025-12-29_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ suspectscore=0 malwarescore=0 spamscore=0 mlxlogscore=402 mlxscore=0
+ clxscore=1030 phishscore=0 adultscore=0 classifier=spam authscore=0 adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512290140
+X-JNJ: AAAAAAABxb6ZZZ5Jn5Wiz11+ElCjddtNQGHUxVP3gLqcTsbtztg3XB6YYtRmXRbDPaGDcm92mGBIMbJiz50N1fIuWu+2oFqUpTjFMGDV59rC6kulvbekZOphdBbJLU1Yu6m8BmQVbdxbittqS+6FVJvfWUnXTDTYdtC+M9+y90AJ6QkSMVZEK6B96Og1SV2hiZvMPxjOnsSLmGssC1WtKrN4Eaf/hRSe2e1ErLwY97yJpIeRrSy6exfoOceUs8nsZapu2V2JS6rf8VMBdk4/fePY2qZXmGfgJkJTZJB2kuD6Ec0MEkVJ0swoc7LGJ0hn73ZPI0+1WFvNx1IjcMdZ1RhVM8Ye9KjottAzk+cV9jjlie6ciTQnyAvqWqFMa4B78PMPgWU6HkRI1Wxuus6HV2CiYbqYCxpvzlH92gXagP9DbxSpjRostIeYmuqUhriEAWJwg92NwnN6YtuEY0VM43UAKi5R7WHB4HAUCYnO0a20e6IVDUd7XhzgbWzMhurD5mL4XAXwNnsfEP2KVFq/E67zj8nhhcHfr/Ot3Fx2MYvDRqsHLl7JgjUyuFjtUrZtoZhbIFPFQv0VBZpqGSjiGzGQ7zBnP2PEdYIHa7BDf+/iyRIzK0jPqk+32FRwV0cfxUN9nYID2+cZ/TunW4tymi2/VrMuLtNt3UTQ6KpuBOnI+Bv6I+wcbMsbUjAnPLhQnUcQvJdK
+Received-SPF: pass client-ip=57.103.66.161;
+ envelope-from=mohamed@unpredictable.fr; helo=outbound.pv.icloud.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -179,72 +89,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/29/25 15:29, Denis V. Lunev wrote:
-> On 12/19/25 19:08, Denis V. Lunev wrote:
->> qcow2_header_updated() is the final call during image close. This means
->> after this point we will have no IO operations on this file descriptor.
->> This assumption has been validated via 'strace' which clearly confirms
->> that this is very final write and there is no sync after this point.
->>
->> There is almost no problem when the image is residing in local
->> filesystem except that we will have image check if the chage will
->> not reach disk before powerloss, but with a network or distributed
->> filesystem we come to trouble. The change could be in flight and we
->> can miss this data on other node like during migration.
->>
->> The patch adds BDRV_REQ_FUA to the write request to do the trick.
->>
->> Signed-off-by: Denis V. Lunev <den@openvz.org>
->> CC: Kevin Wolf <kwolf@redhat.com>
->> CC: Hanna Reitz <hreitz@redhat.com>
->> ---
->>   block/qcow2.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/block/qcow2.c b/block/qcow2.c
->> index e29810d86a..abbc4e82ba 100644
->> --- a/block/qcow2.c
->> +++ b/block/qcow2.c
->> @@ -3252,7 +3252,7 @@ int qcow2_update_header(BlockDriverState *bs)
->>       }
->>   
->>       /* Write the new header */
->> -    ret = bdrv_pwrite(bs->file, 0, s->cluster_size, header, 0);
->> +    ret = bdrv_pwrite(bs->file, 0, s->cluster_size, header, BDRV_REQ_FUA);
->>       if (ret < 0) {
->>           goto fail;
->>       }
-> (attempt #2, mailer has rotten the mail. sorry).
->
-> Thanks a lot for Andrey Drobyshev who has attempted to review and
-> test this patch.
->
-> The patch is non-working due to broken BDRV_REQ_FUA processing in QEMU 
-> code and this looks more severe than the original problem. bdrv_pwrite() 
-> endups in bdrv_aligned_pwritev() which internally calls 
-> bdrv_driver_pwritev() -> bdrv_co_flush() bdrv_co_write_req_finish() 
-> Please note, that bdrv_co_flush() is in reality noop until bs->write_gen 
-> is incremented, which happened only late inside 
-> bdrv_co_write_req_finish(). This means that BDRV_REQ_FUA request will be 
-> flushed only on the NEXT flush operation, which is definitely wrong. Den
+Support for newer guest OSes isn't part of this series.
 
-(attempt #3, mailer has rotten the mail. sorry. Finally get it working)
+v2->v3:
+Remove the Apple M4 support workaround part for now, to be part of another patchset perhaps
+Address comments
 
-Thanks a lot for Andrey Drobyshev who has attempted to review and
-test this patch.
+v1->v2:
+Remove some lines that shouldn't have been present...
 
-The patch is non-working due to broken BDRV_REQ_FUA processing in QEMU 
-code and this looks more severe than the original problem.
+Mohamed Mediouni (4):
+  vmapple: add gicv2m
+  vmapple: apple-gfx: make it work on the latest macOS release
+  Revert "hw/arm: Do not build VMapple machine by default"
+  vmapple: apple-gfx: move legacy memory management APIs away from
+    inline
 
-bdrv_pwrite()  endups in bdrv_aligned_pwritev() which internally calls 
-	bdrv_driver_pwritev() -> bdrv_co_flush()
-	bdrv_co_write_req_finish() 
-Please note, that bdrv_co_flush() is in reality noop until bs->write_gen 
-is incremented, which happened only late inside bdrv_co_write_req_finish().
+ configs/devices/aarch64-softmmu/default.mak |  1 -
+ hw/display/apple-gfx-mmio.m                 | 70 ++++++++++++++++-----
+ hw/display/apple-gfx.h                      | 13 ++++
+ hw/display/apple-gfx.m                      | 47 +++++++++++++-
+ hw/vmapple/vmapple.c                        | 23 +++++++
+ 5 files changed, 137 insertions(+), 17 deletions(-)
 
-This means that BDRV_REQ_FUA request will be flushed only on the NEXT
-flush operation, which is definitely wrong.
-
-Den
+-- 
+2.50.1 (Apple Git-155)
 
 
