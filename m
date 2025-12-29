@@ -2,106 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D32A7CE7C99
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Dec 2025 18:59:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41D8FCE7CF7
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Dec 2025 19:28:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vaHV7-0001Ra-Oa; Mon, 29 Dec 2025 12:57:49 -0500
+	id 1vaHxo-00052k-0R; Mon, 29 Dec 2025 13:27:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vaHUs-000127-JV
- for qemu-devel@nongnu.org; Mon, 29 Dec 2025 12:57:34 -0500
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ (Exim 4.90_1) (envelope-from <gourry@gourry.net>) id 1vaHxi-0004xT-RY
+ for qemu-devel@nongnu.org; Mon, 29 Dec 2025 13:27:23 -0500
+Received: from mail-qt1-x82b.google.com ([2607:f8b0:4864:20::82b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vaHUr-0005c1-1v
- for qemu-devel@nongnu.org; Mon, 29 Dec 2025 12:57:34 -0500
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-7b8bbf16b71so9207934b3a.2
- for <qemu-devel@nongnu.org>; Mon, 29 Dec 2025 09:57:32 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <gourry@gourry.net>) id 1vaHxh-0002ej-8t
+ for qemu-devel@nongnu.org; Mon, 29 Dec 2025 13:27:22 -0500
+Received: by mail-qt1-x82b.google.com with SMTP id
+ d75a77b69052e-4ed66b5abf7so111645701cf.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Dec 2025 10:27:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767031052; x=1767635852; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=0Xy+8eSeOzDb+k1YRCc4hfaw3xrtM1K2VyUwOhxg/MY=;
- b=Lc9akelTnEcvd0y9hk8Hdi36QBA3uZrJz+b06Wz9myqssHwXHKezKkm2bJvKpMWM1z
- C6EvoywgIMl/4WkU1geWMYMgEop/Yzk1EOjZpnWbWk3Wd1JejFD9zzaxtH97UMjBaEbv
- 0yZbWb6V2TWCBJhgXLos1oJ0w+IBmq2aJOXwcJMuYxAdKohbKhpL5UnSG9WvOLS3LozO
- YQ0ucCxR5TBnG9OBoZi1LgWf0hPIksLd7iW8jTnPvbRQ9KINoEZap+/rf3Luf8ODxRz5
- hlnqwSk4aAWroxhLM0MBX5u5/V3qaSZbf19pl1HPMtbWsLRjNDS1iT4pdgYngnH6JjvB
- iPXg==
+ d=gourry.net; s=google; t=1767032838; x=1767637638; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=QQFjMkq4/K1jAttxNxSE37cpaRl5SQggj70CxVEdDgc=;
+ b=F9rkHW92jTiFMcjHBD7dYLac8lxoEX5p7D1vnvqHWq6B20A4vuZfq6OSklVvPciH9J
+ tUKU7F9hdSXH+e+H1b/7u49STux55GaJXbNCe3PKDGtn+yXHh0/pNUOEPpbl6Jqn7moX
+ 8lYLwOK9IPZkzTBytF/GOatIYJ9kNk+P3/eNVwp5oPJZsdVMRz9WGtHL7Jte1g0xkPUC
+ 7ObsbK9KqJ5V4rMSkc71HdHwDrVhM+zrXT5k1OP9aSCrCAyK0GRcz0kQW5DCwoRFHAir
+ /YkKPIJS3H803lqu2YRoCwhmUGneyk03VEXBWHjPG25K4vZKWpDPLplt1/dqrMUy4xES
+ hcmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767031052; x=1767635852;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0Xy+8eSeOzDb+k1YRCc4hfaw3xrtM1K2VyUwOhxg/MY=;
- b=ZToNlWKIfWpR7fz7lRazULnkvBzIpUZpbFkoBiUfactV7eVscJSWFlj4Nh2/O32eFT
- rtdpFInUY9K/U9iUqhGLwQpkZ+6+D0exnk5xFqV33fn65OfPudW6k/QpVTxp4YHmC2cc
- nFrJjURT0gVrsI55TeYu7Ro1budEcuRpZKV/CtBrU331iUIr2wwTkAs0298CrcJNDd7I
- dOxO793o7kuD6WwDWj2ns3gorImcpcWmr4hHKuQ9ht8VXhPIN3/JLnO461SCJJN4jqF4
- naoOMipuAqL5F6VOyP6G4bX1jg+niU6LQy9FgRVrqKVJ7W9L40Va43Iw6ETo11r0dh6t
- md0g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVTTtInRMTVO2raLO4Vx7Gb1WZj9TiyKScLMMPrIoOWWbt+0F9UCSXmz9Rs+yrO+iMD+NrMDvVCoRkm@nongnu.org
-X-Gm-Message-State: AOJu0YxehRf9RJdteS11759DIhTw6hEFT3km5TBuw5EQD4J5xo4ATYEM
- nOQSFGrcZBQLlhrY5v4RRSe+vCzjFbeSPCErJMlaPt+QwL4iPf+wqaMoL/p8N3b97XuUD/OnFCD
- yZTtU
-X-Gm-Gg: AY/fxX67Rnm4IhrL2WKbGPGWFY5Kmw/x4QxQsbmLVU5yUaQCosMlTerk4k9NBeIvqLu
- r4LduIYOsc6Q0sEk2F3R3+E1bGfimFVxR+RZ3juC4Z4tei7fmfCxNMQauJKiTlGci+WNnGkDGbu
- Z2AyEx3z7CEVMU42IS78i7Lq3t35xVtsFGGxB4AWE0Fx4qubUOhvQce7PGSy0EtqRXzwpLVWmv9
- EhlpQcAzVNv5QMPYB05EkeONxNyERQtaIFAQ2h9ekv3Uye2a4EMvo2v+qWk27zUJOTQ02Onm/pN
- rojN1eQWEcQ1ryy149CA/BDbeg7yS1eNjiPrNsRcY5PPV1YFwwq7WPQjsPUmPXh/qX9s8uN1BhS
- mnt5n5FhqfCuY++BBQ8uC36xaNMZHmLYDTM93QTRvfNVnaCpjzlDtSJrMMisftefCevusEgnqtF
- 2NHZmPEpVLryPJOdx87herLtSkG/mAu1C3FKb4MXqzAxPZpTRxiPrU6iHG
-X-Google-Smtp-Source: AGHT+IErFKWWqm+GLSQDAJjT1aQGL+KgN1/3vWXPXUMO/eDX2d0jFCrmaASWq0eJP9PPGU3CkfNm5w==
-X-Received: by 2002:a05:6a00:39a1:b0:7ff:9fe7:9811 with SMTP id
- d2e1a72fcca58-7ff9fe7a134mr25809392b3a.31.1767031051602; 
- Mon, 29 Dec 2025 09:57:31 -0800 (PST)
-Received: from [192.168.1.87] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
+ d=1e100.net; s=20230601; t=1767032838; x=1767637638;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=QQFjMkq4/K1jAttxNxSE37cpaRl5SQggj70CxVEdDgc=;
+ b=bwwQjqOFFvkJ9JgbRJzzpX7ejy7TlrNpWIpw4ZDLiNnMfL5GkCMcBUaq6HXdfdLQJL
+ W34khZmAtpRXFaB2uJ1FZg33iHC2AfjIFKN3JzluXQR/wJkl9sCrOPH6GwpC4n8i0sTv
+ Zh5+29PA/uGthQvSkJIiw4LqnzsxiRrzNImj0xDgdhw/B7kyQQkKFz+w4oTZ/kwAp43v
+ tEKSWclRtRZTW/tV3k1kcZZ2nfHpcZGg9nfixFy15rqsNuSOhlFx4jCCHjuxO0RwiAgV
+ V8qhKF349lO2bQsWrJW4AoRH+t3BQelExhbF1UAuJD8IE3LOhOwzbpyQIh5e5YL2At0X
+ INIg==
+X-Gm-Message-State: AOJu0YwvNX5EhJc1OV5ja4MncGV0QsJW2i+9/gc2jVVN8OsyseTlqHMn
+ yUIsdUM+ua8MQzqFHY7cbeWODxN5eE8mU9KW2VQ4mGU8c46vsZS+agPb15PCX0TYIr4=
+X-Gm-Gg: AY/fxX4gJLbOBIMhmrdfYtchR4itfovISdR/Scgyx1dTO6D7/vcAMU12mYSl6FRn0Tc
+ PVlSbLGDtkOT7Yilsdhj3+FpLbprm65KejOLI4ofxP+XZshd1KQtADLnhdGaN/os7m2f0aDDU6M
+ EQOxravc2bN0o4xn7w6o4fraKCfpX+qFDFkaGwNozhsHfGDqW6q2beoTGFleuv4Wp8znS3NMRG7
+ c/YBhkXPpohJqDnbAgQdDfpitN6+RWWBZ36IldZljIhEuStROaV8g4uSoCBeVENsAFOALM4Ly2K
+ t0nl1IHg57YNxkQYoMQ3bV6HLr82TIfouLmRvKA2KQT6klhVIyf2OIb129QcXwreqpk0GThzEfZ
+ H0SxHUK7C2i0zF8NrAuVewy+FaT/2Vj0G5h+/MOZotwyUABV8MNs369g620vTEl9Fxi21BKFY/l
+ Nlw0Nrz2KYgOrKu7NcBYkh8sLagdXhMJTKFsX7G3u035yeVPjchzmoX8Mvk9npV6cF0IKOhA==
+X-Google-Smtp-Source: AGHT+IFIdphjHy4rhhZeLG3qqrm9JIGXnFQQwKBASSmgoZsEFHviu7TCZMK2hbeRNDXPcMU5b8syag==
+X-Received: by 2002:ac8:5e53:0:b0:4f1:b362:eed7 with SMTP id
+ d75a77b69052e-4f35f4849eamr476146361cf.42.1767032838306; 
+ Mon, 29 Dec 2025 10:27:18 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F
+ (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7ff7a843a18sm30285572b3a.14.2025.12.29.09.57.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 29 Dec 2025 09:57:31 -0800 (PST)
-Message-ID: <3dac03d3-e87e-4ad4-9fad-2c247c10cd12@linaro.org>
-Date: Mon, 29 Dec 2025 09:57:30 -0800
+ 6a1803df08f44-88d997ade8bsm229075706d6.26.2025.12.29.10.27.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 Dec 2025 10:27:17 -0800 (PST)
+Date: Mon, 29 Dec 2025 13:26:42 -0500
+From: Gregory Price <gourry@gourry.net>
+To: fanhuang <FangSheng.Huang@amd.com>
+Cc: qemu-devel@nongnu.org, david@redhat.com, imammedo@redhat.com,
+ jonathan.cameron@huawei.com, Zhigang.Luo@amd.com, Lianjie.Shi@amd.com
+Subject: Re: [PATCH v4 0/1] numa: add 'spm' option for Specific Purpose Memory
+Message-ID: <aVLH4mmbDSp7ZdVu@gourry-fedora-PF4VCD3F>
+References: <20251209093841.2250527-1-FangSheng.Huang@amd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 28/28] MAINTAINERS: update the list of maintained
- files for WHPX
-Content-Language: en-US
-To: Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-devel@nongnu.org
-Cc: Alexander Graf <agraf@csgraf.de>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Shannon Zhao <shannon.zhaosl@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Phil Dennis-Jordan <phil@philjordan.eu>, Zhao Liu <zhao1.liu@intel.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- kvm@vger.kernel.org, Roman Bolshakov <rbolshakov@ddn.com>,
- Pedro Barbuda <pbarbuda@microsoft.com>, qemu-arm@nongnu.org,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Yanan Wang <wangyanan55@huawei.com>, Peter Xu <peterx@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Ani Sinha <anisinha@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
- Cameron Esfahani <dirty@apple.com>
-References: <20251228235422.30383-1-mohamed@unpredictable.fr>
- <20251228235422.30383-29-mohamed@unpredictable.fr>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20251228235422.30383-29-mohamed@unpredictable.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x431.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251209093841.2250527-1-FangSheng.Huang@amd.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82b;
+ envelope-from=gourry@gourry.net; helo=mail-qt1-x82b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -124,13 +97,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/28/25 3:54 PM, Mohamed Mediouni wrote:
-> Add arm64-specific files.
+On Tue, Dec 09, 2025 at 05:38:40PM +0800, fanhuang wrote:
+> Example usage:
+>   -object memory-backend-ram,size=8G,id=m0
+>   -object memory-backend-file,size=8G,id=m1,mem-path=/dev/dax0.0
+>   -numa node,nodeid=0,memdev=m0
+>   -numa node,nodeid=1,memdev=m1,spm=on
 > 
-> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
-> ---
->   MAINTAINERS | 2 ++
->   1 file changed, 2 insertions(+)
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
+Interesting that you added spm= to NUMA rather than the memory backend,
+but then in the patch you consume it to apply to the EFI/E820 memory
+maps.
+
+Sorry i've missed prior versions, is numa the right place to put this,
+considering that the node is not necessarily 100% SPM on a real system?
+
+(in practice it should be, but not technically required to be)
+
+~Gregory
 
