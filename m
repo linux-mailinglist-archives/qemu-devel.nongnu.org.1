@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C0E3CE95C9
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 11:23:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0764ACE95C0
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 11:23:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vaWsJ-0004j7-5z; Tue, 30 Dec 2025 05:22:47 -0500
+	id 1vaWsR-0004mK-0E; Tue, 30 Dec 2025 05:22:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <saif.abrar@linux.vnet.ibm.com>)
- id 1vaWsF-0004eP-UB; Tue, 30 Dec 2025 05:22:43 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1vaWsN-0004lH-HC; Tue, 30 Dec 2025 05:22:52 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <saif.abrar@linux.vnet.ibm.com>)
- id 1vaWsE-00038F-AU; Tue, 30 Dec 2025 05:22:43 -0500
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BTMRejQ029976;
+ id 1vaWsK-0003C0-DL; Tue, 30 Dec 2025 05:22:49 -0500
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BTElUrn004760;
  Tue, 30 Dec 2025 10:22:39 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=lBQYwb
- Z7/O3KG9kLYfknibxVtharLjOFLuM2fZYDsjY=; b=egzhFGBbobRU2EL+K99sr8
- 62bfHjfMTv8RNmhqgbR1OjTQZnlR4kd0OiIZNteTNvdsX6Leff+lu32No89SJL2U
- Kzu/TRVp6JxwTspRNF8Cq9vf15hUvimMjr7KRKUpvk/f9XNzQfjoI0NiEha2df3d
- 1LuzrfoDlE0u88DrnqMxvIILdDz11+9enAGXp4kygAjMjL/knDWq8b6R1RVBu3Ne
- J2UcD94K1+9QSOHZRa1GnIlVshjhGKOFrK/12nmRUNJTHrd3SWPRfNSw44s6I+rz
- OcfKT24X3otZXDOK2/L7AElEVCKJYrRWqNQZq3f4z1oTPdH7rGkkSe2iwYM6w0LA
+ :message-id:mime-version:references:subject:to; s=pp1; bh=HaEE1W
+ uq89Ik1h3i16JD5I2Ih+dNoF4NPMKEdiX49VE=; b=LwzJgAjP/QKJdTdHX5O5kX
+ r4VAvXvYwLLzd9oRitWUAM5/3zjsqJN/+Z5V/fQL62UGKY76/3siei3RoT5bJZ+j
+ zWwrHfYHCRQhSxsMbXxiM0z8EhzbcQWxRJ6I68NcvKM9qh6eEAmmNpyn2eTzMQtq
+ wAVVkmmnM/wocKgagsyqTbkVexrgEzRKpe6TI/YpztJ7f3dk+BlIwv68fgr5TuNY
+ ml4PCIH9vMRUC+NSgyViBXc8UReEMucC61KrzNCTwtJRd9+y7MNq6P7oUcoMUNlF
+ 8aEBurOlZW3NQUxgDCpCRCFY7ysLKqJd1uf6otIRU3/NdNrmM9l+Pfi3BMklJqhw
  ==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ba74u3079-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ba4vjt2ew-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Dec 2025 10:22:38 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BUAIjSU001818;
+ Tue, 30 Dec 2025 10:22:39 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BUAMRQo014099;
+ Tue, 30 Dec 2025 10:22:39 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ba4vjt2eu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 30 Dec 2025 10:22:39 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BU7wT9H008019;
  Tue, 30 Dec 2025 10:22:38 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ba74u3078-1
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bav0js8u8-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Dec 2025 10:22:38 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BU6TWtn023904;
- Tue, 30 Dec 2025 10:22:37 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bat5y9jsx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Dec 2025 10:22:36 +0000
+ Tue, 30 Dec 2025 10:22:38 +0000
 Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
  [10.39.53.230])
- by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 5BUAMZ0M19399214
+ by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 5BUAMaQc19464858
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 30 Dec 2025 10:22:35 GMT
+ Tue, 30 Dec 2025 10:22:37 GMT
 Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 66FB258054;
+ by IMSVA (Postfix) with ESMTP id D707258054;
+ Tue, 30 Dec 2025 10:22:36 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8D51D5805C;
  Tue, 30 Dec 2025 10:22:35 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1D87D5805A;
- Tue, 30 Dec 2025 10:22:34 +0000 (GMT)
 Received: from gfwr526.rchland.ibm.com (unknown [9.10.239.119])
  by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 30 Dec 2025 10:22:34 +0000 (GMT)
+ Tue, 30 Dec 2025 10:22:35 +0000 (GMT)
 From: Saif Abrar <saif.abrar@linux.vnet.ibm.com>
 To: qemu-ppc@nongnu.org, qemu-devel@nongnu.org
 Cc: clg@kaod.org, npiggin@gmail.com, fbarrat@linux.ibm.com, mst@redhat.com,
  marcel.apfelbaum@gmail.com, cohuck@redhat.com, pbonzini@redhat.com,
  thuth@redhat.com, lvivier@redhat.com, danielhb413@gmail.com,
  saif.abrar@linux.vnet.ibm.com
-Subject: [PATCH v2 8/9] pnv/phb4: Implement IODA PCT table
-Date: Tue, 30 Dec 2025 04:21:26 -0600
-Message-ID: <20251230102156.886288-9-saif.abrar@linux.vnet.ibm.com>
+Subject: [PATCH v2 9/9] pnv/phb4: Mask off LSI Source-ID based on number of
+ interrupts
+Date: Tue, 30 Dec 2025 04:21:27 -0600
+Message-ID: <20251230102156.886288-10-saif.abrar@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251230102156.886288-1-saif.abrar@linux.vnet.ibm.com>
 References: <20251230102156.886288-1-saif.abrar@linux.vnet.ibm.com>
@@ -79,31 +80,33 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Bd9whcPASCU3Sy0co6l1kdXfwbv9cdgP
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjMwMDA5MiBTYWx0ZWRfX2eujULApXV6b
- l09AGqI7gz/bZQNHMi7fqHplLRn+coB8NOMXEOsPJUVHp8wChSf67EaDUZ8qzRE3DpkLYuahYFC
- qQhCLRdyRu/fIUz6wFNN5DLbhU/AXGIvL5lFR4Srnq7vjP357NIWptlCg2xLEe73JGluFzNWVzK
- NI30qiP5oJwnjAVlIYGkoFk3nN+n+wiIHF8FMrpnUpJ5Yd9K6sMDHFUwKaXoK6Pzm3jzfEBQllZ
- KjPjdmjdxL/soMceRjTnQ7WhsRhWSvxQwPc+gwN0Oy1ZTYMq31fc30Tgxi5vaj9PDwzTUg2xIqF
- awzT6TZcWz7TKzT0Ha+BASaGBtzDJuLYB0fRgDojsOpaCgNbqmFcWtW1SSQ7+KcYrXyR6YumtJN
- iQokZnPzP0+DRJT0Soyn+/UPohTMAs1PvZ18lm+3ypqVLj1vdJHAI7vs721cuAIZgJpgiDzgYjt
- vriDb9Ymb76x3jRxE3w==
-X-Authority-Analysis: v=2.4 cv=AN8t5o3d c=1 sm=1 tr=0 ts=6953a7ee cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=aow-egSQAAAA:8 a=zgsLwUnGCMBw8fX4dgEA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=gFNbaldVC-z-bsjSTzMo:22
-X-Proofpoint-GUID: Cq92P27LlKghK8d7t7bt3a_Cxr_2Ce05
+X-Authority-Analysis: v=2.4 cv=I7tohdgg c=1 sm=1 tr=0 ts=6953a7ef cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kUKHeS9f1dJEPYFD:21 a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8 a=aow-egSQAAAA:8
+ a=Iptbsd0tML7Dy1tiG88A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=gFNbaldVC-z-bsjSTzMo:22
+X-Proofpoint-ORIG-GUID: PAX86Eli1SsGBxs1agesdepV7nmATOQG
+X-Proofpoint-GUID: cuukLFw7fN4C4tkf7ThGEeVhX8jdSbRu
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjMwMDA5MiBTYWx0ZWRfXyWLAk1HUsef0
+ cj307fnp9RMB5RSf+mmffELXASY/UWcJU4AzOv4QOoGpj0abb5OohMFuR4TMUBBmL8Y/g8jw4JY
+ 1lvGuN+HBEMolxfeLAu1hcDkfctQ3ISvNIm5Tv8dJBbhMAWIz6T1J8HoZXdQYBhMMVMul8PXhRU
+ s//+tqlUG+w1u85fUDYJS5RAOosaIbeZJk0Wlz+tXR9d6g4vCMOkVM0ySez1j++jJ/ryz95eryP
+ uConTnLwQk9KtGRfLp2pA5S6ULInIropRkSLgPnAUwkno9eDj0HMqJOgiDYWJGpi8jdFG8TzAoC
+ ME5brVDbKyFL+XiIGYpVsVfrFkH/vMsrRWqoewPFgN3z75AgysfWbLrRGYZ3LE+WrVcOOaqIxzB
+ RaZwJyuJfubYpsWGWz47RbGCimNXhg9PkUrMS8Yk2+mmo171mGH3Bx9VugZ5Ym0vnTr3KQDhbbO
+ 7al/pe/+CdfXp0Fz7OA==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-29_07,2025-12-30_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0 adultscore=0 suspectscore=0 malwarescore=0
- bulkscore=0 priorityscore=1501 lowpriorityscore=0 phishscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2512300092
-Received-SPF: none client-ip=148.163.156.1;
- envelope-from=saif.abrar@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
+ clxscore=1015 malwarescore=0 bulkscore=0 priorityscore=1501
+ lowpriorityscore=0 suspectscore=0 spamscore=0 adultscore=0 impostorscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2512120000
+ definitions=main-2512300092
+Received-SPF: none client-ip=148.163.158.5;
+ envelope-from=saif.abrar@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -127,73 +130,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-IODA PCT table (#3) is implemented
-without any functionality, being a debug table.
+Add a method to reset the value of LSI Source-ID.
+Mask off LSI source-id based on number of interrupts in the big/small PHB.
 
 Signed-off-by: Saif Abrar <saif.abrar@linux.vnet.ibm.com>
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 ---
- hw/pci-host/pnv_phb4.c              | 6 ++++++
- include/hw/pci-host/pnv_phb4.h      | 2 ++
- include/hw/pci-host/pnv_phb4_regs.h | 1 +
- 3 files changed, 9 insertions(+)
+v1 -> v2: Introduced method pnv_phb4_xsrc_reset().
+
+ hw/pci-host/pnv_phb4.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/hw/pci-host/pnv_phb4.c b/hw/pci-host/pnv_phb4.c
-index ba351bb147..528117f409 100644
+index 528117f409..ad8047cdfb 100644
 --- a/hw/pci-host/pnv_phb4.c
 +++ b/hw/pci-host/pnv_phb4.c
-@@ -264,6 +264,10 @@ static uint64_t *pnv_phb4_ioda_access(PnvPHB4 *phb,
-         mask = phb->big_phb ? PNV_PHB4_MAX_MIST : (PNV_PHB4_MAX_MIST >> 1);
-         mask -= 1;
-         break;
-+    case IODA3_TBL_PCT:
-+        tptr = phb->ioda_PCT;
-+        mask = 7;
-+        break;
-     case IODA3_TBL_RCAM:
-         mask = phb->big_phb ? 127 : 63;
-         break;
-@@ -362,6 +366,8 @@ static void pnv_phb4_ioda_write(PnvPHB4 *phb, uint64_t val)
-     /* Handle side effects */
-     switch (table) {
-     case IODA3_TBL_LIST:
-+    case IODA3_TBL_PCT:
-+        /* No action for debug tables */
-         break;
-     case IODA3_TBL_MIST: {
-         /* Special mask for MIST partial write */
-diff --git a/include/hw/pci-host/pnv_phb4.h b/include/hw/pci-host/pnv_phb4.h
-index bea0684724..6bb75edeef 100644
---- a/include/hw/pci-host/pnv_phb4.h
-+++ b/include/hw/pci-host/pnv_phb4.h
-@@ -65,6 +65,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(PnvPHB4RootBus, PNV_PHB4_ROOT_BUS)
- #define PNV_PHB4_MAX_LSIs          8
- #define PNV_PHB4_MAX_INTs          4096
- #define PNV_PHB4_MAX_MIST          (PNV_PHB4_MAX_INTs >> 2)
-+#define PNV_PHB4_MAX_PCT           128
- #define PNV_PHB4_MAX_MMIO_WINDOWS  32
- #define PNV_PHB4_MIN_MMIO_WINDOWS  16
- #define PNV_PHB4_NUM_REGS          (0x3000 >> 3)
-@@ -138,6 +139,7 @@ struct PnvPHB4 {
-     /* On-chip IODA tables */
-     uint64_t ioda_LIST[PNV_PHB4_MAX_LSIs];
-     uint64_t ioda_MIST[PNV_PHB4_MAX_MIST];
-+    uint64_t ioda_PCT[PNV_PHB4_MAX_PCT];
-     uint64_t ioda_TVT[PNV_PHB4_MAX_TVEs];
-     uint64_t ioda_MBT[PNV_PHB4_MAX_MBEs];
-     uint64_t ioda_MDT[PNV_PHB4_MAX_PEs];
-diff --git a/include/hw/pci-host/pnv_phb4_regs.h b/include/hw/pci-host/pnv_phb4_regs.h
-index c1d5a83271..e30adff7b2 100644
---- a/include/hw/pci-host/pnv_phb4_regs.h
-+++ b/include/hw/pci-host/pnv_phb4_regs.h
-@@ -486,6 +486,7 @@
+@@ -490,6 +490,7 @@ static void pnv_phb4_update_xsrc(PnvPHB4 *phb)
  
- #define IODA3_TBL_LIST          1
- #define IODA3_TBL_MIST          2
-+#define IODA3_TBL_PCT           3
- #define IODA3_TBL_RCAM          5
- #define IODA3_TBL_MRT           6
- #define IODA3_TBL_PESTA         7
+     lsi_base = GETFIELD(PHB_LSI_SRC_ID, phb->regs[PHB_LSI_SOURCE_ID >> 3]);
+     lsi_base <<= 3;
++    lsi_base &= (xsrc->nr_irqs - 1);
+ 
+     /* TODO: handle reset values of PHB_LSI_SRC_ID */
+     if (!lsi_base) {
+@@ -1944,6 +1945,12 @@ static void pnv_phb4_ro_mask_init(PnvPHB4 *phb)
+     /* TODO: Add more RO-masks as regs are implemented in the model */
+ }
+ 
++static void pnv_phb4_xsrc_reset(PnvPHB4 *phb)
++{
++    phb->regs[PHB_LSI_SOURCE_ID >> 3] = PPC_BITMASK(4, 12);
++    pnv_phb4_update_xsrc(phb);
++}
++
+ static void pnv_phb4_err_reg_reset(PnvPHB4 *phb)
+ {
+     STICKY_RST(PHB_ERR_STATUS,       0, PPC_BITMASK(0, 33));
+@@ -1999,10 +2006,11 @@ static void pnv_phb4_reset(Object *obj, ResetType type)
+ {
+     PnvPHB4 *phb = PNV_PHB4(obj);
+     pnv_phb4_pbl_core_reset(phb);
++
++    pnv_phb4_xsrc_reset(phb);
+     pnv_phb4_err_reg_reset(phb);
+     pnv_phb4_pcie_stack_reg_reset(phb);
+     pnv_phb4_regb_err_reg_reset(phb);
+-    phb->regs[PHB_PCIE_CRESET >> 3] = 0xE000000000000000;
+ }
+ 
+ static void pnv_phb4_instance_init(Object *obj)
+@@ -2079,8 +2087,6 @@ static void pnv_phb4_realize(DeviceState *dev, Error **errp)
+         return;
+     }
+ 
+-    pnv_phb4_update_xsrc(phb);
+-
+     phb->qirqs = qemu_allocate_irqs(xive_source_set_irq, xsrc, xsrc->nr_irqs);
+ 
+     pnv_phb4_xscom_realize(phb);
 -- 
 2.47.3
 
