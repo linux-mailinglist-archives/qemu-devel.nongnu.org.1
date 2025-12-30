@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D167CE862E
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 01:10:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE76CE8664
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 01:16:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vaNGb-0008TJ-Fo; Mon, 29 Dec 2025 19:07:18 -0500
+	id 1vaNIL-0001kh-Qn; Mon, 29 Dec 2025 19:09:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1vaNFC-0006xR-Od
- for qemu-devel@nongnu.org; Mon, 29 Dec 2025 19:05:46 -0500
-Received: from p-east2-cluster1-host8-snip4-10.eps.apple.com ([57.103.76.83]
+ id 1vaNFD-000745-8l
+ for qemu-devel@nongnu.org; Mon, 29 Dec 2025 19:05:47 -0500
+Received: from p-east2-cluster1-host5-snip4-8.eps.apple.com ([57.103.76.91]
  helo=outbound.st.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1vaNF8-000421-Fo
+ id 1vaNFB-00042E-A9
  for qemu-devel@nongnu.org; Mon, 29 Dec 2025 19:05:46 -0500
 Received: from outbound.st.icloud.com (unknown [127.0.0.2])
  by p00-icloudmta-asmtp-us-east-1a-60-percent-9 (Postfix) with ESMTPS id
- 9EE5E180044C; Tue, 30 Dec 2025 00:05:36 +0000 (UTC)
+ A1D4618010D5; Tue, 30 Dec 2025 00:05:40 +0000 (UTC)
 Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=F9oLyg/qgYRJ/JZV5dNJO6abkXMsGF/lMhk1P5D4R60=;
+ s=sig1; bh=l9p5jVYclwL2K7rHpkywk2BNDTimX+u9/pjnya/K+yM=;
  h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme;
- b=DIIKvwXG5ZNR/DEyn2lV3hWwp19tiecfIQY7oCgQx48UbL9l9e78/r8Nz3kskpyex0dNU4oDWpUKgUGLavw6hgx5HDBO36OWU+pEb/u7SJ2MSd+5Uv7GGzV9NOoE1Svk929Bo3znJ5Hb+06JqAZhL6tqPyNa67Yw2B7dLXzHfiqtzinFSn6cSvWOYi4BJFhP0YEbwx8MhEcn6MuHT8FG+2I/St07WIDgorDSuU5yQRCG9oVoQBeUoZcTLjG0gQf0Soif/zD/5OfJrU4fnq90grr1RyKw9k3O4XVw5d0iMaUJXEX5PNJY5+XJ0FFNbPPx/9sm3jCxr0oQH00RSkJLUA==
+ b=ZAQpfL6jFmoH6TJe9ryscWIkEN1tJ9lFOENAskmDm6g/oXtd7vJ8Y+AVBEYu4iw2Gbf4qk66HxGOnR/wmhYuMMCRod7fj3HvN5ixzOSDZ6pKIENJAn3y0H/glTVTRgA/Tx7QgS6vPMz6ncdKScCbrV2yQs3Zi+1f05Fl2YW3Mjh65DA1ofcnh1n7BY9H+QXS9DY9XtveHpdlhiWd1er5FQ+rT/FtKWhIAuf7NVAwDjze2qmVvRoB+CRl5Ecd6vsAffu4RW6fkw9pquqvMDdZl5ogf//rBs7aY8rMr3JYT+XTImmgKHa81ICenYuID+j/yzzETAEaCwZaaxy4WJaaHA==
 mail-alias-created-date: 1752046281608
 Received: from localhost.localdomain (unknown [17.42.251.67])
  by p00-icloudmta-asmtp-us-east-1a-60-percent-9 (Postfix) with ESMTPSA id
- DE0551800444; Tue, 30 Dec 2025 00:05:31 +0000 (UTC)
+ 31F4E18010D6; Tue, 30 Dec 2025 00:05:36 +0000 (UTC)
 From: Mohamed Mediouni <mohamed@unpredictable.fr>
 To: mohamed@unpredictable.fr,
 	qemu-devel@nongnu.org
@@ -53,42 +53,42 @@ Cc: Yanan Wang <wangyanan55@huawei.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v13 17/28] whpx: change memory management logic
-Date: Tue, 30 Dec 2025 01:03:49 +0100
-Message-ID: <20251230000401.72124-18-mohamed@unpredictable.fr>
+Subject: [PATCH v13 18/28] target/arm: cpu: mark WHPX as supporting PSCI 1.3
+Date: Tue, 30 Dec 2025 01:03:50 +0100
+Message-ID: <20251230000401.72124-19-mohamed@unpredictable.fr>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251230000401.72124-1-mohamed@unpredictable.fr>
 References: <20251230000401.72124-1-mohamed@unpredictable.fr>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Authority-Info: v=2.4 cv=Wqsm8Nfv c=1 sm=1 tr=0 ts=69531753 cx=c_apl:c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI5MDIyMiBTYWx0ZWRfX/Vct240fj2eX
+ UMExZjPQkx648rqBQIS0zMbTAkI/fqfXNu1ctGC2tYF26VxylbH3tmhKMYaunyKC+ye1wzJfR+u
+ 9wKxfQu2TeS6+ZRLoZtAOdfiTBXVvlMa7qdVm8Rpx2JJlMNvwoyOd2bAlkF1dnCPTmlf3uVul0d
+ FGcpXIunyBccxHOVPF3oTBQ5NTUEI37JR7q9efoVKMC3Yif0WDXpAfnzqhvM3WMkhpz0ND4ZJIW
+ XWnxKhIA2JiIq2ee0+wLOze9lGR5ECbK9UZcqDCLtXdb4Ct939y4BbbGPpMC+yRTbTKVGbJWzRl
+ P2Io0OsJjLzBFhWe+Ih
+X-Proofpoint-ORIG-GUID: aZS_OUviAKYJ2vz3KvDNK1EN0xr-1OdT
+X-Authority-Info: v=2.4 cv=fr/RpV4f c=1 sm=1 tr=0 ts=69531756 cx=c_apl:c_pps
  a=YrL12D//S6tul8v/L+6tKg==:117 a=YrL12D//S6tul8v/L+6tKg==:17
  a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=KKAkSRfTAAAA:8
- a=Warxv3Xc6ASOjn9-k1MA:9 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI5MDIyMiBTYWx0ZWRfX7DnE46JFnNa4
- n2EI9XVD66Sg41ps/H8Updo0j6KhOfVMKPcdmabLYybPBH9DyufWE0dIzMy5gTNJuoalfBR2WLF
- 5FCpF9VbhHZpbEOoK04lhKG6W72ygrQ7BZFKHUY0cRUdBx36ymKBu2+w6qk4ZX9gbwvYCOg5rWF
- qqxQN5mVNaIxDiAt8vpGkjaLfaZ8N1e/zaWaqQlsTQbMhnV/vPEEsOkIfoIahd7Ei1jluvbIZNQ
- r6pfXLmN6XmpQmfxHA2iIxVrK9GOD4oiTdpvoZNrQ1I8ErBj1vEyoNoPpu/sKgCX+NGsmH/OzcE
- ZsuFFoJmw2U6/oRHlQ3
-X-Proofpoint-GUID: zhUu8P3i9JInvn7ln0RqTTo9F0mlNQlH
-X-Proofpoint-ORIG-GUID: zhUu8P3i9JInvn7ln0RqTTo9F0mlNQlH
+ a=GfoCO2L6IEBdUbzNuv4A:9 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-GUID: aZS_OUviAKYJ2vz3KvDNK1EN0xr-1OdT
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-29_07,2025-12-29_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- mlxscore=0 mlxlogscore=999 bulkscore=0 clxscore=1030 suspectscore=0
- phishscore=0 spamscore=0 malwarescore=0 classifier=spam authscore=0 adjust=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1030
+ mlxlogscore=943 suspectscore=0 malwarescore=0 phishscore=0 spamscore=0
+ adultscore=0 bulkscore=0 mlxscore=0 classifier=spam authscore=0 adjust=0
  reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512290222
-X-JNJ: AAAAAAABrS2aNxATCOekBfjdaFRZP5xhfk+c5PkoVsy82gYqGuawpPXvkTMtgXLz4tACSBg6PB6m7HDfu6KFlgBPeQM//QlhjJplnyY0UqR5toYtv3vTEYEwx3tBDeFpGVaWDm2Gpt14SncCt051MnzyOZYVaMvh+fTsRaZfNKdHbgLdvP2GDWk3dHnsazQgm18B5x70JTUhhy//RxcNIkTWcO4DUa1GjZs9f6IMJujqZ6UxIrHBQtNbaunMPSiB8TjKVyoPw37B7w/hV5ohzrHKjuqUIcR55B+nogq1md9RwaAf7XBEC+hx+DPX9Y9i2qyh0QTKI6eoNxM6cYobXWHzUpY4sTAQ8W3Af4m84t3vfavLPZbgKl62O/0LSBSkZ1RcGtaE5+xz/cQv6ywoef6GVLrH+8MjIYQRN6v6huPiI2+73f6DV9mAzemCr3MVOWYi4kOhcvdkX7gmkEP/7YOyjOetUjOiX7KWHNf3SDbunRHMxbdalaWUNly0ItI7upShC7DHsoIg4NhDB36Xb3aZDcroRSfwXjt/BZGQJgSv5Akfcc5l31BDpEoeApE+t47EF28S39TScNPOuBITQY6BFryR1OulfQ+Xqd09qEcJVbZ/PxSscUEWdgihyKJkIqRHdj4rjwet0KL+vSi67a1t1q92a4wDprI+y1yewlhWOcH2iWQ0TqbVhlfs9SllR2jM0x5OBrN2F942vQzLSWiSOSTo51a3saEOIdY0T+ddVrjuU5JTAhSVoTD51q5VetMv+LNU+GnL2CMBt1YxQGB1wC0/1n1MJ/LxWl7cO34VmtJ+i0bqB01WPLIClkqSw3A2NBjUR6z/JL8LDzHjvkteZELfoWX3ye1mJD4axDnCz3XG6RoeJRWb72H9/MrVwxfJJvsd5rZENR85cv8FBu10tR69w3EMWOixGMqAkdh6D1liJM/GF/T0dJU7S/MwDBq0/vc0K/YDsFPG1Q==
-Received-SPF: pass client-ip=57.103.76.83;
+X-JNJ: AAAAAAAB9y66rQar7KXxsAHfs+4k4iGOdpOjTBtuH6C5PNXWo7vFSZW7azL6a/uYTPzZHmcZ3gaKY/K1om9iXAeZZ5woEWr9YZhl9Mw/Eybd+pc+80WI4ZNo5wTbylwzF6rQGq02yp7zXK9vWmLz9pDeAQ5WQSk99B8APbPyAaoxsK7VxAbcJcsGQAUiRP4POoWkfYG0BLmwE0H98GDmUOhlxX1Pi///NFVM+HDjROjTkZ6u1dCLj5mRwQRe0kxvnrRTGkC3ZOwhGhSgUkH7Hs+xy+7btijJ3j2/xgIaa/c71Z1uZBccGh4jr9O86DF78s+23fpgcNkoTk++b1owiUQR/QD/GzKl74SAMmMkHckLjen3dI2EuCJMf/Bc3ZX3RU6Vj1HnaiIIihLkp95P3ILda83PV5O48zuG3Yt48kyTkTym8qCG9aEpVYdCykWJzn2uMkTXiXkshFrnuKUYFfJHcV5ibeofIVzaaG5qrCPVvbW1Zi/kvoebmmpcgGy6jjKVj553FPFa6FT9KbLKQGXC0AVqTwkzJ2l1MCemcSrr60EZmblzkToKmwdxxYgO5EXEuFfd8Lt6xrsEYOWpOmz1/WQpobfUoYUl0+vsZhtgEXoH96L0XtaieaoYjaiWv1lBMG9yzUmNe49tzC5eM+KrMvohNmKDeyqYfK2tm7Qz2jYB2rKRCwxp5pCoVCsMdyXMpoN58ZPmHxPhgp8x18m3zC97EAcbVLM/G3t4sd+1gVgHn2VLcqSOLgizlO5oPV7SA9bKFgCc/hrdC2MnIchjWybaTv4XSqMCYMQUKcxb28bLl3X1ncw0IyXL249cnzTJ/gAPkaYo+fkhaqWNtodTf0toIxhBBjkKCXUqf6aOatHoxXO2/aJpF308aY7sU2xnd0t9brAw1xir+vitq4cfufP3LpbozflHeSn48YU4o4SbEgW8vBV2D5hK3gOeicziaOPCvAM25LI/hP6KM+TlSolU1DQ
+ SIAluw/IHX7Q=
+Received-SPF: pass client-ip=57.103.76.91;
  envelope-from=mohamed@unpredictable.fr; helo=outbound.st.icloud.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -106,144 +106,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This allows edk2 to work on Arm, although u-boot is still not functional.
+Hyper-V supports PSCI 1.3, and that implementation is exposed through
+WHPX.
 
 Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
+
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- accel/whpx/whpx-common.c | 97 +++++++++++++++-------------------------
- 1 file changed, 36 insertions(+), 61 deletions(-)
+ target/arm/cpu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/accel/whpx/whpx-common.c b/accel/whpx/whpx-common.c
-index 827f50f3e0..f018a8f5c7 100644
---- a/accel/whpx/whpx-common.c
-+++ b/accel/whpx/whpx-common.c
-@@ -255,89 +255,64 @@ void whpx_vcpu_kick(CPUState *cpu)
-  * Memory support.
-  */
- 
--static void whpx_update_mapping(hwaddr start_pa, ram_addr_t size,
--                                void *host_va, int add, int rom,
--                                const char *name)
-+static void whpx_set_phys_mem(MemoryRegionSection *section, bool add)
- {
-     struct whpx_state *whpx = &whpx_global;
-+    MemoryRegion *area = section->mr;
-+    bool writable = !area->readonly && !area->rom_device;
-+    WHV_MAP_GPA_RANGE_FLAGS flags;
-+    uint64_t page_size = qemu_real_host_page_size();
-+    uint64_t gva = section->offset_within_address_space;
-+    uint64_t size = int128_get64(section->size);
-     HRESULT hr;
-+    void *mem;
- 
--    /*
--    if (add) {
--        printf("WHPX: ADD PA:%p Size:%p, Host:%p, %s, '%s'\n",
--               (void*)start_pa, (void*)size, host_va,
--               (rom ? "ROM" : "RAM"), name);
--    } else {
--        printf("WHPX: DEL PA:%p Size:%p, Host:%p,      '%s'\n",
--               (void*)start_pa, (void*)size, host_va, name);
--    }
--    */
--
--    if (add) {
--        hr = whp_dispatch.WHvMapGpaRange(whpx->partition,
--                                         host_va,
--                                         start_pa,
--                                         size,
--                                         (WHvMapGpaRangeFlagRead |
--                                          WHvMapGpaRangeFlagExecute |
--                                          (rom ? 0 : WHvMapGpaRangeFlagWrite)));
--    } else {
--        hr = whp_dispatch.WHvUnmapGpaRange(whpx->partition,
--                                           start_pa,
--                                           size);
--    }
--
--    if (FAILED(hr)) {
--        error_report("WHPX: Failed to %s GPA range '%s' PA:%p, Size:%p bytes,"
--                     " Host:%p, hr=%08lx",
--                     (add ? "MAP" : "UNMAP"), name,
--                     (void *)(uintptr_t)start_pa, (void *)size, host_va, hr);
-+    if (!memory_region_is_ram(area)) {
-+        if (writable) {
-+            return;
-+        } else if (!memory_region_is_romd(area)) {
-+            add = false;
-+        }
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index caf7980b1f..70f0bebd19 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -23,6 +23,7 @@
+ #include "qemu/timer.h"
+ #include "qemu/log.h"
+ #include "exec/page-vary.h"
++#include "system/whpx.h"
+ #include "target/arm/idau.h"
+ #include "qemu/module.h"
+ #include "qapi/error.h"
+@@ -1143,6 +1144,8 @@ static void arm_cpu_initfn(Object *obj)
+     if (tcg_enabled() || hvf_enabled()) {
+         /* TCG and HVF implement PSCI 1.1 */
+         cpu->psci_version = QEMU_PSCI_VERSION_1_1;
++    } else if (whpx_enabled()) {
++        cpu->psci_version = QEMU_PSCI_VERSION_1_3;
      }
--}
--
--static void whpx_process_section(MemoryRegionSection *section, int add)
--{
--    MemoryRegion *mr = section->mr;
--    hwaddr start_pa = section->offset_within_address_space;
--    ram_addr_t size = int128_get64(section->size);
--    unsigned int delta;
--    uint64_t host_va;
- 
--    if (!memory_region_is_ram(mr)) {
--        return;
-+    if (!QEMU_IS_ALIGNED(size, page_size) ||
-+        !QEMU_IS_ALIGNED(gva, page_size)) {
-+        /* Not page aligned, so we can not map as RAM */
-+        add = false;
-     }
- 
--    delta = qemu_real_host_page_size() - (start_pa & ~qemu_real_host_page_mask());
--    delta &= ~qemu_real_host_page_mask();
--    if (delta > size) {
--        return;
--    }
--    start_pa += delta;
--    size -= delta;
--    size &= qemu_real_host_page_mask();
--    if (!size || (start_pa & ~qemu_real_host_page_mask())) {
-+    if (!add) {
-+        hr = whp_dispatch.WHvUnmapGpaRange(whpx->partition,
-+                gva, size);
-+        if (FAILED(hr)) {
-+            error_report("WHPX: failed to unmap GPA range");
-+            abort();
-+        }
-         return;
-     }
- 
--    host_va = (uintptr_t)memory_region_get_ram_ptr(mr)
--            + section->offset_within_region + delta;
-+    flags = WHvMapGpaRangeFlagRead | WHvMapGpaRangeFlagExecute
-+     | (writable ? WHvMapGpaRangeFlagWrite : 0);
-+    mem = memory_region_get_ram_ptr(area) + section->offset_within_region;
- 
--    whpx_update_mapping(start_pa, size, (void *)(uintptr_t)host_va, add,
--                        memory_region_is_rom(mr), mr->name);
-+    hr = whp_dispatch.WHvMapGpaRange(whpx->partition,
-+         mem, gva, size, flags);
-+    if (FAILED(hr)) {
-+        error_report("WHPX: failed to map GPA range");
-+        abort();
-+    }
  }
  
- static void whpx_region_add(MemoryListener *listener,
-                            MemoryRegionSection *section)
- {
--    memory_region_ref(section->mr);
--    whpx_process_section(section, 1);
-+    whpx_set_phys_mem(section, true);
- }
- 
- static void whpx_region_del(MemoryListener *listener,
-                            MemoryRegionSection *section)
- {
--    whpx_process_section(section, 0);
--    memory_region_unref(section->mr);
-+    whpx_set_phys_mem(section, false);
- }
- 
- static void whpx_transaction_begin(MemoryListener *listener)
 -- 
 2.50.1 (Apple Git-155)
 
