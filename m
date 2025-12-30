@@ -2,96 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 214B0CE8661
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 01:15:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C5E3CE867A
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 01:28:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vaNL0-000435-W8; Mon, 29 Dec 2025 19:11:51 -0500
+	id 1vaNZt-0006ne-4c; Mon, 29 Dec 2025 19:27:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1vaNFy-00081s-39
- for qemu-devel@nongnu.org; Mon, 29 Dec 2025 19:06:34 -0500
-Received: from p-east2-cluster1-host9-snip4-10.eps.apple.com ([57.103.76.113]
- helo=outbound.st.icloud.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1vaNFw-00048f-MJ
- for qemu-devel@nongnu.org; Mon, 29 Dec 2025 19:06:33 -0500
-Received: from outbound.st.icloud.com (unknown [127.0.0.2])
- by p00-icloudmta-asmtp-us-east-1a-60-percent-9 (Postfix) with ESMTPS id
- 7D2121800475; Tue, 30 Dec 2025 00:06:30 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=HvfpbIRIHkux3GwMoa81UjW64yTUwu8WPNZESmVNycM=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme;
- b=G3RmAwKapFR1oElMGkW6feKRDlJZoLgKQsf54dYMxDIVRuqU5HBwgZMRN2RFaeNMar6YO8pamAw4Cd+DLSdNL23hFVf/ql2Se5X+/Ng4gk5AvhJEEiwOIBJb1FFSK+5zIsLiqcee+6ND2+hug/bSMUR3roCKFfF+8WIrLc7MYKuG1oh9EdvMuG9K7FN7awyIyIWA82loKCAeJWFlJS0pvbLM4O1iQUK83lA8uJJ65RjzGBh80xe9KWJvlOUbfhpjRq3eSLCwrgL+rhnQVpcDDt9wnTspZLF4vxD9+p1+27oLFZYNSEQTtJrzMQ5gbtyHw5b3Zs4/tsreFAAovVrmtw==
-mail-alias-created-date: 1752046281608
-Received: from localhost.localdomain (unknown [17.42.251.67])
- by p00-icloudmta-asmtp-us-east-1a-60-percent-9 (Postfix) with ESMTPSA id
- A5A1318010C3; Tue, 30 Dec 2025 00:06:26 +0000 (UTC)
-From: Mohamed Mediouni <mohamed@unpredictable.fr>
-To: mohamed@unpredictable.fr,
-	qemu-devel@nongnu.org
-Cc: Yanan Wang <wangyanan55@huawei.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Eduardo Habkost <eduardo@habkost.net>, Mads Ynddal <mads@ynddal.dk>,
- Roman Bolshakov <rbolshakov@ddn.com>, Peter Xu <peterx@redhat.com>,
- Shannon Zhao <shannon.zhaosl@gmail.com>,
- Pedro Barbuda <pbarbuda@microsoft.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Cameron Esfahani <dirty@apple.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>, qemu-arm@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Alexander Graf <agraf@csgraf.de>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v13 28/28] MAINTAINERS: update the list of maintained files
- for WHPX
-Date: Tue, 30 Dec 2025 01:04:00 +0100
-Message-ID: <20251230000401.72124-29-mohamed@unpredictable.fr>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20251230000401.72124-1-mohamed@unpredictable.fr>
-References: <20251230000401.72124-1-mohamed@unpredictable.fr>
+ (Exim 4.90_1)
+ (envelope-from <bounce+0e9322.97607e-qemu-devel=nongnu.org@yodel.dev>)
+ id 1vaNZr-0006nR-W0
+ for qemu-devel@nongnu.org; Mon, 29 Dec 2025 19:27:08 -0500
+Received: from k57.kb8c70eb.use4.send.mailgun.net ([204.220.184.57])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1)
+ (envelope-from <bounce+0e9322.97607e-qemu-devel=nongnu.org@yodel.dev>)
+ id 1vaNZp-0008LB-P4
+ for qemu-devel@nongnu.org; Mon, 29 Dec 2025 19:27:07 -0500
+X-Mailgun-Sid: WyI4ZDFlNiIsInFlbXUtZGV2ZWxAbm9uZ251Lm9yZyIsIjk3NjA3ZSJd
+Received: from mail.yodel.dev (mail.yodel.dev [35.209.39.246]) by
+ 6e29256320fa0ae6e54e3421e727591f0044dfe291002258f61f642f0e7a5a3c with SMTP id
+ 69531c4f9ead11955ae48fc9; Tue, 30 Dec 2025 00:26:55 GMT
+X-Mailgun-Sending-Ip: 204.220.184.57
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yodel.dev;
+ s=rsa2048; t=1767054413;
+ bh=oNl4OQ5ttFUEus0IenPa3rXuPfOoRXpNY3TcSoLp4Ks=;
+ h=X-Mailgun-Dkim:From:To:Cc:Subject:Date:Message-ID:MIME-Version:
+ Content-Type:Content-Transfer-Encoding:From:Reply-to:Subject:Date:
+ Message-id:To:Cc:Mime-version:Content-type:
+ Content-transfer-encoding:In-reply-to:References;
+ b=d0aDjYAuHYQlOVffL9GQ/9WvWhOn1yBDtNdi/uNF6tKlSN3FQvgm5bmuTvMq5wnzI
+ Pr5dgkqmtzplyvhbwZ3wRmnl07bRsOv9o+kct/Sjilbkp3kewx0CXMM4OifO9fu7P2
+ TWTBUsTUzbmDpq0R4Nt6PqJAM6Bm1ueDw18H1gPTXfiZnxMbiSY+nNt57TdI6VwkPr
+ g50d8v3HTr08cvCXauMkyHCkz+6/LX4GosdQeyKeAx+kpDJ6hGozx0JJ22nyOsbZ7O
+ sJD0g6guCgcLV2xzS8jQOejJ8k0VFpFMQBEI5XvAUOVekZq2eTukSFtCH11CQeA2fi
+ p1YOhN4JgXZWw==
+X-Mailgun-Dkim: no
+X-Mailgun-Dkim: no
+From: Yodel Eldar <yodel.eldar@yodel.dev>
+To: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Cc: Yodel Eldar <yodel.eldar@yodel.dev>
+Subject: [RFC PATCH] tests/functional/x86_64: Add vhost-user-bridge test
+Date: Mon, 29 Dec 2025 18:25:54 -0600
+Message-ID: <20251230002604.113632-1-yodel.eldar@yodel.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Authority-Info: v=2.4 cv=NdXrFmD4 c=1 sm=1 tr=0 ts=69531786 cx=c_apl:c_pps
- a=YrL12D//S6tul8v/L+6tKg==:117 a=YrL12D//S6tul8v/L+6tKg==:17
- a=t-S863UTctjxRPX8:21 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=KKAkSRfTAAAA:8 a=hdCJvu6vi-O6ykQZt0QA:9 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI5MDIyMiBTYWx0ZWRfX8RYxNZmFulY4
- orx86ryqet9Cridc6VzJa1z76p2TPv78WcZ9n1I0QdsYyWWXksAYAbHwNs/ueEmfk0TbGmknxCG
- eWehe3FUG3+myzDJosf3MnM93F+mkRnik92qkOsOhv5P3bJ/YhgT3q65k9qKtWAmB8x1Hc5oNwz
- K0vq3Ss2V8JA5eJQhXMkkRZ/m7smAfPLm2xxc7KKCmkuDeSxXruc43cr0KKYm2WpXVlSvE2Jxe6
- QIH32VzHUb+n1Vf9ENbItjfCRfg15xQJtacPLIkpytzy7fMI3OJL3TmQW3ukyZn9kwFwr2SDVIH
- U0VORBP+rcHIM+phfpS
-X-Proofpoint-ORIG-GUID: NHOVVDnK-iPcUFZzjqKY2mjSEVgEgdAl
-X-Proofpoint-GUID: NHOVVDnK-iPcUFZzjqKY2mjSEVgEgdAl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-29_07,2025-12-29_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1030
- phishscore=0 spamscore=0 adultscore=0 mlxlogscore=999 suspectscore=0
- bulkscore=0 mlxscore=0 malwarescore=0 classifier=spam authscore=0 adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512290222
-X-JNJ: AAAAAAABVh6ISKBKxx4e1RLQ1oDVSKVBANGY3Q7HZjg+UCNxJ05VplWYSzZSk1lUzfyygnu4uRV0B57leNsTO6l+7fE3vrXkinKXfnF8mfRGX8NkDv35unNziJICaLccMgx2lw0oW87iUyOpqmhJ1yDR886DVcCftT7f/YhQknJiMj5Vt/q+ujQs90RXfIIEn2zt2VohpFopY3gK+utgWRjTtyJ/oGWipB9p002ZdEJQhgI/V5lrpHkDZLs+RSC+qYMntQeXeqpr+k134ENo8Wm40tXKvNV1nNvocgbQyluL+5S8oZSWkBfZw25B55TSZEU/IBW43YUS+xAM1mQYhHV94rUaXT6BVJS/Z5lkOSYhQ1/Nce2JorPKP3QOVxBt02MvLRbMCHLi8u6NYE4iXNX0rxY+wct9xNsf9Pp30u9L0pPRtBxAjD0c3vFHRGBLCWIawZEUIiCirYfMk2i9DratEBRv0zQJmfmBaSuxeafJQIUfASX8jXyrPzAjCBzajZoHwa2RPxRGmpYMeC0TiiNdOhNIsxKaApq6piFdNk9K5EfRUcJnxD+2t2plvLSGFz4jEE49lrJ+WdDOusTiQi6i8nlbwqQDkqtzoGRIny/YT1yYgVJfd1NoaWyG9vIVa85JtexgyqawzafFjoPa/M2Ua0OKEQ9OdkWgGytgdl5SWxWf/ZczJS3yUtiglsVK21QshO6IG4iudX9fobuNEdaZYo8IgSNWEwswpJe0c8UrVtTIYRTqVEeTy75hMYKaEvtd5BIl0bMsRVpS89nEURU24tlisq3LbeQtc8JuwhNkroiQ/ff46fjeESYHaGuiVCjPRDXllQT6OvzMOKFkrpfD/juyRYUOK2n7AFJ55enyFvGjnmiE3XxM2+6YLQ9hPvWBiYVfz0Lcskjz9ktp9MZ1ksK8re+8YgEJE4uATGlt3IYXVSyKUGuQnEw/I6nwNet+DBsVvBCLLdnsOUlI
-Received-SPF: pass client-ip=57.103.76.113;
- envelope-from=mohamed@unpredictable.fr; helo=outbound.st.icloud.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=204.220.184.57;
+ envelope-from=bounce+0e9322.97607e-qemu-devel=nongnu.org@yodel.dev;
+ helo=k57.kb8c70eb.use4.send.mailgun.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,28 +77,188 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add arm64-specific files.
+This introduces a functional test of vhost-user-bridge.
 
-Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+The test runs vhost-user-bridge and launches a guest VM that connects
+to the internet through it. The test succeeds if and only if an attempt
+to connect to a hard-coded well-known URL succeeds.
+
+Signed-off-by: Yodel Eldar <yodel.eldar@yodel.dev>
 ---
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8d84f141cc..7ac1efd904 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -552,6 +552,8 @@ M: Mohamed Mediouni <mohamed@unpredictable.fr>
- S: Supported
- F: accel/whpx/
- F: target/i386/whpx/
-+F: target/arm/whpx/
-+F: hw/intc/arm_gicv3_whpx.c
- F: accel/stubs/whpx-stub.c
- F: include/system/whpx.h
- F: include/system/whpx-accel-ops.h
+This patch introduces a functional test of vhost-user-bridge by
+automating the testing described in its initial commit, 8e3b0cbb72,
+with adjustments like using hubports (formerly the vlan parameter) and
+memfd for the memory backend; hugepages are also omitted to avoid
+requiring root privileges on the host.
+
+The test configures networking within the guest by invoking udhcpc, then
+makes an http request via wget to a well-known URL, example.org, that
+has a low risk of requiring https for connections (a limitation of the
+the test). An assert on the retcode of wget determines success/failure.
+
+Please let me know if there are objections to the use of wget's retcode
+as the test's condition; determining wget success through its output is
+straightforward ("remote file exists"), but out of concern of some
+unknown failure message (besides "bad address") locking up the test,
+I've resorted to checking the retcode instead; perhaps, this violates
+some convention?
+
+Also, I figured checking for memfd support on the host was unnecessary
+in 2026 for the intended users of the test, but perhaps not?
+
+The guest's kernel contains an integrated initramfs and was built with
+buildroot; an attempt to ensure bit-for-bit reproducibility was made by
+building it via Containerfile based on a snapshot container image and
+use of the BR2_REPRODUCIBLE option of buildroot, but the latter feature
+is "experimental," so future builds may differ slightly (though the
+image in the repo will be left untouched). The image and associated
+build files are hosted on my personal account here:
+	https://github.com/yodel/vhost-user-bridge-test
+and will continue to be well into the future, but if there's some other
+preferred location for the asset, please let me know?
+
+Lastly, special thanks to Cédric for inspiring me to write the test in
+"<11454796-30d2-4a57-85a5-d42ff0dce2e6@redhat.com>".
+
+Thanks,
+Yodel
+
+ .../x86_64/test_vhost_user_bridge.py          | 124 ++++++++++++++++++
+ 1 file changed, 124 insertions(+)
+ create mode 100755 tests/functional/x86_64/test_vhost_user_bridge.py
+
+diff --git a/tests/functional/x86_64/test_vhost_user_bridge.py b/tests/functional/x86_64/test_vhost_user_bridge.py
+new file mode 100755
+index 0000000000..61afdbceec
+--- /dev/null
++++ b/tests/functional/x86_64/test_vhost_user_bridge.py
+@@ -0,0 +1,124 @@
++#!/usr/bin/env python3
++#
++# Copyright (c) 2025 Software Freedom Conservancy, Inc.
++#
++# Author: Yodel Eldar <yodel.eldar@yodel.dev>
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
++"""
++Test vhost-user-bridge (vubr) functionality:
++
++    1) Run vhost-user-bridge on the host.
++    2) Launch a guest VM:
++        a) Instantiate a unix domain socket to the vubr-created path
++        b) Instantiate a vhost-user net backend on top of that socket
++        c) Expose vhost-user with a virtio-net-pci interface
++        d) Instantiate UDP socket and user-mode net backends
++        e) Hub the UDP and user-mode backends
++    3) Run udhcpc in the guest to auto-configure networking.
++    4) Run wget in the guest and check its retcode to test internet connectivity
++
++The test fails if wget returns 1 and succeeds on 0.
++"""
++
++import os
++import subprocess
++from qemu_test import Asset, QemuSystemTest, which
++from qemu_test import exec_command_and_wait_for_pattern
++from qemu_test import is_readable_executable_file
++from qemu_test import wait_for_console_pattern
++from qemu_test.ports import Ports
++
++class VhostUserBridge(QemuSystemTest):
++
++    ASSET_KERNEL_INITRAMFS = Asset(
++        "https://github.com/yodel/vhost-user-bridge-test/raw/refs/heads/main/bzImage",
++        "3790bf35e4ddfe062425bca45e923df5a5ee4de44e456d6b00cf47f04991d549")
++
++    def configure_vm(self, ud_socket_path, lport, rport):
++        kernel_path = self.ASSET_KERNEL_INITRAMFS.fetch()
++
++        self.require_accelerator("kvm")
++        self.require_netdev("vhost-user")
++        self.require_netdev("socket")
++        self.require_netdev("hubport")
++        self.require_netdev("user")
++        self.require_device("virtio-net-pci")
++        self.set_machine("q35")
++        self.vm.set_console()
++        self.vm.add_args(
++            "-cpu",      "host",
++            "-accel",    "kvm",
++            "-kernel",   kernel_path,
++            "-append",   "console=ttyS0",
++            "-smp",      "2",
++            "-m",        "128M",
++            "-object",   "memory-backend-memfd,id=mem0,"
++                         "size=128M,share=on,prealloc=on",
++            "-numa",     "node,memdev=mem0",
++            "-chardev", f"socket,id=char0,path={ud_socket_path}",
++            "-netdev",   "vhost-user,id=vhost0,chardev=char0,vhostforce=on",
++            "-device",   "virtio-net-pci,netdev=vhost0",
++            "-netdev",  f"socket,id=udp0,udp=localhost:{lport},"
++                        f"localaddr=localhost:{rport}",
++            "-netdev",   "hubport,id=hub0,hubid=0,netdev=udp0",
++            "-netdev",   "user,id=user0",
++            "-netdev",   "hubport,id=hub1,hubid=0,netdev=user0"
++        )
++
++    def assemble_vubr_args(self, vubr_path, ud_socket_path, lport, rport):
++        vubr_args = []
++
++        if (stdbuf_path := which("stdbuf")) is None:
++            self.log.info("Could not find stdbuf: vhost-user-bridge "
++                          "log lines may appear out of order")
++        else:
++            vubr_args += [stdbuf_path, "-o0", "-e0"]
++
++        vubr_args += [vubr_path, "-u", f"{ud_socket_path}",
++                      "-l", f"127.0.0.1:{lport}", "-r", f"127.0.0.1:{rport}"]
++
++        return vubr_args
++
++    def test_vhost_user_bridge(self):
++        prompt = "~ # "
++
++        vubr_path = self.build_file("tests", "vhost-user-bridge")
++        if is_readable_executable_file(vubr_path) is None:
++            self.skipTest("Could not find a readable and executable "
++                          "vhost-user-bridge")
++
++        with Ports() as ports:
++            sock_dir = self.socket_dir()
++            ud_socket_path = os.path.join(sock_dir.name, "vubr-test.sock")
++            lport, rport = ports.find_free_ports(2)
++
++            self.configure_vm(ud_socket_path, lport, rport)
++
++            vubr_log_path = self.log_file("vhost-user-bridge.log")
++            self.log.info("For the vhost-user-bridge application log,"
++                         f" see: {vubr_log_path}")
++
++            vubr_args = self.assemble_vubr_args(vubr_path, ud_socket_path,
++                                                lport, rport)
++
++            with open(vubr_log_path, "w") as vubr_log, \
++                 subprocess.Popen(vubr_args, stdin=subprocess.DEVNULL,
++                                  stdout=vubr_log, stderr=subprocess.STDOUT):
++                self.vm.launch()
++
++                wait_for_console_pattern(self, prompt)
++                exec_command_and_wait_for_pattern(self, "udhcpc -nt 1", prompt)
++                exec_command_and_wait_for_pattern(self,
++                    "wget -qT 2 --spider example.org", prompt)
++
++                try:
++                    exec_command_and_wait_for_pattern(self, "echo $?", "0", "1")
++                except AssertionError:
++                    self.log.error("Unable to confirm internet connectivity")
++                    raise
++                finally:
++                    self.vm.shutdown()
++
++if __name__ == '__main__':
++    QemuSystemTest.main()
 -- 
-2.50.1 (Apple Git-155)
+2.52.0
 
 
