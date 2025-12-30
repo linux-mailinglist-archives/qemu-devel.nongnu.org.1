@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B45ECCEAA70
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FA36CEAA6F
 	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 22:09:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vagx6-0004Z1-Q8; Tue, 30 Dec 2025 16:08:24 -0500
+	id 1vagxC-0004aq-2u; Tue, 30 Dec 2025 16:08:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagx4-0004YR-HV
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:08:22 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagxA-0004Zz-U0
+ for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:08:28 -0500
+Received: from mail-wm1-x342.google.com ([2a00:1450:4864:20::342])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagx2-0002CV-Pi
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:08:22 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-43277900fb4so1809420f8f.1
- for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 13:08:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagx9-0002Ej-5E
+ for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:08:28 -0500
+Received: by mail-wm1-x342.google.com with SMTP id
+ 5b1f17b1804b1-47755de027eso61075955e9.0
+ for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 13:08:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767128899; x=1767733699; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767128905; x=1767733705; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=lzRXwIe1Jc8ddqbcAemZlDpnfBq+V4MD5nODk/G3BH4=;
- b=DaLd8VRUHHQtlYjjES4hB66egx9o/GsGpQrDC8HrCUXqlgLXzPNnkZghcRHQiDxm6n
- bQGD3a6gi4YgMisT2NoUCT0iRvTjmorhOKEwSabCqHQwXp/ZFDFi9RmXmlD5LodNmuE2
- sMoN0XSf8XwUa8xBOAnHe/fNcWcOo8DaNCbzzOn3q46JG1DJ7M1pG04wVXv8TFzoJYmD
- hVQup3EWoUpCHF1p5DAKprsKBwyLTfgC7hZmE92IFfWRTREWn8dk3f2LOlJCE2o4e+gd
- RT7bk4ol1wMNadwLUG3j6tNOB06k0/lqlkVHfTT76CCX/Ck7r8MSWSnT6h8OfjXT+RG1
- k8eA==
+ :reply-to; bh=YEG6iZ6Aw3LQd9IRTTR+j/7S3SvDhMq9IcY5HHvReKc=;
+ b=YSgpjQfdNREyXxKHE7+4Yu75rG+BL+k0FG2zNVCnJ4X++dXRR5v+qNcb4ha8T896N4
+ hZRi2QZyX47emHwBw5JsUlALXHkJb9gyeYQYJI+Rb0j1Qc3iCBtO/+wyV/UdEsiSMtD3
+ 7oYyhQhbXBSfjuewU1CT1SdNuTsCcw5a5li7LYk8Y9SYFm9958z66Bn/Bw82GnRnbYSR
+ nMlbRSZmlT7db9ChnJY5tVUN82JPzDDjueSk+ygl1hFiy7FyePK9EnmW5v1eNTOuozSm
+ VJ+svPx8tEKBfgiJbKOwq2/mh36OZwSBVrTlSgTY34A8mE/vfOJD0uSCuJAdwlMrV3Nc
+ nYwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767128899; x=1767733699;
+ d=1e100.net; s=20230601; t=1767128905; x=1767733705;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=lzRXwIe1Jc8ddqbcAemZlDpnfBq+V4MD5nODk/G3BH4=;
- b=ma3hOknKQnSTllDlVDLci2++9D8hb2vXiHz41Unhd2l5B3+9iwCGROwcWtI/KUcRda
- OunwrTQ2xu9aZy0jyJmCiPEzT+1UhmGHEsdyYZPS9GvtQk3RzHhpwbCAK71vx9Yzv8uD
- t/6eZfiN/nSMrLz0PVobDXvwaMTGveu+5bM/nQkYjrhUGTXsKmLCTYTpVNSqwkNc/E8Z
- MODOGiJwhUQ0u20jddzw2bYB1OQhoJ7sl92Ug8ewytQ5ZgMO2w+gFxZzL18b+cjg3fOj
- a07c4dOoGCKVzZ2F5jzwHi0dqjFD0Vf+RUBH/ZhSRUtatIKjN7ZFTAdU+oD10CNWZ2/b
- Mpwg==
-X-Gm-Message-State: AOJu0Yx1SAGrbCbO/QCGe2LSlX6WKUKf83g8t4Xaw0dGaCPOWHN89KyQ
- xQL/VfBTD6KMMLq1V5zdhUx+MgyjFG3AN10KIlXFusblRxeERQpKoTmU8KrIav2LKHuQwnjPZla
- Q8BDRKaU=
-X-Gm-Gg: AY/fxX4YNUczXZThSw0Ohi76em0h4QARG9Y9ENyb3tLVNwKEi65rkUyVXngHmYqhytu
- Roez2oQLwNG8TA8JF2+r3GNi1+WivjSkkBWit4Fco0/EI32Z/s5VaS8NPXFlJG/nIQ/R6E8fc2J
- IfcoQjbQ/vNLJqEpAJmAjATrAF6V0mtt4OeXlBmUR+kZdKCMhkYZR//odP4ulk9KeGxpbjGMg9b
- JLaYIhAEo+SAC4fOVTZbyEJpVOQMe20EiUpSJ+J/IBMqL6+cdmQWXDa8EpuDb7uc4KyR/tYieRN
- eM3pSQ6600yGzTZ/pyQX/mHEnt3E9hTiYYbqVMxaJK7IJRZU0xExa6hZGZyNI8k9BgVfAWxbBQd
- Thmdax/FZgaR79e0yGTLvGWszQukjZrrpunSgNMweF9FRur2gpQ4pEuVmkg9S+7KcjGacs7YmvG
- ZsSYmeVZCkrAWhOQQjpvdjPrOGzvZBbJPraUs1aA3JBD6KAFoA5rIqULPxAAP8
-X-Google-Smtp-Source: AGHT+IEbx5oTGr66BMSxHkLtY0pp53PGAt32kN+7qD1+O64wUPZb/QSL9bPpjAi96EJxhd22sGdrNg==
-X-Received: by 2002:a5d:64e9:0:b0:431:382:f141 with SMTP id
- ffacd0b85a97d-4324e3f5da3mr53342152f8f.12.1767128898771; 
- Tue, 30 Dec 2025 13:08:18 -0800 (PST)
+ bh=YEG6iZ6Aw3LQd9IRTTR+j/7S3SvDhMq9IcY5HHvReKc=;
+ b=A1SOV+GxA3re7XnFEAdHXwIOHWlIy1E9KeHaPOLLh7hXO2Rwn4OwwfBpQVYW3r3jOX
+ ibrOMq13b4u6fQ2HIsmEzPAlwxRGZxcnmk+GD+lCHBECk0JC8b0GmzefRMaG1TKRvxTv
+ LnhKbmCRkVDSBz1q9jDYUqF02zpnmO32czMngoPAIpY8Eo5tWRM8L7keBcJVOF+Z+1vy
+ w1TT+E+df8KkQkYrRsDcDZeautajjrqZdi3dIPvtUqI1vDY7SU+BJJkgxdXZ0q5aAJL1
+ AtSN6L1cqrZKY36vW6Z5ZAGlwtEw7lhvmnEpsF2+LmK1GGSsWI8zjjgQ4L8/HxhpcWQm
+ 6zEA==
+X-Gm-Message-State: AOJu0Yw9f4CU4ttoCk1k/aF80VgZTKXp1R5QjWUKguLpkfTO3lyPGlSX
+ W+AQITZ/U3rFC0oQX5GMnaupvqjFS06nxbFN/UPLmtqovArQHZtu27KPHqnpf+8mz4vt351RjK3
+ 3g/iaLk8=
+X-Gm-Gg: AY/fxX6dnN/Cf59q8d2iPgSusDYrCKjzAr/8sRdPJFWUuajaWzrFrQFcYaxMrE/v38c
+ lMxzJ4oCSZTHtBBQmqspeBag5LDvVThOHm88+spOaN+jqEa226cfoB2odBC2yiusW7XZAkmBJai
+ jzhaLtxeuoxpDGm7Z1Kzj3u7OA6lXcjlWE0bSEO7yjOJsocVJQMmdoil1B8s/I6+320Rn36qw6t
+ KJ+mAWDIqZh6vh7Lqyn8hyMnxAaYs04XzU/iqH4mB/xf+6byCoWAsA/gPQkhASOtaytUpuA7gXM
+ Ca+bSW54WwBE5DZV1VfdIotsuLJBFcKBsCgk5zOr7GDbTz4LXQA9PtEmm2z8IAZkOhAn/wrv94f
+ b5S1nIITRArPjslvjUdEVsPvC5p9sa9RLpFc+b9MBxtsWbsPzcSZPTPpatFS62p5bBFBX+FiXri
+ Y6jjKdCPcZhMiaDfLuWsLlwGN04X93iJMdDc1VP9vSmfsqJJDZY/QWVuZEGFav7DIhhJr50to=
+X-Google-Smtp-Source: AGHT+IEPHCNmtgG5XM11k8QqrbT6RoyvIC3v+e+8gRAeVchklO+RXBRHUNAmdK/7JgNQL8hDKQYT4Q==
+X-Received: by 2002:a05:600c:46ce:b0:477:8985:4036 with SMTP id
+ 5b1f17b1804b1-47d1953bb1emr442489195e9.1.1767128905218; 
+ Tue, 30 Dec 2025 13:08:25 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324ea1af2bsm70137622f8f.1.2025.12.30.13.08.18
+ 5b1f17b1804b1-47d193621c8sm609207835e9.7.2025.12.30.13.08.24
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Dec 2025 13:08:18 -0800 (PST)
+ Tue, 30 Dec 2025 13:08:24 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/34] hw/riscv: Treat kernel_start_addr as vaddr
-Date: Tue, 30 Dec 2025 22:07:25 +0100
-Message-ID: <20251230210757.13803-4-philmd@linaro.org>
+Subject: [PULL 04/34] hw/misc: make the tz-ppc-port names more useful
+Date: Tue, 30 Dec 2025 22:07:26 +0100
+Message-ID: <20251230210757.13803-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251230210757.13803-1-philmd@linaro.org>
 References: <20251230210757.13803-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::342;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x342.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,130 +97,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Anton Johansson <anjo@rev.ng>
+From: Alex Bennée <alex.bennee@linaro.org>
 
-Changes kernel_start_addr from target_ulong to vaddr. Logically, the
-argument represents a virtual address at which to load the kernel image,
-which gets treated as a hwaddr as a fallback if elf and uimage loading
-fails.
+The TrustZone peripheral protection controller (tz-ppc) sits between
+peripherals and the main system. However this results in "info mtree"
+looking at bit confusing, especially as the sequence numbers can
+overlap and miss steps:
 
-Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Anton Johansson <anjo@rev.ng>
+      0000000000000000-ffffffffffffffff (prio -2, i/o): system
+        0000000000000000-00000000003fffff (prio 0, i/o): tz-mpc-upstream
+        0000000000400000-00000000007fffff (prio 0, i/o): alias ssram-0-alias @tz-mpc-upstream 0000000000000000-00000000003fffff
+        0000000028000000-00000000281fffff (prio 0, i/o): tz-mpc-upstream
+        0000000028200000-00000000283fffff (prio 0, i/o): tz-mpc-upstream
+        0000000040080000-0000000040080fff (prio 0, i/o): iotkit-secctl-ns-regs
+        0000000040100000-0000000040100fff (prio 0, i/o): tz-ppc-port[1]
+        0000000040101000-0000000040101fff (prio 0, i/o): tz-ppc-port[2]
+        0000000040102000-0000000040102fff (prio 0, i/o): tz-ppc-port[3]
+        0000000040103000-0000000040103fff (prio 0, i/o): tz-ppc-port[4]
+        0000000040110000-0000000040110fff (prio 0, i/o): tz-ppc-port[0]
+        0000000040111000-0000000040111fff (prio 0, i/o): tz-ppc-port[1]
+        0000000040112000-0000000040112fff (prio 0, i/o): tz-ppc-port[2]
+        0000000040113000-0000000040113fff (prio 0, i/o): tz-ppc-port[3]
+        0000000040200000-0000000040200fff (prio 0, i/o): tz-ppc-port[5]
+        0000000040201000-0000000040201fff (prio 0, i/o): tz-ppc-port[6]
+        0000000040202000-0000000040202fff (prio 0, i/o): tz-ppc-port[7]
+        0000000040203000-0000000040203fff (prio 0, i/o): tz-ppc-port[8]
+        0000000040204000-0000000040204fff (prio 0, i/o): tz-ppc-port[9]
+        0000000040205000-0000000040205fff (prio 0, i/o): tz-ppc-port[0]
+        0000000040206000-0000000040206fff (prio 0, i/o): tz-ppc-port[1]
+        0000000040207000-0000000040207fff (prio 0, i/o): tz-ppc-port[10]
+        0000000040208000-0000000040208fff (prio 0, i/o): tz-ppc-port[11]
+        0000000040209000-0000000040209fff (prio 0, i/o): tz-ppc-port[2]
+        000000004020a000-000000004020afff (prio 0, i/o): tz-ppc-port[3]
+        000000004020b000-000000004020bfff (prio 0, i/o): tz-ppc-port[4]
+        000000004020c000-000000004020cfff (prio 0, i/o): tz-ppc-port[12]
+        000000004020d000-000000004020dfff (prio 0, i/o): tz-ppc-port[13]
+        0000000040300000-0000000040300fff (prio 0, i/o): tz-ppc-port[0]
+        0000000040301000-0000000040301fff (prio 0, i/o): tz-ppc-port[1]
+        0000000040302000-0000000040302fff (prio 0, i/o): tz-ppc-port[2]
+        0000000041000000-000000004113ffff (prio 0, i/o): tz-ppc-port[0]
+        0000000042000000-00000000420000ff (prio 0, i/o): tz-ppc-port[5]
+        0000000048007000-0000000048007fff (prio -1000, i/o): FPGA NS PC
+        0000000050080000-0000000050080fff (prio 0, i/o): iotkit-secctl-s-regs
+        0000000058007000-0000000058007fff (prio 0, i/o): tz-ppc-port[0]
+        0000000058008000-0000000058008fff (prio 0, i/o): tz-ppc-port[1]
+        0000000058009000-0000000058009fff (prio 0, i/o): tz-ppc-port[2]
+        0000000080000000-0000000080ffffff (prio 0, ram): mps.ram
+
+So as a quality of life feature lets expose the name of the underlying
+region so we get something more useful:
+
+    0000000000000000-ffffffffffffffff (prio -2, i/o): system
+      0000000000000000-00000000003fffff (prio 0, i/o): tz-mpc-upstream
+      0000000000400000-00000000007fffff (prio 0, i/o): alias ssram-0-alias @tz-mpc-upstream 0000000000000000-00000000003fffff
+      0000000028000000-00000000281fffff (prio 0, i/o): tz-mpc-upstream
+      0000000028200000-00000000283fffff (prio 0, i/o): tz-mpc-upstream
+      0000000040080000-0000000040080fff (prio 0, i/o): iotkit-secctl-ns-regs
+      0000000040100000-0000000040100fff (prio 0, i/o): tz-ppc-port[gpio0]
+      0000000040101000-0000000040101fff (prio 0, i/o): tz-ppc-port[gpio1]
+      0000000040102000-0000000040102fff (prio 0, i/o): tz-ppc-port[gpio2]
+      0000000040103000-0000000040103fff (prio 0, i/o): tz-ppc-port[gpio3]
+      0000000040110000-0000000040110fff (prio 0, i/o): tz-ppc-port[pl080]
+      0000000040111000-0000000040111fff (prio 0, i/o): tz-ppc-port[pl080]
+      0000000040112000-0000000040112fff (prio 0, i/o): tz-ppc-port[pl080]
+      0000000040113000-0000000040113fff (prio 0, i/o): tz-ppc-port[pl080]
+      0000000040200000-0000000040200fff (prio 0, i/o): tz-ppc-port[uart]
+      0000000040201000-0000000040201fff (prio 0, i/o): tz-ppc-port[uart]
+      0000000040202000-0000000040202fff (prio 0, i/o): tz-ppc-port[uart]
+      0000000040203000-0000000040203fff (prio 0, i/o): tz-ppc-port[uart]
+      0000000040204000-0000000040204fff (prio 0, i/o): tz-ppc-port[uart]
+      0000000040205000-0000000040205fff (prio 0, i/o): tz-ppc-port[pl022]
+      0000000040206000-0000000040206fff (prio 0, i/o): tz-ppc-port[pl022]
+      0000000040207000-0000000040207fff (prio 0, i/o): tz-ppc-port[arm_sbcon_i2c]
+      0000000040208000-0000000040208fff (prio 0, i/o): tz-ppc-port[arm_sbcon_i2c]
+      0000000040209000-0000000040209fff (prio 0, i/o): tz-ppc-port[pl022]
+      000000004020a000-000000004020afff (prio 0, i/o): tz-ppc-port[pl022]
+      000000004020b000-000000004020bfff (prio 0, i/o): tz-ppc-port[pl022]
+      000000004020c000-000000004020cfff (prio 0, i/o): tz-ppc-port[arm_sbcon_i2c]
+      000000004020d000-000000004020dfff (prio 0, i/o): tz-ppc-port[arm_sbcon_i2c]
+      0000000040300000-0000000040300fff (prio 0, i/o): tz-ppc-port[mps2-scc]
+      0000000040301000-0000000040301fff (prio 0, i/o): tz-ppc-port[i2s-audio]
+      0000000040302000-0000000040302fff (prio 0, i/o): tz-ppc-port[mps2-fpgaio]
+      0000000041000000-000000004113ffff (prio 0, i/o): tz-ppc-port[gfx]
+      0000000042000000-00000000420000ff (prio 0, i/o): tz-ppc-port[lan9118-mmio]
+      0000000048007000-0000000048007fff (prio -1000, i/o): FPGA NS PC
+      0000000050080000-0000000050080fff (prio 0, i/o): iotkit-secctl-s-regs
+      0000000058007000-0000000058007fff (prio 0, i/o): tz-ppc-port[tz-mpc-regs]
+      0000000058008000-0000000058008fff (prio 0, i/o): tz-ppc-port[tz-mpc-regs]
+      0000000058009000-0000000058009fff (prio 0, i/o): tz-ppc-port[tz-mpc-regs]
+      0000000080000000-0000000080ffffff (prio 0, ram): mps.ram
+
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Cc: Jim MacArthur <jim.macarthur@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20251210132130.14465-1-anjo@rev.ng>
+Message-ID: <20251215170548.2594651-1-alex.bennee@linaro.org>
+[PMD: Wrap long line to avoid checkpatch.pl warning]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/riscv/boot.h    | 6 +++---
- hw/riscv/boot.c            | 6 +++---
- hw/riscv/microchip_pfsoc.c | 3 ++-
- hw/riscv/sifive_u.c        | 3 ++-
- hw/riscv/spike.c           | 2 +-
- hw/riscv/virt.c            | 3 ++-
- 6 files changed, 13 insertions(+), 10 deletions(-)
+ hw/misc/tz-ppc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/riscv/boot.h b/include/hw/riscv/boot.h
-index 35964bf8318..f00b3ca1224 100644
---- a/include/hw/riscv/boot.h
-+++ b/include/hw/riscv/boot.h
-@@ -43,8 +43,8 @@ bool riscv_is_32bit(RISCVHartArrayState *harts);
- char *riscv_plic_hart_config_string(int hart_count);
+diff --git a/hw/misc/tz-ppc.c b/hw/misc/tz-ppc.c
+index 159073d1e6d..6f820430eed 100644
+--- a/hw/misc/tz-ppc.c
++++ b/hw/misc/tz-ppc.c
+@@ -273,8 +273,8 @@ static void tz_ppc_realize(DeviceState *dev, Error **errp)
+             continue;
+         }
  
- void riscv_boot_info_init(RISCVBootInfo *info, RISCVHartArrayState *harts);
--hwaddr riscv_calc_kernel_start_addr(RISCVBootInfo *info,
--                                    hwaddr firmware_end_addr);
-+vaddr riscv_calc_kernel_start_addr(RISCVBootInfo *info,
-+                                   hwaddr firmware_end_addr);
- hwaddr riscv_find_and_load_firmware(MachineState *machine,
-                                     const char *default_machine_firmware,
-                                     hwaddr *firmware_load_addr,
-@@ -57,7 +57,7 @@ hwaddr riscv_load_firmware(const char *firmware_filename,
-                            symbol_fn_t sym_cb);
- void riscv_load_kernel(MachineState *machine,
-                        RISCVBootInfo *info,
--                       target_ulong kernel_start_addr,
-+                       vaddr kernel_start_addr,
-                        bool load_initrd,
-                        symbol_fn_t sym_cb);
- uint64_t riscv_compute_fdt_addr(hwaddr dram_base, hwaddr dram_size,
-diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
-index df1f3abd171..e5490beda00 100644
---- a/hw/riscv/boot.c
-+++ b/hw/riscv/boot.c
-@@ -74,8 +74,8 @@ void riscv_boot_info_init(RISCVBootInfo *info, RISCVHartArrayState *harts)
-     info->is_32bit = riscv_is_32bit(harts);
- }
+-        name = g_strdup_printf("tz-ppc-port[%d]", i);
+-
++        name = g_strdup_printf("tz-ppc-port[%s]",
++                               memory_region_name(port->downstream));
+         port->ppc = s;
+         address_space_init(&port->downstream_as, port->downstream, name);
  
--hwaddr riscv_calc_kernel_start_addr(RISCVBootInfo *info,
--                                    hwaddr firmware_end_addr) {
-+vaddr riscv_calc_kernel_start_addr(RISCVBootInfo *info,
-+                                   hwaddr firmware_end_addr) {
-     if (info->is_32bit) {
-         return QEMU_ALIGN_UP(firmware_end_addr, 4 * MiB);
-     } else {
-@@ -228,7 +228,7 @@ static void riscv_load_initrd(MachineState *machine, RISCVBootInfo *info)
- 
- void riscv_load_kernel(MachineState *machine,
-                        RISCVBootInfo *info,
--                       target_ulong kernel_start_addr,
-+                       vaddr kernel_start_addr,
-                        bool load_initrd,
-                        symbol_fn_t sym_cb)
- {
-diff --git a/hw/riscv/microchip_pfsoc.c b/hw/riscv/microchip_pfsoc.c
-index 0cf849ffb6d..4ff83e49403 100644
---- a/hw/riscv/microchip_pfsoc.c
-+++ b/hw/riscv/microchip_pfsoc.c
-@@ -521,7 +521,8 @@ static void microchip_icicle_kit_machine_init(MachineState *machine)
-     uint64_t mem_low_size, mem_high_size;
-     hwaddr firmware_load_addr;
-     const char *firmware_name;
--    hwaddr firmware_end_addr, kernel_start_addr;
-+    hwaddr firmware_end_addr;
-+    vaddr kernel_start_addr;
-     uint64_t kernel_entry;
-     uint64_t fdt_load_addr;
-     DriveInfo *dinfo = drive_get(IF_SD, 0, 0);
-diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
-index f1b47ab5848..7ec67b25651 100644
---- a/hw/riscv/sifive_u.c
-+++ b/hw/riscv/sifive_u.c
-@@ -515,7 +515,8 @@ static void sifive_u_machine_init(MachineState *machine)
-     MemoryRegion *system_memory = get_system_memory();
-     MemoryRegion *flash0 = g_new(MemoryRegion, 1);
-     hwaddr start_addr = memmap[SIFIVE_U_DEV_DRAM].base;
--    hwaddr firmware_end_addr, kernel_start_addr;
-+    hwaddr firmware_end_addr;
-+    vaddr kernel_start_addr;
-     const char *firmware_name;
-     uint32_t start_addr_hi32 = 0x00000000;
-     uint32_t fdt_load_addr_hi32 = 0x00000000;
-diff --git a/hw/riscv/spike.c b/hw/riscv/spike.c
-index ea527c7bfc1..1493b928dad 100644
---- a/hw/riscv/spike.c
-+++ b/hw/riscv/spike.c
-@@ -199,7 +199,7 @@ static void spike_board_init(MachineState *machine)
-     MemoryRegion *mask_rom = g_new(MemoryRegion, 1);
-     hwaddr firmware_end_addr = memmap[SPIKE_DRAM].base;
-     hwaddr firmware_load_addr = memmap[SPIKE_DRAM].base;
--    hwaddr kernel_start_addr;
-+    vaddr kernel_start_addr;
-     char *firmware_name;
-     uint64_t fdt_load_addr;
-     uint64_t kernel_entry;
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index c87c169d38c..bd8608ea5bf 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -1434,7 +1434,8 @@ static void virt_machine_done(Notifier *notifier, void *data)
-                                      machine_done);
-     MachineState *machine = MACHINE(s);
-     hwaddr start_addr = s->memmap[VIRT_DRAM].base;
--    hwaddr firmware_end_addr, kernel_start_addr;
-+    hwaddr firmware_end_addr;
-+    vaddr kernel_start_addr;
-     const char *firmware_name = riscv_default_firmware_name(&s->soc[0]);
-     uint64_t fdt_load_addr;
-     uint64_t kernel_entry = 0;
 -- 
 2.52.0
 
