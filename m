@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD70CEAAC0
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 22:11:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83CE3CEAAB1
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 22:11:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vagzT-00023n-39; Tue, 30 Dec 2025 16:10:52 -0500
+	id 1vagzP-0001lF-11; Tue, 30 Dec 2025 16:10:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagz1-0001YL-LS
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagz3-0001Yn-Dm
  for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:10:27 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagyx-0002do-Mc
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:10:23 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-4327790c4e9so1826732f8f.2
- for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 13:10:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagz0-0002fk-Qq
+ for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:10:25 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4779ce2a624so78973515e9.2
+ for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 13:10:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767129011; x=1767733811; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767129018; x=1767733818; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Ez5vl1EDt9mc2+b7pnNLOdCCl7mfnkJCH+Oj1B88Eho=;
- b=gxNs5wnQXvndYyx1CRPWSmFWJW2d9WDWZu5kO+dH7485Sj1SrVSr53ONcdgsDrWg8u
- ukhLA/eLDZ4ZWRi/df2mHTsCGdRcdXUOctvDdOtvSPQ8d3bKji+n4OOTPu8O5GWZv3LH
- xVGUY0pG6kIVOSGksBH7HkU/9oAxyNDwu2GG8uIEirONH5qAO0Kn9+ak2rvvknC9ptMH
- tl5Aqcdj2NwJtjl1f8YHUW9h76oPXayu3FA5ZSPcsJDWrTTpHNrsEODJWCuEnGJDWywZ
- Dys0Oc6JriT8rzWOAoVajIwwUyTqM5Zqk5MIQE/gvOVHgT1sDOgyQZY/qOlI3ekQAPyW
- NvPg==
+ :reply-to; bh=L50V/EzCjudz2Uvy5oJglYhqNvb4wYscqaxHo/WQGxg=;
+ b=JlyII0pLPWp3dTevpaR7Wy5EGZXi3QDSeFB57fPcc2cBYeIopjWlx8mFu2s6ydnTDP
+ hwiVNQ9p+ZLTFmOllD4FdphyXZSZA8MHcxMbvBqfIeixBe+4M8jvjfDkf/c+uch52KdG
+ dPREM9uV95+0tcFyrGuqy7nr3LzJap3WiD69wU41Ka19koU0wId6qsDl70Oh24ejgTBo
+ bzR9dlWNWfKuKVZty7lPsCAHgYdh3pzSDzV1n1u5drXWC6NV6I7HJ4fAy8ZVSGokfS+B
+ PGxJ0175D+vutNpx9S8sbQxmaitsX1fLuF0jHsE7JLmsBQscBCbiJdGITmjNZUDz4xLY
+ Xh7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767129011; x=1767733811;
+ d=1e100.net; s=20230601; t=1767129018; x=1767733818;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=Ez5vl1EDt9mc2+b7pnNLOdCCl7mfnkJCH+Oj1B88Eho=;
- b=o1NxzjPLfxqK2oeoAFv9UaJXdC8ToKyjihlVvGTFh8VkxUvpgpW5F0lLg+nNe2ySUJ
- UwGrePhJVtblt70gcxS0q0w9aeR6xdV9N6+rU4983CTGOBuCitCrpkwRg/Vf2meUp/+T
- 60cUr3/P2ccGU1yjgUo4olqjekJbw467NN1AW7koJD7UiJ6AZru+Le2XPHUOinRyBMOL
- F7bjjS7l1LwVWSBCqPX2DQFyJsg8pu2WYM9yyaZoc7O6KJIu5yrYW1JmbMeKHTUfZFGJ
- z/XhQZDcNZA/A+E0JDcEbekwN36sqS4a+tCS66WixoKDun2apU1pa8op7TclwACuvi7s
- 0Tpw==
-X-Gm-Message-State: AOJu0YxKIlIiAl2jaT2U/GVujGv6Jv5WouzJHpcpbQ5a84VS5XmpsWKb
- Agfe7Qlsry+ni3ArAgLKqfVcbO+yISip+zkKXvmprriww+2yChgz42y3p1ImAA6ozMtuuwxew3D
- DI1wv+lY=
-X-Gm-Gg: AY/fxX4i4deXIF49FcWxAy7mrkDq1LqbqqOx5jvdQnXrnOw6f8ZVTPipasPPgiP6rxO
- cKKvqvqP89Xt7LZP0e4mBYm4IvGjadLqkhHIPGVS/z2w3F3cg9xGKS2rpYcE5q26GisCgxtRC8W
- soow4PABD57XVfKzzvZO6YFBBGxBkkIl9QIH6U7RMHpzi5rXwAAx5Kb5r8nmP7WV9S2ATVQo5Gx
- wWvDnuwfGwRIbjGGFSBx/kKWs999+Qk0ZIhrsQt/pq5PmXyIhqH7uYUW/kH78RXUeKpLYAiXByU
- OJFwGYdkEoiCgBUJn9AZwtO0K2EYtJMZ4245HK7EhmGMNjITiwAZ5fUFrnOEel4sYLPsJcY9KSy
- K9UBTpnegPOl+qFgbdIWOKSlzteh0qh0bSOhYV9WM0yMpOoUJKcWSJ3JUClOARZ861ryPgJeBBM
- CkkmBuFkrJhNXHlDMrZre8yro+VKww8ZTsQzgWuo5OrHdZfdlBP6HON7C4ymfm
-X-Google-Smtp-Source: AGHT+IGdbImKySSFSy26RTdWD4TFW08Rc8ls5wCRlARa/EnjFxAZFdsozHCT5bPHccabWIejRmOD2A==
-X-Received: by 2002:a05:6000:420c:b0:430:fbe1:3822 with SMTP id
- ffacd0b85a97d-4324e511811mr51141720f8f.54.1767129011323; 
- Tue, 30 Dec 2025 13:10:11 -0800 (PST)
+ bh=L50V/EzCjudz2Uvy5oJglYhqNvb4wYscqaxHo/WQGxg=;
+ b=FEqEwDY0YUHpsTYZQoYoMFqp4CAZyuGL/IPplRNGZX/hVP0P5DYTFgJRxBKbLGEHRx
+ vE0o7y55UstagEHhbAsQ50uQqygXB1VNc7kRB/qpAqydQMsF/XXNg/TzJnv15JTLPE1u
+ FnuV0o8qOfxSmoaz9n0GVdxy2wQWLoINu99FG+LCEbgK1QUw0nK4nG2r6/PDVhx81PnJ
+ 4L2PHtQmLjkmXX4H17H6g0MKYt8UPaR+MzEo6QhU39DobVD9i8bkPMw3nymMXffTEzKT
+ K76kFzCsJOM653LosqK586AUz0y4dKrTLpsBbi/uMVPs+8sK/wCE0DygkOQVR22k0yyD
+ u3fg==
+X-Gm-Message-State: AOJu0YzZob9pRm49nv4H01hYxhcx1zZHtIkUPlWLmKUQ2zIpETHCuV8P
+ PHmcvP2mDmsZ+bmaDCMHYpOmcuyA5Ls6nFqs4+OybCnb4l5g4Jlj47FiFzfHyt51VYc1LOV+qHa
+ fnRN3qU8=
+X-Gm-Gg: AY/fxX7KJjt/scIljS6Wx+o9oYHaX4RUvu3xPa4AtjOCGevgM6xFSyjCBCUE7tiiAxv
+ xlFMExo5vhi9dJNh41jyNb+uqFManCwoN9l0sWGqRu/dItC8QjEKsZ1Ono4pCb7hHk5NHQCWXeE
+ Se6cuXcnB8xO96913wQmjNBq+KXLlnEi4NK7vToE0W1+Ktj7TXULl6tmHGhlXoyknAS5+qkcNiq
+ hZprs6udF7NYyF5nGAbzKswlUDQbOa6pV0l2RA5/uiMJbH5JPrwUkoeKFMMQuL9o/P5PSm3/gox
+ OoxNrhlY0P/WU1s2Ryv1hWinkIyZOl6noAWO8TLhSDF04Q4dyAWAFzT1wt91Sfja3elXSQYaLFI
+ 5abPGnBICHU7Y5NlJGOFv8vyARaXVqH3BQQNRqfGwCRWbiVFkXhGFIV6892fWhkly/0tFaLH+3j
+ NZ8MSvr9KlyxDKfYx1HStFPVHb0UKQsxepHcp5Rfn3CO8gTq7hMizs/9LrBFtoyLvg7pwL4l4=
+X-Google-Smtp-Source: AGHT+IHs90/+ssDgsmBL+qh/7YJDd7RoVqso1/aK2jBXtrxx0En8x67lERTxV9X6aRtisgJs3lJMGw==
+X-Received: by 2002:adf:b605:0:b0:432:7d2a:2be4 with SMTP id
+ ffacd0b85a97d-4327d2a2d3dmr19266331f8f.60.1767129017858; 
+ Tue, 30 Dec 2025 13:10:17 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324ea8311fsm70773019f8f.28.2025.12.30.13.10.09
+ ffacd0b85a97d-4324ea1b1b1sm69761949f8f.3.2025.12.30.13.10.17
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Dec 2025 13:10:10 -0800 (PST)
+ Tue, 30 Dec 2025 13:10:17 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 20/34] target/i386: Remove x86_stl_phys_notdirty() leftover
-Date: Tue, 30 Dec 2025 22:07:42 +0100
-Message-ID: <20251230210757.13803-21-philmd@linaro.org>
+Subject: [PULL 21/34] target/sparc: Update MMU page table using stl_phys()
+Date: Tue, 30 Dec 2025 22:07:43 +0100
+Message-ID: <20251230210757.13803-22-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251230210757.13803-1-philmd@linaro.org>
 References: <20251230210757.13803-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,52 +97,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Last use of x86_stl_phys_notdirty() was removed in commit 4a1e9d4d11c
-("target/i386: Use atomic operations for pte updates"), let's remove.
+stl_phys_notdirty() is supposed to do an optimized CODE
+path store. Here we update the page table via the DATA
+path, so can use the normal stl_phys() helper.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Message-Id: <20251224151351.86733-2-philmd@linaro.org>
+Message-Id: <20251224151351.86733-3-philmd@linaro.org>
 ---
- target/i386/cpu.h    |  1 -
- target/i386/helper.c | 10 ----------
- 2 files changed, 11 deletions(-)
+ target/sparc/mmu_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 41ea04099b2..2bbc977d908 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2756,7 +2756,6 @@ uint32_t x86_lduw_phys(CPUState *cs, hwaddr addr);
- uint32_t x86_ldl_phys(CPUState *cs, hwaddr addr);
- uint64_t x86_ldq_phys(CPUState *cs, hwaddr addr);
- void x86_stb_phys(CPUState *cs, hwaddr addr, uint8_t val);
--void x86_stl_phys_notdirty(CPUState *cs, hwaddr addr, uint32_t val);
- void x86_stw_phys(CPUState *cs, hwaddr addr, uint32_t val);
- void x86_stl_phys(CPUState *cs, hwaddr addr, uint32_t val);
- void x86_stq_phys(CPUState *cs, hwaddr addr, uint64_t val);
-diff --git a/target/i386/helper.c b/target/i386/helper.c
-index 3f179c6c11f..f9f9488eb4d 100644
---- a/target/i386/helper.c
-+++ b/target/i386/helper.c
-@@ -702,16 +702,6 @@ void x86_stb_phys(CPUState *cs, hwaddr addr, uint8_t val)
-     address_space_stb(as, addr, val, attrs, NULL);
- }
+diff --git a/target/sparc/mmu_helper.c b/target/sparc/mmu_helper.c
+index 217580a4d8c..46bf500ea83 100644
+--- a/target/sparc/mmu_helper.c
++++ b/target/sparc/mmu_helper.c
+@@ -189,7 +189,7 @@ static int get_physical_address(CPUSPARCState *env, CPUTLBEntryFull *full,
+         if (is_dirty) {
+             pde |= PG_MODIFIED_MASK;
+         }
+-        stl_phys_notdirty(cs->as, pde_ptr, pde);
++        stl_phys(cs->as, pde_ptr, pde);
+     }
  
--void x86_stl_phys_notdirty(CPUState *cs, hwaddr addr, uint32_t val)
--{
--    X86CPU *cpu = X86_CPU(cs);
--    CPUX86State *env = &cpu->env;
--    MemTxAttrs attrs = cpu_get_mem_attrs(env);
--    AddressSpace *as = cpu_addressspace(cs, attrs);
--
--    address_space_stl_notdirty(as, addr, val, attrs, NULL);
--}
--
- void x86_stw_phys(CPUState *cs, hwaddr addr, uint32_t val)
- {
-     X86CPU *cpu = X86_CPU(cs);
+     /* the page can be put in the TLB */
 -- 
 2.52.0
 
