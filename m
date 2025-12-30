@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83CE3CEAAB1
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 22:11:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABE77CEAABD
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 22:11:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vagzP-0001lF-11; Tue, 30 Dec 2025 16:10:48 -0500
+	id 1vagzV-00026B-6T; Tue, 30 Dec 2025 16:10:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagz3-0001Yn-Dm
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:10:27 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagz7-0001cp-AP
+ for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:10:30 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagz0-0002fk-Qq
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:10:25 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-4779ce2a624so78973515e9.2
- for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 13:10:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagz4-0002hM-NA
+ for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:10:29 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-47796a837c7so66515935e9.0
+ for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 13:10:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767129018; x=1767733818; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767129024; x=1767733824; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=L50V/EzCjudz2Uvy5oJglYhqNvb4wYscqaxHo/WQGxg=;
- b=JlyII0pLPWp3dTevpaR7Wy5EGZXi3QDSeFB57fPcc2cBYeIopjWlx8mFu2s6ydnTDP
- hwiVNQ9p+ZLTFmOllD4FdphyXZSZA8MHcxMbvBqfIeixBe+4M8jvjfDkf/c+uch52KdG
- dPREM9uV95+0tcFyrGuqy7nr3LzJap3WiD69wU41Ka19koU0wId6qsDl70Oh24ejgTBo
- bzR9dlWNWfKuKVZty7lPsCAHgYdh3pzSDzV1n1u5drXWC6NV6I7HJ4fAy8ZVSGokfS+B
- PGxJ0175D+vutNpx9S8sbQxmaitsX1fLuF0jHsE7JLmsBQscBCbiJdGITmjNZUDz4xLY
- Xh7w==
+ :reply-to; bh=7QqNj0FBvOTWsnndVorR5mnhPv6tLS9zBqtC1X1aBEI=;
+ b=SOwMinm+qUGxS3mtqNxfwcGnKNrxC9uqLo/yQCbdtKBXXJ2rHKM+6ltN9RFUvknav5
+ ncdkjQWCvYu09AQXt7F4wtqMRTkUoo6xUZOKg+Qxy/Hpt1L6rzxEGWIr+tDy+f97To3O
+ bz27VtyFO2o7BM2k+ROwD7P35s6uxQCzboXwVxB86XmyQTw742ENLHcCookMfHXvHxWB
+ xZ+tI6eQkIgSU6j6I9yrVzpW9+CrYjTu27D+CA+ZAlKDfUGTlGLb/TfHiGl9bH4kWCj5
+ /exoR147+MV4B7cnAZro+KdBmORAIJLL2T5u/uig80Q245FV7gVr/tqWVzoKgONzbLYg
+ IXKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767129018; x=1767733818;
+ d=1e100.net; s=20230601; t=1767129024; x=1767733824;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=L50V/EzCjudz2Uvy5oJglYhqNvb4wYscqaxHo/WQGxg=;
- b=FEqEwDY0YUHpsTYZQoYoMFqp4CAZyuGL/IPplRNGZX/hVP0P5DYTFgJRxBKbLGEHRx
- vE0o7y55UstagEHhbAsQ50uQqygXB1VNc7kRB/qpAqydQMsF/XXNg/TzJnv15JTLPE1u
- FnuV0o8qOfxSmoaz9n0GVdxy2wQWLoINu99FG+LCEbgK1QUw0nK4nG2r6/PDVhx81PnJ
- 4L2PHtQmLjkmXX4H17H6g0MKYt8UPaR+MzEo6QhU39DobVD9i8bkPMw3nymMXffTEzKT
- K76kFzCsJOM653LosqK586AUz0y4dKrTLpsBbi/uMVPs+8sK/wCE0DygkOQVR22k0yyD
- u3fg==
-X-Gm-Message-State: AOJu0YzZob9pRm49nv4H01hYxhcx1zZHtIkUPlWLmKUQ2zIpETHCuV8P
- PHmcvP2mDmsZ+bmaDCMHYpOmcuyA5Ls6nFqs4+OybCnb4l5g4Jlj47FiFzfHyt51VYc1LOV+qHa
- fnRN3qU8=
-X-Gm-Gg: AY/fxX7KJjt/scIljS6Wx+o9oYHaX4RUvu3xPa4AtjOCGevgM6xFSyjCBCUE7tiiAxv
- xlFMExo5vhi9dJNh41jyNb+uqFManCwoN9l0sWGqRu/dItC8QjEKsZ1Ono4pCb7hHk5NHQCWXeE
- Se6cuXcnB8xO96913wQmjNBq+KXLlnEi4NK7vToE0W1+Ktj7TXULl6tmHGhlXoyknAS5+qkcNiq
- hZprs6udF7NYyF5nGAbzKswlUDQbOa6pV0l2RA5/uiMJbH5JPrwUkoeKFMMQuL9o/P5PSm3/gox
- OoxNrhlY0P/WU1s2Ryv1hWinkIyZOl6noAWO8TLhSDF04Q4dyAWAFzT1wt91Sfja3elXSQYaLFI
- 5abPGnBICHU7Y5NlJGOFv8vyARaXVqH3BQQNRqfGwCRWbiVFkXhGFIV6892fWhkly/0tFaLH+3j
- NZ8MSvr9KlyxDKfYx1HStFPVHb0UKQsxepHcp5Rfn3CO8gTq7hMizs/9LrBFtoyLvg7pwL4l4=
-X-Google-Smtp-Source: AGHT+IHs90/+ssDgsmBL+qh/7YJDd7RoVqso1/aK2jBXtrxx0En8x67lERTxV9X6aRtisgJs3lJMGw==
-X-Received: by 2002:adf:b605:0:b0:432:7d2a:2be4 with SMTP id
- ffacd0b85a97d-4327d2a2d3dmr19266331f8f.60.1767129017858; 
- Tue, 30 Dec 2025 13:10:17 -0800 (PST)
+ bh=7QqNj0FBvOTWsnndVorR5mnhPv6tLS9zBqtC1X1aBEI=;
+ b=R8XeAVlQ+z9vMFxaTdHuUBtkhqOmmAi41/1l2KTIyh4f3bAgE5r9tdYXswEyvZGNfi
+ GVLAafcGHAhJogNXNMBOpbBK9FQUeHWgnpukxGJUZDca0SoMpzVZ7zApT7dhFRuD5FMj
+ N706Uj8H90dYBAXKS0O+LyFNI6gBBqv5sTwPc4OjSgfdA+FHl2wSrdYW31wLJeEwvb/v
+ mgCLPlAQ1JwJAjwuNb6WvUrzYoMLSqWNMXj3ZncEVaMdaQ3t3P6s/TWl4iJwiH0J1c2Z
+ X4ZRfm5qhZTnX2KOuJSR0u2leeCfazaYrw5yGlOWsKDfQrSc0Vm9zaebbiEX8RAuuypF
+ eqFw==
+X-Gm-Message-State: AOJu0YxMEMxeWNNyE0CEodoI+XZAbm5K9X5WeDY5oKZv+fg0zAgnUlO2
+ HWiiQMEih4tGX565DMYqUQKwlmw0m5+tGCT7JQCrqvehoJh8yhK9EEtdIx8qp+SkA8hUvB2ekDj
+ kof/oZaQ=
+X-Gm-Gg: AY/fxX6dQCHeyNJPrJ1prxvL+c8ioLv5Vxpe7buqAyGT1AVqGAQJ9rgD2hYBGMPC/mT
+ UU0m1kqtcQoQP5jcOior5MvLjEYLOWZwzhu0QNnDSIGrraSfASjB7KBghC8Lj5UzcmOOjckpYiO
+ Sb1QiE6SGIHu1ChhuRSlt4KyVPap+J7oXaizz9EsGdQZXElI/5zmvSrd9S/OsCrl2SzT+zSh4w2
+ yjF1vV9ue/kr144HPAvMmmb8j6/1eaz/sKnGDYDw4kBzJXKwwIQpZ/9PwywNvl766U/lp2Ki3BH
+ YK3Zm+An70nmSIWWV4m5hn2QLUEUpq4QAWqSS4wO5hsEEivsTfC1ZQp2nEhpBdfM0o4yTHqyiCi
+ QAb1S1WGqf1o3cWvhdeTu12JO5miJu03YUM5gyNA4F6blh3icntvX2hc/MZ0TpSg7u8pP9hL7T+
+ ICMDlZB+yL9OJnwGWptL+cnqKGjkzaBQ2HNsOUEbyk7TqRu5+aqVr+F1Y1A57q
+X-Google-Smtp-Source: AGHT+IFr/niFut1s17jRdePbRyq9OXZJN+YbQbMECXCIGdLdNyF7JGjmpTFgN/H8HXeUvkKeQlVnjA==
+X-Received: by 2002:a05:600c:8b70:b0:477:a02d:397a with SMTP id
+ 5b1f17b1804b1-47d1953b94cmr311783385e9.2.1767129024310; 
+ Tue, 30 Dec 2025 13:10:24 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324ea1b1b1sm69761949f8f.3.2025.12.30.13.10.17
+ ffacd0b85a97d-4324eaa08d9sm70773584f8f.30.2025.12.30.13.10.23
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Dec 2025 13:10:17 -0800 (PST)
+ Tue, 30 Dec 2025 13:10:23 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 21/34] target/sparc: Update MMU page table using stl_phys()
-Date: Tue, 30 Dec 2025 22:07:43 +0100
-Message-ID: <20251230210757.13803-22-philmd@linaro.org>
+Subject: [PULL 22/34] hw/arm: Avoid address_space_stl_notdirty() when
+ generating bootloader
+Date: Tue, 30 Dec 2025 22:07:44 +0100
+Message-ID: <20251230210757.13803-23-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251230210757.13803-1-philmd@linaro.org>
 References: <20251230210757.13803-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,31 +98,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-stl_phys_notdirty() is supposed to do an optimized CODE
-path store. Here we update the page table via the DATA
-path, so can use the normal stl_phys() helper.
+When using the '-kernel' command line option, a bootloader is
+emitted, calling address_space_stl_notdirty().
 
+The _notdirty() variant is supposed to /not/ mark the updated
+CODE page as dirty, to not re-translate it. However this code
+is only used with the '-kernel' CLI option after the machine
+is created and /before/ the vCPUs run, and *only* during the
+first (cold) reset; not during following (hot) resets. The
+optimisation is totally not justified, since we haven't
+translated any guest code yet.
+Replace by the normal address_space_stl() helper.
+
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20251224151351.86733-3-philmd@linaro.org>
+Message-Id: <20251224151351.86733-4-philmd@linaro.org>
 ---
- target/sparc/mmu_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/arm/aspeed.c | 4 ++--
+ hw/arm/boot.c   | 8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/target/sparc/mmu_helper.c b/target/sparc/mmu_helper.c
-index 217580a4d8c..46bf500ea83 100644
---- a/target/sparc/mmu_helper.c
-+++ b/target/sparc/mmu_helper.c
-@@ -189,7 +189,7 @@ static int get_physical_address(CPUSPARCState *env, CPUTLBEntryFull *full,
-         if (is_dirty) {
-             pde |= PG_MODIFIED_MASK;
-         }
--        stl_phys_notdirty(cs->as, pde_ptr, pde);
-+        stl_phys(cs->as, pde_ptr, pde);
-     }
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index 6199d2d2d7c..a3db3406c5f 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -77,8 +77,8 @@ static void aspeed_reset_secondary(ARMCPU *cpu,
+     CPUState *cs = CPU(cpu);
  
-     /* the page can be put in the TLB */
+     /* info->smp_bootreg_addr */
+-    address_space_stl_notdirty(as, AST_SMP_MBOX_FIELD_GOSIGN, 0,
+-                               MEMTXATTRS_UNSPECIFIED, NULL);
++    address_space_stl(as, AST_SMP_MBOX_FIELD_GOSIGN, 0,
++                         MEMTXATTRS_UNSPECIFIED, NULL);
+     cpu_set_pc(cs, info->smp_loader_start);
+ }
+ 
+diff --git a/hw/arm/boot.c b/hw/arm/boot.c
+index d87bcb5b88a..0ba3adaf81a 100644
+--- a/hw/arm/boot.c
++++ b/hw/arm/boot.c
+@@ -266,8 +266,8 @@ static void default_reset_secondary(ARMCPU *cpu,
+     AddressSpace *as = arm_boot_address_space(cpu, info);
+     CPUState *cs = CPU(cpu);
+ 
+-    address_space_stl_notdirty(as, info->smp_bootreg_addr,
+-                               0, MEMTXATTRS_UNSPECIFIED, NULL);
++    address_space_stl(as, info->smp_bootreg_addr,
++                         0, MEMTXATTRS_UNSPECIFIED, NULL);
+     cpu_set_pc(cs, info->smp_loader_start);
+ }
+ 
+@@ -277,8 +277,8 @@ static inline bool have_dtb(const struct arm_boot_info *info)
+ }
+ 
+ #define WRITE_WORD(p, value) do { \
+-    address_space_stl_notdirty(as, p, value, \
+-                               MEMTXATTRS_UNSPECIFIED, NULL);  \
++    address_space_stl(as, p, value, \
++                         MEMTXATTRS_UNSPECIFIED, NULL);  \
+     p += 4;                       \
+ } while (0)
+ 
 -- 
 2.52.0
 
