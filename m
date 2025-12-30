@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82D0CEAACD
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 22:11:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7F68CEAAD3
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 22:11:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vah07-0006lL-7K; Tue, 30 Dec 2025 16:11:31 -0500
+	id 1vah0C-0007J4-RL; Tue, 30 Dec 2025 16:11:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vah03-0006YQ-RV
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:11:27 -0500
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vah0A-0007Ak-Ep
+ for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:11:34 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vah02-0002tD-Bk
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:11:27 -0500
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-4327790c4e9so1826959f8f.2
- for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 13:11:25 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vah08-0002tj-Qj
+ for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:11:34 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-47bdbc90dcaso64181005e9.1
+ for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 13:11:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767129084; x=1767733884; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767129091; x=1767733891; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=5rXIIuuJOx9dPiHg3QhjGbzovkvDH2p8y3rHgXwhNGI=;
- b=bKkM9JKeN4UQGCkUO1hVTkY/IdrFjYQ+uXAWZsut9TsgH2dYBO2RqwLe+SuVxgGKft
- B9tLBZvmhuVlydT8LUrjoh3dLkoKBtWcHMZS+H3p+KJ0Xz6MtlCqpy1kB/CqsayoJfHB
- l71yPL3pJGjSIaD7TfJBBoOIXHlOmkeGKbZRnAkKtMV0PEqiATP5oroz4lj6W5YzdGG3
- ZhNkBT6n1TvPurydWSGMzM7RfneopcAn3owyU/1vnRj54/+M8eBBjZcVAQfpo7h/0tvN
- UBXvOO1eamftdSLapocWnY6XqToUrM3RmVZsYGT5R5O1zzeBMnshVm32GRbaMV9wuYER
- Z78g==
+ :reply-to; bh=H4lmZbkpIbKlo+Cbmsb70+Gpr14aO3pvkdUUaISmtEc=;
+ b=Hu4Jo4lYgfyOpMmkotlf3NOeZC41/AGek9U4y0n556bwUXEW6t5Sa1+G18Iv6AuDLh
+ 0R8gQTOm3NcU8+V8ZHpfyQn6hQdPdEfgvVyLyyUp7PXmWUsFkjIwvrOjuTedoC29Qvx/
+ 6FHGdDU3EEP9DUxy5KCMm+uC4xsh604ZtPs2gZUc7eiqmYw7VuirsqAOKmhpkJrKspQ6
+ fE5ZXICoBMK11Vkhg8JSRehkIjCihL5kwZsyJtnzAkslSzCr7umaH6gHgk65G8aIEzn3
+ POdVx4aFTdkd+Y04p6OtWUrntBHJW8vTPQQ9hf4XU4NGrEL9eha/pqcyaisRTN3oKRUb
+ dOjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767129084; x=1767733884;
+ d=1e100.net; s=20230601; t=1767129091; x=1767733891;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=5rXIIuuJOx9dPiHg3QhjGbzovkvDH2p8y3rHgXwhNGI=;
- b=QYpFIY2L4UOhe6Jnk+FbWENX28y77R/4RP3iWYWevVPbb1UITRrJEY6A2ZvA2dXyP+
- xEPABhpaRMeEA/OUl81e34AbMCN/Sue1qM1d4cW0WscUd4bmXa5w0H+V0ZJKdcopdeqD
- dm0fn9Bjzo2MRJ3Ycl2gt3zQDdhInnNzBES3E7TNOnlc2U3abAHtAdB0zymWfdgwisSA
- hcNNcBgbIqbmuyNiRBoochEc3VvLjxN4gwlzPu7vjXjEqo9rtPJBtDfYfTGO/WPnDb7M
- rSj4VL7JZ6LNJHxMwtYKgLaz/4hRB7iqt6+LnEAWiwTY2JvOPg72bTGm85nJmCaUeXJL
- QkLg==
-X-Gm-Message-State: AOJu0Yy4cxQrFNV19hMAglqaQh+S5UjuldftsThT+hE36/D5cRMzzbyf
- U19NzHKLi4y9+BLTilpWSJy4WCk9pINAwUs94ihXIVQDAgogi+RwwIU5EF7aa1HAh4pSDnU2WW/
- HRAFTpco=
-X-Gm-Gg: AY/fxX6fjYUWF1brUC6L9C9EIoF9SCI1pDxzWtYOkJcEtuJDvtYiJT4MR5Opd1e6Wlf
- TcFIaBUZkAGYOkpCV5rryUcddTZfUxR+fQK3glXXQEi6cdysitgrZRbt5HOfLrY9pPLHq9gbYcG
- wRyo8qaiV8FzoP9T9Jx3m2LO5uXwC/+GfjJz4fC78yRhjKiQvNyFIWU46y4MRsQETxZ4M0cRhFM
- vLsQnmHnysZ5rWi7vAec+D/GjkFStTsw5PcCNc1YUIPXMUd6hPFxcmfKwPvmIQnogRsiKeBWbEK
- 0kLjqeU3R7Pf1bSUThETJkaf4q6jScrLtYJP8/0N6dUOwxT+lwByWj2miFaH7VaBMK9xRH7z4KQ
- 9Cbt7ORLaDgNUZWYT2/clJHdGif533s7o9GCXlUtGN2Xat7ekiM+SZ46PSHzXhEmWXQ4behGTe5
- MaKpojGBVG7BRACy0L2p7L0CGw081pPU+Hb0uYl3b+Tnp7LWJgHFt7s2cx7VJP
-X-Google-Smtp-Source: AGHT+IGWW7US14n06nI61jlc48DbuXSqiaUziOlB0rvaawxFfX1LYMSJ0jE6y9gbljxyR9r9OjGO7g==
-X-Received: by 2002:adf:e588:0:b0:430:f742:fbc8 with SMTP id
- ffacd0b85a97d-4324e4bfa36mr32490091f8f.6.1767129084501; 
- Tue, 30 Dec 2025 13:11:24 -0800 (PST)
+ bh=H4lmZbkpIbKlo+Cbmsb70+Gpr14aO3pvkdUUaISmtEc=;
+ b=D5WMLICO+ZTPoQbriivrMIKg6uLWJKws+DW+e74NVNWNQ55cjbqsqq+kmsYlcEJ34B
+ p8ox22m1HCWf0d4hwOQKDUcTSvCKgzsPPeW8xURBMyTMbxgfrqxTIIWcjGVzpj2wgKpT
+ 0ptP3lT6Ribbt2JWE450Mk5sBOLhh4vZIjwEM2X7wq2vJR/hrkw30D3Rr6DnDRd/kvqg
+ lnpOKPhE/Fj9DgxrrMuXBJgobm0QzGEr2bQ/7thj3Ol+qUfq95SnSOnjyfE9Qjq9zw3X
+ CeYgCrbSxLRekbsDYyu8KvP3EQUms/D3vtunw49n2gsR0TcJ1dqNcXzhAQT/xQ7ZW+3z
+ w5WQ==
+X-Gm-Message-State: AOJu0YzlKbvCij+IeZBBreQ5cThNapm65J5xO/AIOBGP7ogSX4dn8kOH
+ WuMfUM41jURbPnfTaTtygHYI4QNiRvyG/GOtWUYstEoh62Bb2Trn4pnNjefclbtIxgDiRtcI9hf
+ dcm7G0oE=
+X-Gm-Gg: AY/fxX5Zt4VE+acJUly2z2U8qRHAthQMGAKXiLHW4l1q8wvHH42vgDS6aTiQ0bLdGX0
+ Nv6KmxUkm02CQrIvHlFI/j3Z7mYUknZPeLgIhcoZTDOA3NbYLXNQvpVtca+msH82iId1nLMCv39
+ 3TJfgYT8ZHoWaUZqpiIg7IW7KN+j+n/XgQ7sFFRcb22ebpN7YP+6M/7xrIgrR6J6gVLKMh2qrZs
+ rgOh4KYLv6HmYL+FawssOvG5ZpqOwbjBTXQ95DPqMkmjoSzXrJ22uY/0xCSGYdko6EsFrEmxXhV
+ VR83IPIaohU/dp50Co+Dh6HoPxWcyjojz+JT+RCgBvkz3OXSM7r1hJ3f2CMAAuHJ8OQlLZh6ikC
+ I+oVbxGIZs1QSyplohKV+zdO+a97NNPojQADBEnid9bY4hgwUFW4jOPmQ4UMbKxni3BnOHlag1b
+ B74Efwxf96lGnvKFFMCR0iL7RKKfI0V5CeE4q1lknFS4ir7dcoZS10+A7amb6i
+X-Google-Smtp-Source: AGHT+IGI1+kt8tkkyfZ373Hv3dpdD98aEP7ptvaUpzxoq7ROk9LtEntYWqi/ouzJNJYnPoEKDNQZyg==
+X-Received: by 2002:a05:600c:470a:b0:479:3a86:dc1f with SMTP id
+ 5b1f17b1804b1-47d1958e43emr322603395e9.37.1767129090876; 
+ Tue, 30 Dec 2025 13:11:30 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324ea830fesm71328031f8f.20.2025.12.30.13.11.23
+ 5b1f17b1804b1-47be272e46fsm647306255e9.4.2025.12.30.13.11.30
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Dec 2025 13:11:24 -0800 (PST)
+ Tue, 30 Dec 2025 13:11:30 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 31/34] hw/i2c/imx: Fix trace func name error
-Date: Tue, 30 Dec 2025 22:07:53 +0100
-Message-ID: <20251230210757.13803-32-philmd@linaro.org>
+Subject: [PULL 32/34] meson: Optimize summary_info about directories
+Date: Tue, 30 Dec 2025 22:07:54 +0100
+Message-ID: <20251230210757.13803-33-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251230210757.13803-1-philmd@linaro.org>
 References: <20251230210757.13803-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,32 +97,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alano Song <AlanoSong@163.com>
+From: Bin Guo <guobin@linux.alibaba.com>
 
-Signed-off-by: Alano Song <AlanoSong@163.com>
-Fixes: e589c0ea9c9 ("hw/i2c/imx_i2c: Convert DPRINTF() to trace events")
+Clear summary_info first, otherwise there will be redundant output
+about build environment.
+
+Signed-off-by: Bin Guo <guobin@linux.alibaba.com>
+Tested-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20251218141144.51001-1-AlanoSong@163.com>
+Message-ID: <20251219230456.37178-1-guobin@linux.alibaba.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i2c/imx_i2c.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ meson.build | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/i2c/imx_i2c.c b/hw/i2c/imx_i2c.c
-index 88269653e2c..9b2d10060ca 100644
---- a/hw/i2c/imx_i2c.c
-+++ b/hw/i2c/imx_i2c.c
-@@ -151,8 +151,8 @@ static void imx_i2c_write(void *opaque, hwaddr offset,
- {
-     IMXI2CState *s = IMX_I2C(opaque);
+diff --git a/meson.build b/meson.build
+index 8111e62bf12..db87358d62d 100644
+--- a/meson.build
++++ b/meson.build
+@@ -4650,6 +4650,7 @@ summary_info += {'Download dependencies': get_option('wrap_mode') != 'nodownload
+ summary(summary_info, bool_yn: true, section: 'Build environment')
  
--    trace_imx_i2c_read(DEVICE(s)->canonical_path, imx_i2c_get_regname(offset),
--                       offset, value);
-+    trace_imx_i2c_write(DEVICE(s)->canonical_path, imx_i2c_get_regname(offset),
-+                        offset, value);
- 
-     value &= 0xff;
- 
+ # Directories
++summary_info = {}
+ summary_info += {'Install prefix':    get_option('prefix')}
+ summary_info += {'BIOS directory':    qemu_datadir}
+ pathsep = host_os == 'windows' ? ';' : ':'
 -- 
 2.52.0
 
