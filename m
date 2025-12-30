@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BBC8CEAADB
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 22:12:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFD45CEAACC
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 22:11:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vagzt-0005ii-IV; Tue, 30 Dec 2025 16:11:17 -0500
+	id 1vah02-0006K3-9A; Tue, 30 Dec 2025 16:11:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagzr-0005Vn-7o
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:11:15 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagzx-0006Ag-Mk
+ for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:11:21 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagzp-0002rN-FQ
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:11:14 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-47d3ffa5f33so19824435e9.2
- for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 13:11:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagzw-0002s5-2y
+ for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:11:21 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-47a80d4a065so51651395e9.2
+ for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 13:11:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767129072; x=1767733872; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767129078; x=1767733878; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Zu2BaYB0moTFOIMF7F4LVDdXIbTCjZNqLUd4CaPJB3A=;
- b=kky9DiBiGSuDezXkofVnWWHtCCcyQm5jyybiPUTRPUHbJ1LcfhVxuyDsaw3iP/ytWW
- 8Y7322IyCYb8r3lW4AT9P32zZym16CckLPxWVVGxYSy9gNiYUQtWmS+h0g0f+wczMLY/
- HyRh7VZuuH+jMiVQWwXTxT2/r19J90AA7GNP9OOMrIsvHW9dnQJvvLxGH8BUBnBzmm7F
- 0gLAweaJBsh8ZJXh8JLaibTpATgUs1xi+BOfBnElklnwvhinUfuV4+f81Vl+WJLK++Yn
- xnfJEX3BadlkC3qamMwm2dBz4cxJ7eVdCoFclC4vgpoMSmaFJlmedDvkJEDGkrtsDMW2
- Umgg==
+ :reply-to; bh=DK0mq3Imy0OD9x4GM+uaaTCwAi8dtPUGh7Hpx81Zgo4=;
+ b=QKFFRkncwAuRAJsuDYAT9fodRqEzKbE3tOvzs8RFWm28QbHlkD1UszpOMR1YmeSAXw
+ in047styG9NgJce01cy7D7azbR+4qIyTqJ6bhJic1/qyp9UampAfQBiC3+CaAXzW9e/C
+ gUxR384RsmWNgB/KCfmIneTdOCFwIanT9IHAACYbVPEVdrcMdgrYCjxYA4+A2R7cNb6C
+ kiFpMsruj3XxubCKqNIhn3gxEwM6XYRibO29+g87F23m7coq9y8XUTFw8iGbim9rxpgI
+ 8Mbt79ZkSYgEf+al92c29NBaqp1aYm/l1JXPoqnniOyk+g8z3VpzlkYRWrxL3S3ootvx
+ SAyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767129072; x=1767733872;
+ d=1e100.net; s=20230601; t=1767129078; x=1767733878;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=Zu2BaYB0moTFOIMF7F4LVDdXIbTCjZNqLUd4CaPJB3A=;
- b=Si1Jfd8g8qPqrd84M05XukIO5R0qLTnXL+UpRDCw7VtznqwfQoifx0zsWxGbS1QexH
- 67JUikQHpOm3Z6AmWdf5Zu/038A6p9qEJ9Gi6ndGEJWTxAIMgk6iA2TUV+KSkXxRSG8W
- Z58J5+vTI+X8W1V64dWtZwspo9qqQWi5oMjL5euISP5McPW6gVJGfTVE/YYEvla3xlpV
- b2gjIum6JjMN5ILJ469QjeyMgMpEo+phriRWYrSFwTkEYq/XIEbOQpyGUvr9LcNu8DB7
- xND3/QuV4LKOY+FNeuIIKVGefoEo8Er+ejjrhKIVduHxUU58ZJlnNSJ4YJ7ZIZyGqOlG
- P7xg==
-X-Gm-Message-State: AOJu0YzT9jULj24dlPmCJ5zv7hVyC1muBLJxRYhd+TIAqK9Gy7pGYKTZ
- 5WVYNw/otV+9bg6s20VjVorzFZ2eMeZhddY8Ka0ns9yyxRJBHou45gJIOR9hP3A5anNUsJIrR+7
- XZDSbBGI=
-X-Gm-Gg: AY/fxX56UH8sOYDBKOZ4kGNc5QJpzE3wYXvvPa1TltXJ1447SNFfEq6rYbDqogRk+b8
- KH6xg7cxgcMy1AXJHsffoASRAxx4r9tPqTSXvBbZ+Rfz/kOz7QzmLstib0U/u0i6crqosQfs1/s
- YyuE5GdmlhBIqqrdPz7nSJ5sVJxwZj60hrBYbNMqWu/Jax1g6sSrst1tK9zQ1IhrkA94Dr+Pofl
- QyFA83o/4U8brMh52RXmEJ0eyf8jrSK+tyotd3LjcEkgQUacZ+MNoCONZRfK1x6udjkDqsZG2D7
- niFTVlRgJ/M3JAKCjnyHwdHoH3pz3ghouFGlq7P/D2wvlx+GHjCj2Qh591u8Axm1Pw3cP4cQr8f
- 1F496Og8e/FgI9Pala109TaZxqCo/LYHZzZALjn1ZN+xAE9IRcUcNh4egd2D2PJRNZuOrM60KUg
- oB7ixz6vnWh//U8pLxUIBmakbd4A/Xv9Xjp5iz1RShpgewKjVdeUFo+RlEz7RF
-X-Google-Smtp-Source: AGHT+IFnLUTeFZ+YjLjJp4l9qNWPh4YMJPcKcVKQF4mU5kqNsWVJkZq0R+IcntLNquLlShqXT9i8tw==
-X-Received: by 2002:a05:600c:3508:b0:477:1bb6:17de with SMTP id
- 5b1f17b1804b1-47d19590bbemr412516955e9.30.1767129071619; 
- Tue, 30 Dec 2025 13:11:11 -0800 (PST)
+ bh=DK0mq3Imy0OD9x4GM+uaaTCwAi8dtPUGh7Hpx81Zgo4=;
+ b=OLOW47c3sIivNM/v++bQVLOnQ0kL5ENERvKgIyMKh+YSoDJ/T+6/5Kj1AFDh3V3oU0
+ v9kzSVzE4U1Wg/cY8zf4WePz9VpqE8AHwk1SOFuNWcvHYzlkZGVW579m5xl8bPEcFHjZ
+ GMF2w4bkZY9BQt6NmrH+6kE/fh0DABmVV9ms6uOGoXm9E1sBaMu0I7euR7CNxUSOlRM0
+ F/HKCUw7USoxsaKNNZDPj9gGi28t9WoO4InN9s65sjPK7eA0a+Wb1b47fcfghGZE8thy
+ QtQYqPafTkICy2q+rvLDv6GZuzJWDooJnKO5X5PZgSMQX5SuLQDOppLorwCLQCuaYtID
+ JBSg==
+X-Gm-Message-State: AOJu0YxHsdMpsAep2XMnJ11QRoyuu6xFqyq3b0ajfZVmL7eWQVc8sFr+
+ 6OBCaJLGOH3i6EGgQ0J6aqsqTTpPRQBz6XRAeYDf7S2FbMEn++lTWBOR+k8SUXjpAQ1XLd1d3yg
+ F0DDvtss=
+X-Gm-Gg: AY/fxX78VLebH+MMWqjcbf+F6p3tMAl8z7X+0qUKHsYYCoKMsuxgf729uBwOGe352GH
+ Q8XNDtkHKHV9gJ4WpFRXm5mge7QdKRRGGlx7IBjpvg0MiNZdltdxP+PV7LH/Fzg6UaDTMG9VBfs
+ A1R3a233yIrLyF/CdFlZ/8QqZa1ELYCPPVHsN6PXChOLTPxDi4bY6bQKFS9iecJZ3EYhlnawlb1
+ 4KVafafcFrl8plb6b7HaWcfD4R238Txq0EF32gu36e/VdzaxZkRX0YU0HqxeI8cVJayThgbEj7q
+ GZdmITh4E4u1NAHBZ0IwZVRc0E4aKSBHz4hJvt99QFka0LuZLflL0d3X+HBwZUykCEu5kDx36hn
+ 4qCR4kTaPrnyxtG/z/eFrh/uHeiLF3WNW6EBMDThVDCshJ7cykE2Wm2xcU93NXEHBXnrrBa2piV
+ 6Fn1s7+oWz8coVTdjgAK8Ka1SeldNrKm6L8l3pEHltZyJBF9gOXp0/Skz9CVmhoxfUxtjmXJo=
+X-Google-Smtp-Source: AGHT+IE2F7DhkxNEtfOf2eklwmbApFPpcM98snmmVlx2xzbXi7i3GIOlSsvqJma4Bi0YXoMI2xTaMw==
+X-Received: by 2002:a05:600c:4f15:b0:477:b734:8c41 with SMTP id
+ 5b1f17b1804b1-47d19538dfbmr457544785e9.1.1767129078117; 
+ Tue, 30 Dec 2025 13:11:18 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d19346dfcsm739823945e9.1.2025.12.30.13.11.10
+ 5b1f17b1804b1-47d19346e48sm597817615e9.2.2025.12.30.13.11.17
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Dec 2025 13:11:11 -0800 (PST)
+ Tue, 30 Dec 2025 13:11:17 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 29/34] qga/vss-win32: Fix ConvertStringToBSTR redefinition with
- newer MinGW
-Date: Tue, 30 Dec 2025 22:07:51 +0100
-Message-ID: <20251230210757.13803-30-philmd@linaro.org>
+Subject: [PULL 30/34] util: Move qemu_ftruncate64 from block/file-win32.c to
+ oslib-win32.c
+Date: Tue, 30 Dec 2025 22:07:52 +0100
+Message-ID: <20251230210757.13803-31-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251230210757.13803-1-philmd@linaro.org>
 References: <20251230210757.13803-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,68 +100,104 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nguyen Dinh Phi <phind.uet@gmail.com>
 
-Newer versions of MinGW-w64 provide ConvertStringToBSTR() in the
-_com_util namespace via <comutil.h>. This causes a redefinition
-error when building qemu-ga on Windows with these toolchains.
-
-Add a meson check to detect whether ConvertStringToBSTR is already
-available, and conditionally compile our fallback implementation
-only when the system does not provide one.
+qemu_ftruncate64() is a general-purpose utility function that may be
+used outside of the block layer. Move it to util/oslib-win32.c where
+other Windows-specific utility functions reside.
 
 Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
-Suggested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
-Message-ID: <20251218085446.462827-2-phind.uet@gmail.com>
+Message-ID: <20251218085446.462827-3-phind.uet@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- meson.build               | 12 ++++++++++++
- qga/vss-win32/install.cpp |  2 ++
- 2 files changed, 14 insertions(+)
+ block/file-win32.c | 32 --------------------------------
+ util/oslib-win32.c | 33 +++++++++++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+), 32 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 14b1160c15d..8111e62bf12 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3241,6 +3241,18 @@ endif
- # Detect host pointer size for the target configuration loop.
- host_long_bits = cc.sizeof('void *') * 8
- 
-+# Detect if ConvertStringToBSTR has been defined in _com_util namespace
-+if host_os == 'windows'
-+  has_convert_string_to_bstr = cxx.links('''
-+    #include <comutil.h>
-+    int main() {
-+        BSTR b = _com_util::ConvertStringToBSTR("test");
-+        return b ? 0 : 1;
-+    }
-+  ''')
-+  config_host_data.set('CONFIG_CONVERT_STRING_TO_BSTR', has_convert_string_to_bstr)
-+endif
-+
- ########################
- # Target configuration #
- ########################
-diff --git a/qga/vss-win32/install.cpp b/qga/vss-win32/install.cpp
-index 7b25d9098ba..5b7a8e9bc52 100644
---- a/qga/vss-win32/install.cpp
-+++ b/qga/vss-win32/install.cpp
-@@ -549,6 +549,7 @@ STDAPI DllUnregisterServer(void)
- 
- 
- /* Support function to convert ASCII string into BSTR (used in _bstr_t) */
-+#ifndef CONFIG_CONVERT_STRING_TO_BSTR
- namespace _com_util
- {
-     BSTR WINAPI ConvertStringToBSTR(const char *ascii) {
-@@ -566,6 +567,7 @@ namespace _com_util
-         return bstr;
-     }
+diff --git a/block/file-win32.c b/block/file-win32.c
+index 0efb609e1d5..b00039bf945 100644
+--- a/block/file-win32.c
++++ b/block/file-win32.c
+@@ -170,38 +170,6 @@ static BlockAIOCB *paio_submit(BlockDriverState *bs, HANDLE hfile,
+     return thread_pool_submit_aio(aio_worker, acb, cb, opaque);
  }
-+#endif
  
- /* Stop QGA VSS provider service using Winsvc API  */
- STDAPI StopService(void)
+-int qemu_ftruncate64(int fd, int64_t length)
+-{
+-    LARGE_INTEGER li;
+-    DWORD dw;
+-    LONG high;
+-    HANDLE h;
+-    BOOL res;
+-
+-    if ((GetVersion() & 0x80000000UL) && (length >> 32) != 0)
+-        return -1;
+-
+-    h = (HANDLE)_get_osfhandle(fd);
+-
+-    /* get current position, ftruncate do not change position */
+-    li.HighPart = 0;
+-    li.LowPart = SetFilePointer (h, 0, &li.HighPart, FILE_CURRENT);
+-    if (li.LowPart == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR) {
+-        return -1;
+-    }
+-
+-    high = length >> 32;
+-    dw = SetFilePointer(h, (DWORD) length, &high, FILE_BEGIN);
+-    if (dw == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR) {
+-        return -1;
+-    }
+-    res = SetEndOfFile(h);
+-
+-    /* back to old position */
+-    SetFilePointer(h, li.LowPart, &li.HighPart, FILE_BEGIN);
+-    return res ? 0 : -1;
+-}
+-
+ static int set_sparse(int fd)
+ {
+     DWORD returned;
+diff --git a/util/oslib-win32.c b/util/oslib-win32.c
+index 839b8a4170e..5f3e8f4d980 100644
+--- a/util/oslib-win32.c
++++ b/util/oslib-win32.c
+@@ -899,3 +899,36 @@ int qemu_shm_alloc(size_t size, Error **errp)
+     error_setg(errp, "Shared memory is not supported.");
+     return -1;
+ }
++
++int qemu_ftruncate64(int fd, int64_t length)
++{
++    LARGE_INTEGER li;
++    DWORD dw;
++    LONG high;
++    HANDLE h;
++    BOOL res;
++
++    if ((GetVersion()&0x80000000UL) && (length >> 32) != 0) {
++        return -1;
++    }
++
++    h = (HANDLE)_get_osfhandle(fd);
++
++    /* get current position, ftruncate do not change position */
++    li.HighPart = 0;
++    li.LowPart = SetFilePointer (h, 0, &li.HighPart, FILE_CURRENT);
++    if (li.LowPart == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR) {
++        return -1;
++    }
++
++    high = length >> 32;
++    dw = SetFilePointer(h, (DWORD) length, &high, FILE_BEGIN);
++    if (dw == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR) {
++        return -1;
++    }
++    res = SetEndOfFile(h);
++
++    /* back to old position */
++    SetFilePointer(h, li.LowPart, &li.HighPart, FILE_BEGIN);
++    return res ? 0 : -1;
++}
 -- 
 2.52.0
 
