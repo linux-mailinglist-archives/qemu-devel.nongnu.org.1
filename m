@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F238CEAA84
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 22:09:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89714CEAA7B
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 22:09:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vagxT-0004wm-8A; Tue, 30 Dec 2025 16:08:47 -0500
+	id 1vagxW-00053s-Kj; Tue, 30 Dec 2025 16:08:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagxO-0004pv-Fr
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:08:43 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagxU-000537-Jv
+ for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:08:48 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagxM-0002Ff-Qn
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:08:42 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-430fbb6012bso8572882f8f.1
- for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 13:08:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagxT-0002G0-3O
+ for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:08:48 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4779aa4f928so103152855e9.1
+ for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 13:08:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767128919; x=1767733719; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767128925; x=1767733725; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=dq6gDL+VvfsJgspbVgIcSIatyQ9ZwkoXNNTZK0OwJ2Y=;
- b=nOSYvE14j1JQo7oEsjzulP0fd1vOeBl8elMXh+Sj+lEr1njJvpMaNCW1jEgtdMz7LX
- eGKbWuej2IsvEuL843vBVEmBhOrzBr4i5ve23h8ATZcbLYEjpCq1eWQyymFJaSdcZvTT
- GI883dGiDkcCrE/p+weecyzeQpNJr2l4TOf0bR6VzDVDa41ZW5LcgMLLsvbs9bZKpDEe
- ivClzYYJnBdeVbxKEug98XRvIQpe2D1kETC8fptyRZfSzIb63B8aSijaq07AkO2YmRsk
- YoxezBpFReWrrRmYCmFDLCg8ZE83x3yPtFS1VXalgM5tKDhB3caKbawbaLDWCE1yoUgk
- TPDw==
+ :reply-to; bh=J6K9VfrYM9O58NYLBO+LcXYAGm/XGIvX82MjEg9FdAU=;
+ b=uz3CsImxacePYGEQ3lQ+2edmNcwQDxP3cdcpB541ZJ7bM2oYb9l9zdRisR6HOjiTBh
+ xVGI9SRHEM+J7NM08GEEWNQBs62phaaidzN/9dP0MMSVVKOBG4qIGcLkPEy8DjfYPm28
+ XsvnSnDN2zYQfcyOPXYch3pA6QqwtYSpxrpvMfcKXhZ1mkLQ8LtFOYoMDlsZYoIWrywZ
+ mpoqzKWmYd4g9J+vObnr3/JRRThnG4m9v1kL/kBXGWP21zocvehfD4FRmuasNC6RM+nU
+ pVF5L7cLAqZk3KK6N5Fdg2MzVBnqlUgXBwscDC+iCXw0ON5PaY1IiviE+qGQjHtmS4Rs
+ 4Jjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767128919; x=1767733719;
+ d=1e100.net; s=20230601; t=1767128925; x=1767733725;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=dq6gDL+VvfsJgspbVgIcSIatyQ9ZwkoXNNTZK0OwJ2Y=;
- b=WF9n2foE1CRg4Xrx+5mS1V3wuVIGXPEADblv54oNkt1kT7r655SWawtxoYhuH9DlyJ
- vZM31pFWpeNpYkJVY5iagCC0HFJh5t6AF6VX30X9JXdxYQuOB+87LnOMhdxRTdzMVyfr
- 9S0L4q3zEGWKDzQlL2hGVH+PwKtO+W8fieGwN/rwN9m5fXEbwCC78R4dgBAF0aD7/kdV
- lZkcX+BZHGGqBJ7PCuT4vCPPnm0rXYjJ9egik/rsWj0icFEmZWKsoEpHiOIF5jYQTD/2
- hr46kDDJwjnw4upUCVcKluFBtPuGywCgPFAcqnwV6u7uU6R1f3LAYRTgoMehF9y2tGhs
- p/fQ==
-X-Gm-Message-State: AOJu0YyXbMvaOhhTHOp8RhyYsMRacTDp4TnOECIwEjKycURpwSexuoPN
- pXWjHWNREg2iKUFHwebwBBqN7l5vwoJ4LtJUBZneIltbkyOlaRG1PvsrTYP5AmIPOx/PWqKufCo
- fbCwNNvk=
-X-Gm-Gg: AY/fxX71Vbu8Ox3ESEtm3RWK2CmqAhQ69xxSfe456nTiwBUjtGoS8am1CC8EhyS7n7q
- 2uN2TTqvrb9lKmm5DAQX5i1hVGw1kj9zv7Kq5+3kvG19uAmWQaghj9wvaomrZUQv6EAS1m2g2Zs
- i4F+HHYIqafmQaajvi9StOKi0o8zp67NMvPt3WoR/UQqeiKG9FIQZnt49xcSDKnaP3H9JnC6ztc
- 88aW70VERwRQ5dFMi/lOCXmsUYNI3ZoI/T/FOxJwpH0M2B8sLRfgEPxXsm0XBokXRUkFdeu/LZW
- pZ0rK4C9Q8S3Cib3fcGJtfPwxLuA8NvaF+f64uFxT6j8CFXH0oaF/Vf+pYEjvarFR0QtaLGpRW+
- dDfyUe5UMWOd5r3VTgg0UxCw9nZe8poTiA+uPVhopv5RpCFvc9y/+nb9B5rK4GGaN+pddBU2r1l
- aSpN78Swwu5ZFp0zTKJlOCGe0u0X16VgikZFd0zaP2RX6ROvplsA6OEQqQo2Hh
-X-Google-Smtp-Source: AGHT+IEtlzQySgxjCQZCN/743cdzfbyg0bK42e6Plmkm5pEsW9B3rapzsVviqnsu30LtJBq6Y5WK6Q==
-X-Received: by 2002:a5d:5d0d:0:b0:431:3a5:d9b8 with SMTP id
- ffacd0b85a97d-4324e510810mr41922457f8f.52.1767128918791; 
- Tue, 30 Dec 2025 13:08:38 -0800 (PST)
+ bh=J6K9VfrYM9O58NYLBO+LcXYAGm/XGIvX82MjEg9FdAU=;
+ b=BZ6bTVlhwqept6y5RRnV8x4AtS9jkrhlh6EpqFG44JzwIdMKH/3b8bFDwb4Ci5MluO
+ UURp2yZgz7jLHQwEuSTPHpbyajbxocS2uJoDewMEK4Chw+4mMwuiFWS9znUM1scKsIEb
+ Uhw2ifpHPQcIwyv1lNVkgm8XonVJXqdyAy3DFz4jJuReylFM/LcYwyEdeY5bWiTefaqQ
+ qjqVzcdp6+Z4TzFB+ZzX6JK1AnPVaicCybLsiuJHFBkdhtVndkAJsgaEjjYe7jGoh5Kn
+ oCfmUUp//jQIw7q3KdmGqJEmWv0AMd4RbCCaQ+g016jpE0X1LA+b32FwU8urqnv6XcSN
+ CeoQ==
+X-Gm-Message-State: AOJu0YyX7GpDHXotIl8ONJLzNTvbSf5QSagZYIkFI1aaKStsMuqBrCT9
+ YZyrsrDhGcLfnkZ5P1hXeKhnZ+omJCKpNA2zWIf0tApNRKm2SbkvlDM4KY5uldQR7WKvTUdUhYC
+ bbgrnbFo=
+X-Gm-Gg: AY/fxX5EJHBNZTUs/bSgYsRKBO4pNX/HuXCMIBuqP1NGlaMkOFWsHDR9MlqVS5MsBGK
+ AUeCZh0NApj7aOocRRxaK3jsUf2uMoKk13efQS/zv0sKkN936qTjCFhZYzMRFRQT4A6y+d9VfjU
+ OyW2pNZUuOOHuO3MmvNiYS01g/T1ix9UDTN5+2Xj5IUz9nHzCY6+DWrCdtRqahH91VbGQvK3sVj
+ DKy84LjU6DXwReBbxEOVuJ4yGxsz50aQamEbd9ML1qGafGkswnPyVO0Dud/E4nX3Csk5QaDcwW6
+ tO0pEs3BQ+gODRAD+aMBvDAI7cyvD52PpABm39tUHXXVh14kCc8igMQwrVyNKw132xpEjJkbnpR
+ V/GyMMYHYtQMMYiXK7i7nNi4JLRuFoWEo/gOxpjrDIulSIzjayw5EO2Hip3RIVDVqG0q1QbFoaJ
+ KMKdbpYQq0BNuSP10sz6h3W+1LTuAj+EIAXC4+E3tlzuto6SFFfkIif8WXfkzK
+X-Google-Smtp-Source: AGHT+IHjRJFEPCpmtF1d1fOUz6/NeEeSSDi7ivz4NbqDULRUK52RohkvYyyH+icCxmzz4YWOGdHf1g==
+X-Received: by 2002:a05:600c:524f:b0:45d:d8d6:7fcc with SMTP id
+ 5b1f17b1804b1-47d1958b73cmr422165405e9.27.1767128925308; 
+ Tue, 30 Dec 2025 13:08:45 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324eaa46c0sm70687019f8f.34.2025.12.30.13.08.37
+ 5b1f17b1804b1-47d193621c8sm609217975e9.7.2025.12.30.13.08.44
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Dec 2025 13:08:38 -0800 (PST)
+ Tue, 30 Dec 2025 13:08:44 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 06/34] monitor/hmp: Make memory_dump() @is_physical argument a
- boolean
-Date: Tue, 30 Dec 2025 22:07:28 +0100
-Message-ID: <20251230210757.13803-7-philmd@linaro.org>
+Subject: [PULL 07/34] monitor/hmp: Use plain uint64_t @addr argument in
+ memory_dump()
+Date: Tue, 30 Dec 2025 22:07:29 +0100
+Message-ID: <20251230210757.13803-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251230210757.13803-1-philmd@linaro.org>
 References: <20251230210757.13803-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,46 +98,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Suggested-by: Dr. David Alan Gilbert <dave@treblig.org>
+memory_dump() takes either hwaddr or vaddr type, depending
+on the @is_physical argument. Simply use uint64_t type which
+is common to both.
+Pad address using field width formatting, removing the need
+for the target_ulong type.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Message-Id: <20251229231546.50604-3-philmd@linaro.org>
+Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
+Message-Id: <20251229231546.50604-4-philmd@linaro.org>
 ---
- monitor/hmp-cmds-target.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ monitor/hmp-cmds-target.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
 diff --git a/monitor/hmp-cmds-target.c b/monitor/hmp-cmds-target.c
-index 2976f986d35..51dcb9e314c 100644
+index 51dcb9e314c..e855c0d8a2c 100644
 --- a/monitor/hmp-cmds-target.c
 +++ b/monitor/hmp-cmds-target.c
-@@ -122,7 +122,7 @@ void hmp_info_registers(Monitor *mon, const QDict *qdict)
+@@ -122,12 +122,13 @@ void hmp_info_registers(Monitor *mon, const QDict *qdict)
  }
  
  static void memory_dump(Monitor *mon, int count, int format, int wsize,
--                        hwaddr addr, int is_physical)
-+                        hwaddr addr, bool is_physical)
+-                        hwaddr addr, bool is_physical)
++                        uint64_t addr, bool is_physical)
  {
      int l, line_size, i, max_digits, len;
      uint8_t buf[16];
-@@ -237,7 +237,7 @@ void hmp_memory_dump(Monitor *mon, const QDict *qdict)
-     int size = qdict_get_int(qdict, "size");
-     target_long addr = qdict_get_int(qdict, "addr");
+     uint64_t v;
+     CPUState *cs = mon_get_cpu(mon);
++    const unsigned int addr_width = is_physical ? 8 : (target_long_bits() * 2);
  
--    memory_dump(mon, count, format, size, addr, 0);
-+    memory_dump(mon, count, format, size, addr, false);
- }
+     if (!cs && (format == 'i' || !is_physical)) {
+         monitor_printf(mon, "Can not dump without CPU\n");
+@@ -165,11 +166,7 @@ static void memory_dump(Monitor *mon, int count, int format, int wsize,
+     }
  
- void hmp_physical_memory_dump(Monitor *mon, const QDict *qdict)
-@@ -247,7 +247,7 @@ void hmp_physical_memory_dump(Monitor *mon, const QDict *qdict)
-     int size = qdict_get_int(qdict, "size");
-     hwaddr addr = qdict_get_int(qdict, "addr");
- 
--    memory_dump(mon, count, format, size, addr, 1);
-+    memory_dump(mon, count, format, size, addr, true);
- }
- 
- void *gpa2hva(MemoryRegion **p_mr, hwaddr addr, uint64_t size, Error **errp)
+     while (len > 0) {
+-        if (is_physical) {
+-            monitor_printf(mon, HWADDR_FMT_plx ":", addr);
+-        } else {
+-            monitor_printf(mon, TARGET_FMT_lx ":", (target_ulong)addr);
+-        }
++        monitor_printf(mon, "%0*" PRIx64 ":", addr_width, addr);
+         l = len;
+         if (l > line_size)
+             l = line_size;
 -- 
 2.52.0
 
