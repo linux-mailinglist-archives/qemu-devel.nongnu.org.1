@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7F68CEAAD3
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 22:11:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB5C2CEAAC9
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 22:11:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vah0C-0007J4-RL; Tue, 30 Dec 2025 16:11:36 -0500
+	id 1vah0I-0007Nm-Eo; Tue, 30 Dec 2025 16:11:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vah0A-0007Ak-Ep
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:11:34 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vah0G-0007Mw-Me
+ for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:11:40 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vah08-0002tj-Qj
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:11:34 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-47bdbc90dcaso64181005e9.1
- for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 13:11:32 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vah0F-0002v7-6W
+ for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:11:40 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-42e2ba54a6fso4460689f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 13:11:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767129091; x=1767733891; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767129097; x=1767733897; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=H4lmZbkpIbKlo+Cbmsb70+Gpr14aO3pvkdUUaISmtEc=;
- b=Hu4Jo4lYgfyOpMmkotlf3NOeZC41/AGek9U4y0n556bwUXEW6t5Sa1+G18Iv6AuDLh
- 0R8gQTOm3NcU8+V8ZHpfyQn6hQdPdEfgvVyLyyUp7PXmWUsFkjIwvrOjuTedoC29Qvx/
- 6FHGdDU3EEP9DUxy5KCMm+uC4xsh604ZtPs2gZUc7eiqmYw7VuirsqAOKmhpkJrKspQ6
- fE5ZXICoBMK11Vkhg8JSRehkIjCihL5kwZsyJtnzAkslSzCr7umaH6gHgk65G8aIEzn3
- POdVx4aFTdkd+Y04p6OtWUrntBHJW8vTPQQ9hf4XU4NGrEL9eha/pqcyaisRTN3oKRUb
- dOjw==
+ :reply-to; bh=L6ML9swyx3/50z1k31zOpaJrNweHVDBzQiceI3AV+jg=;
+ b=ADyubTHfRfHlUnbFXAdFrOLyq8Eu2o0IE03Xj4fx5Ni09g7EsJ5BJmG5rFakl/eGuZ
+ 3K+VEsNxNVljNiA8LK41Kk7j0mP01v671VNwOlfKmMsDrrld0B93koPWvjjh6vBxFToX
+ C3G/itaeV/4cyNe7SZ7nYxuGDaZr1jUaPrYvxz8RkoDZVEgIP6KCAiy08vmwrtL3VgQq
+ /I54XVQLgwF0Q1pJJttMlolt0OnzmY+jSTxdicPsIU59nsGQYbgR62ZSQ+D15oUj5/wr
+ LUZKXOtwlRzFFaDSZRq51JKVjtHCpVb1/L6NjlK/93BO/CIemYjS1GaaE+u/lSFRsmCs
+ rB8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767129091; x=1767733891;
+ d=1e100.net; s=20230601; t=1767129097; x=1767733897;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=H4lmZbkpIbKlo+Cbmsb70+Gpr14aO3pvkdUUaISmtEc=;
- b=D5WMLICO+ZTPoQbriivrMIKg6uLWJKws+DW+e74NVNWNQ55cjbqsqq+kmsYlcEJ34B
- p8ox22m1HCWf0d4hwOQKDUcTSvCKgzsPPeW8xURBMyTMbxgfrqxTIIWcjGVzpj2wgKpT
- 0ptP3lT6Ribbt2JWE450Mk5sBOLhh4vZIjwEM2X7wq2vJR/hrkw30D3Rr6DnDRd/kvqg
- lnpOKPhE/Fj9DgxrrMuXBJgobm0QzGEr2bQ/7thj3Ol+qUfq95SnSOnjyfE9Qjq9zw3X
- CeYgCrbSxLRekbsDYyu8KvP3EQUms/D3vtunw49n2gsR0TcJ1dqNcXzhAQT/xQ7ZW+3z
- w5WQ==
-X-Gm-Message-State: AOJu0YzlKbvCij+IeZBBreQ5cThNapm65J5xO/AIOBGP7ogSX4dn8kOH
- WuMfUM41jURbPnfTaTtygHYI4QNiRvyG/GOtWUYstEoh62Bb2Trn4pnNjefclbtIxgDiRtcI9hf
- dcm7G0oE=
-X-Gm-Gg: AY/fxX5Zt4VE+acJUly2z2U8qRHAthQMGAKXiLHW4l1q8wvHH42vgDS6aTiQ0bLdGX0
- Nv6KmxUkm02CQrIvHlFI/j3Z7mYUknZPeLgIhcoZTDOA3NbYLXNQvpVtca+msH82iId1nLMCv39
- 3TJfgYT8ZHoWaUZqpiIg7IW7KN+j+n/XgQ7sFFRcb22ebpN7YP+6M/7xrIgrR6J6gVLKMh2qrZs
- rgOh4KYLv6HmYL+FawssOvG5ZpqOwbjBTXQ95DPqMkmjoSzXrJ22uY/0xCSGYdko6EsFrEmxXhV
- VR83IPIaohU/dp50Co+Dh6HoPxWcyjojz+JT+RCgBvkz3OXSM7r1hJ3f2CMAAuHJ8OQlLZh6ikC
- I+oVbxGIZs1QSyplohKV+zdO+a97NNPojQADBEnid9bY4hgwUFW4jOPmQ4UMbKxni3BnOHlag1b
- B74Efwxf96lGnvKFFMCR0iL7RKKfI0V5CeE4q1lknFS4ir7dcoZS10+A7amb6i
-X-Google-Smtp-Source: AGHT+IGI1+kt8tkkyfZ373Hv3dpdD98aEP7ptvaUpzxoq7ROk9LtEntYWqi/ouzJNJYnPoEKDNQZyg==
-X-Received: by 2002:a05:600c:470a:b0:479:3a86:dc1f with SMTP id
- 5b1f17b1804b1-47d1958e43emr322603395e9.37.1767129090876; 
- Tue, 30 Dec 2025 13:11:30 -0800 (PST)
+ bh=L6ML9swyx3/50z1k31zOpaJrNweHVDBzQiceI3AV+jg=;
+ b=tfzij/w9oks9gp4OhCoBPywBZeS2JenTfXXcVTPB03uv/g4OqpWNBAnpIyQVu0qTkT
+ 7SBHNfrBsKyLn3bHANHUF7GfX1aLGqWsp8TZk96YLQbr2ssREhGhgNILBgzQZryop82j
+ 4C7mnKT+E/+Yhsk+e0H6n/E0xoxad2BEgTt+7FI0TOjcqAe+0TQb4I1xn5zczazGtsmv
+ 1r7JOHUMMV0hPiUN7iUPPvZzby3DRDSQ6Fhb0Qmy2TNe5hHC+IhA/iqYk0KCpj+ShpQx
+ P/qLolNhpfq6RZCB6TiZedwLlr/QwnfJl8Huf5dQ/pGJ32MpE79wwfikL5Ix8OikIb/l
+ 9Biw==
+X-Gm-Message-State: AOJu0YxnENUzghc3W1QbG0sNYHkyORaYOuOt+HWAM1SpZKx6k5WM4iqu
+ bOv/kMT+1PsSbeVGnk9IFAAEYNhVAEptaoBA9HjueUtPXzVXdPeZE337upzZDUDzPmlW9MMvSgN
+ cpkvfFQ0=
+X-Gm-Gg: AY/fxX6tsPzEVnQMTTXmt60ThcJBcwJ9fCJ5aSuvIk6LQ3ufPacndB2UVHEoo4KtBOT
+ 8uBJwQCvF59ao2OJdsK750HEUL0aBngGF+HqrvxJZUgzafjmDUYpQz7gPLQ4jn8ynv2CwIEuvZa
+ L+kr8zri8BaAfLEzsGJq3nktqNJd4OzWOpY2/OfVaQFtbDWoqapbHSU85X09SJO/AaUDE44Lf8Z
+ sldjM9CJyBAHg6aN513aMF1uER5vZAA3nyXlIkwRlbbkUebR0GyD59OklCcHjAFzlbS6fzDrVGr
+ xSFTG14AIZjD0XsomSBzaKwMzNkVghxmBLPpuCLhv3NYG9zUJuI1L1DmOHJW64Qg5Y/G6R66dLk
+ DYQFqp8JIGsEt8YEHzeS2A9XFMIR92mf2oV+S6ZlaactmEbKIuwq71leQecA1PeIYo4wccjXvmP
+ 7SAFxADum8b7M9PT/WLRdCzAfxzWhj5EqtQhHKqGCnf2MwaUXHvdXO4jPAjgET+TiYPVUOPaM=
+X-Google-Smtp-Source: AGHT+IG/a7SnuP7wprj7M5p94oVcAcENC8Kw/RvUxRG7Rh4yWDKYWbBkpVc1NdXqbasatAeq2LJhLQ==
+X-Received: by 2002:a05:6000:24c4:b0:430:fc3a:fbce with SMTP id
+ ffacd0b85a97d-4324e4c9d45mr50225063f8f.15.1767129097256; 
+ Tue, 30 Dec 2025 13:11:37 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47be272e46fsm647306255e9.4.2025.12.30.13.11.30
+ ffacd0b85a97d-4324eaa2beasm69062242f8f.33.2025.12.30.13.11.36
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Dec 2025 13:11:30 -0800 (PST)
+ Tue, 30 Dec 2025 13:11:36 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 32/34] meson: Optimize summary_info about directories
-Date: Tue, 30 Dec 2025 22:07:54 +0100
-Message-ID: <20251230210757.13803-33-philmd@linaro.org>
+Subject: [PULL 33/34] MAINTAINERS: remove old email for Bandan Das
+Date: Tue, 30 Dec 2025 22:07:55 +0100
+Message-ID: <20251230210757.13803-34-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251230210757.13803-1-philmd@linaro.org>
 References: <20251230210757.13803-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,33 +97,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bin Guo <guobin@linux.alibaba.com>
+From: Stefan Hajnoczi <stefanha@redhat.com>
 
-Clear summary_info first, otherwise there will be redundant output
-about build environment.
+Bandan recently left Red Hat and emails to his old address now result in
+bounce messages. I contacted Bandan and he asked me to remove his old
+address on his behalf.
 
-Signed-off-by: Bin Guo <guobin@linux.alibaba.com>
-Tested-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reported-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20251219230456.37178-1-guobin@linux.alibaba.com>
+Message-ID: <20251226083207.506850-1-stefanha@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- meson.build | 1 +
- 1 file changed, 1 insertion(+)
+ MAINTAINERS | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/meson.build b/meson.build
-index 8111e62bf12..db87358d62d 100644
---- a/meson.build
-+++ b/meson.build
-@@ -4650,6 +4650,7 @@ summary_info += {'Download dependencies': get_option('wrap_mode') != 'nodownload
- summary(summary_info, bool_yn: true, section: 'Build environment')
- 
- # Directories
-+summary_info = {}
- summary_info += {'Install prefix':    get_option('prefix')}
- summary_info += {'BIOS directory':    qemu_datadir}
- pathsep = host_os == 'windows' ? ';' : ':'
+diff --git a/MAINTAINERS b/MAINTAINERS
+index cbae7c26f83..1b4fd48935d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3543,7 +3543,6 @@ X: tests/qtest/migration-*
+ Device Fuzzing
+ M: Alexander Bulekov <alxndr@bu.edu>
+ R: Paolo Bonzini <pbonzini@redhat.com>
+-R: Bandan Das <bsd@redhat.com>
+ R: Stefan Hajnoczi <stefanha@redhat.com>
+ R: Fabiano Rosas <farosas@suse.de>
+ R: Darren Kenny <darren.kenny@oracle.com> 
 -- 
 2.52.0
 
