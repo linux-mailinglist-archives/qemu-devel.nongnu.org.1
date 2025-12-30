@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAD59CEAA96
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 22:10:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 238EACEAAA9
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 22:11:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vagyf-0000uI-Q2; Tue, 30 Dec 2025 16:10:02 -0500
+	id 1vagzH-0001co-54; Tue, 30 Dec 2025 16:10:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagye-0000s0-2q
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:10:00 -0500
-Received: from mail-wr1-x444.google.com ([2a00:1450:4864:20::444])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagym-0001JR-2M
+ for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:10:10 -0500
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagyc-0002PR-LS
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:09:59 -0500
-Received: by mail-wr1-x444.google.com with SMTP id
- ffacd0b85a97d-42b3d7c1321so6064447f8f.3
- for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 13:09:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagyj-0002Yd-5i
+ for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:10:07 -0500
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-430f57cd471so5006284f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 13:10:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767128997; x=1767733797; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767129003; x=1767733803; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=7PdapgrHunfm5ufaIBcnmA01QT5kJZfbNKwQl9yuLx0=;
- b=WDfBO0zYvzInPNet6tE5rULGvjVHWOSTfc2L27ndrblzVOMWA2N/aDSra2sQr5h221
- 32RYZfRNmuy8YWfqA+kHIHBiwLm6qgJZvGL8B7Yh3/prJIv5dAUE1hOishMh22HGsmkw
- E787eq00iYgAz4/ynHCcTsp+CnT8e8Uxi3gP3A/EQw8hINmYZuiKhZc7HEp1vvuHhFMe
- Y8xEyHGbkDn8fx8VqckPteeIJLMKMpHbcR3AmRMstLaKAMCuvit0M55nxzw3RHb7b/QH
- wk6FLciWx2UqOdfVBltoDwG8rw8puYrUWXe60ui38M1Zfew2s5nEc06Kc3q3cvqYwElK
- rrpA==
+ :reply-to; bh=aWZ/wGhyjNTDvmvQyGMp4r18x0TBLO5WgYXXIpLUaQg=;
+ b=f6SQupp5E+KDMq6YYap3MCRcTCqB+Q6sr83AcTZvF6W8l75Vy/00pXCuhWCCm7chGD
+ +GfrWCIkN9Fr0EdpuoGMpCeVWSElBIWl2mxuZJ6yuY4uuZxaoMTb3dzeGBhFPkcZE9+z
+ zQygEHTS6KVOYiyUCLskf4sRm+1xFxIsXIQ93MT/sASfLRKxhLan6EU5zuG/PHzEC8WZ
+ 5qX65NdWUU1l4ZVfgXWYen+J8lisf3Y6FG6nPmPRB1+CoLeOikK8kEfkqQ04OKw3cBGO
+ Xl5YPzKLdModDQWvkQgY8ECBPV2zp5mMocS4IiQjpSeg4G00Dsq2/yTXRNykrdoNw++k
+ 76Ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767128997; x=1767733797;
+ d=1e100.net; s=20230601; t=1767129003; x=1767733803;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=7PdapgrHunfm5ufaIBcnmA01QT5kJZfbNKwQl9yuLx0=;
- b=ICDD6y43Ci+9CSieLTTZdpB4DODfKbMOVs/tO5Y1sUx6dir/gksPoXAnaI7EtPdxF5
- Y+H9OJ2z906SCVsHOMVrvTW5Eh9c9RBBJTiYIyovOZwxl7/NG7c8kuHeCYM7wxMTTBGb
- sY797f4X+Wcuyf6xxm+ttuJM0ukW5axJqg94iLySW9obxEQYksWloj9ypuxOiaAw9fr+
- iJhMsXWwUFKuSHun0tOGaYbMvuExfmF8PrYVl3NDEklE0F4XUPUOXylFH5wXoSfvc0n3
- fR8CHJUYP5TGVZRQYoVKVRxT5l3tvK1lraM6E4OBfgM3aNFAQB/SJYn4LTpVm9lfeoiO
- D7AQ==
-X-Gm-Message-State: AOJu0YxFMdgEN40qkfBm/Ga/SLCGz7VYICmrlvWsZZfkXzeFtokfVfjG
- mPP4/6Oi5/5xTa2FpxcGMYOD8avw/wxXKyCsWEd0hf5x7PNDuKVlEBvYH1bwlJX/Pcwe1W9w+2d
- ASHJnM8g=
-X-Gm-Gg: AY/fxX6O8BMN1IAuLpu2pN57OegxnbO1omabz+SFeGO3s2DyQwYY1JPXEnQbgqfIyC1
- Zuekvq4r+zq5XwJkfu6zSYucMdE/EklsjIdCjH3QXm8tJZ3vfCSdFT8hrQTKQ8LxbHVhRnuLQiX
- qzeo1/Uvvi+mRnsDOH9z3pOLEFYt0RBO7CpGUZzJdR6AxaHLCS1CIwBeVAuChlt+0sNmZmAW+9M
- 8Qj8DBnSgkQVjookQXsQoH13pImWb/uPbkUr4FBKsQP4aqUG14+aHoSszb5bmLTSGkFmbL4LcLS
- EurWkljPMpc4KLgs/nxt9pzpgIk2hopJJ34LKMQEsgNTCVMRy87l/yx/LIOFDJ2oquMiQwopRc0
- G+YhOvvoDLPNhZSyVg/wBybqvM8kjjpCCKHsj2SrayoTYTpYHTVaBNdSWZATDubrzRsrCTc/jQM
- pKHLxl5zbfm6wO1DVswFUddiAsLnDUjUQUnjgG+BBmGM85H8/3TakL9rTD9X7j
-X-Google-Smtp-Source: AGHT+IHXPKs9PxNNeYlpsWVwJ3ry3hi50m0/5RdfTwQKTgyPjAlTgh74o+8C4mDkQ82UxZUe+STFvQ==
-X-Received: by 2002:a05:6000:200f:b0:431:7a0:dbc3 with SMTP id
- ffacd0b85a97d-4324e5061ccmr44912898f8f.29.1767128996741; 
- Tue, 30 Dec 2025 13:09:56 -0800 (PST)
+ bh=aWZ/wGhyjNTDvmvQyGMp4r18x0TBLO5WgYXXIpLUaQg=;
+ b=ib4lBDtiMROBR5d4LzItKXX3oq/aXfIOmPnHrVbcWPJt9mj/MYEBxGQJ8RupSNSYYe
+ x92jmUIAGjmkzIS07q35Qd7SfPoCSBLVO4GiPX1Uzysi4sRqhTG0gjjMfu1RT7JtZ7wA
+ g/ELiyljCGczkxonZHxh1n0Ht1BYnEpEmZ9cqhtqGorg1Do5Hzb2te4jQBZKpaCXWsZh
+ NvaUEmriNiDXgSvPSDRD4e/TzM9gQ5U99KCEASLQtRE26nMcyFr2gbaASivIfGilveMV
+ VPL/Pgfzw15rd8wJONP+wgM0aMdJ94aRmTzNq2jfikBAfUE7cWInWMnvktSiM0F+bB7s
+ Jvmw==
+X-Gm-Message-State: AOJu0Yxnwjn5CbFNvYR6Dnzm3ID4Q61QFkQ1Moj/ldpQMuoUM46yP3oN
+ TOyUTPAVxHktl4C71aXIZvPFO/FKlNMw6Ds+c3KP/JlxC7+w3KTplda+2hm4Be7NmdqrT1l4B/T
+ IyEt3i64=
+X-Gm-Gg: AY/fxX5nG9BkkZoL01jB6LaNQOm57ZagSm85ufxkf+lmF+4qJAh+XZZJ5dAjBiG6ZTb
+ N5DmxnKbYB+wU2y8Dr6z/ol0CV1Nd1UBl0T/naFGFW3Zjs8ELJahYYuJgFsArJhl27r/+C86peQ
+ CF7PPfwHkjnBMizIEx3H+otl4JwwvxtQJswwPqSz2RX8AUmpiWKQUNrJx2lYnv5hWDIQYuIZDc9
+ y9ixd+cvBqq492PaT5aHn0UxHw8u0tmLLxjk7X9+XmbKgzz6dg5q31GrOlZ1FuXmGMd/rteBc7z
+ cnL3gwtTtvd5BLk82qUPTKnIYhyhZ7U2yVfI5Ebtn8RLIRMEJI1xi+EABWRTq8ltyYLxGebMa+y
+ u9xFREapFjbf743X8aX0FKYrugH63SS2RmrlB/oBG4TRkyv+l5n/elhAoaYk/H9SeCzEn08ypUf
+ DvuVtzbDs3rIVYSYsCEzn4zir3BGsHJQW8Q5DxZ+uGr1cLV5XGfFhNlXdCc0Ti
+X-Google-Smtp-Source: AGHT+IFedSR6Q+ZstquTPJxsRRYF2RqcXOnttR5U2EYfYKcywkm9JQ9awEXysIRZnwDp6Wyfcn2UCQ==
+X-Received: by 2002:a05:6000:2dc7:b0:430:ff0c:35fb with SMTP id
+ ffacd0b85a97d-4324e50d03dmr39984358f8f.52.1767129003310; 
+ Tue, 30 Dec 2025 13:10:03 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4324eab2721sm69926145f8f.39.2025.12.30.13.09.56
+ ffacd0b85a97d-4324ea830f3sm69502845f8f.22.2025.12.30.13.10.02
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Dec 2025 13:09:56 -0800 (PST)
+ Tue, 30 Dec 2025 13:10:02 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 18/34] rust/system: Stop exposing bogus DEVICE_NATIVE_ENDIAN
- symbol
-Date: Tue, 30 Dec 2025 22:07:40 +0100
-Message-ID: <20251230210757.13803-19-philmd@linaro.org>
+Subject: [PULL 19/34] target/hexagon: Include missing 'cpu.h' header in
+ 'internal.h'
+Date: Tue, 30 Dec 2025 22:07:41 +0100
+Message-ID: <20251230210757.13803-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251230210757.13803-1-philmd@linaro.org>
 References: <20251230210757.13803-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::444;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x444.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,36 +98,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We want to remove the bogus DEVICE_NATIVE_ENDIAN definition
-(by only having it explicit, either big or little one). Stop
-exposing it to rust devices to avoid it spreading further.
+Both CPUHexagonState and TOTAL_PER_THREAD_REGS are defined
+in "cpu.h" which is luckily indirectly included. However when
+refactoring unrelated files we get:
+
+  In file included from target/hexagon/helper.h:18,
+                   from include/exec/helper-proto.h.inc:56,
+                   from include/exec/helper-proto.h:13,
+                   from target/hexagon/op_helper.c:22:
+  target/hexagon/internal.h: At top level:
+  target/hexagon/internal.h:29:25: error: unknown type name ‘CPUHexagonState’; did you mean ‘CPUPluginState’?
+     29 | void hexagon_debug_vreg(CPUHexagonState *env, int regnum);
+        |                         ^~~~~~~~~~~~~~~
+        |                         CPUPluginState
+  target/hexagon/internal.h:30:25: error: unknown type name ‘CPUHexagonState’; did you mean ‘CPUPluginState’?
+     30 | void hexagon_debug_qreg(CPUHexagonState *env, int regnum);
+        |                         ^~~~~~~~~~~~~~~
+        |                         CPUPluginState
+  target/hexagon/internal.h:31:20: error: unknown type name ‘CPUHexagonState’; did you mean ‘CPUPluginState’?
+     31 | void hexagon_debug(CPUHexagonState *env);
+        |                    ^~~~~~~~~~~~~~~
+        |                    CPUPluginState
+  target/hexagon/internal.h:33:44: error: ‘TOTAL_PER_THREAD_REGS’ undeclared here (not in a function)
+     33 | extern const char * const hexagon_regnames[TOTAL_PER_THREAD_REGS];
+        |                                            ^~~~~~~~~~~~~~~~~~~~~
+
+Fix that by including the missing header.
+
+We don't need the "qemu/log.h" since commit 0cb73cb5a02 ("target/hexagon:
+Remove HEX_DEBUG/HEX_DEBUG_LOG"): remove it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Message-Id: <20251224134644.85582-8-philmd@linaro.org>
+Acked-by: Matheus Tavares Bernardino <matheus.bernardino@oss.qualcomm.com>
+Reviewed-by: Brian Cain <brian.cain@oss.qualcomm.com>
+Message-Id: <20251224134644.85582-9-philmd@linaro.org>
 ---
- rust/system/src/memory.rs | 6 ------
- 1 file changed, 6 deletions(-)
+ target/hexagon/internal.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/system/src/memory.rs b/rust/system/src/memory.rs
-index 4b3316bf767..4e06c16a0b5 100644
---- a/rust/system/src/memory.rs
-+++ b/rust/system/src/memory.rs
-@@ -78,12 +78,6 @@ pub const fn little_endian(mut self) -> Self {
-         self
-     }
+diff --git a/target/hexagon/internal.h b/target/hexagon/internal.h
+index 32e96f00d97..5fc837ae229 100644
+--- a/target/hexagon/internal.h
++++ b/target/hexagon/internal.h
+@@ -18,7 +18,7 @@
+ #ifndef HEXAGON_INTERNAL_H
+ #define HEXAGON_INTERNAL_H
  
--    #[must_use]
--    pub const fn native_endian(mut self) -> Self {
--        self.0.endianness = device_endian::DEVICE_NATIVE_ENDIAN;
--        self
--    }
--
-     #[must_use]
-     pub const fn valid_sizes(mut self, min: u32, max: u32) -> Self {
-         self.0.valid.min_access_size = min;
+-#include "qemu/log.h"
++#include "target/hexagon/cpu.h"
+ 
+ int hexagon_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
+ int hexagon_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
 -- 
 2.52.0
 
