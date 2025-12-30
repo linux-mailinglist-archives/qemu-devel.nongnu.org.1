@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 658E9CE8EF7
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 08:56:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C76CCE8EFB
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 08:56:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vaUZW-0006Sm-IY; Tue, 30 Dec 2025 02:55:14 -0500
+	id 1vaUZV-0006Si-Nt; Tue, 30 Dec 2025 02:55:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1vaUZU-0006SD-CN
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 02:55:12 -0500
+ id 1vaUZT-0006Ry-47
+ for qemu-devel@nongnu.org; Tue, 30 Dec 2025 02:55:11 -0500
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1vaUZR-0007Oh-Ax
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 02:55:12 -0500
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ id 1vaUZR-0007Og-9k
+ for qemu-devel@nongnu.org; Tue, 30 Dec 2025 02:55:10 -0500
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
- 5BU4KR2I3185393; Tue, 30 Dec 2025 07:54:55 GMT
+ 5BU4VWOp3486435; Tue, 30 Dec 2025 07:54:57 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2025-04-25; bh=LB2Vj
- /MWHUNtV6h54DkHNSWb4nqk6QJBlJZJjtacKdo=; b=NdZrNBaIhMqN0GvNZajfT
- bsTF6IuKhBkS1eyCq0cY1y1CrvJr3rmoAJfsFKgWhlxGF1gn9C+Vq7EwZCkifYbJ
- eFO85/gkdC8pqL4CPgpIU0lqW3Ri7FGmiGb5Ikqrv6a6qpVnG0iy4QJDRr8RYDjv
- V1FsfEK1mP6lw5UKCUBPmj/AfxRZa3MaE9JocZCk1qeRCTOo0AqH/2JIjr3pDWmm
- zPHcV2vzUz5zVgn9TKn6k69pQp5/Oqz4L6Rns+58LkRRE59uBXXF6p4lnmBlfnwW
- 3uLEsGpl8Eie0vD4kHTQeoPabsqNbWGO6WrWJgb1WbvCjdMHErX5vksVJjCFmHw8
- A==
+ :mime-version:references:subject:to; s=corp-2025-04-25; bh=tpPav
+ dggv2O1glzHNzXI7DRBmdp4jZbNXxlXCPnuRAc=; b=XOBX8hMaIP4vzOq+5AdOB
+ m5jiuhAMf2w55ZfA9HQPb/Mo0p8Y1Vsrx04FVryrFx+Gr3vLF4AUcVCuhk5u2EXk
+ 884vfNHDWwAONErSPoyxmUh63gbrbW/oxRwdxEuSlSmnXJJ/B7RcCIu9umLqZaMn
+ ry0KTfgcvPSZD7ac8D0mxPLjUvSWdd1zSo+xqb8rQgrFod9iQP8LPj6OxpMnx2oY
+ GgmZkxAsH7f6oV7OUxr/gomwQd5LUU4uVkDujFmUa6R+1xOll8G4qambWBiGm0Pc
+ qc2xXRlT/YkCUBv7d/wcFv0MH+24VVR+MGBPBqf5EqwIbY9HNKlbf5w7KB7UaVJx
+ w==
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4ba61waack-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4ba7b5j9kt-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 30 Dec 2025 07:54:54 +0000 (GMT)
+ Tue, 30 Dec 2025 07:54:56 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 5BU2s4PB017352; Tue, 30 Dec 2025 07:54:53 GMT
+ with ESMTP id 5BU7ehbf017273; Tue, 30 Dec 2025 07:54:55 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 4ba5wbp6ba-1
+ 4ba5wbp6bg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 30 Dec 2025 07:54:53 +0000
+ Tue, 30 Dec 2025 07:54:55 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5BU7smZn005421;
- Tue, 30 Dec 2025 07:54:52 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5BU7smZp005421;
+ Tue, 30 Dec 2025 07:54:54 GMT
 Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 4ba5wbp6aa-3; Tue, 30 Dec 2025 07:54:52 +0000
+ 4ba5wbp6aa-4; Tue, 30 Dec 2025 07:54:54 +0000
 From: Dongli Zhang <dongli.zhang@oracle.com>
 To: qemu-devel@nongnu.org, kvm@vger.kernel.org
 Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
@@ -61,10 +61,9 @@ Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
  davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
  dapeng1.mi@linux.intel.com, joe.jin@oracle.com, ewanhai-oc@zhaoxin.com,
  ewanhai@zhaoxin.com
-Subject: [PATCH v8 2/7] target/i386/kvm: extract unrelated code out of
- kvm_x86_build_cpuid()
-Date: Mon, 29 Dec 2025 23:42:41 -0800
-Message-ID: <20251230074354.88958-3-dongli.zhang@oracle.com>
+Subject: [PATCH v8 3/7] target/i386/kvm: rename architectural PMU variables
+Date: Mon, 29 Dec 2025 23:42:42 -0800
+Message-ID: <20251230074354.88958-4-dongli.zhang@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20251230074354.88958-1-dongli.zhang@oracle.com>
 References: <20251230074354.88958-1-dongli.zhang@oracle.com>
@@ -78,21 +77,21 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  malwarescore=0 bulkscore=0 mlxlogscore=999 phishscore=0 adultscore=0
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2512120000 definitions=main-2512300070
-X-Authority-Analysis: v=2.4 cv=LL1rgZW9 c=1 sm=1 tr=0 ts=6953854e b=1 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjMwMDA3MCBTYWx0ZWRfXzxl/y2cBcNLr
+ ls68EAJu6ITfIDQa8aI1zI3FOcbLpodzGUbUgADsk6prVa4KddsICgLC3Ma5+D0X2/LppJYYhfa
+ nxPQIIiMjbjKgE4ORROfPOB0pW9PWZZ0nAwSCSGuXwbeEKb1g/WHQ0rkybxDK740X8jp1TLkl7z
+ +KCXq8t/Gx1fPeU8xDI/VI7XTFmGCiZhfgQmU+1cWulBh7PpyFoijJEibUzdOZPlw2Ox+xQWEDt
+ zWZRbl230fNq8FcmevbBohSmuL47m6TgHppA4nNXr4tjGYhkFnHTvaZlCDupPBOB7htGPqjDw00
+ MpDlKXW8Mz22dd+LCPe7aVUv1HlS+lxIuCmippmXaa3viII702Bw/El76PyRLf+Vp/lAr75lNQ4
+ 8VluWTgW1TYgZgscVJ5NCSY0gckJjFHHIqxu4dm5UQyiH2Ls+LcisgWhNU9cHVxHnJ582VmD7aF
+ kUx5tRcP+wChFKY77K4QBxzwGlFidNo3ghTXjtGM=
+X-Proofpoint-GUID: KAWYBxaSXLgQuRnBwgu_vzftgSm8Unni
+X-Authority-Analysis: v=2.4 cv=ccjfb3DM c=1 sm=1 tr=0 ts=69538550 b=1 cx=c_pps
  a=zPCbziy225d3KhSqZt3L1A==:117
  a=zPCbziy225d3KhSqZt3L1A==:17
  a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8 a=QyXUC8HyAAAA:8
- a=PfVMnciqd94fTzcZrM0A:9 cc=ntf awl=host:12109
-X-Proofpoint-ORIG-GUID: zxtJd8cAKdm-OzWedISRPmOXbRYJWTmw
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjMwMDA3MCBTYWx0ZWRfX5zH5fBQcojQk
- mGWW9unXcTBiINMoRNjw/d3DjPCyh3198oHoPIzH7OcaLk661jorIllD5T8PmuzBq6VBHw4Ou+s
- IEwHVcJteTbkTLJTWmAi1HROGIm9khiFR/XHdFQmihfILmUfq4pN9oWO7tpW4ZuBrPC/dhLaLrC
- zPePPjASO0vKjpIm/w9rFvWGpzfYMsOHZCClCKkZTYc9667Nktxox+wdGGSjomjUevUjHgrPOwW
- NXPPoRU4p7D8eqHjhzaruTJk8CrbPD7+o3ETsrQEUJsb5649FgBYRyxHaRFNEr3GeJb2TCbJXyc
- kp1WqFkFssKTZcnCj0NGGHHmgP5doComK/gHaRHlzE+Num9lx12ww8RyRl04Q85y8YvqB4s50IO
- SvKATbYvAup5KeQjrw+lO8iXYGHNu+3n93bYPrXiuRomvwHZPQsJLsDeGJmKX1GBubcLGS4ZGX6
- UwyndJvJVhNjjdTLwjjvJoUD0yf8Vis0fhRdSQrY=
-X-Proofpoint-GUID: zxtJd8cAKdm-OzWedISRPmOXbRYJWTmw
+ a=zd2uoN0lAAAA:8 a=S5E2BveMG4f1x5cqP1kA:9 cc=ntf awl=host:12109
+X-Proofpoint-ORIG-GUID: KAWYBxaSXLgQuRnBwgu_vzftgSm8Unni
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=dongli.zhang@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -118,118 +117,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The initialization of 'has_architectural_pmu_version',
-'num_architectural_pmu_gp_counters', and
-'num_architectural_pmu_fixed_counters' is unrelated to the process of
-building the CPUID.
+AMD does not have what is commonly referred to as an architectural PMU.
+Therefore, we need to rename the following variables to be applicable for
+both Intel and AMD:
 
-Extract them out of kvm_x86_build_cpuid().
+- has_architectural_pmu_version
+- num_architectural_pmu_gp_counters
+- num_architectural_pmu_fixed_counters
 
-In addition, use cpuid_find_entry() instead of cpu_x86_cpuid(), because
-CPUID has already been filled at this stage.
+For Intel processors, the meaning of pmu_version remains unchanged.
+
+For AMD processors:
+
+pmu_version == 1 corresponds to versions before AMD PerfMonV2.
+pmu_version == 2 corresponds to AMD PerfMonV2.
 
 Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Sandipan Das <sandipan.das@amd.com>
 ---
-Changed since v1:
-  - Still extract the code, but call them for all CPUs.
 Changed since v2:
-  - Use cpuid_find_entry() instead of cpu_x86_cpuid().
-  - Didn't add Reviewed-by from Dapeng as the change isn't minor.
+  - Change has_pmu_version to pmu_version.
+  - Add Reviewed-by since the change is minor.
+  - As a reminder, there are some contextual change due to PATCH 05,
+    i.e., c->edx vs. edx.
 Changed since v6:
-  - Add Reviewed-by from Dapeng Mi.
+  - Add Reviewed-by from Sandipan.
 
- target/i386/kvm/kvm.c | 62 ++++++++++++++++++++++++-------------------
- 1 file changed, 35 insertions(+), 27 deletions(-)
+ target/i386/kvm/kvm.c | 49 ++++++++++++++++++++++++-------------------
+ 1 file changed, 28 insertions(+), 21 deletions(-)
 
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index c98832f423..08d80ff677 100644
+index 08d80ff677..3b803c662d 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -1986,33 +1986,6 @@ uint32_t kvm_x86_build_cpuid(CPUX86State *env, struct kvm_cpuid_entry2 *entries,
-         }
+@@ -167,9 +167,16 @@ static bool has_msr_perf_capabs;
+ static bool has_msr_pkrs;
+ static bool has_msr_hwcr;
+ 
+-static uint32_t has_architectural_pmu_version;
+-static uint32_t num_architectural_pmu_gp_counters;
+-static uint32_t num_architectural_pmu_fixed_counters;
++/*
++ * For Intel processors, the meaning is the architectural PMU version
++ * number.
++ *
++ * For AMD processors: 1 corresponds to the prior versions, and 2
++ * corresponds to AMD PerfMonV2.
++ */
++static uint32_t pmu_version;
++static uint32_t num_pmu_gp_counters;
++static uint32_t num_pmu_fixed_counters;
+ 
+ static int has_xsave2;
+ static int has_xcrs;
+@@ -2099,24 +2106,24 @@ static void kvm_init_pmu_info(struct kvm_cpuid2 *cpuid)
+         return;
      }
  
--    if (limit >= 0x0a) {
--        uint32_t eax, edx;
--
--        cpu_x86_cpuid(env, 0x0a, 0, &eax, &unused, &unused, &edx);
--
--        has_architectural_pmu_version = eax & 0xff;
+-    has_architectural_pmu_version = c->eax & 0xff;
+-    if (has_architectural_pmu_version > 0) {
+-        num_architectural_pmu_gp_counters = (c->eax & 0xff00) >> 8;
++    pmu_version = c->eax & 0xff;
++    if (pmu_version > 0) {
++        num_pmu_gp_counters = (c->eax & 0xff00) >> 8;
+ 
+         /*
+          * Shouldn't be more than 32, since that's the number of bits
+          * available in EBX to tell us _which_ counters are available.
+          * Play it safe.
+          */
+-        if (num_architectural_pmu_gp_counters > MAX_GP_COUNTERS) {
+-            num_architectural_pmu_gp_counters = MAX_GP_COUNTERS;
++        if (num_pmu_gp_counters > MAX_GP_COUNTERS) {
++            num_pmu_gp_counters = MAX_GP_COUNTERS;
+         }
+ 
+-        if (has_architectural_pmu_version > 1) {
+-            num_architectural_pmu_fixed_counters = c->edx & 0x1f;
++        if (pmu_version > 1) {
++            num_pmu_fixed_counters = c->edx & 0x1f;
+ 
+-            if (num_architectural_pmu_fixed_counters > MAX_FIXED_COUNTERS) {
+-                num_architectural_pmu_fixed_counters = MAX_FIXED_COUNTERS;
++            if (num_pmu_fixed_counters > MAX_FIXED_COUNTERS) {
++                num_pmu_fixed_counters = MAX_FIXED_COUNTERS;
+             }
+         }
+     }
+@@ -4087,25 +4094,25 @@ static int kvm_put_msrs(X86CPU *cpu, KvmPutState level)
+             kvm_msr_entry_add(cpu, MSR_KVM_POLL_CONTROL, env->poll_control_msr);
+         }
+ 
 -        if (has_architectural_pmu_version > 0) {
--            num_architectural_pmu_gp_counters = (eax & 0xff00) >> 8;
--
--            /* Shouldn't be more than 32, since that's the number of bits
--             * available in EBX to tell us _which_ counters are available.
--             * Play it safe.
--             */
--            if (num_architectural_pmu_gp_counters > MAX_GP_COUNTERS) {
--                num_architectural_pmu_gp_counters = MAX_GP_COUNTERS;
--            }
--
 -            if (has_architectural_pmu_version > 1) {
--                num_architectural_pmu_fixed_counters = edx & 0x1f;
--
--                if (num_architectural_pmu_fixed_counters > MAX_FIXED_COUNTERS) {
--                    num_architectural_pmu_fixed_counters = MAX_FIXED_COUNTERS;
--                }
--            }
--        }
--    }
--
-     cpu_x86_cpuid(env, 0x80000000, 0, &limit, &unused, &unused, &unused);
++        if (pmu_version > 0) {
++            if (pmu_version > 1) {
+                 /* Stop the counter.  */
+                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR_CTRL, 0);
+                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_CTRL, 0);
+             }
  
-     for (i = 0x80000000; i <= limit; i++) {
-@@ -2116,6 +2089,39 @@ int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-     return 0;
- }
- 
-+static void kvm_init_pmu_info(struct kvm_cpuid2 *cpuid)
-+{
-+    struct kvm_cpuid_entry2 *c;
-+
-+    c = cpuid_find_entry(cpuid, 0xa, 0);
-+
-+    if (!c) {
-+        return;
-+    }
-+
-+    has_architectural_pmu_version = c->eax & 0xff;
-+    if (has_architectural_pmu_version > 0) {
-+        num_architectural_pmu_gp_counters = (c->eax & 0xff00) >> 8;
-+
-+        /*
-+         * Shouldn't be more than 32, since that's the number of bits
-+         * available in EBX to tell us _which_ counters are available.
-+         * Play it safe.
-+         */
-+        if (num_architectural_pmu_gp_counters > MAX_GP_COUNTERS) {
-+            num_architectural_pmu_gp_counters = MAX_GP_COUNTERS;
-+        }
-+
-+        if (has_architectural_pmu_version > 1) {
-+            num_architectural_pmu_fixed_counters = c->edx & 0x1f;
-+
-+            if (num_architectural_pmu_fixed_counters > MAX_FIXED_COUNTERS) {
-+                num_architectural_pmu_fixed_counters = MAX_FIXED_COUNTERS;
-+            }
-+        }
-+    }
-+}
-+
- int kvm_arch_init_vcpu(CPUState *cs)
- {
-     struct {
-@@ -2306,6 +2312,8 @@ int kvm_arch_init_vcpu(CPUState *cs)
-     cpuid_i = kvm_x86_build_cpuid(env, cpuid_data.entries, cpuid_i);
-     cpuid_data.cpuid.nent = cpuid_i;
- 
-+    kvm_init_pmu_info(&cpuid_data.cpuid);
-+
-     if (x86_cpu_family(env->cpuid_version) >= 6
-         && (env->features[FEAT_1_EDX] & (CPUID_MCE | CPUID_MCA)) ==
-            (CPUID_MCE | CPUID_MCA)) {
+             /* Set the counter values.  */
+-            for (i = 0; i < num_architectural_pmu_fixed_counters; i++) {
++            for (i = 0; i < num_pmu_fixed_counters; i++) {
+                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR0 + i,
+                                   env->msr_fixed_counters[i]);
+             }
+-            for (i = 0; i < num_architectural_pmu_gp_counters; i++) {
++            for (i = 0; i < num_pmu_gp_counters; i++) {
+                 kvm_msr_entry_add(cpu, MSR_P6_PERFCTR0 + i,
+                                   env->msr_gp_counters[i]);
+                 kvm_msr_entry_add(cpu, MSR_P6_EVNTSEL0 + i,
+                                   env->msr_gp_evtsel[i]);
+             }
+-            if (has_architectural_pmu_version > 1) {
++            if (pmu_version > 1) {
+                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_STATUS,
+                                   env->msr_global_status);
+                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_OVF_CTRL,
+@@ -4622,17 +4629,17 @@ static int kvm_get_msrs(X86CPU *cpu)
+     if (env->features[FEAT_KVM] & CPUID_KVM_POLL_CONTROL) {
+         kvm_msr_entry_add(cpu, MSR_KVM_POLL_CONTROL, 1);
+     }
+-    if (has_architectural_pmu_version > 0) {
+-        if (has_architectural_pmu_version > 1) {
++    if (pmu_version > 0) {
++        if (pmu_version > 1) {
+             kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR_CTRL, 0);
+             kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_CTRL, 0);
+             kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_STATUS, 0);
+             kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_OVF_CTRL, 0);
+         }
+-        for (i = 0; i < num_architectural_pmu_fixed_counters; i++) {
++        for (i = 0; i < num_pmu_fixed_counters; i++) {
+             kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR0 + i, 0);
+         }
+-        for (i = 0; i < num_architectural_pmu_gp_counters; i++) {
++        for (i = 0; i < num_pmu_gp_counters; i++) {
+             kvm_msr_entry_add(cpu, MSR_P6_PERFCTR0 + i, 0);
+             kvm_msr_entry_add(cpu, MSR_P6_EVNTSEL0 + i, 0);
+         }
 -- 
 2.39.3
 
