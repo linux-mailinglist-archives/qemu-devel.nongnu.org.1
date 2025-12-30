@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F2CCEAAB4
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 22:11:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C2C0CEAA8A
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 22:09:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vagyO-0007MI-Eb; Tue, 30 Dec 2025 16:09:44 -0500
+	id 1vagyS-00085k-2J; Tue, 30 Dec 2025 16:09:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagy9-0006pk-9y
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:09:32 -0500
-Received: from mail-wm1-x344.google.com ([2a00:1450:4864:20::344])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagyG-00070k-9x
+ for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:09:40 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagy6-0002Kd-Bx
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:09:29 -0500
-Received: by mail-wm1-x344.google.com with SMTP id
- 5b1f17b1804b1-477563e28a3so62836695e9.1
- for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 13:09:26 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vagyC-0002LB-Ju
+ for qemu-devel@nongnu.org; Tue, 30 Dec 2025 16:09:34 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-42b3b0d76fcso5904531f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 13:09:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767128964; x=1767733764; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767128971; x=1767733771; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=O8snffjzsXivY+VrMCvVGRQf0hPgiUgCcuP0Hn1j+LY=;
- b=CowzSSeTLmlEtl2iXBO/3EZ4nPWpLERq+F0hKBY8TytoPcQSS8S238O3U4L7NOwEzY
- sC6BdX2Ty6vvRsg+OTQmAzCErvd1i54CjHw6QeWczLStB0AvyElEDyU2H1YctEejoexV
- 8sNJMUYRJ5iOBK7wR4Ysk/+n5mMiKcj7y1Hw928gASgBUAmo91J0rNaTFv08ag+3AcNP
- ilMD+bcIi50mSumSKCt173oeopIjgSdPL1j92mZuwPT1PBpWSJXXmhYPsDrbsX6QsM6S
- xl0SSwspQSv52E4ugrPUKSKGHLXdifKuvMJGfJb/1lpbC31vLddyr/3whslBRSuAw6yr
- 4RQQ==
+ :reply-to; bh=mJcdNi7cESlpTXpcLSi0wl3ojZ5ipv+IdVxBLAwJeR8=;
+ b=vYVEv5KCPXwJ9ZlH5yTvnpoHT++KQa7WYPR112pzGq/+DZlqHBhDVb9bpWezrzmewJ
+ 6OlTJD6sphvi9KiLM6qORnT6Ft13BsCz3TYGiNrYMofsxVNxsjXWFq3kR5atB21bSRym
+ 90unBmp1QenGwKA0eBXJgMPo3V0zccIOugTLc0ZjMTilVOuWJGQzbO2YmqfFMhcw1wxE
+ FX8qzXwXIus89Z9HWU/EOB3+xinq/xmZnFIHjuy4ARcbwvc4npSJ8iR39AKaQpPZ7SFg
+ dMU+Qz3WX8g7wVVWskFgxiyx/ZvcQS+1BhdLQaPVK3UTYQX01DI83EKz352YfY/vCmND
+ g+tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767128964; x=1767733764;
+ d=1e100.net; s=20230601; t=1767128971; x=1767733771;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=O8snffjzsXivY+VrMCvVGRQf0hPgiUgCcuP0Hn1j+LY=;
- b=t7/OI0YQaIPoI9ibjFYcZsEgI0vFeiwxoS5M/SvOSfdcULJU3vr8uanjS/9R9QBfQ2
- dgD8CLjSR4X8SPbxe3+r8Pr9+qHVHioYsdS/mgf1WwRleZ/8MU+RNU78k7BH6zgTdnAU
- ZXdYzTbzBbsFqZ9lqnCTAIL7R/AR1jZH7t8TTMqAx3mDPw2DLl9iCMJGSvgIpBYbcu5X
- 9tPOg3AKa123lWWGZ9rAQ60KPgY3tGSXfsfvYWjrSwbo8b79URHuRnKhG39L4Av4ddzW
- 69IwLF6JYiPefk3gEIhecNwCpjMt+XkTIIen9wqAhm+6+5OJ3gJ24Avntvbs6qdb3ldN
- tadA==
-X-Gm-Message-State: AOJu0Yz3TKx15vZFq4oXXPUlv6Ez/M1SH4DVMCZe+bJnYgAyElF4cbrw
- YQvkMhlUno18Q05m/laAnoaerPDUFEJpxS8G33m6PHkCg2Trk4HWaAXcupz4KMkyO7RzHT1oTMM
- VwNzMJ5Je4w==
-X-Gm-Gg: AY/fxX7YSFZ7JlSO84OlqF9tXNtPF87QO6Em2AuVNygh5+BNi8xHzHknHRYMY4rn95L
- 7JubJnvxbWEi4TV7Naz/GhUcDjOHjCSJjSwCt+knbn0fkQ3hdNrjJBuWDPZ/sVB8Pr1AlZAarbG
- 9oA8aCJJS3Pu5dGBAuKImdYtfJMAa69RwN/TeEMm/MNG70r9HWI/o2KmeUAdeYKf/hGYJ7L3ON+
- L0gl/eJ8/kWOihcMat6Og0idl8cod/jKE2QsOHobWIe7DrqsLEzHzVqdDn5qH29/mAa9hblgEqb
- nr2Zu8roOKJFYzgxXpsf5+M0xPSrLI+mRtE1OcrGBby6g3pfl2vO+oklRhq6imIjhseXi3rqeI8
- RGXMfAjo7+yptKV1jgmKISroOgz3IlE1j+ccmTGWOyiTONSaAv9FOdy4EAd0jDFMp4H/8/0yVCO
- n0azvxlUWxrF+vlU2iYHDoinlSRQsP0U4gNdayRD4Ztk8GUXrlPudCjmPfDqgPzA1g08qsu88=
-X-Google-Smtp-Source: AGHT+IEPtTkrXnXhRPm8BP0968p2YnVr1BxfbkhxAheNo5shjVnpHKIvMLJpOFNQBOi9vJiFXmGH9A==
-X-Received: by 2002:a05:600c:8718:b0:477:9d88:2da6 with SMTP id
- 5b1f17b1804b1-47d18b0ad6fmr398817425e9.0.1767128964259; 
- Tue, 30 Dec 2025 13:09:24 -0800 (PST)
+ bh=mJcdNi7cESlpTXpcLSi0wl3ojZ5ipv+IdVxBLAwJeR8=;
+ b=MNCjWY3KwwIf9DPymNYK1fdBm+w401oljJ+2tY4ijGDfEzQJC14fPW67yiVfs4pArl
+ Fw7x/Ek6bVh5bNUaOBDyWqBf9RwtK2vp2Ig8rnihmp7JTFsBHxdRx/WukDW7rmXL1oV3
+ oW4o45mBFXRbpEIuDkQtiNBcgW4ezigZMBjAzB4tyWFSdM5gK5FX5WH0vfymnAG6oVJb
+ 9aWmCwdZuQCBG5fMiW0IC3PKiyoM0uRlHjEjxLtR5PXYCZhHfJLsQ61tcOzJp762m4oE
+ GpoSpoXIQrMAM2HRZXaOtNXEsDT1Ll5U+LMEdR63hW8bnasPxmSlIO4YtAPCnRyRhaFV
+ mTPA==
+X-Gm-Message-State: AOJu0YyUVhVI3tysHUbQlbga4+DsIxK49Aj9OmPwS23frgiVfoNVhrne
+ jtbjybgqDbr0wGktDXp6+TAGjMm4tf955Z97L8q/2xDV+O9XjYgB4QMkY2nadYKjO0Ccc2f++iY
+ T79jmC38=
+X-Gm-Gg: AY/fxX6lkdFIJy3Hl9wQSoUVK23qTiSe69DcgWOMmUhWGKYfqjmbDfamSRUNqY/fBoN
+ 7Z+JqG5hMLqbJycr4tCPaaOEsCwejonG41l7xUJcuO6MiHj00dN4JC5TieI7xVLOET9ZHfQDz+w
+ DdDGUw4SOtQaQ5hHIYWsPXB8nE0T1oQwVSH2wv4eCckcuQJ0Ecv7/hhIDTBhWX8qbEesEJiPKIK
+ YkMi+dqZOHlRPQJawTp+AyYPUSvG3wtmIPPUFmoAE9mz+6tTq649YVhPu/FKO2YPQ8vjSUxawp2
+ Y86V4y4cCKh7ZhwZoB7kF9z6rLiS8p+HkchFsAoYXVwwTn5DtUiP6Pi/bcduCbPrkriasl0qfb5
+ A53LOM47sIQLN6JypVDkluABtZkaphquQQPy9Pxs1xCKFzRHDpp+Tc/7ag2kd4jVBwYl7Dm1RMV
+ d/cOHITnNlDNL/6esjD16q0SL0ZawacSx/D7wKPD2EX1/no72YKrJ25iOgtYiQ
+X-Google-Smtp-Source: AGHT+IE3Tp52NTXgfyzTAuLHeHcKPhMhAKpArIzI4SA60Exwe7ML8nk7xXTWUGybBbXSM9+B1eelFg==
+X-Received: by 2002:a05:6000:2002:b0:430:fdfc:7dd0 with SMTP id
+ ffacd0b85a97d-4324e714856mr39491042f8f.63.1767128970756; 
+ Tue, 30 Dec 2025 13:09:30 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d193cba81sm601445195e9.10.2025.12.30.13.09.23
+ ffacd0b85a97d-4324ea1b1bdsm69743829f8f.8.2025.12.30.13.09.30
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Dec 2025 13:09:23 -0800 (PST)
+ Tue, 30 Dec 2025 13:09:30 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/34] hw/net/opencores: Clarify MMIO read/write handlers
- expect 32-bit access
-Date: Tue, 30 Dec 2025 22:07:35 +0100
-Message-ID: <20251230210757.13803-14-philmd@linaro.org>
+Subject: [PULL 14/34] hw/char/serial: Let compiler pick serial_mm_ops[] array
+ length
+Date: Tue, 30 Dec 2025 22:07:36 +0100
+Message-ID: <20251230210757.13803-15-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251230210757.13803-1-philmd@linaro.org>
 References: <20251230210757.13803-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::344;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x344.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,72 +98,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The read/write handlers access array of 32-bit register by index:
-
- 277 struct OpenEthState {
-  ..
- 287     uint32_t regs[REG_MAX];
-  ..
- 291 };
-
- 546 static uint64_t open_eth_reg_read(void *opaque,
- 547                                   hwaddr addr, unsigned int size)
- 548 {
-  ..
- 551     OpenEthState *s = opaque;
- 552     unsigned idx = addr / 4;
-  ..
- 559             v = s->regs[idx];
-  ..
- 563     return v;
- 564 }
-
-This is a 32-bit implementation. Make that explicit in the
-MemoryRegionOps structure (this doesn't change the maximum
-access size, which -- being unset -- is 64-bit).
-
-Move the structure just after the handlers to ease code review.
+No need to enforce the MemoryRegionOps array length.
+We index by device_endian enum, the compiler will easily
+pick the correct length. Besides, this allow further
+adjustments in the device_endian enum itself.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20251224134644.85582-3-philmd@linaro.org>
+Message-Id: <20251224134644.85582-4-philmd@linaro.org>
 ---
- hw/net/opencores_eth.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ hw/char/serial-mm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/net/opencores_eth.c b/hw/net/opencores_eth.c
-index 6abeffcc9c7..a25f8eccff3 100644
---- a/hw/net/opencores_eth.c
-+++ b/hw/net/opencores_eth.c
-@@ -683,6 +683,15 @@ static void open_eth_reg_write(void *opaque,
-     }
+diff --git a/hw/char/serial-mm.c b/hw/char/serial-mm.c
+index 6e963e581f9..0e0be26fa9f 100644
+--- a/hw/char/serial-mm.c
++++ b/hw/char/serial-mm.c
+@@ -44,7 +44,7 @@ static void serial_mm_write(void *opaque, hwaddr addr,
+     serial_io_ops.write(&s->serial, addr >> s->regshift, value, 1);
  }
  
-+static const MemoryRegionOps open_eth_reg_ops = {
-+    .read = open_eth_reg_read,
-+    .write = open_eth_reg_write,
-+    .impl = {
-+        .min_access_size = 4,
-+        .max_access_size = 4,
-+    },
-+};
-+
- static uint64_t open_eth_desc_read(void *opaque,
-         hwaddr addr, unsigned int size)
- {
-@@ -706,12 +715,6 @@ static void open_eth_desc_write(void *opaque,
-     open_eth_check_start_xmit(s);
- }
- 
--
--static const MemoryRegionOps open_eth_reg_ops = {
--    .read = open_eth_reg_read,
--    .write = open_eth_reg_write,
--};
--
- static const MemoryRegionOps open_eth_desc_ops = {
-     .read = open_eth_desc_read,
-     .write = open_eth_desc_write,
+-static const MemoryRegionOps serial_mm_ops[3] = {
++static const MemoryRegionOps serial_mm_ops[] = {
+     [DEVICE_NATIVE_ENDIAN] = {
+         .read = serial_mm_read,
+         .write = serial_mm_write,
 -- 
 2.52.0
 
