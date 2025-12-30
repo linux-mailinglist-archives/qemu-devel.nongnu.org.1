@@ -2,87 +2,128 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23BE9CE9DF1
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 15:07:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D8DECE9EF9
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Dec 2025 15:30:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vaaN6-0004VE-P0; Tue, 30 Dec 2025 09:06:48 -0500
+	id 1vaaiR-00045Q-Lp; Tue, 30 Dec 2025 09:28:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gourry@gourry.net>) id 1vaaN4-0004T8-IJ
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 09:06:46 -0500
-Received: from mail-qt1-x829.google.com ([2607:f8b0:4864:20::829])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gourry@gourry.net>) id 1vaaN2-0000im-NU
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 09:06:46 -0500
-Received: by mail-qt1-x829.google.com with SMTP id
- d75a77b69052e-4eda26a04bfso130483061cf.2
- for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 06:06:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gourry.net; s=google; t=1767103603; x=1767708403; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=66bISrM54aEShqNVvDwKzt/2Q+oJEmylKwxQsZjzI1k=;
- b=QRBdoSTfp5qBGrAml0N7AbzX8nqUMnbtkquGJS5w3HzLLFnOlY5JNP8r9+ib8CmkIJ
- 1EivorKpkb2pDR4XtED5gA18Rz3bGli90+xrpeUuvGvJB2uKl2IWNLHTUWiKQSgP+bSA
- TVkQ5oauDWOpVaQuNEhPgn9wcY+Rp5k/PykgHHHVbfTx5PjY5joshp2tOv2S1vTpe00K
- PqbCUvgHNAXL+S2ElrNT4/1470Poepert8KwxkoDgklx/S8LU2XO48LtVkfxn62izgL8
- TKbvnIKm4sD25P2gSrL4o0HdU27PcZFA1iB2L0EyjXsYuXe8Jf+XvTZ4biwsSB9r/Bi7
- FG8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767103603; x=1767708403;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=66bISrM54aEShqNVvDwKzt/2Q+oJEmylKwxQsZjzI1k=;
- b=ve4EDSpmuRxKWrowe/lVrv8tVZM7krSY2Dfimt7Dz9Bq12xVoOdu/NZFpeVDS4jpJ4
- 9XnF6HRvlAyfNka4aXg5Wm9wk99/dZZ9Ilbt5remB7wZLkAQbRg5ss5tTfcKGsL/rRkh
- XsKNWjvYmCwVTA8jlO1M2ZP00R1m6Bxmf0p3NaODt+wb1kF7iyYj66I7eyfpOpvvhhgQ
- 0CPgwMdL57Rlu0TFvG25Hou+RjNphd7c86ZWU+xJmTk4hAJ74Dl7MQE/+B8rSoBgtGYV
- NAjal02qtIAGfjfZmOiE28PZ7yCKl7oI0KDS+zQAapqFb5aCvJIk7gUdVnl0RNPzEo19
- 31Xw==
-X-Gm-Message-State: AOJu0Yx29mj8t7xJLKjNy6+morK8pyQ4tVBT3UtOzPeZPxdPKFnHwkDf
- dAMwOIKoI7UulJYEvmZxdXecKAArd7WOU+3cfI3mZIkA/M/2USndBgFKkBaxQef1XsM=
-X-Gm-Gg: AY/fxX5bf8n6ad4ZPVapwZsD1StH0mUiZD2Lrh+JiL/FuKtoSVR1CJFBVAgTWthK6j6
- 7A9VyQrscwauGsZXSeIkXqgMDIuztWcep5/xSclzr4sg11ubyOJxEu9NFZU31qIpkpR6pdU0Lv3
- OYSKLYS7VXGQbEoXPvtcWed9VNUPZakr3hubuqOolHhdXv1OzwIZ9uOMYOpuInroaOFQjQAoaX0
- wqgulcV79MzEfydV5vsX+oqyc+VgbrWk8iGM0gFrGVuhU33ufjoLKeW1otvEBOwxhbKptVBW7BM
- mZLVviFWR4OlVByfCs4NaBOJTqA1tzwLWQKA30zvGQJAtnOK8sBp39CM+G2cJIUU99I9283Xb0T
- E0/aSU4J7qHqGUV8zni8epNEjJa0s3S7xLGCq35lCo18spfDn+BNjtQizRHGqXc4JQWFcppjLYc
- RVxZoUHoMmq1mjB6xntCbWzbPAwxLjrMhxelQUtHMPoYvyV4Xs3vkcHAf3qc/7GHEn6n4u4A==
-X-Google-Smtp-Source: AGHT+IH0HWx3Yil0Dd/9SCXD/sm3AHm7LlYzEpOdcijhkC0kH83+BMWtrGGPbkPR2zif6DzqlIjyJA==
-X-Received: by 2002:a05:622a:4010:b0:4ee:1c10:729f with SMTP id
- d75a77b69052e-4f4abd1f227mr493179001cf.35.1767103603122; 
- Tue, 30 Dec 2025 06:06:43 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F
- (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
- by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4f4ac54a6acsm261741201cf.8.2025.12.30.06.06.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Dec 2025 06:06:42 -0800 (PST)
-Date: Tue, 30 Dec 2025 09:06:07 -0500
-From: Gregory Price <gourry@gourry.net>
-To: "Huang, FangSheng (Jerry)" <FangSheng.Huang@amd.com>
-Cc: qemu-devel@nongnu.org, david@redhat.com, imammedo@redhat.com,
- jonathan.cameron@huawei.com, Zhigang.Luo@amd.com, Lianjie.Shi@amd.com
-Subject: Re: [PATCH v4 0/1] numa: add 'spm' option for Specific Purpose Memory
-Message-ID: <aVPcT_APo6SgRrGU@gourry-fedora-PF4VCD3F>
-References: <20251209093841.2250527-1-FangSheng.Huang@amd.com>
- <aVLH4mmbDSp7ZdVu@gourry-fedora-PF4VCD3F>
- <8123efd8-73cc-4dfa-9f1e-6d9a95f66984@amd.com>
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>)
+ id 1vaaiP-00044M-G5; Tue, 30 Dec 2025 09:28:49 -0500
+Received: from smtpout1.mo529.mail-out.ovh.net ([178.32.125.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>)
+ id 1vaaiM-0004rB-JL; Tue, 30 Dec 2025 09:28:49 -0500
+Received: from mxplan5.mail.ovh.net (unknown [10.110.37.52])
+ by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 4dgb6n4wnJz5vqb;
+ Tue, 30 Dec 2025 14:28:33 +0000 (UTC)
+Received: from kaod.org (37.59.142.96) by DAG3EX1.mxp5.local (172.16.2.21)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.61; Tue, 30 Dec
+ 2025 15:28:32 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-96R001963a86a7-fb2c-4a3e-8a4f-406c98943869,
+ 10BB85812771F3279B7407FE60307F74CBD19E16) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 90.14.253.154
+Message-ID: <d6fa3762-7ea8-4173-af20-9615cc5f92dc@kaod.org>
+Date: Tue, 30 Dec 2025 15:28:32 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8123efd8-73cc-4dfa-9f1e-6d9a95f66984@amd.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::829;
- envelope-from=gourry@gourry.net; helo=mail-qt1-x829.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 06/19] hw/arm/aspeed: Integrate interrupt controller
+ for AST1700
+To: Kane Chen <kane_chen@aspeedtech.com>, Nabih Estefan
+ <nabihestefan@google.com>
+CC: Peter Maydell <peter.maydell@linaro.org>, Steven Lee
+ <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>, Jamin Lin
+ <jamin_lin@aspeedtech.com>, Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Joel Stanley <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>, 
+ "open list:All patches CC here" <qemu-devel@nongnu.org>, Troy Lee
+ <troy_lee@aspeedtech.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+References: <20251224014203.756264-1-kane_chen@aspeedtech.com>
+ <20251224014203.756264-7-kane_chen@aspeedtech.com>
+ <465b0714-bd08-40b5-9cf9-5cd206e8548b@kaod.org>
+ <SI6PR06MB76312852C6243B1F48202A89F7B0A@SI6PR06MB7631.apcprd06.prod.outlook.com>
+ <55adfce4-0dbc-492a-b586-4c46df78007a@kaod.org>
+ <SI6PR06MB76318E7A596008386B0AE51CF7BFA@SI6PR06MB7631.apcprd06.prod.outlook.com>
+ <ed07c0f2-737d-4d65-917f-d39d02c37063@kaod.org>
+ <006fa26f-6b84-4e82-b6e1-7d1353579441@kaod.org>
+ <CA+QoejXzjvyLA0Pp0xJjCsrwSyegSBRBs-MaT7yP41Nd2B9BcQ@mail.gmail.com>
+ <SI6PR06MB76312518466322BC6BD67DC5F7BCA@SI6PR06MB7631.apcprd06.prod.outlook.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <SI6PR06MB76312518466322BC6BD67DC5F7BCA@SI6PR06MB7631.apcprd06.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.96]
+X-ClientProxiedBy: DAG2EX1.mxp5.local (172.16.2.11) To DAG3EX1.mxp5.local
+ (172.16.2.21)
+X-Ovh-Tracer-GUID: 9a67376b-2b38-49ac-92ef-3e48a726b295
+X-Ovh-Tracer-Id: 16253772530835426296
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: dmFkZTFz7ulCk6V8EKBEiGoWapd2mwv3yUcCkCImTwag2szEyJ/ZHxW64Eu66TtwEum2UMVYn27odzRh/ZDxP1sL3HpgVLVJ9L2SbDpLzVke82++omYtaX+2UeLNn77+3J5LSlf+ULDWH64xtvCINGjz0d5Xaun3x6j4Vc8t34s2mWG3zPYZq6ZD15wfhNt6N3OiS3eLcge995VkYQvcrumuWxNiPzN+8QnL+4ujeT+RTZDvsKryw6vcNthOqPFz/PrfKIEbUFDCZerS2L02YLU8WCwCPm3NjmUACCcF2InYdNjZkKKsCz5LaM30Fel09h1H3y2mFPP7AD3tzMbtfEjt2EKcGxGxxU69TRt17fmto4qKUG9OKyAn+kx72mPN7za88FBgDphIL18Wjq9EXKxUHPZWIhpzUJM0Fdw5qPIxTgsLAN/l4JfPJL2o6TBDu2HQKXJ7YArphaPTf2rkFaaaTOQhHUCIbr+G1DGtjKFdjbVfo4YkYgw3QQ8WC3KVC3QDIM1oMs35nY7XVfz0Nuh0ejWzObAHjDLha9JQhcU6Kl06SWsLBFV6g3AUgsfb5mr+f88FKPs6haoeyC13H7OFM1kk+Ka/Y39piHTt9GO4+xyQE0wNUwAVnjabTf1Erwz/51vHOVt+lP6Ab7UXGucN6ntnFBoxHYdBkytIsj52cIGOog
+DKIM-Signature: a=rsa-sha256; bh=/ZyaviGEcfL+8cgeDaGqWXjwt0kUTSsmMFX8lqYepSY=; 
+ c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
+ t=1767104915; v=1;
+ b=R2icl9UA6UJwfMU+op8ytkWKWMkgyxXbx0CkIHgBqbzAY03z/mMyVo56RjKcwZpxcA0O8k2y
+ 04N/tnxzKbVQeXTlMFYaxV2fQFS0BzrpM3KC+44CQ4f6SzsHieA8q3FtxpY8LpCRfNqpgw7r2zP
+ 3RMZ3dkvPfM2nl3MHrl196XhwxVB2YgHEoUvRV5Z9xRifOjrzKpc3stCUGsi7Op45l32M2a089I
+ RSmJZUbBZCqUuo28fz3akVFjnhTQWUVBADPu+vL0o6YbYDIzYopi+eITBNX54yf1O1WQEAR92kE
+ ErFfCh241E/Au91yuVsQb52PvX/CTS1BtfFqpK0E5XuvA==
+Received-SPF: pass client-ip=178.32.125.2; envelope-from=clg@kaod.org;
+ helo=smtpout1.mo529.mail-out.ovh.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,62 +140,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Dec 30, 2025 at 10:55:02AM +0800, Huang, FangSheng (Jerry) wrote:
-> Hi Gregory,
+Hello Kane,
+
+> Currently, three devices in our setup support I2C.
+> 1. BMC
+> 2. IO expander 1
+> 3. IO expander 2
 > 
-> > Sorry i've missed prior versions, is numa the right place to put this,
-> > considering that the node is not necessarily 100% SPM on a real system?
-> > 
+> Each device supports 16 I2C buses, and the bus indices for each device all start
+> from 0. This leads to naming conflicts under the current naming convention. While
+> we could extend the bus IDs from 16 to 47, doing so would require significant code
+> changes to handle different ID ranges, making the code harder to maintain.
 > 
-> The decision to add `spm=` to NUMA rather than the memory backend was based
-> on
-> earlier feedback from David during our initial RFC discussions.
-> 
-> David raised a concern that if we put the spm flag on the memory backend, a
-> user
-> could accidentally pass such a memory backend to DIMM/virtio-mem/boot
-> memory,
-> which would have very undesired side effects.
-> 
+> Therefore, I believe using readable bus labels would be more intuitive for the user API.
 
-This makes sense, and in fact I almost wonder if we should actually
-encode a warning in linux in general if a signal NUMA node contains
-both normal and SPM.  That would help drive consistency between QEMU/KVM
-and real platforms from the direction of linux.
+I tend to agree.
 
-> > (in practice it should be, but not technically required to be)
-> 
-> You're right that on a real system, a NUMA node is not technically required
-> to
-> be 100% SPM. However, in AMD's use case, the entire NUMA node memory (backed
-> by
-> memdev) is intended to be SPM, and this approach provides a cleaner and
-> safer
-> configuration interface.
-> 
+> If there are any existing conventions for this use case or if you have any concerns
+> regarding the use of bus labels, please let me know.
 
-I figured this was the case, and honestly this just provides more
-evidence that any given NUMA node probably should only have 1 "type" of
-memory (or otherwise stated: uniform access within a node, non-uniform
-across nodes).
+Could you please send us the contents of directory :
 
----
+	/sys/bus/i2c/devices/
 
-bit of an aside - but at LPC we also talked about SPM NUMA nodes:
-https://lore.kernel.org/linux-mm/20251112192936.2574429-1-gourry@gourry.net/
+on a system with such IO expanders? preferably with some devices
+attached to the I2C buses.
 
-Would be cool to be able to detect this in the drivers and have hotplug
-automatically mark a node SPM unless a driver overrides it.
-(MHP flag? Sorry David :P)
+Thanks,
 
-> > 
-> > ~Gregory
-> 
-> Please let me know if you have further concerns or suggestions.
-> 
-
-I'll look at the patch details a bit more, but generally I like the
-direction - with an obvious note that I have a biased given the above.
-
-~Gregory
+C.
 
