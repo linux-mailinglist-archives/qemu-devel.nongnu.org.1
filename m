@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F609CEB72B
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Dec 2025 08:35:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB47CCEB70D
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Dec 2025 08:34:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vaqip-0007Vs-U6; Wed, 31 Dec 2025 02:34:19 -0500
+	id 1vaqir-0007bZ-Nl; Wed, 31 Dec 2025 02:34:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vaqio-0007Uw-AC
- for qemu-devel@nongnu.org; Wed, 31 Dec 2025 02:34:18 -0500
+ id 1vaqip-0007Vr-E2
+ for qemu-devel@nongnu.org; Wed, 31 Dec 2025 02:34:19 -0500
 Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vaqim-0001Ao-4X
- for qemu-devel@nongnu.org; Wed, 31 Dec 2025 02:34:18 -0500
+ id 1vaqin-0001B6-2h
+ for qemu-devel@nongnu.org; Wed, 31 Dec 2025 02:34:19 -0500
 Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-7acd9a03ba9so11086883b3a.1
- for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 23:34:15 -0800 (PST)
+ d2e1a72fcca58-7b9c17dd591so9107206b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 23:34:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767166455; x=1767771255; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767166456; x=1767771256; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=61Ox3g57Sf+viLXH39+CDULuy7QZTHnRiB/sotzZN9M=;
- b=awg2tp2wSaA1m8FOrZ/kd108h9cTAkvlwyeVYGjnc7tz6IC0rvQoMo5IeOz/JC4ZN6
- 3xSLu4XoedHrTC6ozVHCexGTYveY18ue4lwsuEMJXJguS+2S+CFPgL1bUvbIjO8oBcN+
- 39sFGGQbJfZL/THfU9nCulvuQnKPAekMX6NgQi56nUguvByprsva5sRKV5H7NO82FZdj
- GAJBcGxfxHYOtuhOPDTnhXIJjTx4LRmZIScdTj+chmSGA9WlaEAfk575zG0T+aPmKg6l
- 5NumKuofZ6Pdw7YYnyZOCuulJ4TaIxwnXwtX/TGnH1Suivzf+tAslwvCss9hjJ0EGfoB
- VaVA==
+ bh=Y2PnYPaVgv2a3r54rqJcVWPwTLSu9JeG2yAlY2Q9p00=;
+ b=TF7qkIDMCkA0QTd9MHx+iSblFcB2e6S6rGiIlNmF7PHU2V9mFAMPaDsq1iKPC2UJWr
+ tKg2tUlhaP7NEPCz08lRvG+P4zvD2CMZNCs5hvyq8ZcpfPDFJI6f7vsQSqX1L+2GzJ6/
+ 4izB2BuK/51O/oNPxok2fgBcFzRuld1BboVf+nSDLCHXt5VEgowJKy7eMAe8SzUgdWUv
+ DdguxNdUwPIAX4CWo+CVozAchmpYe1vWgJjj5F0S+/D09Wx3T/KLj/8w+UCobQiIclgZ
+ zoIeG/7P9qjG6jG7Xtewa/PlBTis8zRbR9qlwtDfES7dYYr9UNlt4POAHWde3NlMFLG7
+ vitw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767166455; x=1767771255;
+ d=1e100.net; s=20230601; t=1767166456; x=1767771256;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=61Ox3g57Sf+viLXH39+CDULuy7QZTHnRiB/sotzZN9M=;
- b=FctzGDnbZWNVOWoaae458HK7obRM2QxpbNMPCnvqjtODbrCpCsvLPsGXtDYIJ4YZXK
- qnTWgp7FZYRbVijitI+q7Imd0F5CDJNfd2Q0qTkv27b6uO7ODvArj+kVTrNkoMrkB7zO
- 4cRSM1vZ650KuTo+MvTvaK9Z7Nh8MTN+qcdBRPbFmeHuLU9UDM1la19MaJ2nJTug1JOu
- nbubLnZhiCrURXUWe4zjepzTJCGYcQZVVP/nCaLkPVAoCf7+8JsQpI2FpP9vlLenfoFf
- OPXyAKR0SJ/pKKrTkcDvIrJMuBw/HltBoA0pxcr22gDiBjBx32iQWhCg2m/Gj8DOLcmb
- eUWw==
-X-Gm-Message-State: AOJu0YxXAg7DaHgK9HnOXpRUeGdD3zn4OyExyRtcAUY5o1Q0qoCklZpq
- cDc6+aENN6BXhRu3sN3y8NdJVTVmLFAi1k+EIP0QMmZ+FykP/vJzBpd+8sDD2Ud2AvuaoG26maJ
- bWf7c
-X-Gm-Gg: AY/fxX5fUT1XLtgjoc42Avq3hRVXcganYgCT3U3viLiBuJ6j4cr+bdVFowAtCBb/O+j
- c430QoY2EfEvw+kypbR9Uy1br4adEaUNI/TNT5fOUv+dPKL499KRiAcEtVOFlYdrgQQJfveW8Kv
- t4aIE1x/LpQ1zdAzGWZ+PBnadBPZXp/7RQdUU33KKG5syx/1LkaxO/GqvncR309H/QAz6cbNE27
- teObZ27iqJsC1L7rEIuh6XXXYWgLDm31qkWr1zsKGbelSnKnalgGarKo8C3aiVyP1JTYb7LSlg8
- U6W5FRGxVTR7FDL5cs5fOhAkT2BvUR9SvTwcBSuFPQCehhxEHSbts995ceyvP7nV/PENbETXoDh
- 83dsITiyn8NlqwbXG5i8XGbDMUoK4CGSPDn9Cvqzv7JnpjJvNC+hMG2vutrayqrYZjXKxlX+sis
- 5WOtiQQPu9XMzrPIfC988fkRILZ4dCOGgKXqVd6BZkC4SaGVD2WSS8egf2yiid5KyK
-X-Google-Smtp-Source: AGHT+IFr2BQfgqdsoAz6ZSs2bynSwblget3vPPS78gMEJCrPXxkfH3oy5/3E4GkGFXFyzBULpoiVbg==
-X-Received: by 2002:a05:6a00:44c6:b0:7e8:4398:b369 with SMTP id
- d2e1a72fcca58-7ff66c637damr28990442b3a.60.1767166454672; 
- Tue, 30 Dec 2025 23:34:14 -0800 (PST)
+ bh=Y2PnYPaVgv2a3r54rqJcVWPwTLSu9JeG2yAlY2Q9p00=;
+ b=CU5j/ShBCvIpqbDN6fDqitr6UM3Sff04GunJ3GtPVZSuztRMM1apj7rAmDQTa9G0rB
+ 9W/eqCcLdElkOgB4fMovWPJB0TPRU+Pqpis2EJXziCDlx3YgO1HJf2szMWdA5Fjqqdrd
+ 407xkFXbLw8svD8HYFYsAVFkxjfbQqDwSZZwU0wr/6PBGvQ1r31c2tWaiwJmmUgi+Dw9
+ r7lrTlVZQ9wL9fE1KsiknFQEmVEQKUbV0JfT51F+TgTIaHVg0Fw0BB1Fo5vGHc7rxn9e
+ 1ISaN7LOoy6IT69aaGUzG2X0DZhmhsU+c9SSCyyYULNKdQfM7u/i+55nMKIbPYR+ARJs
+ xMsA==
+X-Gm-Message-State: AOJu0YxhiAhfgPwznap31P38Di3CgDGIuFF7Cs4kvXJgeWaHydPetBJK
+ nYKbOmZQOfSAswDZ7p1E0Plya3GEv2XqLSKIA7CNf+2YEIMshby2yow4nsyj9Ko7KUuRA4aHlAG
+ 9VnUu
+X-Gm-Gg: AY/fxX6//gUKXnG22SPGfFO8nRgVH7V/E5R2iYRm6eot/6vQzd7Y3DcAb4wKQwfOY8T
+ EP21HYzJup55KSKNEycleGqj74d3uLO8Qnu9SGVnTD8OChK/XSAn9BL+wKPHAwyDYfatEq8AH5O
+ nWs/Cs5ElzXCH3KZd8OYZGy0T3b+Y/sbItlExwa+urR3U/Og9leQ5J0oqHb69zB1USI1W1Re9e4
+ jX1WpmANn1D977XD1M3zopu9P1o0RP3EcSKqxRwnjmzKMJQcnsNPvz9DL1iIwFtYVUoMrFa/4hR
+ TY36PIJ56lCnSviAE6fwEcDhI3GqhtYpLCPjMS+hRkb1Y1Lw+3MINc4JUIaRAaJnD597D12l8WE
+ KMk1w44/lIrqYiv2R9EGUCYFTFrBMaYLfiVHDubC7FsjAYfqBOzfyf3aGOUjDTHyl19Rmrejill
+ vqXjDhclqJG2CiV7VqkPmDyb8tvxgTczh8vCfHBCQx07Zt3MpM6JFWNYyL3TAa8LTk
+X-Google-Smtp-Source: AGHT+IG1zw879eV3BZT6wwOppd1KaTa9TNPlq5AXWmRT5G2wTOh/MF/6s/t1RWVHWBLRo7wrooA0Hg==
+X-Received: by 2002:a05:6a00:1ca2:b0:7f6:6011:b106 with SMTP id
+ d2e1a72fcca58-7ff648e611emr32135633b3a.19.1767166455469; 
+ Tue, 30 Dec 2025 23:34:15 -0800 (PST)
 Received: from pc.taild8403c.ts.net (216-71-219-44.dyn.novuscom.net.
  [216.71.219.44]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7ff7e48f3d7sm34597984b3a.51.2025.12.30.23.34.13
+ d2e1a72fcca58-7ff7e48f3d7sm34597984b3a.51.2025.12.30.23.34.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Dec 2025 23:34:14 -0800 (PST)
+ Tue, 30 Dec 2025 23:34:15 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Phil=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -74,9 +74,9 @@ Cc: =?UTF-8?q?Phil=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 05/11] include: qemu/ctype.h -> qemu/qemu-ctype.h
-Date: Tue, 30 Dec 2025 23:33:55 -0800
-Message-ID: <20251231073401.2097765-6-pierrick.bouvier@linaro.org>
+Subject: [PATCH 06/11] include: qemu/coroutine.h -> qemu/qemu-coroutine.h
+Date: Tue, 30 Dec 2025 23:33:56 -0800
+Message-ID: <20251231073401.2097765-7-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251231073401.2097765-1-pierrick.bouvier@linaro.org>
 References: <20251231073401.2097765-1-pierrick.bouvier@linaro.org>
@@ -106,424 +106,494 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This headers conflicts with C++ ctype header, included from iostream.
+This header conflicts with C++ coroutine header.
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/qemu/{ctype.h => qemu-ctype.h} | 0
- block/ssh.c                            | 2 +-
- block/vvfat.c                          | 2 +-
- gdbstub/gdbstub.c                      | 2 +-
- hw/core/bus.c                          | 2 +-
- hw/core/qdev-properties-system.c       | 2 +-
- hw/core/qdev-properties.c              | 2 +-
- hw/hyperv/syndbg.c                     | 2 +-
- hw/nvme/nguid.c                        | 2 +-
- hw/s390x/ccw-device.c                  | 2 +-
- hw/s390x/ipl.c                         | 2 +-
- hw/s390x/s390-virtio-ccw.c             | 2 +-
- hw/scsi/scsi-generic.c                 | 2 +-
- migration/migration.c                  | 2 +-
- monitor/fds.c                          | 2 +-
- monitor/hmp.c                          | 2 +-
- net/net.c                              | 2 +-
- net/tap-solaris.c                      | 2 +-
- qapi/qapi-util.c                       | 2 +-
- qobject/json-parser.c                  | 2 +-
- target/ppc/ppc-qmp-cmds.c              | 2 +-
- target/riscv/cpu.c                     | 2 +-
- target/riscv/riscv-qmp-cmds.c          | 2 +-
- tests/qtest/libqtest.c                 | 2 +-
- tests/qtest/migration/migration-util.c | 2 +-
- tests/vhost-user-bridge.c              | 2 +-
- ui/keymaps.c                           | 2 +-
- util/cutils.c                          | 2 +-
- util/id.c                              | 2 +-
- util/readline.c                        | 2 +-
- 30 files changed, 29 insertions(+), 29 deletions(-)
- rename include/qemu/{ctype.h => qemu-ctype.h} (100%)
+ block/parallels.h                              | 2 +-
+ block/qcow2.h                                  | 2 +-
+ fsdev/qemu-fsdev-throttle.h                    | 2 +-
+ hw/9pfs/9p.h                                   | 2 +-
+ include/block/block-global-state.h             | 2 +-
+ include/block/block-hmp-cmds.h                 | 2 +-
+ include/block/block-io.h                       | 2 +-
+ include/block/reqlist.h                        | 2 +-
+ include/block/throttle-groups.h                | 2 +-
+ include/qemu/coroutine_int.h                   | 2 +-
+ include/qemu/job.h                             | 2 +-
+ include/qemu/{coroutine.h => qemu-coroutine.h} | 0
+ migration/migration.h                          | 2 +-
+ ui/console-priv.h                              | 2 +-
+ block.c                                        | 2 +-
+ block/block-copy.c                             | 2 +-
+ block/io_uring.c                               | 2 +-
+ block/linux-aio.c                              | 2 +-
+ block/mirror.c                                 | 2 +-
+ block/progress_meter.c                         | 2 +-
+ block/vdi.c                                    | 2 +-
+ chardev/char.c                                 | 2 +-
+ hw/9pfs/coth.c                                 | 2 +-
+ hw/block/virtio-blk.c                          | 2 +-
+ migration/rdma.c                               | 2 +-
+ nbd/client-connection.c                        | 2 +-
+ net/colo-compare.c                             | 2 +-
+ qapi/qmp-dispatch.c                            | 2 +-
+ tests/unit/test-aio-multithread.c              | 2 +-
+ ui/console.c                                   | 2 +-
+ ui/ui-qmp-cmds.c                               | 2 +-
+ util/qemu-co-shared-resource.c                 | 2 +-
+ util/qemu-co-timeout.c                         | 2 +-
+ util/qemu-coroutine-io.c                       | 2 +-
+ util/thread-pool.c                             | 2 +-
+ 35 files changed, 34 insertions(+), 34 deletions(-)
+ rename include/qemu/{coroutine.h => qemu-coroutine.h} (100%)
 
-diff --git a/include/qemu/ctype.h b/include/qemu/qemu-ctype.h
+diff --git a/block/parallels.h b/block/parallels.h
+index 423b2ad7271..7836b68d491 100644
+--- a/block/parallels.h
++++ b/block/parallels.h
+@@ -31,7 +31,7 @@
+ */
+ #ifndef BLOCK_PARALLELS_H
+ #define BLOCK_PARALLELS_H
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ 
+ #define HEADS_NUMBER 16
+ #define SEC_IN_CYL 32
+diff --git a/block/qcow2.h b/block/qcow2.h
+index 96db7c51ec2..f139d64659f 100644
+--- a/block/qcow2.h
++++ b/block/qcow2.h
+@@ -26,7 +26,7 @@
+ #define BLOCK_QCOW2_H
+ 
+ #include "crypto/block.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "qemu/units.h"
+ #include "block/block_int.h"
+ 
+diff --git a/fsdev/qemu-fsdev-throttle.h b/fsdev/qemu-fsdev-throttle.h
+index a1dc0307903..6e54991deba 100644
+--- a/fsdev/qemu-fsdev-throttle.h
++++ b/fsdev/qemu-fsdev-throttle.h
+@@ -15,7 +15,7 @@
+ #ifndef QEMU_FSDEV_THROTTLE_H
+ #define QEMU_FSDEV_THROTTLE_H
+ 
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "qemu/throttle.h"
+ 
+ typedef struct FsThrottle {
+diff --git a/hw/9pfs/9p.h b/hw/9pfs/9p.h
+index 65cc45e344f..d380d8bec62 100644
+--- a/hw/9pfs/9p.h
++++ b/hw/9pfs/9p.h
+@@ -7,7 +7,7 @@
+ #include "fsdev/file-op-9p.h"
+ #include "fsdev/9p-iov-marshal.h"
+ #include "qemu/thread.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "qemu/qht.h"
+ 
+ enum {
+diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
+index ed89999f0fb..70c6c91d275 100644
+--- a/include/block/block-global-state.h
++++ b/include/block/block-global-state.h
+@@ -27,7 +27,7 @@
+ #include "qemu/aiocb.h"
+ #include "block/graph-lock.h"
+ #include "block/block-common.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "qemu/transactions.h"
+ 
+ /*
+diff --git a/include/block/block-hmp-cmds.h b/include/block/block-hmp-cmds.h
+index 71113cd7efa..72d0e8bdc37 100644
+--- a/include/block/block-hmp-cmds.h
++++ b/include/block/block-hmp-cmds.h
+@@ -15,7 +15,7 @@
+ #ifndef BLOCK_BLOCK_HMP_CMDS_H
+ #define BLOCK_BLOCK_HMP_CMDS_H
+ 
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ 
+ void hmp_drive_add(Monitor *mon, const QDict *qdict);
+ 
+diff --git a/include/block/block-io.h b/include/block/block-io.h
+index d34d846bb2a..cd33872c26f 100644
+--- a/include/block/block-io.h
++++ b/include/block/block-io.h
+@@ -28,7 +28,7 @@
+ #include "qemu/aio-wait.h"
+ #include "block/block-common.h"
+ #include "block/graph-lock.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "qemu/iov.h"
+ 
+ /*
+diff --git a/include/block/reqlist.h b/include/block/reqlist.h
+index 5253497bae3..25b9329a0cd 100644
+--- a/include/block/reqlist.h
++++ b/include/block/reqlist.h
+@@ -15,7 +15,7 @@
+ #ifndef REQLIST_H
+ #define REQLIST_H
+ 
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ 
+ /*
+  * The API is not thread-safe and shouldn't be. The struct is public to be part
+diff --git a/include/block/throttle-groups.h b/include/block/throttle-groups.h
+index 2355e8d9de6..f88160d0c5a 100644
+--- a/include/block/throttle-groups.h
++++ b/include/block/throttle-groups.h
+@@ -25,7 +25,7 @@
+ #ifndef THROTTLE_GROUPS_H
+ #define THROTTLE_GROUPS_H
+ 
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "qemu/throttle.h"
+ #include "qom/object.h"
+ 
+diff --git a/include/qemu/coroutine_int.h b/include/qemu/coroutine_int.h
+index 1da148552f7..a2985bb6e11 100644
+--- a/include/qemu/coroutine_int.h
++++ b/include/qemu/coroutine_int.h
+@@ -26,7 +26,7 @@
+ #define QEMU_COROUTINE_INT_H
+ 
+ #include "qemu/queue.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ 
+ #ifdef CONFIG_SAFESTACK
+ /* Pointer to the unsafe stack, defined by the compiler */
+diff --git a/include/qemu/job.h b/include/qemu/job.h
+index 0e40e8b4570..04ba53ac3b6 100644
+--- a/include/qemu/job.h
++++ b/include/qemu/job.h
+@@ -30,7 +30,7 @@
+ #include "qemu/aiocb.h"
+ #include "qemu/queue.h"
+ #include "qemu/progress_meter.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "qemu/aio.h"
+ #include "block/graph-lock.h"
+ 
+diff --git a/include/qemu/coroutine.h b/include/qemu/qemu-coroutine.h
 similarity index 100%
-rename from include/qemu/ctype.h
-rename to include/qemu/qemu-ctype.h
-diff --git a/block/ssh.c b/block/ssh.c
-index bdec94e9e92..8ae7be4b423 100644
---- a/block/ssh.c
-+++ b/block/ssh.c
-@@ -34,7 +34,7 @@
- #include "qemu/error-report.h"
- #include "qemu/module.h"
- #include "qemu/option.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qemu/cutils.h"
- #include "qemu/sockets.h"
- #include "qapi/qapi-visit-sockets.h"
-diff --git a/block/vvfat.c b/block/vvfat.c
-index e334b9febb1..d495d07e5b0 100644
---- a/block/vvfat.c
-+++ b/block/vvfat.c
-@@ -36,7 +36,7 @@
- #include "migration/blocker.h"
- #include "qobject/qdict.h"
- #include "qobject/qstring.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qemu/cutils.h"
- #include "qemu/error-report.h"
- 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 1f8cd118924..47d4f63d4e4 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -24,7 +24,7 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qemu/cutils.h"
- #include "qemu/module.h"
- #include "qemu/error-report.h"
-diff --git a/hw/core/bus.c b/hw/core/bus.c
-index 53f392fdda8..202c42b405d 100644
---- a/hw/core/bus.c
-+++ b/hw/core/bus.c
-@@ -19,7 +19,7 @@
- 
- #include "qemu/osdep.h"
- #include "hw/core/qdev-properties.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qemu/module.h"
- #include "qapi/error.h"
- 
-diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
-index fe5464c7da1..420b60e9ba1 100644
---- a/hw/core/qdev-properties-system.c
-+++ b/hw/core/qdev-properties-system.c
+rename from include/qemu/coroutine.h
+rename to include/qemu/qemu-coroutine.h
+diff --git a/migration/migration.h b/migration/migration.h
+index ccc4e536a57..ad3aad5b1a8 100644
+--- a/migration/migration.h
++++ b/migration/migration.h
 @@ -20,7 +20,7 @@
  #include "qapi/qapi-types-migration.h"
- #include "qapi/qapi-visit-virtio.h"
- #include "qapi/qmp/qerror.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qemu/cutils.h"
- #include "qemu/units.h"
- #include "qemu/uuid.h"
-diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-index 05489c8fbbf..3e762d83194 100644
---- a/hw/core/qdev-properties.c
-+++ b/hw/core/qdev-properties.c
-@@ -4,7 +4,7 @@
- #include "qapi/qapi-types-misc.h"
- #include "qapi/qapi-visit-common.h"
- #include "qobject/qlist.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qemu/error-report.h"
- #include "qapi/visitor.h"
- #include "qemu/units.h"
-diff --git a/hw/hyperv/syndbg.c b/hw/hyperv/syndbg.c
-index 1e177f9dd82..7219ed0f219 100644
---- a/hw/hyperv/syndbg.c
-+++ b/hw/hyperv/syndbg.c
+ #include "qobject/json-writer.h"
+ #include "qemu/thread.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "io/channel.h"
+ #include "io/channel-buffer.h"
+ #include "net/announce.h"
+diff --git a/ui/console-priv.h b/ui/console-priv.h
+index 43ceb8122f1..320ae93af18 100644
+--- a/ui/console-priv.h
++++ b/ui/console-priv.h
 @@ -6,7 +6,7 @@
-  */
+ #define CONSOLE_PRIV_H
  
- #include "qemu/osdep.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qemu/error-report.h"
- #include "qemu/main-loop.h"
- #include "qemu/sockets.h"
-diff --git a/hw/nvme/nguid.c b/hw/nvme/nguid.c
-index 4cd6fad6ac9..acd73ac695b 100644
---- a/hw/nvme/nguid.c
-+++ b/hw/nvme/nguid.c
-@@ -16,7 +16,7 @@
+ #include "ui/console.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "qemu/timer.h"
  
- #include "qemu/osdep.h"
- #include "qapi/visitor.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "nvme.h"
- 
- #define NGUID_SEPARATOR '-'
-diff --git a/hw/s390x/ccw-device.c b/hw/s390x/ccw-device.c
-index 25c42732795..6520fee7970 100644
---- a/hw/s390x/ccw-device.c
-+++ b/hw/s390x/ccw-device.c
-@@ -15,7 +15,7 @@
- #include "qemu/module.h"
- #include "ipl.h"
- #include "qapi/visitor.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qapi/error.h"
- 
- static void ccw_device_refill_ids(CcwDevice *dev)
-diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
-index d34adb55220..21adb5955b3 100644
---- a/hw/s390x/ipl.c
-+++ b/hw/s390x/ipl.c
-@@ -34,7 +34,7 @@
- #include "qemu/config-file.h"
+ #include "vgafont.h"
+diff --git a/block.c b/block.c
+index 48a17f393c5..d9b3dfa23fa 100644
+--- a/block.c
++++ b/block.c
+@@ -45,7 +45,7 @@
+ #include "system/block-backend.h"
+ #include "qemu/notify.h"
+ #include "qemu/option.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "block/qapi.h"
+ #include "qemu/timer.h"
  #include "qemu/cutils.h"
- #include "qemu/option.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "standard-headers/linux/virtio_ids.h"
- 
- #define KERN_IMAGE_START                0x010000UL
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 8314655ec2c..217244643b6 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -19,7 +19,7 @@
- #include "hw/s390x/s390_flic.h"
- #include "virtio-ccw.h"
- #include "qemu/config-file.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
+diff --git a/block/block-copy.c b/block/block-copy.c
+index 1826c2e1c7b..c800946efbb 100644
+--- a/block/block-copy.c
++++ b/block/block-copy.c
+@@ -23,7 +23,7 @@
+ #include "system/block-backend.h"
+ #include "qemu/units.h"
+ #include "qemu/co-shared-resource.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "qemu/ratelimit.h"
+ #include "block/aio_task.h"
  #include "qemu/error-report.h"
- #include "qemu/option.h"
- #include "qemu/qemu-print.h"
-diff --git a/hw/scsi/scsi-generic.c b/hw/scsi/scsi-generic.c
-index 0a676a16fa4..c2563ccbdf6 100644
---- a/hw/scsi/scsi-generic.c
-+++ b/hw/scsi/scsi-generic.c
+diff --git a/block/io_uring.c b/block/io_uring.c
+index cb131d3b8b5..940c1ca53b3 100644
+--- a/block/io_uring.c
++++ b/block/io_uring.c
 @@ -13,7 +13,7 @@
- 
- #include "qemu/osdep.h"
- #include "qapi/error.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qemu/error-report.h"
- #include "qemu/module.h"
- #include "hw/scsi/scsi.h"
-diff --git a/migration/migration.c b/migration/migration.c
-index 9d1bf5d276d..5b21eb07d5e 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -14,7 +14,7 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qemu/cutils.h"
- #include "qemu/error-report.h"
- #include "qemu/main-loop.h"
-diff --git a/monitor/fds.c b/monitor/fds.c
-index cc35d2ec334..d98c117a9b2 100644
---- a/monitor/fds.c
-+++ b/monitor/fds.c
-@@ -27,7 +27,7 @@
- #include "qapi/error.h"
- #include "qapi/qapi-commands-misc.h"
- #include "qapi/qmp/qerror.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qemu/cutils.h"
- #include "system/runstate.h"
- 
-diff --git a/monitor/hmp.c b/monitor/hmp.c
-index 4caafbc7146..023c4e77a84 100644
---- a/monitor/hmp.c
-+++ b/monitor/hmp.c
-@@ -30,7 +30,7 @@
- #include "qobject/qdict.h"
- #include "qobject/qnum.h"
- #include "qemu/config-file.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qemu/cutils.h"
- #include "qemu/log.h"
- #include "qemu/option.h"
-diff --git a/net/net.c b/net/net.c
-index a176936f9bc..ca2f49119d5 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -43,7 +43,7 @@
- #include "qemu/sockets.h"
- #include "qemu/cutils.h"
- #include "qemu/config-file.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qemu/id.h"
- #include "qemu/iov.h"
- #include "qemu/qemu-print.h"
-diff --git a/net/tap-solaris.c b/net/tap-solaris.c
-index 75397e6c544..6e1da970d98 100644
---- a/net/tap-solaris.c
-+++ b/net/tap-solaris.c
-@@ -25,7 +25,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "tap_int.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qemu/cutils.h"
- #include "net/net.h"
- 
-diff --git a/qapi/qapi-util.c b/qapi/qapi-util.c
-index 3d849fe0347..b372c74dd04 100644
---- a/qapi/qapi-util.c
-+++ b/qapi/qapi-util.c
-@@ -13,7 +13,7 @@
- #include "qemu/osdep.h"
- #include "qapi/compat-policy.h"
- #include "qapi/error.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qapi/qmp/qerror.h"
- 
- CompatPolicy compat_policy;
-diff --git a/qobject/json-parser.c b/qobject/json-parser.c
-index 7483e582fea..7c5618ba3f3 100644
---- a/qobject/json-parser.c
-+++ b/qobject/json-parser.c
-@@ -12,7 +12,7 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qemu/cutils.h"
- #include "qemu/unicode.h"
- #include "qapi/error.h"
-diff --git a/target/ppc/ppc-qmp-cmds.c b/target/ppc/ppc-qmp-cmds.c
-index 7022564604f..ae9711a21e3 100644
---- a/target/ppc/ppc-qmp-cmds.c
-+++ b/target/ppc/ppc-qmp-cmds.c
-@@ -25,7 +25,7 @@
- #include "qemu/osdep.h"
- #include "cpu.h"
- #include "monitor/monitor.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "monitor/hmp-target.h"
- #include "monitor/hmp.h"
- #include "qapi/error.h"
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 8f26d8b8b07..17df96913ce 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -19,7 +19,7 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/qemu-print.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qemu/log.h"
- #include "cpu.h"
- #include "cpu_vendorid.h"
-diff --git a/target/riscv/riscv-qmp-cmds.c b/target/riscv/riscv-qmp-cmds.c
-index d5e9bec0f86..618007fc0f9 100644
---- a/target/riscv/riscv-qmp-cmds.c
-+++ b/target/riscv/riscv-qmp-cmds.c
-@@ -31,7 +31,7 @@
- #include "qapi/qobject-input-visitor.h"
- #include "qapi/visitor.h"
- #include "qom/qom-qobject.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qemu/qemu-print.h"
- #include "monitor/hmp.h"
- #include "monitor/hmp-target.h"
-diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-index 622464e3656..10a01ba76fa 100644
---- a/tests/qtest/libqtest.c
-+++ b/tests/qtest/libqtest.c
-@@ -31,7 +31,7 @@
- #include "libqtest.h"
- #include "libqmp.h"
- #include "qemu/accel.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qemu/cutils.h"
- #include "qemu/exit-with-parent.h"
- #include "qemu/sockets.h"
-diff --git a/tests/qtest/migration/migration-util.c b/tests/qtest/migration/migration-util.c
-index c2462306a15..1c6dbb6c19b 100644
---- a/tests/qtest/migration/migration-util.c
-+++ b/tests/qtest/migration/migration-util.c
-@@ -11,7 +11,7 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qapi/qapi-visit-sockets.h"
- #include "qapi/qobject-input-visitor.h"
- #include "qapi/error.h"
-diff --git a/tests/vhost-user-bridge.c b/tests/vhost-user-bridge.c
-index ce4c3426d39..cb852194dd0 100644
---- a/tests/vhost-user-bridge.c
-+++ b/tests/vhost-user-bridge.c
-@@ -31,7 +31,7 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/atomic.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qemu/iov.h"
- #include "standard-headers/linux/virtio_net.h"
- #include "libvhost-user.h"
-diff --git a/ui/keymaps.c b/ui/keymaps.c
-index 2359dbfe7e6..6dfd5a45ee3 100644
---- a/ui/keymaps.c
-+++ b/ui/keymaps.c
-@@ -26,7 +26,7 @@
- #include "qemu/datadir.h"
- #include "keymaps.h"
+ #include "qemu/aio.h"
+ #include "block/block.h"
+ #include "block/raw-aio.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "system/block-backend.h"
  #include "trace.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qemu/error-report.h"
+ 
+diff --git a/block/linux-aio.c b/block/linux-aio.c
+index 53c3e9af8ae..53831b17695 100644
+--- a/block/linux-aio.c
++++ b/block/linux-aio.c
+@@ -13,7 +13,7 @@
+ #include "block/block.h"
+ #include "block/raw-aio.h"
+ #include "qemu/event_notifier.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "qemu/defer-call.h"
  #include "qapi/error.h"
- #include "ui/input.h"
-diff --git a/util/cutils.c b/util/cutils.c
-index 9803f11a596..2c0a9926893 100644
---- a/util/cutils.c
-+++ b/util/cutils.c
-@@ -48,7 +48,7 @@
- #include <wchar.h>
- #endif
+ #include "system/block-backend.h"
+diff --git a/block/mirror.c b/block/mirror.c
+index b344182c747..8de0a8dfc89 100644
+--- a/block/mirror.c
++++ b/block/mirror.c
+@@ -13,7 +13,7 @@
  
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
+ #include "qemu/osdep.h"
  #include "qemu/cutils.h"
- #include "qemu/error-report.h"
- 
-diff --git a/util/id.c b/util/id.c
-index ded41c5025e..0ba538dce81 100644
---- a/util/id.c
-+++ b/util/id.c
-@@ -11,7 +11,7 @@
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "qemu/range.h"
+ #include "trace.h"
+ #include "block/blockjob_int.h"
+diff --git a/block/progress_meter.c b/block/progress_meter.c
+index 31a170a2cd6..6ad9be5f83f 100644
+--- a/block/progress_meter.c
++++ b/block/progress_meter.c
+@@ -25,7 +25,7 @@
   */
  
  #include "qemu/osdep.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qemu/id.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "qemu/progress_meter.h"
  
- bool id_wellformed(const char *id)
-diff --git a/util/readline.c b/util/readline.c
-index 0f19674f526..f756d384625 100644
---- a/util/readline.c
-+++ b/util/readline.c
-@@ -24,7 +24,7 @@
+ void progress_init(ProgressMeter *pm)
+diff --git a/block/vdi.c b/block/vdi.c
+index 87b874a7ef5..b42314e08ad 100644
+--- a/block/vdi.c
++++ b/block/vdi.c
+@@ -63,7 +63,7 @@
+ #include "qemu/option.h"
+ #include "qemu/bswap.h"
+ #include "migration/blocker.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "qemu/cutils.h"
+ #include "qemu/uuid.h"
+ #include "qemu/memalign.h"
+diff --git a/chardev/char.c b/chardev/char.c
+index 3e432195a5a..7ff440d884e 100644
+--- a/chardev/char.c
++++ b/chardev/char.c
+@@ -38,7 +38,7 @@
+ #include "qemu/module.h"
+ #include "qemu/option.h"
+ #include "qemu/id.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "qemu/yank.h"
+ 
+ #include "chardev-internal.h"
+diff --git a/hw/9pfs/coth.c b/hw/9pfs/coth.c
+index 598f46add99..eda52fe28f1 100644
+--- a/hw/9pfs/coth.c
++++ b/hw/9pfs/coth.c
+@@ -19,7 +19,7 @@
  
  #include "qemu/osdep.h"
- #include "qemu/readline.h"
--#include "qemu/ctype.h"
-+#include "qemu/qemu-ctype.h"
- #include "qemu/cutils.h"
+ #include "block/thread-pool.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "qemu/main-loop.h"
+ #include "coth.h"
  
- #define IS_NORM 0
+diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
+index ddf0e9ee53e..07be8a3b387 100644
+--- a/hw/block/virtio-blk.c
++++ b/hw/block/virtio-blk.c
+@@ -36,7 +36,7 @@
+ #include "hw/virtio/iothread-vq-mapping.h"
+ #include "hw/virtio/virtio-access.h"
+ #include "hw/virtio/virtio-blk-common.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ 
+ static void virtio_blk_ioeventfd_attach(VirtIOBlock *s);
+ 
+diff --git a/migration/rdma.c b/migration/rdma.c
+index 337b4158899..589048c6978 100644
+--- a/migration/rdma.c
++++ b/migration/rdma.c
+@@ -29,7 +29,7 @@
+ #include "qemu/rcu.h"
+ #include "qemu/sockets.h"
+ #include "qemu/bitmap.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "system/memory.h"
+ #include <sys/socket.h>
+ #include <netdb.h>
+diff --git a/nbd/client-connection.c b/nbd/client-connection.c
+index 79ea97e4cc1..22247b16c34 100644
+--- a/nbd/client-connection.c
++++ b/nbd/client-connection.c
+@@ -29,7 +29,7 @@
+ 
+ #include "qapi/qapi-visit-sockets.h"
+ #include "qapi/clone-visitor.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ 
+ #include "nbd/nbd-internal.h"
+ 
+diff --git a/net/colo-compare.c b/net/colo-compare.c
+index c356419d6a8..4d308e777c8 100644
+--- a/net/colo-compare.c
++++ b/net/colo-compare.c
+@@ -31,7 +31,7 @@
+ #include "util.h"
+ 
+ #include "qemu/aio-wait.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ 
+ #define TYPE_COLO_COMPARE "colo-compare"
+ typedef struct CompareState CompareState;
+diff --git a/qapi/qmp-dispatch.c b/qapi/qmp-dispatch.c
+index 9bb1e6a9f4a..9df35654f27 100644
+--- a/qapi/qmp-dispatch.c
++++ b/qapi/qmp-dispatch.c
+@@ -22,7 +22,7 @@
+ #include "qapi/qobject-input-visitor.h"
+ #include "qapi/qobject-output-visitor.h"
+ #include "qobject/qbool.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "qemu/main-loop.h"
+ 
+ Visitor *qobject_input_visitor_new_qmp(QObject *obj)
+diff --git a/tests/unit/test-aio-multithread.c b/tests/unit/test-aio-multithread.c
+index 9179cdc6a32..a6923a7f572 100644
+--- a/tests/unit/test-aio-multithread.c
++++ b/tests/unit/test-aio-multithread.c
+@@ -12,7 +12,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/aio.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "qemu/thread.h"
+ #include "qemu/error-report.h"
+ #include "iothread.h"
+diff --git a/ui/console.c b/ui/console.c
+index f445db11389..7556256ef04 100644
+--- a/ui/console.c
++++ b/ui/console.c
+@@ -28,7 +28,7 @@
+ #include "qapi/error.h"
+ #include "qapi/qapi-commands-ui.h"
+ #include "qapi/visitor.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "qemu/error-report.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/module.h"
+diff --git a/ui/ui-qmp-cmds.c b/ui/ui-qmp-cmds.c
+index 74fa6c6ec5a..3be35797343 100644
+--- a/ui/ui-qmp-cmds.c
++++ b/ui/ui-qmp-cmds.c
+@@ -19,7 +19,7 @@
+ #include "monitor/qmp-helpers.h"
+ #include "qapi/qapi-commands-ui.h"
+ #include "qapi/qmp/qerror.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "qemu/cutils.h"
+ #include "trace.h"
+ #include "ui/console.h"
+diff --git a/util/qemu-co-shared-resource.c b/util/qemu-co-shared-resource.c
+index 752eb5a1c5f..52ce4414bfe 100644
+--- a/util/qemu-co-shared-resource.c
++++ b/util/qemu-co-shared-resource.c
+@@ -24,7 +24,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "qemu/co-shared-resource.h"
+ 
+ struct SharedResource {
+diff --git a/util/qemu-co-timeout.c b/util/qemu-co-timeout.c
+index 6774440b287..edc533ff7cf 100644
+--- a/util/qemu-co-timeout.c
++++ b/util/qemu-co-timeout.c
+@@ -24,7 +24,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "qemu/aio.h"
+ 
+ typedef struct QemuCoTimeoutState {
+diff --git a/util/qemu-coroutine-io.c b/util/qemu-coroutine-io.c
+index 364f4d5abf5..2d88458fadd 100644
+--- a/util/qemu-coroutine-io.c
++++ b/util/qemu-coroutine-io.c
+@@ -24,7 +24,7 @@
+  */
+ #include "qemu/osdep.h"
+ #include "qemu/sockets.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "qemu/iov.h"
+ #include "qemu/main-loop.h"
+ 
+diff --git a/util/thread-pool.c b/util/thread-pool.c
+index 8f8cb38d5ce..d85b0b04293 100644
+--- a/util/thread-pool.c
++++ b/util/thread-pool.c
+@@ -19,7 +19,7 @@
+ #include "qemu/queue.h"
+ #include "qemu/thread.h"
+ #include "qemu/atomic.h"
+-#include "qemu/coroutine.h"
++#include "qemu/qemu-coroutine.h"
+ #include "trace.h"
+ #include "block/thread-pool.h"
+ #include "qemu/main-loop.h"
 -- 
 2.47.3
 
