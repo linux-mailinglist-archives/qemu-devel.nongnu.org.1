@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60AD8CEB710
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Dec 2025 08:34:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EC78CEB725
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Dec 2025 08:35:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vaqis-0007cp-3o; Wed, 31 Dec 2025 02:34:22 -0500
+	id 1vaqit-0007eH-SY; Wed, 31 Dec 2025 02:34:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vaqiq-0007Zr-CQ
- for qemu-devel@nongnu.org; Wed, 31 Dec 2025 02:34:20 -0500
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1vaqis-0007d0-5C
+ for qemu-devel@nongnu.org; Wed, 31 Dec 2025 02:34:22 -0500
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vaqio-0001BZ-Mi
- for qemu-devel@nongnu.org; Wed, 31 Dec 2025 02:34:20 -0500
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-7b9387df58cso17030864b3a.3
- for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 23:34:18 -0800 (PST)
+ id 1vaqip-0001Bl-I3
+ for qemu-devel@nongnu.org; Wed, 31 Dec 2025 02:34:21 -0500
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-7bab7c997eeso12528001b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 23:34:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767166457; x=1767771257; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767166458; x=1767771258; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=evdd5T/Fi2dYyHzRsiaIO9JAH5fYrMEkDtHE8uL2Oz4=;
- b=ws1zR1a3oYtnkn2lgq7pE/mp7z/pWyVSba3h0KMRGK/+GGjdri4uz3Y9nDFt+FVX86
- 0JaV7o1ojfgLorHXPD83ipvUuSrxoBE/3/kJILDifJHaruw3G7dwTm8JQEspif/Ckjef
- +c5oIZdPsho7Wyn3eTrNFZyfunSucQin5FvVodqwMqiS6LclX7TV4JdMS3+AdOXo8vXZ
- 1KA4S2oIlieNeUkKEDyz1Gl8DibtoJN8HFimem36aLcW+MoOZ7c0kSz4gg+vehsBqf7j
- PcNXgs5dwduzWmFVJ4zAACe7JR779NssVYlUx0FvP/IMQhOE8Z+KmYKqSAsJFpRkNJWd
- 287A==
+ bh=4pu2TYG/+F91diJrA2qUvqaX2TgetOgZbJlelL7PNoU=;
+ b=g6sTaYOeBZQxsRFtilZMkS24g6S8XFxu+4/Eq0Vv65QAK882ItxO6Gqz/M1oJhqpho
+ LSHJTaIK65xOlXIjisz2zshJ1LvXeTK4Ia8nQgykrKO+MFUl7+lh4HFPzAznuHYUHDPe
+ PUo8fgN1Km4Syz0V5KVm4DZ678Upj85Z1nonjjWbJIDI549IrPuIRFhT7xkRtkY5IGcZ
+ DLLxP8gEoKVbpgj9skh6MGemGf8+Y6UmOL3iip9tIvkRj3JxcUPKdth8DeBUFNEn4Fs5
+ x/DR9GxoNuKvab2+IQIEjMV1rpRJ1/PaNqdD3hQM/T1EdO0zuwxKUZhM7IrH29fGyhd5
+ b8ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767166457; x=1767771257;
+ d=1e100.net; s=20230601; t=1767166458; x=1767771258;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=evdd5T/Fi2dYyHzRsiaIO9JAH5fYrMEkDtHE8uL2Oz4=;
- b=W4H7OMgotWLPlehjkk5zoL906JKVzXOAU0tC5MUUfUEAqN6b9C2vf1IBURM1Mth2Uy
- 6WYGEi8vVklmc8nzuDWVxU3VO5c2+RjpGMlhHsCYAw2WWVgjCXvi7ydkaFAdJYAYhFN6
- ZPGxabAmUSWAmQ2jD+q2GjMb5ygQj7EcPqQrB5t/0EkZtpHRjB+N+YD2llz2tOaznZ1M
- kBjLOIV7vh+N+vzShWfi9tJffyZBmK3yHOXLt80J/Xo/YhLXK6JpW/oyodH6PkmkdK9b
- x7C4B1NhuAj8UcS75O7/8uMYqcEVer75lWr5uCSFfGmQGeSgOnlNMRCAEgPY9QAlvpG1
- UR6A==
-X-Gm-Message-State: AOJu0YyK4+YDZhPovavUkMmamyVElE/E1b+4HJlFCjqLUTrZZSc9HhoQ
- fttQ+IyEE50OKRKyQXQ8zRyaz4aMrHI3bVH3VbIkr85lQmVLflZ7SDJZz6eeyx65r3FDImQOTr+
- Su21e
-X-Gm-Gg: AY/fxX49zDCdDr4iWVLsBmJsyeBK4qqCP4FYKok2MvKCWnkiDBsWPTWMvE901c1VZxx
- prIW7YfLYHwwWuA12cVLR2tlZwexhsUvzot+4X6ouuymIMF3yk9IzpJw5Ax7LzewErIwe6YdYh3
- rfay7oxkdTNIcw6mGK7Yu9piBxh1ipaDP7BSINZDpLtr+wt8JMf2iQiEDfJUEq3gQOfnjEpm/WV
- Ika5lab/52JhL4Dc7mKUS2ydVlHglNbSlC87fckUaoeB8RaecyN7ikX7kqKdDbOTVi88zvXtaWr
- 8Gya9i6GY5OGlvu7RcfsEXdtzTUpo7e9vdka38bc+R9uAwOD+wVjlOJ87wEmXwT4rN/x8FiBg4R
- gUasF/QLVnPSEj3kU7Kv+drcmzJ2uGL+CTjbB4+n4is6SAavehE5TzzXSY7gpoBV8Fpy5cf6DpS
- /vAOqNw1xvvVKkp/+YTw3h+nocTmtOYE06tVkRT7PPHYD6eqX5RB/N4mduLnlrX99u
-X-Google-Smtp-Source: AGHT+IFhgxIvjfmVqnKGy44nbXLWF9bkygTYFJe0DKwj/i2/3UY7LAzVxm8YInrwAC1ihJK7sAA39A==
-X-Received: by 2002:a05:6a00:302a:b0:7b7:79ca:9a73 with SMTP id
- d2e1a72fcca58-7ff646f9664mr34651092b3a.10.1767166457155; 
+ bh=4pu2TYG/+F91diJrA2qUvqaX2TgetOgZbJlelL7PNoU=;
+ b=dPhjlwMjemgQWQbmqckeDzMs0J4x5ip2MSWDxV73seGDZhGX+osW9wD1tCt1CmD2/N
+ YzhmWgDj8k+u5jjpmfPSIdEDRcY1sJ8VKjnrZcg8YCsnf0X3ktF4xCL4tZr0fbEYZxqi
+ YHJKDqA42CVRY9Rcb9BqvBN1IFOkyRj/GYTVxqUzgUGOwNrbz4Crdiy6IqfaFS6XGBhV
+ zw+VVnXmyAwWx8pnu1+Nonb8ebAY0y2cfZJOhYWZ4vSCZmK1kDxpItCl5QO9QJQolxTE
+ i49LgvIp2pp33vfuEUiLDGOaVbNyqIz77CL34YfW2uqqutoTe1iW6yQ4J/0bxF2DVSyo
+ Cevg==
+X-Gm-Message-State: AOJu0Yypq8svIfv1pwujKFAWozmJsgzxetdOVdO1sMNbPIf0ZdoR3Ent
+ bk9CzM6yEwKQ1mYuiTGpmhAgIOniPl6FxMIl/esnSuU9w072u0jJyglexeQSoAmA+K18BHG/pDH
+ rR6zu
+X-Gm-Gg: AY/fxX5teDZ4omYt7gSRZD2sq/2Ly5OcEG5C3BJ/iv6FQcNnnU/VxC34114vxHxrKiH
+ hmuKzSB4lUUnteYNPssmfogh/OdDfDdHJpMiI77TC+WPbw0tCx2ufyJmaaQfiVm6bG6FdQo+NOC
+ vzMtwaPcNg3WKaQUBkxUEBJmrTnQqvuSWoLFS3X2DHe7EQ538CW2mFUanLGTnQw/f6agHD0Zvu8
+ bsJfJOEkWJhOaahK6/CvQHXUKQZNoltIUKcre5zLIv56PZHNSqkfu2MTr3gCHllMTYyFxnaWUJ9
+ k5R8U+xa4QYPPHCMbUIcNtxOV5RDL1J9nylVbYzWQZV4YrGL59Z+TkDtTr2rkXr7ymq0sBZ0ZmU
+ LM2cSFYsFWW8djNfQ4ZuFDykvYuX31jYR90a4E068re7siSGyvKThABjy+CeHv5rxSDgmAFcCEJ
+ ygIMYvvsD0PmhJ9cR6oZZRtU4e3VR58FiBJ2Fdbjowt9Y6Zt+uuqc3Lll6u7/4MxaS
+X-Google-Smtp-Source: AGHT+IE7PO8Dw38NSjBDK0GezpRbjNyt552i3Ha5VVy/uzXzBAr8IZZTHZhE435Ly19qsIlyhxA2gA==
+X-Received: by 2002:a05:6a00:8017:b0:7e8:4471:ae68 with SMTP id
+ d2e1a72fcca58-7ff67966c94mr28142616b3a.52.1767166457968; 
  Tue, 30 Dec 2025 23:34:17 -0800 (PST)
 Received: from pc.taild8403c.ts.net (216-71-219-44.dyn.novuscom.net.
  [216.71.219.44]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7ff7e48f3d7sm34597984b3a.51.2025.12.30.23.34.16
+ d2e1a72fcca58-7ff7e48f3d7sm34597984b3a.51.2025.12.30.23.34.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Dec 2025 23:34:16 -0800 (PST)
+ Tue, 30 Dec 2025 23:34:17 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Phil=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -74,16 +74,16 @@ Cc: =?UTF-8?q?Phil=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 08/11] meson: enable cpp (optionally) for plugins
-Date: Tue, 30 Dec 2025 23:33:58 -0800
-Message-ID: <20251231073401.2097765-9-pierrick.bouvier@linaro.org>
+Subject: [PATCH 09/11] qga/vss-win32: fix clang warning with C++20
+Date: Tue, 30 Dec 2025 23:33:59 -0800
+Message-ID: <20251231073401.2097765-10-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251231073401.2097765-1-pierrick.bouvier@linaro.org>
 References: <20251231073401.2097765-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,25 +106,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+C++20 deprecated such constructs.
+
+../qga/vss-win32/requester.cpp:380:32: error: bitwise operation between different enumeration types ('_VSS_SNAPSHOT_CONTEXT' and '_VSS_VOLUME_SNAPSHOT_ATTRIBUTES') is deprecated [-Werror,-Wdeprecated-enum-enum-conversion]
+  380 |     ctx = VSS_CTX_APP_ROLLBACK | VSS_VOLSNAP_ATTR_TRANSPORTABLE |
+
+This is a false positive, since VSS_CTX_APP_ROLLBACK is not a value
+defined in _VSS_VOLUME_SNAPSHOT_ATTRIBUTES enum.
+
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- meson.build | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ qga/vss-win32/requester.cpp | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index c7042413f20..ecfacaf2ac1 100644
---- a/meson.build
-+++ b/meson.build
-@@ -77,7 +77,8 @@ python = import('python').find_installation()
- 
- cc = meson.get_compiler('c')
- all_languages = ['c']
--if host_os == 'windows' and add_languages('cpp', required: false, native: false)
-+enable_cpp = host_os == 'windows' or get_option('plugins')
-+if enable_cpp and add_languages('cpp', required: false, native: false)
-   all_languages += ['cpp']
-   cxx = meson.get_compiler('cpp')
- endif
+diff --git a/qga/vss-win32/requester.cpp b/qga/vss-win32/requester.cpp
+index 5615955b6f3..74489fcd0ae 100644
+--- a/qga/vss-win32/requester.cpp
++++ b/qga/vss-win32/requester.cpp
+@@ -377,8 +377,10 @@ void requester_freeze(int *num_vols, void *mountpoints, ErrorSet *errset)
+      * To prevent the final commit (which requires to write to snapshots),
+      * ATTR_NO_AUTORECOVERY and ATTR_TRANSPORTABLE are specified here.
+      */
+-    ctx = VSS_CTX_APP_ROLLBACK | VSS_VOLSNAP_ATTR_TRANSPORTABLE |
+-        VSS_VOLSNAP_ATTR_NO_AUTORECOVERY | VSS_VOLSNAP_ATTR_TXF_RECOVERY;
++    ctx = VSS_CTX_APP_ROLLBACK;
++    ctx |= VSS_VOLSNAP_ATTR_TRANSPORTABLE |
++           VSS_VOLSNAP_ATTR_NO_AUTORECOVERY |
++           VSS_VOLSNAP_ATTR_TXF_RECOVERY;
+     hr = vss_ctx.pVssbc->SetContext(ctx);
+     if (hr == (HRESULT)VSS_E_UNSUPPORTED_CONTEXT) {
+         /* Non-server version of Windows doesn't support ATTR_TRANSPORTABLE */
 -- 
 2.47.3
 
