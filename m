@@ -2,98 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83424CEC5D0
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Dec 2025 18:21:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB848CEC93C
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Dec 2025 22:22:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vazrO-0007fa-Vt; Wed, 31 Dec 2025 12:19:47 -0500
+	id 1vb3dR-0000rK-QW; Wed, 31 Dec 2025 16:21:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vazr6-0007dy-Qv
- for qemu-devel@nongnu.org; Wed, 31 Dec 2025 12:19:30 -0500
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vazr5-0006bu-AU
- for qemu-devel@nongnu.org; Wed, 31 Dec 2025 12:19:28 -0500
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-2a0834769f0so107688925ad.2
- for <qemu-devel@nongnu.org>; Wed, 31 Dec 2025 09:19:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767201565; x=1767806365; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=a3ab5SQCEewpRtvw8FRjvjpvDeC7R2Ol6Kg+O2JkE0M=;
- b=yzPa5JFrWP72RO/1xM2wBhW8MHT1VaWtoJxpBUa7jifWXFz3iEbL7IMOumdGKFZsvM
- LqFr54PgykdjCZjtNb5MY+CTp8XME/vIAziOPc02tENyB6pBer383xNSGe9eTUIgSHBh
- uvaAaYyyLyCO5yb5lc7QcSspUYKcrOOh8jJ7oJI7DT2+QkgbrOISSdOc3twH+EDQtK+j
- ZXJxciWJ3cYTfWF42itIVqPY1qnUC/05LEedompzL9P0oiFJ4ArgK7qtz0pf47r84Zrn
- PDo+9yMBl/lxki8nYwzEz/Eyh2p3vKAiJlunA6ArF+9/JA2oib8NumWHaBxGwfUEdWQZ
- LKog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767201565; x=1767806365;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=a3ab5SQCEewpRtvw8FRjvjpvDeC7R2Ol6Kg+O2JkE0M=;
- b=Zq0C/XX0UABnWLwzZrGV5TaMuoB/q2zIlJpaj4BaK0w9krWIS27o4GoC+XpougL7Yw
- Y01EdyvqLiCgV/iouNjFTlgUVbmA8EhsqcB/nhiCdtjwqy6vOedVxT+cXo9tVyqotmau
- XeMLCic1XCeXD1k68T4N5/w5scjTXcPEqVDSfEbIGImFY3SGZJXibUW/p+qRlB9re6+p
- qmCv00Hk2QtL2Z7YDrWVOdFaD2P1AHaTADNljBC5NwEg0j2xBBOCn1IlkNUgsqNKc/D5
- mhUJOnQawjt0NkMTU6kCfKpbRZ6kkj0vYYWLBtRTdaxDijcrbzxxE8m42hqTcrGUP33g
- bsIw==
-X-Gm-Message-State: AOJu0Yxo1ead7oMIW5C7ZqnjSnHWthSxhQJFA7Z73fQ9HcpV6bYwtrOZ
- ygiHOFmZmBM4+vreuOJqzIra2nAPiLFIODBVb43VKq3+SjXCLBiYfEUyeDS0D7GZkB++tTiQfJC
- 5w1cu
-X-Gm-Gg: AY/fxX6qKeWVof2vLRnhaJhYf/oP3t9iasR2BVTZRVivLbNTfezIdRvaJd9FUR/Azes
- pIRQmdP/5Y+aeax0+4c2w5d1l753tDGRhj8pRsg0ASA8IHQ+erLfS/p9bAMOBa4E6MjiMsw9rLa
- pugaNAXQPTv4B+eQY7JPPRCH3I/JykTgDwZwalPy0lkEy7mZh+So9l19boyU3JACTKH5YOvIa4d
- xKsXu8OzNAzeVVlLTjGib1y8154yeGlkry6uusKmM4S0kkHu3e3H4IZMWEUHuVYKgEiwpn2Dlb8
- I2t5fo0XeCaINod0PipE5jtfNqW9P1q7dZQZYme5Uc2O9ujAteusICc9bKEirMikMEnjzGtA1BA
- xnGgNs88EnMRsIkrOoP5hpi82I7p5dlyU301BMxZqTZZWUacNo7IYyo+5KxldN3ncnZQxwo25NG
- f/IXhOL8wBBqHNYEh108B91UoQW3qpyFZvogSenpkM3t9e7L51HwTkTeOi
-X-Google-Smtp-Source: AGHT+IGsjmLP8FEVio1D1EFTckGTvYsVPkZP7oKenbBwd+a5vuyLgxgM7nhxdrWWifxkH0EwGwcNtA==
-X-Received: by 2002:a17:903:19ce:b0:29e:e925:1aa0 with SMTP id
- d9443c01a7336-2a2f283f14amr371438395ad.45.1767201565322; 
- Wed, 31 Dec 2025 09:19:25 -0800 (PST)
-Received: from [192.168.1.87] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a2f3c66473sm310014265ad.13.2025.12.31.09.19.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 Dec 2025 09:19:24 -0800 (PST)
-Message-ID: <6930d759-f1d0-406a-bc28-be301984abdf@linaro.org>
-Date: Wed, 31 Dec 2025 09:19:24 -0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/11] include: qemu/coroutine.h -> qemu/qemu-coroutine.h
+ (Exim 4.90_1) (envelope-from <chad@jablonski.xyz>)
+ id 1vb3dL-0000pc-6g
+ for qemu-devel@nongnu.org; Wed, 31 Dec 2025 16:21:32 -0500
+Received: from fout-a7-smtp.messagingengine.com ([103.168.172.150])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <chad@jablonski.xyz>)
+ id 1vb3dI-0003hh-18
+ for qemu-devel@nongnu.org; Wed, 31 Dec 2025 16:21:30 -0500
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+ by mailfout.phl.internal (Postfix) with ESMTP id 41B78EC010E;
+ Wed, 31 Dec 2025 16:21:25 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+ by phl-compute-06.internal (MEProxy); Wed, 31 Dec 2025 16:21:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jablonski.xyz;
+ h=cc:cc:content-transfer-encoding:content-type:date:date:from
+ :from:in-reply-to:message-id:mime-version:reply-to:subject
+ :subject:to:to; s=fm1; t=1767216085; x=1767302485; bh=hmf0GIjV07
+ vVEQuWaf63aEVRMxa7L2GGaBElg5r6J30=; b=ac/riQL6L/+7SrTU+ytXxQLswJ
+ Z/g9dgAzprpwaoUhoVkO9nqksNzUx7Cjt0spKYVXyX1pe330BwlHX5vSPCjpprIZ
+ 1t/VAQ3mn1tsQVELtbl2OGPTusLi6YewbObB3H8mgUntkUr1urB2+flo7RPOJs7+
+ CaVuRA/OLvqPJKOJkR2DK3mGevJywlLKppVhE4gR1DQdiTiL6KUMuD5JLJdekxvR
+ 8AcSe2J+AwvFbXh7yrpRa7sETKnr73cIKFmXJ8CfAIulypKiE2WvgGLmlIYYvJ+g
+ o4ad1Ig5fDRByNv8n3EftFDvJp04woELonWW9OyMJobOgT2GNJybGfnUOlZg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:date:date:feedback-id:feedback-id:from:from
+ :in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+ :to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+ 1767216085; x=1767302485; bh=hmf0GIjV07vVEQuWaf63aEVRMxa7L2GGaBE
+ lg5r6J30=; b=rJe1nHAT5wSbcahJFvRxmtb2MMwHxx7K5sI3sWrBr74AEETMdLr
+ XgNAWkwQbO23A+RA6kFKpm5imkVoc+5YmyLvcTt8wzz8l20Fe+hZYB72doQMa4J1
+ T1FVAjqd32m9XvgDRvcMZs5nA31U4rpVUXFwvyOsrAZGIcRs7vxAiWQSP0cUvXR0
+ r0cLwxMGlREp7d3+ik2SkbUBIzQFVeiU6NDniOv8RBHD1YYMSxQhL4j5Qcc0cNob
+ h1431syJduIhIay/ASVPGkgLuGiJAixRSjyUsNZ+61a2kVniBG/WMyR4biR9LeCW
+ WJck75YUJSrYrNQW/0Xm1ZejJMa2o5msdFQ==
+X-ME-Sender: <xms:1JNVaZ2miYqu7SNx1QF3RkG4TnjMw-S4hVMiE466cQn_jJkzLMRdgA>
+ <xme:1JNVaXj22hjgrdDqphE0o-6t-f-AdwgegRVLbCJik2IJYLreILayF6vgzESTgiOXK
+ 6mLjCBcSNCTiQ8C8qjtjcQisyYC8bpIVOVqL7ICZV3faz_e_OQp6A>
+X-ME-Received: <xmr:1JNVaXTJyMloRzvs3h_6FuNvf4lNGh-ilCN-SZQ19DXp8vFrudD-Hlgu4NKD>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdekfeeliecutefuodetggdotefrod
+ ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+ ihhlohhuthemuceftddtnecufghrlhcuvffnffculdefhedmnecujfgurhephffvvefuff
+ fkofgggfestdekredtredttdenucfhrhhomhepvehhrgguucflrggslhhonhhskhhiuceo
+ tghhrggusehjrggslhhonhhskhhirdighiiiqeenucggtffrrghtthgvrhhnpefhtddvhe
+ eiveeggfetffehieeghedtledvvdeuieejjedvleeiffetvdffjedtueenucffohhmrghi
+ nheptghouggvsggvrhhgrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+ hmpehmrghilhhfrhhomheptghhrggusehjrggslhhonhhskhhirdighiiipdhnsggprhgt
+ phhtthhopeefpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegsrghlrghtohhnse
+ gvihhkrdgsmhgvrdhhuhdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhu
+ rdhorhhgpdhrtghpthhtoheptghhrggusehjrggslhhonhhskhhirdighiii
+X-ME-Proxy: <xmx:1JNVaQiCNocPBPFG2rxR1fvO0ZrDQrj8ThPK3vy6kvEjtT_lnb0svA>
+ <xmx:1JNVaf4IysTdhtyGVrTXlnIudSshJ6lJFN2VgCoGlW383HLZjuk6kQ>
+ <xmx:1JNVaVCJ0-bVHcD-mEzQDSbc2ncwBDqmrr2qfCkf7iU8pExd-Eqy6g>
+ <xmx:1JNVaeZgArncA8VeKqbGXMVnlAeBXX6_ZOea1VOgvcKoxUJde-hBzQ>
+ <xmx:1ZNVaXMOPs30738Lr64McUn0SQNWOXuMzqXNqIf1I1cVobsY_BCOLdqS>
+Feedback-ID: ib26944c1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 31 Dec 2025 16:21:24 -0500 (EST)
+Received: from localhost (chomposaur [local])
+ by chomposaur (OpenSMTPD) with ESMTPA id c24d4e81;
+ Wed, 31 Dec 2025 21:21:23 +0000 (UTC)
+From: Chad Jablonski <chad@jablonski.xyz>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Phil_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Gustavo Bueno Romero <gustavo.romero@linaro.org>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20251231073401.2097765-1-pierrick.bouvier@linaro.org>
- <20251231073401.2097765-7-pierrick.bouvier@linaro.org>
-Content-Language: en-US
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20251231073401.2097765-7-pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Cc: balaton@eik.bme.hu,
+	Chad Jablonski <chad@jablonski.xyz>
+Subject: [PATCH 0/7] ati-vga: CCE engine setup and PIO packet processing
+Date: Wed, 31 Dec 2025 16:21:00 -0500
+Message-ID: <20251231212107.1020964-1-chad@jablonski.xyz>
+X-Mailer: git-send-email 2.51.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=103.168.172.150; envelope-from=chad@jablonski.xyz;
+ helo=fout-a7-smtp.messagingengine.com
+X-Spam_score_int: -1
+X-Spam_score: -0.2
+X-Spam_bar: /
+X-Spam_report: (-0.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ FROM_SUSPICIOUS_NTLD=0.498, FROM_SUSPICIOUS_NTLD_FP=0.058,
+ PDS_OTHER_BAD_TLD=1.997, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,54 +108,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/30/25 11:33 PM, Pierrick Bouvier wrote:
-> This header conflicts with C++ coroutine header.
-> 
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> ---
->   block/parallels.h                              | 2 +-
->   block/qcow2.h                                  | 2 +-
->   fsdev/qemu-fsdev-throttle.h                    | 2 +-
->   hw/9pfs/9p.h                                   | 2 +-
->   include/block/block-global-state.h             | 2 +-
->   include/block/block-hmp-cmds.h                 | 2 +-
->   include/block/block-io.h                       | 2 +-
->   include/block/reqlist.h                        | 2 +-
->   include/block/throttle-groups.h                | 2 +-
->   include/qemu/coroutine_int.h                   | 2 +-
->   include/qemu/job.h                             | 2 +-
->   include/qemu/{coroutine.h => qemu-coroutine.h} | 0
->   migration/migration.h                          | 2 +-
->   ui/console-priv.h                              | 2 +-
->   block.c                                        | 2 +-
->   block/block-copy.c                             | 2 +-
->   block/io_uring.c                               | 2 +-
->   block/linux-aio.c                              | 2 +-
->   block/mirror.c                                 | 2 +-
->   block/progress_meter.c                         | 2 +-
->   block/vdi.c                                    | 2 +-
->   chardev/char.c                                 | 2 +-
->   hw/9pfs/coth.c                                 | 2 +-
->   hw/block/virtio-blk.c                          | 2 +-
->   migration/rdma.c                               | 2 +-
->   nbd/client-connection.c                        | 2 +-
->   net/colo-compare.c                             | 2 +-
->   qapi/qmp-dispatch.c                            | 2 +-
->   tests/unit/test-aio-multithread.c              | 2 +-
->   ui/console.c                                   | 2 +-
->   ui/ui-qmp-cmds.c                               | 2 +-
->   util/qemu-co-shared-resource.c                 | 2 +-
->   util/qemu-co-timeout.c                         | 2 +-
->   util/qemu-coroutine-io.c                       | 2 +-
->   util/thread-pool.c                             | 2 +-
->   35 files changed, 34 insertions(+), 34 deletions(-)
->   rename include/qemu/{coroutine.h => qemu-coroutine.h} (100%)
->
+This series implements CCE engine setup and PIO packet submission/processing.
+This forms the foundation for full CCE support in the future.
 
-This patch was a premature cleanup after fixing ctype.h, coroutine.h 
-does not conflicts with coroutine C++ header (no .h).
-Thus, I will remove it from next version.
+CCE engine microcode is stored but not executed in this series. Reverse
+engineering doesn't look impossible but it will definitely be a journey
+and I think an initial implementation of at least some of the CCE
+packets in C will make it much easier.
 
-Regards,
-Pierrick
+Ring buffer (BM modes) and Type-3 packet processing will follow in
+future series.
+
+Hardware tests available at:
+https://codeberg.org/cjab/ati-tests/src/branch/main/tests/cce.c
+
+Tested on real hardware (Rage 128 Pro Ultra, PCI 1002:5446) and QEMU.
+
+Chad Jablonski (7):
+  ati-vga: Extract ati_reg_write() from ati_mm_write()
+  ati-vga: Implement CCE/PM4 microcode register handling
+  ati-vga: Implement PM4_BUFFER_CNTL register
+  ati-vga: Implement PM4_MICRO_CNTL register
+  ati-vga: Disable GUI engine MMIO writes when CCE enabled
+  ati-vga: Process Type-0/1/2 CCE packets via PIO
+  ati-vga: Implement PM4_STAT register and common flags
+
+ hw/display/ati.c        | 123 ++++++++++++++++++++++---
+ hw/display/ati_cce.c    | 194 ++++++++++++++++++++++++++++++++++++++++
+ hw/display/ati_cce.h    |  91 +++++++++++++++++++
+ hw/display/ati_int.h    |   4 +
+ hw/display/ati_regs.h   |  16 ++++
+ hw/display/meson.build  |   2 +-
+ hw/display/trace-events |   9 ++
+ 7 files changed, 428 insertions(+), 11 deletions(-)
+ create mode 100644 hw/display/ati_cce.c
+ create mode 100644 hw/display/ati_cce.h
+
+-- 
+2.51.2
+
 
