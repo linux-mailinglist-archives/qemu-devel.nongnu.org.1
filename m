@@ -2,94 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C31ECEB3E1
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Dec 2025 05:51:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 258F6CEB707
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Dec 2025 08:34:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vaoA7-0001GL-5Q; Tue, 30 Dec 2025 23:50:19 -0500
+	id 1vaqhI-0006hl-1T; Wed, 31 Dec 2025 02:32:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jay.chang@sifive.com>)
- id 1vaoA1-0001Fg-W0
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 23:50:14 -0500
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jay.chang@sifive.com>)
- id 1vaoA0-0004JV-GO
- for qemu-devel@nongnu.org; Tue, 30 Dec 2025 23:50:13 -0500
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-7b852bb31d9so12493118b3a.0
- for <qemu-devel@nongnu.org>; Tue, 30 Dec 2025 20:50:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1767156610; x=1767761410; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=V12W2O5nWe7i12e7QAmIABN3jxjhBqvfu0RJspjthKI=;
- b=CUd4nfGVN1QlBEMK7sCR3AbS0XgMjpT58DAHBd8guMCTrDL/+PwVASZPd9O1xgIcGL
- YMHbtUVSrOZnDo/FOBpynQkoEY3K2CM+GLU4A/LjqSAU09JVRsFI5gXirIzelI6a8PhS
- dMkQqiaxmK9PXkpg5V5dXxrLWPuvNXTyiuuq7BxGIT2AkMW5FZTPBok0XZbNOjzqp4BM
- XmgO52K998VO/8JFY1O1tZ0jmQA4htcvuU5YKPxxqpzL5htGDg+kYTwwqyORZn8dU/C9
- t3dXM/32OHjy9cxi8UyIvt6Nrby1NlwIG2mKz4cVmOJmso9dSfCSGkwvG7iAKurMX96R
- MGcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767156610; x=1767761410;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=V12W2O5nWe7i12e7QAmIABN3jxjhBqvfu0RJspjthKI=;
- b=uuEqkrG+Dg00A+SWoN0n7Hj26VoAI9lj1PTwZi+/ZdW8FE5Kpyq3/zPHcIFsRJWjzp
- lJwIc2eOcZHpg31IPogghcKKdFaT8ukPnZQfxOuoz85TdXpCAqKXVuDN5qQfzjRqXUBu
- 8ocT1aFO5xRZb1DwIBqljT4Qo6Eh3byMOoSZoUdplOCpu4kPy7Ym4qSsydcGT5Eo/OY0
- KEPZzbXlmQKybVZE2LL7LKivirxV7sCJLhyUKSuur6hHVImccfFKMvfhx/VCGC7IClXv
- hSrHQlBK6yBkuLedzdXYiclJNueN+gdJK0FtOHSuU3PgcCyFCx8ZOoFSvrYSZ6HaaD9n
- sHOw==
-X-Gm-Message-State: AOJu0YzN3EAXtznD/uO50uaumX4CODWQNPsGedA87es8O1u+eSftkEdR
- klqCBESNh+A24NKvPXSJ2Sl5mIEPO0C3viaHsxsAxTFUXoG6Jq+oiaEGs+yvyjCKTwUgYXsDXfF
- EFSk3D2tl5uhhRVCE7SKO3INZHaO3C2eopenlpbLoTVdxG/G5sxWzuX7d5ibGEjVpv434Tb5/iC
- D8ck5swmihzIHHQ5T5zCeYg6rjB6dwGj71IRDtxH1yKjU=
-X-Gm-Gg: AY/fxX4ymk4q90hRW7Qge44X3WEUbrFITAgS+zxfa72fpaibq26slphBoSXfBTR6Igb
- vquox1YZ9E91Me8M7iAg7AnBTmx8H7YgIn7RmbX5xRpmrMV6pEKa1fqYHoz4mgusULwk3b+lJKi
- ACWMNfquTRiI0uEz5rU001LwCOaBCXRsYHHIJNGagk0aazrmS/05NbimZOkP+47r++0xTR7YQTy
- 2shUt83uBp3n9GTkb2Kv1hlk9CmpwnYKHAs44Uay0dtqdZMQ5fBF9H8LLVpJDXXnQgI7C+c7b1U
- LrQw0bUB6yAz7fQ3OvzQZddH7hz0bKO9qsz5Ystcyokqg4k5eg5vknmkccgViWFT/gnpoDEk4YE
- t6fjWXo35n0yeEa2WHVOMx6UTLrIS4Ckz9aeZHbM0sFZK+X79PVZaw5+sZUg5zPn06f1Ytc/vsR
- wQf5pR5wA/JPKJ7xqps8SRGIrlK3CpZJQqDelFJo0y2IfvRfyt4A==
-X-Google-Smtp-Source: AGHT+IEZQjbKPuVCuyXdXz5fEB0Qe6Z7DhKdMvzEH46t+zi4COx9oOVilXhe9Gnz/P67FErnIXQWfQ==
-X-Received: by 2002:a05:6a00:f96:b0:7f0:2d21:878e with SMTP id
- d2e1a72fcca58-7ff657a6a3dmr32493140b3a.25.1767156610303; 
- Tue, 30 Dec 2025 20:50:10 -0800 (PST)
-Received: from jchang-1875.internal.sifive.com ([136.226.240.163])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7ff7a8442edsm33981945b3a.12.2025.12.30.20.50.08
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Dec 2025 20:50:10 -0800 (PST)
-From: Jay Chang <jay.chang@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Jay Chang <jay.chang@sifive.com>
-Subject: [PATCH v3 2/2] target/riscv: Use macros for PMP address alignment
-Date: Wed, 31 Dec 2025 12:50:00 +0800
-Message-ID: <20251231045000.30120-3-jay.chang@sifive.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251231045000.30120-1-jay.chang@sifive.com>
-References: <20251231045000.30120-1-jay.chang@sifive.com>
+ (Exim 4.90_1) (envelope-from <rob@landley.net>) id 1vaqhD-0006hL-KM
+ for qemu-devel@nongnu.org; Wed, 31 Dec 2025 02:32:39 -0500
+Received: from fly.ash.relay.mailchannels.net ([23.83.222.61])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <rob@landley.net>) id 1vaqhB-0000r4-UW
+ for qemu-devel@nongnu.org; Wed, 31 Dec 2025 02:32:39 -0500
+X-Sender-Id: dreamhost|x-authsender|rob@landley.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+ by relay.mailchannels.net (Postfix) with ESMTP id AD5A4560D5D;
+ Wed, 31 Dec 2025 07:32:33 +0000 (UTC)
+Received: from pdx1-sub0-mail-a256.dreamhost.com
+ (trex-green-1.trex.outbound.svc.cluster.local [100.105.251.151])
+ (Authenticated sender: dreamhost)
+ by relay.mailchannels.net (Postfix) with ESMTPA id E7123560C56;
+ Wed, 31 Dec 2025 07:32:30 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
+ t=1767166351;
+ b=GuvFTsz3q0JDjqJtzfTTA11t7QOUu82x84gDnFPDIkzYDP4LdHvZPK/+Vk/S8V/pQp7KOE
+ HQJWeGyr2Sk6yT8VpCOgApRmYlJAeCkCf0SfTqpa7ZY9MO/BvAxbNWGmB/JFfC2qro2c4W
+ Bbs51t2f4HqxAdQnsXFi0bpE48C8mq5US3yk1UHGsE3qmLU9HXZN89yob3SxbnRI9o3F2w
+ ygApcWumt6IafZYz1Kqv6bf05bGtGz1SVK0WZstlFJxAvx8D3EDAmHD+kkHUjuveeyVBve
+ yFSdgOk4Eh1dJEpeC0gb1f6T/2GXFAeUSLTVuI8tXz4TCoKnSPA8rlnhiqlK2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net; s=arc-2022; t=1767166351;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:dkim-signature;
+ bh=6zrZGd2BCW99SGJESQjUy40dHZAlsUkcw1EybcsdFvY=;
+ b=MnuMkBOehvP+JhD9wG22DcCxQHQqrjSYPNo5VzlnUqZE6KCfporLeOg2W8KFy+qw9bab00
+ +5LXjjFEDTmIu9/C98K4QJv1QwpzlbvbMscVWd+4be3mRFUF/KEOEnmax6lTglsTP+gnNz
+ q5SSIROrdiIZ2yaUxPreernPEMeez+SskifFpDvG/eZ/VrEOlbzqIGdfJgaK0s2T6ADQrQ
+ cJ04wD8twryogMDxq9izZR4vebihsuKiu6FuSQQZ+GOVqiGXCLikw4CV7KNCFxP+9SFeHk
+ A3PNlRDtArDwt/SznkYLCHe7+/+tO5bPYczkIL3hFCrEkT7fsyDcuhxH7CjOow==
+ARC-Authentication-Results: i=1; rspamd-69599c6f48-g57fg;
+ auth=pass smtp.auth=dreamhost smtp.mailfrom=rob@landley.net
+X-Sender-Id: dreamhost|x-authsender|rob@landley.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|rob@landley.net
+X-MailChannels-Auth-Id: dreamhost
+X-Plucky-Celery: 2c0abe962cd35c32_1767166353202_3002770154
+X-MC-Loop-Signature: 1767166353202:1354852251
+X-MC-Ingress-Time: 1767166353201
+Received: from pdx1-sub0-mail-a256.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+ by 100.105.251.151 (trex/7.1.3); Wed, 31 Dec 2025 07:32:33 +0000
+Received: from [IPV6:2607:fb90:fa85:cea:c1aa:4813:f755:98f6] (unknown
+ [172.56.10.2])
+ (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ (Authenticated sender: rob@landley.net)
+ by pdx1-sub0-mail-a256.dreamhost.com (Postfix) with ESMTPSA id 4dh1rG1ZWsz105C;
+ Tue, 30 Dec 2025 23:32:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=landley.net;
+ s=dreamhost; t=1767166350;
+ bh=6zrZGd2BCW99SGJESQjUy40dHZAlsUkcw1EybcsdFvY=;
+ h=Date:Subject:To:Cc:From:Content-Type:Content-Transfer-Encoding;
+ b=LDacERJwqn421g8uPoPIo1jYZtUVByC/LmMlPgjI9Bv8vAyKtFvI8aXMjpOJxmjWz
+ OK1IdqqUy+D9ITinyei/5ez7x2nPYAipsz/b14fPMGOOxQyYXb3Z6qdUqn6asybAxQ
+ 1LuYWBJekhs7bpAFwP0PfsqDQ58dSWwvCz+PwnVEtIO82jVglOZ2Yml+jHVAQeucMT
+ RXpFgRbmgFKfoFW5TewwkC5z7rjZoNgVJERxELMu2QPeZvkO8dJ5SGp5DIhXN8U3Wf
+ KzWYd4puDAPfANr1EoXiFwuQgBeIh7Qk3EoN2QGBs2YkOttkGaYbrqz3Gr8yXyxjhC
+ VU4BkK+fwruMg==
+Message-ID: <a841c041-30c2-471c-81bc-f0f4576cb772@landley.net>
+Date: Wed, 31 Dec 2025 01:32:20 -0600
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-11.0 01/13] hw/sh4/r2d: Bail out early if user request
+ invalid RAM size
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ qemu-devel@nongnu.org
+Cc: Thorsten Glaser <tg@debian.org>, Yoshinori Sato
+ <yoshinori.sato@nifty.com>, Magnus Damm <magnus.damm@gmail.com>
+References: <20251124095109.66091-1-philmd@linaro.org>
+ <20251124095109.66091-2-philmd@linaro.org>
+Content-Language: en-US
+From: Rob Landley <rob@landley.net>
+In-Reply-To: <20251124095109.66091-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=jay.chang@sifive.com; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=23.83.222.61; envelope-from=rob@landley.net;
+ helo=fly.ash.relay.mailchannels.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,64 +117,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace manual bit manipulation with alignment macros for better
-readability:
+On 11/24/25 03:50, Philippe Mathieu-Daudé wrote:
+> Do not give false expectations, as this machine only
+> uses 64MB of RAM.
 
-- TOR: Use ROUND_DOWN() to clear lower bits
-- NAPOT: Use ROUND_UP() to set lower bits
+This broke my https://landley.net/bin/mkroot/0.8.13/sh4.tgz because 
+every target in that directory does -m 256 as part of the template from 
+https://github.com/landley/toybox/blob/0.8.13/mkroot/mkroot.sh#L333 
+which worked until now.
 
-The behavior remains unchanged.
+I can special case qemu-system-sh4 but that won't fix compatibility with 
+existing shipped instances. Could you maybe just turn this into a 
+warning instead of -Werror in production?
 
-Signed-off-by: Jay Chang <jay.chang@sifive.com>
----
- target/riscv/pmp.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+I fixed it up by hand for testing in the meantime, and it loaded the 
+kernel with -m 192 but then initramfs couldn't find init. Without the 
+patch series the same git version (942b0d378a1d) booted to a shell 
+prompt. I can try to track down what happened in the morning...
 
-diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-index c88e86cb11..119c448357 100644
---- a/target/riscv/pmp.c
-+++ b/target/riscv/pmp.c
-@@ -235,8 +235,9 @@ void pmp_update_rule_addr(CPURISCVState *env, uint32_t pmp_index)
-     case PMP_AMATCH_TOR:
-         /* Bits pmpaddr[G-1:0] do not affect the TOR address-matching logic. */
-         if (g >= 1) {
--            prev_addr &= ~((1ULL << g) - 1ULL);
--            this_addr &= ~((1ULL << g) - 1ULL);
-+            target_ulong granule = 1ULL << g;
-+            prev_addr = ROUND_DOWN(prev_addr, granule);
-+            this_addr = ROUND_DOWN(this_addr, granule);
-         }
-         if (prev_addr >= this_addr) {
-             sa = ea = 0u;
-@@ -254,7 +255,8 @@ void pmp_update_rule_addr(CPURISCVState *env, uint32_t pmp_index)
-     case PMP_AMATCH_NAPOT:
-         /* Bits [g-2:0] need to be all one to align pmp granularity */
-         if (g >= 2) {
--            this_addr |= ((1ULL << (g - 1ULL)) - 1ULL);
-+            target_ulong granule = 1ULL << (g - 1);
-+            this_addr = ROUND_UP(this_addr + 1ULL, granule) - 1ULL;
-         }
- 
-         pmp_decode_napot(this_addr, &sa, &ea);
-@@ -625,13 +627,15 @@ target_ulong pmpaddr_csr_read(CPURISCVState *env, uint32_t addr_index)
-         case PMP_AMATCH_TOR:
-             /* Bit [g-1:0] read all zero */
-             if (g >= 1 && g < TARGET_LONG_BITS) {
--                val &= ~((1ULL << g) - 1ULL);
-+                target_ulong granule = 1ULL << g;
-+                val = ROUND_DOWN(val, granule);
-             }
-             break;
-         case PMP_AMATCH_NAPOT:
-             /* Bit [g-2:0] read all one */
-             if (g >= 2 && g < TARGET_LONG_BITS) {
--                val |= ((1ULL << (g - 1)) - 1ULL);
-+                target_ulong granule = 1ULL << (g - 1);
-+                val = ROUND_UP(val + 1ULL, granule) - 1ULL;
-             }
-             break;
-         default:
--- 
-2.48.1
+Sorry if I missed newer stuff I should be testing instead, I've been a 
+bit distracted.
 
+Thanks,
+
+Rob
 
