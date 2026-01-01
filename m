@@ -2,91 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB463CEC936
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Dec 2025 22:22:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FA19CECB76
+	for <lists+qemu-devel@lfdr.de>; Thu, 01 Jan 2026 01:55:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vb3dR-0000r3-Eh; Wed, 31 Dec 2025 16:21:37 -0500
+	id 1vb6xV-0001ai-PO; Wed, 31 Dec 2025 19:54:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chad@jablonski.xyz>)
- id 1vb3dM-0000pj-5H
- for qemu-devel@nongnu.org; Wed, 31 Dec 2025 16:21:33 -0500
-Received: from fout-a7-smtp.messagingengine.com ([103.168.172.150])
+ id 1vb6xE-0001Z6-HZ; Wed, 31 Dec 2025 19:54:18 -0500
+Received: from fout-b1-smtp.messagingengine.com ([202.12.124.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chad@jablonski.xyz>)
- id 1vb3dJ-0003il-Px
- for qemu-devel@nongnu.org; Wed, 31 Dec 2025 16:21:31 -0500
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
- by mailfout.phl.internal (Postfix) with ESMTP id 561E8EC0244;
- Wed, 31 Dec 2025 16:21:29 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
- by phl-compute-06.internal (MEProxy); Wed, 31 Dec 2025 16:21:29 -0500
+ id 1vb6xB-0005CY-Py; Wed, 31 Dec 2025 19:54:15 -0500
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+ by mailfout.stl.internal (Postfix) with ESMTP id 762601D0005E;
+ Wed, 31 Dec 2025 19:54:11 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+ by phl-compute-05.internal (MEProxy); Wed, 31 Dec 2025 19:54:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jablonski.xyz;
- h=cc:cc:content-transfer-encoding:content-type:date:date:from
- :from:in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm1; t=1767216089; x=
- 1767302489; bh=YaJUwb0+s40bHZM8eVhuyyzKRNSc6aDi5Spk934ExLc=; b=l
- 357cHzOi/DySGddjx1mn9IdCCL1JXanxmCyspHjfshmbXq7upOE8Qy2ddqMkDJ0C
- WYKU8GwPNW/TeU6kSfU0x3zsx8uyWUgRHZhUQa4p3ZctRixdVC+3tmG/zR0FQM9v
- 5whUB5fU5povWcvQc9vWCpE5d4GRtoni6Uhhmr0qrJys1zdfS41Rc8hsRUsmf6J2
- NkWCM7Rv6sl1fh1osfhdVz/HBOvDsbmLe+4vFB9Ni0/jRb0O/QElS3ygN2z9CalV
- mja/yOFsjzbOsZU6J3uwCL//IzGwq4bnBtKBbOElA46t5jyVdV5WHhmYbjBi0fgh
- IMGTc0qrj0iZae6QH6rtA==
+ h=cc:cc:content-transfer-encoding:content-type:content-type
+ :date:date:from:from:in-reply-to:in-reply-to:message-id
+ :mime-version:references:reply-to:subject:subject:to:to; s=fm1;
+ t=1767228851; x=1767315251; bh=bhZQy/5jBUzINhcePIt/xONoOqENNoVH
+ /9JyJc/yobo=; b=i47NONSwBxW8Kw3BfDzlO7xfeexlLWukZ5J8ljvjzqxki9Jx
+ 6BGHIJmO/Hqmt5h5id3gqwJKPsqLpvofKc3ywCQWarBJAyafBaspzVmo8aretR2w
+ z9QSmh6UmKRoLl+Bsa9blDD/E1W+gEkbtH9dPpHJKKJFT8/fKT0iYHlp3YVM9Si2
+ Z4RA3CT7Ccw+imtMRB+YTSMTYtdbESA9ep9Ih2CxNfdIdcxN1wbGQ/9qsIjJR4TO
+ zv8fHx0AHmWBiY24iR/5kHE8cqIdE/WhsY65EQ9RHb1fp7nd8ikZ49//N8WBp+sI
+ zk6a/W95MKqxM0ubpjIIG5qDU3FyYedUP9U/QQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:date:date:feedback-id:feedback-id:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
- :x-me-sender:x-sasl-enc; s=fm2; t=1767216089; x=1767302489; bh=Y
- aJUwb0+s40bHZM8eVhuyyzKRNSc6aDi5Spk934ExLc=; b=HHqRy6y0yUkpT0v/6
- bA0ege0OV0kyx0dpf7pAa3TssC3Awvy0JltfXk4Ay35cFiOWanzvBWxW3Owm0KKE
- xqqat2G4rzgjYmarPtyS3HnNgtifSDC8vH0xnah5hU/9saQLRBzCKZSSvnVyv4PN
- WWy3u7g9LvyLRokT7pte0EGQZKNfE5JTdNMBdwt7s1/HaY0LY5gIaf17ySCNs0X7
- XoQqk2sHen9zlfMpHEmsD819s/6oZWOTk9yFX+swN1AyAeTp/mSAdK5qjDcBvel9
- KprH6JKnARpKVILeFvGwRxWEVW8R87n5RToAJkk6QaJYh8oMfRLGgXIncauJHVX6
- HkWKw==
-X-ME-Sender: <xms:2ZNVaSJSv24hbiTuuwBvEFXhoU0TRmkdZcgTZEHpxGN_DC_IBgJC2g>
- <xme:2ZNVaRl8avBbkVnWZUYTlIJIWijlvkjJKGKBnmo8EWgO27zaM_uIE3EdqTlI_W0A0
- KaHBkMO8BPMg94jhGR3cO1Cd5C7NXECG62KKptqj5Y1OIzqYFup0A>
-X-ME-Received: <xmr:2ZNVaQFVX1KQ9u4sBPxkK_8d0I7_DsFCpaG0DDRDgyEp7Id-ZBJ-a_1IeT7Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdekfeeljecutefuodetggdotefrod
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1767228851; x=
+ 1767315251; bh=bhZQy/5jBUzINhcePIt/xONoOqENNoVH/9JyJc/yobo=; b=E
+ nG9uMl7ul/78ZiUu3n+7DWhVge/igGU8eQkVaas+GMNxaUeWfZ5X4BGZ2edHwgWi
+ Xy/FK9sgehD4o2RPiSNxvtYiSOaL8YF8EdgKBXGgxaOL0jzsQD9A6P8yY3n725sX
+ x7HVcID8a9XJXcVtPwxhedMwXUCy/BapxnlQWTlKvie/Y0mrL9K/6myBcO7//Na/
+ hsi3cpGjHeeR61VSYrmsRx4Omom1XIX6TD6Y56IJKFvSvnb99VeI3E40McvuWxV9
+ xw1zG0UWC8UAabladXGHpwl7kVJSrO5RrDwqxKEP8+g/icjDxqKQhXnZbTIbGZmT
+ zzit9CS1EKjvH2BDsVFEQ==
+X-ME-Sender: <xms:ssVVaTHucwmb8HHfOxvoljohTnFlBt_v04zhSIkehsyHe8tFmFBc7w>
+ <xme:ssVVaXUxt6QTO6LfQ2N7dE0TzEWDxMRWYgcId5gpzwtspYHjgd5FJyR6b0mPVLWd3
+ 02R9Srdm_QG8Ibk6JYcXRSVErZpCcYXfboRZB8JLqdD8K1O65b00uA>
+X-ME-Received: <xmr:ssVVaaI6NTRokVu99ZSIZvzaCmymSY1JyzSyTmfK71HQCfEa9ABW7x2075h6>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdekgeeflecutefuodetggdotefrod
  ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
- ihhlohhuthemuceftddtnecufghrlhcuvffnffculdejtddmnecujfgurhephffvvefuff
- fkofgjfhgggfestdekredtredttdenucfhrhhomhepvehhrgguucflrggslhhonhhskhhi
- uceotghhrggusehjrggslhhonhhskhhirdighiiiqeenucggtffrrghtthgvrhhnpefgie
- etjefhleehfeeiteejgfeljeffhfeuffdvudeijefgueeuuedvvdekjefhleenucevlhhu
- shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegthhgrugesjhgrsg
- hlohhnshhkihdrgiihiidpnhgspghrtghpthhtohepfedpmhhouggvpehsmhhtphhouhht
- pdhrtghpthhtoheptghhrggusehjrggslhhonhhskhhirdighiiipdhrtghpthhtohepqh
- gvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdprhgtphhtthhopegsrghlrghtohhn
- segvihhkrdgsmhgvrdhhuh
-X-ME-Proxy: <xmx:2ZNVaRGbrNzQEY5Jh1FdXoHGlknzL3Qi2ynmtxTzEgtTT7LUv6ytuw>
- <xmx:2ZNVadPH3CQYnwtcK3A7IC0d1PRFJWkvDqAjj3mNAM80RyWNxkQTVQ>
- <xmx:2ZNVaQEonkh7LcF35U1KZqWqIP4b7PgeFlTJ-MmSNOuYBOb99zDa1Q>
- <xmx:2ZNVaUP4BjAP4f1isOOqRkhBu04ilbatGxL7VEGax9w4WHUz_iasoQ>
- <xmx:2ZNVaYxPnQCcmPH71PbU0aKG3JbQhLKU3_qPUGdusf7CsZE3GP9lV5Mq>
+ ihhlohhuthemuceftddtnecufghrlhcuvffnffculdejtddmnecujfgurhepggfgtgffkf
+ evuffhvffofhgjsehtqhertdertdejnecuhfhrohhmpedfvehhrgguucflrggslhhonhhs
+ khhifdcuoegthhgrugesjhgrsghlohhnshhkihdrgiihiieqnecuggftrfgrthhtvghrnh
+ ephfefudffkeffheduffetledvkeetvdejhedtheektefhhedvgefhheethfffkeegnecu
+ vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheptghhrgguse
+ hjrggslhhonhhskhhirdighiiipdhnsggprhgtphhtthhopeegpdhmohguvgepshhmthhp
+ ohhuthdprhgtphhtthhopehqvghmuhdquggvvhgvlhdqsghouhhntggvshdotghhrggupe
+ hjrggslhhonhhskhhirdighiiisehnohhnghhnuhdrohhrghdprhgtphhtthhopegthhgr
+ ugesjhgrsghlohhnshhkihdrgiihiidprhgtphhtthhopehqvghmuhdquggvvhgvlhesnh
+ honhhgnhhurdhorhhgpdhrtghpthhtohepsggrlhgrthhonhesvghikhdrsghmvgdrhhhu
+X-ME-Proxy: <xmx:ssVVaf-Qz2_vHBl0LECJxfIdDC63E5CbSr2h1gqKSZVw7ZwM1EZVVQ>
+ <xmx:ssVVaVIM-5F78jKwXDfPMqXrBdahnlls7YvNX1e-WLgnM2l-RXdLgw>
+ <xmx:ssVVack4JHsm8rsIWgfTnxOdmWzrtbVBryKKHWfbyygqLDiKzIBDKw>
+ <xmx:ssVVaRPXpyiqKxzoW2GscBMgeXJGVYmjtOs_LLqQmlByyfXNJ9tasA>
+ <xmx:s8VVaZMwO-aP0DCx1Z_vyg5I6waey-E-wz-3yjF8ndAG0Sx2Z3z_StaO>
 Feedback-ID: ib26944c1:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 31 Dec 2025 16:21:28 -0500 (EST)
+ 31 Dec 2025 19:54:10 -0500 (EST)
 Received: from localhost (chomposaur [local])
- by chomposaur (OpenSMTPD) with ESMTPA id afa1f1f2;
- Wed, 31 Dec 2025 21:21:25 +0000 (UTC)
-From: Chad Jablonski <chad@jablonski.xyz>
-To: qemu-devel@nongnu.org
-Cc: balaton@eik.bme.hu,
-	Chad Jablonski <chad@jablonski.xyz>
-Subject: [PATCH 7/7] ati-vga: Implement PM4_STAT register and common flags
-Date: Wed, 31 Dec 2025 16:21:07 -0500
-Message-ID: <20251231212107.1020964-8-chad@jablonski.xyz>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251231212107.1020964-1-chad@jablonski.xyz>
+ by chomposaur (OpenSMTPD) with ESMTPA id ddd7c1ac;
+ Thu, 1 Jan 2026 00:54:09 +0000 (UTC)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 31 Dec 2025 19:54:09 -0500
+Message-Id: <DFCUCDPY9DRX.3Q6NTWWVHI8EZ@jablonski.xyz>
+Cc: <balaton@eik.bme.hu>, <qemu-devel-bounces+chad=jablonski.xyz@nongnu.org>
+Subject: Re: [PATCH 0/7] ati-vga: CCE engine setup and PIO packet processing
+From: "Chad Jablonski" <chad@jablonski.xyz>
+To: "Chad Jablonski" <chad@jablonski.xyz>, <qemu-devel@nongnu.org>
+X-Mailer: aerc 0.21.0
 References: <20251231212107.1020964-1-chad@jablonski.xyz>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=103.168.172.150; envelope-from=chad@jablonski.xyz;
- helo=fout-a7-smtp.messagingengine.com
+In-Reply-To: <20251231212107.1020964-1-chad@jablonski.xyz>
+Received-SPF: pass client-ip=202.12.124.144; envelope-from=chad@jablonski.xyz;
+ helo=fout-b1-smtp.messagingengine.com
 X-Spam_score_int: -2
 X-Spam_score: -0.3
 X-Spam_bar: /
@@ -111,140 +110,6 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The PM4_STAT register largely mirrors the flags of the GUI_STAT
-register. The exception is that the low bits of PM4_STAT reflect the
-remaining slots in the CCE FIFO instead of the GUI FIFO.
-
-This implements a very incomplete set of common flags
-(MICRO_BUSY and GUI_ACTIVE) and the PM4_STAT register.
-
-Signed-off-by: Chad Jablonski <chad@jablonski.xyz>
----
- hw/display/ati.c      | 16 +++++++++++++++-
- hw/display/ati_cce.c  | 38 ++++++++++++++++++++++++++++++++++++++
- hw/display/ati_cce.h  |  3 +++
- hw/display/ati_regs.h |  1 +
- 4 files changed, 57 insertions(+), 1 deletion(-)
-
-diff --git a/hw/display/ati.c b/hw/display/ati.c
-index e7ba202bbd..df3b727b27 100644
---- a/hw/display/ati.c
-+++ b/hw/display/ati.c
-@@ -276,6 +276,16 @@ static inline uint64_t ati_reg_read_offs(uint32_t reg, int offs,
-     }
- }
- 
-+static uint32_t ati_common_stat(ATIVGAState *s)
-+{
-+    /* TODO: This is _very_ naive. It will evolve. */
-+    uint32_t micro_busy = ati_cce_micro_busy(&s->cce.cur_packet) ?
-+                          MICRO_BUSY : 0;
-+    /* GUI_ACTIVE is the OR of all other status flags */
-+    uint32_t gui_active = micro_busy ? GUI_ACTIVE : 0;
-+    return gui_active | micro_busy;
-+}
-+
- static uint64_t ati_mm_read(void *opaque, hwaddr addr, unsigned int size)
- {
-     ATIVGAState *s = opaque;
-@@ -383,7 +393,7 @@ static uint64_t ati_mm_read(void *opaque, hwaddr addr, unsigned int size)
-         break;
-     case RBBM_STATUS:
-     case GUI_STAT:
--        val = 64; /* free CMDFIFO entries */
-+        val = ati_common_stat(s) | 64; /* free CMDFIFO entries */
-         break;
-     case CRTC_H_TOTAL_DISP:
-         val = s->regs.crtc_h_total_disp;
-@@ -568,6 +578,10 @@ static uint64_t ati_mm_read(void *opaque, hwaddr addr, unsigned int size)
-     case PM4_MICRO_CNTL:
-         val = s->cce.freerun ? PM4_MICRO_FREERUN : 0;
-         break;
-+    case PM4_STAT: {
-+        val = ati_common_stat(s) | ati_cce_fifo_cnt(&s->cce);
-+        break;
-+    }
-     default:
-         break;
-     }
-diff --git a/hw/display/ati_cce.c b/hw/display/ati_cce.c
-index 62a88a54df..3d35b0e857 100644
---- a/hw/display/ati_cce.c
-+++ b/hw/display/ati_cce.c
-@@ -11,6 +11,24 @@
- #include "ati_int.h"
- #include "trace.h"
- 
-+static uint32_t
-+ati_cce_fifo_max(uint8_t mode)
-+{
-+    switch (mode) {
-+    case PM4_BUFFER_CNTL_NONPM4...PM4_BUFFER_CNTL_192BM:
-+        return 192;
-+    case PM4_BUFFER_CNTL_128PIO_64INDBM...PM4_BUFFER_CNTL_128BM_64INDBM:
-+        return 128;
-+    case PM4_BUFFER_CNTL_64PIO_128INDBM...PM4_BUFFER_CNTL_64PIO_64VCBM_64INDBM:
-+        /* fall through */
-+    case PM4_BUFFER_CNTL_64PIO_64VCPIO_64INPIO:
-+        return 64;
-+    default:
-+        /* Undocumented but testing shows this returns 192 otherwise */
-+        return 192;
-+    }
-+}
-+
- static inline uint32_t
- ati_cce_data_packets_remaining(const ATIPM4PacketState *p)
- {
-@@ -154,3 +172,23 @@ ati_cce_receive_data(ATIVGAState *s, uint32_t data)
-     }
-     ati_cce_process_packet_data(s, data);
- }
-+
-+bool
-+ati_cce_micro_busy(const ATIPM4PacketState *p)
-+{
-+    uint32_t remaining = ati_cce_data_packets_remaining(p);
-+    if (remaining > 0) {
-+        return true;
-+    }
-+    return false;
-+}
-+
-+uint32_t
-+ati_cce_fifo_cnt(const ATICCEState *c)
-+{
-+    /*
-+     * This should return the available slots. Given that commands are
-+     * processed immediately this returns the fifo max for now.
-+     */
-+    return ati_cce_fifo_max(c->buffer_mode);
-+}
-diff --git a/hw/display/ati_cce.h b/hw/display/ati_cce.h
-index b6ad21f47e..12aede6ecc 100644
---- a/hw/display/ati_cce.h
-+++ b/hw/display/ati_cce.h
-@@ -85,4 +85,7 @@ typedef struct ATICCEState {
- } ATICCEState;
- 
- void ati_cce_receive_data(ATIVGAState *s, uint32_t data);
-+bool ati_cce_micro_busy(const ATIPM4PacketState *p);
-+uint32_t ati_cce_fifo_cnt(const ATICCEState *c);
-+
- #endif /* ATI_CCE_H */
-diff --git a/hw/display/ati_regs.h b/hw/display/ati_regs.h
-index 190b99184c..66f7e3f518 100644
---- a/hw/display/ati_regs.h
-+++ b/hw/display/ati_regs.h
-@@ -289,6 +289,7 @@
- 
- /* CONSTANTS */
- #define GUI_ACTIVE                              0x80000000
-+#define MICRO_BUSY                              0x00020000
- #define ENGINE_IDLE                             0x0
- 
- #define PLL_WR_EN                               0x00000080
--- 
-2.51.2
-
+This series was accidentally based on my pending HOST_DATA series.
+Sending a v2 rebased on master. Sorry for the noise!
 
