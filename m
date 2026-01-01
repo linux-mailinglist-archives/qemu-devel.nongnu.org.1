@@ -2,96 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FA19CECB76
-	for <lists+qemu-devel@lfdr.de>; Thu, 01 Jan 2026 01:55:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5B31CECCC2
+	for <lists+qemu-devel@lfdr.de>; Thu, 01 Jan 2026 04:58:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vb6xV-0001ai-PO; Wed, 31 Dec 2025 19:54:33 -0500
+	id 1vb9oc-0002HD-IR; Wed, 31 Dec 2025 22:57:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chad@jablonski.xyz>)
- id 1vb6xE-0001Z6-HZ; Wed, 31 Dec 2025 19:54:18 -0500
-Received: from fout-b1-smtp.messagingengine.com ([202.12.124.144])
+ id 1vb9oZ-0002Ek-38
+ for qemu-devel@nongnu.org; Wed, 31 Dec 2025 22:57:31 -0500
+Received: from fout-b3-smtp.messagingengine.com ([202.12.124.146])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chad@jablonski.xyz>)
- id 1vb6xB-0005CY-Py; Wed, 31 Dec 2025 19:54:15 -0500
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
- by mailfout.stl.internal (Postfix) with ESMTP id 762601D0005E;
- Wed, 31 Dec 2025 19:54:11 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
- by phl-compute-05.internal (MEProxy); Wed, 31 Dec 2025 19:54:11 -0500
+ id 1vb9oX-0003hx-0I
+ for qemu-devel@nongnu.org; Wed, 31 Dec 2025 22:57:30 -0500
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+ by mailfout.stl.internal (Postfix) with ESMTP id 8198E1D00058;
+ Wed, 31 Dec 2025 22:57:27 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+ by phl-compute-01.internal (MEProxy); Wed, 31 Dec 2025 22:57:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jablonski.xyz;
- h=cc:cc:content-transfer-encoding:content-type:content-type
- :date:date:from:from:in-reply-to:in-reply-to:message-id
- :mime-version:references:reply-to:subject:subject:to:to; s=fm1;
- t=1767228851; x=1767315251; bh=bhZQy/5jBUzINhcePIt/xONoOqENNoVH
- /9JyJc/yobo=; b=i47NONSwBxW8Kw3BfDzlO7xfeexlLWukZ5J8ljvjzqxki9Jx
- 6BGHIJmO/Hqmt5h5id3gqwJKPsqLpvofKc3ywCQWarBJAyafBaspzVmo8aretR2w
- z9QSmh6UmKRoLl+Bsa9blDD/E1W+gEkbtH9dPpHJKKJFT8/fKT0iYHlp3YVM9Si2
- Z4RA3CT7Ccw+imtMRB+YTSMTYtdbESA9ep9Ih2CxNfdIdcxN1wbGQ/9qsIjJR4TO
- zv8fHx0AHmWBiY24iR/5kHE8cqIdE/WhsY65EQ9RHb1fp7nd8ikZ49//N8WBp+sI
- zk6a/W95MKqxM0ubpjIIG5qDU3FyYedUP9U/QQ==
+ h=cc:cc:content-transfer-encoding:content-type:date:date:from
+ :from:in-reply-to:message-id:mime-version:reply-to:subject
+ :subject:to:to; s=fm1; t=1767239847; x=1767326247; bh=iZsO2ANcj7
+ 57/EhFpo0VoAnVh3P9dsWdpvnxBoY+X/M=; b=OzKGk8ijCF7eZCT8vy22+qGuIY
+ w4Y/F3hMzjYmwRqnp20vY6reGjpZGZtXkrSTpKoNez/YLma1uQeQCdsbiocqq7DK
+ YTFuH4qPJlhmKieXRWmBYrI0nwU0GlFj+k8LnkUKm5/HlY+EN4BCpOd2LWatBhcF
+ uprHSVL8OvlQPobSNRjuIZXpts3/yt2indonguqmc0SR1i7OzSTftlh6k0mb3UOI
+ SaV49aqc/gvuTAEunZewo8RH6l4eMBDFs/mpDwFRf+gXzuBQDt7z2Mk+ZSM7xvsY
+ WJHkeBLmCq8QyEbdafWCk/NhQd6mKW8Z6fGqeXCIb//8BdK4T99TvHmm2uUg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1767228851; x=
- 1767315251; bh=bhZQy/5jBUzINhcePIt/xONoOqENNoVH/9JyJc/yobo=; b=E
- nG9uMl7ul/78ZiUu3n+7DWhVge/igGU8eQkVaas+GMNxaUeWfZ5X4BGZ2edHwgWi
- Xy/FK9sgehD4o2RPiSNxvtYiSOaL8YF8EdgKBXGgxaOL0jzsQD9A6P8yY3n725sX
- x7HVcID8a9XJXcVtPwxhedMwXUCy/BapxnlQWTlKvie/Y0mrL9K/6myBcO7//Na/
- hsi3cpGjHeeR61VSYrmsRx4Omom1XIX6TD6Y56IJKFvSvnb99VeI3E40McvuWxV9
- xw1zG0UWC8UAabladXGHpwl7kVJSrO5RrDwqxKEP8+g/icjDxqKQhXnZbTIbGZmT
- zzit9CS1EKjvH2BDsVFEQ==
-X-ME-Sender: <xms:ssVVaTHucwmb8HHfOxvoljohTnFlBt_v04zhSIkehsyHe8tFmFBc7w>
- <xme:ssVVaXUxt6QTO6LfQ2N7dE0TzEWDxMRWYgcId5gpzwtspYHjgd5FJyR6b0mPVLWd3
- 02R9Srdm_QG8Ibk6JYcXRSVErZpCcYXfboRZB8JLqdD8K1O65b00uA>
-X-ME-Received: <xmr:ssVVaaI6NTRokVu99ZSIZvzaCmymSY1JyzSyTmfK71HQCfEa9ABW7x2075h6>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdekgeeflecutefuodetggdotefrod
+ :content-type:date:date:feedback-id:feedback-id:from:from
+ :in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+ :to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+ 1767239847; x=1767326247; bh=iZsO2ANcj757/EhFpo0VoAnVh3P9dsWdpvn
+ xBoY+X/M=; b=Kv52ujGuwfkmqrbJol6J92xAA0/vASz3axWzMXTc+k6+GO8OhBZ
+ H6QwSL56QUoLSkLv8uNpMzLpQPkh1IthgfFlwlC83GRCcblFLxLkHXI3vcQA5wru
+ E1V6538t6ePlbtiRq8cy63SD7VWOokcH5D4lE44FUCj1+A+tSx5FmUcPOxjyoj/H
+ Q+m9aQyPuVl3PYQfJWaBquBXKwDoKTvkmfaH1opwq64VHJ6W4GZhvB6TDeETSl3z
+ m2iFnomKwgOc+VWg62WTe8TlPKkfqfOUGD4bH2H/O3eCypb6gZwe2vsN1Ax7aj5P
+ gE3YCTQwkAfG+3oOpDm0zl6JQW6peB/zIyw==
+X-ME-Sender: <xms:p_BVaXY-tlEZsl4ntm4CpqZ__YbuB94BtjuZwj2_TDNjndKAiwcRYA>
+ <xme:p_BVad2TUCG-vnu3_OiBuop738Z4nicXGgH4vjwMF4qijt3O5iFSr5p95phIp90_G
+ FvXIU6yB-VF7FN9niRTdoEBa-pJere_DB89luiZhKU-RPfmT282nRc>
+X-ME-Received: <xmr:p_BVaXWLYb7k7LIw5gn8U6ThPNb8-AE0oPD0QbCrEjFZR_sxQjPH9uLHI6FS>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdekgeejhecutefuodetggdotefrod
  ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
- ihhlohhuthemuceftddtnecufghrlhcuvffnffculdejtddmnecujfgurhepggfgtgffkf
- evuffhvffofhgjsehtqhertdertdejnecuhfhrohhmpedfvehhrgguucflrggslhhonhhs
- khhifdcuoegthhgrugesjhgrsghlohhnshhkihdrgiihiieqnecuggftrfgrthhtvghrnh
- ephfefudffkeffheduffetledvkeetvdejhedtheektefhhedvgefhheethfffkeegnecu
- vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheptghhrgguse
- hjrggslhhonhhskhhirdighiiipdhnsggprhgtphhtthhopeegpdhmohguvgepshhmthhp
- ohhuthdprhgtphhtthhopehqvghmuhdquggvvhgvlhdqsghouhhntggvshdotghhrggupe
- hjrggslhhonhhskhhirdighiiisehnohhnghhnuhdrohhrghdprhgtphhtthhopegthhgr
- ugesjhgrsghlohhnshhkihdrgiihiidprhgtphhtthhopehqvghmuhdquggvvhgvlhesnh
- honhhgnhhurdhorhhgpdhrtghpthhtohepsggrlhgrthhonhesvghikhdrsghmvgdrhhhu
-X-ME-Proxy: <xmx:ssVVaf-Qz2_vHBl0LECJxfIdDC63E5CbSr2h1gqKSZVw7ZwM1EZVVQ>
- <xmx:ssVVaVIM-5F78jKwXDfPMqXrBdahnlls7YvNX1e-WLgnM2l-RXdLgw>
- <xmx:ssVVack4JHsm8rsIWgfTnxOdmWzrtbVBryKKHWfbyygqLDiKzIBDKw>
- <xmx:ssVVaRPXpyiqKxzoW2GscBMgeXJGVYmjtOs_LLqQmlByyfXNJ9tasA>
- <xmx:s8VVaZMwO-aP0DCx1Z_vyg5I6waey-E-wz-3yjF8ndAG0Sx2Z3z_StaO>
+ ihhlohhuthemuceftddtnecufghrlhcuvffnffculdefhedmnecujfgurhephffvvefuff
+ fkofgggfestdekredtredttdenucfhrhhomhepvehhrgguucflrggslhhonhhskhhiuceo
+ tghhrggusehjrggslhhonhhskhhirdighiiiqeenucggtffrrghtthgvrhhnpefhtddvhe
+ eiveeggfetffehieeghedtledvvdeuieejjedvleeiffetvdffjedtueenucffohhmrghi
+ nheptghouggvsggvrhhgrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+ hmpehmrghilhhfrhhomheptghhrggusehjrggslhhonhhskhhirdighiiipdhnsggprhgt
+ phhtthhopeefpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegsrghlrghtohhnse
+ gvihhkrdgsmhgvrdhhuhdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhu
+ rdhorhhgpdhrtghpthhtoheptghhrggusehjrggslhhonhhskhhirdighiii
+X-ME-Proxy: <xmx:p_BVaXUCeqEQSEl2lnJc3iTck1jyEA3Ft3cKPaTQvMBmHVbZTsYxcA>
+ <xmx:p_BVaWelZYOR0aoHvhV28pkjqDVRSAMx_1XiS2mC0Xx9Kin3L9yuDg>
+ <xmx:p_BVaQV4Zxwm76QycnmpRWta4iK41SNCxed-Cmzx7zunbhGeLAJeOg>
+ <xmx:p_BVafehUXa2LCXDnlDhuSnIx4lLhGy9xlDsTL8evBSRyVrY8mP90A>
+ <xmx:p_BVaTDrIBLtCbcPEadGKgCtnwJGkYyjToCGCFgTEdfGCMRFaBYuhztn>
 Feedback-ID: ib26944c1:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 31 Dec 2025 19:54:10 -0500 (EST)
+ 31 Dec 2025 22:57:26 -0500 (EST)
 Received: from localhost (chomposaur [local])
- by chomposaur (OpenSMTPD) with ESMTPA id ddd7c1ac;
- Thu, 1 Jan 2026 00:54:09 +0000 (UTC)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 31 Dec 2025 19:54:09 -0500
-Message-Id: <DFCUCDPY9DRX.3Q6NTWWVHI8EZ@jablonski.xyz>
-Cc: <balaton@eik.bme.hu>, <qemu-devel-bounces+chad=jablonski.xyz@nongnu.org>
-Subject: Re: [PATCH 0/7] ati-vga: CCE engine setup and PIO packet processing
-From: "Chad Jablonski" <chad@jablonski.xyz>
-To: "Chad Jablonski" <chad@jablonski.xyz>, <qemu-devel@nongnu.org>
-X-Mailer: aerc 0.21.0
-References: <20251231212107.1020964-1-chad@jablonski.xyz>
-In-Reply-To: <20251231212107.1020964-1-chad@jablonski.xyz>
-Received-SPF: pass client-ip=202.12.124.144; envelope-from=chad@jablonski.xyz;
- helo=fout-b1-smtp.messagingengine.com
-X-Spam_score_int: -2
-X-Spam_score: -0.3
+ by chomposaur (OpenSMTPD) with ESMTPA id 3cff8a48;
+ Thu, 1 Jan 2026 03:57:26 +0000 (UTC)
+From: Chad Jablonski <chad@jablonski.xyz>
+To: qemu-devel@nongnu.org
+Cc: balaton@eik.bme.hu,
+	Chad Jablonski <chad@jablonski.xyz>
+Subject: [PATCH v2 0/7] ati-vga: CCE engine setup and PIO packet processing
+Date: Wed, 31 Dec 2025 22:55:48 -0500
+Message-ID: <20260101035555.1300511-1-chad@jablonski.xyz>
+X-Mailer: git-send-email 2.51.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=202.12.124.146; envelope-from=chad@jablonski.xyz;
+ helo=fout-b3-smtp.messagingengine.com
+X-Spam_score_int: -1
+X-Spam_score: -0.2
 X-Spam_bar: /
-X-Spam_report: (-0.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-0.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FROM_SUSPICIOUS_NTLD=0.498, PDS_OTHER_BAD_TLD=1.997, RCVD_IN_DNSWL_LOW=-0.7,
+ FROM_SUSPICIOUS_NTLD=0.498, FROM_SUSPICIOUS_NTLD_FP=0.058,
+ PDS_OTHER_BAD_TLD=1.997, RCVD_IN_DNSWL_LOW=-0.7,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  UNPARSEABLE_RELAY=0.001 autolearn=no autolearn_force=no
@@ -110,6 +108,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series was accidentally based on my pending HOST_DATA series.
-Sending a v2 rebased on master. Sorry for the noise!
+This series implements CCE engine setup and PIO packet submission/processing.
+This forms the foundation for full CCE support in the future.
+
+CCE engine microcode is stored but not executed in this series. Reverse
+engineering doesn't look impossible but it will definitely be a journey
+and I think an initial implementation of at least some of the CCE
+packets in C will make it much easier.
+
+Ring buffer (BM modes) and Type-3 packet processing will follow in
+future series.
+
+Hardware tests available at:
+https://codeberg.org/cjab/ati-tests/src/branch/main/tests/cce.c
+
+Tested on real hardware (Rage 128 Pro Ultra, PCI 1002:5446) and QEMU.
+
+Changes from v1:
+
+- Rebased onto master (no longer depends on HOST_DATA series)
+
+Chad Jablonski (7):
+  ati-vga: Extract ati_reg_write() from ati_mm_write()
+  ati-vga: Implement CCE/PM4 microcode register handling
+  ati-vga: Implement PM4_BUFFER_CNTL register
+  ati-vga: Implement PM4_MICRO_CNTL register
+  ati-vga: Disable GUI engine MMIO writes when CCE enabled
+  ati-vga: Process Type-0/1/2 CCE packets via PIO
+  ati-vga: Implement PM4_STAT register and common flags
+
+ hw/display/ati.c        | 123 ++++++++++++++++++++++---
+ hw/display/ati_cce.c    | 194 ++++++++++++++++++++++++++++++++++++++++
+ hw/display/ati_cce.h    |  91 +++++++++++++++++++
+ hw/display/ati_int.h    |   4 +
+ hw/display/ati_regs.h   |  16 ++++
+ hw/display/meson.build  |   2 +-
+ hw/display/trace-events |   9 ++
+ 7 files changed, 428 insertions(+), 11 deletions(-)
+ create mode 100644 hw/display/ati_cce.c
+ create mode 100644 hw/display/ati_cce.h
+
+-- 
+2.51.2
+
 
