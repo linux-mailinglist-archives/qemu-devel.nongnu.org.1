@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0525CECCC8
-	for <lists+qemu-devel@lfdr.de>; Thu, 01 Jan 2026 04:59:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69131CECCCB
+	for <lists+qemu-devel@lfdr.de>; Thu, 01 Jan 2026 04:59:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vb9oc-0002Gc-CE; Wed, 31 Dec 2025 22:57:34 -0500
+	id 1vb9oc-0002Gb-EP; Wed, 31 Dec 2025 22:57:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chad@jablonski.xyz>)
- id 1vb9oa-0002FU-8X
+ id 1vb9oa-0002FS-61
  for qemu-devel@nongnu.org; Wed, 31 Dec 2025 22:57:32 -0500
 Received: from fhigh-b3-smtp.messagingengine.com ([202.12.124.154])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chad@jablonski.xyz>)
- id 1vb9oY-0003iI-8X
- for qemu-devel@nongnu.org; Wed, 31 Dec 2025 22:57:32 -0500
+ id 1vb9oY-0003iJ-8d
+ for qemu-devel@nongnu.org; Wed, 31 Dec 2025 22:57:31 -0500
 Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
- by mailfhigh.stl.internal (Postfix) with ESMTP id 5E5707A008F;
+ by mailfhigh.stl.internal (Postfix) with ESMTP id 7DA3C7A0098;
  Wed, 31 Dec 2025 22:57:29 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
+Received: from phl-frontend-04 ([10.202.2.163])
  by phl-compute-03.internal (MEProxy); Wed, 31 Dec 2025 22:57:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jablonski.xyz;
  h=cc:cc:content-transfer-encoding:content-type:date:date:from
  :from:in-reply-to:in-reply-to:message-id:mime-version:references
  :reply-to:subject:subject:to:to; s=fm1; t=1767239849; x=
- 1767326249; bh=1/oQvf+7oFxMlLhS7xldh1B7Xf0xiDTcW0n9KdiVD7A=; b=A
- dBLFivlpcUhXnCSG15WQE5B466tPty38JrMrbWDEYJGOXO4OEo2/7tljD9xS4DZX
- lsh/Jjeg2JhTY6qeZDnHMx+A0zuN4MWdsJeOyaLy6cSfrml9pZt+gTT2fChjEXvL
- rHbx1+pxWVIKeC3swfbczSKQNx7RTDscghKY/EvmO9WlCVYoErkEDlQupz7g/sQh
- qPuWMQhIihGegJa7ovp8BfM5QpMJV81kDL4jHoywZWehLXg9ifArctKLuOdlPOzV
- x08vbnMT0DytpoTvM0UHRThyCbE+CieyizoHjiAdokOfVtNFr4W1qDhDd488ZMzw
- 7bMOLR+UbQkw5jdjH0/Og==
+ 1767326249; bh=ygHQ47XsQ65iTRBvZyvIraYIcSs8DRfSbeQqPcnxVz8=; b=W
+ ueyv8XMY1jTMf0Bi7j8XZ3B2sauu5gO1rmLDvoqG4snuG/XEWAKywY2WPquyniVv
+ Ht71rJjQWOGNsHOfp4bF2K6blNsmqGdx95SAoyxkqFXYrnX39L57Q1aJxTmljn+z
+ D8FITXZejPzCj9YaYQtFLTyFliYOZa81VayX2w58B/9g6y1V90zAuFtS2oSyOHtg
+ LpDN0+qyVRxnuhFeX/W//RGIGvQFWDcKDphCXNTcisGDvMQSwOKa55eqrdrgBKCd
+ 6C96Q2hLOBuehEf7TVG6/A1Baug3C+t8P8j7EVFvfgsIh7AHxXsqucrvR31bAR1R
+ wAETXEuQ3tY99C6UvEavA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:date:date:feedback-id:feedback-id:from:from
  :in-reply-to:in-reply-to:message-id:mime-version:references
  :reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
- :x-me-sender:x-sasl-enc; s=fm2; t=1767239849; x=1767326249; bh=1
- /oQvf+7oFxMlLhS7xldh1B7Xf0xiDTcW0n9KdiVD7A=; b=riugsOYB8ukZCRFUl
- rsaX2T7b3eW5dnUpaVIUYWnutVcZWdfnl163l2GZxw08F6sXhb6yMOtYNY1X9PGv
- W0brtfTBSVxnP1aXPw45cue5tSXeEOzhd+ef3+zWtdfdnBGgairElY7v5puI2i6R
- s1+wrCSKy0CnxqCDY+PM3r2mbbT2zlB8P3kBHxaL4wPWnUZxM7d0EhjeeqGzA7Re
- 2+ZBXZIGgySwfcZpHm7hd+OhEJmpQZwBsy62TVPirl3w6JHeCYYnYWmjImOYqGFV
- AbdY0ZB3qKI1OP4IFp9sN0msmWa0927w2pg4LyuaRBKu/0a4BccGnINExBhQOFKv
- 8zNyQ==
-X-ME-Sender: <xms:qfBVaTsQM_zhnTLHPMUU9uDhUQhGQIvMVzW4rl_u8sI5wiP5OSX3Qg>
- <xme:qfBVab7iiBTNMot44cL7H920GnWfxwyMmXwzetR7Wvkn6whflfLUI4YPnxj3r3zj9
- 4Fb-R9WO1ZUpqIZeC6O48N64Tb8fejgdd3SE9m5WbkKtWAF8ke01K8>
-X-ME-Received: <xmr:qfBVaUJHpblxGPFSX3YPniiq9Ad1C8qI8f_L-VT9Xa08_zGHAN6WhEQT-dpU>
+ :x-me-sender:x-sasl-enc; s=fm2; t=1767239849; x=1767326249; bh=y
+ gHQ47XsQ65iTRBvZyvIraYIcSs8DRfSbeQqPcnxVz8=; b=d7e476DuIRTfbjoLl
+ Vmi8t0B/kZPQogk4eFTeLFxtPOxfX+4YOkeMWT2NYfyZw6zRjDCiexvljmV7ru+J
+ Ox/MFb/bUlzrGK9hx9/HEPircZCftMPOsybBRL7+7506ORpj8ZcZrh+q8UVkvh8P
+ f7apoyje8XhYZeDwLfMnqPsi86brUnWT/vXcUzJTYZCz/LKjKlrG92k3rC0HBud2
+ oyRzhhWvF33kYC38VWrmJW5CpDSjdOyTYn0ZVtlb5rBRhOvx/yNQY/tFRWpN9x/M
+ D8D5qXnIWMzoHGM/waFG9zc+4kgT0fnS+dADFmzOIOICplL3t7w9tJZc9auAuXAL
+ fU//A==
+X-ME-Sender: <xms:qfBVaTKXiKkm7b6eczX9bLF6bdLgPkwVgiXFWiTTfmRA-AHWsw_Pyw>
+ <xme:qfBVaelD6VZmQ6k8O68B7iC-Omo-ylBeEqib-ZGtqEHntyqxriA6JBOz2Kwbdp7pv
+ yRkSxqYZYIzDDKsb66xCmUODKFEnFN8aI7ttdSwj96cCD-dHQPplN0p>
+X-ME-Received: <xmr:qfBVaZFIn3HEWWfYOYJykWxeGMZdKKv1pjBQvJKpDnUczx7UGNO8EaE6jbv5>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdekgeejiecutefuodetggdotefrod
  ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
  ihhlohhuthemuceftddtnecufghrlhcuvffnffculdejtddmnecujfgurhephffvvefuff
@@ -59,27 +59,27 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdekgeejiecutefuodetgg
  etjefhleehfeeiteejgfeljeffhfeuffdvudeijefgueeuuedvvdekjefhleenucevlhhu
  shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegthhgrugesjhgrsg
  hlohhnshhkihdrgiihiidpnhgspghrtghpthhtohepfedpmhhouggvpehsmhhtphhouhht
- pdhrtghpthhtoheptghhrggusehjrggslhhonhhskhhirdighiiipdhrtghpthhtohepqh
- gvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdprhgtphhtthhopegsrghlrghtohhn
- segvihhkrdgsmhgvrdhhuh
-X-ME-Proxy: <xmx:qfBVab4mB1-aqTEvmNZ85rdP5HXf1aYoCFIdhqzXM5NMpldmkj9Erw>
- <xmx:qfBVaXyuY8hwdtSJPQOgkCKuB-kb5-TcItdy2CzDJ8tDdgdYyaQFyQ>
- <xmx:qfBVafYzFk4zLeVxkXTD7bfWRpRIZHC9__62nY7ni5Ex0TII1BWu1A>
- <xmx:qfBVaZQtvtqYFPmPtT-0jMaaESoWbNLFsOjHytGmMuYfWCOFy8RQow>
- <xmx:qfBVaYlLpa10Ry9Sen-_l4CUQ2LrPSaLGpgHaxwst8O3WsrcCCxXJY07>
+ pdhrtghpthhtohepsggrlhgrthhonhesvghikhdrsghmvgdrhhhupdhrtghpthhtoheptg
+ hhrggusehjrggslhhonhhskhhirdighiiipdhrtghpthhtohepqhgvmhhuqdguvghvvghl
+ sehnohhnghhnuhdrohhrgh
+X-ME-Proxy: <xmx:qfBVaWGvegisPxC_soZIApTKHb1Z27EIEAqYQ-FKLxpqi0eGynmdmQ>
+ <xmx:qfBVaeNNmwvbRetjT6eq_W9v9c_QGR8RNZ87Y3c89f363rW7TcJpFg>
+ <xmx:qfBVadGc7yqWEcqdQGLHD9eileR-Em3e5QnEREUWjhHsOETAhFs3AQ>
+ <xmx:qfBVadOUaMteEAqvu633UHtrx10imP-GN0mmcgDUixMOpsNaLsi9Gw>
+ <xmx:qfBVadxA5UDqQWOa0xm-AQjWs-s7WzH5qpJ2L65vUZUUUULe2oFsBIsg>
 Feedback-ID: ib26944c1:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 31 Dec 2025 22:57:28 -0500 (EST)
+ 31 Dec 2025 22:57:29 -0500 (EST)
 Received: from localhost (chomposaur [local])
- by chomposaur (OpenSMTPD) with ESMTPA id cf25ce26;
+ by chomposaur (OpenSMTPD) with ESMTPA id 034ab7b5;
  Thu, 1 Jan 2026 03:57:26 +0000 (UTC)
 From: Chad Jablonski <chad@jablonski.xyz>
 To: qemu-devel@nongnu.org
 Cc: balaton@eik.bme.hu,
 	Chad Jablonski <chad@jablonski.xyz>
-Subject: [PATCH v2 2/7] ati-vga: Implement CCE/PM4 microcode register handling
-Date: Wed, 31 Dec 2025 22:55:50 -0500
-Message-ID: <20260101035555.1300511-3-chad@jablonski.xyz>
+Subject: [PATCH v2 3/7] ati-vga: Implement PM4_BUFFER_CNTL register
+Date: Wed, 31 Dec 2025 22:55:51 -0500
+Message-ID: <20260101035555.1300511-4-chad@jablonski.xyz>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260101035555.1300511-1-chad@jablonski.xyz>
 References: <20260101035555.1300511-1-chad@jablonski.xyz>
@@ -111,145 +111,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement registers used for loading and reading microcode for the CCE
-engine. Loading the microcode is the first step for any driver
-implementing CCE. Reading, while not used by drivers is very helpful for
-any reverse engineering and testing work. The microcode is currently
-stored but not used. This lays the groundwork for future RE work on the
-microcode.
-
-There's some quirky behavior around microcode reads that isn't
-documented elsewhere. There appear to be two internal pointers, one for
-reading and one for writing that can get out of sync. Comments in the
-code expand on this.
-
-Tested and validated against a Rage 128 Pro Ultra (PCI 1002:5446).
+The PM4_BUFFER_CNTL register is used to set up the CCE FIFO. These are
+straightforward reads and writes. Future CCE patches make use of this
+state.
 
 Signed-off-by: Chad Jablonski <chad@jablonski.xyz>
 ---
- hw/display/ati.c     | 47 ++++++++++++++++++++++++++++++++++++++++++++
- hw/display/ati_cce.h | 26 ++++++++++++++++++++++++
- hw/display/ati_int.h |  2 ++
- 3 files changed, 75 insertions(+)
- create mode 100644 hw/display/ati_cce.h
+ hw/display/ati.c      | 11 +++++++++++
+ hw/display/ati_cce.h  |  4 ++++
+ hw/display/ati_regs.h | 12 ++++++++++++
+ 3 files changed, 27 insertions(+)
 
 diff --git a/hw/display/ati.c b/hw/display/ati.c
-index 33f8e211dc..e291926470 100644
+index e291926470..a4bef92efd 100644
 --- a/hw/display/ati.c
 +++ b/hw/display/ati.c
-@@ -510,6 +510,31 @@ static uint64_t ati_mm_read(void *opaque, hwaddr addr, unsigned int size)
-     case DEFAULT_SC_BOTTOM_RIGHT:
-         val = s->regs.default_sc_bottom_right;
+@@ -535,6 +535,11 @@ static uint64_t ati_mm_read(void *opaque, hwaddr addr, unsigned int size)
+          */
+         s->cce.microcode.raddr = s->cce.microcode.addr;
          break;
-+    case PM4_MICROCODE_ADDR:
-+        val = s->cce.microcode.addr;
-+        break;
-+    case PM4_MICROCODE_RADDR:
-+        val = 0;
-+        break;
-+    case PM4_MICROCODE_DATAH:
-+        val = (s->cce.microcode.microcode[s->cce.microcode.raddr] >> 32) &
-+              0xffffffff;
-+        break;
-+    case PM4_MICROCODE_DATAL:
-+        val = s->cce.microcode.microcode[s->cce.microcode.raddr] & 0xffffffff;
-+        s->cce.microcode.addr += 1;
-+        /*
-+         * The write address (addr) is always copied into the
-+         * read address (raddr) after a DATAL read. This leads
-+         * to surprising behavior when the PM4_MICROCODE_ADDR
-+         * instead of the PM4_MICROCODE_RADDR register is set to
-+         * a value just before a read. The first read after this
-+         * will reflect the previous raddr before incrementing and
-+         * re-syncing with addr. This is expected and observed on
-+         * the hardware.
-+         */
-+        s->cce.microcode.raddr = s->cce.microcode.addr;
++    case PM4_BUFFER_CNTL:
++        val = ((s->cce.buffer_mode & 0xf) << 28) |
++              (s->cce.no_update << 27) |
++              (s->cce.buffer_size_l2qw & 0x7ffffff);
 +        break;
      default:
          break;
      }
-@@ -932,6 +957,28 @@ void ati_reg_write(ATIVGAState *s, hwaddr addr,
-     case DEFAULT_SC_BOTTOM_RIGHT:
-         s->regs.default_sc_bottom_right = data & 0x3fff3fff;
+@@ -979,6 +984,12 @@ void ati_reg_write(ATIVGAState *s, hwaddr addr,
+         s->cce.microcode.addr += 1;
          break;
-+    case PM4_MICROCODE_ADDR:
-+        s->cce.microcode.addr = data;
-+        break;
-+    case PM4_MICROCODE_RADDR:
-+        s->cce.microcode.raddr = data;
-+        s->cce.microcode.addr = data;
-+        break;
-+    case PM4_MICROCODE_DATAH: {
-+        uint64_t curr = s->cce.microcode.microcode[s->cce.microcode.addr];
-+        uint64_t low = curr & 0xffffffff;
-+        uint64_t high = (data & 0x1f) << 32;
-+        s->cce.microcode.microcode[s->cce.microcode.addr] = high | low;
-+        break;
-+    }
-+    case PM4_MICROCODE_DATAL: {
-+        uint64_t curr = s->cce.microcode.microcode[s->cce.microcode.addr];
-+        uint64_t low = data & 0xffffffff;
-+        uint64_t high = curr & (0xffffffffull << 32);
-+        s->cce.microcode.microcode[s->cce.microcode.addr] = high | low;
-+        s->cce.microcode.addr += 1;
+     }
++    case PM4_BUFFER_CNTL: {
++        s->cce.buffer_size_l2qw = data & 0x7ffffff;
++        s->cce.no_update = (data >> 27) & 1;
++        s->cce.buffer_mode = (data >> 28) & 0xf;
 +        break;
 +    }
      default:
          break;
      }
 diff --git a/hw/display/ati_cce.h b/hw/display/ati_cce.h
-new file mode 100644
-index 0000000000..f2ef1345de
---- /dev/null
+index f2ef1345de..25a2430c60 100644
+--- a/hw/display/ati_cce.h
 +++ b/hw/display/ati_cce.h
-@@ -0,0 +1,26 @@
-+/*
-+ * QEMU ATI SVGA emulation
-+ * CCE engine functions
-+ *
-+ * Copyright (c) 2025 Chad Jablonski
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef ATI_CCE_H
-+#define ATI_CCE_H
-+
-+#include "qemu/osdep.h"
-+#include "qemu/log.h"
-+
-+typedef struct ATIPM4MicrocodeState {
-+    uint8_t addr;
-+    uint8_t raddr;
-+    uint64_t microcode[256];
-+} ATIPM4MicrocodeState;
-+
-+typedef struct ATICCEState {
-+    ATIPM4MicrocodeState microcode;
-+} ATICCEState;
-+
-+#endif /* ATI_CCE_H */
-diff --git a/hw/display/ati_int.h b/hw/display/ati_int.h
-index ea1a8bceab..ed6307151b 100644
---- a/hw/display/ati_int.h
-+++ b/hw/display/ati_int.h
-@@ -14,6 +14,7 @@
- #include "hw/i2c/bitbang_i2c.h"
- #include "vga_int.h"
- #include "qom/object.h"
-+#include "ati_cce.h"
+@@ -21,6 +21,10 @@ typedef struct ATIPM4MicrocodeState {
  
- /*#define DEBUG_ATI*/
+ typedef struct ATICCEState {
+     ATIPM4MicrocodeState microcode;
++    /* BufferCntl */
++    uint32_t buffer_size_l2qw;
++    bool no_update;
++    uint8_t buffer_mode;
+ } ATICCEState;
  
-@@ -100,6 +101,7 @@ struct ATIVGAState {
-     MemoryRegion io;
-     MemoryRegion mm;
-     ATIVGARegs regs;
-+    ATICCEState cce;
- };
+ #endif /* ATI_CCE_H */
+diff --git a/hw/display/ati_regs.h b/hw/display/ati_regs.h
+index d7127748ff..4d1ccc1434 100644
+--- a/hw/display/ati_regs.h
++++ b/hw/display/ati_regs.h
+@@ -378,7 +378,19 @@
+ #define PC_BUSY                                 0x80000000
  
- const char *ati_reg_name(int num);
+ #define BUS_MASTER_DIS                          0x00000040
++
++
++/* PM4_BUFFER_CNTL buffer mode bit constants */
+ #define PM4_BUFFER_CNTL_NONPM4                  0x00000000
++#define PM4_BUFFER_CNTL_192PIO                  0x00000001
++#define PM4_BUFFER_CNTL_192BM                   0x00000002
++#define PM4_BUFFER_CNTL_128PIO_64INDBM          0x00000003
++#define PM4_BUFFER_CNTL_128BM_64INDBM           0x00000004
++#define PM4_BUFFER_CNTL_64PIO_128INDBM          0x00000005
++#define PM4_BUFFER_CNTL_64BM_128INDBM           0x00000006
++#define PM4_BUFFER_CNTL_64PIO_64VCBM_64INDBM    0x00000007
++#define PM4_BUFFER_CNTL_64BM_64VCBM_64INDBM     0x00000008
++#define PM4_BUFFER_CNTL_64PIO_64VCPIO_64INPIO   0x0000000f
+ 
+ /* DP_DATATYPE bit constants */
+ #define DST_8BPP                                0x00000002
 -- 
 2.51.2
 
