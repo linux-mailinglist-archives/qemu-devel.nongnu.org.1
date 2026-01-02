@@ -2,96 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B1CCCEF5FA
-	for <lists+qemu-devel@lfdr.de>; Fri, 02 Jan 2026 22:50:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C272CEF73E
+	for <lists+qemu-devel@lfdr.de>; Sat, 03 Jan 2026 00:00:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vbn1j-0000gW-L8; Fri, 02 Jan 2026 16:49:43 -0500
+	id 1vbo7C-0007MI-L6; Fri, 02 Jan 2026 17:59:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vbn1f-0000bV-4q
- for qemu-devel@nongnu.org; Fri, 02 Jan 2026 16:49:39 -0500
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vbn1d-0000S2-3n
- for qemu-devel@nongnu.org; Fri, 02 Jan 2026 16:49:38 -0500
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-7b80fed1505so12265962b3a.3
- for <qemu-devel@nongnu.org>; Fri, 02 Jan 2026 13:49:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767390575; x=1767995375; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=jBF2uGAd4xll6H3AZatvPd3p+Oc+8ihKdUIVVV1/B4c=;
- b=vLi9b0NSOn6KME9AdGhAnVNzBzSxTxKh6bIUOKHJ/+gvMQW/yWLW9sRxxY92cLwY1u
- cPtMQLJ54tBNT8huQdqTJxMHyJFBZrH+mMvZpwB/8owq6kCrqigu7PEA4XptXuv5i2Pc
- qKiq/kevXC5TdUJr1elUQp09Zh8pUDtbWgZEMQvN70cqu1bkxBzjCiGd0+BlIcPrQBBj
- 5SLrceue4gdLRttaBV57buBHscfQR8skoSbdIvcyHtL7vknr0qhhYPk5JQQDwKGWidjx
- 2KNAzTncTHQReue5WBllLMn/yOI4l7uXp2MKdyg89vccuKNEP4kOHtgSb3uxM9pxJd+s
- L1+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767390575; x=1767995375;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=jBF2uGAd4xll6H3AZatvPd3p+Oc+8ihKdUIVVV1/B4c=;
- b=jLfyT4YUYa2AYE44T5Gur1MFkMqNAFB22gn/yqDOYhqLFbnECk3tlH0mOmL2+nrbeR
- py3QzYXJ4XIc8VoAESI70ZGLnZVhNm1J3fCRW7GLCfZFzfP1N3bdL+ktXNAm6xpAWmDV
- ccPQHu9e5OKVhvJpbpW/TVtcNDJzy3kAoBEgcbC5WzsMrV8m6njO/H+mcDtcPbh0fErN
- M9XFeR5lM+7aC3VhKgK1aBMUOymoP8xUw7joEv/H5WOvsFU7sylO5dGN5gS/cOetSd11
- xNJQ8bKdNqiyEFrqBCNPffFRz6vj+/PVm85ZOuKpuolWIIXsmgIncVTBQ19v1++fK70r
- 5TWw==
-X-Gm-Message-State: AOJu0YzMMN7T4aHNMP/UKSa6hq1IEx9A/SYTnx0bXCrZ6ZSkiOiFdOWv
- e1cTIPtREloEZubfswXuCG48DCjeorrWq2NHUDWT1X+EogL4EMqk5LxTZqj3gEGKHBSo8YkeWNG
- 6ECOX
-X-Gm-Gg: AY/fxX4rV2PrcdRZpcP/NgIW1N3p2DEsFYULuTGQmhdZupsv6ldD/s8XjNegjkf47fP
- EaFXxYWMDJdtDE9U9rpfCBRVTT4N69U8xjCHBCjYHGyLnCo6Wk71tHpBFiQr1jsIXt0sJj2sx4D
- 8PenfHBHqiytl7N8D/5RZuAfVfWSlY6gy9VCtcqEjwwfuzJzbfHTKWRQAm9+cXlVFOikq0jZ7DM
- NycvdLsjYF/f/bqmGHcbWZlrSUPH/AkS/8IMce1Abljw6T/wZxY02XN6wsp1OPnYix/oGa//1n6
- Ia0wapvc+4hvNWcyqXvMy7q2a5E4RZlJdZyvb/4sIqdePBJV5HHC9UP8deFODdhB4uNFfubErwS
- XA/ljdal6TxKPGmqakErBVF8fSfkRAW0fMIgR1cmbkR+1dQvTYNpyBMTEUQZsVoMmZsD3Kp4438
- /vEGunxKwFlU9KJaMX7HiAtBYiiaCT9/zjPW1xkEelRq6KtHK0hbS2cYjwoB0b/gQOHfc=
-X-Google-Smtp-Source: AGHT+IGM583ogQQkCrOWQShgproJEHsm6Cf1Q9HAH0v0nItXCCpR/cFPiGj5hliJsQLkx10usnRgXA==
-X-Received: by 2002:a05:6a20:3ca2:b0:34f:ec81:bc3d with SMTP id
- adf61e73a8af0-376aa1f7e23mr40391361637.44.1767390575383; 
- Fri, 02 Jan 2026 13:49:35 -0800 (PST)
-Received: from [192.168.1.87] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-c2e20a646e8sm21219772a12.11.2026.01.02.13.49.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 02 Jan 2026 13:49:34 -0800 (PST)
-Message-ID: <1e24cfca-3e5a-442c-b02a-05ce2e48511e@linaro.org>
-Date: Fri, 2 Jan 2026 13:49:34 -0800
+ (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
+ id 1vbo77-0007Kk-Sa
+ for qemu-devel@nongnu.org; Fri, 02 Jan 2026 17:59:22 -0500
+Received: from mgamail.intel.com ([198.175.65.17])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
+ id 1vbo75-0002xb-8J
+ for qemu-devel@nongnu.org; Fri, 02 Jan 2026 17:59:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1767394759; x=1798930759;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=D20EtKNYAY+TWKUOPiodzmWKx69NyYfF3aLv9FA9bKk=;
+ b=F0dTlJlMfEo+BRlq5N/g4vASU+H58wtKa/UZ/pSEWcri+Vf0Xeh2won5
+ mN2YObTbvp37yU/6Y9gkeFBKhd/UPner5tEHTdcBx8Wm+zAizn37+2RDf
+ Ezqcr4SXazGO1/huYHxCApzRBK6UCg4ORlusxI0iLyds8kxHWjFYRUmNF
+ Ga83dKqlJapmPn/tfKAOq9zn8pXDgHiw3qII5bx5sysqpbZRZ39vbKE+S
+ RdtcU7FT7CqXE3lY2XlXmHgNgy+f0NNfJMdfitknT8zhbpTpbFIF7DR6g
+ ZXgWYVOgLMWzaWDEc5Mibj0bfSOd9fO2jdCm10kMvhoiwS9AL0GT+wQab A==;
+X-CSE-ConnectionGUID: 0AFE3iCPSBWJrXE4peq7WQ==
+X-CSE-MsgGUID: 9cLqxJa8S4upQoCR6l6Cqw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11659"; a="68862164"
+X-IronPort-AV: E=Sophos;i="6.21,198,1763452800"; d="scan'208";a="68862164"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jan 2026 14:59:15 -0800
+X-CSE-ConnectionGUID: vRiXAqa6SEOb//OBkJgM0g==
+X-CSE-MsgGUID: bicxgchGTNWycW3NUEgpSA==
+X-ExtLoop1: 1
+Received: from soc-cp83kr3.clients.intel.com (HELO [10.241.240.111])
+ ([10.241.240.111])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jan 2026 14:59:14 -0800
+Message-ID: <b6c531d4-328d-48a7-856b-051c918c24ae@intel.com>
+Date: Fri, 2 Jan 2026 14:59:13 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/11] plugins: enable C++ plugins
+Subject: Re: [PATCH v8 4/7] target/i386/kvm: query kvm.enable_pmu parameter
+To: Dongli Zhang <dongli.zhang@oracle.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org
+Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
+ sandipan.das@amd.com, babu.moger@amd.com, likexu@tencent.com,
+ like.xu.linux@gmail.com, groug@kaod.org, khorenko@virtuozzo.com,
+ alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
+ davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
+ dapeng1.mi@linux.intel.com, joe.jin@oracle.com, ewanhai-oc@zhaoxin.com,
+ ewanhai@zhaoxin.com
+References: <20251230074354.88958-1-dongli.zhang@oracle.com>
+ <20251230074354.88958-5-dongli.zhang@oracle.com>
 Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Phil_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Gustavo Bueno Romero <gustavo.romero@linaro.org>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20251231073401.2097765-1-pierrick.bouvier@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20251231073401.2097765-1-pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <20251230074354.88958-5-dongli.zhang@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.17; envelope-from=zide.chen@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,127 +90,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/30/25 11:33 PM, Pierrick Bouvier wrote:
-> Writing plugins in C can be sometimes tedious, especially when using Glib to
-> keep track of execution state. We can directly use the same C API but write our
-> plugin in C++, benefiting from its great standard library offering strings,
-> smart pointers, data structures and synchronization mechanisms.
-> 
-> It's common for downstream QEMU forks to provide C++ for plugins, like this:
-> - https://github.com/panda-re/panda/tree/dev/panda/plugins
-> - https://github.com/FlorentRevest/DejaView/tree/main/src/qemu_plugin
-> 
-> Hopefully this will help more people to use upstream QEMU, and as a benefit, get
-> their contribution back and help to develop plugins ecosystem upstream directly.
-> 
-> This series first cleans up build system for plugins, factorizing details
-> between contrib/plugins and tests/tcg/plugins folders.
-> Then, we perform codebase cleanups to fix conflicts between existing headers
-> and C++ headers.
-> After that, we can update the C++ standard used by QEMU, to benefit fully
-> from latest updates of the language.
-> Finally, we define an empty C++ plugin, making sure we can keep track of
-> possible regression in qemu-plugin header.
-> 
-> Note: This series is *not* a trojan horse to bring C++ in QEMU
-> codebase, nor to define an alternative C++ API for plugins. It's just enabling
-> more users to get the most out of existing C plugin API.
-> 
-> CI: https://gitlab.com/pbo-linaro/qemu/-/pipelines/2239199381
-> 
-> Pierrick Bouvier (11):
->    plugins: move win32_linker.c file to plugins directory
->    plugins: factorize plugin dependencies and library details
->    plugins: use complete filename for defining plugins sources
->    plugins: define plugin API symbols as extern "C" when compiling in C++
->    include: qemu/ctype.h -> qemu/qemu-ctype.h
->    include: qemu/coroutine.h -> qemu/qemu-coroutine.h
->    meson: fix supported compiler arguments in other languages than C
->    meson: enable cpp (optionally) for plugins
->    qga/vss-win32: fix clang warning with C++20
->    meson: update C++ standard to C++23
->    contrib/plugins: add empty cpp plugin
-> 
->   meson.build                                   |  24 ++--
->   block/parallels.h                             |   2 +-
->   block/qcow2.h                                 |   2 +-
->   fsdev/qemu-fsdev-throttle.h                   |   2 +-
->   hw/9pfs/9p.h                                  |   2 +-
->   include/block/block-global-state.h            |   2 +-
->   include/block/block-hmp-cmds.h                |   2 +-
->   include/block/block-io.h                      |   2 +-
->   include/block/reqlist.h                       |   2 +-
->   include/block/throttle-groups.h               |   2 +-
->   include/qemu/coroutine_int.h                  |   2 +-
->   include/qemu/job.h                            |   2 +-
->   .../qemu/{coroutine.h => qemu-coroutine.h}    |   0
->   include/qemu/{ctype.h => qemu-ctype.h}        |   0
->   include/qemu/qemu-plugin.h                    |   8 ++
->   migration/migration.h                         |   2 +-
->   ui/console-priv.h                             |   2 +-
->   block.c                                       |   2 +-
->   block/block-copy.c                            |   2 +-
->   block/io_uring.c                              |   2 +-
->   block/linux-aio.c                             |   2 +-
->   block/mirror.c                                |   2 +-
->   block/progress_meter.c                        |   2 +-
->   block/ssh.c                                   |   2 +-
->   block/vdi.c                                   |   2 +-
->   block/vvfat.c                                 |   2 +-
->   chardev/char.c                                |   2 +-
->   gdbstub/gdbstub.c                             |   2 +-
->   hw/9pfs/coth.c                                |   2 +-
->   hw/block/virtio-blk.c                         |   2 +-
->   hw/core/bus.c                                 |   2 +-
->   hw/core/qdev-properties-system.c              |   2 +-
->   hw/core/qdev-properties.c                     |   2 +-
->   hw/hyperv/syndbg.c                            |   2 +-
->   hw/nvme/nguid.c                               |   2 +-
->   hw/s390x/ccw-device.c                         |   2 +-
->   hw/s390x/ipl.c                                |   2 +-
->   hw/s390x/s390-virtio-ccw.c                    |   2 +-
->   hw/scsi/scsi-generic.c                        |   2 +-
->   migration/migration.c                         |   2 +-
->   migration/rdma.c                              |   2 +-
->   monitor/fds.c                                 |   2 +-
->   monitor/hmp.c                                 |   2 +-
->   nbd/client-connection.c                       |   2 +-
->   net/colo-compare.c                            |   2 +-
->   net/net.c                                     |   2 +-
->   net/tap-solaris.c                             |   2 +-
->   {contrib/plugins => plugins}/win32_linker.c   |   0
->   qapi/qapi-util.c                              |   2 +-
->   qapi/qmp-dispatch.c                           |   2 +-
->   qobject/json-parser.c                         |   2 +-
->   target/ppc/ppc-qmp-cmds.c                     |   2 +-
->   target/riscv/cpu.c                            |   2 +-
->   target/riscv/riscv-qmp-cmds.c                 |   2 +-
->   tests/qtest/libqtest.c                        |   2 +-
->   tests/qtest/migration/migration-util.c        |   2 +-
->   tests/unit/test-aio-multithread.c             |   2 +-
->   tests/vhost-user-bridge.c                     |   2 +-
->   ui/console.c                                  |   2 +-
->   ui/keymaps.c                                  |   2 +-
->   ui/ui-qmp-cmds.c                              |   2 +-
->   util/cutils.c                                 |   2 +-
->   util/id.c                                     |   2 +-
->   util/qemu-co-shared-resource.c                |   2 +-
->   util/qemu-co-timeout.c                        |   2 +-
->   util/qemu-coroutine-io.c                      |   2 +-
->   util/readline.c                               |   2 +-
->   util/thread-pool.c                            |   2 +-
->   contrib/plugins/cpp.cpp                       | 119 ++++++++++++++++++
->   contrib/plugins/meson.build                   |  25 ++--
->   plugins/meson.build                           |  15 ++-
->   qga/vss-win32/requester.cpp                   |   6 +-
->   tests/tcg/plugins/meson.build                 |  18 +--
->   73 files changed, 237 insertions(+), 104 deletions(-)
->   rename include/qemu/{coroutine.h => qemu-coroutine.h} (100%)
->   rename include/qemu/{ctype.h => qemu-ctype.h} (100%)
->   rename {contrib/plugins => plugins}/win32_linker.c (100%)
->   create mode 100644 contrib/plugins/cpp.cpp
-> 
 
-v2 sent:
-https://lore.kernel.org/qemu-devel/20260102214724.4128196-1-pierrick.bouvier@linaro.org/T/#t
+
+On 12/29/2025 11:42 PM, Dongli Zhang wrote:
+> When PMU is enabled in QEMU, there is a chance that PMU virtualization is
+> completely disabled by the KVM module parameter kvm.enable_pmu=N.
+> 
+> The kvm.enable_pmu parameter is introduced since Linux v5.17.
+> Its permission is 0444. It does not change until a reload of the KVM
+> module.
+> 
+> Read the kvm.enable_pmu value from the module sysfs to give a chance to
+> provide more information about vPMU enablement.> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+> Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+> ---
+> Changed since v2:
+>   - Rework the code flow following Zhao's suggestion.
+>   - Return error when:
+>     (*kvm_enable_pmu == 'N' && X86_CPU(cpu)->enable_pmu)
+> Changed since v3:
+>   - Re-split the cases into enable_pmu and !enable_pmu, following Zhao's
+>     suggestion.
+>   - Rework the commit messages.
+>   - Bring back global static variable 'kvm_pmu_disabled' from v2.
+> Changed since v4:
+>   - Add Reviewed-by from Zhao.
+> Changed since v5:
+>   - Rebase on top of most recent QEMU.
+> Changed since v6:
+>   - Add Reviewed-by from Dapeng Mi.
+> 
+>  target/i386/kvm/kvm.c | 61 +++++++++++++++++++++++++++++++------------
+>  1 file changed, 44 insertions(+), 17 deletions(-)
+> 
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index 3b803c662d..338b9558e4 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -187,6 +187,10 @@ static int has_triple_fault_event;
+>  static bool has_msr_mcg_ext_ctl;
+>  
+>  static int pmu_cap;
+> +/*
+> + * Read from /sys/module/kvm/parameters/enable_pmu.
+> + */
+> +static bool kvm_pmu_disabled;
+>  
+>  static struct kvm_cpuid2 *cpuid_cache;
+>  static struct kvm_cpuid2 *hv_cpuid_cache;
+> @@ -2068,23 +2072,30 @@ int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
+>      if (first) {
+>          first = false;
+>  
+> -        /*
+> -         * Since Linux v5.18, KVM provides a VM-level capability to easily
+> -         * disable PMUs; however, QEMU has been providing PMU property per
+> -         * CPU since v1.6. In order to accommodate both, have to configure
+> -         * the VM-level capability here.
+> -         *
+> -         * KVM_PMU_CAP_DISABLE doesn't change the PMU
+> -         * behavior on Intel platform because current "pmu" property works
+> -         * as expected.
+> -         */
+> -        if ((pmu_cap & KVM_PMU_CAP_DISABLE) && !X86_CPU(cpu)->enable_pmu) {
+> -            ret = kvm_vm_enable_cap(kvm_state, KVM_CAP_PMU_CAPABILITY, 0,
+> -                                    KVM_PMU_CAP_DISABLE);
+> -            if (ret < 0) {
+> -                error_setg_errno(errp, -ret,
+> -                                 "Failed to set KVM_PMU_CAP_DISABLE");
+> -                return ret;
+> +        if (X86_CPU(cpu)->enable_pmu) {
+> +            if (kvm_pmu_disabled) {
+> +                warn_report("Failed to enable PMU since "
+> +                            "KVM's enable_pmu parameter is disabled");
+
+I'm wondering about the intended value of this patch?
+
+If enable_pmu is true in QEMU but the corresponding KVM parameter is
+false, then KVM_GET_SUPPORTED_CPUID or KVM_GET_MSRS should be able to
+tell that the PMU feature is not supported by host.
+
+The logic implemented in this patch seems somewhat redundant.
+
+Additionally, in this scenario — where the user intends to enable a
+feature but the host cannot support it — normally no warning is emitted
+by QEMU.
+
+> +            }
+> +        } else {
+> +            /*
+> +             * Since Linux v5.18, KVM provides a VM-level capability to easily
+> +             * disable PMUs; however, QEMU has been providing PMU property per
+> +             * CPU since v1.6. In order to accommodate both, have to configure
+> +             * the VM-level capability here.
+> +             *
+> +             * KVM_PMU_CAP_DISABLE doesn't change the PMU
+> +             * behavior on Intel platform because current "pmu" property works
+> +             * as expected.
+> +             */
+> +            if (pmu_cap & KVM_PMU_CAP_DISABLE) {
+> +                ret = kvm_vm_enable_cap(kvm_state, KVM_CAP_PMU_CAPABILITY, 0,
+> +                                        KVM_PMU_CAP_DISABLE);
+> +                if (ret < 0) {
+> +                    error_setg_errno(errp, -ret,
+> +                                     "Failed to set KVM_PMU_CAP_DISABLE");
+> +                    return ret;
+> +                }
+>              }
+>          }
+>      }
+> @@ -3302,6 +3313,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+>      int ret;
+>      struct utsname utsname;
+>      Error *local_err = NULL;
+> +    g_autofree char *kvm_enable_pmu;
+>  
+>      /*
+>       * Initialize confidential guest (SEV/TDX) context, if required
+> @@ -3437,6 +3449,21 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+>  
+>      pmu_cap = kvm_check_extension(s, KVM_CAP_PMU_CAPABILITY);
+>  
+> +    /*
+> +     * The enable_pmu parameter is introduced since Linux v5.17,
+> +     * give a chance to provide more information about vPMU
+> +     * enablement.
+> +     *
+> +     * The kvm.enable_pmu's permission is 0444. It does not change
+> +     * until a reload of the KVM module.
+> +     */
+> +    if (g_file_get_contents("/sys/module/kvm/parameters/enable_pmu",
+> +                            &kvm_enable_pmu, NULL, NULL)) {
+> +        if (*kvm_enable_pmu == 'N') {
+> +            kvm_pmu_disabled = true;
+
+It’s generally better not to rely on KVM’s internal implementation
+unless really necessary.
+
+For example, in the new mediated vPMU framework, even if the KVM module
+parameter enable_pmu is set, the per-guest kvm->arch.enable_pmu could
+still be cleared.
+
+In such a case, the logic here might not be correct.
+
+> +        }
+> +    }
+> +
+>      return 0;
+>  }
+>  
+
 
