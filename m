@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03BD9CEF5E7
-	for <lists+qemu-devel@lfdr.de>; Fri, 02 Jan 2026 22:49:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8611FCEF600
+	for <lists+qemu-devel@lfdr.de>; Fri, 02 Jan 2026 22:50:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vbn0l-0006mx-Ph; Fri, 02 Jan 2026 16:48:43 -0500
+	id 1vbn0n-0006pz-E6; Fri, 02 Jan 2026 16:48:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vbmzm-0006g9-2n
- for qemu-devel@nongnu.org; Fri, 02 Jan 2026 16:47:46 -0500
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1vbmzo-0006gK-Ss
+ for qemu-devel@nongnu.org; Fri, 02 Jan 2026 16:47:48 -0500
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vbmzk-0000KW-Kf
- for qemu-devel@nongnu.org; Fri, 02 Jan 2026 16:47:41 -0500
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-7b8e49d8b35so15181964b3a.3
- for <qemu-devel@nongnu.org>; Fri, 02 Jan 2026 13:47:40 -0800 (PST)
+ id 1vbmzl-0000Kc-HG
+ for qemu-devel@nongnu.org; Fri, 02 Jan 2026 16:47:43 -0500
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-34c708702dfso13171547a91.1
+ for <qemu-devel@nongnu.org>; Fri, 02 Jan 2026 13:47:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767390459; x=1767995259; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767390460; x=1767995260; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HOkbwVMERK6pZqO0u7uJFvMQBMZKL1x7wpoiTvhRVB4=;
- b=Lus46W/+bayS02n6n71pFalGccFLAvlpI6F4d635fWZZhdQO4uAcSI/J+BsiSLPEZe
- 0Hs1JNEk/KsBC7ZBSoGEX2oongtDTl5tvEoQjUz6zER+WqjX7jeEpjzx5BVlzE5roiEC
- wnZJFe8rAusfRXHv9hNB3Dk3hQ6hqG1GWpPB5+CsTrKx5Fu5k1na+WqLdnIWrm3QC4a+
- h9DUpaVGfLUIYUV7E02OfYZvKWj7HbX8INr8aEt8I4zBzSH3c9x0CpjGvLsbfx6+Axs3
- o/BxCZ5Sivy+BuUYBCjIymB+fA2gELEmGqrVCjjutKYEvrzrk+zfqCNGpb/fzRX45wNc
- qRWQ==
+ bh=em7lmvjlMGnS3avhi35owKtaVtV9xVpJa0BeP9UCQDw=;
+ b=R1KYKm59HdH/Y1KDDouOCcJ4Qp2YyXQQMljMfBM47hkyDLyIr3LB44OTm7WTiLnylV
+ PvKqCvUwBzSjl8xx62+YU5S8G4ZZH4NRMJnac1mtSUyTZgdnD8fNzmqTRCDiJIs/X5tp
+ 0pPuEoAnYbuEh0EI5FLNv6Lf35edBNfu6B04/gj9rEYSEuZqV3XMqxtpwQ0MmSgmKoOF
+ jV6gcNsxOnyIKPobAUbeBwSIJeQxK5BRGL8vdSt7Ha+bUTSmxhyG+1VNAkIRh52VQV7T
+ NLQagRWwaiPdKu7+yAaZKpjoZv2kY1QCeGsMD1snZpgCSRG+xBJd0coI/aM8dPzTXfyF
+ RbyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767390459; x=1767995259;
+ d=1e100.net; s=20230601; t=1767390460; x=1767995260;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=HOkbwVMERK6pZqO0u7uJFvMQBMZKL1x7wpoiTvhRVB4=;
- b=LcUyxiwLFDbuDXl4/vMuW35Zjy3Revf4AMxdJn4hVr8VOBXq1rqqnwVLhxSp0t7dnJ
- xBd55acCyOC6XkXbOCjLwT3R9CWS/thvK4leCcQCzUQ4MKc36QGhfHwA3MWbLDpqx9jJ
- sRK5b/9uFkxYbme8BfSFtjlzk7gVuffu7fNwiaNnlHMCWGeppHyEjIPQ0JRTBIaE8jPY
- ipIwoXtY3DbnbpSPHeWafu56jZcXcSKxXBaW7Y2CcRGPVIPJaUuymHkK0NMVrRCFo91r
- JmcLCiULJmRD5X2UFBKiOFC9GGUlzuWl6j9xtqotN+pW1uGUBBsZwhhKWxiPmme7Bx1J
- ud8w==
-X-Gm-Message-State: AOJu0YwSbt2CZgK6dNstOGi0smWbM4+VeO2WqYo+QIiXAsQEd/WDK8o6
- EYp4kelD77zLAHPtA0yXWwWp3AbYS7xPcj44sAB5vLGmGELb0p6Rz+khwkLVf+GSTqNk3RPNtFS
- NaKrK
-X-Gm-Gg: AY/fxX6fEeOM3hjwHpC4MXPXmLKh/aEolDjpNmW402bhb5OQR89tvOqYN5gpRp7d0Se
- pH7TCg3tT6cr+LIY/2HIRopCYhvDj8jeagJPWXLd2fWEIBfWGbwb8OMipwyKIOf7EscE9TvY/qP
- s2ogeoXM2B36P8nbMwB3Ll5HdBnnpm5GVB5roywtFnP2gyEVHxIBNsraaNEhF89OGMPwcO7b3+z
- QEYisMQbJ8UJUsugo3kC1FiLZVc4GNJPTYO5TKrN25sJlLcKuk1t2MsY6HxH7oq8LJSbA2qLg5T
- jEx0wOErtXxh78fAaBO0eIRPeCzLtH8hqL8qzFwBtSCNJL/soDNrZSOFVK3PHFeBjmfyasntMQ0
- aKM4T13qP40FQoGIKwi+yV3aAhLiEA9t33GpExgaRDPxZt9DiTEmRp+1Ad7Uc91/Y0gttONDD0k
- D51E+0rhn1ezYWUqVayXKNH1TKoMcFMe/gtzv+v8LWPkDrA1DPVH7laKVhx+D6k0X1
-X-Google-Smtp-Source: AGHT+IElzGenGc6qk9JdeU4c1PWpn/r8lAxZt7YYejcpwYoXnsxTwLQ0vFIu00xGngVf+FO6quGkpw==
-X-Received: by 2002:a05:6a21:339c:b0:334:9f66:5273 with SMTP id
- adf61e73a8af0-376aa4fc4f2mr39987706637.47.1767390459141; 
+ bh=em7lmvjlMGnS3avhi35owKtaVtV9xVpJa0BeP9UCQDw=;
+ b=IxMu09S7e5QmgwemflChNJUC3Qke1uR590xtmYhs6I4fgNnLBMnF1cNH2vu5ekMYtf
+ RT3/X9gLvic9SXXVxyVpqSGFoaUyWGHvaiz/X6K7PLr7JRE9uK9xt7rWMUMAMx11qw1P
+ go6zxoHxyVKLU0jINTP6d1okU31P/aaxt2NnFht9kFtKcVV/XJvoa+J4uB6lP4GkrHst
+ HF7yI0ZFxFmhiMrWFf2owpl1sZiCEO+lgV12V/DFdhc+fiommu50f/bYTTa+ouDZT/7c
+ 0tKDClcCENFHP1MMhiGcvWDWTqQzoMYOvou9qwRqsr9AEr7LsAMgtFyphV5V7gAEubXK
+ xFMA==
+X-Gm-Message-State: AOJu0YzkDX2bR/BIVEYMX4tGsV0sAiqGmJghdMFYWvDQkcxPdb/u7btK
+ 6m9PFWXeS1EiforeEzu2wde87u8GmYrgw7RnEHWROHZe5rsBA1iBXl7Y2Mbo1D/Gcovu5kKykfb
+ Za9Wd
+X-Gm-Gg: AY/fxX6jFL22sJ5kTnCXGivzMkBSb0dWhvj0chukdIm+6xXus/ODtGubFr6hpGK9i2x
+ CaO0K1Yth8mZx6zV7hCsig1mGMfazCTCZAsM/ickqy/kMoQzIqUZ02XwsKWizf8gW8Mud6slQwX
+ ZFfvOB5vz7f6A67of0DizqxQL8KaHD0IBv9yj6JG6eNzCNbwIjGyl/oG+PUmw5Hqr/TUWWHY4DQ
+ sc27k8CN3N29I4nxKzR1HzxKCdJ7+Q6HrbygcQ3V+Ec+Jdu0MiapkWaR/2X5KB3kpNNJsp1SPep
+ d/tsrskD5mBGca8Pfl6UbxbL1XZFMrQxIgZdH87bPaCGTsXbOslKiFnlDknwqdcJbc+FeIlRHpx
+ 7eNWpyx8TMGZ56GPv6AxEyOWZIrEuvlztywKqVj8kJTx5PV/lUxDwLJP/MDmqubZquo52sDgA65
+ 3XFo5Z+PzPI5FLC/uUr++2KS5KplSGuB+v5RkuCIHGI+9EPSb/o7uLsTYUR3tYNq/o
+X-Google-Smtp-Source: AGHT+IGJVK3Uz35XkrNJtJ3xeiN504NaAEsJx58PcuOYaLTmUF3N+HtO9Rzg4xPTdx7iT6hq+cbKog==
+X-Received: by 2002:a17:90b:2e4a:b0:339:eff5:ef26 with SMTP id
+ 98e67ed59e1d1-34e921bc3e0mr35556676a91.30.1767390459856; 
  Fri, 02 Jan 2026 13:47:39 -0800 (PST)
 Received: from pc.taild8403c.ts.net (216-71-219-44.dyn.novuscom.net.
  [216.71.219.44]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-34f476f8f3fsm62925a91.5.2026.01.02.13.47.38
+ 98e67ed59e1d1-34f476f8f3fsm62925a91.5.2026.01.02.13.47.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Jan 2026 13:47:38 -0800 (PST)
+ Fri, 02 Jan 2026 13:47:39 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Gustavo Bueno Romero <gustavo.romero@linaro.org>,
@@ -74,16 +74,17 @@ Cc: Gustavo Bueno Romero <gustavo.romero@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 10/11] meson: update C++ standard to C++23
-Date: Fri,  2 Jan 2026 13:47:23 -0800
-Message-ID: <20260102214724.4128196-11-pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 11/11] contrib/plugins: add empty cpp plugin
+Date: Fri,  2 Jan 2026 13:47:24 -0800
+Message-ID: <20260102214724.4128196-12-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260102214724.4128196-1-pierrick.bouvier@linaro.org>
 References: <20260102214724.4128196-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,26 +107,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-C++ is evolving faster than C, so it's useful to enable new standards,
-especially for standard library.
-Update to most recent standard available in our build environments.
+This plugin makes sure we can compile in C++ while including qemu-plugin
+header. It includes all C++ standard headers, up to C++23 standard,
+minus the ones that are missing in the oldest environments we need to
+build for.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ contrib/plugins/cpp.cpp     | 119 ++++++++++++++++++++++++++++++++++++
+ contrib/plugins/meson.build |   4 ++
+ 2 files changed, 123 insertions(+)
+ create mode 100644 contrib/plugins/cpp.cpp
 
-diff --git a/meson.build b/meson.build
-index 38767c2c68a..564cdde9153 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1,5 +1,5 @@
- project('qemu', ['c'], meson_version: '>=1.5.0',
--        default_options: ['warning_level=1', 'c_std=gnu11', 'cpp_std=gnu++11', 'b_colorout=auto',
-+        default_options: ['warning_level=1', 'c_std=gnu11', 'cpp_std=gnu++23', 'b_colorout=auto',
-                           'b_staticpic=false', 'stdsplit=false', 'optimization=2', 'b_pie=true',
-                           'rust_std=2021', 'build.rust_std=2021'],
-         version: files('VERSION'))
+diff --git a/contrib/plugins/cpp.cpp b/contrib/plugins/cpp.cpp
+new file mode 100644
+index 00000000000..1ff54896d97
+--- /dev/null
++++ b/contrib/plugins/cpp.cpp
+@@ -0,0 +1,119 @@
++/*
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * This C++ plugin ensures we don't have regression when compiling C++.
++ */
++
++#include <qemu-plugin.h>
++
++/* https://en.cppreference.com/w/cpp/headers.html */
++#include <algorithm>
++#include <any>
++#include <array>
++#include <atomic>
++#include <barrier>
++#include <bit>
++#include <bitset>
++#include <cassert>
++#include <cctype>
++#include <cerrno>
++#include <cfenv>
++#include <cfloat>
++#include <charconv>
++#include <chrono>
++#include <cinttypes>
++#include <climits>
++#include <clocale>
++#include <cmath>
++#include <codecvt>
++#include <compare>
++#include <complex>
++#include <concepts>
++#include <condition_variable>
++#include <coroutine>
++#include <csetjmp>
++#include <csignal>
++#include <cstdarg>
++#include <cstddef>
++#include <cstdint>
++#include <cstdio>
++#include <cstdlib>
++#include <cstring>
++#include <ctime>
++#include <cuchar>
++#include <cwchar>
++#include <cwctype>
++#include <deque>
++#include <exception>
++#include <execution>
++#include <filesystem>
++#include <forward_list>
++#include <fstream>
++#include <functional>
++#include <future>
++#include <initializer_list>
++#include <iomanip>
++#include <ios>
++#include <iosfwd>
++#include <iostream>
++#include <istream>
++#include <iterator>
++#include <latch>
++#include <limits>
++#include <list>
++#include <locale>
++#include <map>
++#include <memory>
++#include <memory_resource>
++#include <mutex>
++#include <new>
++#include <numbers>
++#include <numeric>
++#include <optional>
++#include <ostream>
++#include <queue>
++#include <random>
++#include <ranges>
++#include <ratio>
++#include <regex>
++#include <scoped_allocator>
++#include <semaphore>
++#include <set>
++#include <shared_mutex>
++#include <source_location>
++#include <span>
++#include <sstream>
++#include <stack>
++#include <stdexcept>
++#include <stop_token>
++#include <streambuf>
++#include <string>
++#include <string_view>
++#include <syncstream>
++#include <system_error>
++#include <thread>
++#include <tuple>
++#include <typeindex>
++#include <typeinfo>
++#include <type_traits>
++#include <unordered_map>
++#include <unordered_set>
++#include <utility>
++#include <valarray>
++#include <variant>
++#include <vector>
++#include <version>
++
++QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
++
++static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
++{
++}
++
++QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
++                                           const qemu_info_t *info,
++                                           int argc, char **argv)
++{
++    qemu_plugin_register_vcpu_tb_trans_cb(id, vcpu_tb_trans);
++    return 0;
++}
+diff --git a/contrib/plugins/meson.build b/contrib/plugins/meson.build
+index 3d2d7862e0c..53d52c97967 100644
+--- a/contrib/plugins/meson.build
++++ b/contrib/plugins/meson.build
+@@ -6,6 +6,10 @@ if host_os != 'windows'
+   contrib_plugins += 'lockstep.c'
+ endif
+ 
++if 'cpp' in all_languages
++  contrib_plugins += 'cpp.cpp'
++endif
++
+ t = []
+ if get_option('plugins')
+   foreach i : contrib_plugins
 -- 
 2.47.3
 
