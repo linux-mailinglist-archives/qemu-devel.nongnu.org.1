@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAB71CEF606
-	for <lists+qemu-devel@lfdr.de>; Fri, 02 Jan 2026 22:50:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C85C9CEF5E3
+	for <lists+qemu-devel@lfdr.de>; Fri, 02 Jan 2026 22:49:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vbn0m-0006ps-HO; Fri, 02 Jan 2026 16:48:44 -0500
+	id 1vbn0l-0006pC-W5; Fri, 02 Jan 2026 16:48:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vbmzg-0006fs-Lq
+ id 1vbmzh-0006fu-8s
  for qemu-devel@nongnu.org; Fri, 02 Jan 2026 16:47:44 -0500
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vbmze-0000JG-1U
- for qemu-devel@nongnu.org; Fri, 02 Jan 2026 16:47:36 -0500
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-34c718c5481so11847628a91.3
+ id 1vbmzf-0000JJ-4O
+ for qemu-devel@nongnu.org; Fri, 02 Jan 2026 16:47:37 -0500
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-34e90f7b49cso9816439a91.3
  for <qemu-devel@nongnu.org>; Fri, 02 Jan 2026 13:47:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767390452; x=1767995252; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767390453; x=1767995253; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FAxt9eRCBAnOw0tS+03oIZgAiM6wZWJgVfag7QKOmwk=;
- b=dxjUAZsBCfrzZoNiy855Lg5LOLPvUU3XiRMSHl2TUFBFJVHnb7JJQ+YUQZJpV7rpeP
- spvR2SFb0xg25yQQ6eSART/doqpyHqjZ9vHZg4xFsRD6Nh0e5RLzIkAd5Dy6ACcC40i8
- ewitxjix6+mQoN7BcHoPcDGIop+tvIukR+vPXdWRWs+jV75daUNBmGMhRKWhz4fHD2mc
- WuoKwgGtqqFbPtOwQ25mvP1OQEJ6kga0mV17upLDKKXy2ikUlAQOV3ooRCgOmFpwK5zl
- xUusyXXMVmqeR+zYJ0aEIeu6rdkW3R6esQGK0f5i291VBtzTT7KN9oyzai2OszvBsX0o
- 3Ypw==
+ bh=gnAdkGiLfpQOWDhRaG+Ezymj+za6GSlpDviqh2IMnE0=;
+ b=lUaHv3RQkestQoMtUooCobHAyQqvsgiK7JpqdBZskwDVwqXiWkIwf+iggy0ZX6l6ev
+ JrzjtwHtOXWlGYC5QEDugEg+iB0gzvoKKBuHeXltAmKDOJRp3wgcT/TL8bfdGEcboYpm
+ /MEd2sYhtBUwYIw2DBdMaIrtVrQ4ytUMVCFOBWhBF9yiIgkWrDp0ldFG2PN8xYrHCe66
+ eLWKbjpObZTv4Gw8pn0yGpI1fldgwHCpKogabgs+M6KTJ+NfQ0x1ci7ZcvW7bAqbyaYs
+ 6uUgnsE/cB9+ReCH7tL6bxAcLjqyoJpnOR2DZ3xKf9V6wTK4SRXaSY0AYL2eAQWsESvN
+ gU8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767390452; x=1767995252;
+ d=1e100.net; s=20230601; t=1767390453; x=1767995253;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=FAxt9eRCBAnOw0tS+03oIZgAiM6wZWJgVfag7QKOmwk=;
- b=SeOKDI2GD9ZjT8mKs/DlmkXJ5aoO2z2thCDYm0ZQUqsz86lhygun6GilRIVRkID0Ot
- 0IlH5jXTISWMe47/j0ZlKkUCZyNqyXFFNm4OdTM+hVNnqdyOMmhdeAz8eTnoPggBA1e7
- cns5z+kFl/sU05Pjw5Fdxqtjl0S5lGz6oHwCDT/bueiX4l+O//cUqy5L6hwO+9Kdq8B/
- KymcWf/jdoj31bOc4pedH9uFli1/BsTGxTyBYu4a6vv24vvtgH80eX/jTSs21hJl3aPS
- 99lO/oIjR7Jfsey1aTuQYvZJe7EWoaCGMFM8BhvzXP4s8fgJ0B9Z7TeMyGzZx32a0+UB
- RsQQ==
-X-Gm-Message-State: AOJu0YxwQEw4UdhbKvoegav8bxvIA/h4sysifNUrQ9IXhXfyYcW+tY5R
- vsC/mvddoInqXXwDywjNBfS/yGHa2jj2RLqbvc4JGffU38z6wW8Q6w5C7mwBN0mX3Dser/DL0A1
- O0PI0
-X-Gm-Gg: AY/fxX55M9WmbSkdCbUaLUO/GB/U+9e1oNzxbkzaXd61cZdeXYx5dkB2kNWC4O1QmGA
- AvTBccDw4PtWkZl7gLZLWGFVqR79LMWuzIr6qD/SAcCVZsCFNj3lvAzKr63dk397x8gN5AaFTf6
- vIKxnnnA1AZGR1p2Xcoey9aaNsapiI6x/gD/PEWFk8J9cngN+kuv3mAZ642mL9L34VsV5naL5KD
- 66DwNSq5w0UyzyeVGRFzI5W4GMa2OZDI7tkK7h/Fsi+h1Ccj/K+xszBPOOZFPyIMLeVElwtgj4q
- 8mlJiyJkYhpkiEAdRaplstsdhPmF1yH5H0h/zbapdHwxyOBmYRAUruI2zpemVJcXoFGRkJqPO3g
- caJj5ynthJxsx0lxhU0b6D46GenRA31HzH65leDxQvzCZIDTathUdy/NrEaSW2svJKPy0zP4uYG
- o1/r0NwyDHA1pMqxuKVGiShnNvOuvA7x4FHIXTAKl5c6OO068WjAmk/kDzDPax54oE
-X-Google-Smtp-Source: AGHT+IFb5x5I/sKOn8Gj/HzF2WrqAvEqu7u8OyILPKEpVhhAGcQso0NGdUGvBcGCj05e9JGeaiuLxg==
-X-Received: by 2002:a17:90b:46:b0:349:3fe8:e7de with SMTP id
- 98e67ed59e1d1-34e921e64efmr35137613a91.28.1767390451938; 
- Fri, 02 Jan 2026 13:47:31 -0800 (PST)
+ bh=gnAdkGiLfpQOWDhRaG+Ezymj+za6GSlpDviqh2IMnE0=;
+ b=IdzywAyEBZIBu4LpGMsY0E4yBeCMQqEaJK/4ls3edGXtPlhrrbtfHjXslTosxRDKBM
+ w6VfyxkTZcSy8VPVVVKBLnel0ZrajQd86GgD2BGg6n4RfhNjugrwEotP8m5A1XdCjLuH
+ Piv2fHsJZlXMZQWMaqcyWkwwucS/FIEclWuhSdpDg7jLBdL1wMN65zABW7yG96yb4g/W
+ muQPMWElAqvS5qZGwe5rJR/VfCMkoW82uiqFxWxALgkjQ/aC4FkK00ylyDFgw2sv2Kpq
+ vmyMOt5NWKUUvpsb+X2n+WcesYeG4ywZuX7Fvnqrydm/Mer7C/0LXZLzEhwc0XQZhxw7
+ 5J3g==
+X-Gm-Message-State: AOJu0Yw03wbPVxG+AI8SuCn+Dx5YMbsVUUjKlvoPRFnijljHj2HZyLLB
+ GVx+pOQ0OQ3sVEhDgSwnVPBcdsRcWPc0RO9EOpXjGUj3PIxUCnGDSPFguiGe/688HkcHU3QM8mt
+ 4qaCe
+X-Gm-Gg: AY/fxX7QQLCUZeMcKG4lMDINCv0GVKSJsFss1J+fOxwuZX/H9TXc6cqLU5LDBItQwj4
+ wRJV/x/bPY4HvCTKcp6M1de5ME/mGcQDXgrNp5m4NN1fmXZP9QE1ShjSFy/IK9aHcvgZgQsK73e
+ bFTGQ3Q30N324I8ibZ8fbdXY8KXg4A/DTCqe3XreskKXBrNzLrjcOqNyEjMWlZ/Y70uziEjo2cA
+ 3TzIP0WhF54Rnx52VVIeI5rlGCGnF46aTfwYkabYcniG8bKUUlwEhHbFZ6IBBg6bAio5KHS7MD9
+ VBAPxh3Ktqvq0JoOXWjZTCKhi+/rVxo9m6i2QYfEtAg0yzmuyVfLBp6qLq3sxeZpg0dYhpPpX2T
+ 0b3FNlU+d0WdDHdBbSVddpnnCFj49OlWRPRZ+2U0eg892J1IlX/dSxTqMhvhsQUZlx4e151OMj5
+ b8ocTVw86IM4ER5TwQEKTnOQ+xoyhyL33t9+zl5URVP0d7rxej9byAWB7t8FLnrbdF
+X-Google-Smtp-Source: AGHT+IEN8L2XuOjcoyS7tXwkOQIatQi+evPwGqJDZkRO+ph6nGmm68q/cXCA3t9I949T2Fsr8AM0Cw==
+X-Received: by 2002:a17:90b:56d0:b0:34a:8c77:d37b with SMTP id
+ 98e67ed59e1d1-34e92144e4emr36517270a91.16.1767390452656; 
+ Fri, 02 Jan 2026 13:47:32 -0800 (PST)
 Received: from pc.taild8403c.ts.net (216-71-219-44.dyn.novuscom.net.
  [216.71.219.44]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-34f476f8f3fsm62925a91.5.2026.01.02.13.47.30
+ 98e67ed59e1d1-34f476f8f3fsm62925a91.5.2026.01.02.13.47.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Jan 2026 13:47:31 -0800 (PST)
+ Fri, 02 Jan 2026 13:47:32 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Gustavo Bueno Romero <gustavo.romero@linaro.org>,
@@ -74,17 +74,18 @@ Cc: Gustavo Bueno Romero <gustavo.romero@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 02/11] plugins: factorize plugin dependencies and library
- details
-Date: Fri,  2 Jan 2026 13:47:15 -0800
-Message-ID: <20260102214724.4128196-3-pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 03/11] plugins: use complete filename for defining plugins
+ sources
+Date: Fri,  2 Jan 2026 13:47:16 -0800
+Message-ID: <20260102214724.4128196-4-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260102214724.4128196-1-pierrick.bouvier@linaro.org>
 References: <20260102214724.4128196-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1030.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1031.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,102 +108,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- meson.build                   |  2 +-
- contrib/plugins/meson.build   | 13 ++-----------
- plugins/meson.build           | 15 ++++++++++++++-
- tests/tcg/plugins/meson.build | 13 ++-----------
- 4 files changed, 19 insertions(+), 24 deletions(-)
+ contrib/plugins/meson.build   | 12 ++++++------
+ tests/tcg/plugins/meson.build |  9 ++++++---
+ 2 files changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index db87358d62d..3d6c6c702d0 100644
---- a/meson.build
-+++ b/meson.build
-@@ -4499,7 +4499,7 @@ if get_option('plugins')
-   if host_os == 'windows'
-     # On windows, we want to deliver the qemu_plugin_api.lib file in the qemu installer,
-     # so that plugin authors can compile against it.
--    install_data(win32_qemu_plugin_api_lib, install_dir: 'lib')
-+    install_data(win32_qemu_plugin_api, install_dir: 'lib')
-   endif
- endif
- 
 diff --git a/contrib/plugins/meson.build b/contrib/plugins/meson.build
-index 6f72b2ce0c9..8f9f0257ee5 100644
+index 8f9f0257ee5..3d2d7862e0c 100644
 --- a/contrib/plugins/meson.build
 +++ b/contrib/plugins/meson.build
-@@ -9,17 +9,8 @@ endif
+@@ -1,16 +1,16 @@
+-contrib_plugins = ['bbv', 'cache', 'cflow', 'drcov', 'execlog', 'hotblocks',
+-                   'hotpages', 'howvec', 'hwprofile', 'ips', 'stoptrigger',
+-                   'traps', 'uftrace']
++contrib_plugins = ['bbv.c', 'cache.c', 'cflow.c', 'drcov.c', 'execlog.c',
++                   'hotblocks.c', 'hotpages.c', 'howvec.c', 'hwprofile.c',
++                   'ips.c', 'stoptrigger.c', 'traps.c', 'uftrace.c']
+ if host_os != 'windows'
+   # lockstep uses socket.h
+-  contrib_plugins += 'lockstep'
++  contrib_plugins += 'lockstep.c'
+ endif
+ 
  t = []
  if get_option('plugins')
    foreach i : contrib_plugins
--    if host_os == 'windows'
--      t += shared_module(i, files(i + '.c') + '../../plugins/win32_linker.c',
--                        include_directories: '../../include/qemu',
--                        link_depends: [win32_qemu_plugin_api_lib],
--                        link_args: win32_qemu_plugin_api_link_flags,
--                        dependencies: glib)
--    else
--      t += shared_module(i, files(i + '.c'),
--                        include_directories: '../../include/qemu',
--                        dependencies: glib)
--    endif
-+    t += shared_module(i, files(i + '.c'),
-+                      dependencies: plugins_deps)
+-    t += shared_module(i, files(i + '.c'),
+-                      dependencies: plugins_deps)
++    t += shared_module(fs.stem(i), files(i),
++                       dependencies: plugins_deps)
    endforeach
  endif
  if t.length() > 0
-diff --git a/plugins/meson.build b/plugins/meson.build
-index 62c991d87fc..4318e3a1671 100644
---- a/plugins/meson.build
-+++ b/plugins/meson.build
-@@ -51,11 +51,24 @@ if host_os == 'windows'
-     dlltool_cmd = [dlltool, '--input-def', '@INPUT@',
-                    '--output-delaylib', '@OUTPUT@', '--dllname', 'qemu.exe']
-   endif
--  win32_qemu_plugin_api_lib = configure_file(
-+  win32_qemu_plugin_api = configure_file(
-     input: win32_plugin_def,
-     output: 'libqemu_plugin_api.a',
-     command: dlltool_cmd
-   )
-+  win32_qemu_plugin_api_lib = static_library('win32_qemu_plugin_api',
-+                                             link_depends: win32_qemu_plugin_api)
-+endif
-+
-+if host_os == 'windows'
-+  plugins_deps = declare_dependency(sources: [files('win32_linker.c')],
-+                                    include_directories: '../include/qemu',
-+                                    link_with: win32_qemu_plugin_api_lib,
-+                                    link_args: win32_qemu_plugin_api_link_flags,
-+                                    dependencies: glib)
-+else
-+  plugins_deps = declare_dependency(include_directories: '../include/qemu',
-+                                    dependencies: glib)
- endif
- 
- user_ss.add(files('user.c', 'api-user.c'))
 diff --git a/tests/tcg/plugins/meson.build b/tests/tcg/plugins/meson.build
-index a6e78438510..c58f2e382ae 100644
+index c58f2e382ae..303f97f9679 100644
 --- a/tests/tcg/plugins/meson.build
 +++ b/tests/tcg/plugins/meson.build
-@@ -1,17 +1,8 @@
+@@ -1,8 +1,11 @@
++test_plugins = ['bb.c', 'discons.c', 'empty.c', 'inline.c', 'insn.c', 'mem.c',
++                'reset.c', 'syscall.c', 'patch.c']
++
  t = []
  if get_option('plugins')
-   foreach i : ['bb', 'discons', 'empty', 'inline', 'insn', 'mem', 'reset', 'syscall', 'patch']
--    if host_os == 'windows'
--      t += shared_module(i, files(i + '.c') + '../../../plugins/win32_linker.c',
--                        include_directories: '../../../include/qemu',
--                        link_depends: [win32_qemu_plugin_api_lib],
--                        link_args: win32_qemu_plugin_api_link_flags,
--                        dependencies: glib)
--    else
--      t += shared_module(i, files(i + '.c'),
--                        include_directories: '../../../include/qemu',
--                        dependencies: glib)
--    endif
-+    t += shared_module(i, files(i + '.c'),
-+                      dependencies: plugins_deps)
+-  foreach i : ['bb', 'discons', 'empty', 'inline', 'insn', 'mem', 'reset', 'syscall', 'patch']
+-    t += shared_module(i, files(i + '.c'),
+-                      dependencies: plugins_deps)
++  foreach i : test_plugins
++    t += shared_module(fs.stem(i), files(i),
++                       dependencies: plugins_deps)
    endforeach
  endif
  if t.length() > 0
