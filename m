@@ -2,111 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26347CEEA51
-	for <lists+qemu-devel@lfdr.de>; Fri, 02 Jan 2026 14:11:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69228CEEACB
+	for <lists+qemu-devel@lfdr.de>; Fri, 02 Jan 2026 14:29:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vbeub-0000PF-15; Fri, 02 Jan 2026 08:09:50 -0500
+	id 1vbfCw-0007Bw-FO; Fri, 02 Jan 2026 08:28:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1vbeuN-0000Mp-9R
- for qemu-devel@nongnu.org; Fri, 02 Jan 2026 08:09:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>)
+ id 1vbfCj-0007A1-Lc; Fri, 02 Jan 2026 08:28:36 -0500
+Received: from smtpout2.mo529.mail-out.ovh.net ([79.137.123.220])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1vbeuK-00052b-HN
- for qemu-devel@nongnu.org; Fri, 02 Jan 2026 08:09:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767359370;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=iI7JxmvH2opy8CsTkOzFCEj4ACQ+3y6bKbtlk/M2Q7c=;
- b=gq7j0h2aeGKfOKx15DUuf8VxXF4Xi+cqIY8m/KpiVn6Pw1qqTJp6MZNr2osVS7uWqLvh2v
- 94hVZJkyBTbZs5L/tmMXzfsnfxnh69MAi6UlGzAHb9BW80vKmIyFFVye0tKr4LRgVwWxIQ
- zhCoI5nQZGbSfRTiivJG8WOCfSJCm9A=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-199-_SK-QRLPM_GWSX6s2dDGpA-1; Fri, 02 Jan 2026 08:09:27 -0500
-X-MC-Unique: _SK-QRLPM_GWSX6s2dDGpA-1
-X-Mimecast-MFC-AGG-ID: _SK-QRLPM_GWSX6s2dDGpA_1767359366
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-b79ff60ed8eso1522403766b.0
- for <qemu-devel@nongnu.org>; Fri, 02 Jan 2026 05:09:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1767359366; x=1767964166; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:organization:references
- :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=iI7JxmvH2opy8CsTkOzFCEj4ACQ+3y6bKbtlk/M2Q7c=;
- b=V8mtLalT+MNKDDYJtMsvEcbFX7RqIYskbG+I9NqLUWFlpPo+OvyGwtUdm4KTWgmQNO
- 4ZjAEkSDtWYtCLYCb8d8Ph6j42qhikYpH+l2YndUB7n3P7AHoXNfGlE+i/CGMY+1Irex
- lZR6iB3v+GjLDJvkJ1OoXLKSJTNIdPEI57+virDMWVwXtYWPcUG3BiteW+WyUHPwaCLM
- hrbCvotfLpKkIAGKEgfUYPYOXdJB5/AsaUbdOl3mi4uwJkFLyxSVcsr17MillkAEClIF
- CIrVCIKQTWVVPRiGNudTRiw3GCk+ZvA3Hq8f8sJMqWTaYS0ZaLjCHwv0BQ7ZcpMaU8RO
- Zzdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767359366; x=1767964166;
- h=content-transfer-encoding:mime-version:organization:references
- :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iI7JxmvH2opy8CsTkOzFCEj4ACQ+3y6bKbtlk/M2Q7c=;
- b=EyFawniwb5PmPKN3h6Qk5SG/O2gOn1NXUY03aoLwoAxy1Z+4QHHUlaEWRLYja5UT8M
- JG447stFnEp3H/bwIzOKNQCNSPyhOXz5HSVUZvOZQNIvcHPF/d8jIHXgjlaHaPh8WWr/
- Ty2K1wBXgBgZZRU8J4ZFD+G78HjpBjaOCKYaPHiPrjzowZ8a96Wq3SxdorHr59VHr+ri
- DXg1tO/fnmzchS4NSEZN819n4Lt4oO8ISUlZGsfo9TbSi8fRpyyECPE2V4BjAon4Bmiv
- tKG30RW2IwdXwClkV7I0LQrPgCyw8nUIXlaaSfcErEb6XlVU1W4K45O5TxAT3ck6i+Er
- dr7Q==
-X-Gm-Message-State: AOJu0YyupJRNvCp7wuYljAuNz6+icbDQpNb/oQVS+Hn3nqZoYwWJ+VXx
- hQ+w/O/hK3dH5KETiAkZu3omTVPmLztIPo6Rs+ELzrj9FPX44TkJsScBar5bwtlCo8lFmfl33FT
- bazisiPrydEpr4DJLUQ4Qq+ad8rHnmAOl+1VDqTFJavWFXB6fuCsKp+T0
-X-Gm-Gg: AY/fxX5283G8ncA13uRp6Nrp5JLEcnqSYFGmRKlXnPFzAESkn11v/6/42hitsThM8TW
- auH2UfNjmI56gIax3W/5zgvmkXCWVWOw7Yrap1LOwR1VJa+HL9ftvtmIEIS/nHY3zcQwns2JxAL
- AURCjtQvHMu9nK+caL7YdJgrHqEXz9Jas0CfXxEWnQN24VoFXVci0P/KASCvlsa6euzuN1N22QB
- tpbzekO6PKUxqlO/SBBmxp/coPuJIy7q1slkUSw5Tp+cZmRsvbFLUmLJAOuNPwuBwi3euzv1fd6
- AQaIpRKuU/tINcjO+Iu2lYTLipUrbAbWzWmttOny7Wtj0lra/VVRX9sXFiAE/R3gOmScpw1bhOu
- UNceKNqCbn/uGvhUG3VjmZg==
-X-Received: by 2002:a17:907:944d:b0:b83:51e0:120 with SMTP id
- a640c23a62f3a-b8351e005e2mr1859485066b.65.1767359365856; 
- Fri, 02 Jan 2026 05:09:25 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGVx2v2dwu0fIzSvqndlwMz4UEgI5xmWAJWQkyrEO26qgF9MWsaKkBLaC1Sq3yurRK0AjpEcQ==
-X-Received: by 2002:a17:907:944d:b0:b83:51e0:120 with SMTP id
- a640c23a62f3a-b8351e005e2mr1859482466b.65.1767359365450; 
- Fri, 02 Jan 2026 05:09:25 -0800 (PST)
-Received: from imammedo-mac ([185.140.112.229])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b8037de1421sm4632545266b.41.2026.01.02.05.09.24
- (version=TLS1_2 cipher=AES128-SHA bits=128/128);
- Fri, 02 Jan 2026 05:09:25 -0800 (PST)
-Date: Fri, 2 Jan 2026 14:09:22 +0100
-From: Igor Mammedov <imammedo@redhat.com>
-To: fanhuang <FangSheng.Huang@amd.com>
-Cc: <qemu-devel@nongnu.org>, <david@redhat.com>,
- <jonathan.cameron@huawei.com>, <Zhigang.Luo@amd.com>, <Lianjie.Shi@amd.com>
-Subject: Re: [PATCH v4 0/1] numa: add 'spm' option for Specific Purpose Memory
-Message-ID: <20260102140922.456f599e@imammedo-mac>
-In-Reply-To: <20251209093841.2250527-1-FangSheng.Huang@amd.com>
-References: <20251209093841.2250527-1-FangSheng.Huang@amd.com>
-Organization: imammedo@redhat.com
-X-Mailer: Claws Mail 3.11.1-67-g0d58c6-dirty (GTK+ 2.24.21;
- x86_64-apple-darwin14.0.0)
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>)
+ id 1vbfCe-0007wc-Lk; Fri, 02 Jan 2026 08:28:31 -0500
+Received: from mxplan5.mail.ovh.net (unknown [10.109.254.75])
+ by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 4djPdp2ntjz5w8j;
+ Fri,  2 Jan 2026 13:28:14 +0000 (UTC)
+Received: from kaod.org (37.59.142.112) by DAG3EX1.mxp5.local (172.16.2.21)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.61; Fri, 2 Jan
+ 2026 14:28:12 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-112S0062b48a99b-67b1-4a38-b3a2-ad9b7b5a0fb2,
+ B7FD5E44328430CDF13337E5E30BE77826E2EBC7) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 90.14.253.154
+Message-ID: <637a3773-004a-42c3-9a1b-0ea7a7ddd8f8@kaod.org>
+Date: Fri, 2 Jan 2026 14:28:11 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 3/3] hw/i2c/aspeed: Fix wrong I2CC_DMA_LEN when
+ I2CM_DMA_TX/RX_ADDR set first
+To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
+ Stanley <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+CC: <troy_lee@aspeedtech.com>, <kane_chen@aspeedtech.com>
+References: <20260102090746.1130033-1-jamin_lin@aspeedtech.com>
+ <20260102090746.1130033-4-jamin_lin@aspeedtech.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <20260102090746.1130033-4-jamin_lin@aspeedtech.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.112]
+X-ClientProxiedBy: DAG4EX2.mxp5.local (172.16.2.32) To DAG3EX1.mxp5.local
+ (172.16.2.21)
+X-Ovh-Tracer-GUID: 9f073d49-04cf-4a54-a5e7-6303c2a96ea5
+X-Ovh-Tracer-Id: 14406170787081653170
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: dmFkZTEZdQjDjPxWmruKpvMPuDGzVE1cxcPGmCa3dvAu8T/Z4yWJ6RxddKNB6t3k/1NBlcjHF8dE6gWhPEEIBz/+921EVKZIVSUORCeK0deoHWfI8EAOdjXWlpx7NgUzkBw5/EgeA8HTtjmsIz4BWgpTx77mAkzE799hM7AkPxr+W8AkUp11Kb1KNWBXLaMOIn25AMlUW7yX0f93ro3fOZnRBLJLlL/qVdA/V6wjhhM7jy1TnO0lhZwOA6XHuQMNTFI29eqsWBiBcU9r1l+x+4FVkAuukumEnAWQPtJMFELO6cXJyF3Pr7KyW++0AN5Rw+STYebdq4cqmdmFj8ycoMIhqVaSDBX6CSjadjCxWzNR+pmG+VlwlZMcxh2QrzPK6qSrHnfZ0PV4N5LqztMSMDzoPtx+mXFGjhAR+VAebaCtLpY61DGHD4FlIN+crHxKRF8vg9P1DchxpdSgeYRMwPKjiEtCrN8oiYo2mnS7/GuzPvNYzaM4q+n6n2gO11fCy9NJbLgGGp+FrRVRdWpllod23dryqWk2InLSWNV913SanGyG+VHGSJN7g51sOMkUFoUBTnpP1P5JEir0eGDOANd9QeodPnwMe/AbjINgReP1rH4nIuATfNHS1bZ4fPjZSvhtQfiqB+QHVbf8zyJBgaWbrsj3/3rZgAd/4FpxuzyMogmWGQ
+DKIM-Signature: a=rsa-sha256; bh=qZgYOABXk12OdwGj5dCvvYrpt3WJnfL11CFxL1GSc+Y=; 
+ c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
+ t=1767360495; v=1;
+ b=hQdxJ3BMiAeBsaCWjVBasnGAK9buhD8kphJTrN+3xvntL58KXrB8QnuCYhlN5/s7xfAZ+6jS
+ lEAICKFzARTrInKmmTTXO/JIFOGACEKEQ2QWvPgTwvP22RF7ziXp6w1O2L3Em4nHf25wUJcRbk6
+ Oml3MimIFShLcCF9wK0ub3VhYJa52b2Aks6op3THuUicpbBSpVjjm6l5QuzrA504HvlFwRXBdsm
+ ZHZEbn+zDEM3UYte1UXYwAVjRbyjybdyLOmWLz/r2K7Q3wAajT/u+qtvP+YdJHjne/T2TJl+53K
+ Ux6qPbB6eR9Xx5uVa8EZ+9FglEKQMJElGea+/BZkp9EEQ==
+Received-SPF: pass client-ip=79.137.123.220; envelope-from=clg@kaod.org;
+ helo=smtpout2.mo529.mail-out.ovh.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,48 +129,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 9 Dec 2025 17:38:40 +0800
-fanhuang <FangSheng.Huang@amd.com> wrote:
+On 1/2/26 10:07, Jamin Lin wrote:
+> In the previous design, the I2C model would update I2CC_DMA_LEN (0x54) based on
+> the value of I2CM_DMA_LEN (0x1C) when the firmware set either I2CM_DMA_TX_ADDR
+> (0x30) or I2CM_DMA_RX_ADDR (0x34). However, this only worked correctly if the
+> firmware set I2CM_DMA_LEN before setting I2CM_DMA_TX_ADDR or I2CM_DMA_RX_ADDR.
+> 
+> If the firmware instead set I2CM_DMA_TX_ADDR or I2CM_DMA_RX_ADDR before setting
+> I2CM_DMA_LEN, the value written to I2CC_DMA_LEN would be incorrect.
+> 
+> To fix this issue, the model should be updated to set I2CC_DMA_LEN when the
+> firmware writes to the I2CM_DMA_LEN register, rather than when it writes to the
+> I2CM_DMA_RX_ADDR and I2CM_DMA_TX_ADDR registers.
+> 
+> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+> Fixes: ba2cccd (aspeed: i2c: Add new mode support)
 
-> Hi all,
-> 
-> This is v4 of the SPM (Specific Purpose Memory) patch. Thank you Jonathan
-> for the detailed review.
-> 
-> Changes in v4 (addressing Jonathan's feedback):
-> - Added architecture check: spm=on now reports error on non-x86 machines
-> - Simplified return logic in e820_update_entry_type() (return true/false directly)
-> - Changed 4GB boundary spanning from warn_report to error_report + exit
-> - Updated QAPI documentation to be architecture-agnostic (removed E820 reference)
-> - Removed unnecessary comments
-> 
-> Use case:
-> This feature allows passing EFI_MEMORY_SP (Specific Purpose Memory) from
-> host to guest VM, useful for memory reserved for specific PCI devices
-> (e.g., GPU memory via VFIO-PCI). The SPM memory appears as soft reserved
-> to the guest and is managed by device drivers rather than the OS memory
-> allocator.
-> 
-> Example usage:
->   -object memory-backend-ram,size=8G,id=m0
->   -object memory-backend-file,size=8G,id=m1,mem-path=/dev/dax0.0
->   -numa node,nodeid=0,memdev=m0
->   -numa node,nodeid=1,memdev=m1,spm=on
+Fixes: ba2cccd64e90 ("aspeed: i2c: Add new mode support")
 
-I'm still not fond of 'spm' toggle on numa node itself (even though on AMD hadware sunch memory has 1:1 mapping)
-without device model in between.
+This change should be backported on the stable branches.
 
-Can we try following instead:
-  * add 'spm' property to DIMM device and disable hotplug on it in such case
-  * make E820 enumerate spm/not hotpluggble marked DIMMs.
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
-That will let us later to have mixed memory on the node if such need arises without
-breaking QEMU CLI.
+Thanks,
 
-> Please review. Thanks!
+C.
+
+> ---
+>   hw/i2c/aspeed_i2c.c | 10 ++++++----
+>   1 file changed, 6 insertions(+), 4 deletions(-)
 > 
-> Best regards,
-> Jerry Huang
-> 
+> diff --git a/hw/i2c/aspeed_i2c.c b/hw/i2c/aspeed_i2c.c
+> index faf2160c06..1b8ac561c3 100644
+> --- a/hw/i2c/aspeed_i2c.c
+> +++ b/hw/i2c/aspeed_i2c.c
+> @@ -656,8 +656,6 @@ static void aspeed_i2c_bus_new_write(AspeedI2CBus *bus, hwaddr offset,
+>           bus->dma_dram_offset =
+>               deposit64(bus->dma_dram_offset, 0, 32,
+>                         FIELD_EX32(value, I2CM_DMA_TX_ADDR, ADDR));
+> -        bus->regs[R_I2CC_DMA_LEN] = ARRAY_FIELD_EX32(bus->regs, I2CM_DMA_LEN,
+> -                                                     TX_BUF_LEN) + 1;
+>           break;
+>       case A_I2CM_DMA_RX_ADDR:
+>           bus->regs[R_I2CM_DMA_RX_ADDR] = FIELD_EX32(value, I2CM_DMA_RX_ADDR,
+> @@ -665,8 +663,6 @@ static void aspeed_i2c_bus_new_write(AspeedI2CBus *bus, hwaddr offset,
+>           bus->dma_dram_offset =
+>               deposit64(bus->dma_dram_offset, 0, 32,
+>                         FIELD_EX32(value, I2CM_DMA_RX_ADDR, ADDR));
+> -        bus->regs[R_I2CC_DMA_LEN] = ARRAY_FIELD_EX32(bus->regs, I2CM_DMA_LEN,
+> -                                                     RX_BUF_LEN) + 1;
+>           break;
+>       case A_I2CM_DMA_LEN:
+>           w1t = FIELD_EX32(value, I2CM_DMA_LEN, RX_BUF_LEN_W1T) ||
+> @@ -679,10 +675,16 @@ static void aspeed_i2c_bus_new_write(AspeedI2CBus *bus, hwaddr offset,
+>           if (FIELD_EX32(value, I2CM_DMA_LEN, RX_BUF_LEN_W1T)) {
+>               ARRAY_FIELD_DP32(bus->regs, I2CM_DMA_LEN, RX_BUF_LEN,
+>                                FIELD_EX32(value, I2CM_DMA_LEN, RX_BUF_LEN));
+> +            bus->regs[R_I2CC_DMA_LEN] = ARRAY_FIELD_EX32(bus->regs,
+> +                                                         I2CM_DMA_LEN,
+> +                                                         RX_BUF_LEN) + 1;
+>           }
+>           if (FIELD_EX32(value, I2CM_DMA_LEN, TX_BUF_LEN_W1T)) {
+>               ARRAY_FIELD_DP32(bus->regs, I2CM_DMA_LEN, TX_BUF_LEN,
+>                                FIELD_EX32(value, I2CM_DMA_LEN, TX_BUF_LEN));
+> +            bus->regs[R_I2CC_DMA_LEN] = ARRAY_FIELD_EX32(bus->regs,
+> +                                                         I2CM_DMA_LEN,
+> +                                                         TX_BUF_LEN) + 1;
+>           }
+>           break;
+>       case A_I2CM_DMA_LEN_STS:
 
 
