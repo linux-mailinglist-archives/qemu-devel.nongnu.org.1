@@ -2,81 +2,154 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EAF5CEE041
-	for <lists+qemu-devel@lfdr.de>; Fri, 02 Jan 2026 09:37:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32DD9CEE07E
+	for <lists+qemu-devel@lfdr.de>; Fri, 02 Jan 2026 10:01:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vbae3-0004RC-Bg; Fri, 02 Jan 2026 03:36:27 -0500
+	id 1vbb12-0002pd-NS; Fri, 02 Jan 2026 04:00:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <munkhuu0825@gmail.com>)
- id 1vbae1-0004Qn-Rc
- for qemu-devel@nongnu.org; Fri, 02 Jan 2026 03:36:25 -0500
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <munkhuu0825@gmail.com>)
- id 1vbadz-0004Zc-Ua
- for qemu-devel@nongnu.org; Fri, 02 Jan 2026 03:36:25 -0500
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-598f59996aaso14140109e87.1
- for <qemu-devel@nongnu.org>; Fri, 02 Jan 2026 00:36:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vbb11-0002p8-Eh
+ for qemu-devel@nongnu.org; Fri, 02 Jan 2026 04:00:11 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vbb0y-0002sE-Vi
+ for qemu-devel@nongnu.org; Fri, 02 Jan 2026 04:00:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1767344407;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=imx4UItI+el2nvnuh4SU4RxGqKX4d6ACLx/C77TkI9Q=;
+ b=W4qB5iYe2Jyzw3lMcKAOpbOZji90O6yMsdr+uQq/n4LDkrLN+0/Y1bA7fiQkOhRFJILt/v
+ AS/wkJS7XZ4wuA38Sb0revfIRD1aOasynVU/ZRtoGmnrjKxAesLw6K56V24m4DDkQfvqdG
+ PzricHnH+q0pJd+bGnO49cO+OIjucH4=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-597-MEuQA53ONAq4wiUJQaHQrw-1; Fri, 02 Jan 2026 04:00:03 -0500
+X-MC-Unique: MEuQA53ONAq4wiUJQaHQrw-1
+X-Mimecast-MFC-AGG-ID: MEuQA53ONAq4wiUJQaHQrw_1767344402
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-477a11d9e67so74381845e9.2
+ for <qemu-devel@nongnu.org>; Fri, 02 Jan 2026 01:00:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1767342981; x=1767947781; darn=nongnu.org;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :from:to:cc:subject:date:message-id:reply-to;
- bh=cS8lWiBIN83g79kBvv7llOiuw0TiSnAEmPquxUp+uEs=;
- b=bQ5Jxv7fGx/yTK90hgFgSxdgsKFy0w//fHw/dZgsknX7Vn2zXU9WvQbHORGmTvsaMb
- C9aGI8koTxOV9yUy9a6uhLTFMIMglg9++lZHHY6KUpuPzdzfGnA1VxP/nYMqppuDYhcm
- bRYrgqtapMAmrWuxx9seDD6X6QreGOthPA0UWOXjyap1nW+xUmBX0YdiBYtSQwDhi0gz
- Cz2dOqbkRXtBmf6Z6EovlRDBTtmuYw/FEA8g3WOpVcFfxAQVsg4CATlDx64TFJwz5IY7
- K09VypdxAis62Ehl7ZfjI9aEJ12rS5B0wp+fehvH1rrhxdsAMprf91U6YsNJO9AHzW+t
- AXvw==
+ d=redhat.com; s=google; t=1767344402; x=1767949202; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=imx4UItI+el2nvnuh4SU4RxGqKX4d6ACLx/C77TkI9Q=;
+ b=KN8ojNJr3hcUQUr66BvdujzXWC1jNyybtq+ARznhyQyUwlpDsZ/xLXk8BKHUe/HI3K
+ FG+InjMkZ9nQYqiwLD0N0O9YaQZ02W/9WyslDa0mlrJS+AAkrDgyM1xsYWtoxfkOBMD5
+ lt+PN3irJ3kPo5tk4higV7Wceubg22Wf5wE+yrfyfbAdWoKIz/oj6aQt6B3FzL1Ewqkc
+ Ecl2ML7m6dwSdGkd3iipoCTALoC0xMDEGUq75BFortyy/8uNV3HykqbZFlFdmnQRJpel
+ wzeMK6b6SIjE5S8kCrfyodHzSTt2zHzDt6ALk3hYXMHj5Sn9txfpbtzr4YpMCzaUHPfz
+ rdEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767342981; x=1767947781;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=cS8lWiBIN83g79kBvv7llOiuw0TiSnAEmPquxUp+uEs=;
- b=eaN2i5Y9MrasoLAqXJrReE+8aez1OLla7RrEI3SQpAOe4pBH35C5DGKhQvOuHYXN6g
- 1AboWRvW9EssR0UW7wf0U5QKqDEXXVMM/gJ3QZuprDYd+aakgb722swwkeDFGHLDvXsF
- 66SAx8HTEC3/cH5n58ibBbY5qiSZfYJKicgcHf+V5nRQZYcstRNF1sR/6svXfBOk0pXo
- 4vFDv99EusqxDATcNC6DMwT2kpundrbJWGTo8jzd7/p8ePMcjPbheIaSmYUx43wgruyD
- ljCjWUz1jviXGTiumDG4p42MIM8XZHFE6aGAh+aa6f6pxhZRkm/fpHQpYu4jfH+Oo2Ev
- Yi/w==
-X-Gm-Message-State: AOJu0YwogMOJWxfjbvBZxOhc9GCT0JJ5ssoRuDdeYXdcK5pyWfiqgkU4
- PapryqJMf1il18EU+X08Bql6ma7elwLYxMJrCjxPrYGZthskIX2lmDnoo4FC7mE3wwfmvRpIbQQ
- NfnR6LfvaJHlUWk6zLjIT70oYHhyplsM8OX7j
-X-Gm-Gg: AY/fxX73IStOonDRXoUQVI0gWPUCUVmEOXMDU0Oun4XbAlZVlXipJr/SKm6ajNYVals
- hX7/wE94F+0dyIhmc5LSyZJHRXzVYHeiEzdtc0VEnHjSbiMhhJjLsYkbyk2veU7PRiMPf4ppJ3e
- K68rnus4aSLLP6xief7Ay3IPABPmXN5XzkaK4wnxWLwxf+dzor5iLFGnQQHSrehyci+7VUieq+D
- 75lS0/iFoF9zANiKCU/1BOb/smcLWxuhkuHALk8dyfocBv3zs0kVczx2z2Fo7IgWv1T0wk=
-X-Google-Smtp-Source: AGHT+IFga/EgJieb2weCtz1bxEVQhS2XN8CFSdFZHMWRYcQbSV5lvGCpRsxUZB28yoJrp62SDOcvdV/J/jRKJuYp/Oo=
-X-Received: by 2002:a05:6512:3b9d:b0:595:840c:cdd0 with SMTP id
- 2adb3069b0e04-59a17cff3d9mr13055650e87.2.1767342980592; Fri, 02 Jan 2026
- 00:36:20 -0800 (PST)
+ d=1e100.net; s=20230601; t=1767344402; x=1767949202;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=imx4UItI+el2nvnuh4SU4RxGqKX4d6ACLx/C77TkI9Q=;
+ b=Gbadt9vt5jaRpW/9T2RzPC9nVLc+dQH63KuFj2xvc2O3sS8HHx1Vyx0/XeGx2OeZK8
+ xAR6ePpdmvU1qgfWyry4SYy+2vV5h9E3Dcb2lXMKU5+CYf75BdRXzZ9ih/Pq9rIZ5RDC
+ vwMroiCpPzcraEC8lWjS2uu5NHXjeK8u0WexzaA05rGgOXPti9iOkQrjbmFz58d6xMd5
+ 1Y44TvFqm20oE46SlA3y6TcUQ3zvoDsEUzwRaskg84DHgVV7janKDSlWymBvNCf2LnM9
+ kagpPwIoPkgsGpNNZXkl17HIhA4199pJcwo1CffseTSB6SqLQ/wjSAmyzX3cjWyf3jdK
+ yldw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVDy1AUVV/kxc3oKjit/xg7xSsHZaGQUCy8dH/7KnykSA68eZrJw5qKs9HggH2npiKXeUWXAoSWS767@nongnu.org
+X-Gm-Message-State: AOJu0YwW2e/hMwpjaY64uVzt3byqZ/PXqUj93T8h2AF6dOAyHypWdIX6
+ jnNN+Gt0CxSzM4nkuTzMPPaaDH/GC/Dpau5/csn5rKQtiWo9gpqvSqk8cMxOx4fNEv4ZOiCTXx3
+ m4fxzjTuXmwYy/9O6Y78c3+2hlzh2uvwaHyG904kEBhaKe7mhLgce0NCa
+X-Gm-Gg: AY/fxX4des8FVRE7uMirE1f+5+O8Lz4u2AJ7uX5KSo+EoTJoSTEl+G6bjk2EwJh0SWd
+ 3y7hSai0HnOgQfzatd9GALZRa3jXn3mbUqCeHxf3rk4bdfCVS5UTpD8rGvh5EI2x7ZROidzu2Oh
+ 7exK5bhybdkuSv/8O+Ap1BC8hAbcuQqJ+TAb7de99WnD9yOSL5MdwrqLJ7eDfs/Kph2TfVWU6+2
+ xqRKzmrKfk4VFg2q/IqYAKT1uU4DJOm60oR0Rv7VwWwuaV3LCb7+CdHenCEYQsYwOms0f6L5ph0
+ MvrWz1+++cwiNtnSbUEQBxScHHkA+g1+t+mPcZ7E0FdE2D4PPKviYqEg15o7+d+a0JldYFtCoq7
+ Ci+Z9jB4=
+X-Received: by 2002:a05:600c:c0c7:b0:47d:264e:b37d with SMTP id
+ 5b1f17b1804b1-47d264eb725mr365540885e9.22.1767344402433; 
+ Fri, 02 Jan 2026 01:00:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHTbAz0kqD8Nc6dioMOIEdxv6Dl7qjoB03Pm4rRXz0Rvyj016hgvDzSL4q9LlOeZ7Qd9SF2NQ==
+X-Received: by 2002:a05:600c:c0c7:b0:47d:264e:b37d with SMTP id
+ 5b1f17b1804b1-47d264eb725mr365540695e9.22.1767344402019; 
+ Fri, 02 Jan 2026 01:00:02 -0800 (PST)
+Received: from [192.168.0.8] ([47.64.114.140])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-47d193522cdsm701270785e9.4.2026.01.02.01.00.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 02 Jan 2026 01:00:01 -0800 (PST)
+Message-ID: <55dfe9c9-448b-4d62-b4c0-7114a99e568e@redhat.com>
+Date: Fri, 2 Jan 2026 10:00:00 +0100
 MIME-Version: 1.0
-References: <20251209085349.61510-1-munkhuu0825@gmail.com>
-In-Reply-To: <20251209085349.61510-1-munkhuu0825@gmail.com>
-From: =?UTF-8?B?0JzTqdC90YXQsdCw0LDRgtCw0YAg0K3QvdGF0LHQsNCw0YLQsNGA?=
- <munkhuu0825@gmail.com>
-Date: Fri, 2 Jan 2026 16:36:09 +0800
-X-Gm-Features: AQt7F2oOo1tU8KVHbeMeVuGDss7oZg4gT3xMjW1uGG2XnIOaLdU2v2b5LtsnC1A
-Message-ID: <CA+0p-WxYdkTFV4qn7GYZrw+VA3MkmjRUrjr0VAcYRBrfSzRxLQ@mail.gmail.com>
-Subject: Re: [PATCH V2] htif: reject invalid signature ranges (end <= begin)
- [PING]
-To: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="0000000000008df5a20647639a78"
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=munkhuu0825@gmail.com; helo=mail-lf1-x136.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] MAINTAINERS: Fix coverage of
+ tests/functional/acpi-bits/
+To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Cc: berrange@redhat.com
+References: <20251220072416.3745923-1-armbru@redhat.com>
+ <20251220072416.3745923-2-armbru@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20251220072416.3745923-2-armbru@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,126 +165,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000008df5a20647639a78
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Hi all,
-
-Ping on this patch =E2=80=94 I just wanted to check if there are any update=
-s or
-feedback.
-
-I=E2=80=99d be happy to address any comments or send a revised version if n=
-eeded.
-
-Thanks for your time.
-
-Best regards,
-Munkhuu Enkhbaatar
-
-On Tue, Dec 9, 2025 at 4:53=E2=80=AFPM heropd <munkhuu0825@gmail.com> wrote=
-:
-
-> From: Munkhbaatar Enkhbaatar <munkhuu0825@gmail.com>
->
-> Prevents huge allocations and crashes caused by malformed HTIF signature
-> addresses.
-> Fixes: link to issue #3205
->
-> Signed-off-by: Munkhbaatar Enkhbaatar <munkhuu0825@gmail.com>
+On 20/12/2025 08.24, Markus Armbruster wrote:
+> The pattern tests/functional/acpi-bits/* covers files in
+> acpi-bits/ (there are none), but not the files in its
+> subdirectories (there are five).  Drop the *.
+> 
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
 > ---
->  hw/char/riscv_htif.c | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/hw/char/riscv_htif.c b/hw/char/riscv_htif.c
-> index a78ea9b01c..aa205c84c0 100644
-> --- a/hw/char/riscv_htif.c
-> +++ b/hw/char/riscv_htif.c
-> @@ -170,6 +170,11 @@ static void htif_handle_tohost_write(HTIFState *s,
-> uint64_t val_written)
->                   * begin/end_signature symbols exist.
->                   */
->                  if (sig_file && begin_sig_addr && end_sig_addr) {
-> +                    if (end_sig_addr <=3D begin_sig_addr) {
-> +                        error_report("Invalid HTIF signature range:
-> begin=3D0x%llx end=3D0x%llx",
-> +                                    begin_sig_addr, end_sig_addr);
-> +                        return;
-> +                    }
->                      uint64_t sig_len =3D end_sig_addr - begin_sig_addr;
->                      char *sig_data =3D g_malloc(sig_len);
->                      dma_memory_read(&address_space_memory, begin_sig_add=
-r,
-> --
-> 2.50.1 (Apple Git-155)
->
->
+>   MAINTAINERS | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 63e9ba521b..fcb60c0c02 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2183,7 +2183,7 @@ ACPI/FUNCTIONAL/BIOSBITS
+>   M: Ani Sinha <anisinha@redhat.com>
+>   M: Michael S. Tsirkin <mst@redhat.com>
+>   S: Supported
+> -F: tests/functional/acpi-bits/*
+> +F: tests/functional/acpi-bits/
+>   F: tests/functional/x86_64/test_acpi_bits.py
+>   F: docs/devel/testing/acpi-bits.rst
 
---0000000000008df5a20647639a78
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-<div dir=3D"ltr"><div dir=3D"ltr"><p class=3D"gmail-isSelectedEnd" style=3D=
-"color:rgb(0,0,0)">Hi all,</p><p class=3D"gmail-isSelectedEnd" style=3D"col=
-or:rgb(0,0,0)">Ping on this patch =E2=80=94 I just wanted to check if there=
- are any updates or feedback.</p><p class=3D"gmail-isSelectedEnd" style=3D"=
-color:rgb(0,0,0)">I=E2=80=99d be happy to address any comments or send a re=
-vised version if needed.</p><p class=3D"gmail-isSelectedEnd" style=3D"color=
-:rgb(0,0,0)">Thanks for your time.</p><p style=3D"color:rgb(0,0,0)">Best re=
-gards,<br>Munkhuu Enkhbaatar</p></div><br><div class=3D"gmail_quote gmail_q=
-uote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Dec 9, 2025 a=
-t 4:53=E2=80=AFPM heropd &lt;<a href=3D"mailto:munkhuu0825@gmail.com">munkh=
-uu0825@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" =
-style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-style:s=
-olid;border-left-color:rgb(204,204,204);padding-left:1ex">From: Munkhbaatar=
- Enkhbaatar &lt;<a href=3D"mailto:munkhuu0825@gmail.com" target=3D"_blank">=
-munkhuu0825@gmail.com</a>&gt;<br>
-<br>
-Prevents huge allocations and crashes caused by malformed HTIF signature<br=
->
-addresses.<br>
-Fixes: link to issue #3205<br>
-<br>
-Signed-off-by: Munkhbaatar Enkhbaatar &lt;<a href=3D"mailto:munkhuu0825@gma=
-il.com" target=3D"_blank">munkhuu0825@gmail.com</a>&gt;<br>
----<br>
-=C2=A0hw/char/riscv_htif.c | 5 +++++<br>
-=C2=A01 file changed, 5 insertions(+)<br>
-<br>
-diff --git a/hw/char/riscv_htif.c b/hw/char/riscv_htif.c<br>
-index a78ea9b01c..aa205c84c0 100644<br>
---- a/hw/char/riscv_htif.c<br>
-+++ b/hw/char/riscv_htif.c<br>
-@@ -170,6 +170,11 @@ static void htif_handle_tohost_write(HTIFState *s, uin=
-t64_t val_written)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 * begin/end_=
-signature symbols exist.<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 */<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (sig_file =
-&amp;&amp; begin_sig_addr &amp;&amp; end_sig_addr) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (=
-end_sig_addr &lt;=3D begin_sig_addr) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 error_report(&quot;Invalid HTIF signature range: begin=3D0x%llx =
-end=3D0x%llx&quot;,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 begin_sig_addr, end_si=
-g_addr);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 return;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br=
->
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0uint64_t sig_len =3D end_sig_addr - begin_sig_addr;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0char *sig_data =3D g_malloc(sig_len);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0dma_memory_read(&amp;address_space_memory, begin_sig_addr,<br>
--- <br>
-2.50.1 (Apple Git-155)<br>
-<br>
-</blockquote></div></div>
-
---0000000000008df5a20647639a78--
 
