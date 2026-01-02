@@ -2,117 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56299CEEACA
-	for <lists+qemu-devel@lfdr.de>; Fri, 02 Jan 2026 14:29:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAE26CEEAD9
+	for <lists+qemu-devel@lfdr.de>; Fri, 02 Jan 2026 14:31:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vbfCz-0007Ex-CZ; Fri, 02 Jan 2026 08:28:49 -0500
+	id 1vbfFr-0001D3-HV; Fri, 02 Jan 2026 08:31:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vbfCw-0007Cz-Lc
- for qemu-devel@nongnu.org; Fri, 02 Jan 2026 08:28:46 -0500
-Received: from 2.mo552.mail-out.ovh.net ([178.33.105.233])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vbfCr-0007zP-2a
- for qemu-devel@nongnu.org; Fri, 02 Jan 2026 08:28:44 -0500
-Received: from mxplan5.mail.ovh.net (unknown [10.110.58.222])
- by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4djPfF5C1pz5w25;
- Fri,  2 Jan 2026 13:28:37 +0000 (UTC)
-Received: from kaod.org (37.59.142.100) by DAG3EX1.mxp5.local (172.16.2.21)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.61; Fri, 2 Jan
- 2026 14:28:36 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-100R00366f6700c-9825-417e-94d9-3ccebe1ea7fe,
- B7FD5E44328430CDF13337E5E30BE77826E2EBC7) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 90.14.253.154
-Message-ID: <91694864-29ce-4603-934d-ccf725bc40cf@kaod.org>
-Date: Fri, 2 Jan 2026 14:28:36 +0100
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vbfFb-000192-RX
+ for qemu-devel@nongnu.org; Fri, 02 Jan 2026 08:31:35 -0500
+Received: from mail-ed1-x541.google.com ([2a00:1450:4864:20::541])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vbfFZ-0000Az-0r
+ for qemu-devel@nongnu.org; Fri, 02 Jan 2026 08:31:30 -0500
+Received: by mail-ed1-x541.google.com with SMTP id
+ 4fb4d7f45d1cf-64d30dc4ed7so15638448a12.0
+ for <qemu-devel@nongnu.org>; Fri, 02 Jan 2026 05:31:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1767360687; x=1767965487; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=HjV/59VQGVQxoGFx1fCN4TjjeXxgeOHzmt6liK3MgIk=;
+ b=Bi0C/Zj7jkjWZ9H/WG9JCQEL8hcKVjOHbgJZg4Lrew7FH6gUW1pLJ4a1fW/Recn/Qc
+ v3mgj4y7T2sDGN7qm75oWeox9hfrfuOAKjHER4nQtFWH+usDLIxjpHdt28DG4CGd/Ll0
+ 2wCvOQWJvMlSOZXokF7BQZAjAtrM0YvFemAmo5BzBRwGL8DAnf0Hj2+d7AA5ILjw6QQw
+ WYp8Pkye/V1AXjy1yG4JBWRJLvXmCVu/V5RCoc6kCOstaeOI/I/y4/QBFQ0P6BDwR2Wr
+ co07IjhTX8nAXy/+qa5Zdg8kNMP+S1jL5cq3QgQVAJsKeZFHMSwt4zcZvgRdXgutplyX
+ dZsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1767360687; x=1767965487;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=HjV/59VQGVQxoGFx1fCN4TjjeXxgeOHzmt6liK3MgIk=;
+ b=RlKb9bKQLuGPDNozDCLZ492cw5t98m1h877poCodbip8CuSDbzzsb4Com1NMLDAcsf
+ uRfFXmudfkUqW0AMEnJMI2oI/l3Wpt5h9Xfn+5hWguRp+Mgn2313ANh7rljc8ZOAm6vH
+ LIjZiTvrAbtphqOP2Y4t2BJtxRTFatWenoLOOKz5ZuAr7w1MG6HoLVzAkz571AwSUka5
+ vUkFV3CFKsNMbP4e2fPUFdFRIbs4wSN2AAwg69abXErpDtpLbyVlgHpDJjWen8nXOsSr
+ WbILeZMDSsVRNllsgdLvGhJuBpq1Otlc97V2FwE6I6m1eZ+NR8cDWCQVFgx4NVx0qJN+
+ MzpQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW8Nb/K/kOWbyXmHUh+5JfuQRJTvQ50wiO+pbdFNSVayNiy4mPPx/yEODDOYHDq7BtqPJmWw2YhWYZt@nongnu.org
+X-Gm-Message-State: AOJu0Yxv53/JEL+6k+L/km2DaD7Zvrn3WHyStRLG6vyH2TgXHm+t/AS1
+ r491XI2DV4VFKFfUsrfUjhsmPaQLEJCIIVRAejKTn+sxwzBZpiEvEqkx
+X-Gm-Gg: AY/fxX5Kv0FpDq3VBdyPVLHUP8u9vc8Vj06H1goXsMd9MvRu+n/CKeS2yjgZw3KiToY
+ gs87S3PwMkJLMCqZ1euxmxucgQr1O+7IMuwbGj0Q5uK7g1d/hPMGoEYKelPJt82qDsyA5GCvZ69
+ KITpu+qZtJKSXnmXRreIox+kGcz96OMW00wHt0cs2b7t4UuoTAR7HrOQ1cdM0r6h55ZPVFmeR19
+ gyFfrWCdNgZEsCh51QCIdfJMKMaq4IpDL0dVp+cLW9gdaVwYQ8CwdP/jGvxrdy2nkVsf5LLTkeI
+ tLpykOGZ7tQ5tTbeywbNxPrWjtYqqd6HLUmSvt8/28KtSREB0tRkODoQQIJlFa5od7dbxdeQH6y
+ hJHoMV3EMWIY07QufiAMrdgAIuuTl+cw2guQN2VdzSffnR+YIqBNrI8+Enu1AsRMSfZ2yGy/0KV
+ zOb1FAV5KyS6v3ABVY8uWiZf5PZ707FTy9YrjdATA9rjXJUf7yWovBppyJiym35DSoqK06Y3ds
+X-Google-Smtp-Source: AGHT+IGtS2kyIPc1LgcqLkXf5L0J2gT63lqsWCr+BRFEtOoEI+hnbTcxGTyEmOKrtLkxUVH155jGIw==
+X-Received: by 2002:a05:6402:40cb:b0:64b:bb79:96bb with SMTP id
+ 4fb4d7f45d1cf-64bbb799a91mr35279427a12.24.1767360687023; 
+ Fri, 02 Jan 2026 05:31:27 -0800 (PST)
+Received: from [10.0.2.15] (dynamic-089-012-124-190.89.12.pool.telefonica.de.
+ [89.12.124.190]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-64b916b82e7sm46634540a12.35.2026.01.02.05.31.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 02 Jan 2026 05:31:25 -0800 (PST)
+Message-ID: <05eac9c6-1134-4d0b-999f-c6f2ee20f443@gmail.com>
+Date: Fri, 2 Jan 2026 14:31:24 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/3] hw/intc/aspeed: Remove TSP 128 - 138
-To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
- Stanley <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-CC: <troy_lee@aspeedtech.com>, <kane_chen@aspeedtech.com>
-References: <20260102090746.1130033-1-jamin_lin@aspeedtech.com>
- <20260102090746.1130033-3-jamin_lin@aspeedtech.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Autocrypt: addr=clg@kaod.org; keydata=
- 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
-In-Reply-To: <20260102090746.1130033-3-jamin_lin@aspeedtech.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+From: Bernhard Beschow <shentey@gmail.com>
+Subject: Re: [PATCH v1 1/6] hw/arm/sabrelite: Convert machine to full class
+To: =?UTF-8?B?TWF0ecOhxaEgQm9iZWs=?= <matyas.bobek@gmail.com>,
+ qemu-devel@nongnu.org, Matyas Bobek <bobekmat@fel.cvut.cz>,
+ Pavel Pisa <pisa@fel.cvut.cz>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
+ Oliver Hartkopp <socketcan@hartkopp.net>,
+ Nikita Ostrenkov <n.ostrenkov@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <cover.1765826753.git.matyas.bobek@gmail.com>
+ <4bece01078549fe0565af4cd28df46da97a372fb.1765826753.git.matyas.bobek@gmail.com>
+Content-Language: en-US
+In-Reply-To: <4bece01078549fe0565af4cd28df46da97a372fb.1765826753.git.matyas.bobek@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.100]
-X-ClientProxiedBy: DAG7EX1.mxp5.local (172.16.2.61) To DAG3EX1.mxp5.local
- (172.16.2.21)
-X-Ovh-Tracer-GUID: 0cad113c-e66b-4d04-8d55-7cc72dffab51
-X-Ovh-Tracer-Id: 14412926183869877170
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTGyKqhfzqYiLfy0XHcrtO7ud0e8JjnqSUrlkJkCtFUzxGOEy72d4Jv2qKPWnUNOF0HU12jYLRo/wNYrnHPTirp2lIWK1zOal56zmPP8P6LRedhCb+8OsBpPx7+cb2tFJVWD5t2JnRVkF386i8YvZlMDYjouBhIAEBVBUysOSGUceremXebXwbaAPzubccIQyExk52793UMOX1Md+t0BvH9d6iHU9P964pRJIFDgTAnUdDqe0HU4n0fOgGjSyi8FJX4iASfnDqGOxRTFK9MJokewSHzzIcsM8eCQpxS7598xUKNsIbbfIY1QXexBSZBWmbqliSHvPIJnJ1RYtyruDBX2otsr/23QXYg95gwBYGeA4Z5uzlMWg16fInx1K0LZPniQLEVT/9oRuJrrehM7xvcXZ8DcLChf4/rp6NR9jv4PBdZ+F87dMGTxOHeI9IV0k+nID3f9jtkSvboAF6KI+JFSgrqaJBm9gPQ7uM3MzGWXcXkiYSAUYZbXJ2AkjPmd+pDkIDIU8ORl8Gklta6fwOlr9K2W9tQi/h0cuuqQN21ysTYWumwp2CxbNBolntdE+8rVuMTAR673gjpJxmErbWuKh+xarl/B31Xy7L4xHX1lp7yLWNuyIS+dcMsECn6iaQEKSsU+hWrXibmSzJ3ci8acQpskVRrLyn/1Cd5TJ1dZdA
-DKIM-Signature: a=rsa-sha256; bh=e8skIPXTKPkD5kZkjr8JiU4XqExm5ISASNtzLcJdBzs=; 
- c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1767360517; v=1;
- b=r9lynUsXJ5krTJqTvyRnIMIhb5uMjoAezRF3lguCsTGIFoBVSQpGBZ0NckO4Fr4JIcQLBRsi
- 0BkEevS7dHv1fhkjne5Ccm+poxsDor3t46BCLCMfJ2ESEGLE+9/3HM0Cvw9jDI/pdQ1x8x5Hlyu
- RBlYmIWRndo5pHnNXQr6m8qxm82614lFNGlFX5lyprnCFpcfA++hdJrRY4F+RICe/PVttUtcDXZ
- Sk68Lukmk3w1Xd3V3cunzE71cAsnOAxK09vP16SbDaFmiZb5z7hXrj1+qI4wJBxS83J+m9q1jfO
- IadtjWivWnxmG7WrbLfI+iHvnWYQaWzAxgxDOnX/M2NOA==
-Received-SPF: pass client-ip=178.33.105.233; envelope-from=clg@kaod.org;
- helo=2.mo552.mail-out.ovh.net
+Received-SPF: pass client-ip=2a00:1450:4864:20::541;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x541.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -128,152 +106,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/2/26 10:07, Jamin Lin wrote:
-> The SSP interrupts 128 - 138 were only used by the AST2700 A0 SoC.
-> Since the AST2700 A0 has been deprecated, these interrupt
-> definitions are no longer needed. This commit removes them to
-> clean up the codebase.
+Am 15. Dezember 2025 20:03:10 UTC schrieb "Matyáš Bobek" 
+<matyas.bobek@gmail.com>:
+>Define SABRELITE_MACHINE manually instead of
+>DEFINE_MACHINE_ARM to allow "canbus*" machine
+>properties to be added later.
+>
+>Signed-off-by: Matyáš Bobek <matyas.bobek@gmail.com>
+>---
+> hw/arm/sabrelite.c | 54 +++++++++++++++++++++++++++++++++++++---------
+> 1 file changed, 44 insertions(+), 10 deletions(-)
+>
+>diff --git a/hw/arm/sabrelite.c b/hw/arm/sabrelite.c
+>index 5b4ab7d77a..29418af190 100644
+>--- a/hw/arm/sabrelite.c
+>+++ b/hw/arm/sabrelite.c
+>@@ -20,6 +20,16 @@
+> #include "qemu/error-report.h"
+> #include "system/qtest.h"
 > 
-> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+>+typedef struct SabreliteMachineState {
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+No need for a typedef here since a "SabreliteMachineState" typedef is 
+introduced by OBJECT_DECLARE_SIMPLE_TYPE below which should be used instead.
 
-Thanks,
+>+    MachineState parent_obj;
 
-C.
+Add one blank line here to visually separate the base class.
 
+>+    FslIMX6State soc;
+>+
+>+    struct arm_boot_info binfo;
 
+"binfo" is unused.
 
-> ---
->   hw/arm/aspeed_ast27x0-tsp.c | 13 ++-------
->   hw/intc/aspeed_intc.c       | 55 ++-----------------------------------
->   2 files changed, 4 insertions(+), 64 deletions(-)
+>+} Sabrelite;
+
+So your struct may look like this:
+
+struct SabreliteMachineState {
+     MachineState parent_obj;
+
+     FslIMX6State soc;
+};
+
+>+
+>+#define TYPE_SABRELITE_MACHINE MACHINE_TYPE_NAME("sabrelite")
+>+OBJECT_DECLARE_SIMPLE_TYPE(SabreliteMachineState, SABRELITE_MACHINE)
+>+
+> static struct arm_boot_info sabrelite_binfo = {
+>     /* DDR memory start */
+>     .loader_start = FSL_IMX6_MMDC_ADDR,
+>@@ -41,7 +51,7 @@ static void sabrelite_reset_secondary(ARMCPU *cpu,
 > 
-> diff --git a/hw/arm/aspeed_ast27x0-tsp.c b/hw/arm/aspeed_ast27x0-tsp.c
-> index f40c70fea5..9c11c016ca 100644
-> --- a/hw/arm/aspeed_ast27x0-tsp.c
-> +++ b/hw/arm/aspeed_ast27x0-tsp.c
-> @@ -62,7 +62,7 @@ static const int aspeed_soc_ast27x0tsp_irqmap[] = {
->   };
->   
->   /* TSPINT 164 */
-> -static const int ast2700_tsp132_tsp164_intcmap[] = {
-> +static const int ast2700_tsp164_intcmap[] = {
->       [ASPEED_DEV_UART0]     = 7,
->       [ASPEED_DEV_UART1]     = 8,
->       [ASPEED_DEV_UART2]     = 9,
-> @@ -89,21 +89,12 @@ static struct nvic_intc_irq_info ast2700_tsp_intcmap[] = {
->       {161, 1, 1, NULL},
->       {162, 1, 2, NULL},
->       {163, 1, 3, NULL},
-> -    {164, 1, 4, ast2700_tsp132_tsp164_intcmap},
-> +    {164, 1, 4, ast2700_tsp164_intcmap},
->       {165, 1, 5, NULL},
->       {166, 1, 6, NULL},
->       {167, 1, 7, NULL},
->       {168, 1, 8, NULL},
->       {169, 1, 9, NULL},
-> -    {128, 0, 1, NULL},
-> -    {129, 0, 2, NULL},
-> -    {130, 0, 3, NULL},
-> -    {131, 0, 4, NULL},
-> -    {132, 0, 5, ast2700_tsp132_tsp164_intcmap},
-> -    {133, 0, 6, NULL},
-> -    {134, 0, 7, NULL},
-> -    {135, 0, 8, NULL},
-> -    {136, 0, 9, NULL},
->   };
->   
->   static qemu_irq aspeed_soc_ast27x0tsp_get_irq(AspeedCoprocessorState *s,
-> diff --git a/hw/intc/aspeed_intc.c b/hw/intc/aspeed_intc.c
-> index 305458d6d4..1702cb87dc 100644
-> --- a/hw/intc/aspeed_intc.c
-> +++ b/hw/intc/aspeed_intc.c
-> @@ -69,28 +69,6 @@ REG32(SSPINT165_STATUS,     0x1D4)
->   /*
->    * TSP INTC Registers
->    */
-> -REG32(TSPINT128_EN,             0x3000)
-> -REG32(TSPINT128_STATUS,         0x3004)
-> -REG32(TSPINT129_EN,             0x3100)
-> -REG32(TSPINT129_STATUS,         0x3104)
-> -REG32(TSPINT130_EN,             0x3200)
-> -REG32(TSPINT130_STATUS,         0x3204)
-> -REG32(TSPINT131_EN,             0x3300)
-> -REG32(TSPINT131_STATUS,         0x3304)
-> -REG32(TSPINT132_EN,             0x3400)
-> -REG32(TSPINT132_STATUS,         0x3404)
-> -REG32(TSPINT133_EN,             0x3500)
-> -REG32(TSPINT133_STATUS,         0x3504)
-> -REG32(TSPINT134_EN,             0x3600)
-> -REG32(TSPINT134_STATUS,         0x3604)
-> -REG32(TSPINT135_EN,             0x3700)
-> -REG32(TSPINT135_STATUS,         0x3704)
-> -REG32(TSPINT136_EN,             0x3800)
-> -REG32(TSPINT136_STATUS,         0x3804)
-> -REG32(TSPINT137_EN,             0x3900)
-> -REG32(TSPINT137_STATUS,         0x3904)
-> -REG32(TSPINT138_EN,             0x3A00)
-> -REG32(TSPINT138_STATUS,         0x3A04)
->   REG32(TSPINT160_169_EN,         0x3B00)
->   REG32(TSPINT160_169_STATUS,     0x3B04)
->   
-> @@ -511,29 +489,9 @@ static void aspeed_tsp_intc_write(void *opaque, hwaddr offset, uint64_t data,
->       trace_aspeed_intc_write(name, offset, size, data);
->   
->       switch (reg) {
-> -    case R_TSPINT128_EN:
-> -    case R_TSPINT129_EN:
-> -    case R_TSPINT130_EN:
-> -    case R_TSPINT131_EN:
-> -    case R_TSPINT132_EN:
-> -    case R_TSPINT133_EN:
-> -    case R_TSPINT134_EN:
-> -    case R_TSPINT135_EN:
-> -    case R_TSPINT136_EN:
->       case R_TSPINT160_169_EN:
->           aspeed_intc_enable_handler(s, offset, data);
->           break;
-> -    case R_TSPINT128_STATUS:
-> -    case R_TSPINT129_STATUS:
-> -    case R_TSPINT130_STATUS:
-> -    case R_TSPINT131_STATUS:
-> -    case R_TSPINT132_STATUS:
-> -    case R_TSPINT133_STATUS:
-> -    case R_TSPINT134_STATUS:
-> -    case R_TSPINT135_STATUS:
-> -    case R_TSPINT136_STATUS:
-> -        aspeed_intc_status_handler(s, offset, data);
-> -        break;
->       case R_TSPINT160_169_STATUS:
->           aspeed_intc_status_handler_multi_outpins(s, offset, data);
->           break;
-> @@ -929,15 +887,6 @@ static const TypeInfo aspeed_2700ssp_intcio_info = {
->   
->   static AspeedINTCIRQ aspeed_2700tsp_intc_irqs[ASPEED_INTC_MAX_INPINS] = {
->       {0, 0, 10, R_TSPINT160_169_EN, R_TSPINT160_169_STATUS},
-> -    {1, 10, 1, R_TSPINT128_EN, R_TSPINT128_STATUS},
-> -    {2, 11, 1, R_TSPINT129_EN, R_TSPINT129_STATUS},
-> -    {3, 12, 1, R_TSPINT130_EN, R_TSPINT130_STATUS},
-> -    {4, 13, 1, R_TSPINT131_EN, R_TSPINT131_STATUS},
-> -    {5, 14, 1, R_TSPINT132_EN, R_TSPINT132_STATUS},
-> -    {6, 15, 1, R_TSPINT133_EN, R_TSPINT133_STATUS},
-> -    {7, 16, 1, R_TSPINT134_EN, R_TSPINT134_STATUS},
-> -    {8, 17, 1, R_TSPINT135_EN, R_TSPINT135_STATUS},
-> -    {9, 18, 1, R_TSPINT136_EN, R_TSPINT136_STATUS},
->   };
->   
->   static void aspeed_2700tsp_intc_class_init(ObjectClass *klass, const void *data)
-> @@ -947,8 +896,8 @@ static void aspeed_2700tsp_intc_class_init(ObjectClass *klass, const void *data)
->   
->       dc->desc = "ASPEED 2700 TSP INTC Controller";
->       aic->num_lines = 32;
-> -    aic->num_inpins = 10;
-> -    aic->num_outpins = 19;
-> +    aic->num_inpins = 1;
-> +    aic->num_outpins = 10;
->       aic->mem_size = 0x4000;
->       aic->nr_regs = 0x3B08 >> 2;
->       aic->reg_offset = 0;
+> static void sabrelite_init(MachineState *machine)
+> {
+>-    FslIMX6State *s;
+>+    Sabrelite *s = SABRELITE_MACHINE(machine);
+> 
+>     /* Check the amount of memory is compatible with the SOC */
+>     if (machine->ram_size > FSL_IMX6_MMDC_SIZE) {
+>@@ -50,13 +60,12 @@ static void sabrelite_init(MachineState *machine)
+>         exit(1);
+>     }
+> 
+>-    s = FSL_IMX6(object_new(TYPE_FSL_IMX6));
+>-    object_property_add_child(OBJECT(machine), "soc", OBJECT(s));
+>+    object_initialize_child(OBJECT(machine), "soc", &s->soc, TYPE_FSL_IMX6);
+> 
+>     /* Ethernet PHY address is 6 */
+>-    object_property_set_int(OBJECT(s), "fec-phy-num", 6, &error_fatal);
+>+    object_property_set_int(OBJECT(&s->soc), "fec-phy-num", 6, &error_fatal);
+> 
+>-    qdev_realize(DEVICE(s), NULL, &error_fatal);
+>+    qdev_realize(DEVICE(&s->soc), NULL, &error_fatal);
+> 
+>     memory_region_add_subregion(get_system_memory(), FSL_IMX6_MMDC_ADDR,
+>                                 machine->ram);
+>@@ -70,7 +79,7 @@ static void sabrelite_init(MachineState *machine)
+>         /* Add the sst25vf016b NOR FLASH memory to first SPI */
+>         Object *spi_dev;
+> 
+>-        spi_dev = object_resolve_path_component(OBJECT(s), "spi1");
+>+        spi_dev = object_resolve_path_component(OBJECT(&s->soc), "spi1");
+>         if (spi_dev) {
+>             SSIBus *spi_bus;
+> 
+>@@ -89,23 +98,33 @@ static void sabrelite_init(MachineState *machine)
+>                 qdev_realize_and_unref(flash_dev, BUS(spi_bus), &error_fatal);
+> 
+>                 cs_line = qdev_get_gpio_in_named(flash_dev, SSI_GPIO_CS, 0);
+>-                qdev_connect_gpio_out(DEVICE(&s->gpio[2]), 19, cs_line);
+>+                qdev_connect_gpio_out(DEVICE(&s->soc.gpio[2]), 19, cs_line);
+>             }
+>         }
+>     }
+> 
+>+
 
+Extra line here. Please remove to keep the style consistent.
+
+>     sabrelite_binfo.ram_size = machine->ram_size;
+>     sabrelite_binfo.secure_boot = true;
+>     sabrelite_binfo.write_secondary_boot = sabrelite_write_secondary;
+>     sabrelite_binfo.secondary_cpu_reset_hook = sabrelite_reset_secondary;
+> 
+>     if (!qtest_enabled()) {
+>-        arm_load_kernel(&s->cpu[0], machine, &sabrelite_binfo);
+>+        arm_load_kernel(&s->soc.cpu[0], machine, &sabrelite_binfo);
+>     }
+> }
+> 
+>-static void sabrelite_machine_init(MachineClass *mc)
+>+static void sabrelite_machine_instance_init(Object *obj)
+> {
+>+    Sabrelite *s = SABRELITE_MACHINE(obj);
+>+
+>+    (void)s;
+
+Unused variable. This normally results in a warning, so shouldn't be 
+done. I suggest deferring introduction of this method to patch "hw/arm: 
+Plug FlexCAN into FSL_IMX6 and Sabrelite".
+
+You may also consider splitting this patch in two, one which open codes 
+the DEFINE_MACHINE_ARM macro and a second one introducing the dedicated 
+struct SabreliteMachineState.
+
+Best regards,
+Bernhard
+
+>+}
+>+
+>+static void sabrelite_machine_class_init(ObjectClass *oc, const void *data)
+>+{
+>+    MachineClass *mc = MACHINE_CLASS(oc);
+>+
+>     mc->desc = "Freescale i.MX6 Quad SABRE Lite Board (Cortex-A9)";
+>     mc->init = sabrelite_init;
+>     mc->max_cpus = FSL_IMX6_NUM_CPUS;
+>@@ -114,4 +133,19 @@ static void sabrelite_machine_init(MachineClass *mc)
+>     mc->auto_create_sdcard = true;
+> }
+> 
+>-DEFINE_MACHINE_ARM("sabrelite", sabrelite_machine_init)
+>+static const TypeInfo sabrelite_machine_init_typeinfo = {
+>+    .name       = TYPE_SABRELITE_MACHINE,
+>+    .parent     = TYPE_MACHINE,
+>+    .class_init = sabrelite_machine_class_init,
+>+    .instance_init = sabrelite_machine_instance_init,
+>+    .instance_size = sizeof(Sabrelite),
+>+    .abstract   = false,
+>+    .interfaces = arm_machine_interfaces,
+>+};
+>+
+>+static void sabrelite_machine_init_register_types(void)
+>+{
+>+    type_register_static(&sabrelite_machine_init_typeinfo);
+>+}
+>+
+>+type_init(sabrelite_machine_init_register_types)
 
