@@ -2,69 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 131F2CEF5FD
-	for <lists+qemu-devel@lfdr.de>; Fri, 02 Jan 2026 22:50:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E67F9CEF5E6
+	for <lists+qemu-devel@lfdr.de>; Fri, 02 Jan 2026 22:49:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vbn0c-0006lM-Ja; Fri, 02 Jan 2026 16:48:36 -0500
+	id 1vbn0k-0006ml-DV; Fri, 02 Jan 2026 16:48:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vbmzi-0006fv-7Y
+ id 1vbmzi-0006fw-Ny
  for qemu-devel@nongnu.org; Fri, 02 Jan 2026 16:47:44 -0500
-Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vbmzg-0000JT-Cz
- for qemu-devel@nongnu.org; Fri, 02 Jan 2026 16:47:37 -0500
-Received: by mail-pf1-x443.google.com with SMTP id
- d2e1a72fcca58-7f216280242so76491b3a.1
- for <qemu-devel@nongnu.org>; Fri, 02 Jan 2026 13:47:35 -0800 (PST)
+ id 1vbmzg-0000Jb-SH
+ for qemu-devel@nongnu.org; Fri, 02 Jan 2026 16:47:38 -0500
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-34c7d0c5ddaso134155a91.0
+ for <qemu-devel@nongnu.org>; Fri, 02 Jan 2026 13:47:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767390454; x=1767995254; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767390455; x=1767995255; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sa5EHxYx/snq7aAH+sWySlzd4bZ6Z+JvqzA3ZIoZGIo=;
- b=A3fP+HcNx6kXh0fd7UREWdV5/vq1V91V/ixNW/FLxBiSYW8l/ab4ycLlccayPOaQCY
- gdO5OUPtSDR3BVGMppSHrFWKT/5Zu7e/HzNxsYBr7+XKm/O+FT7Ru1LOA8xm+iiW8wrf
- R4/hzZNwaUWVUvqrUJVpgF7t2fIyOgWqvmAFoajxWzhX3WSfiosszlUXNOxek5D1STSk
- Y0eDcDdHSfLu4wzYU2tDXEVB00q/tHFgPAzCKr63Z2svhdH26sIjm6JgVbf3JsLMAPDO
- FpAXGMflSzKOuCRxhI6/RrEB3tOlfXx2z+set4zPU83W5/Ofc3sHPvHXpJrxB4BrZy7v
- ZR5A==
+ bh=JDaUMXNl3FZj4WBz+kjiCzD7DUw0YTyswTIoriwfuY8=;
+ b=M3eo6WKNwfJ96eWcRcHQx3TUNiLxhpg4C8PT5qT2qDllqhOBftFem8UDBLFwujaIGH
+ Vzv84uhC9A2MurfFc2PsAw/bWENGY7mpEj3wbHCr34zpT1LtZgSLPfSh6AJirmPOZV8Y
+ 6tFg4W3Yv33bH8KjRa+oBWghIpLNft3xcopDoVa6+8o9JiyAYoLPDOjkNYg7urHxWIta
+ bj7ChkTY8xr/F0tXhpkUdSSNG4Y0MiWDEALo8ZUvz2W6iDkV0otlq4TBUCEkKh7g7VF5
+ Pgs+0gFgsQ5ZOATe6Y1PjPtixmLD0ya0EmaSpHAaGbW8fJANJrkkzTCEk97ugUqoD//d
+ gC3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767390454; x=1767995254;
+ d=1e100.net; s=20230601; t=1767390455; x=1767995255;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=sa5EHxYx/snq7aAH+sWySlzd4bZ6Z+JvqzA3ZIoZGIo=;
- b=sjmo0ygtPpf7VojGD9N+F9V/moSc8sPd7VuPzbJsjBSvC6kv8nJbUTZbVVy3cOPryj
- PGmjdw2QG6gT2GxGa6efaOZNdzVP16uKEB0HvHL/suN5j9hYOnf1BJe9ZF/RsVa89Qt5
- bTPTGyMuWq7p/mb4Ck8vTUeEwEh53JJHB9bmIA+cIYCrFFgaMa+HSKYtCzbW/1AY3MpU
- yX9iKxgpD4obVMvR9tNCbMQ0dj3h11zE9sG6JtN38eZdhj98hhadPF6065cuXE11r420
- kZgGHX76XPtt4Hx88J+vnInaxGjdmXSCyNIwPxAEnBb1gFr5A/H+BVW2icGeb9unhjRD
- i+Jw==
-X-Gm-Message-State: AOJu0YwXQHBYFGUpx3kllCRO8C+MQnDD49XYHpLWeVaRT4XE8cCnbp6n
- UuAU9iXQblxsBgK0q6UtWfhsQfax+RdUMnlh3TEvhcfrx6uRLWLG81GQXA0/r5qZ2s6N0S5lxe5
- ShGP1nnQ=
-X-Gm-Gg: AY/fxX56RsU5IalyvyibJjJVGTUiYXQMQ7NYWaao4HtNzUjcMdEpc8xTlgG0LA4fAIQ
- AVfXObXDz7fRF+1THTO3QXcl7juxd4OB8SGLnJiKzaRdDQF47HFshdrJPb/eZKh0z6cClfdFwfj
- fgUpLqZopPGR1oBYa0oaGxgFoIjMnP3M9f102ykvGP1OsZGZkbcagoDYtMYRCty1aHatiTH9MBq
- IqR0mrv4lyCxuGtFIuaataaQIyjMHAesUpNvDTUwssrIYOyvcUuRt+q7kJwF2Sffb6qvc/FSWRF
- tSDeLssZVq5jsosFcl16ndEMbtfejyc8pahBK2IBMo924QeoPU4VNvGGWiq7aStuzzdaTKvALtV
- xygHpnA/VJoVclj42vG6N/8OcHWy7fnp5IRrXmaj8uVRew3Rfa3DPcZ91jcJBk0/CqvwtGYJxMe
- H+yE4KAWfaAbTtUowKDu92zAo7o4PDn9pTK+OCxPOEWf7XPFna4FxY0M5caVyCgjgmalHXKxw3Y
- VA=
-X-Google-Smtp-Source: AGHT+IGWyC3T2PlBAqYpm0UMco2ajzJrYxA8O6X+AksTPDdjR6HfzNZqlYNe5MqV/AjpLJKWsd2aow==
-X-Received: by 2002:a05:6a20:258f:b0:2b9:6b0b:66be with SMTP id
- adf61e73a8af0-38959351d03mr777455637.14.1767390453989; 
- Fri, 02 Jan 2026 13:47:33 -0800 (PST)
+ bh=JDaUMXNl3FZj4WBz+kjiCzD7DUw0YTyswTIoriwfuY8=;
+ b=BFtKxwuMXLlXg6dTW+cFUQ5Y+IDcUg7G2j+XRUeRThUktui79eaK9AbTZ+mftIVFBn
+ gHqXJCLKiYzUo1x2f2REq6NBIiJwlcc4FPzGq2KhdSKDQyZrz4Qnv7W3gB5Cy4drxZDL
+ jM9w4oCZwTWxp11tli7qJO6OV5JJUTmnNxs39Mcf5kN47R4VuDXchrCCVyMHQIrH95zZ
+ VVyMF6sBnJlSf6HKfVcKnLGAQ/FF3HgC+JtS+uTs9MTlHbzTPLYdVxXDzgtwwkXnCA8w
+ IWX2uZNHuKxvQeTHELyarj9shSFIt3ysYOMdodK03uq4tQxFIULqH+lEXC1y/0/iy5Q0
+ A5gg==
+X-Gm-Message-State: AOJu0YzDMO10lI2qcrS1gcBmSDgt83jgPh7STpTVvr7jsx/t+sMd5wv9
+ QNxNFx/3Ge0yurBWC/Lcu+CbpXuMGKLvboUeLWKMQD4X99oB4LGkVjsml2DG5DxAptFS4jhdCbO
+ pzUsN
+X-Gm-Gg: AY/fxX7Hlhcc8wwnnuzQbCI54Bl2stj9j5uyts3wLAf7NEo4QB3I8oO749n/beffOQS
+ G4jjCq6jTk2QpF7F8fWdxAvw7M4tcRx9CeekqnnptFfguz8aDYNGaKveRLJ+eaHfw6RGnM4Hx8N
+ Kz2RNLSxoHtkjoiw38Avn2tX8nYtb2yHlTS5+xUykUZKVii30QNFg/q3GaaDpnxvqVO+oDu0wCz
+ gb2MhZf0RJ6mfzJbfyYG39aAvKua0v9i9OKPfcdBO7PVfBAwu9Y68K2p1//IYutJbRTcW4qouS2
+ x5bbY9X0JE1h9L/nu6OrOtzY4OMhN3cIaFoYS0V8WXS931V0rhTyreBxOqwlxrB746ZFbt68Ept
+ BMQ0SHTlu0kO6CbTUsqOMvBkS61SxRwFQz8lay92khp2DqvksQWJOALvh89O29a4wpwDRLhYS0t
+ tCPKlUErpQhNFXnttu+ylphGQeDyj0ksYeNioRDg7MwvFkLAtPpK3H6HBkC83n79ZT
+X-Google-Smtp-Source: AGHT+IG/xSh91TxI0VCaXOESTfemCoMwAoINTDHrQBTpUzWJE3NcUqg56/BXMs0ELuXg32Poffk6rQ==
+X-Received: by 2002:a17:90b:5867:b0:34e:6e7d:7e73 with SMTP id
+ 98e67ed59e1d1-34f453c9e48mr732515a91.11.1767390454765; 
+ Fri, 02 Jan 2026 13:47:34 -0800 (PST)
 Received: from pc.taild8403c.ts.net (216-71-219-44.dyn.novuscom.net.
  [216.71.219.44]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-34f476f8f3fsm62925a91.5.2026.01.02.13.47.32
+ 98e67ed59e1d1-34f476f8f3fsm62925a91.5.2026.01.02.13.47.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Jan 2026 13:47:33 -0800 (PST)
+ Fri, 02 Jan 2026 13:47:34 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Gustavo Bueno Romero <gustavo.romero@linaro.org>,
@@ -75,17 +74,17 @@ Cc: Gustavo Bueno Romero <gustavo.romero@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 04/11] plugins: define plugin API symbols as extern "C"
- when compiling in C++
-Date: Fri,  2 Jan 2026 13:47:17 -0800
-Message-ID: <20260102214724.4128196-5-pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 05/11] tests/tcg/plugins/mem.c: remove dependency on qemu
+ headers
+Date: Fri,  2 Jan 2026 13:47:18 -0800
+Message-ID: <20260102214724.4128196-6-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260102214724.4128196-1-pierrick.bouvier@linaro.org>
 References: <20260102214724.4128196-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::443;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x443.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,35 +107,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This plugin uses endianness conversion primitives from QEMU headers. As
+next commit will strongly isolate plugins code from those headers, those
+primitives can't be used anymore.
+
+glib.h provides such primitives:
+https://docs.gtk.org/glib/conversion-macros.html#byte-order-conversion
+
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/qemu/qemu-plugin.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tests/tcg/plugins/mem.c | 59 ++++++++++++++++-------------------------
+ 1 file changed, 23 insertions(+), 36 deletions(-)
 
-diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
-index 60de4fdd3fa..e44f863d839 100644
---- a/include/qemu/qemu-plugin.h
-+++ b/include/qemu/qemu-plugin.h
-@@ -16,6 +16,10 @@
+diff --git a/tests/tcg/plugins/mem.c b/tests/tcg/plugins/mem.c
+index 9649bce99ca..7d64e7018f2 100644
+--- a/tests/tcg/plugins/mem.c
++++ b/tests/tcg/plugins/mem.c
+@@ -12,16 +12,7 @@
+ #include <stdio.h>
+ #include <glib.h>
+ 
+-/*
+- * plugins should not include anything from QEMU aside from the
+- * API header. However as this is a test plugin to exercise the
+- * internals of QEMU and we want to avoid needless code duplication we
+- * do so here. bswap.h is pretty self-contained although it needs a
+- * few things provided by compiler.h.
+- */
+-#include <compiler.h>
  #include <stdbool.h>
- #include <stddef.h>
+-#include <bswap.h>
+ #include <qemu-plugin.h>
  
-+#ifdef __cplusplus
-+extern "C" {
-+#endif
-+
- /*
-  * For best performance, build the plugin with -fvisibility=hidden so that
-  * QEMU_PLUGIN_LOCAL is implicit. Then, just mark qemu_plugin_install with
-@@ -1210,4 +1214,8 @@ void qemu_plugin_u64_set(qemu_plugin_u64 entry, unsigned int vcpu_index,
- QEMU_PLUGIN_API
- uint64_t qemu_plugin_u64_sum(qemu_plugin_u64 entry);
+ QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
+@@ -152,56 +143,52 @@ static void update_region_info(uint64_t region, uint64_t offset,
+         ri->reads++;
+     }
  
-+#ifdef __cplusplus
-+} /* extern "C" */
-+#endif
-+
- #endif /* QEMU_QEMU_PLUGIN_H */
++    void *ri_data = &ri->data[offset];
+     switch (value.type) {
+     case QEMU_PLUGIN_MEM_VALUE_U8:
++    {
++        uint8_t val = value.data.u8;
++        uint8_t *p = ri_data;
+         if (is_store) {
+-            ri->data[offset] = value.data.u8;
+-        } else if (ri->data[offset] != value.data.u8) {
+-            unseen_data = true;
++            *p = val;
++        } else {
++            unseen_data = *p != val;
+         }
+         break;
++    }
+     case QEMU_PLUGIN_MEM_VALUE_U16:
+     {
+-        uint16_t *p = (uint16_t *) &ri->data[offset];
++        uint16_t val = be ? GUINT16_FROM_BE(value.data.u16) :
++                            GUINT16_FROM_LE(value.data.u16);
++        uint16_t *p = ri_data;
+         if (is_store) {
+-            if (be) {
+-                stw_be_p(p, value.data.u16);
+-            } else {
+-                stw_le_p(p, value.data.u16);
+-            }
++            *p = val;
+         } else {
+-            uint16_t val = be ? lduw_be_p(p) : lduw_le_p(p);
+-            unseen_data = val != value.data.u16;
++            unseen_data = *p != val;
+         }
+         break;
+     }
+     case QEMU_PLUGIN_MEM_VALUE_U32:
+     {
+-        uint32_t *p = (uint32_t *) &ri->data[offset];
++        uint32_t val = be ? GUINT32_FROM_BE(value.data.u32) :
++                            GUINT32_FROM_LE(value.data.u32);
++        uint32_t *p = ri_data;
+         if (is_store) {
+-            if (be) {
+-                stl_be_p(p, value.data.u32);
+-            } else {
+-                stl_le_p(p, value.data.u32);
+-            }
++            *p = val;
+         } else {
+-            uint32_t val = be ? ldl_be_p(p) : ldl_le_p(p);
+-            unseen_data = val != value.data.u32;
++            unseen_data = *p != val;
+         }
+         break;
+     }
+     case QEMU_PLUGIN_MEM_VALUE_U64:
+     {
+-        uint64_t *p = (uint64_t *) &ri->data[offset];
++        uint64_t val = be ? GUINT64_FROM_BE(value.data.u64) :
++                            GUINT64_FROM_LE(value.data.u64);
++        uint64_t *p = ri_data;
+         if (is_store) {
+-            if (be) {
+-                stq_be_p(p, value.data.u64);
+-            } else {
+-                stq_le_p(p, value.data.u64);
+-            }
++            *p = val;
+         } else {
+-            uint64_t val = be ? ldq_be_p(p) : ldq_le_p(p);
+-            unseen_data = val != value.data.u64;
++            unseen_data = *p != val;
+         }
+         break;
+     }
 -- 
 2.47.3
 
