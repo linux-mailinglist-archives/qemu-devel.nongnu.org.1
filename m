@@ -2,23 +2,23 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64896CF0208
+	by mail.lfdr.de (Postfix) with ESMTPS id 402F7CF0201
 	for <lists+qemu-devel@lfdr.de>; Sat, 03 Jan 2026 16:34:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vc3dF-0004pD-PT; Sat, 03 Jan 2026 10:33:33 -0500
+	id 1vc3d9-0004oj-Sv; Sat, 03 Jan 2026 10:33:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dilfridge@gentoo.org>)
- id 1vc3d7-0004mj-7j
+ id 1vc3d7-0004nC-Tz
  for qemu-devel@nongnu.org; Sat, 03 Jan 2026 10:33:25 -0500
-Received: from woodpecker.gentoo.org ([2001:470:ea4a:1:5054:ff:fec7:86e4]
+Received: from dev.gentoo.org ([2001:470:ea4a:1:5054:ff:fec7:86e4]
  helo=smtp.gentoo.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_CHACHA20_POLY1305:256)
  (Exim 4.90_1) (envelope-from <dilfridge@gentoo.org>)
- id 1vc3d5-0002rv-5a
- for qemu-devel@nongnu.org; Sat, 03 Jan 2026 10:33:24 -0500
+ id 1vc3d6-0002tt-8W
+ for qemu-devel@nongnu.org; Sat, 03 Jan 2026 10:33:25 -0500
 Received: from noumea.fritz.box
  (p200300e5cf308a00a98854cc6072a531.dip0.t-ipconnect.de
  [IPv6:2003:e5:cf30:8a00:a988:54cc:6072:a531])
@@ -26,14 +26,14 @@ Received: from noumea.fritz.box
  key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
  (Authenticated sender: dilfridge@gentoo.org)
- by smtp.gentoo.org (Postfix) with ESMTPSA id 21752341E74;
- Sat, 03 Jan 2026 15:33:20 +0000 (UTC)
+ by smtp.gentoo.org (Postfix) with ESMTPSA id 59759341E77;
+ Sat, 03 Jan 2026 15:33:22 +0000 (UTC)
 From: =?UTF-8?q?Andreas=20K=2E=20H=C3=BCttel?= <dilfridge@gentoo.org>
 To: qemu-devel@nongnu.org
 Cc: Luca Bonissi <qemu@bonslack.org>
-Subject: [PATCH 3/8] Add termios2 support to hppa target
-Date: Sat,  3 Jan 2026 16:25:34 +0100
-Message-ID: <20260103153239.15787-4-dilfridge@gentoo.org>
+Subject: [PATCH 4/8] Add termios2 support to mips target
+Date: Sat,  3 Jan 2026 16:25:35 +0100
+Message-ID: <20260103153239.15787-5-dilfridge@gentoo.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260103153239.15787-1-dilfridge@gentoo.org>
 References: <20260103153239.15787-1-dilfridge@gentoo.org>
@@ -64,15 +64,15 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Luca Bonissi <qemu@bonslack.org>
 
 Signed-off-by: Luca Bonissi <qemu@bonslack.org>
-Link: https://lore.kernel.org/qemu-devel/ccf1be5c-9e2e-46f6-b303-d29888371fb0@bonslack.org
+Link: https://lore.kernel.org/qemu-devel/361aa9c5-4464-4d27-8a2c-9ab767324530@bonslack.org
 ---
- linux-user/hppa/termbits.h | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ linux-user/mips/termbits.h | 31 +++++++++++++++++++++++++++----
+ 1 file changed, 27 insertions(+), 4 deletions(-)
 
-diff --git a/linux-user/hppa/termbits.h b/linux-user/hppa/termbits.h
-index 11fd4eed62..645f17bf63 100644
---- a/linux-user/hppa/termbits.h
-+++ b/linux-user/hppa/termbits.h
+diff --git a/linux-user/mips/termbits.h b/linux-user/mips/termbits.h
+index e8b4b58d87..27610f7c4d 100644
+--- a/linux-user/mips/termbits.h
++++ b/linux-user/mips/termbits.h
 @@ -18,6 +18,29 @@ struct target_termios {
      target_cc_t c_cc[TARGET_NCCS];         /* control characters */
  };
@@ -103,19 +103,21 @@ index 11fd4eed62..645f17bf63 100644
  /* c_iflag bits */
  #define TARGET_IGNBRK  0000001
  #define TARGET_BRKINT  0000002
-@@ -190,6 +213,12 @@ struct target_termios {
- #define TARGET_TIOCSBRK         0x5427 /* BSD compatibility */
- #define TARGET_TIOCCBRK         0x5428 /* BSD compatibility */
- #define TARGET_TIOCGSID         TARGET_IOR('T', 20, int)
+@@ -227,10 +250,10 @@ struct target_termios {
+ #define TARGET_TIOCSBRK	0x5427  /* BSD compatibility */
+ #define TARGET_TIOCCBRK	0x5428  /* BSD compatibility */
+ #define TARGET_TIOCGSID	0x7416  /* Return the session ID of FD */
+-#define TARGET_TCGETS2          TARGET_IOR('T', 0x2A, struct termios2)
+-#define TARGET_TCSETS2          TARGET_IOW('T', 0x2B, struct termios2)
+-#define TARGET_TCSETSW2         TARGET_IOW('T', 0x2C, struct termios2)
+-#define TARGET_TCSETSF2         TARGET_IOW('T', 0x2D, struct termios2)
 +#define TARGET_TCGETS2          TARGET_IOR('T', 0x2A, struct target_termios2)
 +#define TARGET_TCSETS2          TARGET_IOW('T', 0x2B, struct target_termios2)
 +#define TARGET_TCSETSW2         TARGET_IOW('T', 0x2C, struct target_termios2)
 +#define TARGET_TCSETSF2         TARGET_IOW('T', 0x2D, struct target_termios2)
-+#define TARGET_TIOCGRS485       TARGET_IOR('T', 0x2E, struct serial_rs485)
-+#define TARGET_TIOCSRS485       TARGET_IOWR('T', 0x2F, struct serial_rs485)
- #define TARGET_TIOCGPTN         TARGET_IOR('T', 0x30, unsigned int)
-         /* Get Pty Number (of pty-mux device) */
- #define TARGET_TIOCSPTLCK       TARGET_IOW('T', 0x31, int)
+ #define TARGET_TIOCGRS485       TARGET_IOR('T', 0x2E, struct serial_rs485)
+ #define TARGET_TIOCSRS485       TARGET_IOWR('T', 0x2F, struct serial_rs485)
+ #define TARGET_TIOCGPTN	TARGET_IOR('T',0x30, unsigned int) /* Get Pty Number (of pty-mux device) */
 -- 
 2.52.0
 
