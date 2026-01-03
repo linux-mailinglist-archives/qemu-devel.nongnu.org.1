@@ -2,22 +2,22 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C180CF0203
+	by mail.lfdr.de (Postfix) with ESMTPS id 64896CF0208
 	for <lists+qemu-devel@lfdr.de>; Sat, 03 Jan 2026 16:34:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vc3dD-0004oz-Ql; Sat, 03 Jan 2026 10:33:31 -0500
+	id 1vc3dF-0004pD-PT; Sat, 03 Jan 2026 10:33:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dilfridge@gentoo.org>)
- id 1vc3d7-0004mi-4K
+ id 1vc3d7-0004mj-7j
  for qemu-devel@nongnu.org; Sat, 03 Jan 2026 10:33:25 -0500
-Received: from mail.gentoo.org ([2001:470:ea4a:1:5054:ff:fec7:86e4]
+Received: from woodpecker.gentoo.org ([2001:470:ea4a:1:5054:ff:fec7:86e4]
  helo=smtp.gentoo.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_CHACHA20_POLY1305:256)
  (Exim 4.90_1) (envelope-from <dilfridge@gentoo.org>)
- id 1vc3d5-0002ru-1S
+ id 1vc3d5-0002rv-5a
  for qemu-devel@nongnu.org; Sat, 03 Jan 2026 10:33:24 -0500
 Received: from noumea.fritz.box
  (p200300e5cf308a00a98854cc6072a531.dip0.t-ipconnect.de
@@ -26,14 +26,14 @@ Received: from noumea.fritz.box
  key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
  (Authenticated sender: dilfridge@gentoo.org)
- by smtp.gentoo.org (Postfix) with ESMTPSA id C573A341E6C;
- Sat, 03 Jan 2026 15:33:19 +0000 (UTC)
+ by smtp.gentoo.org (Postfix) with ESMTPSA id 21752341E74;
+ Sat, 03 Jan 2026 15:33:20 +0000 (UTC)
 From: =?UTF-8?q?Andreas=20K=2E=20H=C3=BCttel?= <dilfridge@gentoo.org>
 To: qemu-devel@nongnu.org
 Cc: Luca Bonissi <qemu@bonslack.org>
-Subject: [PATCH 2/8] Add termios2 support to alpha target
-Date: Sat,  3 Jan 2026 16:25:33 +0100
-Message-ID: <20260103153239.15787-3-dilfridge@gentoo.org>
+Subject: [PATCH 3/8] Add termios2 support to hppa target
+Date: Sat,  3 Jan 2026 16:25:34 +0100
+Message-ID: <20260103153239.15787-4-dilfridge@gentoo.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260103153239.15787-1-dilfridge@gentoo.org>
 References: <20260103153239.15787-1-dilfridge@gentoo.org>
@@ -64,58 +64,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Luca Bonissi <qemu@bonslack.org>
 
 Signed-off-by: Luca Bonissi <qemu@bonslack.org>
-Link: https://lore.kernel.org/qemu-devel/02dba951-1bcf-4c74-8a6a-f4f4aa5ce909@bonslack.org
+Link: https://lore.kernel.org/qemu-devel/ccf1be5c-9e2e-46f6-b303-d29888371fb0@bonslack.org
 ---
- linux-user/alpha/termbits.h | 29 +++++++++++++++++++++++++++++
+ linux-user/hppa/termbits.h | 29 +++++++++++++++++++++++++++++
  1 file changed, 29 insertions(+)
 
-diff --git a/linux-user/alpha/termbits.h b/linux-user/alpha/termbits.h
-index 4a4b1e96f2..b7be23ea13 100644
---- a/linux-user/alpha/termbits.h
-+++ b/linux-user/alpha/termbits.h
-@@ -17,6 +17,29 @@ struct target_termios {
- 	target_speed_t c_ospeed;		/* output speed */
+diff --git a/linux-user/hppa/termbits.h b/linux-user/hppa/termbits.h
+index 11fd4eed62..645f17bf63 100644
+--- a/linux-user/hppa/termbits.h
++++ b/linux-user/hppa/termbits.h
+@@ -18,6 +18,29 @@ struct target_termios {
+     target_cc_t c_cc[TARGET_NCCS];         /* control characters */
  };
  
 +struct target_termios2 {
-+	target_tcflag_t c_iflag;		/* input mode flags */
-+	target_tcflag_t c_oflag;		/* output mode flags */
-+	target_tcflag_t c_cflag;		/* control mode flags */
-+	target_tcflag_t c_lflag;		/* local mode flags */
-+	target_cc_t c_cc[TARGET_NCCS];		/* control characters */
-+	target_cc_t c_line;			/* line discipline (== c_cc[19]) */
-+	target_speed_t c_ispeed;		/* input speed */
-+	target_speed_t c_ospeed;		/* output speed */
++    target_tcflag_t c_iflag;       /* input mode flags */
++    target_tcflag_t c_oflag;       /* output mode flags */
++    target_tcflag_t c_cflag;       /* control mode flags */
++    target_tcflag_t c_lflag;       /* local mode flags */
++    target_cc_t c_line;            /* line discipline */
++    target_cc_t c_cc[TARGET_NCCS]; /* control characters */
++    target_speed_t c_ispeed;       /* input speed */
++    target_speed_t c_ospeed;       /* output speed */
 +};
 +
 +struct target_ktermios {
-+	target_tcflag_t c_iflag;		/* input mode flags */
-+	target_tcflag_t c_oflag;		/* output mode flags */
-+	target_tcflag_t c_cflag;		/* control mode flags */
-+	target_tcflag_t c_lflag;		/* local mode flags */
-+	target_cc_t c_cc[TARGET_NCCS];		/* control characters */
-+	target_cc_t c_line;			/* line discipline (== c_cc[19]) */
-+	target_speed_t c_ispeed;		/* input speed */
-+	target_speed_t c_ospeed;		/* output speed */
++    target_tcflag_t c_iflag;       /* input mode flags */
++    target_tcflag_t c_oflag;       /* output mode flags */
++    target_tcflag_t c_cflag;       /* control mode flags */
++    target_tcflag_t c_lflag;       /* local mode flags */
++    target_cc_t c_line;            /* line discipline */
++    target_cc_t c_cc[TARGET_NCCS]; /* control characters */
++    target_speed_t c_ispeed;       /* input speed */
++    target_speed_t c_ospeed;       /* output speed */
 +};
 +
 +
- /* c_cc characters */
- #define TARGET_VEOF 0
- #define TARGET_VEOL 1
-@@ -247,6 +270,12 @@ struct target_termios {
- #define TARGET_TIOCSBRK	0x5427  /* BSD compatibility */
- #define TARGET_TIOCCBRK	0x5428  /* BSD compatibility */
- #define TARGET_TIOCGSID	0x5429  /* Return the session ID of FD */
-+#define TARGET_TCGETS2		TARGET_IOR('T', 0x2A, struct target_termios2)
-+#define TARGET_TCSETS2		TARGET_IOW('T', 0x2B, struct target_termios2)
-+#define TARGET_TCSETSW2	TARGET_IOW('T', 0x2C, struct target_termios2)
-+#define TARGET_TCSETSF2	TARGET_IOW('T', 0x2D, struct target_termios2)
-+#define TARGET_TIOCGRS485	TARGET_IOR('T', 0x2E, struct serial_rs485)
-+#define TARGET_TIOCSRS485	TARGET_IOWR('T', 0x2F, struct serial_rs485)
- #define TARGET_TIOCGPTN	TARGET_IOR('T',0x30, unsigned int) /* Get Pty Number (of pty-mux device) */
- #define TARGET_TIOCSPTLCK	TARGET_IOW('T',0x31, int)  /* Lock/unlock Pty */
- #define TARGET_TIOCGPTPEER      TARGET_IO('T', 0x41) /* Safely open the slave */
+ /* c_iflag bits */
+ #define TARGET_IGNBRK  0000001
+ #define TARGET_BRKINT  0000002
+@@ -190,6 +213,12 @@ struct target_termios {
+ #define TARGET_TIOCSBRK         0x5427 /* BSD compatibility */
+ #define TARGET_TIOCCBRK         0x5428 /* BSD compatibility */
+ #define TARGET_TIOCGSID         TARGET_IOR('T', 20, int)
++#define TARGET_TCGETS2          TARGET_IOR('T', 0x2A, struct target_termios2)
++#define TARGET_TCSETS2          TARGET_IOW('T', 0x2B, struct target_termios2)
++#define TARGET_TCSETSW2         TARGET_IOW('T', 0x2C, struct target_termios2)
++#define TARGET_TCSETSF2         TARGET_IOW('T', 0x2D, struct target_termios2)
++#define TARGET_TIOCGRS485       TARGET_IOR('T', 0x2E, struct serial_rs485)
++#define TARGET_TIOCSRS485       TARGET_IOWR('T', 0x2F, struct serial_rs485)
+ #define TARGET_TIOCGPTN         TARGET_IOR('T', 0x30, unsigned int)
+         /* Get Pty Number (of pty-mux device) */
+ #define TARGET_TIOCSPTLCK       TARGET_IOW('T', 0x31, int)
 -- 
 2.52.0
 
