@@ -2,80 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 106B6CEF8BA
-	for <lists+qemu-devel@lfdr.de>; Sat, 03 Jan 2026 01:28:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B2B1CEFA47
+	for <lists+qemu-devel@lfdr.de>; Sat, 03 Jan 2026 03:39:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vbpUS-0004nq-Rk; Fri, 02 Jan 2026 19:27:32 -0500
+	id 1vbrWd-0003KL-8m; Fri, 02 Jan 2026 21:37:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
- id 1vbpUO-0004nE-HF
- for qemu-devel@nongnu.org; Fri, 02 Jan 2026 19:27:28 -0500
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <jescom87@onedot1.one>)
+ id 1vbrWY-0003Jz-B4
+ for qemu-devel@nongnu.org; Fri, 02 Jan 2026 21:37:50 -0500
+Received: from mail52.out.titan.email ([209.209.25.115])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
- id 1vbpUL-00032C-Q1
- for qemu-devel@nongnu.org; Fri, 02 Jan 2026 19:27:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1767400046; x=1798936046;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=IAttkKUPdKV3jr6OHhRsvukqZBqhsMR4lNcX9qeUMRE=;
- b=Ts58lDhx5oqm33FY8W1SYeMNkY1Fojn7cLlUlrc19yHxO3IRXJIsMWn0
- Ib9Gjhr9bT14rUgehVMbvqnpSlh9DqDepos3BMpcz3KgxuKT+7zehoR2v
- JUhPZa7E2MMllXjwq+bkYf79q12cTeuI485O3J0+kxu0TIT4x+cVUoXt3
- AMLeVbhaR+FkNsFuWe9lkOG8MwmHQeYXkTmqIaKskDyT4de4SpyOOLDVs
- oUYQBefk3E2CDrSEyyjMV4GJ/RX65p1jo1UNros0lIvC1Oym3GnJL2oOH
- v+uEvH/3ikSXsm3JHa8A7w1nEacTrDiCCyyfvecHQENCd8wt8TDWWhI6H Q==;
-X-CSE-ConnectionGUID: uO0Tq/KlSpm9lOKr5WnAmg==
-X-CSE-MsgGUID: 9hrZQqg8Tq2CUdbZfzHxJA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11659"; a="91535746"
-X-IronPort-AV: E=Sophos;i="6.21,198,1763452800"; d="scan'208";a="91535746"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jan 2026 16:27:22 -0800
-X-CSE-ConnectionGUID: vCR2KWO/StmyDAmprPanQQ==
-X-CSE-MsgGUID: dHMzlpObSQWoeWYUhFs9EQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,198,1763452800"; d="scan'208";a="225411362"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.241.240.111])
- ([10.241.240.111])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jan 2026 16:27:21 -0800
-Message-ID: <de20e04a-bfeb-4737-9e30-15d117e796e8@intel.com>
-Date: Fri, 2 Jan 2026 16:27:20 -0800
+ (Exim 4.90_1) (envelope-from <jescom87@onedot1.one>)
+ id 1vbrWV-0000Pn-9l
+ for qemu-devel@nongnu.org; Fri, 02 Jan 2026 21:37:48 -0500
+Received: from localhost (localhost [127.0.0.1])
+ by smtp-out.flockmail.com (Postfix) with ESMTP id 4djl8p3vLgz7t7l
+ for <qemu-devel@nongnu.org>; Sat,  3 Jan 2026 02:37:46 +0000 (UTC)
+DKIM-Signature: a=rsa-sha256; bh=VlyK0nJZOqc5MMD9WUG8f7DQfSjnleAGqqhMlxkesFU=; 
+ c=relaxed/relaxed; d=onedot1.one;
+ h=to:message-id:from:subject:mime-version:date:from:to:subject:date:message-id:cc:in-reply-to:reply-to:references;
+ q=dns/txt; s=titan1; t=1767407866; v=1;
+ b=YCUDkwWanxhKEyOCwZ7mJpVhZhmZEx8ZSWwf70aENbFja7qaLX8usL0IuJJqvWp1cU1ppKp1
+ F7yb3p1pPzZTaQtlnQ9mzv0DEK1Gfs53hV4x4VJjO9VxsCRBXzp+bcqLJN9xCP99GqRMWx0QS8h
+ u5itVg2j4ZwDC+aCXxDqyV8Q=
+Received: from webmail-out.titan.email (unknown [10.10.132.168])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by smtp-out.flockmail.com (Postfix) with ESMTPS id 4djl8p31bvz7t84
+ for <qemu-devel@nongnu.org>; Sat,  3 Jan 2026 02:37:46 +0000 (UTC)
+Date: Sat, 3 Jan 2026 02:37:46 +0000 (GMT)
+Feedback-ID: :jescom87@onedot1.one:onedot1.one:flockmailId
+From: Jesse Comeau <jescom87@onedot1.one>
+To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Message-ID: <198779656619774976.0.v2@titan.email>
+Subject: Jesse (Termux)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 7/7] target/i386/kvm: don't stop Intel PMU counters
-To: Dongli Zhang <dongli.zhang@oracle.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org
-Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
- sandipan.das@amd.com, babu.moger@amd.com, likexu@tencent.com,
- like.xu.linux@gmail.com, groug@kaod.org, khorenko@virtuozzo.com,
- alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
- davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
- dapeng1.mi@linux.intel.com, joe.jin@oracle.com, ewanhai-oc@zhaoxin.com,
- ewanhai@zhaoxin.com
-References: <20251230074354.88958-1-dongli.zhang@oracle.com>
- <20251230074354.88958-8-dongli.zhang@oracle.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <20251230074354.88958-8-dongli.zhang@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=zide.chen@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/related; 
+ boundary="----=_Part_7122889_1198599051.1767407866270"
+X-F-Verdict: SPFVALID
+X-Titan-Src-Out: 1767407866454515101.30087.8862045117033669641@prod-use1-smtp-out1002.
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.4 cv=a8/K9VSF c=1 sm=1 tr=0 ts=695880fa
+ a=zUALi2e9YtxYzuTtHVOXhQ==:117 a=MKtGQD3n3ToA:10 a=1oJP67jkp3AA:10
+ a=CEWIc4RMnpUA:10 a=mTLUI6cdAAAA:8 a=k_soojD9K1zzZ7W-puQA:9
+ a=YYW4CeQkUg_uW3TF:21 a=QEXdDO2ut3YA:10 a=PKy9fIuPxEFJzp7oedu4:22
+ a=Z_60_2tg-voYcxSmnYWO:22 a=iWSbBnEO8tLaiwZIWIOP:22
+ a=NWVoK91CQySWRX1oVYDe:22 a=1LUay7kfOPB8ZNMhXmZn:22
+Received-SPF: pass client-ip=209.209.25.115; envelope-from=jescom87@onedot1.one;
+ helo=mail52.out.titan.email
+X-Spam_score_int: -7
+X-Spam_score: -0.8
+X-Spam_bar: /
+X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_IMAGE_ONLY_20=1.546, HTML_IMAGE_RATIO_04=0.001, HTML_MESSAGE=0.001,
+ HTML_MIME_NO_HTML_TAG=0.377, MIME_HTML_ONLY=0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_REMOTE_IMAGE=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,83 +79,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+------=_Part_7122889_1198599051.1767407866270
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-
-On 12/29/2025 11:42 PM, Dongli Zhang wrote:
-> PMU MSRs are set by QEMU only at levels >= KVM_PUT_RESET_STATE,
-> excluding runtime. Therefore, updating these MSRs without stopping events
-> should be acceptable.
-
-It seems preferable to keep the existing logic. The sequence of
-disabling -> setting new counters -> re-enabling is complete and
-reasonable. Re-enabling the PMU implicitly tell KVM to do whatever
-actions are needed to make the new counters take effect.
-
-If the purpose of this patch to improve performance, given that this is
-a non-critical path, trading this clear and robust logic for a minor
-performance gain does not seem necessary.
-
-
-> In addition, KVM creates kernel perf events with host mode excluded
-> (exclude_host = 1). While the events remain active, they don't increment
-> the counter during QEMU vCPU userspace mode.
-> 
-> Finally, The kvm_put_msrs() sets the MSRs using KVM_SET_MSRS. The x86 KVM
-> processes these MSRs one by one in a loop, only saving the config and
-> triggering the KVM_REQ_PMU request. This approach does not immediately stop
-> the event before updating PMC. This approach is true since Linux kernel
-> commit 68fb4757e867 ("KVM: x86/pmu: Defer reprogram_counter() to
-> kvm_pmu_handle_event"), that is, v6.2.
-
-This seems to assume KVM's internal behavior. While that is true today
-(and possibly in the future), it’s not necessary for QEMU to  make such
-assumptions, as that could unnecessarily limit KVM’s flexibility to
-change its behavior later.
-
-
-> No Fixed tag is going to be added for the commit 0d89436786b0 ("kvm:
-> migrate vPMU state"), because this isn't a bugfix.
-> 
-> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-> Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-> ---
-> Changed since v3:
->   - Re-order reasons in commit messages.
->   - Mention KVM's commit 68fb4757e867 (v6.2).
->   - Keep Zhao's review as there isn't code change.
-> Changed since v6:
->   - Add Reviewed-by from Dapeng Mi.
-> 
->  target/i386/kvm/kvm.c | 9 ---------
->  1 file changed, 9 deletions(-)
-> 
-> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-> index 99837048b8..742dc6ac0d 100644
-> --- a/target/i386/kvm/kvm.c
-> +++ b/target/i386/kvm/kvm.c
-> @@ -4222,13 +4222,6 @@ static int kvm_put_msrs(X86CPU *cpu, KvmPutState level)
->          }
->  
->          if ((IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env)) && pmu_version > 0) {
-> -            if (pmu_version > 1) {
-> -                /* Stop the counter.  */
-> -                kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR_CTRL, 0);
-> -                kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_CTRL, 0);
-> -            }
-> -
-> -            /* Set the counter values.  */
->              for (i = 0; i < num_pmu_fixed_counters; i++) {
->                  kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR0 + i,
->                                    env->msr_fixed_counters[i]);
-> @@ -4244,8 +4237,6 @@ static int kvm_put_msrs(X86CPU *cpu, KvmPutState level)
->                                    env->msr_global_status);
->                  kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_OVF_CTRL,
->                                    env->msr_global_ovf_ctrl);
-> -
-> -                /* Now start the PMU.  */
->                  kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR_CTRL,
->                                    env->msr_fixed_ctr_ctrl);
->                  kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_CTRL,
-
+Hi,&nbsp;
+<div>
+ <br>
+</div>
+<div>
+ &nbsp; &nbsp; Interested in qemu source code for Termux?
+ <br>
+ <br>
+ <div data-signature-parent="sig-parent"> 
+  <signature data-signature-id="local-8b789dba-8a86" style="display:table;width:100%;"> 
+   <div style="user-select: inherit; scrollbar-color: var(--scrollbar-active-color) #0000; box-sizing: border-box;" fr-original-style="user-select: inherit; scrollbar-color: var(--scrollbar-active-color) #0000; box-sizing: border-box;">
+    Jesse Comeau
+    <br style="user-select: inherit; scrollbar-color: var(--scrollbar-active-color) #0000; box-sizing: border-box;" fr-original-style="">August 4th 1987
+    <br style="user-select: inherit; scrollbar-color: var(--scrollbar-active-color) #0000; box-sizing: border-box;" fr-original-style="">519-507-9274
+    <br style="user-select: inherit; scrollbar-color: var(--scrollbar-active-color) #0000; box-sizing: border-box;" fr-original-style="">Teeswater, On
+    <br style="user-select: inherit; scrollbar-color: var(--scrollbar-active-color) #0000; box-sizing: border-box;" fr-original-style="">
+    <br style="user-select: inherit; scrollbar-color: var(--scrollbar-active-color) #0000; box-sizing: border-box;" fr-original-style="">Owner/Founder
+    <br style="user-select: inherit; scrollbar-color: var(--scrollbar-active-color) #0000; box-sizing: border-box;" fr-original-style="">One.1
+   </div> 
+  </signature> 
+ </div>
+</div>
+<img class="flm-open" width="0" height="0" style="border:0;width:0;height:0;display:block;" src="https://gateway-east.rootserverlink.com/dc/t/mo/v2?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwIjoiMTAwMiA3OTcyMDAyIHFlbXUtZGV2ZWxAbm9uZ251Lm9yZyBiMTk3MTk0MDYwZTEwNzQxMWM5NmViOGQzMjljMjM2ZCA0MjM4NjQ3MjkzMjk2NjQwMiAxID8iLCJleHAiOjE3ODI5NTk4NjZ9.diqBoDcjOU1tyaeLQX4pjcdSL_3383n7ki3wyJaEVT4Gaa_DYRmPnKdq45AFxRH-yx-qB_lwRB4w2P-tr55KkQ&requestId=a_03023733_SMR_120_epW_PyFc">
+------=_Part_7122889_1198599051.1767407866270--
 
