@@ -2,72 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C012CF0BCA
-	for <lists+qemu-devel@lfdr.de>; Sun, 04 Jan 2026 08:55:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E06CF0CE0
+	for <lists+qemu-devel@lfdr.de>; Sun, 04 Jan 2026 11:05:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vcIwf-00086Z-M6; Sun, 04 Jan 2026 02:54:37 -0500
+	id 1vcKy7-0001Mg-Nk; Sun, 04 Jan 2026 05:04:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1vcIwd-00085r-4T
- for qemu-devel@nongnu.org; Sun, 04 Jan 2026 02:54:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1vcIwb-0002K5-Kf
- for qemu-devel@nongnu.org; Sun, 04 Jan 2026 02:54:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767513273;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=hYi2AdeJkUKmYKXNm64FjtkWNNMfAqqSRdIJknViB7Q=;
- b=XZe9AFV7CbeR3s5I+8FgkEOk7C8hbKmjf8xThbg7+ga8uWd/iTweIO21SXdL06VfoJpfmh
- or50R4NFCp37ssvNQ+2gKJsIlvjWjBSEMInIbQEooOZTiavGDFEFI8ha1I7J+ZaSB5X+0d
- QoL0XcqjQk7Ep7aRWoXrHJ2kPd76VRY=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-60-mWSuyD5RPpa7mxX-oXFjDA-1; Sun,
- 04 Jan 2026 02:54:29 -0500
-X-MC-Unique: mWSuyD5RPpa7mxX-oXFjDA-1
-X-Mimecast-MFC-AGG-ID: mWSuyD5RPpa7mxX-oXFjDA_1767513268
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ABD18180035A; Sun,  4 Jan 2026 07:54:28 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.72.112.156])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id DF862180044F; Sun,  4 Jan 2026 07:54:25 +0000 (UTC)
-From: Jason Wang <jasowang@redhat.com>
-To: zhangckid@gmail.com, lizhijian@fujitsu.com, jasowang@redhat.com,
- qemu-devel@nongnu.org
-Cc: lulu@redhat.com
-Subject: [PATCH 3/3] tests/qtest: Add test for filter-redirector rx event
- opened
-Date: Sun,  4 Jan 2026 15:54:12 +0800
-Message-ID: <20260104075412.1262-4-jasowang@redhat.com>
-In-Reply-To: <20260104075412.1262-1-jasowang@redhat.com>
-References: <20260104075412.1262-1-jasowang@redhat.com>
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1vcKy4-0001Lx-Ll
+ for qemu-devel@nongnu.org; Sun, 04 Jan 2026 05:04:13 -0500
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1vcKy2-0002r9-L8
+ for qemu-devel@nongnu.org; Sun, 04 Jan 2026 05:04:12 -0500
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-b73161849e1so2529241466b.2
+ for <qemu-devel@nongnu.org>; Sun, 04 Jan 2026 02:04:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1767521049; x=1768125849; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=FIOgTLTlArMoYG4W37E7sIEkKdpilICBovaYe6SFdaY=;
+ b=GjsheZDucaH2IJqGEU+36rQE1lbdfOfTBF6xCw39a6Wqy4UTm2oh1zqUjyV3fwLZgl
+ nKV7ksO7OcH4z960coiOe5aow5odGAYj12iMz3/rUELxWhRXKtGRu/isgC2VyOjY+NhL
+ cnTdD1c0SvYcxLMQE0uvfB7fpbLkYa78YPSkECs6f+8IwISOvpoCJMax7/ZwQczVJQ4r
+ PcJOERih+lqodHMrJs9q9JKIvR3pxn3fTEZM9PMPRmpho3CfDEeNeGP6+NGud+QtcIzN
+ wjRw32ltpheW4EP9CPjsHmhMhSZmwmw9neKr0aEYDOaRNbk8mkWSGnPFNZc29rlBrInO
+ FwNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1767521049; x=1768125849;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=FIOgTLTlArMoYG4W37E7sIEkKdpilICBovaYe6SFdaY=;
+ b=ibZOphxJCQ6EVH2ESNQciFC1nCq+Lr5HfaW3+w4TwE9vHRFkz6kdlsOwL6P9P0CbmX
+ jHdK5KsGBEUbcV36PHH/WdSznzfp4sXOvUHHcs3Vuvd/NodhlkuXnsAKo03e+tNiQlHV
+ dtk/7p+8NcqPZ7PZxIIYxVGmPIiY792fQuDHhweYOPfkNauPvv/lazvFkk9l3Sd+uqBt
+ agVYSrIjETRc9nXLKah2DWMsY0cGiu5FlLEU0UlKPR006Vj07jOdWQg/TmDVyx/Cl/5a
+ u4v9gINPTAOlnSSa8BMpdWZW9hlsrBng5OPiQLFXQeU4XInlI3giRUcyR6hKK4YoF5h1
+ CklQ==
+X-Gm-Message-State: AOJu0YwXuaPBMP5ZkdSJCq9YgFIyMnyYM/iSSv7bqIDmMefZ3Ji8zFQZ
+ HRKBSUSdshiemBGPPjgHwmMIST/EjeNsN6fp5mvOPR8k1ZgRDzf/7V27FYDzdZpf5AB9HSz8X8F
+ m24rXfdXhPGa3Uu6xr3nGgpjXhI4tQUWIUr4yXnbigw==
+X-Gm-Gg: AY/fxX7bzTSugZExq5u7NVzJS2ZF2aFoyWty+EzgnvkOaM972HsmWbZN807byhR+/AN
+ I7U7Vr5YBE630TyGQPq96TX9xRAbwZ37/F4Pu7QyJbflARy0HDqj1HALezsw7k9oiMugDhotnqS
+ JT7k4pdhtHHtYfnRQxqjtXv1JRxreCT+6i33qsh43nTLx4e2ENh96FS4+oIhWa81ukyO2ghglYx
+ 9xbGFI36vS6RwANmDIWSgZxWHlgN8J5EXWHL1y2NVlt8pzBYBM80Gf5wkxt9PVHOUL6RWc+Uwij
+ V/ATnRmDPHoZfrIN049S7JRCrf+5k2Dt8wkZLA==
+X-Google-Smtp-Source: AGHT+IFbk5rzeop8ibbBX+o/oiC1AAEDqUaUhiWN9q/6HdZ7GSNhdZz8SgryszHoR1bexv5GU8clxmOFG06BAB2g7Lw=
+X-Received: by 2002:a17:907:268c:b0:b79:e4db:2e9 with SMTP id
+ a640c23a62f3a-b80371f8c2emr4873364166b.60.1767521048752; Sun, 04 Jan 2026
+ 02:04:08 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20260102214724.4128196-1-pierrick.bouvier@linaro.org>
+ <20260102214724.4128196-8-pierrick.bouvier@linaro.org>
+ <t8ahil.2ih2pjydhjsas@linaro.org>
+ <c17de286-f432-426b-b181-06cd7a8edc55@linaro.org>
+In-Reply-To: <c17de286-f432-426b-b181-06cd7a8edc55@linaro.org>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Date: Sun, 4 Jan 2026 12:03:41 +0200
+X-Gm-Features: AQt7F2oPiUwxwpXLcqxnvK2D72TOLX5NxScatqAujogeY_42OgmfuIoxl6LaQzk
+Message-ID: <CAAjaMXZAs8DpyE5FanhwTq_EBi80vT=mc+axOHUhQbqm_EKJCg@mail.gmail.com>
+Subject: Re: [PATCH v2 07/11] meson: fix supported compiler arguments in other
+ languages than C
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org, Gustavo Bueno Romero <gustavo.romero@linaro.org>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Phil_Mathieu=2DDaud_=C3=A9?= <philmd@linaro.org>, 
+ =?UTF-8?Q?Alex_Benn_=C3=A9_e?= <alex.bennee@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2EBerrang_=C3=A9?= <berrange@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,140 +102,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a new test case 'test_redirector_rx_event_opened' to verify the
-handling of the CHR_EVENT_OPENED event in filter-redirector.
+On Sat, Jan 3, 2026 at 10:39=E2=80=AFPM Pierrick Bouvier
+<pierrick.bouvier@linaro.org> wrote:
+>
+> On 1/3/26 4:54 AM, Manos Pitsidianakis wrote:
+> > On Fri, 02 Jan 2026 23:47, Pierrick Bouvier <pierrick.bouvier@linaro.or=
+g> wrote:
+> >> qemu_common_flags are only checked for c compiler, even though they
+> >> are applied to c++ and objc. This is a problem when C compiler is gcc,
+> >> and C++ compiler is clang, creating a possible mismatch.
+> >>
+> >> One concrete example is option -fzero-call-used-regs=3Dused-gpr with
+> >> ubuntu2204 container, which is supported by gcc, but not by clang, thu=
+s
+> >> leading to a failure when compiling a C++ TCG plugin.
+> >>
+> >> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> >> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> >> ---
+> >> meson.build | 17 +++++++++--------
+> >> 1 file changed, 9 insertions(+), 8 deletions(-)
+> >>
+> >> diff --git a/meson.build b/meson.build
+> >> index a8fd8e88225..256cc0cdb21 100644
+> >> --- a/meson.build
+> >> +++ b/meson.build
+> >> @@ -709,10 +709,7 @@ if cc.compiles('extern struct { void (*cb)(void);=
+ } s; void f(void) { s.cb(); }'
+> >>      hardening_flags +=3D '-fzero-call-used-regs=3Dused-gpr'
+> >> endif
+> >>
+> >> -qemu_common_flags +=3D cc.get_supported_arguments(hardening_flags)
+> >> -
+> >> -add_global_arguments(qemu_common_flags, native: false, language: all_=
+languages)
+> >> -add_global_link_arguments(qemu_ldflags, native: false, language: all_=
+languages)
+> >> +qemu_common_flags +=3D hardening_flags
+> >>
+> >> # Collect warning flags we want to set, sorted alphabetically
+> >> warn_flags =3D [
+> >> @@ -771,15 +768,19 @@ if 'cpp' in all_languages
+> >>    qemu_cxxflags =3D ['-D__STDC_LIMIT_MACROS', '-D__STDC_CONSTANT_MACR=
+OS', '-D__STDC_FORMAT_MACROS'] + qemu_cflags
+> >> endif
+> >>
+> >> -add_project_arguments(qemu_cflags, native: false, language: 'c')
+> >> -add_project_arguments(cc.get_supported_arguments(warn_flags), native:=
+ false, language: 'c')
+> >> +add_project_arguments(cc.get_supported_arguments(qemu_common_flags + =
+qemu_cflags + warn_flags),
+> >> +                      native: false, language: 'c')
+> >> +add_global_link_arguments(qemu_ldflags, native: false, language: all_=
+languages)
+> >> +
+> >> if 'cpp' in all_languages
+> >> -  add_project_arguments(qemu_cxxflags, native: false, language: 'cpp'=
+)
+> >> +  add_project_arguments(cxx.get_supported_arguments(qemu_common_flags=
+ + qemu_cxxflags),
+> >> +                        native: false, language: 'cpp')
+> >
+> > This is a subtle behavior change (qemu_cxxflags wasn't filtered through
+> > cxx.get_supported_arguments previously). Do we care about this?
+> >
+>
+> Sames goes for qemu_c_flags that we now filter also and we applied
+> directly before. The goal is to have the same code layout in meson.build
+> between the three languages for code clarity.
+> My argument for this and qemu_cxxflags is that it should be equivalent,
+> and if it's not, it should have been raised previously with an
+> unsupported argument warning at compile time anyway.
+>
+> By curiousity, looking at meson source, has_argument is implemented by
+> compiling a file with the given flag, which is equivalent to what we do
+> manually. It has different implementations per language: grep
+> has_multi_arguments.
+>
+> Thanks,
+> Pierrick
 
-The test simulates a scenario where the backend character device (socket)
-is disconnected and then reconnected. It works by:
-1. Connecting to the redirector's socket (triggers CHR_EVENT_OPENED).
-2. Sending a packet to verify initial connectivity.
-3. Disconnecting (triggers CHR_EVENT_CLOSED).
-4. Reconnecting (triggers CHR_EVENT_OPENED again).
-5. Sending another packet to verify that the redirector correctly
-   re-registers its handlers and resumes passing traffic.
+Good enough for me
 
-This ensures that the filter-redirector can recover and function correctly
-after a backend reconnection.
-
-Signed-off-by: Jason Wang <jasowang@redhat.com>
----
- tests/qtest/test-filter-redirector.c | 96 ++++++++++++++++++++++++++++
- 1 file changed, 96 insertions(+)
-
-diff --git a/tests/qtest/test-filter-redirector.c b/tests/qtest/test-filter-redirector.c
-index da0c126314..5540c232c0 100644
---- a/tests/qtest/test-filter-redirector.c
-+++ b/tests/qtest/test-filter-redirector.c
-@@ -385,6 +385,100 @@ static void test_redirector_init_status_off(void)
-     qtest_quit(qts);
- }
- 
-+static void test_redirector_rx_event_opened(void)
-+{
-+    int backend_sock[2], send_sock;
-+    uint32_t ret = 0, len = 0;
-+    char send_buf[] = "Hello!!";
-+    char send_buf2[] = "Hello2!!";
-+    char sock_path0[] = "filter-redirector0.XXXXXX";
-+    char *recv_buf;
-+    uint32_t size = sizeof(send_buf);
-+    uint32_t size2 = sizeof(send_buf2);
-+    size = htonl(size);
-+    size2 = htonl(size2);
-+    QTestState *qts;
-+
-+    ret = socketpair(PF_UNIX, SOCK_STREAM, 0, backend_sock);
-+    g_assert_cmpint(ret, !=, -1);
-+
-+    ret = mkstemp(sock_path0);
-+    g_assert_cmpint(ret, !=, -1);
-+
-+    qts = qtest_initf(
-+        "-nic socket,id=qtest-bn0,fd=%d "
-+        "-chardev socket,id=redirector0,path=%s,server=on,wait=off "
-+        "-object filter-redirector,id=qtest-f0,netdev=qtest-bn0,"
-+        "queue=rx,indev=redirector0 ",
-+        backend_sock[1], sock_path0);
-+
-+    struct iovec iov[] = {
-+        {
-+            .iov_base = &size,
-+            .iov_len = sizeof(size),
-+        }, {
-+            .iov_base = send_buf,
-+            .iov_len = sizeof(send_buf),
-+        },
-+    };
-+
-+    struct iovec iov2[] = {
-+        {
-+            .iov_base = &size2,
-+            .iov_len = sizeof(size2),
-+        }, {
-+            .iov_base = send_buf2,
-+            .iov_len = sizeof(send_buf2),
-+        },
-+    };
-+
-+    /* First connection */
-+    send_sock = unix_connect(sock_path0, NULL);
-+    g_assert_cmpint(send_sock, !=, -1);
-+    qtest_qmp_assert_success(qts, "{ 'execute' : 'query-status'}");
-+
-+    ret = iov_send(send_sock, iov, 2, 0, sizeof(size) + sizeof(send_buf));
-+    g_assert_cmpint(ret, ==, sizeof(send_buf) + sizeof(size));
-+
-+    ret = recv(backend_sock[0], &len, sizeof(len), 0);
-+    g_assert_cmpint(ret, ==, sizeof(len));
-+    len = ntohl(len);
-+    g_assert_cmpint(len, ==, sizeof(send_buf));
-+    recv_buf = g_malloc(len);
-+    ret = recv(backend_sock[0], recv_buf, len, 0);
-+    g_assert_cmpint(ret, ==, len);
-+    g_assert_cmpstr(recv_buf, ==, send_buf);
-+    g_free(recv_buf);
-+
-+    close(send_sock);
-+
-+    /* Verify disconnection handling if needed, but mainly we want to test Reconnection */
-+    qtest_qmp_assert_success(qts, "{ 'execute' : 'query-status'}");
-+
-+    /* Second connection */
-+    send_sock = unix_connect(sock_path0, NULL);
-+    g_assert_cmpint(send_sock, !=, -1);
-+    qtest_qmp_assert_success(qts, "{ 'execute' : 'query-status'}");
-+
-+    ret = iov_send(send_sock, iov2, 2, 0, sizeof(size2) + sizeof(send_buf2));
-+    g_assert_cmpint(ret, ==, sizeof(send_buf2) + sizeof(size2));
-+
-+    ret = recv(backend_sock[0], &len, sizeof(len), 0);
-+    g_assert_cmpint(ret, ==, sizeof(len));
-+    len = ntohl(len);
-+    g_assert_cmpint(len, ==, sizeof(send_buf2));
-+    recv_buf = g_malloc(len);
-+    ret = recv(backend_sock[0], recv_buf, len, 0);
-+    g_assert_cmpint(ret, ==, len);
-+    g_assert_cmpstr(recv_buf, ==, send_buf2);
-+    g_free(recv_buf);
-+
-+    close(send_sock);
-+    unlink(sock_path0);
-+    qtest_quit(qts);
-+    close(backend_sock[0]);
-+}
-+
- int main(int argc, char **argv)
- {
-     g_test_init(&argc, &argv, NULL);
-@@ -393,5 +487,7 @@ int main(int argc, char **argv)
-     qtest_add_func("/netfilter/redirector_status", test_redirector_status);
-     qtest_add_func("/netfilter/redirector_init_status_off",
-                    test_redirector_init_status_off);
-+    qtest_add_func("/netfilter/redirector_rx_event_opened",
-+                   test_redirector_rx_event_opened);
-     return g_test_run();
- }
--- 
-2.34.1
-
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
