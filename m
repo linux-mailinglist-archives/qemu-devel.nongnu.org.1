@@ -2,57 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF585CF0BCD
-	for <lists+qemu-devel@lfdr.de>; Sun, 04 Jan 2026 08:55:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07B9DCF0BCE
+	for <lists+qemu-devel@lfdr.de>; Sun, 04 Jan 2026 08:55:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vcIwZ-00084Z-6U; Sun, 04 Jan 2026 02:54:31 -0500
+	id 1vcIwb-00085f-Du; Sun, 04 Jan 2026 02:54:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1vcIwV-00083U-U6
- for qemu-devel@nongnu.org; Sun, 04 Jan 2026 02:54:27 -0500
+ id 1vcIwZ-00085A-O6
+ for qemu-devel@nongnu.org; Sun, 04 Jan 2026 02:54:31 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1vcIwT-0002Ip-TR
- for qemu-devel@nongnu.org; Sun, 04 Jan 2026 02:54:27 -0500
+ id 1vcIwY-0002JZ-1K
+ for qemu-devel@nongnu.org; Sun, 04 Jan 2026 02:54:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767513264;
+ s=mimecast20190719; t=1767513269;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CVPAboRi8GsKhqIEX/T0rUfTBNXcx/r1uGbvlJ8zEgw=;
- b=Ma2POqDnYukHy6m5GazP+Yw5lppMi5OuRmjiwnOzTO0cmr58SkNu1/JLHSq9EyViqx/WRg
- Oxb5ZNxuyqwBPOcOMcwHeItWp/kPBxQaTMSIowITFKuz0dV6zvNpD6zn6KvFQEoHzMi93G
- JskqufFAwwj6ByGYZ4AL1vQ/3znChX4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=JkaPeokfe5utn6p03yAUV+zIHdrTJ9M5DCqbRBawJ3I=;
+ b=PlWQy4b9aC/fG6Pug019TEPPDEWe5A6VKZ06cpXvzgZmy6Hkhv6WSOComum0wFJIyiQZvl
+ x3rr0zcUYN5vu7RqDSsfLXK1qYuWOX22wBCEgdDjOmqu8DtnTsuHSxg1oNKFJG5i4G5P9f
+ 8wfEXf6ZUgPKisuX5uwiFvAWu5xfiSM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-662-w250x8OVM_WQmWH1qtkVTA-1; Sun,
- 04 Jan 2026 02:54:23 -0500
-X-MC-Unique: w250x8OVM_WQmWH1qtkVTA-1
-X-Mimecast-MFC-AGG-ID: w250x8OVM_WQmWH1qtkVTA_1767513262
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-94-XOeLbcXBOXetdo_xOVyxLA-1; Sun,
+ 04 Jan 2026 02:54:26 -0500
+X-MC-Unique: XOeLbcXBOXetdo_xOVyxLA-1
+X-Mimecast-MFC-AGG-ID: XOeLbcXBOXetdo_xOVyxLA_1767513265
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CBF341956050; Sun,  4 Jan 2026 07:54:21 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 284F51956080; Sun,  4 Jan 2026 07:54:25 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.112.156])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 19FE2180044F; Sun,  4 Jan 2026 07:54:18 +0000 (UTC)
+ id 83E1C180044F; Sun,  4 Jan 2026 07:54:22 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: zhangckid@gmail.com, lizhijian@fujitsu.com, jasowang@redhat.com,
  qemu-devel@nongnu.org
 Cc: lulu@redhat.com
-Subject: [PATCH 1/3] net/filter-redirector: add support for dynamic status
- on/off switching
-Date: Sun,  4 Jan 2026 15:54:10 +0800
-Message-ID: <20260104075412.1262-2-jasowang@redhat.com>
+Subject: [PATCH 2/3] qtest: add a test to test redirector status change
+Date: Sun,  4 Jan 2026 15:54:11 +0800
+Message-ID: <20260104075412.1262-3-jasowang@redhat.com>
 In-Reply-To: <20260104075412.1262-1-jasowang@redhat.com>
 References: <20260104075412.1262-1-jasowang@redhat.com>
 MIME-Version: 1.0
@@ -83,108 +82,232 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, filter-redirector does not implement the status_changed
-callback, which means the 'status' property cannot be used to
-dynamically enable/disable the filter at runtime. When status is
-set to 'off' via QMP/HMP, the filter still receives data from the
-indev chardev because the chardev handlers remain registered.
+This patch adds a qtest to test the status change of
+filter-redirector. Two subtests were added:
 
-This patch adds proper support for the 'status' property:
+- test_redirector_status: tests dynamic on/off switching at runtime
+  using qom-set QMP command
 
-1. Implement filter_redirector_status_changed() callback:
-   - When status changes to 'off': remove chardev read handlers
-   - When status changes to 'on': re-register chardev handlers
-     (only if chardev is already open)
+- test_redirector_init_status_off: tests creating filter-redirector
+  with status=off from the start via command line
 
-2. Update filter_redirector_setup() to respect initial status:
-   - If filter is created with status=off, do not register handlers
-   - This allows creating disabled filters via command line or QMP
+Both tests verify that:
 
-3. Handle chardev OPENED/CLOSED events to re-arm handlers on reconnect:
-   - Keep the chr_event callback installed on CLOSE so a later OPENED
-     can re-register the read handlers when nf->on
-   - Use qemu_chr_fe_set_handlers_full(..., set_open=false, sync_state=false)
-     instead of qemu_chr_fe_set_handlers() because the latter forces
-     sync_state=true and may emit CHR_EVENT_OPENED for an already-open
-     backend. Doing that from inside the chr_event callback would cause
-     recursive/re-entrant OPENED handling.
+1. When status is off, data from indev chardev is not received
+2. When status is switched to on, data is received correctly
 
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- net/filter-mirror.c | 38 +++++++++++++++++++++++++++++++++-----
- 1 file changed, 33 insertions(+), 5 deletions(-)
+ tests/qtest/test-filter-redirector.c | 192 +++++++++++++++++++++++++++
+ 1 file changed, 192 insertions(+)
 
-diff --git a/net/filter-mirror.c b/net/filter-mirror.c
-index 8e01e98f40..aa2ab452fd 100644
---- a/net/filter-mirror.c
-+++ b/net/filter-mirror.c
-@@ -179,9 +179,16 @@ static void redirector_chr_event(void *opaque, QEMUChrEvent event)
-     MirrorState *s = FILTER_REDIRECTOR(nf);
- 
-     switch (event) {
-+    case CHR_EVENT_OPENED:
-+        if (nf->on) {
-+            qemu_chr_fe_set_handlers_full(&s->chr_in, redirector_chr_can_read,
-+                                          redirector_chr_read, redirector_chr_event,
-+                                          NULL, nf, NULL, false, false);
-+        }
-+        break;
-     case CHR_EVENT_CLOSED:
--        qemu_chr_fe_set_handlers(&s->chr_in, NULL, NULL, NULL,
--                                 NULL, NULL, NULL, true);
-+        qemu_chr_fe_set_handlers_full(&s->chr_in, NULL, NULL, redirector_chr_event,
-+                                      NULL, nf, NULL, false, false);
-         break;
-     default:
-         break;
-@@ -306,9 +313,11 @@ static void filter_redirector_setup(NetFilterState *nf, Error **errp)
-             return;
-         }
- 
--        qemu_chr_fe_set_handlers(&s->chr_in, redirector_chr_can_read,
--                                 redirector_chr_read, redirector_chr_event,
--                                 NULL, nf, NULL, true);
-+        if (nf->on) {
-+            qemu_chr_fe_set_handlers(&s->chr_in, redirector_chr_can_read,
-+                                     redirector_chr_read, redirector_chr_event,
-+                                     NULL, nf, NULL, true);
-+        }
-     }
- 
-     if (s->outdev) {
-@@ -324,6 +333,24 @@ static void filter_redirector_setup(NetFilterState *nf, Error **errp)
-     }
+diff --git a/tests/qtest/test-filter-redirector.c b/tests/qtest/test-filter-redirector.c
+index a996a80c1c..da0c126314 100644
+--- a/tests/qtest/test-filter-redirector.c
++++ b/tests/qtest/test-filter-redirector.c
+@@ -196,10 +196,202 @@ static void test_redirector_rx(void)
+     qtest_quit(qts);
  }
  
-+static void filter_redirector_status_changed(NetFilterState *nf, Error **errp)
++/*
++ * Test filter-redirector status on/off switching.
++ *
++ * This test verifies that:
++ * 1. When status is set to "off", the filter stops receiving data from indev
++ * 2. When status is set back to "on", the filter resumes receiving data
++ */
++static void test_redirector_status(void)
 +{
-+    MirrorState *s = FILTER_REDIRECTOR(nf);
++    int backend_sock[2], send_sock;
++    uint32_t ret = 0, len = 0;
++    char send_buf[] = "Hello!!";
++    char sock_path0[] = "filter-redirector0.XXXXXX";
++    char *recv_buf;
++    uint32_t size = sizeof(send_buf);
++    size = htonl(size);
++    QTestState *qts;
++    struct timeval tv;
++    fd_set rfds;
 +
-+    if (!s->indev) {
-+        return;
-+    }
++    ret = socketpair(PF_UNIX, SOCK_STREAM, 0, backend_sock);
++    g_assert_cmpint(ret, !=, -1);
 +
-+    if (nf->on) {
-+        qemu_chr_fe_set_handlers(&s->chr_in, redirector_chr_can_read,
-+                                 redirector_chr_read, redirector_chr_event,
-+                                 NULL, nf, NULL, true);
-+    } else {
-+        qemu_chr_fe_set_handlers(&s->chr_in, NULL, NULL, NULL,
-+                                 NULL, NULL, NULL, true);
-+    }
++    ret = mkstemp(sock_path0);
++    g_assert_cmpint(ret, !=, -1);
++
++    /*
++     * Setup a simple rx path:
++     * chardev (sock_path0) -> filter-redirector -> socket backend
++     */
++    qts = qtest_initf(
++        "-nic socket,id=qtest-bn0,fd=%d "
++        "-chardev socket,id=redirector0,path=%s,server=on,wait=off "
++        "-object filter-redirector,id=qtest-f0,netdev=qtest-bn0,"
++        "queue=rx,indev=redirector0 ",
++        backend_sock[1], sock_path0);
++
++    send_sock = unix_connect(sock_path0, NULL);
++    g_assert_cmpint(send_sock, !=, -1);
++
++    /* send a qmp command to guarantee that 'connected' is setting to true. */
++    qtest_qmp_assert_success(qts, "{ 'execute' : 'query-status'}");
++
++    struct iovec iov[] = {
++        {
++            .iov_base = &size,
++            .iov_len = sizeof(size),
++        }, {
++            .iov_base = send_buf,
++            .iov_len = sizeof(send_buf),
++        },
++    };
++
++    /*
++     * Test 1: Set status to "off" and verify data is not received
++     */
++    qtest_qmp_assert_success(qts,
++        "{ 'execute': 'qom-set', 'arguments': "
++        "{ 'path': '/objects/qtest-f0', 'property': 'status', 'value': 'off' }}");
++
++    ret = iov_send(send_sock, iov, 2, 0, sizeof(size) + sizeof(send_buf));
++    g_assert_cmpint(ret, ==, sizeof(send_buf) + sizeof(size));
++
++    /*
++     * Use select with timeout to check if data arrives.
++     * When status is off, no data should arrive.
++     */
++    FD_ZERO(&rfds);
++    FD_SET(backend_sock[0], &rfds);
++    tv.tv_sec = 0;
++    tv.tv_usec = 500000;  /* 500ms timeout */
++    ret = select(backend_sock[0] + 1, &rfds, NULL, NULL, &tv);
++    g_assert_cmpint(ret, ==, 0);  /* Should timeout, no data */
++
++    /*
++     * Test 2: Set status back to "on" and verify data is received
++     */
++    qtest_qmp_assert_success(qts,
++        "{ 'execute': 'qom-set', 'arguments': "
++        "{ 'path': '/objects/qtest-f0', 'property': 'status', 'value': 'on' }}");
++
++    ret = iov_send(send_sock, iov, 2, 0, sizeof(size) + sizeof(send_buf));
++    g_assert_cmpint(ret, ==, sizeof(send_buf) + sizeof(size));
++
++    ret = recv(backend_sock[0], &len, sizeof(len), 0);
++    g_assert_cmpint(ret, ==, sizeof(len));
++    len = ntohl(len);
++
++    g_assert_cmpint(len, ==, sizeof(send_buf));
++    recv_buf = g_malloc(len);
++    ret = recv(backend_sock[0], recv_buf, len, 0);
++    g_assert_cmpint(ret, ==, len);
++    g_assert_cmpstr(recv_buf, ==, send_buf);
++
++    g_free(recv_buf);
++    close(send_sock);
++    unlink(sock_path0);
++    qtest_quit(qts);
 +}
 +
- static char *filter_redirector_get_indev(Object *obj, Error **errp)
++/*
++ * Test filter-redirector created with status=off.
++ *
++ * This test verifies that when a filter-redirector is created with
++ * status=off, it does not receive data until status is set to on.
++ */
++static void test_redirector_init_status_off(void)
++{
++    int backend_sock[2], send_sock;
++    uint32_t ret = 0, len = 0;
++    char send_buf[] = "Hello!!";
++    char sock_path0[] = "filter-redirector0.XXXXXX";
++    char *recv_buf;
++    uint32_t size = sizeof(send_buf);
++    size = htonl(size);
++    QTestState *qts;
++    struct timeval tv;
++    fd_set rfds;
++
++    ret = socketpair(PF_UNIX, SOCK_STREAM, 0, backend_sock);
++    g_assert_cmpint(ret, !=, -1);
++
++    ret = mkstemp(sock_path0);
++    g_assert_cmpint(ret, !=, -1);
++
++    /*
++     * Create filter-redirector with status=off from the start
++     */
++    qts = qtest_initf(
++        "-nic socket,id=qtest-bn0,fd=%d "
++        "-chardev socket,id=redirector0,path=%s,server=on,wait=off "
++        "-object filter-redirector,id=qtest-f0,netdev=qtest-bn0,"
++        "queue=rx,indev=redirector0,status=off ",
++        backend_sock[1], sock_path0);
++
++    send_sock = unix_connect(sock_path0, NULL);
++    g_assert_cmpint(send_sock, !=, -1);
++
++    qtest_qmp_assert_success(qts, "{ 'execute' : 'query-status'}");
++
++    struct iovec iov[] = {
++        {
++            .iov_base = &size,
++            .iov_len = sizeof(size),
++        }, {
++            .iov_base = send_buf,
++            .iov_len = sizeof(send_buf),
++        },
++    };
++
++    /*
++     * Test 1: Filter was created with status=off, data should not be received
++     */
++    ret = iov_send(send_sock, iov, 2, 0, sizeof(size) + sizeof(send_buf));
++    g_assert_cmpint(ret, ==, sizeof(send_buf) + sizeof(size));
++
++    FD_ZERO(&rfds);
++    FD_SET(backend_sock[0], &rfds);
++    tv.tv_sec = 0;
++    tv.tv_usec = 500000;
++    ret = select(backend_sock[0] + 1, &rfds, NULL, NULL, &tv);
++    g_assert_cmpint(ret, ==, 0);  /* Should timeout, no data */
++
++    /*
++     * Test 2: Set status to "on" and verify data is received
++     */
++    qtest_qmp_assert_success(qts,
++        "{ 'execute': 'qom-set', 'arguments': "
++        "{ 'path': '/objects/qtest-f0', 'property': 'status', 'value': 'on' }}");
++
++    ret = iov_send(send_sock, iov, 2, 0, sizeof(size) + sizeof(send_buf));
++    g_assert_cmpint(ret, ==, sizeof(send_buf) + sizeof(size));
++
++    ret = recv(backend_sock[0], &len, sizeof(len), 0);
++    g_assert_cmpint(ret, ==, sizeof(len));
++    len = ntohl(len);
++
++    g_assert_cmpint(len, ==, sizeof(send_buf));
++    recv_buf = g_malloc(len);
++    ret = recv(backend_sock[0], recv_buf, len, 0);
++    g_assert_cmpint(ret, ==, len);
++    g_assert_cmpstr(recv_buf, ==, send_buf);
++
++    g_free(recv_buf);
++    close(send_sock);
++    unlink(sock_path0);
++    qtest_quit(qts);
++}
++
+ int main(int argc, char **argv)
  {
-     MirrorState *s = FILTER_REDIRECTOR(obj);
-@@ -440,6 +467,7 @@ static void filter_redirector_class_init(ObjectClass *oc, const void *data)
-     nfc->setup = filter_redirector_setup;
-     nfc->cleanup = filter_redirector_cleanup;
-     nfc->receive_iov = filter_redirector_receive_iov;
-+    nfc->status_changed = filter_redirector_status_changed;
+     g_test_init(&argc, &argv, NULL);
+     qtest_add_func("/netfilter/redirector_tx", test_redirector_tx);
+     qtest_add_func("/netfilter/redirector_rx", test_redirector_rx);
++    qtest_add_func("/netfilter/redirector_status", test_redirector_status);
++    qtest_add_func("/netfilter/redirector_init_status_off",
++                   test_redirector_init_status_off);
+     return g_test_run();
  }
- 
- static void filter_mirror_init(Object *obj)
 -- 
 2.34.1
 
