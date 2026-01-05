@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2607ECF2381
-	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 08:30:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F19B2CF253C
+	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 09:10:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vcf1k-0001FN-Ue; Mon, 05 Jan 2026 02:29:20 -0500
+	id 1vcfeK-0007kF-26; Mon, 05 Jan 2026 03:09:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vcf1i-0001F1-S4
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 02:29:18 -0500
-Received: from mgamail.intel.com ([198.175.65.16])
+ id 1vcfeD-0007jh-Lq
+ for qemu-devel@nongnu.org; Mon, 05 Jan 2026 03:09:07 -0500
+Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vcf1e-00067L-Uk
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 02:29:18 -0500
+ id 1vcfeA-0002Z7-Es
+ for qemu-devel@nongnu.org; Mon, 05 Jan 2026 03:09:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1767598155; x=1799134155;
+ t=1767600542; x=1799136542;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=Ko2tJYgDPuUFFCjsnDkPJJCMcM9k88miEBVTA1P8iE8=;
- b=h+Xc+kLZVyJYPHxxSFXEm5hGgCMNEWx5D21y6gLZmbON1tHYoWMS4Oxp
- s7kNJads/Vdyn+Woqv9MEm0JkJEPjRxLQ37nPaKJZ4tpaverFVvZcGw5R
- 03/fNkP4H4yIRU9mSTE++CxsUX5sAbbPFPiUUrHxxTpkiD8oj5IplYK/7
- D5ToLIc+NQMA0UZpDDoQAizXgSMFi6NFSsZ+E31IFqhT8PwJ5Uf5xM0gC
- kJs3IpvifC/6a+6GeyhaMhx3Eufo3fzGODbvMsL1gyWXPh02vTFuKg9xl
- 3UJER0Skb92pYUpCzxZz2fa6HxyFERr0lxvs/vyHOrkYoPmfm8/2I8nWj A==;
-X-CSE-ConnectionGUID: ECAp/ZB+TraXIFKNjqLxDg==
-X-CSE-MsgGUID: 4Tfp9QUjTrKJlBfx7OFE2A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11661"; a="69122212"
-X-IronPort-AV: E=Sophos;i="6.21,203,1763452800"; d="scan'208";a="69122212"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jan 2026 23:29:11 -0800
-X-CSE-ConnectionGUID: qgWdcDe2QUuiwpTQEcQnbA==
-X-CSE-MsgGUID: APcGFu95RzKmrGcxVe44Tw==
+ bh=C/ESKvPoYQ25jGL1V9iWNitjx4rrjRjsa5yd1yUDkA8=;
+ b=RATWm1QZwNDJfC6hQaDh+JmcXQDk5LmRwAN3KIkzEGRmWGceLpU40XcU
+ YW6AyqU2NoTLAZds9f2T1qElEVuKfgW7Mcq0UdnSeHEvHyzYXV9G94KJh
+ apHBTSXknQcpRu2nSV1d1U8O9QdcRRtrCFhW5ykQyrV6QciEvx7yGuY7A
+ hK8H4jEywIqzCtyZKoexBFJvL+yw/knCSxDg8ZHywjWKFKu5LucMmVu51
+ g78qovy+8xOUT065zWS9wh+Qtx+x8xXULReuf2fINaZiYHCPwjNLqVOAA
+ eRgtF21jRMaS7L0C3ykWMGF7xX363qnt0d1ce2cGAS0IoW7gIJBnUbHtY A==;
+X-CSE-ConnectionGUID: qPx8ck9WRR6tGXassbYbXg==
+X-CSE-MsgGUID: CMG0IBGhS5OUGSGBOe7mHQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11661"; a="86552121"
+X-IronPort-AV: E=Sophos;i="6.21,203,1763452800"; d="scan'208";a="86552121"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Jan 2026 00:08:58 -0800
+X-CSE-ConnectionGUID: Zt2oDJz4Sf+sOBOcMz544g==
+X-CSE-MsgGUID: bUFwb0cFRCanTS6lkJSeRg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,203,1763452800"; d="scan'208";a="203300183"
+X-IronPort-AV: E=Sophos;i="6.21,203,1763452800"; d="scan'208";a="225867180"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by fmviesa010.fm.intel.com with ESMTP; 04 Jan 2026 23:29:07 -0800
-Date: Mon, 5 Jan 2026 15:54:32 +0800
+ by fmviesa002.fm.intel.com with ESMTP; 05 Jan 2026 00:08:55 -0800
+Date: Mon, 5 Jan 2026 16:34:20 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Igor Mammedov <imammedo@redhat.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -57,17 +57,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  BALATON Zoltan <balaton@eik.bme.hu>,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>,
  devel@lists.libvirt.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [RFC 01/10] qom: Rename ObjectPropertyFlags to
- ObjectPropertyAccessorFlags
-Message-ID: <aVtuOHU6xmhuDx5v@intel.com>
+Subject: Re: [RFC 07/10] hw/core/qdev-properties: Allow to mark qdev property
+ as deprecated
+Message-ID: <aVt3jJ2JqWI96yZE@intel.com>
 References: <20251202170502.3228625-1-zhao1.liu@intel.com>
- <20251202170502.3228625-2-zhao1.liu@intel.com>
- <20260102131253.5b60853b@imammedo-mac>
+ <20251202170502.3228625-8-zhao1.liu@intel.com>
+ <20260102132717.1211737f@imammedo-mac>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260102131253.5b60853b@imammedo-mac>
-Received-SPF: pass client-ip=198.175.65.16; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20260102132717.1211737f@imammedo-mac>
+Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -92,35 +92,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thanks for looking at this!
-
-> > Therefore, rename ObjectPropertyFlags to ObjectPropertyAccessorFlags,
-> > and then the original name ObjectPropertyFlags can be used for other
-> > cases.
+> > +#define DEFINE_PROP_UNSIGNED_DEPRECATED(_name, _state, _field, \
+> > +                                        _defval, _prop, _type) \
+> > +    DEFINE_PROP(_name, _state, _field, _prop, _type,           \
+> > +                .set_default = true,                           \
+> > +                .defval.u    = (_type)_defval,                 \
+> > +                .flags       = OBJECT_PROPERTY_DEPRECATED)
+> > +
+> >  #define DEFINE_PROP_UNSIGNED_NODEFAULT(_name, _state, _field, _prop, _type) \
 > 
-> I wonder if we can  just make existing ObjectPropertyFlags per object as you are planing
-> and still continue using it for accessor flags.
->
-> That basically will lets you use new flags everywhere without rewriting call sites
-> everywhere.
+> adding flags to the end of the names, basicaly spawns a lot of vartions of the same macro,
+> 
+> perhaps it's time to just add flags field and consoladate existing 'flag named' variants,
+> the one won't need to introduce DEFINE_PROP_UNSIGNED_DEPRECATED at all,
+> just use appropriate flag(s) when decaring property.
 
-I'm not sure about this. Currently, these read/write flags are actually
-specific to pointer properties (as showed by the changes in this patch,
-which all involve object_property_add_*_ptr() / object_class_property_add_*_ptr()).
+Good idea, what about this?
 
-Other property types doesn't yet support flag parameters, so additional
-interface modifications are still needed.
+-#define DEFINE_PROP_UNSIGNED(_name, _state, _field, _defval, _prop, _type) \
+-    DEFINE_PROP(_name, _state, _field, _prop, _type,                       \
+-                .set_default = true,                                       \
+-                .defval.u  = (_type)_defval)
++#define DEFINE_PROP_UNSIGNED(_name, _state, _field, _defval, _prop, _type, ...) \
++    DEFINE_PROP(_name, _state, _field, _prop, _type,                            \
++                .set_default = true,                                            \
++                .defval.u  = (_type)_defval,                                    \
++                ##__VA_ARGS__)
 
-And for now other property types either need to explicitly specify get/set
-accessors (e.g., object_property_add_bool()) or directly use the default
-get/set methods (e.g., object_property_add_link()).
+...
 
-If we extend read/write flags to other property types, such as adding
-"flags" argument to object_property_add_bool(), we must ensure the
-OBJ_PROP_FLAG_READ flag align with "get" argument and OBJ_PROP_FLAG_WRITE
-flag align with "set" parameters. This would introduces additional complexity.
+-#define DEFINE_PROP_UINT8(_n, _s, _f, _d)                       \
+-    DEFINE_PROP_UNSIGNED(_n, _s, _f, _d, qdev_prop_uint8, uint8_t)
++#define DEFINE_PROP_UINT8(_n, _s, _f, _d, ...)                       \
++    DEFINE_PROP_UNSIGNED(_n, _s, _f, _d, qdev_prop_uint8, uint8_t, ##__VA_ARGS__)
 
-Thanks,
+Then we can mark a property as deprecated by:
+
+DEFINE_PROP_UINT8("version", IOAPICCommonState, version, IOAPIC_VER_DEF,
+                  .flags = OBJECT_PROPERTY_DEPRECATED),
+
+
+Regards,
 Zhao
 
 
