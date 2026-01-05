@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3474ACF53BC
-	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 19:27:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64296CF5325
+	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 19:16:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vcp7Z-00019r-7R; Mon, 05 Jan 2026 13:16:01 -0500
+	id 1vcp7Z-0001A4-TZ; Mon, 05 Jan 2026 13:16:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brookmangabriel@gmail.com>)
- id 1vcp7P-00015f-6T
+ id 1vcp7P-00015g-6v
  for qemu-devel@nongnu.org; Mon, 05 Jan 2026 13:15:51 -0500
-Received: from mail-qv1-xf30.google.com ([2607:f8b0:4864:20::f30])
+Received: from mail-qk1-x72a.google.com ([2607:f8b0:4864:20::72a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <brookmangabriel@gmail.com>)
- id 1vcp77-000353-UE
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 13:15:37 -0500
-Received: by mail-qv1-xf30.google.com with SMTP id
- 6a1803df08f44-8888a16d243so1369766d6.1
- for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 10:15:32 -0800 (PST)
+ id 1vcp78-00035H-BG
+ for qemu-devel@nongnu.org; Mon, 05 Jan 2026 13:15:38 -0500
+Received: by mail-qk1-x72a.google.com with SMTP id
+ af79cd13be357-8c0f13e4424so17283985a.1
+ for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 10:15:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1767636932; x=1768241732; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1767636933; x=1768241733; darn=nongnu.org;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=BWmrXieWCSWbw5aDZUcuXmz1CVwQXvxz4s+Pt+y6UfI=;
- b=UaFzIHMNCwkGOcpnjf2PbzQvTTCTryUFFz8ZjD1UEeRHpNt106HTxqJTD3cJd9Z2df
- iA7uZ1HNmGONdGqoZf3j8RCdmNb0uIh3zHcCb2lgCpyXXEyyYs9bsPlN/C9mzXCHUhth
- FVvTUPZhylH4WW+rvSvzA+A9/8umG0SaKzqyeUThQqtoZF7QOsa5JQtjstPN9eKYrMeh
- 76t25XOCH/v0qv4dcLiOHoSKKJ8qc8C6L27bk0VrauWjCn5Ft0iQkUTeEftuxswrQiRt
- ssnA92S6RSQuS6E3es3LxmiA6TFrUPiGLJn2kTHMSiXZp8VEfnyxRiSWMT0jXS4P3Mrv
- Jrkw==
+ :reply-to; bh=jHcTA6gvDp/xKck7gSYynyMsBMw427kEreNJmMaWlCI=;
+ b=iDTlJo3/9tS3IbxYHvfZz7/Cs618fRjF1PMDUdTZuIyydWgZ+1zzUwbzdrTaSM1M0b
+ e6e2ImcNG7Zn8VJOiu9g+5zfuAgdvfyvHON2HSkg3MkdrGplM7aiCHMFHm6lnEGke7q/
+ 1XnMxyfdB4mdjUfGfa026X3u2FnCGssW0c6L3kODXjNbv8rT0RoMgQKURfPpk0J3TbZU
+ oIhRkRtqpV0MlsotvOH/GiJHOvbbMFxydrfaWdoECwgmoTZfkYDQWqFKDIGWlndYlvY4
+ zwrVmyBIQt6JTknAKu9qUR7onH24r+BemmscI9s19cSLdWOjRh8kSwRFhFZjXegIqlHs
+ x4JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767636932; x=1768241732;
+ d=1e100.net; s=20230601; t=1767636933; x=1768241733;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=BWmrXieWCSWbw5aDZUcuXmz1CVwQXvxz4s+Pt+y6UfI=;
- b=G4JIKxlYX0hwQzVJ3nQ1ZEAT0HjMumAatyNLcL84UgYc7aZe7f0VRKmw19ZxGumYgL
- WS/jASOlrnvpe0E1K8Nqk+mHeCR+3lZmhbr/WOAkQlZVSsJYZG+C9j4QUB3awCQ5hxuC
- +Z/H/CYkQxEsBuM7Nzi4PRnGNUh73KGtz2vbFFZZOhzgS+lEULyU9RbddLGIe0s6D1ea
- 41vGPJlWjC+9/kEUJjIqxh94K2/jRXhT+knTK9IUOMbfLiH39MSXqvKqZQ8oU2nwy4k2
- PxKqMhBkeAhHOOrlloxlY61ZVEjBjVwEp6Nr81n4ouwEoo81vxLgCJDlCVlnzAsaw5T5
- j40A==
-X-Gm-Message-State: AOJu0Yw8KjtnUevF3+FZSgLxJGlrCt6xt6WBV+0DGuconVnDVYI2b80l
- 3yYii05gQUzj3+OUChhMQcYjTDuPLtdHtDrR+xEyPYiEjhmWdXpINKKh
-X-Gm-Gg: AY/fxX7M523jYu8QWHAwAWVPPjtSQ0YmiCG9OsxkoX5GrAH1/NN0gxOOj681//VLlll
- xANGgrkDdcPIYxWDOR+ZwUCdol3443FbbqJ2tdGHQ+2v8Hcoz4MCX7f3TNt9k1mgGKT8wcGciOh
- EbU+zuxAYcwmbKDmtt7kaZgg83afEc0mtmjpaW0Tk4kyNqFd75GPUMktUN8FjiqE96PJckAKtb3
- 10RPR1UI+O93yfhpUMaDsWSJdV8oZKbjsL4VUGLXdspo0i2YiMLYLvj4DFa1dVK/9QM9tUUJALr
- +YmP9drWqAc8IwBefm1vQQ/cXEEqKRBdCIkksiIYMkYrOWMaDGqgeAH6h9NnNFHC9osU5rFcX4Y
- vfQcmHKbrdMXfztYTCO21D6L8Vzubdd3jldfr13lw6kvbIt6ltgr+/d2CFq71axe9CCx6PSIEFP
- UthwNh1deADbxv1VfQ6WTX+06M
-X-Google-Smtp-Source: AGHT+IHjF8qhvbll+f2NCJXDbsTu75jdWG8PTSweroZXAthjAwRbPR+5lN1OnZ8b6AJ7vJDwULlfQQ==
-X-Received: by 2002:a05:6214:5c43:b0:88a:342f:32a with SMTP id
- 6a1803df08f44-89075d1cce6mr7381786d6.14.1767636931669; 
- Mon, 05 Jan 2026 10:15:31 -0800 (PST)
+ bh=jHcTA6gvDp/xKck7gSYynyMsBMw427kEreNJmMaWlCI=;
+ b=YBHXANkoi+kf3DRNPBV+do+0qqqGojodTw2YxYC0vH2bUBiQAI8Ia9sws2UD2NXd15
+ 8XGBTP20bOhhbgzSEa2+fPrFQJbC/d6qAEalScFRFp3qgz35XtAoGE35e4FuDUgz3OsC
+ DlEVw5medW/K/i+gyu+3ZEJy0NOrdHvt79AKtmJ6S5ldWpRGpU2ygMRtpU0Uu8naGaPS
+ VVTGOfRCyVttS815MGs1k10tLp+L50JPL2d0tmfxkuctMA89sAqym4VVVkGCkiclWIBt
+ cCRiq9iBhvfDpUmOcK1tZRsiI6juMMHVW2M7niG1lBwPV50+kMVgn0xL3TyUscMk0zDm
+ 9z4w==
+X-Gm-Message-State: AOJu0Yz9Eoja3tF4hjiDX7PbdOi5t+B4VcyW3Rogbrkavk87tqdgY4vT
+ HBelfi1pFWletVL0AASt7lf7sTzr5qeKGLcM44yX0ub6m3KKxJ0rqAUE
+X-Gm-Gg: AY/fxX5CrYjU02ZXzhhJLtXZfF+4lXMgHfY4GSoz22g3rHRNVn7KIf9uA5A07N02XfL
+ XE9r21DD9KDdcrsZtx2LXTsUDdVDMAp9qm68dbaz0iDtorVnWTkjXs6XDnvofpH8tHe0B9HQAii
+ 2OQ9CGwUhMpWgk4y/RGpkEorxFu8WpjhbD2kAb6WIX9DWU6D9UtEzff7crabWKbRAvzipaoRBEM
+ zrMPeJZJFDNtTD7eXnoRd3gzx5Qi7g4m4K9p7UrwuFRJ3nO4yHIMBQjk/bg+qI1aWW/3rtEydMf
+ /YfZbG+R0H5tUsbGmNFsgfhUzJZwRcufhqor6SCQCn1GoyHl2+qnEtH1Wa0hbL5U9s1v4oqL3S2
+ h49D1Foo/X1xj4Ja04ivsPIAJV5Dl0bAxoNl+MVjBzqnhdcruwO4nfJ9ZYYhZC6VeZL5ipkzRx8
+ 4FfXRslyQ8ihcW+k1m7HHD83DN
+X-Google-Smtp-Source: AGHT+IGIubFrjaDstDhy2HP0AvVgIuVu6sOCYDgkatRaaxDLLIIQsVe/1hGcWjayX1w34wXl5JnI9Q==
+X-Received: by 2002:a05:6214:2d42:b0:888:8088:209e with SMTP id
+ 6a1803df08f44-89075e29387mr8275936d6.16.1767636933005; 
+ Mon, 05 Jan 2026 10:15:33 -0800 (PST)
 Received: from [192.168.1.204] ([185.213.193.254])
  by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-8907540e24csm3855706d6.25.2026.01.05.10.15.30
+ 6a1803df08f44-8907540e24csm3855706d6.25.2026.01.05.10.15.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jan 2026 10:15:31 -0800 (PST)
+ Mon, 05 Jan 2026 10:15:32 -0800 (PST)
 From: Gabriel Brookman <brookmangabriel@gmail.com>
-Date: Mon, 05 Jan 2026 11:14:53 -0700
-Subject: [PATCH RFC v3 04/12] linux-user: add MTE_STORE_ONLY to prctl
+Date: Mon, 05 Jan 2026 11:14:54 -0700
+Subject: [PATCH RFC v3 05/12] target/arm: removed TBI bits from MTE check logic
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260105-feat-mte4-v3-4-86a0d99ef2e4@gmail.com>
+Message-Id: <20260105-feat-mte4-v3-5-86a0d99ef2e4@gmail.com>
 References: <20260105-feat-mte4-v3-0-86a0d99ef2e4@gmail.com>
 In-Reply-To: <20260105-feat-mte4-v3-0-86a0d99ef2e4@gmail.com>
 To: qemu-devel@nongnu.org
@@ -78,22 +78,22 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>, 
  Gabriel Brookman <brookmangabriel@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767636923; l=2508;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767636923; l=4186;
  i=brookmangabriel@gmail.com; s=20251009; h=from:subject:message-id;
- bh=7iu0AGDmcowWfiZU7ESBith02k7QUQRf9isJWo39Au0=;
- b=vbCSYh9KWkv3PitmxrOhYznRIX9v4mkKzvCyvWXkCYtrno7dqUXMocBVOirwNyiocB2S9paCJ
- 0T/pVVcbeOECQ62/QYnTMhUY3tDSfHddMKKP5ytKf3Uhq4AFqESbNP8
+ bh=vOLU69w4oknJyo6gD2D8xBaLfCFyetC8olb1OJPcJpo=;
+ b=2kr95j6I9M2WDVhFoE/v1Eu39vFnmhb5EFZ1ctSdedVzZl+ncM6v7GecktttoQPjVvIFXX3Dc
+ K7NbWvpiZCcBAEtqhMfdzuA8cZdFDyKJhhifLZeJZsn2H2s0lM3uN2z
 X-Developer-Key: i=brookmangabriel@gmail.com; a=ed25519;
  pk=m9TtPDal6WzoHNnQiHHKf8dTrv3DUCPUUTujuo8vNrw=
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f30;
- envelope-from=brookmangabriel@gmail.com; helo=mail-qv1-xf30.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::72a;
+ envelope-from=brookmangabriel@gmail.com; helo=mail-qk1-x72a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,73 +109,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Linux-user processes can now control whether MTE_STORE_ONLY is enabled
-using the prctl syscall.
+Previously, the TBI bit was used to mediate whether MTE checks happened.
+This dependency isn't described in the ARM ARM. See D10.4.1, Tag Checked
+Memory Accesses, specifically.
+
+Decoupling tag checking from TBI is required to correctly implement
+canonical tag checking, which must function even when TBI is disabled.
 
 Signed-off-by: Gabriel Brookman <brookmangabriel@gmail.com>
 ---
- linux-user/aarch64/mte_user_helper.h |  3 +++
- linux-user/aarch64/target_prctl.h    | 11 +++++++++++
- tests/tcg/aarch64/mte.h              |  3 +++
- 3 files changed, 17 insertions(+)
+ target/arm/tcg/helper-a64.c |  9 +--------
+ target/arm/tcg/hflags.c     | 11 ++++-------
+ target/arm/tcg/mte_helper.c | 10 ----------
+ 3 files changed, 5 insertions(+), 25 deletions(-)
 
-diff --git a/linux-user/aarch64/mte_user_helper.h b/linux-user/aarch64/mte_user_helper.h
-index 0c53abda22..afd2d6dbda 100644
---- a/linux-user/aarch64/mte_user_helper.h
-+++ b/linux-user/aarch64/mte_user_helper.h
-@@ -20,6 +20,9 @@
- # define PR_MTE_TAG_SHIFT       3
- # define PR_MTE_TAG_MASK        (0xffffUL << PR_MTE_TAG_SHIFT)
- #endif
-+#ifndef PR_MTE_STORE_ONLY
-+# define PR_MTE_STORE_ONLY      (1UL << 19)
-+#endif
+diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
+index ba1d775d81..f64025925d 100644
+--- a/target/arm/tcg/helper-a64.c
++++ b/target/arm/tcg/helper-a64.c
+@@ -1050,20 +1050,13 @@ static int mops_sizereg(uint32_t syndrome)
+ }
  
- /**
-  * arm_set_mte_tcf0 - Set TCF0 field in SCTLR_EL1 register
-diff --git a/linux-user/aarch64/target_prctl.h b/linux-user/aarch64/target_prctl.h
-index 621be5727f..5207580c1a 100644
---- a/linux-user/aarch64/target_prctl.h
-+++ b/linux-user/aarch64/target_prctl.h
-@@ -168,6 +168,9 @@ static abi_long do_prctl_set_tagged_addr_ctrl(CPUArchState *env, abi_long arg2)
-     if (cpu_isar_feature(aa64_mte, cpu)) {
-         valid_mask |= PR_MTE_TCF_MASK;
-         valid_mask |= PR_MTE_TAG_MASK;
-+        if (cpu_isar_feature(aa64_mte4, cpu)) {
-+            valid_mask |= PR_MTE_STORE_ONLY;
-+        }
-     }
+ /*
+- * Return true if TCMA and TBI bits mean we need to do MTE checks.
++ * Return true if the TCMA bit means we need to do MTE checks.
+  * We only need to do this once per MOPS insn, not for every page.
+  */
+ static bool mte_checks_needed(uint64_t ptr, uint32_t desc)
+ {
+     int bit55 = extract64(ptr, 55, 1);
  
-     if (arg2 & ~valid_mask) {
-@@ -185,6 +188,14 @@ static abi_long do_prctl_set_tagged_addr_ctrl(CPUArchState *env, abi_long arg2)
+-    /*
+-     * Note that tbi_check() returns true for "access checked" but
+-     * tcma_check() returns true for "access unchecked".
+-     */
+-    if (!tbi_check(desc, bit55)) {
+-        return false;
+-    }
+     return !tcma_check(desc, bit55, allocation_tag_from_addr(ptr));
+ }
+ 
+diff --git a/target/arm/tcg/hflags.c b/target/arm/tcg/hflags.c
+index c4696af5d8..80d7ea9349 100644
+--- a/target/arm/tcg/hflags.c
++++ b/target/arm/tcg/hflags.c
+@@ -405,15 +405,13 @@ static CPUARMTBFlags rebuild_hflags_a64(CPUARMState *env, int el, int fp_el,
+         /*
+          * Set MTE_ACTIVE if any access may be Checked, and leave clear
+          * if all accesses must be Unchecked:
+-         * 1) If no TBI, then there are no tags in the address to check,
+-         * 2) If Tag Check Override, then all accesses are Unchecked,
+-         * 3) If Tag Check Fail == 0, then Checked access have no effect,
+-         * 4) If no Allocation Tag Access, then all accesses are Unchecked.
++         * 1) If Tag Check Override, then all accesses are Unchecked,
++         * 2) If Tag Check Fail == 0, then Checked access have no effect,
++         * 3) If no Allocation Tag Access, then all accesses are Unchecked.
           */
-         env->cp15.gcr_el1 =
-             deposit64(env->cp15.gcr_el1, 0, 16, ~arg2 >> PR_MTE_TAG_SHIFT);
-+
-+        /*
-+         * If MTE_STORE_ONLY is enabled, set the corresponding sctlr_el1 bit
-+         */
-+        if (cpu_isar_feature(aa64_mte4, cpu)) {
-+            env->cp15.sctlr_el[1] =
-+                deposit64(env->cp15.sctlr_el[1], 58, 1, extract64(arg2, 19, 1));
-+        }
-         arm_rebuild_hflags(env);
-     }
-     return 0;
-diff --git a/tests/tcg/aarch64/mte.h b/tests/tcg/aarch64/mte.h
-index 0805676b11..17b932f3f1 100644
---- a/tests/tcg/aarch64/mte.h
-+++ b/tests/tcg/aarch64/mte.h
-@@ -20,6 +20,9 @@
- #ifndef PR_TAGGED_ADDR_ENABLE
- # define PR_TAGGED_ADDR_ENABLE    (1UL << 0)
- #endif
-+#ifndef PR_MTE_STORE_ONLY
-+# define PR_MTE_STORE_ONLY        (1UL << 19)
-+#endif
- #ifndef PR_MTE_TCF_SHIFT
- # define PR_MTE_TCF_SHIFT         1
- # define PR_MTE_TCF_NONE          (0UL << PR_MTE_TCF_SHIFT)
+         if (allocation_tag_access_enabled(env, el, sctlr)) {
+             DP_TBFLAG_A64(flags, ATA, 1);
+-            if (tbid
+-                && !(env->pstate & PSTATE_TCO)
++            if (!(env->pstate & PSTATE_TCO)
+                 && (sctlr & (el == 0 ? SCTLR_TCF0 : SCTLR_TCF))) {
+                 DP_TBFLAG_A64(flags, MTE_ACTIVE, 1);
+                 if (!EX_TBFLAG_A64(flags, UNPRIV)) {
+@@ -439,7 +437,6 @@ static CPUARMTBFlags rebuild_hflags_a64(CPUARMState *env, int el, int fp_el,
+         }
+         /* And again for unprivileged accesses, if required.  */
+         if (EX_TBFLAG_A64(flags, UNPRIV)
+-            && tbid
+             && !(env->pstate & PSTATE_TCO)
+             && (sctlr & SCTLR_TCF0)
+             && allocation_tag_access_enabled(env, 0, sctlr)) {
+diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
+index 942bd4103d..f0880991b6 100644
+--- a/target/arm/tcg/mte_helper.c
++++ b/target/arm/tcg/mte_helper.c
+@@ -819,11 +819,6 @@ static int mte_probe_int(CPUARMState *env, uint32_t desc, uint64_t ptr,
+     bit55 = extract64(ptr, 55, 1);
+     *fault = ptr;
+ 
+-    /* If TBI is disabled, the access is unchecked, and ptr is not dirty. */
+-    if (unlikely(!tbi_check(desc, bit55))) {
+-        return -1;
+-    }
+-
+     ptr_tag = allocation_tag_from_addr(ptr);
+ 
+     if (tcma_check(desc, bit55, ptr_tag)) {
+@@ -960,11 +955,6 @@ uint64_t HELPER(mte_check_zva)(CPUARMState *env, uint32_t desc, uint64_t ptr)
+ 
+     bit55 = extract64(ptr, 55, 1);
+ 
+-    /* If TBI is disabled, the access is unchecked, and ptr is not dirty. */
+-    if (unlikely(!tbi_check(desc, bit55))) {
+-        return ptr;
+-    }
+-
+     ptr_tag = allocation_tag_from_addr(ptr);
+ 
+     if (tcma_check(desc, bit55, ptr_tag)) {
 
 -- 
 2.52.0
