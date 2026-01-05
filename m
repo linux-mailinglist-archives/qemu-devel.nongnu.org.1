@@ -2,81 +2,117 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F19B2CF253C
-	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 09:10:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A521CF27F9
+	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 09:43:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vcfeK-0007kF-26; Mon, 05 Jan 2026 03:09:13 -0500
+	id 1vcg9T-0003jD-Th; Mon, 05 Jan 2026 03:41:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vcfeD-0007jh-Lq
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 03:09:07 -0500
-Received: from mgamail.intel.com ([192.198.163.8])
+ (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
+ id 1vcg9S-0003id-9L
+ for qemu-devel@nongnu.org; Mon, 05 Jan 2026 03:41:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vcfeA-0002Z7-Es
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 03:09:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1767600542; x=1799136542;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=C/ESKvPoYQ25jGL1V9iWNitjx4rrjRjsa5yd1yUDkA8=;
- b=RATWm1QZwNDJfC6hQaDh+JmcXQDk5LmRwAN3KIkzEGRmWGceLpU40XcU
- YW6AyqU2NoTLAZds9f2T1qElEVuKfgW7Mcq0UdnSeHEvHyzYXV9G94KJh
- apHBTSXknQcpRu2nSV1d1U8O9QdcRRtrCFhW5ykQyrV6QciEvx7yGuY7A
- hK8H4jEywIqzCtyZKoexBFJvL+yw/knCSxDg8ZHywjWKFKu5LucMmVu51
- g78qovy+8xOUT065zWS9wh+Qtx+x8xXULReuf2fINaZiYHCPwjNLqVOAA
- eRgtF21jRMaS7L0C3ykWMGF7xX363qnt0d1ce2cGAS0IoW7gIJBnUbHtY A==;
-X-CSE-ConnectionGUID: qPx8ck9WRR6tGXassbYbXg==
-X-CSE-MsgGUID: CMG0IBGhS5OUGSGBOe7mHQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11661"; a="86552121"
-X-IronPort-AV: E=Sophos;i="6.21,203,1763452800"; d="scan'208";a="86552121"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jan 2026 00:08:58 -0800
-X-CSE-ConnectionGUID: Zt2oDJz4Sf+sOBOcMz544g==
-X-CSE-MsgGUID: bUFwb0cFRCanTS6lkJSeRg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,203,1763452800"; d="scan'208";a="225867180"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa002.fm.intel.com with ESMTP; 05 Jan 2026 00:08:55 -0800
-Date: Mon, 5 Jan 2026 16:34:20 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- BALATON Zoltan <balaton@eik.bme.hu>,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>,
- devel@lists.libvirt.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [RFC 07/10] hw/core/qdev-properties: Allow to mark qdev property
- as deprecated
-Message-ID: <aVt3jJ2JqWI96yZE@intel.com>
-References: <20251202170502.3228625-1-zhao1.liu@intel.com>
- <20251202170502.3228625-8-zhao1.liu@intel.com>
- <20260102132717.1211737f@imammedo-mac>
+ (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
+ id 1vcg9Q-0006N2-Gt
+ for qemu-devel@nongnu.org; Mon, 05 Jan 2026 03:41:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1767602478;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=CpBaI83/QXQnH/6r1gOGX/LSjWj4be/cHbKPdrjMLlA=;
+ b=erCkl+lmhZXoCJqjlBIU0CiT5qk5YpxcJ34/TL+bMa/gv5aMeb0HOW5uAFw3shGRMlL98P
+ rzTAfurMmb1flVFUDykQf209NZtB5H3jeZBO0dqSNhTMO0n2zD8EOxHSUJXuV0TxxlzSkZ
+ JSNhgprEkQLLH1hAtckxVY9cSYSbdCk=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-511-vtAVs4ZgOPGLfsgD5dqo7w-1; Mon, 05 Jan 2026 03:40:09 -0500
+X-MC-Unique: vtAVs4ZgOPGLfsgD5dqo7w-1
+X-Mimecast-MFC-AGG-ID: vtAVs4ZgOPGLfsgD5dqo7w_1767602408
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-47918084ac1so120472075e9.2
+ for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 00:40:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=redhat.com; s=google; t=1767602408; x=1768207208; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=CpBaI83/QXQnH/6r1gOGX/LSjWj4be/cHbKPdrjMLlA=;
+ b=lRkBhJvx5J851586r6SEtV9+ITw5F1Fw7yQ+y9cRh93CBxv0IXiWvEazBWvOFogTto
+ jRhzMwAxF/RslNfaeXwtBGxgBbs6LlRFd3VOZtBL7gCEN3d0BttMDm+ADKIBgj746pn1
+ P6/v9SMPTRO56uY32FNTKJVeFDcRe5hARloUbIsR1g95mSslBnGn/BAc67zyRaFyah0F
+ wOU0T3rL8q3vctWvDzbJIFXDzw1qncW9/ZKrn4gd+YzmM6rY/007+mBh0w7rgFMQ0JXQ
+ +nTqtcrtWTfgprjtK9U8nVOohWdMF6whjOBF04DVQHlHayHozoT0Fw2a3udgJ2T8Bz4g
+ goew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1767602408; x=1768207208;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=CpBaI83/QXQnH/6r1gOGX/LSjWj4be/cHbKPdrjMLlA=;
+ b=VS9jqIL+PLcKvhUV04wPqH+TuY1zWmKpXvZ0KIhN9QixK2+MwS09DtXc754UO9+aSN
+ Ivx8bPQ5jEEnmjpii53j2Mipz31zAGnZK0A5jdp/yfXjXg7xtN7WbOxJjnLyfgg/BKjA
+ DB3a+/8pMnzZviRIuDAlIJ5hmcGF+/1FhCzxLxEsTTn9fVNJ7nOYijbNLux7U8iPlRXD
+ acsnwix6oAM6+2afBgScA0VvUOeG62x4c2mEdZaP7W1l2Vd8+XxuKh1VQVufGLdyjdbF
+ fqKbpWxQA0aXFjJKfXT0mMcVlVpqP8dxWq/5TJgVZParoK67Y0WIgATKqlkpfNNozuhs
+ p7+g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU90dXrJus2aFp7Tp8ek+Dc9/axY1E9yGmjfEWiSdsrZ3imBWke5R4ihUqJWuypdhZ43iGGCOqifuGw@nongnu.org
+X-Gm-Message-State: AOJu0Yztt30A7moPl9s6Tl8XvWqJY4cYGlfCo+/Hk2FSuasB2me4I/mL
+ dS2mP86AzQJr2EREdnCyErMmgRPVLILBD1yGLHqSr/OK1YZ9i7/5gpf+RwFNBlwU+vE2v8lNP6L
+ o4AQk0vhwQ02euAkEEqvRNEnAVFeqoU4YKR4QV8XWjO/oP00n/MDGjxCX
+X-Gm-Gg: AY/fxX5usCtWzDvDnGiSYnUNH9G9/18R83ga+fCyzY9n5anfIzq1S87EiB8TOv4ahX5
+ MEcbugjF10boYuyHLM6ZAoIoTM1mS7TTxNAWaTjWvLoOB+2Jd3zG8wkqJHSB3aKT6lOyh2TjxEE
+ pkI075UsIQznQVjIz83A3hHTUczb952aswrBj/p1KySsQHX0RSFoCuPx8go9feYSaS2jG3mmGBa
+ ecetJEsSVg9OQJr6gC8+57p/+5Nd5aMy/nN5cO7TD61WmG9hjipLrDPVaTznM5np5Nz1eW66l3j
+ K2kFpiMRlKyulxZTmQ1ZGNyJBxMAE75kTq87Q67aHgOXqtpDqFCgUDDhzXfuvbKZIwkn/YlOkL4
+ =
+X-Received: by 2002:a05:600c:348a:b0:46e:1a5e:211 with SMTP id
+ 5b1f17b1804b1-47d1958a755mr656043745e9.21.1767602408353; 
+ Mon, 05 Jan 2026 00:40:08 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH95a52nPfqxCMH/IFUE4jS5rV/1ExZzhK0HtVLMD5w4RhlZAsgNa8sdh4ikhaQJFKQ59rXlA==
+X-Received: by 2002:a05:600c:348a:b0:46e:1a5e:211 with SMTP id
+ 5b1f17b1804b1-47d1958a755mr656043395e9.21.1767602407976; 
+ Mon, 05 Jan 2026 00:40:07 -0800 (PST)
+Received: from [10.43.3.236] ([213.175.37.14])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-4324ea830fesm100412053f8f.20.2026.01.05.00.40.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 05 Jan 2026 00:40:07 -0800 (PST)
+Message-ID: <0bf79738-4197-4746-a5fc-3c06722e0937@redhat.com>
+Date: Mon, 5 Jan 2026 09:40:06 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260102132717.1211737f@imammedo-mac>
-Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] docs/interop/firmware: Rename FirmwareFormat to
+ FirmwareFlashFormat
+To: Andrea Bolognani <abologna@redhat.com>, qemu-devel@nongnu.org
+Cc: Kashyap Chamarthy <kchamart@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Markus Armbruster <armbru@redhat.com>
+References: <20251228232649.1708400-1-abologna@redhat.com>
+ <20251228232649.1708400-2-abologna@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?B?TWljaGFsIFByw612b3puw61r?= <mprivozn@redhat.com>
+In-Reply-To: <20251228232649.1708400-2-abologna@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mprivozn@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,47 +128,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > +#define DEFINE_PROP_UNSIGNED_DEPRECATED(_name, _state, _field, \
-> > +                                        _defval, _prop, _type) \
-> > +    DEFINE_PROP(_name, _state, _field, _prop, _type,           \
-> > +                .set_default = true,                           \
-> > +                .defval.u    = (_type)_defval,                 \
-> > +                .flags       = OBJECT_PROPERTY_DEPRECATED)
-> > +
-> >  #define DEFINE_PROP_UNSIGNED_NODEFAULT(_name, _state, _field, _prop, _type) \
+On 12/29/25 00:26, Andrea Bolognani wrote:
+> We are about to introduce a new set of enums that will be used
+> by FirmwareMappingMemory and that don't overlap with the formats
+> that are supported for FirmwareMappingFlash, so we need to
+> disambiguate things.
 > 
-> adding flags to the end of the names, basicaly spawns a lot of vartions of the same macro,
+> Signed-off-by: Andrea Bolognani <abologna@redhat.com>
+> ---
+>  docs/interop/firmware.json | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> perhaps it's time to just add flags field and consoladate existing 'flag named' variants,
-> the one won't need to introduce DEFINE_PROP_UNSIGNED_DEPRECATED at all,
-> just use appropriate flag(s) when decaring property.
+> diff --git a/docs/interop/firmware.json b/docs/interop/firmware.json
+> index da0362a2c0..ef9b976a34 100644
+> --- a/docs/interop/firmware.json
+> +++ b/docs/interop/firmware.json
+> @@ -233,7 +233,7 @@
+>               'verbose-dynamic', 'verbose-static' ] }
+>  
+>  ##
+> -# @FirmwareFormat:
+> +# @FirmwareFlashFormat:
+>  #
+>  # Formats that are supported for firmware images.
 
-Good idea, what about this?
+Nitpick, ... "supported for flash firmware images" perhaps? Because
+after this, the enum is specific to FirmwareFlashFile.
 
--#define DEFINE_PROP_UNSIGNED(_name, _state, _field, _defval, _prop, _type) \
--    DEFINE_PROP(_name, _state, _field, _prop, _type,                       \
--                .set_default = true,                                       \
--                .defval.u  = (_type)_defval)
-+#define DEFINE_PROP_UNSIGNED(_name, _state, _field, _defval, _prop, _type, ...) \
-+    DEFINE_PROP(_name, _state, _field, _prop, _type,                            \
-+                .set_default = true,                                            \
-+                .defval.u  = (_type)_defval,                                    \
-+                ##__VA_ARGS__)
+>  #
+> @@ -243,7 +243,7 @@
+>  #
+>  # Since: 3.0
+>  ##
+> -{ 'enum': 'FirmwareFormat',
+> +{ 'enum': 'FirmwareFlashFormat',
+>    'data': [ 'raw', 'qcow2' ] }
+>  
+>  ##
+> @@ -265,7 +265,7 @@
+>  ##
+>  { 'struct' : 'FirmwareFlashFile',
+>    'data'   : { 'filename' : 'str',
+> -               'format'   : 'FirmwareFormat' } }
+> +               'format'   : 'FirmwareFlashFormat' } }
+>  
+>  
+>  ##
 
-...
-
--#define DEFINE_PROP_UINT8(_n, _s, _f, _d)                       \
--    DEFINE_PROP_UNSIGNED(_n, _s, _f, _d, qdev_prop_uint8, uint8_t)
-+#define DEFINE_PROP_UINT8(_n, _s, _f, _d, ...)                       \
-+    DEFINE_PROP_UNSIGNED(_n, _s, _f, _d, qdev_prop_uint8, uint8_t, ##__VA_ARGS__)
-
-Then we can mark a property as deprecated by:
-
-DEFINE_PROP_UINT8("version", IOAPICCommonState, version, IOAPIC_VER_DEF,
-                  .flags = OBJECT_PROPERTY_DEPRECATED),
-
-
-Regards,
-Zhao
+Michal
 
 
