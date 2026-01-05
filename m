@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95634CF533B
-	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 19:17:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6C95CF5374
+	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 19:21:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vcp8b-0001mf-ER; Mon, 05 Jan 2026 13:17:05 -0500
+	id 1vcp7a-0001AQ-UM; Mon, 05 Jan 2026 13:16:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brookmangabriel@gmail.com>)
- id 1vcp7T-00017N-M0
+ id 1vcp7T-00017K-J0
  for qemu-devel@nongnu.org; Mon, 05 Jan 2026 13:15:57 -0500
-Received: from mail-qk1-x72d.google.com ([2607:f8b0:4864:20::72d])
+Received: from mail-qk1-x731.google.com ([2607:f8b0:4864:20::731])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <brookmangabriel@gmail.com>)
- id 1vcp7P-00037B-Dd
+ id 1vcp7P-00037O-CW
  for qemu-devel@nongnu.org; Mon, 05 Jan 2026 13:15:54 -0500
-Received: by mail-qk1-x72d.google.com with SMTP id
- af79cd13be357-8b1e54aefc5so15053785a.1
- for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 10:15:40 -0800 (PST)
+Received: by mail-qk1-x731.google.com with SMTP id
+ af79cd13be357-8b2d6df99c5so224234785a.1
+ for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 10:15:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1767636940; x=1768241740; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1767636941; x=1768241741; darn=nongnu.org;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=udHcpN8ZZZt21zmciD7G8BASxGfZmLICDSByJJQKjAw=;
- b=VViVQYq1/5eOSa2IUEdWOvF5imujBC8PLtJfF6ibqMalmjYQm1JXpMRU6j0xV91APS
- RqKxTsHueCq6OpbhroQlxjtV+s0Kn33PrDUljnH7Mf4406iD953mPUrJF47a1hYseEY9
- g9NcqO4dcST7oU/x7ZOywNeCFuMv1EC60IsNRFpSE956uC2wgZwm4xy54rfl63eGPoyv
- LYChPrmDVsyjtA6omZ6IMa7KV3DgKo/HWQ2hPpYTqeKiJZ/TSopkSyFsOPh8a2HT35/k
- rOR5v1dfgT3tSl+J2WHf5q7/cBZmV5n15rHqxXiIxb+RC/+kXMwqkmvi7+v7SncGiHQw
- f6zw==
+ :reply-to; bh=ons3pkeG+AVih1XQoRu6SV66GeauT557hqhIckf2+cs=;
+ b=QYBj3sKBj4n/ggZ3VSWGe+OtphBUK3uPgU9hVO778IDKczsI1f1QFsv+EIormiJ0g8
+ 24U7WpfHbjrKhtaXb1pa6zdyc+oJp9jInecQ2FV/JwLFqo16E4PuaNhER/6NIzRQpe5h
+ +4E9/ZY3E67Pqlx579Ai01KFYq3mFv5C5KvtpGosPrXoLhBHYg2GcPTreqFnZtAenWKI
+ spV8HoLYu0MPMSGu14R5AXiRh7NaPy7M1nxJA1BHfkjTC3ogmTFjqZkTosCTt3Mg4gUQ
+ fDk9wy7abBUjqucLizakpdZMhfTEQ7Uq6lpUU7XU4bycWGb/YLB95Tt3vYlED1JMmHBF
+ Tr/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767636940; x=1768241740;
+ d=1e100.net; s=20230601; t=1767636941; x=1768241741;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=udHcpN8ZZZt21zmciD7G8BASxGfZmLICDSByJJQKjAw=;
- b=t88JL9NWnXejsZ+Jn3VGpYiCGsHxLbMnWV/EmPnQjDq4u3coHhsQT7KP2v0LT/MzVl
- VxBGNhJufRfmT+uNAFKOm1jGkgzyeOYUMmC/bOaR0KG5xlbTHD692xqDw39IjBdIVh1v
- ULVqBVHKj5r82YjLs5nOV7VG9G5n0o2e4Tb+Pe2Gw03Zzjn+VvQzr2wkZRZagCpwCwUK
- SPPsN+EwMLv+tHAqAh9iEAEii2AqWX+5X/asheVV7cedMQXsS0pO7QKNRcV3s/bjsLcx
- tWzTcjV4uH40CgZnhMlPUAnhTnnX/h8sT8xkvV32tNkLV50od3sb1CuAHwrChxZE7wQy
- mAMQ==
-X-Gm-Message-State: AOJu0YzUTrCPuTCIZ2McvtfBhD8vUPeoAKsvwRUQ6rUqX6sU3QE/RXkq
- 2Riw/kLpp+I7mQKINPd+PybkdybHA1RcE2DxGSssHhR7d4QmMzYMkWS2
-X-Gm-Gg: AY/fxX5du4yD1JZXat+UShznJVK3NC3s/J+bs34I3bUPn46MnQT4CUaLiFWunEf6bep
- 44TxIjnyqTGF5pB7l8poSb5wHYbLtk8qjWjeuFlQJ2PO14o7K2hLLzuakC5AL1PxBYaRErf1EOZ
- jzX2b0lxSJbdy23kQuJK8WfhIWqIJoxCFhFuCFjLFQCCTVISB8JU4z2EeqwNXTLS7SlW5+RXAMU
- 99ZG47tonqZ13fgUUJPxVmF3AAMClCFM+GWqJB8M4xrc+CsOJ1UtKR54FPmLpu7VdSvwI7SuU/S
- ynlZLxA3Y0OR5guYCVkObNENZwG6p9L8fSa3FLqo/pKhzrGzkLt9n3dZOH37ndX5TIogaZociBG
- nEUuG6t2vYYmzgl0LROONSWNxbg3+5HGu1m/b/O26YZJLnSqvyokP9V8QINbS3jOl9k2nAhTBjb
- EzZhWTeyS/j8vG0y9nx1zgIHvW
-X-Google-Smtp-Source: AGHT+IEH1q73W2xEmNCuPVoyRXFU7CwblIqnnjCeffn+13De9y7qMnrq+Z1Usj1DLFFk8Oq3949RtQ==
-X-Received: by 2002:ac8:5e0d:0:b0:4ee:24b8:2275 with SMTP id
- d75a77b69052e-4ffa769a0a5mr6418201cf.1.1767636939776; 
- Mon, 05 Jan 2026 10:15:39 -0800 (PST)
+ bh=ons3pkeG+AVih1XQoRu6SV66GeauT557hqhIckf2+cs=;
+ b=D2Q29O69kmZvapRADfMiDz7qVHFRNCI/aCU7deDnHIuKkxzB73tZr+aJf2IKXE1DxN
+ +muZqRLLa6cFjJGERZYxI/ZfMY6Uum2PSjgbHAHX0+95S+qLVEjLK8vCek6mirg0KRaY
+ Z7M4yAYjY+bIhncpuNh7aKPxhWOK9SVITFDxQUXuOK2mXvLIZEgoNoIaN8a/eK09Lqa5
+ ui0I6OtRYxLCWbBC5fkcn8jc9duxUsJfNUUGRVtYCqwERRaVKBynTooXEpm+aNayml/Y
+ SdguAhavi9b6/rd8+OTIZs/IXFvDxN/vQBOQsl11qEDbKRGE9+xwHAkAvYzBrhh7j+/3
+ eZGg==
+X-Gm-Message-State: AOJu0YywxKV0wxwEVJxADh1CxvQKsbVJ+ZImnLgONQDtdjRKe/XXoUZV
+ N+bIUDAiq1EnjQdraZLluPEgzO4SdxxxIIn4XsvEM0T3H9zFzdri76ba
+X-Gm-Gg: AY/fxX4uIQXA64bwktLwpOjtJ9Yi4OwyntLu/0yJVRkHfLWxne7Djs4CMA9iYLYA2GE
+ 9cLqfImo+wFj8Eo0TaQej5XBuB/i/e1gXPiXnbRAOTGKBx/B+5gvyfkDFR0Rs1tjGSnbdf9Wloq
+ fAitodeD6KznJR5Md7ZKG7ZRaF1iJIZb25MydW1gKKvtr7QjKoEqHEG1C+GWTOEcFBYN8iIG8KI
+ YU0UPRUAh0WwSKM6JmTqdZIWYjsmhV0FPZWU/xxJQ6jfU/jp4O8R5lgKTr41e32Tkl9O5p9g/ze
+ 4YXjrbeKBMg8KsD06MQQr5r7JTAYFQS2IH7HJJG6xSmE6i4LWkCsxsjMhAW1O/nWVgnKf3raNmj
+ 9IfAEXYrlDbjIhT/cr4ssYWiFQ6fyCTrCsD7f32yNEY0KSXy2KPHgueMxlOK+rIwlZSNNSS/szp
+ n8krMW2lrJXZfhCQ6F2GP7P8SB
+X-Google-Smtp-Source: AGHT+IHauq1L/g3mk0vi3UtS1CQgEx2X0Yl7WmRuvwfGIG6cn649R5xeuMnWC/5DCaHaD2kSFfnMzQ==
+X-Received: by 2002:ad4:55e4:0:b0:888:7c40:6bfc with SMTP id
+ 6a1803df08f44-89076992cd9mr772276d6.4.1767636941239; 
+ Mon, 05 Jan 2026 10:15:41 -0800 (PST)
 Received: from [192.168.1.204] ([185.213.193.254])
  by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-8907540e24csm3855706d6.25.2026.01.05.10.15.38
+ 6a1803df08f44-8907540e24csm3855706d6.25.2026.01.05.10.15.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jan 2026 10:15:39 -0800 (PST)
+ Mon, 05 Jan 2026 10:15:40 -0800 (PST)
 From: Gabriel Brookman <brookmangabriel@gmail.com>
-Date: Mon, 05 Jan 2026 11:14:59 -0700
-Subject: [PATCH RFC v3 10/12] docs: add MTE4 features to docs
+Date: Mon, 05 Jan 2026 11:15:00 -0700
+Subject: [PATCH RFC v3 11/12] tests/tcg: add test for MTE FAR
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260105-feat-mte4-v3-10-86a0d99ef2e4@gmail.com>
+Message-Id: <20260105-feat-mte4-v3-11-86a0d99ef2e4@gmail.com>
 References: <20260105-feat-mte4-v3-0-86a0d99ef2e4@gmail.com>
 In-Reply-To: <20260105-feat-mte4-v3-0-86a0d99ef2e4@gmail.com>
 To: qemu-devel@nongnu.org
@@ -78,15 +78,15 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>, 
  Gabriel Brookman <brookmangabriel@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767636923; l=2273;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767636923; l=2355;
  i=brookmangabriel@gmail.com; s=20251009; h=from:subject:message-id;
- bh=DsmbxIwUBXC/gS0c7G0YS6d9ziseoKdUCW31wFQg4u8=;
- b=7hq6iEvTw/7SdRedRqlvPiN7gXImWHLziKMoojuFus0lGNbf1qb1QAjzwnRwFSfrvYKkEVybz
- ixarxY83VGVDFVqdLBO1SeR2wLoDOvp2mHrJqMq0OfkviO3gECE5gVO
+ bh=9H3S2yi32msQiijkL2anIOhzD686SvaCB6f4b0JzVdc=;
+ b=w+dWMJzzOkLssHJVULkEuGKinX4cxjnS+YyLTk3hYQH3uCCcJr6n2Yda6NbqIeQg3e42ogV/E
+ 4XFTBOvD2QLAlTttC/zJtL4k6XSIEUxHveex/CDyILr4kAg6/N74nXN
 X-Developer-Key: i=brookmangabriel@gmail.com; a=ed25519;
  pk=m9TtPDal6WzoHNnQiHHKf8dTrv3DUCPUUTujuo8vNrw=
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72d;
- envelope-from=brookmangabriel@gmail.com; helo=mail-qk1-x72d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::731;
+ envelope-from=brookmangabriel@gmail.com; helo=mail-qk1-x731.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,53 +109,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The implemented MTE4 features are now present in
-docs/system/arm/emulation.rst
+This functionality was previously enabled but not advertised or tested.
+This commit adds a new test, mte-9, that tests the code for proper
+full-address reporting. FEAT_MTE_TAGGED_FAR requires that FAR_ELx
+report the full logical address, including tag bits.
 
 Signed-off-by: Gabriel Brookman <brookmangabriel@gmail.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- docs/system/arm/emulation.rst | 5 +++++
- target/arm/tcg/cpu64.c        | 8 ++++++++
- 2 files changed, 13 insertions(+)
+ tests/tcg/aarch64/Makefile.target |  2 +-
+ tests/tcg/aarch64/mte-9.c         | 48 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 49 insertions(+), 1 deletion(-)
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 31a5878a8f..12662189fc 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -106,6 +106,11 @@ the following architecture extensions:
- - FEAT_MTE3 (MTE Asymmetric Fault Handling)
- - FEAT_MTE_ASYM_FAULT (Memory tagging asymmetric faults)
- - FEAT_MTE_ASYNC (Asynchronous reporting of Tag Check Fault)
-+- FEAT_MTE_PERM (NoTagAccess memory attribute)
-+- FEAT_MTE_TAGGED_FAR (Full address reporting of Tag Check Fault)
-+- FEAT_MTE_STORE_ONLY (Store-only tag checking)
-+- FEAT_MTE_CANONICAL_TAGS (Canonical tag checking)
-+- FEAT_MTE_NO_ADDRESS_TAGS (Address tagging disabled)
- - FEAT_NMI (Non-maskable Interrupt)
- - FEAT_NV (Nested Virtualization)
- - FEAT_NV2 (Enhanced nested virtualization support)
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 917db5bb09..4ba126f4f8 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1281,8 +1281,16 @@ void aarch64_max_tcg_initfn(Object *obj)
-     t = FIELD_DP64(t, ID_AA64PFR1, CSV2_FRAC, 0); /* FEAT_CSV2_3 */
-     t = FIELD_DP64(t, ID_AA64PFR1, NMI, 1);       /* FEAT_NMI */
-     t = FIELD_DP64(t, ID_AA64PFR1, GCS, 1);       /* FEAT_GCS */
-+    t = FIELD_DP64(t, ID_AA64PFR1,
-+            MTEX, 1);   /* FEAT_MTE_NO_ADDRESS_TAGS + FEAT_MTE_CANONICAL_TAGS */
-     SET_IDREG(isar, ID_AA64PFR1, t);
+diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
+index 9fa8687453..b491cfb5e1 100644
+--- a/tests/tcg/aarch64/Makefile.target
++++ b/tests/tcg/aarch64/Makefile.target
+@@ -64,7 +64,7 @@ AARCH64_TESTS += bti-2
  
-+    t = GET_IDREG(isar, ID_AA64PFR2);
-+    t = FIELD_DP64(t, ID_AA64PFR2, MTEFAR, 1);    /* FEAT_MTE_TAGGED_FAR */
-+    t = FIELD_DP64(t, ID_AA64PFR2, MTESTOREONLY, 1);   /* FEAT_MTE_STORE_ONLY */
-+    t = FIELD_DP64(t, ID_AA64PFR2, MTEPERM, 1);    /* FEAT_MTE_PERM */
-+    SET_IDREG(isar, ID_AA64PFR2, t);
+ # MTE Tests
+ ifneq ($(CROSS_CC_HAS_ARMV8_MTE),)
+-AARCH64_TESTS += mte-1 mte-2 mte-3 mte-4 mte-5 mte-6 mte-7 mte-8
++AARCH64_TESTS += mte-1 mte-2 mte-3 mte-4 mte-5 mte-6 mte-7 mte-8 mte-9
+ mte-%: CFLAGS += $(CROSS_CC_HAS_ARMV8_MTE)
+ endif
+ 
+diff --git a/tests/tcg/aarch64/mte-9.c b/tests/tcg/aarch64/mte-9.c
+new file mode 100644
+index 0000000000..9626a90c13
+--- /dev/null
++++ b/tests/tcg/aarch64/mte-9.c
+@@ -0,0 +1,48 @@
++/*
++ * Memory tagging, full-address reporting.
++ *
++ * Copyright (c) 2021 Linaro Ltd
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
 +
-     t = GET_IDREG(isar, ID_AA64MMFR0);
-     t = FIELD_DP64(t, ID_AA64MMFR0, PARANGE, 6); /* FEAT_LPA: 52 bits */
-     t = FIELD_DP64(t, ID_AA64MMFR0, TGRAN16, 1);   /* 16k pages supported */
++#include "mte.h"
++
++static void *faulting_ptr;
++
++void pass(int sig, siginfo_t *info, void *uc)
++{
++    assert(faulting_ptr == info->si_addr);
++    exit(0);
++}
++
++int main(int ac, char **av)
++{
++    struct sigaction sa;
++    int *p0, *p1, *p2;
++    long excl = 1;
++
++    enable_mte(PR_MTE_TCF_SYNC);
++    p0 = alloc_mte_mem(sizeof(*p0));
++
++    /* Create two differently tagged pointers. */
++    asm("irg %0,%1,%2" : "=r"(p1) : "r"(p0), "r"(excl));
++    asm("gmi %0,%1,%0" : "+r"(excl) : "r" (p1));
++    assert(excl != 1);
++    asm("irg %0,%1,%2" : "=r"(p2) : "r"(p0), "r"(excl));
++    assert(p1 != p2);
++
++    /* Store the tag from the first pointer.  */
++    asm("stg %0, [%0]" : : "r"(p1));
++
++    *p1 = 0;
++
++    memset(&sa, 0, sizeof(sa));
++    sa.sa_sigaction = pass;
++    sa.sa_flags = SA_SIGINFO;
++    sigaction(SIGSEGV, &sa, NULL);
++
++    faulting_ptr = p2;
++    *p2 = 0;
++
++    abort();
++}
 
 -- 
 2.52.0
