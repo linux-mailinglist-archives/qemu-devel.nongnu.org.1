@@ -2,92 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EECDFCF53B3
-	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 19:27:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F00AFCF5443
+	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 19:49:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vcpFd-00078K-8R; Mon, 05 Jan 2026 13:24:21 -0500
+	id 1vcpcZ-00067i-Au; Mon, 05 Jan 2026 13:48:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vcpFZ-000781-Sh
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 13:24:18 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vcpbq-0005eB-Fq
+ for qemu-devel@nongnu.org; Mon, 05 Jan 2026 13:47:19 -0500
 Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vcpFX-0004GX-1u
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 13:24:17 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vcpbo-0000SD-PV
+ for qemu-devel@nongnu.org; Mon, 05 Jan 2026 13:47:18 -0500
 Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4775895d69cso1251485e9.0
- for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 10:24:14 -0800 (PST)
+ 5b1f17b1804b1-477632d9326so1508785e9.1
+ for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 10:47:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767637453; x=1768242253; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767638835; x=1768243635; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=eraO+DVSM3kX29lfo9PzVTCqOnfAgOhe9g52SBxmcIE=;
- b=P1YTDWQoqnKwm/ttbvgDWlzlj+7lrjz+sNq0iravbVffM3xUYckLThCcB3B/8/NDLk
- umNdH5vHrlibMBSTs8GSD2sX64tFaczDjx5bSYLONgyS7kk2JUmeur+2NAiZkE8jAvhk
- G6xw1iD2Q9h3SXIw61ts5aL0XS0NS/juwbittMEpema6umdbIXHALsEpPMD1kttyFj/M
- XDqAC2841CFrNKcernaplBFcsqTwUQvEKTormfYQdd9JpsGfjDvtXn/zNilTz+VzYkOb
- PKyP/FCFw8PdaCzpW6cClYgimweOdsmM+xMkAyt2lkDXX6O2G4HAhIHIqpDuuzUg20SM
- dm6g==
+ bh=SpDhy8RTo0H6hUNpedWzmERUj4zB9i/oq7zkILxNnFM=;
+ b=fNgzzwcpF52Y4HMIOmaaTFPjOSNpq2b4+FKqXkVHURBXsDtwfc2BVgDEb2EvtFDrSJ
+ CO6UV5c5WH42GH2fSfGq7r3WaE6NQYh6jTOXlLBCd8eA8LvkBjBA28IkHxJmSVhHvDk/
+ yumwS66BXHRq8U3l4UcB+XCucOZ9RLXM1Q7mhf9j/zl4F7+benxc5TPebEbODonYMNSK
+ liWvgR8eu46xvOAk4cnRdxy8Efzh9Xe5FCm0MUO8mn2eh+0iqt5W8wQpyRg5+IqgTZO6
+ Ei1FmcLkxWnCqdeg0GNDQ3SN4nWutK1di00YwfkVbhh2x9ycWSnl+77mirElGutaDrt1
+ RByg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767637453; x=1768242253;
+ d=1e100.net; s=20230601; t=1767638835; x=1768243635;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=eraO+DVSM3kX29lfo9PzVTCqOnfAgOhe9g52SBxmcIE=;
- b=DJA25d7PTPcfDw11Wh20nVTAMX8Zx0IrwwLnOs/8y6+OVhpNe5FzmdcNeSKOBjnmP7
- 4t1l0s8SDE/sjy4/7DQ725HOjA7xbKvE68LoNiXaAEcq8XnwN3pJDKz//29x5ujYgsJx
- AyDtGhyrV9dr96fuPgT6qlqMd4H3+02Lgyg8M/sX4W4h4276tLS3hqxBA+FdCQo+LUKg
- DJ7TLphoMKArk3dOxfjEh3gpyD3dscqK0PuwW8Vg60yJWyGpINykyosa8gPDLEF0hO41
- lG9ISV7hp20i58eRs+o2w0LOkhmzoR2HcguKCKoAFFp5RY075Q9ysWrmBKu98fgHKKJa
- JB3A==
+ bh=SpDhy8RTo0H6hUNpedWzmERUj4zB9i/oq7zkILxNnFM=;
+ b=tJx9xBxSJOuxGFKBXSkvqfxxKxd8cDyw4ECd0LVVBpM6Kn4W6fA+1KL8dtHlQveNpa
+ DBlPVPMiIKK+bI0FgLkIe5PL2n1x0faj+5chM/Gkk8BjBCv3IG41qHQW/DhQtY1s7u6n
+ muXnkkcRDzMJjepXrdDd3RWg91srj+PqRJL2N9vqj6Q+Oe3XmNq5Nvg/CA0IHbKxf0LD
+ eNYI8w6Jx35KeEssaYCBBsPD2DAhfSaF21h2lAsp0OX4W/mB4nffy0Tz+Mej5V/ogtoz
+ 3ql7dUCG0uRCPtV7ED02T+JghLgPEZsqgopcPyPBb+Yjmg66NzJxytXY0+OKq7sd/Ob/
+ Uf5w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWoGl80nV2R8Yy1rR61+Zp6KXja0TV/SXQSETQEeIjse1CAMjWlLyG+Dhef3JLwie4ijA561cnYkfMZ@nongnu.org
-X-Gm-Message-State: AOJu0YwckJgggTcJqW+xQzz0AcPkoAcLFxIgKiA/h3tjElg7EWPdl+5W
- g1/eCaFpafi0+wYoAFA+2zpB3JzNESm32S63QqLdaZ4MrXlk2dmoQCXbeWaeK5+k/VU=
-X-Gm-Gg: AY/fxX7JJlB9IzgFbzRHWnemMGv+pSSr+nETaIXLQ2B9Wr2vVNGZKtwDink3iVpz5+l
- GLFu4tXo9DfitE2CUaTK+VU+YmSOS3nQBzmVrB4FwaGi2dQe+ojPBfCZ6ox7fbjUHkUEMZyjhT0
- QTarCSkxALO99GPjfFVyfpzr3MK9dFHqoA5WqrrKowhXI3aNfPfEh4NBR1WxdwPWfBoszXei0Ab
- xH0hb6/vGBSQRg/e7WBlF6vsBt6UoVt1fxrUhrK5wRmXIi3T8kEk82EWz5f7i4bv5sit7NFAOzh
- mAfjeOjjSPXJahfmpa2Pn2gsPsFuzMCMmzI4+ZBT3uqHQF7uUxUriVx+ef+vXmZGH7V22ZHoG8P
- P8KmdQFeFS0MuIiFmiUhprlgYMM3rBGaBG4uYeIq/VJht4VXq5C6fxHnk3TDwP964TFdG1FbAjw
- ztI8449LhRrI/+A09x6NWVZ66kqddQNXpE6obl4VgiySYaFZ1Qi8n5MsBdPA==
-X-Google-Smtp-Source: AGHT+IEqBRAR/hdDBjP5GgMGZUI2NEZZdXUjk6gFAYTUo+yx5KmMdi7WU7CGYWrBrkZLlSceRfrkfg==
-X-Received: by 2002:a05:6000:4011:b0:431:3ba:1188 with SMTP id
- ffacd0b85a97d-432bca1679fmr854382f8f.3.1767637453013; 
- Mon, 05 Jan 2026 10:24:13 -0800 (PST)
+ AJvYcCWG2ZKwbsy/N8umdXb476eroPETLgnqZ4GRrK85l2xIpoXsxrUrNgp8PK57J8TlyhCgC1OkWBZ53uiy@nongnu.org
+X-Gm-Message-State: AOJu0YxdJ2s0c7MLzCdk2k3jUBzXcAtG3SERVfzLZuutG09s4r5M0NDh
+ TLhwCip3k7g1OW5uNte5h/YdCdgV803iWZOQxpaDTk//BIk34uRLJGcUeyitW2wF0CI=
+X-Gm-Gg: AY/fxX4LP9xOjwtKXKhFRya+hojOJ3ZB4BNNZY6IwxiyA4+ZEyVPkZA99wxyAh+RXf2
+ nyKPCZuzQOdVUpGgI5kSjRc8l8Be1v2GMaWWq0Mal5LCpjZWSyTgr/QHQHzTWqEVpI/b9HwgPfW
+ 7JEbwSSmiwIj8AuDMolImzx1AoRN6ekGWDPw2zFyjdPJ+0OVLie9YkJsl17npHvdy4VqEbeTkHq
+ Swzh5ju9T7pNxl8EmJt28ez4jr0FYHy1FD67TodTZrAfxsM4XAsfRx5p3MJgCd0WMxpSyB+cSN8
+ JfadtS9Dz0+GhXDtvWxG3bxfUtGYNwUfe6Yemkqve5kV76pD3rC/r+vshdthlWSN7eKBerUsg8l
+ Y9e9xYLuYwO6Ic+nm+hN4D6jD1hPuGmer6r3+KzpbQUXRpt4bVmtPLlZLfE6/ojH3jSyzi5CxFm
+ fQAFNiYICMJyEP6zGnFpTT84pUY2qMpal3WcXtVUSqBWE3HLNQgWJ0okz0LDTeUzb5TgEZ
+X-Google-Smtp-Source: AGHT+IHN9H9YrstvfBR/GcW4iAzN+UoMyvGONDjc7kReQ+iw1wi67fBpPStECW5snD5k+kjyA13r/w==
+X-Received: by 2002:a05:600c:c494:b0:47d:4047:f377 with SMTP id
+ 5b1f17b1804b1-47d7f0a36b6mr3740885e9.36.1767638834943; 
+ Mon, 05 Jan 2026 10:47:14 -0800 (PST)
 Received: from [10.247.174.66] (88-187-86-199.subs.proxad.net. [88.187.86.199])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-432bca56a24sm846592f8f.33.2026.01.05.10.24.11
+ 5b1f17b1804b1-47d7f390a69sm2996425e9.0.2026.01.05.10.47.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jan 2026 10:24:12 -0800 (PST)
-Message-ID: <5584951e-2eb0-4b4f-b946-0c89482eebf0@linaro.org>
-Date: Mon, 5 Jan 2026 19:24:10 +0100
+ Mon, 05 Jan 2026 10:47:14 -0800 (PST)
+Message-ID: <1752b84f-291b-4f56-9a97-e61163564963@linaro.org>
+Date: Mon, 5 Jan 2026 19:47:12 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 8/9] target/sparc: Simplify gdbstub
- sparc_cpu_gdb_write_register()
+Subject: Re: [PATCH 3/4] target/openrisc: Inline translator_ldl()
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?Q?Cl=C3=A9ment_Chigot?=
- <chigot@adacore.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Anton Johansson <anjo@rev.ng>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Artyom Tarasenko <atar4qemu@gmail.com>, Laurent Vivier <laurent@vivier.eu>,
+Cc: Jia Liu <proljc@gmail.com>, Pierrick Bouvier
+ <pierrick.bouvier@linaro.org>, Anton Johansson <anjo@rev.ng>,
+ Laurent Vivier <laurent@vivier.eu>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Frederic Konrad <konrad.frederic@yahoo.fr>
-References: <20251224162642.90857-1-philmd@linaro.org>
- <20251224162642.90857-9-philmd@linaro.org>
- <a48503cb-0a62-4cc7-83ff-393945dace0d@linaro.org>
- <854a4169-0f9b-4f10-a519-0410b799cb4e@linaro.org>
- <0a04dfd8-1c8c-4d87-99b8-d0e3cb9329d6@linaro.org>
+ Stafford Horne <shorne@gmail.com>
+References: <20251224161804.90064-1-philmd@linaro.org>
+ <20251224161804.90064-4-philmd@linaro.org>
+ <bc66522e-0c13-4c03-a7ec-86ef64a49eb4@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <0a04dfd8-1c8c-4d87-99b8-d0e3cb9329d6@linaro.org>
+In-Reply-To: <bc66522e-0c13-4c03-a7ec-86ef64a49eb4@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::329;
@@ -114,70 +107,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/1/26 12:45, Richard Henderson wrote:
-> On 1/5/26 21:56, Philippe Mathieu-Daudé wrote:
->> On 5/1/26 01:37, Richard Henderson wrote:
->>> On 12/25/25 03:26, Philippe Mathieu-Daudé wrote:
->>>> Rather than ldtul_p() which uses the underlying 'unsigned
->>>> long' size, use the ldn() variant, passing the access size
->>>> as argument (evaluating TARGET_LONG_BITS / 8).
->>>>
->>>> No need to use #ifdef'ry to check for TARGET_ABI32, since
->>>> it is 64-bit:
->>>>
->>>>    $ git grep -E '(ABI32|LONG_BITS)' configs/targets/sparc*
->>>>    configs/targets/sparc-linux-user.mak:5:TARGET_LONG_BITS=32
->>>>    configs/targets/sparc-softmmu.mak:4:TARGET_LONG_BITS=32
->>>>    configs/targets/sparc32plus-linux-user.mak:2:TARGET_ABI32=y
->>>>    configs/targets/sparc32plus-linux-user.mak:8:TARGET_LONG_BITS=64
->>>>    configs/targets/sparc64-linux-user.mak:8:TARGET_LONG_BITS=64
->>>>    configs/targets/sparc64-softmmu.mak:6:TARGET_LONG_BITS=64
->>>>
->>>> Directly expand to the big-endian variant (with the '_be' suffix)
->>>> since we only build the SPARC targets as big-endian.
->>>>
->>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>>> ---
->>>>   target/sparc/gdbstub.c | 12 ++----------
->>>>   1 file changed, 2 insertions(+), 10 deletions(-)
->>>>
->>>> diff --git a/target/sparc/gdbstub.c b/target/sparc/gdbstub.c
->>>> index 134617fb232..d265681f6d2 100644
->>>> --- a/target/sparc/gdbstub.c
->>>> +++ b/target/sparc/gdbstub.c
->>>> @@ -112,15 +112,7 @@ int sparc_cpu_gdb_write_register(CPUState *cs, 
->>>> uint8_t *mem_buf, int n)
->>>>   {
->>>>       SPARCCPU *cpu = SPARC_CPU(cs);
->>>>       CPUSPARCState *env = &cpu->env;
->>>> -#if defined(TARGET_ABI32)
->>>> -    uint32_t tmp;
->>>> -
->>>> -    tmp = ldl_p(mem_buf);
->>>> -#else
->>>> -    target_ulong tmp;
->>>> -
->>>> -    tmp = ldtul_p(mem_buf);
->>>> -#endif
->>>> +    uint64_t tmp = ldn_be_p(mem_buf, TARGET_LONG_BITS / 8);
->>>
->>> No, this changes the behaviour of sparc32plus.
+On 5/1/26 01:11, Richard Henderson wrote:
+> On 12/25/25 03:18, Philippe Mathieu-Daudé wrote:
+>> translator_ldl() is defined in "exec/translator.h" as:
 >>
->> $ git grep TARGET_ABI32 configs/targets/sparc*
->> configs/targets/sparc32plus-linux-user.mak:2:TARGET_ABI32=y
+>>    198 static inline uint32_t
+>>    199 translator_ldl(CPUArchState *env, DisasContextBase *db, vaddr pc)
+>>    200 {
+>>    201     return translator_ldl_end(env, db, pc, MO_TE);
+>>    202 }
 >>
->> $ cat configs/targets/sparc32plus-linux-user.mak
->> TARGET_ABI32=y
->> TARGET_BIG_ENDIAN=y
->> TARGET_LONG_BITS=64
+>> Directly use the inlined form, expanding MO_TE -> MO_BE
+>> since we only build the OpenRISC targets as big-endian.
 >>
->> Isn't it the same?
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   target/openrisc/translate.c | 3 ++-
+>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/target/openrisc/translate.c b/target/openrisc/translate.c
+>> index 6fa4d6cfa70..a6d550bbc2e 100644
+>> --- a/target/openrisc/translate.c
+>> +++ b/target/openrisc/translate.c
+>> @@ -1558,7 +1558,8 @@ static void 
+>> openrisc_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
+>>   static void openrisc_tr_translate_insn(DisasContextBase *dcbase, 
+>> CPUState *cs)
+>>   {
+>>       DisasContext *dc = container_of(dcbase, DisasContext, base);
+>> -    uint32_t insn = translator_ldl(cpu_env(cs), &dc->base, dc- 
+>> >base.pc_next);
+>> +    uint32_t insn = translator_ldl_end(cpu_env(cs), &dc->base,
+>> +                                       dc->base.pc_next, MO_BE);
+>>       if (!decode(dc, insn)) {
+>>           gen_illegal_exception(dc);
 > 
-> No.  ABI32 uses uint32_t, not uint64_t, even with 64-bit registers.
+> Use mo_endian().  With that,
 
-Oh right, I missed that.
+Oops!
 
-> Which is probably functionally broken, because, history.
+> 
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-And still we maintain it...
+Thanks!
 
