@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B04CF5377
-	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 19:21:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A4E2CF534D
+	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 19:18:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vcp7a-0001AY-UJ; Mon, 05 Jan 2026 13:16:03 -0500
+	id 1vcp7Z-0001A3-Rs; Mon, 05 Jan 2026 13:16:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brookmangabriel@gmail.com>)
- id 1vcp7U-00017S-24
+ id 1vcp7T-00017L-K5
  for qemu-devel@nongnu.org; Mon, 05 Jan 2026 13:15:57 -0500
-Received: from mail-qv1-xf35.google.com ([2607:f8b0:4864:20::f35])
+Received: from mail-qk1-x735.google.com ([2607:f8b0:4864:20::735])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <brookmangabriel@gmail.com>)
- id 1vcp7P-00036X-F9
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 13:15:55 -0500
-Received: by mail-qv1-xf35.google.com with SMTP id
- 6a1803df08f44-88a35a00502so1459246d6.0
- for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 10:15:37 -0800 (PST)
+ id 1vcp7O-00036p-Nd
+ for qemu-devel@nongnu.org; Mon, 05 Jan 2026 13:15:53 -0500
+Received: by mail-qk1-x735.google.com with SMTP id
+ af79cd13be357-8b144ec3aa8so18119885a.2
+ for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 10:15:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1767636937; x=1768241737; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1767636939; x=1768241739; darn=nongnu.org;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=/9Fx5rLfzSRK3bLfXlACPoaE0s79Ml+6B18vzxJguro=;
- b=RFFkaQwSYDSlkqo+gKhVj6PFok1mcNm9H00txbhy/W5K6Hw+l/EsgSc4FXiqF2kZps
- r2adOtMYG7qovn2RQMhmZDHc+qWQf1hyVgvFoGUZz+2+JzQKiE02UXjT3p6hHDut6tAo
- kWEffeej7sLByWs8DGUlZaBDD9NQWeFKI72+xwmES/pj3yiI15hwwhc8dQNOInmjn36y
- 3nvraUANT8lIqEkCqF8zBfLtor2coB/I10g2brftwwRjqW04re5zLIqOnpXxZCJRXIb1
- llZuvee2QPl/muYBpRZVqyFQmPThXV6Isw8K/0+5KMANsOwpGHCy7vwRYbMm0+4gcAjq
- njrg==
+ :reply-to; bh=K1wY6K4tRJI0JdX7e3qGoxLV7SdshDJLqi/7D/etC/8=;
+ b=MBMpY++6eUtNy4bW2jPjejI9aIJk9nLUzi72FcD5SdqBPIyUKfSBpQNFsyEsKoGtvG
+ yHgt/XBf5Oh9GxZn0LaRpC+zb2c0nx56XwYhmA+ihl6/KEjul8q/RvuzUovvY59+o6iG
+ 5kNNkQBiWm5TWHuT037sUHuDtTCVw6YgbDtjaCWxjD5fEC2U/W8S35PVSGiMvUGpLFX1
+ q/v+dZsUfzvu9LKdNv05MsRn7Lfv65qTaOUtyWK/33mM/m9+8Srx8S034ZpEBPpuvKX9
+ McOwKQWdTvMt8PjVbNWKz1Mr0hw8CvtuwqE/a+rXcaDpijMN+ssKD/YGZKE4t1DOp5+1
+ FHSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767636937; x=1768241737;
+ d=1e100.net; s=20230601; t=1767636939; x=1768241739;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=/9Fx5rLfzSRK3bLfXlACPoaE0s79Ml+6B18vzxJguro=;
- b=M9s24XpwqTJSAvbs2g3AGeimsRcF70GzyU1se/0qK2ITzmZR3zseOKs2X0eX/S4Nwl
- /Mo7TNhE0ZR9ACzgpj7i+4qd34fGjXZF8XxKJEI9BD4zWxzzbxguQEtZSFJ65AU/W89h
- NTHlYf8ayaFHTgQj28p8FhNKVn597FvVKK3qjdRv7kg47bHtkSwpEZXkifdm2zaeTs5n
- dZZws3EH5dx0DrXXv/E6oqsSZfwViPzDO0kEZTxiJskxGMC7Ap38PgKZRv2V5qkF2bUJ
- B5bKDVa4rj7vJNs9cRyXjD2syU4svaEVhMz7iKICNE6igktKWuahFBDOA8pHN04LE1x7
- RvCA==
-X-Gm-Message-State: AOJu0YxsVkKSHNCKgR32RLrb50I8BjZuNyvlGhURs1GOPzht1kGYuvXP
- lo4DmQAyulrn8bxr9icqAoy1m/0X5fSKBARcchraVfQNTdgq/A4sRKrK
-X-Gm-Gg: AY/fxX7dhZyjZDHRE4w0pdjzRB+cYtdpXK5mnQCMrJf6iEV+m3HulBOcy6uPHSyU9PI
- 2HagIVHQKQDFA5fzkhtql7Nnxq+No6sU33IxWksz5D7IYRBPphvzb3Q6omX4Zu9grpVBHT7QJxM
- 3EiJojnFtCP68WN0elWVRZlDBSbpuqGQcOQOdf69DTufe0iZk4GHmw5UtWM+0qETFYlQWTpJstp
- nwfSdqArxLS+zZgCpvhisVFL8PwI1UNfhVWt4FN2IhSD6tnH7fjgELJ8hY2O0jXUBeI2esKjqJ7
- 4BodH73htJUfdBLFlQTvVcQx6A/vWPW8i6PG6FXNzBWd+BEgUGiC2kG/+A1RtnOpCaivUCCLXCI
- SDUy9zN4gxFj004E2hIzpEZFmSih3Qb+5FBD9pmqZ9iPgS7993YXuMY4Yl1paUo3aTkLmAWl4i+
- tqbJZCiIXD7X/nUDShaMyIZKXn
-X-Google-Smtp-Source: AGHT+IGH0yXr0l71SERYlH3uPyirXQAI7liNy2+TqYI4q0I2pPz76zhuNWbwN83FnL+DB/uz4WD+3A==
-X-Received: by 2002:a05:6214:1306:b0:87d:cad9:ccba with SMTP id
- 6a1803df08f44-89075ce86a4mr7720336d6.14.1767636936937; 
- Mon, 05 Jan 2026 10:15:36 -0800 (PST)
+ bh=K1wY6K4tRJI0JdX7e3qGoxLV7SdshDJLqi/7D/etC/8=;
+ b=I7mYDng/cGmaMbO2BNbbpLG0z3isI7OvU7amn1AclgrjfRh2RQrZhZ9I3QPJWSojE5
+ 9fV0397SPjlkGPFN9G/aSyitNu0eujV2uLsDewht5HLZVoa/VGLjh7M4d2niDK02ATaO
+ FRFQzramqcK55qE9Z2pY0vNoFRPIiBUhuex5KShlPkXNeLWEjJIvP0y8DyIOLNZzRA4V
+ zmh2//TDYpaqJhro6P9TcYAz9lwJAHeNElZ/4026liTKuXhFfxmNzpPXyWalF21BXtNX
+ jR8EVuwR1kqVccpBjiLq7zBaZdXCLLVxFS5P6oMYnyg/ZBHvM4b0VwqF0iAtL6a6JKNK
+ 7ENA==
+X-Gm-Message-State: AOJu0YxpBKWpaW1vlHe4lxF2zqE71LFLYBhNidZSYMlFXUY0kM1BvZAE
+ M2UDDRQvXKVkzcZvoOv8TmNZrTnOKXz6KJxbUdk5PyOQQ4Zsiw1i4ETH
+X-Gm-Gg: AY/fxX4o6Z6P4QbbtaFrxckGgv3f293YLvaoZEP9xVhn3R0zZK7tEXeCXksp+7Wosw5
+ wChP6WtQIRVQQPK846OvZsTNaQqHxztnJ6yyUmS/WBtWdTCB6IjwG1UdgbM9zk/GCP1sTgmzV3v
+ 60sNMK1VnvIsII8uQj9CKXV7ZfPVH2wPsQ/lNiRunSeC1gASBAQMHAsV1SdQOJpg1Nb8c3uvIWH
+ TDf758teswSR3+wREfvGCTiYTFDehsBCiGdAZ1tydx05d+zT87Wy24dNNmySkbH30UqfSYFNbdb
+ AxqB7uxIehNMXvw47U5IRRh4AhyOdoCwJulwOs1OwQrD05fLyxl2M9AEfrs8uGDaZ/ZwXkN1TTi
+ 2QVEGUqN3FVXEvp1ll+DwLCsprETqGX4RGBFP+nXity23PefSQA6/TpjoZisDqLFLDKMTqRq97Z
+ EBqxc0xWLkmG/5zg8nfJPn7a0M
+X-Google-Smtp-Source: AGHT+IHu4Z0N0QvrVyu3+3zXUr8imkbQtAqNuzklhU5BCVSRMP+UIRmcQkpjkNCjnmFEOD9FaTMIqQ==
+X-Received: by 2002:a05:6214:540b:b0:880:5279:98eb with SMTP id
+ 6a1803df08f44-89075ee422fmr6137026d6.44.1767636938361; 
+ Mon, 05 Jan 2026 10:15:38 -0800 (PST)
 Received: from [192.168.1.204] ([185.213.193.254])
  by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-8907540e24csm3855706d6.25.2026.01.05.10.15.35
+ 6a1803df08f44-8907540e24csm3855706d6.25.2026.01.05.10.15.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jan 2026 10:15:36 -0800 (PST)
+ Mon, 05 Jan 2026 10:15:38 -0800 (PST)
 From: Gabriel Brookman <brookmangabriel@gmail.com>
-Date: Mon, 05 Jan 2026 11:14:57 -0700
-Subject: [PATCH RFC v3 08/12] target/arm: storing to canonical tags faults
+Date: Mon, 05 Jan 2026 11:14:58 -0700
+Subject: [PATCH RFC v3 09/12] target/arm: added mtx to translation logic
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260105-feat-mte4-v3-8-86a0d99ef2e4@gmail.com>
+Message-Id: <20260105-feat-mte4-v3-9-86a0d99ef2e4@gmail.com>
 References: <20260105-feat-mte4-v3-0-86a0d99ef2e4@gmail.com>
 In-Reply-To: <20260105-feat-mte4-v3-0-86a0d99ef2e4@gmail.com>
 To: qemu-devel@nongnu.org
@@ -78,15 +78,15 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>, 
  Gabriel Brookman <brookmangabriel@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767636923; l=3655;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767636923; l=5998;
  i=brookmangabriel@gmail.com; s=20251009; h=from:subject:message-id;
- bh=CcVL5fRovpSirzVToytYO4z5WjM+viKj7dzMRsgL4n8=;
- b=L3eBBGvMSl3dbAJ47+QpgN+q6PinoV2TJRj5h3VA4xv2vaoatW8f0+18BKcnj8F5mEJu+hoXv
- fam2POjTgaBArYmdd30LJxysWvUOoHws02jKLvNFwYN2bmQUqQDg/Rj
+ bh=zAdkFwmk5od3EWhS9syG704jByQ4Vosg39i2u0hIl5o=;
+ b=+yhPulw8RtzISRacRkwfr5ieKJ8Ggx22lAf+XU5bThizmwSlyF/fYLsCQxqDnUZgMuSuD4zjL
+ X7o8Z12kJmlASzvMuMf5HNz8WcIfoSP5rS2f3gmrXFvoai9sEaoaohL
 X-Developer-Key: i=brookmangabriel@gmail.com; a=ed25519;
  pk=m9TtPDal6WzoHNnQiHHKf8dTrv3DUCPUUTujuo8vNrw=
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f35;
- envelope-from=brookmangabriel@gmail.com; helo=mail-qv1-xf35.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::735;
+ envelope-from=brookmangabriel@gmail.com; helo=mail-qk1-x735.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,112 +109,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to ARM ARM, section "Memory region tagging types", tag-store
-instructions targeting canonically tagged regions cause a stage 1
-permission fault.
+Added translation logic to ignore canonicity mismatch in tag bits during
+translation step if canonical tag checking is active.
 
 Signed-off-by: Gabriel Brookman <brookmangabriel@gmail.com>
 ---
- target/arm/tcg/mte_helper.c | 44 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ target/arm/helper.c    | 16 +++++++++++++++-
+ target/arm/internals.h |  2 ++
+ target/arm/ptw.c       | 28 +++++++++++++++++++++++++---
+ 3 files changed, 42 insertions(+), 4 deletions(-)
 
-diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
-index 795a5ad20b..8f06ed3162 100644
---- a/target/arm/tcg/mte_helper.c
-+++ b/target/arm/tcg/mte_helper.c
-@@ -227,6 +227,20 @@ uint8_t *allocation_tag_mem_probe(CPUARMState *env, int ptr_mmu_idx,
- #endif
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 4086423b6f..5e8b5b1bc5 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -9579,6 +9579,16 @@ uint64_t arm_sctlr(CPUARMState *env, int el)
+     return env->cp15.sctlr_el[el];
  }
  
-+static void canonical_tag_write_fail(CPUARMState *env,
-+                                uint64_t dirty_ptr, uintptr_t ra)
++int aa64_va_parameter_mtx(uint64_t tcr, ARMMMUIdx mmu_idx)
 +{
-+    uint64_t syn;
-+
-+    env->exception.vaddress = dirty_ptr;
-+
-+    syn = syn_data_abort_no_iss(arm_current_el(env) != 0, 0, 0, 0, 0, 1, 0);
-+    syn |= BIT_ULL(42); /* TnD is bit 42 */
-+
-+    raise_exception_ra(env, EXCP_DATA_ABORT, syn, exception_target_el(env), ra);
-+    g_assert_not_reached();
++    if (regime_has_2_ranges(mmu_idx)) {
++        return extract64(tcr, 60, 2);
++    } else {
++        /* Replicate the single MTX bit so we always have 2 bits.  */
++        return extract64(tcr, 33, 1) * 3;
++    }
 +}
 +
- static uint8_t *allocation_tag_mem(CPUARMState *env, int ptr_mmu_idx,
-                                    uint64_t ptr, MMUAccessType ptr_access,
-                                    int ptr_size, MMUAccessType tag_access,
-@@ -363,6 +377,11 @@ static inline void do_stg(CPUARMState *env, uint64_t ptr, uint64_t xt,
-     int mmu_idx = arm_env_mmu_index(env);
-     uint8_t *mem;
+ int aa64_va_parameter_tbi(uint64_t tcr, ARMMMUIdx mmu_idx)
+ {
+     if (regime_has_2_ranges(mmu_idx)) {
+@@ -9703,7 +9713,7 @@ ARMVAParameters aa64_va_parameters(CPUARMState *env, uint64_t va,
+ {
+     uint64_t tcr = regime_tcr(env, mmu_idx);
+     bool epd, hpd, tsz_oob, ds, ha, hd, pie = false;
+-    bool aie = false;
++    bool aie, mtx = false;
+     int select, tsz, tbi, max_tsz, min_tsz, ps, sh;
+     ARMGranuleSize gran;
+     ARMCPU *cpu = env_archcpu(env);
+@@ -9740,6 +9750,7 @@ ARMVAParameters aa64_va_parameters(CPUARMState *env, uint64_t va,
+         ha = extract32(tcr, 21, 1) && cpu_isar_feature(aa64_hafs, cpu);
+         hd = extract32(tcr, 22, 1) && cpu_isar_feature(aa64_hdbs, cpu);
+         ds = extract64(tcr, 32, 1);
++        mtx = extract64(tcr, 33, 1) && cpu_isar_feature(aa64_mte4, cpu);
+     } else {
+         bool e0pd;
  
-+    if (mtx_check(env, 1 & (ptr >> 55))) {
-+        canonical_tag_write_fail(env, ptr, ra);
-+        return;
-+    }
-+
-     check_tag_aligned(env, ptr, ra);
- 
-     /* Trap if accessing an invalid page.  */
-@@ -390,6 +409,11 @@ void HELPER(stg_stub)(CPUARMState *env, uint64_t ptr)
-     int mmu_idx = arm_env_mmu_index(env);
-     uintptr_t ra = GETPC();
- 
-+    if (mtx_check(env, 1 & (ptr >> 55))) {
-+        canonical_tag_write_fail(env, ptr, ra);
-+        return;
-+    }
-+
-     check_tag_aligned(env, ptr, ra);
-     probe_write(env, ptr, TAG_GRANULE, mmu_idx, ra);
+@@ -9755,6 +9766,7 @@ ARMVAParameters aa64_va_parameters(CPUARMState *env, uint64_t va,
+             sh = extract32(tcr, 12, 2);
+             hpd = extract64(tcr, 41, 1);
+             e0pd = extract64(tcr, 55, 1);
++            mtx = extract64(tcr, 60, 1) && cpu_isar_feature(aa64_mte4, cpu);
+         } else {
+             tsz = extract32(tcr, 16, 6);
+             gran = tg1_to_gran_size(extract32(tcr, 30, 2));
+@@ -9762,6 +9774,7 @@ ARMVAParameters aa64_va_parameters(CPUARMState *env, uint64_t va,
+             sh = extract32(tcr, 28, 2);
+             hpd = extract64(tcr, 42, 1);
+             e0pd = extract64(tcr, 56, 1);
++            mtx = extract64(tcr, 61, 1) && cpu_isar_feature(aa64_mte4, cpu);
+         }
+         ps = extract64(tcr, 32, 3);
+         ha = extract64(tcr, 39, 1) && cpu_isar_feature(aa64_hafs, cpu);
+@@ -9861,6 +9874,7 @@ ARMVAParameters aa64_va_parameters(CPUARMState *env, uint64_t va,
+         .gran = gran,
+         .pie = pie,
+         .aie = aie,
++        .mtx = mtx,
+     };
  }
-@@ -401,6 +425,11 @@ static inline void do_st2g(CPUARMState *env, uint64_t ptr, uint64_t xt,
-     int tag = allocation_tag_from_addr(xt);
-     uint8_t *mem1, *mem2;
  
-+    if (mtx_check(env, 1 & (ptr >> 55))) {
-+        canonical_tag_write_fail(env, ptr, ra);
-+        return;
-+    }
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 31d37b80fb..e3e36300f8 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1395,6 +1395,7 @@ typedef struct ARMVAParameters {
+     ARMGranuleSize gran : 2;
+     bool pie        : 1;
+     bool aie        : 1;
++    bool mtx:1;
+ } ARMVAParameters;
+ 
+ /**
+@@ -1410,6 +1411,7 @@ ARMVAParameters aa64_va_parameters(CPUARMState *env, uint64_t va,
+                                    ARMMMUIdx mmu_idx, bool data,
+                                    bool el1_is_aa32);
+ 
++int aa64_va_parameter_mtx(uint64_t tcr, ARMMMUIdx mmu_idx);
+ int aa64_va_parameter_tbi(uint64_t tcr, ARMMMUIdx mmu_idx);
+ int aa64_va_parameter_tbid(uint64_t tcr, ARMMMUIdx mmu_idx);
+ int aa64_va_parameter_tcma(uint64_t tcr, ARMMMUIdx mmu_idx);
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index 9f864fe837..f95034a2a8 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -1939,7 +1939,16 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+      * validation to do here.
+      */
+     if (inputsize < addrsize) {
+-        uint64_t top_bits = sextract64(address, inputsize,
++        /*
++         * If MTX is enabled, bits 56-59 aren't checked for canonicity
++         * during translation, since they will later be checked during
++         * the tag check step.
++         */
++        uint64_t masked_address = address;
++        if (param.mtx) {
++            masked_address = deposit64(address, 56, 4, param.select * 0xf);
++        }
++        uint64_t top_bits = sextract64(masked_address, inputsize,
+                                            addrsize - inputsize);
+         if (-top_bits != param.select) {
+             /* The gap between the two regions is a Translation fault */
+@@ -3487,15 +3496,28 @@ static bool get_phys_addr_disabled(CPUARMState *env,
+         if (arm_el_is_aa64(env, r_el)) {
+             int pamax = arm_pamax(env_archcpu(env));
+             uint64_t tcr = env->cp15.tcr_el[r_el];
+-            int addrtop, tbi;
++            int addrtop, tbi, mtx;
++            bool bit55;
+ 
+             tbi = aa64_va_parameter_tbi(tcr, mmu_idx);
++            mtx = aa64_va_parameter_mtx(tcr, mmu_idx);
+             if (access_type == MMU_INST_FETCH) {
+                 tbi &= ~aa64_va_parameter_tbid(tcr, mmu_idx);
+             }
+-            tbi = (tbi >> extract64(address, 55, 1)) & 1;
++            bit55 = extract64(address, 55, 1);
++            tbi = (tbi >> bit55) & 1;
++            mtx = (mtx >> bit55) & 1;
+             addrtop = (tbi ? 55 : 63);
+ 
++            /*
++             * With MTX enabled, bits 56-59 are not checked according to
++             * AArch64.S1DisabledOutput.
++             */
++            if (cpu_isar_feature(aa64_mte4, env_archcpu(env)) && mtx &&
++                access_type != MMU_INST_FETCH) {
++                address = deposit64(address, 56, 4, ((mmu_idx) && bit55) * 0xF);
++            }
 +
-     check_tag_aligned(env, ptr, ra);
- 
-     /*
-@@ -449,6 +478,11 @@ void HELPER(st2g_stub)(CPUARMState *env, uint64_t ptr)
-     uintptr_t ra = GETPC();
-     int in_page = -(ptr | TARGET_PAGE_MASK);
- 
-+    if (mtx_check(env, 1 & (ptr >> 55))) {
-+        canonical_tag_write_fail(env, ptr, ra);
-+        return;
-+    }
-+
-     check_tag_aligned(env, ptr, ra);
- 
-     if (likely(in_page >= 2 * TAG_GRANULE)) {
-@@ -548,6 +582,11 @@ void HELPER(stgm)(CPUARMState *env, uint64_t ptr, uint64_t val)
- 
-     ptr = QEMU_ALIGN_DOWN(ptr, gm_bs_bytes);
- 
-+    if (mtx_check(env, 1 & (ptr >> 55))) {
-+        canonical_tag_write_fail(env, ptr, ra);
-+        return;
-+    }
-+
-     /* Trap if accessing an invalid page.  */
-     tag_mem = allocation_tag_mem(env, mmu_idx, ptr, MMU_DATA_STORE,
-                                  gm_bs_bytes, MMU_DATA_LOAD, ra);
-@@ -594,6 +633,11 @@ void HELPER(stzgm_tags)(CPUARMState *env, uint64_t ptr, uint64_t val)
-     intptr_t dcz_bytes, tag_bytes;
-     uint8_t *mem;
- 
-+    if (mtx_check(env, 1 & (ptr >> 55))) {
-+        canonical_tag_write_fail(env, ptr, ra);
-+        return;
-+    }
-+
-     /*
-      * In arm_cpu_realizefn, we assert that dcz > LOG2_TAG_GRANULE+1,
-      * i.e. 32 bytes, which is an unreasonably small dcz anyway,
+             if (extract64(address, pamax, addrtop - pamax + 1) != 0) {
+                 fi->type = ARMFault_AddressSize;
+                 fi->level = 0;
 
 -- 
 2.52.0
