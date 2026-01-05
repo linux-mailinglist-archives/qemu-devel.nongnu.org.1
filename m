@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C889CF1796
-	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 01:11:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4222CF179C
+	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 01:11:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vcYBN-0000AS-6w; Sun, 04 Jan 2026 19:10:49 -0500
+	id 1vcYBn-0000nw-8p; Sun, 04 Jan 2026 19:11:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vcYBI-0000A7-Bu
- for qemu-devel@nongnu.org; Sun, 04 Jan 2026 19:10:44 -0500
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ id 1vcYBm-0000nc-4l
+ for qemu-devel@nongnu.org; Sun, 04 Jan 2026 19:11:14 -0500
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vcYBG-0006hY-6d
- for qemu-devel@nongnu.org; Sun, 04 Jan 2026 19:10:43 -0500
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-34c718c5481so12897366a91.3
- for <qemu-devel@nongnu.org>; Sun, 04 Jan 2026 16:10:40 -0800 (PST)
+ id 1vcYBk-0006ir-NL
+ for qemu-devel@nongnu.org; Sun, 04 Jan 2026 19:11:13 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-2a081c163b0so121624675ad.0
+ for <qemu-devel@nongnu.org>; Sun, 04 Jan 2026 16:11:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767571840; x=1768176640; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767571871; x=1768176671; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=PBiesu5Ev2OD7QXZoscUFBdlGUQrDi+h/3tZk/PSx3U=;
- b=XbjQLaj7hwYu7t7FHoESNqftTC4+RIN0C9W1caHkl/on88dxYWrDxdK/tbVKxrrCpC
- SW2CF7+9YYIqXE2dW/x9LbaKq8FMyeu+F1JNMuy4HEiwPiE96KhXBlB5JuFMd3lF75g+
- LgIJ78pip+Mnlca/Jnhd20nfbHcA2BHvwwKKU6UGqZF9MXrAta/FQZvYN/cizi+mByfV
- wC+B+V/8V6qmzPrP1mjNbzYhsRwX6kD3OgSRt9jfV6TsmLI/YBLn42hAmXxotiXT64j7
- LL/OQ7T53JJelYsmi8yKJoKPkxuinRBN4wL1Yns3Kh3Fzfm2pBa6T9Nagle5lwKOeKBm
- Kf6g==
+ bh=vJrgPVFK6uwfvnKINa3d0+00aqlsY0HQRw83EPuy8tI=;
+ b=vETtuZjUch3IXo3KgWeGFe+fITO3+3/+fM4rxMIpMphqyiWrBPdlj4WvI7HjNYBV8K
+ Y+pTPh9RDGB9A5blFmPuzFW2OvEjMbU3NtYTbPiA7uCaPT9SfQQV5+BjYEur6rm6DJH/
+ Q5vfBCMMO6iYe7P19v1g2Y3LbVgWjaPID4rTzq+E8YuSM9e8p2ReeUXQRHOshUu3U3r2
+ xRTcHOvXe6YJJtgFZtiHdioGxSk/U1jn9bXXXF5WoSyPAeraBHf/cCMwEAAVy8/Ek65T
+ S7jKm6b3nvvnasAMluLyX0705VoA+x2IIKKkMsf5jeGwC+oBLHRHDBIfnQBuV8svhiEw
+ wEyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767571840; x=1768176640;
+ d=1e100.net; s=20230601; t=1767571871; x=1768176671;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=PBiesu5Ev2OD7QXZoscUFBdlGUQrDi+h/3tZk/PSx3U=;
- b=HkvM1vpfwyLwQwqYh80tTcXCTA/M0s600iEbXG3Z5DanYeFjMoN97dagAxAF17dQZo
- SC5++RYevknLyzoSm8986b73LQfhu3OKNBlVsPtodKqeSlVzMBn9G3Sn0/mLA+g187dj
- s+8HocmQok+8kVgcvcrpXO4GwPZsp7jdVkx2LXv4ZjyKwbERDHi7I4UajfI9TAzDkDu8
- sDNgJPQbakkXIOEflOyonRnx5LOlKwDwMSrAzmnpU9b21ot7g6vbT1hR7d/iGGJQPOn2
- lV1mz/KRhxnMEP+GL20bIv0QXDKuE8NkdwpXhaH1N8tugK/Ng67IbrDL1o763vmZnT9Q
- mEAw==
+ bh=vJrgPVFK6uwfvnKINa3d0+00aqlsY0HQRw83EPuy8tI=;
+ b=PesmdgfBS8xEj1nk9AvwQaSie95AG/BHkHxzPkfaCWEdTZYBfdfP/g6rXL6TQChXoR
+ iZ3mZ+zusUVM1N/Q3Hhj57h1X1X6dJXJL1Wob4cUX6WAhVlFuijxW/7Pzy/OC3yYLWgd
+ Zmej7BC2o6waVP0T9qBonkwWN45o3EETbraaZY1Jkxa2JvLaniZrp/YiZtOSL4sHnNPi
+ zrFDQMrasqge1Rkq+ZxiSpcb1BYmzz8iK0E6pgNqgjeNRz5nA1X2osXiB9dBBiOdQFl3
+ 6uNA1F2j3cuS5BM4wjdqm/1OjZlYoApyUxZx9MKNuyKhH7m2pkKiySjggECXKdR2tmxe
+ vQqw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUoX7tLfRslDXhKjDikmp3+2xAT0vnW49S4jXaQgxuWpkC828Hop7wWeCO3vou5lGZ1HG+h/d/ab5dU@nongnu.org
-X-Gm-Message-State: AOJu0Yy06/b3CxmvjKqdViIzhlGe7TrQWE8CoeluKY84h/cK9YbIreOp
- JYRI92E1f5TxyYljas7NZCXgHM9gq9PGetvl4Aijhr/4JNm2UPKfkByuo4qLom/Nj7g=
-X-Gm-Gg: AY/fxX5xFRVHFpL2uaEvlrvY9GheIqhJm3Z1cckV0AbbDYE0SQAmXm7BAdB8c8YXZTN
- xZTPliIQHOpMrIs8kvfeoKjxnoKk7y28OfeuDlBkQ8ls3nf0AP+dOCtBpnnXQOhd+xzdGjghhTG
- FDFtg7CVuCU9dGm5S15DVQOjKQfEj+eqcMLFqPaQmXU0BPfWCeaMtJ3KgFCbwzzw45iSX+Ry0gt
- dssXcwTM6g0dKoFZpsHH2y94eTmS/AVY0F+nWZL4noNZ+I4Lis78f+CJ8gPMAu8x8asoxQC0dQz
- fI2yhLGGyhVxAXxS71jblQewn2NI/hA2R4VePJPEn8bdDtHH9/IyvhThA/1zM0Gv0qZFpzn74k1
- 4MjbVkqbq+dBEOGRgcyObhGDi0/atMPC2pwUvgXVoTT4cmP+deI1PXvkwuvVBjku1eJpVqEQS96
- EkeDiM5ypuExL+hg0MSVQY+jq5u2xEEw==
-X-Google-Smtp-Source: AGHT+IFyDeybToRirfPsPZrbYHBWLa6rZIkzWRvbLtCaD/cxf0HhmUfq7rvo3PskgEdnedW0O5AEMg==
-X-Received: by 2002:a17:90b:2585:b0:340:ecad:414 with SMTP id
- 98e67ed59e1d1-34e921e7557mr44261764a91.27.1767571839671; 
- Sun, 04 Jan 2026 16:10:39 -0800 (PST)
+ AJvYcCUgW+YBFPwB/FljfmFvGRN/5tgTAlXvTWzO5alXteydJPTfxTH15OHNGdC0cc+IZwQSbW9tAScFevGJ@nongnu.org
+X-Gm-Message-State: AOJu0YwEEqPxnL2cfZkIjaUgp/8yaVeRuHXSTbo2r6HcqGdLFAO0kOlD
+ 4H0gP8Qpb1c4llw47ShhswyNNgbUNksNhvzp7VAkHvqzEN4wwegIIjA9F/YEJxZGPoI=
+X-Gm-Gg: AY/fxX6fakkJa4UtZSz5Sc0YBQRfYhDZbJjobkcOAqSPf7uEDrxTKghoZAZHzB7Gkoz
+ vsygd8tAsA1IYt+A2cPOEIuqAGvngLRhMVcpnAZ4ut3t7WQh/eUJznj9iwGDpGMRYUlJYa8izUD
+ g0tKMsACGfkTLqYNzcAsrZi6kttu1/0hqiYHQFpEg0qcu8RRWWw0QsnXxsncC8jz4Mshtpv+zbf
+ +IfHa2OVQxn3YxHsQm9QUORzoBz4cIT0UMfWvdC1F5ffXwke0AWaywlkiv2RKHdIhU5rzUerlA3
+ 5lzw7sWxywyLyvP+JDrljI36JKXzDSsglgGxaMqz3+gfUTJtAtLptv3B6j58d1gLsoIVdXazXKb
+ j13ncHC8+tan36gskLo+dhtMap16ihnEKB7PMk0RJzLXsGic9K6ggxABSK4XdMUQWfG3FaMOK/x
+ WN/cs9PwT4kMXvvdUspKGRjL+t1+VPvWkyqvb9DTMm
+X-Google-Smtp-Source: AGHT+IEFuU+yuOJzTy+I5dOKmpHE6Tcyov9G7Hna6ylS6f/M5FidFzP5HDkkm6PeTGIin1eFsbn/Kw==
+X-Received: by 2002:a17:902:e804:b0:2a1:388d:8ef5 with SMTP id
+ d9443c01a7336-2a2f222be85mr444098075ad.19.1767571871164; 
+ Sun, 04 Jan 2026 16:11:11 -0800 (PST)
 Received: from [192.168.10.140] ([180.233.125.201])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-34f477262fbsm4451427a91.14.2026.01.04.16.10.35
+ d9443c01a7336-2a2f3d77451sm437662245ad.96.2026.01.04.16.11.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 04 Jan 2026 16:10:39 -0800 (PST)
-Message-ID: <88f04645-9ce8-4efb-a26b-56712496930a@linaro.org>
-Date: Mon, 5 Jan 2026 11:10:32 +1100
+ Sun, 04 Jan 2026 16:11:10 -0800 (PST)
+Message-ID: <bc66522e-0c13-4c03-a7ec-86ef64a49eb4@linaro.org>
+Date: Mon, 5 Jan 2026 11:11:04 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] target/openrisc: Use explicit big-endian LD/ST API
+Subject: Re: [PATCH 3/4] target/openrisc: Inline translator_ldl()
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Jia Liu <proljc@gmail.com>, Pierrick Bouvier
@@ -79,14 +79,14 @@ Cc: Jia Liu <proljc@gmail.com>, Pierrick Bouvier
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Stafford Horne <shorne@gmail.com>
 References: <20251224161804.90064-1-philmd@linaro.org>
- <20251224161804.90064-3-philmd@linaro.org>
+ <20251224161804.90064-4-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-In-Reply-To: <20251224161804.90064-3-philmd@linaro.org>
+In-Reply-To: <20251224161804.90064-4-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,22 +110,41 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/25/25 03:18, Philippe Mathieu-Daudé wrote:
-> The OpenRISC architecture uses big endianness. Directly
-> use the big-endian LD/ST API.
+> translator_ldl() is defined in "exec/translator.h" as:
 > 
-> Mechanical change running:
+>    198 static inline uint32_t
+>    199 translator_ldl(CPUArchState *env, DisasContextBase *db, vaddr pc)
+>    200 {
+>    201     return translator_ldl_end(env, db, pc, MO_TE);
+>    202 }
 > 
->    $ for a in uw w l q; do \
->        sed -i -e "s/ld${a}_p(/ld${a}_be_p(/" \
->          $(git grep -wlE '(ld|st)u?[wlq]_p' target/openrisc/);
->      done
+> Directly use the inlined form, expanding MO_TE -> MO_BE
+> since we only build the OpenRISC targets as big-endian.
 > 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   target/openrisc/gdbstub.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   target/openrisc/translate.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/openrisc/translate.c b/target/openrisc/translate.c
+> index 6fa4d6cfa70..a6d550bbc2e 100644
+> --- a/target/openrisc/translate.c
+> +++ b/target/openrisc/translate.c
+> @@ -1558,7 +1558,8 @@ static void openrisc_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
+>   static void openrisc_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
+>   {
+>       DisasContext *dc = container_of(dcbase, DisasContext, base);
+> -    uint32_t insn = translator_ldl(cpu_env(cs), &dc->base, dc->base.pc_next);
+> +    uint32_t insn = translator_ldl_end(cpu_env(cs), &dc->base,
+> +                                       dc->base.pc_next, MO_BE);
+>   
+>       if (!decode(dc, insn)) {
+>           gen_illegal_exception(dc);
+
+Use mo_endian().  With that,
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
 
 r~
 
