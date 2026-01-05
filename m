@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEFB8CF535F
-	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 19:19:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FCB2CF534A
+	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 19:18:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vcp7d-0001Bg-1t; Mon, 05 Jan 2026 13:16:05 -0500
+	id 1vcp7X-00016w-1P; Mon, 05 Jan 2026 13:15:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brookmangabriel@gmail.com>)
- id 1vcp7P-00015Y-6P
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 13:15:51 -0500
-Received: from mail-qv1-xf2d.google.com ([2607:f8b0:4864:20::f2d])
+ id 1vcp7I-00014q-MC
+ for qemu-devel@nongnu.org; Mon, 05 Jan 2026 13:15:46 -0500
+Received: from mail-qv1-xf32.google.com ([2607:f8b0:4864:20::f32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <brookmangabriel@gmail.com>)
- id 1vcp76-00034D-0Q
+ id 1vcp76-00034b-0U
  for qemu-devel@nongnu.org; Mon, 05 Jan 2026 13:15:35 -0500
-Received: by mail-qv1-xf2d.google.com with SMTP id
- 6a1803df08f44-88a3b9ddd40so1187996d6.1
- for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 10:15:28 -0800 (PST)
+Received: by mail-qv1-xf32.google.com with SMTP id
+ 6a1803df08f44-88a2b99d8c5so1330816d6.1
+ for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 10:15:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1767636927; x=1768241727; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1767636929; x=1768241729; darn=nongnu.org;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=B+Hv/Pd2LCKw/PSMs7i5uhg6AdBJ5kEZzn6b+5/2FjM=;
- b=juFdlLis4zgB/5xn+zxQeORrVjeiLKPYdjG822FSKZxiRxI1/eMgN1h9rjHAwqFNl+
- y8FmtPo+yxJMGOewRVjE90g7nR3wYALJDLDw33kPcblyWN0lbPOSPGi67SuEjIJtVrU/
- zMCbVvHxsWMRVC7KSv+x/Lr23eUVbuKzlnRyzEZbWu+GkayuXRLOA7EI1yOHzinD8mht
- 2UWigWvwMfN7EK9F1lmeDJksX5OlFubYa99fG+ZK0kM91sYYRrXVe6VFFVQPIhdnYkH+
- tHJGVHlM+GJ3LHyFry53NJQ8iTeP6eQP0h72tWX2HkyiGjlpTliASKi2cpyEJ7kLr7zQ
- IWrg==
+ :reply-to; bh=LWCpE05OCyK9rjkWEbDU6wH4iFFezXLpSY4SvfoXKxo=;
+ b=KFLGAxLeBVKxzYVjbK1kqDQXbfrOxMmBL7aE3bqF75CXaQVTXdG6Kf+RYPnNBDdqI5
+ jziYI8pWjfrw6JSpGoI0eBal3jld6XYf/8ERmNFBUyfsIOQ2V1mSaKhNbR4vz0P9mTHG
+ Kj7Glti2y+CrtajdrE7LZ823mgyFwbGrZL9ULvxqAzADnHCdIpFFmJXknSBh2d4+QHEW
+ qmqYVRfDzO5mB1fvC/QrDw0PQqwiJGAzNS+1p/p1/Bv1w3TMnRNjEJMmZwxFTwwQ098t
+ DVbXZBlDnM9BEV9Cz36uKjL4KmNakL0a8mxjRd0k7+kZefnOkvL3HW/WXZR+W1L+meke
+ qV3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767636927; x=1768241727;
+ d=1e100.net; s=20230601; t=1767636929; x=1768241729;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=B+Hv/Pd2LCKw/PSMs7i5uhg6AdBJ5kEZzn6b+5/2FjM=;
- b=mFDt3IhgU4xkJ+GXYM2v/YdmAOlSIrMVZoTcaxi7WIJq+dPfCJng8lbNd2exCWOUr6
- b4dqwfRsm9+BCPieFVaro7PmKKpAo6IqE1OpHWVuKww5HUzE+gzr9I1OmNC0/WNyqp1q
- XrJ+RdkSQxy54+YBv1kyTpoElV1rj7OCHvUO8k2syuFWGQ4//v8OKxdbHtenWvAbDGjU
- oQ/0qWh20EcgI0lOceLPrg/uJRlOUEY9Sa5cAoJ6M5n9VQDAfm5+UfqER5ZOR/sPhjgg
- H/D3n6fYFrzooKPwBMeYntkObkEKU1SQTcXWx1fRK1Q+slcPx/rQeig8G0qoBxPNzruS
- JuRA==
-X-Gm-Message-State: AOJu0YwkUqFbPLFnc0Yn2BlR6KNWGr4Fv8cLCPzIp7AlXQy/4ehvrIt4
- aj57FfUtzueJnQoTQtJauLjhOQJcNKSwV+6Sun1MJNRCSapdX6yiv4dg
-X-Gm-Gg: AY/fxX5Hp4csgPrUvtXHMHTnKL4qmP65Yd+1l8pvvACsJj9J/a5EzeGdUHxIqGkef76
- 8alRz8Mg+LghYKyTLqukqL2gj/oH4A9O4Wv7dBxj4X7V+5avIfb/I8eq27UlSb1AZO14hWSk7uP
- Rba+hbgpdqsk+v3q80rUpeacoumOrlZ2pGfR4FfYn3pm6MLst4gXoBq3djcL/Kszd5OQxhm2+eq
- eM7YH6TgcBt4/QSXC/jYOltJeFbwhrDpmkFhRBiFDfl0BTU4X6kOQPCDdnigFL/Fef0OAhjdncy
- 0C1GWZc6TcvHAbLk385YjHfVQZ+Dcg5rSZVlKe6UPImMJMu7fDaB+wjAACbsG6V6UB82BjWZKCe
- nVb2pv4+qxLrLu5SyStd74KU2bQiOqFcBYQKnvOb0w7APevHtdphZegVYnyM4K9rmsjF7IXjoYS
- IlqwfoUYCDU4kfuu7YkBtt3mVC
-X-Google-Smtp-Source: AGHT+IHYdP20i1E7axKMbgwKe0aKHUb/bZzfMFwriKu5QlYEyH4TDqPUEvh7RcaA5iabb9jxFF7QAg==
-X-Received: by 2002:a05:6214:ca5:b0:88a:2841:bb11 with SMTP id
- 6a1803df08f44-89075e7d88dmr8395466d6.27.1767636927168; 
- Mon, 05 Jan 2026 10:15:27 -0800 (PST)
+ bh=LWCpE05OCyK9rjkWEbDU6wH4iFFezXLpSY4SvfoXKxo=;
+ b=MzZeAIJ4KNQbFlJN/glkqccZ2eDP+p+HA8E6SXbDuj5OXWktR/SfX0QKo613BrV1L9
+ gWguBwopO9WC/Nf6SxaBoMnyDVgy4yw8VkNdzS3clMK22w6FtXnuj+J1/wiBpbn7IkSm
+ NKgvVtmRaidojzngCjb34kadmQ9WCETzyKgbdLz52X6tiazwbfeF9+3s+Hnc0vslmaF4
+ fzErQjaIOsHM9BcPsAgn98D8t18o5dp+IpeNiwp6d8cGQT7KyqZsM+f4AD3sFwRc2kNc
+ ut3kM9uLaNGC72wuApDIeY2V7fCwsGnCKThci560I021dRahY3cNwBTeZKcKRcZ05OTn
+ V0HA==
+X-Gm-Message-State: AOJu0YxE1iLCu5jByVCSaEJnO/tPhIXH8iPn1k5xu8I57tH5r+tTGBI0
+ n6Ppt9KVveolkxyf8gDQtXkYDlK+UayASsFfwwHd7FfElCfDLCsD9NR0
+X-Gm-Gg: AY/fxX7NgFdcknOcyt1au0wq+RKbmAiGiO2WFrhe2Is3rva7v247FoXn8rHMLrBI/h0
+ jsbRt0g8hMnZjrVUYRFWieVHFqXTAg9Uzs+3O2AA0dTr+8mtHhhI1mHLNrYdD0dP3Ej0jy1J6J8
+ DHWhqCqOKS9gdTOFJPlsZSG0flZVB3UfZ1kzFjA4cVu/PgKKVCl1AQWpJygrc3h05nt9XSGgnR6
+ MtX4O27dY+Qt+xiL64DN/2+AGlWMg68ksR3++30/wwMoi9igmivgm4JJYgUJ5f+UngFczepvLxL
+ D0GS0ts7DQaoN349Ln2aCtR7Pj4RvJgn4oL9zB9B9KtlOogJgTmdjvUBE4d1gO0hyzua6BqZotC
+ +V1WUAmMZlaU0WnOQ3OTUOFr4o10Gi9vUtFIGYREmJh2rc83M7esGafy9Ne6xAcTKM9DLlc3dVv
+ 7ro6hD7yIC1ZX07eOs6llyx10c
+X-Google-Smtp-Source: AGHT+IEh+on4dgKiJHXBp25QPS2Hce84+sLR8W5yWTCQ2L2YBe0dnohkPXb9Ocx3XHBI33dWkv8KJg==
+X-Received: by 2002:a05:6214:202d:b0:87d:fbe9:9566 with SMTP id
+ 6a1803df08f44-89075e28819mr6831526d6.26.1767636928726; 
+ Mon, 05 Jan 2026 10:15:28 -0800 (PST)
 Received: from [192.168.1.204] ([185.213.193.254])
  by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-8907540e24csm3855706d6.25.2026.01.05.10.15.26
+ 6a1803df08f44-8907540e24csm3855706d6.25.2026.01.05.10.15.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jan 2026 10:15:26 -0800 (PST)
+ Mon, 05 Jan 2026 10:15:28 -0800 (PST)
 From: Gabriel Brookman <brookmangabriel@gmail.com>
-Date: Mon, 05 Jan 2026 11:14:50 -0700
-Subject: [PATCH RFC v3 01/12] target/arm: implement MTE_PERM
+Date: Mon, 05 Jan 2026 11:14:51 -0700
+Subject: [PATCH RFC v3 02/12] target/arm: add TCSO bitmasks to SCTLR
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260105-feat-mte4-v3-1-86a0d99ef2e4@gmail.com>
+Message-Id: <20260105-feat-mte4-v3-2-86a0d99ef2e4@gmail.com>
 References: <20260105-feat-mte4-v3-0-86a0d99ef2e4@gmail.com>
 In-Reply-To: <20260105-feat-mte4-v3-0-86a0d99ef2e4@gmail.com>
 To: qemu-devel@nongnu.org
@@ -78,22 +78,22 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>, 
  Gabriel Brookman <brookmangabriel@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767636923; l=4132;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767636923; l=2722;
  i=brookmangabriel@gmail.com; s=20251009; h=from:subject:message-id;
- bh=mE5nY5j9NmtdHiwmNlYtPNB/QFvmyHnfw0X1To8yh9E=;
- b=fw7lNXQ/lCpLWby01FFEWy68Mi+AUEDEqfPihX3PZu8BCygZ+db6AYEfyVp7YeKmNm0UeQKIf
- A06vc40EN3wDWDDr5JdsohyfMknbpaToP0qySQSAUU+yBfhSYfYHQ/z
+ bh=Us4U7asgtOyjNGX+6WrRHwqGtfDdMl8/TKs5M/sdrmU=;
+ b=FJwkdrVcUsLSLtQD9816e+sUA13U2L5lwo/uXXYuWLWwfHLMlyjKLGBZttMHDPtUYap9Lz5SF
+ cgI1QwV/AaGBWpm5Uu0afmsLbgWub27K6Is+S8We9LpzONoPGip1h/N
 X-Developer-Key: i=brookmangabriel@gmail.com; a=ed25519;
  pk=m9TtPDal6WzoHNnQiHHKf8dTrv3DUCPUUTujuo8vNrw=
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f2d;
- envelope-from=brookmangabriel@gmail.com; helo=mail-qv1-xf2d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f32;
+ envelope-from=brookmangabriel@gmail.com; helo=mail-qv1-xf32.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,123 +109,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduces a new stage 2 memory attribute, NoTagAccess, that raises a
-stage 2 data abort on a tag check, tag read, or tag write.
+These are the bitmasks used to control the FEAT_MTE_STORE_ONLY feature.
+They are now named and setting these fields of SCTLR is ignored if MTE
+or MTE4 is disabled, as per convention.
 
 Signed-off-by: Gabriel Brookman <brookmangabriel@gmail.com>
 ---
- target/arm/cpu-features.h   |  5 +++++
- target/arm/ptw.c            | 17 ++++++++++++++++-
- target/arm/tcg/mte_helper.c | 31 +++++++++++++++++++++++++++++++
- 3 files changed, 52 insertions(+), 1 deletion(-)
+ target/arm/cpu-features.h |  5 +++++
+ target/arm/cpu.h          |  2 ++
+ target/arm/helper.c       | 11 +++++++++--
+ 3 files changed, 16 insertions(+), 2 deletions(-)
 
 diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-index c86a4e667d..48009b5a66 100644
+index 48009b5a66..3473787ab8 100644
 --- a/target/arm/cpu-features.h
 +++ b/target/arm/cpu-features.h
-@@ -1139,6 +1139,11 @@ static inline bool isar_feature_aa64_mte3(const ARMISARegisters *id)
-     return FIELD_EX64_IDREG(id, ID_AA64PFR1, MTE) >= 3;
+@@ -1144,6 +1144,11 @@ static inline bool isar_feature_aa64_mteperm(const ARMISARegisters *id)
+     return FIELD_EX64_IDREG(id, ID_AA64PFR2, MTEPERM) == 1;
  }
  
-+static inline bool isar_feature_aa64_mteperm(const ARMISARegisters *id)
++static inline bool isar_feature_aa64_mte4(const ARMISARegisters *id)
 +{
-+    return FIELD_EX64_IDREG(id, ID_AA64PFR2, MTEPERM) == 1;
++    return FIELD_EX64_IDREG(id, ID_AA64PFR2, MTEFAR) == 1;
 +}
 +
  static inline bool isar_feature_aa64_sme(const ARMISARegisters *id)
  {
      return FIELD_EX64_IDREG(id, ID_AA64PFR1, SME) != 0;
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 2e6b149b2d..9f864fe837 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -3393,7 +3393,7 @@ static ARMCacheAttrs combine_cacheattrs(uint64_t hcr,
-                                         ARMCacheAttrs s1, ARMCacheAttrs s2)
- {
-     ARMCacheAttrs ret;
--    bool tagged = false;
-+    bool tagged, notagaccess = false;
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 9579d43ba3..393bfc0dc9 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -1424,6 +1424,8 @@ void pmu_init(ARMCPU *cpu);
+ #define SCTLR_EnAS0   (1ULL << 55) /* FEAT_LS64_ACCDATA */
+ #define SCTLR_EnALS   (1ULL << 56) /* FEAT_LS64 */
+ #define SCTLR_EPAN    (1ULL << 57) /* FEAT_PAN3 */
++#define SCTLR_TCSO0   (1ULL << 58) /* FEAT_MTE_STORE_ONLY */
++#define SCTLR_TCSO    (1ULL << 59) /* FEAT_MTE_STORE_ONLY */
+ #define SCTLR_EnTP2   (1ULL << 60) /* FEAT_SME */
+ #define SCTLR_NMI     (1ULL << 61) /* FEAT_NMI */
+ #define SCTLR_SPINTMASK (1ULL << 62) /* FEAT_NMI */
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 263ca29d92..4086423b6f 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -3364,10 +3364,17 @@ static void sctlr_write(CPUARMState *env, const ARMCPRegInfo *ri,
  
-     assert(!s1.is_s2_format);
-     ret.is_s2_format = false;
-@@ -3403,6 +3403,18 @@ static ARMCacheAttrs combine_cacheattrs(uint64_t hcr,
-         s1.attrs = 0xff;
+     if (ri->state == ARM_CP_STATE_AA64 && !cpu_isar_feature(aa64_mte, cpu)) {
+         if (ri->opc1 == 6) { /* SCTLR_EL3 */
+-            value &= ~(SCTLR_ITFSB | SCTLR_TCF | SCTLR_ATA);
++            value &= ~(SCTLR_ITFSB | SCTLR_TCF | SCTLR_ATA | SCTLR_TCSO);
+         } else {
+             value &= ~(SCTLR_ITFSB | SCTLR_TCF0 | SCTLR_TCF |
+-                       SCTLR_ATA0 | SCTLR_ATA);
++                       SCTLR_ATA0 | SCTLR_ATA | SCTLR_TCSO | SCTLR_TCSO0);
++        }
++    } else if (ri->state == ARM_CP_STATE_AA64
++            && !cpu_isar_feature(aa64_mte4, cpu)) { /* mte but not mte4 */
++        if (ri->opc1 == 6) { /* SCTLR_EL3 */
++            value &= ~SCTLR_TCSO;
++        } else {
++            value &= ~(SCTLR_TCSO | SCTLR_TCSO0);
+         }
      }
  
-+    if (hcr & HCR_FWB) {
-+        if (s2.attrs >= 0xe) {
-+            notagaccess = true;
-+            s2.attrs = 0x7;
-+        }
-+    } else {
-+        if (s2.attrs == 0x4) {
-+            notagaccess = true;
-+            s2.attrs = 0xf;
-+        }
-+    }
-+
-     /* Combine shareability attributes (table D4-43) */
-     if (s1.shareability == 2 || s2.shareability == 2) {
-         /* if either are outer-shareable, the result is outer-shareable */
-@@ -3437,6 +3449,9 @@ static ARMCacheAttrs combine_cacheattrs(uint64_t hcr,
-     /* TODO: CombineS1S2Desc does not consider transient, only WB, RWA. */
-     if (tagged && ret.attrs == 0xff) {
-         ret.attrs = 0xf0;
-+        if (notagaccess) {
-+            ret.attrs = 0xe0;
-+        }
-     }
- 
-     return ret;
-diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
-index bb48fe359b..942bd4103d 100644
---- a/target/arm/tcg/mte_helper.c
-+++ b/target/arm/tcg/mte_helper.c
-@@ -57,6 +57,28 @@ static int choose_nonexcluded_tag(int tag, int offset, uint16_t exclude)
-     return tag;
- }
- 
-+#ifdef CONFIG_USER_ONLY
-+#else
-+/*
-+ * Constructs S2 Permission Fault as described in ARM ARM "Stage 2 Memory
-+ * Tagging Attributes".
-+ */
-+static void mte_perm_check_fail(CPUARMState *env, uint64_t dirty_ptr,
-+                                uintptr_t ra, bool is_write)
-+{
-+    uint64_t syn;
-+
-+    env->exception.vaddress = dirty_ptr;
-+
-+    syn = syn_data_abort_no_iss(0, 0, 0, 0, 0, is_write, 0);
-+
-+    syn |= BIT_ULL(42); /* TnD is bit 42 */
-+
-+    raise_exception_ra(env, EXCP_DATA_ABORT, syn, 2, ra);
-+    g_assert_not_reached();
-+}
-+#endif
-+
- uint8_t *allocation_tag_mem_probe(CPUARMState *env, int ptr_mmu_idx,
-                                   uint64_t ptr, MMUAccessType ptr_access,
-                                   int ptr_size, MMUAccessType tag_access,
-@@ -116,6 +138,15 @@ uint8_t *allocation_tag_mem_probe(CPUARMState *env, int ptr_mmu_idx,
-     }
-     assert(!(flags & TLB_INVALID_MASK));
- 
-+    /*
-+     * If the virtual page MemAttr == Tagged NoTagAccess, throw S2 permission
-+     * fault (conditional on mteperm being implemented and RA != 0).
-+     */
-+    if (ra && cpu_isar_feature(aa64_mteperm, env_archcpu(env))
-+        && full->extra.arm.pte_attrs == 0xe0) {
-+        mte_perm_check_fail(env, ptr, ra, tag_access == 1);
-+    }
-+
-     /* If the virtual page MemAttr != Tagged, access unchecked. */
-     if (full->extra.arm.pte_attrs != 0xf0) {
-         return NULL;
 
 -- 
 2.52.0
