@@ -2,85 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99486CF6EA5
-	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 07:38:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96277CF744F
+	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 09:19:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vd0gt-0005ZC-Ip; Tue, 06 Jan 2026 01:37:15 -0500
+	id 1vd2Gr-00080D-NO; Tue, 06 Jan 2026 03:18:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vd0gr-0005Yt-QF
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 01:37:13 -0500
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vd0gq-0006tI-2d
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 01:37:13 -0500
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-7f121c00dedso901495b3a.0
- for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 22:37:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767681430; x=1768286230; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=BpSHIWQQ8x9eIJTo+o+MCuWeunb6JYZPGxKktINRqfc=;
- b=PM6g5FxvW8VU9TomaPrKiKhtb1MA7O2DF0Ve9LAWt7skT834vLC7v+HROPE9aGhQJV
- 9xwpm7QJ1d0gUkNOtwo+5WwRZDOJzWuwg7F6vnWqT3xEx9BRJ30tlQFuU7jWIH0p6vov
- sjdpfFMl1vB+xP/zbgDsKw7YuIgUtb1WmRiBuSVhdNO82ARgXOQhnPseeXVZ3QK/y4qV
- 3FA/ybAGTrGMJsfz56bao3dQY7FNOFo58TmF6K8LBQoDnLJVyKV8mpW3eXRzeUVHArMK
- w1ehwDPxMb6OxtD/nov+5kwjUFt3IRVDTtcRKutGVmfwRsrN7khF4zxI8pzm0Rz0HSs5
- NeMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767681430; x=1768286230;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BpSHIWQQ8x9eIJTo+o+MCuWeunb6JYZPGxKktINRqfc=;
- b=G7ZEsjmjyJZ+S2Ks+CZvUYYrmc7iZ2DooZaM1MvM6Zosw23qFJZLtEAe0vII4o6os7
- 4cGQC+roRAgsfdmZlHXWu2Un/SfnHvs1me09n0V9l55yKw1Yn2UA3d9ZDg7ogTJ1UvA6
- pJ/a3G6+DLMHpDTd//vDtZaRlmPM/RUiuxWkNy84ZPZ6ssHHGNy59oiQQ3j9ipJBZaCf
- g4HKNOYmNnBOKa7MU+olPDzyNw2BgPX2RjaOi7X4d5JXYz0r7gv7yaJ/GyhHi65+hLJ2
- pPCmJ5GK8vt1w4znFVdjxBTB/dbVkt8lQXOmpPUpJv5fYblQjdUhbBswepnNT3GVTrF3
- dYCw==
-X-Gm-Message-State: AOJu0YxLXPH35/Nhpovd3hImNJW6Fp1geAbGt1gYtD4VT6WUdmDxd2Jw
- uuyvamsjq73XcblSn+NRLNUGaiBQ33zXi52HRKsfeZLeHNABUrS9s41lkUvi99FT4xiEWBpKDLy
- Us1wdKUs=
-X-Gm-Gg: AY/fxX5B7Zyb3Erv93C7fYBcUaXxXzvLAe1VkL6wUk8OosKIg8Di5e6d3LzKYp1/kp/
- DORMBpu6JZMOQuv5cC8iDvFyyaW4AQ3iavZcENCzxeE5Z0fKdKtdAKE6eW07Lb9Xa4M3pKuupLg
- lOOteawAiJxK+a6luX7frTEQoL4Ga3n6/VS4vyvMOdhbaz7PQVYuUyXjLYEgfWd3jQwKtep3yDQ
- rDdm5fdmxpvy0OR45Tfmg3m0BmDkd/zvor6JEKEKhAFt96lHxEhBHOjuJYNitT0KaZIaDwtw2H/
- 8/Aibp5AJ8DsZAaBVcgUNYhbRUrA4TkGf1X3odQOwUfwxSPpo5Kh6hM+1oVt6dvc//fuOoPCasz
- 6SxySl9jR3jTzIZn/Pjh5khn79ziehLtTUdj15p7OAqZjr5hpfBYNgF43rDE460iikFD3U26PQ3
- 57lipDMkuCwMyKP4UnQXmF0aHhkE4u
-X-Google-Smtp-Source: AGHT+IF4cX2W1reaFPvi9Tl5h0mYtAk/J69aTnoOtr6ykIGHztljV8lVqM+TXGEXIvQhgo6j8kU6vA==
-X-Received: by 2002:a05:6a00:90a6:b0:7b8:ac7f:5969 with SMTP id
- d2e1a72fcca58-8188115eefemr2033426b3a.4.1767681430183; 
- Mon, 05 Jan 2026 22:37:10 -0800 (PST)
-Received: from stoup.. ([180.233.125.201]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-819c5edcf34sm1001613b3a.67.2026.01.05.22.37.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jan 2026 22:37:09 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
-	Zhijin Zeng <zengzhijin@linux.spacemit.com>
-Subject: [PATCH] tcg/riscv: Fix TCG_REG_TMP0 clobber in tcg_gen_dup{m,i}
-Date: Tue,  6 Jan 2026 17:37:04 +1100
-Message-ID: <20260106063704.244300-1-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1vd2Go-0007yY-OF
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 03:18:26 -0500
+Received: from mx1.zhaoxin.com ([210.0.225.12])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1vd2Gl-000087-Js
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 03:18:26 -0500
+X-ASG-Debug-ID: 1767687486-086e2306f6032d0001-jgbH7p
+Received: from ZXSHMBX2.zhaoxin.com (ZXSHMBX2.zhaoxin.com [10.28.252.164]) by
+ mx1.zhaoxin.com with ESMTP id x3dK7Tvg07K7K5Ih (version=TLSv1.2
+ cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+ Tue, 06 Jan 2026 16:18:06 +0800 (CST)
+X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
+Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX2.zhaoxin.com
+ (10.28.252.164) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Tue, 6 Jan
+ 2026 16:18:06 +0800
+Received: from ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85]) by
+ ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85%7]) with mapi id
+ 15.01.2507.059; Tue, 6 Jan 2026 16:18:06 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
+Received: from ewan-server.zhaoxin.com (10.28.44.15) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Tue, 6 Jan
+ 2026 15:54:38 +0800
+Received: from [10.28.44.6] (EwanHaiuntuMini.zhaoxin.com [10.28.44.6])
+ by ewan-server.zhaoxin.com (Postfix) with ESMTP id A34382D02A1E;
+ Mon,  5 Jan 2026 05:11:12 -0500 (EST)
+Message-ID: <a8516d27-0ee9-4139-9d47-51eda832c219@zhaoxin.com>
+Date: Mon, 5 Jan 2026 18:11:12 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+From: Ewan Hai <ewanhai-oc@zhaoxin.com>
+Subject: Re: [PATCH v2 3/4] target/i386: Introduce Zhaoxin Shijidadao-Client
+ CPU model
+To: Zhao Liu <zhao1.liu@intel.com>
+X-ASG-Orig-Subj: Re: [PATCH v2 3/4] target/i386: Introduce Zhaoxin
+ Shijidadao-Client CPU model
+CC: <pbonzini@redhat.com>, <qemu-devel@nongnu.org>, <ewanhai@zhaoxin.com>,
+ <cobechen@zhaoxin.com>, <TonyWWang@zhaoxin.com>
+References: <20251027102139.270662-1-ewanhai-oc@zhaoxin.com>
+ <20251027102139.270662-4-ewanhai-oc@zhaoxin.com> <aSVcOX5WvJYjIEbM@intel.com>
+ <d20164c5-291c-4646-86cb-fddc69542599@zhaoxin.com>
+ <aT/O1u22C1o3p5sn@intel.com>
+Content-Language: en-US
+In-Reply-To: <aT/O1u22C1o3p5sn@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.28.44.15]
+X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Moderation-Data: 1/6/2026 4:18:05 PM
+X-Barracuda-Connect: ZXSHMBX2.zhaoxin.com[10.28.252.164]
+X-Barracuda-Start-Time: 1767687486
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://mx2.zhaoxin.com:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 6693
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -1.21
+X-Barracuda-Spam-Status: No,
+ SCORE=-1.21 using global scores of TAG_LEVEL=1000.0
+ QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=DATE_IN_PAST_12_24,
+ DATE_IN_PAST_12_24_2
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.152631
+ Rule breakdown below
+ pts rule name              description
+ ---- ---------------------- --------------------------------------------------
+ 0.01 DATE_IN_PAST_12_24     Date: is 12 to 24 hours before Received: date
+ 0.80 DATE_IN_PAST_12_24_2   DATE_IN_PAST_12_24_2
+Received-SPF: pass client-ip=210.0.225.12; envelope-from=EwanHai-oc@zhaoxin.com;
+ helo=mx1.zhaoxin.com
+X-Spam_score_int: -7
+X-Spam_score: -0.8
+X-Spam_bar: /
+X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,80 +106,169 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TCG_REG_TMP0 may be used by set_vtype* to load the vtype
-parameter, so delay any other use of TCG_REG_TMP0 until
-the correct vtype has been installed.
+On 12/15/25 5:03 PM, Zhao Liu wrote:
+> 
+> 
+> On Tue, Nov 25, 2025 at 04:57:04PM +0800, Ewan Hai wrote:
+>> Date: Tue, 25 Nov 2025 16:57:04 +0800
+>> From: Ewan Hai <ewanhai-oc@zhaoxin.com>
+>> Subject: Re: [PATCH v2 3/4] target/i386: Introduce Zhaoxin
+>>  Shijidadao-Client CPU model
+>>
+>> On 11/25/25 3:35 PM, Zhao Liu wrote:
+>>>
+>>>
+>>>> +        /*
+>>>> +         * TODO: When the Linux kernel introduces other existing definitions
+>>>> +         * for this leaf, remember to update the definitions here.
+>>>> +         */
+>>>
+>>> This TODO seems a bit vague; it's best to explicitly list the existing
+>>> features that are currently missing. Otherwise, maintainers won't be
+>>> able to understand or clean up this TODO either.
+>>>
+>>
+>> I agree. The same problem also exists in the YongFeng vCPU model. For this
+>> series, I can drop the vague TODO and instead add a more explicit comment that
+>> documents which CPUID.C000_0001.EDX bits are intentionally missing today. In
+>> addition, I can post a small follow-up cleanup patch to fix the YongFeng model
+>> in the same way, so the two Zhaoxin models stay consistent. If you prefer, I can
+>> also fold the YongFeng comment update into this series as an extra patch.
+> 
+> Yes, it's good to make everything clear and I think it's better to
+> include your extra patch into this series to help maintainer review/pick
+> in one goes.
 
-Cc: qemu-stable@nongnu.org
-Fixes: d4be6ee1111 ("tcg/riscv: Implement vector mov/dup{m/i}")
-Reported-by: Zhijin Zeng <zengzhijin@linux.spacemit.com>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tcg/riscv/tcg-target.c.inc | 33 +++++++++++++++++++--------------
- 1 file changed, 19 insertions(+), 14 deletions(-)
+Got it.
 
-diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
-index 31b9f7d87a..0967a445a3 100644
---- a/tcg/riscv/tcg-target.c.inc
-+++ b/tcg/riscv/tcg-target.c.inc
-@@ -1074,7 +1074,7 @@ static bool tcg_out_sti(TCGContext *s, TCGType type, TCGArg val,
- }
- 
- static bool tcg_out_dup_vec(TCGContext *s, TCGType type, unsigned vece,
--                                   TCGReg dst, TCGReg src)
-+                            TCGReg dst, TCGReg src)
- {
-     set_vtype_len_sew(s, type, vece);
-     tcg_out_opc_vx(s, OPC_VMV_V_X, dst, 0, src);
-@@ -1082,29 +1082,34 @@ static bool tcg_out_dup_vec(TCGContext *s, TCGType type, unsigned vece,
- }
- 
- static bool tcg_out_dupm_vec(TCGContext *s, TCGType type, unsigned vece,
--                                    TCGReg dst, TCGReg base, intptr_t offset)
-+                             TCGReg dst, TCGReg base, intptr_t offset)
- {
-+    /* Note set_vtype* may clobber TMP0, so do that first. */
-+    set_vtype_len_sew(s, type, vece);
-     tcg_out_ld(s, TCG_TYPE_REG, TCG_REG_TMP0, base, offset);
--    return tcg_out_dup_vec(s, type, vece, dst, TCG_REG_TMP0);
-+    tcg_out_opc_vx(s, OPC_VMV_V_X, dst, 0, TCG_REG_TMP0);
-+    return true;
- }
- 
- static void tcg_out_dupi_vec(TCGContext *s, TCGType type, unsigned vece,
--                                    TCGReg dst, int64_t arg)
-+                             TCGReg dst, int64_t arg)
- {
-     /* Arg is replicated by VECE; extract the highest element. */
-     arg >>= (-8 << vece) & 63;
- 
--    if (arg >= -16 && arg < 16) {
--        if (arg == 0 || arg == -1) {
--            set_vtype_len(s, type);
--        } else {
--            set_vtype_len_sew(s, type, vece);
--        }
--        tcg_out_opc_vi(s, OPC_VMV_V_I, dst, 0, arg);
--        return;
-+    /* Note set_vtype* may clobber TMP0, so do that first. */
-+    if (arg == 0 || arg == -1) {
-+        set_vtype_len(s, type);
-+    } else {
-+        set_vtype_len_sew(s, type, vece);
-+    }
-+
-+    if (arg >= -16 && arg < 16) {
-+        tcg_out_opc_vi(s, OPC_VMV_V_I, dst, 0, arg);
-+    } else {
-+        tcg_out_movi(s, TCG_TYPE_I64, TCG_REG_TMP0, arg);
-+        tcg_out_opc_vx(s, OPC_VMV_V_X, dst, 0, TCG_REG_TMP0);
-     }
--    tcg_out_movi(s, TCG_TYPE_I64, TCG_REG_TMP0, arg);
--    tcg_out_dup_vec(s, type, vece, dst, TCG_REG_TMP0);
- }
- 
- static void tcg_out_br(TCGContext *s, TCGLabel *l)
--- 
-2.43.0
+>> As background, current Zhaoxin CPUs implement several CPUID.(EAX=0xC0000001,
+>> ECX=0):EDX feature bits that are not yet defined in the Linux kernel, for
+>> example SM2/SM2_EN, SM3/SM4 and their enable bits, PARALLAX/PARALLAX_EN,
+>> TM3/TM3_EN, RNG2/RNG2_EN, PHE2/PHE2_EN, and RSA/RSA_EN.
+>>
+>> We previously tried to upstream all these extra feature bits in one
+>> patch(https://lore.kernel.org/all/20230414095334.8743-1-TonyWWang-oc@zhaoxin.com/),
+>> but the maintainer rejected it because there was no in-tree code using these
+>> features yet. So our current plan is to add the CPUID bits together with real
+>> kernel users step by step.
+> 
+> I see. I think it's enough to document missing CPUIDs in comment.
+> 
+
+Would the following comment be acceptable?
+
+/*
+ * missing: SM2/SM2_EN, CCS/CCS_EN, PARALLAX/PARALLAX_EN,
+ * TM3/TM3_EN, RNG2/RNG2_EN, PHE2/PHE2_EN, RSA/RSA_EN
+ */
+
+Do you think I should also include the lore link in the commit message/cover
+letter for additional context?
+
+> ...
+> 
+>>> (Based on my personal experience, the absence of SMAP seems a bit
+>>> odd. Could it be a hardware bug in a specific stepping?)
+>>>
+>>
+>> This is not a stepping-specific silicon bug. For this product family, SMAP
+>> support was intentionally not enabled in the final product because our internal
+>> performance evaluation showed an unacceptable performance impact in certain
+>> workloads. The v2 CPU model therefore keeps "smap" off to reflect the actual
+>> shipped behavior, while the v1 definition with SMAP enabled is kept for
+>> customers who need to model early v1 silicon where SMAP is still available.
+> 
+> v1 is not the final product, then I think it's not necessary to upstream
+> it. For example, these Intel CPU models are basically all targeted at
+> the final products. But unluckily, engineering samples may have bugs so
+> we have to add or remove features based on what the final products
+> support. So if the final product is clear from the beginning, there's no
+> need to take intermediate steps.
+> 
+> BTW, even with v2, user can still enable smap by +smap.
+> 
+>>>> +                .props = (PropValue[]) {
+>>>> +                    { "xsavec", "on" },
+>>>> +                    { "xgetbv1", "on" },
+>>>> +                    { "xsaves", "on"},
+>>>> +                    { "vmx-xsaves", "on"},
+>>>> +                    { "smap", "off" },
+>>>> +                    { /* end of list */ }
+>>>> +                },
+>>>> +            },
+>>>
+>>> BTW, if the differences aren't too significant, is it possible to merge
+>>> the server and client models? :)
+>>>
+>>
+>> From the user point of view, I slightly prefer keeping separate
+>> Shijidadao-Client and Shijidadao-Server models.
+>>
+>> The main reason is that customers who want a "full-feature" vCPU that behaves
+>> very close to a specific physical product can simply pick the corresponding
+>> model name, without having to remember a set of extra "-cpu ..., +-feature"
+>> overrides. If we merge everything into a single Shijidadao model that
+>> corresponds to a more restricted baseline, users who want the full configuration
+>> would need to explicitly enable multiple features (such as the additional XSAVE
+>> bits) on the command line, which is easier to get wrong and less user-friendly.
+> 
+> Could we make Shijidadao-Client as a v2 of Shijidadao-Server, and create an
+> alias for this v2?
+> 
+> .alias = "Shijidadao-Client"
+> 
+> Then we could rename Shijidadao-Server to Shijidadao, and its v2 is for
+> client.
+> 
+>> This is also aligned with how QEMU models other vendors' micro-architectures
+>> where client and server products have slightly different feature sets.
+> 
+> The main use case for CPU models is to easy migration across mixed CPU
+> clusters [*]. So, IMO, not all products require a model.
+
+For the CPU model naming/versioning, my plan is:
+The current Shijidadao will be equivalent to the old Shijidadao-Client-v2, drop
+the old Shijidadao-Client-v1 according to your advice, Shijidadao-v1 will have
+the alias Shijidadao-Client, and Shijidadao-v2 will have the alias
+Shijidadao-Server.
+
+A key code sketch would look like:
+
+    {
+        .name = "Shijidadao",
+        .level = 0x1f,
+        .vendor = CPUID_VENDOR_ZHAOXIN1,
+        .family = 7,
+        .model = 0x6b,
+        .stepping = 1,
+...
+
+        .model_id = "Zhaoxin Shijidadao-Client Processor",
+        .cache_info = &shijidadao_cache_info,
+        .versions = (X86CPUVersionDefinition[]) {
+            { .version = 1, .alias = "Shijidadao-Client" },
+            {
+                .version = 2,
+                .alias = "Shijidadao-Server",
+                .note = "server variant",
+                .props = (PropValue[]) {
+                    { "model", "0x7b" },
+                    { "stepping", "0" },
+                    { "core-capability", "on" },
+                    { "split-lock-detect", "on" },
+                    { "model-id",
+                      "Zhaoxin Shijidadao-Server Processor" },
+                    { /* end of list */ }
+                },
+            },
+            { /* end of list */ }
+        }
+    },
+
+Does this mapping look acceptable to you?
+
+
+Best wishes,
+Ewan.
 
 
