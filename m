@@ -2,89 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E538CF5504
-	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 20:12:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63E60CF55E8
+	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 20:25:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vcpzT-0004pm-ME; Mon, 05 Jan 2026 14:11:43 -0500
+	id 1vcqBj-0006cD-FI; Mon, 05 Jan 2026 14:24:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vcpzM-0004UG-LD
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 14:11:36 -0500
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ (Exim 4.90_1) (envelope-from <corey@minyard.net>) id 1vcqBi-0006by-0i
+ for qemu-devel@nongnu.org; Mon, 05 Jan 2026 14:24:22 -0500
+Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vcpzK-0006OW-6a
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 14:11:36 -0500
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-34c708702dfso276922a91.1
- for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 11:11:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <corey@minyard.net>) id 1vcqBg-0000WY-94
+ for qemu-devel@nongnu.org; Mon, 05 Jan 2026 14:24:21 -0500
+Received: by mail-ot1-x329.google.com with SMTP id
+ 46e09a7af769-7c6cc44ff62so234648a34.3
+ for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 11:24:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767640290; x=1768245090; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=minyard.net; s=google; t=1767641058; x=1768245858; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:reply-to:message-id:subject:cc:to:from:date
  :from:to:cc:subject:date:message-id:reply-to;
- bh=FhSHiaUAmchznQpwn/zLomPV++UqAw2HPkNHjU5ciQk=;
- b=e1FKKSDGFTVinc/kLyElFd07GxIbh9gW50raP9VVVGTHlEZpdxvsMz5oIMyuDtLK9g
- OP5E8M3/dZBhpIjMaKfD4n4CvmxQmSUZ5uv56Exbi47WrWqyS2GRisdUIkPhRld+rK6n
- T297uN2Bl0ZJJaHDaVya17JWoVzHR4lMIKu/fJQZSgqJAsvA4LThcdCs6RrOG81xhLh4
- TWZL5nhNuZpXLrqmUTLzNzvLSX2UIMZCKW75WxctZ8Xh0JPwftCHViCGqHnVk4TX+Vk+
- LBaIC0ZyuXgU6TAOYP/8Y1plDCoBZDY8jLHWc3h+aJGom2G47tbXCHCTDJR+fa/jpX9B
- ZC0Q==
+ bh=yjN3Gc2g7d7ovaaYp8rpxP8F2paLPZmhuEp8Nk8TBkY=;
+ b=kXy1kikrGckpJ893QmffPpc2m+cVhWF0wsG+sga0WnmzhQB9Ifj5KNUpI8LUTYN0zX
+ KigvImggUMNaV51DjJMmOi1B338YAjXsYOx7NTJuAm84p8BAs0dBSsv7wN2qIP7XseBo
+ H6MGaca4+owVsyzQ1lzy34owq8c5CAbyrI1rQDqlWKWa2w2pFkhsP+oN50ortXniNsl6
+ JDmURnduLGw+TfiAZJ1BEJ4I3u1VrlP41i2mZLChjNFC0uvSbr9pIgb02pXUdHHKQhfp
+ JDrIB+flK++HRHs8Yq5vqpHPXmsWKD8B2svGjVvv6wYOMVx+vFaiuqRBI+rJuEOHQFS4
+ 3Evg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767640290; x=1768245090;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1767641058; x=1768245858;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:reply-to:message-id:subject:cc:to:from:date
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=FhSHiaUAmchznQpwn/zLomPV++UqAw2HPkNHjU5ciQk=;
- b=qXNdSDK4kN9iBEMdj3fu4u1qN809/z3ATVJBMX6Zwj9vYDKYrHw2yaq8ySva9WmHht
- nbdrmp8rIWvrKRrxdu5NgH79raUawcC0k9M5GxasJJeSBPeQ5Rj4l5CcT3jt3S27ej93
- DfzBt0zffJpmndktqn3beGLm/dmvVz2cmkuwto8H4DmP9WJ8gNI5+7dBJWnVs+D6LodV
- EyUVvKnx0eHLsbPyLmMNasXwzmtLHZRdF1GaE4PEiuRc8kUKYV9eC77ybe5/dLoSnDmi
- 1YmqcSl787rWYDGDntDEh6scWY9iGRHjB7X8nEMKWm/+o8XEW1bWHQKvV+GboQoxR9P+
- c/jg==
-X-Gm-Message-State: AOJu0YzEIkWkkT4WKwh9hbHc+XwIynEDeJ8wBY8vu7RM8U+W4YVgU3iw
- P1BQdIY7VGnE926QTkunHOgs5H+KUPBzkWEtoU4gtIIe7mNUcV7IusnrCrNev0Z5sgjvsB/EjKN
- tt7NLecY=
-X-Gm-Gg: AY/fxX46bNJe2mbUpDnD5WPjI5FmQeF7b7Z0exmOm801q3AT4kQx6eeD8PIdKaC42Jt
- B2QY0ijDU6a5+mN9QasAsNW6/GG1WtO8bWuo21r2sYb5iFieFlxlTUD6H7P6e3EFAjIoYVMU1t1
- fdywZxxyK9RFhGtYwVMpvOv310jlETxvnmxPuhqQIBK/UiHQKNlhXLu0kW0egqutOFva2GTCW8M
- Zcacw/SIJyf3TOOu3HNza39swQXb/JE3WjAoXV3TJF95uXbdDHWmbYvhZXtwQZcawW+vPJW+fwi
- V9ZNcuLLOmS6fm4sn7dqUR6xt7n63wmbDw6wzNr81Ndy6t0e15VTUxffSkPtij8tbi7AoIcq5ko
- b6gXZQU1qIDBSzGRWgqhZ8Pb/zNLWWWeaNRy2x1vLK7HPbVdHxWRjrt/1UOrJkBhrqH0O9WoYAm
- Y+f81EoiOKJY0CNzg/W6C7HAuZ7nGFXl2YZn26ejS0XR1SD/Q/38CGYL/9
-X-Google-Smtp-Source: AGHT+IFAa/xJ33Kf7LBFZnR4htuVhvTIbaoMejmPyEziTeQ5F8S0JcJg4efLuA3GUddWuvOfqO7jWA==
-X-Received: by 2002:a17:90b:1c07:b0:341:2b78:61b8 with SMTP id
- 98e67ed59e1d1-34f5f301a25mr232360a91.20.1767640290054; 
- Mon, 05 Jan 2026 11:11:30 -0800 (PST)
-Received: from [192.168.1.87] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
+ bh=yjN3Gc2g7d7ovaaYp8rpxP8F2paLPZmhuEp8Nk8TBkY=;
+ b=iRPsjcwccgMGwCz57aEy3C5pG1tGj5Gdex0TQWi3ghy1QvQd17qP/792sZhdWsSa6m
+ rBT9K8poBo/LeX2lLEkRO8eLDYiwWt1s+cCgcfTcQ+HdLuENJ47iYv6OzwUeq2N3SMSC
+ 1/5ohey86xkXPKOWQdse0Q5WZ5Nwn2BZqw2ZCNICSRVmru0/dlXmanCjRC0IPe7H03V+
+ nF9xnupw60gUGwcFV7HbBSdqfOJrXlxaxInfxuDypvjYKc1yPHhPwHSuW+qgCN8Cj5pc
+ xUerXnvzX5yNTqf0qStljGnG43T8h+i5XzE1AyxgeSd1XhV8GNHF2uVF6U+P4Fy9+d1E
+ 5SCw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUIIeMbjJ3rvtRKhWXplBxvWwx2LmXlzpt+xGKcvfYMgGi28N9M2jUVL6WLJJGsl5mhyLZLiIC6fAKC@nongnu.org
+X-Gm-Message-State: AOJu0YwyoizwITc8KAQXBKSU92cWdYcDGEpaCMfwmIpBP05FCZtfGYRJ
+ wAZduxOgZrcKgRNcEoYE23BbZM69uplMhm6T6+p+2HK9R8Ffq45nzypFdgr5y5Cmi6Q=
+X-Gm-Gg: AY/fxX4OVzrXhiZ8R/7qC8U5in2tweMTlfST7vD/nMbcasnDj2laqFAA3VTXsrX/Bex
+ R65HbW6NgKp03NBsogApxjrjWK24ZcuFBuIFAv4wG3HiJefMpQG80tIrAqfyBSAOj+InW2Xw0K9
+ VaKrt97zxh6n877rsrV/anq0mfyRl8KvuJ3W8x9XGeka9JcL/46Rus9sy2ibbx851M/zR3P1d7Q
+ hx0mwI+uqqrJlh17c8ZO/cQjfVrizpNq1xSAc7O99oTp3xslo+9rYGCdM1fHKINdqAfSes52SRv
+ Xrvu39EoJHjWvCEXVHsaSq3b4srpJv3VSg6pV2YtWtnMFXHjoLZdcZsU6R0KiRnhkmTSO6+qMdi
+ LKTTuObbl2g6y4ZycFVPYaPuUg2SYDVRju2qfqMxy0AvXlk28FRXxk5/6CmCU9my5bvZnJIvFGK
+ 3fv4B8YAGe4Sza8WiJQ7takDbU
+X-Google-Smtp-Source: AGHT+IEalp7Jlu1MyO2rkIkewH5AqeUOfey4U6/cEnxYPHzpt290Xx/DvfRQuMbNLhOC6NozynyF+w==
+X-Received: by 2002:a05:6830:441e:b0:7c5:2dbf:4a83 with SMTP id
+ 46e09a7af769-7ce4669d63bmr229750a34.2.1767641058359; 
+ Mon, 05 Jan 2026 11:24:18 -0800 (PST)
+Received: from mail.minyard.net ([2001:470:b8f6:1b:5606:872d:d03c:aa7f])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-34f5fa78f4asm92364a91.3.2026.01.05.11.11.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jan 2026 11:11:29 -0800 (PST)
-Message-ID: <5cab6793-7bb5-4272-83e0-9dd7a73188b3@linaro.org>
-Date: Mon, 5 Jan 2026 11:11:26 -0800
+ 46e09a7af769-7ce45ffbfaesm448889a34.24.2026.01.05.11.24.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 05 Jan 2026 11:24:17 -0800 (PST)
+Date: Mon, 5 Jan 2026 13:24:12 -0600
+From: Corey Minyard <corey@minyard.net>
+To: Yunpeng Yang <yunpeng.yang@nutanix.com>
+Cc: "philmd@linaro.org" <philmd@linaro.org>,
+ "minyard@acm.org" <minyard@acm.org>, "farosas@suse.de" <farosas@suse.de>,
+ "lvivier@redhat.com" <lvivier@redhat.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Mark Cave-Ayland <mark.caveayland@nutanix.com>,
+ Jonathan Davies <jond@nutanix.com>
+Subject: Re: [PATCH v2 0/2] hw/ipmi/ipmi_bmc_sim: Get/set fake LAN config
+Message-ID: <aVwP3MZtoHoEa3p1@mail.minyard.net>
+References: <20260105155648.1037077-1-yunpeng.yang@nutanix.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] hw/arm/smmu: add memory regions as property for an
- SMMU instance
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, Radoslaw Biernacki <rad@semihalf.com>,
- tangtao1634@phytium.com.cn, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Eric Auger <eric.auger@redhat.com>,
- qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Leif Lindholm <leif.lindholm@oss.qualcomm.com>
-References: <20251216235731.1793908-1-pierrick.bouvier@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20251216235731.1793908-1-pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1032.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260105155648.1037077-1-yunpeng.yang@nutanix.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
+ envelope-from=corey@minyard.net; helo=mail-ot1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,30 +103,57 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: corey@minyard.net
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/16/25 3:57 PM, Pierrick Bouvier wrote:
-> This will be used to access non-secure and secure memory. Secure support
-> and Granule Protection Check (for RME) for SMMU need to access secure
-> memory.
+On Mon, Jan 05, 2026 at 03:56:49PM +0000, Yunpeng Yang wrote:
+> Hi Philippe,
 > 
-> As well, it allows to remove usage of global address_space_memory,
-> allowing different SMMU instances to have a specific view of memory.
+> Thank you for your comments.
+> I've modified my patches according to your advice.
 > 
-> User creatable SMMU are handled as well for virt machine,
-> by setting the memory properties when device is plugged in.
+> Kind regards,
+> Yunpeng
 > 
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> 
+> v1...v2:
 > ---
->   include/hw/arm/smmu-common.h |  4 ++++
->   include/hw/arm/virt.h        |  2 ++
->   hw/arm/sbsa-ref.c            | 16 ++++++++++++----
->   hw/arm/smmu-common.c         | 25 +++++++++++++++++++++++++
->   hw/arm/virt.c                | 13 +++++++++++--
->   5 files changed, 54 insertions(+), 6 deletions(-)
-Gentle ping on this patch that was not yet reviewed.
+> 1. `is_valid_netmask` is renamed to `is_ipv4_netmask_valid`, and is now
+>    implemented using `ldl_be_p`, `clo32`, and `ctz32`. It still ensures
+>    the netmask is not `0.0.0.0`.
+>    I didn't find any related helper functions in `include/`.
 
-Regards,
-Pierrick
+I couldn't find anything, either.
+
+> 2. Now the `IPMILan` structure has its own `VMStateDescription`. It's
+>    linked to the parent `VMStateDescription` using `VMSTATE_STRUCT`.
+> ---
+> 
+
+This looks good to me, I'll pull this in to my tree and pass it on.
+
+-corey
+
+> 
+> Links:
+> * version 1 patches:
+>   https://lists.gnu.org/archive/html/qemu-devel/2025-10/msg07505.html
+> * comments from Philippe Mathieu-Daudé <philmd@linaro.org>:
+>   https://lists.gnu.org/archive/html/qemu-devel/2025-12/msg00117.html
+> 
+> 
+> Yunpeng Yang (2):
+>   hw/ipmi/ipmi_bmc_sim: Support getting fake LAN channel config
+>   hw/ipmi/ipmi_bmc_sim: Support setting fake LAN channel config
+> 
+>  hw/ipmi/ipmi_bmc_sim.c      | 412 +++++++++++++++++++++++++++++++++++-
+>  include/hw/ipmi/ipmi.h      |   1 +
+>  qemu-options.hx             |  26 +++
+>  tests/qtest/ipmi-kcs-test.c | 143 +++++++++++++
+>  4 files changed, 572 insertions(+), 10 deletions(-)
+> 
+> -- 
+> 2.43.7
+> 
 
