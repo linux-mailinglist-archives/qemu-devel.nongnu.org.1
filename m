@@ -2,95 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00AFCF5443
-	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 19:49:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1B68CF54C2
+	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 20:08:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vcpcZ-00067i-Au; Mon, 05 Jan 2026 13:48:06 -0500
+	id 1vcpvW-0007j1-Ne; Mon, 05 Jan 2026 14:07:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vcpbq-0005eB-Fq
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 13:47:19 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vcpuq-0007Zg-Jk
+ for qemu-devel@nongnu.org; Mon, 05 Jan 2026 14:06:58 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vcpbo-0000SD-PV
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 13:47:18 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-477632d9326so1508785e9.1
- for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 10:47:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767638835; x=1768243635; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=SpDhy8RTo0H6hUNpedWzmERUj4zB9i/oq7zkILxNnFM=;
- b=fNgzzwcpF52Y4HMIOmaaTFPjOSNpq2b4+FKqXkVHURBXsDtwfc2BVgDEb2EvtFDrSJ
- CO6UV5c5WH42GH2fSfGq7r3WaE6NQYh6jTOXlLBCd8eA8LvkBjBA28IkHxJmSVhHvDk/
- yumwS66BXHRq8U3l4UcB+XCucOZ9RLXM1Q7mhf9j/zl4F7+benxc5TPebEbODonYMNSK
- liWvgR8eu46xvOAk4cnRdxy8Efzh9Xe5FCm0MUO8mn2eh+0iqt5W8wQpyRg5+IqgTZO6
- Ei1FmcLkxWnCqdeg0GNDQ3SN4nWutK1di00YwfkVbhh2x9ycWSnl+77mirElGutaDrt1
- RByg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767638835; x=1768243635;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=SpDhy8RTo0H6hUNpedWzmERUj4zB9i/oq7zkILxNnFM=;
- b=tJx9xBxSJOuxGFKBXSkvqfxxKxd8cDyw4ECd0LVVBpM6Kn4W6fA+1KL8dtHlQveNpa
- DBlPVPMiIKK+bI0FgLkIe5PL2n1x0faj+5chM/Gkk8BjBCv3IG41qHQW/DhQtY1s7u6n
- muXnkkcRDzMJjepXrdDd3RWg91srj+PqRJL2N9vqj6Q+Oe3XmNq5Nvg/CA0IHbKxf0LD
- eNYI8w6Jx35KeEssaYCBBsPD2DAhfSaF21h2lAsp0OX4W/mB4nffy0Tz+Mej5V/ogtoz
- 3ql7dUCG0uRCPtV7ED02T+JghLgPEZsqgopcPyPBb+Yjmg66NzJxytXY0+OKq7sd/Ob/
- Uf5w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWG2ZKwbsy/N8umdXb476eroPETLgnqZ4GRrK85l2xIpoXsxrUrNgp8PK57J8TlyhCgC1OkWBZ53uiy@nongnu.org
-X-Gm-Message-State: AOJu0YxdJ2s0c7MLzCdk2k3jUBzXcAtG3SERVfzLZuutG09s4r5M0NDh
- TLhwCip3k7g1OW5uNte5h/YdCdgV803iWZOQxpaDTk//BIk34uRLJGcUeyitW2wF0CI=
-X-Gm-Gg: AY/fxX4LP9xOjwtKXKhFRya+hojOJ3ZB4BNNZY6IwxiyA4+ZEyVPkZA99wxyAh+RXf2
- nyKPCZuzQOdVUpGgI5kSjRc8l8Be1v2GMaWWq0Mal5LCpjZWSyTgr/QHQHzTWqEVpI/b9HwgPfW
- 7JEbwSSmiwIj8AuDMolImzx1AoRN6ekGWDPw2zFyjdPJ+0OVLie9YkJsl17npHvdy4VqEbeTkHq
- Swzh5ju9T7pNxl8EmJt28ez4jr0FYHy1FD67TodTZrAfxsM4XAsfRx5p3MJgCd0WMxpSyB+cSN8
- JfadtS9Dz0+GhXDtvWxG3bxfUtGYNwUfe6Yemkqve5kV76pD3rC/r+vshdthlWSN7eKBerUsg8l
- Y9e9xYLuYwO6Ic+nm+hN4D6jD1hPuGmer6r3+KzpbQUXRpt4bVmtPLlZLfE6/ojH3jSyzi5CxFm
- fQAFNiYICMJyEP6zGnFpTT84pUY2qMpal3WcXtVUSqBWE3HLNQgWJ0okz0LDTeUzb5TgEZ
-X-Google-Smtp-Source: AGHT+IHN9H9YrstvfBR/GcW4iAzN+UoMyvGONDjc7kReQ+iw1wi67fBpPStECW5snD5k+kjyA13r/w==
-X-Received: by 2002:a05:600c:c494:b0:47d:4047:f377 with SMTP id
- 5b1f17b1804b1-47d7f0a36b6mr3740885e9.36.1767638834943; 
- Mon, 05 Jan 2026 10:47:14 -0800 (PST)
-Received: from [10.247.174.66] (88-187-86-199.subs.proxad.net. [88.187.86.199])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d7f390a69sm2996425e9.0.2026.01.05.10.47.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jan 2026 10:47:14 -0800 (PST)
-Message-ID: <1752b84f-291b-4f56-9a97-e61163564963@linaro.org>
-Date: Mon, 5 Jan 2026 19:47:12 +0100
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vcpun-00054I-Mw
+ for qemu-devel@nongnu.org; Mon, 05 Jan 2026 14:06:56 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 4C72533754;
+ Mon,  5 Jan 2026 19:06:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1767640009; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=OCkys1HWa7nAW2llAVERGlOu+dUl8Xy9JXeMcmMbkCk=;
+ b=Gbpej2+unrqHQ1INahkxG6w+2EszvjfatPoC+pSgcv1EtlcjHABvC+7xjjf9aHozzNN29O
+ EOsVABL1kgTtR4xWF+OOMlklnxrlyiNgajjtU7wEscSA+mfOXc5LKJKYFhanBGEqffCcn3
+ lVFaUPKowL230AytcVgzaBpIUSKjuKo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1767640009;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=OCkys1HWa7nAW2llAVERGlOu+dUl8Xy9JXeMcmMbkCk=;
+ b=p3s1gs5YU33jeBtb80maCCfIRLgQdW/L7NXdb8eGunAC9o0qTMXh+xE4TXnjXncLyGyEw9
+ oRsj+owwpvoxjbCQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1767640009; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=OCkys1HWa7nAW2llAVERGlOu+dUl8Xy9JXeMcmMbkCk=;
+ b=Gbpej2+unrqHQ1INahkxG6w+2EszvjfatPoC+pSgcv1EtlcjHABvC+7xjjf9aHozzNN29O
+ EOsVABL1kgTtR4xWF+OOMlklnxrlyiNgajjtU7wEscSA+mfOXc5LKJKYFhanBGEqffCcn3
+ lVFaUPKowL230AytcVgzaBpIUSKjuKo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1767640009;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=OCkys1HWa7nAW2llAVERGlOu+dUl8Xy9JXeMcmMbkCk=;
+ b=p3s1gs5YU33jeBtb80maCCfIRLgQdW/L7NXdb8eGunAC9o0qTMXh+xE4TXnjXncLyGyEw9
+ oRsj+owwpvoxjbCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EEE1E13964;
+ Mon,  5 Jan 2026 19:06:47 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id mBdSK8cLXGmSOgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 05 Jan 2026 19:06:47 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: peterx@redhat.com,
+	berrange@redhat.com
+Subject: [PATCH v2 00/25] migration: Cleanup early connection code
+Date: Mon,  5 Jan 2026 16:06:17 -0300
+Message-ID: <20260105190644.14072-1-farosas@suse.de>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] target/openrisc: Inline translator_ldl()
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: Jia Liu <proljc@gmail.com>, Pierrick Bouvier
- <pierrick.bouvier@linaro.org>, Anton Johansson <anjo@rev.ng>,
- Laurent Vivier <laurent@vivier.eu>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Stafford Horne <shorne@gmail.com>
-References: <20251224161804.90064-1-philmd@linaro.org>
- <20251224161804.90064-4-philmd@linaro.org>
- <bc66522e-0c13-4c03-a7ec-86ef64a49eb4@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <bc66522e-0c13-4c03-a7ec-86ef64a49eb4@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.992];
+ MIME_GOOD(-0.10)[text/plain];
+ FUZZY_RATELIMITED(0.00)[rspamd.com];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; MIME_TRACE(0.00)[0:+];
+ ARC_NA(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ RCPT_COUNT_THREE(0.00)[3]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; TO_DN_NONE(0.00)[];
+ RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -2.80
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,47 +108,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/1/26 01:11, Richard Henderson wrote:
-> On 12/25/25 03:18, Philippe Mathieu-Daudé wrote:
->> translator_ldl() is defined in "exec/translator.h" as:
->>
->>    198 static inline uint32_t
->>    199 translator_ldl(CPUArchState *env, DisasContextBase *db, vaddr pc)
->>    200 {
->>    201     return translator_ldl_end(env, db, pc, MO_TE);
->>    202 }
->>
->> Directly use the inlined form, expanding MO_TE -> MO_BE
->> since we only build the OpenRISC targets as big-endian.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   target/openrisc/translate.c | 3 ++-
->>   1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/target/openrisc/translate.c b/target/openrisc/translate.c
->> index 6fa4d6cfa70..a6d550bbc2e 100644
->> --- a/target/openrisc/translate.c
->> +++ b/target/openrisc/translate.c
->> @@ -1558,7 +1558,8 @@ static void 
->> openrisc_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
->>   static void openrisc_tr_translate_insn(DisasContextBase *dcbase, 
->> CPUState *cs)
->>   {
->>       DisasContext *dc = container_of(dcbase, DisasContext, base);
->> -    uint32_t insn = translator_ldl(cpu_env(cs), &dc->base, dc- 
->> >base.pc_next);
->> +    uint32_t insn = translator_ldl_end(cpu_env(cs), &dc->base,
->> +                                       dc->base.pc_next, MO_BE);
->>       if (!decode(dc, insn)) {
->>           gen_illegal_exception(dc);
-> 
-> Use mo_endian().  With that,
+Changes in v2:
 
-Oops!
+Removed some extra changes that were not adding much to the series,
+left multifd_recv_setup() call where it was; stopped merging the
+connection code at the end of the series.
 
-> 
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Added further cleanup to CPR code in qmp_migrate and moved it to
+cpr-transfer.c.
 
-Thanks!
+Minor changes:
+
+- patch 4: didn't add a new trace with the hostname, there's already
+  one at qio_channel_tls_new_client()
+- patch 6: changed other instances of s->parameters.mode to migrate_mode()
+- patch 7: changed migrate_init() to also use migrate_error_free()
+- patch 8: remove extra error_report_err
+- patch 11: removed the extra cpr cleanup
+- patch 12: stopped including migration_tls_channel_connect() in the
+  async portion
+- patches 13-15: split the removal of QEMUFile from channel.c and
+  corrected the RDMA code
+- patch 21: removed the comments about memory management
+
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/2245393469
+
+v1 (rfc):
+https://lore.kernel.org/r/20251226211930.27565-1-farosas@suse.de
+
+Address some of the issues that make the early connection code a bit
+too idiosyncratic. By "early connection" I mean from
+qmp_migrate[_incoming] until the start of the migration
+thread|coroutine.
+
+(IOW, the whole dance of going into socket code, starting an async
+routine, calling back to migration code, checking TLS, going back
+again, coming back once more, etc. All while passing an error_in and
+hostname string that eventually gets (maybe) ignored in tls code,
+along with some is_resume checks along the way)
+
+This series is mostly inspired by the work Markus and Peter did
+recently in organizing some of the error handling code. The new
+migration_connect_error_propagate() function seems like a good place
+to centralize the error handling and call migration_cleanup() during
+this early connection phase when everything is still fairly
+linear. (apologies if I'm dirtying your design =)
+
+Aside from the initial patches that are a bit disruptive, most of the
+series is just refactoring to make the code easier to navigate, names
+more consistent and some general cleanups.
+
+- patches 1-8:
+
+General cleanups, could be applied standalone, although they are
+prerequisites for the rest of the series.
+
+- patches 9-12:
+
+Changes to allow calling migration_cleanup() from
+migration_connect_error_propagate().
+
+The idea here is to make sure error propagation and cleanup happen
+when the error is detected, without calling into non-error-path
+functions.
+
+This is the more risky change because it will cause cleanup to run in
+places where it didn't before.
+
+- patch 13 & 19:
+
+The main change of this series, simplifying the
+qmp-migrate --> migration_connect path. Stops calling the connection
+functions when an error happens in the transport code, adds
+clarification around which paths have asynchronous completion and
+makes the synchronous path return to their caller to start the
+migration instead of initiating it themselves.
+
+- patches 14-18, 20-22:
+
+Moves code out of migration.c and into channel.c. Now that the code is
+more compartmentalized, move it to a more appropriate source file.
+
+- patches 23-25:
+
+BONUS CONTENT, wrap the uri/channels parsing and move it to channel.c
+as well.
+
+- future work?
+
+I think we could move all QMP command functions to a QAPI-specific
+file, but I don't see any standardization in the tree, there's
+block/qapi.c, various instances of foo-qmp-cmds.c and many more just
+laying along with the rest of the code. So I left this for another
+moment.
+
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/2233810778
+
+Fabiano Rosas (25):
+  migration: Remove redundant state change
+  migration: Fix state change at migration_channel_process_incoming
+  migration/tls: Remove unused parameter
+  migration: Cleanup TLS handshake hostname passing
+  migration: Move postcopy_try_recover into migration_incoming_process
+  migration: Use migrate_mode() to query for cpr-transfer
+  migration: Free the error earlier in the resume case
+  migration: Move error reporting out of migration_cleanup
+  migration: Expand migration_connect_error_propagate to cover
+    cancelling
+  migration: yank: Move register instance earlier
+  migration: Fold migration_cleanup() into
+    migration_connect_error_propagate()
+  migration: Handle error in the early async paths
+  migration: Move setting of QEMUFile into
+    migration_outgoing|incoming_setup
+  migration/rdma: Use common connection paths
+  migration: Start incoming from channel.c
+  migration/channel: Rename migration_channel_connect
+  migration: Rename instances of start
+  migration: Move channel code to channel.c
+  migration: Move transport connection code into channel.c
+  migration: Move channel parsing to channel.c
+  migration: Move URI parsing to channel.c
+  migration: Free cpr-transfer MigrationAddress along with gsource
+  migration: Move CPR HUP watch to cpr-transfer.c
+  migration: Remove qmp_migrate_finish
+  migration/channel: Centralize calling
+    migration_channel_connect_outgoing
+
+ include/migration/cpr.h  |   5 +
+ migration/channel.c      | 370 ++++++++++++++++++++++----
+ migration/channel.h      |  27 +-
+ migration/cpr-exec.c     |   2 +-
+ migration/cpr-transfer.c |  23 ++
+ migration/exec.c         |  11 +-
+ migration/exec.h         |   8 +-
+ migration/fd.c           |  15 +-
+ migration/fd.h           |   9 +-
+ migration/file.c         |  20 +-
+ migration/file.h         |   7 +-
+ migration/migration.c    | 557 ++++++++++-----------------------------
+ migration/migration.h    |  16 +-
+ migration/multifd.c      |  17 +-
+ migration/multifd.h      |   2 +-
+ migration/options.c      |   5 +
+ migration/postcopy-ram.c |   2 +-
+ migration/rdma.c         |  46 ++--
+ migration/rdma.h         |   6 +-
+ migration/socket.c       |  30 +--
+ migration/socket.h       |   6 +-
+ migration/tls.c          |  33 +--
+ migration/tls.h          |   9 +-
+ migration/trace-events   |  20 +-
+ 24 files changed, 637 insertions(+), 609 deletions(-)
+
+-- 
+2.51.0
+
 
