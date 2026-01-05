@@ -2,82 +2,119 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B6CCF27F8
-	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 09:43:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BDAECF2B66
+	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 10:23:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vcg9P-0003hf-52; Mon, 05 Jan 2026 03:41:19 -0500
+	id 1vcgn3-0004Xl-Kc; Mon, 05 Jan 2026 04:22:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vcg9M-0003gx-0i
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 03:41:16 -0500
-Received: from mgamail.intel.com ([198.175.65.20])
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1vcgn0-0004XU-7K; Mon, 05 Jan 2026 04:22:14 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vcg9J-0006K6-CN
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 03:41:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1767602473; x=1799138473;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=zzCFUre12J5S1n5MXly8Cz/XMaLl0lsc+PyKLeJKgQo=;
- b=U873SNfdTOPrQ5lZ1qBJ5WAywUdHgyr9k1+1XC6UmLVtkUOnMrW9Q4r2
- vUbLn8WJbyWm4Ii1E80P43YlbtJGe7deJk42/qTO+f1lxSthn3k1m4eoR
- TloBFBJZ8UuprnJLQVkJUfYkXzKwi8zvRJnK9crijG+4QJbWAPYM0bvFi
- 1roXF1KAuomWfMLPcPLJb/11iUZGL+LQRMTWdl6hEPVXEzzelqR0frLoR
- 5IDbRgrZHmexxczQNfctzF2jNCJISQ/PoSYSNf2LztryNwSi8dUxRGNan
- nFSAtSBD6nTO+FYl12HN/jJ2jnw34c/cb4aaeW/WSlCZRJ5LJyGg8c/2+ A==;
-X-CSE-ConnectionGUID: FVU2IqlYQXKX02DONRVjYw==
-X-CSE-MsgGUID: Ix6oWurtRNKN7fqlGPKLmw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11661"; a="68706649"
-X-IronPort-AV: E=Sophos;i="6.21,203,1763452800"; d="scan'208";a="68706649"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jan 2026 00:41:10 -0800
-X-CSE-ConnectionGUID: 3fGi00+RQSGV1gt+rZCixQ==
-X-CSE-MsgGUID: R+Y6nJxgRQOxiSqIKv4iBw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,203,1763452800"; d="scan'208";a="206894046"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa004.jf.intel.com with ESMTP; 05 Jan 2026 00:41:07 -0800
-Date: Mon, 5 Jan 2026 17:06:31 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- BALATON Zoltan <balaton@eik.bme.hu>,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>,
- devel@lists.libvirt.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [RFC 02/10] qom: Add basic object property deprecation hint
- support
-Message-ID: <aVt/F6qjR+UMfXrO@intel.com>
-References: <20251202170502.3228625-1-zhao1.liu@intel.com>
- <20251202170502.3228625-3-zhao1.liu@intel.com>
- <20260102130601.0697deeb@imammedo-mac>
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1vcgmy-0003yu-IT; Mon, 05 Jan 2026 04:22:13 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60511fuC030074;
+ Mon, 5 Jan 2026 09:22:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=NH9n7n
+ Kmqf2eVSI7WSG7Z4WidEsuIVGu7nacknVsWUo=; b=hE2VpDN/ZWpyDZAZrIKEFV
+ 4f16T236sTwzOir8I+A0hfzuB459R2KLmMl/fzQv/3mMcAXKTGvFBGESdUCuV6HK
+ igsQag8XADg7WfG915VEHbRT1ZHENJgKmQV625J1SLc9SNQd06ftH6JiGvVQXKih
+ zpPXQYIrfBEUAJVjLcN2cVmnZY2l0rPrtbWq+yhs2+HQnIIxpdGyZ5bmy4dVd83j
+ gxPhRRfrbV7KdNKvpepE5Atn87ms6o7R6TwLHAGpnLr/BW7pHoB9McFbwE0XZoJj
+ uUvXRO26gZa2qhG7EotP8yQ/5oEL+EITe3TZeS1qVhZQ84rLzbkHIw79NMJ40U7w
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betrtdva4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 05 Jan 2026 09:22:09 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 6059K2Ps023474;
+ Mon, 5 Jan 2026 09:22:08 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betrtdva1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 05 Jan 2026 09:22:08 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6057XJlX012645;
+ Mon, 5 Jan 2026 09:22:07 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bffnj4qpy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 05 Jan 2026 09:22:07 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 6059LlLP21496532
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 5 Jan 2026 09:21:48 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0FCCB58061;
+ Mon,  5 Jan 2026 09:22:05 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 745C858058;
+ Mon,  5 Jan 2026 09:22:01 +0000 (GMT)
+Received: from [9.109.216.92] (unknown [9.109.216.92])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Mon,  5 Jan 2026 09:22:01 +0000 (GMT)
+Message-ID: <9f59b26e-ba76-430f-a725-ef36f2fd4ab8@linux.ibm.com>
+Date: Mon, 5 Jan 2026 14:51:59 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260102130601.0697deeb@imammedo-mac>
-Received-SPF: pass client-ip=198.175.65.20; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/7] hw/ppc: Snapshot support for several ppc devices
+Content-Language: en-GB
+To: Chalapathi V <chalapathi.v@inux.ibm.com>,
+ Caleb Schlossin <calebs@linux.ibm.com>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, npiggin@gmail.com, adityag@linux.ibm.com,
+ milesg@linux.ibm.com, alistair@alistair23.me, kowal@linux.ibm.com,
+ chalapathi.v@linux.ibm.com, angeloj@linux.ibm.com
+References: <20251216151359.418708-1-calebs@linux.ibm.com>
+ <8ed05d78-f09a-4718-9ed6-ea24d3ca5f57@inux.ibm.com>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <8ed05d78-f09a-4718-9ed6-ea24d3ca5f57@inux.ibm.com>
+X-TM-AS-GCONF: 00
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Authority-Analysis: v=2.4 cv=aaJsXBot c=1 sm=1 tr=0 ts=695b82c1 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=f7IdgyKtn90A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=RpNjiQI2AAAA:8 a=VnNF1IyMAAAA:8
+ a=iwG3B9P1yltx3OCZH54A:9 a=lqcHg5cX4UMA:10 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: vbBuLcgIwJlBzaWX3kRfNWo7i_Fdt2jL
+X-Proofpoint-ORIG-GUID: x_nk_KAtLldgRxMZ33NbzGsBHbOt_27f
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA1MDA4MiBTYWx0ZWRfX6QONId/o78OB
+ ft1wrZzsjd9eNXA0OaksylhXyqp6W3A8CB0GI6uGWW3M4WoFGzK5QBAxUsKw5r0ZF1sO94n3Cug
+ EzvNMMq9nngbT3sR3r9YibWQ4LqVsnDGWExYwe31m4QpouzqXJvDx2Y1pTHCooaxPaOadJzzffT
+ lmh6/AF5Aw+iXc+pResRMoB70h/a4FSDG+dP1t5vlenLZg9HqNrwWaZzCayGVz+4QIZVdYVwcjV
+ eRj4C33DBxcMuNNenrQFaFY3aiWIH6AsNgCvdQblkSjijQ6IuTRXliz8qFjiMqFt3dIOe8XoNFo
+ 4NFFLXE+wwyNof6mVU8WAlL5Uvsld0y8EpG0pb2d0uv1WhlrZrjxY3pCTzulbQ6y3BRIbexfQCc
+ LRoDl22zO4NXni56R28q/U5o6iFL6QNoeIWSei483RB/ohBtH5wLTkgMvIGWJ4ZY+xhtzlg81x4
+ 9re8B43HMVHbtWcxiEw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-05_01,2025-12-31_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0
+ priorityscore=1501 clxscore=1011 phishscore=0 spamscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601050082
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,116 +130,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 02, 2026 at 01:06:01PM +0100, Igor Mammedov wrote:
-> Date: Fri, 2 Jan 2026 13:06:01 +0100
-> From: Igor Mammedov <imammedo@redhat.com>
-> Subject: Re: [RFC 02/10] qom: Add basic object property deprecation hint
->  support
-> X-Mailer: Claws Mail 3.11.1-67-g0d58c6-dirty (GTK+ 2.24.21;
->  x86_64-apple-darwin14.0.0)
-> 
-> On Wed,  3 Dec 2025 01:04:54 +0800
-> Zhao Liu <zhao1.liu@intel.com> wrote:
-> 
-> > Now the common (but a bit fragmented) way to mark a property deprecated
-> > is to add the warning in its accssors.
-> > 
-> > But this is pretty inconvenient for such qdev properties, which are
-> > defined via DEFINE_PROP_* macros in the Property array. For qdev
-> > properties, their accessors are provided by pre-defined PropertyInfo, so
-> > that it's possible to modify PropertyInfo for a single "deprecated"
-> > property.
-> > 
-> > Then it's necessary to introduce property flags to mark some properties
-> > as deprecated, and to check the property flags when set the property,
-> > thereby to print a deprecation warning.
-> > 
-> > This not only benefits traditional qdev properties but also helps the
-> > deprecation of generic objects.
-> > 
-> > Note, internal attempt (except the compat case) should not trigger the
-> > deprecation warning but external user should see the deprecation
-> > information. Whether to perform deprecation checks based on property
-> > flags is controlled by the newly added "check" argument in
-> > object_property_try_add_full().
-> 
-> I'd split deprecation warning out for this patch,
-> i.e. make this one "add per object instance flags",
-> and take care of deprecation stuff on top,
+Hi Caleb,
 
-Yeah, will do.
+Thanks for addressing the review comments.
+I am seeing a git am failure on top of upstream commit 159107e390609f.
+Could you please take a look, rebase and resend?
 
-> Also, API likely would need set/get/clear calls to operate on object flags.
+% git am=20
+patches/v3_20251216_calebs_hw_ppc_snapshot_support_for_several_ppc_devices.=
+mbx
+Applying: hw/ppc: Add VMSTATE information for LPC model
+Applying: hw/ppc: Add pnv_spi vmstate support
+error: patch failed: hw/ssi/pnv_spi.c:13
+error: hw/ssi/pnv_spi.c: patch does not apply
+Patch failed at 0002 hw/ppc: Add pnv_spi vmstate support
+hint: Use 'git am --show-current-patch=3Ddiff' to see the failed patch
+hint: When you have resolved this problem, run "git am --continue".
+hint: If you prefer to skip this patch, run "git am --skip" instead.
+hint: To restore the original branch and stop patching, run "git am=20
+--abort".
+hint: Disable this message with "git config set advice.mergeConflict false"
 
-I see, for dynamic flags ("user set" - you mentioned), these APIs are
-necessary. Will add something like object_property_[set|get|clear]_flags.
+Thanks
+Harsh
 
-> > In subsequent work, the "check" option will be enabled for specific
-> > external property setting paths.
-> > 
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > ---
-> >  include/qom/object.h | 72 ++++++++++++++++++++++++++++++++++++++++++++
-> >  qom/object.c         | 72 +++++++++++++++++++++++++++++++++++---------
-> >  2 files changed, 130 insertions(+), 14 deletions(-)
-> > 
-> > diff --git a/include/qom/object.h b/include/qom/object.h
-> > index 3f807a03f5aa..8f4c2f44d835 100644
-> > --- a/include/qom/object.h
-> > +++ b/include/qom/object.h
-> > @@ -86,6 +86,12 @@ typedef void (ObjectPropertyRelease)(Object *obj,
-> >   */
-> >  typedef void (ObjectPropertyInit)(Object *obj, ObjectProperty *prop);
-> >  
-> > +typedef enum ObjectPropertyFlags {
-> > +    OBJECT_PROPERTY_NO_FLAGS     =                             0,
-> > +    OBJECT_PROPERTY_DEPRECATED   =                        1 << 0,
-> 
-> maybe use BIT() instead of manual shift?
-
-Sure, will do.
-
-> addidtionally given you are going to distinguish external vs internal,
-> perhaps add flags 'default' and 'user set',
-> I think the both could be used to cleanup cpu flags handling where we rely on
-> setting/checking  magic numbers to figure out where value comes from.
-
-Good idea.
-
-I think a "user set" flag is enough. Considerring a property may be set
-multiple timers. In object_property_set_full(), we could add the "user
-set" flag for external setting and clear that flag for internal setting,
-then property's set accessor could know whether the value is from user
-or not.
-
-> > +    OBJECT_PROPERTY_FULL_FLAGS   =    OBJECT_PROPERTY_DEPRECATED,
-> > +} ObjectPropertyFlags;
-> > +
-> >  struct ObjectProperty
-> >  {
-> >      char *name;
-> > @@ -98,6 +104,7 @@ struct ObjectProperty
-> >      ObjectPropertyInit *init;
-> >      void *opaque;
-> >      QObject *defval;
-> > +    uint8_t flags;
-> >  };
-> >  
-> >  /**
-> > @@ -1090,6 +1097,41 @@ ObjectProperty *object_property_try_add(Object *obj, const char *name,
-> >                                          ObjectPropertyRelease *release,
-> >                                          void *opaque, Error **errp);
-> >  
-> > +/**
-> > + * object_property_try_add_full:
-> 
-> what's the reason for adding _full flavour over just modifying existing API?
-
-I was previously concerned about making too many changes to other parts,
-but after re-checking, directly extending the current object_property_try_add()
-is better — there's not too many changes. Thanks for the reminder.
-
-Regards,
-Zhao
+On 22/12/25 4:31 pm, Chalapathi V wrote:
+> For the series: Reviewed-by: Chalapathi V <chalapathi.=E2=80=8Av@=E2=80=
+=8Alinux.=E2=80=8Aibm.=E2=80=8A=20
+> com> Thank You, Chalapathi On 16/12/25 8:=E2=80=8A43 pm, Caleb Schlossin =
+wrote:=20
+> Addressing comments from V2 review: Updates in V3: - pnv_psi: Remove=20
+> PSI_DEBUG section as it was not
+>=20
+>=20
+> For the series:
+> Reviewed-by: Chalapathi V <chalapathi.v@linux.ibm.com>
+>=20
+> <mailto:milesg@linux.ibm.com>Thank You,
+>=20
+> Chalapathi
+>=20
+>=20
+> On 16/12/25 8:43 pm, Caleb Schlossin wrote:
+>> Addressing comments from V2 review:
+>>
+>> Updates in V3:
+>> - pnv_psi: Remove PSI_DEBUG section as it was not used
+>> - pnv_psi: Add missing post_load and vmstate info
+>>
+>> Updates in V2:
+>> - Added new patch set for PnvPsi support as it fits with the rest
+>> - Added vmstate support for Power8 and Power9 for LPC
+>> - Fixed pnv_core.c commit message
+>>
+>> Tested:
+>> passed make check
+>>
+>> Thanks,
+>> Caleb
+>>
+>> Michael Kowal (2):
+>>    hw/ppc: Add VMSTATE information for LPC model
+>>    hw/ppc: Add VMSTATE information to PnvPsi
+>>
+>> Caleb Schlossin (2):
+>>    hw/ppc: Add pnv_spi vmstate support
+>>    hw/ppc: Add pnv_i2c vmstate support
+>>
+>> Angelo Jaramillo (3):
+>>    hw/ppc: pnv_adu.c added vmstate support
+>>    hw/ppc: pnv_core.c add vmstate support
+>>    hw/ppc: pnv_chiptod.c add vmstate support
+>>
+>>   hw/ppc/pnv_adu.c             | 12 +++++++++++
+>>   hw/ppc/pnv_chiptod.c         | 38 +++++++++++++++++++++++++++++++++
+>>   hw/ppc/pnv_core.c            | 22 +++++++++++++++++++
+>>   hw/ppc/pnv_i2c.c             | 11 ++++++++++
+>>   hw/ppc/pnv_lpc.c             | 41 ++++++++++++++++++++++++++++++++++++
+>>   hw/ppc/pnv_psi.c             | 36 +++++++++++++++++++++++++++++--
+>>   hw/ssi/pnv_spi.c             | 27 ++++++++++++++++++++++++
+>>   include/hw/ppc/pnv_chiptod.h |  2 ++
+>>   8 files changed, 187 insertions(+), 2 deletions(-)
+>>
 
 
