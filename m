@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 911E1CF3A65
-	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 13:59:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3E61CF3A6B
+	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 13:59:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vck98-0004JB-2A; Mon, 05 Jan 2026 07:57:18 -0500
+	id 1vck97-0004I9-BL; Mon, 05 Jan 2026 07:57:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vck8r-00041J-9l
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 07:57:01 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vck8o-00081E-Gw
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vck8p-0003zN-RI
  for qemu-devel@nongnu.org; Mon, 05 Jan 2026 07:57:00 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vck8o-000816-4K
+ for qemu-devel@nongnu.org; Mon, 05 Jan 2026 07:56:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1767617817;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ojx8t/JOOXnrO76s37xrrqs9UhJmP5zF5kkm4P3shTQ=;
- b=iSxlp5mUTEzc8DMtmhKNteATmpqhFoYqekMJa+mNLDPklMpimVdYuWftaBUhlykI24bl5I
- LNdUSLYQrpoeajWk+bR74zCQbng7KMmrBzhy5OXfytthoGEndGDwCtHoZlU4O1bDuipMUc
- M/mBREtuxntwsVgKsJvgG0frn+eXpH0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=Oazh8Sp0RSLzec0eT5MRbgbZCj2evErxfNkvlx0wdn8=;
+ b=dIB+phGLvLY46OEJ3xTvK5q1BeVlCKs60joo18HbtRX+FkGYc3gz0zYW7Cu+Q07dD+QTcn
+ UdsHPB+4fQ4O0mdXfxVMoY20xMjAHHYSN8E8vCNqiDVHE+aNN4hWSnfgR8xsNTHdyL4/hU
+ 3ja75NZ845SY8CMCDlngyKy//KziL9g=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-7-wRcapylMN06hsNLGKCc3Ew-1; Mon,
- 05 Jan 2026 07:56:52 -0500
-X-MC-Unique: wRcapylMN06hsNLGKCc3Ew-1
-X-Mimecast-MFC-AGG-ID: wRcapylMN06hsNLGKCc3Ew_1767617811
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-612-axr7j136ONumHcy5Z4Tmkw-1; Mon,
+ 05 Jan 2026 07:56:54 -0500
+X-MC-Unique: axr7j136ONumHcy5Z4Tmkw-1
+X-Mimecast-MFC-AGG-ID: axr7j136ONumHcy5Z4Tmkw_1767617813
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 87729180065F; Mon,  5 Jan 2026 12:56:51 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8E134195DE49; Mon,  5 Jan 2026 12:56:53 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.53])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 14A5B19560A7; Mon,  5 Jan 2026 12:56:49 +0000 (UTC)
+ id 040FB19560A7; Mon,  5 Jan 2026 12:56:51 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Patrick Williams <patrick@stwcx.xyz>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 17/36] hw/arm/aspeed: catalina: add HDD FRU EEPROM
-Date: Mon,  5 Jan 2026 13:55:54 +0100
-Message-ID: <20260105125613.622667-18-clg@redhat.com>
+Subject: [PULL 18/36] hw/arm/aspeed: catalina: add GB200 FRU EEPROM
+Date: Mon,  5 Jan 2026 13:55:55 +0100
+Message-ID: <20260105125613.622667-19-clg@redhat.com>
 In-Reply-To: <20260105125613.622667-1-clg@redhat.com>
 References: <20260105125613.622667-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,76 +84,83 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Patrick Williams <patrick@stwcx.xyz>
 
-Use ipmitool/frugen tool to generate a HDD image based on a
+Use ipmitool/frugen tool to generate a GB200 image based on a
 sanitized set of data from a real device EEPROM.
 
 Signed-off-by: Patrick Williams <patrick@stwcx.xyz>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20251217-catalina-eeproms-v1-6-dc7b276efd57@stwcx.xyz
+Link: https://lore.kernel.org/qemu-devel/20251217-catalina-eeproms-v1-7-dc7b276efd57@stwcx.xyz
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/arm/aspeed_ast2600_catalina.c | 41 +++++++++++++++++++++++++++++++-
- 1 file changed, 40 insertions(+), 1 deletion(-)
+ hw/arm/aspeed_ast2600_catalina.c | 45 ++++++++++++++++++++++++++++++--
+ 1 file changed, 43 insertions(+), 2 deletions(-)
 
 diff --git a/hw/arm/aspeed_ast2600_catalina.c b/hw/arm/aspeed_ast2600_catalina.c
-index 17db9035bda5..4cfde870affa 100644
+index 4cfde870affa..4dd72c615dc7 100644
 --- a/hw/arm/aspeed_ast2600_catalina.c
 +++ b/hw/arm/aspeed_ast2600_catalina.c
-@@ -227,6 +227,44 @@ static const uint8_t fio_eeprom[] = {
+@@ -265,6 +265,45 @@ static const uint8_t hdd_eeprom[] = {
  };
- static const size_t fio_eeprom_len = sizeof(fio_eeprom);
+ static const size_t hdd_eeprom_len = sizeof(hdd_eeprom);
  
 +/*
-+ * HDD Carrier Board FRU data. Generated with frugen.
++ * GB200 CPU/GPU Board FRU data. Generated with frugen.
 + *
 + *    {
 + *        "board": {
-+ *            "mfg": "Quanta",
-+ *            "pname": "Catalina HDD MP (QEMU)",
-+ *            "pn": "00000000000",
-+ *            "serial": "00000000000000",
++ *            "mfg": "NVIDIA",
++ *            "pname": "PG548 (QEMU)",
++ *            "pn": "000-00000-0000-000",
++ *            "serial": "0000000000000",
 + *            "date": "01/12/2025 00:00",
-+ *            "custom": ["19-100319", "", "", "adc-ina"]
++ *            "custom": ["Version: A", "Rework:"]
 + *        },
 + *        "product": {
-+ *            "mfg": "Quanta",
-+ *            "pname": "CI-Catalina",
-+ *            "pn": "10000000001",
-+ *            "ver": "MP",
-+ *            "serial": "10000000000000",
++ *            "mfg": "NVIDIA",
++ *            "pname": "GB200 1CPU:1GPU Board PC",
++ *            "pn": "100-00000-0000-001",
++ *            "ver": "E01",
++ *            "serial": "1000000000001",
 + *            "atag": "QEMU"
 + *        }
 + *    }
 + */
-+static const uint8_t hdd_eeprom[] = {
-+    0x01, 0x00, 0x00, 0x01, 0x0b, 0x00, 0x00, 0xf3, 0x01, 0x0a, 0x19, 0x8c,
-+    0x19, 0xf0, 0xc6, 0x51, 0x75, 0x61, 0x6e, 0x74, 0x61, 0xd6, 0x43, 0x61,
-+    0x74, 0x61, 0x6c, 0x69, 0x6e, 0x61, 0x20, 0x48, 0x44, 0x44, 0x20, 0x4d,
-+    0x50, 0x20, 0x28, 0x51, 0x45, 0x4d, 0x55, 0x29, 0x8b, 0x10, 0x04, 0x41,
-+    0x10, 0x04, 0x41, 0x10, 0x04, 0x41, 0x10, 0x04, 0x89, 0x10, 0x04, 0x41,
-+    0x10, 0x04, 0x41, 0x10, 0x04, 0x01, 0xc0, 0x87, 0x51, 0xd6, 0x44, 0x10,
-+    0x34, 0x45, 0x19, 0xc0, 0xc0, 0xc7, 0x61, 0x64, 0x63, 0x2d, 0x69, 0x6e,
-+    0x61, 0xc1, 0x00, 0xff, 0x01, 0x07, 0x19, 0xc6, 0x51, 0x75, 0x61, 0x6e,
-+    0x74, 0x61, 0xcb, 0x43, 0x49, 0x2d, 0x43, 0x61, 0x74, 0x61, 0x6c, 0x69,
-+    0x6e, 0x61, 0x89, 0x11, 0x04, 0x41, 0x10, 0x04, 0x41, 0x10, 0x14, 0x01,
-+    0x82, 0x2d, 0x0c, 0x8b, 0x11, 0x04, 0x41, 0x10, 0x04, 0x41, 0x10, 0x04,
-+    0x41, 0x10, 0x04, 0x83, 0x71, 0xd9, 0xd6, 0xc0, 0xc1, 0x00, 0x00, 0x37
++static const uint8_t gb200_eeprom[] = {
++    0x01, 0x00, 0x00, 0x01, 0x0a, 0x00, 0x00, 0xf4, 0x01, 0x09, 0x19, 0x8c,
++    0x19, 0xf0, 0x85, 0xae, 0x9d, 0x92, 0x69, 0x08, 0x89, 0xf0, 0x59, 0x51,
++    0x18, 0x80, 0xc4, 0x65, 0x5b, 0x27, 0x8a, 0x10, 0x04, 0x41, 0x10, 0x04,
++    0x41, 0x10, 0x04, 0x41, 0x10, 0x8e, 0x10, 0x04, 0x35, 0x10, 0x04, 0x41,
++    0x50, 0x03, 0x41, 0x10, 0xd4, 0x40, 0x10, 0x04, 0xc0, 0xca, 0x56, 0x65,
++    0x72, 0x73, 0x69, 0x6f, 0x6e, 0x3a, 0x20, 0x41, 0xc7, 0x52, 0x65, 0x77,
++    0x6f, 0x72, 0x6b, 0x3a, 0xc1, 0x00, 0x00, 0x37, 0x01, 0x09, 0x19, 0x85,
++    0xae, 0x9d, 0x92, 0x69, 0x08, 0xd8, 0x47, 0x42, 0x32, 0x30, 0x30, 0x20,
++    0x31, 0x43, 0x50, 0x55, 0x3a, 0x31, 0x47, 0x50, 0x55, 0x20, 0x42, 0x6f,
++    0x61, 0x72, 0x64, 0x20, 0x50, 0x43, 0x8e, 0x11, 0x04, 0x35, 0x10, 0x04,
++    0x41, 0x50, 0x03, 0x41, 0x10, 0xd4, 0x40, 0x50, 0x04, 0x83, 0x25, 0x14,
++    0x01, 0x8a, 0x11, 0x04, 0x41, 0x10, 0x04, 0x41, 0x10, 0x04, 0x41, 0x11,
++    0x83, 0x71, 0xd9, 0xd6, 0xc0, 0xc1, 0x00, 0x17
 +};
-+static const size_t hdd_eeprom_len = sizeof(hdd_eeprom);
++static const size_t gb200_eeprom_len = sizeof(gb200_eeprom);
 +
  static void catalina_bmc_i2c_init(AspeedMachineState *bmc)
  {
      /* Reference from v6.16-rc2 aspeed-bmc-facebook-catalina.dts */
-@@ -330,7 +368,8 @@ static void catalina_bmc_i2c_init(AspeedMachineState *bmc)
-     i2c_mux = i2c_slave_create_simple(i2c[5], TYPE_PCA9548, 0x70);
-     /* i2c5mux0ch6 */
-     /* eeprom@52 */
--    at24c_eeprom_init(pca954x_i2c_get_bus(i2c_mux, 6), 0x52, 8 * KiB);
-+    at24c_eeprom_init_rom(pca954x_i2c_get_bus(i2c_mux, 6), 0x52, 8 * KiB,
-+                          hdd_eeprom, hdd_eeprom_len);
-     /* i2c5mux0ch7 */
-     /* ina230@40 - no model */
-     /* ina230@41 - no model */
+@@ -403,11 +442,13 @@ static void catalina_bmc_i2c_init(AspeedMachineState *bmc)
+ 
+     /* &i2c12 */
+     /* eeprom@50 */
+-    at24c_eeprom_init(i2c[12], 0x50, 8 * KiB);
++    at24c_eeprom_init_rom(i2c[12], 0x50, 8 * KiB,
++                          gb200_eeprom, gb200_eeprom_len);
+ 
+     /* &i2c13 */
+     /* eeprom@50 */
+-    at24c_eeprom_init(i2c[13], 0x50, 8 * KiB);
++    at24c_eeprom_init_rom(i2c[13], 0x50, 8 * KiB,
++                          gb200_eeprom, gb200_eeprom_len);
+     /* eeprom@54 */
+     at24c_eeprom_init(i2c[13], 0x54, 256);
+     /* eeprom@55 */
 -- 
 2.52.0
 
