@@ -2,73 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C27CF4954
-	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 17:07:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1751CCF498F
+	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 17:11:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vcn4e-0006O8-IX; Mon, 05 Jan 2026 11:04:52 -0500
+	id 1vcn8Q-0001eJ-MU; Mon, 05 Jan 2026 11:08:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vcn42-0006CO-I7
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 11:04:20 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vcn75-0000dM-DU
+ for qemu-devel@nongnu.org; Mon, 05 Jan 2026 11:07:23 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vcn40-0001Yp-DZ
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 11:04:14 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vcn73-00028E-2x
+ for qemu-devel@nongnu.org; Mon, 05 Jan 2026 11:07:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767629050;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=cc30GGOr0KYzUuRX6aINvx68bU34Pn4a22V59/U6nmw=;
- b=e/BOsPM0Wla1kg0M0OGLAFZrg6nsigLiwduQPrd6c8V+iMgFn5Z2Hl/ymc4UhKcTESeDEM
- yBftArXZqOTqukWa4IMvfL8VTO9QHzdnyov/KZwmmd1WEMpyl5O2y96HmReBNBhi+uVI9P
- pBytcYY8LotH3C8Ig0VuarnGUh2d6CU=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-306-FvZkPrN-PO2r-JamSzdpYQ-1; Mon,
- 05 Jan 2026 11:04:07 -0500
-X-MC-Unique: FvZkPrN-PO2r-JamSzdpYQ-1
-X-Mimecast-MFC-AGG-ID: FvZkPrN-PO2r-JamSzdpYQ_1767629044
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 24177195FCF6; Mon,  5 Jan 2026 16:04:04 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.45.224.53])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9D98619560AB; Mon,  5 Jan 2026 16:04:00 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org,
-	qemu-arm@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
- Jamin Lin <jamin_lin@aspeedtech.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH] tests/functional/arm/aspeed: Update buildroot images to
- 2025.11
-Date: Mon,  5 Jan 2026 17:03:58 +0100
-Message-ID: <20260105160358.771511-1-clg@redhat.com>
+ s=mimecast20190719; t=1767629240;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=9GWvc0xeXQt25In2slS15dV8A6RI6XJwCVMMzgTQUAo=;
+ b=QMbDHNwVhDy38hITCDv1FjJyZWT1DvWoR8Rxj+oooL6g+fKeWCsAm7Aj6LM8OCY6QQMUgE
+ KCij8vY4spFtqBfmMt0VPcrAPruxiKIoGQd8cU2MhfWHobCQNaf1wsgNXjIWaryYI1lcIS
+ kJw4Nxde8H+ELsKQgsXZlPJ1nkeg6H0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-695-kfRUhHtkObewfHBTOaWFIg-1; Mon, 05 Jan 2026 11:07:17 -0500
+X-MC-Unique: kfRUhHtkObewfHBTOaWFIg-1
+X-Mimecast-MFC-AGG-ID: kfRUhHtkObewfHBTOaWFIg_1767629236
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-47d62cc05daso398285e9.3
+ for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 08:07:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1767629236; x=1768234036;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9GWvc0xeXQt25In2slS15dV8A6RI6XJwCVMMzgTQUAo=;
+ b=UwCHHAKH5LI7l/PdRz1alg5kKUkJrKnfGI9lALUE0bZyJHAAceL3LnRGgxFphKRMdr
+ 1j/wZ5/+zfoHSl8PVyf4eafVxDN2XPx5kz9E4HMQ8HjwKcisgLxRG9lwQqZMW1+Gcit2
+ IWU0paBjNjsEfd3/693p9apr4eJcheoqbCzZ0evSJwSB2dd7YcaOs8tzwp9ijKXtHeQV
+ yW2eymAWSzTnlZ4Hp/wpE8lYCzu5oCPLoxm4GV151I+u2n92p7OW20Eb6ML5tKVFbmMm
+ MeP789EaC/4GJ0069LSqT12qqILilZWKJQzLTZT4LoL9i1Fs9MA/6h2W2QRdcgjzgp7A
+ /1nw==
+X-Gm-Message-State: AOJu0YyOqEMuulZzAYzjduk5B5o1s3vA9ydjNyDGTH/E8qAS/hZT2E1V
+ tb3ppoPTKFOMjz85UMQOtnA75NS2QPTVZ+83Z5SSLgIwjVOQq544eIMoypl3DMX3+R21X6mwfzM
+ tmmMgiNz5H+oXmFP5qS53vpL6IHvBxo5BFaLQRsfKrpEaeHfS+fo3sLzA
+X-Gm-Gg: AY/fxX6aWGB9wkmwZroFMSsNmHv8yu0kpo/Hj9ToDQLIokBhgi0XUAeR9gxpgh1YEMX
+ n1EM3dTgle4KNup3C18suSmnr4fzmnEE2sSx8f0SHu9ugw9QS1kBEfbS91Mq9kx4xlkVatYQvn6
+ KiS/cafSy8qeq0QoXaLrH6WooJCYGRbAUkP8dp0RF/CreRD/8wpnWgIQyzryOtGmSHIVMBdAfrw
+ EJs6g2nqp9vt5yLe2dsqqE67yqQjmjcGmqqgWM4IPj1kXvlwhU+98VAcDTJNUkvkB3NExPyIUN5
+ BcuDxfdpmb/SoxOVIqnxdHV7yN5faazGOuxsIMkFRvIOIBXzwglYInTJJ1A8b1SJNR2RhhKj+7b
+ kpTILWizQqkaro65PhG9RhhPFq1v6evUvnktINvU7FJyCIv/yfS7w2MxHGQ==
+X-Received: by 2002:a05:600c:8b06:b0:47b:e2a9:2bd7 with SMTP id
+ 5b1f17b1804b1-47d3b011b03mr444117385e9.19.1767629235933; 
+ Mon, 05 Jan 2026 08:07:15 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH6Ue7USFcKW8MKs3iBSEssrvpcBKLu2iCVLHa1rn3Fy3HK7OPf8D0BCNvbeM6MDibWE1zBDA==
+X-Received: by 2002:a05:600c:8b06:b0:47b:e2a9:2bd7 with SMTP id
+ 5b1f17b1804b1-47d3b011b03mr444117045e9.19.1767629235478; 
+ Mon, 05 Jan 2026 08:07:15 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
+ ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-47d7ee2a3efsm1310465e9.7.2026.01.05.08.07.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 05 Jan 2026 08:07:15 -0800 (PST)
+Message-ID: <c2e28896-a3af-4dd2-8723-9add5f1b2a78@redhat.com>
+Date: Mon, 5 Jan 2026 17:07:13 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 07/28] hw: arm: virt: rework MSI-X configuration
+Content-Language: en-US
+To: Tao Tang <tangtao1634@phytium.com.cn>, mohamed@unpredictable.fr
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <c6eafd44-3187-4c63-97b9-bd4bf96595c0@phytium.com.cn>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <c6eafd44-3187-4c63-97b9-bd4bf96595c0@phytium.com.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,74 +111,76 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The main changes compared to upstream 2025.11 buildroot are
+Hi,
 
-  - Linux v6.18
-  - latest OpenBMC U-Boot
-  - extra packages (ssh, etc.)
+On 1/3/26 6:21 AM, Tao Tang wrote:
+> Hi all,
+>
+>> Introduce a -M msi= argument to be able to control MSI-X support
+>> independently
+>> from ITS, as part of supporting GICv3 + GICv2m platforms.
+>>
+>> Remove vms->its as it's no longer needed after that change.
+>>
+>> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
+>> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>> ---
+>>   hw/arm/virt-acpi-build.c |   3 +-
+>>   hw/arm/virt.c            | 110 ++++++++++++++++++++++++++++++++-------
+>>   include/hw/arm/virt.h    |   4 +-
+>>   3 files changed, 94 insertions(+), 23 deletions(-)
+>>
+>> diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+>> index 86024a1a73..f3adb95cfe 100644
+>
+> I’m trying to clarify the current status of ITS under TCG for the virt
+> machine.(may be a stupid question...)
+>
+> The virt documentation states: "Note that ITS is not modeled in TCG
+> mode." [1] 
+this is outdated. I think ITS TCG support was introduced in 6.2.0
 
-See
+https://www.qemu.org/2021/12/14/qemu-6-2-0/
 
-  https://github.com/legoater/buildroot/commits/aspeed-2025.11
+You can have a look at the emulaation code in hw/intc/arm_gicv3_its.c
 
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- tests/functional/arm/test_aspeed_ast2500.py           | 8 ++++----
- tests/functional/arm/test_aspeed_ast2600_buildroot.py | 8 ++++----
- 2 files changed, 8 insertions(+), 8 deletions(-)
+Thanks
 
-diff --git a/tests/functional/arm/test_aspeed_ast2500.py b/tests/functional/arm/test_aspeed_ast2500.py
-index 5efd104c2b95..ac33c62a9f85 100755
---- a/tests/functional/arm/test_aspeed_ast2500.py
-+++ b/tests/functional/arm/test_aspeed_ast2500.py
-@@ -10,15 +10,15 @@
- 
- class AST2500Machine(AspeedTest):
- 
--    ASSET_BR2_202411_AST2500_FLASH = Asset(
-+    ASSET_BR2_202511_AST2500_FLASH = Asset(
-         ('https://github.com/legoater/qemu-aspeed-boot/raw/master/'
--         'images/ast2500-evb/buildroot-2024.11/flash.img'),
--        '641e6906c18c0f19a2aeb48099d66d4771929c361001d554d0d45c667413e13a')
-+         'images/ast2500-evb/buildroot-2025.11/flash.img'),
-+        '31e5a8e280b982fb0e7c07eb71c94851002f99ac604dfe620e71a5d47cc87e78')
- 
-     def test_arm_ast2500_evb_buildroot(self):
-         self.set_machine('ast2500-evb')
- 
--        image_path = self.ASSET_BR2_202411_AST2500_FLASH.fetch()
-+        image_path = self.ASSET_BR2_202511_AST2500_FLASH.fetch()
- 
-         self.vm.add_args('-device',
-                          'tmp105,bus=aspeed.i2c.bus.3,address=0x4d,id=tmp-test')
-diff --git a/tests/functional/arm/test_aspeed_ast2600_buildroot.py b/tests/functional/arm/test_aspeed_ast2600_buildroot.py
-index 575a5f64143f..3d130b9fd189 100755
---- a/tests/functional/arm/test_aspeed_ast2600_buildroot.py
-+++ b/tests/functional/arm/test_aspeed_ast2600_buildroot.py
-@@ -16,15 +16,15 @@
- 
- class AST2600Machine(AspeedTest):
- 
--    ASSET_BR2_202411_AST2600_FLASH = Asset(
-+    ASSET_BR2_202511_AST2600_FLASH = Asset(
-         ('https://github.com/legoater/qemu-aspeed-boot/raw/master/'
--         'images/ast2600-evb/buildroot-2024.11/flash.img'),
--        '4bb2f3dfdea31199b51d66b42f686dc5374c144a7346fdc650194a5578b73609')
-+         'images/ast2600-evb/buildroot-2025.11/flash.img'),
-+        'c64a0755501393d570ca318e326e1e9f8372edc5a6452cdccc3649bc9fd2c138')
- 
-     def test_arm_ast2600_evb_buildroot(self):
-         self.set_machine('ast2600-evb')
- 
--        image_path = self.ASSET_BR2_202411_AST2600_FLASH.fetch()
-+        image_path = self.ASSET_BR2_202511_AST2600_FLASH.fetch()
- 
-         self.vm.add_args('-device',
-                          'tmp105,bus=aspeed.i2c.bus.3,address=0x4d,id=tmp-test')
--- 
-2.52.0
+Eric
+
+
+>
+> However, when looking at hw/arm/virt.c, I don’t immediately see a hard
+> prohibition of ITS under TCG; for example, the MSI/ITS logic appears
+> to allow ITS depending on machine/version settings, and the series
+> also keeps tcg_its.[2] [3]
+>
+>
+> Could you please confirm the intended behavior today: is ITS expected
+> to be modeled under TCG for the latest virt machine?
+>
+>
+> [1]: https://github.com/qemu/qemu/blob/master/docs/system/arm/virt.rst?plain=1#L46
+>
+>
+> [2]: https://github.com/qemu/qemu/blob/master/hw/arm/virt.c#L3490
+>
+> [3]: https://github.com/qemu/qemu/blob/master/hw/arm/virt.c#L3656
+>
+>
+> Also, Mohamed’s recent work to support "GICv3 + GICv2m" (and to
+> control MSI independently from ITS via -M msi=) looks like a very
+> practical workaround for environments where GICv3 is needed but ITS is
+> unavailable.
+>
+>
+> Best regards,
+>
+> Tao
+>
 
 
