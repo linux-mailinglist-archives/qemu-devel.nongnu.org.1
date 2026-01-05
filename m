@@ -2,106 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0B0ECF4951
+	by mail.lfdr.de (Postfix) with ESMTPS id BE9C3CF4950
 	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 17:07:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vcn3Q-0005eh-7F; Mon, 05 Jan 2026 11:03:36 -0500
+	id 1vcn2x-0005DB-W0; Mon, 05 Jan 2026 11:03:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
- id 1vcn24-00051Q-C3; Mon, 05 Jan 2026 11:02:29 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1vcn29-00052H-6l; Mon, 05 Jan 2026 11:02:31 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
- id 1vcn1w-0001IT-Td; Mon, 05 Jan 2026 11:02:10 -0500
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 605ESTiQ008531;
- Mon, 5 Jan 2026 16:01:58 GMT
+ id 1vcn22-0001IW-I4; Mon, 05 Jan 2026 11:02:13 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 605CgZIK001294;
+ Mon, 5 Jan 2026 16:01:59 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=ASJBjbP7k6PqWeHdH
- wLii+dopCWg1KUoXzyMmz4LIYc=; b=lpmoYWJcLo9YDndG1zIwdNmQiR5/iLL5P
- CjooIML4cCGQ+aRZULPqsQ7FIjQfdPuHpgmM8FEkuhDTaEM5+kqOHUj7PV7/qlDI
- 167H8eZBg7bbg8ydUvD1Rx5V8MQXwNiAYXf4hrT0IgV5rDlHjNrkVEpnIQpeKOAl
- TZ7yHPB0bycH6qVMjpgz3mN73CgK6cOfD/f50dVMidLJoGFG7HdeNKWhcHxNlCt7
- 0fTH5Mn8czK4YxGVUOY+c+Tpoiu59dAmHDu7iQkUpdh2WCWn+a5mTTSsfwkcrT2g
- xc5ltNnIHUyOPYHLbvltkqco6nqs+SQJzikFM6e1CG17/ba0t/02Q==
+ :mime-version:references:subject:to; s=pp1; bh=hR9Op/uk0vupq98tW
+ hVjphviuJajcEYo5k/Jema+QAY=; b=C259mRjn9kX0AMOl4HFIozJIPQB0D3e7g
+ ypAi+wN7oKbOGSikYKop46liSS4/Wagr8mMe0PUMP5xcFxFIHaGIygXeZopVdE9E
+ T+EdiuDciLJ/efu1LgU+c0ZqxTglgNZ0VjavFEfVj/B0hQu5gB7bvFNa3lLVAOyM
+ IHbgRNgoFpG0NdOQpUOBDxfYnM2yqT4TFeOq7TSxWR5VFdMXM90x7tNirRgQ35u+
+ ScgdS9uQqIOism/FhUceK5xeIsLvcFuEq32S0EIkgUxHPE+rb3SiZIu7ZzY8aYzX
+ MlHSo+kaptxWnkkGiQGKDKDXIqGtysDUnlAfhruLuDOSFh6jftqHA==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betm702nd-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betrtfdba-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 05 Jan 2026 16:01:59 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 605G1wuP021213;
+ Mon, 5 Jan 2026 16:01:59 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betrtfdb7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Mon, 05 Jan 2026 16:01:58 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 605G1voF012690;
- Mon, 5 Jan 2026 16:01:57 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betm702n8-1
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 605ExDOU012572;
+ Mon, 5 Jan 2026 16:01:58 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bffnj6ev7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 05 Jan 2026 16:01:57 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 605EU0sl005284;
- Mon, 5 Jan 2026 16:01:56 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bfexjxm76-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 05 Jan 2026 16:01:56 +0000
+ Mon, 05 Jan 2026 16:01:58 +0000
 Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
  [10.39.53.230])
- by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 605G1tTq1638976
+ by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 605G1uc455837100
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 5 Jan 2026 16:01:55 GMT
+ Mon, 5 Jan 2026 16:01:57 GMT
 Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 025A458054;
+ by IMSVA (Postfix) with ESMTP id D4DFE5805C;
+ Mon,  5 Jan 2026 16:01:56 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F06B45805A;
  Mon,  5 Jan 2026 16:01:55 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 236D35805D;
- Mon,  5 Jan 2026 16:01:54 +0000 (GMT)
 Received: from gfwr532.rchland.ibm.com (unknown [9.10.239.133])
  by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  5 Jan 2026 16:01:54 +0000 (GMT)
+ Mon,  5 Jan 2026 16:01:55 +0000 (GMT)
 From: Caleb Schlossin <calebs@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, npiggin@gmail.com, adityag@linux.ibm.com,
  milesg@linux.ibm.com, alistair@alistair23.me,
  chalapathi.v@linux.ibm.com, kowal@linux.ibm.com, angeloj@linux.ibm.com,
  harshpb@linux.ibm.com, calebs@linux.ibm.com
-Subject: [PATCH v4 4/7] hw/ppc: pnv_adu.c added vmstate support
-Date: Mon,  5 Jan 2026 10:01:35 -0600
-Message-ID: <20260105160138.3242709-5-calebs@linux.ibm.com>
+Subject: [PATCH v4 5/7] hw/ppc: pnv_core.c add vmstate support
+Date: Mon,  5 Jan 2026 10:01:36 -0600
+Message-ID: <20260105160138.3242709-6-calebs@linux.ibm.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260105160138.3242709-1-calebs@linux.ibm.com>
 References: <20260105160138.3242709-1-calebs@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=OdmVzxTY c=1 sm=1 tr=0 ts=695be076 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+X-Authority-Analysis: v=2.4 cv=aaJsXBot c=1 sm=1 tr=0 ts=695be077 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=CZX88_KXqTBcai1-icQA:9
-X-Proofpoint-GUID: dMs7jwXwdpR29-ZiH9036yxv38k7Qc50
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA1MDEzOCBTYWx0ZWRfX4LyBJku7Tlof
- p/Lgbl2pURGaR70pzLNQnuGHI4w0yaDbwwKuLxBveSNrYn+4ZcEXPoaeh7f4j2sz4rRs9PK+039
- z5dhLyyzDsdOy5qDtXtupt4U3QoX/0M+wahA0hgEUG9tlPGflXTT4O8Gu/qUCMh0dgOIMxVUI9E
- Uqpj5hCjkiihSRWlVGF45x1ePykvdswYh1NMc8t8bXA2q7Wf1whYwpWk2/F1/gV2QyAZJ8Ejity
- xir+VFMoRp3zHHlRq9hhfqsAWnyQKT+/XkJegRrQ8IfxvlTyHthUPw/wBT9+zFh8VoTDAtdPQz/
- uDUeB7H1fZ4CkJByKWS3rzlhRfXnZfgmkVJnE90+kE3R5121xoJmRmo61c8znPzS7J8ZHJA8nUK
- 2g7oZ8dTYu9mVKL8rEPsWPDAlYLrZ5wvWrGAftkrgH6MotINvBLIoKnmuLTvC+ZnwxsrhdeMxdr
- J7zx3dzcE1QaDC6ZEgw==
-X-Proofpoint-ORIG-GUID: 9qPYYiKQt3kP_KV9PBn21-DdSYvR3hmE
+ a=ijNBCCglf-f1jh5ZZN4A:9
+X-Proofpoint-GUID: oAJbwRLgc7i6kIQuhZ_eBeC0RGh1KU1S
+X-Proofpoint-ORIG-GUID: snn2PLAr_xh0UksLzNcMti_Aju1gtCZK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA1MDEzOCBTYWx0ZWRfXxjjO8fupe1l2
+ AwXZm6xZsNd2+gkHei3W5iuycwfTpIy7TiB70xci51ur/iaevK4hf5kihTA/rapAxKuZMdIpjcD
+ 86N41pzu5/0Y9KfrcwrOvDXUfqCui3VwoSFE6IoNlztuxuldodUB+5+LwVqkv3PYafmFWeV9Adr
+ zKP4NXsxq7IUwU+4Pt0ovhF7wXB+7SVmamPYYXEXI7AQC4uGShGaGT8HpPGLqZx0F9lch0WmoJV
+ Jj3VmkSqviyEmNqNlon562SVUYQOjpsgq6GRvBjX50+i2PE7sYBti1vKgN+BMr2q7QRjuVid39u
+ fG3E0LTgw/Du0v66486JVpi3zgQqekOIv7rW/CTprZrbgmgF4804YpxJXIlvhtH+6XzQIrOYBsQ
+ rGBBk2elJeiZw8VegDwnF6fqt25C5vuLHC9kweCs8fcztwso2vxh0vTPEfgOsfP9ZHIL3h6Z3QA
+ awOVx86NBG+9T25w1kA==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-05_01,2026-01-05_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 phishscore=0 malwarescore=0 adultscore=0
- lowpriorityscore=0 priorityscore=1501 impostorscore=0 bulkscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2512120000
- definitions=main-2601050138
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=calebs@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ suspectscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0
+ priorityscore=1501 clxscore=1015 phishscore=0 spamscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601050138
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=calebs@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -125,52 +124,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-- Added vmstate support for ADU model
+- Add vmstate support PnvCore and PnvQuad capturing scratch
+registers and special wakeup registers
 
 Signed-off-by: Angelo Jaramillo <angelo.jaramillo@linux.ibm.com>
-Reviewed-by: Michael Kowal <kowal@linux.ibm.com>
+Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
 Signed-off-by: Caleb Schlossin <calebs@linux.ibm.com>
 ---
- hw/ppc/pnv_adu.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ hw/ppc/pnv_core.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/hw/ppc/pnv_adu.c b/hw/ppc/pnv_adu.c
-index d686bfa62d..f921a7bcbf 100644
---- a/hw/ppc/pnv_adu.c
-+++ b/hw/ppc/pnv_adu.c
-@@ -23,6 +23,7 @@
- #include "hw/ppc/pnv_chip.h"
- #include "hw/ppc/pnv_lpc.h"
- #include "hw/ppc/pnv_xscom.h"
+diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
+index 59a9eee597..8939515c2c 100644
+--- a/hw/ppc/pnv_core.c
++++ b/hw/ppc/pnv_core.c
+@@ -31,6 +31,7 @@
+ #include "hw/ppc/xics.h"
+ #include "hw/core/qdev-properties.h"
+ #include "helper_regs.h"
 +#include "migration/vmstate.h"
- #include "trace.h"
  
- #define ADU_LPC_BASE_REG     0x40
-@@ -189,6 +190,16 @@ static const Property pnv_adu_properties[] = {
-     DEFINE_PROP_LINK("lpc", PnvADU, lpc, TYPE_PNV_LPC, PnvLpcController *),
- };
+ static const char *pnv_core_cpu_typename(PnvCore *pc)
+ {
+@@ -478,6 +479,15 @@ static void pnv_core_power11_class_init(ObjectClass *oc, const void *data)
+     pnv_core_power10_class_init(oc, data);
+ }
  
-+static const VMStateDescription pnv_adu_vmstate = {
-+    .name = TYPE_PNV_ADU,
++static const VMStateDescription pnv_core_vmstate = {
++    .name = TYPE_PNV_CORE,
 +    .version_id = 1,
 +    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT64(lpc_cmd_reg, PnvADU),
-+        VMSTATE_UINT64(lpc_data_reg, PnvADU),
++        VMSTATE_UINT64_ARRAY(scratch, PnvCore, 8),
 +        VMSTATE_END_OF_LIST(),
 +    },
 +};
 +
- static void pnv_adu_class_init(ObjectClass *klass, const void *data)
+ static void pnv_core_class_init(ObjectClass *oc, const void *data)
  {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-@@ -197,6 +208,7 @@ static void pnv_adu_class_init(ObjectClass *klass, const void *data)
-     dc->desc = "PowerNV ADU";
-     device_class_set_props(dc, pnv_adu_properties);
+     DeviceClass *dc = DEVICE_CLASS(oc);
+@@ -486,6 +496,7 @@ static void pnv_core_class_init(ObjectClass *oc, const void *data)
+     dc->unrealize = pnv_core_unrealize;
+     device_class_set_props(dc, pnv_core_properties);
      dc->user_creatable = false;
-+    dc->vmsd = &pnv_adu_vmstate;
++    dc->vmsd = &pnv_core_vmstate;
  }
  
- static const TypeInfo pnv_adu_type_info = {
+ #define DEFINE_PNV_CORE_TYPE(family, cpu_model) \
+@@ -737,12 +748,23 @@ static void pnv_quad_power11_class_init(ObjectClass *oc, const void *data)
+     pnv_quad_power10_class_init(oc, data);
+ }
+ 
++static const VMStateDescription pnv_quad_vmstate = {
++    .name = TYPE_PNV_QUAD,
++    .version_id = 1,
++    .fields = (const VMStateField[]) {
++        VMSTATE_BOOL(special_wakeup_done, PnvQuad),
++        VMSTATE_BOOL_ARRAY(special_wakeup, PnvQuad, 4),
++        VMSTATE_END_OF_LIST(),
++    },
++};
++
+ static void pnv_quad_class_init(ObjectClass *oc, const void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(oc);
+ 
+     device_class_set_props(dc, pnv_quad_properties);
+     dc->user_creatable = false;
++    dc->vmsd = &pnv_quad_vmstate;
+ }
+ 
+ static const TypeInfo pnv_quad_infos[] = {
 -- 
 2.47.3
 
