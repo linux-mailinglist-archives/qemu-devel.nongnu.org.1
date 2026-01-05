@@ -2,91 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD0CECF1793
-	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 01:09:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D098CF1799
+	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 01:11:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vcY9W-0007x7-Tg; Sun, 04 Jan 2026 19:08:54 -0500
+	id 1vcYB8-00008q-MD; Sun, 04 Jan 2026 19:10:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vcY9A-0007um-Iy
- for qemu-devel@nongnu.org; Sun, 04 Jan 2026 19:08:34 -0500
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1vcYB4-00008Z-A6
+ for qemu-devel@nongnu.org; Sun, 04 Jan 2026 19:10:30 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vcY99-0006Ox-5f
- for qemu-devel@nongnu.org; Sun, 04 Jan 2026 19:08:32 -0500
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-29f2676bb21so188784005ad.0
- for <qemu-devel@nongnu.org>; Sun, 04 Jan 2026 16:08:30 -0800 (PST)
+ id 1vcYAx-0006gv-SG
+ for qemu-devel@nongnu.org; Sun, 04 Jan 2026 19:10:27 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-29f0f875bc5so201134725ad.3
+ for <qemu-devel@nongnu.org>; Sun, 04 Jan 2026 16:10:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767571710; x=1768176510; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767571822; x=1768176622; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=wzJvOWfF9FsF2v2CY2C5j/pnn7zcB7lKpy+H9JIlqVQ=;
- b=j+8XVIdQ/lrO+yd4W85S51r2gslUIsVqZcZl71bBJOc7H3V/YN/Ed/1GhKqfu5eXsZ
- 3k0GGPwtIBO6S1CaoAZZiij9gRm9M64N5bUONiZse63YH9Fnf7RUYFh9bkWIwAO6OiQR
- 5RYtIYN1KgRg7bzvMZyjp3TDB8zIS5AwHiqfmG8mLbXwMp4tacdYnMGR2kujs9UQyawA
- HYggyO56AFSUDsNC90fxJskgabzzPUrdwawuw/uJCApbVRD9XSNCHQWvS+05hwNjG6H3
- GcV1FiYkWEMjwy54ShfYhz77oVzFUDauKARh2aEx0cYQTuHVAD68PIvwHTDR7s8jX8ig
- cGLw==
+ bh=MOxvCj8dWcgKswOOYgwU7/lUdSz8YeFOjTIda9rjdjw=;
+ b=sGK98E3bFfpcVe17XOa2rOwhzTHEfCdHX0G2utC1lSZ0VN/XnK4YLZr0vrt3w3y6kA
+ 8fXHZIAlVnMptDxTVVx29CSLFU1lyy2Nbm5Iv2/4TZOoXJPPUEqQxDufDSFYUK/Qokz7
+ jLKDYyXwRwqcXZJUdVbnAhcUWVMdqpg680Q4zfpAGRkeEo5+iXjFjBBMluVdWvaiFtSx
+ HEmxuVzxKaQOdXNQPji6NJCibyi7bKB6n4AsI2Rn0odt0IbKfni2vFJh9AaZwYg+6ca/
+ PoCEH1FucXpaq3bLwvQxnoMhZ57GlSvjmi84EjlEYedTV7AgxvBPIVSLqJBWgTnG+RDi
+ x6lQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767571710; x=1768176510;
+ d=1e100.net; s=20230601; t=1767571822; x=1768176622;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=wzJvOWfF9FsF2v2CY2C5j/pnn7zcB7lKpy+H9JIlqVQ=;
- b=w37T39UGMDNrRk1f7ilif9VxA5d5AFVCBg+Y/mqLmsk6f5LD7S0YzdYegjZRbf3Egl
- cZUT36JdqLaeSZt84LslXNjKMsbeBqIS/Sx3yt1FpY+fkjYcWaGewDN21Xf9Np7U1x5o
- eAoSsT0aDNUsLNUH4scYWaJIyxvJYMbpvnY9JU5x0Z2D6VTrsPlZpPZo2PiIijsYLa0P
- ousvq95gLQRCdZBVJJCTNRllOQqscfrgQe3LrMv4dnR9AJJ4yroQvKmIQdzj75z5wpBi
- xim8LokOHxryuImHkJdkVV3IS+NKfIntB/4RVXzuveJeiaQ/tfxQ+pBbQceTNXi975zL
- OQ/g==
+ bh=MOxvCj8dWcgKswOOYgwU7/lUdSz8YeFOjTIda9rjdjw=;
+ b=BW9GJLtCGx7Hw/URkk0mlceGbBZQZGyV3x8dfou0bNy9WLXx70er430CSpLC4FEdOb
+ R2om6k+pWOP3OhAxG2fALEYLr1VFuJH4S73s/jLEq14wy05gStZsndgsxSoaTBcVdhDp
+ vQuck7D+O3iJqSahquat/DZYd+Cs1Fw6GYdJF8sWjFVgJekFJRxYm01JioiVP23KAh8O
+ 9oiC8Y4e5pHaWlhmcssFidwl+svsUb8JsNJBoOPDbxnfq9zkBH5d3hIf+m/UdAaPDTWl
+ mM0CiVpxpU3t504IUtsUpBD1yr/6RcVFRCDwctZEXl4xuDIRB2L9y0Gh5N8Ao98Yl9sK
+ lYyQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVqs86GCctCqaMTVO6Zc9qURpFd2KmUSriFxEG5jSPHgAQTvxyi2ck3yYfKaeezOdBSS/UDkXe9pYWc@nongnu.org
-X-Gm-Message-State: AOJu0YzUTYJzmcA7hFBMj32xNZTnQYwaaO8zU27TQMMNz2vHj++DsHIF
- snC76LUwsBq1uhfONl7CMhUf12QaJcNbaeVDQNIFOMjjuN8zQ7rDrSDzDqJ13eSWVpQ=
-X-Gm-Gg: AY/fxX48eM5UxYpf67LHK8g46YNRG35blXZWc16uyhrUoZiIdHyRaHE2B6lLj0YZ8Te
- DNUhoazYZarFGaJC0zVP0VNYi4OHWUx4OLLr8DYWtHPgx2aH5ge2NvcwPMI3C+mhjxooSQjln+B
- x6ktZfZQTygoWHppfB5VbQl26VQU9urFkDnTgXLJkEX4BDDLQuUkkNLGz0S5iTvZVwpXEU1Efnk
- QWLzKC9YD3ps2CQFYGq7bqckK5y6TmeAqtFnbQCJX4LHPChpJwoXyAJ6VABDX4Wd0zff4nGTnzx
- RnEHEfLzECuvZa099RabOPVxPHPlYjnQ5pylIdHdcfjRMzMMPBUY0PmYvNLhcJna63gfmAwpKg2
- iCt6YvmTqs4JdIko2e5QcCdL3XlW6U4lw1gMm22z/47j6OqrW4iw8hGp0UqVuZQg4Sw7wVzXTbd
- 1yF6LVg30Jt7xLJPY63/V/1rVldQkkzg==
-X-Google-Smtp-Source: AGHT+IEza9n1MOGi5G5SsyU+3gyfesU5T/q/KlkMM/dpzTIJh8KNWflYf6A6sH4nAbjNCTn2BYYfzA==
-X-Received: by 2002:a05:6a20:12ca:b0:363:bb19:ed30 with SMTP id
- adf61e73a8af0-376a81dc166mr45241767637.5.1767571709607; 
- Sun, 04 Jan 2026 16:08:29 -0800 (PST)
+ AJvYcCXzuMSduoCJz2T4HyoSzeEY7kK7idguPkYJe2IpLNqGOObqJx0CxyNZHhHT+St6OePAa0unyt8LXHmk@nongnu.org
+X-Gm-Message-State: AOJu0YzXhYeUZokuksjrkmraFtB9gmkCMachxen2FyCGFMbAtNasB6hz
+ UbN01ANr7yHSClqwnLC2+Vw0j7nqAUMfliWBYlDxmupg/pkswbOcVxFfNS5IQsHYTZg=
+X-Gm-Gg: AY/fxX4i/yd1lrPV8S+gZn+UCc5xfc6JUy29d9VYQp9NZWpb08dNhwzdyjJKZFNohNT
+ aj9bmU9arL4shw3fVau8sKGLbr+O3MT+Ewwmv9g+v2MIGWo6ET6hKO63R/i4/9qLxAA5EeXtjDU
+ JQuiEbL3Nvic35STD7Z/A8dMwVnfMU+LNJttNVd3yiZYKL3M0tW2XVZHxwao7mtSmRA+jhTNidH
+ 9SGSTIGIR2UEQEfY6GB5gUo/Vv3ke++wBLcYcyj2zXov4fSdLtcwjhGgcxpJ2Xm5m1Yv8kZkanl
+ 6QJ6/DoKFHG6pYrgkdCPb5UR7T7E2IS+iuIdZGCADGqcMGvDl9YBiiHs3vjVUCTDBZVKENlaHMN
+ RHk9tbSCK/+M6l31xUrpqy/P81c/I+AFvRK0DG2j5tiAvwPTGLASt64WQ0lRI5Hq5YPpBJg1GNA
+ gJk3YRlnm6sC4fSYiv1Z8FTZ2GcOXCkA==
+X-Google-Smtp-Source: AGHT+IGoXQf4EUZzY7TA0ydQi6zEFuhwK+QlfKa4V6XorUuL00f0LrY+UU0oXOfoti1TxW8NXt7uDg==
+X-Received: by 2002:a17:903:32d1:b0:293:e12:1bec with SMTP id
+ d9443c01a7336-2a2f2229207mr489673875ad.20.1767571821966; 
+ Sun, 04 Jan 2026 16:10:21 -0800 (PST)
 Received: from [192.168.10.140] ([180.233.125.201])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-c1e7c147943sm40332734a12.26.2026.01.04.16.08.19
+ d9443c01a7336-2a2f3d4d88asm424756505ad.48.2026.01.04.16.10.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 04 Jan 2026 16:08:22 -0800 (PST)
-Message-ID: <287e7670-9bdd-42c6-84bf-22db4723d19a@linaro.org>
-Date: Mon, 5 Jan 2026 11:08:16 +1100
+ Sun, 04 Jan 2026 16:10:21 -0800 (PST)
+Message-ID: <4d8c706e-b861-43be-ad28-5d34dfbd85ff@linaro.org>
+Date: Mon, 5 Jan 2026 11:10:14 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] configs/targets: Forbid HPPA to use legacy native
- endianness APIs
+Subject: Re: [PATCH 1/4] hw/intc: Mark OpenRISC-specific peripheral as
+ big-endian
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Cc: Anton Johansson <anjo@rev.ng>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+Cc: Jia Liu <proljc@gmail.com>, Pierrick Bouvier
+ <pierrick.bouvier@linaro.org>, Anton Johansson <anjo@rev.ng>,
  Laurent Vivier <laurent@vivier.eu>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, Helge Deller <deller@gmx.de>
-References: <20251224160942.89386-1-philmd@linaro.org>
- <20251224160942.89386-5-philmd@linaro.org>
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Stafford Horne <shorne@gmail.com>
+References: <20251224161804.90064-1-philmd@linaro.org>
+ <20251224161804.90064-2-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-In-Reply-To: <20251224160942.89386-5-philmd@linaro.org>
+In-Reply-To: <20251224161804.90064-2-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,18 +110,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/25/25 03:09, Philippe Mathieu-Daudé wrote:
-> All HPPA-related binaries are buildable without a single use
-> of the legacy "native endian" API. Unset the transitional
-> TARGET_USE_LEGACY_NATIVE_ENDIAN_API definition to forbid
-> further uses of the legacy API.
+On 12/25/25 03:18, Philippe Mathieu-Daudé wrote:
+> The Open Multi-Processor Interrupt Controller (ompic) is only
+> used by the OpenRISC target, which is only built as big-endian.
+> Therefore the DEVICE_NATIVE_ENDIAN definition expand to
+> DEVICE_BIG_ENDIAN (besides, the DEVICE_LITTLE_ENDIAN case isn't
+> tested). Simplify directly using DEVICE_BIG_ENDIAN.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
 > ---
->   configs/targets/hppa-linux-user.mak | 1 +
->   configs/targets/hppa-softmmu.mak    | 1 +
->   2 files changed, 2 insertions(+)
-
+>   hw/intc/ompic.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
