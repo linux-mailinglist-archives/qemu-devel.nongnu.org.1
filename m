@@ -2,89 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F8FCF550D
-	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 20:12:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 584BFCF5507
+	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 20:12:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vcpvp-0007u0-GS; Mon, 05 Jan 2026 14:07:57 -0500
+	id 1vcpwD-0008DH-Sc; Mon, 05 Jan 2026 14:08:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vcpvC-0007gy-EY
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 14:07:22 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vcpvL-0007jd-At
+ for qemu-devel@nongnu.org; Mon, 05 Jan 2026 14:07:29 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vcpvA-00059m-QN
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 14:07:18 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vcpvI-0005Al-7q
+ for qemu-devel@nongnu.org; Mon, 05 Jan 2026 14:07:26 -0500
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 5EF7D5BCC8;
- Mon,  5 Jan 2026 19:07:08 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 37ACA5BCC9;
+ Mon,  5 Jan 2026 19:07:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1767640028; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1767640030; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=l8Cg35PALIzMlNaP40i0YpKV/WkztClLnp/5FtGNUdQ=;
- b=XtRkZRPkqPoA0kGIxknZVSSyo24q2Em+ibWndn/XJnj4LlQJhzGuv6BUoeHlVU62SUcpdI
- q+MwTZNguvbuJF01w6StrMpkAOzxEy6dtxeuQZE/jQiHWVdxebewUI5dtZMoVCJMbxurn0
- bttEFiqEmnfktfY1KuzNOUVLQjva0zw=
+ bh=6g2z5WvcN+x0DrLLM0CsHxCOuixvhNc2LRVtbIoPM+Q=;
+ b=UbLpnG77r9HabaGxHcuW03u5vDmHWPmHz/tQku/2GZLbpQQF2NSjdKQNcvt4+AqDyo5TZF
+ 66WxN1wiZyqC7IRq4ngKf6tOKG3788to54+1EcuypjP6fRmt1VRvtrR/cp2q/3oyiWClIY
+ yw5++K8x3+xqxzWzOMzx2z7c+/mKyuU=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1767640028;
+ s=susede2_ed25519; t=1767640030;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=l8Cg35PALIzMlNaP40i0YpKV/WkztClLnp/5FtGNUdQ=;
- b=DmbOvi5LmZWMLTh9uXs3nVYaDS6Z7zGDOys4yzZE7kWWfu422DvxS7zwb+rhDaYXVp8/cS
- 94WUnOzmRiWFV1Ag==
+ bh=6g2z5WvcN+x0DrLLM0CsHxCOuixvhNc2LRVtbIoPM+Q=;
+ b=ts/2o7Y6/Oh/BgLGx5vncCxzMe4z7xf3iI0eWiBbqC3PrOQIdkVXyAxDHnsAu5DnYXAnPO
+ xKk7tBTlyxLPolBg==
 Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XtRkZRPk;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=DmbOvi5L
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=UbLpnG77;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="ts/2o7Y6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1767640028; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1767640030; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=l8Cg35PALIzMlNaP40i0YpKV/WkztClLnp/5FtGNUdQ=;
- b=XtRkZRPkqPoA0kGIxknZVSSyo24q2Em+ibWndn/XJnj4LlQJhzGuv6BUoeHlVU62SUcpdI
- q+MwTZNguvbuJF01w6StrMpkAOzxEy6dtxeuQZE/jQiHWVdxebewUI5dtZMoVCJMbxurn0
- bttEFiqEmnfktfY1KuzNOUVLQjva0zw=
+ bh=6g2z5WvcN+x0DrLLM0CsHxCOuixvhNc2LRVtbIoPM+Q=;
+ b=UbLpnG77r9HabaGxHcuW03u5vDmHWPmHz/tQku/2GZLbpQQF2NSjdKQNcvt4+AqDyo5TZF
+ 66WxN1wiZyqC7IRq4ngKf6tOKG3788to54+1EcuypjP6fRmt1VRvtrR/cp2q/3oyiWClIY
+ yw5++K8x3+xqxzWzOMzx2z7c+/mKyuU=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1767640028;
+ s=susede2_ed25519; t=1767640030;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=l8Cg35PALIzMlNaP40i0YpKV/WkztClLnp/5FtGNUdQ=;
- b=DmbOvi5LmZWMLTh9uXs3nVYaDS6Z7zGDOys4yzZE7kWWfu422DvxS7zwb+rhDaYXVp8/cS
- 94WUnOzmRiWFV1Ag==
+ bh=6g2z5WvcN+x0DrLLM0CsHxCOuixvhNc2LRVtbIoPM+Q=;
+ b=ts/2o7Y6/Oh/BgLGx5vncCxzMe4z7xf3iI0eWiBbqC3PrOQIdkVXyAxDHnsAu5DnYXAnPO
+ xKk7tBTlyxLPolBg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 153F713964;
- Mon,  5 Jan 2026 19:07:06 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E2F7F13964;
+ Mon,  5 Jan 2026 19:07:08 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id gEajMdoLXGmSOgAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 05 Jan 2026 19:07:06 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id WClbKNwLXGmSOgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 05 Jan 2026 19:07:08 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com,
 	berrange@redhat.com
-Subject: [PATCH v2 10/25] migration: yank: Move register instance earlier
-Date: Mon,  5 Jan 2026 16:06:27 -0300
-Message-ID: <20260105190644.14072-11-farosas@suse.de>
+Subject: [PATCH v2 11/25] migration: Fold migration_cleanup() into
+ migration_connect_error_propagate()
+Date: Mon,  5 Jan 2026 16:06:28 -0300
+Message-ID: <20260105190644.14072-12-farosas@suse.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260105190644.14072-1-farosas@suse.de>
 References: <20260105190644.14072-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Score: -3.01
-X-Rspamd-Queue-Id: 5EF7D5BCC8
+X-Rspamd-Queue-Id: 37ACA5BCC9
 X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
  R_MISSING_CHARSET(0.50)[];
@@ -104,13 +105,15 @@ X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  DKIM_TRACE(0.00)[suse.de:+]
 X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 X-Rspamd-Action: no action
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -127,109 +130,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the register_instance call to migrate_prepare() so it can be
-paired with the unregister_instance at migration_cleanup(). Otherwise,
-the cleanup cannot be run when cpr_state_save() fails because the
-instance is registered only after it.
+Whenever an error occurs between migrate_init() and the start of
+migration_thread, do cleanup immediately after.
 
-When resuming from a paused postcopy migration, migrate_prepare()
-returns early, but migration_cleanup() doesn't run, so the yank will
-remain paired.
+This allows the special casing for resume to be removed from
+migration_connect(), that check is now done at
+migration_connect_error_propagate() which already had a case for
+resume.
+
+The cleanup at qmp_migrate_finish_cb can also be removed because it
+will always be reached wither via the error path at
+qmp_migrate_finish->migration_connect_error_propagate or via the
+migrate_cleanup_bh.
+
+The yank_unregister_instance at qmp_migrate() is now replaced by the
+one at migration_cleanup().
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/migration.c | 26 ++++++++------------------
- 1 file changed, 8 insertions(+), 18 deletions(-)
+ migration/migration.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
 diff --git a/migration/migration.c b/migration/migration.c
-index 259b60af04..164cb26c48 100644
+index 164cb26c48..d57cc2dc3b 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -2180,11 +2180,12 @@ static bool migrate_prepare(MigrationState *s, bool resume, Error **errp)
-         return false;
+@@ -1576,15 +1576,21 @@ static void migration_connect_error_propagate(MigrationState *s, Error *error)
+ {
+     MigrationStatus current = s->state;
+     MigrationStatus next = MIGRATION_STATUS_NONE;
++    bool resume = false;
+ 
+     switch (current) {
+     case MIGRATION_STATUS_SETUP:
+         next = MIGRATION_STATUS_FAILED;
+         break;
+ 
++    case MIGRATION_STATUS_POSTCOPY_PAUSED:
++        resume = true;
++        break;
++
+     case MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP:
+         /* Never fail a postcopy migration; switch back to PAUSED instead */
+         next = MIGRATION_STATUS_POSTCOPY_PAUSED;
++        resume = true;
+         break;
+ 
+     case MIGRATION_STATUS_CANCELLING:
+@@ -1609,6 +1615,10 @@ static void migration_connect_error_propagate(MigrationState *s, Error *error)
      }
  
-+    yank_register_instance(MIGRATION_YANK_INSTANCE, &error_abort);
+     migrate_error_propagate(s, error);
 +
-     return true;
++    if (!resume) {
++        migration_cleanup(s);
++    }
  }
  
--static void qmp_migrate_finish(MigrationAddress *addr, bool resume_requested,
--                               Error **errp);
-+static void qmp_migrate_finish(MigrationAddress *addr, Error **errp);
- 
- static void migrate_hup_add(MigrationState *s, QIOChannel *ioc, GSourceFunc cb,
-                             void *opaque)
-@@ -2209,7 +2210,7 @@ static gboolean qmp_migrate_finish_cb(QIOChannel *channel,
- {
+ void migration_cancel(void)
+@@ -2211,9 +2221,6 @@ static gboolean qmp_migrate_finish_cb(QIOChannel *channel,
      MigrationAddress *addr = opaque;
  
--    qmp_migrate_finish(addr, false, NULL);
-+    qmp_migrate_finish(addr, NULL);
- 
-     cpr_state_close();
-     migrate_hup_delete(migrate_get_current());
-@@ -2221,7 +2222,6 @@ void qmp_migrate(const char *uri, bool has_channels,
+     qmp_migrate_finish(addr, NULL);
+-
+-    cpr_state_close();
+-    migrate_hup_delete(migrate_get_current());
+     qapi_free_MigrationAddress(addr);
+     return G_SOURCE_REMOVE;
+ }
+@@ -2222,7 +2229,6 @@ void qmp_migrate(const char *uri, bool has_channels,
                   MigrationChannelList *channels, bool has_detach, bool detach,
                   bool has_resume, bool resume, Error **errp)
  {
--    bool resume_requested;
-     Error *local_err = NULL;
+-    Error *local_err = NULL;
      MigrationState *s = migrate_get_current();
      g_autoptr(MigrationChannel) channel = NULL;
-@@ -2274,8 +2274,7 @@ void qmp_migrate(const char *uri, bool has_channels,
+     MigrationAddress *addr = NULL;
+@@ -2279,6 +2285,13 @@ void qmp_migrate(const char *uri, bool has_channels,
          return;
      }
  
--    resume_requested = has_resume && resume;
--    if (!migrate_prepare(s, resume_requested, errp)) {
-+    if (!migrate_prepare(s, has_resume && resume, errp)) {
-         /* Error detected, put into errp */
-         return;
++    /*
++     * The migrate_prepare() above calls migrate_init(). From this
++     * point on, until the end of migration, make sure any failures
++     * eventually result in a call to migration_cleanup().
++     */
++    Error *local_err = NULL;
++
+     if (!cpr_state_save(cpr_channel, &local_err)) {
+         goto out;
      }
-@@ -2299,28 +2298,22 @@ void qmp_migrate(const char *uri, bool has_channels,
-                         QAPI_CLONE(MigrationAddress, addr));
- 
-     } else {
--        qmp_migrate_finish(addr, resume_requested, errp);
-+        qmp_migrate_finish(addr, errp);
-     }
+@@ -2303,7 +2316,6 @@ void qmp_migrate(const char *uri, bool has_channels,
  
  out:
      if (local_err) {
-+        yank_unregister_instance(MIGRATION_YANK_INSTANCE);
+-        yank_unregister_instance(MIGRATION_YANK_INSTANCE);
          migration_connect_error_propagate(s, error_copy(local_err));
          error_propagate(errp, local_err);
      }
- }
- 
--static void qmp_migrate_finish(MigrationAddress *addr, bool resume_requested,
--                               Error **errp)
-+static void qmp_migrate_finish(MigrationAddress *addr, Error **errp)
- {
-     MigrationState *s = migrate_get_current();
-     Error *local_err = NULL;
- 
--    if (!resume_requested) {
--        if (!yank_register_instance(MIGRATION_YANK_INSTANCE, errp)) {
--            return;
+@@ -4026,9 +4038,6 @@ void migration_connect(MigrationState *s, Error *error_in)
+     s->expected_downtime = migrate_downtime_limit();
+     if (error_in) {
+         migration_connect_error_propagate(s, error_in);
+-        if (!resume) {
+-            migration_cleanup(s);
 -        }
--    }
--
-     if (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET) {
-         SocketAddress *saddr = &addr->u.socket;
-         if (saddr->type == SOCKET_ADDRESS_TYPE_INET ||
-@@ -2343,9 +2336,6 @@ static void qmp_migrate_finish(MigrationAddress *addr, bool resume_requested,
+         if (s->error) {
+             error_report_err(error_copy(s->error));
+         }
+@@ -4107,7 +4116,6 @@ void migration_connect(MigrationState *s, Error *error_in)
+ 
+ fail:
+     migration_connect_error_propagate(s, local_err);
+-    migration_cleanup(s);
+     if (s->error) {
+         error_report_err(error_copy(s->error));
      }
- 
-     if (local_err) {
--        if (!resume_requested) {
--            yank_unregister_instance(MIGRATION_YANK_INSTANCE);
--        }
-         migration_connect_error_propagate(s, error_copy(local_err));
-         error_propagate(errp, local_err);
-         return;
 -- 
 2.51.0
 
