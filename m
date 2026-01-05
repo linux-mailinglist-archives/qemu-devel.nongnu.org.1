@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19CD9CF31B9
-	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 12:01:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C5CCCF31D1
+	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 12:02:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vciJn-00012H-JW; Mon, 05 Jan 2026 06:00:11 -0500
+	id 1vciJm-000126-Pz; Mon, 05 Jan 2026 06:00:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kito.cheng@sifive.com>)
- id 1vciJe-0000yA-8M
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 06:00:02 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1vciJg-0000zy-PX
+ for qemu-devel@nongnu.org; Mon, 05 Jan 2026 06:00:06 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kito.cheng@sifive.com>)
- id 1vciJb-0001og-Mc
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 06:00:01 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-2a0833b5aeeso187801545ad.1
- for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 02:59:59 -0800 (PST)
+ id 1vciJe-0001pJ-4d
+ for qemu-devel@nongnu.org; Mon, 05 Jan 2026 06:00:04 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-2a110548cdeso186111205ad.0
+ for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 03:00:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1767610798; x=1768215598; darn=nongnu.org;
+ d=sifive.com; s=google; t=1767610800; x=1768215600; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ItC8uyuV9MEuPPK+zE/fnv1fLQkursu/U/pJyg29yX0=;
- b=f/1mQs60mavIxsOsOeap9l7PetIlTSCW2EQ1UobsIsZ8WvaX/WZqqshyGzpMCq7i/d
- BEGvISzmjWIvHGHzKUInipnbVCgBi5zFz+9XqV3hOgbZ8puIywL+XvXq94T7y7EQ3yIJ
- aQwX6LZuE6DLHY6btcwtruSXUc1t+FlMZN0/a4hyL/o2Ljvppv2tSKwXEa188q62gQXS
- /Agt7FqXXI0Ib6qUv+4fa8qApqiRCrP8vPI/EBsHcPHR5iMhlGjKwsWyegZhUTKV3Q0E
- S6RyFu2nVrTHauHSXR7uqQk3Vr1n6B3YcsYjmq+Sa7vh0HLYvb0BwH1Mh2AK0Ijz17p7
- x+mg==
+ bh=sgFnjjxok3hH0hllst2R9+ZDtEpVszUSR75AJx8qMMQ=;
+ b=lVE8XA8HqH1nPkWGXirPzoEdNA3xWKa/umiBR+n7VL0x+iEQu4a8fNiaAcIpxdHOxp
+ y1frWu/9XpaP8UXIbt3V1//ldXQHt9VkOAtltYMJ9GKuD+bkNFXTrjyXSo3JsQWNZRmy
+ fADzMZAKs2JtWoLEmPXYXCeh7YeqEvCFexTTYXsTDuMyoPXPPfi86bobmh9f391J7SB9
+ PQcjlYCkEDKrnoqtekiwKuirbCcEoFZ9kODiLMxSe3ZkCeL0LvcUsPAMQKplzJ1bOVb/
+ mEl5cqGhR9HF+EhF7Pu1Wf3WygeWVQ0aB/PV9javgMihozfyT4Wp0xpg36gEOAxtbepj
+ c2MA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767610798; x=1768215598;
+ d=1e100.net; s=20230601; t=1767610800; x=1768215600;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=ItC8uyuV9MEuPPK+zE/fnv1fLQkursu/U/pJyg29yX0=;
- b=kL+hY8owmzDai07uyeFcRNH19YH+BCFHOz3iSNIs6z4cJ3hkCokjdtua3Rz87+4Q7u
- rzTRX6fXyhe39rZMtFt9kP2ZM7C+cRXrhPIRRD+1YKq9+FqBhwAF79BfkEQ143yaTMc9
- VgoB1hSUFrKG6ZbLg2/IQBzsxV6eIwreu6AifpPhdiK20hEuPIBwxnLvs33ouO/ut9/b
- /JkDCqRsZPE5WPmoh7QPA3YI47GHkLdGq0/eAqjQGw3t4AxZVusqwjV/gGd9T5sxrORH
- l+GQQK95AekayYT1uTzDAySxaklsdy/SyZc+coCY/ESn0wFJ4E2LGRYGSrImX4WpRtTY
- 0g4w==
+ bh=sgFnjjxok3hH0hllst2R9+ZDtEpVszUSR75AJx8qMMQ=;
+ b=Do8rfradJ6mB7GzaHI2eJB3TlwSBWZ3Id7MHa0I5tlGdBAVl1CulMu0oWQE5l9Z0EL
+ HDSdRSJRD34tfzOpU9HuN1qpisSUh6a3OuJIRaA0Bh74G9+xL2oX8dq1CtCzqS75g6Va
+ ZECNwO31aUANp5RhWAnOQjwZXhNstQyfRikH+lWnVyG8j1DT0bRvBARmEsROFla3cs6M
+ fRyqjOqHnnRHct0T0NfcNYbplBF3UyuvHts3YHUjsKC98sVHYj/CO2ORk93dgFHhOYl+
+ R+rdrMbeKSYKXzbPz+QwWKtN5MVXkeKLi4EEDPN/P+cUuzllbOEsGDZATY0vhHU66Hz6
+ 7LZg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUqHKydlJybUI4q39Jtcudy7vFrbbhkxsusyTwXt6yvE2u3jOzrcrGGMFdSP6VqXEA19RJmmXxnsolh@nongnu.org
-X-Gm-Message-State: AOJu0YyxH3keqGfBgKkZWQESrha5EYp1rydsSSrrNeZcyiQCaIkDwR42
- vZjuvQ1mc4+wn4q73Kskl1vtCjWRZw92GDg6CA8usZ8xm5mLTJTWuEljbFHqk3BY4EA=
-X-Gm-Gg: AY/fxX6c1ag/9NneK/fvRr7JyOniiXEsKno+GTZcFWv1gOBhTngcFXB3OGT+jhONFG5
- hQKGWAdEJHg8QiEV6MsUkd9M30b6vXHBYll5W0/p2cvsErvvecM+4QYtzuXDTMTuOahtFQZDOhH
- t2/eZE4hFUKJqHuuARN7l9iExpE9JXbV228ks3aRFvMdQup7wSxG+HKNygB3XDttdQEMoFIedfB
- aAb72RFX+PfBa6xcOOTmV6HWb44mNcJ39e22RErDOQZ9TTTsQRt9QwAml58epJGp6KYWzF7Gnfh
- LA6PlMj2o2+6xOBUXrGMB0HXtFQ9gf2J5zMzZ155wjio+hVvHpTpUopPThn6HoDQ01XFA+tp/rK
- wSnk9RRegt//ZWr+DsgEczvMjQioWHJvnr6vVt9gEDyDgwc11CRayhQSAFsTWrJ1beJvtcBOlT5
- rSVNb989I/IMJd8gMwK0zu+vvSk1agYYW6WzmM1t3ybOQ87BQ=
-X-Google-Smtp-Source: AGHT+IH2dAOgb7q5OjCkQW0AFKUJuQJSmLdQx7ODCszegrKc/2QxebCubAWcPbTE9NXD5UL9YKwchA==
-X-Received: by 2002:a17:903:b90:b0:29f:301a:f6da with SMTP id
- d9443c01a7336-2a2f2a34f54mr488443665ad.43.1767610798421; 
- Mon, 05 Jan 2026 02:59:58 -0800 (PST)
+ AJvYcCXnM5Yp0+IMm6xEex6EZ2Dv3d0TXjhxf3fXdPA0EGPT6J1VunXFjuQdtfQ3/StZjAuKerVIKf6vvSbw@nongnu.org
+X-Gm-Message-State: AOJu0YybprL0eL30aZ6lEDT9rCgYhk6kRL2pGhwghX/7QlSetoc8MNma
+ IePbqQNFqEsU75HeO58Sl461IQztqAksPuCJAqd3fPex9VNaF96xk+KB2HgSbNrTP3o=
+X-Gm-Gg: AY/fxX7sXBtQtVK3J6QdARN+nJOAnHR63gZYcnLJV6UEV8xU5KezCvOMPQqoB/tR6WF
+ vJuf76aMKDWACOeNRhnmWcY0mLc50pcQUqRkghMAwm22WRWsgfMxVLtgKSU3bYfU9RGG15Hx9v+
+ rQGKfF+MBD8lm0NHYCpVL4swGGo7t81ZGx9vHPZV33Yg86IGdu1uyZuD8YJ+JmmpBlOxsOtPaN0
+ HXxc/8lnuSRZw0YWPOeaKgj9mO6cC2PnJpmh/HWbl3YTqMIVX0ef3OZ4PB9E4vb2kvAkFt/hwuf
+ cYSoFJaTq6WOpoyVpD+CIi9qmomw3+/uEkExacg4TIpDJMxJQjtrI2N86t2zibAHH1BqbN1wTvK
+ pIVt4MjKVMOHm9cSpfOKVvif5OUXfPkM+d4d4x9ngSZVZZ7LCslJWxu99N2x243ZYToRDCsnfUP
+ ciN7oGJS1Zrd9KvmGcOF4fTrrxEeHCWAl8q5TV
+X-Google-Smtp-Source: AGHT+IGsQ7LNRPCLuIwd7jmcSpBo5gTc4t4rb6kI4JkaygDS6k6VQwEEw3rj75zwGdTBVWyN/VvqiA==
+X-Received: by 2002:a17:902:f54f:b0:29d:584e:6349 with SMTP id
+ d9443c01a7336-2a2f2231accmr544763805ad.13.1767610800485; 
+ Mon, 05 Jan 2026 03:00:00 -0800 (PST)
 Received: from hsinchu18.internal.sifive.com ([210.176.154.34])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a2f3c6661esm440193975ad.2.2026.01.05.02.59.56
+ d9443c01a7336-2a2f3c6661esm440193975ad.2.2026.01.05.02.59.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jan 2026 02:59:58 -0800 (PST)
+ Mon, 05 Jan 2026 03:00:00 -0800 (PST)
 From: Kito Cheng <kito.cheng@sifive.com>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: palmer@dabbelt.com, alistair.francis@wdc.com, liwei1518@gmail.com,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  kito.cheng@gmail.com, Kito Cheng <kito.cheng@sifive.com>
-Subject: [PATCH 4/5] target/riscv: Add arch=PROFILE to configure CPU using
- RISC-V profiles
-Date: Mon,  5 Jan 2026 18:59:39 +0800
-Message-ID: <20260105105940.3567112-5-kito.cheng@sifive.com>
+Subject: [PATCH 5/5] target/riscv: Add zvl*b extension support in arch=
+ property
+Date: Mon,  5 Jan 2026 18:59:40 +0800
+Message-ID: <20260105105940.3567112-6-kito.cheng@sifive.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260105105940.3567112-1-kito.cheng@sifive.com>
 References: <20260105105940.3567112-1-kito.cheng@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=kito.cheng@sifive.com; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=kito.cheng@sifive.com; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,312 +104,350 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add support for configuring RISC-V CPUs using standard RISC-V profiles
-with the arch= property. The format is:
-
-  arch=<profile-name>[_extension]*
+Add support for specifying vector length (VLEN) using zvl*b extensions
+in the arch= property. This allows explicit VLEN configuration when
+using ISA strings or profiles.
 
 Examples:
-  -cpu rv64,arch=rva23u64
-  -cpu rv64,arch=rva22s64
-  -cpu rv64,arch=rva23u64_zbkb_zkne
+  -cpu rv64,arch=rv64gcv_zvl256b       # V with VLEN=256
+  -cpu rv64,arch=rv64i_zve64f_zvl128b  # Zve64f with VLEN=128
+  -cpu rv64,arch=rva23u64_zvl512b      # RVA23 profile with VLEN=512
 
 Key features:
-- Profiles are detected by prefix matching (case-insensitive)
-- Additional extensions can be appended after the profile name
-- Profiles are only available for 64-bit CPUs
+- zvl<N>b where N is VLEN in bits (must be power of 2, 32-65536)
+- Valid extensions: zvl32b, zvl64b, zvl128b, zvl256b, zvl512b, etc.
+- zvl*b requires v or zve* extension to also be specified
+- Multiple zvl*b extensions take the maximum value
+- Extensions imply minimum VLEN: v implies 128, zve64* implies 64,
+  zve32* implies 32
 
-Available profiles:
-- rva22u64 - RVA22 User-mode profile
-- rva22s64 - RVA22 Supervisor-mode profile
-- rva23u64 - RVA23 User-mode profile (includes mandatory vector)
-- rva23s64 - RVA23 Supervisor-mode profile
+The arch=dump output now shows:
+- Vector length configuration (VLEN=N bits)
+- zvl<N>b in the full ISA string
 
-Profiles automatically enable all mandatory extensions defined by the
-RISC-V profile specification. Additional extensions can be appended
-after the profile name using underscores (following the RISC-V toolchain
-convention).
-
-The arch=help command now lists available profiles in addition to
-extensions.
+The arch=help output now lists available zvl*b extensions with
+documentation.
 
 Signed-off-by: Kito Cheng <kito.cheng@sifive.com>
 ---
- docs/system/target-riscv.rst              |  24 +++++
- target/riscv/cpu.c                        |   8 ++
- target/riscv/tcg/tcg-cpu.c                | 103 +++++++++++++++++++++-
- tests/functional/riscv64/test_cpu_arch.py |  72 +++++++++++++++
- 4 files changed, 203 insertions(+), 4 deletions(-)
+ docs/system/target-riscv.rst              |   2 +
+ target/riscv/cpu.c                        |  23 ++++-
+ target/riscv/tcg/tcg-cpu.c                | 116 +++++++++++++++++++++-
+ tests/functional/riscv64/test_cpu_arch.py |  68 +++++++++++++
+ 4 files changed, 207 insertions(+), 2 deletions(-)
 
 diff --git a/docs/system/target-riscv.rst b/docs/system/target-riscv.rst
-index a16c17a22c2..12807974a8a 100644
+index 12807974a8a..6734c86848a 100644
 --- a/docs/system/target-riscv.rst
 +++ b/docs/system/target-riscv.rst
-@@ -167,6 +167,30 @@ extensions:
+@@ -134,6 +134,8 @@ extensions:
+   Special extensions:
  
-     $ qemu-riscv64 -cpu rv64,arch=rv64gc_zba_zbb,arch=dump /bin/true
+   - ``g`` expands to ``imafd_zicsr_zifencei`` (General purpose)
++  - ``zvl<N>b`` specifies vector length (VLEN) in bits, where N must
++    be a power of 2 (e.g., ``zvl128b``, ``zvl256b``, ``zvl512b``)
  
-+* ``arch=<PROFILE-NAME>[_extension]*``
-+
-+  Configure the CPU using a standard RISC-V profile, optionally with additional
-+  extensions. Profiles define sets of mandatory extensions for specific use
-+  cases. Available profiles (64-bit only):
-+
-+  - ``rva22u64`` - RVA22 User-mode profile
-+  - ``rva22s64`` - RVA22 Supervisor-mode profile
-+  - ``rva23u64`` - RVA23 User-mode profile (includes mandatory vector)
-+  - ``rva23s64`` - RVA23 Supervisor-mode profile
-+
-+  Examples::
-+
-+    $ qemu-riscv64 -cpu rv64,arch=rva23u64 /bin/true
-+    $ qemu-riscv64 -cpu rv64,arch=rva22s64,arch=dump /bin/true
-+    $ qemu-riscv64 -cpu rv64,arch=rva23u64_zbkb_zkne /bin/true
-+
-+  Profiles automatically enable all mandatory extensions defined by the RISC-V
-+  profile specification. For example, RVA23 profiles enable the vector extension
-+  (V) which was optional in RVA22. Additional extensions can be appended after
-+  the profile name using underscores (following the RISC-V toolchain convention).
-+
-+  Use ``arch=help`` to see all available profiles.
-+
- Privilege-implied extensions
- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- 
+   The ISA string must match the CPU's XLEN. For example, ``arch=rv32i`` will
+   fail on a 64-bit CPU.
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index b1d8438cd14..092635b1050 100644
+index 092635b1050..8c3a0c94483 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -1028,7 +1028,15 @@ G_NORETURN void riscv_cpu_list_supported_extensions(void)
+@@ -1028,6 +1028,11 @@ G_NORETURN void riscv_cpu_list_supported_extensions(void)
      riscv_cpu_help_multiext("Experimental Extensions",
                              riscv_cpu_experimental_exts);
  
-+    /* Print available profiles */
-+    qemu_printf("Profiles (64-bit only):\n");
-+    for (int i = 0; riscv_profiles[i] != NULL; i++) {
-+        qemu_printf("  %s\n", riscv_profiles[i]->name);
++    /* Print vector length extensions */
++    qemu_printf("Vector Length Extensions (zvl*b):\n");
++    qemu_printf("  zvl32b, zvl64b, zvl128b, zvl256b, zvl512b, zvl1024b, ...\n");
++    qemu_printf("  (Specifies VLEN in bits, must be power of 2)\n\n");
++
+     /* Print available profiles */
+     qemu_printf("Profiles (64-bit only):\n");
+     for (int i = 0; riscv_profiles[i] != NULL; i++) {
+@@ -1062,7 +1067,14 @@ static G_NORETURN void riscv_cpu_dump_isa_config(RISCVCPU *cpu)
+ 
+     /* Print base information */
+     qemu_printf("Base: RV%d\n", xlen);
+-    qemu_printf("Privilege spec: %s\n\n", priv_spec_to_str(env->priv_ver));
++    qemu_printf("Privilege spec: %s\n", priv_spec_to_str(env->priv_ver));
++
++    /* Print vector length configuration */
++    if (cpu->cfg.vlenb > 0) {
++        uint16_t vlen = cpu->cfg.vlenb << 3;
++        qemu_printf("Vector length: VLEN=%u bits (zvl%ub)\n", vlen, vlen);
 +    }
 +    qemu_printf("\n");
-+
-     qemu_printf("Use '-cpu <cpu>,<ext>=true' to enable an extension.\n");
-+    qemu_printf("Use '-cpu <cpu>,arch=<profile>' to enable a profile.\n");
-     qemu_printf("Use '-cpu <cpu>,arch=dump' to show current configuration.\n");
  
-     exit(0);
+     /* Print single-letter extensions */
+     qemu_printf("Standard Extensions (single-letter):\n");
+@@ -3053,6 +3065,15 @@ static void riscv_isa_string_ext(RISCVCPU *cpu, char **isa_str,
+         }
+     }
+ 
++    /* Add zvl*b if vector length is configured */
++    if (cpu->cfg.vlenb > 0) {
++        uint16_t vlen = cpu->cfg.vlenb << 3;
++        g_autofree char *zvl_ext = g_strdup_printf("zvl%ub", vlen);
++        new = g_strconcat(old, "_", zvl_ext, NULL);
++        g_free(old);
++        old = new;
++    }
++
+     *isa_str = new;
+ }
+ 
 diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 87f1a5c9c73..aa947337cf1 100644
+index aa947337cf1..03a748b7dcc 100644
 --- a/target/riscv/tcg/tcg-cpu.c
 +++ b/target/riscv/tcg/tcg-cpu.c
-@@ -1725,9 +1725,99 @@ static bool riscv_cpu_parse_isa_string(RISCVCPU *cpu, const char *isa_str,
-     return true;
- }
- 
-+/*
-+ * Find a profile by prefix (case-insensitive).
-+ * The profile name must be followed by end of string or underscore.
-+ * Returns the profile and sets *end_ptr to point after the profile name.
-+ */
-+static RISCVCPUProfile *riscv_find_profile_by_prefix(const char *str,
-+                                                      const char **end_ptr)
-+{
-+    for (int i = 0; riscv_profiles[i] != NULL; i++) {
-+        size_t len = strlen(riscv_profiles[i]->name);
-+        if (g_ascii_strncasecmp(str, riscv_profiles[i]->name, len) == 0) {
-+            char next_char = str[len];
-+            if (next_char == '\0' || next_char == '_') {
-+                if (end_ptr) {
-+                    *end_ptr = str + len;
-+                }
-+                return riscv_profiles[i];
-+            }
-+        }
-+    }
-+    return NULL;
+@@ -1596,6 +1596,73 @@ static void riscv_cpu_disable_all_extensions(RISCVCPU *cpu)
+     for (const RISCVIsaExtData *edata = isa_edata_arr; edata->name; edata++) {
+         isa_ext_update_enabled(cpu, edata->ext_enable_offset, false);
+     }
++
++    /* Reset vector length to 0 (will be set by zvl*b or implied by zve/v) */
++    cpu->cfg.vlenb = 0;
 +}
 +
 +/*
-+ * Parse profile string with optional extensions.
-+ * Format: <profile-name>[_<extension>]*
-+ * Examples: rva23u64, rva23u64_zbkb_zkne
++ * Parse zvl*b extension name and return the minimum VLEN in bits.
++ * Returns 0 if the extension name is not a valid zvl*b pattern.
++ * Valid patterns: zvl32b, zvl64b, zvl128b, zvl256b, zvl512b, zvl1024b, etc.
 + */
-+static bool riscv_cpu_parse_profile_string(RISCVCPU *cpu, const char *str,
-+                                           Error **errp)
++static int riscv_parse_zvl_vlen(const char *ext_name)
 +{
-+    const char *p;
-+    RISCVCPUProfile *profile;
++    int vlen;
++    char suffix;
 +
-+    profile = riscv_find_profile_by_prefix(str, &p);
-+    if (profile == NULL) {
-+        error_setg(errp, "unknown profile in '%s'", str);
-+        return false;
++    if (g_ascii_strncasecmp(ext_name, "zvl", 3) != 0) {
++        return 0;
 +    }
 +
-+    /* Check CPU compatibility */
-+    if (riscv_cpu_is_vendor(OBJECT(cpu))) {
-+        error_setg(errp, "Profile %s is not available for vendor CPUs",
-+                   profile->name);
-+        return false;
-+    }
-+    if (riscv_cpu_is_32bit(cpu)) {
-+        error_setg(errp, "Profile %s is only available for 64-bit CPUs",
-+                   profile->name);
-+        return false;
++    if (sscanf(ext_name + 3, "%d%c", &vlen, &suffix) != 2) {
++        return 0;
 +    }
 +
-+    /* Enable the profile */
-+    profile->user_set = true;
-+    riscv_cpu_set_profile(cpu, profile, true);
++    if (g_ascii_tolower(suffix) != 'b') {
++        return 0;
++    }
 +
-+    /* Parse additional extensions after the profile name */
-+    while (*p == '_') {
-+        p++;  /* Skip underscore */
++    /* Validate VLEN is a power of 2 and within reasonable range */
++    if (vlen < 32 || vlen > 65536 || (vlen & (vlen - 1)) != 0) {
++        return 0;
++    }
 +
-+        if (*p == '\0') {
-+            break;  /* Trailing underscore is ok */
++    return vlen;
++}
++
++/*
++ * Get the implied minimum VLEN (in bits) for an extension.
++ * Returns 0 if the extension doesn't imply a minimum VLEN.
++ *
++ * According to RISC-V specification:
++ * - zve32x, zve32f imply zvl32b (VLEN >= 32)
++ * - zve64x, zve64f, zve64d imply zvl64b (VLEN >= 64)
++ * - v implies zvl128b (VLEN >= 128)
++ */
++static int riscv_ext_implied_vlen(const char *ext_name)
++{
++    if (g_ascii_strcasecmp(ext_name, "v") == 0) {
++        return 128;
++    }
++    if (g_ascii_strncasecmp(ext_name, "zve64", 5) == 0) {
++        return 64;
++    }
++    if (g_ascii_strncasecmp(ext_name, "zve32", 5) == 0) {
++        return 32;
++    }
++    return 0;
++}
++
++/*
++ * Update vlenb if the new VLEN is larger than the current one.
++ */
++static void riscv_update_vlen(RISCVCPU *cpu, int vlen)
++{
++    uint16_t current_vlen = cpu->cfg.vlenb << 3;
++    if (vlen > current_vlen) {
++        cpu->cfg.vlenb = vlen >> 3;
++    }
+ }
+ 
+ /*
+@@ -1700,6 +1767,9 @@ static bool riscv_cpu_parse_isa_string(RISCVCPU *cpu, const char *isa_str,
+ 
+             uint32_t bit = riscv_get_misa_bit_from_name(ext_char);
+             riscv_cpu_write_misa_bit(cpu, bit, true);
++            if (ext_char == 'v') {
++                riscv_update_vlen(cpu, 128);
++            }
+             is_first_ext = false;
+         }
+ 
+@@ -1711,6 +1781,13 @@ static bool riscv_cpu_parse_isa_string(RISCVCPU *cpu, const char *isa_str,
+         /* Process the remaining multi-letter extension */
+         const char *multi_ext = ext_name + single_count;
+ 
++        /* Check for zvl*b extension (vector length) */
++        int zvl_vlen = riscv_parse_zvl_vlen(multi_ext);
++        if (zvl_vlen > 0) {
++            riscv_update_vlen(cpu, zvl_vlen);
++            continue;
 +        }
 +
-+        /* Find the end of this extension name */
-+        const char *ext_start = p;
-+        while (*p && *p != '_') {
-+            p++;
+         /* Look up the extension */
+         const RISCVIsaExtData *edata = riscv_find_ext_data(multi_ext);
+         if (edata == NULL) {
+@@ -1720,6 +1797,29 @@ static bool riscv_cpu_parse_isa_string(RISCVCPU *cpu, const char *isa_str,
+ 
+         /* Enable the extension */
+         isa_ext_update_enabled(cpu, edata->ext_enable_offset, true);
++
++        /* Check for implied minimum VLEN (zve32*, zve64*) */
++        int implied_vlen = riscv_ext_implied_vlen(multi_ext);
++        if (implied_vlen > 0) {
++            riscv_update_vlen(cpu, implied_vlen);
 +        }
++    }
 +
-+        /* Extract extension name */
-+        size_t ext_len = p - ext_start;
-+        g_autofree char *ext_name = g_strndup(ext_start, ext_len);
-+
-+        /* Look up the extension */
-+        const RISCVIsaExtData *edata = riscv_find_ext_data(ext_name);
-+        if (edata == NULL) {
-+            error_setg(errp, "unknown extension '%s' in profile string",
-+                       ext_name);
++    /*
++     * Validate that zvl*b is only specified with a vector extension.
++     * zvl*b requires v or zve* extension to also be specified.
++     */
++    if (cpu->cfg.vlenb > 0) {
++        CPURISCVState *env = &cpu->env;
++        bool has_vector = (env->misa_ext & RVV) ||
++                          cpu->cfg.ext_zve32x || cpu->cfg.ext_zve32f ||
++                          cpu->cfg.ext_zve64x || cpu->cfg.ext_zve64f ||
++                          cpu->cfg.ext_zve64d;
++        if (!has_vector) {
++            error_setg(errp, "zvl*b requires v or zve* extension to also be "
++                       "specified");
 +            return false;
 +        }
-+
-+        /* Enable the extension */
-+        isa_ext_update_enabled(cpu, edata->ext_enable_offset, true);
-+    }
-+
-+    return true;
-+}
-+
- /*
-  * arch= property handler for ISA configuration.
-- * Supports: dump, help, or an ISA string like rv64gc_zba_zbb.
-+ * Supports: dump, help, ISA string (rv64gc_zba_zbb),
-+ * or profile with optional extensions (rva23u64, rva23u64_zbkb_zkne).
-  */
- static void cpu_set_arch(Object *obj, Visitor *v, const char *name,
-                          void *opaque, Error **errp)
-@@ -1743,13 +1833,17 @@ static void cpu_set_arch(Object *obj, Visitor *v, const char *name,
-         cpu->cfg.arch_dump_requested = true;
-     } else if (g_strcmp0(value, "help") == 0) {
-         riscv_cpu_list_supported_extensions();
-+    } else if (riscv_find_profile_by_prefix(value, NULL) != NULL) {
-+        /* Parse as profile with optional extensions */
-+        riscv_cpu_parse_profile_string(cpu, value, errp);
-     } else if (g_ascii_strncasecmp(value, "rv", 2) == 0) {
-         /* Parse as ISA string */
-         riscv_cpu_parse_isa_string(cpu, value, errp);
-     } else {
-         error_setg(errp, "unknown arch option '%s'. "
--                   "Supported options: dump, help, or ISA string (e.g., "
--                   "rv64gc_zba_zbb)", value);
-+                   "Supported options: dump, help, ISA string (e.g., "
-+                   "rv64gc_zba_zbb), or profile (e.g., rva23u64, "
-+                   "rva23u64_zbkb)", value);
      }
- }
  
-@@ -1761,7 +1855,8 @@ static void riscv_cpu_add_arch_property(Object *obj)
-     object_property_set_description(obj, "arch",
+     return true;
+@@ -1799,6 +1899,13 @@ static bool riscv_cpu_parse_profile_string(RISCVCPU *cpu, const char *str,
+         size_t ext_len = p - ext_start;
+         g_autofree char *ext_name = g_strndup(ext_start, ext_len);
+ 
++        /* Check for zvl*b extension */
++        int zvl_vlen = riscv_parse_zvl_vlen(ext_name);
++        if (zvl_vlen > 0) {
++            riscv_update_vlen(cpu, zvl_vlen);
++            continue;
++        }
++
+         /* Look up the extension */
+         const RISCVIsaExtData *edata = riscv_find_ext_data(ext_name);
+         if (edata == NULL) {
+@@ -1809,6 +1916,12 @@ static bool riscv_cpu_parse_profile_string(RISCVCPU *cpu, const char *str,
+ 
+         /* Enable the extension */
+         isa_ext_update_enabled(cpu, edata->ext_enable_offset, true);
++
++        /* Check for implied minimum VLEN */
++        int implied_vlen = riscv_ext_implied_vlen(ext_name);
++        if (implied_vlen > 0) {
++            riscv_update_vlen(cpu, implied_vlen);
++        }
+     }
+ 
+     return true;
+@@ -1856,7 +1969,8 @@ static void riscv_cpu_add_arch_property(Object *obj)
          "ISA configuration (write-only). "
          "Use 'help' to list extensions, 'dump' to show current config, "
--        "or provide an ISA string (e.g., rv64gc_zba_zbb).");
-+        "provide an ISA string (e.g., rv64gc_zba_zbb), "
-+        "or use a profile (e.g., rva23u64).");
+         "provide an ISA string (e.g., rv64gc_zba_zbb), "
+-        "or use a profile (e.g., rva23u64).");
++        "or a profile with optional extensions (e.g., rva23u64, "
++        "rva23u64_zbkb_zkne).");
  }
  
  /*
 diff --git a/tests/functional/riscv64/test_cpu_arch.py b/tests/functional/riscv64/test_cpu_arch.py
-index 204247cdb73..c12e1c7fce4 100644
+index c12e1c7fce4..b1f02db9dd2 100644
 --- a/tests/functional/riscv64/test_cpu_arch.py
 +++ b/tests/functional/riscv64/test_cpu_arch.py
-@@ -266,6 +266,78 @@ def test_arch_isa_string_underscore_separated_single(self):
+@@ -266,6 +266,13 @@ def test_arch_isa_string_underscore_separated_single(self):
          self.assertRegex(res.stdout, r'd\s+enabled')
          self.assertRegex(res.stdout, r'c\s+enabled')
  
-+    def test_arch_profile_rva23u64(self):
-+        """Test arch=rva23u64 enables RVA23 profile extensions"""
-+        res = self.run_qemu('rv64,arch=rva23u64,arch=dump')
++    def test_arch_isa_string_zvl_requires_vector(self):
++        """Test zvl*b requires v or zve* extension"""
++        res = self.run_qemu('rv64,arch=rv64g_zvl128b')
 +
-+        self.assertEqual(res.returncode, 0)
++        self.assertNotEqual(res.returncode, 0)
++        self.assertIn("zvl*b requires v or zve* extension", res.stderr)
 +
-+        # RVA23U64 mandates vector extension
-+        self.assertRegex(res.stdout, r'\bv\s+enabled')
-+
-+        # RVA23U64 mandates these extensions
-+        self.assertRegex(res.stdout, r'zicond\s+enabled')
-+        self.assertRegex(res.stdout, r'zimop\s+enabled')
-+        self.assertRegex(res.stdout, r'zcmop\s+enabled')
-+        self.assertRegex(res.stdout, r'zcb\s+enabled')
-+        self.assertRegex(res.stdout, r'zfa\s+enabled')
-+        self.assertRegex(res.stdout, r'zvbb\s+enabled')
-+
-+    def test_arch_profile_rva22u64(self):
-+        """Test arch=rva22u64 enables RVA22 profile extensions"""
-+        res = self.run_qemu('rv64,arch=rva22u64,arch=dump')
-+
-+        self.assertEqual(res.returncode, 0)
-+
-+        # RVA22U64 mandates these MISA extensions
-+        self.assertRegex(res.stdout, r'\bi\s+enabled')
-+        self.assertRegex(res.stdout, r'm\s+enabled')
-+        self.assertRegex(res.stdout, r'a\s+enabled')
-+        self.assertRegex(res.stdout, r'f\s+enabled')
-+        self.assertRegex(res.stdout, r'd\s+enabled')
-+        self.assertRegex(res.stdout, r'c\s+enabled')
-+
-+        # RVA22U64 mandates zicsr and zifencei
-+        self.assertRegex(res.stdout, r'zicsr\s+enabled')
-+        self.assertRegex(res.stdout, r'zifencei\s+enabled')
-+
-+    def test_arch_profile_case_insensitive(self):
-+        """Test arch=PROFILE is case-insensitive"""
-+        res = self.run_qemu('rv64,arch=RVA23U64,arch=dump')
-+
-+        self.assertEqual(res.returncode, 0)
-+        # Should enable vector like lowercase version
-+        self.assertRegex(res.stdout, r'\bv\s+enabled')
-+
-+    def test_arch_help_shows_profiles(self):
-+        """Test arch=help lists available profiles"""
+     def test_arch_profile_rva23u64(self):
+         """Test arch=rva23u64 enables RVA23 profile extensions"""
+         res = self.run_qemu('rv64,arch=rva23u64,arch=dump')
+@@ -338,6 +345,67 @@ def test_arch_profile_with_unknown_extension(self):
+         self.assertNotEqual(res.returncode, 0)
+         self.assertIn("unknown extension 'unknown'", res.stderr)
+ 
++    def test_arch_help_shows_zvl(self):
++        """Test arch=help lists zvl*b extensions"""
 +        res = self.run_qemu('rv64,arch=help')
 +
 +        self.assertEqual(res.returncode, 0)
-+        self.assertIn('Profiles', res.stdout)
-+        self.assertIn('rva22u64', res.stdout)
-+        self.assertIn('rva22s64', res.stdout)
-+        self.assertIn('rva23u64', res.stdout)
-+        self.assertIn('rva23s64', res.stdout)
++        self.assertIn('Vector Length Extensions', res.stdout)
++        self.assertIn('zvl32b', res.stdout)
++        self.assertIn('zvl128b', res.stdout)
 +
-+    def test_arch_profile_with_extensions(self):
-+        """Test arch=PROFILE_EXT enables profile plus additional extensions"""
-+        res = self.run_qemu('rv64,arch=rva23u64_zbkb_zkne,arch=dump')
++    def test_arch_isa_string_zvl(self):
++        """Test arch=ISA-STRING accepts zvl*b extensions"""
++        res = self.run_qemu('rv64,arch=rv64gcv_zvl256b,arch=dump')
 +
 +        self.assertEqual(res.returncode, 0)
-+        # Profile extensions should be enabled
-+        self.assertRegex(res.stdout, r'\bv\s+enabled')
-+        # Additional extensions should also be enabled
-+        self.assertRegex(res.stdout, r'zbkb\s+enabled')
-+        self.assertRegex(res.stdout, r'zkne\s+enabled')
++        self.assertIn('VLEN=256', res.stdout)
++        self.assertIn('zvl256b', res.stdout)
++        # Check zvl*b is included in Full ISA string
++        self.assertRegex(res.stdout, r'Full ISA string:.*_zvl256b')
 +
-+    def test_arch_profile_with_unknown_extension(self):
-+        """Test arch=PROFILE_EXT rejects unknown extensions"""
-+        res = self.run_qemu('rv64,arch=rva23u64_unknown')
++    def test_arch_dump_shows_vlen(self):
++        """Test arch=dump shows vector length configuration"""
++        res = self.run_qemu('rv64,arch=rv64gcv_zvl512b,arch=dump')
 +
-+        self.assertNotEqual(res.returncode, 0)
-+        self.assertIn("unknown extension 'unknown'", res.stderr)
++        self.assertEqual(res.returncode, 0)
++        self.assertIn('Vector length:', res.stdout)
++        self.assertIn('VLEN=512', res.stdout)
++
++    def test_arch_isa_string_zvl_takes_max(self):
++        """Test multiple zvl*b extensions take maximum value"""
++        # zvl128b followed by zvl512b - should use 512
++        res1 = self.run_qemu('rv64,arch=rv64gcv_zvl128b_zvl512b,arch=dump')
++        self.assertEqual(res1.returncode, 0)
++        self.assertIn('VLEN=512', res1.stdout)
++
++        # zvl512b followed by zvl128b - should still use 512
++        res2 = self.run_qemu('rv64,arch=rv64gcv_zvl512b_zvl128b,arch=dump')
++        self.assertEqual(res2.returncode, 0)
++        self.assertIn('VLEN=512', res2.stdout)
++
++        # Three zvl extensions - should use maximum (1024)
++        res3 = self.run_qemu('rv64,arch=rv64gcv_zvl256b_zvl1024b_zvl512b,arch=dump')
++        self.assertEqual(res3.returncode, 0)
++        self.assertIn('VLEN=1024', res3.stdout)
++
++    def test_arch_isa_string_implied_vlen(self):
++        """Test extensions imply minimum VLEN correctly"""
++        # zve64f implies zvl64b, so zvl32b should be ignored
++        res1 = self.run_qemu('rv64,arch=rv64i_zve64f_zvl32b,arch=dump')
++        self.assertEqual(res1.returncode, 0)
++        self.assertIn('VLEN=64', res1.stdout)
++
++        # v implies zvl128b, so zvl64b should be ignored
++        res2 = self.run_qemu('rv64,arch=rv64gcv_zvl64b,arch=dump')
++        self.assertEqual(res2.returncode, 0)
++        self.assertIn('VLEN=128', res2.stdout)
++
++        # zve64x alone should have VLEN=64
++        res3 = self.run_qemu('rv64,arch=rv64i_zve64x,arch=dump')
++        self.assertEqual(res3.returncode, 0)
++        self.assertIn('VLEN=64', res3.stdout)
 +
  
  if __name__ == '__main__':
