@@ -2,89 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0213CF18A9
-	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 02:08:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D2ABCF189D
+	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 02:07:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vcZ4l-0000Ij-3S; Sun, 04 Jan 2026 20:08:03 -0500
+	id 1vcZ3H-0008AJ-VL; Sun, 04 Jan 2026 20:06:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <antonb@tenstorrent.com>)
- id 1vcZ4j-0000Hr-6G
- for qemu-devel@nongnu.org; Sun, 04 Jan 2026 20:08:01 -0500
-Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1vcZ3D-00089q-1u
+ for qemu-devel@nongnu.org; Sun, 04 Jan 2026 20:06:27 -0500
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <antonb@tenstorrent.com>)
- id 1vcZ4h-00044e-Of
- for qemu-devel@nongnu.org; Sun, 04 Jan 2026 20:08:00 -0500
-Received: by mail-ot1-x32e.google.com with SMTP id
- 46e09a7af769-7c75a5cb752so9663055a34.2
- for <qemu-devel@nongnu.org>; Sun, 04 Jan 2026 17:07:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1vcZ3A-0003j6-EQ
+ for qemu-devel@nongnu.org; Sun, 04 Jan 2026 20:06:26 -0500
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-7b80fed1505so13262636b3a.3
+ for <qemu-devel@nongnu.org>; Sun, 04 Jan 2026 17:06:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=tenstorrent.com; s=google; t=1767575278; x=1768180078; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=R6nimTH4x6Y6T9Mv55zR1WreMunRtz7sMNJXYNDPhSI=;
- b=dIRPtwNdECB4na3jDkcFK/w3EaVyluLuxVcNcu8FZwjtiC9z/jChCu6CyRfXwQdNzk
- LPPIz6sSUKJadihJYu50pubPCkh88OHTnGpFYY+7bdUUf+RQS41yH1M81QUbOghzLX10
- sPtvfwdSCOkqAM5skMTr2Xt9KoXcQWuS4bG/DR6QLsN6BQeCrsC9/TH/2+bSoMAC3WLo
- 7YOZZHrWx+bRyFW93AmEyCMUSXvxxlekBOSgrGtsNwWKd+SrMpvbl/gdZEj2DQyazqoW
- /Cud5EOiudyGYAVkQkkou69ZmhHU6vWkRZbAiSeO2C1bSoKANfsbjYAZqBmbWuMo8xcp
- KbQw==
+ d=linaro.org; s=google; t=1767575182; x=1768179982; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=+4Qiz2g9bIsA6O03nJ4aKq9QGXmBiIt7OgrTE6UyBJY=;
+ b=yTfHeSJ7dRIZyCrFSxwW2xgIR5GzwpHk8+A4SVj5uWSobEOF1UxeFVu2+LwSv2lCWa
+ gWsmNx/8eiluiiKGhUtmjYbU6EcXX0QXOqubWW5I8w61tlEezas9f7tX1oQAQDRQ0i3K
+ 9DZZbuLQtLeiNfDdQT7Nq4BqE1RBXcLVw4uvLZmwixSDMt26fpR9oPEjt5M18xk2zxbR
+ A4MDcypoUYz0Ry4tSDaGdyxm4jGWh5t5XMGn9beHym3bvvo6yAesI+4CopyytJHf1Pg0
+ x9a9GU6EtqOORMN7lWOjmIfby4fwYI+3q7sRYvCSu1LSx2lhQGxYx2RY89jcg57UIjrr
+ KGig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767575278; x=1768180078;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=R6nimTH4x6Y6T9Mv55zR1WreMunRtz7sMNJXYNDPhSI=;
- b=ThtxBzLI4pAUIluWpeTPXVvUusINYEDXUq7LWwntFReug8r1o5xL/3tLBgUZWhbpTq
- P+8YcasiFC65xq7cdfJoyMyUUO5l7WEJP8c+z5vKjYns8sNotgVXjiiloFuFzJTW9Ykp
- Di1+Ck70ueHUDiKkxedi60ptqn/fTW5Zxkb0fIvDePVNePDHNr00Q87kkGYdj3a+R+Fz
- Ike66CWSHzKXC2LCizUM54AsOFJL8xQbFnBv+V3XC7qPXLX+dXZ0qCIkS84cNnvNNUJO
- XuBWTEUkG78qbeBdoozRvql8mLAlfHg+QddYM5Oo/ns4wVBXNyCsVArzdXWRXuLNUxGY
- eC0g==
+ d=1e100.net; s=20230601; t=1767575182; x=1768179982;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+4Qiz2g9bIsA6O03nJ4aKq9QGXmBiIt7OgrTE6UyBJY=;
+ b=u6RzUZC8y7UBkkiakI08ib/cmiagxSarld4auw+LLTpjdHOwc7oR7shMfhRTe0Vuqg
+ cWYZdR7JV/Yg8ghsELkVXks/6dHCRiOK3ZqOeM1YucDpJZRYLH5QGGUaSFxATesj/ukV
+ y8G5JcIWHJv52AWZRqXJy2fZlAKjTOdicm9BSCvanFIHa0PCcGofC33nfzXjL2SuJK0n
+ annL0a7VfqrzlCpHmjT4dO1fa3be4wVbdRKaqHk5uiS6q3hnS/USaIe651eJ0emZ1wFI
+ 5OI0Gvr3a0C4rM1gpKbR1y60zmC0IJ40vcA2s9sKVA18nyROmIPFTOZ0HSFoQv2iih7u
+ sbTQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVZpjK4UwH2sXo+iSBOONMPx+vBqUbcgIlTuTnsOboyywvnWqw8JmNzNO44STxHLd35RgJiLUXBFbrm@nongnu.org
-X-Gm-Message-State: AOJu0Yy4S6x756RnOWjWCLs1snX6IAYksgl0YbiqtiLi72yIZZMpoxGb
- 5ZrphX9IiN+toFNdLCrmKmm1zljBgKiqRKEKmr5/MERocI/yDwXAi1WeotRe+D434+g=
-X-Gm-Gg: AY/fxX4AU9l+pRRaWXecc2qlX29W2UEnpgnuirziTWn14DBx5vZkRylJqGg6trneM4m
- fDCNKkynrj+ZE5WVv6aidf2cdyfn23wPcNj6SrBQgF1Yw0EVlH+7fAjJjWW6AHagIPPZa3Askz3
- 6xhag3/Xd0SuxUVLoyzQoSw5Imwlbjh/Cw7ClnIL7w7CfuKFcaHwyAbqY4koF4kGGPKngVZtLcV
- P9a1nLkOH59kWNSJpGCape+N9O/df1JTj6N2wfcOjCEi7M61s8k4/DO2TjTQUnx/kvmMPrFp6Bz
- 1xjswES39ysVA936uaP+PuE4/I7STn1OOiB9IDCeWbGOo4zRyACV7ZgmIPXQd8Kwju/1WFF6pU5
- VsyQxIlaC1T4Kj7YIEpZoucAX5LJh7SNP1rnEZOEOu/ymLQxbYJDeRXEbzDxQmG/5dgmyqb4Lkf
- YaKOmlIDTuAXPlmQ9PCfljK1uVANBjs62oVbLhwY6HIOAM
-X-Google-Smtp-Source: AGHT+IGPq9eIPe+nM1Ssvlacl73ydAbK126cIQ+k/h2R2A4J/epEQMwx4PXmg+2NqNghJXn8U/uMOQ==
-X-Received: by 2002:a05:6830:71a8:b0:7c7:7adb:e0c5 with SMTP id
- 46e09a7af769-7cc66a289d8mr21802552a34.25.1767575278513; 
- Sun, 04 Jan 2026 17:07:58 -0800 (PST)
-Received: from ausc-rvsw-c-01-anton.tenstorrent.com ([38.104.49.66])
+ AJvYcCVsQvDFCmGeOu+EBi+p+CAIdbHhpawxHilxZc4Q5/tYcSO/YxRmtbWvk5J/krJSYx8ng6IgR217fLYx@nongnu.org
+X-Gm-Message-State: AOJu0YxxUxEUtX9S+NjsCMNiaGHZmQl6NMGzAkEmY7tT7rarvH1tW19D
+ PlvqO5kDKjIhHjU9T3IeCuolgZ+mKQoVTJ6i9iEqYxcQkky8jwubbL2tKlXMCrB9nSc=
+X-Gm-Gg: AY/fxX5Okqc/AnpN1EuAz/pq/8nAOJ6GbHWC0DgcDWzMue53uJY7UPdHo9BAvFcCo55
+ FyTAYnNbdKUWUaHsXF0CYmu7de5lczJW0j4W7E8Y1sa6a7sPiClFo8Vg5/KHN6JhFJBF/C27zwA
+ Je7dpn8jVD+VnoPaiQlmgHqr0dxGMVpEThQM5klZpd4RtgCTVXCmQLMhkD2JriiESvOy31B0qeg
+ 2WLGy+9oCfvTpvlLckntHOwDZRylgMh5AA6DuIn3kdYShvpG77y2EWk3Z25Z1iu9GW+wYs0tWIY
+ BOR/7hZal88k7ohb5nGHT3eyi9wzQOTLC8f4laAOlabFz1UrTFazlH1YZSoT0CdqNYiEZvWVNXV
+ 3S3EVBqm4M9/N2NIaSBjT9SQukND092nCZFkGuLYI3VhRb1pS2+7BUCzXmlQQsMVSw+ef6kkpFb
+ nn6L8P+kEh/MW6AId12pc5g6p2xpf6RQ==
+X-Google-Smtp-Source: AGHT+IHUVXFQSC57SOYhVcjXUszymUDfMorBYe4W7mZu1seLOQH5ZEH5p9o5gLWj7YAgjOGklWAI3A==
+X-Received: by 2002:a05:6a00:6009:b0:7e8:4398:b367 with SMTP id
+ d2e1a72fcca58-7ff66672842mr25310158b3a.58.1767575182265; 
+ Sun, 04 Jan 2026 17:06:22 -0800 (PST)
+Received: from [192.168.10.140] ([180.233.125.201])
  by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-7cdf600885asm15962364a34.21.2026.01.04.17.07.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 04 Jan 2026 17:07:57 -0800 (PST)
-From: Anton Blanchard <antonb@tenstorrent.com>
-To: qemu-riscv@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Anton Blanchard <antonb@tenstorrent.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH 4/4] target/riscv: Add mask_reg_full_update to Ascalon CPU
- model
-Date: Mon,  5 Jan 2026 01:05:57 +0000
-Message-Id: <20260105010557.318635-4-antonb@tenstorrent.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260105010557.318635-1-antonb@tenstorrent.com>
-References: <20260105010557.318635-1-antonb@tenstorrent.com>
+ d2e1a72fcca58-7ff7dfab841sm46297400b3a.35.2026.01.04.17.06.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 04 Jan 2026 17:06:21 -0800 (PST)
+Message-ID: <67536efe-24d6-401d-921d-c2bf4e43baf6@linaro.org>
+Date: Mon, 5 Jan 2026 12:06:12 +1100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/8] target/s390x: Use explicit big-endian LD/ST API
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Eric Farman <farman@linux.ibm.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ David Hildenbrand <david@kernel.org>, Thomas Huth <thuth@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Halil Pasic <pasic@linux.ibm.com>, Laurent Vivier <laurent@vivier.eu>,
+ Matthew Rosato <mjrosato@linux.ibm.com>, Farhan Ali <alifm@linux.ibm.com>,
+ Cornelia Huck <cohuck@redhat.com>, Anton Johansson <anjo@rev.ng>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+References: <20251224162036.90404-1-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20251224162036.90404-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
- envelope-from=antonb@tenstorrent.com; helo=mail-ot1-x32e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,27 +113,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ascalon writes all bits of the destination on mask-logical and
-mask-manipulation instructions.
+On 12/25/25 03:20, Philippe Mathieu-Daudé wrote:
+> S390x is big-endian. Use the explicit 'big'
+> endianness instead of the 'native' one.
+> Forbid further uses of legacy APIs.
+> 
+> tag:https://gitlab.com/philmd/qemu/-/tags/endian_s390x-v1
+> CI:https://gitlab.com/philmd/qemu/-/pipelines/2231223066
+> 
+> Philippe Mathieu-Daudé (8):
+>    hw/s390x: Use explicit big-endian LD/ST API
+>    target/s390x: Use explicit big-endian LD/ST API
+>    target/s390x: Replace gdb_get_regl() -> gdb_get_reg64()
+>    target/s390x: Replace MO_TE -> MO_BE
+>    target/s390x: Inline cpu_ld{uw,l}_code() calls in EX opcode helper
+>    target/s390x: Use big-endian variant of cpu_ld/st_data*()
+>    target/s390x: Inline translator_lduw() and translator_ldl()
+>    configs/targets: Forbid S390x to use legacy native endianness APIs
 
-Signed-off-by: Anton Blanchard <antonb@tenstorrent.com>
----
- target/riscv/cpu.c | 1 +
- 1 file changed, 1 insertion(+)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 671891f2a4..fe4234b665 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -3169,6 +3169,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
-         .cfg.elen = 64,
-         .cfg.rvv_ma_all_1s = true,
-         .cfg.rvv_ta_all_1s = true,
-+        .cfg.rvv_mask_reg_full_update = true,
-         .cfg.misa_w = true,
-         .cfg.pmp = true,
-         .cfg.cbom_blocksize = 64,
--- 
-2.34.1
-
+r~
 
