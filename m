@@ -2,73 +2,119 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C19BCF476E
-	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 16:43:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1FAACF48FC
+	for <lists+qemu-devel@lfdr.de>; Mon, 05 Jan 2026 17:02:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vcmio-0005HB-4b; Mon, 05 Jan 2026 10:42:19 -0500
+	id 1vcmv0-0002ox-Pa; Mon, 05 Jan 2026 10:54:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1vcmiG-0005Cb-8i
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 10:41:48 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
+ id 1vcmux-0002oT-0d; Mon, 05 Jan 2026 10:54:51 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1vcmiA-0005Cj-6R
- for qemu-devel@nongnu.org; Mon, 05 Jan 2026 10:41:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767627695;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qYr+u8zztYV6H5gopQk+DG4WhfgUI/kQzpNSda1JA4w=;
- b=c5aVX29XqbWIRHOkX2/CFLvVyd5zQl9i32+eTYRT6Aco9p0I0XYj5dCcL6W5UUEi9w2+cp
- qh5iD0i2USj12OCqydUxe8WXETpW5ru8ZZ1AEvjLpF58OWu2j1317i/PELnI5/UlfmTblR
- s5a6ybJAi1eoMrvxAv3M9/qHcopXIlk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-693-F2wyhHI4PaiM7aM36ZBv3Q-1; Mon,
- 05 Jan 2026 10:41:32 -0500
-X-MC-Unique: F2wyhHI4PaiM7aM36ZBv3Q-1
-X-Mimecast-MFC-AGG-ID: F2wyhHI4PaiM7aM36ZBv3Q_1767627691
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8A1D3180035A; Mon,  5 Jan 2026 15:41:31 +0000 (UTC)
-Received: from gondolin.redhat.com (unknown [10.44.33.132])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 99BC330001A7; Mon,  5 Jan 2026 15:41:29 +0000 (UTC)
-From: Cornelia Huck <cohuck@redhat.com>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Eric Auger <eric.auger@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Cornelia Huck <cohuck@redhat.com>
-Subject: [PATCH v3 2/2] arm: add DCZID_EL0 to idregs array
-Date: Mon,  5 Jan 2026 16:41:19 +0100
-Message-ID: <20260105154119.59853-3-cohuck@redhat.com>
-In-Reply-To: <20260105154119.59853-1-cohuck@redhat.com>
-References: <20260105154119.59853-1-cohuck@redhat.com>
+ (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
+ id 1vcmuv-0007uY-5l; Mon, 05 Jan 2026 10:54:50 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 605D99FK000759;
+ Mon, 5 Jan 2026 15:54:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=7rNBPT
+ fY3QHeQ6vc8h0Aj4PQlaF50J7Utca2rigsauE=; b=F/yQgFhZBz5gQVlUnldMl0
+ Cvz7kr0CnIUjGw+E+qADAzxfirIg+Xpg4fy53W7myQ1CdMPt13DrFZXU+vAzZfdz
+ KfvUzRPCRGpy2wnJ85vGNRhpSBcf3M1fXWakEExLu8s7bdscStZVZf+ZiQrjqc8o
+ V1H0LWLuI6pzw3u7bqkh5FIYz5GsrEDwLRwgg9CDb6P5MoEReMFx2Va9+pE1dvgJ
+ LwGQG9N5CX8GF4eDEOC+YpNXAKz+GJ0RvDMf/0NjNUPSyr98wn+UxjCSFFRquver
+ w6E1K80QgOjp9gdqKCyoaeNv/Ka62EyJ3HzIeioWV52L8Hmwv1HtdEAYmhCD67mw
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betrtfc8x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 05 Jan 2026 15:54:44 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 605FfZv4010926;
+ Mon, 5 Jan 2026 15:54:43 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betrtfc8t-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 05 Jan 2026 15:54:43 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 605EU0pe005284;
+ Mon, 5 Jan 2026 15:54:43 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bfexjxjtt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 05 Jan 2026 15:54:43 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
+ [10.39.53.231])
+ by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 605FsNun29229694
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 5 Jan 2026 15:54:23 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 43CE258052;
+ Mon,  5 Jan 2026 15:54:41 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 56A2A58045;
+ Mon,  5 Jan 2026 15:54:40 +0000 (GMT)
+Received: from [9.10.80.137] (unknown [9.10.80.137])
+ by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Mon,  5 Jan 2026 15:54:40 +0000 (GMT)
+Message-ID: <ac981147-f670-4dc7-b1b0-fa90f4f51560@linux.ibm.com>
+Date: Mon, 5 Jan 2026 09:54:39 -0600
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=cohuck@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/7] hw/ppc: Snapshot support for several ppc devices
+To: Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Chalapathi V <chalapathi.v@inux.ibm.com>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, npiggin@gmail.com, adityag@linux.ibm.com,
+ milesg@linux.ibm.com, alistair@alistair23.me, kowal@linux.ibm.com,
+ chalapathi.v@linux.ibm.com, angeloj@linux.ibm.com
+References: <20251216151359.418708-1-calebs@linux.ibm.com>
+ <8ed05d78-f09a-4718-9ed6-ea24d3ca5f57@inux.ibm.com>
+ <9f59b26e-ba76-430f-a725-ef36f2fd4ab8@linux.ibm.com>
+Content-Language: en-US
+From: Caleb Schlossin <calebs@linux.ibm.com>
+In-Reply-To: <9f59b26e-ba76-430f-a725-ef36f2fd4ab8@linux.ibm.com>
+X-TM-AS-GCONF: 00
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Authority-Analysis: v=2.4 cv=aaJsXBot c=1 sm=1 tr=0 ts=695bdec4 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RpNjiQI2AAAA:8 a=VnNF1IyMAAAA:8 a=5aVG2hVjmkKWcmxzNIoA:9 a=lqcHg5cX4UMA:10
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: 11EyPi1oAz99gM3-KcSIP_p9JehyXTYz
+X-Proofpoint-ORIG-GUID: udqwVUhfJPJO-l75MBXhoWgfEv-0buxa
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA1MDEzOCBTYWx0ZWRfX5SKIVg7OTKzn
+ C7qTMPwdURB/ksdQ0kE6A2LIiyB8snX51YX9cdnLVuSUFdOgP99/hgzfMPmq3A6gWjS3AAmqked
+ aUQfN8xEg696hM1phPun+tQC4cseH1ZyO8NCA0Y5V5CoonyCR7RDp46x5o76kZbKmJxJE1xlUGo
+ Zr8p02WNtM/49YjtB05vsmw2Jt7GRTmV4o5Eu5BHm39YL0l9j4Z/+iYOQxc8pkOq4iaK5cLG7eF
+ 1KTjQ+VQkktFs7R1yNHoBB0JGx0Qvh5K+158FWWIUQWWoV+W0gthgExRl7RNMFPlGVy1wCRM0Eo
+ kPK1ERTWk0Q7O0VPUIJ7yIvrYgN8fritQv0ZEC06MT9onMZZVylqPuzqb56tdhjKa70v6YRvKDL
+ 3TBfKvIaWnSeP/iE+2c1Rm/KuNZ3eX+iHLgkUumlpBS+1NK6ixVPFX0Bg5m/Nqp3aHFdlOevyle
+ +iYGY2Dl3t2RMDrn2Ag==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-05_01,2026-01-05_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0
+ priorityscore=1501 clxscore=1015 phishscore=0 spamscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601050138
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=calebs@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,98 +130,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Continue moving ID registers to the idregs array, so that we
-eventually can switch to an autogenerated cpu-sysregs.h.inc.
 
-This requires a bit of care, since we still have to handle the EL
-specific part (DCZID_EL0.DZP). The value previously saved in
-cpu->dcz_blocksize is now kept in DCZID_EL.BS (transparent to
-callers using the wrappers.)
 
-KVM currently does not support DCZID_EL0 via ONE_REG, assert that
-we're not trying to do anything with it until it does.
+On 1/5/26 3:21 AM, Harsh Prateek Bora wrote:
+> Hi Caleb,
+>=20
+> Thanks for addressing the review comments.
+> I am seeing a git am failure on top of upstream commit 159107e390609f.
+> Could you please take a look, rebase and resend?
+>=20
+> % git am patches/v3_20251216_calebs_hw_ppc_snapshot_support_for_several_p=
+pc_devices.mbx
+> Applying: hw/ppc: Add VMSTATE information for LPC model
+> Applying: hw/ppc: Add pnv_spi vmstate support
+> error: patch failed: hw/ssi/pnv_spi.c:13
+> error: hw/ssi/pnv_spi.c: patch does not apply
+> Patch failed at 0002 hw/ppc: Add pnv_spi vmstate support
+> hint: Use 'git am --show-current-patch=3Ddiff' to see the failed patch
+> hint: When you have resolved this problem, run "git am --continue".
+> hint: If you prefer to skip this patch, run "git am --skip" instead.
+> hint: To restore the original branch and stop patching, run "git am --abo=
+rt".
+> hint: Disable this message with "git config set advice.mergeConflict fals=
+e"
+>=20
+> Thanks
+> Harsh
 
-Signed-off-by: Cornelia Huck <cohuck@redhat.com>
----
- target/arm/cpu-sysregs.h.inc | 1 +
- target/arm/cpu.h             | 8 ++++----
- target/arm/helper.c          | 4 +++-
- target/arm/tcg/translate.h   | 2 +-
- 4 files changed, 9 insertions(+), 6 deletions(-)
+Thanks for letting me know. Will rebase and fix as part of v4 patch set.
 
-diff --git a/target/arm/cpu-sysregs.h.inc b/target/arm/cpu-sysregs.h.inc
-index 2bb2861c6234..7f3aa8b991aa 100644
---- a/target/arm/cpu-sysregs.h.inc
-+++ b/target/arm/cpu-sysregs.h.inc
-@@ -39,3 +39,4 @@ DEF(ID_MMFR5_EL1, 3, 0, 0, 3, 6)
- DEF(CLIDR_EL1, 3, 1, 0, 0, 1)
- DEF(ID_AA64ZFR0_EL1, 3, 0, 0, 4, 4)
- DEF(CTR_EL0, 3, 3, 0, 0, 1)
-+DEF(DCZID_EL0, 3, 3, 0, 0, 7)
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index c0dae1a891a7..08b7d3fb936a 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -1111,8 +1111,6 @@ struct ArchCPU {
-     bool prop_pauth_qarma5;
-     bool prop_lpa2;
- 
--    /* DCZ blocksize, in log_2(words), ie low 4 bits of DCZID_EL0 */
--    uint8_t dcz_blocksize;
-     /* GM blocksize, in log_2(words), ie low 4 bits of GMID_EL0 */
-     uint8_t gm_blocksize;
- 
-@@ -1180,12 +1178,14 @@ struct ARMCPUClass {
- 
- static inline uint8_t get_dczid_bs(ARMCPU *cpu)
- {
--    return cpu->dcz_blocksize;
-+    return extract64(cpu->isar.idregs[DCZID_EL0_IDX], 0, 4);
- }
- 
- static inline void set_dczid_bs(ARMCPU *cpu, uint8_t bs)
- {
--    cpu->dcz_blocksize = bs;
-+    /* keep dzp unchanged */
-+    cpu->isar.idregs[DCZID_EL0_IDX] =
-+        deposit64(cpu->isar.idregs[DCZID_EL0_IDX], 0, 4, bs);
- }
- 
- /* Callback functions for the generic timer's timers. */
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 61b3b90b63c0..2bcb01e45bbf 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -3320,12 +3320,14 @@ static uint64_t aa64_dczid_read(CPUARMState *env, const ARMCPRegInfo *ri)
-     ARMCPU *cpu = env_archcpu(env);
-     int dzp_bit = 1 << 4;
- 
-+    assert(!kvm_enabled());
-+
-     /* DZP indicates whether DC ZVA access is allowed */
-     if (aa64_zva_access(env, NULL, false) == CP_ACCESS_OK) {
-         dzp_bit = 0;
-     }
- 
--    return cpu->dcz_blocksize | dzp_bit;
-+    return cpu->isar.idregs[DCZID_EL0_IDX] | dzp_bit;
- }
- 
- static CPAccessResult sp_el0_access(CPUARMState *env, const ARMCPRegInfo *ri,
-diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
-index b62104b4ae88..1e30d7c77c37 100644
---- a/target/arm/tcg/translate.h
-+++ b/target/arm/tcg/translate.h
-@@ -193,7 +193,7 @@ typedef struct DisasContext {
-      *  < 0, set by the current instruction.
-      */
-     int8_t btype;
--    /* A copy of cpu->dcz_blocksize. */
-+    /* A copy of DCZID_EL0.BS. */
-     uint8_t dcz_blocksize;
-     /* A copy of cpu->gm_blocksize. */
-     uint8_t gm_blocksize;
--- 
-2.52.0
+Thanks,
+Caleb
+
+>=20
+> On 22/12/25 4:31 pm, Chalapathi V wrote:
+>> For the series: Reviewed-by: Chalapathi V <chalapathi.=E2=80=8Av@=E2=80=
+=8Alinux.=E2=80=8Aibm.=E2=80=8A com> Thank You, Chalapathi On 16/12/25 8:=
+=E2=80=8A43 pm, Caleb Schlossin wrote: Addressing comments from V2 review: =
+Updates in V3: - pnv_psi: Remove PSI_DEBUG section as it was not
+>>=20
+>>
+>> For the series:
+>> Reviewed-by: Chalapathi V <chalapathi.v@linux.ibm.com>
+>>
+>> <mailto:milesg@linux.ibm.com>Thank You,
+>>
+>> Chalapathi
+>>
+>>
+>> On 16/12/25 8:43 pm, Caleb Schlossin wrote:
+>>> Addressing comments from V2 review:
+>>>
+>>> Updates in V3:
+>>> - pnv_psi: Remove PSI_DEBUG section as it was not used
+>>> - pnv_psi: Add missing post_load and vmstate info
+>>>
+>>> Updates in V2:
+>>> - Added new patch set for PnvPsi support as it fits with the rest
+>>> - Added vmstate support for Power8 and Power9 for LPC
+>>> - Fixed pnv_core.c commit message
+>>>
+>>> Tested:
+>>> passed make check
+>>>
+>>> Thanks,
+>>> Caleb
+>>>
+>>> Michael Kowal (2):
+>>> =C2=A0=C2=A0 hw/ppc: Add VMSTATE information for LPC model
+>>> =C2=A0=C2=A0 hw/ppc: Add VMSTATE information to PnvPsi
+>>>
+>>> Caleb Schlossin (2):
+>>> =C2=A0=C2=A0 hw/ppc: Add pnv_spi vmstate support
+>>> =C2=A0=C2=A0 hw/ppc: Add pnv_i2c vmstate support
+>>>
+>>> Angelo Jaramillo (3):
+>>> =C2=A0=C2=A0 hw/ppc: pnv_adu.c added vmstate support
+>>> =C2=A0=C2=A0 hw/ppc: pnv_core.c add vmstate support
+>>> =C2=A0=C2=A0 hw/ppc: pnv_chiptod.c add vmstate support
+>>>
+>>> =C2=A0 hw/ppc/pnv_adu.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 | 12 +++++++++++
+>>> =C2=A0 hw/ppc/pnv_chiptod.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 | 38 +++++++++++++++++++++++++++++++++
+>>> =C2=A0 hw/ppc/pnv_core.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 | 22 +++++++++++++++++++
+>>> =C2=A0 hw/ppc/pnv_i2c.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 | 11 ++++++++++
+>>> =C2=A0 hw/ppc/pnv_lpc.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 | 41 ++++++++++++++++++++++++++++++++++++
+>>> =C2=A0 hw/ppc/pnv_psi.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 | 36 +++++++++++++++++++++++++++++--
+>>> =C2=A0 hw/ssi/pnv_spi.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 | 27 ++++++++++++++++++++++++
+>>> =C2=A0 include/hw/ppc/pnv_chiptod.h |=C2=A0 2 ++
+>>> =C2=A0 8 files changed, 187 insertions(+), 2 deletions(-)
+>>>
+>=20
 
 
