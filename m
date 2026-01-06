@@ -2,100 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 722CCCF6D84
-	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 07:03:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A80DFCF6DA9
+	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 07:14:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vd05m-00064M-7q; Tue, 06 Jan 2026 00:58:54 -0500
+	id 1vd0Jq-0002p8-C6; Tue, 06 Jan 2026 01:13:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1vd05k-0005z9-Bt
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 00:58:52 -0500
-Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1vd05i-0003LJ-Jf
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 00:58:52 -0500
-Received: by mail-pj1-x1033.google.com with SMTP id
- 98e67ed59e1d1-34c708702dfso717815a91.1
- for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 21:58:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1767679129; x=1768283929; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JCpIjpsrCUR2qMpdr14Fk1NscDt+wOkSEYl3ksgD64E=;
- b=WiIAxol84JubEgtY7dhLmY4VemoHWzPL/cBZrnJB9kkPHzXQw2RysQBJAki2vhZDoO
- kIW9dGHs4hMq4abj0kmf0ku9PCMGYnB2O9iGX/eZc0lLU/8Jyfv2kkv/bHRFsuSz716I
- xndiMlQeOSO9oRY2/zuGU+pK2AXkf/wY5I9n42bff+ar2AKMRSxrbJCb9bGdQF4Df5Mu
- /3YGwHR/CzOI8/JJBiNoSlh12E/YFzqgZd8i8YPr6hjdqC2Ib0QhyguKbHBRcGh5tnCj
- J/NUJzEKM941GF63uJnrocykPgMwKGo+r0sgvH9NwpfwY5e7xJhxcwZHnVYSGV4qgnKU
- LW+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767679129; x=1768283929;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:sender:x-gm-gg
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JCpIjpsrCUR2qMpdr14Fk1NscDt+wOkSEYl3ksgD64E=;
- b=JPVkDvjwomgI7B4aMWFL4FoGCxvgCGIMyhqemOEa7SR3l7upM9eNx5Ej3iIaO8Ic0d
- LexnnWHvOWlYicjiMYwf2SE/CV0SjyZ1iqS0y6aSSaNbX8zjJhYAR+zDhRcxud8VOZ2B
- 8I8ibKG+dWWlM82Z6/JziVYUGbAGTTZwDyzOPAt0BdyKZUEc+ZSACLbr7SGaHvnbfzpZ
- jNG9naVFf9PXkln0yS4o4UWi3TVGtUu9vdiJNNofzhqWhI+mvti+6lg2Ua61pTJgXS3t
- 1+Q0egS3Ss6bwwVtV6rnensVjK1a9MN74uCHdvpZcTsFLxarShRB+x1mU+V9MsKfToeh
- uduQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXi4JaB8hEDY3DiC4I3Wqormb4kxmOvgocFavL1Tfrp6PMVA98MXb9ilw0walUuqBCASFHMmGS56PT0@nongnu.org
-X-Gm-Message-State: AOJu0YzS7LbpMCdA6MpVWHPJymnHaBtcJEmoxzPwlzlQLE7iNCt+MJNt
- LXG272Z29qWKO5SC3d5NqsSjjEL868JnXXoMmpmpMQ+yGZA00b2OTs/y
-X-Gm-Gg: AY/fxX4HUmecvjABVuA+1U+AvM8RkeSTszhip51CNOzpZThIf8O32+prrKAuJ4k4Xf8
- /mHcbFcK5M4KrQib9WVBbmw7OSy4NW9Gxmvjrcy3jQYe/G6CNfou5DHkMdkFP81hgVDCFKEuNXX
- CArG2E9sRmx5iMTFE9fQSDjitBCOblbpgnKku3tWSY/Iu/F/8yPud3bGRf/mn20cKU1nivWaP+P
- FUqbi4WLqG1g0bAi/qeTZa3f1lDHR9pYE8SP8XDV93wUyzD14sdr/4MpdE9AZjckMpFlLjNowaD
- 8cIX+QQroqInoeCywpzwwGzp2iprHDh2ES+PLsQlgLOlXW2j3lF0se0Jt+e8/FLv3y2YhepXTKf
- WCSof3NLVnwX7CqUW7Cfs+MdVrSllNk5Q0u712k/NluqVVf5xb1mqFPAzEsYtkGv1BHvcKeDkRz
- DABS5StoVAH7pob4mxugvU
-X-Google-Smtp-Source: AGHT+IEwO0RzMsTuRGwi8RKI5nod+MdjLGAjXq95v+boCVs90QVQA+O88QSSIRJfH+0qr7U77+7wPg==
-X-Received: by 2002:a17:90b:1c07:b0:341:2b78:61b8 with SMTP id
- 98e67ed59e1d1-34f5f301a25mr1538602a91.20.1767679129285; 
- Mon, 05 Jan 2026 21:58:49 -0800 (PST)
-Received: from donnager-debian.. ([45.124.203.19])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-34f60178af5sm460222a91.3.2026.01.05.21.58.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jan 2026 21:58:48 -0800 (PST)
-From: Joel Stanley <joel@jms.id.au>
-To: Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Chris Rauer <crauer@google.com>,
- Vijai Kumar K <vijai@behindbytes.com>,
- Sunil V L <sunilvl@ventanamicro.com>, Ran Wang <wangran@bosc.ac.cn>,
- Michael Ellerman <mpe@oss.tenstorrent.com>,
- Joel Stanley <jms@oss.tenstorrent.com>,
- Nick Piggin <npiggin@oss.tenstorrent.com>,
- Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>, qemu-riscv@nongnu.org
-Subject: [PATCH 16/16] hw/riscv/atlantis: Use halting kernel if there is no
- payload
-Date: Tue,  6 Jan 2026 16:26:56 +1030
-Message-ID: <20260106055658.209029-17-joel@jms.id.au>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260106055658.209029-1-joel@jms.id.au>
-References: <20260106055658.209029-1-joel@jms.id.au>
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1vd0Jn-0002nQ-HO
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 01:13:23 -0500
+Received: from mgamail.intel.com ([192.198.163.14])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1vd0Jk-0007Ed-JZ
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 01:13:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1767680000; x=1799216000;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=i7AMha/Ri/atfwjBWKv1K2mOg5F1eHz84D/xRvFSpAM=;
+ b=S4qSnXg4VJ8vv6fGmCkEuB1/4l9iiwu/YnQxMc01+6NYKweK6rhlYMXp
+ hCPh2uvxhmaL6qW0oo5pbe6AHd7bBCqEbTzxuZdckg60MTZqnlgqPSo6x
+ 01FpAF/Cebo1QjBaTvxe2nXJ+KbpmeRIso1B94YuM8gX2MuE6RD7Nbl7x
+ AkCJDtoWQfl3GnGXDEUNtjIgw9mhgHqZW/Dur/V5wzGu3MGHkySCYN/w6
+ u7cp2k483MXWAUnssV4HKCCfiK3O16jOkqc5X8JG0eHSO4n1klARxQjd6
+ qJvKnLYrLtKSi75v0oY6VJOUHa24om55aDL8KP2uKzFFhPz7ULB0uplna g==;
+X-CSE-ConnectionGUID: t7+RwJeISLG1G7H7Huz+TA==
+X-CSE-MsgGUID: d+eSM2iERnes9ye2Z4NMGw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11662"; a="69087539"
+X-IronPort-AV: E=Sophos;i="6.21,204,1763452800"; d="scan'208";a="69087539"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Jan 2026 22:13:16 -0800
+X-CSE-ConnectionGUID: +LPa/C27SJCy0QtzBkDMUQ==
+X-CSE-MsgGUID: dp2H+9pIS+iA+cE48trdMA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,204,1763452800"; d="scan'208";a="202588674"
+Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Jan 2026 22:13:12 -0800
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: alex@shazbot.org, clg@redhat.com, eric.auger@redhat.com, mst@redhat.com,
+ jasowang@redhat.com, peterx@redhat.com, ddutile@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, skolothumtho@nvidia.com, joao.m.martins@oracle.com,
+ clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH v10 00/19] intel_iommu: Enable first stage translation for
+ passthrough device
+Date: Tue,  6 Jan 2026 01:12:42 -0500
+Message-ID: <20260106061304.314546-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
- envelope-from=joel.stan@gmail.com; helo=mail-pj1-x1033.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.001,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=192.198.163.14;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,42 +84,246 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicholas Piggin <npiggin@gmail.com>
+Hi,
 
-To avoid OpenSBI hanging with no messages if there is no kernel
-provided, add the simple payload in that case.
+Based on Cédric's suggestions[1], The nesting series v8 is split to
+"base nesting series" + "ERRATA_772415_SPR17 quirk series", this is the
+base nesting series.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Joel Stanley <joel@jms.id.au>
----
- hw/riscv/tt_atlantis.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+For passthrough device with intel_iommu.x-flts=on, we don't do shadowing of
+guest page table but pass first stage page table to host side to construct a
+nested HWPT. There was some effort to enable this feature in old days, see
+[2] for details.
 
-diff --git a/hw/riscv/tt_atlantis.c b/hw/riscv/tt_atlantis.c
-index f0ad7d574e03..5d6944b6411f 100644
---- a/hw/riscv/tt_atlantis.c
-+++ b/hw/riscv/tt_atlantis.c
-@@ -746,15 +746,15 @@ static void tt_atlantis_machine_done(Notifier *notifier, void *data)
-                                                      firmware_name,
-                                                      &start_addr, NULL);
- 
-+    kernel_start_addr = riscv_calc_kernel_start_addr(&boot_info,
-+                                                     firmware_end_addr);
-     if (machine->kernel_filename) {
--        kernel_start_addr = riscv_calc_kernel_start_addr(&boot_info,
--                                                         firmware_end_addr);
-         riscv_load_kernel(machine, &boot_info, kernel_start_addr,
-                           true, NULL);
--        kernel_entry = boot_info.image_low_addr;
-     } else {
--        kernel_entry = 0;
-+        riscv_setup_halting_payload(machine, &boot_info, kernel_start_addr);
-     }
-+    kernel_entry = boot_info.image_low_addr;
- 
-     fdt_load_addr = riscv_compute_fdt_addr(s->memmap[TT_ATL_DDR_LO].base,
-                                            s->memmap[TT_ATL_DDR_LO].size,
+The key design is to utilize the dual-stage IOMMU translation (also known as
+IOMMU nested translation) capability in host IOMMU. As the below diagram shows,
+guest I/O page table pointer in GPA (guest physical address) is passed to host
+and be used to perform the first stage address translation. Along with it,
+modifications to present mappings in the guest I/O page table should be followed
+with an IOTLB invalidation.
+
+        .-------------.  .---------------------------.
+        |   vIOMMU    |  | Guest I/O page table      |
+        |             |  '---------------------------'
+        .----------------/
+        | PASID Entry |--- PASID cache flush --+
+        '-------------'                        |
+        |             |                        V
+        |             |           I/O page table pointer in GPA
+        '-------------'
+    Guest
+    ------| Shadow |---------------------------|--------
+          v        v                           v
+    Host
+        .-------------.  .-----------------------------.
+        |   pIOMMU    |  | First stage for GIOVA->GPA  |
+        |             |  '-----------------------------'
+        .----------------/  |
+        | PASID Entry |     V (Nested xlate)
+        '----------------\.--------------------------------------------.
+        |             |   | Second stage for GPA->HPA, unmanaged domain|
+        |             |   '--------------------------------------------'
+        '-------------'
+<Intel VT-d Nested translation>
+
+This series reuse VFIO device's default HWPT as nesting parent instead of
+creating new one. This way avoids duplicate code of a new memory listener,
+all existing feature from VFIO listener can be shared, e.g., ram discard,
+dirty tracking, etc. Two limitations are: 1) not supporting VFIO device
+under a PCI bridge with emulated device, because emulated device wants
+IOMMU AS and VFIO device stick to system AS; 2) not supporting kexec or
+reboot from "intel_iommu=on,sm_on" to "intel_iommu=on,sm_off" on platform
+with ERRATA_772415_SPR17, because VFIO device's default HWPT is created
+with NEST_PARENT flag, kernel inhibit RO mappings when switch to shadow
+mode.
+
+This series is also a prerequisite work for vSVA, i.e. Sharing guest
+application address space with passthrough devices.
+
+There are some interactions between VFIO and vIOMMU
+* vIOMMU registers PCIIOMMUOps [set|unset]_iommu_device to PCI
+  subsystem. VFIO calls them to register/unregister HostIOMMUDevice
+  instance to vIOMMU at vfio device realize stage.
+* vIOMMU registers PCIIOMMUOps get_viommu_flags to PCI subsystem.
+  VFIO calls it to get vIOMMU exposed flags.
+* vIOMMU calls HostIOMMUDeviceIOMMUFD interface [at|de]tach_hwpt
+  to bind/unbind device to IOMMUFD backed domains, either nested
+  domain or not.
+
+See below diagram:
+
+        VFIO Device                                 Intel IOMMU
+    .-----------------.                         .-------------------.
+    |                 |                         |                   |
+    |       .---------|PCIIOMMUOps              |.-------------.    |
+    |       | IOMMUFD |(set/unset_iommu_device) || Host IOMMU  |    |
+    |       | Device  |------------------------>|| Device list |    |
+    |       .---------|(get_viommu_flags)       |.-------------.    |
+    |                 |                         |       |           |
+    |                 |                         |       V           |
+    |       .---------|  HostIOMMUDeviceIOMMUFD |  .-------------.  |
+    |       | IOMMUFD |            (attach_hwpt)|  | Host IOMMU  |  |
+    |       | link    |<------------------------|  |   Device    |  |
+    |       .---------|            (detach_hwpt)|  .-------------.  |
+    |                 |                         |       |           |
+    |                 |                         |       ...         |
+    .-----------------.                         .-------------------.
+
+Below is an example to enable first stage translation for passthrough device:
+
+    -M q35,...
+    -device intel-iommu,x-scalable-mode=on,x-flts=on...
+    -object iommufd,id=iommufd0 -device vfio-pci,iommufd=iommufd0,...
+
+Test done:
+- VFIO devices hotplug/unplug
+- different VFIO devices linked to different iommufds
+- vhost net device ping test
+- migration with QAT passthrough
+
+PATCH01-08: Some preparing work
+PATCH09-10: Compatibility check between vIOMMU and Host IOMMU
+PATCH11-16: Implement first stage translation for passthrough device
+PATCH17:    Add migration support and optimization
+PATCH18:    Enable first stage translation for passthrough device
+PATCH19:    Add doc
+
+Qemu code can be found at [3], it's based on master 159107e.
+
+Fault event injection to guest isn't supported in this series, we presume guest
+kernel always construct correct first stage page table for passthrough device.
+For emulated devices, the emulation code already provided first stage fault
+injection.
+
+TODO:
+- Fault event injection to guest when HW first stage page table faults
+
+[1] https://lore.kernel.org/qemu-devel/bbc8412b-25c3-4c95-9fde-a1c9c29b54ce@redhat.com/
+[2] https://patchwork.kernel.org/project/kvm/cover/20210302203827.437645-1-yi.l.liu@intel.com/
+[3] https://github.com/yiliu1765/qemu/tree/zhenzhong/iommufd_nesting.v10
+
+Thanks
+Zhenzhong
+
+Changelog:
+v10:
+- All headers under include/hw/ have been moved to include/hw/core/, do
+  the same for iommu.h (Cédric)
+
+v9:
+- split v8 to base nesting series + ERRATA_772415_SPR17 series (Cédric)
+- s/fs_hwpt/fs_hwpt_id, s/vtd_bind_guest_pasid/vtd_propagate_guest_pasid (Eric)
+- polish error msg when CONFIG_VTD_ACCEL isn't defined (Eric)
+- refactor hwpt_id assignment in vtd_device_attach_iommufd() (Eric)
+
+v8:
+- add hw/i386/intel_iommu_accel.[hc] to hold accel code (Eric)
+- return bool for all vtd accel related functions (Cédric, Eric)
+- introduce a new PCIIOMMUOps::get_host_iommu_quirks() (Eric, Nicolin)
+- minor polishment to comment and code (Cédric, Eric)
+- drop some R-b as they have changes needing review again
+
+v7:
+- s/host_iommu_extract_vendor_caps/host_iommu_extract_quirks (Nicolin)
+- s/RID_PASID/PASID_0 (Eric)
+- drop rid2pasid check in vtd_do_iommu_translate (Eric)
+- refine DID check in vtd_pasid_cache_sync_locked (Liuyi)
+- refine commit log (Nicolin, Eric, Liuyi)
+- Fix doc build (Cédric)
+- add migration support
+
+v6:
+- delete RPS capability related supporting code (Eric, Yi)
+- use terminology 'first/second stage' to replace 'first/second level" (Eric, Yi)
+- use get_viommu_flags() instead of get_viommu_caps() (Nicolin)
+- drop non-RID_PASID related code and simplify pasid invalidation handling (Eric, Yi)
+- drop the patch that handle pasid replay when context invalidation (Eric)
+- move vendor specific cap check from VFIO core to backend/iommufd.c (Nicolin)
+
+v5:
+- refine commit log of patch2 (Cédric, Nicolin)
+- introduce helper vfio_pci_from_vfio_device() (Cédric)
+- introduce helper vfio_device_viommu_get_nested() (Cédric)
+- pass 'bool bypass_ro' argument to vfio_listener_valid_section() instead of 'VFIOContainerBase *' (Cédric)
+- fix a potential build error reported by Jim Shu
+
+v4:
+- s/VIOMMU_CAP_STAGE1/VIOMMU_CAP_HW_NESTED (Eric, Nicolin, Donald, Shameer)
+- clarify get_viommu_cap() return pure emulated caps and explain reason in commit log (Eric)
+- retrieve the ce only if vtd_as->pasid in vtd_as_to_iommu_pasid_locked (Eric)
+- refine doc comment and commit log in patch10-11 (Eric)
+
+v3:
+- define enum type for VIOMMU_CAP_* (Eric)
+- drop inline flag in the patch which uses the helper (Eric)
+- use extract64 in new introduced MACRO (Eric)
+- polish comments and fix typo error (Eric)
+- split workaround patch for ERRATA_772415_SPR17 to two patches (Eric)
+- optimize bind/unbind error path processing
+
+v2:
+- introduce get_viommu_cap() to get STAGE1 flag to create nesting parent HWPT (Liuyi)
+- reuse VFIO's default HWPT as parent HWPT of nested translation (Nicolin, Liuyi)
+- abandon support of VFIO device under pcie-to-pci bridge to simplify design (Liuyi)
+- bypass RO mapping in VFIO's default HWPT if ERRATA_772415_SPR17 (Liuyi)
+- drop vtd_dev_to_context_entry optimization (Liuyi)
+
+v1:
+- simplify vendor specific checking in vtd_check_hiod (Cédric, Nicolin)
+- rebase to master
+
+
+Yi Liu (3):
+  intel_iommu_accel: Propagate PASID-based iotlb invalidation to host
+  intel_iommu: Replay all pasid bindings when either SRTP or TE bit is
+    changed
+  intel_iommu: Replay pasid bindings after context cache invalidation
+
+Zhenzhong Duan (16):
+  intel_iommu: Rename vtd_ce_get_rid2pasid_entry to
+    vtd_ce_get_pasid_entry
+  intel_iommu: Delete RPS capability related supporting code
+  intel_iommu: Update terminology to match VTD spec
+  hw/pci: Export pci_device_get_iommu_bus_devfn() and return bool
+  hw/pci: Introduce pci_device_get_viommu_flags()
+  intel_iommu: Implement get_viommu_flags() callback
+  intel_iommu: Introduce a new structure VTDHostIOMMUDevice
+  vfio/iommufd: Force creating nesting parent HWPT
+  intel_iommu_accel: Check for compatibility with IOMMUFD backed device
+    when x-flts=on
+  intel_iommu_accel: Fail passthrough device under PCI bridge if
+    x-flts=on
+  intel_iommu_accel: Stick to system MR for IOMMUFD backed host device
+    when x-flts=on
+  intel_iommu: Add some macros and inline functions
+  intel_iommu_accel: Bind/unbind guest page table to host
+  intel_iommu: Add migration support with x-flts=on
+  intel_iommu: Enable host device when x-flts=on in scalable mode
+  docs/devel: Add IOMMUFD nesting documentation
+
+ MAINTAINERS                    |   2 +
+ docs/devel/vfio-iommufd.rst    |  17 ++
+ hw/i386/intel_iommu_accel.h    |  51 ++++
+ hw/i386/intel_iommu_internal.h | 155 +++++++---
+ include/hw/core/iommu.h        |  25 ++
+ include/hw/i386/intel_iommu.h  |   6 +-
+ include/hw/pci/pci.h           |  24 ++
+ include/hw/vfio/vfio-device.h  |   2 +
+ hw/i386/intel_iommu.c          | 528 +++++++++++++++++++--------------
+ hw/i386/intel_iommu_accel.c    | 251 ++++++++++++++++
+ hw/pci/pci.c                   |  23 +-
+ hw/vfio/device.c               |  12 +
+ hw/vfio/iommufd.c              |   9 +
+ tests/qtest/intel-iommu-test.c |   4 +-
+ hw/i386/Kconfig                |   5 +
+ hw/i386/meson.build            |   1 +
+ hw/i386/trace-events           |   4 +
+ 17 files changed, 833 insertions(+), 286 deletions(-)
+ create mode 100644 hw/i386/intel_iommu_accel.h
+ create mode 100644 include/hw/core/iommu.h
+ create mode 100644 hw/i386/intel_iommu_accel.c
+
 -- 
-2.47.3
+2.47.1
 
 
