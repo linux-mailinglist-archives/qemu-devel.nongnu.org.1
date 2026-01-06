@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BA87CF6D69
-	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 07:00:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 722CCCF6D84
+	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 07:03:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vd05f-0005iI-Fp; Tue, 06 Jan 2026 00:58:47 -0500
+	id 1vd05m-00064M-7q; Tue, 06 Jan 2026 00:58:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1vd05e-0005gd-9N
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 00:58:46 -0500
-Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
+ id 1vd05k-0005z9-Bt
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 00:58:52 -0500
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1vd05c-0002yW-M9
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 00:58:46 -0500
-Received: by mail-pj1-x102c.google.com with SMTP id
- 98e67ed59e1d1-34c213f7690so606689a91.2
- for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 21:58:44 -0800 (PST)
+ id 1vd05i-0003LJ-Jf
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 00:58:52 -0500
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-34c708702dfso717815a91.1
+ for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 21:58:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1767679123; x=1768283923; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1767679129; x=1768283929; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
  :message-id:reply-to;
- bh=140Fa9Slt48n47q7OyJgPgIXB0Rzk61cwVmwPgxtuDI=;
- b=JPbIOojCE3R4DrInzltvYiryWwE1hrYXaKOdnGWYjVFAY3JFjLjJS/eJD+yDdTD5mk
- E8Q7qZSNrmwGg/Oyb+ZbAfDe/cV3ElYE7IT03LRz9uTwtXnUXTolVv4ZS/X+coURtjgC
- DkeGzOLiz33z+w3oaFqDlknRBnZbwhpaItaRS0UARRywurbIarWR22GuTnrUKjJVamjp
- qoskTv1B+Nq5ZrFWqGjVFdpu81KuTZ2hBfXjEErAbQkgX8Xae7MVoJNVBnaTEHXpkMR8
- C1PntoLvwQo2ZBPy1mqW38shv06xyCyjdD14jlRrL/4nqhtDAmGm0aVszlsR2QZ23lVD
- 67bQ==
+ bh=JCpIjpsrCUR2qMpdr14Fk1NscDt+wOkSEYl3ksgD64E=;
+ b=WiIAxol84JubEgtY7dhLmY4VemoHWzPL/cBZrnJB9kkPHzXQw2RysQBJAki2vhZDoO
+ kIW9dGHs4hMq4abj0kmf0ku9PCMGYnB2O9iGX/eZc0lLU/8Jyfv2kkv/bHRFsuSz716I
+ xndiMlQeOSO9oRY2/zuGU+pK2AXkf/wY5I9n42bff+ar2AKMRSxrbJCb9bGdQF4Df5Mu
+ /3YGwHR/CzOI8/JJBiNoSlh12E/YFzqgZd8i8YPr6hjdqC2Ib0QhyguKbHBRcGh5tnCj
+ J/NUJzEKM941GF63uJnrocykPgMwKGo+r0sgvH9NwpfwY5e7xJhxcwZHnVYSGV4qgnKU
+ LW+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767679123; x=1768283923;
+ d=1e100.net; s=20230601; t=1767679129; x=1768283929;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:sender:x-gm-gg
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=140Fa9Slt48n47q7OyJgPgIXB0Rzk61cwVmwPgxtuDI=;
- b=bjcBJR3SZ8dgSXDTk03G9w5a7q85lwXBJ0Vn7ZT95/r6OvMtsMUFM979p9oLDUcGu7
- KscwyvAeMGzYqYu3s+kptpFJT/ij7iDn9osOBv6MaynnnlnjsJ4xnz8G0swywi9N6t1R
- mQNhY1fXzSFYb8D4tG5B6icN9BmjqUbQmJEqKQ8xT0+Z3eyopHAm/D39+ww43V7Iim1L
- H/sMf27Mnu9WZPMnkjAd0lcvUf550J8z3MSdcESf8+9JOtxJpeWKw5XTs3MIGZ2Frxl1
- MEJIk4n9038RLVOZiU90p0T0RgVUlPaTXaRYLM45ErJuP/qU65vbI22Wd5ZfngLGGX9y
- WSOA==
+ bh=JCpIjpsrCUR2qMpdr14Fk1NscDt+wOkSEYl3ksgD64E=;
+ b=JPVkDvjwomgI7B4aMWFL4FoGCxvgCGIMyhqemOEa7SR3l7upM9eNx5Ej3iIaO8Ic0d
+ LexnnWHvOWlYicjiMYwf2SE/CV0SjyZ1iqS0y6aSSaNbX8zjJhYAR+zDhRcxud8VOZ2B
+ 8I8ibKG+dWWlM82Z6/JziVYUGbAGTTZwDyzOPAt0BdyKZUEc+ZSACLbr7SGaHvnbfzpZ
+ jNG9naVFf9PXkln0yS4o4UWi3TVGtUu9vdiJNNofzhqWhI+mvti+6lg2Ua61pTJgXS3t
+ 1+Q0egS3Ss6bwwVtV6rnensVjK1a9MN74uCHdvpZcTsFLxarShRB+x1mU+V9MsKfToeh
+ uduQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVvPVXlDopIsdTpGBC4Wxo0xx4/PoWgQlmc51BGSRB+pDzl4y9cw9yNizHAI2GaVfSiVsqEzCeGJ5Uy@nongnu.org
-X-Gm-Message-State: AOJu0YxQCafbebJjUV6dSLV9IdwrjpOVrYS0NDI3FQSb0tS9B0nPAOpA
- ypBbxGT/ekfNq5zqgg9Dg3FaHlm9Vyyo2tE1s8O4WJyxLIBRXMHtNDn3vgdc7Q==
-X-Gm-Gg: AY/fxX76XJ3Vi5LMocUd5SsjbXc/7cxmP5nLNLoIXe0oHEVyfgER7oEp7ye6Wfapq5R
- 7L9qF/KNT4P7mrz3hpkq7aO/6lznHXAVFH7uxc8/woE+301p1qOcMl9IhfQAsBoCWB9/pnNGBWG
- 8OTaPR8QAzXNog5qfpyEUJLH1OFKwkuG2+pd53hdw3vUq6BBMu3De2fAd2taYlmVV2CaSX5I4ua
- FCSPho68pNP0YkERtlpUkZv80wDFNa/jfS+tZMV61PEzF6ZXl5vXeOzqhRVu59/VIRLYNIpv2al
- oBOqhWUknn0LM/t9eN14NU3Skj7tWxbqA6WtwmmZfoudhgyDDIT+VQd6drrJCJvgoJFGqKneJsl
- WFjydzBnxi7EKuc6AaHeVf6+BVgn46d/TZpVI3AxO7bN8ULyxNkCCHLsYQMT5kxfmVoQ1QRDw3/
- 8gEfOqnoLOP5z9Sowl1HuHurH7+/HF2pw=
-X-Google-Smtp-Source: AGHT+IHAb3OyGj16b3dYUc/y+rZBmhqMa0uStTqK/yvSlFYhLVaXIFmTk5aoo6oVuIV1J9h3H5nBtw==
-X-Received: by 2002:a17:90b:3a4f:b0:34a:adf1:677d with SMTP id
- 98e67ed59e1d1-34f5f28d6b2mr1305808a91.9.1767679123150; 
- Mon, 05 Jan 2026 21:58:43 -0800 (PST)
+ AJvYcCXi4JaB8hEDY3DiC4I3Wqormb4kxmOvgocFavL1Tfrp6PMVA98MXb9ilw0walUuqBCASFHMmGS56PT0@nongnu.org
+X-Gm-Message-State: AOJu0YzS7LbpMCdA6MpVWHPJymnHaBtcJEmoxzPwlzlQLE7iNCt+MJNt
+ LXG272Z29qWKO5SC3d5NqsSjjEL868JnXXoMmpmpMQ+yGZA00b2OTs/y
+X-Gm-Gg: AY/fxX4HUmecvjABVuA+1U+AvM8RkeSTszhip51CNOzpZThIf8O32+prrKAuJ4k4Xf8
+ /mHcbFcK5M4KrQib9WVBbmw7OSy4NW9Gxmvjrcy3jQYe/G6CNfou5DHkMdkFP81hgVDCFKEuNXX
+ CArG2E9sRmx5iMTFE9fQSDjitBCOblbpgnKku3tWSY/Iu/F/8yPud3bGRf/mn20cKU1nivWaP+P
+ FUqbi4WLqG1g0bAi/qeTZa3f1lDHR9pYE8SP8XDV93wUyzD14sdr/4MpdE9AZjckMpFlLjNowaD
+ 8cIX+QQroqInoeCywpzwwGzp2iprHDh2ES+PLsQlgLOlXW2j3lF0se0Jt+e8/FLv3y2YhepXTKf
+ WCSof3NLVnwX7CqUW7Cfs+MdVrSllNk5Q0u712k/NluqVVf5xb1mqFPAzEsYtkGv1BHvcKeDkRz
+ DABS5StoVAH7pob4mxugvU
+X-Google-Smtp-Source: AGHT+IEwO0RzMsTuRGwi8RKI5nod+MdjLGAjXq95v+boCVs90QVQA+O88QSSIRJfH+0qr7U77+7wPg==
+X-Received: by 2002:a17:90b:1c07:b0:341:2b78:61b8 with SMTP id
+ 98e67ed59e1d1-34f5f301a25mr1538602a91.20.1767679129285; 
+ Mon, 05 Jan 2026 21:58:49 -0800 (PST)
 Received: from donnager-debian.. ([45.124.203.19])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-34f60178af5sm460222a91.3.2026.01.05.21.58.37
+ 98e67ed59e1d1-34f60178af5sm460222a91.3.2026.01.05.21.58.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jan 2026 21:58:42 -0800 (PST)
+ Mon, 05 Jan 2026 21:58:48 -0800 (PST)
 From: Joel Stanley <joel@jms.id.au>
 To: Alistair Francis <alistair.francis@wdc.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
@@ -77,16 +77,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
  Joel Stanley <jms@oss.tenstorrent.com>,
  Nick Piggin <npiggin@oss.tenstorrent.com>,
  Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>, qemu-riscv@nongnu.org
-Subject: [PATCH 15/16] hw/riscv/boot: Provide a simple halting payload
-Date: Tue,  6 Jan 2026 16:26:55 +1030
-Message-ID: <20260106055658.209029-16-joel@jms.id.au>
+Subject: [PATCH 16/16] hw/riscv/atlantis: Use halting kernel if there is no
+ payload
+Date: Tue,  6 Jan 2026 16:26:56 +1030
+Message-ID: <20260106055658.209029-17-joel@jms.id.au>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260106055658.209029-1-joel@jms.id.au>
 References: <20260106055658.209029-1-joel@jms.id.au>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
- envelope-from=joel.stan@gmail.com; helo=mail-pj1-x102c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=joel.stan@gmail.com; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -112,73 +113,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-OpenSBI hangs before any console output if the domain init code sees the
-next stage is not in an executable region.
-
-If no kernel payload is provided to QEMU, the next stage address is
-NULL, and the riscv virt machine memory map ends up covering the 0
-address with the catch all S-mode RWX region and so OpenSBI prints
-console messages and does not hang until the next stage boot.
-
-The TT Atlantis address map has RAM starting at 0 and it loads OpenSBI
-there, so it is M-mode and not accessible by S-mode, tripping the early
-check and hang.
-
-Add a helper to set up a simple payload that gets OpenSBI messages
-to console.
+To avoid OpenSBI hanging with no messages if there is no kernel
+provided, add the simple payload in that case.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Joel Stanley <joel@jms.id.au>
 ---
- include/hw/riscv/boot.h |  2 ++
- hw/riscv/boot.c         | 21 +++++++++++++++++++++
- 2 files changed, 23 insertions(+)
+ hw/riscv/tt_atlantis.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/hw/riscv/boot.h b/include/hw/riscv/boot.h
-index e025162a77b1..d26302d3e987 100644
---- a/include/hw/riscv/boot.h
-+++ b/include/hw/riscv/boot.h
-@@ -78,6 +78,8 @@ void riscv_setup_rom_reset_vec(MachineState *machine, RISCVHartArrayState *harts
-                                hwaddr rom_base, hwaddr rom_size,
-                                uint64_t kernel_entry,
-                                uint64_t fdt_load_addr);
-+void riscv_setup_halting_payload(MachineState *machine,
-+                                 RISCVBootInfo *info, hwaddr addr);
- void riscv_rom_copy_firmware_info(MachineState *machine,
-                                   RISCVHartArrayState *harts,
-                                   hwaddr rom_base,
-diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
-index 9f940c915620..3913bb1183f4 100644
---- a/hw/riscv/boot.c
-+++ b/hw/riscv/boot.c
-@@ -518,6 +518,27 @@ void riscv_setup_rom_reset_vec(MachineState *machine, RISCVHartArrayState *harts
-                                  kernel_entry);
- }
+diff --git a/hw/riscv/tt_atlantis.c b/hw/riscv/tt_atlantis.c
+index f0ad7d574e03..5d6944b6411f 100644
+--- a/hw/riscv/tt_atlantis.c
++++ b/hw/riscv/tt_atlantis.c
+@@ -746,15 +746,15 @@ static void tt_atlantis_machine_done(Notifier *notifier, void *data)
+                                                      firmware_name,
+                                                      &start_addr, NULL);
  
-+/* Simple payload so OpenSBI does not hang early with no output */
-+void riscv_setup_halting_payload(MachineState *machine,
-+                                 RISCVBootInfo *info, hwaddr addr)
-+{
-+    int i;
-+    uint32_t payload_vec[] = {
-+        0x10500073,                     /* 1: wfi           */
-+        0xffdff06f,                     /* j       1b       */
-+    };
-+    /* copy in the payload vector in little_endian byte order */
-+    for (i = 0; i < ARRAY_SIZE(payload_vec); i++) {
-+        payload_vec[i] = cpu_to_le32(payload_vec[i]);
-+    }
-+    rom_add_blob_fixed_as("mrom.payload", payload_vec, sizeof(payload_vec),
-+                          addr, &address_space_memory);
-+
-+    info->kernel_size = sizeof(payload_vec);
-+    info->image_low_addr = addr;
-+    info->image_high_addr = info->image_low_addr + info->kernel_size;
-+}
-+
- void riscv_setup_direct_kernel(hwaddr kernel_addr, hwaddr fdt_addr)
- {
-     CPUState *cs;
++    kernel_start_addr = riscv_calc_kernel_start_addr(&boot_info,
++                                                     firmware_end_addr);
+     if (machine->kernel_filename) {
+-        kernel_start_addr = riscv_calc_kernel_start_addr(&boot_info,
+-                                                         firmware_end_addr);
+         riscv_load_kernel(machine, &boot_info, kernel_start_addr,
+                           true, NULL);
+-        kernel_entry = boot_info.image_low_addr;
+     } else {
+-        kernel_entry = 0;
++        riscv_setup_halting_payload(machine, &boot_info, kernel_start_addr);
+     }
++    kernel_entry = boot_info.image_low_addr;
+ 
+     fdt_load_addr = riscv_compute_fdt_addr(s->memmap[TT_ATL_DDR_LO].base,
+                                            s->memmap[TT_ATL_DDR_LO].size,
 -- 
 2.47.3
 
