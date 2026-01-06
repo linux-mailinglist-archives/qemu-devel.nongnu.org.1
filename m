@@ -2,73 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C21A8CF6DCF
-	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 07:16:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11880CF6E21
+	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 07:22:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vd0LY-0005jq-MW; Tue, 06 Jan 2026 01:15:12 -0500
+	id 1vd0S7-00051G-T9; Tue, 06 Jan 2026 01:22:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vd0LB-0004fx-BJ
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 01:14:51 -0500
-Received: from mgamail.intel.com ([198.175.65.18])
+ (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
+ id 1vd0Rj-0004yI-Eq
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 01:21:39 -0500
+Received: from canpmsgout08.his.huawei.com ([113.46.200.223])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vd0L9-0007OC-RM
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 01:14:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1767680088; x=1799216088;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Bgi2daNKrnU1uskTe90+7gs2wScsxhhyHbewx3ITebg=;
- b=O5ukluYklNyXFfSf2oc5PZaS8CbdsExVPz25HqO/eO3GAEGlY4Xbw8r9
- xFntdYGIy5BfJZB0xlotO5+EmfTH57cf5fcP9B3UL60GqjE/3qtg4tr7f
- VgzY3nf5sP1mCzUDbv5Y2OX2V7Q48y6fVT5HTPVdWbhu8jO93FRc8ugoq
- WRwOL6817Xww4Chfz3aAAKnfcF3Ln7qpV5e8LZx9M1OsdMaJAOAMMAONn
- 558yFoUj1x8eeFo5LYIN7bpYrMOmSX5V5V61Bk3megRtx8i/kojDIS1AH
- 61RjmOrmkUFGI9buf1yG3y6wQmir2XPjBAeeS8+DElL4+PF0ro3Hw8uC9 w==;
-X-CSE-ConnectionGUID: DvSuCgjTTEyRsd2Cv82xgA==
-X-CSE-MsgGUID: 4MU3FU+EQB2HofvBCvtWkg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11662"; a="69094115"
-X-IronPort-AV: E=Sophos;i="6.21,204,1763452800"; d="scan'208";a="69094115"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jan 2026 22:14:47 -0800
-X-CSE-ConnectionGUID: SfHT7wt5SyS48Mn6Z3X05A==
-X-CSE-MsgGUID: jKxWHSzBTjq63iyzKmjZSg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,204,1763452800"; d="scan'208";a="202589115"
-Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jan 2026 22:14:37 -0800
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: alex@shazbot.org, clg@redhat.com, eric.auger@redhat.com, mst@redhat.com,
- jasowang@redhat.com, peterx@redhat.com, ddutile@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, skolothumtho@nvidia.com, joao.m.martins@oracle.com,
- clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v10 19/19] docs/devel: Add IOMMUFD nesting documentation
-Date: Tue,  6 Jan 2026 01:13:01 -0500
-Message-ID: <20260106061304.314546-20-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260106061304.314546-1-zhenzhong.duan@intel.com>
-References: <20260106061304.314546-1-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
+ id 1vd0Rg-0001GK-BU
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 01:21:35 -0500
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+ c=relaxed/relaxed; q=dns/txt; h=From;
+ bh=lDaSqBbrDfZw7jwb/pdxH2mcdpV5iUDeqTeAmdYbOTI=;
+ b=mWn5YynYuZgn41C8c5b6BEdGgqdHbhjE61TpJpglBpI1lHEWxK6+fls1DO4fRebB9hhJTKamd
+ dH38Qx94LLd2c0XU4c53olz4FsKt9fYqCJ1WsewKIJZjCFKy+3IZZWBGK/mGR1ryivIuV+FzxDU
+ +5RY0Ii+m26w1MajpfoZtt8=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+ by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4dlgvZ6sMNzmV6Y;
+ Tue,  6 Jan 2026 14:18:02 +0800 (CST)
+Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
+ by mail.maildlp.com (Postfix) with ESMTPS id 52E8540591;
+ Tue,  6 Jan 2026 14:21:18 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by dggpemf500011.china.huawei.com
+ (7.185.36.131) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 6 Jan
+ 2026 14:21:17 +0800
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+To: <mst@redhat.com>, <pbonzini@redhat.com>, <qemu-devel@nongnu.org>
+CC: <ruanjinjie@huawei.com>
+Subject: [PATCH] hw/rtc/mc146818rtc: Fix get_guest_rtc_ns() overflow bug
+Date: Tue, 6 Jan 2026 14:21:45 +0800
+Message-ID: <20260106062145.151760-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.18;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Originating-IP: [10.90.53.73]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ dggpemf500011.china.huawei.com (7.185.36.131)
+Received-SPF: pass client-ip=113.46.200.223;
+ envelope-from=ruanjinjie@huawei.com; helo=canpmsgout08.his.huawei.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,42 +71,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add documentation about using IOMMUFD backed VFIO device with intel_iommu with
-x-flts=on.
+In get_guest_rtc_ns(), "s->base_rtc" is uint64_t, which multiplied by
+"NANOSECONDS_PER_SECOND" may overflow the uint64_t type.
 
-Suggested-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Fix it by avoiding adding s->base_rtc in get_guest_rtc_ns_offset(),
+because get_guest_rtc_ns() is used either take the remainder of
+NANOSECONDS_PER_SECOND or take the quotient of NANOSECONDS_PER_SECOND.
+
+Fixes: 56038ef6234e ("RTC: Update the RTC clock only when reading it")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 ---
- docs/devel/vfio-iommufd.rst | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ hw/rtc/mc146818rtc.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/docs/devel/vfio-iommufd.rst b/docs/devel/vfio-iommufd.rst
-index 3d1c11f175..cbf59924ba 100644
---- a/docs/devel/vfio-iommufd.rst
-+++ b/docs/devel/vfio-iommufd.rst
-@@ -164,3 +164,20 @@ RAM discarding for mdev.
+diff --git a/hw/rtc/mc146818rtc.c b/hw/rtc/mc146818rtc.c
+index 8631386b9f..78bdfab8bd 100644
+--- a/hw/rtc/mc146818rtc.c
++++ b/hw/rtc/mc146818rtc.c
+@@ -79,10 +79,7 @@ static inline bool rtc_running(MC146818RtcState *s)
  
- ``vfio-ap`` and ``vfio-ccw`` devices don't have same issue as their backend
- devices are always mdev and RAM discarding is force enabled.
-+
-+Usage with intel_iommu featuring x-flts=on
-+------------------------------------------
-+
-+Only IOMMUFD backed VFIO device is supported when intel_iommu is configured
-+with x-flts=on, for legacy container backed VFIO device, below error shows:
-+
-+.. code-block:: none
-+
-+    qemu-system-x86_64: -device vfio-pci,host=0000:02:00.0: vfio 0000:02:00.0: Failed to set vIOMMU: Need IOMMUFD backend when x-flts=on
-+
-+VFIO device under PCI bridge is unsupported, use PCIE bridge if necessary,
-+otherwise below error shows:
-+
-+.. code-block:: none
-+
-+    qemu-system-x86_64: -device vfio-pci,host=0000:02:00.0,bus=bridge1,iommufd=iommufd0: vfio 0000:02:00.0: Failed to set vIOMMU: Host device downstream to a PCI bridge is unsupported when x-flts=on
+ static uint64_t get_guest_rtc_ns(MC146818RtcState *s)
+ {
+-    uint64_t guest_clock = qemu_clock_get_ns(rtc_clock);
+-
+-    return s->base_rtc * NANOSECONDS_PER_SECOND +
+-        guest_clock - s->last_update + s->offset;
++    return qemu_clock_get_ns(rtc_clock) - s->last_update + s->offset;
+ }
+ 
+ static void rtc_coalesced_timer_update(MC146818RtcState *s)
+@@ -623,10 +620,8 @@ static void rtc_update_time(MC146818RtcState *s)
+ {
+     struct tm ret;
+     time_t guest_sec;
+-    int64_t guest_nsec;
+ 
+-    guest_nsec = get_guest_rtc_ns(s);
+-    guest_sec = guest_nsec / NANOSECONDS_PER_SECOND;
++    guest_sec = s->base_rtc + get_guest_rtc_ns(s) / NANOSECONDS_PER_SECOND;
+     gmtime_r(&guest_sec, &ret);
+ 
+     /* Is SET flag of Register B disabled? */
+@@ -637,7 +632,7 @@ static void rtc_update_time(MC146818RtcState *s)
+ 
+ static int update_in_progress(MC146818RtcState *s)
+ {
+-    int64_t guest_nsec;
++    uint64_t guest_nsec;
+ 
+     if (!rtc_running(s)) {
+         return 0;
 -- 
-2.47.1
+2.34.1
 
 
