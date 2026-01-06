@@ -2,97 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14602CF8C57
-	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 15:27:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 943CCCF8979
+	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 14:49:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vd812-0000XT-6v; Tue, 06 Jan 2026 09:26:32 -0500
+	id 1vd7PW-0001mE-Ni; Tue, 06 Jan 2026 08:47:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <martin.kroening@eonerc.rwth-aachen.de>)
- id 1vd7LM-0001De-NX
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 08:43:28 -0500
-Received: from mail-out-4.itc.rwth-aachen.de ([2a00:8a60:1:e501::5:49])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <martin.kroening@eonerc.rwth-aachen.de>)
- id 1vd7LK-0006Qa-Re
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 08:43:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=rwth-aachen.de; i=@rwth-aachen.de; q=dns/txt;
- s=20240516-RWTH; t=1767707007; x=1799243007;
- h=from:date:subject:mime-version:content-transfer-encoding:
- message-id:references:in-reply-to:to:cc;
- bh=Gyc605Oee09BkDbNn+RqelOfUjVXDdOvnXFHhbqMjiM=;
- b=MRfLvhfv67jvTYZFlDd1SgI7q8jB12n3Phns1NBlLXwxyKX8rqZt4Gk6
- GKEKq2kimfCpu+HbvkGkHml8FlWFLjxLlfQppm087RkgL2N6OE6E2Hy1H
- XUUm8d8JdD3pTWuULcRBPGRf9NsZdfKQ6ep1DunCnh/wsukqu9tHVfeG8
- B2qpqHspk2HlVKt6N4xMOJWFA2p71f5DwFkMR3conigBvCPkoEgx+Tg6n
- /oKZenbWR94F6axp/M/hZjLG64aI5KMWoIakn4U5wyDC91Fd+7XFL3FuB
- PVtl8F/nI5QsOMo7qwvmFD9PB/bCctSHEH+b+QvDaMo5x9qXuxyYNcPR5 g==;
-X-CSE-ConnectionGUID: ztqdPzYHQ0aDwZOvvZqE0Q==
-X-CSE-MsgGUID: 2wsSQh8+S5+Mfm6nh8vYfw==
-X-IPAS-Result: =?us-ascii?q?A2CiAwD6D11p/5oagoZagQmEJ3GBagiET6wMhgQPAQEBA?=
- =?us-ascii?q?QEBAQEBCAFKBwQBAYITgi5GAoxsKDgTAQIEAQEBAQMCAwEBAQEBAQEBAQEBC?=
- =?us-ascii?q?wEBBgEBAQEBAQYFgSGGCUYNhlsGIw8BRhAlAiYCAkYQBg4FgwIBgnMUBrAzg?=
- =?us-ascii?q?TKBAYR82gSBHwEFBgkBCgGBCi6IUwGBb4QAhHiCT4FKgj12gmECAoIrgw6Ca?=
- =?us-ascii?q?QSCInoUlRAJP4ECeCwBVRMNCgsHBWGBBQM1EioVbjIdgSM+Fz5jIQkFgmwGi?=
- =?us-ascii?q?QAPiVqBFQMLGA1IESw3FBtDAW4HkAqCd3sTLCKZNq9WB4I4gWeMHpVUATKXY?=
- =?us-ascii?q?JMLLphYigqDf5ZQhD0CBAIEBQIYgX+BaQ4HcYM2UhcCD5Ihwxd3AjoCBwEKA?=
- =?us-ascii?q?QEDCYI5kS4BAQ?=
-IronPort-Data: A9a23:/x4/iKIFQhzM2rWtFE+RopQlxSXFcZb7ZxGr2PjKsXjdYENS1jcAz
- WIfDGDXOfqCamOmL4gib4jl8B4CsMPXmIdgHAsd+CA2RRqmiyZk6fexcx2sZXPCdqUvaGo9s
- q3yv/GZdJhcokf0/0nrav666yEgiclkf5KkYMbcICd9WAR4fykojBNnioYRj5Vh6TSDK1rlV
- eja/YuFYTdJ5xYuajhKs/vb9ks21BjPkGpwUmIWNKgjUGD2yiF94KI3fcmZM3b+S49IKe+2L
- 86r5K255G7Q4yA2AdqjlLvhGmVSKlIFFVHT4pb+c/HKbilq/kTe4I5iXBYvQRs/ZwGyojxE4
- I4lWaqYFF11ZP2cwIzxZDEDe812FfUuFLYquhFTu+TLp6HNWyOEL/mDkCjaMKVAktubD12i+
- tQKNCkBVgKyp9vuyZ6keM5ymPY6AZHSadZ3VnFIlVk1DN48XozDTrWP/oUd1XEqmdxOWP/SI
- cYUAdZtRE2bP1sWYQ9RUsx4xbr07pX8W2QwRFa9oKMt/2nVig9r17XrMdzaUtGNQ8hPlQCCu
- X7Gum3wCREXMpqTxFJp91r12LWfwHmqBer+EpXi6eVRuV3DhVdOSzgYUAW9oamnu0ChDoc3x
- 0s8v3BGQbIJ3FWmS8S4UxCmrXqsuBkaVNxNVeog52mlw67Z80CTC24CQzNpbN0gvdUxAzsw2
- Te0c8jBHyNzsLCFDGnHs77StyyuOW0cISkOaEfoUDc43jUqm6lr5jqnczqpOPfdYgHdcd0o/
- w23kQ==
-IronPort-HdrOrdr: A9a23:4Bx0sag7Fa0wqCgBANXIgIWWMnBQXiwji2hC6mlwRA09TyXBrb
- HLoB1p726StN9xYgBcpTnuAsm9qB/nmKKdpLNhWItKPzOWxFdATrsSjrcKqgeIc0aVygce79
- YDT0EUMrLN5C1B7PoSlzPXLz9P+rW6GeuT9IHjJj9WPHhXg4oJ1XYANi+LVkltAAVWD5swE5
- SRotBHryGtdHAebsGxAGhARO7eut3NmprpbRkaQwc97gODlyml5dfBYmKlNzklIkhy/Ys=
-X-Talos-CUID: 9a23:nXo/8G/i+o8lxVts7b+Vv1wIA8wdYEz99S/ZD1CKLnh3eqS4EWbFrQ==
-X-Talos-MUID: 9a23:nmhCJgacwASLu+BT7SD3vwhiZIRTvueLBkVTl5VWpfiKKnkl
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="6.21,204,1763420400"; d="scan'208";a="16285295"
-Received: from rwthex-s2-a.rwth-ad.de ([134.130.26.154])
- by mail-in-4.itc.rwth-aachen.de with ESMTP; 06 Jan 2026 14:43:18 +0100
-Received: from mkroening-ud22.fritz.box (2a0a:a54a:c75:0:1df6:38e8:59e6:777c)
- by rwthex-s2-a.rwth-ad.de (2a00:8a60:1:e500::26:154) with Microsoft
- SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 6 Jan 2026 14:43:17 +0100
-Date: Tue, 6 Jan 2026 14:43:06 +0100
-Subject: [PATCH 2/2] semihosting/uaccess: Use the cpu_tswap() functions
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vd7PO-0001lf-OG
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 08:47:39 -0500
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vd7PM-0008LI-TN
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 08:47:38 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id CE6305BCD5;
+ Tue,  6 Jan 2026 13:47:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1767707253; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=xVNNgqQQiJPv7wRJbFsl8DmdpVTMBAjU3y3/RMyolX8=;
+ b=T677Igdw8CuNc1z3/OVhLtpyL8lBjkMP8vO1DtDHBSFkN7VdvhiacGzlnqbYNxRT6rEu1X
+ jPcC64FiZZ0s75ds7eURxcBfqY3schoI1If2mdyDGojJh57a9Y7I1BATVa3kW+INOQCmBZ
+ qva+BJDsaWS0FluMkOGKbw0sMyRC9/g=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1767707253;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=xVNNgqQQiJPv7wRJbFsl8DmdpVTMBAjU3y3/RMyolX8=;
+ b=4s645y+6prt+eqc129wRmB5DiOqjMZ3mgfjuVhhT0ySb4rmemAdTYr0qrE91w6VS2HhRS8
+ 7q39dkTnjdTxEPAQ==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=T677Igdw;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4s645y+6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1767707253; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=xVNNgqQQiJPv7wRJbFsl8DmdpVTMBAjU3y3/RMyolX8=;
+ b=T677Igdw8CuNc1z3/OVhLtpyL8lBjkMP8vO1DtDHBSFkN7VdvhiacGzlnqbYNxRT6rEu1X
+ jPcC64FiZZ0s75ds7eURxcBfqY3schoI1If2mdyDGojJh57a9Y7I1BATVa3kW+INOQCmBZ
+ qva+BJDsaWS0FluMkOGKbw0sMyRC9/g=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1767707253;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=xVNNgqQQiJPv7wRJbFsl8DmdpVTMBAjU3y3/RMyolX8=;
+ b=4s645y+6prt+eqc129wRmB5DiOqjMZ3mgfjuVhhT0ySb4rmemAdTYr0qrE91w6VS2HhRS8
+ 7q39dkTnjdTxEPAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4DA143EA63;
+ Tue,  6 Jan 2026 13:47:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id Vmf1A3USXWm4TgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 06 Jan 2026 13:47:33 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Prasad Pandit <ppandit@redhat.com>, Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Prasad Pandit <pjp@fedoraproject.org>
+Subject: Re: [PATCH] migration: introduce MIGRATION_STATUS_FAILING
+In-Reply-To: <CAE8KmOzcOdYhnxpDr8BMV8zjixpEh9r+COe=xyLfXCVWKD0CRw@mail.gmail.com>
+References: <20251222114822.327623-1-ppandit@redhat.com>
+ <87h5tilhcq.fsf@suse.de> <aUq1oA73W9rAdCgG@x1.local>
+ <CAE8KmOzcOdYhnxpDr8BMV8zjixpEh9r+COe=xyLfXCVWKD0CRw@mail.gmail.com>
+Date: Tue, 06 Jan 2026 10:47:30 -0300
+Message-ID: <87zf6q26q5.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-ID: <20260106-semihosting-cpu-tswap-v1-2-646576c25f56@eonerc.rwth-aachen.de>
-References: <20260106-semihosting-cpu-tswap-v1-0-646576c25f56@eonerc.rwth-aachen.de>
-In-Reply-To: <20260106-semihosting-cpu-tswap-v1-0-646576c25f56@eonerc.rwth-aachen.de>
-To: <qemu-devel@nongnu.org>
-CC: =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?utf-8?q?Martin_Kr=C3=B6ning?= <martin.kroening@eonerc.rwth-aachen.de>
-X-Mailer: b4 0.14.3
-X-Originating-IP: [2a0a:a54a:c75:0:1df6:38e8:59e6:777c]
-X-ClientProxiedBy: RWTHEX-W2-A.rwth-ad.de (2a00:8a60:1:e500::26:158) To
- rwthex-s2-a.rwth-ad.de (2a00:8a60:1:e500::26:154)
-Received-SPF: pass client-ip=2a00:8a60:1:e501::5:49;
- envelope-from=martin.kroening@eonerc.rwth-aachen.de;
- helo=mail-out-4.itc.rwth-aachen.de
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; FUZZY_RATELIMITED(0.00)[rspamd.com];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ MIME_TRACE(0.00)[0:+]; MISSING_XM_UA(0.00)[];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ TO_DN_SOME(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ RCPT_COUNT_THREE(0.00)[4]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: CE6305BCD5
+X-Spam-Score: -4.51
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 06 Jan 2026 09:26:27 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,71 +121,147 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  =?utf-8?q?Martin_Kr=C3=B6ning?= <martin.kroening@eonerc.rwth-aachen.de>
-From:  =?utf-8?q?Martin_Kr=C3=B6ning?= via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The semihosting ABI [1] states:
-> Multi-byte values in memory must be formatted as pure little-endian or pure
-> big-endian to match the endianness mapping configuration of the processor.
+Prasad Pandit <ppandit@redhat.com> writes:
 
-This commits ensures that semihosting data is properly byte-swapped if
-the guest's CPU is currently in a different runtime-configurable
-endianness than the host's CPU.
+> Hi,
+>
+> On Tue, 23 Dec 2025 at 21:00, Peter Xu <peterx@redhat.com> wrote:
+>> One thing good about exposing such status via QAPI is, it can help us
+>> diagnose issues by seeing CANCELLING / FAILING even looking at
+>> query-migrate results (as normally when bug happens we can't see the
+>> internal status..), so that we know either it's explicitly cancelled, or
+>> something went wrong.
+>>
+>> If it's a completely hidden / internal status, we may see ACTIVE even if
+>> something wrong happened..
+>
+> * Both process state and reason(s) for the state change needs to be
+> visible to the user. But states like cancelling/failing are redundant,
+> users would derive the same conclusion from CANCELLED and CANCELLING
+> OR FAILED AND FAILING. Besides, migration_cleanup() does exactly the
+> same steps irrespective of whether migration is failing or cancelling
+> or failed or cancelled.
+>
+>> My current hope is any mgmt should normally by default ignore new migration
+>> states..  If that's always achieved, it looks to me adding FAILING directly
+>> into migration status would still have some benefits on debugging.
+>
+> * libvirtd(8) complains about unknown states multiple times:
+>       libvirtd[2194267]: unknown status 'failing' in migration event
+>       libvirtd[2194267]: unknown status 'failing' in migration event
+>       libvirtd[2194267]: unknown status 'failing' in migration event
+>
+>
+>> > > @@ -2907,7 +2914,7 @@ fail_closefb:
+>> > >      qemu_fclose(fb);
+>> > >  fail:
+>> > >      if (ms->state != MIGRATION_STATUS_CANCELLING) {
+>> > > -        migrate_set_state(&ms->state, ms->state, MIGRATION_STATUS_FAILED);
+>> > > +        migrate_set_state(&ms->state, ms->state, MIGRATION_STATUS_FAILING);
+>> > >      }
+>> >
+>> > This is a good example where having MigrationStatus makes the code more
+>> > complicated. This could be exiting=true, running=false, etc. It
+>> > shouldn't matter why this routine failed. If we reach
+>> > migration_cleanup() and, at the very end, state is CANCELLING, then we
+>> > know the cancel command has caused this and set the state to
+>> > CANCELLED. If the state was something else, then it's unintended and we
+>> > set FAILED.
+>>
+>> If it'll be an internal status, we'll still need to identify if someone
+>> already have cancelled it, right?
+>>
+>> Assuming we introduce stop_reason flag, making it:
+>>
+>> enum {
+>>     MIG_STOP_REASON_CANCEL,
+>>     MIG_STOP_REASON_FAIL,
+>> } MigrationStopReason;
+>>
+>> Then we can switch to CANCELLED / FAILED when cleanup from those reasons.
+>>
+>> Then here, logically we also need logic like:
+>>
+>>     if (stop_reason != MIG_STOP_REASON_CANCEL) {
+>>         stop_reason = MIG_STOP_REASON_FAIL;
+>>     }
+>>
+>> Because we want to make sure when the user already triggered cancel, it
+>> won't show FAILED but only show CANCELLED at last?
+>
+> * I think the way we are setting/changing these states in as many
+> locations is only adding to the complications. Do we have to
+> explicitly set these states like this? What if migration_cleanup()
+> always sets the state to 'STOP'. Similarly other places set the state
+> to a predefined state. OR
+> ===
+>     struct {
+>         current_state;
+>         old_state;
+>         event/trigger;
+>         reason[];
+>     } MigrationState s;
+>
+>     migration_change_state(s) {
+>           s->old_state = s->current_state;
+>           if (s->current_state == START && s->trigger ==
+> 'connections-established') {
+>               s->current_state = ACTIVE;
+>               s->reason = "connections-established, migration starting"
+>           } else if (s->current_state == ACTIVE && s->trigger == 'completed') {
+>               s->current_state = STOP
+>               s->reason = "migration completed"
+>           } else if (s->current_state == ACTIVE  && s->trigger == 'pause') {
+>               s->current_state = PAUSE
+>               s->reason = "pause, migration paused"
+>           } else if (s->current_state == ACTIVE && s->trigger ==
+> 'error-occurred') {
+>               s->current_state = STOP
+>               s->reason = "Error occurred, migration failed"
+>           } else if (s->current_state == ACTIVE && s->trigger ==
+> 'user-cancel') {
+>               s->current_state = STOP
+>               s->reason = "user-cancel, migration cancelled"
+>          } else {
+>               s->current_state = s->current_state;
+>               warn_msg("unknown combination, maybe define a new rule?");
+>          }
+>     }
+> ===
+> * We define explicit rules for the state change and accordingly we
+> only call migration_change_state() at any point and it'll change to an
+> appropriate next state, recording the due reason for the change.
+>
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3258
-Buglink: https://github.com/taiki-e/semihosting/issues/18
+If we had a linear state transition table, i.e. a DFA without any
+branching, that would be ideal. But since we have states that can reach
+(and be reached from) multiple other states, then we'll always need some
+input to migration_change_state(). Here you're making it the
+s->trigger. Where will that come from?
 
-[1]: https://github.com/ARM-software/abi-aa/blob/2025Q1/semihosting/semihosting.rst#the-semihosting-interface
+Looking at runstate.c and job.c, it seems we could at least define a
+state transition table and do away with the second parameter to
+migrate_set_state(s, old, new).
 
-Signed-off-by: Martin Kröning <martin.kroening@eonerc.rwth-aachen.de>
----
- include/semihosting/uaccess.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+As we've been discussing, the current state-change mechanism has the
+dual purpose of emitting the state change event and also serving as
+internal tracking of the migration state. It's not clear to me whether
+you're covering both in this proposal or just one of them.
 
-diff --git a/include/semihosting/uaccess.h b/include/semihosting/uaccess.h
-index 2093a49827..6813873a2a 100644
---- a/include/semihosting/uaccess.h
-+++ b/include/semihosting/uaccess.h
-@@ -28,7 +28,7 @@
-     ({ uint64_t val_ = 0;                                               \
-        int ret_ = cpu_memory_rw_debug(env_cpu(env), (addr),             \
-                                       &val_, sizeof(val_), 0);          \
--       (val) = tswap64(val_); ret_; })
-+       (val) = cpu_tswap64(cs, val_); ret_; })
- 
- /**
-  * get_user_u32:
-@@ -39,7 +39,7 @@
-     ({ uint32_t val_ = 0;                                               \
-        int ret_ = cpu_memory_rw_debug(env_cpu(env), (addr),             \
-                                       &val_, sizeof(val_), 0);          \
--       (val) = tswap32(val_); ret_; })
-+       (val) = cpu_tswap32(cs, val_); ret_; })
- 
- /**
-  * get_user_u8:
-@@ -65,7 +65,7 @@
-  * Returns: 0 on success, -1 on error.
-  */
- #define put_user_u64(val, addr)                                         \
--    ({ uint64_t val_ = tswap64(val);                                    \
-+    ({ uint64_t val_ = cpu_tswap64(cs, val);                            \
-        cpu_memory_rw_debug(env_cpu(env), (addr), &val_, sizeof(val_), 1); })
- 
- /**
-@@ -74,7 +74,7 @@
-  * Returns: 0 on success, -1 on error.
-  */
- #define put_user_u32(val, addr)                                         \
--    ({ uint32_t val_ = tswap32(val);                                    \
-+    ({ uint32_t val_ = cpu_tswap32(cs, val);                            \
-        cpu_memory_rw_debug(env_cpu(env), (addr), &val_, sizeof(val_), 1); })
- 
- /**
+I don't think we've established actually what are the goals of having
+any state changes. Do we even need state changes for internal tracking?
+We could use your s->trigger as an enum and just check it wherever
+necessary. And keep the MIGRATION_STATUS exclusive for the external API,
+in which case, it's probably better to just set it unconditionally (in
+many places migrate_set_state already takes the current state as
+argument, i.e. it doesn't care about the current state).
 
--- 
-Git-155)
-
+> Wdyt...?
+>
+> Thank you.
+> ---
+>   - Prasad
 
