@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30D45CF6D7A
-	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 07:02:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD9EDCF6D87
+	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 07:03:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vd05Z-0005XT-HX; Tue, 06 Jan 2026 00:58:41 -0500
+	id 1vd05X-0005Gq-Pk; Tue, 06 Jan 2026 00:58:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1vd05M-0004zc-U5
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 00:58:31 -0500
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
+ id 1vd05T-00051I-IH
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 00:58:35 -0500
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1vd05K-00029h-Iw
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 00:58:28 -0500
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-34f0bc64a27so551290a91.1
- for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 21:58:26 -0800 (PST)
+ id 1vd05S-0002Fg-3d
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 00:58:35 -0500
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-7a9c64dfa8aso595324b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 21:58:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1767679105; x=1768283905; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1767679111; x=1768283911; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lqRmUkHjK4JIa3H46oNnrD3f8z1CVK/k08LxTrnytSE=;
- b=ZI8WHJialyaDfb6qYdbVLE0jw5puXenNJDQxEPb2Aw6FQPHq3DUbMvTUbwJGt8/N+2
- MRDHiaZjqv6wNCNaabdsyAD9syzuWLD8y4js+Li37D3mvJQpjwaiCPn7VY8aRZ1djmps
- WPWLRyd7UXs7X8/fxEyJTvMnhFu6tuBPuvcoV936oB4cabg4GvnSurlAVQ7JIQiNV7cw
- DRQxLuFi0duIBX0C7+2q5pf7sZR/2BruV8ciHxXHsQwOOCefGNF76dIr8KPHlnl1fSJs
- 4v5X5TYSFCwR3P117dY5aontN/Sy7fc5AIk5RtySyLOcFK9D9K66gBEzwUQH6uzTsx1J
- 2gEw==
+ bh=zKlNbHdgqXcrykZtAzAjsZ4B0GkSRVg9B9qhi2MmnfI=;
+ b=UriKetAiZgXLyl5gH0wsZOuvS8zJp6ipk6xLYszb3bFlMyQ60ndw9Cljhw+czuBb4j
+ 7ZzBkS2pp0RSqWxLkKEBeXa1aPqfzcHY0hZMnS+irjeyJUCp+rv2it9fAXaUgIktZVZj
+ xldyuykTzEL1qtUJ8hxX3+LwLLM5po4cuPQPv/XDHO8JBmAcJLV/n6qrAyVGMkmiJ4u+
+ Wc3kModNxSIo/wRQC2UfqO7HtUNUIY7qk5/SFYUit1l/STxj3xq78Pm7EohEvle5N2YJ
+ duUAjLUBuYNT3TPvTSIRYXhclYuFKb+PeI5fPz6wV1/Hmxk5nBrs4UBDYdaFXhpgTQvW
+ WWRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767679105; x=1768283905;
+ d=1e100.net; s=20230601; t=1767679111; x=1768283911;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:sender:x-gm-gg
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lqRmUkHjK4JIa3H46oNnrD3f8z1CVK/k08LxTrnytSE=;
- b=cag5MKatwlX9np2GJdXiZinadHGrPSQ3kbjGzDgG0DUcBMFLftE+W6ZeZsq51jJJxR
- MX1EEVzrdLQmX8LIzi0+DWdwzV2k92yDdnq4w/gWQMAK6zzjbsy1En/qWQQNiLp0BNSO
- jKwMopO3ECnnSx0hlMKjjeOiv5Rtu5VKxraRzpLNdlh5Ou66qYm6UeuU7QEx4Wcgcvbw
- EThfWIr04xPgNclj7G4aU5N/Z44hLbrU++J0oDhxAperud9JD8JkxpNugK9qvbtJ9sIN
- y39LoQUg1pDBwHxMqyXpnUhBiw9RI1cm/dMc0gmn3/osaoECgaoJPFOJZUkdZCzSJFq9
- rDLA==
+ bh=zKlNbHdgqXcrykZtAzAjsZ4B0GkSRVg9B9qhi2MmnfI=;
+ b=kb5GZhK4CsI7inT24Kya2BNEi4HsvACPsoATuqHFH04eBShqjeWvpcaCv87ClZdNaW
+ KilTRKeGpDltpz7k4B0nF7Djnbj9nipAL4pWtF6V5M+QvO/mpAysB3T3RJKyeHbss4su
+ zIIAQkQe2KaoY9f0D0BIbPhPfCBRXjW4bPF+rRalSSGp6p01nJ6F56RC5Ra8hGSd/emt
+ CsVDCyzNLOLNAbb8/qgcTjezVoL/qSo4TwG3/S8aZYXSotk2z4sc2hwXINbJ6wsEengf
+ wqM2s1S7UoCnhPfNpepCpoFG8bE1FeSgQ69hreHP8MAzJA4b58ApJl+BaQ1MEYlxxGCg
+ iJvA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX9Ljfs4tD6Tk2Hngj5ivmiEbzLazw4SdtWiwCJPU4jL6eSMmghpI+nCmwQwWTgGcndiufm9+xLG32P@nongnu.org
-X-Gm-Message-State: AOJu0Yy2Y1nnCcsqRi/fz3SbX2G4GrWnP8zm6ersDX3kUHJPSXJ7zxMf
- 4VhX96i1cmF8t3jCb4txO8Mnzinxx9CGY+3KN//3Ov+pitAOXFaQODxP
-X-Gm-Gg: AY/fxX5P7lpvkEs4zdQT8GitglCCN2eglixGwLrNTxhSmVbkAFi//pSI/sH1PstCwUf
- 0WhEEa2Mt5r0aXA7IP2MYRjXmeSfxKwawRIjGcSivY97+le7eiGIMEA7fzpT/X2b3V20xx+Xxz4
- 8QLABo6Ixk5cadzj00/TpSi47lK3hNCAghRXhcUaF8S5+rP+rDy6Vf5y5hgDW4gAYlOZzxw8HIP
- ML3c/Af3mUOLdzf39UAim7FB61CxwE3uT2pbh83gpdNChz39dlFVzdmKk6vn3Ac+lxgevDXHTmi
- WOWi5alyOuCAFDzuSpW1Kzbcm2IbdhmFCQ8fpIt5p/++kYde6gDkgUiIFzN1xgaF6HF93XMEufS
- mKOnU5Rs8fv4qK0DZV+7XcMAVn39lpFKJHvj2qV5A00EEMzeuyNFi2zZd3vxByoU4jfTJW+q4E/
- r9fYKyAjKNfvlofYEZ4L4m
-X-Google-Smtp-Source: AGHT+IG4BW89bcoS6orjC30/CVvmKSDFDcMutMf/YTruOcYvnAEfaYDj1TbarhNrvfdedl+VA46aVQ==
-X-Received: by 2002:a17:90b:2e8f:b0:33f:eca0:47c6 with SMTP id
- 98e67ed59e1d1-34f5f352ab1mr1535354a91.30.1767679105153; 
- Mon, 05 Jan 2026 21:58:25 -0800 (PST)
+ AJvYcCVDtwr0HqbyoBSd540dseZr19ekWMrVEpiqq0eJz6t9Hkqj0oGn2rS/ztWXNwzKJow7yxiz7pR+weTR@nongnu.org
+X-Gm-Message-State: AOJu0YxWc86NDdaZkMjYWLbLyqa3X1orhTtWQJ1bpxeivcGahWRD3XR4
+ +2hLOQHMBxifckMzK2S9MB8tqek2HbQP5OfAFov5ecFehwh6SxH3bDF0
+X-Gm-Gg: AY/fxX7lDpNNKPkrt77yIFRIDRqk23X5g2bXlkilYhIQRd3jBk681Nh0fqp99kmRidY
+ 9QlrOvNQAMIiERwtpqwSjBxkaScdYqHvu1fZAmEdIdudS/oDAjc93zLARU+xQ+Q0HE3f7gT5gHK
+ UAXFPADfT1Hi9RsVfDvGN7kmaNNAVDQfybv8tNnRSY3T6TtA2OBBncSO3NG6gBRw/1I3DcYOApZ
+ MzRKEBWSkLT3hen4mOwxVpLBAQhO4qyULcqGmqTqIQ3YEM0MArzYoiaX2Bho7BA1vkxkZ+kRSH5
+ hCsOaKdQZ7dzEXG+cFiqzpXBGgMdP1Dn3uBmrblkfWZthEj+HiqAQge+Eyy0NbCBs18sKa4FYlh
+ ppjmYapsVscoud0MuLhEkVUoe4278uxiLX5YOIlmmZfGO4HqWOXzEIfGvm/dIg8cyPXmhX0AV8s
+ 0glEEjYmOA7GtNnme8RUzc
+X-Google-Smtp-Source: AGHT+IGLaOKVtG3bIj9Gu/F73cyxh3DvZQ/C5mXSsagK2j42yWAbR/iZmCMMwGY4ngCwaJ/KD7ny1Q==
+X-Received: by 2002:a05:6a20:7492:b0:350:31b3:218c with SMTP id
+ adf61e73a8af0-389822eda00mr1685252637.19.1767679110965; 
+ Mon, 05 Jan 2026 21:58:30 -0800 (PST)
 Received: from donnager-debian.. ([45.124.203.19])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-34f60178af5sm460222a91.3.2026.01.05.21.58.19
+ 98e67ed59e1d1-34f60178af5sm460222a91.3.2026.01.05.21.58.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jan 2026 21:58:24 -0800 (PST)
+ Mon, 05 Jan 2026 21:58:30 -0800 (PST)
 From: Joel Stanley <joel@jms.id.au>
 To: Alistair Francis <alistair.francis@wdc.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
@@ -77,16 +77,16 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liwei1518@gmail.com>,
  Joel Stanley <jms@oss.tenstorrent.com>,
  Nick Piggin <npiggin@oss.tenstorrent.com>,
  Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>, qemu-riscv@nongnu.org
-Subject: [PATCH 12/16] hw/riscv/atlantis: Integrate i2c buses
-Date: Tue,  6 Jan 2026 16:26:52 +1030
-Message-ID: <20260106055658.209029-13-joel@jms.id.au>
+Subject: [PATCH 13/16] hw/riscv/atlantis: Add some i2c peripherals
+Date: Tue,  6 Jan 2026 16:26:53 +1030
+Message-ID: <20260106055658.209029-14-joel@jms.id.au>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260106055658.209029-1-joel@jms.id.au>
 References: <20260106055658.209029-1-joel@jms.id.au>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=joel.stan@gmail.com; helo=mail-pj1-x102d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=joel.stan@gmail.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -110,129 +110,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we have the DesignWare model we can add buses to the
-tt-atlantis machine.
+Add an I2C RTC device and a temperature sensor. These are not present
+on the board but help for testing.
 
 Signed-off-by: Joel Stanley <joel@jms.id.au>
 ---
- include/hw/riscv/tt_atlantis.h |  9 ++++++++
- hw/riscv/tt_atlantis.c         | 38 ++++++++++++++++++++++++++++++++++
- hw/riscv/Kconfig               |  1 +
- 3 files changed, 48 insertions(+)
+ hw/riscv/tt_atlantis.c | 18 ++++++++++++++++++
+ hw/riscv/Kconfig       |  2 ++
+ 2 files changed, 20 insertions(+)
 
-diff --git a/include/hw/riscv/tt_atlantis.h b/include/hw/riscv/tt_atlantis.h
-index edce490453a8..bbe4cf2b4034 100644
---- a/include/hw/riscv/tt_atlantis.h
-+++ b/include/hw/riscv/tt_atlantis.h
-@@ -14,6 +14,7 @@
- #include "hw/sysbus.h"
- #include "hw/block/flash.h"
- #include "hw/intc/riscv_imsic.h"
-+#include "hw/i2c/designware_i2c.h"
- 
- #define TYPE_TT_ATLANTIS_MACHINE MACHINE_TYPE_NAME("tt-atlantis")
- OBJECT_DECLARE_SIMPLE_TYPE(TTAtlantisState, TT_ATLANTIS_MACHINE)
-@@ -41,6 +42,11 @@ struct TTAtlantisState {
- 
- enum {
-     TT_ATL_SYSCON_IRQ = 10,
-+    TT_ATL_I2C0_IRQ = 33,
-+    TT_ATL_I2C1_IRQ = 34,
-+    TT_ATL_I2C2_IRQ = 35,
-+    TT_ATL_I2C3_IRQ = 36,
-+    TT_ATL_I2C4_IRQ = 37,
-     TT_ATL_UART0_IRQ = 38,
-     TT_ATL_UART1_IRQ = 39,
-     TT_ATL_UART2_IRQ = 40,
-@@ -56,6 +62,9 @@ enum {
-     TT_ATL_DDR_HI,
-     TT_ATL_FW_CFG,
-     TT_ATL_I2C0,
-+    TT_ATL_I2C1,
-+    TT_ATL_I2C2,
-+    TT_ATL_I2C3,
-     TT_ATL_MAPLIC,
-     TT_ATL_MIMSIC,
-     TT_ATL_PCIE_ECAM0,
 diff --git a/hw/riscv/tt_atlantis.c b/hw/riscv/tt_atlantis.c
-index 1e296e027b77..31714666b67f 100644
+index 31714666b67f..f0ad7d574e03 100644
 --- a/hw/riscv/tt_atlantis.c
 +++ b/hw/riscv/tt_atlantis.c
-@@ -69,6 +69,10 @@ static const MemMapEntry tt_atlantis_memmap[] = {
-     [TT_ATL_WDT0] =             { 0xa8030000,       0x10000 },
-     [TT_ATL_PCI_MMU_CFG] =      { 0xaa000000,      0x100000 },
-     [TT_ATL_UART0] =            { 0xb0100000,       0x10000 },
-+    [TT_ATL_I2C0] =             { 0xb0400000,       0x10000 },
-+    [TT_ATL_I2C1] =             { 0xb0500000,       0x10000 },
-+    [TT_ATL_I2C2] =             { 0xb0600000,       0x10000 },
-+    [TT_ATL_I2C3] =             { 0xb0700000,       0x10000 },
-     [TT_ATL_MAPLIC] =           { 0xcc000000,     0x4000000 },
-     [TT_ATL_SAPLIC] =           { 0xe8000000,     0x4000000 },
-     [TT_ATL_DDR_HI] =          { 0x100000000,  0x1000000000 },
-@@ -480,6 +484,20 @@ static void create_fdt_fw_cfg(void *fdt, const MemMapEntry *mem)
-     qemu_fdt_setprop(fdt, name, "dma-coherent", NULL, 0);
+@@ -498,6 +498,19 @@ static void create_fdt_i2c(void *fdt, const MemMapEntry *mem, uint32_t irq,
+     qemu_fdt_setprop_cell(fdt, name, "#size-cells", 0);
  }
  
-+static void create_fdt_i2c(void *fdt, const MemMapEntry *mem, uint32_t irq,
-+                           int irqchip_phandle)
++static void create_fdt_i2c_device(TTAtlantisState *s, int bus,
++                                  const char *compat, int addr)
 +{
-+    g_autofree char *name = g_strdup_printf("/soc/i2c@%" PRIx64, mem->base);
++    void *fdt = MACHINE(s)->fdt;
++    hwaddr base = s->memmap[TT_ATL_I2C0 + bus].base;
++    g_autofree char *name = g_strdup_printf("/soc/i2c@%"PRIx64"/sensor@%d",
++                            base, addr);
 +
 +    qemu_fdt_add_subnode(fdt, name);
-+    qemu_fdt_setprop_string(fdt, name, "compatible", "snps,designware-i2c");
-+    qemu_fdt_setprop_sized_cells(fdt, name, "reg", 2, mem->base, 2, mem->size);
-+    qemu_fdt_setprop_cell(fdt, name, "interrupt-parent", irqchip_phandle);
-+    qemu_fdt_setprop_cells(fdt, name, "interrupts", irq, 0x4);
-+    qemu_fdt_setprop_cell(fdt, name, "#address-cells", 1);
-+    qemu_fdt_setprop_cell(fdt, name, "#size-cells", 0);
++    qemu_fdt_setprop_string(fdt, name, "compatible", compat);
++    qemu_fdt_setprop_cell(fdt, name, "reg", addr);
 +}
 +
  static void finalize_fdt(TTAtlantisState *s)
  {
      uint32_t aplic_s_phandle = next_phandle();
-@@ -507,6 +525,13 @@ static void finalize_fdt(TTAtlantisState *s)
- 
-     create_fdt_uart(fdt, &s->memmap[TT_ATL_UART0], TT_ATL_UART0_IRQ,
-                     aplic_s_phandle);
+@@ -532,6 +545,9 @@ static void finalize_fdt(TTAtlantisState *s)
+                        TT_ATL_I2C0_IRQ + i,
+                        aplic_s_phandle);
+     }
 +
-+    for (int i = 0; i < TT_ATL_NUM_I2C; i++) {
-+        create_fdt_i2c(fdt,
-+                       &s->memmap[TT_ATL_I2C0 + i],
-+                       TT_ATL_I2C0_IRQ + i,
-+                       aplic_s_phandle);
-+    }
++    create_fdt_i2c_device(s, 0, "national,lm75", 0x48);
++    create_fdt_i2c_device(s, 0, "dallas,ds1338", 0x6f);
  }
  
  static void create_fdt(TTAtlantisState *s)
-@@ -815,6 +840,19 @@ static void tt_atlantis_machine_init(MachineState *machine)
-                    qdev_get_gpio_in(s->irqchip, TT_ATL_UART0_IRQ),
-                    115200, serial_hd(0), DEVICE_LITTLE_ENDIAN);
+@@ -852,6 +868,8 @@ static void tt_atlantis_machine_init(MachineState *machine)
+         sysbus_connect_irq(SYS_BUS_DEVICE(&s->i2c[i]), 0,
+                            qdev_get_gpio_in(s->irqchip, TT_ATL_I2C0_IRQ + i));
+     }
++    i2c_slave_create_simple(s->i2c[0].bus, "ds1338", 0x6f);
++    i2c_slave_create_simple(s->i2c[0].bus, "tmp105", 0x48);
  
-+    /* I2C */
-+    for (int i = 0; i < TT_ATL_NUM_I2C; i++) {
-+        object_initialize_child(OBJECT(s), "i2c[*]", &s->i2c[i],
-+                                TYPE_DESIGNWARE_I2C);
-+        sysbus_realize(SYS_BUS_DEVICE(&s->i2c[i]), &error_fatal);
-+        SysBusDevice *sbd = SYS_BUS_DEVICE(&s->i2c[i]);
-+        memory_region_add_subregion(system_memory,
-+                                    s->memmap[TT_ATL_I2C0 + i].base,
-+                                    sysbus_mmio_get_region(sbd, 0));
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&s->i2c[i]), 0,
-+                           qdev_get_gpio_in(s->irqchip, TT_ATL_I2C0_IRQ + i));
-+    }
-+
      /* Load or create device tree */
      if (machine->dtb) {
-         machine->fdt = load_device_tree(machine->dtb, &s->fdt_size);
 diff --git a/hw/riscv/Kconfig b/hw/riscv/Kconfig
-index f1525254b126..e2b6951192df 100644
+index e2b6951192df..9662c32e4b04 100644
 --- a/hw/riscv/Kconfig
 +++ b/hw/riscv/Kconfig
-@@ -146,3 +146,4 @@ config TENSTORRENT
-     select RISCV_IMSIC
+@@ -147,3 +147,5 @@ config TENSTORRENT
      select FW_CFG_DMA
      select PLATFORM_BUS
-+    select DESIGNWARE_I2C
+     select DESIGNWARE_I2C
++    select DS1338
++    select TMP105
 -- 
 2.47.3
 
