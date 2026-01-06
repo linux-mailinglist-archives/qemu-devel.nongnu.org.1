@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4EB9CFB64F
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 00:54:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3B69CFB652
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 00:54:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdGsU-0003Sx-Lk; Tue, 06 Jan 2026 18:54:18 -0500
+	id 1vdGsa-0003Uo-Ms; Tue, 06 Jan 2026 18:54:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdGsS-0003Sf-FK
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 18:54:16 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdGsZ-0003UQ-85
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 18:54:23 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdGsR-00044U-1l
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 18:54:16 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-47bdbc90dcaso10730215e9.1
- for <qemu-devel@nongnu.org>; Tue, 06 Jan 2026 15:54:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdGsX-00045i-RF
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 18:54:23 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4775ae5684fso7098585e9.1
+ for <qemu-devel@nongnu.org>; Tue, 06 Jan 2026 15:54:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767743653; x=1768348453; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767743660; x=1768348460; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gC8s3v5Yfls5rstnKT7boH33TFwx903/gwURhAnqZDY=;
- b=xJLTHhbNZ+Oyec7Au5Op/SZJc7q6Pv/Ncp4zMpXuwXvgKwm3ZGfH4vq7uTDKmjI6Zv
- weV3fYES7lBvBn5JZFOnL9gyFt+khXo/HuTTd+I88BS/GWN95xPwtaIY7sHLlQd8xXcO
- B/yEBAXhazbSql8W0OdrHoZ9rtSNC2xKFDv0jt7v+bSTyMOhlguqWFaW8XSOOjjiC6Rs
- ziQQ+awEFSe0tewlX3syPwO7285k0REVeq/uGEO9/MdFR/+lGERR+9hCfUGPZ8FxU4h3
- DOu4SK6FMoNOkNej1fCeZPvryAXWPD2TdU2hwtUIzAQfpi/72VAxpCTg+emb9hh6L1gG
- D01Q==
+ bh=Fx/85G/s+VYWSF18WauulcwVsUieDaCovi7d8Ks6OsI=;
+ b=c3cvgVYKF8LJsN2ycuQ6OnFJC0xD7YspkMvz0QgDzEWydtR3BGC9VoOGL10H7qJd9J
+ zDGYfJiiOIsOoFmAmT4QEkGH7fp8YcPFWwN89Nq9UnC1yrbgdsHMiICG2HLw3XVEX6h8
+ TRaj3S2zBZdH04Ql2dWgxUTlqhhDmAZexVBBDjYbv4PQRcO9aoXKWuJ44/9VXVg9SuDz
+ 0Vkk5Y1grBtmbIAu1u7hL7Fb4oFHhN1RsKw7Yd3bKJOSQZLCgP2KyDhExJkjECo2RwjN
+ uwhxApQtbMmIwcwUXdRHmix4dk76aIcIOJjv96et2XCaefXDfh5mvG8d275wrYdNbekY
+ LfDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767743653; x=1768348453;
+ d=1e100.net; s=20230601; t=1767743660; x=1768348460;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=gC8s3v5Yfls5rstnKT7boH33TFwx903/gwURhAnqZDY=;
- b=vCr4nbFMgwB4FbzyoQYcgWip0YzSQtM5rEY+QH295BX2rOUvMfqaZG/5DywK/JXgGW
- qzRhYVxcEPR1b9aY6Xf0ZEnw7m7W9YahjtYmZr/AB1n725oYEk86IPyTK+0VEMXzZm5y
- OOS8dw//TNwh2hQPhI4FPP5j/1uar0qnjMsnC3eTdZAG6/NsELPJmW2nJ8X3O5gA2OOn
- 6HNT2XJffjmPKzkJAGNK9ZLiHn4mJ/bZR89gC8lwiCLcCPVeH6v7AD6Om8KhigU7nCqH
- JweV4rk3zBVoBpzB+xoHBNkaFBY7XVGsByjNWCSSXshB0G1xlkjhuKFG4ph1G93eKNcA
- 2z/w==
-X-Gm-Message-State: AOJu0YwXvcgiB+EGxD3vO+4uTH6WkwDxeqeXKJ8Ez/V8/FrupUNE8a/P
- +oX0nXxVfXhRQ3u2xqeG01ABZyvkGFSknTlGA6XKIr1vdvoFGyeGK/N0S/Z/PcPwRHhFVEJfOGh
- QvA61dEg=
-X-Gm-Gg: AY/fxX7DfXuiFCT0daMuhpPHuFdxHyCwM6UcqDuJ6GRm390FzKgCyI9mmM9bqBe3dAV
- 7FfGTUHZ7YGB2iqLulF+skns8OooHL7Vlv9FU1dL6tfQjmIkilRuH2ocvWQRWOkdrMRwpk+CHGT
- F61Q3urquvRKLLaWJdVHrfjVJxdCbi+tdYIJXU2qoObgfXQ5BtVLerZsIhWY9ojNh4u9gLmiL48
- +fzPbcDbLSVeBC1j1/Rc0NUG09ofTs9FN0cEDpp4r2P/5aPxRB34KhOWKE/UII9RHQSonK/62oK
- R53a2MOgkDipsWzec/HCY4EqBAmpbnetbyPNZUlgodwsVzzg9Yo2dV7JhGU2aYOrX1KX9vJW4aX
- HJyUODLAWHIKoIqM9dSVxmdr181JuAP1A6A758Cnaj9oP+4g7iaddiTDKBaayd23nJQNhDfaJ0d
- /E7IJBOUDkStjDhgDvPVj5z4jN0wtM4nBxtYoQ1RdsaL+EW776kHsL0tn7OFLe
-X-Google-Smtp-Source: AGHT+IFNWZm7OMwcLboSTg5veB9jYS39hr8hs64muzUCxaxmsTZdJsg2HRzQ4uJo1JA0eHJKcgjY2Q==
-X-Received: by 2002:a05:600c:3556:b0:477:63b5:6f76 with SMTP id
- 5b1f17b1804b1-47d84b3b3d7mr5538035e9.25.1767743653239; 
- Tue, 06 Jan 2026 15:54:13 -0800 (PST)
+ bh=Fx/85G/s+VYWSF18WauulcwVsUieDaCovi7d8Ks6OsI=;
+ b=oNyF13erml3Kn5EvcX2MCUyOpUuY0fVOahhuOPD+3V51kMBNMtveqvkzy/NOs/1d8/
+ RrpYUiN4qGq/rmR3LWU1icxBJamDCXonpTHerky7uH6rpWN1ilBC1IWuvs8UrJpIcCul
+ uvRwHuiCwZFsnjCg8cA+VEls34o5Hblxb/6GH+snANxAxEP0SZ4PzpPO7b4lSXtz2AYS
+ DAiK/QTq81WdtR9poPMbOjrrkneEMFHsUVyXC5sxi+tEc942dPaYl83H/dNVLbhIP5Pq
+ Ch+s1M7SMB1QD9d77Z3JS2k2suO3GlHUaMK+IDuRf7bFnyGor4GgUzdRHXnMHrfksxdH
+ KdEA==
+X-Gm-Message-State: AOJu0YzlzOYZpZTHuErUjWlhL1fKid5npiAnS+SMtCdHQjQvxRaQ6ePt
+ z1/0JfNrajWCaWt0Sw+7h6bujJGrVfCB9wbKD9WQxzw8mck7XRG5zwv/bSzIbNZ4JPHd/4O7/9P
+ i+jlQoM4=
+X-Gm-Gg: AY/fxX6QvtBuZGHionO3IqQf8/5z/KddFYoMt/VE2Vxcspufye0hP1zhhoI0GQm7BQv
+ kutTPuvMj43QAHd/hBTWgxukDLDgUv2EqYl7NHMLP4DZKVkBKNgA3IATeZNJ21TnBTxRgUsifHX
+ Go+pviU5EHUPejCyxf9gRVoGhuFFZkcUw0tkO8iibgiuwx4AO1ZgCoildrywlIG9n4IFM2SXJnk
+ i5Q3qsYGeLkkeMLm7vCvFTS8Mnm8jPmeNQ56lc+H/Ql2uabe4VoWw5SQFVi/4dGSsec1fZpzKbh
+ M6hQa/WTE6tw0+YwiswKXzRBSopTFIbPhFkzJOzhpIuEOfuGtQ4/McOTV8YYKFfuBwt+Y/NHBEA
+ FVL/DXLb26AtlaYESO9MqGxaiZJQnqN7vxz00+tiUecbjDEGKYa51ULs1trEoXjnHWAlFUXorEZ
+ urOORSnPgGcYvdzO9/J9hZv8Bu5qjGTuEYN/Or/MxfeSehKo3WmVylybv6nS1e
+X-Google-Smtp-Source: AGHT+IEkbNSBfp8Y4pfmV2bVE3auMWZG/+m0liGgY1A/9nYwNeUYgf+PSTLuI2RWZo3zcXYX/2Rvsw==
+X-Received: by 2002:a05:600c:354c:b0:477:214f:bd95 with SMTP id
+ 5b1f17b1804b1-47d84b32f1fmr5935795e9.23.1767743660020; 
+ Tue, 06 Jan 2026 15:54:20 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-432bd5ff1e9sm7475974f8f.41.2026.01.06.15.54.10
+ ffacd0b85a97d-432bd0e16ffsm7349841f8f.12.2026.01.06.15.54.19
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 06 Jan 2026 15:54:12 -0800 (PST)
+ Tue, 06 Jan 2026 15:54:19 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -69,18 +69,17 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 5/6] hw/microblaze: Replace TARGET_BIG_ENDIAN ->
- target_big_endian()
-Date: Wed,  7 Jan 2026 00:53:31 +0100
-Message-ID: <20260106235333.22752-6-philmd@linaro.org>
+Subject: [PATCH 6/6] hw/microblaze: Build files once
+Date: Wed,  7 Jan 2026 00:53:32 +0100
+Message-ID: <20260106235333.22752-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106235333.22752-1-philmd@linaro.org>
 References: <20260106235333.22752-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,36 +102,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Check endianness at runtime to remove the target-specific
-TARGET_BIG_ENDIAN definition.
+Previous commit removed the last target-specific use in
+hw model units, we can now build them once.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/microblaze/petalogix_s3adsp1800_mmu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/microblaze/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/microblaze/petalogix_s3adsp1800_mmu.c b/hw/microblaze/petalogix_s3adsp1800_mmu.c
-index 2a853a7fa5f..0c9a6bf2529 100644
---- a/hw/microblaze/petalogix_s3adsp1800_mmu.c
-+++ b/hw/microblaze/petalogix_s3adsp1800_mmu.c
-@@ -24,6 +24,7 @@
-  */
+diff --git a/hw/microblaze/meson.build b/hw/microblaze/meson.build
+index bb9e4eb8f47..d8e7dfbe0e9 100644
+--- a/hw/microblaze/meson.build
++++ b/hw/microblaze/meson.build
+@@ -4,4 +4,4 @@ microblaze_ss.add(when: 'CONFIG_PETALOGIX_S3ADSP1800', if_true: files('petalogix
+ microblaze_ss.add(when: 'CONFIG_PETALOGIX_ML605', if_true: files('petalogix_ml605_mmu.c'))
+ microblaze_ss.add(when: 'CONFIG_XLNX_ZYNQMP_PMU', if_true: files('xlnx-zynqmp-pmu.c'))
  
- #include "qemu/osdep.h"
-+#include "qemu/target-info.h"
- #include "qemu/units.h"
- #include "qapi/error.h"
- #include "cpu.h"
-@@ -177,7 +178,8 @@ static void petalogix_s3adsp1800_machine_class_init(ObjectClass *oc,
-                                           &EndianMode_lookup,
-                                           machine_get_endianness,
-                                           machine_set_endianness);
--    object_property_set_default_str(prop, TARGET_BIG_ENDIAN ? "big" : "little");
-+    object_property_set_default_str(prop, target_big_endian() ? "big"
-+                                                              : "little");
-     object_class_property_set_description(oc, "endianness",
-             "Defines whether the machine runs in big or little endian mode");
- }
+-hw_arch += {'microblaze': microblaze_ss}
++hw_common_arch += {'microblaze': microblaze_ss}
 -- 
 2.52.0
 
