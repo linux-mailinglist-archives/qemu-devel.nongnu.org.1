@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0071CF9349
-	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 16:59:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05D13CF933D
+	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 16:58:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vd9Ra-0003H3-Pq; Tue, 06 Jan 2026 10:58:02 -0500
+	id 1vd9Rh-0003Ht-AO; Tue, 06 Jan 2026 10:58:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vd9RY-0003GT-Sm
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 10:58:00 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vd9Rf-0003Hk-O2
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 10:58:07 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vd9RX-0006SY-ER
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 10:58:00 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-430f9ffd4e8so1425431f8f.0
- for <qemu-devel@nongnu.org>; Tue, 06 Jan 2026 07:57:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vd9Re-0006TC-6F
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 10:58:07 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-42fb5810d39so647541f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 06 Jan 2026 07:58:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767715077; x=1768319877; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=l9nEPWNTdGtqvPfMZPN8BV/RaQf4q3ChcIBd22+XhgA=;
- b=dts7J/pvQfA0A5VURc80EuQb/o+PqqAThWIkLZPw0eIc1EUmyJsM08OoGuC0AMPG6y
- 23835yg5REp790uhKlB/fteNxg73lGKFVpcKW7ontN/kZ7bNcNTBS64gPi4AQL9BrGX1
- bN/VmHc0XCa82jS62M3UiQdqjMx3RPVVFLh8DVpMqTJpSHV/t/+E+LWGfO7liDLeuBXE
- +gXpiCAWmVWD9oXzKdDUW1EMcLwIxRJrIjGJnCdKx9+AGE1tBUB/WUGdhCEy6EG9627u
- eJrugTgFWCg6fq8MI+jlv+t6utgg9nErkT7aQrWgAiCFx72Fl2a8MPETWsVs2cj5HLYd
- M25w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767715077; x=1768319877;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1767715084; x=1768319884; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=l9nEPWNTdGtqvPfMZPN8BV/RaQf4q3ChcIBd22+XhgA=;
- b=ILQ5tIYpHchknAFOT/c2GKK3QaWq9igMZxnbzdfru8wrOJzXJ+OC7ufBH6jdsYa9ZP
- LuqpeF/NvS/8alEmMGQBaend9QOf+pPMV6hZIJjslgiVhY+SDUfV7cYbxAYYYU0CrjMB
- MhsFTuVlyo500tJoLYV5W8838qXHkF2vifJrpeqVW7McROck4Z2HDzwQ4CZwFHm+pkWz
- 2U6Xfh5sY1hHJqWXbSL41oJExqBkGec1+tyQxOj96WF6s1JUnvSrN4BZ+vzd+uU+kAp1
- s3PpG3pPUug8MUfCDPeCQo5eMB90Ho24iMZYkBz5TGzh2dL+vzG+YZ7jkj4WQbO4gUIp
- 39JQ==
-X-Gm-Message-State: AOJu0YxM9vSo+pRqVFjTtRXNJI7UNEUJopW6+WgIkqzmpeLt2nlUThlQ
- KqcMw7FDdFUUe87BzzCvkvQ/EKhoFSkSxGtnOn6wjpVg1B0VODI4eJX3chuOwvCG+In9l9w3HvQ
- 4wAW5q7w=
-X-Gm-Gg: AY/fxX4ClYgeGQIjPBzmwi3h+iWZUXFrjGiXkGxEYYyhsH0sgiI7vWCXFwRCeztXdZx
- Aky8aAVLbNKkA0mZMGImYchlqQWJVQfXOVafL/yDcYcd+vUx8bN++Ty9GC1lT6yV07XL+iI7vBQ
- kQFjvh9BS4r9DzygANAnzK/rOsVYT//LE+xg4l2UDDQT83Tb2xBH/MQLZufP5idLvYwSGzswGDG
- oecDY0Awo7Q5os7bmhaCfuRlE0DMBYhIcb9Q2/Xm2E6zQOob4+NdElV+feNahkjuX5Nb9VvAEzs
- wMGLxzpOdnM7VnBSzCK3MRIXASXcnPtUokq8PlJDT9Cf4xHHa5gcAEX2wMJ5x5uUqY/JimMA5kl
- awM+ShYB3kJiAXzzLlAMY5dV5L9dazhpo880Hp65NbpuN4lsm+XyE9QoW/GjhGBGalIhMiaDzP8
- UUFcpMFr2dh+5o7NzIDsH+rAr4/24Gu3svkEM1ZdSAAhwodbzqiDts19bGmOXb
-X-Google-Smtp-Source: AGHT+IGqMwM0h/AonNfTDU1+nH3HVsWaN7kDKTzm9j0GWOChkXEW5eFJRTmwO2m/R0T54XYfMnd8iw==
-X-Received: by 2002:a05:6000:191:b0:432:5a4e:c023 with SMTP id
- ffacd0b85a97d-432bcfb6ba9mr3194312f8f.13.1767715077092; 
- Tue, 06 Jan 2026 07:57:57 -0800 (PST)
+ bh=E5roLA89uLgbVSNGHvODMTx5DI2hyxThnFPheFtSmSs=;
+ b=ZgKCUYJzNsrjk+hQDSwH89xprHuKIf3bouvvHS+ZdN+Ap0TR1/S5CRluc92rQl2xoA
+ 82kUEm7WT2lfAbEZ0KVL+mxgGguaTtHY2a0im+cYppypjEYZ/wGXIrFCY2wTbL5YIWlA
+ +XVrFQ0taUNO5yCLOVi4bm1fAt/JdZs+2pZ5ZEsD/OFhWvPHrXntPDrdOV6r63Kkd6ii
+ +LB0HHNH5xXvZvp1VmMSfdg8/uJdpk+P6qK3fh/T4w91WG6DWEFo+5ANFGiYNnNkkrzF
+ dXNGvaL5UfFdEUF98cQobAk9uCSOe9yWY75f1WxgxhmG0TEbvIksL2Jhf/BIm+KEUKsa
+ E5Mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1767715084; x=1768319884;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=E5roLA89uLgbVSNGHvODMTx5DI2hyxThnFPheFtSmSs=;
+ b=nAFLjhJtq29ZP8N9F+poaohigUKBeSRLK3rAVMIuc2P01PF1CNVWlOiM1XbWhQkdtn
+ BfcdqnWbtuSIEh+nrlDlZPNwymoZ3U6xY4ln1D1EF+InXb7RvZgfdzJK1we3PSPVYbUg
+ JTG09IF+KouzM6c+ZdSyKLpdpPtYoBWu2FXx5wydUuonDEOmOR22z/pY+cEwH0JyXIde
+ hNn9qOY9R4OYWLg4Qtcgw/Ia6YWowxcQv3Q9agL35EuGgDzW+FZ50Eslvxlebj5K9K9k
+ sGr0mmNhHRcsf8VJ14TDvFtVRySGxyn2k2rYr5lnCqn5i3ghtYGLLqu4ywglRkvbgEAT
+ Vo/g==
+X-Gm-Message-State: AOJu0YxHjq7nfYxDcxuTvdjjzU36hXhddVngkYnYbQ6IK236c740RVuz
+ 8xgZMaNzM8sipET5+YLJPIObu5kBvfK8AZXCAvZ5ig6Yi4ZKLkPkKHp67BG4+ZMz/lnUaA0RdNA
+ LrWony1U=
+X-Gm-Gg: AY/fxX5HTFjGJ/EJQJvaOMshk5XIcypx55Ya/nvH3dND72b5e8cmW3xDYv12TztdXvS
+ EiN6xyF53p3TmKSXUheSVOUsgUhn07mB4csL2qsQDqAEqKEDgHCFurgy+ZHhMrw1AjBM4ciqpYf
+ hrIevGGw0wsZ/Vh190tmxqXCq8+UecN0d+9DNDWL7EaNHC2ScenbKNIbFvJ90jVRd/Mae7ZsKds
+ IVq3LGF5TgGgrwOI7ySXmN37HmSRhEvMLHwRn3XdR1Rtdz3qFWgaCfsicUuL7m4iN7ICvbo/TM2
+ 3z+SUYtKIqS2a24HKNiyBf9nW7dyk9oYIC+cJr/NAK+9N6NlR1XxQ6zwxlXFmrGKeMbjZ3T/389
+ 9gVKToG899BDyW/E1JENeyw+we2Rec3GW6u+y9vpOo84RK5+wdtmoYf9/pdUv3OBfM1AVJ1Lncp
+ sikH58S5hV1hAeLsg1f6xS/0bZGNiFTxjG0v9EZZizXbROGH1YxLz03BWwK6/ovGUgg9W4L6E=
+X-Google-Smtp-Source: AGHT+IE15yS0TX56lvaufPD4IOv+N3Eu6w+89GICp6O6msnA0bjYS1nfSQif+7WSefs+LtLeWUL3tQ==
+X-Received: by 2002:a05:6000:2204:b0:430:f704:4ef with SMTP id
+ ffacd0b85a97d-432bca58d28mr4124477f8f.61.1767715084064; 
+ Tue, 06 Jan 2026 07:58:04 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-432bd0e16f4sm5279240f8f.11.2026.01.06.07.57.56
+ ffacd0b85a97d-432bd0e180csm4967390f8f.10.2026.01.06.07.58.03
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 06 Jan 2026 07:57:56 -0800 (PST)
+ Tue, 06 Jan 2026 07:58:03 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <laurent@vivier.eu>,
@@ -69,15 +70,17 @@ Cc: Laurent Vivier <laurent@vivier.eu>,
  Anton Johansson <anjo@rev.ng>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 0/8] target/alpha: Use explicit little-endian LD/ST API
-Date: Tue,  6 Jan 2026 16:57:46 +0100
-Message-ID: <20260106155755.53646-1-philmd@linaro.org>
+Subject: [PATCH v2 1/8] hw/alpha: Use explicit little-endian LD/ST API
+Date: Tue,  6 Jan 2026 16:57:47 +0100
+Message-ID: <20260106155755.53646-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260106155755.53646-1-philmd@linaro.org>
+References: <20260106155755.53646-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,35 +103,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Missing review: #5 & #6
+The Alpha architecture uses little endianness. Directly
+use the little-endian LD/ST API.
 
-Since v1: Add mo_endian() with comment
+Mechanical change running:
 
-Alpha is little-endian. Use the explicit 'little'
-endianness instead of the 'native' one.
+  $ for a in uw w l q; do \
+      sed -i -e "s/ld${a}_p(/ld${a}_le_p(/" \
+        $(git grep -wlE '(ld|st)u?[wlq]_p' hw/alpha/);
+    done
 
-Replace legacy ld/st_phys() calls. Forbid further
-uses of legacy APIs.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ hw/alpha/dp264.c   | 11 +++++------
+ hw/alpha/typhoon.c |  4 ++--
+ 2 files changed, 7 insertions(+), 8 deletions(-)
 
-Philippe Mathieu-Daudé (8):
-  hw/alpha: Use explicit little-endian LD/ST API
-  target/alpha: Use explicit little-endian LD/ST API
-  target/alpha: Inline cpu_ldl_code() call in do_unaligned_access()
-  target/alpha: Inline translator_ldl()
-  target/alpha: Factor mo_endian() helper out
-  target/alpha: Replace MO_TE -> MO_LE
-  configs/targets: Forbid Alpha to use legacy native endianness APIs
-  target/alpha: Replace legacy ld_phys() -> address_space_ld()
-
- configs/targets/alpha-linux-user.mak |  2 ++
- configs/targets/alpha-softmmu.mak    |  2 ++
- hw/alpha/dp264.c                     | 11 +++++------
- hw/alpha/typhoon.c                   |  4 ++--
- target/alpha/helper.c                | 28 +++++++++++++++++-----------
- target/alpha/mem_helper.c            |  4 +++-
- target/alpha/translate.c             | 13 +++++++++++--
- 7 files changed, 42 insertions(+), 22 deletions(-)
-
+diff --git a/hw/alpha/dp264.c b/hw/alpha/dp264.c
+index cddd94fec82..5e64528431e 100644
+--- a/hw/alpha/dp264.c
++++ b/hw/alpha/dp264.c
+@@ -194,12 +194,11 @@ static void clipper_init(MachineState *machine)
+             load_image_targphys(initrd_filename, initrd_base,
+                                 ram_size - initrd_base, NULL);
+ 
+-            address_space_stq(&address_space_memory, param_offset + 0x100,
+-                              initrd_base + 0xfffffc0000000000ULL,
+-                              MEMTXATTRS_UNSPECIFIED,
+-                              NULL);
+-            address_space_stq(&address_space_memory, param_offset + 0x108,
+-                              initrd_size, MEMTXATTRS_UNSPECIFIED, NULL);
++            address_space_stq_le(&address_space_memory, param_offset + 0x100,
++                                 initrd_base + 0xfffffc0000000000ULL,
++                                 MEMTXATTRS_UNSPECIFIED, NULL);
++            address_space_stq_le(&address_space_memory, param_offset + 0x108,
++                                 initrd_size, MEMTXATTRS_UNSPECIFIED, NULL);
+         }
+     }
+ }
+diff --git a/hw/alpha/typhoon.c b/hw/alpha/typhoon.c
+index 01fda4b1c8a..7722d4fd009 100644
+--- a/hw/alpha/typhoon.c
++++ b/hw/alpha/typhoon.c
+@@ -622,8 +622,8 @@ static bool make_iommu_tlbe(hwaddr taddr, hwaddr mask, IOMMUTLBEntry *ret)
+    translation, given the address of the PTE.  */
+ static bool pte_translate(hwaddr pte_addr, IOMMUTLBEntry *ret)
+ {
+-    uint64_t pte = address_space_ldq(&address_space_memory, pte_addr,
+-                                     MEMTXATTRS_UNSPECIFIED, NULL);
++    uint64_t pte = address_space_ldq_le(&address_space_memory, pte_addr,
++                                        MEMTXATTRS_UNSPECIFIED, NULL);
+ 
+     /* Check valid bit.  */
+     if ((pte & 1) == 0) {
 -- 
 2.52.0
 
