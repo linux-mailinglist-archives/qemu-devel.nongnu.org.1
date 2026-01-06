@@ -2,111 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 072F9CFAC89
-	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 20:49:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BFABCFACF2
+	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 20:56:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdD2c-00042O-Nx; Tue, 06 Jan 2026 14:48:30 -0500
+	id 1vdD96-0000mt-0N; Tue, 06 Jan 2026 14:55:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vdD2b-000425-FP
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 14:48:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vdD93-0000mc-Pt
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 14:55:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vdD2Y-0001f4-No
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 14:48:29 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vdD90-0003dC-UL
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 14:55:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767728904;
+ s=mimecast20190719; t=1767729305;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sQM0QAPX/R4gKXcAVQ0nMKr+SQR2xWZtsSLrMCxsukM=;
- b=LntnnBSdbAdBuC24oC0qezqYi10AD5ODCIUKefgSMwsQ4kKdim8LcNbR149pcmdZkyhh5F
- DlautogvZJhaez7NNhFSPKA2/bDRCBsEDaBQufW7MdULbeXmUF8sh0sgsB7roqC/wZDxgF
- Wuq23cBP3litOpPjnZutsOMHC/qJUcg=
-Received: from mail-dl1-f69.google.com (mail-dl1-f69.google.com
- [74.125.82.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=JLBYuCbGJX4wvpyfGEJZxJ88C6iaQlO+DitG52afzqY=;
+ b=H9Yi6AWHeMshsAp1mRRhHoUWTDd7QcY3C81qQvmY37Sq1asAQ1hEhiHacCqq1i+LCoIfT1
+ bmgJby+eVzUosF6DZ2jETNKdPvwx6tvkkWo1bfb1wZMQXgoNrMX9aWXY6ayZMWMpk8BWXQ
+ C37WyT8uBObcj47YSShOIsF++vqiNi0=
+Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com
+ [74.125.82.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-647-7xiHp4NmOiS_NLMmrCBLAw-1; Tue, 06 Jan 2026 14:48:23 -0500
-X-MC-Unique: 7xiHp4NmOiS_NLMmrCBLAw-1
-X-Mimecast-MFC-AGG-ID: 7xiHp4NmOiS_NLMmrCBLAw_1767728902
-Received: by mail-dl1-f69.google.com with SMTP id
- a92af1059eb24-11dd10b03c6so868260c88.0
- for <qemu-devel@nongnu.org>; Tue, 06 Jan 2026 11:48:22 -0800 (PST)
+ us-mta-592-gDHB52W_PjKFUjGL24mAZA-1; Tue, 06 Jan 2026 14:55:03 -0500
+X-MC-Unique: gDHB52W_PjKFUjGL24mAZA-1
+X-Mimecast-MFC-AGG-ID: gDHB52W_PjKFUjGL24mAZA_1767729302
+Received: by mail-dy1-f200.google.com with SMTP id
+ 5a478bee46e88-2ae25c02e7bso1656036eec.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Jan 2026 11:55:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1767728902; x=1768333702; darn=nongnu.org;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=sQM0QAPX/R4gKXcAVQ0nMKr+SQR2xWZtsSLrMCxsukM=;
- b=s2k1Zd6IyomB422viHsuuB87F1w9QXFCGVNU0dRdXEj07nH/M8edb+1swTqXfkMSgL
- SzejlwfreY0Lq10+yyhBSDofyQHVz7rYlXkK5Gcc8XmZc1Uz54YxaHECk02lKkaobVFk
- 4yFAqtpuWf4tSM3ro8QDsqr1hlnve32qBmKstaI25GCyzm2g/u3Vg6Vl4Zc1ILMZqjCS
- gFrYdarP1kqtZcH1XacUyJg6tu83JKdydRznqZvSWOHUjMiV9nzThzTbxHooI7waTePu
- iSS/2AAowgUV7wevJDzy2WTKaWiHc+dLksFTcKKa+5rk9rxn3Aaty2kw0tSW7gZ9RhfG
- TOlA==
+ d=redhat.com; s=google; t=1767729302; x=1768334102; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=JLBYuCbGJX4wvpyfGEJZxJ88C6iaQlO+DitG52afzqY=;
+ b=M8/aH9hjRLEHUAtCsSGoU9OeCcTx7hOYVvr8CXeB/wSOGLLZ78NCoHei8odG1N8BX0
+ FaedWbH4TqsyQ4apgSmL2Pp+CLqrzBp9z3rrxf6TfiXp7hCcTlCqKv8qAa4RxtqBXHa7
+ sG2VCSxGdMLBlv7JBja0457/jBXOK//rA9CfOvTDV+Lapuk2HZTjfyv7XZJGGv2iBN07
+ ejueU54IZTZ/CQJqLf5WmQIWy12mc+jLsgVYTOM2U2iHHCFfwPxDi2GOyXqjCyC8ZvOM
+ p6TZXORs/xyxX7Fac3WaS+Wcjrfype+i0TuCVGw4XjRjsXRjz8lr5jtLrn06MpqXLEif
+ SsQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767728902; x=1768333702;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sQM0QAPX/R4gKXcAVQ0nMKr+SQR2xWZtsSLrMCxsukM=;
- b=KZ6jctKMDIb8yrcxB1sEg9Cy57njfCAjJDZzUNQBU25xhW2q+ugeL2RItXQPG9gDcJ
- kitgZ/kaZJvrQDmxcRB7s/D4RV5iKAyk2N6XByK+EJzyTv7CU+Qsj3VgHTC80kbV87Wu
- Sob3CIiS7qQfoCoEE+L3ksGM7qskcrNoWzBeB8+PUKZWa73e3QKr2nvqoqO+RjAWqxoU
- FSBgMZGRbUkK8ONRZkUGM+RGXDcccY+m3uN2SzSHlqEPK6qrm/O4hv6ZDTOm2Og0xmuE
- w2ZdVCFlLp8rAkAI1f/pL9VVtvu6RvFAqFYsUlhgPJ6WeaShxR9THf33sW6fA1uqg2Rw
- WDaQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVXGIqJxorcuO1DQBXlFtl7cj1i3tJ4oQ8q4yJ92n6hnd6wg+kyCZl/KSBNNFnec7d8GOXQBQ/D+KmD@nongnu.org
-X-Gm-Message-State: AOJu0YzIzyrboTVkuILqCz7G2xH3tuLueRN8l69syCGXnx7th4ao0MTt
- vZ/ujtKLiPZw+TK8aNNjdxtzueGAHuMlnFS7ZVpD634agIz62GFmlyZJ4yL7wds/lRNgDVDePss
- ZqFP3SA60PoFs072Qsa1YaQHan81XtxperUYG+6V9YIsSlC09HHyfsEEl
-X-Gm-Gg: AY/fxX6OQKsXKrE5gyJn57dyDFE4pDYxwTzq8K+FAF/40QqBb/IGNWQUhoWSWS/MjnD
- cX8YamHOcVL+aktmpbxgDVPusmCGp/JcvX2f/iILoIr5nnNia9i+dFOsrRfd0vo+1Kpz+k3tPsV
- Wc98g1MR2i988KuZtRIMmmW7O8c6cjcBp+sLCuL2ddZukkyCwzMnS5UqUzjVIjssZ8c0f1Krl+R
- 7RPgOIMhic1V9mRxECmZz19KaJkdZWYOCDZznrbd2pUw0v4jDS6OOleMTmMJr4lj+9WY4NP6End
- 8niVmHG/TU1Bqk6y+9hmKOT/NSEQr+kmp0WBzl0Frzga1sDr/AF7KdITsQGMIqOv69FzE6khIPG
- QeaQ=
-X-Received: by 2002:a05:7022:927:b0:11b:9386:826b with SMTP id
- a92af1059eb24-121f8b9cf08mr47977c88.48.1767728901865; 
- Tue, 06 Jan 2026 11:48:21 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFyoslrf2j6jB+78/YYaXaPKDg12pp2k3aSTCyFUoKi9E3Js2jubsZFQduK8wESR5wLrOe2fQ==
-X-Received: by 2002:a05:7022:927:b0:11b:9386:826b with SMTP id
- a92af1059eb24-121f8b9cf08mr47955c88.48.1767728901238; 
- Tue, 06 Jan 2026 11:48:21 -0800 (PST)
+ d=1e100.net; s=20230601; t=1767729302; x=1768334102;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=JLBYuCbGJX4wvpyfGEJZxJ88C6iaQlO+DitG52afzqY=;
+ b=XITR3d4mgqlhln1jeqLUluAuN2Wz0JvWQxlbeTQ5jkVfWkT/JmMQHIg39AVBK2DIAq
+ ibYaDH/NDS5F9WvcxkcJrbDtKZ0GmiZPFRJ9E0H/ZTkloqIAj9Zj/QCmVUN4nf4tiOoY
+ +97BwSAldhXQc++mnXHDYlFKvEsJqCpbJyn6vPV6wSzzFfmuK4Yyv9uUqJq/dY3waZwE
+ LENOtDp+aFoqCatsXCMEHOqm3DSj3v6byxOtS7heWe32LKgWzZetU5JE7lRt7s09pLPl
+ FEVwg5MorZpzPCzvPGOdQw6z/P37l5FASrA3Ttll4tQTcRBhfoGH2d1BlV+A9LytWd7J
+ 3Ppw==
+X-Gm-Message-State: AOJu0YyfpELN2GocUYGPT+yCX3i/qHS5BVhM53tp08pTNZRteNgzJ3O9
+ CJUVmjZvgqPaTixTp8NYUP6hgO+bcNYuWyOwxF3ba3fHdNOH0n5X811LKyXBJv2BGEf2k0JikxF
+ jWvR9WtL8gbqylCIonRyKt8tm523cBE30ACTUAbJvvxcH7R3XDHn2TcAS
+X-Gm-Gg: AY/fxX6ZRo5bdMOWaqliC0tS6hLLrEku2mr5yZxruweci3wpHc2673kovHh2/FtB6Xt
+ Oj8jjBoc9O6wohkyBFyIXWtb7m4PAywqicyFU/eNwY1u/i0xkhAc6mdu7vcbPlFKjzZh9WzDrNF
+ SGsXnKhrfCHV46ph564fv/4839ZkJTYicmXCdFEGRkFhe15krjdr9azLdIDxscR4ojUSX1PKPY0
+ OdMm5r6faC7GaKSpNtYL3iKal4+CpgIZuDrbjgDx19a4cgfeim8sOe3I1pXQ/n2Fp9r5zkFbDAp
+ UPyj9j2puxqC/OpZAbNJ0XS6YH967TOsdPsK8cBBC9YC/VjMfifkE10nL82HjO37q+lL8/k4ASP
+ pSDw=
+X-Received: by 2002:a05:7300:f187:b0:2b0:310c:529 with SMTP id
+ 5a478bee46e88-2b17d24cbdamr83390eec.14.1767729302357; 
+ Tue, 06 Jan 2026 11:55:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGFIu02HwAcCxhs/vLcklLEDBeI8ft93+dvOf5ig54+hXRsbgVNgDubZ19BfGYjZS430Yl+FA==
+X-Received: by 2002:a05:7300:f187:b0:2b0:310c:529 with SMTP id
+ 5a478bee46e88-2b17d24cbdamr83374eec.14.1767729301800; 
+ Tue, 06 Jan 2026 11:55:01 -0800 (PST)
 Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- a92af1059eb24-121f24984a3sm7435636c88.13.2026.01.06.11.48.17
+ 5a478bee46e88-2b1707d57aasm4518557eec.30.2026.01.06.11.54.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jan 2026 11:48:20 -0800 (PST)
-Date: Tue, 6 Jan 2026 14:48:14 -0500
+ Tue, 06 Jan 2026 11:55:01 -0800 (PST)
+Date: Tue, 6 Jan 2026 14:54:55 -0500
 From: Peter Xu <peterx@redhat.com>
-To: Zhang Chen <zhangckid@gmail.com>
-Cc: Lukas Straub <lukasstraub2@web.de>, qemu-devel@nongnu.org,
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Juan Quintela <quintela@trasno.org>,
- Hailiang Zhang <zhanghailiang@xfusion.com>
-Subject: Re: [PATCH 0/3] migration: Add COLO multifd support and COLO
- migration unit test
-Message-ID: <aV1m_vneDzI_5WDV@x1.local>
+To: Lukas Straub <lukasstraub2@web.de>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Zhang Chen <zhangckid@gmail.com>, Juan Quintela <quintela@trasno.org>
+Subject: Re: [PATCH 1/3] multifd: Add colo support
+Message-ID: <aV1oj75xvV8IfrU8@x1.local>
 References: <20251230-colo_unit_test_multifd-v1-0-f9734bc74c71@web.de>
- <aVPpg_LwlGFIPfen@x1.local>
- <CAK3tnv+f8b9fd_n9_6Od3f__ZuNUtuT2Q_MXszam_k=ooRPqyQ@mail.gmail.com>
+ <20251230-colo_unit_test_multifd-v1-1-f9734bc74c71@web.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK3tnv+f8b9fd_n9_6Od3f__ZuNUtuT2Q_MXszam_k=ooRPqyQ@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <20251230-colo_unit_test_multifd-v1-1-f9734bc74c71@web.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -124,131 +116,183 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Jan 04, 2026 at 01:44:52PM +0800, Zhang Chen wrote:
-> On Tue, Dec 30, 2025 at 11:02 PM Peter Xu <peterx@redhat.com> wrote:
-> >
-> > On Tue, Dec 30, 2025 at 03:05:43PM +0100, Lukas Straub wrote:
-> > > Hello everyone,
-> > > This adds COLO multifd support and migration unit tests for COLO migration
-> > > and failover.
-> >
-> > Hi, Lukas,
-> >
-> > I'll review the series after the new year.
-> >
-> > Could you still introduce some background on how you're deploying COLO?  Do
-> > you use it in production, or for fun?
-> >
-> > COLO is still a nice and interesting feature, said that, COLO has quite a
-> > lot of code plugged into migration core.  I wished it's like a multifd
-> > compressor which was much more self-contained, but it's not.  I wished we
-> > can simplify the code in QEMU migration.
-> >
-> > We've talked it through before with current COLO maintainers, it looks to
-> > me there aren't really much users using it in production, meanwhile COLO
-> > doesn't look like a feature to benefit individual QEMU users either.
-> >
-> > I want to study the use case of COLO in status quo, and evaluate how much
-> > effort we should put on it in the future.  Note that if it's for fun we can
-> > always use a stable branch which will be there forever.  We'll need to
-> > think about QEMU evolving in the future, and what's best for QEMU.
-> >
-> > Thanks,
-> >
+On Tue, Dec 30, 2025 at 03:05:44PM +0100, Lukas Straub wrote:
+> Like in the normal ram_load() path, put the received pages into the
+> colo cache and mark the pages in the bitmap so that they will be
+> flushed to the guest later.
 > 
-> Hi Lukas and Peter,
-
-Hi, Chen,
-
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> Signed-off-by: Lukas Straub <lukasstraub2@web.de>
+> ---
+>  migration/meson.build    |  2 +-
+>  migration/multifd-colo.c | 57 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  migration/multifd-colo.h | 26 ++++++++++++++++++++++
+>  migration/multifd.c      | 14 +++++++++---
+>  4 files changed, 95 insertions(+), 4 deletions(-)
 > 
-> Thanks for this series, I will support for background info if Peter
-> have any questions.
+> diff --git a/migration/meson.build b/migration/meson.build
+> index 16909d54c5110fc5d8187fd3a68c4a5b08b59ea7..1e59fe4f1f0bbfffed90df38e8f39fa87bceb9b9 100644
+> --- a/migration/meson.build
+> +++ b/migration/meson.build
+> @@ -40,7 +40,7 @@ system_ss.add(files(
+>  ), gnutls, zlib)
+>  
+>  if get_option('replication').allowed()
+> -  system_ss.add(files('colo-failover.c', 'colo.c'))
+> +  system_ss.add(files('colo-failover.c', 'colo.c', 'multifd-colo.c'))
+>  else
+>    system_ss.add(files('colo-stubs.c'))
+>  endif
+> diff --git a/migration/multifd-colo.c b/migration/multifd-colo.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..05a81e57b2bda517cbc0844b4f03dc78453f6af8
+> --- /dev/null
+> +++ b/migration/multifd-colo.c
+> @@ -0,0 +1,57 @@
+> +/*
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + *
+> + * multifd colo implementation
+> + *
+> + * Copyright (c) Lukas Straub <lukasstraub2@web.de>
+> + *
+> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
+> + * See the COPYING file in the top-level directory.
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "exec/target_page.h"
+> +#include "qemu/error-report.h"
+> +#include "qapi/error.h"
+> +#include "ram.h"
+> +#include "multifd.h"
+> +#include "options.h"
+> +#include "io/channel-socket.h"
+> +#include "migration/colo.h"
+> +#include "multifd-colo.h"
+> +#include "system/ramblock.h"
+> +
+> +void multifd_colo_prepare_recv(MultiFDRecvParams *p)
+> +{
+> +    if (!migrate_colo()) {
 
-Thanks, I believe my major question so far was, whether we should deprecate
-COLO in migration framework. :)
+We should avoid invoking *_colo_*() function, then check COLO enabled or
+not only reaching here.  Instead, we'd check "migrate_colo()" first and
+invoke it only if it's enabled.
 
-The netfilters and rest can be discussed separately.
+> +        return;
+> +    }
+> +
+> +    assert(p->block->colo_cache);
+> +
+> +    /*
+> +     * While we're still in precopy state (not yet in colo state), we copy
+> +     * received pages to both guest and cache. No need to set dirty bits,
+> +     * since guest and cache memory are in sync.
+> +     */
+> +    if (migration_incoming_in_colo_state()) {
+> +        colo_record_bitmap(p->block, p->normal, p->normal_num);
+> +    }
+> +    p->host = p->block->colo_cache;
 
-Now looking back at my initial ask in Zhijian's fix, I still agree with
-Zhijian on these two points mentioned:
+May want to update the comment of "host" then, because it isn't always
+pointing to ramblock's buffer now when COLO is enabled.
 
-https://lore.kernel.org/all/b2eadde7-57e9-426c-8487-e500ba06410e@fujitsu.com/
+> +}
+> +
+> +void multifd_colo_process_recv(MultiFDRecvParams *p)
+> +{
+> +    if (!migrate_colo()) {
 
-That is:
+Same here.
 
-        - Active users who depend on it.
-        - A unit test for the COLO framework.
+> +        return;
+> +    }
+> +
+> +    if (!migration_incoming_in_colo_state()) {
+> +        for (int i = 0; i < p->normal_num; i++) {
+> +            void *guest = p->block->host + p->normal[i];
+> +            void *cache = p->host + p->normal[i];
+> +            memcpy(guest, cache, multifd_ram_page_size());
+> +        }
+> +    }
+> +    p->host = p->block->host;
+> +}
+> diff --git a/migration/multifd-colo.h b/migration/multifd-colo.h
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..82eaf3f48c47de2f090f9de52f9d57a337d4754a
+> --- /dev/null
+> +++ b/migration/multifd-colo.h
+> @@ -0,0 +1,26 @@
+> +/*
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + *
+> + * multifd colo header
+> + *
+> + * Copyright (c) Lukas Straub <lukasstraub2@web.de>
+> + *
+> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
+> + * See the COPYING file in the top-level directory.
+> + */
+> +
+> +#ifndef QEMU_MIGRATION_MULTIFD_COLO_H
+> +#define QEMU_MIGRATION_MULTIFD_COLO_H
+> +
+> +#ifdef CONFIG_REPLICATION
+> +
+> +void multifd_colo_prepare_recv(MultiFDRecvParams *p);
+> +void multifd_colo_process_recv(MultiFDRecvParams *p);
+> +
+> +#else
+> +
+> +static inline void multifd_colo_prepare_recv(MultiFDRecvParams *p) {}
+> +static inline void multifd_colo_process_recv(MultiFDRecvParams *p) {}
+> +
+> +#endif
+> +#endif
+> diff --git a/migration/multifd.c b/migration/multifd.c
+> index bf6da85af8a1e207235ce06b8dbace33beded6d8..9006f73cc5b52e8814da107c0b5c867ee6d03a95 100644
+> --- a/migration/multifd.c
+> +++ b/migration/multifd.c
+> @@ -29,6 +29,7 @@
+>  #include "qemu-file.h"
+>  #include "trace.h"
+>  #include "multifd.h"
+> +#include "multifd-colo.h"
+>  #include "threadinfo.h"
+>  #include "options.h"
+>  #include "qemu/yank.h"
+> @@ -1398,11 +1399,18 @@ static void *multifd_recv_thread(void *opaque)
+>              if (is_device_state) {
+>                  assert(use_packets);
+>                  ret = multifd_device_state_recv(p, &local_err);
+> +                if (ret != 0) {
+> +                    break;
+> +                }
+>              } else {
+> +                multifd_colo_prepare_recv(p);
+> +
+>                  ret = multifd_recv_state->ops->recv(p, &local_err);
+> -            }
+> -            if (ret != 0) {
+> -                break;
+> +                if (ret != 0) {
+> +                    break;
+> +                }
+> +
+> +                multifd_colo_process_recv(p);
 
-Meanwhile, I can't see how COLO would win if to be compared with some
-app-level HA infrastructure.. considering the overhead it requires on
-running two VMs and compare every packet.
-
-Lukas, thanks for trying to fix the 2nd.  I apologize that I still
-requested you to send these patches, without further raising the attention
-that I still want to discuss deprecation.  I don't think anyone yet proved
-we should keep COLO.  I do plan to send one patch adding COLO framework to
-deprecation, if nobody would stop me in a week justifying question 1 above.
-
-We kind of proved almost nobody is actively using COLO anymore in the past
-few releases.  If nobody is using COLO, we should simply drop it.
-
-> And CC Hailiang Zhang, although he hasn't replied to emails for a long time.
-> If no one objects, I think Lukas can replease Hailiang for COLO Framework.
-> 
-> COLO Framework
-> M: Hailiang Zhang <zhanghailiang@xfusion.com>
-> S: Maintained
-> F: migration/colo*
-> F: include/migration/colo.h
-> F: include/migration/failover.h
-> F: docs/COLO-FT.txt
-
-Right, this is also another reason why I think we may want to deprecate
-COLO framework.
-
-Since I requested this series (sorry again, Lukas), I'll review it today no
-matter if we decide to merge this series at last, or deprecate COLO
-framework.
+Personally I'd suggest we introduce multifd_ram_state_recv() and put
+everything there.
 
 Thanks,
 
+>              }
+>          } else if (is_device_state) {
+>              error_setg(&local_err,
 > 
-> Thanks
-> Chen
-> 
-> > >
-> > > Regards,
-> > > Lukas
-> > >
-> > > Signed-off-by: Lukas Straub <lukasstraub2@web.de>
-> > > ---
-> > > Lukas Straub (3):
-> > >       multifd: Add colo support
-> > >       migration-test: Add -snapshot option for COLO
-> > >       migration-test: Add COLO migration unit test
-> > >
-> > >  migration/meson.build              |   2 +-
-> > >  migration/multifd-colo.c           |  57 ++++++++++++++++++
-> > >  migration/multifd-colo.h           |  26 +++++++++
-> > >  migration/multifd.c                |  14 ++++-
-> > >  tests/qtest/meson.build            |   7 ++-
-> > >  tests/qtest/migration-test.c       |   1 +
-> > >  tests/qtest/migration/colo-tests.c | 115 +++++++++++++++++++++++++++++++++++++
-> > >  tests/qtest/migration/framework.c  |  69 +++++++++++++++++++++-
-> > >  tests/qtest/migration/framework.h  |  10 ++++
-> > >  9 files changed, 294 insertions(+), 7 deletions(-)
-> > > ---
-> > > base-commit: 942b0d378a1de9649085ad6db5306d5b8cef3591
-> > > change-id: 20251230-colo_unit_test_multifd-8bf58dcebd46
-> > >
-> > > Best regards,
-> > > --
-> > > Lukas Straub <lukasstraub2@web.de>
-> > >
-> >
-> > --
-> > Peter Xu
-> >
+> -- 
+> 2.39.5
 > 
 
 -- 
