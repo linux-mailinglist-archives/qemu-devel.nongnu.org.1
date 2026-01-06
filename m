@@ -2,115 +2,117 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44E13CF98C1
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CA6ACF98C2
 	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 18:09:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdAPV-00054G-1y; Tue, 06 Jan 2026 11:59:57 -0500
+	id 1vdAQg-0005wH-Bh; Tue, 06 Jan 2026 12:01:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
- id 1vdAPS-000535-V7; Tue, 06 Jan 2026 11:59:54 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <alex@shazbot.org>)
+ id 1vdAQZ-0005fr-2U; Tue, 06 Jan 2026 12:01:04 -0500
+Received: from fhigh-b5-smtp.messagingengine.com ([202.12.124.156])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
- id 1vdAPR-00051w-5u; Tue, 06 Jan 2026 11:59:54 -0500
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 606F2x8S028393;
- Tue, 6 Jan 2026 16:59:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:reply-to:subject:to; s=pp1;
- bh=Ic2h+SRB+tnT6X5+5cBVSIlETXheks95s13Pb6LWDfc=; b=SJi4camy6fWX
- 4ntdr3Cir/HgspJ4OTNoaQJenJwwFMWAU51wQ44XhwjAuwG7amcboArejJRbOQZl
- p+OOwbxa2EfWsYUUDuA2q9tWasIcnaJDzncbvbnpNdrv7Zg7Ti/bxjMt3q71RKMc
- poznDgatuZEzryfSsvbVuogjjupMHNiHYDFktw6uLJfss4acXKok1/+wdALsxlvL
- XQ06lKwlMFyAbToW7RY+jqG1aPYdqE6PhE8qNy+KsdODihDXbAb1Gy/9C7udXmTc
- SH80B2vOCu3ixvtA9sU3D5Bv1iCCkZgMeqALOiEQeefknSy0MHGMQ864aDfeqE9g
- tVnbpXw57A==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betrtm1nw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Jan 2026 16:59:51 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 606GvZeG025646;
- Tue, 6 Jan 2026 16:59:51 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betrtm1nv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Jan 2026 16:59:51 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 606GLbsv005264;
- Tue, 6 Jan 2026 16:59:50 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bfexk4fpr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Jan 2026 16:59:50 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
- [10.241.53.103])
- by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 606GxnDQ28836580
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 6 Jan 2026 16:59:49 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1C4EB58062;
- Tue,  6 Jan 2026 16:59:49 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B2BD55805A;
- Tue,  6 Jan 2026 16:59:48 +0000 (GMT)
-Received: from mambor8.rchland.ibm.com (unknown [9.10.239.198])
- by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  6 Jan 2026 16:59:48 +0000 (GMT)
-Message-ID: <eb6226b9390fe2fcc6aaee3882af7607f13c94b8.camel@linux.ibm.com>
-Subject: Re: [PATCH 3/4] ppc/pnv: Add unimplemented quad and core regs
-From: Miles Glenn <milesg@linux.ibm.com>
-To: Caleb Schlossin <calebs@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, npiggin@gmail.com, adityag@linux.ibm.com,
- chalapathi.v@linux.ibm.com
-Date: Tue, 06 Jan 2026 10:59:48 -0600
-In-Reply-To: <20251218200353.301866-4-calebs@linux.ibm.com>
-References: <20251218200353.301866-1-calebs@linux.ibm.com>
- <20251218200353.301866-4-calebs@linux.ibm.com>
-Organization: IBM
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-27.el8_10) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=aaJsXBot c=1 sm=1 tr=0 ts=695d3f87 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=VwmPzSXVq4500yFet8UA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: Ewf2m9m_JmN24P_EG9k6wW_2S5LBCQ7M
-X-Proofpoint-ORIG-GUID: SJh39qtSACB5lbN24nvIf-G0iRtFhFwd
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA2MDE0NiBTYWx0ZWRfX/y4j6oh2R1E6
- U+dd5IlPxguXV8ZzryQb2hcxEl+oxp7bRIVpqG0WQxFuFyiTnjBpXXxCTe7difdJ9zttvzcd+dO
- Sj31xh0DPNjaIzMvyFIzeUIB7fZPGW/cNrHFyFNmttcCy0OLtzwrKyq5Zmr1aYlue0pxHlMvomv
- oATISecPm4W4Hrf2cwKVi47WIN79Z6i8LBOcNquZ7qnll6aak/A+/NnNasSLIoyYKIr3dOCpkHL
- MLwQDaZeMdFCqBhH0PbLurZcgS21pcxYLjCV2+5lucftYDw10mYJiXt9EOYsIsYAw7nBCP60FWz
- AH4vCspgKS0O82ibQM1SNHCwFG7NE9ZR8PiH1h9Gyr6K9POsUKOxgju1n6l5lSCFR08/UOGqYM/
- M/6w7gT5Ljl2mJZRTepnTqzqe5AxHb+HJhCJ9JL7nhYdJ9BiAvPUkqxU/TadmtXYYVkP7Gvqz6p
- JdPHO5fkr3p2sUoPi7Q==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-06_01,2026-01-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0
- priorityscore=1501 clxscore=1015 phishscore=0 spamscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601060146
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=milesg@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+ (Exim 4.90_1) (envelope-from <alex@shazbot.org>)
+ id 1vdAQW-0005J2-Ho; Tue, 06 Jan 2026 12:01:02 -0500
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+ by mailfhigh.stl.internal (Postfix) with ESMTP id D06BC7A0157;
+ Tue,  6 Jan 2026 12:00:54 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+ by phl-compute-02.internal (MEProxy); Tue, 06 Jan 2026 12:00:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+ cc:cc:content-transfer-encoding:content-type:content-type:date
+ :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to; s=fm1; t=1767718854;
+ x=1767805254; bh=TzP6zgB/UK1wRtZVoQoKcLloN0E9lGwY2Qs9lCyTvuQ=; b=
+ asqlr7PH/Muy94Zc9EpMo1sxxOuuNhzMHUaTJZRlxWQcUSduAOO1G9dSZc5G2pzm
+ w49gk2wCwLEW0Q2495isZYXXTUhflBvgnXYmX388ckSlm5b6rhB2/1yW6oIkKg71
+ HxhDRSnFMJkjdUihBfT4Z9PPwfEMukH5ncevoGbam0+rVwIb59fh9ggYkhzdBq4V
+ bXhus4sZmYMwNAVdWYu99wNHUvCJB+T4LEsn2vPww3YivNq9WLonKX3n6K/jqN4O
+ Mf7VWpGdls+oTmNmgjZ/kM3fBPYo9jooVY64F2F0hh1qNJwL7b3bc6VG/xEkq8Jx
+ uVjalKqLpJJDL9QGbod8wA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1767718854; x=
+ 1767805254; bh=TzP6zgB/UK1wRtZVoQoKcLloN0E9lGwY2Qs9lCyTvuQ=; b=f
+ 2YoXgovME5zyVhRiX9jEZzv21SMG1XUEsn0eFkcuI++fWOLBVmnBj7pKcfmxpywp
+ +Fw4iYcIR8CskX0XGvcN/Rb90Df6LoPxJd+9/shNCbH1NdKBEhj5qOAH24C3r0pY
+ Nxc5XoAmkLDLJ3ArWZVARYaiIjVYhp+eFUYPF4qDqtEm0OMz7AqCUrYqnATdKf/W
+ ZyGiopK345c07veWRuP98NGHE+hnD/ssfp1Wi+vzUMxr2kBa4JhJNLHMhDhLMs6K
+ j3JT+ECcbnlAd7XNHaya8r+gzIFp8L8Kz8jhpctlL5E6Y72e69Q2UyCRln/pEhOm
+ n3VHLR3kpDZrsopzuWKSw==
+X-ME-Sender: <xms:xT9dae8Oxhfvd6OzL8VD9zcoR_hmbpCqVEMpyq_vLBBZABnMdEiPNQ>
+ <xme:xT9daZbuuDnV2VCzw0t0J0LqYa94cM1U584k-mEoKSZZH8EdUe5CcXYaSHXBUHS_7
+ -XrpPTT3PSj1MGxAKv17LtPlG4gIrz7PTSMRu5T5EGPb-Bhv4iX>
+X-ME-Received: <xmr:xT9daaoMIM0D9GUqBKjnF9DTVAGsok3O7RZk8qD0rjww_pD1_rvcnKKqZ1I>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddutddtjeegucetufdoteggodetrf
+ dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+ rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+ gurhepfffhvfevuffkjghfgggtgfesthhqredttddtjeenucfhrhhomheptehlvgigucgh
+ ihhllhhirghmshhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrth
+ htvghrnhepgfffvdefjeejueevfeetudfhgeetfeeuheetfeekjedvuddvueehffdtgeej
+ keetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+ hlvgigsehshhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopeduledpmhhouggvpehs
+ mhhtphhouhhtpdhrtghpthhtohepvghrihgtrdgruhhgvghrsehrvgguhhgrthdrtghomh
+ dprhgtphhtthhopehskhholhhothhhuhhmthhhohesnhhvihguihgrrdgtohhmpdhrtghp
+ thhtohephihirdhlrdhlihhusehinhhtvghlrdgtohhmpdhrtghpthhtohepqhgvmhhuqd
+ grrhhmsehnohhnghhnuhdrohhrghdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhho
+ nhhgnhhurdhorhhgpdhrtghpthhtohepphgvthgvrhdrmhgrhiguvghllheslhhinhgrrh
+ hordhorhhgpdhrtghpthhtohepjhhgghesnhhvihguihgrrdgtohhmpdhrtghpthhtohep
+ nhhitgholhhinhgtsehnvhhiughirgdrtghomhdprhgtphhtthhopeguughuthhilhgvse
+ hrvgguhhgrthdrtghomh
+X-ME-Proxy: <xmx:xT9daRa85tfiZcXtv4ynW898CxudSOGG81Kq6l1QIcs4xdYCFylCVA>
+ <xmx:xT9dad74IP0OdJAEfXRDIX2jKaa8GZwZAr94lMFBDyeTUNEc7ly3Ow>
+ <xmx:xT9dacQBZLkrF6Q5UJ76cyndxYwJrdomA8F6e1VOSNotzGAPZTSODg>
+ <xmx:xT9daduXkf1L2wv6HttBqU5n3aOch__zJvZqizcAzVJnidEr7-7LGA>
+ <xmx:xj9daW6MA-8_4qR6AoaKCnyIl4KXw8SGeAY9YB-Ks17b5pPUNymDVgOB>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 6 Jan 2026 12:00:52 -0500 (EST)
+Date: Tue, 6 Jan 2026 10:00:51 -0700
+From: Alex Williamson <alex@shazbot.org>
+To: Eric Auger <eric.auger@redhat.com>
+Cc: Shameer Kolothum <skolothumtho@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, Jason Gunthorpe <jgg@nvidia.com>, Nicolin Chen
+ <nicolinc@nvidia.com>, "ddutile@redhat.com" <ddutile@redhat.com>,
+ "berrange@redhat.com" <berrange@redhat.com>, Nathan Chen
+ <nathanc@nvidia.com>, Matt Ochs <mochs@nvidia.com>, "smostafa@google.com"
+ <smostafa@google.com>, "wangzhou1@hisilicon.com" <wangzhou1@hisilicon.com>,
+ "jiangkunkun@huawei.com" <jiangkunkun@huawei.com>,
+ "jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>,
+ "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>,
+ "zhenzhong.duan@intel.com" <zhenzhong.duan@intel.com>, Krishnakant Jaju
+ <kjaju@nvidia.com>
+Subject: Re: [PATCH v6 32/33] vfio: Synthesize vPASID capability to VM
+Message-ID: <20260106100051.313ccbab.alex@shazbot.org>
+In-Reply-To: <15ace9b4-ead5-4153-be5c-7a0323498cb3@redhat.com>
+References: <20251120132213.56581-1-skolothumtho@nvidia.com>
+ <20251120132213.56581-33-skolothumtho@nvidia.com>
+ <7dc608a7-b36b-4250-befd-d26115b54e26@redhat.com>
+ <483fa0e2-aeb5-43b7-a136-692bbd24d0ba@intel.com>
+ <CH3PR12MB75489918DACE8B009A8F4F32AB86A@CH3PR12MB7548.namprd12.prod.outlook.com>
+ <4a1e1e8a-8480-4294-a176-b5e630b7d0c7@redhat.com>
+ <CH3PR12MB75483839B76AB0C78803687FAB87A@CH3PR12MB7548.namprd12.prod.outlook.com>
+ <15ace9b4-ead5-4153-be5c-7a0323498cb3@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=202.12.124.156; envelope-from=alex@shazbot.org;
+ helo=fhigh-b5-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -123,156 +125,129 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: milesg@linux.ibm.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
+On Tue, 6 Jan 2026 14:22:57 +0100
+Eric Auger <eric.auger@redhat.com> wrote:
 
+> On 1/6/26 12:38 PM, Shameer Kolothum wrote:
+> > Hi Eric,
+> > =20
+> >> -----Original Message-----
+> >> From: Eric Auger <eric.auger@redhat.com>
+> >> Sent: 06 January 2026 10:55
+> >> To: Shameer Kolothum <skolothumtho@nvidia.com>; Yi Liu
+> >> <yi.l.liu@intel.com>; qemu-arm@nongnu.org; qemu-devel@nongnu.org
+> >> Cc: peter.maydell@linaro.org; Jason Gunthorpe <jgg@nvidia.com>; Nicolin
+> >> Chen <nicolinc@nvidia.com>; ddutile@redhat.com; berrange@redhat.com;
+> >> Nathan Chen <nathanc@nvidia.com>; Matt Ochs <mochs@nvidia.com>;
+> >> smostafa@google.com; wangzhou1@hisilicon.com;
+> >> jiangkunkun@huawei.com; jonathan.cameron@huawei.com;
+> >> zhangfei.gao@linaro.org; zhenzhong.duan@intel.com; Krishnakant Jaju
+> >> <kjaju@nvidia.com>; alex@shazbot.org
+> >> Subject: Re: [PATCH v6 32/33] vfio: Synthesize vPASID capability to VM
+> >>
+> >> External email: Use caution opening links or attachments
+> >>
+> >>
+> >> Hi Shameer, =20
+> > [...]
+> > =20
+> >>>>> Besides the fact the offset is arbitrarily chosen so that this is t=
+he
+> >>>>> last cap of the vconfig space, the code looks good to me.
+> >>>>> So
+> >>>>> Reviewed-by: Eric Auger <eric.auger@redhat.com>
+> >>>>>
+> >>>>> Just wondering whether we couldn't add some generic pcie code that
+> >>>>> parses the extended cap linked list to check the offset range is not
+> >>>>> used by another cap before allowing the insertion at a given offset?
+> >>>>> This wouldn't prevent a subsequent addition from failing but at lea=
+st we
+> >>>>> would know if there is some collision.this could be added later on =
+though.
+> >>>>> =20
+> >>>> You're absolutely right. My approach of using the last 8 bytes was a
+> >>>> shortcut to avoid implementing proper capability parsing logic
+> >>>> (importing pci_regs.h and maintaining a cap_id-to-cap_size mapping
+> >>>> table), and it simplified PASID capability detection by only examini=
+ng
+> >>>> the last 8bytes by a simple dump :(. However, this approach is not
+> >>>> good as we cannot guarantee that the last 8bytes are unused by any
+> >>>> device.
+> >>>>
+> >>>> Let's just implement the logic to walk the linked list of ext_caps to
+> >>>> find an appropriate offset for our use case. =20
+> >>> I had a go at this. Based on my understanding, even if we walk the PC=
+Ie
+> >>> extended capability linked list, we still can't easily determine the =
+size
+> >>> occupied by the last capability as the extended capability header doe=
+s not
+> >>> encode a length, it only provides the "next" pointer, and for the las=
+t entry
+> >>> next =3D=3D 0. =20
+> >> If my understanding is correct when walking the linked list, you can
+> >> enumerate the start index and the PCIe extended Capability variable si=
+ze
+> >> which is made of fix header size + register block variable size which
+> >> depends on the capability ID). After that we shall be able to allocate=
+ a
+> >> slot within holes or at least check that adding the new prop at the end
+> >> of the 4kB is safe, no?. What do I miss? =20
+> > I think the main issue is that we can't know whether the apparent "hole=
+s"
+> > between extended capabilities are actually free. Depending on the vendor
+> > implementation, those regions may be reserved or used for vendor specif=
+ic
+> > purposes, and I am not sure(please correct me) PCIe spec guarantee that
+> > such gaps are available for reuse. Hence thought of relying on the =E2=
+=80=9Cnext=E2=80=9D
+> > pointer as a safe bet.
+> >
+> > Even if we look at the last CAP ID and derive a size based on the
+> > spec defined register layout, we still can;t know whether there is
+> > any additional vendor specific data beyond that "size". It is still
+> > a best guess and I don't think we gain much in adding this additional
+> > check. =20
+>=20
+> Ah OK I see what you mean (you may have discussed that earlier in other
+> threads sorry). So you may have vendor specific private data in the
+> holes. In that case I guess we cannot do much :-/
+
+Also, we can only know the size of capabilities that are currently
+defined, we don't do a great job of keeping up with the latest ECNs.
+
+Unless we have device specific knowledge, the best we can do is hope
+that a gap between capabilities is unused.  It might be a helpful
+indicator to verify the config space we intend to overlap is zero,
+though we can get false positives with such a method if we overlap a
+capability that kernel vfio-pci has disconnected from the capability
+chain an marked read-only.
+
+> >
+> > Perhaps, I think we could inform the user that we are placing
+> > teh PASID at the last offset and the onus is on user to make sure
+> > it is safe to do so.  =20
+> or another solution is to let the user opt-in for this hasardous
+> placement using an explicit x- prefixed option? Dunno
+
+Yeah, this is probably one of those cases where we expect we don't have
+a foolproof solution and we should allow an override.  I think we're
+defining the initial 'auto' algorithm that a -x-vpasid_cap_offset=3D
+might use by default.  It should also take a numerical value as an
+override though.  We'll need a table so that when we find a device that
+requires a different value, that becomes the auto value for that
+device.
+
+Also consider how adding subsequent purely virtual capability would
+work.  We don't want to have each capability defining a new algorithm
+and default offset.  To that extent, we might be better served with a
+command line override that specifies available ranges of config space
+rather than an offset for a specific vcap.  I think our discussions
+related to a kernel interface were headed more in this direction.
 Thanks,
 
-Glenn
-
-On Thu, 2025-12-18 at 14:03 -0600, Caleb Schlossin wrote:
-> This commit adds the read/write functionality for few core and
-> quad registers.
-> 
-> Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
-> Signed-off-by: Caleb Schlossin <calebs@linux.ibm.com>
-> ---
->  hw/ppc/pnv_core.c | 81 +++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 81 insertions(+)
-> 
-> diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-> index fb2dfc7ba2..84a2fa6364 100644
-> --- a/hw/ppc/pnv_core.c
-> +++ b/hw/ppc/pnv_core.c
-> @@ -184,10 +184,18 @@ static const MemoryRegionOps pnv_core_power9_xscom_ops = {
->   * POWER10 core controls
->   */
->  
-> +#define PNV10_XSCOM_EC_IMA_EVENT_MASK       0x400
->  #define PNV10_XSCOM_EC_CORE_THREAD_STATE    0x412
->  #define PNV10_XSCOM_EC_CORE_THREAD_INFO     0x413
-> +#define PNV10_XSCOM_EC_CORE_FIRMASK         0x443
-> +#define PNV10_XSCOM_EC_CORE_FIRMASK_AND     0x444
-> +#define PNV10_XSCOM_EC_CORE_FIRMASK_OR      0x445
->  #define PNV10_XSCOM_EC_CORE_DIRECT_CONTROLS 0x449
->  #define PNV10_XSCOM_EC_CORE_RAS_STATUS      0x454
-> +#define PNV10_XSCOM_EC_SPATTN_OR            0x497
-> +#define PNV10_XSCOM_EC_SPATTN_AND           0x498
-> +#define PNV10_XSCOM_EC_SPATTN               0x499
-> +#define PNV10_XSCOM_EC_SPATTN_MASK          0x49A
->  
->  static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
->                                             unsigned int width)
-> @@ -223,6 +231,19 @@ static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
->              }
->          }
->          break;
-> +    case PNV10_XSCOM_EC_IMA_EVENT_MASK:
-> +    case PNV10_XSCOM_EC_CORE_FIRMASK:
-> +        return 0;
-> +    case PNV10_XSCOM_EC_CORE_FIRMASK_OR:
-> +    case PNV10_XSCOM_EC_CORE_FIRMASK_AND:
-> +    case PNV10_XSCOM_EC_SPATTN_OR:
-> +    case PNV10_XSCOM_EC_SPATTN_AND:
-> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: Write only register, ignoring "
-> +                              "xscom read at 0x%08x\n", __func__, offset);
-> +        break;
-> +    case PNV10_XSCOM_EC_SPATTN:
-> +    case PNV10_XSCOM_EC_SPATTN_MASK:
-> +        return 0;
->      default:
->          qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
->                        offset);
-> @@ -283,6 +304,15 @@ static void pnv_core_power10_xscom_write(void *opaque, hwaddr addr,
->          }
->          break;
->  
-> +    case PNV10_XSCOM_EC_IMA_EVENT_MASK:
-> +    case PNV10_XSCOM_EC_CORE_FIRMASK:
-> +    case PNV10_XSCOM_EC_CORE_FIRMASK_OR:
-> +    case PNV10_XSCOM_EC_CORE_FIRMASK_AND:
-> +    case PNV10_XSCOM_EC_SPATTN_OR:
-> +    case PNV10_XSCOM_EC_SPATTN_AND:
-> +    case PNV10_XSCOM_EC_SPATTN:
-> +    case PNV10_XSCOM_EC_SPATTN_MASK:
-> +        break;
->      default:
->          qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
->                        offset);
-> @@ -568,6 +598,23 @@ static const MemoryRegionOps pnv_quad_power9_xscom_ops = {
->   * POWER10 Quads
->   */
->  
-> +#define P10_XSCOM_EQ3_MODE_REG1         0x1160a
-> +#define P10_XSCOM_EQ3_NCU_SPEC_BAR_REG  0x11650
-> +#define P10_XSCOM_EQ3_HTM_MODE          0x11680
-> +#define P10_XSCOM_EQ3_HTM_IMA_PDBAR     0x1168b
-> +#define P10_XSCOM_EQ2_MODE_REG1         0x1260a
-> +#define P10_XSCOM_EQ2_NCU_SPEC_BAR_REG  0x12650
-> +#define P10_XSCOM_EQ2_HTM_MODE          0x12680
-> +#define P10_XSCOM_EQ2_HTM_IMA_PDBAR     0x1268b
-> +#define P10_XSCOM_EQ1_MODE_REG1         0x1460a
-> +#define P10_XSCOM_EQ1_NCU_SPEC_BAR_REG  0x14650
-> +#define P10_XSCOM_EQ1_HTM_MODE          0x14680
-> +#define P10_XSCOM_EQ1_HTM_IMA_PDBAR     0x1468b
-> +#define P10_XSCOM_EQ0_MODE_REG1         0x1860a
-> +#define P10_XSCOM_EQ0_NCU_SPEC_BAR_REG  0x18650
-> +#define P10_XSCOM_EQ0_HTM_MODE          0x18680
-> +#define P10_XSCOM_EQ0_HTM_IMA_PDBAR     0x1868b
-> +
->  static uint64_t pnv_quad_power10_xscom_read(void *opaque, hwaddr addr,
->                                              unsigned int width)
->  {
-> @@ -575,6 +622,23 @@ static uint64_t pnv_quad_power10_xscom_read(void *opaque, hwaddr addr,
->      uint64_t val = -1;
->  
->      switch (offset) {
-> +    case P10_XSCOM_EQ0_MODE_REG1:
-> +    case P10_XSCOM_EQ0_NCU_SPEC_BAR_REG:
-> +    case P10_XSCOM_EQ0_HTM_MODE:
-> +    case P10_XSCOM_EQ0_HTM_IMA_PDBAR:
-> +    case P10_XSCOM_EQ1_MODE_REG1:
-> +    case P10_XSCOM_EQ1_NCU_SPEC_BAR_REG:
-> +    case P10_XSCOM_EQ1_HTM_MODE:
-> +    case P10_XSCOM_EQ1_HTM_IMA_PDBAR:
-> +    case P10_XSCOM_EQ2_MODE_REG1:
-> +    case P10_XSCOM_EQ2_NCU_SPEC_BAR_REG:
-> +    case P10_XSCOM_EQ2_HTM_MODE:
-> +    case P10_XSCOM_EQ2_HTM_IMA_PDBAR:
-> +    case P10_XSCOM_EQ3_MODE_REG1:
-> +    case P10_XSCOM_EQ3_NCU_SPEC_BAR_REG:
-> +    case P10_XSCOM_EQ3_HTM_MODE:
-> +    case P10_XSCOM_EQ3_HTM_IMA_PDBAR:
-> +        return 0;
->      default:
->          qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
->                        offset);
-> @@ -589,6 +653,23 @@ static void pnv_quad_power10_xscom_write(void *opaque, hwaddr addr,
->      uint32_t offset = addr >> 3;
->  
->      switch (offset) {
-> +    case P10_XSCOM_EQ0_MODE_REG1:
-> +    case P10_XSCOM_EQ0_NCU_SPEC_BAR_REG:
-> +    case P10_XSCOM_EQ0_HTM_MODE:
-> +    case P10_XSCOM_EQ0_HTM_IMA_PDBAR:
-> +    case P10_XSCOM_EQ1_MODE_REG1:
-> +    case P10_XSCOM_EQ1_NCU_SPEC_BAR_REG:
-> +    case P10_XSCOM_EQ1_HTM_MODE:
-> +    case P10_XSCOM_EQ1_HTM_IMA_PDBAR:
-> +    case P10_XSCOM_EQ2_MODE_REG1:
-> +    case P10_XSCOM_EQ2_NCU_SPEC_BAR_REG:
-> +    case P10_XSCOM_EQ2_HTM_MODE:
-> +    case P10_XSCOM_EQ2_HTM_IMA_PDBAR:
-> +    case P10_XSCOM_EQ3_MODE_REG1:
-> +    case P10_XSCOM_EQ3_NCU_SPEC_BAR_REG:
-> +    case P10_XSCOM_EQ3_HTM_MODE:
-> +    case P10_XSCOM_EQ3_HTM_IMA_PDBAR:
-> +        break;
->      default:
->          qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
->                        offset);
-
+Alex
 
