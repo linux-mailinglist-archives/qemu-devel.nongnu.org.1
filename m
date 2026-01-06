@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D04D2CF6DAC
-	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 07:14:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77D0ECF6DD5
+	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 07:16:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vd0KV-0003Na-Sx; Tue, 06 Jan 2026 01:14:07 -0500
+	id 1vd0KX-0003PZ-QQ; Tue, 06 Jan 2026 01:14:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vd0KU-0003Mm-D5
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 01:14:06 -0500
+ id 1vd0KV-0003Ne-MI
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 01:14:07 -0500
 Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1vd0KQ-0007J8-TK
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 01:14:06 -0500
+ id 1vd0KT-0007JN-VC
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 01:14:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1767680043; x=1799216043;
+ t=1767680046; x=1799216046;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=1ygu3CRxj06O9rmnUnTm9Hgrynjbm0C12ZyY7mRQhOg=;
- b=aS/S5hzyiKlPUqSupwpDb8erRW0XEVfe17LZZT9yE8LysujLBCK8F6t7
- Ocz8LdFX/UjzAnfJ5BZYUY4z2MIU4bMqp/lhd0ypEObOdHrXbvk5lXE3d
- y+Pw/jxcV6F2yThq829pKXEQj3EXtQlfmzUVJHMYrscYvQRHu636cK08s
- 3DSNLiwOkY9YUE5BATvAQGgYUGR5tyavjL2qCSiPzqJC1/3M6Z8uY5qki
- qRV5wQ2IYS6dV3Lr9FRrmzy6viftSQhqqwtd3QzE7l+zQtmr9u8K2Jg6z
- ToUq00R0sTZEP0nT6bt4tjnDROzlDPbtieyP6Gs62cVmT8O6+2EeI28tL A==;
-X-CSE-ConnectionGUID: tJ87pmOYQ7+k/+Nua34aJA==
-X-CSE-MsgGUID: PBvWhg1vTdasjAVJ7bGJBw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11662"; a="69094017"
-X-IronPort-AV: E=Sophos;i="6.21,204,1763452800"; d="scan'208";a="69094017"
+ bh=sr9MnH4s1/ZT5Y57AsuK13UQrrgvHMmHqLScrqc26BI=;
+ b=YIzOz4FhyFZKliX4IFbFU61tQBFbIAlq73TqSWC+mKXPHxzq/KQMRTy9
+ NORVIIgKJGukvqfX4pcLXKcc6HlmnY5JDUlULkZWdFmWyL4weQvrrgCTg
+ t7L5mvaFvNSVSPxZAKHEdTZCMtFLXAzSHYNYYN8kzVcmaPfY7lTn/e3Gx
+ 4m0BVSEOmo95tS/AL/GeuA/lFDySkWhq9xC7C8JV/JoUGIo8HamchbGow
+ e9tIygqq7KgQKOed5w6jlaKGXywukJiBsYJJKrRVdvPxRU7Xp1r5lQpfe
+ Dz/IYFts5BJ4Rl7cy9bFVcwCLeIq/flMGhy8ubF156Mw69PKDNIOq8DKh A==;
+X-CSE-ConnectionGUID: kOCsFbP2Rf24Nr3OtE/rrg==
+X-CSE-MsgGUID: /Cx/wUIrTFG7HW4plAmBQQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11662"; a="69094022"
+X-IronPort-AV: E=Sophos;i="6.21,204,1763452800"; d="scan'208";a="69094022"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jan 2026 22:14:00 -0800
-X-CSE-ConnectionGUID: kU7FO+TWQIyNRJU74FskIQ==
-X-CSE-MsgGUID: o9QGi8+TRqae2R0+B81Y0Q==
+ 05 Jan 2026 22:14:04 -0800
+X-CSE-ConnectionGUID: 5onLJrM2S9W0BBlYUrtc7w==
+X-CSE-MsgGUID: HmR/76+/QPiNC2HWJ/oYTw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,204,1763452800"; d="scan'208";a="202588828"
+X-IronPort-AV: E=Sophos;i="6.21,204,1763452800"; d="scan'208";a="202588847"
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jan 2026 22:13:55 -0800
+ 05 Jan 2026 22:14:00 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex@shazbot.org, clg@redhat.com, eric.auger@redhat.com, mst@redhat.com,
@@ -51,10 +51,10 @@ Cc: alex@shazbot.org, clg@redhat.com, eric.auger@redhat.com, mst@redhat.com,
  nicolinc@nvidia.com, skolothumtho@nvidia.com, joao.m.martins@oracle.com,
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v10 10/19] intel_iommu_accel: Fail passthrough device under
- PCI bridge if x-flts=on
-Date: Tue,  6 Jan 2026 01:12:52 -0500
-Message-ID: <20260106061304.314546-11-zhenzhong.duan@intel.com>
+Subject: [PATCH v10 11/19] intel_iommu_accel: Stick to system MR for IOMMUFD
+ backed host device when x-flts=on
+Date: Tue,  6 Jan 2026 01:12:53 -0500
+Message-ID: <20260106061304.314546-12-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260106061304.314546-1-zhenzhong.duan@intel.com>
 References: <20260106061304.314546-1-zhenzhong.duan@intel.com>
@@ -85,112 +85,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently we don't support nested translation for passthrough device with
-emulated device under same PCI bridge, because they require different address
-space when x-flts=on.
+When guest enables scalable mode and setup first stage page table, we don't
+want to use IOMMU MR but rather continue using the system MR for IOMMUFD
+backed host device.
 
-In theory, we do support if devices under same PCI bridge are all passthrough
-devices. But emulated device can be hotplugged under same bridge. To simplify,
-just forbid passthrough device under PCI bridge no matter if there is, or will
-be emulated devices under same bridge. This is acceptable because PCIE bridge
-is more popular than PCI bridge now.
+Then default HWPT in VFIO contains GPA->HPA mappings which could be reused
+as nesting parent HWPT to construct nested HWPT in vIOMMU.
+
+Move vtd_as_key into intel_iommu_internal.h as it's also used by accel code.
 
 Suggested-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
 ---
- hw/i386/intel_iommu_accel.h |  4 ++--
- hw/i386/intel_iommu.c       |  7 ++++---
- hw/i386/intel_iommu_accel.c | 12 +++++++++++-
- 3 files changed, 17 insertions(+), 6 deletions(-)
+ hw/i386/intel_iommu_accel.h    |  6 ++++++
+ hw/i386/intel_iommu_internal.h | 11 +++++++++++
+ hw/i386/intel_iommu.c          | 28 +++++++++++++++-------------
+ hw/i386/intel_iommu_accel.c    | 18 ++++++++++++++++++
+ 4 files changed, 50 insertions(+), 13 deletions(-)
 
 diff --git a/hw/i386/intel_iommu_accel.h b/hw/i386/intel_iommu_accel.h
-index 472ae109e2..76e0d26942 100644
+index 76e0d26942..d049cab3e1 100644
 --- a/hw/i386/intel_iommu_accel.h
 +++ b/hw/i386/intel_iommu_accel.h
-@@ -13,11 +13,11 @@
- #include CONFIG_DEVICES
- 
+@@ -15,6 +15,7 @@
  #ifdef CONFIG_VTD_ACCEL
--bool vtd_check_hiod_accel(IntelIOMMUState *s, HostIOMMUDevice *hiod,
-+bool vtd_check_hiod_accel(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hiod,
+ bool vtd_check_hiod_accel(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hiod,
                            Error **errp);
++VTDHostIOMMUDevice *vtd_find_hiod_iommufd(VTDAddressSpace *as);
  #else
  static inline bool vtd_check_hiod_accel(IntelIOMMUState *s,
--                                        HostIOMMUDevice *hiod,
-+                                        VTDHostIOMMUDevice *vtd_hiod,
-                                         Error **errp)
- {
-     error_setg(errp, "host IOMMU cannot be checked!");
+                                         VTDHostIOMMUDevice *vtd_hiod,
+@@ -24,5 +25,10 @@ static inline bool vtd_check_hiod_accel(IntelIOMMUState *s,
+     error_append_hint(errp, "CONFIG_VTD_ACCEL is not enabled");
+     return false;
+ }
++
++static inline VTDHostIOMMUDevice *vtd_find_hiod_iommufd(VTDAddressSpace *as)
++{
++    return NULL;
++}
+ #endif
+ #endif
+diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
+index 02522f64e0..d8dad18304 100644
+--- a/hw/i386/intel_iommu_internal.h
++++ b/hw/i386/intel_iommu_internal.h
+@@ -685,4 +685,15 @@ typedef struct VTDHostIOMMUDevice {
+     uint8_t devfn;
+     HostIOMMUDevice *hiod;
+ } VTDHostIOMMUDevice;
++
++/*
++ * PCI bus number (or SID) is not reliable since the device is usaully
++ * initialized before guest can configure the PCI bridge
++ * (SECONDARY_BUS_NUMBER).
++ */
++struct vtd_as_key {
++    PCIBus *bus;
++    uint8_t devfn;
++    uint32_t pasid;
++};
+ #endif
 diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index b11798d4b7..0817b17772 100644
+index 0817b17772..d5a4e02fa1 100644
 --- a/hw/i386/intel_iommu.c
 +++ b/hw/i386/intel_iommu.c
-@@ -4570,9 +4570,10 @@ VTDAddressSpace *vtd_find_add_as(IntelIOMMUState *s, PCIBus *bus,
-     return vtd_dev_as;
- }
+@@ -55,17 +55,6 @@
+ #define VTD_PE_GET_SS_LEVEL(pe) \
+     (2 + (((pe)->val[0] >> 2) & VTD_SM_PASID_ENTRY_AW))
  
--static bool vtd_check_hiod(IntelIOMMUState *s, HostIOMMUDevice *hiod,
-+static bool vtd_check_hiod(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hiod,
-                            Error **errp)
+-/*
+- * PCI bus number (or SID) is not reliable since the device is usaully
+- * initialized before guest can configure the PCI bridge
+- * (SECONDARY_BUS_NUMBER).
+- */
+-struct vtd_as_key {
+-    PCIBus *bus;
+-    uint8_t devfn;
+-    uint32_t pasid;
+-};
+-
+ /* bus/devfn is PCI device's real BDF not the aliased one */
+ struct vtd_hiod_key {
+     PCIBus *bus;
+@@ -1730,12 +1719,25 @@ static bool vtd_as_pt_enabled(VTDAddressSpace *as)
+ /* Return whether the device is using IOMMU translation. */
+ static bool vtd_switch_address_space(VTDAddressSpace *as)
  {
-+    HostIOMMUDevice *hiod = vtd_hiod->hiod;
-     HostIOMMUDeviceClass *hiodc = HOST_IOMMU_DEVICE_GET_CLASS(hiod);
-     int ret;
++    IntelIOMMUState *s;
+     bool use_iommu, pt;
  
-@@ -4596,7 +4597,7 @@ static bool vtd_check_hiod(IntelIOMMUState *s, HostIOMMUDevice *hiod,
-         return true;
-     }
+     assert(as);
  
--    return vtd_check_hiod_accel(s, hiod, errp);
-+    return vtd_check_hiod_accel(s, vtd_hiod, errp);
- }
+-    use_iommu = as->iommu_state->dmar_enabled && !vtd_as_pt_enabled(as);
+-    pt = as->iommu_state->dmar_enabled && vtd_as_pt_enabled(as);
++    s = as->iommu_state;
++    use_iommu = s->dmar_enabled && !vtd_as_pt_enabled(as);
++    pt = s->dmar_enabled && vtd_as_pt_enabled(as);
++
++    /*
++     * When guest enables scalable mode and sets up first stage page table,
++     * we stick to system MR for IOMMUFD backed host device. Then its
++     * default hwpt contains GPA->HPA mappings which is used directly if
++     * PGTT=PT and used as nesting parent if PGTT=FST. Otherwise fall back
++     * to original processing.
++     */
++    if (s->root_scalable && s->fsts && vtd_find_hiod_iommufd(as)) {
++        use_iommu = false;
++    }
  
- static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
-@@ -4632,7 +4633,7 @@ static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
-     vtd_hiod->iommu_state = s;
-     vtd_hiod->hiod = hiod;
- 
--    if (!vtd_check_hiod(s, hiod, errp)) {
-+    if (!vtd_check_hiod(s, vtd_hiod, errp)) {
-         g_free(vtd_hiod);
-         vtd_iommu_unlock(s);
-         return false;
+     trace_vtd_switch_address_space(pci_bus_num(as->bus),
+                                    VTD_PCI_SLOT(as->devfn),
 diff --git a/hw/i386/intel_iommu_accel.c b/hw/i386/intel_iommu_accel.c
-index 6846c6ec4d..ead6c42879 100644
+index ead6c42879..ebfc503d64 100644
 --- a/hw/i386/intel_iommu_accel.c
 +++ b/hw/i386/intel_iommu_accel.c
-@@ -12,12 +12,16 @@
- #include "system/iommufd.h"
- #include "intel_iommu_internal.h"
- #include "intel_iommu_accel.h"
-+#include "hw/pci/pci_bus.h"
- 
--bool vtd_check_hiod_accel(IntelIOMMUState *s, HostIOMMUDevice *hiod,
-+bool vtd_check_hiod_accel(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hiod,
-                           Error **errp)
- {
-+    HostIOMMUDevice *hiod = vtd_hiod->hiod;
-     struct HostIOMMUDeviceCaps *caps = &hiod->caps;
-     struct iommu_hw_info_vtd *vtd = &caps->vendor_caps.vtd;
-+    PCIBus *bus = vtd_hiod->bus;
-+    PCIDevice *pdev = bus->devices[vtd_hiod->devfn];
- 
-     if (!object_dynamic_cast(OBJECT(hiod), TYPE_HOST_IOMMU_DEVICE_IOMMUFD)) {
-         error_setg(errp, "Need IOMMUFD backend when x-flts=on");
-@@ -36,6 +40,12 @@ bool vtd_check_hiod_accel(IntelIOMMUState *s, HostIOMMUDevice *hiod,
-         return false;
-     }
- 
-+    if (pci_device_get_iommu_bus_devfn(pdev, &bus, NULL, NULL)) {
-+        error_setg(errp, "Host device downstream to a PCI bridge is "
-+                   "unsupported when x-flts=on");
-+        return false;
-+    }
-+
-     error_setg(errp,
+@@ -50,3 +50,21 @@ bool vtd_check_hiod_accel(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hiod,
                 "host IOMMU is incompatible with guest first stage translation");
      return false;
+ }
++
++VTDHostIOMMUDevice *vtd_find_hiod_iommufd(VTDAddressSpace *as)
++{
++    IntelIOMMUState *s = as->iommu_state;
++    struct vtd_as_key key = {
++        .bus = as->bus,
++        .devfn = as->devfn,
++    };
++    VTDHostIOMMUDevice *vtd_hiod = g_hash_table_lookup(s->vtd_host_iommu_dev,
++                                                       &key);
++
++    if (vtd_hiod && vtd_hiod->hiod &&
++        object_dynamic_cast(OBJECT(vtd_hiod->hiod),
++                            TYPE_HOST_IOMMU_DEVICE_IOMMUFD)) {
++        return vtd_hiod;
++    }
++    return NULL;
++}
 -- 
 2.47.1
 
