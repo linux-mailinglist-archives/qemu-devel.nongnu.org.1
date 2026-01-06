@@ -2,95 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96277CF744F
-	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 09:19:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5E69CF70E1
+	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 08:36:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vd2Gr-00080D-NO; Tue, 06 Jan 2026 03:18:29 -0500
+	id 1vd1bI-0007mR-DK; Tue, 06 Jan 2026 02:35:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1vd2Go-0007yY-OF
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 03:18:26 -0500
-Received: from mx1.zhaoxin.com ([210.0.225.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1vd2Gl-000087-Js
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 03:18:26 -0500
-X-ASG-Debug-ID: 1767687486-086e2306f6032d0001-jgbH7p
-Received: from ZXSHMBX2.zhaoxin.com (ZXSHMBX2.zhaoxin.com [10.28.252.164]) by
- mx1.zhaoxin.com with ESMTP id x3dK7Tvg07K7K5Ih (version=TLSv1.2
- cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
- Tue, 06 Jan 2026 16:18:06 +0800 (CST)
-X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
-Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX2.zhaoxin.com
- (10.28.252.164) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Tue, 6 Jan
- 2026 16:18:06 +0800
-Received: from ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85]) by
- ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85%7]) with mapi id
- 15.01.2507.059; Tue, 6 Jan 2026 16:18:06 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
-Received: from ewan-server.zhaoxin.com (10.28.44.15) by zxbjmbx1.zhaoxin.com
- (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Tue, 6 Jan
- 2026 15:54:38 +0800
-Received: from [10.28.44.6] (EwanHaiuntuMini.zhaoxin.com [10.28.44.6])
- by ewan-server.zhaoxin.com (Postfix) with ESMTP id A34382D02A1E;
- Mon,  5 Jan 2026 05:11:12 -0500 (EST)
-Message-ID: <a8516d27-0ee9-4139-9d47-51eda832c219@zhaoxin.com>
-Date: Mon, 5 Jan 2026 18:11:12 +0800
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1vd1bB-0007lk-MP
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 02:35:26 -0500
+Received: from mail-yw1-x112b.google.com ([2607:f8b0:4864:20::112b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1vd1b9-0002AB-Gc
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 02:35:25 -0500
+Received: by mail-yw1-x112b.google.com with SMTP id
+ 00721157ae682-78f99901ed5so7811407b3.3
+ for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 23:35:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=jms.id.au; s=google; t=1767684922; x=1768289722; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=HrpAM8PPAYXD3CaG+xN7uoTPiVzRPR4/77s+xJAdYlc=;
+ b=MtGrL7HM/bMJTyGGatIwoOqRA70WBMkRn77MlHmI8mUOyiggcsuPJos7j/cAMy5Km0
+ I77vB/xgsHuYqJsSdSctlsuqRgw9XcVJ7G8auzXywJges2ZzkWue7luqOqXwiP75Kqlg
+ 1l5U8OamyvbSWHEuGlAH6NZY23H9YbXXg5744=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1767684922; x=1768289722;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=HrpAM8PPAYXD3CaG+xN7uoTPiVzRPR4/77s+xJAdYlc=;
+ b=YWde2pwJPXU1DLQsxAGzAAkSD8MT+HKTNs/zfADZuzbIv6/yeG4tGJRRYXFezC2B2n
+ lkvytbx7lVhqSQxdZQTjz4yBsCuBEoPxqhwXLLBt2Nqir3g5Oz2wQEucMz8tIOgQLITS
+ gbnFC4ITN6IfOlyoIZHj+zfuphJtjb+9R7GdvUgWh9WDahAYHRVksLDQTEgExsO95mCc
+ xjwxGRqVNz28nrXTuPdR7/Yiuey1/e9nDGr2fQQ4ubwZzjrYH2JYKCI1NsFyjIi1JkYw
+ vVFbk5tjmhxWGCkCNnnQbdvnoCrnHM2iVuRqHthFM/cx0i216LI/pMaudK7SWBtJjtcx
+ +u8g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXUI+Y4+Zq5JwVkIztO5Y0FiAc3XZxjwiQwgSyrDcDXnT4saav/FSKMq/wy8Lcrh/g5VtYmmzqNtLS8@nongnu.org
+X-Gm-Message-State: AOJu0YzZpjv4ZiOa4I98u2QWnX2fLOCvajEP4P+G4NP1Z4B9OsClYdaL
+ CzYUr6Ve3GIhFll9l9UflQaOhMwAXWSV6uGHtQpHPczPr9PumF7FA726Ldi2fduUSqgt/Kcc3EY
+ TpYwuqgXhvXUahdawpEbYtllpdWb3pnA=
+X-Gm-Gg: AY/fxX7K9xfISX/mzE4+pNj9zVSRCO7Yv3QsEMfpurVM/u4PI5pgXzyG059sEsi3nNf
+ rHSVjsNEBjHmER4gzhXoL3zFgnhNRQg/V1+SrehfDyaAPH/pW1I65Se5oq24RaKZIeeXNtLbQPa
+ +8Ut04efoBCRPG3miZkhUNbY7YtCf0Ba/+d6jrY42YMCuYMGAq4Mj+yL/nrjt+ah4M+epWu74+F
+ voRDLB3Zx1ahKkgutX9wvQ1qjHV444fdLDEgfAoTctzTZRKyKEDKFWntmwUwJfmNDRvUCs=
+X-Google-Smtp-Source: AGHT+IFGKZ8TQn+HvvvVcZ0l+iGaaWXmSCfskRQR1W38NUTaH4+hIChH5MlQkupEQgo0l3f8W5JtCKMfQej4oTCZDV4=
+X-Received: by 2002:a05:690e:1501:b0:645:55a2:be64 with SMTP id
+ 956f58d0204a3-6470c86ae80mr1817769d50.30.1767684922311; Mon, 05 Jan 2026
+ 23:35:22 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Ewan Hai <ewanhai-oc@zhaoxin.com>
-Subject: Re: [PATCH v2 3/4] target/i386: Introduce Zhaoxin Shijidadao-Client
- CPU model
-To: Zhao Liu <zhao1.liu@intel.com>
-X-ASG-Orig-Subj: Re: [PATCH v2 3/4] target/i386: Introduce Zhaoxin
- Shijidadao-Client CPU model
-CC: <pbonzini@redhat.com>, <qemu-devel@nongnu.org>, <ewanhai@zhaoxin.com>,
- <cobechen@zhaoxin.com>, <TonyWWang@zhaoxin.com>
-References: <20251027102139.270662-1-ewanhai-oc@zhaoxin.com>
- <20251027102139.270662-4-ewanhai-oc@zhaoxin.com> <aSVcOX5WvJYjIEbM@intel.com>
- <d20164c5-291c-4646-86cb-fddc69542599@zhaoxin.com>
- <aT/O1u22C1o3p5sn@intel.com>
-Content-Language: en-US
-In-Reply-To: <aT/O1u22C1o3p5sn@intel.com>
+References: <20260106055658.209029-1-joel@jms.id.au>
+In-Reply-To: <20260106055658.209029-1-joel@jms.id.au>
+From: Joel Stanley <joel@jms.id.au>
+Date: Tue, 6 Jan 2026 18:05:09 +1030
+X-Gm-Features: AQt7F2oOcSR5FpX9BvHd7BXSeOwOkPt_9vCeeWSk18DtcRyfw8K2aM5R7stP4MU
+Message-ID: <CACPK8XdxvLLsQxPqSyakxh2GeK2AcGeukcerswB2eyTfeghOGQ@mail.gmail.com>
+Subject: Re: [PATCH 00/16] hw/riscv: Add the Tenstorrent Atlantis machine
+To: Alistair Francis <alistair.francis@wdc.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liwei1518@gmail.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Chris Rauer <crauer@google.com>, Vijai Kumar K <vijai@behindbytes.com>, 
+ Sunil V L <sunilvl@ventanamicro.com>, Ran Wang <wangran@bosc.ac.cn>, 
+ Michael Ellerman <mpe@oss.tenstorrent.com>,
+ Joel Stanley <jms@oss.tenstorrent.com>, 
+ Nick Piggin <npiggin@oss.tenstorrent.com>, 
+ Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>, qemu-riscv@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.28.44.15]
-X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
- zxbjmbx1.zhaoxin.com (10.29.252.163)
-X-Moderation-Data: 1/6/2026 4:18:05 PM
-X-Barracuda-Connect: ZXSHMBX2.zhaoxin.com[10.28.252.164]
-X-Barracuda-Start-Time: 1767687486
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://mx2.zhaoxin.com:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 6693
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -1.21
-X-Barracuda-Spam-Status: No,
- SCORE=-1.21 using global scores of TAG_LEVEL=1000.0
- QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=DATE_IN_PAST_12_24,
- DATE_IN_PAST_12_24_2
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.152631
- Rule breakdown below
- pts rule name              description
- ---- ---------------------- --------------------------------------------------
- 0.01 DATE_IN_PAST_12_24     Date: is 12 to 24 hours before Received: date
- 0.80 DATE_IN_PAST_12_24_2   DATE_IN_PAST_12_24_2
-Received-SPF: pass client-ip=210.0.225.12; envelope-from=EwanHai-oc@zhaoxin.com;
- helo=mx1.zhaoxin.com
-X-Spam_score_int: -7
-X-Spam_score: -0.8
-X-Spam_bar: /
-X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112b;
+ envelope-from=joel.stan@gmail.com; helo=mail-yw1-x112b.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.001,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,169 +98,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/15/25 5:03 PM, Zhao Liu wrote:
-> 
-> 
-> On Tue, Nov 25, 2025 at 04:57:04PM +0800, Ewan Hai wrote:
->> Date: Tue, 25 Nov 2025 16:57:04 +0800
->> From: Ewan Hai <ewanhai-oc@zhaoxin.com>
->> Subject: Re: [PATCH v2 3/4] target/i386: Introduce Zhaoxin
->>  Shijidadao-Client CPU model
->>
->> On 11/25/25 3:35 PM, Zhao Liu wrote:
->>>
->>>
->>>> +        /*
->>>> +         * TODO: When the Linux kernel introduces other existing definitions
->>>> +         * for this leaf, remember to update the definitions here.
->>>> +         */
->>>
->>> This TODO seems a bit vague; it's best to explicitly list the existing
->>> features that are currently missing. Otherwise, maintainers won't be
->>> able to understand or clean up this TODO either.
->>>
->>
->> I agree. The same problem also exists in the YongFeng vCPU model. For this
->> series, I can drop the vague TODO and instead add a more explicit comment that
->> documents which CPUID.C000_0001.EDX bits are intentionally missing today. In
->> addition, I can post a small follow-up cleanup patch to fix the YongFeng model
->> in the same way, so the two Zhaoxin models stay consistent. If you prefer, I can
->> also fold the YongFeng comment update into this series as an extra patch.
-> 
-> Yes, it's good to make everything clear and I think it's better to
-> include your extra patch into this series to help maintainer review/pick
-> in one goes.
+On Tue, 6 Jan 2026 at 16:27, Joel Stanley <joel@jms.id.au> wrote:
+>
+> Introducing Tenstorrent Atlantis!
 
-Got it.
+Note that this was based on v10.2.0 and passed CI before I sent it:
 
->> As background, current Zhaoxin CPUs implement several CPUID.(EAX=0xC0000001,
->> ECX=0):EDX feature bits that are not yet defined in the Linux kernel, for
->> example SM2/SM2_EN, SM3/SM4 and their enable bits, PARALLAX/PARALLAX_EN,
->> TM3/TM3_EN, RNG2/RNG2_EN, PHE2/PHE2_EN, and RSA/RSA_EN.
->>
->> We previously tried to upstream all these extra feature bits in one
->> patch(https://lore.kernel.org/all/20230414095334.8743-1-TonyWWang-oc@zhaoxin.com/),
->> but the maintainer rejected it because there was no in-tree code using these
->> features yet. So our current plan is to add the CPUID bits together with real
->> kernel users step by step.
-> 
-> I see. I think it's enough to document missing CPUIDs in comment.
-> 
+  https://gitlab.com/shenki/qemu/-/pipelines/2246526243
 
-Would the following comment be acceptable?
+However master has moved along and there are now some merge conflicts.
+I'll hold off sending a v2 for now, but in case anyone is trying to
+test, a rebased tree is here:
 
-/*
- * missing: SM2/SM2_EN, CCS/CCS_EN, PARALLAX/PARALLAX_EN,
- * TM3/TM3_EN, RNG2/RNG2_EN, PHE2/PHE2_EN, RSA/RSA_EN
- */
+  https://gitlab.com/shenki/qemu/-/tree/tt-atlantis
 
-Do you think I should also include the lore link in the commit message/cover
-letter for additional context?
+Cheers,
 
-> ...
-> 
->>> (Based on my personal experience, the absence of SMAP seems a bit
->>> odd. Could it be a hardware bug in a specific stepping?)
->>>
->>
->> This is not a stepping-specific silicon bug. For this product family, SMAP
->> support was intentionally not enabled in the final product because our internal
->> performance evaluation showed an unacceptable performance impact in certain
->> workloads. The v2 CPU model therefore keeps "smap" off to reflect the actual
->> shipped behavior, while the v1 definition with SMAP enabled is kept for
->> customers who need to model early v1 silicon where SMAP is still available.
-> 
-> v1 is not the final product, then I think it's not necessary to upstream
-> it. For example, these Intel CPU models are basically all targeted at
-> the final products. But unluckily, engineering samples may have bugs so
-> we have to add or remove features based on what the final products
-> support. So if the final product is clear from the beginning, there's no
-> need to take intermediate steps.
-> 
-> BTW, even with v2, user can still enable smap by +smap.
-> 
->>>> +                .props = (PropValue[]) {
->>>> +                    { "xsavec", "on" },
->>>> +                    { "xgetbv1", "on" },
->>>> +                    { "xsaves", "on"},
->>>> +                    { "vmx-xsaves", "on"},
->>>> +                    { "smap", "off" },
->>>> +                    { /* end of list */ }
->>>> +                },
->>>> +            },
->>>
->>> BTW, if the differences aren't too significant, is it possible to merge
->>> the server and client models? :)
->>>
->>
->> From the user point of view, I slightly prefer keeping separate
->> Shijidadao-Client and Shijidadao-Server models.
->>
->> The main reason is that customers who want a "full-feature" vCPU that behaves
->> very close to a specific physical product can simply pick the corresponding
->> model name, without having to remember a set of extra "-cpu ..., +-feature"
->> overrides. If we merge everything into a single Shijidadao model that
->> corresponds to a more restricted baseline, users who want the full configuration
->> would need to explicitly enable multiple features (such as the additional XSAVE
->> bits) on the command line, which is easier to get wrong and less user-friendly.
-> 
-> Could we make Shijidadao-Client as a v2 of Shijidadao-Server, and create an
-> alias for this v2?
-> 
-> .alias = "Shijidadao-Client"
-> 
-> Then we could rename Shijidadao-Server to Shijidadao, and its v2 is for
-> client.
-> 
->> This is also aligned with how QEMU models other vendors' micro-architectures
->> where client and server products have slightly different feature sets.
-> 
-> The main use case for CPU models is to easy migration across mixed CPU
-> clusters [*]. So, IMO, not all products require a model.
-
-For the CPU model naming/versioning, my plan is:
-The current Shijidadao will be equivalent to the old Shijidadao-Client-v2, drop
-the old Shijidadao-Client-v1 according to your advice, Shijidadao-v1 will have
-the alias Shijidadao-Client, and Shijidadao-v2 will have the alias
-Shijidadao-Server.
-
-A key code sketch would look like:
-
-    {
-        .name = "Shijidadao",
-        .level = 0x1f,
-        .vendor = CPUID_VENDOR_ZHAOXIN1,
-        .family = 7,
-        .model = 0x6b,
-        .stepping = 1,
-...
-
-        .model_id = "Zhaoxin Shijidadao-Client Processor",
-        .cache_info = &shijidadao_cache_info,
-        .versions = (X86CPUVersionDefinition[]) {
-            { .version = 1, .alias = "Shijidadao-Client" },
-            {
-                .version = 2,
-                .alias = "Shijidadao-Server",
-                .note = "server variant",
-                .props = (PropValue[]) {
-                    { "model", "0x7b" },
-                    { "stepping", "0" },
-                    { "core-capability", "on" },
-                    { "split-lock-detect", "on" },
-                    { "model-id",
-                      "Zhaoxin Shijidadao-Server Processor" },
-                    { /* end of list */ }
-                },
-            },
-            { /* end of list */ }
-        }
-    },
-
-Does this mapping look acceptable to you?
-
-
-Best wishes,
-Ewan.
-
+Joel
 
