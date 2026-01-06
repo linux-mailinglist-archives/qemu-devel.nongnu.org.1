@@ -2,62 +2,121 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D017CF870E
-	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 14:14:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B401CF87B6
+	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 14:24:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vd6sl-0004eR-S9; Tue, 06 Jan 2026 08:13:55 -0500
+	id 1vd71h-0004Lf-Oz; Tue, 06 Jan 2026 08:23:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alanosong@163.com>)
- id 1vd6si-0004YA-D5; Tue, 06 Jan 2026 08:13:52 -0500
-Received: from m16.mail.163.com ([220.197.31.3])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vd71g-0004Kb-Ax
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 08:23:08 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alanosong@163.com>)
- id 1vd6sd-0005kR-Dn; Tue, 06 Jan 2026 08:13:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
- s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=1k
- 3I1kaf73evLsvV553tPJTFI3ze8pdf7uUpBFlGrro=; b=ATuq181AzH5HGB65B/
- WUwHRwGiazOW+DVnN4R4Sm1x4ghVMu6XM39crTNiamwiLZLaCuTJdzeTvCQIWVdR
- qsI6SBleJfCas51xTGmnG4yBZ8SvsCBNQh4filwCCh+bUv+nEJnfCgO3I5iCvezg
- JW2iu0zbUFZ6krWprmnA7qcPo=
-Received: from alano.. (unknown [])
- by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id
- _____wDnT4lVCl1p0+SgFA--.17566S4; 
- Tue, 06 Jan 2026 21:13:18 +0800 (CST)
-From: AlanoSong@163.com
-To: qemu-devel@nongnu.org,
-	qemu-arm@nongnu.org
-Cc: cminyard@mvista.com, peter.maydell@linaro.org, philmd@linaro.org,
- ani@anisinha.ca, pbonzini@redhat.com, shannon.zhaosl@gmail.com,
- Alano Song <AlanoSong@163.com>
-Subject: [PATCH 2/2] hw/arm/virt: Add DesignWare I2C controller
-Date: Tue,  6 Jan 2026 21:12:53 +0800
-Message-ID: <20260106131253.16192-3-AlanoSong@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260106131253.16192-1-AlanoSong@163.com>
-References: <20260106131253.16192-1-AlanoSong@163.com>
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vd71e-00012d-Cr
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 08:23:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1767705784;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=uMUbwMUBdsteMrWsSiLau8ydg0IZY1pjxR1xIKUeOR8=;
+ b=Io9UQjzx8gcDcciepOmiehJgPcIhj9lDye9dARrQ+pduH+kymMD+Fou97EtSiPyAUgwshQ
+ r4yQ3o9rU91ctL+oTbM6awBmkWAM//PMCd/xlICbgpWRQGITloypHbKhWXWDv7k3H2nO1A
+ Ug+EAduiesxFDYICBBYLv31VrHy9S4I=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-83-4o7Vp9DgO1mlylevN24qVA-1; Tue, 06 Jan 2026 08:23:01 -0500
+X-MC-Unique: 4o7Vp9DgO1mlylevN24qVA-1
+X-Mimecast-MFC-AGG-ID: 4o7Vp9DgO1mlylevN24qVA_1767705780
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4779b3749a8so8183335e9.1
+ for <qemu-devel@nongnu.org>; Tue, 06 Jan 2026 05:23:01 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1767705780; x=1768310580;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=uMUbwMUBdsteMrWsSiLau8ydg0IZY1pjxR1xIKUeOR8=;
+ b=FhazWeTiU6YNWvC5fzzGVju9ZrljkkajE5oXkgJWwVvyPmyORZlyDK1j1PYAHLRC1R
+ vs/laj+lnX9Hdw1Y+ZD+McgqMQ6IvjdPHTczWUnGSyJxfAY9cz9fpF1gDOdSvjPGgOnn
+ h4bjgLNVuAOV8HNlQanwoWSCPgfalYZYllf7XVexR0dBd1zQAEIeZGYzKVbh2K4Y+qoe
+ gJMjCX9tndMQmi0ogculES4OqTfKqHs8A8UUMCCNV30xznfVvw9dCHH0ChQ8gfeCdkho
+ VcWC7UBunpKeUBFj8NHwQLeAtuDVdJlQg0kidHwM0teHve/ju0yQa5pjN7Fv6I9PXjtz
+ 8kmg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUSQKMAc6l/KPdjR3Phqr3RvVPt/0hBWdP+B5MJUcfnBpB1Hl4JKJnFlap7HolA9El0vK3P/gpxzPZu@nongnu.org
+X-Gm-Message-State: AOJu0Yzq+pjnEytHkXZA/xajrRIpYjsx0D18guJFRGVTvtFpFeLRLRBs
+ 6HQj6re5ByakZuwv/sq5qBB8hIzC4ixzFYNztv64NLXtB+uCf+HZ4SzUTrMYloGle421V0OSAZs
+ F2I4H4YDMxjaD31Qr4vlU8HupvS9wBlS8IgYjs6xmLsDHijs7OIc0mRuD
+X-Gm-Gg: AY/fxX4L2gFQDyQBzvKfAc6NlhuOh/UPuVrJwm8r3A7d2HIWcpAgC/GNtAlVfz+x/zR
+ iNkSYGTCtzotoFZeDXcGJFP3GdQoyxWqhfyPIBFDw56e2XrBT/Ib+UNEPSGxz0dFxHnsqjt8bk+
+ nZlk66WWxz4QNbRP+JQth64/yZyp5dBKKIw7RpF3tYKWFYi+1qlKQeENH8naxA9yd1XWe+lh7je
+ ik6c5X6hZvtPWpt3j+XgjSv2V6c58Q/a3W+ruN8IxwvXmztAX76kZREqnPG58Ibh0S3E2pB7ILk
+ Mx4zZHlLwQGRMeqjtCrS4riiaedEqGEZySRqeLo3OtmHyIUQtEne8St91WxBQN0aVYVZUzT5a2o
+ D9R1ljYjQcSxZwIAielj7PXv1JYvzLsAWzJ04VpACQRt1ejfg9JV3kftBGw==
+X-Received: by 2002:a05:600c:548b:b0:477:7b9a:bb0a with SMTP id
+ 5b1f17b1804b1-47d7f099a1amr33532485e9.21.1767705780456; 
+ Tue, 06 Jan 2026 05:23:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGeBNiJh2dt5qDwMBQNNyOrzSEg61TAqGZFP9VmuDWgrwL/ihWeKed0RSe5N2D3gyleLpsZdg==
+X-Received: by 2002:a05:600c:548b:b0:477:7b9a:bb0a with SMTP id
+ 5b1f17b1804b1-47d7f099a1amr33532085e9.21.1767705780029; 
+ Tue, 06 Jan 2026 05:23:00 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
+ ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-47d7f4184e1sm43720685e9.4.2026.01.06.05.22.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 Jan 2026 05:22:59 -0800 (PST)
+Message-ID: <15ace9b4-ead5-4153-be5c-7a0323498cb3@redhat.com>
+Date: Tue, 6 Jan 2026 14:22:57 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 32/33] vfio: Synthesize vPASID capability to VM
+Content-Language: en-US
+To: Shameer Kolothum <skolothumtho@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+ Jason Gunthorpe <jgg@nvidia.com>, Nicolin Chen <nicolinc@nvidia.com>,
+ "ddutile@redhat.com" <ddutile@redhat.com>,
+ "berrange@redhat.com" <berrange@redhat.com>, Nathan Chen
+ <nathanc@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
+ "smostafa@google.com" <smostafa@google.com>,
+ "wangzhou1@hisilicon.com" <wangzhou1@hisilicon.com>,
+ "jiangkunkun@huawei.com" <jiangkunkun@huawei.com>,
+ "jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>,
+ "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>,
+ "zhenzhong.duan@intel.com" <zhenzhong.duan@intel.com>,
+ Krishnakant Jaju <kjaju@nvidia.com>, "alex@shazbot.org" <alex@shazbot.org>
+References: <20251120132213.56581-1-skolothumtho@nvidia.com>
+ <20251120132213.56581-33-skolothumtho@nvidia.com>
+ <7dc608a7-b36b-4250-befd-d26115b54e26@redhat.com>
+ <483fa0e2-aeb5-43b7-a136-692bbd24d0ba@intel.com>
+ <CH3PR12MB75489918DACE8B009A8F4F32AB86A@CH3PR12MB7548.namprd12.prod.outlook.com>
+ <4a1e1e8a-8480-4294-a176-b5e630b7d0c7@redhat.com>
+ <CH3PR12MB75483839B76AB0C78803687FAB87A@CH3PR12MB7548.namprd12.prod.outlook.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <CH3PR12MB75483839B76AB0C78803687FAB87A@CH3PR12MB7548.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: _____wDnT4lVCl1p0+SgFA--.17566S4
-X-Coremail-Antispam: 1Uf129KBjvJXoWxtF4rJFyfGr4fAw18uFyrtFb_yoW7Zw1fpF
- WqyFZ0grW5AF13X39IgF4fWF15Jw1kK3WY9ws7CrWxCF1qgw1UJrWUta45Gry5urWDJ3WY
- gFZIqFy8Kr1vq3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piY9aDUUUUU=
-X-Originating-IP: [240e:36a:147b:2000:594:6424:e3:c901]
-X-CM-SenderInfo: xdod00pvrqwqqrwthudrp/xtbC9Q9PY2ldCm+oZAAA3L
-Received-SPF: pass client-ip=220.197.31.3; envelope-from=alanosong@163.com;
- helo=m16.mail.163.com
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,178 +129,98 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alano Song <AlanoSong@163.com>
 
-Add DesignWare I2C controller onto virt board,
-and also an at24c eeprom for r/w operation.
 
-Add these two devices into arm virt acpi table.
+On 1/6/26 12:38 PM, Shameer Kolothum wrote:
+> Hi Eric,
+>
+>> -----Original Message-----
+>> From: Eric Auger <eric.auger@redhat.com>
+>> Sent: 06 January 2026 10:55
+>> To: Shameer Kolothum <skolothumtho@nvidia.com>; Yi Liu
+>> <yi.l.liu@intel.com>; qemu-arm@nongnu.org; qemu-devel@nongnu.org
+>> Cc: peter.maydell@linaro.org; Jason Gunthorpe <jgg@nvidia.com>; Nicolin
+>> Chen <nicolinc@nvidia.com>; ddutile@redhat.com; berrange@redhat.com;
+>> Nathan Chen <nathanc@nvidia.com>; Matt Ochs <mochs@nvidia.com>;
+>> smostafa@google.com; wangzhou1@hisilicon.com;
+>> jiangkunkun@huawei.com; jonathan.cameron@huawei.com;
+>> zhangfei.gao@linaro.org; zhenzhong.duan@intel.com; Krishnakant Jaju
+>> <kjaju@nvidia.com>; alex@shazbot.org
+>> Subject: Re: [PATCH v6 32/33] vfio: Synthesize vPASID capability to VM
+>>
+>> External email: Use caution opening links or attachments
+>>
+>>
+>> Hi Shameer,
+> [...]
+>
+>>>>> Besides the fact the offset is arbitrarily chosen so that this is the
+>>>>> last cap of the vconfig space, the code looks good to me.
+>>>>> So
+>>>>> Reviewed-by: Eric Auger <eric.auger@redhat.com>
+>>>>>
+>>>>> Just wondering whether we couldn't add some generic pcie code that
+>>>>> parses the extended cap linked list to check the offset range is not
+>>>>> used by another cap before allowing the insertion at a given offset?
+>>>>> This wouldn't prevent a subsequent addition from failing but at least we
+>>>>> would know if there is some collision.this could be added later on though.
+>>>>>
+>>>> You're absolutely right. My approach of using the last 8 bytes was a
+>>>> shortcut to avoid implementing proper capability parsing logic
+>>>> (importing pci_regs.h and maintaining a cap_id-to-cap_size mapping
+>>>> table), and it simplified PASID capability detection by only examining
+>>>> the last 8bytes by a simple dump :(. However, this approach is not
+>>>> good as we cannot guarantee that the last 8bytes are unused by any
+>>>> device.
+>>>>
+>>>> Let's just implement the logic to walk the linked list of ext_caps to
+>>>> find an appropriate offset for our use case.
+>>> I had a go at this. Based on my understanding, even if we walk the PCIe
+>>> extended capability linked list, we still can't easily determine the size
+>>> occupied by the last capability as the extended capability header does not
+>>> encode a length, it only provides the "next" pointer, and for the last entry
+>>> next == 0.
+>> If my understanding is correct when walking the linked list, you can
+>> enumerate the start index and the PCIe extended Capability variable size
+>> which is made of fix header size + register block variable size which
+>> depends on the capability ID). After that we shall be able to allocate a
+>> slot within holes or at least check that adding the new prop at the end
+>> of the 4kB is safe, no?. What do I miss?
+> I think the main issue is that we can't know whether the apparent "holes"
+> between extended capabilities are actually free. Depending on the vendor
+> implementation, those regions may be reserved or used for vendor specific
+> purposes, and I am not sure(please correct me) PCIe spec guarantee that
+> such gaps are available for reuse. Hence thought of relying on the “next”
+> pointer as a safe bet.
+>
+> Even if we look at the last CAP ID and derive a size based on the
+> spec defined register layout, we still can;t know whether there is
+> any additional vendor specific data beyond that "size". It is still
+> a best guess and I don't think we gain much in adding this additional
+> check.
 
-Confirmed with i2c-tools under v6.18 linux driver.
+Ah OK I see what you mean (you may have discussed that earlier in other
+threads sorry). So you may have vendor specific private data in the
+holes. In that case I guess we cannot do much :-/
+>
+> Perhaps, I think we could inform the user that we are placing
+> teh PASID at the last offset and the onus is on user to make sure
+> it is safe to do so. 
+or another solution is to let the user opt-in for this hasardous
+placement using an explicit x- prefixed option? Dunno
 
-Signed-off-by: Alano Song <AlanoSong@163.com>
----
- hw/arm/Kconfig           |  1 +
- hw/arm/virt-acpi-build.c | 32 ++++++++++++++++++++++++++++++++
- hw/arm/virt.c            | 38 +++++++++++++++++++++++++++++++++++++-
- include/hw/arm/virt.h    |  1 +
- 4 files changed, 71 insertions(+), 1 deletion(-)
+Thanks
 
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 97d747e206..f23c063474 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -36,6 +36,7 @@ config ARM_VIRT
-     select VIRTIO_MEM_SUPPORTED
-     select ACPI_CXL
-     select ACPI_HMAT
-+    select DW_I2C
- 
- config CUBIEBOARD
-     bool
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index 03b4342574..3d06356169 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -100,6 +100,34 @@ static void acpi_dsdt_add_uart(Aml *scope, const MemMapEntry *uart_memmap,
-     aml_append(scope, dev);
- }
- 
-+static void acpi_dsdt_add_i2c(Aml *scope, const MemMapEntry *i2c_memmap,
-+                               uint32_t i2c_irq)
-+{
-+    Aml *i2c_dev, *eprm_dev, *crs;
-+
-+    i2c_dev = aml_device("I2C0");
-+    aml_append(i2c_dev, aml_name_decl("_HID", aml_string("INT3433")));
-+    aml_append(i2c_dev, aml_name_decl("_UID", aml_int(0)));
-+
-+    crs = aml_resource_template();
-+    aml_append(crs, aml_memory32_fixed(i2c_memmap->base,
-+                                       i2c_memmap->size, AML_READ_WRITE));
-+    aml_append(crs, aml_interrupt(AML_CONSUMER, AML_LEVEL, AML_ACTIVE_HIGH,
-+                                  AML_EXCLUSIVE, &i2c_irq, 1));
-+    aml_append(i2c_dev, aml_name_decl("_CRS", crs));
-+
-+    eprm_dev = aml_device("EPRM");
-+    aml_append(eprm_dev, aml_name_decl("_HID", aml_string("INT3499")));
-+    aml_append(eprm_dev, aml_name_decl("_UID", aml_int(0)));
-+
-+    crs = aml_resource_template();
-+    aml_append(crs, aml_i2c_serial_bus_device(0x50, "^"));
-+    aml_append(eprm_dev, aml_name_decl("_CRS", crs));
-+
-+    aml_append(i2c_dev, eprm_dev);
-+    aml_append(scope, i2c_dev);
-+}
-+
- static void acpi_dsdt_add_flash(Aml *scope, const MemMapEntry *flash_memmap)
- {
-     Aml *dev, *crs;
-@@ -1037,6 +1065,10 @@ build_dsdt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-         acpi_dsdt_add_uart(scope, &memmap[VIRT_UART1],
-                            (irqmap[VIRT_UART1] + ARM_SPI_BASE), 1);
-     }
-+
-+    acpi_dsdt_add_i2c(scope, &memmap[VIRT_I2C],
-+                      irqmap[VIRT_I2C] + ARM_SPI_BASE);
-+
-     if (vmc->acpi_expose_flash) {
-         acpi_dsdt_add_flash(scope, &memmap[VIRT_FLASH]);
-     }
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index fd0e28f030..8fd37126d1 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -38,6 +38,8 @@
- #include "hw/arm/boot.h"
- #include "hw/arm/primecell.h"
- #include "hw/arm/virt.h"
-+#include "hw/i2c/dw_i2c.h"
-+#include "hw/nvram/eeprom_at24c.h"
- #include "hw/arm/machines-qom.h"
- #include "hw/block/flash.h"
- #include "hw/display/ramfb.h"
-@@ -193,7 +195,8 @@ static const MemMapEntry base_memmap[] = {
-     [VIRT_NVDIMM_ACPI] =        { 0x09090000, NVDIMM_ACPI_IO_LEN},
-     [VIRT_PVTIME] =             { 0x090a0000, 0x00010000 },
-     [VIRT_SECURE_GPIO] =        { 0x090b0000, 0x00001000 },
--    [VIRT_ACPI_PCIHP] =         { 0x090c0000, ACPI_PCIHP_SIZE },
-+    [VIRT_I2C] =                { 0x090c0000, 0x00001000 },
-+    [VIRT_ACPI_PCIHP] =         { 0x090d0000, ACPI_PCIHP_SIZE },
-     [VIRT_MMIO] =               { 0x0a000000, 0x00000200 },
-     /* ...repeating for a total of NUM_VIRTIO_TRANSPORTS, each of that size */
-     [VIRT_PLATFORM_BUS] =       { 0x0c000000, 0x02000000 },
-@@ -245,6 +248,7 @@ static const int a15irqmap[] = {
-     [VIRT_GPIO] = 7,
-     [VIRT_UART1] = 8,
-     [VIRT_ACPI_GED] = 9,
-+    [VIRT_I2C] = 10,
-     [VIRT_MMIO] = 16, /* ...to 16 + NUM_VIRTIO_TRANSPORTS - 1 */
-     [VIRT_GIC_V2M] = 48, /* ...to 48 + NUM_GICV2M_SPIS - 1 */
-     [VIRT_SMMU] = 74,    /* ...to 74 + NUM_SMMU_IRQS - 1 */
-@@ -1016,6 +1020,36 @@ static void create_uart(const VirtMachineState *vms, int uart,
-     g_free(nodename);
- }
- 
-+static void create_i2c(const VirtMachineState *vms, int i2c)
-+{
-+    char *nodename = NULL;
-+    hwaddr base = vms->memmap[i2c].base;
-+    hwaddr size = vms->memmap[i2c].size;
-+    int irq = vms->irqmap[i2c];
-+    MachineState *ms = MACHINE(vms);
-+    DeviceState *dev = sysbus_create_simple(TYPE_DW_I2C, base,
-+                                            qdev_get_gpio_in(vms->gic, irq));
-+    DWI2CState *s = DW_I2C(dev);
-+
-+    nodename = g_strdup_printf("/dw-i2c@%" PRIx64, base);
-+    qemu_fdt_add_subnode(ms->fdt, nodename);
-+    qemu_fdt_setprop_string(ms->fdt, nodename, "compatible",
-+                            "snps,designware-i2c");
-+    qemu_fdt_setprop_sized_cells(ms->fdt, nodename, "reg",
-+                                 2, base, 2, size);
-+    qemu_fdt_setprop_cells(ms->fdt, nodename, "interrupts",
-+                           GIC_FDT_IRQ_TYPE_SPI, irq,
-+                           GIC_FDT_IRQ_FLAGS_LEVEL_HI);
-+
-+    if (s && s->bus) {
-+        at24c_eeprom_init(s->bus, 0x50, 256);
-+    } else {
-+        fprintf(stderr, "Warning: DW I2C created but bus not available\n");
-+    }
-+
-+    g_free(nodename);
-+}
-+
- static void create_rtc(const VirtMachineState *vms)
- {
-     char *nodename;
-@@ -2493,6 +2527,8 @@ static void machvirt_init(MachineState *machine)
-         create_uart(vms, VIRT_UART1, secure_sysmem, serial_hd(1), true);
-     }
- 
-+    create_i2c(vms, VIRT_I2C);
-+
-     if (vms->secure) {
-         create_secure_ram(vms, secure_sysmem, secure_tag_sysmem);
-     }
-diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-index 8694aaa4e2..911beea7fd 100644
---- a/include/hw/arm/virt.h
-+++ b/include/hw/arm/virt.h
-@@ -75,6 +75,7 @@ enum {
-     VIRT_PLATFORM_BUS,
-     VIRT_GPIO,
-     VIRT_UART1,
-+    VIRT_I2C,
-     VIRT_SECURE_MEM,
-     VIRT_SECURE_GPIO,
-     VIRT_PCDIMM_ACPI,
--- 
-2.43.0
+Eric
+>
+> Thoughts?
+>
+> Thanks,
+> Shameer
+>
 
 
