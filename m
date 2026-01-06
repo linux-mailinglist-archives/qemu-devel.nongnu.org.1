@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57814CFB64C
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 00:54:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87B84CFB643
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 00:54:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdGs8-0003QZ-Gz; Tue, 06 Jan 2026 18:53:56 -0500
+	id 1vdGsF-0003RK-05; Tue, 06 Jan 2026 18:54:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdGs6-0003QO-5Y
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 18:53:54 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdGsC-0003R2-Sf
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 18:54:00 -0500
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdGs4-00042j-NF
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 18:53:53 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-477563e28a3so2147525e9.1
- for <qemu-devel@nongnu.org>; Tue, 06 Jan 2026 15:53:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdGsB-00043K-E1
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 18:54:00 -0500
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-42e2e77f519so915626f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 06 Jan 2026 15:53:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767743631; x=1768348431; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767743638; x=1768348438; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JnxoSZ1P5e+4Xs0K/LmGN52qaOcYyAkfc3LCvt/gqiY=;
- b=V1KAFr+WXk9Pdm30ysqa6+M646CHMReE00cYyFerjXAcoxwUj/NVWqUixz5DNb5qoL
- bKkPc/tUpBX3TbJovejEM5azUKbge4ZKDRz7aPCzGZEDHIiyD1t82OPacivQlUAuA2eb
- etlc061R2ZL1USAbB1XR+cMCk/Y41DH4jKsx3Unq97TKgVw3Ih2W1At9zw8WOEPgx6BP
- 3sIHylXRKQIwEPhpTXp5KMG04mfBbYVZpLU0UTlY2mqacrx5iW3FW9Kskn11NQ0njx91
- mAaOEN0vrxqJ5UBI+IvtmWbvZOZxhmtYU1BvLoW5y6vWMN+GaxkM5pJE7kRyxi6GoVfz
- tOIA==
+ bh=q/eN9Ritycd+ay5bl3VusSVzcL2B0EKh+JMcpk0P4xY=;
+ b=DudmS5xFHPY4x37g9heL0XavoxH2+XudfMd8rafkSpO1lwFPXgljRniRrZBIyTf89n
+ UlRZJ8Lg8DLw57DD6Umw1I6MooQ+r7l7p1KusscRtt9yq5oZEH5uk3yBwiOt9H4CyHU2
+ /yEhFvMwC7TnP/MsKycBmEUWabt/KcaRIA7gprDtpMQzNVj0r19MG7JM4ZWdtWNKRFJS
+ CyiW1C3f7+rKP2QDRa30rzy/1GHeCRO8rbKp+tycWU7vc43yEsYCX7ryHf4sddfqhhFY
+ U6IW6J/+KJJNMmOlv6HpI/FWLBEeMNlHH/20RiLW/1vTcik6bE/kkF4f3as1Xygu7/e1
+ Vmrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767743631; x=1768348431;
+ d=1e100.net; s=20230601; t=1767743638; x=1768348438;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=JnxoSZ1P5e+4Xs0K/LmGN52qaOcYyAkfc3LCvt/gqiY=;
- b=bUT6VV9vzwcQ5CMjZ5qnt8D+VbVp2oTBGGcCieHmNYtgzUS4OTd/7T/+TjsSQf+Qbi
- HYo8Qs42gR2cJIJTLCXB5QUOl6Er2cq0E/LEqIfQyb5D2UzFfNUAZn7yB796P8eCAtzn
- dny4aScK5d6gkLwItq3bweZKALrl9HkHmd0F9HjbuloqT2z3mc6W1T4bJAWs/7B4CMQV
- fkTuhJCFZOozOEqEwNIw3a0GDDQpr4dAgPpDDTAveSigCuGQJJC0+qKTCkoDq9j7wjYD
- RIiAxmyjB1rwTPFuABT/ZmphEIzciiGbTZ2s/owCaSpSYafhv1+Pcg8TIPj85vIOpHa0
- /T9w==
-X-Gm-Message-State: AOJu0YyeJZD0QHbZblkSViY5p3L+BtDa7iofj5EYGuW03KqqAMZrAYF5
- 1ZFz4mwMAugVKE0lsVPOgohLTo+yxk/xPhz90EmHVrWxQSnPuovWcFz2C4fSC9xHJnRa2VdJ+2o
- X9NgjRHQ=
-X-Gm-Gg: AY/fxX5vKD3lJgPhAEFurVLyjYVakV1eEgAjyzmD7KfjGYFrQVaUqjw5JqCg/d/Kz9+
- QgfpQwLp5ClcmInOpkP4b5m/RHPX3e0sgKaT2vrh3n7tP92eu2hH4W+RrIHDf+lWXcCZ4HcdQSw
- oujGwncomwYFbcIdDJP3N0NMpEPaJpXySVwZn20KjTGayhqLTBj9oshXdnxktg8YSPXh6T4iSym
- 6aR0bl1wuKtqt57KTeX7KkVuz0GjvnKqIZFOxfzEqKxV2lu8DBia6FhQ1SOG5872yUoxZ8f+fOy
- iaL6ybXC6f7sBrvsf2l7t8nybukzoNRk096NT4ALjHls0jb3R6YnGMfGtcL6J3GI9qg7Tc5x5R1
- VSJkAldR9nBhr6WzYs+175giIuUSjmE9nRB6+MHYENE+cNKd28/CdPJPk9k+RNfBI+nOl0fKz1+
- 4iR2/eWNoYplJHU5ViGclTweE1qXb5j4IuY20quh+3npRdHre/M2kxPKzAtJA0rlk7GsH84VM=
-X-Google-Smtp-Source: AGHT+IGlU9d32GNvlTne4QBv2rzxdCODCwty5Co7nCae1fkt6s8rx9++BFHDoK+w0YZs9v7ClUq6Ew==
-X-Received: by 2002:a05:600c:848d:b0:477:9a61:fd06 with SMTP id
- 5b1f17b1804b1-47d7f41153cmr53065785e9.8.1767743630970; 
- Tue, 06 Jan 2026 15:53:50 -0800 (PST)
+ bh=q/eN9Ritycd+ay5bl3VusSVzcL2B0EKh+JMcpk0P4xY=;
+ b=hEd0K779qialglEm6LxxVXSNRUZRgFde6IHwY64FbR9wruqlBmRaJvOjBVUyOR8DKf
+ PBkkCT5fxltG6yTLcJmsxpE+vH+vn4qRpiQ/5POzEz0C1HMGT90gEAGkWUCY6s49cRdR
+ rS4VYSlsLvxsqDUgWrKRs/+Fqh1ypwwdfZHwf3kXJ8gfmCupL0vxV212U92FwTxZzVgP
+ BiXmbE9HzoPdUkEmTGXrL55A32zcr+TOCv2u3VLdl/X4XP+vYpAEAmZ0zPp0W15jMfWd
+ r7MJQTPy8ZE+aZOcQx9hUpAEGbJH0lbMK7eqD01n9aGIibbB854J2K1jAh72mlwxsCRB
+ vS6Q==
+X-Gm-Message-State: AOJu0YwJXd6eb7erNr1r3d8aiBige0EFk85fR8/Ei9XmwsW0Tm3+H9R7
+ jkHQDSwFVeLYhcF5wuKtDE/tOVL6bnfguYMrrnx4OASrF6qMy91V4YWT2ZDk2LURGi9YQCK26np
+ sjsezY6c=
+X-Gm-Gg: AY/fxX45xhqKR/d723eEITZOh4II7r6Zfi62xi2LGqajxhBMZuUdmu3eUO1Zxm1blJG
+ 4WeUZgyRDtMHoE8tQpvsdVE+Gi5josIrK/K4Dgf10GHN1Eq4gqyz9suAIt24DnaEMbaX5MgI/kh
+ h1QD+q+OVgQeDdqbfqpgPCxN9dJPWDGgFD0EOTc5710kjTT1pPMx80HsKguJmygogQuvF202t38
+ 90BysUfIIcz17Bjj/MHoWMlBoPTxFZR5LrR1qpN4iP9LsmB7cEHrIlulmXzthdLSllBDJDHx4tg
+ +TVuzT08cwjrfPQ063pxSDQ+5FZo4k0a/kSdyXg1MJ/HwZtGmv1WElRw1KjdcJCy6ihe79MSuND
+ ljWT34VkuR4GgEwGQFAC8nYDPoVFx34eBHJBP9yOi7IUKmkdpUsmPzKzuZMk/iRlEeeUk5oK2Fu
+ iCE0/L5gdu/cdxorHXRPQwCOtEy/KRCllz5/lDDF5fdLaBcEULlyD/0pobF+gC
+X-Google-Smtp-Source: AGHT+IHK9zK7S2o46/V0+W8u15eQ1VgM8FvB2GRdk3BA6ANjEwI3rK1Hi6owIJewgIHENheAKB2cCg==
+X-Received: by 2002:adf:fe8f:0:b0:430:f97a:6f43 with SMTP id
+ ffacd0b85a97d-432c379f3c9mr662935f8f.53.1767743637660; 
+ Tue, 06 Jan 2026 15:53:57 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-432bd0dacd1sm7002107f8f.4.2026.01.06.15.53.48
+ ffacd0b85a97d-432bd0e16ffsm7348054f8f.12.2026.01.06.15.53.56
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 06 Jan 2026 15:53:50 -0800 (PST)
+ Tue, 06 Jan 2026 15:53:57 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -69,18 +69,18 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/6] target/microblaze: Directly check endianness via
- CPUConfig::endi flag
-Date: Wed,  7 Jan 2026 00:53:28 +0100
-Message-ID: <20260106235333.22752-3-philmd@linaro.org>
+Subject: [PATCH 3/6] target/microblaze: Avoid target-specific migration
+ headers in machine.c
+Date: Wed,  7 Jan 2026 00:53:29 +0100
+Message-ID: <20260106235333.22752-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106235333.22752-1-philmd@linaro.org>
 References: <20260106235333.22752-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,55 +103,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The MicroBlazeCPUConfig::endi flag reports whether the CPU is
-configure in little endianness. Directly use this knowledge
-instead of evaluating MemOp from mo_endian().
+machine.c doesn't use any target-specific macro defined by
+the "migration/cpu.h" header. Use the minimum header requiered:
+"migration/qemu-file-types.h" and "migration/vmstate.h", which
+are not target-specific.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/microblaze/translate.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ target/microblaze/machine.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
-index fefe5cb552a..0be3c98dc17 100644
---- a/target/microblaze/translate.c
-+++ b/target/microblaze/translate.c
-@@ -794,7 +794,7 @@ static bool trans_lhuea(DisasContext *dc, arg_typea *arg)
- #else
-     TCGv_i64 addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
-     gen_alignment_check_ea(dc, addr, arg->rb, arg->rd, MO_16, false);
--    (mo_endian(dc) == MO_BE ? gen_helper_lhuea_be : gen_helper_lhuea_le)
-+    (dc->cfg->endi ? gen_helper_lhuea_le : gen_helper_lhuea_be)
-         (reg_for_write(dc, arg->rd), tcg_env, addr);
-     return true;
- #endif
-@@ -828,7 +828,7 @@ static bool trans_lwea(DisasContext *dc, arg_typea *arg)
- #else
-     TCGv_i64 addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
-     gen_alignment_check_ea(dc, addr, arg->rb, arg->rd, MO_32, false);
--    (mo_endian(dc) == MO_BE ? gen_helper_lwea_be : gen_helper_lwea_le)
-+    (dc->cfg->endi ? gen_helper_lwea_le : gen_helper_lwea_be)
-         (reg_for_write(dc, arg->rd), tcg_env, addr);
-     return true;
- #endif
-@@ -954,7 +954,7 @@ static bool trans_shea(DisasContext *dc, arg_typea *arg)
- #else
-     TCGv_i64 addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
-     gen_alignment_check_ea(dc, addr, arg->rb, arg->rd, MO_16, true);
--    (mo_endian(dc) == MO_BE ? gen_helper_shea_be : gen_helper_shea_le)
-+    (dc->cfg->endi ? gen_helper_shea_le : gen_helper_shea_be)
-         (tcg_env, reg_for_read(dc, arg->rd), addr);
-     return true;
- #endif
-@@ -988,7 +988,7 @@ static bool trans_swea(DisasContext *dc, arg_typea *arg)
- #else
-     TCGv_i64 addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
-     gen_alignment_check_ea(dc, addr, arg->rb, arg->rd, MO_32, true);
--    (mo_endian(dc) == MO_BE ? gen_helper_swea_be : gen_helper_swea_le)
-+    (dc->cfg->endi ? gen_helper_swea_le : gen_helper_swea_be)
-         (tcg_env, reg_for_read(dc, arg->rd), addr);
-     return true;
- #endif
+diff --git a/target/microblaze/machine.c b/target/microblaze/machine.c
+index 48efa546d39..f930ff86091 100644
+--- a/target/microblaze/machine.c
++++ b/target/microblaze/machine.c
+@@ -19,7 +19,8 @@
+ 
+ #include "qemu/osdep.h"
+ #include "cpu.h"
+-#include "migration/cpu.h"
++#include "migration/qemu-file-types.h"
++#include "migration/vmstate.h"
+ 
+ 
+ static const VMStateField vmstate_mmu_fields[] = {
 -- 
 2.52.0
 
