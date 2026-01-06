@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30DB2CF6D72
-	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 07:02:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F5A1CF6D58
+	for <lists+qemu-devel@lfdr.de>; Tue, 06 Jan 2026 06:59:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vd04w-00044g-5S; Tue, 06 Jan 2026 00:58:02 -0500
+	id 1vd04w-00046O-PC; Tue, 06 Jan 2026 00:58:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1vd04m-0003w8-JT
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 00:57:53 -0500
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ id 1vd04r-0003xy-3y
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 00:57:59 -0500
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1vd04j-0001oW-4Q
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 00:57:52 -0500
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-34abc7da414so622560a91.0
- for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 21:57:48 -0800 (PST)
+ id 1vd04p-0001pH-Da
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 00:57:56 -0500
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-34c1d84781bso645142a91.2
+ for <qemu-devel@nongnu.org>; Mon, 05 Jan 2026 21:57:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1767679068; x=1768283868; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1767679074; x=1768283874; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
  :message-id:reply-to;
- bh=O/DNpKKJue48zXAOgE3g3fwRRBnWuELVal0qFuNJIi0=;
- b=FGurLz2GUfBNmJGYDNUxVAA/XKPqE327oQseQ7h5+1c5jqFm16gB39qxdWi2+9lDJg
- lJTjjRJQAgq/YPCRvjUgXWLqnFUOu67t38M70owVibFDkN/n1MYpjAutNoLE2sQ6iKGh
- UEjl9yCNfRPcdSBmyCfXnH153v9WwkB9LOiGeySuRnoyoxh8BDAiBr8HMkIpq0u5yQEN
- sVAF7DHE/tLrt61WheirsF1wFHUBN3dBGDZB2G4va3oEY3iPiHxq/v+MrASvDFNxTQP8
- e5Mop37Vir8Tjvm47gkk+4Yld6eeIY8xDJ1Tp8qhmAqyXp3wxVKMeRlyTI36L+PSLUkA
- pPeg==
+ bh=HZBzbTGkFgMZKTeYQM8W9WJlddFLDQHBD3j9FjDSynA=;
+ b=Y+Otp2kXb0jTGxymmi8DMcHGetyuv8w7iek3Wm8A8hRIMdcsbv0CVtOAkl/VF1i3K7
+ sj5YbxCAPNKGJs+PDtWnQeV+mLVlKFiZM8Ok74UZ9IHUQlrBckUfM3EeL2Lv+R2GA6rD
+ 5Qgt2nctbHntGr/JmVnpkEPH+jstCsDMN8TPuDfrkc4ZumIfP7TYf6oA6jvNWtCp3QHV
+ 5O05BQ0u7xLpKzBLRMfXEN0N+3nQU+HXboHC5+2+9VJFxQdSGibfnBWrniGclSh50zUF
+ cskJkQtGJqjdyyN74B3Dg1yg2miHv4q9pumdTGW47yIPystqsDzsxMhcgpy/NkKafLCp
+ Fapg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767679068; x=1768283868;
+ d=1e100.net; s=20230601; t=1767679074; x=1768283874;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:sender:x-gm-gg
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=O/DNpKKJue48zXAOgE3g3fwRRBnWuELVal0qFuNJIi0=;
- b=m7qbfb1U5VyMc+XbL86U9SECoz9x0nSC+EfV1O6R7JjBrGUPDOfapkTW7oK4D+heuo
- qNCzFUhAHkJLFmbBSh0XfnujNzM6ILomXspI6XgUngSpDeWKebfy3bA2pT5npG6M2z70
- Cu9kCwHg3/vshcB5/y6QZkfZQ+AZzdin3/PtQw+xQKnFzJ6MEAGAZgTefyV8Ve0BCU0F
- ZoUjLpHGf4NIHtwRVgnKnfAq4FM2bvbhcyX0BgK7CCKrZiU40YzotfHLZlxwXwiFcagQ
- dwZgAFiWRVhA9qMk6ci81PZIcSarxGez+P+QG6NaIgfs21Pxy5rCodmIaXc2vYwQssJy
- r7sw==
+ bh=HZBzbTGkFgMZKTeYQM8W9WJlddFLDQHBD3j9FjDSynA=;
+ b=mr3EiaWzM43z7xYIMWJcIyFVfvOr1KjnjWr0TJz4m8wXRhdNDkzDgAxM0kmY4aX76K
+ h14P8YiFfcUdLRS8rozlfY8893PUx8KXEIRWjAaQ+8X77N2mDFnjOGT8D40yzeka90e7
+ IP8Ta45KgUlpcDja46XebaeU9Rt0hj95mYkzHMYPxHlsjC7z3QRwkxqo5qwQ+frTEjT9
+ 8J6ubKNw7wy+oEbLcxTw5ffueoZZu73F+o/Rw5ftVGgeCEtIyZ8Gekju7P94u1L6o+hm
+ qgxtFsBsTcQeI+8ChvoAYheiaaia5wwwm4unYIEN7jbehLEd2ou1lifO5M/hR/SHkS1i
+ Wi/w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVaNC2IzldaXHb+aY/LT8sLFA4X3Lutv6v6Q3100su2BfnaX7rDvsSg3/XDeEcnmkJM0mHnCrFbfeOu@nongnu.org
-X-Gm-Message-State: AOJu0YwZ3KGZ5rSJzhUZcCFJT6r4KS+vv9asKniKa5Z0VdZCghhY3qWI
- zfekCBTd8TEkW4cvjBmA/sFp9tBEo3YdTpg1ZmHjJa8PZ/JauCDIQziA
-X-Gm-Gg: AY/fxX4Q8YMelokvYno1xV22BdzRFm88GQxbKJb8IibM92ZuwkjKTswe5hF0U2vlHTY
- ueN9JMIJthchv+gAM7IXOyFJwUbsrBA16xBclNPzS2RuzDP2e7hnk9C1bb182uLID4EK4lpbEAA
- GCh0a6Pn802xdDD1wnfNW32htAudUWHECHflkO0etE+phj8eUUBD/IGlrn0kncnVoDkpuwy9VX3
- anE5C/Ndah/5Sl10G7NyNros0oRwCrrmA2SRlQgA4xCBe6fVgesleUqacY8bNeHjegosULGgJf8
- SfCFD8dElPMW6Q7hRu+rZKb1gKjeTbh4gjFJZjDHAvEiOYtdmeMD4eh7VX3IoQjm4xW4gpTe/2n
- TZ8LmD3GNkCs78lijDG+4B1zLqXt6C21TKmmmjAaH1kPYC5tT0x0hoqeGk8Wg0JXQWNU3NVl2wq
- 7mxzq6GdC1UphKruHhAbazXv0JhrcNxu0=
-X-Google-Smtp-Source: AGHT+IHAWuD+h/CTZv48iMbQCGKoUys6YAbmfx6urenzPhRRiVmtZD5YE6dMx4g8qyIFSF2Xvjk8pw==
-X-Received: by 2002:a17:90b:1645:b0:34a:a1dd:1f2a with SMTP id
- 98e67ed59e1d1-34f5f302170mr1601327a91.20.1767679067749; 
- Mon, 05 Jan 2026 21:57:47 -0800 (PST)
+ AJvYcCUr1IjsuzXRrZ4fvITgEucu/+0EkWnUe3197cV0we/numXYSuPzIKO9fzMZPncJHd2yruaVM56aQqTw@nongnu.org
+X-Gm-Message-State: AOJu0YwNWrHSgEI/w07PZ/GeMhM36U6JUF/4wVYlBsAmBT7v1rx8eU2i
+ o/E4iKfmYy/K48nnfIN+VL42RpbePukB6fs3QXzfQiR0oXmnUoeR58lW
+X-Gm-Gg: AY/fxX4hAo8mqIzjkT6tlHUtN3RFJwT5Jwz+lIr7nQJPfZB4cy6ifTDPH5YmJnVIl5C
+ AQrCFSDXIK2d1OLdzFiXBodrgX19qpxecHoD5Q7taUaiXVD96bMxf1i45LovX09tG+l8JM1wAVK
+ OOhD88ye8q5YxE66jFKOAUVpIZAV9+pDbM0PZACU3LR2eY+TjTMh7PTZAF+YKsDrDZlPCK0gHQ/
+ vn9s1nyeyvL6yoAqnwIpUH9l1WbJtrPg9Ar+xuaPhMGRSFSWYMfkM1WUUiT2mHSk9oBfzyCtv7R
+ NmQMsaJlFzPZVwp9dC+srnk5h8M5nXw/NvgeiWF+RxdEpdYFpc9dq1mMlbMKJ6TqzxeeIifXFy1
+ jYhWD5lVsUKmVxIizFAgFNbmaVX0Nw4IAg4aIt10Tp3F/URZ7gXiqwEiNsnZO8Q4Hi0UzogJCmY
+ eXzO57dvMBUHb8LmhgXD4KYRO6lWScRHo=
+X-Google-Smtp-Source: AGHT+IHF2IdslvfvPg5YvdFBLejsnI1rncX2N6MnvgG1vBKqHdvL7V9TTA/JrXDbAx71a5pyZDlDrA==
+X-Received: by 2002:a17:90b:4f88:b0:32e:5646:d448 with SMTP id
+ 98e67ed59e1d1-34f5f30038bmr1537411a91.21.1767679073948; 
+ Mon, 05 Jan 2026 21:57:53 -0800 (PST)
 Received: from donnager-debian.. ([45.124.203.19])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-34f60178af5sm460222a91.3.2026.01.05.21.57.42
+ 98e67ed59e1d1-34f60178af5sm460222a91.3.2026.01.05.21.57.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jan 2026 21:57:47 -0800 (PST)
+ Mon, 05 Jan 2026 21:57:53 -0800 (PST)
 From: Joel Stanley <joel@jms.id.au>
 To: Alistair Francis <alistair.francis@wdc.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
@@ -77,16 +77,16 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liwei1518@gmail.com>,
  Joel Stanley <jms@oss.tenstorrent.com>,
  Nick Piggin <npiggin@oss.tenstorrent.com>,
  Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>, qemu-riscv@nongnu.org
-Subject: [PATCH 06/16] hw/riscv: Move AIA initialisation to helper file
-Date: Tue,  6 Jan 2026 16:26:46 +1030
-Message-ID: <20260106055658.209029-7-joel@jms.id.au>
+Subject: [PATCH 07/16] hw/riscv/aia: Provide number of irq sources
+Date: Tue,  6 Jan 2026 16:26:47 +1030
+Message-ID: <20260106055658.209029-8-joel@jms.id.au>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260106055658.209029-1-joel@jms.id.au>
 References: <20260106055658.209029-1-joel@jms.id.au>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=joel.stan@gmail.com; helo=mail-pj1-x1035.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=joel.stan@gmail.com; helo=mail-pj1-x1031.google.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -94,7 +94,7 @@ X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.001,
  FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,366 +110,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The AIA init will be used by any server class riscv machine. Separate it
-out in order to share code with such systems.
+Instead of hard coding the number of IRQ sources used by the
+APLIC, pass it in as a parameter. This allows other machines to
+configure this as required.
 
 Signed-off-by: Joel Stanley <joel@jms.id.au>
 ---
- hw/riscv/aia.h             | 58 +++++++++++++++++++++++++
- include/hw/riscv/virt.h    | 29 -------------
- hw/riscv/aia.c             | 88 ++++++++++++++++++++++++++++++++++++++
- hw/riscv/virt-acpi-build.c |  2 +
- hw/riscv/virt.c            | 85 ++++--------------------------------
- hw/riscv/meson.build       |  2 +-
- 6 files changed, 158 insertions(+), 106 deletions(-)
- create mode 100644 hw/riscv/aia.h
- create mode 100644 hw/riscv/aia.c
+ hw/riscv/aia.h             |  1 +
+ include/hw/riscv/virt.h    |  1 +
+ hw/riscv/aia.c             |  5 +++--
+ hw/riscv/virt-acpi-build.c | 22 +++++++++++++---------
+ hw/riscv/virt.c            |  2 ++
+ 5 files changed, 20 insertions(+), 11 deletions(-)
 
 diff --git a/hw/riscv/aia.h b/hw/riscv/aia.h
-new file mode 100644
-index 000000000000..50c48ea4d79c
---- /dev/null
+index 50c48ea4d79c..a63a1ab293fe 100644
+--- a/hw/riscv/aia.h
 +++ b/hw/riscv/aia.h
-@@ -0,0 +1,58 @@
-+/*
-+ * QEMU RISC-V Advanced Interrupt Architecture (AIA)
-+ *
-+ * Copyright (C) 2019 Western Digital Corporation or its affiliates.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef HW_RISCV_AIA_H
-+#define HW_RISCV_AIA_H
-+
-+#include "exec/hwaddr.h"
-+
-+/*
-+ * The virt machine physical address space used by some of the devices
-+ * namely ACLINT, PLIC, APLIC, and IMSIC depend on number of Sockets,
-+ * number of CPUs, and number of IMSIC guest files.
-+ *
-+ * Various limits defined by VIRT_SOCKETS_MAX_BITS, VIRT_CPUS_MAX_BITS,
-+ * and VIRT_IRQCHIP_MAX_GUESTS_BITS are tuned for maximum utilization
-+ * of virt machine physical address space.
-+ */
-+
-+#define VIRT_SOCKETS_MAX_BITS          2
-+#define VIRT_CPUS_MAX_BITS             9
-+#define VIRT_CPUS_MAX                  (1 << VIRT_CPUS_MAX_BITS)
-+#define VIRT_SOCKETS_MAX               (1 << VIRT_SOCKETS_MAX_BITS)
-+
-+#define VIRT_IRQCHIP_NUM_MSIS 255
-+#define VIRT_IRQCHIP_NUM_SOURCES 96
-+#define VIRT_IRQCHIP_NUM_PRIO_BITS 3
-+#define VIRT_IRQCHIP_MAX_GUESTS_BITS 3
-+#define VIRT_IRQCHIP_MAX_GUESTS ((1U << VIRT_IRQCHIP_MAX_GUESTS_BITS) - 1U)
-+
-+
-+#define VIRT_IMSIC_GROUP_MAX_SIZE      (1U << IMSIC_MMIO_GROUP_MIN_SHIFT)
-+#if VIRT_IMSIC_GROUP_MAX_SIZE < \
-+    IMSIC_GROUP_SIZE(VIRT_CPUS_MAX_BITS, VIRT_IRQCHIP_MAX_GUESTS_BITS)
-+#error "Can't accommodate single IMSIC group in address space"
-+#endif
-+
-+#define VIRT_IMSIC_MAX_SIZE            (VIRT_SOCKETS_MAX * \
-+                                        VIRT_IMSIC_GROUP_MAX_SIZE)
-+#if 0x4000000 < VIRT_IMSIC_MAX_SIZE
-+#error "Can't accommodate all IMSIC groups in address space"
-+#endif
-+
-+uint32_t imsic_num_bits(uint32_t count);
-+
-+DeviceState *riscv_create_aia(bool msimode, int aia_guests,
-+                             const MemMapEntry *aplic_m,
-+                             const MemMapEntry *aplic_s,
-+                             const MemMapEntry *imsic_m,
-+                             const MemMapEntry *imsic_s,
-+                             int socket, int base_hartid, int hart_count);
-+
-+
-+#endif
+@@ -48,6 +48,7 @@
+ uint32_t imsic_num_bits(uint32_t count);
+ 
+ DeviceState *riscv_create_aia(bool msimode, int aia_guests,
++                             uint16_t num_sources,
+                              const MemMapEntry *aplic_m,
+                              const MemMapEntry *aplic_s,
+                              const MemMapEntry *imsic_m,
 diff --git a/include/hw/riscv/virt.h b/include/hw/riscv/virt.h
-index 7b4c2c8b7de3..6abab9786ff8 100644
+index 6abab9786ff8..bf6c768c2d50 100644
 --- a/include/hw/riscv/virt.h
 +++ b/include/hw/riscv/virt.h
-@@ -102,12 +102,6 @@ enum {
+@@ -64,6 +64,7 @@ struct RISCVVirtState {
+     struct GPEXHost *gpex_host;
+     OnOffAuto iommu_sys;
+     uint16_t pci_iommu_bdf;
++    uint16_t num_sources;
+ };
  
- #define VIRT_PLATFORM_BUS_NUM_IRQS 32
- 
--#define VIRT_IRQCHIP_NUM_MSIS 255
--#define VIRT_IRQCHIP_NUM_SOURCES 96
--#define VIRT_IRQCHIP_NUM_PRIO_BITS 3
--#define VIRT_IRQCHIP_MAX_GUESTS_BITS 3
--#define VIRT_IRQCHIP_MAX_GUESTS ((1U << VIRT_IRQCHIP_MAX_GUESTS_BITS) - 1U)
--
- #define VIRT_PLIC_PRIORITY_BASE 0x00
- #define VIRT_PLIC_PENDING_BASE 0x1000
- #define VIRT_PLIC_ENABLE_BASE 0x2000
-@@ -135,28 +129,5 @@ enum {
- bool virt_is_acpi_enabled(RISCVVirtState *s);
- bool virt_is_iommu_sys_enabled(RISCVVirtState *s);
- void virt_acpi_setup(RISCVVirtState *vms);
--uint32_t imsic_num_bits(uint32_t count);
--
--/*
-- * The virt machine physical address space used by some of the devices
-- * namely ACLINT, PLIC, APLIC, and IMSIC depend on number of Sockets,
-- * number of CPUs, and number of IMSIC guest files.
-- *
-- * Various limits defined by VIRT_SOCKETS_MAX_BITS, VIRT_CPUS_MAX_BITS,
-- * and VIRT_IRQCHIP_MAX_GUESTS_BITS are tuned for maximum utilization
-- * of virt machine physical address space.
-- */
--
--#define VIRT_IMSIC_GROUP_MAX_SIZE      (1U << IMSIC_MMIO_GROUP_MIN_SHIFT)
--#if VIRT_IMSIC_GROUP_MAX_SIZE < \
--    IMSIC_GROUP_SIZE(VIRT_CPUS_MAX_BITS, VIRT_IRQCHIP_MAX_GUESTS_BITS)
--#error "Can't accommodate single IMSIC group in address space"
--#endif
--
--#define VIRT_IMSIC_MAX_SIZE            (VIRT_SOCKETS_MAX * \
--                                        VIRT_IMSIC_GROUP_MAX_SIZE)
--#if 0x4000000 < VIRT_IMSIC_MAX_SIZE
--#error "Can't accommodate all IMSIC groups in address space"
--#endif
- 
- #endif
+ enum {
 diff --git a/hw/riscv/aia.c b/hw/riscv/aia.c
-new file mode 100644
-index 000000000000..0a89d7b49b7b
---- /dev/null
+index 0a89d7b49b7b..8d45a21f85e2 100644
+--- a/hw/riscv/aia.c
 +++ b/hw/riscv/aia.c
-@@ -0,0 +1,88 @@
-+/*
-+ * QEMU RISC-V Advanced Interrupt Architecture (AIA)
-+ *
-+ * Copyright (C) 2019 Western Digital Corporation or its affiliates.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "system/kvm.h"
-+#include "hw/intc/riscv_aplic.h"
-+#include "hw/intc/riscv_imsic.h"
-+
-+#include "aia.h"
-+
-+uint32_t imsic_num_bits(uint32_t count)
-+{
-+    uint32_t ret = 0;
-+
-+    while (BIT(ret) < count) {
-+        ret++;
-+    }
-+
-+    return ret;
-+}
-+
-+DeviceState *riscv_create_aia(bool msimode, int aia_guests,
-+                             const MemMapEntry *aplic_m,
-+                             const MemMapEntry *aplic_s,
-+                             const MemMapEntry *imsic_m,
-+                             const MemMapEntry *imsic_s,
-+                             int socket, int base_hartid, int hart_count)
-+{
-+    int i;
-+    hwaddr addr = 0;
-+    uint32_t guest_bits;
-+    DeviceState *aplic_s_dev = NULL;
-+    DeviceState *aplic_m_dev = NULL;
-+
-+    if (msimode) {
-+        if (!kvm_enabled()) {
-+            /* Per-socket M-level IMSICs */
-+            addr = imsic_m->base + socket * VIRT_IMSIC_GROUP_MAX_SIZE;
-+            for (i = 0; i < hart_count; i++) {
-+                riscv_imsic_create(addr + i * IMSIC_HART_SIZE(0),
-+                                   base_hartid + i, true, 1,
-+                                   VIRT_IRQCHIP_NUM_MSIS);
-+            }
-+        }
-+
-+        /* Per-socket S-level IMSICs */
-+        guest_bits = imsic_num_bits(aia_guests + 1);
-+        addr = imsic_s->base + socket * VIRT_IMSIC_GROUP_MAX_SIZE;
-+        for (i = 0; i < hart_count; i++) {
-+            riscv_imsic_create(addr + i * IMSIC_HART_SIZE(guest_bits),
-+                               base_hartid + i, false, 1 + aia_guests,
-+                               VIRT_IRQCHIP_NUM_MSIS);
-+        }
-+    }
-+
-+    if (!kvm_enabled()) {
-+        /* Per-socket M-level APLIC */
-+        aplic_m_dev = riscv_aplic_create(aplic_m->base +
-+                                     socket * aplic_m->size,
-+                                     aplic_m->size,
-+                                     (msimode) ? 0 : base_hartid,
-+                                     (msimode) ? 0 : hart_count,
-+                                     VIRT_IRQCHIP_NUM_SOURCES,
-+                                     VIRT_IRQCHIP_NUM_PRIO_BITS,
-+                                     msimode, true, NULL);
-+    }
-+
-+    /* Per-socket S-level APLIC */
-+    aplic_s_dev = riscv_aplic_create(aplic_s->base +
-+                                 socket * aplic_s->size,
-+                                 aplic_s->size,
-+                                 (msimode) ? 0 : base_hartid,
-+                                 (msimode) ? 0 : hart_count,
-+                                 VIRT_IRQCHIP_NUM_SOURCES,
-+                                 VIRT_IRQCHIP_NUM_PRIO_BITS,
-+                                 msimode, false, aplic_m_dev);
-+
-+    if (kvm_enabled() && msimode) {
-+        riscv_aplic_set_kvm_msicfgaddr(RISCV_APLIC(aplic_s_dev), addr);
-+    }
-+
-+    return kvm_enabled() ? aplic_s_dev : aplic_m_dev;
-+}
+@@ -25,6 +25,7 @@ uint32_t imsic_num_bits(uint32_t count)
+ }
+ 
+ DeviceState *riscv_create_aia(bool msimode, int aia_guests,
++                             uint16_t num_sources,
+                              const MemMapEntry *aplic_m,
+                              const MemMapEntry *aplic_s,
+                              const MemMapEntry *imsic_m,
+@@ -65,7 +66,7 @@ DeviceState *riscv_create_aia(bool msimode, int aia_guests,
+                                      aplic_m->size,
+                                      (msimode) ? 0 : base_hartid,
+                                      (msimode) ? 0 : hart_count,
+-                                     VIRT_IRQCHIP_NUM_SOURCES,
++                                     num_sources,
+                                      VIRT_IRQCHIP_NUM_PRIO_BITS,
+                                      msimode, true, NULL);
+     }
+@@ -76,7 +77,7 @@ DeviceState *riscv_create_aia(bool msimode, int aia_guests,
+                                  aplic_s->size,
+                                  (msimode) ? 0 : base_hartid,
+                                  (msimode) ? 0 : hart_count,
+-                                 VIRT_IRQCHIP_NUM_SOURCES,
++                                 num_sources,
+                                  VIRT_IRQCHIP_NUM_PRIO_BITS,
+                                  msimode, false, aplic_m_dev);
+ 
 diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
-index f1406cb68339..b091a9df9e0f 100644
+index b091a9df9e0f..8da60fe127c4 100644
 --- a/hw/riscv/virt-acpi-build.c
 +++ b/hw/riscv/virt-acpi-build.c
-@@ -40,6 +40,8 @@
- #include "qemu/error-report.h"
- #include "system/reset.h"
+@@ -144,6 +144,7 @@ static void acpi_dsdt_add_cpus(Aml *scope, RISCVVirtState *s)
+ }
  
-+#include "aia.h"
-+
- #define ACPI_BUILD_TABLE_SIZE             0x20000
- #define ACPI_BUILD_INTC_ID(socket, index) ((socket << 24) | (index))
+ static void acpi_dsdt_add_plic_aplic(Aml *scope, uint8_t socket_count,
++                                     uint16_t num_sources,
+                                      uint64_t mmio_base, uint64_t mmio_size,
+                                      const char *hid)
+ {
+@@ -153,7 +154,7 @@ static void acpi_dsdt_add_plic_aplic(Aml *scope, uint8_t socket_count,
  
+     for (socket = 0; socket < socket_count; socket++) {
+         plic_aplic_addr = mmio_base + mmio_size * socket;
+-        gsi_base = VIRT_IRQCHIP_NUM_SOURCES * socket;
++        gsi_base = num_sources * socket;
+         Aml *dev = aml_device("IC%.02X", socket);
+         aml_append(dev, aml_name_decl("_HID", aml_string("%s", hid)));
+         aml_append(dev, aml_name_decl("_UID", aml_int(socket)));
+@@ -469,10 +470,13 @@ static void build_dsdt(GArray *table_data,
+     socket_count = riscv_socket_count(ms);
+ 
+     if (s->aia_type == VIRT_AIA_TYPE_NONE) {
+-        acpi_dsdt_add_plic_aplic(scope, socket_count, memmap[VIRT_PLIC].base,
+-                                 memmap[VIRT_PLIC].size, "RSCV0001");
++        acpi_dsdt_add_plic_aplic(scope, socket_count, s->num_sources,
++                                 memmap[VIRT_PLIC].base,
++                                 memmap[VIRT_PLIC].size,
++                                 "RSCV0001");
+     } else {
+-        acpi_dsdt_add_plic_aplic(scope, socket_count, memmap[VIRT_APLIC_S].base,
++        acpi_dsdt_add_plic_aplic(scope, socket_count, s->num_sources,
++                                 memmap[VIRT_APLIC_S].base,
+                                  memmap[VIRT_APLIC_S].size, "RSCV0002");
+     }
+ 
+@@ -489,15 +493,15 @@ static void build_dsdt(GArray *table_data,
+     } else if (socket_count == 2) {
+         virtio_acpi_dsdt_add(scope, memmap[VIRT_VIRTIO].base,
+                              memmap[VIRT_VIRTIO].size,
+-                             VIRTIO_IRQ + VIRT_IRQCHIP_NUM_SOURCES, 0,
++                             VIRTIO_IRQ + s->num_sources, 0,
+                              VIRTIO_COUNT);
+-        acpi_dsdt_add_gpex_host(scope, PCIE_IRQ + VIRT_IRQCHIP_NUM_SOURCES);
++        acpi_dsdt_add_gpex_host(scope, PCIE_IRQ + s->num_sources);
+     } else {
+         virtio_acpi_dsdt_add(scope, memmap[VIRT_VIRTIO].base,
+                              memmap[VIRT_VIRTIO].size,
+-                             VIRTIO_IRQ + VIRT_IRQCHIP_NUM_SOURCES, 0,
++                             VIRTIO_IRQ + s->num_sources, 0,
+                              VIRTIO_COUNT);
+-        acpi_dsdt_add_gpex_host(scope, PCIE_IRQ + VIRT_IRQCHIP_NUM_SOURCES * 2);
++        acpi_dsdt_add_gpex_host(scope, PCIE_IRQ + s->num_sources * 2);
+     }
+ 
+     aml_append(dsdt, scope);
+@@ -576,7 +580,7 @@ static void build_madt(GArray *table_data,
+         for (socket = 0; socket < riscv_socket_count(ms); socket++) {
+             aplic_addr = s->memmap[VIRT_APLIC_S].base +
+                              s->memmap[VIRT_APLIC_S].size * socket;
+-            gsi_base = VIRT_IRQCHIP_NUM_SOURCES * socket;
++            gsi_base = s->num_sources * socket;
+             build_append_int_noprefix(table_data, 0x1A, 1);    /* Type */
+             build_append_int_noprefix(table_data, 36, 1);      /* Length */
+             build_append_int_noprefix(table_data, 1, 1);       /* Version */
 diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index 7615b7cde9ac..38d7a20d7ea5 100644
+index 38d7a20d7ea5..27e9ffd7bb70 100644
 --- a/hw/riscv/virt.c
 +++ b/hw/riscv/virt.c
-@@ -59,6 +59,8 @@
- #include "hw/virtio/virtio-iommu.h"
- #include "hw/uefi/var-service-api.h"
- 
-+#include "aia.h"
-+
- /* KVM AIA only supports APLIC MSI. APLIC Wired is always emulated by QEMU. */
- static bool virt_use_kvm_aia_aplic_imsic(RISCVVirtAIAType aia_type)
- {
-@@ -509,17 +511,6 @@ static void create_fdt_socket_plic(RISCVVirtState *s,
-     }
- }
- 
--uint32_t imsic_num_bits(uint32_t count)
--{
--    uint32_t ret = 0;
--
--    while (BIT(ret) < count) {
--        ret++;
--    }
--
--    return ret;
--}
--
- static void create_fdt_one_imsic(RISCVVirtState *s, hwaddr base_addr,
-                                  uint32_t *intc_phandles, uint32_t msi_phandle,
-                                  bool m_mode, uint32_t imsic_guest_bits)
-@@ -1302,68 +1293,6 @@ static DeviceState *virt_create_plic(const MemMapEntry *memmap, int socket,
-              memmap[VIRT_PLIC].size);
- }
- 
--static DeviceState *virt_create_aia(RISCVVirtAIAType aia_type, int aia_guests,
--                                    const MemMapEntry *memmap, int socket,
--                                    int base_hartid, int hart_count)
--{
--    int i;
--    hwaddr addr = 0;
--    uint32_t guest_bits;
--    DeviceState *aplic_s = NULL;
--    DeviceState *aplic_m = NULL;
--    bool msimode = aia_type == VIRT_AIA_TYPE_APLIC_IMSIC;
--
--    if (msimode) {
--        if (!kvm_enabled()) {
--            /* Per-socket M-level IMSICs */
--            addr = memmap[VIRT_IMSIC_M].base +
--                   socket * VIRT_IMSIC_GROUP_MAX_SIZE;
--            for (i = 0; i < hart_count; i++) {
--                riscv_imsic_create(addr + i * IMSIC_HART_SIZE(0),
--                                   base_hartid + i, true, 1,
--                                   VIRT_IRQCHIP_NUM_MSIS);
--            }
--        }
--
--        /* Per-socket S-level IMSICs */
--        guest_bits = imsic_num_bits(aia_guests + 1);
--        addr = memmap[VIRT_IMSIC_S].base + socket * VIRT_IMSIC_GROUP_MAX_SIZE;
--        for (i = 0; i < hart_count; i++) {
--            riscv_imsic_create(addr + i * IMSIC_HART_SIZE(guest_bits),
--                               base_hartid + i, false, 1 + aia_guests,
--                               VIRT_IRQCHIP_NUM_MSIS);
--        }
--    }
--
--    if (!kvm_enabled()) {
--        /* Per-socket M-level APLIC */
--        aplic_m = riscv_aplic_create(memmap[VIRT_APLIC_M].base +
--                                     socket * memmap[VIRT_APLIC_M].size,
--                                     memmap[VIRT_APLIC_M].size,
--                                     (msimode) ? 0 : base_hartid,
--                                     (msimode) ? 0 : hart_count,
--                                     VIRT_IRQCHIP_NUM_SOURCES,
--                                     VIRT_IRQCHIP_NUM_PRIO_BITS,
--                                     msimode, true, NULL);
--    }
--
--    /* Per-socket S-level APLIC */
--    aplic_s = riscv_aplic_create(memmap[VIRT_APLIC_S].base +
--                                 socket * memmap[VIRT_APLIC_S].size,
--                                 memmap[VIRT_APLIC_S].size,
--                                 (msimode) ? 0 : base_hartid,
--                                 (msimode) ? 0 : hart_count,
--                                 VIRT_IRQCHIP_NUM_SOURCES,
--                                 VIRT_IRQCHIP_NUM_PRIO_BITS,
--                                 msimode, false, aplic_m);
--
--    if (kvm_enabled() && msimode) {
--        riscv_aplic_set_kvm_msicfgaddr(RISCV_APLIC(aplic_s), addr);
--    }
--
--    return kvm_enabled() ? aplic_s : aplic_m;
--}
--
- static void create_platform_bus(RISCVVirtState *s, DeviceState *irqchip)
- {
-     DeviceState *dev;
-@@ -1625,9 +1554,13 @@ static void virt_machine_init(MachineState *machine)
-             s->irqchip[i] = virt_create_plic(s->memmap, i,
-                                              base_hartid, hart_count);
+@@ -1556,6 +1556,7 @@ static void virt_machine_init(MachineState *machine)
          } else {
--            s->irqchip[i] = virt_create_aia(s->aia_type, s->aia_guests,
--                                            s->memmap, i, base_hartid,
--                                            hart_count);
-+            s->irqchip[i] = riscv_create_aia(s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC,
-+                                             s->aia_guests,
-+                                             &s->memmap[VIRT_APLIC_M],
-+                                             &s->memmap[VIRT_APLIC_S],
-+                                             &s->memmap[VIRT_IMSIC_M],
-+                                             &s->memmap[VIRT_IMSIC_S],
-+                                             i, base_hartid, hart_count);
-         }
+             s->irqchip[i] = riscv_create_aia(s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC,
+                                              s->aia_guests,
++                                             s->num_sources,
+                                              &s->memmap[VIRT_APLIC_M],
+                                              &s->memmap[VIRT_APLIC_S],
+                                              &s->memmap[VIRT_IMSIC_M],
+@@ -1690,6 +1691,7 @@ static void virt_machine_instance_init(Object *obj)
+     s->oem_table_id = g_strndup(ACPI_BUILD_APPNAME8, 8);
+     s->acpi = ON_OFF_AUTO_AUTO;
+     s->iommu_sys = ON_OFF_AUTO_AUTO;
++    s->num_sources = VIRT_IRQCHIP_NUM_SOURCES;
+ }
  
-         /* Try to use different IRQCHIP instance based device type */
-diff --git a/hw/riscv/meson.build b/hw/riscv/meson.build
-index 2a8d5b136cc4..07f434fc91a7 100644
---- a/hw/riscv/meson.build
-+++ b/hw/riscv/meson.build
-@@ -1,5 +1,5 @@
- riscv_ss = ss.source_set()
--riscv_ss.add(files('boot.c'))
-+riscv_ss.add(files('boot.c', 'aia.c'))
- riscv_ss.add(when: 'CONFIG_RISCV_NUMA', if_true: files('numa.c'))
- riscv_ss.add(files('riscv_hart.c'))
- riscv_ss.add(when: 'CONFIG_OPENTITAN', if_true: files('opentitan.c'))
+ static char *virt_get_aia_guests(Object *obj, Error **errp)
 -- 
 2.47.3
 
