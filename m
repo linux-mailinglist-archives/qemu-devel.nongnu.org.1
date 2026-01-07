@@ -2,92 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0BF0CFD41E
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 11:51:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4575FCFD4FD
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 12:03:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdR6q-00067j-DB; Wed, 07 Jan 2026 05:49:48 -0500
+	id 1vdRJJ-0005Qv-Fn; Wed, 07 Jan 2026 06:02:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1vdR6o-00062u-3v
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 05:49:46 -0500
+ id 1vdRJ9-0005D1-8G
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 06:02:36 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1vdR6m-0001KC-6q
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 05:49:45 -0500
+ id 1vdRJ2-0004dL-PC
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 06:02:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767782981;
+ s=mimecast20190719; t=1767783738;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=MufZbfFhp1cHM4WRTfq7y1J61SrlyJrkWojaN4dJaP4=;
- b=D++f/fONlGYn8OKDAVOZYMGOs6R49uJxsQwVvjq87lj89gooEMiqeRu2bn4uLaQcT7AlWM
- OGd6MU6FY5oopycss4mh5Mnyexv4uSUU3/y9vCe4oDiPVKZw2zPa5qzFbiWxfgKI89LhCF
- euxtgvUxO/SXGxPXCTKT8LiJy23HTnI=
+ bh=ciWNXoT4vcULZeQ1qcTLKQynEbhiZCtD+3PeRPcjlew=;
+ b=STaauEomvL9UcCVO/5gXJeA0w6TXGm1B63ceM59zID0lKINVUkA/IjEjbYpn4ppwHRFveu
+ TqAW8U9ndRHzITqPqFY+Cx3nH+eYg0bCzfwyyeiOtVLQy2XNNHbw7kd1cDGp6XeezmA5yB
+ eDGzgVM4Bhi5p/PCAvHmM5QYZNRY4Ec=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-fi8-_UQMPuOpEsEalKJFJQ-1; Wed, 07 Jan 2026 05:49:40 -0500
-X-MC-Unique: fi8-_UQMPuOpEsEalKJFJQ-1
-X-Mimecast-MFC-AGG-ID: fi8-_UQMPuOpEsEalKJFJQ_1767782979
+ us-mta-649-fVxVS8NqNWuZ9_2XdkISAg-1; Wed, 07 Jan 2026 06:02:15 -0500
+X-MC-Unique: fVxVS8NqNWuZ9_2XdkISAg-1
+X-Mimecast-MFC-AGG-ID: fVxVS8NqNWuZ9_2XdkISAg_1767783734
 Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-47777158a85so24310305e9.3
- for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 02:49:40 -0800 (PST)
+ 5b1f17b1804b1-47a97b785bdso13182005e9.3
+ for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 03:02:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1767782979; x=1768387779; darn=nongnu.org;
+ d=redhat.com; s=google; t=1767783734; x=1768388534; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=MufZbfFhp1cHM4WRTfq7y1J61SrlyJrkWojaN4dJaP4=;
- b=Ky2VDeUcy6B9k9CPLFYzfWyoGIgdiNy0WE5KKfrviDr9NRlbZfar5myUr353DzA9Yj
- f+AkC+FxnI+x0j2JnDfjX9+2sdwo6cPy3TKRxQ2VpQVO8tmz6WhY4tdrxKq5NwLTrSSr
- CmX8cc/BHoW13ddx5cUTLMv2CrCBug8uDepipjV6zoIa11WXzGbLlHholRNojJGgGRVv
- EDJR6iUEnvuwWBSmyh+omr76vmbzpnrkNYGrHi/xqTEDpzvd4ORSzn2j21Q3mRsqAU/t
- EEH09uZI3ZTiknnLezlndl6elNEnbLYCy5J339iNQ5woASa/i8riQPIdmDkhCz0uaW0D
- LHMQ==
+ bh=ciWNXoT4vcULZeQ1qcTLKQynEbhiZCtD+3PeRPcjlew=;
+ b=mswVBdPN1gTD4FDjQ+dv5fAJPqYMjd/ohg7MbztYFr6gmNb1OkbzQTrgo//tFYLmkx
+ qCXB0cL8phZc7WKL5rURq9bS5NPyAx1ZNX8w08qf90jNvrHhGvN8ox3wnGXWHB9NIhvD
+ PCv8EH6GXdUtn3aTfXDKnTSIQ/rFAFxouXt+cCDuzm59EzPZ4QPGpQ7iVi5g7XF9EiiS
+ Hdmq1SAWRrUVw76eQrMtczrgendv8O764v+LJcBVXWIM4Y1ceyUprxIKCjlZVGX/KrsR
+ 1c/q8vRcFwf4CCB0GHKkELwTGPMjxDSSAXk6BAExShaz3PllxKpiQynMphfESaFAplDR
+ 0zNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767782979; x=1768387779;
+ d=1e100.net; s=20230601; t=1767783734; x=1768388534;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MufZbfFhp1cHM4WRTfq7y1J61SrlyJrkWojaN4dJaP4=;
- b=aHshi2iQCGhXOuDUgxAKJFP7ckUpy0+ErOtNs15PvCOWGTlR2TloCMLbmV0LRf4XP/
- oubjP4vrLekPEYeMdr5kWLB6uGpFTuVdHy8hOxe6/mv8UQQfsJPkCh7BzCDpH0klyWF9
- k9BcxhoHjh1HBmX3tWyXoLRvYtFrIyGzrMZt/8K/Amd8TWbYIZX+isQpCFrlHkvLJfPI
- 9av9p4IOhV/AsUVLeePe36flu2wKtv62uMywyNE56b1xd7DlO8W0gJpI6VJXexbYkHc0
- bPj4yKL08WMM+cudLT006JS7IPyjkogCpIEvwxPxpZCR5Hg9fwpKp6+U9e1lfOwlxdo5
- K//g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWSK9aVWGEq28qM1xs9T+ucC/0b9cRG4Db6euueif99/jZPe5IM9HpM2s7Xwu6tRrOJNUqd/XxVABun@nongnu.org
-X-Gm-Message-State: AOJu0YxLiaxpZpb+OKSFvtFtGjnhabLPBRxZNDfmvwhzwHMXjFQnECfw
- RGPcnivbKp3T6BVszGWG6EughKOGLU+nwFJk8iNUW/9rlb8WPIX0h3Y5EINLvb0ZVvJSjPW+yGX
- 0lvA4IlkahYuSeC6OsCZzgJSCd1T45R1zXWcP1xaQBUz9GJVXfOxeU7E8OyrXReE02iHmgy229C
- 00hl/FTQVdcsaduSu/xCinaPLD2S34T3oOmdMm7N4sPA==
-X-Gm-Gg: AY/fxX5s2EPh17HOPa2mFxkyHztlvsJ9y/0mmT3GnOjvYAzCrabekxenCoEOqpYWWrl
- GAiY3LqINMi5eoF+pKj4JrA8hHFVXjLCwG57VKKt0GMOE4EhWa1ml7Qpm+FfMVSDatfWRYDzNno
- AP2+AbFSTWC8rpxNyRJ52TW2l0klMWzJsmE1BYBs2JBn2JnIvBC+dq2JFYlnH+wM55cgI=
-X-Received: by 2002:a05:600c:3b15:b0:475:dd89:acb with SMTP id
- 5b1f17b1804b1-47d84b3472amr19902465e9.22.1767782978972; 
- Wed, 07 Jan 2026 02:49:38 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGfj5GZhIz71VuqkEG5+RHfSdtr7z7bAGT/FLl8ixHjAkCEwgg9TSwQHZajfpVtSc5W1w2XLpsiUaQDU12Ljvo=
-X-Received: by 2002:a05:600c:3b15:b0:475:dd89:acb with SMTP id
- 5b1f17b1804b1-47d84b3472amr19902285e9.22.1767782978562; Wed, 07 Jan 2026
- 02:49:38 -0800 (PST)
+ bh=ciWNXoT4vcULZeQ1qcTLKQynEbhiZCtD+3PeRPcjlew=;
+ b=Iq41kjn3KHZR9B3e3yA91Y6WTz1vfkJf9lVLVdV0qDL1M7TKVRMrM7Iz8z5NSCRfLz
+ JnvnimVabCnSza2CXOFQnsL0CQtMpKPNlF7U/vl9s+QsBI/kn3Uq1zuYyf/qLLNTWzLl
+ RebVXFn1duYuf3Ia2b6adKPtlJ2/h3HhRJrR70sXqtsqPR1/0QfDK0ea1n9bGcnh3EdV
+ k6BWvuzUO8kZpoWMItdeZVTH8esh+WbJgb40S3FQpe+97RNtiHhKrKszACMkmBpY9hjj
+ 4pPcjXveoVy2WF0KNyolwF26NudlLehrmQv7DQsACQIW1HcInOZ3OADideKsDzZLScXr
+ g82w==
+X-Gm-Message-State: AOJu0YyYX2B7UXnxaskCJ2iv1G3Yc9U63SfrSNWw0hpMZQA/uPB6ikU+
+ 8v9X4FLXS2981Wd7BfEu827ByaBnlrpQhyN6ufbZz20qc0nKMsHqnr5Qf8rjx6od0uzfNGnu2tY
+ U0PcP/g81Px0GP6tjPKrxUAFtx+TXmWODmc+Obiyh9gycPJ8qXAdGXAYlt5haL7NMl4IKIpOajj
+ BRj1AtPUTvoZR2RpPFVRausjpTY7L6UGA=
+X-Gm-Gg: AY/fxX5QAT34vCO7HjD6m/LcolHSp+3b2XvYHB/tZIiuQxJDlaIo3RoVBBvjYItxEEM
+ cepAHYZlT/U4R1d9XhLiXqhS1fZ6ZETpaOZp1iY6g9QEZ9wUS6YGu8IUjDV3qSygsDjGduh2mrn
+ CiS6W8cSVvJBwoeGSSwLNLAWDOtOxvnjqVYkgiLm9ojQCuoo3nwUZ5wSH1/weOwXn2hHY=
+X-Received: by 2002:a05:600c:c4a5:b0:477:1ae1:fa5d with SMTP id
+ 5b1f17b1804b1-47d84b32f5amr21366905e9.20.1767783733551; 
+ Wed, 07 Jan 2026 03:02:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHVxu7mpLwhOG6Eln94curikTMTPUka/lV2XINk9Sw4+347B2vCdVuYa9Tv1ro0S886neOr78nRRPDEPDZDDbg=
+X-Received: by 2002:a05:600c:c4a5:b0:477:1ae1:fa5d with SMTP id
+ 5b1f17b1804b1-47d84b32f5amr21366525e9.20.1767783733156; Wed, 07 Jan 2026
+ 03:02:13 -0800 (PST)
 MIME-Version: 1.0
 References: <20251222114822.327623-1-ppandit@redhat.com>
- <87h5tilhcq.fsf@suse.de> <aUq1oA73W9rAdCgG@x1.local>
- <CAE8KmOzcOdYhnxpDr8BMV8zjixpEh9r+COe=xyLfXCVWKD0CRw@mail.gmail.com>
- <87zf6q26q5.fsf@suse.de>
-In-Reply-To: <87zf6q26q5.fsf@suse.de>
+ <aUqyfkOtXwl6cy9A@x1.local>
+ <CAE8KmOwnPYoK0i53LB8nO95gC53QK4FoNvMrbb9anR3OB+RS4Q@mail.gmail.com>
+ <aV0o-EYEC-4rvdSz@x1.local>
+In-Reply-To: <aV0o-EYEC-4rvdSz@x1.local>
 From: Prasad Pandit <ppandit@redhat.com>
-Date: Wed, 7 Jan 2026 16:19:21 +0530
-X-Gm-Features: AQt7F2ofIZRu7Of4iS7jEyWmY904lm-vpIQLs5wv-r7dw-RaPuj0ArpQp5MvRjw
-Message-ID: <CAE8KmOzxDn7X7rohJGT5AeW3+5oJFgueVtaQCpUc2bmBvrgRXg@mail.gmail.com>
+Date: Wed, 7 Jan 2026 16:31:54 +0530
+X-Gm-Features: AQt7F2qkF4yQYGiKPQ5I4MnicvaGX1az14pe_PwmdoHcSXyP2N6JOjsBCsZdqUA
+Message-ID: <CAE8KmOyh+vku1bnbHfmmek9Uru7AaF-mc0q34807SE+_r5QT3w@mail.gmail.com>
 Subject: Re: [PATCH] migration: introduce MIGRATION_STATUS_FAILING
-To: Fabiano Rosas <farosas@suse.de>
-Cc: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org, 
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>, 
  Prasad Pandit <pjp@fedoraproject.org>
 Content-Type: text/plain; charset="UTF-8"
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
@@ -115,85 +113,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+On Tue, 6 Jan 2026 at 20:53, Peter Xu <peterx@redhat.com> wrote:
+> Yes, something like this would be more than welcomed, thanks.  You can
+> provide a simplified version in the commit log when repost.
 
-On Tue, 6 Jan 2026 at 19:17, Fabiano Rosas <farosas@suse.de> wrote:
-> If we had a linear state transition table, i.e. a DFA without any
-> branching, that would be ideal. But since we have states that can reach
-> (and be reached from) multiple other states, then we'll always need some
-> input to migration_change_state(). Here you're making it the
-> s->trigger. Where will that come from?
+* Okay.
 
-* The trigger or reason can come from the place where we call
-migration_change_state(), there we'll know whether migration has
-paused OR completed OR failed OR cancelled.
-
-* Even with branches, the process is still linear as it goes from
-start to finish. Just that we can reach the end state via different
-paths.
-  ===
-    $ grep -ri 'shutting' /var/log/libvirt/qemu/   | cut -d' ' -f 3- |
-sort | uniq
-     shutting down, reason=crashed
-     shutting down, reason=destroyed
-     shutting down, reason=failed
-     shutting down, reason=migrated
-     shutting down, reason=shutdown
-===
-As we see, guest VM can stop/shutdown due to various reasons.
-
-* Between [migration-start] and [migration-end], we can define
-events/triggers that will lead to the next state. Ex
-
-      - START -> t:connection-established -> ACTIVE
-
-We can reach the ACTIVE state only after connections are established,
-not without that. If connection establishment fails, we reach the END.
-
-     - START  -> t:connection-established -> ACTIVE ->  running   -> END
-
-ACTIVE ->  t:error     ->  END
-
-ACTIVE ->  t:cancel  ->  END
-
-ACTIVE ->  t:pause   ->  PAUSED  -> t:resume -> ACTIVE
-
-> Looking at runstate.c and job.c, it seems we could at least define a
-> state transition table and do away with the second parameter to
-> migrate_set_state(s, old, new).
+> Note that I'm not reading carefully into each of them, because we have
+> concurrent changes from Fabiano recently, essentially it'll change when
+> migration_cleanup() will be used in above examples:
 >
-> As we've been discussing, the current state-change mechanism has the
-> dual purpose of emitting the state change event and also serving as
-> internal tracking of the migration state. It's not clear to me whether
-> you're covering both in this proposal or just one of them.
+> https://lore.kernel.org/r/20260105190644.14072-12-farosas@suse.de
+>
+> So we'll need to be careful landing these two changes.
+> Considering that the other series was close to landing, IMHO it might be
+> good idea to have your patch (when reposted) based on that series.  Please
+> have a look.
 
-* We are not doing away with migration states, just reducing or
-rationalising them to make it easier. Emitting state change to
-libvirtd(8) and internal tracking should still serve the same. Just
-that in migration_is_running() etc. functions we'll check only if the
-state is ACTIVE, instead of 10 other states which also indicate that
-the migration is running.
+* Yes, I see it is changing the same code areas. I'll wait for
+Fabiano's series to merge upstream. Will it happen this week? @Fabiano
+Rosas?
 
-> I don't think we've established actually what are the goals of having
-> any state changes. Do we even need state changes for internal tracking?
-> We could use your s->trigger as an enum and just check it wherever
-> necessary. And keep the MIGRATION_STATUS exclusive for the external API,
-> in which case, it's probably better to just set it unconditionally (in
-> many places migrate_set_state already takes the current state as
-> argument, i.e. it doesn't care about the current state).
+> I still think FAILING isn't such a huge change so it needs to be split into
+> multiple patches.  It's a new status and we need to review every spot of
+> FAILED status change, in which case one patch is very well self contained.
+>
+> Even in a backport I think we should backport all relevant changes about
+> FAILING when necessary.  We should not backport part of it, causing FAILING
+> status to behave different over different paths.
 
-* Well as I see it, different states help us to
-      1 - know where the process is at a given time. In case of
-errors/failures or other events to know what actions to take.
-      2 - what actions/triggers/events are possible.
-
-ex. If an error/cancel occurs before ACTIVE state, during connection
-establishment, it may not have to go through migration_cleanup(),
-probably there's nothing to cleanup. Vs if an error/cancel occurs
-after ACTIVE  or in PAUSED state, we know migration_cleanup() is
-needed.  Similarly if we receive t:resume command when in ACTIVE
-state, OR receive t:pause command in PAUSED state,  we know there's
-nothing to do and ignore it.
+* Adding a new interim state to the .json file is not going to break
+anything. But other places where we start using it via a bulk change
+might break things we don't know. So far we've only tested it in a
+live migration use case. We have not run snapshots
+(bg_migration_iteration()) OR the same host migration use case.
+Hopefully it might work fine there, without any breakages.
 
 Thank you.
 ---
