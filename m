@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6AA0CFDE7F
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 14:23:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABAA2CFDE82
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 14:23:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdTVG-0004Yi-Gu; Wed, 07 Jan 2026 08:23:10 -0500
+	id 1vdTVH-0004gT-8v; Wed, 07 Jan 2026 08:23:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdTUk-0004Rh-7Z
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:22:41 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdTUw-0004Td-1B
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:22:52 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdTUg-00053E-Dv
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:22:37 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdTUu-00055W-DG
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:22:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767792152;
+ s=mimecast20190719; t=1767792167;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:resent-to:
  resent-from:resent-message-id:in-reply-to:in-reply-to:  references:references; 
- bh=oQeg/ax1yqZCNF/kck2njGvRd7LL1zM9VleD8rDKBvQ=;
- b=Ah7MScwx1A6WS1dAOlL0reHqeELavp6xK8xwAG9Gv5ibLUIQM6/+w9toIdAr5xevdkIfKB
- iD09hA3BQcL4qQzy/Nu6euwk+gqZtz/QhSmfZ0Ze7UbBCMOF7UnnNwkR4z0P58GwdnY6ef
- C0XCG7C1WtDX9EyA2+psCJNmcLFlE0g=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=qkfNWyL3vVuiztaDBd6iakYD+1JHNCPUXMngEiTpW8k=;
+ b=BZ1hihbXLD0VPag6GJgyiB5IsPk97UF6TOmaGYlYlCWBDuVuLfzFFwhdZlrUQ90VOPnD9i
+ n+siTB5GHpDV3aLtQMaoS+SwCKcAUpmwuIiXjCKh+Xe6xKCJzy8US+8uxH7CRorgmV4WCx
+ qLLkXSpfs37djhiSDex2gOhirH6o9i4=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-361-ZYLnzWUfPTiiytBiLyOFEA-1; Wed,
- 07 Jan 2026 08:22:31 -0500
-X-MC-Unique: ZYLnzWUfPTiiytBiLyOFEA-1
-X-Mimecast-MFC-AGG-ID: ZYLnzWUfPTiiytBiLyOFEA_1767792149
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-685-HjIBPxnbMH2r1PnEecifkA-1; Wed,
+ 07 Jan 2026 08:22:44 -0500
+X-MC-Unique: HjIBPxnbMH2r1PnEecifkA-1
+X-Mimecast-MFC-AGG-ID: HjIBPxnbMH2r1PnEecifkA_1767792163
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 34CC11800447; Wed,  7 Jan 2026 13:22:29 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B3776195609E; Wed,  7 Jan 2026 13:22:43 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.32])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BB123180066A; Wed,  7 Jan 2026 13:22:28 +0000 (UTC)
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3102530002D1; Wed,  7 Jan 2026 13:22:43 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 9F90A21E6937; Wed, 07 Jan 2026 14:22:26 +0100 (CET)
+ id E7B0121E6937; Wed, 07 Jan 2026 14:22:40 +0100 (CET)
 Resent-To: zhao1.liu@intel.com, richard.henderson@linaro.org,
- qemu-devel@nongnu.org, vsementsov@yandex-team.ru
+ qemu-devel@nongnu.org
 Resent-From: Markus Armbruster <armbru@redhat.com>
-Resent-Date: Wed, 07 Jan 2026 14:22:26 +0100
-Resent-Message-ID: <871pk1k165.fsf@pond.sub.org>
+Resent-Date: Wed, 07 Jan 2026 14:22:40 +0100
+Resent-Message-ID: <87wm1timlb.fsf@pond.sub.org>
 X-From-Line: armbru@redhat.com  Wed Jan  7 13:43:41 2026
 X-Original-To: armbru
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3F2C621E61AA; Wed, 07 Jan 2026 13:43:41 +0100 (CET)
+ id 4316F21E61AD; Wed, 07 Jan 2026 13:43:41 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Peter Xu <peterx@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 04/17] error: error_free(NULL) is safe, drop unnecessary
- conditionals
-Date: Wed,  7 Jan 2026 13:43:28 +0100
-Message-ID: <20260107124341.1093312-5-armbru@redhat.com>
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 05/17] error: Consistently name Error * objects err, and not
+ errp
+Date: Wed,  7 Jan 2026 13:43:29 +0100
+Message-ID: <20260107124341.1093312-6-armbru@redhat.com>
 In-Reply-To: <20260107124341.1093312-1-armbru@redhat.com>
 References: <20260107124341.1093312-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Lines: 96
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Lines: 173
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -94,98 +93,175 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This touches code in xen_enable_tpm() that is obviously wrong.  Since
+I don't know how to fix it properly, I'm adding a FIXME there.
+
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20251119130855.105479-5-armbru@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Message-ID: <20251119130855.105479-6-armbru@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/acpi/pcihp.c             | 4 +---
- io/channel-websock.c        | 4 +---
- io/task.c                   | 4 +---
- migration/migration.c       | 6 ++----
- tests/unit/test-smp-parse.c | 5 +----
- 5 files changed, 6 insertions(+), 17 deletions(-)
+ block/crypto.c          |  8 ++++----
+ hw/acpi/ghes.c          |  8 ++++----
+ hw/ppc/spapr.c          | 16 ++++++++--------
+ hw/xen/xen-pvh-common.c | 13 ++++++++++---
+ nbd/common.c            |  6 +++---
+ 5 files changed, 29 insertions(+), 22 deletions(-)
 
-diff --git a/hw/acpi/pcihp.c b/hw/acpi/pcihp.c
-index 4922bbc778..87162ff2c0 100644
---- a/hw/acpi/pcihp.c
-+++ b/hw/acpi/pcihp.c
-@@ -62,9 +62,7 @@ static int acpi_pcihp_get_bsel(PCIBus *bus)
-                                              &local_err);
- 
-     if (local_err || bsel >= ACPI_PCIHP_MAX_HOTPLUG_BUS) {
--        if (local_err) {
--            error_free(local_err);
--        }
-+        error_free(local_err);
-         return -1;
-     } else {
-         return bsel;
-diff --git a/io/channel-websock.c b/io/channel-websock.c
-index cb4dafdebb..d0929ba232 100644
---- a/io/channel-websock.c
-+++ b/io/channel-websock.c
-@@ -932,9 +932,7 @@ static void qio_channel_websock_finalize(Object *obj)
-     if (ioc->io_tag) {
-         g_source_remove(ioc->io_tag);
-     }
--    if (ioc->io_err) {
--        error_free(ioc->io_err);
--    }
-+    error_free(ioc->io_err);
-     object_unref(OBJECT(ioc->master));
- }
- 
-diff --git a/io/task.c b/io/task.c
-index 451f26f8b4..da79d31782 100644
---- a/io/task.c
-+++ b/io/task.c
-@@ -91,9 +91,7 @@ static void qio_task_free(QIOTask *task)
-     if (task->destroyResult) {
-         task->destroyResult(task->result);
-     }
--    if (task->err) {
--        error_free(task->err);
--    }
-+    error_free(task->err);
-     object_unref(task->source);
- 
-     qemu_mutex_unlock(&task->thread_lock);
-diff --git a/migration/migration.c b/migration/migration.c
-index 9d1bf5d276..1c34d8d432 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1568,10 +1568,8 @@ bool migrate_has_error(MigrationState *s)
- static void migrate_error_free(MigrationState *s)
+diff --git a/block/crypto.c b/block/crypto.c
+index b97d027444..36abb7af46 100644
+--- a/block/crypto.c
++++ b/block/crypto.c
+@@ -938,14 +938,14 @@ static void GRAPH_RDLOCK
+ block_crypto_amend_cleanup(BlockDriverState *bs)
  {
-     QEMU_LOCK_GUARD(&s->error_mutex);
--    if (s->error) {
--        error_free(s->error);
--        s->error = NULL;
--    }
-+    error_free(s->error);
-+    s->error = NULL;
+     BlockCrypto *crypto = bs->opaque;
+-    Error *errp = NULL;
++    Error *err = NULL;
+ 
+     /* release exclusive read/write permissions to the underlying file */
+     crypto->updating_keys = false;
+-    bdrv_child_refresh_perms(bs, bs->file, &errp);
++    bdrv_child_refresh_perms(bs, bs->file, &err);
+ 
+-    if (errp) {
+-        error_report_err(errp);
++    if (err) {
++        error_report_err(err);
+     }
  }
  
- static void migration_connect_error_propagate(MigrationState *s, Error *error)
-diff --git a/tests/unit/test-smp-parse.c b/tests/unit/test-smp-parse.c
-index 28ea9158e7..1b6450e7d8 100644
---- a/tests/unit/test-smp-parse.c
-+++ b/tests/unit/test-smp-parse.c
-@@ -875,10 +875,7 @@ static void check_parse(MachineState *ms, const SMPConfiguration *config,
-                config_str, expect_err, output_topo_str);
+diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
+index 365156dff9..5445dc11bd 100644
+--- a/hw/acpi/ghes.c
++++ b/hw/acpi/ghes.c
+@@ -564,7 +564,7 @@ int acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
+     const uint8_t guid[] =
+           UUID_LE(0xA5BC1114, 0x6F64, 0x4EDE, 0xB8, 0x63, 0x3E, 0x83, \
+                   0xED, 0x7C, 0x83, 0xB1);
+-    Error *errp = NULL;
++    Error *err = NULL;
+     int data_length;
+     GArray *block;
  
- end:
--    if (err != NULL) {
--        error_free(err);
--    }
--
+@@ -584,12 +584,12 @@ int acpi_ghes_memory_errors(AcpiGhesState *ags, uint16_t source_id,
+     acpi_ghes_build_append_mem_cper(block, physical_address);
+ 
+     /* Report the error */
+-    ghes_record_cper_errors(ags, block->data, block->len, source_id, &errp);
++    ghes_record_cper_errors(ags, block->data, block->len, source_id, &err);
+ 
+     g_array_free(block, true);
+ 
+-    if (errp) {
+-        error_report_err(errp);
++    if (err) {
++        error_report_err(err);
+         return -1;
+     }
+ 
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index bcf6aa560f..b3c5097bf8 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -2848,7 +2848,7 @@ static void spapr_machine_init(MachineState *machine)
+     int i;
+     MemoryRegion *sysmem = get_system_memory();
+     long load_limit, fw_size;
+-    Error *errp = NULL;
++    Error *err = NULL;
+     NICInfo *nd;
+ 
+     if (!filename) {
+@@ -2872,7 +2872,7 @@ static void spapr_machine_init(MachineState *machine)
+     /* Determine capabilities to run with */
+     spapr_caps_init(spapr);
+ 
+-    kvmppc_check_papr_resize_hpt(&errp);
++    kvmppc_check_papr_resize_hpt(&err);
+     if (spapr->resize_hpt == SPAPR_RESIZE_HPT_DEFAULT) {
+         /*
+          * If the user explicitly requested a mode we should either
+@@ -2880,10 +2880,10 @@ static void spapr_machine_init(MachineState *machine)
+          * it's not set explicitly, we reset our mode to something
+          * that works
+          */
+-        if (errp) {
++        if (err) {
+             spapr->resize_hpt = SPAPR_RESIZE_HPT_DISABLED;
+-            error_free(errp);
+-            errp = NULL;
++            error_free(err);
++            err = NULL;
+         } else {
+             spapr->resize_hpt = smc->resize_hpt_default;
+         }
+@@ -2891,14 +2891,14 @@ static void spapr_machine_init(MachineState *machine)
+ 
+     assert(spapr->resize_hpt != SPAPR_RESIZE_HPT_DEFAULT);
+ 
+-    if ((spapr->resize_hpt != SPAPR_RESIZE_HPT_DISABLED) && errp) {
++    if ((spapr->resize_hpt != SPAPR_RESIZE_HPT_DISABLED) && err) {
+         /*
+          * User requested HPT resize, but this host can't supply it.  Bail out
+          */
+-        error_report_err(errp);
++        error_report_err(err);
+         exit(1);
+     }
+-    error_free(errp);
 +    error_free(err);
-     abort();
- }
  
+     spapr->rma_size = spapr_rma_size(spapr, &error_fatal);
+ 
+diff --git a/hw/xen/xen-pvh-common.c b/hw/xen/xen-pvh-common.c
+index f365222019..1381310fc7 100644
+--- a/hw/xen/xen-pvh-common.c
++++ b/hw/xen/xen-pvh-common.c
+@@ -101,7 +101,7 @@ static void xen_create_virtio_mmio_devices(XenPVHMachineState *s)
+ #ifdef CONFIG_TPM
+ static void xen_enable_tpm(XenPVHMachineState *s)
+ {
+-    Error *errp = NULL;
++    Error *err = NULL;
+     DeviceState *dev;
+     SysBusDevice *busdev;
+ 
+@@ -111,8 +111,15 @@ static void xen_enable_tpm(XenPVHMachineState *s)
+         return;
+     }
+     dev = qdev_new(TYPE_TPM_TIS_SYSBUS);
+-    object_property_set_link(OBJECT(dev), "tpmdev", OBJECT(be), &errp);
+-    object_property_set_str(OBJECT(dev), "tpmdev", be->id, &errp);
++    /*
++     * FIXME This use of &err is is wrong.  If both calls fail, the
++     * second will trip error_setv()'s assertion.  If just one call
++     * fails, we leak an Error object.  Setting the same property
++     * twice (first to a QOM path, then to an ID string) is almost
++     * certainly wrong, too.
++     */
++    object_property_set_link(OBJECT(dev), "tpmdev", OBJECT(be), &err);
++    object_property_set_str(OBJECT(dev), "tpmdev", be->id, &err);
+     busdev = SYS_BUS_DEVICE(dev);
+     sysbus_realize_and_unref(busdev, &error_fatal);
+     sysbus_mmio_map(busdev, 0, s->cfg.tpm.base);
+diff --git a/nbd/common.c b/nbd/common.c
+index 2a133a66c3..f43cbaa15b 100644
+--- a/nbd/common.c
++++ b/nbd/common.c
+@@ -282,10 +282,10 @@ void nbd_set_socket_send_buffer(QIOChannelSocket *sioc)
+ #ifdef UNIX_STREAM_SOCKET_SEND_BUFFER_SIZE
+     if (sioc->localAddr.ss_family == AF_UNIX) {
+         size_t size = UNIX_STREAM_SOCKET_SEND_BUFFER_SIZE;
+-        Error *errp = NULL;
++        Error *err = NULL;
+ 
+-        if (qio_channel_socket_set_send_buffer(sioc, size, &errp) < 0) {
+-            warn_report_err(errp);
++        if (qio_channel_socket_set_send_buffer(sioc, size, &err) < 0) {
++            warn_report_err(err);
+         }
+     }
+ #endif /* UNIX_STREAM_SOCKET_SEND_BUFFER_SIZE */
 -- 
 2.52.0
 
