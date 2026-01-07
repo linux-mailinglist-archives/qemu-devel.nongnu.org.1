@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB8C9CFFEBF
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 21:08:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABF3CCFFED7
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 21:09:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdZpA-0002AQ-Sa; Wed, 07 Jan 2026 15:08:08 -0500
+	id 1vdZpq-0002q6-6R; Wed, 07 Jan 2026 15:08:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdZp7-0001xn-VS
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 15:08:05 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdZpC-0002XL-VL
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 15:08:12 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdZp4-0002GW-7Y
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 15:08:04 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4779cb0a33fso26772955e9.0
- for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 12:08:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdZpB-0002HC-4w
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 15:08:10 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-47d5e021a53so18407935e9.3
+ for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 12:08:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767816480; x=1768421280; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767816487; x=1768421287; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Tpd/l84XrVzBPcf0urzMcll6yyS6LWFj3wm0Rd/I+6E=;
- b=hCBSv81akcrhyXCs/zQ4zi733AuovHpyn6C7oC++g+wFh/bE9rtuLV4wYqQcNFxDe+
- V9XQts4AIt7q5xmg4xlh4AnrUBSXS+fY30Bs6QtIFJDmHk/Se0ZG6EjvPtMZlrCLcSgF
- PeX14HNXnqsePBfbbRbFUtA3nSGu/T4Bfgk4FOtddClrHQjQ7e8v67TAn8EYkc73ZSUy
- 6rYH51EKmSYomCXY3ux5xas+MxAZrzl7Nji97oEuEegJ6WFHL8RgbU6oFEI7MT0TZgVR
- dVMxeiy1c1slo0F8kIq1GhcjvoTl0CWObf/6Xpu3rwPhfiA714Xy8OuvxryO0NVLCPKw
- XFZg==
+ bh=5iItJ0aNB9FO1EI6E9PzkONwwdwGsq32voTruVa/n7o=;
+ b=V7mBY/9/IhLDT51eTfekeYrSVaZFOyMrVzW9pe+q4QMUSaZm8tp62K6uHKP/nQeUVs
+ fSHQ6l7Vd95cXtG+m84YhVFn3B7DJwmon81sAjrCRHkpP7WHkdYgvLpgf1AXxeeAX/Y8
+ ZxzXiywl/qYB8a6JcvH91JvSJXsRIHyeKgb/YOC9lE4Mizg0PkK+bdIYb8LhC0z9we/A
+ BqXv4ogmW95TPv4W2ds4Qh93GhUQPACD9E6xsV/dRp+j7B9tf1ZjgYr3ZaikntKyZDHE
+ 7qiP3RkhmJfZZwZDbFiYIwl+rACJycaz7K0O465ISGr95Wd71pHpIXdyU6IByZ7qfv9n
+ cWgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767816480; x=1768421280;
+ d=1e100.net; s=20230601; t=1767816487; x=1768421287;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=Tpd/l84XrVzBPcf0urzMcll6yyS6LWFj3wm0Rd/I+6E=;
- b=j8oOGdK9NftyMX2Kd9wWPXZYO8ave4Kc/qB6XOyOJqBRRYtnlyYcEBZgUzx7H/IHDf
- msAJzaPDFYGfXAUPyGEOP34u+w2Ryf69luos4ENswZHTaHLFGtaujkkFO76CMSn5Lbja
- cULMIO0sfgJ/UDGdYHyL/uy3zpdUR6to3tTCClYaG0YxelHkbzOxzBehZ8Eaun+ito6Z
- kKrc238NCcCUNkE8LpYkyJTgyP9cTFZ2sYvDCuHd67WlRGtKhwmyQnYEpXvZbHRTjzL1
- hCLpSN/SfSEsWbK1LCMzF5b7sGHbQgastdsPtVuNTpt5PmiKdc2zdFg7+mtgJAjIlGLM
- mjwA==
-X-Gm-Message-State: AOJu0Yyu0X7zsIhBvUbKO60IC6vkt/CQfOWkbC2Y4Tf+MdiMr4AlFibN
- C7VdxfOgOC79kVT/TRzdk5LiE5QIpEycIW3phycey33XnX0G7P9nJ+k+vyeRKRYRUSlBmpOn02N
- oOfxIifY=
-X-Gm-Gg: AY/fxX5NwN5KyIk7NTgZL84I+5lvPz8m3GnAN9ufiGdZzrFee2hya6RmiKZ/4TYA3jC
- kDU+fetdg71TKbjnHiRqsOm8n1WVueFMiAZoacY73EGftmB/M3pz/LIF5qXv1NryRFEEAjL1rEQ
- fQcM/j9ok3RC2OP9/NPsd42XWFI65nZ1r8jFL/YY51lpLW3T7+B9zpsQgbEdZreb73tCWkeSo7s
- MmijNLZb1VV4qKpfCXbA/PJM+jeKD/VYjqWOJ4fh9xSS9sVxFvXAp63maMZvtgGOT24AEZ/1t1v
- HQAmIQ9mNWHiVOhuhv8x2fVPWXY1sX0nbR3WPOfLDnftYjAchqpBst3lJbUIPxf8ol46MF9yDSl
- LAgygOzSTHcizQx4OMLUmYnTIgCydRN6T5yJe5rz1Y8jSGyXEFQkOkuwJF+nGVsEJ0NuUxB89F4
- TpZavkbQ2H1HLQdbxUegxaNFgC53E+glIdxRmgGFEj5LbnR4LA5MP0gJsgYgiL
-X-Google-Smtp-Source: AGHT+IEEo18OU6MPrOvLfD48XWigK9dJiCmyH8tRi4Vv2kC8GLRHl7K7Go3bBrDZDWobCvDGmGBf7g==
-X-Received: by 2002:a05:600c:1d04:b0:46e:35a0:3587 with SMTP id
- 5b1f17b1804b1-47d84b3a06fmr53318475e9.27.1767816480523; 
- Wed, 07 Jan 2026 12:08:00 -0800 (PST)
+ bh=5iItJ0aNB9FO1EI6E9PzkONwwdwGsq32voTruVa/n7o=;
+ b=uiW5X79z+sb741Qul1pDtAwtMxyDESBlwFigmYyI84UignZVC43MPgZwcUT+kki6Eu
+ JFA79jcbjdwmfgAbnh33tY4WFL5oLG439zgHEvW2EckTOnJiAF904k2/OtG9P02EsS2C
+ yQYsjok8sCVAC6DrYNLaYywSNYF+G4tCR23+QD4dr1dcdgLmd/NHUIVjaBqWzHxiezMx
+ KhhJQTI+E6Mfe9+yA//fTYPeRujgZ6KgeN+4O2rbpzxBaeCy544BQ1B7svN1P7x/uqKD
+ ya/qn6colwv9izLnDfFyQt8f8dK5BV5j02X6MqLuc/6WJ833IGIBPOh/gQkVnJcXWwQ4
+ +4fA==
+X-Gm-Message-State: AOJu0Ywh96ovE8tf4rxVJXk0V5T0Dh/r5OvwNYhRksroXYCbJNp6rgtL
+ X1sL5OcQ++K846FYvbiI0XJQ59Zv/W8Rctd1jrR9MD46lJIuQUU+Keo4lba+5HnoJ7Yu9fdbTEo
+ iaWQK3jw=
+X-Gm-Gg: AY/fxX6IioA4/SScGeFd6m5oHK9YkONwPewSSAxffSBbmABy75wJ8/9w9M5aSf0benJ
+ iox934uAa39ehr8DWa54y6akyu4CJfg/WZgrzrlj5d+yeARqK5RmpOU0/SZpWzsMquGVeHqyWMK
+ lsA5sAiU4wesqy6O6HCwsnq1NOAnFsFTkRSROeWG0S/NEBgG+pgpTBPf6PD86NstGD99uH9ATIA
+ 3v1/Wj72vZ3VmHSvHBgFKu1968YZgWpTqVjM9u7mI3nCW0+VOJ6uJtm/VMieSwV71AfQiosMmgz
+ +zYOGHmaIXeWIk0DtWaO0Yf2MJD/IhLD4tHT4KYRpqMTgPwRabXB2goV6MPPF73B/ec4hDB6sO/
+ W7md60sXzRKONa3Nr/ZunFMm49xMMJu+OssyKdPkwgjBZnwkGYapVSbXPLoiSc0V7g7IKx9QGaG
+ vTtsSvQCL82lY3qZfphroEjhkGNtnV1grapdpFPuvLNC1OChX6xrRHRht3tIzB
+X-Google-Smtp-Source: AGHT+IGxkzcD2untQl3FisMXX8HQ9tKuPqCIASx199WBoQYsJ5dsoXDFpAHYGLNRGBzITS91gi/8eQ==
+X-Received: by 2002:a05:600c:3483:b0:47d:6c69:bf28 with SMTP id
+ 5b1f17b1804b1-47d84b3476fmr49874335e9.24.1767816487370; 
+ Wed, 07 Jan 2026 12:08:07 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-432bd5df9afsm13322083f8f.24.2026.01.07.12.07.59
+ 5b1f17b1804b1-47d8636c610sm20729075e9.0.2026.01.07.12.08.06
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 07 Jan 2026 12:08:00 -0800 (PST)
+ Wed, 07 Jan 2026 12:08:06 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Yoshinori Sato <yoshinori.sato@nifty.com>, Anton Johansson <anjo@rev.ng>,
@@ -71,18 +71,17 @@ Cc: Yoshinori Sato <yoshinori.sato@nifty.com>, Anton Johansson <anjo@rev.ng>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Helge Deller <deller@gmx.de>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 8/9] target/hppa: Remove target_ulong use in disas_log()
- handler
-Date: Wed,  7 Jan 2026 21:07:01 +0100
-Message-ID: <20260107200702.54582-9-philmd@linaro.org>
+Subject: [PATCH 9/9] target/m68k: Replace MD_TLONG -> MD_I32 in monitor.c
+Date: Wed,  7 Jan 2026 21:07:02 +0100
+Message-ID: <20260107200702.54582-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260107200702.54582-1-philmd@linaro.org>
 References: <20260107200702.54582-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,28 +104,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit 85c19af63e7 ("include/exec: Use vaddr in DisasContextBase
-virtual addresses") the DisasContextBase::pc_first field is a vaddr
-type.
+m68k's monitor_defs[] array implicitly uses type=MD_TLONG for
+all its entries. Since we only build this target as 32-bit,
+use the explicit MD_I32 type to avoid an indirect target_long
+use.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/hppa/translate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/m68k/monitor.c | 60 +++++++++++++++++++++----------------------
+ 1 file changed, 30 insertions(+), 30 deletions(-)
 
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 0b7074649b7..0f8a66f7732 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -4864,7 +4864,7 @@ static void hppa_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
- static bool hppa_tr_disas_log(const DisasContextBase *dcbase,
-                               CPUState *cs, FILE *logfile)
- {
--    target_ulong pc = dcbase->pc_first;
-+    vaddr pc = dcbase->pc_first;
+diff --git a/target/m68k/monitor.c b/target/m68k/monitor.c
+index 784f5730919..6d101c75df0 100644
+--- a/target/m68k/monitor.c
++++ b/target/m68k/monitor.c
+@@ -24,36 +24,36 @@ void hmp_info_tlb(Monitor *mon, const QDict *qdict)
+ }
  
-     switch (pc) {
-     case 0x00:
+ static const MonitorDef monitor_defs[] = {
+-    { "d0", offsetof(CPUM68KState, dregs[0]) },
+-    { "d1", offsetof(CPUM68KState, dregs[1]) },
+-    { "d2", offsetof(CPUM68KState, dregs[2]) },
+-    { "d3", offsetof(CPUM68KState, dregs[3]) },
+-    { "d4", offsetof(CPUM68KState, dregs[4]) },
+-    { "d5", offsetof(CPUM68KState, dregs[5]) },
+-    { "d6", offsetof(CPUM68KState, dregs[6]) },
+-    { "d7", offsetof(CPUM68KState, dregs[7]) },
+-    { "a0", offsetof(CPUM68KState, aregs[0]) },
+-    { "a1", offsetof(CPUM68KState, aregs[1]) },
+-    { "a2", offsetof(CPUM68KState, aregs[2]) },
+-    { "a3", offsetof(CPUM68KState, aregs[3]) },
+-    { "a4", offsetof(CPUM68KState, aregs[4]) },
+-    { "a5", offsetof(CPUM68KState, aregs[5]) },
+-    { "a6", offsetof(CPUM68KState, aregs[6]) },
+-    { "a7", offsetof(CPUM68KState, aregs[7]) },
+-    { "pc", offsetof(CPUM68KState, pc) },
+-    { "sr", offsetof(CPUM68KState, sr) },
+-    { "ssp", offsetof(CPUM68KState, sp[0]) },
+-    { "usp", offsetof(CPUM68KState, sp[1]) },
+-    { "isp", offsetof(CPUM68KState, sp[2]) },
+-    { "sfc", offsetof(CPUM68KState, sfc) },
+-    { "dfc", offsetof(CPUM68KState, dfc) },
+-    { "urp", offsetof(CPUM68KState, mmu.urp) },
+-    { "srp", offsetof(CPUM68KState, mmu.srp) },
+-    { "dttr0", offsetof(CPUM68KState, mmu.ttr[M68K_DTTR0]) },
+-    { "dttr1", offsetof(CPUM68KState, mmu.ttr[M68K_DTTR1]) },
+-    { "ittr0", offsetof(CPUM68KState, mmu.ttr[M68K_ITTR0]) },
+-    { "ittr1", offsetof(CPUM68KState, mmu.ttr[M68K_ITTR1]) },
+-    { "mmusr", offsetof(CPUM68KState, mmu.mmusr) },
++    { "d0", offsetof(CPUM68KState, dregs[0]), NULL, MD_I32 },
++    { "d1", offsetof(CPUM68KState, dregs[1]), NULL, MD_I32 },
++    { "d2", offsetof(CPUM68KState, dregs[2]), NULL, MD_I32 },
++    { "d3", offsetof(CPUM68KState, dregs[3]), NULL, MD_I32 },
++    { "d4", offsetof(CPUM68KState, dregs[4]), NULL, MD_I32 },
++    { "d5", offsetof(CPUM68KState, dregs[5]), NULL, MD_I32 },
++    { "d6", offsetof(CPUM68KState, dregs[6]), NULL, MD_I32 },
++    { "d7", offsetof(CPUM68KState, dregs[7]), NULL, MD_I32 },
++    { "a0", offsetof(CPUM68KState, aregs[0]), NULL, MD_I32 },
++    { "a1", offsetof(CPUM68KState, aregs[1]), NULL, MD_I32 },
++    { "a2", offsetof(CPUM68KState, aregs[2]), NULL, MD_I32 },
++    { "a3", offsetof(CPUM68KState, aregs[3]), NULL, MD_I32 },
++    { "a4", offsetof(CPUM68KState, aregs[4]), NULL, MD_I32 },
++    { "a5", offsetof(CPUM68KState, aregs[5]), NULL, MD_I32 },
++    { "a6", offsetof(CPUM68KState, aregs[6]), NULL, MD_I32 },
++    { "a7", offsetof(CPUM68KState, aregs[7]), NULL, MD_I32 },
++    { "pc", offsetof(CPUM68KState, pc), NULL, MD_I32 },
++    { "sr", offsetof(CPUM68KState, sr), NULL, MD_I32 },
++    { "ssp", offsetof(CPUM68KState, sp[0]), NULL, MD_I32 },
++    { "usp", offsetof(CPUM68KState, sp[1]), NULL, MD_I32 },
++    { "isp", offsetof(CPUM68KState, sp[2]), NULL, MD_I32 },
++    { "sfc", offsetof(CPUM68KState, sfc), NULL, MD_I32 },
++    { "dfc", offsetof(CPUM68KState, dfc), NULL, MD_I32 },
++    { "urp", offsetof(CPUM68KState, mmu.urp), NULL, MD_I32 },
++    { "srp", offsetof(CPUM68KState, mmu.srp), NULL, MD_I32 },
++    { "dttr0", offsetof(CPUM68KState, mmu.ttr[M68K_DTTR0]), NULL, MD_I32 },
++    { "dttr1", offsetof(CPUM68KState, mmu.ttr[M68K_DTTR1]), NULL, MD_I32 },
++    { "ittr0", offsetof(CPUM68KState, mmu.ttr[M68K_ITTR0]), NULL, MD_I32 },
++    { "ittr1", offsetof(CPUM68KState, mmu.ttr[M68K_ITTR1]), NULL, MD_I32 },
++    { "mmusr", offsetof(CPUM68KState, mmu.mmusr), NULL, MD_I32 },
+     { NULL },
+ };
+ 
 -- 
 2.52.0
 
