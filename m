@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B18CFECC8
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 17:14:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9515CFECCE
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 17:14:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdW9p-0006Za-4v; Wed, 07 Jan 2026 11:13:13 -0500
+	id 1vdW9r-0006bF-AF; Wed, 07 Jan 2026 11:13:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdW9i-0006Ih-9D
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 11:13:07 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdW9l-0006V0-0p
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 11:13:11 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdW9f-0005Jm-Rc
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 11:13:06 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdW9h-0005KF-Hv
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 11:13:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767802382;
+ s=mimecast20190719; t=1767802384;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zvIbc5z9SdQCq83Vk1qBemPaH1jqlBkNFDuqrNgs054=;
- b=JDP3ouK5/0THLAm/rHakcM0mY4PabYvq/lByU2JbAogqB53l1DIquqg0vF+eibxo25pkHB
- kOBJ894v00QeKOVxp/tg8IkV3pa7x4IWzkYjQaVk57kvPuxhGMKSiHHJ/22Vgx43Pg5p+w
- 8aQF6X94+CxRFunk79z5wMCMEa4vaNA=
+ bh=6GhB7Dx9hbTVm1La553jV0EsD/xbrRhFLD6DIFkiJQ8=;
+ b=a/1y5dkBWQICG3znkleDkyPLdVcrVxOGp+OAMIeK4cqw5n3aJH8WLsd6tkWlO1CDk2Ovmq
+ TPYQmzn8bgZ4qVGwycujTppxzKZUX4Np/U1sFJGRHk+RIkPuGd+/NkylMmxcnBWdyK7/yN
+ k2JaI3mgEHDR4i5TnEtEB3iWARH+seU=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-29-wDha-cjqPiibQqCKnMsnAA-1; Wed,
- 07 Jan 2026 11:13:00 -0500
-X-MC-Unique: wDha-cjqPiibQqCKnMsnAA-1
-X-Mimecast-MFC-AGG-ID: wDha-cjqPiibQqCKnMsnAA_1767802379
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-85-lQQRz8uAMwqXSOwStvdOGg-1; Wed,
+ 07 Jan 2026 11:13:01 -0500
+X-MC-Unique: lQQRz8uAMwqXSOwStvdOGg-1
+X-Mimecast-MFC-AGG-ID: lQQRz8uAMwqXSOwStvdOGg_1767802380
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B731E19560A7; Wed,  7 Jan 2026 16:12:59 +0000 (UTC)
+ id 34C5319560B4; Wed,  7 Jan 2026 16:13:00 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.32])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6DABE19560A2; Wed,  7 Jan 2026 16:12:59 +0000 (UTC)
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9ECAA30002D1; Wed,  7 Jan 2026 16:12:59 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 13EFE21E61A9; Wed, 07 Jan 2026 17:12:57 +0100 (CET)
+ id 1D12621E61AA; Wed, 07 Jan 2026 17:12:57 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org,
-	Thomas Huth <thuth@redhat.com>
-Subject: [PULL 3/4] scripts/device-crash-test: ERROR_RULE_LIST garbage
- collection
-Date: Wed,  7 Jan 2026 17:12:55 +0100
-Message-ID: <20260107161256.1321694-4-armbru@redhat.com>
+Cc: richard.henderson@linaro.org, Jie Song <songjie_yewu@cmss.chinamobile.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 4/4] monitor/qmp: cleanup SocketChardev listener sources early
+ to avoid fd handling race
+Date: Wed,  7 Jan 2026 17:12:56 +0100
+Message-ID: <20260107161256.1321694-5-armbru@redhat.com>
 In-Reply-To: <20260107161256.1321694-1-armbru@redhat.com>
 References: <20260107161256.1321694-1-armbru@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -83,80 +84,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Device 'nand' was dropped in commit commit e86c1f967a3.
+From: Jie Song <songjie_yewu@cmss.chinamobile.com>
 
-Device 'vfio-amd-xgbe' was dropped in commit aeb1a50d4a7.
+When starting a dummy QEMU process with virsh version, monitor_init_qmp()
+enables IOThread monitoring of the QMP fd by default. However, a race
+condition exists during the initialization phase: the IOThread only removes
+the main thread's fd watch when it reaches qio_net_listener_set_client_func_full(),
+which may be delayed under high system load.
 
-Device 'vfio-calxeda-xgmac' was dropped in commit 8ebc416ac17.
+This creates a window between monitor_qmp_setup_handlers_bh() and
+qio_net_listener_set_client_func_full() where both the main thread and
+IOThread are simultaneously monitoring the same fd and processing events.
+This race can cause either the main thread or the IOThread to hang and
+become unresponsive.
 
-The last error messages matching r"images* must be given with the
-'pflash' parameter" was dropped in commit a2ccff4d2bc.
+Fix this by proactively cleaning up the listener's IO sources in
+monitor_init_qmp() before the IOThread initializes QMP monitoring,
+ensuring exclusive fd ownership and eliminating the race condition.
 
-The error message matching r"Option '-device [\w.,-]+' cannot be
-handled by this machine" was dropped in commit commit db78a605599.
-
-The error message matching r"Ignoring smp_cpus value" ceased to match
-in commit f2ad5140fa5, and was then dropped in commit 72649619341.
-
-The error message matching r"rom check and register reset failed" was
-lost in merge commit af3f37319cb.
-
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20251128101321.3287186-1-armbru@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Jie Song <songjie_yewu@cmss.chinamobile.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-ID: <20251125140706.114197-1-mail@jiesong.me>
 ---
- scripts/device-crash-test | 7 -------
- 1 file changed, 7 deletions(-)
+ include/chardev/char-io.h |  2 ++
+ include/chardev/char.h    |  2 ++
+ chardev/char-io.c         |  8 ++++++++
+ chardev/char-socket.c     | 10 ++++++++++
+ monitor/qmp.c             |  5 +++++
+ 5 files changed, 27 insertions(+)
 
-diff --git a/scripts/device-crash-test b/scripts/device-crash-test
-index c1576e8b96..f97d9909c0 100755
---- a/scripts/device-crash-test
-+++ b/scripts/device-crash-test
-@@ -93,7 +93,6 @@ ERROR_RULE_LIST = [
-     {'device':'ivshmem-doorbell', 'expected':True},        # You must specify a 'chardev'
-     {'device':'ivshmem-plain', 'expected':True},           # You must specify a 'memdev'
-     {'device':'loader', 'expected':True},                  # please include valid arguments
--    {'device':'nand', 'expected':True},                    # Unsupported NAND block size 0x1
-     {'device':'nvdimm', 'expected':True},                  # 'memdev' property is not set
-     {'device':'nvme', 'expected':True},                    # Device initialization failed
-     {'device':'pc-dimm', 'expected':True},                 # 'memdev' property is not set
-@@ -114,8 +113,6 @@ ERROR_RULE_LIST = [
-     {'device':'usb-redir', 'expected':True},               # Parameter 'chardev' is missing
-     {'device':'usb-serial', 'expected':True},              # Property chardev is required
-     {'device':'usb-storage', 'expected':True},             # drive property not set
--    {'device':'vfio-amd-xgbe', 'expected':True},           # -device vfio-amd-xgbe: vfio error: wrong host device name
--    {'device':'vfio-calxeda-xgmac', 'expected':True},      # -device vfio-calxeda-xgmac: vfio error: wrong host device name
-     {'device':'vfio-pci', 'expected':True},                # No provided host device
-     {'device':'vfio-pci-igd-lpc-bridge', 'expected':True}, # VFIO dummy ISA/LPC bridge must have address 1f.0
-     {'device':'vhost-scsi.*', 'expected':True},            # vhost-scsi: missing wwpn
-@@ -159,7 +156,6 @@ ERROR_RULE_LIST = [
-     # Silence INFO messages for errors that are common on multiple
-     # devices/machines:
-     {'log':r"No '[\w-]+' bus found for device '[\w-]+'"},
--    {'log':r"images* must be given with the 'pflash' parameter"},
-     {'log':r"(Guest|ROM|Flash|Kernel) image must be specified"},
-     {'log':r"[cC]ould not load [\w ]+ (BIOS|bios) '[\w-]+\.bin'"},
-     {'log':r"Couldn't find rom image '[\w-]+\.bin'"},
-@@ -167,7 +163,6 @@ ERROR_RULE_LIST = [
-     {'log':r"Can't create a second ISA bus"},
-     {'log':r"duplicate fw_cfg file name"},
-     # sysbus-related error messages: most machines reject most dynamic sysbus devices:
--    {'log':r"Option '-device [\w.,-]+' cannot be handled by this machine"},
-     {'log':r"Device [\w.,-]+ is not supported by this machine yet"},
-     {'log':r"Device [\w.,-]+ can not be dynamically instantiated"},
-     {'log':r"Platform Bus: Can not fit MMIO region of size "},
-@@ -175,11 +170,9 @@ ERROR_RULE_LIST = [
-     {'device':'.*-spapr-cpu-core', 'log':r"CPU core type should be"},
-     {'log':r"MSI(-X)? is not supported by interrupt controller"},
-     {'log':r"pxb-pcie? devices cannot reside on a PCIe? bus"},
--    {'log':r"Ignoring smp_cpus value"},
-     {'log':r"sd_init failed: Drive 'sd0' is already in use because it has been automatically connected to another device"},
-     {'log':r"This CPU requires a smaller page size than the system is using"},
-     {'log':r"MSI-X support is mandatory in the S390 architecture"},
--    {'log':r"rom check and register reset failed"},
-     {'log':r"Unable to initialize GIC, CPUState for CPU#0 not valid"},
-     {'log':r"Multiple VT220 operator consoles are not supported"},
-     {'log':r"core 0 already populated"},
+diff --git a/include/chardev/char-io.h b/include/chardev/char-io.h
+index ac379ea70e..540131346d 100644
+--- a/include/chardev/char-io.h
++++ b/include/chardev/char-io.h
+@@ -43,4 +43,6 @@ int io_channel_send(QIOChannel *ioc, const void *buf, size_t len);
+ int io_channel_send_full(QIOChannel *ioc, const void *buf, size_t len,
+                          int *fds, size_t nfds);
+ 
++void remove_listener_fd_in_watch(Chardev *chr);
++
+ #endif /* CHAR_IO_H */
+diff --git a/include/chardev/char.h b/include/chardev/char.h
+index b65e9981c1..192cad67d4 100644
+--- a/include/chardev/char.h
++++ b/include/chardev/char.h
+@@ -307,6 +307,8 @@ struct ChardevClass {
+ 
+     /* handle various events */
+     void (*chr_be_event)(Chardev *s, QEMUChrEvent event);
++
++    void (*chr_listener_cleanup)(Chardev *chr);
+ };
+ 
+ Chardev *qemu_chardev_new(const char *id, const char *typename,
+diff --git a/chardev/char-io.c b/chardev/char-io.c
+index 3be17b51ca..beac5cd245 100644
+--- a/chardev/char-io.c
++++ b/chardev/char-io.c
+@@ -182,3 +182,11 @@ int io_channel_send(QIOChannel *ioc, const void *buf, size_t len)
+ {
+     return io_channel_send_full(ioc, buf, len, NULL, 0);
+ }
++
++void remove_listener_fd_in_watch(Chardev *chr)
++{
++    ChardevClass *cc = CHARDEV_GET_CLASS(chr);
++    if (cc->chr_listener_cleanup) {
++        cc->chr_listener_cleanup(chr);
++    }
++}
+diff --git a/chardev/char-socket.c b/chardev/char-socket.c
+index 26d2f11202..3f45dd2ecd 100644
+--- a/chardev/char-socket.c
++++ b/chardev/char-socket.c
+@@ -1570,6 +1570,15 @@ char_socket_get_connected(Object *obj, Error **errp)
+     return s->state == TCP_CHARDEV_STATE_CONNECTED;
+ }
+ 
++static void tcp_chr_listener_cleanup(Chardev *chr)
++{
++    SocketChardev *s = SOCKET_CHARDEV(chr);
++    if (s->listener) {
++        qio_net_listener_set_client_func_full(s->listener, NULL, NULL,
++                                              NULL, chr->gcontext);
++    }
++}
++
+ static void char_socket_class_init(ObjectClass *oc, const void *data)
+ {
+     ChardevClass *cc = CHARDEV_CLASS(oc);
+@@ -1587,6 +1596,7 @@ static void char_socket_class_init(ObjectClass *oc, const void *data)
+     cc->chr_add_client = tcp_chr_add_client;
+     cc->chr_add_watch = tcp_chr_add_watch;
+     cc->chr_update_read_handler = tcp_chr_update_read_handler;
++    cc->chr_listener_cleanup = tcp_chr_listener_cleanup;
+ 
+     object_class_property_add(oc, "addr", "SocketAddress",
+                               char_socket_get_addr, NULL,
+diff --git a/monitor/qmp.c b/monitor/qmp.c
+index e1419a9efa..687019811f 100644
+--- a/monitor/qmp.c
++++ b/monitor/qmp.c
+@@ -539,6 +539,11 @@ void monitor_init_qmp(Chardev *chr, bool pretty, Error **errp)
+          * e.g. the chardev is in client mode, with wait=on.
+          */
+         remove_fd_in_watch(chr);
++        /*
++         * Clean up listener IO sources early to prevent racy fd
++         * handling between the main thread and the I/O thread.
++         */
++        remove_listener_fd_in_watch(chr);
+         /*
+          * We can't call qemu_chr_fe_set_handlers() directly here
+          * since chardev might be running in the monitor I/O
 -- 
 2.52.0
 
