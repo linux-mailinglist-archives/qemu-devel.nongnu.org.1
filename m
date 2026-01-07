@@ -2,93 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABF3CCFFED7
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 21:09:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B202CFFEF3
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 21:10:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdZpq-0002q6-6R; Wed, 07 Jan 2026 15:08:52 -0500
+	id 1vdZqb-0004Se-GQ; Wed, 07 Jan 2026 15:09:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdZpC-0002XL-VL
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 15:08:12 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdZqU-00049Z-K2
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 15:09:32 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdZpB-0002HC-4w
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 15:08:10 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-47d5e021a53so18407935e9.3
- for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 12:08:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdZqS-0002LZ-5M
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 15:09:30 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-47a8195e515so17908815e9.0
+ for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 12:09:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767816487; x=1768421287; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=5iItJ0aNB9FO1EI6E9PzkONwwdwGsq32voTruVa/n7o=;
- b=V7mBY/9/IhLDT51eTfekeYrSVaZFOyMrVzW9pe+q4QMUSaZm8tp62K6uHKP/nQeUVs
- fSHQ6l7Vd95cXtG+m84YhVFn3B7DJwmon81sAjrCRHkpP7WHkdYgvLpgf1AXxeeAX/Y8
- ZxzXiywl/qYB8a6JcvH91JvSJXsRIHyeKgb/YOC9lE4Mizg0PkK+bdIYb8LhC0z9we/A
- BqXv4ogmW95TPv4W2ds4Qh93GhUQPACD9E6xsV/dRp+j7B9tf1ZjgYr3ZaikntKyZDHE
- 7qiP3RkhmJfZZwZDbFiYIwl+rACJycaz7K0O465ISGr95Wd71pHpIXdyU6IByZ7qfv9n
- cWgA==
+ d=linaro.org; s=google; t=1767816566; x=1768421366; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=JZ7L3Pf178vwFuizAo3o2FgCHyg5vMUBww1QiJ0Hq3c=;
+ b=H9KzQcsS14V1j/RI7zRfta70hnVxl4Y96bjXXL6WNwc7rM0tr0EKVC2sG4jtKfQtum
+ vAGX3pBYS02KGYceMLwDpD8H6QSUR3dHsEo4P1nK4lPCOjrP8ib/eJei5CQSLAJlKs0c
+ EROrKBt8ppUbdm7dTcEH5TouN36LEsF9C34RfCKGXFN22cbnlqMWdjH621yZ9HIiwT4U
+ p5ZfoBIZf4oZh+Z/jUhVc4SFrjaVEgCOv5idUDH1IONEwqhi/FC/1vzenhxnELL2e8lM
+ 7ZQ0win6Xl+8/gdLlsdp/e4vlZliHihyJ1TFzubBbigYXPuNyuF9BnMTUdU9gAhA9njY
+ TDSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767816487; x=1768421287;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=5iItJ0aNB9FO1EI6E9PzkONwwdwGsq32voTruVa/n7o=;
- b=uiW5X79z+sb741Qul1pDtAwtMxyDESBlwFigmYyI84UignZVC43MPgZwcUT+kki6Eu
- JFA79jcbjdwmfgAbnh33tY4WFL5oLG439zgHEvW2EckTOnJiAF904k2/OtG9P02EsS2C
- yQYsjok8sCVAC6DrYNLaYywSNYF+G4tCR23+QD4dr1dcdgLmd/NHUIVjaBqWzHxiezMx
- KhhJQTI+E6Mfe9+yA//fTYPeRujgZ6KgeN+4O2rbpzxBaeCy544BQ1B7svN1P7x/uqKD
- ya/qn6colwv9izLnDfFyQt8f8dK5BV5j02X6MqLuc/6WJ833IGIBPOh/gQkVnJcXWwQ4
- +4fA==
-X-Gm-Message-State: AOJu0Ywh96ovE8tf4rxVJXk0V5T0Dh/r5OvwNYhRksroXYCbJNp6rgtL
- X1sL5OcQ++K846FYvbiI0XJQ59Zv/W8Rctd1jrR9MD46lJIuQUU+Keo4lba+5HnoJ7Yu9fdbTEo
- iaWQK3jw=
-X-Gm-Gg: AY/fxX6IioA4/SScGeFd6m5oHK9YkONwPewSSAxffSBbmABy75wJ8/9w9M5aSf0benJ
- iox934uAa39ehr8DWa54y6akyu4CJfg/WZgrzrlj5d+yeARqK5RmpOU0/SZpWzsMquGVeHqyWMK
- lsA5sAiU4wesqy6O6HCwsnq1NOAnFsFTkRSROeWG0S/NEBgG+pgpTBPf6PD86NstGD99uH9ATIA
- 3v1/Wj72vZ3VmHSvHBgFKu1968YZgWpTqVjM9u7mI3nCW0+VOJ6uJtm/VMieSwV71AfQiosMmgz
- +zYOGHmaIXeWIk0DtWaO0Yf2MJD/IhLD4tHT4KYRpqMTgPwRabXB2goV6MPPF73B/ec4hDB6sO/
- W7md60sXzRKONa3Nr/ZunFMm49xMMJu+OssyKdPkwgjBZnwkGYapVSbXPLoiSc0V7g7IKx9QGaG
- vTtsSvQCL82lY3qZfphroEjhkGNtnV1grapdpFPuvLNC1OChX6xrRHRht3tIzB
-X-Google-Smtp-Source: AGHT+IGxkzcD2untQl3FisMXX8HQ9tKuPqCIASx199WBoQYsJ5dsoXDFpAHYGLNRGBzITS91gi/8eQ==
-X-Received: by 2002:a05:600c:3483:b0:47d:6c69:bf28 with SMTP id
- 5b1f17b1804b1-47d84b3476fmr49874335e9.24.1767816487370; 
- Wed, 07 Jan 2026 12:08:07 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1767816566; x=1768421366;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=JZ7L3Pf178vwFuizAo3o2FgCHyg5vMUBww1QiJ0Hq3c=;
+ b=gNAjL9JWsYGIttepZxgUEU+cCr2ZC6pyz1yaeQiMGohyey8VmPHDI0lh/zXFlUAlWL
+ M6ikLAUU4yJZkvk+q73c9YIS+MkTRFvzn/v9ixjCTPpNfaCBarr8Qwkdc5Qv71IVBYB2
+ EHZ6q+vc5Qh7bHh4ZrCfJzh4wNtcyW6t5vxitsVeQxa3IZyLO/xUQR/2UXjYsVbrRC0h
+ L60tGhJtZiDDvIdVDk9aNWHgWr94j+VJTFalC1Er3lV1gdWIc13R+SBeOeM5Vy1IZ+WA
+ qJS+dyvJOlRFV72SFi/ZNQYl2dUR3GOmCS24eeICQL+S0BuWCsYYCX9oS8gKbtsvqsXu
+ vssA==
+X-Gm-Message-State: AOJu0Yx2UIxFsQxazqRPzJfII6thADrrX1cN+QZdT5fXHjK3ZER4OUfD
+ yO5KuQc/++B/Q6Sh9+4im9Oj2Og6AcWQq1BI4uWwkEUqg/pW/IcglFZnnQGnl4QTEIdyqRdAGs/
+ 72e0Bk6k=
+X-Gm-Gg: AY/fxX4t7LnI21NI2lkBsMkZGMH6WFIpCaS1JRwHGwB4URFN881uZ6gRlvvEwTXc7vj
+ Ex4N4QwS1w3GIkz1lE1SMYWeF/dmwb4d2tXVytEyBmi0SncO7sDKmVPsn81UaxK8mmwSWd5HwkK
+ Ij8MWK2bNvf3BPXL3TbbW0gn341oPlMIMETBDtXJN0OxaWumSRUbqbfK/AEI+u1xRlsyuf++Q0d
+ O+Gk2cHptqYcv/7ija/YW96tFH1I0X/En7NqV6qOaMdMGAN0rr/lkVFfjk6WHe11LG8kKgtZZ1g
+ m7kutzBcB6Yc2o7gkw52iBAwBTPKdwmT5zBP1MEJhPhAv93YE7POcX/ydGMt9rHKhoL9DXkSqVB
+ nyTUewroQdBEFl9qeyTIA6HbJjZ6PXn5v7uNoWK26pAnjHo0J+97OxptXfHk7JyaY2sqQsnious
+ cLyqFrGjZs/u/8AAbQL4qj7wWZ+QRCpn4zJcbAvY5mhATVYHsgn9gX2w==
+X-Google-Smtp-Source: AGHT+IHDU+TAjiZjunK5ROmrOlO650ARChGdt5hWHVa0PjK1J7vDPI6PuMKd4+Oz6nNX3nysNiEzYQ==
+X-Received: by 2002:a05:600c:1e1c:b0:477:561f:6fc8 with SMTP id
+ 5b1f17b1804b1-47d84b0a211mr39126245e9.5.1767816565867; 
+ Wed, 07 Jan 2026 12:09:25 -0800 (PST)
+Received: from [192.168.69.213] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d8636c610sm20729075e9.0.2026.01.07.12.08.06
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 07 Jan 2026 12:08:06 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Yoshinori Sato <yoshinori.sato@nifty.com>, Anton Johansson <anjo@rev.ng>,
- Richard Henderson <richard.henderson@linaro.org>,
- Bastian Koppelmann <kbastian@rumtueddeln.de>,
- Stafford Horne <shorne@gmail.com>, Laurent Vivier <laurent@vivier.eu>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Helge Deller <deller@gmx.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 9/9] target/m68k: Replace MD_TLONG -> MD_I32 in monitor.c
-Date: Wed,  7 Jan 2026 21:07:02 +0100
-Message-ID: <20260107200702.54582-10-philmd@linaro.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260107200702.54582-1-philmd@linaro.org>
-References: <20260107200702.54582-1-philmd@linaro.org>
+ 5b1f17b1804b1-47d7f41f5e0sm112120065e9.8.2026.01.07.12.09.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 07 Jan 2026 12:09:25 -0800 (PST)
+Message-ID: <9eec8c4a-c6fb-4c47-8701-1afec420f5b7@linaro.org>
+Date: Wed, 7 Jan 2026 21:09:23 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 05/18] target/s390x: Remove unused 'gdbstub/helpers.h'
+ header in helper.c
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Anton Johansson <anjo@rev.ng>, Pierrick Bouvier
+ <pierrick.bouvier@linaro.org>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ David Hildenbrand <david@kernel.org>, Thomas Huth <thuth@redhat.com>
+References: <20260107130807.69870-1-philmd@linaro.org>
+ <20260107130807.69870-6-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20260107130807.69870-6-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,88 +105,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-m68k's monitor_defs[] array implicitly uses type=MD_TLONG for
-all its entries. Since we only build this target as 32-bit,
-use the explicit MD_I32 type to avoid an indirect target_long
-use.
+On 7/1/26 14:07, Philippe Mathieu-Daudé wrote:
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/m68k/monitor.c | 60 +++++++++++++++++++++----------------------
- 1 file changed, 30 insertions(+), 30 deletions(-)
+Updated description:
 
-diff --git a/target/m68k/monitor.c b/target/m68k/monitor.c
-index 784f5730919..6d101c75df0 100644
---- a/target/m68k/monitor.c
-+++ b/target/m68k/monitor.c
-@@ -24,36 +24,36 @@ void hmp_info_tlb(Monitor *mon, const QDict *qdict)
- }
- 
- static const MonitorDef monitor_defs[] = {
--    { "d0", offsetof(CPUM68KState, dregs[0]) },
--    { "d1", offsetof(CPUM68KState, dregs[1]) },
--    { "d2", offsetof(CPUM68KState, dregs[2]) },
--    { "d3", offsetof(CPUM68KState, dregs[3]) },
--    { "d4", offsetof(CPUM68KState, dregs[4]) },
--    { "d5", offsetof(CPUM68KState, dregs[5]) },
--    { "d6", offsetof(CPUM68KState, dregs[6]) },
--    { "d7", offsetof(CPUM68KState, dregs[7]) },
--    { "a0", offsetof(CPUM68KState, aregs[0]) },
--    { "a1", offsetof(CPUM68KState, aregs[1]) },
--    { "a2", offsetof(CPUM68KState, aregs[2]) },
--    { "a3", offsetof(CPUM68KState, aregs[3]) },
--    { "a4", offsetof(CPUM68KState, aregs[4]) },
--    { "a5", offsetof(CPUM68KState, aregs[5]) },
--    { "a6", offsetof(CPUM68KState, aregs[6]) },
--    { "a7", offsetof(CPUM68KState, aregs[7]) },
--    { "pc", offsetof(CPUM68KState, pc) },
--    { "sr", offsetof(CPUM68KState, sr) },
--    { "ssp", offsetof(CPUM68KState, sp[0]) },
--    { "usp", offsetof(CPUM68KState, sp[1]) },
--    { "isp", offsetof(CPUM68KState, sp[2]) },
--    { "sfc", offsetof(CPUM68KState, sfc) },
--    { "dfc", offsetof(CPUM68KState, dfc) },
--    { "urp", offsetof(CPUM68KState, mmu.urp) },
--    { "srp", offsetof(CPUM68KState, mmu.srp) },
--    { "dttr0", offsetof(CPUM68KState, mmu.ttr[M68K_DTTR0]) },
--    { "dttr1", offsetof(CPUM68KState, mmu.ttr[M68K_DTTR1]) },
--    { "ittr0", offsetof(CPUM68KState, mmu.ttr[M68K_ITTR0]) },
--    { "ittr1", offsetof(CPUM68KState, mmu.ttr[M68K_ITTR1]) },
--    { "mmusr", offsetof(CPUM68KState, mmu.mmusr) },
-+    { "d0", offsetof(CPUM68KState, dregs[0]), NULL, MD_I32 },
-+    { "d1", offsetof(CPUM68KState, dregs[1]), NULL, MD_I32 },
-+    { "d2", offsetof(CPUM68KState, dregs[2]), NULL, MD_I32 },
-+    { "d3", offsetof(CPUM68KState, dregs[3]), NULL, MD_I32 },
-+    { "d4", offsetof(CPUM68KState, dregs[4]), NULL, MD_I32 },
-+    { "d5", offsetof(CPUM68KState, dregs[5]), NULL, MD_I32 },
-+    { "d6", offsetof(CPUM68KState, dregs[6]), NULL, MD_I32 },
-+    { "d7", offsetof(CPUM68KState, dregs[7]), NULL, MD_I32 },
-+    { "a0", offsetof(CPUM68KState, aregs[0]), NULL, MD_I32 },
-+    { "a1", offsetof(CPUM68KState, aregs[1]), NULL, MD_I32 },
-+    { "a2", offsetof(CPUM68KState, aregs[2]), NULL, MD_I32 },
-+    { "a3", offsetof(CPUM68KState, aregs[3]), NULL, MD_I32 },
-+    { "a4", offsetof(CPUM68KState, aregs[4]), NULL, MD_I32 },
-+    { "a5", offsetof(CPUM68KState, aregs[5]), NULL, MD_I32 },
-+    { "a6", offsetof(CPUM68KState, aregs[6]), NULL, MD_I32 },
-+    { "a7", offsetof(CPUM68KState, aregs[7]), NULL, MD_I32 },
-+    { "pc", offsetof(CPUM68KState, pc), NULL, MD_I32 },
-+    { "sr", offsetof(CPUM68KState, sr), NULL, MD_I32 },
-+    { "ssp", offsetof(CPUM68KState, sp[0]), NULL, MD_I32 },
-+    { "usp", offsetof(CPUM68KState, sp[1]), NULL, MD_I32 },
-+    { "isp", offsetof(CPUM68KState, sp[2]), NULL, MD_I32 },
-+    { "sfc", offsetof(CPUM68KState, sfc), NULL, MD_I32 },
-+    { "dfc", offsetof(CPUM68KState, dfc), NULL, MD_I32 },
-+    { "urp", offsetof(CPUM68KState, mmu.urp), NULL, MD_I32 },
-+    { "srp", offsetof(CPUM68KState, mmu.srp), NULL, MD_I32 },
-+    { "dttr0", offsetof(CPUM68KState, mmu.ttr[M68K_DTTR0]), NULL, MD_I32 },
-+    { "dttr1", offsetof(CPUM68KState, mmu.ttr[M68K_DTTR1]), NULL, MD_I32 },
-+    { "ittr0", offsetof(CPUM68KState, mmu.ttr[M68K_ITTR0]), NULL, MD_I32 },
-+    { "ittr1", offsetof(CPUM68KState, mmu.ttr[M68K_ITTR1]), NULL, MD_I32 },
-+    { "mmusr", offsetof(CPUM68KState, mmu.mmusr), NULL, MD_I32 },
-     { NULL },
- };
- 
--- 
-2.52.0
+     "gdbstub/helpers.h" uses target-specific symbols, but we don't
+     need it, so remove it.
+
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   target/s390x/helper.c | 1 -
+>   1 file changed, 1 deletion(-)
+> 
+> diff --git a/target/s390x/helper.c b/target/s390x/helper.c
+> index 8d1e03f6768..a6c89ed0af3 100644
+> --- a/target/s390x/helper.c
+> +++ b/target/s390x/helper.c
+> @@ -21,7 +21,6 @@
+>   #include "qemu/osdep.h"
+>   #include "cpu.h"
+>   #include "s390x-internal.h"
+> -#include "gdbstub/helpers.h"
+>   #include "qemu/timer.h"
+>   #include "hw/s390x/ioinst.h"
+>   #include "system/hw_accel.h"
 
 
