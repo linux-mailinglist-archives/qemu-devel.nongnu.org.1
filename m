@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61C4DCFEE19
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 17:31:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 902D2CFE94A
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 16:31:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdWQh-0007xr-79; Wed, 07 Jan 2026 11:30:39 -0500
+	id 1vdVUr-00014u-CG; Wed, 07 Jan 2026 10:30:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1vdWQA-0007gS-L1
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 11:30:17 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1vdWQ5-0001uJ-J6
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 11:30:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767803396;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=iPUM7xp70huD4IuUbDkUYYOBKT+O4jmJgBR2AsgrLjE=;
- b=GIRf77LV2WC4FhCAHjfDJpMC0WywE3TF7Zt0GYOr25OjtoGlzBeEBY7TtiX0Fh8EuNppqZ
- Ij40ujMdHNKY1DEbnRCwvy0dINnfQLOkYxYcB1Fx8wFXIaVJwIDSMJCei+0JgYRQo5eyV0
- U4Ca6gp2cra8EDSNaim/sW8GmyIOU8c=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-634-eU5LK5EPOieJ8ReMjpi1sA-1; Wed,
- 07 Jan 2026 11:29:52 -0500
-X-MC-Unique: eU5LK5EPOieJ8ReMjpi1sA-1
-X-Mimecast-MFC-AGG-ID: eU5LK5EPOieJ8ReMjpi1sA_1767803391
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0EACD1956048; Wed,  7 Jan 2026 16:29:51 +0000 (UTC)
-Received: from localhost (unknown [10.2.17.77])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 44DC7180009E; Wed,  7 Jan 2026 16:29:50 +0000 (UTC)
-Date: Tue, 6 Jan 2026 15:30:18 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Chandan Somani <csomani@redhat.com>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Peter Maydell <peter.maydell@linaro.org>,
- Yoshinori Sato <yoshinori.sato@nifty.com>,
- Jiri Pirko <jiri@resnulli.us>, Jason Wang <jasowang@redhat.com>,
- Alistair Francis <alistair@alistair23.me>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- "open list:Block layer core" <qemu-block@nongnu.org>,
- "open list:Stellaris" <qemu-arm@nongnu.org>
-Subject: Re: [PATCH] qdev: Free property array on release
-Message-ID: <20260106203018.GE123256@fedora>
-References: <20251222055009.1050567-1-csomani@redhat.com>
+ (Exim 4.90_1) (envelope-from <pruiz@clavium.io>) id 1vdUtw-0004vJ-Lx
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 09:52:44 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pruiz@clavium.io>) id 1vdUtu-0001UQ-Kb
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 09:52:44 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-42fbc305882so1117432f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 06:52:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=clavium.io; s=google; t=1767797560; x=1768402360; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=R9KMC1+h/mruHXUqpErhUi0wZq2bEw7Vtio1rqjzaZg=;
+ b=kOyNxTBXwRo20Uq8iFxOqfjcmgSspkcp4bgFte/a7SgOhESq5Wo/sqKdbMgD4bM+9X
+ 8H0DFPhQj/R8kpYFhZPUJ0ALCCmvlqJry78TWZaR0BG+dhvqPNAf6/elaiFDPHFuMSvn
+ YXfB3xFdSBhuR6cllzHlPk8AbgawWiZmGzdNi+S2iT2Cz6QhY51EE1REjQIndrWcVhnr
+ 7tzFkTr7JRofo3luAlQb0yXj0C93+eu2jAQDn64ixNP8sO/v3dMe5d7LSPo5bJLBgBUW
+ 4XmZm7hP7X5018lUscstOyMGb+k+6/JBQOx/57zf4T7UWqVCJyqBTalByA0446Xo6cId
+ eqvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1767797560; x=1768402360;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=R9KMC1+h/mruHXUqpErhUi0wZq2bEw7Vtio1rqjzaZg=;
+ b=mhrdsguh9WLD4kBH8crS0pgTuoxBIn+Kg9PeU0SN6bWp3yki/iuhh7aGzGtgw7VeS/
+ V21E+Bg/xcgDLMe2dCcna6dCkDNxnzov2qPYXyp3ylL8V6YK5JwcAzwEjq1zoyCp94Jj
+ +v68Nt47bi1ooDqb3HJVM8S6v3KTVqEyAz+f+N60qU2w1eLPdCJTeYCq6jqKtLUQDnTB
+ YxS248nex0E70NnrBaJGYwG84BvV7VwqhVTzfJkHZVjpnviT50Qv5LrNcT5eZ960nkdk
+ GgLEcyQIzx5/6E6Cha88wpCtrJZ34FMBaNEa0wf/+U6SUQYW375bbWEJ7fkO6l8P47i0
+ APxw==
+X-Gm-Message-State: AOJu0Yw2GNw+PStXFPmIDyloOl4MCTu1PxVwVmbOX6uWlTikUGrqFNlj
+ QBrCPWHGohlQ2HYWgFft2uKOOCD1oe4a1Os26AdjUYAUjFozWMCIjT4pQ3NTEwV9c0U=
+X-Gm-Gg: AY/fxX57lA4vHCXSxIK5GcSSuq07jaM60yCxWgwjUV+X5+IW0ePwL8XhLSExxHQumc3
+ JUCuxO8kfqO1DLXQgGOUS9FaC5ABtEM4O05JrNmvF8qJT1qDkbSsxwk+tDroXwwxB3pZMmCygVK
+ g/DGA05NSpu9hUkx32HFTazvGNZSwrO/X7FakjEuv1u2MTPNW2bedAOrMSHOMXLJt4DDfPn1fiS
+ OGp1GKcbNy6qQniEqMaGqxUqXjIXcAFc3LqK7eW6yO53iWEZ1RDlclSzIWwrn5aQQjCWOLBIJRe
+ mgQbm57rLjLI2oiKfBi2pIN+y5ThoRtiD65Xk0b0/tRDd2qs4wktXilQ0wyxLcji9kMNfod4Yr/
+ cNhJKRzfarrkK1cHlTGM5RZUZunwJVGLMdEr1YeJ5Wm9Nh83iSfOP2Y+LdOO6XqlLleb69m7yxf
+ y7Zzp2Auek0GRU7fCg
+X-Google-Smtp-Source: AGHT+IEGEBWmyUoKm5TVuSk4qYJoR0/aieUomPZXFqpVAgoabA67h5MK1X+auszuJLfSjLdU9i/k/g==
+X-Received: by 2002:a05:600c:b86:b0:479:3a86:dc1e with SMTP id
+ 5b1f17b1804b1-47d84b41007mr34315515e9.36.1767797559835; 
+ Wed, 07 Jan 2026 06:52:39 -0800 (PST)
+Received: from CLV-PRUIZ ([195.76.50.98]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-47d7f70bc4fsm99301085e9.15.2026.01.07.06.52.38
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 07 Jan 2026 06:52:39 -0800 (PST)
+From: "Pedro J. Ruiz" <pruiz@clavium.io>
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, jsnow@redhat.com, kwolf@redhat.com,
+ hreitz@redhat.com, "Pedro J. Ruiz" <pruiz@clavium.io>
+Subject: [PATCH] fdc: Don't set FD_SR0_SEEK during automatic track crossing
+Date: Wed,  7 Jan 2026 15:52:20 +0100
+Message-ID: <20260107145220.18047-1-pruiz@clavium.io>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="j9flY5MmdH5labrY"
-Content-Disposition: inline
-In-Reply-To: <20251222055009.1050567-1-csomani@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
- DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=pruiz@clavium.io; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 07 Jan 2026 10:30:04 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,57 +94,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The floppy disk controller was incorrectly setting the FD_SR0_SEEK
+(Seek End) status bit during automatic track crossing in multi-track
+read/write operations. This caused legacy operating systems like Minix 2
+to interpret successful read operations as errors, resulting in
+"Unrecoverable disk error" messages for blocks that crossed track
+boundaries.
 
---j9flY5MmdH5labrY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+When executing multi-sector READ/WRITE commands with the MT (multi-track)
+flag set, the FDC would correctly advance to the next track when needed
+to continue the transfer. However, it was incorrectly setting the SE
+(Seek End) bit in Status Register 0 (ST0) during this automatic track
+advancement.
 
-On Sun, Dec 21, 2025 at 09:50:05PM -0800, Chandan Somani wrote:
-> @@ -686,14 +684,16 @@ static void release_prop_array(Object *obj, const c=
-har *name, void *opaque)
->      char *elem =3D *arrayptr;
->      int i;
-> =20
-> -    if (!prop->arrayinfo->release) {
-> -        return;
-> +    if (prop->arrayinfo->release) {
-> +        for (i =3D 0; i < *alenptr; i++) {
-> +            Property elem_prop =3D array_elem_prop(obj, prop, name, elem=
-);
-> +            prop->arrayinfo->release(obj, NULL, &elem_prop);
-> +            elem +=3D prop->arrayfieldsize;
-> +        }
->      }
-> =20
-> -    for (i =3D 0; i < *alenptr; i++) {
-> -        Property elem_prop =3D array_elem_prop(obj, prop, name, elem);
-> -        prop->arrayinfo->release(obj, NULL, &elem_prop);
-> -        elem +=3D prop->arrayfieldsize;
-> +    if (*arrayptr) {
-> +        g_free(*arrayptr);
->      }
+According to the Intel 82078 datasheet and related documentation, the
+SE bit (bit 5, value 0x20) in ST0 should only be set:
+1. After explicit SEEK or RECALIBRATE commands
+2. After READ/WRITE commands that perform an "implied seek" (when the
+   command specifies a different cylinder/head/sector than the current
+   position and EIS flag is not set)
 
-Optional cleanup to protect against use-after-free and similar issues:
+The SE bit should NOT be set during automatic track crossing that occurs
+as part of an ongoing multi-track data transfer. This automatic track
+advancement is part of the normal multi-track operation, not a seek.
 
-*arrayptr =3D NULL;
-*alenptr =3D 0;
+This bug prevented Minix 2 and potentially other legacy operating systems
+from booting. The OS floppy driver would detect the unexpected SE bit and
+interpret it as a read error, even though the data was transferred
+successfully. This particularly affected 1024-byte filesystem blocks that
+spanned track boundaries.
 
---j9flY5MmdH5labrY
-Content-Type: application/pgp-signature; name=signature.asc
+Modified fdctrl_seek_to_next_sect() to remove the line that set
+FD_SR0_SEEK when advancing to the next track during multi-track
+operations. The function now:
+- In multi-track mode: advances tracks/heads as needed WITHOUT setting
+  the SE bit
+- In non-multi-track mode: stops at end of track without seeking (also
+  without setting SE bit, as no seek occurs)
 
------BEGIN PGP SIGNATURE-----
+The SE bit is still correctly set by explicit SEEK and RECALIBRATE
+commands elsewhere in the code.
 
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmldcNoACgkQnKSrs4Gr
-c8gb6wgAyEkIglCk/yO+5KgEcW6d70AQnJ4wxSj3huiLCVi2DOUeXaCm1uTi676E
-7X8B3F4GE35GosrqZDSyYM+DSLxravGf6iTr0p6KS6q8qDvJcLLUxbmNJwaKxUDm
-novCP1ki9tu53chW1bux4PkWg8NIEDG9AAxy4EnGsxLYMnENXISUvIMtjDQHKeko
-mSATSi3uE7/ZMHZJJ1bMJ05/7L7X+a4J3+Q77y1Xy45MEXmJac3yetbqKd+miVLe
-dx/2E0aaZIrPND5o+jKy/QO2kFTwF+WipoWSyjZMWZFB8MhunH8VzK3rlgHVF34b
-O/fmR/vt5zcJkb5P6CC9QB/ei9ec2A==
-=8a3e
------END PGP SIGNATURE-----
+Fixes: c5139bd9 (fdc: fix FD_SR0_SEEK for non-DMA transfers and multi
+sectors transfers)
+Signed-off-by: Pedro J. Ruiz <pruiz@clavium.io>
+---
+ hw/block/fdc.c         | 9 ++++++---
+ tests/qtest/fdc-test.c | 2 +-
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
---j9flY5MmdH5labrY--
+diff --git a/hw/block/fdc.c b/hw/block/fdc.c
+index 4585640af9..21713c9c41 100644
+--- a/hw/block/fdc.c
++++ b/hw/block/fdc.c
+@@ -1403,14 +1403,17 @@ static int fdctrl_seek_to_next_sect(FDCtrl *fdctrl, FDrive *cur_drv)
+             } else {
+                 new_head = 0;
+                 new_track++;
+-                fdctrl->status0 |= FD_SR0_SEEK;
++                /* Don't set FD_SR0_SEEK for implicit track crossing during
++                 * multi-track transfers. SEEK bit must only be set for
++                 * explicit SEEK commands, not automatic track advancement.
++                 */
+                 if ((cur_drv->flags & FDISK_DBL_SIDES) == 0) {
+                     ret = 0;
+                 }
+             }
+         } else {
+-            fdctrl->status0 |= FD_SR0_SEEK;
+-            new_track++;
++            /* Not in multi-track mode: stop at end of track and don't seek. */
++            FLOPPY_DPRINTF("end of track, stopping transfer\n");
+             ret = 0;
+         }
+         if (ret == 1) {
+diff --git a/tests/qtest/fdc-test.c b/tests/qtest/fdc-test.c
+index 1b37a8a4d2..9edfbb5a40 100644
+--- a/tests/qtest/fdc-test.c
++++ b/tests/qtest/fdc-test.c
+@@ -519,7 +519,7 @@ static void test_read_no_dma_19(void)
+ 
+     outb(FLOPPY_BASE + reg_dor, inb(FLOPPY_BASE + reg_dor) & ~0x08);
+     send_seek(0);
+-    ret = send_read_no_dma_command(19, 0x20);
++    ret = send_read_no_dma_command(19, 0x00);
+     g_assert(ret == 0);
+ }
+ 
+-- 
+2.50.1 (Apple Git-155)
 
 
