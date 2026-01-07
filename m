@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFFFED00011
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 21:27:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9574D00017
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 21:27:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vda6m-0003lJ-FS; Wed, 07 Jan 2026 15:26:20 -0500
+	id 1vda6v-0003ns-KH; Wed, 07 Jan 2026 15:26:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vda6i-0003iQ-Be
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 15:26:17 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vda6p-0003n4-53
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 15:26:23 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vda6g-0006P2-Nc
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 15:26:16 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-47774d3536dso11651015e9.0
- for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 12:26:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vda6n-0006Q6-M6
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 15:26:22 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-477ba2c1ca2so26472105e9.2
+ for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 12:26:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767817573; x=1768422373; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767817580; x=1768422380; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Q1XWIX49d0Vwn4pfuIJOThjNhdUUETepsmnFQNONRfA=;
- b=SJsscLJzEqBhdaOBsdjj+9uZeZ7WDDkNkpK6LP4+E/JOsTjdhzs9Bz9yYNCgbbJ7mb
- CISeZ5SR1Ev5/zfDsU7ZHb4Py0fck+VOomob5/pm1v7+P+cp2qZbi+3KBEh36JbRHMWM
- uOSk1qSCzEny25Jpff1N0xpZCX3brWYJwfh/1Uiuf+XMQ8LgwV+vPh0s0R2m+KZROSjL
- MYznSTjkOz5nONlb28QXnJrNJF5nWoQoA7R33Y6KBZaiJZXJyWUnvnDqA/lXWR4uiRhL
- 9HFS00CPWIJm0gpYgOLCjyWtxhOl+tEmoJuUQWbClK6p0YN1DFq8gV/FMESioadThe0o
- lc7w==
+ bh=ydQ4hyKcRIPoui770YEugM394L3KtDMNtyKzwbflh9A=;
+ b=zLZQNbN0WyPWzDDSfnOw2NhnsDrjeq3zQ8FYLmpVmJ4g0E275Quk2MMHUeZXgWLOYs
+ 4F/TZFbzOLMbVGfYd+ytLlraadvnBvRH85lfdwFO+8ghVp5G9QJM8Li2erNnULOnFtgG
+ nPwzHIJLD/nEylEMP2dC0H1OjWjqjQROu/MBMJu7lW8vaDA2MyeNWNHLhnH8ODYe4JCc
+ uB7UrlnUtoSiuRRh79GiY9/zDyPkl76R2RNPnj9ntqx5K2SOBh/zYzX7ZBbwZDRxSEWw
+ IlwdTcYNEdhxLjTZRZhHk+TE5s5RfZvXS+Co4PMiptfcMEMrTw8DeNLG7tWzVHvN6aKu
+ WRCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767817573; x=1768422373;
+ d=1e100.net; s=20230601; t=1767817580; x=1768422380;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=Q1XWIX49d0Vwn4pfuIJOThjNhdUUETepsmnFQNONRfA=;
- b=Rj4iRQNpxIFYrvLFrMP8TE1oNRftnZXTiKP+it/PRRjX7CvLEPwNJZAAyNv5GAr6Rc
- q0TFsKerWUAmRXk619/cT6y44cs/1/BT5ChJWvsei3qLhjP0MCRl8ScN843hcNKxSuDl
- d15q484iNnMVOYq86inwmXRFar737DA/yPGZJUvfp9QwxSInyFpjgmXgW6s/USO0BAjW
- M22ntpuBFEEYAKJkUiDQ8Tzaa5Cun9bJKa71WEGZ7l7Xm1VglaHHdGY+xwcLto8PD7Em
- q2fOc97mvr+Zw9sy/uSHz6cfWz48LSywa4AqiHshBTn5QD80AQnrE5AAD6qSgzYxA0Je
- eesg==
-X-Gm-Message-State: AOJu0YzrqbkOorw/gOvyKwklI2Bo+t0Rgti3LR3yJ356gYC2OwFmk/yi
- V2cqkw55BW9GebHUr60QW9qAhyo/3PKihl9h0zGhoGe5ql7shQD+XMKxk+F3N75HSJiiqnj2hZF
- DJLHDvwE=
-X-Gm-Gg: AY/fxX5SMSBZ2x/BRlEvWyqsnSAQFdTRNIIeo/+UUSzfbBQRQYJnabfI7p4hxdwCCze
- VSz4sTPnuJ78jN1Fn1myoJ2j6quY8PuwZmp0vkOYnJe4ImXPCPIJFsFY6E+pcfEJvTul8YzBF30
- MLnJU8VBLBET4gx3NJUm36bNZ2CX5eSXK8eRKqMsoshsnhj/8H6V/4aHxWcTm2mJPTYUm9ukFcG
- 4Akf9ieDuFut1aVMVH8GfyHsLkxE5W5hADvQCVoQK8TzDQbd3Ky5eMZA4rgvFDeQFoNJ2NA+Mfe
- tr/ClvRwCUiwPjUJTtAGuuk9lKHVuAqh2Ze+L9QFwGIWypxiK/+EAQQL7DlGQGaqTX1q5ezrHqB
- LXNVs9G1HQiEknCVcyzqhxavCcpt8l+moVOGQjaorttknDWI5gJaiTUg6acczcMj3OxzFdMj4yv
- A0BLMF/OiQNJvPZ8d0BglP6cpBRpGbAnu9TAche+OBukBpgoEylWt1CJY1Vdqq
-X-Google-Smtp-Source: AGHT+IG3T8IvUp/JoGzSsH6DyCDMGSToGTOhWVRPe1rDkdZTENGa9SiFMfvPOUj6sz/np10v+p3iIA==
-X-Received: by 2002:a05:600c:524f:b0:477:3fcf:368c with SMTP id
- 5b1f17b1804b1-47d7f616361mr97740935e9.9.1767817572812; 
- Wed, 07 Jan 2026 12:26:12 -0800 (PST)
+ bh=ydQ4hyKcRIPoui770YEugM394L3KtDMNtyKzwbflh9A=;
+ b=s493lj7pls7cw3hrlBTCgxKIXfaKvQQ+7ceFtlnow5OZMxKklY4tq+Z6pYV0UcWJkf
+ QC7bc015iQ0ygwoRZgAei3xhLEjdvWknzwXKniQjO6uqDjuzS033GkCzGz2C8j+btPpn
+ QoJrrvxqKa9wvm+C154/X+QBhoC7c295JbVFKHXeqt2q52j1eaysrLI/daY99liyBJyx
+ wwlKpvM0F0NrhiEFwsHZc4wQPXY/j+jUX4HvCu+5lmTGvCRKHt6zvXHeQqOT4RGN+fYt
+ ZhxtBaD3cVVdHqSn3V++sRKMVk02SerMHO5Cx5A1PIh7whDlmnUVNwGDG6M+P7TnJmVj
+ gLoA==
+X-Gm-Message-State: AOJu0YyJGolTdy/yw2ezCvDeanTiFjwQ+KmSafFUacYmpgLUm4lHMHTq
+ 4D2KsUZkEj4xLtUl/2dyEZzVB0cb3J7qJSUvhR7Q/XB9/bZiaqhPAhz7KAFTTwSvLULkFX8qdZJ
+ NNh7VUZ8=
+X-Gm-Gg: AY/fxX53M7enjZM4qYNE515Oa9SAAI+rzOqHGscJE9YeWx8iOsSKIj6229rs9l5UMhi
+ zbEghVVbE3LlKzNATVqd8Nz5XUE5St4tIfr5EZ8gTDZ86aOYKb3DYqDq+eU7RuGB13hSGKFPGd7
+ kcgrWe9mNJlkW3UA/zJd4O/avtGHjCQKJGXLOz22Hvpr6Wc6rvJVplACJUdFPGViUrxycBNWAth
+ aS4zYVy0GPfkZW0hwTGcqUwOZp7ZbRwkOurZgT/G7IDkHKPSNXbjpf5yZ4GWmbKFMz3QdsJ5G5O
+ EIKJbX/UdZxusZiM/2v+U+FcPUCRd+QAgLfMKINZu7FWzOFlfMYn6C71nHp/qRQMk+D3MqYqD1Z
+ 3lMRLcc56pkXLqNGjtfcHO2Y1ucl1rGaKI8X8DhTOjVzx+BaH9XKgoyBbstWwjpJ1aVuyQeMG9o
+ hKA3csghB1rlS0z9FDPqlkwcYCGJQIjEovIAFnD+q0pH5D/gnPW+/jofDSoCbh
+X-Google-Smtp-Source: AGHT+IFRy0jBzumLZlQVwZs3x82r3sn+hltUmV3B9xr0yzcrvGj7KBV/x9LjdZ3MfrPzTOMZKLu9ZA==
+X-Received: by 2002:a05:600c:1d0a:b0:477:8b77:155e with SMTP id
+ 5b1f17b1804b1-47d84b17b55mr49350065e9.15.1767817579680; 
+ Wed, 07 Jan 2026 12:26:19 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-432bd5ee5eesm12386548f8f.34.2026.01.07.12.26.11
+ 5b1f17b1804b1-47d8717a48asm20620035e9.8.2026.01.07.12.26.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 07 Jan 2026 12:26:12 -0800 (PST)
+ Wed, 07 Jan 2026 12:26:19 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>, Anton Johansson <anjo@rev.ng>,
  Max Filippov <jcmvbkbc@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/7] target/xtensa: Convert XTENSA_DEFAULT_CPU_MODEL to
- runtime (no MMU)
-Date: Wed,  7 Jan 2026 21:25:51 +0100
-Message-ID: <20260107202556.55787-3-philmd@linaro.org>
+Subject: [PATCH 3/7] target/xtensa: Replace TARGET_BIG_ENDIAN ->
+ target_big_endian()
+Date: Wed,  7 Jan 2026 21:25:52 +0100
+Message-ID: <20260107202556.55787-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260107202556.55787-1-philmd@linaro.org>
 References: <20260107202556.55787-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,126 +102,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Similarly to the previous commit, now replace the
-XTENSA_DEFAULT_CPU_NOMMU_MODEL definition by the
-xtensa_default_cpu_model_nommu() helper which
-evaluates endianness at runtime. Update xtfpga.c
-machines.
+Check endianness at runtime to remove the target-specific
+TARGET_BIG_ENDIAN definition.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/xtensa/cpu-qom.h |  1 +
- target/xtensa/cpu.h     |  8 --------
- hw/xtensa/xtfpga.c      | 20 ++++++++++++--------
- target/xtensa/cpu.c     |  5 +++++
- 4 files changed, 18 insertions(+), 16 deletions(-)
+ target/xtensa/translate.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/target/xtensa/cpu-qom.h b/target/xtensa/cpu-qom.h
-index 66992d08c2e..75b97632453 100644
---- a/target/xtensa/cpu-qom.h
-+++ b/target/xtensa/cpu-qom.h
-@@ -39,5 +39,6 @@ OBJECT_DECLARE_CPU_TYPE(XtensaCPU, XtensaCPUClass, XTENSA_CPU)
- #define XTENSA_CPU_TYPE_NAME(model) model XTENSA_CPU_TYPE_SUFFIX
+diff --git a/target/xtensa/translate.c b/target/xtensa/translate.c
+index bb8d2ed86cf..36f069d70ca 100644
+--- a/target/xtensa/translate.c
++++ b/target/xtensa/translate.c
+@@ -34,6 +34,7 @@
+ #include "tcg/tcg-op.h"
+ #include "qemu/log.h"
+ #include "qemu/qemu-print.h"
++#include "qemu/target-info.h"
+ #include "exec/translator.h"
+ #include "exec/translation-block.h"
+ #include "exec/target_page.h"
+@@ -1381,7 +1382,7 @@ static void translate_bb(DisasContext *dc, const OpcodeArg arg[],
+     TCGv_i32 tmp = tcg_temp_new_i32();
  
- const char *xtensa_default_cpu_model(void);
-+const char *xtensa_default_cpu_model_nommu(void);
- 
- #endif
-diff --git a/target/xtensa/cpu.h b/target/xtensa/cpu.h
-index fe2f25e527c..85399390044 100644
---- a/target/xtensa/cpu.h
-+++ b/target/xtensa/cpu.h
-@@ -605,14 +605,6 @@ G_NORETURN void xtensa_cpu_do_unaligned_access(CPUState *cpu, vaddr addr,
- 
- #define CPU_RESOLVING_TYPE TYPE_XTENSA_CPU
- 
--#if TARGET_BIG_ENDIAN
--#define XTENSA_DEFAULT_CPU_NOMMU_MODEL "fsf"
--#else
--#define XTENSA_DEFAULT_CPU_NOMMU_MODEL "de212"
--#endif
--#define XTENSA_DEFAULT_CPU_NOMMU_TYPE \
--    XTENSA_CPU_TYPE_NAME(XTENSA_DEFAULT_CPU_NOMMU_MODEL)
--
- void xtensa_collect_sr_names(const XtensaConfig *config);
- void xtensa_translate_init(void);
- void xtensa_translate_code(CPUState *cs, TranslationBlock *tb,
-diff --git a/hw/xtensa/xtfpga.c b/hw/xtensa/xtfpga.c
-index 5fd4d655557..3d7afcad4cc 100644
---- a/hw/xtensa/xtfpga.c
-+++ b/hw/xtensa/xtfpga.c
-@@ -609,10 +609,11 @@ static void xtfpga_lx60_nommu_class_init(ObjectClass *oc, const void *data)
+     tcg_gen_andi_i32(tmp, arg[1].in, 0x1f);
+-    if (TARGET_BIG_ENDIAN) {
++    if (target_big_endian()) {
+         tcg_gen_shr_i32(tmp, tcg_constant_i32(0x80000000u), tmp);
+     } else {
+         tcg_gen_shl_i32(tmp, tcg_constant_i32(0x00000001u), tmp);
+@@ -1394,7 +1395,7 @@ static void translate_bbi(DisasContext *dc, const OpcodeArg arg[],
+                           const uint32_t par[])
  {
-     MachineClass *mc = MACHINE_CLASS(oc);
- 
--    mc->desc = "lx60 noMMU EVB (" XTENSA_DEFAULT_CPU_NOMMU_MODEL ")";
-+    mc->desc = g_strdup_printf("lx60 noMMU EVB (%s)",
-+                               xtensa_default_cpu_model_nommu());
-     mc->init = xtfpga_lx60_nommu_init;
-     mc->max_cpus = 32;
--    mc->default_cpu_type = XTENSA_DEFAULT_CPU_NOMMU_TYPE;
-+    mc->default_cpu_type = xtensa_default_cpu_model_nommu();
-     mc->default_ram_size = 64 * MiB;
- }
- 
-@@ -643,10 +644,11 @@ static void xtfpga_lx200_nommu_class_init(ObjectClass *oc, const void *data)
- {
-     MachineClass *mc = MACHINE_CLASS(oc);
- 
--    mc->desc = "lx200 noMMU EVB (" XTENSA_DEFAULT_CPU_NOMMU_MODEL ")";
-+    mc->desc = g_strdup_printf("lx200 noMMU EVB (%s)",
-+                               xtensa_default_cpu_model_nommu());
-     mc->init = xtfpga_lx200_nommu_init;
-     mc->max_cpus = 32;
--    mc->default_cpu_type = XTENSA_DEFAULT_CPU_NOMMU_TYPE;
-+    mc->default_cpu_type = xtensa_default_cpu_model_nommu();
-     mc->default_ram_size = 96 * MiB;
- }
- 
-@@ -677,10 +679,11 @@ static void xtfpga_ml605_nommu_class_init(ObjectClass *oc, const void *data)
- {
-     MachineClass *mc = MACHINE_CLASS(oc);
- 
--    mc->desc = "ml605 noMMU EVB (" XTENSA_DEFAULT_CPU_NOMMU_MODEL ")";
-+    mc->desc = g_strdup_printf("ml605 noMMU EVB (%s)",
-+                               xtensa_default_cpu_model_nommu());
-     mc->init = xtfpga_ml605_nommu_init;
-     mc->max_cpus = 32;
--    mc->default_cpu_type = XTENSA_DEFAULT_CPU_NOMMU_TYPE;
-+    mc->default_cpu_type = xtensa_default_cpu_model_nommu();
-     mc->default_ram_size = 256 * MiB;
- }
- 
-@@ -711,10 +714,11 @@ static void xtfpga_kc705_nommu_class_init(ObjectClass *oc, const void *data)
- {
-     MachineClass *mc = MACHINE_CLASS(oc);
- 
--    mc->desc = "kc705 noMMU EVB (" XTENSA_DEFAULT_CPU_NOMMU_MODEL ")";
-+    mc->desc = g_strdup_printf("kc705 noMMU EVB (%s)",
-+                               xtensa_default_cpu_model_nommu());
-     mc->init = xtfpga_kc705_nommu_init;
-     mc->max_cpus = 32;
--    mc->default_cpu_type = XTENSA_DEFAULT_CPU_NOMMU_TYPE;
-+    mc->default_cpu_type = xtensa_default_cpu_model_nommu();
-     mc->default_ram_size = 256 * MiB;
- }
- 
-diff --git a/target/xtensa/cpu.c b/target/xtensa/cpu.c
-index 6220edda976..f09b93622c9 100644
---- a/target/xtensa/cpu.c
-+++ b/target/xtensa/cpu.c
-@@ -46,6 +46,11 @@ const char *xtensa_default_cpu_model(void)
-     return target_big_endian() ? "fsf" : "dc232b";
- }
- 
-+const char *xtensa_default_cpu_model_nommu(void)
-+{
-+    return target_big_endian() ? "fsf" : "de212";
-+}
-+
- static void xtensa_cpu_set_pc(CPUState *cs, vaddr value)
- {
-     XtensaCPU *cpu = XTENSA_CPU(cs);
+     TCGv_i32 tmp = tcg_temp_new_i32();
+-    if (TARGET_BIG_ENDIAN) {
++    if (target_big_endian()) {
+         tcg_gen_andi_i32(tmp, arg[0].in, 0x80000000u >> arg[1].imm);
+     } else {
+         tcg_gen_andi_i32(tmp, arg[0].in, 0x00000001u << arg[1].imm);
 -- 
 2.52.0
 
