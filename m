@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B3B5CFD8BE
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 13:07:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7A1BCFD8D3
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 13:08:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdSJn-0003ua-O3; Wed, 07 Jan 2026 07:07:15 -0500
+	id 1vdSJp-0003vY-UU; Wed, 07 Jan 2026 07:07:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vdSJf-0003tL-OH
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vdSJf-0003tS-Q5
  for qemu-devel@nongnu.org; Wed, 07 Jan 2026 07:07:08 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vdSJX-00029f-4R
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 07:07:02 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vdSJY-00029n-SE
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 07:07:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767787617;
+ s=mimecast20190719; t=1767787618;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hLlmpCqjMLS/1h4rjwz0ms3yxBNexM20/Mur+rs/jOA=;
- b=PROOzQMGMRto8EQ8zbITS/1Jozl6GHCB6XpeRUX3ZPz2OCrlQWZV/QA1X6yKaGD1QN3p/v
- KtLenpDvDmMDabvAkJunYtQszKZXucO7zGp48GiqysGaMkyUnJHFWdabQeJCD+wCKvIGxk
- x5w+12LFDA20UyunZrt6adTUklvLPVg=
+ bh=MfiJBRSHKWd6uUsqcK6dtBKc4aUeaTwvVHsNFr2yqLg=;
+ b=SA6XnBm5TFeZd22+H3Y4L35sr7nMh1fB+13bxuuWhYj2OLCbWd3HC/83PtziEkZrU03ECb
+ /Q3imqSX1zrWIlCrQAPAtX8XB9ia6rRuZ7VihUKl4Xp92OKy3OYtvYzfHARrSOIu0m1gqL
+ 0c3CD6NdZNc3258Lx862HIlvlh6ZmZw=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-99-UhUrx0H-MVSh5K3xwpUiGQ-1; Wed,
- 07 Jan 2026 07:06:53 -0500
-X-MC-Unique: UhUrx0H-MVSh5K3xwpUiGQ-1
-X-Mimecast-MFC-AGG-ID: UhUrx0H-MVSh5K3xwpUiGQ_1767787612
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-211-2Dk1ajVmO964o88oGs9TjQ-1; Wed,
+ 07 Jan 2026 07:06:55 -0500
+X-MC-Unique: 2Dk1ajVmO964o88oGs9TjQ-1
+X-Mimecast-MFC-AGG-ID: 2Dk1ajVmO964o88oGs9TjQ_1767787614
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 495761800350; Wed,  7 Jan 2026 12:06:52 +0000 (UTC)
+ id 0397C1800473; Wed,  7 Jan 2026 12:06:54 +0000 (UTC)
 Received: from thuth-p1g4.str.redhat.com (dhcp-192-176.str.redhat.com
  [10.33.192.176])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E6AFD1956053; Wed,  7 Jan 2026 12:06:50 +0000 (UTC)
+ id A173F1956053; Wed,  7 Jan 2026 12:06:52 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Eric Farman <farman@linux.ibm.com>
-Subject: [PULL 07/14] target/s390x: Use explicit big-endian LD/ST API
-Date: Wed,  7 Jan 2026 13:06:31 +0100
-Message-ID: <20260107120638.56735-8-thuth@redhat.com>
+Subject: [PULL 08/14] target/s390x: Replace gdb_get_regl() -> gdb_get_reg64()
+Date: Wed,  7 Jan 2026 13:06:32 +0100
+Message-ID: <20260107120638.56735-9-thuth@redhat.com>
 In-Reply-To: <20260107120638.56735-1-thuth@redhat.com>
 References: <20260107120638.56735-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -86,133 +86,98 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The S390x architecture uses big endianness. Directly use
-the big-endian LD/ST API.
+We only build s390x targets as 64-bit:
 
-Mechanical change running:
+  $ git grep BIT configs/targets/s390x-*
+  configs/targets/s390x-linux-user.mak:6:TARGET_LONG_BITS=64
+  configs/targets/s390x-softmmu.mak:5:TARGET_LONG_BITS=64
 
-  $ for a in uw w l q; do \
-      sed -i -e "s/ld${a}_p(/ld${a}_be_p(/" \
-        $(git grep -wlE '(ld|st)u?[wlq]_p' target/s390x/);
-    done
+Therefore gdb_get_regl() expands to gdb_get_reg64(). Use
+the latter which is more explicit.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Eric Farman <farman@linux.ibm.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20251224162036.90404-3-philmd@linaro.org>
+Message-ID: <20251224162036.90404-4-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- target/s390x/cpu-system.c      |  2 +-
- target/s390x/kvm/kvm.c         |  8 ++++----
- target/s390x/mmu_helper.c      |  3 ++-
- target/s390x/tcg/excp_helper.c | 16 ++++++++--------
- target/s390x/tcg/mem_helper.c  |  5 +++--
- 5 files changed, 18 insertions(+), 16 deletions(-)
+ target/s390x/gdbstub.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/target/s390x/cpu-system.c b/target/s390x/cpu-system.c
-index c7a6fd7e751..881171d71a2 100644
---- a/target/s390x/cpu-system.c
-+++ b/target/s390x/cpu-system.c
-@@ -63,7 +63,7 @@ static void s390_cpu_load_normal(CPUState *s)
-     uint64_t spsw;
+diff --git a/target/s390x/gdbstub.c b/target/s390x/gdbstub.c
+index 6bca376f2b6..d1f02ea5ce4 100644
+--- a/target/s390x/gdbstub.c
++++ b/target/s390x/gdbstub.c
+@@ -34,11 +34,11 @@ int s390_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
  
-     if (!s390_is_pv()) {
--        spsw = ldq_phys(s->as, 0);
-+        spsw = ldq_be_phys(s->as, 0);
-         cpu->env.psw.mask = spsw & PSW_MASK_SHORT_CTRL;
-         /*
-          * Invert short psw indication, so SIE will report a specification
-diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-index fe3bf408dda..bd6c440aefb 100644
---- a/target/s390x/kvm/kvm.c
-+++ b/target/s390x/kvm/kvm.c
-@@ -1667,10 +1667,10 @@ static int handle_oper_loop(S390CPU *cpu, struct kvm_run *run)
-     CPUState *cs = CPU(cpu);
-     PSW oldpsw, newpsw;
- 
--    newpsw.mask = ldq_phys(cs->as, cpu->env.psa +
--                           offsetof(LowCore, program_new_psw));
--    newpsw.addr = ldq_phys(cs->as, cpu->env.psa +
--                           offsetof(LowCore, program_new_psw) + 8);
-+    newpsw.mask = ldq_be_phys(cs->as, cpu->env.psa +
-+                              offsetof(LowCore, program_new_psw));
-+    newpsw.addr = ldq_be_phys(cs->as, cpu->env.psa +
-+                              offsetof(LowCore, program_new_psw) + 8);
-     oldpsw.mask  = run->psw_mask;
-     oldpsw.addr  = run->psw_addr;
-     /*
-diff --git a/target/s390x/mmu_helper.c b/target/s390x/mmu_helper.c
-index 7063f1a905f..026502a3e40 100644
---- a/target/s390x/mmu_helper.c
-+++ b/target/s390x/mmu_helper.c
-@@ -44,7 +44,8 @@ static void trigger_access_exception(CPUS390XState *env, uint32_t type,
-     } else {
-         CPUState *cs = env_cpu(env);
-         if (type != PGM_ADDRESSING) {
--            stq_phys(cs->as, env->psa + offsetof(LowCore, trans_exc_code), tec);
-+            stq_be_phys(cs->as, env->psa + offsetof(LowCore, trans_exc_code),
-+                        tec);
-         }
-         trigger_pgm_exception(env, type);
+     switch (n) {
+     case S390_PSWM_REGNUM:
+-        return gdb_get_regl(mem_buf, s390_cpu_get_psw_mask(env));
++        return gdb_get_reg64(mem_buf, s390_cpu_get_psw_mask(env));
+     case S390_PSWA_REGNUM:
+-        return gdb_get_regl(mem_buf, env->psw.addr);
++        return gdb_get_reg64(mem_buf, env->psw.addr);
+     case S390_R0_REGNUM ... S390_R15_REGNUM:
+-        return gdb_get_regl(mem_buf, env->regs[n - S390_R0_REGNUM]);
++        return gdb_get_reg64(mem_buf, env->regs[n - S390_R0_REGNUM]);
      }
-diff --git a/target/s390x/tcg/excp_helper.c b/target/s390x/tcg/excp_helper.c
-index 54f051ae9e1..d4a096f5998 100644
---- a/target/s390x/tcg/excp_helper.c
-+++ b/target/s390x/tcg/excp_helper.c
-@@ -55,8 +55,8 @@ G_NORETURN void tcg_s390_data_exception(CPUS390XState *env, uint32_t dxc,
-     g_assert(dxc <= 0xff);
- #if !defined(CONFIG_USER_ONLY)
-     /* Store the DXC into the lowcore */
--    stl_phys(env_cpu(env)->as,
--             env->psa + offsetof(LowCore, data_exc_code), dxc);
-+    stl_be_phys(env_cpu(env)->as,
-+                env->psa + offsetof(LowCore, data_exc_code), dxc);
- #endif
- 
-     /* Store the DXC into the FPC if AFP is enabled */
-@@ -72,8 +72,8 @@ G_NORETURN void tcg_s390_vector_exception(CPUS390XState *env, uint32_t vxc,
-     g_assert(vxc <= 0xff);
- #if !defined(CONFIG_USER_ONLY)
-     /* Always store the VXC into the lowcore, without AFP it is undefined */
--    stl_phys(env_cpu(env)->as,
--             env->psa + offsetof(LowCore, data_exc_code), vxc);
-+    stl_be_phys(env_cpu(env)->as,
-+                env->psa + offsetof(LowCore, data_exc_code), vxc);
- #endif
- 
-     /* Always store the VXC into the FPC, without AFP it is undefined */
-@@ -651,10 +651,10 @@ void monitor_event(CPUS390XState *env,
-                    uint8_t monitor_class, uintptr_t ra)
- {
-     /* Store the Monitor Code and the Monitor Class Number into the lowcore */
--    stq_phys(env_cpu(env)->as,
--             env->psa + offsetof(LowCore, monitor_code), monitor_code);
--    stw_phys(env_cpu(env)->as,
--             env->psa + offsetof(LowCore, mon_class_num), monitor_class);
-+    stq_be_phys(env_cpu(env)->as,
-+                env->psa + offsetof(LowCore, monitor_code), monitor_code);
-+    stw_be_phys(env_cpu(env)->as,
-+                env->psa + offsetof(LowCore, mon_class_num), monitor_class);
- 
-     tcg_s390_program_interrupt(env, PGM_MONITOR, ra);
+     return 0;
  }
-diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
-index 9e5bd3ed07f..157ad95b23f 100644
---- a/target/s390x/tcg/mem_helper.c
-+++ b/target/s390x/tcg/mem_helper.c
-@@ -958,8 +958,9 @@ uint32_t HELPER(mvpg)(CPUS390XState *env, uint64_t r0, uint32_t r1, uint32_t r2)
- inject_exc:
- #if !defined(CONFIG_USER_ONLY)
-     if (exc != PGM_ADDRESSING) {
--        stq_phys(env_cpu(env)->as, env->psa + offsetof(LowCore, trans_exc_code),
--                 env->tlb_fill_tec);
-+        stq_be_phys(env_cpu(env)->as,
-+                    env->psa + offsetof(LowCore, trans_exc_code),
-+                    env->tlb_fill_tec);
+@@ -190,7 +190,7 @@ static int cpu_read_c_reg(CPUState *cs, GByteArray *buf, int n)
+ 
+     switch (n) {
+     case S390_C0_REGNUM ... S390_C15_REGNUM:
+-        return gdb_get_regl(buf, env->cregs[n]);
++        return gdb_get_reg64(buf, env->cregs[n]);
+     default:
+         return 0;
      }
-     if (exc == PGM_PAGE_TRANS) {
-         stb_phys(env_cpu(env)->as, env->psa + offsetof(LowCore, op_access_id),
+@@ -227,13 +227,13 @@ static int cpu_read_virt_reg(CPUState *cs, GByteArray *mem_buf, int n)
+ 
+     switch (n) {
+     case S390_VIRT_CKC_REGNUM:
+-        return gdb_get_regl(mem_buf, env->ckc);
++        return gdb_get_reg64(mem_buf, env->ckc);
+     case S390_VIRT_CPUTM_REGNUM:
+-        return gdb_get_regl(mem_buf, env->cputm);
++        return gdb_get_reg64(mem_buf, env->cputm);
+     case S390_VIRT_BEA_REGNUM:
+-        return gdb_get_regl(mem_buf, env->gbea);
++        return gdb_get_reg64(mem_buf, env->gbea);
+     case S390_VIRT_PREFIX_REGNUM:
+-        return gdb_get_regl(mem_buf, env->psa);
++        return gdb_get_reg64(mem_buf, env->psa);
+     default:
+         return 0;
+     }
+@@ -279,13 +279,13 @@ static int cpu_read_virt_kvm_reg(CPUState *cs, GByteArray *mem_buf, int n)
+ 
+     switch (n) {
+     case S390_VIRT_KVM_PP_REGNUM:
+-        return gdb_get_regl(mem_buf, env->pp);
++        return gdb_get_reg64(mem_buf, env->pp);
+     case S390_VIRT_KVM_PFT_REGNUM:
+-        return gdb_get_regl(mem_buf, env->pfault_token);
++        return gdb_get_reg64(mem_buf, env->pfault_token);
+     case S390_VIRT_KVM_PFS_REGNUM:
+-        return gdb_get_regl(mem_buf, env->pfault_select);
++        return gdb_get_reg64(mem_buf, env->pfault_select);
+     case S390_VIRT_KVM_PFC_REGNUM:
+-        return gdb_get_regl(mem_buf, env->pfault_compare);
++        return gdb_get_reg64(mem_buf, env->pfault_compare);
+     default:
+         return 0;
+     }
+@@ -330,7 +330,7 @@ static int cpu_read_gs_reg(CPUState *cs, GByteArray *buf, int n)
+     S390CPU *cpu = S390_CPU(cs);
+     CPUS390XState *env = &cpu->env;
+ 
+-    return gdb_get_regl(buf, env->gscb[n]);
++    return gdb_get_reg64(buf, env->gscb[n]);
+ }
+ 
+ static int cpu_write_gs_reg(CPUState *cs, uint8_t *mem_buf, int n)
 -- 
 2.52.0
 
