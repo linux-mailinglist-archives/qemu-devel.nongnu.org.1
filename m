@@ -2,76 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 048CFCFBD74
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 04:31:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18899CFBE9D
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 05:02:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdKFd-0003po-By; Tue, 06 Jan 2026 22:30:25 -0500
+	id 1vdKjP-0002xC-2r; Tue, 06 Jan 2026 23:01:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vdKFH-0003Zl-Eh
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 22:30:07 -0500
-Received: from mgamail.intel.com ([198.175.65.16])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1vdKjM-0002vb-SM
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 23:01:08 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vdKFD-0001nX-7y
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 22:30:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1767756599; x=1799292599;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=tKrYOOr7sgEAJxrTtz6h28vaixAwN0LfW1so6P3IumU=;
- b=hNI70i3pOWpnR6Ojx6bvxtHlnlXM3DYSOs1ZinpAVZVYYDJrgh4nCvN3
- coyMBud07MGYSUuMixBQPucfJwDxRnpXFTt4wtym8cx6q6HQ8eYEaVLaX
- osoppT6wafR/3t/fOoAFzuYG94TahPhYVRdjJSozYhvtUq52JJEfQrubH
- t0ulxjyn2msno0cYvRFpno+KK6PrJQoKql59q07auaOdkAGHddgN0ZO+4
- dV/4SCaVMpSDcYKZ8dOAOEGFzXCfAt4xl5/smxhGXe2hKnJWnUVyIdI7O
- AMv0iv1pDl0t/msfWH/zTk0lI64oUYJP5SfWr+HELOA5xCA/B2NciGD6k w==;
-X-CSE-ConnectionGUID: kFgAbhAuRyeMslAXi7h7pw==
-X-CSE-MsgGUID: snJXb2OES8KylIcA+DIx6Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="69283417"
-X-IronPort-AV: E=Sophos;i="6.21,207,1763452800"; d="scan'208";a="69283417"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jan 2026 19:29:56 -0800
-X-CSE-ConnectionGUID: w0EPpG7WQKajWuFW3FRBZA==
-X-CSE-MsgGUID: c2+C3AvxTLiolqXeluVivQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,207,1763452800"; d="scan'208";a="233515301"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa002.jf.intel.com with ESMTP; 06 Jan 2026 19:29:55 -0800
-Date: Wed, 7 Jan 2026 11:55:20 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Ewan Hai <ewanhai-oc@zhaoxin.com>
-Cc: pbonzini@redhat.com, qemu-devel@nongnu.org, ewanhai@zhaoxin.com,
- cobechen@zhaoxin.com, TonyWWang@zhaoxin.com
-Subject: Re: [PATCH v2 3/4] target/i386: Introduce Zhaoxin Shijidadao-Client
- CPU model
-Message-ID: <aV3ZKFlCGFyeZ0wh@intel.com>
-References: <20251027102139.270662-1-ewanhai-oc@zhaoxin.com>
- <20251027102139.270662-4-ewanhai-oc@zhaoxin.com>
- <aSVcOX5WvJYjIEbM@intel.com>
- <d20164c5-291c-4646-86cb-fddc69542599@zhaoxin.com>
- <aT/O1u22C1o3p5sn@intel.com>
- <a8516d27-0ee9-4139-9d47-51eda832c219@zhaoxin.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1vdKjK-0001bF-Uu
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 23:01:08 -0500
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 0C5AD596A0A;
+ Wed, 07 Jan 2026 05:01:04 +0100 (CET)
+X-Virus-Scanned: amavis at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
+ id j_DR0hKe-Kx4; Wed,  7 Jan 2026 05:01:02 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 10DC25969FD; Wed, 07 Jan 2026 05:01:02 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 0F9125969F6;
+ Wed, 07 Jan 2026 05:01:02 +0100 (CET)
+Date: Wed, 7 Jan 2026 05:01:02 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Chad Jablonski <chad@jablonski.xyz>
+cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH v4 8/9] ati-vga: Implement HOST_DATA register writes
+In-Reply-To: <DFHZC7DG5UZG.157Y4WLZ0MF3L@jablonski.xyz>
+Message-ID: <c17e68fd-fe8f-b508-495b-79cc1c9c1a2c@eik.bme.hu>
+References: <20260106185700.2102742-1-chad@jablonski.xyz>
+ <20260106185700.2102742-9-chad@jablonski.xyz>
+ <bcce15ee-9f83-128a-0894-2e7c87ceff8c@eik.bme.hu>
+ <DFHZC7DG5UZG.157Y4WLZ0MF3L@jablonski.xyz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a8516d27-0ee9-4139-9d47-51eda832c219@zhaoxin.com>
-Received-SPF: pass client-ip=198.175.65.16; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,60 +66,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> >> As background, current Zhaoxin CPUs implement several CPUID.(EAX=0xC0000001,
-> >> ECX=0):EDX feature bits that are not yet defined in the Linux kernel, for
-> >> example SM2/SM2_EN, SM3/SM4 and their enable bits, PARALLAX/PARALLAX_EN,
-> >> TM3/TM3_EN, RNG2/RNG2_EN, PHE2/PHE2_EN, and RSA/RSA_EN.
-> >>
-> >> We previously tried to upstream all these extra feature bits in one
-> >> patch(https://lore.kernel.org/all/20230414095334.8743-1-TonyWWang-oc@zhaoxin.com/),
-> >> but the maintainer rejected it because there was no in-tree code using these
-> >> features yet. So our current plan is to add the CPUID bits together with real
-> >> kernel users step by step.
-> > 
-> > I see. I think it's enough to document missing CPUIDs in comment.
-> > 
-> 
-> Would the following comment be acceptable?
-> 
-> /*
->  * missing: SM2/SM2_EN, CCS/CCS_EN, PARALLAX/PARALLAX_EN,
->  * TM3/TM3_EN, RNG2/RNG2_EN, PHE2/PHE2_EN, RSA/RSA_EN
->  */
+On Tue, 6 Jan 2026, Chad Jablonski wrote:
+>> Is it documented somewhere that writing these registers reset the host
+>> data or is it from experiments? Are there any other registers that may
+>> need to reset or are these the only place (apart from HOST_DATA_LAST) that
+>> terminate host data?
+>
+> I haven't seen documentation on this or done extensive testing on it yet. My
+> reasoning for placing them here was that these writes kick off blits and so
+> it seemed like a safe place to do this. I agree though, it would be much better
+> to know how this actually behaves. I suspect at the very least there are more
+> register writes that do this. I'll see what else I can learn here
+> through testing.
 
-Yes, look good to me.
+It's OK for now, we can fix it up later if new info is found I was just 
+asking if this was something known or a guess. If you can do testing with 
+real card that's better but not needed if it would take too much time.
 
-> Do you think I should also include the lore link in the commit message/cover
-> letter for additional context?
-
-Yes, mentioning the link in commit message is good. More information is
-helpful.
-
-> > Could we make Shijidadao-Client as a v2 of Shijidadao-Server, and create an
-> > alias for this v2?
-> > 
-> > .alias = "Shijidadao-Client"
-> > 
-> > Then we could rename Shijidadao-Server to Shijidadao, and its v2 is for
-> > client.
-> > 
-> >> This is also aligned with how QEMU models other vendors' micro-architectures
-> >> where client and server products have slightly different feature sets.
-> > 
-> > The main use case for CPU models is to easy migration across mixed CPU
-> > clusters [*]. So, IMO, not all products require a model.
-> 
-> For the CPU model naming/versioning, my plan is:
-> The current Shijidadao will be equivalent to the old Shijidadao-Client-v2, drop
-> the old Shijidadao-Client-v1 according to your advice, Shijidadao-v1 will have
-> the alias Shijidadao-Client, and Shijidadao-v2 will have the alias
-> Shijidadao-Server.
-
-Migration should have more use cases for the server. Personally, I feel
-using the server version as the base model might be more convenient?
-Anyway, it's up to you. Overall, these are fine for me.
-
-Thanks,
-Zhao
-
+Regards,
+BALATON Zoltan
 
