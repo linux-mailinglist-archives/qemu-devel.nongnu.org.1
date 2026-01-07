@@ -2,92 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A15B3CFDD96
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 14:10:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 433EECFDE68
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 14:22:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdTIv-0007ST-8W; Wed, 07 Jan 2026 08:10:25 -0500
+	id 1vdTTK-00039u-HA; Wed, 07 Jan 2026 08:21:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdTIq-0006xf-6h
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:10:20 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1vdTTJ-00039S-2L
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:21:09 -0500
+Received: from mail-dy1-x132d.google.com ([2607:f8b0:4864:20::132d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdTIo-0000cK-Fx
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:10:19 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-477770019e4so17117035e9.3
- for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 05:10:17 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1vdTTH-0004Qp-Ai
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:21:08 -0500
+Received: by mail-dy1-x132d.google.com with SMTP id
+ 5a478bee46e88-2b04fcfc0daso1534347eec.0
+ for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 05:21:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767791416; x=1768396216; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XdCBdTAgg5DNMG8MNY7cl9gDDtL9mKyheHp1iT2HUIQ=;
- b=DaLWCFEs2Ce3yW9SdwAshGSxr3dx+k4y15pMQXvIY+K787jlTSGjG+Sk5stKQM7jne
- L1k9I/919wL3qJidgPwNRG69a5vNN7JOVGSVeSM711hBt9YJCUjeRCDgbCAQSKED6rFk
- 4TTLZfWZRix+c1XG5dxvsEuIJB7TdTrMfqFGBb0uCB0/wxqnmMZr9ibR6ev8PSmD/jf3
- q5ndw2bLMVkz9MMnfDF21zSR2uA1RH8sqZ5R+4ezTqWgEhRxbRBtBbW4hm9N7gcSi88K
- zlSEdAt03cm9mQKKqeHyueMJM8wRBUwxKMo1ANkaAwZ5oL66tn8x5hD15Hy8hHl088cE
- oSTg==
+ d=ventanamicro.com; s=google; t=1767792065; x=1768396865; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=4zjXYBDH4fZc8OGNSJ+bGs1K+cyneUM9beDgznDe/w8=;
+ b=fucbaES/ImW8gbxqGjfI9tCHjMxbryS2SbZdp2GT7qbh4XjPO9unoyH1S0ooiC1B0Z
+ LKS9skNqRa5yfVQTulFEZs/EDwtGrk8ILbaXd2fWidw6ab6FnWBDqVK3eTnOlMSD4ZHs
+ 7COxbU63ieXC6xFVXFbaJHqfu4TdG6qt3xze6U+Q8KXvPwZRh2xrxlsu+HzZx2VDZCfm
+ /7qq7zrCI95vS1gB1QF7QGO3fnsqz2Wnc7/fMIhpBBUU4fAkaCSv0COMEMNzABazhpZW
+ Ub72BDWZbjAQ95YFor99Ft2IQ4FVaTCj4HI2E9I4yQaePfh26/oKx0JbcsWr55MKM0SD
+ gGfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767791416; x=1768396216;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=XdCBdTAgg5DNMG8MNY7cl9gDDtL9mKyheHp1iT2HUIQ=;
- b=qAbgQHUBstsA10bSYPk09AUX8AFs+5vvO/7K36HDBGXZ/4bjs9jJfNerZNgss67Ll5
- Cn+Vo3kDMPZUzjGsQ8LCS7cBqIYQhGgh/ABRkImH3GgitpZCN/2gAIhYQ+9p93TyrwFq
- 5/eA0U+SAoiF9VKAr5GghD2ElEUCj38hvxcHJ1xcmsiwZjTsxPzi72Fg7+hTHi8x4Hyc
- CcmYZ0mkAHbm1cgYWuyoxFpMTJB0tRl4AQIryH6e4uoeiAvZU8x579APRvNSCgNOcM3y
- 9o/08Z79NOL1CPz31OIraRap2hKyIdzDhzgVH3ZIIt9Hs4Jj9/1vPWJwloB+LfVGNjrl
- 2q5w==
-X-Gm-Message-State: AOJu0Ywkc6Y8WEzF+j5nHMVgs6zWQVpcooPVHlRTnlLfIdoxTM1+SaC6
- Zt/K2tcv2gQTOJg8TfM/mVQJSFOIuy8VeBaxycR//zpfUpRb0UueKHSN2IcE6yueUbUenoy7WfJ
- KbFulN5w=
-X-Gm-Gg: AY/fxX7msfKG7fYYPzETMLYNo8yc5x5ZBdkXZSkmmZsOg3dPtOAJojEMoaRcMqTfLmB
- AsyrcaBu1NRbZE9q83StALfn/wgd6eldqqBArl6ifqY+j07zqXBMauqHw0/AOnFUSqt9mPjiyye
- KZdAvG09z2pF6u01FVcrMbq36dlukDA9Tts8ttJsUCm3qU7mgBvSgvKxTnm5TM4JRKEYXTlzZnN
- q5EEgFsFOXW9vhbI9OI6ahQncOaJx/KPVubWuJ1+YddXUBhwY/eXn8n5+T0GEB1rFK5AxUFNHLC
- uaFsSpU+I0GjIBjG66lDOWY1IDG+SEDV7NgWlUcBvx/5teGeQugyKgJWC/kGwHQ+OvFO7EdT4k/
- qKvnJGFjoYnJ3DEc1sRK7m33agHbkyhoYV7XYMpzY1kKLiC7WR1ONyGVtvCrruTWAfAVSwPHFyD
- 2qfX4DKT3G5JA5jm+7hInzBcmm3n+Rpf7k8soRmjeD0+j36ID5f5x3ktUiou++
-X-Google-Smtp-Source: AGHT+IFINcdsWJy/iBL9SR6imcHhiYgG6eS8dARCCXARFt9bN3YTD4pRZjEbk9Vic9xCKqZqEw0kbg==
-X-Received: by 2002:a05:600c:4e8a:b0:479:1b0f:dfff with SMTP id
- 5b1f17b1804b1-47d84b170famr31607375e9.10.1767791416252; 
- Wed, 07 Jan 2026 05:10:16 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d7f41f5e0sm95026885e9.8.2026.01.07.05.10.15
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 07 Jan 2026 05:10:15 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Anton Johansson <anjo@rev.ng>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand <david@kernel.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH 18/18] target/s390x: Build system units in common source set
-Date: Wed,  7 Jan 2026 14:08:06 +0100
-Message-ID: <20260107130807.69870-19-philmd@linaro.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260107130807.69870-1-philmd@linaro.org>
-References: <20260107130807.69870-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1767792065; x=1768396865;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=4zjXYBDH4fZc8OGNSJ+bGs1K+cyneUM9beDgznDe/w8=;
+ b=lqzZfz5aVFuKaLcO5nkRaIzXZpm34+n+CNiv+oKPxo5YKXiYd/0560mmox6yLUqzN5
+ 62lbsWqqHTAQWDth6GP8TV+jJJkGp4AtrndbCjqz8DfOigkdhkmA6YYX7elLdexWSZHn
+ mUbLXM33/uDpIB6XgtRn1kkbisHv1H9oLFmMSZBu8LfmzF737wLSLnl77hT6FOHlk2TQ
+ neiBlnUIj2k/3cIsqGZZeWvudEkPXrVYR7N6p25ONxWKn61Bn3ShSf7vAde6osMnSCfO
+ Hco1VY6dpoQ3v/+WQh1Tj2dhtP977SdA3XN0ddQsA1eOmdp3hwHJ+uNCIrSPL1kUNVC3
+ TQxQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWoLHsiw19eD5ffMa+AH0h/CIvkx6zncwJnEvrHIXN8AMr/9gsS3Zn1fEvmH7JNgc4pFoDAG0om+vsv@nongnu.org
+X-Gm-Message-State: AOJu0YyEbWpfcAxB/iGzwz3A3kELRXbd4eWA5UQ2svSfEv0X/tsjh3hx
+ fT17HgjdUIXOrx8QUmNgjO51blAyhIGi01Nk1BzyP+2O0vELFLYm/SLUUMG6NRRfHss=
+X-Gm-Gg: AY/fxX7LdOwpE6g19HutqaK38QAg4jS9U/VtUURfQPI53c1BWnplxNMP0jveLxCkdVo
+ sAWA+YCsf7joMwHxkF/3p4jpFfaLSJqR57sHnwz78Fhd7dwcU3Nl2gVRtpaK0Pi+hu95gA1d5O5
+ 6e2HPyd8ddJ69KqYYpZ+566CgWQurlsJMi16niNzudNjo06Zmx5/CjUg/W17R9kgMK0W/0qS3HU
+ ThCmR2F0JqGL6DoAjETmPlWvaICLN31kR5DREBsIKzZdWsFBKAxyrFuxd7xTsMGpgPUSXi9nmx5
+ 0zTm8JOlCjydONai/nkrmlQyZQOIuYANi389itM4x2iXqJNpFDpLU5dsOlsyLjwXx7sgSmcg/al
+ S/TTPzkDlnyDGWfcggJ8XxJVCbGClv8uOWx0CKAkWuI+fXErUlvlYtC6HsxFzrc0vfyQ5DpUonC
+ 2o5E+8OiTOj4sWXDNpbRqNUNfi2BtZlWal2c1wjTKrXVb340ZgWr9rs0HBsD7D8Q2/xDTmGdsc
+X-Google-Smtp-Source: AGHT+IEPRllOVi5b2y5roVGyNg6WCdEvEkNx/tzIq7HmNrFVsUfSSmhJagZskCvR4pWw/9PS3uzNZw==
+X-Received: by 2002:a05:7300:d709:b0:2b0:4fe2:6a2e with SMTP id
+ 5a478bee46e88-2b17d238bbfmr1930812eec.9.1767792065126; 
+ Wed, 07 Jan 2026 05:21:05 -0800 (PST)
+Received: from [192.168.68.110] (200-162-225-127.static-corp.ajato.com.br.
+ [200.162.225.127]) by smtp.gmail.com with ESMTPSA id
+ 5a478bee46e88-2b175bee31dsm4771188eec.32.2026.01.07.05.20.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 07 Jan 2026 05:21:04 -0800 (PST)
+Message-ID: <af7be4a9-b1d4-4759-833a-390e1032c1f3@ventanamicro.com>
+Date: Wed, 7 Jan 2026 10:20:57 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/16] hw/riscv: Add the Tenstorrent Atlantis machine
+To: Joel Stanley <joel@jms.id.au>, Alistair Francis
+ <alistair.francis@wdc.com>, qemu-devel@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liwei1518@gmail.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Chris Rauer <crauer@google.com>,
+ Vijai Kumar K <vijai@behindbytes.com>, Sunil V L <sunilvl@ventanamicro.com>,
+ Ran Wang <wangran@bosc.ac.cn>, Michael Ellerman <mpe@oss.tenstorrent.com>,
+ Joel Stanley <jms@oss.tenstorrent.com>,
+ Nick Piggin <npiggin@oss.tenstorrent.com>,
+ Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>, qemu-riscv@nongnu.org
+References: <20260106055658.209029-1-joel@jms.id.au>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Content-Language: en-US
+In-Reply-To: <20260106055658.209029-1-joel@jms.id.au>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::132d;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-dy1-x132d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,52 +111,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For the qemu-system-s390x binary, this doesn't reduce the
-number of built objects, but this ensure the files in the
-meson source set won't get access to target_ulong and
-TARGET_PAGE_SIZE definitions, thus forcing to use the
-correct types instead (such vaddr, hwaddr, uint64_t, ...).
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/s390x/meson.build     | 5 ++++-
- target/s390x/tcg/meson.build | 2 +-
- 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/target/s390x/meson.build b/target/s390x/meson.build
-index 3b34ae034cb..626a8e18f82 100644
---- a/target/s390x/meson.build
-+++ b/target/s390x/meson.build
-@@ -19,7 +19,9 @@ gen_features_h = custom_target('gen-features.h',
- s390x_ss.add(gen_features_h)
- 
- s390x_system_ss = ss.source_set()
--s390x_system_ss.add(files(
-+
-+s390x_common_system_ss = ss.source_set()
-+s390x_common_system_ss.add(files(
-   'helper.c',
-   'arch_dump.c',
-   'diag.c',
-@@ -41,4 +43,5 @@ subdir('kvm')
- 
- target_arch += {'s390x': s390x_ss}
- target_system_arch += {'s390x': s390x_system_ss}
-+target_common_system_arch += {'s390x': s390x_common_system_ss}
- target_user_arch += {'s390x': s390x_user_ss}
-diff --git a/target/s390x/tcg/meson.build b/target/s390x/tcg/meson.build
-index 515cb8b473d..17c9374d09e 100644
---- a/target/s390x/tcg/meson.build
-+++ b/target/s390x/tcg/meson.build
-@@ -12,6 +12,6 @@ s390x_ss.add(when: 'CONFIG_TCG', if_true: files(
-   'vec_int_helper.c',
-   'vec_string_helper.c',
- ))
--s390x_system_ss.add(when: 'CONFIG_TCG', if_true: files(
-+s390x_common_system_ss.add(when: 'CONFIG_TCG', if_true: files(
-   'debug.c',
- ))
--- 
-2.52.0
+On 1/6/26 2:56 AM, Joel Stanley wrote:
+> Introducing Tenstorrent Atlantis!
+> 
+>   The Tenstorrent Atlantis platform is a collaboration between Tenstorrent
+>   and CoreLab Technology. It is based on the Atlantis SoC, which includes
+>   the Ascalon-X CPU and other IP from Tenstorrent and CoreLab Technology.
+> 
+>   The Tenstorrent Ascalon-X is a high performance 64-bit RVA23 compliant
+>   RISC-V CPU.
+> 
+> This initial series adds the base machine support including:
+> 
+>   - AIA (Advanced Interrupt Architecture) support
+>   - PCIe controller and DesignWare I2C integration
+>   - Serial console and device tree generation
+>   - Functional tests for OpenSBI+Linux boot
+> 
+> Changes outside of adding the machine:
+> 
+>   - Atlantis maps DRAM high in the address space but maintains an alias
+>     for the first 2GB at 0x0. We have updated the RISC-V boot loader code
+>     to support boot_info for discontiguous memory layouts.
+> 
+>   - The riscv64 virt machine AIA initialisation has been moved to a
+>     helper file to allow code reuse with the Atlantis machine
+> 
+>   - Revived the DesignWare I2C controller model (previously proposed for
+>     ARM virt) with permission from the original author.
+> 
+> I hope to get early feedback on the base machine now. We intend to
+> continue modelling the soc so it can be useful for firmware and
+> operating system development and testing, so expect more patches to do
+> that soon.
+
+Good choice on the machine name. Looking forward for what's coming next
+(Poseidon, Varuna, Anuket, Leviathan ...)
+
+As for the patches I see stuff that could be sent separately in a prep series,
+mostly the 4 patches on hw/boot and the 2 hw/aia patches. You can refer to this
+prep series as a prerequisite for the main series that would include just the
+machine specific stuff.
+
+This prep series would be easier to review and would probably be merged first,
+alleviating the review effort in the Atlantis series.
+
+Also, the designware i2c controller patch seems fully reviewed. I advise sending
+it standalone to be merged right away. I believe Alistair wouldn't mind pushing
+it via qemu-riscv.
+
+
+Thanks,
+
+Daniel
+
+> 
+> Chris Rauer (1):
+>    hw/i2c: Add designware i2c controller
+> 
+> Joel Stanley (6):
+>    target/riscv: tt-ascalon: Add Tenstorrent mvendorid
+>    hw/riscv: Move AIA initialisation to helper file
+>    hw/riscv/aia: Provide number of irq sources
+>    hw/riscv: Add Tenstorrent Atlantis machine
+>    hw/riscv/atlantis: Integrate i2c buses
+>    hw/riscv/atlantis: Add some i2c peripherals
+> 
+> Nicholas Piggin (9):
+>    target/riscv: tt-ascalon: Enable Zkr extension
+>    target/riscv: tt-ascalon: Add Svadu extension
+>    riscv/boot: Describe discontiguous memory in boot_info
+>    riscv/boot: Account for discontiguous memory when loading firmware
+>    hw/riscv/atlantis: Add PCIe controller
+>    tests/functional/riscv64: Add tt-atlantis tests
+>    hw/riscv/boot: Warn if a ELF format file is loaded as a binary
+>    hw/riscv/boot: Provide a simple halting payload
+>    hw/riscv/atlantis: Use halting kernel if there is no payload
+> 
+>   MAINTAINERS                                  |  15 +
+>   docs/system/riscv/tt_atlantis.rst            |  38 +
+>   docs/system/target-riscv.rst                 |   1 +
+>   hw/riscv/aia.h                               |  59 ++
+>   include/hw/i2c/designware_i2c.h              | 101 ++
+>   include/hw/riscv/boot.h                      |  14 +-
+>   include/hw/riscv/tt_atlantis.h               |  95 ++
+>   include/hw/riscv/virt.h                      |  30 +-
+>   target/riscv/cpu_vendorid.h                  |   2 +
+>   hw/i2c/designware_i2c.c                      | 813 ++++++++++++++++
+>   hw/riscv/aia.c                               |  89 ++
+>   hw/riscv/boot.c                              |  73 +-
+>   hw/riscv/microchip_pfsoc.c                   |   6 +-
+>   hw/riscv/opentitan.c                         |   6 +-
+>   hw/riscv/shakti_c.c                          |   6 +-
+>   hw/riscv/sifive_u.c                          |   3 +-
+>   hw/riscv/spike.c                             |   6 +-
+>   hw/riscv/tt_atlantis.c                       | 917 +++++++++++++++++++
+>   hw/riscv/virt-acpi-build.c                   |  24 +-
+>   hw/riscv/virt.c                              |  94 +-
+>   hw/riscv/xiangshan_kmh.c                     |   6 +-
+>   target/riscv/cpu.c                           |   4 +-
+>   hw/i2c/Kconfig                               |   4 +
+>   hw/i2c/meson.build                           |   1 +
+>   hw/riscv/Kconfig                             |  21 +
+>   hw/riscv/meson.build                         |   3 +-
+>   tests/functional/riscv64/meson.build         |   1 +
+>   tests/functional/riscv64/test_opensbi.py     |   4 +
+>   tests/functional/riscv64/test_tt_atlantis.py |  68 ++
+>   29 files changed, 2365 insertions(+), 139 deletions(-)
+>   create mode 100644 docs/system/riscv/tt_atlantis.rst
+>   create mode 100644 hw/riscv/aia.h
+>   create mode 100644 include/hw/i2c/designware_i2c.h
+>   create mode 100644 include/hw/riscv/tt_atlantis.h
+>   create mode 100644 hw/i2c/designware_i2c.c
+>   create mode 100644 hw/riscv/aia.c
+>   create mode 100644 hw/riscv/tt_atlantis.c
+>   create mode 100755 tests/functional/riscv64/test_tt_atlantis.py
+> 
 
 
