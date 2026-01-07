@@ -2,88 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC9ACFDDA2
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 14:11:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A15B3CFDD96
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 14:10:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdTIu-0007H7-2k; Wed, 07 Jan 2026 08:10:24 -0500
+	id 1vdTIv-0007ST-8W; Wed, 07 Jan 2026 08:10:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdTIk-0006kp-41
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:10:14 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdTIq-0006xf-6h
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:10:20 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdTIi-0000Qo-CN
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:10:13 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-432755545fcso1172818f8f.1
- for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 05:10:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdTIo-0000cK-Fx
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:10:19 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-477770019e4so17117035e9.3
+ for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 05:10:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767791409; x=1768396209; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767791416; x=1768396216; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5Cs0mvcCcwZ/i+ygFt7FDPPIj7PbgqNY+1moJF/HNjU=;
- b=I1N9DZIGJxAfOH2s0uFNZMU5hiDLssZUzS3ZWKjAZecPR3DPFFiKhy8WJJBKhgWuHz
- +houe7rkB67K0ZZDA0XIGbFuvekx5d0SL/711ygwZ/aV2bm0MNwaOAi7fhMQ6MJfChG2
- cotfcfMlFkploUBehfM5IevkGXm7jtLeeX0Gyx/9neWS08Voic5UH2ZsI1plToGPYMKb
- dFubN27/x3UdSxLldgOZZ8RS13dUInt4RwirCWZOeLln4+DUVlib73rFHPRRZCZpmCtP
- VQm47wU6VxT3s2qd1lqlNdHEB+ehu5koenektFwwDu8I+C2nhtTkH3dbfKsIaEKV+xAV
- iBGw==
+ bh=XdCBdTAgg5DNMG8MNY7cl9gDDtL9mKyheHp1iT2HUIQ=;
+ b=DaLWCFEs2Ce3yW9SdwAshGSxr3dx+k4y15pMQXvIY+K787jlTSGjG+Sk5stKQM7jne
+ L1k9I/919wL3qJidgPwNRG69a5vNN7JOVGSVeSM711hBt9YJCUjeRCDgbCAQSKED6rFk
+ 4TTLZfWZRix+c1XG5dxvsEuIJB7TdTrMfqFGBb0uCB0/wxqnmMZr9ibR6ev8PSmD/jf3
+ q5ndw2bLMVkz9MMnfDF21zSR2uA1RH8sqZ5R+4ezTqWgEhRxbRBtBbW4hm9N7gcSi88K
+ zlSEdAt03cm9mQKKqeHyueMJM8wRBUwxKMo1ANkaAwZ5oL66tn8x5hD15Hy8hHl088cE
+ oSTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767791409; x=1768396209;
+ d=1e100.net; s=20230601; t=1767791416; x=1768396216;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=5Cs0mvcCcwZ/i+ygFt7FDPPIj7PbgqNY+1moJF/HNjU=;
- b=Si63VWasUyi/iJXbOhaCPAkd8YCrvqqr63FgjOzCbu5DuMDtmnprp4oPsR/rokMWXl
- UQCPb6w9N6f6mQmc/8Hkw8k3nQK0nqKLT1aX3ioyGLCJjnUaarbet5U8nH2AkYwA+U/i
- zA1S3JO1zC/bW/0P6Y2VVmrYB17ymLixtmeqtdP0KU70GOl4XoEAvpDm5BRBagt6zc6X
- xu0fdM5wpUx0Q7EQjfLosOSjf58O+LXox8Gwp6gppYzQh1V52ebbqB4AKTZD2vQu0CJi
- 0ECC0V4AuqVnTC0HMAyMm+rSXzcwyfoQrPbpa4JRC8YNW7sTEAC6SZlCD0ef1E3gLYLn
- SUUA==
-X-Gm-Message-State: AOJu0YyqlOmsgYl5UmVYfIXbVZcNt93ybXnWmeanyGOTXgnKp+SNH5DX
- kqWpPMUKzkpefcDEQHYp3uli5bU+zqtBFextuXoP4GGPX8ZsacaLbRe2ARzYxVV/Ckazl4Xw7GO
- tJC9sAVU=
-X-Gm-Gg: AY/fxX56b333t3qipE5thUZYSX65XmBHxQnkXRdaNA8oYG76zE4HCJ1E1IvkzK8RMjy
- 5qGkmAHxD9gDVkTOd4kWmQ52TqYEq2EiUuqHgQmVUW6hecX2h5Ez0xeJJtdeYvNivyQZX1Gb9kt
- g6F/7VCvn/xY3J71pfHBvXcMSwP/Ki5qGXSG3qaQtjSEqsubudQey+bfQxGuoMI+xixM5w6DtHN
- v9YbDUDUc/p0gMnZvut5k6naSUIDMwrBh/ef7bmYXwxYVR0PzSEWiIyKt+dkIINxZvOf/9jqKV5
- AgWAIgAcBqUmNOCWW7XYgrAtbxLtV+Wj+JhAEOaZvp/imogVxOdYY+f6tY++KDvjo7TBtYc2yl4
- NDFnqvs7+xDt4ubG4fJ8jghbOsCx4fRug6fFdedSxdP3R5YHQPMxvDlTi6JEjCDckekAmGpXR3c
- 3OR+iSOEzOOCn/g5Q0CC8/MV0vCHYkgaE+T6cDroy5GxFdBmp5Oki9TJBKKJAY
-X-Google-Smtp-Source: AGHT+IH7IAtEGk8cgjS2QxOhY4XEBYztXNqAwLwBC1Bxrn2Pg8f3xlYRNV5vXeaZ/1lpvILikZ6d1w==
-X-Received: by 2002:adf:f98d:0:b0:431:266:d142 with SMTP id
- ffacd0b85a97d-432c364309fmr2621684f8f.26.1767791409349; 
- Wed, 07 Jan 2026 05:10:09 -0800 (PST)
+ bh=XdCBdTAgg5DNMG8MNY7cl9gDDtL9mKyheHp1iT2HUIQ=;
+ b=qAbgQHUBstsA10bSYPk09AUX8AFs+5vvO/7K36HDBGXZ/4bjs9jJfNerZNgss67Ll5
+ Cn+Vo3kDMPZUzjGsQ8LCS7cBqIYQhGgh/ABRkImH3GgitpZCN/2gAIhYQ+9p93TyrwFq
+ 5/eA0U+SAoiF9VKAr5GghD2ElEUCj38hvxcHJ1xcmsiwZjTsxPzi72Fg7+hTHi8x4Hyc
+ CcmYZ0mkAHbm1cgYWuyoxFpMTJB0tRl4AQIryH6e4uoeiAvZU8x579APRvNSCgNOcM3y
+ 9o/08Z79NOL1CPz31OIraRap2hKyIdzDhzgVH3ZIIt9Hs4Jj9/1vPWJwloB+LfVGNjrl
+ 2q5w==
+X-Gm-Message-State: AOJu0Ywkc6Y8WEzF+j5nHMVgs6zWQVpcooPVHlRTnlLfIdoxTM1+SaC6
+ Zt/K2tcv2gQTOJg8TfM/mVQJSFOIuy8VeBaxycR//zpfUpRb0UueKHSN2IcE6yueUbUenoy7WfJ
+ KbFulN5w=
+X-Gm-Gg: AY/fxX7msfKG7fYYPzETMLYNo8yc5x5ZBdkXZSkmmZsOg3dPtOAJojEMoaRcMqTfLmB
+ AsyrcaBu1NRbZE9q83StALfn/wgd6eldqqBArl6ifqY+j07zqXBMauqHw0/AOnFUSqt9mPjiyye
+ KZdAvG09z2pF6u01FVcrMbq36dlukDA9Tts8ttJsUCm3qU7mgBvSgvKxTnm5TM4JRKEYXTlzZnN
+ q5EEgFsFOXW9vhbI9OI6ahQncOaJx/KPVubWuJ1+YddXUBhwY/eXn8n5+T0GEB1rFK5AxUFNHLC
+ uaFsSpU+I0GjIBjG66lDOWY1IDG+SEDV7NgWlUcBvx/5teGeQugyKgJWC/kGwHQ+OvFO7EdT4k/
+ qKvnJGFjoYnJ3DEc1sRK7m33agHbkyhoYV7XYMpzY1kKLiC7WR1ONyGVtvCrruTWAfAVSwPHFyD
+ 2qfX4DKT3G5JA5jm+7hInzBcmm3n+Rpf7k8soRmjeD0+j36ID5f5x3ktUiou++
+X-Google-Smtp-Source: AGHT+IFINcdsWJy/iBL9SR6imcHhiYgG6eS8dARCCXARFt9bN3YTD4pRZjEbk9Vic9xCKqZqEw0kbg==
+X-Received: by 2002:a05:600c:4e8a:b0:479:1b0f:dfff with SMTP id
+ 5b1f17b1804b1-47d84b170famr31607375e9.10.1767791416252; 
+ Wed, 07 Jan 2026 05:10:16 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-432bd5ee24esm10461497f8f.33.2026.01.07.05.10.08
+ 5b1f17b1804b1-47d7f41f5e0sm95026885e9.8.2026.01.07.05.10.15
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 07 Jan 2026 05:10:08 -0800 (PST)
+ Wed, 07 Jan 2026 05:10:15 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  Anton Johansson <anjo@rev.ng>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand <david@kernel.org>
-Subject: [PATCH 17/18] target/s390x: Add more unreachable KVM stubs
-Date: Wed,  7 Jan 2026 14:08:05 +0100
-Message-ID: <20260107130807.69870-18-philmd@linaro.org>
+ Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand <david@kernel.org>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH 18/18] target/s390x: Build system units in common source set
+Date: Wed,  7 Jan 2026 14:08:06 +0100
+Message-ID: <20260107130807.69870-19-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260107130807.69870-1-philmd@linaro.org>
 References: <20260107130807.69870-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,108 +103,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Next patch will move s390x system objects from the target
-specific source set to the common one. Unfortunately the
-kvm_enabled() macro won't be evaluable at built-time
-anymore. Add stubs for KVM symbols unreachable at runtime.
+For the qemu-system-s390x binary, this doesn't reduce the
+number of built objects, but this ensure the files in the
+meson source set won't get access to target_ulong and
+TARGET_PAGE_SIZE definitions, thus forcing to use the
+correct types instead (such vaddr, hwaddr, uint64_t, ...).
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/s390x/kvm/stubs.c | 76 +++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 75 insertions(+), 1 deletion(-)
+ target/s390x/meson.build     | 5 ++++-
+ target/s390x/tcg/meson.build | 2 +-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/target/s390x/kvm/stubs.c b/target/s390x/kvm/stubs.c
-index 046e1f922b7..196127baa51 100644
---- a/target/s390x/kvm/stubs.c
-+++ b/target/s390x/kvm/stubs.c
-@@ -4,8 +4,9 @@
+diff --git a/target/s390x/meson.build b/target/s390x/meson.build
+index 3b34ae034cb..626a8e18f82 100644
+--- a/target/s390x/meson.build
++++ b/target/s390x/meson.build
+@@ -19,7 +19,9 @@ gen_features_h = custom_target('gen-features.h',
+ s390x_ss.add(gen_features_h)
  
- #include "qemu/osdep.h"
+ s390x_system_ss = ss.source_set()
+-s390x_system_ss.add(files(
++
++s390x_common_system_ss = ss.source_set()
++s390x_common_system_ss.add(files(
+   'helper.c',
+   'arch_dump.c',
+   'diag.c',
+@@ -41,4 +43,5 @@ subdir('kvm')
  
--#include "kvm_s390x.h"
-+#include "target/s390x/kvm/kvm_s390x.h"
- #include "target/s390x/kvm/pv.h"
-+#include "target/s390x/cpu_models.h"
- 
- int kvm_s390_get_protected_dump(void)
- {
-@@ -104,3 +105,76 @@ int kvm_s390_dump_completion_data(void *buff)
- {
-     return 0;
- }
-+
-+bool kvm_s390_apply_cpu_model(const S390CPUModel *model,  Error **errp)
-+{
-+    g_assert_not_reached();
-+}
-+
-+void kvm_s390_access_exception(S390CPU *cpu, uint16_t code, uint64_t te_code)
-+{
-+    g_assert_not_reached();
-+}
-+
-+int kvm_s390_mem_op(S390CPU *cpu, vaddr addr, uint8_t ar, void *hostbuf,
-+                    int len, bool is_write)
-+{
-+    g_assert_not_reached();
-+}
-+
-+int kvm_s390_mem_op_pv(S390CPU *cpu, vaddr addr, void *hostbuf, int len,
-+                       bool is_write)
-+{
-+    g_assert_not_reached();
-+}
-+
-+int kvm_s390_set_cpu_state(S390CPU *cpu, uint8_t cpu_state)
-+{
-+    g_assert_not_reached();
-+}
-+
-+void kvm_s390_vcpu_interrupt_pre_save(S390CPU *cpu)
-+{
-+    g_assert_not_reached();
-+}
-+
-+int kvm_s390_vcpu_interrupt_post_load(S390CPU *cpu)
-+{
-+    g_assert_not_reached();
-+}
-+
-+int kvm_s390_get_hpage_1m(void)
-+{
-+    g_assert_not_reached();
-+}
-+
-+void kvm_s390_enable_css_support(S390CPU *cpu)
-+{
-+    g_assert_not_reached();
-+}
-+
-+int kvm_s390_assign_subch_ioeventfd(EventNotifier *notifier, uint32_t sch,
-+                                    int vq, bool assign)
-+{
-+    g_assert_not_reached();
-+}
-+
-+void kvm_s390_cmma_reset(void)
-+{
-+    g_assert_not_reached();
-+}
-+
-+void kvm_s390_crypto_reset(void)
-+{
-+    g_assert_not_reached();
-+}
-+
-+void kvm_s390_set_diag318(CPUState *cs, uint64_t diag318_info)
-+{
-+    g_assert_not_reached();
-+}
-+
-+int kvm_s390_topology_set_mtcr(uint64_t attr)
-+{
-+    g_assert_not_reached();
-+}
+ target_arch += {'s390x': s390x_ss}
+ target_system_arch += {'s390x': s390x_system_ss}
++target_common_system_arch += {'s390x': s390x_common_system_ss}
+ target_user_arch += {'s390x': s390x_user_ss}
+diff --git a/target/s390x/tcg/meson.build b/target/s390x/tcg/meson.build
+index 515cb8b473d..17c9374d09e 100644
+--- a/target/s390x/tcg/meson.build
++++ b/target/s390x/tcg/meson.build
+@@ -12,6 +12,6 @@ s390x_ss.add(when: 'CONFIG_TCG', if_true: files(
+   'vec_int_helper.c',
+   'vec_string_helper.c',
+ ))
+-s390x_system_ss.add(when: 'CONFIG_TCG', if_true: files(
++s390x_common_system_ss.add(when: 'CONFIG_TCG', if_true: files(
+   'debug.c',
+ ))
 -- 
 2.52.0
 
