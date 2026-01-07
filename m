@@ -2,138 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B383FCFC742
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 08:52:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE43ACFC7E3
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 09:04:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdOKX-0005Jy-W2; Wed, 07 Jan 2026 02:51:46 -0500
+	id 1vdOW4-0002Zp-1E; Wed, 07 Jan 2026 03:03:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Honglei1.Huang@amd.com>)
- id 1vdOJs-0004zt-1p
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 02:51:06 -0500
-Received: from mail-westcentralusazlp170130007.outbound.protection.outlook.com
- ([2a01:111:f403:c112::7] helo=CY3PR05CU001.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <lyndra@linux.alibaba.com>)
+ id 1vdOVn-0002Vn-0l; Wed, 07 Jan 2026 03:03:26 -0500
+Received: from out30-97.freemail.mail.aliyun.com ([115.124.30.97])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Honglei1.Huang@amd.com>)
- id 1vdOJo-0003H5-Rj
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 02:51:03 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aUIWVzmyfSgo0yvTPyoNcmPbY3W5B+OOOjyZmlgX7ODl9+4trKp27dwLl/XN9SMMHP7w8N8EviU6it3yta1srBMwcfB+LYcB8PfXFFO6cN7mfptHiI7ndpqtvM38pTwI9p8iODJ4k8/IZyYJkv1eZFGBLT3TuzZ/1Zwxn7D+ez1BXd+f31d3cKMTa0kEp2DBEV/IgDHHnLKzynfLBJa+VAL2S+8F2qf8jpHx4PLbhX5bf6FAlaGZqVdDdpLS8boEkKwdGOuljDTOWQAzxfl7qUvVT0ETaGXVk1UFBje9v8J1TID3CKYfFEVcpZza454hyisBx9eVaR3g2exLVcL/Mg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=t9wRna2kt1TEOV+ujrv8PI06oGs7OyuMaz1W1wJpG2o=;
- b=mdSdsVgzsqmYMrrhbqI4o3bDo/jQJDJsM3YzG6RuMJRpFbQRNiTpVnvv1QwvtGDhMmBSJ74ewZqqgNSDXB/SVpK9sfyzDOUNCtZrLjABCjfM1GmdF7KAqKA3zUtYXMd7Zqm0IYmcMMusykEitq43THweG1KfBvYVkHZoROKmFynZatDkMy5kCYH+tzOeEKN3DmCkmjXlgzO6NcDbipOFamtlfmezQMvDOINsvcaN0YOUqNOGU39fI2ouzdMosFyZSVFG2+suM8DlCFO4TS63wXpaSntBIL+CmPQGXrLsjT9p6I5wzcmcjo2yPQExyuPLHFThh5yrSvNYxhhw9Tss7A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=t9wRna2kt1TEOV+ujrv8PI06oGs7OyuMaz1W1wJpG2o=;
- b=3AAFcwQfSvQDplWVOB6XEs5cEXBBtLX9NAKY1AsLYu3Sbf0QWjBHIdiPcOEtdyKE0uH66NcjfZKCas0KDyhYaDSSdGWwiZ4iUEO6CadfQDTb43HsUXbkOpIf2cUzeO+hzHJrEc4KsmbqIXNyU7y9068Flvz6FU2bezIXCZrtllw=
-Received: from BY3PR05CA0005.namprd05.prod.outlook.com (2603:10b6:a03:254::10)
- by BY5PR12MB4259.namprd12.prod.outlook.com (2603:10b6:a03:202::17)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Wed, 7 Jan
- 2026 07:50:54 +0000
-Received: from SJ1PEPF00001CEB.namprd03.prod.outlook.com
- (2603:10b6:a03:254:cafe::b7) by BY3PR05CA0005.outlook.office365.com
- (2603:10b6:a03:254::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.1 via Frontend Transport; Wed, 7
- Jan 2026 07:50:54 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF00001CEB.mail.protection.outlook.com (10.167.242.27) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9499.1 via Frontend Transport; Wed, 7 Jan 2026 07:50:54 +0000
-Received: from honglei-remote.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 7 Jan
- 2026 01:50:51 -0600
-From: Honglei Huang <honghuan@amd.com>
-To: <alex.bennee@linaro.org>, <dmitry.osipenko@collabora.com>,
- <odaki@rsg.ci.i.u-tokyo.ac.jp>, <Ray.Huang@amd.com>
-CC: <mst@redhat.com>, <cohuck@redhat.com>, <pbonzini@redhat.com>,
- <qemu-devel@nongnu.org>, <honghuan@amd.com>
-Subject: [PATCH RFC v4 3/3] virtio-gpu: Add ROCm capability support
-Date: Wed, 7 Jan 2026 15:50:30 +0800
-Message-ID: <20260107075030.3453924-4-honghuan@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260107075030.3453924-1-honghuan@amd.com>
-References: <20260107075030.3453924-1-honghuan@amd.com>
+ (Exim 4.90_1) (envelope-from <lyndra@linux.alibaba.com>)
+ id 1vdOVh-0006Ec-DY; Wed, 07 Jan 2026 03:03:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux.alibaba.com; s=default;
+ t=1767772967; h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To;
+ bh=UIgERDaJQ1hPrLH/W9m4577Uq9aFxMm1vW76SCESwB4=;
+ b=od0bIQBYCGZf6iGMKlvfFwgWxRvwBeRWHDGQYSe3AkhOAlxZpY5KoTOaTBF32OdCYuwMaZncenBV+G5bvG77HxJjOjFvaXtIUwwBlYHfJG8jjP1Z/9tx0vxdd0qHubJDYBYzpI/pJQdK3ZgYTStTHTg1HnpUa6JrWpaZ/dh+cwE=
+Received: from ea134-sw06.eng.xrvm.cn(mailfrom:lyndra@linux.alibaba.com
+ fp:SMTPD_---0WwY-yyG_1767772656 cluster:ay36) by smtp.aliyun-inc.com;
+ Wed, 07 Jan 2026 15:57:37 +0800
+From: TANG Tiancheng <lyndra@linux.alibaba.com>
+Date: Wed, 07 Jan 2026 15:57:12 +0800
+Subject: [PATCH] target/riscv: Drop stray '+' in pmp()
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CEB:EE_|BY5PR12MB4259:EE_
-X-MS-Office365-Filtering-Correlation-Id: b5dd9bbd-32f1-4978-2c91-08de4dc17c58
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|376014|36860700013|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?PSxNEIBgnQCrd4fYt+3iN5bGCbuc/4x5D3TzyxHSbrWurgXOc8NSJ5I1+ZAH?=
- =?us-ascii?Q?29NHXTcBrvuuoMs3r+L4nFHMTyIBF6mEMdL24ynKkgtVKn159Z+VTGaAvbD9?=
- =?us-ascii?Q?OKrr9dmnF+KF6gZQk8mRGkBLei4dpKAnXerL/I8Q5otcEqKy7tw2Sxm1gjDW?=
- =?us-ascii?Q?lc1HQo4O40mYe0wmmoRd4mDTBhdFJ3x+t9BH43aKLzK1Q8ryJKRqjO1NR6J0?=
- =?us-ascii?Q?TWa5SPMwIj0lYQQU3U8oIXpu6g681eplskaehBK3jOiNZ0uSj7xQqKCFsD2s?=
- =?us-ascii?Q?Gbf/K2KYB3isA/P3e6OMcC8Q11AOxeL5B6FGB+Cl0hMb7fiaCYOP4iBXE3Gg?=
- =?us-ascii?Q?NlKDdkP9X+tcg0kml0O/ieClx7ZR93+STI98oifOcQMyi0175twjx8GPlIlN?=
- =?us-ascii?Q?sHe/oeDafO0YEJ8tkmO/w6VRBLyglOZiqO9STHTSvds8fWRiqqC0tq+UKouQ?=
- =?us-ascii?Q?Xj/PYK7XKtc4kzgsJa5ArNCspPR05JKdUlSGTUS2Eihf9IcdOz6mjMYdhoia?=
- =?us-ascii?Q?eyJ0rK0My8DcFlDWgvQgHtdg7XDX1RQ9Nxy7HmpkUYQZaVKHUgdHkqu0sbAt?=
- =?us-ascii?Q?nUiLfBQi774Z0ACV45Hcsf4YiOxfVHkc2NXRCQBTl7CRt7+apP9qo0KbSdmZ?=
- =?us-ascii?Q?EehqUGOaPYWUAv2zPqG6G7HvkiUYcyfAQzz3p5iqtru7Xlx3XvoPsf1rjILb?=
- =?us-ascii?Q?L4Bp1krPAqEXSAKQka0R7vT5dF4dpOypA9Kqq+htHhPLAjRAt+X3+8YS51SE?=
- =?us-ascii?Q?3Qz4dGzbHoPECAtCtTv+8uKx8Ah/ych5lUK4y8c+8RHpH6P+1bhDL+jJWpge?=
- =?us-ascii?Q?IsG3WR6GElI3wqWR3cH76Z1eI200WNXuFJ1Om2PtoRUyWkdIT8IObu75P/AG?=
- =?us-ascii?Q?WeEIic0gaDmj+/G6zIMo/oF6FACr1oiYqI+6AfS7MemSSgvI2XDAnE6Ec7AI?=
- =?us-ascii?Q?Xk2LjpNsk8Ub0W+RG/VfDCn2DcX+1fSz43Uq/l9tMGQM38IhsBZ501TytBwC?=
- =?us-ascii?Q?aI+wOEgsdG+ND71x5gg5JMGIBS0g8oWesg07H52QDN+L4eUiH1pnDP1Wkl+k?=
- =?us-ascii?Q?+77QZF6kO66L0RSddmLkMCjkyKg9Ex2f3Z83q2ZjJR1wa99a+TFyT5eqc58B?=
- =?us-ascii?Q?pMFF2vM1NWCwUroZl4N2mS9eiPILJ0fmhydndLIwLzy/NJAyP6QtQabBIRnq?=
- =?us-ascii?Q?37von5mpoKLjQ+TipDyp2M0ZNlP3Wy0mDCxT1DrlDwM4BJ41KaCcGhB6wlhQ?=
- =?us-ascii?Q?eHol6GaRCiqrT3Ieg7oSoESslNqlFOkdiCU7vE4PYFyYg5eEayWrWqMnKfwz?=
- =?us-ascii?Q?lFhe7QlT3ba3LQ3N0eSpjbyyRRlt7uwhP+vi1eo710LPMZJoVvfI0kT6WdFq?=
- =?us-ascii?Q?wEx1K5qqjvW6gD/GsMvyHd+J8Y4q/mAGpeRfTGHsyjBfDBZVPy0OBOHhfYww?=
- =?us-ascii?Q?UdY5XJZJNOGEmBHOGvPYWW3HWsFkdg38BdeSqG+rmasVsb7GtH1DxDQe0rwp?=
- =?us-ascii?Q?FnJ4SJKvR1CUCTIJxgOHqRrzn1ypJ9jaoP8J3cm6zHHiGHpPVhmdUQFhWtcQ?=
- =?us-ascii?Q?0lF61HDtKjBhNgdY2LY=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(36860700013)(82310400026); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2026 07:50:54.2089 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b5dd9bbd-32f1-4978-2c91-08de4dc17c58
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF00001CEB.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4259
-Received-SPF: permerror client-ip=2a01:111:f403:c112::7;
- envelope-from=Honglei1.Huang@amd.com;
- helo=CY3PR05CU001.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260107-stray-v1-1-6658efecbb0b@linux.alibaba.com>
+X-B4-Tracking: v=1; b=H4sIANcRXmkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDIyNT3eKSosRK3RQTCzNzy7SURJNEAyWg2oKi1LTMCrA50bG1tQAkuSd
+ 7VwAAAA==
+X-Change-ID: 20251225-stray-d48679fda4a0
+To: qemu-devel@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Weiwei Li <liwei1518@gmail.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org, 
+ TANG Tiancheng <lyndra@linux.alibaba.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767772657; l=1426;
+ i=lyndra@linux.alibaba.com; s=20250909; h=from:subject:message-id;
+ bh=lmQokMJ1ik9Lorhz0JAwJUDu/v+Agcvb4qIXEhYhLEQ=;
+ b=Ei88EtjPgfVJBwTAdaQQbutE4nJtoXXKMaJ9sm3qv1v1F8qYoF1Ub5SssWTaQ7K67KSdfaHmF
+ 5OCcOp0NrCoDc0nW/1CegVtgzZWpmTg9FCbfCzbJnJtP6//bIUMKwW/
+X-Developer-Key: i=lyndra@linux.alibaba.com; a=ed25519;
+ pk=GQh4uOSLVucXGkaZfEuQ956CrYS14cn1TA3N8AiIjBw=
+Received-SPF: pass client-ip=115.124.30.97;
+ envelope-from=lyndra@linux.alibaba.com; helo=out30-97.freemail.mail.aliyun.com
+X-Spam_score_int: -174
+X-Spam_score: -17.5
+X-Spam_bar: -----------------
+X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, UNPARSEABLE_RELAY=0.001,
+ USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -149,104 +77,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add support for ROCm (Radeon Open Compute) capability in virtio-gpu.
-This enables GPU compute workloads using AMD's ROCm platform through
-the virtio-gpu interface.
+Remove an unintended leading '+' left in target/riscv/csr.c (pmp()).
 
-Changes include:
-- Add "rocm" property to virtio-gpu-gl device
-- Define VIRTIO_GPU_FLAG_ROCM_ENABLED flag
-- Enable VIRGL_RENDERER_USE_ROCM flag when ROCm is enabled
-- Register VIRTIO_GPU_CAPSET_ROCM (capset 8) capability
-- Add virtio_gpu_rocm_enabled() helper macro
-
-This allows guests to detect and utilize ROCm capabilities through
-the virtio-gpu device when the feature is enabled.
-
-Signed-off-by: Honglei Huang <honghuan@amd.com>
+Fixes: cd633bea8b0
+Signed-off-by: TANG Tiancheng <lyndra@linux.alibaba.com>
 ---
- hw/display/virtio-gpu-gl.c                  |  2 ++
- hw/display/virtio-gpu-virgl.c               | 12 ++++++++++++
- include/hw/virtio/virtio-gpu.h              |  3 +++
- include/standard-headers/linux/virtio_gpu.h |  1 +
- 4 files changed, 18 insertions(+)
+This patch fixes a stray '+' character that was accidentally introduced
+in the PMP (Physical Memory Protection) CSR handling code in target/riscv/csr.c.
 
-diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-index b98ef2ef98..f059bcb177 100644
---- a/hw/display/virtio-gpu-gl.c
-+++ b/hw/display/virtio-gpu-gl.c
-@@ -159,6 +159,8 @@ static const Property virtio_gpu_gl_properties[] = {
-                     VIRTIO_GPU_FLAG_STATS_ENABLED, false),
-     DEFINE_PROP_BIT("venus", VirtIOGPU, parent_obj.conf.flags,
-                     VIRTIO_GPU_FLAG_VENUS_ENABLED, false),
-+    DEFINE_PROP_BIT("rocm", VirtIOGPU, parent_obj.conf.flags,
-+                    VIRTIO_GPU_FLAG_ROCM_ENABLED, false),
- };
+The issue was introduced in commit cd633bea8b0 as part of the PMP region
+count configurable feature and causes a syntax error that prevents
+compilation.
+
+Fixes: cd633bea8b0
+Link: https://lists.nongnu.org/archive/html/qemu-riscv/2025-06/msg00089.html
+---
+ target/riscv/csr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index 5c91658c3dc412c6f0e6db89120b935b4c0ea6cf..8c1312ab129f4fe6a21d4dff67b3a7d9ca175415 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -743,7 +743,7 @@ static RISCVException pmp(CPURISCVState *env, int csrno)
+ {
+     if (riscv_cpu_cfg(env)->pmp) {
+         int max_pmpcfg = (env->priv_ver >= PRIV_VERSION_1_12_0) ?
+-+                              CSR_PMPCFG15 : CSR_PMPCFG3;
++                               CSR_PMPCFG15 : CSR_PMPCFG3;
  
- static void virtio_gpu_gl_device_unrealize(DeviceState *qdev)
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index cbfb8aca3f..5e0f465c37 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -1160,6 +1160,9 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
-     if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-         flags |= VIRGL_RENDERER_VENUS | VIRGL_RENDERER_RENDER_SERVER;
-     }
-+    if (virtio_gpu_rocm_enabled(g->parent_obj.conf)) {
-+        flags |= (VIRGL_RENDERER_USE_ROCM);
-+    }
- #endif
- 
-     ret = virgl_renderer_init(g, flags, &virtio_gpu_3d_cbs);
-@@ -1218,5 +1221,14 @@ GArray *virtio_gpu_virgl_get_capsets(VirtIOGPU *g)
-         }
-     }
- 
-+    if (virtio_gpu_rocm_enabled(g->parent_obj.conf)) {
-+        virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_ROCM,
-+                                   &capset_max_ver,
-+                                   &capset_max_size);
-+        if (capset_max_size) {
-+            virtio_gpu_virgl_add_capset(capset_ids, VIRTIO_GPU_CAPSET_ROCM);
-+        }
-+    }
-+
-     return capset_ids;
- }
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index fe98ea0019..a099c30377 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -101,6 +101,7 @@ enum virtio_gpu_base_conf_flags {
-     VIRTIO_GPU_FLAG_VENUS_ENABLED,
-     VIRTIO_GPU_FLAG_RESOURCE_UUID_ENABLED,
-     VIRTIO_GPU_FLAG_RESOURCE_USERPTR_ENABLED,
-+    VIRTIO_GPU_FLAG_ROCM_ENABLED,
- };
- 
- #define virtio_gpu_virgl_enabled(_cfg) \
-@@ -125,6 +126,8 @@ enum virtio_gpu_base_conf_flags {
-     (_cfg.flags & (1 << VIRTIO_GPU_FLAG_VENUS_ENABLED))
- #define virtio_gpu_resource_userptr_enabled(_cfg) \
-     (_cfg.flags & (1 << VIRTIO_GPU_FLAG_RESOURCE_USERPTR_ENABLED))
-+#define virtio_gpu_rocm_enabled(_cfg) \
-+    (_cfg.flags & (1 << VIRTIO_GPU_FLAG_ROCM_ENABLED))
- 
- struct virtio_gpu_base_conf {
-     uint32_t max_outputs;
-diff --git a/include/standard-headers/linux/virtio_gpu.h b/include/standard-headers/linux/virtio_gpu.h
-index fe36288fe5..fe6c0f5cc4 100644
---- a/include/standard-headers/linux/virtio_gpu.h
-+++ b/include/standard-headers/linux/virtio_gpu.h
-@@ -315,6 +315,7 @@ struct virtio_gpu_cmd_submit {
- #define VIRTIO_GPU_CAPSET_VENUS 4
- #define VIRTIO_GPU_CAPSET_CROSS_DOMAIN 5
- #define VIRTIO_GPU_CAPSET_DRM 6
-+#define VIRTIO_GPU_CAPSET_ROCM 8
- 
- /* VIRTIO_GPU_CMD_GET_CAPSET_INFO */
- struct virtio_gpu_get_capset_info {
+         if (csrno <= max_pmpcfg) {
+             uint32_t reg_index = csrno - CSR_PMPCFG0;
+
+---
+base-commit: 0fc482b73d8e085d1375b4e17b0647fd2e6fe8f0
+change-id: 20251225-stray-d48679fda4a0
+
+Best regards,
 -- 
-2.34.1
+TANG Tiancheng <lyndra@linux.alibaba.com>
 
 
