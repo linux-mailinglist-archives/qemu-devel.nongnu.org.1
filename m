@@ -2,63 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89C1FCFC70E
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 08:46:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC40CFC507
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 08:22:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdOF5-0004bO-9f; Wed, 07 Jan 2026 02:46:07 -0500
+	id 1vdNrg-0002UB-TO; Wed, 07 Jan 2026 02:21:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vdOEd-0004X3-9I
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 02:45:44 -0500
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vdNre-0002Tq-VV
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 02:21:55 -0500
+Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vdOEY-0002eu-G9
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 02:45:36 -0500
-Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 6077iXnB056946
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 7 Jan 2026 16:45:21 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=8LqQRAhedECX0k+LVAQkCgtwPmQobEqQdKN8XCQxZu8=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=Message-ID:Date:Subject:To:From;
- s=rs20250326; t=1767771921; v=1;
- b=ixKJfGF8IRvN6Hh7ctc9V09huECM11Okvr5gv+kkdg5dBNIOgVWPRN7FQt1rnGmw
- Ux+vYSuKQfG4fElXav7DVlQJB0e7QgTgSROYKQ/KA3eK8JWxltpZuyk5M5Dpe61s
- z5OBb0U131ZraIgSLh/KNltxM8AX7DwDzj6f94DcUQ/Lz/c61Q4P7qWm8X9budiW
- jck3RKYvhKrFHSIGUAxTbqRxKoNz5ORjhzNJ1h91Vf/v2kOJhQgKfQk+EpOOrLNb
- RW5NBYebFzwQUbqX1b/gTkFVr0wbD8HzC13gSMYNmV0hvNcYkGBG2+nMzmHAo/4P
- oe4+YFtqS0vw3/+gPyghbQ==
-Message-ID: <aab424e2-a763-4d4a-ab73-62dd9b570b7f@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 7 Jan 2026 16:44:33 +0900
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vdNrc-0004gA-Gt
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 02:21:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1767770513; x=1799306513;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=eECLbTr1DaGxSjoWz66Jd1rt+CG1mD7xd48W2lFlFOE=;
+ b=ZJAAnH0m2FOZh6CYYgSCckvzjDkeKhrTVH0heWtas2Ds16pUahlY5Itc
+ j2TkZ/Tm5ElXfkOSu5cpBGgN1yEbofI+eszEocgnZz2caJ9x6RlHxbFs7
+ ZMRwRbhJhQaRfbPXOdiItm4ULfPKq0i7Hvz/PGEaMdop+7NswQJTnM72G
+ Ak34pBSgpaMuGFZYhPvJzKNGgQabNlY6tlOq8ciVdbulg+MSwYarPLM9M
+ OAIDoFxCwwzx/F6P6N8fxdHt0MgRf+F27KdOCcA6DdMop+r8v4u66xyaR
+ NzEX1Jd7cLsj0ypgQVIWCK+ANkKsElcs6Mq3P4JFqwG3rMeoKIF6wKe1a g==;
+X-CSE-ConnectionGUID: qhPUYQFCSu+fCr+X0nvqww==
+X-CSE-MsgGUID: yan/P24nShqKIYVg4eo7fQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="69211125"
+X-IronPort-AV: E=Sophos;i="6.21,207,1763452800"; d="scan'208";a="69211125"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Jan 2026 23:21:50 -0800
+X-CSE-ConnectionGUID: zP3uEfjcR7y1s8+1Ellx8A==
+X-CSE-MsgGUID: zF8aJ6ZATdqwPUgc9caCXQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,207,1763452800"; d="scan'208";a="233993578"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa001.fm.intel.com with ESMTP; 06 Jan 2026 23:21:48 -0800
+Date: Wed, 7 Jan 2026 15:47:13 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Shivansh Dhiman <shivansh.dhiman@amd.com>
+Cc: pbonzini@redhat.com, mtosatti@redhat.com, kvm@vger.kernel.org,
+ qemu-devel@nongnu.org, seanjc@google.com, santosh.shukla@amd.com,
+ nikunj.dadhania@amd.com, ravi.bangoria@amd.com, babu.moger@amd.com
+Subject: Re: [PATCH 2/5] i386: Add CPU property x-force-cpuid-0x80000026
+Message-ID: <aV4PgVwYVXHgmCi3@intel.com>
+References: <20251121083452.429261-1-shivansh.dhiman@amd.com>
+ <20251121083452.429261-3-shivansh.dhiman@amd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] virtio-gpu: Add ROCm capability support
-To: Honglei Huang <honghuan@amd.com>, alex.bennee@linaro.org,
- dmitry.osipenko@collabora.com, Ray.Huang@amd.com
-Cc: mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
- qemu-devel@nongnu.org
-References: <20260107071858.3452614-1-honghuan@amd.com>
- <20260107071858.3452614-4-honghuan@amd.com>
-Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20260107071858.3452614-4-honghuan@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251121083452.429261-3-shivansh.dhiman@amd.com>
+Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,22 +83,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2026/01/07 16:18, Honglei Huang wrote:
-> Add support for ROCm (Radeon Open Compute) capability in virtio-gpu.
-> This enables GPU compute workloads using AMD's ROCm platform through
-> the virtio-gpu interface.
+On Fri, Nov 21, 2025 at 08:34:49AM +0000, Shivansh Dhiman wrote:
+> Date: Fri, 21 Nov 2025 08:34:49 +0000
+> From: Shivansh Dhiman <shivansh.dhiman@amd.com>
+> Subject: [PATCH 2/5] i386: Add CPU property x-force-cpuid-0x80000026
+> X-Mailer: git-send-email 2.43.0
 > 
-> Changes include:
-> - Add "rocm" property to virtio-gpu-gl device
-> - Define VIRTIO_GPU_FLAG_ROCM_ENABLED flag
-> - Enable VIRGL_RENDERER_USE_ROCM flag when ROCm is enabled
-> - Register VIRTIO_GPU_CAPSET_ROCM (capset 8) capability
-> - Add virtio_gpu_rocm_enabled() helper macro
+> Introduce new CPU property x-force-cpuid-0x80000026 using which the CPUID
+> 0x80000026 is enabled. It defaults to false.
 > 
-> This allows guests to detect and utilize ROCm capabilities through
-> the virtio-gpu device when the feature is enabled.
+> If a vCPU's model is host, then CPUID is enabled based on CPU family/model.
+> Implement x86_is_amd_zen4_or_above() helper to detect Zen4+ CPUs using
+> family/model.
 > 
-> Signed-off-by: Honglei Huang <honghuan@amd.com>
+> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
+> ---
+>  target/i386/cpu.c |  8 ++++++++
+>  target/i386/cpu.h | 18 ++++++++++++++++++
+>  2 files changed, 26 insertions(+)
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index b7827e448aa5..01c4da7cf134 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -9158,6 +9158,12 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
+>          if (env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_SGX) {
+>              x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0x12);
+>          }
+> +
+> +        /* Enable CPUID[0x80000026] for AMD Genoa models and above */
+> +        if (cpu->force_cpuid_0x80000026 ||
+> +            (!xcc->model && x86_is_amd_zen4_or_above(cpu))) {
 
-Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+I understand you want to address max/host CPU case here, but it's still
+may not guarentee the compatibility with old QEMU PC mahinces, e.g.,
+boot a old PC machine on v11.0 QEMU, it can still have this leaf.
+
+So it would be better to add a compat option to disable 0x80000026 for
+old PC machines by default.
+
+If needed, to avoid unnecessarily enabling extended CPU topology, I think
+it's possible to implement a check similar to x86_has_cpuid_0x1f().
+
+> +            x86_cpu_adjust_level(cpu, &env->cpuid_min_xlevel, 0x80000026);
+> +        }
+>      }
+
+Thanks,
+Zhao
+
 
