@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B69CFB652
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 00:54:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C2BCFB6BB
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 01:06:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdGsa-0003Uo-Ms; Tue, 06 Jan 2026 18:54:24 -0500
+	id 1vdH3X-0007MI-Vh; Tue, 06 Jan 2026 19:05:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdGsZ-0003UQ-85
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 18:54:23 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdH39-0007Hr-7I
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 19:05:19 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdGsX-00045i-RF
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 18:54:23 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4775ae5684fso7098585e9.1
- for <qemu-devel@nongnu.org>; Tue, 06 Jan 2026 15:54:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdH37-0006r2-B9
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 19:05:18 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-477619f8ae5so12051305e9.3
+ for <qemu-devel@nongnu.org>; Tue, 06 Jan 2026 16:05:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767743660; x=1768348460; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Fx/85G/s+VYWSF18WauulcwVsUieDaCovi7d8Ks6OsI=;
- b=c3cvgVYKF8LJsN2ycuQ6OnFJC0xD7YspkMvz0QgDzEWydtR3BGC9VoOGL10H7qJd9J
- zDGYfJiiOIsOoFmAmT4QEkGH7fp8YcPFWwN89Nq9UnC1yrbgdsHMiICG2HLw3XVEX6h8
- TRaj3S2zBZdH04Ql2dWgxUTlqhhDmAZexVBBDjYbv4PQRcO9aoXKWuJ44/9VXVg9SuDz
- 0Vkk5Y1grBtmbIAu1u7hL7Fb4oFHhN1RsKw7Yd3bKJOSQZLCgP2KyDhExJkjECo2RwjN
- uwhxApQtbMmIwcwUXdRHmix4dk76aIcIOJjv96et2XCaefXDfh5mvG8d275wrYdNbekY
- LfDg==
+ d=linaro.org; s=google; t=1767744315; x=1768349115; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=O0XTDCUYQOdJCn3SkzFUg2nTqvISV8zcdWZvnxPwgEM=;
+ b=NO0zP7h5SRYtAMoSY99yQyB29XrQi5bD3G/N0uAhG/x2KdHsL4yfwZ0WsXQpDLlalq
+ eVRacz8K4IPgr3rYq5k5ZS1ljsBtnLjoO+DCfDh7ChznNzjsZIMSFyOhzhusm+rguzQr
+ ioLM9Zza6qz3HtW64/iUKfXVnzIAtWDMW8LKBwUM/gyX2ZIfCvm9H6z/b447SpWXzFMl
+ pUiRj+hZwGuDS2MhWN6wwOnrLh7ZbV/ZHPrjQw/K3vEOKQP8r9evJ0TKb8rc7O5doaRu
+ xyPuI8pilGHkgNZb9BPaTjsBNgPJOJYocSefjamuSdLaelhOTfU/rJUsb6LItoC5Js7J
+ uFkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767743660; x=1768348460;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=Fx/85G/s+VYWSF18WauulcwVsUieDaCovi7d8Ks6OsI=;
- b=oNyF13erml3Kn5EvcX2MCUyOpUuY0fVOahhuOPD+3V51kMBNMtveqvkzy/NOs/1d8/
- RrpYUiN4qGq/rmR3LWU1icxBJamDCXonpTHerky7uH6rpWN1ilBC1IWuvs8UrJpIcCul
- uvRwHuiCwZFsnjCg8cA+VEls34o5Hblxb/6GH+snANxAxEP0SZ4PzpPO7b4lSXtz2AYS
- DAiK/QTq81WdtR9poPMbOjrrkneEMFHsUVyXC5sxi+tEc942dPaYl83H/dNVLbhIP5Pq
- Ch+s1M7SMB1QD9d77Z3JS2k2suO3GlHUaMK+IDuRf7bFnyGor4GgUzdRHXnMHrfksxdH
- KdEA==
-X-Gm-Message-State: AOJu0YzlzOYZpZTHuErUjWlhL1fKid5npiAnS+SMtCdHQjQvxRaQ6ePt
- z1/0JfNrajWCaWt0Sw+7h6bujJGrVfCB9wbKD9WQxzw8mck7XRG5zwv/bSzIbNZ4JPHd/4O7/9P
- i+jlQoM4=
-X-Gm-Gg: AY/fxX6QvtBuZGHionO3IqQf8/5z/KddFYoMt/VE2Vxcspufye0hP1zhhoI0GQm7BQv
- kutTPuvMj43QAHd/hBTWgxukDLDgUv2EqYl7NHMLP4DZKVkBKNgA3IATeZNJ21TnBTxRgUsifHX
- Go+pviU5EHUPejCyxf9gRVoGhuFFZkcUw0tkO8iibgiuwx4AO1ZgCoildrywlIG9n4IFM2SXJnk
- i5Q3qsYGeLkkeMLm7vCvFTS8Mnm8jPmeNQ56lc+H/Ql2uabe4VoWw5SQFVi/4dGSsec1fZpzKbh
- M6hQa/WTE6tw0+YwiswKXzRBSopTFIbPhFkzJOzhpIuEOfuGtQ4/McOTV8YYKFfuBwt+Y/NHBEA
- FVL/DXLb26AtlaYESO9MqGxaiZJQnqN7vxz00+tiUecbjDEGKYa51ULs1trEoXjnHWAlFUXorEZ
- urOORSnPgGcYvdzO9/J9hZv8Bu5qjGTuEYN/Or/MxfeSehKo3WmVylybv6nS1e
-X-Google-Smtp-Source: AGHT+IEkbNSBfp8Y4pfmV2bVE3auMWZG/+m0liGgY1A/9nYwNeUYgf+PSTLuI2RWZo3zcXYX/2Rvsw==
-X-Received: by 2002:a05:600c:354c:b0:477:214f:bd95 with SMTP id
- 5b1f17b1804b1-47d84b32f1fmr5935795e9.23.1767743660020; 
- Tue, 06 Jan 2026 15:54:20 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1767744315; x=1768349115;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=O0XTDCUYQOdJCn3SkzFUg2nTqvISV8zcdWZvnxPwgEM=;
+ b=c/KED7rcBqbne/p9eswB517HhoVY3USgBSCdzgR7q0ZpzbVOkfgC1WwoIGKLF/K0w/
+ /R9w+f2zc7i/5jwR/sAHv8gBz5zRkJ2fP/iPNB2cGlVlGBc9zN3bZsVdRWE+XCBfMDBt
+ rP8ADSYK9cFuZ/eqipStPrsQNtTSNc8m5Iuec/tNXBYe23QBggbawoChubcaVDu54PB/
+ kDK+FQXVWlUl3Aajrinwpor8NNUZofabAH4Wkh0I2+eT6daciAnf2uR3Mai0VpMj8Zjf
+ UvGiQacgnEN2MtVFyEsYILRXjZCQZ0NM2oJRsJhtFfg4dBvUHSYYyAN7A7ct5ACQpTcR
+ Imsw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVFkssYEdIXeeOFf5Ywv3Ac5IP6ZxAj5feq3oU2QnuGMAMU4jzczjjzOKipLXVfbCcvoA1SG9A55uKo@nongnu.org
+X-Gm-Message-State: AOJu0YxGQ8VtEaZU5jR95W/s8/Qpw5aIbbJCfu52F/q2YG+fggqUlOn9
+ k/kYxIhQRDIAl/2JpimZ9FpnjVWyyqtlN+oLjmus3qFQCwEiVVFvL2e7igzVyzMfzvJSiqz0USP
+ xZhRhkWw=
+X-Gm-Gg: AY/fxX59k6pqiB3y6Ew4IYv244nhG6ekPL+pDezfHwEngdiVyBpFBjMu6Kb5d6lhWxo
+ +7g81jozEATNMrpz0+WPl8E7gZbQ/NZZx/PPlS5xxqEoXLkXNVXUUFkAQrjEDNRTChkP04kvLpO
+ R+sy3Fvk+73VZfkZhpCJVrTZd0ntFUKdsMZdhetWRiVM9HTPZK9IVebYBsfWfU02GKD+PWOfwwy
+ Edk/O+OvG4cAYdwUmHDFrt89tSBRgqhlm3zidB12iLx3jmW9GTLQkxdf07VRICRyv52eMPYYVIo
+ N55rZGd5b4v9S2cEE9ZKIWWY/v+kPRWAaHO5etUwV5PN7rZJisH4C0vY8hDRyzAkGyqsbc59+3D
+ hSLt5fspMgXsZ1r5yt/7DIpqfmESs/vUi5bhjgSa6sUwWuMihWqkzPGjRFpf/3BOVlDL2XkxHtx
+ N6t3JggxWjYr087f5FuORvd9LtTM8y6jezynmSkrggUNAFs+/inDnI5g==
+X-Google-Smtp-Source: AGHT+IGze7DIPrR+YYsFsGX5hDWaDrjTPgAf7oMxSDlVnTi0BZqtqnaYR9Vn08+CtUZQ4l4Ng47cIg==
+X-Received: by 2002:a05:600c:a08:b0:477:89d5:fdb2 with SMTP id
+ 5b1f17b1804b1-47d84b2cf97mr4859765e9.14.1767744315521; 
+ Tue, 06 Jan 2026 16:05:15 -0800 (PST)
+Received: from [192.168.69.213] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-432bd0e16ffsm7349841f8f.12.2026.01.06.15.54.19
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 06 Jan 2026 15:54:19 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 6/6] hw/microblaze: Build files once
-Date: Wed,  7 Jan 2026 00:53:32 +0100
-Message-ID: <20260106235333.22752-7-philmd@linaro.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106235333.22752-1-philmd@linaro.org>
-References: <20260106235333.22752-1-philmd@linaro.org>
+ ffacd0b85a97d-432bd0e1adbsm7300181f8f.17.2026.01.06.16.05.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 Jan 2026 16:05:14 -0800 (PST)
+Message-ID: <e8dcafe4-32e8-45cb-9cd2-d18f2725d6c0@linaro.org>
+Date: Wed, 7 Jan 2026 01:05:13 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tcg/optimize: Save o_mask in fold_masks_zosa_int
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+References: <20260106225204.5859-1-richard.henderson@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20260106225204.5859-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,25 +103,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Previous commit removed the last target-specific use in
-hw model units, we can now build them once.
+On 6/1/26 23:52, Richard Henderson wrote:
+> When adding o_mask to this function, we used it in a
+> couple of places but failed to save it for future use.
+> Also, update a related comment.
+> 
+> Cc: qemu-stable@nongnu.org
+> Fixes: 9e397cc0df9 ("tcg/optimize: Introduce fold_masks_zosa")
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/microblaze/meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I think this is:
+Fixes: 56f15f67ea1 ("tcg/optimize: Add one's mask to TempOptInfo")
 
-diff --git a/hw/microblaze/meson.build b/hw/microblaze/meson.build
-index bb9e4eb8f47..d8e7dfbe0e9 100644
---- a/hw/microblaze/meson.build
-+++ b/hw/microblaze/meson.build
-@@ -4,4 +4,4 @@ microblaze_ss.add(when: 'CONFIG_PETALOGIX_S3ADSP1800', if_true: files('petalogix
- microblaze_ss.add(when: 'CONFIG_PETALOGIX_ML605', if_true: files('petalogix_ml605_mmu.c'))
- microblaze_ss.add(when: 'CONFIG_XLNX_ZYNQMP_PMU', if_true: files('xlnx-zynqmp-pmu.c'))
- 
--hw_arch += {'microblaze': microblaze_ss}
-+hw_common_arch += {'microblaze': microblaze_ss}
--- 
-2.52.0
+> Reported-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   tcg/optimize.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tcg/optimize.c b/tcg/optimize.c
+> index c546e8910b..23278799af 100644
+> --- a/tcg/optimize.c
+> +++ b/tcg/optimize.c
+> @@ -1088,8 +1088,9 @@ static bool fold_masks_zosa_int(OptContext *ctx, TCGOp *op,
+>   
+>       ti = ts_info(ts);
+>       ti->z_mask = z_mask;
+> +    ti->o_mask = o_mask;
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
