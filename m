@@ -2,156 +2,150 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A491CFCB02
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 09:53:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EDACCFCBC1
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 10:09:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdPI5-0006B1-Kr; Wed, 07 Jan 2026 03:53:17 -0500
+	id 1vdPXH-0000cU-9z; Wed, 07 Jan 2026 04:08:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vdPI3-0006Ag-Ui
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 03:53:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <FangSheng.Huang@amd.com>)
+ id 1vdPX9-0000ZO-SA
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 04:08:52 -0500
+Received: from mail-westus3azon11012013.outbound.protection.outlook.com
+ ([40.107.209.13] helo=PH8PR06CU001.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vdPI1-0000kQ-SL
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 03:53:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767775992;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=KgczxPr1ni5oqncF61pxzsANw8KUsEzH4gNOxYp1LKI=;
- b=GDCMdpqAU/BOE88BcLWMqYbU2tIIv4KUIZKtN9Hu6eVhU8Gt4S6sy1RjAHfPvRU6z850mN
- zYoPwJq1oIb/5xB7jJYbZ1PBk7aVvnoj6XE9JamB8Ta0tev7RoH9BHZcrCSVU2mvVj4jqI
- AYZBHCrljb7KwTSeeXK7vvUJEDebljY=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-122-YFnZTOvUMQWZ-4RmnRgqKw-1; Wed, 07 Jan 2026 03:53:11 -0500
-X-MC-Unique: YFnZTOvUMQWZ-4RmnRgqKw-1
-X-Mimecast-MFC-AGG-ID: YFnZTOvUMQWZ-4RmnRgqKw_1767775990
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-477c49f273fso18673075e9.3
- for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 00:53:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1767775990; x=1768380790; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=KgczxPr1ni5oqncF61pxzsANw8KUsEzH4gNOxYp1LKI=;
- b=t+OaFBMu4as5qJ1Pakq3yquj7R0f0tvjW8dicWcNvkrFSAcCbOzVB29vLxtENy7TSa
- 7SirnXoSUWaOuQWJBhPzLgkqsQNfsqQFdGmgamg5n6e6Wv1rGIPunBbjBLif0/u5K8CD
- U97mZt/WGEjsIFKQUxeW0t7P4aA1KmS+mgPHQ/L41glDOF3+vCSvV2SLZQH19VKpLynH
- Bs82VBW2Rfpf8U1tOmOkophSI6TBnNxap2JMGij1Jy2R7q3CKtRG7iAfvEVkAdev6QJk
- 5wkIZOoeCu/ta7IUxQbX2mRHoNru40uy2MLd6teih3GxUd5HGI6WuUr5H4UB5XVhuzxb
- BcwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767775990; x=1768380790;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=KgczxPr1ni5oqncF61pxzsANw8KUsEzH4gNOxYp1LKI=;
- b=vAXYgLkGZYS46Oh52yuBSG4s1pLan/nnRvktY+AyszuRDn2yh9tERoRPC04+sG0njl
- I5//KqVJFnWelRjpYH++ie+2D9xnGSJaonQbaAvjGFwFTffKGSpzzQwz4dhq166a+/2s
- WmZUU0oKmZWXRhQ9S7u5OFHQH+OeRPLXw68OxFIWSkxYtMMLOyE3sSNU+1e2ouW0fduN
- uRjxkjE2d1M0FzJltkJGpjOa4sbGxEkz1KS4mN8FTwLpWGE4S9TiSSI3FAYcJZ7V7opA
- Khr1zrwnySVhXZzCgM4Ib4sTsw5+XeGEQ33R85pnbRR2/8ngSsu/Ra8j7ZzZ97MlML9E
- IvDg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWEfUq7OfZL/BP7hBYmIMXHkjoF2EM8tiMR538fLuLBOZz2vIiNaHv37/1kkYPx4O+nYln3gGdsJqTC@nongnu.org
-X-Gm-Message-State: AOJu0YyROnAoBZLqrl5QufRooC41bZcJF+SE7Ff/jXiAg8j+NBdOR7JL
- vdhPL/0dZlAlhDfAZsuBbLjBTvk1NG3+kCaOYAzLc0uHvpjx1x+dZaAPiajZA4W4vN6KAACLzao
- 28j/CFeyKy/qRKZEkMDk2VkI8ocAliYwZX72Nxg5dUveoEPCAwDZURJp2
-X-Gm-Gg: AY/fxX4Xno+VcOQ6wrlswpAF7yscl464QZ85M443w5Rjz9+H4MMIiradVvvIGn2gMea
- 0Or4Yl2uKKLCR55Deb8Bpw8YYqDQM3wBpCXNMV/WGvOWa8ef8xDpA8V4ed6biaBb+AfnG9NyQCU
- LDS85rCrGIYl+P85VsWYsxysIL8JqIxahPewoRlTn7iayS5Ga1Eq/XWaRYDZlzcKZraslHwNZwF
- Izezipz8swxJG2B62y3iYDFjEhgDCiKFbP1qXnAu+0K1WMkqD5jmyzC07Ff8x62c40JY02UyrGF
- DUANg4Uqt0QhNS1LvVueBBHs84jODxzlnIN6wScY/yo28EMo7n+we7T+0BauVD1uQMKpsUjV5pq
- FQZfBkWjXxuANRG6W1jOHUaKvCODyKnFFwT4=
-X-Received: by 2002:a05:600c:19d3:b0:477:63b5:7148 with SMTP id
- 5b1f17b1804b1-47d84b0a9bdmr18179595e9.6.1767775989627; 
- Wed, 07 Jan 2026 00:53:09 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE7+QiMJZNXPADFdIfTQ7I89U0arn5PsYsy45k58ZGUIs8jfvrY9GW5XDlUMldjH73RfDuhnw==
-X-Received: by 2002:a05:600c:19d3:b0:477:63b5:7148 with SMTP id
- 5b1f17b1804b1-47d84b0a9bdmr18179235e9.6.1767775989174; 
- Wed, 07 Jan 2026 00:53:09 -0800 (PST)
-Received: from [10.33.192.176] (nat-pool-str-t.redhat.com. [149.14.88.106])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d8636e588sm8992365e9.0.2026.01.07.00.53.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 07 Jan 2026 00:53:08 -0800 (PST)
-Message-ID: <26e6a35e-d42a-49c9-b36d-3dcfc315cb01@redhat.com>
-Date: Wed, 7 Jan 2026 09:53:07 +0100
+ (Exim 4.90_1) (envelope-from <FangSheng.Huang@amd.com>)
+ id 1vdPX6-0005Ev-J7
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 04:08:51 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wcdxDcX3ZVEnyXCmfTSKiYTNVdzV7NNaEcFZ3SePIibtJTAx3k5gu4vvhDxnGZb1eApUivRp/RGsVhPeHHNw1XImzdPwYh5H/Hovdx26uIz8LkuUtO+mE3QvYYNOqgdMJdhA+gcLX3IMy9KrAl2ee+1n4QSmJEHXormcYiPEZfw/LezClo/INszNBAac3tW2xpl4qGXw1Ya8tDLsXYWncW6ThJOtfduJ35ARBEsuP49ihUkmZQIe9nQpJ/wONbJ5LjNzqq8/zN0qQ5qWB0lAbOQDBG7Id7rOxvjuOGELQ4ZY0oeqPEmB47f970UDePAPPNjuoW/K5W+YW6Per+3/qg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sg9ZTmRfyv9Bh5kJA60/hjxOaDf9SDf/rFy0QiaxGdo=;
+ b=p/rB9pcW9jsEhIEX2d2zG7zN14m4T+JJynSqJVOtRjvW77HlU5XgBbOz+JQR/2Dfs0+Qns04xFotj5vLYuCv4I+SIpGDbdxiEixOIdff0QxzU0/4ct0bw0loEuGlwDGJOYdxfTJTSFnlPqKF2/xj2njrrA7mJ+fr6T1VwO70sD2Eqs0sNZ6E5Zr0jp2m5jYeX2nNRpZbV97dLBPFhnahwIPLg8SOMcfE5M0gSp7bSL89gDKnAwjOZFfmw8DhcGIchEDf23IxvedWLFUGzUk85mtcOovGn+QINRTN8LUozXsY3XaO0HwzIWbGm3J2UpWPf1XXnyh1V/x95idaCXSB5g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sg9ZTmRfyv9Bh5kJA60/hjxOaDf9SDf/rFy0QiaxGdo=;
+ b=5XfEWBm/e4x0UcDqINZGmg5iGtFlEC3MwhiWDwcYnyOrK08yIcMgS0Zt1E8DnWeFxOHOKjFzQD13a//DikZFVhcdMyXM7enLuHwZ2tohJKltdso+PqTFujTYebxaorjXgQA2vdEdrDsz6zH/PCc8tmBuF1w+mtnr+TqS2olu/4A=
+Received: from BL1P221CA0043.NAMP221.PROD.OUTLOOK.COM (2603:10b6:208:5b5::13)
+ by DM3PR12MB9287.namprd12.prod.outlook.com (2603:10b6:8:1ac::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Wed, 7 Jan
+ 2026 09:03:39 +0000
+Received: from BL6PEPF00020E62.namprd04.prod.outlook.com
+ (2603:10b6:208:5b5:cafe::e0) by BL1P221CA0043.outlook.office365.com
+ (2603:10b6:208:5b5::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.2 via Frontend Transport; Wed, 7
+ Jan 2026 09:03:43 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL6PEPF00020E62.mail.protection.outlook.com (10.167.249.23) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9499.1 via Frontend Transport; Wed, 7 Jan 2026 09:03:38 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 7 Jan
+ 2026 03:03:38 -0600
+Received: from [10.65.97.122] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Wed, 7 Jan 2026 03:03:36 -0600
+Message-ID: <9442044f-5cfc-4068-971e-9184bcfd3c76@amd.com>
+Date: Wed, 7 Jan 2026 17:03:36 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/10] pc-bios/s390-ccw: Store boot device type and bus
- separately
-To: jrossi@linux.ibm.com, qemu-devel@nongnu.org, qemu-s390x@nongnu.org,
- mst@redhat.com
-Cc: jjherne@linux.ibm.com, alifm@linux.ibm.com, farman@linux.ibm.com,
- mjrosato@linux.ibm.com, zycai@linux.ibm.com
-References: <20251210205449.2783111-1-jrossi@linux.ibm.com>
- <20251210205449.2783111-3-jrossi@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20251210205449.2783111-3-jrossi@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Subject: Re: [PATCH v4 0/1] numa: add 'spm' option for Specific Purpose Memory
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>, Gregory Price
+ <gourry@gourry.net>
+CC: <qemu-devel@nongnu.org>, <imammedo@redhat.com>,
+ <jonathan.cameron@huawei.com>, <Zhigang.Luo@amd.com>, <Lianjie.Shi@amd.com>
+References: <20251209093841.2250527-1-FangSheng.Huang@amd.com>
+ <aVfyl8sylMICO4mc@gourry-fedora-PF4VCD3F>
+ <1b2acdb2-ad9d-4fdc-bd3b-a13249cc0ab9@kernel.org>
+From: "Huang, FangSheng (Jerry)" <FangSheng.Huang@amd.com>
+In-Reply-To: <1b2acdb2-ad9d-4fdc-bd3b-a13249cc0ab9@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF00020E62:EE_|DM3PR12MB9287:EE_
+X-MS-Office365-Filtering-Correlation-Id: d5ed3b1e-17c7-4a05-d550-08de4dcba5de
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|36860700013|82310400026|1800799024|376014; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?eWdZTCtJeU1rYjVSRkErZHFXQ1drbjNsVHVJRERNVWFLRlFzSDZkL1MwR3V4?=
+ =?utf-8?B?Yk5ZVnVHOTRCcFVwVkhjQWd3QURHMis5aVphYkxRTUhkZHZJbUROS3EzVTVK?=
+ =?utf-8?B?eGNUVkUvRVQ4Y1JSVFhFaURDZDYvSGVES1dkZEFJVnhiSm9XQlRvUExvYW1z?=
+ =?utf-8?B?LzlHNElIUjRiUXNsRFMveDhKSUIzekFSaVdXdXI0bHJKQXpnSGpQS1VvUzRS?=
+ =?utf-8?B?alpFZFl4WkV0MGpoRWZmWUc5bkFTOUJoSlF2NmdVb1ZRdVB1bHBVRjRhZTlZ?=
+ =?utf-8?B?VDJlRDBCVGxrL200Wi83SFoxdFJ0TjAvSDl1ZjRFSlRIYkdKSkJyT3pTaVVl?=
+ =?utf-8?B?YjhLb1Z3Smp0Q3UyOFpET3JJNC9IamQ5T1h0OVhlcjJOdlo4aU1kcUpVNDlM?=
+ =?utf-8?B?T1dMSWJVMlZVWEphYkVVWUlsKzJWUTJ4M2o0a0F3VWFwSnorbEx5SFpHbGpt?=
+ =?utf-8?B?MDZoQjRaTVZMckh5M1ZvY0dvc0JtT3ROY0dlcWJkemtPd2FnTkN5bUpKWUtn?=
+ =?utf-8?B?KzdsN1NpaFdLOFlIVHBPNUtFTHJhcVY5UjZmUUw1TGMveUxleDJZWVp2LzVB?=
+ =?utf-8?B?RFh5NFZaZVpsblBaL0RHL2lsYVArRFVzRTY3ZkNlTmx2ZStLb1ZseWN0b2ND?=
+ =?utf-8?B?akxsZWl3ZHlBRVNBWTlUZy90enowWU9IWjgwYTFSN1M0YTJ0Y1JRZWlneDFJ?=
+ =?utf-8?B?MG1HQXJvZFNkU3hqbTZ0NUxMMVBRNFVLaUFZazFTaVUvaVo1UnNPZE5vU0xr?=
+ =?utf-8?B?VXU5a1hleDYwSi9SSVNhdUllSGZPTTNYYzMxbi95RWplU1hqRUFIQ0o1MkRI?=
+ =?utf-8?B?eUhNVFFtZjgzYjMzN0pKbXFIVDQxMFN3V0cxNG01d2NVb25XL0NRT0xWdE5o?=
+ =?utf-8?B?czNCK3ZKQ3A2c0ZuQzZGNDRiNHNNQnZvbkJIaHFKeDZocllhdzJoSVA5NzRm?=
+ =?utf-8?B?VVZ2V0RCMlVaZWh0THZpL0lndTdZRnJQWFVvd0tPRGRRSUJNRFJVR0dUODNp?=
+ =?utf-8?B?RXRJa2ZHdmpMTEVmZ25nV1YrbHo2SS9QZVF2elBpaEdDQU50Y2JiSHFrTmhI?=
+ =?utf-8?B?K3R0cTdEcm1tR1kyRE9BVUZzWitlTUUveGYrOGszSDVHbHBlQXhqSlk0M1FX?=
+ =?utf-8?B?NGdQR1dhc0c0QVN1N1NXUStlcjZUZVBoUzdLSlMydHc2d2VWL0J5L3ZpRGpl?=
+ =?utf-8?B?MXBDcUdDSGdNWWErM2p1aUZNY3hnOHVIMUJydDl4RG4xTCtyTHRMSk50KzZX?=
+ =?utf-8?B?dzNiMnorU294U2FlM3VQNlJjcUhWOUJCUC9kWHVTNjdEazlZUmh2bXNOZEpz?=
+ =?utf-8?B?UDNJaVQ5RXBIcnFuUEtNMUpockFSQTJMTUhuaE1BZjh5LzhIbEZtTGxRSEgr?=
+ =?utf-8?B?OVpxb1VoYjVZWjZoV0NPQ1RXMTBtRmVnUWZRR0l1dmt4S05wWnNISG9mcExv?=
+ =?utf-8?B?VmExR3E3RG5wc2NhSkRFYzA2OXJHeC9xMTBuSkhQSVp0NDliY2JSYkdhYWx2?=
+ =?utf-8?B?bzd2RWVGd1ZEUHhhSzFFSmJEZEh5dW53eXB0bzU4ZFhxNkhaalFwajNlZGxI?=
+ =?utf-8?B?OTRBbzBTYWFXQ3l5YkdhU2lCZHFnWUlaMXRtYUhzbGszdlBjZjNzYTRJczRO?=
+ =?utf-8?B?eDN5aGNMUzBDNlhmUGNvbGtpd1FkckdGbU1neUhxdHVLdnVZTlVQaU92UEkx?=
+ =?utf-8?B?UEY0R2dCUk1EMzNNVVdCTVkrVjZVREwwQ2p3T0x0Vi9TMXh2YStOSENXSjRL?=
+ =?utf-8?B?cHpoYUhUL0ZUbFdYdTUrQXR5dk13aFZQSU5nUzY4OElHcnhoZWNPaHpjeDRw?=
+ =?utf-8?B?T25WYkZ5RTMxU0FvU0UwanBtYkZhMXJISDhxNWVlNEx5MHBRbk0zOXJVWjgy?=
+ =?utf-8?B?Y214cHg3RUtaaTBBcERaTUpsY0FSR2NTUi9ZcHNDMVJpSlRPMWU5ZGtJKzdz?=
+ =?utf-8?B?cGpHSzlDZmJvb3JJY1p2NlF4UEVZeVVsK2F2bWlIc2FsYktUT203dDM0RVdy?=
+ =?utf-8?B?SmNsSm9SQXc1NUVYNEpwUW1HYVNUbDIvRFJaVE1QVTdBd1R1TGdBSFVpenZG?=
+ =?utf-8?B?Kzk3ekdsRTZHSGZTNDQ0VUxZenZTV2pEN2x4RDJUSGY2dkxBS1dUU21QNVRp?=
+ =?utf-8?Q?yGMQ=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2026 09:03:38.9303 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d5ed3b1e-17c7-4a05-d550-08de4dcba5de
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF00020E62.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR12MB9287
+Received-SPF: permerror client-ip=40.107.209.13;
+ envelope-from=FangSheng.Huang@amd.com;
+ helo=PH8PR06CU001.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -167,73 +161,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/12/2025 21.54, jrossi@linux.ibm.com wrote:
-> From: Jared Rossi <jrossi@linux.ibm.com>
+
+
+On 1/5/2026 11:29 PM, David Hildenbrand (Red Hat) wrote:
+> On 1/2/26 17:30, Gregory Price wrote:
+>> On Tue, Dec 09, 2025 at 05:38:40PM +0800, fanhuang wrote:
+>>>    -numa node,nodeid=0,memdev=m0
+>>>    -numa node,nodeid=1,memdev=m1,spm=on
+>>>
+>>
+>> Should discussion with Jonathan - whatever form this ends up taking, can
+>> we change this from [on,off] to [normal,spm,reserved] and apply the
+>> appropriate types accordingly?
+>>
+>> don't know what to name the tag in that case, something like..
+>>
+>> memmap_type=[normal,spm,reserved] ?
 > 
-> Store both the device type (e.g. block) and device bus (e.g. CCW) to determine
-> IPL format rather than assume all devices can be identified by CCW specific
-> sense data.
+> That looks more extensible indeed.
 > 
-> Signed-off-by: Jared Rossi <jrossi@linux.ibm.com>
-> ---
-...
- > diff --git a/include/hw/s390x/ipl/qipl.h b/include/hw/s390x/ipl/qipl.h
- > index 6824391111..8199b839f0 100644
- > --- a/include/hw/s390x/ipl/qipl.h
- > +++ b/include/hw/s390x/ipl/qipl.h
- > @@ -20,6 +20,13 @@
- >   #define LOADPARM_LEN    8
- >   #define NO_LOADPARM "\0\0\0\0\0\0\0\0"
- >
- > +#define S390_IPL_TYPE_FCP 0x00
- > +#define S390_IPL_TYPE_CCW 0x02
- > +#define S390_IPL_TYPE_PV 0x05
- > +#define S390_IPL_TYPE_QEMU_SCSI 0xff
- > +
- > +#define QEMU_DEFAULT_IPL S390_IPL_TYPE_CCW
+> The semantics would be unchanged compared to spm=on: only applies to 
+> boot memory. Although, as discussed, mixing and matching types per node 
+> should be avoided either way.
+> 
+Hi Gregory, David,
 
-Would it make sense to turn this into an enum as well?
+Thank you for the suggestion on making this more extensible.
 
- >   /*
- >    * The QEMU IPL Parameters will be stored at absolute address
- >    * 204 (0xcc) which means it is 32-bit word aligned but not
-...
-> diff --git a/pc-bios/s390-ccw/virtio-blkdev.c b/pc-bios/s390-ccw/virtio-blkdev.c
-> index 4b819dd80f..f40a9407c2 100644
-> --- a/pc-bios/s390-ccw/virtio-blkdev.c
-> +++ b/pc-bios/s390-ccw/virtio-blkdev.c
-...
-> @@ -129,6 +129,8 @@ void virtio_assume_iso9660(void)
->       case VIRTIO_ID_SCSI:
->           vdev->scsi_block_size = VIRTIO_ISO_BLOCK_SIZE;
->           break;
-> +    default:
-> +        return;
->       }
->   }
->   
-> @@ -139,13 +141,15 @@ void virtio_assume_eckd(void)
->       vdev->guessed_disk_nature = VIRTIO_GDN_DASD;
->       vdev->blk_factor = 1;
->       vdev->config.blk.physical_block_exp = 0;
-> -    switch (vdev->senseid.cu_model) {
-> +    switch (vdev->dev_type) {
->       case VIRTIO_ID_BLOCK:
->           vdev->config.blk.blk_size = VIRTIO_DASD_DEFAULT_BLOCK_SIZE;
->           break;
->       case VIRTIO_ID_SCSI:
->           vdev->config.blk.blk_size = vdev->scsi_block_size;
->           break;
-> +    default:
-> +        return;
+I agree that `memmap_type=[normal,spm,reserved]` is a better approach
+than the simple boolean `spm=on|off`.
 
-This looks like errors could silently be ignored here. Maybe rather panic() 
-here instead of returning? Or use "break" to maintain the old behavior?
+I've analyzed the required changes and will prepare an updated patch
+implementing this. However, I need to go through an internal review
+process before submitting to the community, which may take some time.
 
->       }
->       vdev->config.blk.geometry.heads = 15;
->       vdev->config.blk.geometry.sectors =
+In the meantime, any feedback or suggestions on the design
+are welcome.
 
-  Thomas
-
+Best Regards,
+Jerry Huang
 
