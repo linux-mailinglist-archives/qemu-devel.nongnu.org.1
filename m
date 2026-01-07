@@ -2,95 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF92CFBE19
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 04:43:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CB3ECFBD2F
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 04:19:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdKSF-0004dA-E4; Tue, 06 Jan 2026 22:43:27 -0500
+	id 1vdK4k-0004SJ-Nv; Tue, 06 Jan 2026 22:19:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vdKS0-0004Ma-Tc
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 22:43:13 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vdKRz-0006nb-Gl
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 22:43:12 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-29f0f875bc5so17893245ad.3
- for <qemu-devel@nongnu.org>; Tue, 06 Jan 2026 19:43:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767757390; x=1768362190; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=qYXVL0YA9xXgthTXWMXPz4zjzXgjdgAszuSvzxvZcyw=;
- b=MRFAkjm00QWtxYxWhuM70ltpAZFalwUyFNV5fbn1u3Y5t3OiHOscxg53cBlORx62sD
- Y9aQXFJd2nrtzUwZwxMjSBDRlVkfS5pQrynS/f4eibrDeHn4VSm6GNcvbMVRDurV4SjP
- SZCNhny9eCuOpLMud9D4p1tFLGmQaggPbxG/Zvxj9EAhoh2kynn5jEcG7ob2XCzdupo6
- cwdvgE5RZg2ipOie7BLSplP9mas9pOUW3HHvY/qkzVIVtlCa5ZjDfhvsxezC8oOgdXmO
- xxkYkSxjagOpTWZPyrnYQ7l7xpXtrjeaXQOfPG8M/FxzRuu2AQMNIbXNjWcKl6/BDyGu
- K4xA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767757390; x=1768362190;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=qYXVL0YA9xXgthTXWMXPz4zjzXgjdgAszuSvzxvZcyw=;
- b=JQpOckwl2aAn7lY0Yb+qIG9blUZ+7cwz69VGeeq09KZWfWDIriuEMXuOc2TRKAG7xi
- z6SE8K6w3ak6V/yzydFhzkAiixHVJqzWrfsryzjrwxhcDNEkyiFunqgKEnjTbmKX3IY7
- SrnZqWFQhMoY8xFfz6tTHxi+I1FdIJYhA/38wX8EiibnN+G4JvNRyX5clPMcWo1YKIWP
- OruiLAvWVUZnJ1t3BjZk7kApVfbk61F0bnItwUs/V+JqAdOyMX+eZK7EVyVo+QrTkmdh
- pkoCP4NlKfpIHnjFNKkQpxDa8pCw6bVfXaWvIPOIkESUtUHfH3FDjFBJycP0HEaeUkvE
- F4cw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUhFJ6R3EmMKx44MfkTb+ndiDOJpNpYal7akYwFGKdQQ8eKyrgaOP0U/WjuPTdnVIbrfBEut/ANSwO1@nongnu.org
-X-Gm-Message-State: AOJu0YzAZ7/Wz9l3C8dgO5VOfDDLpT8D86HVWqpznaeUadEpOjWVmuDJ
- qjSDiTQ45Q4qrIHcwL76hA3KBOR8t3SQ47iUbBlKZ4Ol71Zx0f7J3lFH8zlcn7kYu6I=
-X-Gm-Gg: AY/fxX4YUic0/RKDkvAyGLkrsTlEm05iLJnAZst5OHPF/cG9g7dddjPEOvCbiBNMxk9
- Uet3DVkl72EPs7ks6SP5ldOTj/VV4DexE/6nSYCv5P+J2H6EabI5/qGLCbUR3rM+Zgc4wkYQauE
- MMXiq1xvrr8svoMNsA068F3T7FD/7EoR8yqWxLmAlofq7NiaETWitMqtmnPSxEaDkCviIJQq03/
- eZvZRTqvj6CjbBnHT4bgZ5Kv2qZSieOPA2djSXafpXV4yMZsKzv7RiA8aZJOczhqxGYjMuq8QZ3
- fwljGlVn054tmSZ7yj+c+rq0OxFYnL2RxdPuZN5d8niUqY4zoLn71GROscko0q/qFo4h+959cUs
- cNTqyn1Gae+9pflJX1yyw4Cf/JNM7KjciTxkztteVq79CpGfONgdZTcMWIwptxRJGC3wMApiQJM
- Jcpnlxwm3IPHYjm3shi3oNZYJhYxN3tdL0KN6a12EiVSSccA2H7uEkJQJZ736rqr7c7P0=
-X-Google-Smtp-Source: AGHT+IGEzNJrf/DEPjKe1ZLIaxzj/x9lSGUJpqF3kXGqXc/f3B6lnBP8dlIuUJpvip1KCBRXGaxhQg==
-X-Received: by 2002:a17:902:f68c:b0:267:a95d:7164 with SMTP id
- d9443c01a7336-2a3ee51fbefmr8998615ad.60.1767757389888; 
- Tue, 06 Jan 2026 19:43:09 -0800 (PST)
-Received: from [192.168.1.87] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a3e3c48c75sm35494245ad.35.2026.01.06.19.43.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 Jan 2026 19:43:09 -0800 (PST)
-Message-ID: <a98780e4-9658-420a-968f-152e3cadae54@linaro.org>
-Date: Tue, 6 Jan 2026 19:43:09 -0800
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vdK4i-0004ON-K2
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 22:19:08 -0500
+Received: from mgamail.intel.com ([198.175.65.17])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1vdK4f-0008Jo-Uy
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 22:19:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1767755946; x=1799291946;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=fAZ8PcQB9qlQsXfcvHtK3AJ6iG1BB2EddnnwUHlyLVU=;
+ b=Ir/+2ZqYNXKyU4ss+nmPkc0O/yWI6IeXBOWM7xqFsRqRduZD4/m3JKHh
+ uQu9hB4up41KoxeRV8iPWyPanynG/zJkri/S6gTh6XI3gY76/ghQ02SC7
+ fv5SQXH2h2OQQ3mVwMQa8CZvMMsQGIAk6MJHQ0PJExON5cyTnhCors26B
+ pLp9JeH4sivvw9EVVAarJta+34uSz32W5ge6RVKWoRTMysZm+702YI9F3
+ ImzFwMwWrLJtGwjxClBScp9JrCnSISeQDNNB31FLHSso1NiWHXm67shyF
+ vtDi8HUvaJXtWglfHqLMWRbOVwETMggWEspZAyuKXto8g5WyCHdFl4USo Q==;
+X-CSE-ConnectionGUID: WZxPH22bQJCivbTrCYCKrA==
+X-CSE-MsgGUID: EzLofw1bThKuLdL1VlSssQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="69104116"
+X-IronPort-AV: E=Sophos;i="6.21,207,1763452800"; d="scan'208";a="69104116"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Jan 2026 19:19:04 -0800
+X-CSE-ConnectionGUID: 2Tmsq6rNSquVNDbJfNP3Wg==
+X-CSE-MsgGUID: zVWyOSuhTumCj0ImQdEX0Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,207,1763452800"; d="scan'208";a="207355561"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa004.jf.intel.com with ESMTP; 06 Jan 2026 19:19:03 -0800
+Date: Wed, 7 Jan 2026 11:44:28 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ Xudong Hao <xudong.hao@intel.com>, Yu Chen <yu.c.chen@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH 10/10] dosc/cpu-models-x86: Add documentation for
+ DiamondRapids
+Message-ID: <aV3WnOrsaqjcU7N7@intel.com>
+References: <20251120071030.961230-1-zhao1.liu@intel.com>
+ <20251120071030.961230-11-zhao1.liu@intel.com>
+ <aVzwXfbHVUpx1FQx@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/6] hw/microblaze: Build files once
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-References: <20260106235333.22752-1-philmd@linaro.org>
- <20260106235333.22752-7-philmd@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20260106235333.22752-7-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+In-Reply-To: <aVzwXfbHVUpx1FQx@redhat.com>
+Received-SPF: pass client-ip=198.175.65.17; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,15 +86,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/6/26 3:53 PM, Philippe Mathieu-DaudÃ© wrote:
-> Previous commit removed the last target-specific use in
-> hw model units, we can now build them once.
+On Tue, Jan 06, 2026 at 11:22:05AM +0000, Daniel P. Berrangé wrote:
+> Date: Tue, 6 Jan 2026 11:22:05 +0000
+> From: "Daniel P. Berrangé" <berrange@redhat.com>
+> Subject: Re: [PATCH 10/10] dosc/cpu-models-x86: Add documentation for
+>  DiamondRapids
 > 
-> Signed-off-by: Philippe Mathieu-DaudÃ© <philmd@linaro.org>
-> ---
->   hw/microblaze/meson.build | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
+> In $SUBJECT   s/dosc/docs/
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Yeah, thanks!
+
+(Since this patch has been merged, I'll be more careful next. :-))
+
+-Zhao
+
 
