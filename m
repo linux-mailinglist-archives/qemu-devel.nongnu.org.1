@@ -2,79 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3D77CFECB6
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 17:12:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98095CFECCB
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 17:14:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdW8J-0004aQ-18; Wed, 07 Jan 2026 11:11:39 -0500
+	id 1vdW9r-0006cH-Ab; Wed, 07 Jan 2026 11:13:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vdW85-0004Yh-K2
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 11:11:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdW9j-0006Is-0J
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 11:13:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vdW83-00054X-VM
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 11:11:25 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdW9h-0005K7-9J
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 11:13:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767802282;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=oUm16FQnOMY9paj46d0PfsHcgzsdPMVK0Q87iaFVlTk=;
- b=K/mTEq1KXMbrTJ6ThUOJCBiKle0xRys3hoGUNTWhsffMGfOk8CrNTh2V/j2CWj57BY6d1c
- jZooJeWH8LFjSu5GU1FaHs1IC6Njj+IWK7MDu+V6DZv51fHw+DRGWtWGV0hFhVxxEmOjRm
- 22InyK3emMwPV6IOmcpoofxWGLm//5E=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ s=mimecast20190719; t=1767802384;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=n3n5CCAFAvCTgE3Nhql9s/M1ERL8Zb44i+LC2qs21NQ=;
+ b=h1e3NSshWEbUFlHNbVfn1DzaB6Ns4Jay9ChiQ3DG3yQXLqTQxKoRy8od96a3LQ8vO1VVF9
+ EuQuQ+JoM9ycAGjhQNwJcKhxwtq7lPPvaWmLh6sJShwBA0WYoYCaZ5YF3kr7f8SAyeCvt5
+ GxHVkjPepUI67Po3VUitkDV+A0vFGJ4=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-157-5HkkKUNwOnarjhvbEanhgg-1; Wed,
- 07 Jan 2026 11:11:18 -0500
-X-MC-Unique: 5HkkKUNwOnarjhvbEanhgg-1
-X-Mimecast-MFC-AGG-ID: 5HkkKUNwOnarjhvbEanhgg_1767802276
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-592-MYN3dG77M_-eh6u9U8a-DQ-1; Wed,
+ 07 Jan 2026 11:13:00 -0500
+X-MC-Unique: MYN3dG77M_-eh6u9U8a-DQ-1
+X-Mimecast-MFC-AGG-ID: MYN3dG77M_-eh6u9U8a-DQ_1767802380
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DCD3518005B2; Wed,  7 Jan 2026 16:11:15 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.169])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4F0D21955F66; Wed,  7 Jan 2026 16:11:07 +0000 (UTC)
-Date: Wed, 7 Jan 2026 16:11:04 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: zoudongjie <zoudongjie@huawei.com>, qemu-devel@nongnu.org,
- marcandre.lureau@redhat.com, alex.chen@huawei.com,
- chenjianfei3@huawei.com, eric.fangyi@huawei.com,
- luolongmin@huawei.com, mujinsheng@huawei.com, qemu-block@nongnu.org,
- qemu-stable@nongnu.org, renxuming@huawei.com,
- suxiaodong1@huawei.com, wangjian161@huawei.com,
- wangyan122@huawei.com, yebiaoxiang@huawei.com,
- yangming73@huawei.com, zhuyangyang14@huawei.com
-Subject: Re: [PATCH] vnc: Fix memory leak during VNC tls authentication
-Message-ID: <aV6FmB2Wzzkwa2Lh@redhat.com>
-References: <20250916134153.974692-1-zoudongjie@huawei.com>
- <aMqBlebG_tVzubhe@redhat.com>
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D607C19560AA; Wed,  7 Jan 2026 16:12:59 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.32])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8787D1956048; Wed,  7 Jan 2026 16:12:59 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id EB56121E6937; Wed, 07 Jan 2026 17:12:56 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org
+Subject: [PULL 0/4] Monitor patches for 2026-01-07
+Date: Wed,  7 Jan 2026 17:12:52 +0100
+Message-ID: <20260107161256.1321694-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aMqBlebG_tVzubhe@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -89,58 +76,44 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 17, 2025 at 10:38:29AM +0100, Daniel P. Berrangé wrote:
-> On Tue, Sep 16, 2025 at 09:41:53PM +0800, zoudongjie via wrote:
-> > When qemu is performing a TLS handshake for VNC, it will monitor vs->sioc
-> > in the qio_channel_tls_handshake_task. If the number of concurrent VNC
-> > connections exceeds the maximum number allowed by qemu, vnc_connect will
-> > traverse all connection requests in share mode VNC_SHARE_MODE_CONNECTING
-> > and disconnect the first one.
-> > 
-> > If the disconnected request has not yet entered qio_channel_tls_handshake_io,
-> > it will cause the data pointer allocated in qio_channel_tls_handshake_task
-> > to leak directly, leading to an indirect leak of the task and its associated
-> > pointers.
-> 
-> The qio_channel_tls_close method will cancel the pending handshake by
-> calling g_clear_handle_id. The problem is that when we do that, we fail
-> to release the QIOTask object because that is only freed when
-> qio_channel_tls_handshake is called on completion triggering use of
-> qio_task_complete.
-> 
-> The problem here is that we broadly mis-used the APIs for sources...
-> 
-> > @@ -201,13 +219,23 @@ static void qio_channel_tls_handshake_task(QIOChannelTLS *ioc,
-> >          }
-> >  
-> >          trace_qio_channel_tls_handshake_pending(ioc, status);
-> > -        ioc->hs_ioc_tag =
-> > -            qio_channel_add_watch_full(ioc->master,
-> > -                                       condition,
-> > -                                       qio_channel_tls_handshake_io,
-> > -                                       data,
-> > -                                       NULL,
-> > -                                       context);
-> 
-> ...instead of NULL we should have passed a method that can free
-> the 'data' object there, as well as the QIOTask that 'data'
-> contains a reference to.
-> 
-> The qio_task_complete method should not then free the task.
+The following changes since commit 0fc482b73d8e085d1375b4e17b0647fd2e6fe8f0:
 
-A fix for this flaw was implemented here:
+  Merge tag 'pull-aspeed-20260105' of https://github.com/legoater/qemu into staging (2026-01-06 06:52:47 +1100)
 
-  https://lists.nongnu.org/archive/html/qemu-devel/2026-01/msg00778.html
+are available in the Git repository at:
 
-With regards,
-Daniel
+  https://repo.or.cz/qemu/armbru.git tags/pull-monitor-2026-01-07
+
+for you to fetch changes up to e714f1a3d4d1e66b9a3ff4be1ff999c32bbef29e:
+
+  monitor/qmp: cleanup SocketChardev listener sources early to avoid fd handling race (2026-01-07 17:05:25 +0100)
+
+----------------------------------------------------------------
+Monitor patches for 2026-01-07
+
+----------------------------------------------------------------
+Jie Song (1):
+      monitor/qmp: cleanup SocketChardev listener sources early to avoid fd handling race
+
+Markus Armbruster (3):
+      qdev: Fix "info qtree" to show links
+      qdev: Legacy properties are now unused internally, drop
+      scripts/device-crash-test: ERROR_RULE_LIST garbage collection
+
+ include/chardev/char-io.h |  2 ++
+ include/chardev/char.h    |  2 ++
+ chardev/char-io.c         |  8 ++++++++
+ chardev/char-socket.c     | 10 ++++++++++
+ hw/core/qdev-properties.c | 46 ----------------------------------------------
+ monitor/qmp.c             |  5 +++++
+ system/qdev-monitor.c     |  7 +++----
+ scripts/device-crash-test |  7 -------
+ 8 files changed, 30 insertions(+), 57 deletions(-)
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.52.0
 
 
