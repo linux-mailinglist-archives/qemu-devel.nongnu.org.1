@@ -2,67 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5178DCFDE6A
+	by mail.lfdr.de (Postfix) with ESMTPS id 42C4ACFDE67
 	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 14:22:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdTTP-0003B3-7M; Wed, 07 Jan 2026 08:21:15 -0500
+	id 1vdTTz-0003MO-1O; Wed, 07 Jan 2026 08:21:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdTTL-0003A3-AD
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:21:11 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdTTx-0003MB-EQ
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:21:49 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdTTH-0004Qb-Sq
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:21:11 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdTTv-0004nc-Vi
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:21:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767792064;
+ s=mimecast20190719; t=1767792107;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:resent-to:
- resent-from:resent-message-id; bh=oNgIaYQyO2UqvL7DSHOna+Kqe2GfGDXPZ0YYVVLKDTM=;
- b=gua1/BVSsgaSMlRAL1QJWnTZmfHW6ZHJNm1hje8YHNROE7UzguZ6Njfgut9OJME8kxrMSu
- W9cVPzrlTdi9QG1D+ZsEKS2k7oUSA+U2rNS69RrpWg9JATboL2+inNjxBrymZiKx7tprqv
- DJ306VupDN889Pye9gOnlBWUEiiBAoc=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ resent-from:resent-message-id:in-reply-to:in-reply-to:  references:references; 
+ bh=Bcl23ps/bK4EauZ2W48nVvpVqg5Y5Ps47IeSDNjIedc=;
+ b=gJaSD5IA7HfarGm5qb+EEBPxtjPPlZw/phSXLsAF6EgodiWeS1dyOKDKlAS3M1lCpwn+Aa
+ B3OrPVGyILxBaDHx68aP9WhvhOFuuCxqMPRuKvPig4/nzvlnrjrlegsQKIJH8dajeaEvbb
+ nkn2AgTI9TguhPvBX4okkadep1n2/+Q=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-665-FQeJz54uPn-SwDfKhiS7pw-1; Wed,
- 07 Jan 2026 08:21:02 -0500
-X-MC-Unique: FQeJz54uPn-SwDfKhiS7pw-1
-X-Mimecast-MFC-AGG-ID: FQeJz54uPn-SwDfKhiS7pw_1767792062
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-623-2DOyQakjMDyDaEQVm5R41g-1; Wed,
+ 07 Jan 2026 08:21:43 -0500
+X-MC-Unique: 2DOyQakjMDyDaEQVm5R41g-1
+X-Mimecast-MFC-AGG-ID: 2DOyQakjMDyDaEQVm5R41g_1767792102
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EA740180034A; Wed,  7 Jan 2026 13:21:01 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4E2B61954B14; Wed,  7 Jan 2026 13:21:42 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.32])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A7BBF30002D1; Wed,  7 Jan 2026 13:21:01 +0000 (UTC)
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9C52E19560A2; Wed,  7 Jan 2026 13:21:41 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3910C21E6934; Wed, 07 Jan 2026 14:20:59 +0100 (CET)
-Resent-To: richard.henderson@linaro.org, qemu-devel@nongnu.org
+ id 41C7F21E6934; Wed, 07 Jan 2026 14:21:39 +0100 (CET)
+Resent-To: zhao1.liu@intel.com, richard.henderson@linaro.org,
+ qemu-devel@nongnu.org, dbarboza@ventanamicro.com,
+ vsementsov@yandex-team.ru
 Resent-From: Markus Armbruster <armbru@redhat.com>
-Resent-Date: Wed, 07 Jan 2026 14:20:59 +0100
-Resent-Message-ID: <87ikddk18k.fsf@pond.sub.org>
+Resent-Date: Wed, 07 Jan 2026 14:21:39 +0100
+Resent-Message-ID: <87eco1k17g.fsf@pond.sub.org>
 X-From-Line: armbru@redhat.com  Wed Jan  7 13:43:41 2026
 X-Original-To: armbru
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3013921E6937; Wed, 07 Jan 2026 13:43:41 +0100 (CET)
+ id 3268121E61A5; Wed, 07 Jan 2026 13:43:41 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org
-Subject: [PULL 00/17] Error reporting patches for 2026-01-07
-Date: Wed,  7 Jan 2026 13:43:24 +0100
-Message-ID: <20260107124341.1093312-1-armbru@redhat.com>
+Cc: richard.henderson@linaro.org,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Peter Xu <peterx@redhat.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 01/17] hw/core/loader: Make load_elf_hdr() return bool,
+ simplify caller
+Date: Wed,  7 Jan 2026 13:43:25 +0100
+Message-ID: <20260107124341.1093312-2-armbru@redhat.com>
+In-Reply-To: <20260107124341.1093312-1-armbru@redhat.com>
+References: <20260107124341.1093312-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Lines: 95
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Lines: 113
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -88,97 +97,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 0fc482b73d8e085d1375b4e17b0647fd2e6fe8f0:
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Message-ID: <20251119130855.105479-2-armbru@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+---
+ include/hw/core/loader.h |  4 +++-
+ hw/arm/boot.c            |  6 +-----
+ hw/core/loader.c         |  8 ++++++--
+ hw/riscv/spike.c         | 10 +---------
+ 4 files changed, 11 insertions(+), 17 deletions(-)
 
-  Merge tag 'pull-aspeed-20260105' of https://github.com/legoater/qemu into staging (2026-01-06 06:52:47 +1100)
-
-are available in the Git repository at:
-
-  https://repo.or.cz/qemu/armbru.git tags/pull-error-2026-01-07
-
-for you to fetch changes up to fefb4605b37fd59b53ae9cf89d6beedaab72f640:
-
-  block/file-win32: Improve an error message (2026-01-07 13:25:01 +0100)
-
-----------------------------------------------------------------
-Error reporting patches for 2026-01-07
-
-----------------------------------------------------------------
-Markus Armbruster (17):
-      hw/core/loader: Make load_elf_hdr() return bool, simplify caller
-      hw/nvram/xlnx-bbram: More idiomatic and simpler error reporting
-      nbd/client-connection: Replace error_propagate() by assignment
-      error: error_free(NULL) is safe, drop unnecessary conditionals
-      error: Consistently name Error * objects err, and not errp
-      error: Strip trailing '\n' from error string arguments (again)
-      ui: Convert to qemu_create() for simplicity and consistency
-      tap-solaris: Use error_setg_file_open() for better error messages
-      qga: Use error_setg_file_open() for better error messages
-      net/tap: Use error_setg_file_open() for a better error message
-      blkdebug: Use error_setg_file_open() for a better error message
-      error: Use error_setg_file_open() for simplicity and consistency
-      net/slirp: Improve file open error message
-      error: Use error_setg_errno() to improve error messages
-      error: Use error_setg_errno() for simplicity and consistency
-      qga/commands-win32: Use error_setg_win32() for better error messages
-      block/file-win32: Improve an error message
-
- include/hw/core/loader.h    |  4 +++-
- backends/cryptodev-lkcf.c   |  2 +-
- backends/spdm-socket.c      |  4 ++--
- backends/tpm/tpm_emulator.c | 13 +++++--------
- block/blkdebug.c            |  2 +-
- block/crypto.c              |  8 ++++----
- block/file-win32.c          |  2 +-
- hw/9pfs/9p-local.c          |  2 +-
- hw/9pfs/9p.c                |  3 +--
- hw/acpi/core.c              |  5 ++---
- hw/acpi/ghes.c              |  8 ++++----
- hw/acpi/pcihp.c             |  4 +---
- hw/arm/boot.c               |  6 +-----
- hw/audio/es1370.c           |  2 +-
- hw/core/loader.c            | 10 +++++++---
- hw/intc/openpic_kvm.c       |  3 +--
- hw/intc/xics_kvm.c          |  5 +++--
- hw/nvram/xlnx-bbram.c       | 18 ++++--------------
- hw/pci-host/xen_igd_pt.c    |  2 +-
- hw/ppc/spapr.c              | 22 +++++++++++-----------
- hw/remote/vfio-user-obj.c   | 18 +++++++++---------
- hw/riscv/spike.c            | 10 +---------
- hw/sensor/emc141x.c         |  4 ++--
- hw/sensor/tmp421.c          |  4 ++--
- hw/smbios/smbios.c          |  4 ++--
- hw/vfio/migration-multifd.c |  5 +++--
- hw/virtio/vdpa-dev.c        |  4 ++--
- hw/xen/xen-pvh-common.c     | 13 ++++++++++---
- io/channel-websock.c        |  4 +---
- io/task.c                   |  4 +---
- migration/migration.c       |  6 ++----
- migration/postcopy-ram.c    | 10 +++++-----
- migration/rdma.c            |  3 +--
- monitor/hmp-cmds.c          |  2 +-
- nbd/client-connection.c     |  3 +--
- nbd/common.c                |  6 +++---
- net/dump.c                  |  2 +-
- net/l2tpv3.c                |  6 ++----
- net/slirp.c                 |  9 ++++++---
- net/tap-bsd.c               |  6 +++---
- net/tap-linux.c             |  2 +-
- net/tap-solaris.c           |  6 +++---
- net/tap.c                   |  3 +--
- qga/commands-linux.c        | 11 ++++++-----
- qga/commands-posix-ssh.c    | 23 +++++++++++++----------
- qga/commands-win32.c        | 16 ++++++++--------
- system/vl.c                 |  2 +-
- target/i386/sev.c           |  6 ++----
- target/ppc/kvm.c            |  5 ++---
- target/riscv/kvm/kvm-cpu.c  | 11 ++++++-----
- tests/unit/test-smp-parse.c |  5 +----
- ui/gtk.c                    |  2 +-
- ui/ui-qmp-cmds.c            |  4 +---
- util/vfio-helpers.c         |  5 ++---
- 54 files changed, 161 insertions(+), 188 deletions(-)
-
+diff --git a/include/hw/core/loader.h b/include/hw/core/loader.h
+index d035e72748..6f91703503 100644
+--- a/include/hw/core/loader.h
++++ b/include/hw/core/loader.h
+@@ -188,8 +188,10 @@ ssize_t load_elf(const char *filename,
+  *
+  * Inspect an ELF file's header. Read its full header contents into a
+  * buffer and/or determine if the ELF is 64bit.
++ *
++ * Returns true on success, false on failure.
+  */
+-void load_elf_hdr(const char *filename, void *hdr, bool *is64, Error **errp);
++bool load_elf_hdr(const char *filename, void *hdr, bool *is64, Error **errp);
+ 
+ ssize_t load_aout(const char *filename, hwaddr addr, int max_sz,
+                   bool big_endian, hwaddr target_page_size);
+diff --git a/hw/arm/boot.c b/hw/arm/boot.c
+index 0ba3adaf81..e22609de93 100644
+--- a/hw/arm/boot.c
++++ b/hw/arm/boot.c
+@@ -766,16 +766,12 @@ static ssize_t arm_load_elf(struct arm_boot_info *info, uint64_t *pentry,
+     int data_swab = 0;
+     int elf_data_order;
+     ssize_t ret;
+-    Error *err = NULL;
+ 
+-
+-    load_elf_hdr(info->kernel_filename, &elf_header, &elf_is64, &err);
+-    if (err) {
++    if (!load_elf_hdr(info->kernel_filename, &elf_header, &elf_is64, NULL)) {
+         /*
+          * If the file is not an ELF file we silently return.
+          * The caller will fall back to try other formats.
+          */
+-        error_free(err);
+         return -1;
+     }
+ 
+diff --git a/hw/core/loader.c b/hw/core/loader.c
+index 8252616fdd..89d67d2760 100644
+--- a/hw/core/loader.c
++++ b/hw/core/loader.c
+@@ -364,8 +364,9 @@ const char *load_elf_strerror(ssize_t error)
+     }
+ }
+ 
+-void load_elf_hdr(const char *filename, void *hdr, bool *is64, Error **errp)
++bool load_elf_hdr(const char *filename, void *hdr, bool *is64, Error **errp)
+ {
++    bool ok = false;
+     int fd;
+     uint8_t e_ident_local[EI_NIDENT];
+     uint8_t *e_ident;
+@@ -380,7 +381,7 @@ void load_elf_hdr(const char *filename, void *hdr, bool *is64, Error **errp)
+     fd = open(filename, O_RDONLY | O_BINARY);
+     if (fd < 0) {
+         error_setg_errno(errp, errno, "Failed to open file: %s", filename);
+-        return;
++        return false;
+     }
+     if (read(fd, hdr, EI_NIDENT) != EI_NIDENT) {
+         error_setg_errno(errp, errno, "Failed to read file: %s", filename);
+@@ -415,8 +416,11 @@ void load_elf_hdr(const char *filename, void *hdr, bool *is64, Error **errp)
+         off += br;
+     }
+ 
++    ok = true;
++
+ fail:
+     close(fd);
++    return ok;
+ }
+ 
+ /* return < 0 if error, otherwise the number of bytes loaded in memory */
+diff --git a/hw/riscv/spike.c b/hw/riscv/spike.c
+index 1493b928da..35c696f891 100644
+--- a/hw/riscv/spike.c
++++ b/hw/riscv/spike.c
+@@ -180,15 +180,7 @@ static void create_fdt(SpikeState *s, const MemMapEntry *memmap,
+ 
+ static bool spike_test_elf_image(char *filename)
+ {
+-    Error *err = NULL;
+-
+-    load_elf_hdr(filename, NULL, NULL, &err);
+-    if (err) {
+-        error_free(err);
+-        return false;
+-    } else {
+-        return true;
+-    }
++    return load_elf_hdr(filename, NULL, NULL, NULL);
+ }
+ 
+ static void spike_board_init(MachineState *machine)
 -- 
 2.52.0
 
