@@ -2,99 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 433EECFDE68
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 14:22:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4558FCFDE9D
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 14:24:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdTTK-00039u-HA; Wed, 07 Jan 2026 08:21:10 -0500
+	id 1vdTWC-0007NG-LH; Wed, 07 Jan 2026 08:24:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1vdTTJ-00039S-2L
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:21:09 -0500
-Received: from mail-dy1-x132d.google.com ([2607:f8b0:4864:20::132d])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vdTW7-0007DK-UF
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:24:04 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1vdTTH-0004Qp-Ai
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:21:08 -0500
-Received: by mail-dy1-x132d.google.com with SMTP id
- 5a478bee46e88-2b04fcfc0daso1534347eec.0
- for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 05:21:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1767792065; x=1768396865; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=4zjXYBDH4fZc8OGNSJ+bGs1K+cyneUM9beDgznDe/w8=;
- b=fucbaES/ImW8gbxqGjfI9tCHjMxbryS2SbZdp2GT7qbh4XjPO9unoyH1S0ooiC1B0Z
- LKS9skNqRa5yfVQTulFEZs/EDwtGrk8ILbaXd2fWidw6ab6FnWBDqVK3eTnOlMSD4ZHs
- 7COxbU63ieXC6xFVXFbaJHqfu4TdG6qt3xze6U+Q8KXvPwZRh2xrxlsu+HzZx2VDZCfm
- /7qq7zrCI95vS1gB1QF7QGO3fnsqz2Wnc7/fMIhpBBUU4fAkaCSv0COMEMNzABazhpZW
- Ub72BDWZbjAQ95YFor99Ft2IQ4FVaTCj4HI2E9I4yQaePfh26/oKx0JbcsWr55MKM0SD
- gGfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767792065; x=1768396865;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=4zjXYBDH4fZc8OGNSJ+bGs1K+cyneUM9beDgznDe/w8=;
- b=lqzZfz5aVFuKaLcO5nkRaIzXZpm34+n+CNiv+oKPxo5YKXiYd/0560mmox6yLUqzN5
- 62lbsWqqHTAQWDth6GP8TV+jJJkGp4AtrndbCjqz8DfOigkdhkmA6YYX7elLdexWSZHn
- mUbLXM33/uDpIB6XgtRn1kkbisHv1H9oLFmMSZBu8LfmzF737wLSLnl77hT6FOHlk2TQ
- neiBlnUIj2k/3cIsqGZZeWvudEkPXrVYR7N6p25ONxWKn61Bn3ShSf7vAde6osMnSCfO
- Hco1VY6dpoQ3v/+WQh1Tj2dhtP977SdA3XN0ddQsA1eOmdp3hwHJ+uNCIrSPL1kUNVC3
- TQxQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWoLHsiw19eD5ffMa+AH0h/CIvkx6zncwJnEvrHIXN8AMr/9gsS3Zn1fEvmH7JNgc4pFoDAG0om+vsv@nongnu.org
-X-Gm-Message-State: AOJu0YyEbWpfcAxB/iGzwz3A3kELRXbd4eWA5UQ2svSfEv0X/tsjh3hx
- fT17HgjdUIXOrx8QUmNgjO51blAyhIGi01Nk1BzyP+2O0vELFLYm/SLUUMG6NRRfHss=
-X-Gm-Gg: AY/fxX7LdOwpE6g19HutqaK38QAg4jS9U/VtUURfQPI53c1BWnplxNMP0jveLxCkdVo
- sAWA+YCsf7joMwHxkF/3p4jpFfaLSJqR57sHnwz78Fhd7dwcU3Nl2gVRtpaK0Pi+hu95gA1d5O5
- 6e2HPyd8ddJ69KqYYpZ+566CgWQurlsJMi16niNzudNjo06Zmx5/CjUg/W17R9kgMK0W/0qS3HU
- ThCmR2F0JqGL6DoAjETmPlWvaICLN31kR5DREBsIKzZdWsFBKAxyrFuxd7xTsMGpgPUSXi9nmx5
- 0zTm8JOlCjydONai/nkrmlQyZQOIuYANi389itM4x2iXqJNpFDpLU5dsOlsyLjwXx7sgSmcg/al
- S/TTPzkDlnyDGWfcggJ8XxJVCbGClv8uOWx0CKAkWuI+fXErUlvlYtC6HsxFzrc0vfyQ5DpUonC
- 2o5E+8OiTOj4sWXDNpbRqNUNfi2BtZlWal2c1wjTKrXVb340ZgWr9rs0HBsD7D8Q2/xDTmGdsc
-X-Google-Smtp-Source: AGHT+IEPRllOVi5b2y5roVGyNg6WCdEvEkNx/tzIq7HmNrFVsUfSSmhJagZskCvR4pWw/9PS3uzNZw==
-X-Received: by 2002:a05:7300:d709:b0:2b0:4fe2:6a2e with SMTP id
- 5a478bee46e88-2b17d238bbfmr1930812eec.9.1767792065126; 
- Wed, 07 Jan 2026 05:21:05 -0800 (PST)
-Received: from [192.168.68.110] (200-162-225-127.static-corp.ajato.com.br.
- [200.162.225.127]) by smtp.gmail.com with ESMTPSA id
- 5a478bee46e88-2b175bee31dsm4771188eec.32.2026.01.07.05.20.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 07 Jan 2026 05:21:04 -0800 (PST)
-Message-ID: <af7be4a9-b1d4-4759-833a-390e1032c1f3@ventanamicro.com>
-Date: Wed, 7 Jan 2026 10:20:57 -0300
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vdTW5-0005GN-BO
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:24:03 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id D1B7E33F29;
+ Wed,  7 Jan 2026 13:23:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1767792236; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=L7B83DrMwNJa9UE3HYpCDAHxCfWVTGOtU18D82EEtZg=;
+ b=icGzfQEPTgcgwHTTy/OtWf8h7vHwS3DivFwZr2I53+pqrptHmAwn/xEynVfQHCjk3R4H/M
+ pXIFtXHkoUwmmAGgkDsakpIUCOUjLlB7dTdNSRGh2l0ZnLE6B+sVp70DIQMWbxyfo5cNAG
+ 1vYcV2xoG7Ju4ivkBSOcqVAKBDDULl4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1767792236;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=L7B83DrMwNJa9UE3HYpCDAHxCfWVTGOtU18D82EEtZg=;
+ b=MN+DCpGYzWLPqWrHALv/hV+8cyIj84LDmtFp7ihvkGk90/JBZv9S1qwrcW5M9gwURPHZLx
+ qXesDCZcVyEFd0Cw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1767792236; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=L7B83DrMwNJa9UE3HYpCDAHxCfWVTGOtU18D82EEtZg=;
+ b=icGzfQEPTgcgwHTTy/OtWf8h7vHwS3DivFwZr2I53+pqrptHmAwn/xEynVfQHCjk3R4H/M
+ pXIFtXHkoUwmmAGgkDsakpIUCOUjLlB7dTdNSRGh2l0ZnLE6B+sVp70DIQMWbxyfo5cNAG
+ 1vYcV2xoG7Ju4ivkBSOcqVAKBDDULl4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1767792236;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=L7B83DrMwNJa9UE3HYpCDAHxCfWVTGOtU18D82EEtZg=;
+ b=MN+DCpGYzWLPqWrHALv/hV+8cyIj84LDmtFp7ihvkGk90/JBZv9S1qwrcW5M9gwURPHZLx
+ qXesDCZcVyEFd0Cw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 513B63EA63;
+ Wed,  7 Jan 2026 13:23:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id uicRBWxeXmnvBAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 07 Jan 2026 13:23:56 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Prasad Pandit <ppandit@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org, Prasad Pandit
+ <pjp@fedoraproject.org>
+Subject: Re: [PATCH] migration: introduce MIGRATION_STATUS_FAILING
+In-Reply-To: <CAE8KmOzxDn7X7rohJGT5AeW3+5oJFgueVtaQCpUc2bmBvrgRXg@mail.gmail.com>
+References: <20251222114822.327623-1-ppandit@redhat.com>
+ <87h5tilhcq.fsf@suse.de> <aUq1oA73W9rAdCgG@x1.local>
+ <CAE8KmOzcOdYhnxpDr8BMV8zjixpEh9r+COe=xyLfXCVWKD0CRw@mail.gmail.com>
+ <87zf6q26q5.fsf@suse.de>
+ <CAE8KmOzxDn7X7rohJGT5AeW3+5oJFgueVtaQCpUc2bmBvrgRXg@mail.gmail.com>
+Date: Wed, 07 Jan 2026 10:23:53 -0300
+Message-ID: <874ioxzhcm.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/16] hw/riscv: Add the Tenstorrent Atlantis machine
-To: Joel Stanley <joel@jms.id.au>, Alistair Francis
- <alistair.francis@wdc.com>, qemu-devel@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liwei1518@gmail.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Chris Rauer <crauer@google.com>,
- Vijai Kumar K <vijai@behindbytes.com>, Sunil V L <sunilvl@ventanamicro.com>,
- Ran Wang <wangran@bosc.ac.cn>, Michael Ellerman <mpe@oss.tenstorrent.com>,
- Joel Stanley <jms@oss.tenstorrent.com>,
- Nick Piggin <npiggin@oss.tenstorrent.com>,
- Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>, qemu-riscv@nongnu.org
-References: <20260106055658.209029-1-joel@jms.id.au>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Content-Language: en-US
-In-Reply-To: <20260106055658.209029-1-joel@jms.id.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::132d;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-dy1-x132d.google.com
+Content-Type: text/plain
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-0.993]; MIME_GOOD(-0.10)[text/plain];
+ ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+];
+ FUZZY_RATELIMITED(0.00)[rspamd.com];
+ MID_RHS_MATCH_FROM(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; RCPT_COUNT_THREE(0.00)[4]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -111,123 +115,179 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Prasad Pandit <ppandit@redhat.com> writes:
 
+> Hi,
+>
+> On Tue, 6 Jan 2026 at 19:17, Fabiano Rosas <farosas@suse.de> wrote:
+>> If we had a linear state transition table, i.e. a DFA without any
+>> branching, that would be ideal. But since we have states that can reach
+>> (and be reached from) multiple other states, then we'll always need some
+>> input to migration_change_state(). Here you're making it the
+>> s->trigger. Where will that come from?
+>
+> * The trigger or reason can come from the place where we call
+> migration_change_state(), there we'll know whether migration has
+> paused OR completed OR failed OR cancelled.
+>
 
-On 1/6/26 2:56 AM, Joel Stanley wrote:
-> Introducing Tenstorrent Atlantis!
-> 
->   The Tenstorrent Atlantis platform is a collaboration between Tenstorrent
->   and CoreLab Technology. It is based on the Atlantis SoC, which includes
->   the Ascalon-X CPU and other IP from Tenstorrent and CoreLab Technology.
-> 
->   The Tenstorrent Ascalon-X is a high performance 64-bit RVA23 compliant
->   RISC-V CPU.
-> 
-> This initial series adds the base machine support including:
-> 
->   - AIA (Advanced Interrupt Architecture) support
->   - PCIe controller and DesignWare I2C integration
->   - Serial console and device tree generation
->   - Functional tests for OpenSBI+Linux boot
-> 
-> Changes outside of adding the machine:
-> 
->   - Atlantis maps DRAM high in the address space but maintains an alias
->     for the first 2GB at 0x0. We have updated the RISC-V boot loader code
->     to support boot_info for discontiguous memory layouts.
-> 
->   - The riscv64 virt machine AIA initialisation has been moved to a
->     helper file to allow code reuse with the Atlantis machine
-> 
->   - Revived the DesignWare I2C controller model (previously proposed for
->     ARM virt) with permission from the original author.
-> 
-> I hope to get early feedback on the base machine now. We intend to
-> continue modelling the soc so it can be useful for firmware and
-> operating system development and testing, so expect more patches to do
-> that soon.
+It would be interesting maybe to restrict the set of
+states/triggers/events (I'm not sure) to user-visible phases only, and
+those would be defined by anything that's triggered via a QMP
+command. Plus the error state which goes in the other direction.
 
-Good choice on the machine name. Looking forward for what's coming next
-(Poseidon, Varuna, Anuket, Leviathan ...)
+In isolation, having a "trigger" for each QMP command seems like a good
+idea to me. It could be just a flag that tells us what is the current
+command that's being serviced. Most of migration are actions in response
+to a QMP command. This could help with ensuring correctness in
+concurrent invocations.
 
-As for the patches I see stuff that could be sent separately in a prep series,
-mostly the 4 patches on hw/boot and the 2 hw/aia patches. You can refer to this
-prep series as a prerequisite for the main series that would include just the
-machine specific stuff.
+> * Even with branches, the process is still linear as it goes from
+> start to finish. Just that we can reach the end state via different
+> paths.
+>   ===
+>     $ grep -ri 'shutting' /var/log/libvirt/qemu/   | cut -d' ' -f 3- |
+> sort | uniq
+>      shutting down, reason=crashed
+>      shutting down, reason=destroyed
+>      shutting down, reason=failed
+>      shutting down, reason=migrated
+>      shutting down, reason=shutdown
+> ===
+> As we see, guest VM can stop/shutdown due to various reasons.
+>
+> * Between [migration-start] and [migration-end], we can define
+> events/triggers that will lead to the next state. Ex
+>
+>       - START -> t:connection-established -> ACTIVE
 
-This prep series would be easier to review and would probably be merged first,
-alleviating the review effort in the Atlantis series.
+I like this because it forces us to determine more clearly what is the
+necessary condition for a state change. This could eventually allow the
+abstraction of the qapi_event_send_migration() to a higher
+layer. Something like:
 
-Also, the designware i2c controller patch seems fully reviewed. I advise sending
-it standalone to be merged right away. I believe Alistair wouldn't mind pushing
-it via qemu-riscv.
+void qmp_migrate() {
+    t:migrate=true
+    
+    migration_setup() :: do setup, mig_setup_done=true
+    migration_advance_state() :: checks the triggers, changes state and
+                                 sends the event
 
+    migration_start() :: migrate, mig_done=true
+                         failure, mig_failed=true
+                         etc
+    migration_advance_state()
 
-Thanks,
+    migrate_vmstate() :: device state migration, mig_device_done=true
+    migration_advance_state()
 
-Daniel
+ etc..
+}
 
-> 
-> Chris Rauer (1):
->    hw/i2c: Add designware i2c controller
-> 
-> Joel Stanley (6):
->    target/riscv: tt-ascalon: Add Tenstorrent mvendorid
->    hw/riscv: Move AIA initialisation to helper file
->    hw/riscv/aia: Provide number of irq sources
->    hw/riscv: Add Tenstorrent Atlantis machine
->    hw/riscv/atlantis: Integrate i2c buses
->    hw/riscv/atlantis: Add some i2c peripherals
-> 
-> Nicholas Piggin (9):
->    target/riscv: tt-ascalon: Enable Zkr extension
->    target/riscv: tt-ascalon: Add Svadu extension
->    riscv/boot: Describe discontiguous memory in boot_info
->    riscv/boot: Account for discontiguous memory when loading firmware
->    hw/riscv/atlantis: Add PCIe controller
->    tests/functional/riscv64: Add tt-atlantis tests
->    hw/riscv/boot: Warn if a ELF format file is loaded as a binary
->    hw/riscv/boot: Provide a simple halting payload
->    hw/riscv/atlantis: Use halting kernel if there is no payload
-> 
->   MAINTAINERS                                  |  15 +
->   docs/system/riscv/tt_atlantis.rst            |  38 +
->   docs/system/target-riscv.rst                 |   1 +
->   hw/riscv/aia.h                               |  59 ++
->   include/hw/i2c/designware_i2c.h              | 101 ++
->   include/hw/riscv/boot.h                      |  14 +-
->   include/hw/riscv/tt_atlantis.h               |  95 ++
->   include/hw/riscv/virt.h                      |  30 +-
->   target/riscv/cpu_vendorid.h                  |   2 +
->   hw/i2c/designware_i2c.c                      | 813 ++++++++++++++++
->   hw/riscv/aia.c                               |  89 ++
->   hw/riscv/boot.c                              |  73 +-
->   hw/riscv/microchip_pfsoc.c                   |   6 +-
->   hw/riscv/opentitan.c                         |   6 +-
->   hw/riscv/shakti_c.c                          |   6 +-
->   hw/riscv/sifive_u.c                          |   3 +-
->   hw/riscv/spike.c                             |   6 +-
->   hw/riscv/tt_atlantis.c                       | 917 +++++++++++++++++++
->   hw/riscv/virt-acpi-build.c                   |  24 +-
->   hw/riscv/virt.c                              |  94 +-
->   hw/riscv/xiangshan_kmh.c                     |   6 +-
->   target/riscv/cpu.c                           |   4 +-
->   hw/i2c/Kconfig                               |   4 +
->   hw/i2c/meson.build                           |   1 +
->   hw/riscv/Kconfig                             |  21 +
->   hw/riscv/meson.build                         |   3 +-
->   tests/functional/riscv64/meson.build         |   1 +
->   tests/functional/riscv64/test_opensbi.py     |   4 +
->   tests/functional/riscv64/test_tt_atlantis.py |  68 ++
->   29 files changed, 2365 insertions(+), 139 deletions(-)
->   create mode 100644 docs/system/riscv/tt_atlantis.rst
->   create mode 100644 hw/riscv/aia.h
->   create mode 100644 include/hw/i2c/designware_i2c.h
->   create mode 100644 include/hw/riscv/tt_atlantis.h
->   create mode 100644 hw/i2c/designware_i2c.c
->   create mode 100644 hw/riscv/aia.c
->   create mode 100644 hw/riscv/tt_atlantis.c
->   create mode 100755 tests/functional/riscv64/test_tt_atlantis.py
-> 
+IOW, we could do a better job of separating what is work, what is
+migration control flow, what is error handling, etc.
 
+>
+> We can reach the ACTIVE state only after connections are established,
+> not without that. If connection establishment fails, we reach the END.
+>
+>      - START  -> t:connection-established -> ACTIVE ->  running   -> END
+>
+> ACTIVE ->  t:error     ->  END
+>
+> ACTIVE ->  t:cancel  ->  END
+>
+> ACTIVE ->  t:pause   ->  PAUSED  -> t:resume -> ACTIVE
+>
+
+Looks good, not sure if the actual migration flow would fit this, but
+let's assume it would.
+
+>> Looking at runstate.c and job.c, it seems we could at least define a
+>> state transition table and do away with the second parameter to
+>> migrate_set_state(s, old, new).
+>>
+>> As we've been discussing, the current state-change mechanism has the
+>> dual purpose of emitting the state change event and also serving as
+>> internal tracking of the migration state. It's not clear to me whether
+>> you're covering both in this proposal or just one of them.
+>
+> * We are not doing away with migration states, just reducing or
+> rationalising them to make it easier. Emitting state change to
+> libvirtd(8) and internal tracking should still serve the same. Just
+> that in migration_is_running() etc. functions we'll check only if the
+> state is ACTIVE, instead of 10 other states which also indicate that
+> the migration is running.
+>
+
+What I'm trying to convey is that we have:
+
+1) events API that needs to be kept stable, this list of states that
+   libvirt sees and at what moments we emit them.
+
+2) MigrationStatus being used as an internal record of the current
+   (loosely defined) migration phase. This is "arbitrary", hence we're
+   discussing adding a new MigrationStatus "just" to make sure we don't
+   start a new migration at the wrong moment.
+
+I'm trying to understand if you want to cover 1, 2 or both.
+
+I would suggest we first take all of the internal tracking, i.e. #2, the
+"if (state==MIGRATION_STATUS)" code and convert them to use some other
+state tracking, either the triggers as you suggest, or random booleans
+sprinkled all over, it's not immediately important.
+
+Once that is done, then we could freeze the #1, MigrationStatus. It
+would only change whenever we wanted to change the API and that should
+be a well documented change.
+
+>> I don't think we've established actually what are the goals of having
+>> any state changes. Do we even need state changes for internal tracking?
+>> We could use your s->trigger as an enum and just check it wherever
+>> necessary. And keep the MIGRATION_STATUS exclusive for the external API,
+>> in which case, it's probably better to just set it unconditionally (in
+>> many places migrate_set_state already takes the current state as
+>> argument, i.e. it doesn't care about the current state).
+>
+> * Well as I see it, different states help us to
+>       1 - know where the process is at a given time. In case of
+> errors/failures or other events to know what actions to take.
+>       2 - what actions/triggers/events are possible.
+>
+> ex. If an error/cancel occurs before ACTIVE state, during connection
+> establishment, it may not have to go through migration_cleanup(),
+> probably there's nothing to cleanup. Vs if an error/cancel occurs
+> after ACTIVE  or in PAUSED state, we know migration_cleanup() is
+> needed.  Similarly if we receive t:resume command when in ACTIVE
+> state, OR receive t:pause command in PAUSED state,  we know there's
+> nothing to do and ignore it.
+>
+
+Ok, maybe I'm splittling hairs here, I was trying to understand whether
+all of these "if (s->state ...)" have the same semantics.
+
+a) For cases such as CANCELLING: that could be a simple
+   s->trigger[MIGRATE_CANCEL]=1.
+
+  (we're not removing the CANCELLING state due to the API stability, but
+  still)
+
+b) For error conditions: s->event[FAILED]=1, then (possibly at a later
+   point in migration_change_state):
+
+   if (s->event[FAILED] && !s->trigger[MIGRATE_CANCEL]) {
+      migrate_set_state(s->state, MIGRATION_STATUS_FAILED);
+   }
+
+b) For postcopy resume/pause, etc, maybe an actual state machine that can
+   only be in one state would be helpful.
+
+c) For "we reached this point, so set this state", most of those could
+   just be an invocation to migration_change_state() and, as you
+   suggest, that would look for the evidence elsewhere to know what
+   state to set:
+
+   if (s->trigger[MIGRATE] && s->event[COMPLETED]) {
+      migrate_set_state(s->state, MIGRATION_STATUS_COMPLETED);
+   }
 
