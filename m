@@ -2,102 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A9E0CFF664
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 19:21:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF59CCFF7B3
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 19:35:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdY9P-0006L0-8P; Wed, 07 Jan 2026 13:20:55 -0500
+	id 1vdYL2-0002by-Ft; Wed, 07 Jan 2026 13:32:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdY9C-0006KD-8Z
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 13:20:42 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdY98-0005kR-0j
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 13:20:40 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-477563e28a3so8935715e9.1
- for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 10:20:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767810036; x=1768414836; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=c5vUbPm6z1uOCPE8G5muzfEnqNfVl9U7aMx0sRH9rCw=;
- b=xHl2v+6rC8aF2FC2zRHJF4FNb8CdYKgljbA4GDGAcfWSt/XlUqOJuKpYrvo8inKxQ5
- szgWqtwzowdjq/QcrsTxk+dpecUbTNHSSIt0lOtigqCyL0csMzwcZNr4wsXUJ1UfOH6W
- mMu1UvZzDPnGps0Wi12REmOL3zP0RdbZdQUNVoUfO6wiq3U7jlPT5zkblgsBFfjWKnmX
- wR2sQ6+jaqb6x/VxPlhQn4SmGemmmO97F45WgqThqlo4CgI1XXhae1AbX8EzQHUVKe6z
- KiTazyFUPbCTafB6M0A0qAsDE/HQ0Fv/q7Y8tqUajjryqYMiIx7IEdj2Ps3KUsxTFa4D
- XrCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767810036; x=1768414836;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=c5vUbPm6z1uOCPE8G5muzfEnqNfVl9U7aMx0sRH9rCw=;
- b=sE9G1humENaTQB++2TTLNP+7WZRuGlJ063FvMGvDsgL8Avs10Ae+iBoNb1uWh+YMbP
- aapkNZvfvK9C0sha48+cQcRLkvad2NErqkWjUynvbLyaxIgdsP9ESlVXcHs6H4x8GTjl
- GaAOc83RX9PG17aqCZt26EuI/GisS3QuWP7QDrp8Fj8F6IrrLyRi/6nuRAC3mZ4u2UHe
- MrqKkTrP4xzUWfrVRBKtVQ0JEVT11lGMsdA3VjuvPdFOZ40cWE1UjKxkgxYcUfYkAEPg
- /H7IK+GKR5KDXUP4u7uBcgID327x5pBT0GgMffgsks4gkmsa794IVxCO8Mf3ZKEv/+mF
- 3FUg==
-X-Gm-Message-State: AOJu0Yx5kYhKE7velVpsDvKx6SO1Yieer23JkfzKUhJwOhHCvaKbRwBr
- itToyEPC74xpanwtRsy12chAnPVpprilxcL6EwgIRtTW6fIwOwLZSOCOWJb1VAj92Wt9fFCgCRG
- /w9oM3vU=
-X-Gm-Gg: AY/fxX48Xtq/iu16ODHn+7s6ARlU6rrKFdpTTjLdJvMM9zkAirimdftUaMmjceb/2O5
- NrOgv9IPbiqtSoJpBDAJ+O5GaHLVpVYEhCfBoXHOF+ix/wHRsi6ix/EATQ7NQo9KI6Z6AHDR/aq
- GJe+VPyCHLQAMVlIjy2DdceVKrt8Ly8t5ONVbX8Es8LfjZ3fN2lpp80HHUhnPnu/VHdXM+KHYUx
- RCucUdtbsik1tQx0jM3ZzERoqjFMu3DDD35fJBf8CPYDjeR8CDKFH9pHy0rf3HO/7dix8OYGAx+
- J9wJHlujmdzPueptxYJa/iXKmAjzaJuZ6baecniLdMyQOzdmhB+ODx+8VMhYCcKZrWsm80WExCb
- 44tO7lkZmahCTX7NgnooDjAPYbCEsrqDXZLEKjcmLQJd13XMYdqGYjS7xuHhvfVnE6VfIHTB5S/
- ocpKyk9hvRisjjmgIgLqBkSgQQRprdbPweRPqkYKEMRNyjPlE7FOS67AtVeSP7
-X-Google-Smtp-Source: AGHT+IH35LX58d6iyis4US3zlff2ddmvK+Kej9v1Ob5JXh2aZ9aKF+hD5J/dRbIVvn6vm/UBgCxgjA==
-X-Received: by 2002:a05:600c:a30c:b0:479:13e9:3d64 with SMTP id
- 5b1f17b1804b1-47d848787eemr36087415e9.15.1767810035952; 
- Wed, 07 Jan 2026 10:20:35 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d7f620ac8sm107925335e9.0.2026.01.07.10.20.34
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 07 Jan 2026 10:20:35 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-riscv@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Yoshinori Sato <yoshinori.sato@nifty.com>,
- Max Filippov <jcmvbkbc@gmail.com>, kvm@vger.kernel.org
-Subject: [PATCH 2/2] monitor/hmp: Reduce target-specific definitions
-Date: Wed,  7 Jan 2026 19:20:19 +0100
-Message-ID: <20260107182019.51769-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260107182019.51769-1-philmd@linaro.org>
-References: <20260107182019.51769-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
+ id 1vdYKt-0002Wr-L5; Wed, 07 Jan 2026 13:32:48 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
+ id 1vdYKp-0007ru-Ty; Wed, 07 Jan 2026 13:32:46 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 6078dqKQ005656;
+ Wed, 7 Jan 2026 18:32:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=EaEEfO
+ gJBlTZImekR5BvBOO84N4H7sicaukSxtDeFos=; b=Tq6VMlZ1s0jkAqvoGpbt8c
+ JcMBjNZ1H9tDndONmDTRIkF+kWGW4uqvytka/d+XNXkgMBPlKA3I7xPuSKh2SdCQ
+ gT2+hEwQ8qQ2XJoBYtgm9TjIc4rizsJB1Q3PljMvvb8M6gzOmANYuUK4zbYJ0rNq
+ bMF5mkvhlN9tNzvHQlyO+P/xEQNrxj0t+DocTQVM0dIdXrvhUd+L8d4WpjiWYKQd
+ BbhYEyZa/tAFzss4ObjUIbKfvfMElJkLm9CCnHuxfoYu4NvZPd0UHYCu/DyfwxXy
+ 7lV34/ZTLZG4p5Uq/cDUgOVztqaTk4CPWl4tPFeXx4ZVPByX6KK830jOlvDT4f9w
+ ==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betrtsd3f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 07 Jan 2026 18:32:42 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 607HqrAP005250;
+ Wed, 7 Jan 2026 18:32:41 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bfexkap34-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 07 Jan 2026 18:32:41 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
+ [10.39.53.228])
+ by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 607IWdfP25952958
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 7 Jan 2026 18:32:40 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B6C7A58059;
+ Wed,  7 Jan 2026 18:32:39 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AA32058055;
+ Wed,  7 Jan 2026 18:32:38 +0000 (GMT)
+Received: from [9.61.39.95] (unknown [9.61.39.95])
+ by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+ Wed,  7 Jan 2026 18:32:38 +0000 (GMT)
+Message-ID: <2f2bb112-34d7-4a5f-aad0-c5d0630bb064@linux.ibm.com>
+Date: Wed, 7 Jan 2026 13:32:37 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/10] pc-bios/s390-ccw: Add support for virtio-blk-pci IPL
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ qemu-s390x@nongnu.org, mst@redhat.com
+Cc: jjherne@linux.ibm.com, alifm@linux.ibm.com, farman@linux.ibm.com,
+ mjrosato@linux.ibm.com, zycai@linux.ibm.com
+References: <20251210205449.2783111-1-jrossi@linux.ibm.com>
+ <20251210205449.2783111-8-jrossi@linux.ibm.com>
+ <386824c5-d0f9-4384-a4de-d2ff5a3445d7@redhat.com>
+Content-Language: en-US
+From: Jared Rossi <jrossi@linux.ibm.com>
+In-Reply-To: <386824c5-d0f9-4384-a4de-d2ff5a3445d7@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=aaJsXBot c=1 sm=1 tr=0 ts=695ea6ca cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=dcReAGJ9NW_a59aa5fUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: dJM5jXeIoElGnArqSg422fvKpkgq2OsL
+X-Proofpoint-ORIG-GUID: dJM5jXeIoElGnArqSg422fvKpkgq2OsL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA3MDE0NSBTYWx0ZWRfX9iVxjdasIof+
+ Xj4Ff4oUtpifhE8wDtQdn+TZuFvUXWjlSKnPI/lUvUbekaq9+szmaMwalPioF7JCcTz1wWgbHzj
+ SfFIPyV73FwUTNCxY53+hlOng/+ystGlkzqkTV35W0COOXPD+0Qo8gbUBrsHkU341i3arOgxlfS
+ R13o5TMsnBiXWOxUV0Hl3CEppU861ganiKhyg5mknqyStQaJPLvSYhEASbqtUbsy/aFIg8YnKvM
+ DsP4pJfpnaeNgvI1CQeJLAxj/VyaKh0eX8bV5ijvtXyrRFZVfyHvAI61it6EWQpWbK1csX5lM6y
+ WPRXlgkIhx56AyY1Mfv7v9LRI2Zcm18MsBnbvYqmtS2GZ4/sD0BkmkQqcg2XiUgOaihygvCvkra
+ N5wDQxiYSjj8V+1VkION6QjYRZlO6V9VpwWIMdnnlzV1L3wObFOyhyXDlwP91hlqb2boJI6yoYX
+ ivVvuQ7aqcIbTY0h7wA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-07_03,2026-01-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0
+ priorityscore=1501 clxscore=1015 phishscore=0 spamscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601070145
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=jrossi@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,246 +121,481 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From "monitor/hmp-target.h", only the MonitorDef structure
-is target specific (by using the 'target_long' type). All
-the rest (even target_monitor_defs and target_get_monitor_def)
-can be exposed to target-agnostic units, allowing to build
-some of them in meson common source set.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/monitor/hmp-target.h  | 28 +++++-----------------------
- include/monitor/hmp.h         | 23 +++++++++++++++++++++++
- hw/i386/sgx-stub.c            |  2 +-
- hw/i386/sgx.c                 |  1 -
- monitor/hmp-cmds.c            |  1 -
- stubs/target-monitor-defs.c   |  2 +-
- target/i386/cpu-apic.c        |  2 +-
- target/i386/sev-system-stub.c |  2 +-
- target/i386/sev.c             |  1 -
- target/m68k/monitor.c         |  1 +
- target/riscv/monitor.c        |  1 +
- target/sh4/monitor.c          |  1 -
- target/xtensa/monitor.c       |  1 -
- 13 files changed, 34 insertions(+), 32 deletions(-)
 
-diff --git a/include/monitor/hmp-target.h b/include/monitor/hmp-target.h
-index b679aaebbff..d39d8c8abe1 100644
---- a/include/monitor/hmp-target.h
-+++ b/include/monitor/hmp-target.h
-@@ -25,9 +25,12 @@
- #ifndef MONITOR_HMP_TARGET_H
- #define MONITOR_HMP_TARGET_H
- 
--typedef struct MonitorDef MonitorDef;
-+#include "monitor/hmp.h"
-+
-+#ifndef COMPILING_PER_TARGET
-+#error hmp-target.h included from common code
-+#endif
- 
--#ifdef COMPILING_PER_TARGET
- #include "cpu.h"
- struct MonitorDef {
-     const char *name;
-@@ -36,29 +39,8 @@ struct MonitorDef {
-                              int val);
-     int type;
- };
--#endif
- 
- #define MD_TLONG 0
- #define MD_I32   1
- 
--const MonitorDef *target_monitor_defs(void);
--int target_get_monitor_def(CPUState *cs, const char *name, uint64_t *pval);
--
--CPUArchState *mon_get_cpu_env(Monitor *mon);
--CPUState *mon_get_cpu(Monitor *mon);
--
--void hmp_info_mem(Monitor *mon, const QDict *qdict);
--void hmp_info_tlb(Monitor *mon, const QDict *qdict);
--void hmp_mce(Monitor *mon, const QDict *qdict);
--void hmp_info_local_apic(Monitor *mon, const QDict *qdict);
--void hmp_info_sev(Monitor *mon, const QDict *qdict);
--void hmp_info_sgx(Monitor *mon, const QDict *qdict);
--void hmp_info_via(Monitor *mon, const QDict *qdict);
--void hmp_memory_dump(Monitor *mon, const QDict *qdict);
--void hmp_physical_memory_dump(Monitor *mon, const QDict *qdict);
--void hmp_info_registers(Monitor *mon, const QDict *qdict);
--void hmp_gva2gpa(Monitor *mon, const QDict *qdict);
--void hmp_gpa2hva(Monitor *mon, const QDict *qdict);
--void hmp_gpa2hpa(Monitor *mon, const QDict *qdict);
--
- #endif /* MONITOR_HMP_TARGET_H */
-diff --git a/include/monitor/hmp.h b/include/monitor/hmp.h
-index 83721b5ffc6..48cd8cefe98 100644
---- a/include/monitor/hmp.h
-+++ b/include/monitor/hmp.h
-@@ -17,6 +17,29 @@
- #include "qemu/readline.h"
- #include "qapi/qapi-types-common.h"
- 
-+typedef struct MonitorDef MonitorDef;
-+
-+const MonitorDef *target_monitor_defs(void);
-+
-+int target_get_monitor_def(CPUState *cs, const char *name, uint64_t *pval);
-+
-+CPUArchState *mon_get_cpu_env(Monitor *mon);
-+CPUState *mon_get_cpu(Monitor *mon);
-+
-+void hmp_info_mem(Monitor *mon, const QDict *qdict);
-+void hmp_info_tlb(Monitor *mon, const QDict *qdict);
-+void hmp_mce(Monitor *mon, const QDict *qdict);
-+void hmp_info_local_apic(Monitor *mon, const QDict *qdict);
-+void hmp_info_sev(Monitor *mon, const QDict *qdict);
-+void hmp_info_sgx(Monitor *mon, const QDict *qdict);
-+void hmp_info_via(Monitor *mon, const QDict *qdict);
-+void hmp_memory_dump(Monitor *mon, const QDict *qdict);
-+void hmp_physical_memory_dump(Monitor *mon, const QDict *qdict);
-+void hmp_info_registers(Monitor *mon, const QDict *qdict);
-+void hmp_gva2gpa(Monitor *mon, const QDict *qdict);
-+void hmp_gpa2hva(Monitor *mon, const QDict *qdict);
-+void hmp_gpa2hpa(Monitor *mon, const QDict *qdict);
-+
- bool hmp_handle_error(Monitor *mon, Error *err);
- void hmp_help_cmd(Monitor *mon, const char *name);
- strList *hmp_split_at_comma(const char *str);
-diff --git a/hw/i386/sgx-stub.c b/hw/i386/sgx-stub.c
-index d295e54d239..6e82773a86d 100644
---- a/hw/i386/sgx-stub.c
-+++ b/hw/i386/sgx-stub.c
-@@ -1,6 +1,6 @@
- #include "qemu/osdep.h"
- #include "monitor/monitor.h"
--#include "monitor/hmp-target.h"
-+#include "monitor/hmp.h"
- #include "hw/i386/pc.h"
- #include "hw/i386/sgx-epc.h"
- #include "qapi/qapi-commands-misc-i386.h"
-diff --git a/hw/i386/sgx.c b/hw/i386/sgx.c
-index e2801546ad6..54d2cae36d8 100644
---- a/hw/i386/sgx.c
-+++ b/hw/i386/sgx.c
-@@ -16,7 +16,6 @@
- #include "hw/mem/memory-device.h"
- #include "monitor/qdev.h"
- #include "monitor/monitor.h"
--#include "monitor/hmp-target.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "qapi/qapi-commands-misc-i386.h"
-diff --git a/monitor/hmp-cmds.c b/monitor/hmp-cmds.c
-index f7ff6ec90ec..1ab789ff468 100644
---- a/monitor/hmp-cmds.c
-+++ b/monitor/hmp-cmds.c
-@@ -21,7 +21,6 @@
- #include "gdbstub/enums.h"
- #include "monitor/hmp.h"
- #include "qemu/help_option.h"
--#include "monitor/hmp-target.h"
- #include "monitor/monitor-internal.h"
- #include "qapi/error.h"
- #include "qapi/qapi-commands-control.h"
-diff --git a/stubs/target-monitor-defs.c b/stubs/target-monitor-defs.c
-index 35a0a342772..0dd4cdb34f6 100644
---- a/stubs/target-monitor-defs.c
-+++ b/stubs/target-monitor-defs.c
-@@ -1,5 +1,5 @@
- #include "qemu/osdep.h"
--#include "monitor/hmp-target.h"
-+#include "monitor/hmp.h"
- 
- const MonitorDef *target_monitor_defs(void)
- {
-diff --git a/target/i386/cpu-apic.c b/target/i386/cpu-apic.c
-index eeee62b52a2..3b73a04597f 100644
---- a/target/i386/cpu-apic.c
-+++ b/target/i386/cpu-apic.c
-@@ -10,7 +10,7 @@
- #include "qobject/qdict.h"
- #include "qapi/error.h"
- #include "monitor/monitor.h"
--#include "monitor/hmp-target.h"
-+#include "monitor/hmp.h"
- #include "system/hw_accel.h"
- #include "system/kvm.h"
- #include "system/xen.h"
-diff --git a/target/i386/sev-system-stub.c b/target/i386/sev-system-stub.c
-index 7c5c02a5657..f799a338d60 100644
---- a/target/i386/sev-system-stub.c
-+++ b/target/i386/sev-system-stub.c
-@@ -13,7 +13,7 @@
- 
- #include "qemu/osdep.h"
- #include "monitor/monitor.h"
--#include "monitor/hmp-target.h"
-+#include "monitor/hmp.h"
- #include "qapi/error.h"
- #include "sev.h"
- 
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index fb5a3b5d778..7e2a5df8867 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -36,7 +36,6 @@
- #include "migration/blocker.h"
- #include "qom/object.h"
- #include "monitor/monitor.h"
--#include "monitor/hmp-target.h"
- #include "qapi/qapi-commands-misc-i386.h"
- #include "confidential-guest.h"
- #include "hw/i386/pc.h"
-diff --git a/target/m68k/monitor.c b/target/m68k/monitor.c
-index 2bdf6acae0a..784f5730919 100644
---- a/target/m68k/monitor.c
-+++ b/target/m68k/monitor.c
-@@ -7,6 +7,7 @@
- 
- #include "qemu/osdep.h"
- #include "cpu.h"
-+#include "monitor/hmp.h"
- #include "monitor/hmp-target.h"
- #include "monitor/monitor.h"
- 
-diff --git a/target/riscv/monitor.c b/target/riscv/monitor.c
-index 8a77476db93..478fd392ac6 100644
---- a/target/riscv/monitor.c
-+++ b/target/riscv/monitor.c
-@@ -22,6 +22,7 @@
- #include "cpu.h"
- #include "cpu_bits.h"
- #include "monitor/monitor.h"
-+#include "monitor/hmp.h"
- #include "monitor/hmp-target.h"
- #include "system/memory.h"
- 
-diff --git a/target/sh4/monitor.c b/target/sh4/monitor.c
-index 2da6a5426eb..50324d3600c 100644
---- a/target/sh4/monitor.c
-+++ b/target/sh4/monitor.c
-@@ -24,7 +24,6 @@
- #include "qemu/osdep.h"
- #include "cpu.h"
- #include "monitor/monitor.h"
--#include "monitor/hmp-target.h"
- #include "monitor/hmp.h"
- 
- static void print_tlb(Monitor *mon, int idx, tlb_t *tlb)
-diff --git a/target/xtensa/monitor.c b/target/xtensa/monitor.c
-index fbf60d55530..2af84934f83 100644
---- a/target/xtensa/monitor.c
-+++ b/target/xtensa/monitor.c
-@@ -24,7 +24,6 @@
- #include "qemu/osdep.h"
- #include "cpu.h"
- #include "monitor/monitor.h"
--#include "monitor/hmp-target.h"
- #include "monitor/hmp.h"
- 
- void hmp_info_tlb(Monitor *mon, const QDict *qdict)
--- 
-2.52.0
+On 1/7/26 9:44 AM, Thomas Huth wrote:
+> On 10/12/2025 21.54, jrossi@linux.ibm.com wrote:
+>> From: Jared Rossi <jrossi@linux.ibm.com>
+>>
+>> Enable virt-queue PCI configuration and add routines for 
+>> virtio-blk-pci devices.
+>>
+>> Signed-off-by: Jared Rossi <jrossi@linux.ibm.com>
+>> ---
+>>   include/hw/s390x/ipl/qipl.h      |  10 +
+>>   pc-bios/s390-ccw/virtio-pci.h    |  79 +++++++
+>>   pc-bios/s390-ccw/virtio.h        |   1 +
+>>   pc-bios/s390-ccw/main.c          |  60 +++++-
+>>   pc-bios/s390-ccw/virtio-blkdev.c |   3 +
+>>   pc-bios/s390-ccw/virtio-pci.c    | 360 +++++++++++++++++++++++++++++++
+>>   pc-bios/s390-ccw/virtio.c        |   5 +
+>>   pc-bios/s390-ccw/Makefile        |   2 +-
+>>   8 files changed, 517 insertions(+), 3 deletions(-)
+>>   create mode 100644 pc-bios/s390-ccw/virtio-pci.h
+>>   create mode 100644 pc-bios/s390-ccw/virtio-pci.c
+>>
+>> diff --git a/include/hw/s390x/ipl/qipl.h b/include/hw/s390x/ipl/qipl.h
+>> index 8199b839f0..5c7779a1c3 100644
+>> --- a/include/hw/s390x/ipl/qipl.h
+>> +++ b/include/hw/s390x/ipl/qipl.h
+>> @@ -22,6 +22,7 @@
+>>     #define S390_IPL_TYPE_FCP 0x00
+>>   #define S390_IPL_TYPE_CCW 0x02
+>> +#define S390_IPL_TYPE_PCI 0x04
+>>   #define S390_IPL_TYPE_PV 0x05
+>>   #define S390_IPL_TYPE_QEMU_SCSI 0xff
+>>   @@ -105,6 +106,14 @@ struct IplBlockQemuScsi {
+>>   } QEMU_PACKED;
+>>   typedef struct IplBlockQemuScsi IplBlockQemuScsi;
+>>   +struct IplBlockPci {
+>> +    uint32_t reserved0[80];
+>> +    uint8_t  opt;
+>> +    uint8_t  reserved1[3];
+>> +    uint32_t fid;
+>> +} QEMU_PACKED;
+>> +typedef struct IplBlockPci IplBlockPci;
+>
+> Is this supposed to have the same positions for "fid" and "opt" as in 
+> the ipl_pb0_nvme structure in the kernel 
+> (arch/s390/include/uapi/asm/ipl.h)?
+
+Yes, I think.  That was my intention anyway. Are you suggesting it 
+shouldn't?
+
+>
+>>   union IplParameterBlock {
+>>       struct {
+>>           uint32_t len;
+>> @@ -120,6 +129,7 @@ union IplParameterBlock {
+>>               IplBlockFcp fcp;
+>>               IPLBlockPV pv;
+>>               IplBlockQemuScsi scsi;
+>> +            IplBlockPci pci;
+>>           };
+>>       } QEMU_PACKED;
+>>       struct {
+> ...
+>> diff --git a/pc-bios/s390-ccw/virtio-pci.c 
+>> b/pc-bios/s390-ccw/virtio-pci.c
+>> new file mode 100644
+>> index 0000000000..838231d86c
+>> --- /dev/null
+>> +++ b/pc-bios/s390-ccw/virtio-pci.c
+>> @@ -0,0 +1,360 @@
+>> +/*
+>> + * Functionality for virtio-pci
+>> + *
+>> + * Copyright 2025 IBM Corp.
+>> + * Author(s): Jared Rossi <jrossi@linux.ibm.com>
+>> + *
+>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>> + */
+>> +
+>> +#include "clp.h"
+>> +#include "pci.h"
+>> +#include "helper.h"
+>> +#include "s390-ccw.h"
+>> +#include "virtio.h"
+>> +#include "bswap.h"
+>> +#include "virtio-pci.h"
+>> +#include "s390-time.h"
+>> +#include <stdio.h>
+>> +
+>> +/* Variable offsets used for reads/writes to modern memory regions */
+>> +VirtioPciCap c_cap; /* Common capabilities  */
+>> +VirtioPciCap d_cap; /* Device capabilities  */
+>> +VirtioPciCap n_cap; /* Notify capabilities  */
+>> +uint32_t notify_mult;
+>> +uint16_t q_notify_offset;
+>> +
+>> +static int virtio_pci_set_status(VDev *vdev, uint8_t status)
+>> +{
+>> +    int rc = pci_write_byte(vdev->pci_fh, c_cap.off + 
+>> VPCI_C_OFFSET_STATUS,
+>> +                             c_cap.bar, status);
+>> +    if (rc) {
+>> +        puts("Failed to write virtio-pci status");
+>> +        return -EIO;
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +static int virtio_pci_get_status(VDev *vdev, uint8_t *status)
+>> +{
+>> +    int rc = pci_read_byte(vdev->pci_fh, c_cap.off + 
+>> VPCI_C_OFFSET_STATUS,
+>> +                           c_cap.bar, status);
+>> +    if (rc) {
+>> +        puts("Failed to read virtio-pci status");
+>> +        return -EIO;
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +/*
+>> + * Find the position of the capability config within PCI configuration
+>> + * space for a given cfg type.  Return the position if found, 
+>> otherwise 0.
+>> + */
+>> +static uint8_t find_cap_pos(uint32_t fhandle, uint8_t cfg_type)
+>> +{
+>> +    uint8_t next, cfg;
+>> +    int rc;
+>> +
+>> +    rc = pci_read_byte(fhandle, PCI_CAPABILITY_LIST, PCI_CFGBAR, 
+>> &next);
+>> +    rc |= pci_read_byte(fhandle, next + 3, PCI_CFGBAR, &cfg);
+>> +
+>> +    while (!rc && (cfg != cfg_type) && next) {
+>> +        rc = pci_read_byte(fhandle, next + 1, PCI_CFGBAR, &next);
+>> +        rc |= pci_read_byte(fhandle, next + 3, PCI_CFGBAR, &cfg);
+>> +    }
+>> +
+>> +    return rc ? 0 : next;
+>> +}
+>> +
+>> +static int virtio_pci_get_hfeatures(VDev *vdev, uint64_t *features)
+>> +{
+>> +    uint32_t feat0, feat1;
+>> +    int rc;
+>> +
+>> +    rc = pci_bswap32_write(vdev->pci_fh, c_cap.off + 
+>> VPCI_C_OFFSET_DFSELECT,
+>> +                           c_cap.bar, 0);
+>> +
+>> +    rc |= pci_read_bswap32(vdev->pci_fh, c_cap.off + VPCI_C_OFFSET_DF,
+>> +                           c_cap.bar, &feat0);
+>> +
+>> +    rc |= pci_bswap32_write(vdev->pci_fh, c_cap.off + 
+>> VPCI_C_OFFSET_DFSELECT,
+>> +                            c_cap.bar, 1);
+>> +
+>> +    rc |= pci_read_bswap32(vdev->pci_fh, c_cap.off + VPCI_C_OFFSET_DF,
+>> +                               c_cap.bar, &feat1);
+>> +
+>> +    if (rc) {
+>> +        puts("Failed to get PCI feature bits");
+>> +        return -EIO;
+>> +    }
+>> +
+>> +    *features = (uint64_t) feat1 << 32;
+>> +    *features |= (uint64_t) feat0;
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +static int virtio_pci_set_gfeatures(VDev *vdev)
+>> +{
+>> +    int rc;
+>> +
+>> +    rc = pci_bswap32_write(vdev->pci_fh, c_cap.off + 
+>> VPCI_C_OFFSET_GFSELECT,
+>> +                           c_cap.bar, 0);
+>> +
+>> +    rc |= pci_bswap32_write(vdev->pci_fh, c_cap.off + VPCI_C_OFFSET_GF,
+>> +                            c_cap.bar, vdev->guest_features[1]);
+>> +
+>> +    rc |= pci_bswap32_write(vdev->pci_fh, c_cap.off + 
+>> VPCI_C_OFFSET_GFSELECT,
+>> +                            c_cap.bar, 1);
+>> +
+>> +    rc |= pci_bswap32_write(vdev->pci_fh, c_cap.off + VPCI_C_OFFSET_GF,
+>> +                                c_cap.bar, vdev->guest_features[0]);
+>> +
+>> +    if (rc) {
+>> +        puts("Failed to set PCI feature bits");
+>> +        return -EIO;
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +static int virtio_pci_get_blk_config(VDev *vdev)
+>> +{
+>> +    return pci_read_flex(vdev->pci_fh, d_cap.off, d_cap.bar, 
+>> &vdev->config.blk,
+>> +                         sizeof(VirtioBlkConfig));
+>
+> I'm a little bit surprised that there does not seem to be any 
+> endianess swapping for the config.blk data anywhere here ... isn't 
+> that config space data supposed to be in little endian?
+>
+> ... oh, wait, you're not negotiating VIRTIO_F_VERSION_1, are you? ... 
+> so the config space is still in big endian for legacy virtio? ... hmm, 
+> I guess it's ok for now, but in the long run, I think we should rather 
+> use VERSION_1 instead.
+
+I will figure out how to fix the negotiations, both for this and 
+VIRTIO_BLK_F_BLK_SIZE as you mention below.
+
+>
+>> +}
+>> +
+>> +/* virtio spec v1.3 section 4.1.2.1 */
+>> +void virtio_pci_id2type(VDev *vdev, uint16_t device_id)
+>> +{
+>> +    switch (device_id) {
+>> +    case 0x1001:
+>> +        vdev->dev_type = VIRTIO_ID_BLOCK;
+>> +        break;
+>> +    case 0x1000: /* Other valid but currently unsupported virtio 
+>> device types */
+>> +    case 0x1004:
+>> +    default:
+>> +        vdev->dev_type = 0;
+>> +    }
+>> +}
+>> +
+>> +/*
+>> + * Read PCI configuration space to find the offset of the Common, 
+>> Device, and
+>> + * Notification memory regions within the modern memory space.
+>> + * Returns 0 if success, 1 if a capability could not be located, or a
+>> + * negative RC if the configuration read failed.
+>> + */
+>> +static int virtio_pci_read_pci_cap_config(VDev *vdev)
+>> +{
+>> +    uint8_t pos;
+>> +    int rc;
+>> +
+>> +    /* Common capabilities */
+>> +    pos = find_cap_pos(vdev->pci_fh, VPCI_CAP_COMMON_CFG);
+>> +    if (!pos) {
+>> +        puts("Failed to locate PCI common configuration");
+>> +        return 1;
+>> +    }
+>> +
+>> +    rc = pci_read_byte(vdev->pci_fh, pos + VPCI_CAP_BAR, PCI_CFGBAR, 
+>> &c_cap.bar);
+>> +    if (rc || pci_read_bswap32(vdev->pci_fh, pos + VPCI_CAP_OFFSET, 
+>> PCI_CFGBAR,
+>> +                               &c_cap.off)) {
+>> +        puts("Failed to read PCI common configuration");
+>> +        return -EIO;
+>> +    }
+>> +
+>> +    /* Device capabilities */
+>> +    pos = find_cap_pos(vdev->pci_fh, VPCI_CAP_DEVICE_CFG);
+>> +    if (!pos) {
+>> +        puts("Failed to locate PCI device configuration");
+>> +        return 1;
+>> +    }
+>> +
+>> +    rc = pci_read_byte(vdev->pci_fh, pos + VPCI_CAP_BAR, PCI_CFGBAR, 
+>> &d_cap.bar);
+>> +    if (rc || pci_read_bswap32(vdev->pci_fh, pos + VPCI_CAP_OFFSET, 
+>> PCI_CFGBAR,
+>> +                               &d_cap.off)) {
+>> +        puts("Failed to read PCI device configuration");
+>> +        return -EIO;
+>> +    }
+>> +
+>> +    /* Notification capabilities */
+>> +    pos = find_cap_pos(vdev->pci_fh, VPCI_CAP_NOTIFY_CFG);
+>> +    if (!pos) {
+>> +        puts("Failed to locate PCI notification configuration");
+>> +        return 1;
+>> +    }
+>> +
+>> +    rc = pci_read_byte(vdev->pci_fh, pos + VPCI_CAP_BAR, PCI_CFGBAR, 
+>> &n_cap.bar);
+>> +    if (rc || pci_read_bswap32(vdev->pci_fh, pos + VPCI_CAP_OFFSET, 
+>> PCI_CFGBAR,
+>> +                               &n_cap.off)) {
+>> +        puts("Failed to read PCI notification configuration");
+>> +        return -EIO;
+>> +    }
+>> +
+>> +    rc = pci_read_bswap32(vdev->pci_fh, pos + VPCI_N_CAP_MULT, 
+>> PCI_CFGBAR, &notify_mult);
+>> +    if (rc || pci_read_bswap16(vdev->pci_fh, d_cap.off + 
+>> VPCI_C_OFFSET_Q_NOFF,
+>> +                               d_cap.bar, &q_notify_offset)) {
+>> +        puts("Failed to read notification queue configuration");
+>> +        return -EIO;
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +int virtio_pci_reset(VDev *vdev)
+>> +{
+>> +    int rc;
+>> +    uint8_t status = VPCI_S_RESET;
+>> +
+>> +    rc = virtio_pci_set_status(vdev, status);
+>> +    rc |= virtio_pci_get_status(vdev, &status);
+>> +
+>> +    if (rc || status) {
+>> +        puts("Failed to reset virtio-pci device");
+>> +        return 1;
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +int virtio_pci_set_selected_vq(VDev *vdev, uint16_t queue_num)
+>> +{
+>> +    return pci_bswap16_write(vdev->pci_fh, c_cap.off + 
+>> VPCI_C_OFFSET_Q_SELECT,
+>> +                             c_cap.bar, queue_num);
+>> +}
+>> +
+>> +int virtio_pci_set_queue_size(VDev *vdev, uint16_t queue_size)
+>> +{
+>> +    return pci_bswap16_write(vdev->pci_fh, c_cap.off + 
+>> VPCI_C_OFFSET_Q_SIZE,
+>> +                             c_cap.bar, queue_size);
+>> +}
+>> +
+>> +static int virtio_pci_set_queue_enable(VDev *vdev, uint16_t enabled)
+>> +{
+>> +    return pci_bswap16_write(vdev->pci_fh, c_cap.off + 
+>> VPCI_C_OFFSET_Q_ENABLE,
+>> +                             c_cap.bar, enabled);
+>> +}
+>> +
+>> +static int set_pci_vq_addr(VDev *vdev, uint64_t config_off, void *addr)
+>> +{
+>> +    return pci_bswap64_write(vdev->pci_fh, c_cap.off + config_off, 
+>> c_cap.bar,
+>> +                             (uint64_t) addr);
+>> +}
+>> +
+>> +int virtio_pci_setup(VDev *vdev)
+>> +{
+>> +    VRing *vr;
+>> +    int rc;
+>> +    uint64_t pci_features;
+>> +    uint8_t status;
+>> +    int i = 0;
+>> +
+>> +    vdev->config.blk.blk_size = 0;
+>
+> For really getting blk_size, I think you should negotiate 
+> VIRTIO_BLK_F_BLK_SIZE ?
+>
+> Also, I assume the generic part of this function should rather be 
+> agnostic of virtio-block specific settings instead, so it can be used 
+> for virtio-net-pci and virtio-scsi-pci later? So the above line should 
+> likely rather go into the "case VIRTIO_ID_BLOCK" part below?
+
+In the existing virtio_ccw_setup code, config.blk.blk_size is 
+initialized to 0 for all device types like this, which is why I did it 
+that way here too.
+
+Conceptually, I agree that it makes more sense to do it only for actual 
+block devices that care about it.  I'll check if there is any reason why 
+it was done this way in the CCW code to begin with, but probably it can 
+be moved it into the VIRTIO_ID_BLOCK case.
+
+>
+>> +    vdev->guessed_disk_nature = VIRTIO_GDN_NONE;
+>> +    vdev->cmd_vr_idx = 0;
+>> +
+>> +    if (virtio_reset(vdev)) {
+>> +        return -EIO;
+>> +    }
+>> +
+>> +    status = VPCI_S_ACKNOWLEDGE;
+>> +    rc = virtio_pci_set_status(vdev, status);
+>> +    if (rc) {
+>> +        puts("Virtio-pci device Failed to ACKNOWLEDGE");
+>> +        return -EIO;
+>> +    }
+>> +
+>> +    rc = virtio_pci_read_pci_cap_config(vdev);
+>> +    if (rc) {
+>> +        printf("Invalid PCI capabilities");
+>> +        return -EIO;
+>> +    }
+>> +
+>> +    switch (vdev->dev_type) {
+>> +    case VIRTIO_ID_BLOCK:
+>> +        vdev->nr_vqs = 1;
+>> +        vdev->cmd_vr_idx = 0;
+>> +        virtio_pci_get_blk_config(vdev);
+>> +        break;
+>> +    default:
+>> +        puts("Unsupported virtio device");
+>> +        return -ENODEV;
+>> +    }
+>> +
+>> +    status |= VPCI_S_DRIVER;
+>> +    rc = virtio_pci_set_status(vdev, status);
+>> +    if (rc) {
+>> +        puts("Set status failed");
+>> +        return -EIO;
+>> +    }
+>> +
+>> +    /* Feature negotiation */
+>> +    rc = virtio_pci_get_hfeatures(vdev, &pci_features);
+>> +    if (rc || virtio_pci_set_gfeatures(vdev)) {
+>> +        return -EIO;
+>> +    }
+>> +
+>> +    /* Configure virt-queues for pci */
+>> +    for (i = 0; i < vdev->nr_vqs; i++) {
+>> +        VqInfo info = {
+>> +            .queue = (unsigned long long) virtio_get_ring_area() + 
+>> (i * VIRTIO_RING_SIZE),
+>> +            .align = KVM_S390_VIRTIO_RING_ALIGN,
+>> +            .index = i,
+>> +            .num = 0,
+>> +        };
+>> +
+>> +        vr = &vdev->vrings[i];
+>> +
+>> +        if (pci_read_flex(vdev->pci_fh, VPCI_C_COMMON_NUMQ, 
+>> c_cap.bar, &info.num, 2)) {
+>> +            return -EIO;
+>> +        }
+>> +
+>> +        vring_init(vr, &info);
+>> +
+>> +        if (virtio_pci_set_selected_vq(vdev, vr->id)) {
+>> +            puts("Failed to set selected virt-queue");
+>> +            return -EIO;
+>> +        }
+>> +
+>> +        if (virtio_pci_set_queue_size(vdev, VIRTIO_RING_SIZE)) {
+>> +            puts("Failed to set virt-queue size");
+>> +            return -EIO;
+>> +        }
+>> +
+>> +        rc = set_pci_vq_addr(vdev, VPCI_C_OFFSET_Q_DESCLO, vr->desc);
+>> +        rc |= set_pci_vq_addr(vdev, VPCI_C_OFFSET_Q_AVAILLO, 
+>> vr->avail);
+>> +        rc |= set_pci_vq_addr(vdev, VPCI_C_OFFSET_Q_USEDLO, vr->used);
+>> +        if (rc) {
+>> +            puts("Failed to configure virt-queue address");
+>> +            return -EIO;
+>> +        }
+>> +
+>> +        if (virtio_pci_set_queue_enable(vdev, true)) {
+>> +            puts("Failed to set virt-queue enabled");
+>> +            return -EIO;
+>> +        }
+>> +    }
+>> +
+>> +    status |= VPCI_S_FEATURES_OK | VPCI_S_DRIVER_OK;
+>> +    return virtio_pci_set_status(vdev, status);
+>> +}
+>
+>  Thomas
+>
+>
 
 
