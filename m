@@ -2,101 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88C87CFD639
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 12:24:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09CC1CFD64B
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 12:30:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdRdg-00058W-CH; Wed, 07 Jan 2026 06:23:44 -0500
+	id 1vdRjX-00038c-9C; Wed, 07 Jan 2026 06:29:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1vdRdd-0004yL-KW
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 06:23:41 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1vdRdb-0001Wn-EC
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 06:23:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767785017;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=9CVOFgYvcab9tFb37MSVBS/BDqI6hyaB8Sjo503Sz04=;
- b=hPXeJulrnzT2bYUdxb2VyWaRz7finqTBmZcE716hNh9H9VR6dIweIRAEb418uvAXBtRLND
- 7vJL1kgWKTLLtEljB5/XjC+UsSwj2B3c1vxGz44Cp4gqgCOtYOH8+0UI0zzc0HL055PZqf
- NON7PNyJ2cpdPba9QelQkG6M/baTY5I=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-141-QZyKFiC7Ohii7kmP0AzwBg-1; Wed, 07 Jan 2026 06:23:35 -0500
-X-MC-Unique: QZyKFiC7Ohii7kmP0AzwBg-1
-X-Mimecast-MFC-AGG-ID: QZyKFiC7Ohii7kmP0AzwBg_1767785015
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-477c49f273fso20228975e9.3
- for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 03:23:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <buenocalvachejoel@gmail.com>)
+ id 1vdRjV-000387-OT
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 06:29:45 -0500
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <buenocalvachejoel@gmail.com>)
+ id 1vdRjU-0002P9-0E
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 06:29:45 -0500
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-34f634a01e1so126711a91.3
+ for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 03:29:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1767785015; x=1768389815; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1767785382; x=1768390182; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=9CVOFgYvcab9tFb37MSVBS/BDqI6hyaB8Sjo503Sz04=;
- b=IMwD8yWK2HEyXHZP42NlIRpbVHGaDXclloazPN9i9ax1ZDMOUb1UuwQFecJ26GM6JL
- VOP9QiSgNWABwRJuPpaefOL9A2UHqeCecGkOoEuJ4f24nMefs3f0qdzZ+qu0UiQIUEWS
- PqAQI9Byqm9eigEXzhl4M99Dr0qWxReV4LURonMtqfn89Ynd/k/2FXxhJmKdRznVR8Zd
- vWjDhUBKSWbdUSBw4VMpB/JIbJnXh3wXVoa9mpcq8oB/DjZvToKqcSSOC25PlfPJlTAh
- RCeNt1j59ksgsxc7ZuEpUOtaKizBaI8vm8Jb+/tnESqibug4pEZcN+nIgj1X7FVSKLMy
- Z85w==
+ bh=ra2VNP09MDv+TkpTI8FRcFKf7IxfmzJhhAYA1pL3Avc=;
+ b=kpmhIQH9Zp6WQiW0avR5E1LzI6QBCXKdp8PWokR3WUncFfFIJJ6DYUzjNUqAiXWEAT
+ mnoHmEPZM0vwTs7bnwcbvSrI9XGY4112MlXOU+ff0eHr0QLNDo9TN/ylmie6E9iOWMs8
+ gAFJlyM5J1tzXP4wWKrFV7gcAK0yc1+y6rI/18qY0LJsKyxQAOAsKVO06iVBHbNBSz1q
+ DzgB6h31qLQs3exIp/0/AwVhfce3Ghy/ZFcIQDpMO0w981/B5UDkqE8kZ0k1a/m4Xc4b
+ aBxilmBQ41qZ/QmUj64OyKFunCdNfWd98ALNRTAFmQfe+u6PQ3hI6X3L4WxN/+CxKbNG
+ RI/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767785015; x=1768389815;
+ d=1e100.net; s=20230601; t=1767785382; x=1768390182;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9CVOFgYvcab9tFb37MSVBS/BDqI6hyaB8Sjo503Sz04=;
- b=wOOiJWbgN/XFylnDQx/HTU0fNSivqRBifp+zMfWjmbaHO5WIo87ExgJ7O7EnSz5Q5P
- SRKtLlE35emiMN83CiXF98VrinePIgPJ7nCqm/LDuKNGAZ2QdAcFnRB/4SS81uclU9jg
- Po7OwkcpZ/MEN3KFdYg8j97FOjAmtJKgPSCQ/MQm62ctnBiAQtLsuxuKOoexFn8t9EYy
- xjq4VI9ceo+bnh5mP5C687KRuWDrndkJNOfBIx8LRZcSRoq1VDxCUa/FHF2dWpFCAqUS
- u89anIrhO1QzSYjrypoCbG7OB+24MpCDO0Fyy17v6tg9cpsEPsehHhbRG9ZARoQWTFP9
- Ggsg==
-X-Gm-Message-State: AOJu0Yw+QqYEW10KCUC50tuCCzUnVl5VhHYEU0sgwMrL//FxM8w9qFaV
- QyO28A/JBIsuE9YA+XS3I6LGHWmaYt75zWjxyJ0niRnWiYml+v5QuQBnnMVPa3qEDz7ulBZ2Fra
- Ka6IVcac1Sc6lJrSALiE4bRkSHfN0Rr3VW+hdkzT/KPKRyMQZZqCJTcrCqwVQ63Tf1PbtgzyjOd
- 2IhRqQt+A1duRjMYF6vmL64YUmXU3yfxI=
-X-Gm-Gg: AY/fxX5Rij48B8r11d9sFVuh8lMUuBi6Ae0miKkfwNqjiNH2ev9sG5vx/bIbqntiY/e
- PwXVvzYGQyT8JBKkeF1jxUlxfTp7Wwj+OglFxFIIOcl6ryGo5+6SJCUY4sLNjN25PrvMDYVK3If
- uhqbu3XjVd/OxmvTbHOZwKWsodoi6mWojKHHmKH9AuV3Vg1a13D8fSzy6BVpiA59phsfY=
-X-Received: by 2002:a05:600c:3114:b0:47d:403e:90c9 with SMTP id
- 5b1f17b1804b1-47d84b18663mr23871735e9.11.1767785014524; 
- Wed, 07 Jan 2026 03:23:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE8dlfRkDZ0I9wI5A445iRrJuaZf8qiwxRCTBQ4fpLzDt1HoqdTi7RRZZ1seHyRFFheyzkLyE/+d5GNnCIMyjg=
-X-Received: by 2002:a05:600c:3114:b0:47d:403e:90c9 with SMTP id
- 5b1f17b1804b1-47d84b18663mr23871005e9.11.1767785014107; Wed, 07 Jan 2026
- 03:23:34 -0800 (PST)
+ bh=ra2VNP09MDv+TkpTI8FRcFKf7IxfmzJhhAYA1pL3Avc=;
+ b=YuV7v4KGZkU9EzSKeih+QRUANZuD+2jXxzgs9y1ahmOXktCyYgmoXXsntv6EvNKlxk
+ EjFPqQXxErquoxlol7k+ATytieqT3DkEnVu7f92I4e80YEJ3iFO4otEoqt7rwHPMEZe5
+ qnPrt6xY1vPZF5QsEPFgGon2lYpqlOHWlme5J7naaDGCHd95x/SPBHe/NLUowdxruTVr
+ 95FiabTVkwZh6JyQDhgR1XROoAGBcJUQwMINqEibwezV1ze13GX596RpjxeGgisyrZoe
+ wF5IlOs3RbcbpbOer1TP1BYLxGjRBjWVZmKOAYRZCRJVZUSLhLyEk3K4UjGJoDhdEgbi
+ wHBg==
+X-Gm-Message-State: AOJu0Yx9LGuekrA4e7iE8h6D8NAynafmhPnl/uMaXZB3Q4anM0Dp/1LW
+ SVcbth6/Rq0rdoWNez1DCF2eIxZegu2HfCwxdcXTCZbITPZ6ZCItvmHDyAY0SvZzi0LS3ZCKbHf
+ Hog3OhM05dXUv9GgZNz004B3PZJu2tl8NBzu6nwA=
+X-Gm-Gg: AY/fxX4INSmZ5HkqRhmhUNWcZc7Jt7UhvxWXdrockWD+M85CCksqZp9DuJf1mieRvDf
+ xmmAqM33ugIwb9YMaTxuSywzD1+HSKLwqmF34jsaMy8EfyhLxMadN0a3Qgnt0B+a+/+Yox/2a3b
+ 3BMaAA7FuKC0yDWP1HSa0w+zFTd6+5RYmWUmF82TEYFnz7MCZZQpkktY7DYCxHMVMEAjDMAFbTp
+ Lb1wqmEu+gPqDUfQxDQfkz2tZrp3DtTyomqrT2r9L+9Aj4M1DAWamHAIvW9Cy5FZ5AdWZVtAer+
+ J9eGfpMB1NkCjKDIlJrmD99SKpRkKOm0uvScYtef
+X-Google-Smtp-Source: AGHT+IE9aK5sis7NoZzjVjNVqGGYnuRXIdzm3oZI3dUDllbVlw7ef6pmk/Ee4m8e2yG0hV1JlT7A0bHdEYEgqFT7jvo=
+X-Received: by 2002:a17:90a:fc46:b0:340:b8f2:250c with SMTP id
+ 98e67ed59e1d1-34f68b47b08mr1516549a91.1.1767785382003; Wed, 07 Jan 2026
+ 03:29:42 -0800 (PST)
 MIME-Version: 1.0
-References: <20260106203320.2110372-1-peterx@redhat.com>
- <20260106203320.2110372-2-peterx@redhat.com>
-In-Reply-To: <20260106203320.2110372-2-peterx@redhat.com>
-From: Prasad Pandit <ppandit@redhat.com>
-Date: Wed, 7 Jan 2026 16:53:17 +0530
-X-Gm-Features: AQt7F2qX8zV6RG8uhHbhTAw3_KlEGrepDsImVg0WrJbG0hSMk5JbE5GQhoNACIQ
-Message-ID: <CAE8KmOwA-SVy1tQOzAKpa6B4uoVw=veMcn3qzkF0KJ8Cq0C_8w@mail.gmail.com>
-Subject: Re: [PATCH 1/2] tests/migration-test: Remove postcopy_data from
- MigrateCommon
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>, 
- Lukas Straub <lukasstraub2@web.de>, Juraj Marcin <jmarcin@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20251221105340.2699327-1-buenocalvachejoel@gmail.com>
+In-Reply-To: <20251221105340.2699327-1-buenocalvachejoel@gmail.com>
+From: Joel Bueno <buenocalvachejoel@gmail.com>
+Date: Wed, 7 Jan 2026 12:29:31 +0100
+X-Gm-Features: AQt7F2qR6rT7-6OMQrmy-quNF3S_-Tq5nZHVLxw0Jo_TxmWx2e_Tjs4P6QxDQ2o
+Message-ID: <CAPDLHD5HGNAu1=JD=V-9YQMpR_8-tWjONex2jj4ZFHbNe9qVcg@mail.gmail.com>
+Subject: Re: [PATCH] hw/block/m25p80: Fix Winbond Fast Read dummy cycles
+To: qemu-devel@nongnu.org
+Cc: Alistair Francis <alistair@alistair23.me>, Kevin Wolf <kwolf@redhat.com>, 
+ Hanna Reitz <hreitz@redhat.com>,
+ "open list:Block layer core" <qemu-block@nongnu.org>
+Content-Type: multipart/alternative; boundary="000000000000bbc78c0647ca9b22"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=buenocalvachejoel@gmail.com; helo=mail-pj1-x102f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,120 +93,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 7 Jan 2026 at 02:04, Peter Xu <peterx@redhat.com> wrote:
-> Now postcopy is not the only user of start_hook / end_hook that will pass
-> in a opaque pointer.  It doesn't need to be defined in MigrateCommon as
-> part of the framework, as all other hook users can pass hook_data around.
-> Do it too for postcopy.
+--000000000000bbc78c0647ca9b22
+Content-Type: text/plain; charset="UTF-8"
+
+Is there any feedback on this patch series?
+
+On Sun, Dec 21, 2025 at 11:53 Joel Bueno <buenocalvachejoel@gmail.com>
+wrote:
+
+> The Fast Read (0Bh) instruction requires 8 dummy clock cycles
+> according to Winbond datasheets (e.g., W25Q256JV Section 8.2.12).
+> However, the current code adds 8 to needed_bytes, which represents
+> bytes, not clock cycles. Since 8 clock cycles equals 1 byte in SPI
+> communication (1 bit per clock edge), this results in 64 dummy
+> clock cycles instead of 8.
 >
-> Signed-off-by: Peter Xu <peterx@redhat.com>
+> Change the Winbond case to add 1 byte (8 clocks) instead of 8 bytes
+> (64 clocks), matching the existing implementation for SST flash and
+> the datasheet specifications.
+>
+> Signed-off-by: Joel Bueno <buenocalvachejoel@gmail.com>
 > ---
->  tests/qtest/migration/framework.h |  1 -
->  tests/qtest/migration/framework.c | 18 ++++++++++--------
->  2 files changed, 10 insertions(+), 9 deletions(-)
+>  hw/block/m25p80.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/tests/qtest/migration/framework.h b/tests/qtest/migration/framework.h
-> index ed85ed502d..0d39bb0d3c 100644
-> --- a/tests/qtest/migration/framework.h
-> +++ b/tests/qtest/migration/framework.h
-> @@ -230,7 +230,6 @@ typedef struct {
->      bool live;
+> diff --git a/hw/block/m25p80.c b/hw/block/m25p80.c
+> index a5336d92ff..21c2118b33 100644
+> --- a/hw/block/m25p80.c
+> +++ b/hw/block/m25p80.c
+> @@ -1001,7 +1001,7 @@ static void decode_fast_read_cmd(Flash *s)
+>          s->needed_bytes += 1;
+>          break;
+>      case MAN_WINBOND:
+> -        s->needed_bytes += 8;
+> +        s->needed_bytes += 1;
+>          break;
+>      case MAN_NUMONYX:
+>          s->needed_bytes += numonyx_extract_cfg_num_dummies(s);
+> --
+> 2.51.0
 >
->      /* Postcopy specific fields */
-> -    void *postcopy_data;
->      PostcopyRecoveryFailStage postcopy_recovery_fail_stage;
->  } MigrateCommon;
 >
-> diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-> index e35839c95f..4f46cf8629 100644
-> --- a/tests/qtest/migration/framework.c
-> +++ b/tests/qtest/migration/framework.c
-> @@ -541,6 +541,7 @@ void migrate_end(QTestState *from, QTestState *to, bool test_dest)
->
->  static int migrate_postcopy_prepare(QTestState **from_ptr,
->                                      QTestState **to_ptr,
-> +                                    void **hook_data,
->                                      MigrateCommon *args)
->  {
->      QTestState *from, *to;
-> @@ -554,7 +555,7 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
->      }
->
->      if (args->start_hook) {
-> -        args->postcopy_data = args->start_hook(from, to);
-> +        *hook_data = args->start_hook(from, to);
->      }
->      migrate_ensure_non_converge(from);
-> @@ -582,7 +583,7 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
->  }
->
->  static void migrate_postcopy_complete(QTestState *from, QTestState *to,
-> -                                      MigrateCommon *args)
-> +                                      void *hook_data, MigrateCommon *args)
->  {
->      MigrationTestEnv *env = migration_get_env();
->
-> @@ -601,8 +602,7 @@ static void migrate_postcopy_complete(QTestState *from, QTestState *to,
->      }
->
->      if (args->end_hook) {
-> -        args->end_hook(from, to, args->postcopy_data);
-> -        args->postcopy_data = NULL;
-> +        args->end_hook(from, to, hook_data);
->      }
->
->      migrate_end(from, to, true);
-> @@ -610,13 +610,14 @@ static void migrate_postcopy_complete(QTestState *from, QTestState *to,
->
->  void test_postcopy_common(MigrateCommon *args)
->  {
-> +    void *hook_data = NULL;
->      QTestState *from, *to;
->
-> -    if (migrate_postcopy_prepare(&from, &to, args)) {
-> +    if (migrate_postcopy_prepare(&from, &to, &hook_data, args)) {
->          return;
->      }
->      migrate_postcopy_start(from, to, &src_state);
-> -    migrate_postcopy_complete(from, to, args);
-> +    migrate_postcopy_complete(from, to, hook_data, args);
->  }
->
->  static void wait_for_postcopy_status(QTestState *one, const char *status)
-> @@ -742,6 +743,7 @@ void test_postcopy_recovery_common(MigrateCommon *args)
->  {
->      QTestState *from, *to;
->      g_autofree char *uri = NULL;
-> +    void *hook_data = NULL;
 
-* Should 'hook_data' pointer be g_autofree too? Where is it free'd otherwise?
+--000000000000bbc78c0647ca9b22
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
->      /*
->       * Always enable OOB QMP capability for recovery tests, migrate-recover is
-> @@ -752,7 +754,7 @@ void test_postcopy_recovery_common(MigrateCommon *args)
->      /* Always hide errors for postcopy recover tests since they're expected */
->      args->start.hide_stderr = true;
->
-> -    if (migrate_postcopy_prepare(&from, &to, args)) {
-> +    if (migrate_postcopy_prepare(&from, &to, &hook_data, args)) {
->          return;
->      }
->
-> @@ -808,7 +810,7 @@ void test_postcopy_recovery_common(MigrateCommon *args)
->      /* Restore the postcopy bandwidth to unlimited */
->      migrate_set_parameter_int(from, "max-postcopy-bandwidth", 0);
->
-> -    migrate_postcopy_complete(from, to, args);
-> +    migrate_postcopy_complete(from, to, hook_data, args);
->  }
->
->  int test_precopy_common(MigrateCommon *args)
+<div dir=3D"auto">Is there any feedback on this patch series?</div><div><br=
+><div class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=3D=
+"gmail_attr">On Sun, Dec 21, 2025 at 11:53 Joel Bueno &lt;<a href=3D"mailto=
+:buenocalvachejoel@gmail.com">buenocalvachejoel@gmail.com</a>&gt; wrote:<br=
+></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-=
+left:1px #ccc solid;padding-left:1ex">The Fast Read (0Bh) instruction requi=
+res 8 dummy clock cycles<br>
+according to Winbond datasheets (e.g., W25Q256JV Section 8.2.12).<br>
+However, the current code adds 8 to needed_bytes, which represents<br>
+bytes, not clock cycles. Since 8 clock cycles equals 1 byte in SPI<br>
+communication (1 bit per clock edge), this results in 64 dummy<br>
+clock cycles instead of 8.<br>
+<br>
+Change the Winbond case to add 1 byte (8 clocks) instead of 8 bytes<br>
+(64 clocks), matching the existing implementation for SST flash and<br>
+the datasheet specifications.<br>
+<br>
+Signed-off-by: Joel Bueno &lt;<a href=3D"mailto:buenocalvachejoel@gmail.com=
+" target=3D"_blank">buenocalvachejoel@gmail.com</a>&gt;<br>
+---<br>
+=C2=A0hw/block/m25p80.c | 2 +-<br>
+=C2=A01 file changed, 1 insertion(+), 1 deletion(-)<br>
+<br>
+diff --git a/hw/block/m25p80.c b/hw/block/m25p80.c<br>
+index a5336d92ff..21c2118b33 100644<br>
+--- a/hw/block/m25p80.c<br>
++++ b/hw/block/m25p80.c<br>
+@@ -1001,7 +1001,7 @@ static void decode_fast_read_cmd(Flash *s)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0s-&gt;needed_bytes +=3D 1;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
+=C2=A0 =C2=A0 =C2=A0case MAN_WINBOND:<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;needed_bytes +=3D 8;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;needed_bytes +=3D 1;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
+=C2=A0 =C2=A0 =C2=A0case MAN_NUMONYX:<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0s-&gt;needed_bytes +=3D numonyx_extract_c=
+fg_num_dummies(s);<br>
+-- <br>
+2.51.0<br>
+<br>
+</blockquote></div></div>
 
-* The changes look okay; But if tests define hook_data = NULL; Where
-does it get populated?
-
-Thank you.
----
-  - Prasad
-
+--000000000000bbc78c0647ca9b22--
 
