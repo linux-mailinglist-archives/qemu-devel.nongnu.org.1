@@ -2,72 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D65CCFBD29
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 04:18:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE61CFBE0B
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 04:43:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdK2v-0003cq-UO; Tue, 06 Jan 2026 22:17:17 -0500
+	id 1vdKRZ-0004C6-FF; Tue, 06 Jan 2026 22:42:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vdK2t-0003ci-BR
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 22:17:15 -0500
-Received: from mgamail.intel.com ([198.175.65.19])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vdK2p-0007TQ-Op
- for qemu-devel@nongnu.org; Tue, 06 Jan 2026 22:17:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1767755832; x=1799291832;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=I+JhpEp77DDEuePeGuwoQJyUL7I5s0qj1VNr0cVv9k4=;
- b=QiCF6wmfEJn0xqwMM0HKfO7xN0aDv3/geK6KqDY17XR8hRr+O08C/pHS
- 7iT5ZqGdy2VjgqT5JxB8IX9XOfhrDXiCXGgFMy4B6XjPw7T+5mvtQVcgk
- YjgkNmjnxGSvS+BoEQIUArbo5zaHziIb/wU2owYyqO4P8Hk0mxm3rXz3m
- 9yqMc8sipT74jeVWh7lWM3vCU/NHbHdOJpNvGZmZIeDJNh0QSGD65EA7l
- x38lCsN90gp+qMgk6l6RP30NW6WQ3uwoSp0kgUfIS/tOUtiINrBqqzQmb
- gYNtZLezDM40pMCbfINGVHaUXiENN6XclvBlgRnvMOJZhnH3Pwsz4v2ii w==;
-X-CSE-ConnectionGUID: cQ+Z1aW8SF6n2ITn7BqxVg==
-X-CSE-MsgGUID: DhSM0r0wTz+ANZhSeHJNDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="69024695"
-X-IronPort-AV: E=Sophos;i="6.21,207,1763452800"; d="scan'208";a="69024695"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jan 2026 19:17:04 -0800
-X-CSE-ConnectionGUID: x8ojevQeRlqD8WvpwRMMKA==
-X-CSE-MsgGUID: GeJSrDnyRh6QdnLhQs7j4A==
-X-ExtLoop1: 1
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa003.fm.intel.com with ESMTP; 06 Jan 2026 19:17:02 -0800
-Date: Wed, 7 Jan 2026 11:42:27 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- Xudong Hao <xudong.hao@intel.com>, Yu Chen <yu.c.chen@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH 10/10] dosc/cpu-models-x86: Add documentation for
- DiamondRapids
-Message-ID: <aV3WI44CYzWECDHh@intel.com>
-References: <20251120071030.961230-1-zhao1.liu@intel.com>
- <20251120071030.961230-11-zhao1.liu@intel.com>
- <aVzwGBeRaNWC3-s7@redhat.com>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1vdKRX-0004An-8V
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 22:42:43 -0500
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1vdKRV-0006ki-RA
+ for qemu-devel@nongnu.org; Tue, 06 Jan 2026 22:42:43 -0500
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-b98983bae80so1034859a12.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Jan 2026 19:42:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1767757360; x=1768362160; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=2WZdMqkGofu2rx/HfpGlnBU6z9ZV0dNCkdv1WcXEaxc=;
+ b=rXCsgV7m8k+vhMh5Q0XuhiYNrAj/c/Eh4CUx4Eus/gCBH4PsWbHr9w7ehqkOEJHgk2
+ ov5ZGrVJqUVMdf6B10JNRCkFC35Rqc7uFH5ZCWOy6SqmMxaqLpe+4QffZZmxo8Y9DK0P
+ 6mgsxkDvr4v4L7YC9hXCeReGb+pZkizrnenu96vUj85Z370IFiztcFhBJzX15rSlJNE6
+ TGElLBXq1waB7/3oQQXODsXkA41Ca9BbiZ5pHgl9zUhOw0QF52ZubA7OElWF2ehL36/z
+ dHE84J7IJMXOUXE+czx+9aqcTlGKNg3xE2qPjgZ+91Kv47CBBKt+SFWhwk5RMJmYqqRC
+ OcRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1767757360; x=1768362160;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2WZdMqkGofu2rx/HfpGlnBU6z9ZV0dNCkdv1WcXEaxc=;
+ b=APaPvIc7YeLNMTh0rJ/quZcnNoocSwbRWNlUAOze7UG/5lDSYnSEuqm7qTuQbaWYZ6
+ unk1x7se7T8PVRIN5Sgj6lI4SDmfC+dZUGOUiyb4nB7HBg+1nPDwiChaW3YSfOCVTGbl
+ XBV9HYlSTu2atErGpoUeYKgTDi03PfyD97uTk9rNT8/05dwwHROvjk7NaKS2axzo2vXO
+ u3sc8lNQDdejQEmPiU5nQBJvJzx2I6tbaQ3Tdfs9N8DHobAT1+1ZkBRoD6MGMeyQpd0a
+ DAC7yJIpA2yuGjwHjuG+sZ7R+aKPYUGFiY3vhsxiZ3+NgtL9ijf5K4/We7/x9SL8FTZY
+ zorQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWLmu/0kJl9Ci2oQer+9w2ohMBfaOpOY47jHEFBWDqwKYQeUhzK6EM0kU9WWShgPqbphK4NLhOvmseT@nongnu.org
+X-Gm-Message-State: AOJu0YwzI/un5pnG/6yKQ3QwADyIrGnXMSV96sVGYxOy/YxShjnWBmKb
+ mO2mQclFoPDM7bPH+GhL3V+fmSqh+b/Wx8VyPAFtFZklK7eYwbJaYTGt1QY6+uZf6gQ=
+X-Gm-Gg: AY/fxX44pY50Q8hNTNTVh/pi2U/+B0OYFQturPEUAakJbigpkjPs2n/BeboN8XeKrkD
+ VrvoczZaR8jPz9x5KJYAiWXKfEDVUCiOlX1SDQocMM1E0/IToH2Lkj9vwZz239pQHusLySx3dCO
+ gCqyCoj72/4U9+SqfFdGSkxmgd/Ndcd+PRUrpOAJ3ml+NsIqdtYbRm7vrhOnne2wyixkaQgzdcs
+ ooL3D8uBqS003JOWbs1dVlP4XEZCD5jF00KoOA64HaW6mwoQMcLbLCofcqUWMxJ/AQQ52yEBMbM
+ GqtKDbWAnBgO06mvwURQlUkD/SPWRIunpikqca8t4WRJ4SSc3Obt3xmafwx1LHLYBmC2PwQMR6l
+ mmmgKCFtN3jXnvsEzh8YXO5HwbUHh3h/QBBwbsTg9tTmq+twv8/9R9ZT2lPZp2Lq1+xZMxaku0q
+ 93YSRGU5uYxXVTlwzloYR/3rwm4i13kkHTgM0jwAmIY/G4OS2PBzsckA55
+X-Google-Smtp-Source: AGHT+IHVIkXrCd2v/yIj36Gx3PQsQKoEJ6bYa7w+u4Y+XlM4AUgDGeDX2HeW1We8K9tADyZQSeUS+g==
+X-Received: by 2002:a05:6a20:244b:b0:345:e30f:d6da with SMTP id
+ adf61e73a8af0-3898f987cb4mr1129746637.37.1767757360086; 
+ Tue, 06 Jan 2026 19:42:40 -0800 (PST)
+Received: from [192.168.1.87] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-34f5fa78f71sm3405736a91.1.2026.01.06.19.42.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 Jan 2026 19:42:39 -0800 (PST)
+Message-ID: <5c86a8d1-40f7-4334-810c-2deb9b63f59d@linaro.org>
+Date: Tue, 6 Jan 2026 19:42:39 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aVzwGBeRaNWC3-s7@redhat.com>
-Received-SPF: pass client-ip=198.175.65.19; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/6] target/microblaze: Build system files once
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+References: <20260106235333.22752-1-philmd@linaro.org>
+ <20260106235333.22752-5-philmd@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20260106235333.22752-5-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x52f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,53 +107,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Daniel,
-
-> > +``DiamondRapids``
-> > +    Intel Xeon Processor.
-> > +
-> > +    Diamond Rapids product has a topology which differs from previous Xeon
-> > +    products. It does not support SMT, but instead features a dual core
-> > +    module (DCM) architecture. It also has core building blocks (CBB - die
-> > +    level in CPU topology). The cache hierarchy is organized as follows:
-> > +    L1 i/d cache is per thread, L2 cache is per DCM, and L3 cache is per
-> > +    CBB. This cache topology can be emulated for DiamondRapids CPU model
-> > +    using the smp-cache configuration as shown below:
+On 1/6/26 3:53 PM, Philippe Mathieu-Daudé wrote:
+> Previous commit removed the last target-specific use in
+> system units, we can now build them once.
 > 
-> Can I request a slight rewording to simplify this:
-
-Yes, of course.
-
->   ``DiamondRapids``
->      Intel Xeon Processor (DiamondRapids, 2025). This does not include SMT
->      but allows the module and die topology levels. The cache hierarchy is
->      L1 i/d cache per thread, L2 cache per module, and L3 cache per die,
->      which can be emulated using using the smp-cache option:
-
-Thanks for your words!
-
-In the previous text, I also aimed to clarify the relationship between
-DCM/CBB and the QEMU topology hierarchy, as these terms appear frequently
-in DMR-related materials. Therefore, I thought a brief explanation of
-DCM/CBB may be helpful:
-
-This does not include SMT but allows the module (dual core module - DCM)
-and die (core building block - CBB) topology levels.
-
-What do you think?
-
-
->      Example:
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   target/microblaze/meson.build | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
->         ::
-> 
->             -machine smp-cache.0.cache=l1d,smp-cache.0.topology=thread,\
->                      smp-cache.1.cache=l1i,smp-cache.1.topology=thread,\
->                      smp-cache.2.cache=l2,smp-cache.2.topology=module,\
->                      smp-cache.3.cache=l3,smp-cache.3.topology=die,\
->                      ...
 
-Thanks,
-Zhao
-
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
