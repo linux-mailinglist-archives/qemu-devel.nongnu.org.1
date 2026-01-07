@@ -2,94 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BEC7CFCADB
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 09:50:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FE38CFCADE
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 09:50:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdPEC-0007yR-F5; Wed, 07 Jan 2026 03:49:16 -0500
+	id 1vdPEH-0008KE-P6; Wed, 07 Jan 2026 03:49:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vdPDr-0007nP-0y
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 03:48:55 -0500
+ id 1vdPDs-0007qW-H8
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 03:48:56 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vdPDp-0008H9-4x
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 03:48:54 -0500
+ id 1vdPDq-0008HU-9B
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 03:48:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767775732;
+ s=mimecast20190719; t=1767775733;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=f/FsbdCWOY56dDxZsECSCejih4ncADi7hDumpDJ65gk=;
- b=d57TST26S9Tpr6M/LlwSpgqx1ocWqMoHKGtI+sCvnX+hDnNaLRdEjEV1yhl3kVFFOguzi+
- DhUeA+NUQo7LU1F8pQJwPWJfr3ZlLRmoFohni88bFb9CfMoVmQ+7tTY6IeLIrgKj9uwiPg
- nBisrHE9w4nA76yzZY33e0JR2JSUoKA=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=5po6tsrt4IQ0D/x9eF96zQfTjykL6tNnFFFoC5rONSQ=;
+ b=OiS9jAS3X9W6Kdl7IPHWxhsQIiKxRTPyxPIdI8L4agETlGeeiYsLzdAN0gMExCoUIC8inf
+ zFADMUIGAFe2sZmABMiwwgDaYtbNvstnDcXlNUQG8pL0IWU8rIWVvQoCIFGv+qjW8bBlyi
+ 2KGVUkmudoLTMhr5WbG+9ZjNNaLweUI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-346-qlp-v9NgMNqT1iIphehwqA-1; Wed, 07 Jan 2026 03:48:51 -0500
-X-MC-Unique: qlp-v9NgMNqT1iIphehwqA-1
-X-Mimecast-MFC-AGG-ID: qlp-v9NgMNqT1iIphehwqA_1767775730
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4775f51ce36so17338215e9.1
- for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 00:48:50 -0800 (PST)
+ us-mta-356-FZPFTHJ-OjaGdJ5-lG7PLg-1; Wed, 07 Jan 2026 03:48:52 -0500
+X-MC-Unique: FZPFTHJ-OjaGdJ5-lG7PLg-1
+X-Mimecast-MFC-AGG-ID: FZPFTHJ-OjaGdJ5-lG7PLg_1767775731
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4779edba8f3so13748195e9.3
+ for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 00:48:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1767775729; x=1768380529; darn=nongnu.org;
+ d=redhat.com; s=google; t=1767775730; x=1768380530; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=f/FsbdCWOY56dDxZsECSCejih4ncADi7hDumpDJ65gk=;
- b=R8rappoSQurWKn9b8QXk40gEfPjTxFIfRZ3uy9trvIA99M9jVQZ6EGnMsxQRE1EJiy
- 1rZi6e+oPruAO6Yol3YgYKGaDiBsDRRbhkuL8rPDIx3ya3LGO9Jaa8v8RVR09WMYZcJt
- a5Ae4drlhhg7gRof1ZyRCGToA3mO3Z1qlLel29CB59TtmGQLsWP13L4gxYoiN+iirL7R
- 9hlvP5flJrEmEEbbXikEhB5YTIbtP6RX1e0auCPz9FtY40woqYCN/JLplJ7NQqy4/Tzk
- tcXhxJpZJiZ+OMSWNCTPhzVYvDJaG32wJySottfu9Oak9GdtfLEgbRqsw5pTMEkNEBTO
- /Ydg==
+ bh=5po6tsrt4IQ0D/x9eF96zQfTjykL6tNnFFFoC5rONSQ=;
+ b=fwsku4m0OLIl9ranVXIuh8hxgTNsAXbkv2pec31G8NbHqJI3B1+soGsF4N7eeQ65ty
+ YrY1vQh7AzJoE2B/KOKlCELChY+eR1KiMuNLXOJowxi/KRO68tGLYBmvlfgD0hjmgEKo
+ eQlOQWG3h98fpJvfq/akIMTkGbzKr0stzUAyO0XS3bwoXtQaL0ziNvJ2V3hxbDcrLjdH
+ bbZYWWdu4JlVBEGM2pab47KBqZwrLfCGmBNu5N5FiUc1Co4hoKpHIdsO5N7PqPdzZ7rH
+ f+FtnDTFqs5EhFGWrdlqW51HydFWLqcE8dNK6r3NcbcvOw1VaOUGU6RlXKfZcOt54jwc
+ cCjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767775729; x=1768380529;
+ d=1e100.net; s=20230601; t=1767775730; x=1768380530;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=f/FsbdCWOY56dDxZsECSCejih4ncADi7hDumpDJ65gk=;
- b=eBHGp47mqJ5Xb41ZcT7ZbvQbUfI7CF6zjIRSTrNP27WgJNdyuQabnfzDK7YAxWTvfW
- 3/tJPV3JdPa1aW30ZDrgcHm+crpEUpKI0DPNzKMVhq+omuzoaZU005EBestTxBZSUoFT
- KuEz0+mNWXyFEY2lEYfMcsRfuSmtFCuQtFXVLztgKShiMcX0tBKPApBanYlz678aFda3
- 27e2PEb+K3OyoUNMwNY/inqRysCodPkLB/5LkD3nBuu3aDQ0l4Ps9W07/QUgdvBcJ2/V
- UiXyuMr5jkyTRoTU62yZ1SZQE8pJAoUVnQD3G6JEZZPUs3mTSiqRRE/PR2ouWHP8Pahw
- ihKA==
-X-Gm-Message-State: AOJu0YwRb/g6TPpFOt6u38mcI8veAQc4n9GCf/u3DaPRMrJLI1+yCdiv
- QP0WmOVY72MxQ/KWrXi42ykJEpzz41os4trOj1EGYgDQrkJL5NDftsUo/zE/zWGBUDjF/WWA6gm
- HMq9dv9mN0Sg6/yjyQZFzv1HjAy8OvmDchbYtkR59qheRUZfUh0LM1HGx4ptlGPKJAVZ2Axknh5
- USJ/EwjF8LFhvidRE3O6O/1XUU5iPVmmjMPIgXcPqS
-X-Gm-Gg: AY/fxX594Mo2JhGWiPhdw6OJzoHfS3qjuwYS0znoT4onrVD2vWaKv9QQXhXv8urnQvD
- 0mE9z9FEBflAqjhhym1s/7HiC8GsoxkyIV43uXsAokysOWU62VuQp3JX/93nn/P4KTlUKhctNwx
- NfucnQmdSMmgYASZxPxnrEUPNr8plyVDhDNUsPXh5o3g4ljuMxznyrvBz0dK0VfjjoiyrKemCDP
- /Es2KHG5+BbEIUHGe4+LxKUWmtL5u+sond9g7YNdSUgAKiCTn6toFvkrfGzvksSSTnZIpP/5iu7
- Ni9K4jQI/ZRPhqKRB+ggWGV4wpCQZBF2rQ7PwPziPI7Jmk6Su54j2qMVlc+zxxhILGp9Tn5PBwy
- xJXHb6Vmlj1Z4u4Q67FcPmmmFzTxehENBxv/HVatcqgVPPd3vUR2FeWleN3kq/upJvjkDi+AUYt
- 6OCXfV/x/LREqmbw==
-X-Received: by 2002:a05:600c:a16:b0:47b:de05:aa28 with SMTP id
- 5b1f17b1804b1-47d84b0aadcmr15982765e9.2.1767775729008; 
+ bh=5po6tsrt4IQ0D/x9eF96zQfTjykL6tNnFFFoC5rONSQ=;
+ b=sc8zk8nZVB5psNf25EYS8pQdgMjIPr41utBEjU4f0o5fI08B93f9oiZfud0LWZSAi8
+ epM1Zwt7UBNim930Blu8dCrSywszc2Ylr9DIuc4YefCSzz4PArb7PgBZxjKf1JugQRqs
+ fSiN1RCg43i5feeLkp2Mx46gvsoDYFASCZ9IdUN1s7PTc9TK4XLjhX75zWakXbeKoojv
+ 87kkxsCYTbzYHgTEpLlXfFKiuHLZ4Omh9Qd3M5oySH9nlH7VkrC8qpp8Io/5w4AkGAu+
+ FN9PvLzeEtipdb4S3uwDwGbCil3kvt5M3UNY1IHyz2DwU6uea5VtURiqgYEW8M3s67HP
+ U0JQ==
+X-Gm-Message-State: AOJu0Yw6BqWnvVLJoZkcW9tNdxry8YqGT8x0kqQ305o4GlHjSqbUEv+v
+ +kQnx8YOBNE9THBkNeFEN6W2pyFRB6kEe+D9dgpMinP1vAJka8U8fLy7XcoawQwAK4NYJxj5/5d
+ cMSkgu42qkJbsoOH7Q2QrJaCUwsgLpNliccF65hwo74+rBOBP+ZyH6ZmUCbCHpmXwIcIutnyTz1
+ sODG38mJR6FvTg/mYxrS/trVnEE5ogvC/h7xtJ/9eU
+X-Gm-Gg: AY/fxX4kaab5dLu7N53nkNZFpbN4bndmFClt92e44jD8qNqB5ji/O6wkYPdjrBEoRxs
+ eNvGkPLQo91QmlcsbiOJIpWHvGXJXJNQq5kjwNRGeMNxY8UDF71T2GTL3y0etM0FLcDlWLNYZfT
+ eNRvhojL5Azc3zy/yHWVaCNIAhF/oeaKoCyTMxfkV/afefsYpALFISzIdXFIqhtiONaXVQ4Sbfm
+ Ewr1mUs0eGanurn/MHoO0kPjVn4Nn4gXtUskd1OyR4Vz8tFd66myN+ehY9tpIKA5cyneLEXBoQU
+ tRX2Ta/QmlLN2DO+GLzFLlfGzpyeCRsWedwwodRzd33/NBT5Wnptw550Wjutiio+o13x1Ywu3iP
+ N7wBsN4CBLNGvVEGafEsWWunYV8Y2mXujkOq2m/eLx0TKA4cvjY6T3QpXs/BXu+Wj9FTbu4N8j9
+ j53QEfBAjxfUVBUA==
+X-Received: by 2002:a05:600c:1385:b0:477:9cdb:e337 with SMTP id
+ 5b1f17b1804b1-47d84b0a929mr13878255e9.7.1767775730285; 
+ Wed, 07 Jan 2026 00:48:50 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF/RsxVjTpz3FafFQPpLvfcqF3PTXEKnv4NXhyKWXjD18PJUmNPcJM8hpJG4DFcpIfizDcUtA==
+X-Received: by 2002:a05:600c:1385:b0:477:9cdb:e337 with SMTP id
+ 5b1f17b1804b1-47d84b0a929mr13877975e9.7.1767775729819; 
  Wed, 07 Jan 2026 00:48:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHru43wlLq870Le44ky7slXIf33c1MeOM6bTg0/ZZVBIq0VnslBIdKkE8ZGD92BblvG0E2tOA==
-X-Received: by 2002:a05:600c:a16:b0:47b:de05:aa28 with SMTP id
- 5b1f17b1804b1-47d84b0aadcmr15982385e9.2.1767775728417; 
- Wed, 07 Jan 2026 00:48:48 -0800 (PST)
 Received: from [192.168.10.48] ([151.61.26.160])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d7f410c6csm92171235e9.1.2026.01.07.00.48.47
+ 5b1f17b1804b1-47d86c6ff40sm15191825e9.2.2026.01.07.00.48.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Jan 2026 00:48:47 -0800 (PST)
+ Wed, 07 Jan 2026 00:48:49 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: armbru@redhat.com
-Subject: [PATCH 3/5] json-streamer: remove token queue
-Date: Wed,  7 Jan 2026 09:48:38 +0100
-Message-ID: <20260107084840.150843-4-pbonzini@redhat.com>
+Subject: [PATCH 4/5] json-streamer: do not heap-allocate JSONToken
+Date: Wed,  7 Jan 2026 09:48:39 +0100
+Message-ID: <20260107084840.150843-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260107084840.150843-1-pbonzini@redhat.com>
 References: <20260107084840.150843-1-pbonzini@redhat.com>
@@ -120,304 +120,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now fully exploit the push parser, feeding it one token at a time
-without having to wait until braces and brackets are balanced.
-
-While the nesting counts are retained for error recovery purposes,
-the system can now report the first parsing error without waiting
-for delimiters to be balanced.  This also means that JSON_ERROR
-can be handled in json-parser.c, not json-streamer.c.
-
-After reporting the error, json-streamer.c then enters an error recovery
-mode where subsequent errors are suppressed.  This mimics the previous
-error reporting behavior, but it provides prompt feedback on parsing
-errors.  As an example, here is an example interaction with qemu-ga.
-
-BEFORE (error reported only once braces are balanced):
-
-   >> {'execute':foo
-   >> }
-   << {"error": {"class": "GenericError", "desc": "JSON parse error, invalid keyword 'foo'"}}
-   >> {'execute':'somecommand'}
-   << {"error": {"class": "CommandNotFound", "desc": "The command somecommand has not been found"}}
-
-AFTER (error reported immediately, but similar error recovery as before):
-
-   >> {'execute':foo
-   << {"error": {"class": "GenericError", "desc": "JSON parse error, invalid keyword 'foo'"}}
-   >> }
-   >> {'execute':'qmp_capabilities'}
-   << {"error": {"class": "CommandNotFound", "desc": "The command qmp_capabilities has not been found"}}
+This is not needed with a push parser.  Since it processes tokens
+immediately, the JSONToken can be created directly on the stack
+and does not need to copy the lexer's string data.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/qobject/json-parser.h |   5 +-
- qobject/json-parser-int.h     |   1 +
- qobject/json-parser.c         |  26 +++++---
- qobject/json-streamer.c       | 116 ++++++++++++++--------------------
- 4 files changed, 68 insertions(+), 80 deletions(-)
+ qobject/json-parser-int.h |  8 ++++++--
+ qobject/json-parser.c     | 18 ------------------
+ qobject/json-streamer.c   |  4 ++--
+ 3 files changed, 8 insertions(+), 22 deletions(-)
 
-diff --git a/include/qobject/json-parser.h b/include/qobject/json-parser.h
-index 05346fa816b..923eb74ca00 100644
---- a/include/qobject/json-parser.h
-+++ b/include/qobject/json-parser.h
-@@ -29,11 +29,12 @@ typedef struct JSONParserContext {
- typedef struct JSONMessageParser {
-     void (*emit)(void *opaque, QObject *json, Error *err);
-     void *opaque;
--    va_list *ap;
-     JSONLexer lexer;
-+    JSONParserContext parser;
-     int brace_count;
-     int bracket_count;
--    GQueue tokens;
-+    int token_count;
-+    bool error;
-     uint64_t token_size;
- } JSONMessageParser;
- 
 diff --git a/qobject/json-parser-int.h b/qobject/json-parser-int.h
-index 05e2e8e1831..1f435cb8eb2 100644
+index 1f435cb8eb2..5a6b5c9af90 100644
 --- a/qobject/json-parser-int.h
 +++ b/qobject/json-parser-int.h
-@@ -50,6 +50,7 @@ void json_message_process_token(JSONLexer *lexer, GString *input,
- /* json-parser.c */
- JSONToken *json_token(JSONTokenType type, int x, int y, GString *tokstr);
- void json_parser_init(JSONParserContext *ctxt, va_list *ap);
-+void json_parser_reset(JSONParserContext *ctxt);
- QObject *json_parser_feed(JSONParserContext *ctxt, const JSONToken *token, Error **errp);
- void json_parser_destroy(JSONParserContext *ctxt);
+@@ -35,7 +35,12 @@ typedef enum json_token_type {
+     JSON_MAX = JSON_END_OF_INPUT
+ } JSONTokenType;
  
+-typedef struct JSONToken JSONToken;
++typedef struct JSONToken {
++    JSONTokenType type;
++    int x;
++    int y;
++    char *str;
++} JSONToken;
+ 
+ /* json-lexer.c */
+ void json_lexer_init(JSONLexer *lexer, bool enable_interpolation);
+@@ -48,7 +53,6 @@ void json_message_process_token(JSONLexer *lexer, GString *input,
+                                 JSONTokenType type, int x, int y);
+ 
+ /* json-parser.c */
+-JSONToken *json_token(JSONTokenType type, int x, int y, GString *tokstr);
+ void json_parser_init(JSONParserContext *ctxt, va_list *ap);
+ void json_parser_reset(JSONParserContext *ctxt);
+ QObject *json_parser_feed(JSONParserContext *ctxt, const JSONToken *token, Error **errp);
 diff --git a/qobject/json-parser.c b/qobject/json-parser.c
-index 338f0c5aae6..7abdea4dacb 100644
+index 7abdea4dacb..2fede59842f 100644
 --- a/qobject/json-parser.c
 +++ b/qobject/json-parser.c
-@@ -541,21 +541,27 @@ JSONToken *json_token(JSONTokenType type, int x, int y, GString *tokstr)
-     return token;
- }
+@@ -24,13 +24,6 @@
+ #include "qobject/qstring.h"
+ #include "json-parser-int.h"
  
--void json_parser_init(JSONParserContext *ctxt, va_list *ap)
--{
--    ctxt->err = NULL;
--    ctxt->stack = g_queue_new();
--    ctxt->ap = ap;
--}
+-struct JSONToken {
+-    JSONTokenType type;
+-    int x;
+-    int y;
+-    char str[];
+-};
 -
--void json_parser_destroy(JSONParserContext *ctxt)
-+void json_parser_reset(JSONParserContext *ctxt)
- {
-     JSONParserStackEntry *entry;
- 
-+    ctxt->err = NULL;
-     while ((entry = g_queue_pop_tail(ctxt->stack)) != NULL) {
-         qobject_unref(entry->partial);
-         g_free(entry);
-     }
-+}
-+
-+void json_parser_init(JSONParserContext *ctxt, va_list *ap)
-+{
-+    ctxt->stack = g_queue_new();
-+    ctxt->ap = ap;
-+    json_parser_reset(ctxt);
-+}
-+
-+void json_parser_destroy(JSONParserContext *ctxt)
-+{
-+    json_parser_reset(ctxt);
-     g_queue_free(ctxt->stack);
-     ctxt->stack = NULL;
+ /*
+  * Objects: { } | { members }
+  * - Empty: { -> AFTER_LCURLY -> }
+@@ -529,17 +522,6 @@ static QObject *json_parser_parse_token(JSONParserContext *ctxt, const JSONToken
+     return NULL;
  }
-@@ -566,6 +572,10 @@ QObject *json_parser_feed(JSONParserContext *ctxt, const JSONToken *token, Error
  
-     assert(!ctxt->err);
-     switch (token->type) {
-+    case JSON_ERROR:
-+        parse_error(ctxt, token, "JSON parse error, stray '%s'", token->str);
-+        break;
-+
-     case JSON_END_OF_INPUT:
-         /* Check for premature end of input */
-         if (!g_queue_is_empty(ctxt->stack)) {
+-JSONToken *json_token(JSONTokenType type, int x, int y, GString *tokstr)
+-{
+-    JSONToken *token = g_malloc(sizeof(JSONToken) + tokstr->len + 1);
+-
+-    token->type = type;
+-    memcpy(token->str, tokstr->str, tokstr->len);
+-    token->str[tokstr->len] = 0;
+-    token->x = x;
+-    token->y = y;
+-    return token;
+-}
+ 
+ void json_parser_reset(JSONParserContext *ctxt)
+ {
 diff --git a/qobject/json-streamer.c b/qobject/json-streamer.c
-index 6c93e6fd78d..a1210128ac1 100644
+index a1210128ac1..07e0ef51ce3 100644
 --- a/qobject/json-streamer.c
 +++ b/qobject/json-streamer.c
-@@ -1,5 +1,5 @@
- /*
-- * JSON streaming support
-+ * JSON parser - callback interface and error recovery
-  *
-  * Copyright IBM, Corp. 2009
-  *
-@@ -19,97 +19,73 @@
- #define MAX_TOKEN_COUNT (2ULL << 20)
- #define MAX_NESTING (1 << 10)
- 
--static void json_message_free_tokens(JSONMessageParser *parser)
--{
--    JSONToken *token;
--
--    while ((token = g_queue_pop_head(&parser->tokens))) {
--        g_free(token);
--    }
--}
--
- void json_message_process_token(JSONLexer *lexer, GString *input,
+@@ -23,7 +23,7 @@ void json_message_process_token(JSONLexer *lexer, GString *input,
                                  JSONTokenType type, int x, int y)
  {
      JSONMessageParser *parser = container_of(lexer, JSONMessageParser, lexer);
--    JSONParserContext ctxt;
--    QObject *json = NULL;
-+    g_autofree JSONToken *token = json_token(type, x, y, input);
+-    g_autofree JSONToken *token = json_token(type, x, y, input);
++    JSONToken token = (JSONToken) { .type = type, .x = x, .y = y, .str = input->str };
      Error *err = NULL;
--    JSONToken *token;
  
-+    parser->token_size += input->len;
-+    parser->token_count++;
-+
-+    /* Detect message boundaries for error recovery purposes.  */
-     switch (type) {
-     case JSON_LCURLY:
-         parser->brace_count++;
-         break;
-     case JSON_RCURLY:
--        parser->brace_count--;
-+        if (parser->brace_count > 0) {
-+            parser->brace_count--;
-+        }
-         break;
-     case JSON_LSQUARE:
-         parser->bracket_count++;
-         break;
-     case JSON_RSQUARE:
--        parser->bracket_count--;
--        break;
--    case JSON_ERROR:
--        error_setg(&err, "JSON parse error, stray '%s'", input->str);
--        goto out_emit;
--    case JSON_END_OF_INPUT:
--        if (g_queue_is_empty(&parser->tokens)) {
--            return;
-+        if (parser->bracket_count > 0) {
-+            parser->bracket_count--;
-         }
-         break;
-     default:
-         break;
-     }
- 
--    /*
--     * Security consideration, we limit total memory allocated per object
--     * and the maximum recursion depth that a message can force.
--     */
--    if (parser->token_size + input->len + 1 > MAX_TOKEN_SIZE) {
--        error_setg(&err, "JSON token size limit exceeded");
--        goto out_emit;
--    }
--    if (g_queue_get_length(&parser->tokens) + 1 > MAX_TOKEN_COUNT) {
--        error_setg(&err, "JSON token count limit exceeded");
--        goto out_emit;
--    }
--    if (parser->bracket_count + parser->brace_count > MAX_NESTING) {
--        error_setg(&err, "JSON nesting depth limit exceeded");
--        goto out_emit;
--    }
-+    /* during error recovery eat tokens until parentheses balance */
-+    if (!parser->error) {
-+        /*
-+         * Security consideration, we limit total memory allocated per object
-+         * and the maximum recursion depth that a message can force.
-+         */
-+        if (parser->token_size > MAX_TOKEN_SIZE) {
-+            error_setg(&err, "JSON token size limit exceeded");
-+        } else if (parser->token_count > MAX_TOKEN_COUNT) {
-+            error_setg(&err, "JSON token count limit exceeded");
-+        } else if (parser->bracket_count + parser->brace_count > MAX_NESTING) {
-+            error_setg(&err, "JSON nesting depth limit exceeded");
-+        } else {
-+            QObject *json = json_parser_feed(&parser->parser, token, &err);
-+            if (json) {
-+                parser->emit(parser->opaque, json, NULL);
-+            }
-+        }
- 
--    token = json_token(type, x, y, input);
--    parser->token_size += input->len;
--
--    g_queue_push_tail(&parser->tokens, token);
--
--    if ((parser->brace_count > 0 || parser->bracket_count > 0)
--        && parser->brace_count >= 0 && parser->bracket_count >= 0
--        && type != JSON_END_OF_INPUT) {
--        return;
--    }
--
--    json_parser_init(&ctxt, parser->ap);
--
--    /* Process all tokens in the queue */
--    while (!g_queue_is_empty(&parser->tokens)) {
--        token = g_queue_pop_head(&parser->tokens);
--        json = json_parser_feed(&ctxt, token, &err);
--        g_free(token);
--        if (json || err) {
--            break;
-+        if (err) {
-+            parser->emit(parser->opaque, NULL, err);
-+            /* start recovery */
-+            parser->error = true;
-         }
-     }
- 
--    json_parser_destroy(&ctxt);
--
--out_emit:
--    parser->brace_count = 0;
--    parser->bracket_count = 0;
--    json_message_free_tokens(parser);
--    parser->token_size = 0;
--    parser->emit(parser->opaque, json, err);
-+    if ((parser->brace_count == 0 && parser->bracket_count == 0)
-+        || type == JSON_END_OF_INPUT) {
-+        parser->error = false;
-+        parser->brace_count = 0;
-+        parser->bracket_count = 0;
-+        parser->token_count = 0;
-+        parser->token_size = 0;
-+        json_parser_reset(&parser->parser);
-+    }
- }
- 
- void json_message_parser_init(JSONMessageParser *parser,
-@@ -119,12 +95,13 @@ void json_message_parser_init(JSONMessageParser *parser,
- {
-     parser->emit = emit;
-     parser->opaque = opaque;
--    parser->ap = ap;
-+    parser->error = false;
-     parser->brace_count = 0;
-     parser->bracket_count = 0;
--    g_queue_init(&parser->tokens);
-+    parser->token_count = 0;
-     parser->token_size = 0;
- 
-+    json_parser_init(&parser->parser, ap);
-     json_lexer_init(&parser->lexer, !!ap);
- }
- 
-@@ -137,11 +114,10 @@ void json_message_parser_feed(JSONMessageParser *parser,
- void json_message_parser_flush(JSONMessageParser *parser)
- {
-     json_lexer_flush(&parser->lexer);
--    assert(g_queue_is_empty(&parser->tokens));
- }
- 
- void json_message_parser_destroy(JSONMessageParser *parser)
- {
-     json_lexer_destroy(&parser->lexer);
--    json_message_free_tokens(parser);
-+    json_parser_destroy(&parser->parser);
- }
+     parser->token_size += input->len;
+@@ -64,7 +64,7 @@ void json_message_process_token(JSONLexer *lexer, GString *input,
+         } else if (parser->bracket_count + parser->brace_count > MAX_NESTING) {
+             error_setg(&err, "JSON nesting depth limit exceeded");
+         } else {
+-            QObject *json = json_parser_feed(&parser->parser, token, &err);
++            QObject *json = json_parser_feed(&parser->parser, &token, &err);
+             if (json) {
+                 parser->emit(parser->opaque, json, NULL);
+             }
 -- 
 2.52.0
 
