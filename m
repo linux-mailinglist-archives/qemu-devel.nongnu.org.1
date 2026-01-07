@@ -2,75 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FF13CFD29D
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 11:27:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0BF0CFD41E
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 11:51:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdQlL-0000yx-H1; Wed, 07 Jan 2026 05:27:35 -0500
+	id 1vdR6q-00067j-DB; Wed, 07 Jan 2026 05:49:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vdQlI-0000qL-U4
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 05:27:32 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1vdR6o-00062u-3v
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 05:49:46 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vdQlH-0005t3-3t
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 05:27:32 -0500
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1vdR6m-0001KC-6q
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 05:49:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767781649;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ s=mimecast20190719; t=1767782981;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=LkLBY3b4HKc7Dnp8QpnTuvCHtXY90DZNUs/UBD3mHQQ=;
- b=OH+CllYprKZRVgVM65XGc1WTfyDQ8rcsYlosz/dj7qYSxlrgYiHX40TJg4A0eSckKyJu5l
- J3xvrVrx71FdYObH5CsAx0ofxJ+upqTRZL1E91eKWpmFfO1vt8bfD4bwLImVpVfWPsrrWV
- /M9O+rjFkJWwI4Nvf45PrlBo/bMHh4s=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-610-6r35nsC_MvODcA2Kzr8G8g-1; Wed,
- 07 Jan 2026 05:27:28 -0500
-X-MC-Unique: 6r35nsC_MvODcA2Kzr8G8g-1
-X-Mimecast-MFC-AGG-ID: 6r35nsC_MvODcA2Kzr8G8g_1767781647
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2E19B18002C5; Wed,  7 Jan 2026 10:27:27 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.169])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3633218007D2; Wed,  7 Jan 2026 10:27:24 +0000 (UTC)
-Date: Wed, 7 Jan 2026 10:27:21 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: marcandre.lureau@redhat.com
-Cc: qemu-devel@nongnu.org, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- "open list:X86 KVM CPUs" <kvm@vger.kernel.org>
-Subject: Re: [PATCH] Add query-tdx-capabilities
-Message-ID: <aV41CQP0JODTdRqy@redhat.com>
-References: <20260106183620.2144309-1-marcandre.lureau@redhat.com>
+ bh=MufZbfFhp1cHM4WRTfq7y1J61SrlyJrkWojaN4dJaP4=;
+ b=D++f/fONlGYn8OKDAVOZYMGOs6R49uJxsQwVvjq87lj89gooEMiqeRu2bn4uLaQcT7AlWM
+ OGd6MU6FY5oopycss4mh5Mnyexv4uSUU3/y9vCe4oDiPVKZw2zPa5qzFbiWxfgKI89LhCF
+ euxtgvUxO/SXGxPXCTKT8LiJy23HTnI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-657-fi8-_UQMPuOpEsEalKJFJQ-1; Wed, 07 Jan 2026 05:49:40 -0500
+X-MC-Unique: fi8-_UQMPuOpEsEalKJFJQ-1
+X-Mimecast-MFC-AGG-ID: fi8-_UQMPuOpEsEalKJFJQ_1767782979
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-47777158a85so24310305e9.3
+ for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 02:49:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=redhat.com; s=google; t=1767782979; x=1768387779; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=MufZbfFhp1cHM4WRTfq7y1J61SrlyJrkWojaN4dJaP4=;
+ b=Ky2VDeUcy6B9k9CPLFYzfWyoGIgdiNy0WE5KKfrviDr9NRlbZfar5myUr353DzA9Yj
+ f+AkC+FxnI+x0j2JnDfjX9+2sdwo6cPy3TKRxQ2VpQVO8tmz6WhY4tdrxKq5NwLTrSSr
+ CmX8cc/BHoW13ddx5cUTLMv2CrCBug8uDepipjV6zoIa11WXzGbLlHholRNojJGgGRVv
+ EDJR6iUEnvuwWBSmyh+omr76vmbzpnrkNYGrHi/xqTEDpzvd4ORSzn2j21Q3mRsqAU/t
+ EEH09uZI3ZTiknnLezlndl6elNEnbLYCy5J339iNQ5woASa/i8riQPIdmDkhCz0uaW0D
+ LHMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1767782979; x=1768387779;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=MufZbfFhp1cHM4WRTfq7y1J61SrlyJrkWojaN4dJaP4=;
+ b=aHshi2iQCGhXOuDUgxAKJFP7ckUpy0+ErOtNs15PvCOWGTlR2TloCMLbmV0LRf4XP/
+ oubjP4vrLekPEYeMdr5kWLB6uGpFTuVdHy8hOxe6/mv8UQQfsJPkCh7BzCDpH0klyWF9
+ k9BcxhoHjh1HBmX3tWyXoLRvYtFrIyGzrMZt/8K/Amd8TWbYIZX+isQpCFrlHkvLJfPI
+ 9av9p4IOhV/AsUVLeePe36flu2wKtv62uMywyNE56b1xd7DlO8W0gJpI6VJXexbYkHc0
+ bPj4yKL08WMM+cudLT006JS7IPyjkogCpIEvwxPxpZCR5Hg9fwpKp6+U9e1lfOwlxdo5
+ K//g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWSK9aVWGEq28qM1xs9T+ucC/0b9cRG4Db6euueif99/jZPe5IM9HpM2s7Xwu6tRrOJNUqd/XxVABun@nongnu.org
+X-Gm-Message-State: AOJu0YxLiaxpZpb+OKSFvtFtGjnhabLPBRxZNDfmvwhzwHMXjFQnECfw
+ RGPcnivbKp3T6BVszGWG6EughKOGLU+nwFJk8iNUW/9rlb8WPIX0h3Y5EINLvb0ZVvJSjPW+yGX
+ 0lvA4IlkahYuSeC6OsCZzgJSCd1T45R1zXWcP1xaQBUz9GJVXfOxeU7E8OyrXReE02iHmgy229C
+ 00hl/FTQVdcsaduSu/xCinaPLD2S34T3oOmdMm7N4sPA==
+X-Gm-Gg: AY/fxX5s2EPh17HOPa2mFxkyHztlvsJ9y/0mmT3GnOjvYAzCrabekxenCoEOqpYWWrl
+ GAiY3LqINMi5eoF+pKj4JrA8hHFVXjLCwG57VKKt0GMOE4EhWa1ml7Qpm+FfMVSDatfWRYDzNno
+ AP2+AbFSTWC8rpxNyRJ52TW2l0klMWzJsmE1BYBs2JBn2JnIvBC+dq2JFYlnH+wM55cgI=
+X-Received: by 2002:a05:600c:3b15:b0:475:dd89:acb with SMTP id
+ 5b1f17b1804b1-47d84b3472amr19902465e9.22.1767782978972; 
+ Wed, 07 Jan 2026 02:49:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGfj5GZhIz71VuqkEG5+RHfSdtr7z7bAGT/FLl8ixHjAkCEwgg9TSwQHZajfpVtSc5W1w2XLpsiUaQDU12Ljvo=
+X-Received: by 2002:a05:600c:3b15:b0:475:dd89:acb with SMTP id
+ 5b1f17b1804b1-47d84b3472amr19902285e9.22.1767782978562; Wed, 07 Jan 2026
+ 02:49:38 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260106183620.2144309-1-marcandre.lureau@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+References: <20251222114822.327623-1-ppandit@redhat.com>
+ <87h5tilhcq.fsf@suse.de> <aUq1oA73W9rAdCgG@x1.local>
+ <CAE8KmOzcOdYhnxpDr8BMV8zjixpEh9r+COe=xyLfXCVWKD0CRw@mail.gmail.com>
+ <87zf6q26q5.fsf@suse.de>
+In-Reply-To: <87zf6q26q5.fsf@suse.de>
+From: Prasad Pandit <ppandit@redhat.com>
+Date: Wed, 7 Jan 2026 16:19:21 +0530
+X-Gm-Features: AQt7F2ofIZRu7Of4iS7jEyWmY904lm-vpIQLs5wv-r7dw-RaPuj0ArpQp5MvRjw
+Message-ID: <CAE8KmOzxDn7X7rohJGT5AeW3+5oJFgueVtaQCpUc2bmBvrgRXg@mail.gmail.com>
+Subject: Re: [PATCH] migration: introduce MIGRATION_STATUS_FAILING
+To: Fabiano Rosas <farosas@suse.de>
+Cc: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org, 
+ Prasad Pandit <pjp@fedoraproject.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,193 +112,91 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 06, 2026 at 10:36:20PM +0400, marcandre.lureau@redhat.com wrote:
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
-> 
-> Return an empty TdxCapability struct, for extensibility and matching
-> query-sev-capabilities return type.
-> 
-> Fixes: https://issues.redhat.com/browse/RHEL-129674
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> ---
->  qapi/misc-i386.json        | 30 ++++++++++++++++++++++++++++++
->  target/i386/kvm/kvm_i386.h |  1 +
->  target/i386/kvm/kvm.c      |  5 +++++
->  target/i386/kvm/tdx-stub.c |  8 ++++++++
->  target/i386/kvm/tdx.c      | 21 +++++++++++++++++++++
->  5 files changed, 65 insertions(+)
-> 
-> diff --git a/qapi/misc-i386.json b/qapi/misc-i386.json
-> index 05a94d6c416..f10e4338b48 100644
-> --- a/qapi/misc-i386.json
-> +++ b/qapi/misc-i386.json
-> @@ -225,6 +225,36 @@
->  ##
->  { 'command': 'query-sev-capabilities', 'returns': 'SevCapability' }
->  
-> +##
-> +# @TdxCapability:
-> +#
-> +# The struct describes capability for Intel Trust Domain Extensions
-> +# (TDX) feature.
-> +#
-> +# Since: 11.0
-> +##
-> +{ 'struct': 'TdxCapability',
-> +  'data': { } }
-> +
-> +##
-> +# @query-tdx-capabilities:
-> +#
-> +# Get TDX capabilities.
-> +#
-> +# This is only supported on Intel X86 platforms with KVM enabled.
-> +#
-> +# Errors:
-> +#     - If TDX is not available on the platform, GenericError
-> +#
-> +# Since: 11.0
-> +#
-> +# .. qmp-example::
-> +#
-> +#     -> { "execute": "query-tdx-capabilities" }
-> +#     <- { "return": {} }
-> +##
-> +{ 'command': 'query-tdx-capabilities', 'returns': 'TdxCapability' }
+Hi,
 
-This matches the conceptual design used with query-sev-capabilities,
-where the lack of SEV support has to be inferred from the command
-returning "GenericError". On the one hand this allows the caller to
-distinguish different scenarios - unsupported due to lack of HW
-support, vs unsupported due to lack of KVM support. On the other
-hand 'GenericError' might reflect other things that should be
-considered fatal errors, rather than indicitive of lack of support
-in the host.
+On Tue, 6 Jan 2026 at 19:17, Fabiano Rosas <farosas@suse.de> wrote:
+> If we had a linear state transition table, i.e. a DFA without any
+> branching, that would be ideal. But since we have states that can reach
+> (and be reached from) multiple other states, then we'll always need some
+> input to migration_change_state(). Here you're making it the
+> s->trigger. Where will that come from?
 
-With the other 'query-sev' command, we have "enabled: bool" field,
-and when enabled == false, the other fields are documented to have
-undefined values.
+* The trigger or reason can come from the place where we call
+migration_change_state(), there we'll know whether migration has
+paused OR completed OR failed OR cancelled.
 
-I tend towards suggesting that 'query-sev-capabilities' (and thus
-also this new query-tdx-capabilities) should have been more like
-query-sev,  and had a a "supported: bool" field to denote the lack
-of support in the host.
+* Even with branches, the process is still linear as it goes from
+start to finish. Just that we can reach the end state via different
+paths.
+  ===
+    $ grep -ri 'shutting' /var/log/libvirt/qemu/   | cut -d' ' -f 3- |
+sort | uniq
+     shutting down, reason=crashed
+     shutting down, reason=destroyed
+     shutting down, reason=failed
+     shutting down, reason=migrated
+     shutting down, reason=shutdown
+===
+As we see, guest VM can stop/shutdown due to various reasons.
 
-This would not have allowed callers to disinguish the reason why
-SEV/TDX is not supported (hardware vs KVM), but I'm not sure that
-reason matters for callers - lack of KVM support is more of an
-OS integration problem.
+* Between [migration-start] and [migration-end], we can define
+events/triggers that will lead to the next state. Ex
 
+      - START -> t:connection-established -> ACTIVE
 
+We can reach the ACTIVE state only after connections are established,
+not without that. If connection establishment fails, we reach the END.
 
+     - START  -> t:connection-established -> ACTIVE ->  running   -> END
 
-> +
->  ##
->  # @sev-inject-launch-secret:
->  #
-> diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
-> index 2b653442f4d..71dd45be47a 100644
-> --- a/target/i386/kvm/kvm_i386.h
-> +++ b/target/i386/kvm/kvm_i386.h
-> @@ -61,6 +61,7 @@ void kvm_put_apicbase(X86CPU *cpu, uint64_t value);
->  
->  bool kvm_has_x2apic_api(void);
->  bool kvm_has_waitpkg(void);
-> +bool kvm_has_tdx(void);
->  
->  uint64_t kvm_swizzle_msi_ext_dest_id(uint64_t address);
->  void kvm_update_msi_routes_all(void *private, bool global,
-> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-> index 7b9b740a8e5..8ce25d7e785 100644
-> --- a/target/i386/kvm/kvm.c
-> +++ b/target/i386/kvm/kvm.c
-> @@ -6582,6 +6582,11 @@ bool kvm_has_waitpkg(void)
->      return has_msr_umwait;
->  }
->  
-> +bool kvm_has_tdx(void)
-> +{
-> +    return kvm_is_vm_type_supported(KVM_X86_TDX_VM);
-> +}
-> +
->  #define ARCH_REQ_XCOMP_GUEST_PERM       0x1025
->  
->  void kvm_request_xsave_components(X86CPU *cpu, uint64_t mask)
-> diff --git a/target/i386/kvm/tdx-stub.c b/target/i386/kvm/tdx-stub.c
-> index 1f0e108a69e..c4e7f2c58c8 100644
-> --- a/target/i386/kvm/tdx-stub.c
-> +++ b/target/i386/kvm/tdx-stub.c
-> @@ -1,6 +1,8 @@
->  /* SPDX-License-Identifier: GPL-2.0-or-later */
->  
->  #include "qemu/osdep.h"
-> +#include "qapi/error.h"
-> +#include "qapi/qapi-commands-misc-i386.h"
->  
->  #include "tdx.h"
->  
-> @@ -30,3 +32,9 @@ void tdx_handle_get_tdvmcall_info(X86CPU *cpu, struct kvm_run *run)
->  void tdx_handle_setup_event_notify_interrupt(X86CPU *cpu, struct kvm_run *run)
->  {
->  }
-> +
-> +TdxCapability *qmp_query_tdx_capabilities(Error **errp)
-> +{
-> +    error_setg(errp, "TDX is not available in this QEMU");
-> +    return NULL;
-> +}
-> diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-> index 01619857685..b5ee3b1ab92 100644
-> --- a/target/i386/kvm/tdx.c
-> +++ b/target/i386/kvm/tdx.c
-> @@ -14,6 +14,7 @@
->  #include "qemu/base64.h"
->  #include "qemu/mmap-alloc.h"
->  #include "qapi/error.h"
-> +#include "qapi/qapi-commands-misc-i386.h"
->  #include "qapi/qapi-visit-sockets.h"
->  #include "qom/object_interfaces.h"
->  #include "crypto/hash.h"
-> @@ -1537,6 +1538,26 @@ static void tdx_guest_finalize(Object *obj)
->  {
->  }
->  
-> +static TdxCapability *tdx_get_capabilities(Error **errp)
-> +{
-> +    if (!kvm_enabled()) {
-> +        error_setg(errp, "TDX is not available without KVM");
-> +        return NULL;
-> +    }
-> +
-> +    if (!kvm_has_tdx()) {
-> +        error_setg(errp, "TDX is not supported by this host");
-> +        return NULL;
-> +    }
-> +
-> +    return g_new0(TdxCapability, 1);
-> +}
-> +
-> +TdxCapability *qmp_query_tdx_capabilities(Error **errp)
-> +{
-> +    return tdx_get_capabilities(errp);
-> +}
-> +
->  static void tdx_guest_class_init(ObjectClass *oc, const void *data)
->  {
->      ConfidentialGuestSupportClass *klass = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
-> -- 
-> 2.52.0
-> 
+ACTIVE ->  t:error     ->  END
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+ACTIVE ->  t:cancel  ->  END
+
+ACTIVE ->  t:pause   ->  PAUSED  -> t:resume -> ACTIVE
+
+> Looking at runstate.c and job.c, it seems we could at least define a
+> state transition table and do away with the second parameter to
+> migrate_set_state(s, old, new).
+>
+> As we've been discussing, the current state-change mechanism has the
+> dual purpose of emitting the state change event and also serving as
+> internal tracking of the migration state. It's not clear to me whether
+> you're covering both in this proposal or just one of them.
+
+* We are not doing away with migration states, just reducing or
+rationalising them to make it easier. Emitting state change to
+libvirtd(8) and internal tracking should still serve the same. Just
+that in migration_is_running() etc. functions we'll check only if the
+state is ACTIVE, instead of 10 other states which also indicate that
+the migration is running.
+
+> I don't think we've established actually what are the goals of having
+> any state changes. Do we even need state changes for internal tracking?
+> We could use your s->trigger as an enum and just check it wherever
+> necessary. And keep the MIGRATION_STATUS exclusive for the external API,
+> in which case, it's probably better to just set it unconditionally (in
+> many places migrate_set_state already takes the current state as
+> argument, i.e. it doesn't care about the current state).
+
+* Well as I see it, different states help us to
+      1 - know where the process is at a given time. In case of
+errors/failures or other events to know what actions to take.
+      2 - what actions/triggers/events are possible.
+
+ex. If an error/cancel occurs before ACTIVE state, during connection
+establishment, it may not have to go through migration_cleanup(),
+probably there's nothing to cleanup. Vs if an error/cancel occurs
+after ACTIVE  or in PAUSED state, we know migration_cleanup() is
+needed.  Similarly if we receive t:resume command when in ACTIVE
+state, OR receive t:pause command in PAUSED state,  we know there's
+nothing to do and ignore it.
+
+Thank you.
+---
+  - Prasad
 
 
