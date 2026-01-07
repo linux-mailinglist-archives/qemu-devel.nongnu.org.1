@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58DADCFDD68
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 14:09:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C23A9CFDD75
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 14:09:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdTHo-0001KW-Ln; Wed, 07 Jan 2026 08:09:16 -0500
+	id 1vdTHq-0001Sr-7t; Wed, 07 Jan 2026 08:09:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdTHZ-00010R-LT
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:09:05 -0500
-Received: from mail-wm1-x341.google.com ([2a00:1450:4864:20::341])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdTHh-00016i-KL
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:09:11 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdTHY-0008RG-99
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:09:01 -0500
-Received: by mail-wm1-x341.google.com with SMTP id
- 5b1f17b1804b1-47aa03d3326so17448135e9.3
- for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 05:08:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vdTHf-0008Rs-AQ
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:09:09 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-477563e28a3so6358775e9.1
+ for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 05:09:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767791338; x=1768396138; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767791345; x=1768396145; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NJT9/Fz1DKFflJUDbix19L+27ce9cn0U0DoKqxhNjvg=;
- b=pYQH22wk1ScK00JtvkefhauCFia++IREeXK8lFWgUvHiIHbhEjtGdGsNA/pIJmEAJw
- cUnsDZrUdPSqJgoeMis5vt+uBsNl+hD16XVbT4XOkE/UWCkR0MaJTotpEpxOqlk8IZeK
- McxHYNL1VRFHMdbXXaXm+Kpzt6SnPQ0vwVk1giVPkwxP7qQBVHqSfOoKirctF+rToSAk
- 5SVFuAVrVyGFxhoABQvG5Z9tNs3Zr/sVGDrrd5GJwWVyrNCYqf8sDiZ71FYVUNOPoG/v
- iHKF/1mcZh3ZmV7b7GeFdXzIckU3FLyRp1dxyxZBCIyOCwCUEeAUQKB5sh4mhnNskQff
- znLQ==
+ bh=i5YNVHn+fEcYtVEEvGoIpN+2XTdoPVL51JCAEL4vRnE=;
+ b=D2UqHxGPX+bSObcAntW5HsAdsFYNZ06ujG3DmrIz3NhjPxVb/NVX7v/fGkI0wZ7llW
+ 5KzUb3aBbbPEOM/IoMtvTt3L4SRFAnPk02JsF9NDyZkoZ1YfApWS6WM0gnnqPRjWHY0d
+ a5FI8arW7lhn/pssOa5XmOMzQHoi+VgeuVeMDf4zcSjSs/UBwzZcBpL9i+/b8ZVQAT/V
+ Duo48JLQ5zoKTobumvDL1reCYbULDtSeFOPrmr42tlJTggSsQQlouJN3lM58nATyAqFJ
+ 2DO5IHmj7XGw2Qpo1oHYE0MwUBL7XVtTa8s/9gjjQ50xd9OW/YZTTWPYd0YMX/5bH7LP
+ E2lQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767791338; x=1768396138;
+ d=1e100.net; s=20230601; t=1767791345; x=1768396145;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=NJT9/Fz1DKFflJUDbix19L+27ce9cn0U0DoKqxhNjvg=;
- b=foL7Er/otD+/hNmncwQmMTSmAoTFC1OjIyAPXXFrcGxYH/YAxjuzckI0Rr6mbggRne
- 2h3SbyQBV2DN+rZ+J8fm41iK3XaqZbxxbJBgKF8BwDmk57BvSUwJGKnwrcEDsgxFckOU
- qqKxiQ0k29MQIlfbhM9IH81sBFzO533lbJ77cRFe9yOBqwXohmkAQvvV1YlUrBeRiFHh
- W/ta3eU39Pdd1qyIqgCqk/KXBDDS6ZmuFVEfLrd3JBxwy4+rvAshJ1LxsOPYcAPXyGpQ
- VIX62UoCFfruUKWbXqlVKJYKBS869VBbU8pdx2uM3BQGkCVCR4FtmPayF+mYUpnf+Dhd
- 04rg==
-X-Gm-Message-State: AOJu0YxrrkbBlN2M3NB/WXIK7zLFoRRRenuEnP0ZZn+lVH31vYBAB92u
- 5Cd/mWmNXbztZkqimUJ6XmmFxe83fJXV7kT75bhJgLfSxS3E3IXsYCsRALTjaICbUTVDLE6XTb4
- Mvn/1f8nBCw==
-X-Gm-Gg: AY/fxX5JYT7Ti0zVNmu1gUEff3+bwcRBYfnoMXkbO55UtAFJeGamCWk5o0dhNy/ogj3
- VmxfIZobM5fuHjkq3BjEYVm15lLzbRaCuEsZXrDQBkqZmxGncjFRg9JiFJiHSRrzDvQBbc1RNGZ
- L1RSvlRIvJNS2TNjq/bb9FJma2N0C1ym8Js5mhOEx7eFjxSo9q4+ZapAkrA87bNyZebsEiiu9NZ
- BhMOD9dIMv1veKkhmqUdzmV6wI/nXHLHFkZFiKrTVDxl69D4doyvHZoCxoZIy2Cdh9EpRBb4Hx8
- BuThSlCoUb/jtajY13suMYLFAKLjDEpJy0pqsTSPeu1Zw/j1tW1l1IWfHaOfMjxKIoH8GXGdflx
- uAKzoJTYyu3yCmejjpm2s6UigFFy+ni9bk9kpmyfltDox3DKb68QnmBDQDNc3jIJ7lYZ/EaOjS0
- u8uOurgJw9OgWutx+RO10C65nfgNWMVYVSpaOniMDvplV6AdYhm/6dsoZOTu6j
-X-Google-Smtp-Source: AGHT+IGyYy5bQKimbZCunnZTD2OgD8hYWA+Rt5Qyp+v73adTlEuxLZOuy2mYYtm/4Kf2rms+Hon0uQ==
-X-Received: by 2002:a05:600c:444c:b0:477:7b16:5f77 with SMTP id
- 5b1f17b1804b1-47d84b0b303mr27018715e9.3.1767791338342; 
- Wed, 07 Jan 2026 05:08:58 -0800 (PST)
+ bh=i5YNVHn+fEcYtVEEvGoIpN+2XTdoPVL51JCAEL4vRnE=;
+ b=n1eU+TRAq9MaxVyO51JFja/sv8DaxLgKqQxFkZki7urkiVijVxKKPI+8iIirV2R+dS
+ Q8a/LBD5LuTTk2u0MnugbFjNxyeqYcs9h783Jxk3L9Ga976shO9QAfX6ZMuOx8gOTSoo
+ zDnI7jgjBExQIwJ6kPchgPpOZ6mIkh1r9yIGrsO4fsyHzPNU1r3RdWgbGMAzpArvB7mx
+ O1YcEMFbxZQFzmr1EtUK2aGU73QjSI0gME2wLDWNJ9dYaC+aN6+swYo1Iq4nXAKjKpq4
+ 6yjmeS3U7vJ35hFoXI/AzPaCJDuPyw1znX0r4I67N6FUzDQIGF5wDr9s+ciaxmto/Mpd
+ Ug5w==
+X-Gm-Message-State: AOJu0YzNLAeSvO5hf7qJFWTXna/NIcijnnmll79r7d2FjFrCYffCuJTb
+ grEAyebVnkaG2UdnL8wQsllMbO41/SfkTkZhSAdtm+wIR7Q6UDITsBo1phTQsG6bOp6XhaNWaKl
+ jB1gvW8Q=
+X-Gm-Gg: AY/fxX6b6JI6qO66JlbOU5Q2kJTn8rwAZjpKi7JK5a6rkdkc7tZVlqEHsuQQPvH4DgD
+ Oy2QrajtBeODWKJpyN6CoN0dcVDjlpZu7zl32ry3vMxgC1ReGjRea4eSfI8fxDRs+fK/ehwbEQJ
+ aIsup+pZuxSDa+vrQ991gzoi82PyomklApQariFOT/270AIjDOiXXKIUPZwu87YaIVmuAMBGRCK
+ VCc/UzToNGTrMYq5ox3DDmWC+6oBGRDxgdgiL0FYb4Nn10VgicTOUzNZOqOslgfoj/eRIYQM2JU
+ 4gj2Wj6IrsKSW4QcNixaLp+InGmppNCaJLFdVuGneh1inm+5gHkYVgweIRwbgajVYaVG+9XwmHa
+ W17vMY7pw+HFvdNChc35B/OUKyICT7v9EG3RG36a16IfCoBSVb+JB228mrt/TaAca25Vdjjfqgx
+ a5APcEjJban90BaBF5Q/9iOilGpOogrK8gER/+BKeI2NXr1fhoye8VJAbfgWDV
+X-Google-Smtp-Source: AGHT+IEtQQD2aRCIInNws4ZiwB2fokk3z9xBU96stolcOMN1Rve7mHcCfP7/bvJlrOVb9N8bF/oKjw==
+X-Received: by 2002:a05:600c:43c5:b0:477:a53c:8ca1 with SMTP id
+ 5b1f17b1804b1-47d845536f2mr26145145e9.14.1767791345161; 
+ Wed, 07 Jan 2026 05:09:05 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d7f6ef885sm96948515e9.9.2026.01.07.05.08.57
+ 5b1f17b1804b1-47d7f6f0e15sm92747725e9.10.2026.01.07.05.09.04
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 07 Jan 2026 05:08:57 -0800 (PST)
+ Wed, 07 Jan 2026 05:09:04 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
@@ -70,18 +70,17 @@ Cc: qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand <david@kernel.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH 07/18] target/s390x: Pass vaddr/hwaddr types to
- mmu_translate_asce()
-Date: Wed,  7 Jan 2026 14:07:55 +0100
-Message-ID: <20260107130807.69870-8-philmd@linaro.org>
+Subject: [PATCH 08/18] target/s390x: Use hwaddr in mmu_real2abs()
+Date: Wed,  7 Jan 2026 14:07:56 +0100
+Message-ID: <20260107130807.69870-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260107130807.69870-1-philmd@linaro.org>
 References: <20260107130807.69870-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::341;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x341.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,28 +103,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-mmu_translate_asce() translates virtual address to physical one.
+On S/390, absolute addresses are physical ones.
+
+Since mmu_real2abs() is defined in mmu_helper.c, move
+its prototype declaration below the 'mmu_helper.c' comment.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/s390x/mmu_helper.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/s390x/s390x-internal.h | 5 +++--
+ target/s390x/mmu_helper.c     | 4 ++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
+diff --git a/target/s390x/s390x-internal.h b/target/s390x/s390x-internal.h
+index a4b54dc441c..dfc95702c51 100644
+--- a/target/s390x/s390x-internal.h
++++ b/target/s390x/s390x-internal.h
+@@ -10,6 +10,7 @@
+ #ifndef S390X_INTERNAL_H
+ #define S390X_INTERNAL_H
+ 
++#include "exec/hwaddr.h"
+ #include "cpu.h"
+ #include "fpu/softfloat.h"
+ 
+@@ -367,13 +368,13 @@ void ioinst_handle_sal(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
+ 
+ 
+ /* mem_helper.c */
+-target_ulong mmu_real2abs(CPUS390XState *env, target_ulong raddr);
+ void probe_write_access(CPUS390XState *env, uint64_t addr, uint64_t len,
+                         uintptr_t ra);
+ 
+ 
+ /* mmu_helper.c */
+-bool mmu_absolute_addr_valid(target_ulong addr, bool is_write);
++hwaddr mmu_real2abs(CPUS390XState *env, hwaddr raddr);
++bool mmu_absolute_addr_valid(hwaddr addr, bool is_write);
+ /* Special access mode only valid for mmu_translate() */
+ #define MMU_S390_LRA        -1
+ int mmu_translate(CPUS390XState *env, target_ulong vaddr, int rw, uint64_t asc,
 diff --git a/target/s390x/mmu_helper.c b/target/s390x/mmu_helper.c
-index 9ee1d778876..ccb53e99ebd 100644
+index ccb53e99ebd..b73d902b05a 100644
 --- a/target/s390x/mmu_helper.c
 +++ b/target/s390x/mmu_helper.c
-@@ -122,8 +122,8 @@ static inline bool read_table_entry(CPUS390XState *env, hwaddr gaddr,
-     return ret == MEMTX_OK;
+@@ -86,7 +86,7 @@ static bool lowprot_enabled(const CPUS390XState *env, uint64_t asc)
+  * Translate real address to absolute (= physical)
+  * address by taking care of the prefix mapping.
+  */
+-target_ulong mmu_real2abs(CPUS390XState *env, target_ulong raddr)
++hwaddr mmu_real2abs(CPUS390XState *env, hwaddr raddr)
+ {
+     if (raddr < 0x2000) {
+         return raddr + env->psa;    /* Map the lowcore. */
+@@ -96,7 +96,7 @@ target_ulong mmu_real2abs(CPUS390XState *env, target_ulong raddr)
+     return raddr;
  }
  
--static int mmu_translate_asce(CPUS390XState *env, target_ulong vaddr,
--                              uint64_t asc, uint64_t asce, target_ulong *raddr,
-+static int mmu_translate_asce(CPUS390XState *env, vaddr vaddr,
-+                              uint64_t asc, uint64_t asce, hwaddr *raddr,
-                               int *flags)
+-bool mmu_absolute_addr_valid(target_ulong addr, bool is_write)
++bool mmu_absolute_addr_valid(hwaddr addr, bool is_write)
  {
-     const bool edat1 = (env->cregs[0] & CR0_EDAT) &&
+     return address_space_access_valid(&address_space_memory,
+                                       addr & TARGET_PAGE_MASK,
 -- 
 2.52.0
 
