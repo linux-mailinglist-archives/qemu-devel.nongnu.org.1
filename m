@@ -2,64 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A4F4CFE15C
-	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 14:53:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5178DCFDE6A
+	for <lists+qemu-devel@lfdr.de>; Wed, 07 Jan 2026 14:22:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdTy3-0006iV-7a; Wed, 07 Jan 2026 08:52:55 -0500
+	id 1vdTTP-0003B3-7M; Wed, 07 Jan 2026 08:21:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wang.yechao255@zte.com.cn>)
- id 1vdOgA-0002Y5-Bh; Wed, 07 Jan 2026 03:14:07 -0500
-Received: from mxct.zte.com.cn ([183.62.165.209])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdTTL-0003A3-AD
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:21:11 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wang.yechao255@zte.com.cn>)
- id 1vdOg7-0000f4-I0; Wed, 07 Jan 2026 03:14:05 -0500
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdTTH-0004Qb-Sq
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 08:21:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1767792064;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:resent-to:
+ resent-from:resent-message-id; bh=oNgIaYQyO2UqvL7DSHOna+Kqe2GfGDXPZ0YYVVLKDTM=;
+ b=gua1/BVSsgaSMlRAL1QJWnTZmfHW6ZHJNm1hje8YHNROE7UzguZ6Njfgut9OJME8kxrMSu
+ W9cVPzrlTdi9QG1D+ZsEKS2k7oUSA+U2rNS69RrpWg9JATboL2+inNjxBrymZiKx7tprqv
+ DJ306VupDN889Pye9gOnlBWUEiiBAoc=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-665-FQeJz54uPn-SwDfKhiS7pw-1; Wed,
+ 07 Jan 2026 08:21:02 -0500
+X-MC-Unique: FQeJz54uPn-SwDfKhiS7pw-1
+X-Mimecast-MFC-AGG-ID: FQeJz54uPn-SwDfKhiS7pw_1767792062
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mxct.zte.com.cn (FangMail) with ESMTPS id 4dmLQh4WDjz501bd;
- Wed, 07 Jan 2026 16:13:48 +0800 (CST)
-Received: from szxlzmapp04.zte.com.cn ([10.5.231.166])
- by mse-fl1.zte.com.cn with SMTP id 6078DXRk060114;
- Wed, 7 Jan 2026 16:13:33 +0800 (+08)
- (envelope-from wang.yechao255@zte.com.cn)
-Received: from mapi (szxlzmapp04[null]) by mapi (Zmail) with MAPI id mid12;
- Wed, 7 Jan 2026 16:13:36 +0800 (CST)
-X-Zmail-TransId: 2b06695e15b0e32-0b053
-X-Mailer: Zmail v1.0
-Message-ID: <20260107161336108RbvgIEJ1pww_fKZtMreFp@zte.com.cn>
-Date: Wed, 7 Jan 2026 16:13:36 +0800 (CST)
-Mime-Version: 1.0
-From: <wang.yechao255@zte.com.cn>
-To: <palmer@dabbelt.com>, <alistair.francis@wdc.com>, <liwei1518@gmail.com>,
- <dbarboza@ventanamicro.com>, <zhiwei_liu@linux.alibaba.com>
-Cc: <qemu-riscv@nongnu.org>, <qemu-devel@nongnu.org>
-Subject: =?UTF-8?B?W1BBVENIXSB0YXJnZXQvcmlzY3Y6IFJlbW92ZSByZWR1bmRhbnQgbWFjcm8gZGVmaW5pdGlvbnM=?=
-Content-Type: multipart/mixed;
-	boundary="=====_001_next====="
-X-MAIL: mse-fl1.zte.com.cn 6078DXRk060114
-X-TLS: YES
-X-SPF-DOMAIN: zte.com.cn
-X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
-X-SPF: None
-X-SOURCE-IP: 10.5.228.132 unknown Wed, 07 Jan 2026 16:13:48 +0800
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 695E15BC.001/4dmLQh4WDjz501bd
-Received-SPF: pass client-ip=183.62.165.209;
- envelope-from=wang.yechao255@zte.com.cn; helo=mxct.zte.com.cn
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=0.001,
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EA740180034A; Wed,  7 Jan 2026 13:21:01 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.32])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A7BBF30002D1; Wed,  7 Jan 2026 13:21:01 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 3910C21E6934; Wed, 07 Jan 2026 14:20:59 +0100 (CET)
+Resent-To: richard.henderson@linaro.org, qemu-devel@nongnu.org
+Resent-From: Markus Armbruster <armbru@redhat.com>
+Resent-Date: Wed, 07 Jan 2026 14:20:59 +0100
+Resent-Message-ID: <87ikddk18k.fsf@pond.sub.org>
+X-From-Line: armbru@redhat.com  Wed Jan  7 13:43:41 2026
+X-Original-To: armbru
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 3013921E6937; Wed, 07 Jan 2026 13:43:41 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org
+Subject: [PULL 00/17] Error reporting patches for 2026-01-07
+Date: Wed,  7 Jan 2026 13:43:24 +0100
+Message-ID: <20260107124341.1093312-1-armbru@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Lines: 95
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 07 Jan 2026 08:52:49 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,74 +88,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The following changes since commit 0fc482b73d8e085d1375b4e17b0647fd2e6fe8f0:
 
+  Merge tag 'pull-aspeed-20260105' of https://github.com/legoater/qemu into staging (2026-01-06 06:52:47 +1100)
 
---=====_001_next=====
-Content-Type: multipart/related;
-	boundary="=====_002_next====="
+are available in the Git repository at:
 
+  https://repo.or.cz/qemu/armbru.git tags/pull-error-2026-01-07
 
---=====_002_next=====
-Content-Type: multipart/alternative;
-	boundary="=====_003_next====="
+for you to fetch changes up to fefb4605b37fd59b53ae9cf89d6beedaab72f640:
 
+  block/file-win32: Improve an error message (2026-01-07 13:25:01 +0100)
 
---=====_003_next=====
-Content-Type: text/plain;
-	charset="UTF-8"
-Content-Transfer-Encoding: base64
+----------------------------------------------------------------
+Error reporting patches for 2026-01-07
 
-RnJvbTogeWVjaGFvLXcgPHdhbmcueWVjaGFvMjU1QHp0ZS5jb20uY24+DQoNClRoZSBtYWNybyBN
-TVVfVVNFUl9JRFggaXMgdW51c2VkLCBhbmQgaXRzIGRlZmluZWQgdmFsdWUgaXMgaW5jb3JyZWN0
-Lg0KSXQgc2hvdWxkIGJlIE1NVUlkeF9VKDApLCB3aGljaCBpcyBkZWZpbmVkIGluIHRhcmdldC9y
-aXNjdi9pbnRlcm5hbHMuaC4NClRoZXJlZm9yZSwgcmVtb3ZlIHRoZSBtYWNybyBkZWZpbml0aW9u
-IG9mIE1NVV9VU0VSX0lEWC4NCg0KU2lnbmVkLW9mZi1ieTogeWVjaGFvLXcgPHdhbmcueWVjaGFv
-MjU1QHp0ZS5jb20uY24+DQotLS0NCiB0YXJnZXQvcmlzY3YvY3B1LmggfCAyIC0tDQogMSBmaWxl
-IGNoYW5nZWQsIDIgZGVsZXRpb25zKC0pDQoNCmRpZmYgLS1naXQgYS90YXJnZXQvcmlzY3YvY3B1
-LmggYi90YXJnZXQvcmlzY3YvY3B1LmgNCmluZGV4IDkwYjNlOTUxMDUuLmUzODk5YjQ5ZWYgMTAw
-NjQ0DQotLS0gYS90YXJnZXQvcmlzY3YvY3B1LmgNCisrKyBiL3RhcmdldC9yaXNjdi9jcHUuaA0K
-QEAgLTE3Miw4ICsxNzIsNiBAQCBleHRlcm4gUklTQ1ZDUFVJbXBsaWVkRXh0c1J1bGUgKnJpc2N2
-X211bHRpX2V4dF9pbXBsaWVkX3J1bGVzW107DQogDQogI2RlZmluZSBSSVNDVl9JTVBMSUVEX0VY
-VFNfUlVMRV9FTkQgLTENCiANCi0jZGVmaW5lIE1NVV9VU0VSX0lEWCAzDQotDQogI2RlZmluZSBN
-QVhfUklTQ1ZfUE1QUyAoNjQpDQogI2RlZmluZSBPTERfTUFYX1JJU0NWX1BNUFMgKDE2KQ0KICNk
-ZWZpbmUgTUlOX1JJU0NWX1BNUF9HUkFOVUxBUklUWSA0DQotLSANCjIuMjcuMA==
+----------------------------------------------------------------
+Markus Armbruster (17):
+      hw/core/loader: Make load_elf_hdr() return bool, simplify caller
+      hw/nvram/xlnx-bbram: More idiomatic and simpler error reporting
+      nbd/client-connection: Replace error_propagate() by assignment
+      error: error_free(NULL) is safe, drop unnecessary conditionals
+      error: Consistently name Error * objects err, and not errp
+      error: Strip trailing '\n' from error string arguments (again)
+      ui: Convert to qemu_create() for simplicity and consistency
+      tap-solaris: Use error_setg_file_open() for better error messages
+      qga: Use error_setg_file_open() for better error messages
+      net/tap: Use error_setg_file_open() for a better error message
+      blkdebug: Use error_setg_file_open() for a better error message
+      error: Use error_setg_file_open() for simplicity and consistency
+      net/slirp: Improve file open error message
+      error: Use error_setg_errno() to improve error messages
+      error: Use error_setg_errno() for simplicity and consistency
+      qga/commands-win32: Use error_setg_win32() for better error messages
+      block/file-win32: Improve an error message
 
+ include/hw/core/loader.h    |  4 +++-
+ backends/cryptodev-lkcf.c   |  2 +-
+ backends/spdm-socket.c      |  4 ++--
+ backends/tpm/tpm_emulator.c | 13 +++++--------
+ block/blkdebug.c            |  2 +-
+ block/crypto.c              |  8 ++++----
+ block/file-win32.c          |  2 +-
+ hw/9pfs/9p-local.c          |  2 +-
+ hw/9pfs/9p.c                |  3 +--
+ hw/acpi/core.c              |  5 ++---
+ hw/acpi/ghes.c              |  8 ++++----
+ hw/acpi/pcihp.c             |  4 +---
+ hw/arm/boot.c               |  6 +-----
+ hw/audio/es1370.c           |  2 +-
+ hw/core/loader.c            | 10 +++++++---
+ hw/intc/openpic_kvm.c       |  3 +--
+ hw/intc/xics_kvm.c          |  5 +++--
+ hw/nvram/xlnx-bbram.c       | 18 ++++--------------
+ hw/pci-host/xen_igd_pt.c    |  2 +-
+ hw/ppc/spapr.c              | 22 +++++++++++-----------
+ hw/remote/vfio-user-obj.c   | 18 +++++++++---------
+ hw/riscv/spike.c            | 10 +---------
+ hw/sensor/emc141x.c         |  4 ++--
+ hw/sensor/tmp421.c          |  4 ++--
+ hw/smbios/smbios.c          |  4 ++--
+ hw/vfio/migration-multifd.c |  5 +++--
+ hw/virtio/vdpa-dev.c        |  4 ++--
+ hw/xen/xen-pvh-common.c     | 13 ++++++++++---
+ io/channel-websock.c        |  4 +---
+ io/task.c                   |  4 +---
+ migration/migration.c       |  6 ++----
+ migration/postcopy-ram.c    | 10 +++++-----
+ migration/rdma.c            |  3 +--
+ monitor/hmp-cmds.c          |  2 +-
+ nbd/client-connection.c     |  3 +--
+ nbd/common.c                |  6 +++---
+ net/dump.c                  |  2 +-
+ net/l2tpv3.c                |  6 ++----
+ net/slirp.c                 |  9 ++++++---
+ net/tap-bsd.c               |  6 +++---
+ net/tap-linux.c             |  2 +-
+ net/tap-solaris.c           |  6 +++---
+ net/tap.c                   |  3 +--
+ qga/commands-linux.c        | 11 ++++++-----
+ qga/commands-posix-ssh.c    | 23 +++++++++++++----------
+ qga/commands-win32.c        | 16 ++++++++--------
+ system/vl.c                 |  2 +-
+ target/i386/sev.c           |  6 ++----
+ target/ppc/kvm.c            |  5 ++---
+ target/riscv/kvm/kvm-cpu.c  | 11 ++++++-----
+ tests/unit/test-smp-parse.c |  5 +----
+ ui/gtk.c                    |  2 +-
+ ui/ui-qmp-cmds.c            |  4 +---
+ util/vfio-helpers.c         |  5 ++---
+ 54 files changed, 161 insertions(+), 188 deletions(-)
 
---=====_003_next=====
-Content-Type: text/html ;
-	charset="UTF-8"
-Content-Transfer-Encoding: base64
+-- 
+2.52.0
 
-PGRpdiBjbGFzcz0iemNvbnRlbnRSb3ciPjxwPkZyb206IHllY2hhby13ICZsdDt3YW5nLnllY2hh
-bzI1NUB6dGUuY29tLmNuJmd0OzwvcD48cD48YnI+PC9wPjxwPlRoZSBtYWNybyBNTVVfVVNFUl9J
-RFggaXMgdW51c2VkLCBhbmQgaXRzIGRlZmluZWQgdmFsdWUgaXMgaW5jb3JyZWN0LjwvcD48cD5J
-dCBzaG91bGQgYmUgTU1VSWR4X1UoMCksIHdoaWNoIGlzIGRlZmluZWQgaW4gdGFyZ2V0L3Jpc2N2
-L2ludGVybmFscy5oLjwvcD48cD5UaGVyZWZvcmUsIHJlbW92ZSB0aGUgbWFjcm8gZGVmaW5pdGlv
-biBvZiBNTVVfVVNFUl9JRFguPC9wPjxwPjxicj48L3A+PHA+U2lnbmVkLW9mZi1ieTogeWVjaGFv
-LXcgJmx0O3dhbmcueWVjaGFvMjU1QHp0ZS5jb20uY24mZ3Q7PC9wPjxwPi0tLTwvcD48cD4mbmJz
-cDt0YXJnZXQvcmlzY3YvY3B1LmggfCAyIC0tPC9wPjxwPiZuYnNwOzEgZmlsZSBjaGFuZ2VkLCAy
-IGRlbGV0aW9ucygtKTwvcD48cD48YnI+PC9wPjxwPmRpZmYgLS1naXQgYS90YXJnZXQvcmlzY3Yv
-Y3B1LmggYi90YXJnZXQvcmlzY3YvY3B1Lmg8L3A+PHA+aW5kZXggOTBiM2U5NTEwNS4uZTM4OTli
-NDllZiAxMDA2NDQ8L3A+PHA+LS0tIGEvdGFyZ2V0L3Jpc2N2L2NwdS5oPC9wPjxwPisrKyBiL3Rh
-cmdldC9yaXNjdi9jcHUuaDwvcD48cD5AQCAtMTcyLDggKzE3Miw2IEBAIGV4dGVybiBSSVNDVkNQ
-VUltcGxpZWRFeHRzUnVsZSAqcmlzY3ZfbXVsdGlfZXh0X2ltcGxpZWRfcnVsZXNbXTs8L3A+PHA+
-Jm5ic3A7PC9wPjxwPiZuYnNwOyNkZWZpbmUgUklTQ1ZfSU1QTElFRF9FWFRTX1JVTEVfRU5EIC0x
-PC9wPjxwPiZuYnNwOzwvcD48cD4tI2RlZmluZSBNTVVfVVNFUl9JRFggMzwvcD48cD4tPC9wPjxw
-PiZuYnNwOyNkZWZpbmUgTUFYX1JJU0NWX1BNUFMgKDY0KTwvcD48cD4mbmJzcDsjZGVmaW5lIE9M
-RF9NQVhfUklTQ1ZfUE1QUyAoMTYpPC9wPjxwPiZuYnNwOyNkZWZpbmUgTUlOX1JJU0NWX1BNUF9H
-UkFOVUxBUklUWSA0PC9wPjxwPi0tJm5ic3A7PC9wPjxwPjIuMjcuMDwvcD48cCBzdHlsZT0iZm9u
-dC1zaXplOjE0cHg7Zm9udC1mYW1pbHk65b6u6L2v6ZuF6buRLE1pY3Jvc29mdCBZYUhlaTsiPjxi
-cj48L3A+PHAgc3R5bGU9ImZvbnQtc2l6ZToxNHB4O2ZvbnQtZmFtaWx5OuW+rui9r+mbhem7kSxN
-aWNyb3NvZnQgWWFIZWk7Ij48YnI+PC9wPjxwIHN0eWxlPSJmb250LXNpemU6MTRweDtmb250LWZh
-bWlseTrlvq7ova/pm4Xpu5EsTWljcm9zb2Z0IFlhSGVpOyI+PGJyPjwvcD48cCBzdHlsZT0iZm9u
-dC1zaXplOjE0cHg7Zm9udC1mYW1pbHk65b6u6L2v6ZuF6buRLE1pY3Jvc29mdCBZYUhlaTsiPjxi
-cj48L3A+PC9kaXY+
-
-
---=====_003_next=====--
-
---=====_002_next=====--
-
---=====_001_next=====--
 
 
