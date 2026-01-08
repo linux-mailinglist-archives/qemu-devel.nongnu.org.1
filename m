@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC823D0360F
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 15:35:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18158D03603
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 15:35:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdr6B-0007D1-JK; Thu, 08 Jan 2026 09:34:51 -0500
+	id 1vdr5z-00075D-8B; Thu, 08 Jan 2026 09:34:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vdr5w-000729-V9
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 09:34:38 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1vdr5q-000710-Q6
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 09:34:33 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vdr5t-0000iS-Kd
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 09:34:35 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-47d493a9b96so19642295e9.1
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 06:34:32 -0800 (PST)
+ id 1vdr5o-0000gI-1V
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 09:34:30 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-47d5e021a53so24563505e9.3
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 06:34:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767882871; x=1768487671; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767882866; x=1768487666; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NNPkfTC8hSB2O54A92j5y8SEHslcucm7cyY4HjTcIuM=;
- b=T7AxQwtwC8nruwByO5sWdmGorgWfAgoaf+r+R6vQbZt/i14b2rgNYsuwCcJYCnWRT9
- HytQzCigVx3LXpCtQK/eY+2R222cu+WAAlJxlp3Fxdr4Rfl+77RbNyUeyIqzSz+6At2D
- +AMfhC3RtGB8Rexu+YMgBaPWLHI+7Hu4cUo7eLY3vNmGpXifDVPQjIS42LlrfL5hzxoT
- K0BOgyVyfPQnD5OMXA95+AqGnzC/3VQiCV5IeVzPEuYDS7SkEA+RQYlUci1STyuXYIDT
- 1ZeQTWGVxEOf0iJ2m3o63oGXdh84+S4Dv2UPIP062YRmD0ZhZuWitXjPetTbqVihjpR8
- 7t+A==
+ bh=/KVOlUvDlycuELIbU/nTcJH/sre0/0JiNhQLMY+dTJQ=;
+ b=Y0G/a6s9bVo8awMVDkA/4gEmiSGYAYwEiw5uLNqsYQKRABJ/1u+cgLdbdXpeDgyBj9
+ ui439s1DAwjhoKbCsxBCCdZwiNsXhSmLUfW3IrD64oLGwydK6Ye84P+tmr2lAZ1vpHVM
+ uAJcXlKole2GP+/gb8HP5R3TRMQ8fp5Ic3XJOYOlhGyg1IvBRsOrG+bdm1bK5Pt0AJCd
+ uXxxjQP9ujtjowymT2NdxxhE2dNqlfD5dR6q7QM0DMNqc0fTpeejhPic73ifvf49Ciwt
+ jFw+jNjhjW3pAk3lAT3w+e/d4BBvktcHTn5gQkFmjHqyz+AO5TXjJKQvbHXQ85S6DWct
+ qibw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767882871; x=1768487671;
+ d=1e100.net; s=20230601; t=1767882866; x=1768487666;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=NNPkfTC8hSB2O54A92j5y8SEHslcucm7cyY4HjTcIuM=;
- b=jAReXz/qdFxXz44yTK+nOxdbPttcdVtIagvywWDNWX3IHxGtqz8dDtgZQCygWrtglL
- mecgVoN+AlMZlB8owIPTRaCrJ2XiN4NNl/xhliYPt55Hyq1KbTI5e5bizNgof2ptPDEe
- wBq2yc0MHEjfnPq4x39mV32veubDTCSLV8q9OJfA4r+L2ogerjAryO8bQ/TIcycaqdrl
- L2AE8Gs+/N9LebfErf67BHU/KJB3X+I2To2M7lY8Zz4y8XkKeAXQFlbJ3GwXwR7JDkar
- +mFhgRm7QfqT5c3pUO7GqwyS2Vy5WU5jjG7FN3PraqB9c+yVC7w+RZKkAvtKT8SyCCei
- Dibw==
-X-Gm-Message-State: AOJu0YyyLMmxApCfZqHGQ0mUZaxdDk3HfBapcD0RXioqH4BP0wM57yZ0
- LAEqZ+jwcGSw196WHXs86a6PPK3/GFGcExAIgnnVEr8G1NZZHNvEu1l3Xkv+agnQp2k=
-X-Gm-Gg: AY/fxX4sGqe7FU7MZzOJxdzedF6LAVI1okfT3SJrzHSKbEmbd6NOCQR1qBbEhJ/JZr2
- Ce5JfH1wDYxHJH5zdQRzNu2WseiS7eEwiaRcDNLEvBV2L7no93K3MsvebqcQ83Jr+R6sKCbknnw
- HyFo13S0J3CclhQWnb4rsE+5p8BQjbgt9BG12kgnw0H4enIZTgLwyO3nI+3P4ifywfcXF+eeleW
- fgvw4C1qhl2BoUTgCWt0fisf0Ez49duqTT8Aw7h8ioWS00q2qGiSnkR+8JYWFL7NHEXMnzoguQV
- eFDyJT9GWNTUjQKa2G77ku/j8LGGmDs3rbZUXE3p4DBHXPl1T9RPFsiW18WbDUzz2SqzaULoRW7
- nBXmZbs69m0AqAYJ+RulgcNwC+N2TB0B75vAB4UC97usoHw3o5mKwAbpanVzjrYnZnRc6sWGVR+
- WwcEYazLogPW1dNp8T1lUYVg==
-X-Google-Smtp-Source: AGHT+IGCbmw18fNIwlDNBzWCAdNHDFbb56mz7vbgowQfcwqwBe7oDhevb+s+QGfjbElOCftQfjfsMA==
-X-Received: by 2002:a05:600c:1385:b0:47a:94fc:d057 with SMTP id
- 5b1f17b1804b1-47d84b0b0e7mr68176435e9.2.1767882871357; 
- Thu, 08 Jan 2026 06:34:31 -0800 (PST)
+ bh=/KVOlUvDlycuELIbU/nTcJH/sre0/0JiNhQLMY+dTJQ=;
+ b=XV691YzLNtg6NXiPjtmNSGyjGWYxNi0TBZeL3vphlHo57AUjD600P3Oep0xjs0mrdS
+ yUTiWC1Py5T9t9WV+JVFcekVmLdFCM2hH3oO6PHcwNcN4fnnUX3c83xGlpzmnYrMNTtv
+ LIiTHL4gS6ZHkFhGUhPcnSMfSH2hQoqmEdRJaU9ENSHyU8MKaq55TCFLbhr3ow4NMQ4N
+ HjCvXmYcmY8M6j/XqROpx1IMHhjFqEiFTD/kSNY8zVWGv+tQdGb/aN/T/cniN7icf/DT
+ syevfyf2DUTX0X3RcEaKZGmoNQV2Orxd5OF8zBgMjJnnjwYcyZQ35LK3wjftA6pf61fW
+ sFww==
+X-Gm-Message-State: AOJu0Yx5MRH1WfGnDIu23pWtf/bhBZ5crPjq7pO5aErFl49oJk5lipVx
+ jkRbVWJOWkmH3xeScPSbHjGhHRGtsER1780KXzHdUNoeSfAk+A9wwtB5H/UajGjbF/s=
+X-Gm-Gg: AY/fxX7IlSFrYrfm8UlSf9ViR1d6Xm+sU1W8DkJP53g/a7Rltb8dgsjGfvfBWvobGA3
+ d6BtiOsJmR/RLj1u6yQCQOmYkvXsXKuTbgtLFup/bP6saWgisKX3d0dSUsBfgrZFUycm+RtazDX
+ E7+yEFaSg+U7v6hwX+lPVR9c5NY1X+YMuEVokXp/uE5GV2iqlz+8LB+3s7cfnOGxqhRecXiHre6
+ vQ36eR19RjG/L6UQUN8T8Vp/29d4k0v+LGcHthMabwhqU9+ZrLtgebj8ZGrzdzBl9DTozDVrwlw
+ qDC8nbWcd/Jf2UpIAYIxc/R0XC4pdWXokDoNwVxY2F3vtAvMoGA0qh4aJzFS/EjZUtVU0ViixLw
+ COQMIPx8b7C4yCH4MXGiE/MwYAaNJdRI9g4tYyyLNOOFH2ruxCVIuw2NG3qH1so+Gll/m7gCG99
+ ejh4muZ/8UAWQ=
+X-Google-Smtp-Source: AGHT+IFrigIMRj1Fu7UQDZqoA4+G8mVP/VMqzMDX7eqsu7W3FCGzgFfrtVM8wmwRw8nFA5cmiRpzNA==
+X-Received: by 2002:a05:6000:4284:b0:432:bc90:2cfa with SMTP id
+ ffacd0b85a97d-432c374f5b2mr8866039f8f.33.1767882865561; 
+ Thu, 08 Jan 2026 06:34:25 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d8715b5f7sm40785975e9.4.2026.01.08.06.34.24
+ ffacd0b85a97d-432bd5feaf8sm16663691f8f.39.2026.01.08.06.34.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 06:34:27 -0800 (PST)
+ Thu, 08 Jan 2026 06:34:24 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id ECC525F8D1;
- Thu, 08 Jan 2026 14:34:23 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 0C5A15F8DF;
+ Thu, 08 Jan 2026 14:34:24 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Aurelien Jarno <aurelien@aurel32.net>,
@@ -78,24 +78,24 @@ Cc: Aurelien Jarno <aurelien@aurel32.net>,
  Yanan Wang <wangyanan55@huawei.com>, Aleksandar Rikalo <arikalo@gmail.com>,
  Thomas Huth <huth@tuxfamily.org>, Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [RFC PATCH 01/12] target/sh4: drop cpu_reset from realizefn
-Date: Thu,  8 Jan 2026 14:34:12 +0000
-Message-ID: <20260108143423.1378674-2-alex.bennee@linaro.org>
+Subject: [RFC PATCH 02/12] target/m68k: introduce env->reset_pc
+Date: Thu,  8 Jan 2026 14:34:13 +0000
+Message-ID: <20260108143423.1378674-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260108143423.1378674-1-alex.bennee@linaro.org>
 References: <20260108143423.1378674-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,23 +111,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+To transition CPUs to use the multi-phase resettable logic we need to
+stash some information for the reset handlers. Arm does this with
+arm_boot_info but for m68k all we really need is the PC we should
+reset to.
+
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- target/sh4/cpu.c | 1 -
- 1 file changed, 1 deletion(-)
+ target/m68k/cpu.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
-index 21ccb86df48..1dd21ad9ed6 100644
---- a/target/sh4/cpu.c
-+++ b/target/sh4/cpu.c
-@@ -255,7 +255,6 @@ static void superh_cpu_realizefn(DeviceState *dev, Error **errp)
-         return;
-     }
+diff --git a/target/m68k/cpu.h b/target/m68k/cpu.h
+index d9db6a486a8..fda015c4b7b 100644
+--- a/target/m68k/cpu.h
++++ b/target/m68k/cpu.h
+@@ -155,6 +155,7 @@ typedef struct CPUArchState {
  
--    cpu_reset(cs);
-     qemu_init_vcpu(cs);
+     /* Fields from here on are preserved across CPU reset. */
+     uint64_t features;
++    uint32_t reset_pc;
+ } CPUM68KState;
  
-     scc->parent_realize(dev, errp);
+ /*
 -- 
 2.47.3
 
