@@ -2,86 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA7DCD0118F
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 06:31:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7BE3D01186
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 06:31:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdibv-0005WC-8d; Thu, 08 Jan 2026 00:31:03 -0500
+	id 1vdib2-0004vr-Gk; Thu, 08 Jan 2026 00:30:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vdibr-0005LM-L1
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:30:59 -0500
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vdibq-0005OU-0l
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:30:59 -0500
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-c1e4a9033abso1602523a12.3
- for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 21:30:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767850257; x=1768455057; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=TukGEmMKpnvEasDlzBdFYNNO3/Mmmb//jnacHIC6uLY=;
- b=c2jcuIXxELAae7BmWUCViN8+1PUpg5PrAoc72kaWbUS83PQNjb44+KS5BPFgn34J+S
- Hfsir/k2AA9xxtfiVARd+5lPzYXHxh6VJ5iGTVrQoSpM+0qftA9gLfWyVMgjPzREXRc5
- KCtw7/Zez8hgTKtNMaaASwA01+jLFuxJqmDwwM27pI0naMB1UI1X7TBx7+LjNk8SeIZt
- K7txSp93jRZtre6R3GCbUdoFh+5aSsgRa1tPeEf/ruT6jjPx7OY5xPuis/wIy99Ak2m2
- 6HIjcMDdHqEj5Bdwms+cfzvVkw3pzz0gQAoDnLV1adyPukfvMvLcjMaZRc7/x0trL7nW
- efUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767850257; x=1768455057;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=TukGEmMKpnvEasDlzBdFYNNO3/Mmmb//jnacHIC6uLY=;
- b=MbH6Xp1ifvCafkSIEw3z5MDjHASh+f2iMVudGwigR4BbN/ik335BxTRMSYmWEqOth3
- jiXYklXlePDLLae8UtjQM/1KFdXYzAL+BKONGppZD3/67QmsL4P1JFy+8OvXOEC1Q+v3
- 7UmbX9H+Pycg6KT2adNMT2GF0WeRFsK7nNjlx24daZTOp38TztWFdIDQ8iEWpCpWazNo
- TSIh8Saz9sgtn52gyscKqx9Yka+kyNQSpg/oRCmNbeBvVrDpBe03Z/mDB6zGrD69szQk
- R1hkQ9DOfOMOZ4SvDOFJhmET7v5RAhZAkBHpo4B2+o81K5VP25dsA0lIsiifVuW9yhqm
- 5pzQ==
-X-Gm-Message-State: AOJu0YxBswCwAQ39gqzRMY6QzqcLsgrMkwqxhsczagAZsMRC7azGIsbo
- gC9t3VuG3ojo55Ddj5rvbMAkj0Dhd3JBPyQmwpatWUz0fuCXMiDydylIzQbeJgbDxc1j4X85y9Q
- eifCZ5ng=
-X-Gm-Gg: AY/fxX40NI3VQJSr2UI/y5TijD/cpHg4btfpgeLTeOZnOdToQBQHHPpCenMto2yWmNw
- ybWFGn50oUQEvGjFBdMo3T0wp9uUmvSLcaG2R9raVEFEC+Dw9SKP/83RgFoS+IcS7eNE4aR5Y/O
- d/2vXXUb01GdMgXxrQtukDbvCeprF/Rwmr2WVW/AHGjIEsoyZqt4tJ0FKVi1RdhgKSiP3ESReil
- 9CsGsFyeIWoCpA6Wm4hHIv5+nTeejy6VsuG/4ExFofo50i8tchLnD0KUpUg/3ETG6fLCRehSf5N
- j8GS3bSjHoz6YpkmrwLnw4NzpXdSf5IoyW6W/LNcOMGXUV5L0ua264ZBXxyTtzvLCpA2Ud93+P3
- j5rQhQbikFVciG+5GuNgavOIkoDfM2t2ThkDR6+eAo22sWLZ13c85uBo3EBU0L82mZqbYB1CcxR
- uo1V0FZdi7IEfra2OEwA==
-X-Google-Smtp-Source: AGHT+IHFLY6NQ+02OWYAhpQPBlW3Gf91wTKmLotJarAPnU2zUXJLQ5fVYckxt2m9vxlSWOZwk7EzIA==
-X-Received: by 2002:a05:6300:218a:b0:352:4411:6785 with SMTP id
- adf61e73a8af0-3898f9977dbmr4647808637.44.1767850256605; 
- Wed, 07 Jan 2026 21:30:56 -0800 (PST)
-Received: from stoup.. ([180.233.125.201]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-c4cc05cd9d9sm7036552a12.16.2026.01.07.21.30.55
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Jan 2026 21:30:56 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PATCH 17/50] tcg: Replace TCG_TARGET_REG_BITS / 8
-Date: Thu,  8 Jan 2026 16:29:45 +1100
-Message-ID: <20260108053018.626690-18-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260108053018.626690-1-richard.henderson@linaro.org>
-References: <20260108053018.626690-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1vdib0-0004ub-AV
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:30:06 -0500
+Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1vdiay-000509-5t
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:30:06 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1767850191; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=cT1llrEVd/ZK5r3RjQpe5z5UhR9fxG7HFefWTX2eVxwEjLJRjMhONThwICUyjfCZw34OXz0Tvn+dDBWPYqaN64XPhCBqNbNlL8COK6mroj7FxyMN19jfKSlO7RdlgwvrCOk0eeoR7SJ7Pg5EClDkbMGvuWYkfP37j7or6uUl4l8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1767850191;
+ h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=uB6QviAEXcUQ6Gb0tWYD7KtTpwkUuA6zfvGZ/lDG/xA=; 
+ b=dUAQ9UxjMzAbbqk8MouCYAVcFO721iJcn4/0EzFaLEdA9BKFu7VJ1bC+rYUSNF3tWlU8WzF3aRFw3LQ3/xvQB5bEg4rGQr2nXFMoyJzZ75Y6WySveHH2pR9h7a9ACAyim6ituEd4jy9TMz/6luwQ0hW9n3iFeBU0QVbNtQZu86M=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+ dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1767850191; 
+ s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
+ h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=uB6QviAEXcUQ6Gb0tWYD7KtTpwkUuA6zfvGZ/lDG/xA=;
+ b=fya3lEyxpUDGYJzzH0nXYZHsBz+qKmxcfMeK3erVvteDMgOQKaf7UdbDkf5YbkQO
+ Wdo2jrHwamKODHr+8XOJAub9q0pr1poV/0c5SrS2yNJr7q7r3YOAhJXJGXvSeBXerEl
+ /OzMrhYXlPigtZCVFUqcozj5ijG+NBnnfG/1EiMo=
+Received: by mx.zohomail.com with SMTPS id 1767850190559822.0523300479281;
+ Wed, 7 Jan 2026 21:29:50 -0800 (PST)
+Message-ID: <b7a10a62-f664-4690-8d3a-1219182cb1fe@collabora.com>
+Date: Thu, 8 Jan 2026 08:29:45 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/6] virtio-gpu: Force RCU when unmapping blob
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+References: <20251213-force_rcu-v2-0-1de1ca84c6d6@rsg.ci.i.u-tokyo.ac.jp>
+Content-Language: en-US
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <20251213-force_rcu-v2-0-1de1ca84c6d6@rsg.ci.i.u-tokyo.ac.jp>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
+Received-SPF: pass client-ip=136.143.188.112;
+ envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,87 +79,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use sizeof(tcg_target_long) instead of division.
+On 12/13/25 08:41, Akihiko Odaki wrote:
+> Unmapping a blob changes the memory map, which is protected with RCU.
+> RCU is designed to minimize the read-side overhead at the cost of
+> reclamation delay. While this design usually makes sense, it is
+> problematic when unmapping a blob because the operation blocks all
+> virtio-gpu commands and causes perceivable disruption.
+> 
+> Minimize such the disruption with force_rcu(), which minimizes the
+> reclamation delay at the cost of a read-side overhead.
+> 
+> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+> ---
+> Changes in v2:
+> - Stopped overloading the call_rcu1() and force_rcu() notifications onto
+>   one event. This fixes a deadlock after try_dequeue() caused by
+>   incorrect masking of call_rcu1() notifications, and eliminates
+>   spurious force quiescent states caused by being confused with a
+>   call_rcu1() notification.
+>   Tested-by: from the previous version was not collected because this
+>   changes the logic significantly.
+> - Merged the rcu_call_count and forced variables into one to avoid
+>   the race between them that used to require a loop to resolve.
+> - Aligned the type of the duration variable in qemu_futex_timedwait()
+>   for Windows.
+> - Fixed timespec of qemu_futex_timedwait() for 32-bit Linux.
+> - Link to v1: https://lore.kernel.org/qemu-devel/20251029-force_rcu-v1-0-bf860a6277a6@rsg.ci.i.u-tokyo.ac.jp
+> 
+> ---
+> Akihiko Odaki (6):
+>       timer: Rename init_clocks() to qemu_clock_init()
+>       futex: Add qemu_futex_timedwait()
+>       qemu-thread: Add qemu_event_timedwait()
+>       rcu: Use call_rcu() in synchronize_rcu()
+>       rcu: Wake the RCU thread when draining
+>       virtio-gpu: Force RCU when unmapping blob
+> 
+>  include/qemu/futex.h              | 34 ++++++++++++--
+>  include/qemu/rcu.h                |  1 +
+>  include/qemu/thread-posix.h       | 11 +++++
+>  include/qemu/thread.h             |  8 +++-
+>  include/qemu/timer.h              |  4 +-
+>  hw/display/virtio-gpu-virgl.c     |  1 +
+>  tests/unit/test-aio-multithread.c |  2 +-
+>  util/event.c                      | 28 +++++++++--
+>  util/main-loop.c                  |  2 +-
+>  util/qemu-thread-posix.c          | 11 +----
+>  util/qemu-timer.c                 |  7 +--
+>  util/rcu.c                        | 98 ++++++++++++++++++++++-----------------
+>  12 files changed, 137 insertions(+), 70 deletions(-)
+> ---
+> base-commit: 466e779e05b5087bffe39ecc51ec97fdf9121e8b
+> change-id: 20251027-force_rcu-616c743373f7
+> 
+> Best regards,
+> --  
+> Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+> 
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tcg/tcg-op-gvec.c                | 2 +-
- tcg/loongarch64/tcg-target.c.inc | 4 ++--
- tcg/ppc64/tcg-target.c.inc       | 2 +-
- tcg/riscv64/tcg-target.c.inc     | 4 ++--
- 4 files changed, 6 insertions(+), 6 deletions(-)
+The first patch renaming init_clocks() doesn't apply to latest staging
+branch because there is a similar change there, so I skipped it. Tested
+with venus and drm-native contexts, no problems found.
 
-diff --git a/tcg/tcg-op-gvec.c b/tcg/tcg-op-gvec.c
-index 2d184547ba..9c33430638 100644
---- a/tcg/tcg-op-gvec.c
-+++ b/tcg/tcg-op-gvec.c
-@@ -607,7 +607,7 @@ static void do_dup(unsigned vece, TCGv_ptr dbase, uint32_t dofs,
-     }
- 
-     /* Otherwise, inline with an integer type, unless "large".  */
--    if (check_size_impl(oprsz, TCG_TARGET_REG_BITS / 8)) {
-+    if (check_size_impl(oprsz, sizeof(tcg_target_long))) {
-         t_64 = NULL;
-         t_32 = NULL;
- 
-diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
-index 10c69211ac..c3350c90fc 100644
---- a/tcg/loongarch64/tcg-target.c.inc
-+++ b/tcg/loongarch64/tcg-target.c.inc
-@@ -2604,7 +2604,7 @@ static const int tcg_target_callee_save_regs[] = {
- };
- 
- /* Stack frame parameters.  */
--#define REG_SIZE   (TCG_TARGET_REG_BITS / 8)
-+#define REG_SIZE   ((int)sizeof(tcg_target_long))
- #define SAVE_SIZE  ((int)ARRAY_SIZE(tcg_target_callee_save_regs) * REG_SIZE)
- #define TEMP_SIZE  (CPU_TEMP_BUF_NLONGS * (int)sizeof(long))
- #define FRAME_SIZE ((TCG_STATIC_CALL_ARGS_SIZE + TEMP_SIZE + SAVE_SIZE \
-@@ -2731,7 +2731,7 @@ static const DebugFrame debug_frame = {
-     .h.cie.id = -1,
-     .h.cie.version = 1,
-     .h.cie.code_align = 1,
--    .h.cie.data_align = -(TCG_TARGET_REG_BITS / 8) & 0x7f, /* sleb128 */
-+    .h.cie.data_align = -sizeof(tcg_target_long) & 0x7f, /* sleb128 */
-     .h.cie.return_column = TCG_REG_RA,
- 
-     /* Total FDE size does not include the "len" member.  */
-diff --git a/tcg/ppc64/tcg-target.c.inc b/tcg/ppc64/tcg-target.c.inc
-index 3c36b26f25..b54afa0b6d 100644
---- a/tcg/ppc64/tcg-target.c.inc
-+++ b/tcg/ppc64/tcg-target.c.inc
-@@ -70,7 +70,7 @@
- #define SZP  ((int)sizeof(void *))
- 
- /* Shorthand for size of a register.  */
--#define SZR  (TCG_TARGET_REG_BITS / 8)
-+#define SZR  ((int)sizeof(tcg_target_long))
- 
- #define TCG_CT_CONST_S16     0x00100
- #define TCG_CT_CONST_U16     0x00200
-diff --git a/tcg/riscv64/tcg-target.c.inc b/tcg/riscv64/tcg-target.c.inc
-index 31b9f7d87a..9c4f1aba7f 100644
---- a/tcg/riscv64/tcg-target.c.inc
-+++ b/tcg/riscv64/tcg-target.c.inc
-@@ -2929,7 +2929,7 @@ static const int tcg_target_callee_save_regs[] = {
- };
- 
- /* Stack frame parameters.  */
--#define REG_SIZE   (TCG_TARGET_REG_BITS / 8)
-+#define REG_SIZE   ((int)sizeof(tcg_target_long))
- #define SAVE_SIZE  ((int)ARRAY_SIZE(tcg_target_callee_save_regs) * REG_SIZE)
- #define TEMP_SIZE  (CPU_TEMP_BUF_NLONGS * (int)sizeof(long))
- #define FRAME_SIZE ((TCG_STATIC_CALL_ARGS_SIZE + TEMP_SIZE + SAVE_SIZE \
-@@ -3109,7 +3109,7 @@ static const DebugFrame debug_frame = {
-     .h.cie.id = -1,
-     .h.cie.version = 1,
-     .h.cie.code_align = 1,
--    .h.cie.data_align = -(TCG_TARGET_REG_BITS / 8) & 0x7f, /* sleb128 */
-+    .h.cie.data_align = -sizeof(tcg_target_long) & 0x7f, /* sleb128 */
-     .h.cie.return_column = TCG_REG_RA,
- 
-     /* Total FDE size does not include the "len" member.  */
+Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+
 -- 
-2.43.0
-
+Best regards,
+Dmitry
 
