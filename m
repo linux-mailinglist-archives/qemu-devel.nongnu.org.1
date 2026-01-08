@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B8F7D04B5E
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 18:08:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F25F9D04B3D
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 18:07:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdtRo-0006ix-O4; Thu, 08 Jan 2026 12:05:20 -0500
+	id 1vdtS8-0007T3-2t; Thu, 08 Jan 2026 12:05:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vdtRX-00062F-A1
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 12:05:03 -0500
+ id 1vdtRd-0006Hx-TI
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 12:05:15 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vdtRT-00070z-UH
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 12:05:03 -0500
+ id 1vdtRb-0007Cy-QE
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 12:05:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767891899;
+ s=mimecast20190719; t=1767891905;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sHfp9koRpKPpUyuiE2GHRdtDltYSxKdLKrgXRYbwQBU=;
- b=Z5UqNdtS+qw0YuEF+WDzTLIsAX/NJpm6wvA+9f5K6n27xU7d4uUpt3IyR2nw3FOxGzfEUv
- Z9MxqNTFSdzVKdsFXkFzm6c+/PON3el9WKtZZnp9TeIXX234SqzNz+Riywo5dPM486DgHg
- 3sYHNYCHjsK9ycsNQBer6EoNF1C8UQA=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=ADQ88xDE2rpP46nxPCt+L4D0RKvsTUELfinlYd9oUZ4=;
+ b=NOufkiitbdz2IBw046ipTf4zx+BMesgf/9QRLnVUu4rKRlTEAgI9+8tWomm7oufacKAHsk
+ cQYI8yfvG0NXEth0mK9afskM7YSl0ImqJ+WE+8U1uvqyNSUN6LmVdaBnEWg33ZlVDj3eHa
+ KOGT1B8wBLxLTp2MmuzAQjiKlwNhwlM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-496-P4ikxrj8NFKRJ4LaTYsWFg-1; Thu,
- 08 Jan 2026 12:04:53 -0500
-X-MC-Unique: P4ikxrj8NFKRJ4LaTYsWFg-1
-X-Mimecast-MFC-AGG-ID: P4ikxrj8NFKRJ4LaTYsWFg_1767891892
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-684-8UCTbOYhMLaThzENuCpmPw-1; Thu,
+ 08 Jan 2026 12:05:01 -0500
+X-MC-Unique: 8UCTbOYhMLaThzENuCpmPw-1
+X-Mimecast-MFC-AGG-ID: 8UCTbOYhMLaThzENuCpmPw_1767891896
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 285BF1955F34; Thu,  8 Jan 2026 17:04:52 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C089219560AF; Thu,  8 Jan 2026 17:04:56 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.44])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 39ADE19560B4; Thu,  8 Jan 2026 17:04:48 +0000 (UTC)
+ id 8A39419560A2; Thu,  8 Jan 2026 17:04:52 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -59,9 +59,9 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Markus Armbruster <armbru@redhat.com>, Stefan Weil <sw@weilnetz.de>,
  Kevin Wolf <kwolf@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v5 15/24] monitor: introduce monitor_cur_is_hmp() helper
-Date: Thu,  8 Jan 2026 17:03:29 +0000
-Message-ID: <20260108170338.2693853-16-berrange@redhat.com>
+Subject: [PATCH v5 16/24] util: don't skip error prefixes when QMP is active
+Date: Thu,  8 Jan 2026 17:03:30 +0000
+Message-ID: <20260108170338.2693853-17-berrange@redhat.com>
 In-Reply-To: <20260108170338.2693853-1-berrange@redhat.com>
 References: <20260108170338.2693853-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -93,80 +93,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Note that this is not simply the inverse of monitor_cur_is_qmp(),
-as both helpers require that monitor_cur() is first non-NULL.
+The vreport() function will print to HMP if available, otherwise
+to stderr. In the event that vreport() is called during execution
+of a QMP command, it will print to stderr, but mistakenly omit the
+message prefixes (timestamp, guest name, program name).
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/monitor/monitor.h      |  1 +
- monitor/monitor.c              | 10 ++++++++++
- stubs/monitor-core.c           |  6 ++++++
- tests/unit/test-util-sockets.c |  1 +
- 4 files changed, 18 insertions(+)
+ util/error-report.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/monitor/monitor.h b/include/monitor/monitor.h
-index 296690e1f1..9c71e6cf3c 100644
---- a/include/monitor/monitor.h
-+++ b/include/monitor/monitor.h
-@@ -16,6 +16,7 @@ extern QemuOptsList qemu_mon_opts;
- Monitor *monitor_cur(void);
- Monitor *monitor_set_cur(Coroutine *co, Monitor *mon);
- bool monitor_cur_is_qmp(void);
-+bool monitor_cur_is_hmp(void);
+diff --git a/util/error-report.c b/util/error-report.c
+index b262ad01cb..872158ad90 100644
+--- a/util/error-report.c
++++ b/util/error-report.c
+@@ -159,7 +159,7 @@ static void print_loc(void)
+     int i;
+     const char *const *argp;
  
- void monitor_init_globals(void);
- void monitor_init_globals_core(void);
-diff --git a/monitor/monitor.c b/monitor/monitor.c
-index 6dc5a7016d..b81cc7d2ed 100644
---- a/monitor/monitor.c
-+++ b/monitor/monitor.c
-@@ -116,6 +116,16 @@ bool monitor_cur_is_qmp(void)
-     return cur_mon && monitor_is_qmp(cur_mon);
- }
- 
-+/**
-+ * Is the current monitor, if any, a HMP monitor?
-+ */
-+bool monitor_cur_is_hmp(void)
-+{
-+    Monitor *cur_mon = monitor_cur();
-+
-+    return cur_mon && !monitor_is_qmp(cur_mon);
-+}
-+
- /**
-  * Is @mon is using readline?
-  * Note: not all HMP monitors use readline, e.g., gdbserver has a
-diff --git a/stubs/monitor-core.c b/stubs/monitor-core.c
-index a7c32297c9..674211f48f 100644
---- a/stubs/monitor-core.c
-+++ b/stubs/monitor-core.c
-@@ -7,6 +7,12 @@ Monitor *monitor_cur(void)
-     return NULL;
- }
- 
-+bool monitor_cur_is_hmp(void)
-+{
-+    /* since monitor_cur() above returns NULL, this can't be true */
-+    return false;
-+}
-+
- Monitor *monitor_set_cur(Coroutine *co, Monitor *mon)
+-    if (!monitor_cur() && g_get_prgname()) {
++    if (!monitor_cur_is_hmp() && g_get_prgname()) {
+         error_printf("%s:", g_get_prgname());
+         sep = " ";
+     }
+@@ -203,14 +203,14 @@ static void vreport(report_type type, const char *fmt, va_list ap)
  {
-     return NULL;
-diff --git a/tests/unit/test-util-sockets.c b/tests/unit/test-util-sockets.c
-index ee66d727c3..4b7f408902 100644
---- a/tests/unit/test-util-sockets.c
-+++ b/tests/unit/test-util-sockets.c
-@@ -74,6 +74,7 @@ int monitor_get_fd(Monitor *mon, const char *fdname, Error **errp)
- Monitor *monitor_cur(void) { return cur_mon; }
- Monitor *monitor_set_cur(Coroutine *co, Monitor *mon) { abort(); }
- int monitor_vprintf(Monitor *mon, const char *fmt, va_list ap) { abort(); }
-+bool monitor_cur_is_hmp(void) { return false; }
+     gchar *timestr;
  
- #ifndef _WIN32
- static void test_socket_fd_pass_name_good(void)
+-    if (message_with_timestamp && !monitor_cur()) {
++    if (message_with_timestamp && !monitor_cur_is_hmp()) {
+         timestr = real_time_iso8601();
+         error_printf("%s ", timestr);
+         g_free(timestr);
+     }
+ 
+     /* Only prepend guest name if -msg guest-name and -name guest=... are set */
+-    if (error_with_guestname && error_guest_name && !monitor_cur()) {
++    if (error_with_guestname && error_guest_name && !monitor_cur_is_hmp()) {
+         error_printf("%s ", error_guest_name);
+     }
+ 
 -- 
 2.52.0
 
