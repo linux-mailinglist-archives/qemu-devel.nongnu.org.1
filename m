@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61242D01183
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A15D01180
 	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 06:31:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdibO-000504-KY; Thu, 08 Jan 2026 00:30:30 -0500
+	id 1vdibP-00050Z-Cv; Thu, 08 Jan 2026 00:30:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vdibM-0004zU-Bp
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:30:28 -0500
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
+ id 1vdibN-0004zl-CU
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:30:29 -0500
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vdibJ-0005GX-RL
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:30:28 -0500
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-34e90f7b49cso1791364a91.3
- for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 21:30:25 -0800 (PST)
+ id 1vdibL-0005Gu-IN
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:30:29 -0500
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-7f0da2dfeaeso2460957b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 21:30:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767850224; x=1768455024; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=CEdaanuN4O4Pp+xNlzIUSei8+BxLkgpOOD9e/ocjqHM=;
- b=rafslRZsk7zUDlqpH8wDenKoOWqMJiTC1+AFoZG442OM7tuv94inThgritxK0gc5FZ
- ovz2JfWEsDld06eGDMa86fXI0UEkF4067sssIDdfOn3OStrlfiWFadvdRYJ4FsISJuHV
- Njyi62dSuw8ddggQW1vZBh5crVUWgA8ALkHeibKjaaDJXrdeUaGoOFo3FO/zj/WlkBQ5
- qIlGYfNq+MQX+VM0bGwZbCwzqRL5Ml0cLtPkr+h29c/1w+SWpYnUIudHAvvZhnfHRMr1
- QxWy2FkkFK5lWoBeVgBpT56upZZBvRFQsBKFC4f2p2Je8JCv+hRI1CRHouMaD+moSmAA
- 0X/Q==
+ d=linaro.org; s=google; t=1767850226; x=1768455026; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=rVsBcnPsfvmZvQdij3NSQo+uhfcRf83AZzrXvhkPZQ4=;
+ b=Fl/rbIS7gClwzJPXqC4kV49ShQ8LLxiand1uDuJNazjWPp6NZRYYgem7GTy9ccHsSj
+ 3T3A/s29zgzWF0KRv15Vu1oaOkUj0L5wSuZkRjpZi/vPjxpiu0X58yuf9YnK/pGy7aJr
+ IsYZageHnQdmuiyjUxYCy0fe+8I5jgJQ7pLMSqJvs2Rq0ZsrEtIpm+WV/1BObfMK9QGJ
+ 6PPvYdkVjXfzbIufmHoKwjoqnrTyMZ0lgLN8Q78d0AW60uEn9sjFpsoIZ8OZzdvfPTQW
+ 9byyej2aIta+jbhSCm8ldscfOESYRzUQXVJa5KANRuYIRIag7Kdv9kg9ceqLrijOy5O5
+ wyFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767850224; x=1768455024;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=CEdaanuN4O4Pp+xNlzIUSei8+BxLkgpOOD9e/ocjqHM=;
- b=PdfJdyizyXCoxnwFVYYSN5usI0zH7t8a9WbY0ZfaU95QdggG4Tf5btCjDHzCRMVpP/
- vH4XmEHr0GPIialm5uoQO/epMVzJeN4vtsn4/rYefUtriipuo4nMhIVn+OJaL5dH5fAZ
- ZM74sobimjWwpIqqOg8km4AnxISRITC7dnFtoTzGYGNMy2wAe4tGxc5cT9CkEPKKGbwl
- LNxE6GYpOhMgQrvKybxQYJUzgDZ4xYmDj3kHWn4LsFNqyfqYZjA50A3nHR/OYa1Wt/b1
- ucIK89XgN39M0glFfRIL2MpO46gOfy8guBbYCvrZaHrTt4tM5FzwIErJzsG5hvpJgZP5
- A0Jg==
-X-Gm-Message-State: AOJu0YyaXT4pMCHyt3cwbvuPyi8VjHXInx5y80DswBIhq0TvjM3HE6yx
- L5+8EuFfH8mbgOw7LvEMu6kRxgWvHjDI8+/Vpun+OBI3kWNxUK3ykJiwfo9nTeRQmWHE/p7vsV4
- JVTUwfmU=
-X-Gm-Gg: AY/fxX4tMo+NsQ9lmuP74MOv9o/GAyhPxCBJtrHAbYMouKyeLwqtdek/3BQsUKsmA1l
- 6NF9NZbUJICR+ugyIcOSJp4XSPwSpOybxwA1FOUGOPAOe2c4n4etfQLDSvG+P5MteZ63CoO4yBe
- xcSuXkGu0PdMGwjwhlcV4yVyFAyoOuSPEmXjHJjioUGjOPPP2q3T91+PA3FbdNhRgvQTLzFt9zM
- vxGzce+mPyj1iti/CUmtLxBf98TUDNeaLaEhoihwK8JcFAn/XVeI6sWFAusSR1yER0xK1EMJMzu
- 5aFIQsoal9zfvEh+USrxQALb9oFGbYe/Ee1ZI0+XTLWh4cSsx6nN+34i473p/CEIMtCGUxAERj2
- 9ipiVmYkyMZulSgH4x5tkOq/lD/KEOF7FJTpvXuhG6NwdIRcAjRhm0RYJvGaUBFmMjF79crFPDA
- oRIMouwFjvp81xpPtNog==
-X-Google-Smtp-Source: AGHT+IFeNlDSxydkCq8RbNrIq7Toc1rU/tbl8p1t5JohHSIRgh0JcoYqoJj+pXj5UEXDvQhlDK/uCw==
-X-Received: by 2002:a17:90b:5643:b0:343:a631:28a8 with SMTP id
- 98e67ed59e1d1-34f68cf39e6mr4829890a91.37.1767850223917; 
- Wed, 07 Jan 2026 21:30:23 -0800 (PST)
+ d=1e100.net; s=20230601; t=1767850226; x=1768455026;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=rVsBcnPsfvmZvQdij3NSQo+uhfcRf83AZzrXvhkPZQ4=;
+ b=OsH4gqQAKPtLe9/9pBRR1oVuX1mJJEOkwFUSsm2fG6qMn1rXPqAnJVqWRfbZKp7JgS
+ H24xofC3uRTlEtVxlbhSpzyWO6iqWFHoGX6k19KxuGvCNZx4oc+jbTl2fR/H54Z0mqBg
+ NxmD+XdUNniWQs9cpax0n1ek7KIp95uX/suil1CZ2yeUI5fcpZFcu4kgByi9VFzJYOs1
+ rFJXzheh4kAUfa1ocJNac8lrftB0zYyYMb4/op5o9AKapdgpmnWDW8G6bkW8+2FWr5PL
+ qvkGgP0TLUUoeKukS4C4KhFoWmATuAMajvFgUs3Stsctlpx+N82aTq9JZffVzfS7AYM2
+ lJQw==
+X-Gm-Message-State: AOJu0Yxxf07CsAqO6fVqYjjUB1tPo0RQGK+5Az0eQNKfWU03USIB/Ezf
+ tdFF6hC/uvdEN6p43HKeYwFcnrUu1U3M8sEFZLgpedcm8E3/ImS8Hw/24+tTaEaafo1x78QTKDb
+ T7oZHVb8=
+X-Gm-Gg: AY/fxX7Zv/J8D0TgqWjXVuKyXhlPb4HgIGsYFcjmwyZd6iVUxldT+NRGIoOlx/IskMn
+ 9Nvvrt3TE9UauhkkkkuXiEjd3sACq+7j+xpT0iQy8L8Ba6F/OefI5m5KsU3SzVDYloxu1UhnqF/
+ R20mApQB/UT4DITI2sF2CZAddPhKQqJC7dO8Ea4+Dco7SOLrYHu1JX0jhJk2CDDyCA4Va/VGWRa
+ YMYKE6DIuGymkQRdnHmftsDkSqeJ5yAWDqxlE2FNvB9g8tGgWQL5lzqGEHn3250iw0VK7VcVV2Q
+ 3JJpwhDJ4vvsxHF879V/kg2oBgEyjsW8IZ4chfscZJrEcSK7S/IYu3fEYjNk+hk4339EE5zfJko
+ JiatIfPUbKJsUt82CqYdfRRYqrX7yP9/CH9xz4kIQxaPv6mmFBkfyD1KPoKlPBj74Nzv6WWiVAw
+ o4rBtqsNcIH0maOKeuiQ==
+X-Google-Smtp-Source: AGHT+IGYEvbXQjjeOaWhwde2tqnDDR1eqrV2JkhTPk6CCGLAAnjFhk+Qf0D+NXWgQkb727VRojjm6Q==
+X-Received: by 2002:a05:6a20:6a2b:b0:366:14ac:e1dc with SMTP id
+ adf61e73a8af0-3898f9db6f7mr5113319637.66.1767850225673; 
+ Wed, 07 Jan 2026 21:30:25 -0800 (PST)
 Received: from stoup.. ([180.233.125.201]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-c4cc05cd9d9sm7036552a12.16.2026.01.07.21.30.22
+ 41be03b00d2f7-c4cc05cd9d9sm7036552a12.16.2026.01.07.21.30.24
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Jan 2026 21:30:23 -0800 (PST)
+ Wed, 07 Jan 2026 21:30:25 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 00/50] Remove 32-bit host support
-Date: Thu,  8 Jan 2026 16:29:28 +1100
-Message-ID: <20260108053018.626690-1-richard.henderson@linaro.org>
+Subject: [PATCH 01/50] gitlab: Remove 32-bit host testing
+Date: Thu,  8 Jan 2026 16:29:29 +1100
+Message-ID: <20260108053018.626690-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260108053018.626690-1-richard.henderson@linaro.org>
+References: <20260108053018.626690-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,292 +97,195 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Long has it been threatened, but here we are at last.
+These deprecated builds will be disabled.
+Remove testing of armhf, i686, and wasm32.
 
-32-bit host support was deprecated with the 10.0 release, and so
-with the 11.0 release we may remove it.  Phil already did some
-cleanup in 10.2, removing support for mips32 and ppc32 within tcg.
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ .gitlab-ci.d/buildtest-template.yml | 27 -----------------
+ .gitlab-ci.d/buildtest.yml          |  9 ------
+ .gitlab-ci.d/container-cross.yml    | 17 -----------
+ .gitlab-ci.d/containers.yml         |  3 --
+ .gitlab-ci.d/crossbuilds.yml        | 45 -----------------------------
+ 5 files changed, 101 deletions(-)
 
-With a net -7302 in the diffstat, I think the motivations are clear,
-even if half of that was tcg/arm/.
-
-
-r~
-
-
-Richard Henderson (50):
-  gitlab: Remove 32-bit host testing
-  meson: Reject 32-bit hosts
-  *: Remove arm host support
-  bsd-user: Fix __i386__ test for TARGET_HAS_STAT_TIME_T_EXT
-  *: Remove __i386__ tests
-  *: Remove i386 host support
-  host/include/x86_64/bufferiszero: Remove no SSE2 fallback
-  meson: Remove cpu == x86 tests
-  *: Remove ppc host support
-  tcg/i386: Remove TCG_TARGET_REG_BITS tests
-  tcg/x86_64: Rename from i386
-  tcg/ppc64: Rename from ppc
-  meson: Drop host_arch rename for mips64
-  meson: Drop host_arch rename for riscv64
-  meson: Remove cpu == riscv32 tests
-  tcg: Make TCG_TARGET_REG_BITS common
-  tcg: Replace TCG_TARGET_REG_BITS / 8
-  *: Drop TCG_TARGET_REG_BITS test for prefer_i64
-  tcg: Remove INDEX_op_brcond2_i32
-  tcg: Remove INDEX_op_setcond2_i32
-  tcg: Remove INDEX_op_dup2_vec
-  tcg/tci: Drop TCG_TARGET_REG_BITS tests
-  tcg/tci: Remove glue TCG_TARGET_REG_BITS renames
-  tcg: Drop TCG_TARGET_REG_BITS test in region.c
-  tcg: Drop TCG_TARGET_REG_BITS tests in tcg-op.c
-  tcg: Drop TCG_TARGET_REG_BITS tests in tcg-op-gvec.c
-  tcg: Drop TCG_TARGET_REG_BITS tests in tcg-op-ldst.c
-  tcg: Drop TCG_TARGET_REG_BITS tests in tcg.c
-  tcg: Drop TCG_TARGET_REG_BITS tests in tcg-internal.h
-  tcg: Drop TCG_TARGET_REG_BITS test in tcg-has.h
-  include/tcg: Drop TCG_TARGET_REG_BITS tests
-  target/i386/tcg: Drop TCG_TARGET_REG_BITS test
-  target/riscv: Drop TCG_TARGET_REG_BITS test
-  accel/tcg/runtime: Remove 64-bit shift helpers
-  accel/tcg/runtime: Remove helper_nonatomic_cmpxchgo
-  tcg: Unconditionally define atomic64 helpers
-  accel/tcg: Drop CONFIG_ATOMIC64 checks from ldst_atomicicy.c.inc
-  accel/tcg: Drop CONFIG_ATOMIC64 test from translator.c
-  linux-user/arm: Drop CONFIG_ATOMIC64 test
-  linux-user/hppa: Drop CONFIG_ATOMIC64 test
-  target/arm: Drop CONFIG_ATOMIC64 tests
-  target/hppa: Drop CONFIG_ATOMIC64 test
-  target/m68k: Drop CONFIG_ATOMIC64 tests
-  target/s390x: Drop CONFIG_ATOMIC64 tests
-  migration: Drop use of Stat64
-  block: Drop use of Stat64
-  util: Remove stats64
-  include/qemu/atomic: Drop qatomic_{read,set}_[iu]64
-  meson: Remove CONFIG_ATOMIC64
-  include/qemu/atomic: Drop aligned_{u}int64_t
-
- accel/tcg/atomic_template.h                   |    4 +-
- accel/tcg/tcg-runtime.h                       |   23 -
- bsd-user/syscall_defs.h                       |    2 +-
- host/include/i386/host/cpuinfo.h              |   41 -
- host/include/i386/host/crypto/aes-round.h     |  152 -
- host/include/i386/host/crypto/clmul.h         |   29 -
- host/include/ppc/host/cpuinfo.h               |   30 -
- host/include/ppc/host/crypto/aes-round.h      |  182 -
- host/include/ppc64/host/cpuinfo.h             |   31 +-
- host/include/ppc64/host/crypto/aes-round.h    |  183 +-
- .../include/{riscv => riscv64}/host/cpuinfo.h |    0
- host/include/x86_64/host/cpuinfo.h            |   42 +-
- host/include/x86_64/host/crypto/aes-round.h   |  153 +-
- host/include/x86_64/host/crypto/clmul.h       |   30 +-
- include/accel/tcg/cpu-ldst-common.h           |    9 -
- include/block/block_int-common.h              |    3 +-
- include/qemu/atomic.h                         |   39 +-
- include/qemu/cacheflush.h                     |    2 +-
- include/qemu/osdep.h                          |    6 +-
- include/qemu/processor.h                      |    2 +-
- include/qemu/stats64.h                        |  199 -
- include/qemu/timer.h                          |    9 -
- include/system/cpu-timers-internal.h          |    2 +-
- include/tcg/helper-info.h                     |    2 +-
- .../tcg/target-reg-bits.h                     |    8 +-
- include/tcg/tcg-op.h                          |    9 +-
- include/tcg/tcg-opc.h                         |    9 +-
- include/tcg/tcg.h                             |   29 +-
- linux-user/include/host/arm/host-signal.h     |   43 -
- linux-user/include/host/i386/host-signal.h    |   38 -
- .../host/{mips => mips64}/host-signal.h       |    0
- linux-user/include/host/ppc/host-signal.h     |   39 -
- .../host/{riscv => riscv64}/host-signal.h     |    0
- migration/migration-stats.h                   |   36 +-
- tcg/aarch64/tcg-target-reg-bits.h             |   12 -
- tcg/arm/tcg-target-con-set.h                  |   47 -
- tcg/arm/tcg-target-con-str.h                  |   26 -
- tcg/arm/tcg-target-has.h                      |   73 -
- tcg/arm/tcg-target-mo.h                       |   13 -
- tcg/arm/tcg-target-reg-bits.h                 |   12 -
- tcg/arm/tcg-target.h                          |   73 -
- tcg/i386/tcg-target-reg-bits.h                |   16 -
- tcg/loongarch64/tcg-target-reg-bits.h         |   21 -
- tcg/mips/tcg-target-reg-bits.h                |   16 -
- tcg/{mips => mips64}/tcg-target-con-set.h     |    0
- tcg/{mips => mips64}/tcg-target-con-str.h     |    0
- tcg/{mips => mips64}/tcg-target-has.h         |    0
- tcg/{mips => mips64}/tcg-target-mo.h          |    0
- tcg/{mips => mips64}/tcg-target.h             |    0
- tcg/{ppc => ppc64}/tcg-target-con-set.h       |    0
- tcg/{ppc => ppc64}/tcg-target-con-str.h       |    0
- tcg/{ppc => ppc64}/tcg-target-has.h           |    0
- tcg/{ppc => ppc64}/tcg-target-mo.h            |    0
- tcg/{ppc => ppc64}/tcg-target.h               |    0
- tcg/riscv/tcg-target-reg-bits.h               |   19 -
- tcg/{riscv => riscv64}/tcg-target-con-set.h   |    0
- tcg/{riscv => riscv64}/tcg-target-con-str.h   |    0
- tcg/{riscv => riscv64}/tcg-target-has.h       |    0
- tcg/{riscv => riscv64}/tcg-target-mo.h        |    0
- tcg/{riscv => riscv64}/tcg-target.h           |    0
- tcg/s390x/tcg-target-reg-bits.h               |   17 -
- tcg/sparc64/tcg-target-reg-bits.h             |   12 -
- tcg/tcg-has.h                                 |    5 -
- tcg/tcg-internal.h                            |   21 +-
- tcg/tci/tcg-target-has.h                      |    2 -
- tcg/tci/tcg-target-mo.h                       |    2 +-
- tcg/tci/tcg-target-reg-bits.h                 |   18 -
- tcg/{i386 => x86_64}/tcg-target-con-set.h     |    0
- tcg/{i386 => x86_64}/tcg-target-con-str.h     |    0
- tcg/{i386 => x86_64}/tcg-target-has.h         |    8 +-
- tcg/{i386 => x86_64}/tcg-target-mo.h          |    0
- tcg/{i386 => x86_64}/tcg-target.h             |   13 +-
- accel/kvm/kvm-all.c                           |    2 +-
- accel/qtest/qtest.c                           |    4 +-
- accel/tcg/cputlb.c                            |   37 +-
- accel/tcg/icount-common.c                     |   25 +-
- accel/tcg/tcg-runtime.c                       |   15 -
- accel/tcg/translator.c                        |    4 +-
- accel/tcg/user-exec.c                         |    2 -
- block/io.c                                    |   10 +-
- block/qapi.c                                  |    2 +-
- disas/disas-host.c                            |    9 -
- hw/display/xenfb.c                            |   10 +-
- hw/virtio/virtio-mem.c                        |    2 +-
- linux-user/arm/cpu_loop.c                     |   19 +-
- linux-user/hppa/cpu_loop.c                    |   14 +-
- linux-user/mmap.c                             |    2 +-
- linux-user/syscall.c                          |    9 -
- migration/cpu-throttle.c                      |    4 +-
- migration/migration-stats.c                   |   16 +-
- migration/migration.c                         |   24 +-
- migration/multifd-nocomp.c                    |    2 +-
- migration/multifd-zero-page.c                 |    4 +-
- migration/multifd.c                           |   12 +-
- migration/qemu-file.c                         |    6 +-
- migration/ram.c                               |   30 +-
- migration/rdma.c                              |    8 +-
- system/dirtylimit.c                           |    2 +-
- target/arm/ptw.c                              |   18 +-
- target/arm/tcg/gengvec.c                      |   32 +-
- target/arm/tcg/gengvec64.c                    |    4 +-
- target/arm/tcg/translate-sve.c                |   26 +-
- target/hppa/op_helper.c                       |    6 +-
- target/i386/cpu.c                             |   10 -
- target/m68k/op_helper.c                       |    7 +-
- target/s390x/tcg/mem_helper.c                 |    7 -
- tcg/optimize.c                                |  322 --
- tcg/region.c                                  |   12 -
- tcg/tcg-op-gvec.c                             |  113 +-
- tcg/tcg-op-ldst.c                             |  130 +-
- tcg/tcg-op-vec.c                              |   14 +-
- tcg/tcg-op.c                                  |  765 +---
- tcg/tcg.c                                     |  376 +-
- tcg/tci.c                                     |   73 +-
- tests/unit/test-rcu-list.c                    |   17 +-
- util/atomic64.c                               |   85 -
- util/cacheflush.c                             |    4 +-
- util/qsp.c                                    |   12 +-
- util/stats64.c                                |  148 -
- .gitlab-ci.d/buildtest-template.yml           |   27 -
- .gitlab-ci.d/buildtest.yml                    |    9 -
- .gitlab-ci.d/container-cross.yml              |   17 -
- .gitlab-ci.d/containers.yml                   |    3 -
- .gitlab-ci.d/crossbuilds.yml                  |   45 -
- MAINTAINERS                                   |   16 +-
- accel/tcg/atomic_common.c.inc                 |   32 -
- accel/tcg/ldst_atomicity.c.inc                |  149 +-
- common-user/host/arm/safe-syscall.inc.S       |  108 -
- common-user/host/i386/safe-syscall.inc.S      |  127 -
- .../host/{mips => mips64}/safe-syscall.inc.S  |    0
- common-user/host/ppc/safe-syscall.inc.S       |  107 -
- .../{riscv => riscv64}/safe-syscall.inc.S     |    0
- configure                                     |   47 +-
- docs/about/deprecated.rst                     |   29 -
- docs/about/removed-features.rst               |    6 +
- docs/devel/tcg-ops.rst                        |   32 +-
- host/include/i386/host/bufferiszero.c.inc     |  125 -
- host/include/x86_64/host/bufferiszero.c.inc   |  121 +-
- meson.build                                   |  101 +-
- target/i386/tcg/emit.c.inc                    |   39 +-
- target/riscv/insn_trans/trans_rvv.c.inc       |   56 +-
- tcg/arm/tcg-target-opc.h.inc                  |   16 -
- tcg/arm/tcg-target.c.inc                      | 3489 -----------------
- tcg/loongarch64/tcg-target.c.inc              |    4 +-
- tcg/{mips => mips64}/tcg-target-opc.h.inc     |    0
- tcg/{mips => mips64}/tcg-target.c.inc         |    0
- tcg/{ppc => ppc64}/tcg-target-opc.h.inc       |    0
- tcg/{ppc => ppc64}/tcg-target.c.inc           |    2 +-
- tcg/{riscv => riscv64}/tcg-target-opc.h.inc   |    0
- tcg/{riscv => riscv64}/tcg-target.c.inc       |    4 +-
- tcg/tci/tcg-target.c.inc                      |   84 +-
- tcg/{i386 => x86_64}/tcg-target-opc.h.inc     |    0
- tcg/{i386 => x86_64}/tcg-target.c.inc         |  552 +--
- util/meson.build                              |    4 -
- 154 files changed, 1158 insertions(+), 8460 deletions(-)
- delete mode 100644 host/include/i386/host/cpuinfo.h
- delete mode 100644 host/include/i386/host/crypto/aes-round.h
- delete mode 100644 host/include/i386/host/crypto/clmul.h
- delete mode 100644 host/include/ppc/host/cpuinfo.h
- delete mode 100644 host/include/ppc/host/crypto/aes-round.h
- rename host/include/{riscv => riscv64}/host/cpuinfo.h (100%)
- delete mode 100644 include/qemu/stats64.h
- rename tcg/ppc/tcg-target-reg-bits.h => include/tcg/target-reg-bits.h (71%)
- delete mode 100644 linux-user/include/host/arm/host-signal.h
- delete mode 100644 linux-user/include/host/i386/host-signal.h
- rename linux-user/include/host/{mips => mips64}/host-signal.h (100%)
- delete mode 100644 linux-user/include/host/ppc/host-signal.h
- rename linux-user/include/host/{riscv => riscv64}/host-signal.h (100%)
- delete mode 100644 tcg/aarch64/tcg-target-reg-bits.h
- delete mode 100644 tcg/arm/tcg-target-con-set.h
- delete mode 100644 tcg/arm/tcg-target-con-str.h
- delete mode 100644 tcg/arm/tcg-target-has.h
- delete mode 100644 tcg/arm/tcg-target-mo.h
- delete mode 100644 tcg/arm/tcg-target-reg-bits.h
- delete mode 100644 tcg/arm/tcg-target.h
- delete mode 100644 tcg/i386/tcg-target-reg-bits.h
- delete mode 100644 tcg/loongarch64/tcg-target-reg-bits.h
- delete mode 100644 tcg/mips/tcg-target-reg-bits.h
- rename tcg/{mips => mips64}/tcg-target-con-set.h (100%)
- rename tcg/{mips => mips64}/tcg-target-con-str.h (100%)
- rename tcg/{mips => mips64}/tcg-target-has.h (100%)
- rename tcg/{mips => mips64}/tcg-target-mo.h (100%)
- rename tcg/{mips => mips64}/tcg-target.h (100%)
- rename tcg/{ppc => ppc64}/tcg-target-con-set.h (100%)
- rename tcg/{ppc => ppc64}/tcg-target-con-str.h (100%)
- rename tcg/{ppc => ppc64}/tcg-target-has.h (100%)
- rename tcg/{ppc => ppc64}/tcg-target-mo.h (100%)
- rename tcg/{ppc => ppc64}/tcg-target.h (100%)
- delete mode 100644 tcg/riscv/tcg-target-reg-bits.h
- rename tcg/{riscv => riscv64}/tcg-target-con-set.h (100%)
- rename tcg/{riscv => riscv64}/tcg-target-con-str.h (100%)
- rename tcg/{riscv => riscv64}/tcg-target-has.h (100%)
- rename tcg/{riscv => riscv64}/tcg-target-mo.h (100%)
- rename tcg/{riscv => riscv64}/tcg-target.h (100%)
- delete mode 100644 tcg/s390x/tcg-target-reg-bits.h
- delete mode 100644 tcg/sparc64/tcg-target-reg-bits.h
- delete mode 100644 tcg/tci/tcg-target-reg-bits.h
- rename tcg/{i386 => x86_64}/tcg-target-con-set.h (100%)
- rename tcg/{i386 => x86_64}/tcg-target-con-str.h (100%)
- rename tcg/{i386 => x86_64}/tcg-target-has.h (92%)
- rename tcg/{i386 => x86_64}/tcg-target-mo.h (100%)
- rename tcg/{i386 => x86_64}/tcg-target.h (86%)
- delete mode 100644 util/atomic64.c
- delete mode 100644 util/stats64.c
- delete mode 100644 common-user/host/arm/safe-syscall.inc.S
- delete mode 100644 common-user/host/i386/safe-syscall.inc.S
- rename common-user/host/{mips => mips64}/safe-syscall.inc.S (100%)
- delete mode 100644 common-user/host/ppc/safe-syscall.inc.S
- rename common-user/host/{riscv => riscv64}/safe-syscall.inc.S (100%)
- delete mode 100644 host/include/i386/host/bufferiszero.c.inc
- delete mode 100644 tcg/arm/tcg-target-opc.h.inc
- delete mode 100644 tcg/arm/tcg-target.c.inc
- rename tcg/{mips => mips64}/tcg-target-opc.h.inc (100%)
- rename tcg/{mips => mips64}/tcg-target.c.inc (100%)
- rename tcg/{ppc => ppc64}/tcg-target-opc.h.inc (100%)
- rename tcg/{ppc => ppc64}/tcg-target.c.inc (99%)
- rename tcg/{riscv => riscv64}/tcg-target-opc.h.inc (100%)
- rename tcg/{riscv => riscv64}/tcg-target.c.inc (99%)
- rename tcg/{i386 => x86_64}/tcg-target-opc.h.inc (100%)
- rename tcg/{i386 => x86_64}/tcg-target.c.inc (89%)
-
+diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
+index d866cb12bb..9c2ae39ddd 100644
+--- a/.gitlab-ci.d/buildtest-template.yml
++++ b/.gitlab-ci.d/buildtest-template.yml
+@@ -123,30 +123,3 @@
+     - du -chs ${CI_PROJECT_DIR}/*-cache
+   variables:
+     QEMU_JOB_FUNCTIONAL: 1
+-
+-.wasm_build_job_template:
+-  extends: .base_job_template
+-  stage: build
+-  image: $CI_REGISTRY_IMAGE/qemu/$IMAGE:$QEMU_CI_CONTAINER_TAG
+-  before_script:
+-    - source scripts/ci/gitlab-ci-section
+-    - section_start setup "Pre-script setup"
+-    - JOBS=$(expr $(nproc) + 1)
+-    - section_end setup
+-  script:
+-    - du -sh .git
+-    - mkdir build
+-    - cd build
+-    - section_start configure "Running configure"
+-    - emconfigure ../configure --disable-docs
+-          ${TARGETS:+--target-list="$TARGETS"}
+-          $CONFIGURE_ARGS ||
+-      { cat config.log meson-logs/meson-log.txt && exit 1; }
+-    - if test -n "$LD_JOBS";
+-      then
+-        pyvenv/bin/meson configure . -Dbackend_max_links="$LD_JOBS" ;
+-      fi || exit 1;
+-    - section_end configure
+-    - section_start build "Building QEMU"
+-    - emmake make -j"$JOBS"
+-    - section_end build
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index dfe954fe3c..1d4b8a030a 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -784,12 +784,3 @@ coverity:
+       when: never
+     # Always manual on forks even if $QEMU_CI == "2"
+     - when: manual
+-
+-build-wasm:
+-  extends: .wasm_build_job_template
+-  timeout: 2h
+-  needs:
+-    - job: wasm-emsdk-cross-container
+-  variables:
+-    IMAGE: emsdk-wasm32-cross
+-    CONFIGURE_ARGS: --static --disable-tools --enable-debug --enable-tcg-interpreter
+diff --git a/.gitlab-ci.d/container-cross.yml b/.gitlab-ci.d/container-cross.yml
+index 0fd7341afa..044795d9ff 100644
+--- a/.gitlab-ci.d/container-cross.yml
++++ b/.gitlab-ci.d/container-cross.yml
+@@ -22,12 +22,6 @@ arm64-debian-cross-container:
+   variables:
+     NAME: debian-arm64-cross
+ 
+-armhf-debian-cross-container:
+-  extends: .container_job_template
+-  stage: containers
+-  variables:
+-    NAME: debian-armhf-cross
+-
+ hexagon-cross-container:
+   extends: .container_job_template
+   stage: containers
+@@ -40,12 +34,6 @@ loongarch-debian-cross-container:
+   variables:
+     NAME: debian-loongarch-cross
+ 
+-i686-debian-cross-container:
+-  extends: .container_job_template
+-  stage: containers
+-  variables:
+-    NAME: debian-i686-cross
+-
+ mips64el-debian-cross-container:
+   extends: .container_job_template
+   stage: containers
+@@ -85,8 +73,3 @@ win64-fedora-cross-container:
+   extends: .container_job_template
+   variables:
+     NAME: fedora-win64-cross
+-
+-wasm-emsdk-cross-container:
+-  extends: .container_job_template
+-  variables:
+-    NAME: emsdk-wasm32-cross
+diff --git a/.gitlab-ci.d/containers.yml b/.gitlab-ci.d/containers.yml
+index f7d3e7205d..222522ca16 100644
+--- a/.gitlab-ci.d/containers.yml
++++ b/.gitlab-ci.d/containers.yml
+@@ -47,10 +47,8 @@ weekly-container-builds:
+     - amd64-debian-user-cross-container
+     - amd64-debian-legacy-cross-container
+     - arm64-debian-cross-container
+-    - armhf-debian-cross-container
+     - hexagon-cross-container
+     - loongarch-debian-cross-container
+-    - i686-debian-cross-container
+     - mips64el-debian-cross-container
+     - ppc64el-debian-cross-container
+     - riscv64-debian-cross-container
+@@ -58,7 +56,6 @@ weekly-container-builds:
+     - tricore-debian-cross-container
+     - xtensa-debian-cross-container
+     - win64-fedora-cross-container
+-    - wasm-emsdk-cross-container
+     # containers
+     - amd64-alpine-container
+     - amd64-debian-container
+diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
+index 99dfa7eea6..59ff8b1d87 100644
+--- a/.gitlab-ci.d/crossbuilds.yml
++++ b/.gitlab-ci.d/crossbuilds.yml
+@@ -1,13 +1,6 @@
+ include:
+   - local: '/.gitlab-ci.d/crossbuild-template.yml'
+ 
+-cross-armhf-user:
+-  extends: .cross_user_build_job
+-  needs:
+-    - job: armhf-debian-cross-container
+-  variables:
+-    IMAGE: debian-armhf-cross
+-
+ cross-arm64-system:
+   extends: .cross_system_build_job
+   needs:
+@@ -30,44 +23,6 @@ cross-arm64-kvm-only:
+     IMAGE: debian-arm64-cross
+     EXTRA_CONFIGURE_OPTS: --disable-tcg --without-default-features
+ 
+-cross-i686-system:
+-  extends:
+-    - .cross_system_build_job
+-    - .cross_test_artifacts
+-  needs:
+-    - job: i686-debian-cross-container
+-  variables:
+-    IMAGE: debian-i686-cross
+-    EXTRA_CONFIGURE_OPTS: --disable-kvm
+-    MAKE_CHECK_ARGS: check-qtest
+-
+-cross-i686-user:
+-  extends:
+-    - .cross_user_build_job
+-    - .cross_test_artifacts
+-  needs:
+-    - job: i686-debian-cross-container
+-  variables:
+-    IMAGE: debian-i686-cross
+-    MAKE_CHECK_ARGS: check
+-
+-cross-i686-tci:
+-  extends:
+-    - .cross_accel_build_job
+-    - .cross_test_artifacts
+-  timeout: 60m
+-  needs:
+-    - job: i686-debian-cross-container
+-  variables:
+-    IMAGE: debian-i686-cross
+-    ACCEL: tcg-interpreter
+-    EXTRA_CONFIGURE_OPTS: --target-list=i386-softmmu,i386-linux-user,arm-softmmu,arm-linux-user,ppc-softmmu,ppc-linux-user --disable-plugins --disable-kvm
+-    # Force tests to run with reduced parallelism, to see whether this
+-    # reduces the flakiness of this CI job. The CI
+-    # environment by default shows us 8 CPUs and so we
+-    # would otherwise be using a parallelism of 9.
+-    MAKE_CHECK_ARGS: check check-tcg -j2
+-
+ cross-mips64el-system:
+   extends: .cross_system_build_job
+   needs:
 -- 
 2.43.0
 
