@@ -2,71 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E38F0D015FF
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 08:17:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BADBBD015E3
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 08:16:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdk6V-0006tv-2V; Thu, 08 Jan 2026 02:06:43 -0500
+	id 1vdk6b-0007Ii-Tp; Thu, 08 Jan 2026 02:06:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdk6P-0006jo-TF
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 02:06:37 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdk6R-0006lq-4l
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 02:06:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdk6N-0006bQ-9m
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 02:06:37 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdk6O-0006bi-Ot
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 02:06:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767855994;
+ s=mimecast20190719; t=1767855996;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=keBXidDCLkwGrt3l6TpJ6ATfVbhpZVBVBE23uCa133Y=;
- b=Wut0LI8lY+GdnXp1GScDrxCDwO9aRu9gxBU9HEldnDUGLMgogNrVWIcnFAeU9VdfszKQ93
- RhduL3804y/dnzrtrnKJyalZS5xcmiDbS8rg+I+mqBAWdvxs2SS7H+jGA3SP4EPvsUonYE
- 61HsF8u7OqlwZn5m1MP1nqYnsLbGS0c=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=+24QtW0IOqJ/TCWGYCOGIexrTZX+Dhgygc6Vsp4mfbI=;
+ b=VUYs2QHuqasHcI/PA+wZ4NlTJwjqRfdNY7jR82nl1u0Nf6+8ydyvOQaXiD4D4VmdB8E8tt
+ hd1aVBYhMCmrKwInOCHfEL09sKtNF64yOJcY+AFgLGE21UOUzXx2DuYvM42geCigsutUMU
+ x761A+vdYyOsviuvkY2K14eu0pK045k=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-aaTJD16qOnm2En34sLaKnw-1; Thu,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-644-C-2G9KHQNLWrF1bFNojqCw-1; Thu,
  08 Jan 2026 02:06:32 -0500
-X-MC-Unique: aaTJD16qOnm2En34sLaKnw-1
-X-Mimecast-MFC-AGG-ID: aaTJD16qOnm2En34sLaKnw_1767855992
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+X-MC-Unique: C-2G9KHQNLWrF1bFNojqCw-1
+X-Mimecast-MFC-AGG-ID: C-2G9KHQNLWrF1bFNojqCw_1767855991
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E2966195605B; Thu,  8 Jan 2026 07:06:31 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CD51C1800473; Thu,  8 Jan 2026 07:06:31 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.32])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A17141801ACC; Thu,  8 Jan 2026 07:06:31 +0000 (UTC)
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8E06619560A7; Thu,  8 Jan 2026 07:06:31 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 18D9521E61B7; Thu, 08 Jan 2026 08:06:26 +0100 (CET)
+ id 1CBBA21E61B8; Thu, 08 Jan 2026 08:06:26 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v2 10/17] net/tap: Use error_setg_file_open() for a better
+Cc: richard.henderson@linaro.org
+Subject: [PULL v2 11/17] blkdebug: Use error_setg_file_open() for a better
  error message
-Date: Thu,  8 Jan 2026 08:06:18 +0100
-Message-ID: <20260108070625.1586474-11-armbru@redhat.com>
+Date: Thu,  8 Jan 2026 08:06:19 +0100
+Message-ID: <20260108070625.1586474-12-armbru@redhat.com>
 In-Reply-To: <20260108070625.1586474-1-armbru@redhat.com>
 References: <20260108070625.1586474-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,39 +84,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 The error message changes from
 
-    tap: open vhost char device failed
+    Could not read blkdebug config file: REASON
 
 to
 
-    Could not open '/dev/vhost-net': REASON
+    Could not open 'FNAME': REASON
 
 I think the exact file name is more useful to know than the file's
 purpose.
 
-We could put back the "tap: " prefix with error_prepend().  Not
-worth the bother.
-
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20251121121438.1249498-9-armbru@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20251121121438.1249498-10-armbru@redhat.com>
 ---
- net/tap.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ block/blkdebug.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/tap.c b/net/tap.c
-index abe3b2d036..bfba3fd7a7 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -747,8 +747,7 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
-         } else {
-             vhostfd = open("/dev/vhost-net", O_RDWR);
-             if (vhostfd < 0) {
--                error_setg_errno(errp, errno,
--                                 "tap: open vhost char device failed");
-+                error_setg_file_open(errp, errno, "/dev/vhost-net");
-                 goto failed;
-             }
-             if (!qemu_set_blocking(vhostfd, false, errp)) {
+diff --git a/block/blkdebug.c b/block/blkdebug.c
+index c54aee0c84..8a4a8cb85e 100644
+--- a/block/blkdebug.c
++++ b/block/blkdebug.c
+@@ -288,7 +288,7 @@ static int read_config(BDRVBlkdebugState *s, const char *filename,
+     if (filename) {
+         f = fopen(filename, "r");
+         if (f == NULL) {
+-            error_setg_errno(errp, errno, "Could not read blkdebug config file");
++            error_setg_file_open(errp, errno, filename);
+             return -errno;
+         }
+ 
 -- 
 2.52.0
 
