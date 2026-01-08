@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21124D04B5B
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 18:08:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22DECD04B5F
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 18:08:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdtSF-000811-KA; Thu, 08 Jan 2026 12:05:47 -0500
+	id 1vdtSC-0007mP-RI; Thu, 08 Jan 2026 12:05:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vdtS2-0007ZP-Ho
+ id 1vdtS2-0007Zd-QC
  for qemu-devel@nongnu.org; Thu, 08 Jan 2026 12:05:36 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vdtS0-0007MX-K9
+ id 1vdtS1-0007Mh-0m
  for qemu-devel@nongnu.org; Thu, 08 Jan 2026 12:05:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767891931;
+ s=mimecast20190719; t=1767891932;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hs7w5e8PYkWEToas8zAGloctBGVW9BJyZ/k9qigqvuY=;
- b=jKa8ppb4HNK4t2pNpM19uFFyxSHcEsebgwRB/CJMA7nuxci07zJXR1ljkuSezjAV6eTYxn
- XxifYrxMj/rdZXXyYNOQJpsQB4jJVyyy4eVlf8zKDhqac0VILBiw25XAncMqjFwZ5qq+YJ
- 6/zVW86zJRz6biwTeOxbMlVkJBHbh7o=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=sMu62/xjp+e0O9ygWO14PiJ61f02blU4geUHOBlKI7Q=;
+ b=OsoX+FnQ9kvpfPXwInYnfwi4UdpkILr7EwubxjuMa3nXjfoFToRUCxLSFmDkD+XsrSNvO+
+ yNftrV/YWre+m1D2orHdPs9gXZZ47oFbFR4yMKM5L6GLeN7F4jZbySsKT8hMeqQ7gsHSte
+ 8zF0cjwuRkNAgYlWxNCF9gQ+Va9mCkI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-677-XMtLEhKDOjOfc2P8lVtwiw-1; Thu,
- 08 Jan 2026 12:05:25 -0500
-X-MC-Unique: XMtLEhKDOjOfc2P8lVtwiw-1
-X-Mimecast-MFC-AGG-ID: XMtLEhKDOjOfc2P8lVtwiw_1767891922
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-331-d-dGYWb8PZiIXLyfhS6Xgg-1; Thu,
+ 08 Jan 2026 12:05:28 -0500
+X-MC-Unique: d-dGYWb8PZiIXLyfhS6Xgg-1
+X-Mimecast-MFC-AGG-ID: d-dGYWb8PZiIXLyfhS6Xgg_1767891927
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AB6C21956050; Thu,  8 Jan 2026 17:05:22 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F0D88180044D; Thu,  8 Jan 2026 17:05:26 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.44])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CB24E19560A2; Thu,  8 Jan 2026 17:05:18 +0000 (UTC)
+ id 143AE19560BA; Thu,  8 Jan 2026 17:05:22 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -59,10 +59,10 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Markus Armbruster <armbru@redhat.com>, Stefan Weil <sw@weilnetz.de>,
  Kevin Wolf <kwolf@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v5 22/24] util: add support for formatting a program name in
+Subject: [PATCH v5 23/24] util: add support for formatting thread info in
  messages
-Date: Thu,  8 Jan 2026 17:03:36 +0000
-Message-ID: <20260108170338.2693853-23-berrange@redhat.com>
+Date: Thu,  8 Jan 2026 17:03:37 +0000
+Message-ID: <20260108170338.2693853-24-berrange@redhat.com>
 In-Reply-To: <20260108170338.2693853-1-berrange@redhat.com>
 References: <20260108170338.2693853-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -94,191 +94,222 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The error_report function can include the program name in any
-messages it prints. The qemu_log function has no equivalent
-behaviour.
+The message context is now extended to be able to include the
+thread ID and thread name, after the program name. On Linux
+the thread ID will match the process TID visible in /proc,
+while on other platforms it will merely be an integer repr
+of the system thread object address/ID.
 
-This introduces support for a "program name" in the new
-messages API, which will be included by default for all
-binaries.
-
-This change tweaks the output of the error_report function,
-adding a space between the program name and the location
-info. The qemu_log function will gain the program name. This
-can be easily seen with the 'log' trace backend, and how it
-is now more closely matching error_report output.
+This changes the output for both error_report and qemu_log,
+when running under the system emulators or the QEMU storage
+daemon. Other programs omit the thread information since
+they are largely single threaded, though potentially it
+would be useful to enable in all of them, given that the RCU
+thread will always get spawned by a constructor function.
 
 Before:
 
   # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish -d 'trace:qcrypto*'
-  qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x5584e13937f0 dir=fish
-  qcrypto_tls_creds_get_path TLS creds path creds=0x5584e13937f0 filename=ca-cert.pem path=<none>
+  qemu-system-x86_64: qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x560db818e080 dir=fish
+  qemu-system-x86_64: qcrypto_tls_creds_get_path TLS creds path creds=0x560db818e080 filename=ca-cert.pem path=<none>
   qemu-system-x86_64: Unable to access credentials fish/ca-cert.pem: No such file or directory
 
 After:
 
   # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish -d 'trace:qcrypto*'
-  qemu-system-x86_64: qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x5584e13937f0 dir=fish
-  qemu-system-x86_64: qcrypto_tls_creds_get_path TLS creds path creds=0x5584e13937f0 filename=ca-cert.pem path=<none>
-  qemu-system-x86_64: Unable to access credentials fish/ca-cert.pem: No such file or directory
+  qemu-system-x86_64: (772366:main): qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x560db818e080 dir=fish
+  qemu-system-x86_64: (772366:main): qcrypto_tls_creds_get_path TLS creds path creds=0x560db818e080 filename=ca-cert.pem path=<none>
+  qemu-system-x86_64: (772366:main): Unable to access credentials fish/ca-cert.pem: No such file or directory
 
-When adding this the '-msg program-name=on|off' option is
-introduced, so that the program name (which is enabled by
-default) can be supressed if desired. This could be useful
-if '-msg guest-name=on' is being used as a more informative
-identifier.
+The '-msg thread-info=on|off' argument is introduced to allow this
+new default output to be supressed if desired.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/qemu/message.h         |  1 +
- qemu-options.hx                |  9 +++++++--
- system/vl.c                    | 11 ++++++++++-
- tests/unit/test-error-report.c |  5 +++--
- util/error-report.c            |  4 ----
- util/message.c                 | 10 +++++++++-
- 6 files changed, 30 insertions(+), 10 deletions(-)
+ include/qemu/message.h               |  1 +
+ qemu-options.hx                      | 10 +++++++---
+ storage-daemon/qemu-storage-daemon.c |  6 ++++++
+ system/vl.c                          | 17 +++++++++++++++--
+ tests/qemu-iotests/041               |  2 +-
+ tests/qemu-iotests/common.filter     |  2 +-
+ util/message.c                       |  7 +++++++
+ 7 files changed, 38 insertions(+), 7 deletions(-)
 
 diff --git a/include/qemu/message.h b/include/qemu/message.h
-index cfc3c92648..b8518d06be 100644
+index b8518d06be..2cc092c993 100644
 --- a/include/qemu/message.h
 +++ b/include/qemu/message.h
-@@ -6,6 +6,7 @@
- enum QMessageFormatFlags {
+@@ -7,6 +7,7 @@ enum QMessageFormatFlags {
      QMESSAGE_FORMAT_TIMESTAMP = (1 << 0),
      QMESSAGE_FORMAT_WORKLOAD_NAME = (1 << 1),
-+    QMESSAGE_FORMAT_PROGRAM_NAME = (1 << 2),
+     QMESSAGE_FORMAT_PROGRAM_NAME = (1 << 2),
++    QMESSAGE_FORMAT_THREAD_INFO = (1 << 3),
  };
  
  /**
 diff --git a/qemu-options.hx b/qemu-options.hx
-index e8057fdcc9..e58b55d1f7 100644
+index e58b55d1f7..5c09fd8e36 100644
 --- a/qemu-options.hx
 +++ b/qemu-options.hx
-@@ -5515,13 +5515,15 @@ ERST
+@@ -5515,15 +5515,16 @@ ERST
  
  DEF("msg", HAS_ARG, QEMU_OPTION_msg,
      "-msg [timestamp=on|off][,guest-name=on|off]\n"
-+    "     [,program-name=on|off]\n"
+-    "     [,program-name=on|off]\n"
++    "     [,program-name=on|off][,thread-info=on|off]\n"
      "                control error message format\n"
      "                timestamp=on enables timestamps (default: off)\n"
      "                guest-name=on enables guest name prefix but only if\n"
--    "                              -name guest option is set (default: off)\n",
-+    "                              -name guest option is set (default: off)\n"
-+    "                program-name=off disables program name prefix (default: on)\n",
+     "                              -name guest option is set (default: off)\n"
+-    "                program-name=off disables program name prefix (default: on)\n",
++    "                program-name=off disables program name prefix (default: on)\n"
++    "                thread-info=off disables thread ID and name prefix (default: on)\n",
      QEMU_ARCH_ALL)
  SRST
--``-msg [timestamp=on|off][,guest-name=on|off]``
-+``-msg [timestamp=on|off][,guest-name=on|off][,program-name=on|off]``
+-``-msg [timestamp=on|off][,guest-name=on|off][,program-name=on|off]``
++``-msg [timestamp=on|off][,guest-name=on|off][,program-name=on|off][,thread-info=on|off]``
      Control error message format.
  
      ``timestamp=on|off``
-@@ -5530,6 +5532,9 @@ SRST
-     ``guest-name=on|off``
-         Prefix messages with guest name but only if -name guest option is set
-         otherwise the option is ignored. Default is off.
+@@ -5535,6 +5536,9 @@ SRST
+ 
+     ``program-name=on|off``
+         Prefix messages with the program name. Default is on.
 +
-+    ``program-name=on|off``
-+        Prefix messages with the program name. Default is on.
++    ``guest-info=on|off``
++        Prefix messages with the thread ID and name. Default is on.
  ERST
  
  DEF("dump-vmstate", HAS_ARG, QEMU_OPTION_dump_vmstate,
+diff --git a/storage-daemon/qemu-storage-daemon.c b/storage-daemon/qemu-storage-daemon.c
+index eb72561358..cc44ed7848 100644
+--- a/storage-daemon/qemu-storage-daemon.c
++++ b/storage-daemon/qemu-storage-daemon.c
+@@ -47,6 +47,7 @@
+ #include "qemu/cutils.h"
+ #include "qemu/config-file.h"
+ #include "qemu/error-report.h"
++#include "qemu/message.h"
+ #include "qemu/help_option.h"
+ #include "qemu/job.h"
+ #include "qemu/log.h"
+@@ -65,6 +66,10 @@ static const char *pid_file;
+ static char *pid_file_realpath;
+ static volatile bool exit_requested = false;
+ 
++#define QMESSAGE_FORMAT_DEFAULT \
++    (QMESSAGE_FORMAT_PROGRAM_NAME | \
++     QMESSAGE_FORMAT_THREAD_INFO)
++
+ void qemu_system_killed(int signal, pid_t pid)
+ {
+     exit_requested = true;
+@@ -399,6 +404,7 @@ int main(int argc, char *argv[])
+ #endif
+ 
+     error_init(argv[0]);
++    qmessage_set_format(QMESSAGE_FORMAT_DEFAULT);
+     qemu_init_exec_dir(argv[0]);
+     os_setup_signal_handling();
+ 
 diff --git a/system/vl.c b/system/vl.c
-index 5f3b5436a6..503b0dcc24 100644
+index 503b0dcc24..50209e6f4e 100644
 --- a/system/vl.c
 +++ b/system/vl.c
-@@ -381,6 +381,12 @@ static QemuOptsList qemu_msg_opts = {
-             .help = "Prepends guest name for error messages but only if "
-                     "-name guest is set otherwise option is ignored\n",
+@@ -145,6 +145,10 @@
+ 
+ #define MAX_VIRTIO_CONSOLES 1
+ 
++#define QMESSAGE_FORMAT_DEFAULT \
++    (QMESSAGE_FORMAT_PROGRAM_NAME | \
++     QMESSAGE_FORMAT_THREAD_INFO)
++
+ typedef struct BlockdevOptionsQueueEntry {
+     BlockdevOptions *bdo;
+     Location loc;
+@@ -387,6 +391,12 @@ static QemuOptsList qemu_msg_opts = {
+             .help = "Prepends program name for error messages (enabled "
+                     "by default)\n",
          },
 +        {
 +            .name = "program-name",
 +            .type = QEMU_OPT_BOOL,
-+            .help = "Prepends program name for error messages (enabled "
-+                    "by default)\n",
++            .help = "Prepends current thread ID and name for error messages "
++                    "(enabled by default)\n",
 +        },
          { /* end of list */ }
      },
  };
-@@ -819,13 +825,16 @@ static void realtime_init(void)
+@@ -822,10 +832,9 @@ static void realtime_init(void)
+     }
+ }
  
+-
  static void configure_msg(QemuOpts *opts)
  {
--    int flags = 0;
-+    int flags = QMESSAGE_FORMAT_PROGRAM_NAME;
+-    int flags = QMESSAGE_FORMAT_PROGRAM_NAME;
++    int flags = QMESSAGE_FORMAT_DEFAULT;
      if (qemu_opt_get_bool(opts, "timestamp", false)) {
          flags |= QMESSAGE_FORMAT_TIMESTAMP;
      }
-     if (qemu_opt_get_bool(opts, "guest-name", false)) {
-         flags |= QMESSAGE_FORMAT_WORKLOAD_NAME;
+@@ -835,6 +844,9 @@ static void configure_msg(QemuOpts *opts)
+     if (!qemu_opt_get_bool(opts, "program-name", true)) {
+         flags &= ~QMESSAGE_FORMAT_PROGRAM_NAME;
      }
-+    if (!qemu_opt_get_bool(opts, "program-name", true)) {
-+        flags &= ~QMESSAGE_FORMAT_PROGRAM_NAME;
++    if (!qemu_opt_get_bool(opts, "thread-info", true)) {
++        flags &= ~QMESSAGE_FORMAT_THREAD_INFO;
 +    }
      qmessage_set_format(flags);
  }
  
-diff --git a/tests/unit/test-error-report.c b/tests/unit/test-error-report.c
-index 9c63019694..714eafc51e 100644
---- a/tests/unit/test-error-report.c
-+++ b/tests/unit/test-error-report.c
-@@ -47,7 +47,7 @@ test_error_report_loc(void)
-     g_test_trap_subprocess(NULL, 0, 0);
-     g_test_trap_assert_passed();
-     g_test_trap_assert_stderr("\
--test-error-report:some-file.c:7717: test error1*\
-+test-error-report: some-file.c:7717: test error1*\
- test-error-report: test error2*\
- ");
- }
-@@ -90,7 +90,8 @@ static void
- test_error_report_timestamp(void)
- {
-     if (g_test_subprocess()) {
--        qmessage_set_format(QMESSAGE_FORMAT_TIMESTAMP);
-+        qmessage_set_format(QMESSAGE_FORMAT_TIMESTAMP |
-+                            QMESSAGE_FORMAT_PROGRAM_NAME);
-         warn_report("warn");
-         error_report("err");
-         return;
-diff --git a/util/error-report.c b/util/error-report.c
-index 313c2d6055..4c82d10a36 100644
---- a/util/error-report.c
-+++ b/util/error-report.c
-@@ -176,10 +176,6 @@ static void print_loc(Monitor *cur)
-     int i;
-     const char *const *argp;
+@@ -2903,6 +2915,7 @@ void qemu_init(int argc, char **argv)
+     module_call_init(MODULE_INIT_OPTS);
  
--    if (!cur && g_get_prgname()) {
--        fprintf(stderr, "%s:", g_get_prgname());
--        sep = " ";
--    }
-     switch (cur_loc->kind) {
-     case LOC_CMDLINE:
-         argp = cur_loc->ptr;
+     error_init(argv[0]);
++    qmessage_set_format(QMESSAGE_FORMAT_DEFAULT);
+     qemu_init_exec_dir(argv[0]);
+ 
+     os_setup_limits();
+diff --git a/tests/qemu-iotests/041 b/tests/qemu-iotests/041
+index 8452845f44..dc2666afe7 100755
+--- a/tests/qemu-iotests/041
++++ b/tests/qemu-iotests/041
+@@ -1102,7 +1102,7 @@ class TestRepairQuorum(iotests.QMPTestCase):
+         self.vm.shutdown()
+         log = iotests.filter_qtest(self.vm.get_log())
+         log = re.sub(r'^Formatting.*\n', '', log)
+-        log = re.sub(r'^%s: ' % os.path.basename(iotests.qemu_prog), '', log)
++        log = re.sub(r'^%s: \(\d+:\w+\): ' % os.path.basename(iotests.qemu_prog), '', log)
+ 
+         self.assertEqual(log,
+                          "Can no longer replace 'img1' by 'repair0', because " +
+diff --git a/tests/qemu-iotests/common.filter b/tests/qemu-iotests/common.filter
+index 26e6b45b04..c8cb2e860c 100644
+--- a/tests/qemu-iotests/common.filter
++++ b/tests/qemu-iotests/common.filter
+@@ -81,7 +81,7 @@ _filter_qemu_io()
+ # replace occurrences of QEMU_PROG with "qemu"
+ _filter_qemu()
+ {
+-    gsed -e "s#\\(^\\|(qemu) \\)$(basename $QEMU_PROG):#\1QEMU_PROG:#" \
++    gsed -e "s#\\(^\\|(qemu) \\)$(basename $QEMU_PROG): ([0-9]\+:[-_a-zA-Z]\+):#\1QEMU_PROG:#" \
+         -e 's#^QEMU [0-9]\+\.[0-9]\+\.[0-9]\+ monitor#QEMU X.Y.Z monitor#' \
+         -e $'s#\r##' # QEMU monitor uses \r\n line endings
+ }
 diff --git a/util/message.c b/util/message.c
-index fb2c947153..dd01bf7462 100644
+index dd01bf7462..9bf640c8c4 100644
 --- a/util/message.c
 +++ b/util/message.c
-@@ -5,7 +5,7 @@
- #include "qemu/message.h"
- #include "monitor/monitor.h"
- 
--static int message_format;
-+static int message_format = QMESSAGE_FORMAT_PROGRAM_NAME;
- static char *message_workloadname;
- 
- void qmessage_set_format(int flags)
-@@ -32,4 +32,12 @@ void qmessage_context_print(FILE *fp)
-         fputs(message_workloadname, fp);
-         fputc(' ', fp);
+@@ -40,4 +40,11 @@ void qmessage_context_print(FILE *fp)
+             fputs(": ", fp);
+         }
      }
 +
-+    if (message_format & QMESSAGE_FORMAT_PROGRAM_NAME) {
-+        const char *pgnamestr = g_get_prgname();
-+        if (pgnamestr) {
-+            fputs(pgnamestr, fp);
-+            fputs(": ", fp);
-+        }
++    if (message_format & QMESSAGE_FORMAT_THREAD_INFO) {
++        int thid = qemu_get_thread_id();
++        const char *thname = qemu_thread_get_name();
++
++        fprintf(fp, "(%d:%s): ", thid, thname);
 +    }
  }
 -- 
