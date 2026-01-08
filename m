@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A9FD015DA
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 08:15:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB3BFD015BC
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 08:15:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdk6b-0007I5-Lk; Thu, 08 Jan 2026 02:06:49 -0500
+	id 1vdk6X-00070s-2u; Thu, 08 Jan 2026 02:06:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdk6R-0006lp-4a
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 02:06:39 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdk6S-0006pO-UF
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 02:06:41 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdk6O-0006bY-5x
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 02:06:38 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdk6Q-0006c2-P6
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 02:06:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767855995;
+ s=mimecast20190719; t=1767855996;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZPKCPUUR4fzGWdFpXlfe46sZ0bt7B0rWoFCl24emMc4=;
- b=hhZSVgxpu7W5W4dz+lVxlsTp89I2pImavfjFjHYipUAdcn/bIEe4XFH9p/P+I/YuZJT9rk
- eL7rgDS4V0F8iVB8JV2lCaNBbQ9oG0aqqp3HBnRdKwxVc1OUero1MajUOZEQ+W/3VJqS0e
- 11FIIlAQCfaQBNdtY8GgplmOQG1Sst4=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=TkjBCERXAdlruTrVCInbFwKENfOuOCCwFfwxiCh0zrY=;
+ b=hWltHUnz7y3jkCyzk4qWJod9WgeqTnsHg9WLd1LpBgkShgKxz0WrJ6pWoWjh1k/MWDy44G
+ EVDodRgGAdj7xRL+jkiB9HRZu6HWmv04Lmtm80vcxMN4glbB5VH1fl50jxwOA8pxhLY52D
+ Rp+3LqJxrqU1SVwtoYYltMdJwJmvzgU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-264-9MeZ70a8MCqY2t9H_GoaRg-1; Thu,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-246-Kq_k7ZS-M2SWvVuxLD0rWw-1; Thu,
  08 Jan 2026 02:06:33 -0500
-X-MC-Unique: 9MeZ70a8MCqY2t9H_GoaRg-1
-X-Mimecast-MFC-AGG-ID: 9MeZ70a8MCqY2t9H_GoaRg_1767855991
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+X-MC-Unique: Kq_k7ZS-M2SWvVuxLD0rWw-1
+X-Mimecast-MFC-AGG-ID: Kq_k7ZS-M2SWvVuxLD0rWw_1767855992
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C39871800342; Thu,  8 Jan 2026 07:06:31 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2ED0F1956088; Thu,  8 Jan 2026 07:06:32 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.32])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 787C419560B4; Thu,  8 Jan 2026 07:06:31 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 88CA618007D2; Thu,  8 Jan 2026 07:06:31 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 24BB421E61BD; Thu, 08 Jan 2026 08:06:26 +0100 (CET)
+ id 28D9C21E61BF; Thu, 08 Jan 2026 08:06:26 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v2 13/17] net/slirp: Improve file open error message
-Date: Thu,  8 Jan 2026 08:06:21 +0100
-Message-ID: <20260108070625.1586474-14-armbru@redhat.com>
+Subject: [PULL v2 14/17] error: Use error_setg_errno() to improve error
+ messages
+Date: Thu,  8 Jan 2026 08:06:22 +0100
+Message-ID: <20260108070625.1586474-15-armbru@redhat.com>
 In-Reply-To: <20260108070625.1586474-1-armbru@redhat.com>
 References: <20260108070625.1586474-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -83,33 +84,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This error reports failure to create a temporary file, and
-error_setg_file_open() would probably be too terse, so merely switch
-to error_setg_errno() to add errno information.
+A few error messages show numeric errno codes.  Use error_setg_errno()
+to show human-readable text instead.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20251121121438.1249498-12-armbru@redhat.com>
+Message-ID: <20251121121438.1249498-13-armbru@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+[Trivial fixup to riscv_kvm_cpu_finalize_features()]
 ---
- net/slirp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ backends/cryptodev-lkcf.c   |  2 +-
+ hw/ppc/spapr.c              |  6 +++---
+ hw/vfio/migration-multifd.c |  5 +++--
+ migration/rdma.c            |  3 +--
+ net/l2tpv3.c                |  6 ++----
+ target/riscv/kvm/kvm-cpu.c  | 10 +++++-----
+ 6 files changed, 15 insertions(+), 17 deletions(-)
 
-diff --git a/net/slirp.c b/net/slirp.c
-index 120eef6122..5996fec512 100644
---- a/net/slirp.c
-+++ b/net/slirp.c
-@@ -1034,8 +1034,10 @@ static int slirp_smb(SlirpState* s, const char *exported_dir,
+diff --git a/backends/cryptodev-lkcf.c b/backends/cryptodev-lkcf.c
+index 97a8a8812c..40c7bd3c5a 100644
+--- a/backends/cryptodev-lkcf.c
++++ b/backends/cryptodev-lkcf.c
+@@ -218,7 +218,7 @@ static void cryptodev_lkcf_init(CryptoDevBackend *backend, Error **errp)
+     }
+     lkcf->eventfd = eventfd(0, 0);
+     if (lkcf->eventfd < 0) {
+-        error_setg(errp, "Failed to create eventfd: %d", errno);
++        error_setg_errno(errp, errno, "Failed to create eventfd");
+         return;
+     }
  
-     f = fopen(smb_conf, "w");
-     if (!f) {
-+        int eno = errno;
-+
-         slirp_smb_cleanup(s);
--        error_setg(errp,
-+        error_setg_errno(errp, eno,
-                    "Could not create samba server configuration file '%s'",
-                     smb_conf);
-         g_free(smb_conf);
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index b3c5097bf8..f129e4ec39 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -2700,9 +2700,9 @@ static void spapr_set_vsmt_mode(SpaprMachineState *spapr, Error **errp)
+         ret = kvmppc_set_smt_threads(spapr->vsmt);
+         if (ret) {
+             /* Looks like KVM isn't able to change VSMT mode */
+-            error_setg(&local_err,
+-                       "Failed to set KVM's VSMT mode to %d (errno %d)",
+-                       spapr->vsmt, ret);
++            error_setg_errno(&local_err, -ret,
++                             "Failed to set KVM's VSMT mode to %d",
++                             spapr->vsmt);
+             /* We can live with that if the default one is big enough
+              * for the number of threads, and a submultiple of the one
+              * we want.  In this case we'll waste some vcpu ids, but
+diff --git a/hw/vfio/migration-multifd.c b/hw/vfio/migration-multifd.c
+index e4785031a7..4a855f4e12 100644
+--- a/hw/vfio/migration-multifd.c
++++ b/hw/vfio/migration-multifd.c
+@@ -725,8 +725,9 @@ vfio_multifd_save_complete_precopy_thread(SaveCompletePrecopyThreadData *d,
+         data_size = read(migration->data_fd, &packet->data,
+                          migration->data_buffer_size);
+         if (data_size < 0) {
+-            error_setg(errp, "%s: reading state buffer %" PRIu32 " failed: %d",
+-                       vbasedev->name, idx, errno);
++            error_setg_errno(errp, errno,
++                             "%s: reading state buffer %" PRIu32 " failed",
++                             vbasedev->name, idx);
+             goto thread_exit;
+         } else if (data_size == 0) {
+             break;
+diff --git a/migration/rdma.c b/migration/rdma.c
+index 337b415889..9e301cf917 100644
+--- a/migration/rdma.c
++++ b/migration/rdma.c
+@@ -2349,8 +2349,7 @@ static int qemu_get_cm_event_timeout(RDMAContext *rdma,
+         error_setg(errp, "RDMA ERROR: poll cm event timeout");
+         return -1;
+     } else if (ret < 0) {
+-        error_setg(errp, "RDMA ERROR: failed to poll cm event, errno=%i",
+-                   errno);
++        error_setg_errno(errp, errno, "RDMA ERROR: failed to poll cm event");
+         return -1;
+     } else if (poll_fd.revents & POLLIN) {
+         if (rdma_get_cm_event(rdma->channel, cm_event) < 0) {
+diff --git a/net/l2tpv3.c b/net/l2tpv3.c
+index cdfc641aa6..3044fa4608 100644
+--- a/net/l2tpv3.c
++++ b/net/l2tpv3.c
+@@ -639,13 +639,11 @@ int net_init_l2tpv3(const Netdev *netdev,
+     }
+     fd = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
+     if (fd == -1) {
+-        fd = -errno;
+-        error_setg(errp, "socket creation failed, errno = %d",
+-                   -fd);
++        error_setg_errno(errp, errno, "socket creation failed");
+         goto outerr;
+     }
+     if (bind(fd, (struct sockaddr *) result->ai_addr, result->ai_addrlen)) {
+-        error_setg(errp, "could not bind socket err=%i", errno);
++        error_setg_errno(errp, errno, "could not bind socket");
+         goto outerr;
+     }
+     if (!qemu_set_blocking(fd, false, errp)) {
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index 5d792563b9..b047ffa9c0 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -1996,8 +1996,8 @@ static bool kvm_cpu_realize(CPUState *cs, Error **errp)
+     if (riscv_has_ext(&cpu->env, RVV)) {
+         ret = prctl(PR_RISCV_V_SET_CONTROL, PR_RISCV_V_VSTATE_CTRL_ON);
+         if (ret) {
+-            error_setg(errp, "Error in prctl PR_RISCV_V_SET_CONTROL, code: %s",
+-                       strerrorname_np(errno));
++            error_setg_errno(errp, errno,
++                             "Error in prctl PR_RISCV_V_SET_CONTROL");
+             return false;
+         }
+     }
+@@ -2032,7 +2032,7 @@ void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
+         reg.addr = (uint64_t)&val;
+         ret = ioctl(kvmcpu.cpufd, KVM_GET_ONE_REG, &reg);
+         if (ret != 0) {
+-            error_setg(errp, "Unable to read cbom_blocksize, error %d", errno);
++            error_setg_errno(errp, errno, "Unable to read cbom_blocksize");
+             return;
+         }
+ 
+@@ -2051,7 +2051,7 @@ void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
+         reg.addr = (uint64_t)&val;
+         ret = ioctl(kvmcpu.cpufd, KVM_GET_ONE_REG, &reg);
+         if (ret != 0) {
+-            error_setg(errp, "Unable to read cboz_blocksize, error %d", errno);
++            error_setg_errno(errp, errno, "Unable to read cboz_blocksize");
+             return;
+         }
+ 
+@@ -2073,7 +2073,7 @@ void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
+         reg.addr = (uint64_t)&val;
+         ret = ioctl(kvmcpu.cpufd, KVM_GET_ONE_REG, &reg);
+         if (ret != 0) {
+-            error_setg(errp, "Unable to read vlenb register, error %d", errno);
++            error_setg_errno(errp, errno, "Unable to read vlenb register");
+             return;
+         }
+ 
 -- 
 2.52.0
 
