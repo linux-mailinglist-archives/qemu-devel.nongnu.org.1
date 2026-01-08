@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2CFFD0625F
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 21:43:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03660D062B3
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 21:53:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdwpo-00071O-Pi; Thu, 08 Jan 2026 15:42:20 -0500
+	id 1vdwzE-0001QV-0k; Thu, 08 Jan 2026 15:52:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vdwpm-00070o-QD
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 15:42:18 -0500
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1vdwzB-0001Ps-Qn
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 15:52:01 -0500
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vdwpl-0008Tx-36
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 15:42:18 -0500
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-81345800791so1976441b3a.0
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 12:42:16 -0800 (PST)
+ id 1vdwzA-00022x-44
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 15:52:01 -0500
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-81df6a302b1so190747b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 12:51:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767904935; x=1768509735; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767905518; x=1768510318; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=qWu5cPYFuAGi7autqkICiGQ+ftX3esSAox5aQM9wuNU=;
- b=mVpbZAGIUUpFpFutU1vOGxmSaOhrVyRUVoT0zQ0WD8OTlqucXSpzJUQx0zYKH5UaEA
- TwbU6dIhxkMg9cBuzULB0y04HQifTTSsxhmlrr5A+3UIU9yR6NmW79abn05HLPRHOibc
- /YuZndTR4svvfCeoGMeCXXV8Tdmtakwi8IywHEuv88r+uMQW/mA01pAAw3TouQFhC0Sd
- 80HqWdP6zpq+eoS+VbXyNmkAR3B2VNFfHLZEb5g5gKheTooUM7li/xvnwhdjW4t6dBFE
- 71reSjJRdFA/gBoMZsorbGK/2kBzCY8Ipf72vzLgtQKWkXARJZFvXEoL+fVm0RkOU8DL
- 5DAA==
+ bh=WduuRd1zBnSprL751T9lZwTYZxTtQikxVMMFcslllPk=;
+ b=UKDjq0qDmyaWY3t/WeXWiceyvH9yJ5wAE5b/aQMu+LGwxeIDf8GFoaAM7x47T59CU+
+ LrSYK8SHUT4qFI6kcWkqhsPvGDLS/ojAN8cAkQDKnjRmZ6hxHBmxBmOYqvHYGfZ5WHMb
+ JoeRpiAbKryoxd2CTFnGyQXMNVmtFsP1uqmBjLyrVgnxyL6HQS8+3TAEvSZPSMR3NRy5
+ r4TkGj+iRgyKrikjb73k78hQCMFqBctQprAYpA+HRs6C66ijdkHiDDQ4YUuphjYqmZT1
+ 2zycffGREW0gBYng47xcFOkSAvrsnK9FBH4DPsNGSkboPiL7wlsW5Ti8GRQMWqTeEZ0x
+ XYlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767904935; x=1768509735;
+ d=1e100.net; s=20230601; t=1767905518; x=1768510318;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=qWu5cPYFuAGi7autqkICiGQ+ftX3esSAox5aQM9wuNU=;
- b=siEY2Zn/17BV3xN5lOS6EKs0rrY5Be3KnWfy3eKnN4vpIQ5K2mzKWntGfUe3fEffDH
- fpoXQgYci+wRy9+360zlcTSP1oxGlhxlMmh5dQT26qY93maAYzlFGoSUd2phzQpOPVmp
- NI4X9dtxPiuAygDxcPGFcZwCTneBP6FQNbnOVjWqt+7A5CgcaeUSY9rXhwhvFyYSshOB
- B3E8+HTXCDvs6nK7rARb18quZT0nehdjNmZJnxJpMKaWObf8L8DU0VHQDfL84edUp0wV
- plqH0MFLEzvbVHXJd/6Rg9ftpnAVapdyiFNg81vTdCplfFe4OEwMX/cWfcorjKUla3uB
- KjxQ==
+ bh=WduuRd1zBnSprL751T9lZwTYZxTtQikxVMMFcslllPk=;
+ b=Pj9RrGYwD0dVLBzbVFNUWHhvv4RUtddZWpszg+Z8mr47fLbyNHGod2qcb+wKZpBW6i
+ mdhbc+lC2AT8PKTK5vUBz2Cd7qeX/fJxyszZbkrqcIja3/Y7WUwk/Lrd/1UPKvtexYoo
+ r/zcX0XHn8u4/GxC/HYl/HHoiSGvcAZPyvJunWO7FUprt0sgKvirYTn19nn8Dr28pOXd
+ cF4P0jj9iZHVHnJNl66iKqsQsSPlmSfCGlD6fQ6VA7UKgJNjSdSRtwNCO4DF/So8T3bU
+ 30aS+RWolMr8FHJhh+MDkqcMUMWocVizJHd/BaFM4e0zcyPiMenkQF7KDjTJ/Yp1Spxc
+ AG+w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXRw4ia36JoLLYgpyOgROe6iyJGg7U5sLgTm7GcdbqaTzApliV718E/fT3TUpXExD6xBY+KdtHRdZWu@nongnu.org
-X-Gm-Message-State: AOJu0Ywn6qzwF/nVHjOQ2/rnbNk6GGfYuHJ7d58Qv6cYLPtHHHsJvJK2
- C+Hr1f3w2sD76SBKwmuSvNVaGdm3YVlsx+DI1EAcaBDNU+tISYd1vyUJx9Pg6bgBN00=
-X-Gm-Gg: AY/fxX7JzE2SdQKssEeBGibVIJELRG3Exp+rG967omLxWQY1OEa5+JLnlexG5jVMa+A
- YqKKdRfXKncl7+s8phPPGXCpn0a/ncWniFCWBqvoVO424DLUHVmfJKBpAzgBLoBOVSwC9P1U1ZM
- NLP+UgRYdnLkcQ9+Q6h+a/vmi7ER1P21jvWHKdqA5XaruhpcllZC4pZnFj45BpE13HjMYWD20lz
- ZIwDliPQg9nWQ2wZSCOMFj2t8brJH+kLHdCzS1/aKJvLYLaPB05WFTBqQyvhQtiAq1FC2e+x0Ww
- No65KfegvajRzQFmAHI3YLWtg8T1y2hpx6kL72PXlYxr/jdv8D+gDYD0blI/Zpxta30UZ3h1MyY
- FogxHmuAo/psXSH5ezEuu7eh41G+GbEXeJp67DFKA6ioa0sYCG0FCSFxG0aVc9N5ECp3fIIxaPz
- Bq7/159LXWUw1IDHu99vSA+1HeDYOG2YcHeFfXqgwAt0uCqyojEUx2iIt1yLRIBGeU+1A=
-X-Google-Smtp-Source: AGHT+IFo7EIESN+ZqxYq7JEPOZfsMUJU0NnPKqGacGYKuDir20uhDkECvlYn0g7krmmryKKgYIVRWw==
-X-Received: by 2002:a05:6a00:ab03:b0:781:1f28:eadd with SMTP id
- d2e1a72fcca58-81b7d7544d9mr6749730b3a.20.1767904935292; 
- Thu, 08 Jan 2026 12:42:15 -0800 (PST)
+ AJvYcCUPxXx5xeBQzti37Z0z111cksm36VkKwEmP6Lbe4wZtWaTR+PD5HBe3kkZOQ2zwWPjFIeQRRiaoxNaM@nongnu.org
+X-Gm-Message-State: AOJu0YzbSxr5cmcAcynNw20UkQ453+HMYBHr/mM9Bkvroe0xqOQVWEsg
+ /WB4kr2EwVP5ypLtW39ynytkF7I9Ehr+6VcWjq5lO84IepWSXzCp5i7ua3A2jDq3Vbln57efWUi
+ 9WT/X
+X-Gm-Gg: AY/fxX6zGH290+aZsdchWImwXBYD4irvsmi/ornOI9a1DtljqTeTtRE+5ZPNtZFUUiW
+ zH0z+VGZVIhgO0vQIuIkF+7ho5zdT4vyRDmGMztmbHhGtpLdxyg3ZCulMV44RM/+mEyY5x+zi5A
+ M0rjIPV3Nbag2WLmCqC1EXXNOt2qYfQrQwAcSsGqOSSQKc9KXKNbYB1Dy6pBsvI7FGUhS7E3MrU
+ Kf6txPEAwLQsTx/aLikasfaZ/a3TtSvoun7QKhG5SHkXBFh7lLEH3s2Hr5TwykJb4IsKt9bx+N5
+ JZFEEIJG0wEs+u845aYGJtiAyUV/fSw8aMe9lMt4ASEMiMqSrFVh7UQ0Js7uTXFrM1g+UNQxyjX
+ FKFBvJJHAMKyyVLTbhrXwnKXxkwR5HzAS76NPDQyzxsG7CwCokBxk/2syAXVWJa3400Q6UP6qNW
+ 5QDJXvv4grC8orbDmmgIJsewplHuwga/jmjzRLPkiBe9IDZSILxe3ZFaEQ
+X-Google-Smtp-Source: AGHT+IF37dwW1XI5WKygiZ0jxWbh59SKGcNWpszAJNZKwWluCvxNwGIdFJtLscAkrcPo/2a3ajgaDg==
+X-Received: by 2002:a05:6a00:3286:b0:7aa:4f1d:c458 with SMTP id
+ d2e1a72fcca58-81b7d85635emr6694239b3a.19.1767905518354; 
+ Thu, 08 Jan 2026 12:51:58 -0800 (PST)
 Received: from [192.168.1.87] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-819c59e0531sm8418033b3a.49.2026.01.08.12.42.14
+ 41be03b00d2f7-c4cc02ecfaasm8985488a12.14.2026.01.08.12.51.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 08 Jan 2026 12:42:14 -0800 (PST)
-Message-ID: <807dd19a-1d60-4746-ada5-0a6630ede20d@linaro.org>
-Date: Thu, 8 Jan 2026 12:42:14 -0800
+ Thu, 08 Jan 2026 12:51:57 -0800 (PST)
+Message-ID: <b654f3ac-acc8-418f-b7f2-2de27b1f14d9@linaro.org>
+Date: Thu, 8 Jan 2026 12:51:57 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 23/50] tcg/tci: Remove glue TCG_TARGET_REG_BITS renames
+Subject: Re: [PATCH 24/50] tcg: Drop TCG_TARGET_REG_BITS test in region.c
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 References: <20260108053018.626690-1-richard.henderson@linaro.org>
- <20260108053018.626690-24-richard.henderson@linaro.org>
+ <20260108053018.626690-25-richard.henderson@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20260108053018.626690-24-richard.henderson@linaro.org>
+In-Reply-To: <20260108053018.626690-25-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,8 +107,8 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 1/7/26 9:29 PM, Richard Henderson wrote:
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   tcg/tci.c | 13 ++++---------
->   1 file changed, 4 insertions(+), 9 deletions(-)
+>   tcg/region.c | 12 ------------
+>   1 file changed, 12 deletions(-)
 > 
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
