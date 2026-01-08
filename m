@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C6E7D04AE1
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 18:05:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA56AD04ADE
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 18:05:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdtQx-0004D4-QF; Thu, 08 Jan 2026 12:04:27 -0500
+	id 1vdtR3-0004S6-JZ; Thu, 08 Jan 2026 12:04:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vdtQq-00044N-Df
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 12:04:20 -0500
+ id 1vdtQv-0004I2-M3
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 12:04:25 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vdtQo-0006tg-Hu
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 12:04:19 -0500
+ id 1vdtQu-0006vL-DD
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 12:04:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767891857;
+ s=mimecast20190719; t=1767891863;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=w4EwNMbC+CcMqBzFm62KkcpDgI9ZS17aDCUovm6Nb7I=;
- b=NIgXhEMX/y/Qco6AlCMe38j0Oc4OFLCnr5lTjvlCxLx19kofsS+7sBQh4a99ggcSpi4yUN
- K3JacD9+JOP0MRUbtflZ6oaUxi40Pk0H3mlIooKUXoNVtWomG7EEDbMRS8yGu4kbywW0hP
- eEcLaCfnF9fXMoKS+MelYtbQmmvklb4=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=o4SBR89h6eLwGZj35KLKhD3YguhrIDbrsbofZdkSSws=;
+ b=JWWbSw5kwpGhlk5tb9oB0WB/LKYsBDsmtIHKlrGRSmrdssf5r2FRNBPbGasRaTI+GUAqVx
+ JKacWlmrIasTCKEt1FWmjnZB6pmXTCuG0+G3UbNPcUsr7lYxymRZnIMqd2AX6sWiv7wiRk
+ fgBtnnWOX+5uuatkZPQmutygF1TjagA=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-322-Fl3yDTkoOPG-OPaxSqDIcg-1; Thu,
- 08 Jan 2026 12:04:14 -0500
-X-MC-Unique: Fl3yDTkoOPG-OPaxSqDIcg-1
-X-Mimecast-MFC-AGG-ID: Fl3yDTkoOPG-OPaxSqDIcg_1767891852
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-226-Z6uoXxfuMeW7Wx2dfdB1EA-1; Thu,
+ 08 Jan 2026 12:04:18 -0500
+X-MC-Unique: Z6uoXxfuMeW7Wx2dfdB1EA-1
+X-Mimecast-MFC-AGG-ID: Z6uoXxfuMeW7Wx2dfdB1EA_1767891856
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3918519560A3; Thu,  8 Jan 2026 17:04:12 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6DB2E19560B7; Thu,  8 Jan 2026 17:04:16 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.44])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 066EB19560A2; Thu,  8 Jan 2026 17:04:07 +0000 (UTC)
+ id 99C031955F44; Thu,  8 Jan 2026 17:04:12 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -59,9 +59,9 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Markus Armbruster <armbru@redhat.com>, Stefan Weil <sw@weilnetz.de>,
  Kevin Wolf <kwolf@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v5 06/24] audio: make jackaudio use qemu_thread_set_name
-Date: Thu,  8 Jan 2026 17:03:20 +0000
-Message-ID: <20260108170338.2693853-7-berrange@redhat.com>
+Subject: [PATCH v5 07/24] util: set the name for the 'main' thread
+Date: Thu,  8 Jan 2026 17:03:21 +0000
+Message-ID: <20260108170338.2693853-8-berrange@redhat.com>
 In-Reply-To: <20260108170338.2693853-1-berrange@redhat.com>
 References: <20260108170338.2693853-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -77,7 +77,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,74 +93,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This has greater portability than directly call pthread_setname_np,
-which is only 1 out of 3 possible functions for pthreads that can
-set the name.
+The default main thread name is undefined, so use a constructor to
+explicitly set it to 'main'. This constructor is marked to run early
+as the thread name is intended to be used in error reporting / logs
+which may be triggered very early in QEMU execution.
 
-The new API requires a trampoline function, since it can only set
-the name of the current thread.
-
-Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- audio/jackaudio.c | 30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
+ util/qemu-thread-posix.c | 6 ++++++
+ util/qemu-thread-win32.c | 6 ++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/audio/jackaudio.c b/audio/jackaudio.c
-index 7a3fcaedba..c47a1a3781 100644
---- a/audio/jackaudio.c
-+++ b/audio/jackaudio.c
-@@ -629,18 +629,36 @@ static void qjack_enable_in(HWVoiceIn *hw, bool enable)
-     ji->c.enabled = enable;
- }
+diff --git a/util/qemu-thread-posix.c b/util/qemu-thread-posix.c
+index b1c127dbe3..afeac9ecad 100644
+--- a/util/qemu-thread-posix.c
++++ b/util/qemu-thread-posix.c
+@@ -22,6 +22,12 @@
+ #include <pthread_np.h>
+ #endif
  
--#if !defined(WIN32) && defined(CONFIG_PTHREAD_SETNAME_NP_W_TID)
-+#if !defined(WIN32)
-+struct QJackThreadData {
-+    void *(*function)(void *);
-+    void *arg;
-+};
-+
-+static void *qjack_thread_trampoline(void *targ)
++static void __attribute__((__constructor__(QEMU_CONSTRUCTOR_EARLY)))
++qemu_thread_init(void)
 +{
-+    struct QJackThreadData *data = targ;
-+    void *(*function)(void *) = data->function;
-+    void *arg = data->arg;
-+
-+    g_free(data);
-+    qemu_thread_set_name("jack-client");
-+
-+    return function(arg);
++    qemu_thread_set_name("main");
 +}
 +
- static int qjack_thread_creator(jack_native_thread_t *thread,
-     const pthread_attr_t *attr, void *(*function)(void *), void *arg)
+ static void error_exit(int err, const char *msg)
  {
--    int ret = pthread_create(thread, attr, function, arg);
-+    struct QJackThreadData *data = g_new0(struct QJackThreadData, 1);
-+    data->function = function;
-+    data->arg = arg;
-+    int ret = pthread_create(thread, attr, qjack_thread_trampoline, data);
-     if (ret != 0) {
-+        g_free(data);
-         return ret;
-     }
+     fprintf(stderr, "qemu: %s: %s\n", msg, strerror(err));
+diff --git a/util/qemu-thread-win32.c b/util/qemu-thread-win32.c
+index 4d2d663a9a..8ca6429ad3 100644
+--- a/util/qemu-thread-win32.c
++++ b/util/qemu-thread-win32.c
+@@ -22,6 +22,12 @@ typedef HRESULT (WINAPI *pSetThreadDescription) (HANDLE hThread,
+ static pSetThreadDescription SetThreadDescriptionFunc;
+ static HMODULE kernel32_module;
  
--    /* set the name of the thread */
--    pthread_setname_np(*thread, "jack-client");
--
-     return ret;
- }
- #endif
-@@ -695,7 +713,7 @@ static void register_audio_jack(void)
++static void __attribute__((__constructor__(QEMU_CONSTRUCTOR_EARLY)))
++qemu_thread_init(void)
++{
++    qemu_thread_set_name("main");
++}
++
+ static bool load_set_thread_description(void)
  {
-     qemu_mutex_init(&qjack_shutdown_lock);
-     audio_driver_register(&jack_driver);
--#if !defined(WIN32) && defined(CONFIG_PTHREAD_SETNAME_NP_W_TID)
-+#if !defined(WIN32)
-     jack_set_thread_creator(qjack_thread_creator);
- #endif
-     jack_set_error_function(qjack_error);
+     static gsize _init_once = 0;
 -- 
 2.52.0
 
