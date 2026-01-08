@@ -2,72 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71BB0D0342A
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 15:15:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F825D03602
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 15:35:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdqmR-00078H-RP; Thu, 08 Jan 2026 09:14:27 -0500
+	id 1vdr5z-00075I-Jy; Thu, 08 Jan 2026 09:34:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vdqmP-000787-To
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 09:14:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vdqmL-0003Jo-D6
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 09:14:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767881656;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=0fi1pqHYtP7jO9vBODN1intyg953jMq0lsafxoU91w0=;
- b=boO3PXU+WQn2aFx6lhg0wpcZCBW5MHrMjA2fjWA1m0E1LME6T2b52sKsXZYNwpYaE56xvg
- 3cJDF/awuP6kU6FU6mWopZyeOEHueTiTU8a7jPCMk7R7zuOmIenMuwMfhqdblCfgLI6hzS
- Un4IOwSuR1PxkZ6R/DfuMVSEnphiIAM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-66-XLcL8hwDNX2ZEOIVueYvvg-1; Thu,
- 08 Jan 2026 09:14:13 -0500
-X-MC-Unique: XLcL8hwDNX2ZEOIVueYvvg-1
-X-Mimecast-MFC-AGG-ID: XLcL8hwDNX2ZEOIVueYvvg_1767881652
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BA6301956054; Thu,  8 Jan 2026 14:14:11 +0000 (UTC)
-Received: from toolbx.redhat.com (unknown [10.42.28.44])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 26E8A1954193; Thu,  8 Jan 2026 14:14:08 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vdr5p-00070q-N1
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 09:34:30 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1vdr5n-0000gB-4v
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 09:34:29 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-47d3ffb0f44so21688975e9.3
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 06:34:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1767882865; x=1768487665; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=LK1fJuDCyZ+JCIQVkUbdv1IIkYo19dcsZFbtPtQwA4o=;
+ b=LD/0f++ohkwH7/4s0EdsB1GxqYY2/8C6HENzxrh1AGSoebdzIIXENjjhF1qr4780Xu
+ OahAnTFrMb7gddaOElTF8lUMiaE3kzn8tvGkxr2X933vnF1LOpD0Ks9sIPcYxhIbUEqx
+ Ecj9krFM5XC7rLaXskCkACW1V8nlWzsHj4wWExAM50IUvcHPlRnDsP3ldTkYzxXFkrzO
+ FqCDFEYdiWIDzjxQJvAK5yHbxRJu8hkIVx49vDsyCqasEH8h6iDSq9BeSINxZ/lEluF+
+ 9yeKa+GlyzB1dg7eK6amdzG08Dx3VGqQd5fSazcvS50sH6s5KurgNYv8RGlslDKonxzL
+ D9jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1767882865; x=1768487665;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=LK1fJuDCyZ+JCIQVkUbdv1IIkYo19dcsZFbtPtQwA4o=;
+ b=kiLXJAkFyLpOXUrFYySqxuVP5x242/FZr3UCKbvVKe+cZZxQmp7/WNE681DKSOmRvv
+ KxaVRlWlK7l5sN2kpcX2l0G75DaWh9fQXb110gtbyou84HNf2svK9TxMx0smBT97Pab1
+ UNa8d6D6FeG+4kUjtRaQRfblCvx/yG9pNOQ+zo7hdXHKK/NAwE65CJS9kCYuTX0Da76o
+ StpMAmydbgHJe8wsF4l8PgMTAD/1TZj4u0b1KQ+yCblM+CfgmTD/qEcAkVlxjupXX23v
+ tgT9K9SgpBVD7Vad+pX2H+3CZW3nCNAKQZXkUU86crdviYzD17KRHgAYP2UR26aiV3FR
+ 1qDQ==
+X-Gm-Message-State: AOJu0YwjFJwVP/AMRp0OIsXjiyhx+hdrgLdj9w1pacpnXT53h4dNr6Eg
+ cMAHuBhGcKQV0qml00Fz2ahki2UmHUGOCCLHxwfpknCZxQTSC/w/6RGjDFBC1RCspJk=
+X-Gm-Gg: AY/fxX6dHntECLhddJ/y9wS0q4zhoLhuUCOSpOYppM9pwzaQSdeyiKJupxNGyLMAqPK
+ i5+E21w67PDsraN4Rzm/NuIwwGfcR4Sk/3Wq+JTX0k8Dv1KlbBP++GTUUXmRTQHu9aeTWiWth6u
+ F6q84C0TT26jxELKI1ZKTukUHhZFGXZGTwUB9SNDfDYiwFvXsXsFWcFawuCg/o7W+wnON38G5pO
+ G1HA0T+s0vx+RmixFz3dAp7/SIRgNlBeSXsos11KC4MDht2RlR5numA/GR4BLj618DQk+3qiQwy
+ 0q2CPU4hLf1qbnFk+AsNWeaLFCzUI7Y9ODrK88OkyVf5Qm2D1zPng2Dlxq/z9W2hUzf9EqQWcfc
+ on6B4n1fXZAUjoCOfhevrbR9VA8GEw/begStdVr5ctrd9flLmtuPVjQ0bEsT2DLZeavPDmXDGXI
+ OTzSL/FIiCi+M=
+X-Google-Smtp-Source: AGHT+IE8oxPQ6D33yNKb1TeAnSpxaYwtuXGYdFLJ1fY2IJ8jUdCoraYWUbvc8DZlzRCxkzt+pJ80mg==
+X-Received: by 2002:a05:600c:500d:b0:477:b642:9dc1 with SMTP id
+ 5b1f17b1804b1-47d84b3baa1mr58498795e9.20.1767882865206; 
+ Thu, 08 Jan 2026 06:34:25 -0800 (PST)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-47d7f7053f5sm151990255e9.14.2026.01.08.06.34.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 08 Jan 2026 06:34:24 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id D89B35F804;
+ Thu, 08 Jan 2026 14:34:23 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH] meson: disable libatomic with GCC >= 16
-Date: Thu,  8 Jan 2026 14:14:07 +0000
-Message-ID: <20260108141407.2151817-1-berrange@redhat.com>
+Cc: Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Bastian Koppelmann <kbastian@rumtueddeln.de>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-arm@nongnu.org, Yoshinori Sato <yoshinori.sato@nifty.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Aleksandar Rikalo <arikalo@gmail.com>,
+ Thomas Huth <huth@tuxfamily.org>, Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [RFC PATCH 00/12] cpu_reset clean-ups for arm, sh4, mips,
+ m68k and tricore
+Date: Thu,  8 Jan 2026 14:34:11 +0000
+Message-ID: <20260108143423.1378674-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,52 +109,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Historically it was required to ask for libatomic explicitly with
--latomic, but with GCC >= 16 apps will get linked to libatomic
-whether they ask for it or not.
+We tend to apply cpu_reset inconsistently throughout our various
+models which leads to unintended ordering dependencies. This got in
+the way in my last plugins series:
 
-This invalidates QEMU's check for atomic op support for int128
-which explicitly does NOT want to use the libatomic impl. As a
-result with GCC >= 16, QEMU is now getting linked to libatomic
-and is activating CONFIG_ATOMIC128. This in turn exposes a bug
-in GCC's libatomic.a static buld which is incompatible with the
-use of -static-pie leading to build failures like:
+  https://patchew.org/QEMU/20251219190849.238323-1-alex.bennee@linaro.org/
 
-    /usr/bin/ld: /usr/lib/gcc/x86_64-redhat-linux/16/libatomic.a(cas_16_.o): relocation R_X86_64_32 against hidden symbol `libat_compare_exchange_16_i1' can not be used when making a PIE object
-    /usr/bin/ld: failed to set dynamic section sizes: bad value
-collect2: error: ld returned 1 exit status
+where I needed to shuffle things around to ensure that gdb register
+creation was done after dependant peripherals had created their cpu
+interfaces.
 
-The newly introduced -fno-link-libatomic flag can be used to
-disable the new automatic linking of libatomic. Setting this in
-qemu_isa_flags early on ensures that the check for CONFIG_ATOMIC128
-still works correctly.
+Regardless of that we do have a proper reset interface now and most
+architectures have moved to it. This series attempts to clean-up the
+remaining cases with proper qemu_register_reset() calls so reset is
+called when we intend to.
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- meson.build | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Alex.
 
-diff --git a/meson.build b/meson.build
-index db87358d62..56df08c10e 100644
---- a/meson.build
-+++ b/meson.build
-@@ -445,6 +445,15 @@ if host_arch in ['i386', 'x86_64']
-   endif
- endif
- 
-+# GCC >= 16 automatically tries to link libatomic for all programs.
-+#
-+# QEMU explicitly does NOT want to use libatomic for int128 types.
-+#
-+# Later checks assume we won't get atomic ops for int128 without
-+# explicitly asking for -latomic, so we must disable GCC's new
-+# automatic linking with the new -fno-link-libatomic flag
-+qemu_isa_flags += cc.get_supported_arguments('-fno-link-libatomic')
-+
- qemu_common_flags = qemu_isa_flags + qemu_common_flags
- 
- if get_option('prefer_static')
+Alex Bennée (12):
+  target/sh4: drop cpu_reset from realizefn
+  target/m68k: introduce env->reset_pc
+  hw/m68k: register a nextcube_cpu_reset handler
+  hw/m68k: register a mcf5208evb_cpu_reset handler
+  hw/m68k: register a an5206_cpu_reset handler
+  hw/m68k: just use reset_pc for virt platform
+  target/m68k: drop cpu_reset on realizefn
+  hw/mips: defer finalising gcr_base until reset time
+  hw/mips: drop cpu_reset in mips_cpu_realizefn
+  target/tricore: move cpu_reset from tricore_cpu_realizefn
+  target/arm: remove extraneous cpu_reset from realizefn
+  include/hw: expand cpu_reset function docs
+
+ include/hw/core/cpu.h |  3 +++
+ target/m68k/cpu.h     |  1 +
+ hw/m68k/an5206.c      | 24 +++++++++++++++++-------
+ hw/m68k/mcf5208.c     | 25 +++++++++++++++++++------
+ hw/m68k/next-cube.c   | 23 +++++++++++++++++------
+ hw/m68k/virt.c        | 24 +++++++-----------------
+ hw/mips/cps.c         | 22 +++++++++++++---------
+ hw/misc/mips_cmgcr.c  |  1 -
+ target/arm/cpu.c      |  1 -
+ target/m68k/cpu.c     |  1 -
+ target/mips/cpu.c     |  1 -
+ target/sh4/cpu.c      |  1 -
+ target/tricore/cpu.c  |  9 ++++++++-
+ 13 files changed, 85 insertions(+), 51 deletions(-)
+
 -- 
-2.52.0
+2.47.3
 
 
