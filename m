@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AB66D03618
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 15:35:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B446D03636
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 15:36:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdr6B-0007Ct-IS; Thu, 08 Jan 2026 09:34:51 -0500
+	id 1vdr6G-0007Ls-F1; Thu, 08 Jan 2026 09:34:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vdr5w-00072A-VZ
+ id 1vdr5y-000737-B9
  for qemu-devel@nongnu.org; Thu, 08 Jan 2026 09:34:38 -0500
 Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vdr5t-0000iC-Oh
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 09:34:35 -0500
+ id 1vdr5v-0000jB-9h
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 09:34:38 -0500
 Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4779cc419b2so28521765e9.3
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 06:34:31 -0800 (PST)
+ 5b1f17b1804b1-4779ce2a624so27216135e9.2
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 06:34:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767882871; x=1768487671; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767882873; x=1768487673; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4tMArHc3fpfAyjhrmZC/JPcKIoMMLYn+9tiOMpEVPwg=;
- b=rsPqBg7z/CpNF7p0A9Fq7t17E39KhznUwiz8jAoiGu0fn38vV2DRtT9UOwyAHhv66g
- OsAt+j9yocxJXgAY5nma9YBEv0jqcNFlzKdvoZbwj10ZDM3RvLEOdPy4LNY8RGJCVk6Z
- 9W1F57tl3pKvOvO43+vM1A5CynjliboQoOodlj6gKLsJxya4Y+7/bE4g9hqPJVELkooh
- 2axeuO4mWGJt+5jAQkGzeD8zGHh4s4u0YPHYszXFbx2Rty/JtXNi4fe6sqG5vKS6TRVe
- e/IGSIh9iUHjYCiipogHGPXXC8WnVkvZv0V0VOsQYuW/9NmqCtzoSdQFciJz/w4ZDsdf
- mnvw==
+ bh=MKZCBRJMVl+HwSw4Or6YDzCMoqNlO7kCpo//7lZNDA8=;
+ b=vIwPeR9vXxRhLNZAEx3MKTV7cY0OXWL5g++S+pgSo0h8xQ8Z6hUeba6bKqqmCIfQSe
+ YXP8qqbOwtZ7W3XSN93rBwHXr/Hr10Rrms8x18wosGPk9EWjDqoooYjUwrUoUYpw6F52
+ ZpoPp93RjJrguxryhLc6VkjBEzaAOMOqil/N1Ug4vLKbUi11Ljx5kNDXPFcfK5rKZMMb
+ St+D0p+UBD0WjE9nzFyve51Z70bD29oo3cqPBE9XKrABxBK30aFvejha8vNRaXvgXwIu
+ KS/VNR7GsjPweuZkzLpzfshJSdFxsBJxg8IBfzCTED7IbhUSlDQe3SuYyNFgtMSG7cDb
+ McJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767882871; x=1768487671;
+ d=1e100.net; s=20230601; t=1767882873; x=1768487673;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=4tMArHc3fpfAyjhrmZC/JPcKIoMMLYn+9tiOMpEVPwg=;
- b=gdLylH3Ttk7fUbQWIlDUna4Yxi2yivLFzcO/LA6sxjw2Lz/+9tOvFtJ1Kqwm5zWzUl
- 8EFoFQ02Wps60KdP/ItqacK4s4/BzUUVYWbndHUDsylSwBQxfXtVD8sL+2y6kGfGR2NL
- de+YSvxJAVz6FR3kQdUPVbv5cbDWr9+V9VY2OUjQL+Qedq1svM/a0DAhWQoehH5o819a
- 0Q2Jrsf2cWS99cha3g3xk81yFfv8PJkYrf89K1zqI1aa3PX5zzJZkJ5B38qMrqrekAa3
- Dv3k/z6inGs2FC6gUA26QtT4TG80kNUXsKANt+HdjwkncRASb8DCmb0c90ZRLak7H+q+
- +i0g==
-X-Gm-Message-State: AOJu0YyEs/s5Yov+UKZFxpUzS42FuMN5at/XPqt5Nw5ijKay3nzJmO1Z
- e4+Twc8Kh5k9cOnExHAN38etAgsoJ8uzCvK5DVc7NDzRVcUeF3u82LqoEr/dNWEno/s=
-X-Gm-Gg: AY/fxX57vizSFTsKp6/Hp/AlOz6GZK8I0uG69WlkFKmEFTL8hSAzOTbp4xl9qFu3qYy
- gbvalwSEj7c2eGqUrluVh4n7Hen0D3pMhaljOo2A9ag+QazAtAITziuoNJYE4bpfNUJsHSHK/Gh
- 1zIgxba5twabMvdxsRZ7s8jZ56x1p+S4LeUtf6F6RXqqsEQgVhRaEUvaRFyUVEyAGPYTfDiIefN
- 3uivNgVAiTi2ptZmU9Qerwoazf7JT0zwE2l6OvYNe+nHfVYJYfZh0pjosthiBUy8eNZC2CE1pnO
- Wk1geyUmsE16IWyPaT10wpfI7yM7gj6bubqy1QwcJWxpbsoPT4/p2K/ZQawXMw30EdTiby35A/Y
- B/l/MHIdVYwn3DtSo8FWu6790InX01kirUV6l8mhZPo41eFcWpG1kAaQZOCDbQzBGBpxICSmXPn
- 4yrNbxtMdHCOU=
-X-Google-Smtp-Source: AGHT+IHVOmi2wf66jvsMbt43DmnepHxzKqyfjk3Ie12Q2wlyN40HtlHxf0wwxQZu/Pawgbt1iVWkJg==
-X-Received: by 2002:a05:600c:c0ca:b0:47d:87ac:73b8 with SMTP id
- 5b1f17b1804b1-47d87ac7a94mr50207325e9.27.1767882870776; 
- Thu, 08 Jan 2026 06:34:30 -0800 (PST)
+ bh=MKZCBRJMVl+HwSw4Or6YDzCMoqNlO7kCpo//7lZNDA8=;
+ b=cw+OxtjsPWhbkuU4QWe6pTyKqPbVkIGviWsOi7R4b1N1oLVaC7FCdnguTOAX5FjKve
+ /RLh/vqAFLPFcyHr9JAifyx8S/FnJSe+Ae0Yv/6TlfzcOuO40SYmTGnpkk0s+nmymbVC
+ 7f/A+5uzm4zyce26OVLHoyC9yvzFo9RAdGpSnqW1nPS/BFeyvBSZ4aSVW+T5v88Ac/H/
+ Q7H/D7H0DceJodRiPbQrxnPIhoodENubKVOQsxTXtVSc02IOYxhMF8LghsKhmJttoCpR
+ 0RZ3Bp2m7aZpiRdvMkEDnC3a1E7T6vLAcaeREUUIReMQBp6KKdAg+AS4ZoBT/3/QImXS
+ K6dg==
+X-Gm-Message-State: AOJu0YzJvpVNOaA7No0OnhFskSCSlCzi4RNHI8gEHZLKHrY/uAKPF/+6
+ Iq8udmHfffQxhgc948iKD2373xaGtROvvccT8AmFzsS2mVX1bdxAu2Ra71jPcfnJyTA=
+X-Gm-Gg: AY/fxX5kqv1DlQyWTFpqOU6q3bAQYAfUOOA31nVKbFvrJ6AOIIEzmEB68JcT/A44mZr
+ 8kbHOSy9IM8FI7mIx6bgVntQqhXXbvgHHPc6FGhayo31xei0tFpsCPX4oKv13Qq+4x/RuiKH0DJ
+ ieWdWw52dysLIjwUWUwuRVcSKGrlqmUepUMRORp99PYSSEiPmT76qRfzWYG+dFQQfx7Ko/nszp+
+ dXx1I57JmEeQrCkZZZyqY+fPMzYLd4PFDLazmEKc0NafaAJj8gq8Zz7V8H/pm5zknToUl4siAC9
+ lw6CGGKG+gFB+UQ1LZPP5c19GQm/31PSrOgLMwcRDI7cayNazquwqmS3Id0s6crVFJTIPwBPDv0
+ AT+m+sBqUboP/Hoa3zXfYHqB51TBBXrxzrl1waFaOQAWvkWoaKE7B/eezycmnt8z0BRLioy3ZDK
+ x7qtSC5jKEeAA=
+X-Google-Smtp-Source: AGHT+IEMotvXhQTv160rwPcsVO9t+3//HM2qgzgfG8RwcgsbLPqB+CzG8MnZZAgqmXNlPB4P9Rb3IQ==
+X-Received: by 2002:a05:600c:190e:b0:477:9aeb:6a8f with SMTP id
+ 5b1f17b1804b1-47d84b1faffmr81020035e9.9.1767882873126; 
+ Thu, 08 Jan 2026 06:34:33 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d7f6f0e15sm151880935e9.10.2026.01.08.06.34.26
+ 5b1f17b1804b1-47d7f68f69dsm158067355e9.1.2026.01.08.06.34.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 06:34:27 -0800 (PST)
+ Thu, 08 Jan 2026 06:34:32 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id BADCF5FA43;
+ by draig.lan (Postfix) with ESMTP id D1BFC5FADA;
  Thu, 08 Jan 2026 14:34:24 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -78,10 +78,10 @@ Cc: Aurelien Jarno <aurelien@aurel32.net>,
  Yanan Wang <wangyanan55@huawei.com>, Aleksandar Rikalo <arikalo@gmail.com>,
  Thomas Huth <huth@tuxfamily.org>, Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [RFC PATCH 10/12] target/tricore: move cpu_reset from
- tricore_cpu_realizefn
-Date: Thu,  8 Jan 2026 14:34:21 +0000
-Message-ID: <20260108143423.1378674-11-alex.bennee@linaro.org>
+Subject: [RFC PATCH 11/12] target/arm: remove extraneous cpu_reset from
+ realizefn
+Date: Thu,  8 Jan 2026 14:34:22 +0000
+Message-ID: <20260108143423.1378674-12-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260108143423.1378674-1-alex.bennee@linaro.org>
 References: <20260108143423.1378674-1-alex.bennee@linaro.org>
@@ -96,7 +96,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,47 +112,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement a proper cpu reset handler for tricore cpus.
+We already have do_cpu_reset called when the system is reset so there
+is no need to do it here.
+
+By removing this we now only do (smp*2)-1 calls to cpu_reset. Once per
+core as part of qemu_system_reset and then once per secondary core as
+PSCI calls are made to reset them.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- target/tricore/cpu.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ target/arm/cpu.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
-index 04319e107ba..c3dda9f6a54 100644
---- a/target/tricore/cpu.c
-+++ b/target/tricore/cpu.c
-@@ -24,6 +24,7 @@
- #include "qemu/error-report.h"
- #include "tcg/debug-assert.h"
- #include "accel/tcg/cpu-ops.h"
-+#include "system/reset.h"
- 
- static inline void set_feature(CPUTriCoreState *env, int feature)
- {
-@@ -81,6 +82,12 @@ static void tricore_cpu_reset_hold(Object *obj, ResetType type)
-     cpu_state_reset(cpu_env(cs));
- }
- 
-+static void tricore_cpu_reset(void *opaque)
-+{
-+    CPUState *cs = opaque;
-+    cpu_reset(cs);
-+}
-+
- static bool tricore_cpu_has_work(CPUState *cs)
- {
-     return true;
-@@ -120,8 +127,8 @@ static void tricore_cpu_realizefn(DeviceState *dev, Error **errp)
-     if (tricore_has_feature(env, TRICORE_FEATURE_131)) {
-         set_feature(env, TRICORE_FEATURE_13);
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index caf7980b1fc..015131aea08 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -2208,7 +2208,6 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
      }
--    cpu_reset(cs);
-     qemu_init_vcpu(cs);
-+    qemu_register_reset(tricore_cpu_reset, cs);
  
-     tcc->parent_realize(dev, errp);
+     qemu_init_vcpu(cs);
+-    cpu_reset(cs);
+ 
+     acc->parent_realize(dev, errp);
  }
 -- 
 2.47.3
