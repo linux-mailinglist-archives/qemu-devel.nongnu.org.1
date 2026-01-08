@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DD8FD00D05
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 04:11:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1E1AD00CD1
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 04:10:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdgPu-0000xn-J1; Wed, 07 Jan 2026 22:10:30 -0500
+	id 1vdgPx-0001Kp-Jz; Wed, 07 Jan 2026 22:10:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vdgP9-0006ZH-Fy; Wed, 07 Jan 2026 22:09:44 -0500
+ id 1vdgPI-0006gX-Pb; Wed, 07 Jan 2026 22:09:56 -0500
 Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vdgP7-0005e1-OP; Wed, 07 Jan 2026 22:09:43 -0500
+ id 1vdgPG-0005gA-NS; Wed, 07 Jan 2026 22:09:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1767841781; x=1799377781;
+ t=1767841790; x=1799377790;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=/2b3kXmiCRa/BYYzO/hHr0chSCEMHL45PiGF0m8kKTY=;
- b=H8A2LBHOe8/XWsbSUMqrjg+a5JnJSQBmSlgrFEzlNFkOTx6vRrzXK09I
- z8vOgcJfcYKdmZGSWER1nfakAve9ud+octXD9uKkAgJDqUNtCN+KeTdY9
- ob9RnP2ZGHhx5jwxc5SUDtSJYauO2+NI4Gy2kL4tGqWe2jsCM/Pj03L8u
- cz4JiEg0IfMnE016dhnMn2LOnYoTRByms/tKq5BBah/pGLyCxcUdb+X/l
- LWr/Ro77yRdXD5BmImp9QeZWPdUnPvqITUe+rbwDuelMJEdxPTgIVf24X
- WoLOKOJdsH1Lb8f4ULTCNrJ18AJqIXhe9myRANGr/F8q+srTNlLCJOQ6g Q==;
-X-CSE-ConnectionGUID: NFKr0luTTie7hZtZ65lHmA==
-X-CSE-MsgGUID: 0WJTnsVKRTOYcNqNAeMYVw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="91877696"
-X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; d="scan'208";a="91877696"
+ bh=eQl80wcJOArtg5jzbHQMtHiWAJNWb57OsGNNd3OKlKw=;
+ b=IpSS62znFYZ1GWG0lhmvp0HUxkvIUpKepUHrDjx8nX2lte02XSmPfhPP
+ EJwms6A8S0IrBt3ukg6KUMRtTyp2/jNzSUHESwnBSADla4ECy+y4euBng
+ opiZwa5r8/We0UC1ChCByfKvbKiXuuI3n51qOTDuYStML1Bt03PFgokqY
+ 2111YStZl7HB9yWLhlKM54jaBceA/k8/7/7x3Y8GNqqRhBFGcwHS4J5m0
+ FKruMIiCkOafUZpBWkmC9kNOcgLNDMrhKk/D5kqsdUotj5xp55zQ+E3W6
+ jabUmxPDGJMspR5e17MIk7+mb/aVtTFV12mVrtRDotH46HI2Sshs4AIwF A==;
+X-CSE-ConnectionGUID: V584+F/tSuOgOWXxD9fCOA==
+X-CSE-MsgGUID: /9KAUKlwTuOBUOIZLtLyxw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="91877724"
+X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; d="scan'208";a="91877724"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jan 2026 19:09:39 -0800
-X-CSE-ConnectionGUID: s23i9cu5TrGrYQuG6Kc3Eg==
-X-CSE-MsgGUID: xPA6wA+1S4qpU2au1duTiA==
+ 07 Jan 2026 19:09:48 -0800
+X-CSE-ConnectionGUID: kIWWhqTxQGmT66gxvRoqEQ==
+X-CSE-MsgGUID: KlFeMH7URR2pjppFfeN6xA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; d="scan'208";a="202211269"
+X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; d="scan'208";a="202211287"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa006.jf.intel.com with ESMTP; 07 Jan 2026 19:09:30 -0800
+ by orviesa006.jf.intel.com with ESMTP; 07 Jan 2026 19:09:39 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
@@ -70,10 +70,10 @@ Cc: qemu-devel@nongnu.org, devel@lists.libvirt.org, kvm@vger.kernel.org,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>,
  BALATON Zoltan <balaton@eik.bme.hu>, Peter Krempa <pkrempa@redhat.com>,
  Jiri Denemark <jdenemar@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v6 26/27] hw/virtio/virtio-pci: Remove
- VirtIOPCIProxy::ignore_backend_features field
-Date: Thu,  8 Jan 2026 11:30:50 +0800
-Message-Id: <20260108033051.777361-27-zhao1.liu@intel.com>
+Subject: [PATCH v6 27/27] hw/char/virtio-serial: Do not expose the
+ 'emergency-write' property
+Date: Thu,  8 Jan 2026 11:30:51 +0800
+Message-Id: <20260108033051.777361-28-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260108033051.777361-1-zhao1.liu@intel.com>
 References: <20260108033051.777361-1-zhao1.liu@intel.com>
@@ -107,56 +107,77 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The VirtIOPCIProxy::ignore_backend_features boolean was only set
-in the hw_compat_2_7[] array, via the 'x-ignore-backend-features=on'
+The VIRTIO_CONSOLE_F_EMERG_WRITE feature bit was only set
+in the hw_compat_2_7[] array, via the 'emergency-write=off'
 property. We removed all machines using that array, lets remove
-that property, simplify by only using the default version.
+that property. All instances have this feature bit set and
+it can not be disabled. VirtIOSerial::host_features mask is
+now unused, remove it.
 
 Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/virtio/virtio-pci.c         | 5 +----
- include/hw/virtio/virtio-pci.h | 1 -
- 2 files changed, 1 insertion(+), 5 deletions(-)
+ hw/char/virtio-serial-bus.c       | 9 +++------
+ include/hw/virtio/virtio-serial.h | 2 --
+ 2 files changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index b273eb269196..e2a3dcc5b631 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -2040,8 +2040,7 @@ static void virtio_pci_device_plugged(DeviceState *d, Error **errp)
-      * Virtio capabilities present without
-      * VIRTIO_F_VERSION_1 confuses guests
-      */
--    if (!proxy->ignore_backend_features &&
--            !virtio_has_feature(vdev->host_features, VIRTIO_F_VERSION_1)) {
-+    if (!virtio_has_feature(vdev->host_features, VIRTIO_F_VERSION_1)) {
-         virtio_pci_disable_modern(proxy);
+diff --git a/hw/char/virtio-serial-bus.c b/hw/char/virtio-serial-bus.c
+index 5ec5f5313b21..b7c57ea9678c 100644
+--- a/hw/char/virtio-serial-bus.c
++++ b/hw/char/virtio-serial-bus.c
+@@ -557,7 +557,7 @@ static uint64_t get_features(VirtIODevice *vdev, uint64_t features,
  
-         if (!legacy) {
-@@ -2441,8 +2440,6 @@ static const Property virtio_pci_properties[] = {
-                     VIRTIO_PCI_FLAG_MODERN_PIO_NOTIFY_BIT, false),
-     DEFINE_PROP_BIT("page-per-vq", VirtIOPCIProxy, flags,
-                     VIRTIO_PCI_FLAG_PAGE_PER_VQ_BIT, false),
--    DEFINE_PROP_BOOL("x-ignore-backend-features", VirtIOPCIProxy,
--                     ignore_backend_features, false),
-     DEFINE_PROP_BIT("ats", VirtIOPCIProxy, flags,
-                     VIRTIO_PCI_FLAG_ATS_BIT, false),
-     DEFINE_PROP_BIT("x-ats-page-aligned", VirtIOPCIProxy, flags,
-diff --git a/include/hw/virtio/virtio-pci.h b/include/hw/virtio/virtio-pci.h
-index 639752977ee8..581bb830b792 100644
---- a/include/hw/virtio/virtio-pci.h
-+++ b/include/hw/virtio/virtio-pci.h
-@@ -150,7 +150,6 @@ struct VirtIOPCIProxy {
-     uint16_t last_pcie_cap_offset;
-     uint32_t flags;
-     bool disable_modern;
--    bool ignore_backend_features;
-     OnOffAuto disable_legacy;
-     /* Transitional device id */
-     uint16_t trans_devid;
+     vser = VIRTIO_SERIAL(vdev);
+ 
+-    features |= vser->host_features;
++    features |= BIT_ULL(VIRTIO_CONSOLE_F_EMERG_WRITE);
+     if (vser->bus.max_nr_ports > 1) {
+         virtio_add_feature(&features, VIRTIO_CONSOLE_F_MULTIPORT);
+     }
+@@ -587,8 +587,7 @@ static void set_config(VirtIODevice *vdev, const uint8_t *config_data)
+     VirtIOSerialPortClass *vsc;
+     uint8_t emerg_wr_lo;
+ 
+-    if (!virtio_has_feature(vser->host_features,
+-        VIRTIO_CONSOLE_F_EMERG_WRITE) || !config->emerg_wr) {
++    if (!config->emerg_wr) {
+         return;
+     }
+ 
+@@ -1040,7 +1039,7 @@ static void virtio_serial_device_realize(DeviceState *dev, Error **errp)
+         return;
+     }
+ 
+-    if (!virtio_has_feature(vser->host_features,
++    if (!virtio_has_feature(vdev->host_features,
+                             VIRTIO_CONSOLE_F_EMERG_WRITE)) {
+         config_size = offsetof(struct virtio_console_config, emerg_wr);
+     }
+@@ -1156,8 +1155,6 @@ static const VMStateDescription vmstate_virtio_console = {
+ static const Property virtio_serial_properties[] = {
+     DEFINE_PROP_UINT32("max_ports", VirtIOSerial, serial.max_virtserial_ports,
+                                                   31),
+-    DEFINE_PROP_BIT64("emergency-write", VirtIOSerial, host_features,
+-                      VIRTIO_CONSOLE_F_EMERG_WRITE, true),
+ };
+ 
+ static void virtio_serial_class_init(ObjectClass *klass, const void *data)
+diff --git a/include/hw/virtio/virtio-serial.h b/include/hw/virtio/virtio-serial.h
+index 60641860bf83..da0c91e1a403 100644
+--- a/include/hw/virtio/virtio-serial.h
++++ b/include/hw/virtio/virtio-serial.h
+@@ -186,8 +186,6 @@ struct VirtIOSerial {
+     struct VirtIOSerialPostLoad *post_load;
+ 
+     virtio_serial_conf serial;
+-
+-    uint64_t host_features;
+ };
+ 
+ /* Interface to the virtio-serial bus */
 -- 
 2.34.1
 
