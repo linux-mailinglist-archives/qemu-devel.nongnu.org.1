@@ -2,112 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E54A5D02EA2
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 14:13:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4275D02E56
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 14:12:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdpnX-00081O-8c; Thu, 08 Jan 2026 08:11:31 -0500
+	id 1vdpnZ-000884-NR; Thu, 08 Jan 2026 08:11:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vdpnU-0007s0-JU
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 08:11:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vdpnX-00084T-Ju
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 08:11:31 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vdpnS-00083K-7r
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 08:11:28 -0500
+ id 1vdpnW-000849-0D
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 08:11:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767877885;
+ s=mimecast20190719; t=1767877889;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=69DigzWj4ZfxAoDrRrcKXKL2TbKieDPgsraALABmsSU=;
- b=aVkG+XdzGvT57u/gQpqFsnUum0R4w9nAXspra7LS5Eezu8V90IXK+vHpiI6nWtvUgNsOKz
- 2DPeBnRNvJooVxkTQ6tI1SGXIXM0wEO/26inudXamZnDX7G8v5GF3Y/jLRkzMXJdTaPkb0
- TXIzEsAqnBETq1wOmM62uxNKmC0rQWM=
+ bh=X2CkPrmAjPj0SGqqtniQ7b64jK4eZjmHP1vEC37hTGs=;
+ b=LKhYcgKvo6OkizESHScQjScrrGiEt3LZNVkHcJX0mc8tMEFL0ilKOEWbIoRjGCuQiVQpjH
+ 2ZJTy0szc8F0mo6lSswHsn1dgWl3+22YVGy0mQH0UP8P21/BSzv2rqAh9gfHZemyiot5Eb
+ Y8e+nh3oIYxRf7yg2b5vWrcdE5HARr8=
 Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
  [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-518-a6ph6lbcPnW6LtUal3GIeA-1; Thu, 08 Jan 2026 08:11:24 -0500
-X-MC-Unique: a6ph6lbcPnW6LtUal3GIeA-1
-X-Mimecast-MFC-AGG-ID: a6ph6lbcPnW6LtUal3GIeA_1767877883
+ us-mta-439-kohOy7-YPWiBPJ45wvXy5w-1; Thu, 08 Jan 2026 08:11:28 -0500
+X-MC-Unique: kohOy7-YPWiBPJ45wvXy5w-1
+X-Mimecast-MFC-AGG-ID: kohOy7-YPWiBPJ45wvXy5w_1767877887
 Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-477cf2230c8so30185845e9.0
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 05:11:23 -0800 (PST)
+ 5b1f17b1804b1-47a83800743so10536025e9.0
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 05:11:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1767877882; x=1768482682; darn=nongnu.org;
+ d=redhat.com; s=google; t=1767877886; x=1768482686; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=69DigzWj4ZfxAoDrRrcKXKL2TbKieDPgsraALABmsSU=;
- b=fDYK9afxtQT3zvg6EjY6irOKWKCaWUPnYr501QguAF15G7lXjlMISCdAprVnzTHqgY
- ls9DwloQ0k2KgKUHxXkEXFvi53V14HkLqJv7Q9CYJBIwJAZgsF8ywVAtXwdpnytdd93/
- LHVHVOrkIo1iD30UeCl2AjNj+f/q4ypLgQ63Fd5zDm5MuppiNXHARf0j0jyzVZHHfxiP
- qweQ8S9wCzYa6zLObSEI6IOrUW7Tge/tito/ZOjpwrLXYuSS9h9euFLTKb8N9/NxkLyK
- 6A0Wk+iBplWJyA7OCv99rBgy6iYJaDT5U81NUd6MRezZae4VBBkCKzjGLR7qRCqlYUVF
- /dUg==
+ bh=X2CkPrmAjPj0SGqqtniQ7b64jK4eZjmHP1vEC37hTGs=;
+ b=dh1xswT6ywq8EwIigCplt5NIekW7xxwgiJUn9B6+8cQcuNoWIN4YIQJ9DCHcPr3f8g
+ YBVGGLqOxLpmHjrb61X7XYbJ7uP1GDJYiwP2Rc1342VmR/IM0wpYLw1mgOPZHOl+gtb0
+ 95n4VWwpzVJ8xZFRaOQoWWFtUCapjJflk+GPe3WjssxFE4dbLyVb/vvZ0nAn2IerSVsL
+ +reDzcr8hzLg/13C4ifEOOwYO3cODAhaGenZ5n4hQ1OAxmLrpbKv/oDJXwrVLBa9ejLp
+ B408NMK0US/QHMEqrWgCMV2vHhMUoKpOO6D2hedPT0HTr/YEQOH75WNuJFEPu7UtJxZJ
+ 8xLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767877882; x=1768482682;
+ d=1e100.net; s=20230601; t=1767877886; x=1768482686;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=69DigzWj4ZfxAoDrRrcKXKL2TbKieDPgsraALABmsSU=;
- b=lunQ+h95d7Be7NtmjWIle26aqn18llgTpaXjSCRjirjPxS3qCcXGguj6aeWmcURhsp
- fUklzGu0rGkbYSHxl9mwL30TmYVkthjKNw5VOkkt41qO+oMBH1yqlXnPVdC175IPr58h
- QKTkIID+n3QQqKM1cQdzaHtP+1bXcJz0QrU9H5OgXiCEbcl+2ncAitaMD572dbMAMHYt
- /lsbo9GvJoFDZNgs0qjvVB6a1w473yTmBtKKDoTF8+jhfGu4EvZOJVskcBpxlmc5sV3a
- 07CCF9+bjIKBBabnw8WpCwVGNmEqbG8nnu/hHpBr31srR8LbS1DawAtzN1ALqlj8OWFs
- saZg==
-X-Gm-Message-State: AOJu0YxThJZtiEBVdKlYReBU0CN+Zzl0CYCPBG9hoThvVAwVMq8JLvpe
- fs2LBXfVZ+XvhL4tWznjojPKITsqxFHwcjz8szZNx+iBIFkzz4BAmdOeRP/ItQTiWjHSDW21b95
- 8E5H6EBTDMWNScbzEI/OoO92hCGnbCvMDD/4Fu9e4TLLKx5/LFQx4dVbvJtxv+eCwuH6i0ivf6Y
- 4VxmKqFq9sEWBaP8FhxR7tQlQVtojQJ3Lbegux/vhu
-X-Gm-Gg: AY/fxX4Gi1ZEZzXI3H+/xK3AavQ4ZVAUXKhmGmFyxd3gyers1brsiIDBATp6kNZc29/
- NFX+Zt7ov81yJqzdL/fo/FPvJZHwS/vyNSZI3SC4Eg2FjWX7tw6t1YbEKXIlNwqAna5xARGYLrx
- xYVze6aP+wTBzTrxZ1KWnG1j+OmSb6B18ePQoEMm7rtN9Vux3jtKpX368qyizbzZcV+vbe9fZBy
- biZoRZ0IzgcuZyyUyME/fzd99obzlZNJoU6iSFZvp5mXTZIfH9/KsRfQ7uJFeLprW8cLmH83JlX
- LabInvu5Y5JS6/K5a/+RM74TyZ8bkFLRlhywYt/ZxugmxqfPrAATFzIeShPZ32GinuhGqwbQaQa
- xfp0YaM9jjLkNmRscdfxAORE9g6rDHH3fhxVA9tCv+zj6QJtfnRPZVsj09CKxOIU1S/Q6P20Nuz
- 2mlK6Fw01opKH1Cg==
-X-Received: by 2002:a05:600c:630f:b0:47d:5d27:2a7f with SMTP id
- 5b1f17b1804b1-47d84b38534mr67895515e9.26.1767877882416; 
- Thu, 08 Jan 2026 05:11:22 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEZRkwS4JBE3z+OEyFzuopJCLYfolNYNYO+oOKcKdPqfFgMR4KlXOfmyc7/a34yqGzdx8kYEA==
-X-Received: by 2002:a05:600c:630f:b0:47d:5d27:2a7f with SMTP id
- 5b1f17b1804b1-47d84b38534mr67895205e9.26.1767877881966; 
- Thu, 08 Jan 2026 05:11:21 -0800 (PST)
+ bh=X2CkPrmAjPj0SGqqtniQ7b64jK4eZjmHP1vEC37hTGs=;
+ b=joeapbSABYwpyR7Z3q/9QU80y6m5+l/ONGSkvqQvNCG0MiD/NCoUnRB1W+74pRmlCt
+ FkK3Gpd9q+TRlBsYFJgAvStUOuwSYUC6uo4vsdXAVqJo4tpQWRlWyCzgzNgHfyEak/gT
+ oA2kRlWkGv/2CjNQHnn4rOBNanGcni+2htN5MjxJtGROzrtsslnBQy2xrA3ifY/eACMk
+ 7Z7nzI17e8OZ9gKRLERKjdGO5DGi5F4Lz1gqrboTw4L+LCPayBciaoXUKa4ehX3YFURI
+ wgzbm9sRHy/ZnmH5sVSgPtdEHmq5gtg4DUxt9Z90HfjCOko0OTmzFS8ateZfU7FtQQF3
+ is5w==
+X-Gm-Message-State: AOJu0Yy3NbyrO+pJk4wCRsLlnC4xNYuVwksTIFroWbUI+G3Rh0uIy/kG
+ UO5mumR9WlJDfmsOMYa4JUYsmvJUV2PLMJQMB3+J+K0vngADFJCLQBNXOFvrGRtmTsrSjReqfRY
+ HXs9XMeC19wUpjHGZvt9Fdm+efQgU+4QK9B7/rN+bnPdfkrCVZpJfcMUPVmJwAri9mxfyEMwdIN
+ zSeEaR2YuTeOYvBwz0iHXK88rqAqwc9DEFjGWfgjTT
+X-Gm-Gg: AY/fxX7Q2vJy/7dMMM9XC7mF/2kkXKOEM+2b9gQ06149Q3o0wiXycDoYkTW/ZkONcN6
+ 2HOF3hjIKiuep3g4BSL2VvFA22zXdhRXZUpSOLYm7r0jFMBwoK+lyNcT435dG+DBLaXZy2AiZrX
+ h487RYoz0mAqc7d3ZbDJUCtRG6LQuVtkibRxVSlEFM9CrouuElDzuuBgZaLKICiOoXbLQdsOpQF
+ YQuiVfZP0ZGQQKTCEqF7Xy7R6IaN30D2r6001APLCjEfV7435JRq5luM1rDroAtfG7B9wDi3+S6
+ GAXe1WUIE1zPyvqtisIgqGYOzJzOobKEZuzVSHfGxu3qkX+ya6mdpTVPcuAZ3AbPgXbH08HZQ6D
+ G70knNOngMgn3e9n8DlRocrYKVzaMPk9zzT7mjNoS0G+Jdhf2nZQupk+yz0mmT/2S3vtkaveF1e
+ yXyMBN4zXM8w8pBg==
+X-Received: by 2002:a05:600c:46c3:b0:477:a2f7:74de with SMTP id
+ 5b1f17b1804b1-47d7f404854mr137698415e9.3.1767877886263; 
+ Thu, 08 Jan 2026 05:11:26 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEJOUy2wsdEPWdJd5w6lCP1oLrGJraiAqzUrHKYXtwpn0d+29LjKgOmAnUJLS+N29zBXbNPjA==
+X-Received: by 2002:a05:600c:46c3:b0:477:a2f7:74de with SMTP id
+ 5b1f17b1804b1-47d7f404854mr137698135e9.3.1767877885878; 
+ Thu, 08 Jan 2026 05:11:25 -0800 (PST)
 Received: from [192.168.10.48] ([151.61.26.160])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d7f410c6csm163484795e9.1.2026.01.08.05.11.19
+ ffacd0b85a97d-432bd5edb7esm15860259f8f.30.2026.01.08.05.11.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 05:11:20 -0800 (PST)
+ Thu, 08 Jan 2026 05:11:23 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: armbru@redhat.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  qemu-rust@nongnu.org
-Subject: [PATCH v2 13/16] scripts/rustc_args: add --no-strict-cfg
-Date: Thu,  8 Jan 2026 14:10:40 +0100
-Message-ID: <20260108131043.490084-14-pbonzini@redhat.com>
+Subject: [PATCH v2 14/16] rust/util: build QAPI types
+Date: Thu,  8 Jan 2026 14:10:41 +0100
+Message-ID: <20260108131043.490084-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260108131043.490084-1-pbonzini@redhat.com>
 References: <20260108131043.490084-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,64 +125,95 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Allow to generate all --cfg flags, regardless of Cargo.toml content.
-We can't easily list and include all the features used by QAPI types.
-Access via #[cfg()] then requires #![allow(unexpected_cfgs)].
-
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- scripts/rust/rustc_args.py | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ qapi/meson.build      |  9 +++++++++
+ rust/Cargo.lock       |  1 +
+ rust/Cargo.toml       |  2 +-
+ rust/util/Cargo.toml  |  1 +
+ rust/util/meson.build | 17 +++++++++++++++++
+ 5 files changed, 29 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/rust/rustc_args.py b/scripts/rust/rustc_args.py
-index 8098053720a..6a156b9608e 100644
---- a/scripts/rust/rustc_args.py
-+++ b/scripts/rust/rustc_args.py
-@@ -108,7 +108,7 @@ def generate_lint_flags(cargo_toml: CargoTOML) -> Iterable[str]:
-         yield from lint.flags
+diff --git a/qapi/meson.build b/qapi/meson.build
+index a46269b5a0c..a019ec19db1 100644
+--- a/qapi/meson.build
++++ b/qapi/meson.build
+@@ -130,3 +130,12 @@ foreach output : qapi_outputs
+   util_ss.add(qapi_files[i])
+   i = i + 1
+ endforeach
++
++# TODO: build together with the other files, perhaps when Rust is not
++# optional and/or the Rust backend is complete (currently lacking
++# commands, events, modules)
++qapi_rs_files = custom_target('QAPI Rust',
++  output: 'qapi-types.rs',
++  input: [ files('qapi-schema.json') ],
++  command: [ qapi_gen, '-o', 'qapi', '-b', '@INPUT0@', '-B', 'qapi.backend.QAPIRsBackend' ],
++  depend_files: [ qapi_inputs, qapi_gen_depends ])
+diff --git a/rust/Cargo.lock b/rust/Cargo.lock
+index b6c9f934140..7bca9b189db 100644
+--- a/rust/Cargo.lock
++++ b/rust/Cargo.lock
+@@ -454,6 +454,7 @@ dependencies = [
+  "glib-sys",
+  "libc",
+  "serde",
++ "serde_derive",
+ ]
  
+ [[package]]
+diff --git a/rust/Cargo.toml b/rust/Cargo.toml
+index 45ebfa693a4..caddb93722e 100644
+--- a/rust/Cargo.toml
++++ b/rust/Cargo.toml
+@@ -20,7 +20,7 @@ anyhow = "~1.0"
+ foreign = "~0.3.1"
+ libc = "0.2.162"
+ glib-sys = { version = "0.21.2", features = ["v2_66"] }
+-serde = "1.0.226"
++serde = { version = "1.0.226", features = ["derive"] }
+ serde_derive = "1.0.226"
  
--def generate_cfg_flags(header: str, cargo_toml: CargoTOML) -> Iterable[str]:
-+def generate_cfg_flags(header: str, cargo_toml: Optional[CargoTOML]) -> Iterable[str]:
-     """Converts defines from config[..].h headers to rustc --cfg flags."""
+ [workspace.lints.rust]
+diff --git a/rust/util/Cargo.toml b/rust/util/Cargo.toml
+index 554004816eb..9f6c52c5acd 100644
+--- a/rust/util/Cargo.toml
++++ b/rust/util/Cargo.toml
+@@ -18,6 +18,7 @@ foreign = { workspace = true }
+ glib-sys = { workspace = true }
+ libc = { workspace = true }
+ serde = { workspace = true }
++serde_derive = { workspace = true }
+ common = { path = "../common" }
  
-     with open(header, encoding="utf-8") as cfg:
-@@ -117,8 +117,9 @@ def generate_cfg_flags(header: str, cargo_toml: CargoTOML) -> Iterable[str]:
-     cfg_list = []
-     for cfg in config:
-         name = cfg[0]
--        if f'cfg({name})' not in cargo_toml.check_cfg:
--            continue
-+        if cargo_toml:
-+            if f'cfg({name})' not in cargo_toml.check_cfg:
-+                continue
-         if len(cfg) >= 2 and cfg[1] != "1":
-             continue
-         cfg_list.append("--cfg")
-@@ -179,6 +180,13 @@ def main() -> None:
-         required=False,
-         default="1.0.0",
-     )
-+    parser.add_argument(
-+        "--no-strict-cfg",
-+        help="only generate expected cfg",
-+        action="store_false",
-+        dest="strict_cfg",
-+        default=True,
-+    )
-     args = parser.parse_args()
-     if args.verbose:
-         logging.basicConfig(level=logging.DEBUG)
-@@ -209,7 +217,7 @@ def main() -> None:
-                     print(f'cfg(feature,values("{feature}"))')
- 
-     for header in args.config_headers:
--        for tok in generate_cfg_flags(header, cargo_toml):
-+        for tok in generate_cfg_flags(header, cargo_toml if args.strict_cfg else None):
-             print(tok)
- 
- 
+ [lints]
+diff --git a/rust/util/meson.build b/rust/util/meson.build
+index 92d27957eda..7987056962c 100644
+--- a/rust/util/meson.build
++++ b/rust/util/meson.build
+@@ -63,3 +63,20 @@ rust.doctest('rust-util-rs-doctests',
+      dependencies: util_rs,
+      suite: ['doc', 'rust']
+ )
++
++_qapi_cfg = run_command(rustc_args,
++  '--no-strict-cfg',
++  '--config-headers', config_host_h,
++  capture: true, check: true).stdout().strip().splitlines()
++
++_qapi_rs = static_library(
++  'qapi',
++  qapi_rs_files,
++  rust_args: _qapi_cfg,
++  override_options: ['rust_std=2021', 'build.rust_std=2021'],
++  rust_abi: 'rust',
++  link_with: [_util_rs],
++  dependencies: [common_rs, serde_rs],
++)
++
++qapi_rs = declare_dependency(link_with: [_qapi_rs])
 -- 
 2.52.0
 
