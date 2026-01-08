@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1978D03C15
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 16:19:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5721D03BDE
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 16:18:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdrlH-0000sl-3n; Thu, 08 Jan 2026 10:17:19 -0500
+	id 1vdrlJ-0000uR-Dp; Thu, 08 Jan 2026 10:17:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1vdrlD-0000rH-9j
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 10:17:15 -0500
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1vdrlH-0000t6-5C
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 10:17:19 -0500
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1vdrlB-0003KX-K5
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 10:17:15 -0500
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-7f121c00dedso2883136b3a.0
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 07:17:13 -0800 (PST)
+ id 1vdrlF-0003Mx-Ar
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 10:17:18 -0500
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-7e2762ad850so2802204b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 07:17:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1767885432; x=1768490232; darn=nongnu.org;
+ d=sifive.com; s=google; t=1767885435; x=1768490235; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7MIQqhHGiHjK31A9q/v8kSxQcCEoWSWeinQC9NCVaBA=;
- b=HV5hJ7N2yZQzeZ062Lq+pyNzJ+fs/Kg36FyNB27d03gilZKiIMJBcd4b4/iHUzbgDh
- 203Zr3mE6EAvKalVbY9LI+1J5jnFUuCJmLE1q0HRrqlqf9MBiQ5ClQ40v4JMoFAESHdM
- 8p/Sy8f0imZjSpO1YtlcP2mnLTEJ7kfQKBEygxnAeNKTkRMt7/EW1AVFcv1KCD5Lx9fM
- d+O/S7YmbmRqATdFlwU5wgwZNrSPLnpxs82a7gIPI9ZhhbuwYujQN8vd+HeypczgB802
- 9SfbDIT58e6t4G6JuuIQsxpJx3VpBZpjMDLkWM3dM53r0atE/zSgWJV0Pjhzz1/UwDiA
- u+fg==
+ bh=CzZWMHTjiXjVIbO6WLfyyL8tkTs0pi+ESIBnuSvkgSI=;
+ b=OkNt8lIeNKAq1bJSsB0BQN21MNDjpx35d7YHq6QjibqWdVDbfYB2iYjqnEMq1GXNaI
+ wUD8TSv2gweEn7bUpdxCvBrttYYWK7Q/TjdjlfISGXZJZ6tQ96RONziwl9FGgPnR91Yx
+ 5JE7vN9PMbaifNjY4FYugpW9KyPuM3LnE68mps4Cb0SJoAn5ZLvfBYPtIJtCNf9ALSXj
+ 3iGzMdtc3JBaD7ageaCFSPhcShkF4x32hT6zpTBMNGa3NuqqieLUtJAKTAaBwhxN5kQS
+ zVR56NlyOhkMvWF8r7AyMIn9Zzban+RcwLM0ii/4IMFnjT03ppBGdKfm6vPBU5pCgvXP
+ 92EQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767885432; x=1768490232;
+ d=1e100.net; s=20230601; t=1767885435; x=1768490235;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=7MIQqhHGiHjK31A9q/v8kSxQcCEoWSWeinQC9NCVaBA=;
- b=anN6NEehl/Jvfo2QmdrBfP4SDDtcHBdLdp17XUM22l3bo5NFyVdSi3IYIHrdO9iW5y
- OEtxgNKqkrKqWLH6lLXMz7qK1zVDjbIpG9Q8psql055chJv/He4brjX/V4Tq236rwRFr
- LjZ0T0dVBt0tRgxUxCxm66QuTdKgfCBHD9xXCEJEb3v1r4VYqN0FE7c21fP6JSHju58G
- kOPw1HKqcaCQGaxmj2ki3XwiqQd2ryvV/g/jxZzkSlJEzncFiwqHCyZLMTU6bOPFTTRS
- AfUyVP6bQBncZzxJpk/iyCQ2B5ErV6FKllux7yCy/94yDNz/QMRPmNflXj66TuqH6au3
- Xctg==
-X-Gm-Message-State: AOJu0Yw4FyIICg5STdv1VJEeitLICsX92UTGwRbNiWrltwU32lH8Nr4z
- VevcJ+ar55w0JTQ0zDnv7s6zrkJphl+5+X3/P0JJ/vvg4tqowK89lxYCGZjKpqyfVtw1zN/c6aa
- quGQU2L1q2FP8Ftlx1he69ntIGoM2ut4ndgwnMZeXRKE1P5lVAbaFLfqdfom2sgyldqx44K6D7h
- ZiqBkdiiwb1wRQFeKv/Ym9CjPtWukk1Tqd9xHqt70=
-X-Gm-Gg: AY/fxX6U+wFLOvIeaDXE3ENhLCcbwsN/llhGNhPIFXZS5fAQPK96dw7mVw1ojHriLP5
- osz7lI0QIx8bqTpILmY3fOSL0vRGQeUVInEf1tSB3m0DrNQlrix5UthENEL+nKqtHs62qblCrlb
- CJD1VcMeM4RNB16xCOJdCdI+HaxViMz9IW24OY78zjxv+NEaY1UX0qivUJ+ANo+p+PKY2q49+3/
- dxZlD315UV1CmaNMMv3rmBdnznv69OyTV/KAcSBHkGIOb8BcaHHHuraPMTg4B1wD7yhoblMdmRx
- eMcC9cPMxhq8THTpXCl2UokSTz9ZCRh7fzPWCKSqj9o75ZKCb1HlhezOQ2LHdbUM2pGxq/VNGwS
- X1tBDeuzQRTSPtVIF+oHgoIVMJIicXQghnBZxz5ezw8uCQ7J13MiXXfH2ev6Im6zUoQEeA7ChIb
- qajBouW+iBkKROzgoudMs/DGJK+oYP/iy58b0LpM7ZKneyifYXcwqyo1j6oOxfeysRpg==
-X-Google-Smtp-Source: AGHT+IG+G97CoNDLH0W2icvGl5v99TskNlotma6+6wLfhhFqoVfmmwccKgls9tMh4ekb5n+qQU8fpQ==
-X-Received: by 2002:a05:6a00:f0d:b0:7e8:450c:6196 with SMTP id
- d2e1a72fcca58-81b7f6ec189mr6111863b3a.45.1767885432053; 
- Thu, 08 Jan 2026 07:17:12 -0800 (PST)
+ bh=CzZWMHTjiXjVIbO6WLfyyL8tkTs0pi+ESIBnuSvkgSI=;
+ b=NWMLkY3M/f/ceK1vsy4BVePGrGLWWsbT80H9UkSwXnRN54E2Y9K8rAlZjPUwG0dLLT
+ IGl3pLnOfGjTZpLM+BGIOZFYRQByZURlCa22YpHNnpWIea+E5tqaQOcriD/fq00stvf0
+ UZFv5PHuugJEAQ/za1nikFkcuxirTA2U1faYIwQmdMKnDopNQp+z6HMb4Hldsj8qynZ4
+ 0/PVbnHL8l7uUgqdTOJvz8KyTnwxQHsK8bRbgbQrJJEu1dmtZMb7iyzGOwlg4szoTmhE
+ QU3QbAEsNpSTrxoTVrOg8gRXapmg2KEBujvSbFIwlOSPPmpSdFOTOCNgfAOQREUBFK9S
+ 72oQ==
+X-Gm-Message-State: AOJu0YyUn7c8SNg3F+GeAMO/FtbBtd3cYv7DFP9/cneGiNIWmhuHh8y1
+ MYdjpHHxZDTJee7l3NS5jkfbDEVontKZ+cmiO+ZrdDe+zs5U20elNWgrPqCOxcIPN2NsFe+DoJV
+ bhuFCM6YicE8OZsXwCjrAPAl83GXbBvgkusu5U/FQMMmfNLQ5FzzrsNCuiLD0YwKvqQwhBkiExc
+ hgUufXsPtBHMTKl7NQQhPjoRoilhY+XPPihHeftRw=
+X-Gm-Gg: AY/fxX7teupT0CqiIOvXOVzWSWZhILJM0JE/QI+Vuv4wKUXkltaGmIu392k6Pk4qHLF
+ WfhrGNCL3EnTjHQ8VfBCqxtBinVd2zth/3Vmy7VzPaJc7jwlPmPhmzJi8LQRv/sQSlhBY2IW7R0
+ 27Wj1LieiYs79+SRPr+b7lix2VYf1AWox+QJbUi4HzFAOciPXUTf/Y9YVtWSWG3O3aNLFQ0tPdA
+ 2zL0GzkkZDC1fu6NCkbfjg7MHRg1U2y86/9Y39Eb9bxzX/8Eo0QInC+Cy11/8ytXy0lhzJv0/G+
+ L41Gj0nRZGUe/6AG9w6XhesCQ+LSQrZtl1sqZjxa5dr/C4M6vN48WeTGpRHamzeiq9ao9NVNLhU
+ h01gqd5w2zSBkBAabMZtcH2gMISabJ6rlqtuzGC4FcIL+iiStovxLdXpn/pj3iEoUuXWL3ZaHur
+ G5HEiVvQhGkBA6GHWJkWoG7GV+1GDnzvTzP4bUV5rlw6Z3TRaBL/kIOyRSdfpEQ7qEQA==
+X-Google-Smtp-Source: AGHT+IEiPeY5Zjyrh76G39V1GI1DlZa2t5SRbG9kggg5QX2iUdOzdwPIrMjfQ/yQXzX5LSc2Zvd4nA==
+X-Received: by 2002:a05:6a00:1ca2:b0:81d:8d00:76d6 with SMTP id
+ d2e1a72fcca58-81d8d0079e1mr1008228b3a.59.1767885435109; 
+ Thu, 08 Jan 2026 07:17:15 -0800 (PST)
 Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
  [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-81d87955bb6sm1060239b3a.50.2026.01.08.07.17.10
+ d2e1a72fcca58-81d87955bb6sm1060239b3a.50.2026.01.08.07.17.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 07:17:11 -0800 (PST)
+ Thu, 08 Jan 2026 07:17:14 -0800 (PST)
 From: Max Chou <max.chou@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -75,18 +75,18 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Weiwei Li <liwei1518@gmail.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Max Chou <max.chou@sifive.com>
-Subject: [PATCH 05/18] fpu/softfloat: Add OCP FP4 E2M1 to OCP FP8 E4M3 convert
- operation
-Date: Thu,  8 Jan 2026 23:16:36 +0800
-Message-ID: <20260108151650.16329-6-max.chou@sifive.com>
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Max Chou <max.chou@sifive.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PATCH 06/18] target/riscv: Add cfg properity for Zvfofp8min extension
+Date: Thu,  8 Jan 2026 23:16:37 +0800
+Message-ID: <20260108151650.16329-7-max.chou@sifive.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260108151650.16329-1-max.chou@sifive.com>
 References: <20260108151650.16329-1-max.chou@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=max.chou@sifive.com; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=max.chou@sifive.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,111 +109,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit provides the OCP FP4 E2M1 to OCP FP8 E4M3 covert operation
-for the Zvfofp4min extension.
+According to the ISA spec of Zvfofp8min extension,
+
+"The Zvfofp8min extension requires on the Zve32f extension."
 
 Signed-off-by: Max Chou <max.chou@sifive.com>
 ---
- fpu/softfloat.c         | 37 +++++++++++++++++++++++++++++++++++--
- include/fpu/softfloat.h |  2 ++
- 2 files changed, 37 insertions(+), 2 deletions(-)
+ target/riscv/cpu.c                | 8 ++++++++
+ target/riscv/cpu_cfg_fields.h.inc | 1 +
+ target/riscv/tcg/tcg-cpu.c        | 5 +++++
+ target/riscv/vector_helper.c      | 3 ++-
+ 4 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/fpu/softfloat.c b/fpu/softfloat.c
-index 0c7f052ec0..30ba6d6c09 100644
---- a/fpu/softfloat.c
-+++ b/fpu/softfloat.c
-@@ -562,6 +562,11 @@ typedef struct {
-     .frac_shift     = (-F - 1) & 63,                    \
-     .round_mask     = (1ull << ((-F - 1) & 63)) - 1
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 8eab992154..b4b10b52d8 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -193,6 +193,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(zvfbfwma, PRIV_VERSION_1_12_0, ext_zvfbfwma),
+     ISA_EXT_DATA_ENTRY(zvfh, PRIV_VERSION_1_12_0, ext_zvfh),
+     ISA_EXT_DATA_ENTRY(zvfhmin, PRIV_VERSION_1_12_0, ext_zvfhmin),
++    ISA_EXT_DATA_ENTRY(zvfofp8min, PRIV_VERSION_1_12_0, ext_zvfofp8min),
+     ISA_EXT_DATA_ENTRY(zvkb, PRIV_VERSION_1_12_0, ext_zvkb),
+     ISA_EXT_DATA_ENTRY(zvkg, PRIV_VERSION_1_12_0, ext_zvkg),
+     ISA_EXT_DATA_ENTRY(zvkn, PRIV_VERSION_1_12_0, ext_zvkn),
+@@ -778,6 +779,13 @@ static void riscv_cpu_reset_hold(Object *obj, ResetType type)
+     set_default_nan_mode(1, &env->fp_status);
+     /* Default NaN value: sign bit clear, frac msb set */
+     set_float_default_nan_pattern(0b01000000, &env->fp_status);
++    /*
++     * RISC-V Zvfofp8min extension requires:
++     * - Same canonical NaN (0x7F) for both E4M3 and E5M2 formats
++     * - E5M2 format does not generate signaling NaNs (all NaNs are quiet)
++     */
++    set_ocp_fp8_same_canonical_nan(true, &env->fp_status);
++    set_ocp_fp8e5m2_no_signal_nan(true, &env->fp_status);
+     env->vill = true;
  
-+static const FloatFmt float4_e2m1_params = {
-+    FLOAT_PARAMS(2, 1),
-+    .ocpfp = true
-+};
-+
- static const FloatFmt float8_e4m3_params = {
-     FLOAT_PARAMS(4, 3),
-     .ocpfp = true
-@@ -638,6 +643,11 @@ static void unpack_raw64(FloatParts64 *r, const FloatFmt *fmt, uint64_t raw)
-     };
- }
- 
-+static void QEMU_FLATTEN float4_e2m1_unpack_raw(FloatParts64 *p, float4_e2m1 f)
-+{
-+    unpack_raw64(p, &float4_e2m1_params, f);
-+}
-+
- static void QEMU_FLATTEN float8_e4m3_unpack_raw(FloatParts64 *p, float8_e4m3 f)
- {
-     unpack_raw64(p, &float8_e4m3_params, f);
-@@ -1664,7 +1674,11 @@ static bool ocpfp64_is_normal(const FloatParts64 *a, const FloatFmt *fmt,
+ #ifndef CONFIG_USER_ONLY
+diff --git a/target/riscv/cpu_cfg_fields.h.inc b/target/riscv/cpu_cfg_fields.h.inc
+index 3696f02ee0..59302894af 100644
+--- a/target/riscv/cpu_cfg_fields.h.inc
++++ b/target/riscv/cpu_cfg_fields.h.inc
+@@ -104,6 +104,7 @@ BOOL_FIELD(ext_zvfbfmin)
+ BOOL_FIELD(ext_zvfbfwma)
+ BOOL_FIELD(ext_zvfh)
+ BOOL_FIELD(ext_zvfhmin)
++BOOL_FIELD(ext_zvfofp8min)
+ BOOL_FIELD(ext_smaia)
+ BOOL_FIELD(ext_ssaia)
+ BOOL_FIELD(ext_smctr)
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index 378b298886..ba89436f13 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -710,6 +710,11 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+         return;
      }
  
-     if (fmt->ocpfp) {
--        if (fmt->exp_size == 4 && fmt->frac_size == 3) {
-+        if (fmt->exp_size == 2 && fmt->frac_size == 1) {
-+            if (input.exp <= fmt->exp_max) {
-+                return true;
-+            }
-+        } else if (fmt->exp_size == 4 && fmt->frac_size == 3) {
-             /*
-              * The OCP E4M3 format uses only two bit patterns for NaN (a
-              * single mantissa-exponent bit pattern with the sign bit) in
-@@ -1704,7 +1718,11 @@ static bool ocpfp128_is_normal(const FloatParts128 *a, const FloatFmt *fmt,
-     }
- 
-     if (fmt->ocpfp) {
--        if (fmt->exp_size == 4 && fmt->frac_size == 3) {
-+        if (fmt->exp_size == 2 && fmt->frac_size == 1) {
-+            if (input.exp <= fmt->exp_max) {
-+                return true;
-+            }
-+        } else if (fmt->exp_size == 4 && fmt->frac_size == 3) {
-             /*
-              * The OCP E4M3 format uses only two bit patterns for NaN (a
-              * single mantissa-exponent bit pattern with the sign bit) in
-@@ -1791,6 +1809,13 @@ static const uint16_t rsqrt_tab[128] = {
-  * Pack/unpack routines with a specific FloatFmt.
-  */
- 
-+static void float4_e2m1_unpack_canonical(FloatParts64 *p, float4_e2m1 f,
-+                                       float_status *s)
-+{
-+    float4_e2m1_unpack_raw(p, f);
-+    parts_canonicalize(p, s, &float4_e2m1_params);
-+}
++    if (cpu->cfg.ext_zvfofp8min && !cpu->cfg.ext_zve32f) {
++        error_setg(errp, "Zvfofp8min extension depends on Zve32f extension");
++        return;
++    }
 +
- static void float8_e4m3_unpack_canonical(FloatParts64 *p, float8_e4m3 f,
-                                          float_status *s)
- {
-@@ -2999,6 +3024,14 @@ static void parts_float_to_float_widen(FloatParts128 *a, FloatParts64 *b,
-     }
- }
+     if (cpu->cfg.ext_zvfh && !cpu->cfg.ext_zfhmin) {
+         error_setg(errp, "Zvfh extensions requires Zfhmin extension");
+         return;
+diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+index ec0ea4c143..ee5a1e595b 100644
+--- a/target/riscv/vector_helper.c
++++ b/target/riscv/vector_helper.c
+@@ -38,7 +38,8 @@ static target_ulong vtype_reserved(CPURISCVState *env, target_ulong vtype)
+     int xlen = riscv_cpu_xlen(env);
+     target_ulong reserved = 0;
  
-+float8_e4m3 float4_e2m1_to_float8_e4m3(float4_e2m1 a, float_status *s)
-+{
-+    FloatParts64 p;
-+
-+    float4_e2m1_unpack_canonical(&p, a, s);
-+    parts_float_to_ofp8(&p, s, &float8_e4m3_params);
-+    return float8_e4m3_round_pack_canonical(&p, s, &float8_e4m3_params);
-+}
- 
- bfloat16 float8_e4m3_to_bfloat16(float8_e4m3 a, float_status *s)
- {
-diff --git a/include/fpu/softfloat.h b/include/fpu/softfloat.h
-index 13b882bc67..b199a029b0 100644
---- a/include/fpu/softfloat.h
-+++ b/include/fpu/softfloat.h
-@@ -200,6 +200,8 @@ float8_e5m2 bfloat16_to_float8_e5m2(bfloat16, bool saturate, float_status *statu
- float8_e4m3 float32_to_float8_e4m3(float32, bool saturate, float_status *status);
- float8_e5m2 float32_to_float8_e5m2(float32, bool saturate, float_status *status);
- 
-+float8_e4m3 float4_e2m1_to_float8_e4m3(float4_e2m1, float_status *status);
-+
- /*----------------------------------------------------------------------------
- | Software OCP FP operations.
- *----------------------------------------------------------------------------*/
+-    if (riscv_cpu_cfg(env)->ext_zvfbfa) {
++    if (riscv_cpu_cfg(env)->ext_zvfbfa ||
++        riscv_cpu_cfg(env)->ext_zvfofp8min) {
+         reserved = vtype & MAKE_64BIT_MASK(R_VTYPE_RESERVED_SHIFT,
+                                            xlen - 1 - R_VTYPE_RESERVED_SHIFT);
+     } else {
 -- 
 2.43.7
 
