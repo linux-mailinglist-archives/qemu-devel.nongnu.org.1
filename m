@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AD6FD00C94
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 04:07:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA343D00CAE
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 04:08:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdgMd-0000KK-Np; Wed, 07 Jan 2026 22:07:07 -0500
+	id 1vdgMn-0000eh-Th; Wed, 07 Jan 2026 22:07:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vdgMb-0000C7-Bf; Wed, 07 Jan 2026 22:07:05 -0500
+ id 1vdgMk-0000VW-PF; Wed, 07 Jan 2026 22:07:14 -0500
 Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vdgMZ-00057Q-NR; Wed, 07 Jan 2026 22:07:05 -0500
+ id 1vdgMj-00058c-24; Wed, 07 Jan 2026 22:07:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1767841624; x=1799377624;
+ t=1767841634; x=1799377634;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=1/clFgKnxvuTgv4B7v21QOPZa4daiWEdepWxe7LIQyg=;
- b=SVx0l9HafD8FvvXIOd/iykSJhFHrEt78wnNtqbACy6f3grWy83gpCT58
- bBkHPCVhvF0sbYhmLneQp/ShZXpkVE1LjAUo7HvOgB6uIrXQZVtNJNm3o
- fKo+dlq5EVchJ9mS4uxDfKIxcq6b9L2Vg2R5i5rGBDddvoI55pTVYgBRD
- 98r+n2URBFwHkq3bjxynrTjeSm/MFJfUybe9pvykEvD0YV8Vqt/I1JPkT
- 21gG25l+QoW91Qn2/Q/3+QL+2rKK5gbzoovrVmPSc2dqL3HTKTHULrPsC
- dLxUKsvxdNIBTUcTFeSrK1jUJt1uu//re7m8pOvJxiYSRPxljdC7r85qn g==;
-X-CSE-ConnectionGUID: DRowqGEjTHG7hIvtyNdPVw==
-X-CSE-MsgGUID: 62DyH/MKT4KuR+KJCDoIeQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="91877163"
-X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; d="scan'208";a="91877163"
+ bh=+W2nuu0RATsALTShNsBWCjQLHRQFKTYW61n5Szq2eRA=;
+ b=mOjSiVVmLFBNe5Q3L/oCk09Tesj3KmNSi9ws73DLg25tW6Nk9NKPyfnk
+ vEOVNOKIRjbrqRbc+8CjMP0+P9oBGziMmH+2HnmyPgADT4z3itvxfnajd
+ WjWD+Q2Y2SfOQp86T4KKSQn6zxOsJsJQHKCkY6UdZw79V3OZCEhAkYO5c
+ qYit9NU9WwGptiJxou4elziM5pqS5jxoV6b9XzRLAXG2yHsW3wHP6ynD0
+ K0t6xA3EULs0jDUFLictJ0N7FrUruECiXqy94H3nSt4XLlsrnYpQ0M63b
+ PwKoWEusEPG0555QU6yser8U2Pag5jhyuYNlIuVdw+TDIrunvx0DtbabG Q==;
+X-CSE-ConnectionGUID: f8ujD27RS76r86nY/5cS7A==
+X-CSE-MsgGUID: PPDGTK4HSTGGeiK63x4+NQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="91877192"
+X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; d="scan'208";a="91877192"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jan 2026 19:07:02 -0800
-X-CSE-ConnectionGUID: o5e9JpS9TMW3BVsb5Hosng==
-X-CSE-MsgGUID: 9O8QOvoPQVazEAcMzpIAOw==
+ 07 Jan 2026 19:07:11 -0800
+X-CSE-ConnectionGUID: 1axfT+9ORDaOUvqICDifyQ==
+X-CSE-MsgGUID: xBlaUGDlSmWMvr0XoQBtsA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; d="scan'208";a="202210784"
+X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; d="scan'208";a="202210810"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa006.jf.intel.com with ESMTP; 07 Jan 2026 19:06:52 -0800
+ by orviesa006.jf.intel.com with ESMTP; 07 Jan 2026 19:07:01 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
@@ -70,10 +70,10 @@ Cc: qemu-devel@nongnu.org, devel@lists.libvirt.org, kvm@vger.kernel.org,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>,
  BALATON Zoltan <balaton@eik.bme.hu>, Peter Krempa <pkrempa@redhat.com>,
  Jiri Denemark <jdenemar@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v6 09/27] hw/mips/loongson3_virt: Prefer using
- fw_cfg_init_mem_nodma()
-Date: Thu,  8 Jan 2026 11:30:33 +0800
-Message-Id: <20260108033051.777361-10-zhao1.liu@intel.com>
+Subject: [PATCH v6 10/27] hw/nvram/fw_cfg: Factor fw_cfg_init_mem_internal()
+ out
+Date: Thu,  8 Jan 2026 11:30:34 +0800
+Message-Id: <20260108033051.777361-11-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260108033051.777361-1-zhao1.liu@intel.com>
 References: <20260108033051.777361-1-zhao1.liu@intel.com>
@@ -107,31 +107,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-fw_cfg_init_mem_wide() is prefered to initialize fw_cfg
-with DMA support. Without DMA, use fw_cfg_init_mem_nodma().
+Factor fw_cfg_init_mem_internal() out of fw_cfg_init_mem_wide().
+In fw_cfg_init_mem_wide(), assert DMA arguments are provided.
+Callers without DMA have to use the fw_cfg_init_mem() helper.
 
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/mips/loongson3_virt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes since v4:
+ * Fix a "typo" argument in fw_cfg_init_mem_wide().
+---
+ hw/nvram/fw_cfg.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
-index fe51fb66f6f2..cd94e9f5f77e 100644
---- a/hw/mips/loongson3_virt.c
-+++ b/hw/mips/loongson3_virt.c
-@@ -287,7 +287,7 @@ static void fw_conf_init(void)
-     FWCfgState *fw_cfg;
-     hwaddr cfg_addr = virt_memmap[VIRT_FW_CFG].base;
+diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
+index a0315ea9ae6b..3c1d0b9c1d09 100644
+--- a/hw/nvram/fw_cfg.c
++++ b/hw/nvram/fw_cfg.c
+@@ -1054,9 +1054,9 @@ FWCfgState *fw_cfg_init_io_dma(uint32_t iobase, uint32_t dma_iobase,
+     return s;
+ }
  
--    fw_cfg = fw_cfg_init_mem_wide(cfg_addr, cfg_addr + 8, 8, 0, NULL);
-+    fw_cfg = fw_cfg_init_mem_nodma(cfg_addr, cfg_addr + 8, 8);
-     fw_cfg_add_i16(fw_cfg, FW_CFG_NB_CPUS, (uint16_t)current_machine->smp.cpus);
-     fw_cfg_add_i16(fw_cfg, FW_CFG_MAX_CPUS, (uint16_t)current_machine->smp.max_cpus);
-     fw_cfg_add_i64(fw_cfg, FW_CFG_RAM_SIZE, loaderparams.ram_size);
+-FWCfgState *fw_cfg_init_mem_wide(hwaddr ctl_addr,
+-                                 hwaddr data_addr, uint32_t data_width,
+-                                 hwaddr dma_addr, AddressSpace *dma_as)
++static FWCfgState *fw_cfg_init_mem_internal(hwaddr ctl_addr,
++                                            hwaddr data_addr, uint32_t data_width,
++                                            hwaddr dma_addr, AddressSpace *dma_as)
+ {
+     DeviceState *dev;
+     SysBusDevice *sbd;
+@@ -1088,10 +1088,19 @@ FWCfgState *fw_cfg_init_mem_wide(hwaddr ctl_addr,
+     return s;
+ }
+ 
++FWCfgState *fw_cfg_init_mem_wide(hwaddr ctl_addr,
++                                 hwaddr data_addr, uint32_t data_width,
++                                 hwaddr dma_addr, AddressSpace *dma_as)
++{
++    assert(dma_addr && dma_as);
++    return fw_cfg_init_mem_internal(ctl_addr, data_addr, data_width,
++                                    dma_addr, dma_as);
++}
++
+ FWCfgState *fw_cfg_init_mem_nodma(hwaddr ctl_addr, hwaddr data_addr,
+                                   unsigned data_width)
+ {
+-    return fw_cfg_init_mem_wide(ctl_addr, data_addr, data_width, 0, NULL);
++    return fw_cfg_init_mem_internal(ctl_addr, data_addr, data_width, 0, NULL);
+ }
+ 
+ 
 -- 
 2.34.1
 
