@@ -2,142 +2,162 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F270D03796
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 15:47:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FB7ED02D93
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 14:07:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdrHO-0007FZ-0e; Thu, 08 Jan 2026 09:46:26 -0500
+	id 1vdpiG-0008AV-4S; Thu, 08 Jan 2026 08:06:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Shivansh.Dhiman@amd.com>)
- id 1vdnPO-00085O-Il
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 05:38:26 -0500
-Received: from mail-westusazon11010046.outbound.protection.outlook.com
- ([52.101.85.46] helo=BYAPR05CU005.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <Honglei1.Huang@amd.com>)
+ id 1vdpi7-00085B-7I
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 08:05:56 -0500
+Received: from mail-westusazon11010040.outbound.protection.outlook.com
+ ([52.101.85.40] helo=BYAPR05CU005.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Shivansh.Dhiman@amd.com>)
- id 1vdnPM-0004XI-0y
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 05:38:26 -0500
+ (Exim 4.90_1) (envelope-from <Honglei1.Huang@amd.com>)
+ id 1vdpi5-00071C-6q
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 08:05:54 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Pbs8zvxX0HYHGz1AGOyuubl/6B2B8tOqsWL9ZzDt6LjSKXhvKd3Ijfk7aao6+fbn+3+LDBJN5Rg0YuVYKgKrfns6/zWKA0qYEtJm7KaKwompdAJ+tVKhnAWLU2dAIcq7gPkUvaQsTJDRzxljk//nNx0TuDG+jX9Qv4HX0TN/OycAg80eHpGubKQNEMdHCCwuJXLV2lR4NvCgAi83DTqgV5x8JMww3Sg7lNvb/fXs/UnwXWx944UyxNm5cQj6X8FB0XdqG9OhlWddQeSDsr74OPRCTEkpG5x4oxG0VfqBSOFspLAp8ytyAWHoWWiwcd2ZDbWmr6yec2fWW+jD7iLZ4g==
+ b=bBFjGEYSNI5RYIoWkXbcYZp0Gm8SlMtB8/lwnKYO6LjTbJHDlqmzRss4zJv1mNfMPo4TKH9m0WVgvFoLRxn24JEx7JS3f5g6ecrgZLEmI6pvONJfme9YK6KGiUh3X7xdXst0zoEcsl9O3dx3H+Crzd0uNxcL3lkTKGjnNi2I40v5zr6oCXacV51Ihn035SMIEzb4abrFELZSkZ3njNV+46Cfn802UmgaAOtyZz7j4Nj+6Drm7IPHmgdqS0ZU14/0ECMbnyLd5RfWTOp5GuJ8jmnhtgRVWeugS8k2OCv9wyQ23sWBKGVaKaX/s8AF6WwMIrxLvJYNCqljfjfkCW2w+A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FXyrCU8G+78vVYue4sPBuq8Ep9e9JK5JSwB4uC2p26c=;
- b=Tm9i410xsH2ryn2K3c+pqJyM+ZHuIxr2jt8Ino6+jt/y1Mtd8yKwmluDxn55Dd73cawqZxczXGBhdpNUKyGxCKzhXO6psYJzG6V7MLywG+PeGnP+quUE1RKVJ7KdRbl1nVqcjGNaG3UrI5jK3Tai6w6jIuZMdkiZXfgPufU32GFQE9U3AwvQBSTBWnQVEYCIXFPsLzhIG2UYeGY35PklInOokGu8/f7nhkdjZrPK2iYcX32cVY9vGSHUpripXzgV53e20bYhLQgB74uPSwZ5laU49j0yzyj2bx/nVvBkHZuwk83gn3gvU/tLQsSio9yNdQ9BFbJ3BPzqirvzQXivrA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
+ bh=5Ug5bzzBjdn556ubS7o5Y/16NS0uVzt7N5cD9Iz7uu4=;
+ b=dfnF7YD81wZ1twVD0mb6CTIhcwCITX36N4cftFAAr1cvFa+hW8JX18y2Kpu1VRlSIZF/LFPLTVRaWXzPceYKFTwwQUU2j467WleeKbwU9/GExZ2IRMBlya1MWhicH685l6/4738IdY3+tE4ka1WqJbBLFAU9lXEQ3DEzIgBickeb3EJJocNgU6/O526LgVCdiN6QFtxG9Bs2+UdhGL5N+JvEwLQeI4waxAfo3ty6+lDti2dd3XD6+EoYr3Skl9B4kOdvRyAF7Hlnp/SQwY1lkrnLLZdsvtS0Oyu4B+dhvPYJeGpoBf8uP+445r3VeCD4tBWBQ6aRw3mbZFe8MTUXfA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FXyrCU8G+78vVYue4sPBuq8Ep9e9JK5JSwB4uC2p26c=;
- b=MdX+oJmEq/lzwa+yWxeYuPHQWfCzRZy2H36Vs13OGvl4jgOLytZZYaZpsdJfsEmCfGhZf4EbdcZB+YAzJuWGeVsKN+QFfmAdrbtcdD71r2C2Aiu7wLM7gOZHwrg7JvqspR/hUuSUGs7mPCNdaMu9q/1AvEy2pkX9W+EiNP3o9co=
-Received: from BL1PR13CA0189.namprd13.prod.outlook.com (2603:10b6:208:2be::14)
- by DS7PR12MB8322.namprd12.prod.outlook.com (2603:10b6:8:ed::13) with
- Microsoft SMTP Server (version=TLS1_2,
+ bh=5Ug5bzzBjdn556ubS7o5Y/16NS0uVzt7N5cD9Iz7uu4=;
+ b=DtWikNNpratq94zT42O3iNz4WCgHH8c3+G3KIBbTmlECGFKciT/wv+ihYiD+Md+f0s/p7f9S0vHDSy6nkpDHwyHrETLNfBFhWr4Vum3tq39f1Hd45mcdLRyg41VZ3gblmHML+SdUqYF3f4TTbTH9mrB+TSsd+dE2yLFTfV06Cbo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from IA1PR12MB6435.namprd12.prod.outlook.com (2603:10b6:208:3ad::10)
+ by BN7PPF7B4E3DFF8.namprd12.prod.outlook.com
+ (2603:10b6:40f:fc02::6d4) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.3; Thu, 8 Jan
- 2026 10:33:16 +0000
-Received: from BL6PEPF0001AB55.namprd02.prod.outlook.com
- (2603:10b6:208:2be:cafe::80) by BL1PR13CA0189.outlook.office365.com
- (2603:10b6:208:2be::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.2 via Frontend Transport; Thu, 8
- Jan 2026 10:33:16 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL6PEPF0001AB55.mail.protection.outlook.com (10.167.241.7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9520.1 via Frontend Transport; Thu, 8 Jan 2026 10:33:16 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 8 Jan
- 2026 04:33:16 -0600
-Received: from [10.85.34.88] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Thu, 8 Jan 2026 02:33:13 -0800
-Message-ID: <eb712000-bc67-468a-b691-097688233659@amd.com>
-Date: Thu, 8 Jan 2026 16:03:12 +0530
-MIME-Version: 1.0
+ 2026 13:00:44 +0000
+Received: from IA1PR12MB6435.namprd12.prod.outlook.com
+ ([fe80::8b77:7cdb:b17a:a8e2]) by IA1PR12MB6435.namprd12.prod.outlook.com
+ ([fe80::8b77:7cdb:b17a:a8e2%5]) with mapi id 15.20.9499.002; Thu, 8 Jan 2026
+ 13:00:44 +0000
+Message-ID: <a46d9f5d-a543-4a75-b7ae-c1120f7241b4@amd.com>
+Date: Thu, 8 Jan 2026 21:00:37 +0800
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] i386: Implement CPUID 0x80000026
-To: Zhao Liu <zhao1.liu@intel.com>, Shivansh Dhiman <shivansh.dhiman@amd.com>
-CC: <pbonzini@redhat.com>, <mtosatti@redhat.com>, <kvm@vger.kernel.org>,
- <qemu-devel@nongnu.org>, <seanjc@google.com>, <santosh.shukla@amd.com>,
- <nikunj.dadhania@amd.com>, <ravi.bangoria@amd.com>, <babu.moger@amd.com>
-References: <20251121083452.429261-1-shivansh.dhiman@amd.com>
- <20251121083452.429261-2-shivansh.dhiman@amd.com>
- <aV4KVjjZXZSB5YGw@intel.com>
+Subject: Re: [PATCH RFC v4 1/3] virtio-gpu: Add support for
+ VIRTIO_GPU_BLOB_FLAG_USE_USERPTR flag
+To: Cornelia Huck <cohuck@redhat.com>
+Cc: dmitry.osipenko@collabora.com, alex.bennee@linaro.org,
+ odaki@rsg.ci.i.u-tokyo.ac.jp, Ray.Huang@amd.com, mst@redhat.com,
+ pbonzini@redhat.com, qemu-devel@nongnu.org
+References: <20260107075030.3453924-1-honghuan@amd.com>
+ <20260107075030.3453924-2-honghuan@amd.com> <87tswxahdi.fsf@redhat.com>
 Content-Language: en-US
-From: Shivansh Dhiman <shivansh.dhiman@amd.com>
-In-Reply-To: <aV4KVjjZXZSB5YGw@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+From: Honglei Huang <honghuan@amd.com>
+In-Reply-To: <87tswxahdi.fsf@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
+X-ClientProxiedBy: SI1PR02CA0022.apcprd02.prod.outlook.com
+ (2603:1096:4:1f4::16) To IA1PR12MB6435.namprd12.prod.outlook.com
+ (2603:10b6:208:3ad::10)
+MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB55:EE_|DS7PR12MB8322:EE_
-X-MS-Office365-Filtering-Correlation-Id: d6df3641-5e7d-438f-e66f-08de4ea15577
+X-MS-TrafficTypeDiagnostic: IA1PR12MB6435:EE_|BN7PPF7B4E3DFF8:EE_
+X-MS-Office365-Filtering-Correlation-Id: ced73529-6907-494b-c7fc-08de4eb5ef33
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|82310400026|36860700013|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?WDltTkdWSU1US0s4ZGVTV1pCWUtlbGpzM0VPL0tKVE1YamJ1aHUvbzhUbko1?=
- =?utf-8?B?azJmT0hLODljb2ZnQWRidWJreEVzajl6TThIUFZRTzkvOEordGJaL1FXVlZJ?=
- =?utf-8?B?Z0pYWGszYUtPd1lSSHY1VytoK3lVYXNCdFEyOWs3VFl5K1pRc1k3YndyVkRt?=
- =?utf-8?B?WGltMXR3dThVQVpkM21YRmNMYVVmempNSytpVjN5ZXVTS2psWlpTK0QwOE40?=
- =?utf-8?B?cHpscWVHQjFWVm1hekVPOGovVnViTmZKSStVRFM5Q0VsSGVCTDlidE1iMlRC?=
- =?utf-8?B?elc4Sk95a3NwT1Z2Q2IzeW1zWmE0bndTZEhwQWVsYnVmU2RjeTBJRXovcXdC?=
- =?utf-8?B?dWF5VFhYRFc4dWJrYkFWVW50eUxXcTg3YzBWN0h0NEVBM2hBbG1PR3R0Zlli?=
- =?utf-8?B?eEErNzVhS1pVQm45NE0rVjIwVVBWMmdyckgxTkxMb2Zib1lXaGV6VDZ4M1dj?=
- =?utf-8?B?Z3pOR2lrZ1BxY3BTK3dScjZIbnI3OWlDUjNBbmduWWN4NkZUTWprNjB0L2dx?=
- =?utf-8?B?eWsrYWNXSzEvZWhaL3VqT2JzeXorUG1Eb09peHBocWwzekQ1ZHJpNng0SFJD?=
- =?utf-8?B?NGQvL3krbnYwTmV1bFNjRithYUtXT0tKTEdORHErRENXVnlpdGFBQWhDdGJ4?=
- =?utf-8?B?bXo5TnJSR25jQlNIdHQveU8vSXlwWTVpN25hYk9Va2Y5TllnNWk3TmY0SThC?=
- =?utf-8?B?Q3hYNVJMd3FzT2hCVGdmdkUxTlUwWGJzNXQremtHR3hGY1BMZVNJRm5CWGky?=
- =?utf-8?B?YTd2dnZLWnRZVXFFbzk0emMvY0xGZmNKYUF3TUxGUFFHczJTVEVKYW0zaUxU?=
- =?utf-8?B?N0l0RXZtZjZQUjN4eVF6M05laXV6Wmd1dE5WeDV1Y3dyd0xCT1ZjYk05MElZ?=
- =?utf-8?B?NUl1UW1MTzVQeHlqcmY5ZWhSSmxmc3FGWWVWMU5SanVmNVJIZ2JCR0Vvdlc2?=
- =?utf-8?B?ZlovdEZRYUoyVEJGWjRXL3FZOXNlS1lRL3pjRGtRcW1leklmQTc2NW1aZ0Jx?=
- =?utf-8?B?TWpmNFpRUk5WYWdkZkQyVEZ2cEMxcnFMcHRlUzlIWVlFdFE1R2VFNW1abjZ0?=
- =?utf-8?B?cjJ1VjgzZ0tGdTRscnVURDArRGMwcXVUSU9sK0hMMEJvQ0Jpckl0T0hJbXEw?=
- =?utf-8?B?K2phWCtKOEUyZUJ6K215bE94eW5tb2gvRDRUQmxOY2VSU3hlYXhab0VyZTR3?=
- =?utf-8?B?cFcvcFh6Y200OWkzZ2gyOHhZYUd5b1NKSTdRM0VoTUxPb1FteFlybi9NdE0r?=
- =?utf-8?B?QjI1Y08veEU3cEhocWZCUHJxcXdJY2JQOVJxQmFlSzFxdWZ1WHBoWTJiREFm?=
- =?utf-8?B?b21hNGp4UGxyS0xIWEJ5S2JzZkhrS3drTW15eDUrUldGQ0NQSjUyWHNma21I?=
- =?utf-8?B?Q0FzanZsVnVrblhSOThXTmhBRUJSWVhtYisrRDFlQkI1Tm9QWTdXTWkyZFRo?=
- =?utf-8?B?VEhBb25rYkI4REtkYTY2Ukl5UGlsa29kNXdzS0RKb3JrYjFhVlB6TGlYWDFB?=
- =?utf-8?B?c25jNGN5a01nUDBJbmIrMzJSeUtMYkMxZng5Qk1IZ0xFK1FZK2tsL3gzZG5W?=
- =?utf-8?B?WEp0YUZGaytlV0ZwSzVXVWFpMXE5dVhmdlNrM1pIWktYUWhadmd0eDFUQVps?=
- =?utf-8?B?TEdTZU9QeUticC9kelExZ2VWK1VkcjZYc1dPYitLMmNmYlZTVXBGRlNDdEp1?=
- =?utf-8?B?WFZPdmdtK1JuL01iYnlHZnA5Zi9QZVRvR1dtMk1xazBKdGxXWkRCZkJ4UURk?=
- =?utf-8?B?S3poTXltWTl1ZXFpRytydWlpcmlhVEJKWlZMUXJxR0ZMVDY5aWVybFFNOTRh?=
- =?utf-8?B?Q1VJbktFSlNEbmlVMHVqUUN4RG9NT0Eyc25VZ04rM00xdmhuYWFVcmpMRFBJ?=
- =?utf-8?B?NVd2bnRXT0ZQYnVSSm9wM1djT0ZPSC91MG01K3hvY3NBMFdMeWFVTFNDMnZr?=
- =?utf-8?B?TUUxbG1WOUJ6eHpEdklqVjI4RlVTTEF1c1diWUZGdGhKaU9EWFZpSiszeUJD?=
- =?utf-8?B?NHFXdkpmaWpRT1NIOHRJbkdVOEpZUUY0Y3dzVndhT2dVdzhGUFVGTzZCWlJ0?=
- =?utf-8?B?UCtzekFKQzNRNXhyQUF1Rk5OVllTNFB3clM4RXlDS3BlNTNxZFB5TWtCeTNB?=
- =?utf-8?Q?oz7Y=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024); DIR:OUT;
- SFP:1101; 
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Zm1Fd1YxQ2ZiRUJsb0s1V05abWdiMEx1d2tOdXh0cjhGUjBjVmNJMGllQklX?=
+ =?utf-8?B?RXdMbVFuVDJPVFFldnBXVWxDdFlVci9lOTM5c1JPUmFhSnlGQ2dXUm1PZnlq?=
+ =?utf-8?B?c2ZTcEFkbDRwb1RBVnJMU3VUdnBOZjV1VkQzSkJ3K09lNFp3WmoydUxNQ3lS?=
+ =?utf-8?B?VWVxSWs5RHFMWmk1cEQwaG9kVkErUVk3RWg2eXBpZmtQL2pYVmd6ejZFZ3RU?=
+ =?utf-8?B?Z1YrMmE0S0VndC9lVitLTFVueVdFTkFWS0xvNnBWMDNtRGhYaHgyS2xGSkpL?=
+ =?utf-8?B?SUxzZng4V3ZDb0NxWFVxMUp4SzNDNTdUNjdYa0orMHQ0c2c4UFBQaE5qd2dZ?=
+ =?utf-8?B?ZENGU2M2Q2NsTWE0SG5zcEJJTXY4ZkkvYm1EalBNKzFJMmQyME5ySDQ1Q0ZH?=
+ =?utf-8?B?QTBNV0ovMGNlVlpqZCsvTjNJTEpkYTJnVVRxY2l1QnBVcU5Ud243Kytld0NP?=
+ =?utf-8?B?TXJJZWF3TTBCQVBpdUJ1YTcrZ1FSRGxJMlo4b3lYZVRrUVVQY2g3aFhZYm5m?=
+ =?utf-8?B?SlczaTgwT2k4bHpzYjdFVXJhMVRTeXhCTmVmeVE0RGxaWUExTWtvcGU0eXZB?=
+ =?utf-8?B?V2V0WHpqU1lLUjZnRDNoR2R1S1kxTGpNemNydTN4aE5aSTFFRGpkNWsxOEVD?=
+ =?utf-8?B?SWFVNFlmc1hGbC95eUNURGR5bXBwL3YxRlhZSERQb05McStoV0ljUHlLN3Iy?=
+ =?utf-8?B?VUFFcXB3eVhUVXdZaU9WcUo0NEJodUd2N3hWUTAvb0NlWXAzWlBVOTVFeUFn?=
+ =?utf-8?B?emQxdGVLaWtOVUl3Q3c4MlRIbDE1MzViaG9oVUo5dG5qaEUySXdaY1BaK0Q2?=
+ =?utf-8?B?VkQ3Y2dOc0QvV0tPVFh2WWZON1g1MHppaXIvRDIwTTdaOTBBOC8zWTdhTVRM?=
+ =?utf-8?B?d0VmckVObkhzYWREdTQyM1l6ajFWS3VpQTZWdSszMVpFRDB0WkpycmhHN3Jj?=
+ =?utf-8?B?a1BnalczL0VIYTgwRWJJbWd2b2xxZjg0clBQK0h0dUM5Mngwejh2emhxaDBZ?=
+ =?utf-8?B?ZXhpVG5zaGREYlFkSFRnNDd2a2pUK2hIOW9TV3QzeHRFbVluVDk4NlpXOUF5?=
+ =?utf-8?B?YjVNWGpaL1l2cVRpVUtMOHcraDEra3FTZFltOFFrVmE1bmhGWk5nbVJXUWF3?=
+ =?utf-8?B?UUE3WGJsSE9ka3NORCtoSm9TUjNKRUtRd2w0Q3lVcEhrTVdIYkxKL0NIREpB?=
+ =?utf-8?B?NE9NY0FqUTU3amhxOWFhRE9XdC9PU29hK2xCd2RndXh4TExzYWlrcnRZaGUz?=
+ =?utf-8?B?NStiblNWc0lESmt1RjBZU1pDaE16L2tIdXUvSUZJUklVWXdDUU9TdE5SU0R0?=
+ =?utf-8?B?VHdiZkhwVWh4d0NFdXp1S2l6aktBK0dqVDdHYTMzVEFZMXRmVHJWWHdsRytF?=
+ =?utf-8?B?MjZxQVRoT0Q0ZVdpRWNYU0l6VzhFVVo3NGhpRW93Tzc0UXNMbTYxUUY1L2Fa?=
+ =?utf-8?B?UDFOY245NkxVQzFCY0E3b3R3Vis0R1pMRmMwZStJUTNnU2lGV3dRMVpPQnlz?=
+ =?utf-8?B?YVdWNWlPem9maXdubStEb1Rwby8zTmUyZmxlbWtqK1BjOEczVVNyUUxQa0Z3?=
+ =?utf-8?B?ZHcvVFFkalExZWozTkNQcXFodldNQlh4dFhzZ0M5ZDRqRzZKMXB4UVBNbzhm?=
+ =?utf-8?B?U0llaGJ2NVhJRGNkQnpnbURyV1NjbXlPYUlDQ0E1Um1abEFlT3NIK3lYVTE3?=
+ =?utf-8?B?Qm5UeHRKa0VaQzlqUm96ZVRQaGl5emM5Ykt5ZU9mejNFTS9aM0loZ0JwajB0?=
+ =?utf-8?B?MkxseUhpYkhKR1E5VW5yYytsaWRDWXhnWXZqamhzMVlWQ2twVE91Y1ZrWjkv?=
+ =?utf-8?B?NkFiODYwN3VGWlZQR0kzUmNnZnlzZEtmeEVkQXpDemd0aGVtUStTTTBlQ0Er?=
+ =?utf-8?B?Y3FLZ1VjejA2MlM3MGtIdFFodVRXQWVoYkhEYUI4NGhpUXlJWU1IMTRwV3dU?=
+ =?utf-8?Q?Qt8AXKQDlrhLIfa76YmKgXYn5TRiFa6p?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA1PR12MB6435.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?R3A3T1ZEN04xc08rc09BaEhCbU9ISHkwWGQvNjlTbC9CNlFnZFlIR0pnczgr?=
+ =?utf-8?B?RlBuekhEdktsMGN1cFZFSTZPZXU2b2ZOTHFhRUdQMm1HeFFUd0NFYyt0SmMr?=
+ =?utf-8?B?UGU1a2RWSU8xOXpZQUNSRUhhZTRMT2R3VmhSNzNNdEhEek1VZ0Q5RVpBWGZI?=
+ =?utf-8?B?RW43Y0x0T09IN2krR0QzNjRuR01YWDBuWWFVZVpaMmN2RVpPbkNiNVVmakFG?=
+ =?utf-8?B?Q0pOYUdDekIyRUU3RUZ4NzNkdCs0R0RVb0tHWU12RlhLa0ZzZS9vWXB6QnF6?=
+ =?utf-8?B?cG8wRzlkU2d5TUVJQ0I1Y0E5K3BuL1VUVml1blphUFR6ZGt6SlFXUXJVMEI0?=
+ =?utf-8?B?K1htR0s0STdKRGo3Zzgya09lZ2wxeHE5UU4rc2VvU0VCSXE5bW11U0h4N1FP?=
+ =?utf-8?B?VnFVeWJ3U216b2tYRkx3M0NZZ0NHWWFUUkp5S0hFV1kvV3pVa3UvUW5HalBp?=
+ =?utf-8?B?Rmk3cVhSbDl2ZFNjTno1TElVOUIwOGhBeWoyOWpBSTFhS0NEU0dLTlhCRzlE?=
+ =?utf-8?B?VW1WaVJaSW9STU5CV0M2NUlLdHJlT2xnTWhCVnI0YXI3TFRBbXBkNHdOVCtY?=
+ =?utf-8?B?Z1pMUjU0eTVEQ0ZVNVpFTno3eS9VNWI1S1U0M09GMllvQnIzOEZjRjFHOWJk?=
+ =?utf-8?B?RGhGOURlR0hZVGNPSFV3a0NnRFg2b0dXZlhyQndGdWZaTlpOSC9lZm05L2xH?=
+ =?utf-8?B?RVYvcTVtWEVPRThzVDUxdTVKWmhBVWJQVEFqNUNXdklyQ29BcmdTNFZsZXpu?=
+ =?utf-8?B?enNJVklhMjNNdlF0UlExTFpYa0NPZ0pudDR0VjM3VGxKdWJHM093amlRZjkv?=
+ =?utf-8?B?WDZvRnpTY2dDRnVvczRHNXFEN295WVRLNzhuRXJJajB0R001Z2Vxa21UNG5a?=
+ =?utf-8?B?SHREVTBkQ0l1WGdydGhQRWI0SEpDSFRZTlU2TjR5aG96UVBSZ1RJbHlSV1N0?=
+ =?utf-8?B?eTBMbkdleDZsUTR2SWJReWxhTGtCeXVkSTdjeXl3Rm0yMFRKTm9BYzlTb1lO?=
+ =?utf-8?B?UjYrVWM5SHozZHlwL2FzUVFJYmJ2Mkk4MDk5UjBFdUxYcUJmMDBmQTBsbXJw?=
+ =?utf-8?B?UVRBMFFVektPQlY2RmhzR3ZEalRFUlA1algyTjJlcWRVbStYOUxuSWNxbEdY?=
+ =?utf-8?B?L0VUOU5qS3FRVHc3MHArVHo2cmpqbHlUbFprT215ekRjQ2JGSlo1WTFpM0Jl?=
+ =?utf-8?B?SmkraHlSK1pWRTE2SElhQVJ5a25oVnVLUFVNamo3T0MrZTg2Y0VtT1lUMW92?=
+ =?utf-8?B?TDFpVUtmdGJ3WElZcVJjWjQ4bThwVXhPWTFLRHo3S1J1L1VVV3RMRGdlS0F1?=
+ =?utf-8?B?NGVoR2xFTzQ4aDNIVVd4SUk5elVvR3dia085VHc0dlV5TDNYb1F2MWl1Q2VK?=
+ =?utf-8?B?Uktjcm5MKzhjQUVyRkc2UnVkZmtWeW10UHpSaFRWcFJaWW5yWjhhM2hYcUFl?=
+ =?utf-8?B?Tll1WnlkalIyOWs1MVZwYXpkUk9PeHB0NmJOcFYwOVlyL3NQTkpyd0F1bVBh?=
+ =?utf-8?B?RlJSd214b3NJS3dFUnpROHpuTFc1UDkyWUZEOWY2T0dXdG9wMDQvKzdKYzBw?=
+ =?utf-8?B?ZTlNaGxVM3BiR2hZNnpRUWQvZzVlZGRoZHZlN2ZpblVwVFVNNUJmdmZKTjJH?=
+ =?utf-8?B?N0hSNThpN25lUHI0T3IyOVlQeTIvRGVvRjM3VGdBRlAybSs4WngxQVRTRWl6?=
+ =?utf-8?B?dy9FSk9hY0lzVW1aOUpvUGlNSXJsQ0EwbFc0MEovenRRcUp2V0M3Z3dBT3Mv?=
+ =?utf-8?B?dG0ydUpaM1VQR3J5K3Z4UURDNzkvd0trSTF2ejJYWWd2NWQwU1Z0KytjZkNI?=
+ =?utf-8?B?cnU0ZjhOUmZRM250b2YvSms3V3NlZ3ZTWHBoVFRWTzFmMSsxVGlMemkyd09F?=
+ =?utf-8?B?VjhiNlZLVXdwdUNhTWw3czFLSllhUzYwQ3grTzhRTXVSZ3JsOTJQVTEwV3pl?=
+ =?utf-8?B?MDdUMDhTaDcxdGc3TFNXQ2JaOXRrZXgyLy83MnJVcDZmRVZJYWRFbjJ2Y0ZS?=
+ =?utf-8?B?SVJCb1RKVitzL0pZUWxMZndoT2plR3RZK1FWYTVmUGVndmVmUW0wbGFPQjR1?=
+ =?utf-8?B?dmxEWFhjbmRXaUFQdnB3MkVOcUZna3Jqa3FRNHljLzRBZHpPU2g5bS80UEl1?=
+ =?utf-8?B?MDFUMXBscWxrdithVWpTZjhXVmEwSW5BS2hIbDhsL3A3cHlHVDRmUDNqQzND?=
+ =?utf-8?B?c2N6MGl0K2g2dU9FSzJvQmk3VldPcUxkWFU4UHlWTVpxckVIb1F1RDRlODc0?=
+ =?utf-8?B?ODBVNHUwV1dlcTFCNk9LblFIODFOdWVZeVpXSWlQZHdKZzhJTjhzaG5IVkRJ?=
+ =?utf-8?B?TVNFV25FUnZ5T0FMU21DN1JMZTg3SkI3U3IzQmpnbkttcFZLT3p2UT09?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2026 10:33:16.3455 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d6df3641-5e7d-438f-e66f-08de4ea15577
+X-MS-Exchange-CrossTenant-Network-Message-Id: ced73529-6907-494b-c7fc-08de4eb5ef33
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB6435.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2026 13:00:44.6443 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB55.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8322
-Received-SPF: permerror client-ip=52.101.85.46;
- envelope-from=Shivansh.Dhiman@amd.com;
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6i4b8riLk+4QBeCtEZ3kv6j04o9c5a7lSJDsDKp7d1N3fZiBdzVdOfpkdix7WnDTBFDCyCI4VjfyudniIzQgyA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPF7B4E3DFF8
+Received-SPF: permerror client-ip=52.101.85.40;
+ envelope-from=Honglei1.Huang@amd.com;
  helo=BYAPR05CU005.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -148,7 +168,6 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 08 Jan 2026 09:46:23 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -163,157 +182,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Zhao,
 
-On 07-01-2026 12:55, Zhao Liu wrote:
-> Hi Shivansh,
+
+On 2026/1/7 17:42, Cornelia Huck wrote:
+> On Wed, Jan 07 2026, Honglei Huang <honghuan@amd.com> wrote:
 > 
-> Sorry for late reply.
-> 
-> On Fri, Nov 21, 2025 at 08:34:48AM +0000, Shivansh Dhiman wrote:
->> Date: Fri, 21 Nov 2025 08:34:48 +0000
->> From: Shivansh Dhiman <shivansh.dhiman@amd.com>
->> Subject: [PATCH 1/5] i386: Implement CPUID 0x80000026
->> X-Mailer: git-send-email 2.43.0
+>> Add support for the USE_USERPTR blob flag in virtio-gpu to enable
+>> user pointer mapping for blob resources. This allows guest applications
+>> to use user-allocated memory for GPU resources more efficiently.
 >>
->> Implement CPUID leaf 0x80000026 (AMD Extended CPU Topology). It presents the
->> complete topology information to guests via a single CPUID with multiple
->> subleafs, each describing a specific hierarchy level, viz. core, complex,
->> die, socket.
+>> Changes include:
+>> - Add VIRTIO_GPU_BLOB_FLAG_USE_USERPTR flag definition
+>> - Enhance blob resource creation to handle userptr flag properly
+>> - Remove arbitrary nr_entries limit (16384) in mapping creation
+>> - Add conditional handling for userptr vs regular blob mapping
+>> - Support guest_blob_mapped parameter for virgl renderer
+>> - Fix value check issue in virtio-gpu
 >>
->> Note that complex/CCX level relates to "die" in QEMU, and die/CCD level is
->> not supported in QEMU yet. Hence, use CCX at CCD level until diegroups are
->> implemented.
-> 
-> I'm trying to understand AMD's topology hierarchy by comparing it to the
-> kernel's arch/x86/kernel/cpu/topology_ext.c file:
-> 
-> static const unsigned int topo_domain_map_0b_1f[MAX_TYPE_1F] = {
-> 	[SMT_TYPE]	= TOPO_SMT_DOMAIN,
-> 	[CORE_TYPE]	= TOPO_CORE_DOMAIN,
-> 	[MODULE_TYPE]	= TOPO_MODULE_DOMAIN,
-> 	[TILE_TYPE]	= TOPO_TILE_DOMAIN,
-> 	[DIE_TYPE]	= TOPO_DIE_DOMAIN,
-> 	[DIEGRP_TYPE]	= TOPO_DIEGRP_DOMAIN,
-> };
-> 
-> static const unsigned int topo_domain_map_80000026[MAX_TYPE_80000026] = {
-> 	[SMT_TYPE]		= TOPO_SMT_DOMAIN,
-> 	[CORE_TYPE]		= TOPO_CORE_DOMAIN,
-> 	[AMD_CCD_TYPE]		= TOPO_TILE_DOMAIN,
-> 	[AMD_SOCKET_TYPE]	= TOPO_DIE_DOMAIN,
-> };
-
-These mappings reuse some original names (SMT_TYPE and CORE_TYPE) along with the
-new ones (AMD_CCD_TYPE and AMD_SOCKET_TYPE). I think to avoid defining more AMD
-specific types the original names are used. So, essentially you can read them
-like this:
-
-static const unsigned int topo_domain_map_80000026[MAX_TYPE_80000026] = {
-	[AMD_CORE_TYPE]		= TOPO_SMT_DOMAIN,
-	[AMD_CCX_TYPE]		= TOPO_CORE_DOMAIN,
-	[AMD_CCD_TYPE]		= TOPO_TILE_DOMAIN,
-	[AMD_SOCKET_TYPE]	= TOPO_DIE_DOMAIN,
-};
-
-> 
-> What particularly puzzles me is that "complex" isn't listed here, yet it
-> should be positioned between "core" and CCD. Does this mean complex
-> actually corresponds to kernel's module domain?
-
-There is a nuance with CPUID 80000026h related to the shifting of x2APIC ID.
-According to APM, EAX[4:0] tells us the number of bits to shift x2APIC ID right
-to get unique topology ID of the next instance of the current level type.
-
-So, all logical processors with the same next level ID share current level. This
-results in mapping the Nth level type to (N-1)th domain. This is unlike Intel's
-CPUID 0xb which maps Nth level type to Nth domain.
-
-Back to your question, the complex is same as tile since both represent a L3
-cache boundary.
-
-> 
-> Back to QEMU, now CCX is mapped as QEMU's die level, and AMD socket is mapped
-> to socket level. Should we revisit QEMU's topology level mapping for AMD, to
-> align with the above topology domain mapping?
-> 
-> If we want to go further: supporting CCD configuration would be quite
-> tricky. I feel that adding another new parameter between the smp.dies
-> and smp.sockets would create significant confusion.
-
-The current kernel doesn't have sensitivity to a level between L3 boundary and
-socket. Also, most production systems in current AMD CPU landscape have CCD=CCX.
-Only a handful of models feature CCD=2CCX, so this isn't an immediate pressing need.
-
-In QEMU's terminology, socket represents an actual socket and die represents the
-L3 cache boundary. There is no intermediate level between them. Looking ahead,
-when more granular topology information (like CCD) becomes necessary for VMs,
-introducing a "diegroup" level would be the logical approach. This level would
-fit naturally between die and socket, as its role cannot be fulfilled by
-existing topology levels.
-
-Also, I was looking at Intel's SDM Vol. 2A "Instruction Set Reference, A-Z"
-Table 3-8. "Information Returned by CPUID Instruction". The presence of a
-"diegrp" level between die and socket suggests Intel has already recognized the
-need for this intermediate topology level. If this maps to a similar concept as
-AMD's CCD, it would indeed strengthen the case for introducing a new level in QEMU.
-
-> 
->> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
+>> This enables more flexible memory management between guest and host
+>> for GPU virtualization scenarios.
+>>
+>> Signed-off-by: Honglei Huang <honghuan@amd.com>
 >> ---
->>  target/i386/cpu.c     | 76 +++++++++++++++++++++++++++++++++++++++++++
->>  target/i386/kvm/kvm.c | 17 ++++++++++
->>  2 files changed, 93 insertions(+)
->>
->> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
->> index 641777578637..b7827e448aa5 100644
->> --- a/target/i386/cpu.c
->> +++ b/target/i386/cpu.c
->> @@ -495,6 +495,78 @@ static void encode_topo_cpuid1f(CPUX86State *env, uint32_t count,
->>      assert(!(*eax & ~0x1f));
->>  }
->>  
->> +/*
->> + * CPUID_Fn80000026: Extended CPU Topology
->> + *
->> + * EAX Bits Description
->> + * 31:5 Reserved
->> + *  4:0 Number of bits to shift Extended APIC ID right to get a unique
->> + *      topology ID of the current hierarchy level.
->> + *
->> + * EBX Bits Description
->> + * 31:16 Reserved
->> + * 15:0  Number of logical processors at the current hierarchy level.
->> + *
->> + * ECX Bits Description
->> + * 31:16 Reserved
->> + * 15:8  Level Type. Values:
->> + *       Value   Description
->> + *       0h      Reserved
->> + *       1h      Core
->> + *       2h      Complex
->> + *       3h      Die
->> + *       4h      Socket
->> + *       FFh-05h Reserved
->> + * 7:0   Input ECX
->> + *
->> + * EDX Bits Description
->> + * 31:0 Extended APIC ID of the logical processor
->> + */
+>>   hw/display/virtio-gpu.c                     | 7 -------
+>>   include/standard-headers/linux/virtio_gpu.h | 1 +
+>>   2 files changed, 1 insertion(+), 7 deletions(-)
 > 
-> I feel this long comment is not necessary, since people could check APM for
-> details. Or this description could be included in commit message.
+> Please split out any updates to the imported Linux headers into a
+> separate patch to be replaced by a headers sync (I thought checkpatch
+> would warn about that?)
+> 
 
-Sure. Will do. Thanks.
+Understood, will split the Linux headrs changes into a separate commit 
+in next version.
+Really thanks for the reminding.
 
-> 
->> +static void encode_topo_cpuid80000026(CPUX86State *env, uint32_t count,
->> +                                X86CPUTopoInfo *topo_info,
->> +                                uint32_t *eax, uint32_t *ebx,
->> +                                uint32_t *ecx, uint32_t *edx)
-> 
-> Regards,
-> Zhao
-> 
+Regards,
+Honglei
 
 
