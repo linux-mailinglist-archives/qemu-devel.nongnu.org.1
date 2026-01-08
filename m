@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77AA9D011F9
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 06:35:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F227D011FF
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 06:35:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdieV-0001DR-DX; Thu, 08 Jan 2026 00:33:43 -0500
+	id 1vdieT-00012Y-O6; Thu, 08 Jan 2026 00:33:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vdicQ-00084l-Sp
+ id 1vdicS-00084n-4J
  for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:31:39 -0500
 Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vdicO-0005Zr-0B
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:31:33 -0500
+ id 1vdicQ-0005bh-Ju
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:31:35 -0500
 Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-c47ee987401so714935a12.1
- for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 21:31:31 -0800 (PST)
+ 41be03b00d2f7-c0ec27cad8cso1284374a12.1
+ for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 21:31:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767850291; x=1768455091; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767850292; x=1768455092; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=egVbNojwa9yrj9wN1HcbccivbDY9V6hFbtE9omsyoj8=;
- b=gpel02JbgAfioRtaOmDLdvkrPnggH3jFNP7KD7hC/tqQtBFUt6CYVG0pE2H4eUymEq
- +riipawhp5FD+TTVUNgbzv3g4pICQUhNkBeRAUG2HOgjW271Frd/wHcr3IocSlVMB0Ya
- AAdb2zKZ5xYL2ij3G5wXYtlZ/D8/bQwhYwIiURrQCaKbliL7rY2HsOqjn1t8l1nqK/Tg
- I9ZCaFqzqhTOnf/jLJaChW7S9fv2xcE8KMFj0VeGaB1SZIxPZSv1OfL/ahQ8ULPbMDP9
- CQDS7jlsb5FiRDgDBaTNaeSUDdhgeFiCYb833oHIty+J6wQgRzJ4cyca00dZdpJpV2k2
- N8jQ==
+ :reply-to; bh=ZjgbuWaanDrNExLqWK4KBit4/Io3yfr3ZpZa80ElVWM=;
+ b=bRjKgrZdRHG2sNCFtyZVU2ZRM/4nJx7mFVQzdDGSOnX0d2h5gx8u1Yfsnw6H7qokTd
+ kW+FrvvHBW7FmIqReXxQv2brG6VTQqfnzt8dlI+8xfjiQdXH72wmaRXU/ZtwOZVCp71B
+ mH1xhlatNayvxFB2R0Sh2E7vlXbV7mEnX4MivdxE0jhUMQvDDmUKZgURX+O3vl1gDCMJ
+ SzVzEQBv5NAvGNu4bwnf8g+CvIvfI2paVeyBU+47rQB3RJsCUqsIvLSkl82gZVMIjkgv
+ e9BU/CVNNSZ7umKdCh2DQxDj4Ckj962msn0ojcCPYgggY31MvDHCrUXogzb+yV+u9CAd
+ qltQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767850291; x=1768455091;
+ d=1e100.net; s=20230601; t=1767850292; x=1768455092;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=egVbNojwa9yrj9wN1HcbccivbDY9V6hFbtE9omsyoj8=;
- b=HFiPbzLd3K5LYzKzLuqkpK8as3CgZvTRg/7JEx2Be8nz2yPa4p4/brq0TnEos5gsvJ
- 1yCsw6GI47SIoirVcNw4QMli3pzMh4d4NAmE7DjKcbYU+vgHadM2SS00m8ARYf1Jommy
- jgAjk/KlVkCDIhNYDxMtZ+kXBa2Y9fmE09JlxvGrLujM6tQWWbwWKD8ZmpmpsLYcY6OV
- /6P6jyB3vh0INTnmQZdByPzEhi9Bya4MrZ4zMQLpiCmwN6uEJZ/3wItHEtY49SrKYX+u
- KIXO7nDBvihD+JRM5yHK8wsZCWV8f7hz3bQUYBbbmeQmgRU89ThqWPKgjX9AGy3H4vxJ
- WcDA==
-X-Gm-Message-State: AOJu0Yz/xSPFbhob+KIkCQVm8h0HrHGspmR3T0cXPBOS4KMQkA3VEMBE
- 6rPm1QJpAnqCK61qG3U0X6bmvJQVfUI1xN1coXHl+L21D8uK2qrlflYLim4J1IS0Btb/e28icoF
- PR34xhfY=
-X-Gm-Gg: AY/fxX51A9KMdulRoiEkaXnS1pynRTi20lNaj17rIK92aiFyCCf3hGRXNGTYthfI9/9
- TfizMNeaKweLoMubD3+PwXi3obgJ/u4Q0GjCAN+1eEJSERVCgoATucLHhWHxnzGvx+zAS+2qV58
- FJtrR8BW+VxGz6tvK8r9srP5uRNH97R/RNI2pfERsVfSxnPZx9sJmkkBnrOvX50biIrCiVkV/Aa
- mODOtCrbzIAXOvbUwAv/p/dRGVJ+Xox8qq0p97MNz5wPuSXpFWujJ9KR7o4gBywON1ptfwxlC4O
- MTTBqZ8D9Rd1bKUZosZCsQwwPuJeOD+OcQbGuaukR7cX+GaYt1IpdXWBTgDIveEcdyKTpMzKR2x
- UvAkciIGIb6aPwNoeSDZ3/Pf+rR2Sbn/95lMv51S8hLw0L0p5BFf4Qd2+jvnLM+TJrSq7zkYu9D
- pgks7cHKpL27RpAf5hiw==
-X-Google-Smtp-Source: AGHT+IGZnZJUUMyBL/j0Kg9POXXNUURNrALphRiO1WSyoCgblBX7/4kCv9kYCUNYO4OuBrzLBrd/LA==
-X-Received: by 2002:a05:6a20:94c7:b0:366:14b0:4b18 with SMTP id
- adf61e73a8af0-3898eb0ac5cmr4981015637.35.1767850290482; 
- Wed, 07 Jan 2026 21:31:30 -0800 (PST)
+ bh=ZjgbuWaanDrNExLqWK4KBit4/Io3yfr3ZpZa80ElVWM=;
+ b=V6vzgP148JzRAGNDtNzAihZO28ZwENs/IBxGu+lhajwDNT0FErovjviZzloG9NFBM9
+ VUV2R6jNhg6MrTiVR3edsKx7v6k5YFXWBCw0u+9uMDzVTCmuUE7pD5p/CxjURKCuhYv3
+ xfebYp7AZhNeSXIbyhVQTZ5CCn0e8qAHmQclrsuesYwYfE9I2BU8DdTDJgPD57SxVC5L
+ OmHWLAKXej3jrp/rJP35tg/Lw2hEXfF/qdQb4Js9RUNNddVsCd0U0mBiDrVPgpzvxW2u
+ 6bCsnUS5pxiEFGQ4WZPurWoJ5yBlAGRUgxEnOMl0WdL7hvWP8NGvkMxptQ8bet45KjIi
+ +Dxw==
+X-Gm-Message-State: AOJu0YyFvCwBB29JZJxoJa5r5az29SjFUeRWTWdTVjDrKvRo9rkU7jG7
+ Gh4w9FmoOg921ntqKCdPxsA+pgRT2MuojB5SUmN7JJzTGDO15Bn1H1HrfYkZ9LzqXqOyy4qDpaN
+ mnLMyU7I=
+X-Gm-Gg: AY/fxX42tKhEq9QhiyETTEIWTnMcqi8aZY7eA1QuttV8PU3fzUPM0BAv1tsQr7PyV5/
+ UWPpzJ8htzLKpMx6hb/uMGVBRf2Czd3IFBB040nq64am7/LSFK4/M91k2U59MtGLhz3NPLO0wnG
+ NIoc05sQuscTcLJhRwmFvgrnNH6Fs4ZZZ5ExtRecfu+cR6sXYrW2CD980S3KtB1faaPLeMf2qqP
+ x42L3alV6rMqfmdte63GKXyx5MK/J7HNNB0rrPef6PBKnpOErc01f173BZNSIakv4nE+E139IYb
+ 02A4OPHVHqMOuvy98mqCjrimhAO44JHaRWEC0QGqhbrVC8czCtB8678XCon3zcYpx4SezLkD1G+
+ Yhb/pwotCMWxm2JCuQ+P+UstEK/HL6gBx6OzTnMurRutkQtDkswdVKHYCreKzVOAgtnpy+WVuaN
+ NCE5m6L860WZhWEqtfMw==
+X-Google-Smtp-Source: AGHT+IERFBmVOCsOpzn1MP7JYHLhFvrzdV9ovhZFXQuDBll3kEW2kTewWp6Tju3V3wzOpiTg//ho1w==
+X-Received: by 2002:a05:6a20:12d5:b0:35d:d477:a7e7 with SMTP id
+ adf61e73a8af0-3898f906c7bmr4047572637.22.1767850292126; 
+ Wed, 07 Jan 2026 21:31:32 -0800 (PST)
 Received: from stoup.. ([180.233.125.201]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-c4cc05cd9d9sm7036552a12.16.2026.01.07.21.31.28
+ 41be03b00d2f7-c4cc05cd9d9sm7036552a12.16.2026.01.07.21.31.30
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Jan 2026 21:31:29 -0800 (PST)
+ Wed, 07 Jan 2026 21:31:31 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 34/50] accel/tcg/runtime: Remove 64-bit shift helpers
-Date: Thu,  8 Jan 2026 16:30:02 +1100
-Message-ID: <20260108053018.626690-35-richard.henderson@linaro.org>
+Subject: [PATCH 35/50] accel/tcg/runtime: Remove helper_nonatomic_cmpxchgo
+Date: Thu,  8 Jan 2026 16:30:03 +1100
+Message-ID: <20260108053018.626690-36-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260108053018.626690-1-richard.henderson@linaro.org>
 References: <20260108053018.626690-1-richard.henderson@linaro.org>
@@ -97,55 +97,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These were only required for some 32-bit hosts.
+This were only required for some 32-bit hosts.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/tcg-runtime.h |  4 ----
- accel/tcg/tcg-runtime.c | 15 ---------------
- 2 files changed, 19 deletions(-)
+ accel/tcg/tcg-runtime.h       |  3 ---
+ accel/tcg/atomic_common.c.inc | 20 --------------------
+ 2 files changed, 23 deletions(-)
 
 diff --git a/accel/tcg/tcg-runtime.h b/accel/tcg/tcg-runtime.h
-index 8436599b9f..698e9baa29 100644
+index 698e9baa29..dc89155c0f 100644
 --- a/accel/tcg/tcg-runtime.h
 +++ b/accel/tcg/tcg-runtime.h
-@@ -8,10 +8,6 @@ DEF_HELPER_FLAGS_2(rem_i64, TCG_CALL_NO_RWG_SE, s64, s64, s64)
- DEF_HELPER_FLAGS_2(divu_i64, TCG_CALL_NO_RWG_SE, i64, i64, i64)
- DEF_HELPER_FLAGS_2(remu_i64, TCG_CALL_NO_RWG_SE, i64, i64, i64)
+@@ -73,9 +73,6 @@ DEF_HELPER_FLAGS_4(atomic_fetch_oro_le, TCG_CALL_NO_WG,
+                    i128, env, i64, i128, i32)
+ #endif
  
--DEF_HELPER_FLAGS_2(shl_i64, TCG_CALL_NO_RWG_SE, i64, i64, i64)
--DEF_HELPER_FLAGS_2(shr_i64, TCG_CALL_NO_RWG_SE, i64, i64, i64)
--DEF_HELPER_FLAGS_2(sar_i64, TCG_CALL_NO_RWG_SE, s64, s64, s64)
+-DEF_HELPER_FLAGS_5(nonatomic_cmpxchgo, TCG_CALL_NO_WG,
+-                   i128, env, i64, i128, i128, i32)
 -
- DEF_HELPER_FLAGS_2(mulsh_i64, TCG_CALL_NO_RWG_SE, s64, s64, s64)
- DEF_HELPER_FLAGS_2(muluh_i64, TCG_CALL_NO_RWG_SE, i64, i64, i64)
+ #ifdef CONFIG_ATOMIC64
+ #define GEN_ATOMIC_HELPERS(NAME)                                  \
+     DEF_HELPER_FLAGS_4(glue(glue(atomic_, NAME), b),              \
+diff --git a/accel/tcg/atomic_common.c.inc b/accel/tcg/atomic_common.c.inc
+index bca93a0ac4..1ff80d19fe 100644
+--- a/accel/tcg/atomic_common.c.inc
++++ b/accel/tcg/atomic_common.c.inc
+@@ -59,26 +59,6 @@ CMPXCHG_HELPER(cmpxchgo_le, Int128)
  
-diff --git a/accel/tcg/tcg-runtime.c b/accel/tcg/tcg-runtime.c
-index fa7ed9739c..f483c9c2ba 100644
---- a/accel/tcg/tcg-runtime.c
-+++ b/accel/tcg/tcg-runtime.c
-@@ -55,21 +55,6 @@ uint32_t HELPER(remu_i32)(uint32_t arg1, uint32_t arg2)
+ #undef CMPXCHG_HELPER
  
- /* 64-bit helpers */
- 
--uint64_t HELPER(shl_i64)(uint64_t arg1, uint64_t arg2)
+-Int128 HELPER(nonatomic_cmpxchgo)(CPUArchState *env, uint64_t addr,
+-                                  Int128 cmpv, Int128 newv, uint32_t oi)
 -{
--    return arg1 << arg2;
+-#if TCG_TARGET_REG_BITS == 32
+-    uintptr_t ra = GETPC();
+-    Int128 oldv;
+-
+-    oldv = cpu_ld16_mmu(env, addr, oi, ra);
+-    if (int128_eq(oldv, cmpv)) {
+-        cpu_st16_mmu(env, addr, newv, oi, ra);
+-    } else {
+-        /* Even with comparison failure, still need a write cycle. */
+-        probe_write(env, addr, 16, get_mmuidx(oi), ra);
+-    }
+-    return oldv;
+-#else
+-    g_assert_not_reached();
+-#endif
 -}
 -
--uint64_t HELPER(shr_i64)(uint64_t arg1, uint64_t arg2)
--{
--    return arg1 >> arg2;
--}
--
--int64_t HELPER(sar_i64)(int64_t arg1, int64_t arg2)
--{
--    return arg1 >> arg2;
--}
--
- int64_t HELPER(div_i64)(int64_t arg1, int64_t arg2)
- {
-     return arg1 / arg2;
+ #define ATOMIC_HELPER(OP, TYPE) \
+     TYPE HELPER(glue(atomic_,OP))(CPUArchState *env, uint64_t addr,  \
+                                   TYPE val, uint32_t oi)                 \
 -- 
 2.43.0
 
