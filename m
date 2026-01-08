@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C27BD01256
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 06:39:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93445D0117A
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 06:31:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdibl-0005FJ-Pi; Thu, 08 Jan 2026 00:30:53 -0500
+	id 1vdibp-0005It-1y; Thu, 08 Jan 2026 00:30:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vdibe-00057d-8v
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:30:47 -0500
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ id 1vdibh-0005BW-WF
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:30:51 -0500
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vdiba-0005Jb-8r
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:30:45 -0500
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-bd1ce1b35e7so1778383a12.0
- for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 21:30:39 -0800 (PST)
+ id 1vdibc-0005K4-5V
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:30:46 -0500
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-bbf2c3eccc9so631821a12.0
+ for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 21:30:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767850238; x=1768455038; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767850240; x=1768455040; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Jx3+JmsW/FzhhflfU5FCyyF06GpTtbOzQWX6MVGifb4=;
- b=S2ABaItuoC25uDuoT14c7CHeRXWlxEBkgXM58OQ0PO9rMjGk9h7BCemXINFWoxNoKx
- rQroQPJtdk+ZkNqTfvPQL+sXTmwumvjArgMzpAT6Xdk8i5RkurhtMvSUKsNfwAJop9WQ
- /szZ9zSEv/5AovSdR7m25ihmU4QEkJ0aGPnNy786MmgWPK+ya7Q3VKc944j+YAMoB1YD
- DwEcgC2gSVXy5iCpMzE6YmONHV2DpNyOS+vlwKw9N1MAaQ6iNwncsChCcJ0WFG5XsEpu
- xpw6DX6j/M8lVCffbHLhX4/wIlIolPMcMQQQvzqBrJvN7UOv7u5aBF6YBR7tDtvAEZxR
- HWQg==
+ :reply-to; bh=jBZFhd3mroDQaEMxtTd2Hevbbgwe0OuSzrCp3aQ80K8=;
+ b=wVaLGGSKXQlJOR5n2sAODIDoBeC1Xik3gbvZojqkFaFuQbtqbXK/E6w2n9FHH4nJtm
+ HF7mFhcDx93UYHXlB0lyP8OBjSCCRSqiiQ3iLncU8y1cYbwVujFFWzDUs4hjMsLWZp/I
+ KReP26SAcD9O2vtKf2evZq71765ClXi7pHIiRSXAfL7Ec0oimQERb72pYRcg1/bumd2C
+ ebXuyLY2AlFTONWYrT5PWylIelxfX7c31eQCS+wGq6ufUIeF61kPt4Jm8u5LAwSW2HCS
+ RwJqJmXK8GdsmTXEeSIUzqrpZdOExuRhUmguLPP4L2Mj/30idENfQaz6J0UCjyGFzS5y
+ 2Gaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767850238; x=1768455038;
+ d=1e100.net; s=20230601; t=1767850240; x=1768455040;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=Jx3+JmsW/FzhhflfU5FCyyF06GpTtbOzQWX6MVGifb4=;
- b=w2mdSo+doecTYdnx0MLdaikMskT5zP/kC4LGll4eLUsFpQ3OG8XyYI/vRYWdVOJdNJ
- GZr13V0cecoig8m6LrF3exjSOd7CHnho9D4dbFDtr2LtpX2VsDjCHgHoAb7WeNtoiiNm
- X/PCfibwUo/3zZBrzSTlat2GPfDl3msjIvit5ksR124qP6lPZWsoWmUmiskEHKvCcZ/V
- DVnDGYuhTpB927bFu3mk3RfHMZ4FrZMjRl4Qt4edZaQRLPQMMJ0LLyOxxyxnoHD/90eo
- LyMrbr5rgpXk13mDOO/z3ugcm8KODnrTROxldyyfpwQOD2jEXN2R7Sb/Ko6QDHWZgxOC
- pwrg==
-X-Gm-Message-State: AOJu0YykX/ve6Fs1Q4fhUdJIugWxed4n6ADn830r0CV9q/J72c0lWX42
- IJm5nmCoaSLjIvA5hNVRy7XS/g5RoB12mIePw56qqIrQhkZFdsqhrjoDz6QfMXcqNaq5iZz/MDQ
- J4jAEDg0=
-X-Gm-Gg: AY/fxX7+DkYN5Wg+EZWsAZUhRGJtP8CM3i0JKjpjWhEm8FQUzsBdVchPExtMWUNXfXf
- tjJL7wM1DpVw7vFnNRJrKg50OWqY5Wo1+jpwdyDZajJd2qSN2p8RzzjL35OwsJOyiz8jpcC4DTS
- QXUYHNozzGh+77y/Bt8tPQzMwmNJg7U9q5Y8EOj8KObfsOMIsgdShwwYgVeKKGrpA8JoGZcd0vN
- uDISYILo4GhoTfOVv5RHUbRaBBSZI2t5dRG2xpu6Co2XTJJBlMGpRpR85cI3ltFaW/7HjE02nAP
- KL+n7r0pqsnlFXa7G+NugUwg1MCYL6cogUM93i0p4vp1rydGYx62j3AAqK+RVRZ5RC+U84CwfVR
- c1XpnArv0X5Lc51qwm5VfEWRPnluwWMYgscTPCmGbJpFnX0J9i5P1PXvnmuoCoZ5uuUVcE0s45H
- 3cUz/vcZsO7MOJ35LeTw==
-X-Google-Smtp-Source: AGHT+IGssL652wY39js2GzoyZoJS6e2axyPZvY/IeSlC5K6wnhFOPosNC3akmaX8aACcwyC6ldgwPA==
-X-Received: by 2002:a05:6a20:72a0:b0:364:13aa:a526 with SMTP id
- adf61e73a8af0-3898f9bde7emr4605035637.60.1767850238268; 
- Wed, 07 Jan 2026 21:30:38 -0800 (PST)
+ bh=jBZFhd3mroDQaEMxtTd2Hevbbgwe0OuSzrCp3aQ80K8=;
+ b=N8REuydYoRLBTVfLW46wgFV2RhMfKrgt5yrdByVoqVOsyYfnOb21IyBeey7pycEonE
+ 4VQp+NNZ+9FkxCvZP8I+8ItgdigXsDSmhfsyLOCSYS7qJ1fMQYceidNsUaFn8H8+DPfe
+ R9NdGjipjfWPmHhqQSEQk8Izt/0GCQqtNoIoCCsWNCiNOW07F3I5ipm6OhZAzdjj2+HT
+ NNY8tGJA441oJisvNo+PpTVv0vu8E9AjKL98ASNBMJqxuVs5p/vSaQKUAuV9JnXAmGao
+ KOE4o1iGoZepuMWvmDgncqzFsgoB1FOZdGC0pGsbo1qHN+SE2PrNYBRsIyO+OwqrJYQm
+ KLjA==
+X-Gm-Message-State: AOJu0Yw3UW20SU+U7/uY6/u3bCKOw0NLIsPd2D/l0eI+uBQDm+uzEmAy
+ qJZaqOhOAOpJmEkv6yu8FQsyWDT5hMnZIzAuxbrCcLRCPAQXFa45IOKSyShun7YaCqsFMAVWtAj
+ 0UnV4kQw=
+X-Gm-Gg: AY/fxX4wDcp0GhlgrLmRFd6lo0r/ZH8PXhh9JpWVFk5/hGdD9cqmdb7UT9l5IlcYi9i
+ v2xG2sRKORE6j9asF2XaZtcqQlKaeBNff/YWbpsh5Xb0DScB27msXAocXeWBXAdHwwVg9/Cmqt8
+ iNoo72+zHjnFwBcy29ezhMA868aT4dLGCGOisd4czH3A6c0Q0NQSmxfCViJICYUUBlImdXEvFxA
+ Qfi2SpaFZQpz7CsuRab58s55ZISpVIFO0Cd1Vg+a1o1a/Uuh+BV+kSu73Pg2BdDEpuGPdJ41Ozo
+ 0tnmcfOn/AATn0tqrsYmKt6UrzLmW9/wIkTWjEmPLVtwuwrixCcAO4g9CCVAan9qHGdvqz4WzvU
+ PNJMIj1p0U6Zk87wbkmwBw5YYIHyfb750LB0A40DP1+uCbCvFV3ZTNmDHWNBr5ZX8kGyup/MDvH
+ bzN4WguIVvLEhJryAfyA==
+X-Google-Smtp-Source: AGHT+IEeezcXoEWbPvSkpSCDmB56mdGryQAIhjARM/AMF387OFnv6UoGen9VXKf4w5THjzlCw49K0A==
+X-Received: by 2002:a05:6a20:c702:b0:366:14b0:4afb with SMTP id
+ adf61e73a8af0-38982b715acmr7878954637.34.1767850240117; 
+ Wed, 07 Jan 2026 21:30:40 -0800 (PST)
 Received: from stoup.. ([180.233.125.201]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-c4cc05cd9d9sm7036552a12.16.2026.01.07.21.30.36
+ 41be03b00d2f7-c4cc05cd9d9sm7036552a12.16.2026.01.07.21.30.38
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Jan 2026 21:30:37 -0800 (PST)
+ Wed, 07 Jan 2026 21:30:39 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 07/50] host/include/x86_64/bufferiszero: Remove no SSE2
- fallback
-Date: Thu,  8 Jan 2026 16:29:35 +1100
-Message-ID: <20260108053018.626690-8-richard.henderson@linaro.org>
+Subject: [PATCH 08/50] meson: Remove cpu == x86 tests
+Date: Thu,  8 Jan 2026 16:29:36 +1100
+Message-ID: <20260108053018.626690-9-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260108053018.626690-1-richard.henderson@linaro.org>
 References: <20260108053018.626690-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x529.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,34 +97,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since x86_64 always has SSE2, we can remove the fallback
-that was present for i686.
+The 32-bit x86 host is no longer supported.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- host/include/x86_64/host/bufferiszero.c.inc | 5 -----
- 1 file changed, 5 deletions(-)
+ configure   | 16 +---------------
+ meson.build | 49 ++++++++++---------------------------------------
+ 2 files changed, 11 insertions(+), 54 deletions(-)
 
-diff --git a/host/include/x86_64/host/bufferiszero.c.inc b/host/include/x86_64/host/bufferiszero.c.inc
-index 74ae98580f..7e9d896a8d 100644
---- a/host/include/x86_64/host/bufferiszero.c.inc
-+++ b/host/include/x86_64/host/bufferiszero.c.inc
-@@ -3,7 +3,6 @@
-  * buffer_is_zero acceleration, x86 version.
-  */
+diff --git a/configure b/configure
+index 00e455be57..846fab904e 100755
+--- a/configure
++++ b/configure
+@@ -440,13 +440,6 @@ case "$cpu" in
+     linux_arch=arm64
+     ;;
  
--#if defined(CONFIG_AVX2_OPT) || defined(__SSE2__)
- #include <immintrin.h>
- 
- /* Helper for preventing the compiler from reassociating
-@@ -119,7 +118,3 @@ static unsigned best_accel(void)
- #endif
-     return info & CPUINFO_SSE2 ? 1 : 0;
- }
+-  i386|i486|i586|i686)
+-    cpu="i386"
+-    host_arch=i386
+-    linux_arch=x86
+-    CPU_CFLAGS="-m32"
+-    ;;
 -
--#else
--# include "host/include/generic/host/bufferiszero.c.inc"
--#endif
+   loongarch*)
+     cpu=loongarch64
+     host_arch=loongarch64
+@@ -1933,14 +1926,7 @@ if test "$skip_meson" = no; then
+   if test "$cross_compile" = "yes"; then
+     echo "[host_machine]" >> $cross
+     echo "system = '$host_os'" >> $cross
+-    case "$cpu" in
+-        i386)
+-            echo "cpu_family = 'x86'" >> $cross
+-            ;;
+-        *)
+-            echo "cpu_family = '$cpu'" >> $cross
+-            ;;
+-    esac
++    echo "cpu_family = '$cpu'" >> $cross
+     echo "cpu = '$cpu'" >> $cross
+     if test "$bigendian" = "yes" ; then
+         echo "endian = 'big'" >> $cross
+diff --git a/meson.build b/meson.build
+index e53bc1e643..e5bdcf651d 100644
+--- a/meson.build
++++ b/meson.build
+@@ -50,7 +50,7 @@ qapi_trace_events = []
+ 
+ bsd_oses = ['gnu/kfreebsd', 'freebsd', 'netbsd', 'openbsd', 'dragonfly', 'darwin']
+ supported_oses = ['windows', 'freebsd', 'netbsd', 'openbsd', 'darwin', 'sunos', 'linux', 'emscripten']
+-supported_cpus = ['ppc', 'ppc64', 's390x', 'riscv32', 'riscv64', 'x86', 'x86_64',
++supported_cpus = ['ppc', 'ppc64', 's390x', 'riscv32', 'riscv64', 'x86_64',
+   'aarch64', 'loongarch64', 'mips64', 'sparc64', 'wasm32']
+ 
+ cpu = host_machine.cpu_family()
+@@ -265,8 +265,6 @@ enable_modules = get_option('modules') \
+ 
+ if cpu not in supported_cpus
+   host_arch = 'unknown'
+-elif cpu == 'x86'
+-  host_arch = 'i386'
+ elif cpu == 'mips64'
+   host_arch = 'mips'
+ elif cpu in ['riscv32', 'riscv64']
+@@ -275,9 +273,7 @@ else
+   host_arch = cpu
+ endif
+ 
+-if cpu == 'x86'
+-  kvm_targets = ['i386-softmmu']
+-elif cpu == 'x86_64'
++if cpu == 'x86_64'
+   kvm_targets = ['i386-softmmu', 'x86_64-softmmu']
+ elif cpu == 'aarch64'
+   kvm_targets = ['aarch64-softmmu']
+@@ -300,9 +296,7 @@ else
+ endif
+ accelerator_targets = { 'CONFIG_KVM': kvm_targets }
+ 
+-if cpu == 'x86'
+-  xen_targets = ['i386-softmmu']
+-elif cpu == 'x86_64'
++if cpu == 'x86_64'
+   xen_targets = ['i386-softmmu', 'x86_64-softmmu']
+ elif cpu == 'aarch64'
+   # i386 emulator provides xenpv machine type for multiple architectures
+@@ -391,40 +385,17 @@ endif
+ 
+ qemu_isa_flags = []
+ 
+-# __sync_fetch_and_and requires at least -march=i486. Many toolchains
+-# use i686 as default anyway, but for those that don't, an explicit
+-# specification is necessary
+-if host_arch == 'i386' and not cc.links('''
+-  static int sfaa(int *ptr)
+-  {
+-    return __sync_fetch_and_and(ptr, 0);
+-  }
+-
+-  int main(void)
+-  {
+-    int val = 42;
+-    val = __sync_val_compare_and_swap(&val, 0, 1);
+-    sfaa(&val);
+-    return val;
+-  }''')
+-  qemu_isa_flags += ['-march=i486']
+-endif
+-
+ # Pick x86-64 baseline version
+-if host_arch in ['i386', 'x86_64']
+-  if get_option('x86_version') == '0' and host_arch == 'x86_64'
++if host_arch == 'x86_64'
++  if get_option('x86_version') == '0'
+     error('x86_64-v1 required for x86-64 hosts')
+   endif
+ 
+   # add flags for individual instruction set extensions
+   if get_option('x86_version') >= '1'
+-    if host_arch == 'i386'
+-      qemu_common_flags = ['-mfpmath=sse'] + qemu_common_flags
+-    else
+-      # present on basically all processors but technically not part of
+-      # x86-64-v1, so only include -mneeded for x86-64 version 2 and above
+-      qemu_isa_flags += ['-mcx16']
+-    endif
++    # present on basically all processors but technically not part of
++    # x86-64-v1, so only include -mneeded for x86-64 version 2 and above
++    qemu_isa_flags += ['-mcx16']
+   endif
+   if get_option('x86_version') >= '2'
+     qemu_isa_flags += ['-mpopcnt']
+@@ -1031,7 +1002,7 @@ have_xen_pci_passthrough = get_option('xen_pci_passthrough') \
+            error_message: 'Xen PCI passthrough requested but Xen not enabled') \
+   .require(host_os == 'linux',
+            error_message: 'Xen PCI passthrough not available on this platform') \
+-  .require(cpu == 'x86'  or cpu == 'x86_64',
++  .require(cpu == 'x86_64',
+            error_message: 'Xen PCI passthrough not available on this platform') \
+   .allowed()
+ 
+@@ -4553,7 +4524,7 @@ if have_tools
+                               libcap_ng, mpathpersist],
+                install: true)
+ 
+-    if cpu in ['x86', 'x86_64']
++    if cpu == 'x86_64'
+       executable('qemu-vmsr-helper', files('tools/i386/qemu-vmsr-helper.c'),
+                dependencies: [authz, crypto, io, qom, qemuutil,
+                               libcap_ng, mpathpersist],
 -- 
 2.43.0
 
