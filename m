@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7EB9D011CF
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 06:34:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA7DCD0118F
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 06:31:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdibt-0005LU-9N; Thu, 08 Jan 2026 00:31:01 -0500
+	id 1vdibv-0005WC-8d; Thu, 08 Jan 2026 00:31:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vdibq-0005KZ-7l
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:30:58 -0500
+ id 1vdibr-0005LM-L1
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:30:59 -0500
 Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vdibo-0005Ny-9B
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:30:57 -0500
+ id 1vdibq-0005OU-0l
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:30:59 -0500
 Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-bc29d64b39dso1165366a12.3
- for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 21:30:55 -0800 (PST)
+ 41be03b00d2f7-c1e4a9033abso1602523a12.3
+ for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 21:30:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767850255; x=1768455055; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767850257; x=1768455057; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=dhACpDk9o6KEnsF8TAiInCR2PjerLRJOGnsSv7vL7Qg=;
- b=J/nl6qP7Cihg+tPR9e7gBonq8fMQuoevOzKsZXkgKpZxZikYvmpVJ04ljzGjjTJppi
- +PW6p7LpBLMr87xvnrBafGrwWisHAaIdREYJPjqWaXF1kyq5xWrvYPYz+0qqdETgJ/Xp
- yr7mejaVCNybp7XGe5q+OTZ68+nmkcljiy4KBnH1gNcf6p1qLcHUQ8uwyRvAU2h5bhl+
- mb5AgVCAvyFIrUsolK5fcZLMbzKIKCGQIBrp/7A9/8BiIR7Eba8olLeuopTZhzcSquei
- h8O0dt6zbDAi7dc0UceiC6k9l/+yGxWqnaFpAbjse+0HEXDs6MNl6pp6sHbJbQu3K9Xo
- XyPA==
+ :reply-to; bh=TukGEmMKpnvEasDlzBdFYNNO3/Mmmb//jnacHIC6uLY=;
+ b=c2jcuIXxELAae7BmWUCViN8+1PUpg5PrAoc72kaWbUS83PQNjb44+KS5BPFgn34J+S
+ Hfsir/k2AA9xxtfiVARd+5lPzYXHxh6VJ5iGTVrQoSpM+0qftA9gLfWyVMgjPzREXRc5
+ KCtw7/Zez8hgTKtNMaaASwA01+jLFuxJqmDwwM27pI0naMB1UI1X7TBx7+LjNk8SeIZt
+ K7txSp93jRZtre6R3GCbUdoFh+5aSsgRa1tPeEf/ruT6jjPx7OY5xPuis/wIy99Ak2m2
+ 6HIjcMDdHqEj5Bdwms+cfzvVkw3pzz0gQAoDnLV1adyPukfvMvLcjMaZRc7/x0trL7nW
+ efUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767850255; x=1768455055;
+ d=1e100.net; s=20230601; t=1767850257; x=1768455057;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=dhACpDk9o6KEnsF8TAiInCR2PjerLRJOGnsSv7vL7Qg=;
- b=xTgkDWZAxlvGcFPMqiTSsTMeuU0HdhpUS85KzTnLMMSIodSxOIeC647wOUlM6G/X/Y
- j4xzh3+CdnrD/zlxR2Peua6/8eS8+QChrgF0liVQDg4lFbMyWFv9Ind7Az+ViZspucuf
- y2yTXnBcHhNVSe5WC+ZgH+REBCqngEj4Tp19NtGVBYCcvOMaAzLBatL6z8869tfxJiGo
- dTQvmNQpb1ZOXsGtpc7HhUir71mdWVJDp4UwRF8qA1aRPFRc/NCzJheyzIWUGGb9X3gF
- 8VmFEJS2rXPjsSFO6Qzq0daSqXkJFTQ+117YoA/eMeRrpjZaE48W+ryFESZW2AJvVjDZ
- Cx0g==
-X-Gm-Message-State: AOJu0YzhG9Se1XnlfQDOaJnCzaUGr5U18dLpG/8zXChqOHp+hJuTdSqg
- OE+4cI3I0jdQpUU0ihjzDrj4usigGaDfD4hR5xi5D9S8yUb/OY6FcBAJKKjWh03AdDAlPMw8CoE
- JaFTiCGo=
-X-Gm-Gg: AY/fxX6CfnArq06qNos/BEiLxh7WQ3GLETDG+vKpjAXhQ2PsVSKshKSo/FZUqILfg5b
- vJrXET/86/x5OBaP3XYAAXvcQmtjjpOFkjsEJHPhLbf4npMf2kAxmfwvHcmY1m9OczcJ4dcX6mX
- 3fo0abgvRQdpDpJx1vcSAZ4x6sRkdXBFm+DcDHCN2N+FZQXBCjNKopSXwiLjq1x5NjNy0c1Grsm
- G6Mycy66NUNOKEO/+L6pQbjQXazGAwHeCRcDVQmfvqVmbn8x0RmORxLwEyjWE9zeHv48jP/sCXs
- o8LJSFUBnK2SG+fW5bZfqUfVjoEr5CEBGr+IJmqRK22VKFNRcz2IIzSLDPydbRiHiW2IYAHv11r
- 6FiMBGZTdtt7OEsNH3FhM3xFHSPmLpaqZxdKTmnptDcNjn0fCcg82r34dY+YTEI1mWQDsdfMJEY
- oGoqNr+IUChIRDJaqltA==
-X-Google-Smtp-Source: AGHT+IHgD/gH7k0JBp8GxXsIwkFe0XY0fxBFODBu/2gcmiGifQ0a/GsUXkpXRfWdjl78oLYObQrwHQ==
-X-Received: by 2002:a05:6a20:7d9a:b0:34f:68e9:da94 with SMTP id
- adf61e73a8af0-3898f897402mr4549909637.30.1767850254716; 
- Wed, 07 Jan 2026 21:30:54 -0800 (PST)
+ bh=TukGEmMKpnvEasDlzBdFYNNO3/Mmmb//jnacHIC6uLY=;
+ b=MbH6Xp1ifvCafkSIEw3z5MDjHASh+f2iMVudGwigR4BbN/ik335BxTRMSYmWEqOth3
+ jiXYklXlePDLLae8UtjQM/1KFdXYzAL+BKONGppZD3/67QmsL4P1JFy+8OvXOEC1Q+v3
+ 7UmbX9H+Pycg6KT2adNMT2GF0WeRFsK7nNjlx24daZTOp38TztWFdIDQ8iEWpCpWazNo
+ TSIh8Saz9sgtn52gyscKqx9Yka+kyNQSpg/oRCmNbeBvVrDpBe03Z/mDB6zGrD69szQk
+ R1hkQ9DOfOMOZ4SvDOFJhmET7v5RAhZAkBHpo4B2+o81K5VP25dsA0lIsiifVuW9yhqm
+ 5pzQ==
+X-Gm-Message-State: AOJu0YxBswCwAQ39gqzRMY6QzqcLsgrMkwqxhsczagAZsMRC7azGIsbo
+ gC9t3VuG3ojo55Ddj5rvbMAkj0Dhd3JBPyQmwpatWUz0fuCXMiDydylIzQbeJgbDxc1j4X85y9Q
+ eifCZ5ng=
+X-Gm-Gg: AY/fxX40NI3VQJSr2UI/y5TijD/cpHg4btfpgeLTeOZnOdToQBQHHPpCenMto2yWmNw
+ ybWFGn50oUQEvGjFBdMo3T0wp9uUmvSLcaG2R9raVEFEC+Dw9SKP/83RgFoS+IcS7eNE4aR5Y/O
+ d/2vXXUb01GdMgXxrQtukDbvCeprF/Rwmr2WVW/AHGjIEsoyZqt4tJ0FKVi1RdhgKSiP3ESReil
+ 9CsGsFyeIWoCpA6Wm4hHIv5+nTeejy6VsuG/4ExFofo50i8tchLnD0KUpUg/3ETG6fLCRehSf5N
+ j8GS3bSjHoz6YpkmrwLnw4NzpXdSf5IoyW6W/LNcOMGXUV5L0ua264ZBXxyTtzvLCpA2Ud93+P3
+ j5rQhQbikFVciG+5GuNgavOIkoDfM2t2ThkDR6+eAo22sWLZ13c85uBo3EBU0L82mZqbYB1CcxR
+ uo1V0FZdi7IEfra2OEwA==
+X-Google-Smtp-Source: AGHT+IHFLY6NQ+02OWYAhpQPBlW3Gf91wTKmLotJarAPnU2zUXJLQ5fVYckxt2m9vxlSWOZwk7EzIA==
+X-Received: by 2002:a05:6300:218a:b0:352:4411:6785 with SMTP id
+ adf61e73a8af0-3898f9977dbmr4647808637.44.1767850256605; 
+ Wed, 07 Jan 2026 21:30:56 -0800 (PST)
 Received: from stoup.. ([180.233.125.201]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-c4cc05cd9d9sm7036552a12.16.2026.01.07.21.30.53
+ 41be03b00d2f7-c4cc05cd9d9sm7036552a12.16.2026.01.07.21.30.55
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Jan 2026 21:30:54 -0800 (PST)
+ Wed, 07 Jan 2026 21:30:56 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 16/50] tcg: Make TCG_TARGET_REG_BITS common
-Date: Thu,  8 Jan 2026 16:29:44 +1100
-Message-ID: <20260108053018.626690-17-richard.henderson@linaro.org>
+Subject: [PATCH 17/50] tcg: Replace TCG_TARGET_REG_BITS / 8
+Date: Thu,  8 Jan 2026 16:29:45 +1100
+Message-ID: <20260108053018.626690-18-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260108053018.626690-1-richard.henderson@linaro.org>
 References: <20260108053018.626690-1-richard.henderson@linaro.org>
@@ -97,264 +97,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since we only support 64-bit hosts, there's no real need
-to parameterize TCG_TARGET_REG_BITS.  It seems worth holding
-on to the identifier though, for documentation purposes.
-
-Move one tcg/*/tcg-target-reg-bits.h to tcg/target-reg-bits.h
-and remove the others.
+Use sizeof(tcg_target_long) instead of division.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/tcg/helper-info.h                     |  2 +-
- .../tcg/target-reg-bits.h                     |  8 +++----
- include/tcg/tcg.h                             |  2 +-
- tcg/aarch64/tcg-target-reg-bits.h             | 12 -----------
- tcg/loongarch64/tcg-target-reg-bits.h         | 21 -------------------
- tcg/mips64/tcg-target-reg-bits.h              | 16 --------------
- tcg/riscv64/tcg-target-reg-bits.h             | 19 -----------------
- tcg/s390x/tcg-target-reg-bits.h               | 17 ---------------
- tcg/sparc64/tcg-target-reg-bits.h             | 12 -----------
- tcg/tci/tcg-target-reg-bits.h                 | 18 ----------------
- tcg/x86_64/tcg-target-reg-bits.h              | 16 --------------
- 11 files changed, 6 insertions(+), 137 deletions(-)
- rename tcg/ppc64/tcg-target-reg-bits.h => include/tcg/target-reg-bits.h (71%)
- delete mode 100644 tcg/aarch64/tcg-target-reg-bits.h
- delete mode 100644 tcg/loongarch64/tcg-target-reg-bits.h
- delete mode 100644 tcg/mips64/tcg-target-reg-bits.h
- delete mode 100644 tcg/riscv64/tcg-target-reg-bits.h
- delete mode 100644 tcg/s390x/tcg-target-reg-bits.h
- delete mode 100644 tcg/sparc64/tcg-target-reg-bits.h
- delete mode 100644 tcg/tci/tcg-target-reg-bits.h
- delete mode 100644 tcg/x86_64/tcg-target-reg-bits.h
+ tcg/tcg-op-gvec.c                | 2 +-
+ tcg/loongarch64/tcg-target.c.inc | 4 ++--
+ tcg/ppc64/tcg-target.c.inc       | 2 +-
+ tcg/riscv64/tcg-target.c.inc     | 4 ++--
+ 4 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/tcg/helper-info.h b/include/tcg/helper-info.h
-index 49a27e4eae..d5bda83a2e 100644
---- a/include/tcg/helper-info.h
-+++ b/include/tcg/helper-info.h
-@@ -24,7 +24,7 @@
- #include <ffi.h>
- #pragma GCC diagnostic pop
- #endif
--#include "tcg-target-reg-bits.h"
-+#include "tcg/target-reg-bits.h"
+diff --git a/tcg/tcg-op-gvec.c b/tcg/tcg-op-gvec.c
+index 2d184547ba..9c33430638 100644
+--- a/tcg/tcg-op-gvec.c
++++ b/tcg/tcg-op-gvec.c
+@@ -607,7 +607,7 @@ static void do_dup(unsigned vece, TCGv_ptr dbase, uint32_t dofs,
+     }
  
- #define MAX_CALL_IARGS  7
+     /* Otherwise, inline with an integer type, unless "large".  */
+-    if (check_size_impl(oprsz, TCG_TARGET_REG_BITS / 8)) {
++    if (check_size_impl(oprsz, sizeof(tcg_target_long))) {
+         t_64 = NULL;
+         t_32 = NULL;
  
-diff --git a/tcg/ppc64/tcg-target-reg-bits.h b/include/tcg/target-reg-bits.h
-similarity index 71%
-rename from tcg/ppc64/tcg-target-reg-bits.h
-rename to include/tcg/target-reg-bits.h
-index 3a15d7bee4..8f4ad3ed99 100644
---- a/tcg/ppc64/tcg-target-reg-bits.h
-+++ b/include/tcg/target-reg-bits.h
-@@ -7,10 +7,10 @@
- #ifndef TCG_TARGET_REG_BITS_H
- #define TCG_TARGET_REG_BITS_H
+diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
+index 10c69211ac..c3350c90fc 100644
+--- a/tcg/loongarch64/tcg-target.c.inc
++++ b/tcg/loongarch64/tcg-target.c.inc
+@@ -2604,7 +2604,7 @@ static const int tcg_target_callee_save_regs[] = {
+ };
  
--#ifndef _ARCH_PPC64
--# error Expecting 64-bit host architecture
--#endif
--
-+/*
-+ * We only support 64-bit hosts now.
-+ * Retain the identifier for documentation.
-+ */
- #define TCG_TARGET_REG_BITS  64
+ /* Stack frame parameters.  */
+-#define REG_SIZE   (TCG_TARGET_REG_BITS / 8)
++#define REG_SIZE   ((int)sizeof(tcg_target_long))
+ #define SAVE_SIZE  ((int)ARRAY_SIZE(tcg_target_callee_save_regs) * REG_SIZE)
+ #define TEMP_SIZE  (CPU_TEMP_BUF_NLONGS * (int)sizeof(long))
+ #define FRAME_SIZE ((TCG_STATIC_CALL_ARGS_SIZE + TEMP_SIZE + SAVE_SIZE \
+@@ -2731,7 +2731,7 @@ static const DebugFrame debug_frame = {
+     .h.cie.id = -1,
+     .h.cie.version = 1,
+     .h.cie.code_align = 1,
+-    .h.cie.data_align = -(TCG_TARGET_REG_BITS / 8) & 0x7f, /* sleb128 */
++    .h.cie.data_align = -sizeof(tcg_target_long) & 0x7f, /* sleb128 */
+     .h.cie.return_column = TCG_REG_RA,
  
- #endif
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index a6d9aa50d4..067150c542 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -31,7 +31,7 @@
- #include "qemu/plugin.h"
- #include "qemu/queue.h"
- #include "tcg/tcg-mo.h"
--#include "tcg-target-reg-bits.h"
-+#include "tcg/target-reg-bits.h"
- #include "tcg-target.h"
- #include "tcg/tcg-cond.h"
- #include "tcg/insn-start-words.h"
-diff --git a/tcg/aarch64/tcg-target-reg-bits.h b/tcg/aarch64/tcg-target-reg-bits.h
-deleted file mode 100644
-index 3b57a1aafb..0000000000
---- a/tcg/aarch64/tcg-target-reg-bits.h
-+++ /dev/null
-@@ -1,12 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-or-later */
--/*
-- * Define target-specific register size
-- * Copyright (c) 2023 Linaro
-- */
--
--#ifndef TCG_TARGET_REG_BITS_H
--#define TCG_TARGET_REG_BITS_H
--
--#define TCG_TARGET_REG_BITS  64
--
--#endif
-diff --git a/tcg/loongarch64/tcg-target-reg-bits.h b/tcg/loongarch64/tcg-target-reg-bits.h
-deleted file mode 100644
-index 51373ad70a..0000000000
---- a/tcg/loongarch64/tcg-target-reg-bits.h
-+++ /dev/null
-@@ -1,21 +0,0 @@
--/* SPDX-License-Identifier: MIT */
--/*
-- * Define target-specific register size
-- * Copyright (c) 2021 WANG Xuerui <git@xen0n.name>
-- */
--
--#ifndef TCG_TARGET_REG_BITS_H
--#define TCG_TARGET_REG_BITS_H
--
--/*
-- * Loongson removed the (incomplete) 32-bit support from kernel and toolchain
-- * for the initial upstreaming of this architecture, so don't bother and just
-- * support the LP64* ABI for now.
-- */
--#if defined(__loongarch64)
--# define TCG_TARGET_REG_BITS 64
--#else
--# error unsupported LoongArch register size
--#endif
--
--#endif
-diff --git a/tcg/mips64/tcg-target-reg-bits.h b/tcg/mips64/tcg-target-reg-bits.h
-deleted file mode 100644
-index ee346a3f25..0000000000
---- a/tcg/mips64/tcg-target-reg-bits.h
-+++ /dev/null
-@@ -1,16 +0,0 @@
--/* SPDX-License-Identifier: MIT */
--/*
-- * Define target-specific register size
-- * Copyright (c) 2008-2009 Arnaud Patard <arnaud.patard@rtp-net.org>
-- */
--
--#ifndef TCG_TARGET_REG_BITS_H
--#define TCG_TARGET_REG_BITS_H
--
--#if !defined(_MIPS_SIM) || _MIPS_SIM != _ABI64
--# error "Unknown ABI"
--#endif
--
--#define TCG_TARGET_REG_BITS 64
--
--#endif
-diff --git a/tcg/riscv64/tcg-target-reg-bits.h b/tcg/riscv64/tcg-target-reg-bits.h
-deleted file mode 100644
-index 761ca0d774..0000000000
---- a/tcg/riscv64/tcg-target-reg-bits.h
-+++ /dev/null
-@@ -1,19 +0,0 @@
--/* SPDX-License-Identifier: MIT */
--/*
-- * Define target-specific register size
-- * Copyright (c) 2018 SiFive, Inc
-- */
--
--#ifndef TCG_TARGET_REG_BITS_H
--#define TCG_TARGET_REG_BITS_H
--
--/*
-- * We don't support oversize guests.
-- * Since we will only build tcg once, this in turn requires a 64-bit host.
-- */
--#if __riscv_xlen != 64
--#error "unsupported code generation mode"
--#endif
--#define TCG_TARGET_REG_BITS 64
--
--#endif
-diff --git a/tcg/s390x/tcg-target-reg-bits.h b/tcg/s390x/tcg-target-reg-bits.h
-deleted file mode 100644
-index b01414e09d..0000000000
---- a/tcg/s390x/tcg-target-reg-bits.h
-+++ /dev/null
-@@ -1,17 +0,0 @@
--/* SPDX-License-Identifier: MIT */
--/*
-- * Define target-specific register size
-- * Copyright (c) 2009 Ulrich Hecht <uli@suse.de>
-- */
--
--#ifndef TCG_TARGET_REG_BITS_H
--#define TCG_TARGET_REG_BITS_H
--
--/* We only support generating code for 64-bit mode.  */
--#if UINTPTR_MAX == UINT64_MAX
--# define TCG_TARGET_REG_BITS 64
--#else
--# error "unsupported code generation mode"
--#endif
--
--#endif
-diff --git a/tcg/sparc64/tcg-target-reg-bits.h b/tcg/sparc64/tcg-target-reg-bits.h
-deleted file mode 100644
-index 34a6711013..0000000000
---- a/tcg/sparc64/tcg-target-reg-bits.h
-+++ /dev/null
-@@ -1,12 +0,0 @@
--/* SPDX-License-Identifier: MIT */
--/*
-- * Define target-specific register size
-- * Copyright (c) 2023 Linaro
-- */
--
--#ifndef TCG_TARGET_REG_BITS_H
--#define TCG_TARGET_REG_BITS_H
--
--#define TCG_TARGET_REG_BITS  64
--
--#endif
-diff --git a/tcg/tci/tcg-target-reg-bits.h b/tcg/tci/tcg-target-reg-bits.h
-deleted file mode 100644
-index dcb1a203f8..0000000000
---- a/tcg/tci/tcg-target-reg-bits.h
-+++ /dev/null
-@@ -1,18 +0,0 @@
--/* SPDX-License-Identifier: MIT */
--/*
-- * Define target-specific register size
-- * Copyright (c) 2009, 2011 Stefan Weil
-- */
--
--#ifndef TCG_TARGET_REG_BITS_H
--#define TCG_TARGET_REG_BITS_H
--
--#if UINTPTR_MAX == UINT32_MAX
--# define TCG_TARGET_REG_BITS 32
--#elif UINTPTR_MAX == UINT64_MAX
--# define TCG_TARGET_REG_BITS 64
--#else
--# error Unknown pointer size for tci target
--#endif
--
--#endif
-diff --git a/tcg/x86_64/tcg-target-reg-bits.h b/tcg/x86_64/tcg-target-reg-bits.h
-deleted file mode 100644
-index fc3377e829..0000000000
---- a/tcg/x86_64/tcg-target-reg-bits.h
-+++ /dev/null
-@@ -1,16 +0,0 @@
--/* SPDX-License-Identifier: MIT */
--/*
-- * Define target-specific register size
-- * Copyright (c) 2008 Fabrice Bellard
-- */
--
--#ifndef TCG_TARGET_REG_BITS_H
--#define TCG_TARGET_REG_BITS_H
--
--#ifdef __x86_64__
--# define TCG_TARGET_REG_BITS  64
--#else
--# error
--#endif
--
--#endif
+     /* Total FDE size does not include the "len" member.  */
+diff --git a/tcg/ppc64/tcg-target.c.inc b/tcg/ppc64/tcg-target.c.inc
+index 3c36b26f25..b54afa0b6d 100644
+--- a/tcg/ppc64/tcg-target.c.inc
++++ b/tcg/ppc64/tcg-target.c.inc
+@@ -70,7 +70,7 @@
+ #define SZP  ((int)sizeof(void *))
+ 
+ /* Shorthand for size of a register.  */
+-#define SZR  (TCG_TARGET_REG_BITS / 8)
++#define SZR  ((int)sizeof(tcg_target_long))
+ 
+ #define TCG_CT_CONST_S16     0x00100
+ #define TCG_CT_CONST_U16     0x00200
+diff --git a/tcg/riscv64/tcg-target.c.inc b/tcg/riscv64/tcg-target.c.inc
+index 31b9f7d87a..9c4f1aba7f 100644
+--- a/tcg/riscv64/tcg-target.c.inc
++++ b/tcg/riscv64/tcg-target.c.inc
+@@ -2929,7 +2929,7 @@ static const int tcg_target_callee_save_regs[] = {
+ };
+ 
+ /* Stack frame parameters.  */
+-#define REG_SIZE   (TCG_TARGET_REG_BITS / 8)
++#define REG_SIZE   ((int)sizeof(tcg_target_long))
+ #define SAVE_SIZE  ((int)ARRAY_SIZE(tcg_target_callee_save_regs) * REG_SIZE)
+ #define TEMP_SIZE  (CPU_TEMP_BUF_NLONGS * (int)sizeof(long))
+ #define FRAME_SIZE ((TCG_STATIC_CALL_ARGS_SIZE + TEMP_SIZE + SAVE_SIZE \
+@@ -3109,7 +3109,7 @@ static const DebugFrame debug_frame = {
+     .h.cie.id = -1,
+     .h.cie.version = 1,
+     .h.cie.code_align = 1,
+-    .h.cie.data_align = -(TCG_TARGET_REG_BITS / 8) & 0x7f, /* sleb128 */
++    .h.cie.data_align = -sizeof(tcg_target_long) & 0x7f, /* sleb128 */
+     .h.cie.return_column = TCG_REG_RA,
+ 
+     /* Total FDE size does not include the "len" member.  */
 -- 
 2.43.0
 
