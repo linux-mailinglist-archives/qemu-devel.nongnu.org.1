@@ -2,96 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16561D06822
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 00:05:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD810D0682B
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 00:05:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdz3h-0007WL-Al; Thu, 08 Jan 2026 18:04:49 -0500
+	id 1vdz3V-0007GD-P2; Thu, 08 Jan 2026 18:04:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <csomani@redhat.com>)
- id 1vdz3d-0007Sx-RY
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 18:04:45 -0500
+ id 1vdz3U-0007FP-CK
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 18:04:36 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <csomani@redhat.com>)
- id 1vdz3c-0003Yx-8Q
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 18:04:45 -0500
+ id 1vdz3S-0003Vb-N6
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 18:04:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767913483;
+ s=mimecast20190719; t=1767913471;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/wOYTEAvtiSe9YSYoR3MVQ33obg2WZXnCauUYIHGp4U=;
- b=gY+1E11oSv3h8dJvnj6Jd64P1aEpcjNjMfJQuok1b0Ig9/rNLMzuS7tI6cre953HBydYBi
- uF3ZacSojDkFtnPvhXUmnPwQNUCqHb6LXbj1Z8A2YPQqjYzeViuq0tqPRrcNpYFG9dSSQI
- 2pdyDKVvSAIm82gDfrwNGr92nJNsx5c=
+ bh=Cv1t496rtiOvHFcgquBJQKTEpYow9+MipYjH+vSBpgk=;
+ b=L0P7aJX1AtO3LifTgyJku1M8FFCYoKo4XAG82NsE3Bup53wp6fynB86LskSyGxEJAceO6L
+ utRFQQLWY0/zF1h3PED6WIZfX7VgcFIy4OPHS0jVSV8RTOUvQ0R1iLN3yAt+LZvuAAZTzg
+ oPYh2VlNs6ihyf07S76pAuA2uqRotSs=
 Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
  [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-623-1KTWGnOvPbaKNrS7DrnMDA-1; Thu, 08 Jan 2026 18:04:36 -0500
-X-MC-Unique: 1KTWGnOvPbaKNrS7DrnMDA-1
-X-Mimecast-MFC-AGG-ID: 1KTWGnOvPbaKNrS7DrnMDA_1767913468
+ us-mta-605-uADfvPngPpKTFMw-hvP7qg-1; Thu, 08 Jan 2026 18:04:30 -0500
+X-MC-Unique: uADfvPngPpKTFMw-hvP7qg-1
+X-Mimecast-MFC-AGG-ID: uADfvPngPpKTFMw-hvP7qg_1767913470
 Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-8b2e2342803so930039285a.3
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 15:04:35 -0800 (PST)
+ af79cd13be357-8b8738fb141so691103285a.0
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 15:04:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1767913468; x=1768518268; darn=nongnu.org;
+ d=redhat.com; s=google; t=1767913470; x=1768518270; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/wOYTEAvtiSe9YSYoR3MVQ33obg2WZXnCauUYIHGp4U=;
- b=hjubA3Biu2FlH2/vl2FltFKsgrNZr40d95r0lZsPk0MrS35B3Gvb9DkBpH6ig6uXcn
- /JM0eVoXgOP8KLtdZO7YgEwWE3hKu3DHqQSm1Pm1I+Y9TCcCsyJunG2I+ReYxbX0IIfJ
- Dr1OAe6SmSTieSqUnNZgt3ID5yGb1RSlK8xT6sDIzdC/0260Ypeedh6wnO4P/aLs1XOM
- xrkjpKnCPAVsztEk5Ond32yNQRcIgB7jgDWhy4SG5V6O9p+4X+kHlLmaGP80S2aggb0C
- t+1nP/JokZcdDoIH7wELLpdDCo+ABLqUi2jJ6TTUJb9rPpUWKbon5bGh2IPmR+ehBcw4
- 9Zxg==
+ bh=Cv1t496rtiOvHFcgquBJQKTEpYow9+MipYjH+vSBpgk=;
+ b=MlPydl4WcxSSfmAhYh1TZCstCKoK6npa7+IjG1+VY2kJaXDfdqtlim7AdPdih/gz9M
+ CjFMCjc3HGEmxc19snMNFmuwDtrHQAvULJGFk7Lu3HI6AA45fiG35KulqoORvToPNiZs
+ kNPuc6cv4+b/i9uWkds/U41hjJVdhS4QGMxEthEX0CFD6914ci7YDsmr74QGTr7Wfc1/
+ /Qw4fq5eFzvCln4eg7miMheGHvgsWUvjj1VvqOR2l1joIEVx90H2ydTxJQ2s7SSI+PRf
+ wL1bq63ivQJOUC6UvDyzvwWb77o8JPpPT/F/BH17wE0BC8wfy3gRXu8NfyiyrHRBfHcS
+ 2wQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767913468; x=1768518268;
+ d=1e100.net; s=20230601; t=1767913470; x=1768518270;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=/wOYTEAvtiSe9YSYoR3MVQ33obg2WZXnCauUYIHGp4U=;
- b=M2RDIDqzYrC8lNd78jzRG0iUn4VyY00U5K+JP9/zxWuPQrTONbTO78KYRV85AtEQ+x
- wXmsEgDPOXN+qtp7KOCatV+mGf8j7Gui3y84hwlh2jFBkOWsiBR9h26fH8qGgK9l/y++
- UsdBChd/wloA46kGLeg0/gIF+5cusO8HsXY2rTPsfopaYeW2vpdbQOpDM/bSxzHwuMDI
- 0Jf3SyPITv6WmpW7+2yX+pGt5dy4T9w4b9a1mFn7xGpUpwi64U8LOjYpwrZK9vr40KK7
- 1e/ajoC466+iNOUW5hVfjFqCDmgYucgSVfOfGJqVW/Wfl/o4R/2GFAOOPfPJcsj+SIR5
- wNIQ==
-X-Gm-Message-State: AOJu0Yz8YBOzWryMPVR1Wz0O4IO9P0HVYOYH4RH8TURcfE7TRLE2BcOO
- KNxLbZ3q9oB2d4qeIzwOwyJxF1EC9BfYEd0/AFnyFEsAZP9VhFadGrOsr14nFM0Y8Gf4Qadgzvi
- 6ObBK1pqzCr0JvCvzS57SFwHluExao/2pSl3qpAE4kfiF9XZWEXTamYQr5T9sbYxGybUDmb+ZW3
- sn1mBmEp+OXwKypUnnOiD6tAEoZDU2qgfc7jybfuY=
-X-Gm-Gg: AY/fxX5NoohE+KmVZN/Pi0Mmu8a1bllJfQ4kB+cS/q28s9K14X4EUP7fZIgQW5oBSdv
- Avo/xrs486lf21AD6y/2DUjP2yJlhihYtGvHTKnLjwKhyu/j0Ji6N6mua4IJ/oRjfOU3LbtGsq8
- WKjwwuDM0+g39afU/YLh42r8bDbqe++Y9TLlC5TDu4YSa8hYd91k8XULME7rggOgiiPWONm5/AE
- UUFI/MQmnCTm2AgNTdZZAKfa32+udhzt81HjYqUW59E3o/II7o5+OwPG3ZkgVJb6LCYxMF4x2ea
- PULXinpdYexd+hR6UNfZCKW2F+GOLTmeVi0M1R/ps9Qv80fEUi3qJhKOmSv2N/VvE0sWRNtXgoN
- 5DvjrAIJpJt0Q/0kqs9l0++7f/95ty9r6YBriWgw=
-X-Received: by 2002:a05:620a:f0f:b0:863:42ea:d687 with SMTP id
- af79cd13be357-8c38940c2c5mr1046482185a.78.1767913468055; 
- Thu, 08 Jan 2026 15:04:28 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHqRc9bLVLIFbSWb6p7UQfcE+awwIUOeB9+iC0MWv1rMECa22+q5Bz2rlOOLczN5k4v1uS69g==
-X-Received: by 2002:a05:620a:f0f:b0:863:42ea:d687 with SMTP id
- af79cd13be357-8c38940c2c5mr1046477585a.78.1767913467561; 
- Thu, 08 Jan 2026 15:04:27 -0800 (PST)
+ bh=Cv1t496rtiOvHFcgquBJQKTEpYow9+MipYjH+vSBpgk=;
+ b=ktdSdf0Vl+CYoP8x5+cKHcfmKKs35nB5cGPJ11xlkgujE4gpmUai9N19ythrhOpfkF
+ CZmPiIYjxL4R3XsLlK5WHtRI6T0U5XCGTg4Ik7dsDEJrozJrlxGqwWbiSEMtCAnWAHA7
+ 8E5bpSwR+lxQwx+1+3GflTwR3YoxDvyuVTGbXra7ZplZPy4HsHIbgVc0hf8tf4l75qJI
+ 4og1jPtsq/pfEmheVCplkQJEyozNaSnNc5qlBufmoUii4auwcmpxAyx5fqUo0Q3HBZ7y
+ uj1DpKm9A0YU5SU71aJLJQzysv4q8Z+6nOrp1v34sm7+wtZqsqgQwevHoW/f2YDXWJvV
+ urJQ==
+X-Gm-Message-State: AOJu0Yz8LdI6NZ7oUmCSeCiS5OKUvntxMJKM/UQ/osoxgbIsroWilgzn
+ kl2EuCxWTMWSUW/K4C1KOaVXMFpoC++WT3YlGMNTd53UwM0qayWa1R2KqOXbKm9e8CTVn6VT+9A
+ VtopxLaBTbPhHsjjXTJ9Ax1KxJUXJJDPwHd3FMKgG2x36Y2esfjg3G0Lu+GAnuUsWtkscRyJ5VJ
+ Qoa2xnVtc3nUDneFv/B1f0Wzfa6sxYkJQLg2rdeGA=
+X-Gm-Gg: AY/fxX5P1hsDCOhvP6bz3Cz2ddfwz7tQ0omRoS533QnmCNTxCBNbA/QLU68R40AqnWq
+ MzuuAlUuyjVA2J2wbUN7y9LJzlBA6t2Ic1uKoruM6pVDNG0qwl58mEFymSnipU/d+y4ZoeVdGLk
+ 2kSxX1IFHykCHvFp6nzTWei6sG4WTLJXdD7/A8JJWriUF1SUNcHkS0VeirTtdAG6G/pEA4APCiR
+ fuUGGYt9JruN2jaY9UnGHlgYcQq0ptA/RrQZ7Tnt2jATcIJYC2xDVjpj0ieu0Zn5v5yCSDCpvkg
+ DxUm5/P7ZMdA6MlmhungJIFa72LWz6Sqm+u+7GIsZ1tlkI7DI/Tz7dXcQNAgN67/CsOSHfYnwV/
+ tmO37JysPAn8IolpUJEY54qjucMmkUQovETtwNNk=
+X-Received: by 2002:a05:620a:7004:b0:8b2:e177:ddb0 with SMTP id
+ af79cd13be357-8c388bd8d6emr965150785a.23.1767913469910; 
+ Thu, 08 Jan 2026 15:04:29 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEzL2AJ6ZodN/dLEOhjkEmnGrR7OpZAqsq3O/8QBb+eL89B+9yPGgRYwg9ZIFVmQeOEiFIYOA==
+X-Received: by 2002:a05:620a:7004:b0:8b2:e177:ddb0 with SMTP id
+ af79cd13be357-8c388bd8d6emr965146585a.23.1767913469427; 
+ Thu, 08 Jan 2026 15:04:29 -0800 (PST)
 Received: from csomani-thinkpadp1gen7.rmtusca.csb ([47.153.136.179])
  by smtp.gmail.com with ESMTPSA id
- af79cd13be357-8c37f51b787sm680000685a.29.2026.01.08.15.04.26
+ af79cd13be357-8c37f51b787sm680000685a.29.2026.01.08.15.04.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 15:04:27 -0800 (PST)
+ Thu, 08 Jan 2026 15:04:29 -0800 (PST)
 From: Chandan Somani <csomani@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, marcandre.lureau@gmail.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Stefan Berger <stefanb@linux.ibm.com>,
- Stefan Berger <stefanb@linux.vnet.ibm.com>
-Subject: [PATCH v2 4/5] qdev: make release_tpm() idempotent
-Date: Thu,  8 Jan 2026 15:03:10 -0800
-Message-ID: <20260108230311.584141-5-csomani@redhat.com>
+ Stefan Berger <stefanb@linux.ibm.com>
+Subject: [PATCH v2 5/5] tests: add /qdev/free-properties test
+Date: Thu,  8 Jan 2026 15:03:11 -0800
+Message-ID: <20260108230311.584141-6-csomani@redhat.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20260108230311.584141-1-csomani@redhat.com>
 References: <20260108230311.584141-1-csomani@redhat.com>
@@ -125,27 +124,132 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-So it can eventually be called multiple times safely.
+Add a simple qdev test to check that allocated properties get freed with
+the object. This test exhibited array leaks before the fixes.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-Message-Id: <20250429140306.190384-4-marcandre.lureau@redhat.com>
+Message-Id: <20250429140306.190384-6-marcandre.lureau@redhat.com>
 ---
- backends/tpm/tpm_util.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/unit/meson.build |  1 +
+ tests/unit/test-qdev.c | 96 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 97 insertions(+)
+ create mode 100644 tests/unit/test-qdev.c
 
-diff --git a/backends/tpm/tpm_util.c b/backends/tpm/tpm_util.c
-index a64e156f45..264bff22a9 100644
---- a/backends/tpm/tpm_util.c
-+++ b/backends/tpm/tpm_util.c
-@@ -72,6 +72,7 @@ static void release_tpm(Object *obj, const char *name, void *opaque)
- 
-     if (*be) {
-         tpm_backend_reset(*be);
-+        *be = NULL;
+diff --git a/tests/unit/meson.build b/tests/unit/meson.build
+index bd58029060..41e8b06c33 100644
+--- a/tests/unit/meson.build
++++ b/tests/unit/meson.build
+@@ -156,6 +156,7 @@ if have_system
+       'test-qdev-global-props': [qom, hwcore]
      }
- }
+   endif
++  tests += {'test-qdev': [qom, hwcore]}
+ endif
  
+ if have_ga and host_os == 'linux'
+diff --git a/tests/unit/test-qdev.c b/tests/unit/test-qdev.c
+new file mode 100644
+index 0000000000..20eae38e03
+--- /dev/null
++++ b/tests/unit/test-qdev.c
+@@ -0,0 +1,96 @@
++#include "qemu/osdep.h"
++#include "hw/core/qdev-properties.h"
++#include "qom/object.h"
++#include "qapi/error.h"
++#include "qapi/visitor.h"
++
++
++#define TYPE_MY_DEV "my-dev"
++typedef struct MyDev MyDev;
++DECLARE_INSTANCE_CHECKER(MyDev, STATIC_TYPE,
++                         TYPE_MY_DEV)
++
++struct MyDev {
++    DeviceState parent_obj;
++
++    uint32_t prop_u32;
++    char *prop_string;
++    uint32_t *prop_array_u32;
++    uint32_t prop_array_u32_nb;
++};
++
++static const Property my_dev_props[] = {
++    DEFINE_PROP_UINT32("u32", MyDev, prop_u32, 100),
++    DEFINE_PROP_STRING("string", MyDev, prop_string),
++    DEFINE_PROP_ARRAY("array-u32", MyDev, prop_array_u32_nb, prop_array_u32,
++                     qdev_prop_uint32, uint32_t),
++};
++
++static void my_dev_class_init(ObjectClass *oc, const void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(oc);
++
++    dc->realize = NULL;
++    device_class_set_props(dc, my_dev_props);
++}
++
++static const TypeInfo my_dev_type_info = {
++    .name = TYPE_MY_DEV,
++    .parent = TYPE_DEVICE,
++    .instance_size = sizeof(MyDev),
++    .class_init = my_dev_class_init,
++};
++
++/*
++ * Initialize a fake machine, being prepared for future tests.
++ *
++ * Realization of anonymous qdev (with no parent object) requires both
++ * the machine object and its "unattached" container to be at least present.
++ */
++static void test_init_machine(void)
++{
++    /* This is a fake machine - it doesn't need to be a machine object */
++    Object *machine = object_property_add_new_container(
++        object_get_root(), "machine");
++
++    /* This container must exist for anonymous qdevs to realize() */
++    object_property_add_new_container(machine, "unattached");
++}
++
++static void test_qdev_free_properties(void)
++{
++    MyDev *mt;
++
++    mt = STATIC_TYPE(object_new(TYPE_MY_DEV));
++    object_set_props(OBJECT(mt), &error_fatal,
++                     "string", "something",
++                     "array-u32", "12,13",
++                     NULL);
++    qdev_realize(DEVICE(mt), NULL, &error_fatal);
++
++    g_assert_cmpuint(mt->prop_u32, ==, 100);
++    g_assert_cmpstr(mt->prop_string, ==, "something");
++    g_assert_cmpuint(mt->prop_array_u32_nb, ==, 2);
++    g_assert_cmpuint(mt->prop_array_u32[0], ==, 12);
++    g_assert_cmpuint(mt->prop_array_u32[1], ==, 13);
++
++    object_unparent(OBJECT(mt));
++    object_unref(mt);
++}
++
++
++int main(int argc, char **argv)
++{
++    g_test_init(&argc, &argv, NULL);
++
++    module_call_init(MODULE_INIT_QOM);
++    type_register_static(&my_dev_type_info);
++    test_init_machine();
++
++    g_test_add_func("/qdev/free-properties",
++                    test_qdev_free_properties);
++
++    g_test_run();
++
++    return 0;
++}
 -- 
 2.51.1
 
