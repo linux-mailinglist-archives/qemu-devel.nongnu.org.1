@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77991D03022
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 14:27:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13421D0306E
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 14:28:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdq2S-0000rd-LD; Thu, 08 Jan 2026 08:26:56 -0500
+	id 1vdq2T-0000xs-Rj; Thu, 08 Jan 2026 08:26:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1vdq2Q-0000ik-4l
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 08:26:54 -0500
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1vdq2S-0000tb-Mp
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 08:26:56 -0500
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1vdq2O-0003W6-Df
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 08:26:53 -0500
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-7b9c17dd591so2032885b3a.3
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 05:26:52 -0800 (PST)
+ id 1vdq2R-0003WO-4m
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 08:26:56 -0500
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-c3e921afad1so1425758a12.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 05:26:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1767878811; x=1768483611; darn=nongnu.org;
+ d=sifive.com; s=google; t=1767878813; x=1768483613; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ULAUR7NpM52/954YFwisSWw0nlMekmWH6Jtzqs31mW8=;
- b=aYjPeZNlUYIjjSTIwOsLejpZGV1PfCdK8mmZ/9+h9wXc/vbBf4xZHdxhWfVy/SKerY
- LT0B5Q6K7Ntk/lxl/WNy1tctwW1/HnB2mku07ueDuZix7bTqiEWAhDCzRochkeJDQYoL
- qo/l9q7/HSWv6ZpA5JruZmbo1X23UytqcUJDpr5cGxL6DeCM5vg5Ew6K++lyA6Xz4/8A
- a7AV8tZ2S3bKPUyyXzOJ6ovB00r/DpK0BkcGVHUymfel51C5mTox7BJeRGZIPAWiDJrb
- jdeosCu8S3AUn93wOmDmDUjgwjLDq8fgZ4CnBeD7fYrUaMDehzkaBTwtHeAzJi/Jn8b3
- n0bw==
+ bh=r8u/q2e1Rfp47UNW5CHZAz53PMC7FasnQwjb4yxYc8o=;
+ b=YtfBcekLmP20Qepo/jKZ/UWC5LSOna9gMUvxuTfOIFP3oJCT8RJJEHhtPsnz2ATcA6
+ LoWMztyvmW85hjTsefkQsfYyp8IZyVF57Y6Mk1PKxZTK8qXzJOxL+mqTafNM1CHnY//Y
+ 1mbCdnv0ySQAcFJdEFyu1OW0Dc8XXOo0a+Rp/60xHFYa+/cO5bslRLSzzq7zhMlJWbBu
+ ljugM12pfbW67aV6Va/mLTcOVbvIc3l9RJyrZiodWV65noktfbht4JsPIFDE9WY1V8Sa
+ oH+AoERz3nHkKCAiToS0CkoLAYBcUy73LRHGhA/0MDgLCWXvZEszg1pyGkF7m9FDgXL+
+ epYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767878811; x=1768483611;
+ d=1e100.net; s=20230601; t=1767878813; x=1768483613;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=ULAUR7NpM52/954YFwisSWw0nlMekmWH6Jtzqs31mW8=;
- b=HIXBVNq5I8G7tSHIpMLR+PAPY/zh71aWNkltiG0ZssoKhRVdJl4vOZb3FAuxe1zwqO
- h7iLlABUAlYNlYQmHKnsell1sR2Yi1iyKzRq7myjkjg9NFNKOocaXpwFgoj48beNvaeX
- jUANhtXV9/H4l8+QrY80+44fBKTSVOhb6jtWdlVRk23KRlLwyF3KZpwLliSc2Gz4NJLy
- 6+C+MZMmJwwKAscYlbbkivgJPa+AA+rFVBB9qwDpF9Nm5eq66uz5KWPb+qjtEG2gYxfA
- eD+MXxwERp4wHzni5v4AAOQDUbG2t/Sys2CciMRGaQBzIE96rIq5K2TxJ+EHSZKDkuaD
- BXjA==
-X-Gm-Message-State: AOJu0YwrF5WHrJbzCgjnRlgt0yM9tnEMBsUFawLCPPdzdI2NVvOmQmMd
- eKvnw/Kng3GBFI47VIyi61ucNiUjjdgxkWOvgpEqaH2OYQ5exzsf5SwdCi/p7KRqX19zXVbQNRT
- DkrbH9gZZaxp0M1WznEEPl3tEvUFReSwxJkrhROq3flME0vj6cUDjYF1uI1w/A5wGm31pkwZjIl
- RDgXVF5n7NZsrBTAEdxbJsm2ci86I5zTGxOToeFgw=
-X-Gm-Gg: AY/fxX4l/7Ti8SO1+Zto7UR8KvRuifVUmqot9bQcnbmrPovZpdtzFvdfDHD+IBq0hBG
- JAHVPDhaEfoLWoTaIZQu7aXwSE2Zv6NV84Eplu2yixSk1FtgllbAnhOm8PCe9q41GjKOUwveR2J
- Y4QwP9iJtpQ7SiykH8Em3LjXz7i//d+8fzW+W3PR0x57qcqFdvU8alGi4UwxtVfkGxQ1GGvBd6Q
- zt2feedoBZOC1jUsY6RB7bS/lOPyQ4dkOQXsEA6PfnFct8GqHL2VQxZvXnt3HgRvxLVDzC+HGP5
- Ty8lX27tpxVfP1XgQSckmLxWydWV7OlOB7QbPd3cpOkk0nqBqWG5QDi015DJlj2B829CmK08oo8
- vqV/ThGr1f0KeVepiA2A76LW03u5+ccYKoYSs9beX7jabvkQS5sNiOHBpmpc+/E65DaIk6YEnrJ
- Hx7cuzETl/FxOP8+ZtU6T3DT3aYVH90MCO3lOR47OdAwL7zJyh9rcDZrI=
-X-Google-Smtp-Source: AGHT+IH08WGo0D3++qf/mwZsy7wYvtDT18AldpYmTNLFq7BmqKBvSKQt+v9i0ulTxGiWKS9YxDzLYw==
-X-Received: by 2002:a05:6a21:6da4:b0:366:14b2:314 with SMTP id
- adf61e73a8af0-3898f9f883fmr5717584637.71.1767878810650; 
- Thu, 08 Jan 2026 05:26:50 -0800 (PST)
+ bh=r8u/q2e1Rfp47UNW5CHZAz53PMC7FasnQwjb4yxYc8o=;
+ b=BgDRs1MsyY/zpyQqUo+vcFpt7X5WTn6mu6LgO/F6pyTrQ9zr7R6cuZZPRD1cTFWK74
+ VapH06+0PoMTaJOGyfdOtvLmaE5RHEUJCFmZG5vmecPeDARTdRNXwIcYny/CufRF4Arq
+ OtjIGWpWlDp21vHa7ZVfz/USKS6JBNSDEwSF7URvfOBbseGA6Er1uWSTvgZ5hB4P7Y59
+ a2erPipjCpN2GSDCFzNTp9OK6cllnr0gkhbu68qe1TY0J/YjAj73GUgtHCUTJL0OTMrD
+ kZDtg9OjX5BbvTLL3q1fIMxdTdI0azEfIGm4QDo9SO7EnZRkv/vV0sJAfMnOTOW+au++
+ ZiKg==
+X-Gm-Message-State: AOJu0YyRAA/mzpjUOYw6+8Vfz7jvjDI0XJ+44xWFe2cuWrBD9WXtGbDR
+ 7qildWA0ojdZUn3/2nLHbVpLSCWYSLcTNs1lc2yyKtaV3vn+fn9vEykoUNqwgMIsaaDZof3dT3K
+ +d5cIIaQ8AoGYXAmA1J8HzsuVwrp3gIAktl3DSL1YvyueU6HCj7dNgzbPPlkbMS0JmDTQNh09p+
+ d2qJ/vV8fjUmL5KM9KZqdRx3o5QU1Mslu3MoVeuP8=
+X-Gm-Gg: AY/fxX4hdWL8s8xWM8mg6sMWha5oC9oHE+VhuxSmdO1aJcCEKE2H2NVyUANnIJWfPCc
+ 5g+jtr+NqrWiy360HMCf+dkRDO+B3FayNYz0cDDxmgSUOkPRY4fJI2jQkdkftoy+v7A24CvR61n
+ LEdcNNHra7qKzQ4KygUfuAPzVwLRH1mz4uQ/aQ3D9U5Uz3nJn7mTAuOGkB+Q2GPt0xVDxGPD5Y4
+ etub4rctlLhkvTL0sBRenvcR9YA7aOdKLiWfsAEbvTrFynAh/gP7egvJ1GFgSOOe5bukl3GagCk
+ Qqz15Sm+AhA5L9o8fW3vExDLn0QyKRT3W+Tfrs3ThkE/p5QQU4e/q1DTOnaa7ovobKSDojLqLoY
+ bNsGrOrq+/ZrR78p0LwW94hfrg3XxMbWNWxx2oIs5B4Cwhk8jYMGYysNutCRyflySepC88XlDFk
+ 6hZpIoqmKqvJNGEoB2zGLQo22emLjjxV4zAAGKrIJHkBP3133XwPUT36g=
+X-Google-Smtp-Source: AGHT+IGpUX4lVjo/p4cLGmGAGJtnXL7h49JQ+AOxbDh553PmCc++ArArd4hPNCJoBoFtxXczr1tAgQ==
+X-Received: by 2002:a17:90b:4ecc:b0:340:7b2e:64cc with SMTP id
+ 98e67ed59e1d1-34f68b67ceemr6642253a91.15.1767878813218; 
+ Thu, 08 Jan 2026 05:26:53 -0800 (PST)
 Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
  [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-34f6ae3f033sm2298787a91.0.2026.01.08.05.26.49
+ 98e67ed59e1d1-34f6ae3f033sm2298787a91.0.2026.01.08.05.26.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 05:26:50 -0800 (PST)
+ Thu, 08 Jan 2026 05:26:52 -0800 (PST)
 From: Max Chou <max.chou@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -73,17 +73,16 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Weiwei Li <liwei1518@gmail.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Max Chou <max.chou@sifive.com>
-Subject: [PATCH v2 5/9] target/riscv: Use the tb->cs_bqse as the extend tb
- flags.
-Date: Thu,  8 Jan 2026 21:26:26 +0800
-Message-ID: <20260108132631.9429-6-max.chou@sifive.com>
+Subject: [PATCH v2 6/9] target/riscv: Introduce altfmt into DisasContext
+Date: Thu,  8 Jan 2026 21:26:27 +0800
+Message-ID: <20260108132631.9429-7-max.chou@sifive.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260108132631.9429-1-max.chou@sifive.com>
 References: <20260108132631.9429-1-max.chou@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=max.chou@sifive.com; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=max.chou@sifive.com; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,84 +105,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We have more than 32-bits worth of state per TB, so use the
-tb->cs_base, which is otherwise unused for RISC-V, as the extend flag.
-
 Signed-off-by: Max Chou <max.chou@sifive.com>
 ---
- include/exec/translation-block.h | 1 +
- target/riscv/cpu.h               | 3 +++
- target/riscv/tcg/tcg-cpu.c       | 7 ++++++-
- 3 files changed, 10 insertions(+), 1 deletion(-)
+ target/riscv/translate.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/exec/translation-block.h b/include/exec/translation-block.h
-index 4f83d5bec9..40cc699031 100644
---- a/include/exec/translation-block.h
-+++ b/include/exec/translation-block.h
-@@ -65,6 +65,7 @@ struct TranslationBlock {
-      * arm: an extension of tb->flags,
-      * s390x: instruction data for EXECUTE,
-      * sparc: the next pc of the instruction queue (for delay slots).
-+     * riscv: an extension of tb->flags,
-      */
-     uint64_t cs_base;
+diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+index f687c75fe4..911d3932f9 100644
+--- a/target/riscv/translate.c
++++ b/target/riscv/translate.c
+@@ -101,6 +101,7 @@ typedef struct DisasContext {
+     bool cfg_vta_all_1s;
+     bool vstart_eq_zero;
+     bool vl_eq_vlmax;
++    bool altfmt;
+     CPUState *cs;
+     TCGv zero;
+     /* actual address width */
+@@ -1302,6 +1303,7 @@ static void riscv_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+     RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cs);
+     RISCVCPU *cpu = RISCV_CPU(cs);
+     uint32_t tb_flags = ctx->base.tb->flags;
++    uint64_t ext_tb_flags = ctx->base.tb->cs_base;
  
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 962cc45073..4c0676ed53 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -703,6 +703,9 @@ FIELD(TB_FLAGS, BCFI_ENABLED, 28, 1)
- FIELD(TB_FLAGS, PM_PMM, 29, 2)
- FIELD(TB_FLAGS, PM_SIGNEXTEND, 31, 1)
- 
-+FIELD(EXT_TB_FLAGS, MISA_EXT, 0, 32)
-+FIELD(EXT_TB_FLAGS, ALTFMT, 32, 1)
-+
- #ifdef TARGET_RISCV32
- #define riscv_cpu_mxl(env)  ((void)(env), MXL_RV32)
- #else
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 720ff0c2a3..378b298886 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -104,6 +104,7 @@ static TCGTBCPUState riscv_get_tb_cpu_state(CPUState *cs)
-     RISCVCPU *cpu = env_archcpu(env);
-     RISCVExtStatus fs, vs;
-     uint32_t flags = 0;
-+    uint64_t ext_flags = 0;
-     bool pm_signext = riscv_cpu_virt_mem_enabled(env);
- 
-     if (cpu->cfg.ext_zve32x) {
-@@ -118,6 +119,7 @@ static TCGTBCPUState riscv_get_tb_cpu_state(CPUState *cs)
- 
-         /* lmul encoded as in DisasContext::lmul */
-         int8_t lmul = sextract32(FIELD_EX64(env->vtype, VTYPE, VLMUL), 0, 3);
-+        uint8_t altfmt = FIELD_EX64(env->vtype, VTYPE, ALTFMT);
-         uint32_t vsew = FIELD_EX64(env->vtype, VTYPE, VSEW);
-         uint32_t vlmax = vext_get_vlmax(cpu->cfg.vlenb, vsew, lmul);
-         uint32_t maxsz = vlmax << vsew;
-@@ -133,6 +135,7 @@ static TCGTBCPUState riscv_get_tb_cpu_state(CPUState *cs)
-         flags = FIELD_DP32(flags, TB_FLAGS, VMA,
-                            FIELD_EX64(env->vtype, VTYPE, VMA));
-         flags = FIELD_DP32(flags, TB_FLAGS, VSTART_EQ_ZERO, env->vstart == 0);
-+        ext_flags = FIELD_DP64(ext_flags, EXT_TB_FLAGS, ALTFMT, altfmt);
-     } else {
-         flags = FIELD_DP32(flags, TB_FLAGS, VILL, 1);
-     }
-@@ -189,10 +192,12 @@ static TCGTBCPUState riscv_get_tb_cpu_state(CPUState *cs)
-     flags = FIELD_DP32(flags, TB_FLAGS, PM_PMM, riscv_pm_get_pmm(env));
-     flags = FIELD_DP32(flags, TB_FLAGS, PM_SIGNEXTEND, pm_signext);
- 
-+    ext_flags = FIELD_DP64(ext_flags, EXT_TB_FLAGS, MISA_EXT, env->misa_ext);
-+
-     return (TCGTBCPUState){
-         .pc = env->xl == MXL_RV32 ? env->pc & UINT32_MAX : env->pc,
-         .flags = flags,
--        .cs_base = env->misa_ext,
-+        .cs_base = ext_flags,
-     };
- }
- 
+     ctx->pc_save = ctx->base.pc_first;
+     ctx->priv = FIELD_EX32(tb_flags, TB_FLAGS, PRIV);
+@@ -1321,6 +1323,7 @@ static void riscv_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+     ctx->cfg_vta_all_1s = cpu->cfg.rvv_ta_all_1s;
+     ctx->vstart_eq_zero = FIELD_EX32(tb_flags, TB_FLAGS, VSTART_EQ_ZERO);
+     ctx->vl_eq_vlmax = FIELD_EX32(tb_flags, TB_FLAGS, VL_EQ_VLMAX);
++    ctx->altfmt = FIELD_EX64(ext_tb_flags, EXT_TB_FLAGS, ALTFMT);
+     ctx->misa_mxl_max = mcc->def->misa_mxl_max;
+     ctx->xl = FIELD_EX32(tb_flags, TB_FLAGS, XL);
+     ctx->address_xl = FIELD_EX32(tb_flags, TB_FLAGS, AXL);
 -- 
 2.43.7
 
