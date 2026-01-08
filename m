@@ -2,63 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A1B6D015BF
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 08:15:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2506D015F0
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 08:17:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdk6c-0007JO-8h; Thu, 08 Jan 2026 02:06:50 -0500
+	id 1vdk6V-0006up-LT; Thu, 08 Jan 2026 02:06:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdk6S-0006pK-Io
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 02:06:41 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdk6R-0006mR-AJ
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 02:06:39 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdk6Q-0006ce-Jm
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 02:06:40 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdk6O-0006bk-SV
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 02:06:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767855998;
+ s=mimecast20190719; t=1767855996;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gONgRn/GNyBGob63kNT426dkqmiq4qN/s3arf4kHFSI=;
- b=akTONvq8px2J7Hnt/UOZLcXsPr5fCcWWIMgaJmQq2L59DDuvD4yAyr4zuW3xj6lUwenvAf
- fB9gKMxyTMckOj4S3xKwRCQeNrj0DQOTUpnSxQtws+N6NYYaKd4kp7JQ5mLOfxlRkX/lkd
- z2yrJ1x1AMJ+XCc6RPoqgarx0r4+Hvk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=5rBT0wM/0nCOtv8moP8RiQX1LfyxaSmtC3iGS80HRSU=;
+ b=WtitmyUvUHqqVCFnDX7qigs8lrlEguT6JM0v8XOBLQnp2cMnhRhEmKPV8mGSrxEeJJEumq
+ uU/zfR16FHl3AKGPhROA5j0kgwYQL6/Hm0tu/sPdMsItTEb9dYXjhLZqyh4yb5BUaEGPZG
+ QCQt5BBjf9Q2Xx+71mTAIcQlF8TlfFI=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-665--y-M8g2NMHOywAafuALT4Q-1; Thu,
- 08 Jan 2026 02:06:33 -0500
-X-MC-Unique: -y-M8g2NMHOywAafuALT4Q-1
-X-Mimecast-MFC-AGG-ID: -y-M8g2NMHOywAafuALT4Q_1767855992
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-mcXG55-WNfOiC5_Cnq892A-1; Thu,
+ 08 Jan 2026 02:06:32 -0500
+X-MC-Unique: mcXG55-WNfOiC5_Cnq892A-1
+X-Mimecast-MFC-AGG-ID: mcXG55-WNfOiC5_Cnq892A_1767855992
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 20614180035D; Thu,  8 Jan 2026 07:06:32 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C280B1956080; Thu,  8 Jan 2026 07:06:31 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.32])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AA00218008FF; Thu,  8 Jan 2026 07:06:31 +0000 (UTC)
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 73FB830002D2; Thu,  8 Jan 2026 07:06:31 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 10FB521E61B3; Thu, 08 Jan 2026 08:06:26 +0100 (CET)
+ id 14ECB21E61B5; Thu, 08 Jan 2026 08:06:26 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, "Dr. David Alan Gilbert" <dave@treblig.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v2 08/17] tap-solaris: Use error_setg_file_open() for better
- error messages
-Date: Thu,  8 Jan 2026 08:06:16 +0100
-Message-ID: <20260108070625.1586474-9-armbru@redhat.com>
+ Kostiantyn Kostiuk <kkostiuk@redhat.com>
+Subject: [PULL v2 09/17] qga: Use error_setg_file_open() for better error
+ messages
+Date: Thu,  8 Jan 2026 08:06:17 +0100
+Message-ID: <20260108070625.1586474-10-armbru@redhat.com>
 In-Reply-To: <20260108070625.1586474-1-armbru@redhat.com>
 References: <20260108070625.1586474-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -86,54 +85,69 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Error messages change from
 
-    Can't open /dev/ip (actually /dev/udp)
-    Can't open /dev/tap
-    Can't open /dev/tap (2)
+    open("FNAME"): REASON
 
 to
 
-    Could not open '/dev/udp': REASON
-    Could not open '/dev/tap': REASON
-
-where REASON is the value of strerror(errno).
+    Could not open 'FNAME': REASON
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
-Message-ID: <20251121121438.1249498-5-armbru@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
+Message-ID: <20251121121438.1249498-6-armbru@redhat.com>
 ---
- net/tap-solaris.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ qga/commands-linux.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/net/tap-solaris.c b/net/tap-solaris.c
-index 75397e6c54..faf7922ea8 100644
---- a/net/tap-solaris.c
-+++ b/net/tap-solaris.c
-@@ -87,13 +87,13 @@ static int tap_alloc(char *dev, size_t dev_size, Error **errp)
+diff --git a/qga/commands-linux.c b/qga/commands-linux.c
+index c639a60a94..ae2c4d442a 100644
+--- a/qga/commands-linux.c
++++ b/qga/commands-linux.c
+@@ -1503,14 +1503,15 @@ static void transfer_vcpu(GuestLogicalProcessor *vcpu, bool sys2vcpu,
  
-     ip_fd = RETRY_ON_EINTR(open("/dev/udp", O_RDWR, 0));
-     if (ip_fd < 0) {
--        error_setg(errp, "Can't open /dev/ip (actually /dev/udp)");
-+        error_setg_file_open(errp, errno, "/dev/udp");
-         return -1;
+     dirfd = open(dirpath, O_RDONLY | O_DIRECTORY);
+     if (dirfd == -1) {
+-        error_setg_errno(errp, errno, "open(\"%s\")", dirpath);
++        error_setg_file_open(errp, errno, dirpath);
+         return;
      }
  
-     tap_fd = RETRY_ON_EINTR(open("/dev/tap", O_RDWR, 0));
-     if (tap_fd < 0) {
--        error_setg(errp, "Can't open /dev/tap");
-+        error_setg_file_open(errp, errno, "/dev/tap");
-         return -1;
+     fd = openat(dirfd, fn, sys2vcpu ? O_RDONLY : O_RDWR);
+     if (fd == -1) {
+         if (errno != ENOENT) {
+-            error_setg_errno(errp, errno, "open(\"%s/%s\")", dirpath, fn);
++            error_setg_errno(errp, errno, "could not open %s/%s",
++                             dirpath, fn);
+         } else if (sys2vcpu) {
+             vcpu->online = true;
+             vcpu->can_offline = false;
+@@ -1712,7 +1713,7 @@ static void transfer_memory_block(GuestMemoryBlock *mem_blk, bool sys2memblk,
+     dirfd = open(dirpath, O_RDONLY | O_DIRECTORY);
+     if (dirfd == -1) {
+         if (sys2memblk) {
+-            error_setg_errno(errp, errno, "open(\"%s\")", dirpath);
++            error_setg_file_open(errp, errno, dirpath);
+         } else {
+             if (errno == ENOENT) {
+                 result->response = GUEST_MEMORY_BLOCK_RESPONSE_TYPE_NOT_FOUND;
+@@ -1937,7 +1938,7 @@ static GuestDiskStatsInfoList *guest_get_diskstats(Error **errp)
+ 
+     fp = fopen(diskstats, "r");
+     if (fp  == NULL) {
+-        error_setg_errno(errp, errno, "open(\"%s\")", diskstats);
++        error_setg_file_open(errp, errno, diskstats);
+         return NULL;
      }
  
-@@ -107,7 +107,7 @@ static int tap_alloc(char *dev, size_t dev_size, Error **errp)
+@@ -2048,7 +2049,7 @@ GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
  
-     if_fd = RETRY_ON_EINTR(open("/dev/tap", O_RDWR, 0));
-     if (if_fd < 0) {
--        error_setg(errp, "Can't open /dev/tap (2)");
-+        error_setg_file_open(errp, errno, "/dev/tap");
-         return -1;
+     fp = fopen(cpustats, "r");
+     if (fp  == NULL) {
+-        error_setg_errno(errp, errno, "open(\"%s\")", cpustats);
++        error_setg_file_open(errp, errno, cpustats);
+         return NULL;
      }
-     if(ioctl(if_fd, I_PUSH, "ip") < 0){
+ 
 -- 
 2.52.0
 
