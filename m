@@ -2,69 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3544ED03657
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 15:37:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92D18D0362A
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 15:36:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdr6I-0007QY-Aq; Thu, 08 Jan 2026 09:34:58 -0500
+	id 1vdr6B-0007CP-8g; Thu, 08 Jan 2026 09:34:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vdr5x-00072S-Uf
+ id 1vdr5x-00072E-8b
  for qemu-devel@nongnu.org; Thu, 08 Jan 2026 09:34:38 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vdr5u-0000in-36
+ id 1vdr5t-0000hm-Qs
  for qemu-devel@nongnu.org; Thu, 08 Jan 2026 09:34:37 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-47d3ffb0f44so21690025e9.3
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 06:34:33 -0800 (PST)
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-47d3ffa6720so33702405e9.0
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 06:34:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767882873; x=1768487673; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767882870; x=1768487670; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Sbu0M+maxtcRxXrgLFp4j1Dj8ytESdyrwiWOp43GF9w=;
- b=gn2BDc8Db/3PE20HBSfrSfyEvv3tAhXbrAG/OBYrOiM5avEcOWyluVpQGLhNojzbqb
- cfN5hBYcIylkU6EgI/uj3/t76/2lZlZ7lEIhsXGINzU9DEJy1G4RYd9vCgBAXygjpksl
- KFcufQ5o14E6fHG5uxPAPn3eW2CFLK4okQfeikOcL/7SVmFgoQApfDZpdusRI1JHBfBK
- TZlDmZPdadJLVwTywwL/yL2+m3lwVCEP7UiLIKW9qQexx1XB5d3kdRTUdyRs2i5BsTCu
- 58z9eZXmTOgrVJzO1krHiM+/Qcbc7C8yD7LG9X9GYR0ktJGD7g55pQydDfN33PRhtqge
- HUdg==
+ bh=CJzuVbaZdIwgkAzM484kEZrNbs3ZhkcE6xTd5j2Mceg=;
+ b=HYygImr4GhSEdt1R/SIEM+pDUdO/MLWXiAIlyg60A2D7iOkfkyc+ASIL8LdRoUyDcX
+ o0tlFgzlwHsAcuL+6svx36tTurp4oJbD5AwEwF1b4tnT3Ztmg26+4tylczwPC7/DZkWo
+ g+wvu/DnzehhcreiVR+HKqquU9LSuThe1cbe9WmhDhmbM02/MjiMZB0BqlqHeHf4I1LN
+ Bz8QVfTJ5uDtnB/dU78Z/2rRjqJR3FzIKZ5aJry44ap4HoabZiuX1pflO4X3ba8x29mh
+ 2fmwqDYHlZrq9nhuxnwER9w4dPt5ABrQbU2BII4x8QRvE7yi7w8BH9OLbEokVvvoLq5+
+ O/wQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767882873; x=1768487673;
+ d=1e100.net; s=20230601; t=1767882870; x=1768487670;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=Sbu0M+maxtcRxXrgLFp4j1Dj8ytESdyrwiWOp43GF9w=;
- b=ftlkGJW+faMXGgSLKaVhMMCFghlDG0kYaoNwJuVrSN+Gc+2QCD/DhZjUgkTf8/XO/i
- WJqWIn5cPVo92AlaCHesZvzz35aCg/ps/qOFDnVb4kWjIzZqGeqPuZPLA/Gn/1aw+JG/
- SuhA7Ty98qotVTT65++hpm35mXMX9k4wty01+7J4rtI6TjzddsXPiThzWu74I79U4I/J
- 7u1/zTMbss4wvxAGICG0p+xxgWQ7Y7awc9Uw2jjtg0tDEnN2GJSZqhbqEVK1KFUfbXKU
- k0x8oa/CXCkzyc9QPTyZRF6tNcBINJyEW7BvDqaI+VPESVqjT47piXbMADGL/VHYDXUu
- DBjA==
-X-Gm-Message-State: AOJu0Yx0/iQ4OjcdheiPfkKHxiUT66aSdFTPwhMq1CTlj0Fm4FxOxmQj
- B/hemHKj6MSYXaE4Iuu/7nDN5DQD4VrtrACMoKzlP3+fMq+PBdgn2qGNd9RhJqj4eSysHmB0DPp
- eIx8u
-X-Gm-Gg: AY/fxX4iX2J7sp45ocV31BBOG5ShGu9IRGNqOPhQNBG+CUa/J7hiO9J5nAlsjtjrfCb
- GLNVrt2xgultecGn2bD9UjH3TItgOUAbPUrbtFXtmeoiD8Y8kH4z3qNaFiXqU4l5tVCqPEkYPP2
- vJRVMU4jhIkXoP0Cb3RtEGZ1Kvie1CDWXQa53fnnejNg9kjyIMPnRWBxCBa45DmMZPFB0i4Crs3
- Rh27uVG1LPq/Ja16I6fMvEBczSU0gm5Q3SldiUgwOYlYXj7JJzrzoTrfcSAeInwXvAQ116NYlFu
- B6VgOV5vY9QhL3oWa7SsQLmvORrtUxVTwlhqD65LxRI/+yPGtQs8O3DceL4wcrA5xVK1wjkAdib
- /lH1G5a70oBqZrzZYCrR9J8IkZrY5NGQhuSrAV6mZInBJxJn7sZPi+OQlca4hhB0v0kRwsZI1a+
- IjMYRSucu0Czyf7mxkNB/Msw==
-X-Google-Smtp-Source: AGHT+IHHSKKF+8FsIcUnpmA+HxWnW4K6jZYoR2rUxPtSe+qc42mC3oncWJhn1rGbKjit/NRtcIjHyw==
-X-Received: by 2002:a05:600c:620f:b0:477:9fcf:3fe3 with SMTP id
- 5b1f17b1804b1-47d8f34f2e2mr6490295e9.0.1767882872578; 
- Thu, 08 Jan 2026 06:34:32 -0800 (PST)
+ bh=CJzuVbaZdIwgkAzM484kEZrNbs3ZhkcE6xTd5j2Mceg=;
+ b=RsbbPRQVmWdKcPFr6WilXGcXf0oPwccDb/VoazdDCpUQBCMbboXaJpt1K8tYwgeSoA
+ RFGxv4uZ+5FIQ9RLG6cIxNxIO8b7TgklraROg75EfNIcBhf7CxC4adiuGxHu0jAZB3xN
+ WUTdvam9K6nmr4YCB/T7+NpbxqUhw8oy4mZCCxeY68jcAo8LrH6XcebsggzAFmVm2kKT
+ TfxufNYL0rjwneRXuv4GacKfnMpvM+BkgqTGVxd0HpmzyCWadBChHeEy2o/g/GHPgwuI
+ sVtvEUyiNsaGynAgKUowIltbaQ8R8CwwbAq9Xn7tpoDxBUS7eQyv7FWSQSLuoIbw4RCN
+ q+Tw==
+X-Gm-Message-State: AOJu0YyLQeHTLDmUXh37qU5fRPc9bY0FkIlL87a+OG3WT5YX+TnGrL+/
+ s4drb2oL6GJGS7NY6BTh4hs4md5MdpIqlJLJ4lzhcaFaFHOu3ImZyT4r1rz69b0pTHI=
+X-Gm-Gg: AY/fxX6QYuO6wGfiu1Kc2EJY7QJmv8/ZNvlxCaZvhlWAwN5KaAVDCagPCo1h6giddGS
+ VtDze67LYqOl9mzQ75of1ao5WqQw5O2m84i9RL1wydfgLkAGCkqwNkM9Tkt/k50eSKZXZRWxEVp
+ NYTTSWRZNAVgOaEgJfVvXfcJDkoygeZIQInescgCpdN5H9DOjPVT/FFOMgtCwbzznDO36vn2SN+
+ ttCTt2KWdGKy5CUDICClwjfkdMH2VHrpH1J7loBsIkE5km3gaHBXk4wyRF2BXtDjZyCtkJkcNB1
+ qt4R5dhEqK2AwEl6fWXDKfDqdth1KGqfcfOuPBq4hKepyyBbKxAbURQm+2V9lLwbeSJ0lwqTwgR
+ L48T3Jx9qD1bo4LL9XmCVyqzUIoj9hcwoKzaeNh6JcynDerZz/yuqAYUiAf6wMK45MRFfMjon2p
+ PooPW5B6P33AOvP7Sl2G83eQ==
+X-Google-Smtp-Source: AGHT+IEszrccpcodAmK2Okm4qvXdSHUt71l38BB9KgWymhwhe6pMkgAQT1Emcr+HTay4HgOGZdg82w==
+X-Received: by 2002:a05:600c:4fc6:b0:477:5ad9:6df1 with SMTP id
+ 5b1f17b1804b1-47d84b0aaa3mr69677235e9.3.1767882870170; 
+ Thu, 08 Jan 2026 06:34:30 -0800 (PST)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d86637b90sm42599195e9.2.2026.01.08.06.34.25
+ 5b1f17b1804b1-47d8719e695sm37602105e9.17.2026.01.08.06.34.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 08 Jan 2026 06:34:27 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 48F365F917;
+ by draig.lan (Postfix) with ESMTP id 6156D5F943;
  Thu, 08 Jan 2026 14:34:24 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -79,24 +78,24 @@ Cc: Aurelien Jarno <aurelien@aurel32.net>,
  Yanan Wang <wangyanan55@huawei.com>, Aleksandar Rikalo <arikalo@gmail.com>,
  Thomas Huth <huth@tuxfamily.org>, Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [RFC PATCH 05/12] hw/m68k: register a an5206_cpu_reset handler
-Date: Thu,  8 Jan 2026 14:34:16 +0000
-Message-ID: <20260108143423.1378674-6-alex.bennee@linaro.org>
+Subject: [RFC PATCH 06/12] hw/m68k: just use reset_pc for virt platform
+Date: Thu,  8 Jan 2026 14:34:17 +0000
+Message-ID: <20260108143423.1378674-7-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260108143423.1378674-1-alex.bennee@linaro.org>
 References: <20260108143423.1378674-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,70 +111,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As the mbar/rambar0 values are currently fixed we can migrate the
-setting of them to the reset handler as well.
+We never actually set initial_stack so revert to the previous
+behaviour and stash pc in the common env->reset_pc holding place.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- hw/m68k/an5206.c | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ hw/m68k/virt.c | 24 +++++++-----------------
+ 1 file changed, 7 insertions(+), 17 deletions(-)
 
-diff --git a/hw/m68k/an5206.c b/hw/m68k/an5206.c
-index f92a5d6a339..918c376a384 100644
---- a/hw/m68k/an5206.c
-+++ b/hw/m68k/an5206.c
-@@ -15,11 +15,26 @@
- #include "elf.h"
- #include "qemu/error-report.h"
- #include "system/qtest.h"
-+#include "system/reset.h"
+diff --git a/hw/m68k/virt.c b/hw/m68k/virt.c
+index e67900c727d..6af74b7ba1d 100644
+--- a/hw/m68k/virt.c
++++ b/hw/m68k/virt.c
+@@ -87,21 +87,14 @@
+ #define VIRT_VIRTIO_MMIO_BASE 0xff010000     /* MMIO: 0xff010000 - 0xff01ffff */
+ #define VIRT_VIRTIO_IRQ_BASE  PIC_IRQ(2, 1)  /* PIC: 2, 3, 4, 5, IRQ: ALL */
  
- #define KERNEL_LOAD_ADDR 0x10000
- #define AN5206_MBAR_ADDR 0x10000000
- #define AN5206_RAMBAR_ADDR 0x20000000
- 
-+static void an5206_cpu_reset(void *opaque)
-+{
-+    M68kCPU *cpu = opaque;
-+    CPUM68KState *env = &cpu->env;
-+    CPUState *cs = CPU(cpu);
-+
-+    cpu_reset(cs);
-+    cpu->env.vbr = 0;
-+    cpu->env.mbar = AN5206_MBAR_ADDR | 1;
-+    cpu->env.rambar0 = AN5206_RAMBAR_ADDR | 1;
-+
-+    cpu->env.pc = env->reset_pc;
-+}
-+
- static void mcf5206_init(M68kCPU *cpu, MemoryRegion *sysmem, uint32_t base)
- {
-     DeviceState *dev;
-@@ -47,14 +62,9 @@ static void an5206_init(MachineState *machine)
-     MemoryRegion *sram = g_new(MemoryRegion, 1);
- 
-     cpu = M68K_CPU(cpu_create(machine->cpu_type));
-+    qemu_register_reset(an5206_cpu_reset, cpu);
-     env = &cpu->env;
- 
--    /* Initialize CPU registers.  */
--    env->vbr = 0;
--    /* TODO: allow changing MBAR and RAMBAR.  */
--    env->mbar = AN5206_MBAR_ADDR | 1;
--    env->rambar0 = AN5206_RAMBAR_ADDR | 1;
+-typedef struct {
+-    M68kCPU *cpu;
+-    hwaddr initial_pc;
+-    hwaddr initial_stack;
+-} ResetInfo;
 -
-     /* DRAM at address zero */
-     memory_region_add_subregion(address_space_mem, 0, machine->ram);
+ static void main_cpu_reset(void *opaque)
+ {
+-    ResetInfo *reset_info = opaque;
+-    M68kCPU *cpu = reset_info->cpu;
++    M68kCPU *cpu = opaque;
+     CPUState *cs = CPU(cpu);
  
-@@ -90,7 +100,7 @@ static void an5206_init(MachineState *machine)
+     cpu_reset(cs);
+-    cpu->env.aregs[7] = reset_info->initial_stack;
+-    cpu->env.pc = reset_info->initial_pc;
++    cpu->env.aregs[7] = ldl_phys(cs->as, 0);
++    cpu->env.pc = cpu->env.reset_pc;
+ }
+ 
+ static void rerandomize_rng_seed(void *opaque)
+@@ -129,8 +122,8 @@ static void virt_init(MachineState *machine)
+     SysBusDevice *sysbus;
+     hwaddr io_base;
+     int i;
+-    ResetInfo *reset_info;
+     uint8_t rng_seed[32];
++    CPUM68KState *env;
+ 
+     if (ram_size > 3399672 * KiB) {
+         /*
+@@ -142,13 +135,10 @@ static void virt_init(MachineState *machine)
          exit(1);
      }
  
--    env->pc = entry;
-+    env->reset_pc = entry;
- }
+-    reset_info = g_new0(ResetInfo, 1);
+-
+     /* init CPUs */
+     cpu = M68K_CPU(cpu_create(machine->cpu_type));
+-
+-    reset_info->cpu = cpu;
+-    qemu_register_reset(main_cpu_reset, reset_info);
++    qemu_register_reset(main_cpu_reset, cpu);
++    env = &cpu->env;
  
- static void an5206_machine_init(MachineClass *mc)
+     /* RAM */
+     memory_region_add_subregion(get_system_memory(), 0, machine->ram);
+@@ -235,7 +225,7 @@ static void virt_init(MachineState *machine)
+             error_report("could not load kernel '%s'", kernel_filename);
+             exit(1);
+         }
+-        reset_info->initial_pc = elf_entry;
++        env->reset_pc = elf_entry;
+         parameters_base = (high + 1) & ~1;
+         param_ptr = param_blob;
+ 
 -- 
 2.47.3
 
