@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6945CD03C1D
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 16:19:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47846D03C51
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 16:21:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdrml-00026y-Rw; Thu, 08 Jan 2026 10:18:54 -0500
+	id 1vdrmV-0001ve-Nm; Thu, 08 Jan 2026 10:18:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1vdrlf-00018Z-OG
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 10:17:45 -0500
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1vdrli-000197-2F
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 10:17:46 -0500
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1vdrld-0003gE-Hc
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 10:17:43 -0500
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-7b8eff36e3bso3426641b3a.2
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 07:17:41 -0800 (PST)
+ id 1vdrlg-0003ho-IW
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 10:17:45 -0500
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-7aae5f2633dso2402614b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 07:17:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1767885460; x=1768490260; darn=nongnu.org;
+ d=sifive.com; s=google; t=1767885463; x=1768490263; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HFri5ZA09xRzAtu6L+gPED6chTkzb719Dd9fZBMyM3c=;
- b=cWoR2m+VRDFDgEp3aOwrVmnRAGJec5kc88IXrLU6adqA/ZSMv2cv3wGQM4fnNkYUmQ
- 7e8RttQFGbheKQukKb3++3fLq6QpD1FmUUVbv80WBQXFJLoFHvsTbtSMxLTmSaNmiuVj
- IVeFYadkS9xCsun+6uBL6IS92inQTdoAqqlAYdXF8BBQ1MpBhGZdLajNUdJ06B5jc0LX
- +xiaesAomrLrfHmVL892jRv7U6rTjzl1zSRUkDU0Dx5cElhQFMXKR3IcpLQ8NE0xM5G7
- Ip63vTBI5v5Y5/gCNvaxVif2IMmM0zUQ0r6SsEsQed/CaLW5OsDtP1FyjPKkh1MvrB13
- hqcw==
+ bh=OstMPI/h+uk1U6Kh39t8Ott75csp0bQMtJ3rPEB+Wdo=;
+ b=ijYhj0aFMZwQvnLM/r1cCbHCkdLYDuoHVJ2ueqGo80axJk/GVIksEqjdN851Rm/5xb
+ IQuuEg2T9CLobIjWrFWi+hpKPSKUT2sB6Pei4RH4hvEN9nNgeQJGLc7zCY6YFtKADNdF
+ e3ha0ZeWIDCJePcGgzMu/5LhV4AHrITmyRCTKscKiwJGzUFn10wV2wuxoh6GQ2neIZmR
+ VOAwv2/kSKSK7VzAOy1H9Yy9uiEGz4uB6eLuzzRVQu8ovBueEJVLZYQBa8tpCiqTBAan
+ XjwdbQ+Nsw9V+2zy0K4tIx/hdaFm4rJpxcZgQJOS3c1qS76jY4rRblwGNsq8Aa1/3psC
+ UMxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767885460; x=1768490260;
+ d=1e100.net; s=20230601; t=1767885463; x=1768490263;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=HFri5ZA09xRzAtu6L+gPED6chTkzb719Dd9fZBMyM3c=;
- b=Lb2ftpwqm1fUuu8Kmoaqa7mxbgj5HcQg0UKlSUTDvFvxd2mzdVK45AB8XENlToHrLb
- MGTzvQ4EJFrxDr4pq5as39i+jBMWRGPz0PppPUUZNhQbVTFea6OtgLOW7v90LXy9U6GZ
- kuou7gWeknopb5+/tlhgGHrU8bF4fsZJuk+7BWkEyWo5sjBks4A9eSLSnz9m2jZWDt7i
- dOnb7tV5VOFIff577mnd5ldrn5f6yUNdM9kGj31OLhNTHCXi2F5ZemcvjbEcGU9l/XE3
- qGtf5Qjv1cXF7tsCIdJTu9WsK/rPltVYwvwb0zHYV5+E6TS6ygta7KorSo87Ew/SkK+8
- KHJQ==
-X-Gm-Message-State: AOJu0Yx05697GmKHiWn28Njb9lfEXBXfFyTD/A63rVw7HO9yXI9td/2m
- q9A20b3yX5UzG55uJhipn31ZAr2Oi165QO1mHxyfWuzOx5MPayJkDuBktiQAHNK1GK8jZti2KkW
- zh5kGbzfwrjGmCfht160+FfEP6OsrOmLJHoaaPTge86YDXVa3TI2Tz+udLen09zx2svwwW+1UgM
- B+ddf2EFLN3WVQ5MQmTdHwyTO1Zspp370qFyvLFs0=
-X-Gm-Gg: AY/fxX4orACC9lp+lPZdcJcwH/BEZ1g9ckAgFzuiiEVNszk0R6FBkVIjMw21x9i3xdY
- zL6Nk/Hb/A5ZXnjCQ+C1vT2KaTSy0oRcMFdwQqcPbg+GK4TGBNtzKJM5Hr/INR2kJIsq3E09DtP
- tfrA2K9q6bYuyovXrTNrgihXDeHaZ0LqWltC0rzC47nfO8BgPrVIzYvBoDGB0wUHDH1z0jbiWLB
- 7H9Z6bwwDYxMSMS+JAHjPhwIAC1ThkVxSVhwC8FG6thnjepJK3FjNz8SpV1xDWVsO64D8rRHb8s
- O3ZCOX284JYZ4gUZE1b3o22v7n+/XRtD9TaFh8wyaqJebRHNvDfZtOgLYLP/3j+DcLVInOFjzv8
- Oj+RFLrh9wmzDtVB8QeQ13VWQvG0dKQArq+4tMEpPY99EJjXx0YXjystsypnmuxDYlNO/ReSoNy
- jQqZ33XxjGWm/lH1b/iasJ40kz0fWc4A2lpM7IaNypS9OnAoMVwdxxijs=
-X-Google-Smtp-Source: AGHT+IGCi2YNQzFt1tst0ktqMT44HaOaPIaDor3NEsGDB363eFrbnvaKbJjZ1cOnJ9rzv9C7sKNuZw==
-X-Received: by 2002:a05:6a00:408e:b0:7e8:450c:61ae with SMTP id
- d2e1a72fcca58-81b7ffd758emr6072210b3a.69.1767885460018; 
- Thu, 08 Jan 2026 07:17:40 -0800 (PST)
+ bh=OstMPI/h+uk1U6Kh39t8Ott75csp0bQMtJ3rPEB+Wdo=;
+ b=lZcBiznAarjblzPvHkABJx9P1JyRLk4YOS+iazlmG/7w6n52C5rXXoJIN+A5uMtIlN
+ 7AkuggBLFg66p8FSWwLuj/hKUA27VN+mjhQMxuXgd73H/0y8ZgOE4wm3pmheOLoI15Rc
+ aHLwsgu0Szajr4g9qeV3VrKodkeAT+gGPtH54lbjRUyt2Z3l2W4g7u/RJsgf9bqEa3ss
+ Ykv+cdemiYiXuNKMcDDG3GaXZ8F87XrC3+DIMWoaqs4BA27UyxemQex0HaeueYuC8QCN
+ 0OBDNKj3nb9XkwXISdGhUE588JbHNXU+0GPYYODac1evsOAzF1YK02PEz5AgSPyivXoR
+ ddaw==
+X-Gm-Message-State: AOJu0YxfMFccRCO3zexTKNbkCnYTfR6EZ1mx+pEBe492JLxD6Aq5ysCd
+ v9X6n6WRLZMwKM5AWN7YwZOog+0m8MhEscY1TBNvhdJbZwTvfB8cCWItx90SVaRomVLIgdUT+Te
+ e12FI0A8V8qWMx6VbmZlTrNyDVe9de5ihER+tXLb2/F0o54b0qu32W4cPOioLadr1tuEGILGVHX
+ w9374vi6HgCFN15XqD/EuX1Q9WB2eZTYyIQdmiSZw=
+X-Gm-Gg: AY/fxX5gXp8rzgGMoqd/jJuS6nWVqqQ7xF+Sd9ptFNgAhVma77VQiSgrrzPanFrNjRW
+ A8dl2CuWV5xnHRFy3NIKlYp/+U0Hv8TCXYjJeutID6Wbg2h89HUjim0uo57119F+qMm2dCmu4yl
+ wFSiAztWqi22jwK6rHNEsUk6j4hSB+oiT+55ne75KiElCT9S8ydANsDIulwJKkhzfIVjZGg0KTI
+ Sre9HnCeh3vrLulPs6Esuw8R7A+v8FPscGX62T8KREPVU6MM34E65+j/YP9V1kOG67RPPvEy1lR
+ P38ZHv3/DwvpL/uXt1r8HoGd6gBGrxOLkSGhOwvoDPoWE+806EAkY8fRu7ABU1P2zURIEQDQdwo
+ vWX5cp+g9Z8qTBCaBtCovb/VR+LngEsfSDBUTNLyFfVd5pvwgTA8p5w8GcrwQD0t1kv4nHTpQKX
+ 04p5S9Mh9uPQ6GBBEiY1Oyu5/nL1e0r9UzK27t0mdz3Kh8meK8t11sB2g=
+X-Google-Smtp-Source: AGHT+IGAWXKTVLCGV2cgP6GXeMpT36rzH+UtA/2TLx3c5kyW3/RiuZ/XUnJDQ4EqS7jTl5Uay6l1Jw==
+X-Received: by 2002:a05:6a00:a383:b0:81c:717b:9d35 with SMTP id
+ d2e1a72fcca58-81c717ba5bamr3536690b3a.28.1767885463090; 
+ Thu, 08 Jan 2026 07:17:43 -0800 (PST)
 Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
  [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-81d87955bb6sm1060239b3a.50.2026.01.08.07.17.37
+ d2e1a72fcca58-81d87955bb6sm1060239b3a.50.2026.01.08.07.17.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 07:17:39 -0800 (PST)
+ Thu, 08 Jan 2026 07:17:42 -0800 (PST)
 From: Max Chou <max.chou@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -77,23 +77,23 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Max Chou <max.chou@sifive.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH 14/18] target/riscv: Add cfg properity for Zvfofp4min extension
-Date: Thu,  8 Jan 2026 23:16:45 +0800
-Message-ID: <20260108151650.16329-15-max.chou@sifive.com>
+Subject: [PATCH 15/18] target/riscv: Add implied rules for Zvfofp4min extension
+Date: Thu,  8 Jan 2026 23:16:46 +0800
+Message-ID: <20260108151650.16329-16-max.chou@sifive.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260108151650.16329-1-max.chou@sifive.com>
 References: <20260108151650.16329-1-max.chou@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=max.chou@sifive.com; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=max.chou@sifive.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,68 +109,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to the ISA spec of Zvfofp4min extension,
-"The Zvfofp4min extension requires on the Zve32f extension."
+Add implied rules to enable the implied extensions of Zvfofp4min
+extension recursively.
 
 Signed-off-by: Max Chou <max.chou@sifive.com>
 ---
- target/riscv/cpu.c                |  1 +
- target/riscv/cpu_cfg_fields.h.inc |  1 +
- target/riscv/tcg/tcg-cpu.c        | 10 ++++++++++
- 3 files changed, 12 insertions(+)
+ target/riscv/cpu.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 081891c97a..9d4fc3ab6b 100644
+index 9d4fc3ab6b..ec1bf8034f 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -193,6 +193,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zvfbfwma, PRIV_VERSION_1_12_0, ext_zvfbfwma),
-     ISA_EXT_DATA_ENTRY(zvfh, PRIV_VERSION_1_12_0, ext_zvfh),
-     ISA_EXT_DATA_ENTRY(zvfhmin, PRIV_VERSION_1_12_0, ext_zvfhmin),
-+    ISA_EXT_DATA_ENTRY(zvfofp4min, PRIV_VERSION_1_12_0, ext_zvfofp4min),
-     ISA_EXT_DATA_ENTRY(zvfofp8min, PRIV_VERSION_1_12_0, ext_zvfofp8min),
-     ISA_EXT_DATA_ENTRY(zvkb, PRIV_VERSION_1_12_0, ext_zvkb),
-     ISA_EXT_DATA_ENTRY(zvkg, PRIV_VERSION_1_12_0, ext_zvkg),
-diff --git a/target/riscv/cpu_cfg_fields.h.inc b/target/riscv/cpu_cfg_fields.h.inc
-index 59302894af..353a932c36 100644
---- a/target/riscv/cpu_cfg_fields.h.inc
-+++ b/target/riscv/cpu_cfg_fields.h.inc
-@@ -104,6 +104,7 @@ BOOL_FIELD(ext_zvfbfmin)
- BOOL_FIELD(ext_zvfbfwma)
- BOOL_FIELD(ext_zvfh)
- BOOL_FIELD(ext_zvfhmin)
-+BOOL_FIELD(ext_zvfofp4min)
- BOOL_FIELD(ext_zvfofp8min)
- BOOL_FIELD(ext_smaia)
- BOOL_FIELD(ext_ssaia)
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index ba89436f13..c095bc9efd 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -715,6 +715,11 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-         return;
-     }
+@@ -2526,6 +2526,15 @@ static RISCVCPUImpliedExtsRule ZVFOFP8MIN_IMPLIED = {
+     },
+ };
  
-+    if (cpu->cfg.ext_zvfofp4min && !cpu->cfg.ext_zve32f) {
-+        error_setg(errp, "Zvfofp4min extension depends on Zve32f extension");
-+        return;
-+    }
++static RISCVCPUImpliedExtsRule ZVFOFP4MIN_IMPLIED = {
++    .ext = CPU_CFG_OFFSET(ext_zvfofp4min),
++    .implied_multi_exts = {
++        CPU_CFG_OFFSET(ext_zve32f),
 +
-     if (cpu->cfg.ext_zvfh && !cpu->cfg.ext_zfhmin) {
-         error_setg(errp, "Zvfh extensions requires Zfhmin extension");
-         return;
-@@ -738,6 +743,11 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-         }
-     }
- 
-+    if (cpu->cfg.ext_zvfofp4min && !cpu->cfg.ext_zve32f) {
-+        error_setg(errp, "Zvfofp4min extension depends on Zve32f extension");
-+        return;
-+    }
++        RISCV_IMPLIED_EXTS_RULE_END
++    },
++};
 +
-     if ((cpu->cfg.ext_zdinx || cpu->cfg.ext_zhinxmin) && !cpu->cfg.ext_zfinx) {
-         error_setg(errp, "Zdinx/Zhinx/Zhinxmin extensions require Zfinx");
-         return;
+ static RISCVCPUImpliedExtsRule ZVKN_IMPLIED = {
+     .ext = CPU_CFG_OFFSET(ext_zvkn),
+     .implied_multi_exts = {
+@@ -2663,7 +2672,7 @@ RISCVCPUImpliedExtsRule *riscv_multi_ext_implied_rules[] = {
+     &ZKS_IMPLIED, &ZVBB_IMPLIED, &ZVE32F_IMPLIED,
+     &ZVE32X_IMPLIED, &ZVE64D_IMPLIED, &ZVE64F_IMPLIED, &ZVE64X_IMPLIED,
+     &ZVFBFA_IMPLIED, &ZVFBFMIN_IMPLIED, &ZVFBFWMA_IMPLIED,
+-    &ZVFH_IMPLIED, &ZVFHMIN_IMPLIED, &ZVFOFP8MIN_IMPLIED,
++    &ZVFH_IMPLIED, &ZVFHMIN_IMPLIED, &ZVFOFP4MIN_IMPLIED, &ZVFOFP8MIN_IMPLIED,
+     &ZVKN_IMPLIED,
+     &ZVKNC_IMPLIED, &ZVKNG_IMPLIED, &ZVKNHB_IMPLIED,
+     &ZVKS_IMPLIED,  &ZVKSC_IMPLIED, &ZVKSG_IMPLIED, &SSCFG_IMPLIED,
 -- 
 2.43.7
 
