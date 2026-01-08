@@ -2,71 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96EFFD02C47
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 13:55:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12BBDD02C72
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 13:57:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdpY3-0001uy-5N; Thu, 08 Jan 2026 07:55:31 -0500
+	id 1vdpZc-0003Yx-AD; Thu, 08 Jan 2026 07:57:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdpXx-0001uG-3l
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 07:55:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdpXu-0005LG-5L
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 07:55:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767876921;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vdpZP-0003UQ-AK
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 07:56:55 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vdpZN-0005ju-Nc
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 07:56:55 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id EF1465C4F0;
+ Thu,  8 Jan 2026 12:56:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1767877012; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eOHTmsngTX/h/fzMLmGrM+0LJo6gOgPawHYtAV0OeaE=;
- b=i1sxo8MlhP9jmv+Mfl/6/4po69TdWhwT4cggn7n1dgYdkHV0FhnBwHZ0NGVc/lxmq0V4Jd
- AvOBR6+PdMMcbxrq92NgrgC9XY+1mWwiBbCSeqL1YepYE94f+Ng/18lnEeuY4zdWFUyzCC
- AoV/Pe3V68xeK2tiT1OhnWYK/BisNaw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-128-Syf0byNeNeqju8TuVy7-mQ-1; Thu,
- 08 Jan 2026 07:55:17 -0500
-X-MC-Unique: Syf0byNeNeqju8TuVy7-mQ-1
-X-Mimecast-MFC-AGG-ID: Syf0byNeNeqju8TuVy7-mQ_1767876916
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ bh=ltrDkUAWG4KPG7mtQbZcDH7lnlwsr80SG0VBtboHarQ=;
+ b=GU2XOC/lGoXrgHGxmVelU3s8I/8T85BcgESdt6hqCzMtJpw0UVGTbWHgzJujHU/kxp+5ZD
+ EAhRIwiYrJI4QKwH5y4BiLP33tkUUBl0SpQBc7VdvxqYBE83wAOo6Bj8TfcNtEtK6Y8+Ht
+ 62ry4ipHXy6epLC/ji/66WEEWGkbVXY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1767877012;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ltrDkUAWG4KPG7mtQbZcDH7lnlwsr80SG0VBtboHarQ=;
+ b=MVdSGMKwvqO2szL5Ow4VgWHQYQVRb4D1HxoOx9/oJPEPF57/EpcmKfw4prKoBIyw9atW0B
+ e2XlrJ0hPTUwwDCg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1767877011; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ltrDkUAWG4KPG7mtQbZcDH7lnlwsr80SG0VBtboHarQ=;
+ b=NHflQ5TZPK7cT8SITDSsBq5oMM0yJLvyCAuIXhb26qzJphmk5Mfa/mmRElnGgbxHWeCvyJ
+ nDb5YNGkAv9qZueenw3WH1lESQhOFd0yD321A90o7LG8kOZl9p8zi46GQWXaj+49ntNCYR
+ ar3mzvzSqbGK23Q3+jZh1xxcfQjkKY0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1767877011;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ltrDkUAWG4KPG7mtQbZcDH7lnlwsr80SG0VBtboHarQ=;
+ b=h1LSN/06jI5i3MgFlBpIu5ShDaZpviY30jpGvsyYjNxUJaQq3VYXeJBxt85/YjYCbSYdP3
+ UT05Rq0ZZPMW0uDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C16821956050; Thu,  8 Jan 2026 12:55:15 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.32])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5E78519560A2; Thu,  8 Jan 2026 12:55:15 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id DFB3521E61AA; Thu, 08 Jan 2026 13:55:12 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peterx@redhat.com, farosas@suse.de, devel@lists.libvirt.org,
- eblake@redhat.com
-Subject: [PATCH 2/2] migration: Drop deprecated QMP migrate argument @detach
-Date: Thu,  8 Jan 2026 13:55:12 +0100
-Message-ID: <20260108125512.2234147-3-armbru@redhat.com>
-In-Reply-To: <20260108125512.2234147-1-armbru@redhat.com>
-References: <20260108125512.2234147-1-armbru@redhat.com>
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 680A43EA63;
+ Thu,  8 Jan 2026 12:56:51 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id Oia3CpOpX2lgaAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 08 Jan 2026 12:56:51 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
+Cc: thuth@redhat.com, peterx@redhat.com, Fabian Vogt <fvogt@suse.de>,
+ Nicholas Piggin <npiggin@gmail.com>, Chinmay Rath <rathc@linux.ibm.com>,
+ gautam@linux.ibm.com
+Subject: Re: [PATCH v2 1/2] target/ppc: Fix env->quiesced migration
+In-Reply-To: <31a61dff-d30d-4c93-8fc1-391c99d32b42@linux.ibm.com>
+References: <20251217164549.4311-1-farosas@suse.de>
+ <20251217164549.4311-2-farosas@suse.de>
+ <7c64764f-5f38-435f-a68d-a935891da864@linux.ibm.com>
+ <31a61dff-d30d-4c93-8fc1-391c99d32b42@linux.ibm.com>
+Date: Thu, 08 Jan 2026 09:56:48 -0300
+Message-ID: <87bjj41cvj.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ FUZZY_RATELIMITED(0.00)[rspamd.com];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; FREEMAIL_ENVRCPT(0.00)[gmail.com];
+ ARC_NA(0.00)[]; RCVD_TLS_ALL(0.00)[]; MIME_TRACE(0.00)[0:+];
+ MISSING_XM_UA(0.00)[]; RCPT_COUNT_SEVEN(0.00)[8];
+ MID_RHS_MATCH_FROM(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_HAS_DN(0.00)[];
+ FREEMAIL_CC(0.00)[redhat.com,suse.de,gmail.com,linux.ibm.com];
+ TO_DN_SOME(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -4.30
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,109 +125,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Deprecated in commit c2fb6eaeb9d4 (qapi/migration: Deprecate migrate
-argument @detach), v10.1.0.
+Harsh Prateek Bora <harshpb@linux.ibm.com> writes:
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- docs/about/deprecated.rst       | 5 -----
- docs/about/removed-features.rst | 5 +++++
- qapi/migration.json             | 8 --------
- migration/migration-hmp-cmds.c  | 2 +-
- migration/migration.c           | 2 +-
- 5 files changed, 7 insertions(+), 15 deletions(-)
+> One minor comment below:
+>
+> <snip>
+>
+> On 05/01/26 2:30 pm, Harsh Prateek Bora wrote:
+>>> diff --git a/target/ppc/machine.c b/target/ppc/machine.c
+>>> index d72e5ecb94..ba63a7debb 100644
+>>> --- a/target/ppc/machine.c
+>>> +++ b/target/ppc/machine.c
+>>> @@ -6,6 +6,7 @@
+>>> =C2=A0 #include "mmu-hash64.h"
+>>> =C2=A0 #include "migration/cpu.h"
+>>> =C2=A0 #include "qapi/error.h"
+>>> +#include "qemu/error-report.h"
+>
+> I do not see any error reporting being added in the patch below.
+> Does this header inclusion need to be removed ?
+>
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index e9b019b41c..b53d885533 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -142,11 +142,6 @@ Use ``job-dismiss`` instead.
- 
- Use ``job-finalize`` instead.
- 
--``migrate`` argument ``detach`` (since 10.1)
--''''''''''''''''''''''''''''''''''''''''''''
--
--This argument has always been ignored.
--
- Human Machine Protocol (HMP) commands
- -------------------------------------
- 
-diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index 9e5a4dcbac..5eee371f5f 100644
---- a/docs/about/removed-features.rst
-+++ b/docs/about/removed-features.rst
-@@ -760,6 +760,11 @@ without reporting any destination threads, or non-multifd source
- threads).  For debugging purpose, please use ``-name
- $VM,debug-threads=on`` instead.
- 
-+``migrate`` argument ``detach`` (since 11.0)
-+''''''''''''''''''''''''''''''''''''''''''''
-+
-+This argument has always been ignored.
-+
- QEMU Machine Protocol (QMP) events
- ----------------------------------
- 
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 7bd24e66e9..c99ae433e0 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -1397,19 +1397,12 @@
- # @channels: list of migration stream channels with each stream in the
- #     list connected to a destination interface endpoint.
- #
--# @detach: this argument exists only for compatibility reasons and is
--#     ignored by QEMU
--#
- # @resume: when set, use the new uri/channels specified to resume
- #     paused postcopy migration.  This flag should only be used if
- #     the previous postcopy migration was interrupted.  The command
- #     will fail unless migration is in "postcopy-paused" state.
- #     (default: false, since 3.0)
- #
--# Features:
--#
--# @deprecated: Argument @detach is deprecated.
--#
- # Since: 0.14
- #
- # .. admonition:: Notes
-@@ -1469,7 +1462,6 @@
- { 'command': 'migrate',
-   'data': {'*uri': 'str',
-            '*channels': [ 'MigrationChannel' ],
--           '*detach': { 'type': 'bool', 'features': [ 'deprecated' ] },
-            '*resume': 'bool' } }
- 
- ##
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index a2863e6a2f..0a193b8f54 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -829,7 +829,7 @@ void hmp_migrate(Monitor *mon, const QDict *qdict)
-     }
-     QAPI_LIST_PREPEND(caps, g_steal_pointer(&channel));
- 
--    qmp_migrate(NULL, true, caps, false, false, true, resume, &err);
-+    qmp_migrate(NULL, true, caps, true, resume, &err);
-     if (hmp_handle_error(mon, err)) {
-         return;
-     }
-diff --git a/migration/migration.c b/migration/migration.c
-index 94ade36574..42eaceb38a 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -2203,7 +2203,7 @@ static gboolean qmp_migrate_finish_cb(QIOChannel *channel,
- }
- 
- void qmp_migrate(const char *uri, bool has_channels,
--                 MigrationChannelList *channels, bool has_detach, bool detach,
-+                 MigrationChannelList *channels,
-                  bool has_resume, bool resume, Error **errp)
- {
-     bool resume_requested;
--- 
-2.52.0
+Well spotted, that's a leftover from a previous implementation.
 
 
