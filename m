@@ -2,86 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45988D01073
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 06:01:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61242D01183
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 06:31:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdi8k-0007UQ-A0; Thu, 08 Jan 2026 00:00:54 -0500
+	id 1vdibO-000504-KY; Thu, 08 Jan 2026 00:30:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
- id 1vdi8Z-0007Rq-O0
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:00:45 -0500
-Received: from mail-qv1-xf33.google.com ([2607:f8b0:4864:20::f33])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1vdibM-0004zU-Bp
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:30:28 -0500
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
- id 1vdi8V-0006zG-Op
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:00:42 -0500
-Received: by mail-qv1-xf33.google.com with SMTP id
- 6a1803df08f44-88a26ce6619so27095976d6.3
- for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 21:00:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1vdibJ-0005GX-RL
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:30:28 -0500
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-34e90f7b49cso1791364a91.3
+ for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 21:30:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1767848438; x=1768453238; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=G3vcNVxoQ86ms0LQI7aA3LODs0+8eM4a/ySAjtj1Ku0=;
- b=idphcu4NRj8UfskmqRIg0jrkB0O8/LeJ88axe9yvUcI3hPrp4S9diuZIGjGVa666Z8
- M5po7NBr7W7ZVLkzZkpOQDpd0qDoDiIeyGR1fzDq5yEKT2f8aTMM7MKxMRYWzNKztkbS
- yUPsAhYD9JlqEQJOQLZLn+NAS9LgJvvy4f8Aq9OocU2S7dpn+aUiJ0tnJw9ochAl6uMM
- mpbieFoGxrzUVhqn3SAwqjArJGo+ay6RC57afeps1HQFMdr+Go5mpnewCJzpbXrxF39c
- meuBSsAtjncij1k/HSEA+YpSfczxmV+6tdiUe+ocabs3JklDioXYPL3/QVu0pVdaugAu
- qblw==
+ d=linaro.org; s=google; t=1767850224; x=1768455024; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=CEdaanuN4O4Pp+xNlzIUSei8+BxLkgpOOD9e/ocjqHM=;
+ b=rafslRZsk7zUDlqpH8wDenKoOWqMJiTC1+AFoZG442OM7tuv94inThgritxK0gc5FZ
+ ovz2JfWEsDld06eGDMa86fXI0UEkF4067sssIDdfOn3OStrlfiWFadvdRYJ4FsISJuHV
+ Njyi62dSuw8ddggQW1vZBh5crVUWgA8ALkHeibKjaaDJXrdeUaGoOFo3FO/zj/WlkBQ5
+ qIlGYfNq+MQX+VM0bGwZbCwzqRL5Ml0cLtPkr+h29c/1w+SWpYnUIudHAvvZhnfHRMr1
+ QxWy2FkkFK5lWoBeVgBpT56upZZBvRFQsBKFC4f2p2Je8JCv+hRI1CRHouMaD+moSmAA
+ 0X/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767848438; x=1768453238;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=G3vcNVxoQ86ms0LQI7aA3LODs0+8eM4a/ySAjtj1Ku0=;
- b=CHDdFSBJS/+s+KF5lSJvXt/+nbIX1i9R7dPaU35FRkVefRrMG4NzecsSfOaS896wac
- vMEelZNwR0SkspoqN86rWccdaOy8pO/XjRl8VJ4u/4qFwiN4iUmY2KkAYuDBrHYDqBVw
- v4ab8y6ssbMeHQVSSGjUTsOwZxoxlv0mUyxe4liwJ3lyCdhjf5URtYVF8Y7A+4eHMgXV
- xTMavrnizxUG6PleFZD0AZ+tGSehOJgRYVglzdU4cvZhpBN2WNq92uVYPrG+TcEufot2
- 9sNP/XlO7sOqdG5ZGZmrrrEyfsgSJ7Yn9PWbsSWFyeIEGzgRfFc0jAQaiXU1++Gduuoa
- 4iNg==
-X-Gm-Message-State: AOJu0Yw9bk0pSsY4Wsn2kfMc3MK2GmeaxwDpa35Xu3b4N0JB+CL7UEfP
- dHOvVeFyUOZbv7w2zltFQjT8fLu1wCkCPjnrGsHavQqzCG4rVNQerEVoCf4FYOkqJCR5bbiIzHT
- UWoy3TLM/RXzVgAckp7QJEGcp7jB42S0=
-X-Gm-Gg: AY/fxX6/DqW+pReFtRyw5Rb4EvqzEZrxI67L2Q0v/rEUgJGvPmsDWWTu55o8sjh/2bN
- 1x//OQAfZr/DDTTeNGrN5E+FNBQa/9SOWTYlLBkhNoRa4ahbWN7Ta248cr80i6ympiKDzyc7Dev
- sN9WplPNGCslBr2UFI/Zg4UEaWIzhX6jiY+vMwLiy2WeabWOVEEhRdE2J4ga+liVaTM1IWYvcjq
- L8Qj5VJ6fe1JyVcrMchMTUl01pc+Yz7qA3f1frPYtiDTN0luNp0Vw4vic/zI4ZMHc2wTOS5bk7o
- tpTp
-X-Google-Smtp-Source: AGHT+IFl6bDgO568patCV6DFce1DRqzkOSIlCkVJGwUy0z9zr/iwrm5ODEj4p4vWhAOLTRfHh/8bxpAfo8e92BnpsH8=
-X-Received: by 2002:ad4:5ae5:0:b0:888:7db7:b3e with SMTP id
- 6a1803df08f44-890841ad256mr76418526d6.18.1767848437548; Wed, 07 Jan 2026
- 21:00:37 -0800 (PST)
+ d=1e100.net; s=20230601; t=1767850224; x=1768455024;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=CEdaanuN4O4Pp+xNlzIUSei8+BxLkgpOOD9e/ocjqHM=;
+ b=PdfJdyizyXCoxnwFVYYSN5usI0zH7t8a9WbY0ZfaU95QdggG4Tf5btCjDHzCRMVpP/
+ vH4XmEHr0GPIialm5uoQO/epMVzJeN4vtsn4/rYefUtriipuo4nMhIVn+OJaL5dH5fAZ
+ ZM74sobimjWwpIqqOg8km4AnxISRITC7dnFtoTzGYGNMy2wAe4tGxc5cT9CkEPKKGbwl
+ LNxE6GYpOhMgQrvKybxQYJUzgDZ4xYmDj3kHWn4LsFNqyfqYZjA50A3nHR/OYa1Wt/b1
+ ucIK89XgN39M0glFfRIL2MpO46gOfy8guBbYCvrZaHrTt4tM5FzwIErJzsG5hvpJgZP5
+ A0Jg==
+X-Gm-Message-State: AOJu0YyaXT4pMCHyt3cwbvuPyi8VjHXInx5y80DswBIhq0TvjM3HE6yx
+ L5+8EuFfH8mbgOw7LvEMu6kRxgWvHjDI8+/Vpun+OBI3kWNxUK3ykJiwfo9nTeRQmWHE/p7vsV4
+ JVTUwfmU=
+X-Gm-Gg: AY/fxX4tMo+NsQ9lmuP74MOv9o/GAyhPxCBJtrHAbYMouKyeLwqtdek/3BQsUKsmA1l
+ 6NF9NZbUJICR+ugyIcOSJp4XSPwSpOybxwA1FOUGOPAOe2c4n4etfQLDSvG+P5MteZ63CoO4yBe
+ xcSuXkGu0PdMGwjwhlcV4yVyFAyoOuSPEmXjHJjioUGjOPPP2q3T91+PA3FbdNhRgvQTLzFt9zM
+ vxGzce+mPyj1iti/CUmtLxBf98TUDNeaLaEhoihwK8JcFAn/XVeI6sWFAusSR1yER0xK1EMJMzu
+ 5aFIQsoal9zfvEh+USrxQALb9oFGbYe/Ee1ZI0+XTLWh4cSsx6nN+34i473p/CEIMtCGUxAERj2
+ 9ipiVmYkyMZulSgH4x5tkOq/lD/KEOF7FJTpvXuhG6NwdIRcAjRhm0RYJvGaUBFmMjF79crFPDA
+ oRIMouwFjvp81xpPtNog==
+X-Google-Smtp-Source: AGHT+IFeNlDSxydkCq8RbNrIq7Toc1rU/tbl8p1t5JohHSIRgh0JcoYqoJj+pXj5UEXDvQhlDK/uCw==
+X-Received: by 2002:a17:90b:5643:b0:343:a631:28a8 with SMTP id
+ 98e67ed59e1d1-34f68cf39e6mr4829890a91.37.1767850223917; 
+ Wed, 07 Jan 2026 21:30:23 -0800 (PST)
+Received: from stoup.. ([180.233.125.201]) by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-c4cc05cd9d9sm7036552a12.16.2026.01.07.21.30.22
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 07 Jan 2026 21:30:23 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PATCH 00/50] Remove 32-bit host support
+Date: Thu,  8 Jan 2026 16:29:28 +1100
+Message-ID: <20260108053018.626690-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20260107202556.55787-1-philmd@linaro.org>
- <20260107202556.55787-2-philmd@linaro.org>
-In-Reply-To: <20260107202556.55787-2-philmd@linaro.org>
-From: Max Filippov <jcmvbkbc@gmail.com>
-Date: Wed, 7 Jan 2026 21:00:26 -0800
-X-Gm-Features: AQt7F2pTZqVLfpu1BNNvHfiHddvh5HWOxZSrJip2uIP0ZLXYbcfDw6PJcp37wgo
-Message-ID: <CAMo8BfJjkdd87=50tm+dfBgix79quNCqy4b0sC=YO2XcT1xHjA@mail.gmail.com>
-Subject: Re: [PATCH 1/7] target/xtensa: Convert XTENSA_DEFAULT_CPU_MODEL to
- runtime helper (MMU)
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
- Laurent Vivier <laurent@vivier.eu>, Anton Johansson <anjo@rev.ng>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f33;
- envelope-from=jcmvbkbc@gmail.com; helo=mail-qv1-xf33.google.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- FROM_LOCAL_NOVOWEL=0.5, HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.998,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,207 +95,293 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 7, 2026 at 12:26=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
-<philmd@linaro.org> wrote:
->
-> In order to remove the TARGET_BIG_ENDIAN use in "cpu.h",
-> introduce the xtensa_default_cpu_model() helper which
-> returns the current XTENSA_DEFAULT_CPU_MODEL but evaluating
-> endianness at runtime. Update the machines using it.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  target/xtensa/cpu-qom.h     |  2 ++
->  target/xtensa/cpu.h         |  4 ----
->  hw/xtensa/sim.c             | 10 ++++++++--
->  hw/xtensa/virt.c            | 11 +++++++++--
->  hw/xtensa/xtfpga.c          | 17 +++++++++--------
->  linux-user/xtensa/elfload.c |  4 ++--
->  target/xtensa/cpu.c         |  5 +++++
->  7 files changed, 35 insertions(+), 18 deletions(-)
->
-> diff --git a/target/xtensa/cpu-qom.h b/target/xtensa/cpu-qom.h
-> index d932346b5fe..66992d08c2e 100644
-> --- a/target/xtensa/cpu-qom.h
-> +++ b/target/xtensa/cpu-qom.h
-> @@ -38,4 +38,6 @@ OBJECT_DECLARE_CPU_TYPE(XtensaCPU, XtensaCPUClass, XTEN=
-SA_CPU)
->  #define XTENSA_CPU_TYPE_SUFFIX "-" TYPE_XTENSA_CPU
->  #define XTENSA_CPU_TYPE_NAME(model) model XTENSA_CPU_TYPE_SUFFIX
->
-> +const char *xtensa_default_cpu_model(void);
-> +
->  #endif
-> diff --git a/target/xtensa/cpu.h b/target/xtensa/cpu.h
-> index 22192924841..fe2f25e527c 100644
-> --- a/target/xtensa/cpu.h
-> +++ b/target/xtensa/cpu.h
-> @@ -606,14 +606,10 @@ G_NORETURN void xtensa_cpu_do_unaligned_access(CPUS=
-tate *cpu, vaddr addr,
->  #define CPU_RESOLVING_TYPE TYPE_XTENSA_CPU
->
->  #if TARGET_BIG_ENDIAN
-> -#define XTENSA_DEFAULT_CPU_MODEL "fsf"
->  #define XTENSA_DEFAULT_CPU_NOMMU_MODEL "fsf"
->  #else
-> -#define XTENSA_DEFAULT_CPU_MODEL "dc232b"
->  #define XTENSA_DEFAULT_CPU_NOMMU_MODEL "de212"
->  #endif
-> -#define XTENSA_DEFAULT_CPU_TYPE \
-> -    XTENSA_CPU_TYPE_NAME(XTENSA_DEFAULT_CPU_MODEL)
->  #define XTENSA_DEFAULT_CPU_NOMMU_TYPE \
->      XTENSA_CPU_TYPE_NAME(XTENSA_DEFAULT_CPU_NOMMU_MODEL)
->
-> diff --git a/hw/xtensa/sim.c b/hw/xtensa/sim.c
-> index 994460d0414..03dbe69c2d4 100644
-> --- a/hw/xtensa/sim.c
-> +++ b/hw/xtensa/sim.c
-> @@ -36,6 +36,7 @@
->  #include "qemu/error-report.h"
->  #include "xtensa_memory.h"
->  #include "xtensa_sim.h"
-> +#include "target/xtensa/cpu-qom.h"
->
->  static uint64_t translate_phys_addr(void *opaque, uint64_t addr)
->  {
-> @@ -119,12 +120,17 @@ static void xtensa_sim_init(MachineState *machine)
->
->  static void xtensa_sim_machine_init(MachineClass *mc)
->  {
-> -    mc->desc =3D "sim machine (" XTENSA_DEFAULT_CPU_MODEL ")";
-> +    if (target_big_endian()) {
-> +        mc->default_cpu_type =3D XTENSA_CPU_TYPE_NAME("fsf");
-> +        mc->desc =3D "sim machine (fsf)";
-> +    } else {
-> +        mc->default_cpu_type =3D XTENSA_CPU_TYPE_NAME("dc232b");
-> +        mc->desc =3D "sim machine (dc232b)";
-> +    }
->      mc->is_default =3D true;
->      mc->init =3D xtensa_sim_init;
->      mc->max_cpus =3D 4;
->      mc->no_serial =3D 1;
-> -    mc->default_cpu_type =3D XTENSA_DEFAULT_CPU_TYPE;
->  }
->
->  DEFINE_MACHINE("sim", xtensa_sim_machine_init)
-> diff --git a/hw/xtensa/virt.c b/hw/xtensa/virt.c
-> index 271f06e0953..2275953ce67 100644
-> --- a/hw/xtensa/virt.c
-> +++ b/hw/xtensa/virt.c
-> @@ -35,8 +35,10 @@
->  #include "elf.h"
->  #include "system/memory.h"
->  #include "qemu/error-report.h"
-> +#include "qemu/target-info.h"
->  #include "xtensa_memory.h"
->  #include "xtensa_sim.h"
-> +#include "target/xtensa/cpu-qom.h"
->
->  static void create_pcie(MachineState *ms, CPUXtensaState *env, int irq_b=
-ase,
->                          hwaddr addr_base)
-> @@ -117,10 +119,15 @@ static void xtensa_virt_init(MachineState *machine)
->
->  static void xtensa_virt_machine_init(MachineClass *mc)
->  {
-> -    mc->desc =3D "virt machine (" XTENSA_DEFAULT_CPU_MODEL ")";
-> +    if (target_big_endian()) {
-> +        mc->default_cpu_type =3D XTENSA_CPU_TYPE_NAME("fsf");
-> +        mc->desc =3D "virt machine (fsf)";
-> +    } else {
-> +        mc->default_cpu_type =3D XTENSA_CPU_TYPE_NAME("dc232b");
-> +        mc->desc =3D "virt machine (dc232b)";
-> +    }
->      mc->init =3D xtensa_virt_init;
->      mc->max_cpus =3D 32;
-> -    mc->default_cpu_type =3D XTENSA_DEFAULT_CPU_TYPE;
->      mc->default_nic =3D "virtio-net-pci";
->  }
->
-> diff --git a/hw/xtensa/xtfpga.c b/hw/xtensa/xtfpga.c
-> index d427d68e505..5fd4d655557 100644
-> --- a/hw/xtensa/xtfpga.c
-> +++ b/hw/xtensa/xtfpga.c
-> @@ -51,6 +51,7 @@
->  #include "hw/xtensa/mx_pic.h"
->  #include "exec/cpu-common.h"
->  #include "migration/vmstate.h"
-> +#include "target/xtensa/cpu-qom.h"
->
->  typedef struct XtfpgaFlashDesc {
->      hwaddr base;
-> @@ -591,10 +592,10 @@ static void xtfpga_lx60_class_init(ObjectClass *oc,=
- const void *data)
->  {
->      MachineClass *mc =3D MACHINE_CLASS(oc);
->
-> -    mc->desc =3D "lx60 EVB (" XTENSA_DEFAULT_CPU_MODEL ")";
-> +    mc->desc =3D g_strdup_printf("lx60 EVB (%s)", xtensa_default_cpu_mod=
-el());
->      mc->init =3D xtfpga_lx60_init;
->      mc->max_cpus =3D 32;
-> -    mc->default_cpu_type =3D XTENSA_DEFAULT_CPU_TYPE;
-> +    mc->default_cpu_type =3D xtensa_default_cpu_model();
+Long has it been threatened, but here we are at last.
 
-Type was expected here, but model is supplied instead.
-I wonder why xtfpga and sim/virt are done differently?
+32-bit host support was deprecated with the 10.0 release, and so
+with the 11.0 release we may remove it.  Phil already did some
+cleanup in 10.2, removing support for mips32 and ppc32 within tcg.
 
->      mc->default_ram_size =3D 64 * MiB;
->  }
->
-> @@ -625,10 +626,10 @@ static void xtfpga_lx200_class_init(ObjectClass *oc=
-, const void *data)
->  {
->      MachineClass *mc =3D MACHINE_CLASS(oc);
->
-> -    mc->desc =3D "lx200 EVB (" XTENSA_DEFAULT_CPU_MODEL ")";
-> +    mc->desc =3D g_strdup_printf("lx200 EVB (%s)", xtensa_default_cpu_mo=
-del());
->      mc->init =3D xtfpga_lx200_init;
->      mc->max_cpus =3D 32;
-> -    mc->default_cpu_type =3D XTENSA_DEFAULT_CPU_TYPE;
-> +    mc->default_cpu_type =3D xtensa_default_cpu_model();
+With a net -7302 in the diffstat, I think the motivations are clear,
+even if half of that was tcg/arm/.
 
-Same here.
 
->      mc->default_ram_size =3D 96 * MiB;
->  }
->
-> @@ -659,10 +660,10 @@ static void xtfpga_ml605_class_init(ObjectClass *oc=
-, const void *data)
->  {
->      MachineClass *mc =3D MACHINE_CLASS(oc);
->
-> -    mc->desc =3D "ml605 EVB (" XTENSA_DEFAULT_CPU_MODEL ")";
-> +    mc->desc =3D g_strdup_printf("ml605 EVB (%s)", xtensa_default_cpu_mo=
-del());
->      mc->init =3D xtfpga_ml605_init;
->      mc->max_cpus =3D 32;
-> -    mc->default_cpu_type =3D XTENSA_DEFAULT_CPU_TYPE;
-> +    mc->default_cpu_type =3D xtensa_default_cpu_model();
+r~
 
-And here.
 
->      mc->default_ram_size =3D 512 * MiB - XTFPGA_MMU_RESERVED_MEMORY_SIZE=
-;
->  }
->
-> @@ -693,10 +694,10 @@ static void xtfpga_kc705_class_init(ObjectClass *oc=
-, const void *data)
->  {
->      MachineClass *mc =3D MACHINE_CLASS(oc);
->
-> -    mc->desc =3D "kc705 EVB (" XTENSA_DEFAULT_CPU_MODEL ")";
-> +    mc->desc =3D g_strdup_printf("kc705 EVB (%s)", xtensa_default_cpu_mo=
-del());
->      mc->init =3D xtfpga_kc705_init;
->      mc->max_cpus =3D 32;
-> -    mc->default_cpu_type =3D XTENSA_DEFAULT_CPU_TYPE;
-> +    mc->default_cpu_type =3D xtensa_default_cpu_model();
+Richard Henderson (50):
+  gitlab: Remove 32-bit host testing
+  meson: Reject 32-bit hosts
+  *: Remove arm host support
+  bsd-user: Fix __i386__ test for TARGET_HAS_STAT_TIME_T_EXT
+  *: Remove __i386__ tests
+  *: Remove i386 host support
+  host/include/x86_64/bufferiszero: Remove no SSE2 fallback
+  meson: Remove cpu == x86 tests
+  *: Remove ppc host support
+  tcg/i386: Remove TCG_TARGET_REG_BITS tests
+  tcg/x86_64: Rename from i386
+  tcg/ppc64: Rename from ppc
+  meson: Drop host_arch rename for mips64
+  meson: Drop host_arch rename for riscv64
+  meson: Remove cpu == riscv32 tests
+  tcg: Make TCG_TARGET_REG_BITS common
+  tcg: Replace TCG_TARGET_REG_BITS / 8
+  *: Drop TCG_TARGET_REG_BITS test for prefer_i64
+  tcg: Remove INDEX_op_brcond2_i32
+  tcg: Remove INDEX_op_setcond2_i32
+  tcg: Remove INDEX_op_dup2_vec
+  tcg/tci: Drop TCG_TARGET_REG_BITS tests
+  tcg/tci: Remove glue TCG_TARGET_REG_BITS renames
+  tcg: Drop TCG_TARGET_REG_BITS test in region.c
+  tcg: Drop TCG_TARGET_REG_BITS tests in tcg-op.c
+  tcg: Drop TCG_TARGET_REG_BITS tests in tcg-op-gvec.c
+  tcg: Drop TCG_TARGET_REG_BITS tests in tcg-op-ldst.c
+  tcg: Drop TCG_TARGET_REG_BITS tests in tcg.c
+  tcg: Drop TCG_TARGET_REG_BITS tests in tcg-internal.h
+  tcg: Drop TCG_TARGET_REG_BITS test in tcg-has.h
+  include/tcg: Drop TCG_TARGET_REG_BITS tests
+  target/i386/tcg: Drop TCG_TARGET_REG_BITS test
+  target/riscv: Drop TCG_TARGET_REG_BITS test
+  accel/tcg/runtime: Remove 64-bit shift helpers
+  accel/tcg/runtime: Remove helper_nonatomic_cmpxchgo
+  tcg: Unconditionally define atomic64 helpers
+  accel/tcg: Drop CONFIG_ATOMIC64 checks from ldst_atomicicy.c.inc
+  accel/tcg: Drop CONFIG_ATOMIC64 test from translator.c
+  linux-user/arm: Drop CONFIG_ATOMIC64 test
+  linux-user/hppa: Drop CONFIG_ATOMIC64 test
+  target/arm: Drop CONFIG_ATOMIC64 tests
+  target/hppa: Drop CONFIG_ATOMIC64 test
+  target/m68k: Drop CONFIG_ATOMIC64 tests
+  target/s390x: Drop CONFIG_ATOMIC64 tests
+  migration: Drop use of Stat64
+  block: Drop use of Stat64
+  util: Remove stats64
+  include/qemu/atomic: Drop qatomic_{read,set}_[iu]64
+  meson: Remove CONFIG_ATOMIC64
+  include/qemu/atomic: Drop aligned_{u}int64_t
 
-And here.
+ accel/tcg/atomic_template.h                   |    4 +-
+ accel/tcg/tcg-runtime.h                       |   23 -
+ bsd-user/syscall_defs.h                       |    2 +-
+ host/include/i386/host/cpuinfo.h              |   41 -
+ host/include/i386/host/crypto/aes-round.h     |  152 -
+ host/include/i386/host/crypto/clmul.h         |   29 -
+ host/include/ppc/host/cpuinfo.h               |   30 -
+ host/include/ppc/host/crypto/aes-round.h      |  182 -
+ host/include/ppc64/host/cpuinfo.h             |   31 +-
+ host/include/ppc64/host/crypto/aes-round.h    |  183 +-
+ .../include/{riscv => riscv64}/host/cpuinfo.h |    0
+ host/include/x86_64/host/cpuinfo.h            |   42 +-
+ host/include/x86_64/host/crypto/aes-round.h   |  153 +-
+ host/include/x86_64/host/crypto/clmul.h       |   30 +-
+ include/accel/tcg/cpu-ldst-common.h           |    9 -
+ include/block/block_int-common.h              |    3 +-
+ include/qemu/atomic.h                         |   39 +-
+ include/qemu/cacheflush.h                     |    2 +-
+ include/qemu/osdep.h                          |    6 +-
+ include/qemu/processor.h                      |    2 +-
+ include/qemu/stats64.h                        |  199 -
+ include/qemu/timer.h                          |    9 -
+ include/system/cpu-timers-internal.h          |    2 +-
+ include/tcg/helper-info.h                     |    2 +-
+ .../tcg/target-reg-bits.h                     |    8 +-
+ include/tcg/tcg-op.h                          |    9 +-
+ include/tcg/tcg-opc.h                         |    9 +-
+ include/tcg/tcg.h                             |   29 +-
+ linux-user/include/host/arm/host-signal.h     |   43 -
+ linux-user/include/host/i386/host-signal.h    |   38 -
+ .../host/{mips => mips64}/host-signal.h       |    0
+ linux-user/include/host/ppc/host-signal.h     |   39 -
+ .../host/{riscv => riscv64}/host-signal.h     |    0
+ migration/migration-stats.h                   |   36 +-
+ tcg/aarch64/tcg-target-reg-bits.h             |   12 -
+ tcg/arm/tcg-target-con-set.h                  |   47 -
+ tcg/arm/tcg-target-con-str.h                  |   26 -
+ tcg/arm/tcg-target-has.h                      |   73 -
+ tcg/arm/tcg-target-mo.h                       |   13 -
+ tcg/arm/tcg-target-reg-bits.h                 |   12 -
+ tcg/arm/tcg-target.h                          |   73 -
+ tcg/i386/tcg-target-reg-bits.h                |   16 -
+ tcg/loongarch64/tcg-target-reg-bits.h         |   21 -
+ tcg/mips/tcg-target-reg-bits.h                |   16 -
+ tcg/{mips => mips64}/tcg-target-con-set.h     |    0
+ tcg/{mips => mips64}/tcg-target-con-str.h     |    0
+ tcg/{mips => mips64}/tcg-target-has.h         |    0
+ tcg/{mips => mips64}/tcg-target-mo.h          |    0
+ tcg/{mips => mips64}/tcg-target.h             |    0
+ tcg/{ppc => ppc64}/tcg-target-con-set.h       |    0
+ tcg/{ppc => ppc64}/tcg-target-con-str.h       |    0
+ tcg/{ppc => ppc64}/tcg-target-has.h           |    0
+ tcg/{ppc => ppc64}/tcg-target-mo.h            |    0
+ tcg/{ppc => ppc64}/tcg-target.h               |    0
+ tcg/riscv/tcg-target-reg-bits.h               |   19 -
+ tcg/{riscv => riscv64}/tcg-target-con-set.h   |    0
+ tcg/{riscv => riscv64}/tcg-target-con-str.h   |    0
+ tcg/{riscv => riscv64}/tcg-target-has.h       |    0
+ tcg/{riscv => riscv64}/tcg-target-mo.h        |    0
+ tcg/{riscv => riscv64}/tcg-target.h           |    0
+ tcg/s390x/tcg-target-reg-bits.h               |   17 -
+ tcg/sparc64/tcg-target-reg-bits.h             |   12 -
+ tcg/tcg-has.h                                 |    5 -
+ tcg/tcg-internal.h                            |   21 +-
+ tcg/tci/tcg-target-has.h                      |    2 -
+ tcg/tci/tcg-target-mo.h                       |    2 +-
+ tcg/tci/tcg-target-reg-bits.h                 |   18 -
+ tcg/{i386 => x86_64}/tcg-target-con-set.h     |    0
+ tcg/{i386 => x86_64}/tcg-target-con-str.h     |    0
+ tcg/{i386 => x86_64}/tcg-target-has.h         |    8 +-
+ tcg/{i386 => x86_64}/tcg-target-mo.h          |    0
+ tcg/{i386 => x86_64}/tcg-target.h             |   13 +-
+ accel/kvm/kvm-all.c                           |    2 +-
+ accel/qtest/qtest.c                           |    4 +-
+ accel/tcg/cputlb.c                            |   37 +-
+ accel/tcg/icount-common.c                     |   25 +-
+ accel/tcg/tcg-runtime.c                       |   15 -
+ accel/tcg/translator.c                        |    4 +-
+ accel/tcg/user-exec.c                         |    2 -
+ block/io.c                                    |   10 +-
+ block/qapi.c                                  |    2 +-
+ disas/disas-host.c                            |    9 -
+ hw/display/xenfb.c                            |   10 +-
+ hw/virtio/virtio-mem.c                        |    2 +-
+ linux-user/arm/cpu_loop.c                     |   19 +-
+ linux-user/hppa/cpu_loop.c                    |   14 +-
+ linux-user/mmap.c                             |    2 +-
+ linux-user/syscall.c                          |    9 -
+ migration/cpu-throttle.c                      |    4 +-
+ migration/migration-stats.c                   |   16 +-
+ migration/migration.c                         |   24 +-
+ migration/multifd-nocomp.c                    |    2 +-
+ migration/multifd-zero-page.c                 |    4 +-
+ migration/multifd.c                           |   12 +-
+ migration/qemu-file.c                         |    6 +-
+ migration/ram.c                               |   30 +-
+ migration/rdma.c                              |    8 +-
+ system/dirtylimit.c                           |    2 +-
+ target/arm/ptw.c                              |   18 +-
+ target/arm/tcg/gengvec.c                      |   32 +-
+ target/arm/tcg/gengvec64.c                    |    4 +-
+ target/arm/tcg/translate-sve.c                |   26 +-
+ target/hppa/op_helper.c                       |    6 +-
+ target/i386/cpu.c                             |   10 -
+ target/m68k/op_helper.c                       |    7 +-
+ target/s390x/tcg/mem_helper.c                 |    7 -
+ tcg/optimize.c                                |  322 --
+ tcg/region.c                                  |   12 -
+ tcg/tcg-op-gvec.c                             |  113 +-
+ tcg/tcg-op-ldst.c                             |  130 +-
+ tcg/tcg-op-vec.c                              |   14 +-
+ tcg/tcg-op.c                                  |  765 +---
+ tcg/tcg.c                                     |  376 +-
+ tcg/tci.c                                     |   73 +-
+ tests/unit/test-rcu-list.c                    |   17 +-
+ util/atomic64.c                               |   85 -
+ util/cacheflush.c                             |    4 +-
+ util/qsp.c                                    |   12 +-
+ util/stats64.c                                |  148 -
+ .gitlab-ci.d/buildtest-template.yml           |   27 -
+ .gitlab-ci.d/buildtest.yml                    |    9 -
+ .gitlab-ci.d/container-cross.yml              |   17 -
+ .gitlab-ci.d/containers.yml                   |    3 -
+ .gitlab-ci.d/crossbuilds.yml                  |   45 -
+ MAINTAINERS                                   |   16 +-
+ accel/tcg/atomic_common.c.inc                 |   32 -
+ accel/tcg/ldst_atomicity.c.inc                |  149 +-
+ common-user/host/arm/safe-syscall.inc.S       |  108 -
+ common-user/host/i386/safe-syscall.inc.S      |  127 -
+ .../host/{mips => mips64}/safe-syscall.inc.S  |    0
+ common-user/host/ppc/safe-syscall.inc.S       |  107 -
+ .../{riscv => riscv64}/safe-syscall.inc.S     |    0
+ configure                                     |   47 +-
+ docs/about/deprecated.rst                     |   29 -
+ docs/about/removed-features.rst               |    6 +
+ docs/devel/tcg-ops.rst                        |   32 +-
+ host/include/i386/host/bufferiszero.c.inc     |  125 -
+ host/include/x86_64/host/bufferiszero.c.inc   |  121 +-
+ meson.build                                   |  101 +-
+ target/i386/tcg/emit.c.inc                    |   39 +-
+ target/riscv/insn_trans/trans_rvv.c.inc       |   56 +-
+ tcg/arm/tcg-target-opc.h.inc                  |   16 -
+ tcg/arm/tcg-target.c.inc                      | 3489 -----------------
+ tcg/loongarch64/tcg-target.c.inc              |    4 +-
+ tcg/{mips => mips64}/tcg-target-opc.h.inc     |    0
+ tcg/{mips => mips64}/tcg-target.c.inc         |    0
+ tcg/{ppc => ppc64}/tcg-target-opc.h.inc       |    0
+ tcg/{ppc => ppc64}/tcg-target.c.inc           |    2 +-
+ tcg/{riscv => riscv64}/tcg-target-opc.h.inc   |    0
+ tcg/{riscv => riscv64}/tcg-target.c.inc       |    4 +-
+ tcg/tci/tcg-target.c.inc                      |   84 +-
+ tcg/{i386 => x86_64}/tcg-target-opc.h.inc     |    0
+ tcg/{i386 => x86_64}/tcg-target.c.inc         |  552 +--
+ util/meson.build                              |    4 -
+ 154 files changed, 1158 insertions(+), 8460 deletions(-)
+ delete mode 100644 host/include/i386/host/cpuinfo.h
+ delete mode 100644 host/include/i386/host/crypto/aes-round.h
+ delete mode 100644 host/include/i386/host/crypto/clmul.h
+ delete mode 100644 host/include/ppc/host/cpuinfo.h
+ delete mode 100644 host/include/ppc/host/crypto/aes-round.h
+ rename host/include/{riscv => riscv64}/host/cpuinfo.h (100%)
+ delete mode 100644 include/qemu/stats64.h
+ rename tcg/ppc/tcg-target-reg-bits.h => include/tcg/target-reg-bits.h (71%)
+ delete mode 100644 linux-user/include/host/arm/host-signal.h
+ delete mode 100644 linux-user/include/host/i386/host-signal.h
+ rename linux-user/include/host/{mips => mips64}/host-signal.h (100%)
+ delete mode 100644 linux-user/include/host/ppc/host-signal.h
+ rename linux-user/include/host/{riscv => riscv64}/host-signal.h (100%)
+ delete mode 100644 tcg/aarch64/tcg-target-reg-bits.h
+ delete mode 100644 tcg/arm/tcg-target-con-set.h
+ delete mode 100644 tcg/arm/tcg-target-con-str.h
+ delete mode 100644 tcg/arm/tcg-target-has.h
+ delete mode 100644 tcg/arm/tcg-target-mo.h
+ delete mode 100644 tcg/arm/tcg-target-reg-bits.h
+ delete mode 100644 tcg/arm/tcg-target.h
+ delete mode 100644 tcg/i386/tcg-target-reg-bits.h
+ delete mode 100644 tcg/loongarch64/tcg-target-reg-bits.h
+ delete mode 100644 tcg/mips/tcg-target-reg-bits.h
+ rename tcg/{mips => mips64}/tcg-target-con-set.h (100%)
+ rename tcg/{mips => mips64}/tcg-target-con-str.h (100%)
+ rename tcg/{mips => mips64}/tcg-target-has.h (100%)
+ rename tcg/{mips => mips64}/tcg-target-mo.h (100%)
+ rename tcg/{mips => mips64}/tcg-target.h (100%)
+ rename tcg/{ppc => ppc64}/tcg-target-con-set.h (100%)
+ rename tcg/{ppc => ppc64}/tcg-target-con-str.h (100%)
+ rename tcg/{ppc => ppc64}/tcg-target-has.h (100%)
+ rename tcg/{ppc => ppc64}/tcg-target-mo.h (100%)
+ rename tcg/{ppc => ppc64}/tcg-target.h (100%)
+ delete mode 100644 tcg/riscv/tcg-target-reg-bits.h
+ rename tcg/{riscv => riscv64}/tcg-target-con-set.h (100%)
+ rename tcg/{riscv => riscv64}/tcg-target-con-str.h (100%)
+ rename tcg/{riscv => riscv64}/tcg-target-has.h (100%)
+ rename tcg/{riscv => riscv64}/tcg-target-mo.h (100%)
+ rename tcg/{riscv => riscv64}/tcg-target.h (100%)
+ delete mode 100644 tcg/s390x/tcg-target-reg-bits.h
+ delete mode 100644 tcg/sparc64/tcg-target-reg-bits.h
+ delete mode 100644 tcg/tci/tcg-target-reg-bits.h
+ rename tcg/{i386 => x86_64}/tcg-target-con-set.h (100%)
+ rename tcg/{i386 => x86_64}/tcg-target-con-str.h (100%)
+ rename tcg/{i386 => x86_64}/tcg-target-has.h (92%)
+ rename tcg/{i386 => x86_64}/tcg-target-mo.h (100%)
+ rename tcg/{i386 => x86_64}/tcg-target.h (86%)
+ delete mode 100644 util/atomic64.c
+ delete mode 100644 util/stats64.c
+ delete mode 100644 common-user/host/arm/safe-syscall.inc.S
+ delete mode 100644 common-user/host/i386/safe-syscall.inc.S
+ rename common-user/host/{mips => mips64}/safe-syscall.inc.S (100%)
+ delete mode 100644 common-user/host/ppc/safe-syscall.inc.S
+ rename common-user/host/{riscv => riscv64}/safe-syscall.inc.S (100%)
+ delete mode 100644 host/include/i386/host/bufferiszero.c.inc
+ delete mode 100644 tcg/arm/tcg-target-opc.h.inc
+ delete mode 100644 tcg/arm/tcg-target.c.inc
+ rename tcg/{mips => mips64}/tcg-target-opc.h.inc (100%)
+ rename tcg/{mips => mips64}/tcg-target.c.inc (100%)
+ rename tcg/{ppc => ppc64}/tcg-target-opc.h.inc (100%)
+ rename tcg/{ppc => ppc64}/tcg-target.c.inc (99%)
+ rename tcg/{riscv => riscv64}/tcg-target-opc.h.inc (100%)
+ rename tcg/{riscv => riscv64}/tcg-target.c.inc (99%)
+ rename tcg/{i386 => x86_64}/tcg-target-opc.h.inc (100%)
+ rename tcg/{i386 => x86_64}/tcg-target.c.inc (89%)
 
---=20
-Thanks.
--- Max
+-- 
+2.43.0
+
 
