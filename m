@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2506D015F0
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 08:17:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E38F0D015FF
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 08:17:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdk6V-0006up-LT; Thu, 08 Jan 2026 02:06:43 -0500
+	id 1vdk6V-0006tv-2V; Thu, 08 Jan 2026 02:06:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdk6R-0006mR-AJ
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 02:06:39 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdk6P-0006jo-TF
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 02:06:37 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdk6O-0006bk-SV
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 02:06:39 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdk6N-0006bQ-9m
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 02:06:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767855996;
+ s=mimecast20190719; t=1767855994;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5rBT0wM/0nCOtv8moP8RiQX1LfyxaSmtC3iGS80HRSU=;
- b=WtitmyUvUHqqVCFnDX7qigs8lrlEguT6JM0v8XOBLQnp2cMnhRhEmKPV8mGSrxEeJJEumq
- uU/zfR16FHl3AKGPhROA5j0kgwYQL6/Hm0tu/sPdMsItTEb9dYXjhLZqyh4yb5BUaEGPZG
- QCQt5BBjf9Q2Xx+71mTAIcQlF8TlfFI=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=keBXidDCLkwGrt3l6TpJ6ATfVbhpZVBVBE23uCa133Y=;
+ b=Wut0LI8lY+GdnXp1GScDrxCDwO9aRu9gxBU9HEldnDUGLMgogNrVWIcnFAeU9VdfszKQ93
+ RhduL3804y/dnzrtrnKJyalZS5xcmiDbS8rg+I+mqBAWdvxs2SS7H+jGA3SP4EPvsUonYE
+ 61HsF8u7OqlwZn5m1MP1nqYnsLbGS0c=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-mcXG55-WNfOiC5_Cnq892A-1; Thu,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-aaTJD16qOnm2En34sLaKnw-1; Thu,
  08 Jan 2026 02:06:32 -0500
-X-MC-Unique: mcXG55-WNfOiC5_Cnq892A-1
-X-Mimecast-MFC-AGG-ID: mcXG55-WNfOiC5_Cnq892A_1767855992
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+X-MC-Unique: aaTJD16qOnm2En34sLaKnw-1
+X-Mimecast-MFC-AGG-ID: aaTJD16qOnm2En34sLaKnw_1767855992
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C280B1956080; Thu,  8 Jan 2026 07:06:31 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E2966195605B; Thu,  8 Jan 2026 07:06:31 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.32])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 73FB830002D2; Thu,  8 Jan 2026 07:06:31 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A17141801ACC; Thu,  8 Jan 2026 07:06:31 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 14ECB21E61B5; Thu, 08 Jan 2026 08:06:26 +0100 (CET)
+ id 18D9521E61B7; Thu, 08 Jan 2026 08:06:26 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, "Dr. David Alan Gilbert" <dave@treblig.org>,
- Kostiantyn Kostiuk <kkostiuk@redhat.com>
-Subject: [PULL v2 09/17] qga: Use error_setg_file_open() for better error
- messages
-Date: Thu,  8 Jan 2026 08:06:17 +0100
-Message-ID: <20260108070625.1586474-10-armbru@redhat.com>
+Cc: richard.henderson@linaro.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL v2 10/17] net/tap: Use error_setg_file_open() for a better
+ error message
+Date: Thu,  8 Jan 2026 08:06:18 +0100
+Message-ID: <20260108070625.1586474-11-armbru@redhat.com>
 In-Reply-To: <20260108070625.1586474-1-armbru@redhat.com>
 References: <20260108070625.1586474-1-armbru@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -83,71 +84,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Error messages change from
+The error message changes from
 
-    open("FNAME"): REASON
+    tap: open vhost char device failed
 
 to
 
-    Could not open 'FNAME': REASON
+    Could not open '/dev/vhost-net': REASON
+
+I think the exact file name is more useful to know than the file's
+purpose.
+
+We could put back the "tap: " prefix with error_prepend().  Not
+worth the bother.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
-Reviewed-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
-Message-ID: <20251121121438.1249498-6-armbru@redhat.com>
+Message-ID: <20251121121438.1249498-9-armbru@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- qga/commands-linux.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ net/tap.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/qga/commands-linux.c b/qga/commands-linux.c
-index c639a60a94..ae2c4d442a 100644
---- a/qga/commands-linux.c
-+++ b/qga/commands-linux.c
-@@ -1503,14 +1503,15 @@ static void transfer_vcpu(GuestLogicalProcessor *vcpu, bool sys2vcpu,
- 
-     dirfd = open(dirpath, O_RDONLY | O_DIRECTORY);
-     if (dirfd == -1) {
--        error_setg_errno(errp, errno, "open(\"%s\")", dirpath);
-+        error_setg_file_open(errp, errno, dirpath);
-         return;
-     }
- 
-     fd = openat(dirfd, fn, sys2vcpu ? O_RDONLY : O_RDWR);
-     if (fd == -1) {
-         if (errno != ENOENT) {
--            error_setg_errno(errp, errno, "open(\"%s/%s\")", dirpath, fn);
-+            error_setg_errno(errp, errno, "could not open %s/%s",
-+                             dirpath, fn);
-         } else if (sys2vcpu) {
-             vcpu->online = true;
-             vcpu->can_offline = false;
-@@ -1712,7 +1713,7 @@ static void transfer_memory_block(GuestMemoryBlock *mem_blk, bool sys2memblk,
-     dirfd = open(dirpath, O_RDONLY | O_DIRECTORY);
-     if (dirfd == -1) {
-         if (sys2memblk) {
--            error_setg_errno(errp, errno, "open(\"%s\")", dirpath);
-+            error_setg_file_open(errp, errno, dirpath);
+diff --git a/net/tap.c b/net/tap.c
+index abe3b2d036..bfba3fd7a7 100644
+--- a/net/tap.c
++++ b/net/tap.c
+@@ -747,8 +747,7 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
          } else {
-             if (errno == ENOENT) {
-                 result->response = GUEST_MEMORY_BLOCK_RESPONSE_TYPE_NOT_FOUND;
-@@ -1937,7 +1938,7 @@ static GuestDiskStatsInfoList *guest_get_diskstats(Error **errp)
- 
-     fp = fopen(diskstats, "r");
-     if (fp  == NULL) {
--        error_setg_errno(errp, errno, "open(\"%s\")", diskstats);
-+        error_setg_file_open(errp, errno, diskstats);
-         return NULL;
-     }
- 
-@@ -2048,7 +2049,7 @@ GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
- 
-     fp = fopen(cpustats, "r");
-     if (fp  == NULL) {
--        error_setg_errno(errp, errno, "open(\"%s\")", cpustats);
-+        error_setg_file_open(errp, errno, cpustats);
-         return NULL;
-     }
- 
+             vhostfd = open("/dev/vhost-net", O_RDWR);
+             if (vhostfd < 0) {
+-                error_setg_errno(errp, errno,
+-                                 "tap: open vhost char device failed");
++                error_setg_file_open(errp, errno, "/dev/vhost-net");
+                 goto failed;
+             }
+             if (!qemu_set_blocking(vhostfd, false, errp)) {
 -- 
 2.52.0
 
