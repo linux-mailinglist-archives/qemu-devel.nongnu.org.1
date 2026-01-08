@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67B4DD0304C
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 14:28:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40EC4D03055
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 14:28:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdq2K-0000bJ-FV; Thu, 08 Jan 2026 08:26:48 -0500
+	id 1vdq2M-0000cI-J0; Thu, 08 Jan 2026 08:26:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1vdq2I-0000Zm-6f
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 08:26:46 -0500
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1vdq2K-0000bM-QF
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 08:26:48 -0500
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1vdq2G-0003Ur-O7
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 08:26:45 -0500
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-7b75e366866so870842b3a.2
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 05:26:44 -0800 (PST)
+ id 1vdq2J-0003VG-3x
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 08:26:48 -0500
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-bc274b8b15bso2094234a12.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 05:26:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1767878803; x=1768483603; darn=nongnu.org;
+ d=sifive.com; s=google; t=1767878806; x=1768483606; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hlp0cLmJus0NWdWxkzfURjwPNijmFYD3iP511oRuVM4=;
- b=e2tnKVFTQvDnlDOVkxaFLXq+cRBmb+PCMpefQjNcXHIXHRz8rLTf41H3rr+EgzVr4w
- zewb1CGk8BOYCoRJz0YwAI7UIOze6f8wtKbOppHQbhPMrs60tSK0Hx7uJ0v0AlL0ACZ0
- CLI2lRUY3SJibDC93V7s6e4M7FXfrkfPchqlD9s9AOallhpn5m/Qx9Vb3u1syEd7Xo3g
- 2EbQley9TmT4YZ6XUwQmVyXFdy5baK8cf8SKORKhV4/Ba+17OzdRsQlc/+1tGvKHEW7L
- QOrdiXG8+PQpWS2u0dnR0I95pGSqAIG8LBtUHVfRFIyBrV0hyhzhvRr2jFk+o4tC2998
- mY7w==
+ bh=hUjBC9iK/AQDQc/SPGCkS6zufkBrrvUHdIbr52+DJOg=;
+ b=giMOl71/UNIKXZRuwdLreNsgYzyoFZC4bGgxTKsFOrFZH3FtUpYGWkq5b45WPn0WN/
+ ezifgZXMdQN/8IF/kvTaUXxukkMBH9ebLEkMwcfFfDxyYzC+1Kxabg53xaBS+TRMVMQX
+ 1bCvIPUs+Mi0wUuR3uT8/JmTzYl5N+bsvy83uTfI2Z2iuY49wDbf7uNZ86n1yjT9owpx
+ 7yY8ov8lNLMVMqdu46eYQrqtxyFxx7O9n9Rxx6F3VC8EfNrq4/pxVWsMx2ckKjXMk9Tc
+ LJXT7E0ZAp8eB7oHTo/C+C3Co0/7RTIn6ka7K4FhaCoKy2IQTcdwqcn8vAYG8Z1DrfwO
+ oQNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767878803; x=1768483603;
+ d=1e100.net; s=20230601; t=1767878806; x=1768483606;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=hlp0cLmJus0NWdWxkzfURjwPNijmFYD3iP511oRuVM4=;
- b=Z1pZqKgyl48MO7aTowtcJehCJ7H8Uli00bVf7ZZ07h1NQ0NBmKQalj5ytxhhk+Qmvw
- 1JKXqeml8Cd6j8/Jy5/25xUk/8d/ND7uXrtedQpdCuOZ6dLCvUr//MDN2TQABBD+JdXb
- EIb0Kudw4bqeidf8RlwL9W1beRqlmFBwdOoQorNqtyI4e5mcfm2qLwzhxXwBJD/u7kiZ
- 2u8swaZFV4tWQ+9EUcvrMKXPyT4vPXpD+8PKP6ROgBnmH4eoD+pH3BUNdkY24kXFuD2k
- eo0oYQkw4O3GAtaHmTeLeWwTKlMSi1sGpYyqo+t7wzdvfoFmxBB9DwIl2n+Ft3eWx2/V
- ZscA==
-X-Gm-Message-State: AOJu0Yx/+2YFjwt6Tmr4s3Okj2PB1IHddh7nqlNlQRKD11KpYZHZ6miw
- fvxUJMqAEZLWEr5V2OPdCySdQ2S/04xKHvLzUX1HIufV91xvduoEwAjJw9kvZ3dNpsjAL//BjqH
- I8k9W+1NEekfmoWPH5pJDeIbNb+zmOfctkEdcjE1YNfpjhhJmz1qOX95iqg7l6uzHj5IWAuokuQ
- ceVV4hHraLzU0mJSnvHi+WDFDZrYIDRZa5wn0mtkQ=
-X-Gm-Gg: AY/fxX4aFm1NZ/jvFQeybnD9m/ig6fVPE/B1b8VRn2txrflfCtM0d4/4DP9ZdONPZDy
- 0G0RA12zhIrx34fBvDG4SLYVxLVDeEQiACMUSFtJJ7YbgmCkxm+ZjjDytt2ShiReyGpG2NglRFo
- br0svMV7Rdv+8vlI5/moPCD/PNrkzJdyuoDk1u9A2wbcgRAc0vlgcIzEYNgRVjqdVyBZRhEaoHt
- F78VzTnoj5S7VuUEx70SPQ5pNkgpO8EDkpWvUodC5z5K1JaITDcHq+OA5ijmwnRKqxKsVErOW8b
- KfLHCQnUCJImJ7ECDovFMMccZHhqZYZCCsXOYZdtXct+NXWveJVbbKZRtRlrOiiaFpVrWm7PoZX
- XkDsvYYcsvvm0k3MNkVwxBaZwMX5l9h3lbL7LPYdK+cs2Suw4XSMD9Qk9eT19Jcu99OE2x7T8Hb
- UANU5sdqpRM4AssHB+Lg+Rn0OIa45NWOjL8erVVj+6iHyvfoZ+5pWErBc=
-X-Google-Smtp-Source: AGHT+IE+Ot3AaOtkTJWmqHHDqqs/vL5fKGaG3WCP6T/jl3AuljdcDEdc5KkF+uueJlX5EJ7VT/BgIA==
-X-Received: by 2002:a05:6a21:6da7:b0:360:b941:9907 with SMTP id
- adf61e73a8af0-3898f91b4b5mr6050725637.24.1767878802982; 
- Thu, 08 Jan 2026 05:26:42 -0800 (PST)
+ bh=hUjBC9iK/AQDQc/SPGCkS6zufkBrrvUHdIbr52+DJOg=;
+ b=rGGIUgFBSv/WgIYw7YQgfrYG222XRkuDaq6myoIBCGnzYZsJ/EDO9DMS2Ork4m4EtB
+ LWBwwbpR9pUETtHPTgEdzgXRsSBLiS+oO9LD7PNyojFjwcvIobxW5vdt2xR5ajn05WGz
+ pXZD5UjcOGSBWCvDhmK9QGrgD2M93sd06CZ98ndx23sprvPRRAJ9taQKAePdHSsWyOQC
+ 5SFOHNn/SNfoxOcqkKiccRBG4rX47crpC3YHdke7AGRC5Le/wMCgRErXno69HDEVwruV
+ 8II74cZrTGtJEr20oSQvMNFaQ/4oZ1hkttdJHV94/S1TAheH3lwkjnAtxEgZfCn9mF4z
+ VViQ==
+X-Gm-Message-State: AOJu0YylEU/rzOYOdYHWWD61q6TnkUAvQhOA9kY9TVQ+HK5ce5g6eLsK
+ 1QpuGwFmeiDpBlXYWV15Hq8LSFteSfasx8GjVavj2qW0KlCS7SCZpE+4qiaEfyfjAjtSxj/C5S6
+ LgI0oYIF965c9jE8Pwm+4WpVZZKYa6W3VqN/eSNs2E+XPIbXdQ2TsPzdQFIi3YylR+NurqA+DKs
+ w4KAUMsSp6K7cKms8za5+ud+2a5+CdWpmN+M3AEPs=
+X-Gm-Gg: AY/fxX42a2GHzDhrXm0XZpLA7E22ydCifv9JSuo2tuxaa+1nHLXCQyTxk/zjIcZBFEv
+ ETBW0rjmSa+ij1Q8RuLHaufgRXLKHw/GV/N+qJa/AEKjXM2uKgQN1aFgQH6pq0KEIXGldr5U+4g
+ Lcklzo/fyr6e5Ntfz9Sui6bkX1BKcuZ5UHEF2KsJX8PPm5A54y8UlvKgvq8rI2xsCDfAkF2xbPn
+ ID/zED5KmIl7VjxDlQNlgu1GR7Ycsutof2RqXQJmPIJXcu/HDm3t3C3/6PKRq55Yau9LMwesdVx
+ f/Spwaek+3tlL/bQKfuptsJZs+VedSfIYLIduS9pMn9rqaonjxy8IwFQAk05MJf0h7dkzVaZluG
+ aQT2sjD1GtE1Yyw3ZcB8YwJ9sEPzKX9RHbTPycO21x2crREICVTW7ZLyutTRMppuoYfBubSuVck
+ 3+tm4LxwJtcnC4cdLu5+lmKoXPDiM6FbmsL+2RyyBQohz7mTStlWN+HJo=
+X-Google-Smtp-Source: AGHT+IEey6A4OBBU/hchk93LEnDm89WzuCHBkqpAmpJUEUEOz8CAHQzPLhWg+AbHadQni9mveOZtAQ==
+X-Received: by 2002:a17:90b:3d08:b0:33b:be31:8194 with SMTP id
+ 98e67ed59e1d1-34f68cea72fmr5775330a91.34.1767878805546; 
+ Thu, 08 Jan 2026 05:26:45 -0800 (PST)
 Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
  [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-34f6ae3f033sm2298787a91.0.2026.01.08.05.26.41
+ 98e67ed59e1d1-34f6ae3f033sm2298787a91.0.2026.01.08.05.26.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 05:26:42 -0800 (PST)
+ Thu, 08 Jan 2026 05:26:45 -0800 (PST)
 From: Max Chou <max.chou@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -73,23 +73,23 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Weiwei Li <liwei1518@gmail.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Max Chou <max.chou@sifive.com>
-Subject: [PATCH v2 2/9] target/riscv: Add the Zvfbfa extension implied rule
-Date: Thu,  8 Jan 2026 21:26:23 +0800
-Message-ID: <20260108132631.9429-3-max.chou@sifive.com>
+Subject: [PATCH v2 3/9] target/riscv: rvv: Add new VTYPE CSR field - altfmt
+Date: Thu,  8 Jan 2026 21:26:24 +0800
+Message-ID: <20260108132631.9429-4-max.chou@sifive.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260108132631.9429-1-max.chou@sifive.com>
 References: <20260108132631.9429-1-max.chou@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=max.chou@sifive.com; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=max.chou@sifive.com; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,43 +105,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+According to the Zvfbfa ISA spec v0.1, the vtype CSR adds a new field:
+altfmt for BF16 support.
+This update changes the layout of the vtype CSR fields.
+
+- Removed VEDIV field (bits 8-9) since EDIV extension is not planned to
+  be part of the base V extension
+- Added ALTFMT field at bit 8
+- Changed RESERVED field to start from bit 9 instead of bit 10
+
+When Zvfbfa is disabled, bits 8+ are treated as reserved (preserving
+existing behavior for altfmt bit). When Zvfbfa is enabled, only bits 9+
+are reserved.
+
+Reference:
+- https://github.com/riscvarchive/riscv-v-spec/blob/master/ediv.adoc
+
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Signed-off-by: Max Chou <max.chou@sifive.com>
 ---
- target/riscv/cpu.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ target/riscv/cpu.h           |  4 ++--
+ target/riscv/vector_helper.c | 29 ++++++++++++++++++++++++-----
+ 2 files changed, 26 insertions(+), 7 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index d8e2a7ced5..b3caf26704 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -2617,6 +2617,15 @@ static RISCVCPUImpliedExtsRule SSCTR_IMPLIED = {
-     },
- };
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 35d1f6362c..962cc45073 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -191,8 +191,8 @@ FIELD(VTYPE, VLMUL, 0, 3)
+ FIELD(VTYPE, VSEW, 3, 3)
+ FIELD(VTYPE, VTA, 6, 1)
+ FIELD(VTYPE, VMA, 7, 1)
+-FIELD(VTYPE, VEDIV, 8, 2)
+-FIELD(VTYPE, RESERVED, 10, sizeof(target_ulong) * 8 - 11)
++FIELD(VTYPE, ALTFMT, 8, 1)
++FIELD(VTYPE, RESERVED, 9, sizeof(target_ulong) * 8 - 10)
  
-+static RISCVCPUImpliedExtsRule ZVFBFA_IMPLIED = {
-+    .ext = CPU_CFG_OFFSET(ext_zvfbfa),
-+    .implied_multi_exts = {
-+        CPU_CFG_OFFSET(ext_zve32f), CPU_CFG_OFFSET(ext_zfbfmin),
+ typedef struct PMUCTRState {
+     /* Current value of a counter */
+diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+index 2de3358ee8..525a47bf66 100644
+--- a/target/riscv/vector_helper.c
++++ b/target/riscv/vector_helper.c
+@@ -33,6 +33,22 @@
+ #include "vector_internals.h"
+ #include <math.h>
+ 
++static target_ulong vtype_reserved(CPURISCVState *env, target_ulong vtype)
++{
++    int xlen = riscv_cpu_xlen(env);
++    target_ulong reserved = 0;
 +
-+        RISCV_IMPLIED_EXTS_RULE_END
-+    },
-+};
++    if (riscv_cpu_cfg(env)->ext_zvfbfa) {
++        reserved = vtype & MAKE_64BIT_MASK(R_VTYPE_RESERVED_SHIFT,
++                                           xlen - 1 - R_VTYPE_RESERVED_SHIFT);
++    } else {
++        reserved = vtype & MAKE_64BIT_MASK(R_VTYPE_ALTFMT_SHIFT,
++                                           xlen - 1 - R_VTYPE_ALTFMT_SHIFT);
++    }
 +
- RISCVCPUImpliedExtsRule *riscv_misa_ext_implied_rules[] = {
-     &RVA_IMPLIED, &RVD_IMPLIED, &RVF_IMPLIED,
-     &RVM_IMPLIED, &RVV_IMPLIED, NULL
-@@ -2630,8 +2639,8 @@ RISCVCPUImpliedExtsRule *riscv_multi_ext_implied_rules[] = {
-     &ZHINX_IMPLIED, &ZHINXMIN_IMPLIED, &ZICNTR_IMPLIED,
-     &ZIHPM_IMPLIED, &ZK_IMPLIED, &ZKN_IMPLIED,
-     &ZKS_IMPLIED, &ZVBB_IMPLIED, &ZVE32F_IMPLIED,
--    &ZVE32X_IMPLIED, &ZVE64D_IMPLIED, &ZVE64F_IMPLIED,
--    &ZVE64X_IMPLIED, &ZVFBFMIN_IMPLIED, &ZVFBFWMA_IMPLIED,
-+    &ZVE32X_IMPLIED, &ZVE64D_IMPLIED, &ZVE64F_IMPLIED, &ZVE64X_IMPLIED,
-+    &ZVFBFA_IMPLIED, &ZVFBFMIN_IMPLIED, &ZVFBFWMA_IMPLIED,
-     &ZVFH_IMPLIED, &ZVFHMIN_IMPLIED, &ZVKN_IMPLIED,
-     &ZVKNC_IMPLIED, &ZVKNG_IMPLIED, &ZVKNHB_IMPLIED,
-     &ZVKS_IMPLIED,  &ZVKSC_IMPLIED, &ZVKSG_IMPLIED, &SSCFG_IMPLIED,
++    return reserved;
++}
++
+ target_ulong HELPER(vsetvl)(CPURISCVState *env, target_ulong s1,
+                             target_ulong s2, target_ulong x0)
+ {
+@@ -41,12 +57,9 @@ target_ulong HELPER(vsetvl)(CPURISCVState *env, target_ulong s1,
+     uint64_t vlmul = FIELD_EX64(s2, VTYPE, VLMUL);
+     uint8_t vsew = FIELD_EX64(s2, VTYPE, VSEW);
+     uint16_t sew = 8 << vsew;
+-    uint8_t ediv = FIELD_EX64(s2, VTYPE, VEDIV);
++    uint8_t altfmt = FIELD_EX64(s2, VTYPE, ALTFMT);
+     int xlen = riscv_cpu_xlen(env);
+     bool vill = (s2 >> (xlen - 1)) & 0x1;
+-    target_ulong reserved = s2 &
+-                            MAKE_64BIT_MASK(R_VTYPE_RESERVED_SHIFT,
+-                                            xlen - 1 - R_VTYPE_RESERVED_SHIFT);
+     uint16_t vlen = cpu->cfg.vlenb << 3;
+     int8_t lmul;
+ 
+@@ -63,7 +76,13 @@ target_ulong HELPER(vsetvl)(CPURISCVState *env, target_ulong s1,
+         }
+     }
+ 
+-    if ((sew > cpu->cfg.elen) || vill || (ediv != 0) || (reserved != 0)) {
++    if (cpu->cfg.ext_zvfbfa) {
++        if (altfmt == 1 && vsew >= MO_32) {
++            vill = true;
++        }
++    }
++
++    if ((sew > cpu->cfg.elen) || vill || (vtype_reserved(env, s2) != 0)) {
+         /* only set vill bit. */
+         env->vill = 1;
+         env->vtype = 0;
 -- 
 2.43.7
 
