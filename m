@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B7C2D00CF6
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 04:11:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD556D00CD9
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 04:10:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdgPT-0006aB-4A; Wed, 07 Jan 2026 22:10:03 -0500
+	id 1vdgPp-00006K-P1; Wed, 07 Jan 2026 22:10:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vdgNx-0005Ro-9M; Wed, 07 Jan 2026 22:08:35 -0500
+ id 1vdgO6-0005TK-FV; Wed, 07 Jan 2026 22:08:44 -0500
 Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vdgNv-0005QV-FC; Wed, 07 Jan 2026 22:08:29 -0500
+ id 1vdgO4-0005Ri-Pg; Wed, 07 Jan 2026 22:08:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1767841708; x=1799377708;
+ t=1767841717; x=1799377717;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=h8hJFCjpgWizV8fThY8EPP7MvzRhJoCodMT4qRBYUn4=;
- b=Pw0DkrCrqKOQiRHn39u8mWfRTFvw9v15e1kDlqTsTjGd1WjmKAA8Hg95
- v1IJXsHZP9r70t5h6L7QcgRMsM2hCVPrb8GnqruXMWLgAgd/GKm0Pmxn4
- R3+mUTNvnNfgkX/PMAMtURew2ePMSv/w7nEsTfZTUl1oRITjpC0wmYvBU
- lfrQ9O+uphEcM7kLJpZe0lcgCNcueqwbfw11ASOd1UjpT6kHw6OpUssZq
- uXAzYCPAngemNbhAXRONLiIAP33Jmc+M2FduxnXZpZRqqKc7xHTn2uKIK
- 0HaHS+uylJ4b8MT0bW9mVwK9cti8u9gMeEKj0Kxo++/ySHNYKTLjbcMzS w==;
-X-CSE-ConnectionGUID: x/1cAEnjT0qSBkMhMC1sQw==
-X-CSE-MsgGUID: +E0qamU5R2ObHPkjgMaXxQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="91877434"
-X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; d="scan'208";a="91877434"
+ bh=Q2S1HbfA2OWc8pT/OJc71U77jdxwWD7j1qTYdHBk0fg=;
+ b=kFFpRCRh4bwBTnMslBhyKmuu7RFa+44ZDA7TDCKFXueXLf4/IM4L2da9
+ VvuddEE2YIRv0auQyXW09oUH43YcYBam/IDLHEhTV0NRiwxgQp2i8nH5T
+ JzhvfwFFKzt5Cv9GPUpzlm07v/9f5+VoCLagyvUMFZQDGRuWDoF60UHDX
+ dNJbktvV0poXPbtIEyx/RCRbERvBK2InGQ2Iuho2B65Ux00249EKrCtWd
+ 3z0KCMDhgCsB3tIfuHYVJnm0yxQ+WkdeWQ4QSRVX7Yxy4EmpdV40fqG9c
+ Xvg2Xf9gm49IY6Ypealj2HBr9Vv0iZig08AFS6ZinorEYYOV9P+Wl0yEr Q==;
+X-CSE-ConnectionGUID: Ljx2KXscQPWkNsqLfoR1PQ==
+X-CSE-MsgGUID: wMS6wA9iTxyTY7Y+hred5w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="91877465"
+X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; d="scan'208";a="91877465"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jan 2026 19:08:25 -0800
-X-CSE-ConnectionGUID: 6TvJYjOgRyeStfX/4UyOcg==
-X-CSE-MsgGUID: xek6c36hSEuXJpHy++malg==
+ 07 Jan 2026 19:08:35 -0800
+X-CSE-ConnectionGUID: Zt7DD7dHSre3gamWpWGPog==
+X-CSE-MsgGUID: 7KNtoah0RZ2dbmCmnpAKyA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; d="scan'208";a="202211137"
+X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; d="scan'208";a="202211171"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa006.jf.intel.com with ESMTP; 07 Jan 2026 19:08:15 -0800
+ by orviesa006.jf.intel.com with ESMTP; 07 Jan 2026 19:08:25 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
@@ -70,9 +70,10 @@ Cc: qemu-devel@nongnu.org, devel@lists.libvirt.org, kvm@vger.kernel.org,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>,
  BALATON Zoltan <balaton@eik.bme.hu>, Peter Krempa <pkrempa@redhat.com>,
  Jiri Denemark <jdenemar@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v6 18/27] hw/core/machine: Remove hw_compat_2_6[] array
-Date: Thu,  8 Jan 2026 11:30:42 +0800
-Message-Id: <20260108033051.777361-19-zhao1.liu@intel.com>
+Subject: [PATCH v6 19/27] hw/virtio/virtio-mmio: Remove
+ VirtIOMMIOProxy::format_transport_address field
+Date: Thu,  8 Jan 2026 11:30:43 +0800
+Message-Id: <20260108033051.777361-20-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260108033051.777361-1-zhao1.liu@intel.com>
 References: <20260108033051.777361-1-zhao1.liu@intel.com>
@@ -106,8 +107,10 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The hw_compat_2_6[] array was only used by the pc-q35-2.6 and
-pc-i440fx-2.6 machines, which got removed. Remove it.
+The VirtIOMMIOProxy::format_transport_address boolean was only set
+in the hw_compat_2_6[] array, via the 'format_transport_address=off'
+property. We removed all machines using that array, lets remove
+that property, simplifying virtio_mmio_bus_get_dev_path().
 
 Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
@@ -116,41 +119,55 @@ Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/core/machine.c        | 8 --------
- include/hw/core/boards.h | 3 ---
- 2 files changed, 11 deletions(-)
+ hw/virtio/virtio-mmio.c         | 15 ---------------
+ include/hw/virtio/virtio-mmio.h |  1 -
+ 2 files changed, 16 deletions(-)
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 51c28468ff96..b01838c88a60 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -290,14 +290,6 @@ GlobalProperty hw_compat_2_7[] = {
- };
- const size_t hw_compat_2_7_len = G_N_ELEMENTS(hw_compat_2_7);
+diff --git a/hw/virtio/virtio-mmio.c b/hw/virtio/virtio-mmio.c
+index 0b0412b22f23..742ca3d3e4d3 100644
+--- a/hw/virtio/virtio-mmio.c
++++ b/hw/virtio/virtio-mmio.c
+@@ -764,8 +764,6 @@ static void virtio_mmio_pre_plugged(DeviceState *d, Error **errp)
+ /* virtio-mmio device */
  
--GlobalProperty hw_compat_2_6[] = {
--    { "virtio-mmio", "format_transport_address", "off" },
--    /* Optional because not all virtio-pci devices support legacy mode */
--    { "virtio-pci", "disable-modern", "on",  .optional = true },
--    { "virtio-pci", "disable-legacy", "off", .optional = true },
--};
--const size_t hw_compat_2_6_len = G_N_ELEMENTS(hw_compat_2_6);
+ static const Property virtio_mmio_properties[] = {
+-    DEFINE_PROP_BOOL("format_transport_address", VirtIOMMIOProxy,
+-                     format_transport_address, true),
+     DEFINE_PROP_BOOL("force-legacy", VirtIOMMIOProxy, legacy, true),
+     DEFINE_PROP_BIT("ioeventfd", VirtIOMMIOProxy, flags,
+                     VIRTIO_IOMMIO_FLAG_USE_IOEVENTFD_BIT, true),
+@@ -827,19 +825,6 @@ static char *virtio_mmio_bus_get_dev_path(DeviceState *dev)
+     virtio_mmio_proxy = VIRTIO_MMIO(virtio_mmio_bus->parent);
+     proxy_path = qdev_get_dev_path(DEVICE(virtio_mmio_proxy));
+ 
+-    /*
+-     * If @format_transport_address is false, then we just perform the same as
+-     * virtio_bus_get_dev_path(): we delegate the address formatting for the
+-     * device on the virtio-mmio bus to the bus that the virtio-mmio proxy
+-     * (i.e., the device that implements the virtio-mmio bus) resides on. In
+-     * this case the base address of the virtio-mmio transport will be
+-     * invisible.
+-     */
+-    if (!virtio_mmio_proxy->format_transport_address) {
+-        return proxy_path;
+-    }
 -
- MachineState *current_machine;
+-    /* Otherwise, we append the base address of the transport. */
+     section = memory_region_find(&virtio_mmio_proxy->iomem, 0, 0x200);
+     assert(section.mr);
  
- static char *machine_get_kernel(Object *obj, Error **errp)
-diff --git a/include/hw/core/boards.h b/include/hw/core/boards.h
-index 815845207b01..b0e3a523a107 100644
---- a/include/hw/core/boards.h
-+++ b/include/hw/core/boards.h
-@@ -882,7 +882,4 @@ extern const size_t hw_compat_2_8_len;
- extern GlobalProperty hw_compat_2_7[];
- extern const size_t hw_compat_2_7_len;
- 
--extern GlobalProperty hw_compat_2_6[];
--extern const size_t hw_compat_2_6_len;
--
- #endif
+diff --git a/include/hw/virtio/virtio-mmio.h b/include/hw/virtio/virtio-mmio.h
+index 1eab3c0decef..1644d0981050 100644
+--- a/include/hw/virtio/virtio-mmio.h
++++ b/include/hw/virtio/virtio-mmio.h
+@@ -66,7 +66,6 @@ struct VirtIOMMIOProxy {
+     uint32_t guest_page_shift;
+     /* virtio-bus */
+     VirtioBusState bus;
+-    bool format_transport_address;
+     /* Fields only used for non-legacy (v2) devices */
+     uint32_t guest_features[2];
+     VirtIOMMIOQueue vqs[VIRTIO_QUEUE_MAX];
 -- 
 2.34.1
 
