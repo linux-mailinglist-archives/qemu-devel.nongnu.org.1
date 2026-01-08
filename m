@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3AD5D01259
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 06:39:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C12FBD01212
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 06:37:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdiff-0004Vk-JQ; Thu, 08 Jan 2026 00:34:55 -0500
+	id 1vdifq-0004al-MQ; Thu, 08 Jan 2026 00:35:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vdifb-0004PD-In
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:34:51 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1vdifd-0004SC-67
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:34:53 -0500
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vdifZ-0005x5-LV
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:34:51 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-2a0bb2f093aso22176795ad.3
- for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 21:34:49 -0800 (PST)
+ id 1vdifb-0005xP-Iu
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 00:34:52 -0500
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-2a137692691so21562955ad.0
+ for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 21:34:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767850488; x=1768455288; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767850490; x=1768455290; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=j4z0oCAPZUFyYtst2gbg7Turc0axxuEQJrBWN3rdQkE=;
- b=oHD13aKSic8jlCyFCHYKq71ElRMCNIuAV5pkgUvcwALOIbFgxwe1Coq37o99u6efrj
- nJkujLp+eMXuCHMRdWNxs9/oFyWPAlqzyaLgKuC8SnbG5KXNyn1JI+IQUnUOURgj7468
- LnfPVyp7uKVAcJAEjvbj46zNZ5Rwl4Aeg8v9/uteo+v2kYGuOLlf0PPkZyBk9lQHqYDO
- crNZOnQeU0xtzeZZsEofgbyLBAnrdFAHMs7f94uvVKqpJTND59edMkVuevt1cWEZY1xt
- yzO5AskM2+umx7P1FE/sEYCVXuydu4Rfpx6FXs/jBEehQCeuGsoiH3k9FUK0zh4Zeabc
- ds3w==
+ :reply-to; bh=iPCUPgmqCPlQV857vKt3p+PMVqLWxwQcBCKjihbg3eo=;
+ b=mEbB5duMqLYoefUX+m80lEYOWKTp+QLJ8O9krBcTRQP5n1PYcDWWIQdjRw3cE9h3rk
+ yiH/B1ybR02i0N13X5ICmxFiv3XXjdbiTj6jOy9xGbXQiyrd1wz62NZXsk5LJfhEdZED
+ tJf1e7Ekto6hKpfCPrNTEbIxkLmn23Zw7vkNMobwORQZx213Fdzwzs2NSQl7P4bTlSIj
+ 6KPcY+p8y6cfDIrOC42pmiYhB3AXT+d43zoKOVrCuz8qU4D3XzlDy9YZpELWjPjj0jUa
+ KnKM4TeaIkGuNexmOkwV1amg5pIWbO6T7UbttyCR+1nh+mOuJOS+o2ExCBmYYLK4+dIU
+ m9oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767850488; x=1768455288;
+ d=1e100.net; s=20230601; t=1767850490; x=1768455290;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=j4z0oCAPZUFyYtst2gbg7Turc0axxuEQJrBWN3rdQkE=;
- b=wQjV9iGRaAbpUFFHA1X/vMe6FuAq78eM+Hog9CGcIAaeJyRJHJEyITL9WuDdGaCAQ/
- LeFBuNxc+xDg5/24fEfgIuiwR+72dKm7+HW3fMYO8nxT0jRtAqZpEsuKL2AQRb/wHpW/
- /R0QaMB/dkyiI/0lMCXztMYyTSSqT0BdBMnyJmpow3D+CvSxIeK8B5nY4MlVDRF0pwm2
- AfCSyUROPT1w7llSqE03fsSjUWc4IuZIw6Da9ij+b1XcxO4OLuaf9LVBv2g81D2AHIeq
- b7PNfulPYhatEUegWF1NbQZEtOqWhwS8eMAOHVgciuG1gc3vSWl+8xNeqH0XZpPE295R
- 9c/Q==
-X-Gm-Message-State: AOJu0YyZhv7hxE0QfAF9eELrqo8kb3XFy8V/LW3nP42FKcvQvUANnjx9
- UDJjhqVswUIZL/sdnz9p95vetc1fG+o97wq8P/65HrSsfJlHkRl83zUb/B84xzITBYrtNxNXFUZ
- GaBAgZF4=
-X-Gm-Gg: AY/fxX6fp8tvAVi2hGAgFQ8cxee8GEf0W7tRoyHq99iHoEuGTL29d21XY9RQymwlDPH
- xvxkO9V0r1cP1enf/q1mZ1MNSQQ360psM3b2B7jn1tPCFei+nb6XKcENcAh5rLp4LhuEZ2PxgN5
- dbNHlwBAM/LTSURqeecY64pe8+SUb0u2Xf4O7bVkw0xAHGcfLF8Myh+cicbRTGoIgbWhKtQVcjQ
- 9BM1HCPxzkVAHAwlQ9wQo4MSqElTQYxiQ07+3iqHE6HTkkVb+jOKwB6jED0iSD8fi1AOlyCcnET
- GoTAckZ7WMw37wUAio0ea75v799RwZl6XJAAoRcoBbDaXgZ/vXUuCoAJlBGTrJ/par7nfksRfZR
- 40N7MchoR7wa2nY/NRg9jQaeb74Tdy3e73zs5gWfDJNJhJ9RC1oIAyEwVHBahSQWQiEwyrqyS8w
- UKRUry5tRF9d1ayjNbug==
-X-Google-Smtp-Source: AGHT+IH8XIf2EA4aCTWoj8u1Pft6zHH94Qwd2u023Je9imASwmv3oHLW130a6N/BRhxB4tO16iADew==
-X-Received: by 2002:a17:902:ce07:b0:2a0:a92c:2cb6 with SMTP id
- d9443c01a7336-2a3ee4aadb3mr47496445ad.36.1767850488003; 
- Wed, 07 Jan 2026 21:34:48 -0800 (PST)
+ bh=iPCUPgmqCPlQV857vKt3p+PMVqLWxwQcBCKjihbg3eo=;
+ b=rAtFcSsazQvtz39ykXv1+Dirgsc2XpkTdxqaq0ing4u+aU4P8I0+mwUs6YpSxyMOgR
+ tXW4GogU7glikBpCUDZz3gohi54BfFVLNtVZ3sIoVMuj5jSZX2VdIYnJS98EhegC1Akn
+ cOiebtyLJGMGmEPAYA54k1c+n4KWcRToUlMDIoQvMNf+JGFAQAg1YpEcO+RjG+/Otcts
+ 3BhKOtUzLKewMe8PQiDvjX2nyaNzFwLH6lXD4iZzOOApCFpLw8H0/CVK1TY0sA0QSmYt
+ QqdpSGgD/lq08+JlKwzewkA0BGQ3IdbgoC44Tnb5ZtMqxnkB89dJlGHOV7TTQ5wQVULI
+ oVPw==
+X-Gm-Message-State: AOJu0Ywjn+hueLl66Tt4PRA0gNX3NXIKWMqohmnL9WNT/ETH1iyzoEaL
+ Nut6HKZ0mTO2M3r3kN3YrDOxHA1NYENSM4ZFtBP+yu73fi3GqmejWuU+6lzfff/xJOOZgQSyRCa
+ p3wWgiKk=
+X-Gm-Gg: AY/fxX60VSwsGWcKtuR0tDvLUXdReQFkk8jwNrb8tNzgBrDatY4y+oyPOyOkiu+1tom
+ 9ER8LiSCF/Qc3pCclhUJ7P0zcrcYlBes/7g+nEZUyO3iJWtoShNpgDE8t6EC5pwt43gGZrCfCZ3
+ Ty0RtPK1kfIN9qorRs8tvLn8OLvQ2BgHhoeHYcIwm/BD2irFr2twS6NcZhorNdmQC5j43cwc65Q
+ Rop1pwO5fotq0HXv7kx+SbsqFn8YZH7wf311WGiek4J3hKHrjHtccQVzAyr3oCd4yb+0MWFXLnm
+ 9Xl5dilOrQbUHrk2zDpBJzRQEY0gCk0uwBksPmXmBtwmwMOFVftHx2yijY+h9mV2hyKztrFQ6pD
+ AOTLERCeHEO4rEHl/IO1KSaAoJbU0uyLcWir6We25goQeXvQ2umFNMCZns7rzeiroIqfKBcOtTQ
+ k5cqe7qbjjHDyUi1RJmA==
+X-Google-Smtp-Source: AGHT+IHbUBkF+rrIgYIe/bh0oGoGWNs4Rwo953FbBBm0DV3FvD0lWrhTGy9tc+Zfzr7tHj/d0Ld30A==
+X-Received: by 2002:a17:903:478d:b0:2a0:b438:fc15 with SMTP id
+ d9443c01a7336-2a3ee468407mr47089545ad.11.1767850489855; 
+ Wed, 07 Jan 2026 21:34:49 -0800 (PST)
 Received: from stoup.. ([180.233.125.201]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a3e3cb2d93sm66341465ad.63.2026.01.07.21.34.46
+ d9443c01a7336-2a3e3cb2d93sm66341465ad.63.2026.01.07.21.34.48
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Jan 2026 21:34:47 -0800 (PST)
+ Wed, 07 Jan 2026 21:34:49 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 42/50] target/hppa: Drop CONFIG_ATOMIC64 test
-Date: Thu,  8 Jan 2026 16:30:10 +1100
-Message-ID: <20260108053018.626690-43-richard.henderson@linaro.org>
+Subject: [PATCH 43/50] target/m68k: Drop CONFIG_ATOMIC64 tests
+Date: Thu,  8 Jan 2026 16:30:11 +1100
+Message-ID: <20260108053018.626690-44-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260108053018.626690-1-richard.henderson@linaro.org>
 References: <20260108053018.626690-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,38 +99,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/op_helper.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ target/m68k/op_helper.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/target/hppa/op_helper.c b/target/hppa/op_helper.c
-index 0458378abb..a0d733020f 100644
---- a/target/hppa/op_helper.c
-+++ b/target/hppa/op_helper.c
-@@ -74,7 +74,6 @@ static void atomic_store_mask64(CPUHPPAState *env, target_ulong addr,
-                                 uint64_t val, uint64_t mask,
-                                 int size, uintptr_t ra)
- {
--#ifdef CONFIG_ATOMIC64
+diff --git a/target/m68k/op_helper.c b/target/m68k/op_helper.c
+index e9c20a8e03..3f1d943afe 100644
+--- a/target/m68k/op_helper.c
++++ b/target/m68k/op_helper.c
+@@ -816,14 +816,11 @@ static void do_cas2l(CPUM68KState *env, uint32_t regs, uint32_t a1, uint32_t a2,
+     uint32_t u2 = env->dregs[Du2];
+     uint32_t l1, l2;
+     uintptr_t ra = GETPC();
+-#if defined(CONFIG_ATOMIC64)
      int mmu_idx = cpu_mmu_index(env_cpu(env), 0);
-     uint64_t old, new, cmp, *haddr;
-     void *vaddr;
-@@ -88,15 +87,12 @@ static void atomic_store_mask64(CPUHPPAState *env, target_ulong addr,
-     old = *haddr;
-     while (1) {
-         new = be32_to_cpu((cpu_to_be32(old) & ~mask) | (val & mask));
--        cmp = qatomic_cmpxchg__nocheck(haddr, old, new);
-+        cmp = qatomic_cmpxchg(haddr, old, new);
-         if (cmp == old) {
-             return;
-         }
-         old = cmp;
-     }
--#else
--    cpu_loop_exit_atomic(env_cpu(env), ra);
+     MemOpIdx oi = make_memop_idx(MO_BEUQ, mmu_idx);
 -#endif
- }
  
- static void do_stby_b(CPUHPPAState *env, target_ulong addr, target_ulong val,
+     if (parallel) {
+         /* We're executing in a parallel context -- must be atomic.  */
+-#ifdef CONFIG_ATOMIC64
+         uint64_t c, u, l;
+         if ((a1 & 7) == 0 && a2 == a1 + 4) {
+             c = deposit64(c2, 32, 32, c1);
+@@ -837,9 +834,7 @@ static void do_cas2l(CPUM68KState *env, uint32_t regs, uint32_t a1, uint32_t a2,
+             l = cpu_atomic_cmpxchgq_be_mmu(env, a2, c, u, oi, ra);
+             l2 = l >> 32;
+             l1 = l;
+-        } else
+-#endif
+-        {
++        } else {
+             /* Tell the main loop we need to serialize this insn.  */
+             cpu_loop_exit_atomic(env_cpu(env), ra);
+         }
 -- 
 2.43.0
 
