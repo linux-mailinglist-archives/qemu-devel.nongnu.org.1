@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0044CD04B33
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 18:07:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC723D04AED
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 18:06:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdtRj-0005z2-Hn; Thu, 08 Jan 2026 12:05:15 -0500
+	id 1vdtRm-0006XK-T8; Thu, 08 Jan 2026 12:05:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vdtRN-0005pB-Qn
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 12:04:54 -0500
+ id 1vdtRT-0005zL-Am
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 12:05:01 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vdtRI-0006z3-Un
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 12:04:52 -0500
+ id 1vdtRR-00070N-2U
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 12:04:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767891888;
+ s=mimecast20190719; t=1767891896;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8d19vFBRojFtvdIOIQ3lW5BtorD2+Jz3CwhXXu8qa4s=;
- b=FGIywSBq125AiJ4dcU6EHfzLY9pcoQ1NpRAjzDOc4w/njEVIvvriw2sw2WbXxKcPAeicGl
- Sgl8DLWR8vLZDW+64LLQ1lM9OSMSP+Lx2Zz9K00JIAa0L4IgNo/uexp+OlOMLxIc1uWOsg
- mRhmJRwqgwVKgrAOCd5gGxh9lJ0Tb34=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=M1duE9W+YwZQh+SUbRd4DXBvtZgWpQ2DjJcNRbX6my0=;
+ b=e200gPYmmq/kIQWwTs9ZQgzyc7Cva7H3JKbs6rjUrnzZ5W2FBX8r2miNwewqzGTYVZt0sL
+ bpJ8kwcEO0y4mTzGjAwEn49wVnP+bPrI7pNQUz5wX4Y73+G3zBgBuVRPT5DrTU78+sePd+
+ iek+DHbnaY/ZmZ5/CzutJk2BpD6FRb4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-411-fgffMLsxMl2sdnJmS-FXAg-1; Thu,
- 08 Jan 2026 12:04:44 -0500
-X-MC-Unique: fgffMLsxMl2sdnJmS-FXAg-1
-X-Mimecast-MFC-AGG-ID: fgffMLsxMl2sdnJmS-FXAg_1767891883
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-515-uAE3cU_YNP-fZ63kTUVGig-1; Thu,
+ 08 Jan 2026 12:04:51 -0500
+X-MC-Unique: uAE3cU_YNP-fZ63kTUVGig-1
+X-Mimecast-MFC-AGG-ID: uAE3cU_YNP-fZ63kTUVGig_1767891888
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3F03419560A7; Thu,  8 Jan 2026 17:04:43 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D850519541B3; Thu,  8 Jan 2026 17:04:47 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.44])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3E99919560A2; Thu,  8 Jan 2026 17:04:39 +0000 (UTC)
+ id A15CF19560A2; Thu,  8 Jan 2026 17:04:43 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -58,10 +58,11 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  devel@lists.libvirt.org, qemu-block@nongnu.org, qemu-rust@nongnu.org,
  Markus Armbruster <armbru@redhat.com>, Stefan Weil <sw@weilnetz.de>,
  Kevin Wolf <kwolf@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v5 13/24] monitor: refactor error_vprintf()
-Date: Thu,  8 Jan 2026 17:03:27 +0000
-Message-ID: <20260108170338.2693853-14-berrange@redhat.com>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Blake <eblake@redhat.com>
+Subject: [PATCH v5 14/24] monitor: move error_vprintf back to error-report.c
+Date: Thu,  8 Jan 2026 17:03:28 +0000
+Message-ID: <20260108170338.2693853-15-berrange@redhat.com>
 In-Reply-To: <20260108170338.2693853-1-berrange@redhat.com>
 References: <20260108170338.2693853-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -93,34 +94,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The monitor_vprintf() code will return -1 if either the monitor
-is NULL, or the monitor is QMP. The error_vprintf() code can
-take advantage of this to avoid having to duplicate the same
-checks, and instead simply look at the return value.
+The current unit tests rely on monitor.o not being linked, such
+that the monitor stubs get linked instead. Since error_vprintf
+is in monitor.o this allows a stub error_vprintf impl to be used
+that calls g_test_message.
+
+This takes a different approach, with error_vprintf moving
+back to error-report.c such that it is always linked into the
+tests. The monitor_vprintf() stub is then changed to use
+g_test_message if QTEST_SILENT_ERRORS is set, otherwise it will
+return -1 and trigger error_vprintf to call vfprintf.
+
+The end result is functionally equivalent for the purposes of
+the unit tests.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Eric Blake <eblake@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- monitor/monitor.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ monitor/monitor.c    | 15 ---------------
+ stubs/error-printf.c | 18 ------------------
+ stubs/meson.build    |  1 -
+ stubs/monitor-core.c | 14 +++++++++++++-
+ util/error-report.c  | 15 +++++++++++++++
+ 5 files changed, 28 insertions(+), 35 deletions(-)
+ delete mode 100644 stubs/error-printf.c
 
 diff --git a/monitor/monitor.c b/monitor/monitor.c
-index 4d26cd9496..627a59b23e 100644
+index 627a59b23e..6dc5a7016d 100644
 --- a/monitor/monitor.c
 +++ b/monitor/monitor.c
-@@ -268,17 +268,19 @@ void monitor_printc(Monitor *mon, int c)
+@@ -268,21 +268,6 @@ void monitor_printc(Monitor *mon, int c)
      monitor_printf(mon, "'");
  }
  
--/*
-- * Print to current monitor if we have one, else to stderr.
-- */
- int error_vprintf(const char *fmt, va_list ap)
- {
-     Monitor *cur_mon = monitor_cur();
+-int error_vprintf(const char *fmt, va_list ap)
+-{
+-    Monitor *cur_mon = monitor_cur();
+-    /*
+-     * This will return -1 if 'cur_mon' is NULL, or is QMP.
+-     * IOW this will only print if in HMP, otherwise we
+-     * fallback to stderr for QMP / no-monitor scenarios.
+-     */
+-    int ret = monitor_vprintf(cur_mon, fmt, ap);
+-    if (ret == -1) {
+-        ret = vfprintf(stderr, fmt, ap);
+-    }
+-    return ret;
+-}
 -
--    if (cur_mon && !monitor_cur_is_qmp()) {
--        return monitor_vprintf(cur_mon, fmt, ap);
+ static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
+     /* Limit guest-triggerable events to 1 per second */
+     [QAPI_EVENT_RTC_CHANGE]        = { 1000 * SCALE_MS },
+diff --git a/stubs/error-printf.c b/stubs/error-printf.c
+deleted file mode 100644
+index 1afa0f62ca..0000000000
+--- a/stubs/error-printf.c
++++ /dev/null
+@@ -1,18 +0,0 @@
+-#include "qemu/osdep.h"
+-#include "qemu/error-report.h"
+-#include "monitor/monitor.h"
+-
+-int error_vprintf(const char *fmt, va_list ap)
+-{
+-    int ret;
+-
+-    if (g_test_initialized() && !g_test_subprocess() &&
+-        getenv("QTEST_SILENT_ERRORS")) {
+-        char *msg = g_strdup_vprintf(fmt, ap);
+-        g_test_message("%s", msg);
+-        ret = strlen(msg);
+-        g_free(msg);
+-        return ret;
+-    }
+-    return vfprintf(stderr, fmt, ap);
+-}
+diff --git a/stubs/meson.build b/stubs/meson.build
+index 0b2778c568..3d77458a3f 100644
+--- a/stubs/meson.build
++++ b/stubs/meson.build
+@@ -3,7 +3,6 @@
+ # below, so that it is clear who needs the stubbed functionality.
+ 
+ stub_ss.add(files('cpu-get-clock.c'))
+-stub_ss.add(files('error-printf.c'))
+ stub_ss.add(files('fdset.c'))
+ stub_ss.add(files('iothread-lock.c'))
+ stub_ss.add(files('is-daemonized.c'))
+diff --git a/stubs/monitor-core.c b/stubs/monitor-core.c
+index 1894cdfe1f..a7c32297c9 100644
+--- a/stubs/monitor-core.c
++++ b/stubs/monitor-core.c
+@@ -18,5 +18,17 @@ void qapi_event_emit(QAPIEvent event, QDict *qdict)
+ 
+ int monitor_vprintf(Monitor *mon, const char *fmt, va_list ap)
+ {
+-    abort();
++    /*
++     * Pretend 'g_test_message' is our monitor console to
++     * stop the caller sending messages to stderr
++     */
++    if (g_test_initialized() && !g_test_subprocess() &&
++        getenv("QTEST_SILENT_ERRORS")) {
++        char *msg = g_strdup_vprintf(fmt, ap);
++        g_test_message("%s", msg);
++        size_t ret = strlen(msg);
++        g_free(msg);
++        return ret;
++    }
++    return -1;
+ }
+diff --git a/util/error-report.c b/util/error-report.c
+index 1b17c11de1..b262ad01cb 100644
+--- a/util/error-report.c
++++ b/util/error-report.c
+@@ -29,6 +29,21 @@ bool message_with_timestamp;
+ bool error_with_guestname;
+ const char *error_guest_name;
+ 
++int error_vprintf(const char *fmt, va_list ap)
++{
++    Monitor *cur_mon = monitor_cur();
 +    /*
 +     * This will return -1 if 'cur_mon' is NULL, or is QMP.
 +     * IOW this will only print if in HMP, otherwise we
@@ -129,12 +224,13 @@ index 4d26cd9496..627a59b23e 100644
 +    int ret = monitor_vprintf(cur_mon, fmt, ap);
 +    if (ret == -1) {
 +        ret = vfprintf(stderr, fmt, ap);
-     }
--    return vfprintf(stderr, fmt, ap);
++    }
 +    return ret;
- }
- 
- static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
++}
++
+ int error_printf(const char *fmt, ...)
+ {
+     va_list ap;
 -- 
 2.52.0
 
