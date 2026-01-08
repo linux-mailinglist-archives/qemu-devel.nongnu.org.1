@@ -2,55 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E2C9D02BBE
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 13:49:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06DA4D02C44
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 13:55:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdpRR-0007Qh-Qh; Thu, 08 Jan 2026 07:48:41 -0500
+	id 1vdpXx-0001uS-I0; Thu, 08 Jan 2026 07:55:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1vdpRO-0007MP-MM
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 07:48:38 -0500
-Received: from mx.treblig.org ([2a00:1098:5b::1])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdpXv-0001tn-ND
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 07:55:23 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1vdpRM-0003It-To
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 07:48:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
- ; s=bytemarkmx;
- h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
- :Subject; bh=GIxytoyq7LeQI+Xt2xX3VTAop32280JJ+Sj2QXD6TI0=; b=Ian0Y6xQtVMsrN7I
- tEqLgpDUMxMak9+G5Nxw4ReAUuut061CfPKzwoZZFdkiAdVrHxtI8Vv9RHwgY8y55Lp95qvyqhCxa
- 67v3daOOd/zcD3YOssoYHj2NGOG1gfjZJ6O1VuvQSUTfk68egOYMJARJmBVcc+d7K8g+PJQVC5VIZ
- mL+V2HnIcHVUeSzYie6UUveZvtbEaKCJ08KYImROXxk99czog3qMm9HDnGwlQczBxYcfgaK1DeCCs
- zP0mTmmT0yfgq8CK7a0ZPE8CtPYR//0Vh4vxVXGC+5lqsjbrXVWOmqELWW8A55Qum+1WRtm12lbOj
- M+znmD0w0sMmdu/rww==;
-Received: from dg by mx.treblig.org with local (Exim 4.98.2)
- (envelope-from <dg@treblig.org>) id 1vdpRG-0000000DFVC-3P0V;
- Thu, 08 Jan 2026 12:48:30 +0000
-Date: Thu, 8 Jan 2026 12:48:30 +0000
-From: "Dr. David Alan Gilbert" <dave@treblig.org>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org
-Subject: Re: [PATCH] hmp-commands-info.hx: Move definition of "info accel"
-Message-ID: <aV-nngX2HxJlxcfv@gallifrey>
-References: <20260108083249.1602654-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vdpXt-0005Kv-Rj
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 07:55:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1767876920;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=M6O3SxiIjSdwxlN+WJYyd3E+YaZ3cSyo/FS6xvtQhTw=;
+ b=SAVSU1QvyUVwqmo9dWrUIq+Fra3nQ5Ne3oijXCxq9z3+azNoshfCm1wCSK3bPqFaBf2d5O
+ UhjDaLhiQzP2Dsnk+YcykO/sXdXhSwWlswu3JNzBsIcQStM+Lm3kL6SOESl0TbRcN1QTug
+ T8580WIRgPBRrfrz4Fq8E6/Cy4KK/9s=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-297-z3eAa5hnMcmkbeha485KVg-1; Thu,
+ 08 Jan 2026 07:55:16 -0500
+X-MC-Unique: z3eAa5hnMcmkbeha485KVg-1
+X-Mimecast-MFC-AGG-ID: z3eAa5hnMcmkbeha485KVg_1767876916
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BBD101800350; Thu,  8 Jan 2026 12:55:15 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.32])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 431F730002D1; Thu,  8 Jan 2026 12:55:15 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id D943421E66C1; Thu, 08 Jan 2026 13:55:12 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: peterx@redhat.com, farosas@suse.de, devel@lists.libvirt.org,
+ eblake@redhat.com
+Subject: [PATCH 0/2] migration: Drop deprecated QMP stuff
+Date: Thu,  8 Jan 2026 13:55:10 +0100
+Message-ID: <20260108125512.2234147-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <20260108083249.1602654-1-armbru@redhat.com>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.12.48+deb13-amd64 (x86_64)
-X-Uptime: 12:48:22 up 73 days, 12:24,  2 users,  load average: 0.00, 0.01, 0.00
-User-Agent: Mutt/2.2.13 (2024-03-09)
-Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
- helo=mx.treblig.org
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,70 +79,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-* Markus Armbruster (armbru@redhat.com) wrote:
-> Commit c10eb740108 (accel/system: Add 'info accel' on human monitor)
-> inserted "info accel" in the middle of "info sync-profile".  Move it
-> behind "info sync-profile".
-> 
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Markus Armbruster (2):
+  migration: Drop deprecated QMP command query-migrationthreads
+  migration: Drop deprecated QMP migrate argument @detach
 
-Thanks!
+ docs/about/deprecated.rst       | 13 -------
+ docs/about/removed-features.rst | 14 ++++++++
+ qapi/migration.json             | 38 --------------------
+ migration/threadinfo.h          | 25 -------------
+ migration/migration-hmp-cmds.c  |  2 +-
+ migration/migration.c           |  8 +----
+ migration/multifd.c             |  5 ---
+ migration/threadinfo.c          | 64 ---------------------------------
+ migration/meson.build           |  1 -
+ 9 files changed, 16 insertions(+), 154 deletions(-)
+ delete mode 100644 migration/threadinfo.h
+ delete mode 100644 migration/threadinfo.c
 
-
-Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
-
-> ---
->  hmp-commands-info.hx | 24 ++++++++++++------------
->  1 file changed, 12 insertions(+), 12 deletions(-)
-> 
-> diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
-> index 41674dcbe1..74c741f80e 100644
-> --- a/hmp-commands-info.hx
-> +++ b/hmp-commands-info.hx
-> @@ -267,18 +267,6 @@ ERST
->          .cmd        = hmp_info_sync_profile,
->      },
->  
-> -    {
-> -        .name       = "accel",
-> -        .args_type  = "",
-> -        .params     = "",
-> -        .help       = "show accelerator statistics",
-> -    },
-> -
-> -SRST
-> -  ``info accel``
-> -    Show accelerator statistics.
-> -ERST
-> -
->  SRST
->    ``info sync-profile [-m|-n]`` [*max*]
->      Show synchronization profiling info, up to *max* entries (default: 10),
-> @@ -294,6 +282,18 @@ SRST
->      being coalesced.
->  ERST
->  
-> +    {
-> +        .name       = "accel",
-> +        .args_type  = "",
-> +        .params     = "",
-> +        .help       = "show accelerator statistics",
-> +    },
-> +
-> +SRST
-> +  ``info accel``
-> +    Show accelerator statistics.
-> +ERST
-> +
->      {
->          .name       = "kvm",
->          .args_type  = "",
-> -- 
-> 2.52.0
-> 
 -- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+2.52.0
+
 
