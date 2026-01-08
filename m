@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13421D0306E
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 14:28:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25FCDD03052
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 14:28:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdq2T-0000xs-Rj; Thu, 08 Jan 2026 08:26:57 -0500
+	id 1vdq2W-00015C-8R; Thu, 08 Jan 2026 08:27:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1vdq2S-0000tb-Mp
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 08:26:56 -0500
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ id 1vdq2U-00013d-Sc
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 08:26:58 -0500
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1vdq2R-0003WO-4m
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 08:26:56 -0500
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-c3e921afad1so1425758a12.1
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 05:26:54 -0800 (PST)
+ id 1vdq2T-0003Wf-B8
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 08:26:58 -0500
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-34f634dbfd6so1973400a91.2
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 05:26:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1767878813; x=1768483613; darn=nongnu.org;
+ d=sifive.com; s=google; t=1767878816; x=1768483616; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=r8u/q2e1Rfp47UNW5CHZAz53PMC7FasnQwjb4yxYc8o=;
- b=YtfBcekLmP20Qepo/jKZ/UWC5LSOna9gMUvxuTfOIFP3oJCT8RJJEHhtPsnz2ATcA6
- LoWMztyvmW85hjTsefkQsfYyp8IZyVF57Y6Mk1PKxZTK8qXzJOxL+mqTafNM1CHnY//Y
- 1mbCdnv0ySQAcFJdEFyu1OW0Dc8XXOo0a+Rp/60xHFYa+/cO5bslRLSzzq7zhMlJWbBu
- ljugM12pfbW67aV6Va/mLTcOVbvIc3l9RJyrZiodWV65noktfbht4JsPIFDE9WY1V8Sa
- oH+AoERz3nHkKCAiToS0CkoLAYBcUy73LRHGhA/0MDgLCWXvZEszg1pyGkF7m9FDgXL+
- epYg==
+ bh=2MvbuPpLeMz/D/WGRByFHmT/afSEEWto0MWCvVBzumE=;
+ b=UKkl49wJAAUwuldzWkxC8HBrhx01xYihQr4zXB9k4iC41b08nSuikT2GWaprq0wyH9
+ oupAVsjiD9tIp9JSiGw1apwttQgF1jhIHHUUcS1MECPPpM/fKJg6S7OnYSKyJ7Eza5wM
+ mqI0ogheULAI8T1SrFHUnD89uUW7SUV/2UlzQGZkfxnTLZqkd094a7RBqNexrxviX2p7
+ phduSHxZ9D+Koigb7uDrm2fa3LZM4xWyVX53t23f571R+2XUFIc+CaZc3VvfbQo9B0ft
+ VQCI0VGLD/U/EFEd3Z6R7YzNrx1CTU3W0q9PKTXc5sTvJljeXbdT1Kzd0UCvf72wtCDb
+ XWww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767878813; x=1768483613;
+ d=1e100.net; s=20230601; t=1767878816; x=1768483616;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=r8u/q2e1Rfp47UNW5CHZAz53PMC7FasnQwjb4yxYc8o=;
- b=BgDRs1MsyY/zpyQqUo+vcFpt7X5WTn6mu6LgO/F6pyTrQ9zr7R6cuZZPRD1cTFWK74
- VapH06+0PoMTaJOGyfdOtvLmaE5RHEUJCFmZG5vmecPeDARTdRNXwIcYny/CufRF4Arq
- OtjIGWpWlDp21vHa7ZVfz/USKS6JBNSDEwSF7URvfOBbseGA6Er1uWSTvgZ5hB4P7Y59
- a2erPipjCpN2GSDCFzNTp9OK6cllnr0gkhbu68qe1TY0J/YjAj73GUgtHCUTJL0OTMrD
- kZDtg9OjX5BbvTLL3q1fIMxdTdI0azEfIGm4QDo9SO7EnZRkv/vV0sJAfMnOTOW+au++
- ZiKg==
-X-Gm-Message-State: AOJu0YyRAA/mzpjUOYw6+8Vfz7jvjDI0XJ+44xWFe2cuWrBD9WXtGbDR
- 7qildWA0ojdZUn3/2nLHbVpLSCWYSLcTNs1lc2yyKtaV3vn+fn9vEykoUNqwgMIsaaDZof3dT3K
- +d5cIIaQ8AoGYXAmA1J8HzsuVwrp3gIAktl3DSL1YvyueU6HCj7dNgzbPPlkbMS0JmDTQNh09p+
- d2qJ/vV8fjUmL5KM9KZqdRx3o5QU1Mslu3MoVeuP8=
-X-Gm-Gg: AY/fxX4hdWL8s8xWM8mg6sMWha5oC9oHE+VhuxSmdO1aJcCEKE2H2NVyUANnIJWfPCc
- 5g+jtr+NqrWiy360HMCf+dkRDO+B3FayNYz0cDDxmgSUOkPRY4fJI2jQkdkftoy+v7A24CvR61n
- LEdcNNHra7qKzQ4KygUfuAPzVwLRH1mz4uQ/aQ3D9U5Uz3nJn7mTAuOGkB+Q2GPt0xVDxGPD5Y4
- etub4rctlLhkvTL0sBRenvcR9YA7aOdKLiWfsAEbvTrFynAh/gP7egvJ1GFgSOOe5bukl3GagCk
- Qqz15Sm+AhA5L9o8fW3vExDLn0QyKRT3W+Tfrs3ThkE/p5QQU4e/q1DTOnaa7ovobKSDojLqLoY
- bNsGrOrq+/ZrR78p0LwW94hfrg3XxMbWNWxx2oIs5B4Cwhk8jYMGYysNutCRyflySepC88XlDFk
- 6hZpIoqmKqvJNGEoB2zGLQo22emLjjxV4zAAGKrIJHkBP3133XwPUT36g=
-X-Google-Smtp-Source: AGHT+IGpUX4lVjo/p4cLGmGAGJtnXL7h49JQ+AOxbDh553PmCc++ArArd4hPNCJoBoFtxXczr1tAgQ==
-X-Received: by 2002:a17:90b:4ecc:b0:340:7b2e:64cc with SMTP id
- 98e67ed59e1d1-34f68b67ceemr6642253a91.15.1767878813218; 
- Thu, 08 Jan 2026 05:26:53 -0800 (PST)
+ bh=2MvbuPpLeMz/D/WGRByFHmT/afSEEWto0MWCvVBzumE=;
+ b=lHfDwvfYvJPbsEwTrbSCFN6DeyKv64W8bAA5NbPKKm5HEOL4MNVIP567ed93KqBMUa
+ QwIAmqkky4jO91IOEWe0KnuV/A2ACcOrNspYFXZMSiZGJIDESLZhPMzxTx3xfBCKPDIU
+ 3U89VVWFJ4y8pnvV4kcOvLGHsYBH1K9HeDQs3IaLkb424jfoqlH5jucFzhsRA3P+1yAy
+ /C2Xg3Ux84TWY2W9k3hx9zb+Oh243tuEYqQYoFVKrzoY/IgjPr88zWt16M2kdW4v9z84
+ IfleGXaFDhCbDAZWat1X5n564grbof9Rwwuuv07IdWyoX0xGNNGtqCNw+Jm6nITKWh+g
+ qZIA==
+X-Gm-Message-State: AOJu0YwP9PDyfVVI1WWGZxZg2EuIka4nIze7htVs7ubvNSlKJcDkcjBa
+ Cr6JAiheorJCFDkLJQ2krUygYDfhG79XS19eHk63as9EHC2FFouFsjaZIMjuP/fhg5hoJpBlaJy
+ x0qlT9F92TKBXIbHrKyxPqBsNzZkrzQbYCeiKtlQjhULTbz6GmbUD4YSkK8aOJ7uOK0E+ES8CXK
+ Xbga5BkdEh3GBZtieiIAgDjb19roX+NCY2UdsChSY=
+X-Gm-Gg: AY/fxX6cqDh4jaa14rrI0EVS0PiWfMsXcnbvPhDfbZJKpJ11RZMsTGFYW4qYI4E7Old
+ 2G213uSZDO4r8uunS5uPVaYuVQgmtfbmJi/Gq6GmP2bbzq4pkaBCEjsvGt4hqH6z3RRcflWk01b
+ zBh/bF4ZxHiaR4FzIZmWuKPLpgECvRne2mYovmcfHVcy4mA9thLpQecuKWjNuSSPD75ehs+WYld
+ 4oOIm42hPaDyJ8Uk/ITfNT8SGmNva0x0wUvt+hLiyYcZgirSt6M4HUpSogTyP7D9tPqx0LQsm0S
+ VL1p4IRkIyaRoXGsUIFswHWcKsxIZMNkgFJm+F+hFF3cBW4iiv7WsJzGbJLCqBi6gp+V1S9VfXz
+ F4fT1c0IZrCE7+8g9JVqeA1K2yPaoOQ/JA+sMFzvHmxkSQO9JMQAjzzqtkKpkBXKq59Eo5NL8Bg
+ 4eLlvJ5dkdbhuikY6t+wcyfoqDR8XENHir7FCuzPa4YQ8MO9ickqmePFA=
+X-Google-Smtp-Source: AGHT+IGpnBmehXr85p4VrkJ4B0HhQj22hW9AcMLMn/lT3mL62utE5NIa4Yj6w0NLlhXuioVT2C9Gtw==
+X-Received: by 2002:a17:90b:5848:b0:34e:5aa2:cf61 with SMTP id
+ 98e67ed59e1d1-34f68cd6ab9mr5828987a91.28.1767878815731; 
+ Thu, 08 Jan 2026 05:26:55 -0800 (PST)
 Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
  [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-34f6ae3f033sm2298787a91.0.2026.01.08.05.26.51
+ 98e67ed59e1d1-34f6ae3f033sm2298787a91.0.2026.01.08.05.26.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 05:26:52 -0800 (PST)
+ Thu, 08 Jan 2026 05:26:55 -0800 (PST)
 From: Max Chou <max.chou@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -73,16 +73,17 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Weiwei Li <liwei1518@gmail.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Max Chou <max.chou@sifive.com>
-Subject: [PATCH v2 6/9] target/riscv: Introduce altfmt into DisasContext
-Date: Thu,  8 Jan 2026 21:26:27 +0800
-Message-ID: <20260108132631.9429-7-max.chou@sifive.com>
+Subject: [PATCH v2 7/9] target/riscv: Introduce BF16 canonical NaN for Zvfbfa
+ extension
+Date: Thu,  8 Jan 2026 21:26:28 +0800
+Message-ID: <20260108132631.9429-8-max.chou@sifive.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260108132631.9429-1-max.chou@sifive.com>
 References: <20260108132631.9429-1-max.chou@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=max.chou@sifive.com; helo=mail-pg1-x52e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=max.chou@sifive.com; helo=mail-pj1-x1031.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,39 +106,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+According to the Zvfbfa ISA spec (v0.1), improperly NaN-boxed
+f-register operands must substitute the BF16 canonical NaN instead of
+the FP16 canonical NaN for some vector floating-point instructions.
+
 Signed-off-by: Max Chou <max.chou@sifive.com>
 ---
- target/riscv/translate.c | 3 +++
- 1 file changed, 3 insertions(+)
+ target/riscv/insn_trans/trans_rvv.c.inc | 18 +++++++++---------
+ target/riscv/translate.c                |  8 ++++++++
+ 2 files changed, 17 insertions(+), 9 deletions(-)
 
+diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
+index 2a487179f6..3315397257 100644
+--- a/target/riscv/insn_trans/trans_rvv.c.inc
++++ b/target/riscv/insn_trans/trans_rvv.c.inc
+@@ -2347,17 +2347,17 @@ GEN_OPIWI_NARROW_TRANS(vnclip_wi, IMM_ZX, vnclip_wx)
+  */
+ static void do_nanbox(DisasContext *s, TCGv_i64 out, TCGv_i64 in)
+ {
+-    switch (s->sew) {
+-    case 1:
+-        gen_check_nanbox_h(out, in);
+-        break;
+-    case 2:
++    if (s->sew == MO_16) {
++        if (s->altfmt) {
++            gen_check_nanbox_h_bf16(out, in);
++        } else {
++            gen_check_nanbox_h(out, in);
++        }
++    } else if (s->sew == MO_32) {
+         gen_check_nanbox_s(out, in);
+-        break;
+-    case 3:
++    } else if (s->sew == MO_64) {
+         tcg_gen_mov_i64(out, in);
+-        break;
+-    default:
++    } else {
+         g_assert_not_reached();
+     }
+ }
 diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index f687c75fe4..911d3932f9 100644
+index 911d3932f9..a1c4b325e5 100644
 --- a/target/riscv/translate.c
 +++ b/target/riscv/translate.c
-@@ -101,6 +101,7 @@ typedef struct DisasContext {
-     bool cfg_vta_all_1s;
-     bool vstart_eq_zero;
-     bool vl_eq_vlmax;
-+    bool altfmt;
-     CPUState *cs;
-     TCGv zero;
-     /* actual address width */
-@@ -1302,6 +1303,7 @@ static void riscv_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
-     RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cs);
-     RISCVCPU *cpu = RISCV_CPU(cs);
-     uint32_t tb_flags = ctx->base.tb->flags;
-+    uint64_t ext_tb_flags = ctx->base.tb->cs_base;
+@@ -214,6 +214,14 @@ static void gen_check_nanbox_h(TCGv_i64 out, TCGv_i64 in)
+     tcg_gen_movcond_i64(TCG_COND_GEU, out, in, t_max, in, t_nan);
+ }
  
-     ctx->pc_save = ctx->base.pc_first;
-     ctx->priv = FIELD_EX32(tb_flags, TB_FLAGS, PRIV);
-@@ -1321,6 +1323,7 @@ static void riscv_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
-     ctx->cfg_vta_all_1s = cpu->cfg.rvv_ta_all_1s;
-     ctx->vstart_eq_zero = FIELD_EX32(tb_flags, TB_FLAGS, VSTART_EQ_ZERO);
-     ctx->vl_eq_vlmax = FIELD_EX32(tb_flags, TB_FLAGS, VL_EQ_VLMAX);
-+    ctx->altfmt = FIELD_EX64(ext_tb_flags, EXT_TB_FLAGS, ALTFMT);
-     ctx->misa_mxl_max = mcc->def->misa_mxl_max;
-     ctx->xl = FIELD_EX32(tb_flags, TB_FLAGS, XL);
-     ctx->address_xl = FIELD_EX32(tb_flags, TB_FLAGS, AXL);
++static void gen_check_nanbox_h_bf16(TCGv_i64 out, TCGv_i64 in)
++{
++    TCGv_i64 t_max = tcg_constant_i64(0xffffffffffff0000ull);
++    TCGv_i64 t_nan = tcg_constant_i64(0xffffffffffff7fc0ull);
++
++    tcg_gen_movcond_i64(TCG_COND_GEU, out, in, t_max, in, t_nan);
++}
++
+ static void gen_check_nanbox_s(TCGv_i64 out, TCGv_i64 in)
+ {
+     TCGv_i64 t_max = tcg_constant_i64(0xffffffff00000000ull);
 -- 
 2.43.7
 
