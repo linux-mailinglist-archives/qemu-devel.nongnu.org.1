@@ -2,100 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47BC7D03651
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 15:37:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81A6BD0370B
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 15:44:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdr6G-0007Lz-Dt; Thu, 08 Jan 2026 09:34:56 -0500
+	id 1vdrEC-0000vM-GL; Thu, 08 Jan 2026 09:43:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vdr5y-00074P-Hn
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 09:34:38 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vdr5v-0000jT-AL
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 09:34:38 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-47bdbc90dcaso24184475e9.1
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 06:34:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767882874; x=1768487674; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=M6tH0CF/GJKELoBmGqjsJGSOS1a50aHiTGJ/qCRa94o=;
- b=HS4Qf1jSb82GjuDAbydiaDt/Eq83vsu8awTfomJ+OQlCi5rZ4LJO5j4enPSPWw1NGe
- LoYslHzbFB8ymK5PDtr4jTT1NtotBfSCKaeKCgscWJCiaBm+ZcngXPW52j9w7+6X0tbA
- OVI+wDDJNxFdsWqhEvkQjv99ew0h4psNfVy6TfuLvIA9Wclst9gNFKMF8P781IXVUqMQ
- 9P0VK20EmFroxRNesi4s/3FBteuw+f8db1HkOE9C4q3I5DJvMga2tr2xBINGSFDnJg4s
- Dhlninp/BZwvgo9gqhR5I9tdSbD510fzE091ytZALInU9KXEBuBKDntjibtrBIRQrtvA
- qDoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767882874; x=1768487674;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=M6tH0CF/GJKELoBmGqjsJGSOS1a50aHiTGJ/qCRa94o=;
- b=FcLidnFQC4a6i5yQvCRnE3GMkeG7FykVcdySpXqkr8yA3WulHGd1NBDcicPgqt3VOD
- dy/HYg/dEAfkXBMhnq4nxuS+spBo81bF5SzregST//GbfdM+iqm9cEcV5lke/Qdv5ltx
- fRVxRwnxkOMKtymnV2UTCwmp4dm1gQfUtBxm5epdA6TN0TaQkeHAHb+SQSc/l3ngC9Ui
- 2i3BDcOmsaFogf6A7jumy61ErvvmtKr9rCr84xJqrZUSWLPGWq2oFf5sjMozGbw9QFps
- 4WvXKp9nTklOsV8f44sahXRAkZtaM3RB9Z2iLXPjqLWWk+8dZN8fDAnAsJ8LT7BOXRaw
- 9+gQ==
-X-Gm-Message-State: AOJu0YzkaMWPUdkmr3nkvFuPUtfVgjutbv640kBcxlh/d1D1inojtwPF
- MOVdoDcMd85Fh59MfckfWG23IpMLLQUTfLr1IlLhX5kXImR1gPDZchCtJQ6VWURycTM=
-X-Gm-Gg: AY/fxX6rwKDUzSSkRg59VLPy4WvnNWe7XuY55yntWtmxUt6RRkm6zUOsU/uIz5xsPoi
- 69fdUNi27TUqi87uhgIiFIQUa9cZJjvb2ApnEvpp/7j4Y9p5KmDR1HhD3gIdD3iHJYkP8wBySfM
- 2WDk5MKtQbq5R3ebStBt5h2iYyJUZkpcXvNtdZRVHRaBX7dwrPO2yRtIOSIuSsPI6Fhbw8oe08V
- pZDRzwVETnFtZJ31Nbq9YzlPumn3n5pFrWHBVyADpIIrR2xv2zTJ+OGbR8B+JaZhcrFFDCxJkjK
- G0AihDNvEP8/san3jdpAOic4fizl4AdTdAtIPqkOLAXuIH8zAzArgm5OLBWRO7WZgm70BjHcgTX
- rW3/cjFjkLM/vv3ChGOjkOcL/aRJggWEuRWV7zEZCC4o5lrUm8mG/7ReoDv5Lc/DB9H5KJ+muIw
- Kytg08dJQpJDo=
-X-Google-Smtp-Source: AGHT+IFQ2b7jHgSZCCtLDyudNjBkpAYBfcgv7i5tpvjUUC07gUibqxAEQZnVr+TfhdHtcSVluMmqnQ==
-X-Received: by 2002:a05:600c:1392:b0:477:6d96:b3c8 with SMTP id
- 5b1f17b1804b1-47d84b34673mr79074405e9.23.1767882873727; 
- Thu, 08 Jan 2026 06:34:33 -0800 (PST)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-432bd0e16d2sm17391256f8f.13.2026.01.08.06.34.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 06:34:32 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E9D995FADF;
- Thu, 08 Jan 2026 14:34:24 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Bastian Koppelmann <kbastian@rumtueddeln.de>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Zhao Liu <zhao1.liu@intel.com>, Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-arm@nongnu.org, Yoshinori Sato <yoshinori.sato@nifty.com>,
- Yanan Wang <wangyanan55@huawei.com>, Aleksandar Rikalo <arikalo@gmail.com>,
- Thomas Huth <huth@tuxfamily.org>, Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [RFC PATCH 12/12] include/hw: expand cpu_reset function docs
-Date: Thu,  8 Jan 2026 14:34:23 +0000
-Message-ID: <20260108143423.1378674-13-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260108143423.1378674-1-alex.bennee@linaro.org>
-References: <20260108143423.1378674-1-alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vdrE3-0000uy-1W
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 09:42:59 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vdrDz-0002jn-Qx
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 09:42:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1767883373;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=qyYIeyzi3hr3tWTYkOfKT+pJUO3Jqt9iKGwUlkCKDUY=;
+ b=Bl9YDWWNDY4xlStHq1iKy86BLkl+pU0iRX1++uFzvBGuIJE8vTVdeZZnHWL1E6fj21oe5W
+ LUIlJu/K3syyOnAi5jCHUjGEQkLqCaIr/qT8tPP1sUFQfT6C+XJPkVuyuETxKlQCZlEtUO
+ wFVeuKHFOtI3nRdBCxSBO72E+TA9tGc=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-643-lagW5iAqNlusN7BkIEAOHQ-1; Thu,
+ 08 Jan 2026 09:42:51 -0500
+X-MC-Unique: lagW5iAqNlusN7BkIEAOHQ-1
+X-Mimecast-MFC-AGG-ID: lagW5iAqNlusN7BkIEAOHQ_1767883370
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A3B9F19560B7
+ for <qemu-devel@nongnu.org>; Thu,  8 Jan 2026 14:42:50 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.44])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 48AE2180066A; Thu,  8 Jan 2026 14:42:49 +0000 (UTC)
+Date: Thu, 8 Jan 2026 14:42:45 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: checkpatch.pl warning on "added, moved or deleted" messed up
+Message-ID: <aV_CZYA3KokrT4xh@redhat.com>
+References: <87ms2o6z3f.fsf@pond.sub.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87ms2o6z3f.fsf@pond.sub.org>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,32 +80,55 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a hint to the developer that this should only be called from a
-reset chain.
+On Thu, Jan 08, 2026 at 01:57:56PM +0100, Markus Armbruster wrote:
+> I ran checkpatch on my
+> 
+>     [PATCH 0/2] migration: Drop deprecated QMP stuff
+>     Message-ID: <20260108125512.2234147-1-armbru@redhat.com>
+> 
+> and got
+> 
+>     $ scripts/checkpatch.pl --terse *patch
+>     0001-migration-Drop-deprecated-QMP-command-query-migratio.patch:290: WARNING: added, moved or deleted file(s):
+>     total: 0 errors, 1 warnings, 129 lines checked
+> 
+> The culprit seems to be commit 1d745e6d963 (scripts/checkpatch: use new
+> hook for MAINTAINERS update check).  If I use the version immediately
+> preceding it, I get:
+> 
+>     0001-migration-Drop-deprecated-QMP-command-query-migratio.patch:105: WARNING: added, moved or deleted file(s), does MAINTAINERS need updating?
+>     total: 0 errors, 1 warnings, 129 lines checked
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- include/hw/core/cpu.h | 3 +++
- 1 file changed, 3 insertions(+)
+Hmm, the problem is the --terse command is rather crude and simply
+throws away everything except the first line of text. My commit made
+the verbose output multi-line to improve readability
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index f6f17df9e64..9f938e00492 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -811,6 +811,9 @@ void cpu_list_remove(CPUState *cpu);
- /**
-  * cpu_reset:
-  * @cpu: The CPU whose state is to be reset.
-+ *
-+ * You should refrain from calling this during CPU realization and
-+ * make sure this is called from the reset logic instead.
-  */
- void cpu_reset(CPUState *cpu);
- 
+$ ./scripts/checkpatch.pl  ~/dep
+WARNING: added, moved or deleted file(s):
+
+  migration/threadinfo.h
+  migration/threadinfo.c
+
+Does MAINTAINERS need updating?
+
+total: 0 errors, 1 warnings, 193 lines checked
+
+/var/home/berrange/dep has style problems, please review.  If any of these errors
+are false positives report them to the maintainer, see
+CHECKPATCH in MAINTAINERS.
+
+
+but this inadvertantly made terse output worse :-(
+
+With regards,
+Daniel
 -- 
-2.47.3
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
