@@ -2,94 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7EA8D00F67
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 05:17:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B91B2D0106C
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 05:59:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdhRS-0006Lk-Ea; Wed, 07 Jan 2026 23:16:11 -0500
+	id 1vdi6K-0008Ci-GR; Wed, 07 Jan 2026 23:58:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vdhRO-0006Kx-2e
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 23:16:06 -0500
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vdhRL-0002vx-9m
- for qemu-devel@nongnu.org; Wed, 07 Jan 2026 23:16:05 -0500
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-ba599137cf8so573913a12.0
- for <qemu-devel@nongnu.org>; Wed, 07 Jan 2026 20:16:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767845761; x=1768450561; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=okHBr9RCrk54qnEKOp1eWuBaR7NgAz7iUu5BQAD/6OQ=;
- b=h6g8fqtGQ9q4EuTxQDXhZK5pIVLl+5RT/dJTA4HvcJbYEmu9rdxpo6IQEndZ3vVEi0
- GX7h8SHPExo0aQWJZ8V7r4oiDKaMeLVT6O7uBXgcGYdjSVH7JeRzZsc5n4bwOxTdhgrH
- TF9wLw4z8fUiRP+Zv+80lbpAFsezpwlmqCgMob7TXRQyYmxyZpbHmQXBAtPCvIou6q3p
- S6TMYcWma8Dm+VnM3eH3XgdXo9OniV5fWnei0ZzMxEVtNccEpwPtXKAviRX418njzaMi
- BwA0LDdLx+wqVn5a+pNKIX546YVN9yCnjPU4p6bjMQ+iKSbSj5wYYigOByEy2FiZTTMM
- qKXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767845761; x=1768450561;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=okHBr9RCrk54qnEKOp1eWuBaR7NgAz7iUu5BQAD/6OQ=;
- b=gugbqAOStwiIDE6RAiaOEgXRcFl3xA3R/jchjpATJgCUJdrWxPxhUP3apmwMQucIum
- f3vh8ZJ+/+AdtvhgWx+E85pPVmizBXxQJsh8FbhKS0EE7pM/6pfPmDwQZuVVwUARokE5
- 4BCBkFrTji4hxRsX+WQlCXoRAbeHzaMqojwiv6GIOJ0zrRsbPGib9XuyrTh98dOiNDoz
- /dJy81gBS2dHFCiaOQGmk2/q2QhRfH2rbV+Gh05HQ7/cGyCT39eLjAZEMrn7xslP9SGp
- 9qSDemcOfPUZBbR9G0pMrnuPztl/pLdmo+dGlVkZwMCZ3i7w5QGku9tZfeqLJxBUt625
- Z+dA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV53IMJ/KXjglqYUNzeMliK3JPzb73O2ICnOf3I3SuTYVv8xGBiXCAlUccOr/zIFXO+09mrDKZg+Vod@nongnu.org
-X-Gm-Message-State: AOJu0Yyfr6dhx/1OyB3zlPa3w4C4cyKMiwDZAqiev5orOTECaJZJBn4G
- wCm9JuDQaxT808wDevfaerQS1dpS8KRatOSyMMRuRbe6DVTljJKONw6NCkfpdXsgPb0=
-X-Gm-Gg: AY/fxX51V4vwReC6s7P3LjkbnJCKkcHlUFhtYQYeK+kIyvSwLX49Fd7R+E4U3WwkDe0
- LGDVgnjUFu3NJVHnzDu8lLBmmIfO170DTcHjl+9zy6CGRZ54bCVBKoWrhF/aISBqmYNlWqH7ESr
- smIwFAw9ovCnGnclAIlAKr+Sgbc5FFwyjmW92qL4YdKokQ3r2QuErXIktWu1aA9VbJLfuDmeAsx
- 9bjddkTcc3lPS78ByyH0E1AUCkXxjT6DhNaZw2PvoRS52gIgY45tnbEKtb8NeAaYWbmBBHjNPxD
- OqyyDXWHOFoT7E5G1Nw8mA+O6v9CmK5hTaZmPYoRCu4zS84Knng2R5yeNCggNoDl/DwENE8Mu41
- Qv44qEB4ZGgeiwzFKjtE6Dr3eJuo7L2GTEilZFgmbtlRctENgWKcLwNWFJVOumI77GT7H+6IeQl
- RvwcFO2JGnPBgblJJ7DAmUwskraxWdU9K7Mk/16cEV
-X-Google-Smtp-Source: AGHT+IHGdoE4gW24l36tdfZNHGV6OsNl0JiwCHKPXjIeIOmda3U92B6P3p3AdFP9P74bfNa1R7sxqQ==
-X-Received: by 2002:a05:6a21:3281:b0:371:7666:648c with SMTP id
- adf61e73a8af0-3898eaae00dmr4813913637.24.1767845761375; 
- Wed, 07 Jan 2026 20:16:01 -0800 (PST)
-Received: from [192.168.10.140] ([180.233.125.201])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-c4cc95d5c66sm6411640a12.24.2026.01.07.20.15.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 07 Jan 2026 20:16:00 -0800 (PST)
-Message-ID: <4e1b7b58-9598-4914-9a21-de71c465d5ca@linaro.org>
-Date: Thu, 8 Jan 2026 15:15:57 +1100
+ (Exim 4.90_1) (envelope-from <jescom87@onedot1.one>)
+ id 1vdi6G-00089g-83
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 23:58:20 -0500
+Received: from mail72.out.titan.email ([209.209.25.165])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jescom87@onedot1.one>)
+ id 1vdi6E-0006BF-Bk
+ for qemu-devel@nongnu.org; Wed, 07 Jan 2026 23:58:20 -0500
+Received: from localhost (localhost [127.0.0.1])
+ by smtp-out.flockmail.com (Postfix) with ESMTP id 4dmt2V2s7Mz7t99
+ for <qemu-devel@nongnu.org>; Thu,  8 Jan 2026 04:58:10 +0000 (UTC)
+DKIM-Signature: a=rsa-sha256; bh=p4w3KRjzgFr3/LYhdZ6leQSlhS6+y8IVgfp+6cxcIzc=; 
+ c=relaxed/relaxed; d=onedot1.one;
+ h=date:to:message-id:references:mime-version:from:subject:from:to:subject:date:message-id:references:cc:in-reply-to:reply-to;
+ q=dns/txt; s=titan1; t=1767848290; v=1;
+ b=YzkEWQZGZYNk7iCYfqffkRyZxbHOLsdWytjaM6z9kORa3gWIpPe0Uc4F4h5QDMEyEPzP5zio
+ XyzaGubRytJszAfn5VMvBixydAO1rUbYe7M+p24bxDOvYZEf3YaOu/dj1SCOlniS/SuqVM+4UFx
+ CG9LUlKNKsztuKChZdVO4AiM=
+Received: from webmail-out.titan.email (unknown [10.10.163.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by smtp-out.flockmail.com (Postfix) with ESMTPS id 4dmt2V21MNz7t8D
+ for <qemu-devel@nongnu.org>; Thu,  8 Jan 2026 04:58:10 +0000 (UTC)
+Date: Thu, 8 Jan 2026 04:58:10 +0000 (UTC)
+Feedback-ID: :jescom87@onedot1.one:onedot1.one:flockmailId
+From: Jesse Comeau <jescom87@onedot1.one>
+To: "std-discussion@lists.isocpp.org" <std-discussion@lists.isocpp.org>,
+ "python-dev@python.org" <python-dev@python.org>,
+ "jdk-dev@openjdk.org" <jdk-dev@openjdk.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "gem5-dev@gem5.org" <gem5-dev@gem5.org>,
+ "termux-dev@groups.io" <termux-dev@groups.io>,
+ "ubuntu-devel@lists.ubuntu.com" <ubuntu-devel@lists.ubuntu.com>,
+ "devlist@kicad.org" <devlist@kicad.org>,
+ "eclipse-dev@eclipse.org" <eclipse-dev@eclipse.org>
+Message-ID: <199241473425581057.0.v2@titan.email>
+References: <199239015399859200.0.v2@titan.email>
+ <199241473425581057.0.v2@titan.email>
+Subject: Jesse (Computer Systems Design)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 14/17] error: Use error_setg_errno() to improve error
- messages
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20260107124341.1093312-1-armbru@redhat.com>
- <20260107124341.1093312-15-armbru@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20260107124341.1093312-15-armbru@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x534.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/related; 
+ boundary="----=_Part_903500_1575031948.1767848290228"
+X-F-Verdict: SPFVALID
+X-Titan-Src-Out: 1767848290319568184.30087.5404901959738481382@prod-use1-smtp-out1002.
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.4 cv=WtDRMcfv c=1 sm=1 tr=0 ts=695f3962
+ a=fV4G12KpgSuBi+7gI9c/cw==:117 a=MKtGQD3n3ToA:10 a=1oJP67jkp3AA:10
+ a=CEWIc4RMnpUA:10 a=CIpa5kweAAAA:8 a=WEtUbng2D4nCYQTDy0AA:9
+ a=uiLfa2BpfVANWj0z:21 a=QEXdDO2ut3YA:10 a=-FEs8UIgK8oA:10
+ a=X0qombyAlGba11bGhn4G:22 a=iWSbBnEO8tLaiwZIWIOP:22
+ a=NWVoK91CQySWRX1oVYDe:22 a=1LUay7kfOPB8ZNMhXmZn:22
+Received-SPF: pass client-ip=209.209.25.165; envelope-from=jescom87@onedot1.one;
+ helo=mail72.out.titan.email
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ HTML_MIME_NO_HTML_TAG=0.377, MIME_HTML_ONLY=0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,33 +86,215 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/7/26 23:43, Markus Armbruster wrote:
-> @@ -2032,7 +2032,8 @@ void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
->           reg.addr = (uint64_t)&val;
->           ret = ioctl(kvmcpu.cpufd, KVM_GET_ONE_REG, &reg);
->           if (ret != 0) {
-> -            error_setg(errp, "Unable to read cbom_blocksize, error %d", errno);
-> +            error_setg(errp, errno,
-> +                       "Unable to read cbom_blocksize");
->               return;
->           }
->   
+------=_Part_903500_1575031948.1767848290228
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 
-Missed changing the function.
-
-../target/riscv/kvm/kvm-cpu.c:2035:13: error: passing argument 5 of ‘error_setg_internal’ 
-makes pointer from integer without a cast [-Wint-conversion]
-  2035 |             error_setg(errp, errno,
-       |             ^~~~~~~~~~
-       |             |
-       |             int
-In file included from ../target/riscv/kvm/kvm-cpu.c:26:
-../include/qapi/error.h:322:38: note: expected ‘const char *’ but argument is of type ‘int’
-   322 |                          const char *fmt, ...)
-       |                          ~~~~~~~~~~~~^~~
-
-https://gitlab.com/qemu-project/qemu/-/jobs/12639739827
-
-
-r~
+Hi,&nbsp;
+<div>
+ <br>
+</div>
+<div>
+ &nbsp; &nbsp; My name is Jesse Comeau, August 4th 1987, 519-507-9274, Tees=
+water, On. Owner/Founder, One.1, Professional Services. Computer Science, B=
+usiness Administration, Thought Leadership.
+</div>
+<div>
+ <br>
+</div>
+<div>
+ &nbsp; &nbsp; From an Interior Systems Mechanic to a Heat and Frost Mechan=
+ic, and now, from an ElectroMechanic to a QuantumMechanic.
+</div>
+<div>
+ <br>
+</div>
+<div>
+ &nbsp; &nbsp; I apologize, I'm kind of new to this. And sorry for the long=
+ introduction. I believe I'm ready to Develop and Contribute. I just figure=
+d out how to Clone, Configure, Build, and moved onto some Wrapping and Patc=
+hing. Getting more and more familiar with it every day.
+</div>
+<div>
+ <br>
+</div>
+<div>
+ &nbsp; &nbsp; I thought about finding like some sort of a niche, somewhere=
+ I feel comfortable that also made sense and stick to it. NAICs says Comput=
+er Systems Design, so I took that as an example. I wasn't sure where to sta=
+rt. So I gathered up my tools and started prepping.&nbsp;
+</div>
+<div>
+ <br>
+</div>
+<div>
+ &nbsp; &nbsp; I need all the support I can get. I'm not very shy, so that'=
+s why I come to these mailing lists. It seems to be a good place to be a pa=
+rt of a good community.
+</div>
+<div>
+ <br>
+</div>
+<div>
+ &nbsp; &nbsp; Here's a list of what I know and what I got. Feel free to co=
+rrect me if I'm wrong. Any concerns or questions or comments are greatly ap=
+preciated. You might hear back from me. Let me know what you think. I think=
+ I'm off to a good start.
+</div>
+<div>
+ <br>
+</div>
+<div>
+ -------------------------------------------------
+</div>
+<div>
+ -------------------------------------------------
+</div>
+<div>
+ <br>
+</div>
+<div>
+ ### Resources ###
+</div>
+<div>
+ *** Tools ***
+</div>
+<div>
+ <br>
+</div>
+<div>
+ NAICs,
+</div>
+<div>
+ Professional Services,
+</div>
+<div>
+ Computer Systems Designer.
+</div>
+<div>
+ <br>
+</div>
+<div>
+ =E2=80=A2 Lenovo IdeaPad Slim 5&nbsp;
+</div>
+<div>
+ - Ubuntu-X86 (BASH)
+</div>
+<div>
+ =E2=80=A2 Motorola G35&nbsp;
+</div>
+<div>
+ - Termux-ARM (BASH)
+</div>
+<div>
+ <br>
+</div>
+<div>
+ =E2=80=A2 C/C++ (Compilation)
+</div>
+<div>
+ - .cc (Implementation)
+</div>
+<div>
+ - .h (Declaration)
+</div>
+<div>
+ =E2=80=A2 Python (Interpretation)
+</div>
+<div>
+ - .py (Configuration)
+</div>
+<div>
+ =E2=80=A2 Java (Compilation and Interpretation)
+</div>
+<div>
+ - .java (Application)
+</div>
+<div>
+ <br>
+</div>
+<div>
+ =E2=80=A2 System:
+</div>
+<div>
+ - gem5 (Full System Simulation)
+</div>
+<div>
+ - qemu (Full System Emulation)
+</div>
+<div>
+ <br>
+</div>
+<div>
+ =E2=80=A2 Development:
+</div>
+<div>
+ - eclipse (Integrated Development Environment)
+</div>
+<div>
+ - kicad (Electronic Development Automation)
+</div>
+<div>
+ <br>
+</div>
+<div>
+ =E2=80=A2 Manufacturer:
+</div>
+<div>
+ - STMicroelectronics&nbsp;
+</div>
+<div>
+ =E2=80=A2 Distributor:&nbsp;
+</div>
+<div>
+ - DigiKey&nbsp;
+</div>
+<div>
+ <br>
+</div>
+<div>
+ -------------------------------------------------
+</div>
+<div>
+ -------------------------------------------------
+</div>
+<div>
+ <br>
+ <div data-signature-parent=3D"sig-parent">=20
+  <signature data-signature-id=3D"local-8b789dba-8a86" style=3D"display:tab=
+le;width:100%;">=20
+   <div style=3D"user-select: inherit; scrollbar-color: var(--scrollbar-act=
+ive-color) #0000; box-sizing: border-box;" fr-original-style=3D"user-select=
+: inherit; scrollbar-color: var(--scrollbar-active-color) #0000; box-sizing=
+: border-box;">
+    Jesse Comeau
+    <br style=3D"user-select: inherit; scrollbar-color: var(--scrollbar-act=
+ive-color) #0000; box-sizing: border-box;" fr-original-style=3D"">August 4t=
+h 1987
+    <br style=3D"user-select: inherit; scrollbar-color: var(--scrollbar-act=
+ive-color) #0000; box-sizing: border-box;" fr-original-style=3D"">519-507-9=
+274
+    <br style=3D"user-select: inherit; scrollbar-color: var(--scrollbar-act=
+ive-color) #0000; box-sizing: border-box;" fr-original-style=3D"">Teeswater=
+, On
+    <br style=3D"user-select: inherit; scrollbar-color: var(--scrollbar-act=
+ive-color) #0000; box-sizing: border-box;" fr-original-style=3D"">
+    <br style=3D"user-select: inherit; scrollbar-color: var(--scrollbar-act=
+ive-color) #0000; box-sizing: border-box;" fr-original-style=3D"">Owner/Fou=
+nder
+    <br style=3D"user-select: inherit; scrollbar-color: var(--scrollbar-act=
+ive-color) #0000; box-sizing: border-box;" fr-original-style=3D"">One.1
+   </div>=20
+  </signature>=20
+ </div>
+</div>
+<img class=3D"flm-open" width=3D"0" height=3D"0" style=3D"border:0;width:0;=
+height:0;display:block;" src=3D"https://rtt-east.riva.co/dc/t/mo/v2?t=3DeyJ=
+0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwIjoiMTAwMiA3OTcyMDAyIHFlbXUtZGV2ZWxAb=
+m9uZ251Lm9yZyBhMjkyMzFkMmVlMDQzMjI5OWU0YjdlZWI4NGM5MjkzYiA0MjQ2MDM2MzYzMzA2=
+NTk4NiA4ID8iLCJleHAiOjE3ODM0MDAyODl9.bWOK0GtIfU7m4YIS6DcEZKFVvAGr7GcLJYxfB2=
+SKHnPGUGbVovsOOMQnEYoph-i5WOL0X3dE9n-DM70uyGjMVw&requestId=3Da_08045757_SMR=
+_592_epW_OeFO">
+------=_Part_903500_1575031948.1767848290228--
 
