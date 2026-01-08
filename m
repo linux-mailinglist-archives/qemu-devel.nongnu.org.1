@@ -2,33 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D6FDD05228
+	by mail.lfdr.de (Postfix) with ESMTPS id 99452D05226
 	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 18:44:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdu2n-0001UD-QG; Thu, 08 Jan 2026 12:43:33 -0500
+	id 1vdu2o-0001UX-9E; Thu, 08 Jan 2026 12:43:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1vdu2l-0001TL-Fs
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1vdu2l-0001Tb-OA
  for qemu-devel@nongnu.org; Thu, 08 Jan 2026 12:43:31 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1vdu2j-00070a-FZ
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1vdu2j-00070b-MH
  for qemu-devel@nongnu.org; Thu, 08 Jan 2026 12:43:31 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EF26117C0C6
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 20:42:24 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 04BAC17C0C7
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 20:42:25 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 4C927348649;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 6435234864A;
  Thu, 08 Jan 2026 20:43:25 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 0/2] linux-user: epoll_pwait2 syscall
-Date: Thu,  8 Jan 2026 20:43:15 +0300
-Message-ID: <20260108174317.239955-1-mjt@tls.msk.ru>
+Subject: [PATCH 1/2] linux-user: cleanup epoll_pwait ifdeff'ery
+Date: Thu,  8 Jan 2026 20:43:16 +0300
+Message-ID: <20260108174317.239955-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260108174317.239955-1-mjt@tls.msk.ru>
+References: <20260108174317.239955-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
@@ -54,16 +56,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These two changes implements epoll_pwait2 system call.
-First is a clean-up so the actual implementation is simpler.
+All linux targets these days have epoll_pwait system call
+(while some miss epoll_wait, which is less generic).  And
+all linux targets definitely has one or another epoll_*wait*
+system call - so whole code block dealing with this system
+call should always be present.
 
-Michael Tokarev (2):
-  linux-user: cleanup epoll_pwait ifdeff'ery
-  linux-user: implement epoll_pwait2 syscall
+Remove the now-unneeded ifdeff'ery.
 
- linux-user/syscall.c | 37 ++++++++++++++++++++++++-------------
- 1 file changed, 24 insertions(+), 13 deletions(-)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+---
+ linux-user/syscall.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 2060e561a2..d89c36382e 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -13615,13 +13615,10 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+     }
+ #endif
+ 
+-#if defined(TARGET_NR_epoll_wait) || defined(TARGET_NR_epoll_pwait)
+ #if defined(TARGET_NR_epoll_wait)
+     case TARGET_NR_epoll_wait:
+ #endif
+-#if defined(TARGET_NR_epoll_pwait)
+     case TARGET_NR_epoll_pwait:
+-#endif
+     {
+         struct target_epoll_event *target_ep;
+         struct epoll_event *ep;
+@@ -13646,7 +13643,6 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+         }
+ 
+         switch (num) {
+-#if defined(TARGET_NR_epoll_pwait)
+         case TARGET_NR_epoll_pwait:
+         {
+             sigset_t *set = NULL;
+@@ -13666,7 +13662,6 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+             }
+             break;
+         }
+-#endif
+ #if defined(TARGET_NR_epoll_wait)
+         case TARGET_NR_epoll_wait:
+             ret = get_errno(safe_epoll_pwait(epfd, ep, maxevents, timeout,
+@@ -13690,8 +13685,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+         g_free(ep);
+         return ret;
+     }
+-#endif
+-#endif
++#endif /* CONFIG_EPOLL */
+ #ifdef TARGET_NR_prlimit64
+     case TARGET_NR_prlimit64:
+     {
 -- 
 2.47.3
 
