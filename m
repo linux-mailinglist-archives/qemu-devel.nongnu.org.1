@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BA11D04AD4
-	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 18:05:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BD5BD04AE7
+	for <lists+qemu-devel@lfdr.de>; Thu, 08 Jan 2026 18:05:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vdtRp-0006s3-D8; Thu, 08 Jan 2026 12:05:21 -0500
+	id 1vdtSB-0007eU-7l; Thu, 08 Jan 2026 12:05:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vdtRj-0006NS-LP
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 12:05:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vdtRp-000744-U1
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 12:05:21 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vdtRd-0007D8-Lz
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 12:05:12 -0500
+ id 1vdtRn-0007Jk-WD
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 12:05:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767891907;
+ s=mimecast20190719; t=1767891919;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yg0zSnEsN3Jfnx2kC4NbneGQBe53c5O0z2x9H+oKOks=;
- b=IKw0UAa4wCDyWFtRIMAp29Whhqf3/1jbU3tEBurKV94tZ0109VB7xdnSID2JCfSjQwOhmQ
- JQAKbNvUjFNvP7DwwOyfc1XTXx87MaItBjLvpiiqgvcpgRgfVvw4xoyCldEbCt4Q7eP4o0
- BNXVuE7HKQR3mKvUnPrswh5RfOodQGo=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=ElITesBvHnG91wf0vvcybRYKpDNgQUJ4lsL5N7CJHH0=;
+ b=GACrKmPCvz8N44b0xUX2L/b0TVoREk1OUKogBuFak2mOtd/f+Z1j9s3QY/Q/0cwvg1fp0x
+ AZW86nGKds6hoyTra4nQ+OS2xmfHvcHy1W1QGCQRu9Mv7D4BSdOq6b48H1Jqe/jWwU7G0c
+ BTESy9w5C7nE5c1Obq7ToJ/U8e8ZB74=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-112-jv_hIzDlPKGLLROoHcRjwg-1; Thu,
- 08 Jan 2026 12:05:02 -0500
-X-MC-Unique: jv_hIzDlPKGLLROoHcRjwg-1
-X-Mimecast-MFC-AGG-ID: jv_hIzDlPKGLLROoHcRjwg_1767891901
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-83-LLlUw6JCMDyPq9HoMtxQAQ-1; Thu,
+ 08 Jan 2026 12:05:15 -0500
+X-MC-Unique: LLlUw6JCMDyPq9HoMtxQAQ-1
+X-Mimecast-MFC-AGG-ID: LLlUw6JCMDyPq9HoMtxQAQ_1767891914
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 18B0F1800342; Thu,  8 Jan 2026 17:05:01 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 21CF71954B21; Thu,  8 Jan 2026 17:05:14 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.44])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2B20319560B4; Thu,  8 Jan 2026 17:04:56 +0000 (UTC)
+ id 2B08D19560A2; Thu,  8 Jan 2026 17:05:09 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -59,25 +59,26 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Markus Armbruster <armbru@redhat.com>, Stefan Weil <sw@weilnetz.de>,
  Kevin Wolf <kwolf@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v5 17/24] util: fix interleaving of error & trace output
-Date: Thu,  8 Jan 2026 17:03:31 +0000
-Message-ID: <20260108170338.2693853-18-berrange@redhat.com>
+Subject: [PATCH v5 20/24] util: convert error-report & log to message API for
+ timestamp
+Date: Thu,  8 Jan 2026 17:03:34 +0000
+Message-ID: <20260108170338.2693853-21-berrange@redhat.com>
 In-Reply-To: <20260108170338.2693853-1-berrange@redhat.com>
 References: <20260108170338.2693853-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,228 +94,169 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The monitor_cur_hmp() function will acquire/release mutex locks, which
-will trigger trace probes, which can in turn trigger qemu_log() calls.
-vreport() calls monitor_cur() multiple times through its execution
-both directly and indirectly via error_vprintf().
+Both the error-report and log APIs can optional emit a timestamp
+as a prefix on messages, with the '-msg timestamp=on' command
+line flag is set.
 
-The result is that the prefix information printed by vreport() gets
-interleaved with qemu_log() output, when run outside the context of
-an HMP command dispatcher. This can be seen with:
+Convert them to the new message API for formatting the context
+prefix, guaranteeing they will have matching behaviour going
+forward.
 
- $ qemu-system-x86_64 \
-     -msg timestamp=on,guest-name=on \
-     -display none \
-     -object tls-creds-x509,id=f,dir=fish \
-     -name fish \
-     -d trace:qemu_mutex*
-   2025-09-10T16:30:42.514374Z qemu_mutex_unlock released mutex 0x560b0339b4c0 (/var/home/berrange/src/virt/qemu/include/qemu/lockable.h:56)
-   2025-09-10T16:30:42.514400Z qemu_mutex_lock waiting on mutex 0x560b033983e0 (/var/home/berrange/src/virt/qemu/include/qemu/lockable.h:56)
-   2025-09-10T16:30:42.514402Z qemu_mutex_locked taken mutex 0x560b033983e0 (/var/home/berrange/src/virt/qemu/include/qemu/lockable.h:56)
-   2025-09-10T16:30:42.514404Z qemu_mutex_unlock released mutex 0x560b033983e0 (/var/home/berrange/src/virt/qemu/include/qemu/lockable.h:56)
-   2025-09-10T16:30:42.516716Z qemu_mutex_lock waiting on mutex 0x560b03398560 (../monitor/monitor.c:91)
-   2025-09-10T16:30:42.516723Z qemu_mutex_locked taken mutex 0x560b03398560 (../monitor/monitor.c:91)
-   2025-09-10T16:30:42.516726Z qemu_mutex_unlock released mutex 0x560b03398560 (../monitor/monitor.c:96)
-   2025-09-10T16:30:42.516728Z qemu_mutex_lock waiting on mutex 0x560b03398560 (../monitor/monitor.c:91)
-   2025-09-10T16:31:04.842057Z qemu_mutex_locked taken mutex 0x564f5e401560 (../monitor/monitor.c:91)
-   2025-09-10T16:31:04.842058Z qemu_mutex_unlock released mutex 0x564f5e401560 (../monitor/monitor.c:96)
-   2025-09-10T16:31:04.842055Z 2025-09-10T16:31:04.842060Z qemu_mutex_lock waiting on mutex 0x564f5e401560 (../monitor/monitor.c:91)
-   2025-09-10T16:31:04.842061Z qemu_mutex_locked taken mutex 0x564f5e401560 (../monitor/monitor.c:91)
-   2025-09-10T16:31:04.842062Z qemu_mutex_unlock released mutex 0x564f5e401560 (../monitor/monitor.c:96)
-   2025-09-10T16:31:04.842064Z qemu_mutex_lock waiting on mutex 0x564f5e401560 (../monitor/monitor.c:91)
-   2025-09-10T16:31:04.842065Z qemu_mutex_locked taken mutex 0x564f5e401560 (../monitor/monitor.c:91)
-   2025-09-10T16:31:04.842066Z qemu_mutex_unlock released mutex 0x564f5e401560 (../monitor/monitor.c:96)
-   fish 2025-09-10T16:31:04.842068Z qemu_mutex_lock waiting on mutex 0x564f5e401560 (../monitor/monitor.c:91)
-   2025-09-10T16:31:04.842069Z qemu_mutex_locked taken mutex 0x564f5e401560 (../monitor/monitor.c:91)
-   2025-09-10T16:31:04.842070Z qemu_mutex_unlock released mutex 0x564f5e401560 (../monitor/monitor.c:96)
-   2025-09-10T16:31:04.842072Z qemu_mutex_lock waiting on mutex 0x564f5e401560 (../monitor/monitor.c:91)
-   2025-09-10T16:31:04.842097Z qemu_mutex_locked taken mutex 0x564f5e401560 (../monitor/monitor.c:91)
-   2025-09-10T16:31:04.842099Z qemu_mutex_unlock released mutex 0x564f5e401560 (../monitor/monitor.c:96)
-   qemu-system-x86_64:2025-09-10T16:31:04.842100Z qemu_mutex_lock waiting on mutex 0x564f5e401560 (../monitor/monitor.c:91)
-   2025-09-10T16:31:04.842102Z qemu_mutex_locked taken mutex 0x564f5e401560 (../monitor/monitor.c:91)
-   2025-09-10T16:31:04.842103Z qemu_mutex_unlock released mutex 0x564f5e401560 (../monitor/monitor.c:96)
-    2025-09-10T16:31:04.842105Z qemu_mutex_lock waiting on mutex 0x564f5e401560 (../monitor/monitor.c:91)
-   2025-09-10T16:31:04.842106Z qemu_mutex_locked taken mutex 0x564f5e401560 (../monitor/monitor.c:91)
-   2025-09-10T16:31:04.842107Z qemu_mutex_unlock released mutex 0x564f5e401560 (../monitor/monitor.c:96)
-   Unable to access credentials fish/ca-cert.pem: No such file or directory2025-09-10T16:31:04.842109Z qemu_mutex_lock waiting on mutex 0x564f5e401560 (../monitor/monitor.c:91)
-   2025-09-10T16:31:04.842110Z qemu_mutex_locked taken mutex 0x564f5e401560 (../monitor/monitor.c:91)
-   2025-09-10T16:31:04.842111Z qemu_mutex_unlock released mutex 0x564f5e401560 (../monitor/monitor.c:96)
+There is no change in output format for either logs or errors
+with this conversion. There is a slight impact on logging code
+in that recording the timestamp is now potentially delayed by
+the need to acquire the logging mutex.
 
-To avoid this interleaving (as well as reduce the huge number of
-mutex lock/unlock calls) we need to ensure that monitor_cur_is_hmp()
-is only called once at the start of vreport(), and if no HMP is
-present, no further monitor APIs can be called.
-
-This implies error_[v]printf() cannot be called from vreport().
-Instead we must introduce error_[v]printf_mon() which accept a
-pre-acquired Monitor object. In some cases, however, fprintf
-can be called directly as output will never be directed to the
-monitor.
-
- $ qemu-system-x86_64 \
-     -msg timestamp=on,guest-name=on \
-     -display none \
-     -object tls-creds-x509,id=f,dir=fish \
-     -name fish \
-     -d trace:qemu_mutex*
-   2025-09-10T16:31:22.701691Z qemu_mutex_unlock released mutex 0x5626fd3b84c0 (/var/home/berrange/src/virt/qemu/include/qemu/lockable.h:56)
-   2025-09-10T16:31:22.701728Z qemu_mutex_lock waiting on mutex 0x5626fd3b53e0 (/var/home/berrange/src/virt/qemu/include/qemu/lockable.h:56)
-   2025-09-10T16:31:22.701730Z qemu_mutex_locked taken mutex 0x5626fd3b53e0 (/var/home/berrange/src/virt/qemu/include/qemu/lockable.h:56)
-   2025-09-10T16:31:22.701732Z qemu_mutex_unlock released mutex 0x5626fd3b53e0 (/var/home/berrange/src/virt/qemu/include/qemu/lockable.h:56)
-   2025-09-10T16:31:22.703989Z qemu_mutex_lock waiting on mutex 0x5626fd3b5560 (../monitor/monitor.c:91)
-   2025-09-10T16:31:22.703996Z qemu_mutex_locked taken mutex 0x5626fd3b5560 (../monitor/monitor.c:91)
-   2025-09-10T16:31:22.703999Z qemu_mutex_unlock released mutex 0x5626fd3b5560 (../monitor/monitor.c:96)
-   2025-09-10T16:31:22.704000Z fish qemu-system-x86_64: Unable to access credentials fish/ca-cert.pem: No such file or directory
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- util/error-report.c | 67 +++++++++++++++++++++++++++++++--------------
- 1 file changed, 46 insertions(+), 21 deletions(-)
+ include/qemu/error-report.h    |  1 -
+ system/vl.c                    |  7 ++++++-
+ tests/unit/test-error-report.c |  3 ++-
+ util/error-report.c            | 18 ++----------------
+ util/log.c                     |  8 +++-----
+ 5 files changed, 13 insertions(+), 24 deletions(-)
 
+diff --git a/include/qemu/error-report.h b/include/qemu/error-report.h
+index 3ae2357fda..c8000778ec 100644
+--- a/include/qemu/error-report.h
++++ b/include/qemu/error-report.h
+@@ -70,7 +70,6 @@ void error_init(const char *argv0);
+                               fmt, ##__VA_ARGS__);      \
+     })
+ 
+-extern bool message_with_timestamp;
+ extern bool error_with_guestname;
+ extern const char *error_guest_name;
+ 
+diff --git a/system/vl.c b/system/vl.c
+index 60bdd58548..75e2fd310d 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -26,6 +26,7 @@
+ #include "qemu/help-texts.h"
+ #include "qemu/datadir.h"
+ #include "qemu/units.h"
++#include "qemu/message.h"
+ #include "qemu/module.h"
+ #include "qemu/target-info.h"
+ #include "exec/cpu-common.h"
+@@ -818,8 +819,12 @@ static void realtime_init(void)
+ 
+ static void configure_msg(QemuOpts *opts)
+ {
+-    message_with_timestamp = qemu_opt_get_bool(opts, "timestamp", false);
++    int flags = 0;
++    if (qemu_opt_get_bool(opts, "timestamp", false)) {
++        flags |= QMESSAGE_FORMAT_TIMESTAMP;
++    }
+     error_with_guestname = qemu_opt_get_bool(opts, "guest-name", false);
++    qmessage_set_format(flags);
+ }
+ 
+ 
+diff --git a/tests/unit/test-error-report.c b/tests/unit/test-error-report.c
+index a8532fc58f..9c63019694 100644
+--- a/tests/unit/test-error-report.c
++++ b/tests/unit/test-error-report.c
+@@ -12,6 +12,7 @@
+ 
+ #include "qemu/error-report.h"
+ #include "qapi/error.h"
++#include "qemu/message.h"
+ 
+ static void
+ test_error_report_simple(void)
+@@ -89,7 +90,7 @@ static void
+ test_error_report_timestamp(void)
+ {
+     if (g_test_subprocess()) {
+-        message_with_timestamp = true;
++        qmessage_set_format(QMESSAGE_FORMAT_TIMESTAMP);
+         warn_report("warn");
+         error_report("err");
+         return;
 diff --git a/util/error-report.c b/util/error-report.c
-index 872158ad90..14b170ca4c 100644
+index 46ea9ededa..0c39857fc5 100644
 --- a/util/error-report.c
 +++ b/util/error-report.c
-@@ -29,9 +29,12 @@ bool message_with_timestamp;
+@@ -13,6 +13,7 @@
+ #include "qemu/osdep.h"
+ #include "monitor/monitor.h"
+ #include "qemu/error-report.h"
++#include "qemu/message.h"
+ 
+ /*
+  * @report_type is the type of message: error, warning or
+@@ -24,8 +25,6 @@ typedef enum {
+     REPORT_TYPE_INFO,
+ } report_type;
+ 
+-/* Prepend timestamp to messages */
+-bool message_with_timestamp;
  bool error_with_guestname;
  const char *error_guest_name;
  
--int error_vprintf(const char *fmt, va_list ap)
-+/*
-+ * Print to current monitor if we have one, else to stderr.
-+ */
-+static int G_GNUC_PRINTF(2, 0)
-+error_vprintf_mon(Monitor *cur_mon, const char *fmt, va_list ap)
- {
--    Monitor *cur_mon = monitor_cur();
-     /*
-      * This will return -1 if 'cur_mon' is NULL, or is QMP.
-      * IOW this will only print if in HMP, otherwise we
-@@ -44,13 +47,30 @@ int error_vprintf(const char *fmt, va_list ap)
-     return ret;
+@@ -204,13 +203,6 @@ static void print_loc(Monitor *cur)
+     }
  }
  
-+static int G_GNUC_PRINTF(2, 3)
-+error_printf_mon(Monitor *cur_mon, const char *fmt, ...)
-+{
-+    va_list ap;
-+    int ret;
-+
-+    va_start(ap, fmt);
-+    ret = error_vprintf_mon(cur_mon, fmt, ap);
-+    va_end(ap);
-+    return ret;
-+}
-+
-+int error_vprintf(const char *fmt, va_list ap)
-+{
-+    return error_vprintf_mon(monitor_cur(), fmt, ap);
-+}
-+
- int error_printf(const char *fmt, ...)
- {
-     va_list ap;
-     int ret;
- 
-     va_start(ap, fmt);
--    ret = error_vprintf(fmt, ap);
-+    ret = error_vprintf_mon(monitor_cur(), fmt, ap);
-     va_end(ap);
-     return ret;
- }
-@@ -153,34 +173,34 @@ void loc_set_file(const char *fname, int lno)
+-static char *
+-real_time_iso8601(void)
+-{
+-    g_autoptr(GDateTime) dt = g_date_time_new_now_utc();
+-    return g_date_time_format_iso8601(dt);
+-}
+-
  /*
-  * Print current location to current monitor if we have one, else to stderr.
-  */
--static void print_loc(void)
-+static void print_loc(Monitor *cur)
- {
-     const char *sep = "";
-     int i;
-     const char *const *argp;
- 
--    if (!monitor_cur_is_hmp() && g_get_prgname()) {
--        error_printf("%s:", g_get_prgname());
-+    if (!cur && g_get_prgname()) {
-+        fprintf(stderr, "%s:", g_get_prgname());
-         sep = " ";
-     }
-     switch (cur_loc->kind) {
-     case LOC_CMDLINE:
-         argp = cur_loc->ptr;
-         for (i = 0; i < cur_loc->num; i++) {
--            error_printf("%s%s", sep, argp[i]);
-+            error_printf_mon(cur, "%s%s", sep, argp[i]);
-             sep = " ";
-         }
--        error_printf(": ");
-+        error_printf_mon(cur, ": ");
-         break;
-     case LOC_FILE:
--        error_printf("%s:", (const char *)cur_loc->ptr);
-+        error_printf_mon(cur, "%s:", (const char *)cur_loc->ptr);
-         if (cur_loc->num) {
--            error_printf("%d:", cur_loc->num);
-+            error_printf_mon(cur, "%d:", cur_loc->num);
-         }
--        error_printf(" ");
-+        error_printf_mon(cur, " ");
-         break;
-     default:
--        error_printf("%s", sep);
-+        error_printf_mon(cur, "%s", sep);
-     }
- }
- 
-@@ -201,34 +221,39 @@ real_time_iso8601(void)
- G_GNUC_PRINTF(2, 0)
+  * Print a message to current monitor if we have one, else to stderr.
+  * @report_type is the type of message: error, warning or informational.
+@@ -222,18 +214,12 @@ G_GNUC_PRINTF(2, 0)
  static void vreport(report_type type, const char *fmt, va_list ap)
  {
-+    Monitor *cur = NULL;
-     gchar *timestr;
+     Monitor *cur = NULL;
+-    gchar *timestr;
  
--    if (message_with_timestamp && !monitor_cur_is_hmp()) {
-+    if (monitor_cur_is_hmp()) {
-+        cur = monitor_cur();
-+    }
-+
-+    if (message_with_timestamp && !cur) {
-         timestr = real_time_iso8601();
--        error_printf("%s ", timestr);
-+        fprintf(stderr, "%s ", timestr);
-         g_free(timestr);
+     if (monitor_cur_is_hmp()) {
+         cur = monitor_cur();
+     } else {
+         qemu_flockfile(stderr);
+-    }
+-
+-    if (message_with_timestamp && !cur) {
+-        timestr = real_time_iso8601();
+-        fprintf(stderr, "%s ", timestr);
+-        g_free(timestr);
++        qmessage_context_print(stderr);
      }
  
      /* Only prepend guest name if -msg guest-name and -name guest=... are set */
--    if (error_with_guestname && error_guest_name && !monitor_cur_is_hmp()) {
--        error_printf("%s ", error_guest_name);
-+    if (error_with_guestname && error_guest_name && !cur) {
-+        fprintf(stderr, "%s ", error_guest_name);
+diff --git a/util/log.c b/util/log.c
+index 2ce7286f31..3b94c6541b 100644
+--- a/util/log.c
++++ b/util/log.c
+@@ -22,6 +22,7 @@
+ #include "qemu/range.h"
+ #include "qemu/error-report.h"
+ #include "qapi/error.h"
++#include "qemu/message.h"
+ #include "qemu/cutils.h"
+ #include "trace/control.h"
+ #include "qemu/thread.h"
+@@ -147,11 +148,8 @@ FILE *qemu_log_trylock(void)
+ FILE *qemu_log_trylock_context(void)
+ {
+     FILE *f = qemu_log_trylock();
+-    if (log_depth == 1 && message_with_timestamp) {
+-        g_autofree const char *timestr = NULL;
+-        g_autoptr(GDateTime) dt = g_date_time_new_now_utc();
+-        timestr = g_date_time_format_iso8601(dt);
+-        fprintf(f, "%s ", timestr);
++    if (log_depth == 1) {
++        qmessage_context_print(f);
      }
- 
--    print_loc();
-+    print_loc(cur);
- 
-     switch (type) {
-     case REPORT_TYPE_ERROR:
-         break;
-     case REPORT_TYPE_WARNING:
--        error_printf("warning: ");
-+        error_printf_mon(cur, "warning: ");
-         break;
-     case REPORT_TYPE_INFO:
--        error_printf("info: ");
-+        error_printf_mon(cur, "info: ");
-         break;
-     }
- 
--    error_vprintf(fmt, ap);
--    error_printf("\n");
-+    error_vprintf_mon(cur, fmt, ap);
-+    error_printf_mon(cur, "\n");
+     return f;
  }
- 
- /*
 -- 
 2.52.0
 
