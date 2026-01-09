@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D219D07362
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 06:33:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1009CD07380
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 06:36:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ve56e-0004GL-1h; Fri, 09 Jan 2026 00:32:16 -0500
+	id 1ve56e-0004H6-As; Fri, 09 Jan 2026 00:32:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ve56a-0004EU-W8
+ id 1ve56b-0004Ec-MQ
  for qemu-devel@nongnu.org; Fri, 09 Jan 2026 00:32:13 -0500
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ve56Z-0003gh-DB
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 00:32:12 -0500
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-34ccdcbe520so1320248a91.1
+ id 1ve56a-0003h2-7b
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 00:32:13 -0500
+Received: by mail-pj1-x1029.google.com with SMTP id
+ 98e67ed59e1d1-34c30f0f12eso2312602a91.1
  for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 21:32:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767936730; x=1768541530; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767936731; x=1768541531; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=H9MNA25nCytrrB1MJ4OeFVmsiFRsgqqEYw8vG3Tiy1o=;
- b=X7Is279OYNBaRrpitFoMBYLfNbuXgdTILZvenV1GRVRIyHLN6ST11f4aM0CpHDtpxd
- 0hU/1FTD+KAU4Sj8Yf9time8fJZi3LjnS4XDvpE/9sy6UHTKmgw923ER3fWg9cPSqj7Q
- LOqx6XGOkuNPI1EWQgCM0tKslCeQbSsWc9+eLStqGJ07v6mRFr4RIB1GF4qLWFMQi4Px
- XQwm/OmgyWaoLkfXWWSZfNZPDdFryDTT77A+m2CQCDw7BZJXyQvpgW426kCAVmvV9eyV
- dkqwWHfbh9qllGhK34/s96nzzC4FCwOvYZHxLshjCHm9rEOt2AofJfWiqX9BgLZlnH5O
- Tb6g==
+ bh=PC98MoSZr1UE7TNVEPSglIh76HrqcaKgifra9RoSItk=;
+ b=w0h8p33kdhdXGdn6OvZWUYWR6K0vKfrBHUfgKvFFCyGtzd1E4Mm+bId5z0bHE/SF0l
+ 3wEYUo72IYd99q8Z/rK7jYYCh9epCSYdu4bXEDy8mMY/J9O6zdH9kA21mYmC3W6ViP/L
+ l0wF+CAYK4oGZEDOfRYfGR1EM9anGp/ADXDyBNskZsvdpK+9XIfaATJ+WPec/0w/Cjol
+ 2mUC+QougEm9q1JMrNEZlgd1FtSJubI8lo6DNIxulCBL5jxTO9Q7h3bwyoneFmsu6426
+ hj+j7zIJVWEJXtHdj/DLKr9je+GX9ZKkdt7ZcD28/bNoiTUS4D2xcbxEri0oIR1Fk9xT
+ gNaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767936730; x=1768541530;
+ d=1e100.net; s=20230601; t=1767936731; x=1768541531;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=H9MNA25nCytrrB1MJ4OeFVmsiFRsgqqEYw8vG3Tiy1o=;
- b=iTXFsOXM5cEmRVdoiWixIIFJhjVGFfr+C0etS2MAI/P/NJg/UI9LkLGMsi5TW58qbq
- SgVOWsy7DK9HY8WyZGEdFUcwoNQSuRW9JifBTeslucbECS7RJBdbEf0JAevI3QQrUSJj
- /QOsl/nyguvWeApBXzFNU0bZ8G5vA7bPlRzzEruThVk1Xpi0qbif+Xw1B3DPcDbG2fq2
- i5o0tDL1XZqIVN4xb7wvzFY6hZA2T4oOYvzFX99fUqMVEwB6hZPKL8zEoFSrjF/A+JXG
- zc4qyiw4iE6gD0qfSdAj4ulcajFVvMRSNFjihwrotRToagRuSw3YRq5vcuGzdLCIm6Zb
- 50vw==
-X-Gm-Message-State: AOJu0YxrpSmreUI9wlTp6mTYgZYoSVFhJw2VSOVOp8I1hjg/rPAGE8bf
- SSa0KwYlOLkJokaTsnZtGWVJJlsTDIQinQ+AAoJn07KJX1qTbJ1R4xh8lhpcZi25dtJ0P3GYveS
- ANAQr
-X-Gm-Gg: AY/fxX4YkOcdaB7m+sp+/FnoBQwR/Gh23hlHOCuSIRXxNWPxnUe28kdiQmN5CQLxbXD
- vWd2N4JrWxZAfJc6hqho1wimj4Ciafr16ftey85VdB2urOhX6GKqp47WFh9JxG5NdGj8mZ18eFm
- 6kWtngDuXw84cHTz52MWjDUupPxw3kDmGjXXrBylht41U7ZaNItxhMdvZWS7jrhMf2apjBremUF
- EGgUO6YT+9C4yGasvhzXR9kBZgVGf3M+hsEOiFiogigmrtkCbye87mZXmtkcjfA/HsmBce+G1Ts
- DOm40noAoivtfjHXJUNzfypz6W3IH5yuRkk24zZxR9La8i4U2qWa8gPTpDGt7+0CNk0yWjMs9Aq
- 2h3/2a/SVnUBzhFmRL9B9q8007rmarTh+oxE+8gbgMEErmHse6/0VtQpQa6RjdlhO3obcdGTEeC
- V8Fq2avmRoioRrrR/FXR5jzfHweILxgirCWtMvRloz4URhhkd16OjD57UWzg1nP+Zp
-X-Google-Smtp-Source: AGHT+IFjUJ73xsiaR96Cdk8yHLn1/uMMrW1lhxhRUVj3uLzGJS6nQUm4rxyHxQl+ZZ0HgwFA6gyItQ==
-X-Received: by 2002:a17:90b:5b87:b0:34f:6312:f225 with SMTP id
- 98e67ed59e1d1-34f63130c6bmr6907282a91.14.1767936729981; 
- Thu, 08 Jan 2026 21:32:09 -0800 (PST)
+ bh=PC98MoSZr1UE7TNVEPSglIh76HrqcaKgifra9RoSItk=;
+ b=bk9ugtVXgDxzOwROAqaKzY/t3oHqWSQjUNJM6A6rgytaT8lBm7G6gHzKQ/MzMcrP2I
+ CD0SrIBDJKEk6zJZmIFmUtw9zUUV/ZFMmdCfSKq7Z8f1UCFwrRvaXWNAhJQizz5OQb4L
+ xZ2+oIDVJpxyw79wJJk24fdASFbW2a414CfBZnMFFhlAXLR46Llk/h0tKBNpXg5shd0c
+ 8CY8NHj3lqGFORTkAPjEz2OL+O8c12IgpfhjB74fD4weW2F7Xf2lqUCtJfGpTK+l63fk
+ MZ/y6WTR6OyozCSaTTGlyPueUGXPcncANVrAHmsh4H2BZaMTQi2VhbirsDtvTtQ86zku
+ US2A==
+X-Gm-Message-State: AOJu0YxCRlvUE4fTBepaXwiwyBHXM+IuiSUOJDvIeqGae6ihCoaVKn+s
+ EjSSI+VjzZbjTiuy9cGGu0i659vlRU8OwKpNGXBrlRT2aldYXJvNKui9hhvq+3H1DycoTughlEX
+ Qofl+
+X-Gm-Gg: AY/fxX5YTGEFzgMt3qM1gEl1THqhB0+RNOvLkHMWUXUGHFC270LMGVJaxn0QSJmVrGK
+ sNYe1IA4SZrmeZW+/pu9Raak6TnTCfFkib9w17XzdSWm1GAjH6A/TFKT/TNgFU1q/PZ7FiNe4sX
+ xTtbMTRmW4bWdj7FLljMFXmtpyqjF712LmOU98TMNSQB07b6MFkGZdsftGOjWmR2/kG19LWpVGm
+ AYnFVDFaxxkrOFyJe/UaLb1BLivPBnqCFjBscSz1Ms4xAxwPolwXiVMGQUGQmr51cC0FRa39NBO
+ i2/87KFITx43+P75r3suHNLPX4VqGUUr6/YPCjDJFblBx2TSEp/zNmlmfOloeR6WzUhlIly+3PC
+ 0Vql2eHehGjXur6GIS388dOpBCOr1oOVNqh+wNgobA5GezHm9ca8V+QQXZw0+UkJVXXb7P/aT2H
+ a2HXKrxBAUSRkw5y21hW5KqVeNU8kwZtHrK1GjeEbwNNmEweAgcnSsByld8qMPYv4y
+X-Google-Smtp-Source: AGHT+IHxOrDXd9Tl3CnHVlkw7cxCRaB5QzRHQdGsBjRNAKeNqqXwYBtNZsxSAj2fjUB0Y2lVOdiNFA==
+X-Received: by 2002:a17:90b:524d:b0:349:3fe6:ab8b with SMTP id
+ 98e67ed59e1d1-34f68c48301mr7210764a91.36.1767936730745; 
+ Thu, 08 Jan 2026 21:32:10 -0800 (PST)
 Received: from pc.taild8403c.ts.net (216-71-219-44.dyn.novuscom.net.
  [216.71.219.44]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-34f5fa93f30sm9260137a91.5.2026.01.08.21.32.09
+ 98e67ed59e1d1-34f5fa93f30sm9260137a91.5.2026.01.08.21.32.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 21:32:09 -0800 (PST)
+ Thu, 08 Jan 2026 21:32:10 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -73,16 +73,17 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Jim MacArthur <jim.macarthur@linaro.org>, anjo@rev.ng,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 04/29] target/arm/arm-qmp-cmds.c: make compilation unit common
-Date: Thu,  8 Jan 2026 21:31:33 -0800
-Message-ID: <20260109053158.2800705-5-pierrick.bouvier@linaro.org>
+Subject: [PATCH 05/29] include/exec/helper-{gen,
+ proto}.h: add conditional HAS_HELPER64 define
+Date: Thu,  8 Jan 2026 21:31:34 -0800
+Message-ID: <20260109053158.2800705-6-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260109053158.2800705-1-pierrick.bouvier@linaro.org>
 References: <20260109053158.2800705-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1034.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1029.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,134 +106,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move gic_cap_kvm_probe to target/arm/kvm.c to remove #ifdef CONFIG_KVM.
+It allows to include helper for 64 bits variants selectively, by
+including helper-{gen, proto}.h and defining HAS_HELPER64.
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/kvm_arm.h      |  3 +++
- target/arm/arm-qmp-cmds.c | 25 +------------------------
- target/arm/kvm-stub.c     |  5 +++++
- target/arm/kvm.c          | 21 +++++++++++++++++++++
- target/arm/meson.build    |  2 +-
- 5 files changed, 31 insertions(+), 25 deletions(-)
+ include/exec/helper-gen.h   | 6 ++++++
+ include/exec/helper-proto.h | 6 ++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-index 6a9b6374a6d..cc0b374254e 100644
---- a/target/arm/kvm_arm.h
-+++ b/target/arm/kvm_arm.h
-@@ -11,6 +11,7 @@
- #ifndef QEMU_KVM_ARM_H
- #define QEMU_KVM_ARM_H
+diff --git a/include/exec/helper-gen.h b/include/exec/helper-gen.h
+index f7ec1556997..c96e13b835a 100644
+--- a/include/exec/helper-gen.h
++++ b/include/exec/helper-gen.h
+@@ -13,4 +13,10 @@
+ #include "exec/helper-gen.h.inc"
+ #undef  HELPER_H
  
-+#include "qapi/qapi-types-misc-arm.h"
- #include "system/kvm.h"
- #include "target/arm/cpu-qom.h"
- 
-@@ -263,4 +264,6 @@ void kvm_arm_enable_mte(Object *cpuobj, Error **errp);
- 
- void arm_cpu_kvm_set_irq(void *arm_cpu, int irq, int level);
- 
-+void arm_gic_cap_kvm_probe(GICCapability *v2, GICCapability *v3);
++#ifdef HAS_HELPER64
++#define HELPER_H "helper64.h"
++#include "exec/helper-gen.h.inc"
++#undef  HELPER_H
++#endif
 +
- #endif
-diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
-index 45df15de782..29102587bae 100644
---- a/target/arm/arm-qmp-cmds.c
-+++ b/target/arm/arm-qmp-cmds.c
-@@ -43,29 +43,6 @@ static GICCapability *gic_cap_new(int version)
-     return cap;
- }
+ #endif /* HELPER_GEN_H */
+diff --git a/include/exec/helper-proto.h b/include/exec/helper-proto.h
+index 6935cb4f16f..002460722e3 100644
+--- a/include/exec/helper-proto.h
++++ b/include/exec/helper-proto.h
+@@ -13,4 +13,10 @@
+ #include "exec/helper-proto.h.inc"
+ #undef  HELPER_H
  
--static inline void gic_cap_kvm_probe(GICCapability *v2, GICCapability *v3)
--{
--#ifdef CONFIG_KVM
--    int fdarray[3];
--
--    if (!kvm_arm_create_scratch_host_vcpu(fdarray, NULL)) {
--        return;
--    }
--
--    /* Test KVM GICv2 */
--    if (kvm_device_supported(fdarray[1], KVM_DEV_TYPE_ARM_VGIC_V2)) {
--        v2->kernel = true;
--    }
--
--    /* Test KVM GICv3 */
--    if (kvm_device_supported(fdarray[1], KVM_DEV_TYPE_ARM_VGIC_V3)) {
--        v3->kernel = true;
--    }
--
--    kvm_arm_destroy_scratch_host_vcpu(fdarray);
--#endif
--}
--
- GICCapabilityList *qmp_query_gic_capabilities(Error **errp)
- {
-     GICCapabilityList *head = NULL;
-@@ -74,7 +51,7 @@ GICCapabilityList *qmp_query_gic_capabilities(Error **errp)
-     v2->emulated = true;
-     v3->emulated = true;
- 
--    gic_cap_kvm_probe(v2, v3);
-+    arm_gic_cap_kvm_probe(v2, v3);
- 
-     QAPI_LIST_PREPEND(head, v2);
-     QAPI_LIST_PREPEND(head, v3);
-diff --git a/target/arm/kvm-stub.c b/target/arm/kvm-stub.c
-index c93462c5b9b..ea67deea520 100644
---- a/target/arm/kvm-stub.c
-+++ b/target/arm/kvm-stub.c
-@@ -124,3 +124,8 @@ bool kvm_arm_cpu_post_load(ARMCPU *cpu)
- {
-     g_assert_not_reached();
- }
++#ifdef HAS_HELPER64
++#define HELPER_H "helper64.h"
++#include "exec/helper-proto.h.inc"
++#undef  HELPER_H
++#endif
 +
-+void arm_gic_cap_kvm_probe(GICCapability *v2, GICCapability *v3)
-+{
-+    g_assert_not_reached();
-+}
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 48f853fff80..0677d201158 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -2568,3 +2568,24 @@ void arm_cpu_kvm_set_irq(void *arm_cpu, int irq, int level)
-     }
-     kvm_arm_set_irq(cs->cpu_index, KVM_ARM_IRQ_TYPE_CPU, irq_id, !!level);
- }
-+
-+void arm_gic_cap_kvm_probe(GICCapability *v2, GICCapability *v3)
-+{
-+    int fdarray[3];
-+
-+    if (!kvm_arm_create_scratch_host_vcpu(fdarray, NULL)) {
-+        return;
-+    }
-+
-+    /* Test KVM GICv2 */
-+    if (kvm_device_supported(fdarray[1], KVM_DEV_TYPE_ARM_VGIC_V2)) {
-+        v2->kernel = true;
-+    }
-+
-+    /* Test KVM GICv3 */
-+    if (kvm_device_supported(fdarray[1], KVM_DEV_TYPE_ARM_VGIC_V3)) {
-+        v3->kernel = true;
-+    }
-+
-+    kvm_arm_destroy_scratch_host_vcpu(fdarray);
-+}
-diff --git a/target/arm/meson.build b/target/arm/meson.build
-index 462c71148d2..1a1bcde2601 100644
---- a/target/arm/meson.build
-+++ b/target/arm/meson.build
-@@ -16,7 +16,7 @@ arm_common_ss.add(files(
-   'mmuidx.c',
- ))
- 
--arm_system_ss.add(files(
-+arm_common_system_ss.add(files(
-   'arm-qmp-cmds.c',
- ))
- arm_system_ss.add(when: 'CONFIG_KVM', if_true: files('hyp_gdbstub.c', 'kvm.c'))
+ #endif /* HELPER_PROTO_H */
 -- 
 2.47.3
 
