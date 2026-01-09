@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E610D07778
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 07:56:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EE00D07784
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 07:57:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ve6Pc-0003p6-Kh; Fri, 09 Jan 2026 01:55:59 -0500
+	id 1ve6Pg-0003qF-PV; Fri, 09 Jan 2026 01:56:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ve6P5-0003Y8-PI
+ id 1ve6P7-0003YY-Ta
  for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:55:25 -0500
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ve6P3-0002oR-Ki
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:55:22 -0500
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-c026e074373so2039244a12.1
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 22:55:21 -0800 (PST)
+ id 1ve6P6-0002oe-Ah
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:55:25 -0500
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-c54f700b5b1so559963a12.0
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 22:55:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1767941720; x=1768546520; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1767941722; x=1768546522; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cE0jDKqtS7aSGIIwr7yj4Rxy4Z76lwTaUBUlwt7TyeE=;
- b=Qv63CJ4j7qLsdzypxq6XK9/r2U7TOS+WTtIJoJ/3ypWAYHcmHhv4ZsJkdwZ1FJ5UEc
- SSavNspriGE4qBzBK2jHVpcrX9+apsmVrj65lG6J3XhjW6fh+08ui9V777tu3GamX77/
- uiN4dRyB3W145lwzXkQyoQ8o0MkKEG2xLeEFhIF4B1TBJA82xVAKpQOUnRU2WrFhecer
- lAqVFIVZhxNRoBnhIb/PDMNxGNEOnfMclSshNC8UHsF6v5BL+3+NfbJZ6Es6hZdhqnOL
- 1Z9iN5/T8tI7dMFpPqOwoc4lY+HA76YzUAqmFUxMzdLTcOERkcLb+PCFSI7+IrOD2TF/
- O5ng==
+ bh=DGTK42IF6KmJNzRKzLqeNTLx0V2AloFvL8EwbWCo6uw=;
+ b=E+uNQ/PnpNtAUuN2XE6NtVqYmgsUhrhEeqXCGN50Aesn6EUfrcj6CYer86W39dtUVK
+ M3fHeEP23DqU8C75Dn8TPWtJYPpJWCIOTpJCjtqSOLHM8zjyrKRMw0Sb5GS6IxdNGvgb
+ ehlUaYoQA3RDlscwAA68WovTcMucKaX9x9DicTWCdXFJ6/s55LCTQbsBcE60x+DsN5Pj
+ JG61KeeBdgOlQKhWI/M7VNJiGM39cH1fhbWMMYeue4207ks69nQwJzCfe6cuyOf9346B
+ uQxP8WVtFRPykEna9u6Ch4B3Ny8xcI02n9Mmk1JlAo9d+a3gqcZoleVuvinSqLhkxbmK
+ 5gsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767941720; x=1768546520;
+ d=1e100.net; s=20230601; t=1767941722; x=1768546522;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=cE0jDKqtS7aSGIIwr7yj4Rxy4Z76lwTaUBUlwt7TyeE=;
- b=oapvwK1Z0U31Ucbu5M3HVRlhv0gmNx5Ddgg476MhiEuyck1X1luymG2G558FFQW22g
- NmCb+KB0pBox7L9CEanJVSun0qkbGH+HBeWO/E1OatzswORF/GHtDRmbfueukuyZFCA2
- yUKf1T+bkrryNAUsmeA3+TL07bBD42H8SXakqp+YidnP1SHUHbnJ1RHVYC+SL3voRL/8
- Wz/90XcSH7TIdeIE7F3ogU4Gl9kmiGt/YTcwEiXl3MsH9Sgp9Mj39Mqf5nwMl4bWAET0
- q/4ENnZeD7fZHakOVVFXaxCwn8152usPFkpdRv4QAXHZAZiK2Qg/KhqJYO3f7bhSrAw2
- WftA==
-X-Gm-Message-State: AOJu0YyMwfU0dj0kIG+xSYuAKWc69j9XJlh6jm7lkHNdnX7Kvv0oKK7x
- 7XADMZXE2vYPU4f44dKOijiIfSGf+WoncHHVmwXGdxK0JNHcUeYByzbxlFh25g==
-X-Gm-Gg: AY/fxX7CsLhYvCf1qNwyw8sdPqNfQOrnRlAbWX/6jpbyqQDoKwX07kTCsbPjWCsmZr3
- CkY4dX2AhVvb5OFLY19AFujxW1zsrWF46OBoGQsrjW2Lkg7j8xg4nS3t1XKcSInvq2U550kcOSn
- D7tDIOUuRekJROoZK00DeycFdPum9wqcF+a2sdzq4VesIvD+iirnKhJzbVAKfxkbMcdi9YINc+4
- GQPMKVsVFgJqtNUSbXNT0WYlPdP2XauEHv4sth2YW/bD6oCrKBSm/Mdv9fLcmQJe8FRxQBNdZM2
- 3IRJoJEHZbLMzCZYNXjetIEHN8JvTfIZ3VLG1GSPKaA3ehIn30NmV/FGAhDS6seZ9s3NLgNA0AB
- 5CZgImlwBz9RTHaeYwtpwG/7PojrFdkcPalgZFsDBJeTXNLBJ9/Ifc9Q4uBv6b8aqqXSDVn8KF2
- /v8bWsS3TnG/aQczXSLmfknaiWyqgjGE0Gu8AIvoUAr8JikVmuGT4yzSD+r6F4v4ctyFTtWvR4Z
- ZU31GMPxriwXbmUOWg=
-X-Google-Smtp-Source: AGHT+IE6MYxMFyMUbCtP8Ha/wpNjyqGuxt3nDUkWbYzSmaqQMwZgtjcaZaImMKewCU1M9OJwREzpjQ==
-X-Received: by 2002:a05:6a20:9392:b0:389:7d32:c8ad with SMTP id
- adf61e73a8af0-3898f8fc437mr8118164637.34.1767941719632; 
- Thu, 08 Jan 2026 22:55:19 -0800 (PST)
+ bh=DGTK42IF6KmJNzRKzLqeNTLx0V2AloFvL8EwbWCo6uw=;
+ b=bYjWmQ1QhYASt0TVFK8vj9R1H0ks3KiZerVAzJ+eUx1K+lP1I3AlMV44IfZ/NbtWCj
+ 8aEYvL63bIlKofztobHy8ky8y0hrI+F4i0k8xbzsZED67jTsujiYatOKaYh5tI+3fgRe
+ iBZ4krZ//WNCA9DXzXjLxUc+UvnKwQIFqW2ZbqDeTzCnmHwAxloBWVXCmZ5W45ncM1zf
+ 4GTA1MCXUjRRzgqIq7axKATCR08NB2zuGraIFSoDR7ks2KN7q9aH9r0oDeowyxrWMaM9
+ xpGnYkJHboKe26VG2v0HK0/bJiPptzX6AZ7HaomxMlHCijlU7+FDTk/S7WgC3RBGZW/c
+ f/Hg==
+X-Gm-Message-State: AOJu0YxU9qMYIFhlQv2dvmDS+3CKBJPW0K3THa+Y3KXPGh/SJIZAvWhh
+ PW42kKKF7oI6IkFiq780D5Mt8xh3y4JxPr5yPrzwO+YXD0IP732MOCysE/HiQg==
+X-Gm-Gg: AY/fxX5yKE1x8LfCtEVlpFCgNTYN5rJEgiBLLeW84wIedz66CrAtSQ1U7HKeH7hH6//
+ E13rKFE2Mkp+oQQ4QiNrrXZ7Bli2k4OYPXz0obERuhMfappiCLANgAezHvTaqH8hdfVToGtMlTV
+ qEsxissmBnYbydiq3sSa4vahZUq/ABUmI7k02S6w67iravRGDKeXsf+fa8ax1RffWe6I3B74IHZ
+ PiN0QUPEaA6TllUgZpJtyGFFIpJwKpGB60g4fcmY3akHxH4Od9DdVqotadVA9z4fCioOz8TsVDI
+ XNZ4PU1kwsfc8M3aAgkAhixu614rqLmRylYwe37CfsQMV0JEinMs/GaX7Rs/D8s5eSTfqEvdSst
+ T353j+TrtHU7ZUhLASDiTXfeHjAtJEJpyV80gqdK7+txV7Z+cvaMkAxha/cpAGBVPKle4FdsYts
+ l3no8sG/40H9IHl08qYpTKjEGjLNvEdPrwWggksh04HzARJytgmmZocZOSnHEHmDONQnyx0Qwhb
+ 7C28OBO9Jnf/8SGSvM=
+X-Google-Smtp-Source: AGHT+IF78XNsuthPdapVt4woljLS2sA/u+R+8uSwMJSzX3aCjewPMZ8uRumER2ZLjuodBTKJvZMbQQ==
+X-Received: by 2002:a05:6300:210a:b0:320:3da8:34d7 with SMTP id
+ adf61e73a8af0-3898f8dde13mr8641263637.22.1767941722589; 
+ Thu, 08 Jan 2026 22:55:22 -0800 (PST)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-c4cc02ecfaasm9953644a12.14.2026.01.08.22.55.16
+ 41be03b00d2f7-c4cc02ecfaasm9953644a12.14.2026.01.08.22.55.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 22:55:18 -0800 (PST)
+ Thu, 08 Jan 2026 22:55:21 -0800 (PST)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Alistair Francis <alistair.francis@wdc.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Vishal Chourasia <vishalc@linux.ibm.com>
-Subject: [PULL 03/34] hw/core/loader: Free the image file descriptor on error
-Date: Fri,  9 Jan 2026 16:54:28 +1000
-Message-ID: <20260109065459.19987-4-alistair.francis@wdc.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 04/34] hw/core/loader: Free the allocated string from
+ size_to_str()
+Date: Fri,  9 Jan 2026 16:54:29 +1000
+Message-ID: <20260109065459.19987-5-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20260109065459.19987-1-alistair.francis@wdc.com>
 References: <20260109065459.19987-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x52f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -108,26 +108,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alistair Francis <alistair.francis@wdc.com>
 
-Coverity: CID 1642764
-Fixes: f62226f7dc4 ("hw/core/loader: improve error handling in image loading functions")
+The string needs be be freed with g_free() according to the functions
+documentation.
+
+Coverity: CID 1642762
+Fixes: f62226f7dc44 ("hw/core/loader: improve error handling in image loading functions")
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Vishal Chourasia <vishalc@linux.ibm.com>
-Message-ID: <20251030015306.2279148-2-alistair.francis@wdc.com>
+Message-ID: <20251030015306.2279148-3-alistair.francis@wdc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/core/loader.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/core/loader.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/hw/core/loader.c b/hw/core/loader.c
-index b7638ccd72..3d2c1ae286 100644
+index 3d2c1ae286..2fad7292e5 100644
 --- a/hw/core/loader.c
 +++ b/hw/core/loader.c
-@@ -86,6 +86,7 @@ int64_t get_image_size(const char *filename, Error **errp)
+@@ -153,8 +153,12 @@ ssize_t load_image_targphys_as(const char *filename,
+     }
  
-     if (size < 0) {
-         error_setg_errno(errp, errno, "lseek failure: %s", filename);
-+        close(fd);
+     if (size > max_sz) {
++        char *size_str = size_to_str(max_sz);
++
+         error_setg(errp, "%s exceeds maximum image size (%s)",
+-                   filename, size_to_str(max_sz));
++                   filename, size_str);
++
++        g_free(size_str);
          return -1;
      }
  
