@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B6A7D077C4
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 08:02:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7624D077EE
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 08:03:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ve6RO-0006O1-Ha; Fri, 09 Jan 2026 01:57:46 -0500
+	id 1ve6RR-0006Ut-L9; Fri, 09 Jan 2026 01:57:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ve6QW-0005Ly-Lj
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:56:56 -0500
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1ve6Qa-0005ON-Ok
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:57:00 -0500
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ve6QT-0002wT-6l
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:56:51 -0500
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-81e8a9d521dso90032b3a.2
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 22:56:48 -0800 (PST)
+ id 1ve6QX-0002wn-Fl
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:56:55 -0500
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-c47ee987401so1202307a12.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 22:56:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1767941807; x=1768546607; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1767941811; x=1768546611; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=H0Au3sw3AJ8TUnw2C42QeidnjEPUIHmOI0xqLrHkucE=;
- b=mhr7Uu7q8A0lKyqYT7uPTNpcjZmc+9WJV5Tl8k0HIMtdTuvpELXRPna0hEtReCEpPU
- DZPWToXFdCQbPQiPdUQXtLKzp2lBSauBmPCKT2SJEIXHiQZUmw/mVChrr5+8RfAhsOkl
- /0N/fSGrH+NgewJ6sDzjh7bi98K/Cb9/i/r4oJfPl41YYEeJQ7uL6nnRH8CNSjrx8OBN
- HOT81sFo6ZC2qdetTMKVSndxqxCKuAqdWdAcc5HoMKzTTbGYu6iqCbmuc5NbK4P/Wn/m
- MxlFaLJw2rILORo9RjWQ/LOKtz39ZrBzLwiA99YGY64wt18/vIS5L0jyU7H6M9ZvQzMP
- wKAQ==
+ bh=zUPOPeVZbGr/+EHxZHf4JZx3cZQU6Y8YgW1dqWkHlPo=;
+ b=S2Sz4aCwTPaZe7jSeRKRrlGVOOTONlxEDlY6Lsg8Gveh0GI9IEaPQSSqnBrUNCdwd+
+ 3EMeSI97Z82pO+Cx06EwXzSjIizjuiLoTuZmbmTxjvmDESj4LGu8plWh8jRRf5W5uzgC
+ SLILl3YAMSx+kdbXEUa9kL7HmmlfybzWpLD6ZnkfdkeJ5J7EKVdo/1BsIxyVQmwV02wX
+ a8fSVYRW7ycKOnQE8ZB7t3ere75F+YOzBlfJ/5mzMSeGd+fvZ0fPJLNoB2ZfXysYTEkm
+ Dr6U4OTlieNo8VM709vP7BEsd9E0XDY6qtcd7ucMXbT+sQeI1byb+5enHoQRkCRGZ8X4
+ vafg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767941807; x=1768546607;
+ d=1e100.net; s=20230601; t=1767941811; x=1768546611;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=H0Au3sw3AJ8TUnw2C42QeidnjEPUIHmOI0xqLrHkucE=;
- b=s/t8cnF3SUYHco3+1P0XBtEhCOs1GeMdLZzvYZmFZa283dgGt8Xj0/wvrMyKE8tTBK
- vYa+z3SECNecggxvticTlHD36J19NBTMyPGRvY3XRMGL8a9nK9VPH+cai6CzcYos+DwU
- zrk5lV9zLV9XhonR05rgKdYZyu2PQ/QdhBdt+MyaCW4apxmuAt4L6UI5eubFs1lUwb9H
- iuhZGZ3ax5ChW0/ogG4O1BUeOKn0+yhuhskh+Yri1qWmabxoJnLPFsgMJZO7Wqwo+r+3
- 6yTzS9Ofst8EdzLSWswz+hnxZIX2ai6QnsjwT6DJLrlQ3NJFeNzbXqpI0msstMrFQzk/
- CKpQ==
-X-Gm-Message-State: AOJu0YxOSsQ83XnzVILCPZBxgs54rfKBbLYLeGtlL02ToXADQTmslLnu
- GBpoSItSjHPmejxKEps4fF6O5D7etlCMJ9hooMMoHUK3zHawGddkak2YtsLwJA==
-X-Gm-Gg: AY/fxX6+e2kep11NahPqTy4Uba1+LQb9SR7KLjAfkvPWHomH0vi9nAa8l7EudUqo/4I
- hYe9mxt3txuJVWnVAmEpCU7AFVSlbXcoMmeGRpCMXfXQmKv26RU6NECOBNZeVd5jmy7byvwv8r8
- FYDfCkJVPhYN+sM/i0fLTeW9qdhQ2QRkVysbaudyK5gkxkH4X5ELYXMnZamclAe48rajlYrjh/N
- 0MzXCRC8GEdCdgO4ff1t1LwiNL0wKKC0RE1DqQLGk0YcikWYtIi+6BD3fykDzAUOeI0eQh9kIKJ
- A8gzrhXRjXHq2Cnn96pAKGjcOOz3SfCjKQJPHqLt3JkW5M6jiKInONXgJcVdnNgdWjeMF3VjvOd
- ygV/Y80qfZqOtGk5KqSCb0mLX9o2VtKudtvDnmWRoyXTeKgTZTUol3c9L+143hpKL+ULhgB0wn9
- RU1qWpWnvJTnmh+sRIdEvjCZExJGsipInf64kpQdMECPqKqwX1ENPcFlOTDS0/yb06fN/PfetYl
- wJg7LmN/ZzJJlJaT9I=
-X-Google-Smtp-Source: AGHT+IF4R6DjiQoDK+FfMVrfOVuERpFz9PAyx2H2uKE6k6VGhAGxtpy1ZQEvzmow7m3BddQnlt0/QA==
-X-Received: by 2002:a05:6a21:6d81:b0:389:8e23:f43a with SMTP id
- adf61e73a8af0-3898f9dc4d1mr8380363637.73.1767941807401; 
- Thu, 08 Jan 2026 22:56:47 -0800 (PST)
+ bh=zUPOPeVZbGr/+EHxZHf4JZx3cZQU6Y8YgW1dqWkHlPo=;
+ b=mxi8m1KjKBbyd60wqf6sqCfNq5BIvcDwOUit6lRqjx4Ez8rbzixLmzqlgJTMzbcoPA
+ Xsi/Qcr2Ykj4q+2h14agXsHVmz8TAvV2mQEyuYqWVXmjHaMaifYgRAqtYtK+f9S/08x0
+ yCUC2gvtbLWqMYWztYceZuZlmKimlOmqraZXlmxc7lYmbShfmilg5m3KeGRaE/Pwq2/B
+ C9mO80+2FnKx0YKT8Z03jCdzb8KBx27+9jS8nS9k2JgOkvN6bgpmjFkE15J0Yinni71u
+ 9aIu9FPkWi5bKSaAlvXvQOQGJ06jcZlhH8nvyvYR3WqGqjr7vUTKC5zUtvI6Na2dXjy0
+ 10GQ==
+X-Gm-Message-State: AOJu0YyrDznQDW3FFXr/ZELtE40Cs1otf4x2POgY8Tl4/KpaJdlsJz3Z
+ h0AltuHYyl6/lXvClsyb37rUX4IXblenXxldpepYYR+N3izFlrSq7oLSRme+uA==
+X-Gm-Gg: AY/fxX6+zMXRtU7b0QnArXHM8ffGl9jPT0dJQGTyU1lrUQDIs2Mor1NDu8rL0bVHTP/
+ szrkq048gkT3TTu0JIULGyw8Q7r22Hv4akwljF3Wxh0MLEKgaDsX0BoSrbttBOLRPqbVg/D88GQ
+ tMstutrPPA3ChCjfRoosP+Es99lZWt7eu22sqZXBKPX/QgK11k05/kbkhkqIGqUsxc4jyUKfdnE
+ BTJi4dP7cFemK4DgCIbLiKAc3IFmPiy3M2h3XEjBxv8An7JC31klTBp0U/ctR3G9dMBZwKfcYPr
+ mqQBXr8Mg6rN669qmoLtl77OUh19k9lFMySLYnQbcZuJUPlyhJOYxVOQEmcdLqtKwRwQqfu8+IW
+ cgbnHNy8AoHWOu7A4HkJf8swoJZ6WtsWTJdqq8G3QE1BGI5Grh2d1DQzWgkbVtuu/rdEo8ySUut
+ IUvQDhsKJDvHEtgUqP0b1EYo2TndNXn48Lwwn5t8wbIETOM1AVDnju8ut01KxbIPUxdDjMExHUf
+ 3MjT8QGfSz/hX+g37AEPYhzMCHnOg==
+X-Google-Smtp-Source: AGHT+IEBYreNmS48OQOszBI6V5qpFwRbtT+7fV4hy2aPfYL1GXHVkpl0r+jxEX+xyVv9AfAaEP5Flg==
+X-Received: by 2002:a05:6a20:9143:b0:351:cf08:93de with SMTP id
+ adf61e73a8af0-38982b4160dmr12825750637.26.1767941811250; 
+ Thu, 08 Jan 2026 22:56:51 -0800 (PST)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-c4cc02ecfaasm9953644a12.14.2026.01.08.22.56.44
+ 41be03b00d2f7-c4cc02ecfaasm9953644a12.14.2026.01.08.22.56.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 22:56:46 -0800 (PST)
+ Thu, 08 Jan 2026 22:56:50 -0800 (PST)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
@@ -74,16 +74,16 @@ Cc: alistair23@gmail.com, Djordje Todorovic <Djordje.Todorovic@htecgroup.com>,
  Djordje Todorovic <djordje.todorovic@htecgroup.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 29/34] hw/misc: Add RISC-V CMGCR device implementation
-Date: Fri,  9 Jan 2026 16:54:54 +1000
-Message-ID: <20260109065459.19987-30-alistair.francis@wdc.com>
+Subject: [PULL 30/34] hw/misc: Add RISC-V CPC device implementation
+Date: Fri,  9 Jan 2026 16:54:55 +1000
+Message-ID: <20260109065459.19987-31-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20260109065459.19987-1-alistair.francis@wdc.com>
 References: <20260109065459.19987-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x534.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -109,95 +109,111 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Djordje Todorovic <Djordje.Todorovic@htecgroup.com>
 
-Add RISC-V implementation of the Coherent Manager Global Control
-Register (CMGCR) device. It is based on the existing MIPS CMGCR
-implementation but adapted for RISC-V systems.
+Add RISC-V implementation of the Cluster Power Controller (CPC) device.
+It is based on the existing MIPS CPC implementations but adapted for
+RISC-V systems.
 
-The CMGCR device provides global system control for multi-core
-configurations in RISC-V systems.
+The CPC device manages power control for CPU clusters in RISC-V
+systems.
 
 This is needed for the MIPS BOSTON AIA board.
 
 Signed-off-by: Chao-ying Fu <cfu@mips.com>
 Signed-off-by: Djordje Todorovic <djordje.todorovic@htecgroup.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20260108134128.2218102-8-djordje.todorovic@htecgroup.com>
+Message-ID: <20260108134128.2218102-9-djordje.todorovic@htecgroup.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- include/hw/misc/riscv_cmgcr.h |  48 +++++++
- hw/misc/riscv_cmgcr.c         | 243 ++++++++++++++++++++++++++++++++++
- hw/misc/Kconfig               |   9 ++
- hw/misc/meson.build           |   2 +
- 4 files changed, 302 insertions(+)
- create mode 100644 include/hw/misc/riscv_cmgcr.h
- create mode 100644 hw/misc/riscv_cmgcr.c
+ include/hw/misc/riscv_cpc.h |  64 +++++++++
+ hw/misc/riscv_cpc.c         | 265 ++++++++++++++++++++++++++++++++++++
+ hw/misc/Kconfig             |   4 +
+ hw/misc/meson.build         |   1 +
+ 4 files changed, 334 insertions(+)
+ create mode 100644 include/hw/misc/riscv_cpc.h
+ create mode 100644 hw/misc/riscv_cpc.c
 
-diff --git a/include/hw/misc/riscv_cmgcr.h b/include/hw/misc/riscv_cmgcr.h
+diff --git a/include/hw/misc/riscv_cpc.h b/include/hw/misc/riscv_cpc.h
 new file mode 100644
-index 0000000000..1878d98fc6
+index 0000000000..43343ed9e6
 --- /dev/null
-+++ b/include/hw/misc/riscv_cmgcr.h
-@@ -0,0 +1,48 @@
++++ b/include/hw/misc/riscv_cpc.h
+@@ -0,0 +1,64 @@
 +/*
-+ * Coherent Manager Global Control Register
++ * Cluster Power Controller emulation
 + *
-+ * Copyright (C) 2015 Imagination Technologies
++ * Copyright (c) 2016 Imagination Technologies
 + *
-+ * Copyright (C) 2025 MIPS
++ * Copyright (c) 2025 MIPS
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + *
 + */
 +
-+#ifndef RISCV_CMGCR_H
-+#define RISCV_CMGCR_H
++#ifndef RISCV_CPC_H
++#define RISCV_CPC_H
 +
 +#include "hw/core/sysbus.h"
 +#include "qom/object.h"
 +
-+#define TYPE_RISCV_GCR "riscv-gcr"
-+OBJECT_DECLARE_SIMPLE_TYPE(RISCVGCRState, RISCV_GCR)
++#define CPC_ADDRSPACE_SZ    0x6000
 +
-+#define GCR_BASE_ADDR           0x1fb80000ULL
-+#define GCR_MAX_VPS             256
++/* CPC global register offsets relative to base address */
++#define CPC_MTIME_REG_OFS   0x50
 +
-+typedef struct RISCVGCRVPState RISCVGCRVPState;
-+struct RISCVGCRVPState {
-+    uint64_t reset_base;
-+};
++#define CPC_CM_STAT_CONF_OFS   0x1008
 +
-+typedef struct RISCVGCRState RISCVGCRState;
-+struct RISCVGCRState {
++/* CPC blocks offsets relative to base address */
++#define CPC_CL_BASE_OFS     0x2000
++#define CPC_CORE_REG_STRIDE 0x100 /* Stride between core-specific registers */
++
++/* CPC register offsets relative to block offsets */
++#define CPC_STAT_CONF_OFS   0x08
++#define CPC_VP_STOP_OFS     0x20
++#define CPC_VP_RUN_OFS      0x28
++#define CPC_VP_RUNNING_OFS  0x30
++
++#define SEQ_STATE_BIT       19
++#define SEQ_STATE_U5        0x6
++#define SEQ_STATE_U6        0x7
++#define CPC_Cx_STAT_CONF_SEQ_STATE_U5      (SEQ_STATE_U5 << SEQ_STATE_BIT)
++#define CPC_Cx_STAT_CONF_SEQ_STATE_U6      (SEQ_STATE_U6 << SEQ_STATE_BIT)
++
++#define TYPE_RISCV_CPC "xmips-cpc"
++OBJECT_DECLARE_SIMPLE_TYPE(RISCVCPCState, RISCV_CPC)
++
++typedef struct RISCVCPCState {
 +    SysBusDevice parent_obj;
 +
-+    int32_t gcr_rev;
 +    uint32_t cluster_id;
-+    uint32_t num_vps;
++    uint32_t num_vp;
 +    uint32_t num_hart;
 +    uint32_t num_core;
-+    hwaddr gcr_base;
-+    MemoryRegion iomem;
-+    MemoryRegion *cpc_mr;
++    /* VPs running from restart mask */
++    uint64_t vps_start_running_mask;
 +
-+    uint64_t cpc_base;
++    MemoryRegion mr;
++    /* Indicates which VPs are in the run state mask */
++    uint64_t vps_running_mask;
 +
-+    /* VP Local/Other Registers */
-+    RISCVGCRVPState *vps;
-+};
++    /* Array of CPUs managed by this CPC */
++    CPUState **cpus;
++} RISCVCPCState;
 +
-+#endif /* RISCV_CMGCR_H */
-diff --git a/hw/misc/riscv_cmgcr.c b/hw/misc/riscv_cmgcr.c
++#define CPC_MAX_VPS 64  /* Maximum number of VPs supported */
++
++#endif /* RISCV_CPC_H */
+diff --git a/hw/misc/riscv_cpc.c b/hw/misc/riscv_cpc.c
 new file mode 100644
-index 0000000000..b0294e7663
+index 0000000000..231a419062
 --- /dev/null
-+++ b/hw/misc/riscv_cmgcr.c
-@@ -0,0 +1,243 @@
++++ b/hw/misc/riscv_cpc.c
+@@ -0,0 +1,265 @@
 +/*
-+ * Coherent Manager Global Control Register
++ * Cluster Power Controller emulation
 + *
-+ * Copyright (C) 2015 Imagination Technologies
++ * Copyright (c) 2016 Imagination Technologies
 + *
-+ * Copyright (C) 2025 MIPS
++ * Copyright (c) 2025 MIPS
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + *
@@ -206,268 +222,289 @@ index 0000000000..b0294e7663
 + */
 +
 +#include "qemu/osdep.h"
++#include "qapi/error.h"
++#include "cpu.h"
 +#include "qemu/log.h"
 +#include "qemu/module.h"
-+#include "qapi/error.h"
++#include "qemu/timer.h"
++#include "qemu/bitops.h"
 +#include "hw/core/sysbus.h"
 +#include "migration/vmstate.h"
-+#include "hw/misc/riscv_cmgcr.h"
++
++#include "hw/misc/riscv_cpc.h"
 +#include "hw/core/qdev-properties.h"
++#include "hw/intc/riscv_aclint.h"
++#include "hw/core/resettable.h"
 +
-+#include "cpu.h"
-+
-+#define CM_RESET_VEC 0x1FC00000
-+#define GCR_ADDRSPACE_SZ        0x8000
-+
-+/* Offsets to register blocks */
-+#define RISCV_GCB_OFS        0x0000 /* Global Control Block */
-+#define RISCV_CLCB_OFS       0x2000 /* Core Control Block */
-+#define RISCV_CORE_REG_STRIDE 0x100 /* Stride between core-specific registers */
-+
-+/* Global Control Block Register Map */
-+#define GCR_CONFIG_OFS      0x0000
-+#define GCR_BASE_OFS        0x0008
-+#define GCR_REV_OFS         0x0030
-+#define GCR_CPC_STATUS_OFS  0x00F0
-+#define GCR_L2_CONFIG_OFS   0x0130
-+
-+/* GCR_L2_CONFIG register fields */
-+#define GCR_L2_CONFIG_BYPASS_SHF    20
-+#define GCR_L2_CONFIG_BYPASS_MSK    ((0x1ULL) << GCR_L2_CONFIG_BYPASS_SHF)
-+
-+/* GCR_BASE register fields */
-+#define GCR_BASE_GCRBASE_MSK     0xffffffff8000ULL
-+
-+/* GCR_CPC_BASE register fields */
-+#define GCR_CPC_BASE_CPCEN_MSK   1
-+#define GCR_CPC_BASE_CPCBASE_MSK 0xFFFFFFFF8000ULL
-+#define GCR_CPC_BASE_MSK (GCR_CPC_BASE_CPCEN_MSK | GCR_CPC_BASE_CPCBASE_MSK)
-+
-+/* GCR_CL_RESETBASE_OFS register fields */
-+#define GCR_CL_RESET_BASE_RESETBASE_MSK 0xFFFFFFFFFFFFF000U
-+#define GCR_CL_RESET_BASE_MSK GCR_CL_RESET_BASE_RESETBASE_MSK
-+
-+static inline bool is_cpc_connected(RISCVGCRState *s)
++static inline uint64_t cpc_vp_run_mask(RISCVCPCState *cpc)
 +{
-+    return s->cpc_mr != NULL;
++    return MAKE_64BIT_MASK(0, cpc->num_vp);
 +}
 +
-+static inline void update_cpc_base(RISCVGCRState *gcr, uint64_t val)
++static void riscv_cpu_reset_async_work(CPUState *cs, run_on_cpu_data data)
 +{
-+    if (is_cpc_connected(gcr)) {
-+        gcr->cpc_base = val & GCR_CPC_BASE_MSK;
-+        memory_region_transaction_begin();
-+        memory_region_set_address(gcr->cpc_mr,
-+                                  gcr->cpc_base & GCR_CPC_BASE_CPCBASE_MSK);
-+        memory_region_set_enabled(gcr->cpc_mr,
-+                                  gcr->cpc_base & GCR_CPC_BASE_CPCEN_MSK);
-+        memory_region_transaction_commit();
++    RISCVCPCState *cpc = (RISCVCPCState *) data.host_ptr;
++    int i;
++
++    cpu_reset(cs);
++    cs->halted = 0;
++
++    /* Find this CPU's index in the CPC's CPU array */
++    for (i = 0; i < cpc->num_vp; i++) {
++        if (cpc->cpus[i] == cs) {
++            cpc->vps_running_mask |= BIT_ULL(i);
++            break;
++        }
 +    }
 +}
 +
-+static inline void update_gcr_base(RISCVGCRState *gcr, uint64_t val)
++static void cpc_run_vp(RISCVCPCState *cpc, uint64_t vps_run_mask)
 +{
-+    gcr->gcr_base = val & GCR_BASE_GCRBASE_MSK;
-+    memory_region_set_address(&gcr->iomem, gcr->gcr_base);
++    int vp;
 +
-+    /*
-+     * For boston-aia, cpc_base is set to gcr_base + 0x8001 to enable
-+     * cpc automatically.
-+     */
-+    update_cpc_base(gcr, val + 0x8001);
-+}
++    for (vp = 0; vp < cpc->num_vp; vp++) {
++        CPUState *cs = cpc->cpus[vp];
 +
-+/* Read GCR registers */
-+static uint64_t gcr_read(void *opaque, hwaddr addr, unsigned size)
-+{
-+    RISCVGCRState *gcr = (RISCVGCRState *) opaque;
++        if (!extract64(vps_run_mask, vp, 1)) {
++            continue;
++        }
 +
-+    switch (addr) {
-+    /* Global Control Block Register */
-+    case GCR_CONFIG_OFS:
-+        /* Set PCORES to 0 */
-+        return 0;
-+    case GCR_BASE_OFS:
-+        return gcr->gcr_base;
-+    case GCR_REV_OFS:
-+        return gcr->gcr_rev;
-+    case GCR_CPC_STATUS_OFS:
-+        return is_cpc_connected(gcr);
-+    case GCR_L2_CONFIG_OFS:
-+        /* L2 BYPASS */
-+        return GCR_L2_CONFIG_BYPASS_MSK;
-+    default:
-+        qemu_log_mask(LOG_UNIMP, "Read %d bytes at GCR offset 0x%" HWADDR_PRIx
-+                      "\n", size, addr);
++        if (extract64(cpc->vps_running_mask, vp, 1)) {
++            continue;
++        }
++
++        /*
++         * To avoid racing with a CPU we are just kicking off.
++         * We do the final bit of preparation for the work in
++         * the target CPUs context.
++         */
++        async_safe_run_on_cpu(cs, riscv_cpu_reset_async_work,
++                              RUN_ON_CPU_HOST_PTR(cpc));
 +    }
-+    return 0;
 +}
 +
-+static inline target_ulong get_exception_base(RISCVGCRVPState *vps)
++static void cpc_stop_vp(RISCVCPCState *cpc, uint64_t vps_stop_mask)
 +{
-+    return vps->reset_base & GCR_CL_RESET_BASE_RESETBASE_MSK;
++    int vp;
++
++    for (vp = 0; vp < cpc->num_vp; vp++) {
++        CPUState *cs = cpc->cpus[vp];
++
++        if (!extract64(vps_stop_mask, vp, 1)) {
++            continue;
++        }
++
++        if (!extract64(cpc->vps_running_mask, vp, 1)) {
++            continue;
++        }
++
++        cpu_interrupt(cs, CPU_INTERRUPT_HALT);
++        cpc->vps_running_mask &= ~BIT_ULL(vp);
++    }
 +}
 +
-+/* Write GCR registers */
-+static void gcr_write(void *opaque, hwaddr addr, uint64_t data, unsigned size)
++static void cpc_write(void *opaque, hwaddr offset, uint64_t data,
++                      unsigned size)
 +{
-+    RISCVGCRState *gcr = (RISCVGCRState *)opaque;
-+    RISCVGCRVPState *current_vps;
-+    int cpu_index, c, h;
++    RISCVCPCState *s = opaque;
++    int cpu_index, c;
 +
-+    for (c = 0; c < gcr->num_core; c++) {
-+        for (h = 0; h < gcr->num_hart; h++) {
-+            if (addr == RISCV_CLCB_OFS + c * RISCV_CORE_REG_STRIDE + h * 8) {
-+                cpu_index = c * gcr->num_hart + h;
-+                current_vps = &gcr->vps[cpu_index];
-+                current_vps->reset_base = data & GCR_CL_RESET_BASE_MSK;
-+                cpu_set_exception_base(cpu_index + gcr->cluster_id *
-+                                       gcr->num_core * gcr->num_hart,
-+                                       get_exception_base(current_vps));
-+                return;
-+            }
++    for (c = 0; c < s->num_core; c++) {
++        cpu_index = c * s->num_hart +
++                    s->cluster_id * s->num_core * s->num_hart;
++        if (offset ==
++            CPC_CL_BASE_OFS + CPC_VP_RUN_OFS + c * CPC_CORE_REG_STRIDE) {
++            cpc_run_vp(s, (data << cpu_index) & cpc_vp_run_mask(s));
++            return;
++        }
++        if (offset ==
++            CPC_CL_BASE_OFS + CPC_VP_STOP_OFS + c * CPC_CORE_REG_STRIDE) {
++            cpc_stop_vp(s, (data << cpu_index) & cpc_vp_run_mask(s));
++            return;
 +        }
 +    }
 +
-+    switch (addr) {
-+    case GCR_BASE_OFS:
-+        update_gcr_base(gcr, data);
-+        break;
++    switch (offset) {
 +    default:
-+        qemu_log_mask(LOG_UNIMP, "Write %d bytes at GCR offset 0x%" HWADDR_PRIx
-+                      " 0x%" PRIx64 "\n", size, addr, data);
++        qemu_log_mask(LOG_UNIMP,
++                      "%s: Bad offset 0x%x\n",  __func__, (int)offset);
 +        break;
++    }
++
++    return;
++}
++
++static uint64_t cpc_read(void *opaque, hwaddr offset, unsigned size)
++{
++    RISCVCPCState *s = opaque;
++    int c;
++
++    for (c = 0; c < s->num_core; c++) {
++        if (offset ==
++            CPC_CL_BASE_OFS + CPC_STAT_CONF_OFS + c * CPC_CORE_REG_STRIDE) {
++            /* Return the state as U6. */
++            return CPC_Cx_STAT_CONF_SEQ_STATE_U6;
++        }
++    }
++
++    switch (offset) {
++    case CPC_CM_STAT_CONF_OFS:
++        return CPC_Cx_STAT_CONF_SEQ_STATE_U5;
++    case CPC_MTIME_REG_OFS:
++        return muldiv64(qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
++                        RISCV_ACLINT_DEFAULT_TIMEBASE_FREQ,
++                        NANOSECONDS_PER_SECOND);
++        return 0;
++    default:
++        qemu_log_mask(LOG_UNIMP,
++                      "%s: Bad offset 0x%x\n",  __func__, (int)offset);
++        return 0;
 +    }
 +}
 +
-+static const MemoryRegionOps gcr_ops = {
-+    .read = gcr_read,
-+    .write = gcr_write,
++static const MemoryRegionOps cpc_ops = {
++    .read = cpc_read,
++    .write = cpc_write,
 +    .endianness = DEVICE_LITTLE_ENDIAN,
 +    .impl = {
-+        .max_access_size = 8,
++        .min_access_size = 8,
 +    },
 +};
 +
-+static void riscv_gcr_init(Object *obj)
++static void riscv_cpc_init(Object *obj)
 +{
 +    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
-+    RISCVGCRState *s = RISCV_GCR(obj);
-+
-+    memory_region_init_io(&s->iomem, OBJECT(s), &gcr_ops, s,
-+                          "riscv-gcr", GCR_ADDRSPACE_SZ);
-+    sysbus_init_mmio(sbd, &s->iomem);
-+}
-+
-+static void riscv_gcr_reset(DeviceState *dev)
-+{
-+    RISCVGCRState *s = RISCV_GCR(dev);
++    RISCVCPCState *s = RISCV_CPC(obj);
 +    int i;
 +
-+    /* Update cpc_base to gcr_base + 0x8001 to enable cpc automatically. */
-+    update_cpc_base(s, s->gcr_base + 0x8001);
++    memory_region_init_io(&s->mr, OBJECT(s), &cpc_ops, s, "xmips-cpc",
++                          CPC_ADDRSPACE_SZ);
++    sysbus_init_mmio(sbd, &s->mr);
 +
-+    for (i = 0; i < s->num_vps; i++) {
-+        s->vps[i].reset_base = CM_RESET_VEC & GCR_CL_RESET_BASE_MSK;
-+        cpu_set_exception_base(i, get_exception_base(&s->vps[i]));
++    /* Allocate CPU array */
++    s->cpus = g_new0(CPUState *, CPC_MAX_VPS);
++
++    /* Create link properties for each possible CPU slot */
++    for (i = 0; i < CPC_MAX_VPS; i++) {
++        char *propname = g_strdup_printf("cpu[%d]", i);
++        object_property_add_link(obj, propname, TYPE_CPU,
++                                 (Object **)&s->cpus[i],
++                                 qdev_prop_allow_set_link_before_realize,
++                                 OBJ_PROP_LINK_STRONG);
++        g_free(propname);
 +    }
 +}
 +
-+static const VMStateDescription vmstate_riscv_gcr = {
-+    .name = "riscv-gcr",
++static void riscv_cpc_realize(DeviceState *dev, Error **errp)
++{
++    RISCVCPCState *s = RISCV_CPC(dev);
++    int i;
++
++    if (s->vps_start_running_mask & ~cpc_vp_run_mask(s)) {
++        error_setg(errp,
++                   "incorrect vps-start-running-mask 0x%" PRIx64
++                   " for num_vp = %d",
++                   s->vps_start_running_mask, s->num_vp);
++        return;
++    }
++
++    /* Verify that required CPUs have been linked */
++    for (i = 0; i < s->num_vp; i++) {
++        if (!s->cpus[i]) {
++            error_setg(errp, "CPU %d has not been linked", i);
++            return;
++        }
++    }
++}
++
++static void riscv_cpc_reset_hold(Object *obj, ResetType type)
++{
++    RISCVCPCState *s = RISCV_CPC(obj);
++
++    /* Reflect the fact that all VPs are halted on reset */
++    s->vps_running_mask = 0;
++
++    /* Put selected VPs into run state */
++    cpc_run_vp(s, s->vps_start_running_mask);
++}
++
++static const VMStateDescription vmstate_riscv_cpc = {
++    .name = "xmips-cpc",
 +    .version_id = 0,
 +    .minimum_version_id = 0,
 +    .fields = (VMStateField[]) {
-+        VMSTATE_UINT64(cpc_base, RISCVGCRState),
++        VMSTATE_UINT64(vps_running_mask, RISCVCPCState),
 +        VMSTATE_END_OF_LIST()
 +    },
 +};
 +
-+static const Property riscv_gcr_properties[] = {
-+    DEFINE_PROP_UINT32("cluster-id", RISCVGCRState, cluster_id, 0),
-+    DEFINE_PROP_UINT32("num-vp", RISCVGCRState, num_vps, 1),
-+    DEFINE_PROP_UINT32("num-hart", RISCVGCRState, num_hart, 1),
-+    DEFINE_PROP_UINT32("num-core", RISCVGCRState, num_core, 1),
-+    DEFINE_PROP_INT32("gcr-rev", RISCVGCRState, gcr_rev, 0xa00),
-+    DEFINE_PROP_UINT64("gcr-base", RISCVGCRState, gcr_base, GCR_BASE_ADDR),
-+    DEFINE_PROP_LINK("cpc", RISCVGCRState, cpc_mr, TYPE_MEMORY_REGION,
-+                     MemoryRegion *),
++static const Property riscv_cpc_properties[] = {
++    DEFINE_PROP_UINT32("cluster-id", RISCVCPCState, cluster_id, 0x0),
++    DEFINE_PROP_UINT32("num-vp", RISCVCPCState, num_vp, 0x1),
++    DEFINE_PROP_UINT32("num-hart", RISCVCPCState, num_hart, 0x1),
++    DEFINE_PROP_UINT32("num-core", RISCVCPCState, num_core, 0x1),
++    DEFINE_PROP_UINT64("vps-start-running-mask", RISCVCPCState,
++                       vps_start_running_mask, 0x1),
 +};
 +
-+static void riscv_gcr_realize(DeviceState *dev, Error **errp)
-+{
-+    RISCVGCRState *s = RISCV_GCR(dev);
-+
-+    /* Validate num_vps */
-+    if (s->num_vps == 0) {
-+        error_setg(errp, "num-vp must be at least 1");
-+        return;
-+    }
-+    if (s->num_vps > GCR_MAX_VPS) {
-+        error_setg(errp, "num-vp cannot exceed %d", GCR_MAX_VPS);
-+        return;
-+    }
-+
-+    /* Create local set of registers for each VP */
-+    s->vps = g_new(RISCVGCRVPState, s->num_vps);
-+}
-+
-+static void riscv_gcr_class_init(ObjectClass *klass, const void *data)
++static void riscv_cpc_class_init(ObjectClass *klass, const void *data)
 +{
 +    DeviceClass *dc = DEVICE_CLASS(klass);
-+    device_class_set_props(dc, riscv_gcr_properties);
-+    dc->vmsd = &vmstate_riscv_gcr;
-+    device_class_set_legacy_reset(dc, riscv_gcr_reset);
-+    dc->realize = riscv_gcr_realize;
++    ResettableClass *rc = RESETTABLE_CLASS(klass);
++
++    dc->realize = riscv_cpc_realize;
++    rc->phases.hold = riscv_cpc_reset_hold;
++    dc->vmsd = &vmstate_riscv_cpc;
++    device_class_set_props(dc, riscv_cpc_properties);
++    dc->user_creatable = false;
 +}
 +
-+static const TypeInfo riscv_gcr_info = {
-+    .name          = TYPE_RISCV_GCR,
++static const TypeInfo riscv_cpc_info = {
++    .name          = TYPE_RISCV_CPC,
 +    .parent        = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(RISCVGCRState),
-+    .instance_init = riscv_gcr_init,
-+    .class_init    = riscv_gcr_class_init,
++    .instance_size = sizeof(RISCVCPCState),
++    .instance_init = riscv_cpc_init,
++    .class_init    = riscv_cpc_class_init,
 +};
 +
-+static void riscv_gcr_register_types(void)
++static void riscv_cpc_register_types(void)
 +{
-+    type_register_static(&riscv_gcr_info);
++    type_register_static(&riscv_cpc_info);
 +}
 +
-+type_init(riscv_gcr_register_types)
++type_init(riscv_cpc_register_types)
 diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
-index fccd735c24..404500979c 100644
+index 404500979c..38be72b141 100644
 --- a/hw/misc/Kconfig
 +++ b/hw/misc/Kconfig
-@@ -121,6 +121,15 @@ config MIPS_ITU
+@@ -124,11 +124,15 @@ config MIPS_ITU
+ config RISCV_MIPS_CMGCR
      bool
-     depends on TCG
  
-+config RISCV_MIPS_CMGCR
++config RISCV_MIPS_CPC
 +    bool
 +
-+config MIPS_BOSTON_AIA
-+    bool
-+    default y
-+    depends on RISCV64
-+    select RISCV_MIPS_CMGCR
-+
+ config MIPS_BOSTON_AIA
+     bool
+     default y
+     depends on RISCV64
+     select RISCV_MIPS_CMGCR
++    select RISCV_MIPS_CPC
+ 
  config MPS2_FPGAIO
      bool
-     select LED
 diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index b1d8d8e5d2..489f0f3319 100644
+index 489f0f3319..32b878e035 100644
 --- a/hw/misc/meson.build
 +++ b/hw/misc/meson.build
-@@ -157,6 +157,8 @@ specific_ss.add(when: 'CONFIG_MAC_VIA', if_true: files('mac_via.c'))
- specific_ss.add(when: 'CONFIG_MIPS_CPS', if_true: files('mips_cmgcr.c', 'mips_cpc.c'))
+@@ -158,6 +158,7 @@ specific_ss.add(when: 'CONFIG_MIPS_CPS', if_true: files('mips_cmgcr.c', 'mips_cp
  specific_ss.add(when: 'CONFIG_MIPS_ITU', if_true: files('mips_itu.c'))
  
-+specific_ss.add(when: 'CONFIG_RISCV_MIPS_CMGCR', if_true: files('riscv_cmgcr.c'))
-+
+ specific_ss.add(when: 'CONFIG_RISCV_MIPS_CMGCR', if_true: files('riscv_cmgcr.c'))
++specific_ss.add(when: 'CONFIG_RISCV_MIPS_CPC', if_true: files('riscv_cpc.c'))
+ 
  system_ss.add(when: 'CONFIG_SBSA_REF', if_true: files('sbsa_ec.c'))
  
- # HPPA devices
 -- 
 2.52.0
 
