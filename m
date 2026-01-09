@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2FC2D07973
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 08:33:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 557BFD07962
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 08:33:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ve6zK-0002sx-Kj; Fri, 09 Jan 2026 02:32:51 -0500
+	id 1ve6zM-0002wG-KC; Fri, 09 Jan 2026 02:32:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1ve6yk-0002YW-Rg
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 02:32:14 -0500
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1ve6yl-0002cZ-MA
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 02:32:15 -0500
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1ve6yi-0008Ic-2M
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 02:32:14 -0500
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-81e8b1bdf0cso97241b3a.3
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 23:32:11 -0800 (PST)
+ id 1ve6yk-0008J5-32
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 02:32:15 -0500
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-81c5ff546f6so867879b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 23:32:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1767943931; x=1768548731; darn=nongnu.org;
+ d=sifive.com; s=google; t=1767943933; x=1768548733; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TRDm49NvemgpsDycWeF9XfPyaIh5gUwvlJ11vWn6hk4=;
- b=NUnYsNgGzo79WJ26za1OAZJrO+95NLv8QR0ek3EakOgHS4Xc+yiKM+b+wSLIXqIg9Y
- qtt9fak+o6mNRMkG721zVME4O15IBOjG2GljrehVL2S0dpGKybpvRLRu/tivHR4p0O5v
- tDYkwcPlBeN3I8geVQ0QlBFsDgoohthxTDlw1ketMNH5rTgOQYOtree/g4g0Iia2Ef3U
- UEitBRTg7pp4l3fCg4lPzBeDXYRgIna7O0SSThSShhQzF4r0NZmWdSmpIPBIByV6r3ZH
- Z7cc6H3LhqTWr5I9ksPRDUQRWi+pmMxVzGvS4R3uW2c0q3PxjS43//OO4Uruvwpwa6tU
- 9qFw==
+ bh=8ph4xqbmoEVTv72fGeGTo/4FX3xeTc8ZJNboz33aWPA=;
+ b=RomITAMjqD+r6F+Yt9NvrEb/yW7SWLROERIKQX+YpirJ6dXWH8F7WWV9Ramotx8PTb
+ Y7U9zNhH+yLmc1cvDSHsPoCnxcisq3Wk6P2d085hISspsEndI2ZnMtjMUbCbh7fZGpx9
+ LqTp2tTSYqebmECeCRe7v8vmQc65zJWXuM6altRg7ZRDjV8WG3Xfb5SO3nT7wM8y8ikI
+ lomEQgy9lGq3mD8lFIyQffYNg3NXY782Sxcg9trN8pfebfmEe7IKnDStgGrkhj7KX6Ux
+ bjO3jkoBqYRyKEouiBTDDKnYStKHlLeUnOLSJgqA+mjbvidXSZqrq9ivHO00ad4dYWaA
+ 0rBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767943931; x=1768548731;
+ d=1e100.net; s=20230601; t=1767943933; x=1768548733;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=TRDm49NvemgpsDycWeF9XfPyaIh5gUwvlJ11vWn6hk4=;
- b=QcThPgAGDmvd6km2ChmgJj0xuOpcK+AAHAT413Bkw56rxf0bw+bmPe+S9nnNMPzfyK
- mrk1qarWqMwIO+3f0SpO0G1PcagbUDQBjUbLLqGnmwIzhjPJDFIJfjAiPcxpF5aUXvHD
- B4+M0C5iJoS3Gx0abGlUuOCvLFwqLTrgzBZzIQNQ+F940YRY/YxEQMj6wDpdeGiYdhrP
- p53Yyxwj+9wdfjHUdf6EAo4idRvb0FY8fjmRRNLyJDXnd3MuM3nKS0Bc6w3pkKDS+SeP
- L6uSZd9y3NnUv5FAw9394LqOOt/FaNwIm+KI4Romx0QGOKTGgW+pJIfTUVX9q1ZtKHPy
- HLZg==
-X-Gm-Message-State: AOJu0Yy/smC+fuAEarxe9TVAbWXHC50VYPnZPsA75Mdn2CYYuy+haT9M
- OnR9fZb8PtVWWtbLZIUmH6iFvATqnZVS4msR8GaSkVQBF+vwMLuNI9SeV2P2cRhYxTEm3k9Yws1
- 3pu/O7KzQJtamWGEViUepO5qORecKma2viyDdNimJDmMCLv7wvZqQtmy9/kf6rSwG2VDwSdI5mu
- 4lPV5189KEQne/ng/bu5C2T9eraevi2ZI56JU5tKU=
-X-Gm-Gg: AY/fxX5D7N5bcWpdNXOslD18QYXvCI51yM666G/yZd8+AbPimtAaVjN5CJeS9JAV2uj
- KHjFEYZsqD97xuR+Bza2+glmLWGC90wl3LGjtNNYTQsh/cWQ52LFvSo73040QdpeTOUkfkhbTMe
- rswQKyBCad1V97xAGy+t8S/KW4s6cN5cIUx/iIRMeV79SdtKi3pFMCZVJyq4WJjcr+os90KEpYX
- iD/7XJ+QL16Chq7wbEdC+fBmbz3ujcv973mgvwDfV1MzzQCXXX+pNV4i6FsF1hJTyxxyBMU/r8H
- UOW5mtOpjMBLzJf5/tDzdMy5rWEs0wNp4JgXfXedd4R6voCsvafMLy3rYragtxIIpzeuLmivogi
- yu+8QuKG0hLll0dn9VtvpdMjAPJqaio0PAobj8NMEbi0BGS9+GX3Wu0FUZEu/NR9YFN5DSJ6BEd
- 5U8GJrmaYMTAqMz67terfK0yCLggiMz8vzRaKDj8eZD3cqq8P3iisXuPY=
-X-Google-Smtp-Source: AGHT+IHUKAI6BQGfTkjwRhgYQ5PqRd/6mEHJ3yaOMpPEdHRX8SLNmA/JImNhJR2AAiFVg4OUnG9NqA==
-X-Received: by 2002:a05:6a00:4c0b:b0:7e8:4587:e8c8 with SMTP id
- d2e1a72fcca58-81b80cb21abmr7788062b3a.59.1767943930603; 
- Thu, 08 Jan 2026 23:32:10 -0800 (PST)
+ bh=8ph4xqbmoEVTv72fGeGTo/4FX3xeTc8ZJNboz33aWPA=;
+ b=EO7+Txk0LKRjuM6+AHKdfTiCNmOdcRKAz6bjMb1PmpY4kE13Tiq6VlyX86QK71akhp
+ mhM6mboNjSLNbf5O5VICHXiNOVfyZlk4MIJi9R7wvxg8Vjet/hQGc+z41DC5UvN5B75C
+ fDgtwZYsQrMTHiHOVqRRfzp0Wem5Kk3ZlmliHcz7SJAatURokAkGhWkztJRayYB0/AfA
+ sGmWF4BgeaQb+OPrRYpxB3uqx8ligFCxYivvebgYEiUW2onHvCJKzSsdkdJ82M4wXYLd
+ I4o4jvW2tRFy+hBDNuaXwQEE+EK6RtL7JIVYE9rt27KcJ49C1paWpN+cPX7bF2Hynz3H
+ 2dcA==
+X-Gm-Message-State: AOJu0Yz2BfSqtCRbMnYFMCaElKYw7iHRAWBrwYOGoFoxYaI2SRHCBYtM
+ C0FTdgY5noJyL8G/f7Rx0UeI6utd/tqK1D9mXsxHHnh2AiLimyqIs5WUCFqZeb0rc16LRaB8A3J
+ 1RdplP7w9vSs3r5OWBYVlqufL0MwcBG5Q5Pwuu9Qh69xZ2fR4b//zaL5I2Su6UdszABqSLAkHjR
+ qmRZ/SS9PhnDvQ/G3SRbU+ih3bWQkKlOtV/j2qJTk=
+X-Gm-Gg: AY/fxX7Kp+rc67A7Tht9vIcxPoKqHCH3K/dmEuk5OaJ6sWh/IecmC26BL9bWxcCrdNo
+ xuOj9EkdOln8I7d31XM37z4pRcOWhEzk6z2DeQi3QLDMZnOEhYVXPWvhknc2h2aARQnDO9OrkQ8
+ 4lnvHlqLScuk5RcFD2P1W2GKvqbZAMhktv3uSEWTW/ZdL1iej44PE+Rl2tb4KVf+tlKC3+GUsJT
+ Nmqq7S8j50PpZlwjSNsyz/l8pDtXz+aco/8x67hf8/061hgeK+sZ+5aYe0dNDeBWmpbpq2NaeT3
+ uVg2p1NkUvrT9NgqLzzGbA/oB8W66rVB6CyKGY9n7UJVqwLf8nw4Pgcm3He+pRBFOp5YAXLwcrq
+ s5Ja1mHNC5x/i+oTO9zK3EidaoQ9+A3k8Vp+5EZThw6nvSxS8dIj300mzQkblUcTPtpKZZRzY8+
+ GsioL/0klT5bB7XGk7AMtbjEbkSrcpWxhmgw+TWBeI2JtAtvDwRhtcRAQ=
+X-Google-Smtp-Source: AGHT+IEB5f1ZiW2KpF5jYMplQeHCOajUZU1N5ngDZ/acdPHhnO4UdtSa3nWrJsWwAI8PWzvPWKlwRA==
+X-Received: by 2002:a05:6a00:1a15:b0:7e8:3fcb:9b0b with SMTP id
+ d2e1a72fcca58-8194efe1e5dmr10337257b3a.33.1767943932479; 
+ Thu, 08 Jan 2026 23:32:12 -0800 (PST)
 Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
  [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-819c52fd904sm9490421b3a.33.2026.01.08.23.32.08
+ d2e1a72fcca58-819c52fd904sm9490421b3a.33.2026.01.08.23.32.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 23:32:10 -0800 (PST)
+ Thu, 08 Jan 2026 23:32:12 -0800 (PST)
 From: Max Chou <max.chou@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -72,19 +72,17 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Alistair Francis <Alistair.Francis@wdc.com>,
  Weiwei Li <liwei1518@gmail.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Max Chou <max.chou@sifive.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v5 3/4] target/riscv: Expose Zvqdotq extension as a cpu
- property
-Date: Fri,  9 Jan 2026 15:31:53 +0800
-Message-ID: <20260109073154.46251-4-max.chou@sifive.com>
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Max Chou <max.chou@sifive.com>
+Subject: [PATCH v5 4/4] disas/riscv: Support the Zvqdotq extension
+Date: Fri,  9 Jan 2026 15:31:54 +0800
+Message-ID: <20260109073154.46251-5-max.chou@sifive.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260109073154.46251-1-max.chou@sifive.com>
 References: <20260109073154.46251-1-max.chou@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=max.chou@sifive.com; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=max.chou@sifive.com; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,24 +105,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+The Zvqdotq provides following instructions:
+- vqdot.[vv,vx] Vector 8-bit Signed-Signed Dot Product
+- vqdotu.[vv,vx] Vector 8-bit Unsigned Dot Product
+- vqdotsu.[vv,vx] Vector 8-bit Signed-Unsigned Dot Product
+- vqdotus.vx Vector 8-bit Unsigned-Signed Dot Product
+
 Signed-off-by: Max Chou <max.chou@sifive.com>
 ---
- target/riscv/cpu.c | 1 +
- 1 file changed, 1 insertion(+)
+ disas/riscv.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index a295ddefdd..e1f408b037 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1377,6 +1377,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[] = {
- /* These are experimental so mark with 'x-' */
- const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
-     MULTI_EXT_CFG_BOOL("x-svukte", ext_svukte, false),
-+    MULTI_EXT_CFG_BOOL("x-zvqdotq", ext_zvqdotq, false),
+diff --git a/disas/riscv.c b/disas/riscv.c
+index 85cd2a9c2a..b7520f2b42 100644
+--- a/disas/riscv.c
++++ b/disas/riscv.c
+@@ -984,6 +984,13 @@ typedef enum {
+     rv_op_ssamoswap_d = 953,
+     rv_op_c_sspush = 954,
+     rv_op_c_sspopchk = 955,
++    rv_op_vqdot_vv = 956,
++    rv_op_vqdot_vx = 957,
++    rv_op_vqdotu_vv = 958,
++    rv_op_vqdotu_vx = 959,
++    rv_op_vqdotsu_vv = 960,
++    rv_op_vqdotsu_vx = 961,
++    rv_op_vqdotus_vx = 962,
+ } rv_op;
  
-     { },
+ /* register names */
+@@ -2254,6 +2261,13 @@ const rv_opcode_data rvi_opcode_data[] = {
+       rv_op_sspush, 0 },
+     { "c.sspopchk", rv_codec_cmop_ss, rv_fmt_rs1, NULL, rv_op_sspopchk,
+       rv_op_sspopchk, 0 },
++    { "vqdot.vv", rv_codec_v_r, rv_fmt_vd_vs1_vs2_vm, NULL, 0, 0, 0 },
++    { "vqdot.vx", rv_codec_v_r, rv_fmt_vd_rs1_vs2_vm, NULL, 0, 0, 0 },
++    { "vqdotu.vv", rv_codec_v_r, rv_fmt_vd_vs1_vs2_vm, NULL, 0, 0, 0 },
++    { "vqdotu.vx", rv_codec_v_r, rv_fmt_vd_rs1_vs2_vm, NULL, 0, 0, 0 },
++    { "vqdotsu.vv", rv_codec_v_r, rv_fmt_vd_vs1_vs2_vm, NULL, 0, 0, 0 },
++    { "vqdotsu.vx", rv_codec_v_r, rv_fmt_vd_rs1_vs2_vm, NULL, 0, 0, 0 },
++    { "vqdotus.vx", rv_codec_v_r, rv_fmt_vd_rs1_vs2_vm, NULL, 0, 0, 0 },
  };
+ 
+ /* CSR names */
+@@ -3738,8 +3752,11 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
+                 case 37: op = rv_op_vmul_vv; break;
+                 case 38: op = rv_op_vmulhsu_vv; break;
+                 case 39: op = rv_op_vmulh_vv; break;
++                case 40: op = rv_op_vqdotu_vv; break;
+                 case 41: op = rv_op_vmadd_vv; break;
++                case 42: op = rv_op_vqdotsu_vv; break;
+                 case 43: op = rv_op_vnmsub_vv; break;
++                case 44: op = rv_op_vqdot_vv; break;
+                 case 45: op = rv_op_vmacc_vv; break;
+                 case 47: op = rv_op_vnmsac_vv; break;
+                 case 48: op = rv_op_vwaddu_vv; break;
+@@ -3945,9 +3962,13 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
+                 case 37: op = rv_op_vmul_vx; break;
+                 case 38: op = rv_op_vmulhsu_vx; break;
+                 case 39: op = rv_op_vmulh_vx; break;
++                case 40: op = rv_op_vqdotu_vx; break;
+                 case 41: op = rv_op_vmadd_vx; break;
++                case 42: op = rv_op_vqdotsu_vx; break;
+                 case 43: op = rv_op_vnmsub_vx; break;
++                case 44: op = rv_op_vqdot_vx; break;
+                 case 45: op = rv_op_vmacc_vx; break;
++                case 46: op = rv_op_vqdotus_vx; break;
+                 case 47: op = rv_op_vnmsac_vx; break;
+                 case 48: op = rv_op_vwaddu_vx; break;
+                 case 49: op = rv_op_vwadd_vx; break;
 -- 
 2.43.7
 
