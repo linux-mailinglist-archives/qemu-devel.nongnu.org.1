@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EF1BD0AB85
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 15:47:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55DCDD0AB91
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 15:47:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1veDlK-0005uJ-4X; Fri, 09 Jan 2026 09:46:50 -0500
+	id 1veDm4-0006Oz-27; Fri, 09 Jan 2026 09:47:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1veDlI-0005uB-RP
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 09:46:48 -0500
+ id 1veDlo-0006A0-5U
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 09:47:26 -0500
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1veDlH-000146-FG
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 09:46:48 -0500
-Received: from mail.maildlp.com (unknown [172.18.224.150])
- by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dnl3350s2zJ467H;
- Fri,  9 Jan 2026 22:46:39 +0800 (CST)
+ id 1veDlm-00018H-OZ
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 09:47:19 -0500
+Received: from mail.maildlp.com (unknown [172.18.224.107])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dnl3f6R5XzJ46ck;
+ Fri,  9 Jan 2026 22:47:10 +0800 (CST)
 Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
- by mail.maildlp.com (Postfix) with ESMTPS id 5126540539;
- Fri,  9 Jan 2026 22:46:46 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 824C140584;
+ Fri,  9 Jan 2026 22:47:17 +0800 (CST)
 Received: from SecurePC-101-06.huawei.com (10.122.19.247) by
  dubpeml100005.china.huawei.com (7.214.146.113) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Fri, 9 Jan 2026 14:46:45 +0000
+ 15.2.1544.36; Fri, 9 Jan 2026 14:47:16 +0000
 To: Michael Tsirkin <mst@redhat.com>, <qemu-devel@nongnu.org>, Davidlohr Bueso
  <dave@stgolabs.net>
 CC: <linuxarm@huawei.com>, <linux-cxl@vger.kernel.org>, Ravi Shankar
  <venkataravis@micron.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>
-Subject: [PATCH qemu v5 3/7] tests/bios-tables-test: Excluded CEDT.cxl for BI
- restriction relaxation.
-Date: Fri, 9 Jan 2026 14:45:07 +0000
-Message-ID: <20260109144511.557781-4-Jonathan.Cameron@huawei.com>
+Subject: [PATCH qemu v5 4/7] hw/cxl: Update CXL Fixed Memory Window ACPI
+ description to include Back Invalidate support.
+Date: Fri, 9 Jan 2026 14:45:08 +0000
+Message-ID: <20260109144511.557781-5-Jonathan.Cameron@huawei.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20260109144511.557781-1-Jonathan.Cameron@huawei.com>
 References: <20260109144511.557781-1-Jonathan.Cameron@huawei.com>
@@ -72,23 +72,38 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The next patch will relax restrictions on the fixed memory window
-to allow use with back invalidate capable devices.
+Defaults for these windows has always been to enable anything QEMU supports.
+With the addition of back invalidate support it is necessary to specify that
+host windows support this.
+
+CXL emulation is currently only suitable for software stack verification.
+The relaxation of the restrictions on this window to include BI have no
+affect on the OS until BI capable devices are added and until now these
+have not existed. As such no backwards compatibility impacts are expected
+from this change.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
-v5: New patch as test data update was previously missing.
+v5: Equivalent of the default change in the window restrictions patch.
+    That patch isn't ready for upstream just yet, so for now just
+    change the value for everyone.
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 1 +
- 1 file changed, 1 insertion(+)
+ hw/acpi/cxl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8bf4..b4646b5b3147 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,2 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/x86/q35/CEDT.cxl",
+diff --git a/hw/acpi/cxl.c b/hw/acpi/cxl.c
+index 75edb2c0a652..f92f7fa3d558 100644
+--- a/hw/acpi/cxl.c
++++ b/hw/acpi/cxl.c
+@@ -172,7 +172,7 @@ static void cedt_build_cfmws(CXLFixedWindow *fw, Aml *cedt)
+     build_append_int_noprefix(table_data, fw->enc_int_gran, 4);
+ 
+     /* Window Restrictions */
+-    build_append_int_noprefix(table_data, 0x0f, 2);
++    build_append_int_noprefix(table_data, 0x2f, 2);
+ 
+     /* QTG ID */
+     build_append_int_noprefix(table_data, 0, 2);
 -- 
 2.48.1
 
