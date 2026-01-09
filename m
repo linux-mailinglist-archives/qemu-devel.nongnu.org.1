@@ -2,68 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FF34D0739B
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 06:37:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58266D0739E
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 06:38:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ve56r-0004jT-PO; Fri, 09 Jan 2026 00:32:29 -0500
+	id 1ve56t-0004nl-JO; Fri, 09 Jan 2026 00:32:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ve56o-0004cV-II
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 00:32:26 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1ve56p-0004gK-D6
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 00:32:27 -0500
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ve56n-0003kQ-5v
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 00:32:26 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-2a07f8dd9cdso29599955ad.1
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 21:32:24 -0800 (PST)
+ id 1ve56n-0003ke-Sj
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 00:32:27 -0500
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-7e1651ae0d5so2402296b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 21:32:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1767936744; x=1768541544; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=g9IvykFQhZVcNN3polmu+It8RjzUCm16B/WGnBoUEwQ=;
- b=syjc48J70ZBURK1s+JWewT+f5w8d1a3q1W0+S7haLdNvkYGahtCbezarrx2+6De46N
- GaoQsiyPKBPIST4MG4JJF8VYB8eEEMmEldnmNtki8YBUvJPzmTpVXGx38yG+oeClsgUr
- vZqMDT8v1Rw2Fa/w+I7jSEHxhHysVmk5cJPOsZkiKMRK78CPMfDx1M01/R+dtIeUD1nH
- Xa9D32r8rtZFwbj2rOPz/vmjD6pnp5sDAR9Z7TT3Ll+PAO42nIbY8D1nEq0sgG7lcX3/
- /Un87A1Hofyvzp63jzinZ/Ss75TEPdxzwHfAMqKIsyJYBeP8Prb3UFO/KgmWXaykf6UJ
- ymgQ==
+ bh=GoKrriVmMrbjJDHf1DVQarNvxXMmC4IuPbT/CIGrkZg=;
+ b=lpGSL5qZEyIyEORjl/Q7OjJ2KxT72kuG9f2xMZrCABAONZxmTbKgZTOcMtyVVLsdiJ
+ w6m6LESCOXq0Wv79ut+hnqPT86PYFEC12uk79+V848QCtY7gNPKelyPZhfWoC8m/JHD4
+ cYHPbptyNldraks55PWT6eqmCioWRzXfyqdJGqM1dWE2khq2igKCQvmSCZ0bEp6X/F3R
+ HlKrkGKIdrJEnyVI+kq1ghAKivsDI5kCwzsphUC4JhKEn80j+X38n1zaA8q01AsMOATt
+ Lh7+laBkmFtLSs626KiZI7sQBjkw3LweWRS1ghkud6MDCcxdbyvg3LE5OlplxM021fmu
+ UuHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1767936744; x=1768541544;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=g9IvykFQhZVcNN3polmu+It8RjzUCm16B/WGnBoUEwQ=;
- b=L3kRh8cef/4PvDE1QOv17v8LaxezmoiEI3O1KisIFXcdWZPcFdrpPw1KPjQLJUsgk+
- d1S9LpJI3BIvtVh8gguoo2kygAtPLdBi1p6OBcJdBWYxkpIUCEga/GTwbM+J+DO4kpLn
- hTd+QdQovoPgwWmr5tbxaeWf6aXpm6bkNOQjuJDtPk5YnR+FfOZn2UDnUA8gRcbK14gH
- Ma+mJvx1laQW9tVqKLChKJeXXHaBIo2TTXe91hGYt39qTrpwkaX2OgOAlvsKPtcDJLd+
- Nz2HMMuDnW1TT5+L270hN58SPdn/kt46vxMs3meOddp8nCs5j9kqxXmuzS7Kwi7QTjVz
- /gvQ==
-X-Gm-Message-State: AOJu0YxI5zrb/R7PA9gWq47mQUEYn2IYJyESLHLalLGMCEnwFY4jfU5J
- V0bUBy2N4EHDqlbGSgBFZRljcueXUYQhLD7isaYDOGr/j7YCX5FymwFu9oq8fQwjw/mwfxwfIvf
- 9q/i/
-X-Gm-Gg: AY/fxX4e5Chl4DR5tucMoWUcCpF8gD86Zu2z2nUYoSuCE+vssTtnE+ixsYLMAPN0MEe
- OSCRMVQXkObQAxihQQudo/bQ5D616sTkPPPQ5YgadTUXUX7UzOqyb/rZSlo8YLqtAWp6K5pXDpL
- oezLt+yJm1CP8pP3uTkqgdDLXS/4y+S0V9EHnTjv0xR59OfGQAm1TQYdZQFtdbwaFmR9YzJM3xT
- q5UTl3cJWhJCnknKvvvzeznWM7z9HnaucIwSVmmwSCat53yN51V+blmCQu1AsMs0yhH9UEngEfu
- cjkfP3NZQd1Z8rHLOmatMwKelZ7J+V1igEC9EK3FstlQEIMBp7OimJZFohmyoPIP29ipSE80n2e
- Hv2ZaYmmSMqMrIEd5isVBI6qmWYETas4LQeFHAYOn3mZp/CWDF27zRckyNNDFUwpYJHpVIcu6Ad
- +PD25uV3u8vTo1fmZPmknDz7fTZtgbzNSRtJu8kFjb3vmTtyVJG1eLiAVSuH4zon8h
-X-Google-Smtp-Source: AGHT+IFIUhRTnx/ho0RqJne2TPJQDQ2Om/iNzzFwcXeuLv3NtUmSoA69La428ugIkIb0mBE3bv+N9A==
-X-Received: by 2002:a17:903:13c6:b0:2a3:bf5f:936b with SMTP id
- d9443c01a7336-2a3ee43639fmr71557355ad.26.1767936743664; 
- Thu, 08 Jan 2026 21:32:23 -0800 (PST)
+ bh=GoKrriVmMrbjJDHf1DVQarNvxXMmC4IuPbT/CIGrkZg=;
+ b=blkboRx0aMfHL3ogjaf1F/wBaKIQsLuZ9qD3zTCUzxuIcq80lMv4tSJGIikF2oWXYT
+ J3UfxwJdO2RYCkPqbQ3oiQPyrTyPr8AUiP/uXn2a2mRvb89g/UGxF6xhkoibZAsCzL0/
+ ubHTLfsCJnp/vR3dfAuhqsi/yQywi7UhBcQ8VvlAFld5MGnnskE5rhqChR6aZLQrBqVH
+ QCVrShguvT2RgxjZoL2u7pGL47ymteR5EvM7UlnoCnFW/P5k1MjsCa2qLV8tuy2DmANd
+ 7Ie8cGpPZn1HeD4C5gpgrK80bLpgGHv1hG/jFbBrWdytT9wRD578UyRQmDCE9Lp6nn0N
+ mPRg==
+X-Gm-Message-State: AOJu0YyKSwj6LW5aZyVXAKpwpUdr+BWyOo0CZsyyvyXPw4rb+XcZdVgX
+ 8gnTw+l1wd7GH7J8lFIVfCo05EEsf8wk6LmaN4JSw0grDcHyMU5s8KGRS0g7haHYf5WC0W9PTPg
+ 2YlWw
+X-Gm-Gg: AY/fxX6qGkO155EEYX2hUdkayqWVoZwQDOw7HttscyqLwwpn4TGixNO2cwOIN6XJTmX
+ njFVvYTzG5mKlxYs0wj/KcN2M/AjsdkNMWVxN4nLgVVYTbh2pJttho6ca+GRVbGpAiVoLz3FIkP
+ V2ZPidjEIqUxeTFZVPhdX7qSkQdCiGKtXNSSSl794J7caDKh6kPqt8MbwKDG/M1MNPO0J1ruFRf
+ yxK436UIcgwaORTvVF5Sq+YPXwogqsAD9xlu5YCed17IZjmw0Ic7k95PlN94xWYYaV2E1G1gRfp
+ GvxXai/Iy2sFYiJMVv8xmzcozxItB/S8TEGopMGMHZ22/8mJAAJ0/7Kwe+pxRrVBZvIQW+6ht/i
+ 3b0Vkgb+c4+4oMGYqtDcW6B7TFFzGBjQhtI/9Uw3KzkKIQLe0fPgpi7JUWTYSKdQp7EzrU6YPkK
+ /BS07/DTe8LXxme/jR3J8jF2ZdjvvjhMk+UY6cyXvHSGKVKG5poc4SrBwPrx7b9p/b62coa2IUo
+ o8=
+X-Google-Smtp-Source: AGHT+IFfYEHdzbLbfnFof5hEo7fHzUQRCi+UwgjfLMSBbXBNjgQbHCFwJfbRF+aPSYr3k57kESQ2kw==
+X-Received: by 2002:a05:6a20:4308:b0:366:14b2:30e with SMTP id
+ adf61e73a8af0-3898f9cd7ddmr9042046637.65.1767936744430; 
+ Thu, 08 Jan 2026 21:32:24 -0800 (PST)
 Received: from pc.taild8403c.ts.net (216-71-219-44.dyn.novuscom.net.
  [216.71.219.44]) by smtp.gmail.com with ESMTPSA id
  98e67ed59e1d1-34f5fa93f30sm9260137a91.5.2026.01.08.21.32.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 21:32:23 -0800 (PST)
+ Thu, 08 Jan 2026 21:32:24 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -73,16 +74,17 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Jim MacArthur <jim.macarthur@linaro.org>, anjo@rev.ng,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 22/29] target/arm/tcg/gengvec.c: make compilation unit common
-Date: Thu,  8 Jan 2026 21:31:51 -0800
-Message-ID: <20260109053158.2800705-23-pierrick.bouvier@linaro.org>
+Subject: [PATCH 23/29] target/arm/tcg/translate: extract helper64 info in
+ translate-a64
+Date: Thu,  8 Jan 2026 21:31:52 -0800
+Message-ID: <20260109053158.2800705-24-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260109053158.2800705-1-pierrick.bouvier@linaro.org>
 References: <20260109053158.2800705-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,56 +107,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Thanks to HAS_HELPER64 mechanism, we can now move helper info generation
+to a translate-a64 for 64 bits helper.
+This allows to get rid of TARGET_AARCH64 in translate.c.
+
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/tcg/gengvec.c   | 3 ++-
- target/arm/tcg/meson.build | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ target/arm/tcg/translate-a64.c | 7 +++++++
+ target/arm/tcg/translate.c     | 9 ---------
+ 2 files changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/target/arm/tcg/gengvec.c b/target/arm/tcg/gengvec.c
-index 01867f8ace3..99bc4e1cfd0 100644
---- a/target/arm/tcg/gengvec.c
-+++ b/target/arm/tcg/gengvec.c
-@@ -20,9 +20,10 @@
-  */
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index b7a8e94b937..fed2eb18f13 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -26,6 +26,13 @@
+ #include "semihosting/semihost.h"
+ #include "cpregs.h"
  
- #include "qemu/osdep.h"
++#define HAS_HELPER64
++#include "exec/helper-proto.h"
 +
-+#define TARGET_ADDRESS_BITS 32
- #include "translate.h"
++#define HELPER_H "helper64.h"
++#include "exec/helper-info.c.inc"
++#undef  HELPER_H
++
+ static TCGv_i64 cpu_X[32];
+ static TCGv_i64 cpu_gcspr[4];
+ static TCGv_i64 cpu_pc;
+diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
+index 5c496f42c55..ec4358ba402 100644
+--- a/target/arm/tcg/translate.c
++++ b/target/arm/tcg/translate.c
+@@ -26,9 +26,6 @@
+ #include "arm_ldst.h"
+ #include "semihosting/semihost.h"
+ #include "cpregs.h"
+-#ifdef TARGET_AARCH64
+-#define HAS_HELPER64
+-#endif
+ #include "exec/helper-proto.h"
+ #include "exec/target_page.h"
  
+@@ -36,12 +33,6 @@
+ #include "exec/helper-info.c.inc"
+ #undef  HELPER_H
+ 
+-#ifdef TARGET_AARCH64
+-#define HELPER_H "helper64.h"
+-#include "exec/helper-info.c.inc"
+-#undef  HELPER_H
+-#endif
 -
- static void gen_gvec_fn3_qc(uint32_t rd_ofs, uint32_t rn_ofs, uint32_t rm_ofs,
-                             uint32_t opr_sz, uint32_t max_sz,
-                             gen_helper_gvec_3_ptr *fn)
-diff --git a/target/arm/tcg/meson.build b/target/arm/tcg/meson.build
-index d435d2e5b72..a2a636ef14a 100644
---- a/target/arm/tcg/meson.build
-+++ b/target/arm/tcg/meson.build
-@@ -25,7 +25,6 @@ arm_ss.add(when: 'TARGET_AARCH64', if_false: files('stubs32.c'))
- 
- arm_ss.add(files(
-   'cpu32.c',
--  'gengvec.c',
-   'translate.c',
-   'm_helper.c',
-   'mve_helper.c',
-@@ -65,6 +64,7 @@ arm_common_system_ss.add(
-   decodetree.process('neon-ls.decode', extra_args: '--decode=disas_neon_ls'),
-   files(
-   'cpregs-at.c',
-+  'gengvec.c',
-   'hflags.c',
-   'neon_helper.c',
-   'op_helper.c',
-@@ -79,6 +79,7 @@ arm_common_system_ss.add(
-   'vfp_helper.c',
- ))
- arm_user_ss.add(files(
-+  'gengvec.c',
-   'hflags.c',
-   'neon_helper.c',
-   'op_helper.c',
+ #define ENABLE_ARCH_4T    arm_dc_feature(s, ARM_FEATURE_V4T)
+ #define ENABLE_ARCH_5     arm_dc_feature(s, ARM_FEATURE_V5)
+ /* currently all emulated v5 cores are also v5TE, so don't bother */
 -- 
 2.47.3
 
