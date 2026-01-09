@@ -2,95 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0700D07BA9
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 09:10:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C33B2D07C19
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 09:20:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ve7Zs-0003cK-CG; Fri, 09 Jan 2026 03:10:36 -0500
+	id 1ve7hs-0000Ka-1Y; Fri, 09 Jan 2026 03:18:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ve7Z4-0003Jj-Te
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 03:09:50 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ve7Z3-0006zs-7U
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 03:09:46 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-4779adb38d3so27620805e9.2
- for <qemu-devel@nongnu.org>; Fri, 09 Jan 2026 00:09:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767946183; x=1768550983; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=cuRyffJLQTOMD281cNcmYFQwxyXUGv4vB8Cgz7rDWaM=;
- b=W5MjbpUIUKEE9SOf6jvZxHKMD0G7G+s85gyuxIedUG4jsRP7/5Z58zazprO2zaGzRd
- M2KPqByejMcusEu2ZfLLLrLIK1wzDRqJVYZKmsCIZHtdpC49VuIdHDJ4z5zrHUonqDjx
- eDPB8FTurupzqEecweSjAV7ifF1ZmMkWRlxKEN3EtqxgndBluodlJXvJOBa3U4kW2YN1
- xWh3H+vWhhk670pRoQTd4h0v5xYCFaYxv69D5OJAV5vigXJyAkfn5RZVLkOL1QGTl3a6
- oWZIJBMp05WB1I4WYl9DB/032GDKyLh9xFMuLwPBR7mAXEqXF6TYf6mM2rrPj6qfWCky
- B+2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767946183; x=1768550983;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=cuRyffJLQTOMD281cNcmYFQwxyXUGv4vB8Cgz7rDWaM=;
- b=hyEMtPsP20rsh9hkD1J/UDl23BLnQvk8MPUYVTnexmWr4HxPYbskAYDwNXiO2YCoE+
- 5zPxP0WapYDZmMWUmISc/a8l6jGCvjea7nXWKLLoUnnzZ8IhvUofXc6SfHiuS2Xg52xD
- ZCPRNbeYLS40HTMOJisn3aLGl9TR3s6WlhGQX0CdP6GQi93+Yoxruh7DXFVVZnut7jEC
- 1RURuyoZGzCS8u8kwqrB6ZUIpBAa2jX8/xslnQe+bYyGpkO8l3LNaWhzz9uNZm+Gmn05
- NAWYaqiH+NYyllrf6urf8OHHH1HKgsJfY6sVwEroc2u/lfqCr61mFlie774l2lxTz8W6
- bZrA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWgZ1JLzvcMrDuWE2Qmx+QGQ3LCzi5923gT2SDBl7K65c6fT5s5EfS1eK1YFfyVVWiCoPhuil1Iocjt@nongnu.org
-X-Gm-Message-State: AOJu0YwaPxBnplaYT5f+tc2sDbFPrX3jwbWhVg49KXdAZmI+FkND9T/V
- IbAGOvzMxbTH/wZX6sD8VdKNExOE6Hu9lIVXzEND0rry06sLjTqq2eplUeZe1Fiuvgw=
-X-Gm-Gg: AY/fxX7FqPVMuWlLC+uycVDQ6VrfVCqvSv903ZVV4zIDGCRhzYTxi0a3Ozbm4uYkH2M
- nir+eaV5PVmQgp1MgubRdWLm90GVrCFZIZYhjCkNnUykUgeQcWQPuqwvtjfU1Nk5tDOtKSZITmj
- yV3GGrOVH4GHjLKi1hirNZWzIBhnXpJbPcN/iLs6KA95zPdxpbV1nUSQA8D3zEP8/tMSz8GWq+i
- 3SPwVSqs1qRm+STShJcL2HOIZluZzJ8v6tt9yFxQQrCX0uHlsiB5O6G5/NEEHwjUq0oLwnkLcFA
- tONkmbZQSpfDt0G+bgcUHDN4XDzQYfWUc7yCkY5Dbv3ElBEOniMue+t6eQJwWmFkrUdsTRAi7up
- 2vhGso1/xBXtBZrmfVy9j2jBBDKgo13nqbf369ypMRxeHLwno+eVHU2Hz6fcsvja69SglLfu1/O
- FKOYOsBW5J7D3SmWmnk0dnJfqxyfdueudosl9NlxKm3oTw8b+Dg0wNyQ==
-X-Google-Smtp-Source: AGHT+IEspcM9vjrtaLAT7MnJe2KY+PNHopkLjYouGvxqLTP7SaPtzSzMs3hoKReNdH+Fyh6fN3pHQw==
-X-Received: by 2002:a05:600d:6445:20b0:479:3a86:dc1d with SMTP id
- 5b1f17b1804b1-47d8e4a3c68mr30560405e9.37.1767946182815; 
- Fri, 09 Jan 2026 00:09:42 -0800 (PST)
-Received: from [192.168.69.213] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d7f65d9f0sm202446805e9.12.2026.01.09.00.09.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 09 Jan 2026 00:09:42 -0800 (PST)
-Message-ID: <67a7bafb-95ec-4f62-91a5-dcab5ddb7b16@linaro.org>
-Date: Fri, 9 Jan 2026 09:09:41 +0100
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ve7hm-0000Jm-Ue
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 03:18:46 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ve7hk-00080Z-Pb
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 03:18:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1767946722;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=fxwzm0k8MMpu87RRJePm28FlOWSBBJFckB5ykA8VnKk=;
+ b=DralUNf/7DuJ7QAYTItp0Y5qK5FON/VhXdnEuD0cEIkgeh5fecIFF5uUZDwUnXx0eIt871
+ qw9KabDYBYUv/AOSJBHtepX8zb397uxE4i0rdFeUyu3ji/Nng6VQoG7+j4mRCvZ5x6lVfK
+ atPqUhIi2sNz+ATLu0Qb6ZP6RKs5rd8=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-452-DdWNpZB5M4a8MjSrkDrpvQ-1; Fri,
+ 09 Jan 2026 03:18:39 -0500
+X-MC-Unique: DdWNpZB5M4a8MjSrkDrpvQ-1
+X-Mimecast-MFC-AGG-ID: DdWNpZB5M4a8MjSrkDrpvQ_1767946718
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F04941956088; Fri,  9 Jan 2026 08:18:37 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.32])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AD6DB1800285; Fri,  9 Jan 2026 08:18:37 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 4896221E66CC; Fri, 09 Jan 2026 09:18:35 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,  qemu-devel@nongnu.org,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
+Subject: Re: [PATCH v3] system: Convert qemu_arch_available() to TargetInfo API
+In-Reply-To: <d8792a35-340b-4a5b-8349-42ee3d050b2a@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Fri, 9 Jan 2026 08:39:31
+ +0100")
+References: <20260108163601.18676-1-philmd@linaro.org>
+ <f089c7c9-c00f-4c19-b4b5-175873fd8c1e@linaro.org>
+ <341da906-68c9-44e9-929b-30760883178e@linaro.org>
+ <0e4437cd-0e4d-4e5b-9aac-c882ef1e9214@linaro.org>
+ <d8792a35-340b-4a5b-8349-42ee3d050b2a@linaro.org>
+Date: Fri, 09 Jan 2026 09:18:35 +0100
+Message-ID: <87ldi7mc6c.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/29] target/arm/tcg/psci.c: make compilation unit common
-Content-Language: en-US
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Jim MacArthur <jim.macarthur@linaro.org>,
- anjo@rev.ng
-References: <20260109053158.2800705-1-pierrick.bouvier@linaro.org>
- <20260109053158.2800705-8-pierrick.bouvier@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20260109053158.2800705-8-pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,16 +93,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/1/26 06:31, Pierrick Bouvier wrote:
-> Now that helper.h does not contain TARGET_AARCH64 identifier, we can
-> move forward with this file.
-> 
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> ---
->   target/arm/tcg/psci.c      | 2 +-
->   target/arm/tcg/meson.build | 5 +----
->   2 files changed, 2 insertions(+), 5 deletions(-)
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> On 9/1/26 07:58, Pierrick Bouvier wrote:
+
+[...]
+
+>> See my previous answer on v1, -Wswitch is used:
+>> Reading the thread above, the only mention I find is the 3rd commit that
+>> precisely change definition because -Wswitch is enabled with clang.
+>> And it's not only a clang thing, gcc has it in Wall also [1].
+>
+> Yes I read that, I'd really like we use -Wswitch but IIUC we can not,
+> so with that in mind I don't understand your request. Is that for the
+> hypothetical case we can use -Wswitch in the future? Sorry I'm not
+> trying to be picky here, I just fail to see the problem you raised :(
+
+We *are* using -Wswitch.
+
+To see that, delete the default: case in to_json()'s outer switch (patch
+appended), and compile:
+
+    ../qobject/qjson.c: In function =E2=80=98to_json=E2=80=99:
+    ../qobject/qjson.c:154:5: warning: enumeration value =E2=80=98QTYPE_NON=
+E=E2=80=99 not handled in switch [-Wswitch]
+      154 |     switch (qobject_type(obj)) {
+          |     ^~~~~~
+    ../qobject/qjson.c:154:5: warning: enumeration value =E2=80=98QTYPE__MA=
+X=E2=80=99 not handled in switch [-Wswitch]
+
+We run gcc -Wall, which implies -Wswitch.
+
+[...]
+
+
+diff --git a/qobject/qjson.c b/qobject/qjson.c
+index c858dafb5e..6287c93c67 100644
+--- a/qobject/qjson.c
++++ b/qobject/qjson.c
+@@ -213,8 +213,6 @@ static void to_json(JSONWriter *writer, const char *nam=
+e,
+         json_writer_bool(writer, name, qbool_get_bool(val));
+         break;
+     }
+-    default:
+-        abort();
+     }
+ }
+=20
 
 
