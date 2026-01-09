@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11792D0AA66
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 15:35:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A72CCD0AA60
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 15:35:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1veDZW-0004rL-IQ; Fri, 09 Jan 2026 09:34:38 -0500
+	id 1veDZe-0004tP-9I; Fri, 09 Jan 2026 09:34:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <osteffen@redhat.com>)
- id 1veDZS-0004r3-HL
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 09:34:34 -0500
+ id 1veDZa-0004sp-DV
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 09:34:42 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <osteffen@redhat.com>)
- id 1veDZQ-0005Po-Iw
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 09:34:34 -0500
+ id 1veDZZ-0005Qb-2r
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 09:34:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767969271;
+ s=mimecast20190719; t=1767969280;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iaPmqw/Ehr8W6RQwc5yl82CYunPOYiPN0xNLMshtHSc=;
- b=ihqgLq8smpJVYP6H0u1S38uuQnjF+xnGtX4nlZUJdooF/mpzAUNhVnRZAFQq7VIBy++TQO
- OAfxpJXbZjnClcIgTlh6sP9u1nS21COTfkM8RiYS+YsyuuGsPlqSC4RgfGzAWXLgXmst9K
- IJvVI7q4qfdtRJ125In451m5Kl79Cdc=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=RbvZl+vxzfLE3Kc7Wvw7PIUMKqNVOyqJtrnlb2bMgEM=;
+ b=fdwT1W3QNUoeLUi6mR6De6e8ELHqR6OYaoisJsaEp1usoCsMlWDiSStftipnblpO2ILyCS
+ fMek7f7PngHJj1WFZIyXHC3+dfQxSjTo8i4vqDrps5Ugxu55HD9YLghNT2IGyzDQZZttg3
+ v4fwdS/HUpjyw/i44hTi9NiH6EW4RAs=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-442-4i_4hS42MCOsmAjYEx9_fQ-1; Fri,
- 09 Jan 2026 09:34:29 -0500
-X-MC-Unique: 4i_4hS42MCOsmAjYEx9_fQ-1
-X-Mimecast-MFC-AGG-ID: 4i_4hS42MCOsmAjYEx9_fQ_1767969268
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-562-5OsW6jX8Nzi4s9LpspY1GQ-1; Fri,
+ 09 Jan 2026 09:34:36 -0500
+X-MC-Unique: 5OsW6jX8Nzi4s9LpspY1GQ-1
+X-Mimecast-MFC-AGG-ID: 5OsW6jX8Nzi4s9LpspY1GQ_1767969275
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DAED918005B7; Fri,  9 Jan 2026 14:34:27 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E8E8E19560A5; Fri,  9 Jan 2026 14:34:34 +0000 (UTC)
 Received: from osteffen-laptop.redhat.com (unknown [10.45.225.84])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8D4FE18001D5; Fri,  9 Jan 2026 14:34:22 +0000 (UTC)
+ id 77B7F1801A46; Fri,  9 Jan 2026 14:34:28 +0000 (UTC)
 From: Oliver Steffen <osteffen@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -57,9 +57,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Oliver Steffen <osteffen@redhat.com>
-Subject: [PATCH v3 1/6] hw/acpi: Make BIOS linker optional
-Date: Fri,  9 Jan 2026 15:34:08 +0100
-Message-ID: <20260109143413.293593-2-osteffen@redhat.com>
+Subject: [PATCH v3 2/6] hw/acpi: Add standalone function to build MADT
+Date: Fri,  9 Jan 2026 15:34:09 +0100
+Message-ID: <20260109143413.293593-3-osteffen@redhat.com>
 In-Reply-To: <20260109143413.293593-1-osteffen@redhat.com>
 References: <20260109143413.293593-1-osteffen@redhat.com>
 MIME-Version: 1.0
@@ -90,33 +90,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make the BIOS linker optional in acpi_table_end().
-This makes it possible to call for example
-acpi_build_madt() from outside the ACPI table builder context.
+Add a fuction called `acpi_build_madt_standalone()` that builds a MADT
+without the rest of the ACPI table structure.
 
 Signed-off-by: Oliver Steffen <osteffen@redhat.com>
 ---
- hw/acpi/aml-build.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ hw/i386/acpi-build.c | 8 ++++++++
+ hw/i386/acpi-build.h | 2 ++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/hw/acpi/aml-build.c b/hw/acpi/aml-build.c
-index 2d5826a8f1..ed86867ae3 100644
---- a/hw/acpi/aml-build.c
-+++ b/hw/acpi/aml-build.c
-@@ -1748,8 +1748,11 @@ void acpi_table_end(BIOSLinker *linker, AcpiTable *desc)
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index 9446a9f862..e472876567 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -2249,3 +2249,11 @@ void acpi_setup(void)
       */
-     memcpy(len_ptr, &table_len_le, sizeof table_len_le);
- 
--    bios_linker_loader_add_checksum(linker, ACPI_BUILD_TABLE_FILE,
--        desc->table_offset, table_len, desc->table_offset + checksum_offset);
-+    if (linker != NULL) {
-+        bios_linker_loader_add_checksum(linker, ACPI_BUILD_TABLE_FILE,
-+                                        desc->table_offset, table_len,
-+                                        desc->table_offset + checksum_offset);
-+    }
+     acpi_build_tables_cleanup(&tables, false);
  }
++
++GArray *acpi_build_madt_standalone(MachineState *machine) {
++  X86MachineState *x86ms = X86_MACHINE(machine);
++  GArray *table = g_array_new(false, true, 1);
++  acpi_build_madt(table, NULL, x86ms, x86ms->oem_id,
++                  x86ms->oem_table_id);
++  return table;
++}
+diff --git a/hw/i386/acpi-build.h b/hw/i386/acpi-build.h
+index 8ba3c33e48..00e19bbe5e 100644
+--- a/hw/i386/acpi-build.h
++++ b/hw/i386/acpi-build.h
+@@ -8,4 +8,6 @@ extern const struct AcpiGenericAddress x86_nvdimm_acpi_dsmio;
+ void acpi_setup(void);
+ Object *acpi_get_i386_pci_host(void);
  
- void *acpi_data_push(GArray *table_data, unsigned size)
++GArray *acpi_build_madt_standalone(MachineState *machine);
++
+ #endif
 -- 
 2.52.0
 
