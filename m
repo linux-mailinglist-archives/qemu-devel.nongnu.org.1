@@ -2,113 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9C44D0A6B7
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 14:31:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B0F7D0A6CC
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 14:33:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1veCaA-00046Z-66; Fri, 09 Jan 2026 08:31:14 -0500
+	id 1veCb9-0004fi-Vp; Fri, 09 Jan 2026 08:32:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <brueckner@linux.ibm.com>)
- id 1veCa0-00044n-Ld; Fri, 09 Jan 2026 08:31:04 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <brueckner@linux.ibm.com>)
- id 1veCZx-0001w7-LN; Fri, 09 Jan 2026 08:31:04 -0500
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 608Le8cD024133;
- Fri, 9 Jan 2026 13:30:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-type:date:from:in-reply-to:message-id:mime-version
- :references:sender:subject:to; s=pp1; bh=Z473VuK09/6ZCuNeUOUMJD/
- QKcCLw4ICuF6kgtegzGU=; b=VVVlXh7x7Po3OAs3G7IPlC96dlMylhDj8ZytRFQ
- mvnBrLOYN7QzFJCoFdm6yTvEcSxsomsxk9liYsZUxI5tyAzHrempGRApCgHVUsPj
- jQF2yFc1wM0iprt1zWdMCZN1Gecp0/kOHHKxRi33pWTfg+GWJecqnf4DJ5af9yVM
- 1XqpMpZbhg00L2VdeBqiRYgob/9Xn2vt5Ti2kbPC0srkDEEtqm8iTfmumXVy3uEk
- FsiRTa+t0cvBl3EcSuxWPlu2u4t9AqJr1JkbCTV53bj2uD91Dx2VmV6SZcgPMIKO
- EEkDXD/UCFmogR/ba3+7FQJTXloQwswVUyp/HHSGyxN/1UQ==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betu6kerh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 09 Jan 2026 13:30:57 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 609BE9B3019341;
- Fri, 9 Jan 2026 13:30:56 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bfg51mqra-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 09 Jan 2026 13:30:56 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 609DUqxM34603422
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 9 Jan 2026 13:30:52 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5BBDA2004E;
- Fri,  9 Jan 2026 13:30:52 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 416922004D;
- Fri,  9 Jan 2026 13:30:52 +0000 (GMT)
-Received: from vela (unknown [9.111.82.184])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
- Fri,  9 Jan 2026 13:30:52 +0000 (GMT)
-Received: from brueckner by vela with local (Exim 4.99)
- (envelope-from <brueckner@linux.ibm.com>) id 1veCZn-00000000H1C-2nXQ;
- Fri, 09 Jan 2026 14:30:51 +0100
-Date: Fri, 9 Jan 2026 14:30:51 +0100
-From: Hendrik Brueckner <brueckner@linux.ibm.com>
-To: Zhuoying Cai <zycai@linux.ibm.com>
-Cc: thuth@redhat.com, berrange@redhat.com, richard.henderson@linaro.org,
- david@redhat.com, jrossi@linux.ibm.com, qemu-s390x@nongnu.org,
- qemu-devel@nongnu.org, brueckner@linux.ibm.com, walling@linux.ibm.com,
- jjherne@linux.ibm.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- farman@linux.ibm.com, mjrosato@linux.ibm.com, iii@linux.ibm.com,
- eblake@redhat.com, armbru@redhat.com, alifm@linux.ibm.com
-Subject: Re: [PATCH v7 06/29] s390x/diag: Refactor address validation check
- from diag308_parm_check
-Message-ID: <aWEDC7pIILszKpdC@linux.ibm.com>
-References: <20251208213247.702569-1-zycai@linux.ibm.com>
- <20251208213247.702569-7-zycai@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1veCb1-0004Vg-9i
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 08:32:09 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1veCaw-00027Q-L2
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 08:32:05 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-2a0f3f74587so35108145ad.2
+ for <qemu-devel@nongnu.org>; Fri, 09 Jan 2026 05:32:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1767965519; x=1768570319; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+ bh=lRUrPUvBFRuXC2FQf4b3+uuc3GFCJtPGwsQiF6HW3a8=;
+ b=XEBP/EPVEaVUG9Xq0pSSOI424DrI/9M7Dm+ZGf++SW5sgOPKT3480RJQZDC7aPrOuk
+ tLMC6OZW1AAkC4YN3Sa0Z7c5bvfC/+h7es86C6xTO7nDmC2PGptEcBfp3pwi/LF5zGX1
+ voEZwrWtyn6bMqFqs3Jt7e12bdMutf/HAFWDz6kGqERL8CoTBo8+iiT85YghbBp7OETg
+ wZ2ZWaiM0qeTc7me9vkpsah+aT5SoJmZEgp+k3iipNZ2nfegpPUQfkcT5c/wDr9YHGKO
+ MBwdPdfIQh/Fd7AL9hHORuxlBBWJ2cEXvvcqjLdg275VRwzK4wVeMmE0HcjGmeFWWbrB
+ AVSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1767965519; x=1768570319;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=lRUrPUvBFRuXC2FQf4b3+uuc3GFCJtPGwsQiF6HW3a8=;
+ b=NwwmFfF9rp4oOq+foZRk1q/Au4/DxU21iy9/JWeQ0eyRBPFgBrJe8qy3j03khMRYBC
+ RtKL1DPapWq0BdqFIY25nF9Q1xCMbUipK/R0ce/qWY//8gpBylJBdSojkPu9B2zcaL+R
+ mt4OYqexPhx4PgzOL+DWlj74P3KCq40O2WXl+NxTHYSAIX52NiQjP3WjmRZg2uoUeTM+
+ i5wuvCrCt1tmGFU36oSeW8dOJLPxuMjLn3lctDvif/S7TzX2rG7UOrD4azD4PoqO+CnV
+ guK8wIrcsns/PK490xibkXPcEDjnZS0wOyGd231hPIEXV0z1OEGKjeQqGXyLo6Psmefo
+ ErqA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUdfiC6CRKpKIhdSdc1GcsbGYuAqf69pGQEyignHWW0HXGH3itQsxVJvhLzPITSf8Ex1o20L4BUQ0AO@nongnu.org
+X-Gm-Message-State: AOJu0YzawA36Gg/Xe5FrDi8wfL38uJJSjFJpgfKNxFxkJo22PjJ1rmn3
+ Xhr9BhAS04BlEt3Pqj7E/BuGlRXmGJO2/kCta9OGeUab7z/1QA0k9Fi4
+X-Gm-Gg: AY/fxX6kFcbgRHafXK/3Y9V1L2YgYH+PWVw93xpQGAm4FY7IS/vWU2i7XS4mGNzI38t
+ o3ejF6l4hfbmU5oAD2y2oGyCaQcfYbF1h1I0lSfgGPHtcn5w+KMPAT2MNwag4MeRfTTcSIALWJn
+ /Dr4Cj7+H+OHy1eio3/ysFw54mgqF7dnwJG11DtsvCWBAAjZymkLKU0qtILE48RhaN2QgNwfGXa
+ p/3BdY6ZChtP7Gj/4XE0h8UAkZBm41yRzm6cmgZnD6xKG0u2xAhwrz+Vo6OuVv+PWuBgMlstss1
+ YILGJQtVcWxTHDIi99uNgQKXWlDGDBEDfatpp3qIDqiwDj8HQIgXdJjCLMfT5tPgB+nEs6dJHNt
+ zFulgD9WTPrGD3IuOJdj1lu6MTl1tpk5hY7rljXlWGyTUXoH+wBwBIHAk1xzrz2euJJjgtOnlyb
+ WH0IIydFB/L0FNMA7MfoVa
+X-Google-Smtp-Source: AGHT+IFiM8u6P/3GLFhEQR4/VgG8X7nhcgmMoIU7PSTL2HCR3HgtWHeRygeDJCeqxA2h02IkS/9kIg==
+X-Received: by 2002:a17:902:e54d:b0:267:a5df:9b07 with SMTP id
+ d9443c01a7336-2a3ee4389ddmr88216925ad.12.1767965519472; 
+ Fri, 09 Jan 2026 05:31:59 -0800 (PST)
+Received: from donnager-debian.. ([45.124.203.15])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2a3e3c491e7sm107755535ad.38.2026.01.09.05.31.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 09 Jan 2026 05:31:58 -0800 (PST)
+From: Joel Stanley <joel@jms.id.au>
+To: Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Sunil V L <sunilvl@ventanamicro.com>, qemu-devel@nongnu.org
+Cc: Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Michael Ellerman <mpe@oss.tenstorrent.com>,
+ Joel Stanley <jms@oss.tenstorrent.com>,
+ Nick Piggin <npiggin@oss.tenstorrent.com>,
+ Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>, qemu-riscv@nongnu.org
+Subject: [PATCH 0/2] hw/riscv: Make virt AIA setup reusable 
+Date: Sat, 10 Jan 2026 00:01:21 +1030
+Message-ID: <20260109133125.397364-1-joel@jms.id.au>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251208213247.702569-7-zycai@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=QbNrf8bv c=1 sm=1 tr=0 ts=69610311 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=P_NoP72qeY4FxnBEVQMA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: k7u2GVsLqrbIBsiQOJKJboLz_p1Dxihg
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA5MDA5OSBTYWx0ZWRfX9krhlgTNsXWd
- Sjz2etlh65d1x3QglZ1b2+apcY02CT31YqnaCs1cvtd8rZ9R+YjsR2bCF5udtFAKL5DU+LtdaO/
- /Zr0Cwzc5Uc3ccU7ElqZKaz7l+Dd5LO8ozfWd9C8dcnmlJdzWSb0G0Zdmj2+pWZwRJjLLG9ctPF
- v6lgZYo9zOoPO+C4iYHdFLpiJ3SnM4Ch9AzHiihafl8dQdqIKuO9d3YSSh/YWtERjmY3d0HS8QH
- n+PAOcRx0m2hI1dYc78xKbUs/xA20lG4emLA6to49DnPpAaOrDTLWsTSKEtdG9+yZu2UBm0M6Jq
- +FbCc8n1OmC184KBtBOKcxWj7O//FQvtQryTLUbXYr3h/aZhYd59H5StCwqaku0Txj2ctuiOAGY
- NSi0AjjF65qJRu56Z1KGAtiwMsrGYonGUQ0nB7cRozNBIMKPVDzmdIN9y1rmzD0AKbDluKprjux
- M5fzea5qDYdlCL3BBwg==
-X-Proofpoint-GUID: k7u2GVsLqrbIBsiQOJKJboLz_p1Dxihg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-09_04,2026-01-08_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1011 bulkscore=0 suspectscore=0 priorityscore=1501
- adultscore=0 lowpriorityscore=0 impostorscore=0 phishscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601090099
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=brueckner@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=joel.stan@gmail.com; helo=mail-pl1-x632.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.001,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -124,46 +104,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 08, 2025 at 04:32:23PM -0500, Zhuoying Cai wrote:
-> Create a function to validate the address parameter of DIAGNOSE.
-> 
-> Refactor the function for reuse in the next patch, which allows address
-> validation in read or write operation of DIAGNOSE.
-> 
-> Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
-> Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
-> ---
->  target/s390x/diag.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
-> 
-> diff --git a/target/s390x/diag.c b/target/s390x/diag.c
-> index a35d808fd7..a347be7633 100644
-> --- a/target/s390x/diag.c
-> +++ b/target/s390x/diag.c
-> @@ -26,6 +26,12 @@
->  #include "qemu/error-report.h"
->  
->  
-> +static inline bool diag_parm_addr_valid(uint64_t addr, size_t size, bool write)
-> +{
-> +    return address_space_access_valid(&address_space_memory, addr,
-> +                                      size, write, MEMTXATTRS_UNSPECIFIED);
-> +}
-> +
->  int handle_diag_288(CPUS390XState *env, uint64_t r1, uint64_t r3)
->  {
->      uint64_t func = env->regs[r1];
-> @@ -65,9 +71,7 @@ static int diag308_parm_check(CPUS390XState *env, uint64_t r1, uint64_t addr,
->          s390_program_interrupt(env, PGM_SPECIFICATION, ra);
->          return -1;
->      }
-> -    if (!address_space_access_valid(&address_space_memory, addr,
-> -                                    sizeof(IplParameterBlock), write,
-> -                                    MEMTXATTRS_UNSPECIFIED)) {
-> +    if (!diag_parm_addr_valid(addr, sizeof(IplParameterBlock), write)) {
->          s390_program_interrupt(env, PGM_ADDRESSING, ra);
->          return -1;
->      }
+Sharing the AIA setup code looked like a good idea when I was
+implementing a machine with AIA. It will be used by Atlantis initially.
 
-Reviewed-by: Hendrik Brueckner <brueckner@linux.ibm.com>
+Atlantis will use 128 IRQ sources so the second patch makes that
+configurable as part of the setup. I initially changed it globally and
+that broke the virt acpi tests as the number is encoded in acpi
+blob.
+
+Joel Stanley (2):
+  hw/riscv/virt: Move AIA initialisation to helper file
+  hw/riscv/aia: Provide number of irq sources
+
+ hw/riscv/aia.h             | 59 +++++++++++++++++++++++++
+ include/hw/riscv/virt.h    | 30 +------------
+ hw/riscv/aia.c             | 89 ++++++++++++++++++++++++++++++++++++++
+ hw/riscv/virt-acpi-build.c | 24 ++++++----
+ hw/riscv/virt.c            | 87 +++++--------------------------------
+ hw/riscv/meson.build       |  2 +-
+ 6 files changed, 176 insertions(+), 115 deletions(-)
+ create mode 100644 hw/riscv/aia.h
+ create mode 100644 hw/riscv/aia.c
+
+-- 
+2.47.3
+
 
