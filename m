@@ -2,90 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9759D0C8B4
-	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jan 2026 00:27:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 827EAD0C8BD
+	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jan 2026 00:32:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1veLst-0005zG-RC; Fri, 09 Jan 2026 18:27:11 -0500
+	id 1veLxA-0007Ob-Pp; Fri, 09 Jan 2026 18:31:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1veLsq-0005xP-NS
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 18:27:08 -0500
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ id 1veLx5-0007Ni-5u
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 18:31:31 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1veLsp-00036P-AE
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 18:27:08 -0500
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-c227206e6dcso3015180a12.2
- for <qemu-devel@nongnu.org>; Fri, 09 Jan 2026 15:27:06 -0800 (PST)
+ id 1veLx0-0005VT-R8
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 18:31:29 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-2a07fac8aa1so35553995ad.1
+ for <qemu-devel@nongnu.org>; Fri, 09 Jan 2026 15:31:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768001226; x=1768606026; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768001483; x=1768606283; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=mwTF1MVU47K34mQvUCHpkzgFDbb1WUXLEPKgEvmFe9o=;
- b=en2NpJeWi3+NE86eKWOA6LKIWLKQKW7VuvKTv9z1oaboHRrACkFxOPgnQSPCv5/SFu
- pLiTeB43hpxmTgLJ4tR7FkgT6ltQWjBVqiHJ9E6S6qcJ7fUtKS4o/09t908XSxKz/1w3
- c49K5cJi8UaLxL11l5BRQ3f4QrPIWz5k8lOZ+jjMLx8zoKyxnZSeqG+51x+a/mC0+reS
- Vq6OW4AXsQtPWrqiezu06SotQk34wVJ6prAJSyIONVOxCzyjppb0b3lPviC4yFJHzLeA
- sP9Ogs+Rrsv1+Q4ZsqRApMOEZgXnSwiA9BjEjsWr1Hky0tVWsV9Y0qm2RRgkyU2Tz1Rm
- wjtg==
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=6hTDhR4oVItq0Oes4TQkRt/bfJ8n9RXixDrf7NFd2/8=;
+ b=FZ6r8kD1eSCgCPlVBY2bmv3rQES+cWqfveG8RxllHuayI53/P2eLz5zP2V6oxls4Pg
+ wTfxTB1DNrNYR/TQ53vYr90IXGUUIhfLIyZqyX6leYOq85BPvshjQqC0XF5A1I32quom
+ xq7FHIkBkOeH7gzD+LJIMpPCxI4kAmGoYMaa65rTEjt1ohq+kjxLz/GtXjm2lzSs9K4d
+ aKcz9nQie5QBN3jp5aBWwEEN0KAAMFM/3S2lGRHj1i/bvuzjPuhSV1iVbgZAH35tF3dK
+ KLgOT7fUX40y9HCQ9bma1JI8+gaBjz85tMlmZH1xeF9tvKwCUphEfOb4vYcR44d7ktd0
+ Be0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768001226; x=1768606026;
+ d=1e100.net; s=20230601; t=1768001483; x=1768606283;
  h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=mwTF1MVU47K34mQvUCHpkzgFDbb1WUXLEPKgEvmFe9o=;
- b=cpRlUEDV8TrBrzR4vXps7Qqon+FPZhiEWhpFKobq/kGhytxyQkcttH+Ht9BS0g7K9J
- Up7lruo0uqk266uKvi4jbIko6eqpLgRqsrErYYW8x1ChpyXi+xN7OqTpI0IgRi/XgCc2
- y6K6yWJ/qVBIuGi7JNbOED1hrH3+2ay8HFwvyalW1/hY5YwbIFc8/AYbnpOz/qEfwTJL
- PQ2pjZAo3cY2yrk+eBEz/Ge4jXiH9F66Y7TyWin7/K408012PuzOt5i6UokXRMMeKZcZ
- 9w0GQLRQYtTDyzVMgYy031zRvqOAPY+7T3rmdGO9JUF2b7kjP84rbid9Ph1MhHbF4ngf
- TyGQ==
+ bh=6hTDhR4oVItq0Oes4TQkRt/bfJ8n9RXixDrf7NFd2/8=;
+ b=PkgF3pYRF9mlEd42vVSht7bW+FyQTBR5z/QmDwF1hVcjXx7GmMB6BmX9vczeEGYjEG
+ COuXcdFDtOjEjzO7Inz5ZJMOxf1Msk6TWT4ZhzvAw32+GoOY5PHAKkf4+MzK//kqaNgi
+ /1OyrL6lXiQm+QLpIOiAvVNMSQ6EjAOxEETXtIGWwPwuJBfBHrw6JcaUuJYnKKnPn4/F
+ zAg/S/JzCqsjqGJ+FU0sfaIdoIB8KnNl12wgCHFeVF4aq/i5uSjJz/nAGAbNZQb2czef
+ buIQw7Xg+boRde8Gfyn1jZPXSg2k2FKqZ4VUIU/kOWa9bGwC0pzKYCxjL/GAYA4njXtj
+ lYAw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWukG6Yc+xeqxhMZmC2fNl+0p6Y1oKPUzWueVtAYkpyeHV3LKXnB3whDWKAS7Zf7YjQEyRLw/2+mhLP@nongnu.org
-X-Gm-Message-State: AOJu0YysOKp6vVu20WhVgrWjYXFCQyNFS9S8FaFA72pvML9sO7sxqiRc
- dx4/gLQhGavkkpa3XqNxVYIhlubDgJ1hcPW/06xJxHRTxTvFZ6UWQPE3WU9Sb9+2+6g=
-X-Gm-Gg: AY/fxX7sp3sj/ign34ZWivzmjxeTwnbjm5bYtarC83/UWDE2JJU4QyPysTyp+G4gryA
- T1otERCB5GIKAITmDm1p9d7/Jt+ODEA1P32ijMXQU9ITDELfCbmGn/0E7m8qP0sQmCVU0dbezVH
- 7fKowE/tk7SD6a6pbh6Xy986fjw0ZkA9Y3jCRqbcVGijqA+uhWGDW+gCnFIrUm6SKG6JsPSThCa
- MQIUOvZPURIfBPVAi4KJnF/Zt9s4Gl55D9hvmEC0uw0L5WUpiXoFXm5smFHn6orLLy8e3sAZNTM
- c3QvlQjexueK+UoW88R9M4RNDQFpVYC1Oph0eeQIsSGVHzYLyD2f4c/ziwmpSu7TAVImmOJhbCB
- z7y2EIX8WjI5mVTbMbeTXGtWmlJmXkW3bFbQVREWdbirBFBMmADi8iLnoXn0b/pWCKS5oDb7uIU
- UDgsF7IgxZXpeKLdCnhkRFzndjSQ==
-X-Google-Smtp-Source: AGHT+IFwdeoGmvQ/1inYnANOd8kKIivIyvBrW5ueUyZTi/guz0+rDcYzMHnTyqzNnZd5xWSeuIt/Fw==
-X-Received: by 2002:a17:903:2f8a:b0:24b:270e:56c7 with SMTP id
- d9443c01a7336-2a3ee4137cdmr113551775ad.7.1768001225724; 
- Fri, 09 Jan 2026 15:27:05 -0800 (PST)
+ AJvYcCVl1wBXt+7xGvZHBfgR7m6vaTkHKN2l++jedtRHxnv298UU17crNYx6yZq8cOGdFrr42dDWj+88ojI/@nongnu.org
+X-Gm-Message-State: AOJu0YzzKa7VHlowBBOCdrfjwFrz752jstFD80UR59V14RRh8Vt7GQcY
+ 7AZ/H5AounPNV9jcSkopatKovakqYIgmFSrZZIXFe2jPGiE130SVxPaHfV93ij+HqvA2kuxyOLX
+ am7m8Bf0=
+X-Gm-Gg: AY/fxX60oOI9sR1AEtSwY8tv9XghXnLc2FqcZR3wX1cwEG9d6uiqEyr+GNo0dHXDlfX
+ 47+nYHU74cEAUi2Fawkjc8A1GkL8ZwN7KG3TuPe37D+EldNbwfRsUm3g36O2+OJq2qQ1SxXO3rg
+ oiJo5xwd+fOQSntPAWSYstSh/g9cmLncVo+3OD8thazM9NWiEb4F00oehRMh4l/Sje/hSxToaAV
+ O/8Bfd5ObHFgjaP8vzb4G30cM1vsBF0IPCV8rJjCi3/eN6/E5cPa4kLfFJHGaHLML8orT9fcHRY
+ yjLODkI43ZG9DEFicC7oKx5qtQhueR8c3nJLEc/Lr8WV9+tC50Br3xpZ0aSWZLIVcpdfXBeD8b/
+ 715XM49Lpvz5y0FWasRSc5NMl3hspQz6n87mEWnUW6yqDpd5cr4076rxrufBmaxXa1K49xTr420
+ AVGVzXCjEQnqIU1bFX9S9EiZN/ag==
+X-Google-Smtp-Source: AGHT+IEZgH09IaI1KlZqBk7KKBeJGtcfs/XH0YrI4uSJkVKusJzl/ADr9aeiYXIvKBnCrA1PYP6Ivg==
+X-Received: by 2002:a17:903:1105:b0:2a0:cb8d:2ed6 with SMTP id
+ d9443c01a7336-2a3ee4d9b4bmr78855565ad.51.1768001482687; 
+ Fri, 09 Jan 2026 15:31:22 -0800 (PST)
 Received: from [172.23.81.179] ([202.86.209.61])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a3e3c3abb0sm116029035ad.11.2026.01.09.15.27.02
+ d9443c01a7336-2a3e3cc87f8sm113346245ad.77.2026.01.09.15.31.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 09 Jan 2026 15:27:05 -0800 (PST)
-Message-ID: <4ded8cff-6bae-4938-9678-17fc8f27e528@linaro.org>
-Date: Sat, 10 Jan 2026 10:26:59 +1100
+ Fri, 09 Jan 2026 15:31:22 -0800 (PST)
+Message-ID: <15e903f3-8fcc-4748-8541-18d3c16afe4c@linaro.org>
+Date: Sat, 10 Jan 2026 10:31:17 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 12/22] system/memory: Use ldm_p() and stm_p() helpers
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Anton Johansson <anjo@rev.ng>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-References: <20260109165058.59144-1-philmd@linaro.org>
- <20260109165058.59144-13-philmd@linaro.org>
+Subject: Re: [PULL v2 00/17] Error reporting patches for 2026-01-07
+To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+References: <20260108070625.1586474-1-armbru@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-In-Reply-To: <20260109165058.59144-13-philmd@linaro.org>
+In-Reply-To: <20260108070625.1586474-1-armbru@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,17 +103,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/10/26 03:50, Philippe Mathieu-Daudé wrote:
-> address_space_{ld,st}m_internal() take a MemOp argument
-> so can directly use the {ld,st}m_p() helpers.
+On 1/8/26 18:06, Markus Armbruster wrote:
+> The following changes since commit 0fc482b73d8e085d1375b4e17b0647fd2e6fe8f0:
 > 
-> Suggested-by: Paolo Bonzini<pbonzini@redhat.com>
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> ---
->   system/memory_ldst.c.inc | 16 ++--------------
->   1 file changed, 2 insertions(+), 14 deletions(-)
+>    Merge tag 'pull-aspeed-20260105' ofhttps://github.com/legoater/qemu into staging (2026-01-06 06:52:47 +1100)
+> 
+> are available in the Git repository at:
+> 
+>    https://repo.or.cz/qemu/armbru.git tags/pull-error-2026-01-07-v2
+> 
+> for you to fetch changes up to 1f674a2b7aabb49d5a8308ef3949b2bb2fd70281:
+> 
+>    block/file-win32: Improve an error message (2026-01-08 07:50:32 +0100)
+> 
+> ----------------------------------------------------------------
+> Error reporting patches for 2026-01-07
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/11.0 as appropriate.
 
 r~
 
