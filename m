@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58266D0739E
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 06:38:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 089DAD073AA
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 06:38:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ve56t-0004nl-JO; Fri, 09 Jan 2026 00:32:31 -0500
+	id 1ve56t-0004oZ-Qb; Fri, 09 Jan 2026 00:32:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ve56p-0004gK-D6
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 00:32:27 -0500
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1ve56q-0004in-AE
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 00:32:28 -0500
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ve56n-0003ke-Sj
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 00:32:27 -0500
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-7e1651ae0d5so2402296b3a.1
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 21:32:25 -0800 (PST)
+ id 1ve56o-0003ko-Sg
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 00:32:28 -0500
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-34c2f335681so2386070a91.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 21:32:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767936744; x=1768541544; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767936745; x=1768541545; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GoKrriVmMrbjJDHf1DVQarNvxXMmC4IuPbT/CIGrkZg=;
- b=lpGSL5qZEyIyEORjl/Q7OjJ2KxT72kuG9f2xMZrCABAONZxmTbKgZTOcMtyVVLsdiJ
- w6m6LESCOXq0Wv79ut+hnqPT86PYFEC12uk79+V848QCtY7gNPKelyPZhfWoC8m/JHD4
- cYHPbptyNldraks55PWT6eqmCioWRzXfyqdJGqM1dWE2khq2igKCQvmSCZ0bEp6X/F3R
- HlKrkGKIdrJEnyVI+kq1ghAKivsDI5kCwzsphUC4JhKEn80j+X38n1zaA8q01AsMOATt
- Lh7+laBkmFtLSs626KiZI7sQBjkw3LweWRS1ghkud6MDCcxdbyvg3LE5OlplxM021fmu
- UuHA==
+ bh=WmfFVcMtzYnR8N3S8tOZaDOZ/EmC6gFRWJV8lK9mH4o=;
+ b=jHbvd6aE0hq9a40ObIeqjBx/Dd09ULBeJcDneiQuS7NVeYdfPzaY1isjs1itYpev/k
+ z41k76xRm0tl35lCzO0iXc2/ZAUSdTanrSIRvg1murg6S0Pqb4C3FZtF8Dvqx9hRegDk
+ 5hH3yJFVp1rWk2I+SOcPi3H7mRPLoVlpEnjF+vttu7ol6d5887faVX0OqyuTtTdIt6DU
+ jaJt1MnAIGhmKVLtru8VFUDb5JQ3uspnFZqX2JwW7NFde2AQ/fq2qm/OQisoSpo6DyNu
+ e+5kPMvll+RAbTF9DkOJmK4lQP2WEXVIhZSeHUcasaR56DWVUA9jRhGnYXpU1FT+Kkhx
+ puZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767936744; x=1768541544;
+ d=1e100.net; s=20230601; t=1767936745; x=1768541545;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=GoKrriVmMrbjJDHf1DVQarNvxXMmC4IuPbT/CIGrkZg=;
- b=blkboRx0aMfHL3ogjaf1F/wBaKIQsLuZ9qD3zTCUzxuIcq80lMv4tSJGIikF2oWXYT
- J3UfxwJdO2RYCkPqbQ3oiQPyrTyPr8AUiP/uXn2a2mRvb89g/UGxF6xhkoibZAsCzL0/
- ubHTLfsCJnp/vR3dfAuhqsi/yQywi7UhBcQ8VvlAFld5MGnnskE5rhqChR6aZLQrBqVH
- QCVrShguvT2RgxjZoL2u7pGL47ymteR5EvM7UlnoCnFW/P5k1MjsCa2qLV8tuy2DmANd
- 7Ie8cGpPZn1HeD4C5gpgrK80bLpgGHv1hG/jFbBrWdytT9wRD578UyRQmDCE9Lp6nn0N
- mPRg==
-X-Gm-Message-State: AOJu0YyKSwj6LW5aZyVXAKpwpUdr+BWyOo0CZsyyvyXPw4rb+XcZdVgX
- 8gnTw+l1wd7GH7J8lFIVfCo05EEsf8wk6LmaN4JSw0grDcHyMU5s8KGRS0g7haHYf5WC0W9PTPg
- 2YlWw
-X-Gm-Gg: AY/fxX6qGkO155EEYX2hUdkayqWVoZwQDOw7HttscyqLwwpn4TGixNO2cwOIN6XJTmX
- njFVvYTzG5mKlxYs0wj/KcN2M/AjsdkNMWVxN4nLgVVYTbh2pJttho6ca+GRVbGpAiVoLz3FIkP
- V2ZPidjEIqUxeTFZVPhdX7qSkQdCiGKtXNSSSl794J7caDKh6kPqt8MbwKDG/M1MNPO0J1ruFRf
- yxK436UIcgwaORTvVF5Sq+YPXwogqsAD9xlu5YCed17IZjmw0Ic7k95PlN94xWYYaV2E1G1gRfp
- GvxXai/Iy2sFYiJMVv8xmzcozxItB/S8TEGopMGMHZ22/8mJAAJ0/7Kwe+pxRrVBZvIQW+6ht/i
- 3b0Vkgb+c4+4oMGYqtDcW6B7TFFzGBjQhtI/9Uw3KzkKIQLe0fPgpi7JUWTYSKdQp7EzrU6YPkK
- /BS07/DTe8LXxme/jR3J8jF2ZdjvvjhMk+UY6cyXvHSGKVKG5poc4SrBwPrx7b9p/b62coa2IUo
- o8=
-X-Google-Smtp-Source: AGHT+IFfYEHdzbLbfnFof5hEo7fHzUQRCi+UwgjfLMSBbXBNjgQbHCFwJfbRF+aPSYr3k57kESQ2kw==
-X-Received: by 2002:a05:6a20:4308:b0:366:14b2:30e with SMTP id
- adf61e73a8af0-3898f9cd7ddmr9042046637.65.1767936744430; 
- Thu, 08 Jan 2026 21:32:24 -0800 (PST)
+ bh=WmfFVcMtzYnR8N3S8tOZaDOZ/EmC6gFRWJV8lK9mH4o=;
+ b=KD2FPk7jZ09Ff9aSScgGbeADmJ+8hBVQJTIdUiYv9vnkOiNs7l32mIXzqG9X9rixp2
+ MvcjF1slQLkkVJ27z2GplQivK2WD3fT+yqHWHr7yQi0FRlTO+skZ94P77XYB+CU8lJjK
+ vEsuYxpahJPwC1jweNV1FJHOV1nAHdAaffhgU0Jui+5VMDEwOPzVnhb28ZNxsVKvouxZ
+ RLDUCSmgdG5moU+ReYb66+wvceUBwI2G3LUJzvNMJW39FZieH4asG7FLtw9frS5lXpu2
+ 3DA6iKRiLFbbuysRBgLyKDRIOMOUWkoikmuPd/YAx3enymhneDvxo+dVDziaZCy5Er96
+ 29og==
+X-Gm-Message-State: AOJu0YzqcgIyrIDeZao1I7QQs6chVEZt70ITCIV6LgUnkytJ4DB0YBJ7
+ /c9lZCg0X70noTLxHeUwuAnubpYVG0LnTC9ps+Cb7YYW3grGAhyDqmONFc/3BATVJsG2qOhy7Vd
+ nvDXs
+X-Gm-Gg: AY/fxX7JATLTJgms2pGVPl3YkABe/A7W00SUhsN/z+7ZKhrh03abQ2hdQYTIKIitbZW
+ p2OSIcaBuT/hU/2XjhtnvLcLF5yB/qv5mVOVfTkWrP9jH4r4enquwlSB7cC89kXv7l1+bJKcrir
+ gjs8kiX7s9gUBxfmFapNlt8GKQKQGh7FjyZ0h0v5wVm3WLGHWMKPNqKCPrZK0Fchb+9A/oFV87k
+ nRSs2z8OEyi+Wt0BHHLtEXGPZe745gEJr8ygU9TRFmQNAQgBUuT8O/9A0DYNdbjRP4erwYa1FYK
+ EcHQYdF68ra2oN3vXC7OTMK/Ea9vGJl5i6jUt9UxZDqClcGQO7V5ubaSfAvA14C9Da2m8rdgory
+ ErUCoSXC4uNqirKqNqvtBfUHLzJBc74nivHvbAiUiWur9hKvjq1JLpYxr8zFN8WEdCKG5u+y8NS
+ Uwl0vdwZC60aOFiYwJG+qt3wRiQSahDC2fILFonJY2+X0cGdERAR2EIzndbIMiVkUss1Ctj96wK
+ Ys=
+X-Google-Smtp-Source: AGHT+IH0YuWeUTgethgNOaOxMET4pXlxG3A3o+3c+egcvWrocsvcTM6lGoJrrTOsSsWo7uMjPZpRvQ==
+X-Received: by 2002:a17:90b:5211:b0:340:54a1:d703 with SMTP id
+ 98e67ed59e1d1-34f68cefbedmr7732317a91.35.1767936745254; 
+ Thu, 08 Jan 2026 21:32:25 -0800 (PST)
 Received: from pc.taild8403c.ts.net (216-71-219-44.dyn.novuscom.net.
  [216.71.219.44]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-34f5fa93f30sm9260137a91.5.2026.01.08.21.32.23
+ 98e67ed59e1d1-34f5fa93f30sm9260137a91.5.2026.01.08.21.32.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 08 Jan 2026 21:32:24 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
@@ -74,17 +74,17 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Jim MacArthur <jim.macarthur@linaro.org>, anjo@rev.ng,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 23/29] target/arm/tcg/translate: extract helper64 info in
- translate-a64
-Date: Thu,  8 Jan 2026 21:31:52 -0800
-Message-ID: <20260109053158.2800705-24-pierrick.bouvier@linaro.org>
+Subject: [PATCH 24/29] target/arm/tcg/arm_ldst.h: replace target_ulong with
+ uint64_t
+Date: Thu,  8 Jan 2026 21:31:53 -0800
+Message-ID: <20260109053158.2800705-25-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260109053158.2800705-1-pierrick.bouvier@linaro.org>
 References: <20260109053158.2800705-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1030.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,61 +107,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thanks to HAS_HELPER64 mechanism, we can now move helper info generation
-to a translate-a64 for 64 bits helper.
-This allows to get rid of TARGET_AARCH64 in translate.c.
+Allows to include this header without target specifics.
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 7 +++++++
- target/arm/tcg/translate.c     | 9 ---------
- 2 files changed, 7 insertions(+), 9 deletions(-)
+ target/arm/tcg/arm_ldst.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index b7a8e94b937..fed2eb18f13 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -26,6 +26,13 @@
- #include "semihosting/semihost.h"
- #include "cpregs.h"
+diff --git a/target/arm/tcg/arm_ldst.h b/target/arm/tcg/arm_ldst.h
+index cee0548a1c7..0252e3b0ea9 100644
+--- a/target/arm/tcg/arm_ldst.h
++++ b/target/arm/tcg/arm_ldst.h
+@@ -25,14 +25,14 @@
  
-+#define HAS_HELPER64
-+#include "exec/helper-proto.h"
-+
-+#define HELPER_H "helper64.h"
-+#include "exec/helper-info.c.inc"
-+#undef  HELPER_H
-+
- static TCGv_i64 cpu_X[32];
- static TCGv_i64 cpu_gcspr[4];
- static TCGv_i64 cpu_pc;
-diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index 5c496f42c55..ec4358ba402 100644
---- a/target/arm/tcg/translate.c
-+++ b/target/arm/tcg/translate.c
-@@ -26,9 +26,6 @@
- #include "arm_ldst.h"
- #include "semihosting/semihost.h"
- #include "cpregs.h"
--#ifdef TARGET_AARCH64
--#define HAS_HELPER64
--#endif
- #include "exec/helper-proto.h"
- #include "exec/target_page.h"
+ /* Load an instruction and return it in the standard little-endian order */
+ static inline uint32_t arm_ldl_code(CPUARMState *env, DisasContextBase *s,
+-                                    target_ulong addr, bool sctlr_b)
++                                    uint64_t addr, bool sctlr_b)
+ {
+     return translator_ldl_swap(env, s, addr, bswap_code(sctlr_b));
+ }
  
-@@ -36,12 +33,6 @@
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
--#ifdef TARGET_AARCH64
--#define HELPER_H "helper64.h"
--#include "exec/helper-info.c.inc"
--#undef  HELPER_H
--#endif
--
- #define ENABLE_ARCH_4T    arm_dc_feature(s, ARM_FEATURE_V4T)
- #define ENABLE_ARCH_5     arm_dc_feature(s, ARM_FEATURE_V5)
- /* currently all emulated v5 cores are also v5TE, so don't bother */
+ /* Ditto, for a halfword (Thumb) instruction */
+ static inline uint16_t arm_lduw_code(CPUARMState *env, DisasContextBase* s,
+-                                     target_ulong addr, bool sctlr_b)
++                                     uint64_t addr, bool sctlr_b)
+ {
+ #ifndef CONFIG_USER_ONLY
+     /* In big-endian (BE32) mode, adjacent Thumb instructions have been swapped
 -- 
 2.47.3
 
