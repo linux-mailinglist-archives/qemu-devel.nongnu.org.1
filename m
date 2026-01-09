@@ -2,159 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89FE4D0A247
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 14:02:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 412DFD0ABAF
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 15:48:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1veC6l-0001Nh-4f; Fri, 09 Jan 2026 08:00:53 -0500
+	id 1veDmV-0006cA-O7; Fri, 09 Jan 2026 09:48:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1veC6d-0001MP-VJ
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 08:00:45 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vr@darknavy.com>) id 1ve2Nf-000415-KB
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 21:37:41 -0500
+Received: from smtpbguseast1.qq.com ([54.204.34.129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1veC6X-0002xK-BY
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 08:00:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1767963635;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=0Q6sgWEMAOYhktsAS6QyU6Z296K0kxcSAAgks3nL9Dg=;
- b=ZWQwUsHGHZkYh9MF+ZHl4jXCNO1qe1d3wLIBaLT/9EKFqkvk9LN2tqz2YStOXypokwoB7A
- s9Ag1maIr2TgUxEH5IX43+iCcM0aGpdxV/wLQvSMoo99W1kt39TVr4u98uZkxpaaESiafx
- u1Vi91X4Bfi2i65nAWCbG4VFzJo5r/8=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-140-8QicU1BfPn64H8-u8LkyRw-1; Fri, 09 Jan 2026 08:00:33 -0500
-X-MC-Unique: 8QicU1BfPn64H8-u8LkyRw-1
-X-Mimecast-MFC-AGG-ID: 8QicU1BfPn64H8-u8LkyRw_1767963633
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-b802d6ed5b0so898845166b.1
- for <qemu-devel@nongnu.org>; Fri, 09 Jan 2026 05:00:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1767963632; x=1768568432; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=0Q6sgWEMAOYhktsAS6QyU6Z296K0kxcSAAgks3nL9Dg=;
- b=EqhcqLdKFwanj7+3oYmQZkwZoJ0DoTrUC/8p+YEAwGY5tv/TxobmVxcdTFvOAe5Yze
- 04/j0BqfAZkOXR4ZhhZ5AJBLgMRE+SQrWPQe/Jgq6feZ0eByKPRg5ww/nXnhqJPJaUd0
- 56UCqgBNfTW3O+JjTzaGnlISE5NfZwknbfLdFNy4NMmXE3ZmrpqL4mCP+lnxERKMDrma
- GDKTTNxhuWZIoeF9Bfd9txvslmx5EW90dD/Cu+ddklv2W9u4B20vgi8q+Bvz/Ebpqq58
- b7+gCF59SCteG/pVRuI7heh64UfoOwgpoOyupTbMY5wNJLeNfZS5q4WZBbGL5WYku1pl
- sv6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767963632; x=1768568432;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0Q6sgWEMAOYhktsAS6QyU6Z296K0kxcSAAgks3nL9Dg=;
- b=TC7rwv6jVXVcjMFXJ+OVzGWPT5z6txEZQZISJ8pwGWfUacbcgvCUNaHPFyX1n4alPu
- 45E9A/UsipBNUOk5l9f0UNqG0CNod2a+c3AYBP4uKOIUVL1tiVgxQdZWxkk7Z5VHq7s1
- GIt3Jr/5ys7U14vi9C5tIunn2KTVW/amMTUQG+Le4rHWUSm6pXsmej1fY7gmoQLG0dcF
- 5O1/WyJUj+4IDMAzyYi72fzsgp7LT7cyYXKBtjbGixLwCXTHDrj6y4HElrJujC//mKdP
- 778go4JYRpSz4cPdbYBb6/X25SXcFaHUgumv4YPOtgfjn2E+oD266Sp00yLeC1eUfFB7
- KHnA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWyJmow0Gkm+WKhFChseyP9fgKBSyM5TFh1KRSxnCJauBQEm/VNZAP+l1HPBQIuGn5tVX2re7w2ik63@nongnu.org
-X-Gm-Message-State: AOJu0Yznc9rP6PiMi1eQ+07zi5vskDhM2ZCWD4/YK5ufp9YkQm4QiVJc
- yn6/GSWXNsOfhBzKcOc77bLnzAKyLz6yMDNEDwkZMptG35FoZyQL5WN9nfpTd2CMtMLhxQn3dBq
- P9dLY0zEUX4WrkovK2h/JahR1mXMYb/WV6o4O2eglZ3f8mJ7vUxKHi2zz
-X-Gm-Gg: AY/fxX6zXmCuxRuLePEO4uwc+V4lOeIe1xF6LuDanh+dQgX1GMiLhoKLAsP7V7Kh7vc
- cxjeQaNUPgTYqI1MMoM7bUPNnszBGGiBiI9AGdUUbIPWGcXcl0/mjK5gSp9tYbtkbP4xVwbkZ8z
- GTizzRuKMunxldFqLt4d+1EWl7H+69hg8z6BR6iXkrwNXoO23iwdSJvdrP3akrphgeXEtoJo0So
- XSETUME3EpyIvEbZASWUY8eyF8hdlKMSRDGaUpwgtgNS9aU7f91HzLYKzs3Snb4e023xtJLpPTv
- O2ynTgzn2fwX0Gs6kF0ry3xCxnEWzTgLAyLK60HuzdIsaBPoOWZJwzDZFyq4VamJt5KaPX9cHLp
- taWtp7pk=
-X-Received: by 2002:a17:907:3c82:b0:b73:9222:6a64 with SMTP id
- a640c23a62f3a-b8444c5a808mr1108914666b.3.1767963632392; 
- Fri, 09 Jan 2026 05:00:32 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHo29tgSb4FymxZom+1AoeBR3TNlFWFoW6pm/NU056CBF07CsU2bVg9GxVlldoJJru1iSTuwQ==
-X-Received: by 2002:a17:907:3c82:b0:b73:9222:6a64 with SMTP id
- a640c23a62f3a-b8444c5a808mr1108910266b.3.1767963631888; 
- Fri, 09 Jan 2026 05:00:31 -0800 (PST)
-Received: from [192.168.0.9] ([47.64.114.194])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b842a4cff3fsm1085328266b.33.2026.01.09.05.00.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 09 Jan 2026 05:00:31 -0800 (PST)
-Message-ID: <36b96f1b-2f85-46c2-b2ad-159838a428b2@redhat.com>
-Date: Fri, 9 Jan 2026 14:00:29 +0100
+ (Exim 4.90_1) (envelope-from <vr@darknavy.com>) id 1ve2NZ-0007JH-EB
+ for qemu-devel@nongnu.org; Thu, 08 Jan 2026 21:37:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=darknavy.com;
+ s=litx2311; t=1767926236;
+ bh=s9S370S8RXeJ1FD8f8SM/PQYUuYKGXkFVvnBpvOhwFc=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version;
+ b=tgXLIROQo7OXOsELu1MWvuoLe+hmrrHDk50rZT0iQH+aZChHFiXL7yJHpnKPt/Nwk
+ IOMM2yPeackiURxmDR+aeLG0sYjrdIPY5/ylq3urd9DnVCIoYqS+cdVMpS/EJt6WKp
+ lG5V77ZJQ6LpbV4rsmzdLRp8/Llj99n3G7lK6TmQ=
+X-QQ-mid: esmtpsz11t1767926234tec53d6d9
+X-QQ-Originating-IP: G6DeiDrv49mAVVqqRafGQfBkME2meq9SGkuz09YNcN0=
+Received: from localhost.localdomain ( [58.38.42.157])
+ by bizesmtp.qq.com (ESMTP) with 
+ id ; Fri, 09 Jan 2026 10:37:12 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 7724640879889572711
+EX-QQ-RecipientCnt: 3
+From: Vulnerability Report <vr@darknavy.com>
+To: qemu-devel@nongnu.org
+Cc: David Woodhouse <dwmw@amazon.co.uk>, Vulnerability Report <vr@darknavy.com>
+Subject: [PATCH] hw/i386/kvm: fix PIRQ bounds check in xen_physdev_map_pirq()
+Date: Fri,  9 Jan 2026 10:35:48 +0800
+Message-ID: <13FE03BE60EA78D6+20260109023548.4047-1-vr@darknavy.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 12/29] s390x/diag: Implement DIAG 508 subcode 1 for
- signature verification
-To: Zhuoying Cai <zycai@linux.ibm.com>, berrange@redhat.com,
- richard.henderson@linaro.org, david@redhat.com, jrossi@linux.ibm.com,
- qemu-s390x@nongnu.org, qemu-devel@nongnu.org, brueckner@linux.ibm.com
-Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, pasic@linux.ibm.com,
- borntraeger@linux.ibm.com, farman@linux.ibm.com, mjrosato@linux.ibm.com,
- iii@linux.ibm.com, eblake@redhat.com, armbru@redhat.com, alifm@linux.ibm.com
-References: <20251208213247.702569-1-zycai@linux.ibm.com>
- <20251208213247.702569-13-zycai@linux.ibm.com>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20251208213247.702569-13-zycai@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:darknavy.com:qybglogicsvrgz:qybglogicsvrgz5b-2
+X-QQ-XMAILINFO: OVFGYuALQ4aSzCXJvmq8BrCGKSw5DrrGTbEAU2SqGsYPnEo0jHO2c1Cj
+ GkNGpMObkXcQeLmW9dq8NKtdjj/1mmq7lsph9M4JgDkWF63VWYldJiEdfsAhf2MhAzeePfO
+ zEZ/DMARDrKhqk2Ttx/lRRi8sOxDn4+m7zSb1PdOH84iqIFdhxFF2pur2vNOtthSSiQJ/eF
+ IFNabHZ6BgmcRuF7fAzZJoInqfGxj6eR++wxcVy5NpB8qiZq5PEidhazCeM//gyODuFzvDD
+ OoImwOVctb6HNOhkYiX8V3XxKT7JdoDKXBfU89eVR4lTX76tjOBiDEgCfNQrMA2wrQ9iLHp
+ xppNvqGH2E+s3fD0IAFNXlfGi4hJ0I5NIqq2duSr6PztRpY0J1JB8zqVpVWhppxIhzQF7pt
+ fJ5ZBlbLcQGstnV7Hq4j5IKUQ92/g25yTGEfVaY9eR8jNgaZxb9CvV7MwEjZD3XNHI/uHfO
+ 7Bq/5ylRPpKJOrRyflscrJOTKE5QRQUBoKg06CEPt6itSyufmM3rHgUoBwSygECYG8kuKcL
+ 1g4EdPH4OG+BPtN2Opjy3VRNwuNho3sz9j3788+eLThcFVMcretTLoj7H7ijOj0EUml6NbS
+ hJpvU3xa7wCbIKfpHNSbqEw3HvyZUcnOTU+u4RPBsWG3foHNVGwaYS706Tj95k7AIdQkgbr
+ /kBEtMna9WKv+Mi15tJF+5aj6KZTXMoMJC3qb7NxjXShRLoklD0zTmR7dd8OquktEolqAe1
+ xVl2OuPo0WU7UFx1ElJZj5LfmVmjUF6FowZD/4eAt0K8ItYuDRPyhZ7SvmIGQlXdfvlFaAs
+ MaTd6RKMDE8mGEBfyz1fkDhcUuElmDnPyDn2lXTRy5EnXRfYvydISmXS8Ry/D7XCfg5AdE9
+ 5yi9zSilxrgMGKZtGkIc8aYpfe01q/gF0XXt66NcAFmwNV+WiKrhen6duZA98ljslfwCHR2
+ CHQKcS4gsyc+zJmUUj7fl+1BUXOMAfpqtTaFRAYq5Y52kMcH+jVzPDflmwN/rLzahe+wuff
+ rC1JNgAQ==
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+X-QQ-RECHKSPAM: 0
+Received-SPF: pass client-ip=54.204.34.129; envelope-from=vr@darknavy.com;
+ helo=smtpbguseast1.qq.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 09 Jan 2026 09:48:00 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -169,39 +87,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 08/12/2025 22.32, Zhuoying Cai wrote:
-> From: Collin Walling <walling@linux.ibm.com>
-> 
-> DIAG 508 subcode 1 performs signature-verification on signed components.
-> A signed component may be a Linux kernel image, or any other signed
-> binary. **Verification of initrd is not supported.**
-> 
-> The instruction call expects two item-pairs: an address of a device
-> component, an address of the analogous signature file (in PKCS#7 DER format),
-> and their respective lengths. All of this data should be encapsulated
-> within a Diag508SigVerifBlock.
-> 
-> The DIAG handler will read from the provided addresses
-> to retrieve the necessary data, parse the signature file, then
-> perform the signature-verification. Because there is no way to
-> correlate a specific certificate to a component, each certificate
-> in the store is tried until either verification succeeds, or all
-> certs have been exhausted.
-> 
-> A return code of 1 indicates success, and the index and length of the
-> corresponding certificate will be set in the Diag508SigVerifBlock.
-> The following values indicate failure:
-> 
-> 	0x0102: no certificates are available in the store
-> 	0x0202: component data is invalid
-> 	0x0302: PKCS#7 format signature is invalid
-> 	0x0402: signature-verification failed
-> 	0x0502: length of Diag508SigVerifBlock is invalid
-> 
-> Signed-off-by: Collin Walling <walling@linux.ibm.com>
-> Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
-> ---
+Reject pirq == s->nr_pirqs in xen_physdev_map_pirq().
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Fixes: aa98ee38a5 ("hw/xen: Implement emulated PIRQ hypercall support")
+Fixes: CVE-2026-0665
+Reported-by: DARKNAVY (@DarkNavyOrg) <vr@darknavy.com>
+Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+Signed-off-by: Vulnerability Report <vr@darknavy.com>
+---
+ hw/i386/kvm/xen_evtchn.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
+index dd566c4967..173e0818c7 100644
+--- a/hw/i386/kvm/xen_evtchn.c
++++ b/hw/i386/kvm/xen_evtchn.c
+@@ -1877,7 +1877,7 @@ int xen_physdev_map_pirq(struct physdev_map_pirq *map)
+             return pirq;
+         }
+         map->pirq = pirq;
+-    } else if (pirq > s->nr_pirqs) {
++    } else if (pirq >= s->nr_pirqs) {
+         return -EINVAL;
+     } else {
+         /*
+-- 
+2.39.5 (Apple Git-154)
 
 
