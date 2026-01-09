@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 375DDD0735C
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 06:33:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D219D07362
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 06:33:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ve56i-0004MH-Mo; Fri, 09 Jan 2026 00:32:21 -0500
+	id 1ve56e-0004GL-1h; Fri, 09 Jan 2026 00:32:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ve56a-0004E5-Ok
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 00:32:12 -0500
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1ve56a-0004EU-W8
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 00:32:13 -0500
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ve56Y-0003gX-V2
+ id 1ve56Z-0003gh-DB
  for qemu-devel@nongnu.org; Fri, 09 Jan 2026 00:32:12 -0500
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-7bab7c997eeso2918862b3a.0
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 21:32:10 -0800 (PST)
+Received: by mail-pj1-x1034.google.com with SMTP id
+ 98e67ed59e1d1-34ccdcbe520so1320248a91.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 21:32:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767936729; x=1768541529; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767936730; x=1768541530; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rGO5t6yhWgb8pIauU6B5HnqUDD8NxKcUMjfi55ekFSs=;
- b=UAOJEENAcDhFRK9TL7XgVD7s6eGiZ7zsIQHRBQaiTUvzwu6yeain92x2JZmyD8xmAo
- o106uxv6XyQ5Af1PEEOM0+jQUnPpivv92E9kKk6Ts87Fr6NlCqabQGGxIW+ZgqvM7IzK
- DetbgzpcGsaa2T1H4/xI78mkxJiYlynv3zbcvHJmFfFVXXd3iqUJ7d3zkzq6d+yqh6bN
- mvLef2wmij4QMsuHHZujWAEFxgqlnDR+p56NOSCP//FvBtSy4WL/ytZALcDOF/gZsvb+
- 2OKOMN0PjTRcKScGZwZnoTt3vOq0qnvmeahI921+LKntVvtIDqtX6/+uvyAfVMyWxlb0
- eDLg==
+ bh=H9MNA25nCytrrB1MJ4OeFVmsiFRsgqqEYw8vG3Tiy1o=;
+ b=X7Is279OYNBaRrpitFoMBYLfNbuXgdTILZvenV1GRVRIyHLN6ST11f4aM0CpHDtpxd
+ 0hU/1FTD+KAU4Sj8Yf9time8fJZi3LjnS4XDvpE/9sy6UHTKmgw923ER3fWg9cPSqj7Q
+ LOqx6XGOkuNPI1EWQgCM0tKslCeQbSsWc9+eLStqGJ07v6mRFr4RIB1GF4qLWFMQi4Px
+ XQwm/OmgyWaoLkfXWWSZfNZPDdFryDTT77A+m2CQCDw7BZJXyQvpgW426kCAVmvV9eyV
+ dkqwWHfbh9qllGhK34/s96nzzC4FCwOvYZHxLshjCHm9rEOt2AofJfWiqX9BgLZlnH5O
+ Tb6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767936729; x=1768541529;
+ d=1e100.net; s=20230601; t=1767936730; x=1768541530;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=rGO5t6yhWgb8pIauU6B5HnqUDD8NxKcUMjfi55ekFSs=;
- b=IETEPPoBmjSy8/TeWSksuoRZAb4fI1BUu44GBd8Nlq+zUtxmmAB/y7IWurMJWyViW9
- BSmAKcWUfDVwIj9r+WSd5pRtYXxj7kPQEY76v/GXKON6zoWFbIo2aAf8bpU5ohcbxovV
- PopgnVruNDK31hCT8K8JSE2f/bMqK9NoSl37iSSV0a2gmvecnB13GJVk6AnLGRekst7r
- ww9QPF87nl7U1eBJPVEZZgBrHijwAjNFuqkLV5fOfql7bkQhDexfpKcwyfrK+iGdjT4U
- Qi4yXimzC1QjmvoQPK00ib5A1YAGdt0rOIITFc07TJS5rBpntPwCfdCPXSGWodECYLia
- 6rEw==
-X-Gm-Message-State: AOJu0YyO9Kqha8Rvz+7aAvClYD5IEJVbWfAKFjiXNwtpb78uGvPvTbUH
- B4LMEdl0oLhCdYos0bV4qotm14KNTZcLXW5gzU/J0fwxsWB85rfD+xOsXSWEUoFwHLa10xj46S3
- ZKSD5
-X-Gm-Gg: AY/fxX6sbhQHpuvjB1Cxrrt3o/sKEtlbo6EFtL+E281e+ayY61gVioefowneaavzRbQ
- 2czXZfTdQJuaLIMWqCO6miDaXJHbRkvTXVmIjyx6p0wRAPm8NGXx8I/QLg0YbEc9j9DTZZE+DNz
- 8CqPTqxmFj2a6juHJGslg7DFfkOjtDKMvj54sHTvF5aWvDsPrMLwxUS5emKjXWCY4Ec6qfbc4GY
- dzIamMvoST8CZTX2LZI04SOQSYI1zdERme9QS21jgdb+luTrvFI3ZZC2BIVqyHZVkv3z+zEfPe5
- QWpqhbFjY3MSfgnlh4yxuxO+of7h9LiiQ6mgI1WgVH+j34q/PeGa+Qrc4gB8cHQsg7+yAeTzjyF
- UqtZzo4b1ly8Yfl+FWIfb8296iAzF1wh8ByY3GP/MVuf+bwCWkPGPmhNV7mhl9kCscSfpjjjjA6
- qjMgTFaekM2nHSayrWIJ4gXezLTD/vFtq5eC/yf3NeNq7ng0l8CTh9VnI6lPbnQahz
-X-Google-Smtp-Source: AGHT+IF/kVHoGU+LDMx5rVKI1zyPjKapv+1iuAXKcjCLoOEJN4Ge52NevQuBECmS129e50pYGm4NPA==
-X-Received: by 2002:a05:6a20:7490:b0:389:8f3f:50ce with SMTP id
- adf61e73a8af0-3898f9af60amr7872544637.56.1767936729246; 
+ bh=H9MNA25nCytrrB1MJ4OeFVmsiFRsgqqEYw8vG3Tiy1o=;
+ b=iTXFsOXM5cEmRVdoiWixIIFJhjVGFfr+C0etS2MAI/P/NJg/UI9LkLGMsi5TW58qbq
+ SgVOWsy7DK9HY8WyZGEdFUcwoNQSuRW9JifBTeslucbECS7RJBdbEf0JAevI3QQrUSJj
+ /QOsl/nyguvWeApBXzFNU0bZ8G5vA7bPlRzzEruThVk1Xpi0qbif+Xw1B3DPcDbG2fq2
+ i5o0tDL1XZqIVN4xb7wvzFY6hZA2T4oOYvzFX99fUqMVEwB6hZPKL8zEoFSrjF/A+JXG
+ zc4qyiw4iE6gD0qfSdAj4ulcajFVvMRSNFjihwrotRToagRuSw3YRq5vcuGzdLCIm6Zb
+ 50vw==
+X-Gm-Message-State: AOJu0YxrpSmreUI9wlTp6mTYgZYoSVFhJw2VSOVOp8I1hjg/rPAGE8bf
+ SSa0KwYlOLkJokaTsnZtGWVJJlsTDIQinQ+AAoJn07KJX1qTbJ1R4xh8lhpcZi25dtJ0P3GYveS
+ ANAQr
+X-Gm-Gg: AY/fxX4YkOcdaB7m+sp+/FnoBQwR/Gh23hlHOCuSIRXxNWPxnUe28kdiQmN5CQLxbXD
+ vWd2N4JrWxZAfJc6hqho1wimj4Ciafr16ftey85VdB2urOhX6GKqp47WFh9JxG5NdGj8mZ18eFm
+ 6kWtngDuXw84cHTz52MWjDUupPxw3kDmGjXXrBylht41U7ZaNItxhMdvZWS7jrhMf2apjBremUF
+ EGgUO6YT+9C4yGasvhzXR9kBZgVGf3M+hsEOiFiogigmrtkCbye87mZXmtkcjfA/HsmBce+G1Ts
+ DOm40noAoivtfjHXJUNzfypz6W3IH5yuRkk24zZxR9La8i4U2qWa8gPTpDGt7+0CNk0yWjMs9Aq
+ 2h3/2a/SVnUBzhFmRL9B9q8007rmarTh+oxE+8gbgMEErmHse6/0VtQpQa6RjdlhO3obcdGTEeC
+ V8Fq2avmRoioRrrR/FXR5jzfHweILxgirCWtMvRloz4URhhkd16OjD57UWzg1nP+Zp
+X-Google-Smtp-Source: AGHT+IFjUJ73xsiaR96Cdk8yHLn1/uMMrW1lhxhRUVj3uLzGJS6nQUm4rxyHxQl+ZZ0HgwFA6gyItQ==
+X-Received: by 2002:a17:90b:5b87:b0:34f:6312:f225 with SMTP id
+ 98e67ed59e1d1-34f63130c6bmr6907282a91.14.1767936729981; 
  Thu, 08 Jan 2026 21:32:09 -0800 (PST)
 Received: from pc.taild8403c.ts.net (216-71-219-44.dyn.novuscom.net.
  [216.71.219.44]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-34f5fa93f30sm9260137a91.5.2026.01.08.21.32.08
+ 98e67ed59e1d1-34f5fa93f30sm9260137a91.5.2026.01.08.21.32.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 21:32:08 -0800 (PST)
+ Thu, 08 Jan 2026 21:32:09 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -73,16 +73,16 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Jim MacArthur <jim.macarthur@linaro.org>, anjo@rev.ng,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 03/29] target/arm/gdbstub: make compilation unit common
-Date: Thu,  8 Jan 2026 21:31:32 -0800
-Message-ID: <20260109053158.2800705-4-pierrick.bouvier@linaro.org>
+Subject: [PATCH 04/29] target/arm/arm-qmp-cmds.c: make compilation unit common
+Date: Thu,  8 Jan 2026 21:31:33 -0800
+Message-ID: <20260109053158.2800705-5-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260109053158.2800705-1-pierrick.bouvier@linaro.org>
 References: <20260109053158.2800705-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1034.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,130 +105,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Expose and stubs aarch64 functions. All call sites are under a
-"is_aarch64" check.
+Move gic_cap_kvm_probe to target/arm/kvm.c to remove #ifdef CONFIG_KVM.
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/cpu32-stubs.c | 22 ++++++++++++++++++++++
- target/arm/gdbstub.c     |  8 --------
- target/arm/meson.build   | 12 ++++++------
- 3 files changed, 28 insertions(+), 14 deletions(-)
+ target/arm/kvm_arm.h      |  3 +++
+ target/arm/arm-qmp-cmds.c | 25 +------------------------
+ target/arm/kvm-stub.c     |  5 +++++
+ target/arm/kvm.c          | 21 +++++++++++++++++++++
+ target/arm/meson.build    |  2 +-
+ 5 files changed, 31 insertions(+), 25 deletions(-)
 
-diff --git a/target/arm/cpu32-stubs.c b/target/arm/cpu32-stubs.c
-index 81be44d8462..6c524d84198 100644
---- a/target/arm/cpu32-stubs.c
-+++ b/target/arm/cpu32-stubs.c
-@@ -24,3 +24,25 @@ void arm_cpu_lpa2_finalize(ARMCPU *cpu, Error **errp)
+diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
+index 6a9b6374a6d..cc0b374254e 100644
+--- a/target/arm/kvm_arm.h
++++ b/target/arm/kvm_arm.h
+@@ -11,6 +11,7 @@
+ #ifndef QEMU_KVM_ARM_H
+ #define QEMU_KVM_ARM_H
+ 
++#include "qapi/qapi-types-misc-arm.h"
+ #include "system/kvm.h"
+ #include "target/arm/cpu-qom.h"
+ 
+@@ -263,4 +264,6 @@ void kvm_arm_enable_mte(Object *cpuobj, Error **errp);
+ 
+ void arm_cpu_kvm_set_irq(void *arm_cpu, int irq, int level);
+ 
++void arm_gic_cap_kvm_probe(GICCapability *v2, GICCapability *v3);
++
+ #endif
+diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
+index 45df15de782..29102587bae 100644
+--- a/target/arm/arm-qmp-cmds.c
++++ b/target/arm/arm-qmp-cmds.c
+@@ -43,29 +43,6 @@ static GICCapability *gic_cap_new(int version)
+     return cap;
+ }
+ 
+-static inline void gic_cap_kvm_probe(GICCapability *v2, GICCapability *v3)
+-{
+-#ifdef CONFIG_KVM
+-    int fdarray[3];
+-
+-    if (!kvm_arm_create_scratch_host_vcpu(fdarray, NULL)) {
+-        return;
+-    }
+-
+-    /* Test KVM GICv2 */
+-    if (kvm_device_supported(fdarray[1], KVM_DEV_TYPE_ARM_VGIC_V2)) {
+-        v2->kernel = true;
+-    }
+-
+-    /* Test KVM GICv3 */
+-    if (kvm_device_supported(fdarray[1], KVM_DEV_TYPE_ARM_VGIC_V3)) {
+-        v3->kernel = true;
+-    }
+-
+-    kvm_arm_destroy_scratch_host_vcpu(fdarray);
+-#endif
+-}
+-
+ GICCapabilityList *qmp_query_gic_capabilities(Error **errp)
+ {
+     GICCapabilityList *head = NULL;
+@@ -74,7 +51,7 @@ GICCapabilityList *qmp_query_gic_capabilities(Error **errp)
+     v2->emulated = true;
+     v3->emulated = true;
+ 
+-    gic_cap_kvm_probe(v2, v3);
++    arm_gic_cap_kvm_probe(v2, v3);
+ 
+     QAPI_LIST_PREPEND(head, v2);
+     QAPI_LIST_PREPEND(head, v3);
+diff --git a/target/arm/kvm-stub.c b/target/arm/kvm-stub.c
+index c93462c5b9b..ea67deea520 100644
+--- a/target/arm/kvm-stub.c
++++ b/target/arm/kvm-stub.c
+@@ -124,3 +124,8 @@ bool kvm_arm_cpu_post_load(ARMCPU *cpu)
  {
      g_assert_not_reached();
  }
 +
-+
-+int aarch64_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
++void arm_gic_cap_kvm_probe(GICCapability *v2, GICCapability *v3)
 +{
 +    g_assert_not_reached();
 +}
-+
-+int aarch64_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg)
-+{
-+    g_assert_not_reached();
-+}
-+
-+void aarch64_cpu_register_gdb_commands(ARMCPU *cpu, GString *qsupported,
-+                                       GPtrArray *qtable, GPtrArray *stable)
-+{
-+    g_assert_not_reached();
-+}
-+
-+void aarch64_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
-+{
-+    g_assert_not_reached();
-+}
-diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
-index 4e8e341cc04..c7d59fd3726 100644
---- a/target/arm/gdbstub.c
-+++ b/target/arm/gdbstub.c
-@@ -44,11 +44,9 @@ int arm_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
-     ARMCPU *cpu = ARM_CPU(cs);
-     CPUARMState *env = &cpu->env;
- 
--#ifdef TARGET_AARCH64
-     if (arm_gdbstub_is_aarch64(cpu)) {
-         return aarch64_cpu_gdb_read_register(cs, mem_buf, n);
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 48f853fff80..0677d201158 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -2568,3 +2568,24 @@ void arm_cpu_kvm_set_irq(void *arm_cpu, int irq, int level)
      }
--#endif
- 
-     if (n < 16) {
-         /* Core integer register.  */
-@@ -72,11 +70,9 @@ int arm_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
-     CPUARMState *env = &cpu->env;
-     uint32_t tmp;
- 
--#ifdef TARGET_AARCH64
-     if (arm_gdbstub_is_aarch64(cpu)) {
-         return aarch64_cpu_gdb_write_register(cs, mem_buf, n);
-     }
--#endif
- 
-     tmp = ldl_p(mem_buf);
- 
-@@ -504,10 +500,8 @@ void arm_cpu_register_gdb_commands(ARMCPU *cpu)
-     g_autoptr(GString) qsupported_features = g_string_new(NULL);
- 
-     if (arm_feature(&cpu->env, ARM_FEATURE_AARCH64)) {
--    #ifdef TARGET_AARCH64
-         aarch64_cpu_register_gdb_commands(cpu, qsupported_features, query_table,
-                                           set_table);
--    #endif
-     }
- 
-     /* Set arch-specific handlers for 'q' commands. */
-@@ -536,9 +530,7 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
-          * The lower part of each SVE register aliases to the FPU
-          * registers so we don't need to include both.
-          */
--#ifdef TARGET_AARCH64
-         aarch64_cpu_register_gdb_regs_for_features(cpu);
--#endif
-     } else {
-         if (arm_feature(env, ARM_FEATURE_NEON)) {
-             gdb_register_coprocessor(cs, vfp_gdb_get_reg, vfp_gdb_set_reg,
+     kvm_arm_set_irq(cs->cpu_index, KVM_ARM_IRQ_TYPE_CPU, irq_id, !!level);
+ }
++
++void arm_gic_cap_kvm_probe(GICCapability *v2, GICCapability *v3)
++{
++    int fdarray[3];
++
++    if (!kvm_arm_create_scratch_host_vcpu(fdarray, NULL)) {
++        return;
++    }
++
++    /* Test KVM GICv2 */
++    if (kvm_device_supported(fdarray[1], KVM_DEV_TYPE_ARM_VGIC_V2)) {
++        v2->kernel = true;
++    }
++
++    /* Test KVM GICv3 */
++    if (kvm_device_supported(fdarray[1], KVM_DEV_TYPE_ARM_VGIC_V3)) {
++        v3->kernel = true;
++    }
++
++    kvm_arm_destroy_scratch_host_vcpu(fdarray);
++}
 diff --git a/target/arm/meson.build b/target/arm/meson.build
-index 3df7e03654e..462c71148d2 100644
+index 462c71148d2..1a1bcde2601 100644
 --- a/target/arm/meson.build
 +++ b/target/arm/meson.build
-@@ -1,8 +1,11 @@
- arm_ss = ss.source_set()
- arm_common_ss = ss.source_set()
--arm_ss.add(files(
--  'gdbstub.c',
--))
-+arm_common_system_ss = ss.source_set()
-+arm_system_ss = ss.source_set()
-+arm_user_ss = ss.source_set()
-+
-+arm_common_system_ss.add(files('gdbstub.c'))
-+arm_user_ss.add(files('gdbstub.c'))
- 
- arm_ss.add(when: 'TARGET_AARCH64', if_true: files(
-   'cpu64.c',
-@@ -13,15 +16,12 @@ arm_common_ss.add(files(
+@@ -16,7 +16,7 @@ arm_common_ss.add(files(
    'mmuidx.c',
  ))
  
--arm_system_ss = ss.source_set()
--arm_common_system_ss = ss.source_set()
- arm_system_ss.add(files(
+-arm_system_ss.add(files(
++arm_common_system_ss.add(files(
    'arm-qmp-cmds.c',
  ))
  arm_system_ss.add(when: 'CONFIG_KVM', if_true: files('hyp_gdbstub.c', 'kvm.c'))
- arm_system_ss.add(when: 'CONFIG_HVF', if_true: files('hyp_gdbstub.c'))
- 
--arm_user_ss = ss.source_set()
- arm_user_ss.add(files('cpu.c'))
- arm_user_ss.add(when: 'TARGET_AARCH64', if_false: files(
-   'cpu32-stubs.c',
 -- 
 2.47.3
 
