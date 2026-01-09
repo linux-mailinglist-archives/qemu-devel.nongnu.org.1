@@ -2,104 +2,150 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40E2CD07B58
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 09:08:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42002D07B12
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 09:04:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ve7XK-0007RW-Sb; Fri, 09 Jan 2026 03:08:00 -0500
+	id 1ve7T4-00064e-Kl; Fri, 09 Jan 2026 03:03:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1ve7X3-0006pW-Na
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 03:07:41 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
+ id 1ve7SV-0005za-EV; Fri, 09 Jan 2026 03:03:00 -0500
+Received: from mail-westus3azon11012056.outbound.protection.outlook.com
+ ([40.107.209.56] helo=PH8PR06CU001.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1ve7X1-0006ri-JH
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 03:07:41 -0500
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
- 6097fSEX2517927; Fri, 9 Jan 2026 08:07:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2025-04-25; bh=5Mzh6
- SPSyY+ySz4KwLd9MrcwkQQ8Oj4Nc2Fmb7h7jeQ=; b=Bf2zMHlWnOF3k/ITohJpd
- yTWC7fGN7Dzbd8nI+/47lc2aRt6lNWxSZGULX1OlD1Zilkuj4fOy1wPzSYGDFK78
- PeM7KEQ+YJZbHQ5siz7uYDLyxd8CInTju2P6JZMd0x54X/2lhRS/Sc0Yv/2XCVmy
- NGG24orKK4fzGEfTgIXnaQuPXCIzP8c10PS014DqluPWgeqfPyAFYFvpbgF/f6lB
- neCSbHzVPpAISNaRYPdNV4MGw/gvoocvbGWQtfw6w1VyFQXM58TdXxjvUPoQrA9T
- 477BUEpprc9kw3fQK/T/1FRcjYkk91kG/QwiW4K2ZNdGTvoj4ZR83CbJXEDvFwTp
- Q==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bjwgrg0rn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 09 Jan 2026 08:07:32 +0000 (GMT)
-Received: from pps.filterd
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 6097GqhU026350; Fri, 9 Jan 2026 08:07:32 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 4besjpcbsb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 09 Jan 2026 08:07:32 +0000
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 60987KrX009653;
- Fri, 9 Jan 2026 08:07:31 GMT
-Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 4besjpcbj1-6; Fri, 09 Jan 2026 08:07:31 +0000
-From: Dongli Zhang <dongli.zhang@oracle.com>
-To: qemu-devel@nongnu.org, kvm@vger.kernel.org
-Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
- sandipan.das@amd.com, babu.moger@amd.com, likexu@tencent.com,
- like.xu.linux@gmail.com, groug@kaod.org, khorenko@virtuozzo.com,
- alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
- davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
- dapeng1.mi@linux.intel.com, joe.jin@oracle.com, ewanhai-oc@zhaoxin.com,
- ewanhai@zhaoxin.com, zide.chen@intel.com
-Subject: [PATCH v9 5/5] target/i386/kvm: support perfmon-v2 for reset
-Date: Thu,  8 Jan 2026 23:54:00 -0800
-Message-ID: <20260109075508.113097-6-dongli.zhang@oracle.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20260109075508.113097-1-dongli.zhang@oracle.com>
-References: <20260109075508.113097-1-dongli.zhang@oracle.com>
+ (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
+ id 1ve7ST-0006N4-1k; Fri, 09 Jan 2026 03:02:59 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KcbK38VCWIVMuSC8CVAAk7jbhPDBKM/eoJY13oxG8LjYGheNXXHaKNumb+pdJfs7VKxI554C2FDH4nHK0grTWJ4DiEI5OPUxiFOE/aAWtW7mnAuKMPO1BP8wYnSHe2JeGBG5VSBiSB/YYZjN8Sb8mM0qTXmpnLWEuVIOP4q5qQisU41vgp7tHHyfsdkLC9N0/bePHSLY5v+PQRhmW/cclw+02qYoY8iOtvTGP4HVZK4aSJHRezJ7p1vwfCrykV9I9y8tBMnR+R/H4/ijaR40BNAA/7O47Kiv8Eq2sLYZIVhukwm8S8QYgC2K3oNdYrsZvR4nLzJdQDMz0ryvH6usiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hHEVi0NA/oRrrWmuy7hQKBAinH+Kzd7GxoEJoclu3Ns=;
+ b=xCbAD0vN0iUlxKkaNKxZONKLPbPbLggnDCqW+rbCvYKl8uw5tF43IIUDGovpJi5Cky0yF+8YNcRaIYgaCZvGv4T2tPN0H9Ac8M0VZTs101M5F4uh4uxXUDLDOZnLryJzjOXhGHyYuTAiBbfgowrEf9VyABnWWZSLiyyliCZbFfFADMoQdDYdWHagLi09XV9xMWk4c8I9Wye8Ut0cftUC40opU8JT7SWHqRZkSjN2fBS0Xb5Q8gyQNoWPvETpf6ZqUBajJkP2eR1L4MXlj609L1IyOwORCw1GgSQqyFUZbVQbLk+KMLnrDuJ7QUcYFpGqBGO+uNPHSDu8KmyascfhWA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hHEVi0NA/oRrrWmuy7hQKBAinH+Kzd7GxoEJoclu3Ns=;
+ b=aoQF50cXJn5avAKYAOwNBHqEJhanTt5SCRRgZNVQMhKEBW25pqxSpy+JImsYGgP83Bx9WY33IYp93is2F7uO52ja7eP/QxPSb+oj/Lb7gmluS1+NLZpyS8kytPIVCpiW1ydDFYEQs4IE4Itm7v0jOwiOeg9SZXI/OcXy7Pl7xus=
+Received: from BN0PR04CA0195.namprd04.prod.outlook.com (2603:10b6:408:e9::20)
+ by DS7PR12MB8081.namprd12.prod.outlook.com (2603:10b6:8:e6::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.3; Fri, 9 Jan
+ 2026 07:57:48 +0000
+Received: from BN3PEPF0000B074.namprd04.prod.outlook.com
+ (2603:10b6:408:e9:cafe::f8) by BN0PR04CA0195.outlook.office365.com
+ (2603:10b6:408:e9::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.4 via Frontend Transport; Fri, 9
+ Jan 2026 07:57:33 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ BN3PEPF0000B074.mail.protection.outlook.com (10.167.243.119) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9520.1 via Frontend Transport; Fri, 9 Jan 2026 07:57:47 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 9 Jan
+ 2026 01:57:41 -0600
+Received: from XFR-LUMICHEL-L2.amd.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
+ Transport; Fri, 9 Jan 2026 01:57:39 -0600
+Date: Fri, 9 Jan 2026 08:57:34 +0100
+From: Luc Michel <luc.michel@amd.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+CC: <qemu-devel@nongnu.org>, <qemu-riscv@nongnu.org>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
+ <liwei1518@gmail.com>, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Francisco Iglesias
+ <francisco.iglesias@amd.com>
+Subject: Re: [PATCH 0/9] RISC-V CPU time source interface
+Message-ID: <aWC07qlTj_5vljh2@XFR-LUMICHEL-L2.amd.com>
+References: <20251107102340.471141-1-luc.michel@amd.com>
+ <aRb1jmwXE18JB2_g@XFR-LUMICHEL-L2.amd.com>
+ <a5e9c465-5c4a-403e-8768-bf383256091f@linaro.org>
+ <aTKXssxseF4wfXiw@XFR-LUMICHEL-L2.amd.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-09_02,2026-01-08_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- bulkscore=0 malwarescore=0
- spamscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
- definitions=main-2601090056
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA5MDA1NiBTYWx0ZWRfXxI/NFyfqsOv2
- PigjJMNW32CHF1hGwIo+CH3gPAcaSh4sJciLUAho6QaWaZ2RvAZzQaB8MCPyjQbqcWXKZu2/Dic
- S0QJ4uY1L1nNlR9YZv2wkce8Vgzjtb+gkKS5FjV1o12hXAMmTdmuaUV8MryAbCdhlm1vtCx41nc
- 83L64Ht00fLyF/t8TsB6ZdUPhxHqHc+SLBjzANjOy2sPl9nN0GVUdCFaH33mN1CsCeAs+wlR3kV
- HyHIVDRTvY3gC7F6HSWUIjMv/a/jUFge78f9zE7sgTpEk4qZXmUL0i3Y3F6ZM6fw7LNULpWurM1
- lh1gTHozNWh3Jpf6/3uTm+qDEcGcALRqPpkFZfR3Hu+iwNWk/mpyCvGLZJ6GCRcJ9zG4kPTZCSn
- 01xvFm3hJ8eRLt5P1Pys8qV5A131SxA0ujD+r0365YMEvr/X9zTVnLLDgalLK4vNPG762pqkKoA
- 9UC462k7bn4oTHgWVC4Z5o+plnyomNhxNMJujfDA=
-X-Proofpoint-ORIG-GUID: _F2voPnnbGA9qfjeP56fZ6SBkjdvO-9l
-X-Authority-Analysis: v=2.4 cv=ab5sXBot c=1 sm=1 tr=0 ts=6960b744 b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117
- a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8 a=QyXUC8HyAAAA:8
- a=zd2uoN0lAAAA:8 a=YKGenqcJedeHRtipQB0A:9 cc=ntf awl=host:12110
-X-Proofpoint-GUID: _F2voPnnbGA9qfjeP56fZ6SBkjdvO-9l
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=dongli.zhang@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+In-Reply-To: <aTKXssxseF4wfXiw@XFR-LUMICHEL-L2.amd.com>
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B074:EE_|DS7PR12MB8081:EE_
+X-MS-Office365-Filtering-Correlation-Id: 84dd8a6e-f6ca-49b9-a52b-08de4f54c79c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|82310400026|36860700013|376014|1800799024; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?NGJMMG91U3VnR3dlRVZXOEUrOExKOElPWmY4cnJxaktsaTJEWTZWQWVaNHgw?=
+ =?utf-8?B?UjZuZS9EWEpIZ0pNZVgzS2lHa3V6UW14QTg2MkFUemZzZzVUWWlXVkIwKzhj?=
+ =?utf-8?B?bEFnS00zNmE2UkRLcmt6S2U3R0d0Q3h3Uk1Wa0x3YU5UWFJRUlZOR3ZnYUMw?=
+ =?utf-8?B?NURIK2p1bkhXK2Q0OHc3bFErVFA5MDR1YVBkV0pEY3dZRlA5eW13ZHJFOGk2?=
+ =?utf-8?B?Nm5KSVlIWkhybkQyell5djRrVDNCZU1OamYwdG1GOXdlYlpMcnIwOW83cGZ5?=
+ =?utf-8?B?Y3R3M1dnakFMZ1JiaDhRN21GbjNON2l6SzNQMmhHODRxcW9WSXZKRzJRS2NS?=
+ =?utf-8?B?b3BjaUxJaml6aXNBV3V6Qmw3WDRZWUFBNnBPb2FhNGtjaktBRDFuemtHRjJU?=
+ =?utf-8?B?KzY1OVBCVWRTV3A5anYzZGxNeXBPYytkandDSHFOZllqWW1jNkJZeENhNTdU?=
+ =?utf-8?B?OVF4RWdSckl0MHJKQnJnOVJHdXBrUWdxdy9XMWI3UzBnUTlqa3JsMmFpeDQ5?=
+ =?utf-8?B?M0VSV1pvejFTdlFYb2xNVzU2a1c4aEQxVWlyRXczZkRmQXpWNUlCeDBxcVVm?=
+ =?utf-8?B?TnU3bDh5MjBKTzFWOUxJRmd3dmdMSjM0S0NrUHAxc2dNU3VZek1JbzNpYTYv?=
+ =?utf-8?B?ekl3TVlNOCtRNzkwbFltNGU2OU9FU1RzemZkR0hNTHZ5RzExTDVXN1VReWFn?=
+ =?utf-8?B?Y2szU1RSV3RJQytuMzNma3lkTEVoVThxd29CV2lLcDFNcktlQ3gvbHNIN0xK?=
+ =?utf-8?B?ck43S0REWk1xZCt4cmpMNE5WR2RUQ1k2Z3FjS1dSb3FPRGprVzhEUWV3NWd5?=
+ =?utf-8?B?NmFUMUpYcFduWlhkYmw1aWtuZE1rdkxIUEYyNmdmUi9tV0F3OWhNSnJYMEpY?=
+ =?utf-8?B?aFRaL05BblpMK3BiR3I0Q1U3MFhibmtNdjUvV3lITUx4QXhIZzJQc2g4eG1u?=
+ =?utf-8?B?QXA5NU43VFBLa0YvNGg5ZVprV1NacldrV1VHTWtBb1FXRVVmWnBhek1Rd24z?=
+ =?utf-8?B?cEMyWjVoN2dvcy85UFpoMWhjenVnbC9vSWVFV2FEUjdTQkt5blhLM214NExL?=
+ =?utf-8?B?dnAwQk5GbEowVjhEWXVZYnZ2bTh4czdiWGc2MDRqL1ZBQTZsVHV2ODRQdUNl?=
+ =?utf-8?B?T3QrQ0FZT2xWQWxJZzVLejdmd1VyYnord2tJNjVZZ0I5VFdPZHk5dVZiZWFj?=
+ =?utf-8?B?RWRrTlFIK2IyaUJ6T2hVTGZDMUxGMlMyZDBndE1XOTFyQ0poOFk2dStqMHc5?=
+ =?utf-8?B?UXpPbmh5bFBzT2JzRVJaT0FGb3NDdFBsM2pUdjBWdFZtcktsazJncUJqczIz?=
+ =?utf-8?B?Qk1KdFlaaFRybEhsZmtNZ1hkc3FTSW1rWEd1ajVoYVNKNlhKVmVNYzl3cml2?=
+ =?utf-8?B?RzdEaGViOTllM1pNNGx6NTZNUVcxWHpuZ3B6QVY1VDJLOVk1ODRUYk8vTS9F?=
+ =?utf-8?B?cFU5Q0dOdDJoK09IczRpWVFuRDVzaFJSOFhHdmFEYkdOVkNiV2gzMWlOT1FT?=
+ =?utf-8?B?c2pYcUp4aTVEY0paaXRuWDN6ZXJ4ai9qMTh3dFkranV2cEtybVp5Z0U1UmJB?=
+ =?utf-8?B?dnJtNlBKK2g2SWdMWWd2NVlpQlA3UncvcURQTkl6Uzc1SFFkRUxiVnFXNVdh?=
+ =?utf-8?B?SXI3NVg0bVhkRGVlbXJCd3NBK2lPek5qaXJra1ZhK2tBUHNhM2I1UW5RcVBN?=
+ =?utf-8?B?WEE3SWlUWFRjZUVla2VpbFJuRGpZR0hyMFV1UjNVUUlibkxnc01YQWxTaXMy?=
+ =?utf-8?B?Q0NMWmNwTUp0a0RTOWt4cy94MjV6SWtBQ1hDZXVHZ2NmNVloUTFCT3BmUzk2?=
+ =?utf-8?B?MEtGQytEaDlBakg2S2tpSTcrS1kzVWVOZmFiSWpPUXB3MGMxb1FMaGdCWmcx?=
+ =?utf-8?B?WE9MMVJZM01xaWllTmY1QVFLeWtiM0ozeTB3dDhnWUxhQ2NQWHdTcHZYRVQ3?=
+ =?utf-8?B?cmNGZytaamlQL00zSVBjSmpUUUpTeVhzbVhpa0N2SXNySkI2TVlOL2l1VHRU?=
+ =?utf-8?B?NzRmRHBFZzkxeWJuS2VSVGtzSG5kSUNTeTZvbEszTlJNTnJlODB1andPR1Vo?=
+ =?utf-8?B?U1AwV3B5MlN0VGJxMHErTmZUUHlaZ0l4V2t6SDFXeVdLVUJqYmxJV2F3cjJk?=
+ =?utf-8?Q?2MzA=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(82310400026)(36860700013)(376014)(1800799024); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2026 07:57:47.7561 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 84dd8a6e-f6ca-49b9-a52b-08de4f54c79c
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN3PEPF0000B074.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8081
+Received-SPF: permerror client-ip=40.107.209.56;
+ envelope-from=Luc.Michel@amd.com;
+ helo=PH8PR06CU001.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -117,159 +163,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since perfmon-v2, the AMD PMU supports additional registers. This update
-includes get/put functionality for these extra registers.
+On 09:29 Fri 05 Dec     , Luc Michel wrote:
+> On 18:16 Thu 20 Nov     , Philippe Mathieu-Daudé wrote:
+> > On 14/11/25 10:25, Luc Michel wrote:
+> > > Hi,
+> > > 
+> > > Ping, patches missing review: 8 and 9.
+> > 
+> > Doh sorry, I don't remember why I stopped... I suppose I got interrupted
+> > and forgot. Too bad this missed the soft-freeze, now we'll have to wait
+> > after Xmas :/
+> 
+> No problem, thanks for the reviews :)
+> 
+> RISC-V people, may I ask for some feedback on the series now that it is
+> fully reviewed?
+> 
 
-Similar to the implementation in KVM:
+Hi, gentle ping.
 
-- MSR_CORE_PERF_GLOBAL_STATUS and MSR_AMD64_PERF_CNTR_GLOBAL_STATUS both
-use env->msr_global_status.
-- MSR_CORE_PERF_GLOBAL_CTRL and MSR_AMD64_PERF_CNTR_GLOBAL_CTL both use
-env->msr_global_ctrl.
-- MSR_CORE_PERF_GLOBAL_OVF_CTRL and MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR
-both use env->msr_global_ovf_ctrl.
+As a reminder this series fixes some broken code in the RISC-V target
+sstc extension and allows for devices other than the APLIC to serve as
+the timesrc source.
 
-No changes are needed for vmstate_msr_architectural_pmu or
-pmu_enable_needed().
+Thanks
 
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Sandipan Das <sandipan.das@amd.com>
----
-Changed since v1:
-  - Use "has_pmu_version > 1", not "has_pmu_version == 2".
-Changed since v2:
-  - Use cpuid_find_entry() instead of cpu_x86_cpuid().
-  - Change has_pmu_version to pmu_version.
-  - Cap num_pmu_gp_counters with MAX_GP_COUNTERS.
-Changed since v4:
-  - Add Reviewed-by from Sandipan.
-
- target/i386/cpu.h     |  4 ++++
- target/i386/kvm/kvm.c | 48 +++++++++++++++++++++++++++++++++++--------
- 2 files changed, 43 insertions(+), 9 deletions(-)
-
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 0960b98960..6887ae6a33 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -506,6 +506,10 @@ typedef enum X86Seg {
- #define MSR_CORE_PERF_GLOBAL_CTRL       0x38f
- #define MSR_CORE_PERF_GLOBAL_OVF_CTRL   0x390
- 
-+#define MSR_AMD64_PERF_CNTR_GLOBAL_STATUS       0xc0000300
-+#define MSR_AMD64_PERF_CNTR_GLOBAL_CTL          0xc0000301
-+#define MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR   0xc0000302
-+
- #define MSR_K7_EVNTSEL0                 0xc0010000
- #define MSR_K7_PERFCTR0                 0xc0010004
- #define MSR_F15H_PERF_CTL0              0xc0010200
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index fb7b672a9d..67adfafa0c 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -2158,6 +2158,16 @@ static void kvm_init_pmu_info_amd(struct kvm_cpuid2 *cpuid, X86CPU *cpu)
-     }
- 
-     num_pmu_gp_counters = AMD64_NUM_COUNTERS_CORE;
-+
-+    c = cpuid_find_entry(cpuid, 0x80000022, 0);
-+    if (c && (c->eax & CPUID_8000_0022_EAX_PERFMON_V2)) {
-+        pmu_version = 2;
-+        num_pmu_gp_counters = c->ebx & 0xf;
-+
-+        if (num_pmu_gp_counters > MAX_GP_COUNTERS) {
-+            num_pmu_gp_counters = MAX_GP_COUNTERS;
-+        }
-+    }
- }
- 
- static bool is_host_compat_vendor(CPUX86State *env)
-@@ -4220,13 +4230,14 @@ static int kvm_put_msrs(X86CPU *cpu, KvmPutState level)
-             uint32_t step = 1;
- 
-             /*
--             * When PERFCORE is enabled, AMD PMU uses a separate set of
--             * addresses for the selector and counter registers.
--             * Additionally, the address of the next selector or counter
--             * register is determined by incrementing the address of the
--             * current register by two.
-+             * When PERFCORE or PerfMonV2 is enabled, AMD PMU uses a
-+             * separate set of addresses for the selector and counter
-+             * registers. Additionally, the address of the next selector or
-+             * counter register is determined by incrementing the address
-+             * of the current register by two.
-              */
--            if (num_pmu_gp_counters == AMD64_NUM_COUNTERS_CORE) {
-+            if (num_pmu_gp_counters == AMD64_NUM_COUNTERS_CORE ||
-+                pmu_version > 1) {
-                 sel_base = MSR_F15H_PERF_CTL0;
-                 ctr_base = MSR_F15H_PERF_CTR0;
-                 step = 2;
-@@ -4238,6 +4249,15 @@ static int kvm_put_msrs(X86CPU *cpu, KvmPutState level)
-                 kvm_msr_entry_add(cpu, sel_base + i * step,
-                                   env->msr_gp_evtsel[i]);
-             }
-+
-+            if (pmu_version > 1) {
-+                kvm_msr_entry_add(cpu, MSR_AMD64_PERF_CNTR_GLOBAL_STATUS,
-+                                  env->msr_global_status);
-+                kvm_msr_entry_add(cpu, MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR,
-+                                  env->msr_global_ovf_ctrl);
-+                kvm_msr_entry_add(cpu, MSR_AMD64_PERF_CNTR_GLOBAL_CTL,
-+                                  env->msr_global_ctrl);
-+            }
-         }
- 
-         /*
-@@ -4772,13 +4792,14 @@ static int kvm_get_msrs(X86CPU *cpu)
-         uint32_t step = 1;
- 
-         /*
--         * When PERFCORE is enabled, AMD PMU uses a separate set of
--         * addresses for the selector and counter registers.
-+         * When PERFCORE or PerfMonV2 is enabled, AMD PMU uses a separate
-+         * set of addresses for the selector and counter registers.
-          * Additionally, the address of the next selector or counter
-          * register is determined by incrementing the address of the
-          * current register by two.
-          */
--        if (num_pmu_gp_counters == AMD64_NUM_COUNTERS_CORE) {
-+        if (num_pmu_gp_counters == AMD64_NUM_COUNTERS_CORE ||
-+            pmu_version > 1) {
-             sel_base = MSR_F15H_PERF_CTL0;
-             ctr_base = MSR_F15H_PERF_CTR0;
-             step = 2;
-@@ -4788,6 +4809,12 @@ static int kvm_get_msrs(X86CPU *cpu)
-             kvm_msr_entry_add(cpu, ctr_base + i * step, 0);
-             kvm_msr_entry_add(cpu, sel_base + i * step, 0);
-         }
-+
-+        if (pmu_version > 1) {
-+            kvm_msr_entry_add(cpu, MSR_AMD64_PERF_CNTR_GLOBAL_CTL, 0);
-+            kvm_msr_entry_add(cpu, MSR_AMD64_PERF_CNTR_GLOBAL_STATUS, 0);
-+            kvm_msr_entry_add(cpu, MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR, 0);
-+        }
-     }
- 
-     if (env->mcg_cap) {
-@@ -5103,12 +5130,15 @@ static int kvm_get_msrs(X86CPU *cpu)
-             env->msr_fixed_ctr_ctrl = msrs[i].data;
-             break;
-         case MSR_CORE_PERF_GLOBAL_CTRL:
-+        case MSR_AMD64_PERF_CNTR_GLOBAL_CTL:
-             env->msr_global_ctrl = msrs[i].data;
-             break;
-         case MSR_CORE_PERF_GLOBAL_STATUS:
-+        case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS:
-             env->msr_global_status = msrs[i].data;
-             break;
-         case MSR_CORE_PERF_GLOBAL_OVF_CTRL:
-+        case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
-             env->msr_global_ovf_ctrl = msrs[i].data;
-             break;
-         case MSR_CORE_PERF_FIXED_CTR0 ... MSR_CORE_PERF_FIXED_CTR0 + MAX_FIXED_COUNTERS - 1:
 -- 
-2.39.3
-
+Luc
 
