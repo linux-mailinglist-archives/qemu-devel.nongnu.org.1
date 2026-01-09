@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A428ED0B63A
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 17:52:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCCFAD0B644
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 17:52:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1veFia-0004ko-5y; Fri, 09 Jan 2026 11:52:08 -0500
+	id 1veFia-0004s7-EV; Fri, 09 Jan 2026 11:52:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1veFi2-0004M8-Bl
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 11:51:38 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1veFi6-0004N9-PL
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 11:51:42 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1veFhx-0007Lg-7u
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 11:51:32 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-47d3ffa5f33so21248595e9.2
- for <qemu-devel@nongnu.org>; Fri, 09 Jan 2026 08:51:28 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1veFi4-0007MO-37
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 11:51:38 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-47d63594f7eso27486295e9.0
+ for <qemu-devel@nongnu.org>; Fri, 09 Jan 2026 08:51:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767977487; x=1768582287; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767977494; x=1768582294; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cetaL8155CThR92fvfQP9zK4pirbJsIkyuhfEBQWxaI=;
- b=SwuR5R+s+S5Z159FT7tcurbwnkNhibl9iFZUmaT0nTmcG09JHdIkMnorTg84oE2NWq
- ePWvnoiz41Rclc9aaeKyu1vfspwT2LBMBpGV/dp6+qDRRCW1/7iR342CxFAkzwFU316n
- 7Ov9ix2jTbSypFOz8R8qqlqHNPOAvnqqtixzRqOOGMgM8ZqVrnE5ljvJ1hJ1bkuT9lis
- s0ar9pQpFq2MGd/7kyDXUO9Q7SnPNCRxMhsShaxmaOQ2MDoG+9j+6l54T6ECQo8mi2y4
- mxiPFOKADIfEUzRg9XWfbvCxEK/FrZzZ7Cc7DwUt3EdKhyNHP2CjOEZk2J0xOCXyf+sr
- lfSA==
+ bh=N+3aFNkuvJU7k9ASo56JmI7QdR/JRifI4sWY6ldkMUc=;
+ b=nWCXSeFFl45gKgqHc7F9T6QOa9/gK2Qb2B6Zw7saAL26iBykh2E1+HakvcZCSiWABv
+ kH7FSprmUb5BEArLsK72SGzf8E1WgsBrhMpH0jLy275k1c7yxAcHyNUV0GHYLa0tO+QK
+ DwIx1L/foo2uCIFVyGcprIKK08u4Nnjwax2I5AMGDUgU71OMDL9lrfWK+VJBDAmipWLY
+ nfRJh2wZdF3bB8/RJSP1xe+tg+vAXgLinf+q7LMg0Jo7LnuAdZthWpFZ5vsKVwmr3cRz
+ 2xFPJdk+dbF3xmfKXGICRD0YkHPwA4dJANRygsGEwsS8wO9xIqTTRTpHMmGRJew1LBqx
+ IbRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767977487; x=1768582287;
+ d=1e100.net; s=20230601; t=1767977494; x=1768582294;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=cetaL8155CThR92fvfQP9zK4pirbJsIkyuhfEBQWxaI=;
- b=qb/PdZCUDjai937F8pW067ZE3pUKu79ilJCWcPniMRIJ9nYvsuZEzVz2Q+nPIUf8k9
- dQqwpZlZLI82hK4l63NFsKmtEaq8s4nfJ1mB7a+IgnYWmltsMMdRG5Gp9l/PuGcAaRU4
- q9js43kNysQwkqwkmwSoozN2jCj+FxbeFFFi4nM+vkYgpaEXARWCR1aVaVwOlYA/EUFz
- 0HOG1HuMZCNVZYSXCynvlzQoQVHNYZkumUvw6tlJvHeIjdOEMeJA23SPPjSJux3wmpqI
- BB+xNWpSQl1azYdpHjBsUMNoXLqWEjgRl2H4KGxhwSJORWpd1PmNMbZ75kzU0pML+4x8
- tQ+w==
-X-Gm-Message-State: AOJu0YzK30QhTd2Ma758IMIyfD8qEqBkdk/THNqhaEUl4i2+fKT5vcG5
- 6tweiljoEZg/OC8M3PqHmsnFZ/w9mKT8r+8fpZ2aE+pbc5A2s6L54J8TZBOpL+ByvtQwBTtL+Vl
- JqQk7UEM=
-X-Gm-Gg: AY/fxX67m6KEs8O3p/PTmdU/OqSm32fQPq/xKtHxjLDVAjJ5/LaxuirYSRzVRrik9Zw
- uNEAyQIKZaKKe77+V6A3GMyAA7oLAJZRdnv9aAd2eGO+9OhWQNVFriTmaWbj3ozQbmOa4vJDJEj
- mvUSmB30aDuQhbTe+408uejiZOUFAHjQgLBY1oEr7aJwsCl8aG9CXKHXuwbHYkf8uYsw0pfAmdW
- u+oSkXWSlVArlRgrvHOEndvVN1R/ZoyUUWmaZI8KesCWalSV5kmALUB3yjpkKqp+H68RqlPu4pb
- 9hn3aDpcsnoeN87wdKH9aaTmKztA6nzvPd4YBVjYp3U0JPuWHBKRXlGNYaGAPaYj2uxZRrMBjJt
- FmngJM/MyHVmW+LLEfNuNx53rl2XlDye8PNbrbfeM+cP2tPg9e4LTIa9gFUUsYpXnyle8poarzr
- uIRS2LzlW7zLo8W8PbRLShA57sO41xxJvEgiGpHQZqPDKzY4EsY14khCv3nOSR
-X-Google-Smtp-Source: AGHT+IFv8vk8Odo9BtMGQ2dyagTun9Rpl3O1jLkfWn/eSGc0vr+ionI56qGhdxUNYnf7opf6xIRlLQ==
-X-Received: by 2002:a05:600c:8b2c:b0:477:8ba7:fe0a with SMTP id
- 5b1f17b1804b1-47d84b54c3cmr109451335e9.24.1767977487383; 
- Fri, 09 Jan 2026 08:51:27 -0800 (PST)
+ bh=N+3aFNkuvJU7k9ASo56JmI7QdR/JRifI4sWY6ldkMUc=;
+ b=Kvp1hqbYs2LDqM0GSyXExCXlJ/FJWwiTQcaCMnZOnrfwTuX2iTI+1nSPnikgqofkZw
+ b/o+/5yjbq0U18mOQlQC1Q3qac6M2saGNP1fkT8TE/Y6Ce5cXzLDAoAP7nsvaC1eKH/h
+ 27dh820lPRGpgyenssBB2lwzDT2Khzr8TVg3ZkBLIadmhcVCBgz4dS8TQU4fnQEquyvM
+ eRwd2G2GEZZYT0PXuEs76YgRS2Yvcxsg0qpBoGn3I+Zpj0JTSOa24UNLNlQ+OALcMAjg
+ 0oKY5qXJ4MsxX546FbvvUGAD+QZQ1GmjiQspLLDCNVM0SU1U920PkfKVQ53sTJn5YA1n
+ o7Zw==
+X-Gm-Message-State: AOJu0YwuOw1AQvAZwpuc+M+zm3Be2T7RbKrREJjTE+qug1ggXUVMuQtt
+ N7pLcv+H2u/bNSn6NZub348t8sIU5IyEVn3ZcE2ORFhyFoKGPUWmpflcFc4IJngWxITeVi/DBcy
+ WvhJRQpk=
+X-Gm-Gg: AY/fxX7FalDEWBVWAn/OAqn7H0ohutcKKsO1HhItf1UcTmK72BHUOGxk5Oek1DQHQrP
+ ftwoKxiVE/4jXK74syTqyR9uhjBrrjhgoQ1HJbGhBZzEPZ2e8gJHRVMXWwPLad9J97Zn7RbuRhZ
+ sd9vk9K6fwK9hHJv11bLvMS0HuN1wEla42dqbfBPbK5kb6RvsLNBDjTJHjoswNS7d+/Mx//IbsJ
+ T8vvknyeFDg5K/O5EmUhmMXjCV9dNLSDPr+R56RwqE2FQrIkDLANrE735i79hyvVER3gkPDQst2
+ 06mWk9zpKYVd4zboRlICS6WQx/PHIxcTbOVLCjOn/v0UPT58jJy0VR+56fK5vZTbtDtmkaoErL+
+ 6rwvLhIwG5516qm8ezcq7llztUNvdtgwWdwJJrMOOTMtbw7YWGl6nd1TgrnHRe1WEKWVFo03rv+
+ RusY6eE6s7PwvZNFkN0WnihACyR9a0Vj4wK2lJh5wCkIBTQq3YUkL/6aUmVpC1Lle3O+yj8Zg=
+X-Google-Smtp-Source: AGHT+IHWRwr18qwXcXQ2GbKctrQRtHOdS/3T6FhyYmzelmC24jKVciXGqoN7XiFtQZcShnXBmwNdeQ==
+X-Received: by 2002:a05:600c:1991:b0:477:55c9:c3ea with SMTP id
+ 5b1f17b1804b1-47d84b40aa4mr134058615e9.35.1767977494009; 
+ Fri, 09 Jan 2026 08:51:34 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d7f41f5e0sm211422785e9.8.2026.01.09.08.51.25
+ 5b1f17b1804b1-47d7f695225sm217942455e9.4.2026.01.09.08.51.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 09 Jan 2026 08:51:26 -0800 (PST)
+ Fri, 09 Jan 2026 08:51:33 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -69,18 +69,18 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Anton Johansson <anjo@rev.ng>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PATCH v5 04/22] system/physmem: Convert DEBUG_SUBPAGE printf() to
- trace events
-Date: Fri,  9 Jan 2026 17:50:40 +0100
-Message-ID: <20260109165058.59144-5-philmd@linaro.org>
+Subject: [PATCH v5 05/22] system/memory: Split MemoryRegionCache API to
+ 'memory_cached.h'
+Date: Fri,  9 Jan 2026 17:50:41 +0100
+Message-ID: <20260109165058.59144-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109165058.59144-1-philmd@linaro.org>
 References: <20260109165058.59144-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,110 +103,486 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Defining DEBUG_SUBPAGE allows to use raw printf() statements to
-print information about some events; convert these to tracepoints.
+We have 115 direct inclusions of "system/memory.h", and 91 headers
+in include/ use it: hundreds of files have to process it.
+However only one single header really uses the MemoryRegionCache
+API: "hw/virtio/virtio-access.h". Split it out to a new header,
+avoiding processing unused inlined functions hundreds of times.
 
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- system/physmem.c    | 29 ++++++-----------------------
- system/trace-events |  6 ++++++
- 2 files changed, 12 insertions(+), 23 deletions(-)
+ MAINTAINERS                       |   1 +
+ include/hw/virtio/virtio-access.h |   1 +
+ include/system/memory.h           | 185 --------------------------
+ include/system/memory_cached.h    | 210 ++++++++++++++++++++++++++++++
+ system/physmem.c                  |   1 +
+ 5 files changed, 213 insertions(+), 185 deletions(-)
+ create mode 100644 include/system/memory_cached.h
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 4eb4e34ce75..ad1de7c0478 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3260,6 +3260,7 @@ F: include/exec/memop.h
+ F: include/qemu/ldst_unaligned.h
+ F: include/system/ram_addr.h
+ F: include/system/memory.h
++F: include/system/memory_cached.h
+ F: include/system/memory_ldst*
+ F: include/system/physmem.h
+ F: include/system/ramblock.h
+diff --git a/include/hw/virtio/virtio-access.h b/include/hw/virtio/virtio-access.h
+index 5b5fff5295e..cd17d0c87eb 100644
+--- a/include/hw/virtio/virtio-access.h
++++ b/include/hw/virtio/virtio-access.h
+@@ -17,6 +17,7 @@
+ #define QEMU_VIRTIO_ACCESS_H
+ 
+ #include "exec/hwaddr.h"
++#include "system/memory_cached.h"
+ #include "hw/virtio/virtio.h"
+ #include "hw/virtio/virtio-bus.h"
+ 
+diff --git a/include/system/memory.h b/include/system/memory.h
+index 0e8de527d36..92028dc7a4e 100644
+--- a/include/system/memory.h
++++ b/include/system/memory.h
+@@ -2862,140 +2862,6 @@ MemTxResult address_space_write_rom(AddressSpace *as, hwaddr addr,
+ #include "system/memory_ldst_phys.h.inc"
+ #endif
+ 
+-struct MemoryRegionCache {
+-    uint8_t *ptr;
+-    hwaddr xlat;
+-    hwaddr len;
+-    FlatView *fv;
+-    MemoryRegionSection mrs;
+-    bool is_write;
+-};
+-
+-/* address_space_ld*_cached: load from a cached #MemoryRegion
+- * address_space_st*_cached: store into a cached #MemoryRegion
+- *
+- * These functions perform a load or store of the byte, word,
+- * longword or quad to the specified address.  The address is
+- * a physical address in the AddressSpace, but it must lie within
+- * a #MemoryRegion that was mapped with address_space_cache_init.
+- *
+- * The _le suffixed functions treat the data as little endian;
+- * _be indicates big endian; no suffix indicates "same endianness
+- * as guest CPU".
+- *
+- * The "guest CPU endianness" accessors are deprecated for use outside
+- * target-* code; devices should be CPU-agnostic and use either the LE
+- * or the BE accessors.
+- *
+- * @cache: previously initialized #MemoryRegionCache to be accessed
+- * @addr: address within the address space
+- * @val: data value, for stores
+- * @attrs: memory transaction attributes
+- * @result: location to write the success/failure of the transaction;
+- *   if NULL, this information is discarded
+- */
+-
+-#define SUFFIX       _cached_slow
+-#define ARG1         cache
+-#define ARG1_DECL    MemoryRegionCache *cache
+-#include "system/memory_ldst.h.inc"
+-
+-/* Inline fast path for direct RAM access.  */
+-static inline uint8_t address_space_ldub_cached(MemoryRegionCache *cache,
+-    hwaddr addr, MemTxAttrs attrs, MemTxResult *result)
+-{
+-    assert(addr < cache->len);
+-    if (likely(cache->ptr)) {
+-        return ldub_p(cache->ptr + addr);
+-    } else {
+-        return address_space_ldub_cached_slow(cache, addr, attrs, result);
+-    }
+-}
+-
+-static inline void address_space_stb_cached(MemoryRegionCache *cache,
+-    hwaddr addr, uint8_t val, MemTxAttrs attrs, MemTxResult *result)
+-{
+-    assert(addr < cache->len);
+-    if (likely(cache->ptr)) {
+-        stb_p(cache->ptr + addr, val);
+-    } else {
+-        address_space_stb_cached_slow(cache, addr, val, attrs, result);
+-    }
+-}
+-
+-#define ENDIANNESS
+-#include "system/memory_ldst_cached.h.inc"
+-
+-#define ENDIANNESS   _le
+-#include "system/memory_ldst_cached.h.inc"
+-
+-#define ENDIANNESS   _be
+-#include "system/memory_ldst_cached.h.inc"
+-
+-#define SUFFIX       _cached
+-#define ARG1         cache
+-#define ARG1_DECL    MemoryRegionCache *cache
+-#include "system/memory_ldst_phys.h.inc"
+-
+-/* address_space_cache_init: prepare for repeated access to a physical
+- * memory region
+- *
+- * @cache: #MemoryRegionCache to be filled
+- * @as: #AddressSpace to be accessed
+- * @addr: address within that address space
+- * @len: length of buffer
+- * @is_write: indicates the transfer direction
+- *
+- * Will only work with RAM, and may map a subset of the requested range by
+- * returning a value that is less than @len.  On failure, return a negative
+- * errno value.
+- *
+- * Because it only works with RAM, this function can be used for
+- * read-modify-write operations.  In this case, is_write should be %true.
+- *
+- * Note that addresses passed to the address_space_*_cached functions
+- * are relative to @addr.
+- */
+-int64_t address_space_cache_init(MemoryRegionCache *cache,
+-                                 AddressSpace *as,
+-                                 hwaddr addr,
+-                                 hwaddr len,
+-                                 bool is_write);
+-
+-/**
+- * address_space_cache_init_empty: Initialize empty #MemoryRegionCache
+- *
+- * @cache: The #MemoryRegionCache to operate on.
+- *
+- * Initializes #MemoryRegionCache structure without memory region attached.
+- * Cache initialized this way can only be safely destroyed, but not used.
+- */
+-static inline void address_space_cache_init_empty(MemoryRegionCache *cache)
+-{
+-    cache->mrs.mr = NULL;
+-    /* There is no real need to initialize fv, but it makes Coverity happy. */
+-    cache->fv = NULL;
+-}
+-
+-/**
+- * address_space_cache_invalidate: complete a write to a #MemoryRegionCache
+- *
+- * @cache: The #MemoryRegionCache to operate on.
+- * @addr: The first physical address that was written, relative to the
+- * address that was passed to @address_space_cache_init.
+- * @access_len: The number of bytes that were written starting at @addr.
+- */
+-void address_space_cache_invalidate(MemoryRegionCache *cache,
+-                                    hwaddr addr,
+-                                    hwaddr access_len);
+-
+-/**
+- * address_space_cache_destroy: free a #MemoryRegionCache
+- *
+- * @cache: The #MemoryRegionCache whose memory should be released.
+- */
+-void address_space_cache_destroy(MemoryRegionCache *cache);
+-
+ void address_space_flush_icache_range(AddressSpace *as, hwaddr addr, hwaddr len);
+ 
+ /* address_space_get_iotlb_entry: translate an address into an IOTLB
+@@ -3123,14 +2989,6 @@ MemTxResult flatview_read_continue(FlatView *fv, hwaddr addr,
+                                    MemoryRegion *mr);
+ void *qemu_map_ram_ptr(RAMBlock *ram_block, ram_addr_t addr);
+ 
+-/* Internal functions, part of the implementation of address_space_read_cached
+- * and address_space_write_cached.  */
+-MemTxResult address_space_read_cached_slow(MemoryRegionCache *cache,
+-                                           hwaddr addr, void *buf, hwaddr len);
+-MemTxResult address_space_write_cached_slow(MemoryRegionCache *cache,
+-                                            hwaddr addr, const void *buf,
+-                                            hwaddr len);
+-
+ int memory_access_size(MemoryRegion *mr, unsigned l, hwaddr addr);
+ bool prepare_mmio_access(MemoryRegion *mr);
+ 
+@@ -3208,49 +3066,6 @@ MemTxResult address_space_read(AddressSpace *as, hwaddr addr,
+     return result;
+ }
+ 
+-/**
+- * address_space_read_cached: read from a cached RAM region
+- *
+- * @cache: Cached region to be addressed
+- * @addr: address relative to the base of the RAM region
+- * @buf: buffer with the data transferred
+- * @len: length of the data transferred
+- */
+-static inline MemTxResult
+-address_space_read_cached(MemoryRegionCache *cache, hwaddr addr,
+-                          void *buf, hwaddr len)
+-{
+-    assert(addr < cache->len && len <= cache->len - addr);
+-    fuzz_dma_read_cb(cache->xlat + addr, len, cache->mrs.mr);
+-    if (likely(cache->ptr)) {
+-        memcpy(buf, cache->ptr + addr, len);
+-        return MEMTX_OK;
+-    } else {
+-        return address_space_read_cached_slow(cache, addr, buf, len);
+-    }
+-}
+-
+-/**
+- * address_space_write_cached: write to a cached RAM region
+- *
+- * @cache: Cached region to be addressed
+- * @addr: address relative to the base of the RAM region
+- * @buf: buffer with the data transferred
+- * @len: length of the data transferred
+- */
+-static inline MemTxResult
+-address_space_write_cached(MemoryRegionCache *cache, hwaddr addr,
+-                           const void *buf, hwaddr len)
+-{
+-    assert(addr < cache->len && len <= cache->len - addr);
+-    if (likely(cache->ptr)) {
+-        memcpy(cache->ptr + addr, buf, len);
+-        return MEMTX_OK;
+-    } else {
+-        return address_space_write_cached_slow(cache, addr, buf, len);
+-    }
+-}
+-
+ /**
+  * address_space_set: Fill address space with a constant byte.
+  *
+diff --git a/include/system/memory_cached.h b/include/system/memory_cached.h
+new file mode 100644
+index 00000000000..e0ed54bd1eb
+--- /dev/null
++++ b/include/system/memory_cached.h
+@@ -0,0 +1,210 @@
++/*
++ * Physical memory management API
++ *
++ * Copyright 2011 Red Hat, Inc. and/or its affiliates
++ *
++ * Authors:
++ *  Avi Kivity <avi@redhat.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef SYSTEM_MEMORY_CACHED_H
++#define SYSTEM_MEMORY_CACHED_H
++
++#include "exec/hwaddr.h"
++#include "system/memory.h"
++
++struct MemoryRegionCache {
++    uint8_t *ptr;
++    hwaddr xlat;
++    hwaddr len;
++    FlatView *fv;
++    MemoryRegionSection mrs;
++    bool is_write;
++};
++
++/**
++ * address_space_ld*_cached: load from a cached #MemoryRegion
++ * address_space_st*_cached: store into a cached #MemoryRegion
++ *
++ * These functions perform a load or store of the byte, word,
++ * longword or quad to the specified address.  The address is
++ * a physical address in the AddressSpace, but it must lie within
++ * a #MemoryRegion that was mapped with address_space_cache_init.
++ *
++ * The _le suffixed functions treat the data as little endian;
++ * _be indicates big endian; no suffix indicates "same endianness
++ * as guest CPU".
++ *
++ * The "guest CPU endianness" accessors are deprecated for use outside
++ * target-* code; devices should be CPU-agnostic and use either the LE
++ * or the BE accessors.
++ *
++ * @cache: previously initialized #MemoryRegionCache to be accessed
++ * @addr: address within the address space
++ * @val: data value, for stores
++ * @attrs: memory transaction attributes
++ * @result: location to write the success/failure of the transaction;
++ *          if NULL, this information is discarded
++ */
++
++#define SUFFIX       _cached_slow
++#define ARG1         cache
++#define ARG1_DECL    MemoryRegionCache *cache
++#include "system/memory_ldst.h.inc"
++
++/* Inline fast path for direct RAM access.  */
++static inline
++uint8_t address_space_ldub_cached(MemoryRegionCache *cache, hwaddr addr,
++                                  MemTxAttrs attrs, MemTxResult *result)
++{
++    assert(addr < cache->len);
++    if (likely(cache->ptr)) {
++        return ldub_p(cache->ptr + addr);
++    } else {
++        return address_space_ldub_cached_slow(cache, addr, attrs, result);
++    }
++}
++
++static inline
++void address_space_stb_cached(MemoryRegionCache *cache,
++                              hwaddr addr, uint8_t val,
++                              MemTxAttrs attrs, MemTxResult *result)
++{
++    assert(addr < cache->len);
++    if (likely(cache->ptr)) {
++        stb_p(cache->ptr + addr, val);
++    } else {
++        address_space_stb_cached_slow(cache, addr, val, attrs, result);
++    }
++}
++
++#define ENDIANNESS
++#include "system/memory_ldst_cached.h.inc"
++
++#define ENDIANNESS   _le
++#include "system/memory_ldst_cached.h.inc"
++
++#define ENDIANNESS   _be
++#include "system/memory_ldst_cached.h.inc"
++
++#define SUFFIX       _cached
++#define ARG1         cache
++#define ARG1_DECL    MemoryRegionCache *cache
++#include "system/memory_ldst_phys.h.inc"
++
++/**
++ * address_space_cache_init: prepare for repeated access to a physical
++ *                           memory region
++ *
++ * @cache: #MemoryRegionCache to be filled
++ * @as: #AddressSpace to be accessed
++ * @addr: address within that address space
++ * @len: length of buffer
++ * @is_write: indicates the transfer direction
++ *
++ * Will only work with RAM, and may map a subset of the requested range by
++ * returning a value that is less than @len.  On failure, return a negative
++ * errno value.
++ *
++ * Because it only works with RAM, this function can be used for
++ * read-modify-write operations.  In this case, is_write should be %true.
++ *
++ * Note that addresses passed to the address_space_*_cached functions
++ * are relative to @addr.
++ */
++int64_t address_space_cache_init(MemoryRegionCache *cache,
++                                 AddressSpace *as,
++                                 hwaddr addr,
++                                 hwaddr len,
++                                 bool is_write);
++
++/**
++ * address_space_cache_init_empty: Initialize empty #MemoryRegionCache
++ *
++ * @cache: The #MemoryRegionCache to operate on.
++ *
++ * Initializes #MemoryRegionCache structure without memory region attached.
++ * Cache initialized this way can only be safely destroyed, but not used.
++ */
++static inline void address_space_cache_init_empty(MemoryRegionCache *cache)
++{
++    cache->mrs.mr = NULL;
++    /* There is no real need to initialize fv, but it makes Coverity happy. */
++    cache->fv = NULL;
++}
++
++/**
++ * address_space_cache_invalidate: complete a write to a #MemoryRegionCache
++ *
++ * @cache: The #MemoryRegionCache to operate on.
++ * @addr: The first physical address that was written, relative to the
++ * address that was passed to @address_space_cache_init.
++ * @access_len: The number of bytes that were written starting at @addr.
++ */
++void address_space_cache_invalidate(MemoryRegionCache *cache,
++                                    hwaddr addr,
++                                    hwaddr access_len);
++
++/**
++ * address_space_cache_destroy: free a #MemoryRegionCache
++ *
++ * @cache: The #MemoryRegionCache whose memory should be released.
++ */
++void address_space_cache_destroy(MemoryRegionCache *cache);
++
++/*
++ * Internal functions, part of the implementation of address_space_read_cached
++ * and address_space_write_cached.
++ */
++MemTxResult address_space_read_cached_slow(MemoryRegionCache *cache,
++                                           hwaddr addr, void *buf, hwaddr len);
++MemTxResult address_space_write_cached_slow(MemoryRegionCache *cache,
++                                            hwaddr addr, const void *buf,
++                                            hwaddr len);
++
++/**
++ * address_space_read_cached: read from a cached RAM region
++ *
++ * @cache: Cached region to be addressed
++ * @addr: address relative to the base of the RAM region
++ * @buf: buffer with the data transferred
++ * @len: length of the data transferred
++ */
++static inline MemTxResult
++address_space_read_cached(MemoryRegionCache *cache, hwaddr addr,
++                          void *buf, hwaddr len)
++{
++    assert(addr < cache->len && len <= cache->len - addr);
++    fuzz_dma_read_cb(cache->xlat + addr, len, cache->mrs.mr);
++    if (likely(cache->ptr)) {
++        memcpy(buf, cache->ptr + addr, len);
++        return MEMTX_OK;
++    } else {
++        return address_space_read_cached_slow(cache, addr, buf, len);
++    }
++}
++
++/**
++ * address_space_write_cached: write to a cached RAM region
++ *
++ * @cache: Cached region to be addressed
++ * @addr: address relative to the base of the RAM region
++ * @buf: buffer with the data transferred
++ * @len: length of the data transferred
++ */
++static inline MemTxResult
++address_space_write_cached(MemoryRegionCache *cache, hwaddr addr,
++                           const void *buf, hwaddr len)
++{
++    assert(addr < cache->len && len <= cache->len - addr);
++    if (likely(cache->ptr)) {
++        memcpy(cache->ptr + addr, buf, len);
++        return MEMTX_OK;
++    } else {
++        return address_space_write_cached_slow(cache, addr, buf, len);
++    }
++}
++
++#endif
 diff --git a/system/physmem.c b/system/physmem.c
-index cd2b0dc5fc2..0e8a2fb621d 100644
+index 0e8a2fb621d..c7ddf8a9cf8 100644
 --- a/system/physmem.c
 +++ b/system/physmem.c
-@@ -91,8 +91,6 @@
- 
- #include "memory-internal.h"
- 
--//#define DEBUG_SUBPAGE
--
- /* ram_list is read under rcu_read_lock()/rcu_read_unlock().  Writes
-  * are protected by the ramlist lock.
-  */
-@@ -2921,10 +2919,7 @@ static MemTxResult subpage_read(void *opaque, hwaddr addr, uint64_t *data,
-     uint8_t buf[8];
-     MemTxResult res;
- 
--#if defined(DEBUG_SUBPAGE)
--    printf("%s: subpage %p len %u addr " HWADDR_FMT_plx "\n", __func__,
--           subpage, len, addr);
--#endif
-+    trace_subpage_read(subpage, len, addr);
-     res = flatview_read(subpage->fv, addr + subpage->base, attrs, buf, len);
-     if (res) {
-         return res;
-@@ -2939,11 +2934,7 @@ static MemTxResult subpage_write(void *opaque, hwaddr addr,
-     subpage_t *subpage = opaque;
-     uint8_t buf[8];
- 
--#if defined(DEBUG_SUBPAGE)
--    printf("%s: subpage %p len %u addr " HWADDR_FMT_plx
--           " value %"PRIx64"\n",
--           __func__, subpage, len, addr, value);
--#endif
-+    trace_subpage_write(subpage, len, addr, value);
-     stn_p(buf, len, value);
-     return flatview_write(subpage->fv, addr + subpage->base, attrs, buf, len);
- }
-@@ -2953,10 +2944,8 @@ static bool subpage_accepts(void *opaque, hwaddr addr,
-                             MemTxAttrs attrs)
- {
-     subpage_t *subpage = opaque;
--#if defined(DEBUG_SUBPAGE)
--    printf("%s: subpage %p %c len %u addr " HWADDR_FMT_plx "\n",
--           __func__, subpage, is_write ? 'w' : 'r', len, addr);
--#endif
-+
-+    trace_subpage_accepts(subpage, is_write ? 'w' : 'r', len, addr);
- 
-     return flatview_access_valid(subpage->fv, addr + subpage->base,
-                                  len, is_write, attrs);
-@@ -2982,10 +2971,7 @@ static int subpage_register(subpage_t *mmio, uint32_t start, uint32_t end,
-         return -1;
-     idx = SUBPAGE_IDX(start);
-     eidx = SUBPAGE_IDX(end);
--#if defined(DEBUG_SUBPAGE)
--    printf("%s: %p start %08x end %08x idx %08x eidx %08x section %d\n",
--           __func__, mmio, start, end, idx, eidx, section);
--#endif
-+    trace_subpage_register(mmio, start, end, idx, eidx, section);
-     for (; idx <= eidx; idx++) {
-         mmio->sub_section[idx] = section;
-     }
-@@ -3004,10 +2990,7 @@ static subpage_t *subpage_init(FlatView *fv, hwaddr base)
-     memory_region_init_io(&mmio->iomem, NULL, &subpage_ops, mmio,
-                           NULL, TARGET_PAGE_SIZE);
-     mmio->iomem.subpage = true;
--#if defined(DEBUG_SUBPAGE)
--    printf("%s: %p base " HWADDR_FMT_plx " len %08x\n", __func__,
--           mmio, base, TARGET_PAGE_SIZE);
--#endif
-+    trace_subpage_init(mmio, base, TARGET_PAGE_SIZE);
- 
-     return mmio;
- }
-diff --git a/system/trace-events b/system/trace-events
-index 82856e44f2e..6d29a823f04 100644
---- a/system/trace-events
-+++ b/system/trace-events
-@@ -35,6 +35,12 @@ find_ram_offset_loop(uint64_t size, uint64_t candidate, uint64_t offset, uint64_
- ram_block_discard_range(const char *rbname, void *hva, size_t length, bool need_madvise, bool need_fallocate, int ret) "%s@%p + 0x%zx: madvise: %d fallocate: %d ret: %d"
- qemu_ram_alloc_shared(const char *name, size_t size, size_t max_size, int fd, void *host) "%s size %zu max_size %zu fd %d host %p"
- 
-+subpage_register(void *subpage, uint32_t start, uint32_t end, int idx, int eidx, uint16_t section) "subpage %p start 0x%08x end 0x%08x idx 0x%08x eidx 0x%08x section %u"
-+subpage_init(void *subpage, uint64_t base, uint64_t len) "subpage %p base 0x%08" PRIx64 " len 0x%08" PRIx64
-+subpage_accepts(void *subpage, char access, unsigned len, uint64_t addr) "subpage %p %c len %u addr 0x%" PRIx64
-+subpage_read(void *subpage, unsigned len, uint64_t addr) "subpage %p len %u addr 0x%" PRIx64
-+subpage_write(void *subpage, unsigned len, uint64_t addr, uint64_t value) "subpage %p len %u addr 0x%" PRIx64 " value 0x%" PRIx64
-+
- # cpus.c
- vm_stop_flush_all(int ret) "ret %d"
- 
+@@ -53,6 +53,7 @@
+ #include "qemu/memalign.h"
+ #include "qemu/memfd.h"
+ #include "system/memory.h"
++#include "system/memory_cached.h"
+ #include "system/ioport.h"
+ #include "system/dma.h"
+ #include "system/hostmem.h"
 -- 
 2.52.0
 
