@@ -2,95 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FDB5D07DA6
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 09:38:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0866CD07DE7
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 09:40:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ve80O-00047K-6w; Fri, 09 Jan 2026 03:38:00 -0500
+	id 1ve81x-0005G5-W9; Fri, 09 Jan 2026 03:39:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ve80M-00046l-LA
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 03:37:58 -0500
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1ve81w-0005Fb-0G
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 03:39:36 -0500
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ve80L-0003ZK-3y
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 03:37:58 -0500
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-2a099233e8dso29938195ad.3
- for <qemu-devel@nongnu.org>; Fri, 09 Jan 2026 00:37:56 -0800 (PST)
+ id 1ve81u-0003wv-JR
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 03:39:35 -0500
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-7e1651ae0d5so2483342b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 09 Jan 2026 00:39:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1767947875; x=1768552675; darn=nongnu.org;
+ d=linaro.org; s=google; t=1767947973; x=1768552773; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=T2WjEmO+dGhdznKj7Cs0UfudPWwuc4Qw2p1frFQcUAE=;
- b=VvBDZrX7MiG3fZFvPZxb2mDAI6J2IhU5BHB6OWShshv8RgGk9ausD2fN1ywAghZwi9
- PIkEs0NrVtNnTbL9vPPwiGjtHqoP3o23/lJQUwTYczZEwVqL1v3nytGjzO1c/sswM+eR
- WgEhc3s3fx2+uWZKUOoKQxAkAEjBWow3Wjj0SxFn1M7Yh3LN72GLQMK7E7ras53cXsC2
- KK5LJy4AJIRdCzWPVu1nHT45kLFthM/LY3SFblZ57K8ozmEej/k/jgV0VbBykG1j5tG+
- SKvhoxgI2Qngii7k/B1xFnnsf8xtebdFuIeQqWxY36qdPR9RIIBNiFj6MH2DvVy+pfcD
- nXsQ==
+ bh=FiR+gzV1vqB1L8tOebByW+fWHpdaDPImYkIb57eWylQ=;
+ b=EG90XfEuzl22O+05Z7PpV83KMhto8SQpznYWUHKV6V3BWJaaztbUpNAwJKtya3GhcH
+ fZAVo5ulFloLmMxtnIdmQ081aTWzk+KP6u8nvGgOUKj8933R9tKG2AwX0VRV7A/UJIpq
+ iutc+OoinkWnZP3LRJg6eUDqDLJkzVinImPfReqEX7hMHvLfvVxC7exwOqDf2BuWEDbc
+ ceaXb9/l/W8+oCQdQ51/vCCLCwFO2s7BUqmP4bG1TvXo17Nb3CJ2FpOMkx4qEn71i9Bz
+ r+H/CaKjRG5uTUBwx0gd9bxZ5RVhWVZseiVfBbQJn57DGdY0ocl0yFe1cKyXlfAcQPlu
+ s3/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767947875; x=1768552675;
+ d=1e100.net; s=20230601; t=1767947973; x=1768552773;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=T2WjEmO+dGhdznKj7Cs0UfudPWwuc4Qw2p1frFQcUAE=;
- b=C+DM8khpa+TJs22VnKlhV6gRxNfanW/G9L9dpqJCEhaspskDeO7tiVH3JkvLSK12Qi
- 7m19rA0iPPOSAzDNYgdOpv0hEuymGPdECIajX9kxe+SJ+6jl1MoiZTRw9igxS19/x9wM
- wD4IWTvoE4d61nNtD2zKpgJLzRtDANDbTJtSrv/xPdJibmaPFf9ucxHV+Zgwo7hfnJfh
- Dj/EFaUK1cUeCAE96y2eXUAsVkmlaE4rB3yZAc187noXM+8mzgWZuokLNf9gbvO4xPOi
- GcCyLxJDIHOxsMWpUfk4EIR4XpWt/RrG4+E6a3Oo+UG2b0f0C41QB3pXVemV/zPL/Vfw
- CzFg==
-X-Gm-Message-State: AOJu0YyeIal4cjpVfMI1c7Y8URmwQk89kJ6pwhCoXKqkWx15DPi1kfhR
- idu1tngVja9Y+F9XtcU2/J1M7AgelOCqUjH6RcSb85w7msjbHw1UjSaJJVLkoJ0TTn4NcGxpAqv
- hJnPv
-X-Gm-Gg: AY/fxX4ALUEdnuZjqVqJn8xeqvxXCSllzabEudgcFlXkjugzB5CdVn4Q7Me8jM2WsFq
- bQaJ4qsvjF5xoljnVVFjDWB+GkNr1dgdsVOBubvUTNmKk07uW+9MkE8xzYgzO/BMFW7BfxcRJtL
- bGWGHR3P5sKetog8Q5qeIYj8M120j9PfOzgq1FTJ+j51/6WhvvkeelDU4ob/5ZDR0RGVOqLh0Gm
- kfL9xawPw1CSTS8KKN7b54MjknaOMUMqBmIB0+87j47Hk3DgaiWK/2xGGk1te1dUWJpwTAD4kye
- FuM+/PWCkDcUBT0AGrZbrvBajNmupaoVubhNVd9mRUU0JlWF1YvuLIhlLjCA1tMENLVhgxfH5MX
- 54S4PIkIQ4TVALDqT7Z5iTx6f9bidBhQMy3NTyIw+bjpB4C4XgpG7gpyYYjm64bH0hwDMSL4HW1
- wTTmuBsOTvAFdbJCQICUMorRjDSGyx3ndb3puv6DljXZcCpbojPcZCgg3w
-X-Google-Smtp-Source: AGHT+IGOgMgg1q0/SOL+t59qHmk5GbVFsYeLteK6JUEPEgu7LssvXFrTq/u41Wj5vTSObkL05urlOw==
-X-Received: by 2002:a17:902:f685:b0:2a0:8be7:e3d0 with SMTP id
- d9443c01a7336-2a3ee41d127mr77596695ad.10.1767947875127; 
- Fri, 09 Jan 2026 00:37:55 -0800 (PST)
+ bh=FiR+gzV1vqB1L8tOebByW+fWHpdaDPImYkIb57eWylQ=;
+ b=Y2x+w/o/SG7h9PWgHff8EG89IatkgAM0n69yWUi5ecboAx0Qa2+KJlZ9npo0oBbtxT
+ D+5wo9Oc8LK7vcMJ9UPopoyDkEUiWsraMDxI8BLrP53K4hP2TQ10g+5dUp89o7p4GYT4
+ 8AIbnqTVx5JVIdQIzY9bgyEXlbWiiU8PWSLeucJ9onk0dmJ55R7/2mQH5VVLWCivm1Sd
+ ruxmoifAD7RUE2OSD7RgvvBZeBBsdu7DF5Eyy9byujOEtxc18JDqq7pFViFFyNSZrhrA
+ KW+4Jzgf2MI0+JqCzu6W3TbMLPhgFHzDtjr+Xdv1WazpBS/dl9e2K/JoDqX2pjokimpL
+ cYkQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUXBs4tm9/kSZeC0EBWzY9E7eSEvFit2soKxpH+1t4d6qXyfOFNo7T7SiATkrViJiRpu+/RBNLMo2XZ@nongnu.org
+X-Gm-Message-State: AOJu0Yyca661wL8PGRmA+gIfZn6Y74HZdbD93S8ZZyvBvKi8RfPPY1kC
+ ACCExbkTXglZ8091rtFXRaTmtz0zZxqaxPaMOHjz2ozpT0Vp5kMHIeJOjP/0Jrz8lM8VDkhD4p4
+ pY+jU
+X-Gm-Gg: AY/fxX69hjrwsPeI3NPzV7d4bvCO6vAtdWE/N7A5Hv+MszJlY+AvU0AMaMk9oyfIDDL
+ D5lC5ZKrZ5T/+hIu2hulp+fPyg4x1FxJ1G15mGry00+EHjxbjoeFWgj5efulEGi78PHO5qBjiXH
+ zWyPHF1dJWEaTH6L0nnpVDhLYCq8fXcwgTDx4dfY80VH/x2pabEtbBkuObSQkPELuPzO0yRDKor
+ lhIwdMAu1GQkCch/6YfYhZd7fnVNJGr48AE/IH8P0VUfhAwPFJKAi6AqfsM8WTXjfWkTI2ajW5F
+ GwXRMzYwGF+tnbWnGfWbPUgSFenFGhm61LGWxTiMNOTkV2pfwJZc/HxBIcvRrWR2QR1VuwMLAaR
+ X/aLoOt+Mtne4XkB7uUlAZqQ3H9rSnuhFQHgRj/UZdhtBHeROHD9i9AYIDU1tV6cilNd2q4UXzy
+ Ho0ff5hCqJzmVoqnucGV/nA75j98bp1GUZ6jgs5f1lpTWlmOm+buWJx+vxHY6YZJAzM/I=
+X-Google-Smtp-Source: AGHT+IFdzadHaSNOjMe6Su0Vl5S35hnP5Zejss/LNmkC8OM3wOao6kau/ZdzTc8ImOMc7l9VPR50KQ==
+X-Received: by 2002:a05:6a00:8d8e:b0:7b9:ef46:ec61 with SMTP id
+ d2e1a72fcca58-81b7f108957mr8437429b3a.26.1767947972984; 
+ Fri, 09 Jan 2026 00:39:32 -0800 (PST)
 Received: from [192.168.1.87] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a3e3c39fefsm100121645ad.17.2026.01.09.00.37.54
+ d2e1a72fcca58-819bafe991dsm9696995b3a.16.2026.01.09.00.39.32
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 09 Jan 2026 00:37:54 -0800 (PST)
-Message-ID: <bf2275a1-4eae-417b-b4a8-b0e66881df28@linaro.org>
-Date: Fri, 9 Jan 2026 00:37:54 -0800
+ Fri, 09 Jan 2026 00:39:32 -0800 (PST)
+Message-ID: <b94c5770-e6f1-4916-b83e-93a696ea0c80@linaro.org>
+Date: Fri, 9 Jan 2026 00:39:31 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] system: Convert qemu_arch_available() to TargetInfo API
+Subject: Re: [PATCH 14/29] include/tcg/tcg-op.h: introduce TARGET_ADDRESS_BITS
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
- <marcandre.lureau@redhat.com>
-References: <20260108163601.18676-1-philmd@linaro.org>
- <f089c7c9-c00f-4c19-b4b5-175873fd8c1e@linaro.org>
- <341da906-68c9-44e9-929b-30760883178e@linaro.org>
- <0e4437cd-0e4d-4e5b-9aac-c882ef1e9214@linaro.org>
- <d8792a35-340b-4a5b-8349-42ee3d050b2a@linaro.org>
- <87ldi7mc6c.fsf@pond.sub.org>
- <9678ac55-13f7-497c-92c1-3035593251f5@linaro.org>
+ qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Jim MacArthur <jim.macarthur@linaro.org>,
+ anjo@rev.ng
+References: <20260109053158.2800705-1-pierrick.bouvier@linaro.org>
+ <20260109053158.2800705-15-pierrick.bouvier@linaro.org>
+ <347ae217-134a-4181-9a31-c5ff8c83d7f7@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <9678ac55-13f7-497c-92c1-3035593251f5@linaro.org>
+In-Reply-To: <347ae217-134a-4181-9a31-c5ff8c83d7f7@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -113,76 +111,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/9/26 12:32 AM, Philippe Mathieu-Daudé wrote:
-> On 9/1/26 09:18, Markus Armbruster wrote:
->> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
+On 1/9/26 12:02 AM, Philippe Mathieu-Daudé wrote:
+> On 9/1/26 06:31, Pierrick Bouvier wrote:
+>> This define will be used to replace TARGET_LONG_BITS in tcg-op-*
+>> headers. The goal here is to allow a compilation unit to set explicitely
+>> which variant of the arch it's targeting (32 vs 64 bits).
 >>
->>> On 9/1/26 07:58, Pierrick Bouvier wrote:
+>> By default, we simple let it defined as TARGET_LONG_BITS, so existing
+>> code does not need to be changed, and we can progressively convert new
+>> files.
 >>
->> [...]
+>> target/arm/tcg/* files are cleanly splitted between 32 and 64 bits (with
+>> some TARGET_AARCH64 defines). For other arch, this is a work that will
+>> have to be done before converting them.
 >>
->>>> See my previous answer on v1, -Wswitch is used:
->>>> Reading the thread above, the only mention I find is the 3rd commit that
->>>> precisely change definition because -Wswitch is enabled with clang.
->>>> And it's not only a clang thing, gcc has it in Wall also [1].
->>>
->>> Yes I read that, I'd really like we use -Wswitch but IIUC we can not,
->>> so with that in mind I don't understand your request. Is that for the
->>> hypothetical case we can use -Wswitch in the future? Sorry I'm not
->>> trying to be picky here, I just fail to see the problem you raised :(
->>
->> We *are* using -Wswitch.
+>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>> ---
+>>    include/tcg/tcg-op-address-bits.h | 21 +++++++++++++++++++++
+>>    include/tcg/tcg-op-gvec.h         | 11 +++--------
+>>    include/tcg/tcg-op.h              | 22 +++++++---------------
+>>    3 files changed, 31 insertions(+), 23 deletions(-)
+>>    create mode 100644 include/tcg/tcg-op-address-bits.h
 > 
-> Oh... I guess I meant -Wswitch-enum then (which forces to handle the
-> -- meaningless in that case -- QAPI foo__MAX enum values).
-> 
-
-Yes :)
-
-> Anyway time to stop bikeshedding and call it a day (originally I just
-> wanted to remove the duplicated qemu_arch_available symbol :) ).
+> Nice.
 >
 
-I agree, and sorry for the discussion that has been triggered.
+You can say thanks to our Richard here :).
 
-My original point was that a switch allows to catch missing cases, but 
-*ONLY* if it does not include a default:.
-So either stick to the array, or change the switch to remove the default 
-case. Even though I prefer the switch (without default), I don't mind if 
-you prefer the array at this point. You had my review on first version 
-anyway.
-
->> To see that, delete the default: case in to_json()'s outer switch (patch
->> appended), and compile:
->>
->>       ../qobject/qjson.c: In function ‘to_json’:
->>       ../qobject/qjson.c:154:5: warning: enumeration value ‘QTYPE_NONE’ not handled in switch [-Wswitch]
->>         154 |     switch (qobject_type(obj)) {
->>             |     ^~~~~~
->>       ../qobject/qjson.c:154:5: warning: enumeration value ‘QTYPE__MAX’ not handled in switch [-Wswitch]
->>
->> We run gcc -Wall, which implies -Wswitch.
->>
-
-Thanks Markus, that was my point indeed.
-
->> [...]
->>
->>
->> diff --git a/qobject/qjson.c b/qobject/qjson.c
->> index c858dafb5e..6287c93c67 100644
->> --- a/qobject/qjson.c
->> +++ b/qobject/qjson.c
->> @@ -213,8 +213,6 @@ static void to_json(JSONWriter *writer, const char *name,
->>            json_writer_bool(writer, name, qbool_get_bool(val));
->>            break;
->>        }
->> -    default:
->> -        abort();
->>        }
->>    }
->>    
->>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > 
 
 
