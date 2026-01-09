@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C89DD06D4E
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 03:15:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9133FD06D45
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 03:15:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ve21D-0000wI-RN; Thu, 08 Jan 2026 21:14:27 -0500
+	id 1ve21D-0000wl-VS; Thu, 08 Jan 2026 21:14:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1ve21B-0000vv-E3
+ id 1ve21B-0000vz-Jv
  for qemu-devel@nongnu.org; Thu, 08 Jan 2026 21:14:25 -0500
-Received: from mx1.zhaoxin.com ([210.0.225.12])
+Received: from mx2.zhaoxin.com ([61.152.208.219])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1ve218-0002MV-KB
+ id 1ve219-0002N4-CR
  for qemu-devel@nongnu.org; Thu, 08 Jan 2026 21:14:25 -0500
-X-ASG-Debug-ID: 1767924847-086e2306f90c580001-jgbH7p
-Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by
- mx1.zhaoxin.com with ESMTP id uFStxy4tdE9ABJ8p (version=TLSv1.2
+X-ASG-Debug-ID: 1767924857-1eb14e7c0408680001-jgbH7p
+Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by
+ mx2.zhaoxin.com with ESMTP id 5YpCVMNVOchdNMiA (version=TLSv1.2
  cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
- Fri, 09 Jan 2026 10:14:07 +0800 (CST)
+ Fri, 09 Jan 2026 10:14:17 +0800 (CST)
 X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
-Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX3.zhaoxin.com
- (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX1.zhaoxin.com
+ (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Fri, 9 Jan
- 2026 10:14:07 +0800
+ 2026 10:14:17 +0800
 Received: from ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85]) by
  ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85%7]) with mapi id
- 15.01.2507.059; Fri, 9 Jan 2026 10:14:07 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+ 15.01.2507.059; Fri, 9 Jan 2026 10:14:17 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
 Received: from ewan-server.zhaoxin.com (10.28.44.15) by zxbjmbx1.zhaoxin.com
  (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Fri, 9 Jan
  2026 10:10:28 +0800
 Received: by ewan-server.zhaoxin.com (Postfix, from userid 1000)
- id 1791B2D0005A; Thu,  8 Jan 2026 21:10:28 -0500 (EST)
+ id 19E7C2D00059; Thu,  8 Jan 2026 21:10:28 -0500 (EST)
 From: Ewan Hai <ewanhai-oc@zhaoxin.com>
 To: <pbonzini@redhat.com>, <zhao1.liu@intel.com>
 CC: <qemu-devel@nongnu.org>, <ewanhai@zhaoxin.com>, <cobechen@zhaoxin.com>
-Subject: [PATCH v3 0/3] target/i386: Add support for Zhaoxin Shijidadao vCPU
- model
-Date: Thu, 8 Jan 2026 21:10:25 -0500
-X-ASG-Orig-Subj: [PATCH v3 0/3] target/i386: Add support for Zhaoxin
- Shijidadao vCPU model
-Message-ID: <20260109021028.83985-1-ewanhai-oc@zhaoxin.com>
+Subject: [PATCH v3 1/3] target/i386: Add cache model for Zhaoxin Shijidadao
+ vCPUs
+Date: Thu, 8 Jan 2026 21:10:26 -0500
+X-ASG-Orig-Subj: [PATCH v3 1/3] target/i386: Add cache model for Zhaoxin
+ Shijidadao vCPUs
+Message-ID: <20260109021028.83985-2-ewanhai-oc@zhaoxin.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260109021028.83985-1-ewanhai-oc@zhaoxin.com>
+References: <20260109021028.83985-1-ewanhai-oc@zhaoxin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain
 X-Originating-IP: [10.28.44.15]
 X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
  zxbjmbx1.zhaoxin.com (10.29.252.163)
-X-Moderation-Data: 1/9/2026 10:14:06 AM
-X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
-X-Barracuda-Start-Time: 1767924847
+X-Moderation-Data: 1/9/2026 10:14:16 AM
+X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
+X-Barracuda-Start-Time: 1767924857
 X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://mx2.zhaoxin.com:4443/cgi-mod/mark.cgi
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
 X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 1642
+X-Barracuda-Scan-Msg-Size: 3328
 X-Barracuda-BRTS-Status: 1
 X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
 X-Barracuda-Spam-Score: -2.02
 X-Barracuda-Spam-Status: No,
  SCORE=-2.02 using global scores of TAG_LEVEL=1000.0
  QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.152763
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.152762
  Rule breakdown below
  pts rule name              description
  ---- ---------------------- --------------------------------------------------
-Received-SPF: pass client-ip=210.0.225.12; envelope-from=EwanHai-oc@zhaoxin.com;
- helo=mx1.zhaoxin.com
+Received-SPF: pass client-ip=61.152.208.219;
+ envelope-from=EwanHai-oc@zhaoxin.com; helo=mx2.zhaoxin.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,44 +97,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset introduces cache enumeration and a vCPU model for the
-Zhaoxin "Shijidadao" architecture. The model provides two variants via
-version aliases: Shijidadao-Server (v1) and Shijidadao-Client (v2).
-With these additions, QEMU can expose the core identity and features
-of this architecture without relying on host-passthrough.
+Zhaoxin "Shijidadao" vCPUs require built-in cache enumeration in QEMU
+to properly report CPUID leaf 0x4 and 0x80000005/0x80000006 when
+'host-cache-info' is disabled.
 
+This patch defines the L1/L2/L3 cache parameters for the Shijidadao
+architecture, preparing for use in both client and server models.
+
+Signed-off-by: Ewan Hai <ewanhai-oc@zhaoxin.com>
 ---
+ target/i386/cpu.c | 99 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 99 insertions(+)
 
-Changes Since v1:
-- Incorporated Zhao Liu's suggested patch that introduces the cpuid_0x1f op=
-tion.
-- Dropped explicit x-force-cpuid-0x1f property declarations from both
-Shijidadao-Server and Shijidadao-Client models, since the new option provid=
-es
-a cleaner solution.
-- Updated commit messages for the Client and Server patches to remove
-references to the earlier x-force-cpuid-0x1f approach.
-
-Changes Since v2:
-- Removed Zhao Liu's cpuid_0x1f patch from this series, as it has been
-  merged into mainline (commit 3d4978).
-- Consolidated Shijidadao-Client and Shijidadao-Server into a single CPU
-  model, differentiating them via version numbers and aliases.
-- Dropped the original Client v1 model, as it represents an early silicon
-  revision rather than the final production version.
-- Updated the missing feature comment for FEAT_C000_0001_EDX to explicitly
-  list individual features instead of using a generic TODO message.
-
----
-
-Ewan Hai (3):
-  target/i386: Add cache model for Zhaoxin Shijidadao vCPUs
-  target/i386: Introduce Zhaoxin Shijidadao CPU model
-  target/i386: Fix FEAT_C000_0001_EDX comment in Yongfeng model
-
- target/i386/cpu.c | 252 +++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 250 insertions(+), 2 deletions(-)
-
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 37803cd724..1c85445f48 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -3423,6 +3423,105 @@ static const CPUCaches yongfeng_cache_info =3D {
+     },
+ };
+=20
++static const CPUCaches shijidadao_cache_info =3D {
++    .l1d_cache =3D &(CPUCacheInfo) {
++        /* CPUID 0x4.0x0.EAX */
++        .type =3D DATA_CACHE,
++        .level =3D 1,
++        .self_init =3D true,
++
++        /* CPUID 0x4.0x0.EBX */
++        .line_size =3D 64,
++        .partitions =3D 1,
++        .associativity =3D 8,
++
++        /* CPUID 0x4.0x0.ECX */
++        .sets =3D 64,
++
++        /* CPUID 0x4.0x0.EDX */
++        .no_invd_sharing =3D false,
++        .inclusive =3D false,
++        .complex_indexing =3D false,
++
++        /* CPUID 0x80000005.ECX */
++        .lines_per_tag =3D 1,
++        .size =3D 32 * KiB,
++
++        .share_level =3D CPU_TOPOLOGY_LEVEL_CORE,
++    },
++    .l1i_cache =3D &(CPUCacheInfo) {
++        /* CPUID 0x4.0x1.EAX */
++        .type =3D INSTRUCTION_CACHE,
++        .level =3D 1,
++        .self_init =3D true,
++
++        /* CPUID 0x4.0x1.EBX */
++        .line_size =3D 64,
++        .partitions =3D 1,
++        .associativity =3D 16,
++
++        /* CPUID 0x4.0x1.ECX */
++        .sets =3D 64,
++
++        /* CPUID 0x4.0x1.EDX */
++        .no_invd_sharing =3D false,
++        .inclusive =3D false,
++        .complex_indexing =3D false,
++
++        /* CPUID 0x80000005.EDX */
++        .lines_per_tag =3D 1,
++        .size =3D 64 * KiB,
++
++        .share_level =3D CPU_TOPOLOGY_LEVEL_CORE,
++    },
++    .l2_cache =3D &(CPUCacheInfo) {
++        /* CPUID 0x4.0x2.EAX */
++        .type =3D UNIFIED_CACHE,
++        .level =3D 2,
++        .self_init =3D true,
++
++        /* CPUID 0x4.0x2.EBX */
++        .line_size =3D 64,
++        .partitions =3D 1,
++        .associativity =3D 8,
++
++        /* CPUID 0x4.0x2.ECX */
++        .sets =3D 1024,
++
++        /* CPUID 0x4.0x2.EDX */
++        .no_invd_sharing =3D false,
++        .inclusive =3D true,
++        .complex_indexing =3D false,
++
++        /* CPUID 0x80000006.ECX */
++        .size =3D 512 * KiB,
++
++        .share_level =3D CPU_TOPOLOGY_LEVEL_CORE,
++    },
++    .l3_cache =3D &(CPUCacheInfo) {
++        /* CPUID 0x4.0x3.EAX */
++        .type =3D UNIFIED_CACHE,
++        .level =3D 3,
++        .self_init =3D true,
++
++        /* CPUID 0x4.0x3.EBX */
++        .line_size =3D 64,
++        .partitions =3D 1,
++        .associativity =3D 16,
++
++        /* CPUID 0x4.0x3.ECX */
++        .sets =3D 32768,
++
++        /* CPUID 0x4.0x3.EDX */
++        .no_invd_sharing =3D false,
++        .inclusive =3D true,
++        .complex_indexing =3D false,
++
++        .size =3D 32 * MiB,
++        .share_level =3D CPU_TOPOLOGY_LEVEL_DIE,
++    },
++};
++
+ /* The following VMX features are not supported by KVM and are left out in=
+ the
+  * CPU definitions:
+  *
 --=20
 2.34.1
 
