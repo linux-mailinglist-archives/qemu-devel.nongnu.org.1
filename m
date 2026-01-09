@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05845D07B7C
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 09:09:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2480CD07B70
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 09:08:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ve7X5-0006nA-6k; Fri, 09 Jan 2026 03:07:43 -0500
+	id 1ve7X5-0006qP-Vf; Fri, 09 Jan 2026 03:07:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1ve7X0-0006bl-C7
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 03:07:39 -0500
+ id 1ve7X1-0006gg-LG
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 03:07:40 -0500
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1ve7Wy-0006r7-Dz
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 03:07:38 -0500
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ id 1ve7Wz-0006rG-B7
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 03:07:39 -0500
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
- 6097Cp1V2533826; Fri, 9 Jan 2026 08:07:24 GMT
+ 6097faq02518049; Fri, 9 Jan 2026 08:07:26 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2025-04-25; bh=lNOII
- rFODQaNC2ZDsVuxvf9P0BIuEF8bFyedc9e5vws=; b=YxJbWqIK8rGXZv+5ErvN3
- Fycs3d4/Ruz+ZVBUzNvq4dYqcAvLlE7O+QpKPlS0Di+oOKlG7IqXLXDfrJ2YYYF5
- zecJs8V86g/Hy4NPAWgsWfdv1ctCtVFCSaDKgGLVf6Ddxzdzy/+8dHzh7Ue2BZ4t
- q5zVbbEArCmqWaOEcZ7SzB+0tCvsmDAzBIDZeIsqgDaxf7mjbDEPdcTxv4Zlv8PC
- 27fMsHkmpseM5C+AIRfQCnhUO3KDBOJu6fV4+15MaEiusPtbuHOiY8yKOglgBAAu
- lPRPe6crCkOp6Fpg7ogxN8kkXvba93iha3+zXTh5wlEd0Nouj6SEyTx7TUVQIcMl
- A==
+ :mime-version:references:subject:to; s=corp-2025-04-25; bh=LB2Vj
+ /MWHUNtV6h54DkHNSWb4nqk6QJBlJZJjtacKdo=; b=Z3sGNiFoOgjW8bQi8w9/H
+ ENYsMZerbSESgiLhlSC4994oJDkucjFFwLbh7cvQFoCHRlHD/DDTLLwLx6iCixjB
+ wNieqwko5QNCzQr5fUMrNZ5tuBoApkb9M4YQG48/aN2IxlIslJoUmuLlXO8giKaz
+ 5/xspkiEQhLHK6XdyuPLfB5NFzgTJREVhs+XHAV3CI6ubZQlxLWWrbxNs078hewa
+ 9oUewUWopLnDcKnaa6DOl9ogEMZkWnfqcBbf0p1kja1ezS4ot3ObQs2eYzrj1sYS
+ qjSgMNhsx06pXn0oq/zl6lN6rGx37fyBKAgf+Jrlj7Uk0A6wa/o3MK46uoGPhRfi
+ w==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bjw3bg1h9-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bjwgrg0rk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 09 Jan 2026 08:07:23 +0000 (GMT)
+ Fri, 09 Jan 2026 08:07:26 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 6096PHPj017260; Fri, 9 Jan 2026 08:07:23 GMT
+ with ESMTP id 6095BESL026338; Fri, 9 Jan 2026 08:07:25 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 4besjpcbmc-1
+ 4besjpcbnm-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 09 Jan 2026 08:07:23 +0000
+ Fri, 09 Jan 2026 08:07:25 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 60987KrP009653;
- Fri, 9 Jan 2026 08:07:22 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 60987KrR009653;
+ Fri, 9 Jan 2026 08:07:24 GMT
 Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 4besjpcbj1-2; Fri, 09 Jan 2026 08:07:22 +0000
+ 4besjpcbj1-3; Fri, 09 Jan 2026 08:07:24 +0000
 From: Dongli Zhang <dongli.zhang@oracle.com>
 To: qemu-devel@nongnu.org, kvm@vger.kernel.org
 Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
@@ -61,10 +61,10 @@ Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
  davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
  dapeng1.mi@linux.intel.com, joe.jin@oracle.com, ewanhai-oc@zhaoxin.com,
  ewanhai@zhaoxin.com, zide.chen@intel.com
-Subject: [PATCH v9 1/5] target/i386/kvm: set KVM_PMU_CAP_DISABLE if "-pmu" is
- configured
-Date: Thu,  8 Jan 2026 23:53:56 -0800
-Message-ID: <20260109075508.113097-2-dongli.zhang@oracle.com>
+Subject: [PATCH v9 2/5] target/i386/kvm: extract unrelated code out of
+ kvm_x86_build_cpuid()
+Date: Thu,  8 Jan 2026 23:53:57 -0800
+Message-ID: <20260109075508.113097-3-dongli.zhang@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20260109075508.113097-1-dongli.zhang@oracle.com>
 References: <20260109075508.113097-1-dongli.zhang@oracle.com>
@@ -78,21 +78,21 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
  spamscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999 phishscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
  definitions=main-2601090056
-X-Authority-Analysis: v=2.4 cv=KIJXzVFo c=1 sm=1 tr=0 ts=6960b73b b=1 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA5MDA1NiBTYWx0ZWRfX1k8edPay+K0d
+ Ke/uQIquExDgHrKCPuE5jm/Yh2ajeVHbce/wOyrd3nyMgrA1YBvg1UgE9IG7g15p3Yhcys22NyV
+ /UyZu7z67OT9Qx1EpVJg0yHJGeZTs+mRMYpQ75fRkQoXOKh296qZLQLUfgYl8vmUSEPRu04dbkh
+ Hh4pyQlFi2PR8GHDMJ26jw0Vi/3sqLiqoPpY5fZiqrkbJzKdeEWsO09uXJabljMq+zolm+P0akY
+ QOgSmrTGNMN21K1jwZ0Ww8fq+TjgzD18g6XMAwhbuIcXiPLtThajGv5/EVvCpazdIoKmRVl8E5P
+ rUuxv9BsJb4T65hSPeu4XzArA51KmJCMGWquvOc6Wrv1vESnJTT4sBXMieSnnduxY+UaJNzKo2I
+ /cvAMPCwTMZyd9Eru7sJgYtiSFhuVrCKSvZEwu0/+ojwSMvNoJoz7ndpNmGR/wIDcZKurBC3Ivp
+ E606tio1qrVWfjgUcVd6GcuWr5Cz6kzwMDF5VKAQ=
+X-Proofpoint-ORIG-GUID: IXgIWjRxi4YP6ZyWqPd9n-LQHH0_wEJ7
+X-Authority-Analysis: v=2.4 cv=ab5sXBot c=1 sm=1 tr=0 ts=6960b73e b=1 cx=c_pps
  a=qoll8+KPOyaMroiJ2sR5sw==:117
  a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
- a=QyXUC8HyAAAA:8 a=I5TUGnRYk-IH75UTjikA:9 cc=ntf awl=host:12110
-X-Proofpoint-GUID: jRANaL4NnF3zKbn4jt8xOfSZptpx-Rq9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA5MDA1NiBTYWx0ZWRfX41F2Y8XrdSJ7
- jS4b8T6KS+jyQAMBbPe2OxqjSsxvlcLYPFk4ho1rhmB/hUZ1oeTocrtmglId44RraCvYJAnlgYb
- oFacMe9yaNBRJLbNg4CDUoFWsLZONvLrXEfhA8HYMUH4gkXzRYOO3U3t7+r43MEEvKdB68hCIxk
- TnGR6fyQti5NZW/R6UL454jMW0jhveqQomlQ/RwGwIlkbz0F+EBWwAORNc/SYvIxjcJ5p6A0EBv
- TBJKC+TKYW6LVfUK1BYdRUN01x1E/N3Dl5/uVktWR9Z4KLp9NF1tz5LNg6BsbgHwobs7HUYWQY9
- 1pxb9yntfbuFa7iEjZoPpV4ICOIrdf0Whvyre2pH3sMrIG060wTO3NZdiYLMe0rx84e93T6GGVA
- fUPoP9qF6lHABpvGTieDAYYdpF5xlfBNau5mprGbgoqKXmEBywzv2i7PUXf432QyHsIg2OcNJB4
- noxkGrQo0GI6+uBjv0Roq1247GiY0/DOjLOHU/mc=
-X-Proofpoint-ORIG-GUID: jRANaL4NnF3zKbn4jt8xOfSZptpx-Rq9
+ a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8 a=QyXUC8HyAAAA:8
+ a=PfVMnciqd94fTzcZrM0A:9 cc=ntf awl=host:12110
+X-Proofpoint-GUID: IXgIWjRxi4YP6ZyWqPd9n-LQHH0_wEJ7
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=dongli.zhang@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -118,106 +118,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Although AMD PERFCORE and PerfMonV2 are removed when "-pmu" is configured,
-there is no way to fully disable KVM AMD PMU virtualization. Neither
-"-cpu host,-pmu" nor "-cpu EPYC" achieves this.
+The initialization of 'has_architectural_pmu_version',
+'num_architectural_pmu_gp_counters', and
+'num_architectural_pmu_fixed_counters' is unrelated to the process of
+building the CPUID.
 
-As a result, the following message still appears in the VM dmesg:
+Extract them out of kvm_x86_build_cpuid().
 
-[    0.263615] Performance Events: AMD PMU driver.
-
-However, the expected output should be:
-
-[    0.596381] Performance Events: PMU not available due to virtualization, using software events only.
-[    0.600972] NMI watchdog: Perf NMI watchdog permanently disabled
-
-This occurs because AMD does not use any CPUID bit to indicate PMU
-availability.
-
-To address this, KVM_CAP_PMU_CAPABILITY is used to set KVM_PMU_CAP_DISABLE
-when "-pmu" is configured.
+In addition, use cpuid_find_entry() instead of cpu_x86_cpuid(), because
+CPUID has already been filled at this stage.
 
 Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
 ---
 Changed since v1:
-  - Switch back to the initial implementation with "-pmu".
-https://lore.kernel.org/all/20221119122901.2469-3-dongli.zhang@oracle.com
-  - Mention that "KVM_PMU_CAP_DISABLE doesn't change the PMU behavior on
-    Intel platform because current "pmu" property works as expected."
+  - Still extract the code, but call them for all CPUs.
 Changed since v2:
-  - Change has_pmu_cap to pmu_cap.
-  - Use (pmu_cap & KVM_PMU_CAP_DISABLE) instead of only pmu_cap in if
-    statement.
-  - Add Reviewed-by from Xiaoyao and Zhao as the change is minor.
-Changed since v5:
-  - Re-base on top of most recent mainline QEMU.
-  - To resolve conflicts, move the PMU related code before the
-    call site of is_tdx_vm().
+  - Use cpuid_find_entry() instead of cpu_x86_cpuid().
+  - Didn't add Reviewed-by from Dapeng as the change isn't minor.
 Changed since v6:
   - Add Reviewed-by from Dapeng Mi.
 
- target/i386/kvm/kvm.c | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ target/i386/kvm/kvm.c | 62 ++++++++++++++++++++++++-------------------
+ 1 file changed, 35 insertions(+), 27 deletions(-)
 
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 7b9b740a8e..c98832f423 100644
+index c98832f423..08d80ff677 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -179,6 +179,8 @@ static int has_triple_fault_event;
- 
- static bool has_msr_mcg_ext_ctl;
- 
-+static int pmu_cap;
-+
- static struct kvm_cpuid2 *cpuid_cache;
- static struct kvm_cpuid2 *hv_cpuid_cache;
- static struct kvm_msr_list *kvm_feature_msrs;
-@@ -2080,6 +2082,33 @@ full:
- 
- int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
- {
-+    static bool first = true;
-+    int ret;
-+
-+    if (first) {
-+        first = false;
-+
-+        /*
-+         * Since Linux v5.18, KVM provides a VM-level capability to easily
-+         * disable PMUs; however, QEMU has been providing PMU property per
-+         * CPU since v1.6. In order to accommodate both, have to configure
-+         * the VM-level capability here.
-+         *
-+         * KVM_PMU_CAP_DISABLE doesn't change the PMU
-+         * behavior on Intel platform because current "pmu" property works
-+         * as expected.
-+         */
-+        if ((pmu_cap & KVM_PMU_CAP_DISABLE) && !X86_CPU(cpu)->enable_pmu) {
-+            ret = kvm_vm_enable_cap(kvm_state, KVM_CAP_PMU_CAPABILITY, 0,
-+                                    KVM_PMU_CAP_DISABLE);
-+            if (ret < 0) {
-+                error_setg_errno(errp, -ret,
-+                                 "Failed to set KVM_PMU_CAP_DISABLE");
-+                return ret;
-+            }
-+        }
-+    }
-+
-     if (is_tdx_vm()) {
-         return tdx_pre_create_vcpu(cpu, errp);
-     }
-@@ -3391,6 +3420,8 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+@@ -1986,33 +1986,6 @@ uint32_t kvm_x86_build_cpuid(CPUX86State *env, struct kvm_cpuid_entry2 *entries,
          }
      }
  
-+    pmu_cap = kvm_check_extension(s, KVM_CAP_PMU_CAPABILITY);
-+
+-    if (limit >= 0x0a) {
+-        uint32_t eax, edx;
+-
+-        cpu_x86_cpuid(env, 0x0a, 0, &eax, &unused, &unused, &edx);
+-
+-        has_architectural_pmu_version = eax & 0xff;
+-        if (has_architectural_pmu_version > 0) {
+-            num_architectural_pmu_gp_counters = (eax & 0xff00) >> 8;
+-
+-            /* Shouldn't be more than 32, since that's the number of bits
+-             * available in EBX to tell us _which_ counters are available.
+-             * Play it safe.
+-             */
+-            if (num_architectural_pmu_gp_counters > MAX_GP_COUNTERS) {
+-                num_architectural_pmu_gp_counters = MAX_GP_COUNTERS;
+-            }
+-
+-            if (has_architectural_pmu_version > 1) {
+-                num_architectural_pmu_fixed_counters = edx & 0x1f;
+-
+-                if (num_architectural_pmu_fixed_counters > MAX_FIXED_COUNTERS) {
+-                    num_architectural_pmu_fixed_counters = MAX_FIXED_COUNTERS;
+-                }
+-            }
+-        }
+-    }
+-
+     cpu_x86_cpuid(env, 0x80000000, 0, &limit, &unused, &unused, &unused);
+ 
+     for (i = 0x80000000; i <= limit; i++) {
+@@ -2116,6 +2089,39 @@ int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
      return 0;
  }
  
++static void kvm_init_pmu_info(struct kvm_cpuid2 *cpuid)
++{
++    struct kvm_cpuid_entry2 *c;
++
++    c = cpuid_find_entry(cpuid, 0xa, 0);
++
++    if (!c) {
++        return;
++    }
++
++    has_architectural_pmu_version = c->eax & 0xff;
++    if (has_architectural_pmu_version > 0) {
++        num_architectural_pmu_gp_counters = (c->eax & 0xff00) >> 8;
++
++        /*
++         * Shouldn't be more than 32, since that's the number of bits
++         * available in EBX to tell us _which_ counters are available.
++         * Play it safe.
++         */
++        if (num_architectural_pmu_gp_counters > MAX_GP_COUNTERS) {
++            num_architectural_pmu_gp_counters = MAX_GP_COUNTERS;
++        }
++
++        if (has_architectural_pmu_version > 1) {
++            num_architectural_pmu_fixed_counters = c->edx & 0x1f;
++
++            if (num_architectural_pmu_fixed_counters > MAX_FIXED_COUNTERS) {
++                num_architectural_pmu_fixed_counters = MAX_FIXED_COUNTERS;
++            }
++        }
++    }
++}
++
+ int kvm_arch_init_vcpu(CPUState *cs)
+ {
+     struct {
+@@ -2306,6 +2312,8 @@ int kvm_arch_init_vcpu(CPUState *cs)
+     cpuid_i = kvm_x86_build_cpuid(env, cpuid_data.entries, cpuid_i);
+     cpuid_data.cpuid.nent = cpuid_i;
+ 
++    kvm_init_pmu_info(&cpuid_data.cpuid);
++
+     if (x86_cpu_family(env->cpuid_version) >= 6
+         && (env->features[FEAT_1_EDX] & (CPUID_MCE | CPUID_MCA)) ==
+            (CPUID_MCE | CPUID_MCA)) {
 -- 
 2.39.3
 
