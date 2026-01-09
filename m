@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8245ED0784E
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 08:11:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CCE9D07839
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 08:11:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ve6RT-0006dq-Bx; Fri, 09 Jan 2026 01:57:51 -0500
+	id 1ve6RJ-00067R-Jg; Fri, 09 Jan 2026 01:57:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ve6Q7-0004wt-Ua
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:56:28 -0500
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+ id 1ve6QC-00055Q-0F
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:56:33 -0500
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ve6Q6-0002tl-Fa
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:56:27 -0500
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-c0ec27cad8cso1779808a12.1
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 22:56:26 -0800 (PST)
+ id 1ve6QA-0002u5-BL
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:56:31 -0500
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-c5513f598c0so347035a12.0
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 22:56:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1767941785; x=1768546585; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1767941789; x=1768546589; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZA2w/oxYr+Q1uGgUesLYCh7glRA4PbkOh40jya8E0ng=;
- b=gRR5pONdGct2/3I67wFBmvsZ8BqnehMPIoTlhWOIZ6g97Uxv6JJXlucUH/EjYAL0CP
- DYkPEklaMrowRyOWLqNjpUzTg+Q4Fpm/qYKgIB97sGQrztfiOA7yEt9a1MpsXmIYNS97
- gWvs5hR4ls/1y1rd9HQHeJo6UoQqMG21A1LuEnIkTpzWQn2z0XUHxNY3K3+6y/ThRLS4
- UVowhwzmNJ0HNmhB5tGF0MD9vJNp0MihTetdwr9j2pYZr1XRD/PUcd+42Ft9sJpuPdOp
- 4uGR8TnLYi8OXqZc/YuUagtVga9s+kVq5as6SKLKRgYs5wPK6WWbNA4d8gV8UZoYL6z1
- OCYw==
+ bh=HjFpuKrI65dY4xPj+2D6qx22ukyO0mIgkNS35Pgtsp8=;
+ b=JcePT9hSL630E9fYZC1aKE1ZecixBWJNYZB/NnvkLaPN97NScq24WIBeUL9KdjqnwQ
+ gpvZ5l4hYC3GXgwNfjWG+mPVbleCefBIIWraCSa5BgBO35GlG/XCQb64l2x+hNmMv2Dc
+ a6RYMZ4dKYzPc3zlowbx2X+bwhb6oh80Y26lnnpQ5YwAEgBB2ErIccesr7We77quef6d
+ NZ84BE+9SG4UZIlC+C/1FVqHnj43Nt/qJtIFjC97oTy8E5tBD7tLLGJ79aVsDO7YpOJr
+ hWxyrnEZapqc3NIuZy3muO0yJA+PvI+3anT2dIdaNDVkGqyrhtvCHBB0yhodmdUmFpHy
+ IaCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767941785; x=1768546585;
+ d=1e100.net; s=20230601; t=1767941789; x=1768546589;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=ZA2w/oxYr+Q1uGgUesLYCh7glRA4PbkOh40jya8E0ng=;
- b=QAXxVdvCmXR+TdEk7fLtAdHQyZyPXvgP94Ib8cWgmDTGRfw4BGhBBUevH7xab1aUnu
- FXxq+tjrviXokLf7Fqz4G8rU+E38MjEgzO8HW67+Btds7IyVeTaWUVTzP/+lKJeepDex
- zHnqjt2IqMPhflphjq+9WP1Rx1iE/EzrdD/jcwgH7H+9kcoG8vZbXt2nrNJ1o+AZZvlb
- EglbOKxP3cZU+PKq8dDeLyhDP0HC/b/80tUNhISUJ4TQJ7e3dRtrpvACU7O06+ysMm1F
- pNe06pjnc7l9AJVQ2Yddlc19OBIfBbxqjFFx1mZQ5z/1uVyWVo4xkfSBu+2/+NT7MYIq
- Y6tA==
-X-Gm-Message-State: AOJu0Yyj4Lr2e/CnTlgr2SoZItngu/mn5WE4LqEami09nYzm7hfDiYvK
- Kis7y+NiAbPJ5lT8h271BF4Ls7bu3s1h9/6pXXpEL+X0frrpIykru2JXNOgYow==
-X-Gm-Gg: AY/fxX772TzQepB7KcRf01qvZBesguRtnjVD0Osrzwk6nfzx8o1yZyibsgF34PNZm84
- xVJqaEFoHFdNTTJcTKRBue7sKD7uyX6jAFBdiFILp1IqFQG10NZKeVlq3AN98z/74TPutN+ZT+f
- 518prunl3MTus92kFt1jXcJ+ftcYB0EhXkZ8ZmkwYgkPa8Poy2U2RPn4xYDbOvZER0yjxYubCju
- iONGvQ1QEmKOuTB/bHS9GwoM66rzuU/9e5c6qgBXInC2Tj8IlIbkcb+of4kXi44Us7+zhMdOFMU
- 1MbxdHvpdnci9HLlvvJZ6DZWpN5b2393AkqHgzaqU4jqk8TowFkdB0pGfw6fxDWZg33RRIEsvtt
- EN/g7SiyVtA4Csh7dj2W7c4WZgKgzjl9p+rCp5kYCT8pyEkAmEhpknXU+z6nYDadydpLHauwAEg
- a9HeOBM0FHc+H3yG4fBPJJxG6fTfbDOWFmgYbE8zo7avoHZvNNgGMOoQmkFz8KRpzpUV07QJjTq
- hB+klMigUeqXem7REY=
-X-Google-Smtp-Source: AGHT+IFCWpbCiHtiyXIPQw8DIoPLQiEFu+8f/F0Oxyc/l4eqnbLGPn9FWqZEx25EDZ0WhWq365qjTA==
-X-Received: by 2002:a05:6a21:99a9:b0:33f:df99:11e5 with SMTP id
- adf61e73a8af0-3898f906dadmr7573801637.28.1767941784622; 
- Thu, 08 Jan 2026 22:56:24 -0800 (PST)
+ bh=HjFpuKrI65dY4xPj+2D6qx22ukyO0mIgkNS35Pgtsp8=;
+ b=loqCxkxTrHRz/W5+QSAGznygUSkAJDaK+H0ZbBXlekh9LCUVv39RdcVfJZkFovTTrr
+ MRdQGMD5w+v02oJKOPb19IWk5RTTAFUInW1NpNXp3Y+xuM+Vk3gHlPTslpy4dwB2D8fy
+ lSEovesYb++ZcBESsd9QgG4OalqLIvXwy4v4ZeeMS3faXj01Yv+yVYeD3NnaHaNz01VX
+ qwTfbDEhVrB0H1lUhFCs6KNuzk0HYEkX6FkaRaZ78uz3u8xi/0andUx4w20sHxO7vrz3
+ bL8Ng+95zcHoah3S2ATzQ0VBaGH8nJnlknCPwiZLUpNhTvkaBdkcwUgx26oZMLE2HDcM
+ njsA==
+X-Gm-Message-State: AOJu0YyT8POeAf/eY2SE+CYa4e5pgESIrIdW6eDrXOvhPZv0PSux4hSp
+ Jtx2oArImDOnMh/g5mc1z6/btYTr8uI8dSUkYBGNbYnPDFbR1hKKdoli4MzRuA==
+X-Gm-Gg: AY/fxX6nhLFaVbEg5Rbp3KwlUy9n0LZB1hgp2aQ2NLiTgEMQcJ1oyYvoXd78+PLBj7m
+ LU0jVoKABCLODYK4Ek6fsO5PMgc0q0bPwx59rJfWB1RXIg88FKKBepYbaeKCqZ1mK4n5545+7Uy
+ +lSCWMjDR2Mdt66gbRAq0R6tPslV7kiGO5OH0EsuYPM/DdcPU1RMdcKoPAmcZL6OojWwCcDrnbM
+ q7F3ps3eA8QSBlIFn9pRD7ZGodmYJ1V9MAzE54f+dYtg60khqCdmNgnTaKK6CkLbbc/oemsgfsW
+ 7Ew88AtQoCxYFEp4WMh+Yb4ZAxbSyDRxVGr/V8niuxZCWPaMBH6a5ow6sKEalz+X/iy0610t5e4
+ CKydgLBtOkPd+GXXnNFk87rRPdBW9+GRyOl3hd4cdWisgHOObyvEnwRKJk1d1+vy7uDYeL8n/Ba
+ hbRx9vFKQQn4FRnsA2+QuyS0hMW0GOYdm1lylgX+UARjytFxYZCcFdolXeUIUV4UFCfZFEFgG6Z
+ A1nnrJnMgrOUCbMC/k=
+X-Google-Smtp-Source: AGHT+IGtin0CvCeaGO4MlVwA4gHLFx1xBEQyIebfHdjRRjeJssYoRWEcuHm3gNVHI1MUARnsD9fCKQ==
+X-Received: by 2002:a05:6a20:430f:b0:366:14ac:e20e with SMTP id
+ adf61e73a8af0-3898fa81a6bmr8259141637.76.1767941788404; 
+ Thu, 08 Jan 2026 22:56:28 -0800 (PST)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-c4cc02ecfaasm9953644a12.14.2026.01.08.22.56.21
+ 41be03b00d2f7-c4cc02ecfaasm9953644a12.14.2026.01.08.22.56.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 22:56:23 -0800 (PST)
+ Thu, 08 Jan 2026 22:56:27 -0800 (PST)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
@@ -74,16 +74,16 @@ Cc: alistair23@gmail.com, Djordje Todorovic <Djordje.Todorovic@htecgroup.com>,
  Djordje Todorovic <djordje.todorovic@htecgroup.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 23/34] target/riscv: Add cpu_set_exception_base
-Date: Fri,  9 Jan 2026 16:54:48 +1000
-Message-ID: <20260109065459.19987-24-alistair.francis@wdc.com>
+Subject: [PULL 24/34] target/riscv: Add MIPS P8700 CPU
+Date: Fri,  9 Jan 2026 16:54:49 +1000
+Message-ID: <20260109065459.19987-25-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20260109065459.19987-1-alistair.francis@wdc.com>
 References: <20260109065459.19987-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x52c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -109,62 +109,71 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Djordje Todorovic <Djordje.Todorovic@htecgroup.com>
 
-Add a new function, so we can change reset vector from platforms
-during runtime.
+Introduce P8700 CPU by MIPS.
 
 Signed-off-by: Chao-ying Fu <cfu@mips.com>
 Signed-off-by: Djordje Todorovic <djordje.todorovic@htecgroup.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20260108134128.2218102-2-djordje.todorovic@htecgroup.com>
+Message-ID: <20260108134128.2218102-3-djordje.todorovic@htecgroup.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.h |  4 ++++
- target/riscv/cpu.c | 16 ++++++++++++++++
- 2 files changed, 20 insertions(+)
+ target/riscv/cpu-qom.h      |  1 +
+ target/riscv/cpu_vendorid.h |  1 +
+ target/riscv/cpu.c          | 16 ++++++++++++++++
+ 3 files changed, 18 insertions(+)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 0939e6f08c..08a6e491f3 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -668,6 +668,10 @@ G_NORETURN void riscv_raise_exception(CPURISCVState *env,
- target_ulong riscv_cpu_get_fflags(CPURISCVState *env);
- void riscv_cpu_set_fflags(CPURISCVState *env, target_ulong);
+diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
+index 75f4e43408..30dcdcfaae 100644
+--- a/target/riscv/cpu-qom.h
++++ b/target/riscv/cpu-qom.h
+@@ -56,6 +56,7 @@
+ #define TYPE_RISCV_CPU_TT_ASCALON       RISCV_CPU_TYPE_NAME("tt-ascalon")
+ #define TYPE_RISCV_CPU_XIANGSHAN_NANHU  RISCV_CPU_TYPE_NAME("xiangshan-nanhu")
+ #define TYPE_RISCV_CPU_XIANGSHAN_KMH    RISCV_CPU_TYPE_NAME("xiangshan-kunminghu")
++#define TYPE_RISCV_CPU_MIPS_P8700       RISCV_CPU_TYPE_NAME("mips-p8700")
+ #define TYPE_RISCV_CPU_HOST             RISCV_CPU_TYPE_NAME("host")
  
-+#ifndef CONFIG_USER_ONLY
-+void cpu_set_exception_base(int vp_index, target_ulong address);
-+#endif
-+
- FIELD(TB_FLAGS, MEM_IDX, 0, 3)
- FIELD(TB_FLAGS, FS, 3, 2)
- /* Vector flags */
+ OBJECT_DECLARE_CPU_TYPE(RISCVCPU, RISCVCPUClass, RISCV_CPU)
+diff --git a/target/riscv/cpu_vendorid.h b/target/riscv/cpu_vendorid.h
+index 96b6b9c2cb..f1ffc66542 100644
+--- a/target/riscv/cpu_vendorid.h
++++ b/target/riscv/cpu_vendorid.h
+@@ -2,6 +2,7 @@
+ #define TARGET_RISCV_CPU_VENDORID_H
+ 
+ #define THEAD_VENDOR_ID         0x5b7
++#define MIPS_VENDOR_ID          0x127
+ 
+ #define VEYRON_V1_MARCHID       0x8000000000010000
+ #define VEYRON_V1_MIMPID        0x111
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index f22b504772..c2222228d5 100644
+index c2222228d5..3562cbec32 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -73,6 +73,22 @@ bool riscv_cpu_option_set(const char *optname)
-     return g_hash_table_contains(general_user_opts, optname);
- }
+@@ -3303,6 +3303,22 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+         .cfg.max_satp_mode = VM_1_10_SV48,
+     ),
  
-+#ifndef CONFIG_USER_ONLY
-+/* This is used in runtime only. */
-+void cpu_set_exception_base(int vp_index, target_ulong address)
-+{
-+    RISCVCPU *cpu;
-+    CPUState *cs = qemu_get_cpu(vp_index);
-+    if (cs == NULL) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "cpu_set_exception_base: invalid vp_index: %u",
-+                      vp_index);
-+    }
-+    cpu = RISCV_CPU(cs);
-+    cpu->env.resetvec = address;
-+}
-+#endif
++    /* https://mips.com/products/hardware/p8700/ */
++    DEFINE_RISCV_CPU(TYPE_RISCV_CPU_MIPS_P8700, TYPE_RISCV_VENDOR_CPU,
++        .misa_mxl_max = MXL_RV64,
++        .misa_ext = RVI | RVM | RVA | RVF | RVD | RVC | RVS | RVU,
++        .priv_spec = PRIV_VERSION_1_12_0,
++        .cfg.max_satp_mode = VM_1_10_SV48,
++        .cfg.ext_zifencei = true,
++        .cfg.ext_zicsr = true,
++        .cfg.mmu = true,
++        .cfg.pmp = true,
++        .cfg.ext_zba = true,
++        .cfg.ext_zbb = true,
++        .cfg.marchid = 0x8000000000000201,
++        .cfg.mvendorid = MIPS_VENDOR_ID,
++    ),
 +
- static void riscv_cpu_cfg_merge(RISCVCPUConfig *dest, const RISCVCPUConfig *src)
- {
- #define BOOL_FIELD(x) dest->x |= src->x;
+ #if defined(CONFIG_TCG) && !defined(CONFIG_USER_ONLY)
+     DEFINE_RISCV_CPU(TYPE_RISCV_CPU_BASE128, TYPE_RISCV_DYNAMIC_CPU,
+         .cfg.max_satp_mode = VM_1_10_SV57,
 -- 
 2.52.0
 
