@@ -2,77 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 412DFD0ABAF
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 15:48:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0D65D0A5B5
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 14:19:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1veDmV-0006cA-O7; Fri, 09 Jan 2026 09:48:03 -0500
+	id 1veCND-00070c-LY; Fri, 09 Jan 2026 08:17:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr@darknavy.com>) id 1ve2Nf-000415-KB
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 21:37:41 -0500
-Received: from smtpbguseast1.qq.com ([54.204.34.129])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr@darknavy.com>) id 1ve2NZ-0007JH-EB
- for qemu-devel@nongnu.org; Thu, 08 Jan 2026 21:37:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=darknavy.com;
- s=litx2311; t=1767926236;
- bh=s9S370S8RXeJ1FD8f8SM/PQYUuYKGXkFVvnBpvOhwFc=;
- h=From:To:Subject:Date:Message-ID:MIME-Version;
- b=tgXLIROQo7OXOsELu1MWvuoLe+hmrrHDk50rZT0iQH+aZChHFiXL7yJHpnKPt/Nwk
- IOMM2yPeackiURxmDR+aeLG0sYjrdIPY5/ylq3urd9DnVCIoYqS+cdVMpS/EJt6WKp
- lG5V77ZJQ6LpbV4rsmzdLRp8/Llj99n3G7lK6TmQ=
-X-QQ-mid: esmtpsz11t1767926234tec53d6d9
-X-QQ-Originating-IP: G6DeiDrv49mAVVqqRafGQfBkME2meq9SGkuz09YNcN0=
-Received: from localhost.localdomain ( [58.38.42.157])
- by bizesmtp.qq.com (ESMTP) with 
- id ; Fri, 09 Jan 2026 10:37:12 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 7724640879889572711
-EX-QQ-RecipientCnt: 3
-From: Vulnerability Report <vr@darknavy.com>
-To: qemu-devel@nongnu.org
-Cc: David Woodhouse <dwmw@amazon.co.uk>, Vulnerability Report <vr@darknavy.com>
-Subject: [PATCH] hw/i386/kvm: fix PIRQ bounds check in xen_physdev_map_pirq()
-Date: Fri,  9 Jan 2026 10:35:48 +0800
-Message-ID: <13FE03BE60EA78D6+20260109023548.4047-1-vr@darknavy.com>
-X-Mailer: git-send-email 2.52.0
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1veCMp-0006wz-9Z
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 08:17:30 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1veCMn-0005qz-4a
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 08:17:27 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-2a0fe77d141so34183335ad.1
+ for <qemu-devel@nongnu.org>; Fri, 09 Jan 2026 05:17:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1767964643; x=1768569443; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+ bh=1Iw04MMwLGA6t4YCdXdITwXoYyAryedVdQjv0cAR8/I=;
+ b=WbegU+exTt9p0SDGx15qyCOijBWWwWYBMYO7BYy9EB4Trt3znt2VLfiM+10r8QJs9y
+ FbwtxbyzLISRVH1JF02BYu1EJulvH8mM+ryiq9nMdHaJdBBGKT6geoF/B8XYi6iEiM1f
+ hQHwJM2J7X5tTDpiBTHWloVokRaNB3I2BUMrWHhdA0w0O1qWzJXTI69FRXg4HocqLBMk
+ IGB6F8n04gKJQvursqnL8H6uA5BaNs8DUGa97kzp7vV5F8SECU9VCvwNa3KkIu6r7gxk
+ jXkfEmI/Rn7dHqXTAr3mig8NXAYfb1rAXmqiPnmkkI4+w8dlC0E2DxZ5jH7IeDN5jNv6
+ rVyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1767964643; x=1768569443;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=1Iw04MMwLGA6t4YCdXdITwXoYyAryedVdQjv0cAR8/I=;
+ b=j00xSxdePli7/oGvMtWqLtYZpK5BWSHPY7ax44AAcKsqgt5mIzSdu5h6ekCUB63Fs1
+ AIYTTFEjlRqbDSd/SJ+NyBBlk8kgVg4qf68RhRMl+Tl73QsZAV+WSQeP0RThG/i0cBER
+ nIREUn0kJWrJ04k1TYcFCcX6ZfSP1yX6qJPT0mJGUVimYToGoKibYL9zZvE9WNWoaAKr
+ wWyU3pke/sHqODGzNZzC9orsD1TDTibY5sc3MhEdpr2KdiMEBwYri3oSY5QGTYifVK+q
+ Kdab7GBaei6GfxM1KYAA72ZmRnD4Rb3X99wkoxsk9+PDJ1AzaVsSx5lKkAFFDzfvMQAa
+ uGBA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX2gxMbO1yDA/crAo/IMXu9wEccw0NVnb32UWhFHU348qmCPZAro0rwa/xM74wcBK6cbW3NBdpU0SlT@nongnu.org
+X-Gm-Message-State: AOJu0YyipoWh7oUZD6IKkt282qaJvybEp3TV6N7i9AmFbX8N7gIl0xIE
+ Zx0rt/EQlU/BlpJmjX66BmEHUBNBU+acYgSp/KIi/XjLOzs335aItATR
+X-Gm-Gg: AY/fxX5LPdBHYI4jE/qBxpfNbr6REOp12FjcZeQUjB3N5FjrH07DKlLtDV9f40oLFM6
+ WRvytLRPXRmMo7cru0XvT6KZxCIZpWz/YFisJIzmumYLzhyZOocVAI0s2YdtJqM6OtDdKdiYu18
+ eeJDAqqNWWnr4BlZQkcL4dubWpPEP9DH1WOwgKOJlxJBCAjKXa6qzwMe5+IdyP4VJc2Nvh/6Ks5
+ 484lKkNJKuzkQpmSPGd3d6xjYtcPvBzzp+XstxY6LkEY7gz7QaR9vGtdl3J5oC1Idiqssf0G+Sv
+ TdBUgjaEkUs2g1ox6fNiNZrFLwoy4mfp7cMzVJwdvGfh9uRPYOrOq7YSoh2IfImC0lBpp4vYdV+
+ Au+kJuLI2AMfRnjbb+Z0AWPpH/DJnDA50Gfq1qkEnNmbXoHcpRCqvBZYsuRYPxjyVvLkf8dS3Gs
+ LvvIW64dvPAItS7hJaAJN2
+X-Google-Smtp-Source: AGHT+IEuiBciDSQ9CJri2b+xevRcdp79Xp9/goxv5Ika+HcdkV+8BkMPQQx4w5KFk/ehR9UxJuQVJQ==
+X-Received: by 2002:a17:902:cecd:b0:29f:e787:2b9b with SMTP id
+ d9443c01a7336-2a3ee4da376mr92071185ad.41.1767964643427; 
+ Fri, 09 Jan 2026 05:17:23 -0800 (PST)
+Received: from donnager-debian.. ([45.124.203.15])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2a3e3c47390sm106103735ad.25.2026.01.09.05.17.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 09 Jan 2026 05:17:22 -0800 (PST)
+From: Joel Stanley <joel@jms.id.au>
+To: Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
+Cc: Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Vijai Kumar K <vijai@behindbytes.com>, Ran Wang <wangran@bosc.ac.cn>,
+ Michael Ellerman <mpe@oss.tenstorrent.com>,
+ Joel Stanley <jms@oss.tenstorrent.com>,
+ Nick Piggin <npiggin@oss.tenstorrent.com>,
+ Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>, qemu-riscv@nongnu.org
+Subject: [PATCH 0/4] hw/riscv: Boot setup improvements
+Date: Fri,  9 Jan 2026 23:46:51 +1030
+Message-ID: <20260109131657.396794-1-joel@jms.id.au>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:darknavy.com:qybglogicsvrgz:qybglogicsvrgz5b-2
-X-QQ-XMAILINFO: OVFGYuALQ4aSzCXJvmq8BrCGKSw5DrrGTbEAU2SqGsYPnEo0jHO2c1Cj
- GkNGpMObkXcQeLmW9dq8NKtdjj/1mmq7lsph9M4JgDkWF63VWYldJiEdfsAhf2MhAzeePfO
- zEZ/DMARDrKhqk2Ttx/lRRi8sOxDn4+m7zSb1PdOH84iqIFdhxFF2pur2vNOtthSSiQJ/eF
- IFNabHZ6BgmcRuF7fAzZJoInqfGxj6eR++wxcVy5NpB8qiZq5PEidhazCeM//gyODuFzvDD
- OoImwOVctb6HNOhkYiX8V3XxKT7JdoDKXBfU89eVR4lTX76tjOBiDEgCfNQrMA2wrQ9iLHp
- xppNvqGH2E+s3fD0IAFNXlfGi4hJ0I5NIqq2duSr6PztRpY0J1JB8zqVpVWhppxIhzQF7pt
- fJ5ZBlbLcQGstnV7Hq4j5IKUQ92/g25yTGEfVaY9eR8jNgaZxb9CvV7MwEjZD3XNHI/uHfO
- 7Bq/5ylRPpKJOrRyflscrJOTKE5QRQUBoKg06CEPt6itSyufmM3rHgUoBwSygECYG8kuKcL
- 1g4EdPH4OG+BPtN2Opjy3VRNwuNho3sz9j3788+eLThcFVMcretTLoj7H7ijOj0EUml6NbS
- hJpvU3xa7wCbIKfpHNSbqEw3HvyZUcnOTU+u4RPBsWG3foHNVGwaYS706Tj95k7AIdQkgbr
- /kBEtMna9WKv+Mi15tJF+5aj6KZTXMoMJC3qb7NxjXShRLoklD0zTmR7dd8OquktEolqAe1
- xVl2OuPo0WU7UFx1ElJZj5LfmVmjUF6FowZD/4eAt0K8ItYuDRPyhZ7SvmIGQlXdfvlFaAs
- MaTd6RKMDE8mGEBfyz1fkDhcUuElmDnPyDn2lXTRy5EnXRfYvydISmXS8Ry/D7XCfg5AdE9
- 5yi9zSilxrgMGKZtGkIc8aYpfe01q/gF0XXt66NcAFmwNV+WiKrhen6duZA98ljslfwCHR2
- CHQKcS4gsyc+zJmUUj7fl+1BUXOMAfpqtTaFRAYq5Y52kMcH+jVzPDflmwN/rLzahe+wuff
- rC1JNgAQ==
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-X-QQ-RECHKSPAM: 0
-Received-SPF: pass client-ip=54.204.34.129; envelope-from=vr@darknavy.com;
- helo=smtpbguseast1.qq.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=joel.stan@gmail.com; helo=mail-pl1-x632.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.001,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 09 Jan 2026 09:48:00 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,31 +104,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reject pirq == s->nr_pirqs in xen_physdev_map_pirq().
+The first two patches improve the boot infrastructure for riscv so
+machines with split memory regions can load payloads into the correct
+region. 
 
-Fixes: aa98ee38a5 ("hw/xen: Implement emulated PIRQ hypercall support")
-Fixes: CVE-2026-0665
-Reported-by: DARKNAVY (@DarkNavyOrg) <vr@darknavy.com>
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
-Signed-off-by: Vulnerability Report <vr@darknavy.com>
----
- hw/i386/kvm/xen_evtchn.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The second two patches improve usability when attempting to run opensbi
+in less common situations.
 
-diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
-index dd566c4967..173e0818c7 100644
---- a/hw/i386/kvm/xen_evtchn.c
-+++ b/hw/i386/kvm/xen_evtchn.c
-@@ -1877,7 +1877,7 @@ int xen_physdev_map_pirq(struct physdev_map_pirq *map)
-             return pirq;
-         }
-         map->pirq = pirq;
--    } else if (pirq > s->nr_pirqs) {
-+    } else if (pirq >= s->nr_pirqs) {
-         return -EINVAL;
-     } else {
-         /*
+This series are prerequisites for the Atlantis machine.
+
+Nicholas Piggin (4):
+  hw/riscv/boot: Describe discontiguous memory in boot_info
+  hw/riscv/boot: Account for discontiguous memory when loading firmware
+  hw/riscv/boot: Warn if a ELF format file is loaded as a binary
+  hw/riscv/boot: Provide a simple halting payload
+
+ include/hw/riscv/boot.h    | 14 +++++++-
+ hw/riscv/boot.c            | 73 ++++++++++++++++++++++++++++++++------
+ hw/riscv/microchip_pfsoc.c |  6 ++--
+ hw/riscv/opentitan.c       |  6 ++--
+ hw/riscv/shakti_c.c        |  6 +++-
+ hw/riscv/sifive_u.c        |  3 +-
+ hw/riscv/spike.c           |  6 ++--
+ hw/riscv/virt.c            |  7 ++--
+ hw/riscv/xiangshan_kmh.c   |  6 +++-
+ 9 files changed, 104 insertions(+), 23 deletions(-)
+
 -- 
-2.39.5 (Apple Git-154)
+2.47.3
 
 
