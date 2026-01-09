@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F98ED07775
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 07:55:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E610D07778
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 07:56:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ve6PQ-0003ZS-PP; Fri, 09 Jan 2026 01:55:48 -0500
+	id 1ve6Pc-0003p6-Kh; Fri, 09 Jan 2026 01:55:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ve6P2-0003TX-3m
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:55:20 -0500
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ id 1ve6P5-0003Y8-PI
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:55:25 -0500
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ve6P0-0002nq-7A
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:55:19 -0500
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-bc274b8b15bso2586077a12.1
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 22:55:17 -0800 (PST)
+ id 1ve6P3-0002oR-Ki
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:55:22 -0500
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-c026e074373so2039244a12.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 22:55:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1767941716; x=1768546516; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1767941720; x=1768546520; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=azluCpwuy12fnH7pKEXgjFpDbSYy56nGenJ1NmQ5bGY=;
- b=gg6BIIfUM6lyu4hVG+nEadAosd57srg9+bnQJq/QO4SKKfZnHMyHSg3qMJq0ZrRub9
- Yt13Uz4GR91+yqjytnjKfCkBBQr0n32klh8uVtQBjjWJtP6eh60un6k246vQqAqCyrfd
- i1XEYtPfEbwglp8EdQ1tt1oRQWudT7nPXfSVziVsHjlMf79PSlCq2LUAthgldPsJ3xF7
- tdVbwMtsBc4V9C7/zqh4yJfRbICBGXs7We8NI53T11FwxvIqTJScQzRSGnuq79DSQ2Hu
- 6qKkynzC4lzzFxG4vYeavsOoI4ItY4QR/ARGFReUUzhldLPlzkg/lDbSbLpnmiZCfIab
- QOTg==
+ bh=cE0jDKqtS7aSGIIwr7yj4Rxy4Z76lwTaUBUlwt7TyeE=;
+ b=Qv63CJ4j7qLsdzypxq6XK9/r2U7TOS+WTtIJoJ/3ypWAYHcmHhv4ZsJkdwZ1FJ5UEc
+ SSavNspriGE4qBzBK2jHVpcrX9+apsmVrj65lG6J3XhjW6fh+08ui9V777tu3GamX77/
+ uiN4dRyB3W145lwzXkQyoQ8o0MkKEG2xLeEFhIF4B1TBJA82xVAKpQOUnRU2WrFhecer
+ lAqVFIVZhxNRoBnhIb/PDMNxGNEOnfMclSshNC8UHsF6v5BL+3+NfbJZ6Es6hZdhqnOL
+ 1Z9iN5/T8tI7dMFpPqOwoc4lY+HA76YzUAqmFUxMzdLTcOERkcLb+PCFSI7+IrOD2TF/
+ O5ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767941716; x=1768546516;
+ d=1e100.net; s=20230601; t=1767941720; x=1768546520;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=azluCpwuy12fnH7pKEXgjFpDbSYy56nGenJ1NmQ5bGY=;
- b=KG7OGQkaTaMrLZ6REO98Hcxxd8YJKHmxeh4DrkNxrY8FY7o2e1ke/WqUMyQNXqkJO5
- M+fC6NJBod4edz9UMzVoHKs+9F9uFJBXojotjoXQWo6/mkJ4263thgU3Chz4dzuOU+iT
- W30AgeUsmFC4BkR+bWaZRaWOVCf2rxFQ4nbhNkYimLZDPL+blnsuYnVqwsv7sht0Yjy5
- 3bIg5/4Hm9FyRgQZ++1eR8af3NrwSwOmBWK7+r/z3ylXKL4bNCF/K6u3XFKM/rNKOawj
- 4eg12uo3OpS9uyYVfaN38dmlmRrNOCS0Cp4RsloFf2CqjTTKXhXitkTpHZs9apE+D/iU
- tUsA==
-X-Gm-Message-State: AOJu0YwO+d1x7UCsmf6PWsvBFb3dDkXITUQX3s2rdcFViXyuMAxC8VCJ
- 4bLa2QCK5kekxiYwn4DPWGM8qHnpA+wmJpiS9rTPYn7FzyoWUFCReTd3JtyBKA==
-X-Gm-Gg: AY/fxX7v56upAcKowwTPiHCmLnfwsPPGhhMyQkRotsfgJelWXkuzEen8NerkJXiYsin
- 6/K82w4HTkdE9VV8yi7NaoR2O+zflRlCD5n6l9LPy5PxPE4Kyz9e2v9bt2Lgtp1h8fF6iKuvRIf
- 3vm0iU+gS4ByN1Vp00RMHwpZ6afg6QkcC/M5zJh/NcRu9jx23xxr9e9TlepzN/esyGVTudwtlxv
- BcijzQt/8TA3ZErvl8ujq6b0eHzcqpMLZr3wABgiZ94dhLnq5W3LiXXB4Kwo4TL/hD0TqXYo+iW
- v/HsZE3a2SQC4U5gklRdavTf+WbWMZFYT+PEibt4uGrFXi8xgNmxRfcl/gXdrNLJv9QAscJJVcc
- afiHfYYD6oQlL06geEyoqg4azc4djHyvKGw2RF4KntCJYOC5F5BQirRijDXsCfCnXdEXIlY2/cv
- pwiMznPNph0hEaPr+0ZQcmXIHgXICLUOK65LVls0Y6201dbAqS4Ky5qgnGF6vN6Bob2na0ARh3Q
- cv7I/ZMgXYAjBSYaXM=
-X-Google-Smtp-Source: AGHT+IGErp3A98ZOoRlmVrTxH6GDwlqxmjsuiYquey8BwXUEzP9v5US/KA03RiQutz1eJo8pMOMb6Q==
-X-Received: by 2002:a05:6a20:a10e:b0:33c:2154:d4f4 with SMTP id
- adf61e73a8af0-3898f9975b1mr8479748637.49.1767941716428; 
- Thu, 08 Jan 2026 22:55:16 -0800 (PST)
+ bh=cE0jDKqtS7aSGIIwr7yj4Rxy4Z76lwTaUBUlwt7TyeE=;
+ b=oapvwK1Z0U31Ucbu5M3HVRlhv0gmNx5Ddgg476MhiEuyck1X1luymG2G558FFQW22g
+ NmCb+KB0pBox7L9CEanJVSun0qkbGH+HBeWO/E1OatzswORF/GHtDRmbfueukuyZFCA2
+ yUKf1T+bkrryNAUsmeA3+TL07bBD42H8SXakqp+YidnP1SHUHbnJ1RHVYC+SL3voRL/8
+ Wz/90XcSH7TIdeIE7F3ogU4Gl9kmiGt/YTcwEiXl3MsH9Sgp9Mj39Mqf5nwMl4bWAET0
+ q/4ENnZeD7fZHakOVVFXaxCwn8152usPFkpdRv4QAXHZAZiK2Qg/KhqJYO3f7bhSrAw2
+ WftA==
+X-Gm-Message-State: AOJu0YyMwfU0dj0kIG+xSYuAKWc69j9XJlh6jm7lkHNdnX7Kvv0oKK7x
+ 7XADMZXE2vYPU4f44dKOijiIfSGf+WoncHHVmwXGdxK0JNHcUeYByzbxlFh25g==
+X-Gm-Gg: AY/fxX7CsLhYvCf1qNwyw8sdPqNfQOrnRlAbWX/6jpbyqQDoKwX07kTCsbPjWCsmZr3
+ CkY4dX2AhVvb5OFLY19AFujxW1zsrWF46OBoGQsrjW2Lkg7j8xg4nS3t1XKcSInvq2U550kcOSn
+ D7tDIOUuRekJROoZK00DeycFdPum9wqcF+a2sdzq4VesIvD+iirnKhJzbVAKfxkbMcdi9YINc+4
+ GQPMKVsVFgJqtNUSbXNT0WYlPdP2XauEHv4sth2YW/bD6oCrKBSm/Mdv9fLcmQJe8FRxQBNdZM2
+ 3IRJoJEHZbLMzCZYNXjetIEHN8JvTfIZ3VLG1GSPKaA3ehIn30NmV/FGAhDS6seZ9s3NLgNA0AB
+ 5CZgImlwBz9RTHaeYwtpwG/7PojrFdkcPalgZFsDBJeTXNLBJ9/Ifc9Q4uBv6b8aqqXSDVn8KF2
+ /v8bWsS3TnG/aQczXSLmfknaiWyqgjGE0Gu8AIvoUAr8JikVmuGT4yzSD+r6F4v4ctyFTtWvR4Z
+ ZU31GMPxriwXbmUOWg=
+X-Google-Smtp-Source: AGHT+IE6MYxMFyMUbCtP8Ha/wpNjyqGuxt3nDUkWbYzSmaqQMwZgtjcaZaImMKewCU1M9OJwREzpjQ==
+X-Received: by 2002:a05:6a20:9392:b0:389:7d32:c8ad with SMTP id
+ adf61e73a8af0-3898f8fc437mr8118164637.34.1767941719632; 
+ Thu, 08 Jan 2026 22:55:19 -0800 (PST)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-c4cc02ecfaasm9953644a12.14.2026.01.08.22.55.13
+ 41be03b00d2f7-c4cc02ecfaasm9953644a12.14.2026.01.08.22.55.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 22:55:15 -0800 (PST)
+ Thu, 08 Jan 2026 22:55:18 -0800 (PST)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Alistair Francis <alistair.francis@wdc.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 02/34] hw/core/loader: Fixup whitespace for get_image_size()
-Date: Fri,  9 Jan 2026 16:54:27 +1000
-Message-ID: <20260109065459.19987-3-alistair.francis@wdc.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Vishal Chourasia <vishalc@linux.ibm.com>
+Subject: [PULL 03/34] hw/core/loader: Free the image file descriptor on error
+Date: Fri,  9 Jan 2026 16:54:28 +1000
+Message-ID: <20260109065459.19987-4-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20260109065459.19987-1-alistair.francis@wdc.com>
 References: <20260109065459.19987-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x536.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x52f.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -107,41 +108,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alistair Francis <alistair.francis@wdc.com>
 
+Coverity: CID 1642764
+Fixes: f62226f7dc4 ("hw/core/loader: improve error handling in image loading functions")
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by:Vishal Chourasia <vishalc@linux.ibm.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20251030015306.2279148-1-alistair.francis@wdc.com>
+Reviewed-by: Vishal Chourasia <vishalc@linux.ibm.com>
+Message-ID: <20251030015306.2279148-2-alistair.francis@wdc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/core/loader.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ hw/core/loader.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/hw/core/loader.c b/hw/core/loader.c
-index 8252616fdd..b7638ccd72 100644
+index b7638ccd72..3d2c1ae286 100644
 --- a/hw/core/loader.c
 +++ b/hw/core/loader.c
-@@ -75,14 +75,20 @@ int64_t get_image_size(const char *filename, Error **errp)
- {
-     int fd;
-     int64_t size;
-+
-     fd = qemu_open(filename, O_RDONLY | O_BINARY, errp);
--    if (fd < 0)
-+
-+    if (fd < 0) {
-         return -1;
-+    }
-+
-     size = lseek(fd, 0, SEEK_END);
-+
+@@ -86,6 +86,7 @@ int64_t get_image_size(const char *filename, Error **errp)
+ 
      if (size < 0) {
          error_setg_errno(errp, errno, "lseek failure: %s", filename);
++        close(fd);
          return -1;
      }
-+
-     close(fd);
-     return size;
- }
+ 
 -- 
 2.52.0
 
