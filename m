@@ -2,114 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB605D09D7B
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 13:41:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDAE2D09D82
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 13:41:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1veBnU-0003Jp-DP; Fri, 09 Jan 2026 07:40:56 -0500
+	id 1veBnY-0003Kr-ST; Fri, 09 Jan 2026 07:41:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1veBnQ-0003Iz-UX
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 07:40:53 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1veBnU-0003KJ-Kr
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 07:40:58 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1veBnP-0007EA-AS
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 07:40:52 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1veBnT-0007ET-3z
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 07:40:56 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id A38205BD06;
- Fri,  9 Jan 2026 12:40:49 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 82894337E0;
+ Fri,  9 Jan 2026 12:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1767962449; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1767962451; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MsJGFF8VOKFlAUQA5zQYG147+Oe5oJOK9GND8kTEtS0=;
- b=UwwyqNwdvyjyqaqsh55uW4J75Tz5zW4A6ggioz7dh/FV1DgnkfREl0JLSHuV8x11YoHbPJ
- g+ow+IJX0A2GfjWFrsIbCYcuLJNM+OFpyZ07EnTo/OXIP+kr5wfVy7U5c6liqDR4ahRi4J
- WmTOuDtuMieg9/kpn14lWcd8nMtkUzM=
+ bh=TL+uCIHm4IMLJvAke8wrvDvZqP++O5z0LD5bYx6kqZs=;
+ b=TZROB4Ksdd8ZwBz0n/VpHeRM7SWBDJhiGyUxH2XW8k4YQ8QxIGduJzTGB4v9DFi3FabJS0
+ GmClqbd4kwI/EWcPpKu64RDopni10MfYyF8t7siQH+US/TIc9H7Vd5iGKmnxADZZtazRQ4
+ QXUCz8wFQrzJ0F7LYB3hwDNR+UZnmy8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1767962449;
+ s=susede2_ed25519; t=1767962451;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MsJGFF8VOKFlAUQA5zQYG147+Oe5oJOK9GND8kTEtS0=;
- b=dQS8UKWrcZXA2dc6329ztZ/sUZIcbNq1CN2rlV5KeI3J7eonsPj/0luQN3O8VKxAFlqGmF
- fo4VdsTupkAk5KAQ==
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=UwwyqNwd;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=dQS8UKWr
+ bh=TL+uCIHm4IMLJvAke8wrvDvZqP++O5z0LD5bYx6kqZs=;
+ b=T0BKyC2TG2i5dZMVOsQF+EU1kiWnKVSdLvMnZ+M4IQslYPvpd4NqARW8vSKvmSiJ9Er7Qv
+ oDx881uQPEw4G/DA==
+Authentication-Results: smtp-out1.suse.de;
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1767962449; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1767962451; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MsJGFF8VOKFlAUQA5zQYG147+Oe5oJOK9GND8kTEtS0=;
- b=UwwyqNwdvyjyqaqsh55uW4J75Tz5zW4A6ggioz7dh/FV1DgnkfREl0JLSHuV8x11YoHbPJ
- g+ow+IJX0A2GfjWFrsIbCYcuLJNM+OFpyZ07EnTo/OXIP+kr5wfVy7U5c6liqDR4ahRi4J
- WmTOuDtuMieg9/kpn14lWcd8nMtkUzM=
+ bh=TL+uCIHm4IMLJvAke8wrvDvZqP++O5z0LD5bYx6kqZs=;
+ b=TZROB4Ksdd8ZwBz0n/VpHeRM7SWBDJhiGyUxH2XW8k4YQ8QxIGduJzTGB4v9DFi3FabJS0
+ GmClqbd4kwI/EWcPpKu64RDopni10MfYyF8t7siQH+US/TIc9H7Vd5iGKmnxADZZtazRQ4
+ QXUCz8wFQrzJ0F7LYB3hwDNR+UZnmy8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1767962449;
+ s=susede2_ed25519; t=1767962451;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MsJGFF8VOKFlAUQA5zQYG147+Oe5oJOK9GND8kTEtS0=;
- b=dQS8UKWrcZXA2dc6329ztZ/sUZIcbNq1CN2rlV5KeI3J7eonsPj/0luQN3O8VKxAFlqGmF
- fo4VdsTupkAk5KAQ==
+ bh=TL+uCIHm4IMLJvAke8wrvDvZqP++O5z0LD5bYx6kqZs=;
+ b=T0BKyC2TG2i5dZMVOsQF+EU1kiWnKVSdLvMnZ+M4IQslYPvpd4NqARW8vSKvmSiJ9Er7Qv
+ oDx881uQPEw4G/DA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5460C3EA63;
- Fri,  9 Jan 2026 12:40:48 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 336A43EA63;
+ Fri,  9 Jan 2026 12:40:49 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id QJQNBVD3YGkkQgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 09 Jan 2026 12:40:48 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 8CNZOFH3YGkkQgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 09 Jan 2026 12:40:49 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com,
 	berrange@redhat.com
-Subject: [PATCH v3 01/25] migration: Remove redundant state change
-Date: Fri,  9 Jan 2026 09:40:17 -0300
-Message-ID: <20260109124043.25019-2-farosas@suse.de>
+Subject: [PATCH v3 02/25] migration: Fix state change at
+ migration_channel_process_incoming
+Date: Fri,  9 Jan 2026 09:40:18 -0300
+Message-ID: <20260109124043.25019-3-farosas@suse.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260109124043.25019-1-farosas@suse.de>
 References: <20260109124043.25019-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -3.01
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; TO_DN_NONE(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- FUZZY_RATELIMITED(0.00)[rspamd.com]; ARC_NA(0.00)[];
- MIME_TRACE(0.00)[0:+]; FROM_HAS_DN(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- RCVD_TLS_ALL(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email];
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.999];
+ MIME_GOOD(-0.10)[text/plain];
+ FUZZY_RATELIMITED(0.00)[rspamd.com];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; MIME_TRACE(0.00)[0:+];
+ ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCPT_COUNT_THREE(0.00)[3]; DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: A38205BD06
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ RCPT_COUNT_THREE(0.00)[3]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; TO_DN_NONE(0.00)[];
+ RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -2.80
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -126,29 +119,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If local_err is set, migration_connect_error_propagate() will be
-called and that function already has a state transtion from SETUP to
-FAILED.
+When the incoming migration fails during the channel connection phase,
+the state transition to FAILED is currently being done in the
+MigrationState->state, but the MigrationIncomingState->state is the
+one that should be used.
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/migration.c | 2 --
- 1 file changed, 2 deletions(-)
+ migration/channel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 9d1bf5d276..c45393f40e 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -2326,8 +2326,6 @@ static void qmp_migrate_finish(MigrationAddress *addr, bool resume_requested,
-         file_start_outgoing_migration(s, &addr->u.file, &local_err);
-     } else {
-         error_setg(&local_err, "uri is not a valid migration protocol");
--        migrate_set_state(&s->state, MIGRATION_STATUS_SETUP,
--                          MIGRATION_STATUS_FAILED);
-     }
+diff --git a/migration/channel.c b/migration/channel.c
+index 92435fa7f7..4768c71455 100644
+--- a/migration/channel.c
++++ b/migration/channel.c
+@@ -48,7 +48,7 @@ void migration_channel_process_incoming(QIOChannel *ioc)
  
      if (local_err) {
+         error_report_err(local_err);
+-        migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
++        migrate_set_state(&mis->state, mis->state, MIGRATION_STATUS_FAILED);
+         if (mis->exit_on_error) {
+             exit(EXIT_FAILURE);
+         }
 -- 
 2.51.0
 
