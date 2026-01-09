@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A14D6D07806
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 08:04:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3C13D0779F
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 07:59:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ve6RE-0005kn-HD; Fri, 09 Jan 2026 01:57:36 -0500
+	id 1ve6RI-0005wK-5c; Fri, 09 Jan 2026 01:57:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ve6Q2-0004bZ-Sa
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:56:23 -0500
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+ id 1ve6Q5-0004q1-3D
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:56:28 -0500
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ve6Pz-0002tH-Tw
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:56:22 -0500
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-bc274b8b15bso2586491a12.1
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 22:56:19 -0800 (PST)
+ id 1ve6Q2-0002tO-Qg
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:56:24 -0500
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-7e1651ae0d5so2435280b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 22:56:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1767941778; x=1768546578; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1767941781; x=1768546581; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=POiDnI8BIOUkZ2LDLAStq+imox0YEbmN0To2N6UkRIc=;
- b=FSU25YZ8yvr2gx6dWlBq4YlC/uLblpDyWZPcaDlJ89ochDfpvl4suYmIHklTSVfB2k
- L1e2jzkrkM0NVOX76jgfPIDxOw7GCvOwhNqtnV16bXUxEaMW6f4piFEiivRpyuYBiuAY
- oImiPYkmfV3/CL9/ysDLcnuCWeY2PqaXC/xcQ9tJoa0W40cSZkLb6pIEpIA5hMnF7GDj
- M0noLK9yYeU8X2zXywDxBqCX7ETBETvcJA54biY6LniZJMZp1kUfM56ymr8eejQaQ2+i
- k5RCRrljASFxoLa15Lt69nq4o0SKiFidcbk/ku5IrisWEMTH+GU3m1JRl7DS1tTFsQUY
- DJXw==
+ bh=8OGp2STDkhe7ThW6Dm/4DOuMnh+2aTViHI4xdpXEzOs=;
+ b=m8LTQt675IDaXEtQFkE3VbtM7JsJlGjXTZIDP3buD33QgezJsP1Ltq3aiX+rsEBb6K
+ tIr/smlZ9S6j2Ta/14VyUgEa855HNbqoq0F8P1aoIGKHwqvoBzjmAVIMNgkenBr1CriD
+ /0kl74RQcWxK4ghGqnz/etMHYj6aZoEJtK4mvGP67MPz2w1H78SH1GFYE0H7nmPVkQHb
+ tcCtfrDeojS85n9UMQQ4x/f7sjNm6B9XS8HTSFakZtAVLLtCJI+Rl7pWRi8j98TW/MkD
+ zakdw/oatvj4XbSwaTelNNYrWsaBrmFsW6uhp6RGxrXyNC5XqauxVfU4Apa1Uivt2v6d
+ hPZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767941778; x=1768546578;
+ d=1e100.net; s=20230601; t=1767941781; x=1768546581;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=POiDnI8BIOUkZ2LDLAStq+imox0YEbmN0To2N6UkRIc=;
- b=jneph0nm6aTxFz88/dP/q4i6MmO4C6+opQCrOkcVujgjzVfxX8a5iGSCU9Vwjdovsn
- PO02c1+J/jOuNmBB52LJKrMaow/htQWc3xnPpdDUYKko7IofzicoERewt/HQ5x3H1002
- BrVjhAklX//KcrB7c1C86FyF/CM85SHGg6h0vow7CLW5NSOCr5jp6DrFee2LzIQICiwm
- Qzxy1HJM9K50rjAvgcwKLDtVaVfJN8QIXmPu+tyeHzzt+V4Eu9awXcvPGhYAQiGy+U/h
- b1bTcmIX10cVqOX9WDmuAdDsHguvVK2Bu9RwVBZqQ4xBuNo0R8cWJdhCjMQnEQDHe69y
- iwgQ==
-X-Gm-Message-State: AOJu0Yz5GugTfjUeDjz8P02LrJ/h5e6yuY8em/RLMsbciUSthCzaCofz
- 7COV5hH2UBxJANHABde12LUk8BxAw7tZH2R8Y+Q73vYs0VAazEQVTxfotVHPKw==
-X-Gm-Gg: AY/fxX453tVQJNV4zl/fxxfzweD01ABjp3+CovcI3aMMPDkKQNZ99/7cRHsA8r1cdTJ
- Dqsy1WR2ovcJmBj+HAUOEXrVx7p1poXtvcl57lnuZSnPalXsZGEtRo2yuBeRKQZzdf+c8ZE8c4W
- 98i6DQqoAcSQzqMP9TlgGpv7n/jQX+bc25JuZ/GPykv9xKAK8J16r5qF2sdO2sR6ntwGsJwXu3u
- +/Q6LxCzkChwVmMVW4NXHKpXyUH6JnvnuJMyptJF6qhfTVx/HXWHEmm7lyx1tfHS1wNXeZcxd+0
- /2cCri6Ui6RRcknR+WwAdgcZ/aJ7yFNSZJYkcmybMNkUJKq8w4LcJhv5DlINx9F445qiM6I/CJV
- 8a2iYjpDCh2j7whLeis7N1K/V1MaPXX8m+oCiTSnFf8KnpN/h7KfrC/rEdyJs5RtiF/qK8s3YN2
- qgoLHt0AhRlUzBWcZ08Il5y67axj8r/uHfnSYjYu9AyXcY12lhHwXy+F0KhJsdOjiNGxTNmch5r
- fK2MNT3bXlfPmKHkZo=
-X-Google-Smtp-Source: AGHT+IHcfbgguSGHcqW8IKJA2C+mthnfIWW2+4aXmzizcSWSzMAaQeqIQRGAXjiH4OBD2/uTTwhSIw==
-X-Received: by 2002:a05:6a20:7d9d:b0:364:144a:d21c with SMTP id
- adf61e73a8af0-3898f9058d9mr8597463637.26.1767941777954; 
- Thu, 08 Jan 2026 22:56:17 -0800 (PST)
+ bh=8OGp2STDkhe7ThW6Dm/4DOuMnh+2aTViHI4xdpXEzOs=;
+ b=HWbJfU2YPMcI7GjDaqsyqvMw7SRPjbJ7BObhCD7LbqLvM+JKiMsSP62gxuelrzKK6S
+ 4WXwsyKgR5Rjxc3/RFFMRpdxvju13hEpsi9UeUpnQmAsTQYuUlCagVfyphm9AAYJttZV
+ 5iKBTeT1eByLPZ0jingNGCMcDREp99w/WcTyB1zYpeqKt6rQXs+kvr+zXtiLinpEYHdo
+ PwxC9g3FmFCrwPhhbMclps5wb0e93a5gGx1Sp5OBU6usEd9R00uDecRveJhSJ2cSdELS
+ h8Z2Lv0Xjzuk70FIj/mkIHO1MQbZVqDSnY7s3zvL8Y1j1SBLBDPfDtbkurLC4vsqFIBi
+ yicA==
+X-Gm-Message-State: AOJu0YyVSz/JUSjbYFimbBucqsFqqxsK78mWQGpPtlAgwgfGh0Gt7NiE
+ U0VOMa91yD4XRTZJr8/7FP1IFC1i+W3kB/HpnMu2Fuv8Uc+b/b5qCbjZDN3p4Q==
+X-Gm-Gg: AY/fxX6xPD1tOdspoBPn76CKH0uYItkuJ6gyZ9oorKpdyBp9KJuH6j0noBYi96qonMk
+ sUoQ3Yn+qe3npJ4BTU+yQsZ8Oq5lX79qobyELxRPvqEbjzON3jpvDibsrvPyeQi7xsXWu/Ze60N
+ ihnqTvDLuU9PB3o2DHRK6iqsulHmF1JTFO4u0XomGtIMCu0qshqg8TgxapBWBcI4OjgwgJhxIjh
+ an2xTi47Mdp5N+JwM6nz7dZeqvwG1IxpukM1nktr9+vrBssxiPYp+WI6IGKzbj+5i/AwVYmt7mA
+ 0G9D4tISE9Ij3JACzLAjG+FvTXxK7ClGnWRwM5O/4HBYuQeCi5bQDwsTha3ItoAqmkvrn01M0Lo
+ iA/aSED7RX7R+Im+bs4Wak2IqNXlILTvQzTC67pVE8Sa/H/z+NAJ3tDl3t1Z9WKtWSYzA9wqfG2
+ amjSXh6SKPlyfxfAKML2SrrOg8u29Bl97TmuMakyjbfoBSVD73sxqKsmw7m1pOSESKI9ECQDUxE
+ FwgW10ApGax9eOQfAo=
+X-Google-Smtp-Source: AGHT+IHtFcAcWLqxxC7kCJuVp2/Wjk6TrRkJr5EGjYkQRrRnAkiMY0AZtJHsAHQAEZvenFbFftkGHw==
+X-Received: by 2002:a05:6a21:3291:b0:35f:5fc4:d896 with SMTP id
+ adf61e73a8af0-3898f906a35mr8158582637.20.1767941780856; 
+ Thu, 08 Jan 2026 22:56:20 -0800 (PST)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-c4cc02ecfaasm9953644a12.14.2026.01.08.22.56.14
+ 41be03b00d2f7-c4cc02ecfaasm9953644a12.14.2026.01.08.22.56.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 22:56:17 -0800 (PST)
+ Thu, 08 Jan 2026 22:56:20 -0800 (PST)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, lxx <1733205434@qq.com>,
- LIU Xu <liuxu@nucleisys.com>, SUN Dongya <sundongya@nucleisys.com>,
- ZHAO Fujin <zhaofujin@nucleisys.com>,
+Cc: alistair23@gmail.com, Roan Richmond <roan.richmond@codethink.co.uk>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 21/34] target/riscv: Add Zilsd and Zclsd extension support
-Date: Fri,  9 Jan 2026 16:54:46 +1000
-Message-ID: <20260109065459.19987-22-alistair.francis@wdc.com>
+Subject: [PULL 22/34] Add RISCV ZALASR extension
+Date: Fri,  9 Jan 2026 16:54:47 +1000
+Message-ID: <20260109065459.19987-23-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20260109065459.19987-1-alistair.francis@wdc.com>
 References: <20260109065459.19987-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x52d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -106,328 +104,207 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: lxx <1733205434@qq.com>
+From: Roan Richmond <roan.richmond@codethink.co.uk>
 
-This patch adds support for the Zilsd and Zclsd extension,
-which is documented at https://github.com/riscv/riscv-zilsd/releases/tag/v1.0
+This is based on version v0.9 of the ZALASR specification [1].
+The specification is listed as in Ratified state [2].
 
-Signed-off-by: LIU Xu <liuxu@nucleisys.com>
-Co-developed-by: SUN Dongya <sundongya@nucleisys.com>
-Co-developed-by: ZHAO Fujin <zhaofujin@nucleisys.com>
+[1]: https://github.com/riscv/riscv-zalasr/tree/v0.9
+[2]: https://lf-riscv.atlassian.net/wiki/spaces/HOME/pages/16154882/All+RISC-V+Specifications+Under+Active+Development
+
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <176154834968.21563.217396575391240410-1@git.sr.ht>
+Signed-off-by: Roan Richmond <roan.richmond@codethink.co.uk>
+Message-ID: <20251112162923.311714-1-roan.richmond@codethink.co.uk>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_cfg_fields.h.inc         |   2 +
- target/riscv/insn16.decode                |   8 ++
- target/riscv/insn32.decode                |  12 ++-
- target/riscv/cpu.c                        |   4 +
- target/riscv/tcg/tcg-cpu.c                |  33 +++++++
- target/riscv/translate.c                  |   1 +
- target/riscv/insn_trans/trans_zilsd.c.inc | 105 ++++++++++++++++++++++
- 7 files changed, 163 insertions(+), 2 deletions(-)
- create mode 100644 target/riscv/insn_trans/trans_zilsd.c.inc
+ target/riscv/cpu_cfg_fields.h.inc            |   1 +
+ target/riscv/insn32.decode                   |  10 ++
+ target/riscv/cpu.c                           |   2 +
+ target/riscv/translate.c                     |   1 +
+ target/riscv/insn_trans/trans_rvzalasr.c.inc | 113 +++++++++++++++++++
+ 5 files changed, 127 insertions(+)
+ create mode 100644 target/riscv/insn_trans/trans_rvzalasr.c.inc
 
 diff --git a/target/riscv/cpu_cfg_fields.h.inc b/target/riscv/cpu_cfg_fields.h.inc
-index a154ecdc79..0a12ccd6cd 100644
+index 0a12ccd6cd..f4ff4f3f96 100644
 --- a/target/riscv/cpu_cfg_fields.h.inc
 +++ b/target/riscv/cpu_cfg_fields.h.inc
-@@ -19,6 +19,7 @@ BOOL_FIELD(ext_zce)
- BOOL_FIELD(ext_zcf)
- BOOL_FIELD(ext_zcmp)
- BOOL_FIELD(ext_zcmt)
-+BOOL_FIELD(ext_zclsd)
- BOOL_FIELD(ext_zk)
- BOOL_FIELD(ext_zkn)
- BOOL_FIELD(ext_zknd)
-@@ -41,6 +42,7 @@ BOOL_FIELD(ext_zicond)
- BOOL_FIELD(ext_zihintntl)
- BOOL_FIELD(ext_zihintpause)
- BOOL_FIELD(ext_zihpm)
-+BOOL_FIELD(ext_zilsd)
- BOOL_FIELD(ext_zimop)
- BOOL_FIELD(ext_zcmop)
- BOOL_FIELD(ext_ztso)
-diff --git a/target/riscv/insn16.decode b/target/riscv/insn16.decode
-index bf893d1c2e..c34020e4dc 100644
---- a/target/riscv/insn16.decode
-+++ b/target/riscv/insn16.decode
-@@ -130,10 +130,14 @@ sw                110  ... ... .. ... 00 @cs_w
- {
-   ld              011  ... ... .. ... 00 @cl_d
-   c_flw           011  ... ... .. ... 00 @cl_w
-+  # *** Zclsd Extension ***
-+  zclsd_ld        011  ... ... .. ... 00 @cl_d
- }
- {
-   sd              111  ... ... .. ... 00 @cs_d
-   c_fsw           111  ... ... .. ... 00 @cs_w
-+  # *** Zclsd Extension ***
-+  zclsd_sd        111  ... ... .. ... 00 @cs_d
- }
- 
- # *** RV32/64C Standard Extension (Quadrant 1) ***
-@@ -212,10 +216,14 @@ sw                110 .  .....  ..... 10 @c_swsp
-   c64_illegal     011 -  00000  ----- 10 # c.ldsp, RES rd=0
-   ld              011 .  .....  ..... 10 @c_ldsp
-   c_flw           011 .  .....  ..... 10 @c_lwsp
-+  # *** Zclsd Extension ***
-+  zclsd_ldsp      011 .  .....  ..... 10 @c_ldsp
- }
- {
-   sd              111 .  .....  ..... 10 @c_sdsp
-   c_fsw           111 .  .....  ..... 10 @c_swsp
-+  # *** Zclsd Extension ***
-+  zclsd_sd        111 .  .....  ..... 10 @c_sdsp
- }
- 
- # *** RV64 and RV32 Zcb Extension ***
+@@ -67,6 +67,7 @@ BOOL_FIELD(ext_zaamo)
+ BOOL_FIELD(ext_zacas)
+ BOOL_FIELD(ext_zama16b)
+ BOOL_FIELD(ext_zabha)
++BOOL_FIELD(ext_zalasr)
+ BOOL_FIELD(ext_zalrsc)
+ BOOL_FIELD(ext_zawrs)
+ BOOL_FIELD(ext_zfa)
 diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
-index cd23b1f3a9..b341832e41 100644
+index b341832e41..6e35c4b1e6 100644
 --- a/target/riscv/insn32.decode
 +++ b/target/riscv/insn32.decode
-@@ -182,8 +182,16 @@ csrrci   ............     ..... 111 ..... 1110011 @csr
- 
- # *** RV64I Base Instruction Set (in addition to RV32I) ***
- lwu      ............   ..... 110 ..... 0000011 @i
--ld       ............   ..... 011 ..... 0000011 @i
--sd       ....... .....  ..... 011 ..... 0100011 @s
-+{
-+  ld       ............   ..... 011 ..... 0000011 @i
-+  # *** Zilsd instructions ***
-+  zilsd_ld ............   ..... 011 ..... 0000011 @i
-+}
-+{
-+  sd       ....... .....  ..... 011 ..... 0100011 @s
-+  # *** Zilsd instructions ***
-+  zilsd_sd ....... .....  ..... 011 ..... 0100011 @s
-+}
- addiw    ............   ..... 000 ..... 0011011 @i
- slliw    0000000 .....  ..... 001 ..... 0011011 @sh5
- srliw    0000000 .....  ..... 101 ..... 0011011 @sh5
+@@ -1074,3 +1074,13 @@ amominu_h  11000 . . ..... ..... 001 ..... 0101111 @atom_st
+ amomaxu_h  11100 . . ..... ..... 001 ..... 0101111 @atom_st
+ amocas_b    00101 . . ..... ..... 000 ..... 0101111 @atom_st
+ amocas_h    00101 . . ..... ..... 001 ..... 0101111 @atom_st
++
++# *** Zalasr Standard Extension ***
++lb_aqrl  00110 . . ..... ..... 000 ..... 0101111 @atom_st
++lh_aqrl  00110 . . ..... ..... 001 ..... 0101111 @atom_st
++lw_aqrl  00110 . . ..... ..... 010 ..... 0101111 @atom_st
++ld_aqrl  00110 . . ..... ..... 011 ..... 0101111 @atom_st
++sb_aqrl  00111 . . ..... ..... 000 ..... 0101111 @atom_st
++sh_aqrl  00111 . . ..... ..... 001 ..... 0101111 @atom_st
++sw_aqrl  00111 . . ..... ..... 010 ..... 0101111 @atom_st
++sd_aqrl  00111 . . ..... ..... 011 ..... 0101111 @atom_st
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 60abdf3324..d48ff50232 100644
+index d48ff50232..f22b504772 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -121,6 +121,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zihintntl, PRIV_VERSION_1_10_0, ext_zihintntl),
-     ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
-     ISA_EXT_DATA_ENTRY(zihpm, PRIV_VERSION_1_12_0, ext_zihpm),
-+    ISA_EXT_DATA_ENTRY(zilsd, PRIV_VERSION_1_12_0, ext_zilsd),
-     ISA_EXT_DATA_ENTRY(zimop, PRIV_VERSION_1_13_0, ext_zimop),
-     ISA_EXT_DATA_ENTRY(zmmul, PRIV_VERSION_1_12_0, ext_zmmul),
-     ISA_EXT_DATA_ENTRY(za64rs, PRIV_VERSION_1_12_0, has_priv_1_12),
-@@ -144,6 +145,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zcmop, PRIV_VERSION_1_13_0, ext_zcmop),
-     ISA_EXT_DATA_ENTRY(zcmp, PRIV_VERSION_1_12_0, ext_zcmp),
-     ISA_EXT_DATA_ENTRY(zcmt, PRIV_VERSION_1_12_0, ext_zcmt),
-+    ISA_EXT_DATA_ENTRY(zclsd, PRIV_VERSION_1_12_0, ext_zclsd),
-     ISA_EXT_DATA_ENTRY(zba, PRIV_VERSION_1_12_0, ext_zba),
-     ISA_EXT_DATA_ENTRY(zbb, PRIV_VERSION_1_12_0, ext_zbb),
-     ISA_EXT_DATA_ENTRY(zbc, PRIV_VERSION_1_12_0, ext_zbc),
-@@ -1267,6 +1269,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
- 
-     MULTI_EXT_CFG_BOOL("zicntr", ext_zicntr, true),
-     MULTI_EXT_CFG_BOOL("zihpm", ext_zihpm, true),
-+    MULTI_EXT_CFG_BOOL("zilsd", ext_zilsd, false),
- 
-     MULTI_EXT_CFG_BOOL("zba", ext_zba, true),
-     MULTI_EXT_CFG_BOOL("zbb", ext_zbb, true),
-@@ -1306,6 +1309,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     MULTI_EXT_CFG_BOOL("zcmp", ext_zcmp, false),
-     MULTI_EXT_CFG_BOOL("zcmt", ext_zcmt, false),
-     MULTI_EXT_CFG_BOOL("zicond", ext_zicond, false),
-+    MULTI_EXT_CFG_BOOL("zclsd", ext_zclsd, false),
- 
-     /* Vector cryptography extensions */
-     MULTI_EXT_CFG_BOOL("zvbb", ext_zvbb, false),
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index cdc05f60e9..988b2d905f 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -834,6 +834,19 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-         cpu->pmu_avail_ctrs = 0;
-     }
- 
-+    if (cpu->cfg.ext_zclsd) {
-+        if (riscv_has_ext(env, RVC) && riscv_has_ext(env, RVF)) {
-+            error_setg(errp,
-+                    "Zclsd cannot be supported together with C and F extension");
-+            return;
-+        }
-+        if (cpu->cfg.ext_zcf) {
-+            error_setg(errp,
-+                    "Zclsd cannot be supported together with Zcf extension");
-+            return;
-+        }
-+    }
-+
-     if (cpu->cfg.ext_zicfilp && !cpu->cfg.ext_zicsr) {
-         error_setg(errp, "zicfilp extension requires zicsr extension");
-         return;
-@@ -1097,6 +1110,20 @@ static void cpu_enable_zc_implied_rules(RISCVCPU *cpu)
-     }
- }
- 
-+static void cpu_enable_zilsd_implied_rules(RISCVCPU *cpu)
-+{
-+    CPURISCVState *env = &cpu->env;
-+
-+    if (cpu->cfg.ext_zilsd && riscv_has_ext(env, RVC)) {
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zclsd), true);
-+    }
-+
-+    if (cpu->cfg.ext_zclsd) {
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zca), true);
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zilsd), true);
-+    }
-+}
-+
- static void riscv_cpu_enable_implied_rules(RISCVCPU *cpu)
- {
-     RISCVCPUImpliedExtsRule *rule;
-@@ -1105,6 +1132,9 @@ static void riscv_cpu_enable_implied_rules(RISCVCPU *cpu)
-     /* Enable the implied extensions for Zc. */
-     cpu_enable_zc_implied_rules(cpu);
- 
-+    /* Enable the implied extensions for Zilsd. */
-+    cpu_enable_zilsd_implied_rules(cpu);
-+
-     /* Enable the implied MISAs. */
-     for (i = 0; (rule = riscv_misa_ext_implied_rules[i]); i++) {
-         if (riscv_has_ext(&cpu->env, rule->ext)) {
-@@ -1608,6 +1638,9 @@ static void riscv_init_max_cpu_extensions(Object *obj)
-     isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zcmp), false);
-     isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zcmt), false);
- 
-+    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zilsd), false);
-+    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zclsd), false);
-+
-     if (env->misa_mxl != MXL_RV32) {
-         isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zcf), false);
-     } else {
+@@ -128,6 +128,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(zaamo, PRIV_VERSION_1_12_0, ext_zaamo),
+     ISA_EXT_DATA_ENTRY(zabha, PRIV_VERSION_1_13_0, ext_zabha),
+     ISA_EXT_DATA_ENTRY(zacas, PRIV_VERSION_1_12_0, ext_zacas),
++    ISA_EXT_DATA_ENTRY(zalasr, PRIV_VERSION_1_12_0, ext_zalasr),
+     ISA_EXT_DATA_ENTRY(zalrsc, PRIV_VERSION_1_12_0, ext_zalrsc),
+     ISA_EXT_DATA_ENTRY(zama16b, PRIV_VERSION_1_13_0, ext_zama16b),
+     ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
+@@ -1230,6 +1231,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+     MULTI_EXT_CFG_BOOL("zama16b", ext_zama16b, false),
+     MULTI_EXT_CFG_BOOL("zabha", ext_zabha, false),
+     MULTI_EXT_CFG_BOOL("zaamo", ext_zaamo, false),
++    MULTI_EXT_CFG_BOOL("zalasr", ext_zalasr, false),
+     MULTI_EXT_CFG_BOOL("zalrsc", ext_zalrsc, false),
+     MULTI_EXT_CFG_BOOL("zawrs", ext_zawrs, true),
+     MULTI_EXT_CFG_BOOL("zfa", ext_zfa, true),
 diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index e1f4dc5ffd..280ce48a1e 100644
+index 280ce48a1e..0d61420b46 100644
 --- a/target/riscv/translate.c
 +++ b/target/riscv/translate.c
-@@ -1216,6 +1216,7 @@ static uint32_t opcode_at(DisasContextBase *dcbase, target_ulong pc)
- /* Include the auto-generated decoder for 16 bit insn */
- #include "decode-insn16.c.inc"
- #include "insn_trans/trans_rvzce.c.inc"
-+#include "insn_trans/trans_zilsd.c.inc"
- #include "insn_trans/trans_rvzcmop.c.inc"
- #include "insn_trans/trans_rvzicfiss.c.inc"
- 
-diff --git a/target/riscv/insn_trans/trans_zilsd.c.inc b/target/riscv/insn_trans/trans_zilsd.c.inc
+@@ -1199,6 +1199,7 @@ static uint32_t opcode_at(DisasContextBase *dcbase, target_ulong pc)
+ #include "insn_trans/trans_rvzicond.c.inc"
+ #include "insn_trans/trans_rvzacas.c.inc"
+ #include "insn_trans/trans_rvzabha.c.inc"
++#include "insn_trans/trans_rvzalasr.c.inc"
+ #include "insn_trans/trans_rvzawrs.c.inc"
+ #include "insn_trans/trans_rvzicbo.c.inc"
+ #include "insn_trans/trans_rvzimop.c.inc"
+diff --git a/target/riscv/insn_trans/trans_rvzalasr.c.inc b/target/riscv/insn_trans/trans_rvzalasr.c.inc
 new file mode 100644
-index 0000000000..369c33004b
+index 0000000000..bf86805cef
 --- /dev/null
-+++ b/target/riscv/insn_trans/trans_zilsd.c.inc
-@@ -0,0 +1,105 @@
++++ b/target/riscv/insn_trans/trans_rvzalasr.c.inc
+@@ -0,0 +1,113 @@
 +/*
-+ * RISC-V translation routines for the Zilsd & Zclsd Extension.
++ * RISC-V translation routines for the ZALASR (Load-Aquire and Store-Release)
++ * Extension.
 + *
-+ * Copyright (c) 2025 Nucleisys, Inc.
++ * Copyright (c) 2025 Roan Richmond, roan.richmond@codethink.co.uk
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + *
-+ * The documentation of the ISA extensions can be found here:
-+ *   https://github.com/riscv/riscv-zilsd/releases/tag/v1.0
++ * The documentation of the ISA extension can be found here:
++ *   https://github.com/riscv/riscv-zalasr/tree/v0.9
 + */
 +
-+#define REQUIRE_ZILSD(ctx) do {    \
-+    if (!ctx->cfg_ptr->ext_zilsd)  \
-+        return false;              \
++#define REQUIRE_ZALASR(ctx) do {     \
++    if (!ctx->cfg_ptr->ext_zalasr) { \
++        return false;                \
++    }                                \
 +} while (0)
 +
-+#define REQUIRE_ZCLSD(ctx) do {    \
-+    if (!ctx->cfg_ptr->ext_zclsd)  \
-+        return false;              \
-+} while (0)
-+
-+static bool gen_load_i64(DisasContext *ctx, arg_ld *a)
++static bool gen_load_acquire(DisasContext *ctx, arg_lb_aqrl *a, MemOp memop)
 +{
-+    if ((a->rd) % 2) {
++    decode_save_opc(ctx, 0);
++
++    TCGv addr = get_address(ctx, a->rs1, 0);
++    TCGv dest = get_gpr(ctx, a->rd, EXT_NONE);
++    TCGBar bar = (a->rl) ? TCG_BAR_STRL : 0;
++
++    /* Check that AQ is set, as this is mandatory */
++    if (!a->aq) {
 +        return false;
 +    }
 +
-+    TCGv dest_low = dest_gpr(ctx, a->rd);
-+    TCGv dest_high = dest_gpr(ctx, a->rd + 1);
-+    TCGv addr = get_address(ctx, a->rs1, a->imm);
-+    TCGv_i64 tmp = tcg_temp_new_i64();
++    memop |= (ctx->cfg_ptr->ext_zama16b) ? MO_ATOM_WITHIN16 : 0;
 +
-+    tcg_gen_qemu_ld_i64(tmp, addr, ctx->mem_idx, MO_TESQ);
++    tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, memop);
++    gen_set_gpr(ctx, a->rd, dest);
 +
-+    if (a->rd == 0) {
-+        return true;
-+    }
-+
-+    tcg_gen_extr_i64_tl(dest_low, dest_high, tmp);
-+
-+    gen_set_gpr(ctx, a->rd, dest_low);
-+    gen_set_gpr(ctx, a->rd + 1, dest_high);
++    /* Add a memory barrier implied by AQ (mandatory) and RL (optional) */
++    tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ | bar);
 +
 +    return true;
 +}
 +
-+static bool trans_zilsd_ld(DisasContext *ctx, arg_zilsd_ld *a)
++static bool trans_lb_aqrl(DisasContext *ctx, arg_lb_aqrl *a)
 +{
-+    REQUIRE_32BIT(ctx);
-+    REQUIRE_ZILSD(ctx);
-+    return gen_load_i64(ctx, a);
++    REQUIRE_ZALASR(ctx);
++    return gen_load_acquire(ctx, a, (MO_ALIGN | MO_SB));
 +}
 +
-+static bool trans_zclsd_ld(DisasContext *ctx, arg_zclsd_ld *a)
++static bool trans_lh_aqrl(DisasContext *ctx, arg_lh_aqrl *a)
 +{
-+    REQUIRE_32BIT(ctx);
-+    REQUIRE_ZCLSD(ctx);
-+    return gen_load_i64(ctx, a);
++    REQUIRE_ZALASR(ctx);
++    return gen_load_acquire(ctx, a, (MO_ALIGN | MO_TESW));
 +}
 +
-+static bool trans_zclsd_ldsp(DisasContext *ctx, arg_zclsd_ldsp *a)
++static bool trans_lw_aqrl(DisasContext *ctx, arg_lw_aqrl *a)
 +{
-+    REQUIRE_32BIT(ctx);
-+    REQUIRE_ZCLSD(ctx);
++    REQUIRE_ZALASR(ctx);
++    return gen_load_acquire(ctx, a, (MO_ALIGN | MO_TESL));
++}
 +
-+    if (a->rd == 0) {
++static bool trans_ld_aqrl(DisasContext *ctx, arg_ld_aqrl *a)
++{
++    REQUIRE_64BIT(ctx);
++    REQUIRE_ZALASR(ctx);
++    return gen_load_acquire(ctx, a, (MO_ALIGN | MO_TEUQ));
++}
++
++static bool gen_store_release(DisasContext *ctx, arg_sb_aqrl *a, MemOp memop)
++{
++    decode_save_opc(ctx, 0);
++
++    TCGv addr = get_address(ctx, a->rs1, 0);
++    TCGv data = get_gpr(ctx, a->rs2, EXT_NONE);
++    TCGBar bar = (a->aq) ? TCG_BAR_LDAQ : 0;
++
++    /* Check that RL is set, as this is mandatory */
++    if (!a->rl) {
 +        return false;
 +    }
-+    return gen_load_i64(ctx, a);
-+}
 +
-+static bool gen_store_i64(DisasContext *ctx, arg_sd *a)
-+{
-+    if ((a->rs2) % 2) {
-+        return false;
-+    }
++    memop |= (ctx->cfg_ptr->ext_zama16b) ? MO_ATOM_WITHIN16 : 0;
 +
-+    TCGv data_low = get_gpr(ctx, a->rs2, EXT_NONE);
-+    TCGv data_high = get_gpr(ctx, a->rs2 + 1, EXT_NONE);
-+    TCGv addr = get_address(ctx, a->rs1, a->imm);
-+    TCGv_i64 tmp = tcg_temp_new_i64();
++    /* Add a memory barrier implied by RL (mandatory) and AQ (optional) */
++    tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL | bar);
 +
-+    if (a->rs2 == 0) {
-+        tmp = tcg_constant_i64(0);
-+    } else {
-+        tcg_gen_concat_tl_i64(tmp, data_low, data_high);
-+    }
-+    tcg_gen_qemu_st_i64(tmp, addr, ctx->mem_idx, MO_TESQ);
-+
++    tcg_gen_qemu_st_tl(data, addr, ctx->mem_idx, memop);
 +    return true;
 +}
 +
-+static bool trans_zilsd_sd(DisasContext *ctx, arg_zilsd_sd *a)
++static bool trans_sb_aqrl(DisasContext *ctx, arg_sb_aqrl *a)
 +{
-+    REQUIRE_32BIT(ctx);
-+    REQUIRE_ZILSD(ctx);
-+    return gen_store_i64(ctx, a);
++    REQUIRE_ZALASR(ctx);
++    return gen_store_release(ctx, a, (MO_ALIGN | MO_SB));
 +}
 +
-+static bool trans_zclsd_sd(DisasContext *ctx, arg_zclsd_sd *a)
++static bool trans_sh_aqrl(DisasContext *ctx, arg_sh_aqrl *a)
 +{
-+    REQUIRE_32BIT(ctx);
-+    REQUIRE_ZCLSD(ctx);
-+    return gen_store_i64(ctx, a);
++    REQUIRE_ZALASR(ctx);
++    return gen_store_release(ctx, a, (MO_ALIGN | MO_TESW));
++}
++
++static bool trans_sw_aqrl(DisasContext *ctx, arg_sw_aqrl *a)
++{
++    REQUIRE_ZALASR(ctx);
++    return gen_store_release(ctx, a, (MO_ALIGN | MO_TESL));
++}
++
++static bool trans_sd_aqrl(DisasContext *ctx, arg_sd_aqrl *a)
++{
++    REQUIRE_64BIT(ctx);
++    REQUIRE_ZALASR(ctx);
++    return gen_store_release(ctx, a, (MO_ALIGN | MO_TEUQ));
 +}
 -- 
 2.52.0
