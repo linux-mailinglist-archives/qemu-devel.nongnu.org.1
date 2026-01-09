@@ -2,86 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5982FD07821
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 08:07:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8245ED0784E
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 08:11:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ve6Q3-0004T4-Oz; Fri, 09 Jan 2026 01:56:24 -0500
+	id 1ve6RT-0006dq-Bx; Fri, 09 Jan 2026 01:57:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ve6PH-0003dt-DR
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:55:37 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1ve6Q7-0004wt-Ua
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:56:28 -0500
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ve6PF-0002pX-PJ
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:55:35 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-2a102494058so12255395ad.0
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 22:55:32 -0800 (PST)
+ id 1ve6Q6-0002tl-Fa
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:56:27 -0500
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-c0ec27cad8cso1779808a12.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 22:56:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1767941731; x=1768546531; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1767941785; x=1768546585; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xqVtcZ7GhetiIs9h/UKNMMBlkDbc7PuwUw9npuWelOU=;
- b=anP8Oraxx3ZJzdgySJ0OtV+7TpfSTB5P402r9za6H/bW54D34hDSKjNJe0KBWTlVP+
- g3XX/2RXQL1hF8jU8ZdyF+J9rJPwkt/FUqhGrEJXlDnTT4lbSQrNHz61LVdg38sRmJsa
- YNXGxoyUiWc8poxQDvIk+EcDHL5iEatgxlba9mNmvxt8KG0Zy7KXx7+NcWu/MPEBvoTj
- 63HTvilQ0/5/UxPRDHaxHsdd5IlKor5GbJJ2r7s4zt20dOTaO8T6JYbzsFrf/qJpK3Qf
- VBi84txmD0iWs8MC/L0SUryvMjcVUz3ZsfJNPps6lrPjSKKWXYpcAk9MJSUidp11p2m3
- ghKA==
+ bh=ZA2w/oxYr+Q1uGgUesLYCh7glRA4PbkOh40jya8E0ng=;
+ b=gRR5pONdGct2/3I67wFBmvsZ8BqnehMPIoTlhWOIZ6g97Uxv6JJXlucUH/EjYAL0CP
+ DYkPEklaMrowRyOWLqNjpUzTg+Q4Fpm/qYKgIB97sGQrztfiOA7yEt9a1MpsXmIYNS97
+ gWvs5hR4ls/1y1rd9HQHeJo6UoQqMG21A1LuEnIkTpzWQn2z0XUHxNY3K3+6y/ThRLS4
+ UVowhwzmNJ0HNmhB5tGF0MD9vJNp0MihTetdwr9j2pYZr1XRD/PUcd+42Ft9sJpuPdOp
+ 4uGR8TnLYi8OXqZc/YuUagtVga9s+kVq5as6SKLKRgYs5wPK6WWbNA4d8gV8UZoYL6z1
+ OCYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767941731; x=1768546531;
+ d=1e100.net; s=20230601; t=1767941785; x=1768546585;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=xqVtcZ7GhetiIs9h/UKNMMBlkDbc7PuwUw9npuWelOU=;
- b=i1YWuwm7kJAm3smXZadtKZM4uI8lpj59shUpW59ou/ssg4RGHMj6jVfSYCeVLZ+ZmQ
- qHVB5RfQWpc84qq6lZPnQP+o4CBl6n36WMm3zLONEAx4DIfr24tXB6uThTh4rqHAGZZf
- pt621dpbmMwFw7tRUsbpWdvss64Zt4RlGdd2OstEGmJNmlNnTS4aDj6FG+Z+EYJXm1at
- ouwullSi0zAb/oojySPeyFcpG8LWJRuyPpTe0EOatD/1A6fL3QTeWTz7cf5NUtdeut4r
- 3mRJJmdfzvUR28gQLWfHQVlbk2w3HYRU8PJG2h3+N0df846wNvNIvrWkG0pRPF/fUVnJ
- VFWg==
-X-Gm-Message-State: AOJu0YxeP7wv+vp1nyVPxKXsw0YWbkPjvL4jwX9KSvOqh2EVoHocx3Xy
- ZvgI2Q4nhutc0EzLE9mtulNZbhCF6NWoy9kfPzJSUU2v0IuVUONRRJK8NMTgOg==
-X-Gm-Gg: AY/fxX6zNZvdRprc6z3MwDkY24id+LAurPzXAqvWoCae1DNUvGeABfNcrZVy3jBBSay
- vORmU6fQFum+kTe6R1yTKP8P7CFtjnn/rwqriGKqMRh5r840ksHNdLgKzMGXkzFwhZecd2pYiFD
- GMIjuv7hYZRO7tyMn1vrL/IpAVc6qSfRZY9Nda8d+mBl7pQfVanrYdhFv+I+4w4hsqMr2AzzSeW
- kit94q3BeBUciIUIcPVGgDtxi9PNFR6ESlODB1Hkm870+fXke7ryakIRk5BCQDrO05Vn2nKWk25
- A6ulNZzguQbtT+zmRCYt/j4qXTk6USz7Gh4UjA1pz1/ndkl+mXhIy9WiJHAQfQw+8aGwzeVT3lh
- cMlv9mAqVULsRpyVs9zDJ5KwJp03jmMkLC5dObGEv2jsLx/nxiUNzyF/QwndGeuHKizay7sUYJd
- wGEiz/5gXSgdRa85u8G5464KOokSQnuUliFx8qw/QYeCefS4vjHOYqfNbAAgi7gC32+cOGbR1yd
- QoQEzC/il+nWcb0bcQ=
-X-Google-Smtp-Source: AGHT+IHNHhXh+katevCRax6EoNLn6Xv8NZqfkckDwVv//OS8cMO97CMX5yGt2MbzFrbHy1cuvRVXYg==
-X-Received: by 2002:a17:903:3508:b0:2a0:a33d:1385 with SMTP id
- d9443c01a7336-2a3e39d7c25mr124084555ad.17.1767941731371; 
- Thu, 08 Jan 2026 22:55:31 -0800 (PST)
+ bh=ZA2w/oxYr+Q1uGgUesLYCh7glRA4PbkOh40jya8E0ng=;
+ b=QAXxVdvCmXR+TdEk7fLtAdHQyZyPXvgP94Ib8cWgmDTGRfw4BGhBBUevH7xab1aUnu
+ FXxq+tjrviXokLf7Fqz4G8rU+E38MjEgzO8HW67+Btds7IyVeTaWUVTzP/+lKJeepDex
+ zHnqjt2IqMPhflphjq+9WP1Rx1iE/EzrdD/jcwgH7H+9kcoG8vZbXt2nrNJ1o+AZZvlb
+ EglbOKxP3cZU+PKq8dDeLyhDP0HC/b/80tUNhISUJ4TQJ7e3dRtrpvACU7O06+ysMm1F
+ pNe06pjnc7l9AJVQ2Yddlc19OBIfBbxqjFFx1mZQ5z/1uVyWVo4xkfSBu+2/+NT7MYIq
+ Y6tA==
+X-Gm-Message-State: AOJu0Yyj4Lr2e/CnTlgr2SoZItngu/mn5WE4LqEami09nYzm7hfDiYvK
+ Kis7y+NiAbPJ5lT8h271BF4Ls7bu3s1h9/6pXXpEL+X0frrpIykru2JXNOgYow==
+X-Gm-Gg: AY/fxX772TzQepB7KcRf01qvZBesguRtnjVD0Osrzwk6nfzx8o1yZyibsgF34PNZm84
+ xVJqaEFoHFdNTTJcTKRBue7sKD7uyX6jAFBdiFILp1IqFQG10NZKeVlq3AN98z/74TPutN+ZT+f
+ 518prunl3MTus92kFt1jXcJ+ftcYB0EhXkZ8ZmkwYgkPa8Poy2U2RPn4xYDbOvZER0yjxYubCju
+ iONGvQ1QEmKOuTB/bHS9GwoM66rzuU/9e5c6qgBXInC2Tj8IlIbkcb+of4kXi44Us7+zhMdOFMU
+ 1MbxdHvpdnci9HLlvvJZ6DZWpN5b2393AkqHgzaqU4jqk8TowFkdB0pGfw6fxDWZg33RRIEsvtt
+ EN/g7SiyVtA4Csh7dj2W7c4WZgKgzjl9p+rCp5kYCT8pyEkAmEhpknXU+z6nYDadydpLHauwAEg
+ a9HeOBM0FHc+H3yG4fBPJJxG6fTfbDOWFmgYbE8zo7avoHZvNNgGMOoQmkFz8KRpzpUV07QJjTq
+ hB+klMigUeqXem7REY=
+X-Google-Smtp-Source: AGHT+IFCWpbCiHtiyXIPQw8DIoPLQiEFu+8f/F0Oxyc/l4eqnbLGPn9FWqZEx25EDZ0WhWq365qjTA==
+X-Received: by 2002:a05:6a21:99a9:b0:33f:df99:11e5 with SMTP id
+ adf61e73a8af0-3898f906dadmr7573801637.28.1767941784622; 
+ Thu, 08 Jan 2026 22:56:24 -0800 (PST)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-c4cc02ecfaasm9953644a12.14.2026.01.08.22.55.28
+ 41be03b00d2f7-c4cc02ecfaasm9953644a12.14.2026.01.08.22.56.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 22:55:30 -0800 (PST)
+ Thu, 08 Jan 2026 22:56:23 -0800 (PST)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: alistair23@gmail.com, Djordje Todorovic <Djordje.Todorovic@htecgroup.com>,
+ Chao-ying Fu <cfu@mips.com>,
+ Djordje Todorovic <djordje.todorovic@htecgroup.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 07/34] target/riscv: print all available CSRs in
- riscv_cpu_dump_state()
-Date: Fri,  9 Jan 2026 16:54:32 +1000
-Message-ID: <20260109065459.19987-8-alistair.francis@wdc.com>
+Subject: [PULL 23/34] target/riscv: Add cpu_set_exception_base
+Date: Fri,  9 Jan 2026 16:54:48 +1000
+Message-ID: <20260109065459.19987-24-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20260109065459.19987-1-alistair.francis@wdc.com>
 References: <20260109065459.19987-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x52c.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -105,141 +107,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+From: Djordje Todorovic <Djordje.Todorovic@htecgroup.com>
 
-At this moment we're printing a small selection of CSRs. There's no
-particular reason to not print all of them.
+Add a new function, so we can change reset vector from platforms
+during runtime.
 
-We're ignoring the note about CSR_SSTATUS being ommited because it can
-be read via CSR_MSTATUS. There's a huge list of CSRs that would fall in
-this category and it would be an extra burden to manage them, not
-mentioning having to document "we're not listing X because it's the same
-value as Y" to users.
-
-Remove 'dump_csrs' and use the existing 'csr_ops' array to print all
-available CSRs. Create two helpers in csr.c to identify FPU and VPU CSRs
-and skip them - they'll be printed in the FPU/VPU blocks later.
-
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Signed-off-by: Chao-ying Fu <cfu@mips.com>
+Signed-off-by: Djordje Todorovic <djordje.todorovic@htecgroup.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250623172119.997166-4-dbarboza@ventanamicro.com>
+Message-ID: <20260108134128.2218102-2-djordje.todorovic@htecgroup.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.h |  2 ++
- target/riscv/cpu.c | 55 ++++++++++++++++------------------------------
- target/riscv/csr.c | 18 +++++++++++++++
- 3 files changed, 39 insertions(+), 36 deletions(-)
+ target/riscv/cpu.h |  4 ++++
+ target/riscv/cpu.c | 16 ++++++++++++++++
+ 2 files changed, 20 insertions(+)
 
 diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 90b3e95105..b3c0be5779 100644
+index 0939e6f08c..08a6e491f3 100644
 --- a/target/riscv/cpu.h
 +++ b/target/riscv/cpu.h
-@@ -969,6 +969,8 @@ bool riscv_cpu_accelerator_compatible(RISCVCPU *cpu);
+@@ -668,6 +668,10 @@ G_NORETURN void riscv_raise_exception(CPURISCVState *env,
+ target_ulong riscv_cpu_get_fflags(CPURISCVState *env);
+ void riscv_cpu_set_fflags(CPURISCVState *env, target_ulong);
  
- /* CSR function table */
- extern riscv_csr_operations csr_ops[CSR_TABLE_SIZE];
-+bool riscv_csr_is_fpu(int csrno);
-+bool riscv_csr_is_vpu(int csrno);
- 
- extern const bool valid_vm_1_10_32[], valid_vm_1_10_64[];
- 
++#ifndef CONFIG_USER_ONLY
++void cpu_set_exception_base(int vp_index, target_ulong address);
++#endif
++
+ FIELD(TB_FLAGS, MEM_IDX, 0, 3)
+ FIELD(TB_FLAGS, FS, 3, 2)
+ /* Vector flags */
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 063374be62..60abdf3324 100644
+index f22b504772..c2222228d5 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -545,44 +545,27 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
- #endif
-     qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "pc      ", env->pc);
- #ifndef CONFIG_USER_ONLY
--    {
--        static const int dump_csrs[] = {
--            CSR_MHARTID,
--            CSR_MSTATUS,
--            CSR_MSTATUSH,
--            /*
--             * CSR_SSTATUS is intentionally omitted here as its value
--             * can be figured out by looking at CSR_MSTATUS
--             */
--            CSR_HSTATUS,
--            CSR_VSSTATUS,
--            CSR_MIP,
--            CSR_MIE,
--            CSR_MIDELEG,
--            CSR_HIDELEG,
--            CSR_MEDELEG,
--            CSR_HEDELEG,
--            CSR_MTVEC,
--            CSR_STVEC,
--            CSR_VSTVEC,
--            CSR_MEPC,
--            CSR_SEPC,
--            CSR_VSEPC,
--            CSR_MCAUSE,
--            CSR_SCAUSE,
--            CSR_VSCAUSE,
--            CSR_MTVAL,
--            CSR_STVAL,
--            CSR_HTVAL,
--            CSR_MTVAL2,
--            CSR_MSCRATCH,
--            CSR_SSCRATCH,
--            CSR_SATP,
--        };
-+    for (i = 0; i < ARRAY_SIZE(csr_ops); i++) {
-+        int csrno = i;
- 
--        for (i = 0; i < ARRAY_SIZE(dump_csrs); ++i) {
--            riscv_dump_csr(env, dump_csrs[i], f);
-+        /*
-+         * Early skip when possible since we're going
-+         * through a lot of NULL entries.
-+         */
-+        if (csr_ops[csrno].predicate == NULL) {
-+            continue;
-         }
-+
-+        /*
-+         * FPU and VPU CSRs will be printed in the
-+         * CPU_DUMP_FPU/CPU_DUMP_VPU blocks later.
-+         */
-+        if (riscv_csr_is_fpu(csrno) ||
-+            riscv_csr_is_vpu(csrno)) {
-+            continue;
-+        }
-+
-+        riscv_dump_csr(env, csrno, f);
-     }
- #endif
- 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 5c91658c3d..a69b9a11ab 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -5802,6 +5802,24 @@ static RISCVException write_jvt(CPURISCVState *env, int csrno,
-     return RISCV_EXCP_NONE;
+@@ -73,6 +73,22 @@ bool riscv_cpu_option_set(const char *optname)
+     return g_hash_table_contains(general_user_opts, optname);
  }
  
-+bool riscv_csr_is_fpu(int csrno)
++#ifndef CONFIG_USER_ONLY
++/* This is used in runtime only. */
++void cpu_set_exception_base(int vp_index, target_ulong address)
 +{
-+    if (!csr_ops[csrno].predicate) {
-+        return false;
++    RISCVCPU *cpu;
++    CPUState *cs = qemu_get_cpu(vp_index);
++    if (cs == NULL) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "cpu_set_exception_base: invalid vp_index: %u",
++                      vp_index);
 +    }
-+
-+    return csr_ops[csrno].predicate == fs;
++    cpu = RISCV_CPU(cs);
++    cpu->env.resetvec = address;
 +}
++#endif
 +
-+bool riscv_csr_is_vpu(int csrno)
-+{
-+    if (!csr_ops[csrno].predicate) {
-+        return false;
-+    }
-+
-+    return csr_ops[csrno].predicate == vs;
-+}
-+
- /*
-  * Control and Status Register function table
-  * riscv_csr_operations::predicate() must be provided for an implemented CSR
+ static void riscv_cpu_cfg_merge(RISCVCPUConfig *dest, const RISCVCPUConfig *src)
+ {
+ #define BOOL_FIELD(x) dest->x |= src->x;
 -- 
 2.52.0
 
