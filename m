@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D027D077B2
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 08:01:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60D92D07781
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 07:57:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ve6Pu-00045h-1B; Fri, 09 Jan 2026 01:56:18 -0500
+	id 1ve6Po-00043Y-G4; Fri, 09 Jan 2026 01:56:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ve6PB-0003ZT-2m
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:55:31 -0500
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1ve6PK-0003k8-Lq
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:55:40 -0500
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ve6P9-0002ox-HM
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:55:28 -0500
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-7f89d0b37f0so1285950b3a.0
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 22:55:27 -0800 (PST)
+ id 1ve6PI-0002pl-Ft
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:55:38 -0500
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-c075ec1a58aso1681794a12.0
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 22:55:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1767941726; x=1768546526; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1767941734; x=1768546534; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sEEhUQKWzw7fzFc87JZFv1y0Ud0JmfLrIoan4P4nv+Y=;
- b=Ze0Q1xwCc9rixAfERWQvIPvMaC7PStGRbonVkR7ja13SxoAqvYCZZEOR7yHPV/kF0H
- q0dqAk9yhzSqgkafxMhb0Byx9NvgsYYxEEW+BflAQQwziLL5Uuz3bstnLFHMmQaWKXVW
- +vJxx0YC8wQnMWX1Ylj9Uc6winoul/gLhGceozDyF5w1PLJfY4uva7WIoxxFyPZdbk2l
- W2Anu/hGiqkrJ1/WNx2eZViHUOEgflOYP9G5cHIJJSoic53W6YVbDqb5kDgoednpIJ4G
- euN3fp5zFEEC/1R+Y9je0Rq/xVkV412JK2/TsegEaOwPXVEPcPzW/QAISs/dikVIeHqF
- YV+g==
+ bh=92h8wMo6IUZq5rJMwR5yZtQa4K7Jxdwtk3361Z/f4wU=;
+ b=nm2Xw55g/8BKB4w3uNdkBJZWjdkiYpGrPA/ucLbSdfvsB7WvX+ZVfCbYxekiKGI+Oc
+ gL/IzXXUtKZVB814FlZROKsWIwvZre6FT4D3alOQdGWaOcN7RJcjhnXqqZaIBYsRlGTu
+ NiEavOyhzvJgU/Mx1HCuw+wSTun3/MCgV64gFugpsz3e/wpHHDEcxmzrLi+JDGd5jeRI
+ e0VN3MNKY5ULCEOk3mcgoIocmrg3Alvx8YU5kZP3+iatuCRxMOmF5ea0q4Mh43Vq8PlL
+ s6wmgNniJhAFsh3CCRivRFNa5wQdlRV03XvDWhcCkk6V77yevuL4+RnO7ksK5v9ZGn5V
+ W8Mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767941726; x=1768546526;
+ d=1e100.net; s=20230601; t=1767941734; x=1768546534;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=sEEhUQKWzw7fzFc87JZFv1y0Ud0JmfLrIoan4P4nv+Y=;
- b=v58cVJcMtaUb78exyUHXszvm95Xnxc0EWYmwhJ2hCqKQWsmC7tEw+z7JHNWh/ninuZ
- DY5b3FdOADZWl4poW1Gwmp54EFJ1LTVNfhMZNIOZD5VaU88O+Ts5da25x9aeacMm3rVR
- peNMnAa+I237IxTJSSix7LD9kYylJ8Uv60XtaO7BAvPMI9pZtV9FmTiLZ3JhgtjnPeYH
- xz/aoVr5w5pEv1cF9XCUJyUZZpBbrV3xvfXom6SwQoFLABaafDP4JbNWp0FdKXppzs0i
- DYnggIVWGmk3YT+U/2NVZzaZW/ZYG26udhPAahzVVWBx5R7q0cvez7oTtLQxygU2lusA
- IQHQ==
-X-Gm-Message-State: AOJu0YyFZqKc77YVdEz+jeubRX4KyEaNuZ7AufTM5Ry5RK+5C2ekOD1p
- 4Q6m914G78y2CQs0ziKQ5avzTn2wMi1CV+0O/Xt+ByORHdvnBIjukc4vEOEQKA==
-X-Gm-Gg: AY/fxX6om5fpPx5Li/Q9DXkrqlk0IBV0P+94bEkI7yA2TRMgMGvuFNc3Kx8LDO395JR
- RBs+DTqzUY1AV+gHbcXKAYT3sUlj+Ny0c68GZFIQpyGdDs6y0J/WEyKmZl9tPGXzMjAXrsoJS3V
- 3Puunns8SDlgShgUP9FRM6sh7Li1lRfqgMia3uj+BKcezYm0HaM8Z4xd/Zj0XpAfwcm1GJCKgUy
- npfnNmhoJkM9esVQGy0T3WUEUr43482eJKfxX0nzeffIrRDEMUC41GqBfFV164eCCjRwSM9DpwJ
- VEGj4phbt7gov09ZHun8Wg7QjagRCQn2JCQuQPZum4BpVcfsXKdMS5X3gkXzc8nssdnfOmXMMX/
- q8HgRL+EgEc2Iq15KLoStsfJTeHfrZjy3xNfzyoDSZwbQLF9zGsGl1kei1sBoKmuKOrwnN0uuIf
- 4iXRaj6rCsELVzWeF1kPihizSa4KaZvy3On4o1yqj0Z8uJKENfqmrGl6hXO8rC3/H1jw7jZdW/O
- /6LMxL4ez6r0lqDZeg=
-X-Google-Smtp-Source: AGHT+IGf6nWqEVlkx34GYjKr8HJ9qFysOJPGrnjVkzSZpiiRLX9ZvQgr1Sv8hf3VkZ5Ecz1OH15xWQ==
-X-Received: by 2002:a05:6a21:62ca:b0:37d:e26a:bff2 with SMTP id
- adf61e73a8af0-38982b1ffbbmr12199079637.20.1767941725548; 
- Thu, 08 Jan 2026 22:55:25 -0800 (PST)
+ bh=92h8wMo6IUZq5rJMwR5yZtQa4K7Jxdwtk3361Z/f4wU=;
+ b=U0F+U7mu9jicQeKTSFcWVuqgb9Slt0WQGDMjXDAcvGyRXT1LVhzcvAJemILXIsTm8Q
+ YAbfBQIuun6k7X9f+zeB6t2xniC3Rfmv+GjJP5GwgodJTLl5zAOWNKhzILYOjF1j21NH
+ BD56Ngut6yn9kiw2sGMSgak9qr5LPfO5ljcMY28o4rwvocX9J67OTxTYaDuFORnQxtZF
+ B5lEeQqShUnPPrU1aSo4iBMSjkjaNpp7UhQfxdALvdwxvM9uBp9aJTsaRIH3pmgjcFRb
+ fS219Q35O/htiJbUNjAH4+mnNlcOneCR4u547ddgyNfjGs29lQFkvLYpQIA/yMuTdb9d
+ CnfA==
+X-Gm-Message-State: AOJu0Yz6r2vRY2HMCm26Lmq0sJI7yN+vJ4bYO/6bqKjiD0WF90/2BbZK
+ arTSrpAaFmVU7nGkekNoLpHybkVfmIDaMCqsSrlqnU+1AP0BJ39TxBpk4Iw1pg==
+X-Gm-Gg: AY/fxX6gfpz2Fe1f2HE9iH3087qEJc38YN84pU4Q6yDnK7WP9Hxsvi+67WIsMIfb+1m
+ J7P/JMTS4TJdFthLznybmvm8zVHLrlyqXXgt+gxUx8oD6DVVHPQTe+9hqouelp/xrpBqKPUaaGv
+ sZpX4hsnnSFmgeU2AFVr/evD0DHTTMQ3QS3bKchmLHigwN9+Pi1bnpBVmVCUgrYHYOPKj66qwwm
+ N3ebtv4g9r9wZq8/H1NZ2hG/9m+6RWIpiXWPdhrZbddUaQuz1elicpEmqn5ExCm48xqF8HuUglW
+ hZlKAgPpMUxfB9br+8tf12y1w4mEfDIxHvUXeqmff3abpc4vAKCYHRyLVH2B8lYh4KpXTRdqTzo
+ J3DbssLvkkSaoYoMmNKS7ZB+p7gdnvdQSvzWPRXQS1egM/pjZ3ljHKlFyrBJrqujwSZ8Fjp1zzx
+ b8I7q3epE/JZepYPxmI4KgpyJOVP+L2ELm9XvHPliCMbN240c1cMaOXPUjJgvhUt3YC+5f+xXPd
+ PJcsWaYkjnPwB3Z/Is=
+X-Google-Smtp-Source: AGHT+IH1XWDp21XBc6eFvg1xwJntOwV7rwfEp2ViFlh8QOvz4JuP6k0LTGfnl9MYikAG8vLCvLpUWQ==
+X-Received: by 2002:a05:6a20:12d5:b0:35d:d477:a7e7 with SMTP id
+ adf61e73a8af0-3898f906c7bmr7734664637.22.1767941734316; 
+ Thu, 08 Jan 2026 22:55:34 -0800 (PST)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-c4cc02ecfaasm9953644a12.14.2026.01.08.22.55.22
+ 41be03b00d2f7-c4cc02ecfaasm9953644a12.14.2026.01.08.22.55.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 22:55:24 -0800 (PST)
+ Thu, 08 Jan 2026 22:55:33 -0800 (PST)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 05/34] target/riscv/cpu: add riscv_dump_csr() helper
-Date: Fri,  9 Jan 2026 16:54:30 +1000
-Message-ID: <20260109065459.19987-6-alistair.francis@wdc.com>
+Subject: [PULL 08/34] docs/specs/riscv-aia.rst: add 'riscv-aia' accel prop info
+Date: Fri,  9 Jan 2026 16:54:33 +1000
+Message-ID: <20260109065459.19987-9-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20260109065459.19987-1-alistair.francis@wdc.com>
 References: <20260109065459.19987-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -106,108 +106,78 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-riscv_cpu_dump_state() is using the same pattern to print a CSR given
-its number. Add a helper to avoid code repetition.
+Add a small section talking about the 'riscv-aia' KVM setting we
+implement and how it affects the provisioning of the IMSIC s-mode
+in-kernel controller.
 
-While we're at it fix the identation of the 'flags & CPU_DUMP_VPU'
-block.
+While we're at it, fix the formatting of the AIA bullet list.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250623172119.997166-2-dbarboza@ventanamicro.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20251028084622.1177574-1-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 54 +++++++++++++++++++---------------------------
- 1 file changed, 22 insertions(+), 32 deletions(-)
+ docs/specs/riscv-aia.rst | 43 ++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 39 insertions(+), 4 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 8f26d8b8b0..c22c418625 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -516,6 +516,21 @@ char *riscv_cpu_get_name(RISCVCPU *cpu)
-     return cpu_model_from_type(typename);
- }
+diff --git a/docs/specs/riscv-aia.rst b/docs/specs/riscv-aia.rst
+index 8097e2f897..f3c6ab7fcb 100644
+--- a/docs/specs/riscv-aia.rst
++++ b/docs/specs/riscv-aia.rst
+@@ -8,10 +8,8 @@ RISC-V machine for TCG and KVM accelerators.
  
-+static void riscv_dump_csr(CPURISCVState *env, int csrno, FILE *f)
-+{
-+    target_ulong val = 0;
-+    RISCVException res = riscv_csrrw_debug(env, csrno, &val, 0, 0);
+ The support consists of two main modes:
+ 
+-- "aia=aplic": adds one or more APLIC (Advanced Platform Level Interrupt Controller)
+-  devices
+-- "aia=aplic-imsic": adds one or more APLIC device and an IMSIC (Incoming MSI
+-   Controller) device for each CPU
++- *aia=aplic*: adds one or more APLIC (Advanced Platform Level Interrupt Controller) devices
++- *aia=aplic-imsic*: adds one or more APLIC device and an IMSIC (Incoming MSI Controller) device for each CPU
+ 
+ From an user standpoint, these modes will behave the same regardless of the accelerator
+ used.  From a developer standpoint the accelerator settings will change what it being
+@@ -81,3 +79,40 @@ we will emulate in userspace:
+      - n/a
+      - emul
+      - in-kernel
 +
-+    /*
-+     * Rely on the smode, hmode, etc, predicates within csr.c
-+     * to do the filtering of the registers that are present.
-+     */
-+    if (res == RISCV_EXCP_NONE) {
-+        qemu_fprintf(f, " %-8s " TARGET_FMT_lx "\n",
-+                     csr_ops[csrno].name, val);
-+    }
-+}
 +
- static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
- {
-     RISCVCPU *cpu = RISCV_CPU(cs);
-@@ -566,18 +581,7 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-         };
- 
-         for (i = 0; i < ARRAY_SIZE(dump_csrs); ++i) {
--            int csrno = dump_csrs[i];
--            target_ulong val = 0;
--            RISCVException res = riscv_csrrw_debug(env, csrno, &val, 0, 0);
--
--            /*
--             * Rely on the smode, hmode, etc, predicates within csr.c
--             * to do the filtering of the registers that are present.
--             */
--            if (res == RISCV_EXCP_NONE) {
--                qemu_fprintf(f, " %-8s " TARGET_FMT_lx "\n",
--                             csr_ops[csrno].name, val);
--            }
-+            riscv_dump_csr(env, dump_csrs[i], f);
-         }
-     }
- #endif
-@@ -590,12 +594,8 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-         }
-     }
-     if (flags & CPU_DUMP_FPU) {
--        target_ulong val = 0;
--        RISCVException res = riscv_csrrw_debug(env, CSR_FCSR, &val, 0, 0);
--        if (res == RISCV_EXCP_NONE) {
--            qemu_fprintf(f, " %-8s " TARGET_FMT_lx "\n",
--                    csr_ops[CSR_FCSR].name, val);
--        }
-+        riscv_dump_csr(env, CSR_FCSR, f);
++KVM accel option 'riscv-aia'
++----------------------------
 +
-         for (i = 0; i < 32; i++) {
-             qemu_fprintf(f, " %-8s %016" PRIx64,
-                          riscv_fpr_regnames[i], env->fpr[i]);
-@@ -613,22 +613,12 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-                     CSR_VL,
-                     CSR_VTYPE,
-                     CSR_VLENB,
--                };
--        for (i = 0; i < ARRAY_SIZE(dump_rvv_csrs); ++i) {
--            int csrno = dump_rvv_csrs[i];
--            target_ulong val = 0;
--            RISCVException res = riscv_csrrw_debug(env, csrno, &val, 0, 0);
-+        };
-+        uint16_t vlenb = cpu->cfg.vlenb;
- 
--            /*
--             * Rely on the smode, hmode, etc, predicates within csr.c
--             * to do the filtering of the registers that are present.
--             */
--            if (res == RISCV_EXCP_NONE) {
--                qemu_fprintf(f, " %-8s " TARGET_FMT_lx "\n",
--                             csr_ops[csrno].name, val);
--            }
-+        for (i = 0; i < ARRAY_SIZE(dump_rvv_csrs); ++i) {
-+            riscv_dump_csr(env, dump_rvv_csrs[i], f);
-         }
--        uint16_t vlenb = cpu->cfg.vlenb;
- 
-         for (i = 0; i < 32; i++) {
-             qemu_fprintf(f, " %-8s ", riscv_rvv_regnames[i]);
++The KVM accelerator property 'riscv-aia' interacts with the "aia=aplic-imsic"
++to determine how the host KVM module will provide the in-kernel IMSIC s-mode
++controller.  The 'kernel-irqchip' setting has no impact in 'riscv-aia' given
++that any available 'kernel-irqchip' setting will always have an in-kernel
++IMSIC s-mode.  'riscv-aia' has no impact in APLIC m-mode/s-mode and
++IMSIC m-mode settings.
++
++
++.. list-table:: How 'riscv-aia' changes in-kernel IMSIC s-mode provisioning
++   :widths: 25 25 25 25
++   :header-rows: 1
++
++   * - Accel
++     - KVM riscv-aia
++     - AIA type
++     - IMSIC s-mode
++   * - kvm
++     - none
++     - aplic-imsic
++     - in-kernel, default to 'auto'
++   * - kvm
++     - auto
++     - aplic-imsic
++     - in-kernel, hwaccel if available, emul otherwise
++   * - kvm
++     - hwaccel
++     - aplic-imsic
++     - in-kernel, use IMSIC controller from guest hardware
++   * - kvm
++     - emul
++     - aplic-imsic
++     - in-kernel, IMSIC is emulated by KVM
 -- 
 2.52.0
 
