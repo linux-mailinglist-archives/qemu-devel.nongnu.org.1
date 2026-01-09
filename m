@@ -2,91 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA118D0C8BA
-	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jan 2026 00:32:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EC11D0C952
+	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jan 2026 00:57:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1veLxG-0007QV-4D; Fri, 09 Jan 2026 18:31:42 -0500
+	id 1veMLE-000142-0g; Fri, 09 Jan 2026 18:56:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1veLxD-0007Pu-Kz
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 18:31:39 -0500
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1veML9-0000z7-Cu
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 18:56:23 -0500
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1veLxC-0005Wh-4n
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 18:31:39 -0500
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-2a09d981507so26977555ad.1
- for <qemu-devel@nongnu.org>; Fri, 09 Jan 2026 15:31:37 -0800 (PST)
+ id 1veML6-0003qH-EC
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 18:56:22 -0500
+Received: by mail-pl1-x643.google.com with SMTP id
+ d9443c01a7336-29f102b013fso46544075ad.2
+ for <qemu-devel@nongnu.org>; Fri, 09 Jan 2026 15:56:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768001496; x=1768606296; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768002978; x=1768607778; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=/On9YMRS5wamKSpu5GSINZCNGcVZMOKt1wIVcT1yWYc=;
- b=R/+arRdInAKXNRzBe6U//qoyV6fxwAoh9SEnZfFEYYpOAETNXMRlLVu1wzDYCAulq4
- MuXcIWZ4kH2YCtAKlVq7G16Cz5gKYaPBdDH4x7q9Jb1YSmE70CyjdnV5whPKQvfLTjtN
- NuoFwYFB+oR3cbUr/Vpv1W8ZISeyTNBTkz+5zy2XRpf71b22WXWoePwvvJ+1kbcrGhz6
- UxwA403A3jOyoh4c7BXXfi6ypbmjJL09jYlvAXi0WTZ8pf0NK/hTb5khrADcu4sLpGGa
- KrFqjjSjDB1JBpQpGfRkHh8W7aP+PShpmkVzbC2L2ZlBpJbu2HYmcOU6Q9H5JKf2gLC+
- pj8g==
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=QGNyw6s5MTr0RaZ4KmcfEpmjKqGLLGsTn8L5MxuLE50=;
+ b=k9/aolF8IWQ0jy2ZHQj5c1o9bH6PLB6ydW1yHMNf9HEH4T8/f6JhQ7dKI0YWnezSzp
+ c+8w+dx9V/15exZPp6veWZ2sNA0lufRMGd5yGRVizdiJffDxF8xZNurRnxi04+7jt9bV
+ eR19d4EFJ7ysssNC0xKVKCtnYBwp/8Y6jCEdWyoxXzOkE3ZlENivSy/g0au+dB6d3n0I
+ ZCfIBrWOb+bv3XoG/aM32XDaRS+l6GAEB8g3j7qqG7Fj2EAGTDDxAzDEz9sYkpozfGBC
+ JAzLvzE8btZgyp62TT0zOPVFJSUC1gBnHxzk8ya3L/nebycGcOKhBl1TD7lsac4sGiaF
+ t9bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768001496; x=1768606296;
+ d=1e100.net; s=20230601; t=1768002978; x=1768607778;
  h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=/On9YMRS5wamKSpu5GSINZCNGcVZMOKt1wIVcT1yWYc=;
- b=t+IzIeYy0MK9F/eisAdjIsbRGJj0eiGm/ZdW8EsARk7r6hVNKAPXqRb3gO0WGbvSCp
- GYDxMI8iOcUSHouXw7dKXZAX9CpMox6bnNpCq9qvfJeI7D+1gc4M29vj55EgGN+rYxdw
- 1LDrKndAMYM3+ZrOEDymOKPRPDVI+rICjK2hSxMiW3qTiOtGZr8C4PL8u2aWC5SUEHwu
- SLyMfmBxS+QLTy7TZA/159cpb+Mm5jUYmUn9UqDf9/xr+OIenjTtaPOyEViedGnXpyTU
- Ooazzg2vL1RiB+1tFE+kL3Ht0eNLT5E2QFUl3FZzYWCIzIpQFHZ/rQh75sQXrR9RgGYc
- bPcQ==
+ bh=QGNyw6s5MTr0RaZ4KmcfEpmjKqGLLGsTn8L5MxuLE50=;
+ b=UBvDtgNFtH34ku5eIAXq0LLFUmRVQg0tjRJdSzNxuqRXmHoUrA3HFv0hB0IV2UJe5O
+ 7vxboLYeRP8miSHlfrvvRvOtJXLkCFcmvcp8EiowfW8EG4tr48JAes76kkyq7e2lhpFg
+ cpJdEROEbShGzQpRaIiXxaxkJWiA+yjd7FmK7aENXuM4DKogIGib9v7536c4cpZsDDFQ
+ rfY1VYFm0se85rCGxy2/ewyy3xKPIPqVKcAMHshcsZxuxSEmiyxG+nGscXU/VRxIV1Ap
+ gmsM3e0Vc2PAlh3QQE7wN/LUgFnD+zqvDyaH1j312xc37ImHEjJOnJZHv70km+xYihf1
+ qWGA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUqRFqPFmx1nYS4mGaTEZKCF+BaEMdfttmaexPJE4OzaiifbVRJHt9im1P/hLN0hJt7K5+3L2sDMmM4@nongnu.org
-X-Gm-Message-State: AOJu0Yyaf/vujV8dIbeKKJ/n0sidiMxrT2aQqZsQc3VWvf1MM8ayboPL
- +K3lNG0HXWA2WHsMHFQzngk78A/qtkmNhdOhttOZzuhPb8lvJdFw478UKDh7vcFessU=
-X-Gm-Gg: AY/fxX7rFYQUTWwaoUMlWjBvCeqcE3zimGfF6qUTA/n5I3IDek1tPwYdEt5RUoy4lTA
- vw9iXX+3xJ3Y2m/xq2/M2E5lSqRW1S4c7lPhJtUcruEOYrI7MCZbCBl+dtuwSAWSyllu+GsmSMf
- jmF3HCJQoPwB5FRY1iYzrBEf4ANoXBm0So2pKvlXMiPyr+/71Wfqds73iNipTaOnGRMBahnmE8W
- j26mQXrDzLnCWD2CnvvQVV1CQx4386XuZnXerF3OSdnav4ahz91tQDJrjZ5abpZyU0VdR/VhB5M
- Ln2Oud3MsrSuwqndWSZVd0eyEXJ9BBXFrl1BNHMEFWzrsfZ+ygkZCVzG6IWDYwnT5ruA/7/MLvL
- izmDBF58k1mJbC07dTHs0tl7FfHQ+JRadtUYjHc7MMyR+kAsWA9+JVIR1PJ+XmAzpY3bCVPmK6b
- EEQh9wV3zXKXK0U2YwC5iBYGDV3w==
-X-Google-Smtp-Source: AGHT+IEvaIQfQVblt6b7lIsGZkE0HSfHMpLrcDjH2lxARewsVLMYaLC4i72dd2v4wudZC7tCrocbrA==
-X-Received: by 2002:a17:903:1a27:b0:29f:2734:837d with SMTP id
- d9443c01a7336-2a3e39fd48fmr150742305ad.28.1768001491970; 
- Fri, 09 Jan 2026 15:31:31 -0800 (PST)
+ AJvYcCW6oJ84FYoC/n5uMJGZ4AH3ovFbLUdCPTVvr1fKHMVVsGfE2fwYCm54y97Rjk0SQrZp0inVMwxAR05P@nongnu.org
+X-Gm-Message-State: AOJu0YwK9U774Ujy+latcD15H/7u01FUrJiEa38dbXuAMZqjz8s76yFd
+ 1cMrbBxIlMwvpiBogwxLdK6qFUnC+e8hurNCiFA8hN0bpmXlavPdAHhFwDjdYRgkcgg=
+X-Gm-Gg: AY/fxX65TCRCnGSUIVHViWxbJ/S+I3MeD4/unIkpBGzt3EqOHNLEvCCniCmDDRRdATs
+ YpQcO1nY/COe9TiqproIsHLQml0/Yon3Rgz2W7I3IN4Qt6GtCYrt2ZXQUzoPszBsQZZ/+FoktzP
+ kvhmUqFgQ06cUDODjPtvvmvBbw++vJESsoxDQAL2sXr1tZaflRTCbm/B0Q/8WyChf2YT86T7BQ1
+ dSyhCgGkd3QOWQ9ZOkwIkOoCbkytSP3Lk3kr65Ftq1ECoruGsmSsXYMAfst+GgodPbJ0y2ONy2T
+ uYr77vw+htF8YEI41sgv8qQUexaGOJY0kPKEV9KAB6I+mFjF8cIRvpWCCkRuj/XuhKxFLRY5n1N
+ vHcEONbullZ7oMJ9e8jlHGKXCXXGAwJQA1DRqjPl+Yw4gfz50cBPfVbMS3xhyFAXNgfuv3u5jFJ
+ Ld/KVqC2RtUVg7rdB8+SxjmpysSg==
+X-Google-Smtp-Source: AGHT+IGcVl3XSpvoYN//cKumS8BX07cD5U8g1ZP56WcGVKOfuyXEYFnXOUyXIwGhEm6zBM/307wf0g==
+X-Received: by 2002:a17:903:37d0:b0:295:543a:f7e3 with SMTP id
+ d9443c01a7336-2a3ee458e26mr103697125ad.27.1768002978331; 
+ Fri, 09 Jan 2026 15:56:18 -0800 (PST)
 Received: from [172.23.81.179] ([202.86.209.61])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a3e3c3a2ecsm112612675ad.6.2026.01.09.15.31.30
+ d9443c01a7336-2a3e3c48dc1sm112810845ad.40.2026.01.09.15.56.14
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 09 Jan 2026 15:31:31 -0800 (PST)
-Message-ID: <a86928db-ccdf-4cde-9e6c-e07e5f65a9ad@linaro.org>
-Date: Sat, 10 Jan 2026 10:31:27 +1100
+ Fri, 09 Jan 2026 15:56:17 -0800 (PST)
+Message-ID: <4be5bd97-21a5-40fe-9a9c-a4e05b11a1ea@linaro.org>
+Date: Sat, 10 Jan 2026 10:56:11 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 0/4] MAINTAINERS patches for 2026-01-08
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-References: <20260108085850.1790958-1-armbru@redhat.com>
+Subject: Re: [PATCH 0/5] accel/tcg: Restrict WatchPoint API to TCG
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-riscv@nongnu.org,
+ qemu-s390x@nongnu.org, qemu-arm@nongnu.org
+References: <20260106231908.16756-1-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-In-Reply-To: <20260108085850.1790958-1-armbru@redhat.com>
+In-Reply-To: <20260106231908.16756-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::643;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x643.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,24 +106,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/8/26 19:58, Markus Armbruster wrote:
-> The following changes since commit 63a88166ab160d7d92da60b7fcb562c127e51862:
+On 1/7/26 10:19, Philippe Mathieu-Daudé wrote:
+> Hi,
 > 
->    Merge tag 'pull-request-2026-01-07' ofhttps://gitlab.com/thuth/qemu into staging (2026-01-08 07:24:44 +1100)
+> This series is related to single binary, where we want
+> to build compilation units once. Headers using the
+> 'CONFIG_USER_ONLY' definition are "poisoned", except if
+> we duplicate the meson source set, in that case we define
+> COMPILING_SYSTEM_VS_USER and CONFIG_USER_ONLY is no more
+> poisoned.
 > 
-> are available in the Git repository at:
+> Looking at the watchpoint API, CONFIG_USER_ONLY is only
+> used to avoid stubs, so it can easily be reworked to avoid
+> the need of duplicated source set.
 > 
->    https://repo.or.cz/qemu/armbru.git tags/pull-maintainers-2026-01-08
-> 
-> for you to fetch changes up to bfb8ab8370c6cbbb74fc55b4587ca83c71e623f6:
-> 
->    MAINTAINERS: Add MAX78000FTHR section as orphan (2026-01-08 09:53:09 +0100)
-> 
-> ----------------------------------------------------------------
-> MAINTAINERS patches for 2026-01-08
+> Since here, we also restrict the API to TCG, and unify it
+> in a single header: "accel/tcg/watchpoint.h", since it is
+> distinct to the BreakPoint API which can be used by hardware
+> accelerators.
 
+Watchpoints could be used on aarch64 kvm.
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/11.0 as appropriate.
+They probably could be used on other kvm, with modifications to kvm -- at present the api 
+presented to the hypervisor is breakpoint specific, and I'm not sure why.
+
+I think it would be shame to preclude other accelerators from handling watchpoints, even 
+if none currently do so.
+
 
 r~
 
