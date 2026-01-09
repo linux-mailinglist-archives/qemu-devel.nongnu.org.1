@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22C96D077BE
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 08:01:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B636D077EB
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 08:03:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ve6RP-0006SW-6N; Fri, 09 Jan 2026 01:57:47 -0500
+	id 1ve6RR-0006Vo-5P; Fri, 09 Jan 2026 01:57:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ve6Qk-0005SH-0b
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:57:09 -0500
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ id 1ve6Qn-0005Tx-Uh
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:57:13 -0500
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ve6Qi-0002xj-7Y
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:57:05 -0500
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-c2dd0c24e5cso1858828a12.3
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 22:57:03 -0800 (PST)
+ id 1ve6Ql-0002yo-Vx
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:57:09 -0500
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-bc274b8b15bso2586964a12.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 22:57:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1767941822; x=1768546622; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1767941826; x=1768546626; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4Me4ZBOWrzdKvktUjsLww6TB3oR9WOe6FZHLcDEkUQo=;
- b=W/XlbNOxYGkeYcLPcLOQgVwD61xzqQvlNpCyyac/BR6QfVvHt37e0Xuucjt91zYshw
- 5dV/0hC+8+IEMOQHABx3hdSpTlmN+VByp6y62seoV7Hl2+yWZQnEka1vD3sqeRhPE1pV
- 65wyNvIoIDfwwQ/yzobVEUnZH87uGyx6D5JGUy/JacVMX2zEDfO/5+b5iwUxFDeF1/Dv
- 2W1KW0Dx0qZlZtRGZBoSbXl1HLPNEs6GOvqfoNDe/mIDrXHvm14Cy6UBWkdFy6jANuxx
- VC9l73MfOB+oHc69xCJDtlTvbhXWEaHviegG1T6I7u3eHixwDc7OLr4OpmLGvEONbg31
- wxMw==
+ bh=+j/qPjdKZed+xiVY9WDXNNYe7vPb+h/Yx+dAPCmE0lo=;
+ b=H8NvGagwQvRNVL0OF2F5mZEgq+6NkX/BQZWJZfF7wN7uqzgHL0fN1F+xnNKnAq2ORS
+ DtmCGRYvFcm643RPfQhC5OQXsZLxiIKzAusU7fUA4RMANeSNbl7Bf0FBzQhqKWJ+VWgP
+ dvwJrG9eAplQ2FXPNMPcGqWk7DIy7jbc/1uc6z7c+DErcJrR6zdcWmHvyoMJ30DiFWNA
+ R7XEpMPthsM0cq7efB5OaI1uQiZ6XUxQYgfvG9P8aDXrGXxkSJ5iC4GSOxmM4Gc8EUGn
+ huN49DIlOll1mjWeqSbXhhTaG2Oml3JkZhxs2gXKkxKXhJ3IDlg2Jjkq6gvP9TyPH6Um
+ EMCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767941822; x=1768546622;
+ d=1e100.net; s=20230601; t=1767941826; x=1768546626;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=4Me4ZBOWrzdKvktUjsLww6TB3oR9WOe6FZHLcDEkUQo=;
- b=cbD7y17GASwSioxU4xeH+9af8KUfH+Pre+fSDliRYbEPH5lJBMD/LMrs2O4bMIT5t+
- RjW5zxgGGZMSAKdS6NEtliUk6EOqRK0Y1H65Z+3LLvBKUCR6uIG2GY8y1Tfk3voColUN
- dcSUIQwGP8Vwok7AunK6zHtnytw/05tPtElVDkwNY06rNsUpjIOZCKsd+MG/Qyewp6lM
- qqkn8AYYqL+1xOTXH0EM5gZ1Wv5K7/IavNiBxnz9N3AwQcX5jAu+OcsMX2jphx3aVwwf
- nLzvzqHt520NRmupYd2TjVqP73FKBNlJNxryEGgrKXeDztKG0XXh0VjZlDxTaLv5RpOh
- jwhQ==
-X-Gm-Message-State: AOJu0Yx4sj3cgug49rn2itmSy+FxV7TOfGM8aPvHJswUZAvAlr+hl939
- KLzkxN+ZeugKM34qFuih5hSnnquwPRBKADaKbA1QL9bDZaClqc2HmUdX8L3hdQ==
-X-Gm-Gg: AY/fxX4LZb2sgUihRuBBvyFi7piFS+cHtWpqInYdKy3aMizLq2LpDTz4gF6IBL1E304
- CS7f161zHbtFmS/atrzSv/HMFjWD4IFGnPWVLVpQ3mDd+BBxYpOWV/jUHzcCEYxhA5ZMtGG9EnC
- qfImXHNgq5NH1VF7BBICxt0cDQYxePKeLZTMuIyUGrMX5gmJNG1nPbNxQJYYWb1vffxORkyYIVR
- 2OE0ZX0cDteVnIQki2oxl9KYPSeoT+7FOim1u/rMxkgZp+FfvRD8ubve1OLnXcshtoQdGpCpvsY
- GhjUqQGeVb9vF7EHdN7dZrjvI59YfkHi0hFgDEWvnmEuJmg3/cFr1S339yoYa2bGPV7tUbcH5wj
- f0EAMxOSR/n2PaYSDh3ZNVNILtE/sLhXqTGhJtABtiF0v3GFTnwS9RBo/zTTwgvw7vzvGkjzHtx
- OsgauyhNzCX0Y8JPBloFzLLNoxwJr8Lb2fMyLjBdxQK88MHgPNmlgP0LGPdxzVhr+oyCeUgzCCH
- WMC5VJFyCj9mLUFLX6gS3g05rt4jQ==
-X-Google-Smtp-Source: AGHT+IFMphDaa+YYVImX5ctu0dDOAY96rfa/7okRS9Z/94hQotSxFfrI81s5xiaoFCumesknUaCGWQ==
-X-Received: by 2002:a05:6a21:6d8c:b0:35f:6e12:1862 with SMTP id
- adf61e73a8af0-3898f94c400mr8279484637.19.1767941822548; 
- Thu, 08 Jan 2026 22:57:02 -0800 (PST)
+ bh=+j/qPjdKZed+xiVY9WDXNNYe7vPb+h/Yx+dAPCmE0lo=;
+ b=Q4VW9gCu0Y614LKGBwnKIh1K4XQztt4atxDGjP+JAcuw0sbQxUwl3fVm3+SeF3ff0a
+ 5T2PwCuJwrYJc3ArIIQjdKfljjoVSLHT7svVNJffb7/3SyQWQcFNMF8gFRh7sA6YjDJP
+ qEXfw1AU8U3QvBKnpGpDuHXsGy6nBFIa+KTYFDOHTkZSyG28K4s0duDq/cw0rkCy8Y3l
+ E4nKk827gxCLKfuPyQiZGFgjaiQJVUa1REPM8iNvYWrP8qVEpj2QtGIqusUqR32ds8Tz
+ NlYR6B3vNoFN9SnSinFcOghpXVbcHpMD5O9qxKfxcZS2UH/9SOByprKvLjFJAbZ7b6GT
+ 1tsg==
+X-Gm-Message-State: AOJu0YyJKJyX79WTsvEXA4antwABiTMsJKRzz4L8g5RQJ3dAkQ0YNxgr
+ UI6RrMha6EIX6QFPujvZ7r33hlhB7TqWx0HPcj39ajZmSSnKha+1eGPUwGPOpw==
+X-Gm-Gg: AY/fxX5eP6vxcXTN5AJkZOW0fS7RRGBzZgyc/YRt5lD+XWadiiruhrw7VvpXBKf+DPw
+ qqeTQSbUB4TCKY4isCX+vBguU0qx4xuySfddFJXKCBN4WLcc85arvXU61ORciEeB54yPQ7faTUf
+ Cw8A1w9EkBsFCWcPZDpkEiDc+dDtzbjBIMmwvYjNRgTRZbUoDoCW1nHkWEyOiGGJmbvAnzcIdCL
+ /Tu4k5g/3MVYkGi8sl/Xr20Zlm347vVqoVL5uqCuQmTk5f5Q4NUrKEC9GkftXoAA6F+q9o/cDFF
+ Yvztpp/hIoEhzfJ/NDNAt9mQmmsuxPC2cWRb8Uc4LxxDxQFefgxvL24/pnVV11gNejfof0aK+6q
+ xgEOaKW8NLmTta3tR9g+YL9Q9OYxtwEBAV9IEAtNETJguiHWwkgZidCrueRieiTHVrUS6/l5wEC
+ RczjbElgyt/avMjAZ/lGV/1WfWLcSKOIKfTeeyeqvPDETzTLGI4KpKha4WAiFYFR6aLXMtRZDNs
+ IDSFP3M93f2GRK4qLfLHkaHPVzcWg==
+X-Google-Smtp-Source: AGHT+IFmz69m1xpFuVcslGBi9cEhdOxpljiZJRs7GB/9b71I4UBpMcIIHWe29kQfJPgAOJXkH48ihg==
+X-Received: by 2002:a05:6a20:12cf:b0:366:2476:db4a with SMTP id
+ adf61e73a8af0-3898f9c73b1mr8497374637.59.1767941826276; 
+ Thu, 08 Jan 2026 22:57:06 -0800 (PST)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-c4cc02ecfaasm9953644a12.14.2026.01.08.22.56.59
+ 41be03b00d2f7-c4cc02ecfaasm9953644a12.14.2026.01.08.22.57.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 22:57:01 -0800 (PST)
+ Thu, 08 Jan 2026 22:57:05 -0800 (PST)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Djordje Todorovic <Djordje.Todorovic@htecgroup.com>,
  Chao-ying Fu <cfu@mips.com>,
  Djordje Todorovic <djordje.todorovic@htecgroup.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 33/34] riscv/boston-aia: Add an e1000e NIC in slot 0 func 1
-Date: Fri,  9 Jan 2026 16:54:58 +1000
-Message-ID: <20260109065459.19987-34-alistair.francis@wdc.com>
+ Alistair Francis <alistair.francis@wdc.com>, Thomas Huth <thuth@redhat.com>
+Subject: [PULL 34/34] test/functional: Add test for boston-aia board
+Date: Fri,  9 Jan 2026 16:54:59 +1000
+Message-ID: <20260109065459.19987-35-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20260109065459.19987-1-alistair.francis@wdc.com>
 References: <20260109065459.19987-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x530.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x535.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -109,36 +108,170 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Djordje Todorovic <Djordje.Todorovic@htecgroup.com>
 
-The Boston AIA board needs a basic GbE NIC.  There is no PCH GbE
-device emulation, so use an `e1000e` instead.  We place it in
-**slot 0, function 1** in order not to conflict with the existing
-AHCI device in slot 0 func 0.
+Add functional test for Boston AIA board. The P8700 RISC-V based
+CPU by MIPS supports it at the moment.
 
 Signed-off-by: Chao-ying Fu <cfu@mips.com>
 Signed-off-by: Djordje Todorovic <djordje.todorovic@htecgroup.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20260108134128.2218102-12-djordje.todorovic@htecgroup.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20260108134128.2218102-13-djordje.todorovic@htecgroup.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/riscv/boston-aia.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/functional/riscv64/meson.build    |   2 +
+ tests/functional/riscv64/test_boston.py | 123 ++++++++++++++++++++++++
+ 2 files changed, 125 insertions(+)
+ create mode 100755 tests/functional/riscv64/test_boston.py
 
-diff --git a/hw/riscv/boston-aia.c b/hw/riscv/boston-aia.c
-index 1d9fa868c8..b90da096ea 100644
---- a/hw/riscv/boston-aia.c
-+++ b/hw/riscv/boston-aia.c
-@@ -424,6 +424,11 @@ static void boston_mach_init(MachineState *machine)
-     ide_drive_get(hd, ich9->ahci.ports);
-     ahci_ide_create_devs(&ich9->ahci, hd);
+diff --git a/tests/functional/riscv64/meson.build b/tests/functional/riscv64/meson.build
+index c1704d9275..b996c89d7d 100644
+--- a/tests/functional/riscv64/meson.build
++++ b/tests/functional/riscv64/meson.build
+@@ -1,6 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-or-later
  
-+    /* Create e1000e using slot 0 func 1 */
-+    pci_init_nic_in_slot(&PCI_BRIDGE(&pcie2->root)->sec_bus, "e1000e", NULL,
-+                         "00.1");
-+    pci_init_nic_devices(&PCI_BRIDGE(&pcie2->root)->sec_bus, "e1000e");
+ test_riscv64_timeouts = {
++  'boston' : 120,
+   'tuxrun' : 120,
+ }
+ 
+@@ -10,6 +11,7 @@ tests_riscv64_system_quick = [
+ ]
+ 
+ tests_riscv64_system_thorough = [
++  'boston',
+   'sifive_u',
+   'tuxrun',
+ ]
+diff --git a/tests/functional/riscv64/test_boston.py b/tests/functional/riscv64/test_boston.py
+new file mode 100755
+index 0000000000..385de6a61d
+--- /dev/null
++++ b/tests/functional/riscv64/test_boston.py
+@@ -0,0 +1,123 @@
++#!/usr/bin/env python3
++#
++# Boston board test for RISC-V P8700 processor by MIPS
++#
++# Copyright (c) 2025 MIPS
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
++#
 +
-     if (machine->firmware) {
-         fw_size = load_image_targphys(machine->firmware,
-                                       0x1fc00000, 4 * MiB, NULL);
++from qemu_test import QemuSystemTest, Asset
++from qemu_test import wait_for_console_pattern
++
++
++class RiscvBostonTest(QemuSystemTest):
++    """
++    Test the boston-aia board with P8700 processor
++    """
++
++    ASSET_FW_PAYLOAD = Asset(
++        'https://github.com/MIPS/linux-test-downloads/raw/main/p8700/fw_payload.bin',
++        'd6f4ae14d0c178c1d0bb38ddf64557536ca8602a588b220729a8aa17caa383aa')
++
++    ASSET_ROOTFS = Asset(
++        'https://github.com/MIPS/linux-test-downloads/raw/main/p8700/rootfs.ext2',
++        'f937e21b588f0d1d17d10a063053979686897bbbbc5e9617a5582f7c1f48e565')
++
++    def _boot_linux_test(self, smp_count):
++        """Common setup and boot test for Linux on Boston board
++
++        Args:
++            smp_count: Number of CPUs to use for SMP
++        """
++        self.set_machine('boston-aia')
++        fw_payload_path = self.ASSET_FW_PAYLOAD.fetch()
++        rootfs_path = self.ASSET_ROOTFS.fetch()
++
++        self.vm.add_args('-cpu', 'mips-p8700')
++        self.vm.add_args('-m', '2G')
++        self.vm.add_args('-smp', str(smp_count))
++        self.vm.add_args('-kernel', fw_payload_path)
++        self.vm.add_args('-drive', f'file={rootfs_path},format=raw,snapshot=on')
++
++        self.vm.set_console()
++        self.vm.launch()
++
++        # Wait for OpenSBI
++        wait_for_console_pattern(self, 'OpenSBI')
++
++        # Wait for Linux kernel boot
++        wait_for_console_pattern(self, 'Linux version')
++        wait_for_console_pattern(self, 'Machine model: MIPS P8700')
++
++        # Test e1000e network card functionality
++        wait_for_console_pattern(self, 'e1000e')
++        wait_for_console_pattern(self, 'Network Connection')
++
++        # Wait for boot to complete - system reaches login prompt
++        wait_for_console_pattern(self, 'Run /sbin/init as init process')
++
++    def test_boston_boot_linux_min_cpus(self):
++        """
++        Test Linux kernel boot with minimum CPU count (2)
++        """
++        self._boot_linux_test(smp_count=2)
++
++    def test_boston_boot_linux_7_cpus(self):
++        """
++        Test Linux kernel boot with 7 CPUs
++
++        7 CPUs is a special configuration that tests odd CPU count
++        handling and ensures proper core distribution across clusters.
++        """
++        self._boot_linux_test(smp_count=7)
++
++    def test_boston_boot_linux_35_cpus(self):
++        """
++        Test Linux kernel boot with 35 CPUs
++
++        35 CPUs is a special configuration that tests a non-power-of-2
++        CPU count above 32, validating proper handling of larger
++        asymmetric SMP configurations.
++        """
++        self._boot_linux_test(smp_count=35)
++
++    def test_boston_boot_linux_max_cpus(self):
++        """
++        Test Linux kernel boot with maximum supported CPU count (64)
++        """
++        self._boot_linux_test(smp_count=64)
++
++    def test_boston_invalid_cpu_count(self):
++        """
++        Test that 65 CPUs is rejected as invalid (negative test case)
++        """
++        from subprocess import run, PIPE
++
++        fw_payload_path = self.ASSET_FW_PAYLOAD.fetch()
++        rootfs_path = self.ASSET_ROOTFS.fetch()
++
++        cmd = [
++            self.qemu_bin,
++            '-M', 'boston-aia',
++            '-cpu', 'mips-p8700',
++            '-m', '2G',
++            '-smp', '65',
++            '-kernel', fw_payload_path,
++            '-drive', f'file={rootfs_path},format=raw,snapshot=on',
++            '-nographic'
++        ]
++
++        # Run QEMU and expect it to fail immediately.
++        result = run(cmd, capture_output=True, text=True, timeout=5)
++
++        # Check that QEMU exited with error code 1
++        self.assertEqual(result.returncode, 1,
++                         "QEMU should exit with code 1 for invalid SMP count")
++
++        # Check error message
++        self.assertIn('Invalid SMP CPUs 65', result.stderr,
++                      "Error message should indicate invalid SMP CPU count")
++
++if __name__ == '__main__':
++    QemuSystemTest.main()
 -- 
 2.52.0
 
