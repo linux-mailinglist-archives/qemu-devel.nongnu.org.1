@@ -2,152 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42002D07B12
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 09:04:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37C1FD07AFA
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 09:03:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ve7T4-00064e-Kl; Fri, 09 Jan 2026 03:03:38 -0500
+	id 1ve7R5-0003Jg-3y; Fri, 09 Jan 2026 03:01:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
- id 1ve7SV-0005za-EV; Fri, 09 Jan 2026 03:03:00 -0500
-Received: from mail-westus3azon11012056.outbound.protection.outlook.com
- ([40.107.209.56] helo=PH8PR06CU001.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
- id 1ve7ST-0006N4-1k; Fri, 09 Jan 2026 03:02:59 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KcbK38VCWIVMuSC8CVAAk7jbhPDBKM/eoJY13oxG8LjYGheNXXHaKNumb+pdJfs7VKxI554C2FDH4nHK0grTWJ4DiEI5OPUxiFOE/aAWtW7mnAuKMPO1BP8wYnSHe2JeGBG5VSBiSB/YYZjN8Sb8mM0qTXmpnLWEuVIOP4q5qQisU41vgp7tHHyfsdkLC9N0/bePHSLY5v+PQRhmW/cclw+02qYoY8iOtvTGP4HVZK4aSJHRezJ7p1vwfCrykV9I9y8tBMnR+R/H4/ijaR40BNAA/7O47Kiv8Eq2sLYZIVhukwm8S8QYgC2K3oNdYrsZvR4nLzJdQDMz0ryvH6usiQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hHEVi0NA/oRrrWmuy7hQKBAinH+Kzd7GxoEJoclu3Ns=;
- b=xCbAD0vN0iUlxKkaNKxZONKLPbPbLggnDCqW+rbCvYKl8uw5tF43IIUDGovpJi5Cky0yF+8YNcRaIYgaCZvGv4T2tPN0H9Ac8M0VZTs101M5F4uh4uxXUDLDOZnLryJzjOXhGHyYuTAiBbfgowrEf9VyABnWWZSLiyyliCZbFfFADMoQdDYdWHagLi09XV9xMWk4c8I9Wye8Ut0cftUC40opU8JT7SWHqRZkSjN2fBS0Xb5Q8gyQNoWPvETpf6ZqUBajJkP2eR1L4MXlj609L1IyOwORCw1GgSQqyFUZbVQbLk+KMLnrDuJ7QUcYFpGqBGO+uNPHSDu8KmyascfhWA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hHEVi0NA/oRrrWmuy7hQKBAinH+Kzd7GxoEJoclu3Ns=;
- b=aoQF50cXJn5avAKYAOwNBHqEJhanTt5SCRRgZNVQMhKEBW25pqxSpy+JImsYGgP83Bx9WY33IYp93is2F7uO52ja7eP/QxPSb+oj/Lb7gmluS1+NLZpyS8kytPIVCpiW1ydDFYEQs4IE4Itm7v0jOwiOeg9SZXI/OcXy7Pl7xus=
-Received: from BN0PR04CA0195.namprd04.prod.outlook.com (2603:10b6:408:e9::20)
- by DS7PR12MB8081.namprd12.prod.outlook.com (2603:10b6:8:e6::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.3; Fri, 9 Jan
- 2026 07:57:48 +0000
-Received: from BN3PEPF0000B074.namprd04.prod.outlook.com
- (2603:10b6:408:e9:cafe::f8) by BN0PR04CA0195.outlook.office365.com
- (2603:10b6:408:e9::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.4 via Frontend Transport; Fri, 9
- Jan 2026 07:57:33 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- BN3PEPF0000B074.mail.protection.outlook.com (10.167.243.119) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9520.1 via Frontend Transport; Fri, 9 Jan 2026 07:57:47 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 9 Jan
- 2026 01:57:41 -0600
-Received: from XFR-LUMICHEL-L2.amd.com (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
- Transport; Fri, 9 Jan 2026 01:57:39 -0600
-Date: Fri, 9 Jan 2026 08:57:34 +0100
-From: Luc Michel <luc.michel@amd.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-CC: <qemu-devel@nongnu.org>, <qemu-riscv@nongnu.org>, Palmer Dabbelt
- <palmer@dabbelt.com>, Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
- <liwei1518@gmail.com>, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Francisco Iglesias
- <francisco.iglesias@amd.com>
-Subject: Re: [PATCH 0/9] RISC-V CPU time source interface
-Message-ID: <aWC07qlTj_5vljh2@XFR-LUMICHEL-L2.amd.com>
-References: <20251107102340.471141-1-luc.michel@amd.com>
- <aRb1jmwXE18JB2_g@XFR-LUMICHEL-L2.amd.com>
- <a5e9c465-5c4a-403e-8768-bf383256091f@linaro.org>
- <aTKXssxseF4wfXiw@XFR-LUMICHEL-L2.amd.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ve7Qh-00036l-8h
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 03:01:11 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ve7Qd-0005ie-1m
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 03:01:06 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4775e891b5eso18723165e9.2
+ for <qemu-devel@nongnu.org>; Fri, 09 Jan 2026 00:01:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1767945660; x=1768550460; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=pg0Ky50f/M8gc0EUh9jbNZK6fIQCnS6kA3vIrS/ZvIc=;
+ b=I2iIeN0ZVdfnsUK1jT540fsmJjackCL3CcxV6CvmUW1AiSvmr3tATPpfo79XIWESxF
+ hY1Ty4BnCiNJnxc7ELz71s8ftyX8ZvnlWBSTJshr8zf3cVprHOf9SgbClKhrsCmSHvVf
+ EkZ0KoGpya9cVwnM2Dw5osCxwFOM3w69VCp6y9iis7d5R9zjjkAJBWMhDleADBfv9Lmz
+ R7+tWCdeVO02uLoVWr+/hPGA81VI8/Zm5hem8cjDAiYG8DBuTOPPk5MC8RVAOujn5nCo
+ +BVrodZo3msZRvkNRqZ223WIa5Sfiu8RuuCV6x3RHEvh50iGvjEz6WSzPfC2XNWWBsPU
+ Q5pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1767945660; x=1768550460;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=pg0Ky50f/M8gc0EUh9jbNZK6fIQCnS6kA3vIrS/ZvIc=;
+ b=eaVbtnKlBWOYB4+enEToSDinw2ia4Ue5j+oKFQl5Z0JGzOEdQ5h/aaETmF8S2eleuF
+ 8kyZPdzUwut59bNfb/A1m/tVAgFZDsq6dq63qMZjI8XZ5UpulXR/sWLyNROIBXbxSYBu
+ YZihiiQyaOFGy5onWs580jVLWGg/8vFWFd1LnKSZl+5ng4KgX7myxNP1RX1I+EK+Z1Ag
+ cHCxZ781uS00oQ4WAZRk6EpFvFC07jbH1YtGJnLRbRPNCJvOe8s8Jb2m0DWcRE3AOlMc
+ Tsb4p2NY6lAOWbrhi+mS0URmPwtwxbHn12X7pS6VBqmfchzlCvTf7UgOwd4Cj+VN45rD
+ JONQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXjI2WjfUDZcnz9xJd7GEYdSFklm2o5yapMHFTmiL+0d1lvi0EE08uMWUm0Rkp4m9g7FGxbWzhgYbvZ@nongnu.org
+X-Gm-Message-State: AOJu0YwDJHYDNcvYgVwgGqMlK85cQz0l0KZ6zhIIlIkSitI1ZSgWLIe1
+ yxZQqz5qj3gP6fRdqiDm1H6uGIT1q7v/ZYjuZznVsNh1pSzohBErequvwEm2+896lsQvCqfJN0V
+ dbEKvehE=
+X-Gm-Gg: AY/fxX4yjKhlwfM+2If/QVwdaOzUPDbJhoZihbD4EF+ahcK+KcoO1h+K07ShuARLXRp
+ z4MbfD8NxQAQDMNJbNdfcW+bjAepCTts3a217HHLUtlXtNquBFkh553NdeOcPN3C9WlBtxxXD4Q
+ 9UCi/6knThw7RTnRU04JVRzIS/Ynnii4tGWTOa6SgIvW9vfz/Rds5cEAhy2/CQ7+u9eML7c1MD8
+ zZxd+KsPSNKVQMq7anPDjUS2jY5+H1WAv3YQpgnYyHjG0b//joAl4BYHREVIr+ScoI3jGTqtYc4
+ fb33Me+tqqgGnUeJa67txz7qQHDOMlPXq+lF8psk6FTAuBGJFjohWiClp2XFOWJtKESnpFxirnb
+ V6+73qH6MtuvPirnzkSnNKOxQb11/Vj0T680letgJtCSJbVVQdQNKarkBCGyuhOFhCe6EjZTTWB
+ vclRw88tt/PWMYdcfA/cV9jQfSQkr2LoiVVfBEaLAe3Ub9sft4jmywrg==
+X-Google-Smtp-Source: AGHT+IFuKP+ZmrDW2AMLilX3tCinWMge5aqiICdIqrHG5pDKS5TafSWiKUu5atXxZi8FdNWOo/GkvQ==
+X-Received: by 2002:a05:600c:37c8:b0:475:de12:d3b5 with SMTP id
+ 5b1f17b1804b1-47d84b40816mr80004545e9.34.1767945660140; 
+ Fri, 09 Jan 2026 00:01:00 -0800 (PST)
+Received: from [192.168.69.213] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-47d7f653c78sm205527975e9.11.2026.01.09.00.00.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 09 Jan 2026 00:00:59 -0800 (PST)
+Message-ID: <06933b3a-dc90-4332-ba26-66faf2831229@linaro.org>
+Date: Fri, 9 Jan 2026 09:00:58 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aTKXssxseF4wfXiw@XFR-LUMICHEL-L2.amd.com>
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B074:EE_|DS7PR12MB8081:EE_
-X-MS-Office365-Filtering-Correlation-Id: 84dd8a6e-f6ca-49b9-a52b-08de4f54c79c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|36860700013|376014|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?NGJMMG91U3VnR3dlRVZXOEUrOExKOElPWmY4cnJxaktsaTJEWTZWQWVaNHgw?=
- =?utf-8?B?UjZuZS9EWEpIZ0pNZVgzS2lHa3V6UW14QTg2MkFUemZzZzVUWWlXVkIwKzhj?=
- =?utf-8?B?bEFnS00zNmE2UkRLcmt6S2U3R0d0Q3h3Uk1Wa0x3YU5UWFJRUlZOR3ZnYUMw?=
- =?utf-8?B?NURIK2p1bkhXK2Q0OHc3bFErVFA5MDR1YVBkV0pEY3dZRlA5eW13ZHJFOGk2?=
- =?utf-8?B?Nm5KSVlIWkhybkQyell5djRrVDNCZU1OamYwdG1GOXdlYlpMcnIwOW83cGZ5?=
- =?utf-8?B?Y3R3M1dnakFMZ1JiaDhRN21GbjNON2l6SzNQMmhHODRxcW9WSXZKRzJRS2NS?=
- =?utf-8?B?b3BjaUxJaml6aXNBV3V6Qmw3WDRZWUFBNnBPb2FhNGtjaktBRDFuemtHRjJU?=
- =?utf-8?B?KzY1OVBCVWRTV3A5anYzZGxNeXBPYytkandDSHFOZllqWW1jNkJZeENhNTdU?=
- =?utf-8?B?OVF4RWdSckl0MHJKQnJnOVJHdXBrUWdxdy9XMWI3UzBnUTlqa3JsMmFpeDQ5?=
- =?utf-8?B?M0VSV1pvejFTdlFYb2xNVzU2a1c4aEQxVWlyRXczZkRmQXpWNUlCeDBxcVVm?=
- =?utf-8?B?TnU3bDh5MjBKTzFWOUxJRmd3dmdMSjM0S0NrUHAxc2dNU3VZek1JbzNpYTYv?=
- =?utf-8?B?ekl3TVlNOCtRNzkwbFltNGU2OU9FU1RzemZkR0hNTHZ5RzExTDVXN1VReWFn?=
- =?utf-8?B?Y2szU1RSV3RJQytuMzNma3lkTEVoVThxd29CV2lLcDFNcktlQ3gvbHNIN0xK?=
- =?utf-8?B?ck43S0REWk1xZCt4cmpMNE5WR2RUQ1k2Z3FjS1dSb3FPRGprVzhEUWV3NWd5?=
- =?utf-8?B?NmFUMUpYcFduWlhkYmw1aWtuZE1rdkxIUEYyNmdmUi9tV0F3OWhNSnJYMEpY?=
- =?utf-8?B?aFRaL05BblpMK3BiR3I0Q1U3MFhibmtNdjUvV3lITUx4QXhIZzJQc2g4eG1u?=
- =?utf-8?B?QXA5NU43VFBLa0YvNGg5ZVprV1NacldrV1VHTWtBb1FXRVVmWnBhek1Rd24z?=
- =?utf-8?B?cEMyWjVoN2dvcy85UFpoMWhjenVnbC9vSWVFV2FEUjdTQkt5blhLM214NExL?=
- =?utf-8?B?dnAwQk5GbEowVjhEWXVZYnZ2bTh4czdiWGc2MDRqL1ZBQTZsVHV2ODRQdUNl?=
- =?utf-8?B?T3QrQ0FZT2xWQWxJZzVLejdmd1VyYnord2tJNjVZZ0I5VFdPZHk5dVZiZWFj?=
- =?utf-8?B?RWRrTlFIK2IyaUJ6T2hVTGZDMUxGMlMyZDBndE1XOTFyQ0poOFk2dStqMHc5?=
- =?utf-8?B?UXpPbmh5bFBzT2JzRVJaT0FGb3NDdFBsM2pUdjBWdFZtcktsazJncUJqczIz?=
- =?utf-8?B?Qk1KdFlaaFRybEhsZmtNZ1hkc3FTSW1rWEd1ajVoYVNKNlhKVmVNYzl3cml2?=
- =?utf-8?B?RzdEaGViOTllM1pNNGx6NTZNUVcxWHpuZ3B6QVY1VDJLOVk1ODRUYk8vTS9F?=
- =?utf-8?B?cFU5Q0dOdDJoK09IczRpWVFuRDVzaFJSOFhHdmFEYkdOVkNiV2gzMWlOT1FT?=
- =?utf-8?B?c2pYcUp4aTVEY0paaXRuWDN6ZXJ4ai9qMTh3dFkranV2cEtybVp5Z0U1UmJB?=
- =?utf-8?B?dnJtNlBKK2g2SWdMWWd2NVlpQlA3UncvcURQTkl6Uzc1SFFkRUxiVnFXNVdh?=
- =?utf-8?B?SXI3NVg0bVhkRGVlbXJCd3NBK2lPek5qaXJra1ZhK2tBUHNhM2I1UW5RcVBN?=
- =?utf-8?B?WEE3SWlUWFRjZUVla2VpbFJuRGpZR0hyMFV1UjNVUUlibkxnc01YQWxTaXMy?=
- =?utf-8?B?Q0NMWmNwTUp0a0RTOWt4cy94MjV6SWtBQ1hDZXVHZ2NmNVloUTFCT3BmUzk2?=
- =?utf-8?B?MEtGQytEaDlBakg2S2tpSTcrS1kzVWVOZmFiSWpPUXB3MGMxb1FMaGdCWmcx?=
- =?utf-8?B?WE9MMVJZM01xaWllTmY1QVFLeWtiM0ozeTB3dDhnWUxhQ2NQWHdTcHZYRVQ3?=
- =?utf-8?B?cmNGZytaamlQL00zSVBjSmpUUUpTeVhzbVhpa0N2SXNySkI2TVlOL2l1VHRU?=
- =?utf-8?B?NzRmRHBFZzkxeWJuS2VSVGtzSG5kSUNTeTZvbEszTlJNTnJlODB1andPR1Vo?=
- =?utf-8?B?U1AwV3B5MlN0VGJxMHErTmZUUHlaZ0l4V2t6SDFXeVdLVUJqYmxJV2F3cjJk?=
- =?utf-8?Q?2MzA=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(82310400026)(36860700013)(376014)(1800799024); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2026 07:57:47.7561 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 84dd8a6e-f6ca-49b9-a52b-08de4f54c79c
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN3PEPF0000B074.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8081
-Received-SPF: permerror client-ip=40.107.209.56;
- envelope-from=Luc.Michel@amd.com;
- helo=PH8PR06CU001.outbound.protection.outlook.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 13/29] include/tcg/tcg-op.h: eradicate
+ TARGET_INSN_START_EXTRA_WORDS
+Content-Language: en-US
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Jim MacArthur <jim.macarthur@linaro.org>,
+ anjo@rev.ng
+References: <20260109053158.2800705-1-pierrick.bouvier@linaro.org>
+ <20260109053158.2800705-14-pierrick.bouvier@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20260109053158.2800705-14-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -163,31 +108,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 09:29 Fri 05 Dec     , Luc Michel wrote:
-> On 18:16 Thu 20 Nov     , Philippe Mathieu-Daudé wrote:
-> > On 14/11/25 10:25, Luc Michel wrote:
-> > > Hi,
-> > > 
-> > > Ping, patches missing review: 8 and 9.
-> > 
-> > Doh sorry, I don't remember why I stopped... I suppose I got interrupted
-> > and forgot. Too bad this missed the soft-freeze, now we'll have to wait
-> > after Xmas :/
+On 9/1/26 06:31, Pierrick Bouvier wrote:
+> We simply define the 3 variants and call the correct one per arch.
+> Since all arch have a single call site (in translate.c), this is as
+> good documentation as having a single define.
+
+Just wondering, if we define a per-target @inst_start_words
+constant in TCGCPUOps instead of the INSN_START_WORDS definition,
+could we 1/ ensure we call the correct tcg_gen_insn_start()
+in cpu_restore_state_from_tb() and 2/ "optimize" the loop in
+cpu_unwind_data_from_tb()? Surely not worth it =)
+
+> The notable exception is target/arm, which has two different translate
+> files for 32/64 bits. Since it's the only one, we accept to have two
+> call sites for this.
 > 
-> No problem, thanks for the reviews :)
+> This is much simpler and safer than trying to define a common functions
+> with variadic or unused parameters. The only risk is calling two
+> different variants for a single arch, but as mentioned in first
+> paragraph, there is no real reason for this to happen.
 > 
-> RISC-V people, may I ask for some feedback on the series now that it is
-> fully reviewed?
-> 
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>   include/tcg/tcg-op.h             | 16 ++++++----------
+>   target/alpha/cpu-param.h         |  2 --
+>   target/arm/cpu-param.h           |  7 -------
+>   target/avr/cpu-param.h           |  2 --
+>   target/hexagon/cpu-param.h       |  2 --
+>   target/hppa/cpu-param.h          |  2 --
+>   target/i386/cpu-param.h          |  2 --
+>   target/loongarch/cpu-param.h     |  2 --
+>   target/m68k/cpu-param.h          |  2 --
+>   target/microblaze/cpu-param.h    |  2 --
+>   target/mips/cpu-param.h          |  2 --
+>   target/openrisc/cpu-param.h      |  2 --
+>   target/ppc/cpu-param.h           |  2 --
+>   target/riscv/cpu-param.h         |  7 -------
+>   target/rx/cpu-param.h            |  2 --
+>   target/s390x/cpu-param.h         |  2 --
+>   target/sh4/cpu-param.h           |  2 --
+>   target/sparc/cpu-param.h         |  2 --
+>   target/tricore/cpu-param.h       |  2 --
+>   target/xtensa/cpu-param.h        |  2 --
+>   target/alpha/translate.c         |  4 ++--
+>   target/arm/tcg/translate-a64.c   |  2 +-
+>   target/arm/tcg/translate.c       |  2 +-
+>   target/avr/translate.c           |  2 +-
+>   target/hexagon/translate.c       |  2 +-
+>   target/hppa/translate.c          |  2 +-
+>   target/i386/tcg/translate.c      |  2 +-
+>   target/loongarch/tcg/translate.c |  2 +-
+>   target/m68k/translate.c          |  2 +-
+>   target/microblaze/translate.c    |  2 +-
+>   target/mips/tcg/translate.c      |  4 ++--
+>   target/openrisc/translate.c      |  4 ++--
+>   target/ppc/translate.c           |  2 +-
+>   target/riscv/translate.c         |  2 +-
+>   target/rx/translate.c            |  2 +-
+>   target/s390x/tcg/translate.c     |  2 +-
+>   target/sh4/translate.c           |  4 ++--
+>   target/sparc/translate.c         |  2 +-
+>   target/tricore/translate.c       |  2 +-
+>   target/xtensa/translate.c        |  2 +-
+>   40 files changed, 30 insertions(+), 82 deletions(-)
 
-Hi, gentle ping.
-
-As a reminder this series fixes some broken code in the RISC-V target
-sstc extension and allows for devices other than the APLIC to serve as
-the timesrc source.
-
-Thanks
-
--- 
-Luc
 
