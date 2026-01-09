@@ -2,85 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3C13D0779F
-	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 07:59:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F399D077A9
+	for <lists+qemu-devel@lfdr.de>; Fri, 09 Jan 2026 08:00:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ve6RI-0005wK-5c; Fri, 09 Jan 2026 01:57:40 -0500
+	id 1ve6RK-00067k-Ol; Fri, 09 Jan 2026 01:57:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ve6Q5-0004q1-3D
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:56:28 -0500
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1ve6QF-00056a-Rk
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:56:38 -0500
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ve6Q2-0002tO-Qg
- for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:56:24 -0500
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-7e1651ae0d5so2435280b3a.1
- for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 22:56:22 -0800 (PST)
+ id 1ve6QD-0002uK-W2
+ for qemu-devel@nongnu.org; Fri, 09 Jan 2026 01:56:35 -0500
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-bcfd82f55ebso1262236a12.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Jan 2026 22:56:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1767941781; x=1768546581; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1767941792; x=1768546592; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8OGp2STDkhe7ThW6Dm/4DOuMnh+2aTViHI4xdpXEzOs=;
- b=m8LTQt675IDaXEtQFkE3VbtM7JsJlGjXTZIDP3buD33QgezJsP1Ltq3aiX+rsEBb6K
- tIr/smlZ9S6j2Ta/14VyUgEa855HNbqoq0F8P1aoIGKHwqvoBzjmAVIMNgkenBr1CriD
- /0kl74RQcWxK4ghGqnz/etMHYj6aZoEJtK4mvGP67MPz2w1H78SH1GFYE0H7nmPVkQHb
- tcCtfrDeojS85n9UMQQ4x/f7sjNm6B9XS8HTSFakZtAVLLtCJI+Rl7pWRi8j98TW/MkD
- zakdw/oatvj4XbSwaTelNNYrWsaBrmFsW6uhp6RGxrXyNC5XqauxVfU4Apa1Uivt2v6d
- hPZw==
+ bh=Aeod3ku1ZvciysL5QBT9RVp5GEzJeCAgzafr1FJ8KfY=;
+ b=PacspK4Md+E373Iy6S3OPUaItsRtpojeebzbJeFyo5D2nS53hIkuqhKV7rwlhX24EW
+ H6YcRkbr2UDAWxm9U6D1HcVYOZ38rT5IFGj9vhcFf0h2XcPhAMae7wTeVLdpGZ3zFDIX
+ PHCJ9rf/so8+a2/foN0skgH3eBY7DVASqUgbTXKLhcoSMZSIZniw9UVuf3CwhaNBn5nK
+ UF2TTlqan3QSUcvY5lag5fqywmQ5JgkLYxpc1jIGHnv6n/SJQZPHKws0sVlnenUaBnLt
+ msOHyg4NhnrZ41UE7TJqTVbETbMcpTBbMweETeGOg/TYntnFpDAViFdlG8/fAfeRrMxP
+ e9zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1767941781; x=1768546581;
+ d=1e100.net; s=20230601; t=1767941792; x=1768546592;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=8OGp2STDkhe7ThW6Dm/4DOuMnh+2aTViHI4xdpXEzOs=;
- b=HWbJfU2YPMcI7GjDaqsyqvMw7SRPjbJ7BObhCD7LbqLvM+JKiMsSP62gxuelrzKK6S
- 4WXwsyKgR5Rjxc3/RFFMRpdxvju13hEpsi9UeUpnQmAsTQYuUlCagVfyphm9AAYJttZV
- 5iKBTeT1eByLPZ0jingNGCMcDREp99w/WcTyB1zYpeqKt6rQXs+kvr+zXtiLinpEYHdo
- PwxC9g3FmFCrwPhhbMclps5wb0e93a5gGx1Sp5OBU6usEd9R00uDecRveJhSJ2cSdELS
- h8Z2Lv0Xjzuk70FIj/mkIHO1MQbZVqDSnY7s3zvL8Y1j1SBLBDPfDtbkurLC4vsqFIBi
- yicA==
-X-Gm-Message-State: AOJu0YyVSz/JUSjbYFimbBucqsFqqxsK78mWQGpPtlAgwgfGh0Gt7NiE
- U0VOMa91yD4XRTZJr8/7FP1IFC1i+W3kB/HpnMu2Fuv8Uc+b/b5qCbjZDN3p4Q==
-X-Gm-Gg: AY/fxX6xPD1tOdspoBPn76CKH0uYItkuJ6gyZ9oorKpdyBp9KJuH6j0noBYi96qonMk
- sUoQ3Yn+qe3npJ4BTU+yQsZ8Oq5lX79qobyELxRPvqEbjzON3jpvDibsrvPyeQi7xsXWu/Ze60N
- ihnqTvDLuU9PB3o2DHRK6iqsulHmF1JTFO4u0XomGtIMCu0qshqg8TgxapBWBcI4OjgwgJhxIjh
- an2xTi47Mdp5N+JwM6nz7dZeqvwG1IxpukM1nktr9+vrBssxiPYp+WI6IGKzbj+5i/AwVYmt7mA
- 0G9D4tISE9Ij3JACzLAjG+FvTXxK7ClGnWRwM5O/4HBYuQeCi5bQDwsTha3ItoAqmkvrn01M0Lo
- iA/aSED7RX7R+Im+bs4Wak2IqNXlILTvQzTC67pVE8Sa/H/z+NAJ3tDl3t1Z9WKtWSYzA9wqfG2
- amjSXh6SKPlyfxfAKML2SrrOg8u29Bl97TmuMakyjbfoBSVD73sxqKsmw7m1pOSESKI9ECQDUxE
- FwgW10ApGax9eOQfAo=
-X-Google-Smtp-Source: AGHT+IHtFcAcWLqxxC7kCJuVp2/Wjk6TrRkJr5EGjYkQRrRnAkiMY0AZtJHsAHQAEZvenFbFftkGHw==
-X-Received: by 2002:a05:6a21:3291:b0:35f:5fc4:d896 with SMTP id
- adf61e73a8af0-3898f906a35mr8158582637.20.1767941780856; 
- Thu, 08 Jan 2026 22:56:20 -0800 (PST)
+ bh=Aeod3ku1ZvciysL5QBT9RVp5GEzJeCAgzafr1FJ8KfY=;
+ b=l5dQPJO2Tbhj6fjV7yhhL+QiTAajq40urBRx75+muwkDyuq5uOVoGb0WTF4JTKGjMd
+ Q2azPVnwBbRfuop99j1bulBKuLpbY85zoJd9zZ+gN2y/ZmMbK5ki75930lvZub+LOZ7H
+ 0GZOLPYD5stnAs/7xojrLpLKx9/79LeidMdaexVYgV+GjVY7wIxEqafetjFvFXnetVcb
+ to8yzkRD4RxyvHo0ABbYWTcRstreaCDsuCYFzJDd4I6qXpGsHT1hVJp893d7O7FYnQ5z
+ jYsQ+4eSwIiML+nKghTl3VTVMISOg/xtkZVtQQvHBEB08koW1Hcu7DWPkhjpxlTCc3HS
+ pWyQ==
+X-Gm-Message-State: AOJu0YxWFcRWIdjocH1MUiLg01++Km+D/whCVwLzCHhKozaPL8ihlOtM
+ vw5NBtfKIl8pRmBk6KOC6KganWcwUyGGILV7t/vEJ6XS5KXNJ/G8MCtEqD4tmA==
+X-Gm-Gg: AY/fxX4kHITBIKdPsYh3Lead08wk+rbLD0DmMhQiGZi4VoLAJHVk+QNjkXC7lQ8S3Bn
+ ixTih0shKSct7SkpmlRO1cNCQHfUXg/b7DBE5pAAS9esoOjLFp0uQgX9+6R0kkjFTq+2ecUnpeN
+ RozzlZ5QlG02xmtwdDhTIHqPZaHAIlM10eClE6YyiPr3+hNhMr4ukofeH867PGUrcA2Pk1z09Fg
+ zPPpDoGhOkiGQ3SZoz3aPlDY8vLPmOpaY2PDv/IptACfSIvBAWB7I2YQHE2/3kER+XPo/XjMJ2u
+ RXScJQDHH0maUw9uIQ3lNKU8BjB6AK4n2ZX6G9IULfDzSGleWksDoJDRi+ICMPnEmeWUb+SQd3W
+ 4EX51Q5OdsTHIau5a48KkTy1eG6Wmz+d6+Kxw1IaWK6TNlNSIyNVxCPanNYkb8AFwgSCke71LLA
+ I+UQL8jUJBmj1tmeKFaa6jzKCh9xyS+vsd0vZV2CEmLeoIuPKFiXucihY/2HA09V0jcY5f7vS4g
+ jKLP6PLqHU4Cnon5TsVMEoS3mfbhA==
+X-Google-Smtp-Source: AGHT+IHffFa2/mzenLvBqDMkQ0R7YUa4HA2oaym/mscNjL1HDVYd6Mfi5RukyBQizTKN6VGKmDc5DA==
+X-Received: by 2002:a05:6a21:3281:b0:371:7666:648c with SMTP id
+ adf61e73a8af0-3898eaae00dmr9143662637.24.1767941792274; 
+ Thu, 08 Jan 2026 22:56:32 -0800 (PST)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-c4cc02ecfaasm9953644a12.14.2026.01.08.22.56.18
+ 41be03b00d2f7-c4cc02ecfaasm9953644a12.14.2026.01.08.22.56.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jan 2026 22:56:20 -0800 (PST)
+ Thu, 08 Jan 2026 22:56:31 -0800 (PST)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Roan Richmond <roan.richmond@codethink.co.uk>,
+Cc: alistair23@gmail.com, Djordje Todorovic <Djordje.Todorovic@htecgroup.com>,
+ Chao-ying Fu <cfu@mips.com>,
+ Djordje Todorovic <djordje.todorovic@htecgroup.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 22/34] Add RISCV ZALASR extension
-Date: Fri,  9 Jan 2026 16:54:47 +1000
-Message-ID: <20260109065459.19987-23-alistair.francis@wdc.com>
+Subject: [PULL 25/34] target/riscv: Add MIPS P8700 CSRs
+Date: Fri,  9 Jan 2026 16:54:50 +1000
+Message-ID: <20260109065459.19987-26-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20260109065459.19987-1-alistair.francis@wdc.com>
 References: <20260109065459.19987-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x52c.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -104,208 +107,286 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Roan Richmond <roan.richmond@codethink.co.uk>
+From: Djordje Todorovic <Djordje.Todorovic@htecgroup.com>
 
-This is based on version v0.9 of the ZALASR specification [1].
-The specification is listed as in Ratified state [2].
+Define MIPS CSRs used for P8700 CPU.
 
-[1]: https://github.com/riscv/riscv-zalasr/tree/v0.9
-[2]: https://lf-riscv.atlassian.net/wiki/spaces/HOME/pages/16154882/All+RISC-V+Specifications+Under+Active+Development
-
+Signed-off-by: Chao-ying Fu <cfu@mips.com>
+Signed-off-by: Djordje Todorovic <djordje.todorovic@htecgroup.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Signed-off-by: Roan Richmond <roan.richmond@codethink.co.uk>
-Message-ID: <20251112162923.311714-1-roan.richmond@codethink.co.uk>
+Message-ID: <20260108134128.2218102-4-djordje.todorovic@htecgroup.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_cfg_fields.h.inc            |   1 +
- target/riscv/insn32.decode                   |  10 ++
- target/riscv/cpu.c                           |   2 +
- target/riscv/translate.c                     |   1 +
- target/riscv/insn_trans/trans_rvzalasr.c.inc | 113 +++++++++++++++++++
- 5 files changed, 127 insertions(+)
- create mode 100644 target/riscv/insn_trans/trans_rvzalasr.c.inc
+ target/riscv/cpu.h       |   3 +
+ target/riscv/cpu.c       |   3 +
+ target/riscv/mips_csr.c  | 217 +++++++++++++++++++++++++++++++++++++++
+ target/riscv/meson.build |   1 +
+ 4 files changed, 224 insertions(+)
+ create mode 100644 target/riscv/mips_csr.c
 
-diff --git a/target/riscv/cpu_cfg_fields.h.inc b/target/riscv/cpu_cfg_fields.h.inc
-index 0a12ccd6cd..f4ff4f3f96 100644
---- a/target/riscv/cpu_cfg_fields.h.inc
-+++ b/target/riscv/cpu_cfg_fields.h.inc
-@@ -67,6 +67,7 @@ BOOL_FIELD(ext_zaamo)
- BOOL_FIELD(ext_zacas)
- BOOL_FIELD(ext_zama16b)
- BOOL_FIELD(ext_zabha)
-+BOOL_FIELD(ext_zalasr)
- BOOL_FIELD(ext_zalrsc)
- BOOL_FIELD(ext_zawrs)
- BOOL_FIELD(ext_zfa)
-diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
-index b341832e41..6e35c4b1e6 100644
---- a/target/riscv/insn32.decode
-+++ b/target/riscv/insn32.decode
-@@ -1074,3 +1074,13 @@ amominu_h  11000 . . ..... ..... 001 ..... 0101111 @atom_st
- amomaxu_h  11100 . . ..... ..... 001 ..... 0101111 @atom_st
- amocas_b    00101 . . ..... ..... 000 ..... 0101111 @atom_st
- amocas_h    00101 . . ..... ..... 001 ..... 0101111 @atom_st
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 08a6e491f3..35d1f6362c 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -985,5 +985,8 @@ const char *satp_mode_str(uint8_t satp_mode, bool is_32_bit);
+ /* In th_csr.c */
+ extern const RISCVCSR th_csr_list[];
+ 
++/* Implemented in mips_csr.c */
++extern const RISCVCSR mips_csr_list[];
 +
-+# *** Zalasr Standard Extension ***
-+lb_aqrl  00110 . . ..... ..... 000 ..... 0101111 @atom_st
-+lh_aqrl  00110 . . ..... ..... 001 ..... 0101111 @atom_st
-+lw_aqrl  00110 . . ..... ..... 010 ..... 0101111 @atom_st
-+ld_aqrl  00110 . . ..... ..... 011 ..... 0101111 @atom_st
-+sb_aqrl  00111 . . ..... ..... 000 ..... 0101111 @atom_st
-+sh_aqrl  00111 . . ..... ..... 001 ..... 0101111 @atom_st
-+sw_aqrl  00111 . . ..... ..... 010 ..... 0101111 @atom_st
-+sd_aqrl  00111 . . ..... ..... 011 ..... 0101111 @atom_st
+ const char *priv_spec_to_str(int priv_version);
+ #endif /* RISCV_CPU_H */
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index d48ff50232..f22b504772 100644
+index 3562cbec32..e17b3e0785 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -128,6 +128,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zaamo, PRIV_VERSION_1_12_0, ext_zaamo),
-     ISA_EXT_DATA_ENTRY(zabha, PRIV_VERSION_1_13_0, ext_zabha),
-     ISA_EXT_DATA_ENTRY(zacas, PRIV_VERSION_1_12_0, ext_zacas),
-+    ISA_EXT_DATA_ENTRY(zalasr, PRIV_VERSION_1_12_0, ext_zalasr),
-     ISA_EXT_DATA_ENTRY(zalrsc, PRIV_VERSION_1_12_0, ext_zalrsc),
-     ISA_EXT_DATA_ENTRY(zama16b, PRIV_VERSION_1_13_0, ext_zama16b),
-     ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
-@@ -1230,6 +1231,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     MULTI_EXT_CFG_BOOL("zama16b", ext_zama16b, false),
-     MULTI_EXT_CFG_BOOL("zabha", ext_zabha, false),
-     MULTI_EXT_CFG_BOOL("zaamo", ext_zaamo, false),
-+    MULTI_EXT_CFG_BOOL("zalasr", ext_zalasr, false),
-     MULTI_EXT_CFG_BOOL("zalrsc", ext_zalrsc, false),
-     MULTI_EXT_CFG_BOOL("zawrs", ext_zawrs, true),
-     MULTI_EXT_CFG_BOOL("zfa", ext_zfa, true),
-diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index 280ce48a1e..0d61420b46 100644
---- a/target/riscv/translate.c
-+++ b/target/riscv/translate.c
-@@ -1199,6 +1199,7 @@ static uint32_t opcode_at(DisasContextBase *dcbase, target_ulong pc)
- #include "insn_trans/trans_rvzicond.c.inc"
- #include "insn_trans/trans_rvzacas.c.inc"
- #include "insn_trans/trans_rvzabha.c.inc"
-+#include "insn_trans/trans_rvzalasr.c.inc"
- #include "insn_trans/trans_rvzawrs.c.inc"
- #include "insn_trans/trans_rvzicbo.c.inc"
- #include "insn_trans/trans_rvzimop.c.inc"
-diff --git a/target/riscv/insn_trans/trans_rvzalasr.c.inc b/target/riscv/insn_trans/trans_rvzalasr.c.inc
+@@ -3317,6 +3317,9 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+         .cfg.ext_zbb = true,
+         .cfg.marchid = 0x8000000000000201,
+         .cfg.mvendorid = MIPS_VENDOR_ID,
++#ifndef CONFIG_USER_ONLY
++        .custom_csrs = mips_csr_list,
++#endif
+     ),
+ 
+ #if defined(CONFIG_TCG) && !defined(CONFIG_USER_ONLY)
+diff --git a/target/riscv/mips_csr.c b/target/riscv/mips_csr.c
 new file mode 100644
-index 0000000000..bf86805cef
+index 0000000000..822e25e346
 --- /dev/null
-+++ b/target/riscv/insn_trans/trans_rvzalasr.c.inc
-@@ -0,0 +1,113 @@
++++ b/target/riscv/mips_csr.c
+@@ -0,0 +1,217 @@
 +/*
-+ * RISC-V translation routines for the ZALASR (Load-Aquire and Store-Release)
-+ * Extension.
++ * MIPS-specific CSRs.
 + *
-+ * Copyright (c) 2025 Roan Richmond, roan.richmond@codethink.co.uk
++ * Copyright (c) 2025 MIPS
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + *
-+ * The documentation of the ISA extension can be found here:
-+ *   https://github.com/riscv/riscv-zalasr/tree/v0.9
 + */
 +
-+#define REQUIRE_ZALASR(ctx) do {     \
-+    if (!ctx->cfg_ptr->ext_zalasr) { \
-+        return false;                \
-+    }                                \
-+} while (0)
++#include "qemu/osdep.h"
++#include "cpu.h"
++#include "cpu_vendorid.h"
 +
-+static bool gen_load_acquire(DisasContext *ctx, arg_lb_aqrl *a, MemOp memop)
++/* Static MIPS CSR state storage */
++static struct {
++    uint64_t tvec;
++    uint64_t config[12];
++    uint64_t pmacfg[16];
++} mips_csr_state;
++
++/* MIPS CSR */
++#define CSR_MIPSTVEC        0x7c0
++#define CSR_MIPSCONFIG0     0x7d0
++#define CSR_MIPSCONFIG1     0x7d1
++#define CSR_MIPSCONFIG2     0x7d2
++#define CSR_MIPSCONFIG3     0x7d3
++#define CSR_MIPSCONFIG4     0x7d4
++#define CSR_MIPSCONFIG5     0x7d5
++#define CSR_MIPSCONFIG6     0x7d6
++#define CSR_MIPSCONFIG7     0x7d7
++#define CSR_MIPSCONFIG8     0x7d8
++#define CSR_MIPSCONFIG9     0x7d9
++#define CSR_MIPSCONFIG10    0x7da
++#define CSR_MIPSCONFIG11    0x7db
++#define CSR_MIPSPMACFG0     0x7e0
++#define CSR_MIPSPMACFG1     0x7e1
++#define CSR_MIPSPMACFG2     0x7e2
++#define CSR_MIPSPMACFG3     0x7e3
++#define CSR_MIPSPMACFG4     0x7e4
++#define CSR_MIPSPMACFG5     0x7e5
++#define CSR_MIPSPMACFG6     0x7e6
++#define CSR_MIPSPMACFG7     0x7e7
++#define CSR_MIPSPMACFG8     0x7e8
++#define CSR_MIPSPMACFG9     0x7e9
++#define CSR_MIPSPMACFG10    0x7ea
++#define CSR_MIPSPMACFG11    0x7eb
++#define CSR_MIPSPMACFG12    0x7ec
++#define CSR_MIPSPMACFG13    0x7ed
++#define CSR_MIPSPMACFG14    0x7ee
++#define CSR_MIPSPMACFG15    0x7ef
++
++static RISCVException any(CPURISCVState *env, int csrno)
 +{
-+    decode_save_opc(ctx, 0);
-+
-+    TCGv addr = get_address(ctx, a->rs1, 0);
-+    TCGv dest = get_gpr(ctx, a->rd, EXT_NONE);
-+    TCGBar bar = (a->rl) ? TCG_BAR_STRL : 0;
-+
-+    /* Check that AQ is set, as this is mandatory */
-+    if (!a->aq) {
-+        return false;
-+    }
-+
-+    memop |= (ctx->cfg_ptr->ext_zama16b) ? MO_ATOM_WITHIN16 : 0;
-+
-+    tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, memop);
-+    gen_set_gpr(ctx, a->rd, dest);
-+
-+    /* Add a memory barrier implied by AQ (mandatory) and RL (optional) */
-+    tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ | bar);
-+
-+    return true;
++    return RISCV_EXCP_NONE;
 +}
 +
-+static bool trans_lb_aqrl(DisasContext *ctx, arg_lb_aqrl *a)
++static RISCVException read_mipstvec(CPURISCVState *env, int csrno,
++                                    target_ulong *val)
 +{
-+    REQUIRE_ZALASR(ctx);
-+    return gen_load_acquire(ctx, a, (MO_ALIGN | MO_SB));
++    *val = mips_csr_state.tvec;
++    return RISCV_EXCP_NONE;
 +}
 +
-+static bool trans_lh_aqrl(DisasContext *ctx, arg_lh_aqrl *a)
++static RISCVException write_mipstvec(CPURISCVState *env, int csrno,
++                                     target_ulong val, uintptr_t ra)
 +{
-+    REQUIRE_ZALASR(ctx);
-+    return gen_load_acquire(ctx, a, (MO_ALIGN | MO_TESW));
++    mips_csr_state.tvec = val;
++    return RISCV_EXCP_NONE;
 +}
 +
-+static bool trans_lw_aqrl(DisasContext *ctx, arg_lw_aqrl *a)
++static RISCVException read_mipsconfig(CPURISCVState *env, int csrno,
++                                      target_ulong *val)
 +{
-+    REQUIRE_ZALASR(ctx);
-+    return gen_load_acquire(ctx, a, (MO_ALIGN | MO_TESL));
++    *val = mips_csr_state.config[csrno - CSR_MIPSCONFIG0];
++    return RISCV_EXCP_NONE;
 +}
 +
-+static bool trans_ld_aqrl(DisasContext *ctx, arg_ld_aqrl *a)
++static RISCVException write_mipsconfig(CPURISCVState *env, int csrno,
++                                       target_ulong val, uintptr_t ra)
 +{
-+    REQUIRE_64BIT(ctx);
-+    REQUIRE_ZALASR(ctx);
-+    return gen_load_acquire(ctx, a, (MO_ALIGN | MO_TEUQ));
++    mips_csr_state.config[csrno - CSR_MIPSCONFIG0] = val;
++    return RISCV_EXCP_NONE;
 +}
 +
-+static bool gen_store_release(DisasContext *ctx, arg_sb_aqrl *a, MemOp memop)
++static RISCVException read_mipspmacfg(CPURISCVState *env, int csrno,
++                                      target_ulong *val)
 +{
-+    decode_save_opc(ctx, 0);
-+
-+    TCGv addr = get_address(ctx, a->rs1, 0);
-+    TCGv data = get_gpr(ctx, a->rs2, EXT_NONE);
-+    TCGBar bar = (a->aq) ? TCG_BAR_LDAQ : 0;
-+
-+    /* Check that RL is set, as this is mandatory */
-+    if (!a->rl) {
-+        return false;
-+    }
-+
-+    memop |= (ctx->cfg_ptr->ext_zama16b) ? MO_ATOM_WITHIN16 : 0;
-+
-+    /* Add a memory barrier implied by RL (mandatory) and AQ (optional) */
-+    tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL | bar);
-+
-+    tcg_gen_qemu_st_tl(data, addr, ctx->mem_idx, memop);
-+    return true;
++    *val = mips_csr_state.pmacfg[csrno - CSR_MIPSPMACFG0];
++    return RISCV_EXCP_NONE;
 +}
 +
-+static bool trans_sb_aqrl(DisasContext *ctx, arg_sb_aqrl *a)
++static RISCVException write_mipspmacfg(CPURISCVState *env, int csrno,
++                                       target_ulong val, uintptr_t ra)
 +{
-+    REQUIRE_ZALASR(ctx);
-+    return gen_store_release(ctx, a, (MO_ALIGN | MO_SB));
++    mips_csr_state.pmacfg[csrno - CSR_MIPSPMACFG0] = val;
++    return RISCV_EXCP_NONE;
 +}
 +
-+static bool trans_sh_aqrl(DisasContext *ctx, arg_sh_aqrl *a)
-+{
-+    REQUIRE_ZALASR(ctx);
-+    return gen_store_release(ctx, a, (MO_ALIGN | MO_TESW));
-+}
-+
-+static bool trans_sw_aqrl(DisasContext *ctx, arg_sw_aqrl *a)
-+{
-+    REQUIRE_ZALASR(ctx);
-+    return gen_store_release(ctx, a, (MO_ALIGN | MO_TESL));
-+}
-+
-+static bool trans_sd_aqrl(DisasContext *ctx, arg_sd_aqrl *a)
-+{
-+    REQUIRE_64BIT(ctx);
-+    REQUIRE_ZALASR(ctx);
-+    return gen_store_release(ctx, a, (MO_ALIGN | MO_TEUQ));
-+}
++const RISCVCSR mips_csr_list[] = {
++    {
++        .csrno = CSR_MIPSTVEC,
++        .csr_ops = { "mipstvec", any, read_mipstvec, write_mipstvec }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG0,
++        .csr_ops = { "mipsconfig0", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG1,
++        .csr_ops = { "mipsconfig1", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG2,
++        .csr_ops = { "mipsconfig2", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG3,
++        .csr_ops = { "mipsconfig3", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG4,
++        .csr_ops = { "mipsconfig4", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG5,
++        .csr_ops = { "mipsconfig5", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG6,
++        .csr_ops = { "mipsconfig6", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG7,
++        .csr_ops = { "mipsconfig7", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG8,
++        .csr_ops = { "mipsconfig8", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG9,
++        .csr_ops = { "mipsconfig9", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG10,
++        .csr_ops = { "mipsconfig10", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSCONFIG11,
++        .csr_ops = { "mipsconfig11", any, read_mipsconfig, write_mipsconfig }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG0,
++        .csr_ops = { "mipspmacfg0", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG1,
++        .csr_ops = { "mipspmacfg1", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG2,
++        .csr_ops = { "mipspmacfg2", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG3,
++        .csr_ops = { "mipspmacfg3", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG4,
++        .csr_ops = { "mipspmacfg4", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG5,
++        .csr_ops = { "mipspmacfg5", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG6,
++        .csr_ops = { "mipspmacfg6", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG7,
++        .csr_ops = { "mipspmacfg7", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG8,
++        .csr_ops = { "mipspmacfg8", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG9,
++        .csr_ops = { "mipspmacfg9", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG10,
++        .csr_ops = { "mipspmacfg10", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG11,
++        .csr_ops = { "mipspmacfg11", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG12,
++        .csr_ops = { "mipspmacfg12", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG13,
++        .csr_ops = { "mipspmacfg13", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG14,
++        .csr_ops = { "mipspmacfg14", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    {
++        .csrno = CSR_MIPSPMACFG15,
++        .csr_ops = { "mipspmacfg15", any, read_mipspmacfg, write_mipspmacfg }
++    },
++    { },
++};
+diff --git a/target/riscv/meson.build b/target/riscv/meson.build
+index fdefe88ccd..25d59ef9f9 100644
+--- a/target/riscv/meson.build
++++ b/target/riscv/meson.build
+@@ -36,6 +36,7 @@ riscv_system_ss.add(files(
+   'debug.c',
+   'monitor.c',
+   'machine.c',
++  'mips_csr.c',
+   'pmu.c',
+   'th_csr.c',
+   'time_helper.c',
 -- 
 2.52.0
 
