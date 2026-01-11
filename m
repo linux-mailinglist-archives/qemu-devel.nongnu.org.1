@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5048CD0FBC0
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jan 2026 20:59:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CD77D0FBE5
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jan 2026 21:01:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vf1aX-0002wl-HN; Sun, 11 Jan 2026 14:59:01 -0500
+	id 1vf1ai-0003bO-AV; Sun, 11 Jan 2026 14:59:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <skolothumtho@nvidia.com>)
- id 1vf1a2-0002da-FC; Sun, 11 Jan 2026 14:58:33 -0500
-Received: from mail-westcentralusazlp170100005.outbound.protection.outlook.com
- ([2a01:111:f403:c112::5] helo=CY7PR03CU001.outbound.protection.outlook.com)
+ id 1vf1a8-0002mY-Ef; Sun, 11 Jan 2026 14:58:37 -0500
+Received: from mail-northcentralusazlp170130007.outbound.protection.outlook.com
+ ([2a01:111:f403:c105::7] helo=CH4PR04CU002.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <skolothumtho@nvidia.com>)
- id 1vf1a0-0004CL-Ft; Sun, 11 Jan 2026 14:58:30 -0500
+ id 1vf1a6-0004D1-MQ; Sun, 11 Jan 2026 14:58:36 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kQ7e5rprNfgkWrRbt4qX3LxrJQYOVbmFzEqPcC4vNZo2sQ2uQJU8xsgTZx3/+rPzjqCuXTshNn5jF5iFr03C357S3wyRQVZXmdsz6Z32oiKsspeEvgTKHNHghdroasd4C1Pi2AN8gFg/ZzXbnwMguZ6fqR4tiHQxi7eSYjym+b4IVlqQggzObHutYL1HOgp92yZVfYUutgDXMJb40I6u+yNPSiCAPUrM9YolPHBYJ+uQxDWUz2PAxfrvYe7sGUx+NqnprLi/Ao53cc+PT2OkOS4M/FtgTbIj9DscsU3dsH1rcjmtwLkMg0P3NYBMjTU0TFiI5yj0kWcBoz7CdXm2JA==
+ b=jVpM5u0IKUuEdQkVHQmW8RxmQztG/luh+cA0/S3RgswucBnJJLBVJnP6wFj5UOQD4qdfampUVoip/kEQd6qQm4P39m4cGW+WZfEmGUusncPKVO4uL3wdzwEIzxezdBZxB3doJN0kPJSuUiGFmp7DCIDh2zGmCHCCozvDpGSJwCZRFtujpxhI7xpA9xLD9ZgM2Uhok7Lg/6e9qMjZ+nSXWNzFTWbnp1jBwnpTDC52h3rOXlgyU6qh8WUV5j2mdRlVbj/2K9nSvBmls9krCXpC9xBv88IPIFNs++pQ/SjMatux5nV+XOippF5XvpFYqijlUm00CaMLfVPUJQ5Cj+e/5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XXshay5UFH9gRIH75ilulVw+i734oQznY6F8pukll04=;
- b=P9eQqKdscQ7WAe6biurVKrQvx7ahV2BoXx1UMu/X+82zRrRIiXS7fUePpLLmKDxJ53QT3AxLiqGP0OeGEy3VqXZljZlO90TrFxFn3gXbcQsIuTdtYUS0r3J0UW/SnlXKzP1yg0xT/eksb97v1XL2nk9yDxX/xNSYQb6FlQgTSGwJ7fNksT8D7kzrMdeJeoaiUwcdIf63Jr+hVcR70fuGa5uioF9mjrEoIARoWZ9UOhKKnQEChmprbmoqyoJKl4jVQRM8USRGmGIJxRPBzGvSnEy22jFboTGaqMlpFBnpgixbmMwZS3H0CNAZBWhNKA0wJ07R1RXP8uZmi35DLYJjDg==
+ bh=KOoBgHMB/uGW+rtqkkeRlPDweujg/WAyjuEVUYBiLpA=;
+ b=yBGH6LpBTR5sn6Gz/ZaYja0emiS60xtccFMdyXBXG7wYzL/d6+toJP74/E+I2w2qoWgD/rPP1hf0WpjcfIe+Zv2gyAGRJUdKNCZF9ZTyXuIbWcREqMI16ctZEFOxBwEZWd0oUZTRCp/IlR2imjj2F8czPTcCzTbnrpHxlrffFDk/bjOf7ehFDOsYVuf3vlgIcWbS6wVN8m2t010iAXkogquek4tk4FecKOFMbTwi4oNPnKlyKwF+HUi+Zzg3F9AndcTvWjZnmGhlsrp9ymixZv9BxyL+YrBHyb0dTZ3iIG/Q1iKZMdX+DzK1LLjCxVWf/kJxH90L+TSX+sg48Gl+Mg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
+ 216.228.117.161) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XXshay5UFH9gRIH75ilulVw+i734oQznY6F8pukll04=;
- b=f0HFm3N4bSFEu5namrOxq7hrh0FrXfekfms3jqwk/OHcHb1rc5QeN/yilCCHpN9nIR+o+lWqaJq+LKZcBQrLkYGWWUf50Bs3ifQLNpw2u3SuyByj80cghaorlUOl5RPvg6e4kk+2vpMEh/ljwrGW/iVNqda3IcyDf+8FUdXg0hcnfpjMlnJ6M+STw9AZQj3V8IoT9fbBeURVoSBurGnBKzLNp51xsPqYHhRi9c+dZ8pATfE1ECDCikaw8yVCUVD0Oz8RTh8F7NhN75XrF4G2LHlg/g+8j4mKzRQn9QSnNI3RNTY6wgNezn0ow7a1fdbdmrAjuqZWJThyvInAj9gimA==
-Received: from SA9P221CA0024.NAMP221.PROD.OUTLOOK.COM (2603:10b6:806:25::29)
- by DM4PR12MB5914.namprd12.prod.outlook.com (2603:10b6:8:67::21) with
- Microsoft SMTP Server (version=TLS1_2,
+ bh=KOoBgHMB/uGW+rtqkkeRlPDweujg/WAyjuEVUYBiLpA=;
+ b=AGwDPqM2tfzjHGA5HU2RVvQ1J4znpJXhh0cMZXBkn6oVtmYy7jwU8C0rLuoUyj8pQ7V4k1wGyEasuH/+z6E73mEGaDTrdUnL7cxYG9rNE2o04mLUjYP/VwgZKMORkUwK3eoSvl0xGmGIpqTd0xB62av6+xUeJOaxAm8+Qtjow+2C570wSPUvqnpf65n37Z4fA5yj8QCYbg2h4v1wOJrUdwb/ZSmAuseqh8uLGWThdvbk7iQ3KukDXqz4MS5qfuq1XHb3lmBWqv41T+JO7A4pGL5oSsDcn7QBCViZEz+np4Fl6oiH1iUpfYlp3jGqp7uI7XkqL76G4mjLZ7ND3uQy6A==
+Received: from SA1P222CA0026.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:22c::27)
+ by SJ2PR12MB7798.namprd12.prod.outlook.com (2603:10b6:a03:4c0::21)
+ with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Sun, 11 Jan
- 2026 19:58:21 +0000
-Received: from SN1PEPF0002636D.namprd02.prod.outlook.com
- (2603:10b6:806:25:cafe::64) by SA9P221CA0024.outlook.office365.com
- (2603:10b6:806:25::29) with Microsoft SMTP Server (version=TLS1_3,
+ 2026 19:58:27 +0000
+Received: from SN1PEPF0002BA4E.namprd03.prod.outlook.com
+ (2603:10b6:806:22c:cafe::98) by SA1P222CA0026.outlook.office365.com
+ (2603:10b6:806:22c::27) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.7 via Frontend Transport; Sun,
- 11 Jan 2026 19:58:17 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ 11 Jan 2026 19:58:21 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
  smtp.mailfrom=nvidia.com;
  dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SN1PEPF0002636D.mail.protection.outlook.com (10.167.241.138) with Microsoft
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SN1PEPF0002BA4E.mail.protection.outlook.com (10.167.242.71) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9520.1 via Frontend Transport; Sun, 11 Jan 2026 19:58:21 +0000
+ 15.20.9520.1 via Frontend Transport; Sun, 11 Jan 2026 19:58:27 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sun, 11 Jan
- 2026 11:58:14 -0800
+ 2026 11:58:20 -0800
 Received: from NV-2Y5XW94.nvidia.com (10.126.231.35) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sun, 11 Jan
- 2026 11:58:10 -0800
+ 2026 11:58:15 -0800
 From: Shameer Kolothum <skolothumtho@nvidia.com>
 To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
 CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>, <jgg@nvidia.com>,
@@ -71,10 +71,9 @@ CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>, <jgg@nvidia.com>,
  <jiangkunkun@huawei.com>, <jonathan.cameron@huawei.com>,
  <zhangfei.gao@linaro.org>, <zhenzhong.duan@intel.com>, <yi.l.liu@intel.com>,
  <kjaju@nvidia.com>
-Subject: [PATCH v7 28/36] hw/arm/smmuv3-accel: Add a property to specify RIL
- support
-Date: Sun, 11 Jan 2026 19:53:14 +0000
-Message-ID: <20260111195508.106943-29-skolothumtho@nvidia.com>
+Subject: [PATCH v7 29/36] hw/arm/smmuv3-accel: Add support for ATS
+Date: Sun, 11 Jan 2026 19:53:15 +0000
+Message-ID: <20260111195508.106943-30-skolothumtho@nvidia.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260111195508.106943-1-skolothumtho@nvidia.com>
 References: <20260111195508.106943-1-skolothumtho@nvidia.com>
@@ -86,65 +85,65 @@ X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002636D:EE_|DM4PR12MB5914:EE_
-X-MS-Office365-Filtering-Correlation-Id: d9dc31db-4e58-4b59-ed77-08de514bc5bd
+X-MS-TrafficTypeDiagnostic: SN1PEPF0002BA4E:EE_|SJ2PR12MB7798:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9f3e2f35-9a5d-40e5-8a2d-08de514bc93b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|376014|7416014|36860700013|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?ZmtMdG5tM1UrUzdtZ1pSQ1NUYmhKU1ZucjAxd0RvR25BNHhrUWVaQWdyUDJl?=
- =?utf-8?B?VUE5K2g3Qnp6ekYrK1lSNElTRFVYUW5acktSQkFRYmlyT1E2MUtLUkxraks5?=
- =?utf-8?B?RmtBQld0aHVJWStUd1pqS3JHR1VwYklNTUhiZEkybXZxa0VXQ1JlTmhiMHlG?=
- =?utf-8?B?aWVmMzRzU0pReE1CK1lQSjliZTRRbDQzOGJwRnZFQW92NUVmVjVZWCtsWUds?=
- =?utf-8?B?YjYrK0dUS0hmQytsaCtzcUh0TXFYdnBEaitLTG4yL1l5ZFY5bnhsT0lnOUhX?=
- =?utf-8?B?TWMycDUzeGtuMHNZYWZSVlFGTThFMy9BenhSaWZiTm8yZ0NNT2E4K1JDWVh5?=
- =?utf-8?B?N1VrTzZXMXRGZ0EzTzBzUDJyV1J1b3E3U0dyVVhPWDJvNlB4RGh3V3FNUDdX?=
- =?utf-8?B?eTl6Q2NJMjdoa1p0NjdlM3lzK1FxeHpwOVp6Q3NqNi93RXMxdkJQcHptSkk1?=
- =?utf-8?B?cTZQN1VJOWhtV3VuNnhqNmF4WitTU2l3KzE1WEduOXBFZDZ0elBwNWx4cXRx?=
- =?utf-8?B?LytOakswRU9HeUFzTzVvZnlzdEJqRjg0RjRhWm04TXg5Z25nWVNPcEovUjBD?=
- =?utf-8?B?bmQ3Z0NBYlhmcDRsZVpqa1hzMUdCSkJsTXJ0blRjNHFTRmlZSUtBZ3FRL2hn?=
- =?utf-8?B?MkZtcy9sc09QK2RHSWhsS3RDalZaUk9EMHZrWDd4WWtUdncyTlE0R3dQZXJ3?=
- =?utf-8?B?blBvL2F5Unc2WWpwWDVXbmJOc3AwcGt5cnlGVVR3bGhVS3JSVXZBbnpEYlFs?=
- =?utf-8?B?Yk1IU2tIOHBuWFNJSGdEbFlWTkNlYmlMeUovaGpUOWdEMVdjQUdhQ0lPZWY2?=
- =?utf-8?B?S0RCMWRsVXFsN202RFhxY0dGSURnODlPVkZVNDJINitMaGhxeUl3S25HM0dR?=
- =?utf-8?B?Qi9nLy9PRjF0emljbHdjQUllN0RGYTkveXFNdXJpaC94aGFrUHZMQ0lCQ3RT?=
- =?utf-8?B?Unl3OU5GellwTlc0UHhpNVhuaW5oeGNOOE1uemx0MUIza1A1OU8vWVZLaHkx?=
- =?utf-8?B?bmx2NlBEdmtpYWhTaTFFMVhNWm5qaVdKbGxSV1dEMTN3eGU3amwxOFRDQ3ZC?=
- =?utf-8?B?WkJoUFFlM2Y2SkNVc3JLNiswQktKUXR1K0dnWnJxanlCMGRhOFNaWStnd1o0?=
- =?utf-8?B?QnRqL1dCaTIxNDJKYjB1em96THFKWm16YTU5WkxURzI4M3NveWxjTys1Z0d4?=
- =?utf-8?B?b0JKbXVwSm5qTFNOQVFLbGJCOVVSZVpNL00rWWJXR0ZFempLL0E4L1IvUlFX?=
- =?utf-8?B?K0cwdGFjVEgvZDh4eitpUHVWL21wODRLRWx1UXZJMlFZMVNzNXRtMENISDZN?=
- =?utf-8?B?TXhLRnV2Zk5iYkViMkZOd1BMNGk1NnhDRVRqKzAxa2JmWENJSzBLa0dFcmds?=
- =?utf-8?B?WktrSXdSdkFQQnRGK3RDQ2FZdFhoc2s0RzJnVjluUGg2eEFPcEh1dGJleGlW?=
- =?utf-8?B?TkdSaTFwOHYxREVINTlabTNoK25lWUhVeWF5VEo2QUdtVXpMRkpRVkN6czZC?=
- =?utf-8?B?SExQUmFuR0lrdmw3OVcrRXJKalBMNHhRYlBIb3QvdGdSOW1JZWtWTVJLYUxM?=
- =?utf-8?B?enkrWkhUVjFUMzMwekgycmc1Z2pvRTR3c3IvMGErQWM4MFJQYllyUFFVSmpo?=
- =?utf-8?B?S1RrZEIrRFlxRDZFUDdZang2eUdIWnRxNmNPYkJFU1daYmlBQThyZ3pvdHlu?=
- =?utf-8?B?dENnUVB0elhGWVZqTEdMOE4xRkcxVDZYV2RNVFl0VktZVE9GYUpuWFYwSGxD?=
- =?utf-8?B?YktMeTcvaHlBbHVGK1JUM29Ga2VFZnpqb1MzajU2TDVYZmdpUDdKbWcrZFh2?=
- =?utf-8?B?dk1sSGdCcmJoSzJFekZCZ2JOUTBJVGZxMmc3L3lXSVZGWG5KT3VQTnpUTlNi?=
- =?utf-8?B?djg3N0tkL05vUXk0YkpRcHpEcGkwbEF5WVh0VTdpWEN2K2FFM29sUjFycE9N?=
- =?utf-8?B?RG1XeHlIWmpQMEVZZkxHcU8yVFJROWdmZFB2eWFIcFF4ZENsM1dia0pQaWxU?=
- =?utf-8?B?cEtZZEVKL3hxYUl0MFlWYXNXZ0VGb3VDeDV3VzFndTU4UEJEejQrT01tMWhv?=
- =?utf-8?B?Z3hjQ1BqOU9XbDNENjFibUcxaG9hRXBvN2tJWVpkSmR1Q0FUS0M3L1l6RGF5?=
- =?utf-8?Q?RLYQ=3D?=
-X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
- SFS:(13230040)(82310400026)(376014)(7416014)(36860700013)(1800799024); DIR:OUT;
+ ARA:13230040|1800799024|82310400026|36860700013|7416014|376014; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?QXhVR1Urdis5WU44YTJKTzA3Y2lMN1ljbEtWQjJINjhHT0dFTTdoRjJQZUhD?=
+ =?utf-8?B?Zy9sR3NHTkpidzlVR2lTUFg2b1l3THRFTGxCL1VWZ1IxOFB5RTNLMThydnpv?=
+ =?utf-8?B?WEVnWDZsSXZNSXZtK0FsQWxydVQrT2crV1hxVlg4ME1mZVl5T2lVRkUvbUwx?=
+ =?utf-8?B?U2RZUEwxL2JWVk1GQjdsQ2dzbGtheXR3L0IzZzBWaFlRMW5ZQVBDeXpMWTBX?=
+ =?utf-8?B?ckY1dG90VmhEK3RibWpDUkpsd3Y2OWVaMlRGSE0rbHdNK3A0NkxTclVGQ3BM?=
+ =?utf-8?B?eW42UmIrR3dEcTVQclJoQ1pkalQ5RTBKQnFHWFdxVGpXZlppZytSeXBaRU11?=
+ =?utf-8?B?SGZaZkp3ZldCeVdYc1N3VlN2Z2Y4cmFMSVRPUG9pclBMQjR5c09pQWptazda?=
+ =?utf-8?B?NVV3dDlISUhheWRSbHlyM1BCaUw5Mnc5QzQyLzkxcEJmbVdaM2ZueG9hL1pB?=
+ =?utf-8?B?Vk8vNU80Yk01a2JJSnNlMmV3cXRsaHh4VlZMM3JmRGNyUWEwSFQ1Ym50YVVv?=
+ =?utf-8?B?Y2dQT3kzT09OaCtISUVlWVFFWWdXSDIwNzluVldmUFZxbWM4Qk1OdTV0WFBx?=
+ =?utf-8?B?QlRPeklEN1EyY2JuMVA4VVRITHE0OGErdU9BckZmQkRzbyt5R3E4c3l0dk14?=
+ =?utf-8?B?L2k0SmxRY3JTc1pBNWNWQy9vLytGdHQyN1pTZGw0SzJ4ejVJYm5zQ3BHYWJ0?=
+ =?utf-8?B?U0JGN0lQdUViWW9iSFlPU2UzNU5mekdFWXNtbTh5TlZmQUlYZFU1Q1QwYTRS?=
+ =?utf-8?B?NUJBbnlJQTF5VGdzSkpMSDJyMUF2QkI5dm1rb0VlUmhDYWdRbFlCRUJ1cE9s?=
+ =?utf-8?B?NEorOG1XTDNqNEdJUllGeFhrRUs1WG00QWNzM2xLa3Vqd216dXJOcXlldjdH?=
+ =?utf-8?B?ZDRhamUxenI5b3dNbGM3aDVraXdTUHlMZHR0L2NoNU1IdGNCYzB1bWg5NStT?=
+ =?utf-8?B?VENRdWIzMkQ5N01ZamNQM05rVHlQNXVENmNHZ3NCRy9INjByeHhXaFNZeDhx?=
+ =?utf-8?B?VWJRbFh2U2djWWdoVGQwSmtqRDZ0RWFzeEFNai9TN1Z3dmZqK05kQk1SVGRt?=
+ =?utf-8?B?RlBwSkZ3djlNT0t5RFAzMS9PczNsY3hETGhvSG4wamlrZHNkeUZhbUlYbm9x?=
+ =?utf-8?B?czdmV1poNnRHYmE0TjloQ1JYRGMveDhSV0ptNFNxN2lWNUlESDZWOVN1UWQ0?=
+ =?utf-8?B?elhxNzZ6cmxtNi9zV29qVU81YjFwMVJaWk9uSll1eDFPTHJWc0tMNVpGSmVr?=
+ =?utf-8?B?UFdzN1Q2V09xUDFTRGxFMkFFcU5jS2hHczhQdy85RDVqcm9MelRQZ0RzdjBo?=
+ =?utf-8?B?S0VRbzRQU2J1UWlkV29RVGk4UGVoVUR4M1Q5OCtKR1grT2FlZXVjSFFnemp5?=
+ =?utf-8?B?QWlnK1daVVdvVnZQUExhV1hHdFpQRmsvbHh5d25UOFhYTnA2QW0vT2JXZWRD?=
+ =?utf-8?B?M1A4TU1MZjBYaXd2WkdHR292djhqUkxXVks2WFpsTDRpVE1yMTFoUnpTenBI?=
+ =?utf-8?B?cG1EVzVhNk8vSVRBb1ZFekY3Y3MrUW9VbHdIaTc1ZG85anpFQml1d0RLWnZI?=
+ =?utf-8?B?TjRMNEo0Rmp4NzRuanY4Ry8reWdtd0ZpRzJKT05LRTBRVlpDRlRtbFhCSnJF?=
+ =?utf-8?B?QWZIWEFQeHdNT1RXM3NqbVlnUXN0YndCT0RoVDZRZ1RYQUlSdC9ObHhkaTJV?=
+ =?utf-8?B?MEdMK3dGaCtBSXVwNlU1cUJrajk4NEdqZXErVXdGcUs1amE0UnorY2g0U1l2?=
+ =?utf-8?B?bXo5SkFVM1BadXkwd1VBVW9WVTl1Rzl2b2tUYVpVYjhMZm1TS05zdklxS2RZ?=
+ =?utf-8?B?c3BIOTFoazRVTW5vV3k2TnpNcUhuZ0p1OFgyaFcweVg5cy9kVUxlQXIzVmRQ?=
+ =?utf-8?B?MGxhcmtNVTFNeGU0K0VodTNiQ0VGVEVHbkNkTkpIZjN0NE9pR0dLZGNxc2hW?=
+ =?utf-8?B?NTNtVTFXMTVJMHBVWDV2SEU5TXE2aW0xcUxkQ0pMMDdjMlk0UncxNnlzUjBN?=
+ =?utf-8?B?cjNVUm56NWRNZDRDdnBrRDF6SjBxcm9wSS95dk1YVndMZVpMQTd2UmVDNmJ1?=
+ =?utf-8?B?M0Yzd2V5VXJ6dzJUK3Jkc3oxaEYxNjZnUGlFSUQ5OXpGTmtlR1ljOERNY005?=
+ =?utf-8?Q?Rfm0=3D?=
+X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
+ SFS:(13230040)(1800799024)(82310400026)(36860700013)(7416014)(376014); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jan 2026 19:58:21.3551 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d9dc31db-4e58-4b59-ed77-08de514bc5bd
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jan 2026 19:58:27.2149 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9f3e2f35-9a5d-40e5-8a2d-08de514bc93b
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
  Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF0002636D.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF0002BA4E.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5914
-Received-SPF: permerror client-ip=2a01:111:f403:c112::5;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB7798
+Received-SPF: permerror client-ip=2a01:111:f403:c105::7;
  envelope-from=skolothumtho@nvidia.com;
- helo=CY7PR03CU001.outbound.protection.outlook.com
+ helo=CH4PR04CU002.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -167,127 +166,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently QEMU SMMUv3 has RIL support by default. But if accelerated mode
-is enabled, RIL has to be compatible with host SMMUv3 support.
+QEMU SMMUv3 does not enable ATS (Address Translation Services) by default.
+When accelerated mode is enabled and the host SMMUv3 supports ATS, it can
+be useful to report ATS capability to the guest so it can take advantage
+of it if the device also supports ATS.
 
-Add a property so that the user can specify this.
+Note: ATS support cannot be reliably detected from the host SMMUv3 IDR
+registers alone, as firmware ACPI IORT tables may override them. The
+user must therefore ensure the support before enabling it.
+
+The ATS support enabled here is only relevant for vfio-pci endpoints,
+as SMMUv3 accelerated mode does not support emulated endpoint devices.
+QEMU’s SMMUv3 implementation still lacks support for handling ATS
+translation requests, which would be required for emulated endpoints.
 
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 Tested-by: Zhangfei Gao <zhangfei.gao@linaro.org>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
 ---
- hw/arm/smmuv3-accel.c   | 14 ++++++++++++--
- hw/arm/smmuv3-accel.h   |  4 ++++
- hw/arm/smmuv3.c         |  9 +++++++++
- include/hw/arm/smmuv3.h |  1 +
- 4 files changed, 26 insertions(+), 2 deletions(-)
+ hw/arm/smmuv3-accel.c    |  3 +++
+ hw/arm/smmuv3.c          | 24 +++++++++++++++++++++++-
+ hw/arm/virt-acpi-build.c | 10 ++++++++--
+ include/hw/arm/smmuv3.h  |  1 +
+ 4 files changed, 35 insertions(+), 3 deletions(-)
 
 diff --git a/hw/arm/smmuv3-accel.c b/hw/arm/smmuv3-accel.c
-index 33011962e3..df82f1e32a 100644
+index df82f1e32a..a97abc1f79 100644
 --- a/hw/arm/smmuv3-accel.c
 +++ b/hw/arm/smmuv3-accel.c
-@@ -68,8 +68,8 @@ smmuv3_accel_check_hw_compatible(SMMUv3State *s,
-         return false;
-     }
+@@ -654,6 +654,9 @@ void smmuv3_accel_idr_override(SMMUv3State *s)
  
--    /* QEMU SMMUv3 supports Range Invalidation by default */
--    if (FIELD_EX32(info->idr[3], IDR3, RIL) !=
-+    /* User can disable QEMU SMMUv3 Range Invalidation support */
-+    if (FIELD_EX32(info->idr[3], IDR3, RIL) <
-                 FIELD_EX32(s->idr[3], IDR3, RIL)) {
-         error_setg(errp, "Host SMMUv3 doesn't support Range Invalidation");
-         return false;
-@@ -646,6 +646,16 @@ static const PCIIOMMUOps smmuv3_accel_ops = {
-     .get_msi_direct_gpa = smmuv3_accel_get_msi_gpa,
- };
+     /* By default QEMU SMMUv3 has RIL. Update IDR3 if user has disabled it */
+     s->idr[3] = FIELD_DP32(s->idr[3], IDR3, RIL, s->ril);
++
++    /* QEMU SMMUv3 has no ATS. Advertise ATS if opt-in by property */
++    s->idr[0] = FIELD_DP32(s->idr[0], IDR0, ATS, s->ats);
+ }
  
-+void smmuv3_accel_idr_override(SMMUv3State *s)
-+{
-+    if (!s->accel) {
-+        return;
-+    }
-+
-+    /* By default QEMU SMMUv3 has RIL. Update IDR3 if user has disabled it */
-+    s->idr[3] = FIELD_DP32(s->idr[3], IDR3, RIL, s->ril);
-+}
-+
  /* Based on SMUUv3 GPBA.ABORT configuration, attach a corresponding HWPT */
- bool smmuv3_accel_attach_gbpa_hwpt(SMMUv3State *s, Error **errp)
- {
-diff --git a/hw/arm/smmuv3-accel.h b/hw/arm/smmuv3-accel.h
-index 41b37e3122..a8a64802ec 100644
---- a/hw/arm/smmuv3-accel.h
-+++ b/hw/arm/smmuv3-accel.h
-@@ -49,6 +49,7 @@ bool smmuv3_accel_install_ste_range(SMMUv3State *s, SMMUSIDRange *range,
- bool smmuv3_accel_attach_gbpa_hwpt(SMMUv3State *s, Error **errp);
- bool smmuv3_accel_issue_inv_cmd(SMMUv3State *s, void *cmd, SMMUDevice *sdev,
-                                 Error **errp);
-+void smmuv3_accel_idr_override(SMMUv3State *s);
- void smmuv3_accel_reset(SMMUv3State *s);
- #else
- static inline void smmuv3_accel_init(SMMUv3State *s)
-@@ -76,6 +77,9 @@ smmuv3_accel_issue_inv_cmd(SMMUv3State *s, void *cmd, SMMUDevice *sdev,
- {
-     return true;
- }
-+static inline void smmuv3_accel_idr_override(SMMUv3State *s)
-+{
-+}
- static inline void smmuv3_accel_reset(SMMUv3State *s)
- {
- }
 diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-index 8ca1d4ad35..cb619f19df 100644
+index cb619f19df..ca086ba00a 100644
 --- a/hw/arm/smmuv3.c
 +++ b/hw/arm/smmuv3.c
-@@ -305,6 +305,7 @@ static void smmuv3_init_id_regs(SMMUv3State *s)
-     s->idr[5] = FIELD_DP32(s->idr[5], IDR5, GRAN16K, 1);
-     s->idr[5] = FIELD_DP32(s->idr[5], IDR5, GRAN64K, 1);
-     s->aidr = 0x1;
-+    smmuv3_accel_idr_override(s);
- }
- 
- static void smmuv3_reset(SMMUv3State *s)
-@@ -1926,6 +1927,10 @@ static bool smmu_validate_property(SMMUv3State *s, Error **errp)
- #endif
- 
-     if (!s->accel) {
-+        if (!s->ril) {
-+            error_setg(errp, "ril can only be disabled if accel=on");
+@@ -1498,13 +1498,27 @@ static int smmuv3_cmdq_consume(SMMUv3State *s, Error **errp)
+              */
+             smmuv3_range_inval(bs, &cmd, SMMU_STAGE_2);
+             break;
++        case SMMU_CMD_ATC_INV:
++        {
++            SMMUDevice *sdev = smmu_find_sdev(bs, CMD_SID(&cmd));
++
++            if (!sdev || !s->ats) {
++                trace_smmuv3_unhandled_cmd(type);
++                break;
++            }
++
++            if (!smmuv3_accel_issue_inv_cmd(s, &cmd, sdev, errp)) {
++                cmd_error = SMMU_CERROR_ILL;
++                break;
++            }
++            break;
++        }
+         case SMMU_CMD_TLBI_EL3_ALL:
+         case SMMU_CMD_TLBI_EL3_VA:
+         case SMMU_CMD_TLBI_EL2_ALL:
+         case SMMU_CMD_TLBI_EL2_ASID:
+         case SMMU_CMD_TLBI_EL2_VA:
+         case SMMU_CMD_TLBI_EL2_VAA:
+-        case SMMU_CMD_ATC_INV:
+         case SMMU_CMD_PRI_RESP:
+         case SMMU_CMD_RESUME:
+         case SMMU_CMD_STALL_TERM:
+@@ -1931,6 +1945,10 @@ static bool smmu_validate_property(SMMUv3State *s, Error **errp)
+             error_setg(errp, "ril can only be disabled if accel=on");
+             return false;
+         }
++        if (s->ats) {
++            error_setg(errp, "ats can only be enabled if accel=on");
 +            return false;
 +        }
          return true;
      }
  
-@@ -2059,6 +2064,8 @@ static const Property smmuv3_properties[] = {
-     DEFINE_PROP_BOOL("accel", SMMUv3State, accel, false),
-     /* GPA of MSI doorbell, for SMMUv3 accel use. */
+@@ -2066,6 +2084,7 @@ static const Property smmuv3_properties[] = {
      DEFINE_PROP_UINT64("msi-gpa", SMMUv3State, msi_gpa, 0),
-+    /* RIL can be turned off for accel cases */
-+    DEFINE_PROP_BOOL("ril", SMMUv3State, ril, true),
+     /* RIL can be turned off for accel cases */
+     DEFINE_PROP_BOOL("ril", SMMUv3State, ril, true),
++    DEFINE_PROP_BOOL("ats", SMMUv3State, ats, false),
  };
  
  static void smmuv3_instance_init(Object *obj)
-@@ -2084,6 +2091,8 @@ static void smmuv3_class_init(ObjectClass *klass, const void *data)
-     object_class_property_set_description(klass, "accel",
-         "Enable SMMUv3 accelerator support. Allows host SMMUv3 to be "
+@@ -2093,6 +2112,9 @@ static void smmuv3_class_init(ObjectClass *klass, const void *data)
          "configured in nested mode for vfio-pci dev assignment");
-+    object_class_property_set_description(klass, "ril",
-+        "Disable range invalidation support (for accel=on)");
+     object_class_property_set_description(klass, "ril",
+         "Disable range invalidation support (for accel=on)");
++    object_class_property_set_description(klass, "ats",
++        "Enable/disable ATS support (for accel=on). Please ensure host "
++        "platform has ATS support before enabling this");
  }
  
  static int smmuv3_notify_flag_changed(IOMMUMemoryRegion *iommu,
+diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+index bb408de43a..60d8fda755 100644
+--- a/hw/arm/virt-acpi-build.c
++++ b/hw/arm/virt-acpi-build.c
+@@ -346,6 +346,7 @@ typedef struct AcpiIortSMMUv3Dev {
+     /* Offset of the SMMUv3 IORT Node relative to the start of the IORT */
+     size_t offset;
+     bool accel;
++    bool ats;
+ } AcpiIortSMMUv3Dev;
+ 
+ /*
+@@ -401,6 +402,7 @@ static int iort_smmuv3_devices(Object *obj, void *opaque)
+ 
+     bus = PCI_BUS(object_property_get_link(obj, "primary-bus", &error_abort));
+     sdev.accel = object_property_get_bool(obj, "accel", &error_abort);
++    sdev.ats = object_property_get_bool(obj, "ats", &error_abort);
+     pbus = PLATFORM_BUS_DEVICE(vms->platform_bus_dev);
+     sbdev = SYS_BUS_DEVICE(obj);
+     sdev.base = platform_bus_get_mmio_addr(pbus, sbdev, 0);
+@@ -544,6 +546,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+     int i, nb_nodes, rc_mapping_count;
+     AcpiIortSMMUv3Dev *sdev;
+     size_t node_size;
++    bool ats_needed = false;
+     int num_smmus = 0;
+     uint32_t id = 0;
+     int rc_smmu_idmaps_len = 0;
+@@ -579,6 +582,9 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+         /* Calculate RMR nodes required. One per SMMUv3 with accelerated mode */
+         for (i = 0; i < num_smmus; i++) {
+             sdev = &g_array_index(smmuv3_devs, AcpiIortSMMUv3Dev, i);
++            if (sdev->ats) {
++                ats_needed = true;
++            }
+             if (sdev->accel) {
+                 nb_nodes++;
+             }
+@@ -678,8 +684,8 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+     build_append_int_noprefix(table_data, 0, 2); /* Reserved */
+     /* Table 15 Memory Access Flags */
+     build_append_int_noprefix(table_data, 0x3 /* CCA = CPM = DACS = 1 */, 1);
+-
+-    build_append_int_noprefix(table_data, 0, 4); /* ATS Attribute */
++    /* ATS Attribute */
++    build_append_int_noprefix(table_data, ats_needed, 4);
+     /* MCFG pci_segment */
+     build_append_int_noprefix(table_data, 0, 4); /* PCI Segment number */
+ 
 diff --git a/include/hw/arm/smmuv3.h b/include/hw/arm/smmuv3.h
-index 9c39acd5ca..533a2182e8 100644
+index 533a2182e8..242d6429ed 100644
 --- a/include/hw/arm/smmuv3.h
 +++ b/include/hw/arm/smmuv3.h
-@@ -69,6 +69,7 @@ struct SMMUv3State {
-     struct SMMUv3AccelState *s_accel;
+@@ -70,6 +70,7 @@ struct SMMUv3State {
      uint64_t msi_gpa;
      Error *migration_blocker;
-+    bool ril;
+     bool ril;
++    bool ats;
  };
  
  typedef enum {
