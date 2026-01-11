@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E536AD1003E
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jan 2026 23:00:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B36BBD10020
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jan 2026 22:59:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vf3SW-0005Lf-7c; Sun, 11 Jan 2026 16:58:52 -0500
+	id 1vf3SW-0005Nh-UC; Sun, 11 Jan 2026 16:58:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vf3SK-0005KZ-5G
- for qemu-devel@nongnu.org; Sun, 11 Jan 2026 16:58:40 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1vf3SM-0005LL-Ak
+ for qemu-devel@nongnu.org; Sun, 11 Jan 2026 16:58:43 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vf3SH-0003r3-PF
- for qemu-devel@nongnu.org; Sun, 11 Jan 2026 16:58:39 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-2a137692691so38701545ad.0
- for <qemu-devel@nongnu.org>; Sun, 11 Jan 2026 13:58:37 -0800 (PST)
+ id 1vf3SK-0003rj-KU
+ for qemu-devel@nongnu.org; Sun, 11 Jan 2026 16:58:42 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-2a0d5c365ceso40055155ad.3
+ for <qemu-devel@nongnu.org>; Sun, 11 Jan 2026 13:58:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768168716; x=1768773516; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768168719; x=1768773519; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BpSHIWQQ8x9eIJTo+o+MCuWeunb6JYZPGxKktINRqfc=;
- b=p8nEEVwO4ezk+DgcFbpPQCBGCXiz44+3u7S9KB1t73JfYXv0qorJg5nP0/rW6pkNBX
- CqP/Jad/OeOr4d4w0sWc4BDBbX6//R2R++mjaBZag1f1TADjbV7cr/IG9UH/IZaGBvzz
- LQ28hreESnXjH6Tzr1B0Fy4/oo47XGWNChD4BbIyBjOVK13twqBEmS2i9beL5twWMky7
- bJDXL2LeZVOiE/qnFuBlzlPBQBIa9tEf65ywIG92uCv/Eo2AXV2yw7zspyOi0XdYqhLp
- sL84yccZHOldfb5yz+mlVvYT4Nwnbq3T0WdiqFratIGZgtovQvXgy5w3cu2ZGHFIaImn
- Jk7Q==
+ bh=7WU9noscw5cu2FvkNQz+IaG1JpungMpnx4UvU4kIi8U=;
+ b=ng0dZFuq61lkzoWTj103/jRNHh/QHIn1KFQ4aVUJgnEwq3UJpntxMnH6qcSuv8oTNI
+ JcZbTsNOhwNnBXKADFs50n7e9ERu/UvRI57IPas6eyT3t+5kAjq1reFMrL8AmuldSgYk
+ dOcKVOSo/DD4R5tHa/qTBYIThp7gqXp57izfVCREfaZyI1IZeNX1JReTaEZ0Vl40NTDc
+ mczqu4/C8GDxXTKOneemaBi4b49ATI3y9RDfbdTvE0ASRgY8WDnQWX5XtRBYa99lZxdU
+ MY34W78a7DPcJnXQKuqd3fWpq8JTdxEIUPd7cFfe6u1kwArdhpr1b9niCcjFDjJvZ7NX
+ 4buw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768168716; x=1768773516;
+ d=1e100.net; s=20230601; t=1768168719; x=1768773519;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=BpSHIWQQ8x9eIJTo+o+MCuWeunb6JYZPGxKktINRqfc=;
- b=TMYdtyn60lx3CGXZGQ8y72oQ1/9F9dRx4pKwFvurqMLwmyyvoTxzkmeOGohn+xYSp/
- r9Ls6XEV1QzfVRJ9WcGTLNBHgTg91JVL2yduw7rwQyLp0ngxGX/VAaCLEh6B4VYaPMKV
- eBlFnVtmrr1r1EhoqwrOExYAA8E+7r7g4tBorvW7guLM6ypYOQbCTm/LMVN1IrPr4wFW
- gdhbD5zbliIYTxOf8y3OtvNHhV0TI7ITyMVMERmh0OcWI2j8j6U5+sSf0mW7GUT0ohei
- lZmCYTJVnSRQA35nT2pVB0fp83gkClHeANd+iPjjzv9UBd5V/KCICB9O9pkH339EdKHq
- r0qQ==
-X-Gm-Message-State: AOJu0YxGcR677N3e/wCKEMsaRLR8XaUHw7M+Xc6B5morU+004+jOYRHe
- wqHaC3gmPM53oRN965JNBtAAbxtyZmX8UKUVmxUYKjt9T8Z7E6woIfXh/RvW7ny3Ie6INyzVI8d
- CFMVkDJw=
-X-Gm-Gg: AY/fxX7jKx/Q2moC8/NcmjJBBHEpwM8r2roJ45Kp+yfCRgoaoRN9x8lUmOGgILraovw
- 1zA5Cm4GMuO53xe7MngYF9M+RPAlhL2IQUqTFLQORLc3ffyMay0tNF+sHX8AeFELID4q6FqKoiu
- 7mbJJsuqUaNB6FHGS6HkHDwCfbs0Pxst8JTkiAbnHWv/SCIISrjDLQcvqLafMTwjXgRw1y8q9ip
- gCKNT1QvShIUHNE4r38FoSMVPjVeZ4aHJYnA31xnqvuIBm/wRCn52ZKYU2SUzp+Hvalico32A2o
- xMPSpRdzeaiqhQrkRjoBPEYbAArvyIdfzTDL5F7YpbzcbcqQTB0qqincInYPISz4cUjGDc4/V3j
- 6lHlYShSKTrKzM7kIU3ogWoAYlflGLmoXw05DOuwW5g7VgxjemHyHp9hANaMDzOJjmNXFeVEchc
- MOBpYZw/XI+vtvAJs=
-X-Google-Smtp-Source: AGHT+IGNt+0Jl8uu3qyE0YRsm6P47B95trxtelKxi6ARj3ce/EmytsjH4kQee5bpvnx4iaua8+Iaxg==
-X-Received: by 2002:a17:902:f68e:b0:2a0:941a:6b08 with SMTP id
- d9443c01a7336-2a3ee47d754mr162761725ad.21.1768168716353; 
- Sun, 11 Jan 2026 13:58:36 -0800 (PST)
+ bh=7WU9noscw5cu2FvkNQz+IaG1JpungMpnx4UvU4kIi8U=;
+ b=Y7ZZYTHOTOgaAR/aCtUGYNutMqa0dYuBWPARE1KqfhtPhO7cYdYCJZRAxAoCOGTQ9c
+ 3p/XiBWhesFfzjqpCMfcQTvSS6fmQkg1fwj/ZyXGCq8CTKZKDi1v7MarrZS+sc876P2k
+ UWDolGLRQly/NkvCloTfV6nhGFP5fghGqH1v76AAia1qMNSl/d9nvUZ3PqX3X0JHauDr
+ 9Fs3yXLTXeYNWXuWXo3lTwXKOEslOG5cjk+h0NdFv7HTSTu7JGbUX06WwXQtZNNZG5Cz
+ LbDiRnxCUy6AcDx7i8qaBc2beSU7v1oj14Y0j6V/oAWuUctwk4ax4w7Pqr5otS5RrS5P
+ gTfA==
+X-Gm-Message-State: AOJu0YwbvW5VLxDM/nB388C7ZUTnoqTeMwH9l5t9lYR4wep2WoOthkUk
+ /2OwdCV1E5HN6hMazZRSWpOc7FaMsVV9IY1j28Et5nqs63CeEiVJACU9rrHXcbhcwJM0FddtO2t
+ +NxKGsS8=
+X-Gm-Gg: AY/fxX4TSwT/6YhTE/eMb/FLBOIR4EM/xGntlkOM8IvxbgJ34bLiajjBs2420tK3MlF
+ mKpwS1KskLP1z66vwBCyrgUr0tSPd1XDZsYekD27iV7OJG4YR/1zqU+oInd0zhLekgbobinfQBp
+ t329OiMg6xj/EDH5Tm0HD1vT1fzyx5F1VYkLgve0BxnolCSCojkApl/BTy/bfcl8ejnHC4dXNB5
+ IQkrCkv5CR1Y20s+Pg718MCQl9Z0eKN4TOf95rK47ukasH+0YVAryy9VMQogWmtUg9/y/p0Swiz
+ YJ/mXYac8mBHeI/yiWSm5NC6+ztvBK0bVaECJfaZpWeJ5HNU+V+AfI48lQPO5bijMj0epiucCe7
+ okqIFwOr2smepjXDjLcJA9EfHAxt0sQ+fuDPDwyxvckaHQMz4mrAD12waaLND/YASoJflc7GRDC
+ kfEywIG21g61RurRdwZOZT9x8O4g==
+X-Google-Smtp-Source: AGHT+IEerdqgdN8GnGZUht5YTwUffw3px/4VXHMiSaHJN/5tJmkGwDfnAhsAnBmbsLV9CwkaEcK3RQ==
+X-Received: by 2002:a17:902:ecc5:b0:2a0:a0cc:9994 with SMTP id
+ d9443c01a7336-2a3ee4d9312mr164280545ad.47.1768168719108; 
+ Sun, 11 Jan 2026 13:58:39 -0800 (PST)
 Received: from stoup.. ([202.86.209.61]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a3e3c3a31dsm155272365ad.9.2026.01.11.13.58.34
+ d9443c01a7336-2a3e3c3a31dsm155272365ad.9.2026.01.11.13.58.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 Jan 2026 13:58:36 -0800 (PST)
+ Sun, 11 Jan 2026 13:58:38 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
-	Zhijin Zeng <zengzhijin@linux.spacemit.com>
-Subject: [PULL 04/13] tcg/riscv: Fix TCG_REG_TMP0 clobber in tcg_gen_dup{m,i}
-Date: Mon, 12 Jan 2026 08:58:09 +1100
-Message-ID: <20260111215819.569209-5-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Jean-Christian=20C=C3=8ERSTEA?=
+ <jean.christian.cirstea@gmail.com>, qemu-stable@nongnu.org
+Subject: [PULL 05/13] linux-user: allow null `pathname` for statx()/fstatat()
+Date: Mon, 12 Jan 2026 08:58:10 +1100
+Message-ID: <20260111215819.569209-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260111215819.569209-1-richard.henderson@linaro.org>
 References: <20260111215819.569209-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,79 +100,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TCG_REG_TMP0 may be used by set_vtype* to load the vtype
-parameter, so delay any other use of TCG_REG_TMP0 until
-the correct vtype has been installed.
+From: Jean-Christian CÎRSTEA <jean.christian.cirstea@gmail.com>
+
+Since Linux 6.11, the path argument may be NULL.
+
+Before this patch, qemu-*-linux-user failed with EFAULT when `pathname` was
+specified as NULL, even for Linux kernel hosts > 6.10. This patch fixes this
+issue by checking whether `arg2` is 0. If so, don't return EFAULT, but instead
+perform the appropiate syscall and let the host's kernel handle null `pathname`.
 
 Cc: qemu-stable@nongnu.org
-Fixes: d4be6ee1111 ("tcg/riscv: Implement vector mov/dup{m/i}")
-Reported-by: Zhijin Zeng <zengzhijin@linux.spacemit.com>
+Signed-off-by: Jean-Christian CÎRSTEA <jean.christian.cirstea@gmail.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20251229121416.2209295-1-jean.christian.cirstea@gmail.com>
 ---
- tcg/riscv/tcg-target.c.inc | 33 +++++++++++++++++++--------------
- 1 file changed, 19 insertions(+), 14 deletions(-)
+ linux-user/syscall.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
-index 31b9f7d87a..0967a445a3 100644
---- a/tcg/riscv/tcg-target.c.inc
-+++ b/tcg/riscv/tcg-target.c.inc
-@@ -1074,7 +1074,7 @@ static bool tcg_out_sti(TCGContext *s, TCGType type, TCGArg val,
- }
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 2060e561a2..ee7c34027e 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -12141,9 +12141,13 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+             int dirfd = arg1;
+             int flags = arg3;
  
- static bool tcg_out_dup_vec(TCGContext *s, TCGType type, unsigned vece,
--                                   TCGReg dst, TCGReg src)
-+                            TCGReg dst, TCGReg src)
- {
-     set_vtype_len_sew(s, type, vece);
-     tcg_out_opc_vx(s, OPC_VMV_V_X, dst, 0, src);
-@@ -1082,29 +1082,34 @@ static bool tcg_out_dup_vec(TCGContext *s, TCGType type, unsigned vece,
- }
- 
- static bool tcg_out_dupm_vec(TCGContext *s, TCGType type, unsigned vece,
--                                    TCGReg dst, TCGReg base, intptr_t offset)
-+                             TCGReg dst, TCGReg base, intptr_t offset)
- {
-+    /* Note set_vtype* may clobber TMP0, so do that first. */
-+    set_vtype_len_sew(s, type, vece);
-     tcg_out_ld(s, TCG_TYPE_REG, TCG_REG_TMP0, base, offset);
--    return tcg_out_dup_vec(s, type, vece, dst, TCG_REG_TMP0);
-+    tcg_out_opc_vx(s, OPC_VMV_V_X, dst, 0, TCG_REG_TMP0);
-+    return true;
- }
- 
- static void tcg_out_dupi_vec(TCGContext *s, TCGType type, unsigned vece,
--                                    TCGReg dst, int64_t arg)
-+                             TCGReg dst, int64_t arg)
- {
-     /* Arg is replicated by VECE; extract the highest element. */
-     arg >>= (-8 << vece) & 63;
- 
--    if (arg >= -16 && arg < 16) {
--        if (arg == 0 || arg == -1) {
--            set_vtype_len(s, type);
--        } else {
--            set_vtype_len_sew(s, type, vece);
--        }
--        tcg_out_opc_vi(s, OPC_VMV_V_I, dst, 0, arg);
--        return;
-+    /* Note set_vtype* may clobber TMP0, so do that first. */
-+    if (arg == 0 || arg == -1) {
-+        set_vtype_len(s, type);
-+    } else {
-+        set_vtype_len_sew(s, type, vece);
-+    }
-+
-+    if (arg >= -16 && arg < 16) {
-+        tcg_out_opc_vi(s, OPC_VMV_V_I, dst, 0, arg);
-+    } else {
-+        tcg_out_movi(s, TCG_TYPE_I64, TCG_REG_TMP0, arg);
-+        tcg_out_opc_vx(s, OPC_VMV_V_X, dst, 0, TCG_REG_TMP0);
-     }
--    tcg_out_movi(s, TCG_TYPE_I64, TCG_REG_TMP0, arg);
--    tcg_out_dup_vec(s, type, vece, dst, TCG_REG_TMP0);
- }
- 
- static void tcg_out_br(TCGContext *s, TCGLabel *l)
+-            p = lock_user_string(arg2);
+-            if (p == NULL) {
+-                return -TARGET_EFAULT;
++            p = NULL;
++            /* Since Linux 6.11, the path argument may be NULL */
++            if (arg2 != 0) {
++                p = lock_user_string(arg2);
++                if (p == NULL) {
++                    return -TARGET_EFAULT;
++                }
+             }
+ #if defined(__NR_statx)
+             {
 -- 
 2.43.0
 
