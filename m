@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B36BBD10020
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jan 2026 22:59:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12991D10035
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jan 2026 23:00:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vf3SW-0005Nh-UC; Sun, 11 Jan 2026 16:58:53 -0500
+	id 1vf3SX-0005Ny-Lp; Sun, 11 Jan 2026 16:58:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vf3SM-0005LL-Ak
- for qemu-devel@nongnu.org; Sun, 11 Jan 2026 16:58:43 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1vf3SR-0005Ls-GF
+ for qemu-devel@nongnu.org; Sun, 11 Jan 2026 16:58:49 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vf3SK-0003rj-KU
- for qemu-devel@nongnu.org; Sun, 11 Jan 2026 16:58:42 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-2a0d5c365ceso40055155ad.3
- for <qemu-devel@nongnu.org>; Sun, 11 Jan 2026 13:58:40 -0800 (PST)
+ id 1vf3SN-0003sP-Nk
+ for qemu-devel@nongnu.org; Sun, 11 Jan 2026 16:58:45 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-29f0f875bc5so47662075ad.3
+ for <qemu-devel@nongnu.org>; Sun, 11 Jan 2026 13:58:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768168719; x=1768773519; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768168722; x=1768773522; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7WU9noscw5cu2FvkNQz+IaG1JpungMpnx4UvU4kIi8U=;
- b=ng0dZFuq61lkzoWTj103/jRNHh/QHIn1KFQ4aVUJgnEwq3UJpntxMnH6qcSuv8oTNI
- JcZbTsNOhwNnBXKADFs50n7e9ERu/UvRI57IPas6eyT3t+5kAjq1reFMrL8AmuldSgYk
- dOcKVOSo/DD4R5tHa/qTBYIThp7gqXp57izfVCREfaZyI1IZeNX1JReTaEZ0Vl40NTDc
- mczqu4/C8GDxXTKOneemaBi4b49ATI3y9RDfbdTvE0ASRgY8WDnQWX5XtRBYa99lZxdU
- MY34W78a7DPcJnXQKuqd3fWpq8JTdxEIUPd7cFfe6u1kwArdhpr1b9niCcjFDjJvZ7NX
- 4buw==
+ bh=OHti3C71LUbVm5pSNWQt/BFwUr/ys/K/zILSxw8aQnk=;
+ b=AjfXhlkC9+8j0WWgo8KrFTPiidxb5xi9EB5CWUUtLizzztkC/X4cY6IPyU4ljoZ41A
+ sFryu9hUDoV1uKPw6RbWT8DpNqqGL7hHvom2zDKXcL9/nGDcInffIRFbifB7ocoCuqd0
+ hwY0VZGGpduOBuxBq/AZhAmj1tDbMcTTSwtsWEdEZdrb8otOg12KnRFJf22g7cBLtdZY
+ N3rsGWP5fk9QE0jaLSpnDeXfT25jE8ZGTXqBjAn5Q/uNPV9IZ4/THwpm6IFamPUZLtdo
+ VlQmghZaTQe2qUAzsoTzVzpaEwYNJLGLL1jllKvcCpdWJB8osC3PIJb/w2b7Inq5NfDN
+ SilA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768168719; x=1768773519;
+ d=1e100.net; s=20230601; t=1768168722; x=1768773522;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=7WU9noscw5cu2FvkNQz+IaG1JpungMpnx4UvU4kIi8U=;
- b=Y7ZZYTHOTOgaAR/aCtUGYNutMqa0dYuBWPARE1KqfhtPhO7cYdYCJZRAxAoCOGTQ9c
- 3p/XiBWhesFfzjqpCMfcQTvSS6fmQkg1fwj/ZyXGCq8CTKZKDi1v7MarrZS+sc876P2k
- UWDolGLRQly/NkvCloTfV6nhGFP5fghGqH1v76AAia1qMNSl/d9nvUZ3PqX3X0JHauDr
- 9Fs3yXLTXeYNWXuWXo3lTwXKOEslOG5cjk+h0NdFv7HTSTu7JGbUX06WwXQtZNNZG5Cz
- LbDiRnxCUy6AcDx7i8qaBc2beSU7v1oj14Y0j6V/oAWuUctwk4ax4w7Pqr5otS5RrS5P
- gTfA==
-X-Gm-Message-State: AOJu0YwbvW5VLxDM/nB388C7ZUTnoqTeMwH9l5t9lYR4wep2WoOthkUk
- /2OwdCV1E5HN6hMazZRSWpOc7FaMsVV9IY1j28Et5nqs63CeEiVJACU9rrHXcbhcwJM0FddtO2t
- +NxKGsS8=
-X-Gm-Gg: AY/fxX4TSwT/6YhTE/eMb/FLBOIR4EM/xGntlkOM8IvxbgJ34bLiajjBs2420tK3MlF
- mKpwS1KskLP1z66vwBCyrgUr0tSPd1XDZsYekD27iV7OJG4YR/1zqU+oInd0zhLekgbobinfQBp
- t329OiMg6xj/EDH5Tm0HD1vT1fzyx5F1VYkLgve0BxnolCSCojkApl/BTy/bfcl8ejnHC4dXNB5
- IQkrCkv5CR1Y20s+Pg718MCQl9Z0eKN4TOf95rK47ukasH+0YVAryy9VMQogWmtUg9/y/p0Swiz
- YJ/mXYac8mBHeI/yiWSm5NC6+ztvBK0bVaECJfaZpWeJ5HNU+V+AfI48lQPO5bijMj0epiucCe7
- okqIFwOr2smepjXDjLcJA9EfHAxt0sQ+fuDPDwyxvckaHQMz4mrAD12waaLND/YASoJflc7GRDC
- kfEywIG21g61RurRdwZOZT9x8O4g==
-X-Google-Smtp-Source: AGHT+IEerdqgdN8GnGZUht5YTwUffw3px/4VXHMiSaHJN/5tJmkGwDfnAhsAnBmbsLV9CwkaEcK3RQ==
-X-Received: by 2002:a17:902:ecc5:b0:2a0:a0cc:9994 with SMTP id
- d9443c01a7336-2a3ee4d9312mr164280545ad.47.1768168719108; 
- Sun, 11 Jan 2026 13:58:39 -0800 (PST)
+ bh=OHti3C71LUbVm5pSNWQt/BFwUr/ys/K/zILSxw8aQnk=;
+ b=l/JD8RokbJT9cEoxY7amgK9LU/N0Z81iGkCJZAvC5TgoGivF3H7S42kMdudwIWDa9t
+ S3ty47flt0ofT6VRbFK0Jq5D7Dja9uM7f4SYiO+N2f5IzjAldk714dz/OjLcWHzkeiA7
+ PqUTmLg2adFXjbmmLCHRVabfxN7VJpLDxC4U6FB5zINSX7R1ZVAmwik4fqlrFBcTjqgj
+ q9xYQOE7uaqoWa37HRg9f22C6E4knTFMLpMwlKRkr6B/DxereAT6I0SAQ539xbs4wxfo
+ oiNmj7jle4UP3p3LaZW0mmLyhcVvyKE4eaNEuNPViTHF8GYpaWA7gxeSu0Gj8eqBZBVD
+ VJUA==
+X-Gm-Message-State: AOJu0YzW3CIuXeaQWUL2vUfIpkBVaiJVe0WHpe3PtGFnDDQTDTsxIlfB
+ Xvr71tbNk43WKAiw3P+iEyNrvAtUJ5oA6WsPd1f9guWBYXkgao7Z0zHFMsXCD0BdlvuG2tjWRhs
+ 3oBejnJk=
+X-Gm-Gg: AY/fxX4Jg66HK1xUDsZgrfkwULbl2uMigV0cyo/Zfe2fMWQKfEJc9evHfMs70HeSJkA
+ bKja1W7ZRexCZzXIX7vzwQYOuDfm7rN7VWyLaYHkS781qYaaZkt2TJ/jTdvhos+UZ6vKCWEmR0e
+ GNc/ljFGeUSmu4vdB2h0Jpw4ST8fmYOWnfF7X/gOe0aLteP14GOdR6cftbM7e1C+DTQjdYNJnro
+ OrmifztQWkOiLDrgg/BaQqPf6E4GhBupKaShXyFzGhqAZCvSVj/Vnu1eW9b/n/T4v+8/rwGOygo
+ 4oTnsVYM4DATvr977K8CRfNnGrqf6gS/eQulNQPyB0d19YJHCvL6qTs3fUu28NTst6SFHoaix5z
+ 9/u+7bPRfSmLV/UlzsZK8XO1wAbj5drCjnuueB8yvbyTZZY3D5DxrE0v22okPQnlqru5JtdPmYL
+ w125uNLNtxpj6z7aA=
+X-Google-Smtp-Source: AGHT+IFSUvgI7sLZEb/tSS4Wn1T4u3iZRHjJOYvGgkXyUIHd1IXLydx2vidLq9ev3NHxHJcZ6h0W2w==
+X-Received: by 2002:a17:902:d491:b0:2a0:b02b:210b with SMTP id
+ d9443c01a7336-2a3ee4fe86bmr154410095ad.41.1768168722214; 
+ Sun, 11 Jan 2026 13:58:42 -0800 (PST)
 Received: from stoup.. ([202.86.209.61]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a3e3c3a31dsm155272365ad.9.2026.01.11.13.58.36
+ d9443c01a7336-2a3e3c3a31dsm155272365ad.9.2026.01.11.13.58.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 Jan 2026 13:58:38 -0800 (PST)
+ Sun, 11 Jan 2026 13:58:41 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Jean-Christian=20C=C3=8ERSTEA?=
- <jean.christian.cirstea@gmail.com>, qemu-stable@nongnu.org
-Subject: [PULL 05/13] linux-user: allow null `pathname` for statx()/fstatat()
-Date: Mon, 12 Jan 2026 08:58:10 +1100
-Message-ID: <20260111215819.569209-6-richard.henderson@linaro.org>
+Cc: Jim MacArthur <jim.macarthur@linaro.org>, qemu-stable@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 06/13] linux-user/elfload.c: Correction to HWCAP2 accessor
+Date: Mon, 12 Jan 2026 08:58:11 +1100
+Message-ID: <20260111215819.569209-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260111215819.569209-1-richard.henderson@linaro.org>
 References: <20260111215819.569209-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,45 +100,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jean-Christian CÎRSTEA <jean.christian.cirstea@gmail.com>
+From: Jim MacArthur <jim.macarthur@linaro.org>
 
-Since Linux 6.11, the path argument may be NULL.
-
-Before this patch, qemu-*-linux-user failed with EFAULT when `pathname` was
-specified as NULL, even for Linux kernel hosts > 6.10. This patch fixes this
-issue by checking whether `arg2` is 0. If so, don't return EFAULT, but instead
-perform the appropiate syscall and let the host's kernel handle null `pathname`.
+get_elf_hwcap was used when get_elf_hwcap2 should have been.
 
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Jean-Christian CÎRSTEA <jean.christian.cirstea@gmail.com>
+Fixes: fcac98d0ba8b ("linux-user: Remove ELF_HWCAP2")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3259
+Signed-off-by: Jim MacArthur <jim.macarthur@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20251229121416.2209295-1-jean.christian.cirstea@gmail.com>
+Message-ID: <20260106-fix-hwcap2-sve2-v1-1-1d70dff63370@linaro.org>
 ---
- linux-user/syscall.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ linux-user/elfload.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 2060e561a2..ee7c34027e 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -12141,9 +12141,13 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-             int dirfd = arg1;
-             int flags = arg3;
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 0002d5be2f..35471c0c9a 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -708,7 +708,7 @@ static abi_ulong create_elf_tables(abi_ulong p, int argc, int envc,
+     NEW_AUX_ENT(AT_EXECFN, info->file_string);
  
--            p = lock_user_string(arg2);
--            if (p == NULL) {
--                return -TARGET_EFAULT;
-+            p = NULL;
-+            /* Since Linux 6.11, the path argument may be NULL */
-+            if (arg2 != 0) {
-+                p = lock_user_string(arg2);
-+                if (p == NULL) {
-+                    return -TARGET_EFAULT;
-+                }
-             }
- #if defined(__NR_statx)
-             {
+     if (HAVE_ELF_HWCAP2) {
+-        NEW_AUX_ENT(AT_HWCAP2, get_elf_hwcap(thread_cpu));
++        NEW_AUX_ENT(AT_HWCAP2, get_elf_hwcap2(thread_cpu));
+     }
+     if (u_base_platform) {
+         NEW_AUX_ENT(AT_BASE_PLATFORM, u_base_platform);
 -- 
 2.43.0
 
