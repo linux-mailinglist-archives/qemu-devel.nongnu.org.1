@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A79AD0FFCA
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jan 2026 22:45:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBCA2D10021
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jan 2026 22:59:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vf3ED-0007qX-1b; Sun, 11 Jan 2026 16:44:05 -0500
+	id 1vf3SB-0005Hn-1Y; Sun, 11 Jan 2026 16:58:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1vf3EB-0007pm-4g
- for qemu-devel@nongnu.org; Sun, 11 Jan 2026 16:44:03 -0500
-Received: from p-east2-cluster3-host10-snip4-7.eps.apple.com ([57.103.77.148]
- helo=outbound.st.icloud.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1vf3E9-0000i3-6g
- for qemu-devel@nongnu.org; Sun, 11 Jan 2026 16:44:02 -0500
-Received: from outbound.st.icloud.com (unknown [127.0.0.2])
- by p00-icloudmta-asmtp-us-east-1a-60-percent-5 (Postfix) with ESMTPS id
- D268818000A0; Sun, 11 Jan 2026 21:43:52 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=rcV0qxySQmhYiXqEdaNW5NLH6cMSDMa8IAtnH9SZBj0=;
- h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme;
- b=ABnRDHWRbKet69P27/5VML8FEhdlvoT7hq6eM9aVavQ53JQ5Po87GF2nmH9AWJnr2dcVAXRQBRDDwr2r/M/wpsLTfx9osf7MjboB5TJ5066S09SmrmmpeVmykml+4AdrdQw0OCSIELZpRwAUOZmyd5qMm+5tJXeG81bx8z4UAt4HeNR2f6nolK14AGHBH5gFebDCAwVV6tUbdRugol4ZoftqQe8WNNCLq17dr5OoujRXC8avfTYDDk3uXRlR5YEdbdG7O9MmCNtkuHzDA+e/FqZsYoGUeG15N0lHjElp4MOrb00BGf1ahB+CSTtJy0u7Cv58kLjaFC/DtW8Y5sMOwQ==
-mail-alias-created-date: 1752046281608
-Received: from smtpclient.apple (unknown [17.42.251.67])
- by p00-icloudmta-asmtp-us-east-1a-60-percent-5 (Postfix) with ESMTPSA id
- 518741800111; Sun, 11 Jan 2026 21:43:49 +0000 (UTC)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
-Subject: Re: [PATCH v7 17/36] hw/arm/virt: Set msi-gpa property
-From: Mohamed Mediouni <mohamed@unpredictable.fr>
-In-Reply-To: <20260111195508.106943-18-skolothumtho@nvidia.com>
-Date: Sun, 11 Jan 2026 22:43:37 +0100
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, eric.auger@redhat.com,
- peter.maydell@linaro.org, jgg@nvidia.com, nicolinc@nvidia.com,
- ddutile@redhat.com, berrange@redhat.com, clg@redhat.com, alex@shazbot.org,
- nathanc@nvidia.com, mochs@nvidia.com, smostafa@google.com,
- wangzhou1@hisilicon.com, jiangkunkun@huawei.com,
- jonathan.cameron@huawei.com, zhangfei.gao@linaro.org,
- zhenzhong.duan@intel.com, yi.l.liu@intel.com, kjaju@nvidia.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <526B3AB7-B0D4-4104-AF8F-012ED34EC990@unpredictable.fr>
-References: <20260111195508.106943-1-skolothumtho@nvidia.com>
- <20260111195508.106943-18-skolothumtho@nvidia.com>
-To: Shameer Kolothum <skolothumtho@nvidia.com>
-X-Mailer: Apple Mail (2.3864.300.41.1.7)
-X-Proofpoint-GUID: fe-W5KpKPNRIPx4GfEU7NIwyJB1--SBA
-X-Proofpoint-ORIG-GUID: fe-W5KpKPNRIPx4GfEU7NIwyJB1--SBA
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTExMDIwMCBTYWx0ZWRfX6TZnHQHYuo58
- Rg450e9TWFS+HXdZecqVxyAKBPXtsuqE7Wshm6majC3TTnt1X7ObWJ1lmQJHLlXse0iyze2iJzZ
- iWY2YeJ8HirmO4nOcyESr9W5z0eClMUgbI/Q057Yh83DGdUyh3WoNKwgPVNZzVh+Cj3zUlybrgk
- nm32XMSfOmr+iTtbIPIaxIfPXqdqzytGX3Ta0Ssv63PQjioSsJwMMBI87UzgJElYbFWhlilw7z3
- VRDRcJwgQI+noMpvFOmb4jbgnSgZZmaB5wIQRVJ+oQ2Bc9dsB8ipJVGjXOQfKPLhzf9N3ULMjey
- NCukQBbl7aWLVtn1/Kk
-X-Authority-Info: v=2.4 cv=QoRTHFyd c=1 sm=1 tr=0 ts=6964199b
- cx=c_apl:c_apl_out:c_pps a=YrL12D//S6tul8v/L+6tKg==:117
- a=YrL12D//S6tul8v/L+6tKg==:17 a=kj9zAlcOel0A:10 a=vUbySO9Y5rIA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Ikd4Dj_1AAAA:8 a=CVcQco4xPi_mWXQEgksA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-11_08,2026-01-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- adultscore=0 clxscore=1030 bulkscore=0 malwarescore=0 phishscore=0
- suspectscore=0 mlxscore=0 mlxlogscore=999 classifier=spam authscore=0
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2601110200
-X-JNJ: AAAAAAABsfI3K8Fku3NvqCAKESoT1rHQGW+KRyYbsFzVh/VCW1KRXWpCXLo2Qn/5vlorZTeoUFr1Q0uh95JZjpdvf3ke8F6JhXka3S9S3Gw07dd9zQd5Uo0Wno6eiiGZjd+w9s8zBfJ5EnE6PYf0y35SDdYuSW5uslNezOqh46pohxP1/m68cF0EahjG2/Z9mhLDcrjkVRY0LzPx1KYF7shGkZkLxrpKz+PoODYkc6B/hlz1haZqSrltEiqembha0NQJuHWFksX/a35KiWt3kPGXI5zeRngymjPuSH3eFptnXsw1BEz9h7MS5GY6o0qP+RjR5UNkQIPBlhv8hDK51+q+elnMRtpAiLOz9tabGJOPukeRUFEAXIYIfkvjAF0as8PdMCsEmyFttRHIJAcDGPMboAp7IoLTmHhCJ2ZtrQFP9I6PnQ5iNpTijDp3UwFQkizl0emDcktA6lE+BXOawHOD0+bFpRFQ+0wqMt6ob0+SWr8DzQEvc9jze8sFxaYCyvNOkKMnIlyn9cPUW5ywPnevaloiS4vPOb+AixggTJu7BqVzRyKcMy8ZGlD9xzIFJydevkXnYvxWS6zbXjVbO8+Z9KrNmB7p46fiUCQMMfQGJADzW/4z+3In/LLDFJ5tFxdnN6MmHdRTuT3hDd/eyRHcEyuFiWzvzpHpOBVLNNaYL3p4ZYaX30ondUUdPn/gRT0uLT79sAz3Kr7FxSCuUpJZ+VEo5dqbp26lvCKACxX1+sxlEwHtQxcNkizRSgDzOvYhDmY2LWcFiS/3csGRGVZymTMBdXAPTmEbVXpEehWC6Ve+DSTi0Zp3L38VDt8dqpr9s5F6TlQ9/Zc=
-Received-SPF: pass client-ip=57.103.77.148;
- envelope-from=mohamed@unpredictable.fr; helo=outbound.st.icloud.com
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1vf3S8-0005HJ-V0
+ for qemu-devel@nongnu.org; Sun, 11 Jan 2026 16:58:29 -0500
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1vf3S7-0003pe-4M
+ for qemu-devel@nongnu.org; Sun, 11 Jan 2026 16:58:28 -0500
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-81f3b4ae67bso570669b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 11 Jan 2026 13:58:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1768168705; x=1768773505; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=VktFmYwbNak4rx63/CkzhXp2Acb2T9tdf4g+0JQIRZw=;
+ b=SyYCILPNkMtj8rVAhzPm+Oel+vvHG7evceiX0VEJWH1G4vujI/0VbvfeF32EQIsFVV
+ VLSB19+8lXS5z0oqF4NUQPbJaD43J7+W8otoM+j/D/YKVIvD3Z2EDZmHS5qL8MLAjrEz
+ 1WyP6jsCc9yNBYBRuwvFSlP+IpF7vyZHnncuJc7lMpDHdXF4zClWLul7HY8PEeBWnyCI
+ 7hsucERwg0gfMYu5LoktxqotrTpEL9DS9GQ8oO6JQ+4rn3XYVAf+GeAqmgCrz9LFj+r3
+ rMVHZVOw4uI/0yJN51Ybl2VLmhhlnL9cPY61Vy1VcAFYAG0+S7cqG+t7NjXJ18XcrclJ
+ +jig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768168705; x=1768773505;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=VktFmYwbNak4rx63/CkzhXp2Acb2T9tdf4g+0JQIRZw=;
+ b=KA4rKWjmLJVI+0Zy8pB3eK0NcCGtPaVMmjRgyoGJTfUDSjrPZLLzUi9QCQ0LDk/AWK
+ zdsW64l6HzVm5Hjvcx+w9anG2NbBZ6WAFB0rAgoyhl5wUFIWBu9+qUi0QWwQjBjTMT3o
+ GAf4g4bS4paGpGLuJej6AHLSiJob2lcMS6Xl0KLoZf4BBWysAfxuBCEQpcTuoblX7VZr
+ W6N5jFxG6RdmLZ0L06ulPRjYopCT+SA+cEpkNHBUR5gztlJCkzl4SDrrzoOnNs3UE3zz
+ YxZtTTEiic1rEEw4xP6Rvv7963PyA3L3gWrQ83ZAX9UrTY144OHIGaH9ZG6Ob+lwIa4h
+ 2aEg==
+X-Gm-Message-State: AOJu0Yzw8X/+1y2QR6ynwfcY2tsH2CdLitT8D0evsm/Cnav2pHOwtxey
+ H7eK3ECBmKPYUIs4SpfPZwfvXObxv8v4A90vneJcSXBFiUXY9LZ0tb06/IkPuUZYGy7L1TwpGrT
+ VvmogPjM=
+X-Gm-Gg: AY/fxX696tL3iwTJa6C+f8XnUPIp0+BYONixojuPjksZLUgOdnkKPgNbgoXS/qsk+uV
+ /RgfNQxnJ7+rtbem85/pqkorrCN+VY4c/nDVvT3mSDNnpO0t2d8/4RvKYvl4dhY1pSg+08YSTK2
+ cCH7EQ0d86QSCYEpxKAG0sHNLAxFrvw8bxje5Bos3aZYkGxbJSXAFOQI5+Ppv0jIuIvPVeZQbmy
+ +WxRMe13ZhOsIfV8OJsUNcwG4Sh+e3WznY492QF1yRD2UWj6E6BMs9Im32yf/o0UpFJimF6UPQa
+ fn2cSbup65hRD7HlLky7NlffxB0ghvm0cQJoK+DAdrNyEjUHw+TEHm+1H78WgXnCTZqmorqmPo9
+ ca12V4XTkK2cIPdJufBxpSlgUr5gPm8ewX2cgJFjVHFqYcv8+8RIxX1dVGwokjLgzEFNhRRQLJE
+ UsH5kXqJO0ppgwTHM=
+X-Google-Smtp-Source: AGHT+IHdIuQ2y9oHRw/OGeiZDvmKDIyouGOeM5Lteld9kSk8+9IIijkf3CunSgJm7QvTkKcPNlktlA==
+X-Received: by 2002:a05:6a20:3941:b0:366:14ac:e20d with SMTP id
+ adf61e73a8af0-3898fa81a9fmr15238322637.75.1768168705122; 
+ Sun, 11 Jan 2026 13:58:25 -0800 (PST)
+Received: from stoup.. ([202.86.209.61]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2a3e3c3a31dsm155272365ad.9.2026.01.11.13.58.23
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 11 Jan 2026 13:58:24 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/13] tcg/linux-user patch queue
+Date: Mon, 12 Jan 2026 08:58:05 +1100
+Message-ID: <20260111215819.569209-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,73 +96,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The following changes since commit b254e486242466dad881fc2bbfa215f1b67cd30f:
 
+  Merge tag 'pull-riscv-to-apply-20260109' of https://github.com/alistair23/qemu into staging (2026-01-10 10:31:57 +1100)
 
-> On 11. Jan 2026, at 20:53, Shameer Kolothum <skolothumtho@nvidia.com> =
-wrote:
->=20
-> Set the MSI doorbell GPA property for accelerated SMMUv3 devices for =
-use
-> by KVM MSI setup. Also, since any meaningful use of vfio-pci devices =
-with
-> an accelerated SMMUv3 requires both KVM and a kernel irqchip, ensure
-> those are specified when accel=3Don is selected.
->=20
-> Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-> Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
-> ---
-> hw/arm/virt.c | 20 ++++++++++++++++++++
-> 1 file changed, 20 insertions(+)
->=20
-> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> index 9d0568a7d5..08feadf0a8 100644
-> --- a/hw/arm/virt.c
-> +++ b/hw/arm/virt.c
-> @@ -3052,6 +3052,26 @@ static void =
-virt_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
->             /* The new SMMUv3 device is specific to the PCI bus */
->             object_property_set_bool(OBJECT(dev), "smmu_per_bus", =
-true, NULL);
->         }
-> +        if (object_property_find(OBJECT(dev), "accel") &&
-> +            object_property_get_bool(OBJECT(dev), "accel", =
-&error_abort)) {
-> +            hwaddr db_start;
-> +
-> +            if (!kvm_enabled() || !kvm_irqchip_in_kernel()) {
-> +                error_setg(errp, "SMMUv3 accel=3Don requires KVM with =
-"
-> +                           "kernel-irqchip=3Don support");
-> +                    return;
-> +            }
-> +
-> +            if (vms->msi_controller =3D=3D VIRT_MSI_CTRL_ITS) {
-> +                /* GITS_TRANSLATER page + offset */
-> +                db_start =3D base_memmap[VIRT_GIC_ITS].base + 0x10000 =
-+ 0x40;
-> +            } else {
-> +                /* MSI_SETSPI_NS page + offset */
-> +                db_start =3D base_memmap[VIRT_GIC_V2M].base + 0x40;
-> +            }
-Hello,
+are available in the Git repository at:
 
-Currently (but soon no longer the case for virt-11.0+), its=3Doff means =
-no MSI controller at all instead of
-GICv3 + GICv2m.=20
+  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20260112
 
-Would an else if with an error returned if no MSI controller is enabled =
-be adequate?
+for you to fetch changes up to 365a2248ae69f306fe7997fd966bcb1c16a08695:
 
-> +            object_property_set_uint(OBJECT(dev), "msi-gpa", =
-db_start,
-> +                                     &error_abort);
-> +        }
->     }
-> }
->=20
-> --=20
-> 2.43.0
->=20
->=20
+  meson: disable libatomic with GCC >= 16 (2026-01-12 08:49:33 +1100)
 
+----------------------------------------------------------------
+tcg/riscv: Fix TCG_REG_TMP0 clobber in tcg_gen_dup{m,i}
+tcg/optimize: Fixes for o_mask and a_mask
+linux-user: Correction to HWCAP2 accessor
+linux-user: Fixes for mremap
+linux-user: Implement epoll_pwait2 syscall
+meson: disable libatomic with GCC >= 16
+
+----------------------------------------------------------------
+Daniel P. Berrangé (1):
+      meson: disable libatomic with GCC >= 16
+
+Jean-Christian CÎRSTEA (1):
+      linux-user: allow null `pathname` for statx()/fstatat()
+
+Jim MacArthur (1):
+      linux-user/elfload.c: Correction to HWCAP2 accessor
+
+Matthew Lugg (4):
+      linux-user: fix mremap unmapping adjacent region
+      linux-user: fix mremap errors for invalid ranges
+      linux-user: fix reserved_va page leak in do_munmap
+      tests: add tcg coverage for fixed mremap bugs
+
+Michael Tokarev (2):
+      linux-user: cleanup epoll_pwait ifdeff'ery
+      linux-user: implement epoll_pwait2 syscall
+
+Paolo Bonzini (1):
+      tcg/optimize: Do use affected bits
+
+Richard Henderson (3):
+      tcg/optimize: Save o_mask in fold_masks_zosa_int
+      tcg/optimize: Fix a_mask computation for orc
+      tcg/riscv: Fix TCG_REG_TMP0 clobber in tcg_gen_dup{m,i}
+
+ linux-user/elfload.c            |  2 +-
+ linux-user/mmap.c               | 16 ++++++++------
+ linux-user/syscall.c            | 47 +++++++++++++++++++++++++++--------------
+ tcg/optimize.c                  |  7 +++---
+ tests/tcg/multiarch/test-mmap.c | 42 ++++++++++++++++++++++++++++++++++--
+ meson.build                     |  9 ++++++++
+ tcg/riscv/tcg-target.c.inc      | 33 +++++++++++++++++------------
+ 7 files changed, 114 insertions(+), 42 deletions(-)
 
