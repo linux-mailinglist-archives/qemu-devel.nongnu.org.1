@@ -2,93 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2722D0F968
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jan 2026 19:39:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10966D0FCEE
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jan 2026 21:32:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vf0K5-0004Fz-EF; Sun, 11 Jan 2026 13:37:57 -0500
+	id 1vf25F-0005tb-9y; Sun, 11 Jan 2026 15:30:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vf0Js-00049f-RP
- for qemu-devel@nongnu.org; Sun, 11 Jan 2026 13:37:47 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ (Exim 4.90_1) (envelope-from <visitorckw@gmail.com>)
+ id 1vf0VI-0005Rz-0J
+ for qemu-devel@nongnu.org; Sun, 11 Jan 2026 13:49:34 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vf0Jq-00062s-5r
- for qemu-devel@nongnu.org; Sun, 11 Jan 2026 13:37:44 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-2a09a3bd9c5so39617355ad.3
- for <qemu-devel@nongnu.org>; Sun, 11 Jan 2026 10:37:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <visitorckw@gmail.com>)
+ id 1vf0VG-0007Yp-Es
+ for qemu-devel@nongnu.org; Sun, 11 Jan 2026 13:49:31 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-29f102b013fso55406005ad.2
+ for <qemu-devel@nongnu.org>; Sun, 11 Jan 2026 10:49:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768156658; x=1768761458; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=MrcFz3CqcvUyhYF+owPDGEDGy70S6fo78YKmsjpdahs=;
- b=jbCFGzHKO2YoEqDrYTx6Oa1/u45mqlg5zAAfM3RNNCrT7gP250W/btRjR67vzgU3ja
- jlbqFmcCUu/3/bahWWjwur+fHTzWna/kD1Yu87j98FsW/W9MnvlC/RuqfvoT1RcA6sJI
- Ws5Rs0+lgkDJuH8F0ANhn6vCfEQLR+PU3d7AiP9BLSfO+seHcbB1ZJX+qZdO/+R1Mrcc
- vNrSuuE3l5+2esole0EPEW7WTkwIi2VlbVwj1ILPSq3uc6bxMx5+g682907fGnG67blK
- bMEymZH5zsBVV4tY2bmHR7xH2xLsKhP2Yxvi2Ie04muxOxepR32vNVTLayN2VBcRzrtl
- 8a1g==
+ d=gmail.com; s=20230601; t=1768157369; x=1768762169; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ar1B/LWH2fiMHmQ1MbphdWYmxoynyqyilffTedByHN4=;
+ b=b2iBbOByH80wnBunTkXpfoR6EcDYazJ8YOg6Jn/7yxkawLQKCYl4/6AJPurGE9Ie40
+ ZK/EUVJIx3q3D9RJYVnt0ui0vNRdmcusYUZTnDWZMnj/TCL2VF7LLruGeKjLyDIAScXp
+ wznRANxu7fXw0ipdntcexxcvB8EbQEad7pGUVWufEZxb+BEcyRsbN3x41MQph8yYEaV/
+ 1GNBRwJzL2C04sWj2JMiKAhbXp6Pka0XYD9BiekMG+PX6XjkUdebDuJSLeiCOMA35yXK
+ ocoZxnNUfZHVrzp3sLdl7lisPNLFhW3Vu3dLteJud6hw7Rdk1ze7Nc8GQSVS3SyNi4Ku
+ Q0+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768156658; x=1768761458;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=MrcFz3CqcvUyhYF+owPDGEDGy70S6fo78YKmsjpdahs=;
- b=SSclK+YO5vW27piXKdoPvF1HwzDPyGoOwmkzyaUsgR8YkrWc8k3cxKSrDfJ9OOYZGm
- ADyUskQ3Mw/t+/QPq52ZfpkImZOMv62ho8bn7TAV5cJ7Vy74gOVfudh8xLM5OHRREONW
- 8QAX/eN5NV2LCPvf1+KgptzdO79bRtHWgrgUiK8EHXdm7AWnBx2NNd8vMHAJU6EXCx9O
- ksAi8DgovKUN9xXYgHMKi2G0USnqamDSbSZh9nv97g6Ln1mv6rXJS193VyQxK/qzZ/z4
- PAuFZGUtn8IAfWTrtBf2Si1mtN9aTZpUIbxgLuhcGatqmkaKHQMgVN5HYLrUUV73ddfL
- U/5A==
+ d=1e100.net; s=20230601; t=1768157369; x=1768762169;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Ar1B/LWH2fiMHmQ1MbphdWYmxoynyqyilffTedByHN4=;
+ b=GftgzQa1U+hdtxQnQMgSNxYcGU/waLNCX+AXpMoDIeeG55Z2qG5gBm88rV/x83UL3d
+ 0o6bB4WT+4LEq4m+o7im4pYjMcxYajRz1b/VdWnqV2+FddJcwvNQniHpcU0/qrHSA67I
+ wAEveAwFRIwt3FpDN1/PfT5ddZawl8ZhjobypdMnqO/pYz72MjlgJE9nIqsWMdPgQSeW
+ C3w1nYJTGNNMTJx+75h6jEmDuywgD85n9S6KYsr9Ae0HA60BtK44Vy2BjaWgZ9N8zuw9
+ 7/Tm85t/1WBbvzABJh3B5CAE1MFH7uV62qSgj3rjcIQJv8vsGcXFpgeKiQZOB4DSah/9
+ nuFg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWGA4cyq7AqbyJToEaiwDI0pwyOVX3eSdAJEQflhhhbfAf1uBn3Kc+lh0LpopAvUT9co2ik+ZRwjMOx@nongnu.org
-X-Gm-Message-State: AOJu0Ywh9T7V1fk/WWjecjYy3ouMJcGux8FNbrm8ZQagPomy9sLy8SXy
- b0lQLtpOofbOYzx1hnf4t4vwv07Af+iurtI0khdMVg5yNt6A2wIaVfP9/MoVx7njeHk=
-X-Gm-Gg: AY/fxX79M51ZcE5ZODlx/4YSlCjWkZ4+WGKJCFBuHdy5AKkYEoZbisWfnPyJQBA2iWP
- +7en1jAKxhQbOi45kppC9kF5qH7yErFeaS207urlCbUKWx6Uhu7qVaX09meQGi6lU7rWnMRARP/
- dxvjfsyKTzIwjMIk9PKodO1MSxoUMK4OFf/fKQeiyiwywbfrnyawgu9p+PlB+mOz+dfDTQRC42V
- lFyqPuAw7XJCr4tpKHiJDikZIl9yLFpOzILNYY3yPzumBx7c5NHUaSuT9eBoTiDbFngObft4KPu
- Rvh/6xvyl7LvBehNe7TBv/29s/GP58Ou9ogxr5Y6TsMpJpHXealFnoWFUE9Dx7bQlFgg9euPghj
- h4Opil8rQ3MlrV5UnQTF+EpO5qc+IvtRTiBp4JVUNBbIduF0+drwHFOxdCirHJmiaPzZJbYsaEd
- TAvMPpaMSVBuZw33GjwuhYxY6rqsZ9bEb+UIn8VkXraIv2FYsROixp8iWK
-X-Google-Smtp-Source: AGHT+IHkbJgU0TBJlinRq+unb4oivq/ad9uRJqBTh6OhWMRb4wUFhc1zueY50wfocXOpHVkQfxKNNg==
-X-Received: by 2002:a17:903:1108:b0:2a0:9ca7:7405 with SMTP id
- d9443c01a7336-2a3ee491c15mr142706355ad.36.1768156658048; 
- Sun, 11 Jan 2026 10:37:38 -0800 (PST)
-Received: from [192.168.1.87] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
+ AJvYcCXpIwbaei9xo+TVt1UP3OTOTogWvad8ROBBMkQ+kge8wjRiO7vA7rve1fW0Heg9VHpwo3FmxGGTSghP@nongnu.org
+X-Gm-Message-State: AOJu0YyRbmWO3KSEnKTpbY8BmR3a7ZpD/5kix+oL7jNN3zUJzB4mwsDH
+ amSVKUR0U0sT33nhbPKCvYR3tCyjSuiw+4krIAfJL3fFFayXSS51grfefy16Zw==
+X-Gm-Gg: AY/fxX7qyHZHnSgMAE3NRfjIJt1hozikar599Ajqp09wF9VloSE07eIdG+ohl8/wlpk
+ Q9Rz5bHGg+w0e7XeQcDpWjkRu/t2oL9wt4rqR4VvyDHwGuRB2Fx/Sb0XBvyXmOj/L62g1G8Yh9G
+ BTpUh8CKEkOVkRxKD4q9dcrF3yhUb9fthLcNX/+RXIB86+1PqhJnRvJeFjmUaxGg4OcniWxkr/I
+ zHFl2S66PkVKMqVfOJxc3YHyDRDBzlRXT4HBKAsnbfNIO+pKV30l4kSE4JksCnopQn7b9P91zZz
+ raaVa2U9R4/WZf2qp+lpPPQ9ziF7W0Je+18JhPn7JP/ZoKBlo8Tz5IQSxKC3q50HMqeg7aIfc5y
+ KU5e0NRDMyXxEXeD4/AzOtMh5NvDmJt4pgR9VpgRVZ7XMYyv9W/2qqX8bqRRQg/Bi0ggu9W/G2f
+ V+slL0hmVYOZ+cYAvuUpkPgBIWgj311fIu17oCoA9cYotQk3l3FsxP8K0iHR8oIBXl6VUgw3b7+
+ oNT7xpvs6oKYAe6QqMlFA==
+X-Google-Smtp-Source: AGHT+IGuvFEMTAi9wRimF2In2xo0dyfGJ/cVPvbzg1VJwnpc6DLg/SdnyTTf7YQqktVETWmh7J7LpQ==
+X-Received: by 2002:a17:903:244e:b0:2a2:d2e8:9f1f with SMTP id
+ d9443c01a7336-2a3ee491c2bmr155099835ad.31.1768157368607; 
+ Sun, 11 Jan 2026 10:49:28 -0800 (PST)
+Received: from visitorckw-work01.c.googlers.com.com
+ (25.118.81.34.bc.googleusercontent.com. [34.81.118.25])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a3e3cb2c5bsm155920905ad.58.2026.01.11.10.37.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 11 Jan 2026 10:37:37 -0800 (PST)
-Message-ID: <de2f6b6d-3160-4b5c-af21-2b5c673aee92@linaro.org>
-Date: Sun, 11 Jan 2026 10:37:37 -0800
+ d9443c01a7336-2a3e3c4893dsm152753005ad.28.2026.01.11.10.49.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 11 Jan 2026 10:49:28 -0800 (PST)
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+To: laurent@vivier.eu
+Cc: jserv@ccns.ncku.edu.tw, qemu-devel@nongnu.org,
+ Kuan-Wei Chiu <visitorckw@gmail.com>
+Subject: [PATCH] hw/misc/virt_ctrl: Fix incorrect trace event in read operation
+Date: Sun, 11 Jan 2026 18:49:15 +0000
+Message-ID: <20260111184915.1363318-1-visitorckw@gmail.com>
+X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tcg/optimize: Fix a_mask computation for orc
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-References: <20260111071137.433005-1-richard.henderson@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20260111071137.433005-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x630.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=visitorckw@gmail.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Sun, 11 Jan 2026 15:30:43 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,18 +101,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/10/26 11:11 PM, Richard Henderson wrote:
-> In computing a_mask, for or, we remove the bits from t1->o_mask
-> which are known to be zero.  For orc, the bits known to be zero
-> are the inverse of those known to be one.
-> 
-> Cc: qemu-stable@nongnu.org
-> Fixes: cc4033ee47c ("tcg/optimize: Build and use zero, one and affected bits in fold_orc")
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   tcg/optimize.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
+The virt_ctrl_read() function currently invokes trace_virt_ctrl_write()
+instead of trace_virt_ctrl_read(). This results in read operations
+appearing as write operations in the trace output, which is misleading
+during debugging and analysis.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Replace the incorrect trace call with the proper read-specific trace
+event to accurately reflect the hardware behavior.
+
+Fixes: 0791bc02b8fb ("m68k: add a system controller")
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+---
+ hw/misc/virt_ctrl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hw/misc/virt_ctrl.c b/hw/misc/virt_ctrl.c
+index 40747925a2..9b82e97ffd 100644
+--- a/hw/misc/virt_ctrl.c
++++ b/hw/misc/virt_ctrl.c
+@@ -43,7 +43,7 @@ static uint64_t virt_ctrl_read(void *opaque, hwaddr addr, unsigned size)
+         break;
+     }
+ 
+-    trace_virt_ctrl_write(s, addr, size, value);
++    trace_virt_ctrl_read(s, addr, size, value);
+ 
+     return value;
+ }
+-- 
+2.52.0.457.g6b5491de43-goog
+
 
