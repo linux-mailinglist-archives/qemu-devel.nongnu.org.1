@@ -2,28 +2,28 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F177D0FC29
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jan 2026 21:06:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE1FED0FBBC
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jan 2026 20:59:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vf1am-0003t4-0U; Sun, 11 Jan 2026 14:59:16 -0500
+	id 1vf1aj-0003pS-UG; Sun, 11 Jan 2026 14:59:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <skolothumtho@nvidia.com>)
- id 1vf1aQ-0002w7-1U; Sun, 11 Jan 2026 14:58:56 -0500
-Received: from mail-centralusazlp170100005.outbound.protection.outlook.com
- ([2a01:111:f403:c111::5] helo=DM1PR04CU001.outbound.protection.outlook.com)
+ id 1vf1aU-0002xw-Vm; Sun, 11 Jan 2026 14:59:00 -0500
+Received: from mail-northcentralusazlp170120005.outbound.protection.outlook.com
+ ([2a01:111:f403:c105::5] helo=CH5PR02CU005.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <skolothumtho@nvidia.com>)
- id 1vf1aO-0004Dz-Cb; Sun, 11 Jan 2026 14:58:53 -0500
+ id 1vf1aT-0004EY-FO; Sun, 11 Jan 2026 14:58:58 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MGYphqXJNEHA7RzTnse9mPYcvSezVqNh44QARObPE091Ed7dtjaRo33ES8KmgqlX0zTMPV63tFi3W9PD2/SJaEBNCkO6vXDEsBFqaYsg3fg+z0rv9YrwunysmJO1dUILLl/Ab+MgtLT37s0QWAuaBFaDnctjJg07JBs8ZrFPJi+msFWnpL/ed14rpun+gtom1LfSfV0l7fjSi6I4WhBwc+CLUe/EOFY7t2H2qvG9Te+roVN3JnRPudW3sUrbdCoRbJgAC840e34PLbJRL1usAWW+Kr2kwykmUtnA1aObNCFrJN7LDU5fCqvV6r+GS6JXjGpVcs+T8geZA9IYE1y3+A==
+ b=tn+4ghHY08OXT5LiAm6Oxi6h6gMz862Qew9s4kGmx5mfqOKhBLj02qUpkCuJskizibQlBt2IF/Oy1ljTVZfj3pm3qioLAgso1TrjVnIcUQkhc8EuyrBweno4PKY199CbEsKUfwA65t9pL8hnKHQzsQMXDNPqlRIsjXRFHPSOif6pgw0i/KNrBqrIM6l+/IqNnhaf/NxcFtALvwveqHxT+H5LTFyo9LHv1U92phIZBCBtr1hoS/B1dnwjVQSUQhxMoLr6QOtTF+Ug9t4ZNgRX5EOa3w7foMJeo9RmRotw1620rQ2LIleEZjDacli2PYXkItrsreoPzt4TI0TZQ9V6MQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8WhuO7AjTxcMZrMfhhAnY9gQlmp8OZzF9eHpdUnTqnc=;
- b=DwvYmTnpnIAbEVfvmqKuDLQpIhdJyBvwUuv9/cA8B+/yRa7RAg5FBzsV84RwdUjJhXDx3DbfPYU63zhPat8XJCuKuuoplWsPojBdtHSzgGPNDMP6MFg6XRjbGTvEfuNT+WnYvuCLPLOo3fB/0fhHixJDV+cwXnKIxKiFZNnwZUTa9kpEfeUGuKK0h+yXEdUBs/e5e3vRRXchK4BSaDg3z3RykI6VeVnzV6qtFzoM80Kanhq/KUplyCxWaAbOoBG4cGngSofSDm26/i7zWs1yds2FjCAZ0uFVaxT1p2RyXbo9WfJcJFFCvqUJ++OLEQV8XOlyG7Cxknfz3X4T/xtfxw==
+ bh=G2K1766m/PdCqnjNrGL5CHJBlxsD4UESJAJKmxIvDc0=;
+ b=Q7zJKicG3yKgsHCqj/72GJ5PTD3N5UtJw3XvqreiJX4/W3p29uliMQETdOHYdpvosVWW/qWgbWmjdN5wHj8qQ51r9wxlXkA70zSCeNW31zhW4kvsE5ay1b/cvjoTXA0eeqH0xiLMEuPELK2V2rq9fjtQ8vTgoVVL9+yAVzyRl8hcMxnHGddY5848dSyJBwUG1r8NYDhCwHDhz+J+ljtmM6fkXkcxZVZQfS8nwrNgtWjhu5wzQb+a77eELfHg1GIrFmNS9g96QXq5s0QR9Zxfx267jhGFUD0C4Yuxf9E/IhRYDmOGUcD9U+FVVo569La6bed8RVlK1uI2u6QkllnWxw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.161) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -31,18 +31,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8WhuO7AjTxcMZrMfhhAnY9gQlmp8OZzF9eHpdUnTqnc=;
- b=LrlU7mZ8U/ypLpgNB2oVEDGOr+tMI+65bfg2ILbHIwLNE3ZhSYHnY+KQEtXR2PVk+ptS0gbErL/LlK8AAoQPWoaLwm6PRAflAXrjA4o5kKIvykCvfaiZ2aaVYQFmupHwVZer52d7tvA4MDEdKO7kOCiB9RwIxVDRnXvSVNBYq72J+xFyQshL/QZUP2Euvk4VnOSzdz5zNv/kdjVVXUOjNhegRBKeWNhMadEAfWudg8TBTNyehBu04hnjfYkO4q1eUsAUa7OI30JnkrZngKCz1mys17XjvPGCum+SKYjLEU960CC58ocbEbLyRRSCOlYHSP8/D7kreSEuEMBwSxXxCw==
-Received: from SA0PR11CA0007.namprd11.prod.outlook.com (2603:10b6:806:d3::12)
- by IA4PR12MB9811.namprd12.prod.outlook.com (2603:10b6:208:54e::18)
+ bh=G2K1766m/PdCqnjNrGL5CHJBlxsD4UESJAJKmxIvDc0=;
+ b=qlqRpQSKW1bTTWt5SQNXg31emKxjNNahUg2gfPKJTUanWKFmAmi3mnKioi3/Rmv1CZpURGwglZdeh+DY27bCmB5P3I2z8DXfm31fPagpaNJyWdj5VLafcZBsQrybDsHMCyXIthqPN6UZMX24OipCTECBe+kP03gErzb1yMckpNkhfSn0LJVd5sILPJbWz5YY35NixR/9B0hsGSUFkF3ViLJe8U2SpNhvSrG79275Xk7zeH5Zi9yWrLl5A0ZxGEKRSzAiQV1R4qtojMCoOs/hs8eMdvZQbKE8iDyjgueq7TvZUl80GUgbnIe4Wx/rlgBmQUgiGnxZvd05ofEqkKvCCA==
+Received: from SA0PR11CA0012.namprd11.prod.outlook.com (2603:10b6:806:d3::17)
+ by DS5PPF5A66AFD1C.namprd12.prod.outlook.com (2603:10b6:f:fc00::64d)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Sun, 11 Jan
- 2026 19:58:47 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.5; Sun, 11 Jan
+ 2026 19:58:50 +0000
 Received: from SN1PEPF0002BA4B.namprd03.prod.outlook.com
- (2603:10b6:806:d3:cafe::7a) by SA0PR11CA0007.outlook.office365.com
- (2603:10b6:806:d3::12) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10b6:806:d3:cafe::5d) by SA0PR11CA0012.outlook.office365.com
+ (2603:10b6:806:d3::17) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.7 via Frontend Transport; Sun,
- 11 Jan 2026 19:58:43 +0000
+ 11 Jan 2026 19:58:45 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
  smtp.mailfrom=nvidia.com;
  dkim=none (message not signed)
@@ -53,15 +53,15 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
 Received: from mail.nvidia.com (216.228.117.161) by
  SN1PEPF0002BA4B.mail.protection.outlook.com (10.167.242.68) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9520.1 via Frontend Transport; Sun, 11 Jan 2026 19:58:47 +0000
+ 15.20.9520.1 via Frontend Transport; Sun, 11 Jan 2026 19:58:49 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
  (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sun, 11 Jan
- 2026 11:58:42 -0800
+ 2026 11:58:47 -0800
 Received: from NV-2Y5XW94.nvidia.com (10.126.231.35) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sun, 11 Jan
- 2026 11:58:37 -0800
+ 2026 11:58:43 -0800
 From: Shameer Kolothum <skolothumtho@nvidia.com>
 To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
 CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>, <jgg@nvidia.com>,
@@ -71,10 +71,10 @@ CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>, <jgg@nvidia.com>,
  <jiangkunkun@huawei.com>, <jonathan.cameron@huawei.com>,
  <zhangfei.gao@linaro.org>, <zhenzhong.duan@intel.com>, <yi.l.liu@intel.com>,
  <kjaju@nvidia.com>, "Michael S . Tsirkin" <mst@redhat.com>
-Subject: [PATCH v7 33/36] hw/pci: Add helper to insert PCIe extended
- capability at a fixed offset
-Date: Sun, 11 Jan 2026 19:53:19 +0000
-Message-ID: <20260111195508.106943-34-skolothumtho@nvidia.com>
+Subject: [PATCH v7 34/36] hw/pci: Factor out common PASID capability
+ initialization
+Date: Sun, 11 Jan 2026 19:53:20 +0000
+Message-ID: <20260111195508.106943-35-skolothumtho@nvidia.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260111195508.106943-1-skolothumtho@nvidia.com>
 References: <20260111195508.106943-1-skolothumtho@nvidia.com>
@@ -86,56 +86,56 @@ X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002BA4B:EE_|IA4PR12MB9811:EE_
-X-MS-Office365-Filtering-Correlation-Id: 21b637d5-f8e4-451f-59ba-08de514bd54f
+X-MS-TrafficTypeDiagnostic: SN1PEPF0002BA4B:EE_|DS5PPF5A66AFD1C:EE_
+X-MS-Office365-Filtering-Correlation-Id: d9db3d02-beee-466c-1937-08de514bd6ab
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|376014|36860700013|1800799024|7416014; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?U1Qifk8HPSPESBnexowIlcuRTisLrK0ws/IcK223Har0dm/3GtJ3OmnhdZvb?=
- =?us-ascii?Q?baXAQOcu+hTDlw9FVo2BNlmtBWNb2Pu0S04ohDmEaUunJzKWyaOwpfDRJvbu?=
- =?us-ascii?Q?R5EuMOXJBWzZRpfeL0e7umGfUHEKtgWrGyreFRohsk/efK5EPXcGU3WphonW?=
- =?us-ascii?Q?PZx/LU5WO3uBCOBm8ZyoFa/2fG4pCK8j5+sM4F3sAyABZCItdPqY5o9LKoee?=
- =?us-ascii?Q?oiF6X3i0HW55FpC1DnCOA4T4P1QlXcG+DNj9zZNcvE51q3I+TLlodmgVX0iv?=
- =?us-ascii?Q?yeiOYAsyPN1ISfEwk1ZbGTjko1HplbXzqYoO5Ey7qHBzYVOUcRt126pt7mVA?=
- =?us-ascii?Q?nT/npfzidI8fdZNW4jp866gmnYofJTRSeKf/wm4GM+VxniEoadgZH4reNhOA?=
- =?us-ascii?Q?hIEKuXXmEKyqaAS28qmf9qcFoADPAN/DJcE4tASnaWnAiFCFCEY8rtroNHTj?=
- =?us-ascii?Q?o1HPYbj9URjkGmbNoFGJ6irgUnOv6y0Hx3w5fCUY+9xbmr/RzuT+GKZO78m/?=
- =?us-ascii?Q?rCAaSSjr6sOGRVsVYFDJk9xvpJzKV9mjktOGDxXRJOmal0bT2pYX+RftHWNn?=
- =?us-ascii?Q?S7qMZBrbOVEXK6eHsM31F1LiEu1eEw7Ckv7VOsQIs7an6eoHRw+8bvag08Ja?=
- =?us-ascii?Q?qujqSlDwrv3Fbc62lErRIGJGep2/B4QNXzX4JZAH/9SZsoO9yUUbkK8zYtIe?=
- =?us-ascii?Q?tj6TBxuuFcsM/1S7fRCCWwdjg1Du0mlxmPZM+VCNeGK1sBmViCHCKJ7E2QNd?=
- =?us-ascii?Q?B/sXZV2WH4PQWvSgVybbsQh0Vc9NExA9LgA7NYJhYMqi4SlMXGRTa3S7gFyq?=
- =?us-ascii?Q?nWK6QT3P6XcOZWmQ87iOwk95MJk/8/00lm2rSy5MVVOqNBxFUQ3Cp0kaPGVf?=
- =?us-ascii?Q?iwWWcUx2L/9bz3oBAz+JONH7TAeXriCrO6bbcC60pKD9mbkIMiLd/ZEEws7L?=
- =?us-ascii?Q?Bs7MP0VptyzwiEJYRKv4qG+YNJHwMsLcQ3xpA4Add6wi5Sniqe+HkRILln9a?=
- =?us-ascii?Q?OSiYctpTnrYAD60tBq96se5R3gTZqDjaWoJ2oga+5eXJvywG+mqeSJxtvHyv?=
- =?us-ascii?Q?11n8Wp8/6vKRyV5rqxURr3sDp3CO6zuo1cLnOPxE1jk1OwXUFheHJO5UTeRy?=
- =?us-ascii?Q?+5/R7tMx03JtKCQJWIyHcVAhnyoMsMIR9r9NsOunQdg/CZEjFtZWsKo6GvAF?=
- =?us-ascii?Q?hnhKgrEE+kPUI43WrRvc4RSQz3WTdu6YclyoJyHGMJ+asevX2hRwmAS5IXQh?=
- =?us-ascii?Q?wCWo93iQUdQhOsFXl4tQmCpLjjlcOYhj1TYNo7dC7taGgNpx9ZSGF1mCxTg7?=
- =?us-ascii?Q?SfnUO+sb+fchxK/alVj/k/S7WW1c9yy11U1Gkwtve8/ReQTQBGaxrbMtZ1VY?=
- =?us-ascii?Q?I38oTCNmcoFMuZk/4qsYW+11isfwe+pcsl04Y4UqRd81IMs2koLBIAwt22G5?=
- =?us-ascii?Q?K0BtKFsD0x6G6Iw6XH65fdfvA3C0SRgac4yUEqIaZ6LJEnW5H1HJibjWCEzM?=
- =?us-ascii?Q?GDntwEBaRcHC+DyEwPzgQgsIzgU3io/uKGcfNR0JkLpqdiNBGmUZZQTaipWG?=
- =?us-ascii?Q?SoY/Ws1ife8fx/zpIcg=3D?=
+ ARA:13230040|36860700013|376014|7416014|1800799024|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?VNrwEqHVRtJgXK4XwQdPOFs8gHI9C6cCN6rie0hqn2ND+WrLJtdz9VyB0bNl?=
+ =?us-ascii?Q?Xd+N83Cu3pfBWMsSxBvTx4Ca6Ea/vCmB7X6bc1DZjza0UinxBCXaWDR1RRcQ?=
+ =?us-ascii?Q?EeAFg42EyFlRcc0dMI4GtGn0CIh6OyT3hOJ234pDIVeCLzAcoaOTZHexDwIQ?=
+ =?us-ascii?Q?lmVHPsu+LpUq4otvcP9UoZ4SoU3fB6Q1cm39tFQZ91SPgW4Gir0F9XChmOuk?=
+ =?us-ascii?Q?2Ojw/iDhRJDExth1p/d92FCUaYbl2pbC74Lv5nfohaf4++JMX9gfFWlfyozQ?=
+ =?us-ascii?Q?wt1BqL1GDPLcVTgXXLp+ItnjUfAT6CTmHkjdd6KU+MH8/Yy12YniYFH5aqS+?=
+ =?us-ascii?Q?/H0ShhCqcFTsw/q47z8/SG7rzRl4OqEzcYJiwnTNc6OR5/kaG9n+v6oNzdUk?=
+ =?us-ascii?Q?MdfyH2gQstrJkK3J4TQCHZW9+ShxeSIqEmGmLkfKTFnBE6aCaXQDaocca8gP?=
+ =?us-ascii?Q?UsgKs6Ae7EgDc2bpwlvrgvvlN80lLvNT4ThJEFrSovLlUI8cQ5ub9Ka7Bgfh?=
+ =?us-ascii?Q?v4j6Q6ePLe6IiHBQUB4EzX84YLzFaNCWDKwFM7/j7pLggauXHp4kijuWqgoc?=
+ =?us-ascii?Q?98H27K84UYnO9wT6r8qpHBIzFiiSjTb332gtLHnWR9ERtHZD1fUnSBiPXEA9?=
+ =?us-ascii?Q?pRNKxTBjiVp48rvGovlKB3AMnX8kN5WvhTE0D5Mg09EC8QhHn56qEblUZ1pv?=
+ =?us-ascii?Q?PkS8xQOLiKMZ4Al+KeYSP4zI57gg0Y3ySwCiOApYb+h3RorOqjCzW7HEGqK1?=
+ =?us-ascii?Q?t/MPYQ0vnHroZUhXid2n/ic7oFRqczrt8Mt1Okcua1CtWTYzZtxRC8jDTtze?=
+ =?us-ascii?Q?ZB4nxoIoGYfF8S1nvl6vnluUT/8jdXdu/gAD9bauslupIkTSPjzjAppDZh8j?=
+ =?us-ascii?Q?4SoPG9QyTARV0bka5CMQOsS9apvYVA7GTeiWdyX+71wwblYa9Or3hNBZk+gp?=
+ =?us-ascii?Q?Bhj4oGzY5tffCOi4/6E/xToIQGPxUOBgvhZvmEXPAjQ/DILgkRx9wZnP2Tq7?=
+ =?us-ascii?Q?1tygSlYchLcKzcd9DkWH+MXW8zAoKS9R5juLdqrVoEw4HzHc8iDVVN50dgAK?=
+ =?us-ascii?Q?g/a9AYvFh2kmU1KjIYqEQP6O/4NxNFcTlGJaGdYvRsWHD1Cw8BJMZJSBt95I?=
+ =?us-ascii?Q?r/AN8Vo4BlkxECnxNBJLS/CdtFsvS0OxWRRr2aRSIXaBlDpzHY1yKaDC4mX9?=
+ =?us-ascii?Q?byGOfxDJdT++w1Eb6y4Y+7QQhpJIge2HR+xztz4BjTHqbad8cMexnVxd/i4H?=
+ =?us-ascii?Q?eTQUd5YUnKZrtdO+qdu5UtSUaa45Ix4tocj9xYFcdsQoXDR3vjT36cGKX/Eb?=
+ =?us-ascii?Q?zPGcubZmpTUFagwXGyQ1qgpoBqCl9KaaYAaDJp6OoXx3Uma+3GWpF/Wlz4XS?=
+ =?us-ascii?Q?OUSi9EFlo7eX05J4gQtGy7UG6vpioSectjz2Ia87wr1+vy3xpEn6zJhBw4Sv?=
+ =?us-ascii?Q?erJ6UVRUPXudjOuUlW0mFb69Vfcf5pzqyOEsN2sOK6NhR8WRWT7ie1FmBZs3?=
+ =?us-ascii?Q?109yWM2Aty62Ma8pAbZsDpYb1jqvgCvHm9Rm/Ip64rcZcAUy+5XtmeMk15TV?=
+ =?us-ascii?Q?ihL4ODEz+u41BDxiSsE=3D?=
 X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
- SFS:(13230040)(82310400026)(376014)(36860700013)(1800799024)(7416014); DIR:OUT;
+ SFS:(13230040)(36860700013)(376014)(7416014)(1800799024)(82310400026); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jan 2026 19:58:47.4701 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 21b637d5-f8e4-451f-59ba-08de514bd54f
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jan 2026 19:58:49.7603 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d9db3d02-beee-466c-1937-08de514bd6ab
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
  Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF0002BA4B.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR12MB9811
-Received-SPF: permerror client-ip=2a01:111:f403:c111::5;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPF5A66AFD1C
+Received-SPF: permerror client-ip=2a01:111:f403:c105::5;
  envelope-from=skolothumtho@nvidia.com;
- helo=DM1PR04CU001.outbound.protection.outlook.com
+ helo=CH5PR02CU005.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -158,109 +158,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add pcie_insert_capability(), a helper to insert a PCIe extended
-capability into an existing extended capability list at a
-caller-specified offset.
+Refactor PCIe PASID capability initialization by moving the common
+register init into a new helper, pcie_pasid_common_init().
 
-Unlike pcie_add_capability(), which always appends a capability to the
-end of the list, this helper preserves the existing list ordering while
-allowing insertion at an arbitrary offset.
+Subsequent patch to synthesize a vPASID will make use of this
+helper.
 
-The helper only validates that the insertion does not overwrite an
-existing PCIe extended capability header, since corrupting a header
-would break the extended capability linked list. Validation of overlaps
-with other configuration space registers or capability-specific
-register blocks is left to the caller.
+No functional change intended.
 
 Cc: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
 ---
- hw/pci/pcie.c         | 58 +++++++++++++++++++++++++++++++++++++++++++
+ hw/pci/pcie.c         | 19 ++++++++++++-------
  include/hw/pci/pcie.h |  2 ++
- 2 files changed, 60 insertions(+)
+ 2 files changed, 14 insertions(+), 7 deletions(-)
 
 diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-index b302de6419..8568a062a5 100644
+index 8568a062a5..efd5588e96 100644
 --- a/hw/pci/pcie.c
 +++ b/hw/pci/pcie.c
-@@ -1050,6 +1050,64 @@ static void pcie_ext_cap_set_next(PCIDevice *dev, uint16_t pos, uint16_t next)
-     pci_set_long(dev->config + pos, header);
+@@ -1273,18 +1273,13 @@ void pcie_acs_reset(PCIDevice *dev)
+     }
  }
  
-+/*
-+ * Insert a PCIe extended capability at a given offset.
-+ *
-+ * This helper only validates that the insertion does not overwrite an
-+ * existing PCIe extended capability header, as corrupting a header would
-+ * break the extended capability linked list.
-+ *
-+ * The caller must ensure that (offset, size) does not overlap with other
-+ * registers or capability-specific register blocks. Overlaps with
-+ * capability-specific registers are not checked and are considered a
-+ * user-controlled override.
-+ */
-+bool pcie_insert_capability(PCIDevice *dev, uint16_t cap_id, uint8_t cap_ver,
-+                            uint16_t offset, uint16_t size)
-+{
-+    uint16_t prev = 0, next = 0;
-+    uint16_t cur = pci_get_word(dev->config + PCI_CONFIG_SPACE_SIZE);
+-/* PASID */
+-void pcie_pasid_init(PCIDevice *dev, uint16_t offset, uint8_t pasid_width,
+-                     bool exec_perm, bool priv_mod)
++void pcie_pasid_common_init(PCIDevice *dev, uint16_t offset,
++                            uint8_t pasid_width, bool exec_perm, bool priv_mod)
+ {
+     static const uint16_t control_reg_rw_mask = 0x07;
+     uint16_t capability_reg;
+ 
+     assert(pasid_width <= PCI_EXT_CAP_PASID_MAX_WIDTH);
+-
+-    pcie_add_capability(dev, PCI_EXT_CAP_ID_PASID, PCI_PASID_VER, offset,
+-                        PCI_EXT_CAP_PASID_SIZEOF);
+-
+     capability_reg = ((uint16_t)pasid_width) << PCI_PASID_CAP_WIDTH_SHIFT;
+     capability_reg |= exec_perm ? PCI_PASID_CAP_EXEC : 0;
+     capability_reg |= priv_mod  ? PCI_PASID_CAP_PRIV : 0;
+@@ -1296,6 +1291,16 @@ void pcie_pasid_init(PCIDevice *dev, uint16_t offset, uint8_t pasid_width,
+     pci_set_word(dev->wmask + offset + PCI_PASID_CTRL, control_reg_rw_mask);
+ 
+     dev->exp.pasid_cap = offset;
 +
-+    /* Walk the ext cap list to find insertion point */
-+    while (cur) {
-+        uint32_t hdr = pci_get_long(dev->config + cur);
-+        next = PCI_EXT_CAP_NEXT(hdr);
-+
-+        /* Check we are not overwriting any existing CAP header area */
-+        if (offset >= cur && offset < cur + PCI_EXT_CAP_ALIGN) {
-+            return false;
-+        }
-+
-+        prev = cur;
-+        cur = next;
-+        if (next == 0 || next > offset) {
-+            break;
-+        }
-+    }
-+
-+   /* Make sure, next CAP header area is not over written either */
-+    if (next && (offset + size) >= next) {
-+        return false;
-+    }
-+
-+    /* Insert new cap */
-+    pci_set_long(dev->config + offset,
-+                 PCI_EXT_CAP(cap_id, cap_ver, cur));
-+    if (prev) {
-+        pcie_ext_cap_set_next(dev, prev, offset);
-+    } else {
-+        /* Insert at head (0x100) */
-+        pci_set_word(dev->config + PCI_CONFIG_SPACE_SIZE, offset);
-+    }
-+
-+    /* Make capability read-only by default */
-+    memset(dev->wmask + offset, 0, size);
-+    memset(dev->w1cmask + offset, 0, size);
-+    /* Check capability by default */
-+    memset(dev->cmask + offset, 0xFF, size);
-+    return true;
 +}
 +
- /*
-  * Caller must supply valid (offset, size) such that the range wouldn't
-  * overlap with other capability or other registers.
++/* PASID */
++void pcie_pasid_init(PCIDevice *dev, uint16_t offset, uint8_t pasid_width,
++                     bool exec_perm, bool priv_mod)
++{
++    pcie_add_capability(dev, PCI_EXT_CAP_ID_PASID, PCI_PASID_VER, offset,
++                        PCI_EXT_CAP_PASID_SIZEOF);
++    pcie_pasid_common_init(dev, offset, pasid_width, exec_perm, priv_mod);
+ }
+ 
+ /* PRI */
 diff --git a/include/hw/pci/pcie.h b/include/hw/pci/pcie.h
-index c880ae1e04..d68bfa6257 100644
+index d68bfa6257..fc02aeb169 100644
 --- a/include/hw/pci/pcie.h
 +++ b/include/hw/pci/pcie.h
-@@ -133,6 +133,8 @@ uint16_t pcie_find_capability(PCIDevice *dev, uint16_t cap_id);
- void pcie_add_capability(PCIDevice *dev,
-                          uint16_t cap_id, uint8_t cap_ver,
-                          uint16_t offset, uint16_t size);
-+bool pcie_insert_capability(PCIDevice *dev, uint16_t cap_id, uint8_t cap_ver,
-+                            uint16_t offset, uint16_t size);
- void pcie_sync_bridge_lnk(PCIDevice *dev);
+@@ -155,6 +155,8 @@ void pcie_cap_slot_unplug_cb(HotplugHandler *hotplug_dev, DeviceState *dev,
+ void pcie_cap_slot_unplug_request_cb(HotplugHandler *hotplug_dev,
+                                      DeviceState *dev, Error **errp);
  
- void pcie_acs_init(PCIDevice *dev, uint16_t offset);
++void pcie_pasid_common_init(PCIDevice *dev, uint16_t offset,
++                            uint8_t pasid_width, bool exec_perm, bool priv_mod);
+ void pcie_pasid_init(PCIDevice *dev, uint16_t offset, uint8_t pasid_width,
+                      bool exec_perm, bool priv_mod);
+ void pcie_pri_init(PCIDevice *dev, uint16_t offset, uint32_t outstanding_pr_cap,
 -- 
 2.43.0
 
