@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12991D10035
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jan 2026 23:00:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F22FD10047
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jan 2026 23:01:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vf3SX-0005Ny-Lp; Sun, 11 Jan 2026 16:58:53 -0500
+	id 1vf3SX-0005Nu-8d; Sun, 11 Jan 2026 16:58:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vf3SR-0005Ls-GF
+ id 1vf3SR-0005Lu-IC
  for qemu-devel@nongnu.org; Sun, 11 Jan 2026 16:58:49 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vf3SN-0003sP-Nk
- for qemu-devel@nongnu.org; Sun, 11 Jan 2026 16:58:45 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-29f0f875bc5so47662075ad.3
- for <qemu-devel@nongnu.org>; Sun, 11 Jan 2026 13:58:43 -0800 (PST)
+ id 1vf3SQ-0003sc-6R
+ for qemu-devel@nongnu.org; Sun, 11 Jan 2026 16:58:47 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-2a0834769f0so40546005ad.2
+ for <qemu-devel@nongnu.org>; Sun, 11 Jan 2026 13:58:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768168722; x=1768773522; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768168725; x=1768773525; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OHti3C71LUbVm5pSNWQt/BFwUr/ys/K/zILSxw8aQnk=;
- b=AjfXhlkC9+8j0WWgo8KrFTPiidxb5xi9EB5CWUUtLizzztkC/X4cY6IPyU4ljoZ41A
- sFryu9hUDoV1uKPw6RbWT8DpNqqGL7hHvom2zDKXcL9/nGDcInffIRFbifB7ocoCuqd0
- hwY0VZGGpduOBuxBq/AZhAmj1tDbMcTTSwtsWEdEZdrb8otOg12KnRFJf22g7cBLtdZY
- N3rsGWP5fk9QE0jaLSpnDeXfT25jE8ZGTXqBjAn5Q/uNPV9IZ4/THwpm6IFamPUZLtdo
- VlQmghZaTQe2qUAzsoTzVzpaEwYNJLGLL1jllKvcCpdWJB8osC3PIJb/w2b7Inq5NfDN
- SilA==
+ bh=f5ww/TrGKj3Nrn5+V3rWPu1QkcqhU9+Qwg+gP5Flqv4=;
+ b=NChOnuMm84uTsNgDgIw5W77IXsSHCYmFyWK+N8XFkNQLNIn/ZBXtmz+A0aNmHYpfsN
+ Qb3RGgVUvD/iAxh+va4DOsmT+GWubPtjFC6zaPGnvHBqa/QUG6Baw3QQMqnzgyomfy89
+ F1yV38haP1YY8zaiGo9nA2b1t39OSHYBC85B8OqTY7KO3IEr+jpOluSNyFWwNycnZZCC
+ X6CxtXtffkLFOo6etjKUfIisLPr+mVoBctjdxuFinSSnsw8onoaDeA1AY9zKoo9ycVMv
+ iq2tAEgsfgcbyhbsec0yOgDUkKxqicv6zdF25lDtOQvxNwb5no0mOTk8Kzp2YNJB/+0W
+ CT8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768168722; x=1768773522;
+ d=1e100.net; s=20230601; t=1768168725; x=1768773525;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=OHti3C71LUbVm5pSNWQt/BFwUr/ys/K/zILSxw8aQnk=;
- b=l/JD8RokbJT9cEoxY7amgK9LU/N0Z81iGkCJZAvC5TgoGivF3H7S42kMdudwIWDa9t
- S3ty47flt0ofT6VRbFK0Jq5D7Dja9uM7f4SYiO+N2f5IzjAldk714dz/OjLcWHzkeiA7
- PqUTmLg2adFXjbmmLCHRVabfxN7VJpLDxC4U6FB5zINSX7R1ZVAmwik4fqlrFBcTjqgj
- q9xYQOE7uaqoWa37HRg9f22C6E4knTFMLpMwlKRkr6B/DxereAT6I0SAQ539xbs4wxfo
- oiNmj7jle4UP3p3LaZW0mmLyhcVvyKE4eaNEuNPViTHF8GYpaWA7gxeSu0Gj8eqBZBVD
- VJUA==
-X-Gm-Message-State: AOJu0YzW3CIuXeaQWUL2vUfIpkBVaiJVe0WHpe3PtGFnDDQTDTsxIlfB
- Xvr71tbNk43WKAiw3P+iEyNrvAtUJ5oA6WsPd1f9guWBYXkgao7Z0zHFMsXCD0BdlvuG2tjWRhs
- 3oBejnJk=
-X-Gm-Gg: AY/fxX4Jg66HK1xUDsZgrfkwULbl2uMigV0cyo/Zfe2fMWQKfEJc9evHfMs70HeSJkA
- bKja1W7ZRexCZzXIX7vzwQYOuDfm7rN7VWyLaYHkS781qYaaZkt2TJ/jTdvhos+UZ6vKCWEmR0e
- GNc/ljFGeUSmu4vdB2h0Jpw4ST8fmYOWnfF7X/gOe0aLteP14GOdR6cftbM7e1C+DTQjdYNJnro
- OrmifztQWkOiLDrgg/BaQqPf6E4GhBupKaShXyFzGhqAZCvSVj/Vnu1eW9b/n/T4v+8/rwGOygo
- 4oTnsVYM4DATvr977K8CRfNnGrqf6gS/eQulNQPyB0d19YJHCvL6qTs3fUu28NTst6SFHoaix5z
- 9/u+7bPRfSmLV/UlzsZK8XO1wAbj5drCjnuueB8yvbyTZZY3D5DxrE0v22okPQnlqru5JtdPmYL
- w125uNLNtxpj6z7aA=
-X-Google-Smtp-Source: AGHT+IFSUvgI7sLZEb/tSS4Wn1T4u3iZRHjJOYvGgkXyUIHd1IXLydx2vidLq9ev3NHxHJcZ6h0W2w==
-X-Received: by 2002:a17:902:d491:b0:2a0:b02b:210b with SMTP id
- d9443c01a7336-2a3ee4fe86bmr154410095ad.41.1768168722214; 
- Sun, 11 Jan 2026 13:58:42 -0800 (PST)
+ bh=f5ww/TrGKj3Nrn5+V3rWPu1QkcqhU9+Qwg+gP5Flqv4=;
+ b=Zy7IwUwcws5z0hFoOd1KqmKzIIOKuB6scShmJoRgmrK6IvK3jt2SzpG2VfM30gTT3Y
+ ixnahvvmOPluJ/6YW9dAl+B5/dBaCsQS4bmaGrHU039YfNHqYcu2e0rLlpT6IVHF9PrC
+ 3ymBJsd2BtfpZIyv5IkRvu5QdkTE6iyLGOecdqAnFa5ysfCCl4H/V0EbhcSQU34/51g4
+ dAKk60ydnrvP+nlpvrsg9hRGHGn/Vj9ht9ndTTxAs76XGMRvnvnQvtTTSt4TSOyBmq02
+ d8bx1YkOCV7Xt8MI3zvkK+p7OUdADLHJoX6hGwS0bRi/kAKwn00GvRF3FMgOyosupT86
+ bTCQ==
+X-Gm-Message-State: AOJu0YwKFEdgPf0/sf43xWKT2MApLWXuwCaQ9CwdX2MbhQ9uE0BSVF+L
+ tMIcf6wD73iuqVMfobFeLDhMtRwv/dhN3Jv51U627gvi7jGtCjdRPe+Zz8HUwyu65NAWsg/na0f
+ m/ozUutQ=
+X-Gm-Gg: AY/fxX7MP+knxJ9YQCvaHZ7djpb3W7BrdJAI/jkRwzpedhhW7PZSXVbCHp8rEhZsc24
+ yQfZQnI9JlK/z8Y3c59DM39a18G1PXddtMTLuF9mnmWdtzjuiyR4h4h8pcOHwEeo2wyXADXIEAL
+ 52bQXtHr8sNS5pTby779OYUtKAqwt4A6d5AEo3UxcgxSH/MUyqYJFa6FVIidkTIMZxYO6CWUkeJ
+ LGneZI6zffsmD5ChJg+K7v5h4R5GuKKIrp0knt6tygUIFse/r36ou2nNmel0ylkxdadgdH62/pj
+ mkwhlT7z5afpAZ6s3S999ar4XAxnat23Iq82ECNY+/pHIOuM42j403dFEg/O/1GAQd3UvMJjuK6
+ Bp3UjAnOGpSrToLcGlY0atNUDpTF+ny+lZ+vyRK/I5bkrCBOFDNMcQyURaDiea2bZMaf7RU+Rd9
+ DttptqyYmoubBrdow=
+X-Google-Smtp-Source: AGHT+IFJDPQNtbJXHa3ghWtmzGLh1buc5SvxAxWWtGyR1JX7wgcUvfm/zqPKNtPWTW79B9TJJCc4aQ==
+X-Received: by 2002:a17:903:2ac4:b0:2a1:3ee7:cc7a with SMTP id
+ d9443c01a7336-2a3ee43434cmr179988155ad.17.1768168724668; 
+ Sun, 11 Jan 2026 13:58:44 -0800 (PST)
 Received: from stoup.. ([202.86.209.61]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a3e3c3a31dsm155272365ad.9.2026.01.11.13.58.39
+ d9443c01a7336-2a3e3c3a31dsm155272365ad.9.2026.01.11.13.58.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 Jan 2026 13:58:41 -0800 (PST)
+ Sun, 11 Jan 2026 13:58:44 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Jim MacArthur <jim.macarthur@linaro.org>, qemu-stable@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 06/13] linux-user/elfload.c: Correction to HWCAP2 accessor
-Date: Mon, 12 Jan 2026 08:58:11 +1100
-Message-ID: <20260111215819.569209-7-richard.henderson@linaro.org>
+Cc: Matthew Lugg <mlugg@mlugg.co.uk>
+Subject: [PULL 07/13] linux-user: fix mremap unmapping adjacent region
+Date: Mon, 12 Jan 2026 08:58:12 +1100
+Message-ID: <20260111215819.569209-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260111215819.569209-1-richard.henderson@linaro.org>
 References: <20260111215819.569209-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,35 +98,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jim MacArthur <jim.macarthur@linaro.org>
+From: Matthew Lugg <mlugg@mlugg.co.uk>
 
-get_elf_hwcap was used when get_elf_hwcap2 should have been.
+This typo meant that calls to `mremap` which shrink a mapping by some N
+bytes would, when the virtual address space was pre-reserved (e.g.
+32-bit guest on 64-bit host), unmap the N bytes following the *original*
+mapping.
 
-Cc: qemu-stable@nongnu.org
-Fixes: fcac98d0ba8b ("linux-user: Remove ELF_HWCAP2")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3259
-Signed-off-by: Jim MacArthur <jim.macarthur@linaro.org>
+Signed-off-by: Matthew Lugg <mlugg@mlugg.co.uk>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20260106-fix-hwcap2-sve2-v1-1-1d70dff63370@linaro.org>
+Message-ID: <20251117170954.31451-2-mlugg@mlugg.co.uk>
 ---
- linux-user/elfload.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ linux-user/mmap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 0002d5be2f..35471c0c9a 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -708,7 +708,7 @@ static abi_ulong create_elf_tables(abi_ulong p, int argc, int envc,
-     NEW_AUX_ENT(AT_EXECFN, info->file_string);
- 
-     if (HAVE_ELF_HWCAP2) {
--        NEW_AUX_ENT(AT_HWCAP2, get_elf_hwcap(thread_cpu));
-+        NEW_AUX_ENT(AT_HWCAP2, get_elf_hwcap2(thread_cpu));
-     }
-     if (u_base_platform) {
-         NEW_AUX_ENT(AT_BASE_PLATFORM, u_base_platform);
+diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+index 423c77856a..ef3833a2bb 100644
+--- a/linux-user/mmap.c
++++ b/linux-user/mmap.c
+@@ -1171,7 +1171,8 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
+                     errno = ENOMEM;
+                     host_addr = MAP_FAILED;
+                 } else if (reserved_va && old_size > new_size) {
+-                    mmap_reserve_or_unmap(old_addr + old_size,
++                    /* Re-reserve pages we just shrunk out of the mapping */
++                    mmap_reserve_or_unmap(old_addr + new_size,
+                                           old_size - new_size);
+                 }
+             }
 -- 
 2.43.0
 
