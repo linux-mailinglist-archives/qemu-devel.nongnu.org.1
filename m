@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 002B2D154A5
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 21:41:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8304FD154B6
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 21:42:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfOik-0007Jq-VB; Mon, 12 Jan 2026 15:41:02 -0500
+	id 1vfOiq-0007RD-6x; Mon, 12 Jan 2026 15:41:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vfOij-0007Gg-Am
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 15:41:01 -0500
+ id 1vfOio-0007OM-EO
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 15:41:06 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vfOih-0000nc-P4
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 15:41:01 -0500
+ id 1vfOin-0000oX-3V
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 15:41:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768250459;
+ s=mimecast20190719; t=1768250464;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yafivwiApDWfXXVMORytyI2Zaisu4j8GPQ608VS34GE=;
- b=TBOhferYVxmfF6fyfxYE7O39h7wWZLkvbKSJqo3vn+cs1JYmEQA8jOif0Zt22pEpCIblQt
- BcfgIE6/Hxu+7GkdW8V+0ngP1JjAZCBB0uFBDu8VJ9/U9a+Iv/6e2arP5zvGY60h5OGFL5
- qY1vdk+qCH7AlSRcVI37Sz0BlOZWS2E=
+ bh=6mK0AxmYtwmoywSBsV2ddFa1XqazgTvlxchz2B7gUw0=;
+ b=Rk7bItPmAqyDj/2rDh0zDvw0NGEbgHaGhjsfXOhTGfLXNJfiKdjHTZN+yL1YY/gDoKZNl9
+ Z1zmM6+ev+8+BQLCo0QiTUcsQdllAL3t7nbam6x+JjeEq6EVjcqmZBSseltWyDeBSjmsTX
+ S8HAaI0/bo/bnjxOUFGGXAi6JiV5WCg=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-73-gKiwDdC2NfOI1C2nxj8Qkg-1; Mon,
- 12 Jan 2026 15:40:57 -0500
-X-MC-Unique: gKiwDdC2NfOI1C2nxj8Qkg-1
-X-Mimecast-MFC-AGG-ID: gKiwDdC2NfOI1C2nxj8Qkg_1768250456
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-669-zUI357JQMeOWwctkUOHK6Q-1; Mon,
+ 12 Jan 2026 15:41:00 -0500
+X-MC-Unique: zUI357JQMeOWwctkUOHK6Q-1
+X-Mimecast-MFC-AGG-ID: zUI357JQMeOWwctkUOHK6Q_1768250459
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A4CBA1956068; Mon, 12 Jan 2026 20:40:56 +0000 (UTC)
+ id B5F731956063; Mon, 12 Jan 2026 20:40:59 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.178])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F128430001A2; Mon, 12 Jan 2026 20:40:53 +0000 (UTC)
+ id 0E80930001A2; Mon, 12 Jan 2026 20:40:56 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>,
@@ -55,10 +55,9 @@ Cc: Hanna Reitz <hreitz@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Cleber Rosa <crosa@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 08/13] docs/devel/testing: expand documentation for 'make
- check-block'
-Date: Mon, 12 Jan 2026 20:40:21 +0000
-Message-ID: <20260112204026.710659-9-berrange@redhat.com>
+Subject: [PATCH v2 09/13] tests: add nbd and luks to the I/O test suites
+Date: Mon, 12 Jan 2026 20:40:22 +0000
+Message-ID: <20260112204026.710659-10-berrange@redhat.com>
 In-Reply-To: <20260112204026.710659-1-berrange@redhat.com>
 References: <20260112204026.710659-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -90,66 +89,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Explain in greater detail what 'check-block' will run for each format,
-and also document the new format specific targets.
+This introduces new suites for running I/O tests on NBD and LUKS
+drivers, giving new make targets
+
+ * make check-block-luks
+ * make check-block-nbd
+
+as well as adding their tests to 'make check-block SPEED=thorough'
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- docs/devel/testing/main.rst    | 27 ++++++++++++++++++++++++---
- tests/qemu-iotests/meson.build |  2 ++
- 2 files changed, 26 insertions(+), 3 deletions(-)
+ docs/devel/testing/main.rst    | 4 ++--
+ tests/qemu-iotests/meson.build | 4 +++-
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/docs/devel/testing/main.rst b/docs/devel/testing/main.rst
-index 0662766b5c..ec29cf7708 100644
+index ec29cf7708..910ec11ab4 100644
 --- a/docs/devel/testing/main.rst
 +++ b/docs/devel/testing/main.rst
-@@ -221,9 +221,30 @@ same commit that alters the generator code.
- check-block
- ~~~~~~~~~~~
+@@ -235,8 +235,8 @@ formats. The most comprehensive test plan can be run by defining
+ ``SPEED=thorough``, which enables all available tests for every format.
  
--``make check-block`` runs a subset of the block layer iotests (the tests that
--are in the "auto" group).
--See the "QEMU iotests" section below for more information.
-+There are a variety of ways to exercise the block layer I/O tests
-+via make targets.
-+
-+A default ``make check`` or ``make check-block`` command will exercise
-+the ``qcow2`` format, using the tests tagged into the ``auto`` group
-+only.
-+
-+These targets accept the ``SPEED`` variable to augment the set of tests
-+to run. A slightly more comprehensive test plan can be run by defining
-+``SPEED=slow``, which enables all tests for the ``qcow2`` and ``raw``
-+formats. The most comprehensive test plan can be run by defining
-+``SPEED=thorough``, which enables all available tests for every format.
-+
-+This set of formats currently enabled for make integration are
-+``parallels``, ``qcow2``, ``qed``, ``raw``, ``vdi``, ``vhdx``,
-+``vmdk``, and ``vpc``.
-+
-+Each of formats also has its own dedicated make target, named
-+``make check-block-$FORMAT`` which will run all available tests for
-+the designated format and does not require the ``SPEED`` variable
-+to be set.
-+
-+See the "QEMU iotests" section below for more information on the
-+block I/O test framework that is leveraged by these ``make`` targets.
+ This set of formats currently enabled for make integration are
+-``parallels``, ``qcow2``, ``qed``, ``raw``, ``vdi``, ``vhdx``,
+-``vmdk``, and ``vpc``.
++``luks``, ``nbd``, ``parallels``, ``qcow2``, ``qed``, ``raw``, ``vdi``,
++``vhdx``, ``vmdk``, and ``vpc``.
  
- .. _qemu-iotests:
- 
+ Each of formats also has its own dedicated make target, named
+ ``make check-block-$FORMAT`` which will run all available tests for
 diff --git a/tests/qemu-iotests/meson.build b/tests/qemu-iotests/meson.build
-index 16a5e39476..66b09d6b97 100644
+index 66b09d6b97..744d0b6e88 100644
 --- a/tests/qemu-iotests/meson.build
 +++ b/tests/qemu-iotests/meson.build
-@@ -10,6 +10,8 @@ endif
- 
- qemu_iotests_binaries = [qemu_img, qemu_io, qemu_nbd, qsd]
- qemu_iotests_env = {'PYTHON': python.full_path()}
-+# If altering this definition, also update docs/devel/testing/main.rst
-+# section on 'check-block' targets to reflect the changes
+@@ -15,12 +15,14 @@ qemu_iotests_env = {'PYTHON': python.full_path()}
  qemu_iotests_formats = {
    'qcow2': 'quick',
    'raw': 'slow',
++  'luks': 'thorough',
++  'nbd': 'thorough',
+   'parallels': 'thorough',
+   'qed': 'thorough',
+   'vdi': 'thorough',
+   'vhdx': 'thorough',
+   'vmdk': 'thorough',
+-  'vpc': 'thorough'
++  'vpc': 'thorough',
+ }
+ 
+ foreach k, v : emulators
 -- 
 2.52.0
 
