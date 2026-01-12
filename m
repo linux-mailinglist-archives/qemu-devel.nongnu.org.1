@@ -2,107 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF145D1447D
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 18:14:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9470CD144AE
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 18:16:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfLTt-0004bq-6E; Mon, 12 Jan 2026 12:13:29 -0500
+	id 1vfLWN-0007FG-8t; Mon, 12 Jan 2026 12:16:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vfLSz-0003jH-V4
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 12:12:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vfLSy-0007hg-I0
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 12:12:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768237951;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=n4FjcWu0LDKcBLtXzBHQQcI0QgAYGSeNNtKSt3IpPOU=;
- b=dHodj+s3jQE9r61FhBHPJMdiOrOBgrcIQC8pZ/7VpdVmaLNFFNNmNe2egV36ZGEXPOiRKO
- yQXgfkTC6uXrMZkaQIGS12Pl3279e1lgDpKB9IurZnw1JJWF4+EFg8po+D1oyL7OGWBU6E
- lbhTtpn+sJioJd4sehY4I0rQnVTofSQ=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-36-0ZE__jkfMtq5ijkMb2FwmQ-1; Mon, 12 Jan 2026 12:12:30 -0500
-X-MC-Unique: 0ZE__jkfMtq5ijkMb2FwmQ-1
-X-Mimecast-MFC-AGG-ID: 0ZE__jkfMtq5ijkMb2FwmQ_1768237949
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-47d5bd981c8so45878895e9.0
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 09:12:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1vfLWF-0006v2-6E
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 12:15:55 -0500
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1vfLWD-000893-L7
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 12:15:54 -0500
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-34ca40c1213so3337720a91.0
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 09:15:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768237949; x=1768842749; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=n4FjcWu0LDKcBLtXzBHQQcI0QgAYGSeNNtKSt3IpPOU=;
- b=ZfDVOEd64eQhYYRvdELM0O5qNFUKGNeOgldGOxB/7F3QhlH+JPECKIoGioJ+8juci2
- /XzpPODM9wZ/m537klngcDxlK23vZplihtDs5hDs3qVxdVcQoo8NCNdqQk3MpijFFIBG
- blPi66mR3ihv4GgzhswZIwRPYZikyxaRiwu/rPoommMgKSBHSidB+25f9eOYFc7aKnhb
- /TfjgCKMj4bKwFK5eDOWN87BhkkUnTm22ASKPlt46ttOdBOFSIs1RyMokZ2zI0UIiOFC
- nfb1ZZqCIkQwqOmGBNP7blnZXCuBqoI9EHtJVy7rT9wf12YYyKYTzyzv77gGydHEE+A3
- hK9Q==
+ d=linaro.org; s=google; t=1768238152; x=1768842952; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=bP8nw+4xRIgU1pe42o0KsYU/1+seivXe73OoPZKPxAo=;
+ b=nUWXsswV6vlJsH5Yc7+IKZqQ+TZ6MqRC3tl6F/fwhLlgijJKkMDXGPTpm8b7qjdmnY
+ K1rubcUmbQ3XuItmjc8g+1FYgycSdYJ9lM8GRKCTjef+QnUBiqeWpgQuD1xuTwNTy0sp
+ YSIhVwuqrNZB2Nu9t2FFvpBM8s+9cgpL8EJN7lNwgvA4QjosMxr+ERQ3cRbnBbmhscI2
+ adioKGGEHIYEioxJtffnJIOyCFWoRTJkauhpdSdFJixFdiWajgStudEATLvHJ/n8jpao
+ UncUZlYdcWJ8gyE1rDsiW2K6/0weAKFQhYbZ6LFsDmteHoyQlV/btq86EPEPzbLZMcUl
+ MI+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768237949; x=1768842749;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=n4FjcWu0LDKcBLtXzBHQQcI0QgAYGSeNNtKSt3IpPOU=;
- b=K9q8PTHAS42sSvKEwCe9sl3FZ4hqep+Sz4hKyKkwsRT98M7OoEqkDzm7hSeKi+cqEq
- eBttVAfiinymhThgbNalwZCeyp+P1lXUxF8FmkRE1E758wud3K61ni8OVwgFD99P4Uan
- TtuQM7ygEYhyNnVjJOb2A0u4j0XSYl30BnlaQwi0frdYQscfp3fPBOQB6kuasnzCH8rF
- 6trRdvhpFY/8IsBJyVoectaGnx6Y3PDRY6Xe7Sk/5+wJZmNf024pG7Ogww+RTDlF6qKu
- QuiGi8tNrEygNhwp89Gt7yUcz2XIbcq1hrGM29S2heokyXO7SP20+wZOUe+x03mxw3AX
- 0f3A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUGaU/QzuSS2aOTVbBQopn/yg6ovqIuXuHCpG3+AE4sn3OllulEf58IdcHH99IND/KuywkUgi1jXrWp@nongnu.org
-X-Gm-Message-State: AOJu0YxUtA/xD7cSshuoyRis71J7sjsW+93ynRcYMa+C040OA+lvg4uz
- hEnygmTcCd/fwe1KVMGnvHHLthsjyZ2fdoj8jgvmMcb75ksU/LBNDqq6IUczGICg+8OiXz6hQLW
- Ccpuy+APeKnjRPch/pDiw/RNBxl0DmcJD+QkXYvWQEPjKo/KjbAFaT4BeuHwxNBxRQoexvJ+N1d
- Ucu5Yyp6faXUy7LiT+PkuaoYaajMEfUDU=
-X-Gm-Gg: AY/fxX7kWQoV2Wxz9YCf1vdHCMt0ZlrqfjFl2HH5s3U93Xo2YKfbFx29r7JhviCpGd1
- 1V4s7NTHZg4gESex/SbR6nedZEsjizRyNdqdLs84nHVHuxn7JXulRdylnhbyYUXVUU9fHGQj39c
- WOg/Udp9oYxJYVfnWGt+hEnpXGV7rKnGdBDxEieYHuafqBNb+cacV//a0qjvIyrxSioqVkvwMRh
- nnDymwmzo7T/uMdv9LnJ7XDYaTRzR8TpH32wzGqRnMA87p0YM2dafUSsq04T17Q7YhAWg==
-X-Received: by 2002:a05:600c:3e8f:b0:477:5897:a0c4 with SMTP id
- 5b1f17b1804b1-47d84b0b315mr198969975e9.4.1768237949085; 
- Mon, 12 Jan 2026 09:12:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF+VhlfxTBklsMUvnB2bwD9d0SVSG9i3WldYSftXmzGMnTRQo6eoyUW1AqgCgPVrhVKsoZhsI9d3anZTvrNxc8=
-X-Received: by 2002:a05:600c:3e8f:b0:477:5897:a0c4 with SMTP id
- 5b1f17b1804b1-47d84b0b315mr198969675e9.4.1768237948726; Mon, 12 Jan 2026
- 09:12:28 -0800 (PST)
+ d=1e100.net; s=20230601; t=1768238152; x=1768842952;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=bP8nw+4xRIgU1pe42o0KsYU/1+seivXe73OoPZKPxAo=;
+ b=aj71eoF4ENTTTYDquAlzJ4p4sznd+sWYeECgX6OGOjw9Pq/uPvBiSnMWFE3/GKXPgZ
+ 0AML0TjWP3cIhHugpzB7wldvzBvGbNCPYz/9hWpyw7qiv8GxBAJMc68ndOTsNS6H8IBh
+ EsYrnOjBGo2ge4cPMatK8/3ef0LzWKyOnrIUam2JkXmxyEuK69BdFaEmcTvSwyGz2N1x
+ xwEE9ejUKWkTlCVPj1s36xbQWe19ALanjb6WNK5gxgyDklobcwGeEMY0jS7K/c7qZhqn
+ nMtixuC2jpPUK5AIlWwN2Iwa/p7Eplc6UQQ9Y/er9n5j93oChjRD8GGJh3eLcqoPbRg1
+ NxPg==
+X-Gm-Message-State: AOJu0Yy2DCH6Ec37ERjO63x9teWIoDb6lEilsRl2J/qMlXH5UJ3mkII1
+ JdQMEWmXNpZB2HwCalmrJbJVwRkgnD3kIBOfgrsY8BgAtqdOFg92Vppll0YtKeMyf3k=
+X-Gm-Gg: AY/fxX7U+FVjh3EheOgESwXigyVRzLYPxghC+8Y30phkXRWd9UqsGeBBfw2HjzxRpwy
+ khkR5aul7Ftb+w8sPWGgVSaEcn9S2pNtirC8EB+V7JpWP9aUqh0dtr6Ng0+Nv7TvybkpF6baWOd
+ l7GPCQu2ozr0/yqLlYd1mo5xinJrc2bldy5beZGHeO/Xv4FPXZsgU1weO2gffzfUoRoOFz9GbsU
+ io/smAEMuewVEL4g1x3UlB1kVVpEy/e7MpFXfX1h/WY1pZ2Hdq0GI1kreu/d6m2cVlDClaOwpw6
+ dihZWFv3vQm9Qx0QFW52CdRPvIyXY4jgwp3zzt0GkcuyPm3xC5bLJupoZQZkj+whxQ3GOYzqVya
+ ltFBEmNaWLKNHVhnkx5WoNcHc5DW1mEjrnNLNHmJo0fBCowm79HZzID68+beUGE256O4SKxRq1K
+ iPwEnsI8VmgfodGKE+uYeom3CKo3OhETUt1v4HrRXjYphmMmSxnQvlOaHw
+X-Google-Smtp-Source: AGHT+IHpu1smMO8bgQC0dtYejvdgS7E08chd1p6soqZp6mljs3PiwqcypFka06FM9I+Vum9qN92vWA==
+X-Received: by 2002:a17:90b:1a81:b0:32e:3c57:8a9e with SMTP id
+ 98e67ed59e1d1-34f68cc2973mr18150268a91.35.1768238151768; 
+ Mon, 12 Jan 2026 09:15:51 -0800 (PST)
+Received: from [192.168.1.87] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-34f5fb7419csm18215894a91.13.2026.01.12.09.15.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 12 Jan 2026 09:15:50 -0800 (PST)
+Message-ID: <7f09a713-c889-4afc-a4b7-34e3df402ec8@linaro.org>
+Date: Mon, 12 Jan 2026 09:15:49 -0800
 MIME-Version: 1.0
-References: <20260112132259.76855-1-anisinha@redhat.com>
- <20260112132259.76855-20-anisinha@redhat.com>
-In-Reply-To: <20260112132259.76855-20-anisinha@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 12 Jan 2026 18:12:16 +0100
-X-Gm-Features: AZwV_QjXKzvoLIMEpw40RsKeIM2DnH2rFQQH12t1B2CQDOBP8aJHQrSn88CGaco
-Message-ID: <CABgObfYgKFuBJRAR-t+gU2cUu3nVjy3++3R-k4_E+dti4E5XLg@mail.gmail.com>
-Subject: Re: [PATCH v2 19/32] i386/sev: add support for confidential guest
- reset
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
- kvm@vger.kernel.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] target/arm: make granule_protection_check usable
+ from SMMU
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Tao Tang <tangtao1634@phytium.com.cn>,
+ qemu-arm@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Richard Henderson <richard.henderson@linaro.org>,
+ Eric Auger <eric.auger@redhat.com>
+References: <20251216000122.763264-1-pierrick.bouvier@linaro.org>
+ <c8e80923-d837-4874-a072-d5ae579576a4@linaro.org>
+ <CAFEAcA_iXHEFTJ0mS+kRC=rNxxhyCHyw5R=nQNMXYE03qkBTZA@mail.gmail.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Content-Language: en-US
+In-Reply-To: <CAFEAcA_iXHEFTJ0mS+kRC=rNxxhyCHyw5R=nQNMXYE03qkBTZA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,16 +107,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 12, 2026 at 2:24=E2=80=AFPM Ani Sinha <anisinha@redhat.com> wro=
-te:
-> @@ -2758,6 +2807,8 @@ sev_common_instance_init(Object *obj)
->      cgs->get_mem_map_entry =3D cgs_get_mem_map_entry;
->      cgs->set_guest_policy =3D cgs_set_guest_policy;
->
-> +    qemu_register_resettable(OBJECT(sev_common));
+On 1/12/26 9:01 AM, Peter Maydell wrote:
+> On Mon, 12 Jan 2026 at 16:29, Pierrick Bouvier
+> <pierrick.bouvier@linaro.org> wrote:
+>>
+>> On 12/15/25 4:01 PM, Pierrick Bouvier wrote:
+>>> This series prepare granule_protection_check to be usable from SMMU, for
+>>> implementing RME feature.
+>>> It's based on Tao's commit [1] extracting ARMSecuritySpace from cpu.h header for
+>>> convenience.
+> 
+> 
+>> Another gentle ping.
+>> This series has been reviewed and should be ready to be pulled.
+> 
+> Applied to target-arm.next, thanks. I folded in this minor change
+> which avoids the "local variables not declared at beginning of block"
+> style issue:
+> 
+> --- a/target/arm/ptw.c
+> +++ b/target/arm/ptw.c
+> @@ -3785,9 +3785,7 @@ static bool get_phys_addr_gpc(CPUARMState *env,
+> S1Translate *ptw,
+>           return true;
+>       }
+> 
+> -    const uint64_t gpccr = env->cp15.gpccr_el3;
+> -    const bool gpc_enabled = FIELD_EX64(gpccr, GPCCR, GPC);
+> -    if (gpc_enabled) {
+> +    if (FIELD_EX64(env->cp15.gpccr_el3, GPCCR, GPC)) {
+>           ARMCPU *cpu = env_archcpu(env);
+>           MemTxAttrs attrs = {
+>               .secure = true,
+> 
+> -- PMM
 
-Same issue as previous patch.
-
-Paolo
-
+Ok, thanks.
 
