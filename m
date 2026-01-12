@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C270BD15AE8
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 23:54:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DED6D15AEE
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 23:54:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfQnn-0003UT-5G; Mon, 12 Jan 2026 17:54:23 -0500
+	id 1vfQnl-0003D5-6z; Mon, 12 Jan 2026 17:54:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQnU-0001qi-UM
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:54:06 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQnc-0001wZ-5b
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:54:12 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQnT-0003fN-Do
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:54:04 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-47d6a1f08bbso28468215e9.2
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 14:54:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQna-0003gV-HP
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:54:11 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-47d3ffb0f44so48141345e9.3
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 14:54:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768258441; x=1768863241; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768258449; x=1768863249; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=/pnimPG9R8XWMr4Jh5OyK9ONvCYCh5KRvpbaYIrsAcY=;
- b=kVKfjrSYBlPnrry+mEXtJUfhNpUMxxb13E1tynBsMXXokCgX/yBjLK49wHrI5lwIfK
- +Jczqpme4vW9xd3DYkO1p2hETOo9xTmSeXt53hRW14hcUgDybWtYPawczHSnje0CK2Wf
- x0gEIQws3XKygS0Dgh7c9vCVdtwKblXE+06mJfvzdhioPzHqYz2MS00jQQq8xsWOAEsX
- GwkvRM7Gyu5C1G5SsIuRcSyf1bxRi/9H0JYFLgKwI54MNfJfbsRL5Frz5D3eHPIlbnKR
- /ko4+R7qTczTvTD+59Ge0aRqKbimaOIAhFuEez6LlJDRDJbMZfwI5/Wgsc4bB2VXuKSs
- q1XA==
+ :reply-to; bh=PVOxqKe7m5GyEtl7twW69S76IsK+WydF2jTWuzF0bHQ=;
+ b=LoA99oNV+ahd74X0V5pTXSiHZBwAIFyzgcFtGbciGmd+xbqiF8EDskWF3C554yXmrj
+ 3Pxypxz20OTHunCHwqbM41SlSehUIs8nurrf3Po+dqjmTipVdO5OtQAYqKQeauesgnP3
+ tyLA2z72hC1NN4BxU+LkMh/yHKP8CqAS0QftCUkel5DvQo6/SvjUNuj+zc6bwCmDz+Fv
+ /Jz0L96c9pkYeckYmlmkUbBs5ufWMTaM2TMx79VfcV+owQigsV3irFycJWBIsPSzYZWL
+ BPnvvSmE2WCt23WLfJ/Ok0zev6vvYtp28pmcPAF6gd4w/iuNvOhRmfmd0qVXyBwQMUHD
+ 29jA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768258441; x=1768863241;
+ d=1e100.net; s=20230601; t=1768258449; x=1768863249;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=/pnimPG9R8XWMr4Jh5OyK9ONvCYCh5KRvpbaYIrsAcY=;
- b=MGUFeNgIW6MGwIC71/pMtCMzFa2F9NH3WoyWYc8LtmOjYEzcfoyApjCB6ak8Y6ECGf
- PKkILcxkvaOsRVD9cR/Jt5Xt/V6HbM35f8y+oi989NdjlhYZHzs77mJykJOdCpHt6M+t
- Y0i/q3u2+2kx3exZypPohWW8Wtf4969cJAlx3u5Q2akS/oF+9azwcv1T3QCk1OajIR6m
- uMrllobkyZXQhh7uwvoBAvcwvSrpgJ00en+j176g+rrF1GOMF71PukHhJfk95I755L0d
- 5hlgN3o1rrZ1CDpd0c6VxvFFfCsgpMEdtcX/QWUGmRSgu85wYNWP/fTGIs7LsBv7l4Q8
- asIQ==
-X-Gm-Message-State: AOJu0YxEVjkkpBb6gWdd9UCAbixn0w7HVB6hGOWM9JW1qJLi0oonjZPH
- yck2JBYFIWf7qrJFSQAow3wpviBdAwP088fvPJt5e1PDrF1CrE019L+u8EFtdW3wPMmALmtu6pj
- 5gfXP8ao=
-X-Gm-Gg: AY/fxX4hLBswViFJsCkWmNhl7jj3Y6cM2RcmCBg21HYRFhuEsFFl8ndiTWGXceDRa8t
- Th5DEJUcPxNvXdptEjzbweDg1Bk6f0RLIWEpnE+xF4HZcTIjSKvRzaYvonCZMBZq5mkDj+7uJZj
- r6Q8t3PQhsBF5lXy4YFhwOOtgwASW2vMQEVTlsdfbQvZTm9J42rXzvDn/+GlxcndP1QqiXtJTmK
- QSb2Dv+qfA5hHwqknZN1oY8wYislRIBLYb8PXmnxwxtSP6NPB4GTloMvzZ97TuxCKDXuJSqffPU
- 7pVN8HVOh8Vapmw8R6wau5RlgiMRdBZtjDNxwKgJWLuWgEHiU2H6Nl0GpbLbYnV0QWbC2V4xh4j
- Vk521N55NW3RYarI0lPM2yiIFpc54bc6MvC0/dMhaE3Dlx+9yA0rWHZ/XUMSI641Els7Djt+6gW
- yPyUY5cGlgXirYjaTx/m/Gem3XzM2d7uOS/QA36M9wDbkUkt7trRU6WwQiFFhF
-X-Google-Smtp-Source: AGHT+IGvNF9bA9iSMht78O00lwrlRz6ZQ9tPoU2ylLhe8KevPva4Ib7lwL5Y93u6jscsXxvpkwagMg==
-X-Received: by 2002:a05:600c:8b43:b0:47d:264e:b37d with SMTP id
- 5b1f17b1804b1-47d84b36a01mr221683935e9.22.1768258441461; 
- Mon, 12 Jan 2026 14:54:01 -0800 (PST)
+ bh=PVOxqKe7m5GyEtl7twW69S76IsK+WydF2jTWuzF0bHQ=;
+ b=HhaTp7L3UDcX6oRm4wKXY096+ZYi63dhzN83j08BmYGx2UJ31rAEHrysq+uX8Zahvw
+ spuh6gjNGxthxjIXtrHCj/9FyEAz7qQ2jW2E3MnGL1w93bcOKVRQaxJOYBIM1AO1TZMC
+ fIf/164ht8T4f4OdYzXmiCfrIh1URrY5e7mvYr6xqDWGOUXLYA8pWIcpBUF1vpY3nXGS
+ 0ARlT5JmFjIE+0HnraPqfc3oNcKUBOvzHrrb5K1gx9vkVlrXmxEiFCjDPglX4o8w4PKy
+ W50WEwYvZ1YmVH2auuYaXQdD8YCcuxY+N3MnK/hmPTlmgxVXn9zQ0v1XDAQ5IOIkAnmV
+ 3lEQ==
+X-Gm-Message-State: AOJu0Yx0Og8tbMe+2LlBJ7FCdgSm2u311y0wijWpKXGlt/qJIt7lppiq
+ +uXyGLboYybC6LlJg6STQQBJdurreNvaeuQVZo9VQbH5M9JXuZTgv/wgSqE3CUnrGBCZtzmqvAE
+ afu60tEQ=
+X-Gm-Gg: AY/fxX6cpeopdMl01O/EKi8g9ON/wCGzJGPcibYYDvvONyBZRbWEbJfq1xmtDB+8Ml+
+ SmWsDpqqbixcZ8ahdh9g/dBYwzp056VpPntg706knSzzarOYFM1f//qoW/xq1+EyDdRwu/zY3iI
+ TMDiX36SxNf+brd+eruCKUZcK+9WIBNIrXOnBJciGI/1urWclfvN+deaf3vrkCXFyvUDjolxMl/
+ yThkDdZyG8DxJu16YS3H5ouUrLKaGaKnQYuWWj4so6D0N9cKWC11alcEexZrU+i9gy5JXMmjrnk
+ toglluf64TqXTLhWLvEHhxXFZ8wi5VWc/vR8l3Z9NP8Q1Gj1f5HToKxbdOickKr8bzouZrQU62Z
+ DMEnXgOH0djtZaJnHD/bftqgx7R74Stgnhhl2NeIDx00hm3BPN/AdVsYxtJJ5KulRTEq2UcSdDG
+ 8GZFtIV5UP/VGsD496KP2eWVZVIBuk72A9v/vzmGYhq3tfYWm4FElw5vCWGu5i
+X-Google-Smtp-Source: AGHT+IFerl6XOTnhunaAQTE6+5cb6XuiJP06hS4J5h5M8v+40yTiLDuW0LBXL7YzC0HpAl3MlaUDfQ==
+X-Received: by 2002:a05:600c:a47:b0:477:54cd:200e with SMTP id
+ 5b1f17b1804b1-47d8e56624emr178847135e9.1.1768258448766; 
+ Mon, 12 Jan 2026 14:54:08 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47ecf6a5466sm91705475e9.11.2026.01.12.14.54.00
+ ffacd0b85a97d-432bd5fe83bsm40785338f8f.38.2026.01.12.14.54.07
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 12 Jan 2026 14:54:01 -0800 (PST)
+ Mon, 12 Jan 2026 14:54:07 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 44/61] target/rx: Use little-endian variant of cpu_ld/st_data*()
-Date: Mon, 12 Jan 2026 23:48:39 +0100
-Message-ID: <20260112224857.42068-45-philmd@linaro.org>
+Subject: [PULL 45/61] target/rx: Use explicit little-endian LD/ST API
+Date: Mon, 12 Jan 2026 23:48:40 +0100
+Message-ID: <20260112224857.42068-46-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112224857.42068-1-philmd@linaro.org>
 References: <20260112224857.42068-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,99 +97,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We only build the RX target using little endianness order,
-therefore the cpu_ld/st_data*() definitions expand to the little
-endian declarations. Use the explicit little-endian variants.
+The RX architecture uses little endianness. Directly use
+the little-endian LD/ST API.
 
-Mechanical change running:
+Mechanical change using:
 
-  $ tgt=rx; \
-    end=le; \
-    for op in data mmuidx_ra; do \
-      for ac in uw sw l q; do \
-        sed -i -e "s/cpu_ld${ac}_${op}/cpu_ld${ac}_${end}_${op}/" \
-                  $(git grep -l cpu_ target/${tgt}/); \
-      done;
-      for ac in w l q; do \
-        sed -i -e "s/cpu_st${ac}_${op}/cpu_st${ac}_${end}_${op}/" \
-                  $(git grep -l cpu_ target/${tgt}/); \
-      done;
+  $ end=le; \
+    for acc in uw w l q tul; do \
+      sed -i -e "s/ld${acc}_p(/ld${acc}_${end}_p(/" \
+             -e "s/st${acc}_p(/st${acc}_${end}_p(/" \
+        $(git grep -wlE '(ld|st)t?u?[wlq]_p' target/rx/); \
     done
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Message-ID: <20251126202200.23100-5-philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20251224163304.91384-3-philmd@linaro.org>
 ---
- target/rx/helper.c    | 14 +++++++-------
- target/rx/op_helper.c |  6 +++---
- 2 files changed, 10 insertions(+), 10 deletions(-)
+ target/rx/cpu.c     |  2 +-
+ target/rx/gdbstub.c | 24 ++++++++++++------------
+ 2 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/target/rx/helper.c b/target/rx/helper.c
-index 9a78f1457f5..daaeeec1b5c 100644
---- a/target/rx/helper.c
-+++ b/target/rx/helper.c
-@@ -68,10 +68,10 @@ void rx_cpu_do_interrupt(CPUState *cs)
-         qemu_log_mask(CPU_LOG_INT, "fast interrupt raised\n");
-     } else if (cpu_test_interrupt(cs, CPU_INTERRUPT_HARD)) {
-         env->isp -= 4;
--        cpu_stl_data(env, env->isp, save_psw);
-+        cpu_stl_le_data(env, env->isp, save_psw);
-         env->isp -= 4;
--        cpu_stl_data(env, env->isp, env->pc);
--        env->pc = cpu_ldl_data(env, env->intb + env->ack_irq * 4);
-+        cpu_stl_le_data(env, env->isp, env->pc);
-+        env->pc = cpu_ldl_le_data(env, env->intb + env->ack_irq * 4);
-         env->psw_ipl = env->ack_ipl;
-         cpu_reset_interrupt(cs, CPU_INTERRUPT_HARD);
-         qemu_set_irq(env->ack, env->ack_irq);
-@@ -82,14 +82,14 @@ void rx_cpu_do_interrupt(CPUState *cs)
-         const char *expname = "unknown exception";
- 
-         env->isp -= 4;
--        cpu_stl_data(env, env->isp, save_psw);
-+        cpu_stl_le_data(env, env->isp, save_psw);
-         env->isp -= 4;
--        cpu_stl_data(env, env->isp, env->pc);
-+        cpu_stl_le_data(env, env->isp, env->pc);
- 
-         if (vec < 0x100) {
--            env->pc = cpu_ldl_data(env, 0xffffff80 + vec * 4);
-+            env->pc = cpu_ldl_le_data(env, 0xffffff80 + vec * 4);
-         } else {
--            env->pc = cpu_ldl_data(env, env->intb + (vec & 0xff) * 4);
-+            env->pc = cpu_ldl_le_data(env, env->intb + (vec & 0xff) * 4);
+diff --git a/target/rx/cpu.c b/target/rx/cpu.c
+index f5f4f3ba4ab..0437edca1ba 100644
+--- a/target/rx/cpu.c
++++ b/target/rx/cpu.c
+@@ -99,7 +99,7 @@ static void rx_cpu_reset_hold(Object *obj, ResetType type)
+     resetvec = rom_ptr(0xfffffffc, 4);
+     if (resetvec) {
+         /* In the case of kernel, it is ignored because it is not set. */
+-        env->pc = ldl_p(resetvec);
++        env->pc = ldl_le_p(resetvec);
+     }
+     rx_cpu_unpack_psw(env, 0, 1);
+     env->regs[0] = env->isp = env->usp = 0;
+diff --git a/target/rx/gdbstub.c b/target/rx/gdbstub.c
+index f222bf003be..30074c9da7b 100644
+--- a/target/rx/gdbstub.c
++++ b/target/rx/gdbstub.c
+@@ -56,7 +56,7 @@ int rx_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+     uint32_t psw;
+     switch (n) {
+     case 0 ... 15:
+-        env->regs[n] = ldl_p(mem_buf);
++        env->regs[n] = ldl_le_p(mem_buf);
+         if (n == 0) {
+             if (env->psw_u) {
+                 env->usp = env->regs[0];
+@@ -66,38 +66,38 @@ int rx_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
          }
- 
-         if (vec == 30) {
-diff --git a/target/rx/op_helper.c b/target/rx/op_helper.c
-index 2b190a4b2cf..ca3e9e85fc7 100644
---- a/target/rx/op_helper.c
-+++ b/target/rx/op_helper.c
-@@ -217,20 +217,20 @@ void helper_scmpu(CPURXState *env)
- static uint32_t (* const cpu_ldufn[])(CPUArchState *env,
-                                      abi_ptr ptr,
-                                      uintptr_t retaddr) = {
--    cpu_ldub_data_ra, cpu_lduw_data_ra, cpu_ldl_data_ra,
-+    cpu_ldub_data_ra, cpu_lduw_le_data_ra, cpu_ldl_le_data_ra,
- };
- 
- static uint32_t (* const cpu_ldfn[])(CPUArchState *env,
-                                      abi_ptr ptr,
-                                      uintptr_t retaddr) = {
--    cpu_ldub_data_ra, cpu_lduw_data_ra, cpu_ldl_data_ra,
-+    cpu_ldub_data_ra, cpu_lduw_le_data_ra, cpu_ldl_le_data_ra,
- };
- 
- static void (* const cpu_stfn[])(CPUArchState *env,
-                                  abi_ptr ptr,
-                                  uint32_t val,
-                                  uintptr_t retaddr) = {
--    cpu_stb_data_ra, cpu_stw_data_ra, cpu_stl_data_ra,
-+    cpu_stb_data_ra, cpu_stw_le_data_ra, cpu_stl_le_data_ra,
- };
- 
- void helper_sstr(CPURXState *env, uint32_t sz)
+         break;
+     case 16:
+-        env->usp = ldl_p(mem_buf);
++        env->usp = ldl_le_p(mem_buf);
+         if (env->psw_u) {
+-            env->regs[0] = ldl_p(mem_buf);
++            env->regs[0] = ldl_le_p(mem_buf);
+         }
+         break;
+     case 17:
+-        env->isp = ldl_p(mem_buf);
++        env->isp = ldl_le_p(mem_buf);
+         if (!env->psw_u) {
+-            env->regs[0] = ldl_p(mem_buf);
++            env->regs[0] = ldl_le_p(mem_buf);
+         }
+         break;
+     case 18:
+-        psw = ldl_p(mem_buf);
++        psw = ldl_le_p(mem_buf);
+         rx_cpu_unpack_psw(env, psw, 1);
+         break;
+     case 19:
+-        env->pc = ldl_p(mem_buf);
++        env->pc = ldl_le_p(mem_buf);
+         break;
+     case 20:
+-        env->intb = ldl_p(mem_buf);
++        env->intb = ldl_le_p(mem_buf);
+         break;
+     case 21:
+-        env->bpsw = ldl_p(mem_buf);
++        env->bpsw = ldl_le_p(mem_buf);
+         break;
+     case 22:
+-        env->bpc = ldl_p(mem_buf);
++        env->bpc = ldl_le_p(mem_buf);
+         break;
+     case 23:
+-        env->fintv = ldl_p(mem_buf);
++        env->fintv = ldl_le_p(mem_buf);
+         break;
+     case 24:
+-        env->fpsw = ldl_p(mem_buf);
++        env->fpsw = ldl_le_p(mem_buf);
+         break;
+     case 25:
+         return 8;
 -- 
 2.52.0
 
