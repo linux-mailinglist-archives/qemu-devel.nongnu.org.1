@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F640D11E51
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 11:32:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDFE6D11E60
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 11:33:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfFDs-00062v-Vj; Mon, 12 Jan 2026 05:32:33 -0500
+	id 1vfFDy-0006Jc-KN; Mon, 12 Jan 2026 05:32:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfFDq-0005qn-5T
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:32:30 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfFDw-0006Ea-Q3
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:32:36 -0500
 Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfFDo-0001uC-Fg
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:32:29 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfFDv-0001vC-AB
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:32:36 -0500
 Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-47775fb6c56so59046845e9.1
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 02:32:28 -0800 (PST)
+ 5b1f17b1804b1-47796a837c7so42905935e9.0
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 02:32:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768213947; x=1768818747; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768213953; x=1768818753; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5S99U3XUshmuddLFuBd6ft79OtosHUhtCtEVlD+u7mY=;
- b=L0lI1o+tQ3J2yddKgVJ9drl1h3b03p9tClBdJuAjRBINN8IHgi4pOe3B9+i7h64OAh
- a4kycf35AgHrtmeXvuIAZrekhahUziiM61KO8nFurypWYCiz9eWmK1Zj8/iL6NSqPayD
- RlGVfI9sOkvDjoYr+NAKt7J1/E1BA1h8PC9VjpFuUQxme5NKSz5mtVqlQn5aA+ebmtVH
- PDKtSc8V7/a5na7QtrWrvgo7AUDx7QZ30YXZCGCCLBLW8x8oS4oeyR5nRLSxhQGCLN47
- ZaXSeWqKnr03I0/JA7b6km3UoTDF5XNpie2gAa7iXt5mM7oZpxvHfL1uxan7Nqo5pbqy
- ZggQ==
+ bh=Z/H3tcHxNV5Gv+ubcRhcnU/eZQeg+lU3aNVd2Ihjkzg=;
+ b=jYHZG/qqK/CpEdjFP53CRqNv4IK3KAru6dAdiVUSiLKRcWZUiFsuMss42mx9MJNrkY
+ 9CTL2hiIABM7G+FdTEiSCRXknYXLGaHXK9jCI9hlAZp4UHNbtgkYwganYHSuIAYBgswy
+ fFmlOaC76VRF+HGgXkBr6uAyV5vzGCDc6NMYGsTa/IT/mX+GKmhkJJFOpHxF+3WOBbaO
+ yWs/ymzjd2YslrJ0QMEnv1GH+S0rTaD0qLxYiExiCIST4CUOZ+HiZ9HHP2tvyqfi7qKI
+ Q0udx2jRoi4x4id4HMBvYbh7pXUvw3o4xfZ5p0VwsmpwVbKu+ipOpSHGHy3hICxIdqHy
+ riQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768213947; x=1768818747;
+ d=1e100.net; s=20230601; t=1768213953; x=1768818753;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=5S99U3XUshmuddLFuBd6ft79OtosHUhtCtEVlD+u7mY=;
- b=Rj6xynnXfwC0QWqfoJMjc37p7es2fK8avc0Dw0G0/C5X7Y6Jw3jiXi+1uicmJ/auY+
- BTgLw0dW7/2UDVOLuk/nUSNUqbk3JAoZy31NMUaQYW0qaIzhI4v5PdYk+rNjmXTu/tOZ
- HVhUSX5wQ9rF7CryskOyS3aMvNqbSB9l2Or323oo3jkqzRbBqV7+0wRPbxSi3ktWakUf
- 3Dd0OBWieADj+0ZpVGJMxJyAOt1+BTDfXLtiMC4S4paWOLTbojD9uZHG7ueJ3cpSFhsB
- deJuClF7ZNp6Z7DhI9Xt5+DCIW+XO2QeoDrrhdYMJCnoPfIdQI9Enc/eGxMcAVQbaefN
- K/0A==
-X-Gm-Message-State: AOJu0YyyMlxNGhkWBsXIIJ5WA9KPeWGBMICSqWElHT+0HSrM797IW/Yx
- xkxGPznrABVINrHCQMWxFpXfmyEOpGfbDZC5wnJbC9iH9cPoKEkM+AKVBnJE2RE4TRlai50JbwM
- s5OWOP9g=
-X-Gm-Gg: AY/fxX49geeEOzKkzrGF1af4V+wHUbDqQNCLQakdnw5/GsT/lHIUFaB3IcC4vrTwdTD
- uDMx4GLq2IRARMIg7s/ulFn8k9LMt08rUpUBAwZkdM8KjMzLOh2EuxsPYiAumVk2wGa3knx9HKp
- kS1Ud9HAYybj8cjh9r9sMfvbo70syapV4MWv1d1QSjudTGlmB7d/ViDPlthpZsOw8VLuQSdtoYY
- 6rNC9umhIM8NKUL98nhkdf0YREDMBKwcVWaz+Br9Fl8LkoqOp6uJzLttibJXs8vKYroRvX9cgg3
- XS4Z1VVI1WQYLr/lFn2CsfO9c2IS+6ChhOIB5ModQniIdC18CB0ML9/snChUGIHE6E4j2rGt0rO
- 9HXCdcogynoL/g4LMhn0m0wUbT7RGUHV9qD7Or+Uu3X/AENtwTtWEQzCK9UWN38wIWhbyirbm6x
- UXkt6dTu08F3z73tXRRhTueykI9/llOiItzXsNuQdXO0RAecdtMYXFvUXQYAxp
-X-Google-Smtp-Source: AGHT+IFg6iH9BJeHq4aOiqxHsjm/MD6f+vy1OWo+rbxM1fwDMXT1DjWBv/68mkoS6E7clyHMfcuiow==
-X-Received: by 2002:a05:600c:630d:b0:475:e007:bae0 with SMTP id
- 5b1f17b1804b1-47d84b1fbeamr234567095e9.16.1768213946620; 
- Mon, 12 Jan 2026 02:32:26 -0800 (PST)
+ bh=Z/H3tcHxNV5Gv+ubcRhcnU/eZQeg+lU3aNVd2Ihjkzg=;
+ b=GU8QzEV1WQ9J9PPfD2kt5AZTOi28z+zRIgqWv1TwTFM9b4p9bWARXv13OAT8JJiSrC
+ PSVNUxKk7nV4K+GAIjmNYLYhIrRJsB7XZWm/SX7L4bxp/JhsTtL6IYby6168VdejCwtg
+ wD1UH2Zrm7RZZNJsPm7QOlcRA+RUnKDyc10dFhUpUFNLzPZ8sXVcVNdXt5QxRGzVgjUY
+ 1GzgpoCwmSXWmoL44UfEOonDpElQnjpy4eFj3b2mnz2wkHmrsrLp1t39QXgOqhFwgpzs
+ VXOuD6TkJbkBUvkpxTWCzaZ7LwRXdZNBzsVw/v+gIqjFpRXri/AhMw2JMU+5xndhgkYD
+ 9hhQ==
+X-Gm-Message-State: AOJu0YwNCETsDOV4UkMaJ+J0bEnUnXwuA4YnnupD7VFwqpnHm23PSJwy
+ T0sp9cKNlipGgVlAoLfyf571rLAfppcl9bZmmApXwclDmQasAhGi8WPVtDYvsb3B7qy7zLGQk1r
+ MV2X6ftM=
+X-Gm-Gg: AY/fxX69iirKhGEdrOuZ1yWxUu+aibUEvXXoxCgk4pDNmvFCKGj14AsA2ji87km2Qyk
+ IB3TnZqQHm6h4T9HRfsiStJnJ7SZrrs46fg3iPQhisATWoOY7hz2LRS0cjUNxab/V37M0i5zF0P
+ zLpKD4tI3qk/kNCioJsT2OJI4rrGrx2GyvVG7LoIkeWYhc295Zea48MSGYyhvSQoVcdSM78+V6N
+ VIQ1ThQv1wCair05Udfroz/soL5QUi7PKMjYHkyEdsOm0eK3+6ESSePsYzZwCGMIZXxKfzSJ7X7
+ SmlzwjMgs/CFhFoddSDiakgCLDc/TJDhRDDbYtCndoQathCxFIMzc7ZrEX3zwF9oO9PMTWsQx29
+ B52Im1HOiBw8z71MhMS5aiHyiqY7Auc4zdvlQbUvpdockeaXL92Stq2Xq3WIT9cFaj6NNLvMqba
+ lGEVsNo+PO3zrXlodwR1atsmEl6jzqV2oj7vIuAY+gk6ze7FbAW58iSODnDoZr
+X-Google-Smtp-Source: AGHT+IG6yLqjnscPJXeLpTyo/wSaOXniJA2BzbGl8RcqHrdI8Wgzk4BeJql8k1Iyk3EihGerbBf8Qg==
+X-Received: by 2002:a05:600c:c491:b0:471:1774:3003 with SMTP id
+ 5b1f17b1804b1-47d84b5b5d4mr168633285e9.29.1768213953442; 
+ Mon, 12 Jan 2026 02:32:33 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d7f6ef868sm341578045e9.11.2026.01.12.02.32.25
+ 5b1f17b1804b1-47d7f418538sm347941935e9.5.2026.01.12.02.32.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 12 Jan 2026 02:32:26 -0800 (PST)
+ Mon, 12 Jan 2026 02:32:32 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -74,9 +74,10 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  Alexander Graf <agraf@csgraf.de>, Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v6 16/19] accel/hvf: Add hvf_arch_cpu_realize() stubs
-Date: Mon, 12 Jan 2026 11:30:30 +0100
-Message-ID: <20260112103034.65310-17-philmd@linaro.org>
+Subject: [PATCH v6 17/19] target/arm: Create GTimers *after* features
+ finalized / accel realized
+Date: Mon, 12 Jan 2026 11:30:31 +0100
+Message-ID: <20260112103034.65310-18-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112103034.65310-1-philmd@linaro.org>
 References: <20260112103034.65310-1-philmd@linaro.org>
@@ -107,76 +108,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement HVF AccelOpsClass::cpu_target_realize() hook as
-empty stubs. Target implementations will come separately.
+Call generic (including accelerator) cpu_realize() handlers
+*before* setting @gt_cntfrq_hz default
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- include/system/hvf_int.h  | 2 ++
- accel/hvf/hvf-accel-ops.c | 2 ++
- target/arm/hvf/hvf.c      | 5 +++++
- target/i386/hvf/hvf.c     | 5 +++++
- 4 files changed, 14 insertions(+)
+ target/arm/cpu.c | 65 ++++++++++++++++++++++++------------------------
+ 1 file changed, 33 insertions(+), 32 deletions(-)
 
-diff --git a/include/system/hvf_int.h b/include/system/hvf_int.h
-index c8e407a1463..96790b49386 100644
---- a/include/system/hvf_int.h
-+++ b/include/system/hvf_int.h
-@@ -106,4 +106,6 @@ int hvf_update_guest_debug(CPUState *cpu);
-  */
- bool hvf_arch_supports_guest_debug(void);
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index caf7980b1fc..c1087bf5b92 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1636,26 +1636,6 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
+         return;
+     }
  
-+bool hvf_arch_cpu_realize(CPUState *cpu, Error **errp);
+-    if (!cpu->gt_cntfrq_hz) {
+-        /*
+-         * 0 means "the board didn't set a value, use the default". (We also
+-         * get here for the CONFIG_USER_ONLY case.)
+-         * ARMv8.6 and later CPUs architecturally must use a 1GHz timer; before
+-         * that it was an IMPDEF choice, and QEMU initially picked 62.5MHz,
+-         * which gives a 16ns tick period.
+-         *
+-         * We will use the back-compat value:
+-         *  - for QEMU CPU types added before we standardized on 1GHz
+-         *  - for versioned machine types with a version of 9.0 or earlier
+-         */
+-        if (arm_feature(env, ARM_FEATURE_BACKCOMPAT_CNTFRQ) ||
+-            cpu->backcompat_cntfrq) {
+-            cpu->gt_cntfrq_hz = GTIMER_BACKCOMPAT_HZ;
+-        } else {
+-            cpu->gt_cntfrq_hz = GTIMER_DEFAULT_HZ;
+-        }
+-    }
+-
+ #ifndef CONFIG_USER_ONLY
+     /* The NVIC and M-profile CPU are two halves of a single piece of
+      * hardware; trying to use one without the other is a command line
+@@ -1702,7 +1682,40 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
+             return;
+         }
+     }
++#endif
+ 
++    cpu_exec_realizefn(cs, &local_err);
++    if (local_err != NULL) {
++        error_propagate(errp, local_err);
++        return;
++    }
 +
++    arm_cpu_finalize_features(cpu, &local_err);
++    if (local_err != NULL) {
++        error_propagate(errp, local_err);
++        return;
++    }
++
++    if (!cpu->gt_cntfrq_hz) {
++        /*
++         * 0 means "the board didn't set a value, use the default". (We also
++         * get here for the CONFIG_USER_ONLY case.)
++         * ARMv8.6 and later CPUs architecturally must use a 1GHz timer; before
++         * that it was an IMPDEF choice, and QEMU initially picked 62.5MHz,
++         * which gives a 16ns tick period.
++         *
++         * We will use the back-compat value:
++         *  - for QEMU CPU types added before we standardized on 1GHz
++         *  - for versioned machine types with a version of 9.0 or earlier
++         */
++        if (arm_feature(env, ARM_FEATURE_BACKCOMPAT_CNTFRQ) ||
++            cpu->backcompat_cntfrq) {
++            cpu->gt_cntfrq_hz = GTIMER_BACKCOMPAT_HZ;
++        } else {
++            cpu->gt_cntfrq_hz = GTIMER_DEFAULT_HZ;
++        }
++    }
++#ifndef CONFIG_USER_ONLY
+     {
+         uint64_t scale = gt_cntfrq_period_ns(cpu);
+ 
+@@ -1723,18 +1736,6 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
+     }
  #endif
-diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-index ffcfe9663b5..b74a5779c3d 100644
---- a/accel/hvf/hvf-accel-ops.c
-+++ b/accel/hvf/hvf-accel-ops.c
-@@ -356,6 +356,8 @@ static void hvf_accel_ops_class_init(ObjectClass *oc, const void *data)
- {
-     AccelOpsClass *ops = ACCEL_OPS_CLASS(oc);
  
-+    ops->cpu_target_realize = hvf_arch_cpu_realize;
-+
-     ops->create_vcpu_thread = hvf_start_vcpu_thread;
-     ops->kick_vcpu_thread = hvf_kick_vcpu_thread;
-     ops->handle_interrupt = generic_handle_interrupt;
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 718414cc53c..bf8bed1495d 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -972,6 +972,11 @@ int hvf_arch_init_vcpu(CPUState *cpu)
-     return 0;
- }
- 
-+bool hvf_arch_cpu_realize(CPUState *cs, Error **errp)
-+{
-+    return true;
-+}
-+
- void hvf_kick_vcpu_thread(CPUState *cpu)
- {
-     hv_return_t ret;
-diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-index e3e54c10bd5..089dd4da1ff 100644
---- a/target/i386/hvf/hvf.c
-+++ b/target/i386/hvf/hvf.c
-@@ -370,6 +370,11 @@ int hvf_arch_init_vcpu(CPUState *cpu)
-     return 0;
- }
- 
-+bool hvf_arch_cpu_realize(CPUState *cs, Error **errp)
-+{
-+    return true;
-+}
-+
- static void hvf_store_events(CPUState *cpu, uint32_t ins_len, uint64_t idtvec_info)
- {
-     X86CPU *x86_cpu = X86_CPU(cpu);
+-    cpu_exec_realizefn(cs, &local_err);
+-    if (local_err != NULL) {
+-        error_propagate(errp, local_err);
+-        return;
+-    }
+-
+-    arm_cpu_finalize_features(cpu, &local_err);
+-    if (local_err != NULL) {
+-        error_propagate(errp, local_err);
+-        return;
+-    }
+-
+ #ifdef CONFIG_USER_ONLY
+     /*
+      * User mode relies on IC IVAU instructions to catch modification of
 -- 
 2.52.0
 
