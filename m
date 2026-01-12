@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82C26D1356D
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 15:56:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 294B0D136E1
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 16:05:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfJJm-0007mr-4s; Mon, 12 Jan 2026 09:54:54 -0500
+	id 1vfJKB-0008C8-4n; Mon, 12 Jan 2026 09:55:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfJJg-0007fe-RZ
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 09:54:48 -0500
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfJJj-0007kX-8U
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 09:54:51 -0500
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfJJd-0001Xn-Rc
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 09:54:48 -0500
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-b87003e998bso265337166b.1
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 06:54:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfJJe-0001YO-PC
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 09:54:50 -0500
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-b8714a52072so183440266b.3
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 06:54:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1768229684; x=1768834484; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1768229685; x=1768834485; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Y1LxjYjMYUoswFZn9nDXTMgtS1rPNwvvyqGhy82qro8=;
- b=AUHxeNgI9ciszVJcOgOPwwdTIX+UJbMz0uO6pMIG6DDk4ZUay/Zpo/K+m55+zF85gu
- e+xlU1kr1pE4Nnqz7veBfqqmrWlrN3oCcZwGZulGcYOj0OKqlKK1xlCcXXUxViuturrr
- UgMz6UdOvTvrvqe4GDSIOf93oxiUcTJ63thV8c9fwE6Sy6WrX/Aaf7zJE8G++4zwFJdq
- jWjnH9vUKWDYmtfcyjJmqhFSA6CI4Lko48m/5gwHEPpMDlIBfaV99BlA4dYUVOtibN6J
- tlF0+hXqKX40YYlE0Ncec6sg3+TyjYckS+Km3lgT10p65HCK236yXmb2BaZISeUpRLb0
- jOWg==
+ bh=NZ8E/vLXW/n+4mH8Q0iJxaZz9OiFrfoLpfuE5uF7VSk=;
+ b=CN2H+i3MDRtsZeQF2HNHqA3OFkPX48k/GibIgdl5KCyaziTW5lccoYNnAFL3hH5/j7
+ a/6nUgFAqXG9ViMF5plNQw6aU/bnadbnQcd31Bu7Q2UCcYWcP5CaERP5F1x9QZYrwarT
+ gUvRRNY7qCh5g4f3t2sxTp64ASLP6tYf8mvnlfn5ki2s1HeNXAcv6BZsPVCNlyR5RZeL
+ WxTnKjOSKquAJaYQh5NeFAzYRs/AuesIvSbibulIbWV/d+NNG92XTvsf8DvgcbB4Y6kt
+ 5iAazAluVlbtQiAWIybGV35Hsoq5TiAsB9V0u1hv1Ywb0bg0txzt5AA9aga77po9l5If
+ XRvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768229684; x=1768834484;
+ d=1e100.net; s=20230601; t=1768229685; x=1768834485;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=Y1LxjYjMYUoswFZn9nDXTMgtS1rPNwvvyqGhy82qro8=;
- b=ABFi5999jT7iOBiMCOok3Rx2yVuPuMaLwa30JnRj/HLHLFENyIK3wSEo/C5gL1gHeh
- lY6xrEfWNVtybCt26S+t9MD1SwFq9oqmhGS7LdukRkXYL+pCRi8Ga51cpih62dQ3wSTj
- tITDk25S0YjVgTzOBIeOUaGsjCb/e6sqQO5l68V7uPUkcxqH0xGtxc6DjCKKrktbf7E5
- mxg0Cx7QHlEHWWu8si4DJMJSbvBeBlw2wXHkkBM/ECWsXTMRljoFTLCJB2uV3eyb9wBs
- j/nrTmN4N9ogYBgO51SGGoP6JNuDN9jQtH/DtNvRQmLN38/qLSiAdvhIz+4eyLlt4iYH
- xqcQ==
-X-Gm-Message-State: AOJu0YxiTAyCfo1khLlhJTmCs65pa2Jlqx1QuBjVljJdyPE/e7IprJJ+
- YBAtE2CZ+x/Jmmi+j1AIsc/EreWeSrsDsc9LX4dpRqJz0ib1Wj+PoJhtRrGGyKP1
-X-Gm-Gg: AY/fxX7fwdDnZ31pNsPmOqqJVMdGpYW/qWXAAb+moxQYovxWKGUxOS3mXo2n+v5GQhj
- PIHN4qA+Vno1IiOxoceoHCcRD3OL8dZJRM9orhPqa9Z5o6d3rfkqeKg2g9xnH5c016Ih8chXCaa
- Pth2VeWJlZfWMSgb9jR9578csZBIkjvKIPmnFtg0sAfanwRfDXQ7zctQYylQv9TqZIGW9V7sTWT
- BzIftchDFP0KTl5fAe/TprQ2P/P2Fpn0V/roji9HtvzjK8cBcrwulNfGCa26kX+eQZIaWImOwRM
- m1F8lgRrms99xl3rMvfD6gnjJRZoDtXjPvO7iveTbWDUWA7DlBgsqK3CTqUKqUb5Jqvx5THZkwR
- piGOLbo2Yhu4zSF1T0cTWdhR8/5PwS/cTfCLmutiG2Bu9W3ZG7nPisH+FsXbvavcaSnXLbVeR7z
- 72EB910tO16H4bFkuGLDXzOPf96FfDnj5ESR93AmRxp5F+8rgIqpgjFQPOcnNVJsdBfDdQig62
-X-Google-Smtp-Source: AGHT+IEl+b07bG8+3Z0hGlXN5mIYnTrF9fwmZuhOzzlOmo0yshFxPLv4Z0v/ew312KsuxIKCV3GQag==
-X-Received: by 2002:a17:907:7b86:b0:b87:1891:48fb with SMTP id
- a640c23a62f3a-b8718916cf6mr383338366b.23.1768229683536; 
- Mon, 12 Jan 2026 06:54:43 -0800 (PST)
+ bh=NZ8E/vLXW/n+4mH8Q0iJxaZz9OiFrfoLpfuE5uF7VSk=;
+ b=RZCA0drxwZ8ia++yq0CmhwWESTV7TR97eA8hVfwBY3kP7O7P5HcQq5Hoid5eenlGpq
+ fQQ4oUDRRP4ZMs7PPGCO9x1s6vCWPXsh65ywD9CYuBvWsyH6fggYpDoqcYRfcpELN15c
+ W79ycF0a0ZOzOYmcEslR/GrQQz1c7XBm47+LdFTE63sQIKctevoH4dWtgCpHMgszMfqi
+ MOooJqaV3xwh2Yky9S9vwS3W9WP19XFqlbkIs4UcLQ31bK22Tobe/483GJU3Jprlgfot
+ mp39Z95apsQkaOooYmdqD+RUJRrDwkpIyelCxrMpMhZFNj5Scu8YxwehM1aCz+jkOh61
+ Cnhw==
+X-Gm-Message-State: AOJu0YwfWb/lD8ML+KMQfE+cqeKM8roX3tboyRarJcTOFWOmgY6pZTd/
+ qHicuS3eLGTblD7WuG04N/nmLI+er2Nr4mIlnCLZgbZ7L5goK2S1CGnAXTkRbxXX
+X-Gm-Gg: AY/fxX5KZiDps3Al/u6Itw9xzjq2jU5AGQ6Hhx2eHwcT5ORqjQfPMx/05+lqqkUOT9J
+ m6IKC/J5vecE2q3iC8GD/NYmxko92DPViUkPXgB7HrS0/DRrgbDSr7Hir0wHtNT7roagLc6aP7t
+ e1C1WHkXcN5cyiIUwtnLuy88Y5IJhSHJ1prjs2Mb5QTkOcEljDErov5/OCZQIaZkkxKJz5E3MIi
+ HqpAcs1HxTWeRia4UuuZ7a8HnmalL3lC1b85g4L99Qp5BLxqO7ajwVJ47Tz7oVTXD0CPK3W4Yn9
+ cLd8t/pJIlLjAblcJq4sQTyVcgPppSBWiMc3NL6ItkupeOdfk2kj/NwbOaCPlZjN8fd7djXAoNP
+ 94z8IGqxQuVanFnJw0P2Welg2HFnRUtcbKbqnCNkW+lqAT2KLg/tajATpRxIABkfEU29O/jJRks
+ V92BXGgHXF9D1Df9+OuXovF9ihoz7YgSJyrds3s17/IfQN5BN8d4L6F9LrZn/STG9MfB8Vm2/C
+X-Google-Smtp-Source: AGHT+IHsRslvJQAddX3envb+UZTEs4NgJTW38nwMX013zXf1mqEFwfqYAI4cCC+kyWDYSBBNCsEBDA==
+X-Received: by 2002:a17:906:f58d:b0:b87:1b23:cad3 with SMTP id
+ a640c23a62f3a-b871b23cd09mr283903566b.9.1768229684803; 
+ Mon, 12 Jan 2026 06:54:44 -0800 (PST)
 Received: from archlinux (dynamic-077-188-226-222.77.188.pool.telefonica.de.
  [77.188.226.222]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b8731f0718asm37387966b.67.2026.01.12.06.54.42
+ a640c23a62f3a-b8731f0718asm37387966b.67.2026.01.12.06.54.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 Jan 2026 06:54:43 -0800 (PST)
+ Mon, 12 Jan 2026 06:54:44 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -69,23 +69,23 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bin Meng <bmeng.cn@gmail.com>, Thomas Huth <thuth@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
  qemu-ppc@nongnu.org
-Subject: [PATCH 06/14] hw/sd/sdhci: Consolidate eSDHC constants
-Date: Mon, 12 Jan 2026 15:54:10 +0100
-Message-ID: <20260112145418.220506-7-shentey@gmail.com>
+Subject: [PATCH 07/14] hw/sd/sdhci: Rename usdhc_ functions
+Date: Mon, 12 Jan 2026 15:54:11 +0100
+Message-ID: <20260112145418.220506-8-shentey@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112145418.220506-1-shentey@gmail.com>
 References: <20260112145418.220506-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,63 +101,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Drop the "IMX_" part of the names since these are actually {E,U}SDHC
-specific and apply for PowerPC-based SoCs as well. While at it
-consolidate all ESDHC constants into the ESDHC section.
+The next patches will introduce eSDHC device models (big and little endian).
+Prepare for that by renaming the functions. Also, this makes the code have
+similar conventions as in Linux and U-Boot.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/sd/sdhci-internal.h | 1 -
- hw/sd/sdhci.c          | 9 +++++----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ hw/sd/sdhci.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/hw/sd/sdhci-internal.h b/hw/sd/sdhci-internal.h
-index 3e81821dd1..f24532eed2 100644
---- a/hw/sd/sdhci-internal.h
-+++ b/hw/sd/sdhci-internal.h
-@@ -75,7 +75,6 @@
- #define SDHC_CMD_INHIBIT               0x00000001
- #define SDHC_DATA_INHIBIT              0x00000002
- #define SDHC_DAT_LINE_ACTIVE           0x00000004
--#define SDHC_IMX_CLOCK_GATE_OFF        0x00000080
- #define SDHC_DOING_WRITE               0x00000100
- #define SDHC_DOING_READ                0x00000200
- #define SDHC_SPACE_AVAILABLE           0x00000400
 diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index ccdfc59af8..779f411bab 100644
+index 779f411bab..531dd3c291 100644
 --- a/hw/sd/sdhci.c
 +++ b/hw/sd/sdhci.c
-@@ -1642,7 +1642,7 @@ static void sdhci_bus_class_init(ObjectClass *klass, const void *data)
- #define ESDHC_MIX_CTRL                  0x48
- 
- #define ESDHC_VENDOR_SPEC               0xc0
--#define ESDHC_IMX_FRC_SDCLK_ON          (1 << 8)
-+#define ESDHC_FRC_SDCLK_ON              (1 << 8)
- 
- #define ESDHC_DLL_CTRL                  0x60
- 
-@@ -1657,6 +1657,7 @@ static void sdhci_bus_class_init(ObjectClass *klass, const void *data)
- #define ESDHC_CTRL_8BITBUS              (0x2 << 1)
- 
+@@ -1659,7 +1659,7 @@ static void sdhci_bus_class_init(ObjectClass *klass, const void *data)
  #define ESDHC_PRNSTS_SDSTB              (1 << 3)
-+#define ESDHC_PRNSTS_CLOCK_GATE_OFF     BIT(7)
+ #define ESDHC_PRNSTS_CLOCK_GATE_OFF     BIT(7)
  
- static uint64_t usdhc_read(void *opaque, hwaddr offset, unsigned size)
+-static uint64_t usdhc_read(void *opaque, hwaddr offset, unsigned size)
++static uint64_t esdhc_read(void *opaque, hwaddr offset, unsigned size)
  {
-@@ -1731,10 +1732,10 @@ usdhc_write(void *opaque, hwaddr offset, uint64_t val, unsigned size)
+     SDHCIState *s = SYSBUS_SDHCI(opaque);
+     uint32_t ret;
+@@ -1673,7 +1673,7 @@ static uint64_t usdhc_read(void *opaque, hwaddr offset, unsigned size)
+         /*
+          * For a detailed explanation on the following bit
+          * manipulation code see comments in a similar part of
+-         * usdhc_write()
++         * esdhc_write()
+          */
+         hostctl1 = SDHC_DMA_TYPE(s->hostctl1) << (8 - 3);
  
-     case ESDHC_VENDOR_SPEC:
-         s->vendor_spec = value;
--        if (value & ESDHC_IMX_FRC_SDCLK_ON) {
--            s->prnsts &= ~SDHC_IMX_CLOCK_GATE_OFF;
-+        if (value & ESDHC_FRC_SDCLK_ON) {
-+            s->prnsts &= ~ESDHC_PRNSTS_CLOCK_GATE_OFF;
-         } else {
--            s->prnsts |= SDHC_IMX_CLOCK_GATE_OFF;
-+            s->prnsts |= ESDHC_PRNSTS_CLOCK_GATE_OFF;
-         }
-         break;
+@@ -1716,7 +1716,7 @@ static uint64_t usdhc_read(void *opaque, hwaddr offset, unsigned size)
+ }
  
+ static void
+-usdhc_write(void *opaque, hwaddr offset, uint64_t val, unsigned size)
++esdhc_write(void *opaque, hwaddr offset, uint64_t val, unsigned size)
+ {
+     SDHCIState *s = SYSBUS_SDHCI(opaque);
+     uint8_t hostctl1;
+@@ -1872,8 +1872,8 @@ usdhc_write(void *opaque, hwaddr offset, uint64_t val, unsigned size)
+ }
+ 
+ static const MemoryRegionOps usdhc_mmio_ops = {
+-    .read = usdhc_read,
+-    .write = usdhc_write,
++    .read = esdhc_read,
++    .write = esdhc_write,
+     .valid = {
+         .min_access_size = 1,
+         .max_access_size = 4,
 -- 
 2.52.0
 
