@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCA8BD15ADC
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 23:54:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B959D15ACD
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 23:54:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfQn0-0005d6-Q5; Mon, 12 Jan 2026 17:53:34 -0500
+	id 1vfQnC-0007Ot-2e; Mon, 12 Jan 2026 17:53:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQmp-0004mt-9c
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:53:24 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQmw-0005Dv-4t
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:53:30 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQmn-0003XC-Rn
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:53:23 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-42fbad1fa90so5948301f8f.0
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 14:53:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQmu-0003YJ-Ie
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:53:29 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-47d5e021a53so51062265e9.3
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 14:53:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768258400; x=1768863200; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768258407; x=1768863207; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=tJ/bFayLqqI0u1jQiX20vfmUfDSzPimkbdxxULJWrXg=;
- b=nFe2/ZPZUYr/ODa3xF50130INGJUNk3L1aVOEFedVUJ52ZyijHepb2u5cToB4r+aMm
- HRGcmlTnPv+TNd8LPNVOigu+Nd0EWSpqTdsDMwNc4ihog6zof2ola3EWtTA1tg5XBlUn
- UNghjx9fkJvU4SM529/xDXbBHIQe42m8JrLywWoglIqkjhXG2jkZ9KYYXbm+87xBlJo1
- inVEpL5RDumACNX5yKvUFA0OC8ua2OiE2Dz9jmdad/1NxxY1bTt8Bb5Xar4ESJXgGOWV
- TuBXGxZA5Ip7bRGy+RS22b2eTzLZQFn3OlTgY+kEfNg1RGLRKiVDu3YRi8dOWBPkf2Nf
- 784g==
+ :reply-to; bh=kbjExCft2bxFUe4ER2XObcujGSAepb71NphBWSn8QrA=;
+ b=s4J0MHBa1Xo6IcfDtn7vkk+0vJlvkOVkheaO/UCwfhXPbgN1oZjEd5/AOnt6yYOM1w
+ HiIT/G2+qqCLzemLJgAVW6BGrJHdJGigy3T4b94SjxLRX37tCMshgPFFEegzjeguJCUg
+ BR0P/XQ/WyzHc4SjfzjyT3tNPkPQyRGkfjF4+G+NmKfuhoFGK87Se7VfuAcPStwALmXU
+ gg5DvP7xzqHchtCyQczKTkuCo/IxaB5SFSzN9q1J/rnS6E/pj21Zv1lByNLpJ1D7ese5
+ Qs+FCYVvzj2JJtaGbMjIr8py5BN2gawy3y8/X7EejDCXknMOAVAcc1yphoPosJzOHhWT
+ nxbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768258400; x=1768863200;
+ d=1e100.net; s=20230601; t=1768258407; x=1768863207;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=tJ/bFayLqqI0u1jQiX20vfmUfDSzPimkbdxxULJWrXg=;
- b=YxpSkiFo4S/ptnQCHaCL78XX6A/hhL5QMKfMUEUL7QY99/CVPHZe/geux+n5dYirgV
- raQApYAsuaqekXl+rqimy7R97S2PGy2Hn3gjl6Yku8QQzzJU4NZSkZTM0X/FwQi0QOQ0
- kcquQeSb8pxIPQ7kLEKolKq8MhikCGS3SWsvCO1Kfjce6yuWGqVsjhmGbPdK8+rv++uD
- ClaMIdXDfTG0ZwueM+mOekoegTIhOWJgxYyU3uGCddNzdzmN+WsNVZ6e1w0jO9RW9Eg9
- qU/3oQTySm4S83tiT2N/GStC1dOCwUW8/4kj7ImR3l2FvEHBJGOWUUCcSm98pSPiWyzm
- yX2A==
-X-Gm-Message-State: AOJu0YyQA8vsGnNYeHe7Y7ssfVH/Jr5mff6yWKcnwT7QIe8k6wFRilPj
- mlUc5RHFdFXEpEwvgNBdfWYXQMoM7yDiqjklj5GB/fasp2JIemL18USZPktAba8P+9cR6Af/Bbc
- ixaAGm2Q=
-X-Gm-Gg: AY/fxX6n+SEiu0mOXeI+jzCLH/sqVBHfYav7dcZoCQbjEDQ4HAk4bt75p2m2iE1jxq/
- pumCnT0MPDK71vbxfCwmOJJadu0vxeQLMT8o0nXBEJIKinDA8ocAQMn/L/F0EnSNlyeTdrE4Ecw
- lO//1EttZoh79j9XNhgJf5vISJdEj8Tzid/Fexl/q9G1i3syd7wibwBS9STKSepCKm+xDt7wLMB
- pGdz+B7w7yKzAVOdkMt+zTRNgWRRiBhf4VQ7/LfvUwIQb7hpGo1BPEXjSqxHlgh3BYKfydabjGO
- LJ7DlUSKH+tjE29AUc6WFGDgIGFUfpOwGYxgwkla+a8Sla18JRhSw520SztkTyaxOAJN2EvANIb
- 8AYU8mhqJCxcxo4AXnc+pN4i+KZmr1qCSTasgmiXkOEZ4rADeVpzbv5jktmMH7WpDkrED7a58Kr
- kRwpnOlHBthu96sbjfaDrFMV0qJmmE+I2YSpPluZGnKZ4SKlJ1Fmyv4w/EXQigXOM813XZFUA=
-X-Google-Smtp-Source: AGHT+IEZ8IVKH5RAkfltEztI+6VGem5KnOgM/cswJHnhDFWcuenBkbkN+eOSqhHDEDnHW7+zVtSmJQ==
-X-Received: by 2002:a05:6000:1ac7:b0:432:88bd:df3a with SMTP id
- ffacd0b85a97d-432c37d2f98mr25178104f8f.46.1768258400094; 
- Mon, 12 Jan 2026 14:53:20 -0800 (PST)
+ bh=kbjExCft2bxFUe4ER2XObcujGSAepb71NphBWSn8QrA=;
+ b=jVX9qxGdpL/zXlwIqA9u5iRi3tg2Xn+QJyN3/srr0RVDCiAFKlJwzB3Y1eOuWgxljP
+ nSao4UNCUAUWb7m6LpaQn/jqR5FzgbN1KyZHsNIhlGaGzuMjCoyOoqc1cRa98RWhxh/e
+ QYFE4QGQysgnTDcJS0W8pLe9RmWmhr1G8g9kH89Uxh1vUofsWQSCJ/45GiUk13E4FPR/
+ yvELDz0o0wgOM+/MTm998Dr09U9EVNrEjYvVMhEkfBFpwGLbeYOPoH8Mf4vQuqF5otHY
+ vsJQVcb+RCgcV8pDNDK5lK4ouvkILcWaXhujT+HqlL/SK8eOxrfDJr3P4CjpjMj6e6+Q
+ 1hrw==
+X-Gm-Message-State: AOJu0Yzfl2Yed8/oqeN3yG0uIWtwLzgtrUsnvQVY9yLNz7C66DWvYieL
+ 2+r7rBFRad24RXAE010YejGFgpDnCEPVcrwJE3pIbOYBWJFT+G5Q9cxVjf7DyVTSVx5bPGyFBnz
+ PNj8Wqps=
+X-Gm-Gg: AY/fxX4wr5vuCHYmgvc6twXGTdqi3rJoQaLT8Erhkw1/lFMSmF/JyH7qSLkUifbg8mc
+ Pe0JgCKfIq5Ux8/dqablePvMFcs22mE5TSL4YfYPToh19IvBy+9VLZuRUpQBW9pTijqkQ5Tfgx/
+ wHFmV3MOwx8Qosm/6RQPaoT8mWwr4w6/AqG8Capg/qZncPnK5x0uws7RXvaj81CJwN8p3Ev0Pku
+ 9FOwQxiXOv6fBoZbJrXFNwoXqxQeFi8PDTWC8iUlCTqn5HIzZo6LqF9e6E+2XVP2DW4GbsxE6GE
+ cR8MUXsA6ThQg8aN17BgeU7uGIc3Y1PVb7bWhF2lYerTN+jRoYv7PTwh0psPNNIm7aKpH7D1gBw
+ +6rXYI2n+6PMyE3WJa0iqThRQDRnqabmxDwhA+Fu4dmriJzh9rB2knQNU1cgSN4j3GIpoGDTz7o
+ wioxQLQoOolCfhWb073JhBKNN/hQJS/edpI20doiOu1StPXZOVQ3xsPJAFImY0TOsGNi65yEc=
+X-Google-Smtp-Source: AGHT+IFxBU4EBT3457X+fZK6iSavnvPsTqjOOJACTzo/pVS+8l1MsB4+3bfLJIchrdlYEQF0YDKCxw==
+X-Received: by 2002:a05:600c:3b15:b0:47b:e0ff:60f9 with SMTP id
+ 5b1f17b1804b1-47d84b347bbmr196167755e9.20.1768258406596; 
+ Mon, 12 Jan 2026 14:53:26 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-432bd0dacc5sm40590731f8f.5.2026.01.12.14.53.19
+ 5b1f17b1804b1-47d7f4184e1sm364539295e9.4.2026.01.12.14.53.25
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 12 Jan 2026 14:53:19 -0800 (PST)
+ Mon, 12 Jan 2026 14:53:26 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 38/61] hw/intc: Mark OpenRISC-specific peripheral as big-endian
-Date: Mon, 12 Jan 2026 23:48:33 +0100
-Message-ID: <20260112224857.42068-39-philmd@linaro.org>
+Subject: [PULL 39/61] target/openrisc: Use explicit big-endian LD/ST API
+Date: Mon, 12 Jan 2026 23:48:34 +0100
+Message-ID: <20260112224857.42068-40-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112224857.42068-1-philmd@linaro.org>
 References: <20260112224857.42068-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,33 +97,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Open Multi-Processor Interrupt Controller (ompic) is only
-used by the OpenRISC target, which is only built as big-endian.
-Therefore the DEVICE_NATIVE_ENDIAN definition expand to
-DEVICE_BIG_ENDIAN (besides, the DEVICE_LITTLE_ENDIAN case isn't
-tested). Simplify directly using DEVICE_BIG_ENDIAN.
+The OpenRISC architecture uses big endianness. Directly
+use the big-endian LD/ST API.
+
+Mechanical change running:
+
+  $ for a in uw w l q; do \
+      sed -i -e "s/ld${a}_p(/ld${a}_be_p(/" \
+        $(git grep -wlE '(ld|st)u?[wlq]_p' target/openrisc/);
+    done
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20251224161804.90064-2-philmd@linaro.org>
+Message-ID: <20251224161804.90064-3-philmd@linaro.org>
 ---
- hw/intc/ompic.c | 2 +-
+ target/openrisc/gdbstub.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/intc/ompic.c b/hw/intc/ompic.c
-index 58736cd8a0c..cf930afbba4 100644
---- a/hw/intc/ompic.c
-+++ b/hw/intc/ompic.c
-@@ -96,7 +96,7 @@ static void ompic_write(void *opaque, hwaddr addr, uint64_t data, unsigned size)
- static const MemoryRegionOps ompic_ops = {
-     .read = ompic_read,
-     .write = ompic_write,
--    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .endianness = DEVICE_BIG_ENDIAN,
-     .impl = {
-         .max_access_size = 8,
-     },
+diff --git a/target/openrisc/gdbstub.c b/target/openrisc/gdbstub.c
+index 45bba80d878..ca1592c6200 100644
+--- a/target/openrisc/gdbstub.c
++++ b/target/openrisc/gdbstub.c
+@@ -50,7 +50,7 @@ int openrisc_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+     CPUOpenRISCState *env = cpu_env(cs);
+     uint32_t tmp;
+ 
+-    tmp = ldl_p(mem_buf);
++    tmp = ldl_be_p(mem_buf);
+ 
+     if (n < 32) {
+         cpu_set_gpr(env, n, tmp);
 -- 
 2.52.0
 
