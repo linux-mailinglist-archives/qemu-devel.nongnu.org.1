@@ -2,112 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9825D12CE7
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 14:30:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4EEED12CF9
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 14:31:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfHv4-0004yT-0x; Mon, 12 Jan 2026 08:25:18 -0500
+	id 1vfHuL-0003fW-GX; Mon, 12 Jan 2026 08:24:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1vfHuI-0003X3-70
+ id 1vfHuI-0003YM-H3
  for qemu-devel@nongnu.org; Mon, 12 Jan 2026 08:24:30 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1vfHuE-0003qS-Ir
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 08:24:29 -0500
+ id 1vfHuH-0003qw-1B
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 08:24:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768224265;
+ s=mimecast20190719; t=1768224268;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=77thvasEz7mbFfddpidtc2aDEfBsUM8wmBICVXOiwbI=;
- b=e+ZtvixyvLisuZKFx4rKWPPm2ybZEHRg+YTIq1RDvrsrVp7VjHKFqER78o93GB3VhYBZLF
- 6ztcush8F4xTd9lJn7zNZqQAUwt70nKkx1sYI8stkGtzCnEBhAuifS1+40sOGV+PyTqBoy
- e15ompXDv9rSHeNl3TbEnTdZ6IhNsPk=
+ bh=z5Id00LIh2+9ZBejtUIqIXdXBw2c/GTI+LyXgpHZ0vY=;
+ b=Iqu5u+567bR28PVDqjaXInXIQ/dnT4lOyYzRNEWLAV7uf8w3/mKDV7KPFloNzd7nCHmGOx
+ Ykzs0i6oHsqp+OqyxlPWKj+bpmDpue5rvHQUSeSGoLoVoyHSR3Tke6fAm5pDeywdNSEF19
+ 8iuD9aZ6/kvRI/HxCOWUJyHINCH90y8=
 Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
  [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-531-Ihg7aT4WOW6CeqZ7DhnyQA-1; Mon, 12 Jan 2026 08:24:24 -0500
-X-MC-Unique: Ihg7aT4WOW6CeqZ7DhnyQA-1
-X-Mimecast-MFC-AGG-ID: Ihg7aT4WOW6CeqZ7DhnyQA_1768224264
+ us-mta-600-2HfI4gXnOySqsmzRmA6SYQ-1; Mon, 12 Jan 2026 08:24:26 -0500
+X-MC-Unique: 2HfI4gXnOySqsmzRmA6SYQ-1
+X-Mimecast-MFC-AGG-ID: 2HfI4gXnOySqsmzRmA6SYQ_1768224266
 Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-34a9bb41009so8970901a91.3
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 05:24:24 -0800 (PST)
+ 98e67ed59e1d1-34e5a9de94bso12526346a91.0
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 05:24:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768224263; x=1768829063; darn=nongnu.org;
+ d=redhat.com; s=google; t=1768224265; x=1768829065; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=77thvasEz7mbFfddpidtc2aDEfBsUM8wmBICVXOiwbI=;
- b=nj2nvd3lzQCSPyk9bcinzAEY14U8gR5Rw+vrywR+eX9oT9haEGa2X7Vh2JTJtWV/pK
- CIsU5XrCalkHB3Nb/s6boqCt8v6N+Xgyz+1jctkEeAvPdbOnQTauFyo4hkz70I4uZxLN
- xlQLoemgDe1v/9zneTMQBqn3pxZZekowlZytiXsi/qNSei0uGp7rAMYxcddljZyH7zFa
- AxUlEMECoBZjVQlFZXf9gmpGYoPHS5CcLv7Q2dHxkuiCM/xffKYDNZWmAhHCnC8JwxP0
- wRftwiYxWZ8nhYHl4wvkn0pycrfBmMOw7yaNWXu5VvMZxq4cY8+JmZtXkthAYoX2xQ/2
- XjJQ==
+ bh=z5Id00LIh2+9ZBejtUIqIXdXBw2c/GTI+LyXgpHZ0vY=;
+ b=X5yErihaRqxEc03p3P0m7z1wJ6zmdA0//pW1xhgvOSNNeQaSO5VM+HhfKUtupjzVYX
+ pn8A6tmw6OyHEGT1Rairr9A+6wdZhaIhln/LnzOMuIuo0j3UbjggNPisZSofd5MdSd0f
+ KrKELSjFA6Be6hHIUlbzJk8RX6Y5hU9KGRPPUWNZajdJHQVoqFAobwOy9kH4ME1+iKNa
+ gmaYBjn74Nm8Qk7UjU7NNJwf4GOPyg0ygiff96bXpLxmMGRbVPq62r82gc4wC1iMdb0M
+ /uDtxqJKjcpXB8rZ2g3Sx4K/8GTNN0XhYNjg3c5BuVwcm2d6AWfzwCVIw2IEiqi4Z0EY
+ JOmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768224263; x=1768829063;
+ d=1e100.net; s=20230601; t=1768224265; x=1768829065;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=77thvasEz7mbFfddpidtc2aDEfBsUM8wmBICVXOiwbI=;
- b=PgBajKH44xCuVQIpp13d/JyugF/DHC5xZkPvPN2CYgGwSaFGRP09nSDyevk/Le3Vw8
- hOMYs6xSf16E7t2Swo7HISJB2EXXtsH5ceoiH8SNGbQLwRaryAkFZWkvZYUfGiVhHqEG
- HAMm4QknaHHgJaCGiqol1vbkp5LMoSeAxfUpfsv1sg7xg1LXjgRC72ZrEoKC0cKUshko
- RQIYw3gVqhXsC+2nnWh1Za7WkOwy5O94wBP6FLLXI3Jc4G7WyHGrLLGQYluxVMrShsge
- kzK34+wer9WWjENnfSnbUf0bQBBjNHoUU5pRZ/ZQ1fh8wV7eSR6QVKjAbFEdsws2/Z6U
- nB+A==
+ bh=z5Id00LIh2+9ZBejtUIqIXdXBw2c/GTI+LyXgpHZ0vY=;
+ b=ezG9RE3nuFPUhY7SQsu/YH8JUHmDB+euVopWB2phDcbCFeS5ZXwzB4JQDIM1jtSnl0
+ vtyBbvROTCX7d98WTwuTBzu1uzKRS9rjxJbfkKElC7MStI+HgDRwheg/abtQsnfQ+i1B
+ X+83rWzTKQBR8CH6UQucHBXOrMj/54kkXn/MBLs3uBwda9v2BRuzdKvnAGi5kMBfZxxe
+ oMMZbC1+aJYjrFCFOCMaDO1QSHBFRavl53a9wZPh/4/oAhCnL0gaeUAna/Y1dK3PoH9N
+ ThHmXMJ36CsvvqywuwvUN1nVjQjn+aIZkMoa5GhkIih/HfqteskE14dJCtNw0VIX7Vpb
+ UjJg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXrI2HInuYR2c0kITvZgEl0mex3dv79uQYE2crC9cN62ZfKtGo1cSP6I+7HSirGerzv1Hi/6G0ZUGjg@nongnu.org
-X-Gm-Message-State: AOJu0Yxkq3h07WW6ciIu894A4xYfkXGanKiTY+aqrV3016tLX/XN6Y4s
- zONy+FxOeVmcVWTdymAED2rbi+4oC1vFpFFlObRWr0DpmIStCasNfNQYpUV5zo6BKZLSuyc+R0m
- xFP1ExjBeUNJYIFH5p+cs7DWSkjvljIehgP5hWlK8HacwickfC8iF/e0O
-X-Gm-Gg: AY/fxX5OIA3tlgAL8nzu9LlbBtv/q/jcPbMRPcrKx7ym2wdt4KfdJ3oxuc5S6wJbwOl
- nPtM+1ZpjkySHX/WzdV1+r4gWB3HUWMmd3v9XEstXDDhIFY+xyktIg26C9qvcRmpPZr4FT3QWmu
- 3lMaBZYwYIpOP2yT9aOh5AkHrFHN+NHP8xQu/nmoNlUiux/9e/7/3jJtQBQw5v2V38j8ini0GDX
- 2FgAYcGA4uXzJgu6guz43DgS95jFXUEhlORjLQqlzyHzyR75XPcg4oLy20ASNRahw+3+GFGus47
- jj+XPx7ev/TDiNeOZn73FU6xipPPGhXC5fm/Vk0NyiJ5IpRGi18r3flsuPzA0teKjXD5mFUownR
- r0s/Y1py5q4NUD2Oi1NnpRC3FxYo+ZFmzFoLIpO1yrg8=
-X-Received: by 2002:a17:90a:e7cd:b0:340:d569:d295 with SMTP id
- 98e67ed59e1d1-34f68d0bbf9mr18826399a91.24.1768224263609; 
- Mon, 12 Jan 2026 05:24:23 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGqNzs5T4Y/nuvXOBzpoX20Jpvk0mau7pb5OixY7RQGKlDk6YD1j8R2CuGb7j6qKGZqxXYANw==
-X-Received: by 2002:a17:90a:e7cd:b0:340:d569:d295 with SMTP id
- 98e67ed59e1d1-34f68d0bbf9mr18826369a91.24.1768224263249; 
- Mon, 12 Jan 2026 05:24:23 -0800 (PST)
+ AJvYcCUqRsTOoxCBD0GvbPO1W3oPgAMxvU8VbuCJsTs2ztDiQXJEEAfhkBaYGwGrvmuxPX2ip23wsvINtt+D@nongnu.org
+X-Gm-Message-State: AOJu0YyRTBz7xKUpWzsksufS50zG7xQ4KgltgCtbpx8Oe6KoqgD9Jp6M
+ VnZGU+s8PqPPDY03YT7gXEtxrr0P/mjy21bPJDPZzq+MFniy68yVrjGnOtjlrw/QYmepr+8h0jr
+ J5DVu4Q3fGKX+5O4w08QkKCN59sAy7MUVUzQFn5UtHXZA2oeYDSTvcpq+kQ9p2/sc
+X-Gm-Gg: AY/fxX5T6VsdoJCyYVcfLEGH1iE+TWnzAtmFnVruj4lnqxucCzvmaCVcLAomMTfzgyy
+ ZkQbZGKkgmgPUUj5d9ruVKt4vu2MdIQ/UbWiAhL0ly2E4taMs5WnZ2fZhnM93ik47vyqWIAwtcz
+ CBuSFmvuT2RDnZdYNHKaEC8JVZxe/km8HevcVNKMj50xndBEhJlenLzPrfp5ej+4A1ydECr28/+
+ JRbB5t1l7y71UgrlIXCHdvl3sCent8pPHDj/qjHBBFNZCEzcicbC1Cd+Gn6uxLaZNXIaaGDPtyb
+ QnvMOTrdQh1+6UhQ7OiavFqtkkcNWTvZvFzkSwCrF77e/oZ3LxquOFG3oIKBjF/tLG5IGvoudwT
+ 1XsJlNJEv//+dTb7TU8wYigctEW7+v9Rybfkz/X5X4NA=
+X-Received: by 2002:a17:90b:4c11:b0:338:3d07:5174 with SMTP id
+ 98e67ed59e1d1-34f68c7a647mr14962414a91.5.1768224265583; 
+ Mon, 12 Jan 2026 05:24:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFRQkvYubhnMVgKak+JgKwZBj63oDmTdKTQFrGpe5hmh7o3S0YUxy9JRuoHnvx3oExxFNRlrA==
+X-Received: by 2002:a17:90b:4c11:b0:338:3d07:5174 with SMTP id
+ 98e67ed59e1d1-34f68c7a647mr14962394a91.5.1768224265213; 
+ Mon, 12 Jan 2026 05:24:25 -0800 (PST)
 Received: from rhel9-box.lan ([110.227.88.119])
  by smtp.googlemail.com with ESMTPSA id
- 41be03b00d2f7-c4cc05cd87asm17544771a12.15.2026.01.12.05.24.20
+ 41be03b00d2f7-c4cc05cd87asm17544771a12.15.2026.01.12.05.24.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 Jan 2026 05:24:22 -0800 (PST)
+ Mon, 12 Jan 2026 05:24:24 -0800 (PST)
 From: Ani Sinha <anisinha@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
+To: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 Cc: Ani Sinha <anisinha@redhat.com>,
 	qemu-devel@nongnu.org
-Subject: [PATCH v2 22/32] kvm/i8254: add support for confidential guest reset
-Date: Mon, 12 Jan 2026 18:52:35 +0530
-Message-ID: <20260112132259.76855-23-anisinha@redhat.com>
+Subject: [PATCH v2 23/32] hw/hyperv/vmbus: add support for confidential guest
+ reset
+Date: Mon, 12 Jan 2026 18:52:36 +0530
+Message-ID: <20260112132259.76855-24-anisinha@redhat.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20260112132259.76855-1-anisinha@redhat.com>
 References: <20260112132259.76855-1-anisinha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -125,56 +122,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A confidential guest reset involves closing the old virtual machine KVM file
-descriptor and opening a new one. Since its a new KVM fd, PIT needs to be
-reinitialized again. This is done with the help of a notifier which is invoked
-upon KVM vm file desciptor change during confidential guest reset process.
+On confidential guests when the KVM virtual machine file descriptor changes as
+a part of the reset process, event file descriptors needs to be reassociated
+with the new KVM VM file descriptor. This is achieved with the help of a
+callback handler that gets called when KVM VM file descriptor changes during
+the confidential guest reset process.
+
+This patch is untested on confidential guests and only exists for completeness.
 
 Signed-off-by: Ani Sinha <anisinha@redhat.com>
 ---
- hw/i386/kvm/i8254.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ hw/hyperv/vmbus.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/hw/i386/kvm/i8254.c b/hw/i386/kvm/i8254.c
-index 255047458a..4d212fad1b 100644
---- a/hw/i386/kvm/i8254.c
-+++ b/hw/i386/kvm/i8254.c
-@@ -52,6 +52,8 @@ struct KVMPITState {
-     LostTickPolicy lost_tick_policy;
-     bool vm_stopped;
-     int64_t kernel_clock_offset;
+diff --git a/hw/hyperv/vmbus.c b/hw/hyperv/vmbus.c
+index c5bab5d245..947fb7f4f8 100644
+--- a/hw/hyperv/vmbus.c
++++ b/hw/hyperv/vmbus.c
+@@ -20,6 +20,7 @@
+ #include "hw/hyperv/vmbus-bridge.h"
+ #include "hw/core/sysbus.h"
+ #include "exec/cpu-common.h"
++#include "system/kvm.h"
+ #include "exec/target_page.h"
+ #include "trace.h"
+ 
+@@ -248,6 +249,12 @@ struct VMBus {
+      * interrupt page
+      */
+     EventNotifier notifier;
 +
-+    NotifierWithReturn kvmpit_vmfd_change_notifier;
++    /*
++     * Notifier to inform when vmfd is changed as a part of confidential guest
++     * reset mechanism.
++     */
++    NotifierWithReturn vmbus_vmfd_change_notifier;
  };
  
- struct KVMPITClass {
-@@ -203,6 +205,16 @@ static void kvm_pit_put(PITCommonState *pit)
-     }
+ static bool gpadl_full(VMBusGpadl *gpadl)
+@@ -2347,6 +2354,26 @@ static void vmbus_dev_unrealize(DeviceState *dev)
+     free_channels(vdev);
  }
  
-+static int kvmpit_post_vmfd_change(NotifierWithReturn *notifier,
-+                                   void *data, Error** errp)
++/*
++ * If the KVM fd changes because of VM reset in confidential guests,
++ * reassociate event fd with the new KVM fd.
++ */
++static int vmbus_handle_vmfd_change(NotifierWithReturn *notifier,
++                                    void *data, Error** errp)
 +{
-+    KVMPITState *s = container_of(notifier, KVMPITState,
-+                                  kvmpit_vmfd_change_notifier);
++    VMBus *vmbus = container_of(notifier, VMBus,
++                                vmbus_vmfd_change_notifier);
++    int ret = 0;
++    ret = hyperv_set_event_flag_handler(VMBUS_EVENT_CONNECTION_ID,
++                                            &vmbus->notifier);
++    /* if we are only using userland event handler, it may already exist */
++    if (ret != 0 && ret != -EEXIST) {
++        error_setg(errp, "hyperv set event handler failed with %d", ret);
++    }
 +
-+    do_pit_initialize(s, errp);
-+    return 0;
++    return ret;
 +}
 +
- static void kvm_pit_set_gate(PITCommonState *s, PITChannelState *sc, int val)
- {
-     kvm_pit_get(s);
-@@ -292,6 +304,9 @@ static void kvm_pit_realizefn(DeviceState *dev, Error **errp)
+ static const Property vmbus_dev_props[] = {
+     DEFINE_PROP_UUID("instanceid", VMBusDevice, instanceid),
+ };
+@@ -2429,6 +2456,9 @@ static void vmbus_realize(BusState *bus, Error **errp)
+         goto clear_event_notifier;
+     }
  
-     qemu_add_vm_change_state_handler(kvm_pit_vm_state_change, s);
- 
-+    s->kvmpit_vmfd_change_notifier.notify = kvmpit_post_vmfd_change;
-+    kvm_vmfd_add_change_notifier(&s->kvmpit_vmfd_change_notifier);
++    vmbus->vmbus_vmfd_change_notifier.notify = vmbus_handle_vmfd_change;
++    kvm_vmfd_add_change_notifier(&vmbus->vmbus_vmfd_change_notifier);
 +
-     kpc->parent_realize(dev, errp);
- }
+     return;
  
+ clear_event_notifier:
 -- 
 2.42.0
 
