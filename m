@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 649DED11E8E
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 11:33:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 364B6D11E63
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 11:33:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfFE6-0007Ag-DK; Mon, 12 Jan 2026 05:32:46 -0500
+	id 1vfFEH-0007gc-5r; Mon, 12 Jan 2026 05:32:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfFE3-0006zN-Tr
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:32:43 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfFEA-0007Z4-Nx
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:32:51 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfFE2-0001xB-8a
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:32:43 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-4779aa4f928so63850735e9.1
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 02:32:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfFE9-0001y6-6C
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:32:50 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-47d59da3d81so22604005e9.0
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 02:32:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768213960; x=1768818760; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768213967; x=1768818767; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=O0DOizNYs3UPa9+lJDtLfBdhlsyXMboB2ENpO7Py5Ag=;
- b=jX39qEahLZvE4Oml5RskVSjhsVRP/SNaPrFgHOJQC31KoM7yNWRjFD0B3BMz8B0vcY
- m9q5RjBPa+QyLuEeW9eeeSFj5bmKTuG04QPaC0VCGBBJcDwHS84IX0GqvXw7T7I2ouIo
- GC8mOpoKijZSTWyKC3HSIaVLZ0dZDMoqH0eMXlTE5bEge5ryjGt5+pbTzDxTeC8COfIo
- g5NwWBFolWeXXXY8t/t32e9Q4jTYb1ljQDjzv31cE/zijka7ohfTLvjs6YejebggX/2l
- iE6Bfc6cyt73PiZ6zIr2EMfyuN8z30o+BXsKkYaaVU+MEk9MkKWF9iwnU9No1COIyKR9
- wV/Q==
+ bh=Yi610Iff36R1meHawrJl8o7aP+kuOQieFdALRJG5fMk=;
+ b=uHwd7mSJO4KV+3p+shCXRZbxjuqG+QzFhQikOHjKY8vs2N5FwEzjAtuvcTCtFfcUt+
+ iIaHAzoqSCZ/SkEzTgHAJYwc3GFM1As5iG6uqWe2Hq58W8w1QrU2zx6RNxVH9dtJJAs7
+ E6E91S8gMAcjL4Sbp3RwNXkQu7kRzg/2TR0/TSP3yNkL7jXn7A1W6anzO4GEVGyM/Dxi
+ luVgphGqCU6aM3Zc/gk7iiZIG+Qo3PdN0/LyQgDMYmcE7tzXpGbPOrsHv9kVD3cj+O57
+ vyrcKbeVE8jGzMupCQQ8iPJlbgm/s++Ax2FSSvV3sJXPtMeiEK64rv8y5gLuqQkHQhw6
+ FpoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768213960; x=1768818760;
+ d=1e100.net; s=20230601; t=1768213967; x=1768818767;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=O0DOizNYs3UPa9+lJDtLfBdhlsyXMboB2ENpO7Py5Ag=;
- b=dCYyLazi9kZk6sJRZFqrnWntztvFqR5tWg0MgwG0K6clkcJH7NeCaGse/8Zz0QfOT4
- MDZ1X/EEi1jOKVji5OY/gw2TG3Fc8DkPRDrhlU20u3ABonHFxRewCROUkFd2OkDZR6kc
- iw+wpV4uzappVLLqrFo//Anz5UxvT0pdXnkPxsg7fwv6FMB/Q+xXwiWBp6gli7C2xaM4
- Ii9PX9/0Dsg1K6zrrRtQ6MNasZLkrQZvGnHMHAyOUI31zqAZv9vnVpUxEOhi6jyOwBdZ
- dHuNlcVeUBVgIb5TVVn+7uhQb0KLBabs/Jzu//e2fXHtzYedLhGRsGRLrYbCP5Jx86SI
- BdAA==
-X-Gm-Message-State: AOJu0YyoLLfBFa+mikxDnAiS30IzNFPcCeVxD1GVZ4LcfkQIuGSOJIDj
- 7TltNO/8ji4hw+heriouMtJsBZIFWNlaZvtcJIp+yOqS2lhlb8SxIzRxOfhc2aOJWmUi5Kcshzh
- rzeIwJio=
-X-Gm-Gg: AY/fxX58fSbqYLtpdvQm6dVYzqpiOUHtebKDjv2ZQCSZTTLwegzQHQoRcX+sQI+S4SL
- SyiUyWpm7/xRxS0JINyws8984ZvqF9TfvZICl9+uPCEBS853fv7Cz82FDS4/inmATkGeQ5KAOnR
- fmx2W0dJ3vPXO8ju0hbjOWe3DSkhvJg8JQ3z0jw4otWru6BJvmT02/ABxNbbKks+Hd7ec1pmH+v
- CYl5bJh5NhB1z3xJ1zatBXe/hgFV/07LziB81zbqUa6RPhkVKNytQOP/0C7n8MXjCgGsaYdCXxZ
- 6r14HyOLuH9+icZP1r2/UU8n3AoZApSP7yF94ydmSCcJ6IeGeFa5D6Io7sMQj0b7Xsc5gMX0pnd
- cvefZynMVmrQKPg1KfRHjq3oPxOBr30HeehLxLO0NZYID1ONdiLrKUPqoWDQrzZ1PSqqkHPLVbr
- ojLPdAk1u0EwKDzUPxjjHwbzsGOdbEwO4NzEK+QvRkUEMDstsFT8jl+odrHetA
-X-Google-Smtp-Source: AGHT+IGbiSyJ0w/Aqv3K13j9oAQ3PQ8IlZI+mIeWFoPwtrGwy09HAZAVqSNQ7z1HxKEziolaSfhfyA==
-X-Received: by 2002:a05:600c:4f53:b0:477:7991:5d1e with SMTP id
- 5b1f17b1804b1-47d84b3860fmr168540275e9.25.1768213960429; 
- Mon, 12 Jan 2026 02:32:40 -0800 (PST)
+ bh=Yi610Iff36R1meHawrJl8o7aP+kuOQieFdALRJG5fMk=;
+ b=skgj9yNYQmOLryapmXWih8qKTi8jRGUcOlXNqS3lMRdxQtDg5HQ/+oI6pw3c6yjIuF
+ V6Mxv21AhznxWZyNShpyataKusyBPjWIvAVtgOGJ8a2lcTcTGcIRrUGtikffdODobkuK
+ THzQAMJ2CnulCTsUqqRt2HF0UB6yQORZKgCjwDpFG9Gorl3eKWfDsMagEhFAvRswe6Wh
+ YCxByCQLD8592kaFJD0zhPVW5+LggN8SVC7YuAPIqYd/c5TCmBNFEVYJ7SHCN8wHn5Yx
+ RJ/OgyHJT8HgJ+rWInMuCugFAeH+jN/zAfaooP9/gp1jGHRdxFM78yOYacRvOl7d29qh
+ QKzw==
+X-Gm-Message-State: AOJu0Yyw8pbiO7FNLP5RrAadwpyeiXeI1DbqUOOgvzVsDbAxp1k0IMoM
+ eHrPfZhRHv6UMya+xCE+u7DX3lC9qpaNcX6Uc/kVr8umxj+nWXBHwiQm1FEtOzY9BADMwJcHObz
+ DrcmDDO4=
+X-Gm-Gg: AY/fxX6O2brcfy69o7Z+rgtH2y/xuvh95CArTgMwbpJIFG6q2Yk3lWWZrePAxRWLEN6
+ WMSndYj+n6l3NQbRH0+6qJSy3C+Q65uCN7M1B9Jdmcpv3tw+FHStzw8+PVbANiYT9ItwyYnE4o/
+ kjNoF5lpMop/IITSYIPXZzwJceGcfgOoG16Mbm8kgKW52zW/mP01PC14YCsZkbBbXikABZIys4k
+ hKdxwrS8T0UPzZH2sYtygRDLOILWBEVBihPB942ZQEbIuzS7WO34vwmtAasK4E14hlGcnRF44iK
+ oMZOmAOa8GfoavarDMdXLgy87IeJRvea0HgCCeO6sHkJh2zIyFmdtsvNc8yNn8ZgqcpZTmncSSj
+ y8aTEnAV1RnTAvXUXZlIQCcDnhTbM8l8G/rE7TBDhryJk3JrurdnEeNkMhYy/Bs0W5dtF/FtzVD
+ 2oq7CnzRe6J6drCl82ykDorHIqyCHc7WERiOQ/b2X5kzK1aKty/MM6T8fG8A2Q
+X-Google-Smtp-Source: AGHT+IEquge7pQgNftHMqxDhYSqaA5qSgQc2zbRqg0p+uHgbrKs5zaILl9asfJozY1p/Zs0HpN7Mfg==
+X-Received: by 2002:a5d:5f51:0:b0:432:84f6:827f with SMTP id
+ ffacd0b85a97d-432bcfa133emr25428395f8f.9.1768213967293; 
+ Mon, 12 Jan 2026 02:32:47 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d865e3dfasm125106095e9.2.2026.01.12.02.32.39
+ ffacd0b85a97d-432bd0e16d2sm39252711f8f.13.2026.01.12.02.32.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 12 Jan 2026 02:32:39 -0800 (PST)
+ Mon, 12 Jan 2026 02:32:46 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -74,18 +74,17 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  Alexander Graf <agraf@csgraf.de>, Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v6 18/19] target/arm/hvf: Really set Generic Timer counter
- frequency
-Date: Mon, 12 Jan 2026 11:30:32 +0100
-Message-ID: <20260112103034.65310-19-philmd@linaro.org>
+Subject: [PATCH v6 19/19] target/arm: Only allow disabling NEON when using TCG
+Date: Mon, 12 Jan 2026 11:30:33 +0100
+Message-ID: <20260112103034.65310-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112103034.65310-1-philmd@linaro.org>
 References: <20260112103034.65310-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,67 +107,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Setting ARMCPU::gt_cntfrq_hz in hvf_arch_init_vcpu() is
-not correct because the timers have already be initialized
-with the default frequency.
+Only allow disabling NEON when using TCG.
 
-Set it earlier in the AccelOpsClass::cpu_target_realize()
-handler instead, and assert the value is correct when
-reaching hvf_arch_init_vcpu().
+This avoids confusing user experience:
 
-Fixes: a1477da3dde ("hvf: Add Apple Silicon support")
+  $ qemu-system-aarch64 -M virt -accel hvf \
+                        -cpu host,neon=off,vfp=off,vfp-d32=off
+  qemu-system-aarch64: AArch64 CPUs must have both VFP and Neon or neither
+
+  $ qemu-system-aarch64 -M virt -accel hvf \
+                        -cpu host,neon=off,vfp=off,vfp-d32=off
+  qemu-system-aarch64: ARM CPUs must have both VFP-D32 and Neon or neither
+
+  $ qemu-system-aarch64 -M virt -accel hvf \
+                        -cpu host,neon=off,vfp=off,vfp-d32=off
+  qemu-system-aarch64: can't apply global host-arm-cpu.vfp-d32=off: Property 'host-arm-cpu.vfp-d32' not found
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- target/arm/hvf/hvf.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ target/arm/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index bf8bed1495d..e4c0d936f1f 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -897,6 +897,13 @@ cleanup:
-     return ret;
- }
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index c1087bf5b92..05fa3339b1a 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1460,7 +1460,7 @@ static void arm_cpu_post_init(Object *obj)
  
-+static uint64_t get_cntfrq_el0(void)
-+{
-+    uint64_t freq_hz = 0;
-+    asm volatile("mrs %0, cntfrq_el0" : "=r"(freq_hz));
-+    return freq_hz;
-+}
-+
- int hvf_arch_init_vcpu(CPUState *cpu)
- {
-     ARMCPU *arm_cpu = ARM_CPU(cpu);
-@@ -908,7 +915,9 @@ int hvf_arch_init_vcpu(CPUState *cpu)
-     int i;
- 
-     env->aarch64 = true;
--    asm volatile("mrs %0, cntfrq_el0" : "=r"(arm_cpu->gt_cntfrq_hz));
-+
-+    /* system count frequency sanity check */
-+    assert(arm_cpu->gt_cntfrq_hz == get_cntfrq_el0());
- 
-     /* Allocate enough space for our sysreg sync */
-     arm_cpu->cpreg_indexes = g_renew(uint64_t, arm_cpu->cpreg_indexes,
-@@ -974,6 +983,15 @@ int hvf_arch_init_vcpu(CPUState *cpu)
- 
- bool hvf_arch_cpu_realize(CPUState *cs, Error **errp)
- {
-+    ARMCPU *cpu = ARM_CPU(cs);
-+
-+    /*
-+     * We must set the counter frequency HVF will be using
-+     * early, before arm_cpu_realizefn initializes the timers
-+     * with it.
-+     */
-+    cpu->gt_cntfrq_hz = get_cntfrq_el0();
-+
-     return true;
- }
- 
+     if (arm_feature(&cpu->env, ARM_FEATURE_NEON)) {
+         cpu->has_neon = true;
+-        if (!kvm_enabled()) {
++        if (tcg_enabled() || qtest_enabled()) {
+             qdev_property_add_static(DEVICE(obj), &arm_cpu_has_neon_property);
+         }
+     }
 -- 
 2.52.0
 
