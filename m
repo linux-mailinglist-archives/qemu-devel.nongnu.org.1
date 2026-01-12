@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E3E3D12B64
+	by mail.lfdr.de (Postfix) with ESMTPS id 6115BD12B6A
 	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 14:16:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfHlh-0001WD-3a; Mon, 12 Jan 2026 08:15:39 -0500
+	id 1vfHmZ-0001ce-SN; Mon, 12 Jan 2026 08:16:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vfHlK-0001F4-7a
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vfHlK-0001FI-AJ
  for qemu-devel@nongnu.org; Mon, 12 Jan 2026 08:15:14 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vfHlI-0002Ve-ON
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 08:15:13 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vfHlI-0002Vb-4A
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 08:15:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768223711;
+ s=mimecast20190719; t=1768223710;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bYNER3tv7jKHijECoLFlWzyNVq0wnfgD03vxD77kjgc=;
- b=GKuBNYKHqjeyAAnHyMJ3J2VwFWdYi4BYL/91ELZgQBX46fTeTxdEiqrx21PwpDyMjAJbsG
- 4q9YCsKjZ53QPEjnjz2rdN/h/9Cnc3hfvxFlPa7PvBgT032/DGJ2/QIQFPIvOeaN6vm1DZ
- nGbwxGrVBBWKafz8v9rGHEV6qze+PcU=
+ bh=oKfegducDODgkba1XJ/HW/MbccnFLGGMVBYQq+f+uTM=;
+ b=jEDsdZXWidoqgIy7rg4AI8mWOCeAi7hRtrbF7vmAFkKHzpK5ZTgqf9FpbRFgIU43z/6RKj
+ iJI+ZThFdVm5dubKXeOB/deLyMwdXjOg6Q1DZHnUqvrIJx8hsNcbh73imehU7/FoK/vr3q
+ Eq3O+m5oe2L6KXwRDvQ+wVFC+lcAXuI=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-436-DFzMbf4OMZW97BJ_TKY95Q-1; Mon,
- 12 Jan 2026 08:15:06 -0500
-X-MC-Unique: DFzMbf4OMZW97BJ_TKY95Q-1
-X-Mimecast-MFC-AGG-ID: DFzMbf4OMZW97BJ_TKY95Q_1768223705
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-610-XIp_bFlnOd-fK-tadKqcIw-1; Mon,
+ 12 Jan 2026 08:15:09 -0500
+X-MC-Unique: XIp_bFlnOd-fK-tadKqcIw-1
+X-Mimecast-MFC-AGG-ID: XIp_bFlnOd-fK-tadKqcIw_1768223708
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 96C52180061A; Mon, 12 Jan 2026 13:15:05 +0000 (UTC)
+ id 5EE0F1800451; Mon, 12 Jan 2026 13:15:08 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.179])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B566930001A2; Mon, 12 Jan 2026 13:15:03 +0000 (UTC)
+ id BE40330001A2; Mon, 12 Jan 2026 13:15:06 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 02/15] tests/functional/mips/test_malta: Silence warnings
+Subject: [PULL 03/15] tests/functional/ppc64/test_hv: Silence warnings
  reported by pylint
-Date: Mon, 12 Jan 2026 14:14:44 +0100
-Message-ID: <20260112131457.67128-3-thuth@redhat.com>
+Date: Mon, 12 Jan 2026 14:14:45 +0100
+Message-ID: <20260112131457.67128-4-thuth@redhat.com>
 In-Reply-To: <20260112131457.67128-1-thuth@redhat.com>
 References: <20260112131457.67128-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -82,54 +82,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-Pylint complains about too many positional arguments for the
-mips_check_wheezy() function. Add a "*" to enforce that the later
-ones are passed with an argument name (all calling sites are doing
-this already).
+To make pylint happy here, remove unused variables, switch to f-string,
+use "check=True" when calling subprocess.run() and split a line that was
+too long.
 
-Also turn some old-school format strings into proper f-strings now.
-
-Message-Id: <20251119082636.43286-6-thuth@redhat.com>
+Message-Id: <20251119082636.43286-7-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/mips/test_malta.py | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tests/functional/ppc64/test_hv.py | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/tests/functional/mips/test_malta.py b/tests/functional/mips/test_malta.py
-index 7a734bc069b..e8f49f130be 100755
---- a/tests/functional/mips/test_malta.py
-+++ b/tests/functional/mips/test_malta.py
-@@ -50,7 +50,7 @@ def mips_run_common_commands(test, prompt='#'):
-         ' : ata_piix')
-     wait_for_console_pattern(test, prompt)
+diff --git a/tests/functional/ppc64/test_hv.py b/tests/functional/ppc64/test_hv.py
+index d87f440fa79..beec1dbbea3 100755
+--- a/tests/functional/ppc64/test_hv.py
++++ b/tests/functional/ppc64/test_hv.py
+@@ -29,8 +29,6 @@
+ @skipBigDataTest()
+ class HypervisorTest(QemuSystemTest):
  
--def mips_check_wheezy(test, kernel_path, image_path, kernel_command_line,
-+def mips_check_wheezy(test, kernel_path, image_path, kernel_command_line, *,
-                       dl_file, hsum, nic='pcnet', cpuinfo='MIPS 24Kc'):
-     test.require_netdev('user')
-     test.require_device(nic)
-@@ -59,10 +59,10 @@ def mips_check_wheezy(test, kernel_path, image_path, kernel_command_line,
-     port=8080
-     test.vm.add_args('-kernel', kernel_path,
-                      '-append', kernel_command_line,
--                     '-drive', 'file=%s,snapshot=on' % image_path,
-+                     '-drive', f'file={image_path},snapshot=on',
-                      '-netdev', 'user,id=n1' +
-                                 ',tftp=' + os.path.basename(kernel_path) +
--                                ',hostfwd=tcp:127.0.0.1:0-:%d' % port,
-+                                f',hostfwd=tcp:127.0.0.1:0-:{port}',
-                      '-device', f'{nic},netdev=n1',
-                      '-no-reboot')
-     test.vm.set_console()
-@@ -111,7 +111,7 @@ def test_mips_malta(self):
-         self.vm.add_args('-kernel', kernel_path,
-                          '-append', kernel_command_line)
-         self.vm.launch()
--        console_pattern = 'Kernel command line: %s' % kernel_command_line
-+        console_pattern = f'Kernel command line: {kernel_command_line}'
-         self.wait_for_console_pattern(console_pattern)
+-    timeout = 1000
+-    KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 console=hvc0 '
+     panic_message = 'Kernel panic - not syncing'
+     good_message = 'VFS: Cannot open root device'
  
-     ASSET_KERNEL_4_5_0 = Asset(
+@@ -49,8 +47,8 @@ def extract_from_iso(self, iso, path):
+         """
+         filename = self.scratch_file(os.path.basename(path))
+ 
+-        cmd = "xorriso -osirrox on -indev %s -cpx %s %s" % (iso, path, filename)
+-        subprocess.run(cmd.split(),
++        cmd = f"xorriso -osirrox on -indev {iso} -cpx {path} {filename}"
++        subprocess.run(cmd.split(), check=True,
+                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+ 
+         os.chmod(filename, 0o600)
+@@ -66,7 +64,6 @@ def setUp(self):
+ 
+     def do_start_alpine(self):
+         self.vm.set_console()
+-        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE
+         self.vm.add_args("-kernel", self.vmlinuz)
+         self.vm.add_args("-initrd", self.initramfs)
+         self.vm.add_args("-smp", "4", "-m", "2g")
+@@ -78,7 +75,8 @@ def do_start_alpine(self):
+         wait_for_console_pattern(self, 'localhost login:')
+         exec_command_and_wait_for_pattern(self, 'root', ps1)
+         # If the time is wrong, SSL certificates can fail.
+-        exec_command_and_wait_for_pattern(self, 'date -s "' + datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S' + '"'), ps1)
++        cmd='date -s "' + datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S' + '"')
++        exec_command_and_wait_for_pattern(self, cmd, ps1)
+         ps1='alpine:~#'
+         exec_command_and_wait_for_pattern(self, 'setup-alpine -qe', ps1)
+         exec_command_and_wait_for_pattern(self, 'setup-apkrepos -c1', ps1)
 -- 
 2.52.0
 
