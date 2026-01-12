@@ -2,66 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 194E9D1358E
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 15:57:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17FE0D13566
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 15:55:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfJJh-0007gV-M8; Mon, 12 Jan 2026 09:54:49 -0500
+	id 1vfJJk-0007ko-KS; Mon, 12 Jan 2026 09:54:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfJJc-0007bq-3B
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 09:54:44 -0500
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfJJe-0007dD-9c
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 09:54:46 -0500
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfJJZ-0001VO-4U
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 09:54:43 -0500
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-b86f69bbe60so205795666b.1
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 06:54:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfJJb-0001Vf-Ne
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 09:54:45 -0500
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-64fabaf9133so11764144a12.3
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 06:54:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1768229679; x=1768834479; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1768229680; x=1768834480; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=c9E9nBJERza2cHSSGZ/56X3Psf+p38WCxtaLvvfm5Kk=;
- b=V7mmSi9/YQwuPVDAk/iqa2utT0MnvOdfjSZaHaQROVTHj5EdXMRbX/gNc+uyTeo38h
- 4s43ZdNhlFMwZ5eupcXs14fg1/oR8+HCpBrLtgp7vpCk0oQAw9hyvIS9nyv9Or1r2+Ka
- zZ+XC32RW1sB3iFGD+1RPqQ1z27JGLHfVXQ12y5qkLJGx0m0Oq/wEHVg9i60GMQ7m9lf
- FKIjM9/Czsx8NZYb6yTLbbWLyqkKLdN38Ky6qMphl3wZl5AEG7ZwdEitQJIR2Ttts9E0
- WWeYldUT7eAmw5xsJcUJorrSmkNIF70a5jzcbOzNFlM/oVTLIbAqWQ8RH+tjEYP1tWGo
- QDfg==
+ bh=K/Bc8ruLWvUKFLbKbwJTV3mI2vIezZtb/awn2u9R0Sc=;
+ b=Japl+Vg0wDdi7c/DAp76R/u2Z02OBRMDSSBoAMon+P55D1xxTlv97LfDDaKrVeszI7
+ 8pZTx6n9V29xq/2GP650ZyCT6/sDd2DNccMGsLVwgTviOSlE7K5YcQO0Os9eWIpdPU4x
+ xfDo4Zh9OGwQC6EtrV5Odq2IZQ2/Ye19IJcdlcTTRpI8UZyBEsinsqWA4tML+T8Aq0QT
+ kMRuiZmJJR1EfT9b917wh6Vne02IA/s0jhmEbDF74c4X92SRAeN++/iF74aq86fQkDoD
+ 1BdiG2HBKeFr8jthfSixexDWRjzHN3MiE7d5m7WFJqVNIVssR+VC7MQz57ZsVEzDVNdl
+ MTkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768229679; x=1768834479;
+ d=1e100.net; s=20230601; t=1768229680; x=1768834480;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=c9E9nBJERza2cHSSGZ/56X3Psf+p38WCxtaLvvfm5Kk=;
- b=tHxK6aTU7+QG94jKmXf7ZPG1qS/ekKMiTlY2Zc24/V2r9NsgSiLBYMUivLOPemBxKq
- fbIJDssURhSnrZEGVO3AjvZosWOY2v0UH4tjCC3ShzawALAemLp/5eos5VSnSQQsVatz
- 8ozRpWGpl8nwTf7wnupNnyTOoab/41VbonDtj7BVhm92Z2pomYJCFJQNF1vnnjAkm/Ue
- 2EVu9PvaFVsQ998UF+bgrHBZxK3ZtxtFQeGxbnjydyRDmzlhXjK33mPRiaDmUzphUI8y
- WTb4wZCFZ5SIm5JdMtEkyX43ug1BC/HKPsmHV9FBBDhM8TcKd2QSR0y2S5UAhbykKCIl
- TEXw==
-X-Gm-Message-State: AOJu0YwTmCB4uv/+M8EozOIqqUZy9K++OEVK/n2lb202snS7b6k541vJ
- Osm+ex9WXVXbTPVrAFIabfCXZuPd3U6Ro6BEWfQwHyoZsVPeuxBMMcTJaHV0Yg==
-X-Gm-Gg: AY/fxX40qsGiX5m7P3bx0j/BlGDRp9GDu+2OayJmdPPKXQS65UhIDaNqA0buy1kBToB
- 4+/b6mZOONN5QwZ76lKq4WTu/I4ZRi+adJVUC6VN2ob5+eOC5ody6xPEJJeX6XHdub6yR3OnlsH
- KJ1MYPAKbOzWy5Hw8EcOYMczVMFrK0PXhqwT2eGU23UnzgLYtbyvsBahJ5CqxoqYVkwLzPWhOuu
- R+70u/FPnM/UErbVkJ/xAyGxgnhy3pLqBKkCX8BSEdk3+Oi5N7AlRGe8xIEmVLCsCRqT2HmiIIo
- l+mT5hn/WPURkandY/0VDImYUU/afViMk8b7snvf6o5+NdZ1dAXtIecC/7jZoA2OYMlVqCrHH5I
- RfGSsp30ijXcev3LfICmXnZ8JxNXUwndrAhGtLPDVbdm38SzlzvNPgU+SIJZya3aKr9D0H4todi
- T7Rm1FK8vvKKyDuHrmMaG/Bp6ON2SI2FDAMBNWRHdK/y5D4Q+d8qbFXXjjdEIdZdWzdGqn+5y4F
- 2sRX13a+/s=
-X-Google-Smtp-Source: AGHT+IHL54xx7rm0k/txbFmkMEyEBwLCj51POjQlV2qOk5/n32Y3UKQc6bEwkvv2RfBzzoqLE230MA==
-X-Received: by 2002:a17:907:7282:b0:b87:892:f440 with SMTP id
- a640c23a62f3a-b8708930758mr491424666b.38.1768229678584; 
- Mon, 12 Jan 2026 06:54:38 -0800 (PST)
+ bh=K/Bc8ruLWvUKFLbKbwJTV3mI2vIezZtb/awn2u9R0Sc=;
+ b=W7Ly2rwPlQagx7Cp1v9scyQ6sOf+zK2cKBU3gOAuls+03wB617W2PkD9fEnFT4FW+k
+ Ooe+duvdxBlR4nhVELWemKAGkhjxtnLLqagFKTz+CBF//WW4PPv5aO3druntGs9t5zAH
+ DexrIilK+nPZKbVBzBCJrzp2t0moMKqHfRWN4IelprtgwyFQRElGvRtteI6vIxOK9q6M
+ JKt7KKk6t+uihNPEuhUOrAMMAlfRpx/rtHgidM2fu8sJvtBy+8xz6+OfadV2RxACadFw
+ tZ1AWwpx1p3DtocOFsWe1mU9GaudPy0ZsKpSuNm3M4ibQwfK0g37RLq/MP3gRrDdpJ77
+ J2aA==
+X-Gm-Message-State: AOJu0YzN1v/L9o3KLjrYBDBAPBaWnx7YiwsJAzt+etByd59E0bNxno1q
+ McLErB+J4IpD41/IpXXOTIebbffCnL5MUtUUfR5cvaiK35Y6793r2kFJvJdiQw==
+X-Gm-Gg: AY/fxX5FVfRp8u9lq08p1ndGv0MhCOOWHB2WWv5Wh+e7uXGgihihM+DzgBENHRLjde8
+ 6w03yuv1/LUTRBZIK60nGAANdG9M6Ke0MSIGcYruxBNYH4finrMvaWEof+mdqUYkJ8UIn+sXGX4
+ +dqY0NAm4dKsNTP1IfIcoisJXSKvZT87Ec1b1k4AEUWrHDZOxTCUTf9pb25N4VNNFggzrTbF+nM
+ U1lcNH/CkGatAt9QTyu+aBKKiolenJxF3kmD0mYr4s9FuI4lrO6PG5mvmpQGja3eWupMyBu2hqn
+ NJCGlXqI4/1QwaufXOtFNJEkRI5iBft5O8Um0Tr7AQQHoC1wfcu27bbOBsMOZnW2NR/+s7u/Sva
+ 8aSSSzZjY0vhzC3pRy69vwpVY5zSZY5+tprd15PLi+5RUqSf2lqe5EDHEi7KDtb7fsHkNjUYqjR
+ TG2lrxPrumVhhFk1Qcgu62NUTb+5sgufX/Rh5OoTD+hrxVtYCXBquEGuzvcZOpSwRoWUu6jABG
+X-Google-Smtp-Source: AGHT+IFiSdFwTXIhd5gYIuSg1GPgu2PpSZsMBZMIssC6s2idbJNbLr9CJghzMhIYm1T/jXyRlH/1IQ==
+X-Received: by 2002:a17:907:689e:b0:b86:ef31:c2c7 with SMTP id
+ a640c23a62f3a-b86ef31ccf3mr507569666b.42.1768229679538; 
+ Mon, 12 Jan 2026 06:54:39 -0800 (PST)
 Received: from archlinux (dynamic-077-188-226-222.77.188.pool.telefonica.de.
  [77.188.226.222]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b8731f0718asm37387966b.67.2026.01.12.06.54.37
+ a640c23a62f3a-b8731f0718asm37387966b.67.2026.01.12.06.54.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 Jan 2026 06:54:38 -0800 (PST)
+ Mon, 12 Jan 2026 06:54:39 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -70,17 +69,17 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bin Meng <bmeng.cn@gmail.com>, Thomas Huth <thuth@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
  qemu-ppc@nongnu.org
-Subject: [PATCH 01/14] hw/sd/sdhci: Fix TYPE_IMX_USDHC to implement
- sd-spec-version 3 by default
-Date: Mon, 12 Jan 2026 15:54:05 +0100
-Message-ID: <20260112145418.220506-2-shentey@gmail.com>
+Subject: [PATCH 02/14] hw/arm/fsl-imx6: Remove now redundant setting of
+ "sd-spec-version" property
+Date: Mon, 12 Jan 2026 15:54:06 +0100
+Message-ID: <20260112145418.220506-3-shentey@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112145418.220506-1-shentey@gmail.com>
 References: <20260112145418.220506-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x636.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,36 +102,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes TYPE_FSL_IMX6UL, TYPE_FSL_IMX7, and TYPE_FSL_IMX8MP to implement
-version 3 of the SD specification.
+Now that TYPE_IMX_USDHC sets this property internally it is not needed
+on the SoC level any longer.
 
-Note that TYPE_FSL_IMX6 already had "sd-spec-version" set accordingly and
-that TYPE_FSL_IMX25 correctly sets the same property to version 2 since the
-real hardware is an eSDHC which is the uSDHC's predecessor.
-
-Fixes: fd1e5c817964 ("sdhci: Add i.MX specific subtype of SDHCI")
-cc: qemu-stable
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/sd/sdhci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/arm/fsl-imx6.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index 9146e0cde0..23d8f7cbc8 100644
---- a/hw/sd/sdhci.c
-+++ b/hw/sd/sdhci.c
-@@ -1884,9 +1884,11 @@ static const MemoryRegionOps usdhc_mmio_ops = {
- static void imx_usdhc_init(Object *obj)
- {
-     SDHCIState *s = SYSBUS_SDHCI(obj);
-+    DeviceState *dev = DEVICE(obj);
+diff --git a/hw/arm/fsl-imx6.c b/hw/arm/fsl-imx6.c
+index f3aa1d8150..46967b7488 100644
+--- a/hw/arm/fsl-imx6.c
++++ b/hw/arm/fsl-imx6.c
+@@ -323,8 +323,6 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
+         };
  
-     s->io_ops = &usdhc_mmio_ops;
-     s->quirks = SDHCI_QUIRK_NO_BUSY_IRQ;
-+    qdev_prop_set_uint8(dev, "sd-spec-version", 3);
- }
- 
- /* --- qdev Samsung s3c --- */
+         /* UHS-I SDIO3.0 SDR104 1.8V ADMA */
+-        object_property_set_uint(OBJECT(&s->esdhc[i]), "sd-spec-version", 3,
+-                                 &error_abort);
+         object_property_set_uint(OBJECT(&s->esdhc[i]), "capareg",
+                                  IMX6_ESDHC_CAPABILITIES, &error_abort);
+         if (!sysbus_realize(SYS_BUS_DEVICE(&s->esdhc[i]), errp)) {
 -- 
 2.52.0
 
