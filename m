@@ -2,98 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDC42D11EDB
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 11:35:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D9BD11ECF
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 11:35:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfFGL-0003Sh-Dx; Mon, 12 Jan 2026 05:35:05 -0500
+	id 1vfFGN-0003V1-ST; Mon, 12 Jan 2026 05:35:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vfFGJ-0003RJ-Bx
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:35:03 -0500
+ id 1vfFGL-0003Tp-Vf
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:35:05 -0500
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vfFGH-00028s-G7
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:35:03 -0500
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60C1rDgn001282
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 10:35:00 GMT
+ id 1vfFGK-00029O-2k
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:35:05 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60BJt48Q024760
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 10:35:02 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=plLwRG/MfEvmray4D
- OOAMS5DoEibhKDHm37RIdxjSsU=; b=ZMMdcXmtTsPxGODQ07KQQGG2vzXT2FnfM
- l9ZGM7rRA1NLIFf9oNqNwrWysCPt9Z4vvgrqRirKPf12U7lgNvbtQKITO4i8E0Dc
- cuJ3tYoBvdqt+kybo/EJxYeIXxPPeTloy30CkJR4H/D4fXW7vxehTFGEY816oGI1
- soC3/IeNqgNEUxlIotpzO+7VVmBBmRCPZ0EM6GtwzNs4tMln7LU433HSQyU7D6s9
- IRL0xv7eb9UpAyPepHbkW+P6c+AG7HnEqlsV6Dznqk2xMoX/cisSuBoMM/lmG7pB
- fEzXVHXWvzJ24qL6Ev76Qjj3GkQMhu4SKhsbnBAMzTQ45V37arMaQ==
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkeepphyw-1
+ :mime-version:references:subject:to; s=pp1; bh=EDzdgTKh7aa219oXt
+ OEnFhvxxRFlKhfJLUkDL3MnwJ0=; b=RlPagPHHiX+1dRW3VVn2nGqKSpxtxFZai
+ j3ZprK+o3yOlTwxgc6yz+KqHZB665ZKMqSDCa+w3FgjDvU0eTgnETEtxiL1+GR2p
+ 4mbvvBwPbYR/NYDrj/E92LY6n1OGWK0ty64eUmXZk3VU9vAUJ7QWFEX2/0C5d5Ci
+ 8iTlU9oJO0inekuQK0ZM8Tpn3wSXb7EkKme2f7aG1S3O3LGpxj9rCztm+NyWdQs2
+ VTEpgyxKRoftSlQGcIU/riZSyKFIoMcBIW1BmoXezzxcJ9CPK9UY4DZxVpFpe9XP
+ fKxHcqGnDgAemm40b1cXE8fA2WLJZPzXJrsofbvvAmZsxW23A6IKQ==
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bke92pk3p-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 10:34:59 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60C9H1s4002536
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 10:34:59 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bm13sdj4c-1
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 10:35:01 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60CA6vnV025534
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 10:35:00 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bm23mwc36-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 10:34:58 +0000
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 10:35:00 +0000
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
  [10.20.54.106])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 60CAYtm921889382
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 60CAYucS50987288
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 Jan 2026 10:34:55 GMT
+ Mon, 12 Jan 2026 10:34:56 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3D1F020043;
+ by IMSVA (Postfix) with ESMTP id CFB8A20043;
+ Mon, 12 Jan 2026 10:34:56 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9921F20040;
  Mon, 12 Jan 2026 10:34:55 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0C81920040;
- Mon, 12 Jan 2026 10:34:54 +0000 (GMT)
 Received: from Mac.com (unknown [9.43.47.93])
  by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 12 Jan 2026 10:34:53 +0000 (GMT)
+ Mon, 12 Jan 2026 10:34:55 +0000 (GMT)
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: Caleb Schlossin <calebs@linux.ibm.com>,
  Michael Kowal <kowal@linux.ibm.com>, Aditya Gupta <adityag@linux.ibm.com>,
  Chalapathi V <chalapathi.v@linux.ibm.com>
-Subject: [PULL 02/10] hw/ppc: Add VMSTATE information for LPC model
-Date: Mon, 12 Jan 2026 16:04:25 +0530
-Message-ID: <20260112103433.8451-3-harshpb@linux.ibm.com>
+Subject: [PULL 03/10] hw/ppc: Add pnv_spi vmstate support
+Date: Mon, 12 Jan 2026 16:04:26 +0530
+Message-ID: <20260112103433.8451-4-harshpb@linux.ibm.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112103433.8451-1-harshpb@linux.ibm.com>
 References: <20260112103433.8451-1-harshpb@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=DI6CIiNb c=1 sm=1 tr=0 ts=6964ce53 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+X-Proofpoint-ORIG-GUID: 2dKDQsT6H5JINK5I1_EVaMmJTb6gJORU
+X-Authority-Analysis: v=2.4 cv=dYyNHHXe c=1 sm=1 tr=0 ts=6964ce55 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
  a=vUbySO9Y5rIA:10 a=f7IdgyKtn90A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=42l16weh4kzh4Z9CBFoA:9
-X-Proofpoint-GUID: BmERnuRRuP9bNcQHlMJGNjmfeL8L7I66
-X-Proofpoint-ORIG-GUID: BmERnuRRuP9bNcQHlMJGNjmfeL8L7I66
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEyMDA4MSBTYWx0ZWRfX02eMP5k6wn62
- hxt01HwdXWw2ICDFqEtTZRZK4DddjmzQSRrN9eUBRbYI121R7BaY+bK/0pDODX7l0bo8bog3xHY
- D11OEDkJqSLjPCSdmbizj0AUTir7pnondFslTzjSD5ReNof8lmL0QzNdP2O598ntnyXvom5tN7I
- WGbG5Uy1OGjxhq0blgJWBQsCb6oB/9NxeY56bCVhZ1fRWAN0kf83kMuU1BP2mTPr+ad1x36FL9y
- 3ml7GMOyuBUYOsm/CPwD9I8Li1By47GskI2dG20nSwJ7K74uG/b6PunHEHrqRcR5Vn4+cC2iAYS
- ozZfF0EJFYGJAaxNPzTury/BMytnyInYaSuQVW8+8Bjy0sqLlXtldD7w4qgcXJbewIwccgd4LZu
- phY+Id9GXuWgK0PDf/LhpXx9YqIIqklMtPSQvL5HgtHsB0zZv/mTD+a2MkKKwc3QYN7OOGWzgdL
- 1fxohx1rqk3rAQ84nbA==
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=zPJzuvo3V7OF8ZkWVCkA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEyMDA4MSBTYWx0ZWRfXwA78Fv+QpZ8x
+ yY9CKnY8kmraNfRyrT+zCxXie9fYbDhho4MWPPPqQBekfv7+jlcz6N5T43Em2CvUfMozdKzYzYg
+ mDbT4yg+si4WjqHPQNKTRocl2Z618fYksUZ7OKr2WHcW0/ds4SZ+5cngkOJALuptDi0Oab1IIZY
+ PWeH5lFC9hQ5DfoKwIaycXOiScQGgRicxsmyY8V6BQW4Y5unzH97skybIO/B+l+uwzeccmzqT9t
+ 5ftrGb+A79Uk7b+aEf03nb39P+2+ZZI+j5UOPnAkkcbm8dZpIhWB+Y2TrzqMKOEc6yoSoJL/ooT
+ ggLyrdAfLoKIHBYlxyiJnmYTCAAuSpO7105w65rxTdygHHlZhOkSI3Ii4yRgyITM/vEgVpL0d4Y
+ vF3pXYe3HxwcQUti3RPJ152KegAeyUjvadKBeRDYEkxkUQQX0lW7slKyopswqe5shRzsMV3yJl+
+ xc4+UhWV8ZFv7CrN22g==
+X-Proofpoint-GUID: 2dKDQsT6H5JINK5I1_EVaMmJTb6gJORU
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-12_03,2026-01-09_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 priorityscore=1501 lowpriorityscore=0 adultscore=0
- malwarescore=0 spamscore=0 suspectscore=0 phishscore=0 impostorscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2512120000
- definitions=main-2601120081
+ spamscore=0 impostorscore=0 adultscore=0 priorityscore=1501 suspectscore=0
+ bulkscore=0 phishscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601120081
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
  helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -121,101 +120,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Caleb Schlossin <calebs@linux.ibm.com>
 
-The PNV LPC model needs snapshot/migration support.  Added a VMSTATE
-descriptor to save model data and an associated post_load() method.
-Snapshot support added for Power8, Power9, and Power10.
+- Add support for needed PnvSpi structure variables
 
-Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
 Reviewed-by: Michael Kowal <kowal@linux.ibm.com>
 Reviewed-by: Aditya Gupta <adityag@linux.ibm.com>
 Reviewed-by: Chalapathi V <chalapathi.v@linux.ibm.com>
 Signed-off-by: Caleb Schlossin <calebs@linux.ibm.com>
-Link: https://lore.kernel.org/qemu-devel/20260105160138.3242709-2-calebs@linux.ibm.com
+Link: https://lore.kernel.org/qemu-devel/20260105160138.3242709-3-calebs@linux.ibm.com
 Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 ---
- hw/ppc/pnv_lpc.c | 41 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+ hw/ssi/pnv_spi.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/hw/ppc/pnv_lpc.c b/hw/ppc/pnv_lpc.c
-index 3b65c12316..d1357dd359 100644
---- a/hw/ppc/pnv_lpc.c
-+++ b/hw/ppc/pnv_lpc.c
-@@ -30,6 +30,7 @@
- #include "hw/ppc/pnv_lpc.h"
- #include "hw/ppc/pnv_xscom.h"
- #include "hw/ppc/fdt.h"
+diff --git a/hw/ssi/pnv_spi.c b/hw/ssi/pnv_spi.c
+index 1cf3a4416d..76304d26fc 100644
+--- a/hw/ssi/pnv_spi.c
++++ b/hw/ssi/pnv_spi.c
+@@ -13,6 +13,7 @@
+ #include "hw/ssi/pnv_spi.h"
+ #include "hw/ssi/pnv_spi_regs.h"
+ #include "hw/ssi/ssi.h"
 +#include "migration/vmstate.h"
- 
  #include <libfdt.h>
- 
-@@ -696,6 +697,43 @@ static const MemoryRegionOps opb_master_ops = {
-     },
- };
- 
-+static int vmstate_pnv_lpc_post_load(void *opaque, int version_id)
-+{
-+    PnvLpcController *lpc = PNV_LPC(opaque);
-+
-+    memory_region_set_alias_offset(&lpc->opb_isa_fw,
-+                                   lpc->lpc_hc_fw_seg_idsel * LPC_FW_OPB_SIZE);
-+    pnv_lpc_eval_serirq_routes(lpc);
-+
-+    pnv_lpc_eval_irqs(lpc);
-+    return 0;
-+}
-+
-+static const VMStateDescription vmstate_pnv_lpc = {
-+    .name = TYPE_PNV_LPC,
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .post_load = vmstate_pnv_lpc_post_load,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT64(eccb_stat_reg,       PnvLpcController),
-+        VMSTATE_UINT32(eccb_data_reg,       PnvLpcController),
-+        VMSTATE_UINT32(opb_irq_route0,      PnvLpcController),
-+        VMSTATE_UINT32(opb_irq_route1,      PnvLpcController),
-+        VMSTATE_UINT32(opb_irq_stat,        PnvLpcController),
-+        VMSTATE_UINT32(opb_irq_mask,        PnvLpcController),
-+        VMSTATE_UINT32(opb_irq_pol,         PnvLpcController),
-+        VMSTATE_UINT32(opb_irq_input,       PnvLpcController),
-+        VMSTATE_UINT32(lpc_hc_irq_inputs,   PnvLpcController),
-+        VMSTATE_UINT32(lpc_hc_fw_seg_idsel, PnvLpcController),
-+        VMSTATE_UINT32(lpc_hc_irqser_ctrl,  PnvLpcController),
-+        VMSTATE_UINT32(lpc_hc_irqmask,      PnvLpcController),
-+        VMSTATE_UINT32(lpc_hc_irqstat,      PnvLpcController),
-+        VMSTATE_UINT32(lpc_hc_error_addr,   PnvLpcController),
-+        VMSTATE_UINT32(lpc_hc_fw_rd_acc_size,     PnvLpcController),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- static void pnv_lpc_power8_realize(DeviceState *dev, Error **errp)
- {
-     PnvLpcController *lpc = PNV_LPC(dev);
-@@ -721,6 +759,7 @@ static void pnv_lpc_power8_class_init(ObjectClass *klass, const void *data)
-     PnvLpcClass *plc = PNV_LPC_CLASS(klass);
- 
-     dc->desc = "PowerNV LPC Controller POWER8";
-+    dc->vmsd = &vmstate_pnv_lpc;
- 
-     xdc->dt_xscom = pnv_lpc_dt_xscom;
- 
-@@ -766,6 +805,7 @@ static void pnv_lpc_power9_class_init(ObjectClass *klass, const void *data)
-     PnvLpcClass *plc = PNV_LPC_CLASS(klass);
- 
-     dc->desc = "PowerNV LPC Controller POWER9";
-+    dc->vmsd = &vmstate_pnv_lpc;
- 
-     device_class_set_parent_realize(dc, pnv_lpc_power9_realize,
-                                     &plc->parent_realize);
-@@ -782,6 +822,7 @@ static void pnv_lpc_power10_class_init(ObjectClass *klass, const void *data)
-     DeviceClass *dc = DEVICE_CLASS(klass);
- 
-     dc->desc = "PowerNV LPC Controller POWER10";
-+    dc->vmsd = &vmstate_pnv_lpc;
+ #include "hw/core/irq.h"
+ #include "trace.h"
+@@ -1199,6 +1200,31 @@ static int pnv_spi_dt_xscom(PnvXScomInterface *dev, void *fdt,
+     return 0;
  }
  
- static const TypeInfo pnv_lpc_power10_info = {
++static const VMStateDescription pnv_spi_vmstate = {
++    .name = TYPE_PNV_SPI,
++    .version_id = 1,
++    .fields = (const VMStateField[]) {
++        VMSTATE_UINT8(fail_count, PnvSpi),
++        VMSTATE_UINT8(transfer_len, PnvSpi),
++        VMSTATE_UINT8(responder_select, PnvSpi),
++        VMSTATE_BOOL(shift_n1_done, PnvSpi),
++        VMSTATE_UINT8(loop_counter_1, PnvSpi),
++        VMSTATE_UINT8(loop_counter_2, PnvSpi),
++        VMSTATE_UINT8(N1_bits, PnvSpi),
++        VMSTATE_UINT8(N2_bits, PnvSpi),
++        VMSTATE_UINT8(N1_bytes, PnvSpi),
++        VMSTATE_UINT8(N2_bytes, PnvSpi),
++        VMSTATE_UINT8(N1_tx, PnvSpi),
++        VMSTATE_UINT8(N2_tx, PnvSpi),
++        VMSTATE_UINT8(N1_rx, PnvSpi),
++        VMSTATE_UINT8(N2_rx, PnvSpi),
++        VMSTATE_UINT64_ARRAY(regs, PnvSpi, PNV_SPI_REGS),
++        VMSTATE_UINT8_ARRAY(seq_op, PnvSpi, PNV_SPI_REG_SIZE),
++        VMSTATE_UINT64(status, PnvSpi),
++        VMSTATE_END_OF_LIST(),
++    },
++};
++
+ static void pnv_spi_class_init(ObjectClass *klass, const void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+@@ -1209,6 +1235,7 @@ static void pnv_spi_class_init(ObjectClass *klass, const void *data)
+     dc->desc = "PowerNV SPI";
+     dc->realize = pnv_spi_realize;
+     device_class_set_legacy_reset(dc, do_reset);
++    dc->vmsd = &pnv_spi_vmstate;
+     device_class_set_props(dc, pnv_spi_properties);
+ }
+ 
 -- 
 2.52.0
 
