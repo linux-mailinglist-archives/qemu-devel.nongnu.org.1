@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2EBDD15A43
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 23:50:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58160D15A4F
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 23:51:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfQkD-0004h2-6G; Mon, 12 Jan 2026 17:50:41 -0500
+	id 1vfQkI-0005Sk-WE; Mon, 12 Jan 2026 17:50:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQk9-0004Rs-CJ
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:50:39 -0500
-Received: from mail-wm1-x343.google.com ([2a00:1450:4864:20::343])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQkG-0005BV-IV
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:50:44 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQk7-0002uA-WC
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:50:37 -0500
-Received: by mail-wm1-x343.google.com with SMTP id
- 5b1f17b1804b1-47bdbc90dcaso49368025e9.1
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 14:50:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQkE-0002vO-P2
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:50:44 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-47a95efd2ceso60041995e9.2
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 14:50:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768258234; x=1768863034; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768258241; x=1768863041; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=nKnmAuhg2j5g1FJP9++SXoe3W19bdqyFpA0yNrVoyGQ=;
- b=lHjZXxzwQsxoTimwjS93R2R9jHsKR3BI9gg9SKOjVxnYl02UzGuLX/9AHR4Q3E34f8
- fiQtmYVyndz8MezTx0SJenLXiExxbQBmYibz2Yv+mFtJLUkL4WolOFIWWZLo90r4imrm
- jZQE/XWULcGAtEHbDbWCacQfhKqgZ/gV2m7FZE2x8nsykzvvfWHLGxwhlpaO+3Jemqa3
- Laj2nGVcl8mvfsXpQNRXO9PRWEpfGqGW2kXycXxxr6DlALfsJ6ng/a+xio4EZzE7pTRn
- quwP4My6sCUNqqVFKUmVtCJbnfQMgsADJ4f0qmjGBuiLJgxvs52JsF78efS4jVifbN85
- +JEw==
+ :reply-to; bh=ras1IMApp603uPUkGN2gtalv8z8CpghVMPwPfzKwAUQ=;
+ b=SdYz5la4UdKZvsdsoTLp2IxYQLtB2xahWUAUO+HilTeaD2cC9+fTxudJR03eDLXxST
+ TTKd6kb9lTOlJawlLYQHVZO4mO8807MF/PHOgf4UtupdN93gFVrl6EhTfkoOiNXCgM9j
+ skV0ivMzTHVE2BfQnnDcVfBPKRW3jqiV7XN7yMIhLgjd+iWBW+hX5v0Jpamla0pFRLf8
+ QNonFLW4JYysL5gwFaTBZOn36Zmi2ENk+3xJCrQjPUduP2BC0CsT9yHPaZHsnue143Q7
+ PL4QQAGpzvYOSzUEsEWdciqOTQMmZxWU0hWhjYkPh9YzTk3GJd25e4iqdGxQ4o2t7PAw
+ cP9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768258234; x=1768863034;
+ d=1e100.net; s=20230601; t=1768258241; x=1768863041;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=nKnmAuhg2j5g1FJP9++SXoe3W19bdqyFpA0yNrVoyGQ=;
- b=NBxx4/KMAVCoDxgRibUWoXdqFlvdlb+bV8MIy1J0tVrzUGmBLOxYzOi7eeNmYEvz57
- dxSN1+mXRq+tUDNWTXeWnC7jx6hQvazJFNHFst1Gzsfi2RLP4SKQYX6FJ5WNk8pP8luj
- pGWooztgakLaJ6UeJXTFECF012bdp4v7bZwBgUEsEScZM05IRCWV/wUU0kdfTPBG69Vz
- FwM02/eqdO5GgVcWSB7D069SVGRjaAegeLHRkuLlMSboo3//Vh1nOebAUStHuQ0jogkV
- Fb+jxbzASDA8joVhvqBSSQHqJmZN73i11YGs8J+BwZkJqvNMYwuizvvPCGyRHvuM2wLG
- NQfg==
-X-Gm-Message-State: AOJu0Yyz+QfpXYLzMENljwMyv4KwNpO/MVfdEMV8ps/gASFPx1Dow9Zk
- hWFl49JfYCucJ2MCj3bdR4zDyOOOG7hY3HLtT1ZSTV4pEcNIy2EpD0V8UHwJ3h41Am49uummp75
- YkMlOxas=
-X-Gm-Gg: AY/fxX7YMVeHLfxElTYYfVMwLtOT2TxejzyFxJrTwmW1qAz2Q3wtCPmDaYAVXnbeq3v
- n6a02u+soBK5B4yZbk0F7q9PUm7kbzC72GVTDKVfGQ1kCZg2XIK51YI9Hnwebw5ZeMr1HCPdPKe
- HwmBnN1Dpzp62Ts+K3pBHM8VrQ4/5DbqQtuG+0PPkyfpM5AMldhvn56LI2kIq/QIL8ZXRpJO9W+
- 3514xYrdHoNSZf2rvivFC54i5Cpy6FPA89Vxqyh9i184h9/aMOkUJ803BuoHHd01V/KbKRrep+h
- Jrz+dtYbqU7l8fGP5+D65q+QsVwH6IySF5fTAjcIGl9QEQY/T05jkv+0SG44IwbRDsSSLd0PqmJ
- tsGSbqKddjtNEFQdd64lZM6rxkCwQtvj9oEc4htjlXj4+zxK4t2c5dxeMOub1e4mXqooO3oLWdl
- P7SIGgyE5Y/VyHEc+KUkhwJQ7T0JEf7qTHsuBa1Fg5CXJ4L34BJXYGFOWUUUnE
-X-Google-Smtp-Source: AGHT+IEqNJwJoi2JeKtGTo9lvMtcw8mdnoLhKiK66N8gRAYIQQWNMD5cHrARfC/P2pO2dbhsfqhuew==
-X-Received: by 2002:a05:600c:4e8a:b0:479:2a09:9262 with SMTP id
- 5b1f17b1804b1-47d84b18037mr258125295e9.9.1768258234202; 
- Mon, 12 Jan 2026 14:50:34 -0800 (PST)
+ bh=ras1IMApp603uPUkGN2gtalv8z8CpghVMPwPfzKwAUQ=;
+ b=wyluWdA0O4LtF2bVE1X+1YRCj5MfFa7YFogrklwwZC6ienRv5cW0TTqZKZzDbO0Agm
+ fhDop8IEW3+8kijxbAKESS4DEi2xxput5+waDRxaZCZCGq91wmUh0RDowJqhrOYCJVPa
+ 4iAz75gm5eX2MyXrRir7o/S4zOYPYvwSJ9fHlqpaqwvNKR/bdBSzm7muEXaVmXCisnLg
+ eWQmx58/PYIpKkEtX287kwoa+lblf1wbYc4ajEcLVYyHDjnfPV0fAjBoohCGmaoCRv9t
+ OehRlO3YQ+TuWBR/VYzQ2l+8cPaZS9UQ7j50JH8G4McryhnTljaxwHFp0qnTYTkEfTdl
+ /HZA==
+X-Gm-Message-State: AOJu0YwQt/bgsfXWq8Olb4tZ50sbU9XOZlltmUS92BTA0ZIUOkSjPfL5
+ l2iEbtdj/FwSCWaoXX09WfgEzH2JiBtCaJlngWQKk7OT05/9KpBq3scYd4Rkxe+nWuZzuUxe+Dk
+ Y7iSpjXo=
+X-Gm-Gg: AY/fxX5kvSqBexW8VccUlAZAOny8SdoS29JXgQ1qmhByPY7uDS5lFnu1JisJbs6hq3Z
+ 7vdIivTQEelf5UdliLBw2Z34nM9Hr0vpqp44b0cjKq0dHZLemR0WgIn1pJrZWFJtU95HgrMzbxi
+ buz6ckoeoMvPeiPZnIcefr2K3zoGNoiDRPSd8AicnMyPc9yuHM8xEpGYmNQQGstsXbbefQ/xZ7K
+ od+Lm234PjON89A5YV4Yc0MztubQ2q/geJpLI7Nm1v3iCL94Sf43u4OFBvKb3tPd3OiM5NGU2Xg
+ gdKY2q1WP67THoWuNDuulNIA/q+0BlM9I4IJdQx6URGljM3+nUIR2pqWVRHQFC3X/wo1J+E3Sqe
+ kf+tLpmIcQiTdiWuTVxMBvxN8Jxqk0IaJZGTWSAab4a6PqGaJSCT0wGSAa0AQdAN/QBg1CuL32Z
+ WbQA19nmqJBnUfvnxFFTUv0745XSRGcHjoge/BVxcEA6UWo8NZFlC6j/2hkTrZ
+X-Google-Smtp-Source: AGHT+IFe1b6Dl2utcQILMrhWXdcYiJKAhy2tslkMNwEMEW+LHPLgSOKyIGpi87WtHPnt6piVLd6gUA==
+X-Received: by 2002:a05:600c:1d04:b0:46e:35a0:3587 with SMTP id
+ 5b1f17b1804b1-47d84b3a06fmr237479385e9.27.1768258240649; 
+ Mon, 12 Jan 2026 14:50:40 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47ed9b2a92bsm2208955e9.0.2026.01.12.14.50.33
+ 5b1f17b1804b1-47d7f653cd6sm393950135e9.9.2026.01.12.14.50.39
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 12 Jan 2026 14:50:33 -0800 (PST)
+ Mon, 12 Jan 2026 14:50:40 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 14/61] target/alpha: Inline translator_ldl()
-Date: Mon, 12 Jan 2026 23:48:09 +0100
-Message-ID: <20260112224857.42068-15-philmd@linaro.org>
+Subject: [PULL 15/61] target/alpha: Introduce alpha_phys_addr_space_bits()
+Date: Mon, 12 Jan 2026 23:48:10 +0100
+Message-ID: <20260112224857.42068-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112224857.42068-1-philmd@linaro.org>
 References: <20260112224857.42068-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::343;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x343.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,38 +97,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-translator_ldl() is defined in "exec/translator.h" as:
+From: Anton Johansson <anjo@rev.ng>
 
-  198 static inline uint32_t
-  199 translator_ldl(CPUArchState *env, DisasContextBase *db, vaddr pc)
-  200 {
-  201     return translator_ldl_end(env, db, pc, MO_TE);
-  202 }
+In preparation for dropping TARGET_PHYS_ADDR_SPACE_BITS, add a
+a runtime function to correctly represent the size of the physical
+address space for EV4-6 based on the current CPU version.
 
-Directly use the inlined form.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20260106155755.53646-5-philmd@linaro.org>
+Signed-off-by: Anton Johansson <anjo@rev.ng>
+Message-ID: <20260112-phys_addr-v3-1-5f90fdb4015f@rev.ng>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/alpha/translate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ linux-user/alpha/target_proc.h | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/target/alpha/translate.c b/target/alpha/translate.c
-index b1d8a4eb80a..3be97057465 100644
---- a/target/alpha/translate.c
-+++ b/target/alpha/translate.c
-@@ -2904,8 +2904,8 @@ static void alpha_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
- static void alpha_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
- {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
--    uint32_t insn = translator_ldl(cpu_env(cpu), &ctx->base,
--                                   ctx->base.pc_next);
-+    uint32_t insn = translator_ldl_end(cpu_env(cpu), &ctx->base,
-+                                       ctx->base.pc_next, MO_TE);
+diff --git a/linux-user/alpha/target_proc.h b/linux-user/alpha/target_proc.h
+index da437ee0e56..6b491ffa3a7 100644
+--- a/linux-user/alpha/target_proc.h
++++ b/linux-user/alpha/target_proc.h
+@@ -6,6 +6,27 @@
+ #ifndef ALPHA_TARGET_PROC_H
+ #define ALPHA_TARGET_PROC_H
  
-     ctx->base.pc_next += 4;
-     ctx->base.is_jmp = translate_one(ctx, insn);
++#include "qemu/osdep.h"
++#include "target/alpha/cpu.h"
++
++static uint8_t alpha_phys_addr_space_bits(CPUAlphaState *env)
++{
++    switch (env->implver) {
++    case IMPLVER_2106x:
++        /* EV4 */
++        return 34;
++    case IMPLVER_21164:
++        /* EV5 */
++        return 40;
++    case IMPLVER_21264:
++    case IMPLVER_21364:
++        /* EV6 and EV7*/
++        return 44;
++    default:
++        g_assert_not_reached();
++    }
++}
++
+ static int open_cpuinfo(CPUArchState *cpu_env, int fd)
+ {
+     int max_cpus = sysconf(_SC_NPROCESSORS_CONF);
+@@ -57,7 +78,7 @@ static int open_cpuinfo(CPUArchState *cpu_env, int fd)
+             "L1 Dcache\t\t: n/a\n"
+             "L2 cache\t\t: n/a\n"
+             "L3 cache\t\t: n/a\n",
+-            model, TARGET_PAGE_SIZE, TARGET_PHYS_ADDR_SPACE_BITS,
++            model, TARGET_PAGE_SIZE, alpha_phys_addr_space_bits(cpu_env),
+             max_cpus, num_cpus, cpu_mask);
+ 
+     return 0;
 -- 
 2.52.0
 
