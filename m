@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1635CD1358D
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 15:57:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 025ACD1357B
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 15:56:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfJKC-0008Il-EN; Mon, 12 Jan 2026 09:55:20 -0500
+	id 1vfJKB-0008CC-6E; Mon, 12 Jan 2026 09:55:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfJJk-0007lf-58
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 09:54:52 -0500
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfJJn-0007op-4W
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 09:54:55 -0500
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfJJg-0001ZC-20
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 09:54:51 -0500
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-b802d5e9f06so943943366b.1
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 06:54:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfJJi-0001at-7X
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 09:54:54 -0500
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-b8706ce18c0so240525466b.2
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 06:54:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1768229686; x=1768834486; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1768229688; x=1768834488; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FukVwTxoJHIN3FNbcOHO2weFoJlsrxf5RmTepg8qvQg=;
- b=KhkhYIkUkZDRe4vrPe32L6ODkp9qM/CaKkJTekNl4ju3xkeRltXI37rHRlSCX+Bt6G
- 0MwD73JqXw8z8PPZJ/VKA5SsCQe5oUnAsGAMyBhsw6mGu4eZF784UxXTd/w38xqEcWBl
- LnZEm5T4uQG/rj1C6+EpSHz/7ihfo+pWNJZ793lPOfpwSL0hGSj/2fpazmDqHVzivXgj
- T+VelILRcUjDuVC9dMcamoNCKYzUEaDCEMZ2K1ea2hCeFkDjZgS57QhjqR/hXEKYhZRO
- 7Qx7BKi+eu4iFlv7MiaFCHaALJEm8EwoK5L9H+21yrHQ8bY9cKoOFbHFJ40jhC+uQKEX
- fXcg==
+ bh=u7oIuXS4LVRn8XUCBjKf1n6RhnUu4CtgkIdX5fQX0Q0=;
+ b=DH3WAl9HkejOKFyX4/LEaGBICAskq7ozlLf81fwCIxtJJI2aG5c0Dz2cP3Ch/hOX/5
+ Az56Nk58zaHVzxIwwDXBj4UDqFxWYOYLW8J4YN/A/lbLUaji3vfC0LV/x05K25hXuTNo
+ Vw15FkA3ieLzUn0YHGX/svTSlNIu/1jLlvVQjYOcVPKX1y8go/VzPXZur2NQEA6j5fM0
+ G+epVNRwQHP7wHa3//nENctmi6SzeFr3xYbz3eVPAFsPZdJtarM6v17zuRyzR6iJV/EB
+ VZLMufMNd3oONM8stvePdmMxSIvzLNRjMnI0unuNbu4lTfTvPRMRLlGiC4QvSED/x00v
+ cikA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768229686; x=1768834486;
+ d=1e100.net; s=20230601; t=1768229688; x=1768834488;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=FukVwTxoJHIN3FNbcOHO2weFoJlsrxf5RmTepg8qvQg=;
- b=uBvPJi69LidiFvEbaxxYROQzHmxDneqTbB79BNUFNJ3uWi9JZrwgtsb6bg3Ut0vtFL
- FWaZOw+Q8vrWaKu6OA7KYC9gEoDkVAFzcV+VsKO8fRpZ+cOrB0wBiFFTDN3uzMgh5/fp
- jbXBSKEbPj8rzVsw+bqXDfWljPKyH9ARQlaW7hoGyTgLPSyUat8+eNggq3z9yMzaw/2O
- 1INuuyIHvHyQmTSGJ8iPz2vWTfujQu5U/FsJQ96yV79ySDO3tpUtX0Sz951BkJcJ8481
- hneWb+drkVsETwCSTahcPWnD+qNwdcDZqq59+C+B4t6F/nKyncZyCsKPlDofl76DjixG
- vTRg==
-X-Gm-Message-State: AOJu0Ywzlsh/PqTOSnDL/nsxKyl6HXcwwoFX7vmq+u5nnHtshnLVYeHr
- i8+qtzgXT10erySMD+Oc+HCZGxJHbF4fNKJJ98s/e/ZeGJ2x73X9Tw7uElWtYeoJ
-X-Gm-Gg: AY/fxX7t9M8UmDCa4K1Uvb8h0LIUEkZwCmxuoXGHHoIHbDggawsg3wdxyoo30bsPzEP
- rXrtXnVzTLDPxEGpdNOYWk/a65qbYmjL8QqNhHhfPKeHNEnGE53Ts2cvHulml3CYgeJp/JTBuX5
- 2vBrHq+NykcAsV3oh4GY1Izb05XO/ZG4eWanzdi/vJjbSQJivVXcAJkl2boxiKIfGhi1f7NAwD7
- nzj6XAjtjF8URw3mZMgKW8lFm39mutmdnuhnJo7MReMfMMZo7foofjtjJ+C7Wa0qBuX4Hakij8f
- z8Ww5NfAT2Rmc+czqkGlkqZSvZXNxWJO6kevTlu8FQqV65+B9jvCfMzlZ8f39jFDEHejRwQk3ms
- FG6u8XmyW97b1bl5XSqULOv89jnpQID8n3isAhDxNDkVMh2mV9hlgU4ICZunubEmPQrSfBrTi2q
- 9VNWb0iCPycftti3G7Aq3fvUZEI5aZ+Ns8kn108zcIQJGsI/+LXMlusqezVM4rxsQl4HRQ+rX1
-X-Google-Smtp-Source: AGHT+IEyXT6Z2o39BteTzkxetNHbnp+sLXbZ+aq+UjAQcUtQp+l2biGMItp19RwvYrc73lEUdbJANA==
-X-Received: by 2002:a17:906:ef0d:b0:b76:bcf5:a38a with SMTP id
- a640c23a62f3a-b8444b8adafmr1794843066b.0.1768229685983; 
- Mon, 12 Jan 2026 06:54:45 -0800 (PST)
+ bh=u7oIuXS4LVRn8XUCBjKf1n6RhnUu4CtgkIdX5fQX0Q0=;
+ b=ajtALq07gkog5xZgzSIha+1fwYV5CijCYUlV9BhZ0UJer4SIlhNGjefU2nOl5o1AEX
+ t3gLUqykT/RNaPeXSWa7Um2hiTAOEBA4irBmcSeTX/f8oGPUE+4Jt77+i53MlUji/rZg
+ leFiGdtl1iVqRdsX3IODq2BfdUufJKAGQVvCBfZRLUFyJzOkNaPheLqFF4SDbzH4n87V
+ Fw+DWvrS3Aa9IR1t9JNJtM8zuwszeSKlriLz5tafgw38NMwoT1X8jKgT7K7kOCdlcfVj
+ 4pri+UFzepans4XgGCLOJXj+tCv5s/zIg8T4PuuvXq2dPJqd6AEvHPkt8t3T3e2IL6mF
+ 5Czg==
+X-Gm-Message-State: AOJu0Yy437uEeOaB/FwSjXnky73MVuOG3QesbSBhJsVj0EdXX7RkO4o3
+ 9xhjNgTSx/icoLsMMwGXJ1RMSoXyU8DzSy/palI7iu6lxRothflPgUqmpPCKtKIq
+X-Gm-Gg: AY/fxX4DtPQLCiqwxQx2AK0gfP2Wt0v3v8aVdU2zAREn19qIUaCKXBEKioc8Srr+pRM
+ 4qHyzunivTiXMV7ZOydBJvgZKHeQ7oxnvtVsWcEcS1mqlpmDWpN5sbWY/oT2kQV2JzZdBAvDfRS
+ pJxon1OX9CCwpKwI9qLJuV64eLm04tx81hBryx74rDOjP6sMFlq4yyKAhFcKeKNEs0KwfhXLPxK
+ 7NWV2yYaSFl+KAF3+sRIXvDKyXuqQ3ICvGyq9bRQ+ErSI5xfeF+5Qps/OJ1F7TTxAIj7D0DcHCi
+ TeNYpviZh+nK2oSwNg3C+tSyMtt/gM7ynBmoQ22DxTYublbz7Zi0N5SFlCHQha2ATqc2ivGCcja
+ 2Ovcr9yh3CtN9oSNXckJEKdbI8QxIIHX+ivR9ZtFYNP6MQpISL8BjGSlky6oNFeZLtuijw8j6Vf
+ LJcZLY2CjbLT71H5LiMrMMVNQ3GDssQa+ujx3AHhWRU4TmnKdWdGgeRF6OHKmRujvji8r836dB
+X-Google-Smtp-Source: AGHT+IFOIJDr5Eb3sa5kxgWEv8nmZXnfhSC9ttRBIEnYs5YB6D2mH8Ba87XF6LE7ImxjgtgJpfdpWQ==
+X-Received: by 2002:a17:907:26c7:b0:b73:a2ce:540f with SMTP id
+ a640c23a62f3a-b8444c80f04mr1758154366b.17.1768229688025; 
+ Mon, 12 Jan 2026 06:54:48 -0800 (PST)
 Received: from archlinux (dynamic-077-188-226-222.77.188.pool.telefonica.de.
  [77.188.226.222]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b8731f0718asm37387966b.67.2026.01.12.06.54.44
+ a640c23a62f3a-b8731f0718asm37387966b.67.2026.01.12.06.54.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 Jan 2026 06:54:45 -0800 (PST)
+ Mon, 12 Jan 2026 06:54:47 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -69,16 +69,16 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bin Meng <bmeng.cn@gmail.com>, Thomas Huth <thuth@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
  qemu-ppc@nongnu.org
-Subject: [PATCH 08/14] hw/sd/sdhci: Add TYPE_FSL_ESDHC_BE
-Date: Mon, 12 Jan 2026 15:54:12 +0100
-Message-ID: <20260112145418.220506-9-shentey@gmail.com>
+Subject: [PATCH 10/14] hw/arm/fsl-imx25: Extract TYPE_FSL_ESDHC_LE
+Date: Mon, 12 Jan 2026 15:54:14 +0100
+Message-ID: <20260112145418.220506-11-shentey@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112145418.220506-1-shentey@gmail.com>
 References: <20260112145418.220506-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,39 +101,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For now, TYPE_FSL_ESDHC_BE is basically a big-endian variant of
-TYPE_IMX_USDHC. It will be used in the e500 machines in the next step which
-prevents Linux to flood the console with "mmc0: Internal clock never
-stabilised" messages.
+Extract an eSDHC (little endian) device model since the uSDHC device model
+will get an uSDHC-specific MMIO quirk.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- include/hw/sd/sdhci.h |  2 ++
+ include/hw/sd/sdhci.h |  1 +
+ hw/arm/fsl-imx25.c    |  7 ++-----
  hw/sd/sdhci.c         | 31 +++++++++++++++++++++++++++++++
- 2 files changed, 33 insertions(+)
+ 3 files changed, 34 insertions(+), 5 deletions(-)
 
 diff --git a/include/hw/sd/sdhci.h b/include/hw/sd/sdhci.h
-index 32962c210d..3eb0684a89 100644
+index 3eb0684a89..32c52c7d0b 100644
 --- a/include/hw/sd/sdhci.h
 +++ b/include/hw/sd/sdhci.h
-@@ -128,6 +128,8 @@ DECLARE_INSTANCE_CHECKER(SDHCIState, PCI_SDHCI,
- DECLARE_INSTANCE_CHECKER(SDHCIState, SYSBUS_SDHCI,
+@@ -129,6 +129,7 @@ DECLARE_INSTANCE_CHECKER(SDHCIState, SYSBUS_SDHCI,
                           TYPE_SYSBUS_SDHCI)
  
-+#define TYPE_FSL_ESDHC_BE "fsl-esdhc-be"
-+
+ #define TYPE_FSL_ESDHC_BE "fsl-esdhc-be"
++#define TYPE_FSL_ESDHC_LE "fsl-esdhc-le"
+ 
  #define TYPE_IMX_USDHC "imx-usdhc"
  
- #define TYPE_S3C_SDHCI "s3c-sdhci"
+diff --git a/hw/arm/fsl-imx25.c b/hw/arm/fsl-imx25.c
+index 9e02063533..7f65f4ca4b 100644
+--- a/hw/arm/fsl-imx25.c
++++ b/hw/arm/fsl-imx25.c
+@@ -68,7 +68,8 @@ static void fsl_imx25_init(Object *obj)
+     }
+ 
+     for (i = 0; i < FSL_IMX25_NUM_ESDHCS; i++) {
+-        object_initialize_child(obj, "sdhc[*]", &s->esdhc[i], TYPE_IMX_USDHC);
++        object_initialize_child(obj, "sdhc[*]", &s->esdhc[i],
++                                TYPE_FSL_ESDHC_LE);
+     }
+ 
+     for (i = 0; i < FSL_IMX25_NUM_USBS; i++) {
+@@ -239,12 +240,8 @@ static void fsl_imx25_realize(DeviceState *dev, Error **errp)
+             { FSL_IMX25_ESDHC2_ADDR, FSL_IMX25_ESDHC2_IRQ },
+         };
+ 
+-        object_property_set_uint(OBJECT(&s->esdhc[i]), "sd-spec-version", 2,
+-                                 &error_abort);
+         object_property_set_uint(OBJECT(&s->esdhc[i]), "capareg",
+                                  IMX25_ESDHC_CAPABILITIES, &error_abort);
+-        object_property_set_uint(OBJECT(&s->esdhc[i]), "vendor",
+-                                 SDHCI_VENDOR_FSL, &error_abort);
+         if (!sysbus_realize(SYS_BUS_DEVICE(&s->esdhc[i]), errp)) {
+             return;
+         }
 diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index 531dd3c291..6277abe870 100644
+index 6277abe870..6001b71c61 100644
 --- a/hw/sd/sdhci.c
 +++ b/hw/sd/sdhci.c
-@@ -1871,6 +1871,32 @@ esdhc_write(void *opaque, hwaddr offset, uint64_t val, unsigned size)
-     }
+@@ -1897,6 +1897,32 @@ static void fsl_esdhc_be_init(Object *obj)
+     qdev_prop_set_uint8(dev, "vendor", SDHCI_VENDOR_FSL);
  }
  
-+static const MemoryRegionOps esdhc_mmio_be_ops = {
++static const MemoryRegionOps esdhc_mmio_le_ops = {
 +    .read = esdhc_read,
 +    .write = esdhc_write,
 +    .impl = {
@@ -145,15 +170,15 @@ index 531dd3c291..6277abe870 100644
 +        .max_access_size = 4,
 +        .unaligned = false
 +    },
-+    .endianness = DEVICE_BIG_ENDIAN,
++    .endianness = DEVICE_LITTLE_ENDIAN,
 +};
 +
-+static void fsl_esdhc_be_init(Object *obj)
++static void fsl_esdhc_le_init(Object *obj)
 +{
 +    SDHCIState *s = SYSBUS_SDHCI(obj);
 +    DeviceState *dev = DEVICE(obj);
 +
-+    s->io_ops = &esdhc_mmio_be_ops;
++    s->io_ops = &esdhc_mmio_le_ops;
 +    s->quirks = SDHCI_QUIRK_NO_BUSY_IRQ;
 +    qdev_prop_set_uint8(dev, "sd-spec-version", 2);
 +    qdev_prop_set_uint8(dev, "vendor", SDHCI_VENDOR_FSL);
@@ -162,14 +187,14 @@ index 531dd3c291..6277abe870 100644
  static const MemoryRegionOps usdhc_mmio_ops = {
      .read = esdhc_read,
      .write = esdhc_write,
-@@ -1965,6 +1991,11 @@ static const TypeInfo sdhci_types[] = {
-         .instance_finalize = sdhci_sysbus_finalize,
-         .class_init = sdhci_sysbus_class_init,
+@@ -1996,6 +2022,11 @@ static const TypeInfo sdhci_types[] = {
+         .parent = TYPE_SYSBUS_SDHCI,
+         .instance_init = fsl_esdhc_be_init,
      },
 +    {
-+        .name = TYPE_FSL_ESDHC_BE,
++        .name = TYPE_FSL_ESDHC_LE,
 +        .parent = TYPE_SYSBUS_SDHCI,
-+        .instance_init = fsl_esdhc_be_init,
++        .instance_init = fsl_esdhc_le_init,
 +    },
      {
          .name = TYPE_IMX_USDHC,
