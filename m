@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90AFFD15A29
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 23:50:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6796D15A2F
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 23:50:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfQje-0002lm-BP; Mon, 12 Jan 2026 17:50:06 -0500
+	id 1vfQjl-0003KY-VH; Mon, 12 Jan 2026 17:50:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQjc-0002gR-Db
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:50:04 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQjj-0003At-Mk
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:50:11 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQja-0002bh-LW
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:50:04 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-47ed9b04365so372655e9.0
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 14:50:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQji-0002pg-4b
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:50:11 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-42fb5810d39so3617649f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 14:50:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768258201; x=1768863001; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768258208; x=1768863008; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Cos4UCipc+8S3courFEq2OGz4cGQRTYcXYO+7KekyB0=;
- b=XYafBB02E++nMvzb8J0PtAKZnosIMuPFl7dwsL1VlrNenEekjw+WssOa9KJP67N8os
- ZhrPGekVbXw4+hSFX9gg/1gQ28eRvJ2AS98RLgO06q44I6vYgPnHwF1+ZvgySV3ZHCdY
- bUwu/Ea0VzxCW2O2qIlAYJBXN2RLv2hTSAj3Zf1Fm7xGpCuBCVAq5aTrvYF/uNt6s4et
- J4jDoaNY2wks1E29s/N7Ldg+EgFhrGjljJnXHvN/Qmcz9uOM7t9xV4Lt/YJLdurZOpDx
- 6nxYyptDewYf/XFeyj/B2Xh45c9D7ICsVfPNm41FqeKY/dWGpCrRAWtvdedVT1A3wqh6
- lUGQ==
+ :reply-to; bh=m4WK0WCMD/FZzoXl81PVwF7WQ9tvZJH8+XWvkiTSRug=;
+ b=xhWELb9Z3ObR6lVEEkvCzRvHgpad+VYQfH0Dw0A6DXeEjCZiZ+IsxVV+o4wGD4UNx1
+ ANZegQ0YmFP19hTymHX2Dl+OaaPQA0yLQBFdts03DJJgVMDhRn3UGlkAmiG35AtBvQTC
+ 7fRBEQtku+uXImd5RidGir41JqBKlOHg0o43HPsijaEgXiwuNfph3swliI68gUxCj8iO
+ +l5FqfEoappFkN0B6gHJh1fitney8+nVIWBL/3zpomMzY0axgHR3HtombzNVwEFsl/io
+ HwqfgpulOQBZg0z2DtO2QE6rnSErL3aCrIgOn1f5LIUGfQcnrRWLNHdQ8+ip2DxeaoFb
+ 3x5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768258201; x=1768863001;
+ d=1e100.net; s=20230601; t=1768258208; x=1768863008;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=Cos4UCipc+8S3courFEq2OGz4cGQRTYcXYO+7KekyB0=;
- b=VuWi4uQiym2+bo5vtT81VC07w5eH616WH4NFpTqMAKV/fpnvX0Wlldx+ya2QXi5lKn
- 8Y2OZKbE22LP8sfpRPmYyBsilZ3r/UnuB5gkCqlhiIfa2StZKGVgB6bg4z4DtJ45zhxp
- I9Dw3A5qbsr5bTPSM7v1xQk2xWn5WXlbdMTAV4nyJ853/ogfIGw1ltQXiU/9IQdUnO9x
- JUFN3Z9YqlYetdzasRCda0DKvx4QYIQAN5Nazl2YJBz6yAMh/yadlfwYVN2oqn+6Syt6
- PnAPdl/y8moCG6cjPCjTSkeIzuZQW4XF45/9sVU3Db2li08xqYgwL/+Ic1acCxiIvQgU
- +06Q==
-X-Gm-Message-State: AOJu0YzrIK9cZZzcv9pq9Hyg5zfZhTARR0l87jGIMssoXbzDL6wXgwcv
- xpUdNjywdkGEKCOtBenpq59neYibu3PTuZ3KddKpx7HPKMoaB3tng1WwS3bAjTZysv34FpVRT54
- hJTlZJyU=
-X-Gm-Gg: AY/fxX5nbff27glCUSfhMggdk+zDFH0GG+2PVaKdlLC1ga7GoPhehXYfrAADL25MngX
- WKqDUpImYsJ481aXvXeQswkE/t3xFN4nbt7SUFR57jC+vbATUHZJUfE+BsRSY2HP+ORhilQoBDA
- ZJJhXujdKkCAc9KmpanG6FLrBrQElg/9tFcCMtdfk1O8Il47rjMa/F+4ffoiCfC3pcYrMwmm8KO
- mzWkcA1HiT1WcHqwV7q3iy5/My20EATyI3W8KSwNiJlYGqVjqAKEMuqB2DYO0Rx7iljrpqmhxji
- is4/tNGFZJN+jBmwSxWIX/Cd8OXvGQRgwmA7y67mhIfWyp36DoC2XJlLZ0Xje8JVjOkD+pdcPUf
- QL54G3VkJJuUlFlRcSW2vC2FfNvTM2lrC5OAtBvPu+FdpavypkXx2Mn53bamiZnb5WMwLGMPbtY
- 5mOAqOrnKYrkVtDTGvn1DjIT3dgqEHLSdyBP0qcWvwje8XTIIXcKEUbM+f6EVs
-X-Google-Smtp-Source: AGHT+IFPCyvGbv1vQte0+TrzHHilHux6qeVXAIbwZp5ZYtmmR8kFy2ZF6E/SQ2zDW6HeGurmNRSNmg==
-X-Received: by 2002:a05:600c:19c9:b0:477:63db:c718 with SMTP id
- 5b1f17b1804b1-47d84b18215mr251622595e9.16.1768258200602; 
- Mon, 12 Jan 2026 14:50:00 -0800 (PST)
+ bh=m4WK0WCMD/FZzoXl81PVwF7WQ9tvZJH8+XWvkiTSRug=;
+ b=aXCwP40wqE/7Xp1glzoDRjoicvp0g9W+1P/NMAmmPDUZkKbwayKg+iKuncFMZfgTkC
+ 3nyGViipO1UtIHI84J7JcLxFsoYeeKyieRcDTpB4tdY72MS0T0VOaf1Sfgux4KLysTGo
+ VxbnJFU0YRLR5iTCJ6KDYUuynMVXB939CvaJxsV58hS7FKI7ojq6jrWWnHGp3Pnd1O0A
+ f2/4BXCk1Q1Ew6/hyOXOCBepAJzGiOlIUE/MxH2eA+bg/sPcrAmeAZSH03+jy9aQEPOJ
+ bRK7h0ppD7W6FSswyLJCTTcbOJ0v6Yk5F9jDyzcx0vlpWLtzdRHYKRV/wjW5b52Pk2Ew
+ KBUg==
+X-Gm-Message-State: AOJu0YyNskhNMb1mHem9VhegeTq+KNfFkRN84cJTEbwugiZk7JqkUVOT
+ b4xjQHscu0pKdl/F6eSX9RAEXJ7u0CwFblpIeYLKmp5Q8Pa7abC65VWcEQYGQlor1BijkA7qJ7D
+ HSSidEmw=
+X-Gm-Gg: AY/fxX5yXe3Sdcjad3p0AI5x6xsys+PcHEn8mYQl9OPqlMePSeF5o8nesgTI5DV0+FX
+ 8R0ZR14gctT3+cAJCvtIAmw7zRs22rkBkNFrRlqjbG10Z9UbRlH+UAB1jfBTg1y8SxG8Gfj/cxY
+ C1lbZaG/WWq9FS6wJnmtO/ucRdIi2S9g58zMZo8Mj5YsIG+xW/4lrPmmO+URoySovG0xi6UiRZQ
+ REA6qia0iGPgLo8IjheYuLhlCG7pbEqHTrlgH71nCxsHxni01r0wEadKV5skySEJunliT3ivQf1
+ q1VFM7d5/z8FZN4gAewodjDSnUGi+nTSkqAs84vTIuAdOrD5Hoeflc9kHzImghgqpVaxVF5x/Us
+ 4aWCTsh7F0Pi88KvNvHe0KduaPwqxkBvAHY4lZQhtq9qjBiqffCDb8DSzLVEWiNLV+buN3DZs1r
+ Qc3cstB+7wyli91/1BrLUUOhIRX3DMuCHmGW/KpqxKOtRt8tghnobrS3S5wU+9
+X-Google-Smtp-Source: AGHT+IHiRoQ7uyy1Dvt3Dv/W24GuBItnOC+I+w1OhoaRTp890FBzJx1qXGnXpAeZJHlytsiChKlUbQ==
+X-Received: by 2002:a05:6000:310b:b0:431:7a0:dbbb with SMTP id
+ ffacd0b85a97d-432c374ff56mr25377391f8f.33.1768258207853; 
+ Mon, 12 Jan 2026 14:50:07 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d7f41eb3bsm388849625e9.7.2026.01.12.14.49.59
+ ffacd0b85a97d-432bd5df8besm38748012f8f.26.2026.01.12.14.50.06
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 12 Jan 2026 14:50:00 -0800 (PST)
+ Mon, 12 Jan 2026 14:50:06 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 09/61] system/ioport: Declare x86-specific I/O port in
- little-endian order
-Date: Mon, 12 Jan 2026 23:48:04 +0100
-Message-ID: <20260112224857.42068-10-philmd@linaro.org>
+Subject: [PULL 10/61] system/ioport: Do not open-code address_space_ld/st_le()
+ methods
+Date: Mon, 12 Jan 2026 23:48:05 +0100
+Message-ID: <20260112224857.42068-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112224857.42068-1-philmd@linaro.org>
 References: <20260112224857.42068-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,165 +98,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-X86 in/out port (related to ISA bus) uses little endianness:
-- enforce little endianness in x86 cpu_in/out() accessors,
-- serialize QTest in/out port accesses as little-endian.
+When a variable size is known, prefer the address_space_ld/st()
+API. Keep address_space_read/write() for blobs.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20260109165058.59144-22-philmd@linaro.org>
+Message-ID: <20260109165058.59144-23-philmd@linaro.org>
 ---
- system/ioport.c               | 10 +++++-----
- tests/qtest/endianness-test.c | 10 ++++++----
- tests/qtest/libqtest.c        | 13 +++++++++----
- 3 files changed, 20 insertions(+), 13 deletions(-)
+ system/ioport.c | 32 ++++++++++++--------------------
+ 1 file changed, 12 insertions(+), 20 deletions(-)
 
 diff --git a/system/ioport.c b/system/ioport.c
-index 801e2490c36..4b94f2f8111 100644
+index 4b94f2f8111..9209bff2eab 100644
 --- a/system/ioport.c
 +++ b/system/ioport.c
-@@ -56,7 +56,7 @@ static void unassigned_io_write(void *opaque, hwaddr addr, uint64_t val,
- const MemoryRegionOps unassigned_io_ops = {
-     .read = unassigned_io_read,
-     .write = unassigned_io_write,
--    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
- };
- 
+@@ -62,58 +62,50 @@ const MemoryRegionOps unassigned_io_ops = {
  void cpu_outb(uint32_t addr, uint8_t val)
-@@ -71,7 +71,7 @@ void cpu_outw(uint32_t addr, uint16_t val)
-     uint8_t buf[2];
+ {
+     trace_cpu_out(addr, 'b', val);
+-    address_space_write(&address_space_io, addr, MEMTXATTRS_UNSPECIFIED,
+-                        &val, 1);
++    address_space_stb(&address_space_io, addr, val,
++                      MEMTXATTRS_UNSPECIFIED, NULL);
+ }
  
+ void cpu_outw(uint32_t addr, uint16_t val)
+ {
+-    uint8_t buf[2];
+-
      trace_cpu_out(addr, 'w', val);
--    stw_p(buf, val);
-+    stw_le_p(buf, val);
-     address_space_write(&address_space_io, addr, MEMTXATTRS_UNSPECIFIED,
-                         buf, 2);
+-    stw_le_p(buf, val);
+-    address_space_write(&address_space_io, addr, MEMTXATTRS_UNSPECIFIED,
+-                        buf, 2);
++    address_space_stw_le(&address_space_io, addr, val,
++                         MEMTXATTRS_UNSPECIFIED, NULL);
  }
-@@ -81,7 +81,7 @@ void cpu_outl(uint32_t addr, uint32_t val)
-     uint8_t buf[4];
  
+ void cpu_outl(uint32_t addr, uint32_t val)
+ {
+-    uint8_t buf[4];
+-
      trace_cpu_out(addr, 'l', val);
--    stl_p(buf, val);
-+    stl_le_p(buf, val);
-     address_space_write(&address_space_io, addr, MEMTXATTRS_UNSPECIFIED,
-                         buf, 4);
+-    stl_le_p(buf, val);
+-    address_space_write(&address_space_io, addr, MEMTXATTRS_UNSPECIFIED,
+-                        buf, 4);
++    address_space_stl_le(&address_space_io, addr, val,
++                         MEMTXATTRS_UNSPECIFIED, NULL);
  }
-@@ -102,7 +102,7 @@ uint16_t cpu_inw(uint32_t addr)
+ 
+ uint8_t cpu_inb(uint32_t addr)
+ {
+     uint8_t val;
+ 
+-    address_space_read(&address_space_io, addr, MEMTXATTRS_UNSPECIFIED,
+-                       &val, 1);
++    val = address_space_ldub(&address_space_io, addr,
++                             MEMTXATTRS_UNSPECIFIED, NULL);
+     trace_cpu_in(addr, 'b', val);
+     return val;
+ }
+ 
+ uint16_t cpu_inw(uint32_t addr)
+ {
+-    uint8_t buf[2];
      uint16_t val;
  
-     address_space_read(&address_space_io, addr, MEMTXATTRS_UNSPECIFIED, buf, 2);
--    val = lduw_p(buf);
-+    val = lduw_le_p(buf);
+-    address_space_read(&address_space_io, addr, MEMTXATTRS_UNSPECIFIED, buf, 2);
+-    val = lduw_le_p(buf);
++    val = address_space_lduw_le(&address_space_io, addr,
++                                MEMTXATTRS_UNSPECIFIED, NULL);
      trace_cpu_in(addr, 'w', val);
      return val;
  }
-@@ -113,7 +113,7 @@ uint32_t cpu_inl(uint32_t addr)
+ 
+ uint32_t cpu_inl(uint32_t addr)
+ {
+-    uint8_t buf[4];
      uint32_t val;
  
-     address_space_read(&address_space_io, addr, MEMTXATTRS_UNSPECIFIED, buf, 4);
--    val = ldl_p(buf);
-+    val = ldl_le_p(buf);
+-    address_space_read(&address_space_io, addr, MEMTXATTRS_UNSPECIFIED, buf, 4);
+-    val = ldl_le_p(buf);
++    val = address_space_ldl_le(&address_space_io, addr,
++                               MEMTXATTRS_UNSPECIFIED, NULL);
      trace_cpu_in(addr, 'l', val);
      return val;
  }
-diff --git a/tests/qtest/endianness-test.c b/tests/qtest/endianness-test.c
-index 222d116fae2..2b2f92099d0 100644
---- a/tests/qtest/endianness-test.c
-+++ b/tests/qtest/endianness-test.c
-@@ -65,8 +65,9 @@ static uint16_t isa_inw(QTestState *qts, const TestCase *test, uint16_t addr)
-         value = qtest_inw(qts, addr);
-     } else {
-         value = qtest_readw(qts, test->isa_base + addr);
-+        value = test->bswap ? bswap16(value) : value;
-     }
--    return test->bswap ? bswap16(value) : value;
-+    return value;
- }
- 
- static uint32_t isa_inl(QTestState *qts, const TestCase *test, uint16_t addr)
-@@ -76,8 +77,9 @@ static uint32_t isa_inl(QTestState *qts, const TestCase *test, uint16_t addr)
-         value = qtest_inl(qts, addr);
-     } else {
-         value = qtest_readl(qts, test->isa_base + addr);
-+        value = test->bswap ? bswap32(value) : value;
-     }
--    return test->bswap ? bswap32(value) : value;
-+    return value;
- }
- 
- static void isa_outb(QTestState *qts, const TestCase *test, uint16_t addr,
-@@ -93,10 +95,10 @@ static void isa_outb(QTestState *qts, const TestCase *test, uint16_t addr,
- static void isa_outw(QTestState *qts, const TestCase *test, uint16_t addr,
-                      uint16_t value)
- {
--    value = test->bswap ? bswap16(value) : value;
-     if (test->isa_base == -1) {
-         qtest_outw(qts, addr, value);
-     } else {
-+        value = test->bswap ? bswap16(value) : value;
-         qtest_writew(qts, test->isa_base + addr, value);
-     }
- }
-@@ -104,10 +106,10 @@ static void isa_outw(QTestState *qts, const TestCase *test, uint16_t addr,
- static void isa_outl(QTestState *qts, const TestCase *test, uint16_t addr,
-                      uint32_t value)
- {
--    value = test->bswap ? bswap32(value) : value;
-     if (test->isa_base == -1) {
-         qtest_outl(qts, addr, value);
-     } else {
-+        value = test->bswap ? bswap32(value) : value;
-         qtest_writel(qts, test->isa_base + addr, value);
-     }
- }
-diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-index 622464e3656..132aa511375 100644
---- a/tests/qtest/libqtest.c
-+++ b/tests/qtest/libqtest.c
-@@ -31,6 +31,7 @@
- #include "libqtest.h"
- #include "libqmp.h"
- #include "qemu/accel.h"
-+#include "qemu/bswap.h"
- #include "qemu/ctype.h"
- #include "qemu/cutils.h"
- #include "qemu/exit-with-parent.h"
-@@ -1190,12 +1191,12 @@ void qtest_outb(QTestState *s, uint16_t addr, uint8_t value)
- 
- void qtest_outw(QTestState *s, uint16_t addr, uint16_t value)
- {
--    qtest_out(s, "outw", addr, value);
-+    qtest_out(s, "outw", addr, qtest_big_endian(s) ? bswap16(value) : value);
- }
- 
- void qtest_outl(QTestState *s, uint16_t addr, uint32_t value)
- {
--    qtest_out(s, "outl", addr, value);
-+    qtest_out(s, "outl", addr, qtest_big_endian(s) ? bswap32(value) : value);
- }
- 
- static uint32_t qtest_in(QTestState *s, const char *cmd, uint16_t addr)
-@@ -1220,12 +1221,16 @@ uint8_t qtest_inb(QTestState *s, uint16_t addr)
- 
- uint16_t qtest_inw(QTestState *s, uint16_t addr)
- {
--    return qtest_in(s, "inw", addr);
-+    uint16_t v = qtest_in(s, "inw", addr);
-+
-+    return qtest_big_endian(s) ? bswap16(v) : v;
- }
- 
- uint32_t qtest_inl(QTestState *s, uint16_t addr)
- {
--    return qtest_in(s, "inl", addr);
-+    uint32_t v = qtest_in(s, "inl", addr);
-+
-+    return qtest_big_endian(s) ? bswap32(v) : v;
- }
- 
- static void qtest_write(QTestState *s, const char *cmd, uint64_t addr,
 -- 
 2.52.0
 
