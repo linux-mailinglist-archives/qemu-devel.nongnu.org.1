@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EB99D15A11
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 23:49:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 772F4D15A07
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 23:49:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfQiy-0008Su-4H; Mon, 12 Jan 2026 17:49:24 -0500
+	id 1vfQj4-000089-Ky; Mon, 12 Jan 2026 17:49:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQiw-0008Rx-G7
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:49:22 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQj3-00007b-A8
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:49:29 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQiv-0002Uy-1a
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:49:22 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-47aa03d3326so54712125e9.3
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 14:49:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQj1-0002Vs-Mb
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:49:29 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-47d63594f7eso41468915e9.0
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 14:49:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768258159; x=1768862959; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768258166; x=1768862966; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=yG3O/8zEPTmdQian+9ftZRLTDwFtWAAKWudEcRXMF2I=;
- b=A7zdmRLwASlF2Phq/eUpIXK0yToFY4bdI30IHmJM6LpWfgYnIrRswyjK+EPOFTlSzZ
- LETgLrpAqme78zzxxMVMLhX1paIFt71FHJadFuztBZ2mb2mgSwvWUV4FEmfIdWWGMdij
- 5/wS3aE59e1nURlperCgsQZFdS/LzorgK8s09UOcc6/riSzw3mm/lQrpJ6H2kA71w5hu
- o7lIUHeMHzSc2FlgVHRK2YqeP349SjdrAdbhRZYrdKSnh7X/iWpRCVpyU6tW+zve/gR1
- oiPE/+nM4Ui+LRZ3NKN+gj3DZvE6V0QDa+qgWIyCEzUo1qgbwD+HGuESfqK2RTCyyShg
- 9vfg==
+ :reply-to; bh=PoEtvG5/yuE7pWbdVg5nKxn7IMPZ6cy8Zjq1xhUHx6E=;
+ b=zhBI1Qw/ogxmxEZZSwEhNrFVOxE/0x3ZJGJ4frar+92XjG94NTG6Ap6N6s9Sh/HOu4
+ y1mhw31tb0AQm8MVgoeTfgF0TVqcd46b6Z5/6dE0L+mk+KtKKMDFqlcO0ATXGxdKr4Pu
+ QB449VVGdFdztPChkNPH/ihE2GgIuZTKaKJU4Y5dTTI/SZejwHa+qOQEQXsNCiGGfPQ5
+ +nDnkyWYsMwqILXvHbPf0bOLlJumGt6Bdip0Vlk0kI21NnP1RSbn0WlIALRfRxe4UuSW
+ atWREEY+ZebYOk3ZRc9AbIvA3HsAS8c1hbSsEVMlNnRij8xh0dOy0q3c4dicoLnlAPMx
+ zxbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768258159; x=1768862959;
+ d=1e100.net; s=20230601; t=1768258166; x=1768862966;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=yG3O/8zEPTmdQian+9ftZRLTDwFtWAAKWudEcRXMF2I=;
- b=PW1prfFLMXlq7uVyuU7657fhepPH8W4YNLMDa1k9d9Wwk60hZLHMmQ1QzKm5rRO7gh
- ob9SRfzkkrGMDpyFBa5Je/bzge12x7Tfsk31QYHaxwLQMJfulYQxqsIb7B0rtF8QWCFj
- DMbBs9aD/uE15wrLcO/OOmgD+IUFjnKZ8FaNbxmDTS/cW+eCequ82+M7rTzQ/ANpzdMe
- /NVgCGXtezvrHWpap9z0XhxYITbBHCm8tXnIX5TDereEm9PZFHHT4w5UrsEPRMgRxhT3
- Q7qjhaetjlR4T1r1Yh2G7v15m/Uz+ZcLuF5Z1BPM3rcUr5RYAUz30OLpjduqIy5ncNiR
- fsxA==
-X-Gm-Message-State: AOJu0Yxh42WrCFAqkjI8X7hrMPvOC/7fKKoSP49bxHpYaqaG6HckczpK
- Xtu/9tGvOfaKkunrC78s9RUb76Y6mngTeJnX5kCwY01tqjtMmru8TArSTE1C3SrTj4cu6zVWGYg
- 3AHDSpek=
-X-Gm-Gg: AY/fxX4iJg9BdgpEUEzgdCga8/kgwdKLFf5XNAmqtpndmvVIRIdnbX3ZI69aM616+3t
- 2wFZ6VHbJn4CCs7GPYMO/N8gP4qYd4tUdOfVF/joaT1YgyCqEdoFiSmaJt0d2VoF7d+LkjeGj8b
- cxAH1cG2P8iP/JNvY1OxP4H06EjnYsW8mZR7MhR56hLCwPd7g44t8F8oRqXY9kiI8mTDfAyaaDH
- OOLFuH6+F1r54f01hQCA0JDvcImGoq1T3jeRn4sUYKRMvp88hQVGlHxyLbIrKtIAKpn+qNOyP3b
- kCex4GAS0g1ViHWewDt5BDXa5bmPL1EdOOtGHx0c/2WLK0cwdHLQ01YRy/rQn/47iubK4rdy6+k
- r7HnKhPF2lJGsU9d93a8XAoyJ7R5z+tDEWA05EMbf3BZf3jjEnlTODq6EGjBqAMImmW0/VDf/Kw
- JjZcoFEQSFjS/1eoti/EK2lwEfKLi5JhirZJmT+wcwqoHDxzhefW6moXlth/8Ww3P+DBg78Mw=
-X-Google-Smtp-Source: AGHT+IEPVynFFGzqsQi3eDZGydIZxxsjKtHRhitPOijfX1wO8eKwA33eiBOuyW1qR9YZyIolCqP+kA==
-X-Received: by 2002:a05:600c:6385:b0:477:632a:fd67 with SMTP id
- 5b1f17b1804b1-47d84b1a166mr223572445e9.12.1768258159318; 
- Mon, 12 Jan 2026 14:49:19 -0800 (PST)
+ bh=PoEtvG5/yuE7pWbdVg5nKxn7IMPZ6cy8Zjq1xhUHx6E=;
+ b=KFRxV8dxZX6r3eT4JpPuMAcZpPRpLgLYtR/iBIjeZKfRJgkXzLXK+m3ULPDpBbqM0J
+ b+dzhwV6JT5FkF48URZIwA04XymN/QcbxsCqxkEHqqoGS9rGy6dKf8e5MVL2wufW04/b
+ N0+szUbKivT4fv+TYpsvTQ9vkTHNXz5eKWqfKdHsJI33Mf+xEjTptVPGaq7temSuShtY
+ PWM9VBV49+nKxMoTUN9fNDwjZry7adJiFNxcOAfRlnZoJWvTI6ftXLuR9VRx++fJ7FyF
+ Pvw/U1c9r/B5WsWPquw7oo2Uwx/6DQDKoa0DuQAFXPGB8TPcX+oVW+Mv8xp+QddUqCex
+ 7M6Q==
+X-Gm-Message-State: AOJu0Yz1e1zOVY3juAu2u7AIzxNPly4uI5JL/4djKjAjk/FBi7wIt5P8
+ ORzGlMAX9bYYihTCCoDJDf19PiXEce1NsNKj2M/ixMUgD/dgnX5BzGNraDhlDCuZYFfuH7lI7KF
+ oqeKSVZo=
+X-Gm-Gg: AY/fxX60RHpINzFzcMr0PqcLBx+8hF8kB8CYMvRPO5BHa7EmD6yLZS53uozlbAfpUry
+ SA/PdRDP5f6GXaHYqVjjdCAtAcmi8ELyZluapHE05BKq/UtYW1NKrSr/zZzZVl6qGXzmfUYdjYF
+ 4HOuHTdErCzp3GRJWFmRz6iQ4Ls2g5VZdAwnR1IyK+w+qfQtfoY2T/kTs63r2bapE9uk7iqmehM
+ FNW1PSpMJ1QKYQr94+nqQgx9n74tX1c7+cfa+QUvR2b5Rt73A9DG8YjOqb7qXLfcittz4dZz1r2
+ 0U5xVCIh4eMySqocz9mLJYKnB9OP1qQHobRXONF6tGQOqzXbtjKJsGsTSVnySpIrw/wh4cBhoGD
+ rZadaQ9fNMG+vwH3BEURZ6t57GFasA5gDi/gDseCH9MBPRggu1CJQBXXrv2SdQg++2PqeNjTeN3
+ ltQP8WeDAiVOZwWoo2aSkpnwos16kzw11zzyGsfVeN6zfsp/U4Ueqhrga6EQux
+X-Google-Smtp-Source: AGHT+IG90xwllp5XQQ2DX1m8UYfjK/tTdm9V5OpjHGVq47iR/okARkLPZEyDwTOS/VpjkJhlBsJ0XQ==
+X-Received: by 2002:a05:600c:468e:b0:477:a1a2:d829 with SMTP id
+ 5b1f17b1804b1-47d84b1862cmr247289455e9.13.1768258165790; 
+ Mon, 12 Jan 2026 14:49:25 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-432bd5df9afsm43222151f8f.24.2026.01.12.14.49.18
+ 5b1f17b1804b1-47d7f68f686sm372222685e9.3.2026.01.12.14.49.25
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 12 Jan 2026 14:49:18 -0800 (PST)
+ Mon, 12 Jan 2026 14:49:25 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/61] bswap: Consistently use builtin bswap() functions
-Date: Mon, 12 Jan 2026 23:47:58 +0100
-Message-ID: <20260112224857.42068-4-philmd@linaro.org>
+Subject: [PULL 04/61] tests/qtest: Remove unnecessary 'qemu/bswap.h' include
+Date: Mon, 12 Jan 2026 23:47:59 +0100
+Message-ID: <20260112224857.42068-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112224857.42068-1-philmd@linaro.org>
 References: <20260112224857.42068-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,73 +97,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since these headers use some __builtin_bswap*(), use it
-consistently in all the cases, allowing to remove the
-"qemu/bswap.h" inclusion (which only defines bswap* to
-the builtin equivalent).
+None of these files use API declared in "qemu/bswap.h",
+remove the unnecessary inclusion.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20260109164742.58041-5-philmd@linaro.org>
+Message-ID: <20260109164742.58041-2-philmd@linaro.org>
 ---
- include/qemu/host-utils.h | 6 +++---
- include/qemu/int128.h     | 5 +++--
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ tests/qtest/pnv-xive2-common.h     | 1 -
+ tests/qtest/aspeed_smc-test.c      | 1 -
+ tests/qtest/ast2700-smc-test.c     | 1 -
+ tests/qtest/libqos/fw_cfg.c        | 1 -
+ tests/qtest/libqos/i2c-omap.c      | 1 -
+ tests/qtest/pnv-spi-seeprom-test.c | 1 -
+ 6 files changed, 6 deletions(-)
 
-diff --git a/include/qemu/host-utils.h b/include/qemu/host-utils.h
-index dd558589cb5..0777a2bb60e 100644
---- a/include/qemu/host-utils.h
-+++ b/include/qemu/host-utils.h
-@@ -380,7 +380,7 @@ static inline uint16_t revbit16(uint16_t x)
-     return __builtin_bitreverse16(x);
- #else
-     /* Assign the correct byte position.  */
--    x = bswap16(x);
-+    x = __builtin_bswap16(x);
-     /* Assign the correct nibble position.  */
-     x = ((x & 0xf0f0) >> 4)
-       | ((x & 0x0f0f) << 4);
-@@ -403,7 +403,7 @@ static inline uint32_t revbit32(uint32_t x)
-     return __builtin_bitreverse32(x);
- #else
-     /* Assign the correct byte position.  */
--    x = bswap32(x);
-+    x = __builtin_bswap32(x);
-     /* Assign the correct nibble position.  */
-     x = ((x & 0xf0f0f0f0u) >> 4)
-       | ((x & 0x0f0f0f0fu) << 4);
-@@ -426,7 +426,7 @@ static inline uint64_t revbit64(uint64_t x)
-     return __builtin_bitreverse64(x);
- #else
-     /* Assign the correct byte position.  */
--    x = bswap64(x);
-+    x = __builtin_bswap64(x);
-     /* Assign the correct nibble position.  */
-     x = ((x & 0xf0f0f0f0f0f0f0f0ull) >> 4)
-       | ((x & 0x0f0f0f0f0f0f0f0full) << 4);
-diff --git a/include/qemu/int128.h b/include/qemu/int128.h
-index 174bd7dafb8..2b8dd4dec9f 100644
---- a/include/qemu/int128.h
-+++ b/include/qemu/int128.h
-@@ -189,7 +189,8 @@ static inline Int128 bswap128(Int128 a)
- #if __has_builtin(__builtin_bswap128)
-     return __builtin_bswap128(a);
- #else
--    return int128_make128(bswap64(int128_gethi(a)), bswap64(int128_getlo(a)));
-+    return int128_make128(__builtin_bswap64(int128_gethi(a)),
-+                          __builtin_bswap64(int128_getlo(a)));
- #endif
- }
+diff --git a/tests/qtest/pnv-xive2-common.h b/tests/qtest/pnv-xive2-common.h
+index 2077c05ebc7..3b842274243 100644
+--- a/tests/qtest/pnv-xive2-common.h
++++ b/tests/qtest/pnv-xive2-common.h
+@@ -15,7 +15,6 @@
+ #define PPC_BITMASK(bs, be)     ((PPC_BIT(bs) - PPC_BIT(be)) | PPC_BIT(bs))
+ #define PPC_BITMASK32(bs, be)   ((PPC_BIT32(bs) - PPC_BIT32(be)) | \
+                                  PPC_BIT32(bs))
+-#include "qemu/bswap.h"
+ #include "hw/intc/pnv_xive2_regs.h"
+ #include "hw/ppc/xive_regs.h"
+ #include "hw/ppc/xive2_regs.h"
+diff --git a/tests/qtest/aspeed_smc-test.c b/tests/qtest/aspeed_smc-test.c
+index 50a87e62500..39af1df0ed7 100644
+--- a/tests/qtest/aspeed_smc-test.c
++++ b/tests/qtest/aspeed_smc-test.c
+@@ -24,7 +24,6 @@
+  */
  
-@@ -451,7 +452,7 @@ static inline void int128_subfrom(Int128 *a, Int128 b)
+ #include "qemu/osdep.h"
+-#include "qemu/bswap.h"
+ #include "libqtest-single.h"
+ #include "qemu/bitops.h"
+ #include "aspeed-smc-utils.h"
+diff --git a/tests/qtest/ast2700-smc-test.c b/tests/qtest/ast2700-smc-test.c
+index 62d538d8a3a..33fc47230ee 100644
+--- a/tests/qtest/ast2700-smc-test.c
++++ b/tests/qtest/ast2700-smc-test.c
+@@ -7,7 +7,6 @@
+  */
  
- static inline Int128 bswap128(Int128 a)
- {
--    return int128_make128(bswap64(a.hi), bswap64(a.lo));
-+    return int128_make128(__builtin_bswap64(a.hi), __builtin_bswap64(a.lo));
- }
+ #include "qemu/osdep.h"
+-#include "qemu/bswap.h"
+ #include "libqtest-single.h"
+ #include "qemu/bitops.h"
+ #include "aspeed-smc-utils.h"
+diff --git a/tests/qtest/libqos/fw_cfg.c b/tests/qtest/libqos/fw_cfg.c
+index 0ab3959171b..8611f648c14 100644
+--- a/tests/qtest/libqos/fw_cfg.c
++++ b/tests/qtest/libqos/fw_cfg.c
+@@ -17,7 +17,6 @@
+ #include "malloc-pc.h"
+ #include "libqos-malloc.h"
+ #include "../libqtest.h"
+-#include "qemu/bswap.h"
+ #include "hw/nvram/fw_cfg.h"
  
- static inline int clz128(Int128 a)
+ void qfw_cfg_select(QFWCFG *fw_cfg, uint16_t key)
+diff --git a/tests/qtest/libqos/i2c-omap.c b/tests/qtest/libqos/i2c-omap.c
+index 6f98f54820b..71f70c64f85 100644
+--- a/tests/qtest/libqos/i2c-omap.c
++++ b/tests/qtest/libqos/i2c-omap.c
+@@ -10,7 +10,6 @@
+ #include "i2c.h"
+ 
+ 
+-#include "qemu/bswap.h"
+ #include "../libqtest.h"
+ 
+ enum OMAPI2CRegisters {
+diff --git a/tests/qtest/pnv-spi-seeprom-test.c b/tests/qtest/pnv-spi-seeprom-test.c
+index 8033261758b..44e0b92730b 100644
+--- a/tests/qtest/pnv-spi-seeprom-test.c
++++ b/tests/qtest/pnv-spi-seeprom-test.c
+@@ -7,7 +7,6 @@
+  */
+ #include "qemu/osdep.h"
+ #include "libqtest.h"
+-#include "qemu/bswap.h"
+ #include "hw/ssi/pnv_spi_regs.h"
+ #include "pnv-xscom.h"
+ 
 -- 
 2.52.0
 
