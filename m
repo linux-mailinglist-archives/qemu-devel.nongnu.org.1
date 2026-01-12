@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B994D136E5
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 16:05:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7739D1356F
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 15:56:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfJKE-0008Tt-Ee; Mon, 12 Jan 2026 09:55:22 -0500
+	id 1vfJKC-0008LH-RW; Mon, 12 Jan 2026 09:55:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfJJq-0007qD-6U
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 09:55:00 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfJJr-0007qp-79
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 09:55:01 -0500
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfJJl-0001ct-Dv
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 09:54:57 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-b7cf4a975d2so1070155366b.2
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfJJl-0001dP-Sm
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 09:54:58 -0500
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-65089cebdb4so8640663a12.0
  for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 06:54:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1768229691; x=1768834491; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1768229692; x=1768834492; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8gA+Ri6T2SgxvAr0I5jL2NjeYKgeXs1ivfULeQGhHhE=;
- b=TDt+2T9NCw7x0I44XfJz+JKR/kSiOAhnphEj3R7DTbAN1J2FaHVsddPtMC0lElY6dy
- 6Oi0994laFKz+ZT3Jwy1H6S/5J2V9Bk3qA3KAVi2dxntqojdMqUnuebVIZXDB0KM45gk
- qZ86wV6H6RcUguxJmLsSOlea8ZmIkraIHwgTojY1wQe21i3/OhvHpVt5BivCAHjHrT0q
- p/C+bwDYB3VCaGzsvowjr6nEQoy6OSgdXY6c/eGmopzQGcYWy4BvW55JGfeeecuc/9ko
- vypl9z95jqU3KF/idIdjKghZmIYjJ3LvfJGrjwwltehjX52m8vQZKBQZzwHSkzbCvS6o
- FeyQ==
+ bh=vae9tFKipWcRHp6Pwi3fV7Q94asRnHBvfdec3wvV7X0=;
+ b=VSLnl5zWu8g0+7bqphvX/i8TFE3e8n0Xh91Hrz1SRYL5m0Z1LIyN7MdLusBTB0sllW
+ jnNgKVzGamopC/BXzPvkiKO5YoGzUV3yZDUyeLPjhjl9dUF8vHN8absKh8cmlT2uRV2I
+ tfGZjgy0pvMplacU/jNxEzKpPJ9hvT+dVEv8/yMNofHobUEhOCgJ7oJ5l3BRwBtpw1my
+ yDZmOpmIZP9jad89EOietJE2HMRLZlMG10ISTn/jQldHJIcX2ycD97G6bfVCFQo29uh9
+ TcMxeoC0TXNLcFyUk+UnTDUqRZRy8Bfwx0KEx8TIMPN/sDBQ3Mq4pUP/0+4ueRb+oWR8
+ rXHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768229691; x=1768834491;
+ d=1e100.net; s=20230601; t=1768229692; x=1768834492;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=8gA+Ri6T2SgxvAr0I5jL2NjeYKgeXs1ivfULeQGhHhE=;
- b=fyIHIW3Jwosp8Bt7/PYKgrI/p2AoVd8EF98dLX0MZzSWVX7cl9dKYAnJ/R1WS9Bbmo
- Ls6k1eY9wOyhJO86ymd6qVb+owtOBHN1OzHoHcdIVnGIoyyuaKnR6NPngpxSHZqD3MLA
- 39bKwUrAEV7G20Le7RJCbD+bV9hYRv1j9Ymkl1ReJFG6tVmlRbj3nWzjq1U43RwQXMil
- 5NNIWGtpWhEA3dpuRjqLzlLFME6KEyxNfcLseGi03VM6UBssDYcJdVNVg6TytcKgECO3
- s/8rNtQlRxnZzdE3stVM1iIENzsipjeQvTA+f+SK2j4gf3QNNSFYtlb1gYj6dqIggWrl
- opdg==
-X-Gm-Message-State: AOJu0YyTvqiJGPjxWN1d4vr80L1OB3VGA4gXfUucg3ekuvDuqG7bGJNG
- JAnf+0Q5hUpX6y514j5oPf+Xwv2vbYdQswCf1+wNa94KGoQysocG3yk21bGlobtd
-X-Gm-Gg: AY/fxX6PuBrLlaVw8G6loOgmAeiDe1GmW0l13IRS/HYed/5DQGUYPk5mA1I5+3pSHxT
- Kc8lpM6PqsM21X1zonRCmeZ42XPNg6d4bOYcwWkuNWpOCYcFKoNHOEkfhA/0an0SeufukjdfGI3
- zSPEOR2x7lnFRf/21va+xXFQGs03zmaNzEYHPj1hZ/gpcdoG4wRbrZszraF9y+MGgzt29HHsqNW
- AgL91GFTxc0Egt8YpTbSc30Q0dGa3kDZ2xjRk0Us4GagD2wUDCeMccHvoNut54RIrvaU2OAbGQO
- uUsg8Y+bf7DyQ6AOvZeeh7/vtYXOsOJbMiiTytyNTjD2qAtsbXgy/HRtL/1rMAYyqGmbiRo9XmE
- lhWlJ5Lrc4VKn5u7O6NNg1qNgDiRa/UM7i7SwztjWxTt98dYqZ7NJXzfM7oYsCGhIknYAfKbBn7
- Q5+tKdQVpl3mDQw0Gh50Cs1bPwPwKZwpea0hBaaSDfrHX95/XGDBQUd27lnjTdOetBrPnAgmsa
-X-Google-Smtp-Source: AGHT+IFWywqkm7qft/zv4Zb5OGV+Kmwvx4nKdLfZGkdQFZZdeennuy3wXrtENGgF0mcISnafMb4Mwg==
-X-Received: by 2002:a17:907:6090:b0:b87:2d79:61c with SMTP id
- a640c23a62f3a-b872d7908a9mr129565666b.8.1768229691093; 
- Mon, 12 Jan 2026 06:54:51 -0800 (PST)
+ bh=vae9tFKipWcRHp6Pwi3fV7Q94asRnHBvfdec3wvV7X0=;
+ b=q+oKfdILbydfBSXWasGgL1OeVgNV57ii5YQC8AGsH4Ambdfukcu4RwrhPiW/keKP/r
+ hW9we90lkHN/4wDUD1QzitAUQ3IEnofEeIS96a6J+Kk14JolSKUGmnLidxHpbWS+2ytx
+ x4RRx2YENKV/lZGEcRAv3gKCHp9FKXbRvxTLFbdUaR/Q1iNg1OBqVYmizMGcSmL9y/Vw
+ WmRTmZaUMwswwWyNqCShtC7hKYo7zS4jEIQpdLooxvF+N/Q8pe1q5WGNPodQGHp7CX/E
+ 7t8XuATXtoIDt96CdbYfBBgq2IVrGH3wkrvlHW39S2fKngtMW4ePgVMEOkEevZqqrk6o
+ cBug==
+X-Gm-Message-State: AOJu0Ywh0v9dzN2umemA+FfnxCXxhcBO/k2r7UAk+qoi9iLCAMXJDld9
+ uETcIAldvtThvBxoW7UwDu9LhkmPV4Xq4U7I+LK+jefHLon5wIyxG+OA2RuWEBbi
+X-Gm-Gg: AY/fxX5vUFyNZH6UzRPjywt7X49dNKqactR3Q5jqr9eAWeKieFWVC9ikeOSPM2R6bg3
+ HAC6cLGGOcOSgW5oNXSgrrxU7/boTa9Qv0CsGpAggmOOfBD1BfDraFgV0gL98ZJcvCNy8i6dBEm
+ SR1/xu6Ea1Hoke8efGcCAWgyH29hcfpksNude8nnMsy7GyF6K3cvRsmAiCRmzYvwIYxxz4BXRpK
+ G+CvbU45ERn9osHcq4rv6wVm/A4uf662QQZYve0lg/lvoqVxu7dNA+kJnGqnpZkBXGxxq8dBehP
+ mXnOiLQ4xIohigdqfIHVYVl42B9NMw1gJV5NfNQxV2kIwc8VHgvEjAfO6Yn390yGSHQRlH1z7F8
+ BIZgZkOEH9pmdui8HKZ2kgYQCBWHWNy15lMhhUO46oJgp7f3uu7RJ8PnGKEVSrl0Dq0JpCrjXpE
+ hVnrr8ThmpNkYbLyFVt31UyWsfv2xfWeX0Yb66iiLFd+DU7VMi7+CA6D1Qyp6yDGf+OpkIWqcA
+X-Google-Smtp-Source: AGHT+IGyuG3YbVzCEJjBV8WcMWIzeNjwbNjEW1diFhtb9EUGoLtMrPtxrUUIbIsBg8ur63ED4UY2Lw==
+X-Received: by 2002:a17:907:d1d:b0:b84:2075:b902 with SMTP id
+ a640c23a62f3a-b844534526emr1714653566b.36.1768229692047; 
+ Mon, 12 Jan 2026 06:54:52 -0800 (PST)
 Received: from archlinux (dynamic-077-188-226-222.77.188.pool.telefonica.de.
  [77.188.226.222]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b8731f0718asm37387966b.67.2026.01.12.06.54.50
+ a640c23a62f3a-b8731f0718asm37387966b.67.2026.01.12.06.54.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 Jan 2026 06:54:50 -0800 (PST)
+ Mon, 12 Jan 2026 06:54:51 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -69,16 +69,17 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bin Meng <bmeng.cn@gmail.com>, Thomas Huth <thuth@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
  qemu-ppc@nongnu.org
-Subject: [PATCH 13/14] hw/sd/sdhci: Remove vendor property
-Date: Mon, 12 Jan 2026 15:54:17 +0100
-Message-ID: <20260112145418.220506-14-shentey@gmail.com>
+Subject: [PATCH 14/14] hw/sd/trace-events: Remove redundant "SWITCH " command
+ name
+Date: Mon, 12 Jan 2026 15:54:18 +0100
+Message-ID: <20260112145418.220506-15-shentey@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112145418.220506-1-shentey@gmail.com>
 References: <20260112145418.220506-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,82 +102,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that there are dedicated eSDHC device models it is possible to replace
-the "vendor" property (which is really a device-specific property) with a
-dynamic cast, "fishing" out only the device models which shall have the
-quirk applied.
+"switch" is already part of the function name. No need to repeat it.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/sd/sdhci-internal.h | 1 -
- include/hw/sd/sdhci.h  | 4 ----
- hw/sd/sdhci.c          | 5 ++---
- 3 files changed, 2 insertions(+), 8 deletions(-)
+ hw/sd/trace-events | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/sd/sdhci-internal.h b/hw/sd/sdhci-internal.h
-index 50fb746a17..4aeed120bf 100644
---- a/hw/sd/sdhci-internal.h
-+++ b/hw/sd/sdhci-internal.h
-@@ -309,7 +309,6 @@ extern const VMStateDescription sdhci_vmstate;
- #define DEFINE_SDHCI_COMMON_PROPERTIES(_state) \
-     DEFINE_PROP_UINT8("sd-spec-version", _state, sd_spec_version, 2), \
-     DEFINE_PROP_UINT8("uhs", _state, uhs_mode, UHS_NOT_SUPPORTED), \
--    DEFINE_PROP_UINT8("vendor", _state, vendor, SDHCI_VENDOR_NONE), \
-     \
-     /* Capabilities registers provide information on supported
-      * features of this specific host controller implementation */ \
-diff --git a/include/hw/sd/sdhci.h b/include/hw/sd/sdhci.h
-index 51551348cf..a9da6203fc 100644
---- a/include/hw/sd/sdhci.h
-+++ b/include/hw/sd/sdhci.h
-@@ -98,7 +98,6 @@ struct SDHCIState {
-     uint32_t quirks;
-     uint8_t sd_spec_version;
-     uint8_t uhs_mode;
--    uint8_t vendor;        /* For vendor specific functionality */
-     /*
-      * Write Protect pin default active low for detecting SD card
-      * to be protected. Set wp_inverted to invert the signal.
-@@ -107,9 +106,6 @@ struct SDHCIState {
- };
- typedef struct SDHCIState SDHCIState;
+diff --git a/hw/sd/trace-events b/hw/sd/trace-events
+index d30daa2143..4ec52d2a81 100644
+--- a/hw/sd/trace-events
++++ b/hw/sd/trace-events
+@@ -58,7 +58,7 @@ sdcard_write_data(const char *proto, const char *cmd_desc, uint8_t cmd, uint32_t
+ sdcard_read_data(const char *proto, const char *cmd_desc, uint8_t cmd, uint32_t offset, uint64_t size, uint32_t blklen) "%s %20s/ CMD%02d ofs %"PRIu32" size %"PRIu64" blklen %" PRIu32
+ sdcard_set_voltage(uint16_t millivolts) "%u mV"
+ sdcard_ext_csd_update(unsigned index, uint8_t oval, uint8_t nval) "index %u: 0x%02x -> 0x%02x"
+-sdcard_switch(unsigned access, unsigned index, unsigned value, unsigned set) "SWITCH acc:%u idx:%u val:%u set:%u"
++sdcard_switch(unsigned access, unsigned index, unsigned value, unsigned set) "acc:%u idx:%u val:%u set:%u"
+ sdcard_rpmb_read_block(uint16_t resp, uint16_t read_addr, uint16_t result) "resp 0x%x read_addr 0x%x result 0x%x"
+ sdcard_rpmb_write_block(uint16_t req, uint16_t result) "req 0x%x result 0x%x"
  
--#define SDHCI_VENDOR_NONE       0
--#define SDHCI_VENDOR_FSL        2
--
- /*
-  * Controller does not provide transfer-complete interrupt when not
-  * busy.
-diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index 3b0a26ef53..d7640b3789 100644
---- a/hw/sd/sdhci.c
-+++ b/hw/sd/sdhci.c
-@@ -307,7 +307,8 @@ static void sdhci_reset(SDHCIState *s)
-     s->data_count = 0;
-     s->stopped_state = sdhc_not_stopped;
-     s->pending_insert_state = false;
--    if (s->vendor == SDHCI_VENDOR_FSL) {
-+    if (object_dynamic_cast(OBJECT(s), TYPE_FSL_ESDHC_BE) ||
-+            object_dynamic_cast(OBJECT(s), TYPE_FSL_ESDHC_LE)) {
-         s->norintstsen = 0x013f;
-         s->errintstsen = 0x117f;
-     }
-@@ -1863,7 +1864,6 @@ static void fsl_esdhc_be_init(Object *obj)
-     s->io_ops = &esdhc_mmio_be_ops;
-     s->quirks = SDHCI_QUIRK_NO_BUSY_IRQ;
-     qdev_prop_set_uint8(dev, "sd-spec-version", 2);
--    qdev_prop_set_uint8(dev, "vendor", SDHCI_VENDOR_FSL);
- }
- 
- static const MemoryRegionOps esdhc_mmio_le_ops = {
-@@ -1889,7 +1889,6 @@ static void fsl_esdhc_le_init(Object *obj)
-     s->io_ops = &esdhc_mmio_le_ops;
-     s->quirks = SDHCI_QUIRK_NO_BUSY_IRQ;
-     qdev_prop_set_uint8(dev, "sd-spec-version", 2);
--    qdev_prop_set_uint8(dev, "vendor", SDHCI_VENDOR_FSL);
- }
- 
- static uint64_t usdhc_read(void *opaque, hwaddr offset, unsigned size)
 -- 
 2.52.0
 
