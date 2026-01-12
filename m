@@ -2,96 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48E97D1410B
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 17:34:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D111D1421B
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 17:45:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfKnW-0007Eq-Oz; Mon, 12 Jan 2026 11:29:42 -0500
+	id 1vfKrn-0001yn-6m; Mon, 12 Jan 2026 11:34:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vfKnO-0007Dp-O7
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 11:29:35 -0500
-Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vfKnM-0000gO-JX
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 11:29:34 -0500
-Received: by mail-pj1-x1036.google.com with SMTP id
- 98e67ed59e1d1-34f63ad6f51so2512058a91.0
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 08:29:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768235370; x=1768840170; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=TVzFKj5L+YvB/BrFdOmu8AqXFlecRiGXkwutuExEh1k=;
- b=T0kkP+yFGHXSOJA71eCS4L+KYFZBe/Uaz6+l2AiTchSv/j0A/+io5qvH6YaQMmh6gt
- XYLSulA60/Yhq3RwOw+VAwgQFsjPjbmp8inQsWCq6J3KPF/OwdMrkGAEdedFzfnRBfez
- yy6vQRpNFgqN5YiOnTA8m8p+FIS1mFNyZQQvZn6vGLniRclGMjX+QYTJkcDjYDXT/4fx
- +neejuDWOK5HzAjJVu2OpEloIdhBKmyghdlKO9iICNh8kt7jlJbv/YRVBOK31V5Sq1fQ
- ZMz7Fhg4GY4sb5tarmrw+FAljTHDHysRJVlP78uB/dgafm9TDfkn+rSrSlhY/7QNxu8n
- 6VkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768235370; x=1768840170;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=TVzFKj5L+YvB/BrFdOmu8AqXFlecRiGXkwutuExEh1k=;
- b=sukuBlYtgla0oALOBHpxJvSsTrrb5X4u6W2mkEoo6HQW08V14s14GJMj3xbGLyJJTN
- xoELLX3ZOfguhfPJNAvGAhEbmTof7nc2TUsDkU2FxF8lijjWwCGLavSoJti3eqVbETOL
- cAFhHvq3VJGGNlxWjOwVYGlie9RyfSCyNUJzOPfWhvyaefCVYMUYkciNtMOZD5A52yaO
- QdPMvBEbSMTA67oSXxLOTEnGodEgzvO07Z9cGhKdLmfXyPF/KqIQe/LJ8Nnag2XwW+eN
- vNYUgJJKxpiEQmzZrAxm9+Dca3xepbw074waH+0gpvI/0rD+mwUuIW5U2NeUUUyxt7DW
- j1lA==
-X-Gm-Message-State: AOJu0YxPTAfgJhcZaTi4E0wwqNte9zO/JJmTv8zdHW42Q3a/7edFQOSu
- fpmtna/6xtJk9cjNwk6w7o99FnsFwG11Ao28TWcjthUmabLwjJ6JnMsiDDLObFItWzHyd7kw/qN
- 0tNbA
-X-Gm-Gg: AY/fxX68psFol38ucxdNzg9R0mU4qtjd+/csNPQRgJvl90kFRXTGMDAf8t8zXEXOIcy
- DkVaKs3LiQT3UdLIR19vjTqr2JaUgwVHtlA9ldA5/1gzf8gdwVAqiKw9ylBcwprOqE9Ud7xsCH2
- yTYz2eSYGxT3gobkNx3mHhTUF3Aovjvlm9llL8b8B0MrSMl4ssc3W0OswCaxWWZLuJ++jNFJY/e
- o4Zh+AEC4JyOYrqKZCRBNvp1PgzM05xm9z8HLlIymgLRQWWs5zpf9OdL6rBnKcNJRvNz+k51Dba
- e4lvvHDquntRYVb/2+s+fCthnn8MQuIkvlHDQIpP+7bR3IYUQisKxWADyZ79IG08XC2bZegaPW0
- beUiee3xehJC+yiqYJzcqGXSwmZxmRkJbDKGwVz/MkouJNTwMGXAbzxqtmwAGSnUl9wEK257LNV
- xdzaVyyMUdSW6ibvufXRqJOPEbb7lC/BCDu041oJn9t0noDoI1qQ4JdLI6
-X-Google-Smtp-Source: AGHT+IG/9OqAzC2Ah/WDr+X5+vKKVMXHq6vRdlE2q/mXhMSYxyyxhupuERKRMDju3GUWa45DqkeAgg==
-X-Received: by 2002:a17:90b:57f0:b0:341:134:a962 with SMTP id
- 98e67ed59e1d1-34f68c277b0mr14677098a91.28.1768235369943; 
- Mon, 12 Jan 2026 08:29:29 -0800 (PST)
-Received: from [192.168.1.87] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-34f6b29e117sm7237768a91.2.2026.01.12.08.29.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 12 Jan 2026 08:29:28 -0800 (PST)
-Message-ID: <c8e80923-d837-4874-a072-d5ae579576a4@linaro.org>
-Date: Mon, 12 Jan 2026 08:29:27 -0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] target/arm: make granule_protection_check usable
- from SMMU
-Content-Language: en-US
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfKrj-0001rM-Rq
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 11:34:03 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfKrf-0001Ui-Jd
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 11:34:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1768235637;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=TMqg/haHScU/XHrCQ7VdbJzFoiFlO5dSRVMx6U578VI=;
+ b=BGfARw+y8qH4/AZZ+NSXsBSOTy2TpAy4etgU7R3Rfta5EYj0TK0nMAaR9JfzYEEZDLjbrc
+ i45QsThO3UhSWnRnLt9mHzes1u5gYl6ujwFCTT4RJxayZkwj6rfACarYIU1T83pzK0Vtw0
+ zNvOdLIUJ4gKye5HjjEl55qocnJfFUg=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-14-qvDBxrh3M1uWtbPll29iVw-1; Mon,
+ 12 Jan 2026 11:33:55 -0500
+X-MC-Unique: qvDBxrh3M1uWtbPll29iVw-1
+X-Mimecast-MFC-AGG-ID: qvDBxrh3M1uWtbPll29iVw_1768235635
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0290E19560AF
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 16:33:55 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.44.32.79])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id DFB6830001A2; Mon, 12 Jan 2026 16:33:52 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Tao Tang <tangtao1634@phytium.com.cn>, qemu-arm@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Auger <eric.auger@redhat.com>
-References: <20251216000122.763264-1-pierrick.bouvier@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20251216000122.763264-1-pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1036.google.com
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH] tests/rcutorture: Fix build error
+Date: Mon, 12 Jan 2026 17:33:50 +0100
+Message-ID: <20260112163350.1251114-1-clg@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,83 +79,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/15/25 4:01 PM, Pierrick Bouvier wrote:
-> This series prepare granule_protection_check to be usable from SMMU, for
-> implementing RME feature.
-> It's based on Tao's commit [1] extracting ARMSecuritySpace from cpu.h header for
-> convenience.
-> 
-> [1] https://lore.kernel.org/qemu-devel/20251012150701.4127034-5-tangtao1634@phytium.com.cn/
-> 
-> To demonstrate the purpose, this is the (wip) change to use that from SMMU:
-> 
-> diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-> index 80f48df3dda..1acff3bbd66 100644
-> --- a/hw/arm/smmuv3.c
-> +++ b/hw/arm/smmuv3.c
-> @@ -1055,12 +1056,36 @@ static SMMUTranslationStatus smmuv3_do_translate(SMMUv3State *s, hwaddr addr,
->       }
-> 
->       cached_entry = smmu_translate(bs, cfg, addr, flag, &ptw_info);
->       if (desc_s2_translation) {
->           cfg->asid = asid;
->           cfg->stage = stage;
->       }
-> 
-> +    if (cached_entry) {
-> +        /* The fields in SMMU_ROOT_GPT_BASE_CFG are the same as for GPCCR_EL3,
-> +         * except there is no copy of GPCCR_EL3.GPC. See SMMU_ROOT_CR0.GPCEN. */
-> +        const bool gpc_enabled = FIELD_EX32(s->root.cr0, ROOT_CR0, GPCEN);
-> +        if (gpc_enabled) {
-> +            hwaddr paddress = CACHED_ENTRY_TO_ADDR(cached_entry, addr);
-> +            ARMSecuritySpace pspace = sec_sid_to_security_space(cfg->sec_sid);
-> +            ARMSecuritySpace ss = ARMSS_Root;
-> +            ARMMMUFaultInfo fi;
-> +
-> +            ARMGranuleProtectionConfig config = {
-> +                .gpccr = s->root.gpt_base_cfg,
-> +                .gptbr = s->root.gpt_base >> 12,
-> +                .parange = 6, /* 52 bits */
-> +                .support_sel2 = false,
-> +                .gpt_as = &s->smmu_state.as_secure_memory
-> +            };
-> +            if (!arm_granule_protection_check(config, paddress,
-> +                                              pspace, ss, &fi)) {
-> +                printf("ERROR: fi.type=%d fi.gpcf=%d\n", fi.type, fi.gpcf);
-> +                g_assert_not_reached();
-> +            }
-> +        }
-> +    }
-> +
->       if (!cached_entry) {
->           /* All faults from PTW has S2 field. */
->           event->u.f_walk_eabt.s2 = (ptw_info.stage == SMMU_STAGE_2);
-> 
-> v2
-> --
-> 
-> - remove extra boilerplate/include/line from arm-security.h
-> - use local var gpccr instead of config.gpccr
-> - extract GPC enable check out of arm_granule_protection_check
-> - rename as_secure in gpt_as
-> - use arm_addresspace to retrieve gpt address space
-> 
-> Pierrick Bouvier (1):
->    target/arm/ptw: make granule_protection_check usable without a cpu
-> 
-> Tao Tang (1):
->    target/arm: Move ARMSecuritySpace to a common header
-> 
->   include/hw/arm/arm-security.h | 37 ++++++++++++++++++++++
->   target/arm/cpu.h              | 59 +++++++++++++++++++++--------------
->   target/arm/ptw.c              | 59 ++++++++++++++++++++++-------------
->   3 files changed, 110 insertions(+), 45 deletions(-)
->   create mode 100644 include/hw/arm/arm-security.h
-> 
+Newer gcc compiler (version 16.0.0 20260103 (Red Hat 16.0.0-0) (GCC))
+detects an unused variable error:
 
-Another gentle ping.
-This series has been reviewed and should be ready to be pulled.
+  ../tests/unit/rcutorture.c: In function ‘rcu_read_stress_test’:
+  ../tests/unit/rcutorture.c:251:18: error: variable ‘garbage’ set but not used [-Werror=unused-but-set-variable=]
+    251 |     volatile int garbage = 0;
+        |                  ^~~~~~~
 
-Regards,
-Pierrick
+Since the 'garbage' variable is used to generate memory reads from the
+CPU while holding the RCU lock, it can not be removed. Tag it as
+((unused)) instead to silence the compiler warnings/errors.
+
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ tests/unit/rcutorture.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/unit/rcutorture.c b/tests/unit/rcutorture.c
+index 7662081683f5d781da74402113b73884780b1243..2f19d479a3f210cbca19205a0656eda1f4c2e5a7 100644
+--- a/tests/unit/rcutorture.c
++++ b/tests/unit/rcutorture.c
+@@ -248,7 +248,7 @@ static void *rcu_read_stress_test(void *arg)
+     int pc;
+     long long n_reads_local = 0;
+     long long rcu_stress_local[RCU_STRESS_PIPE_LEN + 1] = { 0 };
+-    volatile int garbage = 0;
++    volatile int garbage __attribute__ ((unused)) = 0;
+ 
+     rcu_register_thread();
+ 
+-- 
+2.52.0
+
 
