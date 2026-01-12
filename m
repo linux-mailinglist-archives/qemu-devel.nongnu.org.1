@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A72D15B24
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 23:55:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1671D15AD9
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 23:54:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfQng-0002DG-Fu; Mon, 12 Jan 2026 17:54:16 -0500
+	id 1vfQnj-0002o3-CU; Mon, 12 Jan 2026 17:54:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQnH-00007v-7W
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:53:51 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQnO-0001Vj-8L
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:53:58 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQnF-0003bj-N1
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:53:50 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-432d2670932so3055975f8f.2
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 14:53:49 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQnM-0003dp-PC
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:53:57 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-47774d3536dso49927145e9.0
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 14:53:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768258427; x=1768863227; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768258435; x=1768863235; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=sUg87t0iFBFsEag00yU0i5OcBFg4F6lUVLgoGSuPxag=;
- b=wOO6oYur/MX5eKUSATZRMQnYS3jIuzHXdeIySp/Atp/yNpQxSYeA1o+vMtlX1IrO5n
- iagSNzidro511rvYuNDSn+1n44jK+x+N7DZD2WxygamMmsL02NaiGbrXpig+/tlhz3gM
- F8q1kgYz0LdeCo0MwwPUAJ46JuMHejSP2PmhSp5TxF8rLfN+Si2eEFm0K9lib07UjK+w
- WhSqlxgvEcfwtbQlj5h3Phc9vLFGzcvLqeknG0H1t3SvXwH8CuFcbaG1H46oD7gKNXN9
- dKGKWT4VHY/+Us6b4+SeEDDxubKZJRrLYcVr2N9XkfJwcQIGRvBgiseXtqgKAL0Eef9f
- tJiw==
+ :reply-to; bh=hjDGQkSz2d69Y3xUjIS3DqkHM9ixSaRb9oSaRByIicM=;
+ b=e/sOTclIgIEpNP04iZr8Ghu3W9Z6i805TQarZSbavGUmft7aIoBX6Z/9M7NIXbK0gm
+ MVJ7AoAnxJPmjAFCJia+LBKDNCqmklOWFntCx/zlRlkZeRnZlTOxlkLY18PMCKqLoTcD
+ QXuTpzFwEAULkRgI0NpzJvfgiNODrdNia94fsT3osg7EcIEq43z2mrLjUd1VfNFiG95c
+ 4cuoeYJ9AuBzh+cTycPZe5RGSCz9yhWwM2jcc2+07CA2rldNDwmukjVE3RHR2ITC4G0w
+ NQXLPaNsjbcbs0yiq4RRcpaumlJ9fjKCJ/9YMkchILsk1YFFignj8FofZOn/CwOhw/Lp
+ 8XKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768258427; x=1768863227;
+ d=1e100.net; s=20230601; t=1768258435; x=1768863235;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=sUg87t0iFBFsEag00yU0i5OcBFg4F6lUVLgoGSuPxag=;
- b=FYEChrQURejP9T8z2OWy7VCpBPG9tt1Iw9UpO9M90HNvn1rn0rBqB4tkAmnTSnkE17
- fldK1o4vdXgKock9RIJdV+fMIv9Yun4ADdbCSwOBea4IRWQ0pubYLeJhNOls24TSJMq5
- rLhrRIZgS4HAb1rDIn9gjylBeUIuUTJBtBMKiDd/Y5eogG7pdTY/XagsgTPlSN6IJpbJ
- nS/2JFB8RqqVfiyGGUzqktbaFzzxcp3bBde5YQwXcAN1SQ6nu1q+DekJXoGheehZMFna
- I3ZwqdHzbZCicFGoIuK740/FspnDMM1QTq7IRtTRtNfpJ/t1D6Bw9O89LzXzSQhN2nI9
- NYuw==
-X-Gm-Message-State: AOJu0YyZ6ahXm9cYcsIOI6g2ow9wsqgf+lAKjiix3P1RssOPQ27BqI8h
- HqnGhO7V/EcnmSuaSf/MzrZqCIYUvrj7cuBQ4uI4YLTZMAWdUwKy+HO6nPgp+ZJqPkLrwzDYKP9
- dPPC5++M=
-X-Gm-Gg: AY/fxX4U+mpynRsWFpakyJvwS9FldBTxxPCZerj/JpXRYvSopCocJPvxugDGKt1jSbQ
- Yp6nLf3fDWxfZYpYF4PqpjwOLDabPGuX4dEv0hFBLd0s6G9gD2CfuaA7PbHFJP4ClmwgzfLtryo
- R4+dd2ipKTf73SlpYM4Nn/HTxt7i6wVYNvNB4V1ScnehXT5qSWPj4scnRLvOr3d05Ac7zBtjKPc
- +rwNFj75sJnkIVPbNHvMZIPmzgMncZkc7CJcfHzH2/JFYnHvNIEn3t0shGBxzcH6EPyq65mi05R
- eCuKhuZv85R9NwtmnuyS6wfGMjY4OrQDDcGnbnPWiEWgPdkrPihNr6vclMLpKMtrREyc1D0Gz3k
- ASN/fd9KaI3hfU8/DNhkLTiaDBxX7tqw56VsQvFDFfurSmS8Nf3LnxtQrQHdXmMET+JuHPIZWEa
- O9U9KifBZsEptZgQrwnyMthh06oggKfNK/+HukijSSpXp6xLZa7wNoFzp73XkM
-X-Google-Smtp-Source: AGHT+IHBLkXnBef5GLH1S63AEY4RPmJTvkTMNBfUvPFgQIzEQvUor63bBZ6vIazsfKqbnAwa6CyQmg==
-X-Received: by 2002:a05:6000:2881:b0:431:771:a51f with SMTP id
- ffacd0b85a97d-432c37d3670mr20691122f8f.49.1768258427610; 
- Mon, 12 Jan 2026 14:53:47 -0800 (PST)
+ bh=hjDGQkSz2d69Y3xUjIS3DqkHM9ixSaRb9oSaRByIicM=;
+ b=WOHAEayn9vJRVLl8UZcwokTQTWUhDE5AqpKGecrg5Rpg48RBGNz0fhntIj7X+ER2oL
+ fPVLknxVhYWhqhoYb9xYI1RmKc6yUuqAhRKE7PeT0z1zLdJ+Y0kb3ra8SrgJlzA7+ZDF
+ ch7i1M56MQbgFEYLO5tzWGuU7/2nOWvkUJpo3Hgqn182tdfIY5Y6PveAE2w/44bIZJPz
+ Ox2NBNNh4qfPvddnWEzfaJ57XDH9EJ0fAgMtPMyHJK1U9ODCMEj7B1MmXsNHCPXct7yW
+ ruQ80XFUIzrFCvNkw7GHROg3zjccIvcZjCILHj6l66L5IJWWonz/5Cw54e6DOUFRB2x0
+ 80tA==
+X-Gm-Message-State: AOJu0YyZkM5CMRCQZ1Yn8sJpG/n/BEQFcuPpK4R+XRiUZb+UYz5NzXFK
+ rKMw5X53ma9dM32ayr9r7pBTUJINZ3tlysgWX6oEq22IG4hZT94aVA1B1+ggiC+8YHF2KG2n5ai
+ LmwaksZg=
+X-Gm-Gg: AY/fxX5OtxXRASYxo9fzdlyZyX77CLktiWvooK0VLPtqyDCzsArGTcitK700pPj9IY7
+ uzc0yXxLA8K9TboGQ7hyEVVkEtTjFdij+DC5OzlYRxpTAZw2hJbSOnvJ5NfXPorZvc/yXJliU/P
+ bvEvL2h1B2gPI5vD7jYJQB98skJNlwhbv7F6lANm1tb/SAccD+yg4b6WuJFPimZJzqH5x4vZA6n
+ LWgx1WiZl/J9e/QUw8eIYjle337B/P8tCY6N0BwaKIJGrlz18P6mRZm83/wKrlzmelBsIAW3yGe
+ JL6oDodjg+f6ngrmWavVvprf72frbUAoaXYjBQSESh0aYKBw/eQurel/9T4dkIcwFYcdvFq4/U7
+ S3V78leHVHZhYB4bOAjBRrT+RPE7GzxjNL6f8hP6Z5sFAD+SKK52aqQk0qK6k/fS/papO9SlR9P
+ qsbMEYf4ePANvZtX9an14l+3xxAaVL1ESXWt24Zn6YRe5AK7+rqh7X0nqFx8gF
+X-Google-Smtp-Source: AGHT+IFGVSuxj79EGmfc3vQShBama2SD3T+55Acuv9QzDeMN489W8VFWQp5YXneWZb+bK65OMkPmRA==
+X-Received: by 2002:a05:600c:8b44:b0:47d:6c36:a125 with SMTP id
+ 5b1f17b1804b1-47ed7c2afd2mr11892635e9.17.1768258434911; 
+ Mon, 12 Jan 2026 14:53:54 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-432bd5ede7esm41584651f8f.32.2026.01.12.14.53.46
+ ffacd0b85a97d-432bd0e175csm40337431f8f.14.2026.01.12.14.53.53
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 12 Jan 2026 14:53:47 -0800 (PST)
+ Mon, 12 Jan 2026 14:53:53 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 42/61] target/openrisc: Avoid target-specific migration headers
- in machine.c
-Date: Mon, 12 Jan 2026 23:48:37 +0100
-Message-ID: <20260112224857.42068-43-philmd@linaro.org>
+Subject: [PULL 43/61] target/openrisc: Build system units in common source set
+Date: Mon, 12 Jan 2026 23:48:38 +0100
+Message-ID: <20260112224857.42068-44-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112224857.42068-1-philmd@linaro.org>
 References: <20260112224857.42068-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,33 +97,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-machine.c doesn't use any target-specific macro defined by
-the "migration/cpu.h" header. Use the minimum header required:
-"migration/qemu-file-types.h" and "migration/vmstate.h", which
-are not target-specific.
+Since previous 2 commits and range 2795bc52af4..5b67dbf1dc3 we
+remove all uses of the target_ulong type in target/rx/. Use the
+meson target_common_system_arch[] source set to prevent further
+uses of target-specific types.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20260107200702.54582-6-philmd@linaro.org>
+Message-ID: <20260107200702.54582-7-philmd@linaro.org>
 ---
- target/openrisc/machine.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ target/openrisc/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/openrisc/machine.c b/target/openrisc/machine.c
-index f2853674f0f..2d5ca16c511 100644
---- a/target/openrisc/machine.c
-+++ b/target/openrisc/machine.c
-@@ -19,7 +19,8 @@
+diff --git a/target/openrisc/meson.build b/target/openrisc/meson.build
+index 31608b6dc7f..d51ea1ab753 100644
+--- a/target/openrisc/meson.build
++++ b/target/openrisc/meson.build
+@@ -22,4 +22,4 @@ openrisc_system_ss.add(files(
+ ))
  
- #include "qemu/osdep.h"
- #include "cpu.h"
--#include "migration/cpu.h"
-+#include "migration/qemu-file-types.h"
-+#include "migration/vmstate.h"
- 
- static const VMStateDescription vmstate_tlb_entry = {
-     .name = "tlb_entry",
+ target_arch += {'openrisc': openrisc_ss}
+-target_system_arch += {'openrisc': openrisc_system_ss}
++target_common_system_arch += {'openrisc': openrisc_system_ss}
 -- 
 2.52.0
 
