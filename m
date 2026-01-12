@@ -2,91 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F30A7D13130
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 15:19:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 861A5D12AE3
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 14:07:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfIkb-000205-0T; Mon, 12 Jan 2026 09:18:33 -0500
+	id 1vfHcl-0006mk-Pl; Mon, 12 Jan 2026 08:06:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mpe@tenstorrent.com>)
- id 1vfAgl-0002A6-5j
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 00:42:03 -0500
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <mpe@tenstorrent.com>)
- id 1vfAgi-0000b0-Mf
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 00:42:02 -0500
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-b8719ac9af7so85767666b.0
- for <qemu-devel@nongnu.org>; Sun, 11 Jan 2026 21:41:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1vfHcJ-0006fp-Vs
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 08:05:57 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1vfHcG-00011S-IW
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 08:05:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1768223150;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=O8nC6CiuWwYKC8k7JE7UgDsOARoH5gdYNE869kJ8hOE=;
+ b=TNzHt8GfRpphZqtv67uWKvMyjevxEcyZ9ZtL2hA37kWN6gbcTTjhomAb3/woQ8Jbss3BJy
+ W7QLPkSk4ZFOdK0fEkPpMYqDsr2bx1hnkPxmD+yFT/Sz+VTLZ1WbK+XLiNAbM6KdMAz5cW
+ hxwkQjsqyX4XoC7u/Fj1oUZsA4pMqxg=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-389-jMcWYtCsOMua8yHOSs9qZg-1; Mon, 12 Jan 2026 08:05:49 -0500
+X-MC-Unique: jMcWYtCsOMua8yHOSs9qZg-1
+X-Mimecast-MFC-AGG-ID: jMcWYtCsOMua8yHOSs9qZg_1768223148
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4779d8fd4ecso27354745e9.1
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 05:05:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=tenstorrent.com; s=google; t=1768196518; x=1768801318; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8qddfOCZOjO3MvQyTGNVXdwU/1+f4GO6nIVEaVrlmsc=;
- b=I9JxwYIg4bcJqAx46QALAsaMZoQLFNxARuQ0JEjIQTkVMg+y17bXWHNYcD3+4R/9f4
- DUlDuXx3uqEtrUNsrC+x/FCX6m4IS0SnCIWjUP2gSaGw6fH3vpnWzj+8JFcE6m7MeUU5
- pRCGCZeVEDxAo2XGppqTnjzWtuRzEPEQLHLCkbNqJ24RNfZkquGD6nHrSYrzaSRr370o
- v71oZq4qD1mwH3vY0Bqry2FqzYM3F82sqN6RrsxtCDr1uSywn6KyrO23OmWBv6ZrvGHr
- 7EnmxzIPeq0/uTBZtOpeiwKZNNxMgClr6tulYTX83Ff+KNDoz9IC7ZO0z6yp/BIwCbb/
- xlQQ==
+ d=redhat.com; s=google; t=1768223148; x=1768827948; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=O8nC6CiuWwYKC8k7JE7UgDsOARoH5gdYNE869kJ8hOE=;
+ b=Vyf2ZhbRO3G0yIJDIjmTaqT1wB7zowh3C3wGdt+H5or1Pr8sF8WwND+eXja1IqOCYJ
+ eZGcq5cbsVcXFwK5sDYAJyh41WaXPTNEqnSPqIc0uCC+6HQfFynP693N3kqU/7Uig5lU
+ cC673LLk/nXNc5f+DcHUP2/F7cGT2NnP7TLugfzhtJp+qUEHM0Tw4/WMLIKWhxJykgUr
+ rkGfFgUySydqtB19dkxFuk77mCXXvF7NEjXfdIZ1nU8fX9wB84CkOlj7eGZ8pzFA7yNp
+ gl5AlL/TcYp6x7dhKJGeXamjlbem1r4cxuUA8uDpdHy+K5A++cMlc33VTphdoHB90lEh
+ CtAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768196518; x=1768801318;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=8qddfOCZOjO3MvQyTGNVXdwU/1+f4GO6nIVEaVrlmsc=;
- b=NOl0SotE0ShO49LxTK4W99psuwXMkhK0l7a1yNMO63Vy+83qwy8l/eVfAkkQw8DvjP
- 7gpbdDbeoSsn/1BiPWG0BusF2Nx6i9RMCypOgLIgHI5on//9LlofGJoeRsRhKD+6U5ca
- OoPFFz0jTFYSyvRjRKO+5Ik+A9EtgNLGV2uEzSDfZOXHL5dI8cR2wx1Ha0Hsw5K/LJ5D
- Qk7cajFv6nPk9F6GbWkKS+rE3fZHdNZt+w2D8Qj61bOO/m90I/vvJbyC0FsR7vGDklU8
- vk50oYpt1y24iXvpSb/TdNSzvrD8QjsJvTNcvTKsUkdAVPbiA0Zm0tqyxMI8/yCK5SYO
- tXPQ==
+ d=1e100.net; s=20230601; t=1768223148; x=1768827948;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=O8nC6CiuWwYKC8k7JE7UgDsOARoH5gdYNE869kJ8hOE=;
+ b=nL2iJEiaIo/rR8VINftSmDvJoNoEij4kGg+n/QBKS6K9vvDm4H8GUYrg9y2KFMkVUf
+ 6VnqVG64TYWZwsxt1sri19QpzpG9FHRWasj0KyVAGd/MYmf89mQBowAa470ZeYVhDTo/
+ d7zfZnKtIWwfFz/ImCnJwBbhY+JDpDBAqS7vPAT/N1zoxMGV5B85bMo2uQcnvi7hORmk
+ DjHhPhd9w9+QEDgGv847Mx50I3XHx0qNnorWdiydxYJqUofJxO75eucqmxSx7Nsgdiob
+ 7k9JBwQuUe3FJAj3yZfkcvLpcBryoJyYg7ZqytXYOxk0jNm3qFvokt5LfHCiLCuFjnz+
+ dXYQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXPzUqmmwQ7hW1VoYLbQjDOkMAZiQAILNnXzLqr0hZ3mLiXJEMnj5EDUihFHBr7h+2eC43B24APalJp@nongnu.org
-X-Gm-Message-State: AOJu0YzJPxhUSd2CKoUi9d8yG3bkKfAydYc0hn3/1Kfsi8hNjKiLJopl
- 3XBdACF+yWOVjVLLj9BS9Abxo6pgTHoaWxFi99cJU6S0LaTjWyS6LbzNjLtha6UiZRV3z6r4I5b
- rnN94/javZ2zmUQZAXAckSFiSLHqK3K9qFVnPyyGosA==
-X-Gm-Gg: AY/fxX4UWdGRxHAVp1qkJr0Y8r3b+DT3XF9Q0CJP4VbK119rl7DBNdQBrTMQlVl+vx0
- 4RJG9uRdeIWzqjBfxc2FlmBOMCNimepGuck9q4czw8xQE7xRhRZsGaL7AZ9gyDr3r1UD58e6aP5
- F1N1hHUHWZ8ErbyB/KLiQwAc6PYq+YUaL5Hcu6buTKJLJ6WgkH3lifkI+3peIVzu+1IsYme4V01
- 3rw0n8ikx5H1uQK+pj/LkX5NMCdLNwg9WQJyZmXxgRSeqn+OVQ8yLv+lLzDQ+DxsS9PRxws
-X-Google-Smtp-Source: AGHT+IGUS04BhzHDdx3sJ0gdh88EW9V4KhUaEbV3dytBw+u7VmOLfb5Z7Kx9o3WueeJ8Uo3IJB2pMdYc5cslBjZKQFk=
-X-Received: by 2002:a17:906:aa0c:b0:b79:cd80:6fff with SMTP id
- a640c23a62f3a-b84299bcce9mr1683168166b.17.1768196518543; Sun, 11 Jan 2026
- 21:41:58 -0800 (PST)
+ AJvYcCW2/+C/xVb1RAwSDYx6Ylr0Bk6HJm2pNU3sN5nD8CCS0p+ijpRSj24iarr10fQHgAXtf2QWCJsWXISt@nongnu.org
+X-Gm-Message-State: AOJu0YxF/qkwiHqkSPgPTcRQ2KOqieX7IUI2GUUr1gdiYy3mZv2tSIZD
+ UleU8F3BOu//g+2YEaDNSdLPJE20mnJVWnm+4d7LWIWglRMRlwFLIC28IgyJgkyvUrjMVrZLq5V
+ onvgplkw6IJh3a9HYylNJPgtGQoKn9g95lsiS1JF8aiGR6QOo/pUOucLWTpJoKJQHbgmlpmGpRI
+ 4yeH/0jjMlC6Uolv0GEiS0tXLalGe6wTc=
+X-Gm-Gg: AY/fxX4a/90734UQ4+0+wtAOrd8Lab0e6vlZfxVVCTdBZlpOlsQtZkzws6Jmu1CECRw
+ us36Es/xHnh1X0+fAqkcP8hhUeiDZ6fC+m/QAiqrgcq31ztqIRqYNp1Jljcv2FFTWAcI5DEbHGm
+ 8WPKDPWuyqPXntGIy/kSh3jPHAJdwSGrBjoZXftQiSr/ObBbRk5aqNSXEexcglOdKafOA=
+X-Received: by 2002:a05:600c:5646:b0:471:793:e795 with SMTP id
+ 5b1f17b1804b1-47d7f398fffmr175439865e9.0.1768223147855; 
+ Mon, 12 Jan 2026 05:05:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEEehYMrTwj5be9g51ldl+btJ/yyZfIy8upnwgw1ZcHmF+2Ap2SvJ5UKarhivqkOCul6r3LyJg1Ai4YQoR7PQs=
+X-Received: by 2002:a05:600c:5646:b0:471:793:e795 with SMTP id
+ 5b1f17b1804b1-47d7f398fffmr175439575e9.0.1768223147382; Mon, 12 Jan 2026
+ 05:05:47 -0800 (PST)
 MIME-Version: 1.0
-References: <20260109134145.398565-1-joel@jms.id.au>
-In-Reply-To: <20260109134145.398565-1-joel@jms.id.au>
-From: Michael Ellerman <mpe@oss.tenstorrent.com>
-Date: Mon, 12 Jan 2026 16:41:47 +1100
-X-Gm-Features: AZwV_Qgt7rArxqamu7LacAF4LOaCcKx9lh-w4IKEUyOSn_-QLlJWzF5sttcDYTE
-Message-ID: <CAACLP0V2vuut7Rjy5MheV-2+ObQK9vU-27g-QYiwsxOJ1w1NDw@mail.gmail.com>
-Subject: Re: [PATCH] target/riscv: tt-ascalon: Add Tenstorrent mvendorid
-To: Joel Stanley <joel@jms.id.au>
-Cc: Alistair Francis <alistair.francis@wdc.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Sunil V L <sunilvl@ventanamicro.com>, 
- qemu-devel@nongnu.org, Weiwei Li <liwei1518@gmail.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Joel Stanley <jms@oss.tenstorrent.com>, 
- Nick Piggin <npiggin@oss.tenstorrent.com>, 
- Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>, qemu-riscv@nongnu.org
+References: <20251222114822.327623-1-ppandit@redhat.com>
+ <87h5tilhcq.fsf@suse.de> <aUq1oA73W9rAdCgG@x1.local>
+ <CAE8KmOzcOdYhnxpDr8BMV8zjixpEh9r+COe=xyLfXCVWKD0CRw@mail.gmail.com>
+ <87zf6q26q5.fsf@suse.de>
+ <CAE8KmOzxDn7X7rohJGT5AeW3+5oJFgueVtaQCpUc2bmBvrgRXg@mail.gmail.com>
+ <874ioxzhcm.fsf@suse.de>
+In-Reply-To: <874ioxzhcm.fsf@suse.de>
+From: Prasad Pandit <ppandit@redhat.com>
+Date: Mon, 12 Jan 2026 18:35:30 +0530
+X-Gm-Features: AZwV_QhqPYxmFINkzxyP7VdhvPYm55z3wVfnplQbeBSqNpLOSyOi1pDiu1zYH50
+Message-ID: <CAE8KmOx0ikDueu-znY14RCmp6weX_G+CJMUrQOmOuv-OPwPR+Q@mail.gmail.com>
+Subject: Re: [PATCH] migration: introduce MIGRATION_STATUS_FAILING
+To: Fabiano Rosas <farosas@suse.de>
+Cc: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org, 
+ Prasad Pandit <pjp@fedoraproject.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=mpe@tenstorrent.com; helo=mail-ej1-x62f.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 12 Jan 2026 09:17:30 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,61 +117,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Jan 10, 2026 at 12:42=E2=80=AFAM Joel Stanley <joel@jms.id.au> wrot=
-e:
+Hello Fabiano,
+
+On Wed, 7 Jan 2026 at 18:54, Fabiano Rosas <farosas@suse.de> wrote:
+> I like this because it forces us to determine more clearly what is the
+> necessary condition for a state change. This could eventually allow the
+> abstraction of the qapi_event_send_migration() to a higher
+> layer. Something like:
 >
-> JEP106 has two vendor IDs for Tenstorrent. We will use Bank 16, hex 0xa1:
+> void qmp_migrate() {
+>     t:migrate=true
 >
->  ((16 - 1) << 7) | (0xa1 & ~0x80) =3D 0x7a1
-
-The value LGTM, it matches JEP106BM, and matches the Tenstorrent
-documentation I have.
-
-I would probably say that it's company 33. Which is 0xa1 with the
-parity bit added, but the parity bit isn't used in the calculation,
-ie:
-
-  ((16 - 1) << 7) | 33 =3D 0x7a1
-
-Mentioning that it's company 33 (0x21) would make it a little easier
-to match it up with other public sources, eg openocd:
-
-  https://github.com/openocd-org/openocd/blob/1ebff3ab33c77e3f8fb4e1ddda262=
-b606b572af1/src/helper/jep106.inc#L1935
-
-> Add it to the Ascalon CPU definition as the mvendorid CSR.
+>     migration_setup() :: do setup, mig_setup_done=true
+>     migration_advance_state() :: checks the triggers, changes state and
+>                                  sends the event
 >
-> Signed-off-by: Joel Stanley <joel@jms.id.au>
+>     migration_start() :: migrate, mig_done=true
+>                          failure, mig_failed=true
+>                          etc
+>     migration_advance_state()
+>
+>     migrate_vmstate() :: device state migration, mig_device_done=true
+>     migration_advance_state()
+>
+>  etc..
+> }
+>
+> IOW, we could do a better job of separating what is work, what is
+> migration control flow, what is error handling, etc.
 
-Reviewed-by: Michael Ellerman <mpe@oss.tenstorrent.com>
+* Yes, indeed. Above skeleton code conveys the plausible
+segregation/stages well.
 
-cheers
+> What I'm trying to convey is that we have:
+>
+> 1) events API that needs to be kept stable, this list of states that
+>    libvirt sees and at what moments we emit them.
+===
+  qemuProcessHandleMigrationStatus & qemuMigrationUpdateJobType
+    -> https://gitlab.com/libvirt/libvirt/-/blob/master/src/qemu/qemu_process.c#L1766
+    -> https://gitlab.com/libvirt/libvirt/-/blob/master/src/qemu/qemu_migration.c?ref_type=heads#L1931
+===
+* I was trying to see how libvirtd(8) handles QEMU migration states.
+Looking at the above functions there, it seems they don't do much with
+it. Only MIGRATION_STATUS_POSTCOPY_* has some handling, while other
+states are not handled for anything. Interestingly, there's no _FAILED
+state in there, maybe they call it _ERROR.
 
-> diff --git a/target/riscv/cpu_vendorid.h b/target/riscv/cpu_vendorid.h
-> index f1ffc66542a0..751a13aace47 100644
-> --- a/target/riscv/cpu_vendorid.h
-> +++ b/target/riscv/cpu_vendorid.h
-> @@ -8,4 +8,6 @@
->  #define VEYRON_V1_MIMPID        0x111
->  #define VEYRON_V1_MVENDORID     0x61f
+* While I get the importance of not breaking APIs, still, simplifying
+migration states on the QEMU side should help them too.
+
+> 2) MigrationStatus being used as an internal record of the current
+>    (loosely defined) migration phase. This is "arbitrary", hence we're
+>    discussing adding a new MigrationStatus "just" to make sure we don't
+>    start a new migration at the wrong moment.
 >
-> +#define TENSTORRENT_VENDOR_ID   0x7a1
-> +
->  #endif /*  TARGET_RISCV_CPU_VENDORID_H */
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index efdec49e49ed..85ce4d83a371 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -3190,6 +3190,8 @@ static const TypeInfo riscv_cpu_type_infos[] =3D {
->          .cfg.ext_svnapot =3D true,
->          .cfg.ext_svpbmt =3D true,
+> I'm trying to understand if you want to cover 1, 2 or both.
 >
-> +        .cfg.mvendorid =3D TENSTORRENT_VENDOR_ID,
-> +
->          .cfg.max_satp_mode =3D VM_1_10_SV57,
->      ),
+> I would suggest we first take all of the internal tracking, i.e. #2, the
+> "if (state==MIGRATION_STATUS)" code and convert them to use some other
+> state tracking, either the triggers as you suggest, or random booleans
+> sprinkled all over, it's not immediately important.
 >
-> --
-> 2.47.3
+> Once that is done, then we could freeze the #1, MigrationStatus. It
+> would only change whenever we wanted to change the API and that should
+> be a well documented change.
+
+* Yes, sounds good. We could start with the QEMU internal state/phase
+tracking and then go to #1 above once we see how it all works in
+practice.
+
+> Ok, maybe I'm splittling hairs here, I was trying to understand whether
+> all of these "if (s->state ...)" have the same semantics.
 >
+> a) For cases such as CANCELLING: that could be a simple
+>    s->trigger[MIGRATE_CANCEL]=1.
+>
+>   (we're not removing the CANCELLING state due to the API stability, but
+>   still)
+>
+> b) For error conditions: s->event[FAILED]=1, then (possibly at a later
+>    point in migration_change_state):
+>
+>    if (s->event[FAILED] && !s->trigger[MIGRATE_CANCEL]) {
+>       migrate_set_state(s->state, MIGRATION_STATUS_FAILED);
+>    }
+
+* Do we have to check !MIGRATE_CANCEL like this? It's not clean.
+Ideally if an error/failure event occurs before the user cancels, then
+cancel can be ignored, no? Because migration is anyway going to stop
+or end. OTOH, if we cancel while processing an error/failure, end user
+may not see that error because we report - migration was cancelled.
+
+> b) For postcopy resume/pause, etc, maybe an actual state machine that can
+>    only be in one state would be helpful.
+>
+> c) For "we reached this point, so set this state", most of those could
+>    just be an invocation to migration_change_state() and, as you
+>    suggest, that would look for the evidence elsewhere to know what
+>    state to set:
+>
+>    if (s->trigger[MIGRATE] && s->event[COMPLETED]) {
+>       migrate_set_state(s->state, MIGRATION_STATUS_COMPLETED);
+>    }
+
+* Yes, right. We need to define/differentiate between _what_ is the
+state and _why_ is that state.
+
+* How do we go from here? Next step?
+
+Thank you.
+---
+  - Prasad
+
 
