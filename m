@@ -2,94 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FAB9D11C11
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 11:14:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8C90D11CB1
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 11:19:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfEvn-0006Vf-Kl; Mon, 12 Jan 2026 05:13:51 -0500
+	id 1vfF0P-00015x-PY; Mon, 12 Jan 2026 05:18:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfEvi-0006RL-6a
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:13:47 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfEvg-00079q-RA
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:13:45 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-47796a837c7so42742225e9.0
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 02:13:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768212822; x=1768817622; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=N8aqD12xOoCufFXcGpNF3lLHRx3HXq/0xzFT847jmlg=;
- b=Eq3ykiD769zbC4v9edIWUpqwAOAF8+/miUCSvx2GbGa+is3TqIuqTVcmynPsu0Udil
- pm1ykoUUHAPxWDTsvdYueJmBjFJkXP5aP317FKcZw5xGzFq0vmJmbDm2nzcD5+EyAnU3
- 2f8NZkVqkWS2cpyVWw7S9dJQB1+EOqlKpB0oXKodKbpeuMqiYjKdlDVBCvc9SD7E8Kj2
- ndVKolSiBwyekzY8Djp4O2XlKG2uPrShhHIYDQ20PNysq0Gs6MlhhzBmR6AdQ65+qMlr
- HjHcQ8m27E+kuxj/AV14swb6RuaeqINgjC4xypehcj/hfQgUbBxVDfcrMNmL2r6IvkfH
- Q+Xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768212822; x=1768817622;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=N8aqD12xOoCufFXcGpNF3lLHRx3HXq/0xzFT847jmlg=;
- b=ubGWqml4D+QvTlFB4twl047ABY5ERjo6tweY+xDqL4PW2MuFzT4s0W0FQ+3YI6WuM0
- 09xOyHlpXkKzEa34PzyUB85QHgv5v+7t7zYyd/qCVuoCafzXzxCgCkUXcJ8KDBr8+5Ha
- NV8dovROnYVdv0MwcGSXz1GkgpawZt3J8mW5CNpO9+eGhNdt7BX5m3PuhzlgFkGDnniT
- x1LoY5uDI+E+PfZ/19F9WQCNAH4eo0J1r9vH7pIhlPswisMrd8Jt55DldokpLkBGTBUT
- BbFTEMetbtkZErwqC2SUVqmEXvHfiTOWyW3ZZWB+COPdOTmk+exg8ZaOocrOHUZa79ky
- cLFA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUfR26s/7CMjGKTqQLfXhwluNE7FvyStcjMtyOWLaSdJBbUHQiOjglK4+mmbq65uCvMG603RIw3Z3/I@nongnu.org
-X-Gm-Message-State: AOJu0YwKvl8GupkyLYw3/dC9IzZNYSx1X3PWqivfwfpJb05F0pormVxF
- wm36rnC4SxqJA1LRkXaC7Jq8kp92adSguMvnSKp5V2nUac0Y60FauyJOK+/deVfWB0JLtXUOCyY
- cUJKdA3M=
-X-Gm-Gg: AY/fxX69R+LmBG1zfS7CRYbDxLmqVEUKK5FuaozwVo443d6SnyX4ecOqt422aJwmBr2
- W9wFPsFO9oBAWtno0gKb3wtuiYsjS5CFY+fNYzv1fQRkPAMoxrGxJu5gbmS3B2KRHjvFSvcifhW
- 1JFglq4m5xZdd93nclX2Rz2sF+gNXGCVYeyWpnBFfM4fKyIc2j/A6UI+YLwtXe+rOY/oikibg1/
- OIHcyJeJYo2kGYCVDm1DY2qhR5fhmJvuBAaUFEp/fowWDWQeRcOtIb2TTHhxBIOGltoh5A1jcjM
- 2EDzY/dpiYT4LhOFCuvL4X32UP2VIQ/kpMHH2D3Rxfr3laRAfaYTQLTWA1aZ9hlGZDHTYDfG7l4
- 3NRjHxAbseoRAxo98XnS0KYBOol3MTHlgqX9FDYoz7QZNj0CCsqBzEHj0uFMsM07vD5M0Kn8Mlt
- pm46jA7qPBFyePsF63Q7tB34vbUny/4BpvbFxYb7p/vWlHJqNkd7tFig==
-X-Google-Smtp-Source: AGHT+IHx2ExmqzvFXyHXIW94/ley89BN6y1qaiGzDdYdoJhKpau7RwTyezCFJfwETCqXSAqVsMeRiQ==
-X-Received: by 2002:a05:600c:444c:b0:477:a977:b8c5 with SMTP id
- 5b1f17b1804b1-47d84b5b51amr217346745e9.31.1768212822306; 
- Mon, 12 Jan 2026 02:13:42 -0800 (PST)
-Received: from [192.168.69.208] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-432bd0860f5sm37664819f8f.0.2026.01.12.02.13.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 12 Jan 2026 02:13:41 -0800 (PST)
-Message-ID: <b575794d-48fc-4ca5-82ed-4acfb5598ebe@linaro.org>
-Date: Mon, 12 Jan 2026 11:13:41 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/2] target/riscv: Fix null pointer dereference in
- cpu_set_exception_base
-Content-Language: en-US
-To: Djordje Todorovic <Djordje.Todorovic@htecgroup.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>,
- "cfu@mips.com" <cfu@mips.com>, "alistair23@gmail.com" <alistair23@gmail.com>
-References: <20260112090458.2345280-1-djordje.todorovic@htecgroup.com>
- <20260112090458.2345280-3-djordje.todorovic@htecgroup.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20260112090458.2345280-3-djordje.todorovic@htecgroup.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+ (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
+ id 1vfF0A-0000zo-ML
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:18:25 -0500
+Received: from qs-2001i-snip4-1.eps.apple.com ([57.103.87.84]
+ helo=outbound.qs.icloud.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
+ id 1vfF05-0007lw-Hp
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:18:22 -0500
+Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
+ by p00-icloudmta-asmtp-us-east-2d-20-percent-2 (Postfix) with ESMTPS id
+ 8119118000AA; Mon, 12 Jan 2026 10:18:08 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
+ s=sig1; bh=abB225qvJ9BB1OiVaUt+EK2bMAyAMeH3O+UWphfh+R8=;
+ h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme;
+ b=P6ngTp9yenF6MhaOfMvuTg/mmCNWckAMahcrkN+bf51PY1/LNuGW9TeDtgCXe1XX8BezcZ9pFbMQuKg++PQL1Z0AhWykHQT7cNIcTGyn3kUTMZhcGj/FY+mKrAmRUJH7LQ+NirRF6YpGvlATAgvhu1M0d8J1GWGWGSEFftV/IdPuqZheC03GfPXbevKdWmjs3FqAzdK4wKeHgSFoo8t6Q83nnJPXuX0PqThbm5bzFNURFPBs54Dp8YEP+fqMW4KwyAWF7+f+QRm/ViMCLUc0M0ZEj50vo7srKVXSptR6uoAPD/4tDBGz/xAR+zaydJLEPqYUTfU/8JqX3QxF+mSDdA==
+mail-alias-created-date: 1752046281608
+Received: from smtpclient.apple (unknown [17.57.155.37])
+ by p00-icloudmta-asmtp-us-east-2d-20-percent-2 (Postfix) with ESMTPSA id
+ E10C7180037A; Mon, 12 Jan 2026 10:18:05 +0000 (UTC)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
+Subject: Re: [PATCH v7 17/36] hw/arm/virt: Set msi-gpa property
+From: Mohamed Mediouni <mohamed@unpredictable.fr>
+In-Reply-To: <CH3PR12MB7548B4E80C4660147906DC6CAB81A@CH3PR12MB7548.namprd12.prod.outlook.com>
+Date: Mon, 12 Jan 2026 11:17:54 +0100
+Cc: "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+ Jason Gunthorpe <jgg@nvidia.com>, Nicolin Chen <nicolinc@nvidia.com>,
+ "ddutile@redhat.com" <ddutile@redhat.com>,
+ "berrange@redhat.com" <berrange@redhat.com>,
+ "clg@redhat.com" <clg@redhat.com>, "alex@shazbot.org" <alex@shazbot.org>,
+ Nathan Chen <nathanc@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
+ "smostafa@google.com" <smostafa@google.com>,
+ "wangzhou1@hisilicon.com" <wangzhou1@hisilicon.com>,
+ "jiangkunkun@huawei.com" <jiangkunkun@huawei.com>,
+ "jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>,
+ "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>,
+ "zhenzhong.duan@intel.com" <zhenzhong.duan@intel.com>,
+ "yi.l.liu@intel.com" <yi.l.liu@intel.com>,
+ Krishnakant Jaju <kjaju@nvidia.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <8ACCC1BD-8696-4A02-A295-269713AB0614@unpredictable.fr>
+References: <20260111195508.106943-1-skolothumtho@nvidia.com>
+ <20260111195508.106943-18-skolothumtho@nvidia.com>
+ <526B3AB7-B0D4-4104-AF8F-012ED34EC990@unpredictable.fr>
+ <CH3PR12MB7548B4E80C4660147906DC6CAB81A@CH3PR12MB7548.namprd12.prod.outlook.com>
+To: Shameer Kolothum <skolothumtho@nvidia.com>
+X-Mailer: Apple Mail (2.3864.300.41.1.7)
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEyMDA4MSBTYWx0ZWRfXxR9qgiX/EBri
+ U8vKXz/1/DLjBphOnvlMT3GI9SXOG0f+Wa78Ph5STc52Mo/mH9vizH1KG4x/ptH6fQeTi0QCBFT
+ LPjcwTc9C3f8B+W/xyZaTo48bBN7spEJMF21TIYLo79kQjHsBVpTetgrIy/0RDUl82LZOjtnrYA
+ lvvmJNsW1iqnPSGiVplRz0QxJDc2vO0TI7IS+kCW8DW4nJ1GvC/hMhiD+MtgAyS4Mpag+FiDs3O
+ kyFlPQGeBvbqf5hr3ps3h+2iSyTrVcEsNJRt1LxpNksgFrROcbTuc216u4vMBYNhhzCSk7ccr2e
+ L+BsqFUw1K9BTUoNgUO
+X-Authority-Info: v=2.4 cv=UaRciaSN c=1 sm=1 tr=0 ts=6964ca61
+ cx=c_apl:c_apl_out:c_pps a=bsP7O+dXZ5uKcj+dsLqiMw==:117
+ a=bsP7O+dXZ5uKcj+dsLqiMw==:17 a=kj9zAlcOel0A:10 a=vUbySO9Y5rIA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Ikd4Dj_1AAAA:8 a=69wJf7TsAAAA:8 a=20KFwNOVAAAA:8
+ a=KKAkSRfTAAAA:8 a=r1p2_3pzAAAA:8 a=1XWaLZrsAAAA:8 a=BTeA3XvPAAAA:8
+ a=i0EeH86SAAAA:8 a=QyXUC8HyAAAA:8 a=4zc8lD1vxPkO9fQSZE0A:9 a=CjuIK1q_8ugA:10
+ a=Fg1AiH1G6rFz08G2ETeA:22 a=cvBusfyB2V15izCimMoJ:22 a=r_pkcD-q9-ctt7trBg_g:22
+ a=tafbbOV3vt1XuEhzTjGK:22
+X-Proofpoint-GUID: ipSFBVxGSKgnWtR0ZdgiWpN2TsqFazMd
+X-Proofpoint-ORIG-GUID: ipSFBVxGSKgnWtR0ZdgiWpN2TsqFazMd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-12_03,2026-01-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ clxscore=1030 phishscore=0 adultscore=0 bulkscore=0 spamscore=0
+ mlxlogscore=999 suspectscore=0 malwarescore=0 classifier=spam authscore=0
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
+ definitions=main-2601120081
+X-JNJ: AAAAAAABqZi9kLafIcQGLm2ARDfnbADd1TJlokO0g/Ejr50nTx1vAIyTPaKY5yMJcSfkScCjEzF8zlllZb3je/hNAhH1B95gVpEw1Mn2HT7YTn77ukyZXiYO/0PmZ3rQVFgV956xnRID9EZpy4zhX/iijv17GL5U1T10twxyvUByMaLe2YjqWSPlbgGbjDMpUzOwXXIh3lp7/+i3Pzm2ZtOvVOlQhT696kd1iVpWoZToAB9SZL/eYGyqinqtrzCthQi+iTbdGdb/qxy30UwcdD5MPoILmylgby0dcL0d7dUAme8dAt7JFIhcynj2hO5B8TBV42LhiNaZlAf33BTfxb8ijTJyvE4PTsAI10Ic3pxw5tZ1jsQOBUKDXXXWlwW3C7JItHWkG7ZtBoRS6wb9QObpUKHbvuqGaffqavAoX/MlftJoOKepeIIW75OCt4nizWOxiDvBv7JLINJEXcRjNjJ/Z98CA32Le8VuEt3ycirtrw6TCVsrcFVhv7b6oRjBc91812PCFpx9d/vF9Q/HlWGZ31f3Zfmwp4BOKHexzFeVcj1CxOSg5pBzCB74ZU9q4dag/FacfoZa8gIWJ3J7++CbhLcW+dLQBogDkUx3B5PYqLOyWfuuUIIJ3Ph+R3QebpffH0wFhVWqXfnxEa2b5szdw3a3tU6TbDkeDuv/weVwoaASZxY5/YohfyCIEMgNt74iK+EYl3fkER9Vh5pdIMv30ORH778YUmIAxeqJ7OsG8a4RfgC8rdl12LpSn6J6+GFzrtiLofFPimCt1vzzfXTSLesheXGJNLGKeog/fgtcOI6zjO2ngvxjSvdQmWfbXiIbvxBzreyH
+Received-SPF: pass client-ip=57.103.87.84;
+ envelope-from=mohamed@unpredictable.fr; helo=outbound.qs.icloud.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_MSPIKE_H2=-0.01, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,20 +112,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/1/26 10:05, Djordje Todorovic wrote:
-> Add missing return statement after logging the error when cs is NULL.
-> 
-> Resolves: Coverity CID 1644077
-> 
-
-Fixes: 209c2c9af62 ("target/riscv: Add cpu_set_exception_base")
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
-> Signed-off-by: Djordje Todorovic <djordje.todorovic@htecgroup.com>
-> ---
->   target/riscv/cpu.c | 1 +
->   1 file changed, 1 insertion(+)
+> On 12. Jan 2026, at 10:45, Shameer Kolothum <skolothumtho@nvidia.com> =
+wrote:
+>=20
+>=20
+>=20
+>> -----Original Message-----
+>> From: Mohamed Mediouni <mohamed@unpredictable.fr>
+>> Sent: 11 January 2026 21:44
+>> To: Shameer Kolothum <skolothumtho@nvidia.com>
+>> Cc: qemu-arm@nongnu.org; qemu-devel@nongnu.org;
+>> eric.auger@redhat.com; peter.maydell@linaro.org; Jason Gunthorpe
+>> <jgg@nvidia.com>; Nicolin Chen <nicolinc@nvidia.com>;
+>> ddutile@redhat.com; berrange@redhat.com; clg@redhat.com;
+>> alex@shazbot.org; Nathan Chen <nathanc@nvidia.com>; Matt Ochs
+>> <mochs@nvidia.com>; smostafa@google.com; wangzhou1@hisilicon.com;
+>> jiangkunkun@huawei.com; jonathan.cameron@huawei.com;
+>> zhangfei.gao@linaro.org; zhenzhong.duan@intel.com; =
+yi.l.liu@intel.com;
+>> Krishnakant Jaju <kjaju@nvidia.com>
+>> Subject: Re: [PATCH v7 17/36] hw/arm/virt: Set msi-gpa property
+>>=20
+>> External email: Use caution opening links or attachments
+>>=20
+>>=20
+>>> On 11. Jan 2026, at 20:53, Shameer Kolothum =
+<skolothumtho@nvidia.com>
+>> wrote:
+>>>=20
+>>> Set the MSI doorbell GPA property for accelerated SMMUv3 devices for =
+use
+>>> by KVM MSI setup. Also, since any meaningful use of vfio-pci devices =
+with
+>>> an accelerated SMMUv3 requires both KVM and a kernel irqchip, ensure
+>>> those are specified when accel=3Don is selected.
+>>>=20
+>>> Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+>>> Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
+>>> ---
+>>> hw/arm/virt.c | 20 ++++++++++++++++++++
+>>> 1 file changed, 20 insertions(+)
+>>>=20
+>>> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+>>> index 9d0568a7d5..08feadf0a8 100644
+>>> --- a/hw/arm/virt.c
+>>> +++ b/hw/arm/virt.c
+>>> @@ -3052,6 +3052,26 @@ static void
+>> virt_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
+>>>            /* The new SMMUv3 device is specific to the PCI bus */
+>>>            object_property_set_bool(OBJECT(dev), "smmu_per_bus", =
+true,
+>> NULL);
+>>>        }
+>>> +        if (object_property_find(OBJECT(dev), "accel") &&
+>>> +            object_property_get_bool(OBJECT(dev), "accel", =
+&error_abort)) {
+>>> +            hwaddr db_start;
+>>> +
+>>> +            if (!kvm_enabled() || !kvm_irqchip_in_kernel()) {
+>>> +                error_setg(errp, "SMMUv3 accel=3Don requires KVM =
+with "
+>>> +                           "kernel-irqchip=3Don support");
+>>> +                    return;
+>>> +            }
+>>> +
+>>> +            if (vms->msi_controller =3D=3D VIRT_MSI_CTRL_ITS) {
+>>> +                /* GITS_TRANSLATER page + offset */
+>>> +                db_start =3D base_memmap[VIRT_GIC_ITS].base + =
+0x10000 + 0x40;
+>>> +            } else {
+>>> +                /* MSI_SETSPI_NS page + offset */
+>>> +                db_start =3D base_memmap[VIRT_GIC_V2M].base + 0x40;
+>>> +            }
+>> Hello,
+>>=20
+>> Currently (but soon no longer the case for virt-11.0+), its=3Doff =
+means no MSI
+>> controller at all instead of
+>> GICv3 + GICv2m.
+>>=20
+>> Would an else if with an error returned if no MSI controller is =
+enabled be
+>> adequate?
+>=20
+> The MSI doorbell setup here is only required for MSI translation =
+cases.
+> When ITS is off (and no MSI controller is present), passthrough =
+devices
+> cannot use MSI/MSI-X, so no MSI translation is required. Is that =
+right?
+>=20
+> If so,  skipping the doorbell setup is expected and correct, and =
+returning
+> an error would unnecessarily reject a valid configuration.
+Hello,
+
+Could it be better then to have an else if for the GICv2m case and a =
+separate=20
+else with setting db_start to 0 or something instead of an invalid =
+(because not=20
+present device) address to make things clearer?
+
+Thank you,
+-Mohamed=20
+> Thanks,
+> Shameer
+>=20
 
 
