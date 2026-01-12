@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7523ED12812
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 13:20:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5DBED12836
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 13:21:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfGtQ-0007VF-6S; Mon, 12 Jan 2026 07:19:32 -0500
+	id 1vfGv0-0000O1-BC; Mon, 12 Jan 2026 07:21:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vfGtL-0007Qb-A2
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 07:19:29 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vfGuk-00005x-52
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 07:20:54 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vfGtE-00021t-Ka
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 07:19:24 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vfGuh-0002r5-8E
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 07:20:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768220359;
+ s=mimecast20190719; t=1768220446;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=WSzXhdlhQU08FAnxB9Em4ZWdMNWLxCuKZ7hGG6SV6Vw=;
- b=IO93ztEGLSv4YpY9N97HU465dvoKs/EkMx4UGz2igNXPBWhF0CioLBBxzBczghBXmZKr0J
- ykj5nio1ix5Eozjmz3k/y1eAOOrYvwgQMKU3lEjrtoxHzLkif5AwtgP4ZVED2RkcWXhaYh
- pW5EKyDs5YbgSeGxXMg8bw7F8o8a0pg=
+ bh=GUz/fFHY0vYh37y5tGfe1IC3pqzk5q52FSH7N7Cq9EM=;
+ b=Yfrh1Som3a51zPeAN914EOKRwoxTaDMbQASFAb3rweMNSPaCFwJYJNJyfcO3ZK9i/LglgB
+ yM13wbrRTdFptHqFdY3iRZj2oATSwM6vVTVyEbDX/2QfkzxPzz/4UhMm4agDGzMXKahhT6
+ 9s/2WP+kRNn5t32f9kvrI/cqFGxpzj8=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-553-lzoXL7nSO7eIS4SkwHSHjw-1; Mon,
- 12 Jan 2026 07:19:16 -0500
-X-MC-Unique: lzoXL7nSO7eIS4SkwHSHjw-1
-X-Mimecast-MFC-AGG-ID: lzoXL7nSO7eIS4SkwHSHjw_1768220355
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-17-61EgSCWVMZ6O_vBcm6LroQ-1; Mon,
+ 12 Jan 2026 07:20:41 -0500
+X-MC-Unique: 61EgSCWVMZ6O_vBcm6LroQ-1
+X-Mimecast-MFC-AGG-ID: 61EgSCWVMZ6O_vBcm6LroQ_1768220440
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C98941956054; Mon, 12 Jan 2026 12:19:14 +0000 (UTC)
+ id 02CDD195605A; Mon, 12 Jan 2026 12:20:40 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.32])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5482319560BA; Mon, 12 Jan 2026 12:19:14 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 92B4D18001D5; Mon, 12 Jan 2026 12:20:39 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id B34BB21E6683; Mon, 12 Jan 2026 13:19:11 +0100 (CET)
+ id 304CF21E6742; Mon, 12 Jan 2026 13:20:37 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: Michael Tsirkin <mst@redhat.com>,  <qemu-devel@nongnu.org>,
- <shiju.jose@huawei.com>,  <armbru@redhat.com>,  <linuxarm@huawei.com>,
+ <shiju.jose@huawei.com>,  <linuxarm@huawei.com>,
  <linux-cxl@vger.kernel.org>,  Ravi Shankar <venkataravis@micron.com>
-Subject: Re: [PATCH qemu v2 4/5] hw/cxl/events: Updates for rev3.2 DRAM
- event record
-In-Reply-To: <20260102151512.460766-5-Jonathan.Cameron@huawei.com> (Jonathan
- Cameron's message of "Fri, 2 Jan 2026 15:15:11 +0000")
+Subject: Re: [PATCH qemu v2 5/5] hw/cxl/events: Updates for rev3.2 memory
+ module event record
+In-Reply-To: <20260102151512.460766-6-Jonathan.Cameron@huawei.com> (Jonathan
+ Cameron's message of "Fri, 2 Jan 2026 15:15:12 +0000")
 References: <20260102151512.460766-1-Jonathan.Cameron@huawei.com>
- <20260102151512.460766-5-Jonathan.Cameron@huawei.com>
-Date: Mon, 12 Jan 2026 13:19:11 +0100
-Message-ID: <87cy3ff2gw.fsf@pond.sub.org>
+ <20260102151512.460766-6-Jonathan.Cameron@huawei.com>
+Date: Mon, 12 Jan 2026 13:20:37 +0100
+Message-ID: <877btnf2ei.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -90,43 +90,40 @@ Jonathan Cameron <Jonathan.Cameron@huawei.com> writes:
 
 > From: Shiju Jose <shiju.jose@huawei.com>
 >
-> CXL spec rev3.2 section 8.2.10.2.1.2 Table 8-58, DRAM event record
-> has updated with following new fields.
-> 1. Component Identifier
-> 2. Sub-channel of the memory event location
-> 3. Advanced Programmable Corrected Memory Error Threshold Event Flags
-> 4. Corrected Volatile Memory Error Count at Event
-> 5. Memory Event Sub-Type
+> CXL spec rev3.2 section 8.2.10.2.1.3 Table 8-50, memory module
+> event record has updated with following new fields.
+> 1. Validity Flags
+> 2. Component Identifier
+> 3. Device Event Sub-Type
 >
-> Add updates for the above spec changes in the CXL DRAM event
-> reporting and QMP command to inject DRAM event.
+> Add updates for the above spec changes in the CXL memory module
+> event reporting and QMP command to inject memory module event.
 >
 > Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > ---
->  qapi/cxl.json               | 21 ++++++++++++++++++-
->  include/hw/cxl/cxl_events.h |  9 ++++++--
->  hw/mem/cxl_type3.c          | 42 +++++++++++++++++++++++++++++++++++++
->  hw/mem/cxl_type3_stubs.c    |  7 +++++++
->  4 files changed, 76 insertions(+), 3 deletions(-)
+>  qapi/cxl.json               | 12 +++++++++++-
+>  include/hw/cxl/cxl_events.h |  7 +++++--
+>  hw/mem/cxl_type3.c          | 20 ++++++++++++++++++++
+>  hw/mem/cxl_type3_stubs.c    |  4 ++++
+>  4 files changed, 40 insertions(+), 3 deletions(-)
 >
 > diff --git a/qapi/cxl.json b/qapi/cxl.json
-> index c5ecbe9646..3e4bad4ad0 100644
+> index 3e4bad4ad0..752d46cda2 100644
 > --- a/qapi/cxl.json
 > +++ b/qapi/cxl.json
-> @@ -168,6 +168,21 @@
+> @@ -242,6 +242,14 @@
    ##
-   # @CXLDRAMEvent:
+   # @CXLMemModuleEvent:
    #
-   # Event record for a DRAM Event (CXL r3.0 8.2.9.2.1.2).
+   # Event record for a Memory Module Event (CXL r3.0 8.2.9.2.1.3).
    #
-   # @dpa: Device Physical Address (relative to @path device).  Note
-   #     lower bits include some flags.  See CXL r3.0 Table 8-44 DRAM
-   #     Event Record, Physical Address.
+   # @type: Device Event Type.  See CXL r3.0 Table 8-45 Memory Module
+   #     Event Record for bit definitions for bit definiions.
    #
    [...]
->  # @correction-mask: Bits within each nibble.  Used in order of bits
->  #     set in the nibble-mask.  Up to 4 nibbles may be covered.
+>  # @corrected-persistent-error-count: Total number of correctable
+>  #     errors in persistent memory
 >  #
 > +# @component-id: Device specific component identifier for the event.
 > +#     May describe a field replaceable sub-component of the device.
@@ -134,33 +131,24 @@ Jonathan Cameron <Jonathan.Cameron@huawei.com> writes:
 > +# @is-comp-id-pldm: This flag specifies whether the device-specific
 > +#     component identifier format follows PLDM.
 > +#
-> +# @sub-channel: The sub-channel of the memory event location.
+> +# @sub-type: Device event sub-type.
 > +#
-> +# @cme-ev-flags: Advanced programmable corrected memory error
-> +#     threshold event flags.
-> +#
-> +# @cvme-count: Corrected volatile memory error count at event.
-> +#
-> +# @sub-type: Memory event sub-type.
-> +#
+>  # Since: 8.1
 
 You're not updating the reference to the CXL spec from 3.0 to 3.2.
-Intentional?
+Intentional?  You do in PATCH 2.
 
->  # Since: 8.1
 >  ##
->  { 'struct': 'CXLDRAMEvent',
-> @@ -176,7 +191,11 @@
->              'type': 'uint8', 'transaction-type': 'uint8',
->              '*channel': 'uint8', '*rank': 'uint8', '*nibble-mask': 'uint32',
->              '*bank-group': 'uint8', '*bank': 'uint8', '*row': 'uint32',
-> -            '*column': 'uint16', '*correction-mask': [ 'uint64' ]
-> +            '*column': 'uint16', '*correction-mask': [ 'uint64' ],
+>  { 'struct': 'CXLMemModuleEvent',
+> @@ -251,7 +259,9 @@
+>              'life-used': 'uint8', 'temperature' : 'int16',
+>              'dirty-shutdown-count': 'uint32',
+>              'corrected-volatile-error-count': 'uint32',
+> -            'corrected-persistent-error-count': 'uint32'
+> +            'corrected-persistent-error-count': 'uint32',
 > +            '*component-id': 'str', '*is-comp-id-pldm':'bool',
-> +            '*sub-channel':'uint8',
-> +            '*cme-ev-flags':'uint8', '*cvme-count':'uint32',
 > +            'sub-type':'uint8'
->             }}
+>              }}
 >  
 >  ##
 
