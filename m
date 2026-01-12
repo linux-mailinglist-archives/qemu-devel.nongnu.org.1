@@ -2,112 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 416CBD11A74
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 10:58:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1E9AD11A7D
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 10:58:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfEfs-0000VT-QZ; Mon, 12 Jan 2026 04:57:24 -0500
+	id 1vfEgn-0001fi-Vp; Mon, 12 Jan 2026 04:58:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leonardi@redhat.com>)
- id 1vfEfo-0000Ia-12
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 04:57:21 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vfEgm-0001eX-Iq
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 04:58:20 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leonardi@redhat.com>)
- id 1vfEfm-0004mh-4g
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 04:57:19 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vfEgk-0004pi-PG
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 04:58:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768211836;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1768211897;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IITw8Q3hu7/PKYDKqSgzmT4XoNE9pbceR1oZUqzeVRs=;
- b=JoPxsdhhbGXFyo2P/nTPzzMsX1I4vSiIpJiCvDA3Klq1iQSprtEPhOtTjsyPfXe23pFIV1
- kWXn86gMeg4KsS0Xu9Dw1uZeQQrTL9+BIwOQGvinVwLTNbjbGv5bK5gpkivg4rBqCSzCBn
- Hmof38+VYIaE5Cpp2f0e1/MZ38PS/zI=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=t91xoUVOsOYp9feQTxhCHRsm8L9Qe52PaMmkJm5UaD4=;
+ b=gcGhorLLelTFKz4/K3tFMp0wIGZ6pFFuGoVCMZAjAPCws6QMi2awyXCgpDECxwZteddyM9
+ Mk6i7V0RkKsB3CPXTeadOUEv/gKe19NEG9EnGWiqwYMCWPdi+A+ZQ2sVfkkXDXI/u82oLv
+ 8ZQtrlQXWdU0NUKkguaU6yYBrufhqsU=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-645-ZXlsdFrlPky_Ch0cGmaWVQ-1; Mon, 12 Jan 2026 04:57:13 -0500
-X-MC-Unique: ZXlsdFrlPky_Ch0cGmaWVQ-1
-X-Mimecast-MFC-AGG-ID: ZXlsdFrlPky_Ch0cGmaWVQ_1768211832
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-430fc153d50so4577985f8f.1
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 01:57:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768211832; x=1768816632; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=IITw8Q3hu7/PKYDKqSgzmT4XoNE9pbceR1oZUqzeVRs=;
- b=nL+zbmewA4ScSa83gUD99trAIr2qZdOFt4VHU6cGevOF2wPNJLpb7Fiyx2Ahvkhgpd
- PCtYR7qodtmazf7FsqWP0D7Z3GsvXRB41T+1nDkLHQOTEOA8U7TpvJI/uhz3oMAUM+hV
- 3Rmto/3I/V1Aq1oKCxW010UUjZPR/+BtobFO1CWaKflCcnJkvJLDzaYKwzZ5btJA593F
- oytB7bnASinVSSaUUURmI4tlcqHe4VRA6fIqGYWJJpkJTIecCMRIQ3d78wacJrzvOISU
- w8y3kcPMsHTV3JIy7fB7B6bcre9AROKrMWu2Mj9F1voOY2FtqCMCuJJoninuhZ8ahNid
- GuZQ==
+ us-mta-550-aH5aHkbANw-XXh3pCWgJMg-1; Mon, 12 Jan 2026 04:58:15 -0500
+X-MC-Unique: aH5aHkbANw-XXh3pCWgJMg-1
+X-Mimecast-MFC-AGG-ID: aH5aHkbANw-XXh3pCWgJMg_1768211895
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4775d110fabso61539225e9.1
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 01:58:15 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768211832; x=1768816632;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=IITw8Q3hu7/PKYDKqSgzmT4XoNE9pbceR1oZUqzeVRs=;
- b=u3nTe3MqpWB3Hq5EnkVL/8lF9yfzosYE5D8gSNXyko43BayORzVsgegLXOaIdgOyfj
- +L4RrEoSu7igza/0+crc1c+IXh//uHbs0FQaHuw2YX02JxUYK2ogOrk87RRY24SEyj/x
- aomK/FvQEOmRmJkujusHE7Cn1+X8ROnzNVO98sYFszblDitVPdtudMMZI1oqnsM8Nl4y
- 7ztOEUf7rNYWmbnyYRsaQwvqhjvRoHOPjyCcqtNEuvq9McXZkc+L+jL0owe24sq6vtS3
- Wvp0pLa5kUxKRIw9GEKxqITBdZnLguUyCBWQkT83sgk40RxFkWri9J3287TFVb/t2uzx
- ND2g==
-X-Gm-Message-State: AOJu0Yz/sw+HPtw0nnrg6eEzZmGGObU5Q+XQ72JjiscW+tmTIGGiSJ6T
- IIvuYMcpRO8G434v1O8jG4FKV3+hWpVzID28d2JwSh1qduVw9xVLF5+HQS5HgiCc+JnKyBYOc9i
- zQdOe6xaIJCR4sZQ8nKlb6C27eUE83NBmhkKM/y5dbEAA2XCfQlmMmfrh
-X-Gm-Gg: AY/fxX69x2yXA7kviezHTZr1fR//dNqnvvWJCEjregSpXmuJa/h0gd8yKW9S/2m4DAC
- tTbcyVg36mNb0Ah1xotQ88jnztfvdGfKeFlejPntXXU0RbvMds6UART2l/rNw5n6to+6KDz74j+
- jBTCGyxDriETxZLkhF6JabGZ4mFjiYd3VJv8vb2bAfb2GQ6mzS7Vs48ZQsyTdCjTD5nH12JCuwA
- oQpGT9sV+EDLrlTiVexaY7tkhPMTuWB/guayBh2M3m9By+oh8AW7cZmxncW9Y0vMbFp8ugOxssE
- UPAH4dlZy4cDiC6CH53lwYPUYQ93mGFchZFrUn3dyGsLpy7rVP01rQexYAGjGkbNabzej9cfGRm
- ocR3MyrTY9eRXeHA=
-X-Received: by 2002:a05:6000:3112:b0:431:35a:4a7d with SMTP id
- ffacd0b85a97d-432c38d0f5amr21762929f8f.58.1768211832056; 
- Mon, 12 Jan 2026 01:57:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE8nUpJjlfbThAz7uz78Ez10rox1svb/5PwHDzxi0eoRWJuwrkJOhDHai5qPKd7LGfg5rt0tg==
-X-Received: by 2002:a05:6000:3112:b0:431:35a:4a7d with SMTP id
- ffacd0b85a97d-432c38d0f5amr21762900f8f.58.1768211831597; 
- Mon, 12 Jan 2026 01:57:11 -0800 (PST)
-Received: from leonardi-redhat ([176.206.16.134])
+ d=1e100.net; s=20230601; t=1768211894; x=1768816694;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=t91xoUVOsOYp9feQTxhCHRsm8L9Qe52PaMmkJm5UaD4=;
+ b=cic+S2X6/TvccIOOpiy6rpLhrfY26YY6nFZczXOR/K8u7WdF8o6OR0WMwxjlqLsPHe
+ pjpfQ9L02Z2V6t/1dXSX3VV/zd/X67Dar9Ckb2cLV3xyQk9PZ0U5TGvZJ6MCPsJWSaMJ
+ t96ggEhdenjUovqGSbYA9w/uqI3+51Rcnz8uXv+kdDlxSSJCjJitKx+JfaU5N11DtGgZ
+ 7Klhv/4kQvCx/PQxYju1nQy2CTlNiR7/iVVdVKJynYn9jOZBwLfmsKq5HkF6hBQeVGCC
+ zQUGIfl46F+ueXFB2dnfnt8zjq3dFwoDKAQjBjOsUSga1GS/rKRr4qOE30CLa/gd5Jqi
+ TsLw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCURJzyY9prFNBmJ+HafdqGdCoY2NlOfV9ERF/V8c6BTnoBDzDic8d7Tm8jzfU2eKW2evlUjPb8vECGx@nongnu.org
+X-Gm-Message-State: AOJu0YyNtsHEqB8jzbS+CYFM5YZw4PUm0Dv7hD44cEB2dtlxfiQQAqsv
+ RIa7HkC7Q0ok7MoJuETJMVkPW4/fbB8foyAWD35Yjhy9+SmqllD6GBLthx5NA+09SE7IpHgKpp6
+ NekV4jzaYYBubROiVEnwFii9GtQR264CTt704ubiZbMckXx8+WwQEN42A
+X-Gm-Gg: AY/fxX5CoAAxqdyE37xPixvmzM3alZquWjK9GbACsSyVMfmQzbuFXDTBFaLG3gHHAGv
+ X1xpYhxHPN0a7k8jRjAgdP+NGywwQ9sL/DPfXt33HDmF7DzVsZsDSQucWFBdYxwXTCwWmEsI0PB
+ IPDR1tPy/Qb43J0yJCq8TfqECo8IjUDxvrvtQT2eCPcqa7ET5onbd6HHXldoiqTZ+5LGrAdGEjj
+ dwSmLf2ws2PlrhJaJWi8/o7XppvI21RQ5zDnp3PoUB3Rxki6q24bQcsB1FY2YHhc0hWE2EEk0KQ
+ IHWhOvMyxOhbDsD4gzDuC6A2uljanH0oXQfkMveYKgovl8M1iRQtnOVY3UJKtzgMuavtSjBjG0Y
+ AyHqBoLBgUMT+wO0Ioudv8V2HGF9KAYQOBwRROzMwXuo1gaw4c13Qmk0qZA==
+X-Received: by 2002:a05:600c:a48:b0:477:9eb8:97d2 with SMTP id
+ 5b1f17b1804b1-47d84b08652mr202330545e9.8.1768211894405; 
+ Mon, 12 Jan 2026 01:58:14 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH9fPhh8v4ZYoNoq7m1o4wjGB5opSXOSPQ5eAjNTaUYhi4rdNcm0d+6BkUrej6iIXKXSQ/HyA==
+X-Received: by 2002:a05:600c:a48:b0:477:9eb8:97d2 with SMTP id
+ 5b1f17b1804b1-47d84b08652mr202330235e9.8.1768211893936; 
+ Mon, 12 Jan 2026 01:58:13 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
+ ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-432bd0dacd1sm37154626f8f.4.2026.01.12.01.57.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 Jan 2026 01:57:11 -0800 (PST)
-Date: Mon, 12 Jan 2026 10:57:08 +0100
-From: Luigi Leonardi <leonardi@redhat.com>
-To: Oliver Steffen <osteffen@redhat.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>, 
- Ani Sinha <anisinha@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>, 
- Zhao Liu <zhao1.liu@intel.com>, Joerg Roedel <joerg.roedel@amd.com>, 
- Gerd Hoffmann <kraxel@redhat.com>, kvm@vger.kernel.org,
- Eduardo Habkost <eduardo@habkost.net>, 
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: Re: [PATCH v3 6/6] igvm: Fill MADT IGVM parameter field
-Message-ID: <aWTFR-sYjRIdDbId@leonardi-redhat>
-References: <20260109143413.293593-1-osteffen@redhat.com>
- <20260109143413.293593-7-osteffen@redhat.com>
+ ffacd0b85a97d-432bd0e6784sm38332100f8f.19.2026.01.12.01.58.13
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 12 Jan 2026 01:58:13 -0800 (PST)
+Message-ID: <08c42104-d7c5-4df8-b25f-7138ddc94a94@redhat.com>
+Date: Mon, 12 Jan 2026 10:58:12 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260109143413.293593-7-osteffen@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=leonardi@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] hw/arm/smmu: add memory regions as property for an
+ SMMU instance
+Content-Language: en-US
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: Leif Lindholm <leif.lindholm@oss.qualcomm.com>, qemu-arm@nongnu.org,
+ tangtao1634@phytium.com.cn, richard.henderson@linaro.org,
+ Radoslaw Biernacki <rad@semihalf.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20260108210453.2280733-1-pierrick.bouvier@linaro.org>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20260108210453.2280733-1-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -122,120 +115,201 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 09, 2026 at 03:34:13PM +0100, Oliver Steffen wrote:
->Use the new acpi_build_madt_standalone() function to fill the MADT
->parameter field.
->
->The IGVM parameter can be consumed by Coconut SVSM [1], instead of
->relying on the fw_cfg interface, which has caused problems before due to
->unexpected access [2,3]. Using IGVM parameters is the default way for
->Coconut SVSM; switching over would allow removing specialized code paths
->for QEMU in Coconut.
->
->In any case OVMF, which runs after SVSM has already been initialized,
->will continue reading all ACPI tables via fw_cfg and provide fixed up
->ACPI data to the OS as before.
->
->Generating the MADT twice (during ACPI table building and IGVM processing)
->seems acceptable, since there is no infrastructure to obtain the MADT
->out of the ACPI table memory area.
->
->[1] https://github.com/coconut-svsm/svsm/pull/858
->[2] https://gitlab.com/qemu-project/qemu/-/issues/2882
->[3] https://github.com/coconut-svsm/svsm/issues/646
->
->Signed-off-by: Oliver Steffen <osteffen@redhat.com>
->
->SQUASH: Rename madt parameter handler
 
-Development leftover?
 
->---
-> backends/igvm.c | 35 +++++++++++++++++++++++++++++++++++
-> 1 file changed, 35 insertions(+)
+On 1/8/26 10:04 PM, Pierrick Bouvier wrote:
+> This will be used to access non-secure and secure memory. Secure support
+> and Granule Protection Check (for RME) for SMMU need to access secure
+> memory.
 >
->diff --git a/backends/igvm.c b/backends/igvm.c
->index 7390dee734..90ea2c22fd 100644
->--- a/backends/igvm.c
->+++ b/backends/igvm.c
->@@ -15,9 +15,11 @@
-> #include "qapi/error.h"
-> #include "qemu/target-info-qapi.h"
-> #include "system/igvm.h"
->+#include "glib.h"
+> As well, it allows to remove usage of global address_space_memory,
+> allowing different SMMU instances to have a specific view of memory.
+>
+> User creatable SMMU are handled as well for virt machine,
+> by setting the memory properties when device is plugged in.
+>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 
-is this needed?
+Thanks
 
-> #include "system/memory.h"
-> #include "system/address-spaces.h"
-> #include "hw/core/cpu.h"
->+#include "hw/i386/acpi-build.h"
+Eric
+> ---
+>  include/hw/arm/smmu-common.h |  4 ++++
+>  include/hw/arm/virt.h        |  2 ++
+>  hw/arm/sbsa-ref.c            | 16 ++++++++++++----
+>  hw/arm/smmu-common.c         | 11 +++++++++++
+>  hw/arm/virt.c                | 13 +++++++++++--
+>  5 files changed, 40 insertions(+), 6 deletions(-)
 >
-> #include "trace.h"
->
->@@ -134,6 +136,8 @@ static int qigvm_directive_snp_id_block(QIgvm *ctx, const uint8_t *header_data,
-> static int qigvm_initialization_guest_policy(QIgvm *ctx,
->                                        const uint8_t *header_data,
->                                        Error **errp);
->+static int qigvm_directive_madt(QIgvm *ctx,
->+                                     const uint8_t *header_data, Error **errp);
->
-> struct QIGVMHandler {
->     uint32_t type;
->@@ -162,6 +166,8 @@ static struct QIGVMHandler handlers[] = {
->       qigvm_directive_snp_id_block },
->     { IGVM_VHT_GUEST_POLICY, IGVM_HEADER_SECTION_INITIALIZATION,
->       qigvm_initialization_guest_policy },
->+    { IGVM_VHT_MADT, IGVM_HEADER_SECTION_DIRECTIVE,
->+      qigvm_directive_madt },
-> };
->
-> static int qigvm_handler(QIgvm *ctx, uint32_t type, Error **errp)
->@@ -780,6 +786,35 @@ static int qigvm_initialization_guest_policy(QIgvm *ctx,
->     return 0;
-> }
->
->+static int qigvm_directive_madt(QIgvm *ctx,
->+                                     const uint8_t *header_data, Error **errp)
->+{
->+    const IGVM_VHS_PARAMETER *param = (const IGVM_VHS_PARAMETER *)header_data;
->+    QIgvmParameterData *param_entry;
->+
->+    if (ctx->machine_state == NULL) {
->+        return 0;
->+    }
->+
->+    /* Find the parameter area that should hold the MADT data */
->+    param_entry = qigvm_find_param_entry(ctx, param);
->+    if (param_entry != NULL) {
->+
->+        GArray *madt = acpi_build_madt_standalone(ctx->machine_state);
->+
->+        if (madt->len > param_entry->size) {
->+            error_setg(
->+                errp,
->+                "IGVM: MADT size exceeds parameter area defined in IGVM file");
->+            return -1;
->+        }
->+        memcpy(param_entry->data, madt->data, madt->len);
->+
->+        g_array_free(madt, true);
->+    }
->+    return 0;
->+}
->+
-> static int qigvm_supported_platform_compat_mask(QIgvm *ctx, Error **errp)
-> {
->     int32_t header_count;
->--
->2.52.0
->
-
-Rest LGTM!
-
-Luigi
+> diff --git a/include/hw/arm/smmu-common.h b/include/hw/arm/smmu-common.h
+> index 48368c8e894..b49b2f27fa9 100644
+> --- a/include/hw/arm/smmu-common.h
+> +++ b/include/hw/arm/smmu-common.h
+> @@ -162,6 +162,10 @@ struct SMMUState {
+>      uint8_t bus_num;
+>      PCIBus *primary_bus;
+>      bool smmu_per_bus; /* SMMU is specific to the primary_bus */
+> +    MemoryRegion *memory;
+> +    AddressSpace memory_as;
+> +    MemoryRegion *secure_memory;
+> +    AddressSpace secure_memory_as;
+>  };
+>  
+>  struct SMMUBaseClass {
+> diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
+> index 8694aaa4e2a..5907d41dbb2 100644
+> --- a/include/hw/arm/virt.h
+> +++ b/include/hw/arm/virt.h
+> @@ -180,6 +180,8 @@ struct VirtMachineState {
+>      bool ns_el2_virt_timer_irq;
+>      CXLState cxl_devices_state;
+>      bool legacy_smmuv3_present;
+> +    MemoryRegion *sysmem;
+> +    MemoryRegion *secure_sysmem;
+>  };
+>  
+>  #define VIRT_ECAM_ID(high) (high ? VIRT_HIGH_PCIE_ECAM : VIRT_PCIE_ECAM)
+> diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+> index d86b4706869..52c35e10c2d 100644
+> --- a/hw/arm/sbsa-ref.c
+> +++ b/hw/arm/sbsa-ref.c
+> @@ -613,7 +613,9 @@ static void create_xhci(const SBSAMachineState *sms)
+>      sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, qdev_get_gpio_in(sms->gic, irq));
+>  }
+>  
+> -static void create_smmu(const SBSAMachineState *sms, PCIBus *bus)
+> +static void create_smmu(const SBSAMachineState *sms, PCIBus *bus,
+> +                        MemoryRegion *sysmem,
+> +                        MemoryRegion *secure_sysmem)
+>  {
+>      hwaddr base = sbsa_ref_memmap[SBSA_SMMU].base;
+>      int irq =  sbsa_ref_irqmap[SBSA_SMMU];
+> @@ -625,6 +627,10 @@ static void create_smmu(const SBSAMachineState *sms, PCIBus *bus)
+>      object_property_set_str(OBJECT(dev), "stage", "nested", &error_abort);
+>      object_property_set_link(OBJECT(dev), "primary-bus", OBJECT(bus),
+>                               &error_abort);
+> +    object_property_set_link(OBJECT(dev), "memory", OBJECT(sysmem),
+> +                             &error_abort);
+> +    object_property_set_link(OBJECT(dev), "secure-memory", OBJECT(secure_sysmem),
+> +                             &error_abort);
+>      sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+>      sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
+>      for (i = 0; i < NUM_SMMU_IRQS; i++) {
+> @@ -633,7 +639,9 @@ static void create_smmu(const SBSAMachineState *sms, PCIBus *bus)
+>      }
+>  }
+>  
+> -static void create_pcie(SBSAMachineState *sms)
+> +static void create_pcie(SBSAMachineState *sms,
+> +                        MemoryRegion *sysmem,
+> +                        MemoryRegion *secure_sysmem)
+>  {
+>      hwaddr base_ecam = sbsa_ref_memmap[SBSA_PCIE_ECAM].base;
+>      hwaddr size_ecam = sbsa_ref_memmap[SBSA_PCIE_ECAM].size;
+> @@ -689,7 +697,7 @@ static void create_pcie(SBSAMachineState *sms)
+>  
+>      pci_create_simple(pci->bus, -1, "bochs-display");
+>  
+> -    create_smmu(sms, pci->bus);
+> +    create_smmu(sms, pci->bus, sysmem, secure_sysmem);
+>  }
+>  
+>  static void *sbsa_ref_dtb(const struct arm_boot_info *binfo, int *fdt_size)
+> @@ -825,7 +833,7 @@ static void sbsa_ref_init(MachineState *machine)
+>  
+>      create_xhci(sms);
+>  
+> -    create_pcie(sms);
+> +    create_pcie(sms, sysmem, secure_sysmem);
+>  
+>      create_secure_ec(secure_sysmem);
+>  
+> diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
+> index e1b77cc55fc..cdcfb1343da 100644
+> --- a/hw/arm/smmu-common.c
+> +++ b/hw/arm/smmu-common.c
+> @@ -944,6 +944,13 @@ static void smmu_base_realize(DeviceState *dev, Error **errp)
+>          return;
+>      }
+>  
+> +    g_assert(s->memory);
+> +    address_space_init(&s->memory_as, s->memory, "smmu-memory-view");
+> +    if (s->secure_memory) {
+> +        address_space_init(&s->secure_memory_as, s->secure_memory,
+> +                           "smmu-secure-memory-view");
+> +    }
+> +
+>      /*
+>       * We only allow default PCIe Root Complex(pcie.0) or pxb-pcie based extra
+>       * root complexes to be associated with SMMU.
+> @@ -994,6 +1001,10 @@ static const Property smmu_dev_properties[] = {
+>      DEFINE_PROP_BOOL("smmu_per_bus", SMMUState, smmu_per_bus, false),
+>      DEFINE_PROP_LINK("primary-bus", SMMUState, primary_bus,
+>                       TYPE_PCI_BUS, PCIBus *),
+> +    DEFINE_PROP_LINK("memory", SMMUState, memory,
+> +                     TYPE_MEMORY_REGION, MemoryRegion *),
+> +    DEFINE_PROP_LINK("secure-memory", SMMUState, secure_memory,
+> +                     TYPE_MEMORY_REGION, MemoryRegion *),
+>  };
+>  
+>  static void smmu_base_class_init(ObjectClass *klass, const void *data)
+> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> index 9d0568a7d56..4badc1a7348 100644
+> --- a/hw/arm/virt.c
+> +++ b/hw/arm/virt.c
+> @@ -1514,8 +1514,7 @@ static void create_smmuv3_dev_dtb(VirtMachineState *vms,
+>                             0x0, vms->iommu_phandle, 0x0, 0x10000);
+>  }
+>  
+> -static void create_smmu(const VirtMachineState *vms,
+> -                        PCIBus *bus)
+> +static void create_smmu(const VirtMachineState *vms, PCIBus *bus)
+>  {
+>      VirtMachineClass *vmc = VIRT_MACHINE_GET_CLASS(vms);
+>      int irq =  vms->irqmap[VIRT_SMMU];
+> @@ -1535,6 +1534,10 @@ static void create_smmu(const VirtMachineState *vms,
+>      }
+>      object_property_set_link(OBJECT(dev), "primary-bus", OBJECT(bus),
+>                               &error_abort);
+> +    object_property_set_link(OBJECT(dev), "memory", OBJECT(vms->sysmem),
+> +                             &error_abort);
+> +    object_property_set_link(OBJECT(dev), "secure-memory", OBJECT(vms->secure_sysmem),
+> +                             &error_abort);
+>      sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+>      sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
+>      for (i = 0; i < NUM_SMMU_IRQS; i++) {
+> @@ -1609,6 +1612,7 @@ static void create_pcie(VirtMachineState *vms)
+>      memory_region_init_alias(ecam_alias, OBJECT(dev), "pcie-ecam",
+>                               ecam_reg, 0, size_ecam);
+>      memory_region_add_subregion(get_system_memory(), base_ecam, ecam_alias);
+> +    vms->sysmem = get_system_memory();
+>  
+>      /* Map the MMIO window into system address space so as to expose
+>       * the section of PCI MMIO space which starts at the same base address
+> @@ -2256,6 +2260,7 @@ static void machvirt_init(MachineState *machine)
+>           * devices go in at higher priority and take precedence.
+>           */
+>          secure_sysmem = g_new(MemoryRegion, 1);
+> +        vms->secure_sysmem = secure_sysmem;
+>          memory_region_init(secure_sysmem, OBJECT(machine), "secure-memory",
+>                             UINT64_MAX);
+>          memory_region_add_subregion_overlap(secure_sysmem, 0, sysmem, -1);
+> @@ -3051,6 +3056,10 @@ static void virt_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
+>          } else if (vms->iommu == VIRT_IOMMU_NONE) {
+>              /* The new SMMUv3 device is specific to the PCI bus */
+>              object_property_set_bool(OBJECT(dev), "smmu_per_bus", true, NULL);
+> +            object_property_set_link(OBJECT(dev), "memory",
+> +                                     OBJECT(vms->sysmem), NULL);
+> +            object_property_set_link(OBJECT(dev), "secure-memory",
+> +                                     OBJECT(vms->secure_sysmem), NULL);
+>          }
+>      }
+>  }
 
 
