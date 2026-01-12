@@ -2,106 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFF58D11EE1
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 11:35:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16971D121C4
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 12:00:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfFGt-000480-FS; Mon, 12 Jan 2026 05:35:42 -0500
+	id 1vfFe2-0000Wl-VJ; Mon, 12 Jan 2026 05:59:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vfFGX-0003r3-F6
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:35:18 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vfFGT-0002NE-Es
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:35:16 -0500
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60BNa8fD013867;
- Mon, 12 Jan 2026 10:35:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=wfc5W0UwwY13K09iA
- Mh5BeDolk2EQuypihPY+lzfCKs=; b=hMhQ0UMCg5ZKIaTWTGCauvrmYpuwtA4Zd
- 9mPUdv8HPz+ikjoyZPJFVhQkI2SPov4asPYHklTySw7Fbidvaeh5hq85hng18EBY
- wp0tEOxmDFXzHRFdooQIVxwUIOdj9U2BwcHrG6tbxQCBaPZZJBlx3yKEk7lKgeOT
- 9um5FdGUrIVTL+f2/cbJM915srAxgb7F2AvczJnP5iW9ANfsJaPChlXSDcEBQPHm
- nFDFGwnzLoeCDbF/LD9JrsFc791GVNXAHSE3JL2NM8NBnEgd7xnbIyzQXJFpmgEm
- b0AdUiZcYU/av4rux+N/RvLa0LnX56HsF8mTkdUPbkwx/KTllvOeg==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkeg46hhh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Jan 2026 10:35:12 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60C7Fgea031255;
- Mon, 12 Jan 2026 10:35:11 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bm3t1d37u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Jan 2026 10:35:11 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 60CAZ9sT21889390
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 Jan 2026 10:35:09 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7006A2004D;
- Mon, 12 Jan 2026 10:35:09 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A16BE20040;
- Mon, 12 Jan 2026 10:35:08 +0000 (GMT)
-Received: from Mac.com (unknown [9.43.47.93])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 12 Jan 2026 10:35:08 +0000 (GMT)
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>
-Subject: [PULL 10/10] tests/functional: Add a OS level migration test for
- pseries
-Date: Mon, 12 Jan 2026 16:04:33 +0530
-Message-ID: <20260112103433.8451-11-harshpb@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260112103433.8451-1-harshpb@linux.ibm.com>
-References: <20260112103433.8451-1-harshpb@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfFe1-0000WS-6N
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:59:33 -0500
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfFdz-0005kb-Ev
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:59:32 -0500
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-64b791b5584so10299724a12.0
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 02:59:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1768215569; x=1768820369; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=48x7qwovVElWvGwBKSnaneaSLyUnOvpL9gAGm+M9ITM=;
+ b=kJr14gzFz1SdiqwuedkCqWuJqVgWHD9mbUU+lJN8+2cpwTdvdEI4y8yTqD7vJ4DEMk
+ l9Ys095jHivFgQ7WV3apWCWaKCZIqzwLNcIBLzvbq5SZElsfgkzmR7ZDK6GIg3RpBpxE
+ DGbuRRy+oItECqXNIaZM31Y6dbC/KpqbKcGu1XPk560H+KkrFJdqPQJyZU/Wp1RK5a8a
+ gtAitskFGyBpT1hy7GUGfltGWJ5jgAI4gA7BqzL5GfxWAZLzAU3Yqg3dwB0MYMrILBSq
+ 1i8qxPXacemvc2FqYUcj4KV6pkMQXiCEwrgz6ynhJQ8l/RIhhm7nupZ3NyEypFCn+ehc
+ suSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768215569; x=1768820369;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=48x7qwovVElWvGwBKSnaneaSLyUnOvpL9gAGm+M9ITM=;
+ b=eaFfwvE97Lxqv5QIVCsstnWKbeN8PuWMMyYhelmgKt5DaRg+HA7N3bT5s4MXUPodpR
+ Ip3tjiuZsb+6Hh94AXNKSyqAbrnfBBQugfBW8HNCAH9lMcFBz3bDHUO0OIOldtaO/GBK
+ J1aa0u46Mm7AVMxKMwo82ePRsZi7WUw+KbpJ4bCdCB5iYD7ww70joeBmkb941ZMXmw+L
+ 4AN4PcFIZk/44OI9rEszx51NgLihVVeLFH3vojQX67R462oe/LZsWO0fYgCTKZ4nw0Dg
+ bsKChQpd4hiXNpits7sy8bTMyGwxS8Ytx4rZ7A5scSizz6/5VnfRpEtjT86CqA7oh2Ff
+ OEsA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV0WaALNIEvTeukhbiY2E+Wbf7HRviE/Cf1kJARMRPb6CPyC7tE4aQ6tM10IJRvM8nH3CerJtcI/wtQ@nongnu.org
+X-Gm-Message-State: AOJu0YyaEcg1c/uC/vkSbUCnpBGlCaLSE3BrsAF2/o3Ppar3PUco51on
+ SOEnE4TJ2DivHrmZrctn3hNJ1QvKx7onmsiBMeqN+M4hCeSL4YNjDhZybE8LpQ==
+X-Gm-Gg: AY/fxX66HWshGlfdQcpI5z8J1+LSDt3OP3uUhw8Njnm74oBeRK9llGpYQAozR3l1T9v
+ YuwOZ215lXaAqjWP+x2fOa4rm9WEM6L29BYTzOwOVAhk128V4wtoXF4bVmHjtM89NrG9hEDIflL
+ 0NW1IM3oxq8MlJeECZMaUanI0MQkC92MCJfA1GPFK3JbjGnCBlSqUwl2J/RYTAMsVheabA/5jLD
+ q58T2gyiI/8/Gjaq9bjM92MZJd2pXc/4RmzApwDHLlIGn3zxKt+iSdhvvuk+sBcHPUmGc1VPAHy
+ i77bhfqEoNxrImsuSpD9WdjzSFiBLH3hW5GSI+K8BJiam2AxtTuvpac2XKiNMohV/1b5nH8oR0R
+ 0kR+jdEfESeSvKajyZtR+ibT2PnAITevKN/xmC/X2P5Yd1fDFseSUAt+KzXCAe6Buv+Vozi+qN8
+ 9GNTWOGBHmirI+d82t8FK276OJINRH+UJO9YZbM0FM7h1LVT/U5oeBVZudnXAjZCF4sit+aXGnO
+ OLypLw9gpjJAOMYC3AN2jeU75AqkbZ/VBw=
+X-Google-Smtp-Source: AGHT+IHLxMIAeTy9gVhPLhiaWBPuqwifAscuizvPVCTscYRhDY1UFMYDs9bBmqnKhWpTtFe5v+ZUIw==
+X-Received: by 2002:a05:6402:2683:b0:64b:62f7:c897 with SMTP id
+ 4fb4d7f45d1cf-65097de7c13mr15498266a12.5.1768215569434; 
+ Mon, 12 Jan 2026 02:59:29 -0800 (PST)
+Received: from ehlo.thunderbird.net
+ (dynamic-2a02-3100-299b-b200-f91d-651c-a220-693b.310.pool.telefonica.de.
+ [2a02:3100:299b:b200:f91d:651c:a220:693b])
+ by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-6507be658b3sm17078236a12.18.2026.01.12.02.59.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 12 Jan 2026 02:59:29 -0800 (PST)
+Date: Mon, 12 Jan 2026 10:37:42 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org, Gaurav Sharma <gaurav.sharma_7@nxp.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>
+Subject: =?US-ASCII?Q?RE=3A_=5BPATCHv4_00/15=5D_Adding_comprehe?=
+ =?US-ASCII?Q?nsive_support_for_i=2EMX8MM_EVK_board?=
+In-Reply-To: <AM9PR04MB84870CEFAFB934E3458CD0768786A@AM9PR04MB8487.eurprd04.prod.outlook.com>
+References: <20251205053819.2021772-1-gaurav.sharma_7@nxp.com>
+ <AM9PR04MB8487B6CDD04406F5EF2F8F1687A9A@AM9PR04MB8487.eurprd04.prod.outlook.com>
+ <AM9PR04MB84870CEFAFB934E3458CD0768786A@AM9PR04MB8487.eurprd04.prod.outlook.com>
+Message-ID: <755AFD3B-F733-466D-B623-246FA3FC78B9@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEyMDA4MSBTYWx0ZWRfXwosYejB/D6gH
- mLNzNd/l/dDf1DyXu/la4fjlPgDDI4XkGdz+K9E5f39XcPMWD8tQ2qj+IEcU+KFWLvqI6A9p1wr
- fU8q81yXMmSxTaY9Ds3tBtoxLhOkFiEh5rDHIdkh2/gPR3haoy9ZhLlpjlLHfh1Na7oi20EuPEO
- 1bthL+mqFXYpG3q4hi0GvikbtLIufiMsfFlKD289NP3cEGm/l1SkjfF8xXdIH6cJF8No898HPeP
- 9SBnEj4CkQwcyvb//JKUNzfAH8Z8dLJkB7c8IiYtn6Hol+7tfDGHf4cXqKadFodhALM0dAfrh4V
- cy2nSSPGkdLPJIQcQiwASNjF7fFOrBr6a2aYpNUdmrRS/ABGl3QNUqk/AeqvBkffS6tGsBQf0Qt
- OZ7mt/kcUzLxTGNCf4aJngtk2Y7GgqdTYMFbj+0WlQkoGesuog5c5pjz3AOLqke1mMiFgygDtIu
- eWwGP9I3BUVQetE97SA==
-X-Proofpoint-ORIG-GUID: pMsTE9qHVVYLXumcxjjTHFmntZcZjOpn
-X-Authority-Analysis: v=2.4 cv=B/60EetM c=1 sm=1 tr=0 ts=6964ce60 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=vUbySO9Y5rIA:10 a=f7IdgyKtn90A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8 a=b9j0PSuHwBvCiBSg_C4A:9
-X-Proofpoint-GUID: pMsTE9qHVVYLXumcxjjTHFmntZcZjOpn
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-12_03,2026-01-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 bulkscore=0 spamscore=0 impostorscore=0
- malwarescore=0 phishscore=0 adultscore=0 clxscore=1015 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601120081
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x529.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,107 +107,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
 
-There's currently no OS level test for ppc64le. Add one such test by
-reusing the boot level tests that are already present.
 
-The test boots the source machine, waits for it to reach a mid-boot
-message, migrates and checks that the destination has reached the
-final boot message (VFS error due to no disk).
+Am 5=2E Januar 2026 12:43:38 UTC schrieb Gaurav Sharma <gaurav=2Esharma_7@=
+nxp=2Ecom>:
+>Ping
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/qemu-devel/20260109123519.28703-3-farosas@suse.de
-Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
----
- tests/functional/ppc64/test_migration.py | 12 ++++++++
- tests/functional/ppc64/test_pseries.py   | 35 ++++++++++++++++++++++++
- 2 files changed, 47 insertions(+)
+Hi Gurav!
 
-diff --git a/tests/functional/ppc64/test_migration.py b/tests/functional/ppc64/test_migration.py
-index 5dfdaaf709..a3b819680b 100755
---- a/tests/functional/ppc64/test_migration.py
-+++ b/tests/functional/ppc64/test_migration.py
-@@ -4,6 +4,7 @@
- #
- # ppc migration test
- 
-+from qemu_test.ports import Ports
- from migration import MigrationTest
- 
- 
-@@ -21,6 +22,17 @@ def test_migration_with_exec(self):
-         self.set_machine('mac99')
-         self.migration_with_exec()
- 
-+    def do_migrate_ppc64_linux(self, source_vm, dest_vm):
-+        with Ports() as ports:
-+            port = ports.find_free_port()
-+            if port is None:
-+                self.skipTest('Failed to find a free port')
-+            uri = 'tcp:localhost:%u' % port
-+
-+            dest_vm.qmp('migrate-incoming', uri=uri)
-+            source_vm.qmp('migrate', uri=uri)
-+            self.assert_migration(source_vm, dest_vm)
-+
- 
- if __name__ == '__main__':
-     MigrationTest.main()
-diff --git a/tests/functional/ppc64/test_pseries.py b/tests/functional/ppc64/test_pseries.py
-index 7840c4e3ff..b45763c305 100755
---- a/tests/functional/ppc64/test_pseries.py
-+++ b/tests/functional/ppc64/test_pseries.py
-@@ -9,6 +9,7 @@
- 
- from qemu_test import QemuSystemTest, Asset
- from qemu_test import wait_for_console_pattern
-+from test_migration import PpcMigrationTest
- 
- class PseriesMachine(QemuSystemTest):
- 
-@@ -87,5 +88,39 @@ def test_ppc64_linux_big_boot(self):
-         wait_for_console_pattern(self, console_pattern, self.panic_message)
-         wait_for_console_pattern(self, self.good_message, self.panic_message)
- 
-+    def test_ppc64_linux_migration(self):
-+        self.set_machine('pseries')
-+
-+        kernel_path = self.ASSET_KERNEL.fetch()
-+        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE
-+
-+        dest_vm = self.get_vm(name="dest-qemu")
-+        dest_vm.add_args('-incoming', 'defer')
-+        dest_vm.add_args('-smp', '4')
-+        dest_vm.add_args('-nodefaults')
-+        dest_vm.add_args('-kernel', kernel_path,
-+                         '-append', kernel_command_line)
-+        dest_vm.set_console()
-+        dest_vm.launch()
-+
-+        source_vm = self.get_vm(name="source-qemu")
-+        source_vm.add_args('-smp', '4')
-+        source_vm.add_args('-nodefaults')
-+        source_vm.add_args('-kernel', kernel_path,
-+                           '-append', kernel_command_line)
-+        source_vm.set_console()
-+        source_vm.launch()
-+
-+        # ensure the boot has reached Linux
-+        console_pattern = 'smp: Brought up 1 node, 4 CPUs'
-+        wait_for_console_pattern(self, console_pattern, self.panic_message,
-+                                 vm=source_vm)
-+
-+        PpcMigrationTest().do_migrate_ppc64_linux(source_vm, dest_vm);
-+
-+        # ensure the boot proceeds after migration
-+        wait_for_console_pattern(self, self.good_message, self.panic_message,
-+                                 vm=dest_vm)
-+
- if __name__ == '__main__':
-     QemuSystemTest.main()
--- 
-2.52.0
+I've somehow missed your new iteration so far=2E Anyway, I've left some R-=
+b's as well as some comments mostly regarding further consolidation with im=
+x8mp-evk which should ease maintenance in the future=2E
 
+Thanks for your great work!
+
+Best regards,
+Bernhard
+
+>
+>> -----Original Message-----
+>> From: Gaurav Sharma
+>> Sent: 19 December 2025 10:37
+>> To: Gaurav Sharma <gaurav=2Esharma_7@nxp=2Ecom>; qemu-devel@nongnu=2Eor=
+g
+>> Cc: pbonzini@redhat=2Ecom; peter=2Emaydell@linaro=2Eorg
+>> Subject: RE: [PATCHv4 00/15] Adding comprehensive support for i=2EMX8MM
+>> EVK board
+>>=20
+>> ping
+>>=20
+>> > -----Original Message-----
+>> > From: Gaurav Sharma <gaurav=2Esharma_7@nxp=2Ecom>
+>> > Sent: 05 December 2025 11:08
+>> > To: qemu-devel@nongnu=2Eorg
+>> > Cc: pbonzini@redhat=2Ecom; peter=2Emaydell@linaro=2Eorg; Gaurav Sharm=
+a
+>> > <gaurav=2Esharma_7@nxp=2Ecom>
+>> > Subject: [PATCHv4 00/15] Adding comprehensive support for i=2EMX8MM E=
+VK
+>> > board
+>> >
+>> > Changes in v4:
+>> > - Update Maintainers file
+>> > - Re-used iMX8MP CCM and Analog IP for iMX8MM by introducing a varian=
+t
+>> >   specific property
+>> > - Split up the patch that enabled CCM and Analog in the previous
+>> >   revision=2E Now we have 3 patches to enable CCM and Analog in iMX8M=
+M
+>> > - Updated copyrights
+>> > - Removed '|| KVM' from hw/arm/Kconfig to prevent 'make check'
+>> > failures
+>> >
+>> > Changes in v3:
+>> > - Minor documentation change - Added KVM Acceleration section in
+>> > docs/system/arm/imx8mm-evk=2Erst
+>> >
+>> > Changes in v2:
+>> > - Fixed the DTB offset in functional testing script test_imx8mm_evk=
+=2Epy
+>> >   and preserved alphabetical order of machine names in
+>> > tests/functional/aarch64/meson=2Ebuild
+>> > - Fixed a typo and updated the documentation
+>> > - Modified structures type to static const in fsl-imx8mm=2Ec wherever
+>> >   applicable=2E
+>> > - Added CSI and DSI nodes to the nodes_to_remove list in imx8mm-evk=
+=2Ec=2E
+>> > This
+>> >   is needed because the default DTB in the iMX LF BSP images have CSI
+>> >   and DSI enabled=2E Developers/Hobbyists using these BSP images will
+>> >   observe CSI and DSI crash logs on the console since these are
+>> > unimplemented=2E
+>> >   With this change, both debian and iMX LF images will boot up withou=
+t
+>> > any issues=2E
+>> >
+>> > Changes in v1:
+>> >
+>> > This patch series adds support for the NXP i=2EMX8MM EVK (Evaluation
+>> > Kit) board to QEMU, enabling emulation of this ARM Cortex-A53 based
+>> > development platform=2E
+>> >
+>> > The series includes:
+>> >
+>> > 1=2E Core peripheral support (CCM clock controller, Analog module) 2=
+=2E
+>> > GPT(General Purpose Timer) and WDT(Watchdog Timer) Emulation support
+>> > 3=2E GPIO,I2C,SPI,USDHC and USB Emulation support 4=2E PCIe and ENET
+>> > Controller Emulation support 5=2E Documentation and functional test
+>> > included
+>> >
+>> > Key features ported:
+>> > - Basic boot support with Linux
+>> > - UART console for serial communication
+>> > - Interrupt handling
+>> > - Clock and power management infrastructure
+>> >
+>> > Testing:
+>> > - Linux kernel boots to console
+>> >
+>> > Signed-off-by: Gaurav Sharma <gaurav=2Esharma_7@nxp=2Ecom>
+>> >
+>> > Gaurav Sharma (15):
+>> >   hw/arm: Add the i=2EMX 8MM EVK(Evaluation Kit) board
+>> >   hw/misc/imx8mp_analog: Add property to analog device
+>> >   hw/arm/fsl-imx8mm: Add Analog device IP to iMX8MM SOC
+>> >   hw/arm/fsl-imx8mm: Add Clock Control Module IP to iMX8MM
+>> >   hw/arm/fsl-imx8mm: Implemented support for SNVS
+>> >   hw/arm/fsl-imx8mm: Adding support for USDHC storage controllers
+>> >   hw/arm/fsl-imx8mm: Add PCIe support
+>> >   hw/arm/fsl-imx8mm: Add GPIO controllers
+>> >   hw/arm/fsl-imx8mm: Adding support for I2C emulation
+>> >   hw/arm/fsl-imx8mm: Adding support for SPI controller
+>> >   hw/arm/fsl-imx8mm: Adding support for Watchdog Timers
+>> >   hw/arm/fsl-imx8mm: Adding support for General Purpose Timers
+>> >   hw/arm/fsl-imx8mm: Adding support for ENET ethernet controller
+>> >   hw/arm/fsl-imx8mm: Adding support for USB controller
+>> >   hw/arm/fsl-imx8mm: Adding functional testing of iMX8MM emulation
+>> >
+>> >  MAINTAINERS                                 |  10 +
+>> >  docs/system/arm/imx8mm-evk=2Erst              |  79 +++
+>> >  docs/system/target-arm=2Erst                  |   1 +
+>> >  hw/arm/Kconfig                              |  24 +
+>> >  hw/arm/fsl-imx8mm=2Ec                         | 692 ++++++++++++++++=
+++++
+>> >  hw/arm/imx8mm-evk=2Ec                         | 128 ++++
+>> >  hw/arm/meson=2Ebuild                          |   2 +
+>> >  hw/misc/imx8mp_analog=2Ec                     |  12 +-
+>> >  hw/timer/imx_gpt=2Ec                          |  26 +
+>> >  include/hw/arm/fsl-imx8mm=2Eh                 | 241 +++++++
+>> >  include/hw/misc/imx8mp_analog=2Eh             |   3 +
+>> >  include/hw/timer/imx_gpt=2Eh                  |   2 +
+>> >  tests/functional/aarch64/meson=2Ebuild        |   2 +
+>> >  tests/functional/aarch64/test_imx8mm_evk=2Epy |  67 ++
+>> >  14 files changed, 1288 insertions(+), 1 deletion(-)  create mode
+>> > 100644 docs/system/arm/imx8mm-evk=2Erst  create mode 100644 hw/arm/fs=
+l-
+>> > imx8mm=2Ec  create mode 100644 hw/arm/imx8mm-evk=2Ec  create mode
+>> 100644
+>> > include/hw/arm/fsl-imx8mm=2Eh  create mode 100755
+>> > tests/functional/aarch64/test_imx8mm_evk=2Epy
+>> >
+>> > --
+>> > 2=2E34=2E1
+>
+>
 
