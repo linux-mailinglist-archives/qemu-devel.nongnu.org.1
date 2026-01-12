@@ -2,143 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7239D13E7B
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 17:11:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82A80D13EF7
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 17:18:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfKUW-0004jg-Qs; Mon, 12 Jan 2026 11:10:04 -0500
+	id 1vfKbQ-0000C4-Js; Mon, 12 Jan 2026 11:17:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vfKTa-000469-5S
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 11:09:11 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfKay-0008Up-1K
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 11:16:53 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vfKTV-0005oB-4B
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 11:09:03 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfKau-00077q-JI
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 11:16:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768234140;
+ s=mimecast20190719; t=1768234599;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=6zZI2Yvca91/VVSCRFngnQgUEgbXHwMjUZhCkfJsQmo=;
- b=KO37jtOYr7M0TTJN2gvNhEdfeKCxWQ+2nr5RbIKFDCm8DGf3XVwjfGPS8Y76Btbc1aymk+
- +JEAALjBHhoFPx2cdpBjH/ZETIjsgbvoKw6Uq2F5bYTEma/S2ubVQZB/le8O0aM0tgF0Ys
- cpFX+kXhgAqYg9CrhnxKP5s2L7evvlw=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-104-jQgOgQYwOEKZT3xrmFXh7w-1; Mon, 12 Jan 2026 11:08:58 -0500
-X-MC-Unique: jQgOgQYwOEKZT3xrmFXh7w-1
-X-Mimecast-MFC-AGG-ID: jQgOgQYwOEKZT3xrmFXh7w_1768234137
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-432db1a9589so1295142f8f.0
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 08:08:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768234137; x=1768838937; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=6zZI2Yvca91/VVSCRFngnQgUEgbXHwMjUZhCkfJsQmo=;
- b=RhJtmiu6Tb9bTVh2Xt9CL2Ivq0KUqhaBqwJDJGRUEVzXHMbcxGwcS632iRN4b18tUI
- 8ZCRfVCwB77orckglmP8ETzU3eKrq3ER0br8i3mbr5c7TqqzUun6b9udQOnQP6U0xdiF
- J6Nn3IMq77ksxczekl2KDfCgvVRr+TGvkk0NK6T9I8o+F8H2KDshCXZ1fabnoZjpPu0f
- Z/4W25Nu9nQ6LslNSThlDFOOwU1Kt5frWVVc03vCMiyMde6wkIajoIuhl/Z9fnfUuS8S
- ZzGuAk2gQh7ZunOvMwGq90zDdJyAOz5r4WSxQqsCkTZkP2LA7I1iCit/t3nINJyiAZUw
- lJzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768234137; x=1768838937;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6zZI2Yvca91/VVSCRFngnQgUEgbXHwMjUZhCkfJsQmo=;
- b=k5cxHYhaZOvIzqMPEboR0nsUBVrllbf1EHSfOsAnsqg5XbuXW/Cx5VNwn3b3dWcdkw
- nj9gb23A2gpo8MaiCZTat6qlwQVyCrxk17HuUKIm4k/TiyAOfjGUGMdoGy0iFHvZThTl
- eio6jq1qSK0wRCgR2BxhEWdkFt3MmixLyggAHYM7fu444l+6Nc6PMyDXofYbV+2To6xe
- OtFqdihLPm47GB1i1S7GSvsVSj6VqI82KPPe0ovTK/X77qrNxaQ1Evr3dKUEwRouGE/y
- 5DQtG/PoGphDr4dO/NNvDV5KYKCgoPb+C05mWK8t2rnhdzHpwNkB7K+GjluVMldq3FKN
- OB+g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVMSo7A/iiSgJPLxtphBhn4mPzS1CyfE+A/xHI8ZHNxYPHFi3aixYdlKmZ5QoGyac/MRXgYWaUVWeuf@nongnu.org
-X-Gm-Message-State: AOJu0YxmgFUSRflybRFO0i9JXqMwy+a+ZoDOvCkQ0now6iizWHglC5B7
- S9kA3EB+Xvg5Tn6Xl/3XA3XaBBpAyZjejjHacVK/ecj1dzq5s8dUYjD7XXUJwSlWlpSL8IByWK7
- yOKAvsCBciIv30iOADmKkTt5UrXlOXkXrNi0LqOZjgd2gseix4J/OG5Ji
-X-Gm-Gg: AY/fxX45XhO2wLLwCLqBFB0wjCX7NRG9XrU9EBEy1ntWcEsYHlQXfji7gy2EB5vdFqh
- ghP+2xsbAJh17NqCbzCUDHjxldIJl8xqGR8iLp9bHDo0tm9iOe8Ff1m63fmxlyDJcrdEWtZKoX3
- YDWyHt1pHEUhvW+iEY9s1mmj8dg6qLeVkYZoFKzrjhgm0Ir6lUBIKRHD8KAFeb8szi2SOJBQPgU
- 4yBfNoxNI6PH4+oTKgp1nT/9d2Gzva21kCn8UJordRTWw0NSoriDJrrxXZ121SphVvEBeerzomm
- lFdOjjxOlAthpSnKgWzsPK24+ssI+nxif9/IS5JsszXlJKvfwmLcASb6d7PN4dgcBSlX/seR0+7
- UJu2AE/o=
-X-Received: by 2002:a05:600c:3b19:b0:45d:d97c:236c with SMTP id
- 5b1f17b1804b1-47d84b3b645mr226649425e9.21.1768234137368; 
- Mon, 12 Jan 2026 08:08:57 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHWbxUBTHhn2usIIZF4Jju4HGpJg/a4HqYZUPlRC6Pti7uNYoKmntnM8lw3LalqfhIa5IaEpQ==
-X-Received: by 2002:a05:600c:3b19:b0:45d:d97c:236c with SMTP id
- 5b1f17b1804b1-47d84b3b645mr226648915e9.21.1768234136872; 
- Mon, 12 Jan 2026 08:08:56 -0800 (PST)
-Received: from [192.168.0.9] ([47.64.114.194])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d7f653c61sm367325745e9.10.2026.01.12.08.08.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 12 Jan 2026 08:08:56 -0800 (PST)
-Message-ID: <a24713bf-3399-4e47-824e-03dbe833cf00@redhat.com>
-Date: Mon, 12 Jan 2026 17:08:55 +0100
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Gv07gSs/PvTjpMJNrjhTm55jYh8xe0jymb55ySDg85w=;
+ b=KxZ1HRLJkT4PuYzyUmoNVEhVS745CPmu+DwysYboW2YdT1e7Qqj+KGadlgVlpABZ/q8YF3
+ GoG+16AVHcYGQ3DUeDn0xOLwgQcz332sRaoI/VYL6l++tfs870fZcU17jLJQlTB8PPLSHt
+ mx4pEe2Q0KOkCMh7JlBA3KzcyVifR44=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-104-iGJ2YI2cOnKwwA_cMfMO-Q-1; Mon,
+ 12 Jan 2026 11:16:35 -0500
+X-MC-Unique: iGJ2YI2cOnKwwA_cMfMO-Q-1
+X-Mimecast-MFC-AGG-ID: iGJ2YI2cOnKwwA_cMfMO-Q_1768234594
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F343C180035D; Mon, 12 Jan 2026 16:16:33 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.44.32.79])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 5924C30001A2; Mon, 12 Jan 2026 16:16:28 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PATCH] target/riscv: Fix build errors
+Date: Mon, 12 Jan 2026 17:16:26 +0100
+Message-ID: <20260112161626.1232639-1-clg@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] configs: use default prefix for Windows compilation
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-References: <20260112160736.1028280-1-pbonzini@redhat.com>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20260112160736.1028280-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -163,38 +83,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/01/2026 17.07, Paolo Bonzini wrote:
-> The update to Python 3.13 causes meson configuration to fail, see e.g.:
-> 
->     https://gitlab.com/qemu-project/qemu/-/jobs/12672816538#L397
-> 
->     meson.build:1:0: ERROR: prefix value '/qemu' must be an absolute path
-> 
-> This is https://github.com/mesonbuild/meson/issues/14303.  Remove the
-> prefix='/qemu' line in configs/meson/windows.txt, since commit d17f305a264
-> ("configure: use a platform-neutral prefix", 2020-09-30) says that the
-> NSIS installer doesn't care.
-> 
-> Cc: qemu-stable@nongnu.org
-> Cc: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   configs/meson/windows.txt | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/configs/meson/windows.txt b/configs/meson/windows.txt
-> index 55b192e71b1..9ef0fb3c8f3 100644
-> --- a/configs/meson/windows.txt
-> +++ b/configs/meson/windows.txt
-> @@ -3,7 +3,6 @@
->   
->   [built-in options]
->   bindir = ''
-> -prefix = '/qemu'
->   
->   [project options]
->   qemu_suffix = ''
+Newer gcc compiler (version 16.0.0 20260103 (Red Hat 16.0.0-0) (GCC))
+detects a truncation error:
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+  ../target/riscv/cpu.c: In function ‘riscv_isa_write_fdt’:
+  ../target/riscv/cpu.c:2916:35: error: ‘%d’ directive output may be truncated writing between 1 and 11 bytes into a region of size 5 [-Werror=format-truncation=]
+   2916 |     snprintf(isa_base, maxlen, "rv%di", xlen);
+        |                                   ^~
+  ../target/riscv/cpu.c:2916:32: note: directive argument in the range [-2147483648, 2147483632]
+   2916 |     snprintf(isa_base, maxlen, "rv%di", xlen);
+        |                                ^~~~~~~
+
+Since the xlen variable represents the register width (32, 64, 128) in
+the RISC-V base ISA name, mask its value with a 8-bit bitmask to
+satisfy the size constraints on the snprintf output.
+
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Alistair Francis <alistair.francis@wdc.com>
+Cc: Weiwei Li <liwei1518@gmail.com>
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ target/riscv/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index ffd98e8eed468645b8ceb8a7adb45718bdc4444d..e95eea024939d2cbb5747781c291fed0e1b07bb9 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -2913,7 +2913,7 @@ void riscv_isa_write_fdt(RISCVCPU *cpu, void *fdt, char *nodename)
+     riscv_isa = riscv_isa_string(cpu);
+     qemu_fdt_setprop_string(fdt, nodename, "riscv,isa", riscv_isa);
+ 
+-    snprintf(isa_base, maxlen, "rv%di", xlen);
++    snprintf(isa_base, maxlen, "rv%di", xlen & 0xFF);
+     qemu_fdt_setprop_string(fdt, nodename, "riscv,isa-base", isa_base);
+ 
+     isa_extensions = riscv_isa_extensions_list(cpu, &count);
+-- 
+2.52.0
 
 
