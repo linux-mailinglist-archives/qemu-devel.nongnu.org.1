@@ -2,47 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BBC0D12857
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 13:22:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6646D12854
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 13:22:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfGuo-0000AA-8k; Mon, 12 Jan 2026 07:20:58 -0500
+	id 1vfGur-0000LZ-JU; Mon, 12 Jan 2026 07:21:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vfGuR-0008Gm-9H
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 07:20:39 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vfGuR-0008Gi-66
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 07:20:37 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vfGuO-0002eQ-Hm
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 07:20:35 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vfGuM-0002eP-1b
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 07:20:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
- Message-Id:Date:Subject:From:Sender:Reply-To:Content-ID:Content-Description:
- Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
- In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ s=dkim; h=Cc:To:In-Reply-To:References:Message-Id:Content-Transfer-Encoding:
+ Content-Type:MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=oer5PbYMq+a2BZX11DYCCJry+S77D/LwpPlN/WAAaQw=; b=Qw+hZO45IARpJ7y
- d0nL0tyh8OZGFRq6MojAdSA87VxNQlkQ4LNkUn04X6Y+C/s+9qct4XBGV/eDIggo3v0iotRfI0npy
- t9ff0huPaD2FfsJGAv4vHHTLEIN8v329HFrDM2deRVYgj/jQD1QQuaQoVdj9vcj7rl8q3ghId1G+1
- nI=;
-Subject: [PATCH v3 0/7] single-binary: Drop TARGET_PHYS_ADDR_SPACE_BITS
-Date: Mon, 12 Jan 2026 13:22:41 +0100
-Message-Id: <20260112-phys_addr-v3-0-5f90fdb4015f@rev.ng>
+ List-Help; bh=xDhPNP4c2G5sPQl4fEeZ/26DN5Xx/bOxUCuoj2RbZ18=; b=oc4AMiIBqkLA8ul
+ X3V09h4p1oFhcULson6Za4SCpcJPhP3UTJIbWvzsBeRkbnBUw+Oczb3Bh8ado0V+BTmk5cm6e1KDv
+ oI7ZbeshG0A32JwBcG1nkz8YWHN+WRaABj2aRZ2vAAqEFQsRM+Y5GxXHZUtH8Pwh84m64sTDHjeKU
+ sM=;
+Date: Mon, 12 Jan 2026 13:22:42 +0100
+Subject: [PATCH v3 1/7] target/alpha: Introduce
+ alpha_phys_addr_space_bits()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJHnZGkC/02OQQqDMBBFryKzbkpmEpvqqvcopaRm1GxUkhIq4
- t0bLRSX7zPvMQtEDp4j1MUCgZOPfhwyqFMBTW+HjoV3mYEklYhSi6mf49M6F8RLttqwVRK1hXw
- /BW79Z2/dH5l7H99jmPd0wm39VUhWh0pCIUWjrqZVbMgZc8tvnIcOtkSig4blUaOsXZSyFl1F1
- Li/tq7rFwgMTaDWAAAA
-X-Change-ID: 20251104-phys_addr-b0f47ea3014a
+Message-Id: <20260112-phys_addr-v3-1-5f90fdb4015f@rev.ng>
+References: <20260112-phys_addr-v3-0-5f90fdb4015f@rev.ng>
+In-Reply-To: <20260112-phys_addr-v3-0-5f90fdb4015f@rev.ng>
 To: qemu-devel@nongnu.org
 Cc: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
  Richard Henderson <richard.henderson@linaro.org>, 
  Anton Johansson <anjo@rev.ng>, palmer@dabbelt.com, alistair.francis@wdc.com, 
- pbonzini@redhat.com, gaosong@loongson.cn, maobibo@loongson.cn, 
- Brian Cain <brian.cain@oss.qualcomm.com>
+ pbonzini@redhat.com, gaosong@loongson.cn, maobibo@loongson.cn
 Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
  helo=rev.ng
 X-Spam_score_int: -20
@@ -69,74 +66,59 @@ From:  Anton Johansson via qemu development <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The target macro TARGET_PHYS_ADDR_SPACE_BITS is unused since commit
+In preparation for dropping TARGET_PHYS_ADDR_SPACE_BITS, add a
+a runtime function to correctly represent the size of the physical
+address space for EV4-6 based on the current CPU version.
 
-  2e8fe327eb6 ("accel/tcg: Simplify L1_MAP_ADDR_SPACE_BITS"),
-
-replace the handful of remaining uses with runtime functions or
-constants.
-
-For discussion see:
-
-  https://lore.kernel.org/qemu-devel/8f0db5c1-f20b-4b7a-8d6c-76ce7ec7b4e0@linaro.org/
-
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
-Changes in v3:
-- Added reviewed-by;
-- Widened CC;
-- Link to v2: https://lore.kernel.org/qemu-devel/20251215-phys_addr-v2-0-633aa1d922cd@rev.ng
+ linux-user/alpha/target_proc.h | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-Changes in v2:
-- Move alpha_phys_addr_space_bits() to linux-user/alpha/target_proc.h
-  (Richard);
-- Link to v1: https://lore.kernel.org/qemu-devel/20251209-phys_addr-v1-0-c387f3e72d77@rev.ng
+diff --git a/linux-user/alpha/target_proc.h b/linux-user/alpha/target_proc.h
+index da437ee0e5..6b491ffa3a 100644
+--- a/linux-user/alpha/target_proc.h
++++ b/linux-user/alpha/target_proc.h
+@@ -6,6 +6,27 @@
+ #ifndef ALPHA_TARGET_PROC_H
+ #define ALPHA_TARGET_PROC_H
+ 
++#include "qemu/osdep.h"
++#include "target/alpha/cpu.h"
++
++static uint8_t alpha_phys_addr_space_bits(CPUAlphaState *env)
++{
++    switch (env->implver) {
++    case IMPLVER_2106x:
++        /* EV4 */
++        return 34;
++    case IMPLVER_21164:
++        /* EV5 */
++        return 40;
++    case IMPLVER_21264:
++    case IMPLVER_21364:
++        /* EV6 and EV7*/
++        return 44;
++    default:
++        g_assert_not_reached();
++    }
++}
++
+ static int open_cpuinfo(CPUArchState *cpu_env, int fd)
+ {
+     int max_cpus = sysconf(_SC_NPROCESSORS_CONF);
+@@ -57,7 +78,7 @@ static int open_cpuinfo(CPUArchState *cpu_env, int fd)
+             "L1 Dcache\t\t: n/a\n"
+             "L2 cache\t\t: n/a\n"
+             "L3 cache\t\t: n/a\n",
+-            model, TARGET_PAGE_SIZE, TARGET_PHYS_ADDR_SPACE_BITS,
++            model, TARGET_PAGE_SIZE, alpha_phys_addr_space_bits(cpu_env),
+             max_cpus, num_cpus, cpu_mask);
+ 
+     return 0;
 
----
-Anton Johansson (7):
-      target/alpha: Introduce alpha_phys_addr_space_bits()
-      target/hppa: Define PA[20|1X] physical address space size
-      target/i386: Drop physical address range checks
-      target/loongarch: Introduce loongarch_palen_mask()
-      hw/loongarch: Use loongarch_palen_mask()
-      hw/riscv: Fix IOMMU PAS capability to 56 bits
-      Drop TARGET_PHYS_ADDR_SPACE_BITS
-
- include/exec/cpu-defs.h           |  3 ---
- include/exec/poison.h             |  2 --
- include/hw/loongarch/boot.h       |  3 ++-
- linux-user/alpha/target_proc.h    | 23 ++++++++++++++++++++++-
- target/alpha/cpu-param.h          |  3 ---
- target/arm/cpu-param.h            |  2 --
- target/avr/cpu-param.h            |  1 -
- target/hexagon/cpu-param.h        |  1 -
- target/hppa/cpu-param.h           |  2 --
- target/i386/cpu-param.h           |  2 --
- target/i386/tcg/helper-tcg.h      |  2 --
- target/loongarch/cpu-mmu.h        |  1 +
- target/loongarch/cpu-param.h      |  1 -
- target/loongarch/internals.h      |  1 -
- target/m68k/cpu-param.h           |  1 -
- target/microblaze/cpu-param.h     |  2 --
- target/mips/cpu-param.h           |  2 --
- target/openrisc/cpu-param.h       |  1 -
- target/ppc/cpu-param.h            |  7 -------
- target/riscv/cpu-param.h          |  2 --
- target/rx/cpu-param.h             |  1 -
- target/s390x/cpu-param.h          |  1 -
- target/sh4/cpu-param.h            |  1 -
- target/sparc/cpu-param.h          |  2 --
- target/tricore/cpu-param.h        |  1 -
- target/xtensa/cpu-param.h         |  1 -
- hw/loongarch/boot.c               | 28 ++++++++++++++++------------
- hw/loongarch/virt.c               |  5 ++++-
- hw/riscv/riscv-iommu.c            | 12 +++++++++---
- target/hppa/mem_helper.c          | 23 ++++++++++++++++++-----
- target/i386/cpu.c                 |  9 +++------
- target/i386/kvm/kvm.c             |  3 +--
- target/loongarch/cpu_helper.c     | 14 +++++++++++---
- target/loongarch/tcg/tlb_helper.c | 12 ++++++++----
- 34 files changed, 95 insertions(+), 80 deletions(-)
+-- 
+2.51.0
 
 
