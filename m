@@ -2,84 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D562D15B30
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 23:56:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD949D15B81
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 00:03:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfQoj-0004GM-1V; Mon, 12 Jan 2026 17:55:21 -0500
+	id 1vfQvX-0003Mp-UD; Mon, 12 Jan 2026 18:02:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1vfQoX-0003sO-0w
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:55:10 -0500
-Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1vfQoU-00047N-Up
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:55:08 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1768258493; cv=none; 
- d=zohomail.com; s=zohoarc; 
- b=hNrrKiYrzuX2M/dwnJ413SUaKe4K6xwllew5cZ7kO+qTViJjNnogS/HM67VaZvXTGww9wpRz/dFJ4jvEoMEEu+UFwbqXPbD9xKjJ+ZXXHkpxWuLqATU+DluR2NATvGPjItsGYmgu/SoqzD1AK61HXfljvooUm488MLG5gGfjdrs=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1768258493;
- h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=DFX1dJw0yaWhhJ/7Cf/9JW6rveftWcxUPucoIxUflE0=; 
- b=hMpf0uMtPb0QxTITtfvYxJZX05ZqC6ffyWaO21xOTSSmk/9CvJhtBGRcXhybFuj3GvXTef++DJNHEg1e7B6Ed7CeTU/2mrGf/TMvDhxECYe25bJH+cPj4+PvPwlzfPtgvCZ9P/3nOB1DN2Tk+Z1W7aNFGcIPTusljwDrSyC2uSw=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
- dkim=pass  header.i=collabora.com;
- spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
- dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1768258493; 
- s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
- h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=DFX1dJw0yaWhhJ/7Cf/9JW6rveftWcxUPucoIxUflE0=;
- b=IyhMho/HsHYDDV4wpWe/Cqc2cyK5FNuHigCHVHr45QI7wN/jUV7LAlaj96jY2KSZ
- jCKbBSxC3A5cjPpTpC0hg3z9wDKtST2OAn5xL3N5K1INBKm5mIty9YQEFXovd8eV1sH
- iTut8mGEfES/VaE9GT2anpmBNA0SgJ1g0D9jaXtk=
-Received: by mx.zohomail.com with SMTPS id 1768258490765501.69852247485073;
- Mon, 12 Jan 2026 14:54:50 -0800 (PST)
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Huang Rui <ray.huang@amd.com>,
+ (Exim 4.90_1)
+ (envelope-from <bounce+0e9322.97607e-qemu-devel=nongnu.org@yodel.dev>)
+ id 1vfQvS-0003L1-0L
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 18:02:18 -0500
+Received: from k62.kb8c70eb.use4.send.mailgun.net ([204.220.184.62])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1)
+ (envelope-from <bounce+0e9322.97607e-qemu-devel=nongnu.org@yodel.dev>)
+ id 1vfQvO-0006IB-Qw
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 18:02:17 -0500
+X-Mailgun-Sid: WyI4ZDFlNiIsInFlbXUtZGV2ZWxAbm9uZ251Lm9yZyIsIjk3NjA3ZSJd
+Received: from mail.yodel.dev (mail.yodel.dev [35.209.39.246]) by
+ 15297539a2ede0681a8f567990a433e7a92368a64e971dcb4b220593225b4888 with SMTP id
+ 69657d6eb6eaa267982c3d01; Mon, 12 Jan 2026 23:02:06 GMT
+X-Mailgun-Sending-Ip: 204.220.184.62
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yodel.dev;
+ s=rsa2048; t=1768258924;
+ bh=iqVPn8e+06BTG8i3qFmUc7jS7m5cDGRjlSNFSy+xDBU=;
+ h=X-Mailgun-Dkim:From:To:Cc:Subject:Date:Message-ID:MIME-Version:
+ Content-Type:Content-Transfer-Encoding:From:Reply-to:Subject:Date:
+ Message-id:To:Cc:Mime-version:Content-type:
+ Content-transfer-encoding:In-reply-to:References;
+ b=LV6M75vjrKkJEqcJuoAmBdtdOHhntdb8hsAGBwgv447KXaVAypOCpI203W6Zau7ZT
+ PjjRWutuELI6IvPhCg9tPezYZwL+OAcbnCodwbDm3RT8KJFJGhA18LTUYQbVYeBYc7
+ wtZYeVbnuf8jKqtZ1jUzhuky8Hqp5XULOv8/v8QifMxx4OCPeUziRX3oxNy+yFN2LJ
+ Jsppe6N1DiPlrWmmi3d34Sz8uUcn8VrZMmu3Dj36IRL0+13b5oDbMZ5xKwOhR7qO14
+ HBJHPh6q6C8yKs478N31/5fP+DXpAZG0DPWc2V9TeITTdq6OYOFHpDRoIO/NCP0jwA
+ stMZTOJsTibrQ==
+X-Mailgun-Dkim: no
+X-Mailgun-Dkim: no
+From: Yodel Eldar <yodel.eldar@yodel.dev>
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Yiwei Zhang <zzyiwei@gmail.com>,
- Sergio Lopez Pascual <slp@redhat.com>
-Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
- Gurchetan Singh <gurchetansingh@chromium.org>, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>,
- Robert Beckett <bob.beckett@collabora.com>
-Subject: [RFC PATCH v9 5/5] virtio-gpu: Support mapping hostmem blobs with
- map_fixed
-Date: Tue, 13 Jan 2026 01:52:46 +0300
-Message-ID: <20260112225246.3526313-6-dmitry.osipenko@collabora.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260112225246.3526313-1-dmitry.osipenko@collabora.com>
-References: <20260112225246.3526313-1-dmitry.osipenko@collabora.com>
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Yodel Eldar <yodel.eldar@yodel.dev>
+Subject: [RFC PATCH v2 0/3] vhost-user-bridge housekeeping and test
+Date: Mon, 12 Jan 2026 17:01:24 -0600
+Message-ID: <20260112230127.99125-1-yodel.eldar@yodel.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-Received-SPF: pass client-ip=136.143.188.112;
- envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
+Received-SPF: pass client-ip=204.220.184.62;
+ envelope-from=bounce+0e9322.97607e-qemu-devel=nongnu.org@yodel.dev;
+ helo=k62.kb8c70eb.use4.send.mailgun.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,226 +81,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Support mapping virgl blobs to a fixed location of a hostmem memory
-region using new virglrenderer MAP_FIXED API.
+vhost-user-bridge was introduced prior to the first vhost-user daemon in
+contrib/, and has remained in tests/ ever since. Let's join it with its
+friends. By moving it into its own subdir of contrib/, it's granted
+coverage in MAINTAINERS under the vhost section, whereas in tests/ it
+remains uncovered and somewhat out of place.
 
-This new feature closes multiple problems for virtio-gpu on QEMU:
+Since vhost-user daemons in contrib have sections in the
+vhost-user-contrib doc, let's add a section for vubr there. The section
+as proposed doesn't fully cover all of vhost-user-bridge's capabilities;
+for example, in aef8486ede8b Marc-André added a client mode to vubr that
+is, for now, left unmentioned in the doc.
 
-- Having dedicated memory region for each mapped blob works notoriously
-slow due to QEMU's memory region software design built around RCU that
-isn't optimized for frequent removal of the regions
+To complete the move, changes were made to the tests/ and root
+meson.build files in addition to the new one in
+contrib/vhost-user-bridge/.
 
-- KVM isn't optimized for a frequent slot changes too
+The second patch was the subject of the first RFC. It introduces a basic
+functional test of vubr in the same spirit as the testing mentioned for
+it in vubr's initial commit, 3595e2eb0a23 (I had the wrong commit hash
+in v1 of the RFC, my apologies). Initially, we used wget in the guest to
+make an http request to an external host. This proved to be the wrong
+tack, and I want to thank Marc-André for pointing that out and Thomas
+for suggesting the alternative methods to eliminate the external host
+dependency that are now used by the test.
 
-- QEMU/KVM has a limit for a total number of created memory regions,
-crashing QEMU when limit is reached
+The test is described in its header and commit message, but in short:
+the guest serves a file to the host via http, and the host serves a file
+to the guest via tftp.
 
-This patch makes virtio-gpu-gl to pre-create a single anonymous memory
-region covering whole hostmem area to which blobs will be mapped using
-the MAP_FIXED API.
+I should mention that the guest kernel image has since been modified to
+add python in the guest to be able to serve http. Also, the buildroot
+option to enable DHCP on boot is now included. As before, please see:
+    https://github.com/yodel/vhost-user-bridge-test
+for the kernel and initramfs combined image and associated build files.
 
-Not all virgl resources will support mapping at a fixed memory address. For
-them, we will continue to create individual nested memory sub-regions. In
-particular, vrend resources may not have MAP_FIXED capability.
+For the last patch, adding an RX hexdump to complement the existing
+transmit hexdump proved helpful to me when I was going through vubr's
+logs, and I think it may be helpful to others. I'm not sure if there's a
+reason for its omission besides time-constraints or simply being
+overlooked, so please let me know otherwise?
 
-Venus and DRM native contexts will largely benefit from the MAP_FIXED
-feature in terms of performance and stability improvement.
+I think the test patch (two) is probably ready for pulling but am, as
+always, open to suggestions for improvements/fixes; as for its line in
+MAINTAINERS, I placed it under vhost after Michael's comment in the RFC
+(thank you, Michael), but perhaps the suggestion was meant only for
+vhost-user-bridge.c and not the functional test. Please let me know if
+the vhost section is the right place for the test or not?
 
-Tested-by: Yiwei Zhang <zzyiwei@gmail.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
----
- hw/display/virtio-gpu-gl.c     | 40 ++++++++++++++++++++++-
- hw/display/virtio-gpu-virgl.c  | 59 +++++++++++++++++++++++++++++++++-
- include/hw/virtio/virtio-gpu.h |  3 ++
- 3 files changed, 100 insertions(+), 2 deletions(-)
+And as before, thank you Cédric for having encouraged me to write the
+test in the first place, and now for having Cc-ed Marc-André.
 
-diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-index 8b71dd6fc26f..add6af73e980 100644
---- a/hw/display/virtio-gpu-gl.c
-+++ b/hw/display/virtio-gpu-gl.c
-@@ -13,6 +13,7 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/iov.h"
-+#include "qemu/mmap-alloc.h"
- #include "qemu/module.h"
- #include "qemu/error-report.h"
- #include "qapi/error.h"
-@@ -106,7 +107,12 @@ static void virtio_gpu_gl_reset(VirtIODevice *vdev)
- static void virtio_gpu_gl_device_realize(DeviceState *qdev, Error **errp)
- {
-     ERRP_GUARD();
--    VirtIOGPU *g = VIRTIO_GPU(qdev);
-+    VirtIOGPUBase *b = VIRTIO_GPU_BASE(qdev);
-+    VirtIOGPU *g = VIRTIO_GPU(b);
-+#if !defined(CONFIG_WIN32)
-+    VirtIOGPUGL *gl = VIRTIO_GPU_GL(g);
-+    void *map;
-+#endif
- 
- #if HOST_BIG_ENDIAN
-     error_setg(errp, "virgl is not supported on bigendian platforms");
-@@ -137,6 +143,27 @@ static void virtio_gpu_gl_device_realize(DeviceState *qdev, Error **errp)
- #endif
- 
-     virtio_gpu_device_realize(qdev, errp);
-+    if (*errp) {
-+        return;
-+    }
-+
-+#if !defined(CONFIG_WIN32)
-+    if (virtio_gpu_hostmem_enabled(b->conf)) {
-+        map = qemu_ram_mmap(-1, b->conf.hostmem, qemu_real_host_page_size(),
-+                            0, 0);
-+        if (map == MAP_FAILED) {
-+            error_setg_errno(errp, errno,
-+                             "virgl hostmem region could not be initialized");
-+            return;
-+        }
-+
-+        gl->hostmem_mmap = map;
-+        memory_region_init_ram_ptr(&gl->hostmem_background, NULL,
-+                                   "hostmem-background", b->conf.hostmem,
-+                                   gl->hostmem_mmap);
-+        memory_region_add_subregion(&b->hostmem, 0, &gl->hostmem_background);
-+    }
-+#endif
- }
- 
- static const Property virtio_gpu_gl_properties[] = {
-@@ -172,6 +199,17 @@ static void virtio_gpu_gl_device_unrealize(DeviceState *qdev)
-     gl->renderer_state = RS_START;
- 
-     g_array_unref(g->capset_ids);
-+
-+    /*
-+     * It is not guaranteed that the memory region will be finalized
-+     * immediately with memory_region_del_subregion(), there can be
-+     * a remaining reference to gl->hostmem_mmap. VirtIO-GPU is not
-+     * hotpluggable, hence no need to worry about the leaked mapping.
-+     *
-+     * The memory_region_del_subregion(gl->hostmem_background) is unnecessary
-+     * because b->hostmem  and gl->hostmem_background belong to the same
-+     * device and will be gone at the same time.
-+     */
- }
- 
- static void virtio_gpu_gl_class_init(ObjectClass *klass, const void *data)
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index 15a98336969b..4d0def7c1dca 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -41,9 +41,13 @@
-      VIRGL_VERSION_MICRO >= (micro))
- #endif
- 
-+#define VIRGL_HAS_MAP_FIXED \
-+    (VIRGL_CHECK_VERSION(1, 2, 1) && !IS_ENABLED(CONFIG_WIN32))
-+
- struct virtio_gpu_virgl_resource {
-     struct virtio_gpu_simple_resource base;
-     MemoryRegion *mr;
-+    void *map_fixed;
- };
- 
- static struct virtio_gpu_virgl_resource *
-@@ -126,6 +130,9 @@ virtio_gpu_virgl_map_resource_blob(VirtIOGPU *g,
- {
-     struct virtio_gpu_virgl_hostmem_region *vmr;
-     VirtIOGPUBase *b = VIRTIO_GPU_BASE(g);
-+#if VIRGL_HAS_MAP_FIXED
-+    VirtIOGPUGL *gl = VIRTIO_GPU_GL(g);
-+#endif
-     MemoryRegion *mr;
-     uint64_t size;
-     void *data;
-@@ -136,6 +143,41 @@ virtio_gpu_virgl_map_resource_blob(VirtIOGPU *g,
-         return -EOPNOTSUPP;
-     }
- 
-+#if VIRGL_HAS_MAP_FIXED
-+    /*
-+     * virgl_renderer_resource_map_fixed() allows to create multiple
-+     * mappings of the same resource, while virgl_renderer_resource_map()
-+     * not. Don't allow mapping same resource twice.
-+     */
-+    if (res->map_fixed || res->mr) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: failed to map(fixed) virgl resource: already mapped\n",
-+                      __func__);
-+        return -EBUSY;
-+    }
-+
-+    ret = virgl_renderer_resource_map_fixed(res->base.resource_id,
-+                                            gl->hostmem_mmap + offset);
-+    switch (ret) {
-+    case 0:
-+        res->map_fixed = gl->hostmem_mmap + offset;
-+        return 0;
-+
-+    case -EOPNOTSUPP:
-+        /*
-+         * MAP_FIXED is unsupported by this resource.
-+         * Mapping falls back to a blob subregion method in that case.
-+         */
-+        break;
-+
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: failed to map(fixed) virgl resource: %s\n",
-+                      __func__, strerror(-ret));
-+        return ret;
-+    }
-+#endif
-+
-     ret = virgl_renderer_resource_map(res->base.resource_id, &data, &size);
-     if (ret) {
-         qemu_log_mask(LOG_GUEST_ERROR, "%s: failed to map virgl resource: %s\n",
-@@ -149,7 +191,7 @@ virtio_gpu_virgl_map_resource_blob(VirtIOGPU *g,
- 
-     mr = &vmr->mr;
-     memory_region_init_ram_ptr(mr, OBJECT(mr), "blob", size, data);
--    memory_region_add_subregion(&b->hostmem, offset, mr);
-+    memory_region_add_subregion_overlap(&b->hostmem, offset, mr, 1);
- 
-     /*
-      * MR could outlive the resource if MR's reference is held outside of
-@@ -176,6 +218,21 @@ virtio_gpu_virgl_unmap_resource_blob(VirtIOGPU *g,
-     MemoryRegion *mr = res->mr;
-     int ret;
- 
-+#if VIRGL_HAS_MAP_FIXED
-+    if (res->map_fixed) {
-+        if (mmap(res->map_fixed, res->base.blob_size, PROT_READ | PROT_WRITE,
-+                 MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED,
-+                 -1, 0) == MAP_FAILED) {
-+            ret = -errno;
-+            error_report("%s: failed to unmap(fixed) virgl resource: %s",
-+                          __func__, strerror(-ret));
-+            return ret;
-+        }
-+
-+        res->map_fixed = NULL;
-+    }
-+#endif
-+
-     if (!mr) {
-         return 0;
-     }
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index 1f509d0d5beb..a48b50d4c825 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -263,6 +263,9 @@ struct VirtIOGPUGL {
- 
-     QEMUBH *async_fence_bh;
-     QSLIST_HEAD(, virtio_gpu_virgl_context_fence) async_fenceq;
-+
-+    MemoryRegion hostmem_background;
-+    void *hostmem_mmap;
- };
- 
- struct VhostUserGPU {
+Link to RFCv1:
+https://lore.kernel.org/qemu-devel/20251230002604.113632-1-yodel.eldar@yodel.dev/
+
+Changes since RFCv1:
+- Remove external host dependency (Marc-André)
+- Replace wget to external host with http and tftp between guest and
+  host (Thomas)
+- Use hardcoded UUIDs in the guest and a scratch file on the host for
+  data transfer
+- Use a Popen context manager to terminate and wait on vubr (this isn't
+  necessary now, because vubr terminates when the connected guest shuts
+  down, but I suppose it could be with future changes to vubr)
+- Add line in MAINTAINERS (Michael?)
+- New patch to move from tests/ to contrib/vhost-user-bridge/ and add
+  docs section
+- New patch to add RX debug logging in vhost-user-bridge.c
+
+Thanks,
+Yodel
+
+Yodel Eldar (3):
+  tests/vhost-user-bridge: Move to contrib/vhost-user-bridge/
+  tests/functional/x86_64: Add vhost-user-bridge test
+  contrib/vhost-user-bridge: Add UDP receive hexdump
+
+ MAINTAINERS                                   |   1 +
+ contrib/vhost-user-bridge/meson.build         |   4 +
+ .../vhost-user-bridge}/vhost-user-bridge.c    |   7 +
+ .../devices/virtio/vhost-user-contrib.rst     |  39 +++++
+ meson.build                                   |   1 +
+ .../x86_64/test_vhost_user_bridge.py          | 147 ++++++++++++++++++
+ tests/meson.build                             |   6 -
+ 7 files changed, 199 insertions(+), 6 deletions(-)
+ create mode 100644 contrib/vhost-user-bridge/meson.build
+ rename {tests => contrib/vhost-user-bridge}/vhost-user-bridge.c (98%)
+ create mode 100755 tests/functional/x86_64/test_vhost_user_bridge.py
+
 -- 
 2.52.0
 
