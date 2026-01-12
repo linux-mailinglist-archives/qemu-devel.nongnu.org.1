@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B202AD1284E
+	by mail.lfdr.de (Postfix) with ESMTPS id DD1AED12851
 	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 13:22:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfGup-0000Gy-B7; Mon, 12 Jan 2026 07:20:59 -0500
+	id 1vfGuo-0000Bq-O7; Mon, 12 Jan 2026 07:20:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vfGuR-0008Gl-7g
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 07:20:39 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vfGuR-0008Gj-67
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 07:20:37 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vfGuO-0002eV-Hl
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vfGuO-0002gM-Gf
  for qemu-devel@nongnu.org; Mon, 12 Jan 2026 07:20:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Cc:To:In-Reply-To:References:Message-Id:Content-Transfer-Encoding:
@@ -22,17 +22,16 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=AgxO69IEW2egiBpxY9kDuHoKebHzuCVnmKGUhChrOTc=; b=EePRt+ezUG6HcBf
- sSR+SI04dySIHhc9qvbX4iBaCUv5vt79lcoD1WjKYuSUrQSrqO70c6YSkEgVPEftblj2fQBje7V31
- 4K7T9bSPsiUEqn4Hq4HbjqaX9h1ffYkwWpnEXEAmSiJTvWcSCh1CKPN6428mhNtPfHSPZhIq0wJCp
- xA=;
-Date: Mon, 12 Jan 2026 13:22:43 +0100
-Subject: [PATCH v3 2/7] target/hppa: Define PA[20|1X] physical address
- space size
+ List-Help; bh=gzeRGezhxOX8OEyYUr5gjJHYtehPMyTOVsn/jR2umSk=; b=PztdHzLM4zo47l5
+ xy+k8dj8yQaLvFcMNyOzYj9TqQnsvMwZa1o8dopedSojTexN27b7BdXPlFvTRJcE3ftUbj3ihHTQN
+ I3iUy0/z3fzwGtSPk+8M4tXYdTge5IujnKiP+IKCWZC7NRsmzaLF5HbaqjR3/pNxXbuab9DHZavmz
+ GY=;
+Date: Mon, 12 Jan 2026 13:22:44 +0100
+Subject: [PATCH v3 3/7] target/i386: Drop physical address range checks
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260112-phys_addr-v3-2-5f90fdb4015f@rev.ng>
+Message-Id: <20260112-phys_addr-v3-3-5f90fdb4015f@rev.ng>
 References: <20260112-phys_addr-v3-0-5f90fdb4015f@rev.ng>
 In-Reply-To: <20260112-phys_addr-v3-0-5f90fdb4015f@rev.ng>
 To: qemu-devel@nongnu.org
@@ -66,81 +65,64 @@ From:  Anton Johansson via qemu development <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When converting virtual to physical addresses,
-TARGET_PHYS_ADDR_SPACE_BITS is used under PA-RISC 2.0, and an explicit
-cast to uint32_t is used under PA-RISC 1.X.  Replace the former with a
-more specific macro limited to mem_helper.c, and make the latter
-conversion explicit by defining the size of the physical address space
-for PA-RISC 1.X.
+Since TARGET_PHYS_ADDR_SPACE_BITS is now fixed to 64 bits for all
+targets we can remove range checks on cpu->phys_bits and
+TCG_PHYS_ADDR_BITS.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- target/hppa/mem_helper.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ target/i386/tcg/helper-tcg.h | 2 --
+ target/i386/cpu.c            | 9 +++------
+ target/i386/kvm/kvm.c        | 3 +--
+ 3 files changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index cce82e6599..8563bb0e2a 100644
---- a/target/hppa/mem_helper.c
-+++ b/target/hppa/mem_helper.c
-@@ -29,6 +29,19 @@
- #include "hw/core/cpu.h"
- #include "trace.h"
+diff --git a/target/i386/tcg/helper-tcg.h b/target/i386/tcg/helper-tcg.h
+index e41cbda407..f4b2ff740d 100644
+--- a/target/i386/tcg/helper-tcg.h
++++ b/target/i386/tcg/helper-tcg.h
+@@ -31,8 +31,6 @@
+ # define TCG_PHYS_ADDR_BITS 36
+ #endif
  
-+/*
-+ * 64-bit (PA-RISC 2.0) machines are assumed to run PA-8700, and 32-bit
-+ * machines 7300LC.  This gives 44 and 32 bits of physical address space
-+ * respectively.
-+ *
-+ *   CPU model        Physical address space bits
-+ *   PA-7000--7300LC  32
-+ *   PA-8000--8600    40
-+ *   PA-8700--8900    44
-+ */
-+#define HPPA_PHYS_ADDR_SPACE_BITS_PA20 44
-+#define HPPA_PHYS_ADDR_SPACE_BITS_PA1X 32
-+
- hwaddr hppa_abs_to_phys_pa2_w1(vaddr addr)
- {
-     /*
-@@ -42,8 +55,8 @@ hwaddr hppa_abs_to_phys_pa2_w1(vaddr addr)
-      * Since the supported physical address space is below 54 bits, the
-      * H-8 algorithm is moot and all that is left is to truncate.
+-QEMU_BUILD_BUG_ON(TCG_PHYS_ADDR_BITS > TARGET_PHYS_ADDR_SPACE_BITS);
+-
+ /**
+  * x86_cpu_do_interrupt:
+  * @cpu: vCPU the interrupt is to be handled by.
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 37803cd724..9afea250f3 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -9953,12 +9953,9 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+      * accel-specific code in cpu_exec_realizefn.
       */
--    QEMU_BUILD_BUG_ON(TARGET_PHYS_ADDR_SPACE_BITS > 54);
--    return sextract64(addr, 0, TARGET_PHYS_ADDR_SPACE_BITS);
-+    QEMU_BUILD_BUG_ON(HPPA_PHYS_ADDR_SPACE_BITS_PA20 > 54);
-+    return sextract64(addr, 0, HPPA_PHYS_ADDR_SPACE_BITS_PA20);
- }
+     if (env->features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM) {
+-        if (cpu->phys_bits &&
+-            (cpu->phys_bits > TARGET_PHYS_ADDR_SPACE_BITS ||
+-            cpu->phys_bits < 32)) {
+-            error_setg(errp, "phys-bits should be between 32 and %u "
+-                             " (but is %u)",
+-                             TARGET_PHYS_ADDR_SPACE_BITS, cpu->phys_bits);
++        if (cpu->phys_bits && cpu->phys_bits < 32) {
++            error_setg(errp, "phys-bits should be at least 32"
++                             " (but is %u)", cpu->phys_bits);
+             return;
+         }
+         /*
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 7b9b740a8e..ce922a55b0 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -4766,8 +4766,7 @@ static int kvm_get_msrs(X86CPU *cpu)
+      */
  
- hwaddr hppa_abs_to_phys_pa2_w0(vaddr addr)
-@@ -67,7 +80,7 @@ hwaddr hppa_abs_to_phys_pa2_w0(vaddr addr)
-          * is what can be seen on physical machines too.
-          */
-         addr = (uint32_t)addr;
--        addr |= -1ull << (TARGET_PHYS_ADDR_SPACE_BITS - 4);
-+        addr |= -1ull << (HPPA_PHYS_ADDR_SPACE_BITS_PA20 - 4);
-     }
-     return addr;
- }
-@@ -217,7 +230,7 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
-             if (hppa_is_pa20(env)) {
-                 phys = hppa_abs_to_phys_pa2_w0(addr);
-             } else {
--                phys = (uint32_t)addr;
-+                phys = extract64(addr, 0, HPPA_PHYS_ADDR_SPACE_BITS_PA1X);
-             }
-             break;
-         default:
-@@ -558,7 +571,7 @@ static void itlbt_pa20(CPUHPPAState *env, target_ulong r1,
-     /* Align per the page size. */
-     ent->pa &= TARGET_PAGE_MASK << mask_shift;
-     /* Ignore the bits beyond physical address space. */
--    ent->pa = sextract64(ent->pa, 0, TARGET_PHYS_ADDR_SPACE_BITS);
-+    ent->pa = sextract64(ent->pa, 0, HPPA_PHYS_ADDR_SPACE_BITS_PA20);
- 
-     ent->t = extract64(r2, 61, 1);
-     ent->d = extract64(r2, 60, 1);
+     if (cpu->fill_mtrr_mask) {
+-        QEMU_BUILD_BUG_ON(TARGET_PHYS_ADDR_SPACE_BITS > 52);
+-        assert(cpu->phys_bits <= TARGET_PHYS_ADDR_SPACE_BITS);
++        assert(cpu->phys_bits <= 52);
+         mtrr_top_bits = MAKE_64BIT_MASK(cpu->phys_bits, 52 - cpu->phys_bits);
+     } else {
+         mtrr_top_bits = 0;
 
 -- 
 2.51.0
