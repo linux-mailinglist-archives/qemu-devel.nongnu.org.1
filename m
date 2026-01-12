@@ -2,105 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC863D11EF3
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 11:36:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB38FD11EF0
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 11:36:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfFH8-0004Za-OY; Mon, 12 Jan 2026 05:35:54 -0500
+	id 1vfFHA-0004lf-LL; Mon, 12 Jan 2026 05:35:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vfFGV-0003oC-Gb
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:35:15 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1vfFGX-0003sf-QK
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:35:19 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1vfFGT-0002Mz-Cj
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:35:14 -0500
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60CAJiXN020335
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 10:35:11 GMT
+ id 1vfFGT-0002N7-DF
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:35:16 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60BJt48S024760;
+ Mon, 12 Jan 2026 10:35:11 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=GU1R0ExMjFm94dfOf
- plR+JUI8OhQIYtfO7zrdhfdfeI=; b=m6yUe1pxtXJGw4eeCymolXZqQqaQAprX9
- VWSVVAd34421QBC+BE4GI3liavjcx0kfkpgpcGggOo3mBLZvwxUCk5LtJFqidlgT
- uR4uxTSom3Y9Se0GZeomGv4wf2HA65ZSlvXd1+GPPhjNAEnPbJi0rwp3NmNfkmxa
- qB/buQMYP7VISfFe5/BW7//3pcXZuxJi/qBamU29c7V3KwbAtpRfEUvXZ9/g+iuP
- B0TwCiXGKNv9pRvyLBVX+Mtrh+x/bPGdd9ix1Zg5zZ9xvP33TXTyTTkyZpPgyN3h
- THgBkK2Gjlzeiij0eNqrNnMmK1szI54wMe4rd6NTfe1Z7D26Mlkdg==
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkd6dxd32-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 10:35:11 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60CAYmZw029743
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 10:35:10 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bm3ajd74g-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 10:35:10 +0000
+ :mime-version:references:subject:to; s=pp1; bh=gvklCT0RtyYWN28lI
+ 7WK6j+2ks4ri8iaxdp4yqwwWtg=; b=q/f3ZasuT7z4klO9OoshHBiM3KeY4eYEW
+ Bh5kG0WIybmSi0NKjvbAsIU01aqf/WSWfPJS6MMvPLMX1TRuXNRzvcwEIHiF0cme
+ N7WB1xAQEB+eceTVX1RUr2TAi5Lusnro3yGJU9z/ouT5SGVfqXAE4uWVJI05JDRf
+ QI52lWLYtDPe8oSJVJSvtNFZnlECz87wo/VvfnbmsNuMlUxJkqx+JA79fOjC74sw
+ I9RA5ly/SysTbHmUipJDRyIbK7rem9/Q/Ib5FL55GDBOjQuNjGiNn10ZoSFg7mHw
+ UURP6/ysffSireelQHZ7Y4f6bD6C2lhyu7GfVVoaEKdNZIyOBhudQ==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bke92pk4a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 12 Jan 2026 10:35:11 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60CAMMT5025835;
+ Mon, 12 Jan 2026 10:35:10 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bm2kk5b91-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 12 Jan 2026 10:35:10 +0000
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
  [10.20.54.106])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 60CAZ6Ei36110786
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 60CAZ8h746596408
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 Jan 2026 10:35:06 GMT
+ Mon, 12 Jan 2026 10:35:08 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B32D420043;
- Mon, 12 Jan 2026 10:35:06 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 4935B20040;
+ Mon, 12 Jan 2026 10:35:08 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2FED520040;
- Mon, 12 Jan 2026 10:35:05 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 1ECDC20043;
+ Mon, 12 Jan 2026 10:35:07 +0000 (GMT)
 Received: from Mac.com (unknown [9.43.47.93])
  by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 12 Jan 2026 10:35:04 +0000 (GMT)
+ Mon, 12 Jan 2026 10:35:06 +0000 (GMT)
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 To: qemu-devel@nongnu.org
-Cc: Caleb Schlossin <calebs@linux.ibm.com>,
- Michael Kowal <kowal@linux.ibm.com>, Aditya Gupta <adityag@linux.ibm.com>,
- Chalapathi V <chalapathi.v@linux.ibm.com>,
- Glenn Miles <milesg@linux.ibm.com>
-Subject: [PULL 08/10] hw/ppc: Add VMSTATE information to PnvPsi
-Date: Mon, 12 Jan 2026 16:04:31 +0530
-Message-ID: <20260112103433.8451-9-harshpb@linux.ibm.com>
+Cc: Fabiano Rosas <farosas@suse.de>, Fabian Vogt <fvogt@suse.de>,
+ Chinmay Rath <rathc@linux.ibm.com>
+Subject: [PULL 09/10] target/ppc: Fix env->quiesced migration
+Date: Mon, 12 Jan 2026 16:04:32 +0530
+Message-ID: <20260112103433.8451-10-harshpb@linux.ibm.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112103433.8451-1-harshpb@linux.ibm.com>
 References: <20260112103433.8451-1-harshpb@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: E6Fg-Yrxf0RTKUFISe9tEZIrLZBznqke
-X-Authority-Analysis: v=2.4 cv=LLxrgZW9 c=1 sm=1 tr=0 ts=6964ce5f cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+X-Proofpoint-ORIG-GUID: KYsI41rZWQ96q3MdcdDlAfv4EfC517wT
+X-Authority-Analysis: v=2.4 cv=dYyNHHXe c=1 sm=1 tr=0 ts=6964ce5f cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
  a=vUbySO9Y5rIA:10 a=f7IdgyKtn90A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=fAueZ9Rv7cwqH87Z7dkA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEyMDA4MSBTYWx0ZWRfX1loWulHwwbWU
- YeIgzqfYolTmNn5Hmm5uW98f0iHAvu+ZWQF+NHhEzOWnoZOTHMwc5KyGYunxfkG7RU1N5wOOl9o
- o8rdARna69x0TPvUBA5526PEDJgE6b0Fdh7f014dxQxwsJ7JXLXxsWtWP1nfRVoicmOGW+7iW7O
- uYo7djBFaH+mT3QB/El87WSLB0fMCM2QLQ5I2/eR+NBP5FgJjD6X1ItyRE7I6zyqBR24qgeGU1I
- 3Gnf0qdRPfcn80Pgm2jkDxdMliHfWAjDWYCeNm6GVHcX16lpH5cqz264pcTVWTzx7/E/PM6BlJC
- hDEkFShZvalepiU3KXQ2578ZCiONH1qt+81v6LyqLwFSYjcTZ/Pzqw1xZyjH1qL6cloRK47AZL1
- w7qksH+JJIlBSyUrjRWBmSpHeJndUT92U2vctl+6mCEuNBxWrzPnxWadYU4j1TVY2MVhee/v+F9
- aFPhPo95etvtART8mZg==
-X-Proofpoint-ORIG-GUID: E6Fg-Yrxf0RTKUFISe9tEZIrLZBznqke
+ a=p0WdMEafAAAA:8 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=9aCtKT8Ijwi1QL0PgbgA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEyMDA4MSBTYWx0ZWRfX35+LugF/Pexg
+ NdV+aZJK0Gfmzljbq/FKe2ssZpT2ttIjUJTIG2Qa3MQW4DbUO0Dk2OYPx8GwgdmcI/QjBuH3zIc
+ h20Jw2YlBV8jKLNvCTqzHfaOEeAnnJ1/XSqvFu+sAkcb+NsSnsx97DcGkaHQoEAs1iSTs2V3dNk
+ StE/ehBPwNPKeWFSP9pMqY301Yy5SUOb94MYJbFHaMt8FytUGAEXCIWcbS4lT2UQin7n4chWVwq
+ 8XkDJAlE1ychN6WtxV/SalOV32b8Z9lydX/fZv8FWz2UlNKBBNo5SZadAJZZmJuz35UMqlXFD/x
+ 0chtxqdf3WrrTWrcvgo04Puq7lrdKjLh4Rw7zeNSFgYwE9Vw5aH0/+quoG628IygArKz4qNDKBf
+ Kg6EsnwP2aVC4dq/NvNBsV63oKIEOfv7WWldPKxzbSRVk4BqGU4YBi9DV7X/KopvvJEM/ivqpmR
+ KRXjj28NckmXzBMfrcw==
+X-Proofpoint-GUID: KYsI41rZWQ96q3MdcdDlAfv4EfC517wT
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-12_03,2026-01-09_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 clxscore=1015 spamscore=0 impostorscore=0
- malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0
+ spamscore=0 impostorscore=0 adultscore=0 priorityscore=1501 suspectscore=0
+ bulkscore=0 phishscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601120081
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -118,96 +117,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Caleb Schlossin <calebs@linux.ibm.com>
+From: Fabiano Rosas <farosas@suse.de>
 
-PnvPsi needs to be able to save/load snapshots.  Add VMSTATE information
-to the device class and a post_load() method to restore dynamic data items and
-memory region mappings.
+The commit referenced (from QEMU 10.0) has changed the way the pseries
+machine marks a cpu as quiesced. Previously, the cpu->halted value
+from QEMU common cpu code was (incorrectly) used. With the fix, the
+env->quiesced variable starts being used, which improves on the
+original situation, but also causes a side effect after migration:
 
-Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
-Reviewed-by: Michael Kowal <kowal@linux.ibm.com>
-Reviewed-by: Aditya Gupta <adityag@linux.ibm.com>
-Reviewed-by: Chalapathi V <chalapathi.v@linux.ibm.com>
-Signed-off-by: Caleb Schlossin <calebs@linux.ibm.com>
-Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
-Link: https://lore.kernel.org/qemu-devel/20260105160138.3242709-8-calebs@linux.ibm.com
+The env->quiesced is set at reset and never migrated, which causes the
+destination QEMU to stop delivering interrupts and hang the machine.
+
+To fix the issue from this point on, start migrating the env->quiesced
+value.
+
+For QEMU versions < 10.0, sending the new element on the stream would
+cause migration to be aborted, so add the appropriate compatibility
+property to omit the new subsection.
+
+Independently of this patch, all migrations from QEMU versions < 10.0
+would result in a hang since the older QEMU never migrates
+env->quiesced. This is bad because it leaves machines already running
+on the old QEMU without a migration path into newer versions.
+
+As a workaround, use a few heuristics to infer the new value of
+env->quiesced based on cpu->halted, LPCR and PSSCR bits that are
+usually set/cleared along with quiesced.
+
+Note that this was tested with -cpu power9 and -machine ic-mode=xive
+due to another bug affecting migration of XICS guests. Tested both
+forward and backward migration and savevm/loadvm from 9.2 and 10.0.
+
+Also tested loadvm of a savevm image that contains a mix of cpus both
+halted and not halted.
+
+Reported-by: Fabian Vogt <fvogt@suse.de>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3079
+Fixes: fb802acdc8b ("ppc/spapr: Fix RTAS stopped state")
+Acked-by: Chinmay Rath <rathc@linux.ibm.com>
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+Link: https://lore.kernel.org/qemu-devel/20260109123519.28703-2-farosas@suse.de
 Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 ---
- hw/ppc/pnv_psi.c | 36 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 34 insertions(+), 2 deletions(-)
+ target/ppc/cpu.h      |  1 +
+ hw/ppc/spapr.c        |  6 +++++
+ target/ppc/cpu_init.c |  7 +++++
+ target/ppc/machine.c  | 62 +++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 76 insertions(+)
 
-diff --git a/hw/ppc/pnv_psi.c b/hw/ppc/pnv_psi.c
-index 264568cdfb..e8701c6100 100644
---- a/hw/ppc/pnv_psi.c
-+++ b/hw/ppc/pnv_psi.c
-@@ -25,6 +25,7 @@
- #include "qemu/module.h"
- #include "system/reset.h"
- #include "qapi/error.h"
-+#include "migration/vmstate.h"
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index dbebae89dc..49445eb4ca 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -1529,6 +1529,7 @@ struct ArchCPU {
+     void *machine_data;
+     int32_t node_id; /* NUMA node this CPU belongs to */
+     PPCHash64Options *hash64_opts;
++    bool rtas_stopped_state;
  
- 
- #include "hw/ppc/fdt.h"
-@@ -130,12 +131,11 @@ static void pnv_psi_set_bar(PnvPsi *psi, uint64_t bar)
+     /* Those resources are used only during code translation */
+     /* opcode handlers */
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 72b36b3b69..274f38785f 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -4788,8 +4788,14 @@ DEFINE_SPAPR_MACHINE(10, 1);
+  */
+ static void spapr_machine_10_0_class_options(MachineClass *mc)
  {
-     PnvPsiClass *ppc = PNV_PSI_GET_CLASS(psi);
-     MemoryRegion *sysmem = get_system_memory();
--    uint64_t old = psi->regs[PSIHB_XSCOM_BAR];
++    static GlobalProperty spapr_compat_10_0[] = {
++        { TYPE_POWERPC_CPU, "rtas-stopped-state", "false" },
++    };
++
+     spapr_machine_10_1_class_options(mc);
+     compat_props_add(mc->compat_props, hw_compat_10_0, hw_compat_10_0_len);
++    compat_props_add(mc->compat_props, spapr_compat_10_0,
++                     G_N_ELEMENTS(spapr_compat_10_0));
+ }
  
-     psi->regs[PSIHB_XSCOM_BAR] = bar & (ppc->bar_mask | PSIHB_BAR_EN);
+ DEFINE_SPAPR_MACHINE(10, 0);
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 929254827d..58816c51a7 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -55,6 +55,11 @@
+ /* #define PPC_DEBUG_SPR */
+ /* #define USE_APPLE_GDB */
  
-     /* Update MR, always remove it first */
--    if (old & PSIHB_BAR_EN) {
-+    if (memory_region_is_mapped(&psi->regs_mr)) {
-         memory_region_del_subregion(sysmem, &psi->regs_mr);
++static const Property powerpc_cpu_properties[] = {
++    DEFINE_PROP_BOOL("rtas-stopped-state", PowerPCCPU,
++                      rtas_stopped_state, true),
++};
++
+ static inline void vscr_init(CPUPPCState *env, uint32_t val)
+ {
+     /* Altivec always uses round-to-nearest */
+@@ -7529,6 +7534,8 @@ static void ppc_cpu_class_init(ObjectClass *oc, const void *data)
+                                       &pcc->parent_unrealize);
+     pcc->pvr_match = ppc_pvr_match_default;
+ 
++    device_class_set_props(dc, powerpc_cpu_properties);
++
+     resettable_class_set_parent_phases(rc, NULL, ppc_cpu_reset_hold, NULL,
+                                        &pcc->parent_phases);
+ 
+diff --git a/target/ppc/machine.c b/target/ppc/machine.c
+index d72e5ecb94..49cfdc6d67 100644
+--- a/target/ppc/machine.c
++++ b/target/ppc/machine.c
+@@ -257,6 +257,45 @@ static int cpu_post_load(void *opaque, int version_id)
+         ppc_store_sdr1(env, env->spr[SPR_SDR1]);
      }
  
-@@ -919,6 +919,37 @@ static const TypeInfo pnv_psi_power9_info = {
-     },
- };
- 
-+static int vmstate_pnv_psi_post_load(void *opaque, int version_id)
-+{
-+    PnvPsi *psi = PNV_PSI(opaque);
-+    Pnv9Psi *psi9 = PNV9_PSI(psi);
-+    MemoryRegion   *sysmem = get_system_memory();
-+    uint64_t esb_bar;
-+    hwaddr esb_addr;
++    if (!cpu->rtas_stopped_state) {
++        /*
++         * The source QEMU doesn't have fb802acdc8 and still uses halt +
++         * PM bits in LPCR to implement RTAS stopped state. The new (this)
++         * QEMU will have put the secondary vcpus in stopped state,
++         * waiting for the start-cpu RTAS call. That call will never come
++         * if the source cpus were already running. Try to infer the cpus
++         * state and set env->quiesced accordingly.
++         *
++         * env->quiesced = true  ==> the cpu is waiting to start
++         * env->quiesced = false ==> the cpu is running (unless halted)
++         */
 +
-+    /* Set the ESB MMIO mapping */
-+    esb_bar = psi->regs[PSIHB_REG(PSIHB9_ESB_CI_BASE)];
-+
-+    if (esb_bar & PSIHB9_ESB_CI_VALID) {
-+        esb_addr = esb_bar & PSIHB9_ESB_CI_ADDR_MASK;
-+        memory_region_add_subregion(sysmem, esb_addr,
-+                                    &psi9->source.esb_mmio);
++        /*
++         * Halted _could_ mean quiesced, but it could also be cede,
++         * confer_self, power management, etc.
++         */
++        if (CPU(cpu)->halted) {
++            PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
++            /*
++             * Both the PSSCR_EC bit and LPCR PM bits set at cpu reset
++             * and rtas_stop and cleared at rtas_start, it's a good
++             * heuristic.
++             */
++            if ((env->spr[SPR_PSSCR] & PSSCR_EC) &&
++                (env->spr[SPR_LPCR] & pcc->lpcr_pm)) {
++                env->quiesced = true;
++            } else {
++                env->quiesced = false;
++            }
++        } else {
++            /*
++             * Old QEMU sets halted during rtas_stop_self. Not halted,
++             * therefore definitely not quiesced.
++             */
++            env->quiesced = false;
++        }
 +    }
 +
-+    return 0;
+     post_load_update_msr(env);
+ 
+     if (tcg_enabled()) {
+@@ -649,6 +688,28 @@ static const VMStateDescription vmstate_reservation = {
+     }
+ };
+ 
++static bool rtas_stopped_needed(void *opaque)
++{
++    PowerPCCPU *cpu = opaque;
++
++    return cpu->rtas_stopped_state;
 +}
 +
-+static const VMStateDescription vmstate_pnv_psi = {
-+    .name = TYPE_PNV_PSI,
++static const VMStateDescription vmstate_rtas_stopped = {
++    .name = "cpu/rtas_stopped",
 +    .version_id = 1,
 +    .minimum_version_id = 1,
-+    .post_load = vmstate_pnv_psi_post_load,
++    .needed = rtas_stopped_needed,
 +    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT64_ARRAY(regs, PnvPsi, PSIHB_XSCOM_MAX),
++        /*
++         * "RTAS stopped" state, independent of halted state. For QEMU
++         * < 10.0, this is taken from cpu->halted at cpu_post_load()
++         */
++        VMSTATE_BOOL(env.quiesced, PowerPCCPU),
 +        VMSTATE_END_OF_LIST()
 +    }
 +};
 +
- static void pnv_psi_power10_class_init(ObjectClass *klass, const void *data)
+ #ifdef TARGET_PPC64
+ static bool bhrb_needed(void *opaque)
  {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-@@ -926,6 +957,7 @@ static void pnv_psi_power10_class_init(ObjectClass *klass, const void *data)
-     static const char compat[] = "ibm,power10-psihb-x\0ibm,psihb-x";
- 
-     dc->desc    = "PowerNV PSI Controller POWER10";
-+    dc->vmsd = &vmstate_pnv_psi;
- 
-     ppc->xscom_pcba = PNV10_XSCOM_PSIHB_BASE;
-     ppc->xscom_size = PNV10_XSCOM_PSIHB_SIZE;
+@@ -715,6 +776,7 @@ const VMStateDescription vmstate_ppc_cpu = {
+         &vmstate_tlbmas,
+         &vmstate_compat,
+         &vmstate_reservation,
++        &vmstate_rtas_stopped,
+         NULL
+     }
+ };
 -- 
 2.52.0
 
