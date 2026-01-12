@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4102D15B3F
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 23:56:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B7D8D15B39
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 23:56:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfQpF-0007Dd-17; Mon, 12 Jan 2026 17:55:53 -0500
+	id 1vfQpO-0008Nk-6Q; Mon, 12 Jan 2026 17:56:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQpA-0006xg-KU
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:55:50 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQpH-0007z2-DJ
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:55:55 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQp8-0004P2-T8
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:55:48 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4779cc419b2so65437075e9.3
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 14:55:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQpF-0004QP-JR
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:55:55 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-42fbc305882so3727178f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 14:55:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768258545; x=1768863345; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768258552; x=1768863352; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=iJJ3gBRSSej+H+nQd8C80Px5Z8M+3ay836FIJe8skzk=;
- b=gdaikX7O9V+ovrji1/JEzUjciQHtfBb5l9eX2Q74ZU87DlZwBA1CSlwOQLphRNVNwz
- kkQY5g7bno4A1q5LBC4iIHiJPWqyr88ZSC/tdXg3OhFEdSsGeJedbRuNU8ZvrWOUNDHG
- CTB3B5dlk3oZ//aT3fY+08H941eRuaPaBPUdEB0MiW9w9xwh/fwcobxtIm/g8s1udy4n
- XLVnvbZWe+qSWVrtOLGZe7wfduKHof0xXIS5Xym38Xt9PGeFHmBZH4I4eC/+mWgR9vHS
- cw7WGeEgcvK/iHdpYZp555H1iErIgDvA0CaoT9gKPgn9VLTh+CirAk3pKM7h/hUr+SXl
- cBbA==
+ :reply-to; bh=0v+2OnVOsTI/bCFGO0OtJvlwuMqs+IwSJ72vCxsdZTc=;
+ b=N7sx0jj0p5z4ZCwHXYQy/BW9nfOfxw80sdDQulO9HWh4r95oCqC80SL0Vk8aHGdyuF
+ 5e6pUMfMq8eYIhtAXtg30G+qrnRIOcFj8OY16jgIqHvOLPljSdZLmzTPQwPcvYuJQOYm
+ j9MwFSeywAb14eGFTeeESai7eo6NfapsukT1SkhLdiR4JaiGvtGqOwHB/mnUiHUQcMHq
+ REMPeCyHbo5a+Gs/oF9pqtutRBCdkwKyu7owf5bGt74Bw1nzvKPVlavmKJ33GVywtOb4
+ ZW1IYRyNyeqgi50Y6qpOPNAq0dTIfk7J/lCxp03JmrR4gO1zWSWIlfeA0wDQPL7jmQdO
+ O6Wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768258545; x=1768863345;
+ d=1e100.net; s=20230601; t=1768258552; x=1768863352;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=iJJ3gBRSSej+H+nQd8C80Px5Z8M+3ay836FIJe8skzk=;
- b=Xd6a01x7ZR914KWsCWU9lLTYjbnQFrjy462+W212encnzIv0X0gdqlh6gbGr929msh
- /w3+beNrCn84McGlUJXKc3Z0h/GyFkcWkCGN2JxXEvFoDz1IWJPe5FrG3TrRIzpgy95X
- AiWT/wJSPgmCWM+69PFh6uY1XWnhNWb/hsXrHJUsg0mkPlUd7TDYgw+a+r/42isPIL6N
- BNWhSAN+qQzcsHT+9rdzg7HrUottfDbZsBLcFLBMEkDynGAdCgAhpmPxsR2GZJLpnuoI
- frxTQV1L8nGWd0cjyeILRTUG/eBc0VNslTrlSqUBXkoIa0wLzE/5HtKMURx1h2+bnnMi
- kDYg==
-X-Gm-Message-State: AOJu0YykgMLSE+VuHHUQtBVAyBJJH564QukWqlxdIkQ7QIHiHMXC6TiJ
- C81up9OukXrstpztkqYEBy6L6MysQozMhaPlG42ZvonO4k0aaP29hfp/zB3nOS57IhocIFqoPuY
- qmTJP1cc=
-X-Gm-Gg: AY/fxX7XvbTVzpNnU2IHenVzcu/+FDM0zYFxN2KYVHkApwZ3O4GQ3XzqRfFY+141tfm
- b8v3TSEL6owQxVaWvlIbU6HjyLmtOsBlGdzMbxDdaqcbm8k/E/sSZcM7X4Wh343a7ckPUvQxqOK
- McklJqd0qo/KcToGQhudYo+XJPhXLpRZoRvEeVCYruks+Uq6EK6lyCtt6QRWqQ0XytQdNOhxzFq
- L3BgM1Gv/bOmIoMmdwygYCQvLVXTZm/t4Y2DFVmJZOFUfv4I2oi2uvZiXcYukSMOOERjs3PVF4z
- 46sJgjtGe3zlIpSYhoyZA9PUjd7LSn/70hJvSMVfEFr3QEfCKqux19uipSgNuWEhSVI4RgpCQSs
- ul8kvric8l/q0ZHzHkfWlj4bh53CmWhLbuU75IaB2Judo2SZnWa7uAC7oFhQSdrZFXB8qsANUu4
- EagPZoJxBNRs7fByOfv3hl7yJQ4kFLrBNUJ4ANjHaM5ESqsx8KGxzFpUgetx/q
-X-Google-Smtp-Source: AGHT+IGNGK+Sx/oUAFwBBIPqS43XgJ9iPi8aZKSK9lsYvuwilhmYOlKz4719rZ6Enp17toQfe1KALQ==
-X-Received: by 2002:a05:6000:2209:b0:431:266:d134 with SMTP id
- ffacd0b85a97d-432c37617f6mr25169186f8f.53.1768258545202; 
- Mon, 12 Jan 2026 14:55:45 -0800 (PST)
+ bh=0v+2OnVOsTI/bCFGO0OtJvlwuMqs+IwSJ72vCxsdZTc=;
+ b=Vdp5EiFXUjT2SQe7vYS5xg5G4DVGqdHIQ/EvK+ugkdIaRkngIEiLDJ1Fa9UXYquYcU
+ t3eDodB0MP5g44dBvM0thbUPGqpgA8xwf45Ey6ajlxxcDqXuKBmArW26QmwRqsJzZ0j0
+ 8i+bR7kYp9fChTJjEDovYg6aWELy/xmi1XE+7DeJieYsYNHfA4Di3aUH5NTakKn+koO9
+ EZdLS4kQfXe+k5aW7E9ayi/aC86ZtkC0mkJjf++V9ef2t3LESLiyLONujIFzWitF+PBN
+ 6V56WJn83HyCA4QQ8cBA+NE7W450giVq7Ewyt3eU1XB6Yl62NAMd0EVMEPqL67aDDLXu
+ 32Wg==
+X-Gm-Message-State: AOJu0YwRhb9RU1hb7nsJhU5L3EnO3XWQkEMeqZKW/9+lwfk8ZJ7/QcK4
+ ihUYX4IlEpv4l5b01J3/MdkmrcNT8FAAYhhHl52yG9SewmtqM2aIY0b3MgjYG8TwyyPfshioNTr
+ lO44zuOU=
+X-Gm-Gg: AY/fxX5SbouCyZSXzBOEEsgscQLdWYoyfypbhiVCWlhPO1Dtz/kV7/2dVvHm3v+dVw5
+ zj6hmeigMqWOxiDfAFgdag6Rd5XEzIUQ7By4LRDnmJDo5f1agLaKeYoaLHTHqGKrbuSNi2rqTor
+ cTDt+IuYC/W8cziRgYXsXGENMmAFFzwFSSAyJWgVA+7oodTV5HJOymilSwrWANN904FDQdHGfai
+ uCnoU1qEQ8QgUDEQxPnuwiV134ywldwKRmbLkLEB8mJNkKV3YGWPhiYGA14rlA57zYPjsLU4Rre
+ lfMm/TCnPXDswS95PWUpebDpU+nSvqCbcleMg6Tizmz6PItHkbnP2mdi2JYdEFjC+YGAleIX7yN
+ 0sgkSYa0CeQHw4rpf6HBZ+wUmlmSayP8XK2RNu8k/uOYFnE2S44fQ26yH052e0Twqqb3sb9eMKD
+ VGs/smZrhkwQPQUbcm1rC1MYSscCWSM505CJ2ifqd8WZUqelVTCABqNPs3YX5w
+X-Google-Smtp-Source: AGHT+IHJb9LEBrkY0TIE8w6z5iLodVhdAfetqmJoA7o7Jg1pzUH9L/ii1gAHXMCfkNK+0UqMSgKEDg==
+X-Received: by 2002:a05:6000:40da:b0:430:f23f:4bc5 with SMTP id
+ ffacd0b85a97d-432c3760d02mr21573654f8f.45.1768258551665; 
+ Mon, 12 Jan 2026 14:55:51 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-432bd0e16ffsm41913891f8f.12.2026.01.12.14.55.43
+ ffacd0b85a97d-432bd0dad8bsm41238875f8f.8.2026.01.12.14.55.50
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 12 Jan 2026 14:55:44 -0800 (PST)
+ Mon, 12 Jan 2026 14:55:51 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 59/61] gdbstub/helpers.h: allow header to be called from common
- code
-Date: Mon, 12 Jan 2026 23:48:54 +0100
-Message-ID: <20260112224857.42068-60-philmd@linaro.org>
+Subject: [PULL 60/61] target/arm/gdbstub: extract
+ aarch64_cpu_register_gdb_regs_for_features
+Date: Mon, 12 Jan 2026 23:48:55 +0100
+Message-ID: <20260112224857.42068-61-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112224857.42068-1-philmd@linaro.org>
 References: <20260112224857.42068-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,54 +100,158 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Target specific variants can't be used in common code, thus limit their
-definition to COMPILING_PER_TARGET.
-
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20260109053158.2800705-2-pierrick.bouvier@linaro.org>
+Message-ID: <20260109053158.2800705-3-pierrick.bouvier@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/gdbstub/helpers.h | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ target/arm/internals.h |  1 +
+ target/arm/gdbstub.c   | 53 +--------------------------------------
+ target/arm/gdbstub64.c | 57 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 59 insertions(+), 52 deletions(-)
 
-diff --git a/include/gdbstub/helpers.h b/include/gdbstub/helpers.h
-index b685afac436..197592036bf 100644
---- a/include/gdbstub/helpers.h
-+++ b/include/gdbstub/helpers.h
-@@ -12,13 +12,12 @@
- #ifndef _GDBSTUB_HELPERS_H_
- #define _GDBSTUB_HELPERS_H_
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 9cd4bf74efb..440072d8206 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -387,6 +387,7 @@ void arm_translate_code(CPUState *cs, TranslationBlock *tb,
+ void arm_cpu_register_gdb_commands(ARMCPU *cpu);
+ void aarch64_cpu_register_gdb_commands(ARMCPU *cpu, GString *,
+                                        GPtrArray *, GPtrArray *);
++void aarch64_cpu_register_gdb_regs_for_features(ARMCPU *cpu);
  
--#ifndef COMPILING_PER_TARGET
--#error "gdbstub helpers should only be included by target specific code"
+ void arm_restore_state_to_opc(CPUState *cs,
+                               const TranslationBlock *tb,
+diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
+index 8865f27089d..4e8e341cc04 100644
+--- a/target/arm/gdbstub.c
++++ b/target/arm/gdbstub.c
+@@ -537,58 +537,7 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
+          * registers so we don't need to include both.
+          */
+ #ifdef TARGET_AARCH64
+-        if (isar_feature_aa64_sve(&cpu->isar) ||
+-            isar_feature_aa64_sme(&cpu->isar)) {
+-            GDBFeature *feature = arm_gen_dynamic_svereg_feature(cs, cs->gdb_num_regs);
+-            gdb_register_coprocessor(cs, aarch64_gdb_get_sve_reg,
+-                                     aarch64_gdb_set_sve_reg, feature, 0);
+-        } else {
+-            gdb_register_coprocessor(cs, aarch64_gdb_get_fpu_reg,
+-                                     aarch64_gdb_set_fpu_reg,
+-                                     gdb_find_static_feature("aarch64-fpu.xml"),
+-                                     0);
+-        }
+-
+-        if (isar_feature_aa64_sme(&cpu->isar)) {
+-            GDBFeature *sme_feature =
+-                arm_gen_dynamic_smereg_feature(cs, cs->gdb_num_regs);
+-            gdb_register_coprocessor(cs, aarch64_gdb_get_sme_reg,
+-                                     aarch64_gdb_set_sme_reg, sme_feature, 0);
+-            if (isar_feature_aa64_sme2(&cpu->isar)) {
+-                gdb_register_coprocessor(cs, aarch64_gdb_get_sme2_reg,
+-                                         aarch64_gdb_set_sme2_reg,
+-                                         gdb_find_static_feature("aarch64-sme2.xml"),
+-                                         0);
+-            }
+-        }
+-        /*
+-         * Note that we report pauth information via the feature name
+-         * org.gnu.gdb.aarch64.pauth_v2, not org.gnu.gdb.aarch64.pauth.
+-         * GDB versions 9 through 12 have a bug where they will crash
+-         * if they see the latter XML from QEMU.
+-         */
+-        if (isar_feature_aa64_pauth(&cpu->isar)) {
+-            gdb_register_coprocessor(cs, aarch64_gdb_get_pauth_reg,
+-                                     aarch64_gdb_set_pauth_reg,
+-                                     gdb_find_static_feature("aarch64-pauth.xml"),
+-                                     0);
+-        }
+-
+-#ifdef CONFIG_USER_ONLY
+-        /* Memory Tagging Extension (MTE) 'tag_ctl' pseudo-register. */
+-        if (cpu_isar_feature(aa64_mte, cpu)) {
+-            gdb_register_coprocessor(cs, aarch64_gdb_get_tag_ctl_reg,
+-                                     aarch64_gdb_set_tag_ctl_reg,
+-                                     gdb_find_static_feature("aarch64-mte.xml"),
+-                                     0);
+-        }
 -#endif
 -
- #include "qemu/bswap.h"
- #include "qemu/target-info.h"
-+
-+#ifdef COMPILING_PER_TARGET
- #include "cpu-param.h"
-+#endif
- 
- /*
-  * The GDB remote protocol transfers values in target byte order. As
-@@ -102,6 +101,7 @@ static inline uint8_t *gdb_get_reg_ptr(GByteArray *buf, int len)
-     return buf->data + buf->len - len;
- }
- 
-+#ifdef COMPILING_PER_TARGET
- #if TARGET_LONG_BITS == 64
- #define gdb_get_regl(buf, val) gdb_get_reg64(buf, val)
- #define ldtul_p(addr) ldq_p(addr)
-@@ -113,5 +113,6 @@ static inline uint8_t *gdb_get_reg_ptr(GByteArray *buf, int len)
- #define ldtul_le_p(addr) ldl_le_p(addr)
- #define ldtul_be_p(addr) ldl_be_p(addr)
+-        /* All AArch64 CPUs have at least TPIDR */
+-        gdb_register_coprocessor(cs, aarch64_gdb_get_tls_reg,
+-                                 aarch64_gdb_set_tls_reg,
+-                                 arm_gen_dynamic_tls_feature(cs, cs->gdb_num_regs),
+-                                 0);
++        aarch64_cpu_register_gdb_regs_for_features(cpu);
  #endif
-+#endif /* COMPILING_PER_TARGET */
- 
- #endif /* _GDBSTUB_HELPERS_H_ */
+     } else {
+         if (arm_feature(env, ARM_FEATURE_NEON)) {
+diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
+index 3bc7ff45d57..c584e5b4e69 100644
+--- a/target/arm/gdbstub64.c
++++ b/target/arm/gdbstub64.c
+@@ -879,3 +879,60 @@ void aarch64_cpu_register_gdb_commands(ARMCPU *cpu, GString *qsupported,
+     }
+ #endif
+ }
++
++void aarch64_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
++{
++    CPUState *cs = CPU(cpu);
++    if (isar_feature_aa64_sve(&cpu->isar) ||
++        isar_feature_aa64_sme(&cpu->isar)) {
++        GDBFeature *feature = arm_gen_dynamic_svereg_feature(cs, cs->gdb_num_regs);
++        gdb_register_coprocessor(cs, aarch64_gdb_get_sve_reg,
++                                 aarch64_gdb_set_sve_reg, feature, 0);
++    } else {
++        gdb_register_coprocessor(cs, aarch64_gdb_get_fpu_reg,
++                                 aarch64_gdb_set_fpu_reg,
++                                 gdb_find_static_feature("aarch64-fpu.xml"),
++                                 0);
++    }
++
++    if (isar_feature_aa64_sme(&cpu->isar)) {
++        GDBFeature *sme_feature =
++            arm_gen_dynamic_smereg_feature(cs, cs->gdb_num_regs);
++        gdb_register_coprocessor(cs, aarch64_gdb_get_sme_reg,
++                                 aarch64_gdb_set_sme_reg, sme_feature, 0);
++        if (isar_feature_aa64_sme2(&cpu->isar)) {
++            gdb_register_coprocessor(cs, aarch64_gdb_get_sme2_reg,
++                                     aarch64_gdb_set_sme2_reg,
++                                     gdb_find_static_feature("aarch64-sme2.xml"),
++                                     0);
++        }
++    }
++    /*
++     * Note that we report pauth information via the feature name
++     * org.gnu.gdb.aarch64.pauth_v2, not org.gnu.gdb.aarch64.pauth.
++     * GDB versions 9 through 12 have a bug where they will crash
++     * if they see the latter XML from QEMU.
++     */
++    if (isar_feature_aa64_pauth(&cpu->isar)) {
++        gdb_register_coprocessor(cs, aarch64_gdb_get_pauth_reg,
++                                 aarch64_gdb_set_pauth_reg,
++                                 gdb_find_static_feature("aarch64-pauth.xml"),
++                                 0);
++    }
++
++#ifdef CONFIG_USER_ONLY
++    /* Memory Tagging Extension (MTE) 'tag_ctl' pseudo-register. */
++    if (cpu_isar_feature(aa64_mte, cpu)) {
++        gdb_register_coprocessor(cs, aarch64_gdb_get_tag_ctl_reg,
++                                 aarch64_gdb_set_tag_ctl_reg,
++                                 gdb_find_static_feature("aarch64-mte.xml"),
++                                 0);
++    }
++#endif
++
++    /* All AArch64 CPUs have at least TPIDR */
++    gdb_register_coprocessor(cs, aarch64_gdb_get_tls_reg,
++                             aarch64_gdb_set_tls_reg,
++                             arm_gen_dynamic_tls_feature(cs, cs->gdb_num_regs),
++                             0);
++}
 -- 
 2.52.0
 
