@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC1DCD11E13
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 11:31:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4256D11E21
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 11:32:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfFCZ-0000pJ-CG; Mon, 12 Jan 2026 05:31:11 -0500
+	id 1vfFCe-00013I-61; Mon, 12 Jan 2026 05:31:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfFCV-0000fF-52
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:31:07 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfFCc-0000zY-CC
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:31:14 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfFCT-0001g4-LH
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:31:06 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4775ae77516so68869635e9.1
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 02:31:05 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfFCa-0001hA-QU
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:31:14 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-42fbc3056afso3515695f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 02:31:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768213863; x=1768818663; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768213870; x=1768818670; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sdxPWV01/6nmJEhYXTQC44DzHogM6aeRuubkA7qkB3I=;
- b=s9LiGzaOTTUg0sj8xF6Vj2FoMQaUrjuHMH6CEyuTWQhCF4ax+FeA87kc0trIochtMJ
- Z6B+3w/NjSNQP/iUtkmXAFmwJVPepMA/ZSfu+jaBSp2BWpLpDZyF6Y9viKbwgZO8YsbW
- 59QUkSqdRoEuW4OcEqevjdndh/Qmcxp9qhNPWn8groM5W7jaTocWqKkWUpVIgCZzh3f4
- PH4tcxQHdD4hKXrt87hsgv9hkXZk83oG0TmDFAbIAMSZYGpfLAgV8LmIfPW8/5bpFkyC
- 5kyKInVTeb7cNbDnrK+HKNKJBBtr6dojwMx7IZBe8tJl/JO0w1rb+AtGhmBnY/4KvBlW
- AShg==
+ bh=CXbd4IKEO7Yjpowq+VWguY9db9jI9msI2RfrvzCs7NU=;
+ b=VpFOxpviNZLGwr8rg3SM0PmDB+Vikp4WlAatwbInqU/Tx8HK+DSOG3BWMTtpHJHnOe
+ 8rsxXcgZXUbswughuktmbI0RQIvBtvKPkuoLU49teUisAiIuOnqtsUaLPAzKLqjoD6Bj
+ vv5p5oPNhjngCuLfKZcgrwhWMXEL4NEviRuF3dWkefWuXsP5UHxoAEeFpZndLc9f4RrQ
+ 74Lrdz0nXiYWeUaw07JUvKanJ7BALF/VzPrTGJQlZerZ8XoTVD7e2+A2wCuXERFom9Pd
+ 8/9XL/8sHGAoJxQ86RlSFwIwrImGYADxCrz7soTx66pKCevwiBfz/OtQXGjFwFI9SVbJ
+ mq1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768213863; x=1768818663;
+ d=1e100.net; s=20230601; t=1768213870; x=1768818670;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=sdxPWV01/6nmJEhYXTQC44DzHogM6aeRuubkA7qkB3I=;
- b=ezkKrNYV6olfWe7I8BnC3T7oNLzEnwSK9KVHGYk6wAZOASXiJqtfu1U6Lfzq5OXJbp
- JxWiqUs+VzwHb7voo588woidxW6Qck7dzBQwdVUvGN2yikkG/ENswfY72XXMu4LldTJp
- UjfChe3UHuTog2+1xJ7q+ENxNHYjbzlWqQkHn84UOMYY8YMXSoV1Y9sQAMerNuaG9D2y
- f9t6Qx6mwbPFjHd291ZDBi7MvLIgmeZ7RTVU6plvqNkJLZO4U169b4d0IE7rEHArffro
- qt1ngc1wOdQ3WdZm3H/r+9Alq+Mnlpc81NBZtjFZynsS+O0X9q+RC3j006RRWMjzs9Ur
- mT2w==
-X-Gm-Message-State: AOJu0YxwIBkuL9WkUlRvXbLVBdFfUJKSZZBcyp98PQZ+8CdCBeSAKWNC
- nY7p3dk0DwZp9S1pyxJMqMwY36kYIJAUVybQQqhnWLLaN9K67QKHXDDsu552D+ieK4GttdaUMGU
- +Gg3Mn3s=
-X-Gm-Gg: AY/fxX5ryAfiRrkevusWMqsTfsqO0fQ6K34/St9Bdb52NkNSBk2eVYCMba2jimwbDVr
- CwQMb3vv9psC7dcYLuqJqGTlxWYHTyODkYGMgOcI4yWBaP+Klipeu3WWe7QYlxuW3ijVR+Btsy3
- iXn7/dppWBRKw13MkcoBDiZEdjGDSkw78uT2TLzuXuAj+PHitcCbVpcZX34UMes7MD9NHAPQW/Z
- S+vDZaEoCjTNxPF0FGJDd6w4PHWKcJGkU4Ua9WoKhaTnA2pNp6SppCqEbggbLONvNoJTdNW+roV
- DDlywlLh+3BGx4Bw/0uAXZkxZ/bSrk+uOBG1gzZuFV1zC3S+jyURbXcR7soH4IMHcNRu7svJYQq
- SlG4C6lPslvrjbuf4Amfpl5jE3cout3lnGPNOH//AwGafCOGVL9egLmsiXywv4x3WVAP/Cf5GTv
- DEVY/DoaP2APWy3/FZHVHFJgJ/sV8mhmUp4S1fNTBZO1+SJ+uKDX9n2JxjvnfA
-X-Google-Smtp-Source: AGHT+IGW/uS96/6kTtHUuZ1heBSX/hPA0wMfZihSjWAG/nFtfzwmyfRFPLTg+jz0Q9fvgJX4YgUYfg==
-X-Received: by 2002:a05:600c:83c9:b0:45d:5c71:769a with SMTP id
- 5b1f17b1804b1-47d84b3b650mr194319305e9.26.1768213863556; 
- Mon, 12 Jan 2026 02:31:03 -0800 (PST)
+ bh=CXbd4IKEO7Yjpowq+VWguY9db9jI9msI2RfrvzCs7NU=;
+ b=i4QUWNHlVr73Fp30z1azaMzeh6mi7q5iYVg45vbK2/VE50OxlthGhkWeH4OpNSxJcf
+ AG5+sNGiuv5Q4J9ndleEzpC1z/N9nIW3oLeC0pQL7RSs0VV9/6goKR6kyGZA5AEVUCTq
+ MiO6g/udtvyImszBo7QyUuBVSOMvEDZ/IueeqEbPZBjRSr+RXR8DVoyMjHAeUxswF7GJ
+ 69S5HQt9609exEVelgHrmkeiHmM7gtUpEmcUrjJ3SvCFi1c70rjVMjZ/QUNlnUMYreQR
+ dOT8kyFe5YryjM5h+MiT61aaOIy6BPQBtL752EWA5QtyA39pbhraP977U7ojYsW7cQ+q
+ /4hw==
+X-Gm-Message-State: AOJu0YxsUmWUVq3aMgVOmdDdYQsxkOuMynQnAF+C35osscHx3/73Xe5U
+ lJjCR2KakmRhYbQlRnpcvpEKpa56YhEth6ObIvg+52MEa8fgJcwEhLRbl//kdAZMzvFkAabmT/D
+ QNsoWqTU=
+X-Gm-Gg: AY/fxX7zW+NcJfyk0qABhkVkJUFosMkruPk2NspyPM48ExUNbzYMtnJQAXe56zLdH0q
+ HoAZNjuiiIXVNUPlaaLDsvx3bf2Y3hFfo9vCzUwo+kAP24QwSZ9ub28eFz6QqPFQ4rLLi6i5NF/
+ hVBT6rO2tr6zbCUubd3hnm2V6fQ5ATlq55wIgXwwLTqmbNQwXnoeIMPZ0Elw6LkfBZe/1y7JTh/
+ 1J16YO/Kk0T8mGClZS7mFB7ANIVfVDNDShTFDauh9fLJ4hibewH3Lqp3mQ6Ff8OLOmdwqwjtcOM
+ JcEoS/gmMEyoORMNa0CMrhwooHCRNX75GBn9TxlOIfYjPYL0cIUY1AzatG4uwprwCjxghxF9mel
+ q6uUKremRV2lUyN15yuOsYpryv+5b34LsE1CmApJWEGGgNuugrq/boTn7cgAZcT/dv1kaQXLgUj
+ OGmy+vq+u3kFygP3WJADyVuMV6s7J+gx6oO5eIgg4LeJ1b4h1rpJ9vbGhn+uL6
+X-Google-Smtp-Source: AGHT+IEjcypaFFeEkp9bj/xQCnQ7dKTD0qxZvP201i+RQFNCuzf0fZBezE939nGdivjjpC1gkSHxlw==
+X-Received: by 2002:a05:6000:2410:b0:430:f58d:40cf with SMTP id
+ ffacd0b85a97d-432c3633514mr18598022f8f.16.1768213870400; 
+ Mon, 12 Jan 2026 02:31:10 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d7f390a69sm344400635e9.0.2026.01.12.02.31.02
+ ffacd0b85a97d-432d9610671sm20189887f8f.34.2026.01.12.02.31.09
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 12 Jan 2026 02:31:03 -0800 (PST)
+ Mon, 12 Jan 2026 02:31:09 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -74,17 +74,18 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  Alexander Graf <agraf@csgraf.de>, Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v6 04/19] target/i386/hvf: Use hvf_unprotect_dirty_range
-Date: Mon, 12 Jan 2026 11:30:18 +0100
-Message-ID: <20260112103034.65310-5-philmd@linaro.org>
+Subject: [PATCH v6 05/19] target/i386/hvf: Use address_space_translate in
+ ept_emulation_fault
+Date: Mon, 12 Jan 2026 11:30:19 +0100
+Message-ID: <20260112103034.65310-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112103034.65310-1-philmd@linaro.org>
 References: <20260112103034.65310-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,28 +110,100 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
+The hvf_slot structure is a poor replacement for properly
+looking up a memory region in the address space.
+Use memory_region_get_dirty_log_mask instead of HVF_SLOT_LOG.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- target/i386/hvf/hvf.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ target/i386/hvf/hvf.c | 37 ++++++++++++++++++-------------------
+ 1 file changed, 18 insertions(+), 19 deletions(-)
 
 diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-index 731cd954630..1610000d9ca 100644
+index 1610000d9ca..e3e54c10bd5 100644
 --- a/target/i386/hvf/hvf.c
 +++ b/target/i386/hvf/hvf.c
-@@ -142,8 +142,7 @@ static bool ept_emulation_fault(hvf_slot *slot, uint64_t gpa, uint64_t ept_qual)
-             uint64_t dirty_page_start = gpa & page_mask;
+@@ -119,9 +119,12 @@ void hvf_handle_io(CPUState *env, uint16_t port, void *buffer,
+     }
+ }
  
-             memory_region_set_dirty(slot->region, gpa - slot->start, 1);
--            hv_vm_protect(dirty_page_start, page_size,
--                          HV_MEMORY_READ | HV_MEMORY_WRITE | HV_MEMORY_EXEC);
-+            hvf_unprotect_dirty_range(dirty_page_start, page_size);
-         }
+-static bool ept_emulation_fault(hvf_slot *slot, uint64_t gpa, uint64_t ept_qual)
++static bool ept_emulation_fault(CPUState *cs, uint64_t gpa, uint64_t ept_qual)
+ {
+-    int read, write;
++    bool read, write;
++    MemoryRegion *mr;
++    hwaddr gpa_page = gpa & qemu_real_host_page_mask();
++    hwaddr xlat;
+ 
+     /* EPT fault on an instruction fetch doesn't make sense here */
+     if (ept_qual & EPT_VIOLATION_INST_FETCH) {
+@@ -129,21 +132,22 @@ static bool ept_emulation_fault(hvf_slot *slot, uint64_t gpa, uint64_t ept_qual)
      }
  
+     /* EPT fault must be a read fault or a write fault */
+-    read = ept_qual & EPT_VIOLATION_DATA_READ ? 1 : 0;
+-    write = ept_qual & EPT_VIOLATION_DATA_WRITE ? 1 : 0;
+-    if ((read | write) == 0) {
++    read = ept_qual & EPT_VIOLATION_DATA_READ;
++    write = ept_qual & EPT_VIOLATION_DATA_WRITE;
++    if (!read && !write) {
+         return false;
+     }
+ 
+-    if (write && slot) {
+-        if (slot->flags & HVF_SLOT_LOG) {
+-            uintptr_t page_size = qemu_real_host_page_size();
+-            intptr_t page_mask = -(intptr_t)page_size;
+-            uint64_t dirty_page_start = gpa & page_mask;
++    mr = address_space_translate(cpu_get_address_space(cs, X86ASIdx_MEM),
++                                 gpa_page, &xlat, NULL, write,
++                                 MEMTXATTRS_UNSPECIFIED);
+ 
+-            memory_region_set_dirty(slot->region, gpa - slot->start, 1);
+-            hvf_unprotect_dirty_range(dirty_page_start, page_size);
+-        }
++    /* Handle dirty page logging for ram. */
++    if (write && memory_region_get_dirty_log_mask(mr)) {
++        uintptr_t page_size = qemu_real_host_page_size();
++
++        memory_region_set_dirty(mr, gpa_page + xlat, page_size);
++        hvf_unprotect_dirty_range(gpa_page, page_size);
+     }
+ 
+     /*
+@@ -156,9 +160,6 @@ static bool ept_emulation_fault(hvf_slot *slot, uint64_t gpa, uint64_t ept_qual)
+         return false;
+     }
+ 
+-    if (!slot) {
+-        return true;
+-    }
+     if (!memory_region_is_ram(slot->region) &&
+         !(read && memory_region_is_romd(slot->region))) {
+         return true;
+@@ -765,7 +766,6 @@ static int hvf_handle_vmexit(CPUState *cpu)
+     /* Need to check if MMIO or unmapped fault */
+     case EXIT_REASON_EPT_FAULT:
+     {
+-        hvf_slot *slot;
+         uint64_t gpa = rvmcs(cpu->accel->fd, VMCS_GUEST_PHYSICAL_ADDRESS);
+ 
+         if (((idtvec_info & VMCS_IDT_VEC_VALID) == 0) &&
+@@ -773,9 +773,8 @@ static int hvf_handle_vmexit(CPUState *cpu)
+             vmx_set_nmi_blocking(cpu);
+         }
+ 
+-        slot = hvf_find_overlap_slot(gpa, 1);
+         /* mmio */
+-        if (ept_emulation_fault(slot, gpa, exit_qual)) {
++        if (ept_emulation_fault(cpu, gpa, exit_qual)) {
+             struct x86_decode decode;
+ 
+             hvf_load_regs(cpu);
 -- 
 2.52.0
 
