@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E3C4D15AA6
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 23:52:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A1F3D15AE2
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 23:54:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfQlu-0002xK-AF; Mon, 12 Jan 2026 17:52:26 -0500
+	id 1vfQm5-0003LC-2q; Mon, 12 Jan 2026 17:52:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQlc-0002dq-NU
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:52:10 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQlm-0002r0-53
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:52:20 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQlb-0003BV-9Z
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:52:08 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-43246af170aso3285660f8f.0
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 14:52:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQlj-0003CV-9P
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:52:17 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4779adb38d3so47503815e9.2
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 14:52:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768258325; x=1768863125; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768258332; x=1768863132; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=DTUInP/Tt1Z3d3UClrx1aZRKEsn1LBWbAENhuifa1Fw=;
- b=GFwwOfaRTwTfEbYL362qlgRK8TNLA4h0hXkbnAj6+JFMHJ/GNXjFJC84p0P7mv3VLm
- dDapxABg6WeoJTg5KwqCIDKfPDOIIC67Mtgiewe/gjFsF3cUgHPNVRxTIhE5l5hkDTnp
- u1vPc60DKxC4tvJlZdZBbE5GgqudJ3Sb4/FUQ513Klc/DpreVhiy9pHfeV173Sskvl7v
- 4EAiElIktoHanf0zMrhPy8A5VZzZdGwK5GMRIsyOqrNbF9zgYgjSnRw6YboybIo0XciN
- 6Hh02T9bbvgOo/CxzrTFJlurA3fwlFu6aMoMeNMOh2naHwExlL6/Yp7JztXPFD7feX5p
- PB+Q==
+ :reply-to; bh=HXnDGnM4F4GWWrI+WXkDyeFYrvN63k8fphpbNjR0dkk=;
+ b=tsKSVj3LV6V4ywPldARXXfRvXY0ykcGm0JXKFRlwgdLYVNml4LQNdTiJB5ebsU3Ytb
+ NkaQsbe6gcrtApy0zb7p/WA7jVUmnoLejkK/WuUxw8yxrB1yO4sQg5491cRRjl+KeJje
+ TBD2s63vT9/JGqeM4OmHvLGAYI6fN7arAzNpVNhsYrsZpKSQUnXFuMc3BtFRxBgxNNC9
+ 28wuXqDR5QosepjQp0AgtEqWxQ44oCovGGs07F8sbp5aXi5FGWrHOxIUh9Qi1TVuhPzE
+ hrHlYlab75XCBCSdAeqeq3x+Xrnj/HY9jiZnuOn5o2dH5syVi9acoBOJjYjcAoKJQS2Y
+ WI6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768258325; x=1768863125;
+ d=1e100.net; s=20230601; t=1768258332; x=1768863132;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=DTUInP/Tt1Z3d3UClrx1aZRKEsn1LBWbAENhuifa1Fw=;
- b=Rklc9xrY/PJayuVMvRqv+vEpl9bHF04IEfm3WpnRBGzb6csut2ezystvEYpdNZfTy5
- RBWvuQXftJBLMRxD2/gNomW4GnkelW/KWZF8lJ4rX/HU/E81p5i078be5ZLMdt+CS1cJ
- nSY1P5iNLAtjAUnjLtI2O/R7i8nWyjR5InivV0yIylPax7sEHIoSqcS4sxBHW9gnkMu1
- YFKwfGXRciQXEuWpe/r8dmyiLGWr6jUFio3aEXNg3zfxA1zN63w4nO58chJQ3ulae23y
- T3xkhrsU/XLxdjO1PpIg9scXgmPtlYmSAJrMxBlXp6NdLWG8FTxOWfaf8+ajszatF8wM
- FNIA==
-X-Gm-Message-State: AOJu0YyorByha5xIzLJGDaF4EG/zcAKhNdCxI1PazeF7qEUd1Ir8A//u
- R1lNLgX5cvCTxfpAvKu3HRp+qkMijQwlMaB5LwSR0b0hoJHXzz93emfje7lA4zRqGuZnFrM5Xgt
- DZeoerHU=
-X-Gm-Gg: AY/fxX4+2D+SLuHkEJD3ZQz+/IlriTf8wUav4Dk9xYVlowUXP1x3eiBn3X8RgYuUtbA
- Z4eXjTHLTxqnYPgXLZ8CmuZ1GGUn3GxUhtcUsigkJmPYxFtj1EUQdzv0YtMkYEshZohL87xW0U/
- ASMYBCXJh7rlxr2wJV8E6MACY/yD4/gyymNSKJfLOUwLgL401lGrjDTE5vhIJdzFRpbfmu1Zzw/
- GEq5S8leV6mL7PsRzY4xclOqK7ThPQa60IrgIiK/lUJcOIqf66+8ktGifJmjBnUNPF33kg3JlvM
- NfURoiLpvRJ9q5YRbJ0n5gWGPdjglXjShrwJR2A4D2hPQR/pobBkhfMroCndzpEK4Aas+Ovj1AH
- Jkx7glz5SZdXS/v5VA8iid7ZdenAAqv61ssXJJbaDck555l1jxuGuhUC08uq+rKef6SkogIei0u
- /DxOHv5D0TypTtYIu4LW1tE+PrqpyB3PgY+NpnEEqWXdjgqv+KImk3XDEpq3Ub
-X-Google-Smtp-Source: AGHT+IFLhWjiW/9sY8zIwOlx8kPq8I0aEaSOzolUX1F/wmTOhtKHuyrduwv2swrY+MCqj4r2cbWTrQ==
-X-Received: by 2002:a05:6000:4012:b0:431:327:5dd6 with SMTP id
- ffacd0b85a97d-43423e7dff5mr1089985f8f.8.1768258325230; 
- Mon, 12 Jan 2026 14:52:05 -0800 (PST)
+ bh=HXnDGnM4F4GWWrI+WXkDyeFYrvN63k8fphpbNjR0dkk=;
+ b=FlSuk2RXQ+qgtEyhZ5QtgjzNGuIJfuZ9hWtd2ay00iE+9URTy0lrHfnIHLBQs+++ox
+ VmISCICevSF+2pu5DcKYh5rQ61gH/8Nvp46luMr1W8LL3TragwLY0OCBqU64yZoctsrd
+ OoJyPDKmzL+IJ+PHx0g7P0U2NjLmUJh6MBKJ73uXJPR7EzWWYi2ycm2TK2MWIfTv5S0S
+ mBWAcUHLHixxk0fF12cuL1oW7spAh3c3o+eT6VsRzBa0yt+TxcsnwN5JkpoeXlj4MRRY
+ Lyn2aF47JpeIXpQCyB/QTzeS4UQ2zpY999Q/jcF0qNlDzvRQgkYrY7OSQ/cQj0JjzTqB
+ 7PoQ==
+X-Gm-Message-State: AOJu0YwNY3a7WS5vEnEdZ2CkicA4p4LCI8w/oPOTUkMTorEwCW/W4uHG
+ +kXwvPwCB1KvyPKCTfr2yn0tO2zRPz1SWJnLjfK0Ba8X3cahS6pQ7Mu19jLvZDzX9qjLvNLFg2O
+ uzc7lpOY=
+X-Gm-Gg: AY/fxX6b+1Yg32RkpTCCAsHenEID+HA7bD8m8bWf1YjeUpzTFbfBvQvTtEHTmF+1DqG
+ qLAV+WhF6mZos3vATecF1reXuJUyd3WPACh0QJX4tSo0oSNJCsi2uhBpJh0ql5mcH336rix9eUA
+ T01invSu5HPJVpp/tSS/6WvUaCMKV7fC3kX9viletSywlzIUbHN3ZWsS7VaLNMLmB2OEF854rZH
+ UVnWUAlNz+2fm77lSWLt9cMccwh0gb16wrhj8qunPvxV3alhDpqtGj+pTaJ/aDjNUqR6jAr4ztA
+ uPtv5eizHmteFs5wtD84GcgJ9Vgjwy+bSdDZ5rqOcng/i3Q7qXkKRiQ9sjXfWxNxJF5DK/bji9W
+ RP6XoUDYdo0F1tvCoPmVcZcUhXTpABG1iUIr6WsQMoMTzGLy7M57L+O0X4/W3Hv3nGGQATj7EzB
+ jaINg0NREhsf7o0PVxa8K8qFCjR/8qMgqYAXOBfyrxpplEANUhWZnHoRb4cCn/hPzg+PJnZNE=
+X-Google-Smtp-Source: AGHT+IF07h6ns0pW4hjQ6M95bIwqrrotuPKczjaARiePyd0fgWCOkwmyajoPyUieI6KwDDO8XbGp4A==
+X-Received: by 2002:a05:600c:a04:b0:47d:5dae:73b1 with SMTP id
+ 5b1f17b1804b1-47d84b3b668mr249556435e9.23.1768258331842; 
+ Mon, 12 Jan 2026 14:52:11 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-432bd5ff0b2sm40657253f8f.42.2026.01.12.14.52.03
+ 5b1f17b1804b1-47d7f390a69sm370666305e9.0.2026.01.12.14.52.11
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 12 Jan 2026 14:52:03 -0800 (PST)
+ Mon, 12 Jan 2026 14:52:11 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 27/61] target/loongarch: Use hwaddr type for physical addresses
-Date: Mon, 12 Jan 2026 23:48:22 +0100
-Message-ID: <20260112224857.42068-28-philmd@linaro.org>
+Subject: [PULL 28/61] target/loongarch: Replace MO_TE -> MO_LE
+Date: Mon, 12 Jan 2026 23:48:23 +0100
+Message-ID: <20260112224857.42068-29-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112224857.42068-1-philmd@linaro.org>
 References: <20260112224857.42068-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,53 +97,304 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace variables used with get_physical_address(), which
-expect a physical addresses, by the 'hwaddr' type, instead
-of the 'target_ulong' one.
+We only build the LoongArch target using little endianness
+order, therefore the MO_TE definitions expand to the little
+endian one. Use the latter which is more explicit.
+
+Mechanical change running:
+
+  $ sed -i -e s/MO_TE/MO_LE/ \
+        $(git grep -wl MO_TE target/loongarch/)
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <20251224161456.89707-4-philmd@linaro.org>
+Message-ID: <20251224161456.89707-5-philmd@linaro.org>
 ---
- target/loongarch/cpu_helper.c     | 2 +-
- target/loongarch/tcg/tlb_helper.c | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ .../tcg/insn_trans/trans_atomic.c.inc         | 80 +++++++++----------
+ .../tcg/insn_trans/trans_fmemory.c.inc        | 32 ++++----
+ .../tcg/insn_trans/trans_memory.c.inc         | 64 +++++++--------
+ .../loongarch/tcg/insn_trans/trans_vec.c.inc  | 16 ++--
+ 4 files changed, 96 insertions(+), 96 deletions(-)
 
-diff --git a/target/loongarch/cpu_helper.c b/target/loongarch/cpu_helper.c
-index 4864f4d6d87..2b27274f64e 100644
---- a/target/loongarch/cpu_helper.c
-+++ b/target/loongarch/cpu_helper.c
-@@ -146,7 +146,7 @@ TLBRet loongarch_ptw(CPULoongArchState *env, MMUContext *context,
-                      int access_type, int mmu_idx, int debug)
- {
-     CPUState *cs = env_cpu(env);
--    target_ulong index = 0, phys = 0;
-+    hwaddr index = 0, phys = 0;
-     uint64_t dir_base, dir_width;
-     uint64_t base, pte;
-     int level;
-diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-index 873a0a1b0c4..aab89b9be19 100644
---- a/target/loongarch/tcg/tlb_helper.c
-+++ b/target/loongarch/tcg/tlb_helper.c
-@@ -691,7 +691,7 @@ target_ulong helper_lddir(CPULoongArchState *env, target_ulong base,
- {
-     CPUState *cs = env_cpu(env);
-     uint64_t badvaddr;
--    target_ulong index, phys;
-+    hwaddr index, phys;
-     uint64_t dir_base, dir_width;
+diff --git a/target/loongarch/tcg/insn_trans/trans_atomic.c.inc b/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
+index 77eeedbc42b..a1de389e51b 100644
+--- a/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
++++ b/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
+@@ -69,43 +69,43 @@ static bool gen_am(DisasContext *ctx, arg_rrr *a,
+     return true;
+ }
  
-     if (unlikely((level == 0) || (level > 4))) {
-@@ -726,7 +726,7 @@ void helper_ldpte(CPULoongArchState *env, target_ulong base, target_ulong odd,
-                   uint32_t mem_idx)
- {
-     CPUState *cs = env_cpu(env);
--    target_ulong phys, tmp0, ptindex, ptoffset0, ptoffset1;
-+    hwaddr phys, tmp0, ptindex, ptoffset0, ptoffset1;
-     uint64_t badv;
-     uint64_t ptbase = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTBASE);
-     uint64_t ptwidth = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTWIDTH);
+-TRANS(ll_w, ALL, gen_ll, MO_TESL)
+-TRANS(sc_w, ALL, gen_sc, MO_TESL)
+-TRANS(ll_d, 64, gen_ll, MO_TEUQ)
+-TRANS(sc_d, 64, gen_sc, MO_TEUQ)
+-TRANS(amswap_w, LAM, gen_am, tcg_gen_atomic_xchg_tl, MO_TESL)
+-TRANS64(amswap_d, LAM, gen_am, tcg_gen_atomic_xchg_tl, MO_TEUQ)
+-TRANS(amadd_w, LAM, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TESL)
+-TRANS64(amadd_d, LAM, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TEUQ)
+-TRANS(amand_w, LAM, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TESL)
+-TRANS64(amand_d, LAM, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TEUQ)
+-TRANS(amor_w, LAM, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TESL)
+-TRANS64(amor_d, LAM, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TEUQ)
+-TRANS(amxor_w, LAM, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TESL)
+-TRANS64(amxor_d, LAM, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TEUQ)
+-TRANS(ammax_w, LAM, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TESL)
+-TRANS64(ammax_d, LAM, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TEUQ)
+-TRANS(ammin_w, LAM, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TESL)
+-TRANS64(ammin_d, LAM, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TEUQ)
+-TRANS(ammax_wu, LAM, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TESL)
+-TRANS64(ammax_du, LAM, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TEUQ)
+-TRANS(ammin_wu, LAM, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TESL)
+-TRANS64(ammin_du, LAM, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TEUQ)
+-TRANS(amswap_db_w, LAM, gen_am, tcg_gen_atomic_xchg_tl, MO_TESL)
+-TRANS64(amswap_db_d, LAM, gen_am, tcg_gen_atomic_xchg_tl, MO_TEUQ)
+-TRANS(amadd_db_w, LAM, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TESL)
+-TRANS64(amadd_db_d, LAM, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TEUQ)
+-TRANS(amand_db_w, LAM, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TESL)
+-TRANS64(amand_db_d, LAM, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TEUQ)
+-TRANS(amor_db_w, LAM, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TESL)
+-TRANS64(amor_db_d, LAM, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TEUQ)
+-TRANS(amxor_db_w, LAM, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TESL)
+-TRANS64(amxor_db_d, LAM, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TEUQ)
+-TRANS(ammax_db_w, LAM, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TESL)
+-TRANS64(ammax_db_d, LAM, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TEUQ)
+-TRANS(ammin_db_w, LAM, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TESL)
+-TRANS64(ammin_db_d, LAM, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TEUQ)
+-TRANS(ammax_db_wu, LAM, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TESL)
+-TRANS64(ammax_db_du, LAM, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TEUQ)
+-TRANS(ammin_db_wu, LAM, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TESL)
+-TRANS64(ammin_db_du, LAM, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TEUQ)
++TRANS(ll_w, ALL, gen_ll, MO_LESL)
++TRANS(sc_w, ALL, gen_sc, MO_LESL)
++TRANS(ll_d, 64, gen_ll, MO_LEUQ)
++TRANS(sc_d, 64, gen_sc, MO_LEUQ)
++TRANS(amswap_w, LAM, gen_am, tcg_gen_atomic_xchg_tl, MO_LESL)
++TRANS64(amswap_d, LAM, gen_am, tcg_gen_atomic_xchg_tl, MO_LEUQ)
++TRANS(amadd_w, LAM, gen_am, tcg_gen_atomic_fetch_add_tl, MO_LESL)
++TRANS64(amadd_d, LAM, gen_am, tcg_gen_atomic_fetch_add_tl, MO_LEUQ)
++TRANS(amand_w, LAM, gen_am, tcg_gen_atomic_fetch_and_tl, MO_LESL)
++TRANS64(amand_d, LAM, gen_am, tcg_gen_atomic_fetch_and_tl, MO_LEUQ)
++TRANS(amor_w, LAM, gen_am, tcg_gen_atomic_fetch_or_tl, MO_LESL)
++TRANS64(amor_d, LAM, gen_am, tcg_gen_atomic_fetch_or_tl, MO_LEUQ)
++TRANS(amxor_w, LAM, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_LESL)
++TRANS64(amxor_d, LAM, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_LEUQ)
++TRANS(ammax_w, LAM, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_LESL)
++TRANS64(ammax_d, LAM, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_LEUQ)
++TRANS(ammin_w, LAM, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_LESL)
++TRANS64(ammin_d, LAM, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_LEUQ)
++TRANS(ammax_wu, LAM, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_LESL)
++TRANS64(ammax_du, LAM, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_LEUQ)
++TRANS(ammin_wu, LAM, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_LESL)
++TRANS64(ammin_du, LAM, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_LEUQ)
++TRANS(amswap_db_w, LAM, gen_am, tcg_gen_atomic_xchg_tl, MO_LESL)
++TRANS64(amswap_db_d, LAM, gen_am, tcg_gen_atomic_xchg_tl, MO_LEUQ)
++TRANS(amadd_db_w, LAM, gen_am, tcg_gen_atomic_fetch_add_tl, MO_LESL)
++TRANS64(amadd_db_d, LAM, gen_am, tcg_gen_atomic_fetch_add_tl, MO_LEUQ)
++TRANS(amand_db_w, LAM, gen_am, tcg_gen_atomic_fetch_and_tl, MO_LESL)
++TRANS64(amand_db_d, LAM, gen_am, tcg_gen_atomic_fetch_and_tl, MO_LEUQ)
++TRANS(amor_db_w, LAM, gen_am, tcg_gen_atomic_fetch_or_tl, MO_LESL)
++TRANS64(amor_db_d, LAM, gen_am, tcg_gen_atomic_fetch_or_tl, MO_LEUQ)
++TRANS(amxor_db_w, LAM, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_LESL)
++TRANS64(amxor_db_d, LAM, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_LEUQ)
++TRANS(ammax_db_w, LAM, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_LESL)
++TRANS64(ammax_db_d, LAM, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_LEUQ)
++TRANS(ammin_db_w, LAM, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_LESL)
++TRANS64(ammin_db_d, LAM, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_LEUQ)
++TRANS(ammax_db_wu, LAM, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_LESL)
++TRANS64(ammax_db_du, LAM, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_LEUQ)
++TRANS(ammin_db_wu, LAM, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_LESL)
++TRANS64(ammin_db_du, LAM, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_LEUQ)
+diff --git a/target/loongarch/tcg/insn_trans/trans_fmemory.c.inc b/target/loongarch/tcg/insn_trans/trans_fmemory.c.inc
+index 79da4718a56..b863ba1dc21 100644
+--- a/target/loongarch/tcg/insn_trans/trans_fmemory.c.inc
++++ b/target/loongarch/tcg/insn_trans/trans_fmemory.c.inc
+@@ -140,19 +140,19 @@ static bool gen_fstore_le(DisasContext *ctx, arg_frr *a, MemOp mop)
+     return true;
+ }
+ 
+-TRANS(fld_s, FP_SP, gen_fload_i, MO_TEUL)
+-TRANS(fst_s, FP_SP, gen_fstore_i, MO_TEUL)
+-TRANS(fld_d, FP_DP, gen_fload_i, MO_TEUQ)
+-TRANS(fst_d, FP_DP, gen_fstore_i, MO_TEUQ)
+-TRANS(fldx_s, FP_SP, gen_floadx, MO_TEUL)
+-TRANS(fldx_d, FP_DP, gen_floadx, MO_TEUQ)
+-TRANS(fstx_s, FP_SP, gen_fstorex, MO_TEUL)
+-TRANS(fstx_d, FP_DP, gen_fstorex, MO_TEUQ)
+-TRANS64(fldgt_s, FP_SP, gen_fload_gt, MO_TEUL)
+-TRANS64(fldgt_d, FP_DP, gen_fload_gt, MO_TEUQ)
+-TRANS64(fldle_s, FP_SP, gen_fload_le, MO_TEUL)
+-TRANS64(fldle_d, FP_DP, gen_fload_le, MO_TEUQ)
+-TRANS64(fstgt_s, FP_SP, gen_fstore_gt, MO_TEUL)
+-TRANS64(fstgt_d, FP_DP, gen_fstore_gt, MO_TEUQ)
+-TRANS64(fstle_s, FP_SP, gen_fstore_le, MO_TEUL)
+-TRANS64(fstle_d, FP_DP, gen_fstore_le, MO_TEUQ)
++TRANS(fld_s, FP_SP, gen_fload_i, MO_LEUL)
++TRANS(fst_s, FP_SP, gen_fstore_i, MO_LEUL)
++TRANS(fld_d, FP_DP, gen_fload_i, MO_LEUQ)
++TRANS(fst_d, FP_DP, gen_fstore_i, MO_LEUQ)
++TRANS(fldx_s, FP_SP, gen_floadx, MO_LEUL)
++TRANS(fldx_d, FP_DP, gen_floadx, MO_LEUQ)
++TRANS(fstx_s, FP_SP, gen_fstorex, MO_LEUL)
++TRANS(fstx_d, FP_DP, gen_fstorex, MO_LEUQ)
++TRANS64(fldgt_s, FP_SP, gen_fload_gt, MO_LEUL)
++TRANS64(fldgt_d, FP_DP, gen_fload_gt, MO_LEUQ)
++TRANS64(fldle_s, FP_SP, gen_fload_le, MO_LEUL)
++TRANS64(fldle_d, FP_DP, gen_fload_le, MO_LEUQ)
++TRANS64(fstgt_s, FP_SP, gen_fstore_gt, MO_LEUL)
++TRANS64(fstgt_d, FP_DP, gen_fstore_gt, MO_LEUQ)
++TRANS64(fstle_s, FP_SP, gen_fstore_le, MO_LEUL)
++TRANS64(fstle_d, FP_DP, gen_fstore_le, MO_LEUQ)
+diff --git a/target/loongarch/tcg/insn_trans/trans_memory.c.inc b/target/loongarch/tcg/insn_trans/trans_memory.c.inc
+index 42f4e740126..90bb0815ff3 100644
+--- a/target/loongarch/tcg/insn_trans/trans_memory.c.inc
++++ b/target/loongarch/tcg/insn_trans/trans_memory.c.inc
+@@ -151,44 +151,44 @@ static bool gen_stptr(DisasContext *ctx, arg_rr_i *a, MemOp mop)
+ }
+ 
+ TRANS(ld_b, ALL, gen_load, MO_SB)
+-TRANS(ld_h, ALL, gen_load, MO_TESW)
+-TRANS(ld_w, ALL, gen_load, MO_TESL)
+-TRANS(ld_d, 64, gen_load, MO_TEUQ)
++TRANS(ld_h, ALL, gen_load, MO_LESW)
++TRANS(ld_w, ALL, gen_load, MO_LESL)
++TRANS(ld_d, 64, gen_load, MO_LEUQ)
+ TRANS(st_b, ALL, gen_store, MO_UB)
+-TRANS(st_h, ALL, gen_store, MO_TEUW)
+-TRANS(st_w, ALL, gen_store, MO_TEUL)
+-TRANS(st_d, 64, gen_store, MO_TEUQ)
++TRANS(st_h, ALL, gen_store, MO_LEUW)
++TRANS(st_w, ALL, gen_store, MO_LEUL)
++TRANS(st_d, 64, gen_store, MO_LEUQ)
+ TRANS(ld_bu, ALL, gen_load, MO_UB)
+-TRANS(ld_hu, ALL, gen_load, MO_TEUW)
+-TRANS(ld_wu, 64, gen_load, MO_TEUL)
++TRANS(ld_hu, ALL, gen_load, MO_LEUW)
++TRANS(ld_wu, 64, gen_load, MO_LEUL)
+ TRANS(ldx_b, 64, gen_loadx, MO_SB)
+-TRANS(ldx_h, 64, gen_loadx, MO_TESW)
+-TRANS(ldx_w, 64, gen_loadx, MO_TESL)
+-TRANS(ldx_d, 64, gen_loadx, MO_TEUQ)
++TRANS(ldx_h, 64, gen_loadx, MO_LESW)
++TRANS(ldx_w, 64, gen_loadx, MO_LESL)
++TRANS(ldx_d, 64, gen_loadx, MO_LEUQ)
+ TRANS(stx_b, 64, gen_storex, MO_UB)
+-TRANS(stx_h, 64, gen_storex, MO_TEUW)
+-TRANS(stx_w, 64, gen_storex, MO_TEUL)
+-TRANS(stx_d, 64, gen_storex, MO_TEUQ)
++TRANS(stx_h, 64, gen_storex, MO_LEUW)
++TRANS(stx_w, 64, gen_storex, MO_LEUL)
++TRANS(stx_d, 64, gen_storex, MO_LEUQ)
+ TRANS(ldx_bu, 64, gen_loadx, MO_UB)
+-TRANS(ldx_hu, 64, gen_loadx, MO_TEUW)
+-TRANS(ldx_wu, 64, gen_loadx, MO_TEUL)
+-TRANS(ldptr_w, 64, gen_ldptr, MO_TESL)
+-TRANS(stptr_w, 64, gen_stptr, MO_TEUL)
+-TRANS(ldptr_d, 64, gen_ldptr, MO_TEUQ)
+-TRANS(stptr_d, 64, gen_stptr, MO_TEUQ)
++TRANS(ldx_hu, 64, gen_loadx, MO_LEUW)
++TRANS(ldx_wu, 64, gen_loadx, MO_LEUL)
++TRANS(ldptr_w, 64, gen_ldptr, MO_LESL)
++TRANS(stptr_w, 64, gen_stptr, MO_LEUL)
++TRANS(ldptr_d, 64, gen_ldptr, MO_LEUQ)
++TRANS(stptr_d, 64, gen_stptr, MO_LEUQ)
+ TRANS(ldgt_b, 64, gen_load_gt, MO_SB)
+-TRANS(ldgt_h, 64, gen_load_gt, MO_TESW)
+-TRANS(ldgt_w, 64, gen_load_gt, MO_TESL)
+-TRANS(ldgt_d, 64, gen_load_gt, MO_TEUQ)
++TRANS(ldgt_h, 64, gen_load_gt, MO_LESW)
++TRANS(ldgt_w, 64, gen_load_gt, MO_LESL)
++TRANS(ldgt_d, 64, gen_load_gt, MO_LEUQ)
+ TRANS(ldle_b, 64, gen_load_le, MO_SB)
+-TRANS(ldle_h, 64, gen_load_le, MO_TESW)
+-TRANS(ldle_w, 64, gen_load_le, MO_TESL)
+-TRANS(ldle_d, 64, gen_load_le, MO_TEUQ)
++TRANS(ldle_h, 64, gen_load_le, MO_LESW)
++TRANS(ldle_w, 64, gen_load_le, MO_LESL)
++TRANS(ldle_d, 64, gen_load_le, MO_LEUQ)
+ TRANS(stgt_b, 64, gen_store_gt, MO_UB)
+-TRANS(stgt_h, 64, gen_store_gt, MO_TEUW)
+-TRANS(stgt_w, 64, gen_store_gt, MO_TEUL)
+-TRANS(stgt_d, 64, gen_store_gt, MO_TEUQ)
++TRANS(stgt_h, 64, gen_store_gt, MO_LEUW)
++TRANS(stgt_w, 64, gen_store_gt, MO_LEUL)
++TRANS(stgt_d, 64, gen_store_gt, MO_LEUQ)
+ TRANS(stle_b, 64, gen_store_le, MO_UB)
+-TRANS(stle_h, 64, gen_store_le, MO_TEUW)
+-TRANS(stle_w, 64, gen_store_le, MO_TEUL)
+-TRANS(stle_d, 64, gen_store_le, MO_TEUQ)
++TRANS(stle_h, 64, gen_store_le, MO_LEUW)
++TRANS(stle_w, 64, gen_store_le, MO_LEUL)
++TRANS(stle_d, 64, gen_store_le, MO_LEUQ)
+diff --git a/target/loongarch/tcg/insn_trans/trans_vec.c.inc b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
+index 38bccf28386..ea7e705bab4 100644
+--- a/target/loongarch/tcg/insn_trans/trans_vec.c.inc
++++ b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
+@@ -5279,7 +5279,7 @@ static bool trans_vld(DisasContext *ctx, arg_vr_i *a)
+ 
+     addr = make_address_i(ctx, addr, a->imm);
+ 
+-    tcg_gen_qemu_ld_i128(val, addr, ctx->mem_idx, MO_128 | MO_TE);
++    tcg_gen_qemu_ld_i128(val, addr, ctx->mem_idx, MO_128 | MO_LE);
+     tcg_gen_extr_i128_i64(rl, rh, val);
+     set_vreg64(rh, a->vd, 1);
+     set_vreg64(rl, a->vd, 0);
+@@ -5311,7 +5311,7 @@ static bool trans_vst(DisasContext *ctx, arg_vr_i *a)
+     get_vreg64(ah, a->vd, 1);
+     get_vreg64(al, a->vd, 0);
+     tcg_gen_concat_i64_i128(val, al, ah);
+-    tcg_gen_qemu_st_i128(val, addr, ctx->mem_idx, MO_128 | MO_TE);
++    tcg_gen_qemu_st_i128(val, addr, ctx->mem_idx, MO_128 | MO_LE);
+ 
+     return true;
+ }
+@@ -5337,7 +5337,7 @@ static bool trans_vldx(DisasContext *ctx, arg_vrr *a)
+     rh = tcg_temp_new_i64();
+ 
+     addr = make_address_x(ctx, src1, src2);
+-    tcg_gen_qemu_ld_i128(val, addr, ctx->mem_idx, MO_128 | MO_TE);
++    tcg_gen_qemu_ld_i128(val, addr, ctx->mem_idx, MO_128 | MO_LE);
+     tcg_gen_extr_i128_i64(rl, rh, val);
+     set_vreg64(rh, a->vd, 1);
+     set_vreg64(rl, a->vd, 0);
+@@ -5369,7 +5369,7 @@ static bool trans_vstx(DisasContext *ctx, arg_vrr *a)
+     get_vreg64(ah, a->vd, 1);
+     get_vreg64(al, a->vd, 0);
+     tcg_gen_concat_i64_i128(val, al, ah);
+-    tcg_gen_qemu_st_i128(val, addr, ctx->mem_idx, MO_128 | MO_TE);
++    tcg_gen_qemu_st_i128(val, addr, ctx->mem_idx, MO_128 | MO_LE);
+ 
+     return true;
+ }
+@@ -5478,12 +5478,12 @@ static void gen_xvld(DisasContext *ctx, int vreg, TCGv addr)
+     TCGv temp = tcg_temp_new();
+     TCGv dest = tcg_temp_new();
+ 
+-    tcg_gen_qemu_ld_i64(dest, addr, ctx->mem_idx, MO_TEUQ);
++    tcg_gen_qemu_ld_i64(dest, addr, ctx->mem_idx, MO_LEUQ);
+     set_vreg64(dest, vreg, 0);
+ 
+     for (i = 1; i < 4; i++) {
+         tcg_gen_addi_tl(temp, addr, 8 * i);
+-        tcg_gen_qemu_ld_i64(dest, temp, ctx->mem_idx, MO_TEUQ);
++        tcg_gen_qemu_ld_i64(dest, temp, ctx->mem_idx, MO_LEUQ);
+         set_vreg64(dest, vreg, i);
+     }
+ }
+@@ -5495,12 +5495,12 @@ static void gen_xvst(DisasContext * ctx, int vreg, TCGv addr)
+     TCGv dest = tcg_temp_new();
+ 
+     get_vreg64(dest, vreg, 0);
+-    tcg_gen_qemu_st_i64(dest, addr, ctx->mem_idx, MO_TEUQ);
++    tcg_gen_qemu_st_i64(dest, addr, ctx->mem_idx, MO_LEUQ);
+ 
+     for (i = 1; i < 4; i++) {
+         tcg_gen_addi_tl(temp, addr, 8 * i);
+         get_vreg64(dest, vreg, i);
+-        tcg_gen_qemu_st_i64(dest, temp, ctx->mem_idx, MO_TEUQ);
++        tcg_gen_qemu_st_i64(dest, temp, ctx->mem_idx, MO_LEUQ);
+     }
+ }
+ 
 -- 
 2.52.0
 
