@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D34D11C16
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FAB9D11C11
 	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 11:14:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfEtH-0005U1-P6; Mon, 12 Jan 2026 05:11:15 -0500
+	id 1vfEvn-0006Vf-Kl; Mon, 12 Jan 2026 05:13:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfEtB-0005O1-Bw
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:11:09 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfEvi-0006RL-6a
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:13:47 -0500
 Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfEt9-00071L-JD
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:11:09 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfEvg-00079q-RA
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:13:45 -0500
 Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-47d59da3d81so22483485e9.0
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 02:11:06 -0800 (PST)
+ 5b1f17b1804b1-47796a837c7so42742225e9.0
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 02:13:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768212665; x=1768817465; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1768212822; x=1768817622; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=EdrJr5UwoBbLZE3nuYaxiOrE832uhfsv3BleFpjJzuc=;
- b=q6q03JQCrCf9NCzDQfhk/nYU4hhp6W8O7d65EawHnTCy0c+WrjJkUR8CIx+KWVRwkk
- F3Nlw4Ilp6PmeciSYVIJQTCN2ms6JtqrxEISV3JCkJWOd0+D1x30v4GkvSdw9t0LOXxM
- IYbVyiqQsVj2+MPp72YGKaI/qluchhMl0onuJijigrOMQY3w2+7QcOX/wvQvBOCeOlUT
- wL8eBWCsrOQUUClWHi11LvB1AAS6iAudzsyBJzkwW9nV45h1B+Lp93ZCo5zpvMThV0ar
- E9YyqlggEt5JY/y5UO2dJ3itD1Y/bqjdTecahFjkR7dkOqP3TSdUWSdrPxnrGroKwKdC
- zU1A==
+ bh=N8aqD12xOoCufFXcGpNF3lLHRx3HXq/0xzFT847jmlg=;
+ b=Eq3ykiD769zbC4v9edIWUpqwAOAF8+/miUCSvx2GbGa+is3TqIuqTVcmynPsu0Udil
+ pm1ykoUUHAPxWDTsvdYueJmBjFJkXP5aP317FKcZw5xGzFq0vmJmbDm2nzcD5+EyAnU3
+ 2f8NZkVqkWS2cpyVWw7S9dJQB1+EOqlKpB0oXKodKbpeuMqiYjKdlDVBCvc9SD7E8Kj2
+ ndVKolSiBwyekzY8Djp4O2XlKG2uPrShhHIYDQ20PNysq0Gs6MlhhzBmR6AdQ65+qMlr
+ HjHcQ8m27E+kuxj/AV14swb6RuaeqINgjC4xypehcj/hfQgUbBxVDfcrMNmL2r6IvkfH
+ Q+Xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768212665; x=1768817465;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1768212822; x=1768817622;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=EdrJr5UwoBbLZE3nuYaxiOrE832uhfsv3BleFpjJzuc=;
- b=QHxYq/lgZCu5sfxRKDK6oi8uLyE2oqtVFIAkTbe6zIwIpCrE5IqcFpOKx4nPVtEGMM
- eqAF/QXifSh8b+vrGtsUgaAcOFk8qlnoeotKkaHH1ex576X3LyL+Hmwll3t1vnjsJcwt
- Ez+xwuKeNH+Q9pSwPURZCNdCBIUI+ncoUWn/msoqekVEzMAS7NfFm+Jam9dhv0Qa2tYv
- /DN/RtDB7voXKtt9K5wOOuIGk6GgYGenAs0JN2YzvJpoZErfJy6JRW/oXYBWuPdlmSCA
- GEp+DPHK8xM7t1OaXYtgsu94+II8QboZ6KedVbwNlIj+4nwrqRD1UKaqar6R+V3GwUr8
- HyJA==
+ bh=N8aqD12xOoCufFXcGpNF3lLHRx3HXq/0xzFT847jmlg=;
+ b=ubGWqml4D+QvTlFB4twl047ABY5ERjo6tweY+xDqL4PW2MuFzT4s0W0FQ+3YI6WuM0
+ 09xOyHlpXkKzEa34PzyUB85QHgv5v+7t7zYyd/qCVuoCafzXzxCgCkUXcJ8KDBr8+5Ha
+ NV8dovROnYVdv0MwcGSXz1GkgpawZt3J8mW5CNpO9+eGhNdt7BX5m3PuhzlgFkGDnniT
+ x1LoY5uDI+E+PfZ/19F9WQCNAH4eo0J1r9vH7pIhlPswisMrd8Jt55DldokpLkBGTBUT
+ BbFTEMetbtkZErwqC2SUVqmEXvHfiTOWyW3ZZWB+COPdOTmk+exg8ZaOocrOHUZa79ky
+ cLFA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWcY3/ZJQSBwliBCD35PVVPbaBDf8YWTNp8L/zxFJXtJ+L6B3zXBWKXwvxjZCtvHYfjaaw09aJAeZ4Y@nongnu.org
-X-Gm-Message-State: AOJu0YyYJS0bCbXLxBw9MZQX3q1/ZVfOVCGPeV/B2jAFdkt/3szmI8KV
- pBCsBsRF+mOB0bYFJXTXrUEqIyC+zYt1KfaBrPyBsmZ4SIXfvf+esC8vGgBmwfw7jSM=
-X-Gm-Gg: AY/fxX71MxHlebiTtYN0isDoZfi/8SifqoYsl+X4Z34oP0wmXx8CxwwseAExFSPebI0
- Eq2nL/IeVG1oWt7tO5TRecCDIou4HKZKQ/yRDbK2TMIai1wZee7XMvdlH5scFa7211ttiR3hX++
- VsD4Mn+3kW6qFaF4OQzSeORskrCaIk3rSr8r2gF08TQHTcZxjP/JC2iDmsJgLKgJ4kMg2CtL1Bk
- 1FiJF2wGRU9iTKyBT+n+GTkcOF1o6MVz85mZIepYXQQ7E83cpeKNmE1vSD2RMihtPxLSVXZsVBv
- ycWiUZUy93iCYj+Gc0ige0dO5xjrIIrkTRcDui5fSvUJXR1+eVgW1XA2rgAEnC5VMoWU0peGjHL
- AbZ9R+Z+xKZ+0K1OoeT5QRYs36wwgvdjR5YLu/J7hoG2qzV5NfmEhWS6Zb4U9uizKjvUCcFYnMf
- t0f6Yg6w8ttAzMHUqd15tLYP3Lrd6JXYVEY1zppSw/DmLyxB0i4S8wmDA5+/WHlGcX
-X-Google-Smtp-Source: AGHT+IEia0bnGQA4ZZeuyI9+2gKn6U9jcpEcTlfuLS7ivWk+aITgZERN1g40+YYjPtnqGLWPvOk/gg==
-X-Received: by 2002:a05:600c:3ba9:b0:477:9d88:2da6 with SMTP id
- 5b1f17b1804b1-47d847d0f30mr226244845e9.0.1768212664888; 
- Mon, 12 Jan 2026 02:11:04 -0800 (PST)
+ AJvYcCUfR26s/7CMjGKTqQLfXhwluNE7FvyStcjMtyOWLaSdJBbUHQiOjglK4+mmbq65uCvMG603RIw3Z3/I@nongnu.org
+X-Gm-Message-State: AOJu0YwKvl8GupkyLYw3/dC9IzZNYSx1X3PWqivfwfpJb05F0pormVxF
+ wm36rnC4SxqJA1LRkXaC7Jq8kp92adSguMvnSKp5V2nUac0Y60FauyJOK+/deVfWB0JLtXUOCyY
+ cUJKdA3M=
+X-Gm-Gg: AY/fxX69R+LmBG1zfS7CRYbDxLmqVEUKK5FuaozwVo443d6SnyX4ecOqt422aJwmBr2
+ W9wFPsFO9oBAWtno0gKb3wtuiYsjS5CFY+fNYzv1fQRkPAMoxrGxJu5gbmS3B2KRHjvFSvcifhW
+ 1JFglq4m5xZdd93nclX2Rz2sF+gNXGCVYeyWpnBFfM4fKyIc2j/A6UI+YLwtXe+rOY/oikibg1/
+ OIHcyJeJYo2kGYCVDm1DY2qhR5fhmJvuBAaUFEp/fowWDWQeRcOtIb2TTHhxBIOGltoh5A1jcjM
+ 2EDzY/dpiYT4LhOFCuvL4X32UP2VIQ/kpMHH2D3Rxfr3laRAfaYTQLTWA1aZ9hlGZDHTYDfG7l4
+ 3NRjHxAbseoRAxo98XnS0KYBOol3MTHlgqX9FDYoz7QZNj0CCsqBzEHj0uFMsM07vD5M0Kn8Mlt
+ pm46jA7qPBFyePsF63Q7tB34vbUny/4BpvbFxYb7p/vWlHJqNkd7tFig==
+X-Google-Smtp-Source: AGHT+IHx2ExmqzvFXyHXIW94/ley89BN6y1qaiGzDdYdoJhKpau7RwTyezCFJfwETCqXSAqVsMeRiQ==
+X-Received: by 2002:a05:600c:444c:b0:477:a977:b8c5 with SMTP id
+ 5b1f17b1804b1-47d84b5b51amr217346745e9.31.1768212822306; 
+ Mon, 12 Jan 2026 02:13:42 -0800 (PST)
 Received: from [192.168.69.208] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d7f7035f2sm331730095e9.12.2026.01.12.02.11.03
+ ffacd0b85a97d-432bd0860f5sm37664819f8f.0.2026.01.12.02.13.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 12 Jan 2026 02:11:04 -0800 (PST)
-Message-ID: <bc27550c-f738-4b37-9ae3-7c42a0e38635@linaro.org>
-Date: Mon, 12 Jan 2026 11:11:03 +0100
+ Mon, 12 Jan 2026 02:13:41 -0800 (PST)
+Message-ID: <b575794d-48fc-4ca5-82ed-4acfb5598ebe@linaro.org>
+Date: Mon, 12 Jan 2026 11:13:41 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/18] target/s390x: Use address_space_ldl_be() in
- read_table_entry()
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Anton Johansson <anjo@rev.ng>, Pierrick Bouvier
- <pierrick.bouvier@linaro.org>, Ilya Leoshkevich <iii@linux.ibm.com>,
- David Hildenbrand <david@kernel.org>
-References: <20260107130807.69870-1-philmd@linaro.org>
- <20260107130807.69870-3-philmd@linaro.org>
- <0d46c208-0b8c-4984-a26c-7c584c86eb7e@redhat.com>
+Subject: Re: [PATCH v1 2/2] target/riscv: Fix null pointer dereference in
+ cpu_set_exception_base
 Content-Language: en-US
+To: Djordje Todorovic <Djordje.Todorovic@htecgroup.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>,
+ "cfu@mips.com" <cfu@mips.com>, "alistair23@gmail.com" <alistair23@gmail.com>
+References: <20260112090458.2345280-1-djordje.todorovic@htecgroup.com>
+ <20260112090458.2345280-3-djordje.todorovic@htecgroup.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <0d46c208-0b8c-4984-a26c-7c584c86eb7e@redhat.com>
+In-Reply-To: <20260112090458.2345280-3-djordje.todorovic@htecgroup.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::335;
@@ -107,54 +106,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/1/26 10:32, Thomas Huth wrote:
-> On 07/01/2026 14.07, Philippe Mathieu-Daudé wrote:
->> Keep address_space_read/write() API to access blob of memory.
->> When the access size is known, use the address_space_ld/st()
->> API which can directly swap endianness.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   target/s390x/mmu_helper.c | 11 ++++-------
->>   1 file changed, 4 insertions(+), 7 deletions(-)
->>
->> diff --git a/target/s390x/mmu_helper.c b/target/s390x/mmu_helper.c
->> index 026502a3e40..9ee1d778876 100644
->> --- a/target/s390x/mmu_helper.c
->> +++ b/target/s390x/mmu_helper.c
->> @@ -108,6 +108,7 @@ static inline bool read_table_entry(CPUS390XState 
->> *env, hwaddr gaddr,
->>                                       uint64_t *entry)
->>   {
->>       CPUState *cs = env_cpu(env);
->> +    MemTxResult ret;
->>       /*
->>        * According to the PoP, these table addresses are 
->> "unpredictably real
->> @@ -116,13 +117,9 @@ static inline bool read_table_entry(CPUS390XState 
->> *env, hwaddr gaddr,
->>        *
->>        * We treat them as absolute addresses and don't wrap them.
->>        */
->> -    if (unlikely(address_space_read(cs->as, gaddr, 
->> MEMTXATTRS_UNSPECIFIED,
->> -                                    entry, sizeof(*entry)) !=
->> -                 MEMTX_OK)) {
->> -        return false;
->> -    }
->> -    *entry = be64_to_cpu(*entry);
->> -    return true;
->> +    *entry = address_space_ldl_be(cs->as, gaddr, 
->> MEMTXATTRS_UNSPECIFIED, &ret);
->> +
->> +    return ret == MEMTX_OK;
->>   }
+On 12/1/26 10:05, Djordje Todorovic wrote:
+> Add missing return statement after logging the error when cs is NULL.
 > 
->   Hi Philippe,
+> Resolves: Coverity CID 1644077
 > 
-> this patch seems to break "make check-functional-s390x" ... looks like 
-> there is a bug somewhere, please have a look!
 
-Oops, address_space_ldQ_be.
+Fixes: 209c2c9af62 ("target/riscv: Add cpu_set_exception_base")
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+
+> Signed-off-by: Djordje Todorovic <djordje.todorovic@htecgroup.com>
+> ---
+>   target/riscv/cpu.c | 1 +
+>   1 file changed, 1 insertion(+)
 
 
