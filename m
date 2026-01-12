@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD949D15B81
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C61D15B7E
 	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 00:03:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfQvX-0003Mp-UD; Mon, 12 Jan 2026 18:02:23 -0500
+	id 1vfQvU-0003Lt-GJ; Mon, 12 Jan 2026 18:02:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <bounce+0e9322.97607e-qemu-devel=nongnu.org@yodel.dev>)
- id 1vfQvS-0003L1-0L
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 18:02:18 -0500
+ id 1vfQvR-0003Ks-Q9
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 18:02:17 -0500
 Received: from k62.kb8c70eb.use4.send.mailgun.net ([204.220.184.62])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1)
  (envelope-from <bounce+0e9322.97607e-qemu-devel=nongnu.org@yodel.dev>)
- id 1vfQvO-0006IB-Qw
+ id 1vfQvO-0006I7-RB
  for qemu-devel@nongnu.org; Mon, 12 Jan 2026 18:02:17 -0500
 X-Mailgun-Sid: WyI4ZDFlNiIsInFlbXUtZGV2ZWxAbm9uZ251Lm9yZyIsIjk3NjA3ZSJd
 Received: from mail.yodel.dev (mail.yodel.dev [35.209.39.246]) by
- 15297539a2ede0681a8f567990a433e7a92368a64e971dcb4b220593225b4888 with SMTP id
- 69657d6eb6eaa267982c3d01; Mon, 12 Jan 2026 23:02:06 GMT
+ d1e7d384fc715ab1512602a6ac5d2da06fe6a698fc310d411471673906daec7f with SMTP id
+ 69657d6db5a5d57f8524a7ef; Mon, 12 Jan 2026 23:02:05 GMT
 X-Mailgun-Sending-Ip: 204.220.184.62
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yodel.dev;
- s=rsa2048; t=1768258924;
- bh=iqVPn8e+06BTG8i3qFmUc7jS7m5cDGRjlSNFSy+xDBU=;
- h=X-Mailgun-Dkim:From:To:Cc:Subject:Date:Message-ID:MIME-Version:
- Content-Type:Content-Transfer-Encoding:From:Reply-to:Subject:Date:
- Message-id:To:Cc:Mime-version:Content-type:
+ s=rsa2048; t=1768258925;
+ bh=lQzMPmtgICG9oe9L/v+xMIkXf+dXY2DUXTpSDA4PHWQ=;
+ h=X-Mailgun-Dkim:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
+ References:MIME-Version:Content-Transfer-Encoding:From:Reply-to:
+ Subject:Date:Message-id:To:Cc:Mime-version:Content-type:
  Content-transfer-encoding:In-reply-to:References;
- b=LV6M75vjrKkJEqcJuoAmBdtdOHhntdb8hsAGBwgv447KXaVAypOCpI203W6Zau7ZT
- PjjRWutuELI6IvPhCg9tPezYZwL+OAcbnCodwbDm3RT8KJFJGhA18LTUYQbVYeBYc7
- wtZYeVbnuf8jKqtZ1jUzhuky8Hqp5XULOv8/v8QifMxx4OCPeUziRX3oxNy+yFN2LJ
- Jsppe6N1DiPlrWmmi3d34Sz8uUcn8VrZMmu3Dj36IRL0+13b5oDbMZ5xKwOhR7qO14
- HBJHPh6q6C8yKs478N31/5fP+DXpAZG0DPWc2V9TeITTdq6OYOFHpDRoIO/NCP0jwA
- stMZTOJsTibrQ==
+ b=LmKL6NxPQ1yxeRTdieur8DKGvLVZk/K3M4FQLXBsGHWbEOSZgl0FpyQhQTCo7WdQs
+ 0TBVRvlkfOGKbGgLrdFpP8oiZU0lf4r2pWVeXpfr71WCzXaxO/ZdwSbYVIjlOgykbC
+ 10TTwzwrQB2ouNYmTUn07bfPeHxzIFzYX2EfOFhnAb/CBQnnfdvKtaXN38mi1aPsSI
+ slsd/kbGDiuUUAwCXH30wg2cDDOyMcOfHp8zLDbnTnPnwIZTVmC5xh48Xtxqd20rIo
+ fVsRPDBYAdP1RbA3zakO36mEnjvtTRWgLtUei4/UHGT2y3GES4NmLuzL3KF+zs2jkH
+ XrIg1q7o0KDxw==
 X-Mailgun-Dkim: no
 X-Mailgun-Dkim: no
 From: Yodel Eldar <yodel.eldar@yodel.dev>
@@ -49,11 +49,13 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Yodel Eldar <yodel.eldar@yodel.dev>
-Subject: [RFC PATCH v2 0/3] vhost-user-bridge housekeeping and test
-Date: Mon, 12 Jan 2026 17:01:24 -0600
-Message-ID: <20260112230127.99125-1-yodel.eldar@yodel.dev>
+Subject: [RFC PATCH v2 1/3] tests/vhost-user-bridge: Move to
+ contrib/vhost-user-bridge/
+Date: Mon, 12 Jan 2026 17:01:25 -0600
+Message-ID: <20260112230127.99125-2-yodel.eldar@yodel.dev>
+In-Reply-To: <20260112230127.99125-1-yodel.eldar@yodel.dev>
+References: <20260112230127.99125-1-yodel.eldar@yodel.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=204.220.184.62;
  envelope-from=bounce+0e9322.97607e-qemu-devel=nongnu.org@yodel.dev;
@@ -81,94 +83,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vhost-user-bridge was introduced prior to the first vhost-user daemon in
-contrib/, and has remained in tests/ ever since. Let's join it with its
-friends. By moving it into its own subdir of contrib/, it's granted
-coverage in MAINTAINERS under the vhost section, whereas in tests/ it
-remains uncovered and somewhat out of place.
+After the introduction of vhost-user-bridge and libvhost-user, we
+formed the convention of placing vhost-user daemons in eponymous subdirs
+of contrib/. Follow this convention.
 
-Since vhost-user daemons in contrib have sections in the
-vhost-user-contrib doc, let's add a section for vubr there. The section
-as proposed doesn't fully cover all of vhost-user-bridge's capabilities;
-for example, in aef8486ede8b Marc-André added a client mode to vubr that
-is, for now, left unmentioned in the doc.
+Create a contrib/vhost-user-bridge/ directory and move vhost-user-bridge
+into it. Extract its build target definition from tests/meson.build into
+the new directory, and include its subdir in the root-level meson.build.
 
-To complete the move, changes were made to the tests/ and root
-meson.build files in addition to the new one in
-contrib/vhost-user-bridge/.
+Add a section about it in the "vhost-user daemons in contrib" document.
 
-The second patch was the subject of the first RFC. It introduces a basic
-functional test of vubr in the same spirit as the testing mentioned for
-it in vubr's initial commit, 3595e2eb0a23 (I had the wrong commit hash
-in v1 of the RFC, my apologies). Initially, we used wget in the guest to
-make an http request to an external host. This proved to be the wrong
-tack, and I want to thank Marc-André for pointing that out and Thomas
-for suggesting the alternative methods to eliminate the external host
-dependency that are now used by the test.
-
-The test is described in its header and commit message, but in short:
-the guest serves a file to the host via http, and the host serves a file
-to the guest via tftp.
-
-I should mention that the guest kernel image has since been modified to
-add python in the guest to be able to serve http. Also, the buildroot
-option to enable DHCP on boot is now included. As before, please see:
-    https://github.com/yodel/vhost-user-bridge-test
-for the kernel and initramfs combined image and associated build files.
-
-For the last patch, adding an RX hexdump to complement the existing
-transmit hexdump proved helpful to me when I was going through vubr's
-logs, and I think it may be helpful to others. I'm not sure if there's a
-reason for its omission besides time-constraints or simply being
-overlooked, so please let me know otherwise?
-
-I think the test patch (two) is probably ready for pulling but am, as
-always, open to suggestions for improvements/fixes; as for its line in
-MAINTAINERS, I placed it under vhost after Michael's comment in the RFC
-(thank you, Michael), but perhaps the suggestion was meant only for
-vhost-user-bridge.c and not the functional test. Please let me know if
-the vhost section is the right place for the test or not?
-
-And as before, thank you Cédric for having encouraged me to write the
-test in the first place, and now for having Cc-ed Marc-André.
-
-Link to RFCv1:
-https://lore.kernel.org/qemu-devel/20251230002604.113632-1-yodel.eldar@yodel.dev/
-
-Changes since RFCv1:
-- Remove external host dependency (Marc-André)
-- Replace wget to external host with http and tftp between guest and
-  host (Thomas)
-- Use hardcoded UUIDs in the guest and a scratch file on the host for
-  data transfer
-- Use a Popen context manager to terminate and wait on vubr (this isn't
-  necessary now, because vubr terminates when the connected guest shuts
-  down, but I suppose it could be with future changes to vubr)
-- Add line in MAINTAINERS (Michael?)
-- New patch to move from tests/ to contrib/vhost-user-bridge/ and add
-  docs section
-- New patch to add RX debug logging in vhost-user-bridge.c
-
-Thanks,
-Yodel
-
-Yodel Eldar (3):
-  tests/vhost-user-bridge: Move to contrib/vhost-user-bridge/
-  tests/functional/x86_64: Add vhost-user-bridge test
-  contrib/vhost-user-bridge: Add UDP receive hexdump
-
- MAINTAINERS                                   |   1 +
- contrib/vhost-user-bridge/meson.build         |   4 +
- .../vhost-user-bridge}/vhost-user-bridge.c    |   7 +
- .../devices/virtio/vhost-user-contrib.rst     |  39 +++++
- meson.build                                   |   1 +
- .../x86_64/test_vhost_user_bridge.py          | 147 ++++++++++++++++++
- tests/meson.build                             |   6 -
- 7 files changed, 199 insertions(+), 6 deletions(-)
+Signed-off-by: Yodel Eldar <yodel.eldar@yodel.dev>
+---
+ contrib/vhost-user-bridge/meson.build         |  4 ++
+ .../vhost-user-bridge}/vhost-user-bridge.c    |  0
+ .../devices/virtio/vhost-user-contrib.rst     | 39 +++++++++++++++++++
+ meson.build                                   |  1 +
+ tests/meson.build                             |  6 ---
+ 5 files changed, 44 insertions(+), 6 deletions(-)
  create mode 100644 contrib/vhost-user-bridge/meson.build
- rename {tests => contrib/vhost-user-bridge}/vhost-user-bridge.c (98%)
- create mode 100755 tests/functional/x86_64/test_vhost_user_bridge.py
+ rename {tests => contrib/vhost-user-bridge}/vhost-user-bridge.c (100%)
 
+diff --git a/contrib/vhost-user-bridge/meson.build b/contrib/vhost-user-bridge/meson.build
+new file mode 100644
+index 0000000000..aa58c1df20
+--- /dev/null
++++ b/contrib/vhost-user-bridge/meson.build
+@@ -0,0 +1,4 @@
++if have_tools and have_vhost_user and host_os == 'linux'
++  executable('vhost-user-bridge', files('vhost-user-bridge.c'),
++             dependencies: [qemuutil, vhost_user], install: false)
++endif
+diff --git a/tests/vhost-user-bridge.c b/contrib/vhost-user-bridge/vhost-user-bridge.c
+similarity index 100%
+rename from tests/vhost-user-bridge.c
+rename to contrib/vhost-user-bridge/vhost-user-bridge.c
+diff --git a/docs/system/devices/virtio/vhost-user-contrib.rst b/docs/system/devices/virtio/vhost-user-contrib.rst
+index 48d04d2ade..660d29a700 100644
+--- a/docs/system/devices/virtio/vhost-user-contrib.rst
++++ b/docs/system/devices/virtio/vhost-user-contrib.rst
+@@ -85,3 +85,42 @@ vhost-user-scsi - SCSI controller
+ 
+ The vhost-user-scsi daemon can proxy iSCSI devices onto a virtualized
+ SCSI controller.
++
++.. _vhost_user_bridge:
++
++vhost-user-bridge - Network bridge
++==================================
++
++The vhost-user-bridge daemon serves as a development tool for testing real
++internet traffic by providing a networking backend, i.e. server, for the
++vhost-user protocol.
++
++Example
++-------
++For a single QEMU instance that both runs the user-mode net stack (slirp) and
++serves as a vhost-user protocol frontend, i.e. client, simultaneously:
++
++First, start vhost-user-bridge:
++
++::
++
++  $ vhost-user-bridge -u /tmp/vubr.sock \
++                      -l 127.0.0.1:4444 \
++                      -r 127.0.0.1:5555
++
++Then, invoke QEMU:
++
++::
++
++  $ qemu-system-x86_64 \
++        -m 4G \
++        -object memory-backend-memfd,id=mem0,size=4G,share=on,prealloc=on \
++        -numa node,memdev=mem0 \
++        -chardev socket,id=char0,path=/tmp/vubr.sock \
++        -netdev vhost-user,id=vhost0,chardev=char0,vhostforce=on \
++        -device virtio-net-pci,netdev=vhost0 \
++        -netdev socket,id=udp0,udp=localhost:4444,localaddr=localhost:5555 \
++        -netdev user,id=user0 \
++        -netdev hubport,id=hub0,hubid=0,netdev=udp0 \
++        -netdev hubport,id=hub1,hubid=0,netdev=user0 \
++        ...
+diff --git a/meson.build b/meson.build
+index db87358d62..a4e8a9b7b5 100644
+--- a/meson.build
++++ b/meson.build
+@@ -4546,6 +4546,7 @@ if have_tools
+     subdir('contrib/vhost-user-gpu')
+     subdir('contrib/vhost-user-input')
+     subdir('contrib/vhost-user-scsi')
++    subdir('contrib/vhost-user-bridge')
+   endif
+ 
+   if host_os == 'linux'
+diff --git a/tests/meson.build b/tests/meson.build
+index cbe7916241..87861b2857 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -70,12 +70,6 @@ test_deps = {
+   'test-qht-par': qht_bench,
+ }
+ 
+-if have_tools and have_vhost_user and host_os == 'linux'
+-  executable('vhost-user-bridge',
+-             sources: files('vhost-user-bridge.c'),
+-             dependencies: [qemuutil, vhost_user])
+-endif
+-
+ subdir('decode')
+ 
+ if 'CONFIG_TCG' in config_all_accel
 -- 
 2.52.0
 
