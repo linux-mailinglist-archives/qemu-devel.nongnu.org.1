@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A779D15B2D
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 23:56:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4102D15B3F
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 23:56:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfQpD-0006wa-0Z; Mon, 12 Jan 2026 17:55:51 -0500
+	id 1vfQpF-0007Dd-17; Mon, 12 Jan 2026 17:55:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQp3-0006UQ-1s
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:55:41 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQpA-0006xg-KU
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:55:50 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQp1-0004Jr-93
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:55:40 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-477a2ab455fso63301405e9.3
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 14:55:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vfQp8-0004P2-T8
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 17:55:48 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-4779cc419b2so65437075e9.3
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 14:55:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768258537; x=1768863337; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768258545; x=1768863345; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=e0VpS/erUaB8uXlATMToZM9LtCgo93xRrVfjCp8AQZk=;
- b=E1O/r6EXXmMzlR9LtXBHEqMVD9OeDh6EVBTWB+2n5GxjGGDBtkeTZM8z/kedSCrBzM
- ce61JETzcOmYukfbhOqAR9v0fkOvE3PxC5Xg/kwgsKJyuQXmF0LtHKX6ipLjiPxJIEgX
- plJDUStGyz8MffMAFioR0K/WumsplqQEo+Tb1z7FbXA+EvHaLK66ie+kYr6BFXwOoUNn
- 6GPycasN+A0rFih2/lomSeYWCYkSIvWtNWwj0EnjTSzSfqU1XvXd8dyDcJxxztPa4f5Z
- ChZY3PBr1Xi1DB+iMhC/nnOsZ42ig3Ig8ehm77l4HlSnddIuoeBeTA1fY1BQXzDnG5le
- bfhg==
+ :reply-to; bh=iJJ3gBRSSej+H+nQd8C80Px5Z8M+3ay836FIJe8skzk=;
+ b=gdaikX7O9V+ovrji1/JEzUjciQHtfBb5l9eX2Q74ZU87DlZwBA1CSlwOQLphRNVNwz
+ kkQY5g7bno4A1q5LBC4iIHiJPWqyr88ZSC/tdXg3OhFEdSsGeJedbRuNU8ZvrWOUNDHG
+ CTB3B5dlk3oZ//aT3fY+08H941eRuaPaBPUdEB0MiW9w9xwh/fwcobxtIm/g8s1udy4n
+ XLVnvbZWe+qSWVrtOLGZe7wfduKHof0xXIS5Xym38Xt9PGeFHmBZH4I4eC/+mWgR9vHS
+ cw7WGeEgcvK/iHdpYZp555H1iErIgDvA0CaoT9gKPgn9VLTh+CirAk3pKM7h/hUr+SXl
+ cBbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768258537; x=1768863337;
+ d=1e100.net; s=20230601; t=1768258545; x=1768863345;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=e0VpS/erUaB8uXlATMToZM9LtCgo93xRrVfjCp8AQZk=;
- b=PvczWobhPp0QUnDExVv3qNOsrwsZoBXZmOaxjIdD3y0k5kuPFdN3ikh1jsMfCuN71E
- TOKUHIce3R9aA+PoCugyFHGMXMli53pD12SPlIwdzuPBQ6l9eL7DPGtBarRAwc8Bnv0x
- xJsFgO6kljLXJzLRaFbVQszynj9sG9RLXk49IkgGRXDExxYAUn//ysziXQS2TEAtnSpg
- D+E4kCzGAk6Z4TUPY9Ls1bDT2byGTUEPVsckqqhgX9WnKi14+jPVzR87gH/iIQs8ssJZ
- 2NgQDa6O0G9r1ovcnC+ZWZiJEC7+K/MbBWNjI9DI8fTk26WXZ2wLpHT8u/ME7zAcnCQd
- ne+A==
-X-Gm-Message-State: AOJu0YwBgwNuwcQ8XXmx4ZrSjhe04IHM97vxZB6VXyaZzWHPUqwTOYmo
- k1ZSAmAJd908LXN/l4BW14fgiZVYshfLFBL7e/c2TzkYWrGq9fzFKNHCMGvC/f65Tb2cronIuqZ
- g0hJh4XQ=
-X-Gm-Gg: AY/fxX4tYpP3pnASIYHvsiR18o400Dfo5NqBeGli3xNY6B7YZD2K2vnbe2eDKMAFzzQ
- 80/gsy82na6GcruAiStIe3K/FPL7hLpmajDYpgAeKK5dXHpR5Kq/kmA8i3YDW3umcAZ106yIfj/
- nlynO4mcq95DomjpJMzOtQ/DgCNhpz+qkhqVle3pLqtYHBsoTW8PXjgeRIq/yt9+An/xyGufXVQ
- qW7AuLm0r7EpJrlmzNveCoaQqR9FPbfjKheXspRivD6vh0eSh1Ual0he4/6XLfIDJdoDIWzPPCN
- /bMnzb2DJK/x41qz6/ybCxe+j+vWf7I+y3cpIy2F43KuyKe+nOmuLEVrh6x5iKsdPzo4SqWG0yp
- R0khGtZclT+pwpttuBWZGWyKjmS5GcRMldrILPkcSGtK04WTzaCjR4eHedDcdvfshxrp366w2CK
- 1E+yf5IuElj/5pHQAbhqgvrjzlruAMG0eI+mQgahMdS8pC7yzhBQZ9PQDKqWHO
-X-Google-Smtp-Source: AGHT+IHC1YK1PxXt7VvcP9j6+DndVWDh/H0pnL7zWdiZnl+7ewt3+aGS1ZzzUpdJT7pY4RRFtMZ7Fg==
-X-Received: by 2002:a05:600c:46c4:b0:47d:403e:4eaf with SMTP id
- 5b1f17b1804b1-47d84b18ef7mr256320355e9.10.1768258537251; 
- Mon, 12 Jan 2026 14:55:37 -0800 (PST)
+ bh=iJJ3gBRSSej+H+nQd8C80Px5Z8M+3ay836FIJe8skzk=;
+ b=Xd6a01x7ZR914KWsCWU9lLTYjbnQFrjy462+W212encnzIv0X0gdqlh6gbGr929msh
+ /w3+beNrCn84McGlUJXKc3Z0h/GyFkcWkCGN2JxXEvFoDz1IWJPe5FrG3TrRIzpgy95X
+ AiWT/wJSPgmCWM+69PFh6uY1XWnhNWb/hsXrHJUsg0mkPlUd7TDYgw+a+r/42isPIL6N
+ BNWhSAN+qQzcsHT+9rdzg7HrUottfDbZsBLcFLBMEkDynGAdCgAhpmPxsR2GZJLpnuoI
+ frxTQV1L8nGWd0cjyeILRTUG/eBc0VNslTrlSqUBXkoIa0wLzE/5HtKMURx1h2+bnnMi
+ kDYg==
+X-Gm-Message-State: AOJu0YykgMLSE+VuHHUQtBVAyBJJH564QukWqlxdIkQ7QIHiHMXC6TiJ
+ C81up9OukXrstpztkqYEBy6L6MysQozMhaPlG42ZvonO4k0aaP29hfp/zB3nOS57IhocIFqoPuY
+ qmTJP1cc=
+X-Gm-Gg: AY/fxX7XvbTVzpNnU2IHenVzcu/+FDM0zYFxN2KYVHkApwZ3O4GQ3XzqRfFY+141tfm
+ b8v3TSEL6owQxVaWvlIbU6HjyLmtOsBlGdzMbxDdaqcbm8k/E/sSZcM7X4Wh343a7ckPUvQxqOK
+ McklJqd0qo/KcToGQhudYo+XJPhXLpRZoRvEeVCYruks+Uq6EK6lyCtt6QRWqQ0XytQdNOhxzFq
+ L3BgM1Gv/bOmIoMmdwygYCQvLVXTZm/t4Y2DFVmJZOFUfv4I2oi2uvZiXcYukSMOOERjs3PVF4z
+ 46sJgjtGe3zlIpSYhoyZA9PUjd7LSn/70hJvSMVfEFr3QEfCKqux19uipSgNuWEhSVI4RgpCQSs
+ ul8kvric8l/q0ZHzHkfWlj4bh53CmWhLbuU75IaB2Judo2SZnWa7uAC7oFhQSdrZFXB8qsANUu4
+ EagPZoJxBNRs7fByOfv3hl7yJQ4kFLrBNUJ4ANjHaM5ESqsx8KGxzFpUgetx/q
+X-Google-Smtp-Source: AGHT+IGNGK+Sx/oUAFwBBIPqS43XgJ9iPi8aZKSK9lsYvuwilhmYOlKz4719rZ6Enp17toQfe1KALQ==
+X-Received: by 2002:a05:6000:2209:b0:431:266:d134 with SMTP id
+ ffacd0b85a97d-432c37617f6mr25169186f8f.53.1768258545202; 
+ Mon, 12 Jan 2026 14:55:45 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47ed9e76470sm1806885e9.2.2026.01.12.14.55.36
+ ffacd0b85a97d-432bd0e16ffsm41913891f8f.12.2026.01.12.14.55.43
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 12 Jan 2026 14:55:36 -0800 (PST)
+ Mon, 12 Jan 2026 14:55:44 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 58/61] accel/tcg: Un-inline WatchPoint API user-emulation stubs
-Date: Mon, 12 Jan 2026 23:48:53 +0100
-Message-ID: <20260112224857.42068-59-philmd@linaro.org>
+Subject: [PULL 59/61] gdbstub/helpers.h: allow header to be called from common
+ code
+Date: Mon, 12 Jan 2026 23:48:54 +0100
+Message-ID: <20260112224857.42068-60-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112224857.42068-1-philmd@linaro.org>
 References: <20260112224857.42068-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,143 +98,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently we can not build files including "exec/watchpoint.h"
-as meson common objects because the CONFIG_USER_ONLY definition
-is poisoned. We can easily fix that by un-inlining the
-user-emulation stubs.
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
+Target specific variants can't be used in common code, thus limit their
+definition to COMPILING_PER_TARGET.
+
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20260109053158.2800705-2-pierrick.bouvier@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20260106231908.16756-5-philmd@linaro.org>
 ---
- include/accel/tcg/cpu-ops.h | 17 -----------------
- include/exec/watchpoint.h   | 23 -----------------------
- accel/tcg/user-exec-stub.c  | 33 +++++++++++++++++++++++++++++++++
- 3 files changed, 33 insertions(+), 40 deletions(-)
+ include/gdbstub/helpers.h | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/include/accel/tcg/cpu-ops.h b/include/accel/tcg/cpu-ops.h
-index dd8ea300168..5950cdcaab1 100644
---- a/include/accel/tcg/cpu-ops.h
-+++ b/include/accel/tcg/cpu-ops.h
-@@ -281,21 +281,6 @@ struct TCGCPUOps {
- #endif /* !CONFIG_USER_ONLY */
- };
+diff --git a/include/gdbstub/helpers.h b/include/gdbstub/helpers.h
+index b685afac436..197592036bf 100644
+--- a/include/gdbstub/helpers.h
++++ b/include/gdbstub/helpers.h
+@@ -12,13 +12,12 @@
+ #ifndef _GDBSTUB_HELPERS_H_
+ #define _GDBSTUB_HELPERS_H_
  
--#if defined(CONFIG_USER_ONLY)
--
--static inline void cpu_check_watchpoint(CPUState *cpu, vaddr addr, vaddr len,
--                                        MemTxAttrs atr, int fl, uintptr_t ra)
--{
--}
--
--static inline int cpu_watchpoint_address_matches(CPUState *cpu,
--                                                 vaddr addr, vaddr len)
--{
--    return 0;
--}
--
--#else
--
- /**
-  * cpu_check_watchpoint:
-  * @cpu: cpu context
-@@ -328,6 +313,4 @@ int cpu_watchpoint_address_matches(CPUState *cpu, vaddr addr, vaddr len);
- vaddr cpu_pointer_wrap_notreached(CPUState *, int, vaddr, vaddr);
- vaddr cpu_pointer_wrap_uint32(CPUState *, int, vaddr, vaddr);
- 
+-#ifndef COMPILING_PER_TARGET
+-#error "gdbstub helpers should only be included by target specific code"
 -#endif
 -
- #endif /* TCG_CPU_OPS_H */
-diff --git a/include/exec/watchpoint.h b/include/exec/watchpoint.h
-index 4b6668826c7..c4d069425ba 100644
---- a/include/exec/watchpoint.h
-+++ b/include/exec/watchpoint.h
-@@ -8,34 +8,11 @@
- #ifndef EXEC_WATCHPOINT_H
- #define EXEC_WATCHPOINT_H
+ #include "qemu/bswap.h"
+ #include "qemu/target-info.h"
++
++#ifdef COMPILING_PER_TARGET
+ #include "cpu-param.h"
++#endif
  
--#if defined(CONFIG_USER_ONLY)
--static inline int cpu_watchpoint_insert(CPUState *cpu, vaddr addr, vaddr len,
--                                        int flags, CPUWatchpoint **watchpoint)
--{
--    return -ENOSYS;
--}
--
--static inline int cpu_watchpoint_remove(CPUState *cpu, vaddr addr,
--                                        vaddr len, int flags)
--{
--    return -ENOSYS;
--}
--
--static inline void cpu_watchpoint_remove_by_ref(CPUState *cpu,
--                                                CPUWatchpoint *wp)
--{
--}
--
--static inline void cpu_watchpoint_remove_all(CPUState *cpu, int mask)
--{
--}
--#else
- int cpu_watchpoint_insert(CPUState *cpu, vaddr addr, vaddr len,
-                           int flags, CPUWatchpoint **watchpoint);
- int cpu_watchpoint_remove(CPUState *cpu, vaddr addr,
-                           vaddr len, int flags);
- void cpu_watchpoint_remove_by_ref(CPUState *cpu, CPUWatchpoint *watchpoint);
- void cpu_watchpoint_remove_all(CPUState *cpu, int mask);
--#endif
- 
- #endif /* EXEC_WATCHPOINT_H */
-diff --git a/accel/tcg/user-exec-stub.c b/accel/tcg/user-exec-stub.c
-index 1d52f48226a..28286e11a60 100644
---- a/accel/tcg/user-exec-stub.c
-+++ b/accel/tcg/user-exec-stub.c
-@@ -1,6 +1,8 @@
- #include "qemu/osdep.h"
- #include "hw/core/cpu.h"
-+#include "accel/tcg/cpu-ops.h"
- #include "exec/replay-core.h"
-+#include "exec/watchpoint.h"
- #include "internal-common.h"
- 
- void cpu_resume(CPUState *cpu)
-@@ -19,6 +21,37 @@ void cpu_exec_reset_hold(CPUState *cpu)
- {
+ /*
+  * The GDB remote protocol transfers values in target byte order. As
+@@ -102,6 +101,7 @@ static inline uint8_t *gdb_get_reg_ptr(GByteArray *buf, int len)
+     return buf->data + buf->len - len;
  }
  
-+int cpu_watchpoint_insert(CPUState *cpu, vaddr addr, vaddr len,
-+                          int flags, CPUWatchpoint **watchpoint)
-+{
-+    return -ENOSYS;
-+}
-+
-+int cpu_watchpoint_remove(CPUState *cpu, vaddr addr,
-+                          vaddr len, int flags)
-+{
-+    return -ENOSYS;
-+}
-+
-+void cpu_watchpoint_remove_by_ref(CPUState *cpu, CPUWatchpoint *wp)
-+{
-+}
-+
-+void cpu_watchpoint_remove_all(CPUState *cpu, int mask)
-+{
-+}
-+
-+int cpu_watchpoint_address_matches(CPUState *cpu, vaddr addr, vaddr len)
-+{
-+    return 0;
-+}
-+
-+void cpu_check_watchpoint(CPUState *cpu, vaddr addr, vaddr len,
-+                          MemTxAttrs atr, int fl, uintptr_t ra)
-+{
-+}
-+
-+
- /* User mode emulation does not support softmmu yet.  */
++#ifdef COMPILING_PER_TARGET
+ #if TARGET_LONG_BITS == 64
+ #define gdb_get_regl(buf, val) gdb_get_reg64(buf, val)
+ #define ldtul_p(addr) ldq_p(addr)
+@@ -113,5 +113,6 @@ static inline uint8_t *gdb_get_reg_ptr(GByteArray *buf, int len)
+ #define ldtul_le_p(addr) ldl_le_p(addr)
+ #define ldtul_be_p(addr) ldl_be_p(addr)
+ #endif
++#endif /* COMPILING_PER_TARGET */
  
- void tlb_init(CPUState *cpu)
+ #endif /* _GDBSTUB_HELPERS_H_ */
 -- 
 2.52.0
 
