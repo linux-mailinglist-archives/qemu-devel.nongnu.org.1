@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6646D12854
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 13:22:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B202AD1284E
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 13:22:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfGur-0000LZ-JU; Mon, 12 Jan 2026 07:21:01 -0500
+	id 1vfGup-0000Gy-B7; Mon, 12 Jan 2026 07:20:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vfGuR-0008Gi-66
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 07:20:37 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vfGuR-0008Gl-7g
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 07:20:39 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vfGuM-0002eP-1b
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 07:20:33 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1vfGuO-0002eV-Hl
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 07:20:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Cc:To:In-Reply-To:References:Message-Id:Content-Transfer-Encoding:
  Content-Type:MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=xDhPNP4c2G5sPQl4fEeZ/26DN5Xx/bOxUCuoj2RbZ18=; b=oc4AMiIBqkLA8ul
- X3V09h4p1oFhcULson6Za4SCpcJPhP3UTJIbWvzsBeRkbnBUw+Oczb3Bh8ado0V+BTmk5cm6e1KDv
- oI7ZbeshG0A32JwBcG1nkz8YWHN+WRaABj2aRZ2vAAqEFQsRM+Y5GxXHZUtH8Pwh84m64sTDHjeKU
- sM=;
-Date: Mon, 12 Jan 2026 13:22:42 +0100
-Subject: [PATCH v3 1/7] target/alpha: Introduce
- alpha_phys_addr_space_bits()
+ List-Help; bh=AgxO69IEW2egiBpxY9kDuHoKebHzuCVnmKGUhChrOTc=; b=EePRt+ezUG6HcBf
+ sSR+SI04dySIHhc9qvbX4iBaCUv5vt79lcoD1WjKYuSUrQSrqO70c6YSkEgVPEftblj2fQBje7V31
+ 4K7T9bSPsiUEqn4Hq4HbjqaX9h1ffYkwWpnEXEAmSiJTvWcSCh1CKPN6428mhNtPfHSPZhIq0wJCp
+ xA=;
+Date: Mon, 12 Jan 2026 13:22:43 +0100
+Subject: [PATCH v3 2/7] target/hppa: Define PA[20|1X] physical address
+ space size
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260112-phys_addr-v3-1-5f90fdb4015f@rev.ng>
+Message-Id: <20260112-phys_addr-v3-2-5f90fdb4015f@rev.ng>
 References: <20260112-phys_addr-v3-0-5f90fdb4015f@rev.ng>
 In-Reply-To: <20260112-phys_addr-v3-0-5f90fdb4015f@rev.ng>
 To: qemu-devel@nongnu.org
@@ -66,57 +66,81 @@ From:  Anton Johansson via qemu development <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation for dropping TARGET_PHYS_ADDR_SPACE_BITS, add a
-a runtime function to correctly represent the size of the physical
-address space for EV4-6 based on the current CPU version.
+When converting virtual to physical addresses,
+TARGET_PHYS_ADDR_SPACE_BITS is used under PA-RISC 2.0, and an explicit
+cast to uint32_t is used under PA-RISC 1.X.  Replace the former with a
+more specific macro limited to mem_helper.c, and make the latter
+conversion explicit by defining the size of the physical address space
+for PA-RISC 1.X.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- linux-user/alpha/target_proc.h | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ target/hppa/mem_helper.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/linux-user/alpha/target_proc.h b/linux-user/alpha/target_proc.h
-index da437ee0e5..6b491ffa3a 100644
---- a/linux-user/alpha/target_proc.h
-+++ b/linux-user/alpha/target_proc.h
-@@ -6,6 +6,27 @@
- #ifndef ALPHA_TARGET_PROC_H
- #define ALPHA_TARGET_PROC_H
+diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
+index cce82e6599..8563bb0e2a 100644
+--- a/target/hppa/mem_helper.c
++++ b/target/hppa/mem_helper.c
+@@ -29,6 +29,19 @@
+ #include "hw/core/cpu.h"
+ #include "trace.h"
  
-+#include "qemu/osdep.h"
-+#include "target/alpha/cpu.h"
++/*
++ * 64-bit (PA-RISC 2.0) machines are assumed to run PA-8700, and 32-bit
++ * machines 7300LC.  This gives 44 and 32 bits of physical address space
++ * respectively.
++ *
++ *   CPU model        Physical address space bits
++ *   PA-7000--7300LC  32
++ *   PA-8000--8600    40
++ *   PA-8700--8900    44
++ */
++#define HPPA_PHYS_ADDR_SPACE_BITS_PA20 44
++#define HPPA_PHYS_ADDR_SPACE_BITS_PA1X 32
 +
-+static uint8_t alpha_phys_addr_space_bits(CPUAlphaState *env)
-+{
-+    switch (env->implver) {
-+    case IMPLVER_2106x:
-+        /* EV4 */
-+        return 34;
-+    case IMPLVER_21164:
-+        /* EV5 */
-+        return 40;
-+    case IMPLVER_21264:
-+    case IMPLVER_21364:
-+        /* EV6 and EV7*/
-+        return 44;
-+    default:
-+        g_assert_not_reached();
-+    }
-+}
-+
- static int open_cpuinfo(CPUArchState *cpu_env, int fd)
+ hwaddr hppa_abs_to_phys_pa2_w1(vaddr addr)
  {
-     int max_cpus = sysconf(_SC_NPROCESSORS_CONF);
-@@ -57,7 +78,7 @@ static int open_cpuinfo(CPUArchState *cpu_env, int fd)
-             "L1 Dcache\t\t: n/a\n"
-             "L2 cache\t\t: n/a\n"
-             "L3 cache\t\t: n/a\n",
--            model, TARGET_PAGE_SIZE, TARGET_PHYS_ADDR_SPACE_BITS,
-+            model, TARGET_PAGE_SIZE, alpha_phys_addr_space_bits(cpu_env),
-             max_cpus, num_cpus, cpu_mask);
+     /*
+@@ -42,8 +55,8 @@ hwaddr hppa_abs_to_phys_pa2_w1(vaddr addr)
+      * Since the supported physical address space is below 54 bits, the
+      * H-8 algorithm is moot and all that is left is to truncate.
+      */
+-    QEMU_BUILD_BUG_ON(TARGET_PHYS_ADDR_SPACE_BITS > 54);
+-    return sextract64(addr, 0, TARGET_PHYS_ADDR_SPACE_BITS);
++    QEMU_BUILD_BUG_ON(HPPA_PHYS_ADDR_SPACE_BITS_PA20 > 54);
++    return sextract64(addr, 0, HPPA_PHYS_ADDR_SPACE_BITS_PA20);
+ }
  
-     return 0;
+ hwaddr hppa_abs_to_phys_pa2_w0(vaddr addr)
+@@ -67,7 +80,7 @@ hwaddr hppa_abs_to_phys_pa2_w0(vaddr addr)
+          * is what can be seen on physical machines too.
+          */
+         addr = (uint32_t)addr;
+-        addr |= -1ull << (TARGET_PHYS_ADDR_SPACE_BITS - 4);
++        addr |= -1ull << (HPPA_PHYS_ADDR_SPACE_BITS_PA20 - 4);
+     }
+     return addr;
+ }
+@@ -217,7 +230,7 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
+             if (hppa_is_pa20(env)) {
+                 phys = hppa_abs_to_phys_pa2_w0(addr);
+             } else {
+-                phys = (uint32_t)addr;
++                phys = extract64(addr, 0, HPPA_PHYS_ADDR_SPACE_BITS_PA1X);
+             }
+             break;
+         default:
+@@ -558,7 +571,7 @@ static void itlbt_pa20(CPUHPPAState *env, target_ulong r1,
+     /* Align per the page size. */
+     ent->pa &= TARGET_PAGE_MASK << mask_shift;
+     /* Ignore the bits beyond physical address space. */
+-    ent->pa = sextract64(ent->pa, 0, TARGET_PHYS_ADDR_SPACE_BITS);
++    ent->pa = sextract64(ent->pa, 0, HPPA_PHYS_ADDR_SPACE_BITS_PA20);
+ 
+     ent->t = extract64(r2, 61, 1);
+     ent->d = extract64(r2, 60, 1);
 
 -- 
 2.51.0
