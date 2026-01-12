@@ -2,109 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D83A8D12C90
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 14:27:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F139D12C7B
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 14:27:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfHuy-0004qV-8a; Mon, 12 Jan 2026 08:25:12 -0500
+	id 1vfHuN-0003m5-Dk; Mon, 12 Jan 2026 08:24:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1vfHu6-0003BH-PA
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 08:24:24 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1vfHuC-0003Hm-DQ
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 08:24:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1vfHu4-0003ox-Lu
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 08:24:17 -0500
+ id 1vfHuA-0003pZ-9n
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 08:24:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768224255;
+ s=mimecast20190719; t=1768224260;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WbSNbKmTexfLzSNcOAGGTpME53mT2JoY4BGZ0NYwZQc=;
- b=bwChIUKkrWQyCCfRt3j16+QwZOY4VEvboD5JUNNpeIZ0No8EDpz6in5Z8sGVhqUw1cJcbS
- krDBOxuMRdImbjJcL/Qu/nKT+Q8SLYjvolNPScuqDniEPY9tiIys800WuWbodTjhj1r7GY
- 95u+uby2QLjft3Feca65qHJmXTyJ6Nw=
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
- [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/Xl2NZDHarHkXqS5yrKrfSXN4c45GQhJC2FoUsQnchs=;
+ b=al0S5g+BAd6PtHUYUtUhnuEtq6hgRHZ4b0/p/tf58NzWxhGvVxuwTqzz9637iQ0bFjXlzi
+ PyfzqwEbvgi4qehrl6z/JOC3N6JoDKlNp5Y0qghSlO2H44z3o+l20FpXZX2KyZs3sdXHih
+ DGsATlgucwUtX+MrC9Xz7jOaFUQDwJk=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-642-Wd_8y5h1OCKo3BuVz-tC3A-1; Mon, 12 Jan 2026 08:24:14 -0500
-X-MC-Unique: Wd_8y5h1OCKo3BuVz-tC3A-1
-X-Mimecast-MFC-AGG-ID: Wd_8y5h1OCKo3BuVz-tC3A_1768224253
-Received: by mail-pg1-f197.google.com with SMTP id
- 41be03b00d2f7-c552d1f9eafso4718921a12.0
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 05:24:14 -0800 (PST)
+ us-mta-325-UcPZHL8rMjqjQ32rrMXqGQ-1; Mon, 12 Jan 2026 08:24:17 -0500
+X-MC-Unique: UcPZHL8rMjqjQ32rrMXqGQ-1
+X-Mimecast-MFC-AGG-ID: UcPZHL8rMjqjQ32rrMXqGQ_1768224256
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-34c37b8dc4fso12168641a91.2
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 05:24:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768224253; x=1768829053; darn=nongnu.org;
+ d=redhat.com; s=google; t=1768224256; x=1768829056; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WbSNbKmTexfLzSNcOAGGTpME53mT2JoY4BGZ0NYwZQc=;
- b=n+QMuH7QGWI4PufVCdVl6Gkb3v6ENx9th2gGQUvWxOfl3SN+Wfs49JjMB1VzfEQjeB
- VNn6rz5Tcm0msQpVEEokeU7WEXhYfabaVpEqbDAC3AcWhF6w10/Itud1CHPUiCl/YdhT
- /xSFf+rtyCgHTtigb0F664E+0zsXhldKAJiJL/iTMqjr2p/JvZ7n4pBTB2PYFmdW5pof
- 3viSk6s9kM7HArrWHWDGOJbUuGP2u5GVMHTVtCPsQjDC3HKXOIMsq0jPnTmpG9Mcm+X2
- 3ow753tCLruV+bEAWf+CfUM+Ory0iighFbNmMg7UxZjLfKVkpy6OWcQORv2AedX2n+xW
- TOig==
+ bh=/Xl2NZDHarHkXqS5yrKrfSXN4c45GQhJC2FoUsQnchs=;
+ b=YS+h+uFUq6RWQSjFqCmH8ixDr1BVLg2779ncLrppIfG2miHOtWo+l1UoJQzmIUmhNt
+ qWTmriJS+dKeGDeX52TruKU0pNhz2w/v9NVPZiaxTZyxgpYEEMF1NCK21e+zpiDHX7cX
+ xBiL7kMn/rMFGy3vKZZJH4MBZHtyBaDzGigSdHKUg09OAZQiXVh4t9zamtBmMAb4/VgL
+ 3HmyKWgCFv4yZNN5Z+gxbNo8OGLAvOfYY9DjhmUUVNQQq/NHVPBiSE3zLiWOTwN3F4MS
+ BtICRGlTgtde3xDfbCE/9mSR83ZWquUBjDjifWvwmK5SeGE0rDmGjHtZDLJ9AYK73wLa
+ DRPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768224253; x=1768829053;
+ d=1e100.net; s=20230601; t=1768224256; x=1768829056;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=WbSNbKmTexfLzSNcOAGGTpME53mT2JoY4BGZ0NYwZQc=;
- b=aW6sO4bH9An64y/KTXvP4YW070igKambizKZ1TZ8JJnqhyt4Wmjkxo8eL3rvyoU+X+
- gI1dJVuvSQpCh3A9ss0JgPMQ2UEhHBDu+gCmTbXyoM1gsWfHT6/B9EhCK/AE8/vWdvRX
- n5yzXyUMptxDU2Mgh/41ANVjl/l3OdzgUXuweR62eEmjhVBChOb4K4eyqlo11gUd6vJz
- XDuVGnQ3qPHHJJSu8OUa9LNHKQh87METqgEX5Cw+To9u70ct0srIcJY1fGJs8kqQinmk
- RXcdcBU0ABVORsRekSfwFA2jN2SBwRzG2Q1EW4hXL/UkVC0zYsWxzPEzEnWrSUHqo26E
- ltcA==
+ bh=/Xl2NZDHarHkXqS5yrKrfSXN4c45GQhJC2FoUsQnchs=;
+ b=YVnE8CrfR3rGYNcYn63AFaurY5yC6YHBTsB1F12M2ThKswsnzIA44q+HBtY2M+7S0U
+ YG4cXeP7zI07lzS9hy2kPGiKFLB7FlAsNcVYfQy3+sP6tvoPD66BaEzmjMoFo6OXdqd+
+ I89NDlR7/IhvwzRCAf/sPk7/NWXwIR5Wxz0xbXMAhEmHlktq7Nx4EXDz+M/RfQFi5bzx
+ mP7T56mQHAm80/hCZkLFjjGuKu/SjF+UqKA6iyji2m/Y9vP5LDZW1ASGL1+q7jmyJ6Dz
+ rfdOd+A3kNvvHMGexRIVRDn3j0qr33dfB9Anup7i2qINRrB4mvjBoCiTsIzKx71vWyb5
+ pLDQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWj+S1lA1VCK+EqUIOzT2QYGt+7sqdR2toUbB8RIrxlPcr0BlO7UMmk3oYVuDXfe787Z/ZSjUV9ZNGe@nongnu.org
-X-Gm-Message-State: AOJu0Yw+xhxl1CE3rZwCByXSHAZVhlYmPbpB9hl2pmQwui2K07hpmf2i
- eNHX/5TIB/LdGjJpsxPdThXBZVo/m76ScN1sPDPl2hbbERAIINku7Rh3wKNzATNvIZhcrb0QB3A
- VqtEVtcEejqlrJjEvD7vCoi0FzvlY8LEWqis5PinHEHmkShhDkm59lvKq
-X-Gm-Gg: AY/fxX7RWPZDpq//UW11nibv/V4hrKwTdnmSuFTOcOHrErLLiQeJs10QVskD90tWy2R
- Nxo9KRduBHy/YiMAxiEUe32ByyHmvV3ICHS5OKEHhM+wN10oNc5EzQsbvgd84x5B9RlocmjhxLJ
- b/mBllMNdzuOxQvqcBoDBI6sSTiOBaYE9tyhfBI0eWn1kKGyEK7ntnE0dq27D6ITaZ+hh/rn89w
- KMbvvbKHZYGDBAi/dCHN7lBLGWpHvUypZrMzAZrHwQm9R3KxVfQ5YClZR2O83HulBch45eQzb8r
- DisZOzcA/FohY7LBZnQHbuTDxYvYuCroPRY2RGWedmhWxdkL7xacHvk/0xxN8h5WhlpOp/7Wk9i
- 5uldsHvAyAjtl8TGdtN7RAneZCT895eFiHtQH5kMHmXI=
-X-Received: by 2002:a05:6a21:3381:b0:35e:b995:7098 with SMTP id
- adf61e73a8af0-3898f8d0267mr15548747637.9.1768224253121; 
- Mon, 12 Jan 2026 05:24:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH2OK+gMC6fAaYfSLI0gqpQ6KfWfNIPVV4x1e2pkcK2ja8trgOCdiiDYappareAuAFJ5KU3LQ==
-X-Received: by 2002:a05:6a21:3381:b0:35e:b995:7098 with SMTP id
- adf61e73a8af0-3898f8d0267mr15548727637.9.1768224252679; 
- Mon, 12 Jan 2026 05:24:12 -0800 (PST)
+ AJvYcCXTP4dyJm4h1tKBVWbxQ+XuqRXiq3mAy+3fvq8Ceb47/dMpra+3Hq/GaJnPpUtiqB5ySSB0MKQmQ/VH@nongnu.org
+X-Gm-Message-State: AOJu0YzUjRMRER81/ktpER9k9Vn29qtgcBqr3zsCZby0f+RTaSe5y4X/
+ P/u97S0C86Wh9k13F5QzVsQcZYFL/GU161Wq0Cji+fIk6irfkMjGQ0bJ8zKE7HowL5gabBb2xBt
+ HxmVM4V11CI9JpSKPyh8PqvkenfppDII47tSckiSSGR5tSrqqYMADh+13
+X-Gm-Gg: AY/fxX6M3uj5A4DNh8Wm4Q7Pepnxdx/Ab13XAVqPVUqpK3Hb+eTL5ABm73kO/sjf2ak
+ +j7cXRlnDdEX9powNa3ZILsyF+zM+0WDpSN8Xd2ruMF1qTJzGBIyW+/uVjNHFDMS+ozh/7j2gqr
+ dKLfCZxXajfM2fjdt+S3/uRJitkVdb4ZTNEjvWRAHIIpmpbq6P0n+HnD9Lb3zK+fvsxyqVTjY6v
+ iwQWt7D2je170SUOUlbhMNEUIgZy0P/PuJRwEJUqFW9cbkdDLqv9AMjo8yoJAPjAcHz/b6kHnZV
+ ffh5P2L0klAZMagmRMNdLQe+3tFgUcQhVaj5Mij6iUM25eIMD8FTvTOjhS17/ZNLfVA2IOfZJK4
+ i6fgXjoC6WRn8Zhn5qT2uvtcoD1CxZRrGrTrJLi9SVN8=
+X-Received: by 2002:a05:6a21:3389:b0:364:13e1:10f0 with SMTP id
+ adf61e73a8af0-3898f990467mr15895550637.48.1768224255806; 
+ Mon, 12 Jan 2026 05:24:15 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHkV+5Pj+vPwdorDJk/3GEPIk0RVkmzj9pSTKP97TxM+k+HNRr4FYBWDj0fQukT5a54s7G7qw==
+X-Received: by 2002:a05:6a21:3389:b0:364:13e1:10f0 with SMTP id
+ adf61e73a8af0-3898f990467mr15895534637.48.1768224255391; 
+ Mon, 12 Jan 2026 05:24:15 -0800 (PST)
 Received: from rhel9-box.lan ([110.227.88.119])
  by smtp.googlemail.com with ESMTPSA id
- 41be03b00d2f7-c4cc05cd87asm17544771a12.15.2026.01.12.05.24.10
+ 41be03b00d2f7-c4cc05cd87asm17544771a12.15.2026.01.12.05.24.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 Jan 2026 05:24:12 -0800 (PST)
+ Mon, 12 Jan 2026 05:24:15 -0800 (PST)
 From: Ani Sinha <anisinha@redhat.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
  Zhao Liu <zhao1.liu@intel.com>
 Cc: Ani Sinha <anisinha@redhat.com>, kvm@vger.kernel.org, qemu-devel@nongnu.org
-Subject: [PATCH v2 18/32] i386/sev: free existing launch update data and
- kernel hashes data on init
-Date: Mon, 12 Jan 2026 18:52:31 +0530
-Message-ID: <20260112132259.76855-19-anisinha@redhat.com>
+Subject: [PATCH v2 19/32] i386/sev: add support for confidential guest reset
+Date: Mon, 12 Jan 2026 18:52:32 +0530
+Message-ID: <20260112132259.76855-20-anisinha@redhat.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20260112132259.76855-1-anisinha@redhat.com>
 References: <20260112132259.76855-1-anisinha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -122,59 +121,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If there is existing launch update data and kernel hashes data, they need to be
-freed when initialization code is executed. This is important for resettable
-confidential guests where the initialization happens once every reset.
+When the KVM VM file descriptor changes as a part of the confidential guest
+reset mechanism, it necessary to create a new confidential guest context and
+re-encrypt the VM memeory. This happens for SEV-ES and SEV-SNP virtual machines
+as a part of SEV_LAUNCH_FINISH, SEV_SNP_LAUNCH_FINISH operations.
+
+A new resettable interface for SEV module has been added. A new reset callback
+for the reset 'exit' state has been implemented to perform the above operations
+when the VM file descriptor has changed during VM reset.
+
+Tracepoints has been added also for tracing purpose.
 
 Signed-off-by: Ani Sinha <anisinha@redhat.com>
 ---
- target/i386/sev.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ target/i386/sev.c        | 52 ++++++++++++++++++++++++++++++++++++++++
+ target/i386/trace-events |  1 +
+ 2 files changed, 53 insertions(+)
 
 diff --git a/target/i386/sev.c b/target/i386/sev.c
-index cb2213a32a..d7425dde96 100644
+index d7425dde96..d45356843c 100644
 --- a/target/i386/sev.c
 +++ b/target/i386/sev.c
-@@ -1768,6 +1768,7 @@ static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-     uint32_t ebx;
-     uint32_t host_cbitpos;
-     struct sev_user_data_status status = {};
-+    SevLaunchUpdateData *data, *next_elm;
-     SevCommonState *sev_common = SEV_COMMON(cgs);
-     SevCommonStateClass *klass = SEV_COMMON_GET_CLASS(cgs);
-     X86ConfidentialGuestClass *x86_klass =
-@@ -1775,6 +1776,11 @@ static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+@@ -30,8 +30,10 @@
+ #include "system/kvm.h"
+ #include "kvm/kvm_i386.h"
+ #include "sev.h"
++#include "system/cpus.h"
+ #include "system/system.h"
+ #include "system/runstate.h"
++#include "system/reset.h"
+ #include "trace.h"
+ #include "migration/blocker.h"
+ #include "qom/object.h"
+@@ -85,6 +87,10 @@ typedef struct QEMU_PACKED PaddedSevHashTable {
+     uint8_t padding[ROUND_UP(sizeof(SevHashTable), 16) - sizeof(SevHashTable)];
+ } PaddedSevHashTable;
  
-     sev_common->state = SEV_STATE_UNINIT;
- 
-+    /* free existing launch update data if any */
-+    QTAILQ_FOREACH_SAFE(data, &launch_update, next, next_elm) {
-+        g_free(data);
-+    }
++static void sev_handle_reset(Object *obj, ResetType type);
 +
-     host_cpuid(0x8000001F, 0, NULL, &ebx, NULL, NULL);
-     host_cbitpos = ebx & 0x3f;
- 
-@@ -1961,6 +1967,8 @@ static int sev_snp_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
- {
-     MachineState *ms = MACHINE(qdev_get_machine());
-     X86MachineState *x86ms = X86_MACHINE(ms);
-+    SevCommonState *sev_common = SEV_COMMON(cgs);
-+    SevSnpGuestState *sev_snp_guest = SEV_SNP_GUEST(sev_common);
- 
-     if (x86ms->smm == ON_OFF_AUTO_AUTO) {
-         x86ms->smm = ON_OFF_AUTO_OFF;
-@@ -1969,6 +1977,10 @@ static int sev_snp_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-         return -1;
-     }
- 
-+    /* free existing kernel hashes data if any */
-+    g_free(sev_snp_guest->kernel_hashes_data);
-+    sev_snp_guest->kernel_hashes_data = NULL;
++SevKernelLoaderContext sev_load_ctx = {};
 +
+ QEMU_BUILD_BUG_ON(sizeof(PaddedSevHashTable) % 16 != 0);
+ 
+ #define SEV_INFO_BLOCK_GUID     "00f771de-1a7e-4fcb-890e-68c77e2fb44e"
+@@ -128,6 +134,7 @@ struct SevCommonState {
+     uint8_t build_id;
+     int sev_fd;
+     SevState state;
++    ResettableState reset_state;
+ 
+     QTAILQ_HEAD(, SevLaunchVmsa) launch_vmsa;
+ };
+@@ -1984,6 +1991,38 @@ static int sev_snp_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
      return 0;
  }
  
++/*
++ * handle sev vm reset
++ */
++static void sev_handle_reset(Object *obj, ResetType type)
++{
++    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
++    SevCommonStateClass *klass = SEV_COMMON_GET_CLASS(sev_common);
++
++    if (!sev_common) {
++        return;
++    }
++
++    if (!runstate_is_running()) {
++        return;
++    }
++
++    sev_add_kernel_loader_hashes(&sev_load_ctx, &error_fatal);
++    if (!sev_check_state(sev_common, SEV_STATE_RUNNING)) {
++        /* this calls sev_snp_launch_finish() etc */
++        klass->launch_finish(sev_common);
++    }
++
++    trace_sev_handle_reset();
++    return;
++}
++
++static ResettableState *sev_reset_state(Object *obj)
++{
++    SevCommonState *sev_common = SEV_COMMON(obj);
++    return &sev_common->reset_state;
++}
++
+ int
+ sev_encrypt_flash(hwaddr gpa, uint8_t *ptr, uint64_t len, Error **errp)
+ {
+@@ -2462,6 +2501,8 @@ bool sev_add_kernel_loader_hashes(SevKernelLoaderContext *ctx, Error **errp)
+         return false;
+     }
+ 
++    /* save the context here so that it can be re-used when vm is reset */
++    memcpy(&sev_load_ctx, ctx, sizeof(*ctx));
+     return klass->build_kernel_loader_hashes(sev_common, area, ctx, errp);
+ }
+ 
+@@ -2722,8 +2763,16 @@ static void
+ sev_common_class_init(ObjectClass *oc, const void *data)
+ {
+     ConfidentialGuestSupportClass *klass = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
++    ResettableClass *rc = RESETTABLE_CLASS(oc);
+ 
+     klass->kvm_init = sev_common_kvm_init;
++    /*
++     * the exit phase makes sure sev handles reset after all legacy resets
++     * have taken place (in the hold phase) and IGVM has also properly
++     * set up the boot state.
++     */
++    rc->phases.exit = sev_handle_reset;
++    rc->get_state = sev_reset_state;
+ 
+     object_class_property_add_str(oc, "sev-device",
+                                   sev_common_get_sev_device,
+@@ -2758,6 +2807,8 @@ sev_common_instance_init(Object *obj)
+     cgs->get_mem_map_entry = cgs_get_mem_map_entry;
+     cgs->set_guest_policy = cgs_set_guest_policy;
+ 
++    qemu_register_resettable(OBJECT(sev_common));
++
+     QTAILQ_INIT(&sev_common->launch_vmsa);
+ 
+     /* add migration blocker */
+@@ -2779,6 +2830,7 @@ static const TypeInfo sev_common_info = {
+     .abstract = true,
+     .interfaces = (const InterfaceInfo[]) {
+         { TYPE_USER_CREATABLE },
++        { TYPE_RESETTABLE_INTERFACE },
+         { }
+     }
+ };
+diff --git a/target/i386/trace-events b/target/i386/trace-events
+index 51301673f0..b320f655ee 100644
+--- a/target/i386/trace-events
++++ b/target/i386/trace-events
+@@ -14,3 +14,4 @@ kvm_sev_attestation_report(const char *mnonce, const char *data) "mnonce %s data
+ kvm_sev_snp_launch_start(uint64_t policy, char *gosvw) "policy 0x%" PRIx64 " gosvw %s"
+ kvm_sev_snp_launch_update(uint64_t src, uint64_t gpa, uint64_t len, const char *type) "src 0x%" PRIx64 " gpa 0x%" PRIx64 " len 0x%" PRIx64 " (%s page)"
+ kvm_sev_snp_launch_finish(char *id_block, char *id_auth, char *host_data) "id_block %s id_auth %s host_data %s"
++sev_handle_reset(void) ""
 -- 
 2.42.0
 
