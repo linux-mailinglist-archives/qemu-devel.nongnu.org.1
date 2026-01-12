@@ -2,91 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37C6AD11E8D
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 11:33:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C321BD11EC1
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 11:35:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfFDQ-0002RU-2Y; Mon, 12 Jan 2026 05:32:04 -0500
+	id 1vfFGC-0003LU-Fm; Mon, 12 Jan 2026 05:34:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfFDK-0001jK-6n
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:31:58 -0500
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfFDH-0001mt-Sj
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:31:57 -0500
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-64b8b5410a1so9132227a12.2
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 02:31:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1768213912; x=1768818712; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=IWGJxX6YeT+HvZFllgCLvBWI3AHV8+kEcqSyksG6mQk=;
- b=eThw3EJncvvq2VqqlVPXVxE6qhj907ERteH1FIc6S4OGGBoEbKLdkXPeU7JgA+brpJ
- /bb2UI7KU9JrFUzG71e/CUdGhUtzTUGXBJPlsfC9ePMqdXheP3AiGA22SxNqeojVL9An
- e4Ue1LzIC/IGyYsPXcyJVaHi83MbIJbjpe+LEj9auByo2gipGmQ1mD85UgAziErrljM/
- /KCt3JCyM8WfsxFVnyAtbVAqX3Kw+ia8y1d/565QuSPax4Mh1gyHm4QXBuC0WqrtgMzI
- 3tsOBKCG4pR2F0psDFBuYkjeT2xkNjwuMDCCj5G0lR4fP/SwORBGMP54/LZ9B9/4eBbo
- UPOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768213912; x=1768818712;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=IWGJxX6YeT+HvZFllgCLvBWI3AHV8+kEcqSyksG6mQk=;
- b=OKjtpeZVmLCWKn1s2C5WiXY9RJPAauC/ioACjRaQIUYlzkhHUsnQeR8DcTy2hJf7zI
- dBlBqVsnX18I4W80uKEi1EvG5uIyOmv1loN90LZkoEMdVRbn7Rd3UywyNIYmG2mV8V1O
- zxAlh4luSkRP48f7k/+LmdE2A5xVnjrkeeua3wPNrwZ6Q+Ad+1p9nojrNHvWZ+07tmpA
- Sy/rdnt4LHUUZAPtSDSF3obdG+Ps5UQcVp02DdLDkfr6t0Ls0S+xq3PtD8OxLmYzKVTx
- UZxwEu27Rkzn2S/37CS2DjZu/0ZTW43sQm68Dy5CwhTmHsf2XgcZABCFa4iW8W0yMWtj
- XsCA==
-X-Gm-Message-State: AOJu0Yxnlfv2iiZ82Uul9wbPvC8Z573Q5aMmA/wanpv+7GpikezvZUoJ
- nEv6uy4s4S16F4R+okdskCn20a5gp7pPHVdFcfk8gF1myLYrHNTT2nogXQ7EAg==
-X-Gm-Gg: AY/fxX7DW9A6NUjdyrVOdcRdhRTv4fGfV/AhQOnSv43SwBAWWtC3rpg6gaFbokEu7tc
- bNJ/wSxqnVcMuBk9dBGpdNs7m2SjOHMb4p2yBCEckbsbe0BD1CN6eZkKuoR1YkCEOASEtDYltfZ
- j4mbqGGum2bzhH2HHF681lNLAeBqvO/GKAcFCHzZiGnXtRkZxDGxiVzl2j9XUhVqcPraS/vltJN
- ceSxfCFzZyt6mp007ghNreWtZVNmkX1m6qDldMBDwCns96NI2vcNnynAhgEKpJSFZjyhc0FAYqG
- krT60yYEeIpXjAGxg41s2FP55oFc/UOuBxYgZo3UUbPrSoCICz4dUCfn2MM1+Zlgaiq+2s421v1
- jjgWBUKH1YDIZejtkXhgZwhO6pMlbOVghSNaemEHrKdm2UXE4K4v5qh/69e9Ufe5ZdlHcP+fAYl
- f/FUsvQvfjGv2gdKrWs6oF6YhHLUCHjE0FU29LN/ilvQTsIe6fGQQ0hkqSkV8aYVWearPkJm4e0
- 7SAtz1rJx8bE3k45rCzu207oQ2aNP130Fa4yKKhpKaJRg==
-X-Google-Smtp-Source: AGHT+IGBCZ+GrwEYc1fY+E5Jlq/jqqPFW525mUSLx3O/jBXldBNzlcGtiCDRVpgC4bmZCyhiyIKi9w==
-X-Received: by 2002:a05:6402:27c8:b0:649:a63f:bea9 with SMTP id
- 4fb4d7f45d1cf-65097e4ccabmr14713566a12.16.1768213912161; 
- Mon, 12 Jan 2026 02:31:52 -0800 (PST)
-Received: from ehlo.thunderbird.net
- (dynamic-2a02-3100-299b-b200-f91d-651c-a220-693b.310.pool.telefonica.de.
- [2a02:3100:299b:b200:f91d:651c:a220:693b])
- by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-6507b8c4479sm17520799a12.1.2026.01.12.02.31.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 12 Jan 2026 02:31:51 -0800 (PST)
-Date: Mon, 12 Jan 2026 10:31:48 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, Gaurav Sharma <gaurav.sharma_7@nxp.com>
-CC: pbonzini@redhat.com, peter.maydell@linaro.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCHv4_04/15=5D_hw/arm/fsl-imx8mm=3A?=
- =?US-ASCII?Q?_Add_Clock_Control_Module_IP_to_iMX8MM?=
-In-Reply-To: <20251205053819.2021772-5-gaurav.sharma_7@nxp.com>
-References: <20251205053819.2021772-1-gaurav.sharma_7@nxp.com>
- <20251205053819.2021772-5-gaurav.sharma_7@nxp.com>
-Message-ID: <BA1E2D72-6AE7-42C3-967B-CED2DEE09901@gmail.com>
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1vfFGA-0003KL-CC
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:34:54 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1vfFG8-00028T-O1
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 05:34:54 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60BLqO0N029996
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 10:34:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+ content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=YdK0lJrzvw+G1BxFInbgdPVm8Smaxs1gAf5DVgZpI
+ ik=; b=q1TzJw4vh4qgxeCIIGLF0ipGGKWOlcb91gC6oHgTQRLQuJPZV358EWiWw
+ hjQ9nRQFSCxCJJIu4SsamzO56hnLroyC0urODTkR2LhqVhaGNeygkr6kts99Sunl
+ oCphEMADSM6rW+1ZHOko64x9j0Z7hIJfQzl/T7mK7esBl6/giZbrJdQkfzs1hn2N
+ B4AsysuyYXKuqyuHORun6zByzRcyBOnFw81ZWBTFU2ZWsm+h2JUab9zVO4yLWZRG
+ yFOSnMdMVb0iUEQJ4ZbTRwE7SscsKQT4uZ5el89m6jyPK9Um6krd4WdLxHKUHoOM
+ 3Ovr0uqTjOM0fFefNJ0JXy8lPzC2Q==
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkedsp9v4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 10:34:51 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60C7GMmI030134
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 10:34:50 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bm3ajd730-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 10:34:50 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 60CAYn7H47907298
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 10:34:49 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0AF0420043
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 10:34:49 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 95D3920040
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 10:34:48 +0000 (GMT)
+Received: from Mac.com (unknown [9.43.47.93])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 10:34:48 +0000 (GMT)
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/10] ppc-for-11.0 queue
+Date: Mon, 12 Jan 2026 16:04:23 +0530
+Message-ID: <20260112103433.8451-1-harshpb@linux.ibm.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEyMDA4MSBTYWx0ZWRfX8w+tid9pDSXf
+ LQc9TSanyNdpry8WolG3Zk1zatq9bHstQ1tPiaK07K2Wj0mxTLUsouQP+Ev05ev3YbiAO+WY4zP
+ hqk71kBJ0Y6wiKbXnlO3Y20FtPAW+gVcdjQ8DOWgrMqPy9AL5r0ft50fn63xRcM/eKMQjWkrj5A
+ THd5kfZpEvm6q+vdBNj8gN+VqpXUsG2EKHl9EDfU4NYlh9de/nY/Ys1s3ZtPuuBS4IC6lwLSEF3
+ My+coajR1DVYwzJRt+NBLXRqYZqiKbYKHU/48DmsLBrjOyx3roFcOQeijQVLg4PVZ3qRDg29v4q
+ iSSv76DsXndo2alI12W/bF7qRRCxRcOCxC4dJlDV3Cg6XBnXhtsGU8tv0KrV3Vw4lE9q2iPA2pf
+ CtcN1Fo/odwIxT+6TK1AGCibN3bDBzKVS5Yp94KAULeqE/h7DHMxSJ1EXrUHeNPLUElKMqd9mEQ
+ 3mrFgxDsmadqU0Zkd0Q==
+X-Proofpoint-GUID: v_fxvm0hgQiE5jHi2bXb92yfvPTiSx6W
+X-Authority-Analysis: v=2.4 cv=WLJyn3sR c=1 sm=1 tr=0 ts=6964ce4b cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=vUbySO9Y5rIA:10 a=f7IdgyKtn90A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=NEAV23lmAAAA:8 a=p0WdMEafAAAA:8 a=y9vodQ7xxGY07D5UZ5oA:9
+X-Proofpoint-ORIG-GUID: v_fxvm0hgQiE5jHi2bXb92yfvPTiSx6W
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-12_03,2026-01-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 malwarescore=0 phishscore=0 suspectscore=0
+ priorityscore=1501 bulkscore=0 clxscore=1015 impostorscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2512120000
+ definitions=main-2601120081
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,111 +113,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The following changes since commit b254e486242466dad881fc2bbfa215f1b67cd30f:
 
+  Merge tag 'pull-riscv-to-apply-20260109' of https://github.com/alistair23/qemu into staging (2026-01-10 10:31:57 +1100)
 
-Am 5=2E Dezember 2025 05:38:08 UTC schrieb Gaurav Sharma <gaurav=2Esharma_=
-7@nxp=2Ecom>:
->Add the Clock Control Module (CCM) device to i=2EMX8MM SoC=2E
->The CCM implementation is shared with i=2EMX8MP as the register
->layout is identical between the two variants=2EHence iMX8MM will
->be using the source of iMX8MP CCM=2E
+are available in the Git repository at:
 
-The last sentence seems a bit redundant to me=2E Regardless:
-Reviewed-by: Bernhard Beschow <shentey@gmail=2Ecom>
+  https://gitlab.com/harshpb/qemu.git tags/pull-ppc-for-11.0-20260112
 
->
->Signed-off-by: Gaurav Sharma <gaurav=2Esharma_7@nxp=2Ecom>
->---
-> docs/system/arm/imx8mm-evk=2Erst |  1 +
-> hw/arm/Kconfig                 |  1 +
-> hw/arm/fsl-imx8mm=2Ec            | 10 ++++++++++
-> include/hw/arm/fsl-imx8mm=2Eh    |  2 ++
-> 4 files changed, 14 insertions(+)
->
->diff --git a/docs/system/arm/imx8mm-evk=2Erst b/docs/system/arm/imx8mm-ev=
-k=2Erst
->index 408253193c=2E=2E09aa63240a 100644
->--- a/docs/system/arm/imx8mm-evk=2Erst
->+++ b/docs/system/arm/imx8mm-evk=2Erst
->@@ -12,6 +12,7 @@ The ``imx8mm-evk`` machine implements the following dev=
-ices:
->  * Up to 4 Cortex-A53 cores
->  * Generic Interrupt Controller (GICv3)
->  * 4 UARTs
->+ * Clock Tree
->=20
-> Boot options
-> ------------
->diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
->index 3737335841=2E=2E758addea22 100644
->--- a/hw/arm/Kconfig
->+++ b/hw/arm/Kconfig
->@@ -630,6 +630,7 @@ config FSL_IMX8MM
->     bool
->     select ARM_GIC
->     select FSL_IMX8MP_ANALOG
->+    select FSL_IMX8MP_CCM
->     select IMX
->=20
-> config FSL_IMX8MM_EVK
->diff --git a/hw/arm/fsl-imx8mm=2Ec b/hw/arm/fsl-imx8mm=2Ec
->index 2c84e70c01=2E=2Ea3eddfe3f6 100644
->--- a/hw/arm/fsl-imx8mm=2Ec
->+++ b/hw/arm/fsl-imx8mm=2Ec
->@@ -169,6 +169,8 @@ static void fsl_imx8mm_init(Object *obj)
->=20
->     object_initialize_child(obj, "gic", &s->gic, gicv3_class_name());
->=20
->+    object_initialize_child(obj, "ccm", &s->ccm, TYPE_IMX8MP_CCM);
->+
->     object_initialize_child(obj, "analog", &s->analog, TYPE_IMX8MP_ANALO=
-G);
->=20
->     for (i =3D 0; i < FSL_IMX8MM_NUM_UARTS; i++) {
->@@ -305,6 +307,13 @@ static void fsl_imx8mm_realize(DeviceState *dev, Err=
-or **errp)
->         }
->     }
->=20
->+    /* CCM */
->+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->ccm), errp)) {
->+        return;
->+    }
->+    sysbus_mmio_map(SYS_BUS_DEVICE(&s->ccm), 0,
->+                    fsl_imx8mm_memmap[FSL_IMX8MM_CCM]=2Eaddr);
->+
->     /* Analog */
->     object_property_set_uint(OBJECT(&s->analog), "arm-pll-fdiv-ctl0-rese=
-t",
->                             0x000fa030, &error_abort);
->@@ -340,6 +349,7 @@ static void fsl_imx8mm_realize(DeviceState *dev, Erro=
-r **errp)
->     for (i =3D 0; i < ARRAY_SIZE(fsl_imx8mm_memmap); i++) {
->         switch (i) {
->         case FSL_IMX8MM_ANA_PLL:
->+        case FSL_IMX8MM_CCM:
->         case FSL_IMX8MM_GIC_DIST:
->         case FSL_IMX8MM_GIC_REDIST:
->         case FSL_IMX8MM_RAM:
->diff --git a/include/hw/arm/fsl-imx8mm=2Eh b/include/hw/arm/fsl-imx8mm=2E=
-h
->index 4601f57f2b=2E=2E03ab45d94e 100644
->--- a/include/hw/arm/fsl-imx8mm=2Eh
->+++ b/include/hw/arm/fsl-imx8mm=2Eh
->@@ -14,6 +14,7 @@
-> #include "hw/char/imx_serial=2Eh"
-> #include "hw/intc/arm_gicv3_common=2Eh"
-> #include "hw/misc/imx8mp_analog=2Eh"
->+#include "hw/misc/imx8mp_ccm=2Eh"
-> #include "qom/object=2Eh"
-> #include "qemu/units=2Eh"
->=20
->@@ -34,6 +35,7 @@ struct FslImx8mmState {
->=20
->     ARMCPU             cpu[FSL_IMX8MM_NUM_CPUS];
->     GICv3State         gic;
->+    IMX8MPCCMState     ccm;
->     IMX8MPAnalogState  analog;
->     IMXSerialState     uart[FSL_IMX8MM_NUM_UARTS];
-> };
+for you to fetch changes up to f4e34d0fd56c25dd0c90722ed80a83a175160a6c:
+
+  tests/functional: Add a OS level migration test for pseries (2026-01-12 15:34:04 +0530)
+
+----------------------------------------------------------------
+First PPC PR for 11.0
+
+- Snapshot support for several ppc devices
+- Migration fix and OS level migration test for pseries
+- Minor code cleanups
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEa4EM1tK+EPOIPSFCRUTplPnWj7sFAmlky2YACgkQRUTplPnW
+j7vXUg/8Dx/nsygeDspmhlmvqEWjyXm3fjIGnyCtSZWSkDkhh1x+uc0khFLuG8in
+1Ep2D4qkGDBrdv079WzDKJDhgH21gTApA92xUsJFof2LLgN+MZOgi2Im6wR+Prtr
+EddB7jJ062fDDyMQWBdg+9jkl0+xuj+JE5JXPbXV0Fqu+t3rVJvn7c1b3uRXRrC9
+hgiss0xgTpXdVGnVjsQYLr3+iJ5Qcd7+6UhtRzTgv7S02IJRjpVoHSayBnKmzG9r
+eLqQMykyqU8drmQUruTk1nM2PRbaGTuRO+Swcld7SgqxOxxYIXD72f89B94kZKqM
+qZKv/C03EP30wS7/zJMwWsIEuXKM/oUwXl4i5C5eRUIa637VjcFEhuj0fCd8qxmz
+mUp6tVTYaGESpWUJA9TLZOkvLO9c4gumbTWa5valYeRWCLdXFQZgDg0wrwu7SL5M
+vdzKdnTMozkkKIY0W2Gk5j6E6aHpcGvNxREGrtI1BEUGKtGVzPjMHZmYDormSLIz
+lvgZj7JEncjkGv6uIYKMv1tT7Cbo2YxoGRWbx59PWpK9Ekl8307BMi2OtPYqZm7N
+CKS0lK+OM8CUP7Ao4nwxzH+T6X+C88Ivjt31sS25ixdUK6+Wy8tCEK2XCwA8gxjH
+QuBMDYMoAWgZ+mQITNy+HrqM1TBI8a4PiF9DjX2xj3sdyBd67F8=
+=2zBL
+-----END PGP SIGNATURE-----
+
+----------------------------------------------------------------
+Caleb Schlossin (7):
+      hw/ppc: Add VMSTATE information for LPC model
+      hw/ppc: Add pnv_spi vmstate support
+      hw/ppc: Add pnv_i2c vmstate support
+      hw/ppc: pnv_adu.c added vmstate support
+      hw/ppc: pnv_core.c add vmstate support
+      hw/ppc: pnv_chiptod.c add vmstate support
+      hw/ppc: Add VMSTATE information to PnvPsi
+
+Fabiano Rosas (2):
+      target/ppc: Fix env->quiesced migration
+      tests/functional: Add a OS level migration test for pseries
+
+Gautam Menghani (1):
+      target/ppc/kvm : Use macro names instead of hardcoded constants as return values
+
+ include/hw/ppc/pnv_chiptod.h             |  2 ++
+ target/ppc/cpu.h                         |  1 +
+ hw/ppc/pnv_adu.c                         | 12 +++++++
+ hw/ppc/pnv_chiptod.c                     | 38 ++++++++++++++++++++
+ hw/ppc/pnv_core.c                        | 22 ++++++++++++
+ hw/ppc/pnv_i2c.c                         | 11 ++++++
+ hw/ppc/pnv_lpc.c                         | 41 +++++++++++++++++++++
+ hw/ppc/pnv_psi.c                         | 36 +++++++++++++++++--
+ hw/ppc/spapr.c                           |  6 ++++
+ hw/ssi/pnv_spi.c                         | 27 ++++++++++++++
+ target/ppc/cpu_init.c                    |  7 ++++
+ target/ppc/kvm.c                         | 18 +++++-----
+ target/ppc/machine.c                     | 62 ++++++++++++++++++++++++++++++++
+ tests/functional/ppc64/test_migration.py | 12 +++++++
+ tests/functional/ppc64/test_pseries.py   | 35 ++++++++++++++++++
+ 15 files changed, 319 insertions(+), 11 deletions(-)
 
