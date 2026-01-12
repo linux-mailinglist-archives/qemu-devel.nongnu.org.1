@@ -2,39 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C37DD125FC
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 12:46:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A45CD12602
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 12:47:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfGMt-0007VM-4G; Mon, 12 Jan 2026 06:45:55 -0500
+	id 1vfGMt-0007W3-Oh; Mon, 12 Jan 2026 06:45:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
- id 1vfGMV-0007Mr-P2; Mon, 12 Jan 2026 06:45:35 -0500
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
+ id 1vfGMZ-0007NK-9W; Mon, 12 Jan 2026 06:45:35 -0500
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
- id 1vfGMU-0004nB-8E; Mon, 12 Jan 2026 06:45:31 -0500
+ id 1vfGMX-0004nb-37; Mon, 12 Jan 2026 06:45:34 -0500
 Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c24:fa2:0:640:41ee:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 8BA8B80809;
- Mon, 12 Jan 2026 14:45:28 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 35C48885CF;
+ Mon, 12 Jan 2026 14:45:31 +0300 (MSK)
 Received: from dtalexundeer-nx.yandex.net (unknown
  [2a02:6bf:803e:400:6fcf:dbb2:9b0:d80b])
  by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 6jQQPI5AAW20-YNq35SCM; Mon, 12 Jan 2026 14:45:27 +0300
+ ESMTPSA id 6jQQPI5AAW20-VkRKLOIh; Mon, 12 Jan 2026 14:45:30 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1768218328;
- bh=OuFWa9+MzavqJkI10h1F+5VsTtN4q5muV91G/8fFCZo=;
+ s=default; t=1768218330;
+ bh=z8PGdUQGuutXpE5KQ/Zomo9S+sDSgjZY1LOIsQYZrpI=;
  h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=e6wmly16BEbGOQQVRGkU3FvAzTshHnEvmvmYPGhqXXzq45seztlShJTjFGMLp43DB
- oBlIaBKM6+CQuJp01KpOzQ1UG4EDIp/Xel+SXCpaHk4XoE8/9iKyZJaSR6T4Mdz5AJ
- 418CWcUJLTEG6Q3XP7OkHcZLis6p6+c7olQEHRgA=
+ b=LmDKMe3wTln9h3nZBQEMkxhuMIFKR7qr4HlyUdPKEe6IfuuK92TRKLVcWlwYpInw9
+ +aLgpVgnQTURHmpAJg50T9GPAD0BGargW4gvAMLDgYsHhoWJMPQ7iRBvxSGkhgZJwl
+ 461asNhsmftuDoLYhYScaCvWkXN4s1E/d8j8s4v8=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
@@ -53,22 +52,24 @@ Cc: "Gonglei (Arei)" <arei.gonglei@huawei.com>,
  "yc-core@yandex-team.ru" <yc-core@yandex-team.ru>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Alexandr Moshkov <dtalexundeer@yandex-team.ru>
-Subject: [PATCH v5 3/5] vmstate: introduce VMSTATE_VBUFFER_UINT64
-Date: Mon, 12 Jan 2026 16:45:01 +0500
-Message-Id: <20260112114503.1174330-4-dtalexundeer@yandex-team.ru>
+Subject: [PATCH v5 4/5] vhost: add vmstate for inflight region with inner
+ buffer
+Date: Mon, 12 Jan 2026 16:45:02 +0500
+Message-Id: <20260112114503.1174330-5-dtalexundeer@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260112114503.1174330-1-dtalexundeer@yandex-team.ru>
 References: <20260112114503.1174330-1-dtalexundeer@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+Received-SPF: pass client-ip=178.154.239.136;
  envelope-from=dtalexundeer@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,34 +84,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is an analog of VMSTATE_VBUFFER_UINT32 macro, but for uint64 type.
+Prepare for future inflight region migration for vhost-user-blk.
+We need to migrate size, queue_size, and inner buffer.
+
+So firstly it migrate size and queue_size fields, then allocate memory for buffer with
+migrated size, then migrate inner buffer itself.
 
 Signed-off-by: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
 ---
- include/migration/vmstate.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ hw/virtio/vhost.c         | 42 +++++++++++++++++++++++++++++++++++++++
+ include/hw/virtio/vhost.h |  6 ++++++
+ 2 files changed, 48 insertions(+)
 
-diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
-index 7f1f1c166a..4c9e212d58 100644
---- a/include/migration/vmstate.h
-+++ b/include/migration/vmstate.h
-@@ -707,6 +707,16 @@ extern const VMStateInfo vmstate_info_qlist;
-     .offset       = offsetof(_state, _field),                        \
- }
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index c46203eb9c..9a746c9861 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -2028,6 +2028,48 @@ const VMStateDescription vmstate_backend_transfer_vhost_inflight = {
+     }
+ };
  
-+#define VMSTATE_VBUFFER_UINT64(_field, _state, _version, _test, _field_size) { \
-+    .name         = (stringify(_field)),                             \
-+    .version_id   = (_version),                                      \
-+    .field_exists = (_test),                                         \
-+    .size_offset  = vmstate_offset_value(_state, _field_size, uint64_t),\
-+    .info         = &vmstate_info_buffer,                            \
-+    .flags        = VMS_VBUFFER | VMS_POINTER,                       \
-+    .offset       = offsetof(_state, _field),                        \
++static int vhost_inflight_buffer_pre_load(void *opaque, Error **errp)
++{
++    info_report("vhost_inflight_region_buffer_pre_load");
++    struct vhost_inflight *inflight = opaque;
++
++    int fd = -1;
++    void *addr = qemu_memfd_alloc("vhost-inflight", inflight->size,
++                                  F_SEAL_GROW | F_SEAL_SHRINK | F_SEAL_SEAL,
++                                  &fd, errp);
++    if (*errp) {
++        return -ENOMEM;
++    }
++
++    inflight->offset = 0;
++    inflight->addr = addr;
++    inflight->fd = fd;
++
++    return 0;
 +}
 +
- #define VMSTATE_VBUFFER_ALLOC_UINT32(_field, _state, _version,       \
-                                      _test, _field_size) {           \
-     .name         = (stringify(_field)),                             \
++const VMStateDescription vmstate_vhost_inflight_region_buffer = {
++    .name = "vhost-inflight-region/buffer",
++    .pre_load_errp = vhost_inflight_buffer_pre_load,
++    .fields = (const VMStateField[]) {
++        VMSTATE_VBUFFER_UINT64(addr, struct vhost_inflight, 0, NULL, size),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
++const VMStateDescription vmstate_vhost_inflight_region = {
++    .name = "vhost-inflight-region",
++    .fields = (const VMStateField[]) {
++        VMSTATE_UINT64(size, struct vhost_inflight),
++        VMSTATE_UINT16(queue_size, struct vhost_inflight),
++        VMSTATE_END_OF_LIST()
++    },
++    .subsections = (const VMStateDescription * const []) {
++        &vmstate_vhost_inflight_region_buffer,
++        NULL
++    }
++};
++
+ const VMStateDescription vmstate_vhost_virtqueue = {
+     .name = "vhost-virtqueue",
+     .fields = (const VMStateField[]) {
+diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+index 13ca2c319f..dd552de91f 100644
+--- a/include/hw/virtio/vhost.h
++++ b/include/hw/virtio/vhost.h
+@@ -596,6 +596,12 @@ extern const VMStateDescription vmstate_backend_transfer_vhost_inflight;
+                            vmstate_backend_transfer_vhost_inflight, \
+                            struct vhost_inflight)
+ 
++extern const VMStateDescription vmstate_vhost_inflight_region;
++#define VMSTATE_VHOST_INFLIGHT_REGION(_field, _state) \
++    VMSTATE_STRUCT_POINTER(_field, _state, \
++                           vmstate_vhost_inflight_region, \
++                           struct vhost_inflight)
++
+ extern const VMStateDescription vmstate_vhost_dev;
+ #define VMSTATE_BACKEND_TRANSFER_VHOST(_field, _state) \
+     VMSTATE_STRUCT(_field, _state, 0, vmstate_vhost_dev, struct vhost_dev)
 -- 
 2.34.1
 
