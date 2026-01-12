@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE59D12B95
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 14:20:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DF49D12B92
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 14:19:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfHpa-0004Fa-EU; Mon, 12 Jan 2026 08:19:40 -0500
+	id 1vfHo9-0002a9-KD; Mon, 12 Jan 2026 08:18:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vfHlb-0001Ys-5a
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 08:15:31 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vfHlb-0001Yt-6A
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 08:15:32 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vfHlZ-0002bZ-LS
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vfHlZ-0002bb-P3
  for qemu-devel@nongnu.org; Mon, 12 Jan 2026 08:15:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1768223729;
@@ -22,35 +22,35 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aZUJUXlTONMlWRfr4eM1Jg9J+vE+nPqvdFsuDHwXiuE=;
- b=BFR+fCjORGvvlsPLkpxHye/+nhOWFQY8lNIdOMyYvxLiEccI60j/j84NMngHTF9DlydtTn
- yi1yP/tMKjf1scFvv8vBD+nSTAZC6RpP8zzkvnj4YouevP+PQcLp7f4JjB6JR+wZt+9BIR
- J42NzLjSQID/cbYmIrYhlEdOhSw3Dno=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=3LFCkKY5XgP12F2ImbVWWwQ1H7RA9GzjXE9aQY0PmWw=;
+ b=W+6TC4/AQwwSXMtPctpThcoolefkwopNlKehly/FhQ7flDu4+hcdb1JZY6r736Rppf2mjF
+ XVniqiq4h2NX9UZoUGDkzTox3JPafdP5hOrSX0KtMiMwHFjGFybmr65lAA8AHrJFldYhLt
+ pOhsvm/CYGhDHybqdgGmBzogkwKit5o=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-303-D9uOO-xPOsaWzMJ7Em30bQ-1; Mon,
- 12 Jan 2026 08:15:25 -0500
-X-MC-Unique: D9uOO-xPOsaWzMJ7Em30bQ-1
-X-Mimecast-MFC-AGG-ID: D9uOO-xPOsaWzMJ7Em30bQ_1768223724
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-259-l_FqIZEAPbyH-BQgL-lf6Q-1; Mon,
+ 12 Jan 2026 08:15:27 -0500
+X-MC-Unique: l_FqIZEAPbyH-BQgL-lf6Q-1
+X-Mimecast-MFC-AGG-ID: l_FqIZEAPbyH-BQgL-lf6Q_1768223726
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 84EBF195399A; Mon, 12 Jan 2026 13:15:24 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CB1931800473; Mon, 12 Jan 2026 13:15:26 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.179])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1BCFD30002DA; Mon, 12 Jan 2026 13:15:22 +0000 (UTC)
+ id 42B553000218; Mon, 12 Jan 2026 13:15:25 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 10/15] target/s390x: Replace target_ulong -> uint64_t in
- gdb_write_register()
-Date: Mon, 12 Jan 2026 14:14:52 +0100
-Message-ID: <20260112131457.67128-11-thuth@redhat.com>
+Subject: [PULL 11/15] target/s390x: Remove unused 'gdbstub/helpers.h' header
+ in helper.c
+Date: Mon, 12 Jan 2026 14:14:53 +0100
+Message-ID: <20260112131457.67128-12-thuth@redhat.com>
 In-Reply-To: <20260112131457.67128-1-thuth@redhat.com>
 References: <20260112131457.67128-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -84,30 +84,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-On s390x target_ulong expands to uint64_t. Besides,
-ldq_be_p() returns a uint64_t type. Use that instead.
+"gdbstub/helpers.h" uses target-specific symbols, but we don't
+need it, so remove it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20260107130807.69870-5-philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20260107130807.69870-6-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- target/s390x/gdbstub.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/s390x/helper.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/target/s390x/gdbstub.c b/target/s390x/gdbstub.c
-index d1f02ea5ce4..9ae715add4d 100644
---- a/target/s390x/gdbstub.c
-+++ b/target/s390x/gdbstub.c
-@@ -46,7 +46,7 @@ int s390_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
- int s390_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
- {
-     CPUS390XState *env = cpu_env(cs);
--    target_ulong tmpl = ldq_be_p(mem_buf);
-+    uint64_t tmpl = ldq_be_p(mem_buf);
- 
-     switch (n) {
-     case S390_PSWM_REGNUM:
+diff --git a/target/s390x/helper.c b/target/s390x/helper.c
+index 8d1e03f6768..a6c89ed0af3 100644
+--- a/target/s390x/helper.c
++++ b/target/s390x/helper.c
+@@ -21,7 +21,6 @@
+ #include "qemu/osdep.h"
+ #include "cpu.h"
+ #include "s390x-internal.h"
+-#include "gdbstub/helpers.h"
+ #include "qemu/timer.h"
+ #include "hw/s390x/ioinst.h"
+ #include "system/hw_accel.h"
 -- 
 2.52.0
 
