@@ -2,126 +2,164 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FFF8D11541
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 09:49:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF6B1D115D4
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 09:59:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfDbl-0007NA-DV; Mon, 12 Jan 2026 03:49:05 -0500
+	id 1vfDlY-0003VL-By; Mon, 12 Jan 2026 03:59:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vfDbP-0007Ho-G2
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 03:48:43 -0500
-Received: from smtpout3.mo529.mail-out.ovh.net ([46.105.54.81])
+ (Exim 4.90_1) (envelope-from <Manojlo.Pekovic@amd.com>)
+ id 1vfDlR-0003TY-Q8
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 03:59:05 -0500
+Received: from mail-westusazon11012009.outbound.protection.outlook.com
+ ([52.101.43.9] helo=SJ2PR03CU001.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vfDbM-0002MS-KC
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 03:48:43 -0500
-Received: from mxplan5.mail.ovh.net (unknown [10.110.43.161])
- by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 4dqQyC4smbz5w7c;
- Mon, 12 Jan 2026 08:48:19 +0000 (UTC)
-Received: from kaod.org (37.59.142.112) by DAG3EX1.mxp5.local (172.16.2.21)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.61; Mon, 12 Jan
- 2026 09:48:18 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-112S00693a1c32c-fdb6-4f0d-8d59-5f1e1f9427a1,
- 1B0C08D700A15D24616A380A8005CBD17F9BC8B9) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Message-ID: <f2f3c6c4-c9e7-45ef-b19c-172a21820b2d@kaod.org>
-Date: Mon, 12 Jan 2026 09:48:17 +0100
+ (Exim 4.90_1) (envelope-from <Manojlo.Pekovic@amd.com>)
+ id 1vfDlQ-000430-0r
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 03:59:05 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rEoT74fibBSAKjJR7LdnUtHjpPaLM69apn0U7B1ewbHBsNEuEHL4NJuRHtPIyEmlWUJE9Z2BGlF9Wh9iZ2kpEjpqZ+KZEeNL0oausAZQfSzvsyEq8peAUZODe/usY7Ubrp+0nBn1T7Jh6GN7CFPaW609q/b7Eg96UvAOQ5ijINQ2JmAF8Nq/2hYYiEtf/JuHZNFnxOGPT1lfTdQZWZqE7izstRzBwX+QORfKx4fH1T91bOH9IZkp3cAJiHtvGGYJ4sGV/hu3dagOtx6NMro/CLBf+TFEpacbm/bSOY/mXR4eD1zb83WwZZWUZmWmkaM2eQhG9oQK3lOEoWo4DWnd9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Z9SS0hc9fL7t+VEl7jj6rHO/rgpIVgspDL27n5cW0O8=;
+ b=Jl3xjSC8hIQsZzOfu4wVn9Pt6zE6TU+kI7RkpQvPZ9W0NvmWx5fAgb+b+EropTqBaKsATmKiUnHQcNtv1cILEcjy5il6pXKRMoi1qEcNjd82c0zMrcoRpeBK/feKtX422rtwvgijshEnb5sQd4wJTSMW07gSNJVNaJdNJcO31CQ0rGoiAV/0lJ1DI4eTO6kapziUUsKWhsVJ/3NuJV1Z5YN3+lpBlo95RgAxFiN1c5pk7YlcAs815aPeMVK9WtAvJL5AzZUXItCSJi7yqOcG+EuiUMf+XwkzmAinp4TwcywZwQuBWl7pD1syxJ7RL7wr9j7EwBh8W/Knsr71iaLFcw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Z9SS0hc9fL7t+VEl7jj6rHO/rgpIVgspDL27n5cW0O8=;
+ b=D0ob8tTaMXO6Mm8qnOrnLkIgGlZG9MaRO0HC+Us4RREsUCWlbWnJNqEXiLaDc/pwIG89qFqXh7IllXuUAIlciwAQSaeZMf51HAwtf44g8twg8lJ4SPwEhI4aMG0fPOcUZp5RypJqsZ37VVBHTkfk9Ks3URAL+6WB0KRYZMpvwhg=
+Received: from CH0PR12MB5283.namprd12.prod.outlook.com (2603:10b6:610:d6::12)
+ by DS0PR12MB6463.namprd12.prod.outlook.com (2603:10b6:8:c5::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Mon, 12 Jan
+ 2026 08:53:57 +0000
+Received: from CH0PR12MB5283.namprd12.prod.outlook.com
+ ([fe80::23f7:7362:bc2f:507d]) by CH0PR12MB5283.namprd12.prod.outlook.com
+ ([fe80::23f7:7362:bc2f:507d%3]) with mapi id 15.20.9499.005; Mon, 12 Jan 2026
+ 08:53:57 +0000
+From: "Pekovic, Manojlo" <Manojlo.Pekovic@amd.com>
+To: =?iso-8859-1?Q?C=E9dric_Le_Goater?= <clg@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>, "Prica, Nikola"
+ <Nikola.Prica@amd.com>, "Andjelkovic, Dejan" <Dejan.Andjelkovic@amd.com>
+Subject: RE: [PATCH] vfio/pci: Enable atomic ops for multifunction devices
+Thread-Topic: [PATCH] vfio/pci: Enable atomic ops for multifunction devices
+Thread-Index: AQHcaRi2j570A1RdCkK75QZWVlfQIbU0EcKwgAHQAYCADdlTEA==
+Date: Mon, 12 Jan 2026 08:53:57 +0000
+Message-ID: <CH0PR12MB5283C36ABAF18717DE9091BBFA81A@CH0PR12MB5283.namprd12.prod.outlook.com>
+References: <20251209143250.714546-1-manojlo.pekovic@amd.com>
+ <CH0PR12MB5283E6E62B87088662E8C71AFAB0A@CH0PR12MB5283.namprd12.prod.outlook.com>
+ <6dd0e357-d6ce-43e0-8144-6a8b77fd9fd3@redhat.com>
+In-Reply-To: <6dd0e357-d6ce-43e0-8144-6a8b77fd9fd3@redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Enabled=True;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_SetDate=2026-01-05T13:24:38.0000000Z;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Name=AMD
+ Internal Distribution
+ Only; MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_ContentBits=3;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Method=Standard
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH0PR12MB5283:EE_|DS0PR12MB6463:EE_
+x-ms-office365-filtering-correlation-id: 23b6bf8f-487d-49a2-bd57-08de51b81f33
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230040|376014|366016|1800799024|38070700021;
+x-microsoft-antispam-message-info: =?iso-8859-1?Q?nTaHLSPKsW4fRHI4slU4bWNMqhi9RvkNqYaGPQEa5eZSeaKkeLnDow5ElY?=
+ =?iso-8859-1?Q?hjiDB1fkcNtGC/R6kKDuVu2VATTb0HCq4Z39ypAkGAn3vkHOWxcLzFWKJR?=
+ =?iso-8859-1?Q?AZekuSAmst4476MVz99jt+9bts57eiFCCS4W4zikfdKaFz34GDLVYXc3ap?=
+ =?iso-8859-1?Q?Nhy94wKsj263QAXukQp/NvZ5JhsQX8R0m1tsbjT/9cn6HZRe2yMSE1HdyD?=
+ =?iso-8859-1?Q?t0EujJLz3bbjKoyAC05sUqYEPiULx+tFfyEwS7VGeKc3hCi+DqrXZgkzBB?=
+ =?iso-8859-1?Q?dykB9TCaqshpCj8Kr6QIFjynZLgtEb2oBUV5QduG1BAFBk+z9ZMTo+HqGx?=
+ =?iso-8859-1?Q?/qX310BOxw4i36tsmDb20hlNCu5YKg4axKmY3uHMZFUoi/z8N57wXM3MAr?=
+ =?iso-8859-1?Q?qv+i5z5a2cvoLp8a5V3KVGtnz4ziRejW//buDj3qEc2nX8vA0ZZPW9fds4?=
+ =?iso-8859-1?Q?KAXQEPQY9nEr9/y6gWTZwBg3CgLKaBbtbUxgqCktv0eecaUDb3K1nN8/QH?=
+ =?iso-8859-1?Q?u+sBPt3Atrtxh5oYUuK8Cq6hEX3tzcjZ3bpZUwZumYcCN+p+ICmkss1GHt?=
+ =?iso-8859-1?Q?pUDN/vpKW0Hsn0dxrcuFwTHK2+K0SdvDoakny7YJpHrm9nfbZgyZvkxBdQ?=
+ =?iso-8859-1?Q?gZ6Sum1ZZ4PXWKsJlW5OVQl86ksd2XfIWn3HwvM+EQIVCMeHdPNrLe4o+Z?=
+ =?iso-8859-1?Q?HaQ2rCwogk3VsZR8vC3A7C20ZfccYWLP9COMvwPwrX+SiWEoXI6dTiW2XB?=
+ =?iso-8859-1?Q?rZPBTjSzwS7OPgQ22ej8+yWjhkcNWJi3j+yenlJcP4BJop6NUG99r368Ja?=
+ =?iso-8859-1?Q?YPwzHWll0hGk7zbjykjSUrWoTcg+0unVFuzUZLVJZ+jN57qgaKHZ/Rmzfb?=
+ =?iso-8859-1?Q?vrrjo7I4C6ZhieKkrL5aDMnuY36EMi4RQlTLO/wKj6Zxm6A1lUHf91EjrY?=
+ =?iso-8859-1?Q?BJlw03mFqYYbHsPTFQCVLTYAsDBhjihrbqLVSzrLLdk2gtqmOu0kPKS26I?=
+ =?iso-8859-1?Q?dn3VfTq65ezytr7fCZVwxCXPZiwvEpFO6UmfVVvFdinM1+VC/6TIVM5VY0?=
+ =?iso-8859-1?Q?SQYdryl+tBb9uZTttFypWavuLC3gxNUDhn2UXoUXn02MB3fB8JFPrugEHR?=
+ =?iso-8859-1?Q?pFCAzTFIwVz4tSocmxPV610ARiMN3kTH+12pY5cEvPI85azYA8J9j8lstO?=
+ =?iso-8859-1?Q?mb8mRiUXueYACGcC8PzhqVrHFjcdB06xAoBGqPQOyI9V5r2PkNCqyuJT3x?=
+ =?iso-8859-1?Q?+Rq8lPXhX4+p2bxjgRWCpsTaFlAiPfDIkjTCiAb5oa5PeUhkVztqcc2+Qr?=
+ =?iso-8859-1?Q?iogb7kQd4Lp6J611V6cK62XFWGdqpz0cjn8gzmbnw6OhH/wZlUeDwmEndE?=
+ =?iso-8859-1?Q?o79Dt97+Kko6Lcx5vyMXW53Ln6G1n76VZhWooQxMPm1ES6CJwc+rmG8pgC?=
+ =?iso-8859-1?Q?GwZY85WFOGb3UDWGoAV54DUi02nuztxoU9hup+c2hfGo6fCv8RLpFx9vry?=
+ =?iso-8859-1?Q?ewQhr8rz0AlZYiTsefrb0njG60y0MnVNB2dRaKq2hkj/jjoRfQ4jPXKj6V?=
+ =?iso-8859-1?Q?ifzq/GLdh2ioUqnYnoITS0YcdWQ/?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH0PR12MB5283.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024)(38070700021); DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?b0ykCn4musPTKVhFa0zZd7vcSZZfBGH1A8Pe/lTK8mBEPGDsrtSkoDIO2L?=
+ =?iso-8859-1?Q?2MgcGG72wgAWe5J213nzn9q/ruqjNFFotD3Yh+9pOFvGkZpB3lW9Lu/DoL?=
+ =?iso-8859-1?Q?Up5WuzkW9n86kkC1QCbSC9qkp7G5eCQRLp+lP/GcTKXcYHia1gb7hefG2y?=
+ =?iso-8859-1?Q?f+VAirgrxYarhjk3ohCaOIMHYTJg7ZxlyuL79CxdSZNGi++rwHF+SvYr6o?=
+ =?iso-8859-1?Q?TpHtPE2GeMlparY4oakNrgFlWtXaAGrz1vQhmkE0eZAs+ur5w8i/sVzPvL?=
+ =?iso-8859-1?Q?JXIe/VvfAaxPFL3ISuQIg5EWVuluU17xBDnaxx65UZ+F1zUiBRgJy8axQW?=
+ =?iso-8859-1?Q?xnp+xDQp5Prjrv5TxzcTXT4z9lC4U7lTU17xE29lW4PIVTZ+HdBq332OpB?=
+ =?iso-8859-1?Q?pA2Qy6aKbKfArNKwrwfBruTbV0W4KenGHus58bNO30f1Xa9DgfeuOR8kUZ?=
+ =?iso-8859-1?Q?Oh9zNKI7odSBiUsTh1wv02/nxpbYPqLRXPnf2WwaqnsGohRNjKyAsXjg7x?=
+ =?iso-8859-1?Q?TnS7hoTEufp9Vo0pUcary+eoJTgbwyUPxKmWSOc0Mir/+fkvBJxiVQ7lJ3?=
+ =?iso-8859-1?Q?CSAb9SGsQnFjo4CyVpOBTItThhqEZsGwVb9rL1/lL4p0qAXdQ1don0sVnE?=
+ =?iso-8859-1?Q?eOQkBLw5aRLby7sZ22yaDOhssCHkC39IpnKCC2pHou+RY10wnZkTL2Y2zS?=
+ =?iso-8859-1?Q?9g6fPvQzLvTaFf2nkVlmFEbfmJs7uQmevU7EwmFzK8V01/u6GXvkKmkEAv?=
+ =?iso-8859-1?Q?JL/xvrekV5+Q57pMtxO+7OuGhAfcOfDBhmFfEHHbYqSHOv2CBX2WgweQN3?=
+ =?iso-8859-1?Q?ndDsYYJvyItZFasYw1UTuPPK72DRgfMjzA/Nn+KAJ6qsFEWt7ak7b0CPZe?=
+ =?iso-8859-1?Q?HjXXLXChaj2/uNMpyWDu9ufdQJ0D6ekUDri6VlIMyPiYid3Sm78nn8SBfG?=
+ =?iso-8859-1?Q?wpdXWGdRfDGUuxcXnS0WR+66p3kTdMQTsO77/cddefqIiZ6Gs2SOZrgc8H?=
+ =?iso-8859-1?Q?gvpuQS8HNKhtotT4o+hqkY1Sz3MYGEidnKVv/EzU51ziCxUHNP+b20cRl3?=
+ =?iso-8859-1?Q?rePQl0MicpDMiJvmDGAm4S5vDHyPskRFpmUPjdmILYQdV/4yriTrNCXZCQ?=
+ =?iso-8859-1?Q?9nGHuY9jm2NxeJyn9B5LFq8U0cUmdYsoKEh1y791gUtb0vSeT0TJk9VvcT?=
+ =?iso-8859-1?Q?fgFCYDld3kk0Hb2PISgAXk8QPL8n7oZji9zan6xxlo3yO4CvepJ2Xf6pqF?=
+ =?iso-8859-1?Q?rA78188B/TvJT8DhM3NTiAlCgVc5zAOB2Dm9+aQD7rMk/gEq8YKHBEms3N?=
+ =?iso-8859-1?Q?789giw1Q+wk3toaDmtBul0pK28zdxNsBJ0ppux8jQHENw7z9sAr2ZTgP1h?=
+ =?iso-8859-1?Q?cJS4LQm+WOUD09gRPWktdt0eFK3Ok2a2JtOtiMXMit9mhPnsYsyfriaU1B?=
+ =?iso-8859-1?Q?+pJM6EeaYmBt7m6wqr3KTx5Mbv2Voz9lS25nRQ2kjN3xedV3KKiJKtqcK2?=
+ =?iso-8859-1?Q?v6o3EEmVkpqgPR9DoY3TXZKcJiR/XY9HQ/gO33XdEvIs89oC2SCbTm7WpK?=
+ =?iso-8859-1?Q?ANQlVBcFEM3W0UsdQ8Tsfd4KMr42Zt8TDHEo3zuhjW7NkytxqCpm1oGX36?=
+ =?iso-8859-1?Q?QXFi3mZJo+TWWl8TufoWtmrn3jKJ6kgbzwIZyPpSP6QfWM3ySrYDzBjdHB?=
+ =?iso-8859-1?Q?TJBVLyJzOZ4nSUHG0qlHoaxGQEJ+COs1I6N2M8lhoF/3BMmT0IwPmf38NY?=
+ =?iso-8859-1?Q?W20Mn7mPduWpllSgs+GSMoWdJ28+ut4GK3J72TXClAql2f?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 14/19] hw/arm/aspeed: attach I2C device to AST1700 model
-To: Kane Chen <kane_chen@aspeedtech.com>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>, Andrew Jeffery
- <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, "open
- list:ASPEED BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>
-CC: Troy Lee <troy_lee@aspeedtech.com>, "nabihestefan@google.com"
- <nabihestefan@google.com>
-References: <20251224014203.756264-1-kane_chen@aspeedtech.com>
- <20251224014203.756264-15-kane_chen@aspeedtech.com>
- <1a3595d9-eac7-4575-a31f-1b869c6175f3@kaod.org>
- <5af965b1-d4f2-4b5f-b339-a3ca1ec1905d@kaod.org>
- <SI6PR06MB76312CC4E874C642DA879F11F785A@SI6PR06MB7631.apcprd06.prod.outlook.com>
- <6f0e285f-4921-4b18-8dac-f80b435dc1b4@kaod.org>
- <SI6PR06MB763104221FFD3B2F8511E62FF782A@SI6PR06MB7631.apcprd06.prod.outlook.com>
- <ba0183c5-d2a4-4dea-9238-d26a45c4daa7@kaod.org>
- <SI6PR06MB763187527271B099B236853FF781A@SI6PR06MB7631.apcprd06.prod.outlook.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Autocrypt: addr=clg@kaod.org; keydata=
- xsFNBFu8o3UBEADP+oJVJaWm5vzZa/iLgpBAuzxSmNYhURZH+guITvSySk30YWfLYGBWQgeo
- 8NzNXBY3cH7JX3/a0jzmhDc0U61qFxVgrPqs1PQOjp7yRSFuDAnjtRqNvWkvlnRWLFq4+U5t
- yzYe4SFMjFb6Oc0xkQmaK2flmiJNnnxPttYwKBPd98WfXMmjwAv7QfwW+OL3VlTPADgzkcqj
- 53bfZ4VblAQrq6Ctbtu7JuUGAxSIL3XqeQlAwwLTfFGrmpY7MroE7n9Rl+hy/kuIrb/TO8n0
- ZxYXvvhT7OmRKvbYuc5Jze6o7op/bJHlufY+AquYQ4dPxjPPVUT/DLiUYJ3oVBWFYNbzfOrV
- RxEwNuRbycttMiZWxgflsQoHF06q/2l4ttS3zsV4TDZudMq0TbCH/uJFPFsbHUN91qwwaN/+
- gy1j7o6aWMz+Ib3O9dK2M/j/O/Ube95mdCqN4N/uSnDlca3YDEWrV9jO1mUS/ndOkjxa34ia
- 70FjwiSQAsyIwqbRO3CGmiOJqDa9qNvd2TJgAaS2WCw/TlBALjVQ7AyoPEoBPj31K74Wc4GS
- Rm+FSch32ei61yFu6ACdZ12i5Edt+To+hkElzjt6db/UgRUeKfzlMB7PodK7o8NBD8outJGS
- tsL2GRX24QvvBuusJdMiLGpNz3uqyqwzC5w0Fd34E6G94806fwARAQABzSBDw6lkcmljIExl
- IEdvYXRlciA8Y2xnQGthb2Qub3JnPsLBeAQTAQIAIgUCW7yjdQIbAwYLCQgHAwIGFQgCCQoL
- BBYCAwECHgECF4AACgkQUaNDx8/77KGRSxAAuMJJMhJdj7acTcFtwof7CDSfoVX0owE2FJdd
- M43hNeTwPWlV5oLCj1BOQo0MVilIpSd9Qu5wqRD8KnN2Bv/rllKPqK2+i8CXymi9hsuzF56m
- 76wiPwbsX54jhv/VYY9Al7NBknh6iLYJiC/pgacRCHtSj/wofemSCM48s61s1OleSPSSvJE/
- jYRa0jMXP98N5IEn8rEbkPua/yrm9ynHqi4dKEBCq/F7WDQ+FfUaFQb4ey47A/aSHstzpgsl
- TSDTJDD+Ms8y9x2X5EPKXnI3GRLaCKXVNNtrvbUd9LsKymK3WSbADaX7i0gvMFq7j51P/8yj
- neaUSKSkktHauJAtBNXHMghWm/xJXIVAW8xX5aEiSK7DNp5AM478rDXn9NZFUdLTAScVf7LZ
- VzMFKR0jAVG786b/O5vbxklsww+YXJGvCUvHuysEsz5EEzThTJ6AC5JM2iBn9/63PKiS3ptJ
- QAqzasT6KkZ9fKLdK3qtc6yPaSm22C5ROM3GS+yLy6iWBkJ/nEYh/L/du+TLw7YNbKejBr/J
- ml+V3qZLfuhDjW0GbeJVPzsENuxiNiBbyzlSnAvKlzda/sBDvxmvWhC+nMRQCf47mFr8Xx3w
- WtDSQavnz3zTa0XuEucpwfBuVdk4RlPzNPri6p2KTBhPEvRBdC9wNOdRBtsP9rAPjd52d73O
- wU0EW7yjdQEQALyDNNMw/08/fsyWEWjfqVhWpOOrX2h+z4q0lOHkjxi/FRIRLfXeZjFfNQNL
- SoL8j1y2rQOs1j1g+NV3K5hrZYYcMs0xhmrZKXAHjjDx7FW3sG3jcGjFW5Xk4olTrZwFsZVU
- cP8XZlArLmkAX3UyrrXEWPSBJCXxDIW1hzwpbV/nVbo/K9XBptT/wPd+RPiOTIIRptjypGY+
- S23HYBDND3mtfTz/uY0Jytaio9GETj+fFis6TxFjjbZNUxKpwftu/4RimZ7qL+uM1rG1lLWc
- 9SPtFxRQ8uLvLOUFB1AqHixBcx7LIXSKZEFUCSLB2AE4wXQkJbApye48qnZ09zc929df5gU6
- hjgqV9Gk1rIfHxvTsYltA1jWalySEScmr0iSYBZjw8Nbd7SxeomAxzBv2l1Fk8fPzR7M616d
- tb3Z3HLjyvwAwxtfGD7VnvINPbzyibbe9c6gLxYCr23c2Ry0UfFXh6UKD83d5ybqnXrEJ5n/
- t1+TLGCYGzF2erVYGkQrReJe8Mld3iGVldB7JhuAU1+d88NS3aBpNF6TbGXqlXGF6Yua6n1c
- OY2Yb4lO/mDKgjXd3aviqlwVlodC8AwI0SdujWryzL5/AGEU2sIDQCHuv1QgzmKwhE58d475
- KdVX/3Vt5I9kTXpvEpfW18TjlFkdHGESM/JxIqVsqvhAJkalABEBAAHCwV8EGAECAAkFAlu8
- o3UCGwwACgkQUaNDx8/77KEhwg//WqVopd5k8hQb9VVdk6RQOCTfo6wHhEqgjbXQGlaxKHoX
- ywEQBi8eULbeMQf5l4+tHJWBxswQ93IHBQjKyKyNr4FXseUI5O20XVNYDJZUrhA4yn0e/Af0
- IX25d94HXQ5sMTWr1qlSK6Zu79lbH3R57w9jhQm9emQEp785ui3A5U2Lqp6nWYWXz0eUZ0Ta
- d2zC71Gg9VazU9MXyWn749s0nXbVLcLS0yops302Gf3ZmtgfXTX/W+M25hiVRRKCH88yr6it
- +OMJBUndQVAA/fE9hYom6t/zqA248j0QAV/pLHH3hSirE1mv+7jpQnhMvatrwUpeXrOiEw1n
- HzWCqOJUZ4SY+HmGFW0YirWV2mYKoaGO2YBUwYF7O9TI3GEEgRMBIRT98fHa0NPwtlTktVIS
- l73LpgVscdW8yg9Gc82oe8FzU1uHjU8b10lUXOMHpqDDEV9//r4ZhkKZ9C4O+YZcTFu+mvAY
- 3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
- ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
- KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <SI6PR06MB763187527271B099B236853FF781A@SI6PR06MB7631.apcprd06.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [37.59.142.112]
-X-ClientProxiedBy: DAG6EX2.mxp5.local (172.16.2.52) To DAG3EX1.mxp5.local
- (172.16.2.21)
-X-Ovh-Tracer-GUID: eb058987-57f8-454b-896c-c070c24e2f7c
-X-Ovh-Tracer-Id: 13065786945466174453
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTE6INXccl3KI+gkwDqUGyA44Tn0LygBk5jXYGuhpy/DYAhovpEZ+J80VYkVmgrZCUs4dSuLLdCRTQjlI/vnkk0CxYX7+QqrS5T/+PKsJJ/9meiOo0WeMEZgSEGUd6gzYJK2du6USc4MVgfCD3bQ9PjsJWrjPHxTIojeia9M7+fOkVHvotFAc7LBeJ0xQTpk4DOZ+CuInluR9n4ni/srD5k7RlpRbjZ82BMKeOgzCiHaykZqfjhf8iZSa+S615YW/BACHmdTRA1IDt3xv9LumyBVvjFe6/hGl6PM6Xphcn/Yy6hp2kuNHsZcWVUYEYwXvvH34kB/k/t7O3J4cQ9crLoECOrjhMuQA3C52cW/BBh+4AlXd6xRaxNTUo8/7yH+E5M2Df3Shogc+nJL9OEfHUuf1BpSHDNNIgoQg/7tgh+FsVrpWRgs3Mm2S5CminqPdAxq5iAv27e2mj3jWUnhfdMaMEB1hXBf88fN/ignaoSg4ulwyGnkDTKPkLt0CkgqeWcER5130S5COzz4aq+rYiJ9PvdzH8HeFbdg2o7eAbBhCPoJQpWwhUaBbVbDk8Gcrf3ES5fmIaXh2LTS+rGBAXXlYsptXO9NP3w2CLrlPlTiuBWyfgfASQTvqM29fNuR+Nnon2FHyZ4Uv4R+pNawi8xdMsb6YFCsg/Te/GxH/aE5AQ
-DKIM-Signature: a=rsa-sha256; bh=Yyjx/ruN57pBOhySae0P9XZ8HeF4MLC517fCPNL8Qn8=; 
- c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1768207701; v=1;
- b=epQEHPMqpWgFz2w3J/gmqChxQX2TdukKqsGzH5l85Xvz+OZMtPC6W1ZXqvObHkzEqHMuic0P
- U8bTQeXx96fOX2obfJKs6z4zB7N9GECFhRZS0Su4Ic0uuABi4gP+fwW9+gssX/ABwZK1v+yY2ED
- VvdY9Ssa8zNh8KD5wdukbkeL+Sx+DY4LlPCwyyEgrzcEUFLjZX/RT0KfqrCUU+gfGm7rXQ2Vsh4
- 0/PCQTikXMd19HxlUQh6jaSBTgDheExQjzINS69FP5x3G4zLVxp01yq1HnFGg4oVEyGMSZRvJwL
- enpJ7Ydj50jzroEfVXpr7LJ76YhlmJB4j3ySVs6IjAvlw==
-Received-SPF: pass client-ip=46.105.54.81; envelope-from=clg@kaod.org;
- helo=smtpout3.mo529.mail-out.ovh.net
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR12MB5283.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 23b6bf8f-487d-49a2-bd57-08de51b81f33
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Jan 2026 08:53:57.1889 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 5CL1axTUwEwAjcJCXpSu/xvBaT7YmwD8+dg0SUlpoqb7JRZpeZQgGkbc+2sJ9IG0/fn5etYqFwIzRQrwz1zUYQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6463
+Received-SPF: permerror client-ip=52.101.43.9;
+ envelope-from=Manojlo.Pekovic@amd.com;
+ helo=SJ2PR03CU001.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -137,18 +175,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Kane,
+[AMD Official Use Only - AMD Internal Distribution Only]
 
-> Thanks for your suggestion. After updating the fmc-model, I have successfully
-> loaded the AST2700 DCSCM image using the ast2700a1-evb machine type.
-> 
-> Regarding the I2C test case for the AST1700 (IO expander): would you prefer me
-> to append this to the end of the current AST1700 patch series, or should I submit
-> it as a separate patch series?
-If it is ready, please append the functional test at the end of v5.
+Hi Cedric,
 
-Thanks,
+Good to hear from you. Hope you had a great New Years break.
+If you need any more assistance from my side, please reach out.
+
+BR,
+Manojlo Pekovic
+Software Development Engineer 2
+Cloud Software Team
+
+
+
+-----Original Message-----
+From: C=E9dric Le Goater <clg@redhat.com>
+Sent: Saturday, December 27, 2025 6:55 PM
+To: Pekovic, Manojlo <Manojlo.Pekovic@amd.com>; qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com; Prica, Nikola <Nikola.Prica@amd.com>; Andje=
+lkovic, Dejan <Dejan.Andjelkovic@amd.com>
+Subject: Re: [PATCH] vfio/pci: Enable atomic ops for multifunction devices
+
+Hi Manojlo,
+
+On 12/26/25 15:15, Pekovic, Manojlo wrote:
+> [AMD Official Use Only - AMD Internal Distribution Only]
+>
+> Hi,
+>
+> Do you have any updates on this topic?
+
+There's nothing wrong with it at first glance. It seems like a good candida=
+te for the QEMU 11.0 cycle. We just need to take the time to examine it mor=
+e closely. After the break !
+
+Cheers,
 
 C.
+
 
 
