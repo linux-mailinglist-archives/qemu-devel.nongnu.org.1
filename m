@@ -2,69 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE519D129E0
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 13:52:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F30A7D13130
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 15:19:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfHLm-0005pC-IQ; Mon, 12 Jan 2026 07:48:50 -0500
+	id 1vfIkb-000205-0T; Mon, 12 Jan 2026 09:18:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfHLL-0005X4-4W
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 07:48:23 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfHLI-0006Xh-9c
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 07:48:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768222097;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=YzQtYltNX0aUV94lUYivQBNRqZBcsBEztgu7G9tGpT8=;
- b=gUKLVUudl32FRql1xaToD0qYmq0K+2gJTNoLO5z2HtXtpbVo7UJ7RV9OzqBb5HtCYLG1TK
- xG+Hr/CCfPcVbXW/e+Srn3SZApwq1Vmnm2DEnMwt300dHig+KGXjT0prVnBw8cr78Cbw53
- rTVztGv91G8XdH+aO8GcXgj9dt2LE/0=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-292-ZG35En1pPbeNGrw_7ofEUw-1; Mon,
- 12 Jan 2026 07:48:16 -0500
-X-MC-Unique: ZG35En1pPbeNGrw_7ofEUw-1
-X-Mimecast-MFC-AGG-ID: ZG35En1pPbeNGrw_7ofEUw_1768222095
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5684819344B7; Mon, 12 Jan 2026 12:47:26 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.44.32.79])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4602819560B2; Mon, 12 Jan 2026 12:47:23 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: [PATCH] ppc/vof: Fix build error
-Date: Mon, 12 Jan 2026 13:47:22 +0100
-Message-ID: <20260112124722.1029212-1-clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <mpe@tenstorrent.com>)
+ id 1vfAgl-0002A6-5j
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 00:42:03 -0500
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <mpe@tenstorrent.com>)
+ id 1vfAgi-0000b0-Mf
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 00:42:02 -0500
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-b8719ac9af7so85767666b.0
+ for <qemu-devel@nongnu.org>; Sun, 11 Jan 2026 21:41:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=tenstorrent.com; s=google; t=1768196518; x=1768801318; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8qddfOCZOjO3MvQyTGNVXdwU/1+f4GO6nIVEaVrlmsc=;
+ b=I9JxwYIg4bcJqAx46QALAsaMZoQLFNxARuQ0JEjIQTkVMg+y17bXWHNYcD3+4R/9f4
+ DUlDuXx3uqEtrUNsrC+x/FCX6m4IS0SnCIWjUP2gSaGw6fH3vpnWzj+8JFcE6m7MeUU5
+ pRCGCZeVEDxAo2XGppqTnjzWtuRzEPEQLHLCkbNqJ24RNfZkquGD6nHrSYrzaSRr370o
+ v71oZq4qD1mwH3vY0Bqry2FqzYM3F82sqN6RrsxtCDr1uSywn6KyrO23OmWBv6ZrvGHr
+ 7EnmxzIPeq0/uTBZtOpeiwKZNNxMgClr6tulYTX83Ff+KNDoz9IC7ZO0z6yp/BIwCbb/
+ xlQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768196518; x=1768801318;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=8qddfOCZOjO3MvQyTGNVXdwU/1+f4GO6nIVEaVrlmsc=;
+ b=NOl0SotE0ShO49LxTK4W99psuwXMkhK0l7a1yNMO63Vy+83qwy8l/eVfAkkQw8DvjP
+ 7gpbdDbeoSsn/1BiPWG0BusF2Nx6i9RMCypOgLIgHI5on//9LlofGJoeRsRhKD+6U5ca
+ OoPFFz0jTFYSyvRjRKO+5Ik+A9EtgNLGV2uEzSDfZOXHL5dI8cR2wx1Ha0Hsw5K/LJ5D
+ Qk7cajFv6nPk9F6GbWkKS+rE3fZHdNZt+w2D8Qj61bOO/m90I/vvJbyC0FsR7vGDklU8
+ vk50oYpt1y24iXvpSb/TdNSzvrD8QjsJvTNcvTKsUkdAVPbiA0Zm0tqyxMI8/yCK5SYO
+ tXPQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXPzUqmmwQ7hW1VoYLbQjDOkMAZiQAILNnXzLqr0hZ3mLiXJEMnj5EDUihFHBr7h+2eC43B24APalJp@nongnu.org
+X-Gm-Message-State: AOJu0YzJPxhUSd2CKoUi9d8yG3bkKfAydYc0hn3/1Kfsi8hNjKiLJopl
+ 3XBdACF+yWOVjVLLj9BS9Abxo6pgTHoaWxFi99cJU6S0LaTjWyS6LbzNjLtha6UiZRV3z6r4I5b
+ rnN94/javZ2zmUQZAXAckSFiSLHqK3K9qFVnPyyGosA==
+X-Gm-Gg: AY/fxX4UWdGRxHAVp1qkJr0Y8r3b+DT3XF9Q0CJP4VbK119rl7DBNdQBrTMQlVl+vx0
+ 4RJG9uRdeIWzqjBfxc2FlmBOMCNimepGuck9q4czw8xQE7xRhRZsGaL7AZ9gyDr3r1UD58e6aP5
+ F1N1hHUHWZ8ErbyB/KLiQwAc6PYq+YUaL5Hcu6buTKJLJ6WgkH3lifkI+3peIVzu+1IsYme4V01
+ 3rw0n8ikx5H1uQK+pj/LkX5NMCdLNwg9WQJyZmXxgRSeqn+OVQ8yLv+lLzDQ+DxsS9PRxws
+X-Google-Smtp-Source: AGHT+IGUS04BhzHDdx3sJ0gdh88EW9V4KhUaEbV3dytBw+u7VmOLfb5Z7Kx9o3WueeJ8Uo3IJB2pMdYc5cslBjZKQFk=
+X-Received: by 2002:a17:906:aa0c:b0:b79:cd80:6fff with SMTP id
+ a640c23a62f3a-b84299bcce9mr1683168166b.17.1768196518543; Sun, 11 Jan 2026
+ 21:41:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20260109134145.398565-1-joel@jms.id.au>
+In-Reply-To: <20260109134145.398565-1-joel@jms.id.au>
+From: Michael Ellerman <mpe@oss.tenstorrent.com>
+Date: Mon, 12 Jan 2026 16:41:47 +1100
+X-Gm-Features: AZwV_Qgt7rArxqamu7LacAF4LOaCcKx9lh-w4IKEUyOSn_-QLlJWzF5sttcDYTE
+Message-ID: <CAACLP0V2vuut7Rjy5MheV-2+ObQK9vU-27g-QYiwsxOJ1w1NDw@mail.gmail.com>
+Subject: Re: [PATCH] target/riscv: tt-ascalon: Add Tenstorrent mvendorid
+To: Joel Stanley <joel@jms.id.au>
+Cc: Alistair Francis <alistair.francis@wdc.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Sunil V L <sunilvl@ventanamicro.com>, 
+ qemu-devel@nongnu.org, Weiwei Li <liwei1518@gmail.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Joel Stanley <jms@oss.tenstorrent.com>, 
+ Nick Piggin <npiggin@oss.tenstorrent.com>, 
+ Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>, qemu-riscv@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=mpe@tenstorrent.com; helo=mail-ej1-x62f.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 12 Jan 2026 09:17:30 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,51 +101,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Newer gcc compiler (version 16.0.0 20260103 (Red Hat 16.0.0-0) (GCC))
-detects an unused variable error:
+On Sat, Jan 10, 2026 at 12:42=E2=80=AFAM Joel Stanley <joel@jms.id.au> wrot=
+e:
+>
+> JEP106 has two vendor IDs for Tenstorrent. We will use Bank 16, hex 0xa1:
+>
+>  ((16 - 1) << 7) | (0xa1 & ~0x80) =3D 0x7a1
 
-../hw/ppc/vof.c: In function ‘vof_dt_memory_available’:
-../hw/ppc/vof.c:642:12: error: variable ‘n’ set but not used [-Werror=unused-but-set-variable=]
+The value LGTM, it matches JEP106BM, and matches the Tenstorrent
+documentation I have.
 
-Remove 'n'.
+I would probably say that it's company 33. Which is 0xa1 with the
+parity bit added, but the parity bit isn't used in the calculation,
+ie:
 
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- hw/ppc/vof.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+  ((16 - 1) << 7) | 33 =3D 0x7a1
 
-diff --git a/hw/ppc/vof.c b/hw/ppc/vof.c
-index 5ecfc6891047eb63f498fe286d57f52a54c0a0db..fa7b73159a0b476dfc49326139d75cb87ca487c1 100644
---- a/hw/ppc/vof.c
-+++ b/hw/ppc/vof.c
-@@ -639,7 +639,7 @@ static gint of_claimed_compare_func(gconstpointer a, gconstpointer b)
- 
- static void vof_dt_memory_available(void *fdt, GArray *claimed, uint64_t base)
- {
--    int i, n, offset, proplen = 0, sc, ac;
-+    int i, offset, proplen = 0, sc, ac;
-     target_ulong mem0_end;
-     const uint8_t *mem0_reg;
-     g_autofree uint8_t *avail = NULL;
-@@ -677,7 +677,7 @@ static void vof_dt_memory_available(void *fdt, GArray *claimed, uint64_t base)
-     g_assert(claimed->len && (g_array_index(claimed, OfClaimed, 0).start == 0));
- 
-     avail = g_malloc0(sizeof(uint32_t) * (ac + sc) * claimed->len);
--    for (i = 0, n = 0, availcur = avail; i < claimed->len; ++i) {
-+    for (i = 0, availcur = avail; i < claimed->len; ++i) {
-         OfClaimed c = g_array_index(claimed, OfClaimed, i);
-         uint64_t start, size;
- 
-@@ -705,7 +705,6 @@ static void vof_dt_memory_available(void *fdt, GArray *claimed, uint64_t base)
- 
-         if (size) {
-             trace_vof_avail(c.start + c.size, c.start + c.size + size, size);
--            ++n;
-         }
-     }
-     _FDT((fdt_setprop(fdt, offset, "available", avail, availcur - avail)));
--- 
-2.52.0
+Mentioning that it's company 33 (0x21) would make it a little easier
+to match it up with other public sources, eg openocd:
 
+  https://github.com/openocd-org/openocd/blob/1ebff3ab33c77e3f8fb4e1ddda262=
+b606b572af1/src/helper/jep106.inc#L1935
+
+> Add it to the Ascalon CPU definition as the mvendorid CSR.
+>
+> Signed-off-by: Joel Stanley <joel@jms.id.au>
+
+Reviewed-by: Michael Ellerman <mpe@oss.tenstorrent.com>
+
+cheers
+
+> diff --git a/target/riscv/cpu_vendorid.h b/target/riscv/cpu_vendorid.h
+> index f1ffc66542a0..751a13aace47 100644
+> --- a/target/riscv/cpu_vendorid.h
+> +++ b/target/riscv/cpu_vendorid.h
+> @@ -8,4 +8,6 @@
+>  #define VEYRON_V1_MIMPID        0x111
+>  #define VEYRON_V1_MVENDORID     0x61f
+>
+> +#define TENSTORRENT_VENDOR_ID   0x7a1
+> +
+>  #endif /*  TARGET_RISCV_CPU_VENDORID_H */
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index efdec49e49ed..85ce4d83a371 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -3190,6 +3190,8 @@ static const TypeInfo riscv_cpu_type_infos[] =3D {
+>          .cfg.ext_svnapot =3D true,
+>          .cfg.ext_svpbmt =3D true,
+>
+> +        .cfg.mvendorid =3D TENSTORRENT_VENDOR_ID,
+> +
+>          .cfg.max_satp_mode =3D VM_1_10_SV57,
+>      ),
+>
+> --
+> 2.47.3
+>
 
