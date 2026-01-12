@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6FBFD10D0B
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 08:11:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB40AD10D15
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 08:12:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfC3I-0007qu-2J; Mon, 12 Jan 2026 02:09:24 -0500
+	id 1vfC3H-0007p6-Hk; Mon, 12 Jan 2026 02:09:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1vfC3E-0007ne-IA
+ id 1vfC3E-0007n8-3s
  for qemu-devel@nongnu.org; Mon, 12 Jan 2026 02:09:20 -0500
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1vfC3B-0004ps-Fd
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 02:09:20 -0500
+ (envelope-from <maobibo@loongson.cn>) id 1vfC3B-0004pr-EG
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 02:09:19 -0500
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8DxAfEYnmRphMYHAA--.25341S3;
- Mon, 12 Jan 2026 15:09:12 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8DxPMMZnmRphcYHAA--.24842S3;
+ Mon, 12 Jan 2026 15:09:13 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowJBxacERnmRpEqgaAA--.41358S3;
+ by front1 (Coremail) with SMTP id qMiowJBxacERnmRpEqgaAA--.41358S4;
  Mon, 12 Jan 2026 15:09:12 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: Song Gao <gaosong@loongson.cn>
-Subject: [PULL 01/10] target/loongarch: Add PMU migration support in KVM mode
-Date: Mon, 12 Jan 2026 15:08:55 +0800
-Message-Id: <20260112070904.3230440-2-maobibo@loongson.cn>
+Subject: [PULL 02/10] target/loongarch: Call function
+ loongarch_la464_init_csr() after realized
+Date: Mon, 12 Jan 2026 15:08:56 +0800
+Message-Id: <20260112070904.3230440-3-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20260112070904.3230440-1-maobibo@loongson.cn>
 References: <20260112070904.3230440-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJBxacERnmRpEqgaAA--.41358S3
+X-CM-TRANSID: qMiowJBxacERnmRpEqgaAA--.41358S4
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -62,191 +63,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PMU is supported in KVM mode. When VM is migrated, PMU register should
-be migrated also, otherwise PMU will be disabled after migration.
-
-Here add PMU register save and restore interface and PMU register
-state migration is added also.
+When CPU is realized, it will check capability of host and set guest
+features, such as PMU CSR register number used by VM etc. Here move
+function call with loongarch_la464_init_csr() after CPU is realized.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 Reviewed-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/cpu-csr.h |  4 +++
- target/loongarch/cpu.h     |  4 +++
- target/loongarch/kvm/kvm.c | 54 +++++++++++++++++++++++++++++++++++++-
- target/loongarch/machine.c | 21 +++++++++++++++
- 4 files changed, 82 insertions(+), 1 deletion(-)
+ target/loongarch/cpu.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/target/loongarch/cpu-csr.h b/target/loongarch/cpu-csr.h
-index 7755592926..d860417af2 100644
---- a/target/loongarch/cpu-csr.h
-+++ b/target/loongarch/cpu-csr.h
-@@ -207,6 +207,10 @@ FIELD(CSR_DMW_32, PSEG, 25, 3)
- FIELD(CSR_DMW_32, VSEG, 29, 3)
- FIELD(CSR_DMW_64, VSEG, 60, 4)
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index e01e044239..67ad9c3b79 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -106,11 +106,11 @@ bool loongarch_cpu_has_work(CPUState *cs)
+ }
+ #endif /* !CONFIG_USER_ONLY */
  
-+/* Performance Counter registers */
-+#define LOONGARCH_CSR_PERFCTRL(N)    (0x200 + 2 * N)
-+#define LOONGARCH_CSR_PERFCNTR(N)    (0x201 + 2 * N)
-+
- /* Debug CSRs */
- #define LOONGARCH_CSR_DBG            0x500 /* debug config */
- FIELD(CSR_DBG, DST, 0, 1)
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index 92af68ea7f..0485cdbda0 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -223,6 +223,7 @@ extern const char * const fregnames[32];
- #define IRQ_IPI     12
- #define INT_DMSI    14
+-static void loongarch_la464_init_csr(Object *obj)
++static void loongarch_la464_init_csr(DeviceState *dev)
+ {
+ #ifndef CONFIG_USER_ONLY
+     static bool initialized;
+-    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
++    LoongArchCPU *cpu = LOONGARCH_CPU(dev);
+     CPULoongArchState *env = &cpu->env;
+     int i, num;
  
-+#define MAX_PERF_EVENTS        16
- #define LOONGARCH_STLB         2048 /* 2048 STLB */
- #define LOONGARCH_MTLB         64   /* 64 MTLB */
- #define LOONGARCH_TLB_MAX      (LOONGARCH_STLB + LOONGARCH_MTLB)
-@@ -357,6 +358,8 @@ typedef struct CPUArchState {
-     uint64_t CSR_MERRSAVE;
-     uint64_t CSR_CTAG;
-     uint64_t CSR_DMW[4];
-+    uint64_t CSR_PERFCTRL[MAX_PERF_EVENTS];
-+    uint64_t CSR_PERFCNTR[MAX_PERF_EVENTS];
-     uint64_t CSR_DBG;
-     uint64_t CSR_DERA;
-     uint64_t CSR_DSAVE;
-@@ -367,6 +370,7 @@ typedef struct CPUArchState {
-     struct {
-         uint64_t guest_addr;
-     } stealtime;
-+    uint32_t perf_event_num;
+@@ -369,7 +369,6 @@ static void loongarch_la464_initfn(Object *obj)
  
- #ifdef CONFIG_TCG
-     float_status fp_status;
-diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
-index ef3359ced9..9d844c4905 100644
---- a/target/loongarch/kvm/kvm.c
-+++ b/target/loongarch/kvm/kvm.c
-@@ -155,6 +155,46 @@ static int kvm_loongarch_put_regs_core(CPUState *cs)
-     return ret;
+     cpu->msgint = ON_OFF_AUTO_OFF;
+     cpu->ptw = ON_OFF_AUTO_OFF;
+-    loongarch_la464_init_csr(obj);
+     loongarch_cpu_post_init(obj);
  }
  
-+static int kvm_loongarch_put_pmu(CPUState *cs)
-+{
-+    int i, ret = 0;
-+    CPULoongArchState *env = cpu_env(cs);
-+    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
-+
-+    if (cpu->pmu != ON_OFF_AUTO_ON) {
-+        return 0;
-+    }
-+
-+    for (i = 0; i < env->perf_event_num; i++) {
-+        ret |= kvm_set_one_reg(cs, KVM_IOC_CSRID(LOONGARCH_CSR_PERFCTRL(i)),
-+                               &env->CSR_PERFCTRL[i]);
-+        ret |= kvm_set_one_reg(cs, KVM_IOC_CSRID(LOONGARCH_CSR_PERFCNTR(i)),
-+                               &env->CSR_PERFCNTR[i]);
-+    }
-+
-+    return ret;
-+}
-+
-+static int kvm_loongarch_get_pmu(CPUState *cs)
-+{
-+    int i, ret = 0;
-+    CPULoongArchState *env = cpu_env(cs);
-+    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
-+
-+    if (cpu->pmu != ON_OFF_AUTO_ON) {
-+        return 0;
-+    }
-+
-+    for (i = 0; i < env->perf_event_num; i++) {
-+        ret |= kvm_get_one_reg(cs, KVM_IOC_CSRID(LOONGARCH_CSR_PERFCTRL(i)),
-+                               &env->CSR_PERFCTRL[i]);
-+        ret |= kvm_get_one_reg(cs, KVM_IOC_CSRID(LOONGARCH_CSR_PERFCNTR(i)),
-+                               &env->CSR_PERFCNTR[i]);
-+    }
-+
-+    return ret;
-+}
-+
- static int kvm_loongarch_get_csr(CPUState *cs)
- {
-     int ret = 0;
-@@ -316,6 +356,8 @@ static int kvm_loongarch_get_csr(CPUState *cs)
-     ret |= kvm_get_one_reg(cs, KVM_IOC_CSRID(LOONGARCH_CSR_DMW(3)),
-                            &env->CSR_DMW[3]);
+@@ -524,6 +523,7 @@ static void loongarch_cpu_realizefn(DeviceState *dev, Error **errp)
  
-+    ret |= kvm_loongarch_get_pmu(cs);
-+
-     ret |= kvm_get_one_reg(cs, KVM_IOC_CSRID(LOONGARCH_CSR_TVAL),
-                            &env->CSR_TVAL);
+     qemu_init_vcpu(cs);
+     cpu_reset(cs);
++    loongarch_la464_init_csr(dev);
  
-@@ -488,6 +530,9 @@ static int kvm_loongarch_put_csr(CPUState *cs, KvmPutState level)
- 
-     ret |= kvm_set_one_reg(cs, KVM_IOC_CSRID(LOONGARCH_CSR_DMW(3)),
-                            &env->CSR_DMW[3]);
-+
-+    ret |= kvm_loongarch_put_pmu(cs);
-+
-     /*
-      * timer cfg must be put at last since it is used to enable
-      * guest timer
-@@ -1027,8 +1072,15 @@ static int kvm_cpu_check_pmu(CPUState *cs, Error **errp)
-     }
- 
-     if (kvm_supported) {
-+        /*
-+         * TODO: Will add supported perf event number query interface
-+         * from host, set perf event number with 4 by default
-+         */
-+        cpu->pmu = ON_OFF_AUTO_ON;
-+        env->perf_event_num = 4;
-         env->cpucfg[6] = FIELD_DP32(env->cpucfg[6], CPUCFG6, PMP, 1);
--        env->cpucfg[6] = FIELD_DP32(env->cpucfg[6], CPUCFG6, PMNUM, 3);
-+        env->cpucfg[6] = FIELD_DP32(env->cpucfg[6], CPUCFG6, PMNUM,
-+                                    env->perf_event_num  - 1);
-         env->cpucfg[6] = FIELD_DP32(env->cpucfg[6], CPUCFG6, PMBITS, 63);
-         env->cpucfg[6] = FIELD_DP32(env->cpucfg[6], CPUCFG6, UPM, 1);
-     }
-diff --git a/target/loongarch/machine.c b/target/loongarch/machine.c
-index 0366a50763..28b9079d04 100644
---- a/target/loongarch/machine.c
-+++ b/target/loongarch/machine.c
-@@ -153,6 +153,26 @@ static const VMStateDescription vmstate_lbt = {
-     },
- };
- 
-+static bool pmu_needed(void *opaque)
-+{
-+    LoongArchCPU *cpu = opaque;
-+
-+    return cpu->pmu == ON_OFF_AUTO_ON;
-+}
-+
-+static const VMStateDescription vmstate_pmu = {
-+    .name = "cpu/pmu",
-+    .version_id = 0,
-+    .minimum_version_id = 0,
-+    .needed = pmu_needed,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT32(env.perf_event_num, LoongArchCPU),
-+        VMSTATE_UINT64_ARRAY(env.CSR_PERFCTRL, LoongArchCPU, MAX_PERF_EVENTS),
-+        VMSTATE_UINT64_ARRAY(env.CSR_PERFCNTR, LoongArchCPU, MAX_PERF_EVENTS),
-+        VMSTATE_END_OF_LIST()
-+    },
-+};
-+
- #if defined(CONFIG_TCG) && !defined(CONFIG_USER_ONLY)
- static bool tlb_needed(void *opaque)
- {
-@@ -266,6 +286,7 @@ const VMStateDescription vmstate_loongarch_cpu = {
- #endif
-         &vmstate_lbt,
-         &vmstate_msgint,
-+        &vmstate_pmu,
-         NULL
-     }
- };
+     lacc->parent_realize(dev, errp);
+ }
 -- 
 2.52.0
 
