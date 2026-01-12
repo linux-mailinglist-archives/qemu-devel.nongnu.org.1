@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6989FD1376E
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 16:07:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04CF6D13753
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 16:07:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfJKD-0008Qv-Tk; Mon, 12 Jan 2026 09:55:21 -0500
+	id 1vfJKE-0008U9-EF; Mon, 12 Jan 2026 09:55:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfJJl-0007mS-4q
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 09:54:53 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfJJo-0007pr-GW
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 09:54:57 -0500
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfJJh-0001Zr-8H
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 09:54:52 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-64b9230f564so9147792a12.1
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 06:54:48 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfJJj-0001bf-70
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 09:54:56 -0500
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-b87018f11e3so243032466b.0
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 06:54:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1768229687; x=1768834487; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1768229689; x=1768834489; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3gfNu2eoKafa2xTyp6cd5sW3VFdprV5NhfouBXm89iM=;
- b=E/zjSJM/oS2PNakdyy89VuZet8g9kqDDElUqwiQeM6hvWPofTKWmc69de2D+pMV92k
- hCqjBqukwcG5WEPtqcGzbdfiu83zYvJRNDAHvmu3yBVxQaWELOpkssBgTTunONocQiJ6
- yZufXcnjntKbG2GBeZw0UNyAW5OLnmgTxfHvHxborUYshhvvnliBsZLBXsStxrKg3HgY
- 5v24ppISyOxBLPdA22b6PyzyMjjGIOHKIo+JuIOWwdf49T1b2xtjV7egLC4NlNVauvcB
- pR9dwmZN0I9I/bil0kcdCfbMM6Tz18w/lBrOAH+q9SIBS3+WVyg8m8S4Cns89J0r5YNR
- ZI6Q==
+ bh=GFkaOn9dkeddhVGvavU/6xkr3hsrAucosLysslgaXmA=;
+ b=AfOEoh23YVs6qWR2aBf6Ose5sIv5jjUcxgg/IiRk/IqarXsPmSpVgxCergbBZP9yDr
+ d0eqNQTZx46G1DOKalOwAAKButCYL1o8TTsNqCl/4L8rNBmqPdt3U0SXCtFR5YUGuSCF
+ 70Qy/PkYJKAsxC1lOpNuGWIf6C5ns8w1A1aC23JEawaJdoAdF3SR2nYHVyGO9DPvn9L2
+ Vhs/IxrwKcdLq2OhuQDs7OnvVA/pDuZTXcK68atYHAZbP2fBUIzAxibG0Go9pnr49ma8
+ wO6w4JS5ZZtgfISOfL5my97yhDSCflOFh+2sq/3iDZ2rMi7GiqUA3IbKBe8EQs4YMjDY
+ dqFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768229687; x=1768834487;
+ d=1e100.net; s=20230601; t=1768229689; x=1768834489;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=3gfNu2eoKafa2xTyp6cd5sW3VFdprV5NhfouBXm89iM=;
- b=P9kHOvZR+w6DiPm2UYyU9sYvf2phIIlw+xfyxTRmr1fM4yJjya712hLNapNz7+AJ3L
- 6h2RBcpEp61xGk2Gx+LIWWEJww8GOys+GAvbl4uuef1mRU5pRpRKQns5ZmY6yZ8jTGsE
- aEVThKBLoRDHIuPD0N7C0sUxoB3dMPj9PjhchKcqq0qmxBFjWViwuJWUgCdZV0zERTdf
- MKNplqvN3fH4+TKAYBvMCs8kXwObYcGE9OTFl+yNmJrwpfX5pOMaXJOT7BYfVpK5e/LS
- snd/2lEKisQRrpZ4Q1Q6N9kLoikamVeCEVd/WZLVwnw/tnepMc4Wgng4w9j7k60zTq7t
- YnaA==
-X-Gm-Message-State: AOJu0YxrYI4YsKBKFdkUEp9oNQ1PNTGdLc0g8qJZGY6uiUSChe2SOPlI
- RQ9SnkbERoEpAKufdzARu5+/lB+bbqbaBBi8cqO4k6SBUyHAm8eQmDo7dibrtXJl
-X-Gm-Gg: AY/fxX6YxFj2ug8UwBlvZYrOXqE1sTkGfr59woNasJdb/IevdbXbRVkqqFgtfbOB+BY
- Hs+/JLPOWZSM7qnl+CWHcegGJNkCphRKyf5S/c+AUJct33oFXzUQC4oemI15Jmg2zo2L+Ji3JQ3
- iXCFGWdMzdzHoHJmc8Emptt3ZlP6GE3Gb7E/l909XVq8Od1fVPtYAZGFZXWiHaCZVKUN69sKuDm
- AYkcOewl43MFc/HPmvtu44wdCFQHMqm8TMp0EI/cly3ESm5KnVPoX39CVuDuMh4XUhEMlt8bwJK
- QPcoLCwb+Q3IG7G3UL/tIL8OAPm4kn164fViJmAP0H3eas2kLziMq+7ayP8Q0GSSOlk0mGAHm/1
- iJelj3Sl5FMCTJeAESUKkQCzu0N54hTNett6vo25ZmlKkeAJUcmNE7HbzfEQdFkgPe1OikqDek+
- VriOPiF7mCZfwCzV4s5B4wKPy3PB0sZskA1nIgAeXOvTyJ2Sf9t/rcrMo+B0VE9mD47sZVSq9T
-X-Google-Smtp-Source: AGHT+IFMIamXqw+EdfYyEpkguAEuYIlm9cWOuuK8QI923kT+LufonieaG7Q2PHX051hmXg91Mi2TVw==
-X-Received: by 2002:a17:906:ef0c:b0:b83:246c:c514 with SMTP id
- a640c23a62f3a-b8444fce93fmr1824040566b.51.1768229687024; 
- Mon, 12 Jan 2026 06:54:47 -0800 (PST)
+ bh=GFkaOn9dkeddhVGvavU/6xkr3hsrAucosLysslgaXmA=;
+ b=kWdBJVWOO4C17zV95Jlw/GsXWzPNTngLSZ7M5CzERwb/NHZPki/4IW/3zdAOUfzqjQ
+ 3/I1W/jIXOOe2ftof3N4xUV9W9erAaWJXzJffg3LaRgNUSdkX60gz+atG3pC0/9ohW5q
+ zDFq7X/qLT7NDXhaVBfuJ+UdQwXKe21y0UeYEaJ57M6YzIwTBsQASx+l1zRBRfasb2An
+ q2k7z0YDsMiVe9Aep79327CpO+u+RATFnPkHb54crDtOwBeV4Ttfkbl/8DdarO2fPm5A
+ ItQiun/f+npDcAOjAnOH3rsIQnPV7KNh2Pq5P8POAuRgUnyF45UQB88prHMDh8Z+3k7v
+ D9LQ==
+X-Gm-Message-State: AOJu0YxNEBbI4A88Yi46yWG/+O8PeNVS0k2gKHpabFK9Sa9z31Sf5oHw
+ QSjtEyxW3FkuMjrM2YQ6YIs4IuS4D78oDsA5m7KkvVCLP4kTrxLpnMxpbPDq66Kc
+X-Gm-Gg: AY/fxX6dDbATY2iQeP9NCeU4OEfzbG9Tc4CUDhusYLqMbgzN+IBX28w2DZlsS5rnQDa
+ hLzejKnrej3xN/vzkiLYDYb/iwycvc/zEKnalUrhtP5kdhuszzWvwenc7ClagSaEcI+eT6fzE0j
+ G8+Brv/P3Jb9+QPdnLpfDenXSSq1NFEQkrNxZhZa0qao9G1ImaQWlU0+LagE/bofODNqOfpeAo6
+ UhbyCAFTZ1MVUXfrGYqhCh1YnuD6hmDB/kTQyke18DaVa9PSrHVDSfWz/WdjRFwMw8PL+NaBXNW
+ qcsQgIU8PKJi3+T869+JCqRwYwUbTy4z/nuXFjG8zmAdvUtDgwlR+AzxEAcxi5S1czu4BGn1rEq
+ 6fSrUbOpCGEWJgUak+frgH771RY2Cr0Zc+HmWfwm+TInSzREAIcAiLi+IT8zY2iXQFJj+vU9bgT
+ R+1fA1gjfZWo0xf2dDeKUHtR6KvfhneqnuEKrIkzwfWRQlmmzDgiGnEOIAtauKxW4PYWo+xXtXa
+ h3tcKlhCiE=
+X-Google-Smtp-Source: AGHT+IGCum0tVd4xocmLeXxuZ3Rri5vYo8Gsw8H+xQMZt1UgOGNrgSm0BX0/t5mTEEnrAalkCGJ9pg==
+X-Received: by 2002:a17:907:1b08:b0:b73:6e0d:4f6b with SMTP id
+ a640c23a62f3a-b8444f4aa3fmr1796213066b.36.1768229689132; 
+ Mon, 12 Jan 2026 06:54:49 -0800 (PST)
 Received: from archlinux (dynamic-077-188-226-222.77.188.pool.telefonica.de.
  [77.188.226.222]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b8731f0718asm37387966b.67.2026.01.12.06.54.46
+ a640c23a62f3a-b8731f0718asm37387966b.67.2026.01.12.06.54.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 Jan 2026 06:54:46 -0800 (PST)
+ Mon, 12 Jan 2026 06:54:48 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -69,16 +70,16 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bin Meng <bmeng.cn@gmail.com>, Thomas Huth <thuth@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
  qemu-ppc@nongnu.org
-Subject: [PATCH 09/14] hw/ppc/e500: Use TYPE_FSL_ESDHC_BE
-Date: Mon, 12 Jan 2026 15:54:13 +0100
-Message-ID: <20260112145418.220506-10-shentey@gmail.com>
+Subject: [PATCH 11/14] hw/sd/sdhci: Remove endianness property
+Date: Mon, 12 Jan 2026 15:54:15 +0100
+Message-ID: <20260112145418.220506-12-shentey@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112145418.220506-1-shentey@gmail.com>
 References: <20260112145418.220506-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x533.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,38 +102,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TYPE_FSL_ESDHC_BE maches real hardware more closely by reusing code of
-TYPE_IMX_USDHC. For example, it fixes Linux to flood the guest console with
-"mmc0: Internal clock never stabilised" messages in the QEMU advent calendar
-2018 day 19 image.
+The endianness property was only explicitly set in the e500 machine which
+now instantiates TYPE_FSL_ESDHC_BE. The property could also not be used
+meaningfully in a hypothetical, common TYPE_FSL_ESDHC device model since
+sdhci_common_realize() would fail in that case or it would need to know
+all MMIO implementations upfront. Remove the property in favor of dedicated
+device models.
 
-Reported-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/ppc/e500.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ hw/sd/sdhci-internal.h |  1 -
+ include/hw/sd/sdhci.h  |  1 -
+ hw/sd/sdhci.c          | 35 ++---------------------------------
+ 3 files changed, 2 insertions(+), 35 deletions(-)
 
-diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-index eb0d3a418e..d6ca2e8563 100644
---- a/hw/ppc/e500.c
-+++ b/hw/ppc/e500.c
-@@ -1036,15 +1036,7 @@ void ppce500_init(MachineState *machine)
-         memory_region_add_subregion(ccsr_addr_space, MPC85XX_ESDHC_REGS_OFFSET,
-                                     sysbus_mmio_get_region(s, 0));
+diff --git a/hw/sd/sdhci-internal.h b/hw/sd/sdhci-internal.h
+index f24532eed2..50fb746a17 100644
+--- a/hw/sd/sdhci-internal.h
++++ b/hw/sd/sdhci-internal.h
+@@ -307,7 +307,6 @@ extern const VMStateDescription sdhci_vmstate;
+ #define SDHC_CAPAB_REG_DEFAULT 0x057834b4
  
--        /*
--         * Compatible with:
--         * - SD Host Controller Specification Version 2.0 Part A2
--         * (See MPC8569E Reference Manual)
--         */
--        dev = qdev_new(TYPE_SYSBUS_SDHCI);
--        qdev_prop_set_uint8(dev, "sd-spec-version", 2);
--        qdev_prop_set_uint8(dev, "endianness", DEVICE_BIG_ENDIAN);
--        qdev_prop_set_uint8(dev, "vendor", SDHCI_VENDOR_FSL);
-+        dev = qdev_new(TYPE_FSL_ESDHC_BE);
-         s = SYS_BUS_DEVICE(dev);
-         sysbus_realize_and_unref(s, &error_fatal);
-         sysbus_connect_irq(s, 0, qdev_get_gpio_in(mpicdev, MPC85XX_ESDHC_IRQ));
+ #define DEFINE_SDHCI_COMMON_PROPERTIES(_state) \
+-    DEFINE_PROP_UINT8("endianness", _state, endianness, DEVICE_LITTLE_ENDIAN), \
+     DEFINE_PROP_UINT8("sd-spec-version", _state, sd_spec_version, 2), \
+     DEFINE_PROP_UINT8("uhs", _state, uhs_mode, UHS_NOT_SUPPORTED), \
+     DEFINE_PROP_UINT8("vendor", _state, vendor, SDHCI_VENDOR_NONE), \
+diff --git a/include/hw/sd/sdhci.h b/include/hw/sd/sdhci.h
+index 32c52c7d0b..51551348cf 100644
+--- a/include/hw/sd/sdhci.h
++++ b/include/hw/sd/sdhci.h
+@@ -96,7 +96,6 @@ struct SDHCIState {
+     /* Configurable properties */
+     bool pending_insert_quirk; /* Quirk for Raspberry Pi card insert int */
+     uint32_t quirks;
+-    uint8_t endianness;
+     uint8_t sd_spec_version;
+     uint8_t uhs_mode;
+     uint8_t vendor;        /* For vendor specific functionality */
+diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
+index 6001b71c61..eab814096d 100644
+--- a/hw/sd/sdhci.c
++++ b/hw/sd/sdhci.c
+@@ -1374,7 +1374,7 @@ sdhci_write(void *opaque, hwaddr offset, uint64_t val, unsigned size)
+                        value >> shift, value >> shift);
+ }
+ 
+-static const MemoryRegionOps sdhci_mmio_le_ops = {
++static const MemoryRegionOps sdhci_mmio_ops = {
+     .read = sdhci_read,
+     .write = sdhci_write,
+     .valid = {
+@@ -1385,21 +1385,6 @@ static const MemoryRegionOps sdhci_mmio_le_ops = {
+     .endianness = DEVICE_LITTLE_ENDIAN,
+ };
+ 
+-static const MemoryRegionOps sdhci_mmio_be_ops = {
+-    .read = sdhci_read,
+-    .write = sdhci_write,
+-    .impl = {
+-        .min_access_size = 4,
+-        .max_access_size = 4,
+-    },
+-    .valid = {
+-        .min_access_size = 1,
+-        .max_access_size = 4,
+-        .unaligned = false
+-    },
+-    .endianness = DEVICE_BIG_ENDIAN,
+-};
+-
+ static void sdhci_init_readonly_registers(SDHCIState *s, Error **errp)
+ {
+     ERRP_GUARD();
+@@ -1430,7 +1415,7 @@ void sdhci_initfn(SDHCIState *s)
+     s->transfer_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
+                                      sdhci_data_transfer, s);
+ 
+-    s->io_ops = &sdhci_mmio_le_ops;
++    s->io_ops = &sdhci_mmio_ops;
+ }
+ 
+ void sdhci_uninitfn(SDHCIState *s)
+@@ -1446,22 +1431,6 @@ void sdhci_common_realize(SDHCIState *s, Error **errp)
+ {
+     ERRP_GUARD();
+ 
+-    switch (s->endianness) {
+-    case DEVICE_LITTLE_ENDIAN:
+-        /* s->io_ops is little endian by default */
+-        break;
+-    case DEVICE_BIG_ENDIAN:
+-        if (s->io_ops != &sdhci_mmio_le_ops) {
+-            error_setg(errp, "SD controller doesn't support big endianness");
+-            return;
+-        }
+-        s->io_ops = &sdhci_mmio_be_ops;
+-        break;
+-    default:
+-        error_setg(errp, "Incorrect endianness");
+-        return;
+-    }
+-
+     sdhci_init_readonly_registers(s, errp);
+     if (*errp) {
+         return;
 -- 
 2.52.0
 
