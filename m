@@ -2,108 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D054D143DF
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 18:08:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A63D6D143D0
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jan 2026 18:06:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfLLN-0006x8-3A; Mon, 12 Jan 2026 12:04:41 -0500
+	id 1vfLLQ-00075k-1S; Mon, 12 Jan 2026 12:04:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vfLIB-0005tz-JK
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 12:01:36 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vfLI9-00068X-Mj
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 12:01:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768237280;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=AldCBaYJel6HxB+0CQVjj0wkO30xgddAEo7L/RnCjX4=;
- b=auY2SH8LNXXU1FMRX0tbGPM/HQZZZFU6lINz3wKyHIq2KGgiKb+r1FR0XznYQUgL235dsp
- mMdP/J0Zyiu9eolbUvNddMnIBfSdcpVWNKY1/y/dBma2fR5EX0R4dmtdC4jcNBoQ9VguUF
- SIa4u5BgeLrOqkxeZxR290PUzW4GxXg=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-153-6MSGW3GvO0GkPR3qicvSUQ-1; Mon, 12 Jan 2026 12:01:18 -0500
-X-MC-Unique: 6MSGW3GvO0GkPR3qicvSUQ-1
-X-Mimecast-MFC-AGG-ID: 6MSGW3GvO0GkPR3qicvSUQ_1768237277
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-430fc153d50so4889468f8f.1
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 09:01:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vfLIs-0006Cz-89
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 12:02:13 -0500
+Received: from mail-yw1-x112e.google.com ([2607:f8b0:4864:20::112e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vfLIq-0006Ap-Px
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 12:02:06 -0500
+Received: by mail-yw1-x112e.google.com with SMTP id
+ 00721157ae682-78f89501423so59069007b3.1
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 09:02:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768237277; x=1768842077; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AldCBaYJel6HxB+0CQVjj0wkO30xgddAEo7L/RnCjX4=;
- b=RQ8gxNDDlI9T66RobOam23Lh0Rp+O0YFioW4T16z0kFaqezK9kzBMuOXu2LR/uTD5Z
- jr14KShDbIdazDFRJi3O5vEUzEZYgrwpKkoR6NNIVEqIWaBg0uU3cOFBCS4VeS2ZtXyi
- corZb4fN25ZwMWPzbjE6CMDX90f/hFL6G7MezKhiv9C94KrjcSYLVRIuhFGfgOY6Ijoh
- 6P7uafi4I8cumxMSyg8Bv0zV1fd90lN/uTIjLniQD672sbCuKr+uu9USYv6JTaORM3ja
- Up82ZbR0CG9R79dabJ4c5VGz0ou+y4tW6xujgos49XOLDtKcn2Qrl7Xpyz2lTZaTLa29
- e2Sw==
+ d=linaro.org; s=google; t=1768237323; x=1768842123; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=5U+EmH1NHUyJCyVLYQH3bGY+ISVEX/Nc+x144y3zxMM=;
+ b=n2DtXxa143RhJJ2icEwBA1j7R2VasobonGkE3sVFndQlXXnx0CMMnEAk+loRSVBNuP
+ UGpR+8kEzm7Celrw1Kf5GKRFo4370bxqLeR4AmzX5gwnzDYWI2HD75oRXsiYzYGQ8MNj
+ 9k/rvGJbQymQuecgnBxxGYgor+fb9LgpUppLDEHJMTzRDvZ1s9y7HZqggcY0fKxq0AEl
+ G3TV/G7KMWXUovfS5pk2JHcMKGN/sV0PEUCTcpUkrabq8BIvbGYi88V/lAHgqwrfDvsN
+ y+0DerSpy8+yfoq/aHPd3gbzwr2R32h92ODFBuPmlzec3G1pwehdDQcDmUOxZ/WuuRZR
+ EgoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768237277; x=1768842077;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=AldCBaYJel6HxB+0CQVjj0wkO30xgddAEo7L/RnCjX4=;
- b=n+0AtAES6Dvuf2JnPhzs3AYtmzJlqXPtWh6ILyQyEkbI+dVDv+3dVbByJwRek8HW+b
- kslfSRBi+laBSS+z1PRGRJ1nqzMB+8l5lT26PGlz225zBoP2i+zAke1aoSyNIKSo4X0g
- C4OThHsBFw1NE9uLMBqKFAKNCy0INvoYjgMLUAAt+6Hvl1ODT1mEZ0JpC8lofYJCAirv
- RJ4gucSKkk+PGlc8sSr5dADneUQTgQzTmJjEiw2W8XFzMofjsJ1rQ9W3l0owPWJbDf5A
- z7zndcvsX4n42JR+tYv1Lbmz5wY0S7fSS4NNaLHVaMcyOOlhWiFMfBkYsdFuwe9CCfrp
- PPnA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUUU9sosuxkmZye1LmN7BKUnA/Qx3QQ0p9zhA/5m4xpn0OiIj3g/gDOAvxYwI2qZee2eZH+oG531cNA@nongnu.org
-X-Gm-Message-State: AOJu0YwL1Y4HPBNALzdW8b4n7z6JfYyk980KdwacffVQRkt+6MP1EGnq
- q1bQazLbDPQPz3KpMsGb2uK5HH55wNv08XYw6yR+fMR9PXYsTkNCiyH1PQT62dnLE20++Sjiy4W
- RzNijbcaoOlyidd3FLg26YpVS+3TzOL+mTLuwyc+ww+j7HPARWgpQZwr4Z/UjHZv19jLJNusZkf
- eSPFPDt/EVqzFV8iUiuU17H/Zht5suJ4s=
-X-Gm-Gg: AY/fxX6w+R+0sFWEKbigvPOenqup918whJLLas97effJ+LvpPJA/r6XaqYiKkSUw8er
- 9zpzAOHCXAzzT2i4/5T/3eDtdfy2IE03F4vzBXnHTlVEBwB4Rzui9HJX2NU0gimmCA63oo2SCRy
- Kl948SkeNLwMUGn7M8bthWk4j03lxnhLg/3r/2CNcPzsl5bfgpcvuklSeYkdHuiYcr/k6JNyjLL
- RRawzfYCi2o07GLZBU1TpN3AgyKLHYoPMiwSRd+wFVs4F2Kg65x8Y9CtrMSFRK9XzCvfw==
-X-Received: by 2002:a05:6000:3104:b0:430:f301:3e6c with SMTP id
- ffacd0b85a97d-432c37c870emr17720922f8f.34.1768237276997; 
- Mon, 12 Jan 2026 09:01:16 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEAiYfjnr+gYdtjsO6mWWQ+a+BH9XfzWG3kpFltGJWfx1JU+oZ6aKStp9mLHs0yv0OictNdRBrZnyrHEsB1/Wg=
-X-Received: by 2002:a05:6000:3104:b0:430:f301:3e6c with SMTP id
- ffacd0b85a97d-432c37c870emr17720877f8f.34.1768237276561; Mon, 12 Jan 2026
- 09:01:16 -0800 (PST)
+ d=1e100.net; s=20230601; t=1768237323; x=1768842123;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5U+EmH1NHUyJCyVLYQH3bGY+ISVEX/Nc+x144y3zxMM=;
+ b=cO/5G4F3mbTPj4DD6Filt2WBkpfpL2TWvGZt1x3R3kMCTElsXA125YMdID94Wg9lNR
+ fL6S1duYRDKxOPf3YN/Gvf5rqU31LTkvN30kIRVMx06+fPaZllOanVSsYd301ZMsiT1G
+ 3fGfc6isc1HRog0Xx2NbauWs7otvVgFbyeC76TH9CJ7BS0Quib5mTwSUlXz8iDdyd2eD
+ bBWz54qX4Lut10zOjxh1lM7zgTfxSGTRywdasfrTGkh8Da1n9GhTjflnRQ1TBKtV2poq
+ lssQZ2VYCVuef911U5M1SwAQPcZPIO2E5I258QdWvzscYtqUmtT+jezH7dxrvwN74w23
+ Jrsg==
+X-Gm-Message-State: AOJu0Yy8dgwDaXvnI4xL4mZGOhX0khaJpylAS1+cFrjkc/R0TRK8o/HC
+ xQTpLGe55FsJ+FXz7Na3WlLAVBBHEWWw5Hxr1FYLXdMZkbEqTiQLYvFe+NHNLF9nV44CfrZpsfS
+ 2c2/PdehD6AsFwiBnyCGrne2j4lpsJR1yJv8Dh3AclcVcjNHFxOvidxA=
+X-Gm-Gg: AY/fxX4KyKxu8NTmNtbQq2ypfJfE2KsGQp84flA/PnlMCfcpszEOBA7b0bzIzh+lrZE
+ rtHMvABsyiBeMngaS4vgpYjoDEVt70/1SO7Ld4OcQjffgsfpy07MhdhaZ2br4QwkFUiwoTAqFDl
+ VbHcDqsdO5VVmK78CWeGT05pG5iH90xSktKM/l32caPodP/VjU/j4DoUfe4uW0I7Yg90L6rpo7b
+ otEm5Ny8RKTtuhxKEVk7Ch3URNOzF52khrjhlVSUUnmnvr27MWVHQ+9QjY5zyBpOI7PhC18ENvT
+ Zrg3bfW3tzyeQavgSXdPGZg=
+X-Google-Smtp-Source: AGHT+IHo95rgvdbUh+BH4AS6xEmnr3edzqzOvJ1ZbWYebkXySFPY7L7qX0DhE0d1WA38j9vGTL9voEUd27P1/0IMxb8=
+X-Received: by 2002:a05:690e:4004:b0:648:187d:83e with SMTP id
+ 956f58d0204a3-648f62e04b8mr42313d50.37.1768237322905; Mon, 12 Jan 2026
+ 09:02:02 -0800 (PST)
 MIME-Version: 1.0
-References: <20260112132259.76855-1-anisinha@redhat.com>
- <20260112132259.76855-3-anisinha@redhat.com>
-In-Reply-To: <20260112132259.76855-3-anisinha@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 12 Jan 2026 18:01:04 +0100
-X-Gm-Features: AZwV_QiH3V5FSKAnNtBPpx_JZBXYR6rPYd5poD1efJhVE8ZMgP50Mc7LrPQ905U
-Message-ID: <CABgObfaATsV8ECm+txeVzg4c=5wjKgBR972sLc+Ejw0q=nH+Fg@mail.gmail.com>
-Subject: Re: [PATCH v2 02/32] hw/accel: add a per-accelerator callback to
- change VM accelerator handle
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>, 
+References: <20251216000122.763264-1-pierrick.bouvier@linaro.org>
+ <c8e80923-d837-4874-a072-d5ae579576a4@linaro.org>
+In-Reply-To: <c8e80923-d837-4874-a072-d5ae579576a4@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 12 Jan 2026 17:01:51 +0000
+X-Gm-Features: AZwV_QhRDv73PJ_orOaeMCzp7vAQRNiAOrxIUWNa-XrXwGx7bFmVuILttmqIoGY
+Message-ID: <CAFEAcA_iXHEFTJ0mS+kRC=rNxxhyCHyw5R=nQNMXYE03qkBTZA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] target/arm: make granule_protection_check usable
+ from SMMU
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org, Tao Tang <tangtao1634@phytium.com.cn>,
+ qemu-arm@nongnu.org, 
  =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Auger <eric.auger@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,58 +97,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 12, 2026 at 2:23=E2=80=AFPM Ani Sinha <anisinha@redhat.com> wro=
-te:
-> +    if (current_machine->cgs && reason =3D=3D SHUTDOWN_CAUSE_GUEST_RESET=
-) {
-
-This should check (I think) !cpus_are_resettable(), instead of
-current_machine->cgs.
-
-> +        if (ac->reset_vmfd) {
-> +            ret =3D ac->reset_vmfd(current_machine);
-> +            if (ret < 0) {
-> +                error_report("unable to reset vmfd: %d", ret);
-> +                abort();
-
-This should not be an abort, but it should change the runstate to
-RUN_STATE_INTERNAL_ERROR.
-
-Also, I would move the introduction of
-confidential_guest_can_rebuild_state() callback even before this patch
-(see upcoming review of patch 24).
-
-At the end of the series, this should look something like:
-
-    if (reason =3D=3D SHUTDOWN_CAUSE_GUEST_RESET
-        && (current_machine->new_accel_vmfd_on_reset
-            || !cpus_are_resettable()) {
-        if (ac->reset_vmfd) {
-            ret =3D ac->reset_vmfd(current_machine);
-            if (ret < 0) {
-                 error_report(..., strerror(-ret));
-                 vm_stop(RUN_STATE_INTERNAL_ERROR);
-            }
-        } else if (!cpus_are_resettable()) {
-            error_report("accelerator does not support reset");
-        } else {
-            error_report("accelerator does not support
-x-change-vmfd-on-reset=3D...,"
-                        " proceeding with normal reset");
-        }
-    }
-
-Paolo
-
-> +            }
-> +        }
-> +    }
-> +
->      if (mc && mc->reset) {
->          mc->reset(current_machine, type);
->      } else {
-> --
-> 2.42.0
+On Mon, 12 Jan 2026 at 16:29, Pierrick Bouvier
+<pierrick.bouvier@linaro.org> wrote:
 >
+> On 12/15/25 4:01 PM, Pierrick Bouvier wrote:
+> > This series prepare granule_protection_check to be usable from SMMU, for
+> > implementing RME feature.
+> > It's based on Tao's commit [1] extracting ARMSecuritySpace from cpu.h header for
+> > convenience.
 
+
+> Another gentle ping.
+> This series has been reviewed and should be ready to be pulled.
+
+Applied to target-arm.next, thanks. I folded in this minor change
+which avoids the "local variables not declared at beginning of block"
+style issue:
+
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -3785,9 +3785,7 @@ static bool get_phys_addr_gpc(CPUARMState *env,
+S1Translate *ptw,
+         return true;
+     }
+
+-    const uint64_t gpccr = env->cp15.gpccr_el3;
+-    const bool gpc_enabled = FIELD_EX64(gpccr, GPCCR, GPC);
+-    if (gpc_enabled) {
++    if (FIELD_EX64(env->cp15.gpccr_el3, GPCCR, GPC)) {
+         ARMCPU *cpu = env_archcpu(env);
+         MemTxAttrs attrs = {
+             .secure = true,
+
+-- PMM
 
