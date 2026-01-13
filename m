@@ -2,85 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D686CD191FE
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 14:39:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8213BD1932F
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 14:55:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfebU-0001O7-MM; Tue, 13 Jan 2026 08:38:36 -0500
+	id 1vferH-00038C-Oq; Tue, 13 Jan 2026 08:54:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vfebP-0001Ik-I7
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 08:38:31 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vfebN-0006YG-R5
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 08:38:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768311508;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mSdz39erUi9LLYRddGZtNx0e9pu88ScilH4vY7LruBo=;
- b=NL+iMqY5qo46vOuZ+JEBQ7iLp96O8z9nIM1n812JcYlIbVaej1ekXcs/b3Sf/bm/2eemuJ
- DGUSDsZsPqysN5HHxtcLmyXbKMM91XItnKNVUFlM7xJ5onBgGNA1THWeWfg88IvUrTtnpY
- 6Ilauj7ntwCLDypo3gU48a4f+u5Z/7A=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-217-uoNeWr47MZm5cXiA-8tQKw-1; Tue,
- 13 Jan 2026 08:38:25 -0500
-X-MC-Unique: uoNeWr47MZm5cXiA-8tQKw-1
-X-Mimecast-MFC-AGG-ID: uoNeWr47MZm5cXiA-8tQKw_1768311503
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 097D619560A6; Tue, 13 Jan 2026 13:38:23 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.32])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2A4F119560AB; Tue, 13 Jan 2026 13:38:22 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id B91CA21E676C; Tue, 13 Jan 2026 14:38:19 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,  Hanna Reitz
- <hreitz@redhat.com>,  Gerd Hoffmann <kraxel@redhat.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  Christian Schoenebeck <qemu_oss@crudebyte.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>,  =?utf-8?Q?Marc-Andr=C3=A9?=
- Lureau <marcandre.lureau@redhat.com>,  devel@lists.libvirt.org,
- qemu-block@nongnu.org,  qemu-rust@nongnu.org,  Stefan Weil
- <sw@weilnetz.de>,  Kevin Wolf <kwolf@redhat.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Eric Blake <eblake@redhat.com>
-Subject: Re: [PATCH v5 14/24] monitor: move error_vprintf back to
- error-report.c
-In-Reply-To: <20260108170338.2693853-15-berrange@redhat.com> ("Daniel
- P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Thu, 8 Jan 2026 17:03:28
- +0000")
-References: <20260108170338.2693853-1-berrange@redhat.com>
- <20260108170338.2693853-15-berrange@redhat.com>
-Date: Tue, 13 Jan 2026 14:38:19 +0100
-Message-ID: <87jyxl8wfo.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
+ id 1vferG-00037i-A3
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 08:54:54 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
+ id 1vferE-0000Lr-8p
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 08:54:54 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-2a0834769f0so52420995ad.2
+ for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 05:54:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1768312491; x=1768917291; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=fDnPyI7NPiNXP8nlPrhXeSrPIlabxti57X5AZJh4Nxo=;
+ b=BZHeg2uK9LrDpsA/VxIwLik+58F3RdkQBgj6CTK0XZ74BzzYoytERCzDSweFZ+Q6FI
+ 0HtQi1d0o84NFotpU38P5G07I+/vIk6yp9fWqdj6K4zfx5+ul769Db2YpjHixlf4MY27
+ F8xGEcrFf+DZ8tweFKqb9Lh7gWsZ+Lzzi6Wv9Gl08zS3f8S7+4q5AMYA5MA2+eMbIaGg
+ ReSeDnxenhD6Bf/qvCuspOOhThnG25ZiT1HMLjxbiuiMMC7xzDCswBdj1OUe6AzzcPDR
+ a6yN1BqnTrmjd9YIJaAdzJW/jPZCyFjlXnYzzCzcniv04vBGERGTOR+vG8S6zcYkRDn4
+ EcJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768312491; x=1768917291;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=fDnPyI7NPiNXP8nlPrhXeSrPIlabxti57X5AZJh4Nxo=;
+ b=AYA5GCXP/52XpnrNKL+RalYIaOPMnZaGKlQB8/4KbvE/+u+0b/NVowF8O7czZ7qXtv
+ V7T43FbvAu07UMNhJhTVFl+SGElpyCuvhbxN1WZ/zCvbui8Z9vckrUs2avxTr+4ZrWEk
+ TzQQ4XtfUjk5p5ZrH409wERfNlfafSOONnGfjeMa3WrpYqvQU0tZ6kYUc8ev7+otxRR7
+ XAtYIGf2Kc/7UILRmoTKxJBFGa24wylJr+0TENHSV91AYVSXYoa3sd9OgEuN/AAYp6cC
+ A8aqHl/RwYgq0a6s3nkjITTSLYu3hKlVAp7CVH4JWqA08B8LEyy60jBDeptF2TeE57It
+ W2OQ==
+X-Gm-Message-State: AOJu0YwMn9dEUEN8eE1FH7DGxKLvfFFwAi8Sp38lhyqdrwgw89R0w6RQ
+ nwvnfMwX6SPNoLffOECtDM5gLnd+RATHyZ6iUrIeVvtpauxX8IOND/q6QhdjaqM7
+X-Gm-Gg: AY/fxX67Uwcfq/N9JcVGTSI18nkOCafAGrT0si4D9H5ovWyaZiUQwGCLlz3AxWQmw1K
+ fEzD/6mClVWaSReT5jgDUCOtQiRQxg9UI3k4JPIkNu+hfUtHDECvs1SZM/JQNxhocpMsqDhNLT8
+ h0odOFrn9vpfV1wA9BK5FCcEkCACFqQhlWVTxPzhfdeJvypf9Vq9Kn1yKHM6+uaFD1MDhZ7yjH/
+ PvxTI/AM4FngXBEING3DTqpmfO7g9ysMbsH+QEPtf9O73YY3Vo13ISZvnHOHpMUk3pJfldGijZz
+ 0kFFEGk2CACHb88IUfVsjZpi5LCFFBv6nQd+qK0PNa8HcZFuCWngAmef/oKdb2hJ6JUKEKLEHOX
+ dlekx8Ez9AeS1+zQM5JZdbCQG3VFTASgwZp5fq45+dhFC2RS9/Uhvy1JYRjilRVqr00oyhPXog+
+ hyYX8YCoT60g==
+X-Google-Smtp-Source: AGHT+IF/0NnUoBvl/4c559Ya8K2Vnu7JpOSJaPOga6FwnVSszq9IpLg2j2RoTTGTJMCigmq6KLfmQg==
+X-Received: by 2002:a17:903:2f44:b0:29f:3042:407f with SMTP id
+ d9443c01a7336-2a3ee4343c1mr217829565ad.21.1768312490511; 
+ Tue, 13 Jan 2026 05:54:50 -0800 (PST)
+Received: from ktock.. ([240d:1a:3b6:8b00:eb29:7536:a39f:7476])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2a3e3c3a2eesm38240465ad.6.2026.01.13.05.54.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 13 Jan 2026 05:54:50 -0800 (PST)
+From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Kohei Tokunaga <ktokunaga.mail@gmail.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH v5 0/4] wasm: Enable 64bit guests on TCI using wasm64
+Date: Tue, 13 Jan 2026 22:54:27 +0900
+Message-ID: <cover.1768308374.git.ktokunaga.mail@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,170 +104,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+V5:
 
-> The current unit tests rely on monitor.o not being linked, such
-> that the monitor stubs get linked instead. Since error_vprintf
-> is in monitor.o this allows a stub error_vprintf impl to be used
-> that calls g_test_message.
->
-> This takes a different approach, with error_vprintf moving
-> back to error-report.c such that it is always linked into the
-> tests. The monitor_vprintf() stub is then changed to use
-> g_test_message if QTEST_SILENT_ERRORS is set, otherwise it will
-> return -1 and trigger error_vprintf to call vfprintf.
->
-> The end result is functionally equivalent for the purposes of
-> the unit tests.
->
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Reviewed-by: Eric Blake <eblake@redhat.com>
-> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> ---
->  monitor/monitor.c    | 15 ---------------
->  stubs/error-printf.c | 18 ------------------
->  stubs/meson.build    |  1 -
->  stubs/monitor-core.c | 14 +++++++++++++-
->  util/error-report.c  | 15 +++++++++++++++
->  5 files changed, 28 insertions(+), 35 deletions(-)
->  delete mode 100644 stubs/error-printf.c
->
-> diff --git a/monitor/monitor.c b/monitor/monitor.c
-> index 627a59b23e..6dc5a7016d 100644
-> --- a/monitor/monitor.c
-> +++ b/monitor/monitor.c
-> @@ -268,21 +268,6 @@ void monitor_printc(Monitor *mon, int c)
->      monitor_printf(mon, "'");
->  }
->=20=20
-> -int error_vprintf(const char *fmt, va_list ap)
-> -{
-> -    Monitor *cur_mon =3D monitor_cur();
-> -    /*
-> -     * This will return -1 if 'cur_mon' is NULL, or is QMP.
-> -     * IOW this will only print if in HMP, otherwise we
-> -     * fallback to stderr for QMP / no-monitor scenarios.
-> -     */
-> -    int ret =3D monitor_vprintf(cur_mon, fmt, ap);
-> -    if (ret =3D=3D -1) {
-> -        ret =3D vfprintf(stderr, fmt, ap);
-> -    }
-> -    return ret;
-> -}
-> -
->  static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] =3D=
- {
->      /* Limit guest-triggerable events to 1 per second */
->      [QAPI_EVENT_RTC_CHANGE]        =3D { 1000 * SCALE_MS },
-> diff --git a/stubs/error-printf.c b/stubs/error-printf.c
-> deleted file mode 100644
-> index 1afa0f62ca..0000000000
-> --- a/stubs/error-printf.c
-> +++ /dev/null
-> @@ -1,18 +0,0 @@
-> -#include "qemu/osdep.h"
-> -#include "qemu/error-report.h"
-> -#include "monitor/monitor.h"
-> -
-> -int error_vprintf(const char *fmt, va_list ap)
-> -{
-> -    int ret;
-> -
-> -    if (g_test_initialized() && !g_test_subprocess() &&
-> -        getenv("QTEST_SILENT_ERRORS")) {
-> -        char *msg =3D g_strdup_vprintf(fmt, ap);
-> -        g_test_message("%s", msg);
-> -        ret =3D strlen(msg);
-> -        g_free(msg);
-> -        return ret;
-> -    }
-> -    return vfprintf(stderr, fmt, ap);
-> -}
-> diff --git a/stubs/meson.build b/stubs/meson.build
-> index 0b2778c568..3d77458a3f 100644
-> --- a/stubs/meson.build
-> +++ b/stubs/meson.build
-> @@ -3,7 +3,6 @@
->  # below, so that it is clear who needs the stubbed functionality.
->=20=20
->  stub_ss.add(files('cpu-get-clock.c'))
-> -stub_ss.add(files('error-printf.c'))
->  stub_ss.add(files('fdset.c'))
->  stub_ss.add(files('iothread-lock.c'))
->  stub_ss.add(files('is-daemonized.c'))
-> diff --git a/stubs/monitor-core.c b/stubs/monitor-core.c
-> index 1894cdfe1f..a7c32297c9 100644
-> --- a/stubs/monitor-core.c
-> +++ b/stubs/monitor-core.c
-> @@ -18,5 +18,17 @@ void qapi_event_emit(QAPIEvent event, QDict *qdict)
->=20=20
->  int monitor_vprintf(Monitor *mon, const char *fmt, va_list ap)
->  {
-> -    abort();
-> +    /*
-> +     * Pretend 'g_test_message' is our monitor console to
-> +     * stop the caller sending messages to stderr
-> +     */
-> +    if (g_test_initialized() && !g_test_subprocess() &&
-> +        getenv("QTEST_SILENT_ERRORS")) {
-> +        char *msg =3D g_strdup_vprintf(fmt, ap);
-> +        g_test_message("%s", msg);
-> +        size_t ret =3D strlen(msg);
-> +        g_free(msg);
-> +        return ret;
-> +    }
-> +    return -1;
->  }
-> diff --git a/util/error-report.c b/util/error-report.c
-> index 1b17c11de1..b262ad01cb 100644
-> --- a/util/error-report.c
-> +++ b/util/error-report.c
-> @@ -29,6 +29,21 @@ bool message_with_timestamp;
->  bool error_with_guestname;
->  const char *error_guest_name;
->=20=20
-> +int error_vprintf(const char *fmt, va_list ap)
-> +{
-> +    Monitor *cur_mon =3D monitor_cur();
-> +    /*
-> +     * This will return -1 if 'cur_mon' is NULL, or is QMP.
-> +     * IOW this will only print if in HMP, otherwise we
-> +     * fallback to stderr for QMP / no-monitor scenarios.
-> +     */
-> +    int ret =3D monitor_vprintf(cur_mon, fmt, ap);
-> +    if (ret =3D=3D -1) {
-> +        ret =3D vfprintf(stderr, fmt, ap);
-> +    }
-> +    return ret;
-> +}
-> +
->  int error_printf(const char *fmt, ...)
->  {
->      va_list ap;
+- In emsdk-wasm-cross.docker, removed -sMEMORY64 from the environment
+  variables (e.g. CFLAGS) in the QEMU compilation stage.
+- Updated the Dockerfile to build dependencies always with -sMEMORY64=1 for
+  wasm64 target. The final QEMU compilation can be lowered to wasm32 by
+  using configure's --wasm64-32bit-address-limit flag which enables
+  Emscripten's MEMORY64=2.
+- Fixed wasm64 tests (build-wasm64-64bit and build-wasm64-32bit) to share
+  the same wasm64 container. The build-wasm64-32bit test passes
+  --wasm64-32bit-address-limit to the configure script so that the output is
+  lowered to wasm32 by Emscripten's -sMEMORY64=2.
 
-Without stubs, no change in behavior.
+V4:
 
-With both stubs, before the patch:
+- Rebased on the recent tree.
 
-    monitor_vprintf() is not supposed to run, and aborts
+V3:
 
-    error_vprintf() calls g_test_message() for tests, else vfprintf()
+- Renamed the build tests on GitLab CI("build-wasm32" ->
+  "build-wasm32-32bit", "build-wasm-wasm64" -> "build-wasm64-64bit",
+  "build-wasm-wasm64l" -> "build-wasm64-32bit"). The same change has also
+  been applied to container-cross.yml.
 
-afterwards:
+V2:
 
-    monitor_vprintf() calls g_test_message() and succeeds in tests, else
-    fails
+- Added a link to the Emscripten documentation about -sMEMORY64 in the
+  configure script.
+- Changed --wasm64-memory64 flag to --wasm64-32bit-address-limit to avoid
+  exposing the -sMEMORY64 value directly to the users.
+- Fixed GitLab CI to use --wasm64-32bit-address-limit instead of
+  --wasm64-memory64.
 
-    error_vprintf() calls monitor_printf(), and when it fails falls back
-    to vfprintf().
+V1:
 
-Alright, error_vprintf() behaves the same as before.
+This patch series enables the TCI of the Wasm build to run 64bit
+guests. Unlike the previous series[1], this patch series is implemented by
+adding support for WebAssembly's "wasm64" target which enables 64bit
+pointers.
 
-monitor_vprintf() no longer aborts.  Hmm.  What if we somehow acquire
-calls?  In tests, they'll go to g_test_message(), which is fine, I
-guess.  Outside tests, they'll fail.  So does the non-stub version
-unless the current monitor is HMP.  Also fine, I guess.
+In the previous discussion[2], the main challenge of using wasm64 was its
+limited adoption, particularly the lack of support in our dependency
+(libffi) and some engines such as Safari.
 
-Is it possible to link just one of the stubs?
+For libffi, I've completed the addition of wasm64 support upstream[3] so it
+can be used.
+
+To support wasm32 engines, this patch uses Emscripten's compatibility
+feature, -sMEMORY64=2 flag[4]. This flag still enables 64bit pointers in the
+C code while Emscripten lowers the output binary to wasm32 and limits the
+maximum memory size to 4GB. As a result, QEMU can run on wasm32 engiens
+while still supporting 64bit guests.
+
+# Overview of the build process
+
+To compile QEMU with Emscripten, the following dependencies are required.
+The emsdk-wasm-cross.docker environment includes all necessary components
+and can be used as the build environment:
+
+- Emscripten SDK (emsdk) v4.0.10
+- Libraries cross-compiled with Emscripten (please see also
+  emsdk-wasm-cross.docker for build steps)
+  - GLib v2.84.0
+  - zlib v1.3.1
+  - libffi v3.5.2
+  - Pixman v0.44.2
+
+The configure script supports --cpu=wasm64 flag to compile QEMU with 64bit
+pointer support.
+
+emconfigure ./configure --cpu=wasm64 \
+                        --static --disable-tools \
+                        --target-list=x86_64-softmmu \
+                        --enable-tcg-interpreter
+emmake make -j$(nproc)
+
+If the output needs to run on wasm32 engines, use
+--wasm64-32bit-address-limit flag. This flag enables Emscripten's
+-sMEMORY64=2 flag[4]. (Note: --wasm64-memory64=2 flag in the V1 patch has
+been renamed to --wasm64-32bit-address-limit in V2)
+
+emconfigure ./configure --cpu=wasm64 --wasm64-32bit-address-limit \
+                        --static --disable-tools \
+                        --target-list=x86_64-softmmu \
+                        --enable-tcg-interpreter
+emmake make -j$(nproc)
+
+Either of the above commands generates the following files:
+
+- qemu-system-x86_64.js
+- qemu-system-x86_64.wasm
+
+Guest images can be packaged using Emscripten's file_packager.py tool.
+For example, if the images are stored in a directory named "pack", the
+following command packages them, allowing QEMU to access them through
+Emscripten's virtual filesystem:
+
+/path/to/file_packager.py qemu-system-x86_64.data --preload pack > load.js
+
+This process generates the following files:
+
+- qemu-system-x86_64.data
+- load.js
+
+Emscripten allows passing arguments to the QEMU command via the Module
+object in JavaScript:
+
+Module['arguments'] = [
+    '-nographic', '-m', '512M',
+    '-L', 'pack/',
+    '-drive', 'if=virtio,format=raw,file=pack/rootfs.bin',
+    '-kernel', 'pack/bzImage',
+    '-append', 'earlyprintk=ttyS0 console=ttyS0 root=/dev/vda loglevel=7',
+];
+
+The sample repository[5] (tcidev64 branch) provides a complete setup,
+including an HTML file that implements a terminal UI.
+
+[1] https://lists.nongnu.org/archive/html/qemu-devel/2025-05/msg05376.html
+[2] https://lists.nongnu.org/archive/html/qemu-devel/2025-04/msg01795.html
+[3] https://github.com/libffi/libffi/pull/927
+[4] https://emscripten.org/docs/tools_reference/settings_reference.html#memory64
+[5] https://github.com/ktock/qemu-wasm-sample/tree/tcidev64
+
+Kohei Tokunaga (4):
+  meson: Add wasm64 support to the --cpu flag
+  configure: Enable to propagate -sMEMORY64 flag to Emscripten
+  dockerfiles: Add support for wasm64 to the wasm Dockerfile
+  .gitlab-ci.d: Add build tests for wasm64
+
+ .gitlab-ci.d/buildtest.yml                    | 24 ++++++++++++++---
+ .gitlab-ci.d/container-cross.yml              | 11 +++++++-
+ .gitlab-ci.d/container-template.yml           |  4 ++-
+ .gitlab-ci.d/containers.yml                   |  3 ++-
+ MAINTAINERS                                   |  2 +-
+ configure                                     | 16 +++++++++++-
+ meson.build                                   |  4 +--
+ ...2-cross.docker => emsdk-wasm-cross.docker} | 26 ++++++++++++++-----
+ 8 files changed, 73 insertions(+), 17 deletions(-)
+ rename tests/docker/dockerfiles/{emsdk-wasm32-cross.docker => emsdk-wasm-cross.docker} (89%)
+
+-- 
+2.43.0
 
 
