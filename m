@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED9E9D18FF0
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 14:03:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60449D18FD0
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 14:01:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfe1x-0000nJ-FC; Tue, 13 Jan 2026 08:01:53 -0500
+	id 1vfe1u-0008J3-Ur; Tue, 13 Jan 2026 08:01:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vfe0q-00071c-Dc; Tue, 13 Jan 2026 08:00:51 -0500
+ id 1vfe0u-00072T-K7; Tue, 13 Jan 2026 08:00:51 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vfe0o-00014E-Uz; Tue, 13 Jan 2026 08:00:44 -0500
+ id 1vfe0r-00014j-4z; Tue, 13 Jan 2026 08:00:47 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AD52E17D9E2;
+ by isrv.corpit.ru (Postfix) with ESMTP id B980017D9E3;
  Tue, 13 Jan 2026 16:00:05 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 9D6DF34C419;
+ by tsrv.corpit.ru (Postfix) with ESMTP id B378334C41A;
  Tue, 13 Jan 2026 16:00:10 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org,
 	Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH trivial 4/7] meson.build: stop checking for inotify_init()
-Date: Tue, 13 Jan 2026 16:00:05 +0300
-Message-ID: <20260113130008.910240-8-mjt@tls.msk.ru>
+Subject: [PATCH trivial 5/7] linux-user: assume epoll is always present
+Date: Tue, 13 Jan 2026 16:00:06 +0300
+Message-ID: <20260113130008.910240-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260113130008.910240-1-mjt@tls.msk.ru>
 References: <20260113130008.910240-1-mjt@tls.msk.ru>
@@ -57,27 +57,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-the only place in qemu which used the check for inotify_init()
-was linux-user, which now assumes inotify_init() is always
-present.  There's no need to check for this function anymore.
+epoll is in linux since 2.6. epoll_init1 has been
+added in 2.6.27.  There's no need to check for its
+presence, including all other epoll-related syscalls.
+
+Modern architectures don't have epoll_create(), only
+epoll_create1(), so keep conditional around the former.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- meson.build | 1 -
- 1 file changed, 1 deletion(-)
+ linux-user/syscall.c      | 10 ++--------
+ linux-user/syscall_defs.h |  3 ---
+ 2 files changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 9b5f1540ff..6ea49c6fc0 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2709,7 +2709,6 @@ if (have_inotify_init or have_inotify_init1) and host_os == 'freebsd'
-     have_inotify_init1 = inotify.found()
-   endif
- endif
--config_host_data.set('CONFIG_INOTIFY', have_inotify_init)
- config_host_data.set('CONFIG_INOTIFY1', have_inotify_init1)
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index fad2bf3632..207c54db02 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -72,9 +72,7 @@
+ #ifdef CONFIG_EVENTFD
+ #include <sys/eventfd.h>
+ #endif
+-#ifdef CONFIG_EPOLL
+ #include <sys/epoll.h>
+-#endif
+ #ifdef CONFIG_ATTR
+ #include "qemu/xattr.h"
+ #endif
+@@ -13558,16 +13556,13 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+     case TARGET_NR_signalfd:
+         return do_signalfd4(arg1, arg2, 0);
+ #endif
+-#if defined(CONFIG_EPOLL)
++
+ #if defined(TARGET_NR_epoll_create)
+     case TARGET_NR_epoll_create:
+         return get_errno(epoll_create(arg1));
+ #endif
+-#if defined(TARGET_NR_epoll_create1) && defined(CONFIG_EPOLL_CREATE1)
+     case TARGET_NR_epoll_create1:
+         return get_errno(epoll_create1(target_to_host_bitmask(arg1, fcntl_flags_tbl)));
+-#endif
+-#if defined(TARGET_NR_epoll_ctl)
+     case TARGET_NR_epoll_ctl:
+     {
+         struct epoll_event ep;
+@@ -13596,7 +13591,6 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+         }
+         return get_errno(epoll_ctl(arg1, arg2, arg3, epp));
+     }
+-#endif
  
- # has_header_symbol
+ #if defined(TARGET_NR_epoll_wait)
+     case TARGET_NR_epoll_wait:
+@@ -13682,7 +13676,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+         g_free(ep);
+         return ret;
+     }
+-#endif /* CONFIG_EPOLL */
++
+ #ifdef TARGET_NR_prlimit64
+     case TARGET_NR_prlimit64:
+     {
+diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
+index cd9ff709b8..20e2e7deac 100644
+--- a/linux-user/syscall_defs.h
++++ b/linux-user/syscall_defs.h
+@@ -2595,7 +2595,6 @@ struct target_drm_i915_getparam {
+ #define FUTEX_CLOCK_REALTIME    256
+ #define FUTEX_CMD_MASK          ~(FUTEX_PRIVATE_FLAG | FUTEX_CLOCK_REALTIME)
+ 
+-#ifdef CONFIG_EPOLL
+ #if defined(TARGET_X86_64)
+ #define TARGET_EPOLL_PACKED QEMU_PACKED
+ #else
+@@ -2616,8 +2615,6 @@ struct target_epoll_event {
+ 
+ #define TARGET_EP_MAX_EVENTS (INT_MAX / sizeof(struct target_epoll_event))
+ 
+-#endif
+-
+ struct target_ucred {
+     abi_uint pid;
+     abi_uint uid;
 -- 
 2.47.3
 
