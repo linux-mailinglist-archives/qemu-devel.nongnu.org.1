@@ -2,160 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C775D18F74
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 13:56:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43FE1D18FA7
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 13:59:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfdvM-0002n9-HO; Tue, 13 Jan 2026 07:55:04 -0500
+	id 1vfdwT-0003V9-Oe; Tue, 13 Jan 2026 07:56:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vfdvC-0002kg-MI
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 07:54:54 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vfdvB-0000A7-8q
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 07:54:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768308892;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=mZSW3/ZUk2ok+6+IBKVQ6VdtgLfxbWcsPvZz8Xf6Dgw=;
- b=N3f5TzA3nfTBSahX57AA5EXCt/Yp/m/ZrGwN7q13nhhoTIAPBEkedIpF0FIl2sMSGMFjpB
- P/DAypXz/aA1/YlR2ew19BnnT7JMmwqj1MTyhM2oNvemvwewxiaJM5uWHwbEJG/KD18Zms
- lCpWYhlk2uJwD5gaksThxNyR9zSwWpY=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-335-EM1PL6WCMzKmPEbdR5mttA-1; Tue, 13 Jan 2026 07:54:51 -0500
-X-MC-Unique: EM1PL6WCMzKmPEbdR5mttA-1
-X-Mimecast-MFC-AGG-ID: EM1PL6WCMzKmPEbdR5mttA_1768308890
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-47d17fff653so33499195e9.0
- for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 04:54:51 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <vvisaev@gmail.com>) id 1vfdvr-0002xu-WB
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 07:55:37 -0500
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <vvisaev@gmail.com>) id 1vfdvp-0000Q5-UE
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 07:55:35 -0500
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-59b6f267721so5855692e87.2
+ for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 04:55:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768308890; x=1768913690; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=mZSW3/ZUk2ok+6+IBKVQ6VdtgLfxbWcsPvZz8Xf6Dgw=;
- b=CLYOVR5A8hjO67Boro8e5ZtB6R+YKWMa5HUz8G2OetYHqhW+CmUC422xVAFaSivSQW
- J5+vU7Z6b+q1DfT01/9X2TE/YvyKl5TG6Pl5xdJjBFyjKXx5pzt/9K1xzBB8M+qMLL0m
- X0T53KiHqRVaAxsOM00EAI/GLrt4PB1HiTX1tnn9xzRjhj9QAThSG3WqXf0K3Kv4w8ci
- 8xUZJGCruB2gl3KMfDsSYNjSq2R3pMzKXqbx09FWa9zNKin5ic74YT0qvliGqrhLIN2E
- MLUbbunvMbv79GkP49ePjUlLk/sH4pUpGshdb70iFbCyT70cJ7c20RFkle0RAzP3ZgRc
- dLJA==
+ d=gmail.com; s=20230601; t=1768308931; x=1768913731; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=AzgpZX/s+JwEfxKeQDTA8+BAxqVDSuLUyHaHdrkLiP0=;
+ b=V0Ig+aC0yWVMS+SfR26IvT8sYx7t/OuwTEhKY1s4B83OHWXuDxm+UlEPA5B2gjvBAH
+ lIY3Aj21tJAMWe+6W0ezrJ5/o3jbHG+k9B4QUtq5RHo1hD1I5VQZWFhW/LuIVtVQbN48
+ Dgh6psS76isBBTZxHz6IqogzHr7t5sOmFIVVPeCWXee5wmq9kfuiL0NrWenEIvpdgJHo
+ u2qWkdWZy/aNLDJnQ/tJf4NmGODD7Z94IK8efT+e+0DzJuBTbi4Z9OF+xztScQn5adP2
+ Kw/SgAw2NE12gf8997TpA+1Ia7+gbE/xCxHAuffYqLEDaDZbgoEXP/n59/za+40ALl1E
+ fNJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768308890; x=1768913690;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=1e100.net; s=20230601; t=1768308931; x=1768913731;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mZSW3/ZUk2ok+6+IBKVQ6VdtgLfxbWcsPvZz8Xf6Dgw=;
- b=X+BEWVsEIc+/MMb5B6c7Ma/QS6Vf0uA3k9tjTv7e+c64QO9A8lxPjL1kIrH0yi+MHg
- a3+aZWGC9pgx+Wf02PwE54jpDbQ/lVvYOcOQJjz7or+KcHdx/I62/HDCw23GJSU2H1O5
- 2WkmFp2xU+hYezap3MS92y5b+N/k/i72WjJ+mCNnwKU46irKGM1vJbDKC5KzcPEuR3jU
- /z5wbDrF7X8+uxdMF/XECSTHW+LNY4iOR6aBx5YoKAjRUuz7g1EnX/oOep7xSBuu9zBl
- xNL4aE3h2KjtBiOfjHxwFUv93vGg3LjmK54wCtSc7ycA2vV9kkcvn1G+5TZ/neYfOyRj
- adww==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXz2jHo6nJ4FzAaZKNjbqJ1Jxi5N0mhjH3UQ02nUGygSan1HKhfnxqR8+10Or9PqyvSdQ30FsnXW4QP@nongnu.org
-X-Gm-Message-State: AOJu0YydoaLKqsluCHjffgS6Ysc1raN+zJaBJaF3fKzUzBe5zGL/5ahv
- SXYoau8JuHhHSX1de9KQ1mkKt7aPgLTgmeba9Jt9DgGpVu6uL4pw77u4U6M8Xw9LK8v56Ur89gs
- CCh3uy1o9dF8Js94YngC9hovtpfUS1qcj0dqcnJaubSDsTGsTIZF3KfT+
-X-Gm-Gg: AY/fxX7SBmflLwCuC85CoXHUz8FPEj2gB3481G49f5XQgYWYMprDFf+IWRC4WZg0X/J
- GVORRIeAlvycSrYA9FRnPHHpMsLAq56CpJW6zVaCCk/IoeQ3YWxQFubuFeUHCZqxM2vdhG+/6el
- E5wRZ3bVikxtfPBIcbu73XtBl3ooC9qtY0j8P+gCVssAmheU8X3TEpJZ4lQKNiQtFex5Lvg14Tf
- 11nR0xivTp8UAKk7Cwp4WL05IQ0HFUpMwfp9kBztM54turMisalMkq79IIdi76MJSDx/Fcz6q4O
- luRIMlYm82NETF54fNRki/jpDSvaHTaFXrJwM6JLSgUQ6+DCevpKMXo4dzL+yFyiyTl9ZxXn6Nc
- cGYASMYI=
-X-Received: by 2002:a05:600c:190e:b0:479:3a88:de60 with SMTP id
- 5b1f17b1804b1-47d84b3fa79mr221013475e9.37.1768308890081; 
- Tue, 13 Jan 2026 04:54:50 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFpNAusdBmG6cjjk8OPK+qFIeyHFvbuQfHH1L2vOFqOjgzTl9qy6YZ2/7LptLEHKXwWpKjeig==
-X-Received: by 2002:a05:600c:190e:b0:479:3a88:de60 with SMTP id
- 5b1f17b1804b1-47d84b3fa79mr221013225e9.37.1768308889699; 
- Tue, 13 Jan 2026 04:54:49 -0800 (PST)
-Received: from [192.168.0.9] ([47.64.113.220])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-432bd0e16f4sm45046971f8f.11.2026.01.13.04.54.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Jan 2026 04:54:49 -0800 (PST)
-Message-ID: <8ae21890-6048-4a16-ad92-fb60f05685f4@redhat.com>
-Date: Tue, 13 Jan 2026 13:54:47 +0100
+ bh=AzgpZX/s+JwEfxKeQDTA8+BAxqVDSuLUyHaHdrkLiP0=;
+ b=EwszsKwpHns/ehugEYqkebNJL+oegbpz+DlOirhvezmWuAnxDndWhTbRvjuWedbHoi
+ M2veyMQ7hXcRqJh2hSGkMUxCqHPKmmR98EucnVYUTlm+WgJL7/E+yOUrcWiGslmCXlYp
+ zXWS1aXHI1CnZx1ZHMYqr/MriMQY+wNiLRRXbLCYNab/iBqIQzgykiQcIA6vFkbwJOQg
+ a7RG3rhxvZ+Yj1Ml4FgN6r/47lS8hgtUXmhNQVl45yDEHm2BwLDzkyH44Ihr833mMHaE
+ BHpt9ZJYjl8J5990XbkOXjQCSK4jpZiV7tOTs3yHVdQnM3BGALo+152vg04dDTJCUQT9
+ DUOA==
+X-Gm-Message-State: AOJu0YwAyug6tJ3irnJ3bPmqgm6xFWcXSZ+kJyCxqLIt74URsKPrWpj8
+ s0rFCKRKW/8qTa81XqHDxGzHXVmrAZeOgHGEKnQNbMAo8x41GrNfvuNK
+X-Gm-Gg: AY/fxX4STb7mZU1/KorHetc0YuUW4RXmyKbJKYMSdFqigtMs0Pv6Vb6+7L6qfXqGBAn
+ A0TYlW/CUDhdLQCOPoWlUUDAPC/pyepjJftTzHHdnivlS6Bz4C3VwtfFAHC2QJ2NReVIlc++rGw
+ uioL+V2RsmkyQ3U8hhBQFhP2ZLHW/zGSI7gg22Ry7xIG7gIgSGJgWkvimAgOg7JES47HY9pDCfX
+ Yr+8lMLMS1MRoKjcE+ApiCVQQnjoeiim8H6jbJAwa6PeOtS0SPcirke1FW0ZvYGg+kJ1FdNCRKL
+ HeBVBkiYn60y3zru07/kUVdzpuQPX2M2PPPPMsNJ4H+0liZKWN/46iQaPlyNEZv1lzVtXv+uJZC
+ trH+Sxq1U/gi87rTz0mSMoOj4rYmtmeWmfvC9hwMjSWr/su/qR2PwCKRHwDSoCMT6j1siOA==
+X-Google-Smtp-Source: AGHT+IHs3HJkYK/2SSu0rqev4bLnx9VB5KWwkj4bh/+fBn4HSlKAzkncA5qbKM8dP5j7WL/e/05JyA==
+X-Received: by 2002:a05:6512:1292:b0:59b:6b31:d786 with SMTP id
+ 2adb3069b0e04-59b6f05b50dmr7461700e87.49.1768308930376; 
+ Tue, 13 Jan 2026 04:55:30 -0800 (PST)
+Received: from X1 ([178.66.48.90]) by smtp.gmail.com with ESMTPSA id
+ 2adb3069b0e04-59b6dd08593sm4945059e87.77.2026.01.13.04.55.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 13 Jan 2026 04:55:30 -0800 (PST)
+From: Vladimir Isaev <vvisaev@gmail.com>
+To: richard.henderson@linaro.org,
+	pbonzini@redhat.com
+Cc: qemu-devel@nongnu.org,
+	Vladimir Isaev <vvisaev@gmail.com>
+Subject: [PATCH] accel/tcg/cputlb.c: fix unaligned IO region access
+Date: Tue, 13 Jan 2026 15:54:58 +0300
+Message-ID: <20260113125514.111899-1-vvisaev@gmail.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/13] tests: skip I/O test 128 on GitLab due to broken
- dmsetup
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: Hanna Reitz <hreitz@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- John Snow <jsnow@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-block@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Kevin Wolf <kwolf@redhat.com>,
- Cleber Rosa <crosa@redhat.com>
-References: <20260112204026.710659-1-berrange@redhat.com>
- <20260112204026.710659-11-berrange@redhat.com>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20260112204026.710659-11-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::131;
+ envelope-from=vvisaev@gmail.com; helo=mail-lf1-x131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -171,56 +93,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/01/2026 21.40, Daniel P. Berrangé wrote:
-> The I/O test 128 uses 'dmsetup create' to create a device, optionally
-> using sudo to elevate privileges.
-> 
-> This works in GitLab CI, however, the resulting device never appears
-> in /dev leading the test to fail:
-> 
->    1..1
->    # running raw 128
->    not ok raw 128
->    ----------------------------------- stderr -----------------------------------
->    --- /builds/berrange/qemu/tests/qemu-iotests/128.out
->    +++ /builds/berrange/qemu/build/scratch/raw-file-128/128.out.bad
->    @@ -1,5 +1,5 @@
->     QA output created by 128
-> 
->     == reading from error device ==
->    -read failed: Input/output error
->    +qemu-io: can't open device /dev/mapper/eiodev16546: Could not open '/dev/mapper/eiodev16546': No such file or directory
->     *** done
-> 
->    (test program exited with status code 1)
-> 
-> Most likely the container environment the tests are being run under
-> has a hand-populated /dev such that newly created devices from device
-> mapper won't automatically appear.
-> 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->   tests/qemu-iotests/128 | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/tests/qemu-iotests/128 b/tests/qemu-iotests/128
-> index d0e00d24b1..b32e03beee 100755
-> --- a/tests/qemu-iotests/128
-> +++ b/tests/qemu-iotests/128
-> @@ -73,6 +73,8 @@ _supported_fmt raw
->   _supported_proto file
->   _supported_os Linux
->   
-> +test -n "$GITLAB_CI" && _notrun "dmsetup not functional on GitLab CI runners"
-> +
->   _setup_eiodev
->   
->   TEST_IMG="/dev/mapper/$devname"
+According to comment for full->xlat_section for non-RAM:
+ Otherwise, iotlb contains
+  - a physical section number in the lower TARGET_PAGE_BITS
+  - the offset within section->mr of the page base (I/O, ROMD) with the
+    TARGET_PAGE_BITS masked off.
 
-Could we maybe better check for the existance of $TEST_IMG for deciding 
-whether to skip the test? ... so that this is also properly skipped in other 
-container environments where /dev might not be populated right?
+This 'physical section number in the lower TARGET_PAGE_BITS' is true only
+if memory region is aligned to TARGET_PAGE_BITS.
 
-  Thomas
+For example for memory region with address 0x1000c220 and size of
+2 x 4k pages following sections will be created by flatview_add_to_dispatch():
+
+flatview_add_to_dispatch section 1: addr: 0x1000c220 offset_within_address_space 0x1000c220 offset_within_region 0x0
+flatview_add_to_dispatch section 2: addr: 0x1000c220 offset_within_address_space 0x1000d000 offset_within_region 0xde0
+flatview_add_to_dispatch section 3: addr: 0x1000c220 offset_within_address_space 0x1000e000 offset_within_region 0x1de0
+
+So offset_within_region is not aligned to TARGET_PAGE_SIZE.
+
+This leads to full->xlat_section & ~TARGET_PAGE_BITS to contain information not only about
+section number, but also about offset in the memory region.
+
+Fix it by clearing TARGET_PAGE_BITS bits in xlat before adding section and reapply them in io_prepare().
+
+Signed-off-by: Vladimir Isaev <vvisaev@gmail.com>
+---
+ accel/tcg/cputlb.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index c30073326a..4c0b01b606 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -1090,7 +1090,7 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
+         }
+     } else {
+         /* I/O or ROMD */
+-        iotlb = memory_region_section_get_iotlb(cpu, section) + xlat;
++        iotlb = memory_region_section_get_iotlb(cpu, section) + (xlat & TARGET_PAGE_MASK);
+         /*
+          * Writes to romd devices must go through MMIO to enable write.
+          * Reads to romd devices go through the ram_ptr found above,
+@@ -1277,7 +1277,8 @@ io_prepare(hwaddr *out_offset, CPUState *cpu, hwaddr xlat,
+     hwaddr mr_offset;
+ 
+     section = iotlb_to_section(cpu, xlat, attrs);
+-    mr_offset = (xlat & TARGET_PAGE_MASK) + addr;
++    mr_offset = (xlat & TARGET_PAGE_MASK) + addr +
++                (section->offset_within_region & ~TARGET_PAGE_MASK);
+     cpu->mem_io_pc = retaddr;
+     if (!cpu->neg.can_do_io) {
+         cpu_io_recompile(cpu, retaddr);
+-- 
+2.51.0
 
 
