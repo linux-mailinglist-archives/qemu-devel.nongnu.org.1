@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F0A6D18FCD
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 14:01:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED9E9D18FF0
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 14:03:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfe0Z-0006Zm-AE; Tue, 13 Jan 2026 08:00:27 -0500
+	id 1vfe1x-0000nJ-FC; Tue, 13 Jan 2026 08:01:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vfe0V-0006PC-8y; Tue, 13 Jan 2026 08:00:23 -0500
+ id 1vfe0q-00071c-Dc; Tue, 13 Jan 2026 08:00:51 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vfe0T-00013k-GY; Tue, 13 Jan 2026 08:00:23 -0500
+ id 1vfe0o-00014E-Uz; Tue, 13 Jan 2026 08:00:44 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 96FFF17D9E1;
+ by isrv.corpit.ru (Postfix) with ESMTP id AD52E17D9E2;
  Tue, 13 Jan 2026 16:00:05 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 90EDE34C418;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9D6DF34C419;
  Tue, 13 Jan 2026 16:00:10 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org,
 	Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH RFC 3/3] linux-user/syscall.c: consolidate statfs calls further
-Date: Tue, 13 Jan 2026 16:00:04 +0300
-Message-ID: <20260113130008.910240-7-mjt@tls.msk.ru>
+Subject: [PATCH trivial 4/7] meson.build: stop checking for inotify_init()
+Date: Tue, 13 Jan 2026 16:00:05 +0300
+Message-ID: <20260113130008.910240-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260113130008.910240-1-mjt@tls.msk.ru>
 References: <20260113130008.910240-1-mjt@tls.msk.ru>
@@ -57,140 +57,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since statfs & statfs64 implementations are exactly the same,
-differs only in "64" suffix, merge them into one using a common
-macro.
+the only place in qemu which used the check for inotify_init()
+was linux-user, which now assumes inotify_init() is always
+present.  There's no need to check for this function anymore.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- linux-user/syscall.c | 110 ++++++++++++++++---------------------------
- 1 file changed, 40 insertions(+), 70 deletions(-)
+ meson.build | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 1f84c296d5..1b888bccfc 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -10972,80 +10972,50 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-         return ret;
-     case TARGET_NR_setpriority:
-         return get_errno(setpriority(arg1, arg2, arg3));
--#ifdef TARGET_NR_statfs
--    case TARGET_NR_statfs:
--    case TARGET_NR_fstatfs:
--        {
--            struct statf stfs;
--            struct target_statfs *target_stfs;
--            if (num == TARGET_NR_statfs) {
--                if (!(p = lock_user_string(arg1))) {
--                    return -TARGET_EFAULT;
--                }
--                ret = get_errno(statfs(path(p), &stfs));
--                unlock_user(p, arg1, 0);
--            } else /* if (num == TARGET_NR_fstatfs) */ {
--                ret = get_errno(fstatfs(arg1, &stfs));
--            }
--            if (is_error(ret)) {
--                return ret;
--            }
--            if (!lock_user_struct(VERIFY_WRITE, target_stfs, arg2, 0))
--                return -TARGET_EFAULT;
--            __put_user(stfs.f_type, &target_stfs->f_type);
--            __put_user(stfs.f_bsize, &target_stfs->f_bsize);
--            __put_user(stfs.f_blocks, &target_stfs->f_blocks);
--            __put_user(stfs.f_bfree, &target_stfs->f_bfree);
--            __put_user(stfs.f_bavail, &target_stfs->f_bavail);
--            __put_user(stfs.f_files, &target_stfs->f_files);
--            __put_user(stfs.f_ffree, &target_stfs->f_ffree);
--            __put_user(stfs.f_fsid.__val[0], &target_stfs->f_fsid.val[0]);
--            __put_user(stfs.f_fsid.__val[1], &target_stfs->f_fsid.val[1]);
--            __put_user(stfs.f_namelen, &target_stfs->f_namelen);
--            __put_user(stfs.f_frsize, &target_stfs->f_frsize);
--            __put_user(stfs.f_flags, &target_stfs->f_flags);
--            memset(target_stfs->f_spare, 0, sizeof(target_stfs->f_spare));
--            unlock_user_struct(target_stfs, arg2, 1);
--            return ret;
-+
-+#define statfs_fstatfs_impl(variant) /* variant is statfs or statfs64 */ \
-+    case TARGET_NR_##variant: \
-+    case TARGET_NR_f##variant: \
-+        { \
-+            struct statfs stfs; \
-+            struct target_##variant *target_stfs; \
-+            if (num == TARGET_NR_##variant) { \
-+                if (!(p = lock_user_string(arg1))) { \
-+                    return -TARGET_EFAULT; \
-+                } \
-+                ret = get_errno(statfs(path(p), &stfs)); \
-+                unlock_user(p, arg1, 0); \
-+            } else /* if (num == TARGET_NR_f##variant) */ { \
-+                ret = get_errno(fstatfs(arg1, &stfs)); \
-+            } \
-+            if (is_error(ret)) { \
-+                return ret; \
-+            } \
-+            if (!lock_user_struct(VERIFY_WRITE, target_stfs, arg2, 0)) \
-+                return -TARGET_EFAULT; \
-+            __put_user(stfs.f_type, &target_stfs->f_type); \
-+            __put_user(stfs.f_bsize, &target_stfs->f_bsize); \
-+            __put_user(stfs.f_blocks, &target_stfs->f_blocks); \
-+            __put_user(stfs.f_bfree, &target_stfs->f_bfree); \
-+            __put_user(stfs.f_bavail, &target_stfs->f_bavail); \
-+            __put_user(stfs.f_files, &target_stfs->f_files); \
-+            __put_user(stfs.f_ffree, &target_stfs->f_ffree); \
-+            __put_user(stfs.f_fsid.__val[0], &target_stfs->f_fsid.val[0]); \
-+            __put_user(stfs.f_fsid.__val[1], &target_stfs->f_fsid.val[1]); \
-+            __put_user(stfs.f_namelen, &target_stfs->f_namelen); \
-+            __put_user(stfs.f_frsize, &target_stfs->f_frsize); \
-+            __put_user(stfs.f_flags, &target_stfs->f_flags); \
-+            memset(target_stfs->f_spare, 0, sizeof(target_stfs->f_spare)); \
-+            unlock_user_struct(target_stfs, arg2, 1); \
-+            return ret; \
-         }
-+#ifdef TARGET_NR_statfs
-+    statfs_fstatfs_impl(statfs);
- #endif
- #ifdef TARGET_NR_statfs64
--    case TARGET_NR_statfs64:
--    case TARGET_NR_fstatfs64:
--        {
--            struct statfs stfs;
--            struct target_statfs64 *target_stfs;
--            if (num == TARGET_NR_statfs64) {
--                if (!(p = lock_user_string(arg1))) {
--                    return -TARGET_EFAULT;
--                }
--                ret = get_errno(statfs(path(p), &stfs));
--                unlock_user(p, arg1, 0);
--                } else /* if (num == TARGET_NR_fstatfs64) */ {
--                ret = get_errno(fstatfs(arg1, &stfs));
--            }
--            if (is_error(ret)) {
--                return ret;
--            }
--            if (!lock_user_struct(VERIFY_WRITE, target_stfs, arg3, 0))
--                return -TARGET_EFAULT;
--            __put_user(stfs.f_type, &target_stfs->f_type);
--            __put_user(stfs.f_bsize, &target_stfs->f_bsize);
--            __put_user(stfs.f_blocks, &target_stfs->f_blocks);
--            __put_user(stfs.f_bfree, &target_stfs->f_bfree);
--            __put_user(stfs.f_bavail, &target_stfs->f_bavail);
--            __put_user(stfs.f_files, &target_stfs->f_files);
--            __put_user(stfs.f_ffree, &target_stfs->f_ffree);
--            __put_user(stfs.f_fsid.__val[0], &target_stfs->f_fsid.val[0]);
--            __put_user(stfs.f_fsid.__val[1], &target_stfs->f_fsid.val[1]);
--            __put_user(stfs.f_namelen, &target_stfs->f_namelen);
--            __put_user(stfs.f_frsize, &target_stfs->f_frsize);
--            __put_user(stfs.f_flags, &target_stfs->f_flags);
--            memset(target_stfs->f_spare, 0, sizeof(target_stfs->f_spare));
--            unlock_user_struct(target_stfs, arg3, 1);
--            return ret;
--        }
-+    statfs_fstatfs_impl(statfs64);
- #endif
-+
- #ifdef TARGET_NR_socketcall
-     case TARGET_NR_socketcall:
-         return do_socketcall(arg1, arg2);
+diff --git a/meson.build b/meson.build
+index 9b5f1540ff..6ea49c6fc0 100644
+--- a/meson.build
++++ b/meson.build
+@@ -2709,7 +2709,6 @@ if (have_inotify_init or have_inotify_init1) and host_os == 'freebsd'
+     have_inotify_init1 = inotify.found()
+   endif
+ endif
+-config_host_data.set('CONFIG_INOTIFY', have_inotify_init)
+ config_host_data.set('CONFIG_INOTIFY1', have_inotify_init1)
+ 
+ # has_header_symbol
 -- 
 2.47.3
 
