@@ -2,61 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16155D17B20
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 10:39:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A20EFD17B4A
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 10:40:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfarD-0003YC-1P; Tue, 13 Jan 2026 04:38:36 -0500
+	id 1vfar9-0003V4-CJ; Tue, 13 Jan 2026 04:38:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfaqx-00039p-EW
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfaqx-00039l-7Z
  for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:38:19 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfaqv-0003Ti-Nb
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:38:19 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfaqv-0003Tg-Im
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:38:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768297097;
+ s=mimecast20190719; t=1768297096;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ONzSRfiSaUWx+KVAPYfPWBlvWLdlYnxCJcldgq2dqbU=;
- b=RmGFLEAr3NBrJoaQJjKHViWFYktTuHG+OlY4tcT06Kbrf0miPkCebgdNCsRbdx3XDAgyRB
- 0heEgVZdRs1mAX9LNfoauiE49Xe55qLB43AaojErvl9ZjCgeMcpjdTN0a9hyXOV2S2s72Z
- ioj4jErNfQ/qUcLAIkZzwIBeyX1jcew=
+ bh=acIPCCq6BYTz03H6ermtQrrs5LawRKp9JbbGzGgjjWw=;
+ b=ieI1+M2Kcxbm4nCsWFafy2SZBBf1GwGmpba3pCYT7bKgA7FiKl6gJHNkVcYI0EUy5NjPOR
+ NX7h3CDbd8h71TjBRgu5YoDWZcvQN4ORIzw59YjvQFvHUPGG/6yvS2jZScElGLYp3cjw0G
+ 2irMIgjJDVM6F4iLtV7qoc/LQgYEuJ0=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-7CTw0pOKMfC6bf4LDSRQyQ-1; Tue,
- 13 Jan 2026 04:38:11 -0500
-X-MC-Unique: 7CTw0pOKMfC6bf4LDSRQyQ-1
-X-Mimecast-MFC-AGG-ID: 7CTw0pOKMfC6bf4LDSRQyQ_1768297090
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-425-DO_1QOLMOdu8MFh9GVKpUQ-1; Tue,
+ 13 Jan 2026 04:38:14 -0500
+X-MC-Unique: DO_1QOLMOdu8MFh9GVKpUQ-1
+X-Mimecast-MFC-AGG-ID: DO_1QOLMOdu8MFh9GVKpUQ_1768297093
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5252318005B5; Tue, 13 Jan 2026 09:38:10 +0000 (UTC)
+ id ED06618005AD; Tue, 13 Jan 2026 09:38:12 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.79])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 499253000218; Tue, 13 Jan 2026 09:38:07 +0000 (UTC)
+ id C437B30001A2; Tue, 13 Jan 2026 09:38:10 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex@shazbot.org>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Jason Zeng <jason.zeng@intel.com>,
- Joao Martins <joao.m.martins@oracle.com>, Yi Liu <yi.l.liu@intel.com>,
- Xudong Hao <xudong.hao@intel.com>,
- Giovannio Cabiddu <giovanni.cabiddu@intel.com>,
- Rohith S R <rohith.s.r@intel.com>,
+ Eric Auger <eric.auger@redhat.com>, Nicolin Chen <nicolinc@nvidia.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 30/41] vfio/migration: Allow live migration with vIOMMU without
- VFs using device dirty tracking
-Date: Tue, 13 Jan 2026 10:36:26 +0100
-Message-ID: <20260113093637.1549214-31-clg@redhat.com>
+Subject: [PULL 31/41] hw/pci: Introduce pci_device_get_host_iommu_quirks()
+Date: Tue, 13 Jan 2026 10:36:27 +0100
+Message-ID: <20260113093637.1549214-32-clg@redhat.com>
 In-Reply-To: <20260113093637.1549214-1-clg@redhat.com>
 References: <20260113093637.1549214-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -90,110 +85,114 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Commit e46883204c38 ("vfio/migration: Block migration with vIOMMU")
-introduces a migration blocker when vIOMMU is enabled, because we need
-to calculate the IOVA ranges for device dirty tracking. But this is
-unnecessary for iommu dirty tracking.
+In VFIO core, we call iommufd_backend_get_device_info() to return vendor
+specific hardware information data, but it's not good to retrieve this raw
+data in VFIO core.
 
-Limit the vfio_viommu_preset() check to those devices which use device
-dirty tracking. This allows live migration with VFIO devices which use
-iommu dirty tracking.
+Introduce a new PCIIOMMUOps optional callback, get_host_iommu_quirk() which
+allows to retrieve the vendor specific hardware information data and convert
+it into bitmaps defined with enum host_iommu_quirks.
 
-Suggested-by: Jason Zeng <jason.zeng@intel.com>
-Co-developed-by: Joao Martins <joao.m.martins@oracle.com>
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+pci_device_get_host_iommu_quirks() is a wrapper that can be called on a PCI
+device potentially protected by a vIOMMU.
+
+Suggested-by: Eric Auger <eric.auger@redhat.com>
+Suggested-by: Nicolin Chen <nicolinc@nvidia.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Tested-by: Xudong Hao <xudong.hao@intel.com>
-Tested-by: Giovannio Cabiddu <giovanni.cabiddu@intel.com>
-Tested-by: Rohith S R <rohith.s.r@intel.com>
-Link: https://lore.kernel.org/qemu-devel/20251218062643.624796-10-zhenzhong.duan@intel.com
+Link: https://lore.kernel.org/qemu-devel/20260106062808.316574-2-zhenzhong.duan@intel.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-device.h | 10 ++++++++++
- hw/vfio/container.c           |  5 +----
- hw/vfio/device.c              |  6 ++++++
- hw/vfio/migration.c           |  6 +++---
- 4 files changed, 20 insertions(+), 7 deletions(-)
+ include/hw/core/iommu.h |  5 +++++
+ include/hw/pci/pci.h    | 31 +++++++++++++++++++++++++++++++
+ hw/pci/pci.c            | 12 ++++++++++++
+ 3 files changed, 48 insertions(+)
 
-diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
-index 0bc877ff62f9473d49782ce7c2ee1eb943175821..48d00c7bc47a2fd11a522a1ad09b051f16342545 100644
---- a/include/hw/vfio/vfio-device.h
-+++ b/include/hw/vfio/vfio-device.h
-@@ -148,6 +148,16 @@ bool vfio_device_irq_set_signaling(VFIODevice *vbasedev, int index, int subindex
+diff --git a/include/hw/core/iommu.h b/include/hw/core/iommu.h
+index fcbbcd10150e6e675fb68c817e786bf23b301892..d5401a397b2a47d0cf78246232828c93b6392b71 100644
+--- a/include/hw/core/iommu.h
++++ b/include/hw/core/iommu.h
+@@ -22,4 +22,9 @@ enum viommu_flags {
+     VIOMMU_FLAG_WANT_NESTING_PARENT = BIT_ULL(0),
+ };
  
- void vfio_device_reset_handler(void *opaque);
- bool vfio_device_is_mdev(VFIODevice *vbasedev);
++/* Host IOMMU quirks. Extracted from host IOMMU capabilities */
++enum host_iommu_quirks {
++    HOST_IOMMU_QUIRK_NESTING_PARENT_BYPASS_RO = BIT_ULL(0),
++};
++
+ #endif /* HW_IOMMU_H */
+diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+index 868817cc05ae26832246269eb4a1637c8e6ae64b..6fd8984c99088906fcac73c1f95d2c7f84380c4e 100644
+--- a/include/hw/pci/pci.h
++++ b/include/hw/pci/pci.h
+@@ -474,6 +474,23 @@ typedef struct PCIIOMMUOps {
+      * enum viommu_flags.
+      */
+     uint64_t (*get_viommu_flags)(void *opaque);
++    /**
++     * @get_host_iommu_quirks: get host IOMMU quirks
++     *
++     * Optional callback, if not implemented, then vIOMMU doesn't support
++     * converting @type specific hardware information data into a standard
++     * bitmap format.
++     *
++     * @type: IOMMU hardware info type
++     *
++     * @caps: IOMMU @type specific hardware information data
++     *
++     * @size: size of @caps
++     *
++     * Returns: bitmap with each bit representing a host IOMMU quirk defined in
++     * enum host_iommu_quirks
++     */
++    uint64_t (*get_host_iommu_quirks)(uint32_t type, void *caps, uint32_t size);
+     /**
+      * @get_iotlb_info: get properties required to initialize a device IOTLB.
+      *
+@@ -666,6 +683,20 @@ void pci_device_unset_iommu_device(PCIDevice *dev);
+  */
+ uint64_t pci_device_get_viommu_flags(PCIDevice *dev);
+ 
 +/**
-+ * vfio_device_dirty_pages_disabled: Check if device dirty tracking will be
-+ * used for a VFIO device
++ * pci_device_get_host_iommu_quirks: get host IOMMU quirks.
 + *
-+ * @vbasedev: The VFIODevice to transform
++ * Returns: bitmap with each bit representing a host IOMMU quirk defined in
++ * enum host_iommu_quirks. Or 0 if vIOMMU doesn't convert any.
 + *
-+ * Return: true if either @vbasedev doesn't support device dirty tracking or
-+ * is forcedly disabled from command line, otherwise false.
++ * @dev: PCI device pointer.
++ * @type: IOMMU hardware info type
++ * @caps: IOMMU @type specific hardware information data
++ * @size: size of @caps
 + */
-+bool vfio_device_dirty_pages_disabled(VFIODevice *vbasedev);
- bool vfio_device_hiod_create_and_realize(VFIODevice *vbasedev,
-                                          const char *typename, Error **errp);
- bool vfio_device_attach(char *name, VFIODevice *vbasedev,
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 9881f5df2cc34262ae6aa88aa937659e7b197cd2..af16cd14db069882cc5fcf6349b433af3867f40c 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -178,10 +178,7 @@ bool vfio_container_devices_dirty_tracking_is_supported(
-     VFIODevice *vbasedev;
- 
-     QLIST_FOREACH(vbasedev, &bcontainer->device_list, container_next) {
--        if (vbasedev->device_dirty_page_tracking == ON_OFF_AUTO_OFF) {
--            return false;
--        }
--        if (!vbasedev->dirty_pages_supported) {
-+        if (vfio_device_dirty_pages_disabled(vbasedev)) {
-             return false;
-         }
-     }
-diff --git a/hw/vfio/device.c b/hw/vfio/device.c
-index 100532f35d9ad14bf14c8d6d783f7b06aa85245a..3bab082322633f7cbd4295b4e91717c83fbb48da 100644
---- a/hw/vfio/device.c
-+++ b/hw/vfio/device.c
-@@ -412,6 +412,12 @@ bool vfio_device_is_mdev(VFIODevice *vbasedev)
-     return subsys && (strcmp(subsys, "/sys/bus/mdev") == 0);
++uint64_t pci_device_get_host_iommu_quirks(PCIDevice *dev, uint32_t type,
++                                          void *caps, uint32_t size);
++
+ /**
+  * pci_iommu_get_iotlb_info: get properties required to initialize a
+  * device IOTLB.
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index a136e772a39fd3fb1b3631351dbea710227bedfe..8cbf5f5d703847166c94aaae4d1d5f33c3dc1def 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -3032,6 +3032,18 @@ uint64_t pci_device_get_viommu_flags(PCIDevice *dev)
+     return 0;
  }
  
-+bool vfio_device_dirty_pages_disabled(VFIODevice *vbasedev)
++uint64_t pci_device_get_host_iommu_quirks(PCIDevice *dev, uint32_t type,
++                                          void *caps, uint32_t size)
 +{
-+    return (!vbasedev->dirty_pages_supported ||
-+            vbasedev->device_dirty_page_tracking == ON_OFF_AUTO_OFF);
++    PCIBus *iommu_bus;
++
++    pci_device_get_iommu_bus_devfn(dev, &iommu_bus, NULL, NULL);
++    if (iommu_bus && iommu_bus->iommu_ops->get_host_iommu_quirks) {
++        return iommu_bus->iommu_ops->get_host_iommu_quirks(type, caps, size);
++    }
++    return 0;
 +}
 +
- bool vfio_device_hiod_create_and_realize(VFIODevice *vbasedev,
-                                          const char *typename, Error **errp)
- {
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index e1c25ba90703e9574fdd69275ae2705684396697..f857dc25ed4d0f824bdabc168228a5e925ac7dbe 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -1210,8 +1210,7 @@ bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
-         return !vfio_block_migration(vbasedev, err, errp);
-     }
- 
--    if ((!vbasedev->dirty_pages_supported ||
--         vbasedev->device_dirty_page_tracking == ON_OFF_AUTO_OFF) &&
-+    if (vfio_device_dirty_pages_disabled(vbasedev) &&
-         !vbasedev->iommu_dirty_tracking) {
-         if (vbasedev->enable_migration == ON_OFF_AUTO_AUTO) {
-             error_setg(&err,
-@@ -1236,7 +1235,8 @@ bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
-         goto out_deinit;
-     }
- 
--    if (vfio_viommu_preset(vbasedev)) {
-+    if (!vfio_device_dirty_pages_disabled(vbasedev) &&
-+        vfio_viommu_preset(vbasedev)) {
-         error_setg(&err, "%s: Migration is currently not supported "
-                    "with vIOMMU enabled", vbasedev->name);
-         goto add_blocker;
+ int pci_pri_request_page(PCIDevice *dev, uint32_t pasid, bool priv_req,
+                          bool exec_req, hwaddr addr, bool lpig,
+                          uint16_t prgi, bool is_read, bool is_write)
 -- 
 2.52.0
 
