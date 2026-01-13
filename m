@@ -2,107 +2,151 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01908D1ABD1
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 18:51:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FFDAD1AC40
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 18:58:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfiWk-0005xJ-2k; Tue, 13 Jan 2026 12:49:58 -0500
+	id 1vfie6-00047E-BQ; Tue, 13 Jan 2026 12:57:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jhkim@linux.ibm.com>)
- id 1vfiVT-0005UN-Lw; Tue, 13 Jan 2026 12:48:45 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1vfidZ-0003xa-Lb; Tue, 13 Jan 2026 12:57:03 -0500
+Received: from mail-westus3azlp170120001.outbound.protection.outlook.com
+ ([2a01:111:f403:c107::1] helo=PH8PR06CU001.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jhkim@linux.ibm.com>)
- id 1vfiVQ-0004Ts-6l; Tue, 13 Jan 2026 12:48:38 -0500
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60DF4MkM023973;
- Tue, 13 Jan 2026 17:48:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=1i5iH5p1Qm6eNxAOT
- FrUzoB4dCfBLLbv/tlSNeLToiA=; b=OH6mj87eqlmsmxozTflk/gRE5y2WXALXR
- X9Gg/3NQ8sXnpOBdQpHtsEQ4rMBUqhStUxTYgLSeZSkyoOEbP4HBURT6RZH7L0+X
- pGpjlORQMdhL5xcJ8/F1YMCR3dNpHGuXb7IGgxFb5gOUSJqzcVGSBv4a6kbLVgZW
- xbWQ783m4sX1GEWPwH/mRwMdDX2gGekVwUVAb5iiG5oXr2N3LWmHVaNysVgqYGYH
- aJSgbMFHJ/vrAjkP5YpbB2MtPbkm+ddhOKsbLH6YsPMJdtWucK8ayeZQ15bu010G
- sHfebdJ0xok4jExi1+WjUxds8DEd6pbOIk/mxBMCoAYA4/AaLrbUA==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkd6e5j3b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 13 Jan 2026 17:48:32 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60DHO9YO031294;
- Tue, 13 Jan 2026 17:48:31 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bm3t1nch0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 13 Jan 2026 17:48:31 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 60DHmVeu61407518
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 13 Jan 2026 17:48:31 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DF10058059;
- Tue, 13 Jan 2026 17:48:30 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 467D258053;
- Tue, 13 Jan 2026 17:48:30 +0000 (GMT)
-Received: from IBM-GLTZVH3.ibm.com (unknown [9.61.252.253])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 13 Jan 2026 17:48:30 +0000 (GMT)
-From: Jaehoon Kim <jhkim@linux.ibm.com>
-To: qemu-devel@nongnu.org, qemu-block@nongnu.org
-Cc: pbonzini@redhat.com, stefanha@redhat.com, fam@euphon.net,
- armbru@redhat.com, eblake@redhat.com, berrange@redhat.com,
- eduardo@habkost.net, dave@treblig.org, sw@weilnetz.de,
- Jaehoon Kim <jhkim@linux.ibm.com>
-Subject: [PATCH RFC v1 3/3] qapi/iothread: introduce poll-weight parameter for
- aio-poll
-Date: Tue, 13 Jan 2026 11:48:24 -0600
-Message-ID: <20260113174824.464720-4-jhkim@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260113174824.464720-1-jhkim@linux.ibm.com>
-References: <20260113174824.464720-1-jhkim@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1vfidX-0005ks-Hw; Tue, 13 Jan 2026 12:57:00 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sNCCwMXXPFKzYD/484MLHyMQUD3fxSK+1idVTdGeJK887xQN11lZxOI0SsIB4i5tsiCdIuqXIEsom9mNQfjWayPw9Nr2Bw+RWkRUl0AaVMzj+ZfE73KbNuMgAI2eA7+hvFSZicy1lUSaPlnBKo82xkg0UwsyIJIVospYKcsTmetxVhZ82SXjbGIav6FppRg2EhL1wW6qWoMFs4e7kFdj55Y6+Ex/SUwr5QGV/BcplJLy0rkxDz86cm21Xxo7L4nNHqnTVl9g+JyNBNMrkwpwUqf2TZxkMx8Rwv8wNsbSkKNOWQW4f8K96VMBA0P/xeTcqYjfzA8upqeCwzH1bYyyPg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aYQcRdBvyKmoA0j3Wj78FIBtyG0sidpENmvp67xbkPs=;
+ b=nELK/8hGZs9TQFqxg91bb2gzdBeM69JKAVlqEJ0a2b+X/65+RoHx9mY0dzo57jvl1ewBxnJYJ5h7jXiwJbzW2FRWlo5+nOYlEqJ3FnFKsv5HOW+b3n4FpkcoZ4HBFA4MZjcDqApk0lqebHCOiJl0D+Z/8TuVd8j+uSKDFNHitPDlpjrASSY0KCI6QGUuEYQoopeTh186KsxJwCHBj9uQAnZmtdbX4vRVuuZO9WQ+ZWPuMjWKV8glJq0s69Z49frHq2H872epw7okweD35TkU+2DWQERZDPS+aHcNoi2xb/XZTMWoX0GhBAVDRarrGLaqOO0WjoWxz82vJTbI4388vA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aYQcRdBvyKmoA0j3Wj78FIBtyG0sidpENmvp67xbkPs=;
+ b=pws/3Kmdt3BqLl2s+5zhT7OdaF45E8AMws/q9ItzWmBxDNYvrkOz/p3hplCk6uPyMpHfeis+hK6ydkqMUmTsVzBBRhjN4Y3eixIFY4uWT7Wgk/ixJ/i27xudtS0x5JKLyvXJVk/o8Dch3vuLtCRZgbLlItLrEU0BqAk4buAPTRI8ovyqvAPYsY/bUZzVox37WtkohPBbpwUbOmsZYoj2hRnjlCgakSSQiXbWsYn6uu2r+oQYlWHqySjMXjr4C849vHVVgVp5iIKOxpWIzlE8k75avvzJwIQ/Fr1rYDr8uqgZOKjNSFniOlnICcYy5ElHfdEOzs6vfbtgwDhYp+BXGA==
+Received: from MN0P221CA0023.NAMP221.PROD.OUTLOOK.COM (2603:10b6:208:52a::9)
+ by SA3PR12MB7950.namprd12.prod.outlook.com (2603:10b6:806:31c::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Tue, 13 Jan
+ 2026 17:56:49 +0000
+Received: from BL02EPF0001A105.namprd05.prod.outlook.com
+ (2603:10b6:208:52a:cafe::ba) by MN0P221CA0023.outlook.office365.com
+ (2603:10b6:208:52a::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.7 via Frontend Transport; Tue,
+ 13 Jan 2026 17:56:35 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BL02EPF0001A105.mail.protection.outlook.com (10.167.241.137) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9520.1 via Frontend Transport; Tue, 13 Jan 2026 17:56:48 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 13 Jan
+ 2026 09:56:26 -0800
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 13 Jan
+ 2026 09:56:25 -0800
+Received: from Asurada-Nvidia (10.127.8.14) by mail.nvidia.com (10.129.68.7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Tue, 13 Jan 2026 09:56:24 -0800
+Date: Tue, 13 Jan 2026 09:56:23 -0800
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: Shameer Kolothum <skolothumtho@nvidia.com>
+CC: "eric.auger@redhat.com" <eric.auger@redhat.com>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>, Nathan Chen
+ <nathanc@nvidia.com>, Matt Ochs <mochs@nvidia.com>, Jason Gunthorpe
+ <jgg@nvidia.com>, "jonathan.cameron@huawei.com"
+ <jonathan.cameron@huawei.com>, "zhangfei.gao@linaro.org"
+ <zhangfei.gao@linaro.org>, "zhenzhong.duan@intel.com"
+ <zhenzhong.duan@intel.com>, Krishnakant Jaju <kjaju@nvidia.com>
+Subject: Re: [RFC PATCH 05/16] hw/arm/tegra241-cmdqv: Add initial Tegra241
+ CMDQ-Virtualisation support
+Message-ID: <aWaHR/SEgDs+2RJX@Asurada-Nvidia>
+References: <20251210133737.78257-1-skolothumtho@nvidia.com>
+ <20251210133737.78257-6-skolothumtho@nvidia.com>
+ <309bce2f-be34-4d3b-83e3-2a115f1ace80@redhat.com>
+ <CH3PR12MB7548CCE21D0E447A18E190BAAB8EA@CH3PR12MB7548.namprd12.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: vF3hIEfoDGD0QmnXrI2e7GNDooibAjAE
-X-Authority-Analysis: v=2.4 cv=LLxrgZW9 c=1 sm=1 tr=0 ts=69668570 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8 a=A1X0JdhQAAAA:8
- a=8dkL5VNdttJqmu350ZsA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEzMDE0OCBTYWx0ZWRfXxiH60Cs+0+na
- o19YT/Bj031Cx1W27pi4h4tose4O30p2W7mzw0Y3zf1cePCMkbNJWBehMZAPBARrD6I+TCsH9y3
- tFTJgq1BaSWP7pOKEnUrUgxOP7O8Fh/bQxnnwbVlrE7GkXXTkZ8+I7gEUvk421iYgiM3ppVNqoY
- fPYsYrdTqMNRDpcmo8Qr8eOKnEUWEcJ3RtXRItc6+i57lNLYUg5fEAmhWKtGf20jK9SF97Y2RsH
- QYVRVPemWJOcrYrI7GSf1ImeeKdaPjq0pzfllQ+hS9nPimubWikCjdbMwRsSABpx8jOJ1kbylTA
- dMeARsesbUO/OYkKOqhm9h/Es7ofaj+9Mz9qU/XQ8mCJgmcFLDVG/mAHbNNjeCl6sGY3zuzieOr
- Rn4Hdw+wZFWOzCfxR87NmRU4nFBlXNq567by7yESlXuSCFe4y7G9LPJ8km7yzNXmNmtomNrfy+e
- +OfUrySxWl5oogPfyhw==
-X-Proofpoint-ORIG-GUID: vF3hIEfoDGD0QmnXrI2e7GNDooibAjAE
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-13_04,2026-01-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 clxscore=1015 spamscore=0 impostorscore=0
- malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601130148
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=jhkim@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CH3PR12MB7548CCE21D0E447A18E190BAAB8EA@CH3PR12MB7548.namprd12.prod.outlook.com>
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A105:EE_|SA3PR12MB7950:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3e569efa-2e22-49b0-8bd1-08de52cd1fff
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|82310400026|36860700013|376014; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?Q0jP9F1RLALBtPnbEdM1HfNO+P8PnlUJ87KIz4sTVn/w6NhHnj7E4BmENo+N?=
+ =?us-ascii?Q?OOb23Qawc9lChvCQSMHVpv4EHG7MKCGtqNIT+I/w881oapfby7zX3Z2556no?=
+ =?us-ascii?Q?A2Mn4gI3SxbPMKlGRkKunc3FLykGHw7PX7t+YDDuEQgNsLEVc/tF/B6f5Yck?=
+ =?us-ascii?Q?PtUag6ybPOAXyGGY3/AW0gCGzaVyJ1HzXKT1uHHYQgkuieoir9gCNuNGdWjO?=
+ =?us-ascii?Q?3gjMPazOTddICG3Q25GTS50nFrBklAJDfAO5T+NM46pl2s/3fXmOPPcmIqD1?=
+ =?us-ascii?Q?1dVWFOcgrNj13W6ej8kmoaM2OQ4KrJJUWLefDW0XlEG1btfqqZTG1g3LzZvQ?=
+ =?us-ascii?Q?V1zgPIn4V126E2KaAMFFLecOoGd/+j59v9drz45HLeMYLBF1ik1gj7v27Ve7?=
+ =?us-ascii?Q?BF64vFsLAA6JXk+fPmEm3cUXrLvr695hM1q7ve0VoGvqf60Y0V2UZxSU6D8S?=
+ =?us-ascii?Q?8Q05oGfS7c4AJevIpkXSrG0Kf/2urOYmSAKpFNjRqSE53UbS6dBGqGchYed8?=
+ =?us-ascii?Q?a70iUfAsPgHEmhqK7D4VlYPufHYztQF3MxGE+lnlAMthU423oc4q9teOIv0x?=
+ =?us-ascii?Q?SMQyYHU1+bzfTU9xz+ev6AKH9IDC2Mp0BzN0hTPK/UBz4rRxJXr9fvF7w8vZ?=
+ =?us-ascii?Q?F1JP2HTTYYP5K1XBF2rc9K3VLWDxRwjVDZ2pD4/k+FhmonrWQaxDDU7Xf2Z8?=
+ =?us-ascii?Q?ppsaou3Lkg30ZEcxggCakZTjzIqqalRVezTv9haI4ep+6I7/+gCnSLTL3Sz3?=
+ =?us-ascii?Q?cucVhSwO7NtVpMUWgEJe5R78I199DlARqDFgP/ly29yWVPkG9CeCPMAFxxs8?=
+ =?us-ascii?Q?CjIyxCr/QdZEXOtS24Zgho8623uIVAu4Dxbiu7ZhdFXqf3+i2tTYYwfIIzeS?=
+ =?us-ascii?Q?JC+feTsP6qVzg9eOSgkWgJikQTasZTXt1YjFIkjU0a3AXRaPBQ8DebJtZXtq?=
+ =?us-ascii?Q?P8H5pltdTmY6Z/e7lvCR3JxgD43+lwm+W5eu45AmZzrk5oLDeEMkDn0ceGT7?=
+ =?us-ascii?Q?TEqTGRAxSCt5JQaVAnmePv7kqKvILLBq2bjBT9z6hTwLUjpmx3sRhxeJfvdY?=
+ =?us-ascii?Q?SgtTTX7JWmLcV9rsEIFnPG19pFytluusxSCTPS6CvjxvV3yFIjZ25izD2N2X?=
+ =?us-ascii?Q?OuaZwxoLHDuXHINCCQNNrmBWKwkxwLqt3f4rSIaSho6MG+Cig2OROGo3iEtQ?=
+ =?us-ascii?Q?zpaQQFUAQ5qgNG5/d/gryehl30Y1/CTXdQtRUW4Dc/JVp3UU+56hiCjN0tkK?=
+ =?us-ascii?Q?pD9UO5W4eOK46+l4eT63HlY1/7EpFEioV+k6j9hlWAWpWLiIEUQvXpTbKuKp?=
+ =?us-ascii?Q?WEBXDLmR7QM5QBzv3tBCRMlLHq+1qRLedVC0ypQyo7wGEHdF9xYSMq58jSFc?=
+ =?us-ascii?Q?WTTSUtlOOZtr3t0Ftb6o6fkkfmaSl9FRodeoBfyl7esodQGIzk95VzaOLbO+?=
+ =?us-ascii?Q?A1TZPY3qSzQjcQtBberthwKxgt7/ZWsQ434yWYjOtUwPJR/aLLoxwdbH+83D?=
+ =?us-ascii?Q?JbluMQbK5q6MS/DqpY18kg+TgdDDLAGWIfQooFr8IJEakCfEhXNYzwd5e/76?=
+ =?us-ascii?Q?C9fhwUnxd+dnj/QY/1I=3D?=
+X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
+ SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 17:56:48.9967 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3e569efa-2e22-49b0-8bd1-08de52cd1fff
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL02EPF0001A105.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7950
+Received-SPF: permerror client-ip=2a01:111:f403:c107::1;
+ envelope-from=nicolinc@nvidia.com;
+ helo=PH8PR06CU001.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,284 +162,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce a new poll-weight parameter for aio-poll. This parameter
-controls how much the most recent event interval affects the next
-polling duration. When set to 0, a default value of 2 is used, meaning
-the current interval contributes roughly 25% to the calculation. Larger
-values decrease the weight of the current interval, enabling more
-gradual adjustments to polling duration.
+On Tue, Jan 13, 2026 at 06:41:03AM -0800, Shameer Kolothum wrote:
+> > > -    if (!iommufd_backend_alloc_viommu(idev->iommufd, idev->devid,
+> > > +    if (s->tegra241_cmdqv && !tegra241_cmdqv_alloc_viommu(s, idev,
+> > &viommu_id,
+> > > +                                                          errp)) {
+> > > +        return false;
 
-Signed-off-by: Jaehoon Kim <jhkim@linux.ibm.com>
----
- include/qemu/aio.h                |  4 +++-
- include/system/iothread.h         |  1 +
- iothread.c                        | 10 ++++++++++
- monitor/hmp-cmds.c                |  1 +
- qapi/misc.json                    |  6 ++++++
- qapi/qom.json                     |  8 +++++++-
- qemu-options.hx                   |  7 ++++++-
- tests/unit/test-nested-aio-poll.c |  2 +-
- util/aio-posix.c                  |  9 ++++++---
- util/aio-win32.c                  |  3 ++-
- util/async.c                      |  1 +
- 11 files changed, 44 insertions(+), 8 deletions(-)
+> > I am confused. In tegra241_cmdqv_alloc_viommu() it returns false if
+> > alloc_viommu fails. but you seem to reset s->tegra241_cmdqv as if you
+> > would fall back to non cmdqv setup. What do you try do, fallback or
+> > execute either tegra241 code or default code. Or maybe I misunderstand
+> > the uapi call sequence?
+> 
+> No fallback intended. Currently, if the user has enabled tegra241_cmdqv and
+> tegra241_cmdqv_alloc_viommu() fails, we fail the device init. Sorry about
+> that to reset s->tegra241_cmdqv and !viommu_id logic, , that was a left
+> over logic from previous internal branch I had.
+> 
+> @Nicolin, is there any such requirement for a fallback in this case?
 
-diff --git a/include/qemu/aio.h b/include/qemu/aio.h
-index 6c77a190e9..50b8db2712 100644
---- a/include/qemu/aio.h
-+++ b/include/qemu/aio.h
-@@ -311,6 +311,7 @@ struct AioContext {
-     int64_t poll_max_ns;    /* maximum polling time in nanoseconds */
-     int64_t poll_grow;      /* polling time growth factor */
-     int64_t poll_shrink;    /* polling time shrink factor */
-+    int64_t poll_weight;    /* weight of current interval in calculation */
- 
-     /* AIO engine parameters */
-     int64_t aio_max_batch;  /* maximum number of requests in a batch */
-@@ -792,12 +793,13 @@ void aio_context_destroy(AioContext *ctx);
-  * @max_ns: how long to busy poll for, in nanoseconds
-  * @grow: polling time growth factor
-  * @shrink: polling time shrink factor
-+ * @weight: weight factor applied to the current polling interval
-  *
-  * Poll mode can be disabled by setting poll_max_ns to 0.
-  */
- void aio_context_set_poll_params(AioContext *ctx, int64_t max_ns,
-                                  int64_t grow, int64_t shrink,
--                                 Error **errp);
-+                                 int64_t weight, Error **errp);
- 
- /**
-  * aio_context_set_aio_params:
-diff --git a/include/system/iothread.h b/include/system/iothread.h
-index e26d13c6c7..6ea57ed126 100644
---- a/include/system/iothread.h
-+++ b/include/system/iothread.h
-@@ -38,6 +38,7 @@ struct IOThread {
-     int64_t poll_max_ns;
-     int64_t poll_grow;
-     int64_t poll_shrink;
-+    int64_t poll_weight;
- };
- typedef struct IOThread IOThread;
- 
-diff --git a/iothread.c b/iothread.c
-index caf68e0764..68a944e57c 100644
---- a/iothread.c
-+++ b/iothread.c
-@@ -164,6 +164,7 @@ static void iothread_set_aio_context_params(EventLoopBase *base, Error **errp)
-                                 iothread->poll_max_ns,
-                                 iothread->poll_grow,
-                                 iothread->poll_shrink,
-+                                iothread->poll_weight,
-                                 errp);
-     if (*errp) {
-         return;
-@@ -233,6 +234,9 @@ static IOThreadParamInfo poll_grow_info = {
- static IOThreadParamInfo poll_shrink_info = {
-     "poll-shrink", offsetof(IOThread, poll_shrink),
- };
-+static IOThreadParamInfo poll_weight_info = {
-+    "poll-weight", offsetof(IOThread, poll_weight),
-+};
- 
- static void iothread_get_param(Object *obj, Visitor *v,
-         const char *name, IOThreadParamInfo *info, Error **errp)
-@@ -288,6 +292,7 @@ static void iothread_set_poll_param(Object *obj, Visitor *v,
-                                     iothread->poll_max_ns,
-                                     iothread->poll_grow,
-                                     iothread->poll_shrink,
-+                                    iothread->poll_weight,
-                                     errp);
-     }
- }
-@@ -311,6 +316,10 @@ static void iothread_class_init(ObjectClass *klass, const void *class_data)
-                               iothread_get_poll_param,
-                               iothread_set_poll_param,
-                               NULL, &poll_shrink_info);
-+    object_class_property_add(klass, "poll-weight", "int",
-+                              iothread_get_poll_param,
-+                              iothread_set_poll_param,
-+                              NULL, &poll_weight_info);
- }
- 
- static const TypeInfo iothread_info = {
-@@ -356,6 +365,7 @@ static int query_one_iothread(Object *object, void *opaque)
-     info->poll_max_ns = iothread->poll_max_ns;
-     info->poll_grow = iothread->poll_grow;
-     info->poll_shrink = iothread->poll_shrink;
-+    info->poll_weight = iothread->poll_weight;
-     info->aio_max_batch = iothread->parent_obj.aio_max_batch;
- 
-     QAPI_LIST_APPEND(*tail, info);
-diff --git a/monitor/hmp-cmds.c b/monitor/hmp-cmds.c
-index 5a673cddb2..40e3b1da50 100644
---- a/monitor/hmp-cmds.c
-+++ b/monitor/hmp-cmds.c
-@@ -205,6 +205,7 @@ void hmp_info_iothreads(Monitor *mon, const QDict *qdict)
-         monitor_printf(mon, "  poll-max-ns=%" PRId64 "\n", value->poll_max_ns);
-         monitor_printf(mon, "  poll-grow=%" PRId64 "\n", value->poll_grow);
-         monitor_printf(mon, "  poll-shrink=%" PRId64 "\n", value->poll_shrink);
-+        monitor_printf(mon, "  poll-weight=%" PRId64 "\n", value->poll_weight);
-         monitor_printf(mon, "  aio-max-batch=%" PRId64 "\n",
-                        value->aio_max_batch);
-     }
-diff --git a/qapi/misc.json b/qapi/misc.json
-index 28c641fe2f..b21cc48a03 100644
---- a/qapi/misc.json
-+++ b/qapi/misc.json
-@@ -85,6 +85,11 @@
- # @poll-shrink: how many ns will be removed from polling time, 0 means
- #     that it's not configured (since 2.9)
- #
-+# @poll-weight: the weight factor for adaptive polling.
-+#     Determines how much the current event interval contributes to
-+#     the next polling time calculation.  0 means that the default
-+#     value is used.  (since 10.1)
-+#
- # @aio-max-batch: maximum number of requests in a batch for the AIO
- #     engine, 0 means that the engine will use its default (since 6.1)
- #
-@@ -96,6 +101,7 @@
-            'poll-max-ns': 'int',
-            'poll-grow': 'int',
-            'poll-shrink': 'int',
-+           'poll-weight': 'int',
-            'aio-max-batch': 'int' } }
- 
- ##
-diff --git a/qapi/qom.json b/qapi/qom.json
-index 6f5c9de0f0..d90823478d 100644
---- a/qapi/qom.json
-+++ b/qapi/qom.json
-@@ -606,6 +606,11 @@
- #     algorithm detects it is spending too long polling without
- #     encountering events.  0 selects a default behaviour (default: 0)
- #
-+# @poll-weight: the weight factor for adaptive polling.
-+#     Determines how much the current event interval contributes to
-+#     the next polling time calculation.  0 selects a default
-+#     behaviour (default: 0) since 10.1.
-+#
- # The @aio-max-batch option is available since 6.1.
- #
- # Since: 2.0
-@@ -614,7 +619,8 @@
-   'base': 'EventLoopBaseProperties',
-   'data': { '*poll-max-ns': 'int',
-             '*poll-grow': 'int',
--            '*poll-shrink': 'int' } }
-+            '*poll-shrink': 'int',
-+            '*poll-weight': 'int' } }
- 
- ##
- # @MainLoopProperties:
-diff --git a/qemu-options.hx b/qemu-options.hx
-index ec92723f10..74adaf55fc 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -6352,7 +6352,7 @@ SRST
- 
-             CN=laptop.example.com,O=Example Home,L=London,ST=London,C=GB
- 
--    ``-object iothread,id=id,poll-max-ns=poll-max-ns,poll-grow=poll-grow,poll-shrink=poll-shrink,aio-max-batch=aio-max-batch``
-+    ``-object iothread,id=id,poll-max-ns=poll-max-ns,poll-grow=poll-grow,poll-shrink=poll-shrink,poll-weight=poll-weight,aio-max-batch=aio-max-batch``
-         Creates a dedicated event loop thread that devices can be
-         assigned to. This is known as an IOThread. By default device
-         emulation happens in vCPU threads or the main event loop thread.
-@@ -6388,6 +6388,11 @@ SRST
-         the polling time when the algorithm detects it is spending too
-         long polling without encountering events.
- 
-+        The ``poll-weight`` parameter is the weight factor used in the
-+        adaptive polling algorithm. It determines how much the most
-+        recent event interval affects the calculation of the next
-+        polling duration.
-+
-         The ``aio-max-batch`` parameter is the maximum number of requests
-         in a batch for the AIO engine, 0 means that the engine will use
-         its default.
-diff --git a/tests/unit/test-nested-aio-poll.c b/tests/unit/test-nested-aio-poll.c
-index 9ab1ad08a7..ed791fa23b 100644
---- a/tests/unit/test-nested-aio-poll.c
-+++ b/tests/unit/test-nested-aio-poll.c
-@@ -81,7 +81,7 @@ static void test(void)
-     qemu_set_current_aio_context(td.ctx);
- 
-     /* Enable polling */
--    aio_context_set_poll_params(td.ctx, 1000000, 2, 2, &error_abort);
-+    aio_context_set_poll_params(td.ctx, 1000000, 2, 2, 0, &error_abort);
- 
-     /* Make the event notifier active (set) right away */
-     event_notifier_init(&td.poll_notifier, 1);
-diff --git a/util/aio-posix.c b/util/aio-posix.c
-index dd6008898b..d4f3d8ca8f 100644
---- a/util/aio-posix.c
-+++ b/util/aio-posix.c
-@@ -630,6 +630,7 @@ static void adjust_block_ns(AioContext *ctx, int64_t block_ns)
- {
-     AioHandler *node;
-     int64_t adj_block_ns = -1;
-+    int64_t poll_weight = ctx->poll_weight ? : POLL_WEIGHT_SHIFT;
- 
-     QLIST_FOREACH(node, &ctx->poll_aio_handlers, node_poll) {
-         if (node->poll.has_event) {
-@@ -639,8 +640,8 @@ static void adjust_block_ns(AioContext *ctx, int64_t block_ns)
-              * poll.ns to smooth out polling time adjustments.
-              */
-             node->poll.ns = node->poll.ns
--                ? (node->poll.ns - (node->poll.ns >> POLL_WEIGHT_SHIFT))
--                + (block_ns >> POLL_WEIGHT_SHIFT) : block_ns;
-+                ? (node->poll.ns - (node->poll.ns >> poll_weight))
-+                + (block_ns >> poll_weight) : block_ns;
- 
-             if (node->poll.ns >= ctx->poll_max_ns) {
-                 node->poll.ns = 0;
-@@ -830,7 +831,8 @@ void aio_context_destroy(AioContext *ctx)
- }
- 
- void aio_context_set_poll_params(AioContext *ctx, int64_t max_ns,
--                                 int64_t grow, int64_t shrink, Error **errp)
-+                                 int64_t grow, int64_t shrink,
-+                                 int64_t weight, Error **errp)
- {
-     AioHandler *node;
- 
-@@ -847,6 +849,7 @@ void aio_context_set_poll_params(AioContext *ctx, int64_t max_ns,
-     ctx->poll_max_ns = max_ns;
-     ctx->poll_grow = grow;
-     ctx->poll_shrink = shrink;
-+    ctx->poll_weight = weight;
-     ctx->poll_ns = 0;
- 
-     aio_notify(ctx);
-diff --git a/util/aio-win32.c b/util/aio-win32.c
-index 6e6f699e4b..1985843233 100644
---- a/util/aio-win32.c
-+++ b/util/aio-win32.c
-@@ -429,7 +429,8 @@ void aio_context_destroy(AioContext *ctx)
- }
- 
- void aio_context_set_poll_params(AioContext *ctx, int64_t max_ns,
--                                 int64_t grow, int64_t shrink, Error **errp)
-+                                 int64_t grow, int64_t shrink,
-+                                 int64_t weight, Error **errp)
- {
-     if (max_ns) {
-         error_setg(errp, "AioContext polling is not implemented on Windows");
-diff --git a/util/async.c b/util/async.c
-index 9d3627566f..741fcfd6a7 100644
---- a/util/async.c
-+++ b/util/async.c
-@@ -609,6 +609,7 @@ AioContext *aio_context_new(Error **errp)
-     ctx->poll_ns = 0;
-     ctx->poll_grow = 0;
-     ctx->poll_shrink = 0;
-+    ctx->poll_weight = 0;
- 
-     ctx->aio_max_batch = 0;
- 
--- 
-2.50.1
+Likely no. I agree that we should do in the cleaner way.
 
+Nicolin
 
