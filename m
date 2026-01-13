@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C3FD1B7D0
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 22:55:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA0DCD1B7C7
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 22:54:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfmKX-0004XE-Ul; Tue, 13 Jan 2026 16:53:37 -0500
+	id 1vfmKb-0004Z3-AG; Tue, 13 Jan 2026 16:53:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1vfmKX-0004Wu-2a
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 16:53:37 -0500
+ id 1vfmKZ-0004YV-AZ
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 16:53:39 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1vfmKV-0001vG-GC
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 16:53:36 -0500
+ id 1vfmKX-0001xX-Gf
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 16:53:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768341214;
+ s=mimecast20190719; t=1768341216;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9NqomSuT6/W740TEO6RcpdcYiO7U/ORLpsRNggJkj7E=;
- b=C2axVctbS1tSGxoCyPoDksJzt4DPsnP+p6kJH5qkTncfuPSHaEt2eqr/rf0bR50rU5L0er
- 1fX6XcmpGYJmP0+ISMcROcGFpVYHE5ZBC6P8FLXC5zo9OC6VOHP3Vz8rEFqfYfrLT08gpT
- d7lE6z/n/J448bpmVMjnrnWjR1h6mK4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=tlGI82dwJ0RGmFSTomne2vOSq0GSClzlfVJXz6DWa0c=;
+ b=T2dapTwse7yoD97vr3OsU45eKYprT0FztvO86OdXnXWkFNtTyy9jyny71cIfecnCxhbxGD
+ YEvAXNKzmY/EoQPMnEiKAKywbTxpGhUuhI9eGilCxOGROEnh55ma+0Sb2rxO/13qjK7Gek
+ Mb5nXp4d/bFgb3MBTdNgIzS0kfnGGG0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-613-Ss9Ulg9iMjaEEKQWhZFCTw-1; Tue,
- 13 Jan 2026 16:53:31 -0500
-X-MC-Unique: Ss9Ulg9iMjaEEKQWhZFCTw-1
-X-Mimecast-MFC-AGG-ID: Ss9Ulg9iMjaEEKQWhZFCTw_1768341209
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-193-9gMVX5RzNVSsbvPtLOLB1Q-1; Tue,
+ 13 Jan 2026 16:53:33 -0500
+X-MC-Unique: 9gMVX5RzNVSsbvPtLOLB1Q-1
+X-Mimecast-MFC-AGG-ID: 9gMVX5RzNVSsbvPtLOLB1Q_1768341212
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 78E331956080; Tue, 13 Jan 2026 21:53:29 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BE24F1956067; Tue, 13 Jan 2026 21:53:31 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.89])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id DA85B30001A2; Tue, 13 Jan 2026 21:53:28 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id E36181800285; Tue, 13 Jan 2026 21:53:30 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fam Zheng <fam@euphon.net>,
@@ -55,14 +55,14 @@ Cc: Fam Zheng <fam@euphon.net>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-block@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [RFC 3/4] scsi: add error reporting to scsi_SG_IO()
-Date: Tue, 13 Jan 2026 16:53:18 -0500
-Message-ID: <20260113215320.566595-4-stefanha@redhat.com>
+Subject: [RFC 4/4] scsi: save/load SCSI reservation state
+Date: Tue, 13 Jan 2026 16:53:19 -0500
+Message-ID: <20260113215320.566595-5-stefanha@redhat.com>
 In-Reply-To: <20260113215320.566595-1-stefanha@redhat.com>
 References: <20260113215320.566595-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -88,117 +88,239 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Report the details of the SG_IO ioctl failure if an Error pointer is
-provided. This information aids troubleshooting and will be used by the
-SCSI Persistent Reservations migration code.
+Add a vmstate subsection to SCSIDiskState so that scsi-block devices can
+transfer their reservation state during live migration. Upon loading the
+subsection, the destination QEMU invokes the PERSISTENT RESERVE OUT
+command's PREEMPT service action to atomically move the reservation from
+the source I_T nexus to the destination I_T nexus. This results in
+transparent live migration of SCSI reservations.
+
+This approach is incomplete since SCSI reservations are cooperative and
+other hosts could interfere. Neither the source QEMU nor the destination
+QEMU are aware of changes made by other hosts. The assumption is that
+reservation is not taken over by a third host without cooperation from
+the source host.
+
+I considered adding the vmstate subsection to SCSIDevice instead of
+SCSIDiskState, since reservations are part of the SCSI Primary Commands
+that other devices apart from disks could support. However, due to
+fragility of migrating reservations, we will probably limit support to
+scsi-block and maybe scsi-disk in the future. In the end, I think it
+makes sense to place this within scsi-disk.c.
 
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- include/hw/scsi/scsi.h |  2 +-
- hw/scsi/scsi-disk.c    |  2 +-
- hw/scsi/scsi-generic.c | 33 ++++++++++++++++++++++++++++-----
- 3 files changed, 30 insertions(+), 7 deletions(-)
+ include/hw/scsi/scsi.h |  1 +
+ hw/core/machine.c      |  4 +-
+ hw/scsi/scsi-disk.c    | 49 ++++++++++++++++++++++++-
+ hw/scsi/scsi-generic.c | 83 ++++++++++++++++++++++++++++++++++++++++++
+ hw/scsi/trace-events   |  1 +
+ 5 files changed, 136 insertions(+), 2 deletions(-)
 
 diff --git a/include/hw/scsi/scsi.h b/include/hw/scsi/scsi.h
-index 1a01842c28..c5ec58089b 100644
+index c5ec58089b..d104557bac 100644
 --- a/include/hw/scsi/scsi.h
 +++ b/include/hw/scsi/scsi.h
-@@ -247,7 +247,7 @@ void scsi_device_unit_attention_reported(SCSIDevice *dev);
- void scsi_generic_read_device_inquiry(SCSIDevice *dev);
- int scsi_device_get_sense(SCSIDevice *dev, uint8_t *buf, int len, bool fixed);
- int scsi_SG_IO(BlockBackend *blk, int direction, uint8_t *cmd, uint8_t cmd_size,
--               uint8_t *buf, uint8_t buf_size, uint32_t timeout);
-+               uint8_t *buf, uint8_t buf_size, uint32_t timeout, Error **errp);
- SCSIDevice *scsi_device_find(SCSIBus *bus, int channel, int target, int lun);
- SCSIDevice *scsi_device_get(SCSIBus *bus, int channel, int target, int lun);
+@@ -253,6 +253,7 @@ SCSIDevice *scsi_device_get(SCSIBus *bus, int channel, int target, int lun);
  
+ /* scsi-generic.c. */
+ extern const SCSIReqOps scsi_generic_req_ops;
++bool scsi_generic_pr_state_post_load_errp(SCSIDevice *s, Error **errp);
+ 
+ /* scsi-disk.c */
+ #define SCSI_DISK_QUIRK_MODE_PAGE_APPLE_VENDOR             0
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 6411e68856..16134f8ce5 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -38,7 +38,9 @@
+ #include "hw/acpi/generic_event_device.h"
+ #include "qemu/audio.h"
+ 
+-GlobalProperty hw_compat_10_2[] = {};
++GlobalProperty hw_compat_10_2[] = {
++    { "scsi-block", "migrate-pr", "off" },
++};
+ const size_t hw_compat_10_2_len = G_N_ELEMENTS(hw_compat_10_2);
+ 
+ GlobalProperty hw_compat_10_1[] = {
 diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
-index 97ae535a27..76fe5f085b 100644
+index 76fe5f085b..82e5b59534 100644
 --- a/hw/scsi/scsi-disk.c
 +++ b/hw/scsi/scsi-disk.c
-@@ -2749,7 +2749,7 @@ static int get_device_type(SCSIDiskState *s)
-     cmd[4] = sizeof(buf);
+@@ -3209,6 +3209,46 @@ static const Property scsi_hd_properties[] = {
+     DEFINE_BLOCK_CHS_PROPERTIES(SCSIDiskState, qdev.conf),
+ };
  
-     ret = scsi_SG_IO(s->qdev.conf.blk, SG_DXFER_FROM_DEV, cmd, sizeof(cmd),
--                     buf, sizeof(buf), s->qdev.io_timeout);
-+                     buf, sizeof(buf), s->qdev.io_timeout, NULL);
-     if (ret < 0) {
-         return -1;
-     }
++#ifdef __linux__
++static bool scsi_disk_pr_state_post_load_errp(void *opaque, int version_id, Error **errp)
++{
++    SCSIDiskState *s = opaque;
++    SCSIDevice *dev = &s->qdev;
++
++    return scsi_generic_pr_state_post_load_errp(dev, errp);
++}
++
++static bool scsi_disk_pr_state_needed(void *opaque)
++{
++    SCSIDiskState *s = opaque;
++    SCSIPRState *pr_state = &s->qdev.pr_state;
++    bool ret;
++
++    if (!s->qdev.migrate_pr) {
++        return false;
++    }
++
++    /* A reservation requires a key, so checking this field is enough */
++    WITH_QEMU_LOCK_GUARD(&pr_state->mutex) {
++        ret = pr_state->key;
++    }
++    return ret;
++}
++
++static const VMStateDescription vmstate_scsi_disk_pr_state = {
++    .name = "scsi-disk/pr",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .post_load_errp = scsi_disk_pr_state_post_load_errp,
++    .needed = scsi_disk_pr_state_needed,
++    .fields = (const VMStateField[]) {
++        VMSTATE_UINT64(qdev.pr_state.key, SCSIDiskState),
++        VMSTATE_UINT8(qdev.pr_state.resv_type, SCSIDiskState),
++        VMSTATE_END_OF_LIST()
++    }
++};
++#endif /* __linux__ */
++
+ static const VMStateDescription vmstate_scsi_disk_state = {
+     .name = "scsi-disk",
+     .version_id = 1,
+@@ -3221,7 +3261,13 @@ static const VMStateDescription vmstate_scsi_disk_state = {
+         VMSTATE_BOOL(tray_open, SCSIDiskState),
+         VMSTATE_BOOL(tray_locked, SCSIDiskState),
+         VMSTATE_END_OF_LIST()
+-    }
++    },
++    .subsections = (const VMStateDescription * const []) {
++#ifdef __linux__
++        &vmstate_scsi_disk_pr_state,
++#endif
++        NULL
++    },
+ };
+ 
+ static void scsi_hd_class_initfn(ObjectClass *klass, const void *data)
+@@ -3301,6 +3347,7 @@ static const Property scsi_block_properties[] = {
+                       -1),
+     DEFINE_PROP_UINT32("io_timeout", SCSIDiskState, qdev.io_timeout,
+                        DEFAULT_IO_TIMEOUT),
++    DEFINE_PROP_BOOL("migrate-pr", SCSIDiskState, qdev.migrate_pr, true),
+ };
+ 
+ static void scsi_block_class_initfn(ObjectClass *klass, const void *data)
 diff --git a/hw/scsi/scsi-generic.c b/hw/scsi/scsi-generic.c
-index 6ef673aa4b..f22a38f725 100644
+index f22a38f725..2acfd21232 100644
 --- a/hw/scsi/scsi-generic.c
 +++ b/hw/scsi/scsi-generic.c
-@@ -686,10 +686,10 @@ static int read_naa_id(const uint8_t *p, uint64_t *p_wwn)
+@@ -418,6 +418,89 @@ static void scsi_handle_persistent_reserve_out_reply(
+     }
+ }
  
- int scsi_SG_IO(BlockBackend *blk, int direction, uint8_t *cmd,
-                uint8_t cmd_size, uint8_t *buf, uint8_t buf_size,
--               uint32_t timeout)
-+               uint32_t timeout, Error **errp)
- {
-     sg_io_hdr_t io_header;
--    uint8_t sensebuf[8];
-+    uint8_t sensebuf[8] = {};
-     int ret;
- 
-     memset(&io_header, 0, sizeof(io_header));
-@@ -709,6 +709,29 @@ int scsi_SG_IO(BlockBackend *blk, int direction, uint8_t *cmd,
-         io_header.driver_status || io_header.host_status) {
-         trace_scsi_generic_ioctl_sgio_done(cmd[0], ret, io_header.status,
-                                            io_header.host_status);
-+        if (ret < 0) {
-+            error_setg_errno(errp, -ret, "SG_IO ioctl failed");
-+        } else {
-+            g_autofree char *sensebuf_hex =
-+                g_strdup_printf("%02x%02x%02x%02x%02x%02x%02x%02x",
-+                                sensebuf[0],
-+                                sensebuf[1],
-+                                sensebuf[2],
-+                                sensebuf[3],
-+                                sensebuf[4],
-+                                sensebuf[5],
-+                                sensebuf[6],
-+                                sensebuf[7]);
++static bool scsi_generic_pr_register(SCSIDevice *s, uint64_t key, Error **errp)
++{
++    uint8_t cmd[10] = {};
++    uint8_t buf[24] = {};
++    uint64_t key_be = cpu_to_be64(key);
++    int ret;
 +
-+            error_setg(errp, "SG_IO SCSI command failed with status=0x%x "
-+                    "driver_status=0x%x host_status=0x%x sensebuf=%s "
-+                    "sb_len_wr=%u",
-+                    io_header.status,
-+                    io_header.driver_status,
-+                    io_header.host_status,
-+                    sensebuf_hex,
-+                    io_header.sb_len_wr);
++    cmd[0] = PERSISTENT_RESERVE_OUT;
++    cmd[1] = PRO_REGISTER;
++    cmd[8] = sizeof(buf);
++    memcpy(&buf[8], &key_be, sizeof(key_be));
++
++    ret = scsi_SG_IO(s->conf.blk, SG_DXFER_TO_DEV, cmd, sizeof(cmd),
++                     buf, sizeof(buf), s->io_timeout, errp);
++    if (ret < 0) {
++        error_prepend(errp, "PERSISTENT RESERVE OUT with REGISTER");
++        return false;
++    }
++    return true;
++}
++
++static bool scsi_generic_pr_preempt(SCSIDevice *s, uint64_t key, uint8_t resv_type, Error **errp)
++{
++    uint8_t cmd[10] = {};
++    uint8_t buf[24] = {};
++    uint64_t key_be = cpu_to_be64(key);
++    int ret;
++
++    cmd[0] = PERSISTENT_RESERVE_OUT;
++    cmd[1] = PRO_PREEMPT;
++    cmd[2] = resv_type & 0xf;
++    cmd[8] = sizeof(buf);
++    memcpy(&buf[0], &key_be, sizeof(key_be));
++    memcpy(&buf[8], &key_be, sizeof(key_be));
++
++    ret = scsi_SG_IO(s->conf.blk, SG_DXFER_TO_DEV, cmd, sizeof(cmd),
++                     buf, sizeof(buf), s->io_timeout, errp);
++    if (ret < 0) {
++        error_prepend(errp, "PERSISTENT RESERVE OUT with PREEMPT");
++        return false;
++    }
++    return true;
++}
++
++/* Register keys and preempt reservations after live migration */
++bool scsi_generic_pr_state_post_load_errp(SCSIDevice *s, Error **errp)
++{
++    SCSIPRState *pr_state = &s->pr_state;
++    uint64_t key;
++    uint8_t resv_type;
++
++    WITH_QEMU_LOCK_GUARD(&pr_state->mutex) {
++        key = pr_state->key;
++        resv_type = pr_state->resv_type;
++    }
++
++    trace_scsi_generic_pr_state_post_load_errp(key, resv_type);
++
++    if (key) {
++        if (!scsi_generic_pr_register(s, key, errp)) {
++            return false;
 +        }
-         return -1;
-     }
-     return 0;
-@@ -735,7 +758,7 @@ static void scsi_generic_set_vpd_bl_emulation(SCSIDevice *s)
-     cmd[4] = sizeof(buf);
- 
-     ret = scsi_SG_IO(s->conf.blk, SG_DXFER_FROM_DEV, cmd, sizeof(cmd),
--                     buf, sizeof(buf), s->io_timeout);
-+                     buf, sizeof(buf), s->io_timeout, NULL);
-     if (ret < 0) {
-         /*
-          * Do not assume anything if we can't retrieve the
-@@ -771,7 +794,7 @@ static void scsi_generic_read_device_identification(SCSIDevice *s)
-     cmd[4] = sizeof(buf);
- 
-     ret = scsi_SG_IO(s->conf.blk, SG_DXFER_FROM_DEV, cmd, sizeof(cmd),
--                     buf, sizeof(buf), s->io_timeout);
-+                     buf, sizeof(buf), s->io_timeout, NULL);
-     if (ret < 0) {
-         return;
-     }
-@@ -823,7 +846,7 @@ static int get_stream_blocksize(BlockBackend *blk)
-     cmd[4] = sizeof(buf);
- 
-     ret = scsi_SG_IO(blk, SG_DXFER_FROM_DEV, cmd, sizeof(cmd),
--                     buf, sizeof(buf), 6);
-+                     buf, sizeof(buf), 6, NULL);
-     if (ret < 0) {
-         return -1;
-     }
++
++        /*
++         * Two cases:
++         *
++         * 1. There is no reservation (resv_type is 0) and the other I_T nexus
++         *    will be unregistered. This is important so the source host does
++         *    not leak registered keys across live migration.
++         *
++         * 2. There is a reservation (resv_type is not 0) and the other I_T
++         *    nexus will be unregistered and its reservation is atomically
++         *    taken over by us. This is the scenario where a reservation is
++         *    migrated along with the guest.
++         */
++        if (!scsi_generic_pr_preempt(s, key, resv_type, errp)) {
++            return false;
++        }
++    }
++    /* TODO is rollback needed on the source host if migration fails after this point? */
++    return true;
++}
++
+ static void scsi_read_complete(void * opaque, int ret)
+ {
+     SCSIGenericReq *r = (SCSIGenericReq *)opaque;
+diff --git a/hw/scsi/trace-events b/hw/scsi/trace-events
+index ff92fff7c5..cff8235e9a 100644
+--- a/hw/scsi/trace-events
++++ b/hw/scsi/trace-events
+@@ -391,3 +391,4 @@ scsi_generic_aio_sgio_command(uint32_t tag, uint8_t cmd, uint32_t timeout) "gene
+ scsi_generic_ioctl_sgio_command(uint8_t cmd, uint32_t timeout) "generic ioctl sgio: cmd=0x%x timeout=%u"
+ scsi_generic_ioctl_sgio_done(uint8_t cmd, int ret, uint8_t status, uint8_t host_status) "generic ioctl sgio: cmd=0x%x ret=%d status=0x%x host_status=0x%x"
+ scsi_generic_persistent_reserve_out_reply(uint8_t service_action, uint8_t resv_type, uint64_t old_key, uint64_t new_key) "persistent reserve out reply service_action=%u resv_type=%u old_key=0x%" PRIx64 " new_key=0x%" PRIx64
++scsi_generic_pr_state_post_load_errp(uint64_t key, uint8_t resv_type) "key=0x%" PRIx64 " resv_type=%u"
 -- 
 2.52.0
 
