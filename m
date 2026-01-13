@@ -2,82 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78FB7D1B157
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 20:41:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A186D1B163
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 20:42:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfkFq-0002tB-Tk; Tue, 13 Jan 2026 14:40:38 -0500
+	id 1vfkHV-0004cy-IJ; Tue, 13 Jan 2026 14:42:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vfkFo-0002rJ-Ee
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 14:40:36 -0500
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1vfkHK-0004CP-CK
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 14:42:12 -0500
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vfkFm-0003l1-QQ
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 14:40:36 -0500
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-81f4f4d4822so1280067b3a.3
- for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 11:40:33 -0800 (PST)
+ id 1vfkHI-0003y5-QA
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 14:42:10 -0500
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-81f46b5e2ccso1559737b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 11:42:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768333232; x=1768938032; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=441dD7EwIt/lzGqbhDRbBDkSJ4comyNgrz4qp24vxc8=;
- b=ngDo0Ipzwemnnd6TdRdi9NQhvH5a0heD0QIrj2ph96Q9LCiSeZv1xtVy8fyGCpDO7t
- XqrEqTNlmRqK4SVc7qv/47v17rTJR1GGcQavn0tVceMZa+CpKegcpHz4gm5vIm+Crwgt
- Bl8pkG3Blye1EzVsGNGLHyTfDD4u9hOl4k7+gXkoGozgqoRczz9KrKAPCpvpNbCI7yda
- hQHCI8jXxP1aW+R01aRG1pbOlrT/TDaXUyEZGpRcWFajoxz/70qan0mIWu1e4FMfkHDM
- /3TcrDa12Li9h1Zsyw1cBpdb2JcRGLvSIwQAYKCTuVaw9itrVKQxlQv71VXUr02CTql3
- QEKQ==
+ d=linaro.org; s=google; t=1768333327; x=1768938127; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Ly+4wIDnh1wyizKTgIQbwIDSlIs2Mul4wuPn+jtfmow=;
+ b=SeYaLNRCn7Q4GvugCKkzyYpBOdRlqEXBtzyQE8Upfkt/yAqahWE17MvvHaoW9BoR1P
+ +nd/wFMC9n9XHEqyXbkdt9tnofRH1RDdaf+SLDnSBAchn9dNHL/4zkd+/mUyAJB4gZ5x
+ XT3jXeYLza7b29qGCQPSbb/vyW2qdgnoX0NpR5UZMehiTfRcEhzeYVDq2hJeAiPzYhcx
+ G0EbEkMDA12Ybpk2Hp/5LZ4gSo/V9HSpT37hkUV6V2BPOblWaM2xWgJotaw8SVBauyIq
+ w1V25qoEUpPzLLhxuwRwAh0GvCljcG90m5P+6bZ8jvoEboc5QbeQyo151rggdni/TtlE
+ V4kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768333232; x=1768938032;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=441dD7EwIt/lzGqbhDRbBDkSJ4comyNgrz4qp24vxc8=;
- b=MU6WatYcAn7JxGIfrXWlosXAENPGdaPyORhDkUbI/slSU8rSlwN7ypM/WoVnOzlQRR
- w7J/ELl2ymu6wfKPTYw6Z+FGqXSvCRAV86BK52UDzq+GvcG2BUBY+n1kOuoSOTKAOOy0
- ZoWvx7x95/gCSwVlht8n9LflAivyxMf05TlkIeMFgySRGunxSqikRkuORL13OI35CKT+
- 2wris8A7v+hczmdM/2VvyJlsutik4GycA9Dra/Jb7OxtQbIbeAMuyN9sjbUpfu/Bvvei
- sTFmylQLDjTsmztKQSs3XOc9B7+wjhJ5mRdjjdUy+a0BGKNlNarEbqLwUUdoRl+fTX6i
- zJUQ==
-X-Gm-Message-State: AOJu0YxCJxBWKGo30MzKiQpFYCadd8j1v6B0wSaXxRs4XC9PtoZW115E
- +f75quKOYcGyrsWif4XL/naSCcGxY80eFkpKzw9hDPUMDDvrUiUhFFmEB8cxALQq7aI7Mycr947
- +bxMiCNE=
-X-Gm-Gg: AY/fxX4H8kbB0saaMdDzeDKC+N2R6FcuhGQ/xjaTdmzWuYVeOw6B1mFydoxhHasTBEu
- Yq8q418S63GlTzKBo9DYw1fXupmG6MyNw7XjRNlDuyHePe4gcw/xJxnip2VgjZjgNdBBiMjDPIB
- 1ez2yPq05sPTrQthAyYuCJ62rONAH7BPxh4zQdVgX7k4qyj34IHVSE3ASrjPB1LkWFsRIE7G5EI
- F2I71gF4deg/M6iyFGdylpF+M31ZbyxaidGsrhUz0grn0N39Yc3Bj4jipc2aaYG3n5La6rnKJss
- JC7E3g+Xqx8UdC+8k+ilSo0pMR83xo4wywbphuyjAEt6jeD9Cuji8n9ym2CibNHfnGI9fgJ9ker
- esbxLLaBig//AGGQhPJwLMlDCJUdcpfrrJxrvGPlk+jSY8P6MdDEHSC46bEyLFwV445thVlht4a
- vq7tacsiTJhp4Lj7HWdYrjN3CKYNuYY2UjFM+9c0Iv7hz+Sj3nh2/13tVbjkyIZ7hY
-X-Received: by 2002:a05:6a00:4502:b0:81f:3fbd:ccf with SMTP id
- d2e1a72fcca58-81f81d37a5cmr26300b3a.23.1768333232268; 
- Tue, 13 Jan 2026 11:40:32 -0800 (PST)
-Received: from pc.taild8403c.ts.net (216-71-219-44.dyn.novuscom.net.
- [216.71.219.44]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-81f73c27d18sm2604234b3a.46.2026.01.13.11.40.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jan 2026 11:40:31 -0800 (PST)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Phil=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ d=1e100.net; s=20230601; t=1768333327; x=1768938127;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Ly+4wIDnh1wyizKTgIQbwIDSlIs2Mul4wuPn+jtfmow=;
+ b=fZTCiDrSSLgcewfdy5GgNOkAKPEwne6LuMzioq67h65SFwURrlthwdMXAdEVovqdpm
+ d8P01WqZL1onfPJSJtvVlr5Fuclvyi8HsoDINALkshUvZnEUtZhcSkJiBe/tuwDCvGje
+ 3GI4Adb2ASTjQ0GpWYL8k16rKKWpFqXB/bu75vPFo6KT/cmwldo3WAZ57zEZK4kqre3Q
+ OKEc/gpUf5as4dyXWeaFf7ZD0BXY0eaLwjHLS/LkClc72yd60rRrczrTO55tE9wxTmpn
+ cLDzSAxdMwJmsY7uplKVOSIIl/ko4fN1Np0W0TtVCq6YXK89iIuKdhDg+0H/Lk1u+k5/
+ 4QVg==
+X-Gm-Message-State: AOJu0YxA8cpHtq8EDpahdMLUF6+sbmKrD7w07VaIOB6beVi6H2IlfLeM
+ 4rc1k8xHtIJGmQ7EU1qdDLvljks6OEoHDHRiqhaE1aENJ8FFYrsUONRbgw2mzwvha/NouRh8/z3
+ uGyeHURA=
+X-Gm-Gg: AY/fxX7qzFxRPRmgERFYxBSauJWqDcDTS9jHenZDVhBnGaW5GABUqUNo9XqjZNY7j1K
+ f+1TEWvyl0qfRPwJJYQg53xgLyLcQZt0YWzHTmrMlt0BnWRttdQ2McoHzyt5Nl0pRJFiBhnBzo+
+ AKsCiGd+1+6veebWFiM961Cb+DZ5GH3EEVDxGjms1Z1HfX62bkkwnjitoTDdRdN9fJ9hqBlURX6
+ HUzzqacO2OusIhrK6igFolmbeeDNXKsnlVXfEjQUL0lrqDcUQH5R4JyaFvJ+2XOqVdbzgawDadO
+ tXayuCb4ySpMNvx/UaQzMypFXGtG2yl2vZxhl5z/EFwdLdHY8ojGgomQaVRSlP9DwsErCT1J3c1
+ KmrU5csOJjHCBaOTedkA61LymVCjd5Tg6SZzu30CYC4H+kij1nqqYIwQraxays2oZaIiFeBeMqK
+ LpAjDy1U2EJnoXxpDFqREF4rCEVD1OQpj2GZpYpZ49LiR9gkXLAOKWLBUaJsFfThm3cbY=
+X-Received: by 2002:a05:6a00:4149:b0:81f:4e8d:794b with SMTP id
+ d2e1a72fcca58-81f81d404dcmr29259b3a.23.1768333327213; 
+ Tue, 13 Jan 2026 11:42:07 -0800 (PST)
+Received: from [192.168.1.87] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-819c59e8010sm21664245b3a.52.2026.01.13.11.42.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 13 Jan 2026 11:42:06 -0800 (PST)
+Message-ID: <39a32c0e-e498-4d27-8614-86869a4f8f01@linaro.org>
+Date: Tue, 13 Jan 2026 11:42:06 -0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] linux-user/aarch64/target_fcntl.h: add missing
+ TARGET_O_LARGEFILE definition
+Content-Language: en-US
+To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
+Cc: =?UTF-8?Q?Phil_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>, alex.bennee@linaro.org,
  Laurent Vivier <laurent@vivier.eu>,
- Richard Henderson <richard.henderson@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH] linux-user/aarch64/target_fcntl.h: add missing
- TARGET_O_LARGEFILE definition
-Date: Tue, 13 Jan 2026 11:40:29 -0800
-Message-ID: <20260113194029.1691393-1-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.47.3
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42c.google.com
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20260113194029.1691393-1-pierrick.bouvier@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20260113194029.1691393-1-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,30 +105,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This caused a failure with program using openat2, where O_LARGEFILE was
-replaced by O_NOFOLLOW.
-This issue is only visible when QEMU is compiled with musl libc, where
-O_LARGEFILE is different from 0 (vs glibc).
+On 1/13/26 11:40 AM, Pierrick Bouvier wrote:
+> This caused a failure with program using openat2, where O_LARGEFILE was
+> replaced by O_NOFOLLOW.
+> This issue is only visible when QEMU is compiled with musl libc, where
+> O_LARGEFILE is different from 0 (vs glibc).
+> 
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3262
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>   linux-user/aarch64/target_fcntl.h | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/linux-user/aarch64/target_fcntl.h b/linux-user/aarch64/target_fcntl.h
+> index efdf6e5f058..55ab788a7ce 100644
+> --- a/linux-user/aarch64/target_fcntl.h
+> +++ b/linux-user/aarch64/target_fcntl.h
+> @@ -11,6 +11,7 @@
+>   #define TARGET_O_DIRECTORY      040000 /* must be a directory */
+>   #define TARGET_O_NOFOLLOW      0100000 /* don't follow links */
+>   #define TARGET_O_DIRECT        0200000 /* direct disk access hint */
+> +#define TARGET_O_LARGEFILE     0400000
+>   
+>   #include "../generic/fcntl.h"
+>   #endif
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3262
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- linux-user/aarch64/target_fcntl.h | 1 +
- 1 file changed, 1 insertion(+)
+This is a good candidate for all stable branches as well.
 
-diff --git a/linux-user/aarch64/target_fcntl.h b/linux-user/aarch64/target_fcntl.h
-index efdf6e5f058..55ab788a7ce 100644
---- a/linux-user/aarch64/target_fcntl.h
-+++ b/linux-user/aarch64/target_fcntl.h
-@@ -11,6 +11,7 @@
- #define TARGET_O_DIRECTORY      040000 /* must be a directory */
- #define TARGET_O_NOFOLLOW      0100000 /* don't follow links */
- #define TARGET_O_DIRECT        0200000 /* direct disk access hint */
-+#define TARGET_O_LARGEFILE     0400000
- 
- #include "../generic/fcntl.h"
- #endif
--- 
-2.47.3
-
+Regards,
+Pierrick
 
