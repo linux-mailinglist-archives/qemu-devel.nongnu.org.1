@@ -2,25 +2,25 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3FB2D16A0F
+	by mail.lfdr.de (Postfix) with ESMTPS id E27A7D16A0E
 	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 05:50:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfWL4-0005s3-8U; Mon, 12 Jan 2026 23:49:06 -0500
+	id 1vfWL4-0005rs-6S; Mon, 12 Jan 2026 23:49:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vfWL2-0005qx-2D
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 23:49:04 -0500
+ id 1vfWL0-0005qV-LK
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 23:49:02 -0500
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vfWKy-0002zg-2h
- for qemu-devel@nongnu.org; Mon, 12 Jan 2026 23:49:03 -0500
+ id 1vfWKx-0002zM-S5
+ for qemu-devel@nongnu.org; Mon, 12 Jan 2026 23:49:02 -0500
 Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
  (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 60D4lKwJ027453
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 60D4lKwK027453
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
  Tue, 13 Jan 2026 13:48:25 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
