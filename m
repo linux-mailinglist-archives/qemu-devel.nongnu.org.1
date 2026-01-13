@@ -2,34 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C6A3D18FBD
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 14:00:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03752D18FED
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 14:03:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfe0S-0006G5-Q0; Tue, 13 Jan 2026 08:00:20 -0500
+	id 1vfe0T-0006I7-AN; Tue, 13 Jan 2026 08:00:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vfe0M-00062J-Ki; Tue, 13 Jan 2026 08:00:14 -0500
+ id 1vfe0O-0006BS-Nj; Tue, 13 Jan 2026 08:00:16 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vfe0K-00010V-0c; Tue, 13 Jan 2026 08:00:14 -0500
+ id 1vfe0N-00011Z-0E; Tue, 13 Jan 2026 08:00:16 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4B9F317D9DC;
+ by isrv.corpit.ru (Postfix) with ESMTP id 59BDB17D9DD;
  Tue, 13 Jan 2026 16:00:05 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 45E1034C413;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 526B634C414;
  Tue, 13 Jan 2026 16:00:10 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org,
 	Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH trivial 1/7] linux-user/syscall.c: assume splice is always
- present
-Date: Tue, 13 Jan 2026 15:59:59 +0300
-Message-ID: <20260113130008.910240-2-mjt@tls.msk.ru>
+Subject: [PATCH 1/3] linux-user/syscall.c: statfs: f_flags is always present
+Date: Tue, 13 Jan 2026 16:00:00 +0300
+Message-ID: <20260113130008.910240-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260113130008.910240-1-mjt@tls.msk.ru>
 References: <20260113130008.910240-1-mjt@tls.msk.ru>
@@ -58,56 +57,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-splice() &Co are defined since linux 2.6.17.
-Assume it is always present.
+statfs.f_flags is present since linux 2.6.
+There's no need to check for its existance anymore.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- linux-user/syscall.c | 15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+ linux-user/syscall.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 67ad681098..9cc9ed2fbc 100644
+index 2060e561a2..d32299dddb 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -13450,15 +13450,9 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-         return ret;
- #endif
- 
--#ifdef CONFIG_SPLICE
--#ifdef TARGET_NR_tee
-     case TARGET_NR_tee:
--        {
--            ret = get_errno(tee(arg1,arg2,arg3,arg4));
--        }
-+        ret = get_errno(tee(arg1, arg2, arg3, arg4));
-         return ret;
+@@ -11000,11 +11000,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+             __put_user(stfs.f_fsid.__val[1], &target_stfs->f_fsid.val[1]);
+             __put_user(stfs.f_namelen, &target_stfs->f_namelen);
+             __put_user(stfs.f_frsize, &target_stfs->f_frsize);
+-#ifdef _STATFS_F_FLAGS
+             __put_user(stfs.f_flags, &target_stfs->f_flags);
+-#else
+-            __put_user(0, &target_stfs->f_flags);
 -#endif
--#ifdef TARGET_NR_splice
-     case TARGET_NR_splice:
-         {
-             loff_t loff_in, loff_out;
-@@ -13488,9 +13482,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-             }
+             memset(target_stfs->f_spare, 0, sizeof(target_stfs->f_spare));
+             unlock_user_struct(target_stfs, arg2, 1);
          }
-         return ret;
+@@ -11039,11 +11035,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+             __put_user(stfs.f_fsid.__val[1], &target_stfs->f_fsid.val[1]);
+             __put_user(stfs.f_namelen, &target_stfs->f_namelen);
+             __put_user(stfs.f_frsize, &target_stfs->f_frsize);
+-#ifdef _STATFS_F_FLAGS
+             __put_user(stfs.f_flags, &target_stfs->f_flags);
+-#else
+-            __put_user(0, &target_stfs->f_flags);
 -#endif
--#ifdef TARGET_NR_vmsplice
--	case TARGET_NR_vmsplice:
-+    case TARGET_NR_vmsplice:
-         {
-             struct iovec *vec = lock_iovec(VERIFY_READ, arg2, arg3, 1);
-             if (vec != NULL) {
-@@ -13501,8 +13493,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-             }
+             memset(target_stfs->f_spare, 0, sizeof(target_stfs->f_spare));
+             unlock_user_struct(target_stfs, arg3, 1);
          }
-         return ret;
--#endif
--#endif /* CONFIG_SPLICE */
-+
- #ifdef CONFIG_EVENTFD
- #if defined(TARGET_NR_eventfd)
-     case TARGET_NR_eventfd:
 -- 
 2.47.3
 
