@@ -2,93 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70D53D1896D
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 12:55:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDC39D18A02
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 13:04:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfcwe-0003yf-Ea; Tue, 13 Jan 2026 06:52:21 -0500
+	id 1vfd0h-0006Ct-LL; Tue, 13 Jan 2026 06:56:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vfcwB-0003u5-Nz
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 06:51:53 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vfcw8-0005h1-Uf
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 06:51:51 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-4775e891b5eso34075655e9.2
- for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 03:51:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768305107; x=1768909907; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=IxMuWm7xQKjAl4Pj3jxQYVv7ZjOfvdG6QHv6xK0z5aE=;
- b=o3aBxbHUs8HXLERg9HMP+2qK4VFeB8wY1IudYvDaz++V2THleTBVFSiWbHKSoEMckk
- 9FPDc4XYgMCZp8MsFusFIEka15PQFhgG6FtGi5Qpa6FNHegpJtfguhJAejyu4C/ty9JR
- eTHtujIh97AsOg+O3aUPTvk79JmuNhheAx+fEvvDRcWtuxD0hfjEKQX2MfU9FIfWoi+z
- 0IV75NfkSYTnvNSv0JZbQsL9JYmk4mekK9TjzU5ljXGk/ltxp4y0CyXJBL1i1pmtTdH/
- USqFRzzwSE8wb+eCb15Uq1kf6ur3YD1Hd0qDhS/jfQt5bm7lZY+Cr/dfy9+X10NCVQ1P
- ZzNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768305107; x=1768909907;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=IxMuWm7xQKjAl4Pj3jxQYVv7ZjOfvdG6QHv6xK0z5aE=;
- b=FmfnNPEmz0Yh5qtJPE1Nisb/52f4tGUdGfM3920DEJYjgS6k3R1K8vwAurex0Nugd8
- +rx89B/bP8wOLFqkEhHbTB56xSkPsUMb2HoF6nYDHRqw2qtWBk5MEtoZ7zOqo115QDCd
- j2C87OXBtnESqsxGV1gglMB4LZNVY1qaFQO286GEG6h4lZmB9gNmix+qvaJ2Fdt1sdAx
- wmS2kzv70W8tQKAgUCR4zdhrdPNyfZFXCcz8qURpVpv4TeBoKKgwnQtumS/KqDEuDTF2
- ww/cQK4a2eXG52UFs2qNym2zg9Fyt0qxu6ds1jH937ubN1Et/tzkZnTs4F7W16O7CK56
- 3poA==
-X-Gm-Message-State: AOJu0Yy4AldTvrF86KMoc2ZfgRVacKwtdvVPB3zRwruj87+ATQjUXwPm
- q+saMbBbVUNclxKf/HLcg0mfnRE98IIdBq42U1XoJr7yfYBX+66Mf6yUqY3DbD1fv8s=
-X-Gm-Gg: AY/fxX4HYobvNLcLESEVIpKRUqRjRtyUqO5rTa7ZyiCRclXvaB70YBGvMHASX/Y1aB/
- l4b3K2IdQ5X97CYS9CM6y0MP3bV1ZXJYxTejA/+XeWIcSVAZ6s2jTktRiMXGvW0P4WLv53h3Owc
- NwtwXRWkHvNSImb6F9dKm9mmSAzSvI9UH5SN7oQjENOMBMiwQ22YFYgDO5puizHbzVCbTFvXdBL
- xxZwrJwRzqaDVvZRDur4RDNkaSG1UeYIepiWEc/VmYIWJddzeQPyF/vij4prxR28TldVrB/X3jN
- 4OpABw92C/YgMexkkOHcCyFyrmyE96RcpMBZvQzfH6iAD4gWv0DVSphiXiHdujmZJ1+bqCiqW2l
- nLxOLQN3g5W6qmAlQvvQfDbyS5P1nMr23Y94aZ0SbdQaW7zZNzpkZEf8e7vrI8rPLzo5VMqs/rf
- Y/n460pMWiTzo=
-X-Google-Smtp-Source: AGHT+IEdefbkAp+AV8nKuaVOJwcYStRCAQGUMrTome1AngMpQKdXqE1/UthnyfU7ixCQ9gudgLJb2g==
-X-Received: by 2002:a05:600c:5306:b0:477:7b16:5f88 with SMTP id
- 5b1f17b1804b1-47d84b0a992mr192540685e9.6.1768305106655; 
- Tue, 13 Jan 2026 03:51:46 -0800 (PST)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-432bd5df96asm42982732f8f.28.2026.01.13.03.51.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jan 2026 03:51:46 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 219585F80E;
- Tue, 13 Jan 2026 11:51:45 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
- Jamin Lin <jamin_lin@aspeedtech.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org (open list:ASPEED BMCs)
-Subject: [PATCH] tests/functional: migrate aspeed_rainier image
-Date: Tue, 13 Jan 2026 11:51:37 +0000
-Message-ID: <20260113115138.3171479-1-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.47.3
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vfd0Y-0006Aj-Io
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 06:56:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vfd0U-0006gY-9m
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 06:56:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1768305376;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=AceUXHTl+ZnYM6QlCLoO/rXHTCu2lYmMUrjaVdxnwO4=;
+ b=K+fqt/Ux0TWVZZpOaZtErrbVhybbRz8GoFSWWbSD/tuxTDyCq9mUvIDWGXGMkIOTLh0eT1
+ KThYVzqWJJIKtD41ZcGXxsxsaDM4MPfblwqetZ08fa664w3OU0RFpvHZ+xaUyI4nYKowCl
+ 50/VbKkgUL7R3Jkgtx0bQ0nfFJgbXHI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-541-9pNpgyPoMEO7fDWyKF-6nw-1; Tue,
+ 13 Jan 2026 06:56:13 -0500
+X-MC-Unique: 9pNpgyPoMEO7fDWyKF-6nw-1
+X-Mimecast-MFC-AGG-ID: 9pNpgyPoMEO7fDWyKF-6nw_1768305371
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3DD6418005B8; Tue, 13 Jan 2026 11:56:11 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.87])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 91EA830001A2; Tue, 13 Jan 2026 11:56:06 +0000 (UTC)
+Date: Tue, 13 Jan 2026 11:56:03 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Hanna Reitz <hreitz@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Christian Schoenebeck <qemu_oss@crudebyte.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ devel@lists.libvirt.org, qemu-block@nongnu.org,
+ qemu-rust@nongnu.org, Stefan Weil <sw@weilnetz.de>,
+ Kevin Wolf <kwolf@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH v5 10/24] util: avoid repeated prefix on incremental
+ qemu_log calls
+Message-ID: <aWYy0yQtcaLLdnzE@redhat.com>
+References: <20260108170338.2693853-1-berrange@redhat.com>
+ <20260108170338.2693853-11-berrange@redhat.com>
+ <87h5spak7y.fsf@pond.sub.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
+In-Reply-To: <87h5spak7y.fsf@pond.sub.org>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,34 +96,158 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-fileserver.linaro.org is going away, migrate to the new share server.
+On Tue, Jan 13, 2026 at 11:19:13AM +0100, Markus Armbruster wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
+> 
+> > There are three general patterns to QEMU log output
+> >
+> >  1. Single complete message calls
+> >
+> >       qemu_log("Some message\n");
+> >
+> >  2. Direct use of fprintf
+> >
+> >       FILE *f = qemu_log_trylock()
+> >       fprintf(f, "...");
+> >       fprintf(f, "...");
+> >       fprintf(f, "...\n");
+> >       qemu_log_unlock(f)
+> >
+> >  3. Mixed use of qemu_log_trylock/qemu_log()
+> >
+> >       FILE *f = qemu_log_trylock()
+> >       qemu_log("....");
+> >       qemu_log("....");
+> >       qemu_log("....\n");
+> >       qemu_log_unlock(f)
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- tests/functional/arm/test_aspeed_rainier.py | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/tests/functional/arm/test_aspeed_rainier.py b/tests/functional/arm/test_aspeed_rainier.py
-index 602d6194ac8..025e5751dc7 100755
---- a/tests/functional/arm/test_aspeed_rainier.py
-+++ b/tests/functional/arm/test_aspeed_rainier.py
-@@ -9,10 +9,8 @@
- 
- class RainierMachine(AspeedTest):
- 
--    ASSET_RAINIER_EMMC = Asset(
--        ('https://fileserver.linaro.org/s/B6pJTwWEkzSDi36/download/'
--         'mmc-p10bmc-20240617.qcow2'),
--        'd523fb478d2b84d5adc5658d08502bc64b1486955683814f89c6137518acd90b')
-+    ASSET_RAINIER_EMMC = Asset('https://share.linaro.org/downloadFile?id=PaCHfyerwpSr0CV',
-+                               'd523fb478d2b84d5adc5658d08502bc64b1486955683814f89c6137518acd90b')
- 
-     def test_arm_aspeed_emmc_boot(self):
-         self.set_machine('rainier-bmc')
+> > Fixes: 012842c07552 (log: make '-msg timestamp=on' apply to all qemu_log usage)
+> > Reported-by: Richard Henderson <richard.henderson@linaro.org>
+> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> > ---
+> >  include/qemu/log.h |  7 +++++++
+> >  util/log.c         | 49 ++++++++++++++++++++++++++--------------------
+> >  2 files changed, 35 insertions(+), 21 deletions(-)
+> >
+> > diff --git a/include/qemu/log.h b/include/qemu/log.h
+> > index e9d3c6806b..95f417c2b7 100644
+> > --- a/include/qemu/log.h
+> > +++ b/include/qemu/log.h
+> > @@ -69,6 +69,13 @@ bool qemu_log_separate(void);
+> >   */
+> >  FILE *qemu_log_trylock(void) G_GNUC_WARN_UNUSED_RESULT;
+> >  
+> > +/**
+> > + * As qemu_log_trylock(), but will also print the message
+> > + * context, if any is configured and this caused the
+> > + * acquisition of the FILE lock
+> > + */
+> > +FILE *qemu_log_trylock_context(void) G_GNUC_WARN_UNUSED_RESULT;
+> 
+> This is used just once, in qemu_log().  Could be inlined into
+> qemu_log().
+> 
+> If you prefer to keep it as a function, you could make it static.
+
+The intent was that some, but not all, places which currently use
+qemu_log_trylock() really ought to be including configured message
+prefix, and hence would need to call this method. No such updates
+of callers are done in this series though.
+
+> I wouldn't guess that this prints from the function name.  Dunno,
+> qemu_log_start_line()?  Might want to pair it with a qemu_log_end_line()
+> then.
+>
+> Telling function name is less important if it's static.
+
+Personally the inclusion of "log" in its filename is sufficiently
+suggestive. I'll rename it to qemu_log_trylock_with_context
+which is the name Richard originally requested.
+
+
+> > diff --git a/util/log.c b/util/log.c
+> > index c44d66b5ce..2ce7286f31 100644
+> > --- a/util/log.c
+> > +++ b/util/log.c
+> > @@ -127,13 +127,39 @@ static FILE *qemu_log_trylock_with_err(Error **errp)
+> 
+> Not this patch's fault, but here goes anyway:
+> 
+>    static FILE *qemu_log_trylock_with_err(Error **errp)
+>    {
+>        FILE *logfile;
+> 
+>        logfile = thread_file;
+>        if (!logfile) {
+>            if (log_per_thread) {
+>                g_autofree char *filename
+>                    = g_strdup_printf(global_filename, log_thread_id());
+>                logfile = fopen(filename, "w");
+>                if (!logfile) {
+>                    error_setg_errno(errp, errno,
+>                                     "Error opening logfile %s for thread %d",
+>                                     filename, log_thread_id());
+>                    return NULL;
+>                }
+>                thread_file = logfile;
+>                qemu_log_thread_cleanup_notifier.notify = qemu_log_thread_cleanup;
+>                qemu_thread_atexit_add(&qemu_log_thread_cleanup_notifier);
+>            } else {
+>                rcu_read_lock();
+>                /*
+>                 * FIXME: typeof_strip_qual, as used by qatomic_rcu_read,
+>                 * does not work with pointers to undefined structures,
+>                 * such as we have with struct _IO_FILE and musl libc.
+>                 * Since all we want is a read of a pointer, cast to void**,
+>                 * which does work with typeof_strip_qual.
+>                 */
+>                logfile = qatomic_rcu_read((void **)&global_file);
+>                if (!logfile) {
+>                    rcu_read_unlock();
+>                    return NULL;
+> 
+> Fails without setting @errp.
+
+Trivial to fix, I'll include a patch for that in next posting.
+
+> 
+>                }
+>            }
+>        }
+> 
+>        qemu_flockfile(logfile);
+> >      return logfile;
+> >  }
+
+
+
+> > +FILE *qemu_log_trylock_context(void)
+> > +{
+> > +    FILE *f = qemu_log_trylock();
+> 
+> This can fail, and if it does...
+> 
+> > +    if (log_depth == 1 && message_with_timestamp) {
+> > +        g_autofree const char *timestr = NULL;
+> > +        g_autoptr(GDateTime) dt = g_date_time_new_now_utc();
+> > +        timestr = g_date_time_format_iso8601(dt);
+> > +        fprintf(f, "%s ", timestr);
+> 
+> ... we crash here.
+
+Opps, yes will fix.
+
+
+With regards,
+Daniel
 -- 
-2.47.3
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
