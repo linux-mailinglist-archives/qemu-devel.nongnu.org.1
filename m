@@ -2,95 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8147D18632
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 12:14:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73041D1863B
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 12:14:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfcLQ-00034g-Fv; Tue, 13 Jan 2026 06:13:52 -0500
+	id 1vfcLU-00035n-7Y; Tue, 13 Jan 2026 06:13:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vfcLI-00031g-4Z
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 06:13:45 -0500
+ id 1vfcLM-00032e-3L
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 06:13:48 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vfcLG-0008Pe-Jw
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 06:13:43 -0500
+ id 1vfcLI-0008Pn-DF
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 06:13:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768302821;
+ s=mimecast20190719; t=1768302823;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JWfkiUEs3L3eRoPpvKnE7WI6HuZbSNuFySWoG+pF2vQ=;
- b=AZ0CSl54v2TyfSfVRPJnzaPrBQeIn98uXW93ZnxepI9pzjc472Ee8UFgD3lOj8tg/4ZtrL
- vAJGpsFJSTmjvAmvFc5g/+4pN3bTeqoLRtuMTkTqXq+EkcaoMGTbkrtr15Zy+kihEIgGIV
- awisN71Tvcj0OM8gBRyzp6EkHu7YXQE=
+ bh=5yk+7lehNHXmaDyA6TRaDnfLrvG1v0qyhVBj2t/x3e0=;
+ b=FnM1mc4/Z3DG1FrIGBOGLWpNywT+Ke1bfXu6fu6Cm1P4GGqcZ9GGH5d4WRy0TbVGeuPGQW
+ gwsR1lOmTUQbCU6iTEcj8D1afZv0o9ZGGvi5BZIUzs8kSnksbW47Cyk1Hy/yRienc4PnKW
+ +zww93HW96TJJl+DRVr1hIPcXujWnL0=
 Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
  [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-255-G6j2cbXKPPuIrhMloB2kBg-1; Tue, 13 Jan 2026 06:13:40 -0500
-X-MC-Unique: G6j2cbXKPPuIrhMloB2kBg-1
-X-Mimecast-MFC-AGG-ID: G6j2cbXKPPuIrhMloB2kBg_1768302819
+ us-mta-413-9kbbLA5xMt6LfuUR5NGc_w-1; Tue, 13 Jan 2026 06:13:42 -0500
+X-MC-Unique: 9kbbLA5xMt6LfuUR5NGc_w-1
+X-Mimecast-MFC-AGG-ID: 9kbbLA5xMt6LfuUR5NGc_w_1768302821
 Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4776079ada3so74284495e9.1
- for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 03:13:39 -0800 (PST)
+ 5b1f17b1804b1-4792bd2c290so86164365e9.1
+ for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 03:13:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768302817; x=1768907617; darn=nongnu.org;
+ d=redhat.com; s=google; t=1768302820; x=1768907620; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JWfkiUEs3L3eRoPpvKnE7WI6HuZbSNuFySWoG+pF2vQ=;
- b=Z3njKmGBV4/MWm1Q0ybkhca640X5e1k2YrTCNmkdzW7cxOPlQ95AoVS2MskDzYyFC2
- jv5A2c61PmNrA4l7rd/CloRtrU/RwyuS+PMhZc/YaCTwUKBKWFHTf3h8XM9lWMACfyi8
- LzoqMrOtku1IwxXrBCDt/zI6D5MGbHdGnclmvo/0INr1waX8Vwn0r4jcE1MT1Bi4a1Lw
- MKov/DoL2F8zg0mnaH6WZg+/OSs5SDuwOLVDYztStgDNZ+ZoY9W25Lr0csrkmVuvjkP3
- Pw5rGOE8EyLEb2o3siWe8qZ3c9tf0k+r/PiKa4X8Dyc2cIuYrIhMTPNij7ScCrk2L6F/
- 1jnw==
+ bh=5yk+7lehNHXmaDyA6TRaDnfLrvG1v0qyhVBj2t/x3e0=;
+ b=kaMCr/OrftyUrypUsPIa3FOsLrqrdTCexA//FDffm0XPm+ZGt1EKP+DpacJOE2NyG4
+ KIOshh5xI1mu1v9Brx2PUMJWovDzEX5HG5feLosYXDgep5F29rBYiknC4KZJtCX3zGYl
+ 8ASCTr7nsm7+inhASTdHX7FtqLOrDJ5OsaiDCBhjYHNBLr2GMPYVAktmL0dzFjl7FCRr
+ IjgIoPS3/YVlmVshCUuicUvc0s+IYA90VyXsK65VK+8T1ZEGM18cst/Jb4PoL34GDYwj
+ LVU6ENAA7EKYsMQKWKrc7ncttzvQmI72OjSNJFkTz0D+XoMc+1NUJyGuLUuOZV5k92iL
+ ZgcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768302817; x=1768907617;
+ d=1e100.net; s=20230601; t=1768302820; x=1768907620;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=JWfkiUEs3L3eRoPpvKnE7WI6HuZbSNuFySWoG+pF2vQ=;
- b=O+aph7en54uOyhpTpp94wFmDRKxCSGoNuSd+uGtQofFSKr9GCeOZrzc1vB5zrmV1DN
- BEHk7Mq+Xe0Gd4g498YtMQQSynZkgFW3Hd8X2st/RN6EoAiYDve+UyyJnpHAPm6gVIMa
- XUGLPObAYSL6gXcW3CvdlN3HxUrAtVLnHmD2V/QeQVONhpZmkTXBvAZEoMCh4QimkTLU
- iFBxLaV6/Tct8j8+6pgc5Rhmx1ZFrwgzFngKid/NXahUr1HJx1n5hr0W+/rMscrqennE
- UsPOYG3LYSc6zIbhZiFsYXlE02xx+4nk4i1w/wlKRAL1Sel74iDAUmHJOVvR/C9OPPHZ
- Ja2g==
-X-Gm-Message-State: AOJu0Yw3IA8lEdBA/Gh6iMRehThRjY8hZaesWqOgTOtLm7EivJYTg7m1
- eYLKcBXBGaEs3SgO4GrTWc6XAKn2eczgM/8ukDHAR2XQe/1RdcNn7hPFha/+cd/KrXe0uV+gh8k
- 7xnge++aj+Sy4/ZYyk+Qdkfnhz5T56Lw7viKQHYIui+1hSzQ7xrcIpnF6lAO9IcdnXs7FvVNp55
- S3h3O0RhCm3+nBX7fSnr/zmC0dUjO5vyIIDKc1pbbw
-X-Gm-Gg: AY/fxX699viOQAD5/Hvr8FrOuW+5Ijz1aB4JYjqUzXBbx+bQDGee/tanSoMc0wFcM03
- gJLjdcebVu3TvvsL6SXDiLDoj5mC06P3YWT01crIbV5ad8AmP7BbpH/Nq7P2a+u7ypxyNXkCis1
- EsyaCnQnJB4YIzRC8i/q4mIzHewD95pmtfStOMaAosu3/1Xc5P6IorD3k3/ix9A+rkJMebHfSdM
- 9vZ3hc2uFOzHrKHcq+vdt7v6eu5TBQUe8vOwSM2ou2CezG7qo8nDQN0NQhGPkPNTK7q9bV5lzuJ
- gwFvvsjaBglbDFKEiEzT8BS15AYLBJh1set9Fkjn4j8WyxrFBw+2aywHx5KH1dmNv2iS6KbHmwn
- wungQaA8GV56FJu0Z0F1rDHkuvKUNh2PUmfpWHdApR+7r5QxCnoM4CSQt/EsmRb6PDB8qwwihyY
- sfXFu/yWiPpTLFyQ==
-X-Received: by 2002:a05:600c:4709:b0:479:1348:c614 with SMTP id
- 5b1f17b1804b1-47d84b41b2dmr239582135e9.26.1768302817260; 
- Tue, 13 Jan 2026 03:13:37 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEUMjJGSzu6dH3RfX76RI7SrZkwz7AfoomAvaX5nUo5a9MlTT1hS9J6k7xFWoIwpNtR9tIKhw==
-X-Received: by 2002:a05:600c:4709:b0:479:1348:c614 with SMTP id
- 5b1f17b1804b1-47d84b41b2dmr239581825e9.26.1768302816820; 
- Tue, 13 Jan 2026 03:13:36 -0800 (PST)
+ bh=5yk+7lehNHXmaDyA6TRaDnfLrvG1v0qyhVBj2t/x3e0=;
+ b=dGJwDsOGkkctFRCPsk2d4OHaAJqhl1hS51Y4mBkyi5wZ1w96CBUXsUi8c2jO65LR/e
+ kgRVhdADbQPF7ULYd1FiiGGijbrelNO8Uc8Cj6SsmetbGo3lbX0/dptKmKxw74TMclkA
+ dqWa5VZLIM+KpRzwbUpZRxOqun/Xvf9PMdPmHc5BHk23f9Bx6A6hNcMwGv+tjRf0kQuW
+ QOOOhFfo8UX2RDgTitzOib/F0f/wNXu5Se+O86M1DUIzU7IlBiy26RXt0nvGuofzWrkq
+ tTOKGZOcyd/VyVJVGw5Tt/kvhoFRnRJFRCLRMltlCwvMShC8DLlqwuBsWfBqMKhLIxqW
+ IZcg==
+X-Gm-Message-State: AOJu0Yw58JkSuZ3++/6Z0w08alopbw53mdPI63QKHq3a5GandTDj+mUL
+ yAM5+HFIQikHe2BYyhsnwOiVl942TmjmnHJTGxQEVNEUWFl1jHzclGGlb6AZRWYKa1zUqNCr6Ht
+ KzPjVNEiAiXdN7mimJuBuBIH6oejzqSyMu00eHsH8LgQ5odD3rLj2X08yg+5tsqn7V/x0XD92WS
+ Jpq5VoyyBIi2icV+Kca16Suf1caaKjypXE2ryf7Cu/
+X-Gm-Gg: AY/fxX4EHztVZuqWURk50WsEsHJXGmWJc0PlHOxs3xKIUR2ttl71cjSCxQiRZYRf2qK
+ zG06DJLlpVPpHq5xW4PirwKSpUnl3l4l3+KZ9Plrnm/J8LEjkuxzD69vt9MvGfqsujFPWiqqe/H
+ JVQJ8XeG7j7uiJTQHtC9M8pwEED2uVsrR4+g4V787NqBixhZQWukAO/lRsLK31zEsjdcJ0aQRPO
+ f+SrpuEi+Z9tioC3B5Gg8Tc9nINk032kPbui3goMXduxvdQC6LCComLE0CWl7B2zJaY1ddz9hd1
+ tPgAxpfIvyINBTYyZBrHI2IasQmpT0XjyEXgBgMPDvBViJN7L4IvXEbMhuXSIOJ938Xw9JgNTlY
+ wCaQoI/SzWh5BFtCi/mGfvv0D1p06OGo5lQh8YL5G2qUIHmG+vuiD79/0L+aYSuFV/RSnTLk/x+
+ WX20MbRiwSJtf59A==
+X-Received: by 2002:a05:600c:8506:b0:477:9ce2:a0d8 with SMTP id
+ 5b1f17b1804b1-47d849bd201mr204796705e9.0.1768302820542; 
+ Tue, 13 Jan 2026 03:13:40 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHLCkwWY3sJY8VOKcBhBFJ7w8ldtb+BhmulQsxRbsWWK2uK+lOMFUMLH2fUudDP8qBSA7HJjA==
+X-Received: by 2002:a05:600c:8506:b0:477:9ce2:a0d8 with SMTP id
+ 5b1f17b1804b1-47d849bd201mr204796385e9.0.1768302820156; 
+ Tue, 13 Jan 2026 03:13:40 -0800 (PST)
 Received: from [192.168.10.48] ([151.61.26.160])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47ed9eb6fbesm12480785e9.4.2026.01.13.03.13.35
+ 5b1f17b1804b1-47d7f4184cbsm419522695e9.6.2026.01.13.03.13.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jan 2026 03:13:36 -0800 (PST)
+ Tue, 13 Jan 2026 03:13:37 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Subject: [PULL 1/7] target/i386/tcg: do not leave non-arithmetic flags in
- CC_SRC after PUSHF
-Date: Tue, 13 Jan 2026 12:13:27 +0100
-Message-ID: <20260113111333.1138160-2-pbonzini@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 2/7] target/i386/tcg: remove dead code
+Date: Tue, 13 Jan 2026 12:13:28 +0100
+Message-ID: <20260113111333.1138160-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260113111333.1138160-1-pbonzini@redhat.com>
 References: <20260113111333.1138160-1-pbonzini@redhat.com>
@@ -121,48 +120,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The value that is pushed by PUSHF is the full EFLAGS, while CC_OP_EFLAGS
-only wants arithmetic flags in CC_SRC.  To avoid this, follow what other
-helpers do and set CC_SRC/CC_OP directly in helper_read_eflags.  This
-is basically free and fixes an issue booting Windows 3.11.
+Remove dead code; it arose when I noticed that, because 0x3? opcodes do
+have a pop, case 0x32 works just fine as fcomp (even though 0x?2 is fcom):
+there is no need to hack the op to 0x03.
 
-Reported-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Fixes: e661e2d7a37 ("target/i386/tcg: update cc_op after PUSHF", 2025-12-27)
+Reported by Coverity as CID 1643922.
+
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/cc_helper.c | 4 +++-
- target/i386/tcg/emit.c.inc  | 3 +--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ target/i386/tcg/translate.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/target/i386/tcg/cc_helper.c b/target/i386/tcg/cc_helper.c
-index 91e492196af..6ddd64fcb07 100644
---- a/target/i386/tcg/cc_helper.c
-+++ b/target/i386/tcg/cc_helper.c
-@@ -414,7 +414,9 @@ target_ulong helper_read_eflags(CPUX86State *env)
- {
-     uint32_t eflags;
- 
--    eflags = cpu_cc_compute_all(env);
-+    CC_SRC = eflags = cpu_cc_compute_all(env);
-+    CC_OP = CC_OP_EFLAGS;
-+
-     eflags |= (env->df & DF_MASK);
-     eflags |= env->eflags & ~(VM_MASK | RF_MASK);
-     return eflags;
-diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index 0fde3d669d9..e55b65176fc 100644
---- a/target/i386/tcg/emit.c.inc
-+++ b/target/i386/tcg/emit.c.inc
-@@ -3253,8 +3253,7 @@ static void gen_PUSHF(DisasContext *s, X86DecodedInsn *decode)
-     gen_update_cc_op(s);
-     gen_helper_read_eflags(s->T0, tcg_env);
-     gen_push_v(s, s->T0);
--    decode->cc_src = s->T0;
--    decode->cc_op = CC_OP_EFLAGS;
-+    assume_cc_op(s, CC_OP_EFLAGS);
- }
- 
- static MemOp gen_shift_count(DisasContext *s, X86DecodedInsn *decode,
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 7c444d5006d..460848e4223 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -2543,9 +2543,6 @@ static void gen_x87(DisasContext *s, X86DecodedInsn *decode)
+                 break;
+             }
+             break;
+-            /* map to fcomp; op & 7 == 2 would not pop  */
+-            op = 0x03;
+-            /* fallthrough */
+         case 0x00 ... 0x07: /* fxxx st, sti */
+         case 0x22 ... 0x23: /* fcom2 and fcomp3, undocumented ops */
+         case 0x32: /* fcomp5, undocumented op */
 -- 
 2.52.0
 
