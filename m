@@ -2,54 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C693AD1AC3D
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 18:58:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB81ED1AC5B
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 19:00:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfieN-00048f-OE; Tue, 13 Jan 2026 12:57:51 -0500
+	id 1vfigB-0005mA-B8; Tue, 13 Jan 2026 12:59:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <magnuskulke@linux.microsoft.com>)
- id 1vfide-0003y8-KF
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 12:57:08 -0500
-Received: from linux.microsoft.com ([13.77.154.182])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <magnuskulke@linux.microsoft.com>) id 1vfidc-0005l9-SW
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 12:57:06 -0500
-Received: from example.com (p3e9c06ce.dip0.t-ipconnect.de [62.156.6.206])
- by linux.microsoft.com (Postfix) with ESMTPSA id 1F83A20B716D;
- Tue, 13 Jan 2026 09:57:01 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1F83A20B716D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1768327023;
- bh=7idDqj56L/qVydakVryjoibq9RuMpR3bCCknc2ZO3xQ=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=HaHNDqyamA764PvMg796OSpGaLp2NO4ClRX0BfgePr+Jsb7AwMqWBHJOmOA2kZlQQ
- r+V0yy9EvVbNzE/caCjD7NKwmqu9cbEsYgt4eyaREvkKzbZK1GAje2XPLjwXc6E7xa
- M7bHvc4b0Uj5ibsxo0sc06yVw+WlokmtVAhXVOPA=
-Date: Tue, 13 Jan 2026 18:56:57 +0100
-From: Magnus Kulke <magnuskulke@linux.microsoft.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Wei Liu <liuwe@microsoft.com>,
- Magnus Kulke <magnuskulke@microsoft.com>, Wei Liu <wei.liu@kernel.org>
-Subject: Re: [PATCH] accel/mshv: Remove remap overlapping mappings code
-Message-ID: <aWaHadZujN8AIHMA@example.com>
-References: <20260113153708.448968-1-magnuskulke@linux.microsoft.com>
- <b302b2d9-16aa-4f79-83b3-ea749696af0c@redhat.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1vfig2-0005Zn-BS
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 12:59:38 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1vfifx-0005yU-RU
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 12:59:33 -0500
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4drH7P4wT9zJ467D;
+ Wed, 14 Jan 2026 01:59:13 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+ by mail.maildlp.com (Postfix) with ESMTPS id 124CE40086;
+ Wed, 14 Jan 2026 01:59:27 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 13 Jan
+ 2026 17:59:26 +0000
+Date: Tue, 13 Jan 2026 17:59:25 +0000
+To: Markus Armbruster <armbru@redhat.com>
+CC: Michael Tsirkin <mst@redhat.com>, <qemu-devel@nongnu.org>,
+ <shiju.jose@huawei.com>, <linuxarm@huawei.com>, <linux-cxl@vger.kernel.org>,
+ "Ravi Shankar" <venkataravis@micron.com>
+Subject: Re: [PATCH qemu v2 5/5] hw/cxl/events: Updates for rev3.2 memory
+ module event record
+Message-ID: <20260113175925.00007966@huawei.com>
+In-Reply-To: <87344bf29s.fsf@pond.sub.org>
+References: <20260102151512.460766-1-Jonathan.Cameron@huawei.com>
+ <20260102151512.460766-6-Jonathan.Cameron@huawei.com>
+ <87344bf29s.fsf@pond.sub.org>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b302b2d9-16aa-4f79-83b3-ea749696af0c@redhat.com>
-Received-SPF: pass client-ip=13.77.154.182;
- envelope-from=magnuskulke@linux.microsoft.com; helo=linux.microsoft.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,28 +68,98 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <jonathan.cameron@huawei.com>
+From:  Jonathan Cameron via qemu development <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 13, 2026 at 06:24:01PM +0100, Paolo Bonzini wrote:
+On Mon, 12 Jan 2026 13:23:27 +0100
+Markus Armbruster <armbru@redhat.com> wrote:
+
+> Jonathan Cameron <Jonathan.Cameron@huawei.com> writes:
 > 
-> What other changes are needed?
+> > From: Shiju Jose <shiju.jose@huawei.com>
+> >
+> > CXL spec rev3.2 section 8.2.10.2.1.3 Table 8-50, memory module
+> > event record has updated with following new fields.
+> > 1. Validity Flags
+> > 2. Component Identifier
+> > 3. Device Event Sub-Type
+> >
+> > Add updates for the above spec changes in the CXL memory module
+> > event reporting and QMP command to inject memory module event.
+> >
+> > Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> >  qapi/cxl.json               | 12 +++++++++++-
+> >  include/hw/cxl/cxl_events.h |  7 +++++--
+> >  hw/mem/cxl_type3.c          | 20 ++++++++++++++++++++
+> >  hw/mem/cxl_type3_stubs.c    |  4 ++++
+> >  4 files changed, 40 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/qapi/cxl.json b/qapi/cxl.json
+> > index 3e4bad4ad0..752d46cda2 100644
+> > --- a/qapi/cxl.json
+> > +++ b/qapi/cxl.json
+> > @@ -242,6 +242,14 @@
+> >  # @corrected-persistent-error-count: Total number of correctable
+> >  #     errors in persistent memory
+> >  #
+> > +# @component-id: Device specific component identifier for the event.
+> > +#     May describe a field replaceable sub-component of the device.
+> > +#
+> > +# @is-comp-id-pldm: This flag specifies whether the device-specific
+> > +#     component identifier format follows PLDM.
+> > +#
+> > +# @sub-type: Device event sub-type.
+> > +#  
+> 
+> These three seem to be the same in CXLGeneralMediaEvent, CXLDRAMEvent,
+> and CXLMemModuleEvent.  Should they live in their common base type
+> CXLCommonEventBase?
+
+We have documented that base as corresponding to the spec defined
+Common event record header and these aren't part of that.  We could
+invent a CXLMemCommonEventBase that contains the stuff that is shared
+for memory types of errors but it would probably just confuse anyone
+trying to correlate this stuff with the spec.
+
+There are a lot more event records we don't yet support, or are not
+directly injected because they are responses to some other action.
+(e.g. dynamic capacity add produces an event but also changes a bunch
+ of device state)
+
+I'm not sure if we will add direct injection of any of those other
+events in future. Some are errors such as MLD Port Event Records,
+but reporting those inband makes no sense as normal PCIe error
+reporting is used for that. They are to expose what happened to
+an out of band monitoring interface (see examples in patch 2
+discussion).
+
+Thanks for all your other feedback. We'll resolve that for v3.
+
+Jonathan
+
+> 
+> >  # Since: 8.1
+> >  ##
+> >  { 'struct': 'CXLMemModuleEvent',
+> > @@ -251,7 +259,9 @@
+> >              'life-used': 'uint8', 'temperature' : 'int16',
+> >              'dirty-shutdown-count': 'uint32',
+> >              'corrected-volatile-error-count': 'uint32',
+> > -            'corrected-persistent-error-count': 'uint32'
+> > +            'corrected-persistent-error-count': 'uint32',
+> > +            '*component-id': 'str', '*is-comp-id-pldm':'bool',
+> > +            'sub-type':'uint8'
+> >              }}
+> >  
+> >  ##  
+> 
+> [...]
+> 
+> 
 > 
 
-on QEMU there are no further changes required. The commit has been
-authored in a way that it would be easy to undo later.
-
-L1VH testers have been using QEMU's master branch with the remap commit
-reverted.
-
-On the kernel side it looks like the basic L1VH enablement patches were
-introduced in 6.18 already (f26c930), but there are a few more relevant
-fixes in 6.19 for some aspects like device PT, soft reboot and xsave
-provisioning.
-
-> I'll leave the code in for a while until 6.19 is released.
-
-yes, this makes sense. thanks,
-
-magnus
 
