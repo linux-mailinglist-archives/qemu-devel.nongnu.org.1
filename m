@@ -2,87 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A69C0D17D7C
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 11:04:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A7E0D17D7F
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 11:04:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfbFW-0000qn-Kz; Tue, 13 Jan 2026 05:03:43 -0500
+	id 1vfbFT-0000qf-5T; Tue, 13 Jan 2026 05:03:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1vfbFJ-0000ou-2o
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1vfbFJ-0000os-2A
  for qemu-devel@nongnu.org; Tue, 13 Jan 2026 05:03:32 -0500
-Received: from mout.kundenserver.de ([212.227.126.130])
+Received: from mout.kundenserver.de ([212.227.126.187])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1vfbFG-0006qY-2k
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 05:03:28 -0500
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1vfbFG-0006qV-0B
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 05:03:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivier.eu;
  s=s1-ionos; t=1768298601; x=1768903401; i=laurent@vivier.eu;
- bh=HSbgJ/1VS+TqTvkTZnifrLNWcol7TXzwMJEBDNjkg/8=;
+ bh=U2ZUQMrbQNfSyQjK/+McwlZk747na2cO7PCOXdssNBw=;
  h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
  References:MIME-Version:Content-Transfer-Encoding:cc:
  content-transfer-encoding:content-type:date:from:message-id:
  mime-version:reply-to:subject:to;
- b=nkfPXF3MJ2shkXoNL0wBJ5TJnQuGzlN/4F73GX16T2McW7o4sjIotja60OPhlKfB
- voxrsl8plPvBemnAwvMFOkFF7SfhyjmmedbBeNevuGXJLWamkinzWHj1HvWLSgZkQ
- 70+olc6tgz9XZlUzaywdoecsL4GE7lKwMzBy7fymebx6GuQUWakfKAg/UR85Iv0Fi
- DaQzOysggcHtiimKdRZcQbKjf/egC7J5lvjsHG0JrUT6Zf2jaYmG6s6DHAT1VTrH+
- uplt5kW8pLcq9+Ppph9Tg8oxE0FbgapiHZKwlXGOzCxblJB+LjsPD6JFrdO0hrOpn
- qP0qLSsASKhVcnF8dw==
+ b=vKLz35QpWXhcBvvT6NYqjjzH/wzSdUygeFWV3Y8uwINXGhhlsA28RQag2ZcpKm3i
+ f0KHPKoXsiVVwSqPhRWpggoyYC64u+e+VyPHZcZDCVX/gO0C5zg9MAHQEuOHbRiRx
+ YuKVxklcViQLTXY37w+8HUDs6fZpwtnC1yi0CsTqbJ663aIqwe3kmGYVUZZ06hirC
+ 07lyIOim4TrvVp86oe4Ws8jYkGuxUkVBCjkbWI7//ao4XrZ0n0CVMS3ImvlN8Rrre
+ IaB4D4st0hejqv1tK6J+6NmkI6/gh8JTWpnFfI2SVr7BmgB6ucyA3GAr0NjLvAhcB
+ Zqhoj9kBrRzpGZTJpg==
 X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
 Received: from quad ([82.64.211.94]) by mrelayeu.kundenserver.de (mreue010
- [212.227.15.167]) with ESMTPSA (Nemesis) id 1N7Qkv-1vuOV20MJB-00zjlG; Tue, 13
+ [212.227.15.167]) with ESMTPSA (Nemesis) id 1MEmMt-1vd8Ww1K3v-00AWJk; Tue, 13
  Jan 2026 11:03:21 +0100
 From: Laurent Vivier <laurent@vivier.eu>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <laurent@vivier.eu>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 1/3] m68k: fix CAS2 writeback when Dc1==Dc2
-Date: Tue, 13 Jan 2026 11:03:18 +0100
-Message-ID: <20260113100320.1009608-2-laurent@vivier.eu>
+ Richard Henderson <richard.henderson@linaro.org>,
+ William Hooper <wsh@wshooper.org>
+Subject: [PULL 2/3] m68k: link.l is only available with 68020+
+Date: Tue, 13 Jan 2026 11:03:19 +0100
+Message-ID: <20260113100320.1009608-3-laurent@vivier.eu>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260113100320.1009608-1-laurent@vivier.eu>
 References: <20260113100320.1009608-1-laurent@vivier.eu>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:mLQJucg1R8OfkwrTVD4IsH3WLcRtmDjD49oeDnz3000c9+/e9O/
- fKmlC2CehyX2nwTYweWjVpWuNL/VdUzUJzVuMjQzWetHexaMgmLsEfsIYzfec9xS0V73c99
- zDWPhLxtw1UDxXH5TAfRbkLgx9eYD8P3f3/zZaXZn0cUWpKh2cQc+v1TkqboClsJ00c6w0b
- 6OpTPvo4dOaYP+MEhMvbA==
-UI-OutboundReport: notjunk:1;M01:P0:sTCnfeH6X9c=;vrQEfCflQVIU8ZdXwNhCpbMt4PJ
- SmPpgu0+bztKTje1AGu/ahk7LVwIULLChthsAfhgYGvvhc2ztv1vd1loZRwZRWCmTrIZz4Nvc
- 5XwTtdTJLc97Ei5yYDx9MQA9QuClvJ0TwYz8gHbVe2xxMVNDwl7hEhTYWxA0RXAQzbJ60DvlD
- NTNucCS+kVeHnW9wuajDtSSGYvBhqvSzbMe3BGQ3YGiKmPj3XFeiJM9EMcXUDZ8/rRpRiET9g
- wQDfKclrRGg2MpwcEa55VODn5tOc8NrIeKsHQtsIyD8nUnC1ytocVQwKhRVJjUQIfCCudwvLj
- +KWnQjncfgBDFX3Oz62o4vLjGHJMGruFQ3vzWJfbmMQcHbA6jywE73Y96M8ZHky1gcCVAsJlf
- 7kibNCzyZsVd+m8HDf0jrW3tvzLmMpljS0ukz2c0vF5Lvq81ludn+LcAuGzjbeQVOwwKnGy0z
- bnYupNWwYPuDo02gDfQMkrzb6wUcKz49tum/6Fdu5efk1msDxOf/aUZgUDhirI7QGsmVdJkX1
- +qGii89pj8FpTXE2pT8Mc/F7zoW40b17iIinXagEsn6ciAO+c4Hb20TD1KXDfpg9XFgZ5QsCy
- ex0IU0de+TOzaAt847V0s8VelZCdp7qHL7rBLGGGJ+NMh4/+pTQVEsqTTSKG23y4pqUeJjAL0
- SizGPYNwJwKwmbYqP4eELwPzbkyd3W11pjE5Az5I8RIsiSiF/mTbMrfpJFleNZJh5kXMAdOXk
- Xrvce2qr9A1rNd0FuwlaFqqpNmFNi0XFIfHL2gF3tVs1lz/7yNNjarKndhuTDPjXYMZUtrhdf
- Nu+CaJpXN2ejv4t1TRmZVcyNkIKGaAVgcOC235O2HJ4SCdqqXvRODTS3YygothKr9cQtsy7fM
- A6Y9l4VQs9MdzwBNvT0eM706QwnrdUZeXZYAFoCWoKzxD8PdEiC7z4QWV4muUHgHD8BdEl4QM
- nRoJebJ64oW8j+t7UVZqCwOQl4c4nmyj2wyHj7gpLecyzI3xBEc+y6key21ZwchA4LJ5C3x+2
- 1NMptqiIZ1Ddyy6uKW+/vVs3DkbgR6ukIxTDx+/r6kdxs08bQeM5FBTh2koi/DVq61298DodG
- 0XXTdhfsQk7YYcKRxbrKwMSO0wy9Dvtpd1r9Vu39wP/NBYlwfLFVEaKDE2WfbHnEV/2uocUoy
- xAlyjhRj0Aq979GwFjP/4omN5Qw17ti9fkXRf/MUSeyS1wtIqZtxk3f3TlWFI8uU+/ETOmroP
- zHJqK7tx/PwSnMstc8sQddhIdnupeNOGz9nFaAgylSHKmX0BMhLsaH+QZci1NLwDh/9hxlqIx
- dlnfqwqNXIRQLrN2NuC8Ud+kheMAqFl8xSOCUofv/Ns5pAE3gJsqHupa8aEB+5oYLi37PNoR/
- YIC4iRL7IytQMl8uDCzSO3YcBZ8mY2dEecshD0RFR8bkOXQw9SoG+p8TO6dXrqBmJO3GAJExF
- 4liL/YuNn4pr4Z/2TKu5knAD66sAJJMnnhkMbm9qY8RJXaD6FYqNNP9TGe+uIcM0GlMXzCV46
- ME7LBmGmRWRxSDS07Unkm348fqsCFJduvezR26GU2DguxLP8VkQxaQWRXgcmjV08xQbH532U+
- WoiIbsBE3mDGM+I0TxKZsdYFDRAVHR7pFtr/jwkrMYGPIMpnxgh1FEeRkGFVvgMZlRI1jUYYb
- n8pBzGQPByYAmTjRbOsh/aLuGVj0LeA+3W9ac40KC+Tgp8b/GGmy6RAwf+e9D+MXxArYI1lqn
- oj6ISMgglUgRqr7p2Gz3hGIpr6ycttYbjgoMIc+2VOJP2MNbF6fLWFv0=
-Received-SPF: pass client-ip=212.227.126.130; envelope-from=laurent@vivier.eu;
+X-Provags-ID: V03:K1:avMvrqW+E0aMR2npoP7pUqMIK2R3jvBp6+XXfwyoEDLEsE+zBO8
+ BgUvLvQ3UXiSn1NMRLLAh6Zf8g/wFqh/vjbvyUedXtZernxwdqHdE0llFn8ZuY6Z6aClSN0
+ P/ccOrtfNMfwxepbyONtlHaBpCeXjfWWSretalezbNtvXy99tXRWsSkecg5JnDJtKZFKrQ3
+ 7XjgRherX7qKxRuXoOPPA==
+UI-OutboundReport: notjunk:1;M01:P0:N0FFXPXRdOI=;1aBPGFI/kSczUf+Lsa7SDQcy8nP
+ CiWrevx7811CTNqkooXyx06ulQzV6Y7pGU+KDi/zjUTXhmsPxxWPQC9yBbz1z/eYULAKJjuYj
+ 2+5FshMJJfATSeqXUMDYVl1NqtiRMhWmF7jAib2ejdHRp+0uRg7qMjmRNeyyDtC9YZgOb6V/T
+ j6l5bIr3u7SLbwymxTeVyeUwVfqdWPNaqK6xo/hoATWmbKQuvhkDr/O8nTIWB9QrKUdruFVsS
+ Y+naBp9AjKv1I8YB9QvicOoEQW64pRQm2mHSquqZahaH6MiCoCwg+CQHcsr5G2EPEGNW/nCOm
+ 4BhTM2u5RCnJjn7NY5iwEN6L3EuUPb6USc+2Fqt7jV4wwtaJ5jrqNtgmI1ObsBgzNghxaNa5z
+ jvyPi4aoYi1o+1rP9+mzAGjormlKUFqq7OGuBLDys621lY95YzXoeK4F2mjFWD3jawSLCZdnX
+ wDGTmBpugiKj5PKI3V7Ndf+zpVCpQSE3EuHPBjijoJS6i0FyOsqe3J/lmvD2W9xIbSteNIOX/
+ KIwrtZwNSmUEhgAh6n9EEJkKvi66cKYw01AxfeUuZn0DwapvwakdP1gku7Fd2a3vXjlk4UR7F
+ hH/IT3EW7zJJaJXhKehn0LxBI7hoqisMdgWdJL6tk3junxaibe3WsVCMXjZ25WlMAdu4Q8ZJe
+ 2DZ0zXJDEIqn/BANzgPLtUROxgu4nAVPTl/ALa+IEyliWMJ8nzHX9wpfywaKdaZBf3Jn3Gomk
+ SDwGM2AFLW7ULGw23ZIPvDlNmv2yzh5pCsi3HDqxTO5j9zdR1JNQmZL0ykoI0Kt+CvnAD2gdi
+ tO1P7wjmKmxuTEHzkwnz6BetaMyzT3svjX/Ir9rI3w5pQaBm6aFxiff205bm0GDwO1H7zgqyu
+ MgrfTwGEqL/SzmmERyVt6jNFbyDp1PwgHCD0pPf9X7DgrtzfGsmZvGFwZBvmUYBvTkOI1biYm
+ 7MRm3mJ70hML5yuVqlhu55r8ewPOnonMbOYpyRgVjgDUMmGxe1f5aIppZl+IHmYvNbfP7P+9H
+ +0XlWdT9ateGgc7W4jQhNKz05bY8Ul4RnbSZ9rGwUcZoOaSCWQ8m3rlntMoJc+VG3bjDgmyDF
+ n70kATMAAtGvYfIV/dCgxDe9JWZJJ9Mesx+aoKTIhHmyotCtqwRdV+NlzeLsuppbBONJ9Xmfo
+ gys8Wr9XLqESPe1DwoaeY05CSjdHqjRq6X+BDMxzTcWQDavRDHIQA9CS9lyzkgaDsbtnCPpSw
+ UUdIn0XdMBdlOx/mCH9MYsNwbQ/C3qsjANyWa6sVi2i6FA6Vyt7vaI59Qb6jnsgG9mZ1pQz76
+ LHuMPBF0MOuScDGsIlDz7b6OWM7GOb1A98nwG9aYi1EtZ05R44vKJWT3fuNIK5MPlfnv9KcTU
+ ERAHhyWraw3/8LW811nnRYaEn43vJC3nUCEfaS2K+4D/EUFjayBvSEobe9uNKrBY7ivcGgbQ4
+ Q/4bQ26Bh33n2KnNKmMFxNAV0vbi6hhNzzGSVIR30AxNHD2DY0WKUQI+8HtdVMdEoiQ7FaFWC
+ cZW3773FLAvjCPlcBzL7/jxyCEw6LCaKb2baMdu3vkFzq1hrsZRwwyDq6xhw+HGTNIHCnfQmc
+ bn7rzF/mpjQCHhVvxB8vMJA2IDYWoMnjq3IRWjftvDxO7WC1GtLBuyxE1rnXEIH/4MTWBH4VT
+ axFdxdRvhLxRrRZD4WpKZZCHPxftDLeP8wla8a5OYzouJE4aAgM7ZV2HztCzn2KlkyxcPOwvn
+ 4TB1C6uUW3X2DRT3LzmPhDUPJwHAjD8F5LNXxY5cEFy37qFgVdvpwM/E=
+Received-SPF: pass client-ip=212.227.126.187; envelope-from=laurent@vivier.eu;
  helo=mout.kundenserver.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,50 +101,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to Programmer's Reference Manual, if Dc1 and Dc2 specify the
-same data register and the comparison fails, memory operand 1 is stored
-in the data register.
-
-The current helpers wrote Dc1 then Dc2, leaving operand 2 in the shared
-register.
-
-Swap the writeback order for cas2w/cas2l so memory operand 1 wins.
+Base 68000 only supports word size.
 
 Signed-off-by: Laurent Vivier <laurent@vivier.eu>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20251226213707.331741-1-laurent@vivier.eu>
+Reviewed-by: William Hooper <wsh@wshooper.org>
+Message-ID: <20251227210250.411882-1-laurent@vivier.eu>
 =2D--
- target/m68k/op_helper.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/m68k/cpu.h       | 2 ++
+ target/m68k/cpu.c       | 3 ++-
+ target/m68k/translate.c | 2 +-
+ 3 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/target/m68k/op_helper.c b/target/m68k/op_helper.c
-index e9c20a8e0322..10266b1e0e8b 100644
-=2D-- a/target/m68k/op_helper.c
-+++ b/target/m68k/op_helper.c
-@@ -799,8 +799,8 @@ void HELPER(cas2w)(CPUM68KState *env, uint32_t regs, u=
-int32_t a1, uint32_t a2)
-         env->cc_v =3D c2;
-     }
-     env->cc_op =3D CC_OP_CMPW;
--    env->dregs[Dc1] =3D deposit32(env->dregs[Dc1], 0, 16, l1);
-     env->dregs[Dc2] =3D deposit32(env->dregs[Dc2], 0, 16, l2);
-+    env->dregs[Dc1] =3D deposit32(env->dregs[Dc1], 0, 16, l1);
+diff --git a/target/m68k/cpu.h b/target/m68k/cpu.h
+index d9db6a486a80..7911ab9de30a 100644
+=2D-- a/target/m68k/cpu.h
++++ b/target/m68k/cpu.h
+@@ -555,6 +555,8 @@ enum m68k_features {
+     M68K_FEATURE_MOVEFROMSR_PRIV,
+     /* Exception frame with format+vector (from 68010) */
+     M68K_FEATURE_EXCEPTION_FORMAT_VEC,
++    /* LINK.L (680[2346]0, and CPU32) */
++    M68K_FEATURE_LINKL,
+ };
+=20
+ static inline bool m68k_feature(CPUM68KState *env, int feature)
+diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
+index f1b673119d6b..b55e604b11d1 100644
+=2D-- a/target/m68k/cpu.c
++++ b/target/m68k/cpu.c
+@@ -235,7 +235,7 @@ static void m68010_cpu_initfn(Object *obj)
+=20
+ /*
+  * Adds BFCHG, BFCLR, BFEXTS, BFEXTU, BFFFO, BFINS, BFSET, BFTST, CAS, CA=
+S2,
+- *      CHK2, CMP2, DIVSL, DIVUL, EXTB, PACK, TRAPcc, UNPK.
++ *      CHK2, CMP2, DIVSL, DIVUL, EXTB, LINKL, PACK, TRAPcc, UNPK.
+  *
+  * 68020/30 only:
+  *      CALLM, cpBcc, cpDBcc, cpGEN, cpRESTORE, cpSAVE, cpScc, cpTRAPcc
+@@ -260,6 +260,7 @@ static void m68020_cpu_initfn(Object *obj)
+     m68k_set_feature(env, M68K_FEATURE_MSP);
+     m68k_set_feature(env, M68K_FEATURE_UNALIGNED_DATA);
+     m68k_set_feature(env, M68K_FEATURE_TRAPCC);
++    m68k_set_feature(env, M68K_FEATURE_LINKL);
  }
 =20
- static void do_cas2l(CPUM68KState *env, uint32_t regs, uint32_t a1, uint3=
-2_t a2,
-@@ -861,8 +861,8 @@ static void do_cas2l(CPUM68KState *env, uint32_t regs,=
- uint32_t a1, uint32_t a2,
-         env->cc_v =3D c2;
-     }
-     env->cc_op =3D CC_OP_CMPL;
--    env->dregs[Dc1] =3D l1;
-     env->dregs[Dc2] =3D l2;
-+    env->dregs[Dc1] =3D l1;
- }
-=20
- void HELPER(cas2l)(CPUM68KState *env, uint32_t regs, uint32_t a1, uint32_=
-t a2)
+ /*
+diff --git a/target/m68k/translate.c b/target/m68k/translate.c
+index eb1ba150745e..78efa3e597c4 100644
+=2D-- a/target/m68k/translate.c
++++ b/target/m68k/translate.c
+@@ -5829,7 +5829,7 @@ void register_m68k_insns (CPUM68KState *env)
+     BASE(move_to_sr, 46c0, ffc0);
+ #endif
+     INSN(nbcd,      4800, ffc0, M68K);
+-    INSN(linkl,     4808, fff8, M68K);
++    INSN(linkl,     4808, fff8, LINKL);
+     BASE(pea,       4840, ffc0);
+     BASE(swap,      4840, fff8);
+     INSN(bkpt,      4848, fff8, BKPT);
 =2D-=20
 2.52.0
 
