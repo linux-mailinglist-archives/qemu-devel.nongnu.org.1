@@ -2,117 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0730ED16FC5
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 08:22:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73DA1D17067
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 08:33:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfYiz-0002cG-Ic; Tue, 13 Jan 2026 02:21:57 -0500
+	id 1vfYsQ-0006w0-MX; Tue, 13 Jan 2026 02:31:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1vfYip-0002NV-F9
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 02:21:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vfYs6-0006lP-B0
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 02:31:30 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1vfYim-0005nI-SN
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 02:21:45 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vfYs5-0006wC-5A
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 02:31:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768288904;
+ s=mimecast20190719; t=1768289479;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DIyBP1UlbfdGj0aq90i6iUmp48Wa3gdQSlmSZC+cYDk=;
- b=g3A7PjKOAiCNK+FRP+NimMwldzmjBu4Wmsr8Axf2Dq1D5OKGOmSe69N41fI8jjkKXrhrLM
- hT2FGBipxGsfmWVjDA5LnPCIW3S7/cR9d0nU7FQpTX3kG2gw2ZjCJnxr3VIgLspS5sPhTr
- nnw9WbiZHb9KKYbgaoxSri7+MCaPDek=
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
- [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=JyGWbBoQl/YBMDZt9YIamxxnb0XIV5twswla+YDG86Q=;
+ b=P9xdwDDLNKkK3okNKOCUOAudIo3Oq6cUcvlPJPNthB/2quuUzr4fKfvgHV1cSAsG5l+kL+
+ 2OIwW28okbyhuKIxtmLGW+aJ8XbbMXniWnYRaDit+Q19eEX+22M//w9fVDogreODkyKPKt
+ pZ/LT/YQ8p7rcDy7uPB+z+cV+5mTtgc=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-645-W-VDnY5rNK2rpXjAM4mhvw-1; Tue, 13 Jan 2026 02:21:40 -0500
-X-MC-Unique: W-VDnY5rNK2rpXjAM4mhvw-1
-X-Mimecast-MFC-AGG-ID: W-VDnY5rNK2rpXjAM4mhvw_1768288900
-Received: by mail-pg1-f199.google.com with SMTP id
- 41be03b00d2f7-c552bbd1b03so1916150a12.0
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 23:21:40 -0800 (PST)
+ us-mta-572-_o0PbCURMCm13A8ChoPx8A-1; Tue, 13 Jan 2026 02:31:18 -0500
+X-MC-Unique: _o0PbCURMCm13A8ChoPx8A-1
+X-Mimecast-MFC-AGG-ID: _o0PbCURMCm13A8ChoPx8A_1768289477
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-432a9ef3d86so3770153f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 23:31:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768288900; x=1768893700; darn=nongnu.org;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=DIyBP1UlbfdGj0aq90i6iUmp48Wa3gdQSlmSZC+cYDk=;
- b=oyjBkgfpEUxV9xp7cGPvNY1Au0XYorkrM51vP6Lcde+ZYHVOsZHt99ccso5tSR/dt7
- dRRLQZusUy4Og57m+bxp/r+7do0z+x3cPIQ7GZ+oMa8tHtYY+m6YEzKUhBNVJ0qwO019
- JLG5nYn7d7eY9KcEyiK6nogdUfn2De1lpYAjFf5BGj0Z+Ts/PbfQxbdLfDat4U2MPqfb
- aqSPiC+bTmYdOAKbuirGkvhy/QD2epT9DbIBu6mk7h8+d4hqO+lhVx3kA8jko6qSJTn2
- fRIVGmllXGKrsnSBkJlXf1QFcygthPFQF3xYIT1z26A3nBUh9T4khcYIbQHGOGnulQ9q
- rGDw==
+ d=redhat.com; s=google; t=1768289477; x=1768894277; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=JyGWbBoQl/YBMDZt9YIamxxnb0XIV5twswla+YDG86Q=;
+ b=am0yM90DTv669klsw5BGTY/lki4m2KmEOgAuyWHzH7TJYRyPBPCwr9uwckT/YS5fW9
+ nudWK8B0zbX1iqtKZ5dBPinTrWk4XT9PyBKX4V7GLBzb0P5LDlO5dAlOOiG0JKakyVOm
+ 7mWXanFQv8tbF7TolQzNufXtmADIAXurCaENFiJcBlvthsxxlZrlUinaC1mzCYe4thv/
+ NBlZ0OFDNOsF0jvXAxth43NdC0klasLzlUtgOHxlOaGd1cdYbso4hAFKNuQlpGiXS+HI
+ UOi40if1WOpQiy+80mFgTnMqkJaUWKrvA5Kg5FWqjzFJKaiYTMa0Ckvf1rkkiEnDoO7E
+ CYBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768288900; x=1768893700;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-gg:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=DIyBP1UlbfdGj0aq90i6iUmp48Wa3gdQSlmSZC+cYDk=;
- b=FKmEhIhIuwpf3NFzFtEed3Uq5pMZDk/Ia0KUR9mjuYowSSZHvyyXk373IB0+3Zz4QJ
- 5w0NVE907ydeosuMzv97jIbeUuy83vg+sX4NFsLUTXwFznWnOQQ0fosgdFFx4U/g7W/R
- nXKlx8gJIIA7eNr26onjhC+y59U4rsBX8fUZlQCVI/IrzKoyiBBx57U25f2GuHjEm1xa
- +WhreTRY/oiPuKI9vshmvwrS1vKuyhZLjhi8FOoPRlR74HdULwMxC6D6rXm+uDN5r/he
- IIOYSXUaOI8AGZuOuIrwdVGA/C6AJuGzhBneV+h+EiTTrC1KWCkgqX2NzmbVJIkFYdF6
- PFKQ==
-X-Gm-Message-State: AOJu0YwqHJySlpwtmSU4lWWIHu5cQqVHDtgWhvqu3ucJRPUXKuvXJqr9
- ic3NqMiV/MdQUl12ydDAnDpBDeEjtmvD+u0Ef+comogZx6JirqHOnfZsVZ3cv3uY1zF9QihDm/J
- Y9ByuCRKRc+adjIOw4SouaDXulHvX3DbIaW2H0s3Nb2eHl2itTsmwZIuO
-X-Gm-Gg: AY/fxX6GmP/3d088lKHKZFp21oypVgBXqyOgGXVMJJA6XtNhmSsIy50oMfX92rbIIlP
- rGb5wd/syxCYrl5Nxh3XXH7UPaD04CGw+waYInsOXU76hCu+l9KP/wZYpBR8K0w6lQJZ5IBaB4Z
- F7jrg6tlHiE26QRWV3ePuByieZj9GdlY4i2odC0/pEhh4P7/bQkzR1Ivev+ZEJapUM6cS1hb7uY
- dnnx8kmqW2Cv09mEsNOdNWlE+cIqCzbGto2tl/RcTtWjtDxb1VFCTos2GaSUc/21zuOQiq0QF9Z
- wh0+ADzWRstlwvjNzI4R80LBBRZN80/6lNxSLswzw4AJ2SR5Aao8H+XpS9+dVPkCyeZp4RSZH5a
- JXbAALoi6wWcKCr+BwHkfR6HjZ32DKGpLPJbbXyjN/c24HVmvJTKa76ch+g==
-X-Received: by 2002:a05:6300:218a:b0:363:e391:38a2 with SMTP id
- adf61e73a8af0-3898f992b67mr20813680637.46.1768288899865; 
- Mon, 12 Jan 2026 23:21:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEnXXHOaNZdnaiFJjLFVPw/Sw4deHVWC+/H1ql2dN49b4/t9y4V96E08v4qiFAQ/eHCtN/hlQ==
-X-Received: by 2002:a05:6300:218a:b0:363:e391:38a2 with SMTP id
- adf61e73a8af0-3898f992b67mr20813646637.46.1768288899479; 
- Mon, 12 Jan 2026 23:21:39 -0800 (PST)
-Received: from smtpclient.apple ([110.227.88.119])
+ d=1e100.net; s=20230601; t=1768289477; x=1768894277;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=JyGWbBoQl/YBMDZt9YIamxxnb0XIV5twswla+YDG86Q=;
+ b=bECa5EEorj5+/bwp9XavFpSjYRRUk0PBuY8YnEitviFB4+T611T6uxzvnMridhgMMs
+ u5f4AA2fOkwFuNzDX5iSyzVMdX/s2BQkVY34uTBTyOH+beg7cVs6bP6cadl8JONGkmef
+ jz0nVsgXKz+JYXfN2IsPgtVALrDA4FjFoqxTFcZNnXG7UBhoLIIBSN7FTSbyx7iR0ooP
+ hWRJpSlyoAiN+xpmEegmml0a/jDTU5FnhABjGrg+oh+GTaQkyvRaVGNwpbAZPGusb+c0
+ w/4WUTCyqHDiR91w/pFozL0P1cTpheR4gpJi5DdDOQxBBAgswrjb+L8w5hQfpe5ccHQ+
+ x9KQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWnbY/5m22XK63H7AW8ji9hTEP1u4XToFDvFp4O+dL+ec2TcymSQHeFNRHKWZKLKh54Ql0YNp1mq+ii@nongnu.org
+X-Gm-Message-State: AOJu0Yw7exLaL1tSzeGyHUMB5QRplny7aPtgTfpZxCmABTI6GcMFyN11
+ YCwIgpwhkgGsbBoeAHJ1rWj8OrySesvLYONRYlEHlIk9i+73RWxBkxnuim2dePnbPkP422EvZoB
+ o9/yYsXix9vmNvPeuNuMX7cK2D0plMw6PbN+NEksBP2hPr7gD6NjBVcQT
+X-Gm-Gg: AY/fxX61YmIHVWZW376ixs3hRyyQkC8cvnNkz4+cfRFO9w+DdZUM0SK7yPMBbhGWojb
+ js3l7/HPDdWNyT0ilEHWETnT2I4nmxNdueMFVixMzHVWE7CFkSqo/LgSFE1+/e4QR0dh/g/3aXE
+ G7NyKDte7i26zo3j0Qb2t2jZFEMgtdOpvGYW5yGoUEBg0GrUJquWcJAb5FouzqUOlCjmJoF7tvc
+ +KheTg4Z85dA4K9LYsGrtHWgXrLbW6NvRJZlvxNg+rVFZHrw7bwxls5HEZ3pFC/jTnJsCMfO7j5
+ nIi20vf05tkB2PsEDcDFEGxWzNa3OzYedYquqXaGLdNgMkngNGw9Rv1f3p70+C6vwRniywKAs5t
+ G7xj0sQsH+twaBGV7/KqHia4IqL4Pxew=
+X-Received: by 2002:a05:600c:1e24:b0:46e:4a13:e6c6 with SMTP id
+ 5b1f17b1804b1-47d84b32efemr220976245e9.19.1768289477343; 
+ Mon, 12 Jan 2026 23:31:17 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHM/Y2Ef0VRwmEJt6I1+OgxJe1HI6w9h8SCdLM4+cY1wTwMAOuFiTGElz7nx4WoEHnYaMeVvw==
+X-Received: by 2002:a05:600c:1e24:b0:46e:4a13:e6c6 with SMTP id
+ 5b1f17b1804b1-47d84b32efemr220975765e9.19.1768289476561; 
+ Mon, 12 Jan 2026 23:31:16 -0800 (PST)
+Received: from redhat.com (IGLD-80-230-35-22.inter.net.il. [80.230.35.22])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-34f5f8c45b6sm19101810a91.17.2026.01.12.23.21.35
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 12 Jan 2026 23:21:39 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
-Subject: Re: [PATCH v3 3/6] igvm: Add missing NULL check
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20260109143413.293593-4-osteffen@redhat.com>
-Date: Tue, 13 Jan 2026 12:51:23 +0530
-Cc: qemu-devel <qemu-devel@nongnu.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Luigi Leonardi <leonardi@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
- Joerg Roedel <joerg.roedel@amd.com>, Gerd Hoffmann <kraxel@redhat.com>,
- kvm@vger.kernel.org, Eduardo Habkost <eduardo@habkost.net>,
- Michael Tsirkin <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <F2E4DEF4-3E69-47E4-946F-8795FD6CF77B@redhat.com>
-References: <20260109143413.293593-1-osteffen@redhat.com>
- <20260109143413.293593-4-osteffen@redhat.com>
-To: Oliver Steffen <osteffen@redhat.com>
-X-Mailer: Apple Mail (2.3826.700.81.1.4)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ 5b1f17b1804b1-47d7f661a03sm407695815e9.13.2026.01.12.23.31.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 12 Jan 2026 23:31:15 -0800 (PST)
+Date: Tue, 13 Jan 2026 02:31:13 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Haixu Cui <quic_haixcui@quicinc.com>
+Cc: manos.pitsidianakis@linaro.org, alex.bennee@linaro.org,
+ viresh.kumar@linaro.org, quic_tsoni@quicinc.com,
+ qemu-devel@nongnu.org, zhiqiang.tu@oss.qualcomm.com
+Subject: Re: [PATCH v3 0/2] virtio-spi: Sync Linux headers and add
+ vhost-user-spi device support
+Message-ID: <20260113023043-mutt-send-email-mst@kernel.org>
+References: <20251216032122.1316684-1-quic_haixcui@quicinc.com>
+ <4388d9ee-cdc6-4c65-8afe-938f62c431b6@quicinc.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4388d9ee-cdc6-4c65-8afe-938f62c431b6@quicinc.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -130,52 +123,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, Jan 13, 2026 at 03:20:57PM +0800, Haixu Cui wrote:
+> Hi QEMU developers,
+> 
+> I’m following up on my patch posted on 12/16/2025, and haven’t received any
+> review yet.
+> 
+> Could you please take a look when you get a chance? I’m happy to update it
+> based on feedback.
+> 
+> Thanks,
+> Haixu
 
-
-> On 9 Jan 2026, at 8:04=E2=80=AFPM, Oliver Steffen =
-<osteffen@redhat.com> wrote:
->=20
-> Check for NULL pointer returned from igvm_get_buffer().
-> Documentation for that function calls for that unconditionally.
->=20
-> Signed-off-by: Oliver Steffen <osteffen@redhat.com>
-> ---
-> backends/igvm.c | 13 ++++++++++---
-> 1 file changed, 10 insertions(+), 3 deletions(-)
->=20
-> diff --git a/backends/igvm.c b/backends/igvm.c
-> index a350c890cc..dc1fd026cb 100644
-> --- a/backends/igvm.c
-> +++ b/backends/igvm.c
-> @@ -170,9 +170,16 @@ static int qigvm_handler(QIgvm *ctx, uint32_t =
-type, Error **errp)
->                 (int)header_handle);
->             return -1;
->         }
-> -        header_data =3D igvm_get_buffer(ctx->file, header_handle) +
-> -                      sizeof(IGVM_VHS_VARIABLE_HEADER);
-> -        result =3D handlers[handler].handler(ctx, header_data, errp);
-> +        header_data =3D igvm_get_buffer(ctx->file, header_handle);
-> +        if (header_data =3D=3D NULL) {
-> +            error_setg(
-> +                errp,
-> +                "IGVM: Failed to get directive header data (code: =
-%d)",
-> +                (int)header_handle);
-> +            result =3D -1;
-
-I would just return -1 here and remove the else {} clause below. It =
-makes it slightly easier to follow the code.
-
-> +        } else {
-> +            result =3D handlers[handler].handler(ctx, header_data + =
-sizeof(IGVM_VHS_VARIABLE_HEADER), errp);
-> +        }
->         igvm_free_buffer(ctx->file, header_handle);
->         return result;
->     }
-> --=20
-> 2.52.0
->=20
+I already tagged this, will follow up shortly.
 
 
