@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25997D1901F
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 14:05:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94E92D19130
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 14:19:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfe55-0000Hp-8o; Tue, 13 Jan 2026 08:05:07 -0500
+	id 1vfeBn-0003EM-6B; Tue, 13 Jan 2026 08:12:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vfe52-0000Bi-3w
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 08:05:04 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vfeBZ-00030x-Sx
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 08:11:50 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vfe50-0001co-FQ
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 08:05:03 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vfeBX-0002sj-DO
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 08:11:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768309501;
+ s=mimecast20190719; t=1768309906;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zdHTT09nwwgsO3f3H+vWntFgFFu/rNWG9pQ7CRobSuc=;
- b=hgegDcIgcQNuj6Z0+Hp+fNjmadXednBT7RW1wMi6swL1AmQHRZOSeSkVUJ9sBQZBU6FPH7
- xK5jFsRK3jMctfciysftmMCRL7ExYAKQ/bs2QNq0Ku7Zfg7iREVPp1Dh4yyv83n2KvUo3q
- udvLo4lmCEIXBFwsVT2sPJOXk4nXgvg=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=vy8BMF95p7adHHW6hG64DRRKjz0Oz3OJHhTkbUc8Krs=;
+ b=h69zAnIiJg8jE/XbHn5n3iKzPOemPj7zmk/crzERNwZNC0B4GrPrRFbi5dlKebEyhnpOhp
+ Ha2rh4jtUsHv11B686H6ZgiFypQnBwFgMRMyGQYCWD1Dm84W36nkccQKvIdMRRSGOrujDI
+ w/P3G+qo52Q/zGggsD05rnIlDkyMKEo=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-364-J2tjd0XrNGKOKBEAuOMCZQ-1; Tue,
- 13 Jan 2026 08:04:58 -0500
-X-MC-Unique: J2tjd0XrNGKOKBEAuOMCZQ-1
-X-Mimecast-MFC-AGG-ID: J2tjd0XrNGKOKBEAuOMCZQ_1768309497
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-88-_cGvof1nMA6og4bBYfqQ1g-1; Tue,
+ 13 Jan 2026 08:11:43 -0500
+X-MC-Unique: _cGvof1nMA6og4bBYfqQ1g-1
+X-Mimecast-MFC-AGG-ID: _cGvof1nMA6og4bBYfqQ1g_1768309901
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DC16818002C4; Tue, 13 Jan 2026 13:04:56 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 23DC31800614; Tue, 13 Jan 2026 13:11:41 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.32])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 715C41800240; Tue, 13 Jan 2026 13:04:56 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6D2DF1800665; Tue, 13 Jan 2026 13:11:40 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 07ED821E66C9; Tue, 13 Jan 2026 14:04:54 +0100 (CET)
+ id 0377E21E66C9; Tue, 13 Jan 2026 14:11:38 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
@@ -57,21 +57,19 @@ Cc: qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
  qemu-block@nongnu.org,  qemu-rust@nongnu.org,  Stefan Weil
  <sw@weilnetz.de>,  Kevin Wolf <kwolf@redhat.com>,  Richard Henderson
  <richard.henderson@linaro.org>
-Subject: Re: [PATCH v5 09/24] util: introduce some API docs for logging APIs
-In-Reply-To: <aWYj7-ByD4eyclhG@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Tue, 13 Jan 2026 10:52:31 +0000")
+Subject: Re: [PATCH v5 11/24] ui/vnc: remove use of error_printf_unless_qmp()
+In-Reply-To: <20260108170338.2693853-12-berrange@redhat.com> ("Daniel
+ P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Thu, 8 Jan 2026 17:03:25
+ +0000")
 References: <20260108170338.2693853-1-berrange@redhat.com>
- <20260108170338.2693853-10-berrange@redhat.com>
- <87ms2hal4a.fsf@pond.sub.org> <aWYjHQYYeEqpnnQh@redhat.com>
- <aWYj7-ByD4eyclhG@redhat.com>
-Date: Tue, 13 Jan 2026 14:04:53 +0100
-Message-ID: <87zf6h8xze.fsf@pond.sub.org>
+ <20260108170338.2693853-12-berrange@redhat.com>
+Date: Tue, 13 Jan 2026 14:11:37 +0100
+Message-ID: <87tswp8xo6.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -99,55 +97,59 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-> On Tue, Jan 13, 2026 at 10:49:01AM +0000, Daniel P. Berrang=C3=A9 via Dev=
-el wrote:
->> On Tue, Jan 13, 2026 at 10:59:49AM +0100, Markus Armbruster wrote:
->> > Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
->> >=20
->> > > There is a gotcha with qemu_log() usage in a threaded process.
->> > > If fragments of a log message are output via qemu_log() it is
->> > > possible for messages from two threads to get mixed up. To
->> > > prevent this qemu_log_trylock() should be used, along with
->> > > fprintf(f) calls.
->> > >
->> > > This is a subtle problem that needs to be explained in the
->> > > API docs to ensure correct usage.
->> > >
->> > > Reported-by: Markus Armbruster <armbru@redhat.com>
->> > > Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-
-[...]
-
->> > "Should normally" suggests there are exceptions.
->> >=20
->> > "Should only" does not.
->> >=20
->> > "Must" is a bit stronger still.
->> >=20
->> > Which of the three do we want?
->>=20
->> The "Should" usage was reflecting the reality that we have quite alot
->> of code using qemu_log_trylock + qemu_log, instead of qemu_log_trylock
->> + fprintf.
-
-Yes.
-
->> I didn't feel it appropriate to use 'must' unless we explicitly make
->> qemu_log() fail when used inside the scope of a qemu_log_trylock().
-
-Fair.
-
->> So "Should normally" is the best fit
+> The error_printf_unless_qmp() will print to the monitor if the current
+> one is HMP, if it is QMP nothing will be printed, otherwise stderr
+> will be used.
 >
-> Actually specifically in the log.rs case, we have a greater constraint.
-> The rust code for log_mask_ln will unconditionally add a newline to
-> all messages. So this Rust method *must* only be usd for complete
-> messages, regardless of what policy we have on the C qemu_log() call.
+> This scenario is easily handled by checking !monitor_cur_is_qmp() and
+> then calling the error_printf() function.
+>
+> Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Reviewed-by: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> ---
+>  ui/vnc.c | 14 +++++++++-----
+>  1 file changed, 9 insertions(+), 5 deletions(-)
+>
+> diff --git a/ui/vnc.c b/ui/vnc.c
+> index a61a4f937d..a209c32f6d 100644
+> --- a/ui/vnc.c
+> +++ b/ui/vnc.c
+> @@ -3534,8 +3534,10 @@ int vnc_display_password(const char *id, const cha=
+r *password)
+>          return -EINVAL;
+>      }
+>      if (vd->auth =3D=3D VNC_AUTH_NONE) {
+> -        error_printf_unless_qmp("If you want use passwords please enable=
+ "
+> -                                "password auth using '-vnc ${dpy},passwo=
+rd'.\n");
+> +        if (!monitor_cur_is_qmp()) {
+> +            error_printf("If you want to use passwords, please enable "
+> +                         "password auth using '-vnc ${dpy},password'.\n"=
+);
+> +        }
 
-Got it.
+Let's mention the error message improvement in the commit message.
 
-Suggest to consistently use "should normally" in the contracts where it
-is the best fit.  Use "must" for the Rust method, and maybe mention it
-in the commit message (you decide).
+>          return -EINVAL;
+>      }
+>=20=20
+> @@ -3574,9 +3576,11 @@ static void vnc_display_print_local_addr(VncDispla=
+y *vd)
+>          qapi_free_SocketAddress(addr);
+>          return;
+>      }
+> -    error_printf_unless_qmp("VNC server running on %s:%s\n",
+> -                            addr->u.inet.host,
+> -                            addr->u.inet.port);
+> +    if (!monitor_cur_is_qmp()) {
+> +        error_printf("VNC server running on %s:%s\n",
+> +                     addr->u.inet.host,
+> +                     addr->u.inet.port);
+> +    }
+>      qapi_free_SocketAddress(addr);
+>  }
 
 
