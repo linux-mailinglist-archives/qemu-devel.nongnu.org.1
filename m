@@ -2,58 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84FCCD17B8D
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 10:41:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E35EDD17B50
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 10:40:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfaqW-0000kf-4m; Tue, 13 Jan 2026 04:37:52 -0500
+	id 1vfaqW-0000qK-Ue; Tue, 13 Jan 2026 04:37:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfaqS-0000TP-MN
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:37:48 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfaqT-0000YL-In
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:37:49 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfaqQ-0003O1-4H
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:37:48 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfaqR-0003Oa-W3
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:37:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768297065;
+ s=mimecast20190719; t=1768297067;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iM0nGuuKINqeUk6wxzR01OohYvFbi2TmzKipN46yGhc=;
- b=HBXJ74/9+ek/Y7Czh5AziHGdflXQZIiytMH6G/lSX5BHv9pxOpGwmxlEmq+xuGART6iUt6
- 3RDOLqrTh4uAKxS4gqGoA/v9DgxzoHkS8LkJRIJyJ+7F4YoL4MB3Z/VRs7kC+kSoqomta1
- Iy3Qc6ZLZtdGkJPhpRlqjeZ4XExt/PM=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=3HiLCAxba8GXuTt0rFTrtkhRlm4inQkwIRGs/a9Fcnw=;
+ b=Qi+iki/ZVgl8pOeSf49siQEUeao9kRgGIHngR2m2iwQkvQXYQTW3tvlVVoY+j0xBSZYTD0
+ b197R6McgVIRgR+bIwV+JGM/fdVyCUOX/zLwA/Ozo8HQUa1drqqXWNvKF1KB08lm0ZPrfV
+ 0N1hkWSHVhYviU5tLOgejH8ntBm4G1w=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-82-vHKEqijEPBqV3DFSi56s2g-1; Tue,
- 13 Jan 2026 04:37:42 -0500
-X-MC-Unique: vHKEqijEPBqV3DFSi56s2g-1
-X-Mimecast-MFC-AGG-ID: vHKEqijEPBqV3DFSi56s2g_1768297061
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-38-Ls5P-rLDNYK2M4rTi5FM4A-1; Tue,
+ 13 Jan 2026 04:37:45 -0500
+X-MC-Unique: Ls5P-rLDNYK2M4rTi5FM4A-1
+X-Mimecast-MFC-AGG-ID: Ls5P-rLDNYK2M4rTi5FM4A_1768297064
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 151D91800624; Tue, 13 Jan 2026 09:37:41 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8659C1956094; Tue, 13 Jan 2026 09:37:44 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.79])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9C1BF30001A2; Tue, 13 Jan 2026 09:37:38 +0000 (UTC)
+ id 8761630001A2; Tue, 13 Jan 2026 09:37:41 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex@shazbot.org>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Eric Auger <eric.auger@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>, Yi Liu <yi.l.liu@intel.com>,
+ Eric Auger <eric.auger@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 20/41] intel_iommu: Enable host device when x-flts=on in
- scalable mode
-Date: Tue, 13 Jan 2026 10:36:16 +0100
-Message-ID: <20260113093637.1549214-21-clg@redhat.com>
+Subject: [PULL 21/41] docs/devel: Add IOMMUFD nesting documentation
+Date: Tue, 13 Jan 2026 10:36:17 +0100
+Message-ID: <20260113093637.1549214-22-clg@redhat.com>
 In-Reply-To: <20260113093637.1549214-1-clg@redhat.com>
 References: <20260113093637.1549214-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -87,34 +85,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Now that all infrastructures of supporting passthrough device running
-with first stage translation are there, enable it now.
+Add documentation about using IOMMUFD backed VFIO device with intel_iommu with
+x-flts=on.
 
+Suggested-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Yi Liu <yi.l.liu@intel.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20260106061304.314546-19-zhenzhong.duan@intel.com
+Link: https://lore.kernel.org/qemu-devel/20260106061304.314546-20-zhenzhong.duan@intel.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/i386/intel_iommu_accel.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ docs/devel/vfio-iommufd.rst | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/hw/i386/intel_iommu_accel.c b/hw/i386/intel_iommu_accel.c
-index 1f068005d8fa8b2161247e1e2386db5a60dbbdc5..250232b5a979e9b34d161fde554fd0c64b0cd3d9 100644
---- a/hw/i386/intel_iommu_accel.c
-+++ b/hw/i386/intel_iommu_accel.c
-@@ -47,9 +47,7 @@ bool vtd_check_hiod_accel(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hiod,
-         return false;
-     }
+diff --git a/docs/devel/vfio-iommufd.rst b/docs/devel/vfio-iommufd.rst
+index b37098e1b625d9be0368e53b7492db64828c88c3..2d6e60dce1d38f1de136c3d65f3c396aef9e0805 100644
+--- a/docs/devel/vfio-iommufd.rst
++++ b/docs/devel/vfio-iommufd.rst
+@@ -152,3 +152,20 @@ RAM discarding for mdev.
  
--    error_setg(errp,
--               "host IOMMU is incompatible with guest first stage translation");
--    return false;
-+    return true;
- }
- 
- VTDHostIOMMUDevice *vtd_find_hiod_iommufd(VTDAddressSpace *as)
+ ``vfio-ap`` and ``vfio-ccw`` devices don't have same issue as their backend
+ devices are always mdev and RAM discarding is force enabled.
++
++Usage with intel_iommu featuring x-flts=on
++------------------------------------------
++
++Only IOMMUFD backed VFIO device is supported when intel_iommu is configured
++with x-flts=on, for legacy container backed VFIO device, below error shows:
++
++.. code-block:: none
++
++    qemu-system-x86_64: -device vfio-pci,host=0000:02:00.0: vfio 0000:02:00.0: Failed to set vIOMMU: Need IOMMUFD backend when x-flts=on
++
++VFIO device under PCI bridge is unsupported, use PCIE bridge if necessary,
++otherwise below error shows:
++
++.. code-block:: none
++
++    qemu-system-x86_64: -device vfio-pci,host=0000:02:00.0,bus=bridge1,iommufd=iommufd0: vfio 0000:02:00.0: Failed to set vIOMMU: Host device downstream to a PCI bridge is unsupported when x-flts=on
 -- 
 2.52.0
 
