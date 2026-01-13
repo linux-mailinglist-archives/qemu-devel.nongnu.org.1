@@ -2,96 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED830D17061
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 08:33:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01085D17062
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 08:33:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfYsY-0006yh-SU; Tue, 13 Jan 2026 02:31:52 -0500
+	id 1vfYsc-0006zt-VJ; Tue, 13 Jan 2026 02:31:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfYsW-0006yJ-L5
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 02:31:48 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfYsa-0006zD-6I
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 02:31:52 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfYsT-000724-U3
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 02:31:47 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfYsY-00072U-MI
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 02:31:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768289504;
+ s=mimecast20190719; t=1768289510;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=2JdJmRBqWlb6HULvKQJ5AeUhkpTdTUke8XSYUH+vFA0=;
- b=hSY1IlGa0dl5hm+FlOry34rjFFCERhBBwM7s+pFhLaA+/C0RSKFWyS5+E0y2/kzkoQwp/p
- pITZHezr8fxFU1VsdlYOl6UfBknCBergRDFEB8WxRtflMSZ+YDNGkB8OQh1JcTW9Zdnr1/
- U/sn1sK3seZPNJ3pdxRi6LQ2TKVTZvI=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=bMsgUrN+6siUwNWN9d/6WcgYfbmgKllwh/03b+LoBR0=;
+ b=BooQ369ztnCfbFzsIYEFCvBt6gMqWkAPJ4QbMvh1g1Fj/6wyM8qI5dMTc6AIocyukJPHzE
+ wnBMA94lEnX1AAPhdWEnk+TVQOr1+ysifrm/v7NuDl51UQ8by5K0K7WXik/lIrAGZHhlF/
+ R8CUIll4cBRk/MGK6MDhmbcG5YZd3uM=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-397-Pv4uB_CjMiOA1OF0lP8cKA-1; Tue, 13 Jan 2026 02:31:43 -0500
-X-MC-Unique: Pv4uB_CjMiOA1OF0lP8cKA-1
-X-Mimecast-MFC-AGG-ID: Pv4uB_CjMiOA1OF0lP8cKA_1768289502
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-477a1e2b372so66708105e9.2
- for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 23:31:42 -0800 (PST)
+ us-mta-79-5bI3OArYPA2NLiWrg9oddQ-1; Tue, 13 Jan 2026 02:31:48 -0500
+X-MC-Unique: 5bI3OArYPA2NLiWrg9oddQ-1
+X-Mimecast-MFC-AGG-ID: 5bI3OArYPA2NLiWrg9oddQ_1768289507
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-430fb8d41acso4714839f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 12 Jan 2026 23:31:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768289501; x=1768894301; darn=nongnu.org;
+ d=redhat.com; s=google; t=1768289507; x=1768894307; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=2JdJmRBqWlb6HULvKQJ5AeUhkpTdTUke8XSYUH+vFA0=;
- b=E+hqj124Ct4jB5OF0qRmA+wiu2wodHaXyOEor/2+WDTmqzoXRJECxVoxHlY4tVUSju
- U5swgFf4XvkSQApCy+l7Pg4SOH6cmNd16lbeO1TlWijNd9MTRrJnYDei7n9PfOHKB8Bt
- VTFqywEjE+MVruuA2GuaYyEIpdu5pM7Q50zfLY4L/27fp18kCaKJSml1hINzFt88uYTb
- nbfKgqXMyUNaAYiXAvR0zibEber4/MdQDqDbHR2TmNrTM8ipLjPah4NZo/j1bWKfxKPz
- T36lLtssswtdn1Unb6lDH9leW+hL0idlz+Fxl/HD7RJvCumqgf7Yx+mbr3xHqXvRqPtZ
- zUNA==
+ bh=bMsgUrN+6siUwNWN9d/6WcgYfbmgKllwh/03b+LoBR0=;
+ b=iuryuFb+XheKORxEaFYgKgRlMsMVh82cNsOI1bJhbWoTBsFw+Znl1GK9A7/2rMhPv9
+ pwYzcfApi0vvlgRI538k9aR5tNDyKidAi2xfdPZ46wJ63UNqhQZTkrNRorpJYGOEOPD1
+ hFwLIRkM0bpmmbB6rc5o+yL2lXGaC//3DZesCHMhTYfYm6K8ktbSnEfKud0XlCbnbKEi
+ /TYn1cc3prDOhNUjV8zSqBzz6vOyN3exnooFYpgl1xp20wsjvDmmQci49VMfX6B3aNhH
+ foZbNBN41hncbAbRV8+eYAi/8az1+jZCjnCVIr3Zh2jdWQlIfgQXPpQzQcjOlJUfyThT
+ ZEqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768289501; x=1768894301;
+ d=1e100.net; s=20230601; t=1768289507; x=1768894307;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2JdJmRBqWlb6HULvKQJ5AeUhkpTdTUke8XSYUH+vFA0=;
- b=BwP9Ju4R+nI38nmsttQZNf+NwuaTAXTtafZJ9S2tNHOMseM5Jg3Z09qF5oDcZm1EyB
- afZRZg/aqSmg5HAqOInOEQ24a2AkskmxP2HwTq6EnsGT18eZ3IDqlmABsAgYKo5c2WOt
- s2Kcns9YODbcDcnp/OGVPZQyFHUFz9VX4Xd/s8efEtsy9mW6heenz0wthX/57yofXsp+
- XtP1UNZNAmgn26zVtymwsPAqo5yT1c0vgG0AWNJaWjVr67tJIDP/YuZ6tTkYBSwnmIDy
- tlggorY2Sew0AaJVcZV8ewOlWTVo7vtALL9lupXQhqhaIQkGtHw/9lY/VFmNGYonEqMb
- 5Omg==
-X-Gm-Message-State: AOJu0YwjaL38DgjZsqr+1koGQAd6ZE4FI5Tp+7PWEs/2qOM2ZhL3U5KF
- t1norra9qwZ+MMqdUd5bckaG247qdHAIZlybJYOAJpnd+/9bIv1xx3VESxn3TWArmZ1IchwTAhn
- P2reXDag3ocLPwiTwW5+97amzVNjf+nfcZQ9W9QCvb3YEt1NW86MLnQjuYglqBd/sqs6u+a4/UG
- wCs0acyt216LLDKqTR3JSXIKHnUcpbgrtZfg==
-X-Gm-Gg: AY/fxX6N4H12qrvxMqpTJKeP0ZpaDdO8W1CcYQ6MOIHDwUyfDtoAMblnU5ild6KLEir
- NYCNcmuGArA6Cwz9Ib4TjZNgPplcr7jsMWOjlzUBuHU24pQW9WLdw2KXeSzYrGZSNsuFxMGV+OL
- qL2HnTHjDCGcGL13cnS6XLzfbDQv8iCDyNdK+8sgvDBBjZOv8pQdcBK3Ulpplnn1lfF313lP55M
- HxYmTiwCVhfv5aZEvr5+wFSkUxYDxyN9+6gWzislnFG2bJT8JuNE4/f8BMKnUsLJZkwEfpv5Jcc
- j5bAy+JbdZR7oITzgxOm6PKcZ4Gxy99s86dQ18JzvV/cDnPIDGZ+laSbJ1LltQx0jrJlaUydmB+
- L8RwxzqqfLL3IEsDEYJMx3Zr6fB3kUn9I9G3jfOCjaksVEbyL
-X-Received: by 2002:a05:600c:1994:b0:47a:80f8:82ac with SMTP id
- 5b1f17b1804b1-47d84b39efcmr223351835e9.26.1768289501463; 
- Mon, 12 Jan 2026 23:31:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGXWDSr6m6b7MLDreZ5eUrTBEFAWjdGJfozvrLnwI81nR2IsC8vLPgMmwN/KHXFs61hvKf/ZQ==
-X-Received: by 2002:a05:600c:1994:b0:47a:80f8:82ac with SMTP id
- 5b1f17b1804b1-47d84b39efcmr223351395e9.26.1768289500995; 
- Mon, 12 Jan 2026 23:31:40 -0800 (PST)
+ bh=bMsgUrN+6siUwNWN9d/6WcgYfbmgKllwh/03b+LoBR0=;
+ b=Gp/y/+pUJP3JQwxRT+9e24BAIR3RMtQ1FEjVHjtgwqXHw1zje/kuksfd5/C9XIu++m
+ 0hYaslce7ddEs+2DxbHGlNL4IfgzCHpC7KhJG+NYyXAh/JM1Uai+Lc1qBVQZyQQrZKNb
+ 1yqrQAEVVDvOhqxmd6u/aUXWMEcQroaAukYbOOeS8wBBm3KZDUqdWeggFgzHucx/7oDP
+ VNA2UqhgNQKndGdc9w8dzUtnWBWBDkCNHpzeuL/ww5lsBCV7hRPmkZr/cN9mFNyepehY
+ RwljNWqIviMXGcyIVJaWaZBWoQ22wKRrJRznuNkP07aTxI8MoSPjsno+JrswCFWMltw2
+ pMMA==
+X-Gm-Message-State: AOJu0Yy6jQGh5scRowV3hzos0iD9E/xHS4IK2vKRCiyf2/Dl5FvGV9bV
+ ENEH0FqZARBIkvz2etRKuibzKsr49+YSCNQIHPc4tjSQpUm2WRS3Z/nt+eYgDIJ+leC0kC5dnuf
+ wHyJy/fH6LQ18HhqokyatBuOxZPaWpHUIeWw73T95/bJqi5qF5bhT6+dWUqKsrqMG72YqQFuQID
+ kwNOp+uBhiRpJpwjyCf/bFV/9Dzl7LsFrdXA==
+X-Gm-Gg: AY/fxX4I4e+zcQNF/xk//G3/Ah1C+t02KSdsHJB+x76e0wOh+HdqNclAkxaC0YzeSVD
+ BDyUlljbVATcMnXZOahi2FRN3qAWHyjrhNFuiy6I7EwUkuDi2PlGJAEJNVPFkmaA2Hwq7K8qBFo
+ lxKqHTboDc7I7QyxrI+MH+Cg/7hACebH48iPFE2OSRMne010girlJ6zTp288xfazgv1yxlxWjXQ
+ 0y4wIHTycU5IjoBJQplzxrgCm2s+klXZHKPsM8ZyVKetjSIUDlwl898+Duh0YETPOJh6HHmNjmu
+ R2MhH2KctQb2XwhO/jHQFyVQCpChxxi6Xs69J3CN45EF3v9yq/ExUIL4UVzFUt5AbdPMfWIM8MP
+ JCH+dW1Ysv01vKos7kTUwffuUXLqScBaokq3hJ6QXa4vNazSo
+X-Received: by 2002:a05:6000:208a:b0:431:67d:53b3 with SMTP id
+ ffacd0b85a97d-432c376110emr25686785f8f.43.1768289506967; 
+ Mon, 12 Jan 2026 23:31:46 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGsnE3Qa037YYahyuu89rX2Y77FzpC93LittPIMdArpjQzfWwIDGqFIh9fhRpAF70eIME07KQ==
+X-Received: by 2002:a05:6000:208a:b0:431:67d:53b3 with SMTP id
+ ffacd0b85a97d-432c376110emr25686757f8f.43.1768289506507; 
+ Mon, 12 Jan 2026 23:31:46 -0800 (PST)
 Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
  ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-432bd0dacd1sm41875536f8f.4.2026.01.12.23.31.39
+ ffacd0b85a97d-432bd0dacd1sm41875536f8f.4.2026.01.12.23.31.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 12 Jan 2026 23:31:40 -0800 (PST)
-Message-ID: <1b0159f9-4a1a-47aa-9737-d3d64dbb74bb@redhat.com>
-Date: Tue, 13 Jan 2026 08:31:39 +0100
+ Mon, 12 Jan 2026 23:31:46 -0800 (PST)
+Message-ID: <92edd0d0-2f8a-47a6-ac38-f92d0d534d2b@redhat.com>
+Date: Tue, 13 Jan 2026 08:31:45 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/qtest: Fix build error
+Subject: Re: [PATCH] ppc/vof: Fix build error
 To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Laurent Vivier <lvivier@redhat.com>
-References: <20260112123146.1010621-1-clg@redhat.com>
+Cc: qemu-ppc@nongnu.org, Alexey Kardashevskiy <aik@ozlabs.ru>
+References: <20260112124722.1029212-1-clg@redhat.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -137,7 +136,7 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20260112123146.1010621-1-clg@redhat.com>
+In-Reply-To: <20260112124722.1029212-1-clg@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
@@ -149,7 +148,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -165,43 +164,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/12/26 13:31, Cédric Le Goater wrote:
+On 1/12/26 13:47, Cédric Le Goater wrote:
 > Newer gcc compiler (version 16.0.0 20260103 (Red Hat 16.0.0-0) (GCC))
 > detects an unused variable error:
 > 
->    ../tests/qtest/libqtest.c: In function ‘qtest_qom_has_concrete_type’:
->    ../tests/qtest/libqtest.c:1044:9: error: variable ‘idx’ set but not used [-Werror=unused-but-set-variable=]
+> ../hw/ppc/vof.c: In function ‘vof_dt_memory_available’:
+> ../hw/ppc/vof.c:642:12: error: variable ‘n’ set but not used [-Werror=unused-but-set-variable=]
 > 
-> Remove idx.
+> Remove 'n'.
 > 
-> Cc: Fabiano Rosas <farosas@suse.de>
-> Cc: Laurent Vivier <lvivier@redhat.com>
+> Cc: Alexey Kardashevskiy <aik@ozlabs.ru>
 > Signed-off-by: Cédric Le Goater <clg@redhat.com>
 > ---
->   tests/qtest/libqtest.c | 3 +--
->   1 file changed, 1 insertion(+), 2 deletions(-)
+>   hw/ppc/vof.c | 5 ++---
+>   1 file changed, 2 insertions(+), 3 deletions(-)
 > 
-> diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-> index 622464e3656e2c0138c4cf1cbf98733f84dce876..61f05be5caeaff1c466395234078a37a5d1c4398 100644
-> --- a/tests/qtest/libqtest.c
-> +++ b/tests/qtest/libqtest.c
-> @@ -1041,7 +1041,6 @@ static bool qtest_qom_has_concrete_type(const char *parent_typename,
->       QObject *qobj;
->       QString *qstr;
->       QDict *devinfo;
-> -    int idx;
+> diff --git a/hw/ppc/vof.c b/hw/ppc/vof.c
+> index 5ecfc6891047eb63f498fe286d57f52a54c0a0db..fa7b73159a0b476dfc49326139d75cb87ca487c1 100644
+> --- a/hw/ppc/vof.c
+> +++ b/hw/ppc/vof.c
+> @@ -639,7 +639,7 @@ static gint of_claimed_compare_func(gconstpointer a, gconstpointer b)
 >   
->       if (!list) {
->           QDict *resp;
-> @@ -1066,7 +1065,7 @@ static bool qtest_qom_has_concrete_type(const char *parent_typename,
+>   static void vof_dt_memory_available(void *fdt, GArray *claimed, uint64_t base)
+>   {
+> -    int i, n, offset, proplen = 0, sc, ac;
+> +    int i, offset, proplen = 0, sc, ac;
+>       target_ulong mem0_end;
+>       const uint8_t *mem0_reg;
+>       g_autofree uint8_t *avail = NULL;
+> @@ -677,7 +677,7 @@ static void vof_dt_memory_available(void *fdt, GArray *claimed, uint64_t base)
+>       g_assert(claimed->len && (g_array_index(claimed, OfClaimed, 0).start == 0));
+>   
+>       avail = g_malloc0(sizeof(uint32_t) * (ac + sc) * claimed->len);
+> -    for (i = 0, n = 0, availcur = avail; i < claimed->len; ++i) {
+> +    for (i = 0, availcur = avail; i < claimed->len; ++i) {
+>           OfClaimed c = g_array_index(claimed, OfClaimed, i);
+>           uint64_t start, size;
+>   
+> @@ -705,7 +705,6 @@ static void vof_dt_memory_available(void *fdt, GArray *claimed, uint64_t base)
+>   
+>           if (size) {
+>               trace_vof_avail(c.start + c.size, c.start + c.size + size, size);
+> -            ++n;
 >           }
 >       }
->   
-> -    for (p = qlist_first(list), idx = 0; p; p = qlist_next(p), idx++) {
-> +    for (p = qlist_first(list); p; p = qlist_next(p)) {
->           devinfo = qobject_to(QDict, qlist_entry_obj(p));
->           g_assert(devinfo);
->   
+>       _FDT((fdt_setprop(fdt, offset, "available", avail, availcur - avail)));
 
 Applied to vfio-next.
 
