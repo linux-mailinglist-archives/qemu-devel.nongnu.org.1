@@ -2,57 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06ECED17AE2
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 10:37:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A71BAD17AC3
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 10:37:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfapf-0006BZ-4l; Tue, 13 Jan 2026 04:36:59 -0500
+	id 1vfapf-0006Ew-Vk; Tue, 13 Jan 2026 04:37:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfapa-00065W-Cv
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:36:55 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfapc-00069O-Ow
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:36:56 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfapX-0003Fs-QY
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:36:53 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfapb-0003GK-1U
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:36:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768297010;
+ s=mimecast20190719; t=1768297014;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=70XX6/lwyq36rjgmSKCR1ZXI8qD3s28GlFWvTUH7Uf0=;
- b=dqRVgcKdTeTaOdI0sU2kZtQN95nfA681MBQ9Sv867ZkJFw2o09GyK+jN7ZSVAIGRItku7c
- ZEiyeqN7ZWCdGLqmf4WzvMfpzhGKixFIi2CS8KUcWnMpoD/X52Xpl0vAegfu4DlN61vuVm
- 891Gjv7+S7WkbJtaF65RGZV4IAd0oZM=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=WINxKjiuW6IF/tyBCdsyzHb1uNn8zxXjM9EpMOvrtTg=;
+ b=K6ozQrFPebIS9oT0UwS6e6zdOlue50HfYcqLAzFOqoJ/J3L8nUfuiMvJDVyGfk36LICIIL
+ Oy9VKXBoMkr3PpQRmncwGLUU7/JmD8ukBZeBUDd2u8EqTdcJUJsDE/36wgYuSHItByvXgL
+ NG50hIt0Gq1JGTnRXmAF41pFFR7yzhI=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-436-mBYB2fT8MzWM0wnnHMVKsw-1; Tue,
- 13 Jan 2026 04:36:47 -0500
-X-MC-Unique: mBYB2fT8MzWM0wnnHMVKsw-1
-X-Mimecast-MFC-AGG-ID: mBYB2fT8MzWM0wnnHMVKsw_1768297006
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-390-7qlxOg2eMOmDXgEKpQMMRA-1; Tue,
+ 13 Jan 2026 04:36:52 -0500
+X-MC-Unique: 7qlxOg2eMOmDXgEKpQMMRA-1
+X-Mimecast-MFC-AGG-ID: 7qlxOg2eMOmDXgEKpQMMRA_1768297010
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7C3581955D93; Tue, 13 Jan 2026 09:36:46 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 63EFF19560A5; Tue, 13 Jan 2026 09:36:50 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.79])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 99B6F30001A2; Tue, 13 Jan 2026 09:36:44 +0000 (UTC)
+ id EE8F630001A8; Tue, 13 Jan 2026 09:36:46 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex@shazbot.org>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
+ Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
+ Nicolin Chen <nicolinc@nvidia.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 02/41] docs/devel: Remove stale comments related to iommufd
- dirty tracking
-Date: Tue, 13 Jan 2026 10:35:58 +0100
-Message-ID: <20260113093637.1549214-3-clg@redhat.com>
+Subject: [PULL 03/41] intel_iommu: Rename vtd_ce_get_rid2pasid_entry to
+ vtd_ce_get_pasid_entry
+Date: Tue, 13 Jan 2026 10:35:59 +0100
+Message-ID: <20260113093637.1549214-4-clg@redhat.com>
 In-Reply-To: <20260113093637.1549214-1-clg@redhat.com>
 References: <20260113093637.1549214-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -86,40 +88,113 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-IOMMUFD dirty tracking support had be merged in merge commit dd4bc5f1cfe9,
-the stale comments could be dropped.
+In early days vtd_ce_get_rid2pasid_entry() was used to get pasid entry
+of rid2pasid, then it was extended to get any pasid entry. So a new name
+vtd_ce_get_pasid_entry is better to match what it actually does.
+
+No functional change intended.
 
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/qemu-devel/20251226073007.1139478-1-zhenzhong.duan@intel.com
+Reviewed-by: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
+Reviewed-by: Yi Liu <yi.l.liu@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Link: https://lore.kernel.org/qemu-devel/20260106061304.314546-2-zhenzhong.duan@intel.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- docs/devel/vfio-iommufd.rst | 12 ------------
- 1 file changed, 12 deletions(-)
+ hw/i386/intel_iommu.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/docs/devel/vfio-iommufd.rst b/docs/devel/vfio-iommufd.rst
-index 3d1c11f175e5968e9f1519da70c9a0a6ced03995..b37098e1b625d9be0368e53b7492db64828c88c3 100644
---- a/docs/devel/vfio-iommufd.rst
-+++ b/docs/devel/vfio-iommufd.rst
-@@ -127,18 +127,6 @@ Supports x86, ARM and s390x currently.
- Caveats
- =======
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index 224b7b947906589c49c26bf4f7cd1ff81a46bd1f..436a30288b7b79e0d886447ddf7eddab489f2e63 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -954,10 +954,8 @@ static int vtd_get_pe_from_pasid_table(IntelIOMMUState *s,
+     return 0;
+ }
  
--Dirty page sync
-----------------
--
--Dirty page sync with iommufd backend is unsupported yet, live migration is
--disabled by default. But it can be force enabled like below, low efficient
--though.
--
--.. code-block:: bash
--
--    -object iommufd,id=iommufd0
--    -device vfio-pci,host=0000:02:00.0,iommufd=iommufd0,enable-migration=on
--
- P2P DMA
- -------
+-static int vtd_ce_get_rid2pasid_entry(IntelIOMMUState *s,
+-                                      VTDContextEntry *ce,
+-                                      VTDPASIDEntry *pe,
+-                                      uint32_t pasid)
++static int vtd_ce_get_pasid_entry(IntelIOMMUState *s, VTDContextEntry *ce,
++                                  VTDPASIDEntry *pe, uint32_t pasid)
+ {
+     dma_addr_t pasid_dir_base;
+     int ret = 0;
+@@ -1035,7 +1033,7 @@ static uint32_t vtd_get_iova_level(IntelIOMMUState *s,
+     VTDPASIDEntry pe;
  
+     if (s->root_scalable) {
+-        vtd_ce_get_rid2pasid_entry(s, ce, &pe, pasid);
++        vtd_ce_get_pasid_entry(s, ce, &pe, pasid);
+         if (s->flts) {
+             return VTD_PE_GET_FL_LEVEL(&pe);
+         } else {
+@@ -1058,7 +1056,7 @@ static uint32_t vtd_get_iova_agaw(IntelIOMMUState *s,
+     VTDPASIDEntry pe;
+ 
+     if (s->root_scalable) {
+-        vtd_ce_get_rid2pasid_entry(s, ce, &pe, pasid);
++        vtd_ce_get_pasid_entry(s, ce, &pe, pasid);
+         return 30 + ((pe.val[0] >> 2) & VTD_SM_PASID_ENTRY_AW) * 9;
+     }
+ 
+@@ -1126,7 +1124,7 @@ static dma_addr_t vtd_get_iova_pgtbl_base(IntelIOMMUState *s,
+     VTDPASIDEntry pe;
+ 
+     if (s->root_scalable) {
+-        vtd_ce_get_rid2pasid_entry(s, ce, &pe, pasid);
++        vtd_ce_get_pasid_entry(s, ce, &pe, pasid);
+         if (s->flts) {
+             return pe.val[2] & VTD_SM_PASID_ENTRY_FLPTPTR;
+         } else {
+@@ -1532,7 +1530,7 @@ static int vtd_ce_rid2pasid_check(IntelIOMMUState *s,
+      * has valid rid2pasid setting, which includes valid
+      * rid2pasid field and corresponding pasid entry setting
+      */
+-    return vtd_ce_get_rid2pasid_entry(s, ce, &pe, PCI_NO_PASID);
++    return vtd_ce_get_pasid_entry(s, ce, &pe, PCI_NO_PASID);
+ }
+ 
+ /* Map a device to its corresponding domain (context-entry) */
+@@ -1621,7 +1619,7 @@ static uint16_t vtd_get_domain_id(IntelIOMMUState *s,
+     VTDPASIDEntry pe;
+ 
+     if (s->root_scalable) {
+-        vtd_ce_get_rid2pasid_entry(s, ce, &pe, pasid);
++        vtd_ce_get_pasid_entry(s, ce, &pe, pasid);
+         return VTD_SM_PASID_ENTRY_DID(pe.val[1]);
+     }
+ 
+@@ -1697,7 +1695,7 @@ static bool vtd_dev_pt_enabled(IntelIOMMUState *s, VTDContextEntry *ce,
+     int ret;
+ 
+     if (s->root_scalable) {
+-        ret = vtd_ce_get_rid2pasid_entry(s, ce, &pe, pasid);
++        ret = vtd_ce_get_pasid_entry(s, ce, &pe, pasid);
+         if (ret) {
+             /*
+              * This error is guest triggerable. We should assumt PT
+@@ -3083,7 +3081,7 @@ static inline int vtd_dev_get_pe_from_pasid(VTDAddressSpace *vtd_as,
+         return ret;
+     }
+ 
+-    return vtd_ce_get_rid2pasid_entry(s, &ce, pe, vtd_as->pasid);
++    return vtd_ce_get_pasid_entry(s, &ce, pe, vtd_as->pasid);
+ }
+ 
+ static int vtd_pasid_entry_compare(VTDPASIDEntry *p1, VTDPASIDEntry *p2)
+@@ -5161,7 +5159,7 @@ static int vtd_pri_perform_implicit_invalidation(VTDAddressSpace *vtd_as,
+     if (ret) {
+         return -EINVAL;
+     }
+-    ret = vtd_ce_get_rid2pasid_entry(s, &ce, &pe, vtd_as->pasid);
++    ret = vtd_ce_get_pasid_entry(s, &ce, &pe, vtd_as->pasid);
+     if (ret) {
+         return -EINVAL;
+     }
 -- 
 2.52.0
 
