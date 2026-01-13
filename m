@@ -2,110 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C97DD1864C
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 12:15:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD6F5D18652
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 12:15:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfcLh-0003HB-0Z; Tue, 13 Jan 2026 06:14:09 -0500
+	id 1vfcLY-0003BU-RL; Tue, 13 Jan 2026 06:14:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vfcLe-0003GF-6V
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 06:14:06 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1vfcLV-000396-Oj
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 06:13:57 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vfcLc-0008Sz-Kr
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 06:14:05 -0500
+ id 1vfcLT-0008Rr-5O
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 06:13:57 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768302843;
+ s=mimecast20190719; t=1768302834;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WoHmlff5qVInNJa0c5xb24mKFyNRNi6bvJSwoHs/ngM=;
- b=bF9CDDNE50POj7ptI62RC8E4pBcLq9ZJ+mIfUtgnhI1z79xCMQjvDRINOUU5M4zLn3H6lV
- FYaHWFg63gAElvPUBta2+TOgW4stG66+gdIQOT34aj0SdklMpsbV+6F1yPO3TqwPeFGL9V
- 4Nq/a4XyLjkRczlir68Myv599MPvJqs=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=aI8nc+0Y3FBtb3DTLUVxBO8sB/nyzLVfQTim1m8lj6Q=;
+ b=PAazTwZ5twRyPGMWIGqPdLE0bncw4lK/XfKkU+B8emZ9NsK7M/5p1wR7rnW1zu16oOTUnX
+ /UfkQuI2E1dd4TBPKBOvNQcZI9Bp296nzVpOazrtEdv5VO/2P11EGHSaCpzv/XJTgWLQeF
+ qhTy4GsCzQYbx2/exsgsABPEriIAqlY=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-571-wV9oZq2HOaSTer5JWVmslw-1; Tue, 13 Jan 2026 06:13:52 -0500
-X-MC-Unique: wV9oZq2HOaSTer5JWVmslw-1
-X-Mimecast-MFC-AGG-ID: wV9oZq2HOaSTer5JWVmslw_1768302831
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4776079ada3so74286945e9.1
- for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 03:13:51 -0800 (PST)
+ us-mta-226-N2L907QvMpe450S9irQXGA-1; Tue, 13 Jan 2026 06:13:53 -0500
+X-MC-Unique: N2L907QvMpe450S9irQXGA-1
+X-Mimecast-MFC-AGG-ID: N2L907QvMpe450S9irQXGA_1768302832
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4779ecc3cc8so51666945e9.3
+ for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 03:13:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768302830; x=1768907630; darn=nongnu.org;
+ d=redhat.com; s=google; t=1768302831; x=1768907631; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WoHmlff5qVInNJa0c5xb24mKFyNRNi6bvJSwoHs/ngM=;
- b=kpFhmyTKSe/TedFYsRVW/YYf/jIDXJWRzLSXdSviDhUe554QdbpBaNLp1keTFt2iQO
- WB9ViAXC1pdvedw10ZCNUz49dTSN/FYj3KjVZZ2gkGc9UvSin2KMD36eBl/KievJDtI0
- 8S27ZEo5Z1yYjxQjU8zeN8/6oZ8LGOpta5Q9x68vWUWgz2YafVN7a2umspQt5rbWf0a0
- 7rD1HqNn90Ww3AUSeTybVok6vT4yAH3Ypdr6Ywj5yMrJlCq0eFBjfhsSeDDHt7W60Vew
- QyWvR0Kz/hCr1kgimpIkigCw0auW9CrfCn86nGxbMYttVU9gI1JFIOf/GtPiTCIhElXL
- h6aw==
+ bh=aI8nc+0Y3FBtb3DTLUVxBO8sB/nyzLVfQTim1m8lj6Q=;
+ b=UOj2opeAbWOU06rU/AuFEjWUVqsD6Zrm0YopozBEfkon/GaVaIdb8c3o7F8QEqp5Ax
+ 9JkR41NRv9w4SW3OHz5AIdHfFkIlo0IaMNFFnjWy0Ws71Ut73hCky27XDiL6a6kuW9ys
+ iaen6kitPDctnn35z/li/cF6yiiQQyEZtEIz21UheGFmCZO87LZsP7t5f0Mmc0L+3+oN
+ wpUfc3ZhA8MDMBhL5cKYBz8irnZL+I+wXSvzSC7Jp0qX6jKQWxA5lQZ+NcdtjGFVFT1Z
+ 6KVEDIRiHjXAO/WHc1wWZp3S3/iNcSXbVamDnc7pTNFrRf0UBN1HYVQbRuKz/jjy+Zp/
+ 3PVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768302830; x=1768907630;
+ d=1e100.net; s=20230601; t=1768302831; x=1768907631;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=WoHmlff5qVInNJa0c5xb24mKFyNRNi6bvJSwoHs/ngM=;
- b=JlFmzmqWuJc8iNw5FraH0/A7cCogwHpog3IMBp2+ntETYAKui3Fk0juknj2Jabiyrj
- P/swOJfyu4SlFTHoPTYavrYvUTcHhWDj+/GPVubpX6K5moXexzI2FKL7KCUQWRcEzlEA
- mE9EsR8VNFYjaYn3rqkmMwaWbbpUad272STAfiKbp1Yqu6TFy7l1TkvxBiwK4pKatyJR
- BLqX3agrLiErgNkKRlmpjVjj/LloLm9fxYAnCdcTEwZJh2hp26deqfIbQr1mIYJZ+zSx
- 6irYgXIRtKeAdKVU8LfeWFX4f3DwF23nHGJic/CrCV2Jt8Wk974e/JddJSyPe8WfOzGz
- hvsA==
-X-Gm-Message-State: AOJu0Yz+91wOmGaoGC1Co3iepyhk3ojr/b6oAXQqA6sgKmeO+24jq+gZ
- aLBBEnBY5cOYtF9oEHniDrEbLWEpMN6HuEPRvIf9XNIBLJXwLuWt3gYvMc9R/max4ywREacHxWB
- CFupNuguBjs2riB7YcRxwwo+Q8M9PgQx63GBN9G+zv3W2H9LGb2ZlZJTK4K8ydMrCMGcRoTp5MJ
- V8LZghMKotGt2Am8g6CCApS0ZnJ9n97OEpjjbqBH1T
-X-Gm-Gg: AY/fxX5oBzkfhCsf4mOARlowuMsT2aJhODgYqMZP3ynR3/HWD3YjWQ89ou7h2VWqtj7
- zpDsiefuKvtCc4CNR6yOELwh5KBNxFfafb/hPvTBKplxggN0yjAfIaxUJ+V3WZs3CWrfFK7+mRO
- qR6HCNObVfrWCq3+KG7zbKAYxeas7Ak4O6i4gRjBqXZLBvwEuErarE3f9mQ3Cotd3FXU6MLUtlR
- 95h0BvrKtrNNpsMx897F5lur1njU1fXFoPGYDBWVD4rrdQj2/g/iHIfB98eDypY+KremIBj8jE6
- VfaWQ7AG8cQvAL2/dyFEkwsIMBWLcmyOqEQtJkjIZrxXV+zwaP45U7gsl0BEYRCdGy89NIbDg54
- xXii2WCQcX2/9z6XUvy1b719em8J1OiXRMf8BPf2BNmJ3TjYrn+JJTEuzJIPQSbko9Bjf/xqYBE
- 3kESsaG2efu2A8VQ==
-X-Received: by 2002:a05:600c:1393:b0:477:55ce:f3bc with SMTP id
- 5b1f17b1804b1-47d84b3bad4mr235285325e9.19.1768302830322; 
+ bh=aI8nc+0Y3FBtb3DTLUVxBO8sB/nyzLVfQTim1m8lj6Q=;
+ b=k091/LbsJhKAqvn7Os9Z1rXtsemJnkyvqdMJ4RaekPF30ydazbURn1rsrLlHE5JIdq
+ 0UCUwzqP/VtciUnYxx49areNDovS5LPcuLsn2ecZ+VBFSvXxVq+WOOL9fPn1mePC8V3O
+ iGbR9vSpMXvw/HMujexXwWbu87ppP1cgjFCmbSONpTWYZpftFoEVNwze3xVNoiqpeJcz
+ 7dA8XyVfGH5QFZoXnojBrSlvMFQbveLJsVGefSTRKjd6JCWmyFH2GV5jq7LEC4Gkvx8C
+ xHPL8lUtAm4BeBDtQLVcP0A8VLR3v0NtMKbIHX4SUPtNCm/gSBxawCdRY8mcsoHBdW9h
+ ABIA==
+X-Gm-Message-State: AOJu0YwIetngCKVx3GFnf6r+WyXmk3tBIagvAuZuUoyGyF6hBRMRY+w+
+ q2GL8A63MwUQROpa9RHey+3JvvXiEMbwJjILVEpc1qDC5hNMkgKZN+BflxTjwGdD/LM7qeqM/G1
+ kZz7P3NKrrY7XvPJ8PzYz8EF0M2iW11XHFMNoaYeGrPvQRLMarXY+B86ONN5GoQMVSppCQoTgAq
+ bxqK4+41SeipK3+fHKVClZr/UjZ1XplAfM/n2LGrBs
+X-Gm-Gg: AY/fxX7k6dwwNZCrlGHSgUCrqLt6agaOLg1py1ddeIp0GjjwQjnSoeB3fMulgrL/Vzo
+ KwKwJ4o5CUZRSbxuZV5Z4Q72VoXGruzZVyNR9n+EUf7Ly+T/Vaaoh2qYu+tV5oDvvqZx0b2IFTs
+ kHaXOPN+CLuvTUrcn5hI4vRrUDmZH+RX/o+n6/rVkNHHh6HM5hvJOmfX54N+lRaqz9M09EBbTGA
+ kJWETxMnfTbQmtBVEOm8DwS1OVNbTwLhLI4pCaiIkwzOhYyMD5i3CSzSlh+Vg1O6gpZ9Nmuguwd
+ PA9yK7IdqYcIamtr50gOZvBc7PAOX5XYJlydtoR5lukZ/w1pvQswMh+fzoGD1vp/B3nRVRhkTBX
+ Yu3S8miGYdi6G26ZKDXbnBklHim+zFnEJMLWSTnr8vsZWsnXtE76Q7uYU2rN0th0hySUlxoU/Uc
+ 3vaBLDKt7a/7UA8A==
+X-Received: by 2002:a05:600c:8b2c:b0:477:6d96:b3e5 with SMTP id
+ 5b1f17b1804b1-47d84b186b4mr221323515e9.7.1768302831448; 
+ Tue, 13 Jan 2026 03:13:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEZK4ASfgxJhFFBIyVhu10frPcEyB1FSdZ9Qxo/SeOq9jj5yGf4hBk6TUt9JssekFUITQ2/Ug==
+X-Received: by 2002:a05:600c:8b2c:b0:477:6d96:b3e5 with SMTP id
+ 5b1f17b1804b1-47d84b186b4mr221323135e9.7.1768302830902; 
  Tue, 13 Jan 2026 03:13:50 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGdULqhZlXJ5a1TLOpcM++a0MpEZu6Cb9nKZW9GtBzFwE298R1Iky4D+vNkH5XdKludUKnvpw==
-X-Received: by 2002:a05:600c:1393:b0:477:55ce:f3bc with SMTP id
- 5b1f17b1804b1-47d84b3bad4mr235285025e9.19.1768302829546; 
- Tue, 13 Jan 2026 03:13:49 -0800 (PST)
 Received: from [192.168.10.48] ([151.61.26.160])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47d7f695956sm410025415e9.6.2026.01.13.03.13.47
+ 5b1f17b1804b1-47edc05b267sm24167105e9.15.2026.01.13.03.13.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jan 2026 03:13:48 -0800 (PST)
+ Tue, 13 Jan 2026 03:13:50 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Vulnerability Report <vr@darknavy.com>, David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PULL 6/7] hw/i386/kvm: fix PIRQ bounds check in
- xen_physdev_map_pirq()
-Date: Tue, 13 Jan 2026 12:13:32 +0100
-Message-ID: <20260113111333.1138160-7-pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 7/7] rust: Update Cargo.lock
+Date: Tue, 13 Jan 2026 12:13:33 +0100
+Message-ID: <20260113111333.1138160-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260113111333.1138160-1-pbonzini@redhat.com>
 References: <20260113111333.1138160-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_FILL_THIS_FORM_SHORT=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,34 +123,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vulnerability Report <vr@darknavy.com>
+From: Zhao Liu <zhao1.liu@intel.com>
 
-Reject pirq == s->nr_pirqs in xen_physdev_map_pirq().
+`cargo +nightly build` updates Cargo.lock file.
 
-Fixes: aa98ee38a5 ("hw/xen: Implement emulated PIRQ hypercall support")
-Fixes: CVE-2026-0665
-Reported-by: DARKNAVY (@DarkNavyOrg) <vr@darknavy.com>
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
-Signed-off-by: Vulnerability Report <vr@darknavy.com>
-Link: https://lore.kernel.org/r/13FE03BE60EA78D6+20260109023548.4047-1-vr@darknavy.com
+Reported-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Link: https://lore.kernel.org/r/20260112090900.880621-1-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/i386/kvm/xen_evtchn.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/Cargo.lock | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
-index b65871f3542..8b243984e41 100644
---- a/hw/i386/kvm/xen_evtchn.c
-+++ b/hw/i386/kvm/xen_evtchn.c
-@@ -1877,7 +1877,7 @@ int xen_physdev_map_pirq(struct physdev_map_pirq *map)
-             return pirq;
-         }
-         map->pirq = pirq;
--    } else if (pirq > s->nr_pirqs) {
-+    } else if (pirq >= s->nr_pirqs) {
-         return -EINVAL;
-     } else {
-         /*
+diff --git a/rust/Cargo.lock b/rust/Cargo.lock
+index 42ae857fe53..78452c3db9b 100644
+--- a/rust/Cargo.lock
++++ b/rust/Cargo.lock
+@@ -1,6 +1,6 @@
+ # This file is automatically @generated by Cargo.
+ # It is not intended for manual editing.
+-version = 3
++version = 4
+ 
+ [[package]]
+ name = "anyhow"
+@@ -233,6 +233,8 @@ dependencies = [
+ [[package]]
+ name = "probe"
+ version = "0.5.2"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "136558b6e1ebaecc92755d0ffaf9421f519531bed30cc2ad23b22cb00965cc5e"
+ 
+ [[package]]
+ name = "proc-macro-error"
+@@ -392,7 +394,6 @@ dependencies = [
+  "migration",
+  "qom",
+  "system",
+- "trace",
+  "util",
+ ]
+ 
 -- 
 2.52.0
 
