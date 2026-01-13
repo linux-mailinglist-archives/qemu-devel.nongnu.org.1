@@ -2,28 +2,28 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3781FD1884F
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 12:39:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C33AD18858
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 12:39:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfcjh-0002go-77; Tue, 13 Jan 2026 06:38:58 -0500
+	id 1vfcjm-0002pg-VO; Tue, 13 Jan 2026 06:39:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <skolothumtho@nvidia.com>)
- id 1vfcjW-0002eS-Si; Tue, 13 Jan 2026 06:38:46 -0500
-Received: from mail-centralusazlp170110009.outbound.protection.outlook.com
- ([2a01:111:f403:c111::9] helo=DM5PR21CU001.outbound.protection.outlook.com)
+ id 1vfcjd-0002hL-8Y; Tue, 13 Jan 2026 06:38:53 -0500
+Received: from mail-southcentralusazlp170110003.outbound.protection.outlook.com
+ ([2a01:111:f403:c10d::3] helo=SN4PR0501CU005.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <skolothumtho@nvidia.com>)
- id 1vfcjV-0003n4-IG; Tue, 13 Jan 2026 06:38:46 -0500
+ id 1vfcjb-0003na-OQ; Tue, 13 Jan 2026 06:38:53 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xYvdRug9cfqYOJRCzscHttSW1kALvfVHsnAMzeQp3Bn40FrHM8SKPXZUPcta7VqrmTHncVsf5f/SC0FHxgMcfr3fUM08przSCdxG8uBMAQqhEvPQ3/cVwWOEkq+4Tu+7PAs0n6e6v2chQtfE0O7yp/TcNUHn5NMw5QvsKK4n3J79oMvbHHka60FOxQSGvE6pEP06mzxWEiUzSg6U7KQgB1UQiUUyYT29XlBhFzEwzfoHrnQFIrVTK2xmIFy/CGeHbMOUNo2bqKN5igPSODYTeESgKYYOxMuJJ2mNHKqcTWEzalLux//vhGEeiHNWhGbqAopdkTcc/D/qnkWHhrsYdQ==
+ b=d7fCLcN+8DdDk5nhA51hQYdaYOjdckBIYNd7UdLt2UGgjGX7AVETkXSIRxT6p7f6bgCASzNCDUZJKFKNa9YSFxKJnki2SZIU3LuFwSAajSmfQWMXIe7fKG1eN8A+um1aRz0eddyOxrkwEpR74zUGKNY6vwwA7khEYNnDD5TezrPNsqjVuf9ZHn3v4hConY7hxBae0jnUGs1LToLbEbDia3rlJh2lZ7/0Ubl6btOZJSDtbPQr8jM1pH2GZqiQ8eZCxQkdObdsONjpRm+Mniquk5/R0dsAAlPw8OPhhaEjinugS3Bk0HX7gScbGle1Ng8aLF19h6SSjUVzwboCCOVIIg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NT14EKgEERD5tuxBjBCNFuMg3VDRNysl3RX4Zx8mF10=;
- b=d9pQMH0/kshQYMMZt5BR1i0irRfBqISmdfDdMgVM6xdf2rEfcx3NADDdC0Ho3Sn87PijwXS6Fz3I1thOmGWZv+p8O2YEig8U4NXl/cN6TaaJ6OoGsr+2VNvZVJaVjPLLTRMYU+a5P0rUhstt3fgFxeutCPrg8Bgi0wRvI0toR0WbtQGt//QlhThNfExj7rLUMExJWDbXDI/jn2Z6DA/frH25AF8qu6LBmXS6qZVQ031rqXNoqGq6pBqKAUQQdoRvL5rOioHtcCdc5CYZZELyQYA2rpE5s61ybUcHNmfRCG/OwJ37cmFgiIVM1LbL3IN+RySWl9ZwDwoS1MhkxrlczQ==
+ bh=wEA7tJ1YSyyXldZyMsnV4J3+ftw34QpZQzhveWopWOk=;
+ b=ZBZm4JzSrY9W5Ej2Q5zoHmVP5xRuiaiw25FdTjgfVk09VlVEYRRZzEoDNzcXI1Kw6M133hWl6B/ZGhqkm4F2pqxKCMLHW9l88NUaYiQAYaM5cngmDxpTDTDUlJKJUuvuRYSSXo/BRW/6hLjRmXCZYT42NQPsIE5UWt2fX/yZBzHeO1TNtv378/+uwNsj+Oxk1UOVKlrsuLSjIu7sLsQZcAR1cssCo0jMhuVJuUVZntkTUI9sDMs+wLhJtnk2rtkbiTjZgEc3RNA6TIaNrAd3qt074FUJqoN6cnU1IWTNgiCssgsRctpuFuY1ZhElz64/+evLYaI9czVdIFglYPAm8g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.161) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -31,18 +31,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NT14EKgEERD5tuxBjBCNFuMg3VDRNysl3RX4Zx8mF10=;
- b=A3/7oFXHcWXvXxtsGAMXH6kJVdjNY++SuH6LAKoyZi/JIGXK0HhyW6w6gPTExnelZz0FrPDbT1LT6Ijk1Y6GD1M781T4w2XeEeSkEqTRM5lovY5xEOQbCIbrI9uQX/LXai9Cydg/1xO/A8bEe+i1m8gyYMXWRKA+lEMTuNKtJ2NLhBminQuKfvl96QPhEKAAHU6C/Cy58o+gb5R3CpPFaYyE15oNLgQfj6K63qxfCDHnXEygCFudY+TQEThqh4cEKctryTy7vI1NxLdh7o+TfHjhERM/p6MTmHWDBtT8b5VhMibeaNbRJU2Lry6onuXjT8cU2iZUmIBOMVGXuFgrog==
-Received: from BL6PEPF00016419.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:22e:400:0:1004:0:8) by CH1PPF6D0742E7B.namprd12.prod.outlook.com
- (2603:10b6:61f:fc00::613) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Tue, 13 Jan
- 2026 11:38:41 +0000
+ bh=wEA7tJ1YSyyXldZyMsnV4J3+ftw34QpZQzhveWopWOk=;
+ b=R4t1H8YVBN30Bh0z+4uNJiYHRIGOQL5g+V9YlVkfQwpWyor+4DU7VEtJhO6N81L6rvAfqLHuZgcY1OjCMVHtv6OEgbmeFBz4wuROV+g4KVu+tecC/p7SIqm/IXLmGvn8H1NQzK1Fc/5eQQ1iVh/UsKEekn0UGbJ1phV2afShRmIuEoEqBR46WknuGmZ639nD/rjDwWCsyl+Vp65ca0lEQvkU4GG+yX55KctaXfofW1RVb8aWwiWe4S5GIwv7fE6YGtm9+bNkq21IEdZi4YSFahRsgpTRNjozLw51jiGivi+keGoq9ApTjDXYGEstbnYGeWVRqJB5QEcXZ0hlZp8HGA==
+Received: from BL6PEPF0001641F.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:22e:400:0:1004:0:f) by PH7PR12MB7284.namprd12.prod.outlook.com
+ (2603:10b6:510:20b::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.4; Tue, 13 Jan
+ 2026 11:38:43 +0000
 Received: from BL6PEPF0001AB50.namprd04.prod.outlook.com
- (2a01:111:f403:f903::4) by BL6PEPF00016419.outlook.office365.com
+ (2a01:111:f403:f903::4) by BL6PEPF0001641F.outlook.office365.com
  (2603:1036:903:4::a) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.7 via Frontend Transport; Tue,
- 13 Jan 2026 11:38:41 +0000
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9520.4 via Frontend Transport; Tue,
+ 13 Jan 2026 11:38:43 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
  smtp.mailfrom=nvidia.com;
  dkim=none (message not signed)
@@ -53,24 +53,24 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
 Received: from mail.nvidia.com (216.228.117.161) by
  BL6PEPF0001AB50.mail.protection.outlook.com (10.167.242.74) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9520.1 via Frontend Transport; Tue, 13 Jan 2026 11:38:40 +0000
+ 15.20.9520.1 via Frontend Transport; Tue, 13 Jan 2026 11:38:43 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
  (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 13 Jan
- 2026 03:38:24 -0800
+ 2026 03:38:28 -0800
 Received: from NV-2Y5XW94.nvidia.com (10.126.230.35) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 13 Jan
- 2026 03:38:21 -0800
+ 2026 03:38:25 -0800
 From: Shameer Kolothum <skolothumtho@nvidia.com>
 To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
 CC: <eric.auger@redhat.com>, <alex@shazbot.org>, <clg@redhat.com>,
  <cohuck@redhat.com>, <mst@redhat.com>, <nicolinc@nvidia.com>,
  <nathanc@nvidia.com>, <mochs@nvidia.com>, <jgg@nvidia.com>,
- <kjaju@nvidia.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PATCH v2 2/4] hw/net/virtio-net: Adapt hash handling to updated UAPI
-Date: Tue, 13 Jan 2026 11:37:52 +0000
-Message-ID: <20260113113754.1189-3-skolothumtho@nvidia.com>
+ <kjaju@nvidia.com>
+Subject: [PATCH v2 3/4] hw/vfio: Add helper to retrieve device feature
+Date: Tue, 13 Jan 2026 11:37:53 +0000
+Message-ID: <20260113113754.1189-4-skolothumtho@nvidia.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260113113754.1189-1-skolothumtho@nvidia.com>
 References: <20260113113754.1189-1-skolothumtho@nvidia.com>
@@ -82,63 +82,62 @@ X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB50:EE_|CH1PPF6D0742E7B:EE_
-X-MS-Office365-Filtering-Correlation-Id: e1a12ed2-07aa-4647-a09c-08de52984cbe
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB50:EE_|PH7PR12MB7284:EE_
+X-MS-Office365-Filtering-Correlation-Id: 66cedd20-d2c0-4c0b-f2d2-08de52984e26
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|82310400026|376014|36860700013|7142099003; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?9+6yZa8LlNzzzioWiJTH0ivLi186efVr5f1gmdUcFSoBecLhRuAeHMoYdnf2?=
- =?us-ascii?Q?AH0DQ4Chc+XGGu1DGaTXBytbw+YHiCZ1u8AZIcSZHPvsfmx25i6SuYVXHgc2?=
- =?us-ascii?Q?W6YFNH71i7vdWExD7wERgAd7GpGGRnygK8omgbbVDwqRx6RZrZZGWnAqtcfB?=
- =?us-ascii?Q?IzALVMF6yWaEi39kesGeL9a7xCjwXM1G6eY8sPKJKN2mYelay+cC7a2mA9XF?=
- =?us-ascii?Q?c/EZFQ+yx7UU4J03blAVcwHwIeNgp5c709KrZ8yX/dyyfbrqm3406H/BxPSl?=
- =?us-ascii?Q?6UOP14jHqVKt5DZvIMUjKUWpvkAKKoDrNebyXF7VrD//m8Qd2eEaBco89FXb?=
- =?us-ascii?Q?NyeHPgsMv6y/yCbjT9oBL6ScV3TKXi94uHpfcB7Jcpwc9OEu92zhJHaE5mII?=
- =?us-ascii?Q?ieoj3H70/0yyROiDYoECzzTFfyR012J1/b65ZBZMxb2sZVkmBzGr5RO7ZhCY?=
- =?us-ascii?Q?gL3DgLhXf4EYxUaJpHbIKa2+LujiBE5yKcfwiGX0vAn2Wt3289Ys+ArggaOt?=
- =?us-ascii?Q?EytvayXvgFGV9B3P/I+7jr5PKC6QGgSUG/V3G6kSR1/eG1M0JZ5uSgOOnCdC?=
- =?us-ascii?Q?5BrPmubGKRYe2A0H+h2P8a9T6XauCUOeKQqE0zu2dH1H7ys6kc0wJQhexmpH?=
- =?us-ascii?Q?Q5t7+gBoFxQlVk3Sr/f4xpOwQXrb0cfeMKOjjnx9MWkqyVpe5qetbYj/t95s?=
- =?us-ascii?Q?XNyEKax1dFhJWtzYFzPD3Wz8UOXaBgSKRUBc+0arb/eo0XFsY0cAaGZTRs/M?=
- =?us-ascii?Q?IfWImbJJLqLJsLd2FBNmqgLsgg5xOCAGG29HtlUMW22Xw5yyfLBMf/FsR0/S?=
- =?us-ascii?Q?k8+Q32aaao8FJli9Px0c0ED9zY3n+BXfuTE/wCrZBBUaEsJOT+gIv8pFrPGd?=
- =?us-ascii?Q?DrA80TmRFrodXFNU2kISvy1rAcjhIXb2PHujj2PG8OrFBhJPtCcdCk0GwWjn?=
- =?us-ascii?Q?GH+8BBxzfG9cOuI41TjP5Lq6xsw9h5q8mWYwa3Zy56bKHAhONq963LAwjlh8?=
- =?us-ascii?Q?4dDUnoy/pUcIzyM3ta3uOm9RQoY9wlxjaWYz/ZSKi8aFa1PzSJ7wKeGExOpv?=
- =?us-ascii?Q?dSOpVQsJz6kgVDBrgIazDfMWU3xCQeoZPdFlDVmn/fjcu7aBUjTQ5wuTnz6+?=
- =?us-ascii?Q?u2wU9b1lwAdLbfYswtdt69eEsEAxqUI7+5IdUhKptVwN2AXaVngBAmaf5d+f?=
- =?us-ascii?Q?AKCgsY0OiHZEAiDKKMuYYiyGa6ION+GEnWCPfkCanBG1qHb119GnBvaxZKRz?=
- =?us-ascii?Q?jwAMk4x/02auVXkgoqGZF0IqqV2n8zbXCYlDQpBp0oXAfLMRpjqUXftI/3jv?=
- =?us-ascii?Q?6wDYxi0beaUUbGh6wJD+q1UVILB8QMpmOCwlay5ahgOKaClIJxHh9/h+ryO3?=
- =?us-ascii?Q?JvWCKYrx6W1KJySucHZv1xWlgKt0OK9x3Nu+Oorrri76l5qiLJnwcykpwZ71?=
- =?us-ascii?Q?WE295h64el2lrwqJBciGqS2GG1IHX00yZ3M5PtALmWmV5EzFhxUpBh3wtiV1?=
- =?us-ascii?Q?C3pr6ag4/A0HmJGmjTkOZXMIvDQIhP3VLjXD9mhiTDvhgLK//WaBk8es3cKe?=
- =?us-ascii?Q?bUuI4HLXrnz5/+uei9s=3D?=
+ ARA:13230040|1800799024|82310400026|376014|36860700013; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?EOomNfSPzXtfIY9DRXTSqTddzaRGH6lqkk/G75D2QQs3qwEpKxWZ2aOH2ksu?=
+ =?us-ascii?Q?yTjflxMAiyi3hNXDCY+bIf0BMSxzLPga5mn67GFCwhDxRfZ3vroVNNZ3Ieq9?=
+ =?us-ascii?Q?t7yQAuOkppekUWW0DzlzYWeAU0i8ZYx9CulgusQUvtO76Jsac9f+sg0/7Hbi?=
+ =?us-ascii?Q?p8MbqZCV1eWp904Mj09Ak2oqJBLGGxNX0RNzgqiaHo4waMa0gRh/Z5+qBHBr?=
+ =?us-ascii?Q?IaSg8798QkZcKw6FtFojKqjxegmhgC3zB+wiIRh77Og1L8u0a51eZPbkOwdh?=
+ =?us-ascii?Q?QEAU2iIAx7T9bgeE0JTpyhagXozo6N3iVCLld8DiimxlHQ5O5/28YdsD6EpQ?=
+ =?us-ascii?Q?xid4SBRz/CFadVdFSar4HreyrtVzm/23xhH5HTPlSbdIDs1RvfOuQ0BfbVuk?=
+ =?us-ascii?Q?e/Iv0rmY3B30uFr0ASxdxJiT0bsHHOEZ3aw6mA/JqVQUPGYsFVH/Yb17bhFt?=
+ =?us-ascii?Q?R1b/WMrbcXxG3HUuFWaPgZdFAL9PYGmZ9B9V7eFUYJg40G4PQVnASIxIY/Iy?=
+ =?us-ascii?Q?cedZA8vrdXaDPy/U5vIRqYzm6V6IspKkMJThjtB7GITCaPeQmfn4eZszAWjp?=
+ =?us-ascii?Q?rou5qRJ2ExDlq1h76j9yiKDwRsEnwzQOcXEy19i19maXkoexZS6tydKdwh+h?=
+ =?us-ascii?Q?aSSUbTjRmXMT3nIJEpt22eSnFQstLrGvbUTdzzNzTrwCi1rxmTwxNVNpQEgw?=
+ =?us-ascii?Q?oWzrgjoil8BVuZOXt2S8CMdR+atuzm8XNmuN/jxSFRnYIg3USzLe1u8tLZbX?=
+ =?us-ascii?Q?LYjGBt0F+WehX7cT8rLco4ceyLng05Fmt4dMbbqX+D9K5dL6EjIbM9nlP+Ne?=
+ =?us-ascii?Q?g0qMppVPIFgC7mteYwKbwsdhpshbpfTIg1sQ4wrivqKnfOCGCBGI/RuOGClx?=
+ =?us-ascii?Q?kMZgoxIShwpbB8ov4fj4MEwsx9E3LpC205M4sny1E7TfQ2sfUc1g3lT1Hxjx?=
+ =?us-ascii?Q?aslU0pSR+UPu1Ne1K6mkKSQN0wgFu7FnwPlRAD6P/mP9vr++/Z43N3+j5Nkx?=
+ =?us-ascii?Q?eOjoR8jWaIRjOxj7+/jBfWgGubjZusbxA3DqUrkkdBpVNR6jbf4Z0CAHE6G+?=
+ =?us-ascii?Q?1HwHdzPOZbXygSoyiDcOstoZlwj8SaPwHKMLVjF4IJfalz9I95cRXBBF1oaZ?=
+ =?us-ascii?Q?GO1BKvcbLTMa7xyU65gywf+ci2cupIgcgUyx8bC7FUo55Lrw/ba03qEJVx8n?=
+ =?us-ascii?Q?mt3/KQ20DEhgHKO0/q8HUGea9AU02KDDI6V0J+wmyO6fsHE3tCRjmVUggjix?=
+ =?us-ascii?Q?XBK3JGYHJgyxlj0tYqWblSZvu44IUh+Do3H40xwlx8e3ULSNZWqox4ZFc/E7?=
+ =?us-ascii?Q?tDVVOisufRuWpN/CFvvd6GWlR1w+fHQuamTCoL1om80z3/1WgGfO+e449SCz?=
+ =?us-ascii?Q?wpOb+Aijy0orYt1pi4LUSFfqxROgWfcKaqpBctkqPWk+McSKyuiKfVWRj97e?=
+ =?us-ascii?Q?9fGlPMVRmHwoykbmxozGUOYnW7n/PyfQoeRfPaaCAHmhxkXZfnDctFUtRnHq?=
+ =?us-ascii?Q?xcDmLIpsOI75hllvp6Lms78G6ppyAZXegNM5f4c+Ofi13QYLA+PWiV2a60Pi?=
+ =?us-ascii?Q?Dsd5ff/SluXyuc7nJVk=3D?=
 X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
- SFS:(13230040)(1800799024)(82310400026)(376014)(36860700013)(7142099003);
- DIR:OUT; SFP:1101; 
+ SFS:(13230040)(1800799024)(82310400026)(376014)(36860700013); DIR:OUT;
+ SFP:1101; 
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 11:38:40.7205 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e1a12ed2-07aa-4647-a09c-08de52984cbe
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 11:38:43.0878 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 66cedd20-d2c0-4c0b-f2d2-08de52984e26
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
  Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB50.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPF6D0742E7B
-Received-SPF: permerror client-ip=2a01:111:f403:c111::9;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7284
+Received-SPF: permerror client-ip=2a01:111:f403:c10d::3;
  envelope-from=skolothumtho@nvidia.com;
- helo=DM5PR21CU001.outbound.protection.outlook.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ helo=SN4PR0501CU005.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FORGED_SPF_HELO=1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001,
- SPF_NONE=0.001 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -154,58 +153,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The virtio_net_hdr_v1_hash layout changed in the Linux UAPI, replacing
-the 32-bit hash_value field with two 16-bit fields, hash_value_lo and
-hash_value_hi.
+Add vfio_device_get_feature() as a common helper to retrieve
+VFIO device features.
 
-Update hash handling to populate the new fields correctly and adjust
-offset and size calculations accordingly.
+No functional change intended.
 
-Cc: Michael S. Tsirkin <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
 Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
 ---
- hw/net/virtio-net.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ hw/vfio/container.c           |  2 +-
+ hw/vfio/device.c              | 10 ++++++++++
+ hw/vfio/listener.c            |  4 ++--
+ include/hw/vfio/vfio-device.h |  3 +++
+ 4 files changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 317f1ad23b..512a7c02c9 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -1879,7 +1879,8 @@ static int virtio_net_process_rss(NetClientState *nc, const uint8_t *buf,
-                                              n->rss_data.runtime_hash_types);
-     if (net_hash_type > NetPktRssIpV6UdpEx) {
-         if (n->rss_data.populate_hash) {
--            hdr->hash_value = VIRTIO_NET_HASH_REPORT_NONE;
-+            hdr->hash_value_lo = VIRTIO_NET_HASH_REPORT_NONE;
-+            hdr->hash_value_hi = VIRTIO_NET_HASH_REPORT_NONE;
-             hdr->hash_report = 0;
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index 5993d90545..b0cbcf0f4a 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -208,7 +208,7 @@ static int vfio_device_dma_logging_report(VFIODevice *vbasedev, hwaddr iova,
+     feature->flags = VFIO_DEVICE_FEATURE_GET |
+                      VFIO_DEVICE_FEATURE_DMA_LOGGING_REPORT;
+ 
+-    return vbasedev->io_ops->device_feature(vbasedev, feature);
++    return vfio_device_get_feature(vbasedev, feature);
+ }
+ 
+ static int vfio_container_iommu_query_dirty_bitmap(
+diff --git a/hw/vfio/device.c b/hw/vfio/device.c
+index 100532f35d..0d9f42a1f0 100644
+--- a/hw/vfio/device.c
++++ b/hw/vfio/device.c
+@@ -516,6 +516,7 @@ void vfio_device_unprepare(VFIODevice *vbasedev)
+     vbasedev->bcontainer = NULL;
+ }
+ 
++
+ bool vfio_device_get_viommu_flags_want_nesting(VFIODevice *vbasedev)
+ {
+     VFIOPCIDevice *vdev = vfio_pci_from_vfio_device(vbasedev);
+@@ -527,6 +528,15 @@ bool vfio_device_get_viommu_flags_want_nesting(VFIODevice *vbasedev)
+     return false;
+ }
+ 
++int vfio_device_get_feature(VFIODevice *vbasedev,
++                            struct vfio_device_feature *feature)
++{
++    if (!vbasedev->io_ops || !vbasedev->io_ops->device_feature) {
++        return -EINVAL;
++    }
++    return vbasedev->io_ops->device_feature(vbasedev, feature);
++}
++
+ /*
+  * Traditional ioctl() based io
+  */
+diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
+index 7af0107535..d00fc87f3b 100644
+--- a/hw/vfio/listener.c
++++ b/hw/vfio/listener.c
+@@ -879,7 +879,7 @@ static void vfio_devices_dma_logging_stop(VFIOContainer *bcontainer)
+             continue;
          }
-         return n->rss_data.redirect ? n->rss_data.default_queue : -1;
-@@ -1888,7 +1889,8 @@ static int virtio_net_process_rss(NetClientState *nc, const uint8_t *buf,
-     hash = net_rx_pkt_calc_rss_hash(pkt, net_hash_type, n->rss_data.key);
  
-     if (n->rss_data.populate_hash) {
--        hdr->hash_value = hash;
-+        hdr->hash_value_lo = cpu_to_le16(hash & 0xffff);
-+        hdr->hash_value_hi = cpu_to_le16((hash >> 16) & 0xffff);
-         hdr->hash_report = reports[net_hash_type];
-     }
+-        ret = vbasedev->io_ops->device_feature(vbasedev, feature);
++        ret = vfio_device_get_feature(vbasedev, feature);
  
-@@ -1990,10 +1992,11 @@ static ssize_t virtio_net_receive_rcu(NetClientState *nc, const uint8_t *buf,
+         if (ret != 0) {
+             warn_report("%s: Failed to stop DMA logging, err %d (%s)",
+@@ -984,7 +984,7 @@ static bool vfio_devices_dma_logging_start(VFIOContainer *bcontainer,
+             continue;
+         }
  
-             receive_header(n, sg, elem->in_num, buf, size);
-             if (n->rss_data.populate_hash) {
--                offset = offsetof(typeof(extra_hdr), hash_value);
-+                offset = offsetof(typeof(extra_hdr), hash_value_lo);
-                 iov_from_buf(sg, elem->in_num, offset,
-                              (char *)&extra_hdr + offset,
--                             sizeof(extra_hdr.hash_value) +
-+                             sizeof(extra_hdr.hash_value_lo) +
-+                             sizeof(extra_hdr.hash_value_hi) +
-                              sizeof(extra_hdr.hash_report));
-             }
-             offset = n->host_hdr_len;
+-        ret = vbasedev->io_ops->device_feature(vbasedev, feature);
++        ret = vfio_device_get_feature(vbasedev, feature);
+         if (ret) {
+             error_setg_errno(errp, -ret, "%s: Failed to start DMA logging",
+                              vbasedev->name);
+diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
+index 0bc877ff62..315dbb742a 100644
+--- a/include/hw/vfio/vfio-device.h
++++ b/include/hw/vfio/vfio-device.h
+@@ -259,6 +259,9 @@ void vfio_device_unprepare(VFIODevice *vbasedev);
+ 
+ bool vfio_device_get_viommu_flags_want_nesting(VFIODevice *vbasedev);
+ 
++int vfio_device_get_feature(VFIODevice *vbasedev,
++                            struct vfio_device_feature *feature);
++
+ int vfio_device_get_region_info(VFIODevice *vbasedev, int index,
+                                 struct vfio_region_info **info);
+ int vfio_device_get_region_info_type(VFIODevice *vbasedev, uint32_t type,
 -- 
 2.43.0
 
