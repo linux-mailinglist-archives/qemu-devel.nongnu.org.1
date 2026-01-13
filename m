@@ -2,70 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0DDD17B32
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 10:39:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E662CD17B7D
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 10:41:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfara-0004kF-Nc; Tue, 13 Jan 2026 04:38:58 -0500
+	id 1vfarb-0004oF-6Z; Tue, 13 Jan 2026 04:38:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfarH-0003rJ-36
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:38:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfarL-0003tk-Br
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:38:46 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfarF-0003WL-I7
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:38:38 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfarJ-0003Wl-Pb
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:38:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768297116;
+ s=mimecast20190719; t=1768297121;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=k4KkBf5r7PCQVPgFWgcfd/49FOswq0SRVJv4jAyGOLg=;
- b=hxcCzq4An7z6EpwiNHG4uy8Xigx2as5vnz6SxRyu5fjXD+/BPHU9j18enLJvsi/qj0F7S9
- paJrcbiHYbbORHom6IbLclO9vk08Rxuqp0xImcX0YmN0D+ISHS3sAlzy44MppTyN4XejN7
- Ocabrf5ABmy6+nSUwNxuewP+5zjlJio=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=t/ez37UZl0VfCletKk7E961niqzrd4GVb5O7hezAtxI=;
+ b=S511ZyntR8r+a6daJZLuxSdzMk6h/z66RKjUWELFclsFEypT7IN4M8l9xV02yIv6JnoqZj
+ dmVKvGVNxSM1dlG0V0KYrRect6EATFToTUsaidQ0x6+WdE8XWMphEOO3vNNl35+EtbBzd2
+ hEw+njx3Df8X21G739LImNXMxBb1Up4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-531-rEpS1RVOPrqOCq9HBvSHeQ-1; Tue,
- 13 Jan 2026 04:38:35 -0500
-X-MC-Unique: rEpS1RVOPrqOCq9HBvSHeQ-1
-X-Mimecast-MFC-AGG-ID: rEpS1RVOPrqOCq9HBvSHeQ_1768297114
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-516-kQrMskMMOyK1C79PJ7igzw-1; Tue,
+ 13 Jan 2026 04:38:37 -0500
+X-MC-Unique: kQrMskMMOyK1C79PJ7igzw-1
+X-Mimecast-MFC-AGG-ID: kQrMskMMOyK1C79PJ7igzw_1768297116
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 79837180057E; Tue, 13 Jan 2026 09:38:34 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9673C195423A; Tue, 13 Jan 2026 09:38:36 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.79])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 839D330001A2; Tue, 13 Jan 2026 09:38:32 +0000 (UTC)
+ id E9F4C30001A2; Tue, 13 Jan 2026 09:38:34 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex@shazbot.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 40/41] tests/qtest: Fix build error
-Date: Tue, 13 Jan 2026 10:36:36 +0100
-Message-ID: <20260113093637.1549214-41-clg@redhat.com>
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 41/41] tests/rcutorture: Fix build error
+Date: Tue, 13 Jan 2026 10:36:37 +0100
+Message-ID: <20260113093637.1549214-42-clg@redhat.com>
 In-Reply-To: <20260113093637.1549214-1-clg@redhat.com>
 References: <20260113093637.1549214-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,40 +85,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Newer gcc compiler (version 16.0.0 20260103 (Red Hat 16.0.0-0) (GCC))
 detects an unused variable error:
 
-  ../tests/qtest/libqtest.c: In function ‘qtest_qom_has_concrete_type’:
-  ../tests/qtest/libqtest.c:1044:9: error: variable ‘idx’ set but not used [-Werror=unused-but-set-variable=]
+  ../tests/unit/rcutorture.c: In function ‘rcu_read_stress_test’:
+  ../tests/unit/rcutorture.c:251:18: error: variable ‘garbage’ set but not used [-Werror=unused-but-set-variable=]
+    251 |     volatile int garbage = 0;
+        |                  ^~~~~~~
 
-Remove idx.
+Since the 'garbage' variable is used to generate memory reads from the
+CPU while holding the RCU lock, it can not be removed. Tag it as
+((unused)) instead to silence the compiler warnings/errors.
 
-Cc: Fabiano Rosas <farosas@suse.de>
-Cc: Laurent Vivier <lvivier@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/qemu-devel/20260112123146.1010621-1-clg@redhat.com
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Link: https://lore.kernel.org/qemu-devel/20260112163350.1251114-1-clg@redhat.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- tests/qtest/libqtest.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tests/unit/rcutorture.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-index 132aa5113753031f58acf11ab2d4111803eef7be..794d8700857754b8614720bfa5a2d597e73955c1 100644
---- a/tests/qtest/libqtest.c
-+++ b/tests/qtest/libqtest.c
-@@ -1042,7 +1042,6 @@ static bool qtest_qom_has_concrete_type(const char *parent_typename,
-     QObject *qobj;
-     QString *qstr;
-     QDict *devinfo;
--    int idx;
+diff --git a/tests/unit/rcutorture.c b/tests/unit/rcutorture.c
+index 7662081683f5d781da74402113b73884780b1243..2f19d479a3f210cbca19205a0656eda1f4c2e5a7 100644
+--- a/tests/unit/rcutorture.c
++++ b/tests/unit/rcutorture.c
+@@ -248,7 +248,7 @@ static void *rcu_read_stress_test(void *arg)
+     int pc;
+     long long n_reads_local = 0;
+     long long rcu_stress_local[RCU_STRESS_PIPE_LEN + 1] = { 0 };
+-    volatile int garbage = 0;
++    volatile int garbage __attribute__ ((unused)) = 0;
  
-     if (!list) {
-         QDict *resp;
-@@ -1067,7 +1066,7 @@ static bool qtest_qom_has_concrete_type(const char *parent_typename,
-         }
-     }
- 
--    for (p = qlist_first(list), idx = 0; p; p = qlist_next(p), idx++) {
-+    for (p = qlist_first(list); p; p = qlist_next(p)) {
-         devinfo = qobject_to(QDict, qlist_entry_obj(p));
-         g_assert(devinfo);
+     rcu_register_thread();
  
 -- 
 2.52.0
