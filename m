@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F6CD17B05
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 10:38:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FBB8D17B18
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 10:38:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfaqh-00026W-AQ; Tue, 13 Jan 2026 04:38:03 -0500
+	id 1vfaqh-00025J-1O; Tue, 13 Jan 2026 04:38:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfaqe-0001nW-4Y
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfaqe-0001nD-2p
  for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:38:00 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfaqc-0003QM-Dk
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfaqc-0003QE-7r
  for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:37:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1768297077;
@@ -22,39 +22,37 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gjuUPb1vbhlPDXI27DbfmDSRpGuiGT5u895EaUv2uyw=;
- b=UK1kwEIdUb6o7yEZ/aUl0qXLaqHO8RwIQCjrRgSFVvDNhfHRivGOGiLjOad0lXCbTbPGgz
- L6HxvBXQotoD6UCXGi9iZ5B99026C42xuVm+yneo8pylyCOnKIF7ENVBOxgERYZEftEvEO
- Tc4J/uSHcKdb4stqw7XX03wMhJRmOIU=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=abQudyZ2QRsAkzckmelFBM2Bf5q4iemoZhqXlk/M6X8=;
+ b=QUh6SO4XAPHuEbpYckM6/iRiNyxsO4Cdgtw/qVJiTybQ0HkpILdX9Vmw51GF5e57EpC2Eh
+ h7vajcYr/0+MgZmQqkxMKYpcU+Nd83CMUXeQzl5uER9L/1ygH8FvW1rqIL+lylb9GvwGiV
+ 8tFpTv/B7+UHMHG6JPOFC14u+oYhlyo=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-364-t1DVyuPrPuSaXeqAnHymbw-1; Tue,
- 13 Jan 2026 04:37:52 -0500
-X-MC-Unique: t1DVyuPrPuSaXeqAnHymbw-1
-X-Mimecast-MFC-AGG-ID: t1DVyuPrPuSaXeqAnHymbw_1768297070
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-264-qDzZAHdnNpqZHwsbgs7iYg-1; Tue,
+ 13 Jan 2026 04:37:54 -0500
+X-MC-Unique: qDzZAHdnNpqZHwsbgs7iYg-1
+X-Mimecast-MFC-AGG-ID: qDzZAHdnNpqZHwsbgs7iYg_1768297073
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CE4F51956080; Tue, 13 Jan 2026 09:37:50 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 063D618002C4; Tue, 13 Jan 2026 09:37:53 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.79])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E377330001A2; Tue, 13 Jan 2026 09:37:47 +0000 (UTC)
+ id 4AA4B30001A2; Tue, 13 Jan 2026 09:37:51 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex@shazbot.org>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Joao Martins <joao.m.martins@oracle.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Yi Liu <yi.l.liu@intel.com>, Xudong Hao <xudong.hao@intel.com>,
- Giovannio Cabiddu <giovanni.cabiddu@intel.com>,
- Rohith S R <rohith.s.r@intel.com>
-Subject: [PULL 23/41] vfio/iommufd: Query dirty bitmap before DMA unmap
-Date: Tue, 13 Jan 2026 10:36:19 +0100
-Message-ID: <20260113093637.1549214-24-clg@redhat.com>
+ Yi Liu <yi.l.liu@intel.com>
+Subject: [PULL 24/41] vfio/container-legacy: rename vfio_dma_unmap_bitmap() to
+ vfio_legacy_dma_unmap_get_dirty_bitmap()
+Date: Tue, 13 Jan 2026 10:36:20 +0100
+Message-ID: <20260113093637.1549214-25-clg@redhat.com>
 In-Reply-To: <20260113093637.1549214-1-clg@redhat.com>
 References: <20260113093637.1549214-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -88,60 +86,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-When an existing mapping is unmapped, there could already be dirty bits
-which need to be recorded before unmap.
+This is to follow naming style in container-legacy.c to have low level functions
+with vfio_legacy_ prefix.
 
-If query dirty bitmap fails, we still need to do unmapping or else there
-is stale mapping and it's risky to guest.
+No functional changes.
 
-Co-developed-by: Joao Martins <joao.m.martins@oracle.com>
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Tested-by: Xudong Hao <xudong.hao@intel.com>
-Tested-by: Giovannio Cabiddu <giovanni.cabiddu@intel.com>
-Tested-by: Rohith S R <rohith.s.r@intel.com>
-Link: https://lore.kernel.org/qemu-devel/20251218062643.624796-3-zhenzhong.duan@intel.com
+Link: https://lore.kernel.org/qemu-devel/20251218062643.624796-4-zhenzhong.duan@intel.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/iommufd.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ hw/vfio/container-legacy.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index f56349faf5669cfeed10d7fc5e8d3bf8397bb04d..6d6244d7b9723def647f3dd4eec7ef1558415bb2 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -65,7 +65,7 @@ static int iommufd_cdev_unmap(const VFIOContainer *bcontainer,
-     uint32_t ioas_id = container->ioas_id;
-     bool need_dirty_sync = false;
-     Error *local_err = NULL;
--    int ret;
-+    int ret, unmap_ret;
+diff --git a/hw/vfio/container-legacy.c b/hw/vfio/container-legacy.c
+index 32c260b345194532c5a1c155a61aafa345d3ecae..48bcbc0264effc100642ff59f510533bf0ad2180 100644
+--- a/hw/vfio/container-legacy.c
++++ b/hw/vfio/container-legacy.c
+@@ -68,9 +68,10 @@ static int vfio_ram_block_discard_disable(VFIOLegacyContainer *container,
+     }
+ }
  
-     if (unmap_all) {
-         size = UINT64_MAX;
-@@ -74,8 +74,21 @@ static int iommufd_cdev_unmap(const VFIOContainer *bcontainer,
+-static int vfio_dma_unmap_bitmap(const VFIOLegacyContainer *container,
+-                                 hwaddr iova, uint64_t size,
+-                                 IOMMUTLBEntry *iotlb)
++static int
++vfio_legacy_dma_unmap_get_dirty_bitmap(const VFIOLegacyContainer *container,
++                                       hwaddr iova, uint64_t size,
++                                       IOMMUTLBEntry *iotlb)
+ {
+     const VFIOContainer *bcontainer = VFIO_IOMMU(container);
+     struct vfio_iommu_type1_dma_unmap *unmap;
+@@ -141,7 +142,8 @@ static int vfio_legacy_dma_unmap_one(const VFIOLegacyContainer *container,
      if (iotlb && vfio_container_dirty_tracking_is_started(bcontainer)) {
          if (!vfio_container_devices_dirty_tracking_is_supported(bcontainer) &&
              bcontainer->dirty_pages_supported) {
--            /* TODO: query dirty bitmap before DMA unmap */
--            return iommufd_backend_unmap_dma(be, ioas_id, iova, size);
-+            ret = vfio_container_query_dirty_bitmap(bcontainer, iova, size,
-+                                                    iotlb->translated_addr,
-+                                                    &local_err);
-+            if (ret) {
-+                error_report_err(local_err);
-+            }
-+            /* Unmap stale mapping even if query dirty bitmap fails */
-+            unmap_ret = iommufd_backend_unmap_dma(be, ioas_id, iova, size);
-+
-+            /*
-+             * If dirty tracking fails, return the failure to VFIO core to
-+             * fail the migration, or else there will be dirty pages missed
-+             * to be migrated.
-+             */
-+            return unmap_ret ? : ret;
+-            return vfio_dma_unmap_bitmap(container, iova, size, iotlb);
++            return vfio_legacy_dma_unmap_get_dirty_bitmap(container, iova, size,
++                                                          iotlb);
          }
  
          need_dirty_sync = true;
