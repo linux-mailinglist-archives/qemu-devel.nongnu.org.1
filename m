@@ -2,90 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 234A0D193AD
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 14:59:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC90CD193D4
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 15:00:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfev9-0005p3-LS; Tue, 13 Jan 2026 08:58:55 -0500
+	id 1vfewO-00069N-3Q; Tue, 13 Jan 2026 09:00:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfev7-0005oa-6z
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 08:58:53 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vfew3-00066t-QV
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 08:59:53 -0500
+Received: from mail-yw1-x112e.google.com ([2607:f8b0:4864:20::112e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vfev5-0000tA-MY
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 08:58:52 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-432d2c7a8b9so3948706f8f.2
- for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 05:58:48 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vfevz-0000wd-R2
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 08:59:51 -0500
+Received: by mail-yw1-x112e.google.com with SMTP id
+ 00721157ae682-792768a0cd3so26897187b3.1
+ for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 05:59:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1768312726; x=1768917526; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6WhGDknja7CQejJLDSeyhPCpGEnEpfpz6CPziZT1+0s=;
- b=G3oEKHsMXQ7EAon4j9KcSD5VFxyhAacv0O32Zp2khKT3DAMbzugQ+dnYugML31t0X3
- uF5eORrj16xXQPvgCWHDQCsjqPmrJk5evhnnF5WQA6VGvfoRexmLAgi/sH22F+tFkHS7
- ypKtHqi6OhjWYgkDivzNhKNRqLIp25kH+sr+G3Id6IgDbpdv7ZHHYMwH56HvsU4W4utG
- GYajoYN/dyloQ1EivwGxF/oe44UsaTUW1Q7yKCShzflnFwgnS5FnBS1akVy8+Evvm4t/
- 0SGh4tBayxV/nSfqd+qlmuFjvNDARty16pyvsiyq0f19E9W1tHTNG/iy+ML0v1a9YOue
- zIig==
+ d=linaro.org; s=google; t=1768312782; x=1768917582; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=z3q9+VKXfc1yBHSTbPVSTTCsIYHQBqS+OGCzLqF0AHo=;
+ b=R39QTo74yffIZERFo7zdUMS5Yt83LrBIvtggLcLEQO20pnASAv7aiBqmykHIqVvy+1
+ W59mvXQ6xXQefVt5LmkYPp7j9WwjBycIdKhsjT22zdMWTfii8mzuoPriEIf+2Axy0BKc
+ 6jTr0s7PTT6QMtX0jA3Kf5wlpnwgeMsbgYrzm9A28J7RKPGScfB1tUkGHhZ9kgk9KRZ6
+ +77zS44+QGJM4/gTSTaQ1eO+B8Lq7H1NICAsgOHVG1n40FFGi5Wb4HFB0GZKUnPKV4gg
+ Ee0algk5NFj/e7MJEs7kVAlkPYtKhFJm7qw7STcbHfeSD1zQGd7W5usOiNZw7uMWIFA6
+ ZXsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768312726; x=1768917526;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=6WhGDknja7CQejJLDSeyhPCpGEnEpfpz6CPziZT1+0s=;
- b=jzFpsHFsTrUafb5yEfdQQXNn9wFr5pghGJoE0jLAx+Q/S3JwvvxH7UVP2zleUCnV9w
- Arlw/NvsNSXdseWeWPqHXtj8/9vub71TjuRrlIiablL7s5YsFejdZfW+mzA3cKKOBrzj
- sJ+Bv4uwCnz5ic68X1pKYesEnpRdL4YCbJwVuCFcy73G/4kQyvjO9h/iHcoONro7nBBv
- 73DZxVvCXMpgv+a8IIi3ZHB3cnxqBKA0/0yjMdiciDDUG/6Z4qNz4HgU+FIKWZ0J/uHs
- Z0/VNpj29FHIdGDTepoGyJKnW0jxxZcEBHmFZOtPSJzjxQKxedKbfvC+cL6F0NUiCcYL
- 3plQ==
-X-Gm-Message-State: AOJu0YzmFOH92s0xSzugO7BZBjYwuRXjYmvNIM3aVJhhbNE2MeX9b8cx
- snN12FknQLyNC8i9GMafsL3qDoBoA486qYQbMLtIJiN13b6ZlqJgeqPsLrPbWw==
-X-Gm-Gg: AY/fxX6YLSm4/aa0q7psadAOLyVF5b/I+pjsIpgJd3mfuWhI+f/v5Irqk/Dz1n83K5T
- SVMTv0zYgmN95qsVqapjRzswI0tzm9DVGiGjCbFBAhUc1zUAvK/RWgMhnDO1iqPijPmhTEoL1Yw
- UbcT++qEsaYNHnL6YSHRiJsnbJVpmbxfVEVgeRXp/Dl9dyU8TaQYLKw6/mE4K505gt9N55xEVP0
- 8eG9XRmrHUeSVx21K9Z1E7j+OvddyYrcXp7gqBl/mKD9NhJctVDDmBCACSsE1t8X0s2lvk1476b
- C3pKiv6xa2UFvshCRrVvBf6aYdkCcwrnMXOtTiRBIU4FFksM4hzx8e1eJjGhGi6I89iBjJKKt1k
- pOv5phmBIge72DJQh9MVB91uMbFI2DDMPI/xR7+QkvusJAFzmsMgtSrFbBMzm+raglxgv7wLXTd
- UXPf/CIlgBBc4+M/yUzaiKSgfyc9Lok136KRZdbhI4+VAfeG1Z2QQaBflslSykUR/dYMlb8ajB
-X-Google-Smtp-Source: AGHT+IHz3/MZq5IE1wUR5QXf+2IHt/MHhR2WlMb82Jjaiy4vcro767CKSZ9wAVL85Hpc2XOy6zo8xg==
-X-Received: by 2002:a5d:5d13:0:b0:430:f58d:40d7 with SMTP id
- ffacd0b85a97d-432c374f477mr29322767f8f.13.1768312725842; 
- Tue, 13 Jan 2026 05:58:45 -0800 (PST)
-Received: from ehlo.thunderbird.net
- (dynamic-002-242-220-137.2.242.pool.telefonica.de. [2.242.220.137])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-432bd0dadcfsm43551328f8f.3.2026.01.13.05.58.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Jan 2026 05:58:45 -0800 (PST)
-Date: Tue, 13 Jan 2026 13:58:44 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, Ani Sinha <anisinha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
-CC: kvm@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_11/32=5D_kvm/i386=3A_reload?=
- =?US-ASCII?Q?_firmware_for_confidential_guest_reset?=
-In-Reply-To: <20260112132259.76855-12-anisinha@redhat.com>
-References: <20260112132259.76855-1-anisinha@redhat.com>
- <20260112132259.76855-12-anisinha@redhat.com>
-Message-ID: <1840E5EB-CFD2-478E-B6CB-242B46FD5166@gmail.com>
+ d=1e100.net; s=20230601; t=1768312782; x=1768917582;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=z3q9+VKXfc1yBHSTbPVSTTCsIYHQBqS+OGCzLqF0AHo=;
+ b=aai0cMYHFxMrQ5IdvpuYG+4U/5PkYbMLH1EtvQIaPnN8EGt9CLiYg41PTTYEsX/6kX
+ KnfKeyvBBeMOWCo5WM5tMOqN9V2wBr900YxMqwjzCUaxj1y81PtyGgtZlhMopiRZcFVT
+ XqQVTYYUBsc5pYwHBERJkQueoVffJPI9ixEuwSHnN9nZ3vWYp1ZXcsNtQ2i9xa2BaB6C
+ 0NDZeAMZsWWZnRBSpnCwC5xnEviUt9YzTpmg4FpGlH7mCeqAS7VfS8bKVleZ05NrIQXa
+ Atfsvwm5b1qHdB/k34SAWzyc/TZDoIb62hd9K6opwXPHUYNm2N3lbFijyghrStFpKtvV
+ 5EyQ==
+X-Gm-Message-State: AOJu0YwhlRZueCx/2sW+/eEzcmInAcUxMUz5T1jWkWcnm2PrCIdseXHF
+ XsKdhICdI+2Ouf1Loy2ji9h0lnsn4cjzo4TveZdL7VkNiEZ1Mche9qxVBmYo1GABrfnEW4T2s0n
+ OP+IvjZnzPFdOLPQD5YvS9t0kb5oYzjMzDkPNVf8eqg==
+X-Gm-Gg: AY/fxX6VGrnhF99STtLKw1YUPKxvbK4OTteh7NxTzoWILOeTQceejWESm0o/A0vC2mD
+ l71Vb/TdyCrKBqBe2hIMxSe74rcvks5QGBH3gakMJ+W4hUY42i+tzXlqIzEJtiIC8+Qy9VLly33
+ O6J4SpBNJzzppGXXk8FGcpE0n9380TP3iSls05/2kze0C8Vo4kqmJxdZCpCYSOW5ys6fS3YRdz0
+ m6NtKs3PXqRzxoNmnTEG/lKD8tGOy+ITGUR9a8LAg3cqgmBNibhM9U3RilbFvZUjU9SKBKIEg+A
+ DN8xbMerO4ZQA+GYaGJdgnU=
+X-Google-Smtp-Source: AGHT+IGa6qVaYbnt1kDKE85T4PskdvrQeo1YZb4O5AB53ZeAjQ4qG8412I+djCwrrKYCJb6eAkwq2A9Rj/RIkkk4CH0=
+X-Received: by 2002:a53:d706:0:b0:646:5127:9d0a with SMTP id
+ 956f58d0204a3-64716c97460mr13295987d50.81.1768312781535; Tue, 13 Jan 2026
+ 05:59:41 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=shentey@gmail.com; helo=mail-wr1-x42f.google.com
+References: <CGME20251223120242epcas5p44b454df5afd0d517a4562a545ad11218@epcas5p4.samsung.com>
+ <20251223120012.541777-1-ashish.a6@samsung.com>
+In-Reply-To: <20251223120012.541777-1-ashish.a6@samsung.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 13 Jan 2026 13:59:30 +0000
+X-Gm-Features: AZwV_QiVNyoT6TxcqNp7VrsdYEdUSnWbdMEJu1LJfjxBE6DAbngut9u9jVcZEvU
+Message-ID: <CAFEAcA-UFgxLx8uYM10DoLXutMMNVQaq9xWBjZS5BY6RL1eRnw@mail.gmail.com>
+Subject: Re: [PATCH] target/arm: Implement WFE, SEV and SEVONPEND for Cortex-M
+To: Ashish Anand <ashish.a6@samsung.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, y.kaushal@samsung.com, 
+ vishwa.mg@samsung.com, ashish.anand202@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,88 +93,397 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-Am 12=2E Januar 2026 13:22:24 UTC schrieb Ani Sinha <anisinha@redhat=2Ecom=
->:
->When IGVM is not being used by the confidential guest, the guest firmware=
- has
->to be reloaded explictly again into memory=2E This is because, the memory=
- into
->which the firmware was loaded before reset was encrypted and is thus lost
->upon reset=2E When IGVM is used, it is expected that the IGVM will contai=
-n the
->guest firmware and the execution of the IGVM directives will set up the g=
-uest
->firmware memory=2E
+On Tue, 23 Dec 2025 at 12:02, Ashish Anand <ashish.a6@samsung.com> wrote:
 >
->Signed-off-by: Ani Sinha <anisinha@redhat=2Ecom>
->---
-> target/i386/kvm/kvm=2Ec | 28 ++++++++++++++++++++++++++++
-> 1 file changed, 28 insertions(+)
+> From: "ashish.a6" <ashish.a6@samsung.com>
 >
->diff --git a/target/i386/kvm/kvm=2Ec b/target/i386/kvm/kvm=2Ec
->index 4fedc621b8=2E=2E46c4f9487b 100644
->--- a/target/i386/kvm/kvm=2Ec
->+++ b/target/i386/kvm/kvm=2Ec
->@@ -51,6 +51,8 @@
-> #include "qemu/config-file=2Eh"
-> #include "qemu/error-report=2Eh"
-> #include "qemu/memalign=2Eh"
->+#include "qemu/datadir=2Eh"
->+#include "hw/core/loader=2Eh"
-> #include "hw/i386/x86=2Eh"
-> #include "hw/i386/kvm/xen_evtchn=2Eh"
-> #include "hw/i386/pc=2Eh"
->@@ -3267,6 +3269,22 @@ static int kvm_vm_enable_energy_msrs(KVMState *s)
->=20
-> static int xen_init_wrapper(MachineState *ms, KVMState *s);
->=20
->+static void reload_bios_rom(X86MachineState *x86ms)
->+{
->+    int bios_size;
->+    const char *bios_name;
->+    char *filename;
->+
->+    bios_name =3D MACHINE(x86ms)->firmware ?: "bios=2Ebin";
->+    filename =3D qemu_find_file(QEMU_FILE_TYPE_BIOS, bios_name);
->+
->+    bios_size =3D get_bios_size(x86ms, bios_name, filename);
->+
->+    void *ptr =3D memory_region_get_ram_ptr(&x86ms->bios);
->+    load_image_size(filename, ptr, bios_size);
->+    x86_firmware_configure(0x100000000ULL - bios_size, ptr, bios_size);
->+}
+>     Currently, QEMU implements the 'Wait For Event' (WFE) instruction as a
+>     a simple yield. This causes high host CPU usage because Guest
+>     RTOS idle loops effectively become busy-wait loops.
+>
+>     To improve efficiency, this patch transitions WFE to use the architectural
+>     'Halt' state (EXCP_HLT) for M-profile CPUs. This allows the host thread
+>     to sleep when the guest is idle.
 
-All code in this function is already present in x86-common=2Ec=2E Can we m=
-ove this function there (possibly renaming it to x86_bios_rom_reload()) and=
- export it? This way, we could avoid code duplication and we didn't need to=
- export additional functions like in the previous patch=2E
+Thanks for this patch; it's been a missing piece in QEMU's emulation
+for a long time. I think implementing it just for M-profile is fine.
 
-Best regards,
-Bernhard
 
->+
-> int kvm_arch_vmfd_change_ops(MachineState *ms, KVMState *s)
-> {
->     Error *local_err =3D NULL;
->@@ -3285,6 +3303,16 @@ int kvm_arch_vmfd_change_ops(MachineState *ms, KVM=
-State *s)
->             error_report_err(local_err);
->             return ret;
->         }
->+        if (object_dynamic_cast(OBJECT(ms), TYPE_X86_MACHINE)) {
->+            X86MachineState *x86ms =3D X86_MACHINE(ms);
->+            /*
->+             * If an IGVM file is specified then the firmware must be pr=
-ovided
->+             * in the IGVM file=2E
->+             */
->+            if (!x86ms->igvm) {
->+                reload_bios_rom(x86ms);
->+            }
->+        }
->     }
->=20
->     ret =3D kvm_vm_enable_exception_payload(s);
+>     To support this transition, we implement the full architectural behavior
+>     required for WFE, specifically the 'Event Register' and 'SEVONPEND' logic
+>     defined in the ARMv7-M specification. This ensures that the CPU correctly
+>     identifies wakeup conditions as defined by the architecture.
+>
+>     Changes include:
+>     1.  target/arm/cpu.h: Added 'event_register' to the v7m state struct.
+>     2.  target/arm/cpu.c: Ensured event_register is cleared on reset and
+>         updated arm_cpu_has_work() to check the event register state.
+>     3.  target/arm/machine.c: Added VMState subsection for migration compatibility.
+>     4.  hw/intc/armv7m_nvic.h: Added was_pending flag, to check for SEVONPEND logic.
+>     5.  hw/intc/armv7m_nvic.c: Implemented SEVONPEND logic in :
+>         nvic_recompute_state() and nvic_recompute_state_secure().
+>         This sets the event register and kicks the CPU when a new interrupt
+>         becomes pending.
+>     6.  target/arm/tcg/helper.h: Declare the new helper_sev function.
+>     7.  target/arm/tcg/op_helper.c:
+>         - Update HELPER(wfe) to use EXCP_HLT for M-profile CPUs.
+>         - Implement HELPER(sev) to set the event register and kick all vCPUs.
+>     8.  target/arm/tcg/t16.decode / t32.decode: Enable decoding of the SEV
+>         instruction in Thumb/Thumb-2 mode.
+>     9.  target/arm/tcg/translate.c: Implement trans_SEV using inline
+>         TCG generation to ensure system-wide visibility.
+
+You don't really need to provide this kind of fine-grained "what
+the changes are" info in the commit message -- it's more interesting
+to talk about "what" at a higher level, and about "why".
+
+>
+>     This patch enables resource-efficient idle emulation for Cortex-M.
+>
+>     Signed-off-by: Ashish Anand ashish.a6@samsung.com
+
+>  hw/intc/armv7m_nvic.c         | 22 ++++++++++++++++-
+>  include/hw/intc/armv7m_nvic.h |  1 +
+>  target/arm/cpu.c              |  7 ++++++
+>  target/arm/cpu.h              |  1 +
+>  target/arm/machine.c          | 19 +++++++++++++++
+>  target/arm/tcg/helper.h       |  1 +
+>  target/arm/tcg/op_helper.c    | 45 +++++++++++++++++++++++++++++------
+>  target/arm/tcg/t16.decode     |  2 +-
+>  target/arm/tcg/t32.decode     |  2 +-
+>  target/arm/tcg/translate.c    | 20 ++++++++++++----
+>  10 files changed, 106 insertions(+), 14 deletions(-)
+
+It looks like there's a missing piece here: R_BPBR in the v8M
+Arm ARM says that the event register is also set on exception
+entry and exception return.
+
+> diff --git a/hw/intc/armv7m_nvic.c b/hw/intc/armv7m_nvic.c
+> index 7c78961040..a60990c71f 100644
+> --- a/hw/intc/armv7m_nvic.c
+> +++ b/hw/intc/armv7m_nvic.c
+> @@ -16,6 +16,7 @@
+>  #include "migration/vmstate.h"
+>  #include "qemu/timer.h"
+>  #include "hw/intc/armv7m_nvic.h"
+> +#include "hw/arm/armv7m.h"
+
+This shouldn't be needed.
+
+>  #include "hw/irq.h"
+>  #include "hw/qdev-properties.h"
+>  #include "system/tcg.h"
+> @@ -232,6 +233,8 @@ static void nvic_recompute_state_secure(NVICState *s)
+>      int pend_irq = 0;
+>      bool pending_is_s_banked = false;
+>      int pend_subprio = 0;
+> +    ARMv7MState *armv7m = container_of(s, ARMv7MState, nvic);
+> +    ARMCPU *cpu = armv7m->cpu;
+
+You don't need this roundabout way to get at the CPU object:
+we already have a direct pointer to it in s->cpu (which is
+how the rest of the code in this file gets to it).
+
+>
+>      /* R_CQRV: precedence is by:
+>       *  - lowest group priority; if both the same then
+> @@ -259,6 +262,14 @@ static void nvic_recompute_state_secure(NVICState *s)
+>                  targets_secure = !exc_is_banked(i) && exc_targets_secure(s, i);
+>              }
+>
+> +            if (!vec->was_pending && vec->pending) {
+> +                if (cpu->env.v7m.scr[bank] & R_V7M_SCR_SEVONPEND_MASK) {
+> +                    cpu->env.v7m.event_register = 1;
+> +                    qemu_cpu_kick(CPU(cpu));
+> +                }
+> +            }
+> +            vec->was_pending = vec->pending;
+
+I don't think this is the right way to implement the "set event
+register when an exception transitions from inactive to pending"
+requirement. We should do this when we write vec->pending from
+0 to 1. This means we'll need to abstract out the "set vec->pending"
+action into a function, because currently we do it in multiple places
+in the source code as a direct write. When we do that we will
+have a single place we can do the "if this is 0->1 then set
+the event register" change.
+
+Also, the spec says it is interrupts going to pending that are
+WFE wakeup events, not all exceptions, so I think we only want
+to do this for anything NVIC_FIRST_IRQ and above.
+
+> +
+>              prio = exc_group_prio(s, vec->prio, targets_secure);
+>              subprio = vec->prio & ~nvic_gprio_mask(s, targets_secure);
+>              if (vec->enabled && vec->pending &&
+> @@ -293,6 +304,8 @@ static void nvic_recompute_state(NVICState *s)
+>      int pend_prio = NVIC_NOEXC_PRIO;
+>      int active_prio = NVIC_NOEXC_PRIO;
+>      int pend_irq = 0;
+> +    ARMv7MState *armv7m = container_of(s, ARMv7MState, nvic);
+> +    ARMCPU *cpu = armv7m->cpu;
+>
+>      /* In theory we could write one function that handled both
+>       * the "security extension present" and "not present"; however
+> @@ -316,6 +329,13 @@ static void nvic_recompute_state(NVICState *s)
+>          if (vec->active && vec->prio < active_prio) {
+>              active_prio = vec->prio;
+>          }
+> +        if (!vec->was_pending && vec->pending) {
+> +            if (cpu->env.v7m.scr[M_REG_NS] & R_V7M_SCR_SEVONPEND_MASK) {
+> +                cpu->env.v7m.event_register = 1;
+> +                qemu_cpu_kick(CPU(cpu));
+> +            }
+> +        }
+> +        vec->was_pending = vec->pending;
+>      }
+>
+>      if (active_prio > 0) {
+> @@ -1657,7 +1677,7 @@ static void nvic_writel(NVICState *s, uint32_t offset, uint32_t value,
+>          }
+>          /* We don't implement deep-sleep so these bits are RAZ/WI.
+>           * The other bits in the register are banked.
+> -         * QEMU's implementation ignores SEVONPEND and SLEEPONEXIT, which
+> +         * QEMU's implementation ignores SLEEPONEXIT, which
+>           * is architecturally permitted.
+>           */
+>          value &= ~(R_V7M_SCR_SLEEPDEEP_MASK | R_V7M_SCR_SLEEPDEEPS_MASK);
+> diff --git a/include/hw/intc/armv7m_nvic.h b/include/hw/intc/armv7m_nvic.h
+> index 7b9964fe7e..305eaf6e6a 100644
+> --- a/include/hw/intc/armv7m_nvic.h
+> +++ b/include/hw/intc/armv7m_nvic.h
+> @@ -32,6 +32,7 @@ typedef struct VecInfo {
+>      uint8_t pending;
+>      uint8_t active;
+>      uint8_t level; /* exceptions <=15 never set level */
+> +    bool was_pending;
+>  } VecInfo;
+>
+>  struct NVICState {
+> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+> index 39292fb9bc..0a044f7254 100644
+> --- a/target/arm/cpu.c
+> +++ b/target/arm/cpu.c
+> @@ -143,6 +143,12 @@ static bool arm_cpu_has_work(CPUState *cs)
+>  {
+>      ARMCPU *cpu = ARM_CPU(cs);
+>
+> +    if (arm_feature(&cpu->env, ARM_FEATURE_M)) {
+> +        if (cpu->env.v7m.event_register) {
+> +            return true;
+> +        }
+> +    }
+> +
+>      return (cpu->power_state != PSCI_OFF)
+>          && cpu_test_interrupt(cs,
+>                 CPU_INTERRUPT_FIQ | CPU_INTERRUPT_HARD
+> @@ -480,6 +486,7 @@ static void arm_cpu_reset_hold(Object *obj, ResetType type)
+>              ~(R_V7M_FPCCR_LSPEN_MASK | R_V7M_FPCCR_S_MASK);
+>          env->v7m.control[M_REG_S] |= R_V7M_CONTROL_FPCA_MASK;
+>  #endif
+> +        env->v7m.event_register = 0;
+
+CPU reset resets most state fields to 0 by default, so we
+don't need to do this explicitly here.
+
+>      }
+>
+>      /* M profile requires that reset clears the exclusive monitor;
+> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+> index 39f2b2e54d..44433a444c 100644
+> --- a/target/arm/cpu.h
+> +++ b/target/arm/cpu.h
+> @@ -639,6 +639,7 @@ typedef struct CPUArchState {
+>          uint32_t nsacr;
+>          uint32_t ltpsize;
+>          uint32_t vpr;
+> +        uint32_t event_register;
+>      } v7m;
+>
+>      /* Information associated with an exception about to be taken:
+> diff --git a/target/arm/machine.c b/target/arm/machine.c
+> index 0befdb0b28..acc79188f2 100644
+> --- a/target/arm/machine.c
+> +++ b/target/arm/machine.c
+
+All the migration handling looks good; thanks for remembering
+to include it.
+
+> diff --git a/target/arm/tcg/helper.h b/target/arm/tcg/helper.h
+> index 4636d1bc03..5a10a9fba3 100644
+> --- a/target/arm/tcg/helper.h
+> +++ b/target/arm/tcg/helper.h
+> @@ -60,6 +60,7 @@ DEF_HELPER_1(yield, void, env)
+>  DEF_HELPER_1(pre_hvc, void, env)
+>  DEF_HELPER_2(pre_smc, void, env, i32)
+>  DEF_HELPER_1(vesb, void, env)
+> +DEF_HELPER_1(sev, void, env)
+>
+>  DEF_HELPER_3(cpsr_write, void, env, i32, i32)
+>  DEF_HELPER_2(cpsr_write_eret, void, env, i32)
+> diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
+> index 4fbd219555..ad79724778 100644
+> --- a/target/arm/tcg/op_helper.c
+> +++ b/target/arm/tcg/op_helper.c
+> @@ -469,16 +469,47 @@ void HELPER(wfit)(CPUARMState *env, uint64_t timeout)
+>  #endif
+>  }
+>
+> +void HELPER(sev)(CPUARMState *env)
+> +{
+> +    CPUState *cs = env_cpu(env);
+> +    CPU_FOREACH(cs) {
+> +        ARMCPU *target_cpu = ARM_CPU(cs);
+> +        if (arm_feature(&target_cpu->env, ARM_FEATURE_M)) {
+> +            target_cpu->env.v7m.event_register = 1;
+> +        }
+> +        qemu_cpu_kick(cs);
+
+I don't think we need to kick the CPU if it is ourselves
+(by definition we can't be waiting in WFE if we're executing
+SEV), so we could write
+
+        if (!qemu_cpu_is_self(cs)) {
+            qemu_cpu_kick(cs);
+        }
+
+> +    }
+> +}
+> +
+>  void HELPER(wfe)(CPUARMState *env)
+>  {
+> -    /* This is a hint instruction that is semantically different
+> -     * from YIELD even though we currently implement it identically.
+> -     * Don't actually halt the CPU, just yield back to top
+> -     * level loop. This is not going into a "low power state"
+> -     * (ie halting until some event occurs), so we never take
+> -     * a configurable trap to a different exception level.
+> +    /*
+> +     * WFE (Wait For Event) is a hint instruction.
+> +     * For Cortex-M (M-profile), we implement the strict architectural behavior:
+> +     * 1. Check the Event Register (set by SEV or SEVONPEND).
+> +     * 2. If set, clear it and continue (consume the event).
+>       */
+
+You should add a CONFIG_USER_ONLY version similar to what
+we have in the wfi helper that makes WFE a nop there. Otherwise
+trying to do WFE in the user-mode emulator will abort when
+we raise EXCP_HLT.
+
+> -    HELPER(yield)(env);
+> +    if (arm_feature(env, ARM_FEATURE_M)) {
+> +        CPUState *cs = env_cpu(env);
+> +
+> +        if (env->v7m.event_register) {
+> +            env->v7m.event_register = 0;
+> +            return;
+> +        }
+> +
+> +        cs->exception_index = EXCP_HLT;
+> +        cs->halted = 1;
+> +        cpu_loop_exit(cs);
+> +    } else {
+> +        /*
+> +         * For A-profile and others, we rely on the existing "yield" behavior.
+> +         * Don't actually halt the CPU, just yield back to top
+> +         * level loop. This is not going into a "low power state"
+> +         * (ie halting until some event occurs), so we never take
+> +         * a configurable trap to a different exception level
+> +         */
+> +        HELPER(yield)(env);
+> +    }
+>  }
+>
+>  void HELPER(yield)(CPUARMState *env)
+> diff --git a/target/arm/tcg/t16.decode b/target/arm/tcg/t16.decode
+> index 646c74929d..ac6e24ac14 100644
+> --- a/target/arm/tcg/t16.decode
+> +++ b/target/arm/tcg/t16.decode
+> @@ -229,7 +229,7 @@ REVSH           1011 1010 11 ... ...            @rdm
+>      WFI         1011 1111 0011 0000
+>
+>      # TODO: Implement SEV, SEVL; may help SMP performance.
+
+We should update the TODO comment to note that we only
+implement SEV for M-profile, and that A-profile SEV, SEVL
+are still a TODO item. (Ditto the comment in t32.decode.)
+
+> -    # SEV       1011 1111 0100 0000
+> +    SEV         1011 1111 0100 0000
+>      # SEVL      1011 1111 0101 0000
+>
+>      # The canonical nop has the second nibble as 0000, but the whole of the
+> diff --git a/target/arm/tcg/t32.decode b/target/arm/tcg/t32.decode
+> index d327178829..59b0edf63f 100644
+> --- a/target/arm/tcg/t32.decode
+> +++ b/target/arm/tcg/t32.decode
+> @@ -370,7 +370,7 @@ CLZ              1111 1010 1011 ---- 1111 .... 1000 ....      @rdm
+>          WFI      1111 0011 1010 1111 1000 0000 0000 0011
+>
+>          # TODO: Implement SEV, SEVL; may help SMP performance.
+> -        # SEV    1111 0011 1010 1111 1000 0000 0000 0100
+> +        SEV      1111 0011 1010 1111 1000 0000 0000 0100
+>          # SEVL   1111 0011 1010 1111 1000 0000 0000 0101
+>
+>          ESB      1111 0011 1010 1111 1000 0000 0001 0000
+> diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
+> index 63735d9789..bfe2691884 100644
+> --- a/target/arm/tcg/translate.c
+> +++ b/target/arm/tcg/translate.c
+> @@ -3241,14 +3241,25 @@ static bool trans_YIELD(DisasContext *s, arg_YIELD *a)
+>      return true;
+>  }
+>
+> +static bool trans_SEV(DisasContext *s, arg_SEV *a)
+> +{
+
+This should translate to a NOP if CONFIG_USER_ONLY, or
+if we're not M-profile.
+
+> +    gen_update_pc(s, curr_insn_len(s));
+> +    gen_helper_sev(tcg_env);
+> +    tcg_gen_exit_tb(NULL, 0);
+> +    s->base.is_jmp = DISAS_NORETURN;
+
+Why do we need to do this tcg_gen_exit_tb() and set DISAS_NORETURN ?
+
+Do we even need to end the current TB on a SEV instruction ?
+
+> +    return true;
+
+> +}
+> +
+>  static bool trans_WFE(DisasContext *s, arg_WFE *a)
+>  {
+>      /*
+>       * When running single-threaded TCG code, use the helper to ensure that
+> -     * the next round-robin scheduled vCPU gets a crack.  In MTTCG mode we
+> -     * just skip this instruction.  Currently the SEV/SEVL instructions,
+> -     * which are *one* of many ways to wake the CPU from WFE, are not
+> -     * implemented so we can't sleep like WFI does.
+> +     * the next round-robin scheduled vCPU gets a crack.
+> +     *
+> +     * For Cortex-M, we implement the architectural WFE behavior (sleeping
+> +     * until an event occurs or the Event Register is set).
+> +     * For other profiles, we currently treat this as a NOP or yield,
+> +     * to preserve existing performance characteristics.
+>       */
+>      if (!(tb_cflags(s->base.tb) & CF_PARALLEL)) {
+>          gen_update_pc(s, curr_insn_len(s));
+> @@ -6807,6 +6818,7 @@ static void arm_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
+>              break;
+>          case DISAS_WFE:
+>              gen_helper_wfe(tcg_env);
+> +            tcg_gen_exit_tb(NULL, 0);
+
+Why is this necessary ?
+
+>              break;
+>          case DISAS_YIELD:
+>              gen_helper_yield(tcg_env);
+> --
+> 2.43.0
+
+thanks
+-- PMM
 
