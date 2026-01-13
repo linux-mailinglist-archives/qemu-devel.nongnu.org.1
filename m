@@ -2,159 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 114EED17308
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 09:06:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4BFBD17527
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 09:36:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfZP6-0003uB-6a; Tue, 13 Jan 2026 03:05:28 -0500
+	id 1vfZh5-0003i8-JQ; Tue, 13 Jan 2026 03:24:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vfZOt-0003gr-L9
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 03:05:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vfZOr-00031s-M2
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 03:05:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768291511;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=BWPOlvCE8hWZ6iq9F9Fb+RmfERjRvlMzKwrQ3No+8bs=;
- b=UeEthMUYYsHw/JNLwR49iKpt3QsbuYYXjkbwMtS1TXZAeSZc2k5WHN5w4r6wnjEi4YPT1E
- zcZbkV9Y1bdsK65dGT3aAltxtyoZ1f51Nx9XybY1lS6AmsmLWXFEo/2y9sVZtxcruk6Rto
- WKHyk/ijOzxlSyiAICSxppYGUBENcOE=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-ekKCCXc2MtesSR9MZ5yWyg-1; Tue, 13 Jan 2026 03:05:09 -0500
-X-MC-Unique: ekKCCXc2MtesSR9MZ5yWyg-1
-X-Mimecast-MFC-AGG-ID: ekKCCXc2MtesSR9MZ5yWyg_1768291508
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-b874c325d10so4307666b.1
- for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 00:05:09 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1vfZgp-0003hL-Cr
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 03:23:48 -0500
+Received: from mail-qt1-x831.google.com ([2607:f8b0:4864:20::831])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1vfZgk-0006Nj-Vr
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 03:23:45 -0500
+Received: by mail-qt1-x831.google.com with SMTP id
+ d75a77b69052e-4ffc0ddefc4so83594541cf.3
+ for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 00:23:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768291508; x=1768896308; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=BWPOlvCE8hWZ6iq9F9Fb+RmfERjRvlMzKwrQ3No+8bs=;
- b=NFPgNdiU0Vn7hEJk9mLPO9biQ3Q+n2ef2z4vW/KT4f2GFGc1yUBm+PlWGu/E8f2yxV
- ccf7DtPUGGbCw0rS/IMB5miuLRaFjOqbuucUWXC1tmdyJ2cIYqbf4sSeM8KjDhDYNZ4n
- 5XAKNvEgUpWzGvZ+FNY+X2D4A8LUNnKjzJs3hQJ+ODGEUoTzxIyB/sw89E7vgTm70NBd
- PPo2vinZoQ4F5Mh0LnR3dE58S7cmBT32L9+ayXIW1ovQkk/tPfPgoYBK0HjCHUINi0Kg
- Bs5bteEAOIUVaubW8+ne1gq/ZssCUZWxsDntKH5DJQDtzkihF1gaTFMavdF23mNDKqG4
- 79tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768291508; x=1768896308;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1768292601; x=1768897401; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BWPOlvCE8hWZ6iq9F9Fb+RmfERjRvlMzKwrQ3No+8bs=;
- b=LyUk8tElaFh00aQd0NAf3eNGJ4QfD0supR0YU9adaQzuhC2EW7SVNevblA/v7SdF5x
- yRJeQMi3Dj/8HLInWaIvvx3iKrhyxJFQO0yaz/ORTeWM0/e7QS7CyJQNOJZxdrInoh5q
- fvJbyWIMSnGol44I4JeThXmbG6Zr26kei8x0uzELVolyqcs+x8PdgKR157aBifvORk54
- 3Yhrrdl9Fvf3TlK7tYiqj3gnP/vO4rUa2QZerKMrye0ayMIb5rcY3XCJdBxOxc9lCe4C
- 8fVvgKGwUqM0uC2J3fQQabDPAThKzVshjWwn3M9eQoeY1XzRrdWqlQuGyYv7hm5TNlOI
- FbSQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU7AosPXuZQWQRzGbvbILBh2wwXqNzQDylbfczrTISqOP75uO+RHkQdvmB24kIV0iTDFtnICRDXHzdl@nongnu.org
-X-Gm-Message-State: AOJu0YyB5c9a4Mijl8n86ewjDTYOJfF3bWsu1lvC4CG0gRxShSVzlqja
- gptvNV14XuPg00u7EJv1igUL8A3m0Nop0NOJ69jWpKGQxuSAALE2FWVUhVVxvhVVGE0EJJJPxrl
- gleJM7FNsCdhXAeIT45jm3mT2pgqQRBa0aWk8363HaRsHzQ7ueZRgva3D
-X-Gm-Gg: AY/fxX5P/6tLvnFFE19YNbXZBOrY2fwQLcdWzlHpIArPqxEyudgS2tkhlwGBQTqZHIy
- YRN9sX+SdgUuQ1uH0PT16m0poP+F9oonsBpB4ALBVF1oquOrATzfnomH2vJG2rsaNYRj1N+SNKr
- ec+eaHk7ZPVrau/MqOz15pOtza4VfAuevpygZw9d0BjLhGVzN8mEAc1qeLoNhiRcozuQG9TrZ3o
- Isgs2fiAkftgyiPKZMW2O/L4va2BEVYjCMrhKcEk5bc0gAIBnddlV2sn18dJWHvvVHEOPFdcqVb
- jnD+0GcOItFLwnP0w82mb7gtOH0csa5TNJQpy9zEHELTkJ10hdXz7qUiH2xutOH/SGrTBV1suDk
- xClUO+NI=
-X-Received: by 2002:a17:907:3f92:b0:b87:3740:dd87 with SMTP id
- a640c23a62f3a-b873740dfd2mr145861866b.26.1768291508515; 
- Tue, 13 Jan 2026 00:05:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE9+H8537DQ/nbdp+915Q/EYzzk438sQCrIj8cjV//k+9FVQKN6grcwjJpl5PXMxUbrbPwtRg==
-X-Received: by 2002:a17:907:3f92:b0:b87:3740:dd87 with SMTP id
- a640c23a62f3a-b873740dfd2mr145859766b.26.1768291508060; 
- Tue, 13 Jan 2026 00:05:08 -0800 (PST)
-Received: from [192.168.0.9] ([47.64.113.220])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b842a4cfe76sm2126687866b.40.2026.01.13.00.05.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Jan 2026 00:05:07 -0800 (PST)
-Message-ID: <18ce478c-c934-4c9d-8c5d-6451c81e40c3@redhat.com>
-Date: Tue, 13 Jan 2026 09:05:06 +0100
+ bh=cC0XgdfhUh7UbRoLmiavYRm1qQhzMqioeoKIJX22arY=;
+ b=YSQusT+0xoI9GZ1nv+GBOm0qafCtme+QYy8VX6XSkuVVnB6b9JGJ0UDY9xAX+3vaO1
+ s/gos0RaxGsaPNgZz9rT+P95/9QbMMSlxjah5lamxMNc0cLPkm20ieE63AH/4PXReBqr
+ QMKrXfRojG9vVKrWiyfgxhMuvbQwpMUwpCAyWAkAe0gtR6q0/HGcjwtcRQfIPokFtO4N
+ tYdAyHTg8heezwrj2YCvQU6C/s0iq4HAk6Wq8IgtjYNEBY7JVGlHajZr5NQsDzHEUtyN
+ 6aoRTbRNnrgY2xljqsYT1c2f3g3Fj/hTXkT/xGtdjCxndUkmFL+OafeAvSsuhGM6CjQC
+ g0rA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768292601; x=1768897401;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=cC0XgdfhUh7UbRoLmiavYRm1qQhzMqioeoKIJX22arY=;
+ b=XqE9Kpz3gw+EPVoM82EVa+amnc2qLo4SK70k/GcnVlNAel6hu2KxJd0nC45HQN3mUH
+ rFWmXO/l1+OR+seEW+Vypv3jEbXA6pAoUBMySHch1hMiNg3XBhv5598pmlxhLZPGZwly
+ K45I0lXu6r60/FmhiQkYI8vgt41pE/eBH5P/y+5bC4PENNUZSqle89wA2iEWStyH8Wa0
+ d9qsQb5r5gNGbfP2RhaAVMjdJ1jmN5YNMd2lQkXsAeMjYvtAK9kY+gdsdvE2qZS7Yp6a
+ jiSbOjFalG/di8N3Zg5B29xvCR4qLdinvvcBO9eNE10QDQigs49g4klxJolSrGbVsYYI
+ YpHw==
+X-Gm-Message-State: AOJu0YzMh33Zr1nhmH0AtGKQlajAjZfD8OO4U5QGrosQliLCJbGUUlfU
+ EVJ7hI/At5qJFIlOkSgjsxNulZmKYC1MicBT8ptoHOWIa003ZFLj1xIFsXU/shQmjIwZNOSm3TU
+ vVhrsbeHqshxbommBEgUWeGsToUrCU8Q=
+X-Gm-Gg: AY/fxX5ydBfets6KPe24Tli55cj152Z86eYiTv82QGt/vxwwZhrq6BJ0xs48He0CCYN
+ V2ptq6UigtjCTtAGbzomE8lqeJpKNqG2RMjuZkjTTcMEZmDhng5aySbz6xe/W7Jtlu11QeN/BSi
+ 2bINOZ/4cWP9Lp3EuBABm5HsGv/zp70ai8iPFh4qfuC6f75U+P/z4ncOrkTBu7ijqjVPGA29YBM
+ a4/vOvTrw9aLW+zk7cTpuCtmjIpx01ozzYHrX8OXpr6srcEDky73iwtnmbLhPp8AYdbYTPjXVZZ
+ uvu/P4WFw/IF+YsLJaNmguJeWw7uXbPxa6MgXA==
+X-Google-Smtp-Source: AGHT+IFKljBkrfKxFu/m6nh5wKC7/e8DTDnUvmWgJCJi6iP0dYiIJNjeUyKVjimhdo5YJdps6ZXY5mCqV7m4y3Dgrd8=
+X-Received: by 2002:ac8:6f0b:0:b0:4ed:d76f:a350 with SMTP id
+ d75a77b69052e-4ffb4a1d824mr285649201cf.75.1768292600986; Tue, 13 Jan 2026
+ 00:23:20 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/13] tests: remove redundant meson suite for iotests
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: Hanna Reitz <hreitz@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- John Snow <jsnow@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-block@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Kevin Wolf <kwolf@redhat.com>,
- Cleber Rosa <crosa@redhat.com>
-References: <20260112204026.710659-1-berrange@redhat.com>
- <20260112204026.710659-4-berrange@redhat.com>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20260112204026.710659-4-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20260112230127.99125-1-yodel.eldar@yodel.dev>
+ <20260112230127.99125-4-yodel.eldar@yodel.dev>
+In-Reply-To: <20260112230127.99125-4-yodel.eldar@yodel.dev>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Tue, 13 Jan 2026 12:23:09 +0400
+X-Gm-Features: AZwV_Qhv8tS5cXjiQeFOS2O_av9alVcS2aoY2HD_L8iMbuCJ8GVX1jzjYBfqr0Y
+Message-ID: <CAJ+F1C+OZfmAh2eJrH9__8yFNr-p1njg6DGseN1VWKu344+ReQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 3/3] contrib/vhost-user-bridge: Add UDP receive
+ hexdump
+To: Yodel Eldar <yodel.eldar@yodel.dev>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::831;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x831.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -170,35 +98,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/01/2026 21.40, Daniel P. Berrangé wrote:
-> If a test is in the 'block-slow' or 'block-thorough' suite, there is no
-> need to also add it to the 'slow' or 'thorough' suites.
-> 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+On Tue, Jan 13, 2026 at 3:03=E2=80=AFAM Yodel Eldar <yodel.eldar@yodel.dev>=
+ wrote:
+>
+> vhost-user-bridge debug prints UDP TX hexdumps in its transmit handler,
+> but does not for receives, even though they are beneficial for testing.
+> Add an RX hexdump in the receive callback.
+>
+> To delineate between transmits and receives, also add a debug print
+> indicating that the program is in the transmit handler.
+>
+> Signed-off-by: Yodel Eldar <yodel.eldar@yodel.dev>
+
+Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+
 > ---
->   tests/qemu-iotests/meson.build | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/qemu-iotests/meson.build b/tests/qemu-iotests/meson.build
-> index d7bae71ced..bf588cc2c9 100644
-> --- a/tests/qemu-iotests/meson.build
-> +++ b/tests/qemu-iotests/meson.build
-> @@ -33,7 +33,7 @@ foreach format, speed: qemu_iotests_formats
->     if speed == 'quick'
->       suites = 'block'
->     else
-> -    suites = ['block-' + speed, speed]
-> +    suites = ['block-' + speed]
->     endif
+>  contrib/vhost-user-bridge/vhost-user-bridge.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/contrib/vhost-user-bridge/vhost-user-bridge.c b/contrib/vhos=
+t-user-bridge/vhost-user-bridge.c
+> index ce4c3426d3..3f0fd0fa49 100644
+> --- a/contrib/vhost-user-bridge/vhost-user-bridge.c
+> +++ b/contrib/vhost-user-bridge/vhost-user-bridge.c
+> @@ -179,6 +179,9 @@ vubr_handle_tx(VuDev *dev, int qidx)
+>
+>      assert(qidx % 2);
+>
+> +    DPRINT("\n\n   ***   IN UDP TRANSMIT HANDLER    ***\n\n");
+> +    DPRINT("    hdrlen =3D %d\n", hdrlen);
+> +
+>      for (;;) {
+>          ssize_t ret;
+>          unsigned int out_num;
+> @@ -333,6 +336,10 @@ vubr_backend_recv_cb(int sock, void *ctx)
+>          };
+>          ret =3D RETRY_ON_EINTR(recvmsg(vubr->backend_udp_sock, &msg, 0))=
+;
+>
+> +        if (ret > 0 && VHOST_USER_BRIDGE_DEBUG) {
+> +            iov_hexdump(sg, num, stderr, "RX:", ret);
+> +        }
+> +
+>          if (i =3D=3D 0) {
+>              iov_restore_front(elem->in_sg, sg, hdrlen);
+>          }
+> --
+> 2.52.0
+>
+>
 
-Oh, weird, I was pretty sure that this was necessary at one point in time in 
-the past ... but I just checked, and it now seems to work without this, 
-indeed, so:
 
-Tested-by: Thomas Huth <thuth@redhat.com>
-
-By the way, we've got the same thing in tests/functional/meson.build, too...
-
-  Thomas
-
+--=20
+Marc-Andr=C3=A9 Lureau
 
