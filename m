@@ -2,93 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C43EBD17B77
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 10:41:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C5DFD17BD1
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 10:44:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfaqW-0000pT-ET; Tue, 13 Jan 2026 04:37:52 -0500
+	id 1vfawJ-0006hU-64; Tue, 13 Jan 2026 04:43:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vfaqQ-0000J5-CO
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:37:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vfawG-0006h7-3E
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:43:48 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vfaqM-0003NU-6u
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:37:43 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vfawE-00046q-Bj
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:43:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768297061;
+ s=mimecast20190719; t=1768297424;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=/Y5sLLwtp5CKOTcyJsY3vbxgNPhNOZkAMdCM9/XB47g=;
- b=XvGBOL8swV7SPGXQHGpzhDmlrmY4u4OLy3kirt19cQeqWFuD4PIYvi32NR1Dpvcb4Blo1P
- v2FYto6JH86XHTzl7NiMcwjECBrvmDAyrghBvGCRsYTcaLnj5VvRlxRF4pMMDbRXOkey+D
- gUhpsb46OgOsMvYZztcjdQMNVqZf1kQ=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=nOtm4xyKhbg2Dibv5J67QS/JMXVDs1HEAPPDV4NpVc8=;
+ b=K63DqSY6q97v5R6gjad8f6ioRD+qJ9hpuW3rq0pbOaJ5GC4E52dRPDJUPpXBk2j3hbftU4
+ hsuU7H7ugu1sa2zUy94M3Ntsxl0weFLxFNwpMNn4/l/s6k7G674mGZadDYFsmzUnSXO5vI
+ trbXJugYB8a0Oe32ea/xs+1mHpwUdj0=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-422-3POR138vOCKEJDlnTYfcdw-1; Tue, 13 Jan 2026 04:37:40 -0500
-X-MC-Unique: 3POR138vOCKEJDlnTYfcdw-1
-X-Mimecast-MFC-AGG-ID: 3POR138vOCKEJDlnTYfcdw_1768297059
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-477a1e2b372so67732245e9.2
- for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 01:37:40 -0800 (PST)
+ us-mta-625-jVw-2FvcNkqQBTN7pWnk3g-1; Tue, 13 Jan 2026 04:43:43 -0500
+X-MC-Unique: jVw-2FvcNkqQBTN7pWnk3g-1
+X-Mimecast-MFC-AGG-ID: jVw-2FvcNkqQBTN7pWnk3g_1768297422
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4775d8428e8so59870605e9.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 01:43:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768297059; x=1768901859; darn=nongnu.org;
+ d=redhat.com; s=google; t=1768297422; x=1768902222; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=/Y5sLLwtp5CKOTcyJsY3vbxgNPhNOZkAMdCM9/XB47g=;
- b=QMYmaAsFaassEYudKZU6f0/bAsZkS6Nnpo5AzS/cMcLtQV3AaxWHL9V72LtCgf+Asp
- 9cOcUbBsndbdkC7wgBNHBr/7bbqr+d8ZVwjRf2FXRSodPQT0uQGwviGQDwZ6nyzV/h1z
- UwRZGHDKN5S9OUtvtB76XbZ/LhgGPNNOTqUv9RyvAP0XMmh5hfwaLg7/cBiUpTS3cLAd
- LF+nyXOoDbZzmnM0CgMesc2+C6RO3k4XBp0HmYuvoyAc3tyZEUJG2i4Cm8TSvtoUkRCr
- RIQahWXWnFJvjY3ZJQ0dAP/xbxrSyM//ZF4WsWn8cr2JJzzvauOhIF/QmRsx79GTFcG9
- nREw==
+ bh=nOtm4xyKhbg2Dibv5J67QS/JMXVDs1HEAPPDV4NpVc8=;
+ b=Iwfyft/jafcc1sX0oDsgb6hSXmHylTfkTfDcAe3B0wGKJB62NIWYZkmfJIiPQUHr9w
+ onsl9wEHJ+h9C1cxlMW7ruUwOlnRffj/YkUS2oC9v8A8Mf3q/IrvUVwzA4+REd4Iflly
+ jDpSh0fUeCWOjqMZ8uIhA8gxZViDqeYGTUdJcVycJHkEsC8ZoEZSHU1YIWX2fObWRoCz
+ giREdmuXmbacMSnaEDgjM1LzjIXPj/dQ4PEHnq2jlV66sy6VfVana9uvYBYeXMeeMHFA
+ mmwKmQSaS88sCodBnJ0IiO+2dnfAqqMjQBGnDMMirbzGvFS7O/YpuRHoeIVgoV7N5z8Q
+ BP5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768297059; x=1768901859;
+ d=1e100.net; s=20230601; t=1768297422; x=1768902222;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/Y5sLLwtp5CKOTcyJsY3vbxgNPhNOZkAMdCM9/XB47g=;
- b=kQeFhev36npUUbNmN1pi8j5pIdIBtOAYZ/ww+YRx+6ZWevpwHLYFPBTmy1c0VF7ZfM
- eTGmBCApENSeXwCvRz7cZFrUYEiGGfa0yzaQbSva0yIxo/w+UJLig56laXxrxj1+inJR
- TP3sZ2f9jUGmYwkfsQR/x8NWCwPnSV9pMCSUlsIp12giFyznEGGBCn6GnFCpZY6esiA1
- LE05lVyemFIlan6WujJZtkPKvw9nKBFgC1QNQDzffXDvfkPMK1ptVHp69fMbU+uzd3cp
- n7OmASRTGRsulr0nMy39Le+1p+b2pUwk6RRjm91RrHrNQG87d2ZahhdKOERENFmU+p9s
- LNIQ==
+ bh=nOtm4xyKhbg2Dibv5J67QS/JMXVDs1HEAPPDV4NpVc8=;
+ b=Dvc4OhLqdf7nIRiA6OHpu4QHdeNxn/8CXlfKVJBxfVuuMs4g7ZoCSouNlUdBryUCoa
+ jUpDQ4XmBi44+NR3LxffoiMJmpZBSRKfKPfRXTlwqK0p67WCJqcD006bihzWQj420Ng9
+ YtB61QxHobjcrhOCaHkydi9VB+2C05VyEzvLZE6zoTRPsdwGR7dleVcW97a6jmY8OvVg
+ X9oFVZwMIhwkRv6q948GWlMTrL+zrkIH5rZDG8f1CeR05uMAHqgmhGqHozt/lMgDPd6/
+ loJID45CZkYzm572b30fPr+4sZ9yDYv13Cxjw/r5uiz+xIfrKzev6Tp19L0Ft8kXhlsu
+ Lb/A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXx8mNHRDJSAxxz4GuAELqtI1fr8axeRhqNk9kIbP42PcgXlbp1tPEZMHv+oBlL8G6GrpG3bnPBEQDB@nongnu.org
-X-Gm-Message-State: AOJu0YyeXfx21cFqGYwNhxVe1gxlM4CVPYF79dOWnGuhojx2+RsOoGsK
- ZBgFLjEtzjiDPyRq7tbLfpPpEC+Htyv9Ci6DXdFBcVXVCadCOd3eV6JEKF82e1hiyoZRcecsQFR
- kmH2BrFnTrANfFLa0kaim+i6DSH5+qa/uxsDTn3tRaaN75ei5Pczhi/SZ
-X-Gm-Gg: AY/fxX6Krlg8HXuslaOJVamaNw//U2w1NKXPb1xW9a3ZYA6qMmKf0F0QVtZjYJBIMaU
- 82/hXR2ySwg1n+BP3oydsSYQqmfyzAU51QX1u1OsgDYfUgcooqzofzjhEkFyTDW+k8xJ7Ns6m5t
- Rmr49anWxxHtEOWSaYBtRv8aQ6i/Q0CI55avdWXXlnZEgaDwTindEZ7bGnj+eUjVGimrHlbxBs4
- KmgQpcDD0L4CbbNaN5qhmdBxXf4xvGalyRAJ3W+FgaBrURVrVwL/5VGU1mrCFFcOoElVUG3UN/I
- Hgz5qXAeO3ox0coPD9SQZtkANighAdrS2wNfaGiiHo7F6sLb2AIhB2BtgOxqwHh0pt8YfE62OiA
- lR7Iib+k=
-X-Received: by 2002:a05:600c:8b43:b0:479:1ac2:f9b8 with SMTP id
- 5b1f17b1804b1-47d84b33b7bmr246996905e9.21.1768297058834; 
- Tue, 13 Jan 2026 01:37:38 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG/rTiqugTwEkgznUPQXMi8WEH/oyvf4Vzkm4auDcyPtxQowyNElLzMZDIEfpDy7NlnJIfrDw==
-X-Received: by 2002:a05:600c:8b43:b0:479:1ac2:f9b8 with SMTP id
- 5b1f17b1804b1-47d84b33b7bmr246996535e9.21.1768297058411; 
- Tue, 13 Jan 2026 01:37:38 -0800 (PST)
+ AJvYcCWH+QzUK5bR+OKl+YZ5HF2daTI1e2hAYUZOfj6GClerLOp+oYeyhsTTrb3a61exRUqU2BP3ACGl9xLH@nongnu.org
+X-Gm-Message-State: AOJu0Yxlxg6VCyrvPsiixEiR9F3r1ClinZ+vF6l8q6Hy69gnKxoCd2TA
+ IszCoA+JMoDe/evSNMv7uCa/U9w/O0Dbe2U0+H+/GCa5F4WUFz1usyr9zdCo2mW0QMd8h0/1WE5
+ kUHCO9wgdjspDmyVxJ09VUhoAaaBNTjecqmxn5rlpfSkT2wt4DGvWpbC3
+X-Gm-Gg: AY/fxX69oSzV40SJfXeyiiq3h6FsxahXvWiiQggVx947jPV+/eV8ITwBdYZ9UW/eEHI
+ +oPUnliOXWpVSGPycIDlID9VxIqJV+EVreWOfHV21Ah9nIH+gRWy8vEQpknN+wbMrsf2wdTmIPR
+ 37sA9yWgVcP0ihvTnfGCulyhDwkOz1XRYbyfm1GhKclXuM60K6qYpA6jITkvwWkMtCJ0wB+ULqq
+ Y8AIdNz9hG70ZgoLJ9cBb3/H9nfUYdA0wJISSE5pc6fW+VfqpeoNB5N2jma5HK9p6a7N+2xv3ox
+ RSKE5EFTQX2ypFRB0HwcYFs9KbSirX6/kO0cKzWSFt72ZDdSYwSCKkCC960WFDc8sel6Qqh4AQG
+ ZGHWHfc0=
+X-Received: by 2002:a05:600c:3b15:b0:477:c71:1fc1 with SMTP id
+ 5b1f17b1804b1-47d84b33ba2mr228452555e9.19.1768297422401; 
+ Tue, 13 Jan 2026 01:43:42 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGGYdtSw0ZBW+1Ik2fvOk1q6fPC0RhBjG91JnMl8+kzN785cXWp+QS6+w0/7685QCbf4ulpvw==
+X-Received: by 2002:a05:600c:3b15:b0:477:c71:1fc1 with SMTP id
+ 5b1f17b1804b1-47d84b33ba2mr228452295e9.19.1768297422009; 
+ Tue, 13 Jan 2026 01:43:42 -0800 (PST)
 Received: from [192.168.0.9] ([47.64.113.220])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47ed9feb7d6sm10987665e9.6.2026.01.13.01.37.36
+ ffacd0b85a97d-432bd0e16d2sm44659188f8f.13.2026.01.13.01.43.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Jan 2026 01:37:37 -0800 (PST)
-Message-ID: <9d8945df-414c-46f3-8d3c-7c3e2cae2eaf@redhat.com>
-Date: Tue, 13 Jan 2026 10:37:36 +0100
+ Tue, 13 Jan 2026 01:43:41 -0800 (PST)
+Message-ID: <99c65f26-fb1b-4f5c-8d2f-6c335df60c02@redhat.com>
+Date: Tue, 13 Jan 2026 10:43:40 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 27/29] tests/functional/s390x: Add secure IPL
- functional test
+Subject: Re: [PATCH v7 28/29] docs/specs: Add secure IPL documentation
 To: Zhuoying Cai <zycai@linux.ibm.com>, berrange@redhat.com,
  richard.henderson@linaro.org, david@redhat.com, jrossi@linux.ibm.com,
  qemu-s390x@nongnu.org, qemu-devel@nongnu.org, brueckner@linux.ibm.com
@@ -96,7 +95,7 @@ Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, pasic@linux.ibm.com,
  borntraeger@linux.ibm.com, farman@linux.ibm.com, mjrosato@linux.ibm.com,
  iii@linux.ibm.com, eblake@redhat.com, armbru@redhat.com, alifm@linux.ibm.com
 References: <20251208213247.702569-1-zycai@linux.ibm.com>
- <20251208213247.702569-28-zycai@linux.ibm.com>
+ <20251208213247.702569-29-zycai@linux.ibm.com>
 Content-Language: en-US
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -141,17 +140,17 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20251208213247.702569-28-zycai@linux.ibm.com>
+In-Reply-To: <20251208213247.702569-29-zycai@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -170,150 +169,43 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 08/12/2025 22.32, Zhuoying Cai wrote:
-> Add functional test for secure IPL.
-
-Thanks a lot for adding the test, I think this will be helpful!
-
-> Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
+> Add documentation for secure IPL
+> 
+> Signed-off-by: Collin Walling <walling@linux.ibm.com>
 > ---
-...
-> diff --git a/tests/functional/s390x/test_secure_ipl.py b/tests/functional/s390x/test_secure_ipl.py
-> new file mode 100644
-> index 0000000000..c4c7ec3897
-> --- /dev/null
-> +++ b/tests/functional/s390x/test_secure_ipl.py
-> @@ -0,0 +1,140 @@
-> +#!/usr/bin/env python3
-> +#
-> +# s390x Secure IPL functional test: validates secure-boot verification results
-> +#
-> +# SPDX-License-Identifier: GPL-2.0-or-later
+>   docs/specs/s390x-secure-ipl.rst | 55 +++++++++++++++++++++++++++++++++
+>   1 file changed, 55 insertions(+)
+> 
+> diff --git a/docs/specs/s390x-secure-ipl.rst b/docs/specs/s390x-secure-ipl.rst
+> index 70388d77d8..45f58ab49d 100644
+> --- a/docs/specs/s390x-secure-ipl.rst
+> +++ b/docs/specs/s390x-secure-ipl.rst
+> @@ -1,5 +1,60 @@
+>   .. SPDX-License-Identifier: GPL-2.0-or-later
+>   
+> +s390 Secure IPL
+> +===============
 > +
-> +import os
-
-As far as I can see, you never use any function from "os", so you can drop 
-that import.
-
-> +import time
+> +Secure IPL (a.k.a. secure boot) enables s390-ccw virtual machines to
+> +leverage qcrypto libraries and z/Architecture emulations to verify the
+> +integrity of signed kernels. The qcrypto libraries are used to perform
+> +certificate validation and signature-verification, whereas the
+> +z/Architecture emulations are used to ensure secure IPL data has not
+> +been tampered with, convey data between QEMU and userspace, and set up
+> +the relevant secure IPL data structures with verification results.
 > +
-> +from qemu_test import QemuSystemTest, Asset
-> +from qemu_test import exec_command_and_wait_for_pattern, exec_command
-> +from qemu_test import wait_for_console_pattern, skipBigDataTest
-> +from qemu.utils import kvm_available, tcg_available
-
-You never use kvm_available or tcg_available, so please drop that import.
-
-> +class S390xSecureIpl(QemuSystemTest):
-> +    ASSET_F40_QCOW2 = Asset(
-> +        ('https://archives.fedoraproject.org/pub/archive/'
-> +         'fedora-secondary/releases/40/Server/s390x/images/'
-> +         'Fedora-Server-KVM-40-1.14.s390x.qcow2'),
-> +        '091c232a7301be14e19c76ce9a0c1cbd2be2c4157884a731e1fc4f89e7455a5f')
+> +To find out more about using this feature, see
+> +``docs/system/s390x/secure-ipl.rst``.
 > +
-> +    # Boot a temporary VM to set up secure IPL image:
-> +    # - Create certificate
-> +    # - Sign stage3 binary and kernel
-> +    # - Run zipl
-> +    # - Extract certificate
-> +    # Small delay added to allow the guest prompt/filesystem updates to settle
-> +    def setup_s390x_secure_ipl(self):
-> +        temp_vm = self.get_vm(name='sipl_setup')
-> +        temp_vm.set_machine('s390-ccw-virtio')
-> +        self.require_accelerator('kvm')
-
-I'd maybe move the self.require_accelerator('kvm') to the beginning of the 
-test_s390x_secure_ipl() function already.
-
-> +        self.qcow2_path = self.ASSET_F40_QCOW2.fetch()
+> +Note that "userspace" will refer to the s390-ccw BIOS unless stated
+> +otherwise.
 > +
-> +        temp_vm.set_console()
-> +        temp_vm.add_args('-nographic',
-> +                         '-accel', 'kvm',
-> +                         '-m', '1024',
-> +                         '-drive',
-> +                         f'id=drive0,if=none,format=qcow2,file={self.qcow2_path}',
-> +                         '-device', 'virtio-blk-ccw,drive=drive0,bootindex=1')
-> +        temp_vm.launch()
-> +
-> +        # Initial root account setup (Fedora first boot screen)
-> +        self.root_password = 'fedora40password'
-> +        wait_for_console_pattern(self, 'Please make a selection from the above',
-> +                                 vm=temp_vm)
-> +        exec_command_and_wait_for_pattern(self, '4', 'Password:', vm=temp_vm)
-> +        exec_command_and_wait_for_pattern(self, self.root_password,
-> +                                          'Password (confirm):', vm=temp_vm)
-> +        exec_command_and_wait_for_pattern(self, self.root_password,
-> +                                    'Please make a selection from the above',
-> +                                    vm=temp_vm)
-> +
-> +        # Login as root
-> +        exec_command_and_wait_for_pattern(self, 'c', 'localhost login:', vm=temp_vm)
-> +        exec_command_and_wait_for_pattern(self, 'root', 'Password:', vm=temp_vm)
-> +        exec_command_and_wait_for_pattern(self, self.root_password,
-> +                                          '[root@localhost ~]#', vm=temp_vm)
-> +
-> +        # Certificate generation
-> +        time.sleep(1)
-> +        exec_command_and_wait_for_pattern(self,
-> +                                         'openssl version', 'OpenSSL 3.2.1 30',
-> +                                         vm=temp_vm)
-> +        exec_command_and_wait_for_pattern(self,
-> +                            'openssl req -new -x509 -newkey rsa:2048 '
-> +                            '-keyout mykey.pem -outform PEM -out mycert.pem '
-> +                            '-days 36500 -subj "/CN=My Name/" -nodes -verbose',
-> +                            'Writing private key to \'mykey.pem\'', vm=temp_vm)
-> +
-> +        # Install kernel-devel (needed for sign-file)
-> +        exec_command_and_wait_for_pattern(self,
-> +                                'sudo dnf install kernel-devel-$(uname -r) -y',
-> +                                'Complete!', vm=temp_vm)
-> +        time.sleep(1)
-> +        exec_command_and_wait_for_pattern(self,
-> +                                    'ls /usr/src/kernels/$(uname -r)/scripts/',
-> +                                    'sign-file', vm=temp_vm)
-> +
-> +        # Sign stage3 binary and kernel
-> +        exec_command(self, '/usr/src/kernels/$(uname -r)/scripts/sign-file '
-> +                    'sha256 mykey.pem mycert.pem /lib/s390-tools/stage3.bin',
-> +                    vm=temp_vm)
-> +        time.sleep(1)
-> +        exec_command(self, '/usr/src/kernels/$(uname -r)/scripts/sign-file '
-> +                    'sha256 mykey.pem mycert.pem /boot/vmlinuz-$(uname -r)',
-> +                    vm=temp_vm)
-> +        time.sleep(1)
+> +Both QEMU and userspace work in tandem to perform secure IPL. The Secure
 
-Can you maybe work-around the above time.sleep() commands by waiting for the 
-shell prompt inbetween?
-wait_for_console_pattern(self, '[root@localhost ~]#') or so ?
+I'm not a native speaker, but I'd maybe rather say "work in cooperation" 
+instead of "work in tandem" ?
 
-> +        # Run zipl to prepare for secure boot
-> +        exec_command_and_wait_for_pattern(self, 'zipl --secure 1 -VV', 'Done.',
-> +                                          vm=temp_vm)
-> +
-> +        # Extract certificate to host
-> +        out = exec_command_and_wait_for_pattern(self, 'cat mycert.pem',
-> +                                                '-----END CERTIFICATE-----',
-> +                                                vm=temp_vm)
-> +        # strip first line to avoid console echo artifacts
-> +        cert = "\n".join(out.decode("utf-8").splitlines()[1:])
-> +        self.log.info("%s", cert)
-> +
-> +        self.cert_path = self.scratch_file("mycert.pem")
-> +
-> +        with open(self.cert_path, 'w') as file_object:
+  Thomas
 
-Please add an encoding='utf-8' parameter to open() to avoid a warning from 
-pylint.
-
-...
- > +        wait_for_console_pattern(self, verified_output);
- > +        wait_for_console_pattern(self, verified_output);
-
-Please drop the semicolons at the end here.
-
-(Hint: pylint or flake8 can help to detect such coding-style issues)
-
-  Thanks,
-   Thomas
 
 
