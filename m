@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A31F3D17BA7
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 10:42:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8630BD17B38
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jan 2026 10:39:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfarX-0003yf-Bh; Tue, 13 Jan 2026 04:38:55 -0500
+	id 1vfarP-0003mg-3m; Tue, 13 Jan 2026 04:38:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfar2-0003FN-PT
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:38:25 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfar4-0003HC-Vy
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:38:27 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfar0-0003UN-Ko
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:38:24 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vfar2-0003Uk-Iy
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 04:38:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768297102;
+ s=mimecast20190719; t=1768297103;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=E+c0XSB3dj7G1jIOFSH8sQhzUXIiY/x0fc8xkAVaulg=;
- b=J014SdbGDdkHXVjQd2NcH7jKXLc/6+cnqC4eO+gvl6XxmaEqu3OUbV2pwd7NSZhni8qclr
- QSZzNjJdHlF6/3+D4yo18tMfZxYr57dvjWyxfyGggvZB5nqxKVQv+pi2MII/apXtdubivZ
- h8WImu22DV7CP1g+6waNgpbtsF26tEU=
+ bh=5ngXbfZKk15+ACRyo+DnfXhdDtH8HlbsllMkfeSzSIU=;
+ b=gZL2s6AyDoSgYGe0WuzeZS0/XUtGrzwQ8MrgpIHocIRxx0haY8CNFxNW2K4kLG1AtdIuF0
+ dhJ32t27IjTc5NJI+l9Tjlg7jBflS2hdS/oJhOX9mJ8wRuQYzWKAmvxkTfb3H2oGIg9NWw
+ eSc5YCBmsGcORIBMYOrqSdDMvvj/pxk=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-25-_xAe-mGkNJGi2U5wmNkwkw-1; Tue,
- 13 Jan 2026 04:38:20 -0500
-X-MC-Unique: _xAe-mGkNJGi2U5wmNkwkw-1
-X-Mimecast-MFC-AGG-ID: _xAe-mGkNJGi2U5wmNkwkw_1768297099
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-439-DFFv6Ls5OOaWCHiQJgIlrQ-1; Tue,
+ 13 Jan 2026 04:38:22 -0500
+X-MC-Unique: DFFv6Ls5OOaWCHiQJgIlrQ-1
+X-Mimecast-MFC-AGG-ID: DFFv6Ls5OOaWCHiQJgIlrQ_1768297101
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 503B919560A2; Tue, 13 Jan 2026 09:38:19 +0000 (UTC)
+ id 43B0C195609D; Tue, 13 Jan 2026 09:38:21 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.79])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CB5CA30001A2; Tue, 13 Jan 2026 09:38:17 +0000 (UTC)
+ id C073C30001A2; Tue, 13 Jan 2026 09:38:19 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex@shazbot.org>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
+Cc: Alex Williamson <alex@shazbot.org>, Farhan Ali <alifm@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 34/41] Workaround for ERRATA_772415_SPR17
-Date: Tue, 13 Jan 2026 10:36:30 +0100
-Message-ID: <20260113093637.1549214-35-clg@redhat.com>
+Subject: [PULL 35/41] util/vfio-helper: Fix endianness in PCI config
+ read/write functions
+Date: Tue, 13 Jan 2026 10:36:31 +0100
+Message-ID: <20260113093637.1549214-36-clg@redhat.com>
 In-Reply-To: <20260113093637.1549214-1-clg@redhat.com>
 References: <20260113093637.1549214-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -82,173 +82,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+From: Farhan Ali <alifm@linux.ibm.com>
 
-On a system influenced by ERRATA_772415, IOMMU_HW_INFO_VTD_ERRATA_772415_SPR17
-is repored by IOMMU_DEVICE_GET_HW_INFO. Due to this errata, even the readonly
-range mapped on second stage page table could still be written.
+The VFIO pread/pwrite functions use little-endian data format. Currently, the
+qemu_vfio_pci_read_config() and qemu_vfio_pci_write_config() don't correctly
+convert from CPU native endian format to little-endian (and vice versa) when
+using the pread/pwrite functions. Fix this by limiting read/write to 32 bits
+and handling endian conversion in qemu_vfio_pci_read_config() and
+qemu_vfio_pci_write_config().
 
-Reference from 4th Gen Intel Xeon Processor Scalable Family Specification
-Update, Errata Details, SPR17.
-Link https://edc.intel.com/content/www/us/en/design/products-and-solutions/processors-and-chipsets/eagle-stream/sapphire-rapids-specification-update/
-Backup https://cdrdv2.intel.com/v1/dl/getContent/772415
-
-Also copied the SPR17 details from above link:
-"Problem: When remapping hardware is configured by system software in
-scalable mode as Nested (PGTT=011b) and with PWSNP field Set in the
-PASID-table-entry, it may Set Accessed bit and Dirty bit (and Extended
-Access bit if enabled) in first-stage page-table entries even when
-second-stage mappings indicate that corresponding first-stage page-table
-is Read-Only.
-
-Implication: Due to this erratum, pages mapped as Read-only in second-stage
-page-tables may be modified by remapping hardware Access/Dirty bit updates.
-
-Workaround: None identified. System software enabling nested translations
-for a VM should ensure that there are no read-only pages in the
-corresponding second-stage mappings."
-
-Introduce a helper vfio_device_get_host_iommu_quirk_bypass_ro to check if
-readonly mappings should be bypassed.
-
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Link: https://lore.kernel.org/qemu-devel/20260106062808.316574-5-zhenzhong.duan@intel.com
+Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Link: https://lore.kernel.org/qemu-devel/20260105222029.2423-1-alifm@linux.ibm.com
+[ clg: Fixed typo in subject ]
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- docs/devel/vfio-iommufd.rst      |  9 +++++++++
- include/hw/vfio/vfio-container.h |  1 +
- include/hw/vfio/vfio-device.h    |  3 +++
- hw/vfio/device.c                 | 14 ++++++++++++++
- hw/vfio/iommufd.c                |  9 ++++++++-
- hw/vfio/listener.c               |  6 ++++--
- 6 files changed, 39 insertions(+), 3 deletions(-)
+ util/vfio-helpers.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/docs/devel/vfio-iommufd.rst b/docs/devel/vfio-iommufd.rst
-index 2d6e60dce1d38f1de136c3d65f3c396aef9e0805..6928b47643b876df51675e7607edca62435de139 100644
---- a/docs/devel/vfio-iommufd.rst
-+++ b/docs/devel/vfio-iommufd.rst
-@@ -169,3 +169,12 @@ otherwise below error shows:
- .. code-block:: none
- 
-     qemu-system-x86_64: -device vfio-pci,host=0000:02:00.0,bus=bridge1,iommufd=iommufd0: vfio 0000:02:00.0: Failed to set vIOMMU: Host device downstream to a PCI bridge is unsupported when x-flts=on
-+
-+If host IOMMU has ERRATA_772415_SPR17, running guest with "intel_iommu=on,sm_off"
-+is unsupported, kexec or reboot guest from "intel_iommu=on,sm_on" to
-+"intel_iommu=on,sm_off" is also unsupported. Configure scalable mode off as
-+below if it's not needed by guest:
-+
-+.. code-block:: bash
-+
-+    -device intel-iommu,x-scalable-mode=off
-diff --git a/include/hw/vfio/vfio-container.h b/include/hw/vfio/vfio-container.h
-index 9f6e8cedfc9541e84558d74bdb156e4963a68639..a7d5c5ed679a0338937ae02f37140d94720f6f11 100644
---- a/include/hw/vfio/vfio-container.h
-+++ b/include/hw/vfio/vfio-container.h
-@@ -52,6 +52,7 @@ struct VFIOContainer {
-     QLIST_HEAD(, VFIODevice) device_list;
-     GList *iova_ranges;
-     NotifierWithReturn cpr_reboot_notifier;
-+    bool bypass_ro;
- };
- 
- #define TYPE_VFIO_IOMMU "vfio-iommu"
-diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
-index 48d00c7bc47a2fd11a522a1ad09b051f16342545..f6f3d0e3786cf85553d75674828391e16f9fa250 100644
---- a/include/hw/vfio/vfio-device.h
-+++ b/include/hw/vfio/vfio-device.h
-@@ -268,6 +268,9 @@ void vfio_device_prepare(VFIODevice *vbasedev, VFIOContainer *bcontainer,
- void vfio_device_unprepare(VFIODevice *vbasedev);
- 
- bool vfio_device_get_viommu_flags_want_nesting(VFIODevice *vbasedev);
-+bool vfio_device_get_host_iommu_quirk_bypass_ro(VFIODevice *vbasedev,
-+                                                uint32_t type, void *caps,
-+                                                uint32_t size);
- 
- int vfio_device_get_region_info(VFIODevice *vbasedev, int index,
-                                 struct vfio_region_info **info);
-diff --git a/hw/vfio/device.c b/hw/vfio/device.c
-index 3bab082322633f7cbd4295b4e91717c83fbb48da..086f20f6762a3a86f52bbab840ef67f603850a01 100644
---- a/hw/vfio/device.c
-+++ b/hw/vfio/device.c
-@@ -533,6 +533,20 @@ bool vfio_device_get_viommu_flags_want_nesting(VFIODevice *vbasedev)
-     return false;
+diff --git a/util/vfio-helpers.c b/util/vfio-helpers.c
+index c6195161637a16b4f26dc82f0297e43281a717f7..aab0bf9d485d41b7dc41a1e46449060777cca5e2 100644
+--- a/util/vfio-helpers.c
++++ b/util/vfio-helpers.c
+@@ -233,31 +233,36 @@ int qemu_vfio_pci_init_irq(QEMUVFIOState *s, EventNotifier *e,
+     return 0;
  }
  
-+bool vfio_device_get_host_iommu_quirk_bypass_ro(VFIODevice *vbasedev,
-+                                                uint32_t type, void *caps,
-+                                                uint32_t size)
-+{
-+    VFIOPCIDevice *vdev = vfio_pci_from_vfio_device(vbasedev);
-+
-+    if (vdev) {
-+        return !!(pci_device_get_host_iommu_quirks(PCI_DEVICE(vdev), type,
-+                                                   caps, size) &
-+                  HOST_IOMMU_QUIRK_NESTING_PARENT_BYPASS_RO);
-+    }
-+    return false;
-+}
-+
- /*
-  * Traditional ioctl() based io
-  */
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 0bf68620d2c9a7a5e21553b9cc275e627b73327f..2947e1b80f5213d2781a32cb669bf3b66b69a643 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -351,6 +351,7 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
-     VFIOContainer *bcontainer = VFIO_IOMMU(container);
-     uint32_t type, flags = 0;
-     uint64_t hw_caps;
-+    VendorCaps caps;
-     VFIOIOASHwpt *hwpt;
-     uint32_t hwpt_id;
+-static int qemu_vfio_pci_read_config(QEMUVFIOState *s, void *buf,
++static int qemu_vfio_pci_read_config(QEMUVFIOState *s, uint32_t *buf,
+                                      int size, int ofs)
+ {
      int ret;
-@@ -396,7 +397,8 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
-      * instead.
-      */
-     if (!iommufd_backend_get_device_info(vbasedev->iommufd, vbasedev->devid,
--                                         &type, NULL, 0, &hw_caps, errp)) {
-+                                         &type, &caps, sizeof(caps), &hw_caps,
-+                                         errp)) {
-         return false;
-     }
++    uint32_t val_le;
  
-@@ -411,6 +413,11 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
-      */
-     if (vfio_device_get_viommu_flags_want_nesting(vbasedev)) {
-         flags |= IOMMU_HWPT_ALLOC_NEST_PARENT;
+     trace_qemu_vfio_pci_read_config(buf, ofs, size,
+                                     s->config_region_info.offset,
+                                     s->config_region_info.size);
+     assert(QEMU_IS_ALIGNED(s->config_region_info.offset + ofs, size));
+     ret = RETRY_ON_EINTR(
+-        pread(s->device, buf, size, s->config_region_info.offset + ofs)
++        pread(s->device, &val_le, size, s->config_region_info.offset + ofs)
+     );
 +
-+        if (vfio_device_get_host_iommu_quirk_bypass_ro(vbasedev, type,
-+                                                       &caps, sizeof(caps))) {
-+            bcontainer->bypass_ro = true;
-+        }
-     }
++    *buf = le32_to_cpu(val_le);
+     return ret == size ? 0 : -errno;
+ }
  
-     if (cpr_is_incoming()) {
-diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
-index f193468dee30354ea8c07e9bf2d89b4da42ab78a..8ba1cd255d146ab8055ab73c71eac640eafa1bdd 100644
---- a/hw/vfio/listener.c
-+++ b/hw/vfio/listener.c
-@@ -502,7 +502,8 @@ void vfio_container_region_add(VFIOContainer *bcontainer,
+-static int qemu_vfio_pci_write_config(QEMUVFIOState *s, void *buf, int size, int ofs)
++static int qemu_vfio_pci_write_config(QEMUVFIOState *s, uint32_t *buf, int size, int ofs)
+ {
      int ret;
-     Error *err = NULL;
++    uint32_t val_le;
  
--    if (!vfio_listener_valid_section(section, false, "region_add")) {
-+    if (!vfio_listener_valid_section(section, bcontainer->bypass_ro,
-+                                     "region_add")) {
-         return;
-     }
- 
-@@ -668,7 +669,8 @@ static void vfio_listener_region_del(MemoryListener *listener,
++    val_le = cpu_to_le32(*buf);
+     trace_qemu_vfio_pci_write_config(buf, ofs, size,
+                                      s->config_region_info.offset,
+                                      s->config_region_info.size);
+     assert(QEMU_IS_ALIGNED(s->config_region_info.offset + ofs, size));
+     ret = RETRY_ON_EINTR(
+-        pwrite(s->device, buf, size, s->config_region_info.offset + ofs)
++        pwrite(s->device, &val_le, size, s->config_region_info.offset + ofs)
+     );
+     return ret == size ? 0 : -errno;
+ }
+@@ -296,7 +301,7 @@ static int qemu_vfio_init_pci(QEMUVFIOState *s, const char *device,
+ {
      int ret;
-     bool try_unmap = true;
- 
--    if (!vfio_listener_valid_section(section, false, "region_del")) {
-+    if (!vfio_listener_valid_section(section, bcontainer->bypass_ro,
-+                                     "region_del")) {
-         return;
-     }
- 
+     int i;
+-    uint16_t pci_cmd;
++    uint32_t pci_cmd;
+     struct vfio_group_status group_status = { .argsz = sizeof(group_status) };
+     struct vfio_iommu_type1_info *iommu_info = NULL;
+     size_t iommu_info_size = sizeof(*iommu_info);
 -- 
 2.52.0
 
