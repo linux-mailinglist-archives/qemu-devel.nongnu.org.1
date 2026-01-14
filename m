@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BFECD1C7BB
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 05:50:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7EABD1C78E
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 05:49:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfsnV-0003tC-II; Tue, 13 Jan 2026 23:47:57 -0500
+	id 1vfsnX-0003zo-If; Tue, 13 Jan 2026 23:47:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1vfsnH-0003jx-2R
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 23:47:43 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1vfsnK-0003mX-Op
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 23:47:47 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1vfsnD-0003jt-6U
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 23:47:41 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-2a0833b5aeeso82031385ad.1
- for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 20:47:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1vfsnI-0003km-Ap
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 23:47:45 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-2a09d981507so3502585ad.1
+ for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 20:47:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1768366057; x=1768970857; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1768366062; x=1768970862; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1Vzqjvo/w0Zs6QRyX8FdhDtC3HQSwAJYyNP7h20vpM8=;
- b=QiOIL8IUmhu757dA+uS+aSEKq5w4QpIk9KIwR5D19xMHx4/HQjNGS8KuyzZHpJDUKB
- zOh96t8qAI8A9K2Ao2JuotDmX3nU+5viqWxTozWJhjhvoWQIHAgXHWPZdHG0QbpNwQYM
- 5NYjV/H7/3sgQcZClH+nak6JMPu8QjzX1DOQpYW9QtMgYy+xVG3U2EjzVlacEa9BB57X
- zwddhrpDLqhcbZXiwp3Cr8JwZBjKSvZAcrioetWeBw/5w1sNVhgjxzJ3U2WiIcRW0EaT
- KB3aj5bcQa7I/CVVsB92Q7iRoQvQmW2xenJifxzhiIqPOWVWVa2rA8GOaHjNRS8lvbPC
- OONw==
+ bh=/h9Z+G9EziJ27dTxeY3yWmObXR1T/veTvJS5uPKvEJ0=;
+ b=kw2MR3V+U7b7ww5N6SBDKHz8YGDRwd+jEuuJQ0LnRr3ut3dh+UiV4wBwfRytCYyEAX
+ CZX4IGKhKzK5W5sUxrnosllgO75IQnixzC0R3ALLzm8xGS7ARv5Vww0fvEXBVYHgTisR
+ HWeJhRhv6V18rnhp09jh0P6YNPDNadS569v6WgScpaULuZHdW70m8a5U+gM81gLjgC5+
+ X9TMgTGsnNkQoUsWFEPWwvHcF4/hyfq0rIfRJOB69/3oIo50qzDdtC+08Pkxp4ihZgES
+ Nv24YP9QP0hYGXt8Bm2HWGPhBwOLlJy/AKuff3i06umntKCwBWTu3Jm3EAu96V/YC0qZ
+ Selw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768366057; x=1768970857;
+ d=1e100.net; s=20230601; t=1768366062; x=1768970862;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=1Vzqjvo/w0Zs6QRyX8FdhDtC3HQSwAJYyNP7h20vpM8=;
- b=oJZpbz/GM+xO605JpGGNTf5Sxj6NBoxt0cXluUBWzjO3jS9Rpr1sG43hPmg0TtHI7B
- cwxYqk5+n6yUcsOTJrpLLMbVT9qzPRC3pzx42kjto/qww7rrAm/5nfsjZP5zLR8Kr5oq
- 8BM34bf29NJthlh9AWYHK25QQPArL0kwm9QIifOCnPTMq9tbEjttYSHB6VA983aU0YtH
- jHo8xdYMevM4wPVe2HarUiyvKpnQMqYu3rXnaE1BG8WXwB/p22H7rDhOjDg7rE5Zqnji
- xMvrWUwJlWlG305UGADqNmePkYevA0GP6WFAgHcvqVrFH6HquElqmuLvcle4yB0IT1md
- YbNQ==
+ bh=/h9Z+G9EziJ27dTxeY3yWmObXR1T/veTvJS5uPKvEJ0=;
+ b=JHHPv5slhE7n6IShSgyxj/fVX/uqv+JqSLHDFESdr+dOg1tnhNVaaYIpqlTyb6xPm6
+ 89hpMKIhzzQ4ivqSLvRN3ELNUfDkbnmOySiwzRp1oNHxjyM4pyv1znWkxI0p5xM6Wq1k
+ 1IKe3tLj5Q8w60aLBnFVzvpj9tb5Qmoxs9XNSemLYdnJR0zkGL2avUNbAEZpg8Kfj5B9
+ OJSVzfK7v6xZ1tPFOe1cWi4/VodSyg1Yt2ft6SWPs0wJ69DvYmQ//SCHbGxHMnzK0YhD
+ ouTuKX5XcrKMu9Rl+eHl+ppqYw4jeOwL16MJHzojOFNVneFbjtLfecWNjm4I9VeFt+Ei
+ BoKg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVpEuME11gmWO8J2E6KBJcgxZh0ZbpptBZnx2zmQDYH+93SEmzQZuiQvVV9V1FhAN/p0I/pySS1pes5@nongnu.org
-X-Gm-Message-State: AOJu0YxHc74nZwdmHgrl7c4a3rXFP21XGmeqY4u5TglCcxA08AwSIXat
- Cq73TOnxLIOmitm4GgN4UMGkN8Os0Er1I6r6GIYcA7SduCfE1z2kxEUf
-X-Gm-Gg: AY/fxX7jVsEDFPhwchrRHGQIbusu4chUgROF1EtNqa5uEdssO88+FjMmQFtpO02XOQ5
- r8/B9IWJk9Es0+Gbs0jVqMIku3zxRM9el84/VMUmy8t8xM99HOen4unYQSfGhnJpUogNmGPj+F3
- YvkK4QeLAZdcO37G/f8MQh99URAzMhw+A8DIjn3wEr2WfoBNG/jpi2eBsahw+KLZbKiDUCZkPc1
- wod37UqTnKkZnl1nRrYzPyqFjuZxaB2SvPtKX6RAnzGTG5M8s8ERcKOUTaR/34+lHRdO5iSbw/k
- n8S2S1BD2PFXrwNzUaup9MyBx2KVUh4TGbuZFOBWgRKsnOcGETjZ5pWztMkJcw/3fGlSiuvQYLP
- Q1etCbc9WPNcbV6bbsCy2XE8BHXS6fowQyOTQvJi80JaNQZ6xEp1R/l61o7//TwwO1GK9fRc+la
- XxaUQJTeaTuI4jdn7splBExrkPoZ1XOxJLT9QqX+spl95EC6Db+sVvr14JLxH3EKLGFlzqfw==
-X-Received: by 2002:a17:903:2f8a:b0:26c:2e56:ec27 with SMTP id
- d9443c01a7336-2a599daabf5mr15329815ad.19.1768366057258; 
- Tue, 13 Jan 2026 20:47:37 -0800 (PST)
+ AJvYcCWz1PMCucO9LRevasoDvunBj+Hz+ZLI1+UlZc+5sXI10okXX2CooUtGgIxFUcNT8W9qHnHoNw/rWstd@nongnu.org
+X-Gm-Message-State: AOJu0Yw84ous/EqA8xqcvpoMu1z4wljvisEuL+soO4IrJOkCmwFb1gpr
+ CmyCcKSezbk8ZFqAyJfI5+zl79ZVc/P02RLye6Utj2gic6FkqUd9CIBu
+X-Gm-Gg: AY/fxX6JB2CCEoz0jFJovVhol5ITKOEROwYPMbHDKrvso4QsuWZYBXF9GzL7g1K6uOF
+ JV+eVSs7FLgkI2X1I+bxUeb83Cj0Au04Rw2a8sF9xg2mDl5YYasmbb7LMw+gFvsjhIJ6nil/QXo
+ cgXakbGZfqCku9DQd1hoalYE42SHLcKKXbakH+EYmLfQ7dlE2iYbilktgtA9Gi4u/2JzQ6Jh0+P
+ CVTZKNYthTFi3iHC6OKLsPGtnKFyBBRhSLBjvp4auEDNA6TaDIT02JGXUA77g6rOpYVfElnOltx
+ xx3ADqgAm3VP+k9wS99cSZz2kFQjE1Ze8cX0hpJnCtwp5q4090157zldLHCTGW/Hhy4+JrTe2az
+ zCU+RIOjistrQW3OLFaLjGu7JwpS05RS1H1UyLvF1yN3F22szX/zzBYeJX4DOMeZNcXsxGdySnf
+ f818+u/4WFRwIyQzGUIx3fYfOaNKC3K5Trz/OzYqHHYOaOJkfHZCULQ8/b4Lc=
+X-Received: by 2002:a17:903:22c8:b0:2a1:3ad6:fab3 with SMTP id
+ d9443c01a7336-2a58b49d64bmr46915815ad.1.1768366062327; 
+ Tue, 13 Jan 2026 20:47:42 -0800 (PST)
 Received: from lima-default (123.253.188.110.qld.leaptel.network.
  [123.253.188.110]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a3e3c49037sm216111905ad.36.2026.01.13.20.47.32
+ d9443c01a7336-2a3e3c49037sm216111905ad.36.2026.01.13.20.47.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jan 2026 20:47:36 -0800 (PST)
+ Tue, 13 Jan 2026 20:47:41 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
@@ -72,24 +72,24 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, bin.meng@windriver.com,
  vivahavey@gmail.com, Alvin Chang <alvinga@andestech.com>,
  Yu-Ming Chang <yumin686@andestech.com>, Joel Stanley <joel@jms.id.au>
-Subject: [RFC PATCH 03/25] target/riscv/debug: Implement permissive type
- unavailable trigger
-Date: Wed, 14 Jan 2026 14:46:36 +1000
-Message-ID: <20260114044701.1173347-4-npiggin@gmail.com>
+Subject: [RFC PATCH 04/25] target/riscv/debug: Fix icount trigger privilege
+ check
+Date: Wed, 14 Jan 2026 14:46:37 +1000
+Message-ID: <20260114044701.1173347-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260114044701.1173347-1-npiggin@gmail.com>
 References: <20260114044701.1173347-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,95 +105,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When a trigger type is "disabled", tdata2 and tdata3 must accept values
-that are valid for some supported trigger type. Additionally, writing 0
-to tdata1 must result in the type becoming "disabled". This is important
-for the prescribed sequences for updating triggers.
-
-Implement write tdata=0 -> disabled behaviour and permissive accepting
-of tdata2/3 values in disabled state. This implementation could be
-improved by checking tdata2/3 values against supported trigger types,
-but it is good enough to be usable by software.
-
-From the RISC-V Debug Specification for tdata1:
-
-  Writing 0 to this register must result in a trigger that is disabled.
-  If this trigger supports multiple types, then the hardware should
-  disable it by changing type to 15.
-
-and, when type=15:
-
-  This trigger is disabled. In this state, tdata2 and tdata3 can be
-  written with any value that is supported for any of the types this
-  trigger implements.
+The check_itrigger_priv() did not check privilege bits properly. Move
+all priv checks into functions and have the icount check follow the same
+form as the others.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/riscv/debug.c | 30 +++++++++++++++++++++++++++++-
- 1 file changed, 29 insertions(+), 1 deletion(-)
+ target/riscv/debug.c | 82 ++++++++++++++++++++------------------------
+ 1 file changed, 37 insertions(+), 45 deletions(-)
 
 diff --git a/target/riscv/debug.c b/target/riscv/debug.c
-index 2190c25f23..c92bd9860e 100644
+index c92bd9860e..2effbb49af 100644
 --- a/target/riscv/debug.c
 +++ b/target/riscv/debug.c
-@@ -827,6 +827,28 @@ static void itrigger_reg_write(CPURISCVState *env, target_ulong index,
-     }
- }
- 
-+static void anytype_reg_write(CPURISCVState *env, target_ulong index,
-+                              int tdata_index, target_ulong val)
+@@ -306,48 +306,50 @@ static void do_trigger_action(CPURISCVState *env, target_ulong trigger_index)
+  * Check the privilege level of specific trigger matches CPU's current privilege
+  * level.
+  */
++static bool type2_priv_match(CPURISCVState *env, target_ulong tdata1)
 +{
-+    /*
-+     * This should check the value is valid for at least one of the supported
-+     * trigger types.
-+     */
-+    switch (tdata_index) {
-+    case TDATA1:
-+        env->tdata1[env->trigger_cur] = val;
-+        break;
-+    case TDATA2:
-+        env->tdata2[env->trigger_cur] = val;
-+        break;
-+    case TDATA3:
-+        env->tdata3[env->trigger_cur] = val;
-+        break;
-+    default:
-+        g_assert_not_reached();
++    /* type 2 trigger cannot be fired in VU/VS mode */
++    if (env->virt_enabled) {
++        return false;
++    }
++    /* check U/S/M bit against current privilege level */
++    return (((tdata1 >> 3) & 0b1011) & BIT(env->priv));
++}
++
++static bool type6_priv_match(CPURISCVState *env, target_ulong tdata1)
++{
++    if (env->virt_enabled) {
++        /* check VU/VS bit against current privilege level */
++        return (((tdata1 >> 23) & 0b11) & BIT(env->priv));
++    } else {
++        /* check U/S/M bit against current privilege level */
++        return (((tdata1 >> 3) & 0b1011) & BIT(env->priv));
 +    }
 +}
 +
- static int itrigger_get_adjust_count(CPURISCVState *env)
++static bool icount_priv_match(CPURISCVState *env, target_ulong tdata1)
++{
++    if (env->virt_enabled) {
++        /* check VU/VS bit against current privilege level */
++        return (((tdata1 >> 25) & 0b11) & BIT(env->priv));
++    } else {
++        /* check U/S/M bit against current privilege level */
++        return (((tdata1 >> 6) & 0b1011) & BIT(env->priv));
++    }
++}
++
+ static bool trigger_priv_match(CPURISCVState *env, trigger_type_t type,
+                                int trigger_index)
  {
-     int count = itrigger_get_count(env, env->trigger_cur), executed;
-@@ -883,6 +905,10 @@ void tdata_csr_write(CPURISCVState *env, int tdata_index, target_ulong val)
-     }
+-    target_ulong ctrl = env->tdata1[trigger_index];
++    target_ulong tdata1 = env->tdata1[trigger_index];
  
-     if (tdata_index == TDATA1) {
-+        if (val == 0) {
-+            /* special case, writing 0 results in disabled trigger */
-+            val = build_tdata1(env, TRIGGER_TYPE_UNAVAIL, 0, 0);
-+        }
-         trigger_type = extract_trigger_type(env, val);
-     }
- 
-@@ -897,6 +923,9 @@ void tdata_csr_write(CPURISCVState *env, int tdata_index, target_ulong val)
-         itrigger_reg_write(env, env->trigger_cur, tdata_index, val);
-         check_itrigger = true;
-         break;
-+    case TRIGGER_TYPE_UNAVAIL:
-+        anytype_reg_write(env, env->trigger_cur, tdata_index, val);
-+        break;
+     switch (type) {
+     case TRIGGER_TYPE_AD_MATCH:
+-        /* type 2 trigger cannot be fired in VU/VS mode */
+-        if (env->virt_enabled) {
+-            return false;
+-        }
+-        /* check U/S/M bit against current privilege level */
+-        if ((ctrl >> 3) & BIT(env->priv)) {
+-            return true;
+-        }
+-        break;
++        return type2_priv_match(env, tdata1);
+     case TRIGGER_TYPE_AD_MATCH6:
+-        if (env->virt_enabled) {
+-            /* check VU/VS bit against current privilege level */
+-            if ((ctrl >> 23) & BIT(env->priv)) {
+-                return true;
+-            }
+-        } else {
+-            /* check U/S/M bit against current privilege level */
+-            if ((ctrl >> 3) & BIT(env->priv)) {
+-                return true;
+-            }
+-        }
+-        break;
++        return type6_priv_match(env, tdata1);
+     case TRIGGER_TYPE_INST_CNT:
+-        if (env->virt_enabled) {
+-            /* check VU/VS bit against current privilege level */
+-            if ((ctrl >> 25) & BIT(env->priv)) {
+-                return true;
+-            }
+-        } else {
+-            /* check U/S/M bit against current privilege level */
+-            if ((ctrl >> 6) & BIT(env->priv)) {
+-                return true;
+-            }
+-        }
+-        break;
++        return icount_priv_match(env, tdata1);
      case TRIGGER_TYPE_INT:
      case TRIGGER_TYPE_EXCP:
      case TRIGGER_TYPE_EXT_SRC:
-@@ -904,7 +933,6 @@ void tdata_csr_write(CPURISCVState *env, int tdata_index, target_ulong val)
-                       trigger_type);
-         break;
-     case TRIGGER_TYPE_NO_EXIST:
--    case TRIGGER_TYPE_UNAVAIL:
-         qemu_log_mask(LOG_GUEST_ERROR, "trigger type: %d does not exit\n",
-                       trigger_type);
-         break;
+@@ -665,17 +667,7 @@ itrigger_set_count(CPURISCVState *env, int index, int value)
+ 
+ static bool check_itrigger_priv(CPURISCVState *env, int index)
+ {
+-    target_ulong tdata1 = env->tdata1[index];
+-    if (env->virt_enabled) {
+-        /* check VU/VS bit against current privilege level */
+-        return (get_field(tdata1, ITRIGGER_VS) == env->priv) ||
+-               (get_field(tdata1, ITRIGGER_VU) == env->priv);
+-    } else {
+-        /* check U/S/M bit against current privilege level */
+-        return (get_field(tdata1, ITRIGGER_M) == env->priv) ||
+-               (get_field(tdata1, ITRIGGER_S) == env->priv) ||
+-               (get_field(tdata1, ITRIGGER_U) == env->priv);
+-    }
++    return icount_priv_match(env, index);
+ }
+ 
+ bool riscv_itrigger_enabled(CPURISCVState *env)
 -- 
 2.51.0
 
