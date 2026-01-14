@@ -2,86 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 904CED1F02C
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 14:15:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F4D0D1F08D
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 14:19:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vg0i0-0001SJ-5r; Wed, 14 Jan 2026 08:14:50 -0500
+	id 1vg0mH-0004Rz-Ej; Wed, 14 Jan 2026 08:19:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vg0hM-0001N4-AY
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 08:14:13 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mail@jiesong.me>) id 1vg0lv-0004HN-EI
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 08:18:53 -0500
+Received: from out28-59.mail.aliyun.com ([115.124.28.59])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vg0hK-0002ch-HY
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 08:14:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768396445;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=VF+4CofWT/uDPWbqrNbk5YpetW+t8sgEb1VGTugRRMs=;
- b=XDtTBR0zkyjBm9feq6kRg15Cpi6axhGdbpMws6RmhP92kx6cCx7BFa0cdfZo5UZrc6BL90
- olPXPUxqqk5xQJHbt+pwIGcMEnclSfpulTr3fCawkBsFhdzgdeOV6wNGy5oN1QuBzoswZS
- OFnP3VMB0wUtFHAYUSTc6/shhEkcq7Y=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-594-fWxIxb9LOr6tZvlaOw0JCw-1; Wed,
- 14 Jan 2026 08:14:02 -0500
-X-MC-Unique: fWxIxb9LOr6tZvlaOw0JCw-1
-X-Mimecast-MFC-AGG-ID: fWxIxb9LOr6tZvlaOw0JCw_1768396441
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D195F19560A5; Wed, 14 Jan 2026 13:14:00 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.32])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 527DE19560A7; Wed, 14 Jan 2026 13:14:00 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id D670521E692D; Wed, 14 Jan 2026 14:13:57 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,  Hanna Reitz
- <hreitz@redhat.com>,  Gerd Hoffmann <kraxel@redhat.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  Christian Schoenebeck <qemu_oss@crudebyte.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>,  =?utf-8?Q?Marc-Andr=C3=A9?=
- Lureau <marcandre.lureau@redhat.com>,  devel@lists.libvirt.org,
- qemu-block@nongnu.org,  qemu-rust@nongnu.org,  Stefan Weil
- <sw@weilnetz.de>,  Kevin Wolf <kwolf@redhat.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Eric Blake <eblake@redhat.com>
-Subject: Re: [PATCH v5 14/24] monitor: move error_vprintf back to
- error-report.c
-In-Reply-To: <aWeHlpz7m4hpPQCA@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Wed, 14 Jan 2026 12:09:58 +0000")
-References: <20260108170338.2693853-1-berrange@redhat.com>
- <20260108170338.2693853-15-berrange@redhat.com>
- <87jyxl8wfo.fsf@pond.sub.org> <aWeHlpz7m4hpPQCA@redhat.com>
-Date: Wed, 14 Jan 2026 14:13:57 +0100
-Message-ID: <87sec81gmi.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <mail@jiesong.me>) id 1vg0ls-0004oQ-2b
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 08:18:49 -0500
+Received: from Sun.localdomain(mailfrom:mail@jiesong.me
+ fp:SMTPD_---.g6QTLef_1768396703 cluster:ay29) by smtp.aliyun-inc.com;
+ Wed, 14 Jan 2026 21:18:27 +0800
+From: Jie Song <mail@jiesong.me>
+To: mjt@tls.msk.ru
+Cc: armbru@redhat.com, berrange@redhat.com, eblake@redhat.com, mail@jiesong.me,
+ marcandre.lureau@gmail.com, marcandre.lureau@redhat.com,
+ qemu-devel@nongnu.org, qemu-stable@nongnu.org,
+ songjie_yewu@cmss.chinamobile.com
+Subject: Re: [PATCH v4] monitor/qmp: cleanup SocketChardev listener sources
+ early to avoid fd handling race
+Date: Wed, 14 Jan 2026 21:18:22 +0800
+Message-ID: <20260114131823.8239-1-mail@jiesong.me>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <3719bb72-4b15-4af5-8c55-46cf9a064918@tls.msk.ru>
+References: <3719bb72-4b15-4af5-8c55-46cf9a064918@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=115.124.28.59; envelope-from=mail@jiesong.me;
+ helo=out28-59.mail.aliyun.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,72 +59,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+Hi Michael, sorry for the late reply — this message was unfortunately
+caught by my mail filter and I just noticed it.
 
-> On Tue, Jan 13, 2026 at 02:38:19PM +0100, Markus Armbruster wrote:
->> Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
->>=20
->> > The current unit tests rely on monitor.o not being linked, such
->> > that the monitor stubs get linked instead. Since error_vprintf
->> > is in monitor.o this allows a stub error_vprintf impl to be used
->> > that calls g_test_message.
->> >
->> > This takes a different approach, with error_vprintf moving
->> > back to error-report.c such that it is always linked into the
->> > tests. The monitor_vprintf() stub is then changed to use
->> > g_test_message if QTEST_SILENT_ERRORS is set, otherwise it will
->> > return -1 and trigger error_vprintf to call vfprintf.
->> >
->> > The end result is functionally equivalent for the purposes of
->> > the unit tests.
->> >
->> > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->> > Reviewed-by: Eric Blake <eblake@redhat.com>
->> > Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+Regarding applying this change to qemu-stable: this patch only 
+uses the existing qio_net_listener_set_client_func_full() helper.
+Considering this limited dependency and the fact that the change
+is confined to cleaning up the listener sources earlier to avoid
+the fd handling race, it should be safe to apply this patch to 
+the qemu-stable series.
 
-[...]
+Thanks for taking a look and for considering it for the stable branches.
 
->> Without stubs, no change in behavior.
->>=20
->> With both stubs, before the patch:
->>=20
->>     monitor_vprintf() is not supposed to run, and aborts
->>=20
->>     error_vprintf() calls g_test_message() for tests, else vfprintf()
->>=20
->> afterwards:
->>=20
->>     monitor_vprintf() calls g_test_message() and succeeds in tests, else
->>     fails
->>=20
->>     error_vprintf() calls monitor_printf(), and when it fails falls back
->>     to vfprintf().
->>=20
->> Alright, error_vprintf() behaves the same as before.
->>=20
->> monitor_vprintf() no longer aborts.  Hmm.  What if we somehow acquire
->> calls?  In tests, they'll go to g_test_message(), which is fine, I
->> guess.  Outside tests, they'll fail.  So does the non-stub version
->> unless the current monitor is HMP.  Also fine, I guess.
->>=20
->> Is it possible to link just one of the stubs?
->
-> There is only 1 stub after this patch - for monitor_vprintf().
-> error_vprintf() is never stubbed anymore.
->
-> The interesting scenario outside there tests is the non-system emulator
-> binaries.
->
-> Those will not have the monitor code, so will get the monitor_vprintf
-> stub. That will report g_test_initialized() =3D=3D false, and so the stub
-> will return -1.  error_vprintf() will see this -1 return value and
-> thus call to vfprintf().
->
-> So the behaviour is again the same as before this patch AFAICT for all
-> linkage scenarios.
+> On 11/25/25 17:07, Jie Song wrote:
+> > From: Jie Song <songjie_yewu@cmss.chinamobile.com>
+> > 
+> > When starting a dummy QEMU process with virsh version, monitor_init_qmp()
+> > enables IOThread monitoring of the QMP fd by default. However, a race
+> > condition exists during the initialization phase: the IOThread only removes
+> > the main thread's fd watch when it reaches qio_net_listener_set_client_func_full(),
+> > which may be delayed under high system load.
+> > 
+> > This creates a window between monitor_qmp_setup_handlers_bh() and
+> > qio_net_listener_set_client_func_full() where both the main thread and
+> > IOThread are simultaneously monitoring the same fd and processing events.
+> > This race can cause either the main thread or the IOThread to hang and
+> > become unresponsive.
+> > 
+> > Fix this by proactively cleaning up the listener's IO sources in
+> > monitor_init_qmp() before the IOThread initializes QMP monitoring,
+> > ensuring exclusive fd ownership and eliminating the race condition.
+> 
+> I'm picking this up for qemu-stable series (10.0.x, 10.1.x, 10.2.x),
+> for now.  Please let me know if I shouldn't.
+> 
+> Yes I've seen this change has a breakage potential, too -- let's see
+> how it works out.
+> 
+> Thanks,
+> 
+> /mjt
 
-Thank you!
-
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-
+Best regards,
+Jie Song
 
