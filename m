@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29500D1C7D1
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 05:51:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F6B5D1C795
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 05:49:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfspB-0007je-Vr; Tue, 13 Jan 2026 23:49:42 -0500
+	id 1vfspD-00081y-Rc; Tue, 13 Jan 2026 23:49:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1vfsox-0007E2-S3
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 23:49:28 -0500
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1vfsp2-0007Im-9q
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 23:49:35 -0500
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1vfsow-0004Ci-BO
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 23:49:27 -0500
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-2a102494058so2248745ad.0
- for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 20:49:25 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1vfsp0-0004DR-Ls
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 23:49:31 -0500
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-2a3e76d0f64so2558085ad.1
+ for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 20:49:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1768366164; x=1768970964; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1768366169; x=1768970969; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=e4RKJkMMFPN4YQUEajOwFLoOkui52htamyphMm0OHOM=;
- b=HK9h24Y2e38E6A/bwYlPfrKHdsgujDY/k5p6/oInBEtwdnc6AYyPFvGH37qy0w1Jt9
- bYRjqWVn2HajkE+Tce/fb8IrvFeFRNo0uNr9/oQdk4QywilJSrHYrGI/uKdVzRLW297Q
- WjNuieWJl+JWvZUYIr/BFu+BzWfCus1C6bPnBihBOpR0q30x1Engsf7LQHz+FPtMkLOu
- 31sz/sa0ndjLEzcyyRP9RvuiC0flLidTCsLFydlD28XR6EQu8u6CMUvInDbitp6xhgdL
- P3Gb81owPk+UNbVWW6CwfbvsoT+61cDz6Hjlzak+ZZgnhkjl1tp4ofTHAJPR+atIllR9
- 6L5g==
+ bh=+kY0TVgsVm0GPorTwNSyfEoAVAqvdoi35N7aeXTAA74=;
+ b=Rb3jc8qAkeUHUYvXd0YidPKFSUVZUG+gXqsc5zdMhl5WjcWtWYVyc6CQ3GSKMYYXY9
+ KAneqoUgywBlbkkK9oFGLR9PrcrxDhGdS9fKeR+DgnARfIJR8mtWCf9rUIymvHIpRu82
+ waV2RMJ2+TDl8Hko0l0JiwhQhznIAnNFq967i3KcExgVLOzOvPifno77NQOgzLo+cVsU
+ l9CuQ6kIRFtyk9LAxnKNQ66MLXK7bgL924rH90/Lu8upOwIuj/3WAu43yL8V60s+8pz0
+ CuseG6qP+OKGNa/DJXiKmEBq5rYBodWU2ZhVk3B+0AWwKPojJhEbhTAIY8D4utHfkcH8
+ gV+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768366164; x=1768970964;
+ d=1e100.net; s=20230601; t=1768366169; x=1768970969;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=e4RKJkMMFPN4YQUEajOwFLoOkui52htamyphMm0OHOM=;
- b=FGNZxlYb8WgiPZIAaRXVoVx9GjSaW0oyzCkW/rJbDM15+coQedH515Ksutxy4GB1HE
- WL/+XermJsgaqqJ9YewaLhDFjOFD1sbK1yoJNkqCvYdIkrDjBHnmpExHJqCVpovrU/Hk
- 1NNGymCkp8E3BfEBkQdfCUwPksoGNnLqrxpj0x0Qn2QP9QkmDdoE/Hhp9CD2U1rIpbaH
- AEni7Z1yLUBXeC+WO2t2VHdyByBtUs4pL6tH5GLJjxW2OLHi0VZTiMlxuhxXLD3MVuC/
- rYyu4v+jomqGcMmSAQ0AlKMMNjzHdsKpiE35e54lp8YLDjoUwl5j+yVkIl+rx5RrTQKp
- XSQw==
+ bh=+kY0TVgsVm0GPorTwNSyfEoAVAqvdoi35N7aeXTAA74=;
+ b=JssHwJe+QomPVSnhD3hlV2cL+whomHDFlDHsPtEAPAYt1nDmVBL9bmmCc0FDcx/Oah
+ 5IMIEfcoVIfSh6HbabqxVwHPFNCnQs+cVfLXV9DxC8b+oWjvUND+Tj/G1b+gsaoQhh1k
+ QQZTwAXxWkx7woYa09d0wKiHbc7p2CG1WGMBKOc2DMdIO3GnWIhy5BBi8ZF9SbOxi+4d
+ 18xqicsqeQt+LW2V9wBoajCG1kcxWyBLVzBL4Gjf2vv44MwzlmuxbEyloFmF3A7y/uv9
+ hkTvKJH6BFWKQWZCuxWmvUosf1QtdJKU3UX2RXB21CmtaJaaRV/Xmy8Kponja5zdzjPK
+ bYtg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWbOVkah4JCvKMlQ6wFoMLLqPuEtOtw8VTlcl7fzBlvFK/bQxWegvnM5XRU/0BuCx6tM7NQNu5IAi0+@nongnu.org
-X-Gm-Message-State: AOJu0YwvMcrNTw/CkPBJQaRrulj5wPuuZbOmveGRJ0FfwMCDA5UDIAkB
- FlRM75NbPcYV3bTOA9WwRQgOpHGVgNGge53RUrUCaIGArck8XDkkggYd
-X-Gm-Gg: AY/fxX5qwF0o4/6jbDVQeaI7r7A3LXTNndeQG5CyCQHwbhR7C7Dz1Efrac/7xWk/hEf
- scc4aTbzSMsnJT1fGwohT95szCUtYUqDnNqpygiB1soONMI2yiEWFz0H06Jm8lp5pPxcVtmusFb
- 9UzOHY20QIV4BD21aXRmy2cR5WX9TH6tlGEboPXvqtpyk70fKGOhGK1qJqbcWp8h7NFDl1K5Ntt
- vEDu5f+BTD6qp0odIho7hphj4Qv8lJI9/9ZEh4BbkgBW6xY+mCSgZMaP9FtTWTPtWCj5anlIa9e
- gIcXyNMlmPHPV/epT/fKjyONcwghzGPKOL+Y9bVkBBMWWveuKOB96bhZZs+CB9busONqe4DJwBs
- lli1B6cvOD7+oIlghjr8tH1ACtlCdYvlOemogfXatj2EBSV1c6w54SDD9ueKeqmATkjSvxni1OY
- vN+XBNRQcTVrVLyuM0qfCdHZg1mOQD877qQlcNs374GePVDsIH2rZMy4Fj0SWhcAfyd4Wxsg==
-X-Received: by 2002:a17:903:46c4:b0:2a0:b432:4a6 with SMTP id
- d9443c01a7336-2a599df90edmr17867225ad.15.1768366164274; 
- Tue, 13 Jan 2026 20:49:24 -0800 (PST)
+ AJvYcCW4mzJ8T75myqywTQPjAGr/hvbhf/qccny6QCVf3k2LF+o4ZlnwTRVBI9ilEVbW0po84LWxvIoPBlvc@nongnu.org
+X-Gm-Message-State: AOJu0YyjIucyc+vCn1M7f6eo9pLLxN27PWyPRVDZPQ28pSa9VUzWQo2R
+ OTowhyxJ2JvdZQRSD5culXDjwuMbIva5rBXxsPqTwKrSx2/+vPT6IsCK
+X-Gm-Gg: AY/fxX7AivFUnSJbiKcJTGz7AyntiCFcgZ9udg5/8ubB5x1O2ygTSciTSwpqGrpjWNL
+ Q7yaZ7Wc6l4xpjd3lYaHfIfTmiwfFmOZAOJwB+epLCyVnHYUkubNZaxxIBfEobgzQhLtVstK9su
+ lOSpHLx5HJ8tW3vihdGTnkkKKUuUjwTUfIKs7mYWX7BIylj1mnCBwLJqXitRgvWQebca3Io5wIW
+ McoRlhHrj0G83AwJ7MkPKasMFggwulFzU0vdY4rRMXGwQqL79E3RHis6XGszqBLlCcbCjtsnfAM
+ ULhhnSFxqSUoXoNC0RTOgUDbOpwmXz66/sqd2F4o+ipIh4N6MmBn2QZParyhfndvLkVFy7dLTyQ
+ LoQ1hH+FpJeswrmsC01oScfOD1zux1HnTLBOODNnN2Eknz9HAgYPWt2yG32/6x4gbL/YM7sr5Dr
+ Q4cykxTcZZnHhPZgYU4r/2X3DR+MMA/iLc1bCpfJ8d0C6bddDiSQe9hjQAG8bzrTU6CkD5mA==
+X-Received: by 2002:a17:903:17c5:b0:299:bda7:ae45 with SMTP id
+ d9443c01a7336-2a58b53655emr44501875ad.25.1768366169350; 
+ Tue, 13 Jan 2026 20:49:29 -0800 (PST)
 Received: from lima-default (123.253.188.110.qld.leaptel.network.
  [123.253.188.110]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a3e3c49037sm216111905ad.36.2026.01.13.20.49.19
+ d9443c01a7336-2a3e3c49037sm216111905ad.36.2026.01.13.20.49.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jan 2026 20:49:23 -0800 (PST)
+ Tue, 13 Jan 2026 20:49:29 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
@@ -72,16 +72,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, bin.meng@windriver.com,
  vivahavey@gmail.com, Alvin Chang <alvinga@andestech.com>,
  Yu-Ming Chang <yumin686@andestech.com>, Joel Stanley <joel@jms.id.au>
-Subject: [RFC PATCH 24/25] target/riscv/debug: Emulate TT Ascalon Sdtrig
-Date: Wed, 14 Jan 2026 14:46:57 +1000
-Message-ID: <20260114044701.1173347-25-npiggin@gmail.com>
+Subject: [RFC PATCH 25/25] target/riscv/debug: Fix minor comment typos
+Date: Wed, 14 Jan 2026 14:46:58 +1000
+Message-ID: <20260114044701.1173347-26-npiggin@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260114044701.1173347-1-npiggin@gmail.com>
 References: <20260114044701.1173347-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,59 +104,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds initial Tenstorrent Ascalon Sdtrig implementation details.
-Ascalon has 9 triggers: 4 mcontrol6 triggers that can match exec access,
-4 mcontrol6 triggers that can match load / store access, and 1 icount
-trigger.
-
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/riscv/cpu.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ target/riscv/debug.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index d349457c87..bdc33bb746 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -2972,6 +2972,28 @@ static const RISCVSdtrigConfig default_sdtrig_config = {
-     },
- };
- 
-+#if defined(TARGET_RISCV64)
-+static const RISCVSdtrigConfig tt_ascalon_sdtrig_config = {
-+    .nr_triggers = 9,
-+    .triggers = {
-+        [0 ... 3] = {
-+            .type_mask = (1 << TRIGGER_TYPE_AD_MATCH6) |
-+                         (1 << TRIGGER_TYPE_UNAVAIL),
-+            .mcontrol_rwx_mask = 0x4, /* BP */
-+        },
-+        [4 ... 7] = {
-+            .type_mask = (1 << TRIGGER_TYPE_AD_MATCH6) |
-+                         (1 << TRIGGER_TYPE_UNAVAIL),
-+            .mcontrol_rwx_mask = 0x3, /* WP */
-+        },
-+        [8]       = {
-+            .type_mask = (1 << TRIGGER_TYPE_INST_CNT) |
-+                         (1 << TRIGGER_TYPE_UNAVAIL),
-+        },
-+    },
-+};
-+#endif
-+
- bool riscv_sdtrig_default_implementation(const RISCVSdtrigConfig *config)
- {
-     return config == &default_sdtrig_config;
-@@ -3166,6 +3188,9 @@ static const TypeInfo riscv_cpu_type_infos[] = {
-         .misa_ext = RVG | RVC | RVS | RVU | RVH | RVV,
-         .priv_spec = PRIV_VERSION_1_13_0,
-         .vext_spec = VEXT_VERSION_1_00_0,
-+#if !defined(CONFIG_USER_ONLY)
-+        .debug_cfg = &tt_ascalon_sdtrig_config,
-+#endif
- 
-         /* ISA extensions */
-         .cfg.mmu = true,
+diff --git a/target/riscv/debug.c b/target/riscv/debug.c
+index d7c171736f..32aa46262a 100644
+--- a/target/riscv/debug.c
++++ b/target/riscv/debug.c
+@@ -120,7 +120,7 @@ static trigger_action_t get_trigger_action(CPURISCVState *env,
+         break;
+     case TRIGGER_TYPE_NO_EXIST:
+     case TRIGGER_TYPE_UNAVAIL:
+-        qemu_log_mask(LOG_GUEST_ERROR, "trigger type: %d does not exit\n",
++        qemu_log_mask(LOG_GUEST_ERROR, "trigger type: %d does not exist\n",
+                       trigger_type);
+         break;
+     default:
+@@ -895,7 +895,7 @@ void tdata_csr_write(CPURISCVState *env, int tdata_index, target_ulong val)
+                       trigger_type);
+         break;
+     case TRIGGER_TYPE_NO_EXIST:
+-        qemu_log_mask(LOG_GUEST_ERROR, "trigger type: %d does not exit\n",
++        qemu_log_mask(LOG_GUEST_ERROR, "trigger type: %d does not exist\n",
+                       trigger_type);
+         break;
+     default:
 -- 
 2.51.0
 
