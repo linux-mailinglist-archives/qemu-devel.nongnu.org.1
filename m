@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5578AD1EE2B
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 13:48:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 846DAD1EE25
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 13:48:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vg0Hr-0005zu-Q7; Wed, 14 Jan 2026 07:47:47 -0500
+	id 1vg0Ht-00062J-Jj; Wed, 14 Jan 2026 07:47:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vg0HX-0005sy-He
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 07:47:29 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vg0HZ-0005tB-MV
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 07:47:35 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vg0HR-0002DA-EM
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 07:47:25 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vg0HV-0002DP-C5
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 07:47:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768394839;
+ s=mimecast20190719; t=1768394840;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zxpmqsakgJ0BYcMpa+6PbTMXSVujm+9u46ujIPqDxsc=;
- b=QdV+gkx5EWJ09p/ACHny5NNM6GvbfjXZAR5A95Da2QoFDtRs/xWv1cb4w/sfTkMzF/3tqv
- Y6vaEN2vaJxC2vmV611TUZui4XmXMN1Vrw1Vi/5aaLQlRchg0YOR78oUZdtMfK0enSsGHl
- wsR+7z3x3GzkwELP0fs9JiiPzXnvPO4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=PntajisC8njaCy71Ybp4/FdRN4ipfhaZSgrGYuu0XY4=;
+ b=JWfOo2DtogNiGQLe6Gs4zAcvqyLwkNqdLKURM+KyY6f9StvR/anEluBk+TPAObcbWZ83Yb
+ bGwblWKUXFQE03ng5g6ovBvUuhgWHLEV0RjfBXiI1aQHzv/o0Mj6OKbbMf/D7B2J0sgg5z
+ lm8VJCgoSzs26bJlubAzRf3xLHH0TwA=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-360-zjrGWvqZNvqYbAJvaWwq5A-1; Wed,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-348-sx913RTCOQyrarFz6Cj08w-1; Wed,
  14 Jan 2026 07:47:17 -0500
-X-MC-Unique: zjrGWvqZNvqYbAJvaWwq5A-1
-X-Mimecast-MFC-AGG-ID: zjrGWvqZNvqYbAJvaWwq5A_1768394837
+X-MC-Unique: sx913RTCOQyrarFz6Cj08w-1
+X-Mimecast-MFC-AGG-ID: sx913RTCOQyrarFz6Cj08w_1768394836
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0B6E419560B4; Wed, 14 Jan 2026 12:47:17 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8380818005A7; Wed, 14 Jan 2026 12:47:16 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.32])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 40E05180066A; Wed, 14 Jan 2026 12:47:16 +0000 (UTC)
+ id 2D5C11800240; Wed, 14 Jan 2026 12:47:16 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 9C7B621E692F; Wed, 14 Jan 2026 13:47:13 +0100 (CET)
+ id A036121E6932; Wed, 14 Jan 2026 13:47:13 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com,
 	dave@treblig.org
-Subject: [PATCH 1/3] error: Fix "to current monitor if we have one" comments
-Date: Wed, 14 Jan 2026 13:47:11 +0100
-Message-ID: <20260114124713.3308719-2-armbru@redhat.com>
+Subject: [PATCH 2/3] error: Restore error_printf()'s function comment
+Date: Wed, 14 Jan 2026 13:47:12 +0100
+Message-ID: <20260114124713.3308719-3-armbru@redhat.com>
 In-Reply-To: <20260114124713.3308719-1-armbru@redhat.com>
 References: <20260114124713.3308719-1-armbru@redhat.com>
 MIME-Version: 1.0
@@ -82,156 +82,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A number of print functions are documented to print to "current
-monitor if we have one, else stderr".  Wrong, they print to the
-current monitor only when it's HMP.  This is the case since commit
-4ad417baa43 (error: Print error_report() to stderr if using qmp).
-
-Fix the comments to say "current HMP monitor if we have one".
+Lost in commit 397d30e9401 (qemu-error: remove dependency of stubs on
+monitor) many moons ago.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- include/qapi/error.h |  3 ++-
- monitor/monitor.c    |  2 +-
- util/error-report.c  | 26 ++++++++++++++++----------
- util/qemu-print.c    |  4 ++--
- 4 files changed, 21 insertions(+), 14 deletions(-)
+ util/error-report.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/qapi/error.h b/include/qapi/error.h
-index 2356b84bb3..d1d37fc656 100644
---- a/include/qapi/error.h
-+++ b/include/qapi/error.h
-@@ -64,7 +64,8 @@
-  *
-  * = Reporting and destroying errors =
-  *
-- * Report an error to the current monitor if we have one, else stderr:
-+ * Report an error to the current HMP monitor if we have one, else
-+ * stderr:
-  *     error_report_err(err);
-  * This frees the error object.
-  *
-diff --git a/monitor/monitor.c b/monitor/monitor.c
-index 1273eb7260..c42d9fad58 100644
---- a/monitor/monitor.c
-+++ b/monitor/monitor.c
-@@ -269,7 +269,7 @@ void monitor_printc(Monitor *mon, int c)
- }
- 
- /*
-- * Print to current monitor if we have one, else to stderr.
-+ * Print to current HMP monitor if we have one, else to stderr.
-  */
- int error_vprintf(const char *fmt, va_list ap)
- {
 diff --git a/util/error-report.c b/util/error-report.c
-index 1b17c11de1..f051f29b2d 100644
+index f051f29b2d..0b1c214dc7 100644
 --- a/util/error-report.c
 +++ b/util/error-report.c
-@@ -136,7 +136,8 @@ void loc_set_file(const char *fname, int lno)
- }
+@@ -29,6 +29,9 @@ bool message_with_timestamp;
+ bool error_with_guestname;
+ const char *error_guest_name;
  
- /*
-- * Print current location to current monitor if we have one, else to stderr.
-+ * Print current location to current HMP monitor if we have one, else
-+ * to stderr.
-  */
- static void print_loc(void)
++/*
++ * Print to current HMP monitor if we have one, else to stderr.
++ */
+ int error_printf(const char *fmt, ...)
  {
-@@ -177,7 +178,8 @@ real_time_iso8601(void)
- }
- 
- /*
-- * Print a message to current monitor if we have one, else to stderr.
-+ * Print a message to current HMP monitor if we have one, else to
-+ * stderr.
-  * @report_type is the type of message: error, warning or informational.
-  * Format arguments like vsprintf().  The resulting message should be
-  * a single phrase, with no newline or trailing punctuation.
-@@ -217,7 +219,8 @@ static void vreport(report_type type, const char *fmt, va_list ap)
- }
- 
- /*
-- * Print an error message to current monitor if we have one, else to stderr.
-+ * Print an error message to current HMP monitor if we have one, else
-+ * to stderr.
-  * Format arguments like vsprintf().  The resulting message should be
-  * a single phrase, with no newline or trailing punctuation.
-  * Prepend the current location and append a newline.
-@@ -229,7 +232,8 @@ void error_vreport(const char *fmt, va_list ap)
- }
- 
- /*
-- * Print a warning message to current monitor if we have one, else to stderr.
-+ * Print a warning message to current HMP monitor if we have one, else
-+ * to stderr.
-  * Format arguments like vsprintf().  The resulting message should be
-  * a single phrase, with no newline or trailing punctuation.
-  * Prepend the current location and append a newline.
-@@ -240,8 +244,8 @@ void warn_vreport(const char *fmt, va_list ap)
- }
- 
- /*
-- * Print an information message to current monitor if we have one, else to
-- * stderr.
-+ * Print an information message to current HMP monitor if we have one,
-+ * else to stderr.
-  * Format arguments like vsprintf().  The resulting message should be
-  * a single phrase, with no newline or trailing punctuation.
-  * Prepend the current location and append a newline.
-@@ -252,7 +256,8 @@ void info_vreport(const char *fmt, va_list ap)
- }
- 
- /*
-- * Print an error message to current monitor if we have one, else to stderr.
-+ * Print an error message to current HMP monitor if we have one, else
-+ * to stderr.
-  * Format arguments like sprintf().  The resulting message should be
-  * a single phrase, with no newline or trailing punctuation.
-  * Prepend the current location and append a newline.
-@@ -268,7 +273,8 @@ void error_report(const char *fmt, ...)
- }
- 
- /*
-- * Print a warning message to current monitor if we have one, else to stderr.
-+ * Print a warning message to current HMP monitor if we have one, else
-+ * to stderr.
-  * Format arguments like sprintf(). The resulting message should be a
-  * single phrase, with no newline or trailing punctuation.
-  * Prepend the current location and append a newline.
-@@ -283,8 +289,8 @@ void warn_report(const char *fmt, ...)
- }
- 
- /*
-- * Print an information message to current monitor if we have one, else to
-- * stderr.
-+ * Print an information message to current HMP monitor if we have one,
-+ * else to stderr.
-  * Format arguments like sprintf(). The resulting message should be a
-  * single phrase, with no newline or trailing punctuation.
-  * Prepend the current location and append a newline.
-diff --git a/util/qemu-print.c b/util/qemu-print.c
-index 69ba612f56..4a30cd1a8e 100644
---- a/util/qemu-print.c
-+++ b/util/qemu-print.c
-@@ -16,7 +16,7 @@
- 
- /*
-  * Print like vprintf().
-- * Print to current monitor if we have one, else to stdout.
-+ * Print to current HMP monitor if we have one, else to stdout.
-  */
- int qemu_vprintf(const char *fmt, va_list ap)
- {
-@@ -29,7 +29,7 @@ int qemu_vprintf(const char *fmt, va_list ap)
- 
- /*
-  * Print like printf().
-- * Print to current monitor if we have one, else to stdout.
-+ * Print to current HMP monitor if we have one, else to stdout.
-  */
- int qemu_printf(const char *fmt, ...)
- {
+     va_list ap;
 -- 
 2.52.0
 
