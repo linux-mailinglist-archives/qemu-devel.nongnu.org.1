@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45594D1CB74
+	by mail.lfdr.de (Postfix) with ESMTPS id C3FD9D1CB7F
 	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 07:49:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfufT-0001w3-8k; Wed, 14 Jan 2026 01:47:47 -0500
+	id 1vfufO-0001vy-Qd; Wed, 14 Jan 2026 01:47:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vfuf4-0001pz-6E
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 01:47:22 -0500
+ id 1vfuf3-0001ps-6r
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 01:47:21 -0500
 Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vfuf1-0004AJ-5S
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 01:47:21 -0500
+ id 1vfuf1-0004AO-2s
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 01:47:20 -0500
 Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  [IPv6:2a02:6b8:c42:65a0:0:640:e1de:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 04A0380676;
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 8E46C807BC;
  Wed, 14 Jan 2026 09:47:16 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:c88::1:7])
  by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id ClNQD90AqW20-W6iwykCf; Wed, 14 Jan 2026 09:47:15 +0300
+ ESMTPSA id ClNQD90AqW20-Awhmfl3Y; Wed, 14 Jan 2026 09:47:16 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1768373235;
- bh=jsy4reI1TzanCtXBfxJ4/w5QjWMW6WCD9Mr70g2ZVgo=;
+ s=default; t=1768373236;
+ bh=MN2tkwk+2wULskhErRy+Xg3Kjfi5sWUTJLiHbLKQQjE=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=G7hg0wfSlTvbz//H4usF7syB7F1fRjSqDkyUa+0hdcR0JQzGNDBwHN6oHIVUko0jS
- MPJAh25vv69Kx9LOiyNUawq2C7rXKvLPB/DPM9PpSQhpWP4jt9g7Jw4uBz/4OtG4Et
- iuIOXE77DLsYC1DJqha1RCOBPiZ0pVtWD3nOZS+A=
+ b=xHKj5APoodrDy58rHi4uuVndh+Rx1Tu06IJrq6I+Oq5fVpM4dYudg5vgYOXGU9bsA
+ l8tydnX6ISsvX+FVLLy4uDvzb3JR+YSaLhncXk1XW//7TrtfMW9hKRR2poBhgjw+5i
+ B53KXx6PkrIFYw+rkh19Ag2MAjNCKkC9Ss0WLdRQ=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -42,9 +42,9 @@ To: peterx@redhat.com
 Cc: farosas@suse.de, qemu-devel@nongnu.org, dtalexundeer@yandex-team.ru,
  vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
  d-tatianin@yandex-team.ru
-Subject: [PATCH 4/5] qemu-file: qemu_file_get_fd(): check service byte itself
-Date: Wed, 14 Jan 2026 09:47:09 +0300
-Message-ID: <20260114064710.176268-5-vsementsov@yandex-team.ru>
+Subject: [PATCH 5/5] qemu-file: qemu_file_get_fd(): improve interface
+Date: Wed, 14 Jan 2026 09:47:10 +0300
+Message-ID: <20260114064710.176268-6-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20260114064710.176268-1-vsementsov@yandex-team.ru>
 References: <20260114064710.176268-1-vsementsov@yandex-team.ru>
@@ -73,38 +73,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We can check it, so, why not.
+Make it symmetrical with qemu_file_put_fd() and simplify callers.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- migration/qemu-file.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ migration/qemu-file.c     |  9 ++++-----
+ migration/qemu-file.h     |  2 +-
+ migration/vmstate-types.c | 10 +---------
+ 3 files changed, 6 insertions(+), 15 deletions(-)
 
 diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-index 3a9a0a49d4..da701d40e4 100644
+index da701d40e4..f8394cbbb5 100644
 --- a/migration/qemu-file.c
 +++ b/migration/qemu-file.c
-@@ -390,13 +390,19 @@ int qemu_file_get_fd(QEMUFile *f)
-     int fd = -1;
+@@ -385,9 +385,8 @@ int qemu_file_put_fd(QEMUFile *f, int fd)
+     return ret;
+ }
+ 
+-int qemu_file_get_fd(QEMUFile *f)
++int qemu_file_get_fd(QEMUFile *f, int *fd)
+ {
+-    int fd = -1;
      FdEntry *fde;
      Error *err = NULL;
-+    int service_byte;
- 
-     if (!f->can_pass_fd) {
-         error_setg(&err, "%s does not support fd passing", f->ioc->name);
+     int service_byte;
+@@ -410,12 +409,12 @@ int qemu_file_get_fd(QEMUFile *f)
          goto fail;
      }
  
--    qemu_get_byte(f);
-+    service_byte = qemu_get_byte(f);
-+    if (service_byte != ' ') {
-+        error_setg(&err, "%s unexpected service byte: %d(%c)", f->ioc->name,
-+                   service_byte, service_byte);
-+        goto fail;
-+    }
+-    fd = fde->fd;
++    *fd = fde->fd;
+     QTAILQ_REMOVE(&f->fds, fde, entry);
+     g_free(fde);
  
-     fde = QTAILQ_FIRST(&f->fds);
-     if (!fde) {
+-    trace_qemu_file_get_fd(f->ioc->name, fd);
+-    return fd;
++    trace_qemu_file_get_fd(f->ioc->name, *fd);
++    return 0;
+ 
+ fail:
+     error_report_err(error_copy(err));
+diff --git a/migration/qemu-file.h b/migration/qemu-file.h
+index c13c967167..a8e9bb2ccb 100644
+--- a/migration/qemu-file.h
++++ b/migration/qemu-file.h
+@@ -82,6 +82,6 @@ size_t qemu_get_buffer_at(QEMUFile *f, const uint8_t *buf, size_t buflen,
+ 
+ QIOChannel *qemu_file_get_ioc(QEMUFile *file);
+ int qemu_file_put_fd(QEMUFile *f, int fd);
+-int qemu_file_get_fd(QEMUFile *f);
++int qemu_file_get_fd(QEMUFile *f, int *fd);
+ 
+ #endif
+diff --git a/migration/vmstate-types.c b/migration/vmstate-types.c
+index e34bf4486e..89cb211472 100644
+--- a/migration/vmstate-types.c
++++ b/migration/vmstate-types.c
+@@ -321,7 +321,6 @@ const VMStateInfo vmstate_info_uint64 = {
+ static int get_fd(QEMUFile *f, void *pv, size_t size,
+                   const VMStateField *field)
+ {
+-    int fd;
+     int32_t *v = pv;
+ 
+     if (migrate_mode() == MIG_MODE_CPR_EXEC) {
+@@ -329,14 +328,7 @@ static int get_fd(QEMUFile *f, void *pv, size_t size,
+         return 0;
+     }
+ 
+-    fd = qemu_file_get_fd(f);
+-    if (fd < 0) {
+-        return -1;
+-    }
+-
+-    *v = fd;
+-
+-    return 0;
++    return qemu_file_get_fd(f, v);
+ }
+ 
+ static int put_fd(QEMUFile *f, void *pv, size_t size,
 -- 
 2.48.1
 
