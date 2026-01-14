@@ -2,97 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F6B5D1C795
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 05:49:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71410D1CA83
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 07:20:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfspD-00081y-Rc; Tue, 13 Jan 2026 23:49:43 -0500
+	id 1vfuE6-0008Hw-PY; Wed, 14 Jan 2026 01:19:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1vfsp2-0007Im-9q
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 23:49:35 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1vfsp0-0004DR-Ls
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 23:49:31 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-2a3e76d0f64so2558085ad.1
- for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 20:49:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1768366169; x=1768970969; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+kY0TVgsVm0GPorTwNSyfEoAVAqvdoi35N7aeXTAA74=;
- b=Rb3jc8qAkeUHUYvXd0YidPKFSUVZUG+gXqsc5zdMhl5WjcWtWYVyc6CQ3GSKMYYXY9
- KAneqoUgywBlbkkK9oFGLR9PrcrxDhGdS9fKeR+DgnARfIJR8mtWCf9rUIymvHIpRu82
- waV2RMJ2+TDl8Hko0l0JiwhQhznIAnNFq967i3KcExgVLOzOvPifno77NQOgzLo+cVsU
- l9CuQ6kIRFtyk9LAxnKNQ66MLXK7bgL924rH90/Lu8upOwIuj/3WAu43yL8V60s+8pz0
- CuseG6qP+OKGNa/DJXiKmEBq5rYBodWU2ZhVk3B+0AWwKPojJhEbhTAIY8D4utHfkcH8
- gV+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768366169; x=1768970969;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=+kY0TVgsVm0GPorTwNSyfEoAVAqvdoi35N7aeXTAA74=;
- b=JssHwJe+QomPVSnhD3hlV2cL+whomHDFlDHsPtEAPAYt1nDmVBL9bmmCc0FDcx/Oah
- 5IMIEfcoVIfSh6HbabqxVwHPFNCnQs+cVfLXV9DxC8b+oWjvUND+Tj/G1b+gsaoQhh1k
- QQZTwAXxWkx7woYa09d0wKiHbc7p2CG1WGMBKOc2DMdIO3GnWIhy5BBi8ZF9SbOxi+4d
- 18xqicsqeQt+LW2V9wBoajCG1kcxWyBLVzBL4Gjf2vv44MwzlmuxbEyloFmF3A7y/uv9
- hkTvKJH6BFWKQWZCuxWmvUosf1QtdJKU3UX2RXB21CmtaJaaRV/Xmy8Kponja5zdzjPK
- bYtg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW4mzJ8T75myqywTQPjAGr/hvbhf/qccny6QCVf3k2LF+o4ZlnwTRVBI9ilEVbW0po84LWxvIoPBlvc@nongnu.org
-X-Gm-Message-State: AOJu0YyjIucyc+vCn1M7f6eo9pLLxN27PWyPRVDZPQ28pSa9VUzWQo2R
- OTowhyxJ2JvdZQRSD5culXDjwuMbIva5rBXxsPqTwKrSx2/+vPT6IsCK
-X-Gm-Gg: AY/fxX7AivFUnSJbiKcJTGz7AyntiCFcgZ9udg5/8ubB5x1O2ygTSciTSwpqGrpjWNL
- Q7yaZ7Wc6l4xpjd3lYaHfIfTmiwfFmOZAOJwB+epLCyVnHYUkubNZaxxIBfEobgzQhLtVstK9su
- lOSpHLx5HJ8tW3vihdGTnkkKKUuUjwTUfIKs7mYWX7BIylj1mnCBwLJqXitRgvWQebca3Io5wIW
- McoRlhHrj0G83AwJ7MkPKasMFggwulFzU0vdY4rRMXGwQqL79E3RHis6XGszqBLlCcbCjtsnfAM
- ULhhnSFxqSUoXoNC0RTOgUDbOpwmXz66/sqd2F4o+ipIh4N6MmBn2QZParyhfndvLkVFy7dLTyQ
- LoQ1hH+FpJeswrmsC01oScfOD1zux1HnTLBOODNnN2Eknz9HAgYPWt2yG32/6x4gbL/YM7sr5Dr
- Q4cykxTcZZnHhPZgYU4r/2X3DR+MMA/iLc1bCpfJ8d0C6bddDiSQe9hjQAG8bzrTU6CkD5mA==
-X-Received: by 2002:a17:903:17c5:b0:299:bda7:ae45 with SMTP id
- d9443c01a7336-2a58b53655emr44501875ad.25.1768366169350; 
- Tue, 13 Jan 2026 20:49:29 -0800 (PST)
-Received: from lima-default (123.253.188.110.qld.leaptel.network.
- [123.253.188.110]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a3e3c49037sm216111905ad.36.2026.01.13.20.49.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jan 2026 20:49:29 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-riscv@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, bin.meng@windriver.com,
- vivahavey@gmail.com, Alvin Chang <alvinga@andestech.com>,
- Yu-Ming Chang <yumin686@andestech.com>, Joel Stanley <joel@jms.id.au>
-Subject: [RFC PATCH 25/25] target/riscv/debug: Fix minor comment typos
-Date: Wed, 14 Jan 2026 14:46:58 +1000
-Message-ID: <20260114044701.1173347-26-npiggin@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260114044701.1173347-1-npiggin@gmail.com>
-References: <20260114044701.1173347-1-npiggin@gmail.com>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1vfuDz-0008GJ-Nr; Wed, 14 Jan 2026 01:19:24 -0500
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1vfuDx-0000A7-Eg; Wed, 14 Jan 2026 01:19:23 -0500
+Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 98F78C01AC;
+ Wed, 14 Jan 2026 09:19:13 +0300 (MSK)
+Received: from [IPV6:2a02:6bf:8080:c88::1:7] (unknown [2a02:6bf:8080:c88::1:7])
+ by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id AJNmZ80AfW20-uK4vFqAX; Wed, 14 Jan 2026 09:19:12 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1768371552;
+ bh=MjZ+p+f9yJQUOy1N1T+uGF94WpII2zAukpQ58wZNqxw=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=VOrv0mKtVxZlOXgrJulmBaeG9rxA5WwV97nRzonAzt642GDyYRZQIZfx+XGVNWC9b
+ 2/vrkkbWZcIYSWKdR5HmcCUJn9xqMSl1LQPfAD5HimnrhIhTxLdEyI8An6TqNVgAEF
+ zuLY/5WaPWGi523oFG+HcGt3BM/5Ls1z/ocIn7Xo=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <2af404d1-5e50-4caa-bee6-f8aab6a30a7e@yandex-team.ru>
+Date: Wed, 14 Jan 2026 09:19:10 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62a.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 0/5] support inflight migration
+To: Peter Xu <peterx@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Alexandr Moshkov <dtalexundeer@yandex-team.ru>, qemu-devel@nongnu.org,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Zhenwei Pi <pizhenwei@bytedance.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Raphael Norwitz <raphael@enfabrica.net>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, mzamazal@redhat.com,
+ Fabiano Rosas <farosas@suse.de>, qemu-block@nongnu.org,
+ virtio-fs@lists.linux.dev, "yc-core@yandex-team.ru"
+ <yc-core@yandex-team.ru>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+References: <20260113095813.134810-1-dtalexundeer@yandex-team.ru>
+ <20260113181242.GB528940@fedora> <aWaVVJh13ctiW9Ku@x1.local>
+Content-Language: en-US
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <aWaVVJh13ctiW9Ku@x1.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: qemu development <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -104,34 +83,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- target/riscv/debug.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On 13.01.26 21:56, Peter Xu wrote:
+> On Tue, Jan 13, 2026 at 01:12:42PM -0500, Stefan Hajnoczi wrote:
+>> On Tue, Jan 13, 2026 at 02:58:09PM +0500, Alexandr Moshkov wrote:
+>>
+>> Peter: Please review the migration aspects (especially the vmstates).
+>> Thank you!
+> 
+> Looks good from my side as long as it's based on VMSD, I appreciate that
+> change from the old versions where it used to use qemufile APIs.
+> 
+> The major question here is if this series depends on Vladimir's other
+> series
 
-diff --git a/target/riscv/debug.c b/target/riscv/debug.c
-index d7c171736f..32aa46262a 100644
---- a/target/riscv/debug.c
-+++ b/target/riscv/debug.c
-@@ -120,7 +120,7 @@ static trigger_action_t get_trigger_action(CPURISCVState *env,
-         break;
-     case TRIGGER_TYPE_NO_EXIST:
-     case TRIGGER_TYPE_UNAVAIL:
--        qemu_log_mask(LOG_GUEST_ERROR, "trigger type: %d does not exit\n",
-+        qemu_log_mask(LOG_GUEST_ERROR, "trigger type: %d does not exist\n",
-                       trigger_type);
-         break;
-     default:
-@@ -895,7 +895,7 @@ void tdata_csr_write(CPURISCVState *env, int tdata_index, target_ulong val)
-                       trigger_type);
-         break;
-     case TRIGGER_TYPE_NO_EXIST:
--        qemu_log_mask(LOG_GUEST_ERROR, "trigger type: %d does not exit\n",
-+        qemu_log_mask(LOG_GUEST_ERROR, "trigger type: %d does not exist\n",
-                       trigger_type);
-         break;
-     default:
+No, it does not. And if we can proceed with merging these series first, I'll
+be happy to rebase on top of it.
+
+> while there's still one patch that is not-for-merge:
+> 
+> https://lore.kernel.org/all/20251016114104.1384675-24-vsementsov@yandex-team.ru/#t
+> 
+> Does it automatically mark this series RFC as well?
+> 
+> Personally speaking, a new migration cap would work all fine, we should
+> have discussed it somewhere previously.  Said that, "local-vhost-user-blk"
+> capability is likely not the right one.  IMHO it should be either "local"
+> or "fd-passing" / "fd-passthrough" (or something generic) as the name.  If
+> we are not sure if we will leverage more than "passing the FDs around", we
+> can make it as simple as "local" as a new migration capability.
+> 
+> Then migration's misc.h should export a function migrate_is_local() then
+> device code can probe that in its own vmstate handling paths on save/load.
+> 
+> A note to Vladimir: please remember to add a check to enforce UNIX socket
+> when a formal patch 23 will be proposed some day, no matter what is the
+> name of the capability.  It should fail qmp "migrate" or qmp
+> "migrate_incoming" command if the main URI is not a unix socket.
+> 
+
+Thanks! I'll keep that in mind when prepare next version.
+
 -- 
-2.51.0
-
+Best regards,
+Vladimir
 
