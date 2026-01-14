@@ -2,88 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3B6D1EB7F
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 13:23:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 522DED1EBB2
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 13:27:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfzuG-0001WX-PT; Wed, 14 Jan 2026 07:23:24 -0500
+	id 1vfzxP-000300-9G; Wed, 14 Jan 2026 07:26:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vfztv-0001T4-Bo
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 07:23:16 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vfzxH-0002v8-P9
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 07:26:32 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vfztt-0007zZ-Pi
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 07:23:03 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vfzxG-0000iW-5y
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 07:26:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768393380;
+ s=mimecast20190719; t=1768393589;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=6hdiooh6NrQsiBujMo60ueod3VrVFVCWn9eH7aYK3Iw=;
- b=RiI8Eogi1Cwuy2oP9n3MflsRwHt6GIP7H0l9TAGM9APVMarAvb7ZHHJSzPux/1/AOZzSOT
- FZDvwTqyZr5p90oV4Pwec8Yj5qZnMCnF1vqkiSdvQi6EImQLlaea1DBTd1I0B71nOEW+7u
- RW+dRVw6bxZOCAEwImscY2uTQsauFWY=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3W1TBgpVWgkAGfz0fTl0gxUhHHatXchW+EtU/acZiK8=;
+ b=HAI43HiPoIVs7IjsfWaBzEVyYJd94FMdQRRb6YZ7E98LjpNv36OEqAmaVtr8vND7Tb2v5D
+ 4ty0/qLvtolxUY1MQa4YzNkDIG8wS56Tg5WKpnqlpS/LgtcMTBPhNDCJxhGYzEJD63conu
+ ncyEiAYDHSeCHdwfXaGYQGlRsj2C7uE=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-547-00DYJANJNUKhhpArof5tnA-1; Wed, 14 Jan 2026 07:22:58 -0500
-X-MC-Unique: 00DYJANJNUKhhpArof5tnA-1
-X-Mimecast-MFC-AGG-ID: 00DYJANJNUKhhpArof5tnA_1768393378
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-8824d5b11easo188779996d6.3
- for <qemu-devel@nongnu.org>; Wed, 14 Jan 2026 04:22:58 -0800 (PST)
+ us-mta-269-CGgum6RrMOi9PzcqodwbBw-1; Wed, 14 Jan 2026 07:26:28 -0500
+X-MC-Unique: CGgum6RrMOi9PzcqodwbBw-1
+X-Mimecast-MFC-AGG-ID: CGgum6RrMOi9PzcqodwbBw_1768393587
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-8c530da0691so135281385a.3
+ for <qemu-devel@nongnu.org>; Wed, 14 Jan 2026 04:26:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768393378; x=1768998178; darn=nongnu.org;
+ d=redhat.com; s=google; t=1768393587; x=1768998387; darn=nongnu.org;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=6hdiooh6NrQsiBujMo60ueod3VrVFVCWn9eH7aYK3Iw=;
- b=JTyc0Qwc3Lq1UUKb2vNdq6q0DqV/2I5tRVBVJSyb1cCKylHNfzhEDa7koMbBxqk6+T
- Xx119C8qdiafDmeNNHjHus7agZpGlekn0247FjP18zhEeNzFIRUyODMTHa+3qVKq36ye
- TW0XZshxutEPDvdipPti+v9arUIc4jkIRaYF/tvewCb1bE4SFAWOJkofObp01Ev7b/BF
- m5Im9aQ1pTmvP7j+/tTYqDyabuby1PgM2hEI2A0T7RY3CZ8BuYNeTlvUSDAYG4xLpd1b
- TzGUooWg9yLFR9Mo3i997ToDBAuTGI3hLUUhRVEuY0En/eRNh2XEAiE859NMnB9Yw34z
- PUZw==
+ bh=3W1TBgpVWgkAGfz0fTl0gxUhHHatXchW+EtU/acZiK8=;
+ b=cNSAh6/Ik5mW5CxsMEJLIob+FsllirvhbSCutgKXalFLAEEWJzpZiERuOui6L4Kcau
+ TlrUsvndmW1/OA3mujVJKsFNmmEwwB+yvmxCiR65q8vlY6GysaEq5MbSyAAppSdGLux9
+ 8uibLkPjIWRaUdVmhF25UUtD8Kq9KXelXsZ2aADqaIOYxMym2KT/4Mtduep7TzCC7sNS
+ vOtbYydKbrL1rA4eAWfu5/sylIEeqbCLgD8dwqc6fa69LcEAWROivU6QjKAvfgmyq0J4
+ d7DZNQ50hkXxvZPEepQSvzbHxJy0GtXbZWvDQek2RdEcrhdcYpMdyRgjy3s4AUJkeHsA
+ IvaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768393378; x=1768998178;
+ d=1e100.net; s=20230601; t=1768393587; x=1768998387;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6hdiooh6NrQsiBujMo60ueod3VrVFVCWn9eH7aYK3Iw=;
- b=H1xVnllhhJobhkvbUC1CIWPIVG8xuCWLEzTQw2i0oB7BadVaNAiTyQFM/4HuLsFNL9
- F/FULT3SPi9bEOGE/gPOCtnlTgaMQKgmz+x9zA3Gl8CACUGExGtxksMKv3BWA6i33IMs
- Cr58CDXxABBCCHJ1rJCApxvSiNci7Z4IdB/nx3zaAXS9vOhf1NmzDx2DKVd+yaf+Isud
- aw6gU7DwxJAjveqfj0pNMHJheqVcfTICJSbS3BIyYAt3cC/f2TDa7H7ZaHWZfdeWUQ42
- dAitfz7A1uEL+KSKLAAt3IA1qHyUcTkpX8Gse5czSwH5FVmgIo+plj8WjfdDRwh5vY5A
- htbg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXbrlH4rsCpSM7W3bnD1hXRT6OrL5Tlreomushjhjs8Rkrzzhel1HxXg2Q54vlzfAfc7o25Mrif2YVk@nongnu.org
-X-Gm-Message-State: AOJu0YwVkMckq7jWevQKFHYGBR4y/h4z1im5VAiqN2f8FYWDgfHzNkQl
- r/VVHGKUDnM1p/NoDnGkInI/0rFkqZuNpuWKgM4vUun7lnVkvaQ+2AumHQHrJuBsGHGSr54fT/g
- XwyCQkk+to2SwLXY5JdAwEx7/G0DW3y6gwQt4otEz2P9tr3imJ0chxI7j
-X-Gm-Gg: AY/fxX6zi+7ayh0qZzq0sni6Hq6zc34cF7zn0xihP05bYpnMkNEdjbHDghenk0n3fzE
- RVNfwZWRurc+1EnOfHHxwhxC/LWYAi6AAYzt7sxmPkE/ZaA9p38c/SUFLHXdZfiPN13GiJNYnz1
- nsqypRpvEB/whsbtFIOi6L9oOpX0qH88Pse/So2lu9thqHMyIvHjhPvWAyMZXBsger9YiBjp8yb
- 1O/zf5GHzR5ZIsO4co87043DBZc4PJMcxxH4YKwLnWt3I6RFq2cwaJzmMudyZbdMc/8/N9Yrp6S
- a3Z0smDW51yajJVfea2wE6fSvAklQe4153c4m8b/CnVeXm16u8HVJY9D6Vs/lg2RMp4eTdyKsJg
- Hd7I=
-X-Received: by 2002:a05:6214:21ed:b0:880:5193:1102 with SMTP id
- 6a1803df08f44-892743cf6a6mr28041936d6.56.1768393378073; 
- Wed, 14 Jan 2026 04:22:58 -0800 (PST)
-X-Received: by 2002:a05:6214:21ed:b0:880:5193:1102 with SMTP id
- 6a1803df08f44-892743cf6a6mr28041436d6.56.1768393377556; 
- Wed, 14 Jan 2026 04:22:57 -0800 (PST)
+ bh=3W1TBgpVWgkAGfz0fTl0gxUhHHatXchW+EtU/acZiK8=;
+ b=QNnA+1A6qJ5P2gqlNEasRQcVIdtfLctVciz1T9yTapa+5C3+2/utNOCnQcZb2Yk9+a
+ 7Kh0cyUbVNhA4CspJfqhF3S/PM7Vv8Evz2eGHOrxUrL9d8kh2s7Jz4wg8f+3Irf5kTLD
+ EOfoyA+5qC6IJeBhSCkhuJtepLfb2P6uwSMPdCJBaBPeah0OJkaFDVUlvA1nTWr/rKU4
+ 6IGKBgSC59Jb89C++kLacta98p8i3ahwGT4SwVetytqze2POMyL4fA+4PN5yVDCwNAkP
+ bT4bZFte+GqefRluGQGYR6gq6/1kMFGPpj365L0ZOwFNgk655ozNOV5i4OEk6NIhj6lX
+ f9eg==
+X-Gm-Message-State: AOJu0YzStWIek1U9MJTRA0ylxBXuWgZLMwVym9v3OAx+kRmSMLLL+FA4
+ PNoFRmbRr1Fsm+RqkfgVBANCfFj/PnEJNTfNBB1qNfrOyCdwatQu2Kl3yzZdzX0Fro7PHLYybYP
+ VQmlGNuIRLeZPHlAcJrRmGHj7ocnCAuHPe6oE7Epb3AXhfX+gDZTANLaD
+X-Gm-Gg: AY/fxX4PezdiXMR511jNQ3hBcucKW+MpqjPstnKZ/1l/geJHAsfxzKExAwS6eE6SXkT
+ Gb5YsR2VG7ydncs7c36Tbm7emEaKHbxIe/DKGASKMWTeUSzzhhlJnHk/ABU0vfeOSK338F0uhhL
+ hjW4jQpe98DvmZP0kDDnRUWd+9Kc1dL1px+AWvCl4WwOHxzVBmBTmlh22LTt3sysBk/z8SuX370
+ PlnzToQpMJeMLq7wnOkmmVSGmJnwcix24WVaN4H1mF4QTpCD0vr5AA/GbJZ+QURf52GjdBNu4hq
+ vOU7NnrUYBuDTORP467Ar/j+HTdYCDMkJWJ0Kf1Tjt0EXOxcUBDQUTJzivmEkNaRG0Gz+3DSGGW
+ Qxhs=
+X-Received: by 2002:a05:620a:400d:b0:8b2:f145:7f28 with SMTP id
+ af79cd13be357-8c52fb1d058mr307023385a.33.1768393587406; 
+ Wed, 14 Jan 2026 04:26:27 -0800 (PST)
+X-Received: by 2002:a05:620a:400d:b0:8b2:f145:7f28 with SMTP id
+ af79cd13be357-8c52fb1d058mr307019485a.33.1768393586882; 
+ Wed, 14 Jan 2026 04:26:26 -0800 (PST)
 Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-890770e2a8fsm176650066d6.16.2026.01.14.04.22.56
+ af79cd13be357-8c530ba54b8sm152072785a.42.2026.01.14.04.26.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Jan 2026 04:22:57 -0800 (PST)
-Date: Wed, 14 Jan 2026 07:22:55 -0500
+ Wed, 14 Jan 2026 04:26:26 -0800 (PST)
+Date: Wed, 14 Jan 2026 07:26:24 -0500
 From: Peter Xu <peterx@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- Alexandr Moshkov <dtalexundeer@yandex-team.ru>,
- qemu-devel@nongnu.org, "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+To: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, "Gonglei (Arei)" <arei.gonglei@huawei.com>,
  Zhenwei Pi <pizhenwei@bytedance.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>,
@@ -92,19 +88,20 @@ Cc: Stefan Hajnoczi <stefanha@redhat.com>,
  Jason Wang <jasowang@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
  Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- mzamazal@redhat.com, Fabiano Rosas <farosas@suse.de>,
- qemu-block@nongnu.org, virtio-fs@lists.linux.dev,
+ Stefan Hajnoczi <stefanha@redhat.com>, mzamazal@redhat.com,
+ Fabiano Rosas <farosas@suse.de>, qemu-block@nongnu.org,
+ virtio-fs@lists.linux.dev,
  "yc-core@yandex-team.ru" <yc-core@yandex-team.ru>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH v6 0/5] support inflight migration
-Message-ID: <aWeKn5A7-tWaWv0z@x1.local>
+Subject: Re: [PATCH v6 5/5] vhost-user-blk: support inter-host inflight
+ migration
+Message-ID: <aWeLcDtZyRpk81W6@x1.local>
 References: <20260113095813.134810-1-dtalexundeer@yandex-team.ru>
- <20260113181242.GB528940@fedora> <aWaVVJh13ctiW9Ku@x1.local>
- <2af404d1-5e50-4caa-bee6-f8aab6a30a7e@yandex-team.ru>
+ <20260113095813.134810-6-dtalexundeer@yandex-team.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <2af404d1-5e50-4caa-bee6-f8aab6a30a7e@yandex-team.ru>
+In-Reply-To: <20260113095813.134810-6-dtalexundeer@yandex-team.ru>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -130,57 +127,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 14, 2026 at 09:19:10AM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> On 13.01.26 21:56, Peter Xu wrote:
-> > On Tue, Jan 13, 2026 at 01:12:42PM -0500, Stefan Hajnoczi wrote:
-> > > On Tue, Jan 13, 2026 at 02:58:09PM +0500, Alexandr Moshkov wrote:
-> > > 
-> > > Peter: Please review the migration aspects (especially the vmstates).
-> > > Thank you!
-> > 
-> > Looks good from my side as long as it's based on VMSD, I appreciate that
-> > change from the old versions where it used to use qemufile APIs.
-> > 
-> > The major question here is if this series depends on Vladimir's other
-> > series
+On Tue, Jan 13, 2026 at 02:58:19PM +0500, Alexandr Moshkov wrote:
+> During inter-host migration, waiting for disk requests to be drained
+> in the vhost-user backend can incur significant downtime.
 > 
-> No, it does not. And if we can proceed with merging these series first, I'll
-> be happy to rebase on top of it.
+> This can be avoided if QEMU migrates the inflight region in
+> vhost-user-blk.
+> Thus, during the qemu migration, with feature flag the vhost-user
+> back-end can immediately stop vrings, so all in-flight requests will be
+> migrated to another host.
+> 
+> Signed-off-by: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
+> ---
+>  hw/block/vhost-user-blk.c          | 28 ++++++++++++++++++++++++++++
+>  include/hw/virtio/vhost-user-blk.h |  1 +
+>  2 files changed, 29 insertions(+)
+> 
+> diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
+> index a8fd90480a..9093e98841 100644
+> --- a/hw/block/vhost-user-blk.c
+> +++ b/hw/block/vhost-user-blk.c
+> @@ -377,6 +377,7 @@ static int vhost_user_blk_init(DeviceState *dev, bool connect, Error **errp)
+>      vhost_dev_set_config_notifier(&s->dev, &blk_ops);
+>  
+>      s->vhost_user.supports_config = true;
+> +    s->vhost_user.supports_inflight_migration = s->inflight_migration;
+>      ret = vhost_dev_init(&s->dev, &s->vhost_user, VHOST_BACKEND_TYPE_USER, 0,
+>                           false, errp);
+>      if (ret < 0) {
+> @@ -656,6 +657,27 @@ static struct vhost_dev *vhost_user_blk_get_vhost(VirtIODevice *vdev)
+>      return &s->dev;
+>  }
+>  
+> +static bool vhost_user_blk_inflight_needed(void *opaque)
+> +{
+> +    struct VHostUserBlk *s = opaque;
+> +
+> +    bool inflight_migration = vhost_dev_has_feature(&s->dev,
+> +                        VHOST_USER_PROTOCOL_F_GET_VRING_BASE_INFLIGHT);
+> +
+> +    return inflight_migration &&
+> +           !migrate_local_vhost_user_blk();
 
-I thought it requires migrate_local_vhost_user_blk() be present?  The
-inflight feature should not be enabled only if there's a hint that it's a
-local migration..
+Here's the spot that should depend on migrate_local_vhost_user_blk() from
+Vladimilr's RFC patch (again, likely to be renamed..).
 
-I'll comment inline on the patch later.
+Btw, is this check correct against "!migrate_local_vhost_user_blk()"?  I
+was expecting the feature off only if local=on, so I expect it to be:
 
-> 
-> > while there's still one patch that is not-for-merge:
-> > 
-> > https://lore.kernel.org/all/20251016114104.1384675-24-vsementsov@yandex-team.ru/#t
-> > 
-> > Does it automatically mark this series RFC as well?
-> > 
-> > Personally speaking, a new migration cap would work all fine, we should
-> > have discussed it somewhere previously.  Said that, "local-vhost-user-blk"
-> > capability is likely not the right one.  IMHO it should be either "local"
-> > or "fd-passing" / "fd-passthrough" (or something generic) as the name.  If
-> > we are not sure if we will leverage more than "passing the FDs around", we
-> > can make it as simple as "local" as a new migration capability.
-> > 
-> > Then migration's misc.h should export a function migrate_is_local() then
-> > device code can probe that in its own vmstate handling paths on save/load.
-> > 
-> > A note to Vladimir: please remember to add a check to enforce UNIX socket
-> > when a formal patch 23 will be proposed some day, no matter what is the
-> > name of the capability.  It should fail qmp "migrate" or qmp
-> > "migrate_incoming" command if the main URI is not a unix socket.
-> > 
-> 
-> Thanks! I'll keep that in mind when prepare next version.
-> 
+       return inflight_migration && migrate_local_vhost_user_blk();
+
+?
+
+> +}
+> +
+> +static const VMStateDescription vmstate_vhost_user_blk_inflight = {
+> +    .name = "vhost-user-blk/inflight",
+> +    .version_id = 1,
+> +    .needed = vhost_user_blk_inflight_needed,
+> +    .fields = (const VMStateField[]) {
+> +        VMSTATE_VHOST_INFLIGHT_REGION(inflight, VHostUserBlk),
+
+One other trivial nitpick while glimpsing over the patch: should we move
+the macro definition from previous patch to this one, where it is used?
+
+> +        VMSTATE_END_OF_LIST()
+> +    },
+> +};
+> +
+>  static bool vhost_user_blk_pre_incoming(void *opaque, Error **errp)
+>  {
+>      VHostUserBlk *s = VHOST_USER_BLK(opaque);
+> @@ -678,6 +700,10 @@ static const VMStateDescription vmstate_vhost_user_blk = {
+>          VMSTATE_VIRTIO_DEVICE,
+>          VMSTATE_END_OF_LIST()
+>      },
+> +    .subsections = (const VMStateDescription * const []) {
+> +        &vmstate_vhost_user_blk_inflight,
+> +        NULL
+> +    }
+>  };
+>  
+>  static bool vhost_user_needed(void *opaque)
+> @@ -751,6 +777,8 @@ static const Property vhost_user_blk_properties[] = {
+>                        VIRTIO_BLK_F_WRITE_ZEROES, true),
+>      DEFINE_PROP_BOOL("skip-get-vring-base-on-force-shutdown", VHostUserBlk,
+>                       skip_get_vring_base_on_force_shutdown, false),
+> +    DEFINE_PROP_BOOL("inflight-migration", VHostUserBlk,
+> +                     inflight_migration, false),
+>  };
+>  
+>  static void vhost_user_blk_class_init(ObjectClass *klass, const void *data)
+> diff --git a/include/hw/virtio/vhost-user-blk.h b/include/hw/virtio/vhost-user-blk.h
+> index b06f55fd6f..e1466e5cf6 100644
+> --- a/include/hw/virtio/vhost-user-blk.h
+> +++ b/include/hw/virtio/vhost-user-blk.h
+> @@ -52,6 +52,7 @@ struct VHostUserBlk {
+>      bool started_vu;
+>  
+>      bool skip_get_vring_base_on_force_shutdown;
+> +    bool inflight_migration;
+>  
+>      bool incoming_backend;
+>  };
 > -- 
-> Best regards,
-> Vladimir
+> 2.34.1
 > 
 
 -- 
