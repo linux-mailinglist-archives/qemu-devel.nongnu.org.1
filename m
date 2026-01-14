@@ -2,111 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD24BD1ECA8
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 13:34:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C50D1ECB7
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 13:35:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vg04S-0007PP-62; Wed, 14 Jan 2026 07:34:02 -0500
+	id 1vg059-00086t-Vn; Wed, 14 Jan 2026 07:34:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vg03i-0007DA-I7
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 07:33:16 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vg050-0007su-VY
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 07:34:34 -0500
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vg03g-00043X-QO
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 07:33:10 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vg04x-0004CD-9M
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 07:34:29 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 2F3AC5C5CB;
- Wed, 14 Jan 2026 12:33:07 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 4D3765C598;
+ Wed, 14 Jan 2026 12:34:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1768393987; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1768394064; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=T+bEQW588LGPPmIIvqpMNUdCDuDK7AVUk23vz5XhzIE=;
- b=TvBpw3HwdMrJICMeD8WFwfRbyvLKN2siZwvdz4JoKFpJb9lkSVRMyt589AHAQaC7/XWhUB
- sKzFdW6VJmQNz779Img00e9bG+4Hd59+LXhAVW97qa7MZt0f4Um5WEU1c4L5nrUVxkrR9s
- 0yEA8dzVhV7xxoGpS5ZX8woq3aN+dfg=
+ bh=6mYdlHsoaQNYvlb2I58sGhuKpi3VpIdAEDysjlhwsAU=;
+ b=Wz/5/XqnY8xQEiptfgQwBpln0irCz3bSkX/+sNPRnsdWPUFLzfdrWBYjcmkEiRaxooWqLw
+ sSUjMLZ75R10FX5P/TaDDRu+yKvsrtOaG7VBSfh3v/1oMKu2EgjgaTPqiFHVlRfhbxCwOp
+ 8o7fQT0e6nFa7XZ0RNx4P8jiniKplLE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1768393987;
+ s=susede2_ed25519; t=1768394064;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=T+bEQW588LGPPmIIvqpMNUdCDuDK7AVUk23vz5XhzIE=;
- b=AH2/T4TqMqKVW9zK+0okzJlacN7jTtTyh4M7h2nlWxIltgg6ycEYEgeNjm2F8mCOICz8EI
- ASMaX4I1H/oLmiDA==
+ bh=6mYdlHsoaQNYvlb2I58sGhuKpi3VpIdAEDysjlhwsAU=;
+ b=ViuMqXVlFOHKuduZFPQ0qg9cJjL/A31E35w1rcfRCbWG/4gVi3mAZS8RMhBjuzXHSIU7Nl
+ BdunkKTYERM5faAQ==
 Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=TvBpw3Hw;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="AH2/T4Tq"
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1768393987; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1768394064; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=T+bEQW588LGPPmIIvqpMNUdCDuDK7AVUk23vz5XhzIE=;
- b=TvBpw3HwdMrJICMeD8WFwfRbyvLKN2siZwvdz4JoKFpJb9lkSVRMyt589AHAQaC7/XWhUB
- sKzFdW6VJmQNz779Img00e9bG+4Hd59+LXhAVW97qa7MZt0f4Um5WEU1c4L5nrUVxkrR9s
- 0yEA8dzVhV7xxoGpS5ZX8woq3aN+dfg=
+ bh=6mYdlHsoaQNYvlb2I58sGhuKpi3VpIdAEDysjlhwsAU=;
+ b=Wz/5/XqnY8xQEiptfgQwBpln0irCz3bSkX/+sNPRnsdWPUFLzfdrWBYjcmkEiRaxooWqLw
+ sSUjMLZ75R10FX5P/TaDDRu+yKvsrtOaG7VBSfh3v/1oMKu2EgjgaTPqiFHVlRfhbxCwOp
+ 8o7fQT0e6nFa7XZ0RNx4P8jiniKplLE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1768393987;
+ s=susede2_ed25519; t=1768394064;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=T+bEQW588LGPPmIIvqpMNUdCDuDK7AVUk23vz5XhzIE=;
- b=AH2/T4TqMqKVW9zK+0okzJlacN7jTtTyh4M7h2nlWxIltgg6ycEYEgeNjm2F8mCOICz8EI
- ASMaX4I1H/oLmiDA==
+ bh=6mYdlHsoaQNYvlb2I58sGhuKpi3VpIdAEDysjlhwsAU=;
+ b=ViuMqXVlFOHKuduZFPQ0qg9cJjL/A31E35w1rcfRCbWG/4gVi3mAZS8RMhBjuzXHSIU7Nl
+ BdunkKTYERM5faAQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A13923EA63;
- Wed, 14 Jan 2026 12:33:06 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BAA493EA63;
+ Wed, 14 Jan 2026 12:34:23 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 7hw2GAKNZ2neUAAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 14 Jan 2026 12:33:06 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id lNN7Hk+NZ2lSUgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 14 Jan 2026 12:34:23 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>, peterx@redhat.com
 Cc: qemu-devel@nongnu.org, dtalexundeer@yandex-team.ru,
  vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
  d-tatianin@yandex-team.ru
-Subject: Re: [PATCH 4/5] qemu-file: qemu_file_get_fd(): check service byte
- itself
-In-Reply-To: <20260114064710.176268-5-vsementsov@yandex-team.ru>
+Subject: Re: [PATCH 5/5] qemu-file: qemu_file_get_fd(): improve interface
+In-Reply-To: <20260114064710.176268-6-vsementsov@yandex-team.ru>
 References: <20260114064710.176268-1-vsementsov@yandex-team.ru>
- <20260114064710.176268-5-vsementsov@yandex-team.ru>
-Date: Wed, 14 Jan 2026 09:33:03 -0300
-Message-ID: <87pl7cnzls.fsf@suse.de>
+ <20260114064710.176268-6-vsementsov@yandex-team.ru>
+Date: Wed, 14 Jan 2026 09:34:21 -0300
+Message-ID: <87ms2gnzjm.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Spam-Score: -4.51
-X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  NEURAL_HAM_LONG(-1.00)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; FUZZY_RATELIMITED(0.00)[rspamd.com];
- RCVD_VIA_SMTP_AUTH(0.00)[]; MISSING_XM_UA(0.00)[];
- MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[];
- RCPT_COUNT_SEVEN(0.00)[7]; RCVD_TLS_ALL(0.00)[];
- TO_DN_SOME(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_COUNT_TWO(0.00)[2];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ FUZZY_RATELIMITED(0.00)[rspamd.com]; ARC_NA(0.00)[];
+ MISSING_XM_UA(0.00)[]; RCPT_COUNT_SEVEN(0.00)[7];
+ MID_RHS_MATCH_FROM(0.00)[]; RCVD_TLS_ALL(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 2F3AC5C5CB
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ FROM_HAS_DN(0.00)[]; MIME_TRACE(0.00)[0:+];
+ FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; TO_DN_SOME(0.00)[]
+X-Spam-Score: -4.30
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -125,38 +115,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
 
-> We can check it, so, why not.
+> Make it symmetrical with qemu_file_put_fd() and simplify callers.
 >
 > Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 > ---
->  migration/qemu-file.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
+>  migration/qemu-file.c     |  9 ++++-----
+>  migration/qemu-file.h     |  2 +-
+>  migration/vmstate-types.c | 10 +---------
+>  3 files changed, 6 insertions(+), 15 deletions(-)
 >
 > diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-> index 3a9a0a49d4..da701d40e4 100644
+> index da701d40e4..f8394cbbb5 100644
 > --- a/migration/qemu-file.c
 > +++ b/migration/qemu-file.c
-> @@ -390,13 +390,19 @@ int qemu_file_get_fd(QEMUFile *f)
->      int fd = -1;
+> @@ -385,9 +385,8 @@ int qemu_file_put_fd(QEMUFile *f, int fd)
+>      return ret;
+>  }
+>  
+> -int qemu_file_get_fd(QEMUFile *f)
+> +int qemu_file_get_fd(QEMUFile *f, int *fd)
+>  {
+> -    int fd = -1;
 >      FdEntry *fde;
 >      Error *err = NULL;
-> +    int service_byte;
->  
->      if (!f->can_pass_fd) {
->          error_setg(&err, "%s does not support fd passing", f->ioc->name);
+>      int service_byte;
+> @@ -410,12 +409,12 @@ int qemu_file_get_fd(QEMUFile *f)
 >          goto fail;
 >      }
 >  
-> -    qemu_get_byte(f);
-> +    service_byte = qemu_get_byte(f);
-> +    if (service_byte != ' ') {
-> +        error_setg(&err, "%s unexpected service byte: %d(%c)", f->ioc->name,
-> +                   service_byte, service_byte);
-> +        goto fail;
-> +    }
+> -    fd = fde->fd;
+> +    *fd = fde->fd;
+>      QTAILQ_REMOVE(&f->fds, fde, entry);
+>      g_free(fde);
 >  
->      fde = QTAILQ_FIRST(&f->fds);
->      if (!fde) {
+> -    trace_qemu_file_get_fd(f->ioc->name, fd);
+> -    return fd;
+> +    trace_qemu_file_get_fd(f->ioc->name, *fd);
+> +    return 0;
+>  
+>  fail:
+>      error_report_err(error_copy(err));
+> diff --git a/migration/qemu-file.h b/migration/qemu-file.h
+> index c13c967167..a8e9bb2ccb 100644
+> --- a/migration/qemu-file.h
+> +++ b/migration/qemu-file.h
+> @@ -82,6 +82,6 @@ size_t qemu_get_buffer_at(QEMUFile *f, const uint8_t *buf, size_t buflen,
+>  
+>  QIOChannel *qemu_file_get_ioc(QEMUFile *file);
+>  int qemu_file_put_fd(QEMUFile *f, int fd);
+> -int qemu_file_get_fd(QEMUFile *f);
+> +int qemu_file_get_fd(QEMUFile *f, int *fd);
+>  
+>  #endif
+> diff --git a/migration/vmstate-types.c b/migration/vmstate-types.c
+> index e34bf4486e..89cb211472 100644
+> --- a/migration/vmstate-types.c
+> +++ b/migration/vmstate-types.c
+> @@ -321,7 +321,6 @@ const VMStateInfo vmstate_info_uint64 = {
+>  static int get_fd(QEMUFile *f, void *pv, size_t size,
+>                    const VMStateField *field)
+>  {
+> -    int fd;
+>      int32_t *v = pv;
+>  
+>      if (migrate_mode() == MIG_MODE_CPR_EXEC) {
+> @@ -329,14 +328,7 @@ static int get_fd(QEMUFile *f, void *pv, size_t size,
+>          return 0;
+>      }
+>  
+> -    fd = qemu_file_get_fd(f);
+> -    if (fd < 0) {
+> -        return -1;
+> -    }
+> -
+> -    *v = fd;
+> -
+> -    return 0;
+> +    return qemu_file_get_fd(f, v);
+>  }
+>  
+>  static int put_fd(QEMUFile *f, void *pv, size_t size,
 
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
