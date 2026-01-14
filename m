@@ -2,97 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 636D6D1FCFF
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 16:36:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02815D1FD69
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 16:38:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vg2v4-00064t-JU; Wed, 14 Jan 2026 10:36:26 -0500
+	id 1vg2we-00080x-0y; Wed, 14 Jan 2026 10:38:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vg2ur-0005vY-1k
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 10:36:16 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vg2wa-0007z7-Ga
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 10:38:01 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vg2up-0003pu-Lk
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 10:36:12 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vg2wZ-00040t-3T
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 10:38:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768404969;
+ s=mimecast20190719; t=1768405077;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=yFREpAotJMpoOXOn0epbHgD3xLWzMM8N9fE0gBuHRFI=;
- b=M71cZUBNSDiVtZGygFv1xf47biEiQMMGiFx1ZvjsXAoparFsXY+j9jB+Eo491DNoCA6EBO
- rfiJo/JKOq8Exa9dS+2+2le1mKo2PuY3NSM1rRFdEzHYl9REulysUlY700ZUXF1+XkzS5Y
- wKe7Vvx0hfslgwDxSFrknr+lwX7Ki1k=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=mcnyo4z/K8zuM5H3fJ07dyGpdMXNXVDKzy7IKjPXbW8=;
+ b=OuOsKsw9VL3QLTFAqIItdOrTFr87vhZOM76/82wz9s7w+SehMQOxZpvb0WhRmwd9eXrcr9
+ GvyCM4BXgCevoVlW/TydNtjM5dUBkQ4zGN2hpY/WhuZFH+0a/OCrMGs8ZckYuBjAN7srV7
+ l9Xu9xuV0ZZagpdSdkPA+r/fJLSxn68=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-595-1r-z5dzMOPC35N8AZnCCiw-1; Wed, 14 Jan 2026 10:36:07 -0500
-X-MC-Unique: 1r-z5dzMOPC35N8AZnCCiw-1
-X-Mimecast-MFC-AGG-ID: 1r-z5dzMOPC35N8AZnCCiw_1768404967
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-8b2e235d4d2so3418576885a.3
- for <qemu-devel@nongnu.org>; Wed, 14 Jan 2026 07:36:07 -0800 (PST)
+ us-mta-659-XwCp0VHwMJiy0uzwQ_pMLw-1; Wed, 14 Jan 2026 10:37:55 -0500
+X-MC-Unique: XwCp0VHwMJiy0uzwQ_pMLw-1
+X-Mimecast-MFC-AGG-ID: XwCp0VHwMJiy0uzwQ_pMLw_1768405075
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-8c52d3be24cso191132785a.0
+ for <qemu-devel@nongnu.org>; Wed, 14 Jan 2026 07:37:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768404967; x=1769009767; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=yFREpAotJMpoOXOn0epbHgD3xLWzMM8N9fE0gBuHRFI=;
- b=qJeGi1uXLb7csY4YaEOu1D7uRd41TKw31A/FGqi3G+CXOyQbntK5XAq5wQednhWmkE
- 19P+euZ++S+PP/9aLS7G7xg8/3ryFFEltnAPRD9dLBEqHOZAPIpbZC+LB9ffXwmCfzrH
- dXUO1ARVukIATFcyH64wXqF09pmKN8e8WmmdGFfxF4OEq+xbREs7VlinsfCcFIpOuYhD
- HTIqIs/YZSSo/d5wtvrwLdHfXSoptdYK1jkxh0c6qpsi8pFZZxCeaUj3f5K5mxfSFdye
- ddWzdavwOHcVGVygx0SJznOXXy7vcxyYSt9tqJjHw4wqxIsSBekikP1VyQQR0uTPU42F
- ycng==
+ d=redhat.com; s=google; t=1768405074; x=1769009874; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=mcnyo4z/K8zuM5H3fJ07dyGpdMXNXVDKzy7IKjPXbW8=;
+ b=gHKCpGF2eR9To/G6jPrhdpr8gLPh8tKIV+2H/6bczqToXdNaowsa9NOKchATGdprvU
+ rgdcQ4suF6NaurFJe8LfO2EG0hCayTD8k8jkCDYmGXpKu9b+WQTz66GrSiEVMHaFqHqY
+ k44xIwxGBm5Ui2ZBTVtmxnCaytUwzuHliNx9nBYm/9zaIIH5J4s4c2bcISb1CjYl1ekW
+ YcNVIchpz+W761KGfwKbmZZ1P4B6W4IDGb5ijI7pNMB04BsC2KzRjwjOkiJK8VPofhPa
+ olUauY3xkS248a0XHOrXnv/9X+pIMkAVSvGwYa+7gvxAOjfjjYD6w1TUsRdYzfaUGkCA
+ TB8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768404967; x=1769009767;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yFREpAotJMpoOXOn0epbHgD3xLWzMM8N9fE0gBuHRFI=;
- b=DE4WkpsACN5hySX5J/29Thg7adQIFIt/B3GZy0KT5kRyVU1t1CXEe7PYKr2vd3cnC4
- V51CDxfXGjIw3SNv6GDm0JQ3pvoVVd9minmGuznesgWayeCtwcJOlmIlDzFfEGtx/Ugk
- e/h8PFSLbyNYIuRJE6J55yFjbzvGoHCz6AXhs4tf7w/19MV2j7t9xkIT5D9IfPe+8jQJ
- KmTJHAW58gmKmqqSvsqr8lQlPD2GlgR8vB+EDmzHSK7SfgnExJY5uVr6tKozOSJo9x38
- z6SAGdYVOXFlGL9LgtHg/m1AIXhL41nYab+xjnZi4jBTSnrNWAluJS2tlEAoILvhwucS
- 1dFQ==
-X-Gm-Message-State: AOJu0YxFGI6RJyKStNoLjk44DEyPpWq3UDzvYvE246KXABZNm7Lj6uPz
- sgzo+fyShTiLBUWlrnqi3xFJ3GTmdheaQsuPv61BLO8BM/RXcJUHX5TknguA4CASbJSPhK8bmES
- Fsp07FNcfj6I34oF+rs7wOfl9FxbLip+wp95IaBSPOQk6HLEhB56CCHZNo5K8JLPJ
-X-Gm-Gg: AY/fxX6RfKZNskhUJuJ9fogNS+nxMLP2oVRGVaAC9wzK9sNjMhg6afYLHxuybuYetSC
- nu1E11AqaSBmWG5HzOxuPeq+dFjCYoapPQBrwbAR7qTV6R7aXo1qvXL3D6hWiC00g/N5Hz/tgtz
- 244imYJsw3qBuszJT1D6/sekf1kUV6IsOYqEIgcwhDQtvmFjQG694CEiEx5WgzEHeuqUwditSTc
- SVYA1sTiKtBthc3qlBC6RioDcZE442Ol1lRUrf3wVwNQPZaXr7OojVlrE9mv8L7DcOX1F32191n
- C/N5NILtscd2uUqo8jd3IQRTgZWSVCA7YRhyShLmSKU23NxeuiWYJ5lT80/Hx12zIx7eU+BREEE
- htKk=
-X-Received: by 2002:a05:620a:2902:b0:8b2:1f8d:f115 with SMTP id
- af79cd13be357-8c52fbfa45emr433983085a.65.1768404966617; 
- Wed, 14 Jan 2026 07:36:06 -0800 (PST)
-X-Received: by 2002:a05:620a:2902:b0:8b2:1f8d:f115 with SMTP id
- af79cd13be357-8c52fbfa45emr433977985a.65.1768404966202; 
- Wed, 14 Jan 2026 07:36:06 -0800 (PST)
-Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-8c530a6bdbdsm180992085a.10.2026.01.14.07.36.05
+ d=1e100.net; s=20230601; t=1768405074; x=1769009874;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=mcnyo4z/K8zuM5H3fJ07dyGpdMXNXVDKzy7IKjPXbW8=;
+ b=ii1dstSuCVxjFNo1tb8ub49myWYt0edGMHToAR5GAFcR1anrWP4AK1LPOx8UO6EERu
+ ANj/Y1sh+D3ln4R5l8yvANvgmxwOh01xg+YZhAEt/lBb5BC44HFuPqHwv16mZVEUxJEi
+ 2Ks7R+HP6ZXxdm8xTO5V9lxO9IfwcvriYwlHg1WPMrpfNXMLUpxrr4I595TqXwB9v342
+ H41lsa8zdskObs61vKjVGakBO/jJ8veYyFPOouzECcox9BUy447PgoZMDMu7tK9ZtKmO
+ RCStDaYm+e+zeYyVAQDy9eRGLmfqdu8OiC50EoG+90dnP8sAC/1bFEeMcXtFVPmsZR6f
+ k0hA==
+X-Gm-Message-State: AOJu0YxgvPD2RkHQRryyVxI2+y4q2i4Fe8CQJGnOdnuo/TixlSOpkQGc
+ sepA+3Gijl8X90NIU4K/Z+g/HespZRn+T9nCfjzwfOzA3/ANvKOUAIg18EIRMt5mqI2/742Gx2b
+ gpAMiwEZ3RjwpoH4YIHhHwsc1w6Bpqoy7hhqU2TynAnt4hyC460B5Csb5maCVtmUtQqAv7UMpnH
+ mHEIK8JbyHOFYSD8+usfefMeE3ZawlKlpB4Y9Msg==
+X-Gm-Gg: AY/fxX7Ld7ndON2Ez+JrlXHOVKo6hwlpVmIaskWK1cCNv6e9sz/bRvy3zjOGlLgehh9
+ 7pOdjZ8F9FCNv2m0oOcZcUjecNzuCNqxjusb6Ry7VGyNIxAkBRgoIpB7dCozauOQvv3rohKm4aB
+ ev2PC7TEPW/zl4HbiNrMTYOFTCFbt94SnQNB5qms7Jf+0uDkSBo8jn/1H/e75oLNhOuy9b5uyiM
+ UaDv4ja1fpGHIbcS0kEOqcSA7kR6dcv2kWHTvAZCXjhVWaUA8Yrzt0s/3n4jZZoG7bbMq/ZSza2
+ vq0cbI6MteXNRSVUy1FGUvLSO8sxTlBzUR2LsPjXibgcv8/c8+IEkT+ZCdZhwekFa5LD8n0qVcG
+ m
+X-Received: by 2002:a05:620a:284d:b0:8c1:ab1c:f2da with SMTP id
+ af79cd13be357-8c52fbf6914mr453173485a.70.1768405074536; 
+ Wed, 14 Jan 2026 07:37:54 -0800 (PST)
+X-Received: by 2002:a05:620a:284d:b0:8c1:ab1c:f2da with SMTP id
+ af79cd13be357-8c52fbf6914mr453168385a.70.1768405073901; 
+ Wed, 14 Jan 2026 07:37:53 -0800 (PST)
+Received: from x1.com ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-8c530aab8f1sm184047185a.23.2026.01.14.07.37.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Jan 2026 07:36:05 -0800 (PST)
-Date: Wed, 14 Jan 2026 10:36:04 -0500
+ Wed, 14 Jan 2026 07:37:53 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
-To: Prasad Pandit <ppandit@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Lukas Straub <lukasstraub2@web.de>, Juraj Marcin <jmarcin@redhat.com>
-Subject: Re: [PATCH 2/2] tests/migration-test: Remove
- postcopy_recovery_fail_stage from MigrateCommon
-Message-ID: <aWe35LsGn_68MIUu@x1.local>
-References: <20260106203320.2110372-1-peterx@redhat.com>
- <20260106203320.2110372-3-peterx@redhat.com>
- <CAE8KmOz9XtaEY+LMD9CCCR_bMXe04chGHdvuwVqsYRNe+AtUJg@mail.gmail.com>
- <aV6UhNJzQLnDaJvO@x1.local>
- <CAE8KmOzPHTf6eaufn3dWTJJ2nsifdxZzwENK2hD_LZLGiE-pcQ@mail.gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Lukas Straub <lukasstraub2@web.de>, Fabiano Rosas <farosas@suse.de>,
+ Juraj Marcin <jmarcin@redhat.com>, peterx@redhat.com,
+ Prasad Pandit <ppandit@redhat.com>
+Subject: [PATCH v2 0/2] tests/migration-test: Small cleanup series on postcopy
+ tests
+Date: Wed, 14 Jan 2026 10:37:49 -0500
+Message-ID: <20260114153751.2427172-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.50.1
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAE8KmOzPHTf6eaufn3dWTJJ2nsifdxZzwENK2hD_LZLGiE-pcQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -118,40 +115,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jan 08, 2026 at 03:11:32PM +0530, Prasad Pandit wrote:
-> On Wed, 7 Jan 2026 at 22:45, Peter Xu <peterx@redhat.com> wrote:
-> > On Wed, Jan 07, 2026 at 05:07:40PM +0530, Prasad Pandit wrote:
-> > > On Wed, 7 Jan 2026 at 02:04, Peter Xu <peterx@redhat.com> wrote:
-> > > > The parameter can be instead passed into the function.
-> > >
-> > > * It'll help to include - why? pass the parameter instead.
-> >
-> > I want to remove special and unnecessary fields in MigrateCommon struct.
-> >
-> > I'll add a sentence when repost.
-> ...
-> > > * To keep it consistent, maybe we can call the variable 'stage' as above?
-> >
-> > Personally I prefer fail_stage, e.g. fail_stage=NONE means it never fails.
-> > stage==NONE is less clear.
-> 
-> * Let's make it fail_stage in both places then?
+v2:
+- add one sentence to commit message of patch 2
 
-Could you explain what's the 2nd place to use it besides the parameter in
-test_postcopy_recovery_common()?
+This series removes two unnecessary fields in MigrateCommon that was only
+for postcopy tests.
 
-> 
-> Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
+Comments welcomed, thanks.
 
-Thanks,
+Peter Xu (2):
+  tests/migration-test: Remove postcopy_data from MigrateCommon
+  tests/migration-test: Remove postcopy_recovery_fail_stage from
+    MigrateCommon
 
-> 
-> Thank you.
-> ---
->   - Prasad
-> 
+ tests/qtest/migration/framework.h      |  7 ++-----
+ tests/qtest/migration/framework.c      | 25 ++++++++++++++-----------
+ tests/qtest/migration/postcopy-tests.c | 12 ++++--------
+ tests/qtest/migration/tls-tests.c      |  8 ++++----
+ 4 files changed, 24 insertions(+), 28 deletions(-)
 
 -- 
-Peter Xu
+2.50.1
 
 
