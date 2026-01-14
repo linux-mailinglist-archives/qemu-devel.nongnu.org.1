@@ -2,88 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F64D1C650
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 05:37:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A7A3D1C61D
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 05:36:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfsbZ-0006AQ-PW; Tue, 13 Jan 2026 23:35:37 -0500
+	id 1vfsbb-0006B9-R8; Tue, 13 Jan 2026 23:35:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1vfsbV-00069i-Ox
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 23:35:35 -0500
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1vfsbZ-0006Aq-J8
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 23:35:37 -0500
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1vfsbU-0008Kf-6u
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 23:35:33 -0500
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-81f478e5283so2997890b3a.2
- for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 20:35:31 -0800 (PST)
+ id 1vfsbY-0008LI-94
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 23:35:37 -0500
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-81e9d0cd082so3684931b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 20:35:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1768365330; x=1768970130; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1768365335; x=1768970135; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
  :message-id:reply-to;
- bh=A9olK44AYgWu2ZXXXtInH5+BcooZTljrg2yaMIZdD0E=;
- b=CpLQqK5tPB9QLpaFrBkX2Od3l7D4FnKAA6WeoWQoAnUYRvGOexcv7rpVbQHT/ZFyHP
- JP8yNCHOBqsf03DuHdVufPZShHfCKUvddN5e4JzTXtnsu8dHiwUJvHAXUebQSvwIBlKf
- K3QZ00ScEIREgQ8gdKqCsQMdMCP03SwlUW7trrIWLVUVt6ST0KAfyfevqnOdn0iFlaYb
- WLqJHSVF3mmsctNqAwQztqcksKKLqqOrojXejgv35Ge2jwUVXDoo6h7T20Qlz+W91RIO
- sH4o2bwqMWdZxorhOcukwIEojIsNCPDwN8/h5HdALyMbv5lg9WYjLXSAL7M2NpMsZzNj
- 9P1Q==
+ bh=P8DcrnEjphKOWXSl7mahCJlmtxkm2g8RSUes1tVeSkw=;
+ b=CQnLmyJtoQWotoCQrfXPvdYHo1/N+N5a7UAnGmJkh7s38yBlqwE3aKxvMumCTwjoC4
+ dbhFwB7I932tQVLtamX6PJaBU01sKflzMw4Yx75t1mrGChTF6TcUNZrBiD3PqxnqzJ6d
+ OxARAYxm03e6z9AV2zZDRuCKp9q5rpD2RnoSRfG4AXWyooq1FnsH3xVtsjNkBswEHrjs
+ WBAWGxsNs1mCTRKAzJHep79lF3ENpMvdzAqpv65aAmcCyyQfBRFkMvBb9f7Fc/KpAB2O
+ YOc76AaLFDIeVQ/wGrgkLBwnIF0p3X1+UjpBTRZoAK12UAcrgbuysFKtvXFSBMO5VPcT
+ QYyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768365330; x=1768970130;
+ d=1e100.net; s=20230601; t=1768365335; x=1768970135;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:sender:x-gm-gg
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=A9olK44AYgWu2ZXXXtInH5+BcooZTljrg2yaMIZdD0E=;
- b=bBVar0VTh0piptJjiVUYqEoH6XC2AiEIKYBdCDQu1zF4ifRxOU357M/uhzETTlfnC1
- FlG/4iFy2hN+xed2FNyf0KmbmpKPXNXdkbXw7VB0vlEfBCECeSYHfmi9RBHCwgJN/4c+
- bhasfWfyFKwgXc9bUqhQ6dvuoivdMDVFMFxLh2fBUUU06t9QisZTEHc6rLn+a3PEFksn
- PEh0bifolM9PuRMa2wGWwI6vuZC5TDgGKXArX1dKn/dRT2aAIuWSfwpOcHlaHiUnA0SB
- V8nGpZRN6IW4n4ezr7IXcgeenE2/75Nxz5XiRqb+YlE0/gw4t5mgiy+MQw/TofuJzQyj
- NTYw==
+ bh=P8DcrnEjphKOWXSl7mahCJlmtxkm2g8RSUes1tVeSkw=;
+ b=ri+wpWYtpmKnEYHD3rITizC6jLcHCyKifvTx+gYpaaqt7sqso6kn+e8pBfL0q6Cd7d
+ MNBR41Igfj1X9NaU+FlbH1+bqf0y4WLVbCWUAJqW3qyhcuTA/dGOCO0wjVtde2we1LET
+ NQtqOVIercSmuu1jWTPqSOWwI/L2aH8TENGEGQjy3w1aXwNmO5297KBp11oH+SGsefwJ
+ YBFYRYB0pgFjBgBBdUdcOm3RHM7aeRkaEjMlcvGImehkbxdgjzvE8Y0rJKKxcLgV5Pbr
+ D36M4sOUJf2dQpil1fejpWhWWkR1EzNMtOfyIiAcf9cbBqUr4k/ndJTWDOGMtYiK0bIQ
+ bYYQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWVS9b+kzg5P1Q8slKMi3m0/58SwaDPIQ29M06e6PeBghNQnY1laKpoWVb4cBcq4BeAS7Pg6iL8/km6@nongnu.org
-X-Gm-Message-State: AOJu0YxKWDbGyyjj4hK0bruFZUd3oD6lrXHODFHaMWFiYHyeVjxhNs8F
- EvaI/8KGC0z65bhtoHxfDHg2v2w2dK4oiTSSR6T782fBXeS1tasrVGIu
-X-Gm-Gg: AY/fxX4A9utJlK4MPcUdrwo+5OklOLt2LaRH18VXsHMLRmMa+GW0tU+bWthfz4NZSCr
- 5gAkGIYGyv1V/2kfvhntVigN5KisQQZEppuhWo93haaxWN+NxcE6Ae92IyMnumj7ywoaOO39HKa
- y6LGgkuOF7NOnHjEzMCgZWupq/a8Vt380CEIXOs9JLU2MNMhSEFsBT7wUUZJEc6dyTKtOwaMsMX
- nreG2W+BGxJ5Pe8SDRdNWy4opjdFZN3ptJz0Q5uPo5KGscGVE+R3HLvMpHa73eBRrUpYZO3xHPQ
- v+S+9cyukRxn7xtAmEsJ08HQTbCuhMp6THH/dijdC327bL6iO4Yu/gRvRrouxCUBBrgyH2QdxMc
- I0Lbe2jdhVB75mOiaL5x5mrJ6qqDZkNOgQRawgDRD//idD+PmIpZAFHNRJazdhLGuj/JF4jTtqy
- Oro+wo8yqY2mte0c/I6fEK
-X-Received: by 2002:a05:6a20:729b:b0:361:2d0c:fd81 with SMTP id
- adf61e73a8af0-38befaf6a41mr1207832637.28.1768365329916; 
- Tue, 13 Jan 2026 20:35:29 -0800 (PST)
+ AJvYcCVDIlTyixxPUGtM6nsAg4839h5i+7/rTNuyrJTimJBo0a16kRpw3b+P7Ryer9bGSskAPW+BC8DUGXrb@nongnu.org
+X-Gm-Message-State: AOJu0YwucK0/7oE7vXIP9QUhfu9juGTEpU25cv1PQaWV+/G16koc8d2V
+ EKR+/Eq4LRTuHu0Ds9qiu344AHIprbxGTJwSJpCoflYNMeOuCPuCFiKU
+X-Gm-Gg: AY/fxX5ZfboOt+1maPW4d4eoMkpIuLvTIMQfobSlyKMLpQV2hSNh+UK0IE+iD1+gP7Q
+ eITnvbXKZRQENzJWyX0r2lqh/M1VQIHY7T9Xbunm/BONvmkxH7hPWGtLcEymNF1bsxx8fJcinFz
+ Vje62WlJvBjH7v1habgOEajzoS4+mxvGfZi6aqEW0XIy37ZMtBc/wNbuSV0rhh83350hDX7yyzN
+ 6ABpC2FuVRqzyMyoWFYOnIbYLNnUamFs3qNZSU+f2ZqVyN1AUppR/5/g7USgFLxq47/5zST4ihS
+ fjyKhmSsYacPnfvxE6mz5z04FfdLUTmgeKXbJ4OchpgFh6Sh4gfaCuL29caTGoGAnMqqZR3Udzj
+ A0VIHotaDl6u+4OdUlrYShsnMjqPdgUlr7XIxKJXTD3FtzLNjF4IpF69BuhdhQNinQvAK8YpcJ/
+ HAysIcZLugEjxgSy5tz//b
+X-Received: by 2002:a05:6a00:4517:b0:81f:4708:b477 with SMTP id
+ d2e1a72fcca58-81f81ffde1dmr1111239b3a.60.1768365334810; 
+ Tue, 13 Jan 2026 20:35:34 -0800 (PST)
 Received: from donnager-debian.. ([45.124.203.15])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-c4cb5352268sm20702659a12.0.2026.01.13.20.35.25
+ 41be03b00d2f7-c4cb5352268sm20702659a12.0.2026.01.13.20.35.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jan 2026 20:35:29 -0800 (PST)
+ Tue, 13 Jan 2026 20:35:34 -0800 (PST)
 From: Joel Stanley <joel@jms.id.au>
 To: Alistair Francis <alistair.francis@wdc.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Sunil V L <sunilvl@ventanamicro.com>, qemu-devel@nongnu.org
 Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Weiwei Li <liwei1518@gmail.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Michael Ellerman <mpe@oss.tenstorrent.com>,
  Joel Stanley <jms@oss.tenstorrent.com>,
  Nick Piggin <npiggin@oss.tenstorrent.com>,
  Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>, qemu-riscv@nongnu.org
-Subject: [PATCH v2 5/6] hw/riscv/atlantis: Add some i2c peripherals
-Date: Wed, 14 Jan 2026 15:04:27 +1030
-Message-ID: <20260114043433.1056021-6-joel@jms.id.au>
+Subject: [PATCH v2 6/6] hw/riscv/atlantis: Use halting kernel if there is no
+ payload
+Date: Wed, 14 Jan 2026 15:04:28 +1030
+Message-ID: <20260114043433.1056021-7-joel@jms.id.au>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260114043433.1056021-1-joel@jms.id.au>
 References: <20260114043433.1056021-1-joel@jms.id.au>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=joel.stan@gmail.com; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=joel.stan@gmail.com; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -91,7 +93,7 @@ X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.001,
  FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,71 +109,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add an I2C RTC device and a temperature sensor. These are not present
-on the board but help for testing.
+From: Nicholas Piggin <npiggin@gmail.com>
 
+To avoid OpenSBI hanging with no messages if there is no kernel
+provided, add the simple payload in that case.
+
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Joel Stanley <joel@jms.id.au>
 ---
- hw/riscv/tt_atlantis.c | 18 ++++++++++++++++++
- hw/riscv/Kconfig       |  2 ++
- 2 files changed, 20 insertions(+)
+ hw/riscv/tt_atlantis.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/hw/riscv/tt_atlantis.c b/hw/riscv/tt_atlantis.c
-index 2d0add278c20..2e96c5954268 100644
+index 2e96c5954268..cec17e7cb952 100644
 --- a/hw/riscv/tt_atlantis.c
 +++ b/hw/riscv/tt_atlantis.c
-@@ -497,6 +497,19 @@ static void create_fdt_i2c(void *fdt, const MemMapEntry *mem, uint32_t irq,
-     qemu_fdt_setprop_cell(fdt, name, "#size-cells", 0);
- }
+@@ -745,15 +745,15 @@ static void tt_atlantis_machine_done(Notifier *notifier, void *data)
+                                                      firmware_name,
+                                                      &start_addr, NULL);
  
-+static void create_fdt_i2c_device(TTAtlantisState *s, int bus,
-+                                  const char *compat, int addr)
-+{
-+    void *fdt = MACHINE(s)->fdt;
-+    hwaddr base = s->memmap[TT_ATL_I2C0 + bus].base;
-+    g_autofree char *name = g_strdup_printf("/soc/i2c@%"PRIx64"/sensor@%d",
-+                            base, addr);
-+
-+    qemu_fdt_add_subnode(fdt, name);
-+    qemu_fdt_setprop_string(fdt, name, "compatible", compat);
-+    qemu_fdt_setprop_cell(fdt, name, "reg", addr);
-+}
-+
- static void finalize_fdt(TTAtlantisState *s)
- {
-     uint32_t aplic_s_phandle = next_phandle();
-@@ -531,6 +544,9 @@ static void finalize_fdt(TTAtlantisState *s)
-                        TT_ATL_I2C0_IRQ + i,
-                        aplic_s_phandle);
++    kernel_start_addr = riscv_calc_kernel_start_addr(&boot_info,
++                                                     firmware_end_addr);
+     if (machine->kernel_filename) {
+-        kernel_start_addr = riscv_calc_kernel_start_addr(&boot_info,
+-                                                         firmware_end_addr);
+         riscv_load_kernel(machine, &boot_info, kernel_start_addr,
+                           true, NULL);
+-        kernel_entry = boot_info.image_low_addr;
+     } else {
+-        kernel_entry = 0;
++        riscv_setup_halting_payload(machine, &boot_info, kernel_start_addr);
      }
-+
-+    create_fdt_i2c_device(s, 0, "national,lm75", 0x48);
-+    create_fdt_i2c_device(s, 0, "dallas,ds1338", 0x6f);
- }
++    kernel_entry = boot_info.image_low_addr;
  
- static void create_fdt(TTAtlantisState *s)
-@@ -851,6 +867,8 @@ static void tt_atlantis_machine_init(MachineState *machine)
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->i2c[i]), 0,
-                            qdev_get_gpio_in(s->irqchip, TT_ATL_I2C0_IRQ + i));
-     }
-+    i2c_slave_create_simple(s->i2c[0].bus, "ds1338", 0x6f);
-+    i2c_slave_create_simple(s->i2c[0].bus, "tmp105", 0x48);
- 
-     /* Load or create device tree */
-     if (machine->dtb) {
-diff --git a/hw/riscv/Kconfig b/hw/riscv/Kconfig
-index ee876557ef15..0367d25d48da 100644
---- a/hw/riscv/Kconfig
-+++ b/hw/riscv/Kconfig
-@@ -138,6 +138,8 @@ config TENSTORRENT
-     select FW_CFG_DMA
-     select PLATFORM_BUS
-     select DESIGNWARE_I2C
-+    select DS1338
-+    select TMP105
- 
- config XIANGSHAN_KUNMINGHU
-     bool
+     fdt_load_addr = riscv_compute_fdt_addr(s->memmap[TT_ATL_DDR_LO].base,
+                                            s->memmap[TT_ATL_DDR_LO].size,
 -- 
 2.47.3
 
