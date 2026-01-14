@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EE66D1F20D
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 14:44:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32B0CD1F23A
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 14:45:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vg19Z-0001Yg-Lj; Wed, 14 Jan 2026 08:43:17 -0500
+	id 1vg19e-0001vY-Ms; Wed, 14 Jan 2026 08:43:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1vg19W-0001OB-So
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 08:43:14 -0500
-Received: from p-east2-cluster4-host9-snip4-10.eps.apple.com ([57.103.78.221]
+ id 1vg19a-0001iY-Uz
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 08:43:18 -0500
+Received: from p-east2-cluster4-host1-snip4-5.eps.apple.com ([57.103.78.156]
  helo=outbound.st.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1vg19U-0008SR-LJ
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 08:43:14 -0500
+ id 1vg19Y-0000FJ-AM
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 08:43:18 -0500
 Received: from outbound.st.icloud.com (unknown [127.0.0.2])
  by p00-icloudmta-asmtp-us-east-1a-100-percent-2 (Postfix) with ESMTPS id
- 0D5A31800745; Wed, 14 Jan 2026 13:43:07 +0000 (UTC)
+ 5EFD418004B8; Wed, 14 Jan 2026 13:43:11 +0000 (UTC)
 Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=0bcIOI3LlXP+xiRF8XwgIxeQr5th/olwhYQiO6iSkA8=;
+ s=sig1; bh=hmtRjfpovQKAt6bOzupfSsq9QGbrBwhc/6trzg3cQyI=;
  h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme;
- b=abrxsGEXtQdxCPGWQcQkwFU+OqlvPeJlxsosPPgn+wA5KvjsRhgtVD8fI7rlTwtunf33IpYeLJqhJ3c9em6ZUl3Usn3ZK82w8naKcqsepGqkeexeHTXNksNhAeHjcruy3OlbRAXqulfMqUcqhfSXWIQeDWou23a6habz/zqumqeVJPKeZMm9LhFBWPdZmR7Cee9xa4HBT2Ev1NlfVAdD573VJlz1M4TIuqpmOyppaPFF6m8u4QoIeNmxEy6JCF8Uy+jMaMuw5aGO5ttkk9A6LW6oyUl/+Qf1XoQgIDTTI/u2K8WP3f9022iuaz0xViwL/YdXbFIewwtSVGTqBPFUSw==
+ b=BLw1EtPoHEtXcBOGMsuT0RGJw4q0c1HVSKWWIF+Wlx8qay4hlMhfOlBSnTPfT36NA+XwouK+NbZEEkuSck83LNkteGTjb8Z8uQ0sSGpGrMgexCXr/n0VwoeWyRDmrcBTzcz7mgjlCk2BqapKnPAsalimNtvWqtTI1bT7pBDgbbPqonrag9+InqU0oXigmy/ZyYn13SxfbnlmBRtAKGj6z5YHJ5FAAZ9qSydcXXofrtCyqiKO9X3XUvDx615xVmMSEdbfsRfcd4D73y2KXRESgDUZnOlRxoJFtsK0MxtSclJeph/XOOqRj6ywob8XfjXnLVqlR7TUJHx7kjT+a8M8xg==
 mail-alias-created-date: 1752046281608
 Received: from localhost.localdomain (unknown [17.42.251.67])
  by p00-icloudmta-asmtp-us-east-1a-100-percent-2 (Postfix) with ESMTPSA id
- 15AAD180048A; Wed, 14 Jan 2026 13:43:03 +0000 (UTC)
+ B5CD118004BA; Wed, 14 Jan 2026 13:43:07 +0000 (UTC)
 From: Mohamed Mediouni <mohamed@unpredictable.fr>
 To: mohamed@unpredictable.fr,
 	qemu-devel@nongnu.org
@@ -52,46 +52,44 @@ Cc: qemu-arm@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Cameron Esfahani <dirty@apple.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v14 19/26] hw/arm, accel/hvf,
- whpx: unify get_physical_address_range between WHPX and HVF
-Date: Wed, 14 Jan 2026 14:41:36 +0100
-Message-ID: <20260114134143.26198-20-mohamed@unpredictable.fr>
+Subject: [PATCH v14 20/26] whpx: arm64: implement -cpu host
+Date: Wed, 14 Jan 2026 14:41:37 +0100
+Message-ID: <20260114134143.26198-21-mohamed@unpredictable.fr>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260114134143.26198-1-mohamed@unpredictable.fr>
 References: <20260114134143.26198-1-mohamed@unpredictable.fr>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE0MDExNCBTYWx0ZWRfX0zRtmKyDo9zi
- U723+PfjQSkKKyMP66FGSGroFc0tigQbVomOBkG9PlokEKNwLMnhcvUgbcxvaHE0O9MhLzoMGQ4
- tf0NVoVUrrcP6wk1sZHFskDzU4/SLbuzQX7EBhoJOZKHFIjIx8WsSJcjRD/LpZhiq9EcaoFORrE
- cv2I026eSz49nOuPnYCGN0dwOkM+5+Gx8/6hKiLPyldflWc/K3u0n/l9OG0eW26X3YnH6gcBhJN
- 4IKacyKu/+YoqYQhgBY7nDNJSIqUh8Rzdat2eYTiekjLRPNPSD2RDQL8Wkb7Yxp7AkfmVJlQ0hy
- H2dEDUBZ2iiVNNh8tn/
-X-Proofpoint-GUID: 1R3Ew8QpJDGhj3hds5TKgneAXG6Dun3s
-X-Proofpoint-ORIG-GUID: 1R3Ew8QpJDGhj3hds5TKgneAXG6Dun3s
-X-Authority-Info: v=2.4 cv=esnSD4pX c=1 sm=1 tr=0 ts=69679d6d
+X-Proofpoint-GUID: Niior0fXAZ6E_LD8mm8t_cG0mjqAFJPV
+X-Proofpoint-ORIG-GUID: Niior0fXAZ6E_LD8mm8t_cG0mjqAFJPV
+X-Authority-Info: v=2.4 cv=dceNHHXe c=1 sm=1 tr=0 ts=69679d71
  cx=c_apl:c_apl_out:c_pps a=YrL12D//S6tul8v/L+6tKg==:117
  a=YrL12D//S6tul8v/L+6tKg==:17 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=KKAkSRfTAAAA:8 a=2RVAx2gzJTwwV__86OcA:9 a=cvBusfyB2V15izCimMoJ:22
+ a=L6Cw-x9jAAAA:20 a=KKAkSRfTAAAA:8 a=hGuVB2XOhXFvD5HHq_UA:9
+ a=cvBusfyB2V15izCimMoJ:22 a=bA3UWDv6hWIuX7UZL3qL:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE0MDExNCBTYWx0ZWRfX45hzdUzN7QcC
+ fVtjoaFZSWJZnVvg1VXW/4+XkIQwX7HxdNJ8+HAK3RyztK1HzoVXbkbyrYv1wEnLQMYuZkEGnGq
+ JYfJXcsycoD/wFziR5tigvd6gJInEsfdGOaiHVr+Hf5HSSkzTU/TeESARYXBBGQWi2TXRcJ33G9
+ U4WeInn6cn1E1VqOrIcBm1dEcCDc+Btl8wAFbO7rC9azOmt43KbjJ+yLZX5hjkSlMdVKGFWoLST
+ UhIzInfs6wmcSbGKHHn1SbnxkuCLbztwnrG4t7wHQGBwnTSprxADuyNgM09MIjJUmshdydr2woW
+ 1ij99cMtb9x4AQa29yS
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-14_04,2026-01-14_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- mlxscore=0 clxscore=1030 adultscore=0
- malwarescore=0 mlxlogscore=999
- bulkscore=0 spamscore=0 phishscore=0 classifier=spam authscore=0 adjust=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ mlxlogscore=999 malwarescore=0 clxscore=1030 mlxscore=0 suspectscore=0
+ phishscore=0 bulkscore=0 adultscore=0 classifier=spam authscore=0 adjust=0
  reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2601140114
-X-JNJ: AAAAAAABxOr2dA8dDR2l+CU3550mmXTy+MeUd0YdI7p0oyOp7Yk3XC2N4aL/dpZeHAPrZifz3PjGiKbZVjUhN1A2ZDBQD1rrV4aSeU3lLD3AlLN+uPw0V7ruWHrcxqzCJdN9SKhX7CiV9tFtuDuXD9DhUy4JCjQcV72kez7nyqoSGmSOaZm1QwFg2DrgtpMlfGmT/iAGXkOFDKS+LnNl9j6JFpvq4weBmb4RW81KS1tZ/Kc2a/dbep4xEQ6iX3CeEqpOWC9NA2Lkq795piFMrQ7D9BNVRe9IKc8nYwhNHEfnhJu5B/QLlvA80PxyDBJ7fLZjgc9ESRhUWmMjqXZVq2v5qn4MTCsB5kW5R85cCvVs+Rk+kAjGcTyvBBmP4wNweeeSVRpsjr83WivV6delYqhyN2tQUqYxApy4gYlMbD/nwk9YDFafyR78nJwFPgyKdHqkPxV7O7TPM12u05cLqEHO4VWfv3C1HCezW5PIYaY4WYUt8E4tPCp8qry74bVvJuhTfAPNJszz//Hu8iNnrpyuFHLLtSZCwJRYc/W1ZFI/EEW3s+84KAb+RTutL8WikS225nrn848950x0g5IK0IqQyVuSzYJuRWF0gbVtSNObykXgaQPLz129+g82qIerKYXU/dxYsgth6CiTLnWelPErCKGTtxO8NufMFRLLf67p/3GDGUUQfBN4KH5GMKU1BJ7lvivAFznH1zyyiw4/8ogJCEcdCmXQSje7Q6dtTOXCweZQCdMtYSxsBhwgEwktXlnxfqaiSYPoa4v93RU583o7puNKzhRE11lggbMUaShag/oBVOq0DaSkX4EE4o6cCVuflO6rE51Y4fxjmGlDIaMkJ7vgM4bn1XLpxO/FkCgyN91vH9weOCBuFdMKIFINLxj40BD9oswLnwDLAsCc8wVHG6qjYAxrkRIWdpL1pF9WDUor2X0NBpaYqCjwwo+N6w==
-Received-SPF: pass client-ip=57.103.78.221;
+X-JNJ: AAAAAAAByZ+3breDGgekNczDPmltsxpPA3VsOjN6hNkg91XlvHsYQ75+gRiDBuCvQogzBUZR9/odY6OhDs0AUKqFf/vhfc5jvWKpP/150XNVYVmk5usfZS+pQWZeIvXr2OC+oN/CBp3UycYtMLtptMd9htxqVDlQSOq/V1D7RodK3xfG2obxcBCcyRzbfyWbc0HZowbNj6iY1bGmJDMKO2qr+eJwwGdhTNf3POfNjv/t+w3KNn7Du6thNZC/gZSZm3peYtHKETg0CHKSBPrLOp3/wf20D2Xk+I1SGKTjWYXBN6/kh7rd959qH/Ti+srM4CV/kxBIxRFCoSw6HKlKysv5m53VMMKCKPikgeB6CFCwKmuJ1Rx1bCw7TcqfVRqzyvEAn4dcjmEi7lM49DB08jjfbcoFppCuo/Rd955/dOY/vavlp3k3rfSRU4Get/Ub/LqxTQUFCFhKwpyUakf6IhQZZMx7BdSfFrwxF+NSSEwlBFY9ydhHoP54je8uPc+bLvrstf55BB4L0EV/704YH72iNpI+1wGAAft6sGiube2cn/92Cgx0BIjU/5YNiKnK53Y1C4UXfbPZNbd2SueIciZmIin5f7qpt6vgp/FqtVL3qg8zwWe17OAWYBwspyQZybimiOsYT/CQNOM0s09SZv49rE+b8g3dlO6D0sdSIWf7/4y6vWSTiOgniIoRYH62R1gKaYJFYotCttKvyN5M095NsLVTdx7c6JhJ3v41lOjscC6vTBhQJvMDMvJgnfVFjB5x/wH64RbA2XaX8qwluVCEPTvLyqWnfFVi55fZS8H7p8teijiEaqHnWaNPNlkFmYKyyw3Zbtda2/QmzcKfqFmEM9Tf1wKhBLMQ6ha4g8ReSaFanlicyMLGFoMO4QfldSsvBLHWDP8E2pR9+vPd4nbthJ3tHAvG4sqzZJoCSXz/VhwrT7QK
+Received-SPF: pass client-ip=57.103.78.156;
  envelope-from=mohamed@unpredictable.fr; helo=outbound.st.icloud.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,274 +105,220 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Logic to fetch MIDR_EL1 for cpu 0 adapted from:
+https://github.com/FEX-Emu/FEX/blob/e6de17e72ef03aa88ba14fa0ec13163061608c74/Source/Windows/Common/CPUFeatures.cpp#L62
+
 Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- accel/hvf/hvf-all.c        |  7 +++++--
- hw/arm/virt.c              | 43 +++++---------------------------------
- include/hw/core/boards.h   |  4 ++--
- include/system/hvf_int.h   |  5 +++++
- target/arm/hvf-stub.c      | 20 ------------------
- target/arm/hvf/hvf.c       |  6 +++---
- target/arm/hvf_arm.h       |  3 ---
- target/arm/meson.build     |  1 -
- target/arm/whpx/whpx-all.c |  5 +++--
- target/i386/hvf/hvf.c      | 11 ++++++++++
- 10 files changed, 34 insertions(+), 71 deletions(-)
- delete mode 100644 target/arm/hvf-stub.c
+ target/arm/cpu64.c         |  17 +++---
+ target/arm/whpx/whpx-all.c | 104 +++++++++++++++++++++++++++++++++++++
+ target/arm/whpx_arm.h      |   1 +
+ 3 files changed, 116 insertions(+), 6 deletions(-)
 
-diff --git a/accel/hvf/hvf-all.c b/accel/hvf/hvf-all.c
-index 77f4e4e4f3..ce18bc0dac 100644
---- a/accel/hvf/hvf-all.c
-+++ b/accel/hvf/hvf-all.c
-@@ -17,6 +17,7 @@
- #include "system/hvf_int.h"
- #include "hw/core/cpu.h"
- #include "hw/core/boards.h"
-+#include "target/arm/hvf_arm.h"
- #include "trace.h"
+diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
+index bf30381370..689babe822 100644
+--- a/target/arm/cpu64.c
++++ b/target/arm/cpu64.c
+@@ -26,10 +26,13 @@
+ #include "qemu/units.h"
+ #include "system/kvm.h"
+ #include "system/hvf.h"
++#include "system/whpx.h"
++#include "system/hw_accel.h"
+ #include "system/qtest.h"
+ #include "system/tcg.h"
+ #include "kvm_arm.h"
+ #include "hvf_arm.h"
++#include "whpx_arm.h"
+ #include "qapi/visitor.h"
+ #include "hw/core/qdev-properties.h"
+ #include "internals.h"
+@@ -521,7 +524,7 @@ void arm_cpu_pauth_finalize(ARMCPU *cpu, Error **errp)
+     isar2 = FIELD_DP64(isar2, ID_AA64ISAR2, APA3, 0);
+     isar2 = FIELD_DP64(isar2, ID_AA64ISAR2, GPA3, 0);
  
- bool hvf_allowed;
-@@ -256,8 +257,10 @@ static int hvf_accel_init(AccelState *as, MachineState *ms)
-     int pa_range = 36;
-     MachineClass *mc = MACHINE_GET_CLASS(ms);
+-    if (kvm_enabled() || hvf_enabled()) {
++    if (hwaccel_enabled()) {
+         /*
+          * Exit early if PAuth is enabled and fall through to disable it.
+          * The algorithm selection properties are not present.
+@@ -598,10 +601,10 @@ void aarch64_add_pauth_properties(Object *obj)
  
--    if (mc->hvf_get_physical_address_range) {
--        pa_range = mc->hvf_get_physical_address_range(ms);
-+
-+    if (mc->get_physical_address_range) {
-+        pa_range = mc->get_physical_address_range(ms,
-+            hvf_arch_get_default_ipa_bit_size(), hvf_arch_get_max_ipa_bit_size());
-         if (pa_range < 0) {
-             return -EINVAL;
-         }
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 283935ae76..c59bcaa000 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -3314,43 +3314,11 @@ static int virt_kvm_type(MachineState *ms, const char *type_str)
-     return fixed_ipa ? 0 : requested_pa_size;
- }
- 
--static int virt_whpx_get_physical_address_range(MachineState *ms)
-+static int virt_get_physical_address_range(MachineState *ms,
-+    int default_ipa_size, int max_ipa_size)
- {
-     VirtMachineState *vms = VIRT_MACHINE(ms);
- 
--    int max_ipa_size = whpx_arm_get_ipa_bit_size();
--
--    /* We freeze the memory map to compute the highest gpa */
--    virt_set_memmap(vms, max_ipa_size);
--
--    int requested_ipa_size = 64 - clz64(vms->highest_gpa);
--
--    /*
--     * If we're <= the default IPA size just use the default.
--     * If we're above the default but below the maximum, round up to
--     * the maximum. whpx_arm_get_max_ipa_bit_size() conveniently only
--     * returns values that are valid ARM PARange values.
--     */
--    if (requested_ipa_size <= max_ipa_size) {
--        requested_ipa_size = max_ipa_size;
--    } else {
--        error_report("-m and ,maxmem option values "
--                     "require an IPA range (%d bits) larger than "
--                     "the one supported by the host (%d bits)",
--                     requested_ipa_size, max_ipa_size);
--        return -1;
--    }
--
--    return requested_ipa_size;
--}
--
--static int virt_hvf_get_physical_address_range(MachineState *ms)
--{
--    VirtMachineState *vms = VIRT_MACHINE(ms);
--
--    int default_ipa_size = hvf_arm_get_default_ipa_bit_size();
--    int max_ipa_size = hvf_arm_get_max_ipa_bit_size();
--
-     /* We freeze the memory map to compute the highest gpa */
-     virt_set_memmap(vms, max_ipa_size);
- 
-@@ -3359,8 +3327,8 @@ static int virt_hvf_get_physical_address_range(MachineState *ms)
-     /*
-      * If we're <= the default IPA size just use the default.
-      * If we're above the default but below the maximum, round up to
--     * the maximum. hvf_arm_get_max_ipa_bit_size() conveniently only
--     * returns values that are valid ARM PARange values.
-+     * the maximum. hvf/whpx_arch_get_max_ipa_bit_size() conveniently only
-+     * return values that are valid ARM PARange values.
-      */
-     if (requested_ipa_size <= default_ipa_size) {
-         requested_ipa_size = default_ipa_size;
-@@ -3442,8 +3410,7 @@ static void virt_machine_class_init(ObjectClass *oc, const void *data)
-     mc->get_valid_cpu_types = virt_get_valid_cpu_types;
-     mc->get_default_cpu_node_id = virt_get_default_cpu_node_id;
-     mc->kvm_type = virt_kvm_type;
--    mc->hvf_get_physical_address_range = virt_hvf_get_physical_address_range;
--    mc->whpx_get_physical_address_range = virt_whpx_get_physical_address_range;
-+    mc->get_physical_address_range = virt_get_physical_address_range;
-     assert(!mc->get_hotplug_handler);
-     mc->get_hotplug_handler = virt_machine_get_hotplug_handler;
-     hc->pre_plug = virt_machine_device_pre_plug_cb;
-diff --git a/include/hw/core/boards.h b/include/hw/core/boards.h
-index 0b2aefb126..26e0879e1a 100644
---- a/include/hw/core/boards.h
-+++ b/include/hw/core/boards.h
-@@ -277,8 +277,8 @@ struct MachineClass {
-     void (*reset)(MachineState *state, ResetType type);
-     void (*wakeup)(MachineState *state);
-     int (*kvm_type)(MachineState *machine, const char *arg);
--    int (*hvf_get_physical_address_range)(MachineState *machine);
--    int (*whpx_get_physical_address_range)(MachineState *machine);
-+    int (*get_physical_address_range)(MachineState *machine,
-+        int default_ipa_size, int max_ipa_size);
- 
-     BlockInterfaceType block_default_type;
-     int units_per_default_bus;
-diff --git a/include/system/hvf_int.h b/include/system/hvf_int.h
-index 3d2be4092e..cecd4617d2 100644
---- a/include/system/hvf_int.h
-+++ b/include/system/hvf_int.h
-@@ -73,6 +73,8 @@ void assert_hvf_ok_impl(hv_return_t ret, const char *file, unsigned int line,
- const char *hvf_return_string(hv_return_t ret);
- int hvf_arch_init(void);
- hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t pa_range);
-+uint32_t hvf_arch_get_default_ipa_bit_size(void);
-+uint32_t hvf_arch_get_max_ipa_bit_size(void);
- hvf_slot *hvf_find_overlap_slot(uint64_t, uint64_t);
- void hvf_kick_vcpu_thread(CPUState *cpu);
- 
-@@ -120,4 +122,7 @@ int hvf_update_guest_debug(CPUState *cpu);
-  */
- bool hvf_arch_supports_guest_debug(void);
- 
-+uint32_t hvf_arch_get_default_ipa_bit_size(void);
-+uint32_t hvf_arch_get_max_ipa_bit_size(void);
-+
+     /* Default to PAUTH on, with the architected algorithm on TCG. */
+     qdev_property_add_static(DEVICE(obj), &arm_cpu_pauth_property);
+-    if (kvm_enabled() || hvf_enabled()) {
++    if (hwaccel_enabled()) {
+         /*
+          * Mirror PAuth support from the probed sysregs back into the
+-         * property for KVM or hvf. Is it just a bit backward? Yes it is!
++         * property for HW accel. Is it just a bit backward? Yes it is!
+          * Note that prop_pauth is true whether the host CPU supports the
+          * architected QARMA5 algorithm or the IMPDEF one. We don't
+          * provide the separate pauth-impdef property for KVM or hvf,
+@@ -769,6 +772,8 @@ static void aarch64_host_initfn(Object *obj)
+     }
+ #elif defined(CONFIG_HVF)
+     hvf_arm_set_cpu_features_from_host(cpu);
++#elif defined(CONFIG_WHPX)
++    whpx_arm_set_cpu_features_from_host(cpu);
+ #else
+     g_assert_not_reached();
  #endif
-diff --git a/target/arm/hvf-stub.c b/target/arm/hvf-stub.c
-deleted file mode 100644
-index ff137267a0..0000000000
---- a/target/arm/hvf-stub.c
-+++ /dev/null
-@@ -1,20 +0,0 @@
--/*
-- * QEMU Hypervisor.framework (HVF) stubs for ARM
-- *
-- *  Copyright (c) Linaro
-- *
-- * SPDX-License-Identifier: GPL-2.0-or-later
-- */
--
--#include "qemu/osdep.h"
--#include "hvf_arm.h"
--
--uint32_t hvf_arm_get_default_ipa_bit_size(void)
--{
--    g_assert_not_reached();
--}
--
--uint32_t hvf_arm_get_max_ipa_bit_size(void)
--{
--    g_assert_not_reached();
--}
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index fa26f63a61..5e93c42047 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -731,7 +731,7 @@ static uint64_t hvf_get_reg(CPUState *cpu, int rt)
- static void clamp_id_aa64mmfr0_parange_to_ipa_size(ARMISARegisters *isar)
+@@ -779,8 +784,8 @@ static void aarch64_host_initfn(Object *obj)
+ 
+ static void aarch64_max_initfn(Object *obj)
  {
-     uint32_t ipa_size = chosen_ipa_bit_size ?
--            chosen_ipa_bit_size : hvf_arm_get_max_ipa_bit_size();
-+            chosen_ipa_bit_size : hvf_arch_get_max_ipa_bit_size();
-     uint64_t id_aa64mmfr0;
- 
-     /* Clamp down the PARange to the IPA size the kernel supports. */
-@@ -827,7 +827,7 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
-     return r == HV_SUCCESS;
- }
- 
--uint32_t hvf_arm_get_default_ipa_bit_size(void)
-+uint32_t hvf_arch_get_default_ipa_bit_size(void)
- {
-     uint32_t default_ipa_size;
-     hv_return_t ret = hv_vm_config_get_default_ipa_size(&default_ipa_size);
-@@ -836,7 +836,7 @@ uint32_t hvf_arm_get_default_ipa_bit_size(void)
-     return default_ipa_size;
- }
- 
--uint32_t hvf_arm_get_max_ipa_bit_size(void)
-+uint32_t hvf_arch_get_max_ipa_bit_size(void)
- {
-     uint32_t max_ipa_size;
-     hv_return_t ret = hv_vm_config_get_max_ipa_size(&max_ipa_size);
-diff --git a/target/arm/hvf_arm.h b/target/arm/hvf_arm.h
-index ea82f2691d..5d19d82e5d 100644
---- a/target/arm/hvf_arm.h
-+++ b/target/arm/hvf_arm.h
-@@ -22,7 +22,4 @@ void hvf_arm_init_debug(void);
- 
- void hvf_arm_set_cpu_features_from_host(ARMCPU *cpu);
- 
--uint32_t hvf_arm_get_default_ipa_bit_size(void);
--uint32_t hvf_arm_get_max_ipa_bit_size(void);
--
+-    if (kvm_enabled() || hvf_enabled()) {
+-        /* With KVM or HVF, '-cpu max' is identical to '-cpu host' */
++    if (hwaccel_enabled()) {
++        /* When hardware acceleration enabled, '-cpu max' is identical to '-cpu host' */
+         aarch64_host_initfn(obj);
+         return;
+     }
+@@ -799,7 +804,7 @@ static const ARMCPUInfo aarch64_cpus[] = {
+     { .name = "cortex-a57",         .initfn = aarch64_a57_initfn },
+     { .name = "cortex-a53",         .initfn = aarch64_a53_initfn },
+     { .name = "max",                .initfn = aarch64_max_initfn },
+-#if defined(CONFIG_KVM) || defined(CONFIG_HVF)
++#if defined(CONFIG_KVM) || defined(CONFIG_HVF) || defined(CONFIG_WHPX)
+     { .name = "host",               .initfn = aarch64_host_initfn },
  #endif
-diff --git a/target/arm/meson.build b/target/arm/meson.build
-index ce155ba9b4..1ddc4b2a54 100644
---- a/target/arm/meson.build
-+++ b/target/arm/meson.build
-@@ -41,7 +41,6 @@ arm_common_system_ss.add(files('cpu.c'))
- arm_common_system_ss.add(when: 'TARGET_AARCH64', if_false: files(
-   'cpu32-stubs.c'))
- arm_common_system_ss.add(when: 'CONFIG_KVM', if_false: files('kvm-stub.c'))
--arm_common_system_ss.add(when: 'CONFIG_HVF', if_false: files('hvf-stub.c'))
- arm_common_system_ss.add(when: 'CONFIG_ARM_COMPATIBLE_SEMIHOSTING',
- 		                 if_true: files('common-semi-target.c'))
- arm_common_system_ss.add(files(
+ };
 diff --git a/target/arm/whpx/whpx-all.c b/target/arm/whpx/whpx-all.c
-index fce4e1ba10..038a9dcfd7 100644
+index 038a9dcfd7..3b79b8b376 100644
 --- a/target/arm/whpx/whpx-all.c
 +++ b/target/arm/whpx/whpx-all.c
-@@ -775,8 +775,9 @@ int whpx_accel_init(AccelState *as, MachineState *ms)
-         goto error;
-     }
+@@ -41,6 +41,17 @@
  
--    if (mc->whpx_get_physical_address_range) {
--        pa_range = mc->whpx_get_physical_address_range(ms);
-+    if (mc->get_physical_address_range) {
-+        pa_range = mc->get_physical_address_range(ms,
-+            whpx_arm_get_ipa_bit_size(), whpx_arm_get_ipa_bit_size());
-         if (pa_range < 0) {
-             ret = -EINVAL;
-             goto error;
-diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-index 2023a7bfbb..9d41e51b83 100644
---- a/target/i386/hvf/hvf.c
-+++ b/target/i386/hvf/hvf.c
-@@ -225,6 +225,17 @@ int hvf_arch_init(void)
-     return 0;
+ #include <winhvplatform.h>
+ #include <winhvplatformdefs.h>
++#include <winreg.h>
++
++typedef struct ARMHostCPUFeatures {
++    ARMISARegisters isar;
++    uint64_t features;
++    uint64_t midr;
++    uint32_t reset_sctlr;
++    const char *dtb_compatible;
++} ARMHostCPUFeatures;
++
++static ARMHostCPUFeatures arm_host_cpu_features;
+ 
+ struct whpx_reg_match {
+     WHV_REGISTER_NAME reg;
+@@ -668,6 +679,99 @@ static void clamp_id_aa64mmfr0_parange_to_ipa_size(ARMISARegisters *isar)
+     SET_IDREG(isar, ID_AA64MMFR0, id_aa64mmfr0);
  }
  
-+/* 48-bit on all Intel Macs. Function currently unused. */
-+uint32_t hvf_arch_get_default_ipa_bit_size(void)
++static uint64_t whpx_read_midr(void)
 +{
-+    g_assert_not_reached();
++    HKEY key;
++    uint64_t midr_el1;
++    DWORD size = sizeof(midr_el1);
++    const char *path = "Hardware\\Description\\System\\CentralProcessor\\0\\";
++    assert(!RegOpenKeyExA(HKEY_LOCAL_MACHINE, path, 0, KEY_READ, &key));
++    assert(!RegGetValueA(key, NULL, "CP 4000", RRF_RT_REG_QWORD, NULL, &midr_el1, &size));
++    RegCloseKey(key);
++    return midr_el1;
 +}
 +
-+uint32_t hvf_arch_get_max_ipa_bit_size(void)
++static bool whpx_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
 +{
-+    g_assert_not_reached();
++    const struct isar_regs {
++        WHV_REGISTER_NAME reg;
++        uint64_t *val;
++    } regs[] = {
++        { WHvArm64RegisterIdAa64Pfr0El1, &ahcf->isar.idregs[ID_AA64PFR0_EL1_IDX] },
++        { WHvArm64RegisterIdAa64Pfr1El1, &ahcf->isar.idregs[ID_AA64PFR1_EL1_IDX] },
++        { WHvArm64RegisterIdAa64Dfr0El1, &ahcf->isar.idregs[ID_AA64DFR0_EL1_IDX] },
++        { WHvArm64RegisterIdAa64Dfr1El1 , &ahcf->isar.idregs[ID_AA64DFR1_EL1_IDX] },
++        { WHvArm64RegisterIdAa64Isar0El1, &ahcf->isar.idregs[ID_AA64ISAR0_EL1_IDX] },
++        { WHvArm64RegisterIdAa64Isar1El1, &ahcf->isar.idregs[ID_AA64ISAR1_EL1_IDX] },
++        { WHvArm64RegisterIdAa64Isar2El1, &ahcf->isar.idregs[ID_AA64ISAR2_EL1_IDX] },
++        { WHvArm64RegisterIdAa64Mmfr0El1, &ahcf->isar.idregs[ID_AA64MMFR0_EL1_IDX] },
++        { WHvArm64RegisterIdAa64Mmfr1El1, &ahcf->isar.idregs[ID_AA64MMFR1_EL1_IDX] },
++        { WHvArm64RegisterIdAa64Mmfr2El1, &ahcf->isar.idregs[ID_AA64MMFR2_EL1_IDX] },
++        { WHvArm64RegisterIdAa64Mmfr3El1, &ahcf->isar.idregs[ID_AA64MMFR2_EL1_IDX] }
++    };
++
++    int i;
++    WHV_REGISTER_VALUE val;
++
++    ahcf->dtb_compatible = "arm,armv8";
++    ahcf->features = (1ULL << ARM_FEATURE_V8) |
++                     (1ULL << ARM_FEATURE_NEON) |
++                     (1ULL << ARM_FEATURE_AARCH64) |
++                     (1ULL << ARM_FEATURE_PMU) |
++                     (1ULL << ARM_FEATURE_GENERIC_TIMER);
++
++    for (i = 0; i < ARRAY_SIZE(regs); i++) {
++        clean_whv_register_value(&val);
++        whpx_get_global_reg(regs[i].reg, &val);
++        *regs[i].val = val.Reg64;
++    }
++
++    /*
++     * MIDR_EL1 is not a global register on WHPX
++     * As such, read the CPU0 from the registry to get a consistent value.
++     * Otherwise, on heterogenous systems, you'll get variance between CPUs.
++     */
++    ahcf->midr = whpx_read_midr();
++
++    clamp_id_aa64mmfr0_parange_to_ipa_size(&ahcf->isar);
++
++    /*
++     * Disable SVE, which is not supported by QEMU whpx yet.
++     * Work needed for SVE support:
++     * - SVE state save/restore
++     * - any potentially needed VL management
++     * Also disable SME at the same time. (not currently supported by Hyper-V)
++     */
++    SET_IDREG(&ahcf->isar, ID_AA64PFR0,
++              GET_IDREG(&ahcf->isar, ID_AA64PFR0) & ~R_ID_AA64PFR0_SVE_MASK);
++
++    SET_IDREG(&ahcf->isar, ID_AA64PFR1,
++              GET_IDREG(&ahcf->isar, ID_AA64PFR1) & ~R_ID_AA64PFR1_SME_MASK);
++
++    return true;
 +}
 +
- hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t pa_range)
++void whpx_arm_set_cpu_features_from_host(ARMCPU *cpu)
++{
++    if (!arm_host_cpu_features.dtb_compatible) {
++        if (!whpx_enabled() ||
++            !whpx_arm_get_host_cpu_features(&arm_host_cpu_features)) {
++            /*
++             * We can't report this error yet, so flag that we need to
++             * in arm_cpu_realizefn().
++             */
++            cpu->host_cpu_probe_failed = true;
++            return;
++        }
++    }
++
++    cpu->dtb_compatible = arm_host_cpu_features.dtb_compatible;
++    cpu->isar = arm_host_cpu_features.isar;
++    cpu->env.features = arm_host_cpu_features.features;
++    cpu->midr = arm_host_cpu_features.midr;
++    cpu->reset_sctlr = arm_host_cpu_features.reset_sctlr;
++}
++
+ int whpx_init_vcpu(CPUState *cpu)
  {
-     return hv_vm_create(HV_VM_DEFAULT);
+     HRESULT hr;
+diff --git a/target/arm/whpx_arm.h b/target/arm/whpx_arm.h
+index de7406b66f..df65fd753c 100644
+--- a/target/arm/whpx_arm.h
++++ b/target/arm/whpx_arm.h
+@@ -12,5 +12,6 @@
+ #include "target/arm/cpu-qom.h"
+ 
+ uint32_t whpx_arm_get_ipa_bit_size(void);
++void whpx_arm_set_cpu_features_from_host(ARMCPU *cpu);
+ 
+ #endif
 -- 
 2.50.1 (Apple Git-155)
 
