@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3977FD1CB73
+	by mail.lfdr.de (Postfix) with ESMTPS id 74BC1D1CB79
 	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 07:49:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfufL-0001sJ-8Y; Wed, 14 Jan 2026 01:47:39 -0500
+	id 1vfufL-0001uM-Ct; Wed, 14 Jan 2026 01:47:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vfuf2-0001pm-Uf
+ id 1vfuf2-0001pl-UK
  for qemu-devel@nongnu.org; Wed, 14 Jan 2026 01:47:21 -0500
-Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
+Received: from forwardcorp1d.mail.yandex.net
+ ([2a02:6b8:c41:1300:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vfuf0-0004A0-Q4
+ id 1vfuf0-0004A8-HB
  for qemu-devel@nongnu.org; Wed, 14 Jan 2026 01:47:20 -0500
 Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  [IPv6:2a02:6b8:c42:65a0:0:640:e1de:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 7FD2C807B9;
- Wed, 14 Jan 2026 09:47:14 +0300 (MSK)
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 1412D8074D;
+ Wed, 14 Jan 2026 09:47:15 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:c88::1:7])
  by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id ClNQD90AqW20-3AvZsROj; Wed, 14 Jan 2026 09:47:14 +0300
+ ESMTPSA id ClNQD90AqW20-0Zw04bIg; Wed, 14 Jan 2026 09:47:14 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1768373234;
- bh=A8aHx7NDG7I0eOLZpPn11ukQ0g9iIT0KmhKkmcwKQQA=;
+ bh=Tif36W+c4IEEnHeR+8q+hVk+mR4A73d1GMBH7oqV3UA=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=nWOJWikNpKQQ0UqfdnWhaDDn0NLiJgcDD2r9vRt0yMjsBmDjsaOYyCqhU8Y1jP2er
- fUtl7lYX15v3SPyedtsgW7DmdBK06mFPqOfINRjXw+HB/W0ejIAkcd4Gi5blxMOiFy
- yAYgKmBg+1NRj6vB0QepyF6uiTwOCj8Ukxt/7zSc=
+ b=WFnsEhpPlPwxCywp/aMYs4q7alunzPm2kKCS/UZ/JFObwlq7CxpBFx598db3F3UBR
+ 9YTfuG7F5Ga1s/ZHgh6ASrPhQJgwSMVgstY6dnMhvT0IdCtTyso2bYGKvj6sPm7AN0
+ 9H7i4KArs3h+3n5csw9pofYX9hac9Qqrk2ec84A0=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -42,23 +43,22 @@ To: peterx@redhat.com
 Cc: farosas@suse.de, qemu-devel@nongnu.org, dtalexundeer@yandex-team.ru,
  vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
  d-tatianin@yandex-team.ru
-Subject: [PATCH 1/5] vmstate-types: get_fd(): handle qemu_file_get_fd() failure
-Date: Wed, 14 Jan 2026 09:47:06 +0300
-Message-ID: <20260114064710.176268-2-vsementsov@yandex-team.ru>
+Subject: [PATCH 2/5] qemu-file: qemu_file_get_fd(): fail if no expected fd come
+Date: Wed, 14 Jan 2026 09:47:07 +0300
+Message-ID: <20260114064710.176268-3-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20260114064710.176268-1-vsementsov@yandex-team.ru>
 References: <20260114064710.176268-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.200;
+Received-SPF: pass client-ip=2a02:6b8:c41:1300:1:45:d181:df01;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,42 +73,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu_file_get_fd() may fail, and return -1 in this case.
-We don't support passing "invalid" file descriptors (like -1),
-so we should not interpret error here like invalid descriptor.
+In _put() we don't actually allow send a service byte
+without fd. So on _get() it's unexpected. Let's be strict.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- migration/vmstate-types.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ migration/qemu-file.c | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/migration/vmstate-types.c b/migration/vmstate-types.c
-index 4b01dc19c2..e34bf4486e 100644
---- a/migration/vmstate-types.c
-+++ b/migration/vmstate-types.c
-@@ -321,12 +321,21 @@ const VMStateInfo vmstate_info_uint64 = {
- static int get_fd(QEMUFile *f, void *pv, size_t size,
-                   const VMStateField *field)
+diff --git a/migration/qemu-file.c b/migration/qemu-file.c
+index 4b5a409a80..02f30c1c21 100644
+--- a/migration/qemu-file.c
++++ b/migration/qemu-file.c
+@@ -389,28 +389,34 @@ int qemu_file_get_fd(QEMUFile *f)
  {
-+    int fd;
-     int32_t *v = pv;
-+
-     if (migrate_mode() == MIG_MODE_CPR_EXEC) {
-         qemu_get_sbe32s(f, v);
-         return 0;
+     int fd = -1;
+     FdEntry *fde;
++    Error *err = NULL;
+ 
+     if (!f->can_pass_fd) {
+-        Error *err = NULL;
+         error_setg(&err, "%s does not support fd passing", f->ioc->name);
+-        error_report_err(error_copy(err));
+-        qemu_file_set_error_obj(f, -EIO, err);
+-        goto out;
++        goto fail;
      }
--    *v = qemu_file_get_fd(f);
+ 
+     /* Force the dummy byte and its fd passenger to appear. */
+     qemu_peek_byte(f, 0);
+ 
+     fde = QTAILQ_FIRST(&f->fds);
+-    if (fde) {
+-        qemu_get_byte(f);       /* Drop the dummy byte */
+-        fd = fde->fd;
+-        QTAILQ_REMOVE(&f->fds, fde, entry);
+-        g_free(fde);
++    if (!fde) {
++        error_setg(&err, "%s no FD come with service byte", f->ioc->name);
++        goto fail;
+     }
+-out:
 +
-+    fd = qemu_file_get_fd(f);
-+    if (fd < 0) {
-+        return -1;
-+    }
++    qemu_get_byte(f);       /* Drop the dummy byte */
++    fd = fde->fd;
++    QTAILQ_REMOVE(&f->fds, fde, entry);
++    g_free(fde);
 +
-+    *v = fd;
+     trace_qemu_file_get_fd(f->ioc->name, fd);
+     return fd;
 +
-     return 0;
++fail:
++    error_report_err(error_copy(err));
++    qemu_file_set_error_obj(f, -EIO, err);
++    return -1;
  }
  
+ /** Closes the file
 -- 
 2.48.1
 
