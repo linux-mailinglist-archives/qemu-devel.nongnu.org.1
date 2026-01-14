@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC597D1C7D6
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 05:52:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29500D1C7D1
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 05:51:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfspB-0007j9-VT; Tue, 13 Jan 2026 23:49:42 -0500
+	id 1vfspB-0007je-Vr; Tue, 13 Jan 2026 23:49:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1vfsos-0007Co-61
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 23:49:27 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1vfsox-0007E2-S3
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 23:49:28 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1vfsoq-0004Bx-KX
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 23:49:21 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-2a0f3f74587so61242375ad.2
- for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 20:49:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1vfsow-0004Ci-BO
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 23:49:27 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-2a102494058so2248745ad.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 20:49:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1768366159; x=1768970959; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1768366164; x=1768970964; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rNzsJq6kudxVf3nVXDeExz5WeTdkRECgPvPbcRQeMNU=;
- b=BbYH36/2crQkwit/3DXSz1vilxz9aQqtMMkqliAhfFk7FmheG1VYLxbFsqCZeD/NqH
- UIV4kvxX1f7v48OV4Yb9L4s/F42WD3C/TI9MLu76QZNm0tos9TIOpqZiUJC9TOX+IkFR
- Os9tYpGmjOZ4dWn3qMH8oo+2T3fKeLksDp1sfPbRBnFnHNss+c95q1188yIEM9SL4OCJ
- XDr2ZHJQWfDAlcXKtrjjZtYRk4x4qrJSGX9dCxQ+Yr7Mfu+v/JnxYahDCQ8F0pf0GON/
- 3RFkdnPvb31atKRBaJBPSS10d3kh8tFGGCNrAQN98hRAEJJiPfqK6+i/Na5bqumVtJAW
- Bs6Q==
+ bh=e4RKJkMMFPN4YQUEajOwFLoOkui52htamyphMm0OHOM=;
+ b=HK9h24Y2e38E6A/bwYlPfrKHdsgujDY/k5p6/oInBEtwdnc6AYyPFvGH37qy0w1Jt9
+ bYRjqWVn2HajkE+Tce/fb8IrvFeFRNo0uNr9/oQdk4QywilJSrHYrGI/uKdVzRLW297Q
+ WjNuieWJl+JWvZUYIr/BFu+BzWfCus1C6bPnBihBOpR0q30x1Engsf7LQHz+FPtMkLOu
+ 31sz/sa0ndjLEzcyyRP9RvuiC0flLidTCsLFydlD28XR6EQu8u6CMUvInDbitp6xhgdL
+ P3Gb81owPk+UNbVWW6CwfbvsoT+61cDz6Hjlzak+ZZgnhkjl1tp4ofTHAJPR+atIllR9
+ 6L5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768366159; x=1768970959;
+ d=1e100.net; s=20230601; t=1768366164; x=1768970964;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=rNzsJq6kudxVf3nVXDeExz5WeTdkRECgPvPbcRQeMNU=;
- b=LtlCEzGT1OhHmGnVGn2h3PVofulXVJnBNQKd21Xn1Ezz2p0sJu+y35U16Rei7UzaEl
- oOq96gNMG5DSjFHJCbtABK8KdUqZAdlFvoDvzJ/RRf3VTVZuO4aWmXHRYrUNzCA9fnqJ
- seaOopKf3e6KZtTO/clSsX834Pz4/t4o3NYr8dAo/CHSjM67a3ej8F9fsDbdMA/uoJs4
- A9Lhc9Cp2qcuNFc5ZC4k7AQg9xxlf1RaZta+lXJ71iqHuGRsvEjG7LHRE0ulbb8NqNiR
- 7jeAvMNfLiZ56H2IxRbFZKMIus+DjRmERiVovhHq0NkiPdrxkG95DFUULSlht97n1QWr
- AcgQ==
+ bh=e4RKJkMMFPN4YQUEajOwFLoOkui52htamyphMm0OHOM=;
+ b=FGNZxlYb8WgiPZIAaRXVoVx9GjSaW0oyzCkW/rJbDM15+coQedH515Ksutxy4GB1HE
+ WL/+XermJsgaqqJ9YewaLhDFjOFD1sbK1yoJNkqCvYdIkrDjBHnmpExHJqCVpovrU/Hk
+ 1NNGymCkp8E3BfEBkQdfCUwPksoGNnLqrxpj0x0Qn2QP9QkmDdoE/Hhp9CD2U1rIpbaH
+ AEni7Z1yLUBXeC+WO2t2VHdyByBtUs4pL6tH5GLJjxW2OLHi0VZTiMlxuhxXLD3MVuC/
+ rYyu4v+jomqGcMmSAQ0AlKMMNjzHdsKpiE35e54lp8YLDjoUwl5j+yVkIl+rx5RrTQKp
+ XSQw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVfhVs3ohfVOd+tfeRSB2L2VMOjwnGrIIbfw0EzWR94HnbhF1I+DyrSVzf2sBXBxjasI5aIlWiRgmo6@nongnu.org
-X-Gm-Message-State: AOJu0YyRJKntD9/yP3aXmipPjToIZ78eBYRU6oGK7a+6cZMVMAhHuOP9
- Dsfp9I1eNZZbn4CRTtjGfDLNG8y8qnDdKdjpy+OGluoK8lRnTWYL5naZ0bUY1A==
-X-Gm-Gg: AY/fxX5WiZX/RCd+EzjVYPmRblq0MVNCuuC9yvx7KPoU0ZDwJ0J9iD6G8E4DDRRMiMj
- riVzwlD6pJF0Y6GwPDImlQJ8n7RxgDHokE7jsHqwBrHKrZnPT1Y1piBEFZij8hCKPuJlOeGgJ/a
- MSbLUPvzgAD0OqoF/x15FpASuHARe9J9U0t7UVaPffdi9WGZPVSWtfv6/KrqyMJEdn280/Nzh2R
- FTWy3raeYgcaKdjB7MFm67oVMohtFrGnrJusU2NU/ovSN9gnGtBuk5sS1xHcGVNPpV/lyje6ZXr
- t0NPLEy0e2GmL0PMsDcIdZze3LhK6Yj0HpnhLTQloBIRKMfdXgtXsglK9I4a9QRT230EjlQHxb4
- r8DH+ETc+fV9cmTeiS86WPHxqn6lZygn29pwMIT27H5YbbJ2KuUYYb3RKSEz01xSxr6CWxQ7dyY
- n5onKtAOZPUtExuJc9+xVGmsLfQCnMFPEqQjjyGKo9TeO8SRmbiXQQ7a+E5No=
-X-Received: by 2002:a17:902:ce91:b0:29f:e787:2b9b with SMTP id
- d9443c01a7336-2a599e47481mr13685485ad.41.1768366159235; 
- Tue, 13 Jan 2026 20:49:19 -0800 (PST)
+ AJvYcCWbOVkah4JCvKMlQ6wFoMLLqPuEtOtw8VTlcl7fzBlvFK/bQxWegvnM5XRU/0BuCx6tM7NQNu5IAi0+@nongnu.org
+X-Gm-Message-State: AOJu0YwvMcrNTw/CkPBJQaRrulj5wPuuZbOmveGRJ0FfwMCDA5UDIAkB
+ FlRM75NbPcYV3bTOA9WwRQgOpHGVgNGge53RUrUCaIGArck8XDkkggYd
+X-Gm-Gg: AY/fxX5qwF0o4/6jbDVQeaI7r7A3LXTNndeQG5CyCQHwbhR7C7Dz1Efrac/7xWk/hEf
+ scc4aTbzSMsnJT1fGwohT95szCUtYUqDnNqpygiB1soONMI2yiEWFz0H06Jm8lp5pPxcVtmusFb
+ 9UzOHY20QIV4BD21aXRmy2cR5WX9TH6tlGEboPXvqtpyk70fKGOhGK1qJqbcWp8h7NFDl1K5Ntt
+ vEDu5f+BTD6qp0odIho7hphj4Qv8lJI9/9ZEh4BbkgBW6xY+mCSgZMaP9FtTWTPtWCj5anlIa9e
+ gIcXyNMlmPHPV/epT/fKjyONcwghzGPKOL+Y9bVkBBMWWveuKOB96bhZZs+CB9busONqe4DJwBs
+ lli1B6cvOD7+oIlghjr8tH1ACtlCdYvlOemogfXatj2EBSV1c6w54SDD9ueKeqmATkjSvxni1OY
+ vN+XBNRQcTVrVLyuM0qfCdHZg1mOQD877qQlcNs374GePVDsIH2rZMy4Fj0SWhcAfyd4Wxsg==
+X-Received: by 2002:a17:903:46c4:b0:2a0:b432:4a6 with SMTP id
+ d9443c01a7336-2a599df90edmr17867225ad.15.1768366164274; 
+ Tue, 13 Jan 2026 20:49:24 -0800 (PST)
 Received: from lima-default (123.253.188.110.qld.leaptel.network.
  [123.253.188.110]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a3e3c49037sm216111905ad.36.2026.01.13.20.49.14
+ d9443c01a7336-2a3e3c49037sm216111905ad.36.2026.01.13.20.49.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jan 2026 20:49:18 -0800 (PST)
+ Tue, 13 Jan 2026 20:49:23 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
@@ -72,17 +72,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, bin.meng@windriver.com,
  vivahavey@gmail.com, Alvin Chang <alvinga@andestech.com>,
  Yu-Ming Chang <yumin686@andestech.com>, Joel Stanley <joel@jms.id.au>
-Subject: [RFC PATCH 23/25] target/riscv/debug: Support heterogeneous mcontrol
- access types
-Date: Wed, 14 Jan 2026 14:46:56 +1000
-Message-ID: <20260114044701.1173347-24-npiggin@gmail.com>
+Subject: [RFC PATCH 24/25] target/riscv/debug: Emulate TT Ascalon Sdtrig
+Date: Wed, 14 Jan 2026 14:46:57 +1000
+Message-ID: <20260114044701.1173347-25-npiggin@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260114044701.1173347-1-npiggin@gmail.com>
 References: <20260114044701.1173347-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,101 +104,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Similarly to the last patch, mcontrol/mcontrol6 trigger types may
-not implement the same read/write/execute match capability. Add
-configuration to describe what access type matches are supported.
+This adds initial Tenstorrent Ascalon Sdtrig implementation details.
+Ascalon has 9 triggers: 4 mcontrol6 triggers that can match exec access,
+4 mcontrol6 triggers that can match load / store access, and 1 icount
+trigger.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/riscv/cpu.c   |  1 +
- target/riscv/debug.c | 26 ++++++++++++++++++++------
- target/riscv/debug.h |  1 +
- 3 files changed, 22 insertions(+), 6 deletions(-)
+ target/riscv/cpu.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 5708da5054..d349457c87 100644
+index d349457c87..bdc33bb746 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -2967,6 +2967,7 @@ static const RISCVSdtrigConfig default_sdtrig_config = {
-                          (1 << TRIGGER_TYPE_AD_MATCH6) |
-                          (1 << TRIGGER_TYPE_INST_CNT) |
-                          (1 << TRIGGER_TYPE_UNAVAIL),
-+            .mcontrol_rwx_mask = 0x7, /* WP/BP */
-         },
+@@ -2972,6 +2972,28 @@ static const RISCVSdtrigConfig default_sdtrig_config = {
      },
  };
-diff --git a/target/riscv/debug.c b/target/riscv/debug.c
-index e8d343bf42..d7c171736f 100644
---- a/target/riscv/debug.c
-+++ b/target/riscv/debug.c
-@@ -449,7 +449,11 @@ static inline bool type2_breakpoint_enabled(target_ulong ctrl)
- static target_ulong type2_mcontrol_validate(CPURISCVState *env,
-                                             target_ulong ctrl)
- {
-+    CPUState *cs = env_cpu(env);
-+    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cs);
-+    target_ulong index = env->sdtrig_state.trigger_cur;
-     target_ulong val;
-+    target_ulong rwx_mask;
-     uint32_t size;
  
-     /* validate the generic part first */
-@@ -475,9 +479,12 @@ static target_ulong type2_mcontrol_validate(CPURISCVState *env,
-         }
-     }
- 
--    /* keep the mode and attribute bits */
--    val |= (ctrl & (TYPE2_U | TYPE2_S | TYPE2_M |
--                    TYPE2_LOAD | TYPE2_STORE | TYPE2_EXEC));
-+    /* only set supported access (load/store/exec) bits */
-+    rwx_mask = mcc->def->debug_cfg->triggers[index].mcontrol_rwx_mask;
-+    val |= ctrl & rwx_mask;
++#if defined(TARGET_RISCV64)
++static const RISCVSdtrigConfig tt_ascalon_sdtrig_config = {
++    .nr_triggers = 9,
++    .triggers = {
++        [0 ... 3] = {
++            .type_mask = (1 << TRIGGER_TYPE_AD_MATCH6) |
++                         (1 << TRIGGER_TYPE_UNAVAIL),
++            .mcontrol_rwx_mask = 0x4, /* BP */
++        },
++        [4 ... 7] = {
++            .type_mask = (1 << TRIGGER_TYPE_AD_MATCH6) |
++                         (1 << TRIGGER_TYPE_UNAVAIL),
++            .mcontrol_rwx_mask = 0x3, /* WP */
++        },
++        [8]       = {
++            .type_mask = (1 << TRIGGER_TYPE_INST_CNT) |
++                         (1 << TRIGGER_TYPE_UNAVAIL),
++        },
++    },
++};
++#endif
 +
-+    /* keep the mode bits */
-+    val |= ctrl & (TYPE2_U | TYPE2_S | TYPE2_M);
- 
-     return val;
- }
-@@ -573,7 +580,11 @@ static inline bool type6_breakpoint_enabled(target_ulong ctrl)
- static target_ulong type6_mcontrol6_validate(CPURISCVState *env,
-                                              target_ulong ctrl)
+ bool riscv_sdtrig_default_implementation(const RISCVSdtrigConfig *config)
  {
-+    CPUState *cs = env_cpu(env);
-+    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cs);
-+    target_ulong index = env->sdtrig_state.trigger_cur;
-     target_ulong val;
-+    target_ulong rwx_mask;
-     uint32_t size;
+     return config == &default_sdtrig_config;
+@@ -3166,6 +3188,9 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+         .misa_ext = RVG | RVC | RVS | RVU | RVH | RVV,
+         .priv_spec = PRIV_VERSION_1_13_0,
+         .vext_spec = VEXT_VERSION_1_00_0,
++#if !defined(CONFIG_USER_ONLY)
++        .debug_cfg = &tt_ascalon_sdtrig_config,
++#endif
  
-     /* validate the generic part first */
-@@ -596,9 +607,12 @@ static target_ulong type6_mcontrol6_validate(CPURISCVState *env,
-         val |= (ctrl & TYPE6_SIZE);
-     }
- 
--    /* keep the mode and attribute bits */
--    val |= (ctrl & (TYPE6_VU | TYPE6_VS | TYPE6_U | TYPE6_S | TYPE6_M |
--                    TYPE6_LOAD | TYPE6_STORE | TYPE6_EXEC));
-+    /* only set supported access (load/store/exec) bits */
-+    rwx_mask = mcc->def->debug_cfg->triggers[index].mcontrol_rwx_mask;
-+    val |= ctrl & rwx_mask;
-+
-+    /* keep the mode bits */
-+    val |= (ctrl & (TYPE6_VU | TYPE6_VS | TYPE6_U | TYPE6_S | TYPE6_M));
- 
-     return val;
- }
-diff --git a/target/riscv/debug.h b/target/riscv/debug.h
-index f9e840d615..c9f7225954 100644
---- a/target/riscv/debug.h
-+++ b/target/riscv/debug.h
-@@ -137,6 +137,7 @@ enum {
- 
- struct trigger_properties {
-     uint16_t type_mask; /* Trigger types supported (0 = no trigger here) */
-+    uint8_t mcontrol_rwx_mask; /* mc/mc6 rwx access match supported */
- };
- 
- typedef struct RISCVSdtrigConfig {
+         /* ISA extensions */
+         .cfg.mmu = true,
 -- 
 2.51.0
 
