@@ -2,162 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8240D1F0ED
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 14:24:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A035FD1F12F
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 14:32:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vg0qr-0007TU-Re; Wed, 14 Jan 2026 08:23:57 -0500
+	id 1vg0yJ-00037Z-Ib; Wed, 14 Jan 2026 08:31:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vg0qo-0007Hu-OW
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 08:23:54 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vg0qm-0006m2-W6
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 08:23:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768397032;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=+30kf3+Bh57iG8rB/pt9BBUuV+RTMvxsnLo8D9GYINs=;
- b=ARxReCmQOLuGGO/c8t8LpFAb51GbgxNrjTUab7wtXf+z66+C6Ggv4Uwpv4WWjEhObbZrE/
- E4n4m2NbIOaRmQ2E28mvAQsux/T6eA0pELNNT8Q8RTjW1c0LoB0FeT+Z+v7dFfE1eYl3+c
- qWu2Y6SZudJvBR+4Er7CIzgEaS1fgvY=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-279-MZwCPT31M4-fJUFdOLuhNA-1; Wed, 14 Jan 2026 08:23:50 -0500
-X-MC-Unique: MZwCPT31M4-fJUFdOLuhNA-1
-X-Mimecast-MFC-AGG-ID: MZwCPT31M4-fJUFdOLuhNA_1768397029
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-47ee432070aso3987035e9.1
- for <qemu-devel@nongnu.org>; Wed, 14 Jan 2026 05:23:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768397029; x=1769001829; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=+30kf3+Bh57iG8rB/pt9BBUuV+RTMvxsnLo8D9GYINs=;
- b=dWQEXoJiuXDAyrv6lFxzYOWDNd7Ridc6NbKQGSQQyvxMAG8rxb5F22r+KHI+zVQxRf
- hv6VF9nLbLQSs2MeaiCjdBllSCaZ8xSSuCviQPp8cQTpSHdXL7NgPdVozRjnKe3Imaw/
- MzMVCQQhS/5Kl5VQVT0dttq+hGVEmgjwOg88/eDOYHdjn18Bq/SQ5S4MkOnbKh5FP8R3
- RC4psgoANWZjYiaJIXweUJgHLlyyfa4yWVonNjP/2PSZMo0/iSm/ueuqgJKpzYOU3ytv
- f0q7IV7arGtEq0aIgUtLBMcMxojoc0waAYFgKWG9tlfIlWkaCq9KRpRc5RIq1P9/4Yl2
- COnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768397029; x=1769001829;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+30kf3+Bh57iG8rB/pt9BBUuV+RTMvxsnLo8D9GYINs=;
- b=bnITe4gfW9OfpmfCuojjQu6lkXMMd5kYPTCpLUaqOk2SGqvC1Q/SKckcn5LOL36d1X
- anAiI54wFQrIAIpQyRSrYnUulq0iQ3CbluP2ddhRTAKnmLRyTUpouHNgsYw6Or2Nsbjb
- 7tU1e0wR+bmoOfH2V32P47mrVxhGEm+5IsZHhoaR8RvSY6yVfVnBXn6iB4cevBjnfFY/
- EBKLHpT424ffYDdPnBoKEpsDNHvGYnZrP+IBeYiHbHcUHWIkOVL9FcZ+xa7W5XnhasBo
- yEXUYjIzHmkBUFSJLBCaac9OvcZ/DrLgbGo/wOxd3KC03QacS3Y+GysTDdNEbg8L9y37
- X5Pg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWwI0xkpF8iF/Npm12PnSZBlfGQBRcMC5HAA/Cyi06rH+MNglN+4rLWo0riC+BpOLHbJIR71TPKPJyr@nongnu.org
-X-Gm-Message-State: AOJu0YyM/iTVfIZM+Sp7kAbEAdVShDJGaqj33cMXzyA2N7weiQ2TG9eE
- tsd2OD6VTo7NF2dhzFBBswZZM3hSpMEjWXr7ap9ynY0eAC+dGlsYBl9OtyD+gHIWxCqWIecPFi3
- l553H/F/INiVam9L970+vRRZSQPidTkGs6KS4vn40PCgj61IQbKrJzPFB
-X-Gm-Gg: AY/fxX6e4dQ5A9Ty53YZRn60yFV5kqNT1o/GzZE5vU8LHaylE8fD+GutUnrvttCFESk
- TYvWssa1RWO9VfbQVG4Q4QujNozmMZJnC3P5vLVNz6wLiosE/Bq+DDe3RunXdhOmPzHbTaM49Nl
- 69Dd/uN6QVFDX6aT6EalIRPoQMot0+i+qF0B+BwukJFvv6BBvI0dw5qZt83Qjd79qlLdvfTRuUu
- wXaTDDkN7SNPI4HaR4vCq8TxOkCW1OTyu3Daa9s/C4PHQDYMJwMNAkebrRK1bSX4aaPtAPByMcI
- SJ02+yS3oj3GUVdlFv4SPihio/XIn3PgKHPWbLjQV0lDhpx2B2u1sPia8AafsSeB6AficJN+Gxw
- 7i1X0LLZyJSEavrqE59HbazYQR685volILv3wBLaPRAwP8NxC
-X-Received: by 2002:a05:600c:3581:b0:45d:f81d:eae7 with SMTP id
- 5b1f17b1804b1-47ee3371d96mr30210755e9.28.1768397029265; 
- Wed, 14 Jan 2026 05:23:49 -0800 (PST)
-X-Received: by 2002:a05:600c:3581:b0:45d:f81d:eae7 with SMTP id
- 5b1f17b1804b1-47ee3371d96mr30210375e9.28.1768397028851; 
- Wed, 14 Jan 2026 05:23:48 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47ee54b8c9bsm27731645e9.3.2026.01.14.05.23.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 14 Jan 2026 05:23:48 -0800 (PST)
-Message-ID: <9cbf062a-f19e-4fa7-970d-e463dd5eba58@redhat.com>
-Date: Wed, 14 Jan 2026 14:23:47 +0100
+ (Exim 4.90_1) (envelope-from <tangtao1634@phytium.com.cn>)
+ id 1vg0xq-000314-LH; Wed, 14 Jan 2026 08:31:21 -0500
+Received: from sgoci-sdnproxy-4.icoremail.net ([129.150.39.64])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <tangtao1634@phytium.com.cn>)
+ id 1vg0xn-0008Py-7G; Wed, 14 Jan 2026 08:31:10 -0500
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+ by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwD3A12PmmdpXDceAw--.14103S2;
+ Wed, 14 Jan 2026 21:30:55 +0800 (CST)
+Received: from [192.168.31.151] (unknown [113.246.119.109])
+ by mail (Coremail) with SMTP id AQAAfwD3TeuEmmdpr6oTAA--.19949S2;
+ Wed, 14 Jan 2026 21:30:53 +0800 (CST)
+Message-ID: <6d50c3fe-e235-48e8-b461-fe0689f12070@phytium.com.cn>
+Date: Wed, 14 Jan 2026 21:30:42 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/6] hw/riscv: Add the Tenstorrent Atlantis machine
-To: Joel Stanley <joel@jms.id.au>
-Cc: Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Sunil V L <sunilvl@ventanamicro.com>, qemu-devel@nongnu.org,
- Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Michael Ellerman <mpe@oss.tenstorrent.com>,
- Joel Stanley <jms@oss.tenstorrent.com>,
- Nick Piggin <npiggin@oss.tenstorrent.com>,
- Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>, qemu-riscv@nongnu.org
-References: <20260114043433.1056021-1-joel@jms.id.au>
- <437f995f-6ae0-469a-b2d3-6ce59b3f49e0@redhat.com>
- <CACPK8XdURBGUWxaiT+4uEP6nKxMP=C7_iw4A=9s4cNj0DmC+uw@mail.gmail.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- xsFNBFu8o3UBEADP+oJVJaWm5vzZa/iLgpBAuzxSmNYhURZH+guITvSySk30YWfLYGBWQgeo
- 8NzNXBY3cH7JX3/a0jzmhDc0U61qFxVgrPqs1PQOjp7yRSFuDAnjtRqNvWkvlnRWLFq4+U5t
- yzYe4SFMjFb6Oc0xkQmaK2flmiJNnnxPttYwKBPd98WfXMmjwAv7QfwW+OL3VlTPADgzkcqj
- 53bfZ4VblAQrq6Ctbtu7JuUGAxSIL3XqeQlAwwLTfFGrmpY7MroE7n9Rl+hy/kuIrb/TO8n0
- ZxYXvvhT7OmRKvbYuc5Jze6o7op/bJHlufY+AquYQ4dPxjPPVUT/DLiUYJ3oVBWFYNbzfOrV
- RxEwNuRbycttMiZWxgflsQoHF06q/2l4ttS3zsV4TDZudMq0TbCH/uJFPFsbHUN91qwwaN/+
- gy1j7o6aWMz+Ib3O9dK2M/j/O/Ube95mdCqN4N/uSnDlca3YDEWrV9jO1mUS/ndOkjxa34ia
- 70FjwiSQAsyIwqbRO3CGmiOJqDa9qNvd2TJgAaS2WCw/TlBALjVQ7AyoPEoBPj31K74Wc4GS
- Rm+FSch32ei61yFu6ACdZ12i5Edt+To+hkElzjt6db/UgRUeKfzlMB7PodK7o8NBD8outJGS
- tsL2GRX24QvvBuusJdMiLGpNz3uqyqwzC5w0Fd34E6G94806fwARAQABzSJDw6lkcmljIExl
- IEdvYXRlciA8Y2xnQHJlZGhhdC5jb20+wsGRBBMBCAA7FiEEoPZlSPBIlev+awtgUaNDx8/7
- 7KEFAmTLlVECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQUaNDx8/77KG0eg//
- S0zIzTcxkrwJ/9XgdcvVTnXLVF9V4/tZPfB7sCp8rpDCEseU6O0TkOVFoGWM39sEMiQBSvyY
- lHrP7p7E/JYQNNLh441MfaX8RJ5Ul3btluLapm8oHp/vbHKV2IhLcpNCfAqaQKdfk8yazYhh
- EdxTBlzxPcu+78uE5fF4wusmtutK0JG0sAgq0mHFZX7qKG6LIbdLdaQalZ8CCFMKUhLptW71
- xe+aNrn7hScBoOj2kTDRgf9CE7svmjGToJzUxgeh9mIkxAxTu7XU+8lmL28j2L5uNuDOq9vl
- hM30OT+pfHmyPLtLK8+GXfFDxjea5hZLF+2yolE/ATQFt9AmOmXC+YayrcO2ZvdnKExZS1o8
- VUKpZgRnkwMUUReaF/mTauRQGLuS4lDcI4DrARPyLGNbvYlpmJWnGRWCDguQ/LBPpbG7djoy
- k3NlvoeA757c4DgCzggViqLm0Bae320qEc6z9o0X0ePqSU2f7vcuWN49Uhox5kM5L86DzjEQ
- RHXndoJkeL8LmHx8DM+kx4aZt0zVfCHwmKTkSTQoAQakLpLte7tWXIio9ZKhUGPv/eHxXEoS
- 0rOOAZ6np1U/xNR82QbF9qr9TrTVI3GtVe7Vxmff+qoSAxJiZQCo5kt0YlWwti2fFI4xvkOi
- V7lyhOA3+/3oRKpZYQ86Frlo61HU3r6d9wzOwU0EW7yjdQEQALyDNNMw/08/fsyWEWjfqVhW
- pOOrX2h+z4q0lOHkjxi/FRIRLfXeZjFfNQNLSoL8j1y2rQOs1j1g+NV3K5hrZYYcMs0xhmrZ
- KXAHjjDx7FW3sG3jcGjFW5Xk4olTrZwFsZVUcP8XZlArLmkAX3UyrrXEWPSBJCXxDIW1hzwp
- bV/nVbo/K9XBptT/wPd+RPiOTIIRptjypGY+S23HYBDND3mtfTz/uY0Jytaio9GETj+fFis6
- TxFjjbZNUxKpwftu/4RimZ7qL+uM1rG1lLWc9SPtFxRQ8uLvLOUFB1AqHixBcx7LIXSKZEFU
- CSLB2AE4wXQkJbApye48qnZ09zc929df5gU6hjgqV9Gk1rIfHxvTsYltA1jWalySEScmr0iS
- YBZjw8Nbd7SxeomAxzBv2l1Fk8fPzR7M616dtb3Z3HLjyvwAwxtfGD7VnvINPbzyibbe9c6g
- LxYCr23c2Ry0UfFXh6UKD83d5ybqnXrEJ5n/t1+TLGCYGzF2erVYGkQrReJe8Mld3iGVldB7
- JhuAU1+d88NS3aBpNF6TbGXqlXGF6Yua6n1cOY2Yb4lO/mDKgjXd3aviqlwVlodC8AwI0Sdu
- jWryzL5/AGEU2sIDQCHuv1QgzmKwhE58d475KdVX/3Vt5I9kTXpvEpfW18TjlFkdHGESM/Jx
- IqVsqvhAJkalABEBAAHCwV8EGAECAAkFAlu8o3UCGwwACgkQUaNDx8/77KEhwg//WqVopd5k
- 8hQb9VVdk6RQOCTfo6wHhEqgjbXQGlaxKHoXywEQBi8eULbeMQf5l4+tHJWBxswQ93IHBQjK
- yKyNr4FXseUI5O20XVNYDJZUrhA4yn0e/Af0IX25d94HXQ5sMTWr1qlSK6Zu79lbH3R57w9j
- hQm9emQEp785ui3A5U2Lqp6nWYWXz0eUZ0Tad2zC71Gg9VazU9MXyWn749s0nXbVLcLS0yop
- s302Gf3ZmtgfXTX/W+M25hiVRRKCH88yr6it+OMJBUndQVAA/fE9hYom6t/zqA248j0QAV/p
- LHH3hSirE1mv+7jpQnhMvatrwUpeXrOiEw1nHzWCqOJUZ4SY+HmGFW0YirWV2mYKoaGO2YBU
- wYF7O9TI3GEEgRMBIRT98fHa0NPwtlTktVISl73LpgVscdW8yg9Gc82oe8FzU1uHjU8b10lU
- XOMHpqDDEV9//r4ZhkKZ9C4O+YZcTFu+mvAY3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfA
- HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
- izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <CACPK8XdURBGUWxaiT+4uEP6nKxMP=C7_iw4A=9s4cNj0DmC+uw@mail.gmail.com>
+Subject: Re: [RFC v8 0/7] hw/misc: Introduce a generalized IOMMU test framework
+To: Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>, Eric Auger <eric.auger@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Chen Baozi <chenbaozi@phytium.com.cn>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Mostafa Saleh <smostafa@google.com>,
+ CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
+References: <20251224034647.2596434-1-tangtao1634@phytium.com.cn>
+From: Tao Tang <tangtao1634@phytium.com.cn>
+In-Reply-To: <20251224034647.2596434-1-tangtao1634@phytium.com.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+X-CM-TRANSID: AQAAfwD3TeuEmmdpr6oTAA--.19949S2
+X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQAPBWlmpwAGbgAAsL
+Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=tangtao163
+ 4@phytium.com.cn;
+X-Coremail-Antispam: 1Uk129KBjvJXoW3ur18GFW5Gr15Gw1UGrykXwb_yoWDAr1kpa
+ yfGa9IkF48Jr1fCr4xAw48ZFy5Jan3Ja17Ar17Kw1F9390yryIvr15KryrKF9rJrW8ZF47
+ Za10qF1DWF4YyrJanT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+ DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
+ UUUUU
+Received-SPF: pass client-ip=129.150.39.64;
+ envelope-from=tangtao1634@phytium.com.cn; helo=sgoci-sdnproxy-4.icoremail.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -173,50 +76,250 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/14/26 12:14, Joel Stanley wrote:
-> On Wed, 14 Jan 2026 at 19:36, Cédric Le Goater <clg@redhat.com> wrote:
->>
->> Hello Joel,
->>
->> On 1/14/26 05:34, Joel Stanley wrote:
->>> v2 separates out prep patches so the machine can be reviewed
->>> independently. It depends on the following two series:
->>>
->>>    AIA: https://lore.kernel.org/qemu-devel/20260109133125.397364-1-joel@jms.id.au
->>>    Boot: https://lore.kernel.org/qemu-devel/20260109131657.396794-1-joel@jms.id.au
->>>
->>> Original cover letter:
->>>
->>> Introducing Tenstorrent Atlantis!
->>>
->>>    The Tenstorrent Atlantis platform is a collaboration between Tenstorrent
->>
->>
->> What kind of board is the "Tenstorrent Atlantis platform" ? Is it an evb ?
-> 
-> An upcoming dev board with the SoC on it.
-> 
->>>    and CoreLab Technology. It is based on the Atlantis SoC, which includes
->>
->> Why isn't the SoC modeled independently ?
-> 
-> What I've modelled is the soc, with the exception of the test i2c
-> sensors. Everything listed (aside from the i2c sensors) is inside the
-> SoC.
-> 
-> Lets say we add atlantis-evb that has atlantis-soc on it, with memory,
-> i2c devices, etc. What does that look like? 
 
-Looks good to me.
+A gentle ping on this series. Any further suggestions would be greatly 
+appreciated.
 
-> The aspeed machines are a bit complex to follow these days!
 
-Aspeed machines have been around for a decade. Ten years already !
+Link:
 
-Tenstorrent machines should be similar in 2036. Hopefully sooner.
+https://lore.kernel.org/qemu-devel/20251224034647.2596434-1-tangtao1634@phytium.com.cn/
 
-Thanks,
 
-C.
+Best regards,
+
+Tao
+
+
+On 2025/12/24 11:46, Tao Tang wrote:
+> Changes since v7: Following Pierrick’s feedback, this version fixes the
+> uint64_t formatting issue
+> (switching to PRIx64 to avoid %lx mismatches on non-LP64 platforms). I also
+> validated the series with Pierrick’s qemu-ci workflow, and all jobs passed;
+> the CI run is available at:
+>
+> https://github.com/hnusdr/qemu/actions/runs/20476259310
+>
+> Motivation
+> ----------
+>
+> Currently, thoroughly testing IOMMU emulation (e.g., ARM SMMUv3) requires
+> a significant software stack. We need to boot a full guest operating
+> system (like Linux) with the appropriate drivers (e.g., IOMMUFD) and rely
+> on firmware (e.g., ACPI with IORT tables or Hafnium) to correctly
+> configure the IOMMU and orchestrate DMA from a peripheral device.
+>
+> This dependency on a complex software stack presents several challenges:
+>
+> * High Barrier to Entry: Writing targeted tests for specific IOMMU
+>      features (like fault handling, specific translation regimes, etc.)
+>      becomes cumbersome.
+>
+> * Difficult to Debug: It's hard to distinguish whether a bug originates
+>      from the IOMMU emulation itself, the guest driver, the firmware
+>      tables, or the guest kernel's configuration.
+>
+> * Slow Iteration: The need to boot a full guest OS slows down the
+>      development and testing cycle.
+>
+> The primary goal of this work is to create a lightweight, self-contained
+> testing environment that allows us to exercise the IOMMU's core logic
+> directly at the qtest level, removing the need for any guest-side software.
+>
+> Our Approach: A Dedicated Test Framework
+> -----------------------------------------
+>
+> To achieve this, we introduce three main components:
+>
+> * A minimal hardware device: iommu-testdev
+> * A reusable IOMMU helper library: libqos/qos-smmuv3
+> * A comprehensive qtest suite: iommu-smmuv3-test
+>
+> The iommu-testdev is intentionally not a conformant, general-purpose PCIe
+> or platform device. It is a purpose-built, highly simplified "DMA engine"
+> designed to be analogous to a minimal PCIe Root Complex that bypasses the
+> full, realistic topology (Host Bridges, Switches, Endpoints) to provide a
+> direct, programmable path for a DMA request to reach the IOMMU. Its sole
+> purpose is to trigger a DMA transaction when its registers are written to,
+> making it perfectly suited for direct control from a test environment like
+> qtest.
+>
+> The Qtest Framework
+> -------------------
+>
+> The new qtest (iommu-smmuv3-test.c) serves as the "bare-metal driver"
+> for both the IOMMU and the iommu-testdev. It leverages the libqos helper
+> library to manually perform all the setup that would typically be handled
+> by the guest kernel and firmware, but in a completely controlled and
+> predictable manner:
+>
+> 1.  IOMMU Configuration: It directly initializes the SMMU's registers to a
+>      known state using helper functions from qos-smmuv3.
+>
+> 2.  Translation Structure Setup: It uses the libqos library to construct
+>      the necessary translation structures in memory, including Stream Table
+>      Entries (STEs), Context Descriptors (CDs), and Page Tables (PTEs).
+>
+> 3.  DMA Trigger: It programs the iommu-testdev to initiate a DMA operation
+>      targeting a specific IOVA with configurable attributes.
+>
+> 4.  Verification: It waits for the transaction to complete and verifies
+>      that the memory was accessed correctly after address translation by
+>      the IOMMU.
+>
+> This framework provides a solid and extensible foundation for validating
+> the IOMMU's core translation paths. The current test suite covers:
+>
+> - Stage 1 only translation (VA -> PA via CD page tables)
+> - Stage 2 only translation (IPA -> PA via STE S2 tables)
+> - Nested translation (VA -> IPA -> PA, Stage 1 + Stage 2)
+>
+> The infrastructure is designed to be extended to support additional
+> security spaces and IOMMU features.
+>
+>
+> Testing:
+> --------
+> QTEST_QEMU_BINARY=./build/qemu-system-aarch64 \
+>    ./build/tests/qtest/iommu-smmuv3-test --tap -k
+>
+>
+> If you want to check coverage report, please follow instructions below
+> which are shared by Pierrick in previous review [1]
+>
+> # install gcovr if not already installed, `sudo apt install gcovr`
+> # on ubuntu for example
+> $ export CFLAGS="--coverage"
+> $ ./configure --target-list=aarch64-softmmu
+> $ ninja -C build
+> $ QTEST_QEMU_BINARY=./build/qemu-system-aarch64 \
+>    ./build/tests/qtest/iommu-smmuv3-test
+> $ rm -rf build/coverage_html
+> $ mkdir build/coverage_html
+> $ gcovr \
+>        --gcov-ignore-parse-errors suspicious_hits.warn \
+>        --gcov-ignore-parse-errors negative_hits.warn \
+>        --merge-mode-functions=separate \
+>        --html-details build/coverage_html/index.html \
+>        --filter 'hw/arm/smmu*'
+> # check the version of gcovr if meeting some unsupported options error.
+> # Upgrading to 8.4 version may resolve the error.
+> $ gcovr --version
+> $ pip install --user --upgrade gcovr
+> $ echo file://$(pwd)/build/coverage_html/index.html
+> # open this in browser by clicking on your terminal
+>
+> [1] https://lore.kernel.org/qemu-devel/a361b46f-2173-4c98-a5d3-6b4d2ac004af@linaro.org/
+>
+>
+> Major Changes from v7 to v8:
+> -----------------------------
+>    - Fix uint64_t formatting issue by using PRIx64 for portability
+>    - Validate the series with Pierrick's qemu-ci workflow; all jobs passed
+>    - This series is also saved in github repo [5]
+> [5] https://github.com/hnusdr/qemu/tree/iommu-testdev-v8-community
+>
+>
+> Major Changes from v6 to v7:
+> -----------------------------
+>    - Split the smmuv3-common.h work into smaller patches
+>      (registerfields conversion, NSCFG bits, helper setters)
+>    - Add MAINTAINERS entries for iommu-testdev and qos-smmuv3 helpers
+>    - Tighten documentation wording and update the DMA test pattern value
+>    - Simplify qtest PCI device discovery and rename QSMMU_IOVA constant
+>    - This series is also saved in github repo [4]
+>
+> [4] https://github.com/hnusdr/qemu/tree/iommu-testdev-v7-community
+>
+>
+> Major Changes from v5 to v6:
+> -----------------------------
+>    - Split batch testing into individual test cases per translation mode
+>    - Removed cleanup functions and related codes or comments
+>    - Improved error handling with explicit assertions
+>    - Add coverage build and test instructions shared by Pierrick
+>    - Keep Reviewed-by and Tested-by from Pierrick's review
+>    - This series is also saved in github repo [2]
+>
+> [2] https://github.com/hnusdr/qemu/tree/iommu-testdev-v6-community
+>
+>
+> Major Changes from v4 to v5:
+> -----------------------------
+>   - Remove a duplicated patch that was accidentally included in v4.
+>
+>
+> Major Changes from v3 to v4:
+> -----------------------------
+>
+> 1. Added shared smmuv3-common.h so both the device and libqos consume the same
+>     STE/CD/register definitions as Alex suggested [3]
+> 2. Slimmed iommu-testdev down to a pure DMA trigger with a tighter MMIO
+>     contract (new doorbell helper, simplified attributes/errors).
+> 3. Updated `qos-smmuv3` and the qtest so they include the common header,
+>     honor per-test expected results, and rely solely on the streamlined device
+>     interface.
+> 4. Compacted changes of v2 to v3.
+>
+> [3] https://lore.kernel.org/qemu-devel/87zf8jk244.fsf@draig.linaro.org/
+>
+>
+> Major Changes from v2 to v3:
+> -----------------------------
+>
+> 1. Generalization/Renaming: rebranded `smmu-testdev` → `iommu-testdev` (code,
+>     headers, docs) to reflect the broadened scope.
+> 2. Separation of concerns: iommu-testdev is now a pure DMA trigger; all
+>     SMMUv3-specific setup (STE/CD/page tables, multi-mode support, space offsets)
+>     lives in `qos-smmuv3.{c,h}` and is consumed by the new qtest.
+> 3. Improved modularity & coverage: the stacked design (device + helper + qtest)
+>     made it straightforward to add S1/S2/Nested tests, a cleaner config system,
+>     and clearer validation logic.
+> 4. Code/documentation quality: added tracepoints, better error handling/naming,
+>     and refreshed `docs/specs/iommu-testdev.rst` with the new layout.
+>
+> Future Work
+> -----------
+>
+> The current implementation focuses on basic translation path validation
+> in the Non-Secure address space. Future extensions could include:
+>
+> * Multi-space testing (Secure, Root, Realm) for SMMUv3
+> * Support for other IOMMU types (Intel VT-d, AMD-Vi, RISC-V IOMMU)
+>
+>
+> Tao Tang (7):
+>    hw/arm/smmuv3: Extract common definitions to smmuv3-common.h
+>    hw/arm/smmuv3-common: Define STE/CD fields via registerfields
+>    hw/misc: Introduce iommu-testdev for bare-metal IOMMU testing
+>    hw/arm/smmuv3-common: Add NSCFG bit definition for CD
+>    hw/arm/smmuv3-common: Add STE/CD set helpers for repeated field setup
+>    tests/qtest/libqos: Add SMMUv3 helper library
+>    tests/qtest: Add SMMUv3 bare-metal test using iommu-testdev
+>
+>   MAINTAINERS                     |  13 +
+>   docs/specs/index.rst            |   1 +
+>   docs/specs/iommu-testdev.rst    | 112 ++++++
+>   hw/arm/smmuv3-internal.h        | 255 +------------
+>   hw/misc/Kconfig                 |   5 +
+>   hw/misc/iommu-testdev.c         | 271 ++++++++++++++
+>   hw/misc/meson.build             |   1 +
+>   hw/misc/trace-events            |  10 +
+>   include/hw/arm/smmuv3-common.h  | 423 +++++++++++++++++++++
+>   include/hw/misc/iommu-testdev.h |  68 ++++
+>   tests/qtest/iommu-smmuv3-test.c | 121 ++++++
+>   tests/qtest/libqos/meson.build  |   3 +
+>   tests/qtest/libqos/qos-smmuv3.c | 633 ++++++++++++++++++++++++++++++++
+>   tests/qtest/libqos/qos-smmuv3.h | 256 +++++++++++++
+>   tests/qtest/meson.build         |   1 +
+>   15 files changed, 1919 insertions(+), 254 deletions(-)
+>   create mode 100644 docs/specs/iommu-testdev.rst
+>   create mode 100644 hw/misc/iommu-testdev.c
+>   create mode 100644 include/hw/arm/smmuv3-common.h
+>   create mode 100644 include/hw/misc/iommu-testdev.h
+>   create mode 100644 tests/qtest/iommu-smmuv3-test.c
+>   create mode 100644 tests/qtest/libqos/qos-smmuv3.c
+>   create mode 100644 tests/qtest/libqos/qos-smmuv3.h
+>
 
 
