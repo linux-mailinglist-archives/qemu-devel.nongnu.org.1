@@ -2,72 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E03DD1E4D2
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 12:05:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54140D1E503
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 12:08:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfyfw-0002gK-2a; Wed, 14 Jan 2026 06:04:32 -0500
+	id 1vfyj0-0004R0-Bf; Wed, 14 Jan 2026 06:07:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vfyfi-0002eS-7X
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 06:04:18 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1vfyfg-0001G7-Fs
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 06:04:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768388655;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=0cVFJ08nowcWabLBs1K+PrQb1Q6rOq1oR824HMYYDrU=;
- b=Utr2wc5uMAeCxwMMAAukCMLuhajWLy2HOT5ldxVsbByudkV2ZFN4g2Yq9D6MMxbHEmtMQv
- o22HbHiBpRsyY81U3oHi3ntvgD2wL69dn/33vBvmw5rlbeSRL9Ip+BUtR/hZDqG6F+ZF+c
- PaRGKBNM3pLCP5+fNEyxU8744P+FFU4=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-144-ymnZgR5FMJuqrHbc5PXR2g-1; Wed,
- 14 Jan 2026 06:04:13 -0500
-X-MC-Unique: ymnZgR5FMJuqrHbc5PXR2g-1
-X-Mimecast-MFC-AGG-ID: ymnZgR5FMJuqrHbc5PXR2g_1768388652
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8A85F1800365; Wed, 14 Jan 2026 11:04:12 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.45.224.56])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AC5BD30001A2; Wed, 14 Jan 2026 11:04:11 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id D9AAC1800387; Wed, 14 Jan 2026 12:04:06 +0100 (CET)
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 2/2] hw/uefi: add pcap support
-Date: Wed, 14 Jan 2026 12:04:06 +0100
-Message-ID: <20260114110406.3500357-3-kraxel@redhat.com>
-In-Reply-To: <20260114110406.3500357-1-kraxel@redhat.com>
-References: <20260114110406.3500357-1-kraxel@redhat.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1vfyir-0004Qe-67
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 06:07:33 -0500
+Received: from mail-qk1-x731.google.com ([2607:f8b0:4864:20::731])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1vfyio-0001s2-Je
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 06:07:32 -0500
+Received: by mail-qk1-x731.google.com with SMTP id
+ af79cd13be357-8b31a665ba5so1039894285a.2
+ for <qemu-devel@nongnu.org>; Wed, 14 Jan 2026 03:07:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1768388848; x=1768993648; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=dgZQq00nF77FQTRpTqVnwFGW+ekeVIrkNrtU47louAY=;
+ b=gyHDYiER5nxlW3FeH7LF/WyksTPAW5BaJowHzlJHQXCQ41gA4gZ/o60HehYlylHwtM
+ yGfduyNbLXX/Vfo/Ilo+ybzOY9ZqQ45FaZh5csF0Jhz8gH5xLLmwHRdGa6prZ3OAToqi
+ aR2mtRDEmaQbgCfxqTnmoL0r8KErrUx0YX0kYmq3cuAHXH1jjKUjARS7NMEw1CzOb6J/
+ f5QQqkfrY20WeRV4xynroWhl0J/UMhx3TgVuWPyUwQQyqLKwYX7WAOtK582OZes3JcAC
+ V0D8MOHy+dKj4HzdEj66lM/Uq6DP0KTFryU+AO6PL2ckA69TRTAnQQXvtwFFjqraQijv
+ SpHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768388848; x=1768993648;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dgZQq00nF77FQTRpTqVnwFGW+ekeVIrkNrtU47louAY=;
+ b=RVprJ0xxT5pSdn5+oRWLdaLKrzdHccsJ+sALWvTmg/opyuaYsrn/DjBoiWRrsmgI4g
+ cg5UFcrqRmsiYOV16e1AfiPt5ooWYGUiCUY/TJvqNJjOjWYywyDqpyra8uqngdRtq/6e
+ nPSQrK+dwZNb9Xnxs0uSEcaFRmtMJmXLUGs03E0YKKYKETerVAwmfHnZK9L5+JRdWrBb
+ gobpWw0oelH69WkrV1/AZU8MaY4Z3DKUO2NDo2HfxInaAM9wyXPTKJnazJj4MIQY8Vpf
+ Yxcxyvp/5fm6VqKkG7400WX1OTZW4GB/bhDelKrmK2vmcxyfcxQqCGxM220bQAjcl7Aj
+ V7AA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUOTsvA2oO2XnOXKPkeMfreWkpCj207GEDytxy8geadNuLRFcSTnUac2lcO4g0pBpCUiVyEXj302D77@nongnu.org
+X-Gm-Message-State: AOJu0YxvfjEAdu6E8kCftrIpPTJFF+T2CDVJdTAmwyUQ/RM4TKrZldpl
+ 7mg3OCocGlsiildTqpQYRo7lGzxgUyndVdJhBL2F+xfxbKlkUEiWY54jTo0rJJ0cLkk=
+X-Gm-Gg: AY/fxX6EV6uk6r/Zxwyp5QfnB5oWJ3GdOMRvZ2D7ETWPrIS6FU1lkW81qW62N6hhLRQ
+ gVyOgaEXDQLN1RnEeq45OtglkunrexjWRUuHspfAwNEBdI4NrJjDzR/qEjZRk7PMLu4PLed1BYI
+ SeAnp98/aBKufU9i3yjhMIL8AvTXz/4dWaY6GGjrB+kRIXkMBHPuUfqH9NHE+Z7a7Hmi8n2eGSf
+ NKuro1+Yk9NpnkkH1/FkkQudTyO5OE/DebqA99+UP9b7YKd6AIeXjwL1NiimjnVi3US4J+JP3Q6
+ YeUWW7M1WNgL0rp/XZIuixDc4VGXgxbonce5QwI9dGs1MNw03Kr4iM/3rx7QD6IIUMnHJd6Z5be
+ /7kcbojHnHQLN2rK+Td8sm1gT6PBSdv62mH7Q3TYDGToHdpWB+nVmIASMnrmzrNCf30ZDsmOL7z
+ Gudj4VYb3zuExSGCAKFF50h1IkpFfUlfpN7qUoza65
+X-Received: by 2002:a05:620a:1a03:b0:8c2:9ff4:a8bd with SMTP id
+ af79cd13be357-8c52fb2366emr292755685a.15.1768388847827; 
+ Wed, 14 Jan 2026 03:07:27 -0800 (PST)
+Received: from [192.168.68.103] ([152.234.121.223])
+ by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-8c530b777c0sm140054485a.33.2026.01.14.03.07.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 14 Jan 2026 03:07:26 -0800 (PST)
+Message-ID: <8fbf8a40-4fa0-4152-8d90-1f24d8f364b4@ventanamicro.com>
+Date: Wed, 14 Jan 2026 08:07:22 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] hw/riscv/aia: Provide number of irq sources
+To: Joel Stanley <joel@jms.id.au>, Alistair Francis
+ <alistair.francis@wdc.com>, Sunil V L <sunilvl@ventanamicro.com>,
+ qemu-devel@nongnu.org
+Cc: Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei
+ <zhiwei_liu@linux.alibaba.com>, Michael Ellerman <mpe@oss.tenstorrent.com>,
+ Joel Stanley <jms@oss.tenstorrent.com>,
+ Nick Piggin <npiggin@oss.tenstorrent.com>,
+ Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>, qemu-riscv@nongnu.org
+References: <20260114012846.981884-1-joel@jms.id.au>
+ <20260114012846.981884-3-joel@jms.id.au>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Content-Language: en-US
+In-Reply-To: <20260114012846.981884-3-joel@jms.id.au>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::731;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-qk1-x731.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,208 +109,185 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add pcapfile property to uevi-vars-* devices, allowing to write out a
-capture of the communication traffic between uefi firmware and qemu.
 
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/hw/uefi/var-service.h | 10 ++++
- hw/uefi/var-service-core.c    |  7 +++
- hw/uefi/var-service-pcap.c    | 94 +++++++++++++++++++++++++++++++++++
- hw/uefi/var-service-sysbus.c  |  1 +
- hw/uefi/meson.build           |  1 +
- 5 files changed, 113 insertions(+)
- create mode 100644 hw/uefi/var-service-pcap.c
 
-diff --git a/include/hw/uefi/var-service.h b/include/hw/uefi/var-service.h
-index 91fb4a20918a..7d84025cd58d 100644
---- a/include/hw/uefi/var-service.h
-+++ b/include/hw/uefi/var-service.h
-@@ -77,6 +77,10 @@ struct uefi_vars_state {
-     bool                              force_secure_boot;
-     bool                              disable_custom_mode;
-     bool                              use_pio;
-+
-+    /* request + reply capture */
-+    char                              *pcapfile;
-+    FILE                              *pcapfp;
- };
- 
- struct uefi_vars_cert {
-@@ -189,4 +193,10 @@ uefi_var_policy *uefi_vars_add_policy(uefi_vars_state *uv,
-                                       variable_policy_entry *pe);
- uint32_t uefi_vars_mm_check_policy_proto(uefi_vars_state *uv);
- 
-+/* vars-service-pcap.c */
-+void uefi_vars_pcap_init(uefi_vars_state *uv, Error **errp);
-+void uefi_vars_pcap_reset(uefi_vars_state *uv);
-+void uefi_vars_pcap_request(uefi_vars_state *uv, void *buffer, size_t size);
-+void uefi_vars_pcap_reply(uefi_vars_state *uv, void *buffer, size_t size);
-+
- #endif /* QEMU_UEFI_VAR_SERVICE_H */
-diff --git a/hw/uefi/var-service-core.c b/hw/uefi/var-service-core.c
-index 6ab8df091aaf..ce0628fa5248 100644
---- a/hw/uefi/var-service-core.c
-+++ b/hw/uefi/var-service-core.c
-@@ -101,6 +101,8 @@ static uint32_t uefi_vars_cmd_mm(uefi_vars_state *uv, bool dma_mode)
-     }
-     memset(uv->buffer + size, 0, uv->buf_size - size);
- 
-+    uefi_vars_pcap_request(uv, uv->buffer, size);
-+
-     /* dispatch */
-     if (qemu_uuid_is_equal(&mhdr->guid, &EfiSmmVariableProtocolGuid)) {
-         retval = uefi_vars_mm_vars_proto(uv);
-@@ -127,6 +129,8 @@ static uint32_t uefi_vars_cmd_mm(uefi_vars_state *uv, bool dma_mode)
-         retval = UEFI_VARS_STS_ERR_NOT_SUPPORTED;
-     }
- 
-+    uefi_vars_pcap_reply(uv, uv->buffer, sizeof(*mhdr) + mhdr->length);
-+
-     /* write buffer */
-     if (dma_mode) {
-         dma_memory_write(&address_space_memory, dma,
-@@ -163,6 +167,8 @@ void uefi_vars_hard_reset(uefi_vars_state *uv)
-     uefi_vars_clear_volatile(uv);
-     uefi_vars_policies_clear(uv);
-     uefi_vars_auth_init(uv);
-+
-+    uefi_vars_pcap_reset(uv);
- }
- 
- static uint32_t uefi_vars_cmd(uefi_vars_state *uv, uint32_t cmd)
-@@ -319,4 +325,5 @@ void uefi_vars_realize(uefi_vars_state *uv, Error **errp)
- {
-     uefi_vars_json_init(uv, errp);
-     uefi_vars_json_load(uv, errp);
-+    uefi_vars_pcap_init(uv, errp);
- }
-diff --git a/hw/uefi/var-service-pcap.c b/hw/uefi/var-service-pcap.c
-new file mode 100644
-index 000000000000..424ad6022e7e
---- /dev/null
-+++ b/hw/uefi/var-service-pcap.c
-@@ -0,0 +1,94 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include "qemu/osdep.h"
-+#include "qemu/error-report.h"
-+#include "qemu/pcap.h"
-+#include "system/dma.h"
-+
-+#include "hw/uefi/var-service.h"
-+
-+#define LINKTYPE_EDK2_MM  302
-+
-+#define SNAPLEN   (64 * 1024)
-+#define TYPE_RESET       0x01
-+#define TYPE_REQUEST     0x02
-+#define TYPE_REPLY       0x03
-+
-+static void uefi_vars_pcap_header(FILE *fp)
-+{
-+    static const struct pcap_hdr header = {
-+        .magic_number  = PCAP_MAGIC,
-+        .version_major = PCAP_MAJOR,
-+        .version_minor = PCAP_MINOR,
-+        .snaplen       = SNAPLEN,
-+        .network       = LINKTYPE_EDK2_MM,
-+    };
-+
-+    fwrite(&header, sizeof(header), 1, fp);
-+    fflush(fp);
-+}
-+
-+static void uefi_vars_pcap_packet(FILE *fp, uint32_t type, void *buffer, size_t size)
-+{
-+    struct pcaprec_hdr header;
-+    struct timeval tv;
-+    uint32_t orig_len = size + sizeof(type);
-+    uint32_t incl_len = MIN(orig_len, SNAPLEN);
-+
-+    gettimeofday(&tv, NULL);
-+    header.ts_sec   = tv.tv_sec;
-+    header.ts_usec  = tv.tv_usec;
-+    header.incl_len = incl_len;
-+    header.orig_len = orig_len;
-+
-+    fwrite(&header, sizeof(header), 1, fp);
-+    fwrite(&type, sizeof(type), 1, fp);
-+    if (buffer) {
-+        fwrite(buffer, incl_len - sizeof(type), 1, fp);
-+    }
-+    fflush(fp);
-+}
-+
-+void uefi_vars_pcap_init(uefi_vars_state *uv, Error **errp)
-+{
-+    int fd;
-+
-+    if (!uv->pcapfile) {
-+        return;
-+    }
-+
-+    fd = qemu_create(uv->pcapfile,
-+                     O_WRONLY | O_TRUNC | O_BINARY,
-+                     0666, errp);
-+    if (fd < 0) {
-+        return;
-+    }
-+
-+    uv->pcapfp = fdopen(fd, "wb");
-+    uefi_vars_pcap_header(uv->pcapfp);
-+}
-+
-+void uefi_vars_pcap_reset(uefi_vars_state *uv)
-+{
-+    if (!uv->pcapfp) {
-+        return;
-+    }
-+    uefi_vars_pcap_packet(uv->pcapfp, TYPE_RESET, NULL, 0);
-+}
-+
-+void uefi_vars_pcap_request(uefi_vars_state *uv, void *buffer, size_t size)
-+{
-+    if (!uv->pcapfp) {
-+        return;
-+    }
-+    uefi_vars_pcap_packet(uv->pcapfp, TYPE_REQUEST, buffer, size);
-+}
-+
-+void uefi_vars_pcap_reply(uefi_vars_state *uv, void *buffer, size_t size)
-+{
-+    if (!uv->pcapfp) {
-+        return;
-+    }
-+    uefi_vars_pcap_packet(uv->pcapfp, TYPE_REPLY, buffer, size);
-+}
-diff --git a/hw/uefi/var-service-sysbus.c b/hw/uefi/var-service-sysbus.c
-index 75b079051848..97a96cae6a2b 100644
---- a/hw/uefi/var-service-sysbus.c
-+++ b/hw/uefi/var-service-sysbus.c
-@@ -33,6 +33,7 @@ static const Property uefi_vars_sysbus_properties[] = {
-     DEFINE_PROP_SIZE("size", uefi_vars_sysbus_state, state.max_storage,
-                      256 * 1024),
-     DEFINE_PROP_STRING("jsonfile", uefi_vars_sysbus_state, state.jsonfile),
-+    DEFINE_PROP_STRING("pcapfile", uefi_vars_sysbus_state, state.pcapfile),
-     DEFINE_PROP_BOOL("force-secure-boot", uefi_vars_sysbus_state,
-                      state.force_secure_boot, false),
-     DEFINE_PROP_BOOL("disable-custom-mode", uefi_vars_sysbus_state,
-diff --git a/hw/uefi/meson.build b/hw/uefi/meson.build
-index c8f38dfae247..3eae47553315 100644
---- a/hw/uefi/meson.build
-+++ b/hw/uefi/meson.build
-@@ -3,6 +3,7 @@ system_ss.add(files('hardware-info.c', 'ovmf-log.c'))
- uefi_vars_ss = ss.source_set()
- if (config_all_devices.has_key('CONFIG_UEFI_VARS'))
-   uefi_vars_ss.add(files('var-service-core.c',
-+                         'var-service-pcap.c',
-                          'var-service-json.c',
-                          'var-service-vars.c',
-                          'var-service-auth.c',
--- 
-2.52.0
+On 1/13/2026 10:28 PM, Joel Stanley wrote:
+> Instead of hard coding the number of IRQ sources used by the APLIC pass
+> it in as a parameter. This allows other machines to configure this as
+> required.
+> 
+> The maximum number of sources is 1023.
+> 
+> Signed-off-by: Joel Stanley <joel@jms.id.au>
+> ---
+
+Reviewed-by: Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>
+
+
+> v2: Add assert for the number of irq sources
+> ---
+>   hw/riscv/aia.h             |  1 +
+>   include/hw/riscv/virt.h    |  1 +
+>   hw/riscv/aia.c             |  8 ++++++--
+>   hw/riscv/virt-acpi-build.c | 25 ++++++++++++++++---------
+>   hw/riscv/virt.c            |  2 ++
+>   5 files changed, 26 insertions(+), 11 deletions(-)
+> 
+> diff --git a/hw/riscv/aia.h b/hw/riscv/aia.h
+> index 50c48ea4d79c..a63a1ab293fe 100644
+> --- a/hw/riscv/aia.h
+> +++ b/hw/riscv/aia.h
+> @@ -48,6 +48,7 @@
+>   uint32_t imsic_num_bits(uint32_t count);
+>   
+>   DeviceState *riscv_create_aia(bool msimode, int aia_guests,
+> +                             uint16_t num_sources,
+>                                const MemMapEntry *aplic_m,
+>                                const MemMapEntry *aplic_s,
+>                                const MemMapEntry *imsic_m,
+> diff --git a/include/hw/riscv/virt.h b/include/hw/riscv/virt.h
+> index 25ec5c665780..fa7fe8d4f648 100644
+> --- a/include/hw/riscv/virt.h
+> +++ b/include/hw/riscv/virt.h
+> @@ -64,6 +64,7 @@ struct RISCVVirtState {
+>       struct GPEXHost *gpex_host;
+>       OnOffAuto iommu_sys;
+>       uint16_t pci_iommu_bdf;
+> +    uint16_t num_sources;
+>   };
+>   
+>   enum {
+> diff --git a/hw/riscv/aia.c b/hw/riscv/aia.c
+> index 0a89d7b49b7b..a9130896fba2 100644
+> --- a/hw/riscv/aia.c
+> +++ b/hw/riscv/aia.c
+> @@ -25,6 +25,7 @@ uint32_t imsic_num_bits(uint32_t count)
+>   }
+>   
+>   DeviceState *riscv_create_aia(bool msimode, int aia_guests,
+> +                             uint16_t num_sources,
+>                                const MemMapEntry *aplic_m,
+>                                const MemMapEntry *aplic_s,
+>                                const MemMapEntry *imsic_m,
+> @@ -37,6 +38,9 @@ DeviceState *riscv_create_aia(bool msimode, int aia_guests,
+>       DeviceState *aplic_s_dev = NULL;
+>       DeviceState *aplic_m_dev = NULL;
+>   
+> +    /* The RISC-V Advanced Interrupt Architecture, Chapter 1.2. Limits */
+> +    g_assert(num_sources <= 1023);
+> +
+>       if (msimode) {
+>           if (!kvm_enabled()) {
+>               /* Per-socket M-level IMSICs */
+> @@ -65,7 +69,7 @@ DeviceState *riscv_create_aia(bool msimode, int aia_guests,
+>                                        aplic_m->size,
+>                                        (msimode) ? 0 : base_hartid,
+>                                        (msimode) ? 0 : hart_count,
+> -                                     VIRT_IRQCHIP_NUM_SOURCES,
+> +                                     num_sources,
+>                                        VIRT_IRQCHIP_NUM_PRIO_BITS,
+>                                        msimode, true, NULL);
+>       }
+> @@ -76,7 +80,7 @@ DeviceState *riscv_create_aia(bool msimode, int aia_guests,
+>                                    aplic_s->size,
+>                                    (msimode) ? 0 : base_hartid,
+>                                    (msimode) ? 0 : hart_count,
+> -                                 VIRT_IRQCHIP_NUM_SOURCES,
+> +                                 num_sources,
+>                                    VIRT_IRQCHIP_NUM_PRIO_BITS,
+>                                    msimode, false, aplic_m_dev);
+>   
+> diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
+> index b091a9df9e0f..350912903174 100644
+> --- a/hw/riscv/virt-acpi-build.c
+> +++ b/hw/riscv/virt-acpi-build.c
+> @@ -144,6 +144,7 @@ static void acpi_dsdt_add_cpus(Aml *scope, RISCVVirtState *s)
+>   }
+>   
+>   static void acpi_dsdt_add_plic_aplic(Aml *scope, uint8_t socket_count,
+> +                                     uint16_t num_sources,
+>                                        uint64_t mmio_base, uint64_t mmio_size,
+>                                        const char *hid)
+>   {
+> @@ -151,9 +152,12 @@ static void acpi_dsdt_add_plic_aplic(Aml *scope, uint8_t socket_count,
+>       uint32_t gsi_base;
+>       uint8_t  socket;
+>   
+> +    /* The RISC-V Advanced Interrupt Architecture, Chapter 1.2. Limits */
+> +    g_assert(num_sources <= 1023);
+> +
+>       for (socket = 0; socket < socket_count; socket++) {
+>           plic_aplic_addr = mmio_base + mmio_size * socket;
+> -        gsi_base = VIRT_IRQCHIP_NUM_SOURCES * socket;
+> +        gsi_base = num_sources * socket;
+>           Aml *dev = aml_device("IC%.02X", socket);
+>           aml_append(dev, aml_name_decl("_HID", aml_string("%s", hid)));
+>           aml_append(dev, aml_name_decl("_UID", aml_int(socket)));
+> @@ -469,10 +473,13 @@ static void build_dsdt(GArray *table_data,
+>       socket_count = riscv_socket_count(ms);
+>   
+>       if (s->aia_type == VIRT_AIA_TYPE_NONE) {
+> -        acpi_dsdt_add_plic_aplic(scope, socket_count, memmap[VIRT_PLIC].base,
+> -                                 memmap[VIRT_PLIC].size, "RSCV0001");
+> +        acpi_dsdt_add_plic_aplic(scope, socket_count, s->num_sources,
+> +                                 memmap[VIRT_PLIC].base,
+> +                                 memmap[VIRT_PLIC].size,
+> +                                 "RSCV0001");
+>       } else {
+> -        acpi_dsdt_add_plic_aplic(scope, socket_count, memmap[VIRT_APLIC_S].base,
+> +        acpi_dsdt_add_plic_aplic(scope, socket_count, s->num_sources,
+> +                                 memmap[VIRT_APLIC_S].base,
+>                                    memmap[VIRT_APLIC_S].size, "RSCV0002");
+>       }
+>   
+> @@ -489,15 +496,15 @@ static void build_dsdt(GArray *table_data,
+>       } else if (socket_count == 2) {
+>           virtio_acpi_dsdt_add(scope, memmap[VIRT_VIRTIO].base,
+>                                memmap[VIRT_VIRTIO].size,
+> -                             VIRTIO_IRQ + VIRT_IRQCHIP_NUM_SOURCES, 0,
+> +                             VIRTIO_IRQ + s->num_sources, 0,
+>                                VIRTIO_COUNT);
+> -        acpi_dsdt_add_gpex_host(scope, PCIE_IRQ + VIRT_IRQCHIP_NUM_SOURCES);
+> +        acpi_dsdt_add_gpex_host(scope, PCIE_IRQ + s->num_sources);
+>       } else {
+>           virtio_acpi_dsdt_add(scope, memmap[VIRT_VIRTIO].base,
+>                                memmap[VIRT_VIRTIO].size,
+> -                             VIRTIO_IRQ + VIRT_IRQCHIP_NUM_SOURCES, 0,
+> +                             VIRTIO_IRQ + s->num_sources, 0,
+>                                VIRTIO_COUNT);
+> -        acpi_dsdt_add_gpex_host(scope, PCIE_IRQ + VIRT_IRQCHIP_NUM_SOURCES * 2);
+> +        acpi_dsdt_add_gpex_host(scope, PCIE_IRQ + s->num_sources * 2);
+>       }
+>   
+>       aml_append(dsdt, scope);
+> @@ -576,7 +583,7 @@ static void build_madt(GArray *table_data,
+>           for (socket = 0; socket < riscv_socket_count(ms); socket++) {
+>               aplic_addr = s->memmap[VIRT_APLIC_S].base +
+>                                s->memmap[VIRT_APLIC_S].size * socket;
+> -            gsi_base = VIRT_IRQCHIP_NUM_SOURCES * socket;
+> +            gsi_base = s->num_sources * socket;
+>               build_append_int_noprefix(table_data, 0x1A, 1);    /* Type */
+>               build_append_int_noprefix(table_data, 36, 1);      /* Length */
+>               build_append_int_noprefix(table_data, 1, 1);       /* Version */
+> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+> index 01115a0fb946..e5df5a5d4638 100644
+> --- a/hw/riscv/virt.c
+> +++ b/hw/riscv/virt.c
+> @@ -1556,6 +1556,7 @@ static void virt_machine_init(MachineState *machine)
+>           } else {
+>               s->irqchip[i] = riscv_create_aia(s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC,
+>                                                s->aia_guests,
+> +                                             s->num_sources,
+>                                                &s->memmap[VIRT_APLIC_M],
+>                                                &s->memmap[VIRT_APLIC_S],
+>                                                &s->memmap[VIRT_IMSIC_M],
+> @@ -1690,6 +1691,7 @@ static void virt_machine_instance_init(Object *obj)
+>       s->oem_table_id = g_strndup(ACPI_BUILD_APPNAME8, 8);
+>       s->acpi = ON_OFF_AUTO_AUTO;
+>       s->iommu_sys = ON_OFF_AUTO_AUTO;
+> +    s->num_sources = VIRT_IRQCHIP_NUM_SOURCES;
+>   }
+>   
+>   static char *virt_get_aia_guests(Object *obj, Error **errp)
 
 
