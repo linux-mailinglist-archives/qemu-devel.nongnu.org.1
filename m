@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 207C2D1C7D0
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 05:51:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26DB8D1C7C4
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 05:51:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfsoC-0004nb-2y; Tue, 13 Jan 2026 23:48:40 -0500
+	id 1vfsoE-0004zT-IM; Tue, 13 Jan 2026 23:48:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1vfsnp-0004Ut-Q9
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 23:48:18 -0500
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1vfsns-0004aA-Vz
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 23:48:22 -0500
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1vfsnm-0003pN-46
- for qemu-devel@nongnu.org; Tue, 13 Jan 2026 23:48:17 -0500
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-c4464dfeae8so5432003a12.3
- for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 20:48:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1vfsnr-0003pz-9m
+ for qemu-devel@nongnu.org; Tue, 13 Jan 2026 23:48:20 -0500
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-2a0d5c365ceso55441635ad.3
+ for <qemu-devel@nongnu.org>; Tue, 13 Jan 2026 20:48:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1768366093; x=1768970893; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1768366098; x=1768970898; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Z2Hb19DkgCo3AeCu7BNIkPGvJ4ku8WfXnjreJrPfJ2w=;
- b=VCohNXzHnmUFbYanvB1wLBVdYjrAS8rlpxDLDdCc5JgFYClQbcoqTBGzpzAGU/vgTF
- yazinHY4dNnqcq2j8tAIc3+/I1HCxwP4m6Wgx8WqkU2qBrT7sA+t/0tzcpzowq/Rikv+
- K8Wd43DjiATlUdqSSb218cZbrbFMlr/9nZTicOaLFtWvjtjv3zxJ1r9t/fiKAx1knitu
- OKgibv3ySYzaTEZWF4AMt9OCje1oIYb8b6+qguwoFITgmlqPDh0ytf+0uPmwKF1dVeoA
- n6y7XW+gMRnNHMtwpjsPS1GS789DF/eEMws+SbbyWq8oc+JaHxLWOS8Mt4j/MrTC9k4+
- ZfAw==
+ bh=Ofm+N/LDiPzYAnLWkV+TDBOxIPdJ2LtztPUqgJYqw8Q=;
+ b=gb1ikUnmqWxyGPbSXLtbmZmzyS7mgtcfr9F0zapmRCqlvWGAqt/4D58vxNIlDV1QMR
+ 5Lr09+bSwU/L8ZhroSvTFRtI+8q45I/jy3FY3Isascffi4h6X8QOrj/UItMxIDitoBhF
+ yhJeKmVXfu/J/M9BIsCkcCQ4X/F6D7vGQOvWP+VoBsdaRau5Ezf7g7WvohOoi/0rZ4EI
+ c4u26S0NzJY9vaEEDeAziJIUEuIh+ljB813+g/e0Kfyyg5Ia96mqnKc6ih3jXOBkBVjy
+ iVqu+2jer6kE9fXkcKazBcNXiodgJMp4zDbClYSR5ygJcja3y4Qo9vaanQDy84JaeYF+
+ AGwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768366093; x=1768970893;
+ d=1e100.net; s=20230601; t=1768366098; x=1768970898;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=Z2Hb19DkgCo3AeCu7BNIkPGvJ4ku8WfXnjreJrPfJ2w=;
- b=HyW8kckJL3+KY3AimvzSRcGtWMZdN3zBwM6ITSiuRVwy3WWeXvDF0CxUMMBw1L3lWK
- DXDBZPv06p312oWS5ibyD1oFF9BBuFb2AcZ5LtDVrJOmTE/fDEJwiZiNZxjKy8/Y0N9I
- f/EFjcLdU59aGUu/wb4c4y7Zngo1g1Jp+8Ech7PNMTpLjg5WYECGRf0b7p64WjkuzDqm
- TJP6LaiSKtezRcK+NgBXXIOmv9w6c6am/PjQNp4hNwgpkCJTAnrYZLzcMqgQoFNc7/Lv
- LsYWPDQ3MprFAWTL2hs9AwRT7JN07kjkJFeWWhdetpX/TSBJPQm365VqirBrDY+mIcAz
- EskA==
+ bh=Ofm+N/LDiPzYAnLWkV+TDBOxIPdJ2LtztPUqgJYqw8Q=;
+ b=R++MM8+/8OJ2TCYr7ap4soLbM7R914rsoT7al3hoT8AftwY4QSd9Mo2+k/sUWApHXR
+ /JN90GJvODF4/s+euyTwlvqqE0ZwJQi3jvI9R1WRVrg0anFiWesFdnDBx78e18d7TsfC
+ pGL95/HRt/Zyx7sakdM3OHCpPrSYCkM1iG9U/j9bND0qxxJDv58UcdcvPtrhNCXXOLIP
+ h5pMt9ilgKr343hsXvbiY8c0vC2r5dZxJ8yflZeIsaVF3OJtzkf/tsZ5nqweGal43wro
+ 0T7BVt9pN5cttYo3Jaf9tbHwBBaEuREL+l6zM2q9n5XcFBCP06MmuHra7XTG72HTDAJw
+ 7vNQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXA4f0xERc01HcNNigxscwJ/QSAGbEfqnDV1a3ArDmpEdjZPImfWpheXIQak3FzvLi7dATgQmcM7yLM@nongnu.org
-X-Gm-Message-State: AOJu0YxVLXN6Y9Ch3lqN1wyRcjoZ4g4Wc1k4JUkuUIL+tDh2nmsHhgXv
- zJIyFzIfxKupdcLMA+21kNooA8wrUsqaCQZFjQlrUPThMQ6nwmk9DwrZQa4Q6Q==
-X-Gm-Gg: AY/fxX4xyDrmtODiQ5lOTQ0GjsQn3JeKIrHpeYz/wT3P6j8Rj5fbCq60anXIK7kfS+7
- QFYk4C5ytiHHKW4vwNq6rufoB2yWzFY78yi75WtblTjggzmSjpkQ4vzStXiW7ymz0TI5wG7DFrn
- RlZ/R9no3vRbAkfq26AoDj/1MDnq9YZReH7B4li68KuXxk4L4gsbbb92BhBc6ARMWhv9n/OPbT0
- irJvSb6bto1adxTPFtc0KwdQOaW6qM3rPujl9vt3b+MtYBE2kiNF3VEKWp90xzIVchOx5JngsFC
- DEd5A4+KyI7THteMIS68wo+xxblHqQAdeS1SyyAHaxp3IJVVLIIeGrjQVB4pW9Az6G9sNuhlIt2
- FJqnQobS5oQ+4fxD+hJnLzmrCD/OFzLzS/0N7yRMgMoPs5dk8xFOPuiBikcAjbrC50sqXAHeJ8Q
- HrzE8FxEc4cdxaGmKyAmfVsDi7NuF5+vp/Flc/NO8jGZWh6QsqfxL/x8mL2NhARjVO8BVEXA==
-X-Received: by 2002:a05:6a20:729b:b0:361:2d0c:fd81 with SMTP id
- adf61e73a8af0-38befaf6a41mr1244313637.28.1768366092875; 
- Tue, 13 Jan 2026 20:48:12 -0800 (PST)
+ AJvYcCUw9wJDVh7/foPWOmy3ybQodMh4w7KucItz981PC5R/QNPNwyZMoUhoBWEi5nxqK63vceOSqNQPmpXX@nongnu.org
+X-Gm-Message-State: AOJu0YyvmLoOFtoL3FYoxrAKQcc8+hO8wo8xzWRyv2fWF/d21Y4MJj6S
+ ARsK02GRxAc0T1jb2mJu5VSqc/iFEe2Uu4U38yrVgE8JBMlyXTRzrbiC
+X-Gm-Gg: AY/fxX56xlYfC7AEG7zvhTosZznFm0RRtJgu1VoiSzJ/8MXHKbWtRHeNb3BFC6f9cXZ
+ HzcYv/+txFnjpm3Z0NtwET+LDeMV/0/F5rLJ6A0Cq5XB3/rMwHFjPYGZGU50o1Ngw8YV45lxeGk
+ Ktb3lvFXoA+gO6uJt30jEDzNnaiwGO82Mh0ndRzhfOE3wsjU6xlXJGMJE80Y1agZMyUxO/j+mlh
+ tRmsjje99ZbDxH3trr9JRpCyGxhPNVK9b2qvPgdtTvH6FN6oGl13fZzL9zbzTGQgmKWrP8kM0z2
+ Em2Kx346iAAluN4MJZp5WwUO73gGVXwjxiZvWq6Udbn2CJs+2RR9WP31XoSlen6UpDf1vXijSPj
+ LolhzLZw+/2xH+gtx8EUcsi6QSVb4yu9K3sJY4H6m/fwexQ75wUuFucwnv4smsBSsNgO5yHaOV5
+ ouHwV9nrotczIuotjYTqAEdGSrUnf4+8BszvQKa0sF0RXQobEST+xITcLNg9arSTCRyPfcAQ==
+X-Received: by 2002:a17:902:d4c7:b0:2a2:f2a5:4136 with SMTP id
+ d9443c01a7336-2a599dc866amr14488245ad.22.1768366097974; 
+ Tue, 13 Jan 2026 20:48:17 -0800 (PST)
 Received: from lima-default (123.253.188.110.qld.leaptel.network.
  [123.253.188.110]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a3e3c49037sm216111905ad.36.2026.01.13.20.48.08
+ d9443c01a7336-2a3e3c49037sm216111905ad.36.2026.01.13.20.48.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jan 2026 20:48:12 -0800 (PST)
+ Tue, 13 Jan 2026 20:48:17 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
@@ -72,17 +72,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, bin.meng@windriver.com,
  vivahavey@gmail.com, Alvin Chang <alvinga@andestech.com>,
  Yu-Ming Chang <yumin686@andestech.com>, Joel Stanley <joel@jms.id.au>
-Subject: [RFC PATCH 10/25] target/riscv/debug: Maintain itrigger_enabled in
- helper_itrigger_match()
-Date: Wed, 14 Jan 2026 14:46:43 +1000
-Message-ID: <20260114044701.1173347-11-npiggin@gmail.com>
+Subject: [RFC PATCH 11/25] target/riscv/debug: Fix breakpoint matching action
+Date: Wed, 14 Jan 2026 14:46:44 +1000
+Message-ID: <20260114044701.1173347-12-npiggin@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260114044701.1173347-1-npiggin@gmail.com>
 References: <20260114044701.1173347-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x535.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,52 +104,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-helper_itrigger_match() iterates over all triggers so it can maintain
-itrigger_enabled rather than calling riscv_itrigger_enabled() which
-becomes O(N^2) where N is the number of icount triggers.
+The debug exception callback is too late to find the action for the
+trigger(s) which caused it, and it is actually passing the wrong thing
+to do_trigger_action(), which expects a trigger index but is given
+DBG_ACTION_BP (which will be interpreted as trigger 0 and use the
+action set for that trigger).
+
+It could be possible to derive the trigger index from the bp/wp address,
+but that is clunky and it is really the action that determines whether
+an exception should be raised, also multiple triggers may perform their
+actions in the same cycle, so it is more consistent to check action
+during the breakpoint matching phase. If a breakpoint exception is to be
+taken then that is signaled at that time.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/riscv/debug.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ target/riscv/debug.c | 35 +++++++++++++++++++++++------------
+ 1 file changed, 23 insertions(+), 12 deletions(-)
 
 diff --git a/target/riscv/debug.c b/target/riscv/debug.c
-index d835c0e79a..7ae02fe2d2 100644
+index 7ae02fe2d2..bd61b7ff02 100644
 --- a/target/riscv/debug.c
 +++ b/target/riscv/debug.c
-@@ -693,9 +693,18 @@ bool riscv_itrigger_enabled(CPURISCVState *env)
-     return false;
+@@ -280,7 +280,8 @@ static target_ulong textra_validate(CPURISCVState *env, target_ulong tdata3)
+     return textra;
  }
  
-+/*
-+ * This is called by TCG when an instruction completes.
-+ * TCG runs in single-step mode when itrigger_enabled = true, so
-+ * it can call after each insn.
-+ */
- void helper_itrigger_match(CPURISCVState *env)
+-static void do_trigger_action(CPURISCVState *env, target_ulong trigger_index)
++/* Return true if an exception should be raised */
++static bool do_trigger_action(CPURISCVState *env, target_ulong trigger_index)
  {
-     int count;
-+    bool enabled = false;
-+
-+    g_assert(env->itrigger_enabled);
-+
-     for (int i = 0; i < RV_MAX_TRIGGERS; i++) {
-         if (get_trigger_type(env, i) != TRIGGER_TYPE_INST_CNT) {
-             continue;
-@@ -709,10 +718,12 @@ void helper_itrigger_match(CPURISCVState *env)
+     trigger_action_t action = get_trigger_action(env, trigger_index);
+ 
+@@ -288,8 +289,7 @@ static void do_trigger_action(CPURISCVState *env, target_ulong trigger_index)
+     case DBG_ACTION_NONE:
+         break;
+     case DBG_ACTION_BP:
+-        riscv_raise_exception(env, RISCV_EXCP_BREAKPOINT, 0);
+-        break;
++        return true;
+     case DBG_ACTION_DBG_MODE:
+     case DBG_ACTION_TRACE0:
+     case DBG_ACTION_TRACE1:
+@@ -302,6 +302,7 @@ static void do_trigger_action(CPURISCVState *env, target_ulong trigger_index)
+     default:
+         g_assert_not_reached();
+     }
++    return false;
+ }
+ 
+ /*
+@@ -718,7 +719,9 @@ void helper_itrigger_match(CPURISCVState *env)
          }
          itrigger_set_count(env, i, count--);
          if (!count) {
--            env->itrigger_enabled = riscv_itrigger_enabled(env);
-             do_trigger_action(env, i);
-+        } else {
-+            enabled = true;
+-            do_trigger_action(env, i);
++            if (do_trigger_action(env, i)) {
++                riscv_raise_exception(env, RISCV_EXCP_BREAKPOINT, 0);
++            }
+         } else {
+             enabled = true;
+         }
+@@ -965,11 +968,11 @@ void riscv_cpu_debug_excp_handler(CPUState *cs)
+ 
+     if (cs->watchpoint_hit) {
+         if (cs->watchpoint_hit->flags & BP_CPU) {
+-            do_trigger_action(env, DBG_ACTION_BP);
++            riscv_raise_exception(env, RISCV_EXCP_BREAKPOINT, 0);
+         }
+     } else {
+         if (cpu_breakpoint_test(cs, env->pc, BP_CPU)) {
+-            do_trigger_action(env, DBG_ACTION_BP);
++            riscv_raise_exception(env, RISCV_EXCP_BREAKPOINT, 0);
          }
      }
-+    env->itrigger_enabled = enabled;
  }
+@@ -1006,8 +1009,10 @@ bool riscv_cpu_debug_check_breakpoint(CPUState *cs)
+                 pc = env->tdata2[i];
  
- static void riscv_itrigger_update_count(CPURISCVState *env)
+                 if ((ctrl & TYPE2_EXEC) && (bp->pc == pc)) {
+-                    env->badaddr = pc;
+-                    return true;
++                    if (do_trigger_action(env, i)) {
++                        env->badaddr = pc;
++                        return true;
++                    }
+                 }
+                 break;
+             case TRIGGER_TYPE_AD_MATCH6:
+@@ -1015,8 +1020,10 @@ bool riscv_cpu_debug_check_breakpoint(CPUState *cs)
+                 pc = env->tdata2[i];
+ 
+                 if ((ctrl & TYPE6_EXEC) && (bp->pc == pc)) {
+-                    env->badaddr = pc;
+-                    return true;
++                    if (do_trigger_action(env, i)) {
++                        env->badaddr = pc;
++                        return true;
++                    }
+                 }
+                 break;
+             default:
+@@ -1067,7 +1074,9 @@ bool riscv_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp)
+             }
+ 
+             if ((wp->flags & flags) && (wp->vaddr == addr)) {
+-                return true;
++                if (do_trigger_action(env, i)) {
++                    return true;
++                }
+             }
+             break;
+         case TRIGGER_TYPE_AD_MATCH6:
+@@ -1083,7 +1092,9 @@ bool riscv_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp)
+             }
+ 
+             if ((wp->flags & flags) && (wp->vaddr == addr)) {
+-                return true;
++                if (do_trigger_action(env, i)) {
++                    return true;
++                }
+             }
+             break;
+         default:
 -- 
 2.51.0
 
