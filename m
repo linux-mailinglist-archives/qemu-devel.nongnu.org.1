@@ -2,118 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A48F7D1ECBD
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 13:35:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B8DCD1EE2C
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 13:48:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vg05n-0000YS-Nm; Wed, 14 Jan 2026 07:35:19 -0500
+	id 1vg0H4-0005lj-BK; Wed, 14 Jan 2026 07:47:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vg05i-0000IH-Hl
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 07:35:15 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vg0Gh-0005j5-NM
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 07:46:47 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vg05f-0004h3-Jj
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 07:35:13 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vg0Gd-00028C-5D
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 07:46:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768394109;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1768394789;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=teVed9wkpF4YrY622OZwfCVxWWIea5vtN1+xtUYhAhU=;
- b=CGFenmS4eUTqJD3jP80UikTP8hTSSerfl5eH8Gy63vi9fye7bg0LPldRHJPMLQyzpHGkjs
- Qaz19xm7tScH7tbeWRwaLrdx285N9JMdnXBIMAYmN5e7NiD8LUo7bZIt6epYnGjv91M3yR
- ppRMcZmsszopaw/AaOAKiPw3lbHaHs0=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-uwFeLuVqPKuD4aVHCcgxTQ-1; Wed, 14 Jan 2026 07:35:08 -0500
-X-MC-Unique: uwFeLuVqPKuD4aVHCcgxTQ-1
-X-Mimecast-MFC-AGG-ID: uwFeLuVqPKuD4aVHCcgxTQ_1768394106
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4779ecc3cc8so59234615e9.3
- for <qemu-devel@nongnu.org>; Wed, 14 Jan 2026 04:35:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768394106; x=1768998906; darn=nongnu.org;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=teVed9wkpF4YrY622OZwfCVxWWIea5vtN1+xtUYhAhU=;
- b=lS74fKyVj/NE/1GnQUQiCxXzRKD0rOsPlrtFaOhYM4XPXcXYVMZmPPn0S1YZ8BHUhF
- mV1hTQJtb3l5oh8VNJeRv/KhHajFHTRYuf+b9PjWkFKbSElV2JG4c+ehiXSqvYWgHXLm
- BlwFIC6nwkJxwOCufVn8z5FPx4OwWOtQv/YkhfHyFJa89dDgt2jrAQls20Z7eLjozHDO
- f6q5gzPtLTcQD9j/TMm2krqhQKEDEdYZbr/kd9TwmOSmoZBHLYN1CdR83JtTICtZnslN
- lrn0F5LHe0GZaTQVNB8pbmxKvcfCAFveyZdzCBNU5dOEgbsKXeuRy7QFfa1Vf3fbABiV
- 3dtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768394106; x=1768998906;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=teVed9wkpF4YrY622OZwfCVxWWIea5vtN1+xtUYhAhU=;
- b=NJoBOmtbP8Jvl+djgopFKXy1vqVGXAsa7ekh/LB5klnuZRnAwrATugdJnfG1II3TUT
- mg/XMNdQnwdWp6xo1rIDrXPRc6qLz+MXMU7oUnevWVTuaWymxUC2IiPvawwBO8X5c7oI
- ISBPHVWVUXOkQ4f2WTLADGWVQgAn+fcs0M8tAU+txgzAYfla79inYeqnnejVqmml74MC
- KMy86vbaj9fc1gJYHZbK4Bk0Is8HgSG+Van8/oRlND//jCFI1jCChkkSUEzmU/rLswWr
- 5tz7I44ykbm+2RstGdCcX53MyI2FnmvhNIdWJwZGWcN7DmpmHJsPSxPT8npqN3b9NPta
- NrHw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWzY6nrXj36VW2vbzi2/GzqrRSMrYz0iuEnKfrhWriOqwI5wv67iR5BPKmwOjkL9cz3cUhkw4ge3/xc@nongnu.org
-X-Gm-Message-State: AOJu0YytPoksdGv3tWLJrabVGxVjsDm4PdZzQSGlkYaaElv0LAmOP9mJ
- D3+bAYmC2HdE7oRquXRaLVTllLdAFyOBOorduFpmH5rFPpdCrBFfxQbW6318r9l3y5pqQIuukAg
- FOecWT3pzf3VlumieoKWeUxf5vYJsOR09c9EDRDn/tg/OVqBra2hnYrMy57Un2tsm
-X-Gm-Gg: AY/fxX7j4gwLuOTQMzB9u9gpj8POWrGmqfnhZeecbO2/zE7SfbvddLFvSlYuqckXHvj
- yagD74eje4UwyW1kFu0GoZshg0/WpMhEwsCqLXKoAndc0vCn4WLHJNpfQAHCLZ16VWPak27MKp9
- Gtyt9gWrAmZu/IuLbvWB2fGjszdO4W2b2m6LNaMZ/tE6VeDV6hBtyLUVOl5Vv9A3PjZtdU/WBa/
- C1RD6aSmV6ViO6oP2iTSpzG9NQRtgBp0P/gVJM3n+5IP5PTEFRO8ASYapuF49ngQi7lPvB9gsbi
- xSWKnf7E6WO6RjwKUAv0nGQi4puSMOo6nIj98bSjphTQEamxSSrTzyDu/Nut283o7eI9VfEDdEG
- GwQ073PAp2eQPgTn3UJLneUrbr8JVpNE=
-X-Received: by 2002:a05:600c:a4c:b0:477:7975:30ea with SMTP id
- 5b1f17b1804b1-47ee338a820mr30066615e9.29.1768394106179; 
- Wed, 14 Jan 2026 04:35:06 -0800 (PST)
-X-Received: by 2002:a05:600c:a4c:b0:477:7975:30ea with SMTP id
- 5b1f17b1804b1-47ee338a820mr30066105e9.29.1768394105575; 
- Wed, 14 Jan 2026 04:35:05 -0800 (PST)
-Received: from redhat.com (IGLD-80-230-35-22.inter.net.il. [80.230.35.22])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47ee1189f5fsm22615875e9.2.2026.01.14.04.35.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Jan 2026 04:35:05 -0800 (PST)
-Date: Wed, 14 Jan 2026 07:35:01 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Shameer Kolothum <skolothumtho@nvidia.com>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
- Jason Gunthorpe <jgg@nvidia.com>, Nicolin Chen <nicolinc@nvidia.com>,
- "ddutile@redhat.com" <ddutile@redhat.com>,
- "berrange@redhat.com" <berrange@redhat.com>,
- "clg@redhat.com" <clg@redhat.com>, "alex@shazbot.org" <alex@shazbot.org>,
- Nathan Chen <nathanc@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
- "smostafa@google.com" <smostafa@google.com>,
- "wangzhou1@hisilicon.com" <wangzhou1@hisilicon.com>,
- "jiangkunkun@huawei.com" <jiangkunkun@huawei.com>,
- "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>,
- "zhenzhong.duan@intel.com" <zhenzhong.duan@intel.com>,
- "yi.l.liu@intel.com" <yi.l.liu@intel.com>,
- Krishnakant Jaju <kjaju@nvidia.com>
-Subject: Re: [PATCH v7 33/36] hw/pci: Add helper to insert PCIe extended
- capability at a fixed offset
-Message-ID: <20260114073338-mutt-send-email-mst@kernel.org>
-References: <20260111195508.106943-1-skolothumtho@nvidia.com>
- <20260111195508.106943-34-skolothumtho@nvidia.com>
- <20260114114556.0000153c@huawei.com>
- <CH3PR12MB7548C1DABCCCB8CB332B59A0AB8FA@CH3PR12MB7548.namprd12.prod.outlook.com>
+ bh=fmdKhxQO5sJ7ePl8AF/0z76V997rSx7Gzmlf+EId7hg=;
+ b=YBQ7auQvFYvA44XesS36F7MWusa/Ytp18V8X7Dk7aKxPPnF7aBWAcRZ9jbLku7z3MGLOSK
+ A9p+tV6QQN8NpkTCR5WZO62gZeUNfrUmz8OfpvMMCiLqQfplKYK+vDwTmNgQWDxd98mPA1
+ BFNQwyZIYCyFBe7TpqFhg+J0oEWx+w8=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-9-MH967anxOui4sJRcFJgMJA-1; Wed,
+ 14 Jan 2026 07:46:26 -0500
+X-MC-Unique: MH967anxOui4sJRcFJgMJA-1
+X-Mimecast-MFC-AGG-ID: MH967anxOui4sJRcFJgMJA_1768394784
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id ECC3F180057E; Wed, 14 Jan 2026 12:46:23 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.41])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8B2471956048; Wed, 14 Jan 2026 12:46:17 +0000 (UTC)
+Date: Wed, 14 Jan 2026 12:46:13 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Hanna Reitz <hreitz@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Christian Schoenebeck <qemu_oss@crudebyte.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ devel@lists.libvirt.org, qemu-block@nongnu.org,
+ qemu-rust@nongnu.org, Stefan Weil <sw@weilnetz.de>,
+ Kevin Wolf <kwolf@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH v5 15/24] monitor: introduce monitor_cur_is_hmp() helper
+Message-ID: <aWeQFT9r333oCtZT@redhat.com>
+References: <20260108170338.2693853-1-berrange@redhat.com>
+ <20260108170338.2693853-16-berrange@redhat.com>
+ <874iop8ssa.fsf@pond.sub.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CH3PR12MB7548C1DABCCCB8CB332B59A0AB8FA@CH3PR12MB7548.namprd12.prod.outlook.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+In-Reply-To: <874iop8ssa.fsf@pond.sub.org>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -122,7 +82,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -135,176 +95,140 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 14, 2026 at 12:26:29PM +0000, Shameer Kolothum wrote:
+On Tue, Jan 13, 2026 at 03:57:09PM +0100, Markus Armbruster wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
 > 
+> > Note that this is not simply the inverse of monitor_cur_is_qmp(),
+> > as both helpers require that monitor_cur() is first non-NULL.
+> >
+> > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> > ---
+> >  include/monitor/monitor.h      |  1 +
+> >  monitor/monitor.c              | 10 ++++++++++
+> >  stubs/monitor-core.c           |  6 ++++++
+> >  tests/unit/test-util-sockets.c |  1 +
+> >  4 files changed, 18 insertions(+)
+> >
+> > diff --git a/include/monitor/monitor.h b/include/monitor/monitor.h
+> > index 296690e1f1..9c71e6cf3c 100644
+> > --- a/include/monitor/monitor.h
+> > +++ b/include/monitor/monitor.h
+> > @@ -16,6 +16,7 @@ extern QemuOptsList qemu_mon_opts;
+> >  Monitor *monitor_cur(void);
+> >  Monitor *monitor_set_cur(Coroutine *co, Monitor *mon);
+> >  bool monitor_cur_is_qmp(void);
+> > +bool monitor_cur_is_hmp(void);
+> >  
+> >  void monitor_init_globals(void);
+> >  void monitor_init_globals_core(void);
+> > diff --git a/monitor/monitor.c b/monitor/monitor.c
+> > index 6dc5a7016d..b81cc7d2ed 100644
+> > --- a/monitor/monitor.c
+> > +++ b/monitor/monitor.c
+> > @@ -116,6 +116,16 @@ bool monitor_cur_is_qmp(void)
+> >      return cur_mon && monitor_is_qmp(cur_mon);
+> >  }
+> >  
+> > +/**
+> > + * Is the current monitor, if any, a HMP monitor?
 > 
-> > -----Original Message-----
-> > From: Jonathan Cameron <jonathan.cameron@huawei.com>
-> > Sent: 14 January 2026 11:46
-> > To: Shameer Kolothum <skolothumtho@nvidia.com>
-> > Cc: qemu-arm@nongnu.org; qemu-devel@nongnu.org;
-> > eric.auger@redhat.com; peter.maydell@linaro.org; Jason Gunthorpe
-> > <jgg@nvidia.com>; Nicolin Chen <nicolinc@nvidia.com>; ddutile@redhat.com;
-> > berrange@redhat.com; clg@redhat.com; alex@shazbot.org; Nathan Chen
-> > <nathanc@nvidia.com>; Matt Ochs <mochs@nvidia.com>;
-> > smostafa@google.com; wangzhou1@hisilicon.com;
-> > jiangkunkun@huawei.com; zhangfei.gao@linaro.org;
-> > zhenzhong.duan@intel.com; yi.l.liu@intel.com; Krishnakant Jaju
-> > <kjaju@nvidia.com>; Michael S . Tsirkin <mst@redhat.com>
-> > Subject: Re: [PATCH v7 33/36] hw/pci: Add helper to insert PCIe extended
-> > capability at a fixed offset
-> > 
-> > External email: Use caution opening links or attachments
-> > 
-> > 
-> > On Sun, 11 Jan 2026 19:53:19 +0000
-> > Shameer Kolothum <skolothumtho@nvidia.com> wrote:
-> > 
-> > > Add pcie_insert_capability(), a helper to insert a PCIe extended
-> > > capability into an existing extended capability list at a
-> > > caller-specified offset.
-> > >
-> > > Unlike pcie_add_capability(), which always appends a capability to the
-> > > end of the list, this helper preserves the existing list ordering while
-> > > allowing insertion at an arbitrary offset.
-> > >
-> > > The helper only validates that the insertion does not overwrite an
-> > > existing PCIe extended capability header, since corrupting a header
-> > > would break the extended capability linked list. Validation of overlaps
-> > > with other configuration space registers or capability-specific
-> > > register blocks is left to the caller.
-> > >
-> > > Cc: Michael S. Tsirkin <mst@redhat.com>
-> > > Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
-> > Hi Shameer.
-> 
-> Happy new year!
-> 
-> > 
-> > Random musings inline... Maybe I'm just failing in my spec grep skills.
-> > 
-> > > ---
-> > >  hw/pci/pcie.c         | 58
-> > +++++++++++++++++++++++++++++++++++++++++++
-> > >  include/hw/pci/pcie.h |  2 ++
-> > >  2 files changed, 60 insertions(+)
-> > >
-> > > diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-> > > index b302de6419..8568a062a5 100644
-> > > --- a/hw/pci/pcie.c
-> > > +++ b/hw/pci/pcie.c
-> > > @@ -1050,6 +1050,64 @@ static void pcie_ext_cap_set_next(PCIDevice
-> > *dev, uint16_t pos, uint16_t next)
-> > >      pci_set_long(dev->config + pos, header);
-> > >  }
-> > >
-> > > +/*
-> > > + * Insert a PCIe extended capability at a given offset.
-> > > + *
-> > > + * This helper only validates that the insertion does not overwrite an
-> > > + * existing PCIe extended capability header, as corrupting a header would
-> > > + * break the extended capability linked list.
-> > > + *
-> > > + * The caller must ensure that (offset, size) does not overlap with other
-> > > + * registers or capability-specific register blocks. Overlaps with
-> > > + * capability-specific registers are not checked and are considered a
-> > > + * user-controlled override.
-> > > + */
-> > > +bool pcie_insert_capability(PCIDevice *dev, uint16_t cap_id, uint8_t
-> > cap_ver,
-> > > +                            uint16_t offset, uint16_t size)
-> > > +{
-> > > +    uint16_t prev = 0, next = 0;
-> > > +    uint16_t cur = pci_get_word(dev->config + PCI_CONFIG_SPACE_SIZE);
-> > > +
-> > > +    /* Walk the ext cap list to find insertion point */
-> > > +    while (cur) {
-> > > +        uint32_t hdr = pci_get_long(dev->config + cur);
-> > > +        next = PCI_EXT_CAP_NEXT(hdr);
-> > > +
-> > > +        /* Check we are not overwriting any existing CAP header area */
-> > > +        if (offset >= cur && offset < cur + PCI_EXT_CAP_ALIGN) {
-> > > +            return false;
-> > > +        }
-> > > +
-> > > +        prev = cur;
-> > > +        cur = next;
-> > > +        if (next == 0 || next > offset) {
-> > 
-> > So this (sort of) relies on a thing I've never been able to find a clear
-> > statement of in the PCIe spec.  Does Next Capability Offset have to be
-> > larger than the offset of the current record?  I.e. Can we have
-> > backwards pointers?
-> 
-> That’s right. I also couldn’t find a place in the spec that explicitly
-> says the list must be forward only. A device doing a backward walk
-> would be pretty odd, hopefully nothing like that exists in the wild.
+> "an HMP"?  Not a native speaker...
 
-Yes, there's no reason not to have such pointers, with either
-PCIe or classical PCI capability.
+Not that I know the rules either really, but I think
+it does sound better as "an" :-)
+
+> > + */
+> > +bool monitor_cur_is_hmp(void)
+> > +{
+> > +    Monitor *cur_mon = monitor_cur();
+> > +
+> > +    return cur_mon && !monitor_is_qmp(cur_mon);
+> > +}
+> > +
+> 
+> The only use at the end of this series looks like this:
+> 
+>     Monitor *cur = NULL;
+> 
+>     if (monitor_cur_is_hmp()) {
+>         cur = monitor_cur();
+>     } else {
+>         // some stderr code
+>     }
+> 
+> Meh.  Could do
+> 
+>     Monitor *cur = monitor_cur();
+> 
+>     if (monitor_cur_is_qmp(cur)) {
+>         cur = NULL;
+>         // some stderr code
+>     }
+> 
+> Or with a helper returning the HMP monitor, we could have something like
+> 
+>     cur = monitor_cur_hmp();
+> 
+>     if (!cur) {
+>         // some stderr code
+>     }
+> 
+> Doesn't mirror monitor_cur_is_qmp() then.  But I just pointed out in
+> reply to PATCH 11 that we don't actually need monitor_cur_is_qmp()>
+
+I'll do the middle option here. It is pointless churn to delete
+monitor_cur_is_qmp and then add monitor_cur_is_hmp or monitor_cur_hmp,
+so i'll just use monitor_cur_is_qmp
+
+> 
+> Ideas, not demands.
+> 
+> >  /**
+> >   * Is @mon is using readline?
+> >   * Note: not all HMP monitors use readline, e.g., gdbserver has a
+> > diff --git a/stubs/monitor-core.c b/stubs/monitor-core.c
+> > index a7c32297c9..674211f48f 100644
+> > --- a/stubs/monitor-core.c
+> > +++ b/stubs/monitor-core.c
+> > @@ -7,6 +7,12 @@ Monitor *monitor_cur(void)
+> >      return NULL;
+> >  }
+> >  
+> > +bool monitor_cur_is_hmp(void)
+> > +{
+> > +    /* since monitor_cur() above returns NULL, this can't be true */
+> 
+> Maybe
+> 
+>        /* We can't have a monitor, let alone an HMP monitor */
+
+Sure.
 
 
-> > Meh, I think this is fine, it just came up before and I couldn't find
-> > a reference to prove it!
-> > 
-> > More importantly, if it isn't a requirement and a rare device turns up
-> > that has a backwards pointer, that just means there isn't a 'right'
-> > point in the list to put this at, so any random choice is fine and
-> > the next == 0 condition means we always fine an option.
+> > diff --git a/tests/unit/test-util-sockets.c b/tests/unit/test-util-sockets.c
+> > index ee66d727c3..4b7f408902 100644
+> > --- a/tests/unit/test-util-sockets.c
+> > +++ b/tests/unit/test-util-sockets.c
+> > @@ -74,6 +74,7 @@ int monitor_get_fd(Monitor *mon, const char *fdname, Error **errp)
+> >  Monitor *monitor_cur(void) { return cur_mon; }
+> >  Monitor *monitor_set_cur(Coroutine *co, Monitor *mon) { abort(); }
+> >  int monitor_vprintf(Monitor *mon, const char *fmt, va_list ap) { abort(); }
+> > +bool monitor_cur_is_hmp(void) { return false; }
 > 
-> Yes. 
-> 
-> > 
-> > > +            break;
-> > > +        }
-> > > +    }
-> > > +
-> > > +   /* Make sure, next CAP header area is not over written either */
-> > 
-> > Looks like one space too few.
-> > 
-> > > +    if (next && (offset + size) >= next) {
-> > > +        return false;
-> > > +    }
-> > > +
-> > > +    /* Insert new cap */
-> > > +    pci_set_long(dev->config + offset,
-> > > +                 PCI_EXT_CAP(cap_id, cap_ver, cur));
-> > > +    if (prev) {
-> > > +        pcie_ext_cap_set_next(dev, prev, offset);
-> > > +    } else {
-> > > +        /* Insert at head (0x100) */
-> > 
-> > Comment is a little confusing as you aren't inserting the new capability
-> > there.  What I think this is actually doing is
-> > 
-> > /*
-> >  * Insert a Null Extended Capability (7.9.28 in the PCI 6.2 spec)
-> >  * at head when there are no extended capabilities and use that to
-> >  * point to the inserted capability at offset.
-> >  */
-> 
-> Sure. However, Zhangfei has reported a crash with this and I have
-> reworked the logic a bit to cover few corner cases. Based on his
-> tests I will update this.
-> 
-> Thanks,
-> Shameer
-> 
-> > > +        pci_set_word(dev->config + PCI_CONFIG_SPACE_SIZE, offset);
-> > > +    }
-> > > +
-> > > +    /* Make capability read-only by default */
-> > > +    memset(dev->wmask + offset, 0, size);
-> > > +    memset(dev->w1cmask + offset, 0, size);
-> > > +    /* Check capability by default */
-> > > +    memset(dev->cmask + offset, 0xFF, size);
-> > > +    return true;
-> > > +}
-> > 
-> 
+> Fine.  abort() would also be fine.  Matter of taste.
+
+I tested abort is ok here .
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
