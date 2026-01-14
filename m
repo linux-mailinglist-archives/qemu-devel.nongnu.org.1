@@ -2,89 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BD51D1E56D
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 12:15:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E42D1E5C8
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jan 2026 12:21:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vfypz-0006Xq-85; Wed, 14 Jan 2026 06:14:57 -0500
+	id 1vfyvA-0002VA-DV; Wed, 14 Jan 2026 06:20:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1vfypl-0006SX-4J
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 06:14:42 -0500
-Received: from mail-yw1-x112c.google.com ([2607:f8b0:4864:20::112c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1vfyph-0003mx-Dv
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 06:14:39 -0500
-Received: by mail-yw1-x112c.google.com with SMTP id
- 00721157ae682-78fdb90b670so79267517b3.2
- for <qemu-devel@nongnu.org>; Wed, 14 Jan 2026 03:14:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=jms.id.au; s=google; t=1768389276; x=1768994076; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=QMiwVDwXj2dFs8KEeqQ55bZILtO3/3fPWfNS6/YxFIE=;
- b=lrqJqwA09l7wbei/pmOggjtEZRGfwa8H1jBUNy3EkAkD1sxlGNk7mDpCgyQpjKk4Ae
- gbG2FKBrAeiwlLxHTbryqRZYTlM9L0izbOV7o9R3h36R/KHFoyPwUBe0y2+dab41Thxw
- ANuP3eBzFXjBnBJHLK6BR7+/DqMVfUXIMSt3U=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768389276; x=1768994076;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=QMiwVDwXj2dFs8KEeqQ55bZILtO3/3fPWfNS6/YxFIE=;
- b=v0uQR+iRhLx8tf0H3Ct68/TglUkYGUfC/y5gRCrUi+1zDtorSvBP3ZVccv5AzQZ8Qe
- tY5trSrzWnuzEqACm6NpT3P1rpD/uTNKkSCe+UkTbNlzLlo1TsKhjPfUW0fNWbhPxh8U
- QctwR+kxZcCFwBE/r3TAr++GsMtZmGHL945QpxkxI/g0JYzuuYtk77VMxVBICIBxKhBt
- iMOJDhkFfKwjZTEvQxkvj+6yzi0IrCtYnPxRhp5nLOsZLl60RY0o7ywtRAT9eT1oYdf+
- /KcKj3HM3T1H78RTnntbMEfoAFl1N80ZHvTXQpRN0RplN3pip37KYoqOiH9JV55kbg4Y
- Gnzw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV1+P6/Sh+n/TurDYFbzToSnyB4+GSsshJNrDvj6slTXp1Pg1rTYhkJFjCQ0/YydMhskIkvBIFxmv7H@nongnu.org
-X-Gm-Message-State: AOJu0YwS+ZpSO+vKL0Hp1wLKeJRkkJc98mErus1oRY/701tUkH+SDDyV
- U/m3yP+7aKK1M0rrDVtrx8g2BAdeur+pZmqpPXX4eQFq3Kz+TrENoWeAYWYd8mPxmyfbERxZoQ7
- MzTFKyUAGz6g6XZcDBn4hBLqEQpngjkw=
-X-Gm-Gg: AY/fxX6qLTCeUI038MJxBi0VjdVpberTvpdzLwtCspNjiRq7M6BSOOHVu/NpcpERNgx
- Og6zSphniG+FXY64Ty5NND4Mok6Z4E/K3YSvYCoUVyk6j41WU8K5wMYCklg3YsvBlyYlZNBr86b
- GEPqUrahxS1im4LfQ5+rqtLi2FnNJPDOTSdoetacua/RVOvGi6T0mu5MwYeIxThIRYOjYu2J/rT
- 7wLmijCba/HKx5bhQXEDXyWBCfKWU3bGDJwLC1zVu2TTGBrPUrN+5ZE7ScRQn+v86xkQkM=
-X-Received: by 2002:a05:690e:13c8:b0:641:f5bc:6961 with SMTP id
- 956f58d0204a3-64903b594camr1226062d50.77.1768389276030; Wed, 14 Jan 2026
- 03:14:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <agraf@csgraf.de>)
+ id 1vfyuO-0002Kl-6d; Wed, 14 Jan 2026 06:19:29 -0500
+Received: from mail.csgraf.de ([85.25.223.15] helo=zulu616.server4you.de)
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <agraf@csgraf.de>)
+ id 1vfyuM-0004a6-DM; Wed, 14 Jan 2026 06:19:27 -0500
+Received: from [0.0.0.0] (ec2-3-122-114-9.eu-central-1.compute.amazonaws.com
+ [3.122.114.9]) by csgraf.de (Postfix) with ESMTPSA id 9042760801BA;
+ Wed, 14 Jan 2026 12:19:05 +0100 (CET)
+Message-ID: <6edbbdd7-8992-420e-9aee-7596afbcf00d@csgraf.de>
+Date: Wed, 14 Jan 2026 12:19:04 +0100
 MIME-Version: 1.0
-References: <20260114043433.1056021-1-joel@jms.id.au>
- <437f995f-6ae0-469a-b2d3-6ce59b3f49e0@redhat.com>
-In-Reply-To: <437f995f-6ae0-469a-b2d3-6ce59b3f49e0@redhat.com>
-From: Joel Stanley <joel@jms.id.au>
-Date: Wed, 14 Jan 2026 21:44:24 +1030
-X-Gm-Features: AZwV_Qgmjayv6SrLMxBU2qNAJRnXbCCB-d6_dIkSJoHWekaBJoItJpC9KnoJYio
-Message-ID: <CACPK8XdURBGUWxaiT+4uEP6nKxMP=C7_iw4A=9s4cNj0DmC+uw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/6] hw/riscv: Add the Tenstorrent Atlantis machine
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Cc: Alistair Francis <alistair.francis@wdc.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Sunil V L <sunilvl@ventanamicro.com>, 
- qemu-devel@nongnu.org, Weiwei Li <liwei1518@gmail.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Michael Ellerman <mpe@oss.tenstorrent.com>, 
- Joel Stanley <jms@oss.tenstorrent.com>,
- Nick Piggin <npiggin@oss.tenstorrent.com>, 
- Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>, qemu-riscv@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112c;
- envelope-from=joel.stan@gmail.com; helo=mail-yw1-x112c.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.001,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] hvf/arm: handle FEAT_SME2 migration
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Phil_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Mads Ynddal <mads@ynddal.dk>, Peter Maydell <peter.maydell@linaro.org>,
+ qemu-arm@nongnu.org
+References: <20260114-sme2-hvf-v1-0-ce9599596736@linaro.org>
+ <20260114-sme2-hvf-v1-1-ce9599596736@linaro.org>
+Content-Language: en-US
+From: Alexander Graf <agraf@csgraf.de>
+In-Reply-To: <20260114-sme2-hvf-v1-1-ce9599596736@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=85.25.223.15; envelope-from=agraf@csgraf.de;
+ helo=zulu616.server4you.de
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,46 +59,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 14 Jan 2026 at 19:36, C=C3=A9dric Le Goater <clg@redhat.com> wrote:
+Hi Manos!
+
+On 14.01.26 09:35, Manos Pitsidianakis wrote:
+> SME2 support adds the following state for HVF guests:
 >
-> Hello Joel,
+> - Vector registers Z0, ... , Z31 (introduced by FEAT_SVE but HVF does
+>    not support it)
+> - Predicate registers P0, .., P15 (also FEAT_SVE)
+> - ZA register
+> - ZT0 register
+> - PSTATE.{SM,ZA} bits (SVCR pseudo-register)
+> - SMPRI_EL1 which handles the PE's priority in the SMCU
+> - TPIDR2_EL0 the thread local ID register for SME
 >
-> On 1/14/26 05:34, Joel Stanley wrote:
-> > v2 separates out prep patches so the machine can be reviewed
-> > independently. It depends on the following two series:
-> >
-> >   AIA: https://lore.kernel.org/qemu-devel/20260109133125.397364-1-joel@=
-jms.id.au
-> >   Boot: https://lore.kernel.org/qemu-devel/20260109131657.396794-1-joel=
-@jms.id.au
-> >
-> > Original cover letter:
-> >
-> > Introducing Tenstorrent Atlantis!
-> >
-> >   The Tenstorrent Atlantis platform is a collaboration between Tenstorr=
-ent
->
->
-> What kind of board is the "Tenstorrent Atlantis platform" ? Is it an evb =
-?
+> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-An upcoming dev board with the SoC on it.
 
-> >   and CoreLab Technology. It is based on the Atlantis SoC, which includ=
-es
->
-> Why isn't the SoC modeled independently ?
+Thanks a lot for the patches. I don't have an M4/M5 handy (yet), so I 
+can't test the code works correctly. But it sounds like you did that, so 
+I have no concerns on functionality.
 
-What I've modelled is the soc, with the exception of the test i2c
-sensors. Everything listed (aside from the i2c sensors) is inside the
-SoC.
+However, I have concerns on a few maintainability aspects. You #ifdef 
+out a lot of code conditionally on the target macOS version. Any of that 
+code that is in ifdef may or may not end up getting compiled in CI or 
+other test builds, which means you are missing out on a lot of 
+compilation test coverage. As a general rule of thumb, please reduce 
+#ifdef to the bare minimum.
 
-Lets say we add atlantis-evb that has atlantis-soc on it, with memory,
-i2c devices, etc. What does that look like? The aspeed machines are a
-bit complex to follow these days!
+One thing I like to do (when possible) is to use the ifdef to define a 
+global const variable or an inline function. That way the compiler's 
+dead code analysis will eliminate the non-active aspects of your code, 
+but all previous compiler phases still run which means you get syntax 
+checks.
 
-Cheers,
+How much of the code down here really does require #ifdefs? And if it's 
+a lot, maybe we just bump the minimum required macOS version instead.
 
-Joel
+
+Alex
+
 
