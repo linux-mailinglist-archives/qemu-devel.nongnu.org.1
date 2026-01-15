@@ -2,62 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40C4ED2509A
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 15:48:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C7FD251DB
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 15:58:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgOcr-0005aG-ML; Thu, 15 Jan 2026 09:47:05 -0500
+	id 1vgOnH-0007Ad-8w; Thu, 15 Jan 2026 09:57:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vgOcH-0004kF-Rf
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 09:46:43 -0500
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vgOcC-0002rc-On
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 09:46:28 -0500
-Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:bca6:0:640:3d05:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 54D4EC0209;
- Thu, 15 Jan 2026 17:46:21 +0300 (MSK)
-Received: from vsementsov-lin (unknown [2a02:6bf:8080:b8d::1:8])
- by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 8kWwj30BHuQ0-7J5TUSWO; Thu, 15 Jan 2026 17:46:20 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1768488380;
- bh=H/bX/Anw/6rlKINMAotFT7jwt9W/yiN609ztiVY5So0=;
- h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
- b=P3g4qcF8Xf+23YP2Pfee4p+CWC25kcw5+HMDhl4Bnex7exHTKkgUDeno9eqnxXssJ
- i9+XJjFgFQbD83QLU/Pnb39zW1mJNtY3/Mb0n4XF7RiG++3vBThhedK+90N8+tMAaA
- 4ttB/bWQMba68lcbEI/OjCdJIhwB2utL4armwJ2c=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: marcandre.lureau@redhat.com
-Cc: pbonzini@redhat.com, qemu-devel@nongnu.org, vsementsov@yandex-team.ru,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 10/10] chardev/char: qemu_char_open(): add return value
-Date: Thu, 15 Jan 2026 17:46:04 +0300
-Message-ID: <20260115144606.233252-11-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115144606.233252-1-vsementsov@yandex-team.ru>
-References: <20260115144606.233252-1-vsementsov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vgOn2-00078t-Kx
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 09:57:36 -0500
+Received: from mail-yw1-x1132.google.com ([2607:f8b0:4864:20::1132])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vgOn0-0006Ve-JL
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 09:57:35 -0500
+Received: by mail-yw1-x1132.google.com with SMTP id
+ 00721157ae682-78d6a3c3b77so23684357b3.0
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 06:57:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1768489053; x=1769093853; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=KLju0veGxDRCaNlNCZ9kxVtqnhSLkNS5jHDofzqZdqk=;
+ b=fdaebW7ep900y9P/aSxFwOEyd6lcbTaYJwm+0zdgL9vx/gEJOsa9Q8E6RqkolcgaW5
+ grWPj0ojcQyXXpvsjRdbMm5sAyDMDMnJ0t5e/gD8V6MRMjCFhsMcB6HTnT/E1rhAkD8l
+ pqujt13WuRz7qtMoBxujonzpnkPmINk6ZvKT039nUCGDBpU4Rx4wJiWa78bpZE3FW3BQ
+ /KLfISdbjYKn1RNTNwc/oaBWOGQTAMjFDCjRnzmxJQpCnwnA4d1Zd0nB00WPGgF1+pDo
+ VQAAHTBeqLXwb9t3mQ8JiY8VhwDKIL4Zd2ximlXsFC8evhV+Mo/I0VQnm94JemuMKbeG
+ WG4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768489053; x=1769093853;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=KLju0veGxDRCaNlNCZ9kxVtqnhSLkNS5jHDofzqZdqk=;
+ b=mlsjAcWZuAJWB1tPG5Fu5EASoYODrlyDDjNCqv3Q4vvt7evcUOQo2Q/dbkYJ8oMOiL
+ wUELuGw3elV7nUuqMSdJU32VDD/9QvfGyjtneI1jxajEFVoNvkJtW44Lf2BW64hb3zR9
+ SmvRZLkjKk28azeztSfxvy+XvyIQ7lA367HKx2fEQOsSnro3kIQQ3rB4avgi/puavJX0
+ e+zMRjLvCrAudfxrsvF60IG0pmv2DConH5zsmMc5hC7heGHpIsQzNpVO57FmkOgVU/H1
+ laIwaRiulySFAphPZv5+qr8C4nI7RGKtRKtGkbmu2gbsPJIFIe553WGA0DRLSLUb0JN4
+ V9og==
+X-Gm-Message-State: AOJu0YyFBWPy1xsuz3lRkGVwDJ8V+6BTiZb/8Y11LGk3Lq4WLwWZyU2V
+ l6HavlKrzDy7ZrilrO/ebRJB8rjrgd8iMIejJNhFtUbxzMBI8O3f5MbcWleXa75djhultpBFrgx
+ YINeAESPUvRiu3CjdNQjl8kQtzWU9ETpg/5FoTh48kA==
+X-Gm-Gg: AY/fxX630cRmgHleNoV++6V65tZ4oTSiW0MRvavV876PbBCXZQF5dtIW3Kx6NcRJM/R
+ XPOWqAs9VEHQOMP/4MsZyQsoFP4goJGqRf4ihkUdqEU/DofO8Ix/qxiPoV9QR3Tf/B+lchJrrb9
+ yA7+XjrmV7aYTgEY4oDI2+RELFC5pQckAOnj+6FmxRWzYnanfBDEYEfDBrFRwu3s0H187fGYkcf
+ A8YGDtIMo6n8c1n2j3nhbPHs8WXfI2D8t1HcZ6doQTg13oWdkTLBh2YrlnhLOeS2aaQ6hzZYsCB
+ 7BSZWWMV7GKFVDqMJxN3XpY=
+X-Received: by 2002:a05:690e:16a0:b0:644:4431:5742 with SMTP id
+ 956f58d0204a3-6490a634d1bmr2335112d50.23.1768489053206; Thu, 15 Jan 2026
+ 06:57:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.72;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+References: <20251204093502.50582-1-corvin.koehne@gmail.com>
+ <20251204093502.50582-14-corvin.koehne@gmail.com>
+In-Reply-To: <20251204093502.50582-14-corvin.koehne@gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 15 Jan 2026 14:57:21 +0000
+X-Gm-Features: AZwV_QgipE8e9I0ddnG3h3pWcNpLvGxV7Tm9kKn0Nff5rlgV4Un4-Vn-kGgd7fk
+Message-ID: <CAFEAcA9w2r4Od5o3BqU=Q_SHTshb1_gHB8oG0aj9spF1Z7tMGQ@mail.gmail.com>
+Subject: Re: [PATCH v5 13/15] hw/arm/xilinx_zynq: Add flash-type property
+To: =?UTF-8?Q?Corvin_K=C3=B6hne?= <corvin.koehne@gmail.com>
+Cc: qemu-devel@nongnu.org, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Alistair Francis <alistair@alistair23.me>,
+ qemu-arm@nongnu.org, 
+ Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org, 
+ =?UTF-8?Q?Corvin_K=C3=B6hne?= <c.koehne@beckhoff.com>, 
+ Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?Q?Yannick_Vo=C3=9Fen?= <y.vossen@beckhoff.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1132;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,68 +99,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Accordingly with recommendations in include/qapi/error.h accompany
-errp by boolean return value and get rid of error propagation.
+On Thu, 4 Dec 2025 at 09:35, Corvin K=C3=B6hne <corvin.koehne@gmail.com> wr=
+ote:
+>
+> From: YannickV <Y.Vossen@beckhoff.com>
+>
+> Read flash-type value as machine property and set the flash type
+> accordingly.
+>
+> Signed-off-by: YannickV <Y.Vossen@beckhoff.com>
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
----
- chardev/char.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+Machine properties are user-facing : this one seems to let
+the user specify any random device name with no error checking
+which it will then try to instantiate. I think it would be
+better to have the base class code know via some other
+mechanism what kind of flash device it should create.
 
-diff --git a/chardev/char.c b/chardev/char.c
-index ef0cdffd3f..5bda43c6e7 100644
---- a/chardev/char.c
-+++ b/chardev/char.c
-@@ -246,7 +246,7 @@ int qemu_chr_add_client(Chardev *s, int fd)
-         CHARDEV_GET_CLASS(s)->chr_add_client(s, fd) : -1;
- }
- 
--static void qemu_char_open(Chardev *chr, ChardevBackend *backend, Error **errp)
-+static bool qemu_char_open(Chardev *chr, ChardevBackend *backend, Error **errp)
- {
-     ChardevClass *cc = CHARDEV_GET_CLASS(chr);
-     /* Any ChardevCommon member would work */
-@@ -262,13 +262,15 @@ static void qemu_char_open(Chardev *chr, ChardevBackend *backend, Error **errp)
-         }
-         chr->logfd = qemu_create(common->logfile, flags, 0666, errp);
-         if (chr->logfd < 0) {
--            return;
-+            return false;
-         }
-     }
- 
--    if (cc->chr_open) {
--        cc->chr_open(chr, backend, errp);
-+    if (!cc->chr_open) {
-+        return true;
-     }
-+
-+    return cc->chr_open(chr, backend, errp);
- }
- 
- static void char_init(Object *obj)
-@@ -1006,7 +1008,6 @@ static Chardev *chardev_new(const char *id, const char *typename,
- {
-     Object *obj;
-     Chardev *chr = NULL;
--    Error *local_err = NULL;
- 
-     assert(g_str_has_prefix(typename, "chardev-"));
-     assert(id);
-@@ -1017,9 +1018,7 @@ static Chardev *chardev_new(const char *id, const char *typename,
-     chr->label = g_strdup(id);
-     chr->gcontext = gcontext;
- 
--    qemu_char_open(chr, backend, &local_err);
--    if (local_err) {
--        error_propagate(errp, local_err);
-+    if (!qemu_char_open(chr, backend, errp)) {
-         object_unref(obj);
-         return NULL;
-     }
--- 
-2.52.0
+One approach would be to have suitable information in the
+machine class struct, which is filled in by the class
+init function. You can see this in hw/arm/raspi.c, for
+instance, where we set a board_rev field that then the
+code creating the board can look at.
 
+thanks
+-- PMM
 
