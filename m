@@ -2,106 +2,156 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 350FAD2499F
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 13:47:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA57AD24990
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 13:46:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgMl3-0008Ct-9O; Thu, 15 Jan 2026 07:47:26 -0500
+	id 1vgMkH-0006yG-Kc; Thu, 15 Jan 2026 07:46:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1vgMkl-00084i-U1
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 07:47:09 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vgMjc-0006Iz-Nw
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 07:46:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1vgMkj-0003Sm-SO
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 07:47:07 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1vgMjb-0002jj-9d
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 07:45:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768481224;
+ s=mimecast20190719; t=1768481153;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=yqgnHMXGXghM2JvdM51gNPhwcKFK9Ojk5hTUXkj5TrI=;
- b=W0yAodmIEaDjFzgex2oQIlP0/CWO8aXg2mSGrHafaGgsrfSpegyJAo3UN2ncU5uLtP2Wwl
- 76MJCQUEU8lONSy4V+6dIUSHpZPReOA506WHPpGqeo4xFntqPOmVaMCrBQ+aMlRs3RfZ0V
- oFjEs1D6J7ms7/mfxv0g+7iEun+VaKY=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=i2+ZEyCo26xdZk43w8WDiymE0C3ctBIU+/uaebrygC4=;
+ b=NTmaf/UAg6Dgy6aLDjfQHYk384XQoDPPPD7iXenvTdOLdVAc+CCalw7B6bVJIYI4/gG1+x
+ F02bbjKTNbNXQrwxjL7HQhcWSk6Acf6v7KpkfOzWVPnv1JTIeMZSBmhsuaB1kgu53KmA5V
+ oq57L9+EFwl2LkBd9nReCq87putOJ4Q=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-586-kqVT8_yDNLmOWhM-OhgcUA-1; Thu, 15 Jan 2026 07:45:56 -0500
-X-MC-Unique: kqVT8_yDNLmOWhM-OhgcUA-1
-X-Mimecast-MFC-AGG-ID: kqVT8_yDNLmOWhM-OhgcUA_1768481156
-Received: by mail-yw1-f197.google.com with SMTP id
- 00721157ae682-7903fc98229so7958307b3.0
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 04:45:56 -0800 (PST)
+ us-mta-543-0_0J1s_DO0G2d5lIXU3gBQ-1; Thu, 15 Jan 2026 07:45:52 -0500
+X-MC-Unique: 0_0J1s_DO0G2d5lIXU3gBQ-1
+X-Mimecast-MFC-AGG-ID: 0_0J1s_DO0G2d5lIXU3gBQ_1768481151
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-47ee71f0244so9049315e9.0
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 04:45:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768481156; x=1769085956; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=yqgnHMXGXghM2JvdM51gNPhwcKFK9Ojk5hTUXkj5TrI=;
- b=E/u/4HktbaxgCgFQowhLDYxWtx9sreXBZomPgp7aqMI5nPQRGL302trQudBfVuxPh5
- f6jdCTYvX+bQCEBIkklFZt6JIZXoD9g4j3C0XWqYPaL32olpW2oAeRLgBQUiXMD+2zDg
- iMZc9mVHEZnZY987vWvG7aRpdxDRjyrJ4c/epp5OJ7+6CLH0f8PFyjeOThV2LI62jBIY
- qEXqysWTk3ZfrILrmBin7+KY00yxloKQzgdVvroT9bwDJJiEtvRUtxn7b/H+qEJdgDOU
- zPSb+4A27814ecBcnC2lgN/qVo+PgIDVkgYbZlGaFYeGl21lU856t10cMZeljzqu7uZM
- zMvA==
+ d=redhat.com; s=google; t=1768481151; x=1769085951; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=i2+ZEyCo26xdZk43w8WDiymE0C3ctBIU+/uaebrygC4=;
+ b=dtlH2aAQ/CY8S3EeMyDJXfwIdrnNQGS+c/l3MNIAcuJirlvlNjguBzGxCvctppgqRd
+ y7RL8u+pbYCF8NrppxY63IdjZCRroSibWZ81bR4a+U2Kznh79YKLyDFqojvId2cu0F8o
+ d83ey5ojTGf1wmAROpRegr+lLo6YfNRUmXuTZ/oXPnXYBAZKqICvaN38KNGN7k++m/B9
+ QiodI40aLMu9IMDRwrUyugG9iZExLMpgSbfOXLTzeIq5Wc6plc/AQa8B598hhwscOTWX
+ bmexNsBn2OZNDicFc6SufYi5dhqxCtqUnDV8RHCQ90E12AdjzF0SR6TSAs4zF35RhnFE
+ UmwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768481156; x=1769085956;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=yqgnHMXGXghM2JvdM51gNPhwcKFK9Ojk5hTUXkj5TrI=;
- b=UJrpHaEpUI/pR5r0CdX4iKkPel7dCfxL6LmmApu8I/o2LIsO7djycDHe01S8IGoNTM
- oJ2NN39FVjSH82nNqqSeotwNOGKJGZt1BTYypmtuoS4tWIW2xYg0VsMrWDRt9fpnj9js
- QIlEwlS160jFbiBX6exWN8HLWx7TxEqnjw3Qa7uWO9tFgGF7Gd2NEjhSvh01+J+1IBDz
- o/4sXlHjFTSfm+IH6/ErNXYWb/Rp3vSZkByJqG45H6cuhlcObZMEtPupxc4W9y9odqA6
- l+yKJLmuMNb6DPI+0XtRZLiPGToR2OTcJ92Rohgoaia+2RMhOCP0TvxCckwwcGmUSjdA
- xZSA==
-X-Gm-Message-State: AOJu0YzX3sXPmyaBP+c7JvpQaAoSUCzRI32VxnJON4NtrzW5a1dwhJsY
- DnRiSPW4jFL1tqE+X/bUV8VfRxOIJt8GoZP6PY+AU4kvKhaUlEnfwfAFafdTaoSpGf2i5XOb/Uz
- HCccdsXboqo3eGmi/Tu5qaKeqPs2nRwuroWVgg4MxDJkfdn6U36y6oDGcDNRvmioQwZow2yNQ4K
- gyU3+RawgCRh/pcyTyg6T7N1SFDB+S1qE=
-X-Gm-Gg: AY/fxX65wbWenEpnwBkD2f6OMpHOLLwLL2wptTVgp6wQfrUT4hE2X31Qp6rvLQC5lk1
- QdVadcoislSYA0k+0EvPv/IRJSSHmdhkI3mqDmGm4UMp6MzxYtIh9bWmiOs+6AQtzo8nFd0hKhV
- I81ptCSdG6FyBgBHJojHr+FaUV1rvcHsMCUkd0nejXDRqrzGh2PPQkfcIxzJb1hg==
-X-Received: by 2002:a53:c486:0:b0:640:fabf:565d with SMTP id
- 956f58d0204a3-64903b11b8bmr3139128d50.43.1768481156095; 
- Thu, 15 Jan 2026 04:45:56 -0800 (PST)
-X-Received: by 2002:a53:c486:0:b0:640:fabf:565d with SMTP id
- 956f58d0204a3-64903b11b8bmr3139114d50.43.1768481155749; Thu, 15 Jan 2026
- 04:45:55 -0800 (PST)
+ d=1e100.net; s=20230601; t=1768481151; x=1769085951;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=i2+ZEyCo26xdZk43w8WDiymE0C3ctBIU+/uaebrygC4=;
+ b=qo4Uk38OqZ5mtNUaobKXvhVbryFXQ2P7gKiUNgR2BPgHk/a+HOXLCkSkIbXKdIiu89
+ Wfk1h1VInLrk6qaXFgGwJJ8mzFTCd6S1RW/MqVBoFXOJvXwGa3K6fIVAomI/wt/U7mdE
+ UPL4gk+0wpuvGdcS4xH9GkW7in7NbSpQuapw8LY21/iJWtV8KvWhkkGCFjZDV5YkTB3O
+ I3tVqUYnso6Sn+XB8amALnPzC09qboeAx5Kf78VN76+KC7uLMp9O9KyBk5uRJx06jZ41
+ OPdVbb257wGW7gzosaxr1K+VZWn4GBGL27+9LLnutHaG19x+QeJ7ms9vhPbNaujjDAsl
+ bZuQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWeq9xwlPfGGDGpzczt2pCWdfviswj6tN41pCypdRfgGRcisLOo5x/zG9YeMCr4TkQBfLm8NGB1YSgL@nongnu.org
+X-Gm-Message-State: AOJu0YxBudzCs/AjOOTCU6MT7HgOw0rxMMnF56wBMbLTCme2COn9WlH5
+ 53zvjQ3KfhSYm2JwyC0hBEmsG4hKFS/KW2UohMoh+nXlDjeFb+dSSIXbbUdI8EF2fS38cIe+/ld
+ 8NkzCVCnVKkLV1D8gGZvU9p+YMqaNM6ZY6esq9EYSMxT0eAIX8FpMD0gd
+X-Gm-Gg: AY/fxX6LenU8M759j7rfaZGmXJVN/zK95nFxlzODVJVrPfQthfpKNoULkOF0m71mqOY
+ NUwV0CgRV7vfKLD71coGlM7lhlD5HBudR+uUXk+nHoNCVJof863PSr+S+jt6X9ME3ju3P/gkCqR
+ 9K5jCD5StPcQABDigSYVDQe5Jw0LZfZvMDcnghu5+C95gN3KZ4w4VAfmhUQPKexCVL5z2aCdEfn
+ SyTQ8RnJN3Si7UT40WtaHyZMNUkuhBarqSjabdOmyglwWONNoichTFqvr+gjVyHWO0Rk+Ne0tMM
+ 6Eq/gLZBpQjr5DDxVNMIK2oVtVjePsShu+GaRW6EymTKs03z/LsvdWFr2YTt4l/Fxkd4b8Aa9aQ
+ 16zesyT5Jx8O3GMBwCtbYkHomMBM9GTQaiyaZZw8SpZFd4oxu
+X-Received: by 2002:a05:600c:3e8d:b0:47d:6c69:bf28 with SMTP id
+ 5b1f17b1804b1-47ee481cf37mr65913365e9.24.1768481150850; 
+ Thu, 15 Jan 2026 04:45:50 -0800 (PST)
+X-Received: by 2002:a05:600c:3e8d:b0:47d:6c69:bf28 with SMTP id
+ 5b1f17b1804b1-47ee481cf37mr65913045e9.24.1768481150375; 
+ Thu, 15 Jan 2026 04:45:50 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-47f429071a2sm43991055e9.11.2026.01.15.04.45.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 15 Jan 2026 04:45:49 -0800 (PST)
+Message-ID: <e813790d-5ea5-41b0-9012-c4c88e9b88b2@redhat.com>
+Date: Thu, 15 Jan 2026 13:45:49 +0100
 MIME-Version: 1.0
-References: <20251111091058.879669-1-aesteve@redhat.com>
- <20251111091058.879669-4-aesteve@redhat.com>
- <87cy3brs8r.fsf@alyssa.is>
-In-Reply-To: <87cy3brs8r.fsf@alyssa.is>
-From: Albert Esteve <aesteve@redhat.com>
-Date: Thu, 15 Jan 2026 13:45:44 +0100
-X-Gm-Features: AZwV_Qhu516z3-nSOxDvxQBVvhUxZAbZdfm04Xl08TlYtI3hlUtGfkQJq0Xw5-U
-Message-ID: <CADSE00+GE-uhyOx0fJ80KatDfXSdyQ4Etnh-WGO=GKzRwJq7vw@mail.gmail.com>
-Subject: Re: [PATCH v11 3/7] vhost_user.rst: Add SHMEM_MAP/_UNMAP to spec
-To: Alyssa Ross <hi@alyssa.is>
-Cc: qemu-devel@nongnu.org, dbassey@redhat.com, 
- "Michael S. Tsirkin" <mst@redhat.com>, manos.pitsidianakis@linaro.org,
- slp@redhat.com, 
- stefanha@redhat.com, Fabiano Rosas <farosas@suse.de>, jasowang@redhat.com, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>, david@redhat.com, stevensd@chromium.org, 
- Stefano Garzarella <sgarzare@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/4] hw/net/virtio-net: Adapt hash handling to updated
+ UAPI
+To: Shameer Kolothum <skolothumtho@nvidia.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: eric.auger@redhat.com, alex@shazbot.org, cohuck@redhat.com,
+ mst@redhat.com, nicolinc@nvidia.com, nathanc@nvidia.com, mochs@nvidia.com,
+ jgg@nvidia.com, kjaju@nvidia.com, Jason Wang <jasowang@redhat.com>
+References: <20260113113754.1189-1-skolothumtho@nvidia.com>
+ <20260113113754.1189-3-skolothumtho@nvidia.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <20260113113754.1189-3-skolothumtho@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -119,149 +169,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jan 15, 2026 at 1:10=E2=80=AFPM Alyssa Ross <hi@alyssa.is> wrote:
->
-> Albert Esteve <aesteve@redhat.com> writes:
->
-> > Add SHMEM_MAP/_UNMAP request to the vhost-user
-> > spec documentation.
-> >
-> > Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-> > Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> > Signed-off-by: Albert Esteve <aesteve@redhat.com>
-> > ---
-> >  docs/interop/vhost-user.rst | 59 +++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 59 insertions(+)
-> >
-> > diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
-> > index 17a68a62eb..6c1d66d7d3 100644
-> > --- a/docs/interop/vhost-user.rst
-> > +++ b/docs/interop/vhost-user.rst
-> > @@ -350,6 +350,27 @@ Device state transfer parameters
-> >    In the future, additional phases might be added e.g. to allow
-> >    iterative migration while the device is running.
-> >
-> > +MMAP request
-> > +^^^^^^^^^^^^
-> > +
-> > ++-------+---------+-----------+------------+-----+-------+
-> > +| shmid | padding | fd_offset | shm_offset | len | flags |
-> > ++-------+---------+-----------+------------+-----+-------+
-> > +
-> > +:shmid: a 8-bit shared memory region identifier
-> > +
-> > +:fd_offset: a 64-bit offset of this area from the start
-> > +            of the supplied file descriptor
-> > +
-> > +:shm_offset: a 64-bit offset from the start of the
-> > +             pointed shared memory region
-> > +
-> > +:len: a 64-bit size of the memory to map
-> > +
-> > +:flags: a 64-bit value:
-> > +  - 0: Pages are mapped read-only
-> > +  - 1: Pages are mapped read-write
-> > +
-> >  C structure
-> >  -----------
-> >
-> > @@ -375,6 +396,7 @@ In QEMU the vhost-user message is implemented with =
-the following struct:
-> >            VhostUserInflight inflight;
-> >            VhostUserShared object;
-> >            VhostUserTransferDeviceState transfer_state;
-> > +          VhostUserMMap mmap;
-> >        };
-> >    } QEMU_PACKED VhostUserMsg;
-> >
-> > @@ -1064,6 +1086,7 @@ Protocol features
-> >    #define VHOST_USER_PROTOCOL_F_XEN_MMAP             17
-> >    #define VHOST_USER_PROTOCOL_F_SHARED_OBJECT        18
-> >    #define VHOST_USER_PROTOCOL_F_DEVICE_STATE         19
-> > +  #define VHOST_USER_PROTOCOL_F_SHMEM                20
-> >
-> >  Front-end message types
-> >  -----------------------
-> > @@ -1872,6 +1895,42 @@ is sent by the front-end.
-> >    when the operation is successful, or non-zero otherwise. Note that i=
-f the
-> >    operation fails, no fd is sent to the backend.
-> >
-> > +``VHOST_USER_BACKEND_SHMEM_MAP``
-> > +  :id: 9
-> > +  :equivalent ioctl: N/A
-> > +  :request payload: fd and ``struct VhostUserMMap``
-> > +  :reply payload: N/A
-> > +
-> > +  When the ``VHOST_USER_PROTOCOL_F_SHMEM`` protocol feature has been
-> > +  successfully negotiated, this message can be submitted by the backen=
-ds to
-> > +  advertise a new mapping to be made in a given VIRTIO Shared Memory R=
-egion.
-> > +  Upon receiving the message, the front-end will mmap the given fd int=
-o the
-> > +  VIRTIO Shared Memory Region with the requested ``shmid``.
-> > +  If ``VHOST_USER_PROTOCOL_F_REPLY_ACK`` is negotiated, and
-> > +  back-end set the ``VHOST_USER_NEED_REPLY`` flag, the front-end
-> > +  must respond with zero when operation is successfully completed,
-> > +  or non-zero otherwise.
->
-> Having now tried to implement this, I'm wondering whether replies should
-> be mandatory, even without VHOST_USER_PROTOCOL_F_REPLY_ACK, like they
-> are for some other messages.  Without waiting for a reply, a backend
-> doesn't know when it can tell the driver to start using the mapped
-> memory, so I'm not sure there's ever a case in which a backend would not
-> want to wait for a reply after sending VHOST_USER_BACKEND_SHMEM_MAP,
-> even if it doesn't wait habitually wait for replies for other messages.
-> (crosvm is like this =E2=80=94 its backends don't negotiate
-> VHOST_USER_PROTOCOL_F_REPLY_ACK, and their non-standard map/unmap
-> requests had mandatory replies.)
+On 1/13/26 12:37, Shameer Kolothum wrote:
+> The virtio_net_hdr_v1_hash layout changed in the Linux UAPI, replacing
+> the 32-bit hash_value field with two 16-bit fields, hash_value_lo and
+> hash_value_hi.
+> 
+> Update hash handling to populate the new fields correctly and adjust
+> offset and size calculations accordingly.
+> 
+> Cc: Michael S. Tsirkin <mst@redhat.com>
+> Cc: Jason Wang <jasowang@redhat.com>
+> Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
+> ---
+>   hw/net/virtio-net.c | 11 +++++++----
+>   1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+> index 317f1ad23b..512a7c02c9 100644
+> --- a/hw/net/virtio-net.c
+> +++ b/hw/net/virtio-net.c
+> @@ -1879,7 +1879,8 @@ static int virtio_net_process_rss(NetClientState *nc, const uint8_t *buf,
+>                                                n->rss_data.runtime_hash_types);
+>       if (net_hash_type > NetPktRssIpV6UdpEx) {
+>           if (n->rss_data.populate_hash) {
+> -            hdr->hash_value = VIRTIO_NET_HASH_REPORT_NONE;
+> +            hdr->hash_value_lo = VIRTIO_NET_HASH_REPORT_NONE;
+> +            hdr->hash_value_hi = VIRTIO_NET_HASH_REPORT_NONE;
+>               hdr->hash_report = 0;
+>           }
+>           return n->rss_data.redirect ? n->rss_data.default_queue : -1;
+> @@ -1888,7 +1889,8 @@ static int virtio_net_process_rss(NetClientState *nc, const uint8_t *buf,
+>       hash = net_rx_pkt_calc_rss_hash(pkt, net_hash_type, n->rss_data.key);
+>   
+>       if (n->rss_data.populate_hash) {
+> -        hdr->hash_value = hash;
+> +        hdr->hash_value_lo = cpu_to_le16(hash & 0xffff);
+> +        hdr->hash_value_hi = cpu_to_le16((hash >> 16) & 0xffff);
+>           hdr->hash_report = reports[net_hash_type];
+>       }
+>   
+> @@ -1990,10 +1992,11 @@ static ssize_t virtio_net_receive_rcu(NetClientState *nc, const uint8_t *buf,
+>   
+>               receive_header(n, sg, elem->in_num, buf, size);
+>               if (n->rss_data.populate_hash) {
+> -                offset = offsetof(typeof(extra_hdr), hash_value);
+> +                offset = offsetof(typeof(extra_hdr), hash_value_lo);
+>                   iov_from_buf(sg, elem->in_num, offset,
+>                                (char *)&extra_hdr + offset,
+> -                             sizeof(extra_hdr.hash_value) +
+> +                             sizeof(extra_hdr.hash_value_lo) +
+> +                             sizeof(extra_hdr.hash_value_hi) +
+>                                sizeof(extra_hdr.hash_report));
+>               }
+>               offset = n->host_hdr_len;
 
-What you say makes sense to me. Every test I run for this, I used the
-flag, because it was required to work correctly. Nonetheless, I
-assumed giving flexibility may be better in case there are backends
-that will not be accessing the mapped memory right away and prefer to
-save the response. Also, previous implementation in QEMU always
-checked VHOST_USER_PROTOCOL_F_REPLY_ACK before sending a response.
-Which made me think this was the norm.
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
-I could relax that requirement in a v12, given this patch is still
-pending to merge (and update the implementation accordingly).
+Thanks,
 
->
-> > +  Mapping over an already existing map is not allowed and requests sha=
-ll fail.
-> > +  Therefore, the memory range in the request must correspond with a va=
-lid,
-> > +  free region of the VIRTIO Shared Memory Region. Also, note that mapp=
-ings
-> > +  consume resources and that the request can fail when there are no re=
-sources
-> > +  available. Lastly, mappings are automatically unmapped by the front-=
-end
-> > +  across device reset operation.
-> > +
-> > +``VHOST_USER_BACKEND_SHMEM_UNMAP``
-> > +  :id: 10
-> > +  :equivalent ioctl: N/A
-> > +  :request payload: ``struct VhostUserMMap``
-> > +  :reply payload: N/A
-> > +
-> > +  When the ``VHOST_USER_PROTOCOL_F_SHMEM`` protocol feature has been
-> > +  successfully negotiated, this message can be submitted by the backen=
-ds so
-> > +  that the front-end un-mmaps a given range (``shm_offset``, ``len``) =
-in the
-> > +  VIRTIO Shared Memory Region with the requested ``shmid``. Note that =
-the
-> > +  given range shall correspond to the entirety of a valid mapped regio=
-n.
-> > +  A reply is generated indicating whether unmapping succeeded.
-> > +
-> >  .. _reply_ack:
-> >
-> >  VHOST_USER_PROTOCOL_F_REPLY_ACK
-> > --
-> > 2.49.0
+C.
 
 
