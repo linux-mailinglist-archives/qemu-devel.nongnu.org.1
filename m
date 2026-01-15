@@ -2,81 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64797D23193
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 09:27:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 212D9D2326E
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 09:33:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgIgG-0005LU-1G; Thu, 15 Jan 2026 03:26:13 -0500
+	id 1vgIn0-0000nr-7j; Thu, 15 Jan 2026 03:33:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1vgIgC-0005LB-Jg
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 03:26:08 -0500
-Received: from mail-qt1-x832.google.com ([2607:f8b0:4864:20::832])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1vgIg8-0001LO-S1
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 03:26:06 -0500
-Received: by mail-qt1-x832.google.com with SMTP id
- d75a77b69052e-50146483bf9so11683161cf.3
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 00:26:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1768465564; x=1769070364; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=UxZBHNhT1o2H7oHQa5pSKhIB3sBLjsNfhZdXskofB5c=;
- b=WUn15F5O88M9AUTXL0Pz5v+s+WUbcO2Tf6UYv0wUwuL5Bfvb6+oN5R1iuhhCCD0VRJ
- zwaYAWw5I5DfnDc5vd5W7xRx9hg9C3C1XqzLFvWYcLJkcIUEtAIzGbc/FEqoxpHE1hGM
- 9A0nZbvGIdZejzU0KyaMdHqD3sooR15Xa9cY7NiK1zJeo2oraTjItyWWEYeABV2Z2rKh
- 1Y9IoA0eKYDWXb7SYQ6//NB//x/+lGOiji4EC12EmKouNoZNFM7DmJ56Twl4OZ9ZuD8v
- PvUnGG1uVZBe2rcRaEKUg4J1dVKWv4LlYazwKIQY/T49IR7vKjaInAihvKXlUD/YwyIm
- 7twg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768465564; x=1769070364;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=UxZBHNhT1o2H7oHQa5pSKhIB3sBLjsNfhZdXskofB5c=;
- b=SsfZmnyz15YPvkUpmWF/qm+k/dSAE3wQ2DC/ksM79i+eO7izgKNEtJ3tLp4+w+yMbk
- j/6F93U/ohy7R35QJ6xe8SRPZuO5ZiTLvE2cZWHd2eZjaZs9I7PWWyb/rPJwc5z8v779
- CdivCLGp8zzBn9Sp4GkQ1ye8M3QcTwrtkUXPwjPh22MsqgrIzRsmVWtr/WciBg6Eh5oz
- KkID6Rrdlz/YK0t1f9phcrNRkjIhSTKuZmQsFBB4JZ7Oa15S7O4tzkwA4Z3T+pYhwj+l
- 225uo7Fv2j/OMw+jxsliGVM8MkSuifdF6bV3pcYrfR98rzOW6F9J4JYzIj723ovzTh4h
- crLA==
-X-Gm-Message-State: AOJu0YyVcxYbCb+m/UMEHsWPoz+1Nmpd4yGLsU6Wfhc4B++UYyT0ecS3
- zyCdwoBPgCEn8yL27NZf6zJobTLWmehSB1kM0ddjZ/KzSEeZQOoOxifRtkOHOi3lYHl8sqnx/8F
- IF+rwBiTynEvnn0+mJwQfpHF4geWzh01RwA==
-X-Gm-Gg: AY/fxX6vIywkhbUV77mTkocerzwq/UJdvIKKPsKzw/CUnsbKBFnGNqMAXBRw9oDIY0M
- SP5ac28cIGBxEesaDc3B8NY6w+l2QkRtbKdELti6V0y1gg2dYIKPdaLjhv4K/KVBS7yP1Vptpfa
- cNmi9qZIj+COVKyHhV9I23dgPyn+i7E0B56cf9lpu3HMDFIBSc5AuRGEdM8pi4uV1+rD0hJ6Xs1
- CqhYENrjG+Zr9PB3PeP8Rb9aOZpwU8Lj7Qb+wVbep+lhokil5yXBLP/7YLb9GzU7gBxV8SI3QiC
- pPSsop5NWWpAw1CJy8RpMoMZBIs=
-X-Received: by 2002:a05:622a:261b:b0:4ee:1676:faa6 with SMTP id
- d75a77b69052e-5014820827dmr80248731cf.20.1768465563531; Thu, 15 Jan 2026
- 00:26:03 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <Honglei1.Huang@amd.com>)
+ id 1vgImt-0000eD-Qd
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 03:33:03 -0500
+Received: from mail-centralusazon11010032.outbound.protection.outlook.com
+ ([52.101.61.32] helo=DM1PR04CU001.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Honglei1.Huang@amd.com>)
+ id 1vgImr-0002l3-Op
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 03:33:03 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dHXz6G1YWkOWReUS53LyHfrcuspXb5SRF1+PmcYVXd6uRCtIwIwFTJrHl6IizoPnDKZSX33i0h3bfPh/omgbVycdQDI3BSRniq6x/hRSHizHDx1m3hdZvxrOaIHg8AJ10Ext+qsnMY8l5yBHdwqc4eeZ7q/CSpI+phJ0STZyxJ3pZjOxXyF3HHoPIupSB1eXm9DqYELDrp08odesU4JPWz0hO045HkMApvwg0L/2QNjsh0pKwEPofxAvph8NYqKj8vqjeeXoYOOLNbxGgYUXedzVBDyNoh97zt8pkS09Z0b8lLB6504/MS++dqxN+4KAH1XeQS3mvENMBqXO3Kb5dg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wkyqXMXeRZTC/CUqrVHZw1dPYLfWVEv48aAxLfVwCCI=;
+ b=f6iovKxSqeJeMOKgJaouKK/okwfSQhelMrMK4dNsHMKIKKck5JxhkzQFYmRINLsNt4eohdE1BCbhJjK8EKhFV/nr5XEQ4jIxBLmf3bA+nn7zkT2qSUGy9k7uXfL/4AFaTl/IWzYgyxcqz/QwjlNakrTuHRqoJAtdSh/kbEoVZys5vKmd8BpHofwJ1XZ2+JikyEOywQ/Z7hIR/7Qvg00pIsSMVH/6oEVu4jYuYM6Ddk5XJHAVawD1G74vHtI6zOwwpDv/B3OYsM8Se6SfPjCjr5t2mE/E7WV4/tV8gm/KwtDrF6HHndRaBQ9P8TN0KMvg6K60emOLSh6NeEchjU7PBA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wkyqXMXeRZTC/CUqrVHZw1dPYLfWVEv48aAxLfVwCCI=;
+ b=etN2G5GQrb/xDSaOB3LY5hoqLicxDE+rZCVdim5b4Sm3sothlFGwtVgAwAk9mxOw0KKQh9+M80u5de7n7CApIYRSngNRNYoivnnbazXzTy+wFrdWzxcRf2gTP732rvBzGSq1W3wOv/BlKVYzP0NPQO8sSuj8pryq8fqvbadmC2g=
+Received: from BN9PR03CA0051.namprd03.prod.outlook.com (2603:10b6:408:fb::26)
+ by LV2PR12MB999095.namprd12.prod.outlook.com (2603:10b6:408:353::12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Thu, 15 Jan
+ 2026 08:27:55 +0000
+Received: from BN2PEPF000044A4.namprd02.prod.outlook.com
+ (2603:10b6:408:fb:cafe::8b) by BN9PR03CA0051.outlook.office365.com
+ (2603:10b6:408:fb::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.7 via Frontend Transport; Thu,
+ 15 Jan 2026 08:27:29 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN2PEPF000044A4.mail.protection.outlook.com (10.167.243.155) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9542.4 via Frontend Transport; Thu, 15 Jan 2026 08:27:55 +0000
+Received: from honglei-remote.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 15 Jan
+ 2026 02:27:52 -0600
+From: Honglei Huang <honghuan@amd.com>
+To: <alex.bennee@linaro.org>, <dmitry.osipenko@collabora.com>,
+ <odaki@rsg.ci.i.u-tokyo.ac.jp>, <Ray.Huang@amd.com>
+CC: <mst@redhat.com>, <cohuck@redhat.com>, <pbonzini@redhat.com>,
+ <qemu-devel@nongnu.org>, <honghuan@amd.com>
+Subject: [PATCH v5 0/4] virtio-gpu: Add userptr support and ROCm capability
+ enhancements
+Date: Thu, 15 Jan 2026 16:27:35 +0800
+Message-ID: <20260115082739.174224-1-honghuan@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20260115-gtk-v1-1-57f49e856408@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20260115-gtk-v1-1-57f49e856408@rsg.ci.i.u-tokyo.ac.jp>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Thu, 15 Jan 2026 12:25:52 +0400
-X-Gm-Features: AZwV_QiJs3wNMh0A8u-0_iQgRdi2oRcJ7u7lXrdkCE_-2l2D-R8mn2hFegH_R10
-Message-ID: <CAJ+F1CJDdjL5fKKzsDUGN8y20aX5dkb7Xere_cXJ5WZw-V0HOg@mail.gmail.com>
-Subject: Re: [PATCH] ui/gtk: Narrow DMA-BUF critical section
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::832;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x832.google.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A4:EE_|LV2PR12MB999095:EE_
+X-MS-Office365-Filtering-Correlation-Id: a35ef947-048b-4bdd-8304-08de540ffb88
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|82310400026|1800799024|36860700013|13003099007; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?jmLgliw/jGjJh9gCmFwEmbNHDY80rbJ2+h0B5MoHF/SXpqF21OqC4MY9w7uT?=
+ =?us-ascii?Q?c3efwEo0ZsSgMgjxmlp+i5fXsHK0ddTOoeeaER8gz6/+iN4mgXW9S57VhUwF?=
+ =?us-ascii?Q?Y3yYv6pr/8me6weUEch3TYEPCOguSfshIzEJSnX5TcKAIfpobUrTlgXh5v+N?=
+ =?us-ascii?Q?Eeh4yVts3JiwSYCSgr7wZ5Vl1Iwvfrb3Z0DN7+8fg0cbdkULirEjitSoWXzj?=
+ =?us-ascii?Q?zJMqRX198mPsLlcfUsnE1xMkUFIPbK43ZkJZjTridlGed+MFEON74jemLLIC?=
+ =?us-ascii?Q?qmsNB2bg4kl/QmSoJpa85d8NPwMIdAdUksJ8owm9Jw6IChFckiY+mcYZlTsB?=
+ =?us-ascii?Q?cCPyRFay6EB7gCZ4ENHsmwKZxvTItnO/teQ3J2RAZTHuhPZ1bk0rwsErel0H?=
+ =?us-ascii?Q?uqzg68BTsduFCDYkIC29kGv+VeY8zCt+IZKIvq1h2Fv7+Pdl2cpFe9m5lnON?=
+ =?us-ascii?Q?iD9Xw6zEPmkC7DoJN5oHyQGrbFNNALiYAIIxvILUkN+uGdSo2O7Y/jqT4je4?=
+ =?us-ascii?Q?yLwf+3+7DQEWdQX6Os7C96gLRNQh2SthnMcc7ET0UhLiukS/3GXr/w8GzR4m?=
+ =?us-ascii?Q?2ysaSoUB7M+FOcYXF821HSiHfpzt2Q2e0WpFdwcl2TGKaccLSWLRw03CpzuX?=
+ =?us-ascii?Q?d3Zk6ccPOK1PFVoHtyLnXkweYn5Mvb+gUb/WwXhucev9UVlVc3yKH60sGeC7?=
+ =?us-ascii?Q?j/ykRB8RHiyRjIE5UBDjeFjex5VqdaSUXbPd3fnGfOA404iYyyC39gKXkit0?=
+ =?us-ascii?Q?RcDxjkutJ5GRuTYwWZSfLvvzmI22XHB+ziNL2bfuu/LwLhO1quQYOPr5q6he?=
+ =?us-ascii?Q?eBzKJL4KobjykNo0JrgEJpLUCfEPcrb2luGKhu3VLdj8cgWs1BMOxZzuqWuh?=
+ =?us-ascii?Q?jZvS06QHB24BdgtpF9Nz7mldQbmbI2CqthwpykonUFuIWyZOevh6rMrS0fbu?=
+ =?us-ascii?Q?6wgJfI5Fp73g8Eq5zSi0HO5cGznsWXlcipXEpuleJ+EWeof7Wtt+KcT5WBfv?=
+ =?us-ascii?Q?F67B1+1RWaCUXwIyIRywgqF87EkcyRHcSf4ZJpMoBIA5UJ/yYLfM3JLMDLzQ?=
+ =?us-ascii?Q?VkAaf8B9fDDs4UVFRtO7jNjsxjD5JaMjOI5rJqOKstpF7dx3E6njO+/nbVMs?=
+ =?us-ascii?Q?RFAZbNK/rxVk/aF+p/ry1R2Ey4fdhcbbXKt2WloMH0kf31IQPQWnN0T3ijLN?=
+ =?us-ascii?Q?YjUL4stEb2CSb1lqQmZpGYXalehu/uOHQNvmitcuumoz8WaRwsaB3L500axC?=
+ =?us-ascii?Q?AE8sAzFn4Jts0f56eX+jWwNrQjYlnh5Z/l3bJx7SB+o3ai8NdIIX0Vm431uM?=
+ =?us-ascii?Q?xhbPQWs/QAqyOz6xONkNGeY9c76z+fM2ibxcneTcYtM9LSHgNGRCWKQPlcSV?=
+ =?us-ascii?Q?z40ilbo7hv3eOJRw4Plsql28alMRPO6c7iOgkYoVAZFjDOc5H0IJY04fRI2G?=
+ =?us-ascii?Q?rGy/3pnzUcwWRmyXmDxijB7fOcCkZBLTbYC5x9wVOUrGH8tfWkGkI33TDKHb?=
+ =?us-ascii?Q?D9MK8wI5cLe+uRlWNj0CGmoS8cxkXit8my3KHD5KvkXbXcj9SJ6/o5D3twLr?=
+ =?us-ascii?Q?tWgKx2qVhlt/MGjlehitK5ITFGQbylSylJUfXgm3PXjWPW/v819+4XmK47Oe?=
+ =?us-ascii?Q?VCec9RI3Lg8sGpsyx7hHh6Q=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(376014)(82310400026)(1800799024)(36860700013)(13003099007);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2026 08:27:55.4013 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a35ef947-048b-4bdd-8304-08de540ffb88
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF000044A4.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB999095
+Received-SPF: permerror client-ip=52.101.61.32;
+ envelope-from=Honglei1.Huang@amd.com;
+ helo=DM1PR04CU001.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,155 +150,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Akihiko
+This patch series introduces enhancements to virtio-gpu to improve
+memory management and GPU virtualization capabilities for ROCm (Radeon Open Compute) 
+workloads.
 
-On Thu, Jan 15, 2026 at 9:44=E2=80=AFAM Akihiko Odaki
-<odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
->
-> ui/gtk performs the following procedure to flush a scanout:
-> 1) Queue a draw event.
-> 2) The draw event gets triggered.
-> 3) Blit the scanout to the framebuffer.
->
-> When flushing a DMA-BUF scanout, ui/gtk blocks the device before 2) if
-> possible and unblocks it after 3).
->
-> Blocking the device before 2) has two problems.
->
-> First, it can leave the device blocked indefinitely because GTK
-> sometimes decides to cancel 2) when the window is not visible for
-> example. ui/gtk regularly repeats 1) as a workaround, but it is not
-> applicable to GtkGLArea because it causes display corruption.
->
-> Second, the behavior is inconsistent with the other types of scanout
-> that leaves the device unblocked between 1) and 2).
->
-> To fix these problems, let ui/gtk block the device after 2) instead.
+Usage example:
+  -device virtio-gpu-gl,rocm=on
 
-Wouldn't that let the device overwrite the buffer before it is displayed?
+The series includes:
 
-I wish there would be a clear design for how virtio-gpu handles
-display buffering.. I suppose more demanding users, like crosvm may
-have documented this.
+1. Linux header updates for userptr support: Synchronizes virtio-gpu headers
+   with upstream kernel changes, adding VIRTIO_GPU_F_RESOURCE_USERPTR feature
+   flag and VIRTIO_GPU_BLOB_FLAG_USE_USERPTR blob flag support. This enables
+   user pointer mapping for blob resources, allowing guest applications to use
+   user-allocated memory for GPU resources more efficiently.
 
-> Note that the device is still blocked during 3) for DMA-BUF; this is
-> because, unlike the other scanout types, 3) can happen asynchronously
-> with the device for a DMA-BUF, and the device may simulatenously
-> overwrite it, resulting in tearing, if it is left unblocked.
->
-> With the problems fixed, the workaround to repeat 1) is no longer
-> necessary and removed.
->
-> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-> ---
->  ui/gtk-egl.c     |  8 +-------
->  ui/gtk-gl-area.c | 23 +----------------------
->  2 files changed, 2 insertions(+), 29 deletions(-)
->
-> diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
-> index ae9239999cdb..61bb8d731ac5 100644
-> --- a/ui/gtk-egl.c
-> +++ b/ui/gtk-egl.c
-> @@ -91,6 +91,7 @@ void gd_egl_draw(VirtualConsole *vc)
->              } else {
->                  qemu_dmabuf_set_draw_submitted(dmabuf, false);
->              }
-> +            graphic_hw_gl_block(vc->gfx.dcl.con, true);
->          }
->  #endif
->          gd_egl_scanout_flush(&vc->gfx.dcl, 0, 0, vc->gfx.w, vc->gfx.h);
-> @@ -152,12 +153,6 @@ void gd_egl_refresh(DisplayChangeListener *dcl)
->      gd_update_monitor_refresh_rate(
->              vc, vc->window ? vc->window : vc->gfx.drawing_area);
->
-> -    if (vc->gfx.guest_fb.dmabuf &&
-> -        qemu_dmabuf_get_draw_submitted(vc->gfx.guest_fb.dmabuf)) {
-> -        gd_egl_draw(vc);
-> -        return;
-> -    }
-> -
->      if (!vc->gfx.esurface) {
->          gd_egl_init(vc);
->          if (!vc->gfx.esurface) {
-> @@ -408,7 +403,6 @@ void gd_egl_flush(DisplayChangeListener *dcl,
->
->      if (vc->gfx.guest_fb.dmabuf &&
->          !qemu_dmabuf_get_draw_submitted(vc->gfx.guest_fb.dmabuf)) {
-> -        graphic_hw_gl_block(vc->gfx.dcl.con, true);
->          qemu_dmabuf_set_draw_submitted(vc->gfx.guest_fb.dmabuf, true);
->          gtk_egl_set_scanout_mode(vc, true);
->          gtk_widget_queue_draw_area(area, x, y, w, h);
-> diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
-> index cd86022d264a..9e7ec7043037 100644
-> --- a/ui/gtk-gl-area.c
-> +++ b/ui/gtk-gl-area.c
-> @@ -86,6 +86,7 @@ void gd_gl_area_draw(VirtualConsole *vc)
->              } else {
->                  qemu_dmabuf_set_draw_submitted(dmabuf, false);
->              }
-> +            graphic_hw_gl_block(vc->gfx.dcl.con, true);
->          }
->  #endif
->
-> @@ -163,27 +164,6 @@ void gd_gl_area_refresh(DisplayChangeListener *dcl)
->
->      gd_update_monitor_refresh_rate(vc, vc->window ? vc->window : vc->gfx=
-.drawing_area);
->
-> -    if (vc->gfx.guest_fb.dmabuf &&
-> -        qemu_dmabuf_get_draw_submitted(vc->gfx.guest_fb.dmabuf)) {
-> -        /*
-> -         * gd_egl_refresh() calls gd_egl_draw() if a DMA-BUF draw has al=
-ready
-> -         * been submitted, but this function does not call gd_gl_area_dr=
-aw() in
-> -         * such a case due to display corruption.
-> -         *
-> -         * Calling gd_gl_area_draw() is necessary to prevent a situation=
- where
-> -         * there is a scheduled draw event but it won't happen bacause t=
-he window
-> -         * is currently in inactive state (minimized or tabified). If dr=
-aw is not
-> -         * done for a long time, gl_block timeout and/or fence timeout (=
-on the
-> -         * guest) will happen eventually.
-> -         *
-> -         * However, it is found that calling gd_gl_area_draw() here caus=
-es guest
-> -         * display corruption on a Wayland Compositor. The display corru=
-ption is
-> -         * more serious than the possible fence timeout so gd_gl_area_dr=
-aw() is
-> -         * omitted for now.
-> -         */
-> -        return;
-> -    }
-> -
->      if (!vc->gfx.gls) {
->          if (!gtk_widget_get_realized(vc->gfx.drawing_area)) {
->              return;
-> @@ -342,7 +322,6 @@ void gd_gl_area_scanout_flush(DisplayChangeListener *=
-dcl,
->
->      if (vc->gfx.guest_fb.dmabuf &&
->          !qemu_dmabuf_get_draw_submitted(vc->gfx.guest_fb.dmabuf)) {
-> -        graphic_hw_gl_block(vc->gfx.dcl.con, true);
->          qemu_dmabuf_set_draw_submitted(vc->gfx.guest_fb.dmabuf, true);
->          gtk_gl_area_set_scanout_mode(vc, true);
->      }
->
-> ---
-> base-commit: 667e1fff878326c35c7f5146072e60a63a9a41c8
-> change-id: 20260115-gtk-424c2b910e65
->
-> Best regards,
-> --
-> Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
->
->
+2. Removal of nr_entries limit: Removes the artificial 16384 entry limit in
+   virtio_gpu_create_mapping_iov() to align with kernel driver behavior and
+   support legitimate large scatter-gather operations.
 
+3. Linux header updates for ROCm capability: Synchronizes headers to add
+   VIRTIO_GPU_CAPSET_ROCM capability set definition.
 
---=20
-Marc-Andr=C3=A9 Lureau
+4. ROCm capability support: Adds native support for AMD's ROCm (Radeon Open
+   Compute) platform through a new "rocm=on" device property and capability.
+   This enables GPU compute workloads using the ROCm stack through virtio-gpu.
+
+Changes in v5:
+- Split userptr header updates into dedicated patch (patch 1/4)
+- Extracted nr_entries limit removal into standalone commit (patch 2/4)
+- Split ROCm header updates into dedicated patch (patch 3/4)
+- Removed VIRTIO_GPU_F_RESOURCE_USERPTR feature decectiontion
+- Keep ROCm capability support with "rocm=on" device property (patch 4/4)
+- Change corresponding commit messages, change corresponding cover letter content
+- Remove RFC label
+
+Changes in v4:
+- Change this series to RFC
+- Renamed HSAKMT-related functionality to ROCm for better clarity and
+  alignment with the ROCm ecosystem terminology
+- Changed device property from "hsakmt=on" to "rocm=on"
+- Changed flag from VIRTIO_GPU_FLAG_HSAKMT_ENABLED to
+  VIRTIO_GPU_FLAG_ROCM_ENABLED
+- Changed renderer flag from VIRGL_RENDER_USE_HSAKMT to
+  VIRGL_RENDERER_USE_ROCM
+- Updated capset handling to use VIRTIO_GPU_CAPSET_ROCM (8) instead of
+  VIRTIO_GPU_CAPSET_HSAKMT (8)
+- Removed the error handling fix from patch 1 (virtio-gpu-virgl.c) into
+  another thread
+
+Changes in v3:
+- Renamed HSAKMT-related functionality to ROCm for better clarity and
+  alignment with the ROCm ecosystem terminology
+- Changed device property from "hsakmt=on" to "rocm=on"
+- Changed flag from VIRTIO_GPU_FLAG_HSAKMT_ENABLED to
+  VIRTIO_GPU_FLAG_ROCM_ENABLED
+- Changed renderer flag from VIRGL_RENDER_USE_HSAKMT to
+  VIRGL_RENDERER_USE_ROCM
+- Updated capset handling to use VIRTIO_GPU_CAPSET_ROCM (8) instead of
+  VIRTIO_GPU_CAPSET_HSAKMT (8)
+- Removed the error handling fix from patch 1 (virtio-gpu-virgl.c) into
+  another thread
+
+Changes in v2:
+- Fixed error handling bug in virtio-gpu-virgl.c where the return
+  value check was inverted (changed from "if (!ret)" to "if (ret != 0)")
+- Added VIRGL_RENDER_USE_HSAKMT flag initialization in virtio_gpu_virgl_init()
+  when HSAKMT support is enabled
+- Simplified blob resource creation logic by removing complex conditional
+  branching for userptr vs regular blob handling
+- Updated commit messages to reflect bug fixes and improvements
+- Added references to related patches in Linux kernel, virglrenderer, and
+  ROCm Runtime components for complete feature implementation tracking
+
+Related patches in other components:
+- Linux kernel virtio-gpu support:
+  https://lore.kernel.org/lkml/20251112072910.3716944-1-honglei1.huang@amd.com/
+- Virglrenderer support:
+  https://gitlab.freedesktop.org/virgl/virglrenderer/-/merge_requests/1568
+- ROCm Runtime support (merged):
+  https://github.com/ROCm/ROCR-Runtime/commit/48d3719dba6ca91f597a8179d8b341387ce155e8
+
+Honglei Huang (4):
+  virtio-gpu: Update Linux headers to add virtio-gpu userptr support
+  virtio-gpu: Remove nr_entries limit check in create_mapping_iov
+  virtio-gpu: Update Linux headers to add ROCM capability set
+  virtio-gpu: Add ROCm capability support
+
+ hw/display/virtio-gpu-gl.c                  |  2 ++
+ hw/display/virtio-gpu-virgl.c               | 12 ++++++++++++
+ hw/display/virtio-gpu.c                     |  7 -------
+ include/hw/virtio/virtio-gpu.h              |  3 +++
+ include/standard-headers/linux/virtio_gpu.h |  6 ++++++
+ 5 files changed, 23 insertions(+), 7 deletions(-)
+
+-- 
+2.34.1
+
 
