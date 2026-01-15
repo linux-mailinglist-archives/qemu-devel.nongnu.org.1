@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D758D27DAA
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 19:56:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02DEED27DBA
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 19:57:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgSW3-0002PN-6R; Thu, 15 Jan 2026 13:56:19 -0500
+	id 1vgSVz-0001rH-19; Thu, 15 Jan 2026 13:56:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vgSVQ-0000jF-CA
+ id 1vgSVQ-0000jA-3V
  for qemu-devel@nongnu.org; Thu, 15 Jan 2026 13:55:41 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vgSVN-0005w7-VI
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 13:55:40 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-47ee301a06aso11660055e9.0
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 10:55:29 -0800 (PST)
+ id 1vgSVN-0005wO-Tp
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 13:55:39 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4801c314c84so5219345e9.0
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 10:55:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768503328; x=1769108128; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768503329; x=1769108129; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=DUH5FjK7b2EIsIIQmTzRC8PsiEQGFhbRDC16YQhe6Bo=;
- b=RHJmFFjGOMUoN8xir+PTHuNagJIG4ExpBSq71IqWGKGQm5c+ll71RSKfkk6awXzHPh
- XOHBWXJqsXFAdMWNB2OucowogKX0ft0BQR59Mwf9XUWpNeCjXaHWav4TZGxATrLH6RSE
- 8zbdee9eb1N1lItaPF1Vw7p8x2LLoD7VaJ8Xbw7Ja1gBrwiqN048ih789CQk3Pxu+I12
- IBPyhSVLIl4kjNDOI7lqfw1Y6kaq/Enzc+GVhCJECAM9gyWxxs1YsPXTh/n31wMxfd3P
- JOMz0Abwoj5b7oriIgFJ7UoYrUIO/L9l9he26+52oKBWyMC3rJjBiEJXcgK8A6oPHc9a
- LYWg==
+ :reply-to; bh=wlp0FvTGz1vaK6cfRoAC6PByfj8iN/GLtX8hRHZ8j8A=;
+ b=tzQSP2mLbanGzsXgSM1wgteFNMVgGkxghxnrxyKscF7wwmRFKuY9RtrxMjG2tPd+Wv
+ AL2iEUSPMU/Bv/WomVc5Tx2EWm6pASTKhNuzTFYgR7FhjHRAS5wFl90SdGmypDoV93Sb
+ FJdQRWxOIPKRAXh8DhmHIokXqijy9si7BpqLgW3MT4Q4CprW7L112Dmz+7L8TCqem2ae
+ c33j41a+ddtnR1LGmAtRu15fN5qk3Q73pZFC0F33XN7vIvSRw19KOx0+LxXOgoQNc2gh
+ +iFQi0Yc38GnPPFPflLJLbnBaBBMEmg+ke/j7ohcBgGfKIjeRmAXI165cMUzEVRSUrTB
+ 1wYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768503328; x=1769108128;
+ d=1e100.net; s=20230601; t=1768503329; x=1769108129;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=DUH5FjK7b2EIsIIQmTzRC8PsiEQGFhbRDC16YQhe6Bo=;
- b=OcKqFYqVapsSLI60yGvH+34IEkhk1Al54P2zCFrZ+h7I6c3U9WR+TowbPhkw9jVhEQ
- A7EE54xIdzPER8GvTJnsqk9YTWqOOpVo3meQirrH14tupASJXlo+OphjgiHESzGBKfLH
- 9iB9vwTpwfP400x1xnXFsJYVXUawOfJR/RZcKhNMgAspDYBcN/KdK8cw+Lt9bQRzuWWd
- zywnCaXts6UPS5JLHDnoJuWYj6oMHSVU8MdXNcBqIzMWxYe8/I+kOJ2mmK3rpY5MPq2w
- mjdRv8XmUAHOeLzj+rIrc3BwfkNRJ4CAOtHnkjOGqNWuJ201iMgyomBERPh1k6+qmGeB
- FGtA==
-X-Gm-Message-State: AOJu0Yybvdh9hw7POOoovh1M3EbNURDPAQYFU7yzKleE85Y1u10Yq0/c
- AjVjDLe8Ts0jD2Lfu1CR/AXvAus3YHl9U73TZMuriImaMK0/BAL02O+PMwJcuO3LomMBzlS2P/v
- kUef4
-X-Gm-Gg: AY/fxX52JOhx1m9S/9xdrSQHntpc+RvzcW/Zk9Lfl6PFLNmbkLg0jzKRr4I5zpTzSFZ
- 7A3FxjQ1GtKLiKZOdfGXFuC0aInfsvPFObt5SA7NkSO7CdJoTLa+9Ragmo1xMRe5qfF1qEmAQr6
- FpFwn2xvnism5YMfv90mPONiArdXuYrNcmEpteVIhjhr+k0jBeNCRQh+MYoiAksHe9MPkHAmOTH
- Ml7HaVti4g15pNB/7f6PPYUQAV9tnhsXmsI8m/q1ZEzUp//lpyAu2rxr0oy0bxHqtFoQtGMGl5m
- Hhc37EYUF4qDoLT1nQrDb8Chb5ybRDgi515nzPN+Xd5q50n/lxZofAFnHLmlSH6QYorsewwriG6
- tToAW915Eig3uFsTdyh4l/9Z5C9DQVDE+W0EUvLMiAE3koIZ+Fh25J44TcQd+40abKLnMkmKWD2
- zG4BgfdKS4A9HPMjJVBVw6hb5CYSOtdfXNRyANz9Z6Jw0hEq9MAhcSerUQiOnUPPGvg/AbZw3Vq
- nHu8BTIHoeOjMq5p9y5wv2ACWY9OnnLyBDFFUR4Iv6HUw==
-X-Received: by 2002:a05:600c:8710:b0:471:14f5:126f with SMTP id
- 5b1f17b1804b1-4801eb142famr2253005e9.33.1768503328060; 
+ bh=wlp0FvTGz1vaK6cfRoAC6PByfj8iN/GLtX8hRHZ8j8A=;
+ b=ka+SMLhGiL3Sbv2R32HvB4fe0DRh5GZ6IOLrgAjilJ3waHovbMKNglpJb1etE5LFTc
+ NCi1Iq63Sx9j5wdNH+PVTj436aafDICzipV2zB+eRzCiWvKCJPlgLGJQn1KpApAyetDo
+ wUuXrFZLcQwv37EDnfV46Ugb3qjcsxDeTZTTU05g9lGKWHZAyHYUS3kaXaNSMDSmS5l+
+ +zFSqE0/3XpGMekIak87pnNlUB5oUyYrKoq6FM57yFgCuXletTk4PcqPjh+K5gElQKZy
+ 1gkSPqvsZhdjbutpBv6RPrXsuda+77jLjdEK1g5g8OXoV4knv+BHt6ZaKiyRfneEdjXw
+ 45OA==
+X-Gm-Message-State: AOJu0Yyzwh02HVhgjpCFAkOcQ2HtabSaTLbpuCZeqzSXSkReE3C0sSsh
+ o6Fsnij475GLi1uqeDfrtgnogS3uac94k5QpJQ+i27VsSfVVU9TOKiGV5qBWhSq6835KeUZotiH
+ yRfXE
+X-Gm-Gg: AY/fxX7r25kCRHHGK1fwalSRkKgcA7eh1c7hfI4Ino+XF1oU3Hj0aUK4hBnsxDj436u
+ rt5nEeFT5SsVECwUyt8GUZXha5qkppNT3xrq76fJ730tZOkuZdjScDmeXCm41e8oovGTVnc39N+
+ nNGDL6cqSVw0TwQuDojIaD5SFjVJhdqqXj3WS8WTc78M7PFgOkHwYsiCv9KsuUKUkqzz6kuXTzv
+ gqFH28pWwU/WrGmBWwlBOvGCan3t0tWfk/V2MHQ8T1AQpLKY6hbxBV/Q4IlJ8utTraEqVqzO4m/
+ EfAm02zPufFrRSwItImLNzSa6wZ+JPlCygdtjWsBbSP3G7SQ0r6dlU9kWJVUk6+KVikMTIxDrAm
+ lpMu7GZdgGx9c2FD/SdKBakABGGhp+MKAZrOKGtsLoFNMz/TJz97i1RXVuhsv4HzW2E+b+7nm9p
+ 208XvR6DQ55C0lVzaBstzbTFc6ArmMfjOmEkvJ+62bg8+TxWzx3xKa+qtLr8H3KQtRgLiwc9LDd
+ 6WQikRIN1+7M+bWw8jz8S+939aLnWmq4UXacCpbCxEBI13YhoU4ia4p
+X-Received: by 2002:a05:600c:4ec7:b0:47e:e2eb:bc22 with SMTP id
+ 5b1f17b1804b1-4801e30a126mr8229695e9.5.1768503328855; 
  Thu, 15 Jan 2026 10:55:28 -0800 (PST)
 Received: from mnementh.archaic.org.uk
  (f.7.f.1.7.5.e.f.f.f.c.5.d.8.2.4.0.0.0.0.0.d.1.0.0.b.8.0.1.0.0.2.ip6.arpa.
  [2001:8b0:1d0:0:428d:5cff:fe57:1f7f])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4356996cecasm514207f8f.26.2026.01.15.10.55.26
+ ffacd0b85a97d-4356996cecasm514207f8f.26.2026.01.15.10.55.28
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Jan 2026 10:55:27 -0800 (PST)
+ Thu, 15 Jan 2026 10:55:28 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 20/25] docs/system/generic-loader: move TODO to source code
-Date: Thu, 15 Jan 2026 18:55:02 +0000
-Message-ID: <20260115185508.786428-21-peter.maydell@linaro.org>
+Subject: [PULL 21/25] tests/functional: migrate aspeed_rainier image
+Date: Thu, 15 Jan 2026 18:55:03 +0000
+Message-ID: <20260115185508.786428-22-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260115185508.786428-1-peter.maydell@linaro.org>
 References: <20260115185508.786428-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,78 +101,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently we have a "Restrictions and ToDos" section at the bottom of
-the document which notes that there's no way to specify a CPU to load
-a file through that doesn't also set that CPU's PC.  This is written
-as a developer-facing note.  Move this to a TODO comment in the
-source code, and provide a shorter user-facing statement of the
-current restriction under the specific sub-option that it applies to.
+From: Alex Bennée <alex.bennee@linaro.org>
 
+Cedric has a host for the file which allows us to keep the name.
+
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Message-id: 20260113135941.3361163-1-alex.bennee@linaro.org
+Cc: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- docs/system/generic-loader.rst | 14 +++-----------
- hw/core/generic-loader.c       | 18 ++++++++++++++++++
- 2 files changed, 21 insertions(+), 11 deletions(-)
+ tests/functional/arm/test_aspeed_rainier.py | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/docs/system/generic-loader.rst b/docs/system/generic-loader.rst
-index d5416711e9..0df9b66976 100644
---- a/docs/system/generic-loader.rst
-+++ b/docs/system/generic-loader.rst
-@@ -99,6 +99,9 @@ shown below:
-   If this option is not specified, then the data will be loaded via
-   the address space of the first CPU, and no CPU will have its PC set.
+diff --git a/tests/functional/arm/test_aspeed_rainier.py b/tests/functional/arm/test_aspeed_rainier.py
+index 602d6194ac..30827beca3 100755
+--- a/tests/functional/arm/test_aspeed_rainier.py
++++ b/tests/functional/arm/test_aspeed_rainier.py
+@@ -9,10 +9,8 @@
  
-+  Note that there is currently no way to specify the address space to
-+  load the data without also causing that CPU's PC to be set.
-+
-   Since it sets the starting PC, this option should only be used for the boot
-   image.
+ class RainierMachine(AspeedTest):
  
-@@ -111,14 +114,3 @@ shown below:
- An example of loading an ELF file which CPU0 will boot is shown below::
+-    ASSET_RAINIER_EMMC = Asset(
+-        ('https://fileserver.linaro.org/s/B6pJTwWEkzSDi36/download/'
+-         'mmc-p10bmc-20240617.qcow2'),
+-        'd523fb478d2b84d5adc5658d08502bc64b1486955683814f89c6137518acd90b')
++    ASSET_RAINIER_EMMC = Asset('https://kaod.org/qemu/aspeed/rainier/mmc-p10bmc-20240617.qcow2',
++                               'd523fb478d2b84d5adc5658d08502bc64b1486955683814f89c6137518acd90b')
  
-     -device loader,file=./images/boot.elf,cpu-num=0
--
--Restrictions and ToDos
--^^^^^^^^^^^^^^^^^^^^^^
--
--At the moment it is just assumed that if you specify a cpu-num then
--you want to set the PC as well. This might not always be the case. In
--future the internal state 'set_pc' (which exists in the generic loader
--now) should be exposed to the user so that they can choose if the PC
--is set or not.
--
--
-diff --git a/hw/core/generic-loader.c b/hw/core/generic-loader.c
-index 24f3908b1c..66a24f7b2a 100644
---- a/hw/core/generic-loader.c
-+++ b/hw/core/generic-loader.c
-@@ -30,6 +30,24 @@
-  * separate backend.
-  */
- 
-+/*
-+ * TODO: currently the "load a file" functionality provides no way
-+ * for the user to specify which CPU address space to load the data
-+ * into without also causing that CPU's PC to be set to the start
-+ * address of the file.
-+ *
-+ * We could fix this by having a new suboption set-pc (default: true)
-+ * so the user can say
-+ *  -device loader,file=<file>,cpu-num=<cpu-num>
-+ * for the current "use this address space and set the PC" behaviour
-+ * or
-+ *  -device loader,file=<file>,cpu-num=<cpu-num>,set-pc=off
-+ * to just pick the address space and not set the PC.
-+ *
-+ * Using set-pc without file= should be handled as an error; otherwise
-+ * it can feed through to what we set s->set_pc to.
-+ */
-+
- #include "qemu/osdep.h"
- #include "system/dma.h"
- #include "system/reset.h"
+     def test_arm_aspeed_emmc_boot(self):
+         self.set_machine('rainier-bmc')
 -- 
 2.47.3
 
