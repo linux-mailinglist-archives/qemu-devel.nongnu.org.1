@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6E97D27E0B
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 19:58:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D4DD27D60
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 19:56:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgSW2-0002JR-DY; Thu, 15 Jan 2026 13:56:18 -0500
+	id 1vgSVP-0000fv-LC; Thu, 15 Jan 2026 13:55:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vgSV3-0000ch-MT
+ id 1vgSV4-0000ck-IS
  for qemu-devel@nongnu.org; Thu, 15 Jan 2026 13:55:20 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vgSUz-0005mV-2s
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 13:55:16 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-47d59da3d81so9940715e9.0
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 10:55:11 -0800 (PST)
+ id 1vgSV1-0005sV-0S
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 13:55:17 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-4327790c4e9so882700f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 10:55:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768503310; x=1769108110; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768503311; x=1769108111; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ud2T5sLAWTu5Ijq1YhobwgkD/yOPgwz2pVJhcRpx83k=;
- b=w1Ku8MZbtP9P9rqNbZXldLl6mhY1XOUiGL0FNSvxS873noqZCfCDJWl1p0M7/NF78B
- 4x4Zq3jYCfItR1PmGWiV0ymXm/nbBQ+FJ4Udf88PAgFIudrqUgr2NQUQhCBPjkctBCV7
- KsU+/TBJU7aJB5gJKqZ562Dp8rW5HDMIcWFBnBh/sJhxzcxg+n8KKwkvbQ0WTMhp71Ve
- FFF7JxpXczPTOFPAJpRBF52eYMFkfa8SC5/3pQJGE6GboU8YT+jxPivEFP2VTwajN7Uw
- FX6EckR9WUYtXTvxlfNXXra0Js+m3vOCq7oXO7C8fAAHykOwrwFuFhH5Lym62Rocyeya
- 9amQ==
+ :reply-to; bh=gVbnXqfgbvwxJ7BEsCc6CmzypR5ojwe4TPV/AFLeVSs=;
+ b=xXjo9wdhuEqpAE5+XP3xTf+9lIuz9bChneJ8L2WUAgvHQM4Hz8ma9GtRItaC+6mgC5
+ S7ADenZhX6YOeJVB2sRi4TayObtg6GYNmHZfw0OMO1lAfpf9RJg5n0q4hR3QytCfMnkx
+ OAxqG8ePlaNS9+CNLEKBR90zAvO/sMrNiGwluRN5/JANVDRU6DjNeq0hdlppJjxmWdL/
+ 3Zraz+4OQmz8NLxFnijHyF/QFNyTEOZbqWTTfUHHSnlp19kPWF80L74uXLUl3/K7BLha
+ 3AZrGZXDuJoDD/ap4wCun0vLCrbOyp6WKdRz4A9K6N5Dcxa/7WVL2dbJszd24lQgN96Q
+ 1ySA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768503310; x=1769108110;
+ d=1e100.net; s=20230601; t=1768503311; x=1769108111;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=ud2T5sLAWTu5Ijq1YhobwgkD/yOPgwz2pVJhcRpx83k=;
- b=v5PkALh3xh//eCA2JXkkVNPP/FwQuk06RA4/jQwVS7hOStEkNOVN20X8vKizvEnb+l
- JJn1G3Ur64a4Q9yxV//kxJIUUQazCwhMB+KBQ4B2m6eEVLciOynp4xPpDORTgQjoBjGm
- 55zcc8tu1OiB6+eQ04VXAJyow6nOidmDpaAeHUOWxfuveYQu3JjSq+9VCdjT6Atw+3nx
- YllBhcFjbpEZ1/RLz3elMdb2skV+kpscO13HTpcbgfDsOTNWFu0u5hnFnsiDJdlvHaIN
- p50yX+sXsZJiqxA5agblRy7KDewnODfWCbyj/weYtLQDhKu8oFTy7pNGIA2GtrcQxZh0
- Se8A==
-X-Gm-Message-State: AOJu0YwrHfZyFdxkzwQx7DmrenIralHt5DIThS5nUz/MJ7FALApvMcDx
- WgwMPTPiVRCo04NsrGpayJ4DaHBl2pQ/B15LUAFHwYj0XseUlKz9vtKWXlo/77IB20ryZdhViKF
- JN3sz
-X-Gm-Gg: AY/fxX5CDRP253PHxE/tKSU7tx1pr/SxwXjEN/SeCEv6P02C++RrOvI89iWvT2KNFFa
- p0euHa0baobMD1upIkBG05O+kObnVbdmsfw9i/p2p2YDAV2oe/5Awt3FxUnC4UgP/W1NM/CXRa5
- DxjXYR8Xjcu15KrBiQ7Omf2nprZf48X3Hp8OjyWHzp3vL2c3R4Be0+PEkoDeuOwCjTSj+Qb+pV6
- hIuuu9lU/UY4K5sfu9Cu+Lx7g1ig3F+SkBBFKGgTLpVShWZttQqYJwrsqChmJKBEYVxRiDBE3ou
- 6o5w2XdaYXjICsESyeC7ZYGb8oMliWUjIzUR3XAWPEobeEbQUG5WeGIk6GnYBbW6Ja/tzGL6phe
- d23EwbhzWvosHPcQBeLSLGQOdXQB+LRjSngAwWS6mZXToiqp1q6gg1WqPR/O9FiHiAUc+Qcer2F
- MxEJob0qFESAKxwqSe9f4RU/2Slg6PoasEJw9/32Z41Ki+lel0rjqe71Mufnhrc4LKCT8R3ecLf
- c3kwNsrHmRzcnhoBh8swwK5VT4b8wIlWm+d0jWPQ7iX9iQVTdAj0DzP
-X-Received: by 2002:a05:600d:2388:b0:47e:e7de:7c41 with SMTP id
- 5b1f17b1804b1-47f44d4ca19mr27846865e9.16.1768503310303; 
- Thu, 15 Jan 2026 10:55:10 -0800 (PST)
+ bh=gVbnXqfgbvwxJ7BEsCc6CmzypR5ojwe4TPV/AFLeVSs=;
+ b=lvavYWKyciTOvXLwNL9IfuBfDo00q2SYcqOZVxN6OvFWU3QbwIBpSLK9vdOAflY3Ll
+ 3nvWHUtRUFDq2T5KEzhFcCCKgQ10of89K7bxPgc9qix+xXohia8X64vS5WwafjS1RFkT
+ cuiJF0IY/snoANn7SoG4PDQDKNBnWLGCqJ8VPe4sdvBe9nr4AVaXZhhVA4336fSCA4c/
+ Mx6gRtm2S560VvGPv7XYJYBQgD5m3Y4vpShbAekb+LsNXrahubfgPEA9o4EdYQznRQx5
+ BSCLpw8NJnd778XOI4FtJjfQ4NAXnbda26WjaVSyR/Ay8zqns7R6DY6k+JFXguuSzc/o
+ Xqlg==
+X-Gm-Message-State: AOJu0Yz9TEKr66x7sCo+J/YLrYbeFiAwXWFonI7o2AOKcyL4qiNtYOPK
+ bJplZ6tz1PDZxZHdbfXArd528MvyX8Qaf+jQM/L5cv7Uyw2fv7nfVTY1JrdllyLUdtJ6wrEyiYY
+ t3RVJ
+X-Gm-Gg: AY/fxX6ee44j4axNL/mZ6ZVWpYANyBzaXNkRrMbWtlPoVamCxEdwCYYjl3xRht9IBc9
+ XZGflprZUnlOJdXBWZFmvabed9DeADAP+20v6zSsvAferqIZ2PYjeKvKjZRFoS6Z1yCsP3mPH9a
+ jMZEorwYfFWXO7ztQJSPp5yZ9/MT37JRMLIG94gq4D4/39+GRMBnamBJuy5TOSJiP49atertJSB
+ IZrA2DEQaWU9ynE5X6apT4p5KG0cgMmic0rRXFB9dDuzuQjgQpj/QkKnumcRoQLLHaYZkhp4dS/
+ a5+lizCcKx2FR8WvRzSduIdVH2LWj1eclLPALddNIIBJNqHDKUDquDzoC2bpCAx+ncl83EjY9EA
+ eA7tRQSQHQQuDfgt4kUZ2Wz1da20QFDxoPQw/0ibsTTYF9xSRJZVh4SV1cQafTtaJvYejijhClp
+ 6+negs41f8oTKBEmeyTJFpeSEuDbUgMHlG94dMX0fOwNkwXqsac9Y+Jf8T8mgiHcX+5LRoPwxMr
+ RFsxPITfJeAkJKekEa13x/Wo2XpfIqHvvIw8nRh/PkdHQ==
+X-Received: by 2002:a05:6000:144c:b0:430:f68f:ee91 with SMTP id
+ ffacd0b85a97d-43569bbeb36mr479488f8f.37.1768503311204; 
+ Thu, 15 Jan 2026 10:55:11 -0800 (PST)
 Received: from mnementh.archaic.org.uk
  (f.7.f.1.7.5.e.f.f.f.c.5.d.8.2.4.0.0.0.0.0.d.1.0.0.b.8.0.1.0.0.2.ip6.arpa.
  [2001:8b0:1d0:0:428d:5cff:fe57:1f7f])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4356996cecasm514207f8f.26.2026.01.15.10.55.09
+ ffacd0b85a97d-4356996cecasm514207f8f.26.2026.01.15.10.55.10
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Jan 2026 10:55:09 -0800 (PST)
+ Thu, 15 Jan 2026 10:55:10 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/25] hw/arm/raspi: remove duplicate include
-Date: Thu, 15 Jan 2026 18:54:43 +0000
-Message-ID: <20260115185508.786428-2-peter.maydell@linaro.org>
+Subject: [PULL 02/25] target/arm: Enable ID_AA64MMFR4_EL1 register
+Date: Thu, 15 Jan 2026 18:54:44 +0000
+Message-ID: <20260115185508.786428-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260115185508.786428-1-peter.maydell@linaro.org>
 References: <20260115185508.786428-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,29 +101,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Osama Abdelkader <osama.abdelkader@gmail.com>
+From: Jim MacArthur <jim.macarthur@linaro.org>
 
-hw/arm/boot.h is included twice
-
-Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
+Signed-off-by: Jim MacArthur <jim.macarthur@linaro.org>
+[PMM: add entry to v8_user_idregs[] list also]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/raspi.c | 1 -
- 1 file changed, 1 deletion(-)
+ target/arm/cpu-sysregs.h.inc | 1 +
+ target/arm/helper.c          | 6 ++++--
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/hw/arm/raspi.c b/hw/arm/raspi.c
-index 1276bb4df4..00e4a10466 100644
---- a/hw/arm/raspi.c
-+++ b/hw/arm/raspi.c
-@@ -24,7 +24,6 @@
- #include "qemu/error-report.h"
- #include "hw/core/boards.h"
- #include "hw/core/loader.h"
--#include "hw/arm/boot.h"
- #include "hw/arm/machines-qom.h"
- #include "qom/object.h"
- 
+diff --git a/target/arm/cpu-sysregs.h.inc b/target/arm/cpu-sysregs.h.inc
+index 2bb2861c62..2ba49d8478 100644
+--- a/target/arm/cpu-sysregs.h.inc
++++ b/target/arm/cpu-sysregs.h.inc
+@@ -14,6 +14,7 @@ DEF(ID_AA64MMFR0_EL1, 3, 0, 0, 7, 0)
+ DEF(ID_AA64MMFR1_EL1, 3, 0, 0, 7, 1)
+ DEF(ID_AA64MMFR2_EL1, 3, 0, 0, 7, 2)
+ DEF(ID_AA64MMFR3_EL1, 3, 0, 0, 7, 3)
++DEF(ID_AA64MMFR4_EL1, 3, 0, 0, 7, 4)
+ DEF(ID_PFR0_EL1, 3, 0, 0, 1, 0)
+ DEF(ID_PFR1_EL1, 3, 0, 0, 1, 1)
+ DEF(ID_DFR0_EL1, 3, 0, 0, 1, 2)
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 263ca29d92..a7239ff25b 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -6566,11 +6566,11 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+               .access = PL1_R, .type = ARM_CP_CONST,
+               .accessfn = access_aa64_tid3,
+               .resetvalue = GET_IDREG(isar, ID_AA64MMFR3) },
+-            { .name = "ID_AA64MMFR4_EL1_RESERVED", .state = ARM_CP_STATE_AA64,
++            { .name = "ID_AA64MMFR4_EL1", .state = ARM_CP_STATE_AA64,
+               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 7, .opc2 = 4,
+               .access = PL1_R, .type = ARM_CP_CONST,
+               .accessfn = access_aa64_tid3,
+-              .resetvalue = 0 },
++              .resetvalue = GET_IDREG(isar, ID_AA64MMFR4) },
+             { .name = "ID_AA64MMFR5_EL1_RESERVED", .state = ARM_CP_STATE_AA64,
+               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 7, .opc2 = 5,
+               .access = PL1_R, .type = ARM_CP_CONST,
+@@ -6706,6 +6706,8 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+               .exported_bits = R_ID_AA64MMFR2_AT_MASK },
+             { .name = "ID_AA64MMFR3_EL1",
+               .exported_bits = 0 },
++            { .name = "ID_AA64MMFR4_EL1",
++              .exported_bits = 0 },
+             { .name = "ID_AA64MMFR*_EL1_RESERVED",
+               .is_glob = true },
+             { .name = "ID_AA64DFR0_EL1",
 -- 
 2.47.3
 
