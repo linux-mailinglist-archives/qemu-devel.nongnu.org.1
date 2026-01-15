@@ -2,106 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 283A4D282D1
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 20:43:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5899AD28830
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 21:46:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgTEP-0007Oc-87; Thu, 15 Jan 2026 14:42:09 -0500
+	id 1vgUE3-0005to-UI; Thu, 15 Jan 2026 15:45:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vgTEB-0007HW-6v
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 14:41:55 -0500
-Received: from mail-qk1-x72a.google.com ([2607:f8b0:4864:20::72a])
+ (Exim 4.90_1) (envelope-from <kelly.cullinane@oasis-open.org>)
+ id 1vgTFF-0008TR-Ti
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 14:43:02 -0500
+Received: from mail-qt1-x832.google.com ([2607:f8b0:4864:20::832])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vgTE9-00070V-BJ
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 14:41:54 -0500
-Received: by mail-qk1-x72a.google.com with SMTP id
- af79cd13be357-8c2c36c10dbso152309285a.2
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 11:41:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <kelly.cullinane@oasis-open.org>)
+ id 1vgTFD-00077O-Sa
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 14:43:01 -0500
+Received: by mail-qt1-x832.google.com with SMTP id
+ d75a77b69052e-4ffc5f35b54so18511031cf.0
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 11:42:58 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768506177; cv=none;
+ d=google.com; s=arc-20240605;
+ b=RqKUSaZccbUvX5e0AnfijaZ6ogcgI9delz8mVqAa8oq5Jn0ujlBDXJhqPCo6iOLgPx
+ EAEWXNArMzi119YQIokTp0MPPwv8vyGAep8XsvNwPiD+S8EQ3LH+bwXPpEKrYjUG06lQ
+ krbRQd/j9gYJHTXv5699mI3tnSYBNZ0K94gDKlxCl812kSVRWuR5CMoeXwL8X3AsusPr
+ U4swPrpkk4148WQBE57cjiAFtwQOyN+FHKTzV+eKdlnoljKNKXFckE6DU+6MTwYMG3kn
+ dp7XIxxFjFaOMJf6DbKHZRviO0JbWV8pxgpqu70TZbdAPg55iLHFv4EXCZW8pgcJK4nK
+ ktHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
+ s=arc-20240605; 
+ h=content-transfer-encoding:to:subject:message-id:date:from
+ :mime-version:dkim-signature;
+ bh=BVuRcIp9C9aDs7YujmRCIsJWyiCOSqmqC7FZNs5wMUU=;
+ fh=PnYt+qEB9tAfMKoqBm2xjKOFpYyFFGPudh5cVIoieJM=;
+ b=a13hVAHkh471hkmw0sE1eawaxQTTbl4c2UbgfDMrulZG6SqQizlfNf7JaDW1Arm4ei
+ 4JY/CGkAPYZT1nzUvip0lcUoH4JfgtlTzoTAYpfDMmPKqmR8lfAwR8LGy0euTGFjNRle
+ L6LGiXCZFC+vFXWXldzoEFH0Zz7WPsw4xrUSg23Q7x1vApsixTnfDWJkViqeJZ1esTvD
+ TQ4EdEA0brpIa/YYY6uODdK8dNtEuMXPMTydnR8PUJ+jdmN2IathzNPgZaYZmUqKI+DN
+ NcNuTs0uwDsK5whudhYkcBDBnd8lVhbUqrqgt3VssGSPmiWkPQE49z5OPzxjNd9EcUpf
+ WyUA==; darn=nongnu.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768506112; x=1769110912; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=XStVtb63ZUi/yHG1V8OVVG3pE4n+ztizFlEvQhgiFbM=;
- b=qmpQf68hUQhjnmG5THlahtUo+QO7ahX/jYf5HUvy8dWwuAK8fk1dzqDI2J1b1BgVTh
- EU9OZ3ty738pmpX5AHGbPakQ9WFspdKA83tgCuoEDL1FegdOkU9+yFV7LeQEfUp6ekpB
- o8EBu8lQNDhpfP+ZIurI1TqbfWkTPRv6rp78XhraEqSFMnT5KPDsjDIBG/QvPPb2dc9d
- V7589OE0Vv7yXKEcYZ4v1iLyE3PORxhFKohNJhaU0hr8sIj8CTzhBJhek7bgMK2/b5tV
- QTlahSf2KUTL957hF2zcrngbws2SOGr9VTXl/4GQ/gdybakd8Uq5hs5dsIY1Ok2aB8RC
- tt9Q==
+ d=oasis-open-org.20230601.gappssmtp.com; s=20230601; t=1768506177; x=1769110977;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:to:subject:message-id:date:from
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=BVuRcIp9C9aDs7YujmRCIsJWyiCOSqmqC7FZNs5wMUU=;
+ b=mVG0hM8FeOdabHztB/ZFIfawD7ou0CWJDF4/T8lXx7yHDyKMs0w2NqAoavHTIVL3oN
+ 3xZw8+ezKZFmw4dNyGAc5/jMxxYKHsLSKQJCdTVqs4ltnILvTn442cAYzqm+FWtal32Y
+ XpFz8dITwBt0Y/vxxHyK+7eYiASwkZkAM5dKPGtMpWZALvuswyd+Snj4YBMcx/d3ACvz
+ jBnibDNwhjzqsF9/tJ+dTt83UL6z52hpxPuBllfbvTUQGR22KeJKYmrM2L3nnzLGi3aw
+ jSzTykQvlNkqBaBvjB+JqipLEYohvV+bDWjws2OXDh14Mk5YTUfJrfPzKX3aVzs4HUrI
+ xI0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768506112; x=1769110912;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=XStVtb63ZUi/yHG1V8OVVG3pE4n+ztizFlEvQhgiFbM=;
- b=kgwRiDGI0wniGTMiOvUjDygGDjJPucGBCDxhxVKbbJveSbqMyS63TAcVR8QTCQM1Si
- gXh0zCskvS2mHmTSoxYGogVx33nxAV1uXCRwEHnV8zfFtqNBl3dDQ76PLr4k7owApRG3
- MFjRvjclhpm+QucPpAllkxBx8YKPFDdOV+IZ1oNaupdqD3EaznpvYa25ITuAI7myaLoG
- GO5mMq8D6WWFIuQaZZjKvWMBpNcpfWsB/uMa27TYPN6OdgYK+BYT82yABbFS4f0OPqF5
- FXcNUdZH501g47ZJjJOQQv4zYVcHVVAZyIxgx84ii6G8mgEL/Q1j526PzjCOZHCvzRA2
- fnqA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXE2XQU/D4UPNFNIUzVCIVgWkTlPPtDH+bNnOi6bZm6jeP10bvMVZpZxAjZaBD6uqsGlwInbr6s4LqO@nongnu.org
-X-Gm-Message-State: AOJu0YxsDuGm7YxQA39fN8rofkFKaWL4MeZv1Zt1D2OZ6u68gjH5Z2A7
- GXVB9raLbMH2lJa3gKpTgp93tmmrdDb89DWKARjkBHWMmCRWefLl10lDtw7HqvEj1fk=
-X-Gm-Gg: AY/fxX4nioNlx/C9/6SnPOPWFktoY/xZiYyqVSnZxWDONfAF4/o1aHETzBO4Jt9HVCj
- xA2a9ukJgfU1yVm23RUOAMTDIJ6qqgpu+0M50N/6xQGfb/+Gco9TrFUidksJgvyDGJ1FPfLbREA
- uIfheY0RXU36yoguMrjuvhRyciyGWouqUpBFffZuL1DK5IVpPX1zM8lIoiAZFfnWr8C3Nj4nek1
- lEFZMcjNYA6+3cEtVkjDBMe1NYkK+huNjj6bk5q/Wt1rspwJ/hJP0ZTzgRrfsfFVSoFl+N+hQcU
- gRSAkAKLoKQAIVA8GuKiztx/XLLM7vHCDxUdj5e+IEibkhYFgacvp8WEZsJsdb4D1/rwfrM41yD
- m7j0qECnAIjQVzfIP8jxzqlQIy3D++wBtRP7RS8QWZolSZ7LGwJ8SGBEBimtT3QC7dhnC23CklB
- n80Bos7pl6SLX5T27zWO3tLyYk2KL42raYw8uoc8jbAhdm9s+A+M4Kcw==
-X-Received: by 2002:a05:620a:19a9:b0:8c5:384e:dcd9 with SMTP id
- af79cd13be357-8c6a66da411mr84746885a.2.1768506111901; 
- Thu, 15 Jan 2026 11:41:51 -0800 (PST)
-Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-8942e6ad75asm3176586d6.31.2026.01.15.11.41.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 15 Jan 2026 11:41:50 -0800 (PST)
-Message-ID: <2837af07-c175-4eff-90e6-760446492c34@linaro.org>
-Date: Thu, 15 Jan 2026 20:41:46 +0100
+ d=1e100.net; s=20230601; t=1768506177; x=1769110977;
+ h=content-transfer-encoding:to:subject:message-id:date:from
+ :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=BVuRcIp9C9aDs7YujmRCIsJWyiCOSqmqC7FZNs5wMUU=;
+ b=N0vmELyGeUUxZx/LR34gdKtrxTj+9UOJHq7xFMOb75CTzG+QyQa8x7/TYphBCqzwIi
+ uejnPYxp1eQVn9g192sSLcFpO4hmqP4CCC9Kh6bxs5/kCX4o2oGFtbdhuCAPLGOWwHX6
+ +8wKbcfkbnX6DtW+sr5n1OYcxa+Po0Qhg5+Ss00aB7qsAY1gTw3y5ISP/QoyM4/bFyW0
+ RXKOf3mydbCddtzRZaIUA1V8zCZ+AKLcFzy/co25kVn+m3FE9WyFQZv54HQeSMT1Hwcm
+ ON/vGmUkTgaPx3nUosZ83jk2Z3qWLNxMkZXJp1Xb24qUYp84Zkp/9oxZ8zEo7mfNrywA
+ pTfA==
+X-Gm-Message-State: AOJu0YzqXj8PwmpVPyro1ehyqI/78ymyJnSKg3uNnqK7ahFNfFMYQrAg
+ UlNI4jG5A7FbuWE0Wi4aJK+v5vdVOhg8Cqnu3dwwn6W2/se1IbyHR2/jYlTal238Zf0/mRQG1v/
+ YHPKeNAjY2OJ2VgJEDI/x+6LaXVxhr0VwoJSRnuuFb+ljxe14JoRI9X4=
+X-Gm-Gg: AY/fxX7FKIcLMZ9eQ71rTT9yPbPDaDPvNbmKTziavO+4JSYHfYbUvLzzkhHk+vcoEZ/
+ Z1KPB86gd0YGaTBR2v0iwQJczPd5UL6lT1ozgLHFGeJWFGL/IY0NECaVJeVnxZTP5axsIsHHdS/
+ kKacdcu4CGQegihDq5CpNhN5NjV5kfVxktNfZqs/obSc0bLJ7YjoMgHMBJoFdETGH86dcfkxiAO
+ GDxHWEmESrTkywLPUWUMctSFa5vs1gO9xWbb+TS+0tJRbjBN/npVjCghYDhz3RWnRHeKMt9khr0
+ DaKQ85NPKbhO8dHN2LzzrJnUSgZB09P0hjIcXqdqpPKyZebNJzwyQA/t1VD7
+X-Received: by 2002:a05:622a:411:b0:4f1:ccec:84b0 with SMTP id
+ d75a77b69052e-502a1f82c21mr6340201cf.57.1768506177294; Thu, 15 Jan 2026
+ 11:42:57 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 13/31] accel/nvmm: Replace @dirty field by generic
- CPUState::vcpu_dirty field
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Markus Armbruster <armbru@redhat.com>
-Cc: Reinoud Zandijk <reinoud@NetBSD.org>, Paolo Bonzini
- <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ryo ONODERA <ryoon@netbsd.org>
-References: <20250704101433.8813-1-philmd@linaro.org>
- <20250704101433.8813-14-philmd@linaro.org>
- <44ccfba7-21a3-4c24-aa6a-4b2bdb989792@redhat.com>
- <dd7fbe03-1458-4c44-b8db-a9d5e9ae33f1@linaro.org>
- <87v7h44pal.fsf@pond.sub.org> <aWdfqvJhtDt14lTJ@redhat.com>
- <ea1e0e45-f864-4a43-a40e-48fd82c26c56@redhat.com>
- <87a4yg4gmo.fsf@pond.sub.org> <aWd9wP9-9rx0ELhY@gorilla.13thmonkey.org>
- <5279bbb4-a4b8-4c71-8275-92643b8796d7@redhat.com>
- <aWjBiwjKpfmnaBSe@gorilla.13thmonkey.org> <87a4yfxgm9.fsf@pond.sub.org>
- <87sec6hlmj.fsf@draig.linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <87sec6hlmj.fsf@draig.linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72a;
- envelope-from=philmd@linaro.org; helo=mail-qk1-x72a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+From: Kelly Cullinane <kelly.cullinane@oasis-open.org>
+Date: Thu, 15 Jan 2026 14:42:20 -0500
+X-Gm-Features: AZwV_Qjs08tGS2fCNaZfZKc6ZBlNPl7GFmYqfaCBM6gz6pHZBaSGEXxzjP1u8sg
+Message-ID: <CAAiF601MvyNNsA77U=vdKwHr-xgQFmUp2u5izCY7Qfbs5_OfTA@mail.gmail.com>
+Subject: Invitation to comment on VIRTIO v1.4 CSD01
+To: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::832;
+ envelope-from=kelly.cullinane@oasis-open.org; helo=mail-qt1-x832.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 15 Jan 2026 15:45:49 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -116,40 +110,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/1/26 17:43, Alex Bennée wrote:
-> Markus Armbruster <armbru@redhat.com> writes:
-> 
->> Reinoud Zandijk <reinoud@NetBSD.org> writes:
->>
->>> On Wed, Jan 14, 2026 at 01:17:20PM +0100, Paolo Bonzini wrote:
->>>> On 1/14/26 12:28, Reinoud Zandijk wrote:
->>
->> [...]
->>
->>>> We're not asking you to keep CI up-to-date (which Thomas is doing now,
->>>> despite having no specific need that I know of to support NetBSD), just to
->>>> *report* failure to build from source and tell us "hey, that's how we fixed
->>>> it".  Otherwise we have the false impression that no one even cares about
->>>> new QEMU on NetBSD.
->>>
->>> As pkgsrc normally tracks releases and has a directory with local patches on
->>> top of that, build errors only show up when we bump the version. Version 10.2
->>> is now in pkgsrc though I am running 10.1.3 so there is surely interest in
->>> keeping it running. I could try to commit some more trivial patches in the
->>> repo here to reduce the diffs some more.
->>
->> Fixing the build long after it broke is less than ideal.  What would it
->> take to get NetBSD covered in CI?
-> 
-> We have the ability to run tests via the vm-build:
-> 
->    make vm-build-netbsd
-> 
-> however to take full advantage that needs a runner with a reasonable
-> amount of memory and access to KVM so it can run reasonably fast. Does
-> anyone want to host a dedicated x86_64 custom runner?
+OASIS members and other interested parties,
 
-Pierrick had a clever & simpler way to get that:
-https://lore.kernel.org/qemu-devel/ae956364-78e6-4067-b0eb-94213891a112@linaro.org/
+OASIS and the VIRTIO TC are pleased to announce that VIRTIO v1.4 CSD01
+is now available for public review and comment.
 
+VIRTIO TC aims to enhance the performance of virtual devices by
+standardizing key features of the VIRTIO (Virtual I/O) Device
+Specification.
+
+Virtual I/O Device (VIRTIO) Version 1.4
+Committee Specification Draft 01 / Public Review Draft 01
+09 December 2025
+
+TEX: https://docs.oasis-open.org/virtio/virtio/v1.4/csprd01/virtio-v1.4-csp=
+rd01.html
+(Authoritative)
+HTML: https://docs.oasis-open.org/virtio/virtio/v1.4/csprd01/virtio-v1.4-cs=
+prd01.html
+PDF: https://docs.oasis-open.org/virtio/virtio/v1.4/csprd01/virtio-v1.4-csp=
+rd01.pdf
+
+The ZIP containing the complete files of this release is found in the direc=
+tory:
+https://docs.oasis-open.org/virtio/virtio/v1.4/csprd01/virtio-v1.4-csprd01.=
+zip
+
+How to Provide Feedback
+OASIS and the VIRTIO TC value your feedback. We solicit input from
+developers, users and others, whether OASIS members or not, for the
+sake of improving the interoperability and quality of its technical
+work.
+
+The public review is now open and ends Friday, February 13 2026 at 23:59 UT=
+C.
+
+Comments may be submitted to the project=E2=80=99s comment mailing list at
+virtio-comment@lists.linux.dev. You can subscribe to the list by
+sending an email to
+virtio-comment+subscribe@lists.linux.dev.
+
+All comments submitted to OASIS are subject to the OASIS Feedback
+License, which ensures that the feedback you provide carries the same
+obligations at least as the obligations of the TC members. In
+connection with this public review, we call your attention to the
+OASIS IPR Policy applicable especially to the work of this technical
+committee. All members of the TC should be familiar with this
+document, which may create obligations regarding the disclosure and
+availability of a member's patent, copyright, trademark and license
+rights that read on an approved OASIS specification.
+
+OASIS invites any persons who know of any such claims to disclose
+these if they may be essential to the implementation of the above
+specification, so that notice of them may be posted to the notice page
+for this TC's work.
+
+Additional information about the specification and the VIRTIO TC can
+be found at the TC=E2=80=99s public homepage.
 
