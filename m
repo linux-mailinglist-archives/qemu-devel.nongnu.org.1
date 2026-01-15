@@ -2,71 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72256D249ED
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 13:55:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 288EED24EA5
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 15:22:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgMrx-0004tR-78; Thu, 15 Jan 2026 07:54:37 -0500
+	id 1vgMBv-0005Ce-Ja; Thu, 15 Jan 2026 07:11:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vgMrd-0004rw-6l; Thu, 15 Jan 2026 07:54:13 -0500
-Received: from mgamail.intel.com ([198.175.65.15])
+ (Exim 4.90_1) (envelope-from <hi@alyssa.is>) id 1vgMBp-0005Aj-Af
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 07:11:01 -0500
+Received: from fout-a6-smtp.messagingengine.com ([103.168.172.149])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vgMrb-0004zW-Dr; Thu, 15 Jan 2026 07:54:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768481652; x=1800017652;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=fwge3zK8SEsQODkGXwBAwwKTKvpbQl8D/iyb9Pa5KYM=;
- b=Q/Wc2tpSgnDX4Xd7tmQyNfOrEqT5mmURxa6blzFI/pPPoC2GhkESXN4v
- gPaT0Lr/qToaxc9rytfAk8ol4eBQHectwkIimimmmW5KTa26FUBLPFXSE
- ZQLuzknGSuK+61g4T5lfil8mawmYcUU5aaWYTA9PXAPmQ2WnReKBIOVyc
- 0tkNn1nKXIXwNPJUna/6011A/GuG1ptNJ6Zd8WPCyH69vMamxHx/oPDyi
- foZu6LVOABJb/BZFa+Z+Oza646PUaPTjmusAxVoNIB5Oc8LXzyoDkHtVc
- qd/8x+li/bjlSY3F/wliY7yS6DMIDJcxANmOcX+fGWQF0PJfmD99p3UW2 g==;
-X-CSE-ConnectionGUID: S6xcR+WCTwWQoibFy1fmBQ==
-X-CSE-MsgGUID: eXzq7lOiR2+MV9uL9KgXxA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="73418483"
-X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; d="scan'208";a="73418483"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2026 04:54:09 -0800
-X-CSE-ConnectionGUID: FWlDDYORQ46TOu+QIXDv2A==
-X-CSE-MsgGUID: tGQAaSQLT9mKJnubJr6DKA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; d="scan'208";a="209461095"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa004.jf.intel.com with ESMTP; 15 Jan 2026 04:54:07 -0800
-Date: Thu, 15 Jan 2026 21:19:36 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, armbru@redhat.com,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- qemu-rust@nongnu.org
-Subject: Re: [PATCH v2 08/16] rust/qobject: add Display/Debug
-Message-ID: <aWjpaNwzXf178Vq+@intel.com>
-References: <20260108131043.490084-1-pbonzini@redhat.com>
- <20260108131043.490084-9-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <hi@alyssa.is>) id 1vgMBj-00014s-7I
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 07:10:57 -0500
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+ by mailfout.phl.internal (Postfix) with ESMTP id D338AEC02C8;
+ Thu, 15 Jan 2026 07:10:50 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+ by phl-compute-04.internal (MEProxy); Thu, 15 Jan 2026 07:10:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
+ :cc:content-type:content-type:date:date:from:from:in-reply-to
+ :in-reply-to:message-id:mime-version:references:reply-to:subject
+ :subject:to:to; s=fm1; t=1768479050; x=1768565450; bh=lSUZ/b50rv
+ ziLgTAO8h0r4ZuYJdWI7SdQqV/oN9mX40=; b=n3XV8tRhsXAx+xHWl2Ks/BmmV3
+ 2UOCG1J7gOVrA0aIeS4cL44P+W0XrWN2ZFQGIidC60gawMnupK/zGk77+mnAaJ8E
+ IzMDqEDbRBloJ7HyAvcNV0RcppgsD5He8DQSqYGviuMwA5gMLr4VrA/VA8GEO+Ox
+ IDFcQdKnvOQRP1PP4Dglb2uHR/Mh+kEwcuPyHX8mR7tOLBI5Znh9cKbLgvu1OE6r
+ liLRyIvNoaIcFs9yEUKrEbUMYLknGKCVGlazK3LSEt4RRd+9PbHjJdy9uEEwcSMV
+ eUH6lEd4jLaD6uwc95LQBACEEI9gk1oS7U7E734A42EpALN6i2ZdvBGQD0Ug==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:content-type:date:date
+ :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:subject:subject:to
+ :to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+ 1768479050; x=1768565450; bh=lSUZ/b50rvziLgTAO8h0r4ZuYJdWI7SdQqV
+ /oN9mX40=; b=Duc59CVBaDO1cpf6wVAOYWV1RXW7PvtHZsUgCFOnt92IOc6/mIN
+ ksVlGnKIIIcSwG8a0U3VIYmdGFah7j3nhDhpr+R2A8gXQcbK8+yWieGno3BvPCjR
+ w+pmLiSWhSil0OsDMy4g3dhdzUVunK9EGKoD1f1+85I0BQYEoZPNIng/1/i422BK
+ 5X1nCJm0yl1kHspv5ws/fG0+jrkEyAfMH9u7lu08MGHz8mQkV5M9/nl2E7qHgC1U
+ 4+Oy6vl+PO7EMrj6HhmtmZ+uVS47tzRrXa0JjJiYdBda5VEz6KFvEWaCB4T5AJoB
+ qwUs8TIA8zvAx2+bewPbAujr0tbJp0Tyu1Q==
+X-ME-Sender: <xms:StloabHujWuFAwkZtjUi5Cs_b9juwlaq5uMlXzlwEaGuiehTmX2vFg>
+ <xme:StloaX7mK3conjjOGEOriI2fSbO0j0xNnPNt9ZJKcYeVmeBHbOpKY3Ecj6gZd2GlS
+ dJTFL0n9XvL59JJMOUA0vxUAP5rBuW7LlRW36Oglo1IMN3x3lEA9mE>
+X-ME-Received: <xmr:StloaRfradHPdb0umh_IPbW37n3-4XMb7XD751mqEx8cshEIhcWp5ltbjR71vlY-e5Y6wSMJLiYw4dWw3n0J>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduvdeitddvucetufdoteggodetrf
+ dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+ rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+ gurhephffvvefujghffffkgggtsehgtderredttdejnecuhfhrohhmpeetlhihshhsrgcu
+ tfhoshhsuceohhhisegrlhihshhsrgdrihhsqeenucggtffrrghtthgvrhhnpeetheevud
+ fgjefghefhieejudelkeeljeegvdekueeuhffhgedvveefteevgeetieenucevlhhushht
+ vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehhihesrghlhihsshgrrd
+ hishdpnhgspghrtghpthhtohepudehpdhmohguvgepshhmthhpohhuthdprhgtphhtthho
+ pehsthgvvhgvnhhsugestghhrhhomhhiuhhmrdhorhhgpdhrtghpthhtoheprghlvgigrd
+ gsvghnnhgvvgeslhhinhgrrhhordhorhhgpdhrtghpthhtohepmhgrnhhoshdrphhithhs
+ ihguihgrnhgrkhhisheslhhinhgrrhhordhorhhgpdhrtghpthhtohepqhgvmhhuqdguvg
+ hvvghlsehnohhnghhnuhdrohhrghdprhgtphhtthhopegrvghsthgvvhgvsehrvgguhhgr
+ thdrtghomhdprhgtphhtthhopegurghvihgusehrvgguhhgrthdrtghomhdprhgtphhtth
+ hopegusggrshhsvgihsehrvgguhhgrthdrtghomhdprhgtphhtthhopehjrghsohifrghn
+ ghesrhgvughhrghtrdgtohhmpdhrtghpthhtoheplhhvihhvihgvrhesrhgvughhrghtrd
+ gtohhm
+X-ME-Proxy: <xmx:StloablCZD9bcxXl1qV3fQt4HnstAzmNFu2AD9NFfg3oaFxQGwbu5g>
+ <xmx:Stloae8v6kQDrNjJq-NBzTz2gKAQVY-WmfrUJz3q9Aa5ZzIEaXlIFA>
+ <xmx:StloaZE3ULgd8uvX3GrKRuepUPBsyRYFHfWtxLc4n2BbXmY1E9OSQg>
+ <xmx:StloaaKOhjA09NCm3TxtghKU_9dFI1wd26PZHoa6LHKgIcINliAk_w>
+ <xmx:StloabFJPxQ9wgdfaJGIV99wsR3RL-NyvlF3PTDITJGwyiJ0f09HX4dk>
+Feedback-ID: i12284293:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 15 Jan 2026 07:10:50 -0500 (EST)
+Received: by mbp.qyliss.net (Postfix, from userid 1000)
+ id B058B705D789; Thu, 15 Jan 2026 13:10:48 +0100 (CET)
+From: Alyssa Ross <hi@alyssa.is>
+To: Albert Esteve <aesteve@redhat.com>, qemu-devel@nongnu.org
+Cc: dbassey@redhat.com, "Michael S. Tsirkin" <mst@redhat.com>,
+ manos.pitsidianakis@linaro.org, slp@redhat.com, stefanha@redhat.com,
+ Fabiano Rosas <farosas@suse.de>, jasowang@redhat.com, Alex =?utf-8?Q?Benn?=
+ =?utf-8?Q?=C3=A9e?=
+ <alex.bennee@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ david@redhat.com, stevensd@chromium.org, Stefano Garzarella
+ <sgarzare@redhat.com>, Laurent Vivier <lvivier@redhat.com>, Albert Esteve
+ <aesteve@redhat.com>
+Subject: Re: [PATCH v11 3/7] vhost_user.rst: Add SHMEM_MAP/_UNMAP to spec
+In-Reply-To: <20251111091058.879669-4-aesteve@redhat.com>
+References: <20251111091058.879669-1-aesteve@redhat.com>
+ <20251111091058.879669-4-aesteve@redhat.com>
+Date: Thu, 15 Jan 2026 13:10:44 +0100
+Message-ID: <87cy3brs8r.fsf@alyssa.is>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260108131043.490084-9-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; boundary="=-=-=";
+ micalg=pgp-sha512; protocol="application/pgp-signature"
+Received-SPF: pass client-ip=103.168.172.149; envelope-from=hi@alyssa.is;
+ helo=fout-a6-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,20 +117,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jan 08, 2026 at 02:10:35PM +0100, Paolo Bonzini wrote:
-> Date: Thu,  8 Jan 2026 14:10:35 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH v2 08/16] rust/qobject: add Display/Debug
-> X-Mailer: git-send-email 2.52.0
-> 
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
-> 
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+--=-=-=
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+Albert Esteve <aesteve@redhat.com> writes:
+
+> Add SHMEM_MAP/_UNMAP request to the vhost-user
+> spec documentation.
+>
+> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+> Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> Signed-off-by: Albert Esteve <aesteve@redhat.com>
 > ---
->  rust/util/src/qobject/mod.rs | 28 ++++++++++++++++++++++++++++
->  1 file changed, 28 insertions(+)
+>  docs/interop/vhost-user.rst | 59 +++++++++++++++++++++++++++++++++++++
+>  1 file changed, 59 insertions(+)
+>
+> diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
+> index 17a68a62eb..6c1d66d7d3 100644
+> --- a/docs/interop/vhost-user.rst
+> +++ b/docs/interop/vhost-user.rst
+> @@ -350,6 +350,27 @@ Device state transfer parameters
+>    In the future, additional phases might be added e.g. to allow
+>    iterative migration while the device is running.
+>=20=20
+> +MMAP request
+> +^^^^^^^^^^^^
+> +
+> ++-------+---------+-----------+------------+-----+-------+
+> +| shmid | padding | fd_offset | shm_offset | len | flags |
+> ++-------+---------+-----------+------------+-----+-------+
+> +
+> +:shmid: a 8-bit shared memory region identifier
+> +
+> +:fd_offset: a 64-bit offset of this area from the start
+> +            of the supplied file descriptor
+> +
+> +:shm_offset: a 64-bit offset from the start of the
+> +             pointed shared memory region
+> +
+> +:len: a 64-bit size of the memory to map
+> +
+> +:flags: a 64-bit value:
+> +  - 0: Pages are mapped read-only
+> +  - 1: Pages are mapped read-write
+> +
+>  C structure
+>  -----------
+>=20=20
+> @@ -375,6 +396,7 @@ In QEMU the vhost-user message is implemented with th=
+e following struct:
+>            VhostUserInflight inflight;
+>            VhostUserShared object;
+>            VhostUserTransferDeviceState transfer_state;
+> +          VhostUserMMap mmap;
+>        };
+>    } QEMU_PACKED VhostUserMsg;
+>=20=20
+> @@ -1064,6 +1086,7 @@ Protocol features
+>    #define VHOST_USER_PROTOCOL_F_XEN_MMAP             17
+>    #define VHOST_USER_PROTOCOL_F_SHARED_OBJECT        18
+>    #define VHOST_USER_PROTOCOL_F_DEVICE_STATE         19
+> +  #define VHOST_USER_PROTOCOL_F_SHMEM                20
+>=20=20
+>  Front-end message types
+>  -----------------------
+> @@ -1872,6 +1895,42 @@ is sent by the front-end.
+>    when the operation is successful, or non-zero otherwise. Note that if =
+the
+>    operation fails, no fd is sent to the backend.
+>=20=20
+> +``VHOST_USER_BACKEND_SHMEM_MAP``
+> +  :id: 9
+> +  :equivalent ioctl: N/A
+> +  :request payload: fd and ``struct VhostUserMMap``
+> +  :reply payload: N/A
+> +
+> +  When the ``VHOST_USER_PROTOCOL_F_SHMEM`` protocol feature has been
+> +  successfully negotiated, this message can be submitted by the backends=
+ to
+> +  advertise a new mapping to be made in a given VIRTIO Shared Memory Reg=
+ion.
+> +  Upon receiving the message, the front-end will mmap the given fd into =
+the
+> +  VIRTIO Shared Memory Region with the requested ``shmid``.
+> +  If ``VHOST_USER_PROTOCOL_F_REPLY_ACK`` is negotiated, and
+> +  back-end set the ``VHOST_USER_NEED_REPLY`` flag, the front-end
+> +  must respond with zero when operation is successfully completed,
+> +  or non-zero otherwise.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Having now tried to implement this, I'm wondering whether replies should
+be mandatory, even without VHOST_USER_PROTOCOL_F_REPLY_ACK, like they
+are for some other messages.  Without waiting for a reply, a backend
+doesn't know when it can tell the driver to start using the mapped
+memory, so I'm not sure there's ever a case in which a backend would not
+want to wait for a reply after sending VHOST_USER_BACKEND_SHMEM_MAP,
+even if it doesn't wait habitually wait for replies for other messages.
+(crosvm is like this =E2=80=94 its backends don't negotiate
+VHOST_USER_PROTOCOL_F_REPLY_ACK, and their non-standard map/unmap
+requests had mandatory replies.)
 
+> +  Mapping over an already existing map is not allowed and requests shall=
+ fail.
+> +  Therefore, the memory range in the request must correspond with a vali=
+d,
+> +  free region of the VIRTIO Shared Memory Region. Also, note that mappin=
+gs
+> +  consume resources and that the request can fail when there are no reso=
+urces
+> +  available. Lastly, mappings are automatically unmapped by the front-end
+> +  across device reset operation.
+> +
+> +``VHOST_USER_BACKEND_SHMEM_UNMAP``
+> +  :id: 10
+> +  :equivalent ioctl: N/A
+> +  :request payload: ``struct VhostUserMMap``
+> +  :reply payload: N/A
+> +
+> +  When the ``VHOST_USER_PROTOCOL_F_SHMEM`` protocol feature has been
+> +  successfully negotiated, this message can be submitted by the backends=
+ so
+> +  that the front-end un-mmaps a given range (``shm_offset``, ``len``) in=
+ the
+> +  VIRTIO Shared Memory Region with the requested ``shmid``. Note that the
+> +  given range shall correspond to the entirety of a valid mapped region.
+> +  A reply is generated indicating whether unmapping succeeded.
+> +
+>  .. _reply_ack:
+>=20=20
+>  VHOST_USER_PROTOCOL_F_REPLY_ACK
+> --=20
+> 2.49.0
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQRV/neXydHjZma5XLJbRZGEIw/wogUCaWjZRAAKCRBbRZGEIw/w
+ojTxAP93lHaJh2kmvHwG5O2vK/Jh+U1b0Ku8woayEWso4+mkMAEA9IszIjVUPVO9
+z2sWZctewdSNuhRCqObUzKVhwkY8DwA=
+=7k++
+-----END PGP SIGNATURE-----
+--=-=-=--
 
