@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63444D27D74
+	by mail.lfdr.de (Postfix) with ESMTPS id A85DAD27D78
 	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 19:56:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgSVa-0000sj-HT; Thu, 15 Jan 2026 13:55:50 -0500
+	id 1vgSVi-00019b-6H; Thu, 15 Jan 2026 13:55:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vgSV6-0000dK-TL
+ id 1vgSV7-0000dQ-05
  for qemu-devel@nongnu.org; Thu, 15 Jan 2026 13:55:22 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vgSV3-0005sv-Ev
+ id 1vgSV4-0005t4-7w
  for qemu-devel@nongnu.org; Thu, 15 Jan 2026 13:55:19 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-42fbc305882so614536f8f.0
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 10:55:15 -0800 (PST)
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-43277900fb4so1099657f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 10:55:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768503314; x=1769108114; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768503316; x=1769108116; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Zqq8lC3PTzkCbrFHvPVa1u+gK2upzDKe386+6s++ORg=;
- b=c8wmfh9dkYtWd7bjAg6VQOb3DaxqiBl+QfI19tCsp6UEoErgR9RaL+0AKwFRGdPvij
- pwGHuhc2gqKIMI0LTD2XMq7b4b66bQF6YtYixJgnmz0cSqXO81b9vZr8McD0Vt6OYC+v
- k0qQefyd/scecholdn/2t9/VLp7CgiWLSAW65BpNtv3EEYgXQeIO3U84Vj62uSjprtB9
- uTrjFglAm/dOnbw2HsRYPVj465gsxbyljcvHwfnU5CZWFP1fchHzDxu7+LtjFlbFWjhl
- W5TW6Xk7iaRrps6IkHZGg7sfBsDkTA4UY0YXKFQFXvd8IISnqaplbbtGCDAe0zM/DHnE
- Z2yA==
+ :reply-to; bh=Tw/4WFwwimCPloBHy1pZS+5uugfLv7VltlAhw1gKOiY=;
+ b=mVjq/mMzZzKnL+gCHJhAOzMZI72QjEJT/6kBm8uAtxa2A5zhcExr1xHWfJcnsc882A
+ rqzhpmIMWUSEviBJVk041t6X75HP1emOqSGp3lVi53i12fe9T4B19yfIN3Qm2SvGhx41
+ M5MG8vG948SArPRyuPgIj7kaLmWQht1tNWEK5uWYqtJGshAqDsOFu6xbFc1VKGU2CCqQ
+ OI/XKSFs0/T39bQV8jFmwgsvKCzGsd3EWyCgBj1DFXNVn5B/1gM4CklMvJvCLhIFyUtS
+ HUoL1VJMpr4eOx1dJeFyz7r3Ysmfx/I2DFvYCGUeZj9HXM3IRVxvOtR9zzL0xqAQsHD/
+ SvkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768503314; x=1769108114;
+ d=1e100.net; s=20230601; t=1768503316; x=1769108116;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=Zqq8lC3PTzkCbrFHvPVa1u+gK2upzDKe386+6s++ORg=;
- b=kIIcI9NLySX6U+0/a2/CP6/qKFohB8VFD6UXR0s4KS5NIwoP9A8cgMiKtvq30FS6ZM
- 81DkPQszaF4w1Ew5tvKrByDkjWf70Jyj3qHW8zzTAA14cqL+JOAHC807GMMqTsRjLQyh
- B39MCwAh/qu2hRgjfU1ZvqnhXKrXaAMcCqVjyJG3gWGwovpMxiqdyCn2Fo6nJEi/bS1z
- xP6l2NpywKmbNQfQTkz/4PvQvBrvfu7V9hu2tVLneRiBLi0831/OLYClUslXjKLunMrC
- 0AJqZMHV7uUI+VpFqoOTsToz97DuZiz+SKnjc1EL8DPUL3WwmFKnk4+zk71Qm6iUDN/T
- KMNw==
-X-Gm-Message-State: AOJu0YxgQy41MUUyXpvqPx0rL3FM2EI1hET1FhHtZYzJyZZJ3Do562L1
- O6S9hhJelYzihVkGCaHpVfLcNxGIVbZmEHWXIeYNxi0c5UKQO7W5bALfI0alyjcS08xptNdfhjx
- SAj7V
-X-Gm-Gg: AY/fxX7tRncOXAvbs24KtaXadRAww0O/vBnHBgOphUoL8fAJSGuw/Lc+nPWsfgMWIGB
- HmSyBkKBsZ3kaVwdkW4XMWNjkTUD1QCY6muhsqHPveybDSlDwxTDblH/V49L1ZAkQEQIVcYlKbZ
- j+U7r6LO2leNbdvkLIgYFmt0fwAhzAqYv+TXpQIZvopz8qXWUAn1xAkrFi/xGcWHLV5Xv3FDFKh
- fLDbuCDLuxXhY3YBS9GnydLUFIQOTGaIOApyTWUrBMBEuA6aZfdbR71pGkItaEiGAi34KO/fR5Q
- hIYcEj8qIUFs0tLPiukHllMKgOtd4tUE1lkPa/33BQC18mvPx3Wy8BKIXSXeTXqkjS7ZnQMBmmb
- rmxrdhPKirxvdJDBgv+3EeHzBSIr93XzWqMEhLXrZbMFBmNEuxMDjYVp2DMkbOTK2yJQGWoBqEo
- JByN/gcQBRfztFS0hru6RGP1Ds3NyqwtZ+Ts+nPYpWULnrOX00lFbezYMQmrTw5PF/tGXAUS3d7
- aH8rdOfPfTK7RoIQMJwlUKZQKPN00LaXXk3YkocL9t7/A==
-X-Received: by 2002:a05:6000:25c6:b0:42f:bb9b:9a82 with SMTP id
- ffacd0b85a97d-43569bd2f46mr407960f8f.60.1768503314543; 
- Thu, 15 Jan 2026 10:55:14 -0800 (PST)
+ bh=Tw/4WFwwimCPloBHy1pZS+5uugfLv7VltlAhw1gKOiY=;
+ b=LO/un/x9RVgfQCKhH/jUKLiDLwlbSfflvM+uzcbmHrEBmeULTuLuhUoP9o8WWYEKVi
+ droEX3XbHFvlAcad3lH+upY4pqJcHqRwRbPj158itFpZ0ia3dvZzJR0hSy6jtE18KxMV
+ mxZtODRGU1hP+C7Wzwm1noQuifo/ffI6bJx7YCYXV/L85FhVhkWv+xQTnlu6tlNbLjrz
+ owpai98PCH7BlmcYW/P17jy/b4jlDpEbL98x59Ofe8/LJPtkEOMkFu0lXQFahDOpe4av
+ O7Z0RarIB4XcGeeKRKrt/vAYIg11KAQ808y3G81ymuTZCYw7AKrEkMZ/E/NC2Ly027PF
+ Xxyg==
+X-Gm-Message-State: AOJu0Yx2nePmPQi2VqIAMMMfGpxgByEb3P/w2Rh7yYOwsHt+hfSjvPmX
+ Kyq3CZhGn3GsGXLE3EM2Ipo55rGowHrXlM2kHoLOBjj4IT5LV6WEt7/5N3/YVtLCaT0kQPBh/5s
+ uDAoQ
+X-Gm-Gg: AY/fxX7YzALggbHEjPGcK8DKsGztDNsYujC+60R7B3wRYDgApVP9Wr1PVrmlZnKWgUJ
+ p/EZIm3yhqI16uKG9Kncoo7hHPzCPeYj06y2/Fzl+nBW0RknkfplYW2s2SWjioASSxFgvHSkVyM
+ RmEB8yEO0JS6lSRh9qf/obp1wTyx211zSFOlwiefVnn86t/7jri6CIIp18uAuqg1xYsSX/VjdSa
+ ZMRR3cJuc1CUBnstRRujfWU+2pJC9BgAz7Qq9fiw+nrrnEmkBKXbufRe4qpUxXVtnzu7j8dZp7r
+ Rmu+2KPlDHV/98fuW6BRd1YatAYixbVHOYvxaL/Ta1ZkdWR3pVP7UWceLS7DKC20G6kIqHTfBL3
+ az7iETaTrHfSekR6Ju7H2DkvP3rxi3IdAH9kMODXNuO8MwPDJ0t3Qz/QXbu3nz3k3kUWGz3sVSD
+ LWzyPTSsW32CxbzMGpw76p/7N6h53qjyQpJHdjtUPV0Yee3tUAVrgy5InD3xvv7j/XSIIE/gs1T
+ nLWksXeyH0T87vrvnDsqpKgrzzBeXWp4kUv1yL5GqOkynsoevf24kiZ
+X-Received: by 2002:a5d:5f51:0:b0:430:fd0e:a502 with SMTP id
+ ffacd0b85a97d-434df0ed345mr5126340f8f.22.1768503316040; 
+ Thu, 15 Jan 2026 10:55:16 -0800 (PST)
 Received: from mnementh.archaic.org.uk
  (f.7.f.1.7.5.e.f.f.f.c.5.d.8.2.4.0.0.0.0.0.d.1.0.0.b.8.0.1.0.0.2.ip6.arpa.
  [2001:8b0:1d0:0:428d:5cff:fe57:1f7f])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4356996cecasm514207f8f.26.2026.01.15.10.55.13
+ ffacd0b85a97d-4356996cecasm514207f8f.26.2026.01.15.10.55.14
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Jan 2026 10:55:13 -0800 (PST)
+ Thu, 15 Jan 2026 10:55:15 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 06/25] hw/char/cmsdk-apb-uart.c: log guest_errors for r/w to
- disabled uart
-Date: Thu, 15 Jan 2026 18:54:48 +0000
-Message-ID: <20260115185508.786428-7-peter.maydell@linaro.org>
+Subject: [PULL 07/25] hw/arm: Re-enable the MAX78000FTHR machine in
+ qemu-system-arm/aarch64
+Date: Thu, 15 Jan 2026 18:54:49 +0000
+Message-ID: <20260115185508.786428-8-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260115185508.786428-1-peter.maydell@linaro.org>
 References: <20260115185508.786428-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,46 +102,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: julia <midnight@trainwit.ch>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-I don't want to admit how many hours I spent trying to figure out why
-nothing was being printed (as the enable-ing code hadn't yet run,
-even thought it existed).
+Unfortunately while rebasing the series registering the
+ARM/Aarch64 machine interfaces and getting it merged as
+commit 38c5ab40031 ("hw/arm: Filter machine types for
+qemu-system-arm/aarch64 binaries") we missed the recent
+addition of the MAX78000FTHR machine in commit 51eb283dd0e.
+Correct that.
 
-Signed-off-by: julia <midnight@trainwit.ch>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20251217-cmsdk-uart-disabled-warning2-v1-1-847de48840bc@trainwit.ch
+The effect is that the machine was accidentally disabled.
+
+Cc: qemu-stable@nongnu.org
+Reported-by: Thomas Huth <thuth@redhat.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Tested-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20251218214306.63667-1-philmd@linaro.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3248
+Fixes: 38c5ab40031 ("hw/arm: Filter machine types for single binary")
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/char/cmsdk-apb-uart.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ hw/arm/max78000fthr.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/hw/char/cmsdk-apb-uart.c b/hw/char/cmsdk-apb-uart.c
-index bf891081dc..edb80f6181 100644
---- a/hw/char/cmsdk-apb-uart.c
-+++ b/hw/char/cmsdk-apb-uart.c
-@@ -159,6 +159,10 @@ static uint64_t uart_read(void *opaque, hwaddr offset, unsigned size)
-     switch (offset) {
-     case A_DATA:
-         r = s->rxbuf;
-+        if (!(s->ctrl & R_CTRL_RX_EN_MASK)) {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "CMSDK APB UART: receive data read with Rx disabled\n");
-+        }
-         s->state &= ~R_STATE_RXFULL_MASK;
-         cmsdk_apb_uart_update(s);
-         qemu_chr_fe_accept_input(&s->chr);
-@@ -248,6 +252,10 @@ static void uart_write(void *opaque, hwaddr offset, uint64_t value,
-     switch (offset) {
-     case A_DATA:
-         s->txbuf = value;
-+        if (!(s->ctrl & R_CTRL_TX_EN_MASK)) {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "CMSDK APB UART: transmit data write with Tx disabled\n");
-+        }
-         if (s->state & R_STATE_TXFULL_MASK) {
-             /* Buffer already full -- note the overrun and let the
-              * existing pending transmit callback handle the new char.
+diff --git a/hw/arm/max78000fthr.c b/hw/arm/max78000fthr.c
+index ed50bb9197..530ca9dd96 100644
+--- a/hw/arm/max78000fthr.c
++++ b/hw/arm/max78000fthr.c
+@@ -12,6 +12,7 @@
+ #include "hw/core/qdev-properties.h"
+ #include "hw/core/qdev-clock.h"
+ #include "qemu/error-report.h"
++#include "hw/arm/machines-qom.h"
+ #include "hw/arm/max78000_soc.h"
+ #include "hw/arm/boot.h"
+ 
+@@ -47,4 +48,4 @@ static void max78000_machine_init(MachineClass *mc)
+     mc->valid_cpu_types = valid_cpu_types;
+ }
+ 
+-DEFINE_MACHINE("max78000fthr", max78000_machine_init)
++DEFINE_MACHINE_ARM("max78000fthr", max78000_machine_init)
 -- 
 2.47.3
 
