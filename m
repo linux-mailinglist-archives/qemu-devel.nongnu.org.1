@@ -2,109 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C23F8D243A3
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 12:41:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C28BD244E5
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 12:50:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgLiW-0000gZ-N2; Thu, 15 Jan 2026 06:40:44 -0500
+	id 1vgLjq-00016I-K4; Thu, 15 Jan 2026 06:42:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vgLiV-0000g1-DF
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 06:40:43 -0500
-Received: from mail-yx1-xb12b.google.com ([2607:f8b0:4864:20::b12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vgLiS-0006XP-96
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 06:40:42 -0500
-Received: by mail-yx1-xb12b.google.com with SMTP id
- 956f58d0204a3-6481bd1763bso681167d50.3
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 03:40:39 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768477239; cv=none;
- d=google.com; s=arc-20240605;
- b=NPIoBm+67POC2VGyaV/TuIPYFm3ME0FA+/imic9TOjVbiCza6JKpDIrxCimqq/JSpo
- HUOEuh84YHtxSsciB1apFg0J+CeQrciqRn5i4vVWKgV1qZSbxlHFlTedomXFDIwvd/mf
- WImzfV7jDULQ+x607G3HSF5CWrYXGS8rAOGB8Gkx6R/u5STpP06Fz32vuKPhs1bjtUkl
- 3OqI3rme8MZLEq3gBoZusoupLmwAFfUtxZvzBjp0aQORBqolN0K4XeA34oKAjYXY7rFl
- ZifWMzWuNSEmi+U6HbqNx/SIL7kjL37GGsLf4u0IXOa4158bKuIcBuEqxlRqnO6mbeE2
- OmKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
- s=arc-20240605; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:dkim-signature;
- bh=fFFx7OzskZAfL50UvXSLyWt2Znq4Ui3kmVewWPOvWWk=;
- fh=/qGZ1hzH5xmJGWmsPnrLrZicMR615sp3k8X3IIPfDCg=;
- b=JA0QoMAQ5491vwzSj8gGJDrFdn1yn5HaFZggzK7Ya6B82Hs3+WBiX+shoi0AL6O60D
- cXqRRcnI33ScB81xvz8q22u5kX4trKMjc6FChFqy5mzcMj1iGYIiZ0BlYn2ZeYOpazMY
- mSvTU1f9gwmqJFdoJaYKHczihvSgS6Zp3N99jKsS+J62xO+UHySLS+00t5fV/bjSbIXW
- 0F3sxQ1QqskN7A8jIb0fxsPU76uc+TlpP5kBFKSuKpHKod98zLOw7Xf8TMQLDXXOMi2k
- PnU7Q1/H28d7dqa9YOjg09Vfy0MUjTfAJ5cn2CwsbL6L7ujHAHZxPtY/AwymvqLWPN7F
- cScA==; darn=nongnu.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768477239; x=1769082039; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=fFFx7OzskZAfL50UvXSLyWt2Znq4Ui3kmVewWPOvWWk=;
- b=Mmw9IcAZcgKoBh2Hw98mri7ea4Uo/nx00fSKdAEoJ5dnKJBKxOLkQrn3Wv1DDY4fwS
- lbTPKG+7M+n88eWW+EeDKRGSimHdprbgFiHFJhfbywkyiH7fWZe4Ar2vfXNJALxNmmDq
- 5UwCw30VlC1osvbpWywOsAX80yqhpsK43KRp8TvZkjuCpl6RPofW3rpDeYfdyAJ9irOw
- 85IzkP4A9h3xtTqL3upCBLup32fhoupD8czey9xRJpruD2pwMY6fcZFBgbXytq1VZ3my
- LadEYF1wnu0pxZKcABSEmlRkk4RFo3c0a3KdAeFW8ouArH9emJMMkzU/RvBUlh02CB2g
- jHSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768477239; x=1769082039;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=fFFx7OzskZAfL50UvXSLyWt2Znq4Ui3kmVewWPOvWWk=;
- b=mq/FCyESd9jZ29vCywrH312uXW2ObpGSQZNAnmLUaEokqKw6tJimpSfbyi5r6CLkF9
- Hhp9OBJKUFvHJFc7CFPfEBo3VYnQW2gAHT5VGEaUGY47O6cTfvbEP8eGDPdkPRh+JZvP
- h8fCMqBRkZta9CyNRzc7JOcxX+aOc6CA9+X9TBWJsvnpzHiw4zjWcfDFWtaJHT8EwSCd
- U08hA3TwDnsxZqvbigB81YDyezsAu3S5OLrV5RMxAxZy2k/t8qBqdS3x1tKyJc8gltq6
- J5GNK4sMSc+I8mem+F5H/XKQK6RDeROZdVmWk2tvRDY/EsaasEFG79bxX/7/Zzbmjd9o
- 8r8g==
-X-Gm-Message-State: AOJu0YydcRXslmeaZAcv0+GkyhWcN5nYSC9WJJgq3PQyPaQvWx0HK4pr
- q0VF76F9YKU3me1WsAXqwSybSh5veKl9UdhM7zHMP37LZx9Vn6kU/P8bjU8ojmjk1yj2sn3qskp
- gTTfkbZPCGt4GfpwNANSEKpmXgcg5qdKLyK0ESaUgYA==
-X-Gm-Gg: AY/fxX7J4vHCs0nK6ZaK8Sm0Do8KtgVlcTGuYjqTBr1Pz7KoACxd+LSxglmTC3I7GM4
- jHEbARwfG/jemzshHKp0zRaci7PtLzrUXTtsOA2Ox2EEfBDR/RUReSFeB8S/iRP7/Ct/yNEuC9b
- Bg35a2V/s0PmHOHlVZglFBZ2FoyFU/hchAoXsSPmpV2EKPAiaoTby33le5yOWCWSn6LHenjsdxz
- QdbLv3WBeYi0l3+L6D2Dx2SPFa9FNVYnIW4Bbf7/ZG6D+4scsLWIEW85BQbFm/UK3lCo2b8tpZQ
- 1NO5EG16gGJWlpEcDDVxL08=
-X-Received: by 2002:a05:690e:150f:b0:640:cc09:b7c8 with SMTP id
- 956f58d0204a3-64901aba07dmr4671181d50.23.1768477239127; Thu, 15 Jan 2026
- 03:40:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vgLjX-0000yx-S3
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 06:41:49 -0500
+Received: from 10.mo552.mail-out.ovh.net ([87.98.187.244])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1vgLjV-0007BV-6X
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 06:41:47 -0500
+Received: from mxplan5.mail.ovh.net (unknown [10.109.249.222])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4dsLfq6FDCz5wr9;
+ Thu, 15 Jan 2026 11:41:39 +0000 (UTC)
+Received: from kaod.org (37.59.142.100) by DAG3EX1.mxp5.local (172.16.2.21)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.61; Thu, 15 Jan
+ 2026 12:41:39 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-100R00399c69f9d-e96c-46ae-ae68-a61b87072c40,
+ 730BEF4863DC82B2970748FB5926F4A3C98AA806) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Message-ID: <aa50c2e6-8068-4eba-ba30-95e5c6412baa@kaod.org>
+Date: Thu, 15 Jan 2026 12:41:38 +0100
 MIME-Version: 1.0
-References: <20251204093502.50582-1-corvin.koehne@gmail.com>
- <20251204093502.50582-9-corvin.koehne@gmail.com>
-In-Reply-To: <20251204093502.50582-9-corvin.koehne@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 15 Jan 2026 11:40:27 +0000
-X-Gm-Features: AZwV_QgKu58r0LIKquRSRuVzdnh7PRKVH1bqCbwMKbGE_GSVVGK8QxK32e_jsCA
-Message-ID: <CAFEAcA_qY3pPREJ5bW7dLN17bTC2b_6ydLD3PLOkpPUFViOXbA@mail.gmail.com>
-Subject: Re: [PATCH v5 08/15] hw/misc: Add dummy ZYNQ DDR controller
-To: =?UTF-8?Q?Corvin_K=C3=B6hne?= <corvin.koehne@gmail.com>
-Cc: qemu-devel@nongnu.org, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Alistair Francis <alistair@alistair23.me>,
- qemu-arm@nongnu.org, 
- Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org, 
- =?UTF-8?Q?Corvin_K=C3=B6hne?= <c.koehne@beckhoff.com>, 
- Hanna Reitz <hreitz@redhat.com>,
- =?UTF-8?Q?Yannick_Vo=C3=9Fen?= <y.vossen@beckhoff.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b12b;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb12b.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] tests/functional: migrate aspeed_rainier image
+To: Peter Maydell <peter.maydell@linaro.org>
+CC: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ <qemu-devel@nongnu.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>, Andrew Jeffery
+ <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, "open
+ list:ASPEED BMCs" <qemu-arm@nongnu.org>
+References: <20260113135941.3361163-1-alex.bennee@linaro.org>
+ <770e5e68-f8a9-4321-821a-aa0930db0d95@kaod.org>
+ <CAFEAcA9dz5BPdpB+2wukcJ=jgGCwkCTa7Y=FA4s+qzymg7gHRg@mail.gmail.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <CAFEAcA9dz5BPdpB+2wukcJ=jgGCwkCTa7Y=FA4s+qzymg7gHRg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.100]
+X-ClientProxiedBy: DAG2EX2.mxp5.local (172.16.2.12) To DAG3EX1.mxp5.local
+ (172.16.2.21)
+X-Ovh-Tracer-GUID: 1cc244d0-39e0-4805-b797-75ad2cc30a1c
+X-Ovh-Tracer-Id: 15164464370461149999
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: dmFkZTFnBAwFBvZ4XvCdK6IE0vQxTBMT6IFnVgcQrNZL0wRkQstRU44D1VoDv7Tdf+msoBudrk/ayMFcnp8h/WD9+vWjSOIAHGV7HOoMWrJvEWlZ95USfeLrOg39t9U1hNQBVcZjnOVz8828a8ySgER2v4fQulVJA5PpZN+bJSxDHEOwum5XhhvWR5uOeeP8QQ/MwhebIWpO23w/ZKZfrNSjtGEGvzyb9iR5fRvtx4De5tqi7ist/OTvJjZh9tobXPnMDBZXPuhfVjQBIqAYGrmC/vAL1IsCXx9zqVVXNkLkh/rshsE1aq3EzJdDcEBaAv/WPUXaeBzQ5wCXBkjK6ZKuKed5bPjREJxwkQE80jcUpbrhTCAZYgwt15YV8n1dbMbJ1PacasLzKRkSDjyIJILv0gSoXjLLDgDkpGUPU9hEi4gv1Wu0Tu5L+lfzr9ZxlUeP93VsKxVwTfPMRg+voz2rZK1U5UY/JFYswFct8TVKPpZ2ymQru1XYy8rrtJ2tfNXEeugcCY12WN5G09IPBQckU0PWbwxifDrfoffxvbDs2QyDpG3tefZSI5WkKGbAO8lZRd1OJgrq69DkoH0w2rff7rALzGVjbckBO9h8insTbnBUIH83VbV8rTFUU1zLZziRB3Wh9lSTnk4GMMAsjcJGAQrl+iyx3ypHqB0ui9WXqiVjnA
+DKIM-Signature: a=rsa-sha256; bh=vWcvE3alVxjnHODyzGP6/PEw+G2R/3D3n1br6hLPo8U=; 
+ c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
+ t=1768477301; v=1;
+ b=Dh3NGT4Y/FLo5hc3jWt1kDLfTPmLejdQAvxZBnAjyZBDK6IaD4OSnc908jXyTNzg1zUZBTRE
+ obh1rRIBgAMfR4llqEM6hbdJRzrc4w0bNnqRwsvOdhAfLSn3ExscGVI7X4SLTW57XHTPshePxxU
+ tXtqXnBdKxHaCYDaq3Am1zRFL8Q3rlqL5FlQazQekf8pMRM4MhF8DcJELw1fPEp1zLOeM1W2d8P
+ b157z0VWg1Bu/UUSqEKH+pbnU9i9Q1HyIKXggocQNKYZ4FSBfVuzaRBRCmIaTFKeDP3tf1Ew9iu
+ AAMBgAC20EzVin/r4dPI4YlYt2izv3PCdp+ixqDDSua6g==
+Received-SPF: pass client-ip=87.98.187.244; envelope-from=clg@kaod.org;
+ helo=10.mo552.mail-out.ovh.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -120,100 +129,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 4 Dec 2025 at 09:35, Corvin K=C3=B6hne <corvin.koehne@gmail.com> wr=
-ote:
->
-> From: YannickV <Y.Vossen@beckhoff.com>
->
-> A dummy DDR controller for ZYNQ has been added. While all registers are p=
-resent,
-> not all are functional. Read and write access is validated, and the user =
-mode
-> can be set. This provides a basic DDR controller initialization, preventi=
-ng
-> system hangs due to endless polling or similar issues.
->
-> Signed-off-by: YannickV <Y.Vossen@beckhoff.com>
+On 1/15/26 11:44, Peter Maydell wrote:
+> On Tue, 13 Jan 2026 at 16:19, Cédric Le Goater <clg@kaod.org> wrote:
+>>
+>> On 1/13/26 14:59, Alex Bennée wrote:
+>>> Cedric has a host for the file which allows us to keep the name.
+>>>
+>>> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+>>> Cc: Cédric Le Goater <clg@kaod.org>
+>>>
+>>> ---
+>>> v2
+>>>     - host at kaod instead to keep filename
+>>> ---
+>>>    tests/functional/arm/test_aspeed_rainier.py | 6 ++----
+>>>    1 file changed, 2 insertions(+), 4 deletions(-)
+> 
+> Applied to target-arm.next, thanks.
 
-I have a few minor review comments below, but this otherwise
-looks good to me.
+OK. I am dropping it from aspeed-next.
 
-> diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
-> index fccd735c24..3de37c9e1d 100644
-> --- a/hw/misc/Kconfig
-> +++ b/hw/misc/Kconfig
-> @@ -240,4 +240,7 @@ config IOSB
->  config XLNX_VERSAL_TRNG
->      bool
->
-> +config XLNX_ZYNQ_DDRC
-> +    bool
-> +
->  source macio/Kconfig
+> I've added a cc:stable tag since the old URL will be going
+> away shortly.
+Thanks.
 
-You also need to have the "config ZYNQ" section in hw/arm/Kconfig
-have a line "select XLNX_ZYNQ_DDRC", to tell kconfig that the
-Zynq SoC needs this device.
-
-> diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-> index b1d8d8e5d2..ffbcca9796 100644
-> --- a/hw/misc/meson.build
-> +++ b/hw/misc/meson.build
-> @@ -95,6 +95,7 @@ system_ss.add(when: 'CONFIG_RASPI', if_true: files(
->  ))
->  system_ss.add(when: 'CONFIG_SLAVIO', if_true: files('slavio_misc.c'))
->  system_ss.add(when: 'CONFIG_ZYNQ', if_true: files('zynq_slcr.c'))
-> +system_ss.add(when: 'CONFIG_ZYNQ', if_true: files('xlnx-zynq-ddrc.c'))
-
-This should be "when: 'CONFIG_XLNX_ZYNQ_DDRC'", so we build the
-source file exactly when some board or SoC says it needs the device.
-(This mistake is what is hiding the effects of missing the
-"select XLNX_ZYNQ_DDRC".)
-
->  system_ss.add(when: 'CONFIG_XLNX_ZYNQMP_ARM', if_true: files('xlnx-zynqm=
-p-crf.c'))
->  system_ss.add(when: 'CONFIG_XLNX_ZYNQMP_ARM', if_true: files('xlnx-zynqm=
-p-apu-ctrl.c'))
->  system_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files(
-
-> +static const MemoryRegionOps ddrctrl_ops =3D {
-> +    .read =3D register_read_memory,
-> +    .write =3D register_write_memory,
-> +    .endianness =3D DEVICE_LITTLE_ENDIAN,
-> +};
-
-It's better to explicitly set the access size controls
- .valid.min_access_size
- .valid.max_access_size
- .impl.min_access_size
- .impl.max_access_size
-
-explicitly, even if they happen to match the defaults. This tells
-the reader you've thought about what the device actually permits
-and what your implementation code can deal with.
-(The default is "accept anything, never generate external abort"
-and "assume the read and write functions handle all widths".
-This is usually not what actual devices do or what the code
-people write is intended to accept. Devices on Arm systems are
-often "only 32-bit accesses are permitted".)
-
-
-> +#define TYPE_DDRCTRL "zynq.ddr-ctlr"
-> +#define DDRCTRL(obj) \
-> +    OBJECT_CHECK(DDRCTRLState, (obj), TYPE_DDRCTRL)
-
-Current QEMU style prefers using one of the helper
-macros to generate the cast macros etc. For this kind of
-"simple leaf class" OBJECT_DECLARE_SIMPLE_TYPE is probably
-what you want. See for some more info:
-https://www.qemu.org/docs/master/devel/qom.html#standard-type-declaration-a=
-nd-definition-macros
-
-There is also OBJECT_DEFINE_SIMPLE_TYPE which provides
-the boilerplate TypeInfo and type registration in the .c
-file for you, but that one is more "optional if you
-prefer it".
-
-thanks
--- PMM
+C.
 
