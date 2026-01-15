@@ -2,90 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFF0BD27DCE
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 19:57:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2923D27E2A
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 19:58:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgSW3-0002NY-5Y; Thu, 15 Jan 2026 13:56:19 -0500
+	id 1vgSYU-0001Sv-AM; Thu, 15 Jan 2026 13:58:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vgSVR-0000jM-9q
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 13:55:41 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vgSVN-0005wx-VQ
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 13:55:41 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-42fbc3056afso762395f8f.2
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 10:55:33 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vgSYD-0000wZ-H4
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 13:58:35 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vgSYB-0006a7-Rv
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 13:58:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1768503510;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=hSaWkiEldx16GFFC1s9mqelmr/R2HTRT2+Buu/tOcCU=;
+ b=hrm3SnhWUORdFLf8v+4BE4FO/9rWeLrbnzkcx8rmPV6Q+14rQImyckk602P65DlAAndUSN
+ p9IA9XB4/jFK0tGbefH4wRgSw1rtFySM+vSKESq2p9GzLsFKO3Q+5N73cyg4fchG5Cyv5Q
+ 41zFAkSOfmO0rbiRHtq94hBL9Pstopw=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-353-PzW3wbYvODS167qxMFoNGQ-1; Thu, 15 Jan 2026 13:58:28 -0500
+X-MC-Unique: PzW3wbYvODS167qxMFoNGQ-1
+X-Mimecast-MFC-AGG-ID: PzW3wbYvODS167qxMFoNGQ_1768503508
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-5014d56a63aso35335891cf.0
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 10:58:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768503333; x=1769108133; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=x5Cau6/2yzQZEna3TOFcOvbLNRZLiSt2qOjwpRD0Axo=;
- b=NxlU559OForscdRDB2WfmZnpAhZAneyk3Ycr3WfqwQQDj2PKdnp1EadvS+nm8RdFv2
- Gj9p+A6kLO0CVtXw09opqpyFC3lHHdt0Cl6/nwGXxPHTtd78CmnhDzqVu3mR5xOKp2C5
- NoYVTgmyJHbh2wGwje8yX/COoFD5W0LvCLGFBhPbFO8J9BrE728krlDEA79XN7xfkhei
- AeM4i2UQhKWC1T9kioc84cTBkZQSAPOV9TyoEjlOs0MQMVHnZXqStiHhXVhOgGdrXtGE
- w5bD7FItUAKe57/VIq1WsGp9mKMn4roQHdOum0o+gC+hk5mBHHJs9f2aGiroBVd1VrHF
- AAaA==
+ d=redhat.com; s=google; t=1768503508; x=1769108308; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=hSaWkiEldx16GFFC1s9mqelmr/R2HTRT2+Buu/tOcCU=;
+ b=ArXVvQOsWQswUiGyYdfmofPwtRJRT6jJASRlyAVDSGD90rac9HnHxf+fzwzkVVmHFH
+ h28nb3amGyCZZiJtAlqjW9teL+OZhGv+P9BALtr3++nba7O4rDT2MwaEMxzk8v0fXDt0
+ u3GunZ8eXQk+INsbq1+5myi2atzFXxSjk5GRAzXs6mJWdYoKmIy4buBkCMIjS8XxAQaT
+ caGMpL5X1te7ckyok1g64m1+G4DbtHouUdBsvpWuuP0l9DK6EfYR9Ob8Yh4e9xKaJSv2
+ L/RYDGsmo2F2FjJ8dNQUawfWfGKhJqsfSipuTZ+bwltMkJ5MCKih61fELrwfIEXU/6jW
+ 3ipA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768503333; x=1769108133;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=x5Cau6/2yzQZEna3TOFcOvbLNRZLiSt2qOjwpRD0Axo=;
- b=CDZegl/2UbLWJUoBCrORHaO0zAGCEV204WHzBFxbaqbLKzrwHvrW1Wc35Rh3g3M5xM
- VgVixNKPiEbqKMLDxilNBgCKIlKp3FCISBEgrxvHCW4QAwEOvqii4mJtuHiFe4nOU9ml
- e++/+FUc0xkSh1PSF+/TTBegBhNWxqqZ27c4dH8M7t1016PDUe0sNvo1UUPydxcxIhKB
- 6cAGj/VK0myjR2vpFRQ2sfb9Zs7y//n5vxDtryhP0Ztdl/yTpVC6k2AIg4ZkOUYZR6M7
- C9GxC2VWiigPlHbmfXYhFVWOEveZzY2N2Nl2ssg65fD6vFHopoHAugDIZuMoH02wO0uq
- w8uw==
-X-Gm-Message-State: AOJu0Yx6PD4UPpyiRk1x/9Dp8eUjzdxfTB57C/sZ5ySRe5finhhl0SHQ
- DmtKdm966J0Wo2wA4CeJhOYnqE2Q7MiFtlC4mRdnW1DIANJChYlggavzH2Z1c1vCcU4Aa77RJie
- P/x9E
-X-Gm-Gg: AY/fxX67X8CbHaBPyIXSkzrPCMp8SSr+VLNK9khVE3s945D03fBOWGavv4+xHm17PVa
- vtsanu5CXiEEgepyQiup7AAtzFMATU1Q6VujmjDQOLSmB7Ac33+QHQFcWEDZBrfwvoIThK33lny
- u+U2QvhK1dzvPgRQOsewywVZAM1mmFGmc1rIn9E63aJ+kqxkdqYIdoSnqPxzviHHcs7cMys4GQ3
- 5ZVbVINlLc6WLDmo0cJdZO1XyxZbnAsAyVTooMmUl9Q7/hywRS0YlX+mGjG6rV364F4MN69JV0k
- /0ay+kwAoe4eOj4QigoCqd2WV4/HzOmX7rwJsEas5VReElkPihz4jK7t5uc/AR7AaIosFsAFu7Q
- rN/cWiJO1mS1caV9USI09MyaMcIiHT6oIBa9cIr++QDMmtxDpu0tIvKXNJ22Ousn2r3rDxm1TG1
- iNHNAc5PHDUJN3YhIZ0GBArke0l+KbhujpjTGNcYDxzOlLjVSmRR+oMJY/qHMahR98ABIg3Gjhf
- XAjJvMQ704NhT3L1w8YljCt4nUVuAjVu8CNB8Xyc6zVqA==
-X-Received: by 2002:a05:6000:184f:b0:42f:9f18:8f59 with SMTP id
- ffacd0b85a97d-4356a060d83mr358255f8f.42.1768503332815; 
- Thu, 15 Jan 2026 10:55:32 -0800 (PST)
-Received: from mnementh.archaic.org.uk
- (f.7.f.1.7.5.e.f.f.f.c.5.d.8.2.4.0.0.0.0.0.d.1.0.0.b.8.0.1.0.0.2.ip6.arpa.
- [2001:8b0:1d0:0:428d:5cff:fe57:1f7f])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4356996cecasm514207f8f.26.2026.01.15.10.55.32
- for <qemu-devel@nongnu.org>
+ d=1e100.net; s=20230601; t=1768503508; x=1769108308;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=hSaWkiEldx16GFFC1s9mqelmr/R2HTRT2+Buu/tOcCU=;
+ b=mWzM4BbErnws5HzcX4UP25TF2zlBPpguYhZy5X8c7bQHFTXGyHPHEpxvfH/WYAHsbg
+ 2lhz3TykfV7tsUXsIiembf9gEJ+6/kS7JwIQAhMUmwqIHypt8siKggXbc01IglHaRdxT
+ kr7lYl+AvVsn+Ar7E2dYoimj0Vxaq/UPLsmopg3hLhcngC6OWQzmglKhRb6px8K1JmiW
+ SKdpwSIITJeZib92tXRDGDqEf464FVXGGFNWkrYIgW1Vh2qstv+ZzJ5+Wwh7qptqDQWF
+ malRrNfScz+ftdqymuq88HNjGnizsen1e3dicxBohMql9/j4oL25TngB1cOLIM1cm3mu
+ IT/Q==
+X-Gm-Message-State: AOJu0Yzi/fSiYDoY65QEj02QySCdYOn2sxzwOwZI9wudYDAP0Mc6WH/R
+ zqBItD1vwBlSdiH6Y1S5h+uHb7IyEaog+tyeVsFoSd+3cZcglhSh8ssAzN0yRfpf4DK4HkCl//m
+ LrDdW6xGngdor2pzPzsB3ZTl9Kluiv/INLXNDbVYPpl5i+xXKcg69t457
+X-Gm-Gg: AY/fxX4aexvXqZZXUjpsCj8EwrSsmdXKimE5uT3TbFHin73XwkOpMOmWxMy09SBc1Ha
+ XBqPm/js2hEj83lIM4slPkL3/6NlqqozoO+ChMf/2813afRyG9Qstm9hcjYTHqY3SB/OOsd8sMY
+ A+Au9vB3HIyn9J34+dDCA1YLOKq8YfKtqAmHax5upQuRLxCFBEkJvG2W2joN+j8LRiejBfK/Kr8
+ rKyyGfsd4ceAf1UrNhvnyHxNvZhGtP0/q4hz8jCdQudwZ/j5M/2v+mvFNt5iZoVimqZWSJ1SVGG
+ sRUbjC2VzFNkIl04Oy2n/fe9v9CzLR2Yp0Pznx+eGlPGe9BKWQsbmgcr87HRJaZR3FBHthPLtE2
+ z38Q=
+X-Received: by 2002:ac8:424c:0:b0:502:a235:e1a1 with SMTP id
+ d75a77b69052e-502a235e424mr1884081cf.10.1768503508238; 
+ Thu, 15 Jan 2026 10:58:28 -0800 (PST)
+X-Received: by 2002:ac8:424c:0:b0:502:a235:e1a1 with SMTP id
+ d75a77b69052e-502a235e424mr1883891cf.10.1768503507851; 
+ Thu, 15 Jan 2026 10:58:27 -0800 (PST)
+Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-502a1ed3155sm2010011cf.19.2026.01.15.10.58.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Jan 2026 10:55:32 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 25/25] target/arm: Rename access_aa64_tid5() to access_tid5()
-Date: Thu, 15 Jan 2026 18:55:07 +0000
-Message-ID: <20260115185508.786428-26-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260115185508.786428-1-peter.maydell@linaro.org>
-References: <20260115185508.786428-1-peter.maydell@linaro.org>
+ Thu, 15 Jan 2026 10:58:27 -0800 (PST)
+Date: Thu, 15 Jan 2026 13:58:22 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Juraj Marcin <jmarcin@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>
+Subject: Re: [PATCH 0/3] migration: deprecations and removals for 11.0
+Message-ID: <aWk4zklo0pV_Folu@x1.local>
+References: <20260114195659.2543649-1-peterx@redhat.com>
+ <87wm1jxv4n.fsf@pond.sub.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87wm1jxv4n.fsf@pond.sub.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,43 +115,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is no equivalent access_aa32_tid5() (HCR_EL2.TID5 only exists
-starting from v8); rename access_aa64_tid5() to access_tid5() to line
-up with the naming we now have for the TID1 and TID3 check functions.
+On Thu, Jan 15, 2026 at 07:11:52AM +0100, Markus Armbruster wrote:
+> Peter Xu <peterx@redhat.com> writes:
+> 
+> > This series removes two deprecated features and formally propose
+> > deprecation of COLO framework for 11.0.
+> >
+> > Please review, thanks.
+> 
+> As far as I can tell, this together with
+> 
+>     [PATCH 0/2] migration: Drop deprecated QMP stuff
+>     Message-ID: <20260108125512.2234147-1-armbru@redhat.com>
+>     https://lore.kernel.org/qemu-devel/20260108125512.2234147-1-armbru@redhat.com/
+> 
+> buries all the deprecated migration interfaces.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20251231170858.254594-5-peter.maydell@linaro.org
----
- target/arm/helper.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Yes.  This series was definitely inspired by that one, thanks for doing it
+(and the fast reviews)!
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index acfb2cbc31..dce648b482 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -5429,8 +5429,8 @@ static const ARMCPRegInfo dcpodp_reg[] = {
-       .accessfn = aa64_cacheop_poc_access, .writefn = dccvap_writefn },
- };
- 
--static CPAccessResult access_aa64_tid5(CPUARMState *env, const ARMCPRegInfo *ri,
--                                       bool isread)
-+static CPAccessResult access_tid5(CPUARMState *env, const ARMCPRegInfo *ri,
-+                                  bool isread)
- {
-     if ((arm_current_el(env) < 2) && (arm_hcr_el2_eff(env) & HCR_TID5)) {
-         return CP_ACCESS_TRAP_EL2;
-@@ -7467,7 +7467,7 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-         ARMCPRegInfo gmid_reginfo = {
-             .name = "GMID_EL1", .state = ARM_CP_STATE_AA64,
-             .opc0 = 3, .opc1 = 1, .crn = 0, .crm = 0, .opc2 = 4,
--            .access = PL1_R, .accessfn = access_aa64_tid5,
-+            .access = PL1_R, .accessfn = access_tid5,
-             .type = ARM_CP_CONST, .resetvalue = cpu->gm_blocksize,
-         };
-         define_one_arm_cp_reg(cpu, &gmid_reginfo);
+> Opportunity to deprecate some more ;)
+
+Let's see if we can remove COLO first. I would treat COLO as five features
+in a wholesale package.. :)
+
 -- 
-2.47.3
+Peter Xu
 
 
