@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 611E2D21D5A
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 01:18:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CFF4D21D51
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 01:18:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgB3m-0005KQ-Ko; Wed, 14 Jan 2026 19:17:58 -0500
+	id 1vgB3s-0005dY-AT; Wed, 14 Jan 2026 19:18:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1vgB3j-000595-VB
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 19:17:55 -0500
-Received: from p-west3-cluster4-host6-snip4-2.eps.apple.com ([57.103.74.203]
+ id 1vgB3p-0005Um-Fh
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 19:18:01 -0500
+Received: from p-west3-cluster4-host7-snip4-10.eps.apple.com ([57.103.74.141]
  helo=outbound.ms.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1vgB3i-0002Ir-HD
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 19:17:55 -0500
+ id 1vgB3n-0002Jr-UW
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 19:18:01 -0500
 Received: from outbound.ms.icloud.com (unknown [127.0.0.2])
  by p00-icloudmta-asmtp-us-west-3a-60-percent-0 (Postfix) with ESMTPS id
- 766611800412; Thu, 15 Jan 2026 00:17:50 +0000 (UTC)
+ 2C8BD18000EB; Thu, 15 Jan 2026 00:17:56 +0000 (UTC)
 Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=j3gxaGgJ/UOlr7E7Wf1HhS3Y6+PzTtQg7lYYYapxm5A=;
+ s=sig1; bh=8BCQd7Pm/bl3RBBACCAJWlsvec2RfbtyFInvh6wrHr0=;
  h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme;
- b=WUPKWO3G+qTUjzeVfm3tOxfIIkQVN0eECH5wH2/qmIW60WWGmYtkWvAu91watGYvWfEo4ejWnFCd2nvJDvGQMV7HGKVKeWBdusNPLbFh+PGS+sxcoV9ySFP4o2TdRdI5pgl00mA6heV3rlH78aq4kOmJheIYPD6iuhpksAUvPjSf7zMMcwzEjUMOird3Hv5v4zErxqlWshNxIaf0xz4WtMcNER9F8AIViFAqMy4cJdBMQkjrJrrYh5B9fWH3Z1blWAU+8QhePa0FFaigzsVJw2+5n1syAwuiHHMXta6QyPC0hBpXCS2oYw+5DXbFIvKJpjIdC3IrnT2p9xyHnJJe2g==
+ b=ArQJYhCtloiSoSwbZQPSe+22e5nAuMlk6sg8Ww04E4019XBd8wcXENKs0ON8MRTAkaLF3TCQ5V6c23Dj14o96FAVYzX5CjlyQ/MhylQpByDB2niq1Dsz02Zdd5xRDc44d5GU4DlfceOglgNAKpvXNuvS0+SqsUsPVjjaOm69wy8GeYFs4vGMq67bfFf4u3j32CUzp5kbrSKQS/8OGqa9F4gkEbcGVlghsyS8wms86hpIG4WqEWm7byiw0n2FWfuh7FOkxSpHZxmWFm3pXCNw/s1yAVytcm+v+hm1Z5WDhOy+e0+Pn+klgkOgnkushMBtvQukWU/UHtPjK4bc170urA==
 mail-alias-created-date: 1752046281608
 Received: from localhost.localdomain (unknown [17.57.154.37])
  by p00-icloudmta-asmtp-us-west-3a-60-percent-0 (Postfix) with ESMTPSA id
- DCE571800440; Thu, 15 Jan 2026 00:17:42 +0000 (UTC)
+ 3564F18000B5; Thu, 15 Jan 2026 00:17:50 +0000 (UTC)
 From: Mohamed Mediouni <mohamed@unpredictable.fr>
 To: mohamed@unpredictable.fr,
 	qemu-devel@nongnu.org
@@ -53,44 +53,45 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v15 24/26] whpx: arm64: check for physical address width after
- WHPX availability
-Date: Thu, 15 Jan 2026 01:15:03 +0100
-Message-ID: <20260115001505.57237-25-mohamed@unpredictable.fr>
+Subject: [PATCH v15 25/26] whpx: arm64: add partition-wide reset on the reboot
+ path
+Date: Thu, 15 Jan 2026 01:15:04 +0100
+Message-ID: <20260115001505.57237-26-mohamed@unpredictable.fr>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260115001505.57237-1-mohamed@unpredictable.fr>
 References: <20260115001505.57237-1-mohamed@unpredictable.fr>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Authority-Info: v=2.4 cv=a7c9NESF c=1 sm=1 tr=0 ts=69683230
+X-Proofpoint-ORIG-GUID: ul7neQda63ds19tib5uNEVJs1L9o1M0m
+X-Authority-Info: v=2.4 cv=Ev/fbCcA c=1 sm=1 tr=0 ts=69683236
  cx=c_apl:c_apl_out:c_pps a=qkKslKyYc0ctBTeLUVfTFg==:117 a=vUbySO9Y5rIA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=KKAkSRfTAAAA:8 a=lhTSZ31de6YUvqMuns4A:9
- a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-GUID: BuuWRK_Lf1o0Y0N85gXC5QsfmjBvE1cH
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE1MDAwMCBTYWx0ZWRfX7HAmcsrnwADA
- Mfh4zNbG2bZJp6womv0C97Yfnoa9kr16AfsymB+GG6xzWoJ7KhE/Xf1u6vijddYm09tSaNBoBmM
- ihYFx4MncKEBLXPDEwqOJ27+2rU8mtcna9pKB2Mv4i0H75T2mzVE6tw8ChlwEQkFxGt3O8jea49
- t+ariZjcCHOePPDHt57uORPArb4FlcrtamLipQtdjq/XeEAIR9FmpcyRxhJZrgOEgULbX2Bpsi1
- 5DqJbIarIxbQdMg6tEP6nBYvXxmLBsDRll0e/OMTzofSpKNql4DqAivSTQr4+T1puxNj34X6026
- QMRmMzIZPjnAiaHubD8
-X-Proofpoint-ORIG-GUID: BuuWRK_Lf1o0Y0N85gXC5QsfmjBvE1cH
+ a=VkNPw1HP01LnGYTKEx00:22 a=KKAkSRfTAAAA:8 a=h5GvOLqLgfJ3vAEETv4A:9
+ a=NqO74GWdXPXpGKcKHaDJD/ajO6k=:19 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE1MDAwMCBTYWx0ZWRfXx0EhmOpTUp2A
+ qrYGUVnHxAYSbKVK+lDXCXPeh1rRs+8HC+v4QaAiFeEwZB6rxwojH93RrwMlTqSmp/vlAk0YLrX
+ WzLRptCjmqFUxMUH+1O7P0WYjNUbn+ViE2CxMb1gxW0F46D5F5tPdNPvTFq0XAremzfPWPKw3AP
+ DMiW8KhOZcFmkHRszAP1EQtK+cz8LyZFkMfYaWBX4vEXm0sbNs0U+prO59Qkp5cGoQuR3ZrofzF
+ /RrUFffqbVRljQECI7T7z1hxNO4fddJzqOpy5cXlGHu3F5ix8GrZd+xrhMUP8jzMdNw8ZPMLp6V
+ 5e/z5JpWXPDSuLEiO0r
+X-Proofpoint-GUID: ul7neQda63ds19tib5uNEVJs1L9o1M0m
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-14_07,2026-01-14_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- bulkscore=0 suspectscore=0 spamscore=0 malwarescore=0 clxscore=1030
- adultscore=0 mlxlogscore=999 mlxscore=0 classifier=spam authscore=0 adjust=0
+ spamscore=0 clxscore=1030 bulkscore=0 malwarescore=0 mlxlogscore=932
+ suspectscore=0 adultscore=0 mlxscore=0 classifier=spam authscore=0 adjust=0
  reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2601150000
-X-JNJ: AAAAAAABRHA02LwuS8bMOV//VuGbwwN7qP1XWZWUe9FCH8SMcFY8uI578w7jFeKiJKviayplt5Aq4+z/heNzIT+b/Eoq9KVNXzJqmF/V9CkMTNvJN2Gj7umedawJh6osIlTVw2FGk9CiuBhjFGs+4IW81zbBdnNTuO6L069xizv/uJxj49QsTro3N7Pyap7Yr/WZjyJKsGEiVikAWGT3AZnuvUPQONjNheTy/2PXNjxaxJFK0GFDTbbHyqB7PYEm1l1ON9uWJd/Z8oIZqAh/UzOyD+DCgH77QNJ2Twrv61qviTUYAhK7xftTAeld+CBXS5Upzt8lQ5rPWrze8Mzl9Yb/0cpvzN4kQVTjQL5CDW4BpaKsEkilBjEkD3Vbc6osMnojJGV/L5zZyAFzTf0SeUVw4VLgZQ9Ll9SB4n12yIVrc5bWJ1VLIgdw74QvgHYTjog/fZuh7xtM+j1r08+hBUh+iQGoq1H33gL3ZTRlF3g2glkpEkqvvt2QQ57ZKS12aYluJt5YlhTs0/Gou6lc852qy1KN9vY7gATo1zrdYYgarL6fBgmTMb6XMMI3UjIJX0xb97xjIixcDJBM4Fb6vXnl/HVqSi2FnO+07B8N7KPsaIetGz2nRvsl5+k+1rVH7pkBmIjfmlVsDGW6eQf/X1IdhBxDclsTrUxUyB1rZBDcSFqb5spyGcHObFax+HGDVQq+EamBXShnQxOjOXZyNQYd2LmXjbdtHB/BxVuZUQwCgWWZ7kpJ1ZpEQ8tX1JBdXkO5Q5gQDQigBopDyzGHIlrU+uTmlrJjLVOg9Y/+egYBut4QK249wLRfH6csbmdgdU0Lraw+N27Uge/GwKuwgrQtGbevXKfBxeOR7KmDVRXL0I8z50vFdq9SrSVFCfs1Vj9wTQAntxpTezhT3Z8KlHYt/eXVenKbxrtYo6kgIV49L8OSDNQ9iZAMeGKvJ7gl05qcZZyO3ul2FdRpYTGeavVt
-Received-SPF: pass client-ip=57.103.74.203;
+X-JNJ: AAAAAAABU8Ikf7h5VuvgN8QhO4l1miLWzOvERXoruMGnXE5XYAEJDZ2z6MMe0WtpCTv/2itn2j4RynFwL3NsDy4a6Lx7Cjp1PByhQa8Qvm2d+Pts8pu9mO/pUmzW7MJ28pj5BmG5nXncXEhX1Y0GMXgZhvX0esrTYlmLCCxuHsUGBgCvWt3tPH7JV0vdpMrB01P9PjfYJ1hyDSyteFhCWMxidLM+RV4aGjkJL0I5vCdVL8ptZsSpoGFhLDUmP7prxW26mbcseTGwnBlfDepc+ckKCqICP/26g26cFS7yDGvhNA/efBSpJfwzKMpFi5yWlwcMhh8tDR1dNPKtzrEZuuKqWWoTgmWBMpszure5TfYle9Iwd0JzpcbGI577+QHR05vVr9ffMVCtOe740QS8PvmvCgqO/tEOlolwAp7OI/AfR3w5vMq5wxtxsIMgB37Ve6RG/0+Whn6v/CCLLQ15xwgtE9QRPhlaXTBuXXkimmRCnHtWIbCqNWfXsjraubGnaNh3ZcwhVBwOM40OWaJhQUFfbYAAlXRW1+v58of8sWs4Y0GkEcgK9up8TfOqPUbHzmVHOcUXOpcsGn3v+EkHE65wEEZEWTQOdubjIDSXkRk1mnb0U4B9LQngdcG1Rf25JklxNKmToaHUViSmyP8iS0I2+6New1mIFIuWWHhwrMDjaSwdyOkwygyLTDu6ybmSvm6orCkIVQyuy3yGeiNMb5hQoywqd7NLH21+owJ7qjStG+329r5lL/zTx/MODwBjQgv2ThAArXII9QVDQdjOd757oW4NnaF1qVueiNICQ0mSq4eI6iIjS9OGJ4TlxFEt7HPDBqEOqRNTSNquj7Jbojp8fojqlAmYDFyjiWxtHyWwZ22vOvIS6gyeN/+CjOop3H+RuD8lPlQEU7/cuKTBN3LlMAYF445nU3ZuAxfYUQI7TGwaMJdgo9m+yeKhAUBniwTs
+Received-SPF: pass client-ip=57.103.74.141;
  envelope-from=mohamed@unpredictable.fr; helo=outbound.ms.icloud.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,59 +107,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the case where WHPX isn't supported on the platform, makes the
-intended error appear instead of failing at getting the IPA width.
+This resets non-architectural state to allow for reboots to succeed.
 
 Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/whpx/whpx-all.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ include/system/whpx-internal.h | 2 ++
+ target/arm/whpx/whpx-all.c     | 2 ++
+ 2 files changed, 4 insertions(+)
 
+diff --git a/include/system/whpx-internal.h b/include/system/whpx-internal.h
+index 8ded54a39b..ad6ade223e 100644
+--- a/include/system/whpx-internal.h
++++ b/include/system/whpx-internal.h
+@@ -86,6 +86,8 @@ void whpx_apic_get(APICCommonState *s);
+   X(HRESULT, WHvSetVirtualProcessorInterruptControllerState2, \
+         (WHV_PARTITION_HANDLE Partition, UINT32 VpIndex, PVOID State, \
+          UINT32 StateSize)) \
++  X(HRESULT, WHvResetPartition, \
++        (WHV_PARTITION_HANDLE Partition)) \
+ 
+ #define LIST_WINHVEMULATION_FUNCTIONS(X) \
+   X(HRESULT, WHvEmulatorCreateEmulator, (const WHV_EMULATOR_CALLBACKS* Callbacks, WHV_EMULATOR_HANDLE* Emulator)) \
 diff --git a/target/arm/whpx/whpx-all.c b/target/arm/whpx/whpx-all.c
-index ab31371aea..def85988e7 100644
+index def85988e7..e1611f8660 100644
 --- a/target/arm/whpx/whpx-all.c
 +++ b/target/arm/whpx/whpx-all.c
-@@ -654,7 +654,7 @@ uint32_t whpx_arm_get_ipa_bit_size(void)
-         WHvCapabilityCodePhysicalAddressWidth, &whpx_cap,
-         sizeof(whpx_cap), &whpx_cap_size);
-     if (FAILED(hr)) {
--        error_report("WHPX: failed to get supported"
-+        error_report("WHPX: failed to get supported "
-              "physical address width, hr=%08lx", hr);
-     }
- 
-@@ -879,15 +879,6 @@ int whpx_accel_init(AccelState *as, MachineState *ms)
-         goto error;
-     }
- 
--    if (mc->get_physical_address_range) {
--        pa_range = mc->get_physical_address_range(ms,
--            whpx_arm_get_ipa_bit_size(), whpx_arm_get_ipa_bit_size());
--        if (pa_range < 0) {
--            ret = -EINVAL;
--            goto error;
--        }
--    }
--
-     whpx->mem_quota = ms->ram_size;
- 
-     hr = whp_dispatch.WHvGetCapability(
-@@ -915,6 +906,14 @@ int whpx_accel_init(AccelState *as, MachineState *ms)
-         goto error;
-     }
- 
-+    if (mc->get_physical_address_range) {
-+        pa_range = mc->get_physical_address_range(ms,
-+            whpx_arm_get_ipa_bit_size(), whpx_arm_get_ipa_bit_size());
-+        if (pa_range < 0) {
-+            return -EINVAL;
-+        }
-+    }
-+
-     hr = whp_dispatch.WHvCreatePartition(&whpx->partition);
-     if (FAILED(hr)) {
-         error_report("WHPX: Failed to create partition, hr=%08lx", hr);
+@@ -497,6 +497,8 @@ int whpx_vcpu_run(CPUState *cpu)
+             if (arm_cpu->power_state != PSCI_OFF) {
+                 whpx_psci_cpu_off(arm_cpu);
+             }
++            /* Partition-wide reset, to reset state for reboots to succeed. */
++            whp_dispatch.WHvResetPartition(whpx->partition);
+             bql_unlock();
+             break;
+         case WHvRunVpExitReasonNone:
 -- 
 2.50.1 (Apple Git-155)
 
