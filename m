@@ -2,105 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35604D244F4
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 12:50:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42034D24545
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 12:55:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgLmH-0006Nm-6J; Thu, 15 Jan 2026 06:44:37 -0500
+	id 1vgLwa-0003lI-OV; Thu, 15 Jan 2026 06:55:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leonardi@redhat.com>)
- id 1vgLm5-0006Hx-3r
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 06:44:25 -0500
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1vgLwJ-00037Q-1G
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 06:55:05 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leonardi@redhat.com>)
- id 1vgLm3-0008Fw-Bc
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 06:44:24 -0500
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1vgLwH-0002w3-Ce
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 06:54:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768477461;
+ s=mimecast20190719; t=1768478095;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=B0mUnKqTDPYeGBq3J7FxGI1fg8tXB/i7Hy7CrdeMHoE=;
- b=PUg8qNoCQeKDc9JAQnTf1q2x4BMuUZWtuyMzl6JRvaMcSXHaa2jJwQS352P1/js9M3VeVa
- izeEueGl+PospBSG8CrpP3Hkr8Vm9o2/OxO0Xwixt6q1l+lsX6oR9XlZNiRdgmBKIfFkBC
- cAzhX0OAYkBFrNpEx+Ojf4WIQrhJB0o=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=u0th5VhGu7rvQfZUpVYyawCPX/KrPrzZgrw1SuOK/ko=;
+ b=E2GgOFjEspiOKl4Bufr1gezZ5TNu68Z1Kvi1/AHGdAumbaiUPw8mFIiWDKnwoTaSt3SGvT
+ K4RBDcexT6PBrz460Ymy2KDGHw3bPgHWe4OGAyxNdWfGChaBYnynXpFqZtF1bUErYFXPOg
+ xlYsB4kProe3PGwFWFkiAGlJXYQUZco=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-515-DwQPzDI5MaGWJfTbOqituQ-1; Thu, 15 Jan 2026 06:44:19 -0500
-X-MC-Unique: DwQPzDI5MaGWJfTbOqituQ-1
-X-Mimecast-MFC-AGG-ID: DwQPzDI5MaGWJfTbOqituQ_1768477458
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-430fb8d41acso490919f8f.1
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 03:44:19 -0800 (PST)
+ us-mta-629-LNDe5RbyPnuJhFb1RLkNnA-1; Thu, 15 Jan 2026 06:54:54 -0500
+X-MC-Unique: LNDe5RbyPnuJhFb1RLkNnA-1
+X-Mimecast-MFC-AGG-ID: LNDe5RbyPnuJhFb1RLkNnA_1768478093
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-47ed980309aso9132165e9.0
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 03:54:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768477458; x=1769082258; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=B0mUnKqTDPYeGBq3J7FxGI1fg8tXB/i7Hy7CrdeMHoE=;
- b=LPRVs+DCQ9W0UNC+Ad/P6VmzQxQrrownvgu0Gem0bLtvZLxveVepTnNrxOPl5U1F7f
- 2GpyyNAapxh7bXm9rqMXUVnVo5pBAjx3FptvfieZvv9k++4r6vSEF46RvkjFoid69r9V
- vswKArE4C1vGyV82ki/ilaaJzjbC9tU39c6cX1FTTbEOpausdwK2ZxcMly5xyuo9BBjj
- 93wm3GuN7fyvhbWJw9BnT2Et2U0Y/bAF0P1eWKVx1TOhUtc30xaMtVwPktcqVG0hLOYy
- +WnFdUnR7QhRZcsPAmCIIGv8k86XxJZr5xWS2ijVoJZv6carxjFiukgZzWTsuzzrcpaO
- rkqw==
+ d=redhat.com; s=google; t=1768478093; x=1769082893; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=u0th5VhGu7rvQfZUpVYyawCPX/KrPrzZgrw1SuOK/ko=;
+ b=THw4dha3Kox4XJtBegGH4wzeinLteIAr0YrRT27r3rcE/ywRvEu76HELaeDPPKaC6X
+ rTx5jMWWve4vdENEO6sTNgExwPJWIv6aV4lcaukjRMiVWJAEdBSuNtJ24ovsRFqqt/Iz
+ cchwmPbMGlBQfGfV5DIZ3zN3AX/ZLorg6serqO65UV7cFYfbGcqJUQp5rBGC2Ys+PxLc
+ ynygeD/9/nPpBC86OP3FNys0/Z/LjdkOrcEicCegDMSE0Ge9ZZd3Oi4zLc35Qx4B7ZxF
+ x1mAFDtx5SLcnWIk9bbn3wdCn3TQCoP/YIn0qZkdDd3Y5fTzmUsk2yKsD9cyWTjh9qqn
+ 3a8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768477458; x=1769082258;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=B0mUnKqTDPYeGBq3J7FxGI1fg8tXB/i7Hy7CrdeMHoE=;
- b=AMrTQWq2X3l1fWjLQSpjmtE/0c4zkmJ+xwJXwHzDzF2Iaoet6E4gIXY9Bi6Mv5ib7Q
- o44HGN6sVPDJqzt1txJKKXhlIHu8c7TjOK+644RuMkzPyYph0ms8KjqLBJb3XDMXYifJ
- td68ovl4qGOc1dmlMwPSzUgO6uM/Zq/an+fXLmCsttR9ShEaF5bbRvO39ulAK+qL+D4q
- ilMuBld6ozdpcZ1oXWrWdHMR5N+nkBSetQ9UZfwmxxQrIWVbQFEX2kXAc3KVBSK7UXxN
- uYoAKc0jHJQu1ClAJduxUmQZTtSsZI+jn079gof8jmMQDwPFIPVVWTyXtDlwTwcdOXmg
- Kurw==
-X-Gm-Message-State: AOJu0YxDOpCmgKjcWGYUcQKJbO7lKQAZXc3lUQCMEm1jatXfPKd6BDyK
- TIb1/2anEX7Uy8tnFZQPi/Gjcj5KdFhysMDExGWlIldL6K0K6rywK56keaWVUUbpw9uZtrpluyR
- /9kbyBijmDzcMqpK7fYiuTej6pk+4GL0z73vW66znagKRlz0EQaqK0n7N
-X-Gm-Gg: AY/fxX71lmWaqFyS5+1e7qcn95NbIePz4QvGEq6gTmzwFAHH9gDG4WBpUHpqcmGPqZ6
- +SnSXboxBcJTNH8741oYVtXLoN9ityigb7Bxhpp5iexqhWlojxQcFVkj+lhnT0OCYYnt1yN7EtR
- F0jzsxY3ib+qUUbdaIb5LuQsSMJvQJ3WzLsQzBrnkG31tejjT1Y/PiUti5uyFN12o3oMMSyUPN/
- 76Zc4DS6o2Ih9GuiwqVIoBk5mKntcpVnIZ2p2nkxbBAi5bUPJxjIT3r1ELIa+BmZ7Ceu6NnTKTV
- o9UW/x3BvoJxV1x8jCOqgZ7XILs+/c1/TXBWZWNIkYrK0EBJGkxEOP/MUe3W3djuu2sp7FpoaZV
- wy3Ns+zRHXNh5x6I=
-X-Received: by 2002:a05:6000:26c6:b0:430:f40f:61b9 with SMTP id
- ffacd0b85a97d-4342c4ef09emr6865159f8f.4.1768477458370; 
- Thu, 15 Jan 2026 03:44:18 -0800 (PST)
-X-Received: by 2002:a05:6000:26c6:b0:430:f40f:61b9 with SMTP id
- ffacd0b85a97d-4342c4ef09emr6865132f8f.4.1768477457900; 
- Thu, 15 Jan 2026 03:44:17 -0800 (PST)
-Received: from leonardi-redhat ([176.206.16.134])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-434af6b143fsm5374205f8f.25.2026.01.15.03.44.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Jan 2026 03:44:17 -0800 (PST)
-Date: Thu, 15 Jan 2026 12:44:14 +0100
-From: Luigi Leonardi <leonardi@redhat.com>
-To: Oliver Steffen <osteffen@redhat.com>
-Cc: qemu-devel@nongnu.org, Marcelo Tosatti <mtosatti@redhat.com>, 
- Ani Sinha <anisinha@redhat.com>, Zhao Liu <zhao1.liu@intel.com>, 
- Joerg Roedel <joerg.roedel@amd.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, Gerd Hoffmann <kraxel@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
- Stefano Garzarella <sgarzare@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: Re: [PATCH v4 3/5] igvm: Add common function for finding parameter
- entries
-Message-ID: <aWjQyUrF_bLIhm9H@leonardi-redhat>
-References: <20260114175007.90845-1-osteffen@redhat.com>
- <20260114175007.90845-4-osteffen@redhat.com>
+ d=1e100.net; s=20230601; t=1768478093; x=1769082893;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=u0th5VhGu7rvQfZUpVYyawCPX/KrPrzZgrw1SuOK/ko=;
+ b=p9Yf8D+6TC8UAAiYCtg4IYJcndUOQYfi12kt8tinSd8qpvxFlQOHQU6VqSiXDkW9rC
+ 6pOxk2bHJ2d3A9ogBadtnbK+YfTDcfEw5olZMFxCeqDW230YAPPVxA6x/qAKhsR/qtWD
+ YBYkQSlM66X/2v9JEHAtHIMU6kF+FVfgzL2tBPKRSyXdH0T6PYaEFr4Epu6sInxAQ8vg
+ quirc56Xx14Sq0he2C4Q7T/C2ox5I3N1vxAc2Gkjfb7qdz8+TU79EET4sBU6dXMkcWie
+ +YOCQH0sOH+h0xpnPBZ2ACvb4gIiC8JhrQ9jSTCK7xUzja4HwymB4XUwVPtXoHO81vOD
+ k6Lw==
+X-Gm-Message-State: AOJu0Yx/w85N6mMqcupd+nlfDGzlu4fWZkIyNsc1tZEgJ3+mefBo3t7y
+ tdJBPjNm7MwDbblhhY9fgxQWFtPdsUTH3e/OIJdhJ7BlJPT2z4X0Xv+aY+fnjTFo6mPikvw7Svy
+ L9LxJcQFY81VXlj3rTsVPuVin6o3JhSesvSf2xmWWBZLj0PivYTA3WoBqplA3SqlvQfgm75Q5qp
+ Lx9kG0AYW0UbN3pvqmHUIZXPkXvXq51d8DA+y768Xmag==
+X-Gm-Gg: AY/fxX5YdsYTzL5ZcXlDTmqbCu/Afx7GXXo34Cg6JTMS/qiVdx2Fvs7zB1WaPB0BpJY
+ TltnvkU9hV59T2PXZm2O2B3Uup4Sxz0xgIMPmUDXc3XshA+SbakhIztjGQ78oplgrpvHmZul1kF
+ nzjwnY2GdPiNZTN/ldF599h2YQ9cNCrJepU8HBay0N/nBvgvePYPDlNeF4GsoEh55uL1JRMq5pA
+ quBfufJbTnpPD2WTbQ3yRTg3kY9a8xxnvCsvqV2JtbVC30yr8Iv6SB5
+X-Received: by 2002:a05:600c:64c6:b0:477:9d88:2da6 with SMTP id
+ 5b1f17b1804b1-4801d7881femr2250375e9.0.1768478092841; 
+ Thu, 15 Jan 2026 03:54:52 -0800 (PST)
+X-Received: by 2002:a05:600c:64c6:b0:477:9d88:2da6 with SMTP id
+ 5b1f17b1804b1-4801d7881femr2250055e9.0.1768478092449; Thu, 15 Jan 2026
+ 03:54:52 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260114175007.90845-4-osteffen@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=leonardi@redhat.com;
+References: <20260109124043.25019-1-farosas@suse.de>
+ <20260109124043.25019-8-farosas@suse.de>
+In-Reply-To: <20260109124043.25019-8-farosas@suse.de>
+From: Prasad Pandit <ppandit@redhat.com>
+Date: Thu, 15 Jan 2026 17:24:35 +0530
+X-Gm-Features: AZwV_QjAK5xJUSMjsceCzT8HQroWZM5gvoe0LDIO4Wvu9_NJYz1hkLe0nM9kPWo
+Message-ID: <CAE8KmOzLG1QzPqw4H989Ws0-1LjcQzcXHJ8QbX06rVGsRQEKyg@mail.gmail.com>
+Subject: Re: [PATCH v3 07/25] migration: Free the error earlier in the resume
+ case
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, peterx@redhat.com, berrange@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -125,174 +111,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Oliver,
+On Fri, 9 Jan 2026 at 18:11, Fabiano Rosas <farosas@suse.de> wrote:
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -1811,8 +1811,8 @@ int migrate_init(MigrationState *s, Error **errp)
+>      s->setup_time = 0;
+>      s->start_postcopy = false;
+>      s->migration_thread_running = false;
+> -    error_free(s->error);
+> -    s->error = NULL;
+> +
+> +    migrate_error_free(s);
+>
+>      if (should_send_vmdesc()) {
+>          s->vmdesc = json_writer_new(false);
+> @@ -2087,6 +2087,13 @@ static bool migrate_prepare(MigrationState *s, bool resume, Error **errp)
+>          migrate_set_state(&s->state, MIGRATION_STATUS_POSTCOPY_PAUSED,
+>                            MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP);
+>
+> +        /*
+> +         * If there's a previous error, free it and prepare for
+> +         * another one. For the non-resume case, this happens at
+> +         * migrate_init() below.
+> +         */
+> +        migrate_error_free(s);
+> +
+>          /* This is a resume, skip init status */
+>          return true;
+>      }
+> @@ -4015,13 +4022,6 @@ void migration_connect(MigrationState *s, Error *error_in)
+>      bool resume = (s->state == MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP);
+>      int ret;
+>
+> -    /*
+> -     * If there's a previous error, free it and prepare for another one.
+> -     * Meanwhile if migration completes successfully, there won't have an error
+> -     * dumped when calling migration_cleanup().
+> -     */
+> -    migrate_error_free(s);
+> -
+>      s->expected_downtime = migrate_downtime_limit();
+>      if (error_in) {
+>          migration_connect_error_propagate(s, error_in);
 
-On Wed, Jan 14, 2026 at 06:50:05PM +0100, Oliver Steffen wrote:
->Move repeating code for finding the parameter entries in the IGVM
->backend out of the parameter handlers into a common function.
->
->Signed-off-by: Oliver Steffen <osteffen@redhat.com>
->---
-> backends/igvm.c | 117 +++++++++++++++++++++++++-----------------------
-> 1 file changed, 61 insertions(+), 56 deletions(-)
->
->diff --git a/backends/igvm.c b/backends/igvm.c
->index a350c890cc..ccb2f51cd9 100644
->--- a/backends/igvm.c
->+++ b/backends/igvm.c
->@@ -95,6 +95,19 @@ typedef struct QIgvm {
->     unsigned region_page_count;
-> } QIgvm;
->
->+static QIgvmParameterData*
->+qigvm_find_param_entry(QIgvm *igvm, const IGVM_VHS_PARAMETER *param)
->+{
->+    QIgvmParameterData *param_entry;
->+    QTAILQ_FOREACH(param_entry, &igvm->parameter_data, next)
->+    {
->+        if (param_entry->index == param->parameter_area_index) {
->+            return param_entry;
->+        }
->+    }
->+    return NULL;
->+}
->+
-> static int qigvm_directive_page_data(QIgvm *ctx, const uint8_t *header_data,
->                                      Error **errp);
-> static int qigvm_directive_vp_context(QIgvm *ctx, const uint8_t *header_data,
->@@ -569,58 +582,53 @@ static int qigvm_directive_memory_map(QIgvm *ctx, const uint8_t *header_data,
->     }
->
->     /* Find the parameter area that should hold the memory map */
->-    QTAILQ_FOREACH(param_entry, &ctx->parameter_data, next)
->-    {
->-        if (param_entry->index == param->parameter_area_index) {
->-            max_entry_count =
->-                param_entry->size / sizeof(IGVM_VHS_MEMORY_MAP_ENTRY);
->-            mm_entry = (IGVM_VHS_MEMORY_MAP_ENTRY *)param_entry->data;
->-
->-            retval = get_mem_map_entry(entry, &cgmm_entry, errp);
->-            while (retval == 0) {
->-                if (entry >= max_entry_count) {
->-                    error_setg(
->-                        errp,
->-                        "IGVM: guest memory map size exceeds parameter area defined in IGVM file");
->-                    return -1;
->-                }
->-                mm_entry[entry].starting_gpa_page_number = cgmm_entry.gpa >> 12;
->-                mm_entry[entry].number_of_pages = cgmm_entry.size >> 12;
->-
->-                switch (cgmm_entry.type) {
->-                case CGS_MEM_RAM:
->-                    mm_entry[entry].entry_type =
->-                        IGVM_MEMORY_MAP_ENTRY_TYPE_MEMORY;
->-                    break;
->-                case CGS_MEM_RESERVED:
->-                    mm_entry[entry].entry_type =
->-                        IGVM_MEMORY_MAP_ENTRY_TYPE_PLATFORM_RESERVED;
->-                    break;
->-                case CGS_MEM_ACPI:
->-                    mm_entry[entry].entry_type =
->-                        IGVM_MEMORY_MAP_ENTRY_TYPE_PLATFORM_RESERVED;
->-                    break;
->-                case CGS_MEM_NVS:
->-                    mm_entry[entry].entry_type =
->-                        IGVM_MEMORY_MAP_ENTRY_TYPE_PERSISTENT;
->-                    break;
->-                case CGS_MEM_UNUSABLE:
->-                    mm_entry[entry].entry_type =
->-                        IGVM_MEMORY_MAP_ENTRY_TYPE_PLATFORM_RESERVED;
->-                    break;
->-                }
->-                retval = get_mem_map_entry(++entry, &cgmm_entry, errp);
->-            }
->-            if (retval < 0) {
->-                return retval;
->-            }
->-            /* The entries need to be sorted */
->-            qsort(mm_entry, entry, sizeof(IGVM_VHS_MEMORY_MAP_ENTRY),
->-                  qigvm_cmp_mm_entry);
->+    param_entry = qigvm_find_param_entry(ctx, param);
->+    if (param_entry == NULL) {
->+        return 0;
->+    }
->+
->+    max_entry_count = param_entry->size / sizeof(IGVM_VHS_MEMORY_MAP_ENTRY);
->+    mm_entry = (IGVM_VHS_MEMORY_MAP_ENTRY *)param_entry->data;
->
->+    retval = get_mem_map_entry(entry, &cgmm_entry, errp);
->+    while (retval == 0) {
->+        if (entry >= max_entry_count) {
->+            error_setg(
->+                errp,
->+                "IGVM: guest memory map size exceeds parameter area defined in IGVM file");
->+            return -1;
->+        }
->+        mm_entry[entry].starting_gpa_page_number = cgmm_entry.gpa >> 12;
->+        mm_entry[entry].number_of_pages = cgmm_entry.size >> 12;
->+
->+        switch (cgmm_entry.type) {
->+        case CGS_MEM_RAM:
->+            mm_entry[entry].entry_type = IGVM_MEMORY_MAP_ENTRY_TYPE_MEMORY;
->+            break;
->+        case CGS_MEM_RESERVED:
->+            mm_entry[entry].entry_type =
->+                IGVM_MEMORY_MAP_ENTRY_TYPE_PLATFORM_RESERVED;
->+            break;
->+        case CGS_MEM_ACPI:
->+            mm_entry[entry].entry_type =
->+                IGVM_MEMORY_MAP_ENTRY_TYPE_PLATFORM_RESERVED;
->+            break;
->+        case CGS_MEM_NVS:
->+            mm_entry[entry].entry_type = IGVM_MEMORY_MAP_ENTRY_TYPE_PERSISTENT;
->+            break;
->+        case CGS_MEM_UNUSABLE:
->+            mm_entry[entry].entry_type =
->+                IGVM_MEMORY_MAP_ENTRY_TYPE_PLATFORM_RESERVED;
->             break;
->         }
->+        retval = get_mem_map_entry(++entry, &cgmm_entry, errp);
->     }
->+    if (retval < 0) {
->+        return retval;
->+    }
->+    /* The entries need to be sorted */
->+    qsort(mm_entry, entry, sizeof(IGVM_VHS_MEMORY_MAP_ENTRY),
->+          qigvm_cmp_mm_entry);
->     return 0;
-> }
->
->@@ -655,14 +663,11 @@ static int qigvm_directive_environment_info(QIgvm *ctx,
->     QIgvmParameterData *param_entry;
->     IgvmEnvironmentInfo *environmental_state;
->
->-    QTAILQ_FOREACH(param_entry, &ctx->parameter_data, next)
->-    {
->-        if (param_entry->index == param->parameter_area_index) {
->-            environmental_state =
->-                (IgvmEnvironmentInfo *)(param_entry->data + param->byte_offset);
->-            environmental_state->memory_is_shared = 1;
->-            break;
->-        }
->+    param_entry = qigvm_find_param_entry(ctx, param);
->+    if (param_entry != NULL) {
+* Looks okay.
+Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
 
-What about an early return?
-
->+        environmental_state =
->+            (IgvmEnvironmentInfo *)(param_entry->data + 
->param->byte_offset);
->+        environmental_state->memory_is_shared = 1;
->     }
->     return 0;
-> }
->-- 2.52.0
->
-
-Can we reuse `qigvm_find_param_entry` for 
-`qigvm_directive_parameter_insert` and `qigvm_directive_vp_count` as 
-well?
-
-Luigi
+Thank you.
+---
+  - Prasad
 
 
