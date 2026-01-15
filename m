@@ -2,111 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 645EFD226A7
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 06:15:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0510CD22724
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 06:40:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgFga-0000Kv-Jp; Thu, 15 Jan 2026 00:14:20 -0500
+	id 1vgG4z-0006uT-Ff; Thu, 15 Jan 2026 00:39:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jhkim@linux.ibm.com>)
- id 1vgFgY-0000KK-SH; Thu, 15 Jan 2026 00:14:18 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1vgG4v-0006su-NZ
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 00:39:29 -0500
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jhkim@linux.ibm.com>)
- id 1vgFgV-0006jD-Fm; Thu, 15 Jan 2026 00:14:17 -0500
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60EIAxQn030620;
- Thu, 15 Jan 2026 05:14:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=foDgfz
- Rvfx6BnbX2Fe6VvYR4ev0e86Ddh8ypJzZv5sA=; b=Ij60k07DxGbSBnQb/ySxXZ
- YMnbDJi+XEott2HW4Xdfdq3hS+G8YWEnhdOsOwsqqvK6dfbC97snFj2XcPLdCIQt
- 5K3959G9G1H3QfbKIQzC73r+1XbL8TBnoIfCm3wJ/0+9ILCW5hHLIOO0nHkuaC1Y
- C6qaDQF9bO7pUAJVG6v0+769Uq/sDxW0gZmB1rH43pLlq0iR6B+utm77yA5tfWmb
- VJZhwa6fc+M0ZOGzRq+tyW6LomZ+cDnvX3BlczMqk5P4vYid/8EOSdCJsPvS+Jp4
- bAf7OB47NmGrbWDFbhpZ8dzppW8W0oAiRXYKsTOy2fhhGfs/wUP2YBnMX9et2BAw
- ==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkc6hcnbq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 Jan 2026 05:14:11 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60F4qOo6031250;
- Thu, 15 Jan 2026 05:14:10 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bm3t1ww6q-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 Jan 2026 05:14:10 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
- [10.39.53.233])
- by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 60F5E9gc28312248
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 15 Jan 2026 05:14:09 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 67C0658054;
- Thu, 15 Jan 2026 05:14:09 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CC4D15803F;
- Thu, 15 Jan 2026 05:14:08 +0000 (GMT)
-Received: from [9.61.255.133] (unknown [9.61.255.133])
- by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 15 Jan 2026 05:14:08 +0000 (GMT)
-Message-ID: <eb891295-5ffd-4613-bc37-56d8a07d1fff@linux.ibm.com>
-Date: Wed, 14 Jan 2026 23:14:07 -0600
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1vgG4n-0004fB-Kg
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 00:39:27 -0500
+Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
+ [133.11.54.205]) (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 60F5cwVa061416
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Thu, 15 Jan 2026 14:39:07 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=fTeyggx/dI4xbMSuG0TslJjx3WzvGbWT9CLiF/W9IK0=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=From:Subject:Date:Message-Id:To;
+ s=rs20250326; t=1768455547; v=1;
+ b=DusKrq542FG4DC8bee0QFe8hxkvnpgC3onMJEbgfDAPT4E9lVFIs2QOGJBMmI2HS
+ izGtRaLnClANMNPcOc4XFCV+5xyjZJTCmOAg+x2p8bqTYcGyhhqtm8o4d9ZlFOzw
+ pU8Fxvwp9gOLVxLTdVrkv8/ssrwx5pPJl0IH0mKXfchWudUFIlhGbjKq5YE77y+C
+ u09A4Nd0qfCX4ZkC5M0/bBDxm8STMUah4eVdfB3/hZ5ltaS4FRRb57a12WkLOhHj
+ FaK/myn7D3lux0R+iy2rIjtCH4lVyXMwCcvOBzFsrO7vAWQV8sA3WEJm7drmP2Fj
+ xqHSsHP6jj9ZbTPHBW+lvg==
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Subject: [PATCH v3 0/5] virtio-gpu: Force RCU when unmapping blob
+Date: Thu, 15 Jan 2026 14:38:49 +0900
+Message-Id: <20260115-force_rcu-v3-0-1f8bfaff4815@rsg.ci.i.u-tokyo.ac.jp>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v1 3/3] qapi/iothread: introduce poll-weight parameter
- for aio-poll
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, pbonzini@redhat.com,
- stefanha@redhat.com, fam@euphon.net, eblake@redhat.com,
- berrange@redhat.com, eduardo@habkost.net, dave@treblig.org, sw@weilnetz.de
-References: <20260113174824.464720-1-jhkim@linux.ibm.com>
- <20260113174824.464720-4-jhkim@linux.ibm.com> <87qzrs4oud.fsf@pond.sub.org>
-Content-Language: en-US
-From: JAEHOON KIM <jhkim@linux.ibm.com>
-In-Reply-To: <87qzrs4oud.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: YhPjKT2Kmku-ZshdQGHla_ZxMyF5_09k
-X-Proofpoint-ORIG-GUID: YhPjKT2Kmku-ZshdQGHla_ZxMyF5_09k
-X-Authority-Analysis: v=2.4 cv=TaibdBQh c=1 sm=1 tr=0 ts=696877a3 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=Pg_0jPdBt9vz6Qyl_R0A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE1MDAyOCBTYWx0ZWRfX65K1say45viX
- 6nUy6poU0cKaEHWt8DebPuQRMrcljLONxavMm3lg1LweoYijuYePV/OuG8j/uyOq4ZjXXtBtZub
- UaPzIuAPvzjrgQ3zCA6ISu5XUDhjSBiM1eYa+RRxw9BsYqGJYiFeDS1nqcgtqKvtJqX4YsORYSz
- hq2bF0UgslxlJpZP4rLAGb303nrNRymbYfUSmNF6Li59+M46oawxTWnkDUIEYS/ApuUNhpCJgwr
- mrlwJSm7vcbp2cqWp6tTF0W9sLX+LcY3DB07SPAuB8XCdN4ezrLW1BpIj1fTzyXOE/wKE6ZfqU2
- W3p35KRTrvGiaiJ+Lxg+cAdHYZn03aDG9QZJ0i7VGAqXAR4ImIBgKvV9p74dBDQsoBygc+QLfzB
- 92E6n6j35tbJeE9cR5m22fnlnFcMgx2LqjYDSKrl+vKXd+8dfHamnT5BEwcjm6P4YCDGgWSHXJZ
- IyN0Ww3II9KBgwD0SQw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-15_01,2026-01-14_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 phishscore=0 impostorscore=0 bulkscore=0 clxscore=1015
- suspectscore=0 priorityscore=1501 malwarescore=0 lowpriorityscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2512120000
- definitions=main-2601150028
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=jhkim@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-B4-Tracking: v=1; b=H4sIAGl9aGkC/3XM3wqCMByG4VuRHbexP7ZZR91HRKyfm67AyaYjE
+ e+9KUSedPh+fDwziiY4E9G5mFEwyUXnuxziUCBoddcY7OrciFN+ZJQrbH0Acw8wYskkqFIIJax
+ C+d8HY917s6633K2Lgw/TRie2rl/ltFMSwxQ/bCWpllwpLS8hNgQccWTEg39Nnmggzx6tZOI/h
+ jOxZ3hmWG0Y6KoEWf9nlmX5AE64Ox/2AAAA
+X-Change-ID: 20251027-force_rcu-616c743373f7
+To: qemu-devel@nongnu.org, Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+X-Mailer: b4 0.15-dev-179e8
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,84 +75,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/14/2026 1:48 AM, Markus Armbruster wrote:
-> Jaehoon Kim <jhkim@linux.ibm.com> writes:
->
->> Introduce a new poll-weight parameter for aio-poll. This parameter
->> controls how much the most recent event interval affects the next
->> polling duration. When set to 0, a default value of 2 is used, meaning
->> the current interval contributes roughly 25% to the calculation. Larger
->> values decrease the weight of the current interval, enabling more
->> gradual adjustments to polling duration.
->>
->> Signed-off-by: Jaehoon Kim <jhkim@linux.ibm.com>
-> [...]
->
->> diff --git a/qapi/misc.json b/qapi/misc.json
->> index 28c641fe2f..b21cc48a03 100644
->> --- a/qapi/misc.json
->> +++ b/qapi/misc.json
->> @@ -85,6 +85,11 @@
->>   # @poll-shrink: how many ns will be removed from polling time, 0 means
->>   #     that it's not configured (since 2.9)
->>   #
->> +# @poll-weight: the weight factor for adaptive polling.
->> +#     Determines how much the current event interval contributes to
->> +#     the next polling time calculation.  0 means that the default
->> +#     value is used.  (since 10.1)
-> When the default value is used, the actual value being used remains
-> hidden.  Why?
-Actually, I just followed the existing pattern of poll-grow, which also 
-defaults to a factor of 2 when set to 0.
-It wasn't my intention to hide the value; I kept this because the 
-previous API has been working fine without issues.
-If you think the actual value should be visible, I'll consider ways to 
-make it explicit in the next version.
->> +#
->>   # @aio-max-batch: maximum number of requests in a batch for the AIO
->>   #     engine, 0 means that the engine will use its default (since 6.1)
->>   #
->> @@ -96,6 +101,7 @@
->>              'poll-max-ns': 'int',
->>              'poll-grow': 'int',
->>              'poll-shrink': 'int',
->> +           'poll-weight': 'int',
->>              'aio-max-batch': 'int' } }
->>   
->>   ##
->> diff --git a/qapi/qom.json b/qapi/qom.json
->> index 6f5c9de0f0..d90823478d 100644
->> --- a/qapi/qom.json
->> +++ b/qapi/qom.json
->> @@ -606,6 +606,11 @@
->>   #     algorithm detects it is spending too long polling without
->>   #     encountering events.  0 selects a default behaviour (default: 0)
->>   #
->> +# @poll-weight: the weight factor for adaptive polling.
->> +#     Determines how much the current event interval contributes to
->> +#     the next polling time calculation.  0 selects a default
->> +#     behaviour (default: 0) since 10.1.
-> This leaves the actual default behavior unspecified.  Is this a good
-> idea?
-I agree that the documentation should be more explicit.
-I'll update it to clarify that the default factor is 2 and explain its 
-meaning.
->> +#
->>   # The @aio-max-batch option is available since 6.1.
->>   #
->>   # Since: 2.0
->> @@ -614,7 +619,8 @@
->>     'base': 'EventLoopBaseProperties',
->>     'data': { '*poll-max-ns': 'int',
->>               '*poll-grow': 'int',
->> -            '*poll-shrink': 'int' } }
->> +            '*poll-shrink': 'int',
->> +            '*poll-weight': 'int' } }
->>   
->>   ##
->>   # @MainLoopProperties:
-> [...]
->
->
+Unmapping a blob changes the memory map, which is protected with RCU.
+RCU is designed to minimize the read-side overhead at the cost of
+reclamation delay. While this design usually makes sense, it is
+problematic when unmapping a blob because the operation blocks all
+virtio-gpu commands and causes perceivable disruption.
+
+Minimize such the disruption with force_rcu(), which minimizes the
+reclamation delay at the cost of a read-side overhead.
+
+Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+---
+Changes in v3:
+- Fix immediate timeout in qemu_futex_timedwait() for Windows.
+- Dropped patch "timer: Rename init_clocks() to qemu_clock_init()".
+- Link to v2: https://lore.kernel.org/qemu-devel/20251213-force_rcu-v2-0-1de1ca84c6d6@rsg.ci.i.u-tokyo.ac.jp
+
+Changes in v2:
+- Stopped overloading the call_rcu1() and force_rcu() notifications onto
+  one event. This fixes a deadlock after try_dequeue() caused by
+  incorrect masking of call_rcu1() notifications, and eliminates
+  spurious force quiescent states caused by being confused with a
+  call_rcu1() notification.
+  Tested-by: from the previous version was not collected because this
+  changes the logic significantly.
+- Merged the rcu_call_count and forced variables into one to avoid
+  the race between them that used to require a loop to resolve.
+- Aligned the type of the duration variable in qemu_futex_timedwait()
+  for Windows.
+- Fixed timespec of qemu_futex_timedwait() for 32-bit Linux.
+- Link to v1: https://lore.kernel.org/qemu-devel/20251029-force_rcu-v1-0-bf860a6277a6@rsg.ci.i.u-tokyo.ac.jp
+
+---
+Akihiko Odaki (5):
+      futex: Add qemu_futex_timedwait()
+      qemu-thread: Add qemu_event_timedwait()
+      rcu: Use call_rcu() in synchronize_rcu()
+      rcu: Wake the RCU thread when draining
+      virtio-gpu: Force RCU when unmapping blob
+
+ include/qemu/futex.h          | 36 +++++++++++++---
+ include/qemu/rcu.h            |  1 +
+ include/qemu/thread-posix.h   | 11 +++++
+ include/qemu/thread.h         |  8 +++-
+ hw/display/virtio-gpu-virgl.c |  1 +
+ util/event.c                  | 28 ++++++++++---
+ util/qemu-thread-posix.c      | 11 +----
+ util/rcu.c                    | 98 ++++++++++++++++++++++++-------------------
+ 8 files changed, 131 insertions(+), 63 deletions(-)
+---
+base-commit: fba5c49719875145f1dcb44fbe85f541a47805c6
+change-id: 20251027-force_rcu-616c743373f7
+
+Best regards,
+--  
+Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 
 
