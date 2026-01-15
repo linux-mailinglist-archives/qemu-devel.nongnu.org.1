@@ -2,95 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9B67D24F41
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 15:30:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9483D24F80
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 15:34:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgOJ8-0003ZA-RC; Thu, 15 Jan 2026 09:26:42 -0500
+	id 1vgOJa-0003bm-5U; Thu, 15 Jan 2026 09:27:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vgOJ7-0003Ym-HL
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 09:26:41 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vgOJS-0003ay-64
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 09:27:03 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vgOJ5-0004kk-27
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 09:26:41 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-47ee3a63300so9579455e9.2
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 06:26:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768487197; x=1769091997; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HdzmhiNbhCuoACAiWr3MI6gOjyxPmkl9tpbKx4JTUfE=;
- b=qhcZXwe6zwQZ7btnBzVbu1uvG/1ExAwqSm2n8KC5z4Dqgie1g4i3CiPhjEXrLc2qNb
- S5RfNWHI7qRwfEN+3llwFfi9dQWkRgARoiBATf1HWwynq8uBMPMZ2dyfjtiLeImSfjqg
- CrADsE9qnOxiaQ0eg0onymB/oQcO3Ots+Rjsw/IYasBRyqKojw5gW1CVIhDVTY/EW4ST
- P9vw1i6j9mN5oLkxSHCIWtE7pALPdVLH6i5ir+4fjCTtcGL8FWYGR4xtoMy0EzqlGjyz
- d3LBYQ/vCJJ1DaMFH2UgBBzXIhoXT1cKClb+2ZjcCbkiMjKrBuDYem77JaV9Il8TMq2A
- cMmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768487197; x=1769091997;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=HdzmhiNbhCuoACAiWr3MI6gOjyxPmkl9tpbKx4JTUfE=;
- b=t3DVPOt4oWMT5tbyFVijhIAtIgR57Uh0YhHW9IV6Uin1atFe+RFZRto7cjGadU1ve1
- JHJSMstPXI3fleH+aaceuQl/X6tQvO9+mmWfIIU2L2a65GiVbn3m5Nh8wgwlELRM1109
- pug6B/INoNIrmqbP6W72KPXPj98eWOTYJzMOrT3zq8XKfYX5NbKjuQm6/PITEiVKdC1V
- GgPqBF0V86ABg8sQNI0mjD+SDc/+5klHE5ewepsbzI/US3UGxiEvHkd10Kp/tTWvb+vm
- WUCY8nGM0vmt8Vsf5x4l3jAq1Bp9mQMJKe7dl9XFYoS0Xe3Ql4KbPmT1QFAZHQYG9pTQ
- WctQ==
-X-Gm-Message-State: AOJu0YwtATH0EUFGGl1VXOYmUblTa+UM3TZyEfhNo8pi5oBfIQPCz3LP
- IVxjRkdA1jEoIS/PTyEpqSkiDcBDmjrnwdHteYFuzdq0ZMqn4TVLhzDpvNisANJaZ+zhIs+63P+
- rp6Jl
-X-Gm-Gg: AY/fxX7jM1gzOlhKqytCbOYtC878H7a7cHy9evuQAxENtPGeGy8kim6LRvwJGVuAV2F
- uD59MAEwaTQlphrxhIWbRCgh0EkT+jCiaLNa460zsJ+rnbAK/F7jxDVQN17rw8d13LDUeV15pkM
- rMvPpUbvnI6QrNFF0Kq7ZOHKJhzCCilN616M7mrlBJHirYOBO4TADAPi9y9p6b5H37ivSiS4K6a
- QFigHEhqF636t47L9JRLWmEu3H7dkVkFz5gKDTY+DrL6h0vz3z6+2+uBlBwIULJ8us2O8JnFooO
- vDUPNvSfbHqBCl6ySEePefJANHqiWw8HDRR08L1jA9PwQCZd+6PDp5W622sfU+52vBVKudqw6Vx
- JEV3zUjM0aqfsyVNXPYbOwE4BIsw7giUzDEZV53KVLLCj+1WTrtP4H7SxI7a15oWNum/zR5ebDh
- HPS5TLC+bf6O/YwwSkBPOMHUeWlHuGBGgBFBY6N/pDrMpvu8e+PFps9LijFDhSE4jbN0kaiYzhP
- Yq/4k+y/lk0E9K2ClQyOBz1wIjdsvPCE+QoeW0YMIXnpw==
-X-Received: by 2002:a05:600c:548c:b0:477:fcb:2256 with SMTP id
- 5b1f17b1804b1-47ee3371876mr85492845e9.17.1768487197336; 
- Thu, 15 Jan 2026 06:26:37 -0800 (PST)
-Received: from mnementh.archaic.org.uk
- (f.7.f.1.7.5.e.f.f.f.c.5.d.8.2.4.0.0.0.0.0.d.1.0.0.b.8.0.1.0.0.2.ip6.arpa.
- [2001:8b0:1d0:0:428d:5cff:fe57:1f7f])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47f4b2672d6sm50759435e9.14.2026.01.15.06.26.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Jan 2026 06:26:36 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Alistair Francis <alistair@alistair23.me>,
- Zhang Chen <zhangckid@gmail.com>, Li Zhijian <lizhijian@fujitsu.com>
-Subject: [PATCH 4/4] qemu-options.hx: Improve formatting in colo-compare docs
-Date: Thu, 15 Jan 2026 14:26:29 +0000
-Message-ID: <20260115142629.665319-5-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260115142629.665319-1-peter.maydell@linaro.org>
-References: <20260115142629.665319-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vgOJP-0004nG-BE
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 09:27:01 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 178565BCEB;
+ Thu, 15 Jan 2026 14:26:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1768487217; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=lnxjG/P5HdyOusBN3EXBIdVb+5bWCjOooGjKUoMJQ6w=;
+ b=r6TMBL/cxIYtE8cpk9GRS/gdT8LUnWNxlTTi1GH4ychsWazcq5cNM1poQpHXQQ48dq4Ix/
+ Phssi0r/3zzTT5Ise3mqodCabAsDssKFrF8Y4kj4Nbx1E4hoMqNVyFcUd3y/EPGNVuJakI
+ SHBTbVBFHguBLdPozFfnLTK5hrXwbVQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1768487217;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=lnxjG/P5HdyOusBN3EXBIdVb+5bWCjOooGjKUoMJQ6w=;
+ b=f0YxrrT7LZZJYUsVZQtw2yjgPKUFlGU9+g0LzYLDf3x7pqcnucTPTxwVno9ZJ/9i4ARglM
+ x1fAxvjyckatA6CA==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b="r6TMBL/c";
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=f0YxrrT7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1768487217; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=lnxjG/P5HdyOusBN3EXBIdVb+5bWCjOooGjKUoMJQ6w=;
+ b=r6TMBL/cxIYtE8cpk9GRS/gdT8LUnWNxlTTi1GH4ychsWazcq5cNM1poQpHXQQ48dq4Ix/
+ Phssi0r/3zzTT5Ise3mqodCabAsDssKFrF8Y4kj4Nbx1E4hoMqNVyFcUd3y/EPGNVuJakI
+ SHBTbVBFHguBLdPozFfnLTK5hrXwbVQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1768487217;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=lnxjG/P5HdyOusBN3EXBIdVb+5bWCjOooGjKUoMJQ6w=;
+ b=f0YxrrT7LZZJYUsVZQtw2yjgPKUFlGU9+g0LzYLDf3x7pqcnucTPTxwVno9ZJ/9i4ARglM
+ x1fAxvjyckatA6CA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8BBCF3EA63;
+ Thu, 15 Jan 2026 14:26:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id AjRKEzD5aGkQZQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 15 Jan 2026 14:26:56 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, armbru@redhat.com
+Subject: Re: [PATCH 1/5] migration: Use QAPI_CLONE_MEMBERS in
+ migrate_params_test_apply
+In-Reply-To: <87h5sonkdu.fsf@suse.de>
+References: <20260114132309.5832-1-farosas@suse.de>
+ <20260114132309.5832-2-farosas@suse.de> <aWex7yI4jIoYXEjp@x1.local>
+ <87h5sonkdu.fsf@suse.de>
+Date: Thu, 15 Jan 2026 11:26:53 -0300
+Message-ID: <87v7h3lzo2.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; FUZZY_RATELIMITED(0.00)[rspamd.com];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+]; MISSING_XM_UA(0.00)[];
+ TO_DN_SOME(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ MID_RHS_MATCH_FROM(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ RCPT_COUNT_THREE(0.00)[3]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim,suse.de:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Score: -4.51
+X-Rspamd-Queue-Id: 178565BCEB
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,80 +125,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The colo-compare option documentation has some formatting issues: it
-uses a "@var{...}" syntax which is not used elsewhere and which is
-rendered literally into the HTML documentation.  The bare "@" sign
-also results in an unintended 'mailto:' hyperlink.
+Fabiano Rosas <farosas@suse.de> writes:
 
-Rewrite this into the style we seem to use most in the rest of
-the command line options, where an option which takes an argument
-is written as "my-option=<thing>".
+> Peter Xu <peterx@redhat.com> writes:
+>
+>> On Wed, Jan 14, 2026 at 10:23:05AM -0300, Fabiano Rosas wrote:
+>>> Use QAPI_CLONE_MEMBERS instead of making an assignment. The QAPI
+>>> method makes the handling of the TLS strings more intuitive because it
+>>> clones them as well.
+>>
+>> The cover letter said this patch didn't change, but it has changed at least
+>> somewhere.. anyway, I'm re-reviewing every line here.
+>>
+>
+> Sorry, I forgot I had already addressed your review comments from the
+> other series in this patch.
+>
+>>> 
+>>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>>> ---
+>>>  migration/options.c | 32 ++++++++++++++++++--------------
+>>>  1 file changed, 18 insertions(+), 14 deletions(-)
+>>> 
+>>> diff --git a/migration/options.c b/migration/options.c
+>>> index 9a5a39c886..994e1cc5ac 100644
+>>> --- a/migration/options.c
+>>> +++ b/migration/options.c
+>>> @@ -1264,9 +1264,9 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
+>>>  static void migrate_params_test_apply(MigrationParameters *params,
+>>>                                        MigrationParameters *dest)
+>>>  {
+>>> -    *dest = migrate_get_current()->parameters;
+>>> +    MigrationState *s = migrate_get_current();
+>>>  
+>>> -    /* TODO use QAPI_CLONE() instead of duplicating it inline */
+>>> +    QAPI_CLONE_MEMBERS(MigrationParameters, dest, &s->parameters);
+>>>  
+>>>      if (params->has_throttle_trigger_threshold) {
+>>>          dest->throttle_trigger_threshold = params->throttle_trigger_threshold;
+>>> @@ -1285,24 +1285,18 @@ static void migrate_params_test_apply(MigrationParameters *params,
+>>>      }
+>>>  
+>>>      if (params->tls_creds) {
+>>> +        qapi_free_StrOrNull(dest->tls_creds);
+>>>          dest->tls_creds = QAPI_CLONE(StrOrNull, params->tls_creds);
+>>> -    } else {
+>>> -        /* clear the reference, it's owned by s->parameters */
+>>> -        dest->tls_creds = NULL;
+>>>      }
+>>>  
+>>>      if (params->tls_hostname) {
+>>> +        qapi_free_StrOrNull(dest->tls_hostname);
+>>>          dest->tls_hostname = QAPI_CLONE(StrOrNull, params->tls_hostname);
+>>> -    } else {
+>>> -        /* clear the reference, it's owned by s->parameters */
+>>> -        dest->tls_hostname = NULL;
+>>>      }
+>>>  
+>>>      if (params->tls_authz) {
+>>> +        qapi_free_StrOrNull(dest->tls_authz);
+>>>          dest->tls_authz = QAPI_CLONE(StrOrNull, params->tls_authz);
+>>> -    } else {
+>>> -        /* clear the reference, it's owned by s->parameters */
+>>> -        dest->tls_authz = NULL;
+>>>      }
+>>>  
+>>>      if (params->has_max_bandwidth) {
+>>> @@ -1359,8 +1353,9 @@ static void migrate_params_test_apply(MigrationParameters *params,
+>>>      }
+>>>  
+>>>      if (params->has_block_bitmap_mapping) {
+>>> -        dest->has_block_bitmap_mapping = true;
+>>> -        dest->block_bitmap_mapping = params->block_bitmap_mapping;
+>>> +        qapi_free_BitmapMigrationNodeAliasList(dest->block_bitmap_mapping);
+>>> +        dest->block_bitmap_mapping = QAPI_CLONE(BitmapMigrationNodeAliasList,
+>>> +                                                params->block_bitmap_mapping);
+>>>      }
+>>>  
+>>>      if (params->has_x_vcpu_dirty_limit_period) {
+>>> @@ -1384,7 +1379,8 @@ static void migrate_params_test_apply(MigrationParameters *params,
+>>>      }
+>>>  
+>>>      if (params->has_cpr_exec_command) {
+>>> -        dest->cpr_exec_command = params->cpr_exec_command;
+>>> +        qapi_free_strList(dest->cpr_exec_command);
+>>> +        dest->cpr_exec_command = QAPI_CLONE(strList, params->cpr_exec_command);
+>>>      }
+>>>  }
+>>
+>> So we have 5 special cases here, (1-3) for tls, (4) for block bitmap, (5)
+>> for cpr-exec-cmd.  All good.
+>>
+>>>  
+>>> @@ -1535,6 +1531,14 @@ void qmp_migrate_set_parameters(MigrationParameters *params, Error **errp)
+>>>      migrate_params_test_apply(params, &tmp);
+>>>  
+>>>      if (migrate_params_check(&tmp, errp)) {
+>>> +        /*
+>>> +         * Mark block_bitmap_mapping as present now while we have the
+>>> +         * params structure with the user input around.
+>>> +         */
+>>> +        if (params->has_block_bitmap_mapping) {
+>>> +            migrate_get_current()->has_block_bitmap_mapping = true;
+>>> +        }
+>>
+>> Now I'm looking at the lastest master branch, we have:
+>>
+>> migrate_params_apply():
+>>     if (params->has_block_bitmap_mapping) {
+>>         qapi_free_BitmapMigrationNodeAliasList(
+>>             s->parameters.block_bitmap_mapping);
+>>
+>>         s->has_block_bitmap_mapping = true;
+>>         s->parameters.block_bitmap_mapping =
+>>             QAPI_CLONE(BitmapMigrationNodeAliasList,
+>>                        params->block_bitmap_mapping);
+>>     }
+>>
+>> Do we really need above change?
+>>
+>
+> It should be in the next patch.
+>
+>>> +
+>>>          migrate_params_apply(params);
+>>>          migrate_post_update_params(params, errp);
+>>>      }
+>>
+>> The other thing is, when reaching here, after we have all 5 special cases
+>> dynamically allocated, do we need to always free it?
+>>
+>> We used to do it for the initial (1-3) for tls (in migrate_tls_opts_free()).
+>> I think we should also free (4,5) now from &tmp?
+>>
+>
+> Yes!
+>
 
-We take the opportunity to make the documentation a little clearer
-by splitting up the long paragraph and using preformatted-text
-markup for the names of the suboptions.
+Although, for CPR, the ASAN, valgrind, etc tools will never catch the
+leak because of the execvp(). It took me a while to figure that one.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
-As I don't know anything about colo-compare, I may have
-accidentally introduced errors here; please check.
----
- qemu-options.hx | 41 +++++++++++++++++++++++++----------------
- 1 file changed, 25 insertions(+), 16 deletions(-)
-
-diff --git a/qemu-options.hx b/qemu-options.hx
-index aca9dba8b9..3883afb484 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -5972,22 +5972,31 @@ SRST
-         stored. The file format is libpcap, so it can be analyzed with
-         tools such as tcpdump or Wireshark.
- 
--    ``-object colo-compare,id=id,primary_in=chardevid,secondary_in=chardevid,outdev=chardevid,iothread=id[,vnet_hdr_support][,notify_dev=id][,compare_timeout=@var{ms}][,expired_scan_cycle=@var{ms}][,max_queue_size=@var{size}]``
--        Colo-compare gets packet from primary\_in chardevid and
--        secondary\_in, then compare whether the payload of primary packet
--        and secondary packet are the same. If same, it will output
--        primary packet to out\_dev, else it will notify COLO-framework to do
--        checkpoint and send primary packet to out\_dev. In order to
--        improve efficiency, we need to put the task of comparison in
--        another iothread. If it has the vnet\_hdr\_support flag,
--        colo compare will send/recv packet with vnet\_hdr\_len.
--        The compare\_timeout=@var{ms} determines the maximum time of the
--        colo-compare hold the packet. The expired\_scan\_cycle=@var{ms}
--        is to set the period of scanning expired primary node network packets.
--        The max\_queue\_size=@var{size} is to set the max compare queue
--        size depend on user environment.
--        If user want to use Xen COLO, need to add the notify\_dev to
--        notify Xen colo-frame to do checkpoint.
-+    ``-object colo-compare,id=<id>,primary_in=<chardevid>,secondary_in=<chardevid>,outdev=<chardevid>,iothread=<id>[,vnet_hdr_support][,notify_dev=<id>][,compare_timeout=<time_ms>][,expired_scan_cycle=<time_ms>][,max_queue_size=<maxsize>]``
-+        Colo-compare gets packets from the chardev backends specified by
-+        ``primary_in`` and ``secondary_in``, and compares whether the payloads
-+        of the primary packet and the secondary packet are the same.
-+        If they match, it will output the primary packet to the chardev
-+        backend specified by ``outdev``; otherwise it will notify COLO-framework
-+        to do a checkpoint and send the primary packet to ``outdev``.
-+
-+        In order to improve efficiency, we need to put the task of comparison in
-+        another iothread; the ``iothread`` option specifies that iothread object
-+        (which your commandline should create).
-+
-+        The ``vnet_hdr_support`` flag tells
-+        colo compare to pass the vnet header length when it sends and receives packets.
-+
-+        The ``compare_timeout`` option sets the maximum time that
-+        colo-compare will hold the packet for, in ms.
-+
-+        The ``expired_scan_cycle`` option sets the period of scanning expired
-+        primary node network packets, in ms.
-+
-+        The ``max_queue_size`` option sets the max compare queue size.
-+
-+        If you want to use Xen COLO, you need to specify ``notify_dev`` to
-+        tell colo-compare how to notify Xen colo-frame to do a checkpoint.
- 
-         COLO-compare must be used with the help of filter-mirror,
-         filter-redirector and filter-rewriter.
--- 
-2.47.3
-
+>>> -- 
+>>> 2.51.0
+>>> 
 
