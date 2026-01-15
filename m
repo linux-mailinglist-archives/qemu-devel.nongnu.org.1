@@ -2,93 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09DABD25D1C
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 17:47:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDA9ED25D43
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 17:48:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgQUg-0005NU-Gi; Thu, 15 Jan 2026 11:46:48 -0500
+	id 1vgQWM-0006dc-5L; Thu, 15 Jan 2026 11:48:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1vgQSx-0004mV-02
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 11:45:02 -0500
-Received: from mail-qt1-x82a.google.com ([2607:f8b0:4864:20::82a])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vgQV8-0005vt-Nj
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 11:47:17 -0500
+Received: from mail-yx1-xb12a.google.com ([2607:f8b0:4864:20::b12a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1vgQSt-0001sK-Qr
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 11:44:58 -0500
-Received: by mail-qt1-x82a.google.com with SMTP id
- d75a77b69052e-501c6665144so11042701cf.0
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 08:44:55 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vgQV4-0002sC-UP
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 11:47:13 -0500
+Received: by mail-yx1-xb12a.google.com with SMTP id
+ 956f58d0204a3-64472ea7d18so829185d50.2
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 08:47:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1768495494; x=1769100294; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=2ux+VE/+K2Vucfmlu4qwytpG/PYt/dUmyBefIeBanvM=;
- b=e7HcBJCNZAIKL20euqLNjkM0e24eLyY29xc6qk4XvcT1h14NY8boUZqXE9cOQTpXmI
- 0WsUyUREMvzTH2TemxmG49RSxFE7S84CwUYqvHey7ylRMQwWSEVwi8gt+JylQJtKeWFe
- ASBnxh3XUIXoJWcQ+KUDu8ngTxel1UTSRuuwRoRLdc7ia4pjWeO7wJxjJeITWq9dXZje
- ua8y2DEh/yHCS9sZ0NrM3i0VM2oqhKBu+y6058AlCvjaWnTgrRt776MaFPCO8C1o88AA
- cxBhehmSXe4jpqY/KHKoFMpoNa8iNlohoxtuhtko6vF+mnEVUfha2oCw9Ay19it0LSnj
- B+Gg==
+ d=linaro.org; s=google; t=1768495629; x=1769100429; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=dLpB9xpODEAueR62n/GkI0QwFHxW938HRna5py6VUnI=;
+ b=x4dSEW6O9WqGFPq2IFNaurL5hJFGnNSejRth5cx9gDnj+b5k545XIQTY1GcTbl6wOj
+ a0+Y3QjmA2MH1q0dLrRc3txAr0i1Q9i/z9CrTXOHIiFgMpZV8XAjKh3MpwllzBt9qJ92
+ BcdfjQCZIWiFWTY/ESskWxTYbHvSDqNPTfj3Bb2wIJr4VEDdvaUVjmYIxzSEyMz3CjfZ
+ xM05uofF9KlnHq68LF6l3myAcs1mxe/Cf1HK0Z0QWAByup06/QhdWeUxdaxJBwWWN3eN
+ 046RTIF/bD14LBaQao+JQyFLHCVZRlZ3cDSxxvoTvvEZrp1PcD+in2z31t5f1SCpS0eL
+ C5UQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768495494; x=1769100294;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2ux+VE/+K2Vucfmlu4qwytpG/PYt/dUmyBefIeBanvM=;
- b=di9fOweOM+ksVJmTc54c1KxOUFvxZikJh0BSdhlCfkti5EFPn8VLHnBpMOfmHP4lAb
- IEOPTzYdLItSKZaSLNBIc/TAXzNRvuH+sa2DP8bZt+rXEbrznIC5v79BGIb+EJDstRFv
- 6yt6apP6FrbOM/fQTzCvIUUlBOmxPzyVL2L42umO85oom5o3xrX2bh7jdeP59LY7Catp
- YKVOopn5/ipslj5P7kwRr4X8sP+4mMCDqYjrd/Tt7xUcULiRty3sHCXuxKQu/lAmXCs1
- m7BOg1488eOtStR5QBvhdqGRhiVMrBisbfI81gPeSgdviRvndnqB1BMRBhwoAEifdMvn
- 0rOA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXj9yB3niddJeuSiWP5LSZRrVEfgOnDAe4yE5gTjUk09T5K358gZTEK86gziK1drwhlmJg9ldMV8aEk@nongnu.org
-X-Gm-Message-State: AOJu0Yy0pLcK/mYIf5u101GjLP1EHraR/aWULqB8mys5nSYe1LmnAIVA
- 3G/ea7BUXbmocEuBgvLEDV5SOl1W9XANS1rePYFor4XHl+Oqp5yjo0pz4Dx10fUg1w4=
-X-Gm-Gg: AY/fxX6ER+GAvhRJybt/1+Zd/hxXeVBp6ErB/xAnK+WC7XKcq+6Hb50nlQbcSSh39HG
- 6qMGK+PnzC0pk1P9qiIgBqH9TiU/ldV3/i0zahnKPfinWgn8Et4T1FFX4hAnd5s87/E3QA4WSRw
- CCessDYZPY9F86TGiUpcbvekcgmheVxGftGxMSsHn8RoG4Q6P8nFrs8G3y2f3pAFzqCn+MqhpWe
- yDqk81qx7pFh3GsSM/13zDhtkmuLq22X1PwdJynNSyHnnZ1+5p1VD2YXtaewl2UNDlpvI1AexrV
- rQC05GOtQdD0maigEvd8bSSAs9k6aTYd+6YnJFJDGY4sDEyQyB2Oot8DOIN3Z6KydD0esefvxYJ
- o6GAF73sSKnkmJG2c2MSXnq365mefUGzVo8Diar5/ZwQTuwfh6vvIFxOntPVOLZikVb9Q9HmkRH
- Ur1wv1J2IkFb5E+eyjgVen4eX0n9njnWDoce02uJQR
-X-Received: by 2002:ac8:5d48:0:b0:4f3:5889:2a79 with SMTP id
- d75a77b69052e-502a17e09d7mr805881cf.81.1768495494296; 
- Thu, 15 Jan 2026 08:44:54 -0800 (PST)
-Received: from [192.168.68.103] ([152.234.121.223])
- by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-50148dd75d4sm40466851cf.2.2026.01.15.08.44.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 15 Jan 2026 08:44:53 -0800 (PST)
-Message-ID: <9b4c0055-bc09-44d3-a1ac-2817e1182b3b@ventanamicro.com>
-Date: Thu, 15 Jan 2026 13:44:49 -0300
+ d=1e100.net; s=20230601; t=1768495629; x=1769100429;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=dLpB9xpODEAueR62n/GkI0QwFHxW938HRna5py6VUnI=;
+ b=j2Dmfy8f/t9ow7nO4n9bL3k/+ZetqUxFhGrzhYYCsp2sTy6L35+Liv08AAfVoaqMmj
+ sm5gA2nl23YJJUaNAL4nx2myZ79YQz3OCeeFKADlNIKee4RREhu7nvxh06CvCHGOUlsh
+ VS4So8vzsJ4PImuvhYIQL81pS8fDD8e2wRPCLy4m23ak0IlZ2vcu3OGLRApRRks8Qx92
+ zTQDJOLkLXa1gFRnCcJgnZzC9nbWSBiO1DoTxZChNjfFydXlJ1kWtdDmr/Bl4ibGxB2S
+ 2gheuhnJadUvRwVrEwlwXSZQN3bJAWlyUQatLfQkMcyUzya/3oehKZcF2WVw/3NK88Rt
+ rDFw==
+X-Gm-Message-State: AOJu0Yy1LVgiZ2Bt/uGLbYj1fuEBNLyz2nRNHcazfcm/a211coQrFtCp
+ uEKAOpr9okcGzdeGlw5ny1FQ9sMnCEW231m8HhnZY7OHI1RGmFUtrL1oFOO6C0YHDHtbcSPA970
+ NQxLi7JpD4uyM512vztTsi3MaN1cqlufsu4W3miQgPg==
+X-Gm-Gg: AY/fxX5qwUXO4Tx19LnegbT/kqquLwto8vAGS6XYxVKwEMCwDVXhD8ek0iloQOEUpxe
+ jQkVnd1oP3CmQHDNNCFwn5lNUTFPBrPnXDRyS5WM+XWjtcmi33JMbLRwO30tCyQZo+v4xZPzcb4
+ 18bd2fmVJascDljuCwhSRI6ICsQ72ZvjhYRDj3bqEZXBBIUDD7iqzScviGMQUv52DR01phDxpKl
+ 4lwaM0GkCCt0+NZVX4/WbQXjIhE8KaZ1vqY+OJ7MLG1JH+z+slxmOOjBB85I0IfsjYlz9wWrSu+
+ gJ+g8BccmVBfH2UcgXjFwk0=
+X-Received: by 2002:a53:ac84:0:b0:640:b501:d7dc with SMTP id
+ 956f58d0204a3-6491649f7fbmr291748d50.23.1768495629440; Thu, 15 Jan 2026
+ 08:47:09 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] hw/riscv/boot: Warn if a ELF format file is loaded as
- a binary
-To: Joel Stanley <joel@jms.id.au>, Alistair Francis
- <alistair.francis@wdc.com>, qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, Weiwei Li <liwei1518@gmail.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Vijai Kumar K <vijai@behindbytes.com>, Ran Wang <wangran@bosc.ac.cn>,
- Michael Ellerman <mpe@oss.tenstorrent.com>,
- Joel Stanley <jms@oss.tenstorrent.com>,
- Nick Piggin <npiggin@oss.tenstorrent.com>,
- Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>, qemu-riscv@nongnu.org
-References: <20260109131657.396794-1-joel@jms.id.au>
- <20260109131657.396794-4-joel@jms.id.au>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Content-Language: en-US
-In-Reply-To: <20260109131657.396794-4-joel@jms.id.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82a;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-qt1-x82a.google.com
+References: <20260109123211.368869-1-joel@jms.id.au>
+In-Reply-To: <20260109123211.368869-1-joel@jms.id.au>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 15 Jan 2026 16:46:56 +0000
+X-Gm-Features: AZwV_Qg5__UKLyEP0MJ57qQ8O8hekEzAooy70ZwpURjy0r-AltrNLHYyTBx6Yyg
+Message-ID: <CAFEAcA9JW+1f+mRKXtFoFwGUKzBM0mypjMFc5ToukRyKqCWy0Q@mail.gmail.com>
+Subject: Re: [PATCH] hw/i2c: Add designware i2c controller
+To: Joel Stanley <joel@jms.id.au>
+Cc: qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Chris Rauer <crauer@google.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-riscv@nongnu.org,
+ Hao Wu <wuhaotsh@google.com>, AlanoSong@163.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b12a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb12a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,70 +94,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 1/9/2026 10:16 AM, Joel Stanley wrote:
-> From: Nicholas Piggin <npiggin@gmail.com>
-> 
-> It is possible that an ELF file can not be loaded, in that
-> case the loader falls back to loading the file as a binary
-> blob. Print a warning in this case because it is likely that
-> it is not intended.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+On Fri, 9 Jan 2026 at 12:33, Joel Stanley <joel@jms.id.au> wrote:
+>
+> From: Chris Rauer <crauer@google.com>
+>
+> Reviewed-by: Hao Wu <wuhaotsh@google.com>
+> Signed-off-by: Chris Rauer <crauer@google.com>
+> Link: https://lore.kernel.org/qemu-devel/20220110214755.810343-2-venture@google.com
+> [jms: rebase and minor build fixes for class_init and reset callback]
 > Signed-off-by: Joel Stanley <joel@jms.id.au>
 > ---
+> This is a re-submission of the model with Chris' permission, with a
+> light touch of updates to make it build with qemu master.
+>
+> It will be used by the Tenstorrent Atlantis machine, which will include
+> a functional test for i2c devices attached to the controller.
+>
+> Daniel suggested that Alistair would take it through the riscv tree as
+> a (soft) pre-req for the Atlantis machine.
 
+Hi -- what relation does this model have to the
+patch posted by Alano Song a few days earlier?
+ https://lore.kernel.org/qemu-devel/20260106131253.16192-1-AlanoSong@163.com/
+Are these independent re-implementations? Do we
+have any particular reason to prefer one over the other?
 
-Reviewed-by: Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>
-
->   hw/riscv/boot.c | 23 +++++++++++++++++++----
->   1 file changed, 19 insertions(+), 4 deletions(-)
-> 
-> diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
-> index f3857e984240..3ea95c175c14 100644
-> --- a/hw/riscv/boot.c
-> +++ b/hw/riscv/boot.c
-> @@ -179,13 +179,27 @@ hwaddr riscv_load_firmware(MachineState *machine,
->   
->       g_assert(firmware_filename != NULL);
->   
-> -    if (load_elf_ram_sym(firmware_filename, NULL, NULL, NULL,
-> -                         &firmware_entry, NULL, &firmware_end, NULL,
-> -                         0, EM_RISCV, 1, 0, NULL, true, sym_cb) > 0) {
-> +    firmware_size = load_elf_ram_sym(firmware_filename, NULL, NULL, NULL,
-> +                                     &firmware_entry, NULL, &firmware_end,
-> +                                     NULL, 0, EM_RISCV, 1, 0, NULL, false,
-> +                                     sym_cb);
-> +    if (firmware_size > 0) {
->           *firmware_load_addr = firmware_entry;
->           return firmware_end;
->       }
->   
-> +    if (firmware_size != ELF_LOAD_NOT_ELF) {
-> +        /*
-> +         * If the user specified an ELF format firmware that could not be
-> +         * loaded as an ELF, it's possible that loading it as a binary is
-> +         * not what was intended.
-> +         */
-> +        warn_report("could not load ELF format firmware '%s' (%s). "
-> +                    "Attempting to load as binary.",
-> +                    firmware_filename,
-> +                    load_elf_strerror(firmware_size));
-> +    }
-> +
->       firmware_size = load_image_targphys_as(firmware_filename,
->                                              *firmware_load_addr,
->                                              mem_size, NULL,
-> @@ -195,7 +209,8 @@ hwaddr riscv_load_firmware(MachineState *machine,
->           return *firmware_load_addr + firmware_size;
->       }
->   
-> -    error_report("could not load firmware '%s'", firmware_filename);
-> +    error_report("could not load firmware '%s': %s", firmware_filename,
-> +                 load_elf_strerror(firmware_size));
->       exit(1);
->   }
->   
-
+thanks
+-- PMM
 
