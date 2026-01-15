@@ -2,62 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC5B0D23379
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 09:43:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E92D22FE7
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 09:04:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgIw4-0004U8-AK; Thu, 15 Jan 2026 03:42:32 -0500
+	id 1vgIJl-0007VR-7F; Thu, 15 Jan 2026 03:02:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <emckean@protonmail.com>)
- id 1vgIDz-00059d-Hx; Thu, 15 Jan 2026 02:56:59 -0500
-Received: from mail-0701.mail-europe.com ([51.83.17.38]
- helo=mail-07.mail-europe.com)
+ (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
+ id 1vgIJh-0007V7-Uu; Thu, 15 Jan 2026 03:02:53 -0500
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <emckean@protonmail.com>)
- id 1vgIDx-0002ue-Pe; Thu, 15 Jan 2026 02:56:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
- s=protonmail3; t=1768463810; x=1768723010;
- bh=fqmesBnwB+wTVZRd+/9qpEYTfuDDmVjMJOMhDs00iSQ=;
- h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
- Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
- Message-ID:BIMI-Selector;
- b=BkMieD2ZCagwwpQcuDvpMPaDfma8c1lib909+99rNmR6o8x5U1GBzSwavL3KQNyN+
- IKW98mxQOA9L+GdM756RR9HYufH40XOkw3GaytK4JOGdnBFrm+80X/Yc11uCAXAzIg
- ZhZLmmlbWmLSKTPMj4OW7dHEVfI9/zHhfS3isSx3fA59BFv/LQ2Dafy0+esJ5cMxuF
- v5vw/yOAKz5jOVjNoW6+F07ngqxeWhmJMgMxJG3brROU4QqmjGY3x4r3A94TRTrNNE
- 5fBWG5q+Zrz02ELBqk5/HAph5LyjxJUMJOXixSR/tMq38JotF4CacQBQ/OaZ/SDCdO
- 0R+09yXe26LDA==
-Date: Thu, 15 Jan 2026 07:56:45 +0000
-To: Peter Maydell <peter.maydell@linaro.org>
-From: e <emckean@protonmail.com>
-Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org
-Subject: Re: [PATCH qemu] hw/arm/max78000: Fix num-irq to match hardware
- specification
-Message-ID: <DUWQ5Ve-tVEHGZDWH-XpmErxJDu5_tIsPEcYNxE4YX1w1u_skMBv2xWS9SIiEQoLlFXH11WuMIinhvXQaWcdnGSdpMc60Ea0Dm3i9lTaxCg=@protonmail.com>
-In-Reply-To: <CAFEAcA_YkEVkm_6ihHHrDv43wAEw2qceBWW2xHjZdQzW0H4KSg@mail.gmail.com>
-References: <176663430090.23028.16926971585326050904-0@git.sr.ht>
- <CAFEAcA_YkEVkm_6ihHHrDv43wAEw2qceBWW2xHjZdQzW0H4KSg@mail.gmail.com>
-Feedback-ID: 173361351:user:proton
-X-Pm-Message-ID: 14015f9d8a2588b0c51f860050499871cf9f5b74
+ (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
+ id 1vgIJf-0003nO-H2; Thu, 15 Jan 2026 03:02:53 -0500
+Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:5c05:0:640:ff67:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 40D30C01FF;
+ Thu, 15 Jan 2026 11:02:44 +0300 (MSK)
+Received: from [IPV6:2a02:6bf:8080:973::1:c] (unknown [2a02:6bf:8080:973::1:c])
+ by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id e2QOZR0AtOs0-G2hSGKBs; Thu, 15 Jan 2026 11:02:43 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1768464163;
+ bh=ZUJZI7SQZpwpRWo/U9YelphDIPCuoS/LEwjSNozNdgk=;
+ h=In-Reply-To:Cc:Date:References:To:Subject:Message-ID:From;
+ b=PPtnS+CdJuMoC003CD+fY8B9H9EzgyReivy2Rg1h8cts1Brp/FJJWYqUSR/sDn2FT
+ 5L6fk2ZUHXfEhWdrrJ0SlQV9Z6fKAr/fzcZDWY+5N5YUd0XJmmGgV+PihNeGZwDjGf
+ 1Djvb/+vtWiFiqcHDFZj07gVYjK4lU65D2EcOx18=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Content-Type: multipart/alternative;
+ boundary="------------JRS3MVlEFliYQpBjkHu5GDll"
+Message-ID: <20b51375-fbb5-47d4-a77a-1baf04fa037b@yandex-team.ru>
+Date: Thu, 15 Jan 2026 13:02:40 +0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: softfail client-ip=51.83.17.38;
- envelope-from=emckean@protonmail.com; helo=mail-07.mail-europe.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 5/5] vhost-user-blk: support inter-host inflight
+ migration
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Zhenwei Pi <pizhenwei@bytedance.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Raphael Norwitz <raphael@enfabrica.net>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, mzamazal@redhat.com,
+ Fabiano Rosas <farosas@suse.de>, qemu-block@nongnu.org,
+ virtio-fs@lists.linux.dev, "yc-core@yandex-team.ru"
+ <yc-core@yandex-team.ru>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+References: <20260113095813.134810-1-dtalexundeer@yandex-team.ru>
+ <20260113095813.134810-6-dtalexundeer@yandex-team.ru>
+ <aWeLcDtZyRpk81W6@x1.local>
+Content-Language: en-US
+From: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
+In-Reply-To: <aWeLcDtZyRpk81W6@x1.local>
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=dtalexundeer@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_SOFTFAIL=0.665 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 15 Jan 2026 03:42:30 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: qemu development <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -69,83 +85,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I appreciate the detailed reply and breakdown. Apologies for the lack of du=
-e diligence on the previous discussion. I do not have the hardware with me =
-currently but will confirm the real number of external interrupts in a few =
-months when I do again.
+This is a multi-part message in MIME format.
+--------------JRS3MVlEFliYQpBjkHu5GDll
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-- Ethan
 
-On Tuesday, January 13th, 2026 at 1:19 AM, Peter Maydell <peter.maydell@lin=
-aro.org> wrote:
+On 1/14/26 17:26, Peter Xu wrote:
+>> +}
+>> +
+>> +static const VMStateDescription vmstate_vhost_user_blk_inflight = {
+>> +    .name = "vhost-user-blk/inflight",
+>> +    .version_id = 1,
+>> +    .needed = vhost_user_blk_inflight_needed,
+>> +    .fields = (const VMStateField[]) {
+>> +        VMSTATE_VHOST_INFLIGHT_REGION(inflight, VHostUserBlk),
+> One other trivial nitpick while glimpsing over the patch: should we move
+> the macro definition from previous patch to this one, where it is used?
+Thanks for reply! I think you right, I'll move this macro.
+>
+>> +        VMSTATE_END_OF_LIST()
+>> +    },
+>> +};
+>> +
+>>   static bool vhost_user_blk_pre_incoming(void *opaque, Error **errp)
+>>   {
+>>       VHostUserBlk *s = VHOST_USER_BLK(opaque);
+>> @@ -678,6 +700,10 @@ static const VMStateDescription vmstate_vhost_user_blk = {
+>>           VMSTATE_VIRTIO_DEVICE,
+>>           VMSTATE_END_OF_LIST()
+>>       },
+>> +    .subsections = (const VMStateDescription * const []) {
+>> +        &vmstate_vhost_user_blk_inflight,
+>> +        NULL
+>> +    }
+>>   };
+>>   
+>>   static bool vhost_user_needed(void *opaque)
+>> @@ -751,6 +777,8 @@ static const Property vhost_user_blk_properties[] = {
+>>                         VIRTIO_BLK_F_WRITE_ZEROES, true),
+>>       DEFINE_PROP_BOOL("skip-get-vring-base-on-force-shutdown", VHostUserBlk,
+>>                        skip_get_vring_base_on_force_shutdown, false),
+>> +    DEFINE_PROP_BOOL("inflight-migration", VHostUserBlk,
+>> +                     inflight_migration, false),
+>>   };
+>>   
+>>   static void vhost_user_blk_class_init(ObjectClass *klass, const void *data)
+>> diff --git a/include/hw/virtio/vhost-user-blk.h b/include/hw/virtio/vhost-user-blk.h
+>> index b06f55fd6f..e1466e5cf6 100644
+>> --- a/include/hw/virtio/vhost-user-blk.h
+>> +++ b/include/hw/virtio/vhost-user-blk.h
+>> @@ -52,6 +52,7 @@ struct VHostUserBlk {
+>>       bool started_vu;
+>>   
+>>       bool skip_get_vring_base_on_force_shutdown;
+>> +    bool inflight_migration;
+>>   
+>>       bool incoming_backend;
+>>   };
+>> -- 
+>> 2.34.1
+>>
+--------------JRS3MVlEFliYQpBjkHu5GDll
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
->=20
->=20
-> On Thu, 25 Dec 2025 at 04:14, ~emckean emckean@git.sr.ht wrote:
->=20
-> > From: Ethan McKean emckean@protonmail.com
-> >=20
-> > The MAX78000 user guide Section 5.2 and Table 5-1 specify 119 interrupt
-> > entries. The previous value of 120 was based on a misreading of the
-> > table which spans three pages, with entries 0-104 on pages 102-103 and
-> > the remaining entries 105-118 on page 104.
-> >=20
-> > Signed-off-by: Ethan McKean emckean@protonmail.com
-> > ---
-> > hw/arm/max78000_soc.c | 8 +-------
-> > 1 file changed, 1 insertion(+), 7 deletions(-)
-> >=20
-> > diff --git a/hw/arm/max78000_soc.c b/hw/arm/max78000_soc.c
-> > index 7f1856f5ba..1e2f66428d 100644
-> > --- a/hw/arm/max78000_soc.c
-> > +++ b/hw/arm/max78000_soc.c
-> > @@ -88,13 +88,7 @@ static void max78000_soc_realize(DeviceState *dev_so=
-c, Error **errp)
-> >=20
-> > armv7m =3D DEVICE(&s->armv7m);
-> >=20
-> > - /*
-> > - * The MAX78000 user guide's Interrupt Vector Table section
-> > - * suggests that there are 120 IRQs in the text, while only listing
-> > - * 104 in table 5-1. Implement the more generous of the two.
-> > - * This has not been tested in hardware.
-> > - */
-> > - qdev_prop_set_uint32(armv7m, "num-irq", 120);
-> > + qdev_prop_set_uint32(armv7m, "num-irq", 119);
->=20
->=20
-> The num-irq property of the armv7m QEMU device is the number
-> of external interrupts (see the comments in the props_nvic[]
-> definition in hw/intc/armv7m_nvic.c). Table 5-1 includes in
-> its count the 16 internal interrupts (from 0, unused, through
-> to 15, systick). So to get from the last listed external interrupt
-> number in table 5-1 (which is # 119) to the total number of external
-> interrupts we must subtract 15. That gets us 119 - 15 =3D=3D 104,
-> which is what our comment says for the table 5-1 figure.
->=20
-> But the datasheet also says this in section 5.2:
->=20
-> "Including the 15 system exceptions for the Arm
-> Cortex-M4 with FPU, the total number of entries is 134."
->=20
-> That's where we get the "more generous" number from. If you
-> strictly believe the 134 figure and that they weren't off
-> by one by not accounting for the unused zero internal exception
-> then that would be 134 - 15 =3D=3D 119, but I am very reluctant to
-> believe in a non-multiple-of-8 number of external interrupts
-> unless somebody goes and finds the real hardware and tests
-> by writing to the NVIC_ISERn register bank to find where the
-> RAZ/WI bits start. If anybody did do that it would not
-> massively surprise me if it turned out that the actual number
-> of external interrupts is 104 and the datasheet text was wrong.
->=20
-> Getting the number slightly high in QEMU is pretty harmless.
->=20
-> The original discussion about what we should set num-irq to
-> in the review of the patchseries is in this mail thread:
-> https://lore.kernel.org/qemu-devel/CAFEAcA96fap_EJiFtX6a_PFmWeP1OPZGABueA=
-yE_=3DJQwFi-spA@mail.gmail.com/
->=20
-> thanks
-> -- PMM
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 1/14/26 17:26, Peter Xu wrote:<span
+      style="white-space: pre-wrap">
+</span></div>
+    <div class="moz-cite-prefix"><span style="white-space: pre-wrap">
+</span></div>
+    <blockquote type="cite" cite="mid:aWeLcDtZyRpk81W6@x1.local">
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">+}
++
++static const VMStateDescription vmstate_vhost_user_blk_inflight = {
++    .name = "vhost-user-blk/inflight",
++    .version_id = 1,
++    .needed = vhost_user_blk_inflight_needed,
++    .fields = (const VMStateField[]) {
++        VMSTATE_VHOST_INFLIGHT_REGION(inflight, VHostUserBlk),
+</pre>
+      </blockquote>
+      <pre wrap="" class="moz-quote-pre">
+One other trivial nitpick while glimpsing over the patch: should we move
+the macro definition from previous patch to this one, where it is used?</pre>
+    </blockquote>
+    Thanks for reply! I think you right, I'll move this macro.<br>
+    <blockquote type="cite" cite="mid:aWeLcDtZyRpk81W6@x1.local">
+      <pre wrap="" class="moz-quote-pre">
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">+        VMSTATE_END_OF_LIST()
++    },
++};
++
+ static bool vhost_user_blk_pre_incoming(void *opaque, Error **errp)
+ {
+     VHostUserBlk *s = VHOST_USER_BLK(opaque);
+@@ -678,6 +700,10 @@ static const VMStateDescription vmstate_vhost_user_blk = {
+         VMSTATE_VIRTIO_DEVICE,
+         VMSTATE_END_OF_LIST()
+     },
++    .subsections = (const VMStateDescription * const []) {
++        &amp;vmstate_vhost_user_blk_inflight,
++        NULL
++    }
+ };
+ 
+ static bool vhost_user_needed(void *opaque)
+@@ -751,6 +777,8 @@ static const Property vhost_user_blk_properties[] = {
+                       VIRTIO_BLK_F_WRITE_ZEROES, true),
+     DEFINE_PROP_BOOL("skip-get-vring-base-on-force-shutdown", VHostUserBlk,
+                      skip_get_vring_base_on_force_shutdown, false),
++    DEFINE_PROP_BOOL("inflight-migration", VHostUserBlk,
++                     inflight_migration, false),
+ };
+ 
+ static void vhost_user_blk_class_init(ObjectClass *klass, const void *data)
+diff --git a/include/hw/virtio/vhost-user-blk.h b/include/hw/virtio/vhost-user-blk.h
+index b06f55fd6f..e1466e5cf6 100644
+--- a/include/hw/virtio/vhost-user-blk.h
++++ b/include/hw/virtio/vhost-user-blk.h
+@@ -52,6 +52,7 @@ struct VHostUserBlk {
+     bool started_vu;
+ 
+     bool skip_get_vring_base_on_force_shutdown;
++    bool inflight_migration;
+ 
+     bool incoming_backend;
+ };
+-- 
+2.34.1
+
+</pre>
+      </blockquote>
+      <pre wrap="" class="moz-quote-pre">
+</pre>
+    </blockquote>
+  </body>
+</html>
+
+--------------JRS3MVlEFliYQpBjkHu5GDll--
 
