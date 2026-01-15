@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18AB0D25D7E
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 17:50:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6434CD25D68
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 17:49:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgQXB-0007kU-QL; Thu, 15 Jan 2026 11:49:21 -0500
+	id 1vgQXE-00084s-5I; Thu, 15 Jan 2026 11:49:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vgQWb-0007W7-IX
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 11:48:47 -0500
+ id 1vgQWi-0007dj-7P
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 11:48:52 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vgQWa-0003xR-16
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 11:48:45 -0500
+ id 1vgQWg-0003yI-Tn
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 11:48:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768495723;
+ s=mimecast20190719; t=1768495728;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JN46k4IKDfvc8nKMlY0GOdbyNPNsphPRE/DkfvMnpXs=;
- b=SaLrFpj+fKNRagtdI68iGIbAZ8OJBZEshmeV2Kb6a9qTutNWjyTf76sz1Cp/2GFHI8+mtX
- qsN9iBuE43z5VoTP1Ev0OWR4yRk2uadnbRWXgViyuQJQhmc9Vmfm8lKQGnwwCwGk0ybKVo
- 8wrXWRLhZK7FFSe78NJULxOfXwnPI60=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=TPfZvkDB8pcYaArJdbzMvJw7dYMzW+2OSos4xEWIsDI=;
+ b=gFlW+xuOiDDCHWEUiGvEYsaCx5nHAW/y/BqhBtQLrLgUuJuUcq1dX7N4/gakYDC89WDLnY
+ kZhj3NbTvNhNzFY5zEwD+rOI8uuCxP1dQKf8LPm9DadY3bJYOq4SuL96abIAtD87K+bJe6
+ x5NM5Q2+7+Tcls9xmCW9RLt1B/gkpE4=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-398-M5jIipQSPzeImbCYYOmywA-1; Thu,
- 15 Jan 2026 11:48:40 -0500
-X-MC-Unique: M5jIipQSPzeImbCYYOmywA-1
-X-Mimecast-MFC-AGG-ID: M5jIipQSPzeImbCYYOmywA_1768495719
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-186-R7ELnl7tPmyv6DZhNyoVBg-1; Thu,
+ 15 Jan 2026 11:48:43 -0500
+X-MC-Unique: R7ELnl7tPmyv6DZhNyoVBg-1
+X-Mimecast-MFC-AGG-ID: R7ELnl7tPmyv6DZhNyoVBg_1768495722
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0350F18002C2; Thu, 15 Jan 2026 16:48:39 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2E10919560AF; Thu, 15 Jan 2026 16:48:42 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.98])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4FD681800285; Thu, 15 Jan 2026 16:48:36 +0000 (UTC)
+ id 6124B18004D8; Thu, 15 Jan 2026 16:48:39 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, John Snow <jsnow@redhat.com>,
@@ -55,9 +55,9 @@ Cc: Thomas Huth <thuth@redhat.com>, John Snow <jsnow@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3 11/14] tests: validate dmsetup result in test 128
-Date: Thu, 15 Jan 2026 16:47:53 +0000
-Message-ID: <20260115164756.799402-12-berrange@redhat.com>
+Subject: [PATCH v3 12/14] tests: fix check for sudo access in LUKS I/O test
+Date: Thu, 15 Jan 2026 16:47:54 +0000
+Message-ID: <20260115164756.799402-13-berrange@redhat.com>
 In-Reply-To: <20260115164756.799402-1-berrange@redhat.com>
 References: <20260115164756.799402-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -89,55 +89,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The I/O test 128 uses 'dmsetup create' to create a device, optionally
-using sudo to elevate privileges.
+The test did not cope with the possibility that 'sudo' was not installed
+at all, merely that it was not configured. This broke tests in any CI
+env which lacks 'sudo'.
 
-This dmsetup command works in GitLab CI, however, the test then fails
-with a missing device name:
-
-  1..1
-  # running raw 128
-  not ok raw 128
-  ----------------------------------- stderr -----------------------------------
-  --- /builds/berrange/qemu/tests/qemu-iotests/128.out
-  +++ /builds/berrange/qemu/build/scratch/raw-file-128/128.out.bad
-  @@ -1,5 +1,5 @@
-   QA output created by 128
-
-   == reading from error device ==
-  -read failed: Input/output error
-  +qemu-io: can't open device /dev/mapper/eiodev16546: Could not open '/dev/mapper/eiodev16546': No such file or directory
-   *** done
-
-  (test program exited with status code 1)
-
-It is believed that this is due to the build env using a manually
-populated /dev, such that the device mapper node won't ever appear.
-It is not a race, since a test adding a sleep did not result in the
-device appearing.
-
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tests/qemu-iotests/128 | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/qemu-iotests/149 | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/tests/qemu-iotests/128 b/tests/qemu-iotests/128
-index d0e00d24b1..d75b1a451a 100755
---- a/tests/qemu-iotests/128
-+++ b/tests/qemu-iotests/128
-@@ -42,6 +42,12 @@ _setup_eiodev()
- 		echo "0 $((1024 * 1024 * 1024 / 512)) error" | \
- 			$cmd dmsetup create "$devname" 2>/dev/null
- 		if [ "$?" -eq 0 ]; then
-+			DEV="/dev/mapper/$devname"
-+			if ! -e $DEV
-+			then
-+				_notrun "Device $DEV not appearing"
-+			fi
-+
- 			sudo="$cmd"
- 			return
- 		fi
+diff --git a/tests/qemu-iotests/149 b/tests/qemu-iotests/149
+index c13343d7ef..6dff39a28a 100755
+--- a/tests/qemu-iotests/149
++++ b/tests/qemu-iotests/149
+@@ -95,11 +95,14 @@ def verify_passwordless_sudo():
+ 
+     args = ["sudo", "-n", "/bin/true"]
+ 
+-    proc = subprocess.Popen(args,
+-                            stdin=subprocess.PIPE,
+-                            stdout=subprocess.PIPE,
+-                            stderr=subprocess.STDOUT,
+-                            universal_newlines=True)
++    try:
++        proc = subprocess.Popen(args,
++                                stdin=subprocess.PIPE,
++                                stdout=subprocess.PIPE,
++                                stderr=subprocess.STDOUT,
++                                universal_newlines=True)
++    except FileNotFoundError as e:
++        iotests.notrun('requires sudo binary: %s' % e)
+ 
+     msg = proc.communicate()[0]
+ 
 -- 
 2.52.0
 
