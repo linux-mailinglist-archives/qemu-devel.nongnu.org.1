@@ -2,108 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50719D24D67
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 14:56:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5DA2D24E90
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 15:21:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgNoa-0002YJ-AD; Thu, 15 Jan 2026 08:55:08 -0500
+	id 1vgOCk-00017y-OZ; Thu, 15 Jan 2026 09:20:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vgNoX-0002R3-Um
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 08:55:05 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1vgNoW-00050P-Bx
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 08:55:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768485303;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vgOCi-00017V-QS
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 09:20:04 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1vgOCg-0003Lp-Gg
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 09:20:03 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 8D8715BD43;
+ Thu, 15 Jan 2026 14:19:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1768486797; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=93wgKnKmeOZilnfE5bsaANYa8+VZ81kU71KXmSuD97A=;
- b=GPzitpeUhezHanw08iv1HaulsTT19mH9NnKvY0PhmbS6WInY4M7atPAXzPDu8vRWPlkGPE
- lyjAxSAcvus4XZHiY9bRdY70oIjrnDYGIOMSRnnpRVi8DzfexyglhTO96pqUr4momvPYBm
- dYA58FRN384B/uxl/WdHtEGKz3JkZGU=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-448-aBpARl1gMFCnMtE0jahjZQ-1; Thu, 15 Jan 2026 08:55:02 -0500
-X-MC-Unique: aBpARl1gMFCnMtE0jahjZQ-1
-X-Mimecast-MFC-AGG-ID: aBpARl1gMFCnMtE0jahjZQ_1768485301
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4801c1056c7so4686145e9.2
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 05:55:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768485300; x=1769090100; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=93wgKnKmeOZilnfE5bsaANYa8+VZ81kU71KXmSuD97A=;
- b=YlPYoU2MMPg1QS9NhEIp0c+EF6Z4PQM+ZNztrziM5AhEJP8Fwc5hPOiKnpE/6muaKZ
- zhwaHwYzCwBpgWc9ncGCmQXIij6PD5YUiCw5+WibC2+MXe1NcWKW25KGTnV8QUmVA+Pq
- y0suO24uGs0s/aRDmK3TmAJWEpUpGCx++nim5bbv6bufFvjzSwZuH/gzGpBrPs9B8208
- XRjUQ6cS6hUXDxxOSB47lDSj6r7qtkWM2m0Wer8TioBJvPDAd/g6TPw5D2bqqmgQHdo5
- 2WvwU2OaqkMetPF9tWvCOzW7aSRhV1dJrk59V8CMDdcZ8NSstVS+LCVFN8KGFrN8t7GU
- whsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768485300; x=1769090100;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=93wgKnKmeOZilnfE5bsaANYa8+VZ81kU71KXmSuD97A=;
- b=OLVYGQpt2uTq3YvWnJYHZl5Jk3VvpUImYwBp5KwNKhHG7/Vh+7iQdohdsG78eiAZrB
- Bik3vqgBYd6L6HtiM9QqUOzYlLf063xMmLupbgCANkakvILajoOujAp/T+tWlPI3bm91
- AfTpV7zv+8lTEtIT2bTzADjXbqdZsQK+bMbcGYrUYuYTs14EO84cHJNbUS0Z1kAD+IaD
- mlofcoWMoruIyW50ypKDDv2/7h34ZEmo3oCtEHpZYSq0xZb4onWDTT+4hMfmW4Y5RM50
- 1XNXO3Dhg85HuQz/7QLflxVp2xQMizILGQUwcZi0mrbvHF+8QRtnWKMSRTWZmfgMQrUR
- PRDA==
-X-Gm-Message-State: AOJu0YwyKS86XZItnu/KFiZTg9Ri65Z+C8AzIiGN7lvOOe/sag/x9JfY
- r7cOhuVjpZ10eKlVAdC7Gt1Ea+L0lTisYhpbeTagWn+DOtFthWIkixNxXAwQz3vpXvQAOPOZEA2
- Q0QMvlbAJ/kwYAy/eKqX3s6JEveT7/QJH4HqZIM189F5EdmMJWREM9eRzviwpS7CvP0IGbKCj4c
- iVSXui8/F56H3hMPfY8SZBXDeeLqCCDE8HBefuYH3q
-X-Gm-Gg: AY/fxX5gWBG3e9iUfPFdTbeqOpE8M1faTLmqjDfh49VXLUc3Qw+vjfLSbx903siWdNq
- qRIhePod/N0sgBlfi3TKw58QlMcNTbnIy5hvbI7Q+sBpc+kUjpqzhNkL7Ut9RPP6EXcigbHjQ6W
- HAmvsMKq/o2pTZ+pXaG2Tov5SzIfRxmYSxgg7jJeJpgmxRznMzNKY15BfB2GcqIqHlx11orT9I4
- lrjBULYi3x075O/9oRsmbIo+ImQtUQC+i43Xha3lgZ/Ak/EkxIbzf9i8MtPEJOr69IXa/UId2gG
- fkTQIh33p+AWWBowQi5lSS89cWaUwSIbft2PSX6gj5IOiZ6lriErydU5l/KpYNopr8al9Du/It6
- HijRfK6nbDxXoXHoP3OIGD/7N+gx/CY8Kh+qXqze6gctZFZrOORDVm7pO4g/FEbQxq1CbDX0oxR
- L+d0nbeu5o6GaIHQ==
-X-Received: by 2002:a05:600c:4fd6:b0:479:3a86:dc1c with SMTP id
- 5b1f17b1804b1-47ee338d74cmr78838955e9.36.1768485300352; 
- Thu, 15 Jan 2026 05:55:00 -0800 (PST)
-X-Received: by 2002:a05:600c:4fd6:b0:479:3a86:dc1c with SMTP id
- 5b1f17b1804b1-47ee338d74cmr78838735e9.36.1768485299963; 
- Thu, 15 Jan 2026 05:54:59 -0800 (PST)
-Received: from [192.168.10.48] ([151.61.26.160])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47f428afd9csm48568825e9.6.2026.01.15.05.54.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Jan 2026 05:54:58 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org
-Subject: [PATCH 2/2] tcg: possibly convert deposit_z to shl+shr
-Date: Thu, 15 Jan 2026 14:54:53 +0100
-Message-ID: <20260115135453.140870-3-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115135453.140870-1-pbonzini@redhat.com>
-References: <20260115135453.140870-1-pbonzini@redhat.com>
+ bh=s9sLZwr6RbuiekgW6Zz33YGkel03GvnXs7QJpQMnsss=;
+ b=OAKsMVHtO7l4+EZ0rL6s8qPuuJWhsusxJE+hN4OR+DujQBPNth9Y6sE5sWTKf6pxpIQqBG
+ t0ddQ622hbmCaCI1luXsECWvP2hnHiN5vyRcszZYBsHmj09NHGw+PupFES7FfQxF0uyCuA
+ Opd5AxJySjodpX2UNbOC/VrEXnH6mcw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1768486797;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=s9sLZwr6RbuiekgW6Zz33YGkel03GvnXs7QJpQMnsss=;
+ b=dyyGuyEXqh9MAoEBMVmBNslxhCytYE9NI+kADNnRAznbe016Z5eKh+WRX3AOBf8bJe0yyB
+ pbccNNl0w6QG8TBg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1768486797; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=s9sLZwr6RbuiekgW6Zz33YGkel03GvnXs7QJpQMnsss=;
+ b=OAKsMVHtO7l4+EZ0rL6s8qPuuJWhsusxJE+hN4OR+DujQBPNth9Y6sE5sWTKf6pxpIQqBG
+ t0ddQ622hbmCaCI1luXsECWvP2hnHiN5vyRcszZYBsHmj09NHGw+PupFES7FfQxF0uyCuA
+ Opd5AxJySjodpX2UNbOC/VrEXnH6mcw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1768486797;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=s9sLZwr6RbuiekgW6Zz33YGkel03GvnXs7QJpQMnsss=;
+ b=dyyGuyEXqh9MAoEBMVmBNslxhCytYE9NI+kADNnRAznbe016Z5eKh+WRX3AOBf8bJe0yyB
+ pbccNNl0w6QG8TBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0CD433EA63;
+ Thu, 15 Jan 2026 14:19:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id eZhQL4z3aGmeXgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 15 Jan 2026 14:19:56 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: Lukas Straub <lukasstraub2@web.de>, Juraj Marcin <jmarcin@redhat.com>,
+ peterx@redhat.com, Prasad Pandit <ppandit@redhat.com>
+Subject: Re: [PATCH v2 0/2] tests/migration-test: Small cleanup series on
+ postcopy tests
+In-Reply-To: <20260114153751.2427172-1-peterx@redhat.com>
+References: <20260114153751.2427172-1-peterx@redhat.com>
+Date: Thu, 15 Jan 2026 11:19:53 -0300
+Message-ID: <87a4yfnek6.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ FREEMAIL_ENVRCPT(0.00)[web.de]; MISSING_XM_UA(0.00)[];
+ FUZZY_RATELIMITED(0.00)[rspamd.com]; TO_DN_SOME(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_HAS_DN(0.00)[]; FREEMAIL_CC(0.00)[web.de,redhat.com];
+ RCPT_COUNT_FIVE(0.00)[6]; FROM_EQ_ENVFROM(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo]
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,64 +116,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-extract and deposit_z are similar operations, only differing in
-that extract shifts the operand right and deposit_z shifts it left.
-Like extract, it is possible to implement deposit_z as either AND+SHL or
-SHL+SHR.  Use tcg_op_imm_match to check whether the processor supports the
-immediate that is needed for the mask, and if not fall back to two shifts.
+Peter Xu <peterx@redhat.com> writes:
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- tcg/tcg-op.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+> v2:
+> - add one sentence to commit message of patch 2
+>
+> This series removes two unnecessary fields in MigrateCommon that was only
+> for postcopy tests.
+>
+> Comments welcomed, thanks.
+>
+> Peter Xu (2):
+>   tests/migration-test: Remove postcopy_data from MigrateCommon
+>   tests/migration-test: Remove postcopy_recovery_fail_stage from
+>     MigrateCommon
+>
+>  tests/qtest/migration/framework.h      |  7 ++-----
+>  tests/qtest/migration/framework.c      | 25 ++++++++++++++-----------
+>  tests/qtest/migration/postcopy-tests.c | 12 ++++--------
+>  tests/qtest/migration/tls-tests.c      |  8 ++++----
+>  4 files changed, 24 insertions(+), 28 deletions(-)
 
-diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
-index ccf66382623..e7d6702f9c4 100644
---- a/tcg/tcg-op.c
-+++ b/tcg/tcg-op.c
-@@ -960,8 +960,18 @@ void tcg_gen_deposit_z_i32(TCGv_i32 ret, TCGv_i32 arg,
-             tcg_gen_extract_i32(ret, ret, 0, ofs + len);
-             return;
-         }
--        tcg_gen_andi_i32(ret, arg, (1u << len) - 1);
--        tcg_gen_shli_i32(ret, ret, ofs);
-+        /*
-+         * Use TCG_TARGET_extract_valid to check for 8- and 16-bit extension
-+         * opcodes, which tcg_gen_andi_i32 can produce.
-+         */
-+        if (TCG_TARGET_extract_valid(TCG_TYPE_I32, 0, len) ||
-+            tcg_op_imm_match(INDEX_op_and, TCG_TYPE_I32, (1u << len) - 1)) {
-+            tcg_gen_andi_i32(ret, arg, (1u << len) - 1);
-+            tcg_gen_shli_i32(ret, ret, ofs);
-+        } else {
-+            tcg_gen_shli_i32(ret, arg, 32 - len);
-+            tcg_gen_shri_i32(ret, ret, 32 - len - ofs);
-+        }
-     }
- }
- 
-@@ -2628,8 +2638,18 @@ void tcg_gen_deposit_z_i64(TCGv_i64 ret, TCGv_i64 arg,
-             tcg_gen_extract_i64(ret, ret, 0, ofs + len);
-             return;
-         }
--        tcg_gen_andi_i64(ret, arg, (1ull << len) - 1);
--        tcg_gen_shli_i64(ret, ret, ofs);
-+        /*
-+         * Use TCG_TARGET_extract_valid to check for 8-, 16- and 32-bit extension
-+         * opcodes, which tcg_gen_andi_i64 can produce.
-+         */
-+        if (TCG_TARGET_extract_valid(TCG_TYPE_I64, 0, len) ||
-+	    tcg_op_imm_match(INDEX_op_and, TCG_TYPE_I64, (1ull << len) - 1)) {
-+            tcg_gen_andi_i64(ret, arg, (1ull << len) - 1);
-+            tcg_gen_shli_i64(ret, ret, ofs);
-+        } else {
-+            tcg_gen_shli_i64(ret, arg, 64 - len);
-+            tcg_gen_shri_i64(ret, ret, 64 - len - ofs);
-+        }
-     }
- }
- 
--- 
-2.52.0
-
+Queued, thanks
 
