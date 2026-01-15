@@ -2,46 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C621D22152
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B437D22158
 	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 03:05:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgCj0-00018c-BN; Wed, 14 Jan 2026 21:04:38 -0500
+	id 1vgCj1-00018s-BY; Wed, 14 Jan 2026 21:04:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1vgCiy-00017g-29
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 21:04:36 -0500
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1vgCiz-000180-Ca
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 21:04:37 -0500
 Received: from mx.treblig.org ([2a00:1098:5b::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1vgCiw-0001hi-ED
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 21:04:35 -0500
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1vgCiw-0001hn-F2
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 21:04:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
  ; s=bytemarkmx;
- h=Content-Type:MIME-Version:Message-ID:Date:Subject:From:From
- :Subject; bh=5BqdBaV9GCY2kVp4eGlMG6Vgj6I2T1fTpTIgfWKCIyE=; b=nILUwC7cpVjATKTs
- ve1hhbGN2dLjn/Z/9vy+NlDav7IsZcj8eN+iLC1USIg+w0gUYOwi5uctgmJW7OGMFn44Ru5blm0BA
- UJCjS27AtWx6d1d7dL1ScySxl2wqCLhUHXq6+DbyBwcxst5b77PYzvCxVGYht4EZqhNbnXdKZWjKY
- gWF63saEldO0lC9ddZqzoID3/ctWa75jtJmc5CLNDhIe1+i5P92ozsLLX52H5Hp8H+SOTFpkrhXr4
- r0k1Ec4yzv4mMDEc0vyYuTsV9lMsf9XZEngwfzyc2sSR0mvTliVXwjEl3QpelovDW2mUwNEniJT7N
- MXTizHW/fWJW8d5HMQ==;
+ h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
+ :Subject; bh=UF/C1/YyJL2Raz9w8Jk2ZQlJ5lWkUSxLDIWmN53lJCM=; b=TVkReYm9K0faAMSh
+ 2az4tEFYsP4aL92qLJ5mEna7PDKLPDKySFPmp0vkAVzMyWDXSF5MAWoNHs0HZOvfn8gNjp+Jptbyt
+ /uueAVCyJQ20yMsZfI39M/a8vkLOiYL8ghga+2PuDy4SvjymWiwbgmrpBq311Dj3ssfB0CU5fDCLe
+ ZY/C+vH55oeLcunMhhfi3UVzAJoVU+4ToNcE/2A3IFm7EskPkThlqtMeF7TDy9kfKT73AoK0xL11c
+ VDhZ0whs6xTYaeeXZY4S31V2IupI0Nqonx0iMT10ZamKuUfCInw2omH9ZhqNzl8DvHCrAFjLQvvk+
+ F7GUWREaIcxNyLJbBQ==;
 Received: from localhost ([127.0.0.1] helo=dalek)
  by mx.treblig.org with esmtp (Exim 4.98.2)
- (envelope-from <dave@treblig.org>) id 1vgCis-0000000Eq8W-0xOX;
- Thu, 15 Jan 2026 02:04:30 +0000
+ (envelope-from <dave@treblig.org>) id 1vgCit-0000000Eq8W-0H9W;
+ Thu, 15 Jan 2026 02:04:31 +0000
 From: dave@treblig.org
 To: dave@treblig.org,
 	armbru@redhat.com,
 	berrange@redhat.com
 Cc: qemu-devel@nongnu.org
-Subject: [PATCH 1/4] hmp-commands-info.hx: Move definition of "info accel"
-Date: Thu, 15 Jan 2026 02:04:20 +0000
-Message-ID: <20260115020423.722069-2-dave@treblig.org>
+Subject: [PATCH 2/4] hmp*hx: Move info docs
+Date: Thu, 15 Jan 2026 02:04:21 +0000
+Message-ID: <20260115020423.722069-3-dave@treblig.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115020423.722069-1-dave@treblig.org>
 References: <20260115020423.722069-1-dave@treblig.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dave@treblig.org;
  helo=mx.treblig.org
@@ -66,61 +65,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Markus Armbruster <armbru@redhat.com>
+From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-Commit c10eb740108 (accel/system: Add 'info accel' on human monitor)
-inserted "info accel" in the middle of "info sync-profile".  Move it
-behind "info sync-profile".
+Move the docs for the info subcommand from the separate hx
+into the top level file next to the 'info' command itself.
+That makes every command in the top level file have a RST section.
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
+Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
 ---
- hmp-commands-info.hx | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ hmp-commands-info.hx |  9 +--------
+ hmp-commands.hx      | 27 +++++++++++++++++----------
+ 2 files changed, 18 insertions(+), 18 deletions(-)
 
 diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
-index 41674dcbe1..74c741f80e 100644
+index 74c741f80e..964eed004c 100644
 --- a/hmp-commands-info.hx
 +++ b/hmp-commands-info.hx
-@@ -267,18 +267,6 @@ ERST
-         .cmd        = hmp_info_sync_profile,
-     },
- 
--    {
--        .name       = "accel",
--        .args_type  = "",
--        .params     = "",
--        .help       = "show accelerator statistics",
--    },
+@@ -8,14 +8,7 @@ HXCOMM
+ HXCOMM In this file, generally SRST fragments should have two extra
+ HXCOMM spaces of indent, so that the documentation list item for "info foo"
+ HXCOMM appears inside the documentation list item for the top level
+-HXCOMM "info" documentation entry. The exception is the first SRST
+-HXCOMM fragment that defines that top level entry.
 -
 -SRST
--  ``info accel``
--    Show accelerator statistics.
--ERST
+-``info`` *subcommand*
+-  Show various information about the system state.
 -
- SRST
-   ``info sync-profile [-m|-n]`` [*max*]
-     Show synchronization profiling info, up to *max* entries (default: 10),
-@@ -294,6 +282,18 @@ SRST
-     being coalesced.
+-ERST
++HXCOMM "info" documentation entry.
+ 
+     {
+         .name       = "version",
+diff --git a/hmp-commands.hx b/hmp-commands.hx
+index 5cc4788f12..f4a6eeda93 100644
+--- a/hmp-commands.hx
++++ b/hmp-commands.hx
+@@ -1814,16 +1814,6 @@ SRST
+   command.
  ERST
  
+-    {
+-        .name       = "info",
+-        .args_type  = "item:s?",
+-        .params     = "[subcommand]",
+-        .help       = "show various information about the system state",
+-        .cmd        = hmp_info_help,
+-        .sub_table  = hmp_info_cmds,
+-        .flags      = "p",
+-    },
+-
+ #if defined(CONFIG_FDT)
+     {
+         .name       = "dumpdtb",
+@@ -1867,3 +1857,20 @@ SRST
+   List event channels in the guest
+ ERST
+ #endif
++
++HXCOMM *** MUST BE LAST ENTRY **
 +    {
-+        .name       = "accel",
-+        .args_type  = "",
-+        .params     = "",
-+        .help       = "show accelerator statistics",
++        .name       = "info",
++        .args_type  = "item:s?",
++        .params     = "[subcommand]",
++        .help       = "show various information about the system state",
++        .cmd        = hmp_info_help,
++        .sub_table  = hmp_info_cmds,
++        .flags      = "p",
 +    },
 +
 +SRST
-+  ``info accel``
-+    Show accelerator statistics.
++``info`` *subcommand*
++  Show various information about the system state.
 +ERST
-+
-     {
-         .name       = "kvm",
-         .args_type  = "",
++HXCOMM *** MUST BE LAST ENTRY **
 -- 
 2.52.0
 
