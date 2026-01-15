@@ -2,140 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5DA5D231C4
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 09:28:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8158FD2338E
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 09:44:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgIiG-0006C5-1L; Thu, 15 Jan 2026 03:28:16 -0500
+	id 1vgIx3-0005OS-MO; Thu, 15 Jan 2026 03:43:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Honglei1.Huang@amd.com>)
- id 1vgIiD-0006Ba-3H
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 03:28:13 -0500
-Received: from mail-westcentralusazlp170100005.outbound.protection.outlook.com
- ([2a01:111:f403:c112::5] helo=CY7PR03CU001.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vgIx1-0005II-Bj
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 03:43:31 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Honglei1.Huang@amd.com>)
- id 1vgIiB-0001Yp-8X
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 03:28:12 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xUn5A4AE1Kcu5gvX26h2B5iEDpdurpMNIPZcvmHfvge+XbU5CA6KnY2iDapIZY9S545g8IxDW/L8MhNpNGldLyI+x/yx3rNPqCtcrHVDjtSAWovi62CF4uqfiR41sTmrMc9YHIn6tjpqnKyGe0C28KYWfzYHPVnAhDLO+QhVz7twvoqfzvvIQFdMRMmXfZdldD4o1WleEEKxn4jAMZ1Xevl/mJlF/jZoe3lbBYhx1tuqdql22I6LkwRdX4JNnm0MfvcxMevwYawIzT3MoZmrac6pjjphc9W4ZgyfNrCw/6UX4O6Bkvpc1mabXP5b9/BYJMOJc3zwWro4//hYp5sLVA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sNOgWtPx2bJ7OlOPzP/bnM6XqKyAdKXeNppIo33ygx0=;
- b=Z3jjBRdRaXWzubJbZIMN7QADW/hQQJRzoIEyJoXpMGzjyA3E9JikhPeYsuh78hY/6HfmvR5e7KCz+RyTGafT2Npk/SHWZXdxroJTgeFZqb4F0ekQTqFB20aIUAJqJfo08FPSx/JgL2v08dUvkcmXR1Mj36Hb63HmcyB8EUx0xrHRJUMpga16gi8aU/Bjgaa7IiWCmz72B5apjGB6CewY9XQI3egOmKftc+RMXI8z6Y0opy8YziWMpyznzWKW1U6FI1TopLos0c5mA2QXjKfahPxbb9f5DDsU3WnjTrLsfcg39dovs0Gx3Xj3p5K2bzPKDeO9+2GJ/R3uIdnjoVTbNA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sNOgWtPx2bJ7OlOPzP/bnM6XqKyAdKXeNppIo33ygx0=;
- b=cXmQ1FhbRcpb3cL2N/UDrTiG8ARUmowj1r94FDU/6wYrkrBbw6srHOV4orAmfBfC2D5/cjN+TIN0qEfkiJCLWSWqnCF9PNvQhoF0XTqVVTmvMG9ItnePxTO0kBTVzBZ/pH4bm8qT1ufLbQp2jG0nMtAbzN65lLOuCJq2UBduH2E=
-Received: from BN1PR13CA0001.namprd13.prod.outlook.com (2603:10b6:408:e2::6)
- by CH1PPFC908D89D1.namprd12.prod.outlook.com (2603:10b6:61f:fc00::623) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Thu, 15 Jan
- 2026 08:28:05 +0000
-Received: from BN2PEPF000044A3.namprd02.prod.outlook.com
- (2603:10b6:408:e2:cafe::7d) by BN1PR13CA0001.outlook.office365.com
- (2603:10b6:408:e2::6) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9542.2 via Frontend Transport; Thu,
- 15 Jan 2026 08:28:05 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN2PEPF000044A3.mail.protection.outlook.com (10.167.243.154) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9520.1 via Frontend Transport; Thu, 15 Jan 2026 08:28:05 +0000
-Received: from honglei-remote.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 15 Jan
- 2026 02:28:02 -0600
-From: Honglei Huang <honghuan@amd.com>
-To: <alex.bennee@linaro.org>, <dmitry.osipenko@collabora.com>,
- <odaki@rsg.ci.i.u-tokyo.ac.jp>, <Ray.Huang@amd.com>
-CC: <mst@redhat.com>, <cohuck@redhat.com>, <pbonzini@redhat.com>,
- <qemu-devel@nongnu.org>, <honghuan@amd.com>
-Subject: [PATCH v5 4/4] virtio-gpu: Add ROCm capability support
-Date: Thu, 15 Jan 2026 16:27:39 +0800
-Message-ID: <20260115082739.174224-5-honghuan@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260115082739.174224-1-honghuan@amd.com>
-References: <20260115082739.174224-1-honghuan@amd.com>
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1vgIwx-000507-7U
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 03:43:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1768466605;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=7R/i8PSx6hkEYVtXAbLS4TG1LDEKBS4CWRWeDwI7Bk8=;
+ b=PYxPXwSIPsJg4DfqeI2MEywqiCYZENwMrjBv9ylbloNoOB/wJkI+cJXXeQTe+pk5dQli1x
+ n8mzVw8J2JHEn5qWK47PxW5Sy77M3SgKQTgerSPt1fxXDy2edvDHfc5W4aCfNiwwVYy5Xy
+ wtSo6keURI6upxSZc8H+FTABwi3xXwo=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-692-elc9R0UBPOuvgKA7166iFw-1; Thu, 15 Jan 2026 03:43:22 -0500
+X-MC-Unique: elc9R0UBPOuvgKA7166iFw-1
+X-Mimecast-MFC-AGG-ID: elc9R0UBPOuvgKA7166iFw_1768466601
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4775f51ce36so5568205e9.1
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 00:43:22 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768466601; x=1769071401;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7R/i8PSx6hkEYVtXAbLS4TG1LDEKBS4CWRWeDwI7Bk8=;
+ b=ZhSbunqeeI8EckfMBTbv7K7qBh5kwfbXqEcl2b+DPErXPejmO/Vgoma2NjoslU8M2q
+ H2mkUD0KGczVWv+Pf+QDhqWEuNGTTx2GtYw8RiZ0SraLPAY73OpsVT5ofiDQgGkEPl+c
+ OOjYsXzeg+OQY+u3IPlG68Jzpo9GHP+8KE1oPoQaa65IBWZSHeX38kvEGdn/xiWsHK+U
+ 6bVa6MJ7UmX12TsvvTS3dcKwMcA9hrUDpZxtHHyf18V5gFYYvk6KfOzvoWrFKcMTyBmy
+ P+92ZMeJsrgmwoHi9T4g7GK+Ldg7Syi8T6iiCdf7tgbNeuGWAZXS4KNMvooXmLN+B96u
+ tqBg==
+X-Gm-Message-State: AOJu0YyBLD/nTXhPG/hDYCVTTvCZ9wcu5tFxSSTvdg8jxkK8szo/zZ0+
+ BTTe/ljHTbegq1uuNQJnZGTSBEQzpwXsI9aiifsdc1Lhk9/YH5TGVtu4YqXccRKadU/9IybYiXX
+ dUP/4NvQOiXJh824stkbz7UNOXR8RwiX6i/tI4uu9Nzwf8dZ4h0IBP8cH
+X-Gm-Gg: AY/fxX4WmOj+uObKUN+HF5BOOH6nNWVTm8mIpkvoFZ4AHhIe1+RR/lMaoWBvb0OOnG1
+ 0l+M0iIZX5Z7lJYlP+qnomhOGT+vGKewAYbne621MuJD2kVOD0d/5u2+TQIv1wvrdhlhcX6RRwq
+ bkmR8KAkVBcDD88ierk4kacNfAZr2QSgR9LxwcSDk2ME24J3TvbFKy/hZxgjsQAq7Lh9xhfvYkT
+ uh/kZDwKKf76mnF8drdu3QmUwgtqXAomzEIgfll2DWmE0hteG4OGiAm+kOb14x5bw42QtR1fBAb
+ gqRSKs0mKDOWBUcnwm66EVufdgk4VEFy9jiKRGa57q4OsWs+HoKZkjnfEHcVEfqQ2HMYzQ8slL3
+ pS+/pd9z5VGV9mDRUrhxN3D3cIJj3nHJw3XjJWd5jfHX0sMvsNy60WHoHog==
+X-Received: by 2002:a05:600c:a415:b0:47e:e779:36e with SMTP id
+ 5b1f17b1804b1-47ee7790531mr43397455e9.19.1768466601278; 
+ Thu, 15 Jan 2026 00:43:21 -0800 (PST)
+X-Received: by 2002:a05:600c:a415:b0:47e:e779:36e with SMTP id
+ 5b1f17b1804b1-47ee7790531mr43397085e9.19.1768466600814; 
+ Thu, 15 Jan 2026 00:43:20 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
+ ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-434af6e09acsm4361880f8f.35.2026.01.15.00.43.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 15 Jan 2026 00:43:20 -0800 (PST)
+Message-ID: <f28112f7-5f54-4fa5-92b9-9e391e6630f2@redhat.com>
+Date: Thu, 15 Jan 2026 09:43:19 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000044A3:EE_|CH1PPFC908D89D1:EE_
-X-MS-Office365-Filtering-Correlation-Id: 76082bfc-521c-4831-80a1-08de54100189
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|36860700013|82310400026|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?LH3Zx20rhwg0sUnFQltKp0HqCREKQM8ttROQAqR0svInT5EPlloX9vcsJuH6?=
- =?us-ascii?Q?H+73iC4M7wxoSVe0XywfdItpqnx5kAEfTSjbvb92wwldmk/Dn35aqiGimO4J?=
- =?us-ascii?Q?GaWkeiQiNXP2RmG68z4N6ee0HBRPuQ+oSNDhgWQSVfTpKtK4Z3XQeW+kDuMX?=
- =?us-ascii?Q?f1B+78SH4152uoAgQ7YOLEnUCftB80oB8AmY4HqNEVKkosUMhGD/OPu4yjck?=
- =?us-ascii?Q?I536qbkTBN6B6gZI2edNhVd5NOSXQy62CNr+wsdcdVzz/C2QaGPo5uDUzDzn?=
- =?us-ascii?Q?P6jY9g6iWHt7ED2iOCeQw3eLyp3zT94CPDMtGSF0RhQYxXaBljW5sMvAKS2I?=
- =?us-ascii?Q?IIhsNdzsBQ/XMWGHp5ob+7fuk6PUwzVtH2Gbwhtg+zCHy4jD4730koDlslrA?=
- =?us-ascii?Q?CnV47J19W3cBEJDo99+CLsRZgWFGt8GQOBbJjVKIw2P9W2f8sofV8jZDrzNc?=
- =?us-ascii?Q?G6ElxPI/SmmFozgunsJ1VVqSlkIqcm+NNqzG7ahpMjHdaaGRQmJaftvbXx5U?=
- =?us-ascii?Q?crLsYPlN3jIgrRUF559qGpiNpbUnOFKonvhLvkzkbjsbffh6C9UY8iFQ7Hpa?=
- =?us-ascii?Q?Dqxr10WW/ZmYMZqoA0WLOwUUSVXj3H3551IeF4dGV8ypp+sXYKbAak9ba0vk?=
- =?us-ascii?Q?CWbGXUZki2agt1aFXUL8qybrRz2325rgyvboYIBWgSZgjeM4Wb9QfkeorcxC?=
- =?us-ascii?Q?z7HrqyGHSCwO/h+37koEeHV/8x6k6jBA47l6hEbEp7WmBFkUQy8AJMPUBFQ8?=
- =?us-ascii?Q?rBFswpdnPMd1F2OsiY8Q3w2K6NpAitqwP8FGW5zkfS370eYc6agThExGyz/2?=
- =?us-ascii?Q?tiMxHDPD2E315XyZUo2mRAs7qKbojPSZNmkNc4gnk+gOhMqyU9S+tjh31Ji0?=
- =?us-ascii?Q?qLV3t2dr47qwVS1kQTY1PMDdWV61GcgXspOtOaUawO1KS5/7weoThZqSjxv4?=
- =?us-ascii?Q?D7M/MeqW8bgGql8CTTOyfdgVRMrWjwQ183mckPCgHz+6GiFTOGTeGdhR+UJU?=
- =?us-ascii?Q?wsTMVlckGfuGa5y5HNLVKMd5h7x7pHQO8rASuV8WAN0QX2tqtL37necheINd?=
- =?us-ascii?Q?yoNJlrfN11/IwFKGaf89N3hE9tpA5aidKeLV/aP0v5vnErjUePQsHc2OYYKd?=
- =?us-ascii?Q?A+SrHa19ppp6JSdGV8OcBtnpJVwXJkQ/74+UHt6sIaYkBZk7XtsLkUXfamo8?=
- =?us-ascii?Q?+lnXP5/qGJk9gPJk/G0+lO1L085mzun2UwdsV5mjpktwmVoJDknCUogT0MgM?=
- =?us-ascii?Q?8asvy6L9f2vp4lpCcAAnqdyx3ZNKmRmVfoEFF1k51LMYgkwXDkMU61C72SvM?=
- =?us-ascii?Q?nwZi7R3gwqmGWP4+7WySJ3AY5JMKmBybjvPxA20L/70obY8M9IVYKv8qzjMM?=
- =?us-ascii?Q?kjq4RXq8xeNLtTr8vbgEjWy5tJcqIz8Hqh3L3vEntIXOa/HJKphAg6Csqt9H?=
- =?us-ascii?Q?5aUc5ffjPtyHjcWDfDItEhFoD5NgMzBm6bdNPehh0N3BFXtdgrYwlPTjbLNQ?=
- =?us-ascii?Q?m2YNurxU1jFvX9cQ6P8/s9KwbSCCZTV0iAsWADI5ie9RY7a4auxchn4RR4hj?=
- =?us-ascii?Q?oc7T69/gZjOSC9uncYgR+UMbv3WSpptX+DavltxxKBt/8cFGGFUNhzzs6+O8?=
- =?us-ascii?Q?v+awr6CFcR/sxBpPolR2J7J2VNJZDi9oUR/nXb0OVjwVEAZIoJ7Dvsuz5j6r?=
- =?us-ascii?Q?Rdv2fw=3D=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(376014)(36860700013)(82310400026)(1800799024); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2026 08:28:05.4755 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 76082bfc-521c-4831-80a1-08de54100189
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF000044A3.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPFC908D89D1
-Received-SPF: permerror client-ip=2a01:111:f403:c112::5;
- envelope-from=Honglei1.Huang@amd.com;
- helo=CY7PR03CU001.outbound.protection.outlook.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v8 1/7] hw/arm/smmuv3: Extract common definitions to
+ smmuv3-common.h
+Content-Language: en-US
+To: Tao Tang <tangtao1634@phytium.com.cn>, Paolo Bonzini
+ <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Chen Baozi <chenbaozi@phytium.com.cn>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Mostafa Saleh <smostafa@google.com>,
+ CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
+References: <20251224034647.2596434-1-tangtao1634@phytium.com.cn>
+ <20251224034647.2596434-2-tangtao1634@phytium.com.cn>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20251224034647.2596434-2-tangtao1634@phytium.com.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -148,94 +119,600 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add support for ROCm (Radeon Open Compute) capability in virtio-gpu.
-This enables GPU compute workloads using AMD's ROCm platform through
-the virtio-gpu interface.
 
-Changes include:
-- Add "rocm" property to virtio-gpu-gl device
-- Define VIRTIO_GPU_FLAG_ROCM_ENABLED flag
-- Enable VIRGL_RENDERER_USE_ROCM flag when ROCm is enabled
-- Add virtio_gpu_rocm_enabled() helper macro
 
-This allows guests to detect and utilize ROCm capabilities through
-the virtio-gpu device when the feature is enabled.
+On 12/24/25 4:46 AM, Tao Tang wrote:
+> Move register definitions, command enums, and Stream Table Entry (STE) /
+> Context Descriptor (CD) structure definitions from the internal header
+> hw/arm/smmuv3-internal.h to a new common header
+> include/hw/arm/smmuv3-common.h.
+>
+> This allows other components, such as generic SMMUv3 tests or test devices,
+> to utilize these definitions without including the specific SMMUv3 device
+> internal state.
+>
+> Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
+> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 
-Signed-off-by: Honglei Huang <honghuan@amd.com>
-Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
----
- hw/display/virtio-gpu-gl.c     |  2 ++
- hw/display/virtio-gpu-virgl.c  | 12 ++++++++++++
- include/hw/virtio/virtio-gpu.h |  3 +++
- 3 files changed, 17 insertions(+)
-
-diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-index b98ef2ef98..f059bcb177 100644
---- a/hw/display/virtio-gpu-gl.c
-+++ b/hw/display/virtio-gpu-gl.c
-@@ -159,6 +159,8 @@ static const Property virtio_gpu_gl_properties[] = {
-                     VIRTIO_GPU_FLAG_STATS_ENABLED, false),
-     DEFINE_PROP_BIT("venus", VirtIOGPU, parent_obj.conf.flags,
-                     VIRTIO_GPU_FLAG_VENUS_ENABLED, false),
-+    DEFINE_PROP_BIT("rocm", VirtIOGPU, parent_obj.conf.flags,
-+                    VIRTIO_GPU_FLAG_ROCM_ENABLED, false),
- };
- 
- static void virtio_gpu_gl_device_unrealize(DeviceState *qdev)
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index cbfb8aca3f..5e0f465c37 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -1160,6 +1160,9 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
-     if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-         flags |= VIRGL_RENDERER_VENUS | VIRGL_RENDERER_RENDER_SERVER;
-     }
-+    if (virtio_gpu_rocm_enabled(g->parent_obj.conf)) {
-+        flags |= (VIRGL_RENDERER_USE_ROCM);
-+    }
- #endif
- 
-     ret = virgl_renderer_init(g, flags, &virtio_gpu_3d_cbs);
-@@ -1218,5 +1221,14 @@ GArray *virtio_gpu_virgl_get_capsets(VirtIOGPU *g)
-         }
-     }
- 
-+    if (virtio_gpu_rocm_enabled(g->parent_obj.conf)) {
-+        virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_ROCM,
-+                                   &capset_max_ver,
-+                                   &capset_max_size);
-+        if (capset_max_size) {
-+            virtio_gpu_virgl_add_capset(capset_ids, VIRTIO_GPU_CAPSET_ROCM);
-+        }
-+    }
-+
-     return capset_ids;
- }
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index 58e0f91fda..9923970ece 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -100,6 +100,7 @@ enum virtio_gpu_base_conf_flags {
-     VIRTIO_GPU_FLAG_RUTABAGA_ENABLED,
-     VIRTIO_GPU_FLAG_VENUS_ENABLED,
-     VIRTIO_GPU_FLAG_RESOURCE_UUID_ENABLED,
-+    VIRTIO_GPU_FLAG_ROCM_ENABLED,
- };
- 
- #define virtio_gpu_virgl_enabled(_cfg) \
-@@ -122,6 +123,8 @@ enum virtio_gpu_base_conf_flags {
-     (_cfg.hostmem > 0)
- #define virtio_gpu_venus_enabled(_cfg) \
-     (_cfg.flags & (1 << VIRTIO_GPU_FLAG_VENUS_ENABLED))
-+#define virtio_gpu_rocm_enabled(_cfg) \
-+    (_cfg.flags & (1 << VIRTIO_GPU_FLAG_ROCM_ENABLED))
- 
- struct virtio_gpu_base_conf {
-     uint32_t max_outputs;
--- 
-2.34.1
+Eric
+> ---
+>  hw/arm/smmuv3-internal.h       | 255 +------------------------------
+>  include/hw/arm/smmuv3-common.h | 268 +++++++++++++++++++++++++++++++++
+>  2 files changed, 269 insertions(+), 254 deletions(-)
+>  create mode 100644 include/hw/arm/smmuv3-common.h
+>
+> diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
+> index b6b7399347..8679ab6d09 100644
+> --- a/hw/arm/smmuv3-internal.h
+> +++ b/hw/arm/smmuv3-internal.h
+> @@ -23,6 +23,7 @@
+>  
+>  #include "hw/registerfields.h"
+>  #include "hw/arm/smmu-common.h"
+> +#include "hw/arm/smmuv3-common.h"
+>  
+>  typedef enum SMMUTranslationStatus {
+>      SMMU_TRANS_DISABLE,
+> @@ -38,147 +39,6 @@ typedef enum SMMUTranslationClass {
+>      SMMU_CLASS_IN,
+>  } SMMUTranslationClass;
+>  
+> -/* MMIO Registers */
+> -
+> -REG32(IDR0,                0x0)
+> -    FIELD(IDR0, S2P,         0 , 1)
+> -    FIELD(IDR0, S1P,         1 , 1)
+> -    FIELD(IDR0, TTF,         2 , 2)
+> -    FIELD(IDR0, COHACC,      4 , 1)
+> -    FIELD(IDR0, BTM,         5 , 1)
+> -    FIELD(IDR0, HTTU,        6 , 2)
+> -    FIELD(IDR0, DORMHINT,    8 , 1)
+> -    FIELD(IDR0, HYP,         9 , 1)
+> -    FIELD(IDR0, ATS,         10, 1)
+> -    FIELD(IDR0, NS1ATS,      11, 1)
+> -    FIELD(IDR0, ASID16,      12, 1)
+> -    FIELD(IDR0, MSI,         13, 1)
+> -    FIELD(IDR0, SEV,         14, 1)
+> -    FIELD(IDR0, ATOS,        15, 1)
+> -    FIELD(IDR0, PRI,         16, 1)
+> -    FIELD(IDR0, VMW,         17, 1)
+> -    FIELD(IDR0, VMID16,      18, 1)
+> -    FIELD(IDR0, CD2L,        19, 1)
+> -    FIELD(IDR0, VATOS,       20, 1)
+> -    FIELD(IDR0, TTENDIAN,    21, 2)
+> -    FIELD(IDR0, ATSRECERR,   23, 1)
+> -    FIELD(IDR0, STALL_MODEL, 24, 2)
+> -    FIELD(IDR0, TERM_MODEL,  26, 1)
+> -    FIELD(IDR0, STLEVEL,     27, 2)
+> -    FIELD(IDR0, RME_IMPL,    30, 1)
+> -
+> -REG32(IDR1,                0x4)
+> -    FIELD(IDR1, SIDSIZE,      0 , 6)
+> -    FIELD(IDR1, SSIDSIZE,     6 , 5)
+> -    FIELD(IDR1, PRIQS,        11, 5)
+> -    FIELD(IDR1, EVENTQS,      16, 5)
+> -    FIELD(IDR1, CMDQS,        21, 5)
+> -    FIELD(IDR1, ATTR_PERMS_OVR, 26, 1)
+> -    FIELD(IDR1, ATTR_TYPES_OVR, 27, 1)
+> -    FIELD(IDR1, REL,          28, 1)
+> -    FIELD(IDR1, QUEUES_PRESET, 29, 1)
+> -    FIELD(IDR1, TABLES_PRESET, 30, 1)
+> -    FIELD(IDR1, ECMDQ,        31, 1)
+> -
+> -#define SMMU_IDR1_SIDSIZE 16
+> -#define SMMU_CMDQS   19
+> -#define SMMU_EVENTQS 19
+> -
+> -REG32(IDR2,                0x8)
+> -     FIELD(IDR2, BA_VATOS, 0, 10)
+> -
+> -REG32(IDR3,                0xc)
+> -     FIELD(IDR3, HAD,         2, 1);
+> -     FIELD(IDR3, PBHA,        3, 1);
+> -     FIELD(IDR3, XNX,         4, 1);
+> -     FIELD(IDR3, PPS,         5, 1);
+> -     FIELD(IDR3, MPAM,        7, 1);
+> -     FIELD(IDR3, FWB,         8, 1);
+> -     FIELD(IDR3, STT,         9, 1);
+> -     FIELD(IDR3, RIL,        10, 1);
+> -     FIELD(IDR3, BBML,       11, 2);
+> -     FIELD(IDR3, E0PD,       13, 1);
+> -     FIELD(IDR3, PTWNNC,     14, 1);
+> -     FIELD(IDR3, DPT,        15, 1);
+> -
+> -REG32(IDR4,                0x10)
+> -
+> -REG32(IDR5,                0x14)
+> -     FIELD(IDR5, OAS,         0, 3);
+> -     FIELD(IDR5, GRAN4K,      4, 1);
+> -     FIELD(IDR5, GRAN16K,     5, 1);
+> -     FIELD(IDR5, GRAN64K,     6, 1);
+> -     FIELD(IDR5, VAX,        10, 2);
+> -     FIELD(IDR5, STALL_MAX,  16, 16);
+> -
+> -#define SMMU_IDR5_OAS 4
+> -
+> -REG32(IIDR,                0x18)
+> -REG32(AIDR,                0x1c)
+> -REG32(CR0,                 0x20)
+> -    FIELD(CR0, SMMU_ENABLE,   0, 1)
+> -    FIELD(CR0, EVENTQEN,      2, 1)
+> -    FIELD(CR0, CMDQEN,        3, 1)
+> -
+> -#define SMMU_CR0_RESERVED 0xFFFFFC20
+> -
+> -REG32(CR0ACK,              0x24)
+> -REG32(CR1,                 0x28)
+> -REG32(CR2,                 0x2c)
+> -REG32(STATUSR,             0x40)
+> -REG32(GBPA,                0x44)
+> -    FIELD(GBPA, ABORT,        20, 1)
+> -    FIELD(GBPA, UPDATE,       31, 1)
+> -
+> -/* Use incoming. */
+> -#define SMMU_GBPA_RESET_VAL 0x1000
+> -
+> -REG32(IRQ_CTRL,            0x50)
+> -    FIELD(IRQ_CTRL, GERROR_IRQEN,        0, 1)
+> -    FIELD(IRQ_CTRL, PRI_IRQEN,           1, 1)
+> -    FIELD(IRQ_CTRL, EVENTQ_IRQEN,        2, 1)
+> -
+> -REG32(IRQ_CTRL_ACK,        0x54)
+> -REG32(GERROR,              0x60)
+> -    FIELD(GERROR, CMDQ_ERR,           0, 1)
+> -    FIELD(GERROR, EVENTQ_ABT_ERR,     2, 1)
+> -    FIELD(GERROR, PRIQ_ABT_ERR,       3, 1)
+> -    FIELD(GERROR, MSI_CMDQ_ABT_ERR,   4, 1)
+> -    FIELD(GERROR, MSI_EVENTQ_ABT_ERR, 5, 1)
+> -    FIELD(GERROR, MSI_PRIQ_ABT_ERR,   6, 1)
+> -    FIELD(GERROR, MSI_GERROR_ABT_ERR, 7, 1)
+> -    FIELD(GERROR, MSI_SFM_ERR,        8, 1)
+> -
+> -REG32(GERRORN,             0x64)
+> -
+> -#define A_GERROR_IRQ_CFG0  0x68 /* 64b */
+> -REG32(GERROR_IRQ_CFG1, 0x70)
+> -REG32(GERROR_IRQ_CFG2, 0x74)
+> -
+> -#define A_STRTAB_BASE      0x80 /* 64b */
+> -
+> -#define SMMU_BASE_ADDR_MASK 0xfffffffffffc0
+> -
+> -REG32(STRTAB_BASE_CFG,     0x88)
+> -    FIELD(STRTAB_BASE_CFG, FMT,      16, 2)
+> -    FIELD(STRTAB_BASE_CFG, SPLIT,    6 , 5)
+> -    FIELD(STRTAB_BASE_CFG, LOG2SIZE, 0 , 6)
+> -
+> -#define A_CMDQ_BASE        0x90 /* 64b */
+> -REG32(CMDQ_PROD,           0x98)
+> -REG32(CMDQ_CONS,           0x9c)
+> -    FIELD(CMDQ_CONS, ERR, 24, 7)
+> -
+> -#define A_EVENTQ_BASE      0xa0 /* 64b */
+> -REG32(EVENTQ_PROD,         0xa8)
+> -REG32(EVENTQ_CONS,         0xac)
+> -
+> -#define A_EVENTQ_IRQ_CFG0  0xb0 /* 64b */
+> -REG32(EVENTQ_IRQ_CFG1,     0xb8)
+> -REG32(EVENTQ_IRQ_CFG2,     0xbc)
+> -
+> -#define A_IDREGS           0xfd0
+> -
+>  static inline int smmu_enabled(SMMUv3State *s)
+>  {
+>      return FIELD_EX32(s->cr[0], CR0, SMMU_ENABLE);
+> @@ -272,37 +132,6 @@ static inline void smmu_write_cmdq_err(SMMUv3State *s, uint32_t err_type)
+>      s->cmdq.cons = FIELD_DP32(s->cmdq.cons, CMDQ_CONS, ERR, err_type);
+>  }
+>  
+> -/* Commands */
+> -
+> -typedef enum SMMUCommandType {
+> -    SMMU_CMD_NONE            = 0x00,
+> -    SMMU_CMD_PREFETCH_CONFIG       ,
+> -    SMMU_CMD_PREFETCH_ADDR,
+> -    SMMU_CMD_CFGI_STE,
+> -    SMMU_CMD_CFGI_STE_RANGE,
+> -    SMMU_CMD_CFGI_CD,
+> -    SMMU_CMD_CFGI_CD_ALL,
+> -    SMMU_CMD_CFGI_ALL,
+> -    SMMU_CMD_TLBI_NH_ALL     = 0x10,
+> -    SMMU_CMD_TLBI_NH_ASID,
+> -    SMMU_CMD_TLBI_NH_VA,
+> -    SMMU_CMD_TLBI_NH_VAA,
+> -    SMMU_CMD_TLBI_EL3_ALL    = 0x18,
+> -    SMMU_CMD_TLBI_EL3_VA     = 0x1a,
+> -    SMMU_CMD_TLBI_EL2_ALL    = 0x20,
+> -    SMMU_CMD_TLBI_EL2_ASID,
+> -    SMMU_CMD_TLBI_EL2_VA,
+> -    SMMU_CMD_TLBI_EL2_VAA,
+> -    SMMU_CMD_TLBI_S12_VMALL  = 0x28,
+> -    SMMU_CMD_TLBI_S2_IPA     = 0x2a,
+> -    SMMU_CMD_TLBI_NSNH_ALL   = 0x30,
+> -    SMMU_CMD_ATC_INV         = 0x40,
+> -    SMMU_CMD_PRI_RESP,
+> -    SMMU_CMD_RESUME          = 0x44,
+> -    SMMU_CMD_STALL_TERM,
+> -    SMMU_CMD_SYNC,
+> -} SMMUCommandType;
+> -
+>  static const char *cmd_stringify[] = {
+>      [SMMU_CMD_PREFETCH_CONFIG] = "SMMU_CMD_PREFETCH_CONFIG",
+>      [SMMU_CMD_PREFETCH_ADDR]   = "SMMU_CMD_PREFETCH_ADDR",
+> @@ -525,64 +354,6 @@ typedef struct SMMUEventInfo {
+>  
+>  void smmuv3_record_event(SMMUv3State *s, SMMUEventInfo *event);
+>  
+> -/* Configuration Data */
+> -
+> -/* STE Level 1 Descriptor */
+> -typedef struct STEDesc {
+> -    uint32_t word[2];
+> -} STEDesc;
+> -
+> -/* CD Level 1 Descriptor */
+> -typedef struct CDDesc {
+> -    uint32_t word[2];
+> -} CDDesc;
+> -
+> -/* Stream Table Entry(STE) */
+> -typedef struct STE {
+> -    uint32_t word[16];
+> -} STE;
+> -
+> -/* Context Descriptor(CD) */
+> -typedef struct CD {
+> -    uint32_t word[16];
+> -} CD;
+> -
+> -/* STE fields */
+> -
+> -#define STE_VALID(x)   extract32((x)->word[0], 0, 1)
+> -
+> -#define STE_CONFIG(x)  extract32((x)->word[0], 1, 3)
+> -#define STE_CFG_S1_ENABLED(config) (config & 0x1)
+> -#define STE_CFG_S2_ENABLED(config) (config & 0x2)
+> -#define STE_CFG_ABORT(config)      (!(config & 0x4))
+> -#define STE_CFG_BYPASS(config)     (config == 0x4)
+> -
+> -#define STE_S1FMT(x)       extract32((x)->word[0], 4 , 2)
+> -#define STE_S1CDMAX(x)     extract32((x)->word[1], 27, 5)
+> -#define STE_S1STALLD(x)    extract32((x)->word[2], 27, 1)
+> -#define STE_EATS(x)        extract32((x)->word[2], 28, 2)
+> -#define STE_STRW(x)        extract32((x)->word[2], 30, 2)
+> -#define STE_S2VMID(x)      extract32((x)->word[4], 0 , 16)
+> -#define STE_S2T0SZ(x)      extract32((x)->word[5], 0 , 6)
+> -#define STE_S2SL0(x)       extract32((x)->word[5], 6 , 2)
+> -#define STE_S2TG(x)        extract32((x)->word[5], 14, 2)
+> -#define STE_S2PS(x)        extract32((x)->word[5], 16, 3)
+> -#define STE_S2AA64(x)      extract32((x)->word[5], 19, 1)
+> -#define STE_S2ENDI(x)      extract32((x)->word[5], 20, 1)
+> -#define STE_S2AFFD(x)      extract32((x)->word[5], 21, 1)
+> -#define STE_S2HD(x)        extract32((x)->word[5], 23, 1)
+> -#define STE_S2HA(x)        extract32((x)->word[5], 24, 1)
+> -#define STE_S2S(x)         extract32((x)->word[5], 25, 1)
+> -#define STE_S2R(x)         extract32((x)->word[5], 26, 1)
+> -
+> -#define STE_CTXPTR(x)                                   \
+> -    ((extract64((x)->word[1], 0, 16) << 32) |           \
+> -     ((x)->word[0] & 0xffffffc0))
+> -
+> -#define STE_S2TTB(x)                                    \
+> -    ((extract64((x)->word[7], 0, 16) << 32) |           \
+> -     ((x)->word[6] & 0xfffffff0))
+> -
+>  static inline int oas2bits(int oas_field)
+>  {
+>      switch (oas_field) {
+> @@ -603,30 +374,6 @@ static inline int oas2bits(int oas_field)
+>      g_assert_not_reached();
+>  }
+>  
+> -/* CD fields */
+> -
+> -#define CD_VALID(x)   extract32((x)->word[0], 31, 1)
+> -#define CD_ASID(x)    extract32((x)->word[1], 16, 16)
+> -#define CD_TTB(x, sel)                                          \
+> -    ((extract64((x)->word[(sel) * 2 + 3], 0, 19) << 32) |       \
+> -     ((x)->word[(sel) * 2 + 2] & ~0xfULL))
+> -
+> -#define CD_HAD(x, sel)   extract32((x)->word[(sel) * 2 + 2], 1, 1)
+> -
+> -#define CD_TSZ(x, sel)   extract32((x)->word[0], (16 * (sel)) + 0, 6)
+> -#define CD_TG(x, sel)    extract32((x)->word[0], (16 * (sel)) + 6, 2)
+> -#define CD_EPD(x, sel)   extract32((x)->word[0], (16 * (sel)) + 14, 1)
+> -#define CD_ENDI(x)       extract32((x)->word[0], 15, 1)
+> -#define CD_IPS(x)        extract32((x)->word[1], 0 , 3)
+> -#define CD_AFFD(x)       extract32((x)->word[1], 3 , 1)
+> -#define CD_TBI(x)        extract32((x)->word[1], 6 , 2)
+> -#define CD_HD(x)         extract32((x)->word[1], 10 , 1)
+> -#define CD_HA(x)         extract32((x)->word[1], 11 , 1)
+> -#define CD_S(x)          extract32((x)->word[1], 12, 1)
+> -#define CD_R(x)          extract32((x)->word[1], 13, 1)
+> -#define CD_A(x)          extract32((x)->word[1], 14, 1)
+> -#define CD_AARCH64(x)    extract32((x)->word[1], 9 , 1)
+> -
+>  /**
+>   * tg2granule - Decodes the CD translation granule size field according
+>   * to the ttbr in use
+> diff --git a/include/hw/arm/smmuv3-common.h b/include/hw/arm/smmuv3-common.h
+> new file mode 100644
+> index 0000000000..9da817f41a
+> --- /dev/null
+> +++ b/include/hw/arm/smmuv3-common.h
+> @@ -0,0 +1,268 @@
+> +/*
+> + * ARM SMMUv3 support - Common API
+> + *
+> + * Copyright (C) 2014-2016 Broadcom Corporation
+> + * Copyright (c) 2017 Red Hat, Inc.
+> + * Written by Prem Mallappa, Eric Auger
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#ifndef HW_ARM_SMMUV3_COMMON_H
+> +#define HW_ARM_SMMUV3_COMMON_H
+> +
+> +/* Configuration Data */
+> +
+> +/* STE Level 1 Descriptor */
+> +typedef struct STEDesc {
+> +    uint32_t word[2];
+> +} STEDesc;
+> +
+> +/* CD Level 1 Descriptor */
+> +typedef struct CDDesc {
+> +    uint32_t word[2];
+> +} CDDesc;
+> +
+> +/* Stream Table Entry(STE) */
+> +typedef struct STE {
+> +    uint32_t word[16];
+> +} STE;
+> +
+> +/* Context Descriptor(CD) */
+> +typedef struct CD {
+> +    uint32_t word[16];
+> +} CD;
+> +
+> +/* STE fields */
+> +
+> +#define STE_VALID(x)   extract32((x)->word[0], 0, 1)
+> +
+> +#define STE_CONFIG(x)  extract32((x)->word[0], 1, 3)
+> +#define STE_CFG_S1_ENABLED(config) (config & 0x1)
+> +#define STE_CFG_S2_ENABLED(config) (config & 0x2)
+> +#define STE_CFG_ABORT(config)      (!(config & 0x4))
+> +#define STE_CFG_BYPASS(config)     (config == 0x4)
+> +
+> +#define STE_S1FMT(x)       extract32((x)->word[0], 4 , 2)
+> +#define STE_S1CDMAX(x)     extract32((x)->word[1], 27, 5)
+> +#define STE_S1STALLD(x)    extract32((x)->word[2], 27, 1)
+> +#define STE_EATS(x)        extract32((x)->word[2], 28, 2)
+> +#define STE_STRW(x)        extract32((x)->word[2], 30, 2)
+> +#define STE_S2VMID(x)      extract32((x)->word[4], 0 , 16)
+> +#define STE_S2T0SZ(x)      extract32((x)->word[5], 0 , 6)
+> +#define STE_S2SL0(x)       extract32((x)->word[5], 6 , 2)
+> +#define STE_S2TG(x)        extract32((x)->word[5], 14, 2)
+> +#define STE_S2PS(x)        extract32((x)->word[5], 16, 3)
+> +#define STE_S2AA64(x)      extract32((x)->word[5], 19, 1)
+> +#define STE_S2ENDI(x)      extract32((x)->word[5], 20, 1)
+> +#define STE_S2AFFD(x)      extract32((x)->word[5], 21, 1)
+> +#define STE_S2HD(x)        extract32((x)->word[5], 23, 1)
+> +#define STE_S2HA(x)        extract32((x)->word[5], 24, 1)
+> +#define STE_S2S(x)         extract32((x)->word[5], 25, 1)
+> +#define STE_S2R(x)         extract32((x)->word[5], 26, 1)
+> +
+> +#define STE_CTXPTR(x)                                   \
+> +    ((extract64((x)->word[1], 0, 16) << 32) |           \
+> +     ((x)->word[0] & 0xffffffc0))
+> +
+> +#define STE_S2TTB(x)                                    \
+> +    ((extract64((x)->word[7], 0, 16) << 32) |           \
+> +     ((x)->word[6] & 0xfffffff0))
+> +
+> +/* CD fields */
+> +
+> +#define CD_VALID(x)   extract32((x)->word[0], 31, 1)
+> +#define CD_ASID(x)    extract32((x)->word[1], 16, 16)
+> +#define CD_TTB(x, sel)                                          \
+> +    ((extract64((x)->word[(sel) * 2 + 3], 0, 19) << 32) |       \
+> +     ((x)->word[(sel) * 2 + 2] & ~0xfULL))
+> +
+> +#define CD_HAD(x, sel)   extract32((x)->word[(sel) * 2 + 2], 1, 1)
+> +
+> +#define CD_TSZ(x, sel)   extract32((x)->word[0], (16 * (sel)) + 0, 6)
+> +#define CD_TG(x, sel)    extract32((x)->word[0], (16 * (sel)) + 6, 2)
+> +#define CD_EPD(x, sel)   extract32((x)->word[0], (16 * (sel)) + 14, 1)
+> +#define CD_ENDI(x)       extract32((x)->word[0], 15, 1)
+> +#define CD_IPS(x)        extract32((x)->word[1], 0 , 3)
+> +#define CD_AFFD(x)       extract32((x)->word[1], 3 , 1)
+> +#define CD_TBI(x)        extract32((x)->word[1], 6 , 2)
+> +#define CD_HD(x)         extract32((x)->word[1], 10 , 1)
+> +#define CD_HA(x)         extract32((x)->word[1], 11 , 1)
+> +#define CD_S(x)          extract32((x)->word[1], 12, 1)
+> +#define CD_R(x)          extract32((x)->word[1], 13, 1)
+> +#define CD_A(x)          extract32((x)->word[1], 14, 1)
+> +#define CD_AARCH64(x)    extract32((x)->word[1], 9 , 1)
+> +
+> +/* MMIO Registers */
+> +
+> +REG32(IDR0,                0x0)
+> +    FIELD(IDR0, S2P,         0 , 1)
+> +    FIELD(IDR0, S1P,         1 , 1)
+> +    FIELD(IDR0, TTF,         2 , 2)
+> +    FIELD(IDR0, COHACC,      4 , 1)
+> +    FIELD(IDR0, BTM,         5 , 1)
+> +    FIELD(IDR0, HTTU,        6 , 2)
+> +    FIELD(IDR0, DORMHINT,    8 , 1)
+> +    FIELD(IDR0, HYP,         9 , 1)
+> +    FIELD(IDR0, ATS,         10, 1)
+> +    FIELD(IDR0, NS1ATS,      11, 1)
+> +    FIELD(IDR0, ASID16,      12, 1)
+> +    FIELD(IDR0, MSI,         13, 1)
+> +    FIELD(IDR0, SEV,         14, 1)
+> +    FIELD(IDR0, ATOS,        15, 1)
+> +    FIELD(IDR0, PRI,         16, 1)
+> +    FIELD(IDR0, VMW,         17, 1)
+> +    FIELD(IDR0, VMID16,      18, 1)
+> +    FIELD(IDR0, CD2L,        19, 1)
+> +    FIELD(IDR0, VATOS,       20, 1)
+> +    FIELD(IDR0, TTENDIAN,    21, 2)
+> +    FIELD(IDR0, ATSRECERR,   23, 1)
+> +    FIELD(IDR0, STALL_MODEL, 24, 2)
+> +    FIELD(IDR0, TERM_MODEL,  26, 1)
+> +    FIELD(IDR0, STLEVEL,     27, 2)
+> +    FIELD(IDR0, RME_IMPL,    30, 1)
+> +
+> +REG32(IDR1,                0x4)
+> +    FIELD(IDR1, SIDSIZE,      0 , 6)
+> +    FIELD(IDR1, SSIDSIZE,     6 , 5)
+> +    FIELD(IDR1, PRIQS,        11, 5)
+> +    FIELD(IDR1, EVENTQS,      16, 5)
+> +    FIELD(IDR1, CMDQS,        21, 5)
+> +    FIELD(IDR1, ATTR_PERMS_OVR, 26, 1)
+> +    FIELD(IDR1, ATTR_TYPES_OVR, 27, 1)
+> +    FIELD(IDR1, REL,          28, 1)
+> +    FIELD(IDR1, QUEUES_PRESET, 29, 1)
+> +    FIELD(IDR1, TABLES_PRESET, 30, 1)
+> +    FIELD(IDR1, ECMDQ,        31, 1)
+> +
+> +#define SMMU_IDR1_SIDSIZE 16
+> +#define SMMU_CMDQS   19
+> +#define SMMU_EVENTQS 19
+> +
+> +REG32(IDR2,                0x8)
+> +     FIELD(IDR2, BA_VATOS, 0, 10)
+> +
+> +REG32(IDR3,                0xc)
+> +     FIELD(IDR3, HAD,         2, 1);
+> +     FIELD(IDR3, PBHA,        3, 1);
+> +     FIELD(IDR3, XNX,         4, 1);
+> +     FIELD(IDR3, PPS,         5, 1);
+> +     FIELD(IDR3, MPAM,        7, 1);
+> +     FIELD(IDR3, FWB,         8, 1);
+> +     FIELD(IDR3, STT,         9, 1);
+> +     FIELD(IDR3, RIL,        10, 1);
+> +     FIELD(IDR3, BBML,       11, 2);
+> +     FIELD(IDR3, E0PD,       13, 1);
+> +     FIELD(IDR3, PTWNNC,     14, 1);
+> +     FIELD(IDR3, DPT,        15, 1);
+> +
+> +REG32(IDR4,                0x10)
+> +
+> +REG32(IDR5,                0x14)
+> +     FIELD(IDR5, OAS,         0, 3);
+> +     FIELD(IDR5, GRAN4K,      4, 1);
+> +     FIELD(IDR5, GRAN16K,     5, 1);
+> +     FIELD(IDR5, GRAN64K,     6, 1);
+> +     FIELD(IDR5, VAX,        10, 2);
+> +     FIELD(IDR5, STALL_MAX,  16, 16);
+> +
+> +#define SMMU_IDR5_OAS 4
+> +
+> +REG32(IIDR,                0x18)
+> +REG32(AIDR,                0x1c)
+> +REG32(CR0,                 0x20)
+> +    FIELD(CR0, SMMU_ENABLE,   0, 1)
+> +    FIELD(CR0, EVENTQEN,      2, 1)
+> +    FIELD(CR0, CMDQEN,        3, 1)
+> +
+> +#define SMMU_CR0_RESERVED 0xFFFFFC20
+> +
+> +REG32(CR0ACK,              0x24)
+> +REG32(CR1,                 0x28)
+> +REG32(CR2,                 0x2c)
+> +REG32(STATUSR,             0x40)
+> +REG32(GBPA,                0x44)
+> +    FIELD(GBPA, ABORT,        20, 1)
+> +    FIELD(GBPA, UPDATE,       31, 1)
+> +
+> +/* Use incoming. */
+> +#define SMMU_GBPA_RESET_VAL 0x1000
+> +
+> +REG32(IRQ_CTRL,            0x50)
+> +    FIELD(IRQ_CTRL, GERROR_IRQEN,        0, 1)
+> +    FIELD(IRQ_CTRL, PRI_IRQEN,           1, 1)
+> +    FIELD(IRQ_CTRL, EVENTQ_IRQEN,        2, 1)
+> +
+> +REG32(IRQ_CTRL_ACK,        0x54)
+> +REG32(GERROR,              0x60)
+> +    FIELD(GERROR, CMDQ_ERR,           0, 1)
+> +    FIELD(GERROR, EVENTQ_ABT_ERR,     2, 1)
+> +    FIELD(GERROR, PRIQ_ABT_ERR,       3, 1)
+> +    FIELD(GERROR, MSI_CMDQ_ABT_ERR,   4, 1)
+> +    FIELD(GERROR, MSI_EVENTQ_ABT_ERR, 5, 1)
+> +    FIELD(GERROR, MSI_PRIQ_ABT_ERR,   6, 1)
+> +    FIELD(GERROR, MSI_GERROR_ABT_ERR, 7, 1)
+> +    FIELD(GERROR, MSI_SFM_ERR,        8, 1)
+> +
+> +REG32(GERRORN,             0x64)
+> +
+> +#define A_GERROR_IRQ_CFG0  0x68 /* 64b */
+> +REG32(GERROR_IRQ_CFG1, 0x70)
+> +REG32(GERROR_IRQ_CFG2, 0x74)
+> +
+> +#define A_STRTAB_BASE      0x80 /* 64b */
+> +
+> +#define SMMU_BASE_ADDR_MASK 0xfffffffffffc0
+> +
+> +REG32(STRTAB_BASE_CFG,     0x88)
+> +    FIELD(STRTAB_BASE_CFG, FMT,      16, 2)
+> +    FIELD(STRTAB_BASE_CFG, SPLIT,    6 , 5)
+> +    FIELD(STRTAB_BASE_CFG, LOG2SIZE, 0 , 6)
+> +
+> +#define A_CMDQ_BASE        0x90 /* 64b */
+> +REG32(CMDQ_PROD,           0x98)
+> +REG32(CMDQ_CONS,           0x9c)
+> +    FIELD(CMDQ_CONS, ERR, 24, 7)
+> +
+> +#define A_EVENTQ_BASE      0xa0 /* 64b */
+> +REG32(EVENTQ_PROD,         0xa8)
+> +REG32(EVENTQ_CONS,         0xac)
+> +
+> +#define A_EVENTQ_IRQ_CFG0  0xb0 /* 64b */
+> +REG32(EVENTQ_IRQ_CFG1,     0xb8)
+> +REG32(EVENTQ_IRQ_CFG2,     0xbc)
+> +
+> +#define A_IDREGS           0xfd0
+> +
+> +/* Commands */
+> +
+> +typedef enum SMMUCommandType {
+> +    SMMU_CMD_NONE            = 0x00,
+> +    SMMU_CMD_PREFETCH_CONFIG       ,
+> +    SMMU_CMD_PREFETCH_ADDR,
+> +    SMMU_CMD_CFGI_STE,
+> +    SMMU_CMD_CFGI_STE_RANGE,
+> +    SMMU_CMD_CFGI_CD,
+> +    SMMU_CMD_CFGI_CD_ALL,
+> +    SMMU_CMD_CFGI_ALL,
+> +    SMMU_CMD_TLBI_NH_ALL     = 0x10,
+> +    SMMU_CMD_TLBI_NH_ASID,
+> +    SMMU_CMD_TLBI_NH_VA,
+> +    SMMU_CMD_TLBI_NH_VAA,
+> +    SMMU_CMD_TLBI_EL3_ALL    = 0x18,
+> +    SMMU_CMD_TLBI_EL3_VA     = 0x1a,
+> +    SMMU_CMD_TLBI_EL2_ALL    = 0x20,
+> +    SMMU_CMD_TLBI_EL2_ASID,
+> +    SMMU_CMD_TLBI_EL2_VA,
+> +    SMMU_CMD_TLBI_EL2_VAA,
+> +    SMMU_CMD_TLBI_S12_VMALL  = 0x28,
+> +    SMMU_CMD_TLBI_S2_IPA     = 0x2a,
+> +    SMMU_CMD_TLBI_NSNH_ALL   = 0x30,
+> +    SMMU_CMD_ATC_INV         = 0x40,
+> +    SMMU_CMD_PRI_RESP,
+> +    SMMU_CMD_RESUME          = 0x44,
+> +    SMMU_CMD_STALL_TERM,
+> +    SMMU_CMD_SYNC,
+> +} SMMUCommandType;
+> +
+> +#endif /* HW_ARM_SMMUV3_COMMON_H */
 
 
