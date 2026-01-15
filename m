@@ -2,107 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C372D2921D
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 23:56:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11058D2924A
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 00:00:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgWFO-00068n-S6; Thu, 15 Jan 2026 17:55:25 -0500
+	id 1vgWJs-0004FC-25; Thu, 15 Jan 2026 18:00:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vgWFF-0005z4-J8
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 17:55:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1vgWJl-00046K-Nk
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 17:59:53 -0500
+Received: from mx.treblig.org ([2a00:1098:5b::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vgWFD-0008K6-LB
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 17:55:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768517711;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=R2BbPrejjC1FlAZ8xQiekJJRvkNULNih9IpSitGenkg=;
- b=cyvWiwwGQeNXqAit0PMLij27U+cJzMNiCaSkOC/IL6rXjaqfyzSmwanViIE25hVU/zfG85
- sYm6/VzC0iXLxDoIYgFa7tz8BTBmPLwh01SOTo87tcz2SLEoR2TOJ165jhY0CkryctkFkX
- cLda9EhOXE98txaiH0AyPaDZkkTESNg=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-248-rY7w0snCPoioQSVL9NUPzA-1; Thu, 15 Jan 2026 17:55:09 -0500
-X-MC-Unique: rY7w0snCPoioQSVL9NUPzA-1
-X-Mimecast-MFC-AGG-ID: rY7w0snCPoioQSVL9NUPzA_1768517709
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-8c6a5bc8c43so154648985a.2
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 14:55:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768517708; x=1769122508; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=R2BbPrejjC1FlAZ8xQiekJJRvkNULNih9IpSitGenkg=;
- b=eEZ99Ob2iy31hKs6ueo6nv9572vAgG4nbDe+l7oC3Yd0CbFLmIweFhfET8wEmD6zaS
- bZpuc6UbD7bB57aSulsBFCjbf4fi5CW6ypw01pWllbJ5qYJTknDp7oyO96IXYslXXZSy
- SxLt1TpvWrn9sK3QmQAAmsfM4GpZHjLZC8FB59AkT+7hUOZs3MKksxEVv9uIKFc444sS
- mjYYHgPtvNQI92J7Io9freCDdYfT3/s5buXogVkd7UWL+A2DXeBGcZ/Anw54b4nkKLhy
- pUJbM67zsZ64M5MqqGtD0KrO3EB+1eq2MzTyA/CykD0cYm1myGOkQyUNNYxBkbmh64UU
- HGWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768517708; x=1769122508;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=R2BbPrejjC1FlAZ8xQiekJJRvkNULNih9IpSitGenkg=;
- b=ro5KX8JwephESUXvtnZS1VVoNWplzG9cA/qHpT3iNgfthU22ayMB4rJ/w9WZDyyPsZ
- anpP4t62tVMX7MLU6fNRj+sVal/5w6uhYM5389PVMNuyVs/nRsly+NGz+OktDWLalr7z
- xGmU7ytrXXRjcNUinWwP9T/v0mpSVgin+CIAk7znBnkapVGer14CflMqvRryxAWV25dW
- 9eHV8i8W7cL0iA76ntFIY7s+gmfmJpux0v4PHDf3Ou76bk2Ord119oM2b5wYv6/dBlLx
- LNdgp8LVJKR4YnEwy2zX4e2kZHa4USPWpcgAos41u7Kuw59NX6p7DbyqkOkLgBNSEuyj
- WIaA==
-X-Gm-Message-State: AOJu0YwqQdNVyP+MV2A9fcZDKWxeZ15od4SkE+bpZMav6B4NVNlZu44A
- oSHRufSJOI4dfqAPGyEyNkueVldzIhetPM5EX4KlTy+HzpKBArlUA9x7ypIP0kNH/d5u8QMnF2u
- ZCem+bHHpcBu3erqDihiaHMN6/YJgbToEMRlHR7uf4C7LKFYLr4Ippbs9/543rMKjq8+6CTL4cj
- vAAdA6ZGQ+2aaPYBPXeRE7+S2BnIk6DM7emxCk1A==
-X-Gm-Gg: AY/fxX67Zjq0yUXG7l4C4TzZFb2G1pL7B07AllFfWjNndMtjrJl5cwH8VYTeQu3bt1n
- rFCx6anGr5/F4qu99famYgA/B4RkHR8vAu3mFO5y929DY/A+HSWya+0CV/CgFYLVnKN8JTb7rbE
- qX2RNwbqhMq3XtBYfH494HzXYue0+HfSJRQXWsZNAbwI6ln/JJUvbsSiiUKgyV2oPYTwMQlreTN
- 8Z61tEnh7HG9hfKnH4Rw5JsMgG2ZnkSJYnvufItdHKqSlLV8dU4BGFnCscMEadq7fIDo7Or9aCj
- AhsRS+dXgBwiP/UP8NP4F83Qr5po9vS2eYhR0bRi48T8PWvIyRz5VWz9hy1rLf8vX0y5IykTYrN
- d
-X-Received: by 2002:a05:620a:4415:b0:8c3:7e05:db01 with SMTP id
- af79cd13be357-8c6a66d6957mr144837985a.2.1768517708487; 
- Thu, 15 Jan 2026 14:55:08 -0800 (PST)
-X-Received: by 2002:a05:620a:4415:b0:8c3:7e05:db01 with SMTP id
- af79cd13be357-8c6a66d6957mr144834985a.2.1768517707783; 
- Thu, 15 Jan 2026 14:55:07 -0800 (PST)
-Received: from x1.com ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-8c6a71d8314sm70353185a.24.2026.01.15.14.55.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Jan 2026 14:55:07 -0800 (PST)
-From: Peter Xu <peterx@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Juraj Marcin <jmarcin@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Markus Armbruster <armbru@redhat.com>,
- Prasad Pandit <ppandit@redhat.com>, peterx@redhat.com
-Subject: [PATCH v2 2/2] migration: Remove fd: support on files
-Date: Thu, 15 Jan 2026 17:55:03 -0500
-Message-ID: <20260115225503.3083355-3-peterx@redhat.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260115225503.3083355-1-peterx@redhat.com>
-References: <20260115225503.3083355-1-peterx@redhat.com>
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1vgWJk-0000Tl-2f
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 17:59:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+ ; s=bytemarkmx;
+ h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
+ :Subject; bh=04NgBVIA7fW0fvfeQBVxkrZNRIgoNO5GhDCQtUQnsxw=; b=rQWXtiDCd/2ig8Iz
+ OHBoDq3R85nsorKjT0Eh3JwHc+2To/nBULVZjMw3WWmNsVKK26aOw6ClNa04tFyr7rTP0vjG8h8Z7
+ qI8jF5vR3OX35ijZuWsbSSH6bjWiUUt4UEvYVJ5zrTsKClBvsRoCGYSYXDBofJcYjPW5uZNAqaJEm
+ /46YlsFVK1wHseayw6YhQk/xovt7Vdz2jvET0+Fx5oQOnUppj1VI2ceaEHuVEHXo6MUEitHkSjh5x
+ LxITDJ0vZl8kudy49tR43KnOYaY5PrlvhxGvHLGgX1QYvXuMLzR9L6oW/P2sLcctsFE1TCaNYV0an
+ Sd3FUyBebKQHFAcVCA==;
+Received: from dg by mx.treblig.org with local (Exim 4.98.2)
+ (envelope-from <dg@treblig.org>) id 1vgWJf-0000000F6ru-0N7V;
+ Thu, 15 Jan 2026 22:59:47 +0000
+Date: Thu, 15 Jan 2026 22:59:47 +0000
+From: "Dr. David Alan Gilbert" <dave@treblig.org>
+To: Peter Xu <peterx@redhat.com>
+Cc: Lukas Straub <lukasstraub2@web.de>, qemu-devel@nongnu.org,
+ Juraj Marcin <jmarcin@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Markus Armbruster <armbru@redhat.com>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ =?utf-8?B?THVrw6HFoQ==?= Doktor <ldoktor@redhat.com>,
+ Juan Quintela <quintela@trasno.org>,
+ Zhang Chen <zhangckid@gmail.com>, zhanghailiang@xfusion.com,
+ Li Zhijian <lizhijian@fujitsu.com>, Jason Wang <jasowang@redhat.com>
+Subject: Re: [PATCH 1/3] migration/colo: Deprecate COLO migration framework
+Message-ID: <aWlxY9TWGT1aaMJz@gallifrey>
+References: <20260114195659.2543649-1-peterx@redhat.com>
+ <20260114195659.2543649-2-peterx@redhat.com>
+ <aWf4i7EOXtpAljGX@x1.local> <20260115224929.616aab85@penguin>
+ <aWlso1w39cQnEh2t@x1.local>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <aWlso1w39cQnEh2t@x1.local>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/6.12.48+deb13-amd64 (x86_64)
+X-Uptime: 22:48:45 up 80 days, 22:25,  2 users,  load average: 0.13, 0.04, 0.01
+User-Agent: Mutt/2.2.13 (2024-03-09)
+Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
+ helo=mx.treblig.org
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,159 +76,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This feature was deprecated in 9.1.  Remove it in this release (11.0).
+* Peter Xu (peterx@redhat.com) wrote:
+> On Thu, Jan 15, 2026 at 10:49:29PM +0100, Lukas Straub wrote:
+> > Nack.
+> > 
+> > This code has users, as explained in my other email:
+> > https://lore.kernel.org/qemu-devel/20260115224516.7f0309ba@penguin/T/#mc99839451d6841366619c4ec0d5af5264e2f6464
+> 
+> Please then rework that series and consider include the following (I
+> believe I pointed out a long time ago somewhere..):
+> 
 
-We also need to remove one unit test (/migration/precopy/fd/file) that
-covers the fd: file migration, because it'll stop working now.
+> - Some form of justification of why multifd needs to be enabled for COLO.
+>   For example, in your cluster deployment, using multifd can improve XXX
+>   by YYY.  Please describe the use case and improvements.
 
-Reviewed-by: Prasad Pandit <ppandit@redhat.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- docs/about/deprecated.rst             | 14 ---------
- docs/about/removed-features.rst       |  9 ++++++
- migration/fd.c                        | 11 ++++---
- tests/qtest/migration/precopy-tests.c | 41 ---------------------------
- 4 files changed, 16 insertions(+), 59 deletions(-)
+That one is pretty easy; since COLO is regularly taking snapshots, the faster
+the snapshoting the less overhead there is.
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index dfb0a6eba5..a46cc6b9fd 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -560,17 +560,3 @@ If the user requests a modern x86 CPU model (i.e. not one of ``486``,
- ``athlon``, ``kvm32``, ``pentium``, ``pentium2``, ``pentium3``or ``qemu32``)
- a warning will be displayed until a future QEMU version when such CPUs will
- be rejected.
--
--Migration
-----------
--
--``fd:`` URI when used for file migration (since 9.1)
--''''''''''''''''''''''''''''''''''''''''''''''''''''
--
--The ``fd:`` URI can currently provide a file descriptor that
--references either a socket or a plain file. These are two different
--types of migration. In order to reduce ambiguity, the ``fd:`` URI
--usage of providing a file descriptor to a plain file has been
--deprecated in favor of explicitly using the ``file:`` URI with the
--file descriptor being passed as an ``fdset``. Refer to the ``add-fd``
--command documentation for details on the ``fdset`` usage.
-diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index 4aae30918d..ebb46bb3b1 100644
---- a/docs/about/removed-features.rst
-+++ b/docs/about/removed-features.rst
-@@ -710,6 +710,15 @@ Use blockdev-mirror with NBD instead. See "QMP invocation for live
- storage migration with ``blockdev-mirror`` + NBD" in
- docs/interop/live-block-operations.rst for a detailed explanation.
- 
-+``migrate`` command with file-based ``fd:`` URI (removed in 11.0)
-+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-+
-+In order to reduce ambiguity, the ``fd:`` URI usage of providing a
-+file descriptor to a plain file has been removed in favor of
-+explicitly using the ``file:`` URI with the file descriptor being
-+passed as an ``fdset``. Refer to the ``add-fd`` command documentation
-+for details on the ``fdset`` usage.
-+
- ``migrate-set-capabilities`` ``block`` option (removed in 9.1)
- ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
- 
-diff --git a/migration/fd.c b/migration/fd.c
-index 9bf9be6acb..fdeece2101 100644
---- a/migration/fd.c
-+++ b/migration/fd.c
-@@ -24,6 +24,7 @@
- #include "qemu/sockets.h"
- #include "io/channel-util.h"
- #include "trace.h"
-+#include "qapi/error.h"
- 
- static bool fd_is_pipe(int fd)
- {
-@@ -58,8 +59,9 @@ void fd_start_outgoing_migration(MigrationState *s, const char *fdname, Error **
-     }
- 
-     if (!migration_fd_valid(fd)) {
--        warn_report("fd: migration to a file is deprecated."
--                    " Use file: instead.");
-+        error_setg(errp, "fd: migration to a file is not supported."
-+                   " Use file: instead.");
-+        return;
-     }
- 
-     trace_migration_fd_outgoing(fd);
-@@ -92,8 +94,9 @@ void fd_start_incoming_migration(const char *fdname, Error **errp)
-     }
- 
-     if (!migration_fd_valid(fd)) {
--        warn_report("fd: migration to a file is deprecated."
--                    " Use file: instead.");
-+        error_setg(errp, "fd: migration to a file is not supported."
-+                   " Use file: instead.");
-+        return;
-     }
- 
-     trace_migration_fd_incoming(fd);
-diff --git a/tests/qtest/migration/precopy-tests.c b/tests/qtest/migration/precopy-tests.c
-index aca7ed51ef..3af8ec2e33 100644
---- a/tests/qtest/migration/precopy-tests.c
-+++ b/tests/qtest/migration/precopy-tests.c
-@@ -289,45 +289,6 @@ static void test_precopy_fd_socket(char *name, MigrateCommon *args)
- 
-     test_precopy_common(args);
- }
--
--static void *migrate_hook_start_precopy_fd_file(QTestState *from,
--                                                QTestState *to)
--{
--    g_autofree char *file = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
--    int src_flags = O_CREAT | O_RDWR;
--    int dst_flags = O_CREAT | O_RDWR;
--    int fds[2];
--
--    fds[0] = open(file, src_flags, 0660);
--    assert(fds[0] != -1);
--
--    fds[1] = open(file, dst_flags, 0660);
--    assert(fds[1] != -1);
--
--
--    qtest_qmp_fds_assert_success(to, &fds[0], 1,
--                                 "{ 'execute': 'getfd',"
--                                 "  'arguments': { 'fdname': 'fd-mig' }}");
--
--    qtest_qmp_fds_assert_success(from, &fds[1], 1,
--                                 "{ 'execute': 'getfd',"
--                                 "  'arguments': { 'fdname': 'fd-mig' }}");
--
--    close(fds[0]);
--    close(fds[1]);
--
--    return NULL;
--}
--
--static void test_precopy_fd_file(char *name, MigrateCommon *args)
--{
--    args->listen_uri = "defer";
--    args->connect_uri = "fd:fd-mig";
--    args->start_hook = migrate_hook_start_precopy_fd_file;
--    args->end_hook = migrate_hook_end_fd;
--
--    test_file_common(args, true);
--}
- #endif /* _WIN32 */
- 
- /*
-@@ -1255,8 +1216,6 @@ void migration_test_add_precopy(MigrationTestEnv *env)
- #ifndef _WIN32
-     migration_test_add("/migration/precopy/fd/tcp",
-                        test_precopy_fd_socket);
--    migration_test_add("/migration/precopy/fd/file",
--                       test_precopy_fd_file);
- #endif
- 
-     /*
+Lukas: Given COLO has a bunch of different features (i.e. the block
+replication, the clever network comparison etc) do you know which ones
+are used in the setups you are aware of?
+
+I'd guess the tricky part of a test would be the network side; I'm
+not too sure how you'd set that in a test.
+
+Dave
+
 -- 
-2.50.1
-
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
 
