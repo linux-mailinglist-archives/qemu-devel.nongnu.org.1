@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2B8FD25D7B
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 17:50:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 607CCD25D5B
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 17:49:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgQWW-0007Im-TY; Thu, 15 Jan 2026 11:48:40 -0500
+	id 1vgQWb-0007TX-4b; Thu, 15 Jan 2026 11:48:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vgQWS-0007FZ-Pt
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 11:48:36 -0500
+ id 1vgQWY-0007N2-JR
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 11:48:42 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vgQWR-0003vA-4N
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 11:48:36 -0500
+ id 1vgQWX-0003wn-03
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 11:48:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768495714;
+ s=mimecast20190719; t=1768495720;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mSqq1fW/DLK5nLvisDx5sBLgdT92CKVAKUFrZDNP1q8=;
- b=dFgmVNtUgd7JAu+c2RlB9PrrRUn9vlNkJFxHfCQ6+Pay0IULecNoRqw03kC9oZNPDifVOI
- 4nNJdcr2lY/uAZiObcyEZ8fxh/qAmFRwaKzSxVY8OI2m9ZMoq9Obp0nKk9vqzCNfk7AtPQ
- xdP+tA/O6GH9bfr844m6Bm66qk88DwU=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=a3iWmsyh3bQWlQtCzms6LzBGE0iwI7atdxUB70MTeYU=;
+ b=bjQCCxWou0cwqzEtY7PITJLt5Ku6XHohm3P9qLg8OwMwEb40IkI3Au80mbhqghJOTIjRh+
+ pJhsrbQJdstZyACWN6m0UOr7cgHReJtj+fK9kOHI6cx7j/azTcvphLHA39U661NfO31kVL
+ Jh5FviFSCSFUHCJe+KfSXf3lSPK2q84=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-651-aouzCRIjN6Cg_DthuHxbxA-1; Thu,
- 15 Jan 2026 11:48:33 -0500
-X-MC-Unique: aouzCRIjN6Cg_DthuHxbxA-1
-X-Mimecast-MFC-AGG-ID: aouzCRIjN6Cg_DthuHxbxA_1768495712
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-299-DOJLRTMYNemkH2b5n-GywQ-1; Thu,
+ 15 Jan 2026 11:48:36 -0500
+X-MC-Unique: DOJLRTMYNemkH2b5n-GywQ-1
+X-Mimecast-MFC-AGG-ID: DOJLRTMYNemkH2b5n-GywQ_1768495716
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0C18D195606C; Thu, 15 Jan 2026 16:48:32 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DC7271800371; Thu, 15 Jan 2026 16:48:35 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.98])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 58F201800665; Thu, 15 Jan 2026 16:48:29 +0000 (UTC)
+ id 6669F1800285; Thu, 15 Jan 2026 16:48:32 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, John Snow <jsnow@redhat.com>,
@@ -55,9 +55,10 @@ Cc: Thomas Huth <thuth@redhat.com>, John Snow <jsnow@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3 09/14] tests: add nbd and luks to the I/O test suites
-Date: Thu, 15 Jan 2026 16:47:51 +0000
-Message-ID: <20260115164756.799402-10-berrange@redhat.com>
+Subject: [PATCH v3 10/14] tests: use 'driver' as collective term for either
+ format or protocol
+Date: Thu, 15 Jan 2026 16:47:52 +0000
+Message-ID: <20260115164756.799402-11-berrange@redhat.com>
 In-Reply-To: <20260115164756.799402-1-berrange@redhat.com>
 References: <20260115164756.799402-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -89,55 +90,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This introduces new suites for running I/O tests on NBD and LUKS
-drivers, giving new make targets
-
- * make check-block-luks
- * make check-block-nbd
-
-as well as adding their tests to 'make check-block SPEED=thorough'
+The I/O tests integration previously exclusively tested block formats
+and now also covers the NBD protocol. Replace references to 'format'
+with 'driver', as a generic term to collectively apply to either a
+format or protocol.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- docs/devel/testing/main.rst    | 4 ++--
- tests/qemu-iotests/meson.build | 4 +++-
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ docs/devel/testing/main.rst    | 13 +++++++------
+ tests/Makefile.include         |  4 ++--
+ tests/qemu-iotests/meson.build |  6 +++---
+ 3 files changed, 12 insertions(+), 11 deletions(-)
 
 diff --git a/docs/devel/testing/main.rst b/docs/devel/testing/main.rst
-index dc4f7202a5..8067d0a3ed 100644
+index 8067d0a3ed..797111009a 100644
 --- a/docs/devel/testing/main.rst
 +++ b/docs/devel/testing/main.rst
-@@ -233,8 +233,8 @@ to run. A slightly more comprehensive test plan can be run by defining
- ``SPEED=slow``, which enables all tests for the ``qcow2`` and ``raw``
- formats. The most comprehensive test plan can be run by defining
- ``SPEED=thorough``, which enables all available tests for the formats
--``parallels``, ``qcow2``, ``qed``, ``raw``, ``vdi``, ``vhdx``,
--``vmdk``, and ``vpc``.
-+``luks``, ``nbd``, ``parallels``, ``qcow2``, ``qed``, ``raw``, ``vdi``,
-+``vhdx``, ``vmdk``, and ``vpc``.
+@@ -222,7 +222,8 @@ check-block
+ ~~~~~~~~~~~
  
- Each of formats also has its own dedicated make target, named
- ``make check-block-$FORMAT`` which will run all available tests for
+ There are a variety of ways to exercise the block layer I/O tests
+-via make targets.
++via make targets for a selection of formats / protocols (collectively
++referred to as ``drivers`` below).
+ 
+ A default ``make check`` or ``make check-block`` command will exercise
+ the ``qcow2`` format, using the tests tagged into the ``auto`` group
+@@ -231,14 +232,14 @@ only.
+ These targets accept the ``SPEED`` variable to augment the set of tests
+ to run. A slightly more comprehensive test plan can be run by defining
+ ``SPEED=slow``, which enables all tests for the ``qcow2`` and ``raw``
+-formats. The most comprehensive test plan can be run by defining
+-``SPEED=thorough``, which enables all available tests for the formats
++drivers. The most comprehensive test plan can be run by defining
++``SPEED=thorough``, which enables all available tests for the drivers
+ ``luks``, ``nbd``, ``parallels``, ``qcow2``, ``qed``, ``raw``, ``vdi``,
+ ``vhdx``, ``vmdk``, and ``vpc``.
+ 
+-Each of formats also has its own dedicated make target, named
+-``make check-block-$FORMAT`` which will run all available tests for
+-the designated format and does not require the ``SPEED`` variable
++Each of drivers also has its own dedicated make target, named
++``make check-block-$DRIVER`` which will run all available tests for
++the designated driver and does not require the ``SPEED`` variable
+ to be set.
+ 
+ See the "QEMU iotests" section below for more information on the
+diff --git a/tests/Makefile.include b/tests/Makefile.include
+index fc6fdcbbf9..63ae84f516 100644
+--- a/tests/Makefile.include
++++ b/tests/Makefile.include
+@@ -14,8 +14,8 @@ check-help:
+ 	@echo " $(MAKE) check-unit               Run qobject tests"
+ 	@echo " $(MAKE) check-qapi-schema        Run QAPI schema tests"
+ 	@echo " $(MAKE) check-tracetool          Run tracetool generator tests"
+-	@echo " $(MAKE) check-block              Run block tests (all formats)"
+-	@echo " $(MAKE) check-block-FORMAT       Run block tests (only for FORMAT)"
++	@echo " $(MAKE) check-block              Run block tests (all formats/protocols)"
++	@echo " $(MAKE) check-block-DRIVER       Run block tests (only for format/protocol 'DRIVER')"
+ ifneq ($(filter $(all-check-targets), check-softfloat),)
+ 	@echo " $(MAKE) check-tcg                Run TCG tests"
+ 	@echo " $(MAKE) check-softfloat          Run FPU emulation tests"
 diff --git a/tests/qemu-iotests/meson.build b/tests/qemu-iotests/meson.build
-index 66b09d6b97..744d0b6e88 100644
+index 744d0b6e88..5d6b0b5ed9 100644
 --- a/tests/qemu-iotests/meson.build
 +++ b/tests/qemu-iotests/meson.build
-@@ -15,12 +15,14 @@ qemu_iotests_env = {'PYTHON': python.full_path()}
- qemu_iotests_formats = {
+@@ -12,7 +12,7 @@ qemu_iotests_binaries = [qemu_img, qemu_io, qemu_nbd, qsd]
+ qemu_iotests_env = {'PYTHON': python.full_path()}
+ # If altering this definition, also update docs/devel/testing/main.rst
+ # section on 'check-block' targets to reflect the changes
+-qemu_iotests_formats = {
++qemu_iotests_drivers = {
    'qcow2': 'quick',
    'raw': 'slow',
-+  'luks': 'thorough',
-+  'nbd': 'thorough',
-   'parallels': 'thorough',
-   'qed': 'thorough',
-   'vdi': 'thorough',
-   'vhdx': 'thorough',
-   'vmdk': 'thorough',
--  'vpc': 'thorough'
-+  'vpc': 'thorough',
- }
+   'luks': 'thorough',
+@@ -33,8 +33,8 @@ endforeach
  
- foreach k, v : emulators
+ qemu_iotests_check_cmd = files('check')
+ 
+-foreach format, speed: qemu_iotests_formats
+-  # Formats tagged 'quick' get the subset of tests in the 'auto'
++foreach format, speed: qemu_iotests_drivers
++  # Drivers tagged 'quick' get the subset of tests in the 'auto'
+   # group, run by default with 'make check' / 'make check-block'
+   seen = []
+   if speed == 'quick'
 -- 
 2.52.0
 
