@@ -2,78 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5076AD2263D
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 05:52:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 916FDD2264F
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 05:54:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgFKL-0004nD-6C; Wed, 14 Jan 2026 23:51:21 -0500
+	id 1vgFNe-0001td-KV; Wed, 14 Jan 2026 23:54:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1vgFKH-0004lx-To
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 23:51:17 -0500
-Received: from p-west3-cluster2-host10-snip4-4.eps.apple.com ([57.103.74.17]
- helo=outbound.ms.icloud.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1vgFKG-00066y-6p
- for qemu-devel@nongnu.org; Wed, 14 Jan 2026 23:51:17 -0500
-Received: from outbound.ms.icloud.com (unknown [127.0.0.2])
- by p00-icloudmta-asmtp-us-west-3a-10-percent-0 (Postfix) with ESMTPS id
- 6BC091800126; Thu, 15 Jan 2026 04:51:14 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=sQ4Ek+qCxf73Mm1+7CUPLvriVbB9zK8bC6CHZbAqExw=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme;
- b=X8KIPoIrLiJXVsVo/oamy8nBByaPE6fWxOiHWl/oNtxZ3cu1oS2CczqUmqdBR0QTO9HNv9Xhf4mqcDLmMznihZwTxYgol8XyUxRsZS1ZTDe4/OlSnng5Q8a6WGvAQxW/SNXZsNgDvWBdM22RfCypNXVxYyNXwuhdx4dOkZej1azWClQo/FdydpSmvdK79bevgIm2Fj2ZddrhGWf5Xqan+UO2NoDUqVnTNbuF6wP0yVi2bbdV6VyXcJNkiefBX07omh28VhX31WoaY2EGbVP6XGl505v+t3c3q6Vdma4sutGim/ed9fiUWbPzjS1fdfEHAt/vwNHKb+wjdB9T9yXXTA==
-mail-alias-created-date: 1752046281608
-Received: from localhost.localdomain (unknown [17.57.154.37])
- by p00-icloudmta-asmtp-us-west-3a-10-percent-0 (Postfix) with ESMTPSA id
- 1D1FB18007C3; Thu, 15 Jan 2026 04:51:11 +0000 (UTC)
-From: Mohamed Mediouni <mohamed@unpredictable.fr>
-To: qemu-devel@nongnu.org
-Cc: Alexander Graf <agraf@csgraf.de>, Cameron Esfahani <dirty@apple.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
- qemu-arm@nongnu.org, Phil Dennis-Jordan <phil@philjordan.eu>,
- Peter Maydell <peter.maydell@linaro.org>,
- Roman Bolshakov <rbolshakov@ddn.com>,
- Mohamed Mediouni <mohamed@unpredictable.fr>
-Subject: [PATCH v7 10/10] hvf: sync registers used at EL2
-Date: Thu, 15 Jan 2026 05:50:42 +0100
-Message-ID: <20260115045042.70086-11-mohamed@unpredictable.fr>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260115045042.70086-1-mohamed@unpredictable.fr>
-References: <20260115045042.70086-1-mohamed@unpredictable.fr>
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
+ id 1vgFNc-0001si-Fa
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 23:54:44 -0500
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
+ id 1vgFNa-0006v2-Tv
+ for qemu-devel@nongnu.org; Wed, 14 Jan 2026 23:54:44 -0500
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-81f5381d168so479095b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 14 Jan 2026 20:54:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1768452881; x=1769057681; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=YxGpCaEA6E+gJcfxQzza4MUxtSt8D1xK+PctoM3MmKM=;
+ b=Aj7yCFZ2VG2slZDOGZTh+68ITkOseAtG5NtfSmZg4z17PRMhCUiJhrB9nroIdnYUPY
+ j4gpgxRVinvMIzrpXKGLRVRkMZe+KlYVbyd2lotWZT2nDbRWmg3C4qkl6/QCavTvAvhz
+ P1u50aj/B5tVPiYv7HVEVLYHAhHIfhMYhYHTn67zIneGnGeoDRlaU2y9FNx3BmAXWkY5
+ Dwg8IlxYi+BaWztc+54xm6yZOmFjblR65db+zPxdqJRpmSkG3RNlVCP/fqp/bU0MLACL
+ uQfa6l+Tuf3gYRB45Xx7w+AFs4PTsU6PbzRyeMcRgpCI7mF39jGaviXKPC5ufhBIS3P8
+ hC3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768452881; x=1769057681;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=YxGpCaEA6E+gJcfxQzza4MUxtSt8D1xK+PctoM3MmKM=;
+ b=O5bT7pwQql6mvDlc51jr108c5yVAln4OrssJ38N7M6f1RonLDvDYNXCiXU0YDDaFdd
+ Xb+oucn7ysrR3mHi4iksyDLAPOlrrryUW2QFsi0syj1v8llTZJR+1s+JUjaG5zHJy1/+
+ gZddBc+Uh2esQi/d/jdhAKcLd0Ylyo396te5caybYKtYS8K4jDflUOst/f9KrFP5HsPT
+ GZKWc0U5bQjYYkn++rzVJqU81OEbl1DO5DDhKO+llLdojCTO0A6X55r0XimanOtseoFI
+ uSTzX8FcfqFFXTB+xu06mYt8hW2a20l0M26s9AqjlGhg61MOZzjOsPkLgDRzAfW8Cj5z
+ TVeA==
+X-Gm-Message-State: AOJu0YzxgEJWUTWHAE+wDjyBlMGAdYNSZ/gwEhM7lPBmxXL/hQp1HYwp
+ nrKudMkqr2eyID0FzZwBULP/htY+EQnXOfDtBL0VJ4A1tpXS2hPIEd5Wrzg37g==
+X-Gm-Gg: AY/fxX78KViX6BjSLh9T0dUFoFoDA0PJkxREYaC5Lyysj0dFo6/AlWZeQRp9CJEp3Vl
+ LcB9fp7HQwZZRP8QVWEOSSrf0tsY7/qFK+u62o3y2kEIIWn0WbclBmx1cJHBzZDFd7jJhf5jA3/
+ la3er7GXiboKT+3kv1kscnEg9v3lxJBrxoXRFvy6CJs/vc7zMl1ssEdBWS75twU9dQ7Ljkn0vkd
+ ld7zgtiEB0GNlniWCVAdHli4SzNMO+8f5kLilmeaQckxt8Sgztdd+MVoFi8SK/js3kHooCpfhrH
+ fsfCns+uqvCmZeKXDyr6FSrtZbAE6bpjJbhBmm48tgCcSJ+9fxGDAExm2E9d9v1EFRJBM7IA9bn
+ y4c/7owjaUFzdZVKjsybMlJSyy470y0d4ZuGtDtNt5we7p1HqGTVXVxsuggwJzcAoTZLH8UIq21
+ bucJ8FAvMqdPpokg==
+X-Received: by 2002:a05:6a00:301e:b0:81a:b183:44fc with SMTP id
+ d2e1a72fcca58-81f81d1ac72mr5263141b3a.23.1768452881086; 
+ Wed, 14 Jan 2026 20:54:41 -0800 (PST)
+Received: from jeuk-MS-7D42.. ([175.119.5.143])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-81f8e4b4110sm1141426b3a.10.2026.01.14.20.54.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 14 Jan 2026 20:54:40 -0800 (PST)
+From: Jeuk Kim <jeuk20.kim@gmail.com>
+To: qemu-devel@nongnu.org,
+	richard.henderson@linaro.org
+Cc: pbonzini@redhat.com, qemu-block@nongnu.org, jeuk20.kim@samsung.com,
+ j-young.choi@samsung.com
+Subject: [PULL 0/3] ufs queue
+Date: Thu, 15 Jan 2026 13:53:58 +0900
+Message-ID: <cover.1768452598.git.jeuk20.kim@samsung.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: oXL2-H_-3LRog5quyDE47tc1L9Sh-21b
-X-Authority-Info: v=2.4 cv=GdIaXAXL c=1 sm=1 tr=0 ts=69687242
- cx=c_apl:c_apl_out:c_pps a=qkKslKyYc0ctBTeLUVfTFg==:117 a=vUbySO9Y5rIA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7gx8ALrZTGDtSAp3wEYA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE1MDAyOSBTYWx0ZWRfX2dLIx7xwXIQ4
- idVvm51FOy2SkGag2Muv8gvVMvM5343m27X3N8P8qLBmk1/l+Z2DdhxGNzZhLATmkZjtxfvpPRD
- 9hMhx2I42qodiI7NWw2BTlLDmKFlWuVf8u5YQseK1d362wCWH0JBr3ZfK5P5iZI2ljBbSplocZt
- RqazPM37sshbXX/iFupp+iiXmCTSqOGKc3vxdCWLMxhK4G6Ps0WbDo/2DgUzd7etmpKrtid5qlM
- qyA9kdBs7f3/6474th+wFDSy97LQ9nrKg7egEaQqoWKuQHE69RQrkaE9M9ank0Bxm+V1X0937yr
- 4vfM9isTrn8aADCXKnN
-X-Proofpoint-ORIG-GUID: oXL2-H_-3LRog5quyDE47tc1L9Sh-21b
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-15_01,2026-01-14_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- suspectscore=0 clxscore=1030 mlxlogscore=854 bulkscore=0 malwarescore=0
- mlxscore=0 adultscore=0 phishscore=0 classifier=spam authscore=0 adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2601150029
-X-JNJ: AAAAAAABNd71uqer21B3K76TuVornhxsWf1stsPy7Djp7bOmD1zJ+hxwOo9zzXY9p0NOrrWEGfALGuBuoaCkvCXABeQbEJogGIYCpUfHalMotqGCPO2r8r1iEEeX1nscHuIC/ZQ/TbNjy5srT9PrjUzoZuFxdbD3syolxZkuFw0qsP/talGosTtY1LcAITDVsn3QFBbQLTzS3Au/FhOPuK/RuaAQ5T23AZN28bxmIaWBnQSs2D9W9fIMRQryUwxwpauCZ9tLkoNeq0OsTFhcYOj75p4onZT/U3iUWk0lT55Ojs2By+mrRDUs58xfcgmZxEP1uSYgTuTVC8CmvZKtTPMJbt1mYQPNCZ4cb14YNzEzuOOKpHavW/V8MguMNLQwfPEruoDgGATmqC3J+FRVvSF6A/AqR9i1u4vzutOr85pqvkHuwAuqtNfY02v0yCOEfBZdZkUR03J06aBMDrthtsO4zG+JGZooCwOkD4d4l5P7Wf4oRn1+2Wla0HQabuQy1ckkmlfMq+cv1lzbxEI0REmN3i5ZJEwa9FdhyoXD5XT3GnmLTEJDvSlzwAoE3WouSlRcP7LRQfP64bL6XMDmSaO8vt9oEbW3PbupuLwGucq51+LyhXxbV3Bzpl7hZFsA+8xhwe8zTsAlLvmHpO8ipy1SlWOTjDvYQ+MDfEsE6UJmzVqU5C+XAK9odg==
-Received-SPF: pass client-ip=57.103.74.17;
- envelope-from=mohamed@unpredictable.fr; helo=outbound.ms.icloud.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=jeuk20.kim@gmail.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,124 +96,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When starting up the VM at EL2, more sysregs are available. Sync the state of those.
+From: Jeuk Kim <jeuk20.kim@samsung.com>
 
-In addition, sync the state of the EL1 physical timer when the vGIC is used, even
-if running at EL1. However, no OS running at EL1 is expected to use those registers.
+The following changes since commit d03c3e522eb0696dcfc9c2cf643431eaaf51ca0f:
 
-Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
----
- target/arm/hvf/hvf.c        | 37 +++++++++++++++++++++++++++++++++----
- target/arm/hvf/sysreg.c.inc | 35 +++++++++++++++++++++++++++++++++++
- 2 files changed, 68 insertions(+), 4 deletions(-)
+  Merge tag 'pull-vfio-20260113' of https://github.com/legoater/qemu into staging (2026-01-14 02:37:13 +1100)
 
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 9a70cbed28..40467929e8 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -417,13 +417,34 @@ static const struct hvf_reg_match hvf_fpreg_match[] = {
- #define DEF_SYSREG(HVF_ID, ...) \
-   QEMU_BUILD_BUG_ON(HVF_ID != KVMID_TO_HVF(KVMID_AA64_SYS_REG64(__VA_ARGS__)));
- 
-+#define DEF_SYSREG_EL2(HVF_ID, ...) \
-+  QEMU_BUILD_BUG_ON(HVF_ID != KVMID_TO_HVF(KVMID_AA64_SYS_REG64(__VA_ARGS__)));
-+
-+#define DEF_SYSREG_VGIC(HVF_ID, ...) \
-+  QEMU_BUILD_BUG_ON(HVF_ID != KVMID_TO_HVF(KVMID_AA64_SYS_REG64(__VA_ARGS__)));
-+
-+#define DEF_SYSREG_VGIC_EL2(HVF_ID, ...) \
-+  QEMU_BUILD_BUG_ON(HVF_ID != KVMID_TO_HVF(KVMID_AA64_SYS_REG64(__VA_ARGS__)));
-+
- #include "sysreg.c.inc"
- 
- #undef DEF_SYSREG
-+#undef DEF_SYSREG_EL2
-+#undef DEF_SYSREG_VGIC
-+#undef DEF_SYSREG_VGIC_EL2
-+
-+#define DEF_SYSREG(HVF_ID, op0, op1, crn, crm, op2)  {HVF_ID},
-+#define DEF_SYSREG_EL2(HVF_ID, op0, op1, crn, crm, op2)  {HVF_ID, .el2 = true},
-+#define DEF_SYSREG_VGIC(HVF_ID, op0, op1, crn, crm, op2)  {HVF_ID, .vgic = true},
-+#define DEF_SYSREG_VGIC_EL2(HVF_ID, op0, op1, crn, crm, op2)  {HVF_ID, true, true},
-+
-+struct hvf_sreg {
-+    hv_sys_reg_t sreg;
-+    bool vgic;
-+    bool el2;
-+};
- 
--#define DEF_SYSREG(HVF_ID, op0, op1, crn, crm, op2)  HVF_ID,
--
--static const hv_sys_reg_t hvf_sreg_list[] = {
-+static struct hvf_sreg hvf_sreg_list[] = {
- #include "sysreg.c.inc"
- };
- 
-@@ -982,11 +1003,19 @@ int hvf_arch_init_vcpu(CPUState *cpu)
- 
-     /* Populate cp list for all known sysregs */
-     for (i = 0; i < sregs_match_len; i++) {
--        hv_sys_reg_t hvf_id = hvf_sreg_list[i];
-+        hv_sys_reg_t hvf_id = hvf_sreg_list[i].sreg;
-         uint64_t kvm_id = HVF_TO_KVMID(hvf_id);
-         uint32_t key = kvm_to_cpreg_id(kvm_id);
-         const ARMCPRegInfo *ri = get_arm_cp_reginfo(arm_cpu->cp_regs, key);
- 
-+        if (hvf_sreg_list[i].vgic && !hvf_irqchip_in_kernel()) {
-+            continue;
-+        }
-+
-+        if (hvf_sreg_list[i].el2 && !hvf_nested_virt_enabled()) {
-+            continue;
-+        }
-+
-         if (ri) {
-             assert(!(ri->type & ARM_CP_NO_RAW));
-             arm_cpu->cpreg_indexes[sregs_cnt++] = kvm_id;
-diff --git a/target/arm/hvf/sysreg.c.inc b/target/arm/hvf/sysreg.c.inc
-index 067a8603fa..ce4a4fdc68 100644
---- a/target/arm/hvf/sysreg.c.inc
-+++ b/target/arm/hvf/sysreg.c.inc
-@@ -145,3 +145,38 @@ DEF_SYSREG(HV_SYS_REG_TPIDRRO_EL0, 3, 3, 13, 0, 3)
- DEF_SYSREG(HV_SYS_REG_CNTV_CTL_EL0, 3, 3, 14, 3, 1)
- DEF_SYSREG(HV_SYS_REG_CNTV_CVAL_EL0, 3, 3, 14, 3, 2)
- DEF_SYSREG(HV_SYS_REG_SP_EL1, 3, 4, 4, 1, 0)
-+
-+DEF_SYSREG_VGIC(HV_SYS_REG_CNTP_CTL_EL0, 3, 3, 14, 2, 1)
-+DEF_SYSREG_VGIC(HV_SYS_REG_CNTP_CVAL_EL0, 3, 3, 14, 2, 2)
-+#ifdef SYNC_NO_RAW_REGS
-+DEF_SYSREG_VGIC(HV_SYS_REG_CNTP_TVAL_EL0, 3, 3, 14, 2, 0)
-+#endif
-+
-+DEF_SYSREG_VGIC_EL2(HV_SYS_REG_CNTHCTL_EL2, 3, 4, 14, 1, 0)
-+DEF_SYSREG_VGIC_EL2(HV_SYS_REG_CNTHP_CVAL_EL2, 3, 4, 14, 2, 2)
-+DEF_SYSREG_VGIC_EL2(HV_SYS_REG_CNTHP_CTL_EL2, 3, 4, 14, 2, 1)
-+#ifdef SYNC_NO_RAW_REGS
-+DEF_SYSREG_VGIC_EL2(HV_SYS_REG_CNTHP_TVAL_EL2, 3, 4, 14, 2, 0)
-+#endif
-+DEF_SYSREG_VGIC_EL2(HV_SYS_REG_CNTVOFF_EL2, 3, 4, 14, 0, 3)
-+
-+DEF_SYSREG_EL2(HV_SYS_REG_CPTR_EL2, 3, 4, 1, 1, 2)
-+DEF_SYSREG_EL2(HV_SYS_REG_ELR_EL2, 3, 4, 4, 0, 1)
-+DEF_SYSREG_EL2(HV_SYS_REG_ESR_EL2, 3, 4, 5, 2, 0)
-+DEF_SYSREG_EL2(HV_SYS_REG_FAR_EL2, 3, 4, 6, 0, 0)
-+DEF_SYSREG_EL2(HV_SYS_REG_HCR_EL2, 3, 4, 1, 1, 0)
-+DEF_SYSREG_EL2(HV_SYS_REG_HPFAR_EL2, 3, 4, 6, 0, 4)
-+DEF_SYSREG_EL2(HV_SYS_REG_MAIR_EL2, 3, 4, 10, 2, 0)
-+DEF_SYSREG_EL2(HV_SYS_REG_MDCR_EL2, 3, 4, 1, 1, 1)
-+DEF_SYSREG_EL2(HV_SYS_REG_SCTLR_EL2, 3, 4, 1, 0, 0)
-+DEF_SYSREG_EL2(HV_SYS_REG_SPSR_EL2, 3, 4, 4, 0, 0)
-+DEF_SYSREG_EL2(HV_SYS_REG_SP_EL2, 3, 6, 4, 1, 0)
-+DEF_SYSREG_EL2(HV_SYS_REG_TCR_EL2, 3, 4, 2, 0, 2)
-+DEF_SYSREG_EL2(HV_SYS_REG_TPIDR_EL2, 3, 4, 13, 0, 2)
-+DEF_SYSREG_EL2(HV_SYS_REG_TTBR0_EL2, 3, 4, 2, 0, 0)
-+DEF_SYSREG_EL2(HV_SYS_REG_TTBR1_EL2, 3, 4, 2, 0, 1)
-+DEF_SYSREG_EL2(HV_SYS_REG_VBAR_EL2, 3, 4, 12, 0, 0)
-+DEF_SYSREG_EL2(HV_SYS_REG_VMPIDR_EL2, 3, 4, 0, 0, 5)
-+DEF_SYSREG_EL2(HV_SYS_REG_VPIDR_EL2, 3, 4, 0, 0, 0)
-+DEF_SYSREG_EL2(HV_SYS_REG_VTCR_EL2, 3, 4, 2, 1, 2)
-+DEF_SYSREG_EL2(HV_SYS_REG_VTTBR_EL2, 3, 4, 2, 1, 0)
--- 
-2.50.1 (Apple Git-155)
+are available in the Git repository at:
 
+  https://gitlab.com/jeuk20.kim/qemu.git tags/pull-ufs-20260115
+
+for you to fetch changes up to 0995e513c7c46412ccb5b11a2e71b9c7145997b0:
+
+  tests/qtest/ufs-test: Add test for mcq completion queue wraparound (2026-01-15 13:45:04 +0900)
+
+----------------------------------------------------------------
+ufs: MCQ fixes and tests
+
+- Mask PRDT data byte count to 18 bits
+- Fix MCQ completion queue wraparound
+
+----------------------------------------------------------------
+Ilia Levi (2):
+      hw/ufs: Fix mcq completion queue wraparound
+      tests/qtest/ufs-test: Add test for mcq completion queue wraparound
+
+Jeuk Kim (1):
+      hw/ufs: Ensure DBC of PRDT uses only lower 18 bits
+
+ hw/ufs/ufs.c           |  23 ++++++++-
+ hw/ufs/ufs.h           |   9 ++++
+ tests/qtest/ufs-test.c | 126 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 156 insertions(+), 2 deletions(-)
 
