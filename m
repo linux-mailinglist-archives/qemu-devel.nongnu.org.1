@@ -2,92 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 931BAD22F69
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 08:57:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC5B0D23379
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 09:43:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgIDX-0004i6-MS; Thu, 15 Jan 2026 02:56:31 -0500
+	id 1vgIw4-0004U8-AK; Thu, 15 Jan 2026 03:42:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vgIDV-0004g3-QS
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 02:56:29 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vgIDU-0002pX-5L
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 02:56:29 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-2a07f8dd9cdso4438555ad.1
- for <qemu-devel@nongnu.org>; Wed, 14 Jan 2026 23:56:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768463786; x=1769068586; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=iv38R0w0UhtZUHCNYDFYJNpVgQoPsUcJBlhNKE+1IGg=;
- b=VStGHpfee51ta7+Xxe+eVcjVpZJcuRFfl4O1ZUx6/XhHA9iTlPhgzj61cyndljB+9j
- ytfnBaItoTGnLI1di1K8Ka31AZVGk1VBsdUuRj0SAb72M+txk4NP4Gs9K4+1KblDHZxC
- 5OxMX/b0QQnb6dzrxBsCyoqJWy3Fcu+/mjMheAx/F4d7ZcJMSDuS10XQ2hUOnk92YOhJ
- IG7x89n+GYaQT31VPlyIA7TwlrhN4Z1E3zQb3jeh1RQCj3vAk1DjfydzTeVJNs7jMHjb
- a4kUPC+JpwO3DM/T5ChYrTWgf0vWVpA9eXvrCpkUNF9NncGQrhtBW5Rm/S6PcYGoGzQw
- w3Mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768463786; x=1769068586;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=iv38R0w0UhtZUHCNYDFYJNpVgQoPsUcJBlhNKE+1IGg=;
- b=FFoOaorzXLfF/Uw/yhhm6IAgUL8/a4YqeLTesloOg5sQGn0+sUnugju+qC8dpqzaN9
- YEqq292AlWOx/tzLmXf+AL2Xp2gex0fkgIiOlP4l2b99MUooINZNxhRGsjFmWLvLm+AG
- lzvhKiiUTUZVivbpDCgIFNfXirjrn3ilB7xdYG7BWTpkMEPd/rZaPe2A+IG4gB4XfzCK
- QGpfiNekrNCnyiqnqhTlii+T6Ud2V7OEfyrPGZQbuGYlZfQp6E5hBiz89zfgbrNgEi3n
- n+5gtUB/bd7Zb0ctkIRbK+St/Ka0OqqJNMM10iuxVZuozkDUFeVOFtOkLZMNJRxXk6fd
- Og8g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUJSv6yimOOgbj0Hic3L5Jcv8CN8+DF9gBKwXP/ymlqJXwJx51FSZ0EhdSyrfhboOoHOxd+Zk5OPb+1@nongnu.org
-X-Gm-Message-State: AOJu0YxD9kh86LzvJiozyblMZ3ITIA0AFNLnQgIyYvLbF+Mvk7Lfm8UA
- 5cdb9x/LlL6jRIUywVwO1Yilh/a3russt919QBGZVxYZj9mVFw4cVBP/+S2GDjHt/pl6qqGuX7D
- 7XJW3jXF1pw==
-X-Gm-Gg: AY/fxX5YReB9L+BHwMrbzkWsQ1HLyX2E9v7tf6Vwd5SlaQj46xEFPpibesmX8U02NIt
- /AoGZUwLQi7mAIPYNhxcNMVc2o7FuupnNA03cpXg6LzdZ6Zf/oAwsPksUYXEw1mCIPjxt3qDfFN
- 5+WwRLHSwB04Jh9N7RteiEO9OzuiDF40/jOE63QiP3fOYEUX+MwL6StgzhQ7hV+hDeCQJiB6+kn
- pKa2pnSWHG/duwnzsRwVnkV74N9jSXs55bLVpdyEDvElsqescGFDyG4ztnZLPOInlaRtSvLyCsp
- y07UwtIV9EDf5kW+T+90DdVwpfVgxJKr7wUd4Zw09Svq/lmVVdfuA9qSE9w1hIDcnL+neRpWgwx
- CaRNs3C9Med+nnabWmiaiEOw/kEfgJniuptpAt9EAbLV1WVL5jnshZTpJkqL7gV4zYLM3TBg0tY
- GtzctZt3ygJl6EaM/L7/WR8H8fInl+wQ==
-X-Received: by 2002:a17:902:cec3:b0:246:7a43:3f66 with SMTP id
- d9443c01a7336-2a599d81c70mr63025785ad.7.1768463786394; 
- Wed, 14 Jan 2026 23:56:26 -0800 (PST)
-Received: from [192.168.10.140] ([180.233.125.201])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a3e3cd2954sm79703625ad.86.2026.01.14.23.56.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 14 Jan 2026 23:56:25 -0800 (PST)
-Message-ID: <42588c0e-91ed-4a6c-8a1d-777bb42d8927@linaro.org>
-Date: Thu, 15 Jan 2026 18:56:23 +1100
+ (Exim 4.90_1) (envelope-from <emckean@protonmail.com>)
+ id 1vgIDz-00059d-Hx; Thu, 15 Jan 2026 02:56:59 -0500
+Received: from mail-0701.mail-europe.com ([51.83.17.38]
+ helo=mail-07.mail-europe.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <emckean@protonmail.com>)
+ id 1vgIDx-0002ue-Pe; Thu, 15 Jan 2026 02:56:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+ s=protonmail3; t=1768463810; x=1768723010;
+ bh=fqmesBnwB+wTVZRd+/9qpEYTfuDDmVjMJOMhDs00iSQ=;
+ h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+ Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+ Message-ID:BIMI-Selector;
+ b=BkMieD2ZCagwwpQcuDvpMPaDfma8c1lib909+99rNmR6o8x5U1GBzSwavL3KQNyN+
+ IKW98mxQOA9L+GdM756RR9HYufH40XOkw3GaytK4JOGdnBFrm+80X/Yc11uCAXAzIg
+ ZhZLmmlbWmLSKTPMj4OW7dHEVfI9/zHhfS3isSx3fA59BFv/LQ2Dafy0+esJ5cMxuF
+ v5vw/yOAKz5jOVjNoW6+F07ngqxeWhmJMgMxJG3brROU4QqmjGY3x4r3A94TRTrNNE
+ 5fBWG5q+Zrz02ELBqk5/HAph5LyjxJUMJOXixSR/tMq38JotF4CacQBQ/OaZ/SDCdO
+ 0R+09yXe26LDA==
+Date: Thu, 15 Jan 2026 07:56:45 +0000
+To: Peter Maydell <peter.maydell@linaro.org>
+From: e <emckean@protonmail.com>
+Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org
+Subject: Re: [PATCH qemu] hw/arm/max78000: Fix num-irq to match hardware
+ specification
+Message-ID: <DUWQ5Ve-tVEHGZDWH-XpmErxJDu5_tIsPEcYNxE4YX1w1u_skMBv2xWS9SIiEQoLlFXH11WuMIinhvXQaWcdnGSdpMc60Ea0Dm3i9lTaxCg=@protonmail.com>
+In-Reply-To: <CAFEAcA_YkEVkm_6ihHHrDv43wAEw2qceBWW2xHjZdQzW0H4KSg@mail.gmail.com>
+References: <176663430090.23028.16926971585326050904-0@git.sr.ht>
+ <CAFEAcA_YkEVkm_6ihHHrDv43wAEw2qceBWW2xHjZdQzW0H4KSg@mail.gmail.com>
+Feedback-ID: 173361351:user:proton
+X-Pm-Message-ID: 14015f9d8a2588b0c51f860050499871cf9f5b74
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 0/7] Mostly x86 fixes for 2025-01-13
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20260113111333.1138160-1-pbonzini@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20260113111333.1138160-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: softfail client-ip=51.83.17.38;
+ envelope-from=emckean@protonmail.com; helo=mail-07.mail-europe.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_SOFTFAIL=0.665 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 15 Jan 2026 03:42:30 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,24 +69,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/13/26 22:13, Paolo Bonzini wrote:
-> The following changes since commit cf3e71d8fc8ba681266759bb6cb2e45a45983e3e:
-> 
->    Merge tag 'single-binary-20260112' ofhttps://github.com/philmd/qemu into staging (2026-01-13 11:51:18 +1100)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/bonzini/qemu.git tags/for-upstream
-> 
-> for you to fetch changes up to a24f045228271391b5c5064ebf049e1f50b6d712:
-> 
->    rust: Update Cargo.lock (2026-01-13 10:54:28 +0100)
-> 
-> ----------------------------------------------------------------
-> * target/i386/tcg fixes
-> * hw/i386/kvm: fix PIRQ bounds check in xen_physdev_map_pirq()
+I appreciate the detailed reply and breakdown. Apologies for the lack of du=
+e diligence on the previous discussion. I do not have the hardware with me =
+currently but will confirm the real number of external interrupts in a few =
+months when I do again.
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/11.0 as appropriate.
+- Ethan
 
-r~
+On Tuesday, January 13th, 2026 at 1:19 AM, Peter Maydell <peter.maydell@lin=
+aro.org> wrote:
+
+>=20
+>=20
+> On Thu, 25 Dec 2025 at 04:14, ~emckean emckean@git.sr.ht wrote:
+>=20
+> > From: Ethan McKean emckean@protonmail.com
+> >=20
+> > The MAX78000 user guide Section 5.2 and Table 5-1 specify 119 interrupt
+> > entries. The previous value of 120 was based on a misreading of the
+> > table which spans three pages, with entries 0-104 on pages 102-103 and
+> > the remaining entries 105-118 on page 104.
+> >=20
+> > Signed-off-by: Ethan McKean emckean@protonmail.com
+> > ---
+> > hw/arm/max78000_soc.c | 8 +-------
+> > 1 file changed, 1 insertion(+), 7 deletions(-)
+> >=20
+> > diff --git a/hw/arm/max78000_soc.c b/hw/arm/max78000_soc.c
+> > index 7f1856f5ba..1e2f66428d 100644
+> > --- a/hw/arm/max78000_soc.c
+> > +++ b/hw/arm/max78000_soc.c
+> > @@ -88,13 +88,7 @@ static void max78000_soc_realize(DeviceState *dev_so=
+c, Error **errp)
+> >=20
+> > armv7m =3D DEVICE(&s->armv7m);
+> >=20
+> > - /*
+> > - * The MAX78000 user guide's Interrupt Vector Table section
+> > - * suggests that there are 120 IRQs in the text, while only listing
+> > - * 104 in table 5-1. Implement the more generous of the two.
+> > - * This has not been tested in hardware.
+> > - */
+> > - qdev_prop_set_uint32(armv7m, "num-irq", 120);
+> > + qdev_prop_set_uint32(armv7m, "num-irq", 119);
+>=20
+>=20
+> The num-irq property of the armv7m QEMU device is the number
+> of external interrupts (see the comments in the props_nvic[]
+> definition in hw/intc/armv7m_nvic.c). Table 5-1 includes in
+> its count the 16 internal interrupts (from 0, unused, through
+> to 15, systick). So to get from the last listed external interrupt
+> number in table 5-1 (which is # 119) to the total number of external
+> interrupts we must subtract 15. That gets us 119 - 15 =3D=3D 104,
+> which is what our comment says for the table 5-1 figure.
+>=20
+> But the datasheet also says this in section 5.2:
+>=20
+> "Including the 15 system exceptions for the Arm
+> Cortex-M4 with FPU, the total number of entries is 134."
+>=20
+> That's where we get the "more generous" number from. If you
+> strictly believe the 134 figure and that they weren't off
+> by one by not accounting for the unused zero internal exception
+> then that would be 134 - 15 =3D=3D 119, but I am very reluctant to
+> believe in a non-multiple-of-8 number of external interrupts
+> unless somebody goes and finds the real hardware and tests
+> by writing to the NVIC_ISERn register bank to find where the
+> RAZ/WI bits start. If anybody did do that it would not
+> massively surprise me if it turned out that the actual number
+> of external interrupts is 104 and the datasheet text was wrong.
+>=20
+> Getting the number slightly high in QEMU is pretty harmless.
+>=20
+> The original discussion about what we should set num-irq to
+> in the review of the patchseries is in this mail thread:
+> https://lore.kernel.org/qemu-devel/CAFEAcA96fap_EJiFtX6a_PFmWeP1OPZGABueA=
+yE_=3DJQwFi-spA@mail.gmail.com/
+>=20
+> thanks
+> -- PMM
 
