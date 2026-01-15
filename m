@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AFE9D2327D
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 09:33:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B7E6D231C1
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 09:28:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgIn1-0000uJ-FN; Thu, 15 Jan 2026 03:33:11 -0500
+	id 1vgIi9-0006A5-Q9; Thu, 15 Jan 2026 03:28:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Honglei1.Huang@amd.com>)
- id 1vgImx-0000k2-5v
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 03:33:08 -0500
-Received: from mail-centralusazon11010056.outbound.protection.outlook.com
- ([52.101.61.56] helo=DM1PR04CU001.outbound.protection.outlook.com)
+ id 1vgIi7-00069R-0E
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 03:28:07 -0500
+Received: from mail-eastus2azlp170100001.outbound.protection.outlook.com
+ ([2a01:111:f403:c110::1] helo=BN1PR04CU002.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Honglei1.Huang@amd.com>)
- id 1vgImv-0002lE-Hp
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 03:33:06 -0500
+ id 1vgIi5-0001Xd-13
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 03:28:06 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZaCT1tjjfdN+X2ukIIxS0N19VAFoV1HO3+TnQi4fdwPR+Nx8WmhelrWSR6VjkK9LWs4GdKhveY/k64QvWRFZ73IdFzIDfz1/kGEELRY8ht7+Gj2lCUzzoynJkEf1sl0LcBMIvwUACJSslw0YOJLrCEUUV8oCtyEoq/p2sxIldd8AwSIBrBzsyAgsc8Nj39WzdYRIbtKVvu86tiN3F7fEoUIo6jln9jhkb11ZzvIs4SFX6X0j2frIz/6yiBlGLJOwBgDm0vQRSLjdQsbvg185nnBQGaYeI3MGjql3QEs+X3+4iejLozJO/xM6egKfyCKBhgS9WgyH98DppT76QmqFEg==
+ b=sTwQ/sQ+u1HyIXrf6YpqdqLuo+BI84HGTTImcF5e14L9s3dB2kYNJHXDipaUMIiEwniX/4D2zQ9AmFTqD6Xh6KWssvf+Dyi1ckt4aeXXI0t+v38DVvFTrXMnTWZcENZAvYACS2iNlMgk4hRsQx9JrV73pMk7UPkemYxcAyci75SbvDl3+26j9KNmSq6/TIlKEyoqbti3XRoBSzWyKxx13++fjCBj6UmxoRDCvVWLYbiEWy20qBq49mi4QWdPskEjopLYkH/JXM+bndjOpZaMVv7xbYMtvwAChJYUZd5xvaIJ3LObIGYex8DrEBGx+Yr/kKPML4EshZzuBg39kIrpwg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hobFZoGJUl+y/IB94YbkL7Cj8D+Or1nPlGMm4csT5DY=;
- b=ht9hsNG3WjYhMiP56WUclq2P+xrQ+fzypV4Ngf59/fToJo/KT3eFImeHY1D8mSeXxFjNylGKw2d582tly4b5oWBLOoemeskWKnvI846tjN9Z7hViOqd9JfdE31HIr4ZGgbQcPJPmkS85OixbWlytV/I3ohyICwU0kwklyEiYBVjLvc/BWtsHTXY7//CaE9aL34FpbVWbZ5fIEHhTU25tRDKSW1X7OSEuZhbso/7g5/g7FVCBQDWw1hQQFMtgbtG0DjXeCd/PxXUCj6tZ+xfaGvuir11GE1DRk4PMMjYSoU3y7Fl0T66x/rruMz45UtJG4GqKPNGEEX5899EHO8rDrg==
+ bh=M8AHasBVXhtTBO7v3AW7MDHurUWLVP7TYV61f7a/Y9Q=;
+ b=c4G3AImlvwx7ktf4OB3u/ICRDu/H2RprTiq+6kXM3+Tdp9+AGBc5j3HdJVMYjPkg8hWpi/jyrT4Dg+a/rFEdzngvzZkR+TqfzOp/zWMvksbBc2BJ7t3KLv57vjc9sjjTBJX0Jhb+KmcS0J7g6l6KdhqSpfu+h9Rh/kcLMrQ3mxzVzvJ1JYmvBbx5f4k6wtuoLs9QfQK69aHFCfO9PCjWjBaqOYxR+v+G/ltE0KOx7oZyoVJbLQ+blzOExb4NM6OldrLvB7ppo9Sk+j8FiDAF8Vvg7aWapLUuio6qgq8CHlN5vpK2OUXovc4j85XpDAVgGEAvbvwU+G6b0H7f0VBtVw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hobFZoGJUl+y/IB94YbkL7Cj8D+Or1nPlGMm4csT5DY=;
- b=zAabYrnzq0LLgtIwtMoLAN9vC8EstaTClQuTlYxLLKDDX49mFaV9kzjdtyvKDYFB6R0nGkjaJgpUDdH8ltTf6ZdEq9iwMoBz73URd8luugB2mWeGCvaNNBUphdZ0pud+Vxd/BiB+q2kg1+vxs9JyNQnM9u299Rqnz6xEsdHEoTg=
-Received: from BN9PR03CA0100.namprd03.prod.outlook.com (2603:10b6:408:fd::15)
- by DM4PR12MB6231.namprd12.prod.outlook.com (2603:10b6:8:a6::18) with
+ bh=M8AHasBVXhtTBO7v3AW7MDHurUWLVP7TYV61f7a/Y9Q=;
+ b=J4+VuGcJVGqARu2FBKzUAsPuUWdzE5WdyUh1+wpEsdSgxbqsea9z4iPzv0uAyYZ2aImcHDgMbdQ7U0BJgBtoVWR6II7MuI9VzSw2q8sIll7CnaniyG4aM6xb6FJ9RAh3OKyYRrdmOFFScNph/c+9yWw8Nt/L/y19ZClFi33YR4I=
+Received: from BN1PR13CA0012.namprd13.prod.outlook.com (2603:10b6:408:e2::17)
+ by DS4PR12MB9636.namprd12.prod.outlook.com (2603:10b6:8:27f::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Thu, 15 Jan
- 2026 08:27:58 +0000
-Received: from BN2PEPF000044A2.namprd02.prod.outlook.com
- (2603:10b6:408:fd:cafe::8c) by BN9PR03CA0100.outlook.office365.com
- (2603:10b6:408:fd::15) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9520.6 via Frontend Transport; Thu,
- 15 Jan 2026 08:27:51 +0000
+ 2026 08:28:00 +0000
+Received: from BN2PEPF000044A3.namprd02.prod.outlook.com
+ (2603:10b6:408:e2:cafe::46) by BN1PR13CA0012.outlook.office365.com
+ (2603:10b6:408:e2::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9542.2 via Frontend Transport; Thu,
+ 15 Jan 2026 08:27:56 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -51,22 +51,22 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BN2PEPF000044A2.mail.protection.outlook.com (10.167.243.153) with Microsoft
+ BN2PEPF000044A3.mail.protection.outlook.com (10.167.243.154) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9520.1 via Frontend Transport; Thu, 15 Jan 2026 08:27:57 +0000
+ 15.20.9520.1 via Frontend Transport; Thu, 15 Jan 2026 08:28:00 +0000
 Received: from honglei-remote.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 15 Jan
- 2026 02:27:55 -0600
+ 2026 02:27:57 -0600
 From: Honglei Huang <honghuan@amd.com>
 To: <alex.bennee@linaro.org>, <dmitry.osipenko@collabora.com>,
  <odaki@rsg.ci.i.u-tokyo.ac.jp>, <Ray.Huang@amd.com>
 CC: <mst@redhat.com>, <cohuck@redhat.com>, <pbonzini@redhat.com>,
  <qemu-devel@nongnu.org>, <honghuan@amd.com>
-Subject: [PATCH v5 1/4] virtio-gpu: Update Linux headers to add virtio-gpu
- userptr support
-Date: Thu, 15 Jan 2026 16:27:36 +0800
-Message-ID: <20260115082739.174224-2-honghuan@amd.com>
+Subject: [PATCH v5 2/4] virtio-gpu: Remove nr_entries limit check in
+ create_mapping_iov
+Date: Thu, 15 Jan 2026 16:27:37 +0800
+Message-ID: <20260115082739.174224-3-honghuan@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260115082739.174224-1-honghuan@amd.com>
 References: <20260115082739.174224-1-honghuan@amd.com>
@@ -78,66 +78,65 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000044A2:EE_|DM4PR12MB6231:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9d22fe9e-6376-42d3-0c28-08de540ffd08
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A3:EE_|DS4PR12MB9636:EE_
+X-MS-Office365-Filtering-Correlation-Id: ca01efc9-8099-4a7d-6645-08de540ffe8e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|376014|82310400026|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?2d3RTueQfzZXzNcqIkEY9y9wcC8tHk2pUhmU6w3cK8WNOz+7twbbcoHVnaJZ?=
- =?us-ascii?Q?eyyShLB/I5oZCxNpE2C458vsjgsU3Umpsc7BdT+GBnf7ilGT8TBV0wDuYk40?=
- =?us-ascii?Q?GCovIyGh4VPxcbb+AduqB5oQ5mt2Dc9aVlSHky5+3XdvGdOmRF08vOmdGmP6?=
- =?us-ascii?Q?bJxc1PLmX7DnZsYi9CqE9Y0d0H0CeNj3y2hjTAxaQjfoM441wbjyIcpnshqs?=
- =?us-ascii?Q?qhO4UbM44SZjysVtdps7ClhPNPuR2dTTq33K1wYbxY3BeooFKsr7CP9/ptj4?=
- =?us-ascii?Q?VtrfaviVs33HdrfwC9gsztPCT9FeojiLsDY6IMHAgYNLxttSWVahutc55OKd?=
- =?us-ascii?Q?QzYVp9aWY8R4xNPnsny6silit3joMR+GzlE9cTIXLN6/MC2rAQXHMlWSmnL7?=
- =?us-ascii?Q?zqJ8Apu/71HpsiTt5Xt3YVLfY6Ox+0kEy5WhqmHBuun/t80B4vICiZe2N0A1?=
- =?us-ascii?Q?M4rzgBgEhpqxNJXQ5AKWcrx0aI2mIO8fHtAmT7AnfkH53ZS9JwuxezQ5qcZE?=
- =?us-ascii?Q?8e0dA6w0KrRFXF/QoTwbC+0gT2h1Z00zYz4M7N+mN04EjSn/MzoCAbbDaUUA?=
- =?us-ascii?Q?Q3PSMMF0KpDOSo5Y6JlIFIgVCpkXmVJAwet4oGkFMnIeYEK0kGhrDhs9jpKx?=
- =?us-ascii?Q?bO54NNsfIYNeZK/dNrLB8QuXQOFJZmFTt61duPErhRo+A+3IoATAcb3DZNNE?=
- =?us-ascii?Q?do9Zv9t/ta110cN+TUeKenDlh0c3ouovHNuIgyATrfKCQ7jVvt7aFLlBoKeg?=
- =?us-ascii?Q?5B6umpk7L4ojJnLNgH8BkVb8VSSNAHf+nYMISsNMCfKo+KOBBzr+dOBag4WQ?=
- =?us-ascii?Q?gFXhAKo9FSPCVpGGW5VYKJ7tzvKAV3ViY1G5kRNapmxYUB8g9AcNu9/qEmzz?=
- =?us-ascii?Q?eNfOU5rS6XSJfGZF40rU8+3M1TSSoSiygHifFnyLNC1l31a4jipn0WsRFso5?=
- =?us-ascii?Q?JwfMak/zzEsOnto6tT8Vew76JQvfX+Z0JksK+IovwRWjDRYZuDb9u7x/sXqm?=
- =?us-ascii?Q?BU9o0Xjy2Xr4t+hHAsgnYmSuVwSRlsnOWYp1F6Z+VWHFO6yBkXX/A+T3O9bp?=
- =?us-ascii?Q?KHzonv1VYQoc8cTTc6euVAxUzft2p22FIPu6dKtRgGRsZcgR7t8L/zQ9L2Yj?=
- =?us-ascii?Q?t3izcSZUG2SihrkmJW37/WBS1uEzw86wOlKhTArPRjJ8zosW2cfyCwWBVdKY?=
- =?us-ascii?Q?t+fU78ZOv8xh8dlkXDAU+3g+nld9Ap6Y8FWJ9zQcVOvmbvvov+dix+Tz2NMN?=
- =?us-ascii?Q?3yJNcuY4UE2i+5gK0iXxqQwx34wPJszqnjogBavZD7T1wylo4+Z/8zUb3ALN?=
- =?us-ascii?Q?BScEFSy0/Pu02umFshozguAbPn2q182u7b3DRJVEVXbgc6w5fJHVNmj/yeUW?=
- =?us-ascii?Q?xFiXHHtvv+qDJxS1pO5vWKqo03Ws78nLqDe1nZOj2mCdnUsN31IDMTqoxX3+?=
- =?us-ascii?Q?Ysi43iI2pp/sqQ3vLUlKNZfhaWtrO6/9pAiDUNU9xD2v9MBaJFj3XiY4dqKJ?=
- =?us-ascii?Q?lgoEEy5qqPCPPiVChcxECEk6CfYD5CEA4njfj0FXKsRy3mzk4yWQV72Sr7n0?=
- =?us-ascii?Q?DISmjO8w5deZXC4zV/C2CQHyPUgrUb8xXJ7U4hiJ+KoHzejiVb6U39QqMjIP?=
- =?us-ascii?Q?eBpTbDs9UlME7P43zJGLUPBkD6JzrNaGaJ/DROwZVwDXWiQb3kwXUAzlLPfw?=
- =?us-ascii?Q?Ury9pw=3D=3D?=
+ ARA:13230040|82310400026|1800799024|376014|36860700013; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?Am8vDf+ltPlZlLv/0gNvKfABSBrd7Hucwe68Mh9fsPMzxJM48qhNmBOE68rE?=
+ =?us-ascii?Q?MwG7Frxo/chUfP3w4udzfuzkFcGNjmEzDPRIfUEg3TW2U1bJRPKvVg+cqSaX?=
+ =?us-ascii?Q?AxBKpsn8yJlDE98sZn10mlqkKZ6HBTs5EW+qfxHtAQfpDi+pU8UOUiSSP8x3?=
+ =?us-ascii?Q?GEsnTSw8/tuj2cOst9DqPqywlHwlk21y9qMSIuDUj2YMbSY0mIovA8C1eQgF?=
+ =?us-ascii?Q?EK57spUtac4EES3aquNahwL6T/mZJ45wF2IXdJehN8IVc+yqzpus0EEG5N/C?=
+ =?us-ascii?Q?idrHM9BMijh8oki3nV02cY860Tf75Qm6VOdaI6YIEkSEgNYSjw9bpH8L0xEB?=
+ =?us-ascii?Q?GSAyz0L4NkDA5ZL7mjjsD9t4Q7ab5ujvdbrB2fkMB9OTrTP4Xt+0gt1GR8jl?=
+ =?us-ascii?Q?+80sCJzsU+VXLSC91UDzoc6aBadFnbStDlYNDdlDypiT4Raof1bNZzNPNgC1?=
+ =?us-ascii?Q?PdTbmS9osRaoGU1F7ELJ1dzyHzDE2ugX60I/wwMzLkVzJ139niQ4BDAsspMG?=
+ =?us-ascii?Q?B8Lsk04KqDRBt666NcKM+pwGEc35+iPYuxf9MyIoYTJVYXvhiYyR8tcMRjGT?=
+ =?us-ascii?Q?lh2TL2LxJj7W7aBGCEYqI/AIplVGCkIuLfVrK//IogV2YQYgfUrV28XfPABN?=
+ =?us-ascii?Q?oHwn7JYMdHxEfUXBJ2yRNYD4zpQyoJsDam0haHMEWFZFqaylnZsGck4NKp87?=
+ =?us-ascii?Q?beIX7hm6Pv3Lf9lRzSMExkgakUkeMsvnv9HJuatQW1MSSqYQkM1xAjzcLJtm?=
+ =?us-ascii?Q?+N5abAxJ/fJjDOgTa9sJk/djbFnUstCKfl+tSlWJoXdv2RMsjerlYTr8liR5?=
+ =?us-ascii?Q?fxF8/+WhlCM6TQ7Xx0WzaX3EC2nSGIU6VMsJzZDpTP+iqs991Fc8awhwFnyK?=
+ =?us-ascii?Q?HXtoyTEUMv90J0lQLCdMnuldtXcTv0YS+GC104QmnPOm/D7fAJyb0BDpwvJQ?=
+ =?us-ascii?Q?qfBlDMhOAF33Qx5+bLq2LDvGKx8Bl2jZG7ApEW9uTeXyHKjmI6fwDUgvLvAI?=
+ =?us-ascii?Q?0cizJK0XkIr6q3SoOH4nPt4YVqv0DV4/ou/gwIEv1wCsb1vTbqTkcLAIljhk?=
+ =?us-ascii?Q?XyfXVucqoOx0JkOhi4ipSdvUa/i/W468wzAz4UQnoBMeA154NCX2SKGhP/MK?=
+ =?us-ascii?Q?y7ZHU9tK+UxAmmYUtpSmPQVcqchfWVLY87QXgDw/G/hRVQ55eZQlyI6wDsMO?=
+ =?us-ascii?Q?xguDnDufnv3mo8NG4cXFsLnq5qZJY/DkCGQXnrEa2z0AN1vQvjxgZwdpRrXX?=
+ =?us-ascii?Q?Rg/Np8IFc8XKk7UOqtrgAJqWxv+m5dmgHKpI7sSG7g8F8FfC4ZN+/t3Pc6G+?=
+ =?us-ascii?Q?hteHRjEEw33I+ixpdwNQCM5cXN62B2FrFfYzYZeihlut9C75BSR/pAt5PvCL?=
+ =?us-ascii?Q?uvu/VuPKuOcbbnKNOWBR7U7bh1LXz3hkAMoWajuBCGKmY0jGDyugmpUp6Mul?=
+ =?us-ascii?Q?TJTXv2xujf1pNk/BNEg+aIufZ3BxeRR+redMcV74SkOqIFP4I6aQor8cpQ2I?=
+ =?us-ascii?Q?4pp/asMT8pbBVIaTZKXkZsmMn5ISuRLrfNCD26oHE6l3Yyp2Q1ee6RJUOWrX?=
+ =?us-ascii?Q?0emmLQ6XZH+IMH5XUYbkzb09FS7Bi/KKF9b/DgqBXjbRyu0VwIQKyPMnDUOu?=
+ =?us-ascii?Q?2/HiX7XLmg/roevYIFSU0Lajzv511N07VIw+YcEhGI08zVOZI4ESqXm6EJtK?=
+ =?us-ascii?Q?opKM+Q=3D=3D?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700013)(376014)(82310400026)(1800799024); DIR:OUT;
+ SFS:(13230040)(82310400026)(1800799024)(376014)(36860700013); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2026 08:27:57.9175 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9d22fe9e-6376-42d3-0c28-08de540ffd08
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2026 08:28:00.4748 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca01efc9-8099-4a7d-6645-08de540ffe8e
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF000044A2.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF000044A3.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6231
-Received-SPF: permerror client-ip=52.101.61.56;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9636
+Received-SPF: permerror client-ip=2a01:111:f403:c110::1;
  envelope-from=Honglei1.Huang@amd.com;
- helo=DM1PR04CU001.outbound.protection.outlook.com
+ helo=BN1PR04CU002.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -153,39 +152,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update linux header same with the related linux patches.
-kernel headers, which introduces:
-- VIRTIO_GPU_F_RESOURCE_USERPTR feature flag
-- VIRTIO_GPU_BLOB_FLAG_USE_USERPTR blob flag
+Remove the check that limits nr_entries to 16384 in the
+virtio_gpu_create_mapping_iov() function. The kernel virtio-gpu
+driver does not have this limitation, and this artificial limit
+in QEMU can prevent legitimate large scatter-gather list operations
+from succeeding.
+
+Remove this check to keep consistent with the kernel virtio-gpu
+implementation.
 
 Signed-off-by: Honglei Huang <honghuan@amd.com>
 ---
- include/standard-headers/linux/virtio_gpu.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ hw/display/virtio-gpu.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/include/standard-headers/linux/virtio_gpu.h b/include/standard-headers/linux/virtio_gpu.h
-index 00cd3f04af..b562f5d6a0 100644
---- a/include/standard-headers/linux/virtio_gpu.h
-+++ b/include/standard-headers/linux/virtio_gpu.h
-@@ -64,6 +64,10 @@
-  * context_init and multiple timelines
-  */
- #define VIRTIO_GPU_F_CONTEXT_INIT        4
-+/*
-+ * VIRTGPU_BLOB_FLAG_USE_USERPTR
-+ */
-+#define VIRTIO_GPU_F_RESOURCE_USERPTR    5
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index 643e91ca2a..17df148920 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -808,13 +808,6 @@ int virtio_gpu_create_mapping_iov(VirtIOGPU *g,
+     size_t esize, s;
+     int e, v;
  
- enum virtio_gpu_ctrl_type {
- 	VIRTIO_GPU_UNDEFINED = 0,
-@@ -405,6 +409,7 @@ struct virtio_gpu_resource_create_blob {
- #define VIRTIO_GPU_BLOB_FLAG_USE_MAPPABLE     0x0001
- #define VIRTIO_GPU_BLOB_FLAG_USE_SHAREABLE    0x0002
- #define VIRTIO_GPU_BLOB_FLAG_USE_CROSS_DEVICE 0x0004
-+#define VIRTIO_GPU_BLOB_FLAG_USE_USERPTR      0x0008
- 	/* zero is invalid blob mem */
- 	uint32_t blob_mem;
- 	uint32_t blob_flags;
+-    if (nr_entries > 16384) {
+-        qemu_log_mask(LOG_GUEST_ERROR,
+-                      "%s: nr_entries is too big (%d > 16384)\n",
+-                      __func__, nr_entries);
+-        return -1;
+-    }
+-
+     esize = sizeof(*ents) * nr_entries;
+     ents = g_malloc(esize);
+     s = iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num,
 -- 
 2.34.1
 
