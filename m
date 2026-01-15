@@ -2,100 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5899AD28830
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 21:46:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AB57D283B7
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 20:49:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgUE3-0005to-UI; Thu, 15 Jan 2026 15:45:52 -0500
+	id 1vgTKG-0002KD-4Q; Thu, 15 Jan 2026 14:48:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kelly.cullinane@oasis-open.org>)
- id 1vgTFF-0008TR-Ti
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 14:43:02 -0500
-Received: from mail-qt1-x832.google.com ([2607:f8b0:4864:20::832])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vgTK7-0002J9-KO
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 14:48:05 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <kelly.cullinane@oasis-open.org>)
- id 1vgTFD-00077O-Sa
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 14:43:01 -0500
-Received: by mail-qt1-x832.google.com with SMTP id
- d75a77b69052e-4ffc5f35b54so18511031cf.0
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 11:42:58 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768506177; cv=none;
- d=google.com; s=arc-20240605;
- b=RqKUSaZccbUvX5e0AnfijaZ6ogcgI9delz8mVqAa8oq5Jn0ujlBDXJhqPCo6iOLgPx
- EAEWXNArMzi119YQIokTp0MPPwv8vyGAep8XsvNwPiD+S8EQ3LH+bwXPpEKrYjUG06lQ
- krbRQd/j9gYJHTXv5699mI3tnSYBNZ0K94gDKlxCl812kSVRWuR5CMoeXwL8X3AsusPr
- U4swPrpkk4148WQBE57cjiAFtwQOyN+FHKTzV+eKdlnoljKNKXFckE6DU+6MTwYMG3kn
- dp7XIxxFjFaOMJf6DbKHZRviO0JbWV8pxgpqu70TZbdAPg55iLHFv4EXCZW8pgcJK4nK
- ktHg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
- s=arc-20240605; 
- h=content-transfer-encoding:to:subject:message-id:date:from
- :mime-version:dkim-signature;
- bh=BVuRcIp9C9aDs7YujmRCIsJWyiCOSqmqC7FZNs5wMUU=;
- fh=PnYt+qEB9tAfMKoqBm2xjKOFpYyFFGPudh5cVIoieJM=;
- b=a13hVAHkh471hkmw0sE1eawaxQTTbl4c2UbgfDMrulZG6SqQizlfNf7JaDW1Arm4ei
- 4JY/CGkAPYZT1nzUvip0lcUoH4JfgtlTzoTAYpfDMmPKqmR8lfAwR8LGy0euTGFjNRle
- L6LGiXCZFC+vFXWXldzoEFH0Zz7WPsw4xrUSg23Q7x1vApsixTnfDWJkViqeJZ1esTvD
- TQ4EdEA0brpIa/YYY6uODdK8dNtEuMXPMTydnR8PUJ+jdmN2IathzNPgZaYZmUqKI+DN
- NcNuTs0uwDsK5whudhYkcBDBnd8lVhbUqrqgt3VssGSPmiWkPQE49z5OPzxjNd9EcUpf
- WyUA==; darn=nongnu.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vgTK5-0008RH-I6
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 14:48:03 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-480142406b3so5972535e9.1
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 11:48:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oasis-open-org.20230601.gappssmtp.com; s=20230601; t=1768506177; x=1769110977;
- darn=nongnu.org; 
- h=content-transfer-encoding:to:subject:message-id:date:from
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=BVuRcIp9C9aDs7YujmRCIsJWyiCOSqmqC7FZNs5wMUU=;
- b=mVG0hM8FeOdabHztB/ZFIfawD7ou0CWJDF4/T8lXx7yHDyKMs0w2NqAoavHTIVL3oN
- 3xZw8+ezKZFmw4dNyGAc5/jMxxYKHsLSKQJCdTVqs4ltnILvTn442cAYzqm+FWtal32Y
- XpFz8dITwBt0Y/vxxHyK+7eYiASwkZkAM5dKPGtMpWZALvuswyd+Snj4YBMcx/d3ACvz
- jBnibDNwhjzqsF9/tJ+dTt83UL6z52hpxPuBllfbvTUQGR22KeJKYmrM2L3nnzLGi3aw
- jSzTykQvlNkqBaBvjB+JqipLEYohvV+bDWjws2OXDh14Mk5YTUfJrfPzKX3aVzs4HUrI
- xI0w==
+ d=linaro.org; s=google; t=1768506480; x=1769111280; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Ug1YcFGOinbtgTHpfnbojUD33mGP8SL3zLP1Ja1h7sM=;
+ b=xVtnIliIXWPNWcsxZAA800r/8VZtUtq0hGc+Of4grGDiPcaKeZ+jaP27LMj20OqwQ1
+ Rchf0NCgR+bqy9xPM/z6rrlBABHa2+e+N/ZIP/cWa4PEed7H4ucqOb0LRJLUP2UTcka3
+ ARI4odRiQ2dMC/S96wMGcZSf2fOew7mhIo7Rc0oHHbSFi/xxziAs9/Bhas0mxJVgBPlD
+ Nk//nETB5HDNviBDhhzyJ4ChV+EFlTKds4ubt8Xu22ajT5ObyCVkJqbVEopJoRIzyGKq
+ Pe1hbdCpDW0yauW8HfeYgkzsGBvgWoDVNLLCUiAMriSH9RTfHPicVNe3YxO0Iq16hhZD
+ b4bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768506177; x=1769110977;
- h=content-transfer-encoding:to:subject:message-id:date:from
- :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BVuRcIp9C9aDs7YujmRCIsJWyiCOSqmqC7FZNs5wMUU=;
- b=N0vmELyGeUUxZx/LR34gdKtrxTj+9UOJHq7xFMOb75CTzG+QyQa8x7/TYphBCqzwIi
- uejnPYxp1eQVn9g192sSLcFpO4hmqP4CCC9Kh6bxs5/kCX4o2oGFtbdhuCAPLGOWwHX6
- +8wKbcfkbnX6DtW+sr5n1OYcxa+Po0Qhg5+Ss00aB7qsAY1gTw3y5ISP/QoyM4/bFyW0
- RXKOf3mydbCddtzRZaIUA1V8zCZ+AKLcFzy/co25kVn+m3FE9WyFQZv54HQeSMT1Hwcm
- ON/vGmUkTgaPx3nUosZ83jk2Z3qWLNxMkZXJp1Xb24qUYp84Zkp/9oxZ8zEo7mfNrywA
- pTfA==
-X-Gm-Message-State: AOJu0YzqXj8PwmpVPyro1ehyqI/78ymyJnSKg3uNnqK7ahFNfFMYQrAg
- UlNI4jG5A7FbuWE0Wi4aJK+v5vdVOhg8Cqnu3dwwn6W2/se1IbyHR2/jYlTal238Zf0/mRQG1v/
- YHPKeNAjY2OJ2VgJEDI/x+6LaXVxhr0VwoJSRnuuFb+ljxe14JoRI9X4=
-X-Gm-Gg: AY/fxX7FKIcLMZ9eQ71rTT9yPbPDaDPvNbmKTziavO+4JSYHfYbUvLzzkhHk+vcoEZ/
- Z1KPB86gd0YGaTBR2v0iwQJczPd5UL6lT1ozgLHFGeJWFGL/IY0NECaVJeVnxZTP5axsIsHHdS/
- kKacdcu4CGQegihDq5CpNhN5NjV5kfVxktNfZqs/obSc0bLJ7YjoMgHMBJoFdETGH86dcfkxiAO
- GDxHWEmESrTkywLPUWUMctSFa5vs1gO9xWbb+TS+0tJRbjBN/npVjCghYDhz3RWnRHeKMt9khr0
- DaKQ85NPKbhO8dHN2LzzrJnUSgZB09P0hjIcXqdqpPKyZebNJzwyQA/t1VD7
-X-Received: by 2002:a05:622a:411:b0:4f1:ccec:84b0 with SMTP id
- d75a77b69052e-502a1f82c21mr6340201cf.57.1768506177294; Thu, 15 Jan 2026
- 11:42:57 -0800 (PST)
+ d=1e100.net; s=20230601; t=1768506480; x=1769111280;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Ug1YcFGOinbtgTHpfnbojUD33mGP8SL3zLP1Ja1h7sM=;
+ b=DT2oRDUeT2VAwTm0Na6v8xE5F5YCQrv5iAB0PJDAXkI1ngJViNxqOYkO8j5vP+3Lw1
+ UOR3a8y2tlUl4RBzbJ7+XCXwA+22u87Yg+0DJ5q6cRU+JcLxCv9KjSJ6HfxYKatwUDWx
+ +Ue7Uby1BTqo0vkpoTXSDsv+ZRwm4roULZBXYB0QDjxHZcfD/msh1rtulFd16lkrA0M0
+ 47+zijbfSfV6TDKazJFw5VZyuJozLP7dSv876OWFaFD2hRd0njUl2QsFTkF1BPGaA4g2
+ d9EI9UoyXkdf6ft4ket0OZKPR5dfZ5IlCqf0z1hYSDnzPq4cPwgFJteAY6DP96Fxy/3l
+ q5Hw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWmpVyM7fl/8QA4Byrsw3fVP5OmAiEqYQ1u0ubT1xhd4rBfkefePLijWV+Xxw7KWm0k/gmHOhVv2YrB@nongnu.org
+X-Gm-Message-State: AOJu0YyLs3Q6GfYoezoMYXVw+18FM/nRFXsdJ8CmQkKkCLBjcixSjxK+
+ wGvagRZCYuf+/CygXmsLNBvAehswTlJSkTLNOivcbsJf24w9jv+2BsoxG/2lMZUEekk=
+X-Gm-Gg: AY/fxX4nJx0DSFPmyBgjtCFiJZV7rthiCE4aaoFshjkEiirddxMOkVJHAFPRtwEzj7m
+ VFj2zuglhC4kH970lAEardMRkZnZJ/m3yoPh1cEwExBStYbhPYQ0isy8+o7IeuBUyt/bobcZJ9o
+ 4BKYJzfFExRcanh2sXUD4YUvsYtHFc5Dxn8nGFQstvPNOvaNJnGUxU8cw/97FsjkJ7DCunGPQaE
+ 5AHLYzqUkv82ZvSCOo6PrFW8sIjJGmbcESvE8YTqJD32X2vfnVKoL+L2JSe1hamSyP/j9OR02ep
+ 9BjILPcsXjFDVbFZA7irMQ8copqumPBK4e8qfFuMNnv8mJxU1kzQMxSTaguX2uKn32Aaxzx6W2g
+ LOhJIz3i65+7iRP61RzjaftH511rwwKBShGScQdQefILDz1RfJ6clFhH5yrCv/croRWsyxji/5s
+ fRwtOks6dOZe4vj3Jaimpl9rJkeJrdOXX5hpEdtuC1HFs1JQu6HDZ7fQ==
+X-Received: by 2002:a05:600c:4513:b0:477:9cdb:e337 with SMTP id
+ 5b1f17b1804b1-4801e2fc2e3mr12628575e9.7.1768506479413; 
+ Thu, 15 Jan 2026 11:47:59 -0800 (PST)
+Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-47f4b2672d6sm63511675e9.14.2026.01.15.11.47.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 15 Jan 2026 11:47:58 -0800 (PST)
+Message-ID: <5e72f6d4-6914-4797-85f6-6131af0d1349@linaro.org>
+Date: Thu, 15 Jan 2026 20:47:56 +0100
 MIME-Version: 1.0
-From: Kelly Cullinane <kelly.cullinane@oasis-open.org>
-Date: Thu, 15 Jan 2026 14:42:20 -0500
-X-Gm-Features: AZwV_Qjs08tGS2fCNaZfZKc6ZBlNPl7GFmYqfaCBM6gz6pHZBaSGEXxzjP1u8sg
-Message-ID: <CAAiF601MvyNNsA77U=vdKwHr-xgQFmUp2u5izCY7Qfbs5_OfTA@mail.gmail.com>
-Subject: Invitation to comment on VIRTIO v1.4 CSD01
-To: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::832;
- envelope-from=kelly.cullinane@oasis-open.org; helo=mail-qt1-x832.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 0/1] hw/i2c/aspeed: Introduce 'bus-label' to customize
+ bus naming
+Content-Language: en-US
+To: Kane Chen <kane_chen@aspeedtech.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>, Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Jamin Lin <jamin_lin@aspeedtech.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
+ "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>,
+ Markus Armbruster <armbru@redhat.com>
+Cc: troy_lee@aspeedtech.com
+References: <20260112083054.4151945-1-kane_chen@aspeedtech.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20260112083054.4151945-1-kane_chen@aspeedtech.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 15 Jan 2026 15:45:49 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,61 +108,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-OASIS members and other interested parties,
+Hi,
 
-OASIS and the VIRTIO TC are pleased to announce that VIRTIO v1.4 CSD01
-is now available for public review and comment.
+Cc'ing Markus.
 
-VIRTIO TC aims to enhance the performance of virtual devices by
-standardizing key features of the VIRTIO (Virtual I/O) Device
-Specification.
+On 12/1/26 09:30, Kane Chen via qemu development wrote:
+> From: Kane-Chen-AS <kane_chen@aspeedtech.com>
+> 
+> Currently, the Aspeed I2C controller uses a static naming convention
+> for its buses (e.g., "aspeed.i2c.bus.0"). This approach leads to
+> object name conflicts in machine models that incorporate multiple I2C
+> controllers, such as an Aspeed SoC paired with an external IO expander
+> or a co-processor like the AST1700.
+> 
 
-Virtual I/O Device (VIRTIO) Version 1.4
-Committee Specification Draft 01 / Public Review Draft 01
-09 December 2025
+Is this a side-effect of Problem 4: 'The /machine/unattached/ orphanage'
+described here?
+https://lore.kernel.org/qemu-devel/87o7d1i7ky.fsf@pond.sub.org/
 
-TEX: https://docs.oasis-open.org/virtio/virtio/v1.4/csprd01/virtio-v1.4-csp=
-rd01.html
-(Authoritative)
-HTML: https://docs.oasis-open.org/virtio/virtio/v1.4/csprd01/virtio-v1.4-cs=
-prd01.html
-PDF: https://docs.oasis-open.org/virtio/virtio/v1.4/csprd01/virtio-v1.4-csp=
-rd01.pdf
+This problem isn't specific to I2C nor Aspeed.
 
-The ZIP containing the complete files of this release is found in the direc=
-tory:
-https://docs.oasis-open.org/virtio/virtio/v1.4/csprd01/virtio-v1.4-csprd01.=
-zip
+> This patch series introduces a 'bus-label' property to the Aspeed I2C
+> controller. By setting this property, higher-level platform code
+> (e.g., the SoC realize function) can provide a unique prefix for the
+> I2C buses.
+> 
+> Changes in v1:
+> 
+> Added bus-label property to AspeedI2CState.
+> Added bus-name property to AspeedI2CBus.
+> Modified aspeed_i2c_realize to generate bus names based on the label.
+> Updated aspeed_i2c_bus_realize to use the customized name for bus
+> initialization and memory region naming.
+> 
+> Example usage: If a controller's bus-label is set to "ioexp0", its buses
+> will be named "ioexp0.0", "ioexp0.1", etc., instead of the default
+> "aspeed.i2c.bus.0".
+> 
+> Any feedback or suggestions are appreciated.
+> 
+> Best Regards,
+> Kane
+> 
+> Kane-Chen-AS (1):
+>    hw/i2c/aspeed: Introduce 'bus-label' to customize bus naming
+> 
+>   include/hw/i2c/aspeed_i2c.h |  2 ++
+>   hw/i2c/aspeed_i2c.c         | 27 +++++++++++++++++++++------
+>   2 files changed, 23 insertions(+), 6 deletions(-)
+> 
 
-How to Provide Feedback
-OASIS and the VIRTIO TC value your feedback. We solicit input from
-developers, users and others, whether OASIS members or not, for the
-sake of improving the interoperability and quality of its technical
-work.
-
-The public review is now open and ends Friday, February 13 2026 at 23:59 UT=
-C.
-
-Comments may be submitted to the project=E2=80=99s comment mailing list at
-virtio-comment@lists.linux.dev. You can subscribe to the list by
-sending an email to
-virtio-comment+subscribe@lists.linux.dev.
-
-All comments submitted to OASIS are subject to the OASIS Feedback
-License, which ensures that the feedback you provide carries the same
-obligations at least as the obligations of the TC members. In
-connection with this public review, we call your attention to the
-OASIS IPR Policy applicable especially to the work of this technical
-committee. All members of the TC should be familiar with this
-document, which may create obligations regarding the disclosure and
-availability of a member's patent, copyright, trademark and license
-rights that read on an approved OASIS specification.
-
-OASIS invites any persons who know of any such claims to disclose
-these if they may be essential to the implementation of the above
-specification, so that notice of them may be posted to the notice page
-for this TC's work.
-
-Additional information about the specification and the VIRTIO TC can
-be found at the TC=E2=80=99s public homepage.
 
