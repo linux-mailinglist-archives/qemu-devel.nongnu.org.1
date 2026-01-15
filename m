@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02DEED27DBA
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 19:57:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D7DED27DE3
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jan 2026 19:57:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgSVz-0001rH-19; Thu, 15 Jan 2026 13:56:15 -0500
+	id 1vgSW0-00025J-PE; Thu, 15 Jan 2026 13:56:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vgSVQ-0000jA-3V
+ id 1vgSVQ-0000jL-T0
  for qemu-devel@nongnu.org; Thu, 15 Jan 2026 13:55:41 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vgSVN-0005wO-Tp
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 13:55:39 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4801c314c84so5219345e9.0
+ id 1vgSVN-0005wa-VS
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 13:55:40 -0500
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-42fbc305552so1033235f8f.0
  for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 10:55:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768503329; x=1769108129; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768503330; x=1769108130; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=wlp0FvTGz1vaK6cfRoAC6PByfj8iN/GLtX8hRHZ8j8A=;
- b=tzQSP2mLbanGzsXgSM1wgteFNMVgGkxghxnrxyKscF7wwmRFKuY9RtrxMjG2tPd+Wv
- AL2iEUSPMU/Bv/WomVc5Tx2EWm6pASTKhNuzTFYgR7FhjHRAS5wFl90SdGmypDoV93Sb
- FJdQRWxOIPKRAXh8DhmHIokXqijy9si7BpqLgW3MT4Q4CprW7L112Dmz+7L8TCqem2ae
- c33j41a+ddtnR1LGmAtRu15fN5qk3Q73pZFC0F33XN7vIvSRw19KOx0+LxXOgoQNc2gh
- +iFQi0Yc38GnPPFPflLJLbnBaBBMEmg+ke/j7ohcBgGfKIjeRmAXI165cMUzEVRSUrTB
- 1wYw==
+ :reply-to; bh=wA/nEsPqIhwLRmIhUu82koV0Ke+qsz79EcZMSFMqDbo=;
+ b=CgYioMqs43yPq6+fZi1B6eABLGW2X/c8Hst7+81Sb3M6AuOt7SSr8w+txAOs+2mula
+ 8Dw2sKzmIfYY9JU6/KPgQnbWjFJA9udg366NvrGYCNugMOADZsZ/qtPceqAHxYEU4azo
+ 7gB68fUxXfuqSYSCeVJoHg05Mp64uMRhqtArHAItltzn2h1HUM/K0ie6CS6847vL8GST
+ Rdq06aOopBiziPXkhk01zbjAY2ylc/CU/XxrnMH6I75s3mHrs2QIJrJ0lHiFJcBWXv7Y
+ O07c0kn6mJPyC9zyI8hYPivgsO7Fm/Mgu2KhLYHH2TxhNISXSxQRq3EMHCDX3eKxkqJ4
+ k9LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768503329; x=1769108129;
+ d=1e100.net; s=20230601; t=1768503330; x=1769108130;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=wlp0FvTGz1vaK6cfRoAC6PByfj8iN/GLtX8hRHZ8j8A=;
- b=ka+SMLhGiL3Sbv2R32HvB4fe0DRh5GZ6IOLrgAjilJ3waHovbMKNglpJb1etE5LFTc
- NCi1Iq63Sx9j5wdNH+PVTj436aafDICzipV2zB+eRzCiWvKCJPlgLGJQn1KpApAyetDo
- wUuXrFZLcQwv37EDnfV46Ugb3qjcsxDeTZTTU05g9lGKWHZAyHYUS3kaXaNSMDSmS5l+
- +zFSqE0/3XpGMekIak87pnNlUB5oUyYrKoq6FM57yFgCuXletTk4PcqPjh+K5gElQKZy
- 1gkSPqvsZhdjbutpBv6RPrXsuda+77jLjdEK1g5g8OXoV4knv+BHt6ZaKiyRfneEdjXw
- 45OA==
-X-Gm-Message-State: AOJu0Yyzwh02HVhgjpCFAkOcQ2HtabSaTLbpuCZeqzSXSkReE3C0sSsh
- o6Fsnij475GLi1uqeDfrtgnogS3uac94k5QpJQ+i27VsSfVVU9TOKiGV5qBWhSq6835KeUZotiH
- yRfXE
-X-Gm-Gg: AY/fxX7r25kCRHHGK1fwalSRkKgcA7eh1c7hfI4Ino+XF1oU3Hj0aUK4hBnsxDj436u
- rt5nEeFT5SsVECwUyt8GUZXha5qkppNT3xrq76fJ730tZOkuZdjScDmeXCm41e8oovGTVnc39N+
- nNGDL6cqSVw0TwQuDojIaD5SFjVJhdqqXj3WS8WTc78M7PFgOkHwYsiCv9KsuUKUkqzz6kuXTzv
- gqFH28pWwU/WrGmBWwlBOvGCan3t0tWfk/V2MHQ8T1AQpLKY6hbxBV/Q4IlJ8utTraEqVqzO4m/
- EfAm02zPufFrRSwItImLNzSa6wZ+JPlCygdtjWsBbSP3G7SQ0r6dlU9kWJVUk6+KVikMTIxDrAm
- lpMu7GZdgGx9c2FD/SdKBakABGGhp+MKAZrOKGtsLoFNMz/TJz97i1RXVuhsv4HzW2E+b+7nm9p
- 208XvR6DQ55C0lVzaBstzbTFc6ArmMfjOmEkvJ+62bg8+TxWzx3xKa+qtLr8H3KQtRgLiwc9LDd
- 6WQikRIN1+7M+bWw8jz8S+939aLnWmq4UXacCpbCxEBI13YhoU4ia4p
-X-Received: by 2002:a05:600c:4ec7:b0:47e:e2eb:bc22 with SMTP id
- 5b1f17b1804b1-4801e30a126mr8229695e9.5.1768503328855; 
- Thu, 15 Jan 2026 10:55:28 -0800 (PST)
+ bh=wA/nEsPqIhwLRmIhUu82koV0Ke+qsz79EcZMSFMqDbo=;
+ b=Z8M0nGxNQpkrfsJl7woTckN0TRbcmF69uYLskmy9Ke/c/EGPm5OJ6bZl9AIxd1kadc
+ feHytCtRDqWuEF40ZYgOBFbByRL4TNNK3mHc1mxshrY5jdhkButD4/JEIbiJEJpWBuML
+ MyAVJTxXPth4BILJpySD9qEOl/Zo+U9hmFnEoZ3PPi2mImYMmjr+tqwZZTEUkXQU8Hlp
+ z4WeSV/i7zTMZsUfe2lp/MEn5kOiFx/RU303/fUvRY9kSDWrWuClI2PIakuooZxTWGp0
+ j11RpW5QghtpcSQeWd12bTV9vBvXzgVsMHG2I5s5QcxddLhYGnLQzkT3HCfErztgkLaF
+ C0kg==
+X-Gm-Message-State: AOJu0YzPLb3ulniAPBzzz6P5G7yPIRiimrpWiLvNLBuIi8yzH1+kjCOC
+ sK3tAAZZaZsyg6VHPO7WTQTlXR5LP2UMiPAT/YyrWb8qUAanT62HM6MUUx7jydqazIAaPxf3YkX
+ aRjzE
+X-Gm-Gg: AY/fxX6T7cV6P7UrR6tVG/wOKvG+S2bPrf6qaNGVgkUIbJwmUIbDoyahC+TTfTMxO+n
+ dduti6xhr+2jHq0Yhqqip0tMLOGy76Mr4iAMZBsQb2S+iiyR9X/V5esGE2xwxq4w+Vb1c9J1+ez
+ Zzhy+P993qDWiLKUNT7AJaCI0hVHkKuj4Kbi5RUH6qcfz09Imk9NQmHXLsoJW+edKGz4QzbK0IW
+ lToyBlAoGzOtcXwQ4x81kf/cIfB+/gs7G+tCDpREqbL8E5RIfIq6AbF210ylmbOZvsfi3LXUKKH
+ Hy+MKCloTDgNDM1vULeV+WtMxGvzxFI34m0ZoOC1AX2oN1+yx6QDFg9ajrzBMxGxfd5qvtQmTHk
+ vVX/qnWh98mfrqK3HttDSPXz4nGRQkGirXqrNaGJSQjFKNZnAAs9uic/YDohldyJAo+wnwcV85U
+ 2qHO3iAS53ew1w/cb8OWXnl/szZLY+Obaavfg3HGwCwQcP8EPtL8ghOG/Qt9PJe/jks0tkcgHXc
+ UyntKiNNQzyLYADRFgDK2fes7Syf/H73SahFcj76ZM59A==
+X-Received: by 2002:a5d:5889:0:b0:430:ff81:2961 with SMTP id
+ ffacd0b85a97d-4356a082ebfmr310433f8f.51.1768503329649; 
+ Thu, 15 Jan 2026 10:55:29 -0800 (PST)
 Received: from mnementh.archaic.org.uk
  (f.7.f.1.7.5.e.f.f.f.c.5.d.8.2.4.0.0.0.0.0.d.1.0.0.b.8.0.1.0.0.2.ip6.arpa.
  [2001:8b0:1d0:0:428d:5cff:fe57:1f7f])
@@ -65,20 +65,20 @@ Received: from mnementh.archaic.org.uk
  ffacd0b85a97d-4356996cecasm514207f8f.26.2026.01.15.10.55.28
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Jan 2026 10:55:28 -0800 (PST)
+ Thu, 15 Jan 2026 10:55:29 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 21/25] tests/functional: migrate aspeed_rainier image
-Date: Thu, 15 Jan 2026 18:55:03 +0000
-Message-ID: <20260115185508.786428-22-peter.maydell@linaro.org>
+Subject: [PULL 22/25] target/arm: Don't specify ID_PFR1 accessfn twice
+Date: Thu, 15 Jan 2026 18:55:04 +0000
+Message-ID: <20260115185508.786428-23-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260115185508.786428-1-peter.maydell@linaro.org>
 References: <20260115185508.786428-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,37 +101,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alex Bennée <alex.bennee@linaro.org>
+In the definition of ID_PFR1 we have an ifdef block; we specify the
+accessfn once in the common part of the ifdef and once in the
+not-user-only part, which is redundant but harmless.
 
-Cedric has a host for the file which allows us to keep the name.
+The accessfn will always return success in user-only mode (because
+we won't trap to EL2), so specify it only in the not-user-only
+half of the ifdef, as was probably the intention.
+
+This is only cc'd to stable to avoid a textual conflict with
+the following patch, which is a bug fix.
 
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Message-id: 20260113135941.3361163-1-alex.bennee@linaro.org
-Cc: Cédric Le Goater <clg@kaod.org>
+Fixes: 0f150c8499e970bd ("target/arm: Constify ID_PFR1 on user emulation")
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20251231170858.254594-2-peter.maydell@linaro.org
 ---
- tests/functional/arm/test_aspeed_rainier.py | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ target/arm/helper.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tests/functional/arm/test_aspeed_rainier.py b/tests/functional/arm/test_aspeed_rainier.py
-index 602d6194ac..30827beca3 100755
---- a/tests/functional/arm/test_aspeed_rainier.py
-+++ b/tests/functional/arm/test_aspeed_rainier.py
-@@ -9,10 +9,8 @@
- 
- class RainierMachine(AspeedTest):
- 
--    ASSET_RAINIER_EMMC = Asset(
--        ('https://fileserver.linaro.org/s/B6pJTwWEkzSDi36/download/'
--         'mmc-p10bmc-20240617.qcow2'),
--        'd523fb478d2b84d5adc5658d08502bc64b1486955683814f89c6137518acd90b')
-+    ASSET_RAINIER_EMMC = Asset('https://kaod.org/qemu/aspeed/rainier/mmc-p10bmc-20240617.qcow2',
-+                               'd523fb478d2b84d5adc5658d08502bc64b1486955683814f89c6137518acd90b')
- 
-     def test_arm_aspeed_emmc_boot(self):
-         self.set_machine('rainier-bmc')
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 1ee721ac7b..958e8edd34 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -6312,7 +6312,6 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+             { .name = "ID_PFR1", .state = ARM_CP_STATE_BOTH,
+               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 1, .opc2 = 1,
+               .access = PL1_R, .type = ARM_CP_NO_RAW,
+-              .accessfn = access_aa32_tid3,
+ #ifdef CONFIG_USER_ONLY
+               .type = ARM_CP_CONST,
+               .resetvalue = GET_IDREG(isar, ID_PFR1),
 -- 
 2.47.3
 
