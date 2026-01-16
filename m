@@ -2,96 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF173D316D2
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 13:59:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F051D3195C
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 14:11:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgjPj-0003i0-S1; Fri, 16 Jan 2026 07:58:56 -0500
+	id 1vgir5-00086G-BX; Fri, 16 Jan 2026 07:23:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vgjPV-0003fj-ON
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 07:58:41 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vgjPU-0000AM-04
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 07:58:41 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-47ee3da7447so11849955e9.0
- for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 04:58:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768568317; x=1769173117; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=h+RqHQeniNxEgx1KoTf/hdjWw4joxNDfaDyoWRJZKuw=;
- b=blX0J7kusfGAaXNhI6HW7qmsNN/Wyq8Pp3rOQRBVZ2lE7PBkdHNOx5U7UWkCc8H9cW
- YxeWNFZpyAeC9Gch5Itqs3wD5z0DcHRWKbGeDaFXZ0FenEjQF4i69PHd8k9CbXJjPWW2
- ghuspBXYTBIIuw4Mh9w4GzkM817is/0du8erIGUZnUncovY6jfaVhPzpD35/lXINkJax
- 2DH6BNQdSIZ1Hshkbsu1UCMmcFz87xAPyazFcIP3xrJgRTbCWANNlPeeBb+IX0FTw4PR
- CsGoFOOPAsRqJpfVLfPb3YHdzvNGkuufsECSokspMmgD4pj6i5+1C0KKTw4P9rdO1UxV
- 7gCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768568317; x=1769173117;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=h+RqHQeniNxEgx1KoTf/hdjWw4joxNDfaDyoWRJZKuw=;
- b=iRQFWJYSyByoCn1BNw8YLZyyuOzlaoaZ0AQYqxULuGIGCyYMvv2nltLayjQOCOy/Tg
- x541LGJ5TiHCk+gCjY/EEWyf5DNVx++y1rrLOdLExrJWIjYyMmuo60eADGuT0jO9QbSp
- V2jMIwU6i0AAULM0ZlSH4EqKZJRU63ofIzP+qEV9IQo2CZui2OVu62VvICdGpblSORLE
- hNcEQ69uhBVuviHUYI3L+SoTFKT4BeUDHf++wMkH7+uY6jDRvLSiaLyXrX9kq7dQ7p21
- fv5xYNP561mXycon86RqjgIHc4S0mNJfIx39UliT5SPJEI6UzE4R4xwf8wpkDvi4n1Da
- brtA==
-X-Gm-Message-State: AOJu0Yyk5dUTTzimIKQ4gP+cJ34geEznnffAvc2vhPu+7R+eNZuXQrTW
- 16wkSivSWWFCOwiKAkHxGZh8bDC248tzmOLpxz1eWS5UkGT7BqK8KiQ7PbeO9LaQ5r5oKEOIAwQ
- S5xub
-X-Gm-Gg: AY/fxX4qhUN1V/jtVYw2DyTPYYElhitgMOVQX0O88asnGC6XJSSymuBGU6NNi1BscjE
- b+2YYsRy3QWxnXcjY8UwufDQBrKJ5Q+q6avMb7AMpre52AajNCk1n26EVMbcHE1eg+v8o6filSy
- 1Yq0/SxrjwtGYVQoQ0pG2J8WwQMCRrrjrWFsi2RWlS8xay03nL9yqf0iEoTsdVhS8sPudp4lJm8
- uNdINDLrX5Awr04DriPUMnqOmYhS56oCQvwMnpmhiJCKCnlvAXzm+i9yRtWMV7TXGjXtCqBSrzN
- zU+tp1+fyhnV2uoshrvxFJPb3Aqued/DdvbVj1+SLr/OAyDRAleu7tVAFrQghMsqKGpsbCxvTZ1
- xx75S08J7QJM30cx2MAMFtylEJAoUaN0d7K6qNY5TJNJ2UOrYjK/KorYskRkNunclbjzksxx0Mn
- onbCPQ3Tv5pdshG/ynJgCFj+5j28xez789kPMpdAadp5ImpzHEB3FWYtakN8nyBgwK8isKYz6Zw
- a0UFDoYo64UQcxGJVBxS6UxwMHlOUIKxiSL6cD1iaIArA==
-X-Received: by 2002:a05:600c:4e43:b0:477:c71:1fc1 with SMTP id
- 5b1f17b1804b1-4801e3342eemr35605065e9.19.1768568316715; 
- Fri, 16 Jan 2026 04:58:36 -0800 (PST)
-Received: from mnementh.archaic.org.uk
- (f.7.f.1.7.5.e.f.f.f.c.5.d.8.2.4.0.0.0.0.0.d.1.0.0.b.8.0.1.0.0.2.ip6.arpa.
- [2001:8b0:1d0:0:428d:5cff:fe57:1f7f])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4801fe67780sm15387565e9.16.2026.01.16.04.58.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Jan 2026 04:58:36 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Magnus Kulke <magnus.kulke@linux.microsoft.com>,
- Wei Liu <wei.liu@kernel.org>, Warner Losh <imp@bsdimp.com>,
- Kyle Evans <kevans@freebsd.org>,
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vgiqx-0007ZK-NS
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 07:23:01 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vgiqs-00018s-I2
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 07:22:56 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1768566172;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8OwMRY56U2LWsDrxJycoiV5FoCimw79+fMzGGxkX3w0=;
+ b=QPp1IF9khPELWCIElrbpcFQILkO05iCYFs/SyPo9T6Ef4zQ1e6q3e17SEX2DNISZP5/zEb
+ AQSeLwzqEUdTlbRVnp1mibldDDuJCwu9639Ky/A2t50fpD8zCztfi94YFKLIRPsEdrETX5
+ ScEFPT6BkL4ljZHNfNguL/uuDRvSS6g=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-398-Ln_BKay_OwymtfZXw36KLg-1; Fri,
+ 16 Jan 2026 07:22:49 -0500
+X-MC-Unique: Ln_BKay_OwymtfZXw36KLg-1
+X-Mimecast-MFC-AGG-ID: Ln_BKay_OwymtfZXw36KLg_1768566168
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 28B61180034D; Fri, 16 Jan 2026 12:22:48 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.135])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 13D981955F22; Fri, 16 Jan 2026 12:22:45 +0000 (UTC)
+Date: Fri, 16 Jan 2026 12:22:43 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org, Gustavo Bueno Romero <gustavo.romero@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Helge Deller <deller@gmx.de>, Michael Roth <michael.roth@amd.com>,
- Kostiantyn Kostiuk <kkostiuk@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Subject: [PATCH 4/4] all: Clean up includes
-Date: Fri, 16 Jan 2026 12:58:30 +0000
-Message-ID: <20260116125830.926296-5-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260116125830.926296-1-peter.maydell@linaro.org>
-References: <20260116125830.926296-1-peter.maydell@linaro.org>
+ Phil =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v2 02/11] plugins: factorize plugin dependencies and
+ library details
+Message-ID: <aWotkyT7pmw3RKh8@redhat.com>
+References: <20260102214724.4128196-1-pierrick.bouvier@linaro.org>
+ <20260102214724.4128196-3-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
+In-Reply-To: <20260102214724.4128196-3-pierrick.bouvier@linaro.org>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,174 +89,93 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit was created with scripts/clean-includes:
- ./scripts/clean-includes '--git' 'all' '--all'
+On Fri, Jan 02, 2026 at 01:47:15PM -0800, Pierrick Bouvier wrote:
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>  meson.build                   |  2 +-
+>  contrib/plugins/meson.build   | 13 ++-----------
+>  plugins/meson.build           | 15 ++++++++++++++-
+>  tests/tcg/plugins/meson.build | 13 ++-----------
+>  4 files changed, 19 insertions(+), 24 deletions(-)
+> 
+> diff --git a/meson.build b/meson.build
+> index db87358d62d..3d6c6c702d0 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -4499,7 +4499,7 @@ if get_option('plugins')
+>    if host_os == 'windows'
+>      # On windows, we want to deliver the qemu_plugin_api.lib file in the qemu installer,
+>      # so that plugin authors can compile against it.
+> -    install_data(win32_qemu_plugin_api_lib, install_dir: 'lib')
+> +    install_data(win32_qemu_plugin_api, install_dir: 'lib')
+>    endif
+>  endif
+>  
+> diff --git a/contrib/plugins/meson.build b/contrib/plugins/meson.build
+> index 6f72b2ce0c9..8f9f0257ee5 100644
+> --- a/contrib/plugins/meson.build
+> +++ b/contrib/plugins/meson.build
+> @@ -9,17 +9,8 @@ endif
+>  t = []
+>  if get_option('plugins')
+>    foreach i : contrib_plugins
+> -    if host_os == 'windows'
+> -      t += shared_module(i, files(i + '.c') + '../../plugins/win32_linker.c',
+> -                        include_directories: '../../include/qemu',
+> -                        link_depends: [win32_qemu_plugin_api_lib],
+> -                        link_args: win32_qemu_plugin_api_link_flags,
+> -                        dependencies: glib)
+> -    else
+> -      t += shared_module(i, files(i + '.c'),
+> -                        include_directories: '../../include/qemu',
+> -                        dependencies: glib)
+> -    endif
+> +    t += shared_module(i, files(i + '.c'),
+> +                      dependencies: plugins_deps)
 
-and manually edited to remove one change to hw/virtio/cbor-helpers.c.
-All these changes are header files that include osdep.h or some
-system header that osdep.h pulls in; they don't need to do this.
+Nit-pick - under-indented by 1 space. The orignal code had the
+same bug, but lets not preserve it.
 
-All .c should include qemu/osdep.h first.  The script performs three
-related cleanups:
 
-* Ensure .c files include qemu/osdep.h first.
-* Including it in a .h is redundant, since the .c  already includes
-  it.  Drop such inclusions.
-* Likewise, including headers qemu/osdep.h includes is redundant.
-  Drop these, too.
+> diff --git a/tests/tcg/plugins/meson.build b/tests/tcg/plugins/meson.build
+> index a6e78438510..c58f2e382ae 100644
+> --- a/tests/tcg/plugins/meson.build
+> +++ b/tests/tcg/plugins/meson.build
+> @@ -1,17 +1,8 @@
+>  t = []
+>  if get_option('plugins')
+>    foreach i : ['bb', 'discons', 'empty', 'inline', 'insn', 'mem', 'reset', 'syscall', 'patch']
+> -    if host_os == 'windows'
+> -      t += shared_module(i, files(i + '.c') + '../../../plugins/win32_linker.c',
+> -                        include_directories: '../../../include/qemu',
+> -                        link_depends: [win32_qemu_plugin_api_lib],
+> -                        link_args: win32_qemu_plugin_api_link_flags,
+> -                        dependencies: glib)
+> -    else
+> -      t += shared_module(i, files(i + '.c'),
+> -                        include_directories: '../../../include/qemu',
+> -                        dependencies: glib)
+> -    endif
+> +    t += shared_module(i, files(i + '.c'),
+> +                      dependencies: plugins_deps)
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- hw/scsi/lasi_ncr710.h          | 1 -
- hw/scsi/ncr53c710.h            | 1 -
- include/hw/core/loader.h       | 1 -
- include/hw/i386/tdvf.h         | 1 -
- include/hw/ppc/spapr_fadump.h  | 1 -
- include/hw/riscv/iommu.h       | 1 -
- include/system/accel-irq.h     | 1 -
- linux-user/alpha/target_proc.h | 1 -
- qga/commands-windows-ssh.h     | 1 -
- qga/vss-win32/vss-debug.h      | 1 -
- target/i386/kvm/vmsr_energy.h  | 2 --
- 11 files changed, 12 deletions(-)
+Same under-indent by 1.
 
-diff --git a/hw/scsi/lasi_ncr710.h b/hw/scsi/lasi_ncr710.h
-index 99be001fc3..450fb7e1c3 100644
---- a/hw/scsi/lasi_ncr710.h
-+++ b/hw/scsi/lasi_ncr710.h
-@@ -15,7 +15,6 @@
- #define HW_LASI_NCR710_H
- 
- #include "hw/core/sysbus.h"
--#include "qemu/osdep.h"
- #include "exec/memattrs.h"
- #include "hw/scsi/scsi.h"
- #include "hw/scsi/ncr53c710.h"
-diff --git a/hw/scsi/ncr53c710.h b/hw/scsi/ncr53c710.h
-index a8dc92f4ef..00b6a01577 100644
---- a/hw/scsi/ncr53c710.h
-+++ b/hw/scsi/ncr53c710.h
-@@ -15,7 +15,6 @@
- #ifndef HW_NCR53C710_H
- #define HW_NCR53C710_H
- 
--#include "qemu/osdep.h"
- #include "hw/core/sysbus.h"
- #include "hw/scsi/scsi.h"
- #include "qemu/fifo8.h"
-diff --git a/include/hw/core/loader.h b/include/hw/core/loader.h
-index 6f91703503..4abd55a64b 100644
---- a/include/hw/core/loader.h
-+++ b/include/hw/core/loader.h
-@@ -1,7 +1,6 @@
- #ifndef LOADER_H
- #define LOADER_H
- #include "hw/nvram/fw_cfg.h"
--#include "qemu/typedefs.h"
- 
- /* loader.c */
- /**
-diff --git a/include/hw/i386/tdvf.h b/include/hw/i386/tdvf.h
-index e75c8d1acc..4d7362ad65 100644
---- a/include/hw/i386/tdvf.h
-+++ b/include/hw/i386/tdvf.h
-@@ -9,7 +9,6 @@
- #ifndef HW_I386_TDVF_H
- #define HW_I386_TDVF_H
- 
--#include "qemu/osdep.h"
- 
- #define TDVF_SECTION_TYPE_BFV               0
- #define TDVF_SECTION_TYPE_CFV               1
-diff --git a/include/hw/ppc/spapr_fadump.h b/include/hw/ppc/spapr_fadump.h
-index fde2830e94..82681fb9a6 100644
---- a/include/hw/ppc/spapr_fadump.h
-+++ b/include/hw/ppc/spapr_fadump.h
-@@ -6,7 +6,6 @@
- #ifndef PPC_SPAPR_FADUMP_H
- #define PPC_SPAPR_FADUMP_H
- 
--#include "qemu/osdep.h"
- #include "cpu.h"
- 
- /* Fadump commands */
-diff --git a/include/hw/riscv/iommu.h b/include/hw/riscv/iommu.h
-index 25f1a8b159..999384fc89 100644
---- a/include/hw/riscv/iommu.h
-+++ b/include/hw/riscv/iommu.h
-@@ -19,7 +19,6 @@
- #ifndef HW_RISCV_IOMMU_H
- #define HW_RISCV_IOMMU_H
- 
--#include "qemu/osdep.h"
- #include "qom/object.h"
- 
- #define TYPE_RISCV_IOMMU "riscv-iommu"
-diff --git a/include/system/accel-irq.h b/include/system/accel-irq.h
-index 671fb7dfdb..a2caa06f54 100644
---- a/include/system/accel-irq.h
-+++ b/include/system/accel-irq.h
-@@ -12,7 +12,6 @@
- #ifndef SYSTEM_ACCEL_IRQ_H
- #define SYSTEM_ACCEL_IRQ_H
- #include "hw/pci/msi.h"
--#include "qemu/osdep.h"
- #include "system/kvm.h"
- #include "system/mshv.h"
- 
-diff --git a/linux-user/alpha/target_proc.h b/linux-user/alpha/target_proc.h
-index 6b491ffa3a..71949d380d 100644
---- a/linux-user/alpha/target_proc.h
-+++ b/linux-user/alpha/target_proc.h
-@@ -6,7 +6,6 @@
- #ifndef ALPHA_TARGET_PROC_H
- #define ALPHA_TARGET_PROC_H
- 
--#include "qemu/osdep.h"
- #include "target/alpha/cpu.h"
- 
- static uint8_t alpha_phys_addr_space_bits(CPUAlphaState *env)
-diff --git a/qga/commands-windows-ssh.h b/qga/commands-windows-ssh.h
-index 40ac67c4d9..c35d945a89 100644
---- a/qga/commands-windows-ssh.h
-+++ b/qga/commands-windows-ssh.h
-@@ -11,7 +11,6 @@
-  */
- 
- #include <glib/gstrfuncs.h>
--#include <stdbool.h>
- typedef struct WindowsUserInfo {
-     char *sshDirectory;
-     char *authorizedKeyFile;
-diff --git a/qga/vss-win32/vss-debug.h b/qga/vss-win32/vss-debug.h
-index 7800457392..506cee6698 100644
---- a/qga/vss-win32/vss-debug.h
-+++ b/qga/vss-win32/vss-debug.h
-@@ -10,7 +10,6 @@
-  * See the COPYING file in the top-level directory.
-  */
- 
--#include "qemu/osdep.h"
- #include <vss-handles.h>
- 
- #ifndef VSS_DEBUG_H
-diff --git a/target/i386/kvm/vmsr_energy.h b/target/i386/kvm/vmsr_energy.h
-index 151bcbd642..415d64f51c 100644
---- a/target/i386/kvm/vmsr_energy.h
-+++ b/target/i386/kvm/vmsr_energy.h
-@@ -14,8 +14,6 @@
- #ifndef VMSR_ENERGY_H
- #define VMSR_ENERGY_H
- 
--#include <stdint.h>
--#include "qemu/osdep.h"
- #include "io/channel-socket.h"
- #include "hw/i386/topology.h"
- 
+With the indents fixed:
+
+  Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+
+
+
+With regards,
+Daniel
 -- 
-2.47.3
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
