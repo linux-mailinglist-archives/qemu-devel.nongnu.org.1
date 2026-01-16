@@ -2,93 +2,121 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12177D338A5
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 17:40:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45130D33AD5
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 18:06:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgmqk-00040B-Uf; Fri, 16 Jan 2026 11:39:04 -0500
+	id 1vgnER-00072M-Mn; Fri, 16 Jan 2026 12:03:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vgmqf-0003zj-My
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 11:38:59 -0500
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1vgnDT-0005r4-2a
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 12:02:34 -0500
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vgmqd-0008FI-4l
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 11:38:56 -0500
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-b8765be29d6so324806466b.0
- for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 08:38:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1vgnDQ-0003Ex-ID
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 12:02:30 -0500
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-81db1530173so1117935b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 09:02:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768581533; x=1769186333; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1768582945; x=1769187745; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=x4Tc973jOTHABPnQERVMdDzMxzIQZH/UhcGyjpS8qMk=;
- b=pDHEJGo8BFSumjteebPoXWfTgwvsxkC/vD5egWNDO+nyoj4Jvh0OLzpb0WhLL1l6LK
- 8rILhb3kIXzOKQM6yVnwyJ1/VSGi0GLGglHdS0S2EuAvYH/67giQ2BqD3S6jyquwQ4L2
- 8pi0Ys6suv7GMtMZwnVv/u0SOHCJZoh8KEw5zELHta061RmObncpV7+B8YswkO83R4N2
- n3VmmH/HlEJ2Ad34LhKMTOy+bBG1o9ILSzF4a0H6s+bkT0tw7eQTG5MEpfr5TMzOOG2A
- jTS0Czd2QDRmm4eJwItzOlfhVmoS6l07Ox9ZSQq/d27SdYpuZ5HRRWibc/FPqYpkD+WG
- RQ6w==
+ bh=IaC5cMq3hpNZfgvKzXrbibMIMM2X53QxWy4khHC+OFo=;
+ b=Z4cIh9xrIyVUWHFt/6oNIExZipTv44PwFF/lWITXP+BG50nNNpXJy2byScCjnPPRqA
+ wT0mS9AV3Z8drju0XM7gfrs6F9MUKDxhjpwmIawenKz4oMUEldSTReZoqM5rWJOLPUQl
+ 0Dj/m71u/EV0MFKW97B7SPS9+luNc7FOyqqVoJh0A9IO9DneFpG1+vTYXY4Pb95QsPwV
+ sfiwGqQKvAvZOTb92lM+P16STqVUATgBDfC4MWLfDZhiPQAhLInU4hCT/wlywtK3XsAK
+ Jsflgi8iG8Lkk6LkHPub3Atx91BlYbH7cxtZzxp746VXNcx6OriBI2IVfFv1xqt4LWU7
+ OptQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768581533; x=1769186333;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1768582945; x=1769187745;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=x4Tc973jOTHABPnQERVMdDzMxzIQZH/UhcGyjpS8qMk=;
- b=JRvE5EbpbAoBwvL6pLoz1qWU2QvEqJFU5+9d9GYvKEOIjE1F1fxfUZStVE7bNOLK21
- aCk3R07kx7RtJfn3RXwmiyDO9eCdtF/Iev1AmX+sPWIfJCYYCXmAEdAESBYH6q9ToWUR
- 9tgjl6RYulgi3Cd0ij1QetDht1W8fyJjuU+KI7gekHf1RmvsvPostWjVFI1joFQY8HlQ
- A5rsd9YPRNt20VKoa8Nb2zHM19jVvNw8EHZ2R14pu+sFhNfrfgUpH6kdpc9l208j01yo
- +W00OyC9mgv9eyc9u4qRGRYxBKkcO8y12NOlPCwZV6GY0VXixbw+Q3ZbsShIAsUnEYWw
- TNpA==
+ bh=IaC5cMq3hpNZfgvKzXrbibMIMM2X53QxWy4khHC+OFo=;
+ b=L5oooc7JNwfpZmaZd07gzswjlSbczlrNFD7u4OslZ81+G9eTTlLpJNbhcVgNnSOIBZ
+ UaHa9JGHFn8jcXLcepygZsf1Z8BHxWjMKVa735aWmkrzcXieexUBs9ECHq+4iqE1rH9S
+ JWxKV8bk6rpiLYQnjFVW20jQtnSevvAC+ZrZPkELRSuT9Vbf8BRKmN8dkDfc/ilFh74u
+ TaIC5Fv39MTvg7BMTmB5aehVVQ2Mi3s8NVakVnE17Wz3Z2wsKoXgno/iaBZX2oKzVJky
+ nycRzIpR1Vvfh+v3Utbp2WAHI/rXG7IGtw5KUnnY/kN798Ft3liyi0TgD9TFs9bwwEB6
+ PsAw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVQG8SG6W8A5aAZJ9RA4AUd35T/6YgMKn4nIXsdtZGir+1D8Hc5uKwH1mC7t/0RMNGHfYVhs5w2Fox8@nongnu.org
-X-Gm-Message-State: AOJu0YyjCmYE7TK2D18lbdneVTRhZtnXU0YlGcwfuIJY3GIEs+PeVWLx
- oM9hzu0ltrGvsSjxyTdVDC3azLjv7n+sF5Dg91Xr4gcrEb4ZDaCAa4yzKG8d9ucrfcE=
-X-Gm-Gg: AY/fxX7Q4PUpGWWqhLIKw3pdpe2Um0T+ReOTNnMDIotVZN7a3R2atibiY//Zs3eYA+k
- iJhId98cx1Zvr2gNSBs0f6h4gd2BL2Cw6ZdTjON3q4JdU7CexSDUaUBkA7lKTtl6TLGmgo3N+jZ
- IZNz3jK5wnswsieo6wdWnQ+puMEUkcrDCxaY4kr1G9q8nX2pKTPW7Xq9LO4W1SPPogWznZ2Mrc7
- ibKbapbxzrCpkcO/d7RBViKM2O/pBaFCkKpJ+JtHRqB0gpiB35TAn694uVWqaOIMmXspHGPv2ii
- VqF/MS0ff2cmPpXRc1XjZMBVSOMk0d/mAan4vGLrsMlPNect3XU1H8sdV2LJ4ycU+FEQWf2h01M
- P+VRoO600RuHgNIw0PJ9LoltLTqN19UD1FDMBg82kin/jQZbgftWk7VJEjE4AmkNmT7mT3UgRYJ
- syF/qD/aBMfcQ7vrNnANl+kowINdPwFWpuGL9seOCvWukYHoDW+gVZMw==
-X-Received: by 2002:a17:907:930a:b0:b87:751:6f21 with SMTP id
- a640c23a62f3a-b879300b515mr326634066b.36.1768581532631; 
- Fri, 16 Jan 2026 08:38:52 -0800 (PST)
-Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b87959f6e74sm277303266b.48.2026.01.16.08.38.51
+ AJvYcCV+28Odi3JAMFq89Bjg8FaJCBIjssrxTpt131w37qIEcCcOYk/isczhY22eH5n/I3hZPFLTcc/6O7RO@nongnu.org
+X-Gm-Message-State: AOJu0YzaI+OhqFm3qJ8GbaivwqxoHLmQyv9Yb5CmAmrJEee/GRNiv/3D
+ yaOY/xA2Xqt70jiw0xJWVn0edD1mta9qcj//YzXY7uTs0+xZi4kuHH5LYMIdgzotOkA=
+X-Gm-Gg: AY/fxX7o5JTuwH1PePocctHOB8Ol7QOKFLupEIShldHYy2ucR6UbkHKWClBigzw3euE
+ dC9Q5pfE+9Sj5EodbtFulxzsdHFx9MGNEpm+9LCHbtPRZOlX9ONmwG/q6EKhJz2YXYQgY9hLQ/D
+ gefWaXqfGk/2JhSRlqPl8n26UFAZy7ZYQPEmqb+BeJnIQSGV7KFasyuUkvJyTQvidcrTpdyjuDv
+ aQX4JQr3tGwGs8njzrPfaTyZSEgZtiRcS3QrphDfRaAlKvDEwHcLqcooBVy21cCHsSGrSpte0jM
+ 9T61Igog2LEMkXsHG8zSogXwXCi1miWwUmYE3sS/tZVmMG8oZ5MdXFO1b2uuyBOORprqPW6Fq26
+ hmbiTjQWU2elGJI61GWg7MxDOu92z7py7MZAXxWbG6GWHyD5lQ1sjtR7FXX3QjKArVxGxOofHrV
+ g+TJWW28q8YZUl2xO5qKE5Yam9nYfqBN4p9w19wIGDpqnpn0dWwa4BKGy8
+X-Received: by 2002:a05:6a00:891:b0:81d:7db9:9c4b with SMTP id
+ d2e1a72fcca58-81f9f689487mr3338752b3a.14.1768582944751; 
+ Fri, 16 Jan 2026 09:02:24 -0800 (PST)
+Received: from [192.168.1.87] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-81fa108c51dsm2548282b3a.14.2026.01.16.09.02.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 16 Jan 2026 08:38:52 -0800 (PST)
-Message-ID: <bb2418df-067b-4686-8118-b7a40325b732@linaro.org>
-Date: Fri, 16 Jan 2026 17:38:50 +0100
+ Fri, 16 Jan 2026 09:02:24 -0800 (PST)
+Message-ID: <e86ac5f5-2131-45f6-ab40-1f24dd553669@linaro.org>
+Date: Fri, 16 Jan 2026 09:02:23 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 26/26] MAINTAINERS: update the list of maintained
- files for WHPX
+Subject: Re: [PATCH] MAINTAINERS: Add docs/system/i386/ to the general x86
+ architecture section
 Content-Language: en-US
-To: Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Pedro Barbuda <pbarbuda@microsoft.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Shannon Zhao <shannon.zhaosl@gmail.com>, qemu-arm@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-References: <20260116135235.38092-1-mohamed@unpredictable.fr>
- <20260116135235.38092-27-mohamed@unpredictable.fr>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20260116135235.38092-27-mohamed@unpredictable.fr>
+To: Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Zhao Liu <zhao1.liu@intel.com>, Markus Armbruster <armbru@redhat.com>,
+ qemu-trivial@nongnu.org
+References: <20260116101139.269906-1-thuth@redhat.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Autocrypt: addr=pierrick.bouvier@linaro.org; keydata=
+ xsDNBGK9dgwBDACYuRpR31LD+BnJ0M4b5YnPZKbj+gyu82IDN0MeMf2PGf1sux+1O2ryzmnA
+ eOiRCUY9l7IbtPYPHN5YVx+7W3vo6v89I7mL940oYAW8loPZRSMbyCiUeSoiN4gWPXetoNBg
+ CJmXbVYQgL5e6rsXoMlwFWuGrBY3Ig8YhEqpuYDkRXj2idO11CiDBT/b8A2aGixnpWV/s+AD
+ gUyEVjHU6Z8UervvuNKlRUNE0rUfc502Sa8Azdyda8a7MAyrbA/OI0UnSL1m+pXXCxOxCvtU
+ qOlipoCOycBjpLlzjj1xxRci+ssiZeOhxdejILf5LO1gXf6pP+ROdW4ySp9L3dAWnNDcnj6U
+ 2voYk7/RpRUTpecvkxnwiOoiIQ7BatjkssFy+0sZOYNbOmoqU/Gq+LeFqFYKDV8gNmAoxBvk
+ L6EtXUNfTBjiMHyjA/HMMq27Ja3/Y73xlFpTVp7byQoTwF4p1uZOOXjFzqIyW25GvEekDRF8
+ IpYd6/BomxHzvMZ2sQ/VXaMAEQEAAc0uUGllcnJpY2sgQm91dmllciA8cGllcnJpY2suYm91
+ dmllckBsaW5hcm8ub3JnPsLBDgQTAQoAOBYhBGa5lOyhT38uWroIH3+QVA0KHNAPBQJivXYM
+ AhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEH+QVA0KHNAPX58L/1DYzrEO4TU9ZhJE
+ tKcw/+mCZrzHxPNlQtENJ5NULAJWVaJ/8kRQ3Et5hQYhYDKK+3I+0Tl/tYuUeKNV74dFE7mv
+ PmikCXBGN5hv5povhinZ9T14S2xkMgym2T3DbkeaYFSmu8Z89jm/AQVt3ZDRjV6vrVfvVW0L
+ F6wPJSOLIvKjOc8/+NXrKLrV/YTEi2R1ovIPXcK7NP6tvzAEgh76kW34AHtroC7GFQKu/aAn
+ HnL7XrvNvByjpa636jIM9ij43LpLXjIQk3bwHeoHebkmgzFef+lZafzD+oSNNLoYkuWfoL2l
+ CR1mifjh7eybmVx7hfhj3GCmRu9o1x59nct06E3ri8/eY52l/XaWGGuKz1bbCd3xa6NxuzDM
+ UZU+b0PxHyg9tvASaVWKZ5SsQ5Lf9Gw6WKEhnyTR8Msnh8kMkE7+QWNDmjr0xqB+k/xMlVLE
+ uI9Pmq/RApQkW0Q96lTa1Z/UKPm69BMVnUvHv6u3n0tRCDOHTUKHXp/9h5CH3xawms7AzQRi
+ vXYMAQwAwXUyTS/Vgq3M9F+9r6XGwbak6D7sJB3ZSG/ZQe5ByCnH9ZSIFqjMnxr4GZUzgBAj
+ FWMSVlseSninYe7MoH15T4QXi0gMmKsU40ckXLG/EW/mXRlLd8NOTZj8lULPwg/lQNAnc7GN
+ I4uZoaXmYSc4eI7+gUWTqAHmESHYFjilweyuxcvXhIKez7EXnwaakHMAOzNHIdcGGs8NFh44
+ oPh93uIr65EUDNxf0fDjnvu92ujf0rUKGxXJx9BrcYJzr7FliQvprlHaRKjahuwLYfZK6Ma6
+ TCU40GsDxbGjR5w/UeOgjpb4SVU99Nol/W9C2aZ7e//2f9APVuzY8USAGWnu3eBJcJB+o9ck
+ y2bSJ5gmGT96r88RtH/E1460QxF0GGWZcDzZ6SEKkvGSCYueUMzAAqJz9JSirc76E/JoHXYI
+ /FWKgFcC4HRQpZ5ThvyAoj9nTIPI4DwqoaFOdulyYAxcbNmcGAFAsl0jJYJ5Mcm2qfQwNiiW
+ YnqdwQzVfhwaAcPVABEBAAHCwPYEGAEKACAWIQRmuZTsoU9/Llq6CB9/kFQNChzQDwUCYr12
+ DAIbDAAKCRB/kFQNChzQD/XaC/9MnvmPi8keFJggOg28v+r42P7UQtQ9D3LJMgj3OTzBN2as
+ v20Ju09/rj+gx3u7XofHBUj6BsOLVCWjIX52hcEEg+Bzo3uPZ3apYtIgqfjrn/fPB0bCVIbi
+ 0hAw6W7Ygt+T1Wuak/EV0KS/If309W4b/DiI+fkQpZhCiLUK7DrA97xA1OT1bJJYkC3y4seo
+ 0VHOnZTpnOyZ+8Ejs6gcMiEboFHEEt9P+3mrlVJL/cHpGRtg0ZKJ4QC8UmCE3arzv7KCAc+2
+ dRDWiCoRovqXGE2PdAW8788qH5DEXnwfzDhnCQ9Eot0Eyi41d4PWI8TWZFi9KzGXJO82O9gW
+ 5SYuJaKzCAgNeAy3gUVUUPrUsul1oe2PeWMFUhWKrqko0/Qo4HkwTZY6S16drTMncoUahSAl
+ X4Z3BbSPXPq0v1JJBYNBL9qmjULEX+NbtRd3v0OfB5L49sSAC2zIO8S9Cufiibqx3mxZTaJ1
+ ZtfdHNZotF092MIH0IQC3poExQpV/WBYFAI=
+In-Reply-To: <20260116101139.269906-1-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,29 +139,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/1/26 14:52, Mohamed Mediouni wrote:
-> Add arm64-specific files.
+On 1/16/26 2:11 AM, Thomas Huth wrote:
+> From: Thomas Huth <thuth@redhat.com>
 > 
-> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
-> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> We've got a section for generic x86 architecture support in our
+> MAINTAINERS file - this should cover the docs/system/i386/ folder, too.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->   MAINTAINERS | 2 ++
->   1 file changed, 2 insertions(+)
+>   MAINTAINERS | 1 +
+>   1 file changed, 1 insertion(+)
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 9127a82ec3..f03ffe907d 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -565,6 +565,8 @@ M: Mohamed Mediouni <mohamed@unpredictable.fr>
->   S: Supported
->   F: accel/whpx/
->   F: target/i386/whpx/
-> +F: target/arm/whpx/
 
-  -> squash in patch #15
-
-> +F: hw/intc/arm_gicv3_whpx.c
-
-  -> squash in patch #14
-
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
