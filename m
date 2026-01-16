@@ -2,92 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEBC2D29627
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 01:11:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A294D2962D
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 01:11:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgXQ8-0007I5-Kg; Thu, 15 Jan 2026 19:10:33 -0500
+	id 1vgXR1-0007xP-RD; Thu, 15 Jan 2026 19:11:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vgXQ2-0007Hc-2C
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 19:10:26 -0500
-Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
+ id 1vgXQu-0007u2-Jz
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 19:11:21 -0500
+Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vgXPz-00030i-B2
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 19:10:25 -0500
-Received: by mail-ot1-x332.google.com with SMTP id
- 46e09a7af769-7cfdcae466eso490745a34.3
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 16:10:22 -0800 (PST)
+ id 1vgXQs-0003IH-Tg
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 19:11:20 -0500
+Received: by mail-ot1-x32c.google.com with SMTP id
+ 46e09a7af769-7cfd5d34817so966031a34.1
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 16:11:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768522221; x=1769127021; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768522278; x=1769127078; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=nW3K/ZIgeqH9ZJ0pbw8yuQ8bos01FtCHvP48Xzx4NI8=;
- b=aaJDz+dO2fkXE4yiVfM8uj3rZLCE2sLbPCkmSVO+cKafkF0uDh2C5T1G+LiBWJvcJE
- +fWhOlsEwEtR/cIsRteTUUwbYVNu2WavSvgn/aiaJ1LAqY2zWg+fpxp+gaqNqr5ivz5c
- HK5NbI7liBNjVYaz6GRwGTDFixQ5YT95M58YLCBC8xCW0rgV7xI90je/XsuVwzZQjO00
- jhf/dylx54sxWUWv2JqEC7nKGmX9Bfi2nfIQVm0PWJpwy56WMAWs7Bwb9D77h8MDCWBO
- /RdA3R5u7OOCPzl++0unjKHe0fw9Ipn01lP3QUYk3MLohJNeGg1znYEi4ClqTzgDDg4h
- hk9A==
+ bh=zEXqWvyYHBxajM5Ie54wEc6mNyB8beVHMI2CCX/w60U=;
+ b=frdC/ay4K66qhSTwwfrBD2v/qrl//5tvJsOLOKNjmnDSbnbmdrqqH7ePgwXDdPX5DN
+ r6obYr7XJSx8/N1xQZ2fpeg6eWdLtCi9wXRKqr7Mbpz7Aps2oWpkXdXAZa/395DfhHXb
+ 1bnPADKf2Lu87qQQTgXgrHM0+F3xF9nokvcXUZUQTRTgBJv9BPWVxY13PoUf1YhoPRxo
+ nLaUVz0KMNvqzgE3AuzfqCEiKFXHiYOww8ewkQMB5eRLPUoJ6yoOMdFhI+4ZEr+kJDgn
+ grYrWucvNJWTg3F9uxW7jupXMn8AOika7LC6T91d5c+oBSaAWDMwRWOyPs5dPlO5c4+z
+ V6Lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768522221; x=1769127021;
+ d=1e100.net; s=20230601; t=1768522278; x=1769127078;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=nW3K/ZIgeqH9ZJ0pbw8yuQ8bos01FtCHvP48Xzx4NI8=;
- b=ugxoz7INwORcu6YSErYmRMlZXynHnfr7ZkVZXNwYgHiz4alSNKFCgRzUQAVbRmXDKm
- xa5OVPIbW+PUCi2ZthQiMhlBzIrFty61UqSNF60JUVJ5Mm+IlnrGW7E2BZSGEMD/+3jF
- zFHVf1LQivFSa3GF33m4SsThyvI1kuP5pFlmJsRRMcj9AutzekmuopxXLRpSUcsWT90v
- JfoihvDc7UKIkBF/SX5AThVFh0xYLG/JrmEFtee7ezo4/4lA4M43w83HJSfpiElLzezq
- GC1xGzl6NJtwFvC4bPfer7zT/AaFKzRbJafOv+gPgF5fDNt5VTuNTPjvpHBl9scnfqRn
- wH5w==
+ bh=zEXqWvyYHBxajM5Ie54wEc6mNyB8beVHMI2CCX/w60U=;
+ b=U7hYcdWwyoppBi8soc10noFspb9Gfid1UsFimjfX/JMZcAEgKRauBAm8oRCVW3B/rt
+ Idsh7pNVEYbArRbq9XcmDzFUHKpOih8sb7reFJjzvhokdfXvrclhttI+by3kM5UcViKt
+ lqAIbumz73iCbLiThyxmxXrN7rWxgfq43p85x/uaj6yxIkl6Sp7T4D1lb32utsxmUljr
+ EcCCTQdWsqGrNv9qa/VuqHrUgeoCHD6QsVnALYi1xJgZXsNqhwmG6nPSjyTjUakSEQR9
+ T0rz+ULc1f/JGSreJiprpIE0dRuPynL+ZFKJ8Jo0O+GyjwfgQODFe+iPWTfVNy+j81od
+ sN9Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUrK/KjQge1Xmvp+ui4hD0R5DHyHbFDaPPlnvcLTcIapYXB2cOLqO8BTGtt/jEWvR2QssYpNgXxBHYy@nongnu.org
-X-Gm-Message-State: AOJu0Yzdz3y2oaTsJiHhkg7w2ddv+M7V7YQ+uNEOL0v393ecu6YOgElZ
- 0XdeJG8ljXIpbSvU0Ck9/MngH3u4n2VmwYOEaqrXRfltt8HuP8eXkpVIOBRwhVR5JAekSV8qK+q
- HWgo+zv0=
-X-Gm-Gg: AY/fxX7cinme2aTuy7043/hTu7k73kQ+ehPbMZJ4k8zgoYhXQj9fJ2MN23KaKQmuH9H
- VkIHaNZH6Xya9ii0UXUNNyBhkrybNfxl9JN9ooEdigrDJT01/0tw3aQKwgVRbJML6JA8u0Lxb4j
- /gcDK4XHYUY873kU/pyxvFcXp6Kh6mZgURtlLT0Bl7hvmUbmqVBEFSWnJR1WgBPgp+UBfVt8ywU
- yEP7ONJ7bZdu+72xypMg22b8AQiBZjCokQqVymPzF4Wpmu+IZKYevq6GUOOebXAdtdpXI9GwLCC
- Kx8Ck2E18Hz03Jc0UkbB6I7Igw3DmjDsBiVGaMqCW8TYFCaqQRjx+nPp7CKuqPAgRPdNVVN81MY
- 5DXygNnmB2nKtlKTEVN9fMBHrgJDimWfsWU+Hs/qMUfPr4OuIGj/grI9AOCtN2FS5njLN8BUQAa
- bxqDFWaiY3LcKjKzytDsyg+LJHOdYM7oWupszgu9P49OlPE1CAdTi7Ws+3tyYVXgY=
-X-Received: by 2002:a05:6830:6f42:b0:7c7:5d72:567b with SMTP id
- 46e09a7af769-7cfdee2124bmr728606a34.23.1768522221091; 
- Thu, 15 Jan 2026 16:10:21 -0800 (PST)
+ AJvYcCVjFcbLCnTiQcq9VcDLlStBlKxC5GVvNDc01CZWNHbXaUIxF2aVNcnWcC1xN3warcZ8iHpN0QKqY9Tj@nongnu.org
+X-Gm-Message-State: AOJu0YxW3g9EVDUVPrfYNlamdPhnvKTh/fLcIr68CyJ4u25tFfsCk6U+
+ FVCizQH4xLVlnRfZ/dgwcUudtnOIKRl1vXraCc4NSNnsMGxoZNQGZ6TYAjKzMq6HT5nNPxoEwQm
+ Z+vXxBlE=
+X-Gm-Gg: AY/fxX4vgAFje4vglO8FQ6LJY0kdNJ4AKD2W2Mi8WIWXpHnlUZtWVbKqsRserzwX4k5
+ gUVhJEtcP1Qm1itSdtpw/vAgwSLuMjH7G/zFh2K6cgIDoSEgLp9N5d6QkCTmQ5spshnpEp5pmWi
+ 0+PBIJmA/tow9/UwoKjdlq52qsVrF8muxXBdccvLukzCTPXR9vF9hn1r9s5xNYaIkGHiYQ9tz3N
+ zVk1DEqmUNOikiAnZ7D0nyWfdDngJ+ukIthqvLKjr6A2OYdajsvTSw3x2fNIePJwUPNEVfXbZbP
+ fXDQSzEAzdFL5N8mlQdu7hCC6xIsBeBF/nrFAAd3P6CIY87ZCeo3zlsY0wVls98ixJOkQKtxBCY
+ gYiEhADN/UdY8vQmmmUNjZ9C8X8PQIplpZd8opsihPi+YR1h8peqv1+LJAC7NBjXvJbFAulyl+4
+ 6qn3JJnCfm8cc1xEGEKO4XT8a3Qcmm7Yca5BWPsmNZAitNV+23yYLf
+X-Received: by 2002:a05:6830:378a:b0:7c9:594f:2d16 with SMTP id
+ 46e09a7af769-7cfdfc8f7admr427618a34.0.1768522277661; 
+ Thu, 15 Jan 2026 16:11:17 -0800 (PST)
 Received: from [10.244.221.227] ([172.59.196.187])
  by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-7cfdf28ef93sm686077a34.15.2026.01.15.16.10.13
+ 586e51a60fabf-4044baf5402sm763721fac.4.2026.01.15.16.11.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 15 Jan 2026 16:10:20 -0800 (PST)
-Message-ID: <52228d4a-2c5c-452c-9d39-a8b7b0adda27@linaro.org>
-Date: Fri, 16 Jan 2026 11:10:08 +1100
+ Thu, 15 Jan 2026 16:11:17 -0800 (PST)
+Message-ID: <0a8f1d66-7c1d-41e2-ba7d-7b872ef97036@linaro.org>
+Date: Fri, 16 Jan 2026 11:11:06 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: add reviewer for linux-user
+Subject: Re: [PATCH] MAINTAINERS: add co-maintainer for TCG Plugins
 To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: Anton Johansson <anjo@rev.ng>,
- Gustavo Bueno Romero <gustavo.romero@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>,
- Brian Cain <brian.cain@oss.qualcomm.com>,
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?Q?Phil_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20260115201712.2706663-1-pierrick.bouvier@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>,
+ Gustavo Bueno Romero <gustavo.romero@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, stefanha@redhat.com,
+ pbonzini@redhat.com
+References: <20260115202511.2709767-1-pierrick.bouvier@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-In-Reply-To: <20260115201712.2706663-1-pierrick.bouvier@linaro.org>
+In-Reply-To: <20260115202511.2709767-1-pierrick.bouvier@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x332.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,29 +108,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/16/26 07:17, Pierrick Bouvier wrote:
-> I had interest in this area for some time, and would like to help
-> reviewing it.
+On 1/16/26 07:25, Pierrick Bouvier wrote:
+> I would like to help Alex to maintain TCG Plugins. We talked about it
+> and he will keep the priority for merging series, but I can occasionally
+> merge some of them when there is a special interest.
 > 
 > Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 > ---
->   MAINTAINERS | 1 +
->   1 file changed, 1 insertion(+)
+>   MAINTAINERS | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/MAINTAINERS b/MAINTAINERS
-> index 4ddbfba9f01..4ef0c10f63a 100644
+> index 4ddbfba9f01..d80cdfbb6e7 100644
 > --- a/MAINTAINERS
 > +++ b/MAINTAINERS
-> @@ -4021,6 +4021,7 @@ T: git https://github.com/qemu-bsd-user/qemu-bsd-user bsd-user-rebase-3.1
+> @@ -4039,10 +4039,10 @@ F: include/tcg/
 >   
->   Linux user
->   M: Laurent Vivier <laurent@vivier.eu>
-> +R: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>   TCG Plugins
+>   M: Alex Bennée <alex.bennee@linaro.org>
+> +M: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>   T: git https://gitlab.com/stsquad/qemu plugins/next
+>   R: Alexandre Iooss <erdnaxe@crans.org>
+>   R: Mahmoud Mandour <ma.mandourr@gmail.com>
+> -R: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 >   S: Maintained
->   F: linux-user/
->   F: configs/targets/*linux-user.mak
-
-Yay.
+>   F: docs/devel/tcg-plugins.rst
+>   F: plugins/
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
