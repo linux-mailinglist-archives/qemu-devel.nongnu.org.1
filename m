@@ -2,70 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24006D29B70
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 02:47:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30C68D29D40
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 03:01:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgYvL-0000xf-SF; Thu, 15 Jan 2026 20:46:51 -0500
+	id 1vgZ8B-0002pk-Td; Thu, 15 Jan 2026 21:00:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <bounce+0e9322.97607e-qemu-devel=nongnu.org@yodel.dev>)
- id 1vgYvF-0000uR-MA
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 20:46:47 -0500
-Received: from k57.kb8c70eb.use4.send.mailgun.net ([204.220.184.57])
+ (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
+ id 1vgZ89-0002kQ-8a
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 21:00:05 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1)
- (envelope-from <bounce+0e9322.97607e-qemu-devel=nongnu.org@yodel.dev>)
- id 1vgYvC-0000NV-Uh
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 20:46:45 -0500
-X-Mailgun-Sid: WyI4ZDFlNiIsInFlbXUtZGV2ZWxAbm9uZ251Lm9yZyIsIjk3NjA3ZSJd
-Received: from mail.yodel.dev (mail.yodel.dev [35.209.39.246]) by
- cad0cebcd768843fd51d305414832d0b6da05acbafe8094d47580c8c19531652 with SMTP id
- 6969987a834a10b0f0ab9013; Fri, 16 Jan 2026 01:46:34 GMT
-X-Mailgun-Sending-Ip: 204.220.184.57
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yodel.dev;
- s=rsa2048; t=1768527993;
- bh=gAN3Y5SV5SlPLFmcCVzEMCphX2dQx2LOgVwQXPYMOmc=;
- h=X-Mailgun-Dkim:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
- References:MIME-Version:Content-Transfer-Encoding:From:Reply-to:
- Subject:Date:Message-id:To:Cc:Mime-version:Content-type:
- Content-transfer-encoding:In-reply-to:References;
- b=gaZxgqtT0eNavgx+DrrldhjCW4bqYirZhEoU74zQvYlQTDmaUCGsoZ4/wypmi3LWK
- eZlmPNJemVf+hzZ65nea15haiuvIa87q28Jtu+PDzUwD6yY1SDBNyJtC0xQ3ZYwOUd
- dpR2corv8gQZtsfBwUV0QK6jGlZ9NOUdsMmixvPHl5/aqrhMBDTCTASNhHZoFiY+BJ
- UmD7kGLkWUucB2pk+uSFG7Isjw0vNMz//h0yPfmXWRr0zzn+oUS9gaslLjj8FKZrAP
- EC0i3ARabpLBR4d8eigy8T90gLT3rAjjxt5HUP12rc99xpP/Rxevd7hsWxC5oP5J9f
- t/FHTwTDolLRg==
-X-Mailgun-Dkim: no
-X-Mailgun-Dkim: no
-From: Yodel Eldar <yodel.eldar@yodel.dev>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>,
- Richard Henderson <richard.henderson@linaro.org>,
- Dominik Disconnect3d Czarnota <dominik.b.czarnota@gmail.com>,
- Yodel Eldar <yodel.eldar@yodel.dev>
-Subject: [PATCH v3 3/3] gdbstub/user-target: Convert host errno to GDB
- File-I/O errno
-Date: Thu, 15 Jan 2026 19:46:12 -0600
-Message-ID: <20260116014612.226183-4-yodel.eldar@yodel.dev>
-In-Reply-To: <20260116014612.226183-1-yodel.eldar@yodel.dev>
-References: <20260116014612.226183-1-yodel.eldar@yodel.dev>
+ (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
+ id 1vgZ87-0002e4-LQ
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 21:00:04 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-2a07fac8aa1so10732025ad.1
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 18:00:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1768528801; x=1769133601; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=9yFEczzgqitOLWULI6hXHPLEo/GmjrNUL7oeuv38zAU=;
+ b=QoGV+s3MmUiIWzbCvIZ7+RY/9EK0LL2KYpiB/7DyO6ZXmdRAblr1HSPb06eAWpCeps
+ 5ydYPT5Oqk01iWYmFNd7H2bDBE3X9jrN2Qy6B2NJhBjibvMr4OM5LkP2QJoQfjLjmP+6
+ yD5B1Mhf01JkOWSBJ2Fzlhl1p4WoNk9Ozdlq5VFPUSKyPMIAH+Tjf0+n1UQDHYorCybA
+ QLcQgSWCNdKhyMge2jl6TeeUjpttznX3DcRBz+Js5egi7uYBEkPRMSsmz7oKr8LKg3Ll
+ x+yQzichCcCJaiO5OAZUOzTGxH+sLP/bOKQMmbXanu7l1FAozmJMcrCVqffNwAj/CfGv
+ rzxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768528801; x=1769133601;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9yFEczzgqitOLWULI6hXHPLEo/GmjrNUL7oeuv38zAU=;
+ b=WEuNjmdTnbhCthZdXqwN3HE1LkvmPJ/vq+ha/zE3D6vJPsLWsFvSOSg/KfTb/UxoXl
+ yIDfgMKnEwqaht+Aee41EJ/ni16RRXd98RJ+9v6PZQvVUEwHBkDsMsiOkZcN9Kjd7HUO
+ UbFUDCXK2C+UtHhgULfzSdRHZjk6zT/8AkA2UUErTjpUkoNOvYNVECi2ZjipZ5CYJ43Q
+ GnEw37AQH/GEdvv2J10IBeKRyzvey5+8FHdvEhwndV7nI8tqQEDIHMr5PVOWUzbr6zDr
+ 52P9H5gP03seGm29epiD6N8/EeeBzyeglOtcJj/ryF/w9/V6sWRISqKM9YXpQ51ppP1a
+ qEIQ==
+X-Gm-Message-State: AOJu0Yxt14+YhXUMk0GNhMO66K5r4leP87Mjh0xNO5Kw9CcNxGI9sSlg
+ 0mVwRTy8RGo/d90w5RPnK6o3n+bfzBy4B8EtwkbuOsdKXM6UpE+E9raKnb8x5PuwHMHGYVL3Qfu
+ neTpQOyI=
+X-Gm-Gg: AY/fxX6O8OvfPj49GjK91oCQ6u0fA9SEGXyYV6IHwvP/oMTfdkmhuBbdgzJh+Dz3KIr
+ UKQMz/+OvWKkvW/ouNSrpceFc4BcYburNdh41Fo3H2WUgs2CkKJPEb+Ho2anbmxysEiy+wtd2kF
+ qFhCjD5RmdRHIHf5E7Oc85//NM4vngtiR3Ula7fZNJTdxpprqH6VrDI9zsGlU30CHoLHCpfJzYM
+ U7KWJ/tp7OOt3mgq9bFnYepTWl5nm7y4aVBqrynzY1OgnsLOkFVM8eUx44ripaLUw0VOMFPcxSe
+ SnZ8Wj0hSesuwLh5Hl3ZMD+lfWRIVGufmmFp4+XRmWOJuD62fCKLIfZfZJnUMpyd6zsUkJ0vobv
+ tj8hUUN/9X1Jz2h7GX9tn5lqnb2jDF1v8o7qAF1myAcCGDBo0SlN6l4FP8E+TBNlCASO4D4KdzP
+ D9202Vu/NL1Icf5HgaAzY54wtS7fT1vXWVmfk+y1oaxkUWxx2Q0LhK
+X-Received: by 2002:a17:903:2351:b0:2a0:ccef:a5d3 with SMTP id
+ d9443c01a7336-2a7174f8e2emr15059195ad.3.1768528801261; 
+ Thu, 15 Jan 2026 18:00:01 -0800 (PST)
+Received: from sifive.com ([136.226.240.171]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2a7190ce2ebsm5414625ad.32.2026.01.15.17.59.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 15 Jan 2026 18:00:00 -0800 (PST)
+Date: Fri, 16 Jan 2026 09:59:57 +0800
+From: Max Chou <max.chou@sifive.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: Re: [PATCH v2 5/9] target/riscv: Use the tb->cs_bqse as the extend
+ tb flags.
+Message-ID: <aWma0vO3uxd7mek9@sifive.com>
+References: <20260108132631.9429-1-max.chou@sifive.com>
+ <20260108132631.9429-6-max.chou@sifive.com>
+ <ade8a525-c12c-4de8-9d24-9851181e04fb@ventanamicro.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=204.220.184.57;
- envelope-from=bounce+0e9322.97607e-qemu-devel=nongnu.org@yodel.dev;
- helo=k57.kb8c70eb.use4.send.mailgun.net
+In-Reply-To: <ade8a525-c12c-4de8-9d24-9851181e04fb@ventanamicro.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=max.chou@sifive.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,69 +104,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use host_to_gdb_errno to convert host-supplied errnos to their GDB
-File-I/O remote protocol values, and use them in F reply packets.
+On 2026-01-12 15:28, Daniel Henrique Barboza wrote:
+> Note: typo in commit title: 'cs->bqse'
+> 
+> On 1/8/2026 10:26 AM, Max Chou wrote:
+> > We have more than 32-bits worth of state per TB, so use the
+> > tb->cs_base, which is otherwise unused for RISC-V, as the extend flag.
+> > 
+> > Signed-off-by: Max Chou <max.chou@sifive.com>
+> > ---
+> 
+> That's a neat idea. I'll use it in my e-trace series in case this series
+> is merged first.
+> 
+> 
+> Reviewed-by: Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>
+> 
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2751
-Reported-by: Dominik 'Disconnect3d' Czarnota <dominik.b.czarnota@gmail.com>
-Signed-off-by: Yodel Eldar <yodel.eldar@yodel.dev>
----
- gdbstub/user-target.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+Thanks for the review, Daniel. I just discovered a typo in the patch
+message, so I’ll send out the v3 to fix it.
 
-diff --git a/gdbstub/user-target.c b/gdbstub/user-target.c
-index 43231e695e..7ef0282f70 100644
---- a/gdbstub/user-target.c
-+++ b/gdbstub/user-target.c
-@@ -10,6 +10,7 @@
- #include "qemu/osdep.h"
- #include "exec/gdbstub.h"
- #include "gdbstub/commands.h"
-+#include "gdbstub/syscalls.h"
- #include "qemu.h"
- #include "internals.h"
- #ifdef CONFIG_LINUX
-@@ -315,7 +316,8 @@ void gdb_handle_v_file_open(GArray *params, void *user_ctx)
-     int fd = open(filename, flags, mode);
- #endif
-     if (fd < 0) {
--        g_string_printf(gdbserver_state.str_buf, "F-1,%x", errno);
-+        int gdb_errno = host_to_gdb_errno(errno);
-+        g_string_printf(gdbserver_state.str_buf, "F-1,%x", gdb_errno);
-     } else {
-         g_string_printf(gdbserver_state.str_buf, "F%x", fd);
-     }
-@@ -327,7 +329,8 @@ void gdb_handle_v_file_close(GArray *params, void *user_ctx)
-     int fd = gdb_get_cmd_param(params, 0)->val_ul;
- 
-     if (close(fd) == -1) {
--        g_string_printf(gdbserver_state.str_buf, "F-1,%x", errno);
-+        int gdb_errno = host_to_gdb_errno(errno);
-+        g_string_printf(gdbserver_state.str_buf, "F-1,%x", gdb_errno);
-         gdb_put_strbuf();
-         return;
-     }
-@@ -350,7 +353,8 @@ void gdb_handle_v_file_pread(GArray *params, void *user_ctx)
- 
-     ssize_t n = pread(fd, buf, bufsiz, offset);
-     if (n < 0) {
--        g_string_printf(gdbserver_state.str_buf, "F-1,%x", errno);
-+        int gdb_errno = host_to_gdb_errno(errno);
-+        g_string_printf(gdbserver_state.str_buf, "F-1,%x", gdb_errno);
-         gdb_put_strbuf();
-         return;
-     }
-@@ -373,7 +377,8 @@ void gdb_handle_v_file_readlink(GArray *params, void *user_ctx)
-     ssize_t n = readlink(filename, buf, BUFSIZ);
- #endif
-     if (n < 0) {
--        g_string_printf(gdbserver_state.str_buf, "F-1,%x", errno);
-+        int gdb_errno = host_to_gdb_errno(errno);
-+        g_string_printf(gdbserver_state.str_buf, "F-1,%x", gdb_errno);
-         gdb_put_strbuf();
-         return;
-     }
--- 
-2.52.0
-
+Thanks,
+rnax
 
