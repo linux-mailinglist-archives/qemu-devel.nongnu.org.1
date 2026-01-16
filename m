@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5691D2AD53
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 04:37:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ABA2D2ACC7
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 04:34:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgaan-00056h-V0; Thu, 15 Jan 2026 22:33:45 -0500
+	id 1vgaaq-00059h-VX; Thu, 15 Jan 2026 22:33:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vgaal-00056D-AK
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:33:43 -0500
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1vgaap-000597-1T
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:33:47 -0500
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vgaaj-0005IE-GW
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:33:43 -0500
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-81dbc0a99d2so814344b3a.1
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 19:33:41 -0800 (PST)
+ id 1vgaan-0005Jt-CI
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:33:46 -0500
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-81f3fba4a11so1499662b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 19:33:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768534420; x=1769139220; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768534424; x=1769139224; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=N59fScNT/GU69c4/pB+lZMvNhLijF5cb/1PlNGXkv0Y=;
- b=riSHIojxF1ErDeDe+8Jh+2N05Q7YymEEFYkVKmdeCdjrnve0qPFbs5fR/Svebh7CLL
- TEwTbFjqOAvfp/fYpcEhVnlWCF44UNCFAGVDM4aPB6nyZJl8PzTE77Sypd/jFtOCc6im
- ZM9bzBkLJsoyJOkhh+iH1i2JyQAPhKL9o9bGzo/PzTflVvRKZbWydPacQQQW7dQ4XeX6
- JIskJnI4vdOHwnPBqmhdqZTJcQjZ8zxb5cIFiyu5RRvaq4KWlltdbTFWRLnBTzDoGth5
- 1HzSst00hIKL0owZmwPNWYictTrqHQMX3//kb+Y2P4yPs6GRwkAwjq97uo9sd7FWm5hm
- uoiQ==
+ bh=zzDXHHrlzlOvFG8u9bvgWF8ocDA0BIRZVJaj0j3UHCk=;
+ b=m5OwzCJkLxa9eneWZ5koaL0oXhuHHOWGpsMQ8qOkneILXD91NHidUh/Ot3u/lQKva7
+ 6hBh4NuxoBSXxdVnq0ydoxcUnBWz7gBvuO0xOA5gSnSXuRVoZd8/VG/D6UOBay+3Ukz2
+ iJq0bv9w2sYJXsLL7sM+y8HfaDWXE4P2N5C875g3vgDdHzrjxEpYm3a1jTo5GTBxlly8
+ Qvu7cvrwbSEgHy5+y2izuFl5Q3HS/1fO/7iVtOtAM9IAOlhydRdk2fMjpnD2oD+gl0yF
+ om4v4WOCPeWX/TW/nR9IDlc3nvxK4dxjANFJQh0VdtpGgny0oPkbz+FMDHHeOHASWi6A
+ /prA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768534420; x=1769139220;
+ d=1e100.net; s=20230601; t=1768534424; x=1769139224;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=N59fScNT/GU69c4/pB+lZMvNhLijF5cb/1PlNGXkv0Y=;
- b=XAfW5xnB5dmY3x6yOpu/qZFVioHehpQAdnlLr3OzH8PoJwbapViloUDaq0bjoCjEnL
- U/iMcleT1xGrA9EamwJkMfwvoRHWBYUtBKWZ3qy3d4JxWSWcmlW83+sOb1aH6+K88n0/
- JmE6n6ullrMdQNHHeU24UhWe8/YDFLNDkgzj2P0JfZBBa1F7tjytOY6jqxOMQkrRSWDs
- E5kUPagL96OOzFvO+zx8ysTH/qtEDOz8Sa9xPuSIQ/WhE5YCsrir0DfzZ7VYVYeRC/OF
- oV+cHrXavEOP1W0G4LLzXAl5HCXqBVsIhNiJhNxNLyTNvWiYEza2zwoiq2DZDVaRbGHF
- 5qIA==
-X-Gm-Message-State: AOJu0Yy9U/SvcqPiDQjcRBp38+or34+ysIdiX08ifIid3efT6QulXIvq
- Kg13YIj5olkAvEZYobzuX1hLYcixsAiTRiqPZI6AoBWGyYXUgmg+9XAevHrjx4B+JkTRv/lxJCV
- RXwWbuqdRAQ==
-X-Gm-Gg: AY/fxX6nsOUTaJLBwULVX8oZaVsHJqsCOPae/U9GWaDxYwewbQuWhnjiVozV2erpGPr
- d4PqXf18ZKXrMc6eDqicZk3L3r461VY02AIfssvNpLNqze+5ZTRVP0THmZJ+9CUON905t5RgUdM
- x4mcT7KBGhvPLalH7zllMH/0hlzGssmiUtCVufGIP+X11ZLpwiinXfzSPt6J1s1KWeH5ZmAcPmN
- EnXras66mZmalma1q9jooaGlqt8jEg/lC496Pg6MBDLDiSG/EUYmjp9FcjMX86lzCZgzliTDLbz
- xkhe5OOStERsrDr4HtfCzJQvuckmSSqXS2egY9BIBIpnKlb3FhwOmucthtnkVR7FwfPF3reXCcE
- z7QW3yYo5+T4fL+jQoWc55XKcdek6U/5lmpKg7xZP8IambVfZFqX+Ggm+Pb2Jdvsy13/SQmBcHN
- bKvh1dfEOzjSlIXrc4cg==
-X-Received: by 2002:a05:6a00:1788:b0:81f:3d13:e07b with SMTP id
- d2e1a72fcca58-81fa035461emr1580849b3a.43.1768534420095; 
- Thu, 15 Jan 2026 19:33:40 -0800 (PST)
+ bh=zzDXHHrlzlOvFG8u9bvgWF8ocDA0BIRZVJaj0j3UHCk=;
+ b=AYMlVkwVK8Bsn+OOgpLk3MbBOV8SQkQdUpowgFIAJVttVxCuW/IR2H79urdpfptmZ0
+ 0Gcu2agmg1F1vfEDaagougbrqS9M3rnESoGbEL/bGFQQmH1ymxV7K0fpzuk2odQLExq0
+ fsgQOJ7kP6rzx8dyk2Pc+bPSvQpec2EPUUoZ2hUCRog0lkhxubAeaz5bXOrEhnJC8sis
+ CcHTHjiEBdq4v7l/E4tUkbyyKXcl1SRT9z9nHSWRzfI9Bc1+qDfLyrn7w4Y+HFrZ3WuU
+ eX5fag4gmEen1FShhibT72uywlFRE+2A3NPP42Dk/QZu0fD8N888WsmmXnVVbKeHVvRg
+ xs3w==
+X-Gm-Message-State: AOJu0YySVtBGo5MQoO6OjmDy89nD0C6sQRIH87xL7hNsTeMfB+WELSWw
+ XjLwXhnZejE7/zIAJf+EiFPmXgf4vkY1CrbPlH+B/B9Y98e3hduBTSrM9q/ssVsjaaHDij+/Sy0
+ QNxSoUdIJqg==
+X-Gm-Gg: AY/fxX427CdF3abJ4cbJoak1uzhY4CpBIpJTUITH+fklPKjXEB6fWRM4T5TJOQu/y/l
+ PxcTDHeFXjxtU2aRe7ey7xwiVpiGLZctvR8kAumuIcDLyHcbr2oL5mIlL3Ro3QZumryidtTVnfV
+ /QmJoSSgm6s36egfVDrGrij3S1kFHqOU3Z4ZqzAHbvI6PK+o+MK2ZNvDWx8DphjPxz5bYRjoEBR
+ cqsLJAvJBr0QeyYk0CIxIiwzxa+NqLDcoFwsvM9Q+obZmvePl7tY2NDH9fTJi6s3RuPXdfeZQcM
+ iu6BG6zb3gD4QFvJUWiICe+9IdIohdzAHPpAV4Ez02Og6B2G7kOFmiUzuXQuktszQiI9SNbhYVj
+ eu9P1rmZ/VvETJeLyUDxyRy9DYvoOBS9qEAJyZVaT4uPB53/yYwT6S01HmxF1q8MxBCRhX5Q2CM
+ XMLfOx4+Es4bvosefPJjUyHgbwOzrx
+X-Received: by 2002:a05:6a00:1891:b0:7f7:5783:fc6d with SMTP id
+ d2e1a72fcca58-81fa01d9d58mr1350898b3a.41.1768534423881; 
+ Thu, 15 Jan 2026 19:33:43 -0800 (PST)
 Received: from stoup.. ([180.233.125.201]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-81fa12b5c67sm683372b3a.69.2026.01.15.19.33.36
+ d2e1a72fcca58-81fa12b5c67sm683372b3a.69.2026.01.15.19.33.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Jan 2026 19:33:39 -0800 (PST)
+ Thu, 15 Jan 2026 19:33:43 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: ktokunaga.mail@gmail.com, berrange@redhat.com, pierrick.bouvier@linaro.org,
  thuth@redhat.com, pbonzini@redhat.com, philmd@linaro.org
-Subject: [PATCH v2 06/58] tests/docker/dockerfiles: Drop wasm32 from
- emsdk-wasm-cross.docker
-Date: Fri, 16 Jan 2026 14:32:12 +1100
-Message-ID: <20260116033305.51162-7-richard.henderson@linaro.org>
+Subject: [PATCH v2 07/58] gitlab: Remove 32-bit host testing
+Date: Fri, 16 Jan 2026 14:32:13 +1100
+Message-ID: <20260116033305.51162-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260116033305.51162-1-richard.henderson@linaro.org>
 References: <20260116033305.51162-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,78 +98,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We will no longer build wasm32, so drop the docker config.
-Streamline the dockerfile to hardcode TARGET_CPU as wasm64.
+These deprecated builds will be disabled.
+Remove testing of armhf and i686.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- .gitlab-ci.d/container-cross.yml                 |  1 -
- tests/docker/dockerfiles/emsdk-wasm-cross.docker | 15 ++++-----------
- 2 files changed, 4 insertions(+), 12 deletions(-)
+ .gitlab-ci.d/container-cross.yml | 12 ---------
+ .gitlab-ci.d/containers.yml      |  2 --
+ .gitlab-ci.d/crossbuilds.yml     | 45 --------------------------------
+ 3 files changed, 59 deletions(-)
 
 diff --git a/.gitlab-ci.d/container-cross.yml b/.gitlab-ci.d/container-cross.yml
-index 6bdd482b80..b376c837dc 100644
+index b376c837dc..d7ae57fb1f 100644
 --- a/.gitlab-ci.d/container-cross.yml
 +++ b/.gitlab-ci.d/container-cross.yml
-@@ -90,5 +90,4 @@ wasm64-emsdk-cross-container:
-   extends: .container_job_template
+@@ -22,12 +22,6 @@ arm64-debian-cross-container:
    variables:
-     NAME: emsdk-wasm64-cross
--    BUILD_ARGS: --build-arg TARGET_CPU=wasm64
-     DOCKERFILE: emsdk-wasm-cross
-diff --git a/tests/docker/dockerfiles/emsdk-wasm-cross.docker b/tests/docker/dockerfiles/emsdk-wasm-cross.docker
-index ecd5a02903..8a924816f9 100644
---- a/tests/docker/dockerfiles/emsdk-wasm-cross.docker
-+++ b/tests/docker/dockerfiles/emsdk-wasm-cross.docker
-@@ -7,7 +7,6 @@ ARG GLIB_VERSION=${GLIB_MINOR_VERSION}.0
- ARG PIXMAN_VERSION=0.44.2
- ARG FFI_VERSION=v3.5.2
- ARG MESON_VERSION=1.5.0
--ARG TARGET_CPU=wasm32
+     NAME: debian-arm64-cross
  
- FROM docker.io/emscripten/emsdk:$EMSDK_VERSION_QEMU AS build-base-common
- ARG MESON_VERSION
-@@ -31,21 +30,16 @@ RUN mkdir /build
- WORKDIR /build
- RUN mkdir -p $TARGET
- 
--FROM build-base-common AS build-base-wasm32
+-armhf-debian-cross-container:
+-  extends: .container_job_template
+-  stage: containers
+-  variables:
+-    NAME: debian-armhf-cross
 -
--FROM build-base-common AS build-base-wasm64
-+FROM build-base-common AS build-base
- ENV CFLAGS="$CFLAGS -sMEMORY64=1"
- ENV CXXFLAGS="$CXXFLAGS -sMEMORY64=1"
- ENV LDFLAGS="$LDFLAGS -sMEMORY64=1"
+ hexagon-cross-container:
+   extends: .container_job_template
+   stage: containers
+@@ -40,12 +34,6 @@ loongarch-debian-cross-container:
+   variables:
+     NAME: debian-loongarch-cross
+ 
+-i686-debian-cross-container:
+-  extends: .container_job_template
+-  stage: containers
+-  variables:
+-    NAME: debian-i686-cross
 -
--FROM build-base-${TARGET_CPU} AS build-base
--ARG TARGET_CPU
- RUN <<EOF
- cat <<EOT > /cross.meson
- [host_machine]
- system = 'emscripten'
--cpu_family = '${TARGET_CPU}'
--cpu = '${TARGET_CPU}'
-+cpu_family = 'wasm64'
-+cpu = 'wasm64'
- endian = 'little'
+ mips64el-debian-cross-container:
+   extends: .container_job_template
+   stage: containers
+diff --git a/.gitlab-ci.d/containers.yml b/.gitlab-ci.d/containers.yml
+index 9b6d33ac13..6aeccf8be0 100644
+--- a/.gitlab-ci.d/containers.yml
++++ b/.gitlab-ci.d/containers.yml
+@@ -47,10 +47,8 @@ weekly-container-builds:
+     - amd64-debian-user-cross-container
+     - amd64-debian-legacy-cross-container
+     - arm64-debian-cross-container
+-    - armhf-debian-cross-container
+     - hexagon-cross-container
+     - loongarch-debian-cross-container
+-    - i686-debian-cross-container
+     - mips64el-debian-cross-container
+     - ppc64el-debian-cross-container
+     - riscv64-debian-cross-container
+diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
+index 99dfa7eea6..59ff8b1d87 100644
+--- a/.gitlab-ci.d/crossbuilds.yml
++++ b/.gitlab-ci.d/crossbuilds.yml
+@@ -1,13 +1,6 @@
+ include:
+   - local: '/.gitlab-ci.d/crossbuild-template.yml'
  
- [binaries]
-@@ -67,14 +61,13 @@ RUN emconfigure ./configure --prefix=$TARGET --static
- RUN emmake make install -j$(nproc)
+-cross-armhf-user:
+-  extends: .cross_user_build_job
+-  needs:
+-    - job: armhf-debian-cross-container
+-  variables:
+-    IMAGE: debian-armhf-cross
+-
+ cross-arm64-system:
+   extends: .cross_system_build_job
+   needs:
+@@ -30,44 +23,6 @@ cross-arm64-kvm-only:
+     IMAGE: debian-arm64-cross
+     EXTRA_CONFIGURE_OPTS: --disable-tcg --without-default-features
  
- FROM build-base AS libffi-dev
--ARG TARGET_CPU
- ARG FFI_VERSION
- RUN mkdir -p /libffi
- RUN git clone https://github.com/libffi/libffi /libffi
- WORKDIR /libffi
- RUN git checkout $FFI_VERSION
- RUN autoreconf -fiv
--RUN emconfigure ./configure --host=${TARGET_CPU}-unknown-linux \
-+RUN emconfigure ./configure --host=wasm64-unknown-linux \
-     --prefix=$TARGET --enable-static \
-     --disable-shared --disable-dependency-tracking \
-     --disable-builddir --disable-multi-os-directory \
+-cross-i686-system:
+-  extends:
+-    - .cross_system_build_job
+-    - .cross_test_artifacts
+-  needs:
+-    - job: i686-debian-cross-container
+-  variables:
+-    IMAGE: debian-i686-cross
+-    EXTRA_CONFIGURE_OPTS: --disable-kvm
+-    MAKE_CHECK_ARGS: check-qtest
+-
+-cross-i686-user:
+-  extends:
+-    - .cross_user_build_job
+-    - .cross_test_artifacts
+-  needs:
+-    - job: i686-debian-cross-container
+-  variables:
+-    IMAGE: debian-i686-cross
+-    MAKE_CHECK_ARGS: check
+-
+-cross-i686-tci:
+-  extends:
+-    - .cross_accel_build_job
+-    - .cross_test_artifacts
+-  timeout: 60m
+-  needs:
+-    - job: i686-debian-cross-container
+-  variables:
+-    IMAGE: debian-i686-cross
+-    ACCEL: tcg-interpreter
+-    EXTRA_CONFIGURE_OPTS: --target-list=i386-softmmu,i386-linux-user,arm-softmmu,arm-linux-user,ppc-softmmu,ppc-linux-user --disable-plugins --disable-kvm
+-    # Force tests to run with reduced parallelism, to see whether this
+-    # reduces the flakiness of this CI job. The CI
+-    # environment by default shows us 8 CPUs and so we
+-    # would otherwise be using a parallelism of 9.
+-    MAKE_CHECK_ARGS: check check-tcg -j2
+-
+ cross-mips64el-system:
+   extends: .cross_system_build_job
+   needs:
 -- 
 2.43.0
 
