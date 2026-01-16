@@ -2,45 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9EBBD29740
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 01:52:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AEE2D29748
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 01:52:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgY44-0005zs-OB; Thu, 15 Jan 2026 19:51:48 -0500
+	id 1vgY46-00061u-Sj; Thu, 15 Jan 2026 19:51:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1vgY3w-0005vx-Kg
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 19:51:40 -0500
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1vgY3z-0005wM-7v
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 19:51:44 -0500
 Received: from mx.treblig.org ([2a00:1098:5b::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1vgY3t-0000qg-SW
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 19:51:39 -0500
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1vgY3v-0000qk-UA
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 19:51:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
  ; s=bytemarkmx;
- h=Content-Type:MIME-Version:Message-ID:Date:Subject:From:From
- :Subject; bh=spUoSBLxVK/LW2IDytQ4t3d9mqfWBv3rna67/EINeR8=; b=XyDaLURKCHM1x1hb
- 6cRA2zfs+ZNObGk85Le7rYxnRvK5zS6oi1BPp0LNfD71Fpe1ZDyacIbDAWzAnMViCoyQcxQL6xL1b
- UnP/rs5qX/Tjggyks9AHkovz6+A1yihYVJdUELqZecoNcZm5CgHf2t4zx9clR39mP6qv1EXmjhv0Q
- 8Ue7ESyCm6yR5ATRsoSHw3/1b/QI3BSMGj6HI9/YBUw2cMVBbAoHGrUDGfwGvriQjEQETRpDdneNp
- lf4GH4xFF8PoFPT/G6Z0JyaItVdSy2ifd08G+Ae0r48BgqepV9IKyKtdohYyw/oFPPzDGkyZGS3x4
- ZHXvrvZf61X9krrv7w==;
+ h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
+ :Subject; bh=S69CqaNpTILaVSDiIWXdlALCd2xyUfUPqtotfKwH5BA=; b=Ey2VbmIa6kkQRMJe
+ ZAYLAcxMqeQflkPzEOivowIstH7K4wk9GIIsaCdE4wG0AqPCOBtJVy/bHjGqi+p+DQdW56TUV+TKr
+ kDsl21LnaNhwyHNWS2Foc4ZozzKQ+XyS4h9tf1wKvUJAr3+g7EcxuD7veltvwsoG7x4JvpmQWO8O9
+ JdK9VwVgPn/QLwZijoq9QSz2le+KORlf1AHXKx21FYy89/gpRb0haoRnt9IEXNeRNRXmEN7BVRo+r
+ hEDe3d4fOcc+qnntbC+an8Cts9TxIkVQopWFcxA05KUk/Y3vpHDIasRc/QBrkVAvikCDlPsIHP+TF
+ /UgEtQabf2FgHJ6xqQ==;
 Received: from localhost ([127.0.0.1] helo=dalek)
  by mx.treblig.org with esmtp (Exim 4.98.2)
- (envelope-from <dave@treblig.org>) id 1vgY3s-0000000F7wG-0YkN;
+ (envelope-from <dave@treblig.org>) id 1vgY3s-0000000F7wG-2cWl;
  Fri, 16 Jan 2026 00:51:36 +0000
 From: dave@treblig.org
 To: dave@treblig.org, armbru@redhat.com, berrange@redhat.com,
  marcandre.lureau@redhat.com
 Cc: qemu-devel@nongnu.org
-Subject: [PATCH v2 2/4] hmp*hx: Move info docs
-Date: Fri, 16 Jan 2026 00:50:46 +0000
-Message-ID: <20260116005050.376616-3-dave@treblig.org>
+Subject: [PATCH v2 3/4] hxtool: Split srst/erst add checks
+Date: Fri, 16 Jan 2026 00:50:47 +0000
+Message-ID: <20260116005050.376616-4-dave@treblig.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260116005050.376616-1-dave@treblig.org>
 References: <20260116005050.376616-1-dave@treblig.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dave@treblig.org;
  helo=mx.treblig.org
@@ -67,79 +66,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-Move the docs for the info subcommand from the separate hx
-into the top level file next to the 'info' command itself.
-That makes every command in the top level file have a RST section.
+Split the SRST/ERST case and add some checks.
+This is mainly to make it easier to add some checks in following
+patches.
 
 Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- hmp-commands-info.hx |  9 +--------
- hmp-commands.hx      | 27 +++++++++++++++++----------
- 2 files changed, 18 insertions(+), 18 deletions(-)
+ scripts/hxtool | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
-index 74c741f80e..964eed004c 100644
---- a/hmp-commands-info.hx
-+++ b/hmp-commands-info.hx
-@@ -8,14 +8,7 @@ HXCOMM
- HXCOMM In this file, generally SRST fragments should have two extra
- HXCOMM spaces of indent, so that the documentation list item for "info foo"
- HXCOMM appears inside the documentation list item for the top level
--HXCOMM "info" documentation entry. The exception is the first SRST
--HXCOMM fragment that defines that top level entry.
--
--SRST
--``info`` *subcommand*
--  Show various information about the system state.
--
--ERST
-+HXCOMM "info" documentation entry.
+diff --git a/scripts/hxtool b/scripts/hxtool
+index 80516b9437..51dc841479 100755
+--- a/scripts/hxtool
++++ b/scripts/hxtool
+@@ -2,15 +2,29 @@
  
-     {
-         .name       = "version",
-diff --git a/hmp-commands.hx b/hmp-commands.hx
-index 5cc4788f12..f4a6eeda93 100644
---- a/hmp-commands.hx
-+++ b/hmp-commands.hx
-@@ -1814,16 +1814,6 @@ SRST
-   command.
- ERST
- 
--    {
--        .name       = "info",
--        .args_type  = "item:s?",
--        .params     = "[subcommand]",
--        .help       = "show various information about the system state",
--        .cmd        = hmp_info_help,
--        .sub_table  = hmp_info_cmds,
--        .flags      = "p",
--    },
--
- #if defined(CONFIG_FDT)
-     {
-         .name       = "dumpdtb",
-@@ -1867,3 +1857,20 @@ SRST
-   List event channels in the guest
- ERST
- #endif
-+
-+HXCOMM *** MUST BE LAST ENTRY **
-+    {
-+        .name       = "info",
-+        .args_type  = "item:s?",
-+        .params     = "[subcommand]",
-+        .help       = "show various information about the system state",
-+        .cmd        = hmp_info_help,
-+        .sub_table  = hmp_info_cmds,
-+        .flags      = "p",
-+    },
-+
-+SRST
-+``info`` *subcommand*
-+  Show various information about the system state.
-+ERST
-+HXCOMM *** MUST BE LAST ENTRY **
+ hxtoh()
+ {
+-    flag=1
++    in_rst=0
+     while read -r str; do
+         case $str in
+             HXCOMM*)
+             ;;
+-            SRST*|ERST*) flag=$(($flag^1))
++            SRST*)
++              if [ $in_rst -eq 1 ]
++              then
++                echo "Error: SRST inside another RST" >&2
++                exit 1
++              fi
++              in_rst=1
++            ;;
++            ERST*)
++              if [ $in_rst -eq 0 ]
++              then
++                echo "Error: ERST already outside RST" >&2
++                exit 1
++              fi
++              in_rst=0
+             ;;
+             *)
+-            test $flag -eq 1 && printf "%s\n" "$str"
++            test $in_rst -eq 0 && printf "%s\n" "$str"
+             ;;
+         esac
+     done
 -- 
 2.52.0
 
