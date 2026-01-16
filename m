@@ -2,94 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB188D308F0
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:42:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3229CD308F5
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:42:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgi9E-00020c-6l; Fri, 16 Jan 2026 06:37:49 -0500
+	id 1vgiAR-0002Ck-V8; Fri, 16 Jan 2026 06:39:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vgi8q-0001xq-KK
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:37:27 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <jim.macarthur@linaro.org>)
+ id 1vgi9t-00026v-Ey
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:38:42 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1vgi8p-00011x-7Q
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:37:24 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-42fb0fc5aa9so993728f8f.1
- for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 03:37:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jim.macarthur@linaro.org>)
+ id 1vgi9q-00017n-OR
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:38:29 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-47f3b7ef761so10478345e9.0
+ for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 03:38:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768563440; x=1769168240; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1768563504; x=1769168304; darn=nongnu.org;
+ h=in-reply-to:from:cc:content-language:references:to:subject
+ :user-agent:mime-version:date:message-id:from:to:cc:subject:date
  :message-id:reply-to;
- bh=o/9FO1UO8KL8VpofMlm6RsNWYo0B2Gy8oMuLBOYMRLA=;
- b=WJcXbxK4EQqpcukC9SMAPxWUOf+UWJ6yXr5avgVCatnmWGIdXsjvju5IJMM525wMgp
- k7dEtqcnD00/6vegzZtCcY9aeUDbAayzAbZK+eyMBXQ4aLOf0B1bu+zmLBFzJup4I71a
- iHoil50Bug4KsEMWWli8UMjCS4kRsBtVUrV/Au7l+tmsTi05GjB6yNPj27t+4Z/HxjnE
- KJt83IXCZa+ZNzKztlBi+R2jtnIfbXfsKMeICgqahIn2AluNvPQPDNICTmfJx7iMjWb6
- rRRP8L9+uCi/h+ZHgSpgQ/bpOg6uhDYxpAEg3a58azEVqGBJ6W2RJHhxMU93irnWl0PP
- qkXw==
+ bh=5yegmVWK+S8ae7YDwsWiupFNvdK/cte+7BnKI7zq9fY=;
+ b=CUFYFssAGToB8TEDFTE9miKomlDcvEGrrfLpowTRbfkwD2qYhQWft3GEytn0Jte8lg
+ Ua1zVIILRjbhVlVUJyuuCnH6SLXiSVZQ434b3caYzV+tMNwyM8GVx/3I4DcfCu8sZbch
+ 9pFMEBd4MJ9ZYDvO462rHEMbwbk6TGIylvrVnx64vnMdgv+PlIpOTBSl/CpNxLq4SioO
+ JgZ12MK7vlGb9icXPJgp+PIERzpbyZuZCutw69+rooR8WOZQICfhB66ASV0fChSji4yn
+ 1lYFb4/3KZxExYic8ztma9co3ue+Dw+9K3g25XprnyW7VoOyt3ik3ftFjxbaP8fBqWg7
+ O9Pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768563440; x=1769168240;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-gg
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=o/9FO1UO8KL8VpofMlm6RsNWYo0B2Gy8oMuLBOYMRLA=;
- b=Pw2MvEQbZZmh7WFQRuGVCsk9RCLv/28R55K5ePh3prtjcflqcmyUNv/M35bjpPzuXs
- hDDJZtW3az0CarEtyvneH6h82zYgTF95wwnX5n5HEAdVxhVEdaCqEwNirNCL/Y2j8OXJ
- 4hVnLIEDrH29jM7jwIeUGDTBgk+c+4Lz4Xzq5pq79LluWW30tgWxlyv6qe9EmiJuTWzF
- gnz6z9LjMzERn4YEm9ButEgqn63YCPSE8nlHpeiRy4I+h8x16nFO1epyDvd6qFJPEoX9
- tz3iNKL/VUx8cllnwKMot2xhiMJqiqRPfmyE6/oC3s3u1d8XUvMl0r6niDkL5j7jXfE4
- pKpA==
-X-Gm-Message-State: AOJu0YysUVb93OKPQMBDc6KW1MdL+xuqi0Ud8aJmqZjJY9dxx1bptkRr
- jvKfZ4E9rOGhAPhciu6/d2oZJnBqcQ2SL0qQNBNTINIpZZNH28Rj8fwVbsOXGSqaknM=
-X-Gm-Gg: AY/fxX6lD3qQ7ICngOsXrGnrVXHTDWLdRPaYsNbDV4z8KlkSKRJn1t3e5z2obhFHKmP
- Mb4GPxPlPx68IfJdJKqtuzipi7duAlS6JjUMUb9i2R0PlyjA+VraasM3lsIw9xWwNEV1TEQKB/c
- tAKwYnGui9c68ro3wmea98yPMtENdUN9aVabbKVWhGE1dZBly3UZI+d+BV0hKhlsd5uWace5Xkf
- hFqPXOIX+/NdNC+vSs+iaEH+FDiaJyHNKnGJqm+X9af2hLhZbNHylBtqcx3kBMxvWpkfk+nc5e3
- NNbJmirD2n4Kun/2chw7piUSJaXLuVab0rgChx3eWym7YWVAvvwReOo++8nQ2QVIK1l9kpfatGp
- lSCbPBwrngyRV1ocQgNORCY3ZMJlc2nlv8wJCQ2ayO8S39GneWFnztiRMJKe7GQyH12J1dcWjCV
- TdLCPu2wwoJtVSw4GZXBp0Tw==
-X-Received: by 2002:a05:6000:4304:b0:432:8504:b8a9 with SMTP id
- ffacd0b85a97d-4356a06769cmr3425031f8f.62.1768563440395; 
- Fri, 16 Jan 2026 03:37:20 -0800 (PST)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-43569921dddsm4907193f8f.6.2026.01.16.03.37.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Jan 2026 03:37:19 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id D9C0D5F898;
- Fri, 16 Jan 2026 11:37:18 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: qemu-devel@nongnu.org,  Phil =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Markus
- Armbruster <armbru@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Stefan
- Hajnoczi <stefanha@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,
- Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  John Snow <jsnow@redhat.com>,  Richard Henderson
- <richard.henderson@linaro.org>
-Subject: Re: [PATCH] MAINTAINERS: add maintainer for docs/
-In-Reply-To: <20260115203529.2713193-1-pierrick.bouvier@linaro.org> (Pierrick
- Bouvier's message of "Thu, 15 Jan 2026 12:35:29 -0800")
-References: <20260115203529.2713193-1-pierrick.bouvier@linaro.org>
-User-Agent: mu4e 1.12.15-pre1; emacs 30.1
-Date: Fri, 16 Jan 2026 11:37:18 +0000
-Message-ID: <87ms2dhjpt.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1768563504; x=1769168304;
+ h=in-reply-to:from:cc:content-language:references:to:subject
+ :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=5yegmVWK+S8ae7YDwsWiupFNvdK/cte+7BnKI7zq9fY=;
+ b=d0yqLVZODYHEZo6HlYDHsmoVizGq9PCieDT3Tw2CrMuEXXfxGvAG6tVYDSONv1GhGe
+ fMDr9GYuRJVlVbinRn1tL0c/4LRhRYnjcZsw0APhjpt/9Jk5oUe/yU5Hib8bOwyOWheK
+ BgC1Tk++RXp1z2gsKeU8ZGzHKSSWhiYFHrcnbt2L3MyGO3tlK+0KQtDm/qscGV3sXSAf
+ KbcgAE1XmDoenQ/h6n/L8CRrSHVmCPwAOL+cEoEU1DAfMqljlaM6zv0v3AYiFJq8I3Si
+ diduUSHiXQ2RxkI107ssO1kVkvWXjlNHTFJEfiEEwCk1c9KggAcSVE9BTq9mAwRO8i+A
+ rGJA==
+X-Gm-Message-State: AOJu0YyPo/Rm066uvwx+iU1FmFTEGBVUHzqNygLmRXcZFFvXcapSCPe0
+ jyBDp/gDOI3YXdsgfhF/Winh0iLHhyb40MxtkXYWheSvwtKM5VAI5nQuTbYEOKYNiuvN9PmGrFa
+ x/O9Y
+X-Gm-Gg: AY/fxX5IqWX7dDg+XxYiE/TIEOsMUeu2cZL3ZZIGT+WZvhcEpDItBFNyCp7XMYhWFg5
+ ophII1seviJXUhBCMm5EGGVW0yeRLMKSVEgi/7lBYr3Gm1qkKuWXgsfMvOEpycxuCDZXLDbBp/m
+ PItSqreF6Ajr/h6UMV8dan04tio4wyj7taNhO6qydCKXxidFnCZpsBgO/Suo7IKEdP4pZniIcDZ
+ s6BRDweD3os4pIX5PsoyaAYOoBihYsnxe1GWsYmIhhph9KDeGTApSoQPiJEplN2zrE22tuKP61f
+ gacrYbVbJpJPQkzTy38cz9OdJ95pzjG6to0Gfbp07Ks8i1znBkXMKEpGY8GjYCW0ddnnIcT+SSW
+ J3YDUXft6mkuhsaZd2y/InW7zLGEX1zPiIcYQcahO/rWYJcDvvkj5QmB2JGp0HKwIJIG6bjAR92
+ KD4VP6U40Oo36e3zQNih+KA68u9l4EDnnsm7RY5WZ+VRUhvIi7z8+WnG4=
+X-Received: by 2002:a05:600d:8445:10b0:480:1a22:fce8 with SMTP id
+ 5b1f17b1804b1-4801e3494acmr26838915e9.26.1768563504145; 
+ Fri, 16 Jan 2026 03:38:24 -0800 (PST)
+Received: from ?IPV6:2a10:d582:31e:0:bf4d:6c0b:c4a1:ca58?
+ ([2a10:d582:31e:0:bf4d:6c0b:c4a1:ca58])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4801fd458aesm15936255e9.2.2026.01.16.03.38.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 16 Jan 2026 03:38:23 -0800 (PST)
+Content-Type: multipart/alternative;
+ boundary="------------okY9sOL9SMnTDT0AwoSqrbjB"
+Message-ID: <c19329fc-f57e-4687-a490-c38c4bfea866@linaro.org>
+Date: Fri, 16 Jan 2026 11:38:23 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] tcg: target-dependent lowering of extract to shr/and
+To: qemu-devel@nongnu.org
+References: <20260115135453.140870-1-pbonzini@redhat.com>
+ <20260115135453.140870-2-pbonzini@redhat.com>
+Content-Language: en-US
+Cc: pbonzini@redhat.com
+From: Jim MacArthur <jim.macarthur@linaro.org>
+In-Reply-To: <20260115135453.140870-2-pbonzini@redhat.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=jim.macarthur@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -107,20 +102,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
+This is a multi-part message in MIME format.
+--------------okY9sOL9SMnTDT0AwoSqrbjB
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> I would like to help maintaining qemu documentation and I've been
-> invited by Alex to apply as maintainer.
->
-> Files in docs/ that are already maintained will continue to be under
-> their respective maintainer. The goal here is to have someone that can
-> help on all other files that don't have an official maintainer.
->
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+On 1/15/26 13:54, Paolo Bonzini wrote:
+> diff --git a/tcg/tcg.c b/tcg/tcg.c
+> index fbf09f5c826..79ca49154a2 100644
+> --- a/tcg/tcg.c
+> +++ b/tcg/tcg.c
+> @@ -3509,11 +3509,8 @@ static void process_constraint_sets(void)
+>       }
+>   }
+>   
+> -static const TCGArgConstraint *opcode_args_ct(const TCGOp *op)
+> +static const TCGArgConstraint *op_args_ct(TCGOpcode opc, TCGType type, unsigned flags)
+>   {
+> -    TCGOpcode opc = op->opc;
+> -    TCGType type = TCGOP_TYPE(op);
+> -    unsigned flags = TCGOP_FLAGS(op);
+>       const TCGOpDef *def = &tcg_op_defs[opc];
+>       const TCGOutOp *outop = all_outop[opc];
+>       TCGConstraintSetIndex con_set;
+> @@ -3540,6 +3537,24 @@ static const TCGArgConstraint *opcode_args_ct(const TCGOp *op)
+>       return all_cts[con_set];
+>   }
+>   
+> +static const TCGArgConstraint *opcode_args_ct(const TCGOp *op)
+> +{
+> +    return op_args_ct(op->opc, TCGOP_TYPE(op), TCGOP_FLAGS(op));
+> +}
+> +
+> +/* Return true if the backend can efficiently handle IMM as an immediate
+> +   for OP.  */
+> +bool tcg_op_imm_match(TCGOpcode opc, TCGType type, tcg_target_ulong imm)
+> +{
+> +    const TCGOpDef * const def = &tcg_op_defs[opc];
+> +    const TCGArgConstraint *args_ct = op_args_ct(opc, type, 0);
+> +
+> +    tcg_debug_assert(def->nb_iargs == 2);
+> +    return tcg_target_const_match(
+> +        imm, args_ct[def->nb_oargs + 2].ct,
+> +        type, 0, 0);
+> +}
+> +
+>   static void remove_label_use(TCGOp *op, int idx)
+>   {
+>       TCGLabel *label = arg_label(op->args[idx]);
 
-Acked-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+Functionally this looks good, but there are a couple of coding standards 
+issues raised by scripts/checkpatch.pl: The definition of op_args_ct is 
+over 80 characters, and your block comment for tcg_op_imm_match should 
+use /* and */ on separate lines. If those are fixed I'm happy to approve it.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Jim
+
+--------------okY9sOL9SMnTDT0AwoSqrbjB
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <div class="moz-cite-prefix">On 1/15/26 13:54, Paolo Bonzini wrote:<span
+      style="white-space: pre-wrap">
+</span></div>
+    <blockquote type="cite"
+      cite="mid:20260115135453.140870-2-pbonzini@redhat.com">
+      <pre wrap="" class="moz-quote-pre">diff --git a/tcg/tcg.c b/tcg/tcg.c
+index fbf09f5c826..79ca49154a2 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -3509,11 +3509,8 @@ static void process_constraint_sets(void)
+     }
+ }
+ 
+-static const TCGArgConstraint *opcode_args_ct(const TCGOp *op)
++static const TCGArgConstraint *op_args_ct(TCGOpcode opc, TCGType type, unsigned flags)
+ {
+-    TCGOpcode opc = op-&gt;opc;
+-    TCGType type = TCGOP_TYPE(op);
+-    unsigned flags = TCGOP_FLAGS(op);
+     const TCGOpDef *def = &amp;tcg_op_defs[opc];
+     const TCGOutOp *outop = all_outop[opc];
+     TCGConstraintSetIndex con_set;
+@@ -3540,6 +3537,24 @@ static const TCGArgConstraint *opcode_args_ct(const TCGOp *op)
+     return all_cts[con_set];
+ }
+ 
++static const TCGArgConstraint *opcode_args_ct(const TCGOp *op)
++{
++    return op_args_ct(op-&gt;opc, TCGOP_TYPE(op), TCGOP_FLAGS(op));
++}
++
++/* Return true if the backend can efficiently handle IMM as an immediate
++   for OP.  */
++bool tcg_op_imm_match(TCGOpcode opc, TCGType type, tcg_target_ulong imm)
++{
++    const TCGOpDef * const def = &amp;tcg_op_defs[opc];
++    const TCGArgConstraint *args_ct = op_args_ct(opc, type, 0);
++
++    tcg_debug_assert(def-&gt;nb_iargs == 2);
++    return tcg_target_const_match(
++        imm, args_ct[def-&gt;nb_oargs + 2].ct,
++        type, 0, 0);
++}
++
+ static void remove_label_use(TCGOp *op, int idx)
+ {
+     TCGLabel *label = arg_label(op-&gt;args[idx]);</pre>
+    </blockquote>
+    <p>Functionally this looks good, but there are a couple of coding
+      standards issues raised by scripts/checkpatch.pl: The definition
+      of op_args_ct is over 80 characters, and your block comment for
+      tcg_op_imm_match should use /* and */ on separate lines. If those
+      are fixed I'm happy to approve it.</p>
+    <p>Jim</p>
+  </body>
+</html>
+
+--------------okY9sOL9SMnTDT0AwoSqrbjB--
 
