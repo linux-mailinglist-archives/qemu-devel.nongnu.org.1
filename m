@@ -2,88 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44D7DD2D00D
+	by mail.lfdr.de (Postfix) with ESMTPS id 47034D2D00E
 	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 08:13:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgdsz-0001o2-VR; Fri, 16 Jan 2026 02:04:46 -0500
+	id 1vgdu2-0001wJ-QW; Fri, 16 Jan 2026 02:05:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vgdsy-0001nn-D7
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 02:04:44 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <zhangckid@gmail.com>)
+ id 1vgdu1-0001wB-A0
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 02:05:49 -0500
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vgdsw-0007TN-OV
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 02:04:44 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-4327778df7fso964116f8f.3
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 23:04:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <zhangckid@gmail.com>)
+ id 1vgdtz-0007r0-N1
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 02:05:49 -0500
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-b874c00a3fcso275318066b.1
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 23:05:46 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768547145; cv=none;
+ d=google.com; s=arc-20240605;
+ b=dwsfmtpnV/ttNhbHVhcFyU+MssxLKE4HEeu3lrnuwEObdxIF+Mgn6Jw2+jfTbzPft1
+ sIK3CpjRfy1yt5RD25CTB2UPH+iqdmb2pcmlFGpTFROcYYJUMp8AX5joMbHO9Db9Xjxt
+ /Jv248LEGt0kQfKfAgZi+UxAHa/hoqYjgovzz0UM9dR5OBki33oJHAaE3yVxM7DYxOeZ
+ Un3T/L0Yxv7mc5JQDk/KdUgQEqtOHKK/vLoEA89QWyFPKoZqFyfTJpVC5yXkeA8ELPSR
+ LE9cKVJZCGtw15y1me5LastPIUN1ofnORf9w2CGOSa9qTJLABhDUWPsa69kIMusPKQAG
+ gY8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
+ s=arc-20240605; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:dkim-signature;
+ bh=AsqEc9PXMF1ro4pWK4CMXB6LDGqoxaqaq/aPc5UncC8=;
+ fh=IEUzuLXylejbDGG2MK70eEAf260NzTwK6+PSBf6A97M=;
+ b=QoJR7/rMDlXuE+CI9q0VhlohDMHFjyQ30wLNW953uq9EaFpc7JPw/JMTfesdayDJ6s
+ Fa+40F/9XkiBNbFc1jZIoaBvenJ37Nh7SMfz/aVsPL6DLywgiTUmMKeXhorNuzgX/mkY
+ vNsWQciD0A+zzuLfQaJ+a+wwzorLRVNtikTNP4ODN5B5loza32uxGkEs487AiO2dN1Uk
+ 0r43MK0VPZIh05L5/X5VdaFft2/6nUio9mFexk0E34BEB11loilWYmnjPx54+fEZbTqr
+ QlKZ/gGj0PSqDVawJB2m3yJrHr5g0tIDQ2wsxpRbzS9EGroiQXzfdLEfJLDgemBS/daZ
+ ynsA==; darn=nongnu.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768547080; x=1769151880; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=/R5BZ9//1J+auLQWp/EEFSreqN+iaaYrBNvk9LIr+3g=;
- b=R7RFDtbap552HQh7cLfQTrihdMEvE1LTIhKHabucwRTDts+FNRWjjdpuWchtqgnMg0
- tsM/PcREJcAsijNgFRqecAlauZWFqTDl7JpRyfFV9dkc2v73KVg9OaPRcKnixq7+4vd8
- bPlw4bjkDhbbbXr78a1NdqEu8uNiu9O7IdO3GRMiY0PkrPJMLKDIOt6fiKFtmpuFzZGK
- MvqbnBat3mVPkMDy+YWiOtJkcwHrQKlYMGYe9Bj9aR2e4gptIOgdk9IhEHkXVSG/lZ/2
- DzNvoDidUJb14tB2T3amC+j21e8Nw6SXmMJ19+3KUzhpPIrd3x77dpNSCINtMKrEZ9HQ
- BKQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768547080; x=1769151880;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1768547145; x=1769151945; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/R5BZ9//1J+auLQWp/EEFSreqN+iaaYrBNvk9LIr+3g=;
- b=wruTFBOa4shYecJMpUrdxKOJ4y3hEh4CbbMWVuM09of9fze9wjQRQLSScW+3bULPu7
- fG+EwDLS6A7oUd3C502tyBt7asfnVVBGfyH5c2uO6WG+/fFu/ySRezCm9Z6jDRwfWWuV
- K10gyx5cA+2SWHNKAMiOTrArNpM9YaD8LPfdThiM2zXJENW11gO8Ji5qrIU3Hjbh9z+a
- 11FGxtnv4gkUgri3AuV4AckeOlTx1/r6jZKY26C+Jz3CMi5VpyWpP2YFWKFEw6J5IoAN
- DBRABKFJ1HWPYEpFe6o7CjPYFBEXVMHaCCXllYmZmjZ1nZY4dyniz/UCMAI0VqHhmwGo
- fbVg==
-X-Gm-Message-State: AOJu0Yw54dzf+wDJ+eFgXL2eqqJ0O+TfBoUwwJraYXagyFnG0aMe5dLe
- uGcQs28sCq9slp6yONRAtW1zEdVMEMv/ncTwDEVLN4mJt/t99AxyAsD/mVJRcYHunUtU6he9OyH
- Y3uO2N7w=
-X-Gm-Gg: AY/fxX5PePv6mDBKwkhkdFhj6rbp1McCaQQVlIZfZa9qr+gQy884X/WDB+jqtO4p0fr
- 0FKAWuyMLKwygAUjZ+q93kWes12OLhaS5cAdsAy57g8pOv2OasZCORxDaeM7MvXDuAGAqm3ca1a
- uxBBtrrX2uCd03LDE3epv+eiHBOV6WqGHZ9lunjvFIj3EC1DiWbz8ZPHbzVHSs9+uXfJXUejpUv
- McUUkhXbPuQhq0OODs7UzJ8v6vdzlLsnZawLFXjgxcfAmyqe3F/3U0ugioVWRmpzse1rNo0Fybq
- 4LA1VoNNCSHrxmhEgz+XappPPYpNAOz+DvER6IUcBKfJnkf/vAWjzfs/UK34vx4BCczmumOxLeg
- uOy49vwBfLKKaWgDRCEMXH4lwX72fKWBJ2RgJekv+//IAwOZgNmyuSl/mujfrf6jJ3Ggk+l0H0p
- cu70zwVKZ/yn2wEaQUsd7WOKIoXEfsMsgLVAVHtLDD6zTAKs1WGK/7xE/PoQ2X
-X-Received: by 2002:a5d:5f46:0:b0:430:f463:b6ae with SMTP id
- ffacd0b85a97d-4356a060e19mr2267377f8f.53.1768547080329; 
- Thu, 15 Jan 2026 23:04:40 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-43569921da2sm3422032f8f.1.2026.01.15.23.04.39
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 15 Jan 2026 23:04:39 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Mohamed Mediouni <mohamed@unpredictable.fr>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] tests/functional: Check for nested virtualization to run KVM
- tests
-Date: Fri, 16 Jan 2026 08:04:38 +0100
-Message-ID: <20260116070438.31869-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.52.0
+ bh=AsqEc9PXMF1ro4pWK4CMXB6LDGqoxaqaq/aPc5UncC8=;
+ b=U1NqMe7Gwd5x6U5ofrK1idchP3Eve5z76egrLAPy00Ooh6zbnhfmNNb97WzxfT8fFN
+ ERIOK8WTQtXGPfMTz7Evmdex6cSL+kHNW7msKIKGkXwvoGc+2p+4isXuIZIUwNmyMLI5
+ dQgzsxanJyPoQAOvF02Ho5jV1ZU91Fq6riYgr32S7ta2JGVYcau5G64ctJ+CsL2Uxanv
+ UZs3a3Yz1jOWj+5uMs78v46nHe91nY0xKuaeGakYZmr/FJytPU/a3qHnZGR3ZOlfhE3s
+ 4VAZqkx6L8QqaFJN0fHcKeHQa6fiOKhHY2gHoZMcHYfKrTN3cvHYm5Q39/41pipwyiBY
+ 5kiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768547145; x=1769151945;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=AsqEc9PXMF1ro4pWK4CMXB6LDGqoxaqaq/aPc5UncC8=;
+ b=eQ+TzGQOCrhnpvkBdCLYSnaWP0/uja+axrd9eRlJQp4o6+qdr7AkHhlHRO+daRbvN5
+ wi1SGD/d+JqEql+s5t6PFpansYXE3SOXG6nwxHh003chj0KN78PlKknvDWNKipgP/pay
+ pN8xhZXgYbuGAt7MTyy1aDH14hWflYc5RU4QNBYvIg2yMPDMRDAkCfnfxSQzk7nkqrb0
+ sQU06lVAl5TYDGRKZ9sPg4n7Ds5U+m5lulvAMO38kk87CsOsCgfAzT4uLQU5bt/li5LY
+ +1Z00LF5cgIqPBS/v3wl5WSF5J16gMK+KXzl+56vQYWFP70uQjzcN+PN3m/ISvCypICS
+ L5sA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVjJMhHsZKpAEd1asA8UlnaOkGmnK0QaVMGvzmdwbtpYXTwzrl6H8dItd1jb9Au6IKON1nL2fqrr99p@nongnu.org
+X-Gm-Message-State: AOJu0YxeF2zphNzfyt7drUaMi8W35r66RfHY+jZ8GcQZ7K9mDKwoqPeB
+ qQWnZ1KhshXjOnNrVyxcr3vqtnZjEY8MQw8fbSQ4yat6b0C5mSDJlwR5wHh0N0clZ6uTYGHrbzJ
+ T5fvXku0dvK1NrEwE/87SJ+ivHrr5zIs=
+X-Gm-Gg: AY/fxX4YMZuRLEYDHD9jmQNVnuIC6Dr2r2d9MEY6b0uP/UWwzPmTgArl+WEj3CMZNW3
+ 7qpUuNOq4aAy2xy7j6yWReVhdrfAqEJfgBMd00RVb+QrZtl2GuefWD/rHzD2pgqQ2aGUlLqOJed
+ FOeTo5ChGDXLWz4zkMJP4UwharJg8PPW5YQMWVdaMnHJ5Bg81+dAeyJ+DbEkrmOd/03hufHj/Zd
+ 0lC6kvho/W0y2f2yT+9qOyfzVMazb6/vZ5JSiwBSM5098S3+u65LEeIBa9xY7KAbikpIaz8
+X-Received: by 2002:a17:907:70a:b0:b87:1e50:95c2 with SMTP id
+ a640c23a62f3a-b8792d67e48mr198873766b.3.1768547145177; Thu, 15 Jan 2026
+ 23:05:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+References: <20260114195659.2543649-1-peterx@redhat.com>
+ <20260114195659.2543649-2-peterx@redhat.com>
+ <aWf4i7EOXtpAljGX@x1.local> <20260115224929.616aab85@penguin>
+ <aWlso1w39cQnEh2t@x1.local> <aWlxY9TWGT1aaMJz@gallifrey>
+In-Reply-To: <aWlxY9TWGT1aaMJz@gallifrey>
+From: Zhang Chen <zhangckid@gmail.com>
+Date: Fri, 16 Jan 2026 15:05:04 +0800
+X-Gm-Features: AZwV_QiKpG1RN4-Q_eK8RtIUWgKbsVxU4bgoSXUMwo_KAneYTnaJI3aaZdMTKzA
+Message-ID: <CAK3tnvLTmpjhhZPa7m-pbhGg-jMjo0KQO5_9Jr1KCBFmckRe5g@mail.gmail.com>
+Subject: Re: [PATCH 1/3] migration/colo: Deprecate COLO migration framework
+To: "Dr. David Alan Gilbert" <dave@treblig.org>
+Cc: Peter Xu <peterx@redhat.com>, Lukas Straub <lukasstraub2@web.de>,
+ qemu-devel@nongnu.org, 
+ Juraj Marcin <jmarcin@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ =?UTF-8?B?THVrw6HFoSBEb2t0b3I=?= <ldoktor@redhat.com>, 
+ Juan Quintela <quintela@trasno.org>, zhanghailiang@xfusion.com, 
+ Li Zhijian <lizhijian@fujitsu.com>, Jason Wang <jasowang@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=zhangckid@gmail.com; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,59 +124,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Apple Silicon, nested virtualization starts to be usable
-with M3 models and later. Check for the CPU model to avoid
-failure on pre-M3:
+On Fri, Jan 16, 2026 at 6:59=E2=80=AFAM Dr. David Alan Gilbert <dave@trebli=
+g.org> wrote:
+>
+> * Peter Xu (peterx@redhat.com) wrote:
+> > On Thu, Jan 15, 2026 at 10:49:29PM +0100, Lukas Straub wrote:
+> > > Nack.
+> > >
+> > > This code has users, as explained in my other email:
+> > > https://lore.kernel.org/qemu-devel/20260115224516.7f0309ba@penguin/T/=
+#mc99839451d6841366619c4ec0d5af5264e2f6464
+> >
+> > Please then rework that series and consider include the following (I
+> > believe I pointed out a long time ago somewhere..):
+> >
+>
+> > - Some form of justification of why multifd needs to be enabled for COL=
+O.
+> >   For example, in your cluster deployment, using multifd can improve XX=
+X
+> >   by YYY.  Please describe the use case and improvements.
+>
+> That one is pretty easy; since COLO is regularly taking snapshots, the fa=
+ster
+> the snapshoting the less overhead there is.
+>
+> Lukas: Given COLO has a bunch of different features (i.e. the block
+> replication, the clever network comparison etc) do you know which ones
+> are used in the setups you are aware of?
+>
+> I'd guess the tricky part of a test would be the network side; I'm
+> not too sure how you'd set that in a test.
 
-  qemu-system-aarch64: unable to find CPU model 'cortex-a72'
+Hi Dave,
 
-Now tests are correctly skipped, i.e. on M1:
+For the COLO network test part we already have some qtest for that.
+The original COLO-proxy function decoupled into several QEMU netfilter modu=
+les:
+The filter-mirror/filter-redirector/filter-rewriter/colo-compare.
+Only the colo-compare is COLO specific one.
+COLO connect all the general modules with chardev socket to finish function=
+s.
+Current status is we already have the qtest for filter-mirror/filter-redire=
+ctor:
+like the qemu/tests/qtest/test-filter-mirror.c
 
-  ok 1 test_kvm.Aarch64VirtKVMTests.test_aarch64_nvhe_selftest # SKIP Nested Virtualization not available on Apple M1 Pro
-  ok 2 test_kvm.Aarch64VirtKVMTests.test_aarch64_vhe_selftest # SKIP Nested Virtualization not available on Apple M1 Pro
+If this discussion ultimately dicides to retain COLO, I can cover COLO
+network test case.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- tests/functional/aarch64/test_kvm.py | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+Thanks
+Chen
 
-diff --git a/tests/functional/aarch64/test_kvm.py b/tests/functional/aarch64/test_kvm.py
-index 7545f5ed554..b26c849ec67 100755
---- a/tests/functional/aarch64/test_kvm.py
-+++ b/tests/functional/aarch64/test_kvm.py
-@@ -29,8 +29,31 @@ class Aarch64VirtKVMTests(LinuxKernelTest):
-     # base of tests
-     KUT_BASE = "/usr/share/kvm-unit-tests/"
- 
-+    def require_nested_virtualization(self):
-+        """
-+        Requires the accelerator to support nested virtualization for the test
-+        to continue
-+
-+        If the check fails, the test is canceled.
-+        """
-+        import platform, re, subprocess
-+
-+        if platform.system() != 'Darwin':
-+            return
-+        r = subprocess.run(['sysctl', '-n', 'machdep.cpu.brand_string'],
-+                           text=True, capture_output=True)
-+        if r.returncode != 0:
-+            return
-+        m = re.match(r"Apple M(\d+)( .*)?", r.stdout)
-+        if m:
-+            if int(m.group(1)) < 3:
-+                self.skipTest("Nested Virtualization not available"
-+                              " on %s" % r.stdout.strip())
-+
-     def _launch_guest(self, kvm_mode="nvhe"):
- 
-+        self.require_nested_virtualization()
-+
-         self.set_machine('virt')
-         kernel_path = self.ASSET_KVM_TEST_KERNEL.fetch()
- 
--- 
-2.52.0
-
+>
+> Dave
+>
+> --
+>  -----Open up your eyes, open up your mind, open up your code -------
+> / Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \
+> \        dave @ treblig.org |                               | In Hex /
+>  \ _________________________|_____ http://www.treblig.org   |_______/
 
