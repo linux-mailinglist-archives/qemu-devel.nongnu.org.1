@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D75D9D2D014
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 08:13:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BC8BD2D027
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 08:13:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vge0J-0003Zj-KL; Fri, 16 Jan 2026 02:12:19 -0500
+	id 1vge1N-0005YP-I4; Fri, 16 Jan 2026 02:13:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vge0G-0003XA-Po
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 02:12:16 -0500
-Received: from mail-wr1-x442.google.com ([2a00:1450:4864:20::442])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vge1G-00050y-Qj
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 02:13:18 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vge0C-0001Ae-Ud
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 02:12:15 -0500
-Received: by mail-wr1-x442.google.com with SMTP id
- ffacd0b85a97d-42fed090e5fso876418f8f.1
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 23:12:09 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vge1E-0001Kz-Sx
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 02:13:18 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-47ee974e230so14920825e9.2
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 23:13:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768547529; x=1769152329; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768547595; x=1769152395; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=1B+l+dzGo9lhySuM53KvC5ptYdIE7EZDoyhBzo6VSlU=;
- b=TQgWLlMWfNdI6J3uefkq6f1IYsU4xasBL6is40EiDUwDViiprnJJmjdt5S2+qCyPF+
- tNQStzt4f5SW4wSW4QUT0JjwcfQIEj4fP6vG6FR1U0M8AK6bczPkjjuRdr+4jaWCzRge
- R4rg2SaPLP3djTlzVJaQiF/AHIxcUj6BLGN5GeVUvVrVHwKwqDl3m3AoFvedjXClK/lc
- FsFWItPDvlQdvDJOEUx1ZuKZqdLzhr0ShmjbOVVO3g5tb0VEyhUl8Y3jPMlUvurqUP6w
- xyGuWVAp60zqaq9ZECqMZ4gkdz9YGwS4YGbgn4WUdbSvXPmccHOjfIz6hqMl5x+z+1ty
- zKMA==
+ bh=oCTK9jGMUUuo4/vBVviw/ESPLEsvqG3hgTOmY/je7dk=;
+ b=KPiz65e6cnvGTj6ikDqa2t9xcd9JJ0S6GgelrMCNzWhI6dwURtAuOo1qLPMzkfX4HN
+ 0FeE401y/rtVIYoMbjGZl08ZzLCywdQmtVq2VNI/WOYJH0fU441BGeWjvW0YDpWHH4Hx
+ 8Bahpq/WT4s6Ekyn65FFKAbWg1gbauRwuKIs9X2kdhAEpsulP6fZca0XJNbgyxHvTg58
+ QqC2rVK/hkdJTsVmFyHf5PdQWyk3bSGVkkzi9dNQOYjo9OnS5SBf4q5SV2yFE7AtKAoo
+ QfcbFEUWOCLFDcIQSwh2x1nTLZnTRhn2hYcsVu6IJKydERo4XGyRjho+XlrRmy4Dfby8
+ tjqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768547529; x=1769152329;
+ d=1e100.net; s=20230601; t=1768547595; x=1769152395;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=1B+l+dzGo9lhySuM53KvC5ptYdIE7EZDoyhBzo6VSlU=;
- b=PxwL7dIKPSG8mgzaQTVRBQBN9ySaPTEhmoPikDi9uwoofkbJwHaXUrqyqhUFp5fDEz
- fERTwKmdXPl/d3BbO5HPWvQSeMswrEo3ii7FTBdbV51K6Hd/ZgHrVUMn7uN9jl/IyVzk
- xT5kucgeZWT8sxPT09iRWiXp88AgHA6snF5tohZ9Rx0liPiB1b/a4WAKzbVvglrKKAUG
- F0tvqJlwdkwla6Nl4Tsmv/K1zZrNr+4jMtIM2AalOoaEQR1HECMfpen5C3G5a3REumxB
- aepXfzejOw9WF7ZvnHtlwCF3jVURcUYAF9T3aXTOBV/aXnXfnzJUFNalrA77nWRv3Uig
- n5Hw==
+ bh=oCTK9jGMUUuo4/vBVviw/ESPLEsvqG3hgTOmY/je7dk=;
+ b=DnoHMDRVIVcdzLMwRVT1X7mc4Wvsrl+Hu8QkRXfhhnP/53agILeOSHkwh3Sduhfmhw
+ rQIdDmLnt0UBy9xTGVtPj05CzOqUE6egeCtN/lxm2uesOY0UvPrIy795b9a6lV2JKnSS
+ K1jGpLkpUEuhxl6kcTY5ihpG8+EXdsn7vxqdIQ9N5GAhSJOuJisPOaMlDhj+j9vw0LpW
+ PimBYJQU6aoe42BQhc0FyftpYjQ7yT8XeHgNI0hB04Z0IIiOJwQAYiYh8iuR39antmyt
+ jAbYXyvhkbDY3gvID43Wr6RalAIWFsXiHDH1DMhVUBsoC+BYcDdFS1pBJnfs3dqKEOSX
+ 029w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWArKA9qQbA2WlHoejW661eZulWvHV9/4jO4cDEkJ299BT1gN2PVKHUGi1uHDjHRS7cgHNo5yijmLbn@nongnu.org
-X-Gm-Message-State: AOJu0YzoHm5IFP2qXSORb2jMz/uT110ND0bLxvKf8g2p8+gDXqQBXM+N
- +PQ/4BOXjDoHxKC9HRdS0XdJk21H63VwVamPZztR6JQCjSEz0BBjuW2ifb+OcvG4ISI=
-X-Gm-Gg: AY/fxX6u3f9NeuFsUspQhVqM5rJbBUmV9yq/6yqj/9UPbZijREHTH4seS3xkn9wdmC3
- s/4KmwOrLHbq37jR6YD8GYLla2gtWb8a5EP7OOYr44gnpPBiWvjPZ3G70FhpWjUsBLCEhziJDcT
- Tb+2Om31FkGe1oaG2krkKvjhdk9SsPCQi7k2X1qq94ZONf9jNU6aWMyMzZF7f3iUCGc7+sHq0t+
- OM+k/4cwSlMhfLJIBXARUA0jKm7wdeqh6xP0bIkj/nFjkA1LdPjWGqZ6y9OsGw/v/LH8uqIoVn6
- HmS2MoxLroc8yE0+OYQ5yv5OBkAM3IyVX0mjSfSsX2bk1OIhkqFeM9Gp6H64H5Jz/YtfJsn2E/O
- P7+To3eU/PaXOhImEj8/gGw0B4jyNHBg05bXMpo6p68dlnuMfBl7o/NzF7Z1SGoiaO677clj84b
- Z+JTj3Toolp+Y+f/ADzW0X7RMxUeJEjYFD9oNfTc1Je1XOTTC6OSN8bw==
-X-Received: by 2002:a05:6000:2911:b0:431:327:5dc2 with SMTP id
- ffacd0b85a97d-43569bcc0acmr1992520f8f.51.1768547528688; 
- Thu, 15 Jan 2026 23:12:08 -0800 (PST)
+ AJvYcCUy0bF9PQH1wAAqoKsPh4oBTeLCicj5wbH4zWXq5iyk18IRaCYRelZ2O/BQ+JOYgD6Sfq9fDhzKYUGh@nongnu.org
+X-Gm-Message-State: AOJu0YxURuRdnszmFloes+MsoeRGMnp40+HunT17DEbtMPGSgj62tabx
+ 94r/nnE+1mWAYswdjCzMzcAGmkmnpbl18FXY6nmEKznVohru3IUjS0KzcCW3zemWY1M=
+X-Gm-Gg: AY/fxX54eZ2Q9TAF1EtxFFg+KAS1q+14CIu0VPtchPtgCMQdp4ghvggwvgcVyHsNv4N
+ TyF/pLFPAk6GYrDjeI46aeqDkQ+JYfyELMLWRLlmY4r3oyiUBEjh6OAnXzIx15J0k+2YG6DXnrN
+ qUk68Jyv+pv0keEfj14jNeGZuBzBY87JflBKDe4P8GtEgg85b3B6AIs45DJpMZLK9uaQldIZeTs
+ HirxD4gxsNlB4zMd19t+bLtY2XV+ZO+aUb3vk8vkB2PYHl7Yb5il1FujbVhz8DuNlJp0irDb/zT
+ xzeTpAtmD87WpUWBkKeavYQaa6khDlb6y/QHdbamo2SQGXR5yX3eH78/2/vHNElOViS+EV2sF9B
+ d6sXM8YUISh/Mcbuv0o6KxCRaEDAXlm89eQtDvQSYZgK5DFNeMuCtSov4kvPec7gdf8+oTT0Js6
+ lIpwZY0os85JUL3+HpgRHMWEYq3rR8BG8T7aEpMWt6/IlKUHsf0l5phg==
+X-Received: by 2002:a05:600c:1c05:b0:47e:e952:86ca with SMTP id
+ 5b1f17b1804b1-4801e2f28edmr24196395e9.2.1768547595240; 
+ Thu, 15 Jan 2026 23:13:15 -0800 (PST)
 Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-435699271dfsm3351011f8f.15.2026.01.15.23.12.07
+ 5b1f17b1804b1-47f428ac749sm84270105e9.5.2026.01.15.23.13.14
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 15 Jan 2026 23:12:08 -0800 (PST)
-Message-ID: <2a68ffa0-ea8a-410c-b8c5-a4803d042b05@linaro.org>
-Date: Fri, 16 Jan 2026 08:12:07 +0100
+ Thu, 15 Jan 2026 23:13:14 -0800 (PST)
+Message-ID: <f8f6a95e-f684-4612-ab1c-a062a3fec6b5@linaro.org>
+Date: Fri, 16 Jan 2026 08:13:14 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] include/gdbstub/syscalls: Add EIO and ENOSYS GDB
- File-I/O errno values
+Subject: Re: [PATCH v3 3/3] gdbstub/user-target: Convert host errno to GDB
+ File-I/O errno
 Content-Language: en-US
 To: Yodel Eldar <yodel.eldar@yodel.dev>, qemu-devel@nongnu.org
 Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -76,13 +76,13 @@ Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Dominik Disconnect3d Czarnota <dominik.b.czarnota@gmail.com>
 References: <20260116014612.226183-1-yodel.eldar@yodel.dev>
- <20260116014612.226183-2-yodel.eldar@yodel.dev>
+ <20260116014612.226183-4-yodel.eldar@yodel.dev>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20260116014612.226183-2-yodel.eldar@yodel.dev>
+In-Reply-To: <20260116014612.226183-4-yodel.eldar@yodel.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::442;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x442.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,16 +106,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 16/1/26 02:46, Yodel Eldar wrote:
-> This patch adds the EIO and ENOSYS errno values that were missing from
-> the GDB Manual [1] when the other errno values were defined.
+> Use host_to_gdb_errno to convert host-supplied errnos to their GDB
+> File-I/O remote protocol values, and use them in F reply packets.
 > 
-> [1] https://sourceware.org/gdb/current/onlinedocs/gdb.html/Errno-Values.html
-> 
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2751
+> Reported-by: Dominik 'Disconnect3d' Czarnota <dominik.b.czarnota@gmail.com>
 > Signed-off-by: Yodel Eldar <yodel.eldar@yodel.dev>
 > ---
->   include/gdbstub/syscalls.h | 2 ++
->   1 file changed, 2 insertions(+)
+>   gdbstub/user-target.c | 13 +++++++++----
+>   1 file changed, 9 insertions(+), 4 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
