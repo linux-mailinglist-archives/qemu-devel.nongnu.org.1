@@ -2,34 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8224D305AA
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:26:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFAA9D308CD
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:41:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vghyJ-0004Wt-8v; Fri, 16 Jan 2026 06:26:31 -0500
+	id 1vgi59-0000cR-GC; Fri, 16 Jan 2026 06:33:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vghyG-0004UN-So; Fri, 16 Jan 2026 06:26:28 -0500
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1vgi56-0000aO-Aq
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:33:32 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vghyF-0007ui-6u; Fri, 16 Jan 2026 06:26:28 -0500
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1vgi54-0000CI-Fs
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:33:32 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1F62A17ED9B;
- Fri, 16 Jan 2026 14:26:14 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 976BE17EDA3;
+ Fri, 16 Jan 2026 14:33:15 +0300 (MSK)
 Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 5D52E34EC91;
- Fri, 16 Jan 2026 14:26:24 +0300 (MSK)
-Message-ID: <55edf1c7-98c7-416e-a99f-3751ab25ee46@tls.msk.ru>
-Date: Fri, 16 Jan 2026 14:26:23 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id D622D34EC96;
+ Fri, 16 Jan 2026 14:33:25 +0300 (MSK)
+Message-ID: <5b520a18-ee10-4403-9599-d144652dc93e@tls.msk.ru>
+Date: Fri, 16 Jan 2026 14:33:25 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] m68k: fix CAS2 writeback when Dc1==Dc2
-To: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org,
- qemu-stable <qemu-stable@nongnu.org>
-References: <20251226213707.331741-1-laurent@vivier.eu>
+Subject: Re: [PULL 2/6] hw/loongarch/virt: Fix irq allocation failure with pci
+ device from fdt
+To: Bibo Mao <maobibo@loongson.cn>, qemu-devel@nongnu.org
+Cc: Xianglai Li <lixianglai@loongson.cn>
+References: <20260115064840.219920-1-maobibo@loongson.cn>
+ <20260115064840.219920-3-maobibo@loongson.cn>
 Content-Language: en-US, ru-RU
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
@@ -75,7 +77,7 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
  ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
  3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
-In-Reply-To: <20251226213707.331741-1-laurent@vivier.eu>
+In-Reply-To: <20260115064840.219920-3-maobibo@loongson.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
@@ -101,18 +103,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/27/25 00:37, Laurent Vivier wrote:
-> According to Programmer's Reference Manual, if Dc1 and Dc2 specify the
-> same data register and the comparison fails, memory operand 1 is stored
-> in the data register.
+On 1/15/26 09:48, Bibo Mao wrote:
+> From: Xianglai Li <lixianglai@loongson.cn>
 > 
-> The current helpers wrote Dc1 then Dc2, leaving operand 2 in the shared
-> register.
-> 
-> Swap the writeback order for cas2w/cas2l so memory operand 1 wins.
+> When we use the -kernel parameter to start an elf format kernel relying on
+> fdt, we get the following error:
+..
 
-This seems to be a qemu-stable material, I'm picking it up.
-Please let me know if I shouldn't.
+Hi!
+
+I can't find this patch in qemu-devel mailing list archives,
+besides this pull request.  Has it not been there?
+
+> pcieport 0000:00:01.0: of_irq_parse_pci: failed with rc=-22
+> pcieport 0000:00:01.0: enabling device (0000 -> 0003)
+> pcieport 0000:00:01.0: PME: Signaling with IRQ 19
+> pcieport 0000:00:01.0: AER: enabled with IRQ 19
+> pcieport 0000:00:01.1: of_irq_parse_pci: failed with rc=-22
+> pcieport 0000:00:01.1: enabling device (0000 -> 0003)
+> pcieport 0000:00:01.1: PME: Signaling with IRQ 20
+> pcieport 0000:00:01.1: AER: enabled with IRQ 20
+> pcieport 0000:00:01.2: of_irq_parse_pci: failed with rc=-22
+> pcieport 0000:00:01.2: enabling device (0000 -> 0003)
+> pcieport 0000:00:01.2: PME: Signaling with IRQ 21
+> pcieport 0000:00:01.2: AER: enabled with IRQ 21
+> pcieport 0000:00:01.3: of_irq_parse_pci: failed with rc=-22
+> pcieport 0000:00:01.3: enabling device (0000 -> 0003)
+> pcieport 0000:00:01.3: PME: Signaling with IRQ 22
+> pcieport 0000:00:01.3: AER: enabled with IRQ 22
+> pcieport 0000:00:01.4: of_irq_parse_pci: failed with rc=-22
+> 
+> This is because  the description of interrupt-cell is missing in the pcie
+> irq map.  And there is a lack of a description of the interrupt trigger
+> type.  Now it is corrected and the correct interrupt-cell is added in the
+> pcie irq map.
+> 
+> Refer to the implementation in arm and add some comments.
+
+This looks like a qemu-stable material to me.
+Please let me know if it is not and I shouldn't pick it up
+for qemu stable series.
 
 Thanks,
 
