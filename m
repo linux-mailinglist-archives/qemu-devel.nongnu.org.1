@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFAEFD30402
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:19:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E509BD30406
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:19:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vghqe-0007GS-Gx; Fri, 16 Jan 2026 06:18:36 -0500
+	id 1vghqm-0007JC-36; Fri, 16 Jan 2026 06:18:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghqa-0007FF-QP
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:18:32 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghqh-0007I1-S6
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:18:41 -0500
+Received: from mail-wr1-x441.google.com ([2a00:1450:4864:20::441])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghqZ-0005fw-C2
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:18:32 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-432d2670932so1575172f8f.2
- for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 03:18:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghqf-0005hX-TX
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:18:39 -0500
+Received: by mail-wr1-x441.google.com with SMTP id
+ ffacd0b85a97d-42fbc305882so999314f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 03:18:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768562309; x=1769167109; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768562316; x=1769167116; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=CcnzBZgEqrP8OEgT2AND3gS2a/N3KEvsYp7Fa2E/Yak=;
- b=O1EYwyYZdXRdBgnGIM5WBE4vsPgCfMopspyv4/GCjXldvepkJAZJmSZ98FiipUyuWI
- mFoHIjwbdjsflY9Fo8NU1ZUecUD++/Lbh894hrwr9EPl2thpZ66dSzzDqDAzW4iwBdLN
- TzLFBn7uGAUEeHKDXsTG4siOsIcwO61ucV3z0D9A1h/T0dSvuOWNUJt3yUoyjWh9SQCb
- vpEFsu8t1QUqFPWDCYfcJ20E1689/kE8qCxAxYtNV9BSTR6a81/BdYhnOeCtoxg3M5qQ
- mln6aDqHgtopGhPMDlA4f+qHHUmuG6NUYzqx3jzeWWi+cT5DT7eBgNlqMGrZX3xAH6aA
- bDXQ==
+ :reply-to; bh=+lSDqpgt49/OyQ2ExzKjU606U5rmO2/rMItUS6X3ncQ=;
+ b=XWi3BOoju3xmOr9zUExzCOWDplb0NMhWJfhErBEGK+/s157RmUoNDQhiaKEn1N7iUG
+ Mubblyheu57hYJmhehlJVvVBNuhKWKjw2nVT+yrWbF/K64B7zAq+jOl0mrzTUh8L58zp
+ Fzc75fzACPkSRxKKWO83lap23trZvH7AagejfJBs+MJW2jdPK4idDEU/V9ZZXeAFLoxB
+ tHH8Clcylifjnr18XAwaF2lpfqgHzc91mnhnEXvlO5u9dfleJ0l7UWczKoGAdHcEJaYe
+ stH5w9YMZDvUGpLTXIxb0UWH5/TpYBtTQqPxkGH5lw/qPN3r4jTYXxQ15AwdV3Q29SL2
+ 5Qjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768562309; x=1769167109;
+ d=1e100.net; s=20230601; t=1768562316; x=1769167116;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=CcnzBZgEqrP8OEgT2AND3gS2a/N3KEvsYp7Fa2E/Yak=;
- b=E9qMReKzswCVv3m1Mcvcu48bwEcHFsm5GkzZctIUsgy0HWEWhD8V7QoD8F8jpuSIqf
- uzjl3VxevBMHQu4m5U7wUjGXJEAhG6nOrSdAiO8+E6ftUppDOPE48+HI2nYbToWSfoia
- PlePqsRin1AT6+9c0S1Vr0nDAutPfC/wzGdNzaxu/GCrAL7AI9EG+JWit6XTEXTXnXBm
- g7NL7UOe1Ajjhtk1g4sm8gH8fMfiEMdS0eCArKFNukJNV0Rz4GMI+jwb1yqKw4wb4a1D
- UBk5zUUgsH8s9U1O7JhwYDte6e8uA5dbF71qBJeSNkog31SKGotKOQtXJMA18r0qZPVw
- 7WxQ==
-X-Gm-Message-State: AOJu0Yz+dLLDPkE1lfkhmUtk/fmhlg3yG0bNsieatEZyHBVwSD287DxM
- OnFORi9cVC+K9B1+GC1QIVXlPNixb7Mla8x8nFDW1ZGQGefZ6mntC/BnUdKUM57+QlJOv4PWwct
- eyivjfg0=
-X-Gm-Gg: AY/fxX4Di0V2JvuvXc3T2xVTGP41/FwJThwFlp224/7Zt968SUxd+32X4LU3A6MXYVp
- XoC8aV5RjtPzojNfa/wQ1omh6EZp+7M24ph6lbSiNbZU+VgRICMz6129cQuhQQ/sK94qxH11024
- gdT4F1z5yBNelSHmcmMMjhR09s3f3jVgMe7jqV5j/HJKhabGBGjaWlJtzeCyP2x/QgMhfC47cs2
- EHwyXbS8Ikk0GxtZw9a9U6mdVs7Azsb7SWkKLovfZu1Ns5dlgw2Slh4tb/+RqjjN80SSWiobapX
- RgDbUepaII5WigY4yUlRkZX6fRESc+QvVbdLCmrnHwT8KZk0cJaMW6fvjA6oPwllgL0p2YE1zVp
- msSX9VQPj9NvuUs7FiGdEoKJXxhI5Ph8k2Mmg55vp1sfwNoMt6az/ok3ekBfXW9qEI7+iO/AoaN
- 7d6MQWNyfV54Lwv7kavygkV8c3DWeJlnxAvQ1PSNXRAL1R04p7btbpxlvupUeEc7a5xazfA1U=
-X-Received: by 2002:a5d:5d10:0:b0:431:a33:d872 with SMTP id
- ffacd0b85a97d-4356997f5f0mr2788890f8f.8.1768562309240; 
- Fri, 16 Jan 2026 03:18:29 -0800 (PST)
+ bh=+lSDqpgt49/OyQ2ExzKjU606U5rmO2/rMItUS6X3ncQ=;
+ b=vZs19zlWz38P8wse+a47dBqc3AHKxL4DQpdDPKmIDdvFbC/YAz5K0fNCCBqb2WYV6g
+ 6Pp4bhBsWcogigUOY0eJWfirzRzQp2I45fUBRJA3+k1iTgFy+DJE/qoJFxQkR1z91dn1
+ gpcqiZmE4oBbiezoJYYI77kzdIbheGKu1/tACcQ/1MefpIfJt6ddzvo2Wh8/L4fS+jnR
+ VgBGjOI4dgfteJ1hhhWzM8jVh2PSFwVBfoOsDBtwSV/p2zlktJn5/VnetnY7CQZLfZ4S
+ +UZakKS/CiVhEWEFi+Xc8f74jPFYs951prC7W0w90umfDWi7/3uBsb1eGZWQVfgxeAgD
+ XShA==
+X-Gm-Message-State: AOJu0YzB31u8P2NiYyRA2q9hfrkSXCjSrX5WKut8mv0e0eWqA5gmE90h
+ 8toUT95Dqv7uPupjRV9tiiZivkoP4QAvrJwHUFHJQMsFpowSDdiDLXPpnry+MKl0LK9gp1kLYss
+ /sMZSAB0=
+X-Gm-Gg: AY/fxX7Q9zjz73OsBKotUTeU5yptz4tW10EL5OE/P16WSEIeBhzwEYFyfuUTDwnNXcW
+ Ner2bAHEegIn8+YAxIeJzXmwOgrN2nPl3N/ghOPop+eVR9bNLhowJ4K/1LPnFSXc30U9ypWKgC7
+ GD6tzOnknk2fOxF6FMYCxyPQqpKvXAUoJ+I8PKBVRhgr456myzDvlaxsP4GwW0H+iLZsSi6vtEJ
+ A8y4DWa2gKlN0A3hneDNfWOUlM4CH6k7dhZ8hF6b036C6ougWo0ZNGQP5IjBTo/Wacj6/9LwsnZ
+ qnpUJD+OdBhjjMis+md3mlqTsz1Aeu4QWGOm8jNvN1J17RgVn3rAxeW4B3aqY4r/ZQMA/4GdFz5
+ FadUScuwCEA0Dc5FPoCGLinOk5nMjxzquuiNbR57uUTEVKD5JOg/DZ5rklt6PCD9YadmORDXv8m
+ Ebg35Vw8M2k1QuJ6w5KhN1jZrM6DRjeyyz5UDVWs3IPtN0YNmb1BWCGqW7viT94p4GoAv2Hi8=
+X-Received: by 2002:a05:6000:2382:b0:432:86a3:ef2e with SMTP id
+ ffacd0b85a97d-4356998ad0dmr2794824f8f.21.1768562316001; 
+ Fri, 16 Jan 2026 03:18:36 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-43569926ff1sm4592945f8f.13.2026.01.16.03.18.28
+ ffacd0b85a97d-4356997eb1fsm4746688f8f.35.2026.01.16.03.18.35
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 16 Jan 2026 03:18:28 -0800 (PST)
+ Fri, 16 Jan 2026 03:18:35 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/30] tests/qtest/migration: Add MigrationTestEnv::has_hvf
- field
-Date: Fri, 16 Jan 2026 12:17:40 +0100
-Message-ID: <20260116111807.36053-4-philmd@linaro.org>
+Subject: [PULL 04/30] meson: Add wasm64 support to the --cpu flag
+Date: Fri, 16 Jan 2026 12:17:41 +0100
+Message-ID: <20260116111807.36053-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260116111807.36053-1-philmd@linaro.org>
 References: <20260116111807.36053-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::441;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x441.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,41 +96,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow tests to tune their parameters when running on HVF.
+From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 
+wasm64 target enables 64bit pointers using Emscripten's -sMEMORY64=1
+flag[1]. This enables QEMU to run 64bit guests.
+
+Although the configure script uses "uname -m" as the fallback value when
+"cpu" is empty, this can't be used for Emscripten which targets to Wasm.
+So, in wasm build, this commit fixes configure to require --cpu flag to be
+explicitly specified by the user.
+
+[1] https://emscripten.org/docs/tools_reference/settings_reference.html#memory64
+
+Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <91f16f0e9ae6b36fbf0c2caac510dcf855120400.1768308374.git.ktokunaga.mail@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250128135429.8500-6-philmd@linaro.org>
 ---
- tests/qtest/migration/framework.h | 1 +
- tests/qtest/migration/framework.c | 1 +
- 2 files changed, 2 insertions(+)
+ configure   | 6 +++++-
+ meson.build | 4 ++--
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/tests/qtest/migration/framework.h b/tests/qtest/migration/framework.h
-index ed85ed502dd..2ef0f579626 100644
---- a/tests/qtest/migration/framework.h
-+++ b/tests/qtest/migration/framework.h
-@@ -39,6 +39,7 @@ typedef enum {
+diff --git a/configure b/configure
+index 55e0bd34256..92bfc5f9765 100755
+--- a/configure
++++ b/configure
+@@ -365,7 +365,6 @@ elif check_define __APPLE__; then
+   host_os=darwin
+ elif check_define EMSCRIPTEN ; then
+   host_os=emscripten
+-  cpu=wasm32
+   cross_compile="yes"
+ else
+   # This is a fatal error, but don't report it yet, because we
+@@ -419,6 +418,8 @@ elif check_define __aarch64__ ; then
+   cpu="aarch64"
+ elif check_define __loongarch64 ; then
+   cpu="loongarch64"
++elif check_define EMSCRIPTEN ; then
++  error_exit "wasm32 or wasm64 must be specified to the cpu flag"
+ else
+   # Using uname is really broken, but it is just a fallback for architectures
+   # that are going to use TCI anyway
+@@ -519,6 +520,9 @@ case "$cpu" in
+   wasm32)
+     CPU_CFLAGS="-m32"
+     ;;
++  wasm64)
++    CPU_CFLAGS="-m64 -sMEMORY64=1"
++    ;;
+ esac
  
- typedef struct MigrationTestEnv {
-     bool has_kvm;
-+    bool has_hvf;
-     bool has_tcg;
-     bool has_uffd;
-     bool uffd_feature_thread_id;
-diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-index 6d830079ee4..57d3b9b7c5a 100644
---- a/tests/qtest/migration/framework.c
-+++ b/tests/qtest/migration/framework.c
-@@ -1101,6 +1101,7 @@ MigrationTestEnv *migration_get_env(void)
-     }
+ if test -n "$host_arch" && {
+diff --git a/meson.build b/meson.build
+index c58007291a8..600c50007da 100644
+--- a/meson.build
++++ b/meson.build
+@@ -51,7 +51,7 @@ qapi_trace_events = []
+ bsd_oses = ['gnu/kfreebsd', 'freebsd', 'netbsd', 'openbsd', 'dragonfly', 'darwin']
+ supported_oses = ['windows', 'freebsd', 'netbsd', 'openbsd', 'darwin', 'sunos', 'linux', 'emscripten']
+ supported_cpus = ['ppc', 'ppc64', 's390x', 'riscv32', 'riscv64', 'x86', 'x86_64',
+-  'arm', 'aarch64', 'loongarch64', 'mips64', 'sparc64', 'wasm32']
++  'arm', 'aarch64', 'loongarch64', 'mips64', 'sparc64', 'wasm32', 'wasm64']
  
-     env->has_kvm = qtest_has_accel("kvm");
-+    env->has_hvf = qtest_has_accel("hvf");
-     env->has_tcg = qtest_has_accel("tcg");
+ cpu = host_machine.cpu_family()
  
-     if (!env->has_tcg && !env->has_kvm) {
+@@ -923,7 +923,7 @@ if have_tcg
+     if not get_option('tcg_interpreter')
+       error('Unsupported CPU @0@, try --enable-tcg-interpreter'.format(cpu))
+     endif
+-  elif host_arch == 'wasm32'
++  elif host_arch == 'wasm32' or host_arch == 'wasm64'
+     if not get_option('tcg_interpreter')
+       error('WebAssembly host requires --enable-tcg-interpreter')
+     endif
 -- 
 2.52.0
 
