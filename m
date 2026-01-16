@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8423DD304E8
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:23:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88BEDD30478
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:21:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vghst-00037I-6X; Fri, 16 Jan 2026 06:20:55 -0500
+	id 1vghss-00035m-OZ; Fri, 16 Jan 2026 06:20:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghsL-0002DS-5Z
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:20:26 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghsO-0002G0-IB
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:20:30 -0500
 Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghsE-0006rP-VW
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:20:18 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghsL-0006uv-Gp
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:20:22 -0500
 Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4801d98cf39so6299185e9.1
- for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 03:20:11 -0800 (PST)
+ 5b1f17b1804b1-4801c731d0aso9357545e9.1
+ for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 03:20:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768562410; x=1769167210; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768562417; x=1769167217; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Jlctq5vKHYkeEDFI7uZ1fcRMPddROuIgRymQ+Ihf0vE=;
- b=oaydNj8mDedOdtlViYk2w4PEdgPBPd+OP3Owsms+/bpV1DB5Ek5TAsSrGtHlQltNTO
- 0vm9BWzTdnQ62wy/4d8/k8+QdCDgyYxCyFKfmaAaEnFCUaQF9hNs+33RLF30oEAuyuWW
- wsII68Y3l0Rtu3xleYoGK2bR4CBYct88BHf8X5OBpxcOU2uF/Ed29oGVKwK3y/C+18xm
- 8n+4I8LmzKP5feDGCsghkiBoG+Dxi+7LMx32dH1PFvMQp0G+yZI8hQCDBvlmh+qqDhfx
- g90UDYqjhAY5L5vltlQL/hhPnIKCouUdxQgzv/4pqsAOeYuGZIvTNA5vczsbWlnZx5X1
- IxZg==
+ :reply-to; bh=JqMxH9hKNHMGm8UIIiwO7kE7bFNqCnI01NlYSC3IPms=;
+ b=J/4eknik2DeKuTrBDwBdOs3uhoQt9CS8dz+0xRJffV0PwdOj4UuPF/bOklJchEM5zi
+ 7GzEXSkRBzYCWCjy7vMoNV7f/mpf4iaHSNvikzY5xARysB5o+jlRg0duX0kQ9FDJD+a+
+ 1s3jdAvIb3ocQ084Uff+dp3lewDwevd1Nov8WM242riFhcTn9xj92TbR2J9qTcq+WcaJ
+ eVoXXzHE38YGv4Vg0YhsPtz8uy0GlYn3Fk9TvekU9Vk0S5W5o9gYsx94DJKBMUFpqd/J
+ ArY17pR5eyMTe18RTfT+PaM8aKlzCpDgDbjD2RZ1ABXCuy7hc8jYd4oFm0bOQBNyhl0k
+ tlgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768562410; x=1769167210;
+ d=1e100.net; s=20230601; t=1768562417; x=1769167217;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=Jlctq5vKHYkeEDFI7uZ1fcRMPddROuIgRymQ+Ihf0vE=;
- b=wGFrXzh2NH3DJvsVgQUGleFJ4CuPFhZqdXiEcqY4KQSHqYZNP6Di5OV57CTTRCzL/a
- sLBFM2ujRnAb7h4ARvUOt2z6EnofR43+SQARcPVE8T/QYKHvqgL1odSdEdafoFN8PxXd
- XU2wXTcRqZMKqsNQs0yVj0tSuaGPPVP2dJdnqY0Yamqb2oF3ryUsrsGAyYikct8utH1T
- gems5zBNw0adW4xLOrXOXGqqEcKM+TvgYCclOVXrZOqA/nh5MFYN3ARArwxjJTL0h+Va
- CyHhfPeLGPU3WnYwxFz7L72YWmTXfdgTNNo/Crq2kVT1zi6yGZnAri4+QmEmAuKp8URa
- mJKw==
-X-Gm-Message-State: AOJu0YzDhJOKt1yTm6q2cVl0V6T9N/77YpOwgTYzmE25LXc7EGKsCW8k
- D3nlKX3alFYhjjilDz1lwVjJNHQK9BsKeyWKtp66/FQTZcdhOxlqSGR51vu5jk4o5KQR2O9dvkb
- R959RlME=
-X-Gm-Gg: AY/fxX66hiiaNPNBuO5qnEb2SJEcgB5ZO8KXm5ZWAggbTxBaoifb+gmdZq5IZCFd6zg
- S7qVb7/tZyQ3MhogWSkufpjI8FbnvJWimykf5I3AxOGHnUrNWZ3rRLE+jVQGBNphROk4rVYIErw
- AvwxyMC76HXdPYZ+QaggZTmUnxmctK1ULkdMPk2m/ibwKNfxAu3zf4Ui+/I4uWB4ENdfd3A2Fp4
- W19/BdpVlio8qN8o8PUXnxZTlEkbj60Qfc4yKP0FVsn5jiJ0GR4pg7ukrDv8eylHhnsJwabUUGU
- Bnk49drzGyn6ykD4MMWc+T1ve4w9469cbcDn+9VNNXAIyFMu3kvwzsj7c+oQMn4PtpzUdZR5FWX
- ljxAmKvZb5RYalF3JdFyBE/2ECuoGh/mj87JTp6DXHjVUWJC0B1ZisGKBt587y14ia6JquEucMc
- tHLre85ni7dzrsXmrkhrV0JDS0y1Bz/1L5zDHGxETaf/X3OQynH6BUf+Aya1+2
-X-Received: by 2002:a05:600c:4fc6:b0:47a:7fd0:9f01 with SMTP id
- 5b1f17b1804b1-4801eacf142mr29859025e9.16.1768562410413; 
- Fri, 16 Jan 2026 03:20:10 -0800 (PST)
+ bh=JqMxH9hKNHMGm8UIIiwO7kE7bFNqCnI01NlYSC3IPms=;
+ b=s843EvqC9RntROuqKV5PxE2rvDUtgOjo2DmOVK47OQBmV6Bi4BD7wxt1lOjyAMa7kA
+ RM6IalckvFFIrHxmPcwbX5023C0NkWkOjkkCI1zMYxkczjl18PsW6qPWuATkz7MiTtw+
+ wg/5aIcF7bBIvARBSlWLx/oBiy38UliVuvGQ/nswKavZsuRsG1KtTbTq59UvXhDwiqzE
+ SFPlNLklb7pSed383QoQs4PR4vpwjPOyXycZErs3jhK/5NVV63mqbZbJPLmc5zziX79f
+ jJq2MnMt234pbsuNMsMIa84O/ZQvw1RyN7KJ/871Q8VCxD0sZrTbAclU4eazrgHii5p+
+ kJUg==
+X-Gm-Message-State: AOJu0YwYIrICNoYu39trwyoeXQ3xtHQnCL7DOK/0pOpOvR6uiVnDBjoZ
+ IdibKwgR2UuEBUdF1lzwBzoMS08vaWbGk3zHNzO0dVAzZ5U1o81EaYkhyjN7uHf5ooUMgHcYBX4
+ tVuLk1HI=
+X-Gm-Gg: AY/fxX4ZxwJjfCGABBBvxZlPlYuKDQUhHrfH9f2ynmczi3y7C/NsHxL6+beiSd77BPo
+ FF/OFdFBPNf4eCtZLrNRrxHj8jxk9VsXTfm4uocyeK9gIDAkB8g3gxJqENO9FNzDsqEc9p7ZOm0
+ YeU1jWt/q2qRmnVK9R/dNNXnprXB72v4ny27gtYxtZhcfiY2gcZGrdc6k6Ub9RLBCKWXy+XlXnb
+ jFC+eifVzHxu4aFGvZQ/1kcfpSmBVFQF/4oPJovWb0MXA1M9UZC+FwzE2uEfUgd2EZ1DYv3efBW
+ Q+kEvz9YQIJExJfS5bJ/OQeUiUSvwzeOAgR0LvvUU+3kPaG6OMam4TYm1HwmO10OGtP0ExGX6gO
+ efpLBpm8oEWXHXsS2KRB9ZhrnndzcKOhEzzn4fykVyO4/EOhdmMucanRo6g7YWCbXpnIYL1UsXy
+ EdEj1S3PLDn7VGVC0NviRaWe4VEOpbj6yoVtHHtokUsqJ8WNOT6CSmFHyUD+kY
+X-Received: by 2002:a05:600c:3554:b0:47a:8154:33e3 with SMTP id
+ 5b1f17b1804b1-4801e34cac0mr28814305e9.28.1768562417052; 
+ Fri, 16 Jan 2026 03:20:17 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4801fe67780sm13781605e9.16.2026.01.16.03.20.09
+ 5b1f17b1804b1-4801e879542sm39864435e9.4.2026.01.16.03.20.16
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 16 Jan 2026 03:20:09 -0800 (PST)
+ Fri, 16 Jan 2026 03:20:16 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 18/30] target/arm/hvf: Implement dirty page tracking
-Date: Fri, 16 Jan 2026 12:17:55 +0100
-Message-ID: <20260116111807.36053-19-philmd@linaro.org>
+Subject: [PULL 19/30] accel/hvf: Skip WFI if CPU has work to do
+Date: Fri, 16 Jan 2026 12:17:56 +0100
+Message-ID: <20260116111807.36053-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260116111807.36053-1-philmd@linaro.org>
 References: <20260116111807.36053-1-philmd@linaro.org>
@@ -96,104 +96,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+Avoid sleeping vCPU thread for any pending work, not just IRQs.
 
-Notice writes to pages which are being monitored.  Mark the page dirty,
-re-enable writes, and retry the instruction without emulation.
-
-Assert the fault is not from a stage1 page table walk.
-
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Message-ID: <20260112103034.65310-12-philmd@linaro.org>
+Message-ID: <20260112103034.65310-13-philmd@linaro.org>
 ---
- target/arm/hvf/hvf.c | 52 ++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 43 insertions(+), 9 deletions(-)
+ target/arm/hvf/hvf.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index fa26f63a61a..af28b8e8825 100644
+index af28b8e8825..d74703a3d55 100644
 --- a/target/arm/hvf/hvf.c
 +++ b/target/arm/hvf/hvf.c
-@@ -1869,9 +1869,10 @@ static int hvf_handle_exception(CPUState *cpu, hv_vcpu_exit_exception_t *excp)
-         uint32_t srt = (syndrome >> 16) & 0x1f;
-         uint32_t cm = (syndrome >> 8) & 0x1;
-         uint64_t val = 0;
-+        uint64_t ipa = excp->physical_address;
-+        AddressSpace *as = cpu_get_address_space(cpu, ARMASIdx_NS);
+@@ -1737,8 +1737,11 @@ static void hvf_wfi(CPUState *cpu)
+     uint64_t nanos;
+     uint32_t cntfrq;
  
--        trace_hvf_data_abort(excp->virtual_address,
--                             excp->physical_address, isv,
-+        trace_hvf_data_abort(excp->virtual_address, ipa, isv,
-                              iswrite, s1ptw, len, srt);
- 
-         if (cm) {
-@@ -1880,23 +1881,56 @@ static int hvf_handle_exception(CPUState *cpu, hv_vcpu_exit_exception_t *excp)
-             break;
-         }
- 
-+        /* Handle dirty page logging for ram. */
-+        if (iswrite) {
-+            hwaddr xlat;
-+            MemoryRegion *mr = address_space_translate(as, ipa, &xlat,
-+                                                       NULL, true,
-+                                                       MEMTXATTRS_UNSPECIFIED);
-+            if (memory_region_is_ram(mr)) {
-+                uintptr_t page_size = qemu_real_host_page_size();
-+                intptr_t page_mask = -(intptr_t)page_size;
-+                uint64_t ipa_page = ipa & page_mask;
-+
-+                /* TODO: Inject exception to the guest. */
-+                assert(!mr->readonly);
-+
-+                if (memory_region_get_dirty_log_mask(mr)) {
-+                    memory_region_set_dirty(mr, ipa_page + xlat, page_size);
-+                    hvf_unprotect_dirty_range(ipa_page, page_size);
-+                }
-+
-+                /* Retry with page writes enabled. */
-+                break;
-+            }
-+        }
-+
+-    if (cpu_test_interrupt(cpu, CPU_INTERRUPT_HARD | CPU_INTERRUPT_FIQ)) {
+-        /* Interrupt pending, no need to wait */
++    if (cpu_has_work(cpu)) {
 +        /*
-+         * TODO: If s1ptw, this is an error in the guest os page tables.
-+         * Inject the exception into the guest.
++         * Don't bother to go into our "low power state" if
++         * we would just wake up immediately.
 +         */
-+        assert(!s1ptw);
-+
-+        /*
-+         * TODO: ISV will be 0 for SIMD or SVE accesses.
-+         * Inject the exception into the guest.
-+         */
-         assert(isv);
- 
-+        /*
-+         * Emulate MMIO.
-+         * TODO: Inject faults for errors.
-+         */
-         if (iswrite) {
-             val = hvf_get_reg(cpu, srt);
--            address_space_write(&address_space_memory,
--                                excp->physical_address,
--                                MEMTXATTRS_UNSPECIFIED, &val, len);
-+            address_space_write(as, ipa, MEMTXATTRS_UNSPECIFIED, &val, len);
-         } else {
--            address_space_read(&address_space_memory,
--                               excp->physical_address,
--                               MEMTXATTRS_UNSPECIFIED, &val, len);
-+            address_space_read(as, ipa, MEMTXATTRS_UNSPECIFIED, &val, len);
-             if (sse) {
-                 val = sextract64(val, 0, len * 8);
-             }
-             hvf_set_reg(cpu, srt, val);
-         }
--
-         advance_pc = true;
-         break;
+         return;
      }
+ 
 -- 
 2.52.0
 
