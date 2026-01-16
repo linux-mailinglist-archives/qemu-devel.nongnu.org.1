@@ -2,111 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47034D2D00E
+	by mail.lfdr.de (Postfix) with ESMTPS id DE0C9D2D015
 	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 08:13:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgdu2-0001wJ-QW; Fri, 16 Jan 2026 02:05:50 -0500
+	id 1vge05-0003Mh-3j; Fri, 16 Jan 2026 02:12:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhangckid@gmail.com>)
- id 1vgdu1-0001wB-A0
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 02:05:49 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vge00-0003Kw-Ti
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 02:12:01 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <zhangckid@gmail.com>)
- id 1vgdtz-0007r0-N1
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 02:05:49 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-b874c00a3fcso275318066b.1
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 23:05:46 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768547145; cv=none;
- d=google.com; s=arc-20240605;
- b=dwsfmtpnV/ttNhbHVhcFyU+MssxLKE4HEeu3lrnuwEObdxIF+Mgn6Jw2+jfTbzPft1
- sIK3CpjRfy1yt5RD25CTB2UPH+iqdmb2pcmlFGpTFROcYYJUMp8AX5joMbHO9Db9Xjxt
- /Jv248LEGt0kQfKfAgZi+UxAHa/hoqYjgovzz0UM9dR5OBki33oJHAaE3yVxM7DYxOeZ
- Un3T/L0Yxv7mc5JQDk/KdUgQEqtOHKK/vLoEA89QWyFPKoZqFyfTJpVC5yXkeA8ELPSR
- LE9cKVJZCGtw15y1me5LastPIUN1ofnORf9w2CGOSa9qTJLABhDUWPsa69kIMusPKQAG
- gY8A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
- s=arc-20240605; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:dkim-signature;
- bh=AsqEc9PXMF1ro4pWK4CMXB6LDGqoxaqaq/aPc5UncC8=;
- fh=IEUzuLXylejbDGG2MK70eEAf260NzTwK6+PSBf6A97M=;
- b=QoJR7/rMDlXuE+CI9q0VhlohDMHFjyQ30wLNW953uq9EaFpc7JPw/JMTfesdayDJ6s
- Fa+40F/9XkiBNbFc1jZIoaBvenJ37Nh7SMfz/aVsPL6DLywgiTUmMKeXhorNuzgX/mkY
- vNsWQciD0A+zzuLfQaJ+a+wwzorLRVNtikTNP4ODN5B5loza32uxGkEs487AiO2dN1Uk
- 0r43MK0VPZIh05L5/X5VdaFft2/6nUio9mFexk0E34BEB11loilWYmnjPx54+fEZbTqr
- QlKZ/gGj0PSqDVawJB2m3yJrHr5g0tIDQ2wsxpRbzS9EGroiQXzfdLEfJLDgemBS/daZ
- ynsA==; darn=nongnu.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vgdzz-00018b-Ci
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 02:12:00 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-4308d81fdf6so967081f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 23:11:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1768547145; x=1769151945; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AsqEc9PXMF1ro4pWK4CMXB6LDGqoxaqaq/aPc5UncC8=;
- b=U1NqMe7Gwd5x6U5ofrK1idchP3Eve5z76egrLAPy00Ooh6zbnhfmNNb97WzxfT8fFN
- ERIOK8WTQtXGPfMTz7Evmdex6cSL+kHNW7msKIKGkXwvoGc+2p+4isXuIZIUwNmyMLI5
- dQgzsxanJyPoQAOvF02Ho5jV1ZU91Fq6riYgr32S7ta2JGVYcau5G64ctJ+CsL2Uxanv
- UZs3a3Yz1jOWj+5uMs78v46nHe91nY0xKuaeGakYZmr/FJytPU/a3qHnZGR3ZOlfhE3s
- 4VAZqkx6L8QqaFJN0fHcKeHQa6fiOKhHY2gHoZMcHYfKrTN3cvHYm5Q39/41pipwyiBY
- 5kiA==
+ d=linaro.org; s=google; t=1768547510; x=1769152310; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=5CAHwUn8YXntEQ8O4POihLaO+M8kM/Rf1a0MQloUD/g=;
+ b=d77xYMZOGUjE7VixG5uecoxlQRegFFA8AdXLaCSiNoWjK65KhY5f+5j9+uBYSfrNy6
+ UBe0x4lwmZhnI0dKSloeInT3xHD3d+IsIOcjvdflUOUI205PH2bkbD1Z8osiwJYqMUwj
+ F6pO4osBtg6fej5plon+aK1/ytG4ZzIEuFV+YmvV8vjesZscxh2gnufW9h8LpeSRG3ki
+ 9tOHiCWSfKVxQIBEqGoLygikTzsxQUIrDul2xdw2R3ONBKaCYnNNea1KYDUzOFunpYdr
+ hnO/hDy/yLMLxGGSMt/taHYej6iB2IwE+yQ2Pwf9lvOzxGqA7eGb26kbV/oUvzEUuSwI
+ c6Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768547145; x=1769151945;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=AsqEc9PXMF1ro4pWK4CMXB6LDGqoxaqaq/aPc5UncC8=;
- b=eQ+TzGQOCrhnpvkBdCLYSnaWP0/uja+axrd9eRlJQp4o6+qdr7AkHhlHRO+daRbvN5
- wi1SGD/d+JqEql+s5t6PFpansYXE3SOXG6nwxHh003chj0KN78PlKknvDWNKipgP/pay
- pN8xhZXgYbuGAt7MTyy1aDH14hWflYc5RU4QNBYvIg2yMPDMRDAkCfnfxSQzk7nkqrb0
- sQU06lVAl5TYDGRKZ9sPg4n7Ds5U+m5lulvAMO38kk87CsOsCgfAzT4uLQU5bt/li5LY
- +1Z00LF5cgIqPBS/v3wl5WSF5J16gMK+KXzl+56vQYWFP70uQjzcN+PN3m/ISvCypICS
- L5sA==
+ d=1e100.net; s=20230601; t=1768547510; x=1769152310;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=5CAHwUn8YXntEQ8O4POihLaO+M8kM/Rf1a0MQloUD/g=;
+ b=f64zJ5hDFkVgf2xjrx6+k0PTC8TTUj1HCcsa/XAsj8MT+n5D2iliHLG5N59GBRNnMX
+ 9VWAijCADhCe1jr2IlI2fUVhmgtR3xd0aqtKfTWxqPhgDQaqJa9vKwC+fWthQjhttwYI
+ 1N/0P4L3jeLKdGetRvjgiwx0MGzuhLW+uFdf/UECrcN6QvquXyRtsF+lB0WL9DQd/uv9
+ pXflARglx6YPtPZkgPKw26+t0VBy0i4i5iyN+f3w24YVLIU76SnBGCUVGeAN/ijr5y92
+ y7lsWPefwpS7Xl89NfVcZJ7bIeaAjHHgsSHndG2rxNQwTtjPGHvd2WGKSZQs+GX8A/6M
+ iiTg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVjJMhHsZKpAEd1asA8UlnaOkGmnK0QaVMGvzmdwbtpYXTwzrl6H8dItd1jb9Au6IKON1nL2fqrr99p@nongnu.org
-X-Gm-Message-State: AOJu0YxeF2zphNzfyt7drUaMi8W35r66RfHY+jZ8GcQZ7K9mDKwoqPeB
- qQWnZ1KhshXjOnNrVyxcr3vqtnZjEY8MQw8fbSQ4yat6b0C5mSDJlwR5wHh0N0clZ6uTYGHrbzJ
- T5fvXku0dvK1NrEwE/87SJ+ivHrr5zIs=
-X-Gm-Gg: AY/fxX4YMZuRLEYDHD9jmQNVnuIC6Dr2r2d9MEY6b0uP/UWwzPmTgArl+WEj3CMZNW3
- 7qpUuNOq4aAy2xy7j6yWReVhdrfAqEJfgBMd00RVb+QrZtl2GuefWD/rHzD2pgqQ2aGUlLqOJed
- FOeTo5ChGDXLWz4zkMJP4UwharJg8PPW5YQMWVdaMnHJ5Bg81+dAeyJ+DbEkrmOd/03hufHj/Zd
- 0lC6kvho/W0y2f2yT+9qOyfzVMazb6/vZ5JSiwBSM5098S3+u65LEeIBa9xY7KAbikpIaz8
-X-Received: by 2002:a17:907:70a:b0:b87:1e50:95c2 with SMTP id
- a640c23a62f3a-b8792d67e48mr198873766b.3.1768547145177; Thu, 15 Jan 2026
- 23:05:45 -0800 (PST)
+ AJvYcCVCfRBAhi3HpTwiCz5+IUZgDCNBFK+jJ4X0n2xqwMo29nfGY2GRHHGqcR9Ul98/DQgSHErzcX/q2eoe@nongnu.org
+X-Gm-Message-State: AOJu0YwheFS0Giexca+B/MRZZRz0n4xn25IB/s3U//0NzOyCaDD7DkIQ
+ /znzXudJwTJFuRRc2YwB8/8dF4PU7vGI7VlKmDF0w9GOmSzNOLu5gyt4ZhJ8ALCgNfSHyInRGFw
+ pOYP6aN8=
+X-Gm-Gg: AY/fxX45NAOIGlJTJvUkf2t714we+DUN0Cdp8p4I2E/SJdRZSROIvmX0nZrI2jtBW5i
+ ijN8T2E9b55v43LF0QD7/urZaBMaFmF1GQQGzi+k41xvGHazptX9GldKlXx1L2YmMM1toDb+oC9
+ wY8gt9mgax5b1kuVs3Y4TCcCPFLHpVUu3LHq3cnVV17RggsxpmgEbNsgQ5REqz/qnw0KFyTMt8s
+ wFuMB6XvpkwRF2hw+KYCYEWgZ1yyqmX7gRtYV00+4aQLhI/+4sJtEM/Bx22U5Fdo+343qXHphkT
+ 88aDFL6R3rMnMe96w8tuuIr4/vW9FRUDgMBh3MVQ2CPcQVkCJ0eXL9LPc3KW461WJjmp9NQB/LM
+ oESgv+JxRl1GxzLJzjwGgtC0LDuHLuFP1lEQeX4BAbAh/WhE+9yjVu1D4d2uhy1br2Wgoo2iH5W
+ Yc1+1O9cNHVgLWyEmuWpaXYGVht2iHfaeS64eCsC6dmIxCkvjj/md3KOjzbf1A7jNo
+X-Received: by 2002:a5d:5d02:0:b0:430:f97a:6f42 with SMTP id
+ ffacd0b85a97d-43569bcd728mr2076503f8f.54.1768547510429; 
+ Thu, 15 Jan 2026 23:11:50 -0800 (PST)
+Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-43569921dddsm3591061f8f.6.2026.01.15.23.11.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 15 Jan 2026 23:11:49 -0800 (PST)
+Message-ID: <7be78f97-18b0-42a1-98ac-084a1a4c005d@linaro.org>
+Date: Fri, 16 Jan 2026 08:11:48 +0100
 MIME-Version: 1.0
-References: <20260114195659.2543649-1-peterx@redhat.com>
- <20260114195659.2543649-2-peterx@redhat.com>
- <aWf4i7EOXtpAljGX@x1.local> <20260115224929.616aab85@penguin>
- <aWlso1w39cQnEh2t@x1.local> <aWlxY9TWGT1aaMJz@gallifrey>
-In-Reply-To: <aWlxY9TWGT1aaMJz@gallifrey>
-From: Zhang Chen <zhangckid@gmail.com>
-Date: Fri, 16 Jan 2026 15:05:04 +0800
-X-Gm-Features: AZwV_QiKpG1RN4-Q_eK8RtIUWgKbsVxU4bgoSXUMwo_KAneYTnaJI3aaZdMTKzA
-Message-ID: <CAK3tnvLTmpjhhZPa7m-pbhGg-jMjo0KQO5_9Jr1KCBFmckRe5g@mail.gmail.com>
-Subject: Re: [PATCH 1/3] migration/colo: Deprecate COLO migration framework
-To: "Dr. David Alan Gilbert" <dave@treblig.org>
-Cc: Peter Xu <peterx@redhat.com>, Lukas Straub <lukasstraub2@web.de>,
- qemu-devel@nongnu.org, 
- Juraj Marcin <jmarcin@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?UTF-8?B?THVrw6HFoSBEb2t0b3I=?= <ldoktor@redhat.com>, 
- Juan Quintela <quintela@trasno.org>, zhanghailiang@xfusion.com, 
- Li Zhijian <lizhijian@fujitsu.com>, Jason Wang <jasowang@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=zhangckid@gmail.com; helo=mail-ej1-x630.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/3] gdbstub: Export host_to_gdb_errno File-I/O helper
+ function
+Content-Language: en-US
+To: Yodel Eldar <yodel.eldar@yodel.dev>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Dominik Disconnect3d Czarnota <dominik.b.czarnota@gmail.com>
+References: <20260116014612.226183-1-yodel.eldar@yodel.dev>
+ <20260116014612.226183-3-yodel.eldar@yodel.dev>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20260116014612.226183-3-yodel.eldar@yodel.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -124,63 +106,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 16, 2026 at 6:59=E2=80=AFAM Dr. David Alan Gilbert <dave@trebli=
-g.org> wrote:
->
-> * Peter Xu (peterx@redhat.com) wrote:
-> > On Thu, Jan 15, 2026 at 10:49:29PM +0100, Lukas Straub wrote:
-> > > Nack.
-> > >
-> > > This code has users, as explained in my other email:
-> > > https://lore.kernel.org/qemu-devel/20260115224516.7f0309ba@penguin/T/=
-#mc99839451d6841366619c4ec0d5af5264e2f6464
-> >
-> > Please then rework that series and consider include the following (I
-> > believe I pointed out a long time ago somewhere..):
-> >
->
-> > - Some form of justification of why multifd needs to be enabled for COL=
-O.
-> >   For example, in your cluster deployment, using multifd can improve XX=
-X
-> >   by YYY.  Please describe the use case and improvements.
->
-> That one is pretty easy; since COLO is regularly taking snapshots, the fa=
-ster
-> the snapshoting the less overhead there is.
->
-> Lukas: Given COLO has a bunch of different features (i.e. the block
-> replication, the clever network comparison etc) do you know which ones
-> are used in the setups you are aware of?
->
-> I'd guess the tricky part of a test would be the network side; I'm
-> not too sure how you'd set that in a test.
+On 16/1/26 02:46, Yodel Eldar wrote:
+> Move host_to_gdb_errno from target/m68k/m68k-semi.c to
+> gdbstub/syscalls.c. Declare it in include/gdbstub/syscalls.h.
+> 
+> Add both newly added GDB File-I/O supported errno values, EIO and
+> ENOSYS, to the mapping.
+> 
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Yodel Eldar <yodel.eldar@yodel.dev>
+> ---
+>   gdbstub/syscalls.c         | 36 ++++++++++++++++++++++++++++++++++++
+>   include/gdbstub/syscalls.h |  9 +++++++++
+>   target/m68k/m68k-semi.c    | 29 -----------------------------
+>   3 files changed, 45 insertions(+), 29 deletions(-)
 
-Hi Dave,
-
-For the COLO network test part we already have some qtest for that.
-The original COLO-proxy function decoupled into several QEMU netfilter modu=
-les:
-The filter-mirror/filter-redirector/filter-rewriter/colo-compare.
-Only the colo-compare is COLO specific one.
-COLO connect all the general modules with chardev socket to finish function=
-s.
-Current status is we already have the qtest for filter-mirror/filter-redire=
-ctor:
-like the qemu/tests/qtest/test-filter-mirror.c
-
-If this discussion ultimately dicides to retain COLO, I can cover COLO
-network test case.
-
-Thanks
-Chen
-
->
-> Dave
->
-> --
->  -----Open up your eyes, open up your mind, open up your code -------
-> / Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \
-> \        dave @ treblig.org |                               | In Hex /
->  \ _________________________|_____ http://www.treblig.org   |_______/
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
