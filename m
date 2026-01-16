@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B06ECD38975
+	by mail.lfdr.de (Postfix) with ESMTPS id C087BD38976
 	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 23:50:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgsch-00043A-3o; Fri, 16 Jan 2026 17:48:55 -0500
+	id 1vgsdR-0004GK-P3; Fri, 16 Jan 2026 17:49:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vgscf-000425-54
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 17:48:53 -0500
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1vgsdK-0004EW-6G
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 17:49:35 -0500
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vgscd-0007rB-7m
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 17:48:52 -0500
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-81f4ba336b4so2437052b3a.1
- for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 14:48:50 -0800 (PST)
+ id 1vgsdH-0007sj-Mu
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 17:49:33 -0500
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-81e8b1bdf0cso1504101b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 14:49:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768603729; x=1769208529; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=sAC7e/d0bBtJEIwHTiI41xr+WOUYUHqJkfZ94sKSblk=;
- b=VxEexn8vgYhzSSqYyEIrYJHQAOlxLekgzgUMfKr3zCaOuPQq5RIX/UAnTD9Zq8W9iR
- fH88PO0Ht7NFhEey9lyGorJB+3CsZtr5VyEddN17wF2qFrRA9iorOPWU+ntiEtbO6BNm
- Lz+98xaeE43GT7hZQ1XF06JLL9Z4jSavahec73cMv/EV/to/adogKw3Jqjj+2CY8V0AS
- +Rdr2q585/tGqH1tRxZwaGdRy9cPMhK1GWfoEgChC2TvrpcGxX6q9Fg+ShQlOQ0UHYqf
- OLwz5lB2gCBOW9t9NZzNBDsUl6XgubBb6Jj1+ug9GjWDJ8z19AyZTWOQhbI9A8V8MOUD
- izew==
+ d=linaro.org; s=google; t=1768603770; x=1769208570; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=FdpCekvKZL83qWf+bMVR8A5GN7sZrhO6Z8RZXKo7LBU=;
+ b=JW60uIVGKSsp98wzfuWEwRKTbrjAVnkk4XWrncvG8BMWEyNypGuoeoU4ezPWXmN/2f
+ l4BnS5r3jcz2r28g6imCeJPEo++H0BwstB0Hk4BNLEDQVhDjdLt6Fr+QS1BePiM/KHwC
+ pSvTUhLv4hzk3kwUfnJz76zLUfCWOkUcWoPta6aYsq95/BztumQm9cy3DoLVN7sodwBd
+ ewSa8IGbN1Mj4g0Yx2wBAfxU5nZYOYZbKAIz+k56q6qWnfd/VNjExjNmNNze803Vi33D
+ /zOrRGuZg/cTS9+vz50sP1LbjFdS2QDvOSckp5ZuFPubZsgJifca1ywxZ2sopJ20Y3ry
+ UHhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768603729; x=1769208529;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=sAC7e/d0bBtJEIwHTiI41xr+WOUYUHqJkfZ94sKSblk=;
- b=JmJq5ph6exys9OzWAigOFCxgwFC8FLWJpY8U8NawDBHtDDeyxSvk+EyIMKS+MIUNMR
- dZKmrtls6HeMUrLglmsJ4gOeSMqP6YmYVzBeQhrcN3AsJeOFFGodCivWa6hCB0lHJbPg
- p9VmkL1M5/a10fRLKwzCWOVlIKJFzjnzPthe+mvfXl5zpMk1ZERvGvcIYDxSCfTSr6SU
- oPdrijfxjGx1H0JnH4mPnd1dZDToOG3qc4oZlnMxaWZwp040tWuM+QUeyigfCM/asgwO
- hM0amyt9GF9/iN539L+MhIQhsBajDLnSuSHElYVA7GSU0MtJ0KIOiLvUZ9PoK2MYqvyk
- uipw==
+ d=1e100.net; s=20230601; t=1768603770; x=1769208570;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=FdpCekvKZL83qWf+bMVR8A5GN7sZrhO6Z8RZXKo7LBU=;
+ b=GPPkmEPlchRoq1sFfUo+QNYJ4Jb8oguzz0WNkvMY/2lOaoRE12hYk4y1l9ffhpXwoM
+ SiS72wcYKqajqkghyU00exeEqJuSti37RMxsjMg1WsvxF8HY9VoHrgYna6rMvVROUL+T
+ Pk338kD07cTa6OEO566Gd1HHAm0FMSax/PdQHGouGyXBwc79/U5DkJPEjn2Z7i6vvbjL
+ wReHPXJyoC5jp0fsPy59mmQgf0/C8mg5spsIHFCzW02oYgTJFgOj31Gdki34/Dq7Kzqi
+ 8+n++7vUk4klOfcUxfP+7DDUvWVQGTC5J2Zrj5vym+baKInV400MwgkEZd+8+0Eo7Wp0
+ MGjA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUAhd9E8ABJsgNiDe7pTHvfujI9Q1ny3HaM6L6AuQwyr8Fr67KvwcYC9iRWnfDFHUAoLtE5VRrXQYG0@nongnu.org
-X-Gm-Message-State: AOJu0Yxbr8suTejrLXuUYBsiuGG+c9Lg5k/J6Asf24/JMqPthdLXi6Mw
- kq2OJwVP1y5UP94ly/WFPVDheVR/5pCJfE78udLIYwTl60n2qUX5ZfU/MqzdON/q218=
-X-Gm-Gg: AY/fxX7B7oRRTbgQanF546mllB9xZwqIslqitIqgn/COIS/0khzIACIzwfgRIVELHAI
- j6b8/aoW+oogA2bcpLf/jS6MJSz0iFgUvZuvVajh/xqt9i7sJoTSf3d5SRuUHUUgJC+DsqEtFzY
- VJwnjYHOHtqWf4ixksth6lyD5NUayveEjhj3c4/hDeAUG+T0n4woUwdoJ8AaAr8+oElQRISR+oE
- tmMYN6yCFEiPuM92pDfLBeU2edyfLHWNC+GxtXmXHHgZ3gunhmAEKYqOxllGmeoNCHJwZjSdbnJ
- wb5ayq9VktsX4FvtjFWLDndjZB+2qPG7CooTXCqjRkAP7+SsUk8jD4VWCNbMPrVJJwZJzQ09fuM
- VLOwJ/UkLJUYuzefBNHrPC/sMEKq/OQ6sHP/a/de69CMINCizYZ7XHmx6a7PdvtOvgDVkMxcKFX
- odiSNMk1socR3RdNnpykx9Bi7rcE3Z073SbfC2thwP2uAmQg7No5+mIpTo
-X-Received: by 2002:a05:6a00:809:b0:81e:6d2d:90c9 with SMTP id
- d2e1a72fcca58-81fa036a13bmr4418600b3a.39.1768603728988; 
- Fri, 16 Jan 2026 14:48:48 -0800 (PST)
+ AJvYcCUtcX7dk/Ghugeiq4Kj5X/3/TxaaMFJvbuxiEyJSQHPngg6CfEuX8K3P1RvNIFO82bMRX3u8DNvquhv@nongnu.org
+X-Gm-Message-State: AOJu0Yx0R2ViIW9reY0JRn9A/rebn87YaaasXphyM9HEBWanH47S6Iq4
+ jWLSI2sMMYTqJuXuymjEVsuB1aloY/m9d1Qe6UR8Wxz4LmMdpnzK3aAEVWeC9VIF+gU=
+X-Gm-Gg: AY/fxX56MpJljM2I0bXp4sXE/I/d9m95kBs8pxX+gR5GC92sFHMjVwgyDLuKcx7Se+k
+ x9+e/bDovruHAkR0sdqFYxQNMAdYMKcWNiBtR6j8AJQM0uLTv64B5LdMsu+w00Vz+bip3/rGb0L
+ hepJrD4oRXfeUcWhlvhWOvlgDNLBfPu70XKn4GTZJjk9sOKUaLjc9jjkxMJ99xSAGLZqt6/tbvS
+ xcu6SKyZYjUhKegim7sFPuXW4wBBlbmf5vkMiS5bVB76O1oUK+44mcOLlD7y07fguBg6qkBh7cW
+ UPOIIUd9flSThUgBJikFGdyCPK7kCETxv3zSQtryZdQ49vddmwb2XblwrxIgBZtMO8MBZqLy8sQ
+ jQNmukXkuMoJK1th5CPJoYN3IAW/uaMW6UsUB+oSZIyHRWuu9LHkzF90jUchPXmfVS7nIqjXT/P
+ Dtk80oCjt4IeUC98uracy4TKE2fcAdulsbc/yR3w0CBphUVR4cy9WHn1Zl
+X-Received: by 2002:a05:6a21:a34a:b0:35d:53dc:cb57 with SMTP id
+ adf61e73a8af0-38dfe76d344mr4583788637.49.1768603770211; 
+ Fri, 16 Jan 2026 14:49:30 -0800 (PST)
 Received: from [192.168.1.87] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-81fa10cf1e6sm2884832b3a.26.2026.01.16.14.48.48
+ 41be03b00d2f7-c5edf354b3asm2836870a12.24.2026.01.16.14.49.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 16 Jan 2026 14:48:48 -0800 (PST)
-Message-ID: <6e8b7db2-fe09-4901-817d-21678c986ca4@linaro.org>
-Date: Fri, 16 Jan 2026 14:48:47 -0800
+ Fri, 16 Jan 2026 14:49:29 -0800 (PST)
+Message-ID: <7e8d19cb-723d-4d5c-821e-6ad25649c867@linaro.org>
+Date: Fri, 16 Jan 2026 14:49:29 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 52/58] target/s390x: Simplify atomicity check in do_csst
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: ktokunaga.mail@gmail.com, berrange@redhat.com, thuth@redhat.com,
- pbonzini@redhat.com, philmd@linaro.org
-References: <20260116033305.51162-1-richard.henderson@linaro.org>
- <20260116033305.51162-53-richard.henderson@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: Re: [PATCH v4 1/4] target/arm: Initialize AS 0 first
 Content-Language: en-US
+To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, richard.henderson@linaro.org, alex.bennee@linaro.org,
+ philmd@linaro.org, peter.maydell@linaro.org
+References: <20260116185814.108560-1-gustavo.romero@linaro.org>
+ <20260116185814.108560-2-gustavo.romero@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Autocrypt: addr=pierrick.bouvier@linaro.org; keydata=
  xsDNBGK9dgwBDACYuRpR31LD+BnJ0M4b5YnPZKbj+gyu82IDN0MeMf2PGf1sux+1O2ryzmnA
  eOiRCUY9l7IbtPYPHN5YVx+7W3vo6v89I7mL940oYAW8loPZRSMbyCiUeSoiN4gWPXetoNBg
@@ -111,18 +111,18 @@ Autocrypt: addr=pierrick.bouvier@linaro.org; keydata=
  5SYuJaKzCAgNeAy3gUVUUPrUsul1oe2PeWMFUhWKrqko0/Qo4HkwTZY6S16drTMncoUahSAl
  X4Z3BbSPXPq0v1JJBYNBL9qmjULEX+NbtRd3v0OfB5L49sSAC2zIO8S9Cufiibqx3mxZTaJ1
  ZtfdHNZotF092MIH0IQC3poExQpV/WBYFAI=
-In-Reply-To: <20260116033305.51162-53-richard.henderson@linaro.org>
+In-Reply-To: <20260116185814.108560-2-gustavo.romero@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42c.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -138,16 +138,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/15/26 7:32 PM, Richard Henderson wrote:
-> We should have used MO_{32,64} from the start, rather than
-> raw integer constants.  However, now that the CONFIG_ATOMIC64
-> test has been removed, we can remove the 'max' variable and
-> simplify the two blocks.
+On 1/16/26 10:58 AM, Gustavo Romero wrote:
+> Move the initialization of AS of index 0 (ARMASIdx_NS) so it happens
+> before the initialization of the other address spaces. This is purely a
+> code organization change with no effect on behavior.
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+> Suggested-by: Alex Bennée <alex.bennee@linaro.org>
 > ---
->   target/s390x/tcg/mem_helper.c | 11 ++++-------
->   1 file changed, 4 insertions(+), 7 deletions(-)
+>   target/arm/cpu.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
