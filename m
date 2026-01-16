@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77BC5D304C7
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:22:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA8D0D304E3
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:23:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vghtS-0005un-MY; Fri, 16 Jan 2026 06:21:30 -0500
+	id 1vghtZ-0006sr-PV; Fri, 16 Jan 2026 06:21:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghtP-0005k5-VS
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:21:28 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghtW-0006ip-Nx
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:21:35 -0500
+Received: from mail-wr1-x442.google.com ([2a00:1450:4864:20::442])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghtO-0007N7-94
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:21:27 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-480142406b3so8870255e9.1
- for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 03:21:25 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghtV-0007Ne-4r
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:21:34 -0500
+Received: by mail-wr1-x442.google.com with SMTP id
+ ffacd0b85a97d-432dc56951eso1238901f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 03:21:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768562484; x=1769167284; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768562491; x=1769167291; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=AJ2C+J8W/PdiTCId1bKgsQdGDEMoeG3PAJYMq0CzxlY=;
- b=SBTe1RPYssJanDDyMgFnwKabv/SclOjIh6968RSajgRnGb+0xause2ulDkUEt+qUoa
- 0ED3yYxYanLrtcbHwUv6tX5s//Q9rr/RksEV9R4+JOxJqJp1wLvhXOdCr3cblsufXnJ0
- OWchZ6ezBh0OJNkLQA2L2pwxVDWQUq/BrmyjV6FKXGNx5kdaHvMuCfWacqTRw4D+uDzX
- BYmab5KY/kLavA4XEsfwQ9tqfeGKMvacXRIFOeN92oy3fAhc36NaSIu6R8yZkemMuli5
- Hm0535pHjMLH9b//b2Z34qkQVSka4paKMYC0UunuRjEKJQ5SYQ72pgUTA5YPIFLwuyU1
- mbcg==
+ :reply-to; bh=hYBppovx5aTKboLp6qMxPvKWQRGV5NsjKuRsihbv0cc=;
+ b=WSxUESZwOcYUEZDb1iG2HEp04ik0dSm/xMAG7YEthY0M/uAZffBUNOE6L55UJz29ZZ
+ bo+galtlegvHPhRKlqSB5LLNg6XQl6Vys1faNemkFroy5vW8P7BSy/fqhtjmlrn7ywBo
+ B0E6w+aiDhpRsMTJZbrLNYA6f1EXlyiG7BVcEAv7LAwMbON7oAvM5lZsxq51/0Kf4bR0
+ A9zuP1dceYEMZ0eNrA6JkWZNq2Vxrt/ncvjXTp/YuAX8m9ABe68qTxjynfqguC9pfG6F
+ 0i2Idrm8tiPhNUp9AW95tWugz5X0UvHQdGfQPDZ487VWbSFJxL2WIzFeK6cmNc6CQM9v
+ 6OPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768562484; x=1769167284;
+ d=1e100.net; s=20230601; t=1768562491; x=1769167291;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=AJ2C+J8W/PdiTCId1bKgsQdGDEMoeG3PAJYMq0CzxlY=;
- b=VK7xSPLncecDh16IQsZkEWAkPw+0jwsdJCvGz7hyFtyJAepqF0w1srilz4iRAzb0zG
- x67YJoYc10oe6zsU6qWQ+SpMweculwE+HvkiKMXPo/uLC6TCT13ioCGJbm10uyf/7YuH
- 4J2LAl9M/QqL4CzqUkviHIgeNuQRIMTAgiTE07GHJDV2x9GbsJ/U/qOBrIzYp8DhT1MH
- w47ihunuxxmsssA5zKhuL+8hxGLqCPMiTRBX+32vJpS1ZMUCuvE36lLbf4Lc1cM3EAj6
- yij9SI48tEh01rfw4ODlnyvelG+XOEPUXSqrL1ybw7grytmHtgxG696xckV/vBnwm3Eo
- liZA==
-X-Gm-Message-State: AOJu0YxXcnnRlwrzsrX7JvME7JzgNj8hsoUxh24eX7YdgTsPRPejh32N
- vQS56TDBH2K5MGRkexh7L99fTej7LEMLsf0qE0EqhmI1Bv6QVRv+mvY/FaW1xsvHvlumc0TwIpo
- oGwOnAAM=
-X-Gm-Gg: AY/fxX68voSg+GxDFD1GEqwOletFpe8LSl+wbrBO7eMEKob73rFshOV9VutDWjN7l+P
- j821kUameCbLL8HWnaz0G/jcLD04OHnSuhcPMU68qNriBVTxRB6Lg7/36I+jeGbbeAmYcw6Ooke
- jlykFFLQ4r5tWw/NcYI///nSxnzIbXf0L4j5EXODKMd2hrmqcx5D+3in/ZI80VjVMqNJEXGzIVY
- MzdCksS7ITzPmoHJw1wkKKM/dH/a6Z80DOGBuAHZVw4Hogljr///Ta6dmfabgjPj8YHkCAFX7Cb
- SlfjvTf7a9PxlX/ZGMKioQ/fkJoHAy4YQh85O7mYhPOogJ3rqzez+b43vRSB1U5WCeEikjra5BZ
- JTOlhE4iJIbD/izPFMCJfQnO85NuX3RUW4tCWqAIw4jN3053FbyQatuPyHpHR7C34KiIUNykTCh
- RKz7wZsTTJTYAzc/HzZvXfVOC8teFN8e0yE0NsxjPBY/1Awyu6Mn/zBUu7bm9S
-X-Received: by 2002:a05:600c:1986:b0:475:da1a:53f9 with SMTP id
- 5b1f17b1804b1-4801e30ba86mr32955375e9.14.1768562484476; 
- Fri, 16 Jan 2026 03:21:24 -0800 (PST)
+ bh=hYBppovx5aTKboLp6qMxPvKWQRGV5NsjKuRsihbv0cc=;
+ b=fn2kheec8HpRvnkJpLwQkLNgEwcB54mE4dOrdBIsU3/ai38u/tuPxa68ykcTnOngbX
+ mMGKiQcE0kgm+rbSQmnazd7PB0w/RcagyJV/lfr1bBHlSPuPtlZqh9jsgVm3+8smS/jP
+ Fv+b+B8LhNt/6xKDXIQ70RNBCYqzvTBPC83AfsFkKsnx2dXpDl3jVyI5nPlz9DAejFEi
+ IGuESsOC3lVnqhLHFH1Q3a58bHAY9oFbDohOxnQv6UTRIkoQfXNu1PyQ6Piqz1gYTqsK
+ 1Qk9VMEpRIvl5dZP4xunDb+6hhO72gpQ6YKTVIjeSISbFvM9Cs8Tr4hwhT3G5x0sopR3
+ teog==
+X-Gm-Message-State: AOJu0YzUtLnf/ujo+Pk7WDg5c9aektOI8eclX6ABapld8sHnClOHGOA6
+ zGvzAtjkBao8Ey+uUQsCexp9cp2ZorAr7T/NreIRMCyXWWF6RYRQo5jf6UdxYpeECmhCBfLd/Vh
+ khoe7y1A=
+X-Gm-Gg: AY/fxX6r0vD0qw3kyMr9l5aQMen8k0ZPq0KZYg3opypwMwYx1y6q5QDrZHzbzXg2H0y
+ Kl2zWSuBJ3MOH3YYJHkz+XtXLqPkrqOZwx3+ymy4au3El468dS4x25YCti2tW3DzHAmk3c7a8ur
+ EswxIaTf79eb+31R7wyn47Hu/Y0XEyN8HVPxCWfxY5EgQg3CC4Z+L+X1k18WgXQj2tYW/Smr7vC
+ NVRyVOxNy6pumgE87f9YeOiuHiH7Z4RP8emBOcCDH4vaoP1Y9RNbVlJZ5Lo092de85lz/fqhvPw
+ CNnWDibxd6kP0hcaIfpAHDRGzncJzmCrL4fevyDLVGmA91ZzbFnH/NBb7eyhnfU7f5PzRM4qMV3
+ zueCKXWOIMiXG1JKcLSi3SurVWdKfqE1FSoldhr0tSDO6eeqc0zUj+mwb62S4C7u2sqKZyBn6ce
+ tmpWuxPwnpdI7AjFe4VINvbSnN4AVjrFbBjuCXoJCRaPILVnRk8cWn5zINXWEm
+X-Received: by 2002:a05:6000:2389:b0:430:fd9f:e6e2 with SMTP id
+ ffacd0b85a97d-4356996f593mr2867406f8f.9.1768562491069; 
+ Fri, 16 Jan 2026 03:21:31 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-43569926648sm4781082f8f.10.2026.01.16.03.21.23
+ ffacd0b85a97d-4356996d02dsm4581186f8f.23.2026.01.16.03.21.30
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 16 Jan 2026 03:21:24 -0800 (PST)
+ Fri, 16 Jan 2026 03:21:30 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 29/30] target/i386/nvmm: Include missing ramlist.h header
-Date: Fri, 16 Jan 2026 12:18:06 +0100
-Message-ID: <20260116111807.36053-30-philmd@linaro.org>
+Subject: [PULL 30/30] tests/functional: Require TCG to run reverse debugging
+ tests
+Date: Fri, 16 Jan 2026 12:18:07 +0100
+Message-ID: <20260116111807.36053-31-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260116111807.36053-1-philmd@linaro.org>
 References: <20260116111807.36053-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::442;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x442.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,48 +97,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+Record/replay is specific to TCG. Require it to avoid failure
+when using a HVF-only build on Darwin:
 
-Compiling on NetBSD currently fails with:
+  qemu-system-aarch64: -icount shift=7,rr=record,rrfile=/scratch/replay.bin,rrsnapshot=init: cannot configure icount, TCG support not available
 
- ../src/target/i386/nvmm/nvmm-all.c:1136:22: error: unknown type name 'RAMBlockNotifier'
-  1136 | nvmm_ram_block_added(RAMBlockNotifier *n, void *host, size_t size,
-       |                      ^~~~~~~~~~~~~~~~
- ../src/target/i386/nvmm/nvmm-all.c:1152:15: error: variable 'nvmm_ram_notifier' has initializer but incomplete type
-  1152 | static struct RAMBlockNotifier nvmm_ram_notifier = {
-       |               ^~~~~~~~~~~~~~~~
- ../src/target/i386/nvmm/nvmm-all.c:1153:6: error: 'struct RAMBlockNotifier' has no member named 'ram_block_added'
-  1153 |     .ram_block_added = nvmm_ram_block_added
-       |      ^~~~~~~~~~~~~~~
- ../src/target/i386/nvmm/nvmm-all.c:1153:24: error: 'nvmm_ram_block_added' undeclared here (not in a function)
-  1153 |     .ram_block_added = nvmm_ram_block_added
-       |                        ^~~~~~~~~~~~~~~~~~~~
-
-Include the right header to get this fixed.
-
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Acked-by: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <20260114083812.18496-1-thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Message-ID: <20260115161029.24116-1-philmd@linaro.org>
 ---
- target/i386/nvmm/nvmm-all.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/functional/reverse_debugging.py | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/target/i386/nvmm/nvmm-all.c b/target/i386/nvmm/nvmm-all.c
-index f808828d492..8a1af35ed32 100644
---- a/target/i386/nvmm/nvmm-all.c
-+++ b/target/i386/nvmm/nvmm-all.c
-@@ -16,6 +16,7 @@
- #include "system/nvmm.h"
- #include "system/cpus.h"
- #include "system/memory.h"
-+#include "system/ramlist.h"
- #include "system/runstate.h"
- #include "qemu/main-loop.h"
- #include "qemu/error-report.h"
+diff --git a/tests/functional/reverse_debugging.py b/tests/functional/reverse_debugging.py
+index 8b9507674a0..8e6f0b0e923 100644
+--- a/tests/functional/reverse_debugging.py
++++ b/tests/functional/reverse_debugging.py
+@@ -67,6 +67,8 @@ def vm_get_icount(vm):
+     def reverse_debugging(self, gdb_arch, shift=7, args=None, big_endian=False):
+         from qemu_test import GDB
+ 
++        self.require_accelerator("tcg")
++
+         # create qcow2 for snapshots
+         self.log.info('creating qcow2 image for VM snapshots')
+         image_path = os.path.join(self.workdir, 'disk.qcow2')
 -- 
 2.52.0
 
