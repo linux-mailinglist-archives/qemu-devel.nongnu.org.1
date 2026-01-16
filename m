@@ -2,29 +2,29 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3073D2D50C
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 08:39:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3337CD2D4A9
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 08:36:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgeOO-00037f-K7; Fri, 16 Jan 2026 02:37:12 -0500
+	id 1vgeIk-0000Tu-Lt; Fri, 16 Jan 2026 02:31:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vgeNt-0002h7-Gc
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 02:36:41 -0500
+ id 1vgeIP-0000AH-SA
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 02:31:06 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vgeNr-00079q-7D
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 02:36:41 -0500
+ id 1vgeIN-0005b7-Nf
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 02:31:01 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Fri, 16 Jan
- 2026 15:30:24 +0800
+ 2026 15:30:25 +0800
 Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Fri, 16 Jan 2026 15:30:24 +0800
+ Transport; Fri, 16 Jan 2026 15:30:25 +0800
 To: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Thomas Huth
  <thuth@redhat.com>, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, Richard Henderson
@@ -33,10 +33,12 @@ To: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Thomas Huth
  list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <kane_chen@aspeedtech.com>, <nabihestefan@google.com>, <komlodi@google.com>
-Subject: [PULL 0/3] Update vbootrom image to commit 1c8e9510b22c
-Date: Fri, 16 Jan 2026 15:30:18 +0800
-Message-ID: <20260116073024.3485812-1-jamin_lin@aspeedtech.com>
+Subject: [PULL 1/3] MAINTAINERS: Update ASPEED entry
+Date: Fri, 16 Jan 2026 15:30:19 +0800
+Message-ID: <20260116073024.3485812-2-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260116073024.3485812-1-jamin_lin@aspeedtech.com>
+References: <20260116073024.3485812-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -65,35 +67,29 @@ From:  Jamin Lin via qemu development <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit c1c58cee16380f81f88fbde6b12f247b376839e2:
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+---
+ MAINTAINERS | 2 ++
+ 1 file changed, 2 insertions(+)
 
-  Merge tag 'pull-target-arm-20260115' of https://gitlab.com/pm215/qemu into staging (2026-01-16 09:33:20 +1100)
-
-are available in the Git repository at:
-
-  https://github.com/jamin-aspeed/qemu.git tags/pull-vbootrom-20260116
-
-for you to fetch changes up to 107253db5886ec9c0173ffdcb1671a51695a20d5:
-
-  pc-bios: Update vbootrom image to commit 1c8e9510b22c (2026-01-16 15:09:53 +0800)
-
-----------------------------------------------------------------
-vbootrom update pull request
-
-----------------------------------------------------------------
-
-Jamin Lin (3):
-  MAINTAINERS: Update ASPEED entry
-  roms/vbootrom: Update to commit 1c8e9510b22c
-  pc-bios: Update vbootrom image to commit 1c8e9510b22c
-
- MAINTAINERS                 |   2 ++
- pc-bios/ast27x0_bootrom.bin | Bin 16408 -> 28564 bytes
- pc-bios/npcm7xx_bootrom.bin | Bin 672 -> 736 bytes
- pc-bios/npcm8xx_bootrom.bin | Bin 672 -> 672 bytes
- roms/vbootrom               |   2 +-
- 5 files changed, 3 insertions(+), 1 deletion(-)
-
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 4ddbfba9f0..28046b457a 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1248,11 +1248,13 @@ F: hw/net/ftgmac100.c
+ F: include/hw/net/ftgmac100.h
+ F: docs/system/arm/aspeed.rst
+ F: docs/system/arm/fby35.rst
++F: docs/specs/aspeed*
+ F: tests/functional/*/*aspeed*
+ F: tests/*/*aspeed*
+ F: tests/*/*ast2700*
+ F: hw/arm/fby35.c
+ F: pc-bios/ast27x0_bootrom.bin
++F: roms/vbootrom
+ 
+ NRF51
+ M: Joel Stanley <joel@jms.id.au>
 -- 
 2.43.0
 
