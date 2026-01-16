@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01E0AD2AD29
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 04:36:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C50BD2AD1D
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 04:36:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgacI-0001Ko-34; Thu, 15 Jan 2026 22:35:18 -0500
+	id 1vgacL-0001S1-3z; Thu, 15 Jan 2026 22:35:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vgacF-0001E0-6v
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:35:15 -0500
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1vgacI-0001OF-Jn
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:35:18 -0500
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vgacD-0006Cf-Hk
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:35:14 -0500
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-81f4e136481so759607b3a.3
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 19:35:13 -0800 (PST)
+ id 1vgacH-0006EB-1A
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:35:18 -0500
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-81f478e5283so1397737b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 19:35:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768534512; x=1769139312; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768534516; x=1769139316; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=E3quorIoavgbRlUqCdA1N/hSlFNVi1G5ba+Ci7qX808=;
- b=pfyU9a21JgUnqLfct2YKiqnaK/0y23xZSXgQMM6jrPW2rMA7QjPqLwvhzfAlITqYRh
- nOnn33BWLhQzLji3oTkVZIMtzTWErbJaDy7XJSaplR3qpI0QUQxlg8wfaFKPPBJcv1+x
- wObn9wmAqlTyC2TW+CloilYdr1Pxw+jcPUgOvFEj14TaZ6dhMSo+lf0hCCrrrAj02QL8
- lQr9FX70DmmlbSqEY0UDYqJbJ0FHyYyacE3euG7zVWvshXQWbxhQs7Te9wOL1eQ4+Tvq
- bLZR8rZvhkXhany/CkcRCRmOtwlcTNbgOC4aFFnIVe481+IgUL7ZW2Q2Qh0WH33Gfm6e
- Jdsw==
+ bh=rGBrEuQ4ySeYQyQaMh9vioeyRGMPOCdt+8viJgwwXN0=;
+ b=A7WtctokLym5FwhdMzbnZXHgkTlVX2iEldYrXiNQ3zLz7SqgmdOIjBnILa5EHD+oKX
+ gfcI671aIl0S9sR+FtlnSq+ioDbLCITEC0oUSTckdU1tO8DjZ1RxB//ZlI4OFsThUbte
+ DUwj+/Q4sKqONKg86BwOmOoXdn5ZLyLREZA0qypB6rt+8dyVMXt2LGBialR+o8oKkiHW
+ p3lm2HArrS/I7X1U9Id9wS4JYbflKQlQVfv4lz1jnSo/E/Kv+W+Aqr9LaOi+96ldXtmG
+ gRiz/5LGfM/b20Gpap4ZPCtxcjTQPQmp3UTcxvyi37FoVlWC3QeOmRQtlViNOU5+I86p
+ jzIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768534512; x=1769139312;
+ d=1e100.net; s=20230601; t=1768534516; x=1769139316;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=E3quorIoavgbRlUqCdA1N/hSlFNVi1G5ba+Ci7qX808=;
- b=xLRbT5H6+ramZbmL+YdB5KjytyBvVjNlbbDWYmMSz9GmvM/HMYIrHshPtjPEcq3ByJ
- 6Mr1MFQijwxKgbhvrN4APLyyZ7ntlaGcCbrE8llOV0EeFa6sygh7t9+0QjCRJF6TYJWz
- 2UB/uqLOP1pmwzmIz13hkHvnrhyj6A2M0gSDLjkb8zw44epnP5R5QG62e/n/C3vHOFSu
- b3bxVYAu3eLRjrqolu5ri0jsTcZtbMqE3WWDnsRh42IZFnmL8gT31OXmiFCQnu7uOBcE
- GL/wdA0QX6FWKA0Q3aYGhyFOXk+uWmnU+g8M3UwrXhXaBxSw8ByjT7YZK7ouavYQCvlF
- HCvQ==
-X-Gm-Message-State: AOJu0Yy/9qmNn5YXkbUo/07iLp1ceXsMKmqVH0rJunaJh4Id4VMVt56w
- XoV+B91LpmNv7R33GnV99dv6/Se2MsiLdDo2pEJz/z1Dkv9L59KOwOrNoyC5NGjYxvGPm9dDwPj
- NU9b/ggnC7Q==
-X-Gm-Gg: AY/fxX6b9Lz16oa+bqhJ7bUq0yyKJPBLz2sxdCO3BDF9XLXuwvWP1cgMuksA9eqqPle
- TMLyjpC7SJYPJyQnOgxcripHg4TlP+zIdNzKKm5/WU6Vtlpm1h/dn3gOcp5pTGrrQuhBPfsoiol
- FXLxjMgGl3DBuDq1lcBq6FQid4WTkK7WR6ZDp9nUlCAvidP9gTA4EEMSgoWfjge2at4lbrZXliC
- br6WXguS5sS5o8lZBZMxpwi3Hnb/SgGLfm/tUmYfIbmpuQDyxOtQkm6yWdSTMgsEgrpsr29fweK
- ln/f5vkF02LP6pWVQ+L41L/gwU1ZoEwm3oAsRQXXxzaJN12EgZ8VscJnDvZilQyZtrH5gFzpEfs
- z1WLlIqJpgBHnSJ4pi3+I1F59YJVUzNmxPp3GuzIeppy1T68ouCtqcvwSKChqJorUypzYusrbCP
- +oOxJ7EjS/oV1b6KlqTw==
-X-Received: by 2002:a05:6a00:3e0e:b0:81f:40e5:34c1 with SMTP id
- d2e1a72fcca58-81fa18820f8mr1177177b3a.64.1768534512078; 
- Thu, 15 Jan 2026 19:35:12 -0800 (PST)
+ bh=rGBrEuQ4ySeYQyQaMh9vioeyRGMPOCdt+8viJgwwXN0=;
+ b=ZtoLdhqQzMAkBv9SH3ztE1aA1B5k1S95I3VY8XzA3dHqCPrhc9jvCalLvPL0C3pi0U
+ 44EcGks6eWvs0fyGwgt3StLaDiyOSGbTjZqM1jpeC0dSqhENJijkQe8sqx2l5fXY+iCU
+ wnIJ/jaSD6JHdw66013vUtuXBeZqdQVvusWJpbKUL8puensMrqcYbzuFE1WxtZB4OoEP
+ ZkwobP5NuLFbMoW8MzU1NyiDVio9G4++u1y/BZiofQhBJpVN+isvLEQXKDzTwz5IMOQB
+ J56esnfzT78df+FWWqqKvc3UXbLk0+fmoIBRwO0ST3XoeTVVFCty/NXvtqt5KRyCKDt+
+ GT4w==
+X-Gm-Message-State: AOJu0Yyi6vkgvfrRKcZRc7+IzhA4CpApy0tkDx2OBPWFwjgSqh8YzYYQ
+ 9SvN4BOMn1IPBo8MHqytD0F0jJ6ZGUwaHx/KN/N27x0E7P+sKK02RVO7lFpHO/6J70T01nwyWiV
+ 05kZAfikVhA==
+X-Gm-Gg: AY/fxX7UnUWa0Haj8x8O86rmiGBbYSMwlN6s+wPMOuL7I/2FJUqKzN56UjMdXbPJqTU
+ hRWd/yAKGc0qSCeZhcN3+CapT1Z/RFMNqpbLGraMB6++9G8aSzZsu66T/6naofOQcFp/iHAllJm
+ 0wG4h+qfOT22QBaTzrmEdGVk1s90yeEQW6j1h4qr18krwA+uMZ57fusN9sif/8xiBYHueXdZOlq
+ KxpvrtiFGIpXEMuZ5wD3IpdNHGLqUgl1fhxkrkgg0IaaixlC+J9TKKn9+1pBwskH6/oQ/vyZ+cX
+ UyGVEWzuNGJb1W+mwKxJCC6+jJQ6MEhH4nPjc4VhrL7oWgjlCBmyJ4megaY1jyZVlC0MCVsQFqj
+ RA7Q6YbAfRndHyA4b4/FsaICBFOtbaT1EiGmOhfatNbHkTdZX/Bb3wDWv3c4ZHYf7k/xguc+J//
+ pTxrCDeSaEykmK+p0e+QRl2QWzL9pt
+X-Received: by 2002:a05:6a00:4517:b0:81e:8e66:38eb with SMTP id
+ d2e1a72fcca58-81fa03cd847mr1536188b3a.63.1768534515617; 
+ Thu, 15 Jan 2026 19:35:15 -0800 (PST)
 Received: from stoup.. ([180.233.125.201]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-81fa12b5c67sm683372b3a.69.2026.01.15.19.35.08
+ d2e1a72fcca58-81fa12b5c67sm683372b3a.69.2026.01.15.19.35.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Jan 2026 19:35:11 -0800 (PST)
+ Thu, 15 Jan 2026 19:35:15 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: ktokunaga.mail@gmail.com, berrange@redhat.com, pierrick.bouvier@linaro.org,
  thuth@redhat.com, pbonzini@redhat.com, philmd@linaro.org
-Subject: [PATCH v2 30/58] tcg/tci: Remove glue TCG_TARGET_REG_BITS renames
-Date: Fri, 16 Jan 2026 14:32:36 +1100
-Message-ID: <20260116033305.51162-31-richard.henderson@linaro.org>
+Subject: [PATCH v2 31/58] tcg: Drop TCG_TARGET_REG_BITS test in region.c
+Date: Fri, 16 Jan 2026 14:32:37 +1100
+Message-ID: <20260116033305.51162-32-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260116033305.51162-1-richard.henderson@linaro.org>
 References: <20260116033305.51162-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,57 +98,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/tci.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ tcg/region.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/tcg/tci.c b/tcg/tci.c
-index f71993c287..29ecb39929 100644
---- a/tcg/tci.c
-+++ b/tcg/tci.c
-@@ -26,11 +26,6 @@
- #include <ffi.h>
+diff --git a/tcg/region.c b/tcg/region.c
+index 2181267e48..5d4be1453b 100644
+--- a/tcg/region.c
++++ b/tcg/region.c
+@@ -464,17 +464,6 @@ static size_t tcg_n_regions(size_t tb_size, unsigned max_threads)
+  */
+ #define MIN_CODE_GEN_BUFFER_SIZE     (1 * MiB)
  
- 
--#define ctpop_tr    glue(ctpop, TCG_TARGET_REG_BITS)
--#define deposit_tr  glue(deposit, TCG_TARGET_REG_BITS)
--#define extract_tr  glue(extract, TCG_TARGET_REG_BITS)
--#define sextract_tr glue(sextract, TCG_TARGET_REG_BITS)
--
+-#if TCG_TARGET_REG_BITS == 32
+-#define DEFAULT_CODE_GEN_BUFFER_SIZE_1 (32 * MiB)
+-#ifdef CONFIG_USER_ONLY
+-/*
+- * For user mode on smaller 32 bit systems we may run into trouble
+- * allocating big chunks of data in the right place. On these systems
+- * we utilise a static code generation buffer directly in the binary.
+- */
+-#define USE_STATIC_CODE_GEN_BUFFER
+-#endif
+-#else /* TCG_TARGET_REG_BITS == 64 */
+ #ifdef CONFIG_USER_ONLY
  /*
-  * Enable TCI assertions only when debugging TCG (and without NDEBUG defined).
-  * Without assertions, the interpreter runs much faster.
-@@ -525,7 +520,7 @@ uintptr_t QEMU_DISABLE_CFI tcg_qemu_tb_exec(CPUArchState *env,
-             break;
-         case INDEX_op_ctpop:
-             tci_args_rr(insn, &r0, &r1);
--            regs[r0] = ctpop_tr(regs[r1]);
-+            regs[r0] = ctpop64(regs[r1]);
-             break;
-         case INDEX_op_addco:
-             tci_args_rrr(insn, &r0, &r1, &r2);
-@@ -639,15 +634,15 @@ uintptr_t QEMU_DISABLE_CFI tcg_qemu_tb_exec(CPUArchState *env,
-             break;
-         case INDEX_op_deposit:
-             tci_args_rrrbb(insn, &r0, &r1, &r2, &pos, &len);
--            regs[r0] = deposit_tr(regs[r1], pos, len, regs[r2]);
-+            regs[r0] = deposit64(regs[r1], pos, len, regs[r2]);
-             break;
-         case INDEX_op_extract:
-             tci_args_rrbb(insn, &r0, &r1, &pos, &len);
--            regs[r0] = extract_tr(regs[r1], pos, len);
-+            regs[r0] = extract64(regs[r1], pos, len);
-             break;
-         case INDEX_op_sextract:
-             tci_args_rrbb(insn, &r0, &r1, &pos, &len);
--            regs[r0] = sextract_tr(regs[r1], pos, len);
-+            regs[r0] = sextract64(regs[r1], pos, len);
-             break;
-         case INDEX_op_brcond:
-             tci_args_rl(insn, tb_ptr, &r0, &ptr);
+  * As user-mode emulation typically means running multiple instances
+@@ -490,7 +479,6 @@ static size_t tcg_n_regions(size_t tb_size, unsigned max_threads)
+  */
+ #define DEFAULT_CODE_GEN_BUFFER_SIZE_1 (1 * GiB)
+ #endif
+-#endif
+ 
+ #define DEFAULT_CODE_GEN_BUFFER_SIZE \
+   (DEFAULT_CODE_GEN_BUFFER_SIZE_1 < MAX_CODE_GEN_BUFFER_SIZE \
 -- 
 2.43.0
 
