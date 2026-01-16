@@ -2,82 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E249D33720
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 17:19:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46A8CD337A0
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 17:25:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgmWp-0000rB-VE; Fri, 16 Jan 2026 11:18:29 -0500
+	id 1vgmbu-0002fn-NJ; Fri, 16 Jan 2026 11:23:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vgmWc-0000nh-I8
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 11:18:14 -0500
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1vgmb1-0002Sg-VK; Fri, 16 Jan 2026 11:22:51 -0500
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vgmWa-0005Sw-GB
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 11:18:14 -0500
-Received: from [192.168.10.110] (p865013-ipoe.ipoe.ocn.ne.jp [153.242.222.12])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 60GGGinu010611
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Sat, 17 Jan 2026 01:17:12 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=u9pVgkMP4NgwsmM9D/ByUQ6Jj7PVyDSQvI4cyQB1oL4=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=Message-ID:Date:Subject:To:From;
- s=rs20250326; t=1768580232; v=1;
- b=NKlSTV/ZtReH6WHtOLpBHdbcwiV+08SHKiQxtTBfP8NcNmNBc8YJM4Ak644uA8hC
- V3W16WtE7wKZ6KjdujdnkyDichX3C89be0sqTdQt1+aRIUdrF82VSNnsWeMsXnic
- LekqmRomMxr4Or0G//YDqcl2hLU+ajMx5Y6WWeUXriC02MIfZVwDcqcejzlUvEdE
- V8urZXphGPSE3wOkbgRgTxRJEB0eprFHm0Myf6eqXD77p2gP/G78M2eMBYmCM6+G
- bX0AVeQfwzimdDBVsE4X/HzjF7wTBOv3uxyQ7fbSav35IsfJ2TSU+FnmVyz8iDKJ
- f7wDKh1QvtUh2g3iKEVZmg==
-Message-ID: <8096931e-65cd-492e-b26f-ec439bd8ac0e@rsg.ci.i.u-tokyo.ac.jp>
-Date: Sat, 17 Jan 2026 01:17:03 +0900
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1vgmat-0006M7-EC; Fri, 16 Jan 2026 11:22:41 -0500
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id EB86247727;
+ Fri, 16 Jan 2026 17:22:35 +0100 (CET)
+Message-ID: <57bc5da0-5889-43dd-ab53-635363583b5c@proxmox.com>
+Date: Fri, 16 Jan 2026 17:22:34 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v9 4/5] virtio-gpu: Destroy virgl resources on
- virtio-gpu reset
-To: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Huang Rui <ray.huang@amd.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Yiwei Zhang <zzyiwei@gmail.com>,
- Sergio Lopez Pascual <slp@redhat.com>
-Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
- Gurchetan Singh <gurchetansingh@chromium.org>, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>,
- Julia Zhang <julia.zhang@amd.com>, Chen Jiqian <Jiqian.Chen@amd.com>,
- Rob Clark <robdclark@gmail.com>, Robert Beckett <bob.beckett@collabora.com>
-References: <20260112225246.3526313-1-dmitry.osipenko@collabora.com>
- <20260112225246.3526313-5-dmitry.osipenko@collabora.com>
- <98a2cbaa-582d-43bf-b59a-7a0e75c486d5@rsg.ci.i.u-tokyo.ac.jp>
- <a00c0a85-be88-449f-bdde-0f49ebc0a7f9@collabora.com>
+Subject: Re: [PATCH v6 14/15] block/io_uring: use aio_add_sqe()
+To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, eblake@redhat.com,
+ Hanna Czenczek <hreitz@redhat.com>, qemu-block@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ hibriansong@gmail.com
+References: <20251104022933.618123-1-stefanha@redhat.com>
+ <20251104022933.618123-15-stefanha@redhat.com>
 Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <a00c0a85-be88-449f-bdde-0f49ebc0a7f9@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
+From: Fiona Ebner <f.ebner@proxmox.com>
+In-Reply-To: <20251104022933.618123-15-stefanha@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
+X-Bm-Transport-Timestamp: 1768580505689
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,39 +61,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2026/01/16 22:08, Dmitry Osipenko wrote:
-> On 1/13/26 07:47, Akihiko Odaki wrote:
->>> +void virtio_gpu_virgl_resource_destroy(VirtIOGPU *g,
->>> +                                       struct
->>> virtio_gpu_simple_resource *base,
->>> +                                       Error **errp)
->>
->> An error reporting rule described in include/qapi/error.h requires
->> functions that use Error to return a value indicating success or failure.
->>
->> For this particular case, I think it can simply return what
->> virtio_gpu_virgl_resource_unref() returns, without having errp.
-> 
-> The error reporting arg is added here because resource_destroy()
-> callback of VirtIOGPUClass requires it:
-> 
-> ```
-> vgc->resource_destroy = virtio_gpu_virgl_resource_destroy;
-> ```
+Hi,
 
-I missed that line. That is my fault.
+Am 04.11.25 um 5:11 AM schrieb Stefan Hajnoczi:
+> AioContext has its own io_uring instance for file descriptor monitoring.
+> The disk I/O io_uring code was developed separately. Originally I
+> thought the characteristics of file descriptor monitoring and disk I/O
+> were too different, requiring separate io_uring instances.
+> 
+> Now it has become clear to me that it's feasible to share a single
+> io_uring instance for file descriptor monitoring and disk I/O. We're not
+> using io_uring's IOPOLL feature or anything else that would require a
+> separate instance.
+> 
+> Unify block/io_uring.c and util/fdmon-io_uring.c using the new
+> aio_add_sqe() API that allows user-defined io_uring sqe submission. Now
+> block/io_uring.c just needs to submit readv/writev/fsync and most of the
+> io_uring-specific logic is handled by fdmon-io_uring.c.
+> 
+> There are two immediate advantages:
+> 1. Fewer system calls. There is no need to monitor the disk I/O io_uring
+>    ring fd from the file descriptor monitoring io_uring instance. Disk
+>    I/O completions are now picked up directly. Also, sqes are
+>    accumulated in the sq ring until the end of the event loop iteration
+>    and there are fewer io_uring_enter(2) syscalls.
+> 2. Less code duplication.
+> 
+> Note that error_setg() messages are not supposed to end with
+> punctuation, so I removed a '.' for the non-io_uring build error
+> message.
+> 
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> Reviewed-by: Eric Blake <eblake@redhat.com>
 
-> 
-> The include/qapi/error.h says "Whenever practical, also return a value
-> that indicates success / failure". Hence, the returned value is optional.
-> 
-> I don't quite see how errp can be avoided.
-> 
-> Perhaps you're meaning to add virtio_gpu_gl_resource_destroy() that will
-> be local to virtio-gpu-gl.c. Will change this in v10, otherwise please
-> clarify more your suggestion.
+after commit 047dabef97 ("block/io_uring: use aio_add_sqe()") using
+'aio=io_uring' for an 'ide-hd' drive becomes prohibitively slow: for me,
+a Debian 12 guest [0] won't even reach the GRUB menu after multiple
+minutes. Using aio=threads makes the issue go away, as does building
+from the previous commit, i.e. 1eebdab3c3 ("aio-posix: add aio_add_sqe()
+API for user-defined io_uring requests"). The issue still exists on
+current master.
 
-Let's keep this way. The error handling infrastructure intentionally 
-allows to specify NULL when you don't care the error, so we don't need 
-another function to dismiss the error.
+There are lots and lots of 512 byte read requests. MAX_BUFFERED_REQS in
+ide_buffered_readv() is only 16, maybe that has something to do with it?
+Haven't had the time to dig into the issue yet, and wasn't able to
+reproduce with 'qemu-img bench' or something other than 'ide-hd'.
+
+Best Regards,
+Fiona
+
+[0]:
+> ./qemu-system-x86_64 \
+>   -accel kvm \
+>   -chardev 'socket,id=qmp,path=/var/run/qemu-server/500.qmp,server=on,wait=off' \
+>   -mon 'chardev=qmp,mode=control' \
+>   -pidfile /var/run/qemu-server/500.pid \
+>   -nodefaults \
+>   -vnc 'unix:/var/run/qemu-server/500.vnc,password=on' \
+>   -m 4096 \
+>   -device 'VGA,id=vga,bus=pci.0,addr=0x2' \
+>   -drive 'file=/mnt/pve/dir/images/500/vm-500-disk-0.raw,if=none,id=drive-ide0,format=raw,aio=io_uring' \
+>   -device 'ide-hd,bus=ide.0,unit=0,drive=drive-ide0,id=ide0'
+
+
 
