@@ -2,96 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BED8D2D4A8
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 08:36:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16B87D2D4CA
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 08:37:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgeGr-0007P3-Oe; Fri, 16 Jan 2026 02:29:25 -0500
+	id 1vgeHi-00089T-2J; Fri, 16 Jan 2026 02:30:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vgeGg-0007M2-Sx
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 02:29:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vgeHe-00085g-Dq
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 02:30:14 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vgeGe-0004sz-Tq
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 02:29:14 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vgeHa-0005Vc-Ha
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 02:30:12 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768548550;
+ s=mimecast20190719; t=1768548609;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=XK3dLO83R+YVc18tZJ9BXa5qJQxcmyXg4xEUxsNHudo=;
- b=NYmjBEkududg+WxMgWIzOHrrbnrQRyZsFS5D0ark0BGcL7rnGqRHttNbITGZgwaM5fpZta
- Jbrm+dUtS6Hs67tGKZKtoXHl/YHtK6wFZVoGmE+sD2PKHx6rcAXgMvG2bmVNKwF+MZmMJh
- pqV81p3K8WQu7+l7G5ODkt7FqYxb0tU=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=JX5h5jnW9stWJi+gMRKoMGKUWNB8Xv/N2ESBj2rkRCs=;
+ b=bS8ToD3D6SmWlptd7WimgvpXkFiHyOUttl6NL2z9iW/GNp3rs1DMdj1j/tJsmEFcyEYAxp
+ 9Q51xiFQGFJD48WXghoSWUEifBadB/ZyXe4vkQtomeSk+COoawDjpgGyegX8TkuNiAVOX3
+ ke4BTpoT0QRT7BKDWynnNV/bLp0fptk=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-608-VHx4y6pUP5qeS2n3Uo8g6w-1; Fri, 16 Jan 2026 02:29:07 -0500
-X-MC-Unique: VHx4y6pUP5qeS2n3Uo8g6w-1
-X-Mimecast-MFC-AGG-ID: VHx4y6pUP5qeS2n3Uo8g6w_1768548546
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-b873b0bfe9dso160891066b.0
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 23:29:07 -0800 (PST)
+ us-mta-149-eZfZRLfDMFmU2wCY4WxGbA-1; Fri, 16 Jan 2026 02:30:08 -0500
+X-MC-Unique: eZfZRLfDMFmU2wCY4WxGbA-1
+X-Mimecast-MFC-AGG-ID: eZfZRLfDMFmU2wCY4WxGbA_1768548607
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-b876b03afc5so455904366b.3
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 23:30:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768548546; x=1769153346; darn=nongnu.org;
+ d=redhat.com; s=google; t=1768548607; x=1769153407; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :references:to:from:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=XK3dLO83R+YVc18tZJ9BXa5qJQxcmyXg4xEUxsNHudo=;
- b=spiqUs0sYKqA04f9ERSQa86FKTL6JLRg3Og1SCfmKpTorL743f/FbI9ZqR0lQ5ifU/
- KHNfo1irfD8xTS+aFQIM3e4Hmjr5xZRD0P5V1ypUuSjWlsHWvEnvb2yNLNDOwlgzLxJL
- rlmDmRIYjxe/x3AlEGLojf6h54cGVhtXqtTMOXCL2oYmJAUh8rRP2wXI8XIBCKndFyuo
- 1q1QCpwAK0tsEDIOD4PVr0kh602KoLyx7k4DnoCLpTKhImBi2MxbAuV7fm2ra37bpYAS
- NNwYf/6yYQ+QUHNordeH2vF7SLM3gEHRr7vxtPtHr0oCcwT6luP3GLtYoQUhOtXdmdoQ
- vLbQ==
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=JX5h5jnW9stWJi+gMRKoMGKUWNB8Xv/N2ESBj2rkRCs=;
+ b=cSlgFv7DoyjmopieEyZQ8szEPNgDbUVd8mK9GypIywoS85S3qWe6TIoG581TYJpnEx
+ obF0UNtIryTHRIeoEv3/bZxeS9jBPuAhKq4tPv+mB6AG+OaWUwAzdZ2VwxYE/BXkdNZh
+ gTRXetEkr7JkXrSo6gGM/ntSdHyP5XNXNJjbEVTeHzp9eaFSuVvekIjsi2B5MH8szGtK
+ Rofj/5YuXPasUJ5IetOoCBeU43B4rfneSU3gJ4D4CAkyDVfQfU+d2hffE58gr5/6DVR/
+ VE1VTOgaalHhMvDG4EehrfCykqDwGcfPOVT1fZ3t9KbIm/HZHl0Gb1zBtbH4MUNLCutW
+ loWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768548546; x=1769153346;
+ d=1e100.net; s=20230601; t=1768548607; x=1769153407;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :references:to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=XK3dLO83R+YVc18tZJ9BXa5qJQxcmyXg4xEUxsNHudo=;
- b=mJeLXmTIM/PDrSXa18SGS5kqoWlNxSmACdfqdIpf5Q4o1iVt3oaGl+hrkPjS1C5Jvg
- BlABP8SwYNuj/SfWAhq1aBhfsAGR1T5RhRobfRzewoSkFtaFsRNKcKObXpAdPoM8U6d9
- AnsbG9krliU3PinZ9XZ4IIt/zLy8pjhcjkfKqFA4BGy1EgDO6OPygphW3T2qOxBdNmMf
- CFLOT9u9WdCFctgbuMoftIVVhrfqH0zIIg2KGMJMp54QJ3S+ubDyztJn3wUZW+b1bavp
- J5ilzycSI3A1gPxFTQuCID/oOxWLBUh0JtArxEnyjaW9w5fEDjZ/y/nA5gF6FeUDeDbW
- Tc2A==
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JX5h5jnW9stWJi+gMRKoMGKUWNB8Xv/N2ESBj2rkRCs=;
+ b=ImbIFojmyBzmY7q89CVrXEYIxJOhzhizWFWWeBH5YVLiYkribDyoylWZ50vTG1nNGo
+ j+vyuxUnPfiDNToHs1krqH9bhBqvIUsKqJqRQCRX7OrX02VnHlbMEPyX5h43l/SwtIM6
+ +ECLp2bvQEyZxtYnQdr5oyAQcLO8bgul6v/YW3wu8/vUSTGMSTVvR67jU/LkIaVYdyDg
+ x68F6G4DEwKz3tE/SvWhfZ5woMvlkZoiy3yYT6OnPYinOrBBA2WsBwSAhU3vn+6wjxQo
+ /RzZc6Q4sqyYcSseHFoRRIauAmcDgPG80ByKhrQE8lso5NZy0hS7mXUXqsU+/Bv1/owK
+ F9Qw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU5/NCGgNm+dcyU5g/X8z7ViaJ3wVbnhJmCT6zuj3CBRw9eARLKnDMoQ9Erj3LUZEmIbaGbbrua2BRI@nongnu.org
-X-Gm-Message-State: AOJu0Yx05pRrip5MBt50U4x+iCqTRrpO+JOA4QV9fucL66X9SwmZlFU7
- uZHN0h3vw3lLycg1MA+GP1/rFktjA4l12Vez8Gd0AaU3Z+sG0O8QtItpyA0BuJgexSg3qX0II/0
- zwd559qGqP3I3D3fZrF0WHZoz53u6Oi9RC2NPPgUAOI83GRDn4obAlWuGxbTjHdG2
-X-Gm-Gg: AY/fxX7OizlAswfwOPNH1qk8kSbeBwIpj4uVleV3R804Xs1inNsIQLgFFzQlgXL/J9A
- 0E1h6JWXAFgXu6QgpVhFJdquQiBru5fCxwC0tDH+6A3vBBkF7NKNHf33S5j3UvP/ASTGVqmVoTf
- YzMCt7TTqgOka5UU5EstBZZRxbbnPi9oCDFDS38CwoMRPFLVMGw2BD+d7xUuu6qJHBO4kWeYUCB
- 5CWgivdvHSGoCBKw6zJNOpjDfV1k/cTCsH/mlWelqPbSROF0SwWfj3h7snwmwkYM1ME6D7UteOI
- ytM/KZohWSmry5kDMkrUEkAukDOJj6yH7u9bxw1zT+Co0L9JGjQy7K4HbcsoOE9nnKx2QlRlhdI
- Prdhnuk0=
-X-Received: by 2002:a17:907:7256:b0:b77:1b05:a081 with SMTP id
- a640c23a62f3a-b8792e196f4mr206883566b.27.1768548546399; 
- Thu, 15 Jan 2026 23:29:06 -0800 (PST)
-X-Received: by 2002:a17:907:7256:b0:b77:1b05:a081 with SMTP id
- a640c23a62f3a-b8792e196f4mr206881866b.27.1768548546044; 
- Thu, 15 Jan 2026 23:29:06 -0800 (PST)
+ AJvYcCWYqZ9rjsj8MPSwWbp3+ySk7ulPTKGqqvpkp/wJHjJGpMs3MjYUZ/hwVd7pAjjdGOOb5VmFFgF7gUWm@nongnu.org
+X-Gm-Message-State: AOJu0Yw4yy3ssHvkl+PT17rOU7Cwpx3JpeVZ60FoeRcUcXGe+O36FidP
+ 7cRuaIY2lDqVA5gOCmsFkwftx3jOd9K2C61WOhU+h3RkAuSoXLei/742HipaaigRFQ6+0O3xqbo
+ FiD2MfszNaaoVTA/CF2pFpnvWb8kY1FtjBK/inHHYxjJ68TkaYCxFIsTs
+X-Gm-Gg: AY/fxX4LKOG638m+2TfkAaQCscGHrNu0SegsqhvoYNjeSvbLlQy34jhcgDUW007Vvxp
+ lPGUVv7Xg0zDsqv3MbK77dHEnq4WH7552C4B/zwDsaNHU+y3wsgXrUcDPT78yWXmWrsRHDG3IGz
+ m2Ki6QVy7GqSWMsXwpPOlkiBFqcox3BHN7Juqj3QUELRMdkCryl5u34TCJBLavKZUnX0NcVNcPF
+ Z7LFZ95QIWRpYR3QbGd0SAj4xRl6ReAkzraAWrmkHJC91XAIJZf9cCCDsZR/vUCXTsb+xZWLU9d
+ Qn2NYIRbC9pI0gaLrxSkwBvJWTpzfL3pWZCr4xLonfUMmdSkgf4MWkTAHSWX+lzIzutQzq7YVH7
+ BAxXGXsU=
+X-Received: by 2002:a17:907:7ba5:b0:b87:191f:4f96 with SMTP id
+ a640c23a62f3a-b87932557e2mr180744466b.61.1768548606501; 
+ Thu, 15 Jan 2026 23:30:06 -0800 (PST)
+X-Received: by 2002:a17:907:7ba5:b0:b87:191f:4f96 with SMTP id
+ a640c23a62f3a-b87932557e2mr180742666b.61.1768548606156; 
+ Thu, 15 Jan 2026 23:30:06 -0800 (PST)
 Received: from [192.168.0.9] ([47.64.113.220])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b879513e63dsm157082066b.14.2026.01.15.23.29.05
+ a640c23a62f3a-b879513ea20sm167256666b.12.2026.01.15.23.30.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 15 Jan 2026 23:29:05 -0800 (PST)
-Message-ID: <e31d7369-071c-4f49-8eb1-686f43db76f2@redhat.com>
-Date: Fri, 16 Jan 2026 08:29:04 +0100
+ Thu, 15 Jan 2026 23:30:05 -0800 (PST)
+Message-ID: <ebc3a7ce-17fa-4468-8a2f-ca70c91df4b9@redhat.com>
+Date: Fri, 16 Jan 2026 08:30:04 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/50] tcg/i386: Remove TCG_TARGET_REG_BITS tests
-From: Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v2 17/58] tcg/i386: Remove TCG_TARGET_REG_BITS tests
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20260108053018.626690-1-richard.henderson@linaro.org>
- <20260108053018.626690-11-richard.henderson@linaro.org>
- <3f392a80-0db8-46b0-9761-ce0d7492a624@redhat.com>
+Cc: ktokunaga.mail@gmail.com, berrange@redhat.com,
+ pierrick.bouvier@linaro.org, pbonzini@redhat.com, philmd@linaro.org
+References: <20260116033305.51162-1-richard.henderson@linaro.org>
+ <20260116033305.51162-18-richard.henderson@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -135,17 +136,17 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <3f392a80-0db8-46b0-9761-ce0d7492a624@redhat.com>
+In-Reply-To: <20260116033305.51162-18-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -163,24 +164,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/01/2026 08.26, Thomas Huth wrote:
-> On 08/01/2026 06.29, Richard Henderson wrote:
->> We now only support 64-bit code generation.
->>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   tcg/i386/tcg-target-has.h      |   8 +-
->>   tcg/i386/tcg-target-reg-bits.h |   2 +-
->>   tcg/i386/tcg-target.h          |  13 +-
->>   tcg/i386/tcg-target.c.inc      | 552 ++++++---------------------------
->>   4 files changed, 97 insertions(+), 478 deletions(-)
+On 16/01/2026 04.32, Richard Henderson wrote:
+> We now only support 64-bit code generation.
 > 
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   tcg/i386/tcg-target-has.h      |   8 +-
+>   tcg/i386/tcg-target-reg-bits.h |   2 +-
+>   tcg/i386/tcg-target.h          |  13 +-
+>   tcg/i386/tcg-target.c.inc      | 552 ++++++---------------------------
+>   4 files changed, 97 insertions(+), 478 deletions(-)
 
--ENOTENOUGHCOFFEE
+v2 now looks fine, thanks!
 
-Sorry, I meant to reply to v2 of this patch, not to v1...
-
-  Thomas
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
