@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0509BD2F008
+	by mail.lfdr.de (Postfix) with ESMTPS id 03006D2F007
 	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 10:48:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vggN6-000086-US; Fri, 16 Jan 2026 04:44:00 -0500
+	id 1vggPz-0001A2-V2; Fri, 16 Jan 2026 04:47:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vggN3-00007I-Ko
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 04:43:58 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1vggPx-00018K-N6
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 04:46:57 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vggMz-0007FJ-Sx
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 04:43:57 -0500
+ id 1vggPw-0007uH-0u
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 04:46:57 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768556632;
+ s=mimecast20190719; t=1768556815;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=I8YVAeplXYnvRzdj+eZyk7d+O5KSiXJJHtJ7ZiJfdRA=;
- b=ZyG7Zcz1an4SGUzs0BMGhX5EEKpLqOu/PRsX6QQjQQWRqikFRJrcNZb9fX7W2MmApv0Ow5
- Y26meOoIwkypfnMvzK0kI7MISFWRphMP/ChpTMEWXwwDlqX0o8G5DwJl9wziZig8MV4CVM
- a/Edw/T9Z/GiThRLHQIKHBNfcvJYAYs=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=sfDGErVxumvs4vxD3ArmlSXqVkPv7fP2hf/CI8LUNYk=;
+ b=Mi7ilaahN1iScCg0M1etX/sLQncW8UFkJyiihZgRjgh5i4LPDVkegpi1Hq/1X6S03VgS/H
+ MG7Yyj8+Bw4XgxFDcuoKmgV5E4lonzJNYvBnzF+KV+R+sXpJ75uV1hoebnm18bXRL5pmG+
+ Hv69IiRCQj3I2pS0k7S0nhoen8+pe30=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-595-umXe3TpeNa-ejR7ojjsMpA-1; Fri,
- 16 Jan 2026 04:43:48 -0500
-X-MC-Unique: umXe3TpeNa-ejR7ojjsMpA-1
-X-Mimecast-MFC-AGG-ID: umXe3TpeNa-ejR7ojjsMpA_1768556628
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-154-Rt3vOaFIMmCVyw7Bi1hklQ-1; Fri,
+ 16 Jan 2026 04:46:51 -0500
+X-MC-Unique: Rt3vOaFIMmCVyw7Bi1hklQ-1
+X-Mimecast-MFC-AGG-ID: Rt3vOaFIMmCVyw7Bi1hklQ_1768556810
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A6E44180044D; Fri, 16 Jan 2026 09:43:47 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F19611956054; Fri, 16 Jan 2026 09:46:49 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.135])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D42EA18007D2; Fri, 16 Jan 2026 09:43:45 +0000 (UTC)
-Date: Fri, 16 Jan 2026 09:43:42 +0000
+ id 2462E18004D8; Fri, 16 Jan 2026 09:46:45 +0000 (UTC)
+Date: Fri, 16 Jan 2026 09:46:43 +0000
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>,
- Alexandr Moshkov <dtalexundeer@yandex-team.ru>
-Subject: Re: [PATCH] tests/functional/x86_64: Limit the memlock test to Linux
- hosts
-Message-ID: <aWoITn43oMG_WSM9@redhat.com>
-References: <20260114095904.35442-1-thuth@redhat.com>
- <aWdpi4ibUm9qNrwa@redhat.com>
- <fdc2093e-8acb-44fb-b280-edf40f5f8883@redhat.com>
+To: "Dr. David Alan Gilbert" <dave@treblig.org>
+Cc: Peter Xu <peterx@redhat.com>, Lukas Straub <lukasstraub2@web.de>,
+ qemu-devel@nongnu.org, Juraj Marcin <jmarcin@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Markus Armbruster <armbru@redhat.com>,
+ =?utf-8?B?THVrw6HFoQ==?= Doktor <ldoktor@redhat.com>,
+ Juan Quintela <quintela@trasno.org>,
+ Zhang Chen <zhangckid@gmail.com>, zhanghailiang@xfusion.com,
+ Li Zhijian <lizhijian@fujitsu.com>, Jason Wang <jasowang@redhat.com>
+Subject: Re: [PATCH 1/3] migration/colo: Deprecate COLO migration framework
+Message-ID: <aWoJAz_GLXzqs_oH@redhat.com>
+References: <20260114195659.2543649-1-peterx@redhat.com>
+ <20260114195659.2543649-2-peterx@redhat.com>
+ <aWf4i7EOXtpAljGX@x1.local> <20260115224929.616aab85@penguin>
+ <aWlso1w39cQnEh2t@x1.local> <aWlxY9TWGT1aaMJz@gallifrey>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <fdc2093e-8acb-44fb-b280-edf40f5f8883@redhat.com>
+In-Reply-To: <aWlxY9TWGT1aaMJz@gallifrey>
 User-Agent: Mutt/2.2.14 (2025-02-20)
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,43 +92,28 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 16, 2026 at 09:09:17AM +0100, Thomas Huth wrote:
-> On 14/01/2026 11.01, Daniel P. Berrangé wrote:
-> > On Wed, Jan 14, 2026 at 10:59:04AM +0100, Thomas Huth wrote:
-> > > From: Thomas Huth <thuth@redhat.com>
+On Thu, Jan 15, 2026 at 10:59:47PM +0000, Dr. David Alan Gilbert wrote:
+> * Peter Xu (peterx@redhat.com) wrote:
+> > On Thu, Jan 15, 2026 at 10:49:29PM +0100, Lukas Straub wrote:
+> > > Nack.
 > > > 
-> > > The memlock test analyzes /proc/*/status files and expects the layout
-> > > from Linux in there. However, these files also exist on NetBSD hosts
-> > > with a completely different layout, causing this test to fail. Thus
-> > > limit the test to Linux hosts now.
-> > > 
-> > > Signed-off-by: Thomas Huth <thuth@redhat.com>
-> > > ---
-> > >   tests/functional/x86_64/meson.build | 5 +++--
-> > >   1 file changed, 3 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/tests/functional/x86_64/meson.build b/tests/functional/x86_64/meson.build
-> > > index f78eec5e6cf..97286d78b8f 100644
-> > > --- a/tests/functional/x86_64/meson.build
-> > > +++ b/tests/functional/x86_64/meson.build
-> > > @@ -9,12 +9,13 @@ test_x86_64_timeouts = {
-> > >     'virtio_balloon': 120,
-> > >   }
-> > > -tests_x86_64_system_quick = [
-> > > +tests_x86_64_system_quick = \
-> > > +  (host_os == 'linux' ? ['memlock'] : []) + \
+> > > This code has users, as explained in my other email:
+> > > https://lore.kernel.org/qemu-devel/20260115224516.7f0309ba@penguin/T/#mc99839451d6841366619c4ec0d5af5264e2f6464
 > > 
-> > IMHO this should be done with a decorator in the test program, so
-> > we keep all conditions in the source, not meson.
+> > Please then rework that series and consider include the following (I
+> > believe I pointed out a long time ago somewhere..):
+> > 
 > 
-> If we already know here that the test will only SKIP during runtime, I think
-> there is no need to add it to the test plan. Otherwise this will just always
-> waste some cycles when running the tests.
+> > - Some form of justification of why multifd needs to be enabled for COLO.
+> >   For example, in your cluster deployment, using multifd can improve XXX
+> >   by YYY.  Please describe the use case and improvements.
+> 
+> That one is pretty easy; since COLO is regularly taking snapshots, the faster
+> the snapshoting the less overhead there is.
 
-One could say the same about many of the things we check in the @skip
-decorators. The time saved by doing it in meson is negligible, and
-also ensures it is skipped if anyone runs the test program directly
-outside meson.
+Also if we ever want to be able to deprecate the non-multifd migration,
+then we need to ensure multifd migration has the super-set of functionality.
+
 
 With regards,
 Daniel
