@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DC47D313C6
+	by mail.lfdr.de (Postfix) with ESMTPS id D42F3D313CC
 	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 13:42:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgj8b-000286-4Y; Fri, 16 Jan 2026 07:41:19 -0500
+	id 1vgj8y-0002iD-Vl; Fri, 16 Jan 2026 07:41:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vgj7c-000220-9O
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 07:40:12 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1vgj7d-000247-Jj
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 07:40:14 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vgj7a-0004g1-08
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 07:40:11 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-430f3ef2d37so1468765f8f.3
- for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 04:40:09 -0800 (PST)
+ id 1vgj7b-0004gF-Uy
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 07:40:13 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-42fbbc3df8fso1092164f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 04:40:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768567208; x=1769172008; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768567209; x=1769172009; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tP5WdEw2SWqsSQRDCQEyx/TDMvYDo3Lw58Gf9MWPLqc=;
- b=ltmqnkig0lk0YMX988KWbITW4IjjsLNXfvAl8AeU7p9m1R70EpLbB42johZEavmcx3
- 6mer3oQEr+bW354EK0bzOdotoZrrQf/Jm1EjrsfcVVJhdWtzYhOYzcgVuU0ELfmhFKQc
- HlgHQYye6gODymPDo+nlNZA/Tb7JtGmB2+g356XAqsXgUrJ/CIY1S16PUYQZUJBP5Ic+
- yMayi91cUqdOQipUJi1cfvA61wBCOv+ZnH+9BKhsjhx6sayXHFN71t/UYQo8/7DJ5WkS
- ffXZTG8fAMSfDuSn53VGklGXPxHEsAp9V33JWQ2UGKSZkkiyf4s40nLoQ1flSAVgtfEp
- FYRQ==
+ bh=a0wgjb5PW8AjpxMtNWI1pQBRJl7CsYfLGacp91OKMNE=;
+ b=yd9eRq0SnFLy+TBpt3WL4muWW10EIOHnMcg7Qten7YfrB8Jy1dr6R6gwik8VhT5EpM
+ IYqC5ZMdtOVPTgFv/qSFBJaM4msvjxvVleLJtfGcg11VGh7F4fR9y+s3wBtKsxZKwW5r
+ hlDZERpt+CVQNE+FrYlQ4wXm6zX7//LoLFwzFOcjXCv+5GPhuR+M+P6ItMdm2o0nWSbN
+ yPyJFO7e+yQls50h63CmOFqrAae8XDZVH1zmXMgQfT4XLrrl/+OOGW+3Kyq5ofOyIVJ6
+ pfkOx6VlJkiv1P8AMcDGJDgijh0VLAIyuJOGr//v/wBBk4Anw7ROqm0+0ZDvftVhJ+XG
+ F9tQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768567208; x=1769172008;
+ d=1e100.net; s=20230601; t=1768567209; x=1769172009;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=tP5WdEw2SWqsSQRDCQEyx/TDMvYDo3Lw58Gf9MWPLqc=;
- b=cvMrZfX9OBbU6kUG7T3IrWebpWGJ8IDWpp4401EIXPkhWQvXF9mfF/FX3Ik9LGzOSs
- 56HkFP8UORb96vY9ljx0gYeUbdsuvktOenb8VUFBo9E1aIrhcjpBLxlCOJjWWLa1FuWk
- JF0K5JyfW0P9R6Q5aTun1wwhyqYXkbCMOLd4KlnApIZTTdmoHQPDdKF+LH0S+AkZNwnt
- FpKWSzV3ZZLLVcRC2apyNVaNCeDFUU5e7vL00m5zerbemKoPOTaGETtGbRkgeX9ADTpk
- McSyrqjbxVQZGejdgqm9aHckqnkIGhHknnQPsb9E9XK9Fy/p84ZdCDTYXOD7P2P3lIBT
- wJXw==
-X-Gm-Message-State: AOJu0YzSKGTs2D2McIon6SdSoClH7RK9J2badsuCt6Jfdxhe984rqiq5
- pbGA+JC988oipirVnlivs2daciV7Fz4ea1HXqjmBUoBrccqpYHYIdjArKs9KLW7ZNEXjw6PFiNC
- BfK2F
-X-Gm-Gg: AY/fxX4aRBc2Qt9GO8VLVBUPiA7weLtG/ftMhauIQcoL+Q5O1jg4D7B5oHVAucq84Pz
- rPnUBAiym4qLgxTRxTcy58i9fbE46fVUicXdaJpuNIDawJg6VM4z+0y/eLKns9mK1UDlU7uTavb
- srYQxaaxttyFS9grJz5o6oAW8U7VsNDukA/MwznNas0PN6Z/cJC7tmiQVHPGyuR73gutR+E5puM
- HaRyNPRbIujfkID5vnXVuHOxiT6jXWDFNexXI1/NAzc5/SUGbGlgGLsEV9r0OPIX+KFrA+F3F/J
- /i5Hpcm7Px6vPD0WmveZazKzksje1R7E/m4jsBDpKWym7sEyIC8FGbcpYNzLg1vWRWvVTOywiyQ
- KLbpWSJ+N5GWFa63l1aVaj/DG73NHWR5df1A9ioZOUq2OfOkTcBAPD4YL6APr7V3WAlZ6S7B801
- tjUbj9B0wE2Zo6Hh+GhNjwYSYap8MGMAqFU0ghQhQnhXOGcbgubAVFidwhKnPRJ9JJDcY+bDkSN
- Cn4WlZiQk0fc7rAvCp9pFZhe4f/EYGwZKY0VRM+CWzoDA==
-X-Received: by 2002:a05:6000:40e1:b0:430:fdb8:8510 with SMTP id
- ffacd0b85a97d-43569989668mr3238891f8f.24.1768567208339; 
- Fri, 16 Jan 2026 04:40:08 -0800 (PST)
+ bh=a0wgjb5PW8AjpxMtNWI1pQBRJl7CsYfLGacp91OKMNE=;
+ b=GebLhwkCSLG5jOGNevCNVB2CiJyemqM7nGchgsinad+6RdqBZUsNxlXDrrXkx2BAnL
+ ktdZVX04HcGeM48gq8G5uz896o6LLan+pFW3EZVaLkXFbe5BGbJZ6WKJcZZcHmtyNYWf
+ H9F4wFi8ilXirUhM3VWI51fcs6YyQCfLdm1VFaJkoMCahC4fEOO+SluRJ8aufzloBUGQ
+ ga1wkSX1BU3OeekBgPaPFD6a1wQSiaQBQ7RUDUfY/1mi89N4d8a1OCxi3QLcHMaUQ20S
+ AmC4J5P4s5QIOE+GWpcFusb9WYQoq1Omf16PvacOEooQFNz72aicJX1ZDrcSYFhZ+lin
+ 7TvA==
+X-Gm-Message-State: AOJu0Yy4z+K054EWEARdsSvTEEVOhUx9j5CG1aK/aTiy+7TP6SHUiCdY
+ mwVG0n3NRFAh8x+Q7Hg2rC+7+n7U4lK8PSsCjFGWLgf9LIJAGFclEsuDWXCEWsNYYGS5o1Z/f2I
+ ddK3x
+X-Gm-Gg: AY/fxX5+nKl9+w/rgIHxQ2n6axhdz0cPjpY1FbSIsIw5969P4ck+0oSSJchIuiRJbiQ
+ +dRldA2i8WFLi7YRuokDVZM92NyFI+ECHpW3sKA2hAFu/QLvCCQVXNkImvfudRg67UvXD2L0i8m
+ zrNyUr+iqPkGRhJ4t8ZK3NNEiQbWea0dGci2wOqwH4NrNO0K5yrwaiDOYQLgXCT1iCOq51J4IET
+ NEp1aPutzSWT6GO1ebqZ8vFlpwrmbOK5doryd984LJZ9w5tSI+A6NywLIl2hO3+evObiVFYJw9y
+ a/MZj4G/t598UOCPYd9ddFuGizvWLrtfzAc4X+9ptfxVpXAf5M3Y0qHdyWvEG/xw25ktzYP10cL
+ Pw5u1ifV0LckRuSF1mV5lOUVP491feiu4JSW6GSfWUXQJMwgu3TRUx8mKhAQ4meLJgChu+Ti5Nw
+ XVZIdTpaVjMtpBCflZuLQxqXsr8lItdl8aekS9n/KIGGm5r2LfMHDaro10u26pcSR/PM7qh1UBZ
+ eM74zJ1hJPTb1omgHTBl3bH7HYSuncoxeaoXRQPIuMVzg==
+X-Received: by 2002:a05:6000:2f83:b0:430:fd9f:e705 with SMTP id
+ ffacd0b85a97d-4356999c900mr3789276f8f.27.1768567209547; 
+ Fri, 16 Jan 2026 04:40:09 -0800 (PST)
 Received: from mnementh.archaic.org.uk
  (f.7.f.1.7.5.e.f.f.f.c.5.d.8.2.4.0.0.0.0.0.d.1.0.0.b.8.0.1.0.0.2.ip6.arpa.
  [2001:8b0:1d0:0:428d:5cff:fe57:1f7f])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4356992c6f2sm5192566f8f.19.2026.01.16.04.40.07
+ ffacd0b85a97d-4356992c6f2sm5192566f8f.19.2026.01.16.04.40.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Jan 2026 04:40:07 -0800 (PST)
+ Fri, 16 Jan 2026 04:40:08 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH v2 1/6] scripts/clean-includes: Allow directories on command
- line
-Date: Fri, 16 Jan 2026 12:40:00 +0000
-Message-ID: <20260116124005.925382-2-peter.maydell@linaro.org>
+Subject: [PATCH v2 2/6] scripts/clean-includes: Remove outdated comment
+Date: Fri, 16 Jan 2026 12:40:01 +0000
+Message-ID: <20260116124005.925382-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260116124005.925382-1-peter.maydell@linaro.org>
 References: <20260116124005.925382-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,60 +102,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently clean-includes supports two ways of specifying files to check:
- * --all to run on everything
- * specific files
-There's no way to say "check everything in target/arm".
-
-Add support for handling directory names, by always running
-the arguments through git ls-files.
+Remove an old comment suggesting a manual shell line to use to find
+files to run the script on. The script's exclude-list and its
+support for directory names make this irrelevant.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- scripts/clean-includes | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ scripts/clean-includes | 9 ---------
+ 1 file changed, 9 deletions(-)
 
 diff --git a/scripts/clean-includes b/scripts/clean-includes
-index 25dbf16c02..07c0fd44e4 100755
+index 07c0fd44e4..568033ee9c 100755
 --- a/scripts/clean-includes
 +++ b/scripts/clean-includes
-@@ -14,7 +14,7 @@
- # the top-level directory.
+@@ -39,15 +39,6 @@
+ # removed.
+ # Other files (including C++ and ObjectiveC) can't be handled by this script.
  
- # Usage:
--#   clean-includes [--git subjectprefix] [--check-dup-head] file ...
-+#   clean-includes [--git subjectprefix] [--check-dup-head] file-or-dir ...
- # or
- #   clean-includes [--git subjectprefix] [--check-dup-head] --all
- #
-@@ -28,7 +28,8 @@
- #
- # Using --all will cause clean-includes to run on the whole source
- # tree (excluding certain directories which are known not to need
--# handling).
-+# handling). This is equivalent to passing '.' as the directory to
-+# scan.
+-# The following one-liner may be handy for finding files to run this on.
+-# However some caution is required regarding files that might be part
+-# of the guest agent or standalone tests.
+-
+-# for i in $(git ls-tree --name-only HEAD) ; do test -f $i && \
+-#   grep -E '^# *include' $i | head -1 | grep 'osdep.h' ; test $? != 0 && \
+-#   echo $i ; done
+-
+-
+ GIT=no
+ DUPHEAD=no
  
- # This script requires Coccinelle to be installed.
- 
-@@ -86,11 +87,14 @@ if [ $# -eq 0 ]; then
-     exit 1
- fi
- 
-+# --all means "scan everything starting from the current directory"
- if [ "$1" = "--all" ]; then
--    # We assume there are no files in the tree with spaces in their name
--    set -- $(git ls-files '*.[ch]' | grep -E -v "$XDIRREGEX")
-+    set -- '.'
- fi
- 
-+# We assume there are no files in the tree with spaces in their name
-+set -- $(git ls-files "$@" | grep '\.[ch]$' | grep -E -v "$XDIRREGEX")
-+
- # Annoyingly coccinelle won't read a scriptfile unless its
- # name ends '.cocci', so write it out to a tempfile with the
- # right kind of name.
 -- 
 2.47.3
 
