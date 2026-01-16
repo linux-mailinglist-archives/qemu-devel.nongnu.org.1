@@ -2,88 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B6C0D2AF6C
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 04:48:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C361CD2AFF4
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 04:51:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgags-0005Xv-Rb; Thu, 15 Jan 2026 22:40:02 -0500
+	id 1vgas0-0000uc-Iv; Thu, 15 Jan 2026 22:51:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vgagq-0005X0-S8
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:40:00 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1vgarx-0000pd-HC
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:51:29 -0500
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vgagp-0000Ej-7l
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:40:00 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-2a0d5c365ceso11982245ad.3
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 19:39:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1vgarv-0005xt-IE
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:51:29 -0500
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-29f30233d8aso11105425ad.0
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 19:51:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768534798; x=1769139598; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=VnCVV9AnEgawNA+fiIe+uEXCZKJSFhPJndsOefTu71g=;
- b=ARall/9EWYqhvumnxJPfpz7ymBU+J1h7j+JQObPDGiZ4KE4ClMGoE8Bxvc37Trd4/j
- HuxvYzY9Vp8j62TlGAU5FKJpUWtAW+hdmxahyvfILyFNl0p7nadto/1aHAenk6BhdkbO
- Qo89Kl0JyPuS92BVdvr2JMnFbUPgYzsZE6ivHtUUf/bmt10lPlX648P3XRm/6PhGASw/
- IVqpZWi1XvmuCCpbrJb6T9yGLKofbllSO75dMJg0SX2DSddRSgAILLOXuPDdGiCcnWWL
- b8wkbW2m+KfT8r1gNthwrOlyycHkMqpqibOgq0vfIvuvRQ/GobxB0IofW1iTZWbDsjXJ
- agRA==
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1768535485; x=1769140285;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=VD9vI+H8h2Y/AZLPWdtSH7aUriuk4uFXlIP0xDC18ro=;
+ b=SF9uHA+6gT1K05lAw791DupAxgAFbRtlcwZOB8+ER/UEYjE9+6/9vu7sC9xeQvo0AV
+ E6TB562NX12TpOq4FJggovE0fy6QWRnThxMNXASrk7q7IbeXeTJcg+pOeWxDx0wWHEC3
+ m64m9UTczElhec2JvqTjXk+TTkKJ8wR3S1iXLLL892N/EAj0nAOWSrqSKFYyVUXKKQdc
+ palun4VTB5mLD5Y12Gvqhzi25D33QjALxRe0l9ReQEtS4qB9D9felEbVifa4CR5lEFez
+ qPlP2rKrI4RV0bd894CeK59l9RvGbyQWxla3Ua847yd18YeEhjlI3PFFD0fOvdJUymX5
+ 48hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768534798; x=1769139598;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=VnCVV9AnEgawNA+fiIe+uEXCZKJSFhPJndsOefTu71g=;
- b=fFE6Ush58oMEeW/zId3XKxC9KWHP2amdWbRrmkNPrSxndG0QVF7uWmrCW9Y+AdUUL1
- Xac8fuaauBt+5hJIATzXHNdcBe1KsEcq8zrl1bi3N49kl/V+oIz/s97vhhwxjfVyB/Bb
- SFULa+sAEFlTzBlqXva0AEow+YSRE6QSbyOVZBO8BiyVwFy+nObdzyGtTnJQzbeGYVtu
- zsCrSB/mK+NGn1vd47c37jQSChhr93MC7rOCJS29VZ9YKg6CLLbiV+fM6+p/ZiUkSL/r
- BWO1HDl/UziB5zE1X0zaaD0P8p/ouhKhd3GvpTdxvEsarIGpD4+6paOIx1MlAZd+T61A
- I7BA==
-X-Gm-Message-State: AOJu0YzLpAP47UK2FKKuu4GguqaLS2Mc5S8q3WQVBPehpZugaxnXLCOQ
- 4tYsxfP4mTwsJW+xapf0CzmUhvVyLIK8g9dvXKVXEGnCMVVQXirHc/yJnywbknxrciTk6z9aF7L
- 4YLQbd4gpDg==
-X-Gm-Gg: AY/fxX7EI15tjb3m4aBsLNoGe0tRMYe/JWM/2N4RSk3Zt8uDooxtKKRCReb8y9SaOoh
- ChUg9xqY/PPWB//mP0/bblXHX0kDF7sLt+rVh0SKE91fYK+KUNFi9GinbX2N8UNnMiW/64CWzSJ
- 0+B+o5GD27wcjfA/THYoMKh4fd8sE/6cX0ueukbjrQV8vhF2Dc2D+JFhRXxbphHAvBOYkHQRNUm
- epqve5s3eiQTFIUUOqwnq6RvSH0MNTXosIGLfONZ3xaLZx/IsfIKQMx006WN/Ln36DF+fKCsQd/
- IxAbFBWEAXTU0TDE2FF1wlwrwGXmp6FQCae/MdzgFQp0LcGoQ90YCFAgMPJjp5clhKJJ/sj1jnf
- 1gNUpX6wFN9ouzpGKDeX50xiO97f+pITX6qq0OrbXfXplqR3U4GxEhQ3CTJXXz/fdUXsZqW8ZGI
- 77Eje7OXe4bi7ASNTh3Q==
-X-Received: by 2002:a17:903:1105:b0:2a3:e6fa:4a06 with SMTP id
- d9443c01a7336-2a7189295edmr13757415ad.39.1768534797598; 
- Thu, 15 Jan 2026 19:39:57 -0800 (PST)
-Received: from stoup.. ([180.233.125.201]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a7190ca9d5sm6527975ad.25.2026.01.15.19.39.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Jan 2026 19:39:57 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: ktokunaga.mail@gmail.com, berrange@redhat.com, pierrick.bouvier@linaro.org,
- thuth@redhat.com, pbonzini@redhat.com, philmd@linaro.org
-Subject: [PATCH v2 58/58] include/qemu/atomic: Drop aligned_{u}int64_t
-Date: Fri, 16 Jan 2026 14:33:04 +1100
-Message-ID: <20260116033305.51162-59-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260116033305.51162-1-richard.henderson@linaro.org>
-References: <20260116033305.51162-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20230601; t=1768535485; x=1769140285;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=VD9vI+H8h2Y/AZLPWdtSH7aUriuk4uFXlIP0xDC18ro=;
+ b=BvsT+pTskuNs2bxaaZCEtewL58jdw2OThk8/dyRDs70/mwVBJv5BMLywkrBRufSj3K
+ dQZEjHhq3Aw5Mm2NL0qHm2EKCLAZQ5Y4IqwVOEefTINn9H4upXApCEt4utSnA5Qhg7HC
+ cM4/jVCMITYRKrYeETCdXqlnpxzKFWzzz1ViQbBTtjCEFNSCg6NNH98YiBml0ufEcei0
+ ZudkWy7N9nyka8ZxnC1Kff3uh114LKnfYMqMMSlISzWKJivFHzmLrphEaheLqe9rxAhu
+ OAhNyzSmMJTjNf3EiNJKT/nMNWrP7eGiRIF7AeraW5wUK2n5LJOTT3vPg+6Z/wcXp3Qj
+ nF6A==
+X-Gm-Message-State: AOJu0YxVzXv/Afpz6yokEuT86I2G3Ec6vsRJP0mf4+ksG7PF9j4agVZC
+ j5dYx3t43ddOFW08Mxw3picij0u4+2duTPC72zw6jhYc/xgMxmQFkpUvPsD2tXyRz93OnUaP3P4
+ 97h9+XYxuEmoE/h6EQRvnbTLC899sHJakKLCiKPC8vnVfYOG/kFfn
+X-Gm-Gg: AY/fxX4bYNuKw8lWoaMqkpNPluqNayLwK6PYQr95RMSk3dOWPT1nkZE7MuyCX4n7ZsK
+ Z5cMfVU02HvIkcVvglkeoOkr2XFr5UkhAymE9WrU5XeQcb15FdBC0EV0Vxlyrx6WAAMOTgsJSUB
+ bsuxqBRRLwlverJrGarV7Tf0uU9JGGdwXdLfqMBvTVJ7U8CnCimlNkWEAJ7c8K4PWgx3lIvFz9m
+ Zh8WVLcW3n2aLSHegn+AViY99Vz1nvaSwTRbzrkz1ek/MwOk5LzIjnB3QNs0AN7lN/L7SkgARPE
+ wUShCOlLMWnMYu7WXgzzNfMOqA==
+X-Received: by 2002:a17:903:2f8a:b0:2a1:3cd9:a73a with SMTP id
+ d9443c01a7336-2a7189482fbmr13106205ad.40.1768535485414; Thu, 15 Jan 2026
+ 19:51:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20260116033305.51162-1-richard.henderson@linaro.org>
+ <20260116033305.51162-12-richard.henderson@linaro.org>
+In-Reply-To: <20260116033305.51162-12-richard.henderson@linaro.org>
+From: Warner Losh <imp@bsdimp.com>
+Date: Thu, 15 Jan 2026 20:51:14 -0700
+X-Gm-Features: AZwV_QhOGQFdx2JqjGSCwgtNxXE7v2QyPY2RpuTb6HKjZlIv4F81BEgG5w_1Z14
+Message-ID: <CANCZdfoX4g=K4Z7cCeuyRzAnrQBhmzLoLxckhPqp15J0L74ufg@mail.gmail.com>
+Subject: Re: [PATCH v2 11/58] bsd-user: Fix __i386__ test for
+ TARGET_HAS_STAT_TIME_T_EXT
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: QEMU Developers <qemu-devel@nongnu.org>, ktokunaga.mail@gmail.com, 
+ "Daniel P. Berrange" <berrange@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Kyle Evans <kevans@freebsd.org>
+Content-Type: multipart/alternative; boundary="000000000000618e2a06487941ba"
+Received-SPF: none client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=wlosh@bsdimp.com; helo=mail-pl1-x62a.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,99 +95,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As we no longer support i386 as a host architecture,
-this abstraction is no longer required.
+--000000000000618e2a06487941ba
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- accel/tcg/atomic_template.h          |  4 ++--
- include/qemu/atomic.h                | 13 -------------
- include/system/cpu-timers-internal.h |  2 +-
- linux-user/hppa/cpu_loop.c           |  2 +-
- util/qsp.c                           |  4 ++--
- 5 files changed, 6 insertions(+), 19 deletions(-)
+On Thu, Jan 15, 2026, 8:34=E2=80=AFPM Richard Henderson <
+richard.henderson@linaro.org> wrote:
 
-diff --git a/accel/tcg/atomic_template.h b/accel/tcg/atomic_template.h
-index ae5203b439..f7924078f7 100644
---- a/accel/tcg/atomic_template.h
-+++ b/accel/tcg/atomic_template.h
-@@ -27,8 +27,8 @@
- # define SHIFT      4
- #elif DATA_SIZE == 8
- # define SUFFIX     q
--# define DATA_TYPE  aligned_uint64_t
--# define SDATA_TYPE aligned_int64_t
-+# define DATA_TYPE  uint64_t
-+# define SDATA_TYPE int64_t
- # define BSWAP      bswap64
- # define SHIFT      3
- #elif DATA_SIZE == 4
-diff --git a/include/qemu/atomic.h b/include/qemu/atomic.h
-index 27d98014d4..dc9290084b 100644
---- a/include/qemu/atomic.h
-+++ b/include/qemu/atomic.h
-@@ -234,17 +234,4 @@
-     _oldn;                                                              \
- })
- 
--/*
-- * Abstractions to access atomically (i.e. "once") i64/u64 variables.
-- *
-- * The i386 abi is odd in that by default members are only aligned to
-- * 4 bytes, which means that 8-byte types can wind up mis-aligned.
-- * Clang will then warn about this, and emit a call into libatomic.
-- *
-- * Use of these types in structures when they will be used with atomic
-- * operations can avoid this.
-- */
--typedef int64_t aligned_int64_t __attribute__((aligned(8)));
--typedef uint64_t aligned_uint64_t __attribute__((aligned(8)));
--
- #endif /* QEMU_ATOMIC_H */
-diff --git a/include/system/cpu-timers-internal.h b/include/system/cpu-timers-internal.h
-index 94bb7394c5..8c262ce139 100644
---- a/include/system/cpu-timers-internal.h
-+++ b/include/system/cpu-timers-internal.h
-@@ -47,7 +47,7 @@ typedef struct TimersState {
-     int64_t last_delta;
- 
-     /* Compensate for varying guest execution speed.  */
--    aligned_int64_t qemu_icount_bias;
-+    int64_t qemu_icount_bias;
- 
-     int64_t vm_clock_warp_start;
-     int64_t cpu_clock_offset;
-diff --git a/linux-user/hppa/cpu_loop.c b/linux-user/hppa/cpu_loop.c
-index e5c0f52d94..972e85c487 100644
---- a/linux-user/hppa/cpu_loop.c
-+++ b/linux-user/hppa/cpu_loop.c
-@@ -83,7 +83,7 @@ static abi_ulong hppa_lws(CPUHPPAState *env)
-                 uint64_t o64, n64, r64;
-                 o64 = *(uint64_t *)g2h(cs, old);
-                 n64 = *(uint64_t *)g2h(cs, new);
--                r64 = qatomic_cmpxchg((aligned_uint64_t *)g2h(cs, addr), o64, n64);
-+                r64 = qatomic_cmpxchg((uint64_t *)g2h(cs, addr), o64, n64);
-                 ret = r64 != o64;
-             }
-             break;
-diff --git a/util/qsp.c b/util/qsp.c
-index 382e4397e2..55477ae025 100644
---- a/util/qsp.c
-+++ b/util/qsp.c
-@@ -83,8 +83,8 @@ typedef struct QSPCallSite QSPCallSite;
- struct QSPEntry {
-     void *thread_ptr;
-     const QSPCallSite *callsite;
--    aligned_uint64_t n_acqs;
--    aligned_uint64_t ns;
-+    uint64_t n_acqs;
-+    uint64_t ns;
-     unsigned int n_objs; /* count of coalesced objs; only used for reporting */
- };
- typedef struct QSPEntry QSPEntry;
--- 
-2.43.0
+> The target test is TARGET_I386, not __i386__.
+>
+> Cc: Warner Losh <imp@bsdimp.com>
+> Cc: Kyle Evans <kevans@freebsd.org>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  bsd-user/syscall_defs.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
 
+Reviewed-by: Warner Losh <imp@bsdimp.com>
+
+
+diff --git a/bsd-user/syscall_defs.h b/bsd-user/syscall_defs.h
+> index 52f84d5dd1..c49be32bdc 100644
+> --- a/bsd-user/syscall_defs.h
+> +++ b/bsd-user/syscall_defs.h
+> @@ -247,7 +247,7 @@ struct target_freebsd11_stat {
+>      unsigned int:(8 / 2) * (16 - (int)sizeof(struct
+> target_freebsd_timespec));
+>  } __packed;
+>
+> -#if defined(__i386__)
+> +#if defined(TARGET_I386)
+>  #define TARGET_HAS_STAT_TIME_T_EXT       1
+>  #endif
+>
+> --
+> 2.43.0
+>
+>
+
+--000000000000618e2a06487941ba
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
+ner"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jan 15, 2026, 8:34=E2=80=
+=AFPM Richard Henderson &lt;<a href=3D"mailto:richard.henderson@linaro.org"=
+>richard.henderson@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"=
+gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-=
+left:1ex">The target test is TARGET_I386, not __i386__.<br>
+<br>
+Cc: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com" target=3D"_blank" rel=
+=3D"noreferrer">imp@bsdimp.com</a>&gt;<br>
+Cc: Kyle Evans &lt;<a href=3D"mailto:kevans@freebsd.org" target=3D"_blank" =
+rel=3D"noreferrer">kevans@freebsd.org</a>&gt;<br>
+Reviewed-by: Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linar=
+o.org" target=3D"_blank" rel=3D"noreferrer">philmd@linaro.org</a>&gt;<br>
+Reviewed-by: Pierrick Bouvier &lt;<a href=3D"mailto:pierrick.bouvier@linaro=
+.org" target=3D"_blank" rel=3D"noreferrer">pierrick.bouvier@linaro.org</a>&=
+gt;<br>
+Signed-off-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@li=
+naro.org" target=3D"_blank" rel=3D"noreferrer">richard.henderson@linaro.org=
+</a>&gt;<br>
+---<br>
+=C2=A0bsd-user/syscall_defs.h | 2 +-<br>
+=C2=A01 file changed, 1 insertion(+), 1 deletion(-)<br></blockquote></div><=
+/div><div dir=3D"auto"><br></div><div dir=3D"auto">Reviewed-by: Warner Losh=
+ &lt;<a href=3D"mailto:imp@bsdimp.com">imp@bsdimp.com</a>&gt;</div><div dir=
+=3D"auto"><br></div><div dir=3D"auto"><br></div><div dir=3D"auto"><div clas=
+s=3D"gmail_quote gmail_quote_container"><blockquote class=3D"gmail_quote" s=
+tyle=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+diff --git a/bsd-user/syscall_defs.h b/bsd-user/syscall_defs.h<br>
+index 52f84d5dd1..c49be32bdc 100644<br>
+--- a/bsd-user/syscall_defs.h<br>
++++ b/bsd-user/syscall_defs.h<br>
+@@ -247,7 +247,7 @@ struct target_freebsd11_stat {<br>
+=C2=A0 =C2=A0 =C2=A0unsigned int:(8 / 2) * (16 - (int)sizeof(struct target_=
+freebsd_timespec));<br>
+=C2=A0} __packed;<br>
+<br>
+-#if defined(__i386__)<br>
++#if defined(TARGET_I386)<br>
+=C2=A0#define TARGET_HAS_STAT_TIME_T_EXT=C2=A0 =C2=A0 =C2=A0 =C2=A01<br>
+=C2=A0#endif<br>
+<br>
+-- <br>
+2.43.0<br>
+<br>
+</blockquote></div></div></div>
+
+--000000000000618e2a06487941ba--
 
