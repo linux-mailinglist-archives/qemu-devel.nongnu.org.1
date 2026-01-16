@@ -2,113 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1859D30351
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:15:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AB6ED303E0
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:19:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vghne-0005QL-21; Fri, 16 Jan 2026 06:15:30 -0500
+	id 1vghqk-0007Il-KN; Fri, 16 Jan 2026 06:18:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vghnP-0005Hv-WA
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:15:20 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1vghnN-00052c-Ly
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:15:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768562111;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=uBFcIcrgb2MjkGS3VK1hgFnObDBwyhac/qUF9dw1XGY=;
- b=QUaX0PdwDw1/zi1vG9ooZwG4tdRyFlkcS4OiQFSjc8kNfMLQP5eTH57fmVn4bH5buJXwti
- /9PnIyv61pBXaR5ScYYO+EHuzmeQrd+O+Geu4g/v63nIZkmTsvaf9CnsKURPjWu6skXsk/
- 2lTUpk8qO2pyrBh37tmsaoyrOiXGmfE=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-147-JgPj9ksMMaKBZt_XHXlg4A-1; Fri, 16 Jan 2026 06:15:10 -0500
-X-MC-Unique: JgPj9ksMMaKBZt_XHXlg4A-1
-X-Mimecast-MFC-AGG-ID: JgPj9ksMMaKBZt_XHXlg4A_1768562110
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-8c52f89b415so486767785a.0
- for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 03:15:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghqJ-00076S-VQ
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:18:19 -0500
+Received: from mail-wm1-x341.google.com ([2a00:1450:4864:20::341])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghqH-0005eK-9T
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:18:15 -0500
+Received: by mail-wm1-x341.google.com with SMTP id
+ 5b1f17b1804b1-47fedb7c68dso12962555e9.2
+ for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 03:18:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768562110; x=1769166910; darn=nongnu.org;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=uBFcIcrgb2MjkGS3VK1hgFnObDBwyhac/qUF9dw1XGY=;
- b=pIT1bDWzVp1Y5FMkd+UdtAp/uORQvX7SAZ/NjRA4omHm/RRPGVnIyQQg07rExfbSNA
- jwkdYXZA2BS0s0+4UwxqK8x3ZFHi3JtP5xd8F6AzZGha9Ho3D8XeWqdNMIjaknk4Hape
- apkWbcNaQKt4j1BW/Z8vE+dUTH+T01LGD8NjcjyfJPTWkJgRxHVYXZ2BLE4Roi/N+UHu
- 7q0sEC8i/0OtlHSkwaXJk8t8Rd/hqBUELPj6lcdHWcSUKxl4CUgjWC+zQggAyDlmIlET
- vYZHz64KCjn/Hgn6UI2ksGJ1GhaqmkFwfpW+4l7Rng890ZKUCf0O0cJ/GBS1F5OebInq
- WigQ==
+ d=linaro.org; s=google; t=1768562289; x=1769167089; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=t9WzqMRuuA0/2oxyRezfpX4mT6hp/EAORI+sidITiX0=;
+ b=Rs3/7tjGFpW3K9aU9W/oybetLt43YjuIbl2UXeYfxa5z2iAUP+XFfB6WlaYooN6OAs
+ +mIHc4HDavTUi0ItvidzHdMsKPEB1mpJ3FhzPPp62ApSe78+o57uTQXEbzNS4HuFUWKB
+ bqA+luQ981qs7FvgjTmgLnqBMMtx6+CC9ZtpbRl+FiLqbuVqCpn++Lw9yYGvhM4a8P5h
+ I/uPeDo1F/5IoIYzXsMPcft+yQLOY/6K6feLuyztqbbIM12jq0759rvFBcjH2UPnYPJj
+ TnN2m2m6GkjeRC/hr8q0hBRYCRuJN4vcsh0FQr5TWdqEIS3hjP7beCjsEeC0F18HjJGZ
+ +Ugg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768562110; x=1769166910;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uBFcIcrgb2MjkGS3VK1hgFnObDBwyhac/qUF9dw1XGY=;
- b=f3DxahuR2I2juAC3sZh3IPPYK+Cpls/p9WP90y5xKhesB7wn//l/Ljv0hT5y3SAgh4
- A55ofiz0Km1CuzOTI5XzQBqhLtDeIQ71jNp9Ew1QdzeknEEYFFRKWzDZt6uuY71RHFPu
- IZptv7qw3AdL6U6Fuk2X5/7D71fsEHx3L8/MIHbIZmEavanVKej455opTUeyVeU66vJy
- IKjPqAMmixieIrJgzoGwSjWLdJ61YAKfndVmC50dQejx0WEWHWn+GA8PC3vvM4j9ZcLm
- uOa1ACJL2hK2eping8ftlp9nrLaeaP/Nm7Ec5c67Sqv6luWuxrV9I9ytKNyUtbqJWhgp
- jaOg==
-X-Gm-Message-State: AOJu0YzUd7nMEoCpXygWKFEL8w2gJ+NJqmGO8E4Y4VSy3STjimT90Pak
- U6KPY6/0Dv3fdAtSiGLY83LoHVDcOfxEuzbOnr1aSZ6d7yXOvs3baZ772aY2qhRWLTNOtOCydRA
- XJ1ehd256jY0/VXtcHpkvPxtt7aKuDMdp7jvViRzqL1+uWBO+4Gzr+P31
-X-Gm-Gg: AY/fxX4pDZnApNrSj4guByf5qy6ylBXrTmZtjFUQrQxqRvnu+4AyHu67kEUZGqi1nW2
- gvQiDw2b5CZLyY0u3328/CM//EKHWEAdCGHUJLy+arVODVSB6chXIkkDVGJ26l/i2shpq96PWsz
- TgVwryCXTicEvORml3XKyRfKKFUJTCh+87toXqKY5oWYfsqgOA2CeiHRZlxh6SOhXR5CbX55GXZ
- UhaiDBfMCmz0DW6GKbUoi9qoaSoD46a91ddrMkXgQE3ec5gD/0WIIE+0c5i1YLLkBgPT+KbWg63
- qS1loo9160iY6E8CQJPUBPLXOV74ez9+Pmzp96Rjd6+s8FlysMCu/20Az08Y0xkzs6C//3jWln3
- e1T/Pj1g863mp0BajsaQiTSOVgFT2Qg==
-X-Received: by 2002:a05:620a:6c0d:b0:8c6:a06c:f2d3 with SMTP id
- af79cd13be357-8c6a66da8c1mr351768585a.8.1768562109958; 
- Fri, 16 Jan 2026 03:15:09 -0800 (PST)
-X-Received: by 2002:a05:620a:6c0d:b0:8c6:a06c:f2d3 with SMTP id
- af79cd13be357-8c6a66da8c1mr351763685a.8.1768562109410; 
- Fri, 16 Jan 2026 03:15:09 -0800 (PST)
-Received: from redhat.com (IGLD-80-230-35-22.inter.net.il. [80.230.35.22])
- by smtp.gmail.com with ESMTPSA id
- af79cd13be357-8c6a72986bdsm201223285a.55.2026.01.16.03.15.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Jan 2026 03:15:08 -0800 (PST)
-Date: Fri, 16 Jan 2026 06:15:04 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Albert Esteve <aesteve@redhat.com>
-Cc: qemu-devel@nongnu.org, dbassey@redhat.com,
- manos.pitsidianakis@linaro.org, slp@redhat.com, stefanha@redhat.com,
- Fabiano Rosas <farosas@suse.de>, jasowang@redhat.com,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, david@redhat.com, hi@alyssa.is,
- stevensd@chromium.org, Stefano Garzarella <sgarzare@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>
-Subject: Re: [PATCH v11 5/7] vhost_user.rst: Add GET_SHMEM_CONFIG message
-Message-ID: <20260116055716-mutt-send-email-mst@kernel.org>
-References: <20251111091058.879669-1-aesteve@redhat.com>
- <20251111091058.879669-6-aesteve@redhat.com>
- <CADSE00+24EjXdRMDXXf7tgWLaH2gqeDhL_OeRbmZQ2e8JULPXA@mail.gmail.com>
+ d=1e100.net; s=20230601; t=1768562289; x=1769167089;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=t9WzqMRuuA0/2oxyRezfpX4mT6hp/EAORI+sidITiX0=;
+ b=kEXAJOKh/XsOPOMaITO5r9N2yUGSi40L1Jtt8nI3BUl49E4/MJqi3e8v4mnWdd2aWn
+ SVGnus9p5sDpKbmTMX6mdaA0Sc+PK2DMrTvcLRVRRKTmDzzh/lRrEnVzyeXx5u+66ScD
+ r2Z5pK9LBzAPDkq7UBSFdw6/zKFYn8xedXZmMD75jCKTQerhtK/O1OVJrTsCjwZn/iNG
+ lbs3CQMB9rRCdrYVT25myqpQLpb7MvipGmPfB1k7MwRZfQoPBCAMwnuTR9NNyM1bxWqz
+ dkdUoEVPuByxNBay5Kzux9sR9LsZj6oXwsjM81T0CdME3IzAvqijNydRYzfDNHFTq3m6
+ 65Fw==
+X-Gm-Message-State: AOJu0YxEI0ClPJjKpOMGMPxZAK+mNdEcvE/y9kR9nbPJyRMtTKt3An7O
+ akRZT9nzdOxbKutwkVa4FJtsBPmVOaHL/lRIt8in1rXCdWFYQoBijNIwT9Ag6vkDCElGdKPzyT/
+ V/WCGej0=
+X-Gm-Gg: AY/fxX55DPGNa3+jih9K1OgLcSoohqetXpDj9YY1WdNbFf8PokITxj0qhNAM721EJtI
+ xyQdk9f6z95myVFJ7PHdlD7m/7W+qm8u8b6bHIw2+w1xXztmkgwC8u8Am4vyAoYh02IbFH3Lhtm
+ ZlgfX5BXX0ZeDea9pGXhJtSsuB0WzvB6zocOv50ZD6TAX+PFiWlo8PP4pNas1kppelG3/zQGuB6
+ SCNYniPmpRP8RjD5Dg+q6Am1qBrb6khTpBBvgJvtXcFGAkd1yb7Y/QqJRHMI0kD7NJzWDMd9r9n
+ SDpDUI1mELHYgyHymOYA5swQ7ifXLSyKDbZldH4fu0EEw8Lh30MHDD9O/jfKGJZZOWNpMqFfhZE
+ fGhfiVQGwS1Kcu7+Veyxh4unkBPE6HylcvXbwDnv7UhN7uhYk5XXNLfyZ/aR+qmN61KuCbxs9dv
+ vFGCSNbIqVJKX2HBivQI6zITxCjgVUr5k80qreUuUZbZDp00MyD2xFPC+g6WYR
+X-Received: by 2002:a05:600c:a411:b0:480:1ecd:e7ce with SMTP id
+ 5b1f17b1804b1-4801ecde895mr18870285e9.11.1768562289117; 
+ Fri, 16 Jan 2026 03:18:09 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-48020312253sm13368395e9.14.2026.01.16.03.18.08
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 16 Jan 2026 03:18:08 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/30] Accelerators patches for 2026-01-16
+Date: Fri, 16 Jan 2026 12:17:37 +0100
+Message-ID: <20260116111807.36053-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADSE00+24EjXdRMDXXf7tgWLaH2gqeDhL_OeRbmZQ2e8JULPXA@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::341;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x341.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -124,107 +94,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 16, 2026 at 11:20:25AM +0100, Albert Esteve wrote:
-> On Tue, Nov 11, 2025 at 10:11 AM Albert Esteve <aesteve@redhat.com> wrote:
-> >
-> > Add GET_SHMEM_CONFIG vhost-user frontend
-> > message to the spec documentation.
-> >
-> > Reviewed-by: Alyssa Ross <hi@alyssa.is>
-> > Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-> > Signed-off-by: Albert Esteve <aesteve@redhat.com>
-> > ---
-> >  docs/interop/vhost-user.rst | 39 +++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 39 insertions(+)
-> >
-> > diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
-> > index 6c1d66d7d3..6a1ecd7f48 100644
-> > --- a/docs/interop/vhost-user.rst
-> > +++ b/docs/interop/vhost-user.rst
-> > @@ -371,6 +371,20 @@ MMAP request
-> >    - 0: Pages are mapped read-only
-> >    - 1: Pages are mapped read-write
-> >
-> > +VIRTIO Shared Memory Region configuration
-> > +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> > +
-> > ++-------------+---------+------------+----+--------------+
-> > +| num regions | padding | mem size 0 | .. | mem size 255 |
-> > ++-------------+---------+------------+----+--------------+
-> > +
-> > +:num regions: a 32-bit number of regions
-> > +
-> > +:padding: 32-bit
-> > +
-> > +:mem size: contains ``num regions`` 64-bit fields representing the size of each
-> > +           VIRTIO Shared Memory Region
-> > +
-> 
-> When implementing this for rust-vmm, the mem size came up a bit
-> confusing. In the last patch (7/7) of this series, the implementation
-> uses `num regions` as a count for the number of valid regions (thus
-> accounting for gaps in the shmem region mapping). Thus, `mem size` has
-> this confusing statement saying that it containers `num regions`
-> fields. It should say it contains 256 fields (it is only sent once
-> during initialization, so no need to save bytes here), with only `num
-> regions` that are valid (i.e., greater than 0). Maybe it could even
-> discard the `num regions` field, and send only the full array.
-> Thoughts?
+The following changes since commit c1c58cee16380f81f88fbde6b12f247b376839e2:
 
-Let's discuss the exact wording here.
-I'm not sure why would we need this padding sending unused fields
-though. Waste no, need not?
+  Merge tag 'pull-target-arm-20260115' of https://gitlab.com/pm215/qemu into staging (2026-01-16 09:33:20 +1100)
 
-> As much as I wanted this series merged, this deserves a clarification.
-> So I can either send a new version of the series or split the last
-> three patches into a different series. Hopefully it only requires one
-> more version though.
-> 
-> 
-> >  C structure
-> >  -----------
-> >
-> > @@ -397,6 +411,7 @@ In QEMU the vhost-user message is implemented with the following struct:
-> >            VhostUserShared object;
-> >            VhostUserTransferDeviceState transfer_state;
-> >            VhostUserMMap mmap;
-> > +          VhostUserShMemConfig shmem;
-> >        };
-> >    } QEMU_PACKED VhostUserMsg;
-> >
-> > @@ -1761,6 +1776,30 @@ Front-end message types
-> >    Using this function requires prior negotiation of the
-> >    ``VHOST_USER_PROTOCOL_F_DEVICE_STATE`` feature.
-> >
-> > +``VHOST_USER_GET_SHMEM_CONFIG``
-> > +  :id: 44
-> > +  :equivalent ioctl: N/A
-> > +  :request payload: N/A
-> > +  :reply payload: ``struct VhostUserShMemConfig``
-> > +
-> > +  When the ``VHOST_USER_PROTOCOL_F_SHMEM`` protocol feature has been
-> > +  successfully negotiated, this message can be submitted by the front-end
-> > +  to gather the VIRTIO Shared Memory Region configuration. The back-end will
-> > +  respond with the number of VIRTIO Shared Memory Regions it requires, and
-> > +  each shared memory region size in an array. The shared memory IDs are
-> > +  represented by the array index. The information returned shall comply
-> > +  with the following rules:
-> > +
-> > +  * The shared information will remain valid and unchanged for the entire
-> > +    lifetime of the connection.
-> > +
-> > +  * The Shared Memory Region size must be a multiple of the page size
-> > +    supported by mmap(2).
-> > +
-> > +  * The size may be 0 if the region is unused. This can happen when the
-> > +    device does not support an optional feature but does support a feature
-> > +    that uses a higher shmid.
-> > +
-> >  Back-end message types
-> >  ----------------------
-> >
-> > --
-> > 2.49.0
-> >
+are available in the Git repository at:
+
+  https://github.com/philmd/qemu.git tags/accel-20260116
+
+for you to fetch changes up to 7b87e00c25bb7b792c0ea80ac02f0bb6770f5106:
+
+  tests/functional: Require TCG to run reverse debugging tests (2026-01-16 11:17:28 +0100)
+
+----------------------------------------------------------------
+Accelerators patches queue
+
+- Enable 64bit WebAssembly guests (TCI)
+- Fix migration on HVF
+- Remove a signal race with WFI on HVF (Aarch64)
+- Correct HVF guest timer frequency (Aarch64)
+- Fix NVMM build (x86)
+
+----------------------------------------------------------------
+
+Kohei Tokunaga (4):
+  meson: Add wasm64 support to the --cpu flag
+  configure: Enable to propagate -sMEMORY64 flag to Emscripten
+  dockerfiles: Add support for wasm64 to the wasm Dockerfile
+  gitlab-ci: Add build tests for wasm64
+
+Markus Armbruster (1):
+  hmp-commands-info.hx: Move definition of "info accel"
+
+Philippe Mathieu-Daudé (15):
+  migration/dirtyrate: Do not unlock cpu_list lock twice
+  tests/qtest/migration: Make 'has_dirty_ring' generic
+  tests/qtest/migration: Add MigrationTestEnv::has_hvf field
+  target/i386/hvf: Use host page alignment in ept_emulation_fault()
+  accel/hvf: Enforce host alignment in hv_vm_protect()
+  accel/hvf: Skip WFI if CPU has work to do
+  accel/hvf: Implement WFI without using pselect()
+  accel/hvf: Have PSCI CPU_SUSPEND halt the vCPU
+  accel: Introduce AccelOpsClass::cpu_target_realize() hook
+  accel/hvf: Add hvf_arch_cpu_realize() stubs
+  target/arm: Create GTimers *after* features finalized / accel realized
+  target/arm/hvf: Really set Generic Timer counter frequency
+  target/arm: Only allow disabling NEON when using TCG
+  accel/nvmm: Fix 'cpu' typo in nvmm_init_vcpu()
+  tests/functional: Require TCG to run reverse debugging tests
+
+Richard Henderson (9):
+  accel/hvf: Create hvf_protect_clean_range, hvf_unprotect_dirty_range
+  target/i386/hvf: Use hvf_unprotect_dirty_range
+  target/i386/hvf: Use address_space_translate in ept_emulation_fault
+  accel/hvf: Simplify hvf_log_*
+  accel/hvf: Move hvf_log_sync to hvf_log_clear
+  accel/hvf: Simplify hvf_set_phys_mem
+  accel/hvf: Drop hvf_slot and hvf_find_overlap_slot
+  accel/hvf: Remove mac_slots
+  target/arm/hvf: Implement dirty page tracking
+
+Thomas Huth (1):
+  target/i386/nvmm: Include missing ramlist.h header
+
+ MAINTAINERS                                   |   2 +-
+ configure                                     |  16 +-
+ meson.build                                   |   4 +-
+ include/accel/accel-cpu-ops.h                 |   1 +
+ include/system/hvf_int.h                      |  22 +--
+ tests/qtest/migration/framework.h             |   1 +
+ accel/accel-common.c                          |   5 +
+ accel/hvf/hvf-accel-ops.c                     |  18 +-
+ accel/hvf/hvf-all.c                           | 186 ++++++------------
+ migration/dirtyrate.c                         |   1 -
+ target/arm/cpu.c                              |  67 +++----
+ target/arm/hvf/hvf.c                          | 167 ++++++++--------
+ target/i386/hvf/hvf.c                         |  48 +++--
+ target/i386/nvmm/nvmm-all.c                   |   3 +-
+ tests/qtest/migration/framework.c             |   3 +-
+ tests/qtest/migration/precopy-tests.c         |   3 +-
+ .gitlab-ci.d/buildtest.yml                    |  24 ++-
+ .gitlab-ci.d/container-cross.yml              |  11 +-
+ .gitlab-ci.d/container-template.yml           |   4 +-
+ .gitlab-ci.d/containers.yml                   |   3 +-
+ accel/hvf/trace-events                        |   1 +
+ hmp-commands-info.hx                          |  24 +--
+ ...2-cross.docker => emsdk-wasm-cross.docker} |  26 ++-
+ tests/functional/reverse_debugging.py         |   2 +
+ 24 files changed, 303 insertions(+), 339 deletions(-)
+ rename tests/docker/dockerfiles/{emsdk-wasm32-cross.docker => emsdk-wasm-cross.docker} (89%)
+
+-- 
+2.52.0
 
 
