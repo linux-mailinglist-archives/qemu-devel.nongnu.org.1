@@ -2,28 +2,28 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18CD5D2EC77
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 10:32:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA96CD2EC71
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 10:32:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vggB1-0002oP-0N; Fri, 16 Jan 2026 04:31:31 -0500
+	id 1vggB1-0002qF-UI; Fri, 16 Jan 2026 04:31:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <skolothumtho@nvidia.com>)
- id 1vggAy-0002ic-9n; Fri, 16 Jan 2026 04:31:28 -0500
-Received: from mail-centralusazlp170110009.outbound.protection.outlook.com
- ([2a01:111:f403:c111::9] helo=DM5PR21CU001.outbound.protection.outlook.com)
+ id 1vggB0-0002o7-Ds; Fri, 16 Jan 2026 04:31:30 -0500
+Received: from mail-westus2azlp170120002.outbound.protection.outlook.com
+ ([2a01:111:f403:c007::2] helo=MW6PR02CU001.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <skolothumtho@nvidia.com>)
- id 1vggAw-0005Sd-KU; Fri, 16 Jan 2026 04:31:28 -0500
+ id 1vggAy-0005Sr-7t; Fri, 16 Jan 2026 04:31:30 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g67zqSoDM+oW8D4Jk0kb53Z12eY/vj2jBm6JEcE6Xjm13Jb6YaVn0uHqP6cjoQZCNTF77fv+tHR9FXkmxWpa5z3CjAqhscOzpjYYkxVnqDziM12XomG9bdpU6qefSs7hX7QvsXD1mFusmu8/Br0BofR6Gck5gMveuFMfSn69CxQBFLeO7c7f/q5c/0OqHDt0cUmFBMj33mY0Hw7ItxyjIcY1kFbbx2//mlDoKtB7v6AeVObBLlMtXLAe/KMnusIIvYYuQ2QUBJJGEc4ylUiRp5kcjDAOSK1QqDxyY4Fl1EVnlwnl0DGhQqXOsml7wGYtcl6tGPgb9JYlfom2GpoJRw==
+ b=QAj5WsOd9IZUjt348BFANslIZM2RhCZrO7t5qcfGlZHXKbxJcrJ95TjFrxubr9je6MtmgwrNan/kAuPNkIn8N8IAFVkF1Xpyzk0kq0dKavUVf+veuj/1/VyCxfHtmwVQ9TYsqOSsMKrv3spirl4XU0uqOVrLAtj7/kLYYSokQWRAqRpEOGWk3nSJ3Smy5MbJWCs7RQaI0OMREJ3sSjeDNGjhBTzjf5yyqIX0orYPyVwQKzM+atyd5fx8AlYpgnzJC5PpYG3PLD4ASLpnwZiUkXp/zu5C2DPgp18zxRTO4vHJRslz/wtNDWsgF4WH9egOR4cfI7tLSWTlHA1xvrNaKA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rxbB4gZPK1wEdYioADPBR6ZU0eRGSMiTpJZw7HpRG3c=;
- b=cImnLdZZGMFL7Xeb6H4YYkP6H2PfYA9BUBUOgJRlWzli2574GEPRV2v+/BLSHQ3VNRSv5xDvFEiHeT9als/SU9/LrK4n2UhiGVqwpphwQaz4XJCPlKWDkfxIojuxA3STzGIKegRLnthA+bM8l/yUTew85YTGSpe5w8xH44gwzIPmVo+aE972IYao7A06AqWiE7a8THaLxZNEghpuIC+dXCtdKR6c6P8AJ5iVlpsl80FYBzd5i2xoIfm5lx0MsYPVi3+VECJRw39OLPFgKvku/3HQJLa4qCqlER/DRPhuiosKTA7upkTONISGMgSIjmPgAJrqA1LGEog3mfC5Mo3vPw==
+ bh=CzVuB3Zfw3DPe1Xle4ETdvT0a2715FF5A6tdvxG3fz4=;
+ b=bL48wWft4wPEtEltwF+ZWh+DuI2K+rNDuVFTB7YFogJRME6QNMxTUTiGALxEvv6kvN2r6vbaXlaLHKQ0VWlfLVvKVMdaGcTnXlGbGSSMhK1dOpJ2Rs7YBLilL1wxv8KTXJEnJmBPbGnGiJsI4O/vZ5AZV2pf4WPJOftiIW4P4b/P95HxkHTCfi1fvzw6o876vtHDfHi75PBg4X0rqcVtrO7mxGaYf6vZegVcbVHChZrsKua5y2qEQKbuDpDibThB0H8Y9xBkG+AyvVCf9IrSCdwUyJPeXc4h+UYyBZgOvD5+k1Ox2XwtbyZDX3rNUqLfpmJedaoXwQZ+Y5/u4dvMyQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.161) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -31,18 +31,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rxbB4gZPK1wEdYioADPBR6ZU0eRGSMiTpJZw7HpRG3c=;
- b=DCi3rSYth0M+ZsLDlWIzzWR8hUX9/83eh+kSmKJSEpsIkkZaAdqI1Wq3pQSxK1Y3DTMk43QPx9glYBsOPfffH8mhlYwJo0oTuLPwItEElT5hSjZgAJuq4SYTVZ0AjrIlwlgADrjucu2v2d3F6XTqIH07moJf9Y1BPEqI+i1SbTAjD77WAmlxuYE12nyXWLtwNAiGfGW4tmrVN5x3lmwbu6s4Hyxp4KRjEtoa6vRowvXB9qrIge3ngqakoOwmoSRN5JBIhYCtEO/8tHJwUgFLWY4gXPLOWG2wxdkAuK6QX+4lyWNuXx/BFYyLtGod6NcMibS/ytVx1iP3FE23qaeYAQ==
-Received: from BY1P220CA0010.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:59d::12)
- by DS7PR12MB5864.namprd12.prod.outlook.com (2603:10b6:8:7b::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Fri, 16 Jan
- 2026 09:31:18 +0000
+ bh=CzVuB3Zfw3DPe1Xle4ETdvT0a2715FF5A6tdvxG3fz4=;
+ b=SelRdAJwNgaCYjnUMYlZb/DyGlcMz410PwJ/ZKIo9Go0bXF4oJ+HtGeturp15wkl5IZFZNuQNnZxMMGZ0A5D57EshYm80wYIDhxXCcVDXCizjX8KJhAnc4aSAIfybtX3o89s5Go7e3paBCqZ1OCm0Wkv6YUX9yNKvI2UPOmE+wP2py9rXBoExEbWpuu7+eUPSLdo1rEpKDxk4Mp3ENiadL2D79wh3mP2bk3G/Dwa1gH24LoFO1F/qsiBmm+GvtCrHHD5B9W0iL52ejvYbB37EfK4ifC9t5ysFnKHd1ZG6atQzjQWLLzhPijed6uyfkHd45B3VynmQswl1o79ocMPvg==
+Received: from BY1P220CA0004.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:59d::15)
+ by PH0PR12MB7888.namprd12.prod.outlook.com (2603:10b6:510:28b::20)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.4; Fri, 16 Jan
+ 2026 09:31:21 +0000
 Received: from BY1PEPF0001AE16.namprd04.prod.outlook.com
- (2603:10b6:a03:59d:cafe::1b) by BY1P220CA0010.outlook.office365.com
- (2603:10b6:a03:59d::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9520.9 via Frontend Transport; Fri,
- 16 Jan 2026 09:31:24 +0000
+ (2603:10b6:a03:59d:cafe::bc) by BY1P220CA0004.outlook.office365.com
+ (2603:10b6:a03:59d::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9520.8 via Frontend Transport; Fri,
+ 16 Jan 2026 09:31:34 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
  smtp.mailfrom=nvidia.com;
  dkim=none (message not signed)
@@ -53,15 +53,15 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
 Received: from mail.nvidia.com (216.228.117.161) by
  BY1PEPF0001AE16.mail.protection.outlook.com (10.167.242.104) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9542.4 via Frontend Transport; Fri, 16 Jan 2026 09:31:18 +0000
+ 15.20.9542.4 via Frontend Transport; Fri, 16 Jan 2026 09:31:21 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
  (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 16 Jan
- 2026 01:31:05 -0800
+ 2026 01:31:09 -0800
 Received: from NV-2Y5XW94.nvidia.com (10.126.231.35) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 16 Jan
- 2026 01:31:02 -0800
+ 2026 01:31:06 -0800
 From: Shameer Kolothum <skolothumtho@nvidia.com>
 To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
 CC: <eric.auger@redhat.com>, <alex@shazbot.org>, <clg@redhat.com>,
@@ -69,9 +69,9 @@ CC: <eric.auger@redhat.com>, <alex@shazbot.org>, <clg@redhat.com>,
  <nathanc@nvidia.com>, <mochs@nvidia.com>, <jgg@nvidia.com>,
  <jonathan.cameron@huawei.com>, <zhenzhong.duan@intel.com>,
  <vivek.kasireddy@intel.com>, <kjaju@nvidia.com>
-Subject: [PATCH v3 3/4] hw/vfio: Add helper to retrieve device feature
-Date: Fri, 16 Jan 2026 09:29:48 +0000
-Message-ID: <20260116092950.15796-4-skolothumtho@nvidia.com>
+Subject: [PATCH v3 4/4] hw/vfio/region: Create dmabuf for PCI BAR per region
+Date: Fri, 16 Jan 2026 09:29:49 +0000
+Message-ID: <20260116092950.15796-5-skolothumtho@nvidia.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260116092950.15796-1-skolothumtho@nvidia.com>
 References: <20260116092950.15796-1-skolothumtho@nvidia.com>
@@ -83,74 +83,73 @@ X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE16:EE_|DS7PR12MB5864:EE_
-X-MS-Office365-Filtering-Correlation-Id: eaaad066-5a92-421c-9c72-08de54e2009a
+X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE16:EE_|PH0PR12MB7888:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9e9a66d5-a5a9-4f28-4e15-08de54e202ad
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|7416014|376014|82310400026|1800799024|36860700013; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?SVNTTFI2Tk5mVTMvdDZCcVlTNzgwOExqOWlEVFdybXhvNDBLQ1ZnaXluVXRS?=
- =?utf-8?B?ckh5QUZJNElVZk5yTHpDNERkamFmbWY3anhXU2xJek5wZVZKNkgwa1BRclkz?=
- =?utf-8?B?Yzc4RDUwbzNEU1h6Q1hhZVVpcnh6NXJaQ1crektZWGttY2ZkNHA2V2I5eFVq?=
- =?utf-8?B?VjhvSTUrWmpXdWhwRFhmS0U1S1l5VXdZVk01V24yZUhUM3FpbEdmQjcxeEpu?=
- =?utf-8?B?cXNyM2pYSlZxVVJoRDBDaDRGZkJlakI3KzZ3Q0RvNjA5QU1tc3hpaTlsQk9q?=
- =?utf-8?B?OG5PbEVUVjBLelBVaTJnbWczUnZrR3BDb0I2b3o4KzlzTG5JalVuVWVHcjV2?=
- =?utf-8?B?MlRwRE5kV01LK2FEUVJMRnZwUk5KQU40aW9tNEhWRkI5UFlFblRXaktBc3Zm?=
- =?utf-8?B?TllzcWRiQ3Q4b2Q5dHJkc2MyZFRvWWtZa0lDVVFybXB5SldidjNWMWlVblV3?=
- =?utf-8?B?K1lScXFIZjBjZVRUL1FkVW9CaDJFeHc5ZmU5WUsyVGhnMW1aS3kreGM3NTJX?=
- =?utf-8?B?TjdJbGYrNjI1b0dJcnZrdFNWNXJmWHVlNHdzMTJZQlZrSVVva1d0OHJaa3J6?=
- =?utf-8?B?bDUzTWpSTTByM0ZoYjZUS2VvQnZURXMwVFVrcGg3L3hDTDFROVdqam95cXlx?=
- =?utf-8?B?Yy8zenluTkZpNCt2dXFST3hBU2x0ZXhtUmFaWjVFdDBYZHdncm9XTURveHkv?=
- =?utf-8?B?NHFtNlNoenY0bFg5b1lEb1hDM3ZQS3hPR1RHUzdIYjQ3bEJMdTQrOXJiTS9F?=
- =?utf-8?B?d1lVOEVjK1NwQTZOZ2EvR1R2cWRrazRNdTBnbTlXRWFKelJyblJPbzJneFJY?=
- =?utf-8?B?MDMzT2t4RUNaUXVta2IrRURlMWczWC9EUUQ5Q3h2S0VJQXIvR0h2TXljcktH?=
- =?utf-8?B?UnRnTFc0TDMrSDYzMVpKeXNIRm5TeExBZ2hIV1Bnd1UxOHYrNmg2aTk1NVFw?=
- =?utf-8?B?UFhpajd3bGhwRGxWc3BEbDBSS3NVWHhFaVpUTzZzR0VPV211ZWd6Szd1RGg5?=
- =?utf-8?B?cWNNSzdNZVh1dENkeXNSVVo2R0NSQjZCUVh5TnBtTWRxN0tIWW5DRGhoaDFW?=
- =?utf-8?B?SjVBYVRjeXJpN0wwSVczdTZXcVNMYiszMklvczAyUDN6NnpiSWIyemt4ZDlD?=
- =?utf-8?B?S25zaFdTdmJzQkZnWlN0WWp5TE9adnJ0NEYyNmVndXg3dk1WeUxFb1Jpb3FK?=
- =?utf-8?B?N0NqUm1nUjlIOVVKQUQwM1dMeDkvRGtxSktTMjd0blR0amxtekdvSGtGQml3?=
- =?utf-8?B?VEZXaVRuRTBRbkhVaEdvWUpVMXRBUlBhT3NHZGdua2NmR3QrNkUrQk1ZZ21t?=
- =?utf-8?B?bTJqYUJPbFpBUVpGcjB2Z0UybFJuODcyRnU2SktBZDBua0FPUk4xVndYSU94?=
- =?utf-8?B?QldNNFRKOUNpV1FpbUI2RjFSN3FTM1cyME5DQnVINXJyK01NYXBDbTVVSDV0?=
- =?utf-8?B?QWtVR0VsUEdqQlBxOGNpNzdFc2NyYWlYbHZvM2xTQ2F4T24zWXlzZUUxRzlo?=
- =?utf-8?B?SFQ0d3pHd3R5eUZwdUxFS2NLam5JVE5hUHFlYWkvVzFCeG9xOWEvL0Y2WUpW?=
- =?utf-8?B?MThtazNLdURRcGR1L2pOWVpuQStreXkwekNWRnJPZWJaZDgwMGk5SUV4bFJ4?=
- =?utf-8?B?UmZWUzE4aHJKUkhXK3FBQzZZaVRybzBIWDZNd3NvN09pMXltbjVtbGVHNTlp?=
- =?utf-8?B?Y0JQc2N6cEc0a05nZElkZFJKd1hKbUx5K3IzYzg2K0VuWDRlK1gyeUZMVHVW?=
- =?utf-8?B?NldFUDhTc095OG9SeHNGZGlXT2drbkhCOVNDQWY0elFBYkJ5UEhpTTlZRDdX?=
- =?utf-8?B?bTQ5d3Q2TUF3N080M1MraExTNWJUaS9DY05DSFNCMk9KV2JKWC9TQ2JpaXRG?=
- =?utf-8?B?L0l4eXlhUWhpVHFMaXA2N0dZbCt6WmRjQ1VPb285MmY5MTM3YVVyK0Eyb0c3?=
- =?utf-8?B?UnkwaXpLZ3hwVSs3V1VaL2RwemdyQVBENUt2MzBHN2svVzIwbDlYSEpkK1Nk?=
- =?utf-8?B?UkNXVUxpWnZoLzRKTlN2NVF1ODRLaEJRWE1zQzQ1ek1kSDRqUTRVZC9nM0xH?=
- =?utf-8?B?YWhFaHZoTjg5YUJIQmFqWUlrd0RnaXJWb21qejUyaGkzaU1rcFQ2dXpxMlpj?=
- =?utf-8?B?Vk9Ed240NUdJUkJkdVNGYWMyUmw3aFZvQmUzL2N5SmJXVmdpc1BmYlJmalVq?=
- =?utf-8?B?YjZiaVFtRkpTNlJCenh6VUlqc3RjY3NFKzZWQ1A1YmFmTVlleXBUS3FvZEVI?=
- =?utf-8?B?L3NHcUlIQmRQZFp2ZFFYU2hZbXF3PT0=?=
+ ARA:13230040|376014|36860700013|1800799024|82310400026|7416014; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?RmVLeCtlMERpME1JUzZsQjRzTW5pREpJVS9OSTk5NC9WdTBFZ1M0N2dPeHR5?=
+ =?utf-8?B?MzZIanNCdEpTUzFtU2ZwUjYzdk9IKys2aVBjcG9Od0owbnFicjBWckxwa0Fz?=
+ =?utf-8?B?VU1ZVkJiM24rMFJ2TEphM3Bwc3ZoM0ZOSFNVVnBIZFZrOXFDaXh2U1NYSVFv?=
+ =?utf-8?B?aWljZTVvTGFsT0dIYnEzVGhDS2diMUVkTXprdTJTTWxmN0xEZTlCMkMzYmpK?=
+ =?utf-8?B?YVc1RFU4a1RGVXhZbkNibjVwYXlaQjV5WFc1YnRaNGVoWThRbnh0TkxIaFFI?=
+ =?utf-8?B?ampFTkE4QThRdjB1Q2FLWUN5RXBKS3dYTFZwVVZ6QjRUVlQxSFNWMmRMTVF5?=
+ =?utf-8?B?ZUZuWldGR0E1d2phRXFzRXo3M0xMZGt6YndlZnRteVdFQ1VqZ1FNRFJaNGhQ?=
+ =?utf-8?B?eUtkOXpSM2ZabXVrWVEyVmtFcW4zdGZReDBjeU1kSjBXSC9GSlVyWGNtMEZR?=
+ =?utf-8?B?eVBXOWdIYndNSUN0YlhXYU5KVng4ZXI5QVMyS3hrci80eHpNU3hPMVluZ3pz?=
+ =?utf-8?B?QVhMNXlkY1B0TGdOOXFGQjhudnNwcmJUTzh2MTdVZHptRnRwQ0dnczQ1ZHcy?=
+ =?utf-8?B?OFFtWFhaMzVkWlI4V3Z0aVNaU21TSXViYnhqV3pOdTdZZUs4Mjl3TWhvTCtE?=
+ =?utf-8?B?eXREaUZEUlhZY2Z4d056NG16Sm05QUVHdVR1UHFpdVRiYWh5aWN5bzJNeE5H?=
+ =?utf-8?B?OHZHbEx5NGphSlFvMDJWRkNZQlNQcm1TUXk3TCthdEY0RW81dzg2by9pKy8z?=
+ =?utf-8?B?MDVjQmY1ZFp0T3lERmF1cGU5TFNacFVmRUpWUUhLUkRzUnFTM29tamlaK21a?=
+ =?utf-8?B?QTl4Q25mM2xXY2RaN0N1RnorMWlkTTBnRndBTm1lQ2NyVWs4UG11eHlTTVRl?=
+ =?utf-8?B?T3dSM3owL0p3OXp6ZFhrSGpnVUorRGNMVDE1Yi9KK3FQaDFDNnJZdlBKdkVr?=
+ =?utf-8?B?QzQ0WlJaaHptbDA1STdKWlk4RnNsZllIdkdVblJhd0o4SjExM1dndjJJK1BM?=
+ =?utf-8?B?a3hjSTVpaDRmT29sM2F4aTErL1ZTR2p5VHJ3ejVLUVJWM2JjTTJFekFWdVZF?=
+ =?utf-8?B?dDlsTzhlUDlnNFRkNGY3MFVMdXRzV21lNlY2SmIzaGZKNUM3cmViYy9wcnBk?=
+ =?utf-8?B?MVMwOW12OVBqb3IxVGNibDhlV09BbzBDNWFzZmJTVWUyT1JwZ1RoQk9PalJC?=
+ =?utf-8?B?TEw3bEc3NVlQeXErY0FFT1ZtNEs5SXNqTkR4VGh2dllUQ29BWXZYUGdNUmxq?=
+ =?utf-8?B?bEpPUTk5M3BYWU5Zbk9PdzVxd2lwaG5YNjR2cXN5SkRWVGRlcU1YMUs4dlJh?=
+ =?utf-8?B?Y3pnbHBISVJFckNFWkNENXR5cGlWOVRPQjYySm1Xb2RtT3JoaDgwbTFmd0RX?=
+ =?utf-8?B?U09ZVEdvenFuTGoydU5lNVU5RTErdGhUbmQ3cWR4MUdWbWZMTFJJY2lXNFUw?=
+ =?utf-8?B?cWxSUURCMlZBcmdzSi9lWktLdnJUUlczZ3ZLRzFOek92Q3RkUnZpZ2xmOGVj?=
+ =?utf-8?B?cnc5UFZrd0l6ZVFLUXFlR1ZjTVphQlJTMWc3bFhHeVl1LzU0bWRNMWZuZW5i?=
+ =?utf-8?B?TDQvU1BhNC9BVDhFakpodEs0b0ZlRUJTMFRVVkFKNTYvQXBKdXl4d1NZREo3?=
+ =?utf-8?B?MmE4ODdBMGZEd2dVYkdyeC9pN29yQVVvYm9oRmp1SS83MVBhOUFtYkVPWnFq?=
+ =?utf-8?B?cTRod3pidXdwWEhNRmpubUVVaGxUSFQ5Z09aNzFVdWVTUW5JYWs2R1Q1TXFo?=
+ =?utf-8?B?ZVBwaXlrMTgrZUp5bTY4UWdKTjdYRDU1TmNvTFdTd1p5eTFLUFlBSkg0VFI5?=
+ =?utf-8?B?eG1VNnlmaGRRcVZ1TGNPS1hnQWM5c0pnaXlKRlpicldNQzBtR0k2bUZ0TlAr?=
+ =?utf-8?B?RWd2Ni84eFpkYVc5UGpLbTJ0NG5jSDhDM09UWnZmVE5RSjIxSXpZZlFSblJT?=
+ =?utf-8?B?RDdVSDV0VVBWbEc2dlNzU0lNa0VHTjlrdERNdG9PU21wREFpL3lGcmdkbld0?=
+ =?utf-8?B?UVVkWi9FT1lTZTV0MDBWUytvR3owUFhVaU9NWFBEcWxxSFYzZXZaR3NiWGUr?=
+ =?utf-8?B?SHdZYVpRdWwwT1FvOEF6cnprRWk5ZFFtaHRKaDZSaDdZWGk3S04vdmlQY3c2?=
+ =?utf-8?B?RU8rWktCRXNNTDF3bVhIeEs2UXh2MXdqRXF3bTJ5TXYxVElUVjBJZ1o1TWUv?=
+ =?utf-8?B?dDlLT05TK3dodlQwRjFsYXdUd1RPaFJLMFJSTS9SOUx2VHNXVUlqUXZWSmp2?=
+ =?utf-8?B?eHlvbGRLOGhkckgyRDVtelQ2WmNnPT0=?=
 X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
- SFS:(13230040)(7416014)(376014)(82310400026)(1800799024)(36860700013); DIR:OUT;
+ SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026)(7416014); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2026 09:31:18.2186 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: eaaad066-5a92-421c-9c72-08de54e2009a
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2026 09:31:21.7043 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9e9a66d5-a5a9-4f28-4e15-08de54e202ad
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
  Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource: BY1PEPF0001AE16.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5864
-Received-SPF: permerror client-ip=2a01:111:f403:c111::9;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7888
+Received-SPF: permerror client-ip=2a01:111:f403:c007::2;
  envelope-from=skolothumtho@nvidia.com;
- helo=DM5PR21CU001.outbound.protection.outlook.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ helo=MW6PR02CU001.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FORGED_SPF_HELO=1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001,
- SPF_NONE=0.001 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -166,89 +165,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add vfio_device_get_feature() as a common helper to retrieve
-VFIO device features.
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-No functional change intended.
+Linux now provides a VFIO dmabuf exporter to expose PCI BAR memory for P2P
+use cases. Create a dmabuf for each mapped BAR region after the mmap is set
+up, and store the returned fd in the region’s RAMBlock. This allows QEMU to
+pass the fd to dma_map_file(), enabling iommufd to import the dmabuf and map
+the BAR correctly in the host IOMMU page table.
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+If the kernel lacks support or dmabuf setup fails, QEMU skips the setup
+and continues with normal mmap handling.
+
+Tested-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
 Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
 ---
- hw/vfio/container.c           | 2 +-
- hw/vfio/device.c              | 9 +++++++++
- hw/vfio/listener.c            | 4 ++--
- include/hw/vfio/vfio-device.h | 3 +++
- 4 files changed, 15 insertions(+), 3 deletions(-)
+ hw/vfio/region.c     | 65 +++++++++++++++++++++++++++++++++++++++++++-
+ hw/vfio/trace-events |  1 +
+ 2 files changed, 65 insertions(+), 1 deletion(-)
 
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index af16cd14db..4c2816b574 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -205,7 +205,7 @@ static int vfio_device_dma_logging_report(VFIODevice *vbasedev, hwaddr iova,
-     feature->flags = VFIO_DEVICE_FEATURE_GET |
-                      VFIO_DEVICE_FEATURE_DMA_LOGGING_REPORT;
+diff --git a/hw/vfio/region.c b/hw/vfio/region.c
+index ca75ab1be4..ab39d77574 100644
+--- a/hw/vfio/region.c
++++ b/hw/vfio/region.c
+@@ -29,6 +29,7 @@
+ #include "qemu/error-report.h"
+ #include "qemu/units.h"
+ #include "monitor/monitor.h"
++#include "system/ramblock.h"
+ #include "vfio-helpers.h"
  
--    return vbasedev->io_ops->device_feature(vbasedev, feature);
-+    return vfio_device_get_feature(vbasedev, feature);
+ /*
+@@ -238,13 +239,71 @@ static void vfio_subregion_unmap(VFIORegion *region, int index)
+     region->mmaps[index].mmap = NULL;
  }
  
- static int vfio_container_iommu_query_dirty_bitmap(
-diff --git a/hw/vfio/device.c b/hw/vfio/device.c
-index 086f20f676..973fc35b59 100644
---- a/hw/vfio/device.c
-+++ b/hw/vfio/device.c
-@@ -547,6 +547,15 @@ bool vfio_device_get_host_iommu_quirk_bypass_ro(VFIODevice *vbasedev,
-     return false;
- }
- 
-+int vfio_device_get_feature(VFIODevice *vbasedev,
-+                            struct vfio_device_feature *feature)
++static bool vfio_region_create_dma_buf(VFIORegion *region, Error **errp)
 +{
-+    if (!vbasedev->io_ops || !vbasedev->io_ops->device_feature) {
-+        return -EINVAL;
++    g_autofree struct vfio_device_feature *feature = NULL;
++    VFIODevice *vbasedev = region->vbasedev;
++    struct vfio_device_feature_dma_buf *dma_buf;
++    size_t total_size;
++    int i, ret;
++
++    total_size = sizeof(*feature) + sizeof(*dma_buf) +
++                 sizeof(struct vfio_region_dma_range) * region->nr_mmaps;
++    feature = g_malloc0(total_size);
++    *feature = (struct vfio_device_feature) {
++        .argsz = total_size,
++        .flags = VFIO_DEVICE_FEATURE_GET | VFIO_DEVICE_FEATURE_DMA_BUF,
++    };
++
++    dma_buf = (void *)feature->data;
++    *dma_buf = (struct vfio_device_feature_dma_buf) {
++        .region_index = region->nr,
++        .open_flags = O_RDWR,
++        .nr_ranges = region->nr_mmaps,
++    };
++
++    for (i = 0; i < region->nr_mmaps; i++) {
++        dma_buf->dma_ranges[i].offset = region->mmaps[i].offset;
++        dma_buf->dma_ranges[i].length = region->mmaps[i].size;
 +    }
-+    return vbasedev->io_ops->device_feature(vbasedev, feature);
++
++    ret = vfio_device_get_feature(vbasedev, feature);
++    if (ret < 0) {
++        if (ret == -ENOTTY) {
++            warn_report_once("VFIO dma-buf not supported in kernel: "
++                             "PCI BAR IOMMU mappings may fail");
++            return true;
++        }
++        /* P2P DMA or exposing device memory use cases are not supported. */
++        error_setg_errno(errp, -ret, "%s: failed to create dma-buf: "
++                         "PCI BAR IOMMU mappings may fail",
++                         memory_region_name(region->mem));
++        return false;
++    }
++
++    /* Assign the dmabuf fd to associated RAMBlock */
++    for (i = 0; i < region->nr_mmaps; i++) {
++        MemoryRegion *mr = &region->mmaps[i].mem;
++        RAMBlock *ram_block = mr->ram_block;
++
++        ram_block->fd = ret;
++        ram_block->fd_offset = region->mmaps[i].offset;
++        trace_vfio_region_dmabuf(region->vbasedev->name, ret, region->nr,
++                                 memory_region_name(region->mem),
++                                 region->mmaps[i].offset,
++                                 region->mmaps[i].size);
++    }
++    return true;
 +}
 +
- /*
-  * Traditional ioctl() based io
-  */
-diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
-index 8ba1cd255d..1087fdc142 100644
---- a/hw/vfio/listener.c
-+++ b/hw/vfio/listener.c
-@@ -909,7 +909,7 @@ static void vfio_devices_dma_logging_stop(VFIOContainer *bcontainer)
-             continue;
-         }
+ int vfio_region_mmap(VFIORegion *region)
+ {
+     int i, ret, prot = 0;
++    Error *local_err = NULL;
+     char *name;
+     int fd;
  
--        ret = vbasedev->io_ops->device_feature(vbasedev, feature);
-+        ret = vfio_device_get_feature(vbasedev, feature);
+-    if (!region->mem) {
++    if (!region->mem || !region->nr_mmaps) {
+         return 0;
+     }
  
-         if (ret != 0) {
-             warn_report("%s: Failed to stop DMA logging, err %d (%s)",
-@@ -1014,7 +1014,7 @@ static bool vfio_devices_dma_logging_start(VFIOContainer *bcontainer,
-             continue;
-         }
+@@ -305,6 +364,10 @@ int vfio_region_mmap(VFIORegion *region)
+                                region->mmaps[i].size - 1);
+     }
  
--        ret = vbasedev->io_ops->device_feature(vbasedev, feature);
-+        ret = vfio_device_get_feature(vbasedev, feature);
-         if (ret) {
-             error_setg_errno(errp, -ret, "%s: Failed to start DMA logging",
-                              vbasedev->name);
-diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
-index f6f3d0e378..35a5ec6d92 100644
---- a/include/hw/vfio/vfio-device.h
-+++ b/include/hw/vfio/vfio-device.h
-@@ -272,6 +272,9 @@ bool vfio_device_get_host_iommu_quirk_bypass_ro(VFIODevice *vbasedev,
-                                                 uint32_t type, void *caps,
-                                                 uint32_t size);
- 
-+int vfio_device_get_feature(VFIODevice *vbasedev,
-+                            struct vfio_device_feature *feature);
++    if (!vfio_region_create_dma_buf(region, &local_err)) {
++        error_report_err(local_err);
++    }
 +
- int vfio_device_get_region_info(VFIODevice *vbasedev, int index,
-                                 struct vfio_region_info **info);
- int vfio_device_get_region_info_type(VFIODevice *vbasedev, uint32_t type,
+     return 0;
+ 
+ no_mmap:
+diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
+index 180e3d526b..466695507b 100644
+--- a/hw/vfio/trace-events
++++ b/hw/vfio/trace-events
+@@ -118,6 +118,7 @@ vfio_device_put(int fd) "close vdev->fd=%d"
+ vfio_region_write(const char *name, int index, uint64_t addr, uint64_t data, unsigned size) " (%s:region%d+0x%"PRIx64", 0x%"PRIx64 ", %d)"
+ vfio_region_read(char *name, int index, uint64_t addr, unsigned size, uint64_t data) " (%s:region%d+0x%"PRIx64", %d) = 0x%"PRIx64
+ vfio_region_setup(const char *dev, int index, const char *name, unsigned long flags, unsigned long offset, unsigned long size) "Device %s, region %d \"%s\", flags: 0x%lx, offset: 0x%lx, size: 0x%lx"
++vfio_region_dmabuf(const char *dev, int fd, int index,  const char *name, unsigned long offset, unsigned long size) "Device %s, dmabuf fd %d region %d \"%s\", offset: 0x%lx, size: 0x%lx"
+ vfio_region_mmap_fault(const char *name, int index, unsigned long offset, unsigned long size, int fault) "Region %s mmaps[%d], [0x%lx - 0x%lx], fault: %d"
+ vfio_region_mmap(const char *name, unsigned long offset, unsigned long end) "Region %s [0x%lx - 0x%lx]"
+ vfio_region_exit(const char *name, int index) "Device %s, region %d"
 -- 
 2.43.0
 
