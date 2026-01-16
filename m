@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ABDCD30496
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:21:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77BC5D304C7
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:22:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vghtN-000580-Ei; Fri, 16 Jan 2026 06:21:25 -0500
+	id 1vghtS-0005un-MY; Fri, 16 Jan 2026 06:21:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghtJ-0004fE-KM
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:21:21 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghtP-0005k5-VS
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:21:28 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghtH-0007Mp-Oy
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:21:21 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-42fbc305882so1001127f8f.0
- for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 03:21:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghtO-0007N7-94
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:21:27 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-480142406b3so8870255e9.1
+ for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 03:21:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768562478; x=1769167278; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768562484; x=1769167284; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=eHLs8AUi0uIKt/UnDT2O1wmc+fAIIzrx7AQFHa6gfgQ=;
- b=RO83T/FMQmjFaPIlIK90SMGV18bZEIfTzgJsJ6vebo7CCyumRqfBEEFjG4zu6HZaJm
- pUHSu364a2Tl07jSy7g4wM4G9Q4PcfJqfes+CshBdZL3HbuOKKgipLE0G1Oqhhj2L9xj
- u4FM9KXhkJxymTorJRCDfVbzNOEWFw05hLUrorjgIQsaqO0dH+O3wLEMNFBeJGFX0HHz
- Oh17sXDBT+H01Bas1NCXflgVk+afTquFSSwq1s8fu5WoHJphWOYJzPkxDSSy60FYUd5U
- 24wauaoeHf16YxL2O4RmMrosLlqSgCMLXmQaKXIyDgvwQAx7JDe6pC2MqfwQ6NuIrBNi
- Om/Q==
+ :reply-to; bh=AJ2C+J8W/PdiTCId1bKgsQdGDEMoeG3PAJYMq0CzxlY=;
+ b=SBTe1RPYssJanDDyMgFnwKabv/SclOjIh6968RSajgRnGb+0xause2ulDkUEt+qUoa
+ 0ED3yYxYanLrtcbHwUv6tX5s//Q9rr/RksEV9R4+JOxJqJp1wLvhXOdCr3cblsufXnJ0
+ OWchZ6ezBh0OJNkLQA2L2pwxVDWQUq/BrmyjV6FKXGNx5kdaHvMuCfWacqTRw4D+uDzX
+ BYmab5KY/kLavA4XEsfwQ9tqfeGKMvacXRIFOeN92oy3fAhc36NaSIu6R8yZkemMuli5
+ Hm0535pHjMLH9b//b2Z34qkQVSka4paKMYC0UunuRjEKJQ5SYQ72pgUTA5YPIFLwuyU1
+ mbcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768562478; x=1769167278;
+ d=1e100.net; s=20230601; t=1768562484; x=1769167284;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=eHLs8AUi0uIKt/UnDT2O1wmc+fAIIzrx7AQFHa6gfgQ=;
- b=KeRuVO7hK4mit25lSb/sd5pKVD1q4qatFG2r/H+T39D+sQD5nvygsysm93jHWjF1JZ
- StWo4IcZccFE0z+SD31OsbWYmHZzBQKSE0uNfA9Nr6aIO6j20jNwEZdnUY9FzwkjfvX7
- t2PsQ3B5VCacfqh7/esmqKzvs2FjelRgwstUtX76hEpaTOCikzsuVAbugHdff2TJ4Nlc
- vsqf9aihwWpWwTrax2Q3grmgErtiEgvV3Gti9aSx7v0ee1mDYPUGh/z8NFDcIxOrTxoM
- FKc2MNab1bV97N2wmLnzGUKnQaTj9p+XAkUVVHcPZitEKsRdj/Lhz5NU2cVcixrQPHVL
- ISdA==
-X-Gm-Message-State: AOJu0YypoP39IsqpEK6IFt5PvLIggyNtrQEAmFOEJlhTZrYwl6i7uCET
- TAkdNH9/tSCdawnnP9lW3HcsW1cSXt7Hdqx724J6uKfGfAp7NwdyFpGxLWyzfCzGR/pEEdVsQY1
- Vm2wXt+U=
-X-Gm-Gg: AY/fxX7kllukvbgMi8GYSAxLzONBTZBBdaJm4eFAzbkegCz5MQYrBSFHdOTalEdGCAl
- rBnc9UQRnuz+hCGwapuv4s4JfF5U+JDzEPLQ8UXgJJxD3gaBSVI1ec112m/7HSYPmm9SMgLLiox
- r1WSOembWBqx67uPIXYPIJ8MkT79GLVsdx0aTVZaXCO9+7Q5fXwns10q2trUTXzcHa78HovGtHq
- LBF9H+Z8JDD2PqLsQcsN41rzWEahNpz0nlzQjpFZh8Z+WJ14wARQIdHtkmLogC61NBw94M/84b0
- ApHRn7xGQp1V766htZvL599NDSfg517jjJcOQpxhXcjGTIJEStxfhljNBRh23yMcsnA9VVk/gfb
- KETdrLkJhhfkthrj/5ExVdkADkqFr+R7AY8Ozojpl/U67hglvUzJjyrc2swE44Onnxwq7C7V5Kj
- OsfOk6ArfqFupJeLUBxk5WBESN0+tRGE7EhiwWeRxuqQcW9RhYnZeZ+oXd3cEe
-X-Received: by 2002:a05:6000:1845:b0:432:c0e6:cfcd with SMTP id
- ffacd0b85a97d-4356998af3emr3176524f8f.22.1768562477904; 
- Fri, 16 Jan 2026 03:21:17 -0800 (PST)
+ bh=AJ2C+J8W/PdiTCId1bKgsQdGDEMoeG3PAJYMq0CzxlY=;
+ b=VK7xSPLncecDh16IQsZkEWAkPw+0jwsdJCvGz7hyFtyJAepqF0w1srilz4iRAzb0zG
+ x67YJoYc10oe6zsU6qWQ+SpMweculwE+HvkiKMXPo/uLC6TCT13ioCGJbm10uyf/7YuH
+ 4J2LAl9M/QqL4CzqUkviHIgeNuQRIMTAgiTE07GHJDV2x9GbsJ/U/qOBrIzYp8DhT1MH
+ w47ihunuxxmsssA5zKhuL+8hxGLqCPMiTRBX+32vJpS1ZMUCuvE36lLbf4Lc1cM3EAj6
+ yij9SI48tEh01rfw4ODlnyvelG+XOEPUXSqrL1ybw7grytmHtgxG696xckV/vBnwm3Eo
+ liZA==
+X-Gm-Message-State: AOJu0YxXcnnRlwrzsrX7JvME7JzgNj8hsoUxh24eX7YdgTsPRPejh32N
+ vQS56TDBH2K5MGRkexh7L99fTej7LEMLsf0qE0EqhmI1Bv6QVRv+mvY/FaW1xsvHvlumc0TwIpo
+ oGwOnAAM=
+X-Gm-Gg: AY/fxX68voSg+GxDFD1GEqwOletFpe8LSl+wbrBO7eMEKob73rFshOV9VutDWjN7l+P
+ j821kUameCbLL8HWnaz0G/jcLD04OHnSuhcPMU68qNriBVTxRB6Lg7/36I+jeGbbeAmYcw6Ooke
+ jlykFFLQ4r5tWw/NcYI///nSxnzIbXf0L4j5EXODKMd2hrmqcx5D+3in/ZI80VjVMqNJEXGzIVY
+ MzdCksS7ITzPmoHJw1wkKKM/dH/a6Z80DOGBuAHZVw4Hogljr///Ta6dmfabgjPj8YHkCAFX7Cb
+ SlfjvTf7a9PxlX/ZGMKioQ/fkJoHAy4YQh85O7mYhPOogJ3rqzez+b43vRSB1U5WCeEikjra5BZ
+ JTOlhE4iJIbD/izPFMCJfQnO85NuX3RUW4tCWqAIw4jN3053FbyQatuPyHpHR7C34KiIUNykTCh
+ RKz7wZsTTJTYAzc/HzZvXfVOC8teFN8e0yE0NsxjPBY/1Awyu6Mn/zBUu7bm9S
+X-Received: by 2002:a05:600c:1986:b0:475:da1a:53f9 with SMTP id
+ 5b1f17b1804b1-4801e30ba86mr32955375e9.14.1768562484476; 
+ Fri, 16 Jan 2026 03:21:24 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4356996cecasm4304496f8f.26.2026.01.16.03.21.17
+ ffacd0b85a97d-43569926648sm4781082f8f.10.2026.01.16.03.21.23
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 16 Jan 2026 03:21:17 -0800 (PST)
+ Fri, 16 Jan 2026 03:21:24 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 28/30] accel/nvmm: Fix 'cpu' typo in nvmm_init_vcpu()
-Date: Fri, 16 Jan 2026 12:18:05 +0100
-Message-ID: <20260116111807.36053-29-philmd@linaro.org>
+Subject: [PULL 29/30] target/i386/nvmm: Include missing ramlist.h header
+Date: Fri, 16 Jan 2026 12:18:06 +0100
+Message-ID: <20260116111807.36053-30-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260116111807.36053-1-philmd@linaro.org>
 References: <20260116111807.36053-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,38 +96,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix typo to avoid the following build failure:
+From: Thomas Huth <thuth@redhat.com>
 
-  target/i386/nvmm/nvmm-all.c: In function 'nvmm_init_vcpu':
-  target/i386/nvmm/nvmm-all.c:988:9: error: 'AccelCPUState' has no member named 'vcpu_dirty'
-    988 |     qcpu->vcpu_dirty = true;
-        |         ^~
+Compiling on NetBSD currently fails with:
 
-Cc: qemu-stable@nongnu.org
-Reported-by: Thomas Huth <thuth@redhat.com>
-Fixes: 2098164a6be ("accel/nvmm: Replace @dirty field by generic CPUState::vcpu_dirty field")
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+ ../src/target/i386/nvmm/nvmm-all.c:1136:22: error: unknown type name 'RAMBlockNotifier'
+  1136 | nvmm_ram_block_added(RAMBlockNotifier *n, void *host, size_t size,
+       |                      ^~~~~~~~~~~~~~~~
+ ../src/target/i386/nvmm/nvmm-all.c:1152:15: error: variable 'nvmm_ram_notifier' has initializer but incomplete type
+  1152 | static struct RAMBlockNotifier nvmm_ram_notifier = {
+       |               ^~~~~~~~~~~~~~~~
+ ../src/target/i386/nvmm/nvmm-all.c:1153:6: error: 'struct RAMBlockNotifier' has no member named 'ram_block_added'
+  1153 |     .ram_block_added = nvmm_ram_block_added
+       |      ^~~~~~~~~~~~~~~
+ ../src/target/i386/nvmm/nvmm-all.c:1153:24: error: 'nvmm_ram_block_added' undeclared here (not in a function)
+  1153 |     .ram_block_added = nvmm_ram_block_added
+       |                        ^~~~~~~~~~~~~~~~~~~~
+
+Include the right header to get this fixed.
+
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20260113203924.81560-1-philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Acked-by: Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <20260114083812.18496-1-thuth@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/i386/nvmm/nvmm-all.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/i386/nvmm/nvmm-all.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/target/i386/nvmm/nvmm-all.c b/target/i386/nvmm/nvmm-all.c
-index b9bd9ed985a..f808828d492 100644
+index f808828d492..8a1af35ed32 100644
 --- a/target/i386/nvmm/nvmm-all.c
 +++ b/target/i386/nvmm/nvmm-all.c
-@@ -985,7 +985,7 @@ nvmm_init_vcpu(CPUState *cpu)
-         }
-     }
- 
--    qcpu->vcpu_dirty = true;
-+    cpu->vcpu_dirty = true;
-     cpu->accel = qcpu;
- 
-     return 0;
+@@ -16,6 +16,7 @@
+ #include "system/nvmm.h"
+ #include "system/cpus.h"
+ #include "system/memory.h"
++#include "system/ramlist.h"
+ #include "system/runstate.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/error-report.h"
 -- 
 2.52.0
 
