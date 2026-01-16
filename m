@@ -2,100 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 330A0D325CD
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 15:09:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EF4DD325D1
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 15:09:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgkUx-00049v-Fp; Fri, 16 Jan 2026 09:08:23 -0500
+	id 1vgkVQ-0004Cd-Hq; Fri, 16 Jan 2026 09:08:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vgkUv-00049Q-Ks
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 09:08:21 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vgkUs-0005jG-O3
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 09:08:21 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-47ee3a63300so19924165e9.2
- for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 06:08:17 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vgkVO-0004CN-TB
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 09:08:50 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1vgkVM-0005l1-Ro
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 09:08:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1768572527;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=TR/8yuRfP6ITzdjE3EsGgj37qYsa9p3GFXx5kqAvcZQ=;
+ b=XlyzbfGfSb2eY1YSOvQ5WIaFm6XC0uRmI2Gja2wI4pjz3CbY2eDsudB9eznwJJqKiQHdg6
+ nGeqhJMtU4Yi2l5uKi4Q55i5LeoPCGGhKriBRNZTynJyl6cuql6XGB0Qu40hwvUT3DcYh4
+ mkJiM4d8f6i5as9zVsylnEtVdXFFRJ0=
+Received: from mail-dl1-f69.google.com (mail-dl1-f69.google.com
+ [74.125.82.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-626-H8ApgTJ0MAa_79mT9upjKQ-1; Fri, 16 Jan 2026 09:08:45 -0500
+X-MC-Unique: H8ApgTJ0MAa_79mT9upjKQ-1
+X-Mimecast-MFC-AGG-ID: H8ApgTJ0MAa_79mT9upjKQ_1768572524
+Received: by mail-dl1-f69.google.com with SMTP id
+ a92af1059eb24-123840bf029so1553375c88.1
+ for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 06:08:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768572496; x=1769177296; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=MlVhHj2fazwXQUvFAwPS57eaA6wBdf4bc+MmU9XWzyA=;
- b=x9G04d1+RyPUSoVhOoHSuOwHnZwN+7fVTYgPGEm5SYwZaby1ywZvzn1ArSUYXuH1f1
- Fs4/NYHrtsup+jKJahfyFcCVnY2KfboqsKz9ZeP999hvy4K3oDL693B66nb9VPbQbaO3
- 7Ii8zxuRDg6lF8YMgQ2stxeex96eB/pyoJk1AE9ITMtQ46z1i8Cu/mCoiWgVzmn47bHs
- rnLPqH7itgtv1JhVC1Y7uPqPuH4hxCYzgvIBlbynzcfx8x9JnHYvQvoKnZlr5sMPHXc7
- HLOaLr5lpw94xgt57RrR23ivojz4ZJQ+1OpfEiiI6o5FzVc7iDWWT2wXEZ6es27QWlyf
- BGXA==
+ d=redhat.com; s=google; t=1768572524; x=1769177324; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=TR/8yuRfP6ITzdjE3EsGgj37qYsa9p3GFXx5kqAvcZQ=;
+ b=iNtxdmaJOvzrdRavVNH8iqzHEpeZmTxW21g2gF7k6sS2wxGwVYT+m2JipP/MZozbiV
+ IIZq8xAB4ZTqTFmVXFUXHWPMt0RW6T/UlvfBWAut0r2jbweOdP4v6tIQ4k/nLISI0olP
+ fEfkBAE5wEuDHaFI6SMH/3T9SoBsH+rrCIk4QOwhMCCl4GSS9HqEL4uSo5DuNYp8IqUG
+ s9+oDWUh7/x11slKQAdLogZK7sA0CvrL8Jg5tk41Lg4Y+dJ3eDqjHAh7YIfj2vkNyDaz
+ Gpswj0BZ70PbY8Zb1RFV6vF6XXj5GfH7mCHUntqh7D+tJm+gYFRvQKMShFUkJ3TwnL/e
+ 13pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768572496; x=1769177296;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=MlVhHj2fazwXQUvFAwPS57eaA6wBdf4bc+MmU9XWzyA=;
- b=FyfMCviYIfCp8cVsSRi5Ry6LKZQnORmY7g0T+u4OoORmgEUcib3U0pMR8nQHn3JcB7
- llWMjOqhFvxKO2oELG2hAUgaUtz2hwujrF0iXssUEjETAqBXaBFHbSO1ZjVZBX47+Ca9
- qAThJ5W3YgwtavbJtH1ZxqepRAqLCy1katdKaEu0sijm0aK4a8j86+8slUbKeUKy5ZOO
- gIAoO1wXfI7K3QAzSa4waj7ubAP27pd14lkemQD3z2RPPDfFrUYQopoOzVF4GWgD6NHn
- zVnZp8GtotoWaU2YDnhYvMpeEJhOzp98S8ILRQE03fJB5bOYbqdre9w5+9w9ne4INyaf
- K2dw==
+ d=1e100.net; s=20230601; t=1768572524; x=1769177324;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TR/8yuRfP6ITzdjE3EsGgj37qYsa9p3GFXx5kqAvcZQ=;
+ b=YG5fLQoGqK8FoLDhvzNea7wYLvSaonfye9Y0kiwCQKCZgeaoYNz/Ehzr9/X1OAdIjF
+ iofof89S5HAOIGm7b5pEUeteK8wzFpjcxu827VR4Wztt6KUHVLYDP1DSPwBbsQj3tzQ1
+ O0702+kdpASuw3Gu1EaHfYX/i0054gN/WXW3Q54TE6NOFFgdu2IG83eatXJbddtQcYte
+ YC0yiVUcrjPtzWCwpDfT4oBFxzUF9RNWvWFIiiDzcEL8VMiK4KHLZTUIQkkShWbkwL4X
+ Caj1oi8OxGVUAsiYSvoEG1uEJbnOlhj1G/2zaHoy8ElLy9GAKglGSL6IYSh32qpTW51Z
+ nDmA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWzauSmvk+5t8XmuALyw2QTfJDdG+mWQjS4w8L8emUocwZEzfIN63RuBT4l/p7qj3dijzhIAxlt1qOS@nongnu.org
-X-Gm-Message-State: AOJu0YxF/+JyB6eQR+lkonUwdl2tO+8AgZ3RtcrOucTf3dpUc9XUNIOV
- cv7rYqbQd4D3/u6SwUYLq9QHf8rnaN+pG7wPBO67aS0g3JPNkL5aTtTLr81v0/TW4f0=
-X-Gm-Gg: AY/fxX4Nszb1bN1Wc8RO0Z9uNUlvO8u2C4FORuZ7elVemLQUhVBmjmx0y6/XJqicsCT
- 6VkMcMyZFrD3KC8d0wNfIAuXQ0VTaLwo9UzL5gNUEbMTSDoRFCO5ioYCTm2aoLLDIT2w36WUOV/
- BhZ3F2V7iMk/71dSGFr4hDLBPVoBvyzaN8FM7FLO/dRsA7HyCaqE5EA0VCsuP6s3LlAyISmCz/t
- wCvNh0PpBF7896ok4VNybongECiSDcljXpUniwCjzFKTUzxA9lOBEkybD0nWohZbYX/zeixaqF/
- yrERI+smcmJESD6Q7MDDTZfxte2JTYW3KwNgu1j9qMpNT3ezy2zL+T4aNIROl0VOh8mX10EgbHg
- fTvHY5ZDL7wUOpaNggxF9Vgq/3PSAj1a0vul46pi/X5yFrTltNz0a5PwD1/ndcxGqqpTPvIojla
- 0lxl2KqAIwqFoLpIPM8dnw/m7OwDdYNJjZzuWiTf6NjJiPdLxYL0LBVkPwbfBJKp/R
-X-Received: by 2002:a05:600c:4ed3:b0:47e:e91d:73c0 with SMTP id
- 5b1f17b1804b1-4801e3397d6mr38910535e9.19.1768572496131; 
- Fri, 16 Jan 2026 06:08:16 -0800 (PST)
-Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-48020312253sm16187565e9.14.2026.01.16.06.08.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 16 Jan 2026 06:08:15 -0800 (PST)
-Message-ID: <c84ed056-6ba6-4a00-a493-94fa9f13170a@linaro.org>
-Date: Fri, 16 Jan 2026 15:08:14 +0100
+ AJvYcCUTTvTm1J2tsqlLt4KhPnDDFrmptwq6GRe0Td5sDdM2twz8Zx16RS8cokn9jxGHTuF1CyyvdyBgyjEY@nongnu.org
+X-Gm-Message-State: AOJu0YyrqcEV88xT0L5jFT5YypJkCOgZORXK762FTAt+rzwE+CagLpUq
+ sWs3r1dAX6Fi9MLINpGEs9iVaH93RQiNzCTlV8FwpU3apj9fSh7alFtHpUx9LDbQzuW0nQHXhg7
+ HOYi9JzKm+IuIAeMDbRHk1jYO/djWT2nL8ygWGT6707xi0WSQgpnM83pF
+X-Gm-Gg: AY/fxX6iC5avRzFW8aOM3mwkZioTBU7S+LUOVKHdBN4c6KM5Kh93t6IvdLFT14F5TJz
+ 1XpnoiSk1KAj/wUJYptPo87nYI6re3eIGVyLRMRr1dXnzgrmHs/tmzma3Z5F3bfgQyP+TxDMixk
+ L1cRMiVLK+JLYiin1kbOGD7TUQ4fMXFytH4XM07Y8d8jFsP3A08Fwka+FkVqioRxf92mQRlAee8
+ 8RXkqPWJbjhh9a6c4Hj15T7zydgZCvurWR87NilyfH8JOl0oPRubF7Y44DfAOkT91BZJpq5KeFD
+ mHxnR1wQsBIiMrLCAoUUg8mmyVLk+04HCSDKKJ4pM+IUJHBVEPVvqIpegHEWySOELK7lr/O7pZU
+ pCRk=
+X-Received: by 2002:a05:7022:2490:b0:11d:f89d:85a0 with SMTP id
+ a92af1059eb24-1244a75ebebmr2375688c88.27.1768572524300; 
+ Fri, 16 Jan 2026 06:08:44 -0800 (PST)
+X-Received: by 2002:a05:7022:2490:b0:11d:f89d:85a0 with SMTP id
+ a92af1059eb24-1244a75ebebmr2375670c88.27.1768572523781; 
+ Fri, 16 Jan 2026 06:08:43 -0800 (PST)
+Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
+ a92af1059eb24-1244ac57fd0sm2375736c88.3.2026.01.16.06.08.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 16 Jan 2026 06:08:43 -0800 (PST)
+Date: Fri, 16 Jan 2026 09:08:35 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Zhang Chen <zhangckid@gmail.com>, Lukas Straub <lukasstraub2@web.de>,
+ qemu-devel@nongnu.org, Juraj Marcin <jmarcin@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Juan Quintela <quintela@trasno.org>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ zhanghailiang@xfusion.com, Li Zhijian <lizhijian@fujitsu.com>,
+ Jason Wang <jasowang@redhat.com>
+Subject: Re: [PATCH 1/3] migration/colo: Deprecate COLO migration framework
+Message-ID: <aWpGY9Y1dPwlBuw3@x1.local>
+References: <20260114195659.2543649-1-peterx@redhat.com>
+ <20260114195659.2543649-2-peterx@redhat.com>
+ <aWf4i7EOXtpAljGX@x1.local> <20260115224929.616aab85@penguin>
+ <87ecnqt6nc.fsf@pond.sub.org>
+ <CAK3tnvKUXk9yvvTKC6cJOKnMJrhZz6W_ZuKze=rqj8JHAREg1g@mail.gmail.com>
+ <87ecnpyjw7.fsf@pond.sub.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 09/26] whpx: Move around files before introducing
- AArch64 support
-Content-Language: en-US
-To: Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Pedro Barbuda <pbarbuda@microsoft.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Shannon Zhao <shannon.zhaosl@gmail.com>, qemu-arm@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-References: <20260116135235.38092-1-mohamed@unpredictable.fr>
- <20260116135235.38092-10-mohamed@unpredictable.fr>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20260116135235.38092-10-mohamed@unpredictable.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+In-Reply-To: <87ecnpyjw7.fsf@pond.sub.org>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,32 +129,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Mohamed,
-
-On 16/1/26 14:52, Mohamed Mediouni wrote:
-> Switch to a design where we can share whpx code between x86 and AArch64 when it makes sense to do so.
+On Fri, Jan 16, 2026 at 10:41:28AM +0100, Markus Armbruster wrote:
+> Zhang Chen <zhangckid@gmail.com> writes:
 > 
-> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
+> > On Fri, Jan 16, 2026 at 2:26 PM Markus Armbruster <armbru@redhat.com> wrote:
+> >>
+> >> Lukas Straub <lukasstraub2@web.de> writes:
+> >>
+> >> > On Wed, 14 Jan 2026 15:11:55 -0500
+> >> > Peter Xu <peterx@redhat.com> wrote:
+> >> >
+> >> >> On Wed, Jan 14, 2026 at 02:56:57PM -0500, Peter Xu wrote:
+> >> >> > COLO was broken for QEMU release 10.0/10.1 without anyone noticed.  One
+> >> >> > reason might be that we don't have an unit test for COLO (which we
+> >> >> > explicitly require now for any new migration feature).  The other reason
+> >> >> > should be that there are just no more active COLO users, at least based on
+> >> >> > the latest development of QEMU.
+> >> >> >
+> >> >> > I don't remember seeing anything really active in the past few years in
+> >> >> > COLO development.
+> >> >> >
+> >> >> > Meanwhile, COLO migration framework maintainer (Hailiang Zhang)'s last
+> >> >> > email to qemu-devel is in Dec 2021 where the patch proposed an email
+> >> >> > change (<20211214075424.6920-1-zhanghailiang@xfusion.com>).
+> >> >> >
+> >> >> > We've discussed this for a while, see latest discussions here (our thoughts
+> >> >> > of deprecating COLO framework might be earlier than that, but still):
+> >> >> >
+> >> >> > https://lore.kernel.org/r/aQu6bDAA7hnIPg-y@x1.local/
+> >> >> > https://lore.kernel.org/r/20251230-colo_unit_test_multifd-v1-0-f9734bc74c71@web.de
+> >> >> >
+> >> >> > Let's make it partly official and put COLO into deprecation list.  If
+> >> >> > anyone cares about COLO and is deploying it, please send an email to
+> >> >> > qemu-devel to discuss.
+> >> >> >
+> >> >> > Otherwise, let's try to save some energy for either maintainers or
+> >> >> > developers who is looking after QEMU. Let's save the work if we don't even
+> >> >> > know what the work is for.
+> >> >> >
+> >> >> > Cc: Lukáš Doktor <ldoktor@redhat.com>
+> >> >>
+> >> >> My apologize, I copied the wrong email.
+> >> >>
+> >> >> Cc: Lukas Straub <lukasstraub2@web.de>
+> >> >
+> >> > Nack.
+> >> >
+> >> > This code has users, as explained in my other email:
+> >> > https://lore.kernel.org/qemu-devel/20260115224516.7f0309ba@penguin/T/#mc99839451d6841366619c4ec0d5af5264e2f6464
+> >>
+> >> Code being useful is not enough.  We must have people to maintain it
+> >> adequately.  This has not been the case for COLO in years.
+> >>
+> >> Deprecating a feature with intent to remove it is not a death sentence.
+> >> It's a *suspended* death sentence: if somebody steps up to maintain it,
+> >> we can revert the deprecation, or extend the grace period to give them a
+> >> chance.
+> >>
+> >> I think we should deprecate COLO now to send a clear distress signal.
+> >> The deprecation notice should explain it doesn't work, and will be
+> >> removed unless people step up to fix it and to maintain it.  This will
+> >> ensure progress one way or the other.  Doing nothing now virtually
+> >> ensures we'll have the same discussion again later.
+> >>
+> >> "Broken for two releases without anyone noticing" and "maintainer absent
+> >> for more than four years" doesn't exacltly inspire hope, though.  We
+> >> should seriously consider removing it right away.
+> >>
+> >> Lukas, can you give us hope?
+> >>
+> >
+> > Hi Markus,
+> > Maybe you missed something?
+> > I think Lukas is ready to maintain this code in his previous emails.
+> > https://lore.kernel.org/qemu-devel/20260115224516.7f0309ba@penguin/T/#mc99839451d6841366619c4ec0d5af5264e2f6464
 > 
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> ---
->   MAINTAINERS                                           | 2 ++
->   accel/meson.build                                     | 1 +
->   accel/whpx/meson.build                                | 6 ++++++
->   {target/i386 => accel}/whpx/whpx-accel-ops.c          | 4 ++--
->   {target/i386/whpx => include/system}/whpx-accel-ops.h | 4 ++--
->   {target/i386/whpx => include/system}/whpx-internal.h  | 6 ++++--
->   target/i386/whpx/meson.build                          | 1 -
->   target/i386/whpx/whpx-all.c                           | 4 ++--
->   target/i386/whpx/whpx-apic.c                          | 2 +-
->   9 files changed, 20 insertions(+), 10 deletions(-)
->   create mode 100644 accel/whpx/meson.build
->   rename {target/i386 => accel}/whpx/whpx-accel-ops.c (97%)
->   rename {target/i386/whpx => include/system}/whpx-accel-ops.h (92%)
->   rename {target/i386/whpx => include/system}/whpx-internal.h (97%)
+> Patch to MAINTAINERS or it didn't happen ;)
 
-Just wondering, could we have target/i386/whpx/whpx-internal.h moved
-to accel/whpx/whpx-internal.h? (can be done on top in another patch)
+I'd even say MAINTAINERS file is, in many cases, cosmetic..
+
+It definitely is helpful for people to do lookups or scripts to fetch
+information, but IMHO we need more than one single entry, and in some sense
+that entry is less important than the activities.
+
+We need someone to be first familiar with a piece of code, spend time on
+it, actively reply to the relevant queries upstream, proper testing /
+gating to make sure the feature is usable as stated - either fully
+maintained or odd fixes or others, and more.
+
+I used to request Lukas help reviewing the loadvm threadify series [1,2]
+which definitely touches COLO, I didn't really get a respond.  That's also
+a sign I don't feel like Lucas cares enough about COLO, after I explicitly
+pointing out something might be changing and might be risky.
+
+It's like Hailiang is also in the MAINTAINERS file but Hailiang is
+unfortunately not active anymore recently over the years.
+
+Frankly, it was Zhijian and Chen that were always helping from that regard.
+I would rather think anyone of both would be more suitable at least from
+all the discussions I had with COLO, but this is a promise I can't do.  I
+also still want to remove it as I proposed, in case it releases everyone.
+
+So an update in the file isn't even enough if we accept it.  We need
+activity corresponding to the file change.  That's also why I still think
+we should remove COLO regardless if 11.0 doesn't improve in this condition,
+as I stated in the other email.
+
+[1] https://lore.kernel.org/qemu-devel/aSSx28slqi1ywg2v@x1.local
+[2] https://lore.kernel.org/all/20251022192612.2737648-1-peterx@redhat.com
+
+Thanks,
+
+-- 
+Peter Xu
+
 
