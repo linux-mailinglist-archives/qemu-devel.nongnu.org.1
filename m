@@ -2,86 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA8D0D304E3
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:23:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8224D305AA
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:26:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vghtZ-0006sr-PV; Fri, 16 Jan 2026 06:21:37 -0500
+	id 1vghyJ-0004Wt-8v; Fri, 16 Jan 2026 06:26:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghtW-0006ip-Nx
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:21:35 -0500
-Received: from mail-wr1-x442.google.com ([2a00:1450:4864:20::442])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghtV-0007Ne-4r
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:21:34 -0500
-Received: by mail-wr1-x442.google.com with SMTP id
- ffacd0b85a97d-432dc56951eso1238901f8f.0
- for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 03:21:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768562491; x=1769167291; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=hYBppovx5aTKboLp6qMxPvKWQRGV5NsjKuRsihbv0cc=;
- b=WSxUESZwOcYUEZDb1iG2HEp04ik0dSm/xMAG7YEthY0M/uAZffBUNOE6L55UJz29ZZ
- bo+galtlegvHPhRKlqSB5LLNg6XQl6Vys1faNemkFroy5vW8P7BSy/fqhtjmlrn7ywBo
- B0E6w+aiDhpRsMTJZbrLNYA6f1EXlyiG7BVcEAv7LAwMbON7oAvM5lZsxq51/0Kf4bR0
- A9zuP1dceYEMZ0eNrA6JkWZNq2Vxrt/ncvjXTp/YuAX8m9ABe68qTxjynfqguC9pfG6F
- 0i2Idrm8tiPhNUp9AW95tWugz5X0UvHQdGfQPDZ487VWbSFJxL2WIzFeK6cmNc6CQM9v
- 6OPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768562491; x=1769167291;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=hYBppovx5aTKboLp6qMxPvKWQRGV5NsjKuRsihbv0cc=;
- b=fn2kheec8HpRvnkJpLwQkLNgEwcB54mE4dOrdBIsU3/ai38u/tuPxa68ykcTnOngbX
- mMGKiQcE0kgm+rbSQmnazd7PB0w/RcagyJV/lfr1bBHlSPuPtlZqh9jsgVm3+8smS/jP
- Fv+b+B8LhNt/6xKDXIQ70RNBCYqzvTBPC83AfsFkKsnx2dXpDl3jVyI5nPlz9DAejFEi
- IGuESsOC3lVnqhLHFH1Q3a58bHAY9oFbDohOxnQv6UTRIkoQfXNu1PyQ6Piqz1gYTqsK
- 1Qk9VMEpRIvl5dZP4xunDb+6hhO72gpQ6YKTVIjeSISbFvM9Cs8Tr4hwhT3G5x0sopR3
- teog==
-X-Gm-Message-State: AOJu0YzUtLnf/ujo+Pk7WDg5c9aektOI8eclX6ABapld8sHnClOHGOA6
- zGvzAtjkBao8Ey+uUQsCexp9cp2ZorAr7T/NreIRMCyXWWF6RYRQo5jf6UdxYpeECmhCBfLd/Vh
- khoe7y1A=
-X-Gm-Gg: AY/fxX6r0vD0qw3kyMr9l5aQMen8k0ZPq0KZYg3opypwMwYx1y6q5QDrZHzbzXg2H0y
- Kl2zWSuBJ3MOH3YYJHkz+XtXLqPkrqOZwx3+ymy4au3El468dS4x25YCti2tW3DzHAmk3c7a8ur
- EswxIaTf79eb+31R7wyn47Hu/Y0XEyN8HVPxCWfxY5EgQg3CC4Z+L+X1k18WgXQj2tYW/Smr7vC
- NVRyVOxNy6pumgE87f9YeOiuHiH7Z4RP8emBOcCDH4vaoP1Y9RNbVlJZ5Lo092de85lz/fqhvPw
- CNnWDibxd6kP0hcaIfpAHDRGzncJzmCrL4fevyDLVGmA91ZzbFnH/NBb7eyhnfU7f5PzRM4qMV3
- zueCKXWOIMiXG1JKcLSi3SurVWdKfqE1FSoldhr0tSDO6eeqc0zUj+mwb62S4C7u2sqKZyBn6ce
- tmpWuxPwnpdI7AjFe4VINvbSnN4AVjrFbBjuCXoJCRaPILVnRk8cWn5zINXWEm
-X-Received: by 2002:a05:6000:2389:b0:430:fd9f:e6e2 with SMTP id
- ffacd0b85a97d-4356996f593mr2867406f8f.9.1768562491069; 
- Fri, 16 Jan 2026 03:21:31 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4356996d02dsm4581186f8f.23.2026.01.16.03.21.30
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 16 Jan 2026 03:21:30 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 30/30] tests/functional: Require TCG to run reverse debugging
- tests
-Date: Fri, 16 Jan 2026 12:18:07 +0100
-Message-ID: <20260116111807.36053-31-philmd@linaro.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260116111807.36053-1-philmd@linaro.org>
-References: <20260116111807.36053-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1vghyG-0004UN-So; Fri, 16 Jan 2026 06:26:28 -0500
+Received: from isrv.corpit.ru ([212.248.84.144])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1vghyF-0007ui-6u; Fri, 16 Jan 2026 06:26:28 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 1F62A17ED9B;
+ Fri, 16 Jan 2026 14:26:14 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 5D52E34EC91;
+ Fri, 16 Jan 2026 14:26:24 +0300 (MSK)
+Message-ID: <55edf1c7-98c7-416e-a99f-3751ab25ee46@tls.msk.ru>
+Date: Fri, 16 Jan 2026 14:26:23 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::442;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x442.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] m68k: fix CAS2 writeback when Dc1==Dc2
+To: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org,
+ qemu-stable <qemu-stable@nongnu.org>
+References: <20251226213707.331741-1-laurent@vivier.eu>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <20251226213707.331741-1-laurent@vivier.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,33 +101,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Record/replay is specific to TCG. Require it to avoid failure
-when using a HVF-only build on Darwin:
+On 12/27/25 00:37, Laurent Vivier wrote:
+> According to Programmer's Reference Manual, if Dc1 and Dc2 specify the
+> same data register and the comparison fails, memory operand 1 is stored
+> in the data register.
+> 
+> The current helpers wrote Dc1 then Dc2, leaving operand 2 in the shared
+> register.
+> 
+> Swap the writeback order for cas2w/cas2l so memory operand 1 wins.
 
-  qemu-system-aarch64: -icount shift=7,rr=record,rrfile=/scratch/replay.bin,rrsnapshot=init: cannot configure icount, TCG support not available
+This seems to be a qemu-stable material, I'm picking it up.
+Please let me know if I shouldn't.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Message-ID: <20260115161029.24116-1-philmd@linaro.org>
----
- tests/functional/reverse_debugging.py | 2 ++
- 1 file changed, 2 insertions(+)
+Thanks,
 
-diff --git a/tests/functional/reverse_debugging.py b/tests/functional/reverse_debugging.py
-index 8b9507674a0..8e6f0b0e923 100644
---- a/tests/functional/reverse_debugging.py
-+++ b/tests/functional/reverse_debugging.py
-@@ -67,6 +67,8 @@ def vm_get_icount(vm):
-     def reverse_debugging(self, gdb_arch, shift=7, args=None, big_endian=False):
-         from qemu_test import GDB
- 
-+        self.require_accelerator("tcg")
-+
-         # create qcow2 for snapshots
-         self.log.info('creating qcow2 image for VM snapshots')
-         image_path = os.path.join(self.workdir, 'disk.qcow2')
--- 
-2.52.0
-
+/mjt
 
