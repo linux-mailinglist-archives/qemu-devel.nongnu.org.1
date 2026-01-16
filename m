@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0FD7D3225E
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 14:54:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD0F8D32268
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 14:54:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgkFx-0002up-7K; Fri, 16 Jan 2026 08:52:55 -0500
+	id 1vgkG5-0002zk-G0; Fri, 16 Jan 2026 08:53:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1vgkFu-0002tY-AU
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 08:52:50 -0500
-Received: from ci-2003b-snip4-4.eps.apple.com ([57.103.91.145]
+ id 1vgkFy-0002vc-HW
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 08:52:55 -0500
+Received: from ci-2003i-snip4-1.eps.apple.com ([57.103.91.212]
  helo=outbound.ci.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1vgkFs-00024i-UZ
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 08:52:50 -0500
+ id 1vgkFx-00025G-4y
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 08:52:54 -0500
 Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
  by p00-icloudmta-asmtp-us-central-1k-60-percent-15 (Postfix) with ESMTPS id
- 75F4D18007F0; Fri, 16 Jan 2026 13:52:45 +0000 (UTC)
+ 1B7EF18007F2; Fri, 16 Jan 2026 13:52:49 +0000 (UTC)
 Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=ksqwamjc+5RKV9piY5vkALtcG0RUP+bOT4m8O729l+Y=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:x-icloud-hme;
- b=GTh9gostxkOef5jssb2a8xOxa7O2jATrtTpgU/gUEX1/8n0CAcaOz9AqmmOS9qfNYKzoAO9t5WkQQ3HGrGPcXYLORWXXeDkCHhdzlhAD3oLT1tGJCLbwwwHe7hQ2DRqUGyPBWcsovlQRbo4qGN9y1uUPsptDWhyQxJ9sFFraV6tYKoB0nNDXdieCxq4m4PbdG/2PKGLJw5Hyi1nO7FzNeKeOUrvy/MA5Hio7JMrr8IhyKuLaMBua4H7203a2gwt86kGnq9qrWq9TOmlsRvwV2/DDPkDlSpb24H7mXNViJYjgndM3XBp1Rv1qnYRSP28rdNL6MBSdR1QSAgzEu1bHQQ==
+ s=sig1; bh=lE935EhSo6eiiRGBTf1TCzdO8HBh375WWDyS664DB/c=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme;
+ b=btG7LVF4FVUlY/WG1R/l44bepPF3fEaEZCxuJMp9FR57ff0s2dT2WqD3I66cwK9d8LfRcgPrkejwVYud7id7ib/f3mYKe7nVIf6y9y7ZXUTdP+iU5JS5qXw1WBA2E0S1mmq7R7MhbsTND6otbxnm1e6SIfWsBPbwnwPdICgyJ5yqpxAEPT5GDyk5kBaBE58c56JTepjP8PA8wZrzSKc1N7qgTXlV+zr+GMsuI+nYdBeQXCuxKXffp/bZf9DkRZb7EURPP+1G5KbejnuVUXgTKxgmpt/ADe45SMPuzfijCRGlN+h+g0L41nVNAmTcOk3oi2zp1mGvLqcL7vEES00t2w==
 mail-alias-created-date: 1752046281608
 Received: from localhost.localdomain (unknown [17.57.156.36])
  by p00-icloudmta-asmtp-us-central-1k-60-percent-15 (Postfix) with ESMTPSA id
- 2E638180F919; Fri, 16 Jan 2026 13:52:42 +0000 (UTC)
+ 0B22E1800135; Fri, 16 Jan 2026 13:52:44 +0000 (UTC)
 From: Mohamed Mediouni <mohamed@unpredictable.fr>
 To: mohamed@unpredictable.fr,
 	qemu-devel@nongnu.org
@@ -44,38 +44,35 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Shannon Zhao <shannon.zhaosl@gmail.com>, qemu-arm@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v16 02/26] accel/system: Introduce hwaccel_enabled() helper
-Date: Fri, 16 Jan 2026 14:52:11 +0100
-Message-ID: <20260116135235.38092-3-mohamed@unpredictable.fr>
+Subject: [PATCH v16 03/26] qtest: hw/arm: virt: skip ACPI test for ITS off
+Date: Fri, 16 Jan 2026 14:52:12 +0100
+Message-ID: <20260116135235.38092-4-mohamed@unpredictable.fr>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260116135235.38092-1-mohamed@unpredictable.fr>
 References: <20260116135235.38092-1-mohamed@unpredictable.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Authority-Info: v=2.4 cv=CcEFJbrl c=1 sm=1 tr=0 ts=696a42ae
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE2MDA5NyBTYWx0ZWRfX6GBeL6hc2Gvx
+ kXvxcCL0aKHnOoMYwZMXgREYEjCit+W0A7aTNzgwKAPOB5ST2PXVwJXGIeUGNU/HKyCZ+nIl8Nj
+ rjB7Kzqf8m9fP1tc9U96Gq7yEq3xs32ZN9RLim4YW8yUhCcVW5+kdbGXiSs3f3fvIws4Z9bADeK
+ M3uWcS0J+2lq6pDVKZ4yIheHPetGYlu2QMWbv8kB8RXeMHBGKVZFJcymopJd0fBfC/FX7IYLslD
+ yJzI1N80Ngg7eLqUl+QPDobaBHqGwnEBXU3+a+J5+vFak+/+yn1ENJ1Wh6QMkHbZl+cBheZqLyW
+ z8BnBlLmRFcDIRQVF1t
+X-Proofpoint-ORIG-GUID: miGxH8NC2HMg8Ve4b4-v4a0_hOw6CKLC
+X-Proofpoint-GUID: miGxH8NC2HMg8Ve4b4-v4a0_hOw6CKLC
+X-Authority-Info: v=2.4 cv=QrRTHFyd c=1 sm=1 tr=0 ts=696a42b3
  cx=c_apl:c_apl_out:c_pps a=2G65uMN5HjSv0sBfM2Yj2w==:117
- a=2G65uMN5HjSv0sBfM2Yj2w==:17 a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=KKAkSRfTAAAA:8 a=zYwLhoXY7WJC0OmO1EgA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-GUID: Y0smF5NtWqI19Mecxy6e5KsISPuGYowK
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE2MDA5NyBTYWx0ZWRfX4bQRisPaBtpK
- QYRWNP7t/gK/0j7b1e3NpGXYGwmtpOIK+NFaPa7hXHo2IdFJNTmQFTp7q21xwkTK86Y9iUT6TV5
- yvTHNJPUrxMZjsueGi3ECRJR5rzSnZ2LKrazhBJzrG+nr7PN5AbFK6Xok9eSmQ/fKecKIo2h82T
- t0PK5XmGuEqDkuHi82i3RAeeonHUr23yO01JsHr5Br+WsjA0R9trvSGYpaTsPoogJMkWqwVwKyX
- oO7ruQZd7ypRZiRVkkIj8G+NRX3r+cHyV+wfcwPFk8PvfRXyGv3ZR2d8uqTYQsl1jFaq2r1q/07
- /IrkVwvfE+jDyn0vIli
-X-Proofpoint-ORIG-GUID: Y0smF5NtWqI19Mecxy6e5KsISPuGYowK
+ a=2G65uMN5HjSv0sBfM2Yj2w==:17 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=KKAkSRfTAAAA:8 a=1t8nasy7xzbR8br5Zw8A:9 a=cvBusfyB2V15izCimMoJ:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-16_05,2026-01-15_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- phishscore=0 spamscore=0 suspectscore=0 clxscore=1030 adultscore=0
- mlxlogscore=999 mlxscore=0 malwarescore=0 classifier=spam authscore=0
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2601160097
-X-JNJ: AAAAAAABfHICVNlQpcT7s/hw5PxnLPNJDi9NhRYhcrKW1bKDDm1w3zWswKmRsJFq9bSDlhNR//QU30VHTFh/mw4tMcfahzw4/TK1mAseXD/VZaJInn84cmus1/my0y+YaM+JeE9ULnTxkqSGQa+237a7a/7m1G/xQFQbiWJxC9jgE0G4VwVzGctpx6A+bm6N99y+kWoQNdSLm+ug3P4iUyeyw3p2XYCBVMyK5I944k6OM+Fk0QVwzfk+1ZrQwiuOA+DsmHyNuLwMSdokGxAIe/QAsoR+Hgwwc84YyvwApCR3TvCCvAqdYdIfI2WezFqA/PRKEWOXsuwivKhcBg73AyCkqErApq6R79P8U5n795TxUvUZFgyagcel4b7QVkiWh5J4I0rzazENhrl/m9nRmt8GXS4/z3ue7EDkeIrBZdaCQA5vrY1jVjk4iTagX8KDx5908SbmF4xbT7lL5KXVmmTYO5+066J2j5CP1+KMD4kmziFF8tX9txNlazJmU16cYQShf0TN7N0SfSIHYBkVm0Mww8YMbBMRC51ufczT3VrgjVhAm6CwllcVaIWLlAjfUpyl5Sk2tVLjskesVZ5bnWgY25vqQisbqBAq/LK4lsUTe5naMx8hNc0PCv21425w0M1l+3/7+xEgavo5Ax/7Dp8v9/8VYs352Xel96udHUPckPmWOY4d8veo99NtzXA+3PFWEn0YO/DzdP1n+L4gIMYkb2Yvia0HBcQgXfdpr6KAUjVOauZfrW9FxQgTnwaBJ+wErgWhBV4Gy10Y1VxePyX+WAFZMKJITAzJsg8zLooawNuf+KazjB8p2tiRVPfwD4K4RQ==
-Received-SPF: pass client-ip=57.103.91.145;
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ mlxlogscore=923 bulkscore=0 phishscore=0 malwarescore=0 clxscore=1030
+ suspectscore=0 adultscore=0 mlxscore=0 classifier=spam authscore=0 adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2601160097
+X-JNJ: AAAAAAABtozFUpXpe5Thb+0CDg1zjDkTOsfn7OvPoZrkFr7l6M4Huxds+h+KN4sPwOlJ+RRKnuufrlAhKGnN7WMB4LV53SdON+1BljphTKF2YQIiQFQumdZ7JgP+XRUnSunAIxoeI0T/gdSYHlmfxALs3csMOcr1R6J/4eIlWF3M0f8QMDubCArDAnyotR2c8jfXGucgN8WxgKiO+NBA0++MK16MFTxApLbzUnbCDcjgmG4/72LDG4jpKvmY9OIjc8VGaNB/QJfhpx3xLoyXbcdbaZWF7exEtvmrauB+Q2Lhb7l7htmxH8f1C/thOXew0mAcRxYlq59ZF5rhutCKVswcZ6QRdKiaW/YcdUyjzMN+eFjwJxaG7jmzZnMkLsLIXFq0rtpA1k6sTfC4buevsu6iNdMNrh2f/ZCTljBZM1D+b5k6e31wrYlANvzwkhZAsFtFhG4248m0tqFRHyKCF8IU3iWLeakc1u6YRE/wHUAGAVmGidkhJpsVUdmwISnoHA8kk54IXj9KHZjSf1nWoiKkQPI5eLPI3j0mV76fuQtJ6AqpTCiXzamq2AbEQrbuvgiu21WiJzcTJNsXLaJz6wXQbP4kMRLXJbfRxRxvGaOG8aBv0fglhotwr2+UoyuHRQVxXL5+1oPRvtIPQLc3itP0VNZQ8LYKnZNSda0ivfEfLCPRMZSEdtX3ssrDZbb7PMZnO7XPOu4M+qeDIG5xBDHnyreYUtk3XectmmmZEfUqYj7+CvB1lCPnkTtJXeKtUGoeU+SspJNoK72SvT7y8cROsrFAEW7TU7Rakwp686opHlPfYrU=
+Received-SPF: pass client-ip=57.103.91.212;
  envelope-from=mohamed@unpredictable.fr; helo=outbound.ci.icloud.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -99,40 +96,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
 
-hwaccel_enabled() return whether any hardware accelerator
-is enabled.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/system/hw_accel.h | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ tests/qtest/bios-tables-test-allowed-diff.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/system/hw_accel.h b/include/system/hw_accel.h
-index 55497edc29..628a50e066 100644
---- a/include/system/hw_accel.h
-+++ b/include/system/hw_accel.h
-@@ -40,4 +40,17 @@ void cpu_synchronize_pre_loadvm(CPUState *cpu);
- void cpu_synchronize_post_reset(CPUState *cpu);
- void cpu_synchronize_post_init(CPUState *cpu);
- 
-+/**
-+ * hwaccel_enabled:
-+ *
-+ * Returns: %true if a hardware accelerator is enabled, %false otherwise.
-+ */
-+static inline bool hwaccel_enabled(void)
-+{
-+    return hvf_enabled()
-+        || kvm_enabled()
-+        || nvmm_enabled()
-+        || whpx_enabled();
-+}
-+
- #endif /* QEMU_HW_ACCEL_H */
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..bfc4d60124 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,2 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/aarch64/virt/APIC.its_off",
 -- 
 2.50.1 (Apple Git-155)
 
