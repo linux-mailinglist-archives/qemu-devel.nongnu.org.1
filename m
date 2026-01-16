@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D78E8D2A4B9
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 03:45:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7001BD2A4AB
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 03:45:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgZoV-00060Y-9E; Thu, 15 Jan 2026 21:43:51 -0500
+	id 1vgZoU-0005zs-Md; Thu, 15 Jan 2026 21:43:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chad@jablonski.xyz>)
- id 1vgZo0-0005qY-Om
+ id 1vgZo2-0005qZ-7c
  for qemu-devel@nongnu.org; Thu, 15 Jan 2026 21:43:23 -0500
 Received: from fout-b8-smtp.messagingengine.com ([202.12.124.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chad@jablonski.xyz>)
- id 1vgZnw-0002Ra-Dj
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 21:43:18 -0500
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
- by mailfout.stl.internal (Postfix) with ESMTP id 1E9A51D00091;
+ id 1vgZo0-0002SA-F1
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 21:43:21 -0500
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+ by mailfout.stl.internal (Postfix) with ESMTP id 455D81D00094;
  Thu, 15 Jan 2026 21:43:13 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
- by phl-compute-01.internal (MEProxy); Thu, 15 Jan 2026 21:43:13 -0500
+Received: from phl-frontend-03 ([10.202.2.162])
+ by phl-compute-02.internal (MEProxy); Thu, 15 Jan 2026 21:43:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jablonski.xyz;
  h=cc:cc:content-transfer-encoding:content-type:date:date:from
  :from:in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm1; t=1768531392; x=
- 1768617792; bh=+/FyD+vMcIQ9VqCK0mlHx+J4DTJhXkCV6w8jNgGWsJY=; b=f
- tCYX8VxzOiCSBS7/oaxPxWC18g5yAfKqaB8dP241l/5f+IOUDfaZJEw061aihrXa
- dIHkRIiFFfrsyZb09uzCx07jZ9PmN7wUaOxFzZSLhFXRz/AiacNceAxTOv3js0aK
- 7Z+B/uzX0ed40KdUzkzsRN7dSzdz154dlfu0e4bSmdWsGgqlXBYUR9wPTlzLsqlN
- Hm02wDX09585pMJyTofbx5zZZ58k1pFZCuL13ULfc3NAApNtSJpyfd3Smm7ZkNf0
- L0sm598NE4QaTFQyw5NzngBHES62BFleEL+lEBWWbOcP9lNuKIdPihafbb0tPKom
- 27iXuaXdDa3W4+QUY6eZQ==
+ :reply-to:subject:subject:to:to; s=fm1; t=1768531393; x=
+ 1768617793; bh=6SW+LMri3vFEXJCJjGvFcKszWaLzdvchvSDF9eawbwE=; b=n
+ N2a9bsqJA+8YXvRHW4/RA1FZDFY+3uqz+UT23Ed+IJa4gBeZLVhxCVrL88vNMs6v
+ StjoEXrUZ+o/BFEqWHCPV4O7QLVlQhN+K8Y138F9+zyIqrmNhbvnznPcdmXnCH3I
+ VFxenoFRFul0ffOmrrgyfwIoZ23o5l5kw4mGgE3yYnNz+ljE+qmpPcvA6qBiuPGu
+ pAlmSbVIY+tBYKjaPVXSiaXHlSc5m1qoUODZn5vFATlHJep3fXdj9/41O0XAOUXr
+ UKQAXPuEDKI7ZGmRPh5lD/1kRtUjWPgTueW0XYzjIJMxN356GytcLTbJZN1M66ru
+ IfK0Jl89B8yc2zB5xeAww==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:date:date:feedback-id:feedback-id:from:from
  :in-reply-to:in-reply-to:message-id:mime-version:references
  :reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
- :x-me-sender:x-sasl-enc; s=fm2; t=1768531392; x=1768617792; bh=+
- /FyD+vMcIQ9VqCK0mlHx+J4DTJhXkCV6w8jNgGWsJY=; b=XrwnQoSALE+jlpj5y
- hncevzHxYZgcDjukbpn6bJ1tHUMiU0kogvmhT28NS/F1dZhaSpzOgHJimNQly1VY
- 5qkvHyEqIQP137sXodgatD5/VNUL/M3igfRbKqa7hHnfM91++iKUm8EjDC+YAfj4
- epJT7Q7WLrrESQovOxxtOIPN31mga9p6F4TGrrjJbLrIzvLv5VUsiFp2r8gB0r11
- RiaHC4MgJMRP5+/yUu6hfmpwQoxkwyz2YPu51rc5xohZNrrButSR/bChSaoLWbk7
- 34cHFFsp005psKUKBFUJBj7uU5h+Dcs4oF3rkER/fvbTNjy+oB0q0CW0VazCDVep
- i+trg==
-X-ME-Sender: <xms:wKVpaaRunNqcKc0WQj_aW11SBJd-u1ulvA_GGVXPwh8PM_AQ-K54zA>
- <xme:wKVpaXNrBIl8Mzp63RE-FG3-DawOQRCn_9KCHQo3-PTn2espEYW3nH40F7NsxFuzh
- OiGi6HdzBpQPF1i5ThE8p2vd1av0bzGOy18kKXBvvKfz6SVs3F7m6E>
-X-ME-Received: <xmr:wKVpaVMa7Uv7kdG12CBFJIWnT_7z7uq6Gbdik8llWTr7Ouy_zz4abwBsfePW>
+ :x-me-sender:x-sasl-enc; s=fm2; t=1768531393; x=1768617793; bh=6
+ SW+LMri3vFEXJCJjGvFcKszWaLzdvchvSDF9eawbwE=; b=mdzuat9qESGuEa0hy
+ sldhWgXqfLBNYDUjm+wlWBnsXa+7khphHLRM5EzZ66gu3nXyfNni2QP0l1I1XsH9
+ 4Zk/DUuokh44KPFaRz/ABeagtf8jLEddcFG2V4JkDJ+kCgxtu1xbgVUnegRPpHk+
+ njKgeBR1bipr8UpugExfWpZdK+QbqU0BWd1SXOEV9M5PMcN7szn3EKr33Q9uluKr
+ tZPEgrp0eFc4T7Um6LP6KmCguiYOmQkzv98neSIcayze6rDxrzASNkG4FEhOWENM
+ 0e4Y92PfzrlfCwdyjfoRAATtc7RCDERPdIdH/6t95HrSjH2+XYg7mtnif4GfbNfE
+ zLPeA==
+X-ME-Sender: <xms:waVpaUJlig0y9tO8PPTyBvCqkuDv2tG5qVNXYpAVwzZvSqoj_37_Bw>
+ <xme:waVpaXZxPOT7HzIdCb700ftac8DtjOxTBJBVal9ORd5LQs7k54nPZ4ysDBwoARBp6
+ l2z5QA2TA8EUMJJfWdfoUjRj_enZEChs0aLM39I65W3eR5PaODP5u-u>
+X-ME-Received: <xmr:waVpaeLWPlEvy3doDlCJPlpafT3COVvFD_0OZ1Jh1miKj70IOlORWW4UPnFE>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduvdejjeejucetufdoteggodetrf
  dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
  rghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdljedtmdenucfjughrpefhvfevuf
@@ -59,27 +59,28 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduvdejjeejucetufdote
  eiteejhfelheefieetjefgleejfffhueffvdduieejgfeuueeuvddvkeejhfelnecuvehl
  uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheptghhrggusehjrg
  gslhhonhhskhhirdighiiipdhnsggprhgtphhtthhopeefpdhmohguvgepshhmthhpohhu
- thdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpth
- htohepsggrlhgrthhonhesvghikhdrsghmvgdrhhhupdhrtghpthhtoheptghhrggusehj
+ thdprhgtphhtthhopegsrghlrghtohhnsegvihhkrdgsmhgvrdhhuhdprhgtphhtthhope
+ hqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtoheptghhrggusehj
  rggslhhonhhskhhirdighiii
-X-ME-Proxy: <xmx:wKVpaftK6YB0j2ZPhL5EE9U5Xas74SB72snqRBkxhjUdsy85TjYuGQ>
- <xmx:wKVpaXXqd7CdZ_bIZ0hHuxTYdDh8wLQ5crsnhPhYG9r3uniSoUIVqQ>
- <xmx:wKVpaftyIYSw5_e5sW5Xgi7Pbpg39oCiBBswnR0NP75aGLYqZnWgwQ>
- <xmx:wKVpabWAwmbRBi_sBSellP0JTgO_-UA5-NeMhmP_KRdbtfw41RFzfw>
- <xmx:wKVpaRbhA2KfR5t_JK9ANMFxitA5m-2vS7o3s06PcFdV9sOwfBV-lbmx>
+X-ME-Proxy: <xmx:waVpadAFioufv0AWXvZ4Xkub4g0Nm4cJharBntXaXUR3ZeG5hIf6zw>
+ <xmx:waVpabraTjES0dIpc8_dTGdlgF3RIabGoBrHuCKMg6Z8FdAOA_QAoA>
+ <xmx:waVpaQhHYTRqu02zYCBisrnNKhNdrRmQ9jqHwodtblHBVMEPVUonVQ>
+ <xmx:waVpaQAvy4GdkoOMRDS9eqihZbZLrMbsIS5ynwf17Z6S0mqQgd6EIA>
+ <xmx:waVpabtB2osu8-HTw3ddIgdZOsL0XnLLUeiGo5xtk9nNXdIwtY_Tt-hi>
 Feedback-ID: ib26944c1:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
  15 Jan 2026 21:43:12 -0500 (EST)
 Received: from localhost (chomposaur [local])
- by chomposaur (OpenSMTPD) with ESMTPA id ab29ab07;
+ by chomposaur (OpenSMTPD) with ESMTPA id bf9e8395;
  Fri, 16 Jan 2026 02:43:07 +0000 (UTC)
 From: Chad Jablonski <chad@jablonski.xyz>
 To: qemu-devel@nongnu.org
 Cc: balaton@eik.bme.hu,
 	Chad Jablonski <chad@jablonski.xyz>
-Subject: [PATCH v5 08/12] ati-vga: Consolidate set dirty and dst update
-Date: Thu, 15 Jan 2026 21:42:54 -0500
-Message-ID: <20260116024258.1487173-9-chad@jablonski.xyz>
+Subject: [PATCH v5 09/12] ati-vga: Add internal ati_2d_do_blt accepting src
+ and dst
+Date: Thu, 15 Jan 2026 21:42:55 -0500
+Message-ID: <20260116024258.1487173-10-chad@jablonski.xyz>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260116024258.1487173-1-chad@jablonski.xyz>
 References: <20260116024258.1487173-1-chad@jablonski.xyz>
@@ -111,93 +112,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Both supported ROPs follow the same memory set dirty logic.
-This consolidates that logic to remove the duplication.
+Separate the implementation of the blit and the src and dst setup.
+This maintains the public interface of ati_2d_blt while allowing for
+flexibility in how the blit is performed.
 
-Hardware testing revealed that the Rage 128 does not update dst_x or dst_y
-after a blit, regardless of the source. This removes the update for the
-Rage 128 device.
-
-Note that there is a behavior change here in that previously the "fill"
-ROPs updated only dst_y and SRC_COPY updated dst_y and dst_x. The
-Mobility M6 register reference (DST_HEIGHT_WIDTH) states that dst_y is
-updated after a blit but doesn't mention dst_x.
+The ati_2d_blt function becomes the function that sets up the src and
+dst for a VRAM blit and then calls ati_2d_do_blt. A later patch will set
+up the src and dst for a HOST_DATA blit before calling ati_2d_do_blt.
 
 Signed-off-by: Chad Jablonski <chad@jablonski.xyz>
-
 ---
-
-I plan to validate the above Radeon behavior in the future but I don't
-have the best test environment set up for that card at the moment.
-Zoltan if you've seen the dst_x behavior is required then we can modify
-this but otherwise it felt safe to me to follow the docs for now.
----
- hw/display/ati_2d.c | 41 +++++++++++++++++++----------------------
- 1 file changed, 19 insertions(+), 22 deletions(-)
+ hw/display/ati_2d.c | 59 +++++++++++++++++++++++++--------------------
+ 1 file changed, 33 insertions(+), 26 deletions(-)
 
 diff --git a/hw/display/ati_2d.c b/hw/display/ati_2d.c
-index 91fd3b7827..38390f2da8 100644
+index 38390f2da8..691e0f0702 100644
 --- a/hw/display/ati_2d.c
 +++ b/hw/display/ati_2d.c
-@@ -207,18 +207,6 @@ void ati_2d_blt(ATIVGAState *s)
-                 memmove(&dst->bits[i], &src->bits[j], dst->rect.width * bypp);
-             }
-         }
--        if (dst->bits >= s->vga.vram_ptr + s->vga.vbe_start_addr &&
--            dst->bits < s->vga.vram_ptr + s->vga.vbe_start_addr +
--            s->vga.vbe_regs[VBE_DISPI_INDEX_YRES] * s->vga.vbe_line_offset) {
--            memory_region_set_dirty(&s->vga.vram, s->vga.vbe_start_addr +
--                                    s->regs.dst_offset +
--                                    dst->rect.y * surface_stride(ds),
--                                    dst->rect.height * surface_stride(ds));
--        }
--        s->regs.dst_x = (dst->left_to_right ?
--                         dst->rect.x + dst->rect.width : dst->rect.x);
--        s->regs.dst_y = (dst->top_to_bottom ?
--                         dst->rect.y + dst->rect.height : dst->rect.y);
-         break;
+@@ -80,38 +80,19 @@ static void setup_2d_blt_dst(const ATIVGAState *s, ATIBltDst *dst)
      }
-     case ROP3_PATCOPY:
-@@ -260,20 +248,29 @@ void ati_2d_blt(ATIVGAState *s)
-                 }
-             }
-         }
--        if (dst->bits >= s->vga.vram_ptr + s->vga.vbe_start_addr &&
--            dst->bits < s->vga.vram_ptr + s->vga.vbe_start_addr +
--            s->vga.vbe_regs[VBE_DISPI_INDEX_YRES] * s->vga.vbe_line_offset) {
--            memory_region_set_dirty(&s->vga.vram, s->vga.vbe_start_addr +
--                                    s->regs.dst_offset +
--                                    dst->rect.y * surface_stride(ds),
--                                    dst->rect.height * surface_stride(ds));
--        }
--        s->regs.dst_y = (dst->top_to_bottom ?
--                         dst->rect.y + dst->rect.height : dst->rect.y);
-         break;
-     }
-     default:
-         qemu_log_mask(LOG_UNIMP, "Unimplemented ati_2d blt op %x\n",
-                       (s->regs.dp_mix & GMC_ROP3_MASK) >> 16);
-     }
-+
-+    if (s->dev_id != PCI_DEVICE_ID_ATI_RAGE128_PF) {
-+        /*
-+         * Hardware testing shows that dst is _not_ updated for Rage 128.
-+         * The M6 (R100/Radeon) docs state however that dst_y is updated.
-+         * This has not yet been validated on R100 hardware.
-+         */
-+        s->regs.dst_y = (dst->top_to_bottom ?
-+                        dst->rect.y + dst->rect.height : dst->rect.y);
-+    }
-+
-+    if (dst->bits >= s->vga.vram_ptr + s->vga.vbe_start_addr &&
-+        dst->bits < s->vga.vram_ptr + s->vga.vbe_start_addr +
-+        s->vga.vbe_regs[VBE_DISPI_INDEX_YRES] * s->vga.vbe_line_offset) {
-+        memory_region_set_dirty(&s->vga.vram, s->vga.vbe_start_addr +
-+                                s->regs.dst_offset +
-+                                dst->rect.y * surface_stride(ds),
-+                                dst->rect.height * surface_stride(ds));
-+    }
  }
+ 
+-void ati_2d_blt(ATIVGAState *s)
++static void ati_2d_do_blt(ATIVGAState *s, const ATIBltSrc *src, ATIBltDst *dst)
+ {
+     /* FIXME it is probably more complex than this and may need to be */
+     /* rewritten but for now as a start just to get some output: */
+     DisplaySurface *ds = qemu_console_surface(s->vga.con);
+     uint8_t *end = s->vga.vram_ptr + s->vga.vram_size;
+     int dst_stride_words, src_stride_words;
+-    ATIBltDst _dst; /* TEMP: avoid churn in future patches */
+-    ATIBltDst *dst = &_dst;
+-    ATIBltSrc _src; /* TEMP: avoid churn in future patches */
+-    ATIBltSrc *src = &_src;
+ 
+     DPRINTF("%p %u ds: %p %d %d rop: %x\n", s->vga.vram_ptr,
+             s->vga.vbe_start_addr, surface_data(ds), surface_stride(ds),
+             surface_bits_per_pixel(ds),
+             (s->regs.dp_mix & GMC_ROP3_MASK) >> 16);
+ 
+-    setup_2d_blt_dst(s, dst);
+-
+-    src->x = (dst->left_to_right ?
+-             s->regs.src_x :
+-             s->regs.src_x + 1 - dst->rect.width);
+-    src->y = (dst->top_to_bottom ?
+-             s->regs.src_y :
+-             s->regs.src_y + 1 - dst->rect.height);
+-    src->stride = s->regs.src_pitch;
+-    src->bits = s->vga.vram_ptr + s->regs.src_offset;
+-    if (s->dev_id == PCI_DEVICE_ID_ATI_RAGE128_PF) {
+-        src->bits += s->regs.crtc_offset & 0x07ffffff;
+-        src->stride *= dst->bpp;
+-    }
+-
+     if (!dst->bpp) {
+         qemu_log_mask(LOG_GUEST_ERROR, "Invalid bpp\n");
+         return;
+@@ -147,12 +128,6 @@ void ati_2d_blt(ATIVGAState *s)
+             qemu_log_mask(LOG_GUEST_ERROR, "Zero source pitch\n");
+             return;
+         }
+-        if (src->x > 0x3fff || src->y > 0x3fff || src->bits >= end
+-            || src->bits + src->x
+-             + (src->y + dst->rect.height) * src->stride >= end) {
+-            qemu_log_mask(LOG_UNIMP, "blt outside vram not implemented\n");
+-            return;
+-        }
+ 
+         DPRINTF("pixman_blt(%p, %p, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)\n",
+                 src->bits, dst->bits,
+@@ -274,3 +249,35 @@ void ati_2d_blt(ATIVGAState *s)
+                                 dst->rect.height * surface_stride(ds));
+     }
+ }
++
++void ati_2d_blt(ATIVGAState *s)
++{
++    uint8_t *end = s->vga.vram_ptr + s->vga.vram_size;
++    ATIBltDst dst;
++    ATIBltSrc src;
++
++    setup_2d_blt_dst(s, &dst);
++
++    /* Setup src to point at VRAM */
++    src.x = (dst.left_to_right ?
++             s->regs.src_x :
++             s->regs.src_x + 1 - dst.rect.width);
++    src.y = (dst.top_to_bottom ?
++             s->regs.src_y :
++             s->regs.src_y + 1 - dst.rect.height);
++    src.stride = s->regs.src_pitch;
++    src.bits = s->vga.vram_ptr + s->regs.src_offset;
++    if (s->dev_id == PCI_DEVICE_ID_ATI_RAGE128_PF) {
++        src.bits += s->regs.crtc_offset & 0x07ffffff;
++        src.stride *= dst.bpp;
++    }
++
++    if (src.x > 0x3fff || src.y > 0x3fff || src.bits >= end
++        || src.bits + src.x
++         + (src.y + dst.rect.height) * src.stride >= end) {
++        qemu_log_mask(LOG_UNIMP, "blt src outside vram not implemented\n");
++        return;
++    }
++
++    ati_2d_do_blt(s, &src, &dst);
++}
 -- 
 2.51.2
 
