@@ -2,82 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09513D309CF
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:45:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30B58D3164C
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 13:57:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgiGo-0007GI-Hl; Fri, 16 Jan 2026 06:45:38 -0500
+	id 1vgj4L-0008H1-Bu; Fri, 16 Jan 2026 07:36:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vgiGn-0007G8-0u
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:45:37 -0500
-Received: from mail-yw1-x112e.google.com ([2607:f8b0:4864:20::112e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vgiGl-0002x2-8M
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:45:36 -0500
-Received: by mail-yw1-x112e.google.com with SMTP id
- 00721157ae682-7939e7b648aso19687347b3.1
- for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 03:45:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768563931; x=1769168731; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Mhz7rDewIG+9h4lDk0O6CJzEtkHyeXxEcY8aiXnyZdU=;
- b=QRGxYo+uIUXngM1Nq6sN8QKlUH/RNhmkfc77zJy1HyFrxx9nrUdfe6Qxj26kFJbuMa
- WbXBhGbAu7tdCbyq9fD7NHcXWFV3GmOVNIthG29brhkCXfWCZbiUpjJrepQHr790naU4
- S0RnCjGh7odlmYJ2ntYTNBpkohU7pRYSNKi2h++74bvuh/fWi+KVQRHEwBA+LLnhtcS7
- SwV95znz6xe350FeSPVhDT3ymOMvxAYZb8vLH81Nu4LxxH8lLDxuNapOtLHoH3lPtvwL
- ZDq5YCmpYi3UkwnkJtqPeILKMNwAq6R0f1Rv1M7qoCCLSJNRidfiO3YZUFxOO0pBnrZR
- vzEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768563931; x=1769168731;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Mhz7rDewIG+9h4lDk0O6CJzEtkHyeXxEcY8aiXnyZdU=;
- b=EgkFWw/AfGjYtGknHWj7NA+jco0WRlS1W+oDBu0mOniZkTzSjT/6BUoVMV95zqRpOe
- m6AvHYArnQlWEwBGFshjzRJgtThwV0/jVxMbZg4k9Agxp3kj/Z3xgSVhZTW/8t4Amapl
- JyifiDW/N/Qm/G2lgLNEsfCh/Qob5lyDBWihZY91lk/cH+l8WssPAvxKUhtz6vNvhTn+
- Ck3Ogn2OxsZj07JAWEIi9uKzbm5zsmrqvhTjE9SVcRbfzd/mvGmu02L/zcljp0dOazZC
- Rxd6+upfYp0o5+tZthYk95D/IDXBGpiXdcPPJ+83goeSBUyCSCmBT/Q4n5ZllkDqw3dr
- 5QGQ==
-X-Gm-Message-State: AOJu0YyrrAqlxbQaurAVBUQ2l/7oUD1GfepTpMrv+oV4/s7NqiwznhOB
- YkEdu7fmAnhvgVaFRgTfWD6hUbU5Zb6xtGS4FMRzIMgyWQ0qts4QTynncDy1IixTpAk46YN70f2
- sMRIJg89X3VCYMuyvjEh//HjKcxQuRS0TKF94c4wyZg==
-X-Gm-Gg: AY/fxX5u1J1hK1/mhOOAVNSBuFVseTtzB/ul0aImNEMTDppJR6SLJLNUqtJ9jtzR4PW
- FBHnBPAuHQMUyj4j+SXnF3VyPih3FDEys0aqv+jC+ZqrpuHh3Z4+hGYS0Z/hZMQwMOkHFYYAs4L
- i+/sOz/2rzY998G3VrNS4JIqSGQ23EWcyXhyZ9XxbRk47GQbJ4J28Mjx5e7bJsZp9ij6XLYaNUe
- YSWEWjnbGJsLgy6M8pJBFwbZQirvmubot/vEqlrr0M60NvuHlf5mY16xTMU1IX1akzIvUfvaVP/
- Qk4oplGbDLs37GnsyPKHXX655+o/C0yPqw==
-X-Received: by 2002:a05:690c:dc2:b0:786:4860:21fd with SMTP id
- 00721157ae682-793c536b2c4mr19360127b3.39.1768563931158; Fri, 16 Jan 2026
- 03:45:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vgj3T-00085R-9a
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 07:36:00 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1vgj3R-0003z1-7u
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 07:35:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1768566951;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=MxHPyNr8RGPpOoO6uRu8LEpTsn9JVEirCrQP9JQAHDE=;
+ b=LtoWzdCm7p1Tq8Fo1ldQNeUzybmZ8wZfJEb+7iOJT5CB3WAxOGCkqI4nMQ4bpqLeEwdWVL
+ o2S+Jo+gyYHl3z/14JQO1WXMwohuV45oKJELTIESpHDueoNb3f0OmCsWE3ApZ4M7/cdK3p
+ YG7Tl/J/Y9g/14mniXD4l4/NCAgPnfA=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-636-au4ywnOMPq2PRu_TLBJYfA-1; Fri,
+ 16 Jan 2026 07:35:49 -0500
+X-MC-Unique: au4ywnOMPq2PRu_TLBJYfA-1
+X-Mimecast-MFC-AGG-ID: au4ywnOMPq2PRu_TLBJYfA_1768566948
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3A93519560A3; Fri, 16 Jan 2026 12:35:48 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.135])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D0E8A1800665; Fri, 16 Jan 2026 12:35:45 +0000 (UTC)
+Date: Fri, 16 Jan 2026 12:35:42 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org, Gustavo Bueno Romero <gustavo.romero@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Phil =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v2 00/11] plugins: enable C++ plugins
+Message-ID: <aWownlTDHCx10w9I@redhat.com>
+References: <20260102214724.4128196-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
-References: <20241031175214.214455-1-pbonzini@redhat.com>
- <20241031175214.214455-23-pbonzini@redhat.com>
-In-Reply-To: <20241031175214.214455-23-pbonzini@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 16 Jan 2026 11:45:19 +0000
-X-Gm-Features: AZwV_Qg22OVyHeaZIi9ccC3QWKv8zncX74ombB7oillcY1oFBMvVLVEYvnP1hSg
-Message-ID: <CAFEAcA-CZ-pL_nOSSinZdgmP8NbzuTN0xhRFhB-ny0NkgCfLOw@mail.gmail.com>
-Subject: Re: [PULL 22/49] device/virtio-nsm: Support for Nitro Secure Module
- device
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Dorjoy Chowdhury <dorjoychy111@gmail.com>, 
- Alexander Graf <graf@amazon.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112e;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112e.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260102214724.4128196-1-pierrick.bouvier@linaro.org>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,52 +84,69 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 31 Oct 2024 at 17:56, Paolo Bonzini <pbonzini@redhat.com> wrote:
->
-> From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
->
-> Nitro Secure Module (NSM)[1] device is used in AWS Nitro Enclaves[2]
-> for stripped down TPM functionality like cryptographic attestation.
-> The requests to and responses from NSM device are CBOR[3] encoded.
->
-> This commit adds support for NSM device in QEMU. Although related to
-> AWS Nitro Enclaves, the virito-nsm device is independent and can be
-> used in other machine types as well. The libcbor[4] library has been
-> used for the CBOR encoding and decoding functionalities.
->
-> [1] https://lists.oasis-open.org/archives/virtio-comment/202310/msg00387.html
-> [2] https://docs.aws.amazon.com/enclaves/latest/user/nitro-enclave.html
-> [3] http://cbor.io/
-> [4] https://libcbor.readthedocs.io/en/latest/
+On Fri, Jan 02, 2026 at 01:47:13PM -0800, Pierrick Bouvier wrote:
+> Writing plugins in C can be sometimes tedious, especially when using Glib to
+> keep track of execution state. We can directly use the same C API but write our
+> plugin in C++, benefiting from its great standard library offering strings,
+> smart pointers, data structures and synchronization mechanisms.
+> 
+> It's common for downstream QEMU forks to provide C++ for plugins, like this:
+> - https://github.com/panda-re/panda/tree/dev/panda/plugins
+> - https://github.com/FlorentRevest/DejaView/tree/main/src/qemu_plugin
+> 
+> Hopefully this will help more people to use upstream QEMU, and as a benefit, get
+> their contribution back and help to develop plugins ecosystem upstream directly.
+> 
+> This series first cleans up build system for plugins, factorizing details
+> between contrib/plugins and tests/tcg/plugins folders.
+> Then, we perform codebase cleanups to fix conflicts between existing headers
+> and C++ headers.
+> After that, we can update the C++ standard used by QEMU, to benefit fully
+> from latest updates of the language.
+> Finally, we define an empty C++ plugin, making sure we can keep track of
+> possible regression in qemu-plugin header.
+> 
+> Note: This series is *not* a trojan horse to bring C++ in QEMU
+> codebase, nor to define an alternative C++ API for plugins. It's just enabling
+> more users to get the most out of existing C plugin API.
 
-Hi; this commit includes a file hw/virtio/cbor-helpers.c which
-does not include our standard qemu/osdep.h header:
+That's somewhat misleading, because as the diffstat below shows,
+this is indeed bringing new C++ source files into QEMU:
 
+   contrib/plugins/cpp.cpp                     | 119 ++++++++++++++++++++
 
-> diff --git a/hw/virtio/cbor-helpers.c b/hw/virtio/cbor-helpers.c
-> new file mode 100644
-> index 00000000000..49f55df3994
-> --- /dev/null
-> +++ b/hw/virtio/cbor-helpers.c
-> @@ -0,0 +1,321 @@
-> +/*
-> + * QEMU CBOR helpers
-> + *
-> + * Copyright (c) 2024 Dorjoy Chowdhury <dorjoychy111@gmail.com>
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or
-> + * (at your option) any later version.  See the COPYING file in the
-> + * top-level directory.
-> + */
-> +
-> +#include "hw/virtio/cbor-helpers.h"
+and the description above talks about bringing more C++ plugins in
+from external forks, and the meson.build files are modified to
+deal with C++.
 
-Is this intentional? Could we make this file include osdep.h
-as our standard practice requires, or would that break something?
+We've had a handful of C++ files historically we've worked to
+reduce, with the eventual goal of not using a C++ toolchain for
+any part of QEMU build. Given that IMHO qemu.git should not be
+adding new C++ sources files, even if in the plugins dir.
 
-thanks
--- PMM
+Since the qemu-plugin.h file should be entirely self-contained,
+do we actually need to be bundling all the plugins into qemu.git ?
+
+Should we in fact have a sepate gitlab.com/qemu/qemu-plugins repository
+where we keep plugins ?
+
+Since the qemu-plugin.h file is defining a somewhat stable API, plugins
+in that separate repo ought to be able to build against multiple QEMU
+releases, and could thus benefit from not being bundled together and
+don't need to be on the same release cycle.
+
+The main qemu.git CI jobs could trigger testing of a separate
+qemu-plugins.git repo, so we still validate no regressions.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
