@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 261FFD2ACD2
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 04:34:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58E20D2AD7B
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 04:37:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgabp-0007Vr-8F; Thu, 15 Jan 2026 22:34:49 -0500
+	id 1vgabp-0007XO-Uj; Thu, 15 Jan 2026 22:34:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vgabd-0007Fz-N5
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:34:40 -0500
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1vgabi-0007IR-1v
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:34:45 -0500
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vgabc-0005ks-0Y
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:34:37 -0500
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-7b22ffa2a88so705436b3a.1
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 19:34:35 -0800 (PST)
+ id 1vgabf-0005mi-KE
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:34:41 -0500
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-81ecbdfdcebso921284b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 19:34:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768534475; x=1769139275; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768534478; x=1769139278; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KL546BRv3o5TBcmNuNTcD1O7NivqyCwfyc6P5AJbIyY=;
- b=PebdVed6IiAeFlUbg9Y3i0KLuwCTinvPIBb1gbDbIoBnAOHtRTFxiz0t9gEcuGEGkJ
- sSFhhhzPIQf94LA22qkuivpJwz6WsnuOoTSl+xjujhRaulSyobhvmWXbsYLF8GDRP+nh
- ed+NQ4pcNdp/GZpviJCvNLUxOvwzb3QtyumaHLVLrySAv310bDcoJD7lRU/rMaF/IVXr
- QA69pcYcmSj0ayNn4A7DKs4ZZ2I/TPXWzipfpXD54go1DmufDgmpkdEKNvO+jWMjQ5tu
- IG0zm3o/TjMeyJ9bdxC/fUfqWn4blWejcKQnC9R/N/U/cXQEhvCQ8Xp6MLPGM1zqlvUT
- N3kQ==
+ bh=1elLXYSGrJNsfz40yQiYIFdnTmy9vR+YxG5ftNQkGbA=;
+ b=oLpLITrPkshjaOM5X466rcGrr9PgxnhmqnT6EzxdZp2cX+87fTbdVqwQ8PH8Wl/qX1
+ Lcp8QRWL+r5QhI1yitvqC6E7ScIKTopkCr0oqxiNoytNP96dcgowXN4EeJUzVMSkWbKX
+ 4hAsTbGguqpSbqujvqk5RuZ9U2r5tPKXbITxqNPbYAP+2H0QhrMC4s+e9NPTcmBl1n2N
+ yLa8SkUR1sMtZrrt1a55UT05i4YsDhHPgkgUZZnDY2NJiiu3B9lXMuCiMnKAdlV4WTdX
+ URq7hx2Vq7kRMAze9V/fRBA6kpPEWOO9UyIwCdUCmsaSGx50QQem6LyvLNIaTIoCvkyG
+ /HKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768534475; x=1769139275;
+ d=1e100.net; s=20230601; t=1768534478; x=1769139278;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=KL546BRv3o5TBcmNuNTcD1O7NivqyCwfyc6P5AJbIyY=;
- b=UaLqJhz5+Lfonhw56w3gaM0XYY7uPJnTYmWM5hoC77kGjIVC+Z6DZe4HNrc4eCsrL2
- 7XV7KJZclMbwinSdU0MtCU4OpVRH4k4sRknBbVLea1tEvoiZybs6stQrA/rMOMsTm0r0
- 154JSBqd748+tfq551t7KOr/yAvhGrKD0OPMJcr6bDiK0Q2RiCEHSIwJCIDVncUjTUoP
- tYSyb5Qgemosfn3EmRRRkY08hXmBzjQSi0kacuQao7PMG+l2VaaMf941JOveE/NmX07P
- fEhiwnD86ooYIlxzJ3kk4+gZlmFzPzHMh7yrsxdBB3oG6/v/rCi0mGmh5JZBlCVblWrp
- zNzQ==
-X-Gm-Message-State: AOJu0YyCnqBPTlbUvnhifU/WE3gIv1VtX0TNLmyfyOfwJ5B42nT0Farl
- e31omeaOqUx04LYzHecWTKIhWTED2YWi2IAk47FBwVQeA2ArEw0pwH3v9t3/unzB7RXbSApm1LS
- +dEmxNn3q5A==
-X-Gm-Gg: AY/fxX7wtR/GA6lRTK4LDeMQh6q/M15OfyfSDsIqAJUBI4GMOOTbRyPt8XVQIpDn7D0
- sVyM65qUM02lq+nydUBll/iCgeKCyKKk7jdJSiRhbNwdOFJ+5O/gDrQietUVFw3rNe1ID/i96TQ
- nA44xHvfnpZGZUV2KbTAd6HbyOQmk67sqI4GKv2dNhIR72LmXuHmD4z4XvgAz8mcVs1XrFPN/MI
- 3UbH8Ed6PtnfhGbDVvzBW4OTJHVnC+Sg6BzP9hR4vlbTbSjhwNtddKE4k2GuiqcS8yN8keiFKLn
- njA6YibUqAJw2KSJ0URZetOJbY7t/fSCHA+jYjglb78je39mZobbGW1u691oH2+IWYrlmSb1Rj4
- NV9Tmj+MIXalnaGXxxlV3kFOpb0UoSi2Duil3w3geTQQZq+1Xdbblmk0Vfpmzqu4rE17L4QrNK2
- 2tsGJdGFYPjKJHygrVYA==
-X-Received: by 2002:a05:6a00:2e90:b0:81f:44f9:7c1a with SMTP id
- d2e1a72fcca58-81fa1771ec6mr1122948b3a.3.1768534474569; 
- Thu, 15 Jan 2026 19:34:34 -0800 (PST)
+ bh=1elLXYSGrJNsfz40yQiYIFdnTmy9vR+YxG5ftNQkGbA=;
+ b=r0KOlbZaBlg80kmxNUAO505uNxpkRLLnwKK3G5y5EZdOjDMoF9g+NKq1zYP+BZBJj9
+ 8H+zeD1kbFqTX681q9mpXbWHJ5yc58iSAHq+UIrKJekp9ohNT0azQHGHMgP3kTIcDvPo
+ YoSj5osqeHhQQJyYqpRH5oJGFgZ9r839Ij+oUpRLCELIegzfRBzaDaEJ1oPduLpgAb/r
+ 300JAYjz5v+WtQbx2URICXsfNzrF0om7Lp0ae9iroqS5q8hvpsYTTvlpkExR5Wj8EjRW
+ qR0OA685CNcl0oT36X5gNkHIEvGaZtcLPm2pYMHs0L150aUlnaVsGYXrSvMZC3fwie63
+ haEg==
+X-Gm-Message-State: AOJu0YxAvUa3W9M5j3TsgAyj0q6NZkUlc+TGcpyKs3DjIhluJMbbFlrr
+ AwXp5Q6JVZTvn1BJtYRuIgNdvR5bqaPsLtjXrNwmKQPK+tJN52sDzYoxBqTDcga0BBXmAzLV6JV
+ Eslw0O37NGw==
+X-Gm-Gg: AY/fxX7LBD95O4L0yi1Q+jujWhRj1K5SrUFYkXcOREgOCvPI2I64sxAa1u39nzovuWH
+ EMFvwKrGai3aSd0mw5rxKCMCAHNOJU73hQcPTpRLJRhqa+Gd0bO1NrBO9KF1gNAlvW+JqJ5HrWk
+ I0vjPpk3jKcaElk1CgRHo9Gbvatt10hajJB0fo7ckyVz4AFv7CroI069KVCOSxoGGLsNSUiQkeR
+ aiqbkCYay/s/1V1jpxXEwlgIkSgDXXD4l8MYXxWMLHEtDbzlYDGkHIwG+xig2cDOpICuNeIS6ES
+ 5XMuc2b+g09709fZshVkQ9WJBFRsg+MCNnVzrdWDnLwUrVTx2SKrVPnUMocNIuZcOx1nbQfP/eH
+ Etr13pZmntN55fK3+rxi24P7fWKYfmb7F2rzW47b1Q0Ac3WJl735T5oNpRWVJPF+vXoyx3G2qWf
+ /GnPI4B/RHa1kdp215XQ==
+X-Received: by 2002:a05:6a00:3397:b0:81f:4566:cce8 with SMTP id
+ d2e1a72fcca58-81fa184d5b5mr1068751b3a.55.1768534478257; 
+ Thu, 15 Jan 2026 19:34:38 -0800 (PST)
 Received: from stoup.. ([180.233.125.201]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-81fa12b5c67sm683372b3a.69.2026.01.15.19.34.31
+ d2e1a72fcca58-81fa12b5c67sm683372b3a.69.2026.01.15.19.34.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Jan 2026 19:34:34 -0800 (PST)
+ Thu, 15 Jan 2026 19:34:37 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: ktokunaga.mail@gmail.com, berrange@redhat.com, pierrick.bouvier@linaro.org,
  thuth@redhat.com, pbonzini@redhat.com, philmd@linaro.org
-Subject: [PATCH v2 20/58] meson: Drop host_arch rename for mips64
-Date: Fri, 16 Jan 2026 14:32:26 +1100
-Message-ID: <20260116033305.51162-21-richard.henderson@linaro.org>
+Subject: [PATCH v2 21/58] meson: Drop host_arch rename for riscv64
+Date: Fri, 16 Jan 2026 14:32:27 +1100
+Message-ID: <20260116033305.51162-22-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260116033305.51162-1-richard.henderson@linaro.org>
 References: <20260116033305.51162-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,130 +100,125 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This requires renaming several directories:
-tcg/mips, linux-user/include/host/mips, and
-common-user/host/mips.
+tcg/riscv, linux-user/include/host/riscv, and
+common-user/host/riscv.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/include/host/{mips => mips64}/host-signal.h | 0
- tcg/{mips => mips64}/tcg-target-con-set.h              | 0
- tcg/{mips => mips64}/tcg-target-con-str.h              | 0
- tcg/{mips => mips64}/tcg-target-has.h                  | 0
- tcg/{mips => mips64}/tcg-target-mo.h                   | 0
- tcg/{mips => mips64}/tcg-target-reg-bits.h             | 0
- tcg/{mips => mips64}/tcg-target.h                      | 0
- MAINTAINERS                                            | 2 +-
- common-user/host/{mips => mips64}/safe-syscall.inc.S   | 0
- configure                                              | 8 +++-----
- meson.build                                            | 2 --
- tcg/{mips => mips64}/tcg-target-opc.h.inc              | 0
- tcg/{mips => mips64}/tcg-target.c.inc                  | 0
- 13 files changed, 4 insertions(+), 8 deletions(-)
- rename linux-user/include/host/{mips => mips64}/host-signal.h (100%)
- rename tcg/{mips => mips64}/tcg-target-con-set.h (100%)
- rename tcg/{mips => mips64}/tcg-target-con-str.h (100%)
- rename tcg/{mips => mips64}/tcg-target-has.h (100%)
- rename tcg/{mips => mips64}/tcg-target-mo.h (100%)
- rename tcg/{mips => mips64}/tcg-target-reg-bits.h (100%)
- rename tcg/{mips => mips64}/tcg-target.h (100%)
- rename common-user/host/{mips => mips64}/safe-syscall.inc.S (100%)
- rename tcg/{mips => mips64}/tcg-target-opc.h.inc (100%)
- rename tcg/{mips => mips64}/tcg-target.c.inc (100%)
+ host/include/{riscv => riscv64}/host/cpuinfo.h           | 0
+ linux-user/include/host/{riscv => riscv64}/host-signal.h | 0
+ tcg/{riscv => riscv64}/tcg-target-con-set.h              | 0
+ tcg/{riscv => riscv64}/tcg-target-con-str.h              | 0
+ tcg/{riscv => riscv64}/tcg-target-has.h                  | 0
+ tcg/{riscv => riscv64}/tcg-target-mo.h                   | 0
+ tcg/{riscv => riscv64}/tcg-target-reg-bits.h             | 0
+ tcg/{riscv => riscv64}/tcg-target.h                      | 0
+ MAINTAINERS                                              | 2 +-
+ common-user/host/{riscv => riscv64}/safe-syscall.inc.S   | 0
+ configure                                                | 4 ++--
+ meson.build                                              | 2 --
+ tcg/{riscv => riscv64}/tcg-target-opc.h.inc              | 0
+ tcg/{riscv => riscv64}/tcg-target.c.inc                  | 0
+ 14 files changed, 3 insertions(+), 5 deletions(-)
+ rename host/include/{riscv => riscv64}/host/cpuinfo.h (100%)
+ rename linux-user/include/host/{riscv => riscv64}/host-signal.h (100%)
+ rename tcg/{riscv => riscv64}/tcg-target-con-set.h (100%)
+ rename tcg/{riscv => riscv64}/tcg-target-con-str.h (100%)
+ rename tcg/{riscv => riscv64}/tcg-target-has.h (100%)
+ rename tcg/{riscv => riscv64}/tcg-target-mo.h (100%)
+ rename tcg/{riscv => riscv64}/tcg-target-reg-bits.h (100%)
+ rename tcg/{riscv => riscv64}/tcg-target.h (100%)
+ rename common-user/host/{riscv => riscv64}/safe-syscall.inc.S (100%)
+ rename tcg/{riscv => riscv64}/tcg-target-opc.h.inc (100%)
+ rename tcg/{riscv => riscv64}/tcg-target.c.inc (100%)
 
-diff --git a/linux-user/include/host/mips/host-signal.h b/linux-user/include/host/mips64/host-signal.h
+diff --git a/host/include/riscv/host/cpuinfo.h b/host/include/riscv64/host/cpuinfo.h
 similarity index 100%
-rename from linux-user/include/host/mips/host-signal.h
-rename to linux-user/include/host/mips64/host-signal.h
-diff --git a/tcg/mips/tcg-target-con-set.h b/tcg/mips64/tcg-target-con-set.h
+rename from host/include/riscv/host/cpuinfo.h
+rename to host/include/riscv64/host/cpuinfo.h
+diff --git a/linux-user/include/host/riscv/host-signal.h b/linux-user/include/host/riscv64/host-signal.h
 similarity index 100%
-rename from tcg/mips/tcg-target-con-set.h
-rename to tcg/mips64/tcg-target-con-set.h
-diff --git a/tcg/mips/tcg-target-con-str.h b/tcg/mips64/tcg-target-con-str.h
+rename from linux-user/include/host/riscv/host-signal.h
+rename to linux-user/include/host/riscv64/host-signal.h
+diff --git a/tcg/riscv/tcg-target-con-set.h b/tcg/riscv64/tcg-target-con-set.h
 similarity index 100%
-rename from tcg/mips/tcg-target-con-str.h
-rename to tcg/mips64/tcg-target-con-str.h
-diff --git a/tcg/mips/tcg-target-has.h b/tcg/mips64/tcg-target-has.h
+rename from tcg/riscv/tcg-target-con-set.h
+rename to tcg/riscv64/tcg-target-con-set.h
+diff --git a/tcg/riscv/tcg-target-con-str.h b/tcg/riscv64/tcg-target-con-str.h
 similarity index 100%
-rename from tcg/mips/tcg-target-has.h
-rename to tcg/mips64/tcg-target-has.h
-diff --git a/tcg/mips/tcg-target-mo.h b/tcg/mips64/tcg-target-mo.h
+rename from tcg/riscv/tcg-target-con-str.h
+rename to tcg/riscv64/tcg-target-con-str.h
+diff --git a/tcg/riscv/tcg-target-has.h b/tcg/riscv64/tcg-target-has.h
 similarity index 100%
-rename from tcg/mips/tcg-target-mo.h
-rename to tcg/mips64/tcg-target-mo.h
-diff --git a/tcg/mips/tcg-target-reg-bits.h b/tcg/mips64/tcg-target-reg-bits.h
+rename from tcg/riscv/tcg-target-has.h
+rename to tcg/riscv64/tcg-target-has.h
+diff --git a/tcg/riscv/tcg-target-mo.h b/tcg/riscv64/tcg-target-mo.h
 similarity index 100%
-rename from tcg/mips/tcg-target-reg-bits.h
-rename to tcg/mips64/tcg-target-reg-bits.h
-diff --git a/tcg/mips/tcg-target.h b/tcg/mips64/tcg-target.h
+rename from tcg/riscv/tcg-target-mo.h
+rename to tcg/riscv64/tcg-target-mo.h
+diff --git a/tcg/riscv/tcg-target-reg-bits.h b/tcg/riscv64/tcg-target-reg-bits.h
 similarity index 100%
-rename from tcg/mips/tcg-target.h
-rename to tcg/mips64/tcg-target.h
+rename from tcg/riscv/tcg-target-reg-bits.h
+rename to tcg/riscv64/tcg-target-reg-bits.h
+diff --git a/tcg/riscv/tcg-target.h b/tcg/riscv64/tcg-target.h
+similarity index 100%
+rename from tcg/riscv/tcg-target.h
+rename to tcg/riscv64/tcg-target.h
 diff --git a/MAINTAINERS b/MAINTAINERS
-index c58fa93fd5..d3e6041186 100644
+index d3e6041186..c1e586c58f 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -4074,7 +4074,7 @@ R: Huacai Chen <chenhuacai@kernel.org>
- R: Jiaxun Yang <jiaxun.yang@flygoat.com>
- R: Aleksandar Rikalo <arikalo@gmail.com>
- S: Odd Fixes
--F: tcg/mips/
-+F: tcg/mips64/
+@@ -4086,7 +4086,7 @@ M: Palmer Dabbelt <palmer@dabbelt.com>
+ M: Alistair Francis <Alistair.Francis@wdc.com>
+ L: qemu-riscv@nongnu.org
+ S: Maintained
+-F: tcg/riscv/
++F: tcg/riscv64/
+ F: disas/riscv.[ch]
  
- PPC TCG target
- M: Richard Henderson <richard.henderson@linaro.org>
-diff --git a/common-user/host/mips/safe-syscall.inc.S b/common-user/host/mips64/safe-syscall.inc.S
+ S390 TCG target
+diff --git a/common-user/host/riscv/safe-syscall.inc.S b/common-user/host/riscv64/safe-syscall.inc.S
 similarity index 100%
-rename from common-user/host/mips/safe-syscall.inc.S
-rename to common-user/host/mips64/safe-syscall.inc.S
+rename from common-user/host/riscv/safe-syscall.inc.S
+rename to common-user/host/riscv64/safe-syscall.inc.S
 diff --git a/configure b/configure
-index e9d0b9e2c0..04d0b214b6 100755
+index 04d0b214b6..ee09f90125 100755
 --- a/configure
 +++ b/configure
-@@ -400,10 +400,8 @@ elif check_define _ARCH_PPC64 ; then
-   else
-     cpu="ppc64"
-   fi
--elif check_define __mips__ ; then
--  if check_define __mips64 ; then
--    cpu="mips64"
--  fi
-+elif check_define __mips64 ; then
-+  cpu="mips64"
- elif check_define __s390__ ; then
-   if check_define __s390x__ ; then
-     cpu="s390x"
-@@ -455,7 +453,7 @@ case "$cpu" in
+@@ -469,8 +469,8 @@ case "$cpu" in
+     CPU_CFLAGS="-m64 -mlittle-endian"
+     ;;
  
-   mips64*|mipsisa64*)
-     cpu=mips64
--    host_arch=mips
-+    host_arch=mips64
-     linux_arch=mips
+-  riscv32 | riscv64)
+-    host_arch=riscv
++  riscv64)
++    host_arch=riscv64
+     linux_arch=riscv
      ;;
  
 diff --git a/meson.build b/meson.build
-index 0647ca0c89..c36f2f6962 100644
+index c36f2f6962..e1ac764793 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -265,8 +265,6 @@ enable_modules = get_option('modules') \
  
  if cpu not in supported_cpus
    host_arch = 'unknown'
--elif cpu == 'mips64'
--  host_arch = 'mips'
- elif cpu in ['riscv32', 'riscv64']
-   host_arch = 'riscv'
+-elif cpu in ['riscv32', 'riscv64']
+-  host_arch = 'riscv'
  else
-diff --git a/tcg/mips/tcg-target-opc.h.inc b/tcg/mips64/tcg-target-opc.h.inc
+   host_arch = cpu
+ endif
+diff --git a/tcg/riscv/tcg-target-opc.h.inc b/tcg/riscv64/tcg-target-opc.h.inc
 similarity index 100%
-rename from tcg/mips/tcg-target-opc.h.inc
-rename to tcg/mips64/tcg-target-opc.h.inc
-diff --git a/tcg/mips/tcg-target.c.inc b/tcg/mips64/tcg-target.c.inc
+rename from tcg/riscv/tcg-target-opc.h.inc
+rename to tcg/riscv64/tcg-target-opc.h.inc
+diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv64/tcg-target.c.inc
 similarity index 100%
-rename from tcg/mips/tcg-target.c.inc
-rename to tcg/mips64/tcg-target.c.inc
+rename from tcg/riscv/tcg-target.c.inc
+rename to tcg/riscv64/tcg-target.c.inc
 -- 
 2.43.0
 
