@@ -2,100 +2,131 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 677DCD31DF0
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 14:32:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0658D31847
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 14:06:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgitu-0003ct-Dn; Fri, 16 Jan 2026 07:26:02 -0500
+	id 1vgjWI-0008M6-8y; Fri, 16 Jan 2026 08:05:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1vgitn-0003ZR-Kt
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 07:25:55 -0500
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1vgjVK-00087J-SA
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 08:04:46 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1vgitm-0001tc-3i
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 07:25:55 -0500
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1vgjVH-0001Mf-5k
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 08:04:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768566353;
+ s=mimecast20190719; t=1768568676;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nZ4y8uqCRINEK/ME3gVahYI+u+vDZeh3gltIhi5Zmok=;
- b=Xm+0qa9Mzh9wRdNcCxwQTmIdSYIg1r0VpcYrORgydLxUFOU+1sC0diI9ZoglMwEG/XvcnQ
- TfcR1z6PBejf9h/+Tb3Uodc8560jzCzuq+JDcPUCvBVDs3Pkw6QqNfCc0gz6txU29ubM14
- KBBjt/QQda6h5KtIYGxqoToLPUmhYE8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=xCI4g++BBetoODDy0PyGDWZ/SldOs+tTH/fbdPbguSg=;
+ b=gyEJsXG13/IpaFevMxMst20mrPEh9Wy1m4RZWiyEGUoGvvR3x4E8xwCBCubQIRupfEvhKd
+ i3seg82hiuvXBahUurMDD4jsQZp8rQhvY8y7IQ8O8QQv9NKpKlDcITA+guSzpXrL1LWix2
+ p2UMx6aYis0ihpacbh7x8xNWc3HkajE=
+Received: from mail-yx1-f70.google.com (mail-yx1-f70.google.com
+ [74.125.224.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-22-CI_7RMGmMoemZy0M_etPFQ-1; Fri, 16 Jan 2026 07:25:47 -0500
-X-MC-Unique: CI_7RMGmMoemZy0M_etPFQ-1
-X-Mimecast-MFC-AGG-ID: CI_7RMGmMoemZy0M_etPFQ_1768566346
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-47d3c9b8c56so28491485e9.0
- for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 04:25:46 -0800 (PST)
+ us-mta-608-8Nkn79dAPX-kId4MRT354Q-1; Fri, 16 Jan 2026 08:04:34 -0500
+X-MC-Unique: 8Nkn79dAPX-kId4MRT354Q-1
+X-Mimecast-MFC-AGG-ID: 8Nkn79dAPX-kId4MRT354Q_1768568673
+Received: by mail-yx1-f70.google.com with SMTP id
+ 956f58d0204a3-6467b002cfeso3235660d50.3
+ for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 05:04:33 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768568673; cv=none;
+ d=google.com; s=arc-20240605;
+ b=XuBnNXrYQXysWQqluWSFmxyWzz+h6KpAtM34Guu3tXW9iC1UYBddqccXVielS8HAI7
+ BuEEgltpFJyJfZAFk57nsMKIKStQpif3OWIvP6kHuTKTD3284oy/xkFZskf4OYD42O6b
+ HLpu7/wBgIiKlRPv2q+zlW0+Q0yc6iOOVbTWaCnCfGXyzlkSemagVfN+fvHouiqTHl2o
+ jRzQt0c4/+1dpTTMgQQ8osJmctFNc3ItaF3xdu3LzizkhWd0Z/lZBMQN40PPc3K2uwGf
+ thn/99Y2Z8kl0Ob+4S0vL9Jxk6vksFMrCucbiWMIBDAY0HKIpUAUelhj1hx5JAyNEFVY
+ Cvlg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
+ s=arc-20240605; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:dkim-signature;
+ bh=xCI4g++BBetoODDy0PyGDWZ/SldOs+tTH/fbdPbguSg=;
+ fh=SCla5qwtivMsa9WuGACYFmsiD8ZAou9vajHYlsGjyaE=;
+ b=F1hUnOC2MfDhXYolMwvQnB4Bpoq5EJ4/y8qPzcMKMOgMIKjh53huY1lLn1HBZ8aErg
+ mYIl9UqFYagy5QfKm3wQy5nGzqZjnc81E+9Ezv46lKZVftRnIra2uJjVIWumnsgfiME3
+ 34x2Djo5eB2zo4qjCMVQ0qLTUzU3gfv26WRJUCNJvJ5gCyYULJBbjRsklB5L9G7g9vjq
+ 1Q4HSxf6bDXhv85jP+52ILOKOx09vsb2IymQcWG6JH9H/yCrRE+V3a49IOwvJDeBaofT
+ 5c1GtcGzKhVrybyLo08yvgBPWKhpzwDrI+meEuC8+gvKE4LxJMlZ9nD+q0Wfm6b3Icfn
+ wEiw==; darn=nongnu.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768566346; x=1769171146; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=nZ4y8uqCRINEK/ME3gVahYI+u+vDZeh3gltIhi5Zmok=;
- b=L6rxtdGrKwl+JWCvYdSYQSoQfnt+/x9+r9E+CGe06t3q0w49JNy66xZjYI8guxuD2h
- dpo6gJPwPuW0W7RHcfnPOkPTrNzGdMP6EPSiKqE7GJ5/UuSytsuVtekb+NhLOm753jMf
- TzQ24KG8iOvrrM2Mk1XBLhgTQ0+9m2b1oW8UaiQMXucOiYZEoNQWUi13OB2HDAk51Ky3
- D0dyqrUG72DzKWVn4TMyaATgKZTGSuSkoTGgMjJTXl1idpamdwTz2xJE3Lm6bFP6qPNr
- kHzlgZYRWC8wjqMu4OIK4dSS/HcPjD+4jtZanLpvGYjGUCqGroGUzHg/wIQN0dP7L7xQ
- bTdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768566346; x=1769171146;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=redhat.com; s=google; t=1768568673; x=1769173473; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nZ4y8uqCRINEK/ME3gVahYI+u+vDZeh3gltIhi5Zmok=;
- b=VkL9nnT8Z4k3/eUu9jrzWFalxtyELgN/IdQF0cGSCXeIL0IAmpmMRV/ARMItnIOYpl
- N4um81uITWTC3WgXWkpuyfvY7LM6dW6pEfB0GMtYK4b0T5piHrMCWIzM7KxcAx14excs
- 62BfVB84GvF3+RbvfphJLPK0lmWNKv4VvxlfuWrCHSr36+bcHjwJN70/70R9pctkZNtk
- FL2VQt2dC9mQVbZ1C6ULVlQFz+hPDm9pYKsZZ4OHN5EOxrFoZo8hLPWqGJvdYwSza8j8
- eE8hCj6/SEJ978rJwT8Aw/qXAcQgnBSKcqW3rQUYlk7rRB7jPFb5ecATRoqKkW9zT8KU
- RKUA==
-X-Gm-Message-State: AOJu0Yw9mbbAXJlUcscHxustckX38w4cXvnU0uSyA1evjzGUdsicpkal
- LYkWiO4Zm083PuSDraS2EDAMAwb4KLgJlTN4iX7uToGc9iSweM+skaACqbGUL1JvrX4NeAXgi3/
- Hul4+4lAR8fSx5Ox8YEIpKMNgCEO/GtpgNpi6wYyox3DTvbj3jaaLIE5H+Ia+1nUDcWIcEeQTuY
- 3Le2BSDdDeMUmMNmS0jEVd/9btH0lO4jM=
-X-Gm-Gg: AY/fxX7utCdpW8PNxRWdHyrC6tRHeSeK2e/V/rQTGfMcnu8E5H3dNElxVyF8PZfIpA3
- y2qJXjIKx+0LlhfzBpEFKedz8RsxqACV7Ne6qQ/zedIyr+f9O7GaUxB5iHLrOM3hlcc6pIp7TUY
- 8UVl9T7mpglkEDGdQSbVEokGb/V2YvqOeYlA/VH7rva+z+vPyBH+PvDCDWJ7XihFlzIo/kNZZ1V
- oBScGKfq83lXfhueZVIeKeHrpRdfV5YFpCcgHM+GI11TNhS+UwLBBtj
-X-Received: by 2002:a05:600c:3495:b0:477:639d:bca2 with SMTP id
- 5b1f17b1804b1-4801eaadbd9mr26166275e9.4.1768566345738; 
- Fri, 16 Jan 2026 04:25:45 -0800 (PST)
-X-Received: by 2002:a05:600c:3495:b0:477:639d:bca2 with SMTP id
- 5b1f17b1804b1-4801eaadbd9mr26166025e9.4.1768566345365; Fri, 16 Jan 2026
- 04:25:45 -0800 (PST)
+ bh=xCI4g++BBetoODDy0PyGDWZ/SldOs+tTH/fbdPbguSg=;
+ b=og2ghUtVcUUDbHqlTkaZlpje+D5O3/qJ2xB3WlVx5XHtmq98dW2cmGsEn3NZqDGANH
+ yjbpvgnSyUNUTWwV54uI1Hmkoeb3l0HKGJWM8OVZWCOksk4PRel08PDETLGruPAW19fv
+ 8xME0GWHDggTX5vxTwC90Ai+HnUHhclGixB/XsZoKoiCd7wrqneZbuMSddC27YWcwkO2
+ vmaJkT95o0Bc7tyrLngbb6G+mHv1vqCsgRS5qE36E80i4ytaqE7NER070OpMO8KlUGqm
+ fke34qi1xuHzkiwRVo3wqBmOGwERq4p8a7tcEX0Pa2Ofz2qkMKWn0RTmhXV/8krZ21yC
+ 5Ltg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768568673; x=1769173473;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=xCI4g++BBetoODDy0PyGDWZ/SldOs+tTH/fbdPbguSg=;
+ b=emLjt4hHEmieSXd8CeI5boX9OSdy9TjgDzLkuQg9KnM6Bdf4TfKIeh68mDBRufCNfI
+ cAFAqx7RYefW82kwe0gQW3+2cvogMkTHyP3iMm+CvNVt+vCkZaaamTwLTnMsvM4JjPQU
+ 1ow9jBg8iMbaGdaWAgbAxWv+akVQR/iwcIWkyPbMCttt2AvhwjRLDGXRlIb6CaAh31Zb
+ 5ud2/tvJdBXJ+1T24jf0/IYHnPtpLZs5MqrzQXQP0PLsZ9ZH4e1Xbj8dqK6SLp/wlCdf
+ C7pK8dn5EBRLoXfm4aGyh/Z1nluMEyrL1FmnU4WwyqY+A+D4T6r5RgRCFYbQQKgWk80O
+ nJbQ==
+X-Gm-Message-State: AOJu0YzQ37fHt/wu2PNKw0g0+Egxz6a/mDKUy0tb4vVqH5ey8A0bC7rh
+ xYU4fORGJjt5Nzpga1KccwjP49d6yUH2gxy4VsvrzwBfMPzwu8cmsEBOWqkY10bOnVJ+4+QA6TQ
+ fpe6CwWPk6imhslJmiNHpSUKdpN97nSvLxNVxJFI5sjecVw1iaB6xtR0NwCUnJpaAMK4ScTgLFR
+ 4DwWpfiNjkI+1i9SywIL1YD2t5UFWyRIw=
+X-Gm-Gg: AY/fxX7qtzWz1u3ql+Or849i2qfhv7hsCip3ZL/U2fFCKGPdWLK3wknZV8Y0uLH0WMw
+ wbIgEVDRx9SR2Gz015w+gOjZ4LtW1DFNyhjZsxAw0kJsqKM9z9Zx0dp9Iq68pW5z/hVMoIabOMl
+ 5BJXrBOH2rs9XcWfsVotMp3tKsS9+SOdipNxJMM3zGOrRTiMKtzxRGYpwpxUPyvg==
+X-Received: by 2002:a05:690e:15d7:b0:644:2e0f:4158 with SMTP id
+ 956f58d0204a3-6491649035emr2178684d50.25.1768568672742; 
+ Fri, 16 Jan 2026 05:04:32 -0800 (PST)
+X-Received: by 2002:a05:690e:15d7:b0:644:2e0f:4158 with SMTP id
+ 956f58d0204a3-6491649035emr2178660d50.25.1768568672236; Fri, 16 Jan 2026
+ 05:04:32 -0800 (PST)
 MIME-Version: 1.0
-References: <20260109124043.25019-1-farosas@suse.de>
- <20260109124043.25019-12-farosas@suse.de>
-In-Reply-To: <20260109124043.25019-12-farosas@suse.de>
-From: Prasad Pandit <ppandit@redhat.com>
-Date: Fri, 16 Jan 2026 17:55:27 +0530
-X-Gm-Features: AZwV_QhTuuQ-uFdolbUVsEU1G97SuQzxY7xxXQJQ5OH_SPn7s1FNwpFEfLCI9bk
-Message-ID: <CAE8KmOwGzbRca1TpcQWjYrvd2UiFJ57RVNd8g44-cQdddOKktQ@mail.gmail.com>
-Subject: Re: [PATCH v3 11/25] migration: Fold migration_cleanup() into
- migration_connect_error_propagate()
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, peterx@redhat.com, berrange@redhat.com
+References: <20251111091058.879669-1-aesteve@redhat.com>
+ <20251111091058.879669-6-aesteve@redhat.com>
+ <CADSE00+24EjXdRMDXXf7tgWLaH2gqeDhL_OeRbmZQ2e8JULPXA@mail.gmail.com>
+ <20260116055716-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20260116055716-mutt-send-email-mst@kernel.org>
+From: Albert Esteve <aesteve@redhat.com>
+Date: Fri, 16 Jan 2026 14:04:20 +0100
+X-Gm-Features: AZwV_Qg1JhwtgXqwbxkzcv52SsP-DhP_JiSa2P-vO2opvHwWYU3Xdqeq7XzTdeQ
+Message-ID: <CADSE00+AOpy2JNPvZ_DFGR8pJ=-4iiYdb-5Mh_LAnLusjBDyQA@mail.gmail.com>
+Subject: Re: [PATCH v11 5/7] vhost_user.rst: Add GET_SHMEM_CONFIG message
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, dbassey@redhat.com, manos.pitsidianakis@linaro.org, 
+ slp@redhat.com, stefanha@redhat.com, Fabiano Rosas <farosas@suse.de>,
+ jasowang@redhat.com, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>, david@redhat.com, hi@alyssa.is,
+ stevensd@chromium.org, 
+ Stefano Garzarella <sgarzare@redhat.com>, Laurent Vivier <lvivier@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=ppandit@redhat.com;
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -7
+X-Spam_score: -0.8
+X-Spam_bar: /
+X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_BL_SPAMCOP_NET=1.347, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,135 +142,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 9 Jan 2026 at 18:12, Fabiano Rosas <farosas@suse.de> wrote:
-> Whenever an error occurs between migrate_init() and the start of
-> migration_thread, do cleanup immediately after.
+On Fri, Jan 16, 2026 at 12:15=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com=
+> wrote:
+>
+> On Fri, Jan 16, 2026 at 11:20:25AM +0100, Albert Esteve wrote:
+> > On Tue, Nov 11, 2025 at 10:11=E2=80=AFAM Albert Esteve <aesteve@redhat.=
+com> wrote:
+> > >
+> > > Add GET_SHMEM_CONFIG vhost-user frontend
+> > > message to the spec documentation.
+> > >
+> > > Reviewed-by: Alyssa Ross <hi@alyssa.is>
+> > > Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > > Signed-off-by: Albert Esteve <aesteve@redhat.com>
+> > > ---
+> > >  docs/interop/vhost-user.rst | 39 +++++++++++++++++++++++++++++++++++=
+++
+> > >  1 file changed, 39 insertions(+)
+> > >
+> > > diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rs=
+t
+> > > index 6c1d66d7d3..6a1ecd7f48 100644
+> > > --- a/docs/interop/vhost-user.rst
+> > > +++ b/docs/interop/vhost-user.rst
+> > > @@ -371,6 +371,20 @@ MMAP request
+> > >    - 0: Pages are mapped read-only
+> > >    - 1: Pages are mapped read-write
+> > >
+> > > +VIRTIO Shared Memory Region configuration
+> > > +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> > > +
+> > > ++-------------+---------+------------+----+--------------+
+> > > +| num regions | padding | mem size 0 | .. | mem size 255 |
+> > > ++-------------+---------+------------+----+--------------+
+> > > +
+> > > +:num regions: a 32-bit number of regions
+> > > +
+> > > +:padding: 32-bit
+> > > +
+> > > +:mem size: contains ``num regions`` 64-bit fields representing the s=
+ize of each
+> > > +           VIRTIO Shared Memory Region
+> > > +
+> >
+> > When implementing this for rust-vmm, the mem size came up a bit
+> > confusing. In the last patch (7/7) of this series, the implementation
+> > uses `num regions` as a count for the number of valid regions (thus
+> > accounting for gaps in the shmem region mapping). Thus, `mem size` has
+> > this confusing statement saying that it containers `num regions`
+> > fields. It should say it contains 256 fields (it is only sent once
+> > during initialization, so no need to save bytes here), with only `num
+> > regions` that are valid (i.e., greater than 0). Maybe it could even
+> > discard the `num regions` field, and send only the full array.
+> > Thoughts?
+>
+> Let's discuss the exact wording here.
+> I'm not sure why would we need this padding sending unused fields
+> though. Waste no, need not?
 
-* .. immediately after -> immediately.
+What about something like this:
 
-> The cleanup at qmp_migrate_finish_cb can also be removed because it
-> will always be reached wither via the error path at
++:mem size: an array of 256 64-bit fields representing the size of each
++          VIRTIO Shared Memory Region. ``num regions`` specifies the
++          number of valid regions (non-zero size). The array index
++          corresponds to the shared memory ID (shmid).
 
-* wither -> whether OR either
+If you are suggesting removing the num regions+padding field, then the
+description could be further simplified to:
 
-> qmp_migrate_finish->migration_connect_error_propagate or via the
-> migrate_cleanup_bh.
->
-> The yank_unregister_instance at qmp_migrate() is now replaced by the
-> one at migration_cleanup().
->
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->  migration/migration.c | 26 +++++++++++++++++---------
->  1 file changed, 17 insertions(+), 9 deletions(-)
->
-> diff --git a/migration/migration.c b/migration/migration.c
-> index 164cb26c48..d57cc2dc3b 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -1576,15 +1576,21 @@ static void migration_connect_error_propagate(MigrationState *s, Error *error)
->  {
->      MigrationStatus current = s->state;
->      MigrationStatus next = MIGRATION_STATUS_NONE;
-> +    bool resume = false;
->
->      switch (current) {
->      case MIGRATION_STATUS_SETUP:
->          next = MIGRATION_STATUS_FAILED;
->          break;
->
-> +    case MIGRATION_STATUS_POSTCOPY_PAUSED:
-> +        resume = true;
-> +        break;
-> +
->      case MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP:
->          /* Never fail a postcopy migration; switch back to PAUSED instead */
->          next = MIGRATION_STATUS_POSTCOPY_PAUSED;
-> +        resume = true;
->          break;
->
->      case MIGRATION_STATUS_CANCELLING:
-> @@ -1609,6 +1615,10 @@ static void migration_connect_error_propagate(MigrationState *s, Error *error)
->      }
->
->      migrate_error_propagate(s, error);
-> +
-> +    if (!resume) {
-> +        migration_cleanup(s);
-> +    }
->  }
->
->  void migration_cancel(void)
-> @@ -2211,9 +2221,6 @@ static gboolean qmp_migrate_finish_cb(QIOChannel *channel,
->      MigrationAddress *addr = opaque;
->
->      qmp_migrate_finish(addr, NULL);
-> -
-> -    cpr_state_close();
-> -    migrate_hup_delete(migrate_get_current());
->      qapi_free_MigrationAddress(addr);
->      return G_SOURCE_REMOVE;
->  }
-> @@ -2222,7 +2229,6 @@ void qmp_migrate(const char *uri, bool has_channels,
->                   MigrationChannelList *channels, bool has_detach, bool detach,
->                   bool has_resume, bool resume, Error **errp)
->  {
-> -    Error *local_err = NULL;
->      MigrationState *s = migrate_get_current();
->      g_autoptr(MigrationChannel) channel = NULL;
->      MigrationAddress *addr = NULL;
-> @@ -2279,6 +2285,13 @@ void qmp_migrate(const char *uri, bool has_channels,
->          return;
->      }
->
-> +    /*
-> +     * The migrate_prepare() above calls migrate_init(). From this
-> +     * point on, until the end of migration, make sure any failures
-> +     * eventually result in a call to migration_cleanup().
-> +     */
++:mem size: an array of 256 64-bit fields representing the size of each
++          VIRTIO Shared Memory Region. The array index corresponds
++          to the shared memory ID (shmid).
 
-*  +1
 
-> +    Error *local_err = NULL;
-> +
->      if (!cpr_state_save(cpr_channel, &local_err)) {
->          goto out;
->      }
-> @@ -2303,7 +2316,6 @@ void qmp_migrate(const char *uri, bool has_channels,
+
+
 >
->  out:
->      if (local_err) {
-> -        yank_unregister_instance(MIGRATION_YANK_INSTANCE);
->          migration_connect_error_propagate(s, error_copy(local_err));
->          error_propagate(errp, local_err);
->      }
-> @@ -4026,9 +4038,6 @@ void migration_connect(MigrationState *s, Error *error_in)
->      s->expected_downtime = migrate_downtime_limit();
->      if (error_in) {
->          migration_connect_error_propagate(s, error_in);
-> -        if (!resume) {
-> -            migration_cleanup(s);
-> -        }
->          if (s->error) {
->              error_report_err(error_copy(s->error));
->          }
-> @@ -4107,7 +4116,6 @@ void migration_connect(MigrationState *s, Error *error_in)
+> > As much as I wanted this series merged, this deserves a clarification.
+> > So I can either send a new version of the series or split the last
+> > three patches into a different series. Hopefully it only requires one
+> > more version though.
+> >
+> >
+> > >  C structure
+> > >  -----------
+> > >
+> > > @@ -397,6 +411,7 @@ In QEMU the vhost-user message is implemented wit=
+h the following struct:
+> > >            VhostUserShared object;
+> > >            VhostUserTransferDeviceState transfer_state;
+> > >            VhostUserMMap mmap;
+> > > +          VhostUserShMemConfig shmem;
+> > >        };
+> > >    } QEMU_PACKED VhostUserMsg;
+> > >
+> > > @@ -1761,6 +1776,30 @@ Front-end message types
+> > >    Using this function requires prior negotiation of the
+> > >    ``VHOST_USER_PROTOCOL_F_DEVICE_STATE`` feature.
+> > >
+> > > +``VHOST_USER_GET_SHMEM_CONFIG``
+> > > +  :id: 44
+> > > +  :equivalent ioctl: N/A
+> > > +  :request payload: N/A
+> > > +  :reply payload: ``struct VhostUserShMemConfig``
+> > > +
+> > > +  When the ``VHOST_USER_PROTOCOL_F_SHMEM`` protocol feature has been
+> > > +  successfully negotiated, this message can be submitted by the fron=
+t-end
+> > > +  to gather the VIRTIO Shared Memory Region configuration. The back-=
+end will
+> > > +  respond with the number of VIRTIO Shared Memory Regions it require=
+s, and
+> > > +  each shared memory region size in an array. The shared memory IDs =
+are
+> > > +  represented by the array index. The information returned shall com=
+ply
+> > > +  with the following rules:
+> > > +
+> > > +  * The shared information will remain valid and unchanged for the e=
+ntire
+> > > +    lifetime of the connection.
+> > > +
+> > > +  * The Shared Memory Region size must be a multiple of the page siz=
+e
+> > > +    supported by mmap(2).
+> > > +
+> > > +  * The size may be 0 if the region is unused. This can happen when =
+the
+> > > +    device does not support an optional feature but does support a f=
+eature
+> > > +    that uses a higher shmid.
+> > > +
+> > >  Back-end message types
+> > >  ----------------------
+> > >
+> > > --
+> > > 2.49.0
+> > >
 >
->  fail:
->      migration_connect_error_propagate(s, local_err);
-> -    migration_cleanup(s);
->      if (s->error) {
->          error_report_err(error_copy(s->error));
->      }
-> --
-> 2.51.0
-
-* Change looks okay.
-Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
-
-Thank you.
----
-  - Prasad
 
 
