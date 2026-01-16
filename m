@@ -2,153 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBAC6D2DDBF
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 09:17:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09B66D2DDE3
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 09:17:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgetc-0008UZ-G4; Fri, 16 Jan 2026 03:09:28 -0500
+	id 1vgexV-0000mT-Na; Fri, 16 Jan 2026 03:13:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vgeta-0008Tv-9y
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 03:09:26 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1vgetY-0005rn-KK
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 03:09:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768550962;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=gUIw3O//XYeqSIp3LhrVxuCNcs7iXth9avzR721VM6I=;
- b=J74bNpj5/HHOQaBlIE64q7SiAJFCjsny7B2yApU0kuQygJ+4nmlO9AIJ/q6s8ANXRmZKs4
- LtWVvhz6UKG8hklUBl9qUqhNl6E3z19WFY5M5qZ5OYW58jYWtwfiPndh390lp0vDrX8sLs
- 2vIpH28TQzbwGXdtBJfQrDboiLV7+yM=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-636-wa5Q5HopORuGjw2CnRt6Gw-1; Fri, 16 Jan 2026 03:09:20 -0500
-X-MC-Unique: wa5Q5HopORuGjw2CnRt6Gw-1
-X-Mimecast-MFC-AGG-ID: wa5Q5HopORuGjw2CnRt6Gw_1768550959
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-64b7907dd42so2366379a12.3
- for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 00:09:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vgexT-0000m1-Vm
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 03:13:28 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vgexS-0007Cy-Jn
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 03:13:27 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-42fb0fc5aa9so875815f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 00:13:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768550959; x=1769155759; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=gUIw3O//XYeqSIp3LhrVxuCNcs7iXth9avzR721VM6I=;
- b=fH45iqmgIpVjjUMCr92sjJXP0nTSDyJs/qd3yAQqQbAXGvHvOcu+9Jvd3nqFNvJTrF
- uXK/2meVkGhd0jFqU2Eq2isqD7IdEn8hfx568Q8FdDvXHAEisfUPV8AxzJAoNXg5LBD5
- 91WgxbRQxc8o+JUzx3LNhSXNxBA5IHbAv32njPV2+glJMwVKOqxB5DTA9KbAjLkpcUYG
- S/qZ/Mekwx2B45uxpxU7aVFrFO7QgCLsffe9jlRHOXkci/fcsu3c6gKD2crTf06kz1aO
- CYjES9fqT0xhUUsh0KUT3FDsKicC0/NOd6WQf0l3Ir4OZJMMQMrTEFyEVkZfCgHErrin
- ZQKA==
+ d=linaro.org; s=google; t=1768551205; x=1769156005; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=5QUEsYDrAGzO73vIlE2XGwPkTlHQxGzzyCROJHRymws=;
+ b=WvijHV26Ye+GgAZW3AuZ2ckNdgR4bLNJ3PU226n3D0mc5nSbIxdrL2IGjJhA9i5wE7
+ gT3e6VAcYYRvmZCFT00xv/7VhMP7vVx7eGWcHfgEC1jtpi91X9944EzSpZrYgUxR3fcy
+ KqT6zu7YjzIgAmEMAx+cOfwTJ7IthErap2/vy/XuyT+OWPQz2EAFFvKA6uY4y0Hvfwwa
+ SuD2Yckm42kOYT70Cpksyah0bpiwJdEPx4Kza1es0xE67qlnI1YMBUU3WLyXj0Lok58s
+ 1lz5/2iSIgCvQppi9Lr2+AFg5GHQ3id1eqKz1DmIADqXOU4snAY6W1mSjh/UTf7jzm11
+ C95A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768550959; x=1769155759;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gUIw3O//XYeqSIp3LhrVxuCNcs7iXth9avzR721VM6I=;
- b=AT4HD+wgBsPn574mbjjgKMg1pe3OVQB1BCwJSesOIbz68uEnjupf53IqaGQWLicq5E
- Q5AHFig9HHqqAJfh3aSU6O/U5F/82DzrfHVsNWpZjZyaPXogAy9aAzqrBZ3xQQhWR/87
- VuIRAva6MLH/eJggYcF+3w2DLYSAu/1eHAxma84ZnSIL+ZqoLHMLcbArGsXjT0P9r7Hi
- vqYST+DKFo4Q0D/XPuFsmgwkszqdrCHP4Fk34CyOotVsaVk5ARjY6h6QGRZ8TAj8fwJR
- gQd1+Y1+u77aQDVyAPJveuyaUV6wt30+sJT5rNhHXUDExeRRF5SiSbdKabPyo6gOmdpl
- AGVA==
-X-Gm-Message-State: AOJu0YwcOeD2Z9ZwWyoeJ/jjOC8LZ1n4Xdk7spB1kYtZwfiS2m47/YoL
- gdqF/bRRGgowDVw3uWmwZiRgqn2tzaCfhoTPTohh/ugRN9vnTN3RZeGje4a20uq8byzgSNzlZ3A
- DDy1a6ppX88H+Kdhrh64bpEv/HyUqv53VJA7Tg4jwXRhVsr+8uPFU4pGtwE4qmBYX
-X-Gm-Gg: AY/fxX5eFvMqdSfXjpyEnI9Q8G9WoB9992LCQ8VLKJuNscApA687i22Ga/jhUd7N5pv
- 7VF8mKWaFrWbLpOl+MriQPa5aW85Y968l51Pn26N+isWi7Ui6nhFlcWCGtrSXa2yePvAkmnihGe
- zyg+TvJz2+KoAmRxh14MHHvBlTOHSTwvgN3LWD9++wgNu4Guu3YgWwSx4kRxayp3ShmQX84ob8/
- 9gj1QniMynoFZaXeBJyXUfv6S9oq4eIBchh6FdBAJ2Px5x/GfFZ+8WNQqsOAKKLiBLd7HL0aRph
- 3SGFFcKyLcDpmfSz7KWnPFfxHkV3vsig3TZipvlGmJErZHBBVl8UJoaJiG5HzAqkfO1qhTlP2Z2
- mblNLrQo=
-X-Received: by 2002:a05:6402:5106:b0:64c:584c:556c with SMTP id
- 4fb4d7f45d1cf-654bb6192admr1307264a12.30.1768550959241; 
- Fri, 16 Jan 2026 00:09:19 -0800 (PST)
-X-Received: by 2002:a05:6402:5106:b0:64c:584c:556c with SMTP id
- 4fb4d7f45d1cf-654bb6192admr1307253a12.30.1768550958905; 
- Fri, 16 Jan 2026 00:09:18 -0800 (PST)
-Received: from [192.168.0.9] ([47.64.113.220])
- by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-654534c8b7fsm1771867a12.27.2026.01.16.00.09.17
+ d=1e100.net; s=20230601; t=1768551205; x=1769156005;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=5QUEsYDrAGzO73vIlE2XGwPkTlHQxGzzyCROJHRymws=;
+ b=AodmfRf5/3rc1GB+ef7nnGzdgkfrp5WJr10y+eLW1RCIMOm5gO6+7hzvQLPQYQG6x4
+ e+EMg/R3kiiCgL+IIaYpkS7qn7qegX66Urd7TQtqSEzy3+sW7zq9QPecHiRx1Nf2BuCK
+ jBtYxTKZW5DSCh4ROGiUqZdqMgJ8+yphfua8ZckUiTISt0Samjk13YlTOrA5JIboP63E
+ oD0d5VnqWAbJ2iP1DkCrJqNVLdJYr3FioSVj9yKhEkHQmz/OLaif+skaFaRpdSoqtrAi
+ iZbWonI1ng1pLL9z9copkltKAux2OUsvuQY28cANvH8yMjPgh/ndU02yuUKwrhzUtiFT
+ hkrQ==
+X-Gm-Message-State: AOJu0Yzo27wUpGL+wajuIUaSLrdrs2OzMhx7nN1oNIh0/wBHT4yKqgzg
+ eTfKusTcles5iTun6A63FHpOLkzrDqSQsJY6NHFfE4IdkzqvIYeQCW7e3D2J8WENRtQ=
+X-Gm-Gg: AY/fxX6+zCGwdjZFKn9+McsGUlclNeRjRM/5HKhDPduCCCgaBNMSCU5YeJlV9oapKeM
+ u6IOjL3B2v4Zdy6dmjAhcUybcgyJRuuB4rH8SuWqzBQgUq26oYQBuTAR4LlAArgV+5eYI1NLHrj
+ gLhJh0RmaN9ua+iXWlH7wtHfuysCvNvvD6J9DyBCywba0G93g3IpkmaANt6XVFZLuu+5nwj9quH
+ s0KxHcn350KQhVgkjP55CRq6bkkPSUJu0BFGevKXOAv2+yqYzrElA/umpYiOegJnr2DTLAYG5Pp
+ NUCZjICGIqYCjcnFs/7yX4WYxneH59Qwc2Fvqmuk3BYPo8i8p8lRF4S93qzPg9r0shY6geraunW
+ MZQy3GVcu+bSf+WIK2RGi3BdsZpIHpvUHTsSIdJAFC5Z9Qgg17PLRfAeVmRZl+hCF3n6/c+WfkS
+ 8c/90PBzAGaiErbuCoKaVkVGrQ12Smz9E+D8cee6vEDXtqffJLWn4Vog==
+X-Received: by 2002:a05:6000:1787:b0:431:397:4c45 with SMTP id
+ ffacd0b85a97d-4356a0673f2mr1832963f8f.59.1768551204820; 
+ Fri, 16 Jan 2026 00:13:24 -0800 (PST)
+Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-43569921dddsm3876605f8f.6.2026.01.16.00.13.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 16 Jan 2026 00:09:18 -0800 (PST)
-Message-ID: <fdc2093e-8acb-44fb-b280-edf40f5f8883@redhat.com>
-Date: Fri, 16 Jan 2026 09:09:17 +0100
+ Fri, 16 Jan 2026 00:13:24 -0800 (PST)
+Message-ID: <024e32fe-1110-4b63-bef8-f492671cae4c@linaro.org>
+Date: Fri, 16 Jan 2026 09:13:23 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/functional/x86_64: Limit the memlock test to Linux
- hosts
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>,
- Alexandr Moshkov <dtalexundeer@yandex-team.ru>
-References: <20260114095904.35442-1-thuth@redhat.com>
- <aWdpi4ibUm9qNrwa@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v2 1/4] hmp-commands-info.hx: Move definition of "info
+ accel"
 Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <aWdpi4ibUm9qNrwa@redhat.com>
+To: dave@treblig.org, armbru@redhat.com, berrange@redhat.com,
+ marcandre.lureau@redhat.com
+Cc: qemu-devel@nongnu.org
+References: <20260116005050.376616-1-dave@treblig.org>
+ <20260116005050.376616-2-dave@treblig.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20260116005050.376616-2-dave@treblig.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -164,39 +101,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/01/2026 11.01, Daniel P. Berrangé wrote:
-> On Wed, Jan 14, 2026 at 10:59:04AM +0100, Thomas Huth wrote:
->> From: Thomas Huth <thuth@redhat.com>
->>
->> The memlock test analyzes /proc/*/status files and expects the layout
->> from Linux in there. However, these files also exist on NetBSD hosts
->> with a completely different layout, causing this test to fail. Thus
->> limit the test to Linux hosts now.
->>
->> Signed-off-by: Thomas Huth <thuth@redhat.com>
->> ---
->>   tests/functional/x86_64/meson.build | 5 +++--
->>   1 file changed, 3 insertions(+), 2 deletions(-)
->>
->> diff --git a/tests/functional/x86_64/meson.build b/tests/functional/x86_64/meson.build
->> index f78eec5e6cf..97286d78b8f 100644
->> --- a/tests/functional/x86_64/meson.build
->> +++ b/tests/functional/x86_64/meson.build
->> @@ -9,12 +9,13 @@ test_x86_64_timeouts = {
->>     'virtio_balloon': 120,
->>   }
->>   
->> -tests_x86_64_system_quick = [
->> +tests_x86_64_system_quick = \
->> +  (host_os == 'linux' ? ['memlock'] : []) + \
+On 16/1/26 01:50, dave@treblig.org wrote:
+> From: Markus Armbruster <armbru@redhat.com>
 > 
-> IMHO this should be done with a decorator in the test program, so
-> we keep all conditions in the source, not meson.
+> Commit c10eb740108 (accel/system: Add 'info accel' on human monitor)
+> inserted "info accel" in the middle of "info sync-profile".  Move it
+> behind "info sync-profile".
 
-If we already know here that the test will only SKIP during runtime, I think 
-there is no need to add it to the test plan. Otherwise this will just always 
-waste some cycles when running the tests.
+Oops...
 
-  Thomas
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+> Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
+> ---
+>   hmp-commands-info.hx | 24 ++++++++++++------------
+>   1 file changed, 12 insertions(+), 12 deletions(-)
 
