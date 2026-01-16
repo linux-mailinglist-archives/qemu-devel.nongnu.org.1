@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26CA0D2E4C3
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 09:53:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 955D8D2E4B6
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 09:53:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgfWb-0005JF-La; Fri, 16 Jan 2026 03:49:45 -0500
+	id 1vgfZJ-00067k-UO; Fri, 16 Jan 2026 03:52:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vgfWY-0005Iz-EX
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 03:49:42 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vgfZH-00066W-Eh
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 03:52:31 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vgfWX-0006kO-53
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 03:49:42 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vgfZG-000795-4J
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 03:52:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768553380;
+ s=mimecast20190719; t=1768553549;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uR1AgGgjMArvKgtYLxN2w/wO3Fdiw9TqKqnPdY4UlD8=;
- b=WDYkmEI9TOmqdRkWYENiWnMvhOZcfXSggGyyxE68yR8m3ITJDYpInjy5kOi03HYRJ7+68C
- 6IYtFUu/XopQ93szZdO8vKcQXm64rEqd9YwAVVVQWrVp5ArKYd16kYDMzAsaZPoutg2fxy
- D0u57PYCJd0O6eZ/mVcdkE4qeX3ZsSE=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=5gahUjP6J9EOFfp2dCaR6LCsaHcKgGV6OTPNYuaUkFc=;
+ b=IwemMcRvhVP/yduOpZLDIHmrqtcWZGn7y9nS1LSCT53hiWF32Esbu1ismKo8ZYHBF4JlH9
+ ywpv9Hu1MJJ9E+1t1FLc2vqzNpr6tG76OUB+PTB7BXsQobN4L73bIdr9/UhobpGqmqOjCN
+ 04Prvj3XqS5QzEd9KaxHf9tTVZyDpnE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-634-3LPg6RbgOaeFEkkD9h0eNw-1; Fri,
- 16 Jan 2026 03:49:36 -0500
-X-MC-Unique: 3LPg6RbgOaeFEkkD9h0eNw-1
-X-Mimecast-MFC-AGG-ID: 3LPg6RbgOaeFEkkD9h0eNw_1768553375
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-580-Yg1kiHHlMWmIthL66L6USA-1; Fri,
+ 16 Jan 2026 03:52:27 -0500
+X-MC-Unique: Yg1kiHHlMWmIthL66L6USA-1
+X-Mimecast-MFC-AGG-ID: Yg1kiHHlMWmIthL66L6USA_1768553546
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 03AD41956095; Fri, 16 Jan 2026 08:49:35 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A394F1954B0C; Fri, 16 Jan 2026 08:52:26 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.32])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B0996195419D; Fri, 16 Jan 2026 08:49:34 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4AB2C180049F; Fri, 16 Jan 2026 08:52:26 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 457B121E692D; Fri, 16 Jan 2026 09:49:32 +0100 (CET)
+ id D744321E692D; Fri, 16 Jan 2026 09:52:23 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org,  Juraj Marcin <jmarcin@redhat.com>,  Daniel P .
- =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Fabiano Rosas
- <farosas@suse.de>,  Prasad Pandit <ppandit@redhat.com>
-Subject: Re: [PATCH v2 1/2] migration: Remove zero-blocks capability
-In-Reply-To: <20260115225503.3083355-2-peterx@redhat.com> (Peter Xu's message
- of "Thu, 15 Jan 2026 17:55:02 -0500")
-References: <20260115225503.3083355-1-peterx@redhat.com>
- <20260115225503.3083355-2-peterx@redhat.com>
-Date: Fri, 16 Jan 2026 09:49:32 +0100
-Message-ID: <87jyxirlgj.fsf@pond.sub.org>
+To: dave@treblig.org
+Cc: berrange@redhat.com,  marcandre.lureau@redhat.com,  qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 2/4] hmp*hx: Move info docs
+In-Reply-To: <20260116005050.376616-3-dave@treblig.org> (dave@treblig.org's
+ message of "Fri, 16 Jan 2026 00:50:46 +0000")
+References: <20260116005050.376616-1-dave@treblig.org>
+ <20260116005050.376616-3-dave@treblig.org>
+Date: Fri, 16 Jan 2026 09:52:23 +0100
+Message-ID: <87ecnqrlbs.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -85,12 +85,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+dave@treblig.org writes:
 
-> It was declared deprecated since 9.2.
+> From: "Dr. David Alan Gilbert" <dave@treblig.org>
 >
-> Reviewed-by: Fabiano Rosas <farosas@suse.de>
-> Signed-off-by: Peter Xu <peterx@redhat.com>
+> Move the docs for the info subcommand from the separate hx
+> into the top level file next to the 'info' command itself.
+> That makes every command in the top level file have a RST section.
+
+Could mention:
+
+  Generated HTML changes slightly.  The difference is basically
+  invisible.
+
+> Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
+> Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
 
