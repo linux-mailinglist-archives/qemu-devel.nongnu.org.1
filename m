@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E03CD30457
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:21:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C307D30486
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:21:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vghsu-0003Qa-Uq; Fri, 16 Jan 2026 06:20:57 -0500
+	id 1vghtE-0003kP-Cx; Fri, 16 Jan 2026 06:21:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghsb-0002Oi-Pa
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghsf-0002RC-LT
  for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:20:42 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+Received: from mail-wm1-x344.google.com ([2a00:1450:4864:20::344])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghsW-000742-3W
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:20:33 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-42fbc305882so1000663f8f.0
- for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 03:20:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghse-0007CH-3I
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:20:41 -0500
+Received: by mail-wm1-x344.google.com with SMTP id
+ 5b1f17b1804b1-47ee3da7447so11391545e9.0
+ for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 03:20:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768562430; x=1769167230; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768562438; x=1769167238; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=1AA9O3Oy1LC1a26OjN56Jb2vi15fizc8/aL/r4eofks=;
- b=ZuyWhUOyguuLZOStiae4K8GaF44VpLBKPinx27dub8Tjv8s+nFsOvtI9dkMUopuDkZ
- cjBNxpmUlIjWPPu7oepkcLRTy7ZvrHWuYjCm3AK7qeLVtFWtTMpo8ZNjbDpmQq/zcyqM
- 06PwFnV7cd1xUX8PmeZB4Bl9ayDerZ9wRHVpa3IZ6kl++a7++in+Xyab6Or9cqjIWN/B
- RL6qy+FYxch5Z0TYd/OJXwy7cWHk0uBAnhwxKtaoXiBBSAaOSIT5AC+DkNyBOvV99B+T
- Vq8i1Miot4l1TeqAWzpvAUYGPQhX/285GxtnGMdC6Gzig+PYdD3zJu3qw7gTSJfNV0Br
- 6SsQ==
+ :reply-to; bh=KstmbcyqBDmNKiirh3lzOKShkET70rsL+d/5h23NuT8=;
+ b=YIcCuywZJgD7wA8zsWip5eLD01xdYXKkyY1NwyHqgRNXyWX8x3Dq5EnG57QcLkaUQF
+ hmdrKEOECp30pLdLUF+8d/D00gEW4IG8I2dHfIm1XzEAidIdMNNv6GDiQJ67JYOkSbQN
+ vuF/b2WbNh/Bt4i6uCx8crT2fBG+WMu2/7DG1dKVW7GnN6sHG5DAFNWxatZHS2pkJmdG
+ k+B+AilJSJ4iS18ap3xNLSPsXL0KrjX9RrJIjWjVVdkIEsKL+r5uXoJazP0VMzHL+v6j
+ JMk2L50ASa16dIl+mURUDWtTV5BJBZJnetuSlJKgWrq3MnxvKMDUeELwzrwsvgt8N3P+
+ t6YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768562430; x=1769167230;
+ d=1e100.net; s=20230601; t=1768562438; x=1769167238;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=1AA9O3Oy1LC1a26OjN56Jb2vi15fizc8/aL/r4eofks=;
- b=UJPjENBprRsz4xo0VzhMmICwhqDpKclpsZR6gQusWZ4plyeAvfL4PMXU3kcrXEiUg2
- pOOTEl1x5csaitMjeqhiEpSkYZY/uMOotOoM8Kma503V29dhH9E+jL4Q7MRDSSHyMTMO
- BMWw50NfgvIehrufC0DliwCb6otsqpPzyoMqh/zkTC0+68iaybn7f8lWZnG/lfjssvPB
- Re1d51Vz7sgYbh99mD9pOlnAksoEoDds9cpgO+bwgIEneRlRGPyBZsp5M9VGYLd2Jduf
- wC5c9NV3eZcnTlqnHvo8RT8sYsNF1ZBJ5Ph2DYnAgmnP+y+eoMYi7irtFpW4bwnnjfvr
- RV5A==
-X-Gm-Message-State: AOJu0YwbtKIF1cKRvPHjws6E98O1wBZc68EHRjMpt9rKQjyaRVm0lTPR
- uf+1wd9GjNHishO3gJ2vOihDz+4wK3AhKlOoBg7Su8H2FnQRmBYaHPx3dSydPhQ7CUvYS2lrzUJ
- PQsWC/jc=
-X-Gm-Gg: AY/fxX6Q1n5dXXflXRNJLBf3yro03vF8Q50/2mTmMUkmNCZcCAB4utMLEyOyoLnv2Ki
- IjfztpAeTJn00bSqTa90RhOGNkYdMk8Sqns+JHucCt2lEyb4HtXvSAdXbyvqFcD/B59fhhDyx46
- aLg2/pzkg7l+nZzp/QpdhZMIbTnDXfYc/spynt5oHrtrIahWP8WIFGrOAL4fgZ7sLBPAOysqmxX
- PdvGNLGFw1OZGX98XZYGc1wl9Glgl+KFoPneYttMvYktu2qKfO/+f0YB01Yys8cUblovULM0gU+
- 4A70MIYMhMJy+ZeSsPsRwk9O0huEJR8ZTZVnINaC6R6R7Sm9d9Uci+MNny5K7+fFawtOsP8fY0+
- tGR4aqh1jwGtVa9lVVkNaMIMLRXzhCiyYNGbVB6u5W0y6/2r1jOogBegU5Nu6BxZL8WfP9lWwmp
- olX7coEhDbpZ8Qk1KG0i8CaylOW/kCMh7YCC/ldE6/nnMJwlKaTNkq+eD9R9tH
-X-Received: by 2002:a05:6000:428a:b0:430:f23f:4bc5 with SMTP id
- ffacd0b85a97d-43569bc77a2mr3109141f8f.45.1768562430221; 
- Fri, 16 Jan 2026 03:20:30 -0800 (PST)
+ bh=KstmbcyqBDmNKiirh3lzOKShkET70rsL+d/5h23NuT8=;
+ b=Q0sXhB/ZUTYsu01qEUy27DySrgGdXGSOSoi5oYMwKPt0T8FljhuruPGcksYkU/1KiW
+ 7Gi72HHJ7qIeWeAHMCzEpSnxB1qwyjNuRpdZcLyhWB8UxviXhNfaebyEsZ4WLgP6XFB9
+ uYS++go4mpEOpmW+bB+kwB8RAtXy/9TVPDk3sMWpzUzE4G/DZ1X1mK9RCIZC5RknL8u/
+ g+xgP8WxORUhR+bmGc0U7Lds+GWkJjkswG+Q7I/fX2sE6soqxCNB5jpIeQ3HAC8SwqSv
+ fcCFjhzu19gygK9K1wimsRhRTCK4/BobrIDO4R2Yfe0C/99mzZf/Jnk8YUwF1gTrlRJI
+ hqyw==
+X-Gm-Message-State: AOJu0YyRV2ZXuCPaMAoIje7Ko6oTkH8voGTKf45C8kQWb3ts6lPGS8gc
+ xHotXfsHJfcBcS3ONxqDPE6N0dd9GGjc+wLaq9yeOxuVogwJtC64cZ59DFyohiR6rrE7MVIPlXe
+ WEpIw4MVTsQ==
+X-Gm-Gg: AY/fxX7M9lj+AmuDfQX8jp1qndolITZFW9cxm2nIziKpvrQ0snv/OzTa5e/wiQDLVSi
+ p2xDzCo+QTwryHxF08Hu3iL7fRuFu6wmKoQHWOtXg/pDV0jylEZrCpPlBh0TNpoUMIWKf7Vqhkc
+ Z3vQ7x7yfALdbwwcMdCjvTgN+x8fRqxyIzGRJ41lYJDBhBho/MwFOtKxgz3skHQN1Mr8O3wznl7
+ lbRns77TC8BOIYe6obtCHlkHPoxLfS/GTFPYmaKrDk01ogQsHOn8nHAJLthMk2wkVeTb2j12RT/
+ HZ5QU2r+wF7h9zo80kgsowm2Wm87K7octRQ3Ea+aACaMU3BeZuzAD8lZ4CnfoAyCXO8ZAErFyhH
+ spR7yaKbDIrVbECnG1sy7oiGLVgMJFTnGSrusqgaKVTVBHRRaR7y/yAiseF+f6zMn7E6JOU7kVK
+ FW25p2JPqN0thsFhTmn2OG+fSf1thyPRH8pCixtU1283QVL5kKF1qzp9MhYuzPDA/aUhhIsn4=
+X-Received: by 2002:a05:600c:458c:b0:47d:6856:9bd9 with SMTP id
+ 5b1f17b1804b1-4801e3342bamr23479895e9.23.1768562437787; 
+ Fri, 16 Jan 2026 03:20:37 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-43569921facsm4594048f8f.5.2026.01.16.03.20.29
+ 5b1f17b1804b1-47f42907141sm93961735e9.9.2026.01.16.03.20.36
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 16 Jan 2026 03:20:29 -0800 (PST)
+ Fri, 16 Jan 2026 03:20:37 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 21/30] accel/hvf: Have PSCI CPU_SUSPEND halt the vCPU
-Date: Fri, 16 Jan 2026 12:17:58 +0100
-Message-ID: <20260116111807.36053-22-philmd@linaro.org>
+Subject: [PULL 22/30] accel: Introduce AccelOpsClass::cpu_target_realize() hook
+Date: Fri, 16 Jan 2026 12:17:59 +0100
+Message-ID: <20260116111807.36053-23-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260116111807.36053-1-philmd@linaro.org>
 References: <20260116111807.36053-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::344;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x344.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,67 +96,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Return EXCP_HLT to the main loop.
+Allow accelerators to set vCPU properties before its realization.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Message-ID: <20260112103034.65310-15-philmd@linaro.org>
+Message-ID: <20251103101034.59039-16-philmd@linaro.org>
 ---
- target/arm/hvf/hvf.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ include/accel/accel-cpu-ops.h | 1 +
+ accel/accel-common.c          | 5 +++++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index b936098d257..718414cc53c 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -301,8 +301,6 @@ void hvf_arm_init_debug(void)
- #define TMR_CTL_IMASK   (1 << 1)
- #define TMR_CTL_ISTATUS (1 << 2)
+diff --git a/include/accel/accel-cpu-ops.h b/include/accel/accel-cpu-ops.h
+index 0674764914f..9c07a903ea0 100644
+--- a/include/accel/accel-cpu-ops.h
++++ b/include/accel/accel-cpu-ops.h
+@@ -34,6 +34,7 @@ struct AccelOpsClass {
+     /* initialization function called when accel is chosen */
+     void (*ops_init)(AccelClass *ac);
  
--static int hvf_wfi(CPUState *cpu);
--
- static uint32_t chosen_ipa_bit_size;
++    bool (*cpu_target_realize)(CPUState *cpu, Error **errp);
+     bool (*cpus_are_resettable)(void);
+     void (*cpu_reset_hold)(CPUState *cpu);
  
- typedef struct HVFVTimer {
-@@ -1008,7 +1006,7 @@ static void hvf_psci_cpu_off(ARMCPU *arm_cpu)
-  * Returns 0 on success
-  *         -1 when the PSCI call is unknown,
-  */
--static bool hvf_handle_psci_call(CPUState *cpu)
-+static bool hvf_handle_psci_call(CPUState *cpu, int *excp_ret)
- {
-     ARMCPU *arm_cpu = ARM_CPU(cpu);
-     CPUARMState *env = &arm_cpu->env;
-@@ -1091,9 +1089,8 @@ static bool hvf_handle_psci_call(CPUState *cpu)
-             ret = QEMU_PSCI_RET_INVALID_PARAMS;
-             break;
-         }
--        /* Powerdown is not supported, we always go into WFI */
-         env->xregs[0] = 0;
--        hvf_wfi(cpu);
-+        *excp_ret = EXCP_HLT;
-         break;
-     case QEMU_PSCI_0_1_FN_MIGRATE:
-     case QEMU_PSCI_0_2_FN_MIGRATE:
-@@ -1910,7 +1907,7 @@ static int hvf_handle_exception(CPUState *cpu, hv_vcpu_exit_exception_t *excp)
-         cpu_synchronize_state(cpu);
-         if (arm_cpu->psci_conduit == QEMU_PSCI_CONDUIT_HVC) {
-             /* Do NOT advance $pc for HVC */
--            if (!hvf_handle_psci_call(cpu)) {
-+            if (!hvf_handle_psci_call(cpu, &ret)) {
-                 trace_hvf_unknown_hvc(env->pc, env->xregs[0]);
-                 /* SMCCC 1.3 section 5.2 says every unknown SMCCC call returns -1 */
-                 env->xregs[0] = -1;
-@@ -1927,7 +1924,7 @@ static int hvf_handle_exception(CPUState *cpu, hv_vcpu_exit_exception_t *excp)
-             /* Secure Monitor Call exception, we need to advance $pc */
-             advance_pc = true;
+diff --git a/accel/accel-common.c b/accel/accel-common.c
+index 850c5ab4b8e..eecb2a292af 100644
+--- a/accel/accel-common.c
++++ b/accel/accel-common.c
+@@ -106,6 +106,11 @@ bool accel_cpu_common_realize(CPUState *cpu, Error **errp)
+     if (acc->cpu_common_realize && !acc->cpu_common_realize(cpu, errp)) {
+         return false;
+     }
++    if (acc->ops
++        && acc->ops->cpu_target_realize
++        && !acc->ops->cpu_target_realize(cpu, errp)) {
++        return false;
++    }
  
--            if (!hvf_handle_psci_call(cpu)) {
-+            if (!hvf_handle_psci_call(cpu, &ret)) {
-                 trace_hvf_unknown_smc(env->xregs[0]);
-                 /* SMCCC 1.3 section 5.2 says every unknown SMCCC call returns -1 */
-                 env->xregs[0] = -1;
+     return true;
+ }
 -- 
 2.52.0
 
