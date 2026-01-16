@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41446D2AF3F
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 04:47:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9407D2AF5E
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 04:48:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgagS-0005CW-Jk; Thu, 15 Jan 2026 22:39:36 -0500
+	id 1vgaga-0005Eg-Mo; Thu, 15 Jan 2026 22:39:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vgagQ-0005Bx-Ru
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:39:34 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1vgagU-0005Dc-KA
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:39:38 -0500
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vgagP-0008Ug-Di
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:39:34 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-2a0d5c365ceso11980245ad.3
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 19:39:33 -0800 (PST)
+ id 1vgagT-0008Vv-2Y
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:39:38 -0500
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-2a0d67f1877so10568795ad.2
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 19:39:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768534772; x=1769139572; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768534775; x=1769139575; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nqPM6MHn7AUegnXKkA5IATnkWJcY3AmpmfrRokR9q1Q=;
- b=g6NuW71/rzbCVQM5g3bsjoXo1Z1epTj0bnVZXn3CJOVtsoNK1DzW2XE4uHr0/bNaR4
- IasBgitmgENEp5fGh7MVwLbHgOi8NKtHFnaRPVtP0Wh8+L7wEzypWhfmC3EtGctXBrGv
- kwQnf/eiasHNVm+NRId4YbokQy85KgZqwvwF81GfvGGNr88udBSGABBWK4Jn5r0rHa5F
- KUj1VhRYonO2G1m5mpD7u31eb1vf/Dfdz5xevMDG7Iu0sboBaxGqmZFD5Eiuq6R1vpoO
- qfbQNvKgVBcokgdooQieOcmrJCJNlGgQiklSgqGOhBna+7UdDHQfxyTTr2ptxSfrS8/8
- /p5w==
+ bh=vnW0mF2lM84XyAIXdpTSBn+2equ8zZi4b8HlvUKuVvM=;
+ b=tuxrs/+iR8LRza4HpDlkvHIf4MR+OiaprBwPB/pHYbGT4gdotOXWOPbYsOexeCgIrP
+ Yi+JMAK5sbyoNai0CVM3h73VaCDqCqfeh8qARwW3zV+nBg8uAxiVMPxNNcCv/0ak/Wnc
+ NKeB8KrILhEeS5sbBdrCFN4+WaDEGYFl1/wHHOyB1L6mq/eQTCoeS4P3vaupp8wqVVU9
+ 82W+k4snvm7tN/VyRagjSeMH3ljrJ4PCJ3Q+RuUrGg/wyJcjxoK5WDUv8wk6vvP6LX97
+ X1jMkeEX65dO6wglMWmWbhRbLtbUvaYwS0nbdDLLFWBs5yN8nQelCxrYXA47ENCV0bzQ
+ VxqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768534772; x=1769139572;
+ d=1e100.net; s=20230601; t=1768534775; x=1769139575;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=nqPM6MHn7AUegnXKkA5IATnkWJcY3AmpmfrRokR9q1Q=;
- b=wtArrBrh8qPiFMU/JjnZO5pOOU7K9UC2e+uZjDk18vVIQefGGEniJvcVGO1NqxaChG
- TY9ju8SlXu7+X5lcrAVz7VXo6AYehbJ3IGyT8T53BBFlexhCa1fXhwkQOm3nadrl5xBb
- bE/LwwdK/H8Z5RTSTHE2rNpFwbzUScWJDaiGMmb5xmgTaXiRNdOtD+tg136Ia9BEHpZW
- 5t1UlskMUsmoqxHSnGAcSRHuzzFkSdX+x0PL+E2L/C2y/VsdFj78jE/tuw3nsY59qVyE
- qZM1wAFKr2BQUQM8c3LLNT7Tk6H2fM0Au60ARBrW0uw5DWppcJmC2AD9SEhVtudxO3CU
- Xinw==
-X-Gm-Message-State: AOJu0YzbfR5rUwNisWvyWB3/Ejz62n+t/wvNmJnWamkBZkZA8/VHOVn+
- 4Uj4j9d27+E1zSGfukrdsjw/4MZiXpL7srZ79274bi/F37uPtUpIzGqnakMLeShyQ5jSHhci8H9
- Puuw65FQ3HA==
-X-Gm-Gg: AY/fxX4kEnSOaL+vYwf6/hjn62pMkIKeNaCUq+XiS1/Q8IDJhvTFwES64TBHqa4pHOm
- aXxzhmnjV3BavxQdJw9YcFa7zjm6CAGXhhZT7KyaoVeVj5t2zppndO7N910pGM13xBfmekOvstd
- Bes8Q5n42LBH8pGQyraRJdCtSABYra1Wm9+BCavCl1pUETQUPWjplGWioIptqOMPCybSwRJKNcU
- +38VBf3QgP7u8ld0Rl3fVCskvPX2sFN+iDdAZNL59UqP38RFR4TSwIK4hQKU2QWL1U+ylvmtNss
- ml3tGGwLL6B4LHNJSu22Q9A+FKhljDcfHkyD5zklNh6z74KPmxfvmKw4ITTr+qwibS12d/l1PVR
- v4jbjlMAz784NpXaPoShKy0TKzIGBdpqjCH7j2tR4M/jPtpVOkeQ23VZ66cTVKtmiQ8cw3n+7M0
- HyJOlXtBBWEGrzmPG5tw==
-X-Received: by 2002:a17:902:db0f:b0:2a1:4293:beb9 with SMTP id
- d9443c01a7336-2a7189739c2mr13655545ad.58.1768534771948; 
- Thu, 15 Jan 2026 19:39:31 -0800 (PST)
+ bh=vnW0mF2lM84XyAIXdpTSBn+2equ8zZi4b8HlvUKuVvM=;
+ b=GAMnlYd0zF6r0QcuzKQ9ySErKQe/9L0MixWi57bwoRCZzMo75fJ9mgI1Xak5UgO086
+ XYxWrAVR1cn6mxlNnhZV9fVqgVo+pVgimUuOWkbIFHBTf+OPoQQLLC1awj4TEvLGj2DE
+ iB1Dp8db+h5Ezp1nn9DhHMKh3eacG2dPoU0n22LksojCdM8gEt0QKZDrsH0nGly4RJzD
+ saQlmH1Wl7x7Ytu5bTWNRjTJK2YiYFAQecjRoPCTxjvoh8WTy91CReqwH1jZTQS0yAuX
+ ge3TX0Nwxk16n2AIvZ/2SmwFkkc10WPd4YmuajiyeZYC1oMShCO9Rs7YvUzmH/6R0x52
+ C9mQ==
+X-Gm-Message-State: AOJu0Yy4gz2bI4kaibfiNWK40J6d4i6Va7Kat0oWP2dSoq8EEnkFONY5
+ UcHAf+qYoDwkNt/LHE7nkX3L9RgqCjWX3wAGshzYQ5lpcWKRrMaF1jO65aJwPrSTRYymcTLRQ9e
+ IfSwMyarPEA==
+X-Gm-Gg: AY/fxX6bk2SUYdvg9FJRBComputmzFVGW9bb1X9t20cYyE4Ks9ebcgQ0SWcMDPdEwL6
+ S14P70trebjEvteORkkVmE28tf2FuTKQOd0foiO404oAAEhfKL0VzWNKZ6v+AfDvr8ap9JW+3qd
+ Jo3sp8iDTThp9RRFsMA2XDmpXnai4fvTjAuVmgyolaX5qdl0E3iBOd6O/0ISHho3yPlDAOeRqXQ
+ e32msyb5Pdzg+FBmO9S7GioSolwQvJEsc8O7+159yAltj6PYVOo0+686tyjIzJGhOI0x+tr9+7p
+ 9KhqQ/VMfnha6DNTbJSVMNb9IqcQz10uVedYcoksryFBkrrd6rnXMfsEFfX7i+bGPLueyvtWMKI
+ 9c2XlScpDA88qvJCGHIeP79B5HL2SaTyvyOfoR0zRcZdwc/ZQB+1ZVa1Z5Ug7cmGNKLVWr88WHu
+ HHzLwdQRfdqwQzZRXHMQ==
+X-Received: by 2002:a17:902:da82:b0:297:f09a:51cd with SMTP id
+ d9443c01a7336-2a7188a590emr14079875ad.14.1768534775507; 
+ Thu, 15 Jan 2026 19:39:35 -0800 (PST)
 Received: from stoup.. ([180.233.125.201]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a7190ca9d5sm6527975ad.25.2026.01.15.19.39.28
+ d9443c01a7336-2a7190ca9d5sm6527975ad.25.2026.01.15.19.39.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Jan 2026 19:39:31 -0800 (PST)
+ Thu, 15 Jan 2026 19:39:35 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: ktokunaga.mail@gmail.com, berrange@redhat.com, pierrick.bouvier@linaro.org,
  thuth@redhat.com, pbonzini@redhat.com, philmd@linaro.org
-Subject: [PATCH v2 51/58] target/s390x: Drop CONFIG_ATOMIC64 tests
-Date: Fri, 16 Jan 2026 14:32:57 +1100
-Message-ID: <20260116033305.51162-52-richard.henderson@linaro.org>
+Subject: [PATCH v2 52/58] target/s390x: Simplify atomicity check in do_csst
+Date: Fri, 16 Jan 2026 14:32:58 +1100
+Message-ID: <20260116033305.51162-53-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260116033305.51162-1-richard.henderson@linaro.org>
 References: <20260116033305.51162-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,40 +98,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+We should have used MO_{32,64} from the start, rather than
+raw integer constants.  However, now that the CONFIG_ATOMIC64
+test has been removed, we can remove the 'max' variable and
+simplify the two blocks.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/s390x/tcg/mem_helper.c | 7 -------
- 1 file changed, 7 deletions(-)
+ target/s390x/tcg/mem_helper.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
 diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
-index 2972b7ddb9..0b8b6d3bbb 100644
+index 0b8b6d3bbb..2a79a789f6 100644
 --- a/target/s390x/tcg/mem_helper.c
 +++ b/target/s390x/tcg/mem_helper.c
-@@ -1815,9 +1815,7 @@ static uint32_t do_csst(CPUS390XState *env, uint32_t r3, uint64_t a1,
+@@ -1813,13 +1813,10 @@ static uint32_t do_csst(CPUS390XState *env, uint32_t r3, uint64_t a1,
+      * restart early if we can't support either operation that is supposed
+      * to be atomic.
       */
-     if (parallel) {
-         uint32_t max = 2;
--#ifdef CONFIG_ATOMIC64
-         max = 3;
--#endif
-         if ((HAVE_CMPXCHG128 ? 0 : fc + 2 > max) ||
-             (HAVE_ATOMIC128_RW ? 0 : sc > max)) {
-             cpu_loop_exit_atomic(env_cpu(env), ra);
-@@ -1856,12 +1854,7 @@ static uint32_t do_csst(CPUS390XState *env, uint32_t r3, uint64_t a1,
-             uint64_t ov;
+-    if (parallel) {
+-        uint32_t max = 2;
+-        max = 3;
+-        if ((HAVE_CMPXCHG128 ? 0 : fc + 2 > max) ||
+-            (HAVE_ATOMIC128_RW ? 0 : sc > max)) {
+-            cpu_loop_exit_atomic(env_cpu(env), ra);
+-        }
++    if (parallel &&
++        ((!HAVE_CMPXCHG128 && fc + 2 > MO_64) ||
++         (!HAVE_ATOMIC128_RW && sc > MO_64))) {
++        cpu_loop_exit_atomic(env_cpu(env), ra);
+     }
  
-             if (parallel) {
--#ifdef CONFIG_ATOMIC64
-                 ov = cpu_atomic_cmpxchgq_be_mmu(env, a1, cv, nv, oi8, ra);
--#else
--                /* Note that we asserted !parallel above.  */
--                g_assert_not_reached();
--#endif
-             } else {
-                 ov = cpu_ldq_mmu(env, a1, oi8, ra);
-                 cpu_stq_mmu(env, a1, (ov == cv ? nv : ov), oi8, ra);
+     /*
 -- 
 2.43.0
 
