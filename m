@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED640D303E6
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:19:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4773AD303FA
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:19:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vghr3-0007eV-P8; Fri, 16 Jan 2026 06:19:01 -0500
+	id 1vghrS-0008Cy-Oh; Fri, 16 Jan 2026 06:19:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghr1-0007Tw-Qq
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:18:59 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghr8-00081S-0L
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:19:07 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghr0-0005nU-3e
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:18:59 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-47eddddcdcfso10168935e9.1
- for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 03:18:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghr6-0005pc-Da
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:19:05 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-47fedb7c68dso12969075e9.2
+ for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 03:19:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768562336; x=1769167136; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768562343; x=1769167143; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=0NDegptD8d1Zx0ptc1ByVU7iaPP5/DQ14N5L2MLvo1s=;
- b=K9E39UDS3oeGeGCy9/KzIN4wLB8E+TtaDA8XT1lflabOtPeQe6lIRSxvof8s6giNr0
- XwtGkENqsBg96+yDaF1k4SYhU8LiJ6tZPcdz0xCqpJfFnqpysQNUksTPbfFMZvU9le09
- jlIMs7P8w7rpj8FcYCkpSR3rpbvrOf6dTzLSCPcNB7d3Twyn0A3E7FrpZwti0M6raA9H
- WcDfD4FZ5qcd+/weaW/bq659/YRHbTI07ZdjB8jcEhwGC8UlI6xZI5Vdfz7qSSrV5PoY
- bagrM5fw5O7GrccVpvVOGYNW7M2sdOd5q/LFcU8ATBskaSPiKZvnOwvOuKgeX9qiJR/D
- EDug==
+ :reply-to; bh=aaDCuoO92f4Vf69cn2iypqC0aQgUpS+QpOm8Ne49+7s=;
+ b=ZOjrq8OB+PkYF6eWi0RpsIpflXFmSDvp67U7eYuCa2Ld5e3cWZ2Oca1GL3AKlDhGaH
+ xjoTKZnBuUZfxnM6xcFxOs94To2LvN/xxYsnfkayo13KoszrPmonRpwP8Bc8bIBA9Unc
+ svKFundAKi1TJrBrrmdRRFaFiRMK+31mF8dVtDKYxxOPuHEMKweF+y2GwOHQy8yyjtvn
+ 9AYld2CDojvXDHCTBpoI6yGGgNKYlFOFhEeU9NoHfa2Tfi6ELwolMrJp/AIKu1W+smC/
+ CwCy9vN6BB7PXbgukyOSeL113R+7E3unYi1+G9UMPrpKeScuCLItmYyCUvFn/JQm0+zm
+ uLTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768562336; x=1769167136;
+ d=1e100.net; s=20230601; t=1768562343; x=1769167143;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=0NDegptD8d1Zx0ptc1ByVU7iaPP5/DQ14N5L2MLvo1s=;
- b=L1ee+rBtbvds+Osez6vdxW3ZfgY6so+bgx5AogRITqznd8OGpOmtpNnzeTQ2W56SaO
- PseZamUPpVji1465JhAsjGPMq2/oj4obvXCKfpQXt3jwsUFMD+39OP29hAJHli8IO8Js
- t1jPbrnJ6crGw1ax/TlbTlB2f/f2CJySWiNVavXGvXymBdGf0XSv5GbuJY6SUR2SswSq
- sf/UEdf5pu7OFFc+VPx7uhJrCKev/40gzE3q++cGVzjfg25NSA/Ak7bRmH88AZ0MlfsB
- Pw1YTrgNQNB+rtBiMBGywwYRTzbDp2RGQTa/U6WzWI6LqYuRA/GlKcZx3A+VRx+TTA6F
- QUJw==
-X-Gm-Message-State: AOJu0YxjT0hhZyHDRCmXM5GcivY8UTA+5WEh/aXd5e1YTVY6Cf2UTixu
- DK1W7r4DZfaljH7n4dg8QjyMTYB+vLczZ2MPNMMk6i9IFoEq1ZDXZ2uukQKou9e3nntIIGUmab4
- PYQjbtzA=
-X-Gm-Gg: AY/fxX7l5dAOpbBJpzBfKU8jWvoX4mvW7yNDSlUZWXlMO0vzVMOk2EnYxAHJpGHnvI2
- FRQzVY8jQRpOnC26ozS0NCIgcHvTFGLzCGErrwAWLM+ZH0BqO4Cyf4s2qL0u6zE7VIwXKrOB05L
- ZfU6zJYEMs8q30S9ckNSJEnmoqNwHccHj5nl7BbSfaviIzFgcbU3YVaBnoNe87gUYkGq2avXPwz
- DJZgoCpN2hRyr0hUMtlA8TxYX4eOHHs4Sf7sc6FQHzRhLupZ0k9nC8XZhrQmG6y8mH84rf2mXsV
- P1VH741zsudiPzCxyBuvmQUPwRIOFU/VHhBR9KWoKvoq6SFeEZTW8HDVS7/2m011fvEOY8uckYP
- rdU+5IzxNEZhmHEchJBfvY5Kk2qNjflwnYG+AYjLNgN9tgZxdiSETth7b6VjugAuwJDi1+4uuNa
- wVMvpXgEu/b5AuWa2rKDGe1F9TgUhbKKaWunZexQLcYc6TMELnE64alq5eUU9z
-X-Received: by 2002:a05:600c:37c8:b0:477:af07:dd21 with SMTP id
- 5b1f17b1804b1-4801eb0d71cmr23604365e9.25.1768562336027; 
- Fri, 16 Jan 2026 03:18:56 -0800 (PST)
+ bh=aaDCuoO92f4Vf69cn2iypqC0aQgUpS+QpOm8Ne49+7s=;
+ b=r1+4F6dAqQuFQEjabAga0S8EVwmoS5pbKT0v/t2D87/jvM8bS7foalq4F1E0A5JJku
+ FbvGstllYVCbSzTeps86iSO9ZfbUJm0JTEJh1SGvjJ16pZgWMAihPWXtSbRHv45iNqMU
+ xUW1dSv0svZgzjEk0fbwBcn7XEJJfLlfbZBH4ALK/vADIEhp3rcJ+8NuLEKmyPC/QODn
+ PSXm8J1eb+3FK6X/oAWQzRug2RVFdn38QpTsHISmOGe3xlUB/VmpSlAVH8j5LdmoYMlw
+ iyzReHn5TnZcWh0+tB7ST48DGnCasFI0ACuxBxMapC2TIucXSd4WBLdf7WjkUO6e3rKb
+ 1eyw==
+X-Gm-Message-State: AOJu0YzW8X/BKf9sSMZ7kVz6wlVFdaE/nQBV4R1xorp/+nz9gA80i21/
+ VGXuMzVCSItoiZ59yMDEGplJZDYgZillpdVFPqtwu7W+q8Jtbbm2ynHb2QMy9wCcJ9325DX1UrB
+ FA4Pt7ZI=
+X-Gm-Gg: AY/fxX484biZMuIN6kqGGJbos7oXLiyyp4jfuCTivIeDL2UcoiknKKcE1N2GgJOXDmZ
+ LfdYRhQk7SWcHkgar6SLFsTA9esWxtN5nH4pDCRDoQcOoHrViZUTggMa0LkZyQ65qUiYfn3C8XX
+ GSWvvh+qy1LkKICzrmlnCMq87nPx0r4QC0wAMmvr62y0hYyLDPaWgTAKcHD7K26tOQWI3pPJ4uH
+ zaGO9TGzf3IfqcJkvbBwH1uhFNt+dVxa3rqMG0NL/CmtJVM5T1uCVjsxGGOyznQi7VO7cSxYP5k
+ SQjlE25zM2Z/KVtrwpEaC/9zWxWZQ09JaAscOTRScEJAwI6tm6eFEvsxYb0jVDA7XVHnUDusU8b
+ H8o1L1/TAPw77OAfbnwJykhLt29eeb/jWfnlZ1os18PCsVK2qUuajdyGn+KxGyRuZ7nQBl+7iBv
+ dUyAt2im2KlCb+cjYZOdhb0pCqQRUi5dH4swnEOW5K8bsylJEnDp1ERGoP3eTx
+X-Received: by 2002:a05:600c:1d0a:b0:477:8ba7:fe0a with SMTP id
+ 5b1f17b1804b1-4801e343051mr35811995e9.24.1768562342598; 
+ Fri, 16 Jan 2026 03:19:02 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4801fe2c2a2sm13863985e9.10.2026.01.16.03.18.55
+ ffacd0b85a97d-4356997e6dasm4696524f8f.32.2026.01.16.03.19.01
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 16 Jan 2026 03:18:55 -0800 (PST)
+ Fri, 16 Jan 2026 03:19:02 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/30] gitlab-ci: Add build tests for wasm64
-Date: Fri, 16 Jan 2026 12:17:44 +0100
-Message-ID: <20260116111807.36053-8-philmd@linaro.org>
+Subject: [PULL 08/30] accel/hvf: Create hvf_protect_clean_range,
+ hvf_unprotect_dirty_range
+Date: Fri, 16 Jan 2026 12:17:45 +0100
+Message-ID: <20260116111807.36053-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260116111807.36053-1-philmd@linaro.org>
 References: <20260116111807.36053-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,117 +97,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-The wasm builds are tested for 3 targets: wasm32, wasm64(-sMEMORY64=1) and
-wasm64(-sMEMORY64=2). The CI builds the containers using the same Dockerfile
-(emsdk-wasm-cross.docker) with different build args.
-
-Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <ee30d4956a485fd46b4735028486d3fb7b22fe60.1768308374.git.ktokunaga.mail@gmail.com>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Message-ID: <20251103101034.59039-2-philmd@linaro.org>
 ---
- .gitlab-ci.d/buildtest.yml          | 24 +++++++++++++++++++++---
- .gitlab-ci.d/container-cross.yml    | 11 ++++++++++-
- .gitlab-ci.d/container-template.yml |  4 +++-
- .gitlab-ci.d/containers.yml         |  3 ++-
- 4 files changed, 36 insertions(+), 6 deletions(-)
+ include/system/hvf_int.h |  3 +++
+ accel/hvf/hvf-all.c      | 25 +++++++++++++++++++++++++
+ accel/hvf/trace-events   |  1 +
+ 3 files changed, 29 insertions(+)
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index dfe954fe3ce..ea0f5bb0574 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -785,11 +785,29 @@ coverity:
-     # Always manual on forks even if $QEMU_CI == "2"
-     - when: manual
+diff --git a/include/system/hvf_int.h b/include/system/hvf_int.h
+index 3d2be4092ef..5a57691885f 100644
+--- a/include/system/hvf_int.h
++++ b/include/system/hvf_int.h
+@@ -89,6 +89,9 @@ int hvf_arch_get_registers(CPUState *);
+ /* Must be called by the owning thread */
+ void hvf_arch_update_guest_debug(CPUState *cpu);
  
--build-wasm:
-+build-wasm32-32bit:
-   extends: .wasm_build_job_template
-   timeout: 2h
-   needs:
--    - job: wasm-emsdk-cross-container
-+    - job: wasm32-emsdk-cross-container
-   variables:
-     IMAGE: emsdk-wasm32-cross
--    CONFIGURE_ARGS: --static --disable-tools --enable-debug --enable-tcg-interpreter
-+    CONFIGURE_ARGS: --static --cpu=wasm32 --disable-tools --enable-debug --enable-tcg-interpreter
++void hvf_protect_clean_range(hwaddr addr, size_t size);
++void hvf_unprotect_dirty_range(hwaddr addr, size_t size);
 +
-+build-wasm64-64bit:
-+  extends: .wasm_build_job_template
-+  timeout: 2h
-+  needs:
-+    - job: wasm64-emsdk-cross-container
-+  variables:
-+    IMAGE: emsdk-wasm64-cross
-+    CONFIGURE_ARGS: --static --cpu=wasm64 --disable-tools --enable-debug --enable-tcg-interpreter
-+
-+build-wasm64-32bit:
-+  extends: .wasm_build_job_template
-+  timeout: 2h
-+  needs:
-+    - job: wasm64-emsdk-cross-container
-+  variables:
-+    IMAGE: emsdk-wasm64-cross
-+    CONFIGURE_ARGS: --static --cpu=wasm64 --wasm64-32bit-address-limit --disable-tools --enable-debug --enable-tcg-interpreter
-diff --git a/.gitlab-ci.d/container-cross.yml b/.gitlab-ci.d/container-cross.yml
-index 0fd7341afac..7022015e956 100644
---- a/.gitlab-ci.d/container-cross.yml
-+++ b/.gitlab-ci.d/container-cross.yml
-@@ -86,7 +86,16 @@ win64-fedora-cross-container:
-   variables:
-     NAME: fedora-win64-cross
+ struct hvf_sw_breakpoint {
+     vaddr pc;
+     vaddr saved_insn;
+diff --git a/accel/hvf/hvf-all.c b/accel/hvf/hvf-all.c
+index 77f4e4e4f30..741b4bdc4fb 100644
+--- a/accel/hvf/hvf-all.c
++++ b/accel/hvf/hvf-all.c
+@@ -58,6 +58,31 @@ void assert_hvf_ok_impl(hv_return_t ret, const char *file, unsigned int line,
+     abort();
+ }
  
--wasm-emsdk-cross-container:
-+wasm32-emsdk-cross-container:
-   extends: .container_job_template
-   variables:
-     NAME: emsdk-wasm32-cross
-+    BUILD_ARGS: --build-arg TARGET_CPU=wasm32
-+    DOCKERFILE: emsdk-wasm-cross
++static void do_hv_vm_protect(hwaddr start, size_t size,
++                             hv_memory_flags_t flags)
++{
++    hv_return_t ret;
 +
-+wasm64-emsdk-cross-container:
-+  extends: .container_job_template
-+  variables:
-+    NAME: emsdk-wasm64-cross
-+    BUILD_ARGS: --build-arg TARGET_CPU=wasm64
-+    DOCKERFILE: emsdk-wasm-cross
-diff --git a/.gitlab-ci.d/container-template.yml b/.gitlab-ci.d/container-template.yml
-index 82c1b69e8dd..b92e96b0fc5 100644
---- a/.gitlab-ci.d/container-template.yml
-+++ b/.gitlab-ci.d/container-template.yml
-@@ -10,12 +10,14 @@
-     - export COMMON_TAG="$CI_REGISTRY/qemu-project/qemu/qemu/$NAME:latest"
-     - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
-     - until docker info; do sleep 1; done
-+    - export DOCKERFILE_NAME=${DOCKERFILE:-$NAME}
-   script:
-     - echo "TAG:$TAG"
-     - echo "COMMON_TAG:$COMMON_TAG"
-     - docker build --tag "$TAG" --cache-from "$TAG" --cache-from "$COMMON_TAG"
-       --build-arg BUILDKIT_INLINE_CACHE=1
--      -f "tests/docker/dockerfiles/$NAME.docker" "."
-+      $BUILD_ARGS
-+      -f "tests/docker/dockerfiles/$DOCKERFILE_NAME.docker" "."
-     - docker push "$TAG"
-   after_script:
-     - docker logout
-diff --git a/.gitlab-ci.d/containers.yml b/.gitlab-ci.d/containers.yml
-index f7d3e7205dc..dde9a3f840f 100644
---- a/.gitlab-ci.d/containers.yml
-+++ b/.gitlab-ci.d/containers.yml
-@@ -58,7 +58,8 @@ weekly-container-builds:
-     - tricore-debian-cross-container
-     - xtensa-debian-cross-container
-     - win64-fedora-cross-container
--    - wasm-emsdk-cross-container
-+    - wasm32-emsdk-cross-container
-+    - wasm64-emsdk-cross-container
-     # containers
-     - amd64-alpine-container
-     - amd64-debian-container
++    trace_hvf_vm_protect(start, size, flags,
++                         flags & HV_MEMORY_READ  ? 'R' : '-',
++                         flags & HV_MEMORY_WRITE ? 'W' : '-',
++                         flags & HV_MEMORY_EXEC  ? 'X' : '-');
++
++    ret = hv_vm_protect(start, size, flags);
++    assert_hvf_ok(ret);
++}
++
++void hvf_protect_clean_range(hwaddr addr, size_t size)
++{
++    do_hv_vm_protect(addr, size, HV_MEMORY_READ | HV_MEMORY_EXEC);
++}
++
++void hvf_unprotect_dirty_range(hwaddr addr, size_t size)
++{
++    do_hv_vm_protect(addr, size,
++                     HV_MEMORY_READ | HV_MEMORY_WRITE | HV_MEMORY_EXEC);
++}
++
+ static int do_hvf_set_memory(hvf_slot *slot, hv_memory_flags_t flags)
+ {
+     struct mac_slot *macslot;
+diff --git a/accel/hvf/trace-events b/accel/hvf/trace-events
+index 2fd3e127c74..f989da59492 100644
+--- a/accel/hvf/trace-events
++++ b/accel/hvf/trace-events
+@@ -5,3 +5,4 @@
+ # hvf-accel-ops.c
+ hvf_vm_map(uint64_t paddr, uint64_t size, void *vaddr, uint8_t flags, const char r, const char w, const char e) "paddr:0x%016"PRIx64" size:0x%08"PRIx64" vaddr:%p flags:0x%02x/%c%c%c"
+ hvf_vm_unmap(uint64_t paddr, uint64_t size) "paddr:0x%016"PRIx64" size:0x%08"PRIx64
++hvf_vm_protect(uint64_t paddr, size_t size, uint8_t flags, const char r, const char w, const char e) "paddr:0x%016"PRIx64" size:0x%08zx flags:0x%02x/%c%c%c"
 -- 
 2.52.0
 
