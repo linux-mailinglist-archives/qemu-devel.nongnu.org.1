@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3045D316C3
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 13:59:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B54D316D3
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 13:59:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgjPj-0003hz-RJ; Fri, 16 Jan 2026 07:58:56 -0500
+	id 1vgjPq-0003jn-QU; Fri, 16 Jan 2026 07:59:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vgjPS-0003eh-2d
+ id 1vgjPS-0003ei-5y
  for qemu-devel@nongnu.org; Fri, 16 Jan 2026 07:58:38 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vgjPP-00009o-Ss
+ id 1vgjPQ-00009s-68
  for qemu-devel@nongnu.org; Fri, 16 Jan 2026 07:58:37 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-47d59da3d81so13264955e9.0
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-4801d1daf53so10857925e9.2
  for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 04:58:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768568314; x=1769173114; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768568315; x=1769173115; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AOsYTkHMDWaZJQZPkrAXk9jzTOl3OFsQkdgtD7kLcAY=;
- b=Argoz/zn4ZDyh6i2nvmE89Hq49QOg5SbG2wWpS3trnJd9+P1mcme4df7ShlgVBDYar
- r3/RxJpiJbhq6TmKgAFgNnyyaTtrt7cdyxtihQOsqMuPP/lf83cwHPw2akrphAfGBlII
- 0IIWsSFUdEc60G91FJgBwPm+tpLfZXUCj++opPMRQ8038itetgpd9D3ZJ+tYvU3M2tA2
- UGFE3TxsSD8fIiJb2mtrct9kQJdBt8MXvvI8TTioLZ/zdDRSxFmxwWk4QhOq0LAHpm9v
- cgsjpI3H2/MKhi63QZWSqpQShm9w4RQeSJFObzGfNtP3NNUZUr1BJjWmMhTwyNVd2+zR
- iJRg==
+ bh=xxtWiPsN7Mi5aHJwrd0JDklGWH67zod3CgRiIov2LTE=;
+ b=EqEXQKIdRhRssBywlR+8rt8vcW0cvXidahDIp+2/muvGfz68CsML0ZnaCVIDqQkm84
+ gRanJUa2mjg/HHgGjMnXz+9n5z/3K26p1k2aGqI+sIICwJvDYALwkCruG7Jp5fEAeieM
+ 5g4hMmYWPZxpOIWdLSGjrEqspb5xjAR4K4heqaZfeDuMe5w14tysa4pza7PxD4ZJqRdy
+ OFm4E5BQZFxltUzLSn38E4fp/QgRi6EhxYSFMdDqUbU1zSrMb85izzuUkEgVGXS/pz6t
+ p/2A5zEFsdHVeiFOIS/6HYbmgnjSQR5D+ep2XDUsnTn6AgRc7/SAvIj/sL015Kp8t6TB
+ 4nMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768568314; x=1769173114;
+ d=1e100.net; s=20230601; t=1768568315; x=1769173115;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=AOsYTkHMDWaZJQZPkrAXk9jzTOl3OFsQkdgtD7kLcAY=;
- b=M00oA1s5IZt6vCiUUmp82YsWWXROy1GDKZOVEjvXuc/nanO9jwjT1AwYC07FZTlepv
- tKSyk7b1S/KwicYWDhzQXtfW3qQ5G1YxL7XtQoJv0sthU2R0NDS3maADm42sfcb+TJbA
- KnnRIScdZ8wB0opdq/LT860t59ZAbeS2Y9SlgwJz0BcvpVmpQu3D71+rycS7kthyFEYE
- vdN9trihnpq/MjfW0qWKE5WnK9t+bh3p9UPWth0JZXPvnOk2d9WrloT42NlPX+SI4uwb
- T/vviW1vX5gfIxk3GQ2CaBdM8/oo0Z1k7krWqBSGX2Ojp8BVYS+m+SGz1RXVDDGLLCcp
- GVQA==
-X-Gm-Message-State: AOJu0Ywv0YVrNeIN51jYm2B578FfXNC6vUCrXmLegpr3cfTMc2Yd5Xt1
- ovIS/M02bE2wKbd3T7PcQYpyRfeP+3CtkR1CwD4jekkilVO1vGk0XQmjzJcLodN+OSoRHko7BlE
- NxddR
-X-Gm-Gg: AY/fxX602NPbt/6tD/E96Mxr+IUMZxO6xr57Yhxr0lpUjC4sk0xftAi+uCLa2XcY4/D
- D5/B8HMPlmPSi8PnKJLV86ou8IPe5svFdnrIprCIE+Z/q8jx0Cv8cjAbpxSKghny4nSaI9v28J2
- p3IgqOKqP6zmXeZfJfOYrbuH+HbHAZBx9WQszQze7Bka8vhv/mn6RMVtDoIobqXqFAgJ2KBBaVS
- it+D2U71xaJf96OT8ShYYWEsQyZ+hStqUwWqcPulNINl3j0k+7d9VwkpnEFqz1ew16xZuVe2GGP
- W7sjWAvlr2J1t5jL4KJGhT0Gf82AfqYLn0NcVvFlXYJh50qwqv8rrCDE9AGkzBzCbIqPdtIJ7LR
- VTyrwdbSisxOQM33r8KqXwJnGRtnqaBVFcfqr1bdPEpOn+ipH+IBGH+qnQ6LA6t65L/dy5p3wX6
- /VV+qGMkiFTfB8fCYhyxCNPRwlstH5UtDgQjlX401KJQQ5RohRrFIibRpmsHn9wrJbjn3zx8RrF
- 1p8pgQ98BCIiNFN4MfTjlOmmlnn8rrxFIAHMsqBeakd/A==
-X-Received: by 2002:a05:600c:8b6c:b0:46e:2815:8568 with SMTP id
- 5b1f17b1804b1-4801e66fcc5mr31827705e9.10.1768568313587; 
- Fri, 16 Jan 2026 04:58:33 -0800 (PST)
+ bh=xxtWiPsN7Mi5aHJwrd0JDklGWH67zod3CgRiIov2LTE=;
+ b=X8dvsi8dJKPB6rA8XTZw5hJ/fhn2Xwi4AbnFywm9Wb9/7cOULInGWlbcVdsH4+jtCD
+ mpwcgy2485HFlt1l0+ytkn079yUJyUSNr/WNZw9sj8gpeF7dwkjp0EYfeo20IpUUeXdi
+ aj2yKPLQ4uWcPlTXi9og13QFfO/HAooNudKlVI9bHyteBmXcXJPUxg3vyjb+k3jVJhor
+ SvUgwwNdsKkKXg1mahU3EfmnKLzBJThVgYWYPrjUO3ktVR3pr36Hx/elZ68deHqwVpYo
+ CZsZICUCrBui6V7cWU9gF2nQhz+XFMjKGB8UR1aiMEMr2S9XSiWmd/FeX6X5v+E/2rO5
+ WVSQ==
+X-Gm-Message-State: AOJu0YzS4+fwYVtH8gPc6tFGYhfL10+3OtGhcPK0Wh+sDfgwQeJMcAK0
+ gY9HQJ4KkAi5vRg6aQnjHWKp4qj+KBWUXe3SF1zm9wQq2vUQOfDSRpWsc2df8PegC78e/R+w3re
+ v7eUp
+X-Gm-Gg: AY/fxX6tGJuZQ1NOKVRfPeL1nmnWmAIeXrLxpG8ZehCbIA+4XpwYsFkL02Wx51/MHDP
+ pYOAzq1/IflSorHF6aXW8RzQDXYAh7ht/j1W9h0491cxJWByK2NEiSaskxQfzjB2KMDq2w/hVrE
+ bK0vDxASaiMq9OTdY1bQk5ofsWtHq0s6kwhse79I4KtDXiavhl3SVK/2LY6WLnO0rg7p13TC3WW
+ R8Z8l/wVjShQAAwFWYp51juik4h9Y8jNoGQ/FjROsmDXVo4afXWaX5IT6zj4mMCiVT9LPiNgHGy
+ yw59b2qUY4TNs48WoVMZxNdcDcZ1od7xNp6P/86iCcYD52wmWfU2J/6BeunClKKsN+VYWKRO6xx
+ Kt5dXiicOTBhsepBSuDtEEYa2B4ab58y+UB6/eSkP6YHH2oJeh8KNNVfKASGgncelEXKeYAIPr0
+ 0Pj8AnFQQxZjA0UakjFiXOgCrYtYQ00ZxHYWwtcwMHTTJySYKxnN67VTcw0pvm/VCak1NLroVW/
+ angF7ZYYq0P78LfTo9k/FubyBnqb2JgUFotUzGC0sTidHyxSIZxIap2
+X-Received: by 2002:a05:600c:6990:b0:47e:c562:a41f with SMTP id
+ 5b1f17b1804b1-4801e334361mr35901095e9.18.1768568314641; 
+ Fri, 16 Jan 2026 04:58:34 -0800 (PST)
 Received: from mnementh.archaic.org.uk
  (f.7.f.1.7.5.e.f.f.f.c.5.d.8.2.4.0.0.0.0.0.d.1.0.0.b.8.0.1.0.0.2.ip6.arpa.
  [2001:8b0:1d0:0:428d:5cff:fe57:1f7f])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4801fe67780sm15387565e9.16.2026.01.16.04.58.32
+ 5b1f17b1804b1-4801fe67780sm15387565e9.16.2026.01.16.04.58.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Jan 2026 04:58:32 -0800 (PST)
+ Fri, 16 Jan 2026 04:58:34 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Magnus Kulke <magnus.kulke@linux.microsoft.com>,
@@ -75,16 +75,16 @@ Cc: Magnus Kulke <magnus.kulke@linux.microsoft.com>,
  Helge Deller <deller@gmx.de>, Michael Roth <michael.roth@amd.com>,
  Kostiantyn Kostiuk <kkostiuk@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>
-Subject: [PATCH 1/4] mshv: Clean up includes
-Date: Fri, 16 Jan 2026 12:58:27 +0000
-Message-ID: <20260116125830.926296-2-peter.maydell@linaro.org>
+Subject: [PATCH 2/4] bsd-user: Clean up includes
+Date: Fri, 16 Jan 2026 12:58:28 +0000
+Message-ID: <20260116125830.926296-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260116125830.926296-1-peter.maydell@linaro.org>
 References: <20260116125830.926296-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,7 +108,7 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This commit was created with scripts/clean-includes:
- ./scripts/clean-includes '--git' 'mshv' 'accel/mshv' 'target/i386/mshv' 'include/system/mshv.h'
+ ./scripts/clean-includes '--git' 'bsd-user' 'bsd-user'
 
 All .c should include qemu/osdep.h first.  The script performs three
 related cleanups:
@@ -121,83 +121,67 @@ related cleanups:
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- accel/mshv/irq.c            | 3 +--
- accel/mshv/mshv-all.c       | 1 -
- include/system/mshv.h       | 1 -
- target/i386/mshv/mshv-cpu.c | 1 -
- target/i386/mshv/x86.c      | 1 -
- 5 files changed, 1 insertion(+), 6 deletions(-)
+ bsd-user/bsd-mem.h         | 3 ---
+ bsd-user/bsd-proc.c        | 1 -
+ bsd-user/freebsd/os-proc.h | 2 --
+ bsd-user/qemu-bsd.h        | 1 -
+ 4 files changed, 7 deletions(-)
 
-diff --git a/accel/mshv/irq.c b/accel/mshv/irq.c
-index adf8f337d9..3c238c33c3 100644
---- a/accel/mshv/irq.c
-+++ b/accel/mshv/irq.c
-@@ -10,8 +10,8 @@
-  * SPDX-License-Identifier: GPL-2.0-or-later
-  */
+diff --git a/bsd-user/bsd-mem.h b/bsd-user/bsd-mem.h
+index 416d0f8c23..a118e57260 100644
+--- a/bsd-user/bsd-mem.h
++++ b/bsd-user/bsd-mem.h
+@@ -49,11 +49,8 @@
+ #ifndef BSD_USER_BSD_MEM_H
+ #define BSD_USER_BSD_MEM_H
  
--#include "linux/mshv.h"
+-#include <sys/types.h>
+ #include <sys/ipc.h>
+-#include <sys/mman.h>
+ #include <sys/shm.h>
+-#include <fcntl.h>
+ 
+ #include "qemu-bsd.h"
+ #include "exec/mmap-lock.h"
+diff --git a/bsd-user/bsd-proc.c b/bsd-user/bsd-proc.c
+index ca3c1bf94f..8dcac9608d 100644
+--- a/bsd-user/bsd-proc.c
++++ b/bsd-user/bsd-proc.c
+@@ -19,7 +19,6 @@
  #include "qemu/osdep.h"
-+#include "linux/mshv.h"
- #include "qemu/error-report.h"
- #include "hw/hyperv/hvhdk_mini.h"
- #include "hw/hyperv/hvgdk_mini.h"
+ 
+ #include <sys/param.h>
+-#include <sys/types.h>
+ #include <sys/cpuset.h>
+ #include <sys/resource.h>
+ #include <sys/wait.h>
+diff --git a/bsd-user/freebsd/os-proc.h b/bsd-user/freebsd/os-proc.h
+index 3003c8cb63..cc53215138 100644
+--- a/bsd-user/freebsd/os-proc.h
++++ b/bsd-user/freebsd/os-proc.h
+@@ -23,10 +23,8 @@
+ #include <sys/param.h>
+ #include <sys/procctl.h>
+ #include <sys/signal.h>
+-#include <sys/types.h>
+ #include <sys/procdesc.h>
+ #include <sys/wait.h>
+-#include <unistd.h>
+ 
+ #include "target_arch_cpu.h"
+ 
+diff --git a/bsd-user/qemu-bsd.h b/bsd-user/qemu-bsd.h
+index ffc64bb244..56affcd31d 100644
+--- a/bsd-user/qemu-bsd.h
++++ b/bsd-user/qemu-bsd.h
 @@ -20,7 +20,6 @@
- #include "system/mshv.h"
- #include "system/mshv_int.h"
- #include "trace.h"
--#include <stdint.h>
- #include <sys/ioctl.h>
+ #ifndef QEMU_BSD_H
+ #define QEMU_BSD_H
  
- #define MSHV_IRQFD_RESAMPLE_FLAG (1 << MSHV_IRQFD_BIT_RESAMPLE)
-diff --git a/accel/mshv/mshv-all.c b/accel/mshv/mshv-all.c
-index 4675cb886f..bed0fa298e 100644
---- a/accel/mshv/mshv-all.c
-+++ b/accel/mshv/mshv-all.c
-@@ -41,7 +41,6 @@
- #include "system/reset.h"
- #include "trace.h"
- #include <err.h>
--#include <stdint.h>
- #include <sys/ioctl.h>
- 
- #define TYPE_MSHV_ACCEL ACCEL_CLASS_NAME("mshv")
-diff --git a/include/system/mshv.h b/include/system/mshv.h
-index 8b1fc20c80..75286baf16 100644
---- a/include/system/mshv.h
-+++ b/include/system/mshv.h
-@@ -14,7 +14,6 @@
- #ifndef QEMU_MSHV_H
- #define QEMU_MSHV_H
- 
--#include "qemu/osdep.h"
- #include "qemu/accel.h"
- #include "hw/hyperv/hyperv-proto.h"
- #include "hw/hyperv/hvhdk.h"
-diff --git a/target/i386/mshv/mshv-cpu.c b/target/i386/mshv/mshv-cpu.c
-index 1c3db02188..586383b882 100644
---- a/target/i386/mshv/mshv-cpu.c
-+++ b/target/i386/mshv/mshv-cpu.c
-@@ -13,7 +13,6 @@
- #include "qemu/osdep.h"
- #include "qemu/error-report.h"
- #include "qemu/memalign.h"
--#include "qemu/typedefs.h"
- 
- #include "system/mshv.h"
- #include "system/mshv_int.h"
-diff --git a/target/i386/mshv/x86.c b/target/i386/mshv/x86.c
-index d574b3bc52..0700cc05ef 100644
---- a/target/i386/mshv/x86.c
-+++ b/target/i386/mshv/x86.c
-@@ -13,7 +13,6 @@
- #include "cpu.h"
- #include "emulate/x86_decode.h"
- #include "emulate/x86_emu.h"
--#include "qemu/typedefs.h"
- #include "qemu/error-report.h"
- #include "system/mshv.h"
- 
+-#include <sys/types.h>
+ #include <sys/resource.h>
+ #include <sys/ipc.h>
+ #include <sys/msg.h>
 -- 
 2.47.3
 
