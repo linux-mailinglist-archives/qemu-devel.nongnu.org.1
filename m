@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3397CD2ACCF
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 04:34:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3474ED2ACEF
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 04:35:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgabA-0005JC-LY; Thu, 15 Jan 2026 22:34:08 -0500
+	id 1vgabH-0005UX-9H; Thu, 15 Jan 2026 22:34:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vgab9-0005Il-7r
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:34:07 -0500
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+ id 1vgabE-0005Jl-Kf
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:34:12 -0500
+Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vgab7-0005Wy-CG
- for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:34:06 -0500
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-ba599137cf8so555641a12.0
- for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 19:34:05 -0800 (PST)
+ id 1vgabB-0005Yo-H9
+ for qemu-devel@nongnu.org; Thu, 15 Jan 2026 22:34:12 -0500
+Received: by mail-pg1-x52b.google.com with SMTP id
+ 41be03b00d2f7-c1e4a9033abso883361a12.3
+ for <qemu-devel@nongnu.org>; Thu, 15 Jan 2026 19:34:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768534444; x=1769139244; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768534448; x=1769139248; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UDkM7uIkvNm6fLdpIQ/hnja2LnP7PMDxeJXBu7Pf1iw=;
- b=hDKpu1UaPTXKZwELIyb5s9KOq6vA9U5wDwwDIxx5IE/epu8ttLicTs0eMWBP8DqRki
- vHxFkxz0yR3WoO2aLa6/RLkZPBEQpsCVoHQBnZKL++ifst/Zf+prDBm0nkkMerjXSrl3
- iyKQ8eevKGyS3Gf8Qip+6lsB9OlCDR+MZ2piq+PHVay/Pk4ZunVJ63SZyEUfOPNkNHhO
- vI7+PVTp3Df6VkL7XdkcnD+84u/eZgQEWnrkxLOu1FF4HxQhyfdfOgk5QucNpSSL/tCH
- vKzRcjr2U+u1y54uYNKEsoKOi69Nnen/k6hfeqmzPBXWp7j2N3i6ymRhSHKEv8n7wbmi
- n2tw==
+ bh=6cFvqZnBPLfXXQooWLNQYtz6n4/uznQ97AbDCdjuZ2I=;
+ b=AGbDS6051OSH8qhvCCwAUbbTaDj9vPdf/8H47U7pO9qvoY/3Op1IPzT+X+XHPmNhFh
+ dmn7X7cFs/rUXdDPnITVQzFWbNS+cgz/JPqr+mi86OqT64lFLbd1hPrYbfLPgfD70pyj
+ EpyAsij66gtPTasOanuCffEaVzgT1qy+H2DGkHy0a8wkiiQbLkKBnkyydPDRm2Dy7fXS
+ B6VEHMkZkqV6WP2oI6Ig34AYUI7Ag165YCdegtAXRWHgmRam8PJbtVbsQMoQ0QpV0nEs
+ GA2vp39xnMS6M6REZcFVcDotqKQFvPAKCHqTxq/cmsGTLbT0hVRXqF5wp2XUZiSmu4L4
+ 4CCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768534444; x=1769139244;
+ d=1e100.net; s=20230601; t=1768534448; x=1769139248;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=UDkM7uIkvNm6fLdpIQ/hnja2LnP7PMDxeJXBu7Pf1iw=;
- b=QHw0fO4kUHObiZGTWSWR0aQAI/Az1E5cTUiRl7smTqo+wimALz6Z9P75yfl4rx6VKE
- krZxm9JAn/zr9zSt5OHLztZvP22/Z+e1an5QdZrqt2K72QyC6NmDXtGbdontdmbo9Do1
- w6Ml+diKffIimcrMFaIn7/GfAy5V8t06lwEf3EqQnPRd5EhqoI00QWkwZ58Jz9rk21AF
- 3+83lBuMNJei72wI4zZ9+ZrpnisfpBQLE3FYjDcFAuB8qsJwaMvgvZGs0m0YDWU/x8LG
- jk2ZGkbquBkhHUul2OVAOEyXQQ9Ffbo6M8kFG6y1rLspJsUzx2G4lv+P7XvmxMqZxDoU
- MS0Q==
-X-Gm-Message-State: AOJu0Yx+/3rRO4AikrcB3UhldWr4hLChpqCR3jNZWaxlEKiQHZaOwZB5
- VyFrhSgBJlh8GK+63LJk6u+4XO/PZc19Y7PKzxd401I3QYS+crFQdNuPvcbC/7ERtaxWSLaP/8n
- JCnp289mzsA==
-X-Gm-Gg: AY/fxX7++bW3nSWcxpCZEpA0j44TO2GPe/11Ze5ZEkNQq2K93ZnQlT0aQGbncmmv3GA
- +gmGrDDrQdGcQAgG7LbHpaI0/Q8xcwOqaGku4H1BOAPFefTJI9Ji1QgvsIxcRT2AdVlgbqVmFRg
- rbYhusdrGgXV8qs4PyWLj2SP7ouwowyQoRInM6956OV2BzgKlvMFPaSqF+61RDtWTeZ7KP5Nqz7
- 4zdzU20qqKpodAiNucF9nENS4UYPJbcJ1v4cbMtM3yNJ4n3T08fmtzxb6jPqV8TRwk7yDuhMC5r
- 78PTPXbOtyJJQymHVaIbk/5FmlMnAGqkx3ohtOR5EIdkOv2MIpjE3HD3AJk5oCMc+RKTeIVRFF9
- 7NofiorJsoNFH/3riUr7x95pmklKSR4gQwjdFDZbCrf2pghbYk4hTsb0s8bVsFeSxAm4BUvmmoX
- FzDr39O0RGZKbwOFrppA==
-X-Received: by 2002:a17:90b:4cc2:b0:32e:3592:581a with SMTP id
- 98e67ed59e1d1-35272ce863bmr1430473a91.17.1768534443919; 
- Thu, 15 Jan 2026 19:34:03 -0800 (PST)
+ bh=6cFvqZnBPLfXXQooWLNQYtz6n4/uznQ97AbDCdjuZ2I=;
+ b=uOq7h6QgyVSv8659c6Ffew6RFvXPaijSGA2b7W5yvyWD8vqkm3bdxUM/ruCBfw7EN3
+ cNGVI5T4E4LGR3p45kCzxOdMUlBgQYhx7sxG0tSvf/kcCmAil7LC2ZnrocdlkY55mzJh
+ qiESdMC8zpz07SAq+Z/zZPgACXqQPznYV8sAMQ3mBinFOu8RQXqV2lrG8Cr5uaH/RLtq
+ Me6VeoSYzRWQ3aMRBWIBBdj644c1wYBKXzdXm7f1IDVhcohXIhPoFeup+gGn0ddFxI7b
+ 7K0nh0bHbj3aPJatbmoZyfDqD+QlKZIySY4cdnOLNydovdL6xkmSGCAbCxeJ3MPKXyvd
+ wppg==
+X-Gm-Message-State: AOJu0Yw8wF0WAaXOtxvTFxshYQuCk6zESOtTjfWnriogNBlnKG6KROAE
+ /x9VnZlpXoZNZMFNdBNItVkA5sBTy5B67OqWNBcbhO/DgHCpptt4gOsBORoDaAANUv81mW5vIZK
+ acn3SnwJHwg==
+X-Gm-Gg: AY/fxX78pSwbt2dYCCaZLO2yJLfnT3qDpUv4TVRXdJcc8JrMNOCyIIyttpa10pxnQaw
+ oV3QWYyZuDlRrku8OPmnF7KQjxcawZv9Ouj44eLBmWSe98lbnxeyMXhEomgJ1pMu+wNf/STt+DV
+ x4fkweLrA4GrY+xsgTdXx7EIenFu2CtfaU6OyMQUcqBFofHAXizdyG/y4g/2yjQRNVm4TaqMMd+
+ L+uxqwQcwCu7pEJ4rTR2fjnvKblsmM6HUNRFF8o58TlzGV+OKsSrzQOh55tFnY5g5fqnz8SEoJg
+ KURQOM/3gbtebOMabchbnBg1atDpgK3X/NuIp/ZNaLCIlEJcx6bllOIq9qKLc+TWoGuIDUQaY38
+ 1unQp3D7lJ6F9oTUFmlIZNEjh7yVqksJTMxzQFlyT0FyXR0Jm8fAvee+Z0kMLC2k75CvTK32z8n
+ Q36776lh9o452rXd2mGP3GYBk0f6b4
+X-Received: by 2002:a05:6a20:d8a:b0:371:7fee:7497 with SMTP id
+ adf61e73a8af0-38dfe7c8fbfmr1782000637.68.1768534447795; 
+ Thu, 15 Jan 2026 19:34:07 -0800 (PST)
 Received: from stoup.. ([180.233.125.201]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-81fa12b5c67sm683372b3a.69.2026.01.15.19.34.00
+ d2e1a72fcca58-81fa12b5c67sm683372b3a.69.2026.01.15.19.34.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Jan 2026 19:34:03 -0800 (PST)
+ Thu, 15 Jan 2026 19:34:07 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: ktokunaga.mail@gmail.com, berrange@redhat.com, pierrick.bouvier@linaro.org,
  thuth@redhat.com, pbonzini@redhat.com, philmd@linaro.org
-Subject: [PATCH v2 12/58] *: Remove __i386__ tests
-Date: Fri, 16 Jan 2026 14:32:18 +1100
-Message-ID: <20260116033305.51162-13-richard.henderson@linaro.org>
+Subject: [PATCH v2 13/58] *: Remove i386 host support
+Date: Fri, 16 Jan 2026 14:32:19 +1100
+Message-ID: <20260116033305.51162-14-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260116033305.51162-1-richard.henderson@linaro.org>
 References: <20260116033305.51162-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,251 +98,953 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove instances of __i386__, except from tests and imported headers.
+Move the files from host/include/i386 to host/include/x86_64,
+replacing the stub headers that redirected to i386.
 
-Drop a block containing sanity check and fprintf error message for
-i386-on-i386 or x86_64-on-x86_64 emulation.  If we really want
-something like this, we would do it via some form of compile-time check.
+Remove linux-user/include/host/i386.
+Remove common-user/host/i386.
 
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/qemu/atomic.h     |  4 ++--
- include/qemu/cacheflush.h |  2 +-
- include/qemu/osdep.h      |  4 +---
- include/qemu/processor.h  |  2 +-
- include/qemu/timer.h      |  9 ---------
- tcg/tci/tcg-target-mo.h   |  2 +-
- accel/kvm/kvm-all.c       |  2 +-
- disas/disas-host.c        |  6 ------
- hw/display/xenfb.c        | 10 +---------
- linux-user/syscall.c      |  9 ---------
- target/i386/cpu.c         | 10 ----------
- util/cacheflush.c         |  2 +-
- configure                 |  2 --
- 13 files changed, 9 insertions(+), 55 deletions(-)
+ host/include/i386/host/cpuinfo.h            |  41 ------
+ host/include/i386/host/crypto/aes-round.h   | 152 -------------------
+ host/include/i386/host/crypto/clmul.h       |  29 ----
+ host/include/x86_64/host/cpuinfo.h          |  42 +++++-
+ host/include/x86_64/host/crypto/aes-round.h | 153 +++++++++++++++++++-
+ host/include/x86_64/host/crypto/clmul.h     |  30 +++-
+ linux-user/include/host/i386/host-signal.h  |  38 -----
+ common-user/host/i386/safe-syscall.inc.S    | 127 ----------------
+ host/include/i386/host/bufferiszero.c.inc   | 125 ----------------
+ host/include/x86_64/host/bufferiszero.c.inc | 126 +++++++++++++++-
+ 10 files changed, 347 insertions(+), 516 deletions(-)
+ delete mode 100644 host/include/i386/host/cpuinfo.h
+ delete mode 100644 host/include/i386/host/crypto/aes-round.h
+ delete mode 100644 host/include/i386/host/crypto/clmul.h
+ delete mode 100644 linux-user/include/host/i386/host-signal.h
+ delete mode 100644 common-user/host/i386/safe-syscall.inc.S
+ delete mode 100644 host/include/i386/host/bufferiszero.c.inc
 
-diff --git a/include/qemu/atomic.h b/include/qemu/atomic.h
-index f80cba24cf..c39dc99f2f 100644
---- a/include/qemu/atomic.h
-+++ b/include/qemu/atomic.h
-@@ -204,7 +204,7 @@
-  * the same semantics.
-  */
- #if !defined(QEMU_SANITIZE_THREAD) && \
--    (defined(__i386__) || defined(__x86_64__) || defined(__s390x__))
-+    (defined(__x86_64__) || defined(__s390x__))
- # define smp_mb__before_rmw() signal_barrier()
- # define smp_mb__after_rmw() signal_barrier()
- #else
-@@ -218,7 +218,7 @@
-  */
- 
- #if !defined(QEMU_SANITIZE_THREAD) && \
--    (defined(__i386__) || defined(__x86_64__) || defined(__s390x__))
-+    (defined(__x86_64__) || defined(__s390x__))
- # define qatomic_set_mb(ptr, i) \
-     ({ (void)qatomic_xchg(ptr, i); smp_mb__after_rmw(); })
- #else
-diff --git a/include/qemu/cacheflush.h b/include/qemu/cacheflush.h
-index 76eb55d818..8c64b87814 100644
---- a/include/qemu/cacheflush.h
-+++ b/include/qemu/cacheflush.h
-@@ -19,7 +19,7 @@
-  * mappings of the same physical page(s).
-  */
- 
--#if defined(__i386__) || defined(__x86_64__) || defined(__s390__)
-+#if defined(__x86_64__) || defined(__s390__)
- 
- static inline void flush_idcache_range(uintptr_t rx, uintptr_t rw, size_t len)
- {
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index 4cdeda0b9c..b384b5b506 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -637,9 +637,7 @@ bool qemu_has_ofd_lock(void);
- 
- bool qemu_has_direct_io(void);
- 
--#if defined(__HAIKU__) && defined(__i386__)
--#define FMT_pid "%ld"
--#elif defined(WIN64)
-+#ifdef WIN64
- #define FMT_pid "%" PRId64
- #else
- #define FMT_pid "%d"
-diff --git a/include/qemu/processor.h b/include/qemu/processor.h
-index 9f0dcdf28f..95b3262f8b 100644
---- a/include/qemu/processor.h
-+++ b/include/qemu/processor.h
-@@ -7,7 +7,7 @@
- #ifndef QEMU_PROCESSOR_H
- #define QEMU_PROCESSOR_H
- 
--#if defined(__i386__) || defined(__x86_64__)
-+#if defined(__x86_64__)
- # define cpu_relax() asm volatile("rep; nop" ::: "memory")
- 
- #elif defined(__aarch64__)
-diff --git a/include/qemu/timer.h b/include/qemu/timer.h
-index 8b561cd696..7c18da1652 100644
---- a/include/qemu/timer.h
-+++ b/include/qemu/timer.h
-@@ -866,15 +866,6 @@ static inline int64_t cpu_get_host_ticks(void)
-     return retval;
- }
- 
--#elif defined(__i386__)
+diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
+deleted file mode 100644
+index 93d029d499..0000000000
+--- a/host/include/i386/host/cpuinfo.h
++++ /dev/null
+@@ -1,41 +0,0 @@
+-/*
+- * SPDX-License-Identifier: GPL-2.0-or-later
+- * Host specific cpu identification for x86.
+- */
 -
--static inline int64_t cpu_get_host_ticks(void)
+-#ifndef HOST_CPUINFO_H
+-#define HOST_CPUINFO_H
+-
+-/* Digested version of <cpuid.h> */
+-
+-#define CPUINFO_ALWAYS          (1u << 0)  /* so cpuinfo is nonzero */
+-#define CPUINFO_OSXSAVE         (1u << 1)
+-#define CPUINFO_MOVBE           (1u << 2)
+-#define CPUINFO_LZCNT           (1u << 3)
+-#define CPUINFO_POPCNT          (1u << 4)
+-#define CPUINFO_BMI1            (1u << 5)
+-#define CPUINFO_BMI2            (1u << 6)
+-#define CPUINFO_SSE2            (1u << 7)
+-#define CPUINFO_AVX1            (1u << 9)
+-#define CPUINFO_AVX2            (1u << 10)
+-#define CPUINFO_AVX512F         (1u << 11)
+-#define CPUINFO_AVX512VL        (1u << 12)
+-#define CPUINFO_AVX512BW        (1u << 13)
+-#define CPUINFO_AVX512DQ        (1u << 14)
+-#define CPUINFO_AVX512VBMI2     (1u << 15)
+-#define CPUINFO_ATOMIC_VMOVDQA  (1u << 16)
+-#define CPUINFO_ATOMIC_VMOVDQU  (1u << 17)
+-#define CPUINFO_AES             (1u << 18)
+-#define CPUINFO_PCLMUL          (1u << 19)
+-#define CPUINFO_GFNI            (1u << 20)
+-
+-/* Initialized with a constructor. */
+-extern unsigned cpuinfo;
+-
+-/*
+- * We cannot rely on constructor ordering, so other constructors must
+- * use the function interface rather than the variable above.
+- */
+-unsigned cpuinfo_init(void);
+-
+-#endif /* HOST_CPUINFO_H */
+diff --git a/host/include/i386/host/crypto/aes-round.h b/host/include/i386/host/crypto/aes-round.h
+deleted file mode 100644
+index 59a64130f7..0000000000
+--- a/host/include/i386/host/crypto/aes-round.h
++++ /dev/null
+@@ -1,152 +0,0 @@
+-/*
+- * x86 specific aes acceleration.
+- * SPDX-License-Identifier: GPL-2.0-or-later
+- */
+-
+-#ifndef X86_HOST_CRYPTO_AES_ROUND_H
+-#define X86_HOST_CRYPTO_AES_ROUND_H
+-
+-#include "host/cpuinfo.h"
+-#include <immintrin.h>
+-
+-#if defined(__AES__) && defined(__SSSE3__)
+-# define HAVE_AES_ACCEL  true
+-# define ATTR_AES_ACCEL
+-#else
+-# define HAVE_AES_ACCEL  likely(cpuinfo & CPUINFO_AES)
+-# define ATTR_AES_ACCEL  __attribute__((target("aes,ssse3")))
+-#endif
+-
+-static inline __m128i ATTR_AES_ACCEL
+-aes_accel_bswap(__m128i x)
 -{
--    int64_t val;
--    asm volatile ("rdtsc" : "=A" (val));
--    return val;
+-    return _mm_shuffle_epi8(x, _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8,
+-                                            9, 10, 11, 12, 13, 14, 15));
 -}
 -
- #elif defined(__x86_64__)
- 
- static inline int64_t cpu_get_host_ticks(void)
-diff --git a/tcg/tci/tcg-target-mo.h b/tcg/tci/tcg-target-mo.h
-index 779872e39a..b5b389dafc 100644
---- a/tcg/tci/tcg-target-mo.h
-+++ b/tcg/tci/tcg-target-mo.h
-@@ -8,7 +8,7 @@
- #define TCG_TARGET_MO_H
- 
- /*
-- * We could notice __i386__ or __s390x__ and reduce the barriers depending
-+ * We could notice __x86_64__ or __s390x__ and reduce the barriers depending
-  * on the host.  But if you want performance, you use the normal backend.
-  * We prefer consistency across hosts on this.
-  */
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index f85eb42d78..8301a512e7 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -61,7 +61,7 @@
- #include <sys/eventfd.h>
- #endif
- 
--#if defined(__i386__) || defined(__x86_64__) || defined(__aarch64__)
-+#if defined(__x86_64__) || defined(__aarch64__)
- # define KVM_HAVE_MCE_INJECTION 1
- #endif
- 
-diff --git a/disas/disas-host.c b/disas/disas-host.c
-index 88e7d8800c..7cf432938e 100644
---- a/disas/disas-host.c
-+++ b/disas/disas-host.c
-@@ -44,12 +44,6 @@ static void initialize_debug_host(CPUDebug *s)
- #endif
- #if defined(CONFIG_TCG_INTERPRETER)
-     s->info.print_insn = print_insn_tci;
--#elif defined(__i386__)
--    s->info.mach = bfd_mach_i386_i386;
--    s->info.cap_arch = CS_ARCH_X86;
--    s->info.cap_mode = CS_MODE_32;
--    s->info.cap_insn_unit = 1;
--    s->info.cap_insn_split = 8;
- #elif defined(__x86_64__)
-     s->info.mach = bfd_mach_x86_64;
-     s->info.cap_arch = CS_ARCH_X86;
-diff --git a/hw/display/xenfb.c b/hw/display/xenfb.c
-index 164fd0b248..ba886a940e 100644
---- a/hw/display/xenfb.c
-+++ b/hw/display/xenfb.c
-@@ -459,10 +459,7 @@ static int xenfb_map_fb(struct XenFB *xenfb)
-          */
-         uint32_t *ptr32 = NULL;
-         uint32_t *ptr64 = NULL;
--#if defined(__i386__)
--        ptr32 = (void*)page->pd;
--        ptr64 = ((void*)page->pd) + 4;
--#elif defined(__x86_64__)
-+#if defined(__x86_64__)
-         ptr32 = ((void*)page->pd) - 4;
-         ptr64 = (void*)page->pd;
- #endif
-@@ -480,11 +477,6 @@ static int xenfb_map_fb(struct XenFB *xenfb)
-         /* 64bit dom0, 32bit domU */
-         mode = 32;
-         pd   = ((void*)page->pd) - 4;
--#elif defined(__i386__)
--    } else if (strcmp(protocol, XEN_IO_PROTO_ABI_X86_64) == 0) {
--        /* 32bit dom0, 64bit domU */
--        mode = 64;
--        pd   = ((void*)page->pd) + 4;
- #endif
-     }
- 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 67ad681098..3601715769 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -7452,15 +7452,6 @@ void syscall_init(void)
-                               ~(TARGET_IOC_SIZEMASK << TARGET_IOC_SIZESHIFT)) |
-                 (size << TARGET_IOC_SIZESHIFT);
-         }
+-static inline void ATTR_AES_ACCEL
+-aesenc_MC_accel(AESState *ret, const AESState *st, bool be)
+-{
+-    __m128i t = (__m128i)st->v;
+-    __m128i z = _mm_setzero_si128();
 -
--        /* automatic consistency check if same arch */
--#if (defined(__i386__) && defined(TARGET_I386) && defined(TARGET_ABI32)) || \
--    (defined(__x86_64__) && defined(TARGET_X86_64))
--        if (unlikely(ie->target_cmd != ie->host_cmd)) {
--            fprintf(stderr, "ERROR: ioctl(%s): target=0x%x host=0x%x\n",
--                    ie->name, ie->target_cmd, ie->host_cmd);
--        }
+-    if (be) {
+-        t = aes_accel_bswap(t);
+-        t = _mm_aesdeclast_si128(t, z);
+-        t = _mm_aesenc_si128(t, z);
+-        t = aes_accel_bswap(t);
+-    } else {
+-        t = _mm_aesdeclast_si128(t, z);
+-        t = _mm_aesenc_si128(t, z);
+-    }
+-    ret->v = (AESStateVec)t;
+-}
+-
+-static inline void ATTR_AES_ACCEL
+-aesenc_SB_SR_AK_accel(AESState *ret, const AESState *st,
+-                      const AESState *rk, bool be)
+-{
+-    __m128i t = (__m128i)st->v;
+-    __m128i k = (__m128i)rk->v;
+-
+-    if (be) {
+-        t = aes_accel_bswap(t);
+-        k = aes_accel_bswap(k);
+-        t = _mm_aesenclast_si128(t, k);
+-        t = aes_accel_bswap(t);
+-    } else {
+-        t = _mm_aesenclast_si128(t, k);
+-    }
+-    ret->v = (AESStateVec)t;
+-}
+-
+-static inline void ATTR_AES_ACCEL
+-aesenc_SB_SR_MC_AK_accel(AESState *ret, const AESState *st,
+-                         const AESState *rk, bool be)
+-{
+-    __m128i t = (__m128i)st->v;
+-    __m128i k = (__m128i)rk->v;
+-
+-    if (be) {
+-        t = aes_accel_bswap(t);
+-        k = aes_accel_bswap(k);
+-        t = _mm_aesenc_si128(t, k);
+-        t = aes_accel_bswap(t);
+-    } else {
+-        t = _mm_aesenc_si128(t, k);
+-    }
+-    ret->v = (AESStateVec)t;
+-}
+-
+-static inline void ATTR_AES_ACCEL
+-aesdec_IMC_accel(AESState *ret, const AESState *st, bool be)
+-{
+-    __m128i t = (__m128i)st->v;
+-
+-    if (be) {
+-        t = aes_accel_bswap(t);
+-        t = _mm_aesimc_si128(t);
+-        t = aes_accel_bswap(t);
+-    } else {
+-        t = _mm_aesimc_si128(t);
+-    }
+-    ret->v = (AESStateVec)t;
+-}
+-
+-static inline void ATTR_AES_ACCEL
+-aesdec_ISB_ISR_AK_accel(AESState *ret, const AESState *st,
+-                        const AESState *rk, bool be)
+-{
+-    __m128i t = (__m128i)st->v;
+-    __m128i k = (__m128i)rk->v;
+-
+-    if (be) {
+-        t = aes_accel_bswap(t);
+-        k = aes_accel_bswap(k);
+-        t = _mm_aesdeclast_si128(t, k);
+-        t = aes_accel_bswap(t);
+-    } else {
+-        t = _mm_aesdeclast_si128(t, k);
+-    }
+-    ret->v = (AESStateVec)t;
+-}
+-
+-static inline void ATTR_AES_ACCEL
+-aesdec_ISB_ISR_AK_IMC_accel(AESState *ret, const AESState *st,
+-                            const AESState *rk, bool be)
+-{
+-    __m128i t = (__m128i)st->v;
+-    __m128i k = (__m128i)rk->v;
+-
+-    if (be) {
+-        t = aes_accel_bswap(t);
+-        k = aes_accel_bswap(k);
+-        t = _mm_aesdeclast_si128(t, k);
+-        t = _mm_aesimc_si128(t);
+-        t = aes_accel_bswap(t);
+-    } else {
+-        t = _mm_aesdeclast_si128(t, k);
+-        t = _mm_aesimc_si128(t);
+-    }
+-    ret->v = (AESStateVec)t;
+-}
+-
+-static inline void ATTR_AES_ACCEL
+-aesdec_ISB_ISR_IMC_AK_accel(AESState *ret, const AESState *st,
+-                            const AESState *rk, bool be)
+-{
+-    __m128i t = (__m128i)st->v;
+-    __m128i k = (__m128i)rk->v;
+-
+-    if (be) {
+-        t = aes_accel_bswap(t);
+-        k = aes_accel_bswap(k);
+-        t = _mm_aesdec_si128(t, k);
+-        t = aes_accel_bswap(t);
+-    } else {
+-        t = _mm_aesdec_si128(t, k);
+-    }
+-    ret->v = (AESStateVec)t;
+-}
+-
+-#endif /* X86_HOST_CRYPTO_AES_ROUND_H */
+diff --git a/host/include/i386/host/crypto/clmul.h b/host/include/i386/host/crypto/clmul.h
+deleted file mode 100644
+index dc3c814797..0000000000
+--- a/host/include/i386/host/crypto/clmul.h
++++ /dev/null
+@@ -1,29 +0,0 @@
+-/*
+- * x86 specific clmul acceleration.
+- * SPDX-License-Identifier: GPL-2.0-or-later
+- */
+-
+-#ifndef X86_HOST_CRYPTO_CLMUL_H
+-#define X86_HOST_CRYPTO_CLMUL_H
+-
+-#include "host/cpuinfo.h"
+-#include <immintrin.h>
+-
+-#if defined(__PCLMUL__)
+-# define HAVE_CLMUL_ACCEL  true
+-# define ATTR_CLMUL_ACCEL
+-#else
+-# define HAVE_CLMUL_ACCEL  likely(cpuinfo & CPUINFO_PCLMUL)
+-# define ATTR_CLMUL_ACCEL  __attribute__((target("pclmul")))
 -#endif
-         ie++;
-     }
- }
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 37803cd724..0b8cca7cec 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -2251,16 +2251,6 @@ void host_cpuid(uint32_t function, uint32_t count,
-                  : "=a"(vec[0]), "=b"(vec[1]),
-                    "=c"(vec[2]), "=d"(vec[3])
-                  : "0"(function), "c"(count) : "cc");
--#elif defined(__i386__)
--    asm volatile("pusha \n\t"
--                 "cpuid \n\t"
--                 "mov %%eax, 0(%2) \n\t"
--                 "mov %%ebx, 4(%2) \n\t"
--                 "mov %%ecx, 8(%2) \n\t"
--                 "mov %%edx, 12(%2) \n\t"
--                 "popa"
--                 : : "a"(function), "c"(count), "S"(vec)
--                 : "memory", "cc");
- #else
-     abort();
- #endif
-diff --git a/util/cacheflush.c b/util/cacheflush.c
-index 69c9614e2c..99221a409f 100644
---- a/util/cacheflush.c
-+++ b/util/cacheflush.c
-@@ -225,7 +225,7 @@ static void __attribute__((constructor)) init_cache_info(void)
-  * Architecture (+ OS) specific cache flushing mechanisms.
-  */
- 
--#if defined(__i386__) || defined(__x86_64__) || defined(__s390__)
-+#if defined(__x86_64__) || defined(__s390__)
- 
- /* Caches are coherent and do not require flushing; symbol inline. */
- 
-diff --git a/configure b/configure
-index 0742f1212d..de0f3a8ebe 100755
---- a/configure
-+++ b/configure
-@@ -382,8 +382,6 @@ fi
- if test ! -z "$cpu" ; then
-   # command line argument
-   :
--elif check_define __i386__ ; then
--  cpu="i386"
- elif check_define __x86_64__ ; then
-   if check_define __ILP32__ ; then
-     cpu="x32"
+-
+-static inline Int128 ATTR_CLMUL_ACCEL
+-clmul_64_accel(uint64_t n, uint64_t m)
+-{
+-    union { __m128i v; Int128 s; } u;
+-
+-    u.v = _mm_clmulepi64_si128(_mm_set_epi64x(0, n), _mm_set_epi64x(0, m), 0);
+-    return u.s;
+-}
+-
+-#endif /* X86_HOST_CRYPTO_CLMUL_H */
+diff --git a/host/include/x86_64/host/cpuinfo.h b/host/include/x86_64/host/cpuinfo.h
+index 67debab9a0..93d029d499 100644
+--- a/host/include/x86_64/host/cpuinfo.h
++++ b/host/include/x86_64/host/cpuinfo.h
+@@ -1 +1,41 @@
+-#include "host/include/i386/host/cpuinfo.h"
++/*
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ * Host specific cpu identification for x86.
++ */
++
++#ifndef HOST_CPUINFO_H
++#define HOST_CPUINFO_H
++
++/* Digested version of <cpuid.h> */
++
++#define CPUINFO_ALWAYS          (1u << 0)  /* so cpuinfo is nonzero */
++#define CPUINFO_OSXSAVE         (1u << 1)
++#define CPUINFO_MOVBE           (1u << 2)
++#define CPUINFO_LZCNT           (1u << 3)
++#define CPUINFO_POPCNT          (1u << 4)
++#define CPUINFO_BMI1            (1u << 5)
++#define CPUINFO_BMI2            (1u << 6)
++#define CPUINFO_SSE2            (1u << 7)
++#define CPUINFO_AVX1            (1u << 9)
++#define CPUINFO_AVX2            (1u << 10)
++#define CPUINFO_AVX512F         (1u << 11)
++#define CPUINFO_AVX512VL        (1u << 12)
++#define CPUINFO_AVX512BW        (1u << 13)
++#define CPUINFO_AVX512DQ        (1u << 14)
++#define CPUINFO_AVX512VBMI2     (1u << 15)
++#define CPUINFO_ATOMIC_VMOVDQA  (1u << 16)
++#define CPUINFO_ATOMIC_VMOVDQU  (1u << 17)
++#define CPUINFO_AES             (1u << 18)
++#define CPUINFO_PCLMUL          (1u << 19)
++#define CPUINFO_GFNI            (1u << 20)
++
++/* Initialized with a constructor. */
++extern unsigned cpuinfo;
++
++/*
++ * We cannot rely on constructor ordering, so other constructors must
++ * use the function interface rather than the variable above.
++ */
++unsigned cpuinfo_init(void);
++
++#endif /* HOST_CPUINFO_H */
+diff --git a/host/include/x86_64/host/crypto/aes-round.h b/host/include/x86_64/host/crypto/aes-round.h
+index 2773cc9f10..59a64130f7 100644
+--- a/host/include/x86_64/host/crypto/aes-round.h
++++ b/host/include/x86_64/host/crypto/aes-round.h
+@@ -1 +1,152 @@
+-#include "host/include/i386/host/crypto/aes-round.h"
++/*
++ * x86 specific aes acceleration.
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef X86_HOST_CRYPTO_AES_ROUND_H
++#define X86_HOST_CRYPTO_AES_ROUND_H
++
++#include "host/cpuinfo.h"
++#include <immintrin.h>
++
++#if defined(__AES__) && defined(__SSSE3__)
++# define HAVE_AES_ACCEL  true
++# define ATTR_AES_ACCEL
++#else
++# define HAVE_AES_ACCEL  likely(cpuinfo & CPUINFO_AES)
++# define ATTR_AES_ACCEL  __attribute__((target("aes,ssse3")))
++#endif
++
++static inline __m128i ATTR_AES_ACCEL
++aes_accel_bswap(__m128i x)
++{
++    return _mm_shuffle_epi8(x, _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8,
++                                            9, 10, 11, 12, 13, 14, 15));
++}
++
++static inline void ATTR_AES_ACCEL
++aesenc_MC_accel(AESState *ret, const AESState *st, bool be)
++{
++    __m128i t = (__m128i)st->v;
++    __m128i z = _mm_setzero_si128();
++
++    if (be) {
++        t = aes_accel_bswap(t);
++        t = _mm_aesdeclast_si128(t, z);
++        t = _mm_aesenc_si128(t, z);
++        t = aes_accel_bswap(t);
++    } else {
++        t = _mm_aesdeclast_si128(t, z);
++        t = _mm_aesenc_si128(t, z);
++    }
++    ret->v = (AESStateVec)t;
++}
++
++static inline void ATTR_AES_ACCEL
++aesenc_SB_SR_AK_accel(AESState *ret, const AESState *st,
++                      const AESState *rk, bool be)
++{
++    __m128i t = (__m128i)st->v;
++    __m128i k = (__m128i)rk->v;
++
++    if (be) {
++        t = aes_accel_bswap(t);
++        k = aes_accel_bswap(k);
++        t = _mm_aesenclast_si128(t, k);
++        t = aes_accel_bswap(t);
++    } else {
++        t = _mm_aesenclast_si128(t, k);
++    }
++    ret->v = (AESStateVec)t;
++}
++
++static inline void ATTR_AES_ACCEL
++aesenc_SB_SR_MC_AK_accel(AESState *ret, const AESState *st,
++                         const AESState *rk, bool be)
++{
++    __m128i t = (__m128i)st->v;
++    __m128i k = (__m128i)rk->v;
++
++    if (be) {
++        t = aes_accel_bswap(t);
++        k = aes_accel_bswap(k);
++        t = _mm_aesenc_si128(t, k);
++        t = aes_accel_bswap(t);
++    } else {
++        t = _mm_aesenc_si128(t, k);
++    }
++    ret->v = (AESStateVec)t;
++}
++
++static inline void ATTR_AES_ACCEL
++aesdec_IMC_accel(AESState *ret, const AESState *st, bool be)
++{
++    __m128i t = (__m128i)st->v;
++
++    if (be) {
++        t = aes_accel_bswap(t);
++        t = _mm_aesimc_si128(t);
++        t = aes_accel_bswap(t);
++    } else {
++        t = _mm_aesimc_si128(t);
++    }
++    ret->v = (AESStateVec)t;
++}
++
++static inline void ATTR_AES_ACCEL
++aesdec_ISB_ISR_AK_accel(AESState *ret, const AESState *st,
++                        const AESState *rk, bool be)
++{
++    __m128i t = (__m128i)st->v;
++    __m128i k = (__m128i)rk->v;
++
++    if (be) {
++        t = aes_accel_bswap(t);
++        k = aes_accel_bswap(k);
++        t = _mm_aesdeclast_si128(t, k);
++        t = aes_accel_bswap(t);
++    } else {
++        t = _mm_aesdeclast_si128(t, k);
++    }
++    ret->v = (AESStateVec)t;
++}
++
++static inline void ATTR_AES_ACCEL
++aesdec_ISB_ISR_AK_IMC_accel(AESState *ret, const AESState *st,
++                            const AESState *rk, bool be)
++{
++    __m128i t = (__m128i)st->v;
++    __m128i k = (__m128i)rk->v;
++
++    if (be) {
++        t = aes_accel_bswap(t);
++        k = aes_accel_bswap(k);
++        t = _mm_aesdeclast_si128(t, k);
++        t = _mm_aesimc_si128(t);
++        t = aes_accel_bswap(t);
++    } else {
++        t = _mm_aesdeclast_si128(t, k);
++        t = _mm_aesimc_si128(t);
++    }
++    ret->v = (AESStateVec)t;
++}
++
++static inline void ATTR_AES_ACCEL
++aesdec_ISB_ISR_IMC_AK_accel(AESState *ret, const AESState *st,
++                            const AESState *rk, bool be)
++{
++    __m128i t = (__m128i)st->v;
++    __m128i k = (__m128i)rk->v;
++
++    if (be) {
++        t = aes_accel_bswap(t);
++        k = aes_accel_bswap(k);
++        t = _mm_aesdec_si128(t, k);
++        t = aes_accel_bswap(t);
++    } else {
++        t = _mm_aesdec_si128(t, k);
++    }
++    ret->v = (AESStateVec)t;
++}
++
++#endif /* X86_HOST_CRYPTO_AES_ROUND_H */
+diff --git a/host/include/x86_64/host/crypto/clmul.h b/host/include/x86_64/host/crypto/clmul.h
+index f25eced416..dc3c814797 100644
+--- a/host/include/x86_64/host/crypto/clmul.h
++++ b/host/include/x86_64/host/crypto/clmul.h
+@@ -1 +1,29 @@
+-#include "host/include/i386/host/crypto/clmul.h"
++/*
++ * x86 specific clmul acceleration.
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef X86_HOST_CRYPTO_CLMUL_H
++#define X86_HOST_CRYPTO_CLMUL_H
++
++#include "host/cpuinfo.h"
++#include <immintrin.h>
++
++#if defined(__PCLMUL__)
++# define HAVE_CLMUL_ACCEL  true
++# define ATTR_CLMUL_ACCEL
++#else
++# define HAVE_CLMUL_ACCEL  likely(cpuinfo & CPUINFO_PCLMUL)
++# define ATTR_CLMUL_ACCEL  __attribute__((target("pclmul")))
++#endif
++
++static inline Int128 ATTR_CLMUL_ACCEL
++clmul_64_accel(uint64_t n, uint64_t m)
++{
++    union { __m128i v; Int128 s; } u;
++
++    u.v = _mm_clmulepi64_si128(_mm_set_epi64x(0, n), _mm_set_epi64x(0, m), 0);
++    return u.s;
++}
++
++#endif /* X86_HOST_CRYPTO_CLMUL_H */
+diff --git a/linux-user/include/host/i386/host-signal.h b/linux-user/include/host/i386/host-signal.h
+deleted file mode 100644
+index e2b64f077f..0000000000
+--- a/linux-user/include/host/i386/host-signal.h
++++ /dev/null
+@@ -1,38 +0,0 @@
+-/*
+- * host-signal.h: signal info dependent on the host architecture
+- *
+- * Copyright (c) 2003-2005 Fabrice Bellard
+- * Copyright (c) 2021 Linaro Limited
+- *
+- * This work is licensed under the terms of the GNU LGPL, version 2.1 or later.
+- * See the COPYING file in the top-level directory.
+- */
+-
+-#ifndef I386_HOST_SIGNAL_H
+-#define I386_HOST_SIGNAL_H
+-
+-/* The third argument to a SA_SIGINFO handler is ucontext_t. */
+-typedef ucontext_t host_sigcontext;
+-
+-static inline uintptr_t host_signal_pc(host_sigcontext *uc)
+-{
+-    return uc->uc_mcontext.gregs[REG_EIP];
+-}
+-
+-static inline void host_signal_set_pc(host_sigcontext *uc, uintptr_t pc)
+-{
+-    uc->uc_mcontext.gregs[REG_EIP] = pc;
+-}
+-
+-static inline void *host_signal_mask(host_sigcontext *uc)
+-{
+-    return &uc->uc_sigmask;
+-}
+-
+-static inline bool host_signal_write(siginfo_t *info, host_sigcontext *uc)
+-{
+-    return uc->uc_mcontext.gregs[REG_TRAPNO] == 0xe
+-        && (uc->uc_mcontext.gregs[REG_ERR] & 0x2);
+-}
+-
+-#endif
+diff --git a/common-user/host/i386/safe-syscall.inc.S b/common-user/host/i386/safe-syscall.inc.S
+deleted file mode 100644
+index db2ed09839..0000000000
+--- a/common-user/host/i386/safe-syscall.inc.S
++++ /dev/null
+@@ -1,127 +0,0 @@
+-/*
+- * safe-syscall.inc.S : host-specific assembly fragment
+- * to handle signals occurring at the same time as system calls.
+- * This is intended to be included by common-user/safe-syscall.S
+- *
+- * Written by Richard Henderson <rth@twiddle.net>
+- * Copyright (C) 2016 Red Hat, Inc.
+- *
+- * This work is licensed under the terms of the GNU GPL, version 2 or later.
+- * See the COPYING file in the top-level directory.
+- */
+-
+-        .global safe_syscall_base
+-        .global safe_syscall_start
+-        .global safe_syscall_end
+-        .type   safe_syscall_base, @function
+-
+-        /* This is the entry point for making a system call. The calling
+-         * convention here is that of a C varargs function with the
+-         * first argument an 'int *' to the signal_pending flag, the
+-         * second one the system call number (as a 'long'), and all further
+-         * arguments being syscall arguments (also 'long').
+-         */
+-safe_syscall_base:
+-        .cfi_startproc
+-        push    %ebp
+-        .cfi_adjust_cfa_offset 4
+-        .cfi_rel_offset ebp, 0
+-        push    %esi
+-        .cfi_adjust_cfa_offset 4
+-        .cfi_rel_offset esi, 0
+-        push    %edi
+-        .cfi_adjust_cfa_offset 4
+-        .cfi_rel_offset edi, 0
+-        push    %ebx
+-        .cfi_adjust_cfa_offset 4
+-        .cfi_rel_offset ebx, 0
+-
+-        /* The syscall calling convention isn't the same as the C one:
+-         * we enter with 0(%esp) == return address
+-         *               4(%esp) == &signal_pending
+-         *               8(%esp) == syscall number
+-         *               12(%esp) ... 32(%esp) == syscall arguments
+-         *               and return the result in eax
+-         * and the syscall instruction needs
+-         *               eax == syscall number
+-         *               ebx, ecx, edx, esi, edi, ebp == syscall arguments
+-         *               and returns the result in eax
+-         * Shuffle everything around appropriately.
+-         * Note the 16 bytes that we pushed to save registers.
+-         */
+-        mov     12+16(%esp), %ebx       /* the syscall arguments */
+-        mov     16+16(%esp), %ecx
+-        mov     20+16(%esp), %edx
+-        mov     24+16(%esp), %esi
+-        mov     28+16(%esp), %edi
+-        mov     32+16(%esp), %ebp
+-
+-        /* This next sequence of code works in conjunction with the
+-         * rewind_if_safe_syscall_function(). If a signal is taken
+-         * and the interrupted PC is anywhere between 'safe_syscall_start'
+-         * and 'safe_syscall_end' then we rewind it to 'safe_syscall_start'.
+-         * The code sequence must therefore be able to cope with this, and
+-         * the syscall instruction must be the final one in the sequence.
+-         */
+-safe_syscall_start:
+-        /* if signal_pending is non-zero, don't do the call */
+-        mov     4+16(%esp), %eax        /* signal_pending */
+-        cmpl    $0, (%eax)
+-        jnz     2f
+-        mov     8+16(%esp), %eax        /* syscall number */
+-        int     $0x80
+-safe_syscall_end:
+-
+-        /* code path for having successfully executed the syscall */
+-#if defined(__linux__)
+-        /* Linux kernel returns (small) negative errno. */
+-        cmp     $-4095, %eax
+-        jae     0f
+-#elif defined(__FreeBSD__)
+-        /* FreeBSD kernel returns positive errno and C bit set. */
+-        jc      1f
+-#else
+-#error "unsupported os"
+-#endif
+-        pop     %ebx
+-        .cfi_remember_state
+-        .cfi_adjust_cfa_offset -4
+-        .cfi_restore ebx
+-        pop     %edi
+-        .cfi_adjust_cfa_offset -4
+-        .cfi_restore edi
+-        pop     %esi
+-        .cfi_adjust_cfa_offset -4
+-        .cfi_restore esi
+-        pop     %ebp
+-        .cfi_adjust_cfa_offset -4
+-        .cfi_restore ebp
+-        ret
+-        .cfi_restore_state
+-
+-#if defined(__linux__)
+-0:      neg     %eax
+-        jmp     1f
+-#endif
+-
+-        /* code path when we didn't execute the syscall */
+-2:      mov     $QEMU_ERESTARTSYS, %eax
+-
+-        /* code path setting errno */
+-1:      pop     %ebx
+-        .cfi_adjust_cfa_offset -4
+-        .cfi_restore ebx
+-        pop     %edi
+-        .cfi_adjust_cfa_offset -4
+-        .cfi_restore edi
+-        pop     %esi
+-        .cfi_adjust_cfa_offset -4
+-        .cfi_restore esi
+-        pop     %ebp
+-        .cfi_adjust_cfa_offset -4
+-        .cfi_restore ebp
+-        mov     %eax, 4(%esp)
+-        jmp     safe_syscall_set_errno_tail
+-
+-        .cfi_endproc
+-        .size   safe_syscall_base, .-safe_syscall_base
+diff --git a/host/include/i386/host/bufferiszero.c.inc b/host/include/i386/host/bufferiszero.c.inc
+deleted file mode 100644
+index 74ae98580f..0000000000
+--- a/host/include/i386/host/bufferiszero.c.inc
++++ /dev/null
+@@ -1,125 +0,0 @@
+-/*
+- * SPDX-License-Identifier: GPL-2.0-or-later
+- * buffer_is_zero acceleration, x86 version.
+- */
+-
+-#if defined(CONFIG_AVX2_OPT) || defined(__SSE2__)
+-#include <immintrin.h>
+-
+-/* Helper for preventing the compiler from reassociating
+-   chains of binary vector operations.  */
+-#define SSE_REASSOC_BARRIER(vec0, vec1) asm("" : "+x"(vec0), "+x"(vec1))
+-
+-/* Note that these vectorized functions may assume len >= 256.  */
+-
+-static bool __attribute__((target("sse2")))
+-buffer_zero_sse2(const void *buf, size_t len)
+-{
+-    /* Unaligned loads at head/tail.  */
+-    __m128i v = *(__m128i_u *)(buf);
+-    __m128i w = *(__m128i_u *)(buf + len - 16);
+-    /* Align head/tail to 16-byte boundaries.  */
+-    const __m128i *p = QEMU_ALIGN_PTR_DOWN(buf + 16, 16);
+-    const __m128i *e = QEMU_ALIGN_PTR_DOWN(buf + len - 1, 16);
+-    __m128i zero = { 0 };
+-
+-    /* Collect a partial block at tail end.  */
+-    v |= e[-1]; w |= e[-2];
+-    SSE_REASSOC_BARRIER(v, w);
+-    v |= e[-3]; w |= e[-4];
+-    SSE_REASSOC_BARRIER(v, w);
+-    v |= e[-5]; w |= e[-6];
+-    SSE_REASSOC_BARRIER(v, w);
+-    v |= e[-7]; v |= w;
+-
+-    /*
+-     * Loop over complete 128-byte blocks.
+-     * With the head and tail removed, e - p >= 14, so the loop
+-     * must iterate at least once.
+-     */
+-    do {
+-        v = _mm_cmpeq_epi8(v, zero);
+-        if (unlikely(_mm_movemask_epi8(v) != 0xFFFF)) {
+-            return false;
+-        }
+-        v = p[0]; w = p[1];
+-        SSE_REASSOC_BARRIER(v, w);
+-        v |= p[2]; w |= p[3];
+-        SSE_REASSOC_BARRIER(v, w);
+-        v |= p[4]; w |= p[5];
+-        SSE_REASSOC_BARRIER(v, w);
+-        v |= p[6]; w |= p[7];
+-        SSE_REASSOC_BARRIER(v, w);
+-        v |= w;
+-        p += 8;
+-    } while (p < e - 7);
+-
+-    return _mm_movemask_epi8(_mm_cmpeq_epi8(v, zero)) == 0xFFFF;
+-}
+-
+-#ifdef CONFIG_AVX2_OPT
+-static bool __attribute__((target("avx2")))
+-buffer_zero_avx2(const void *buf, size_t len)
+-{
+-    /* Unaligned loads at head/tail.  */
+-    __m256i v = *(__m256i_u *)(buf);
+-    __m256i w = *(__m256i_u *)(buf + len - 32);
+-    /* Align head/tail to 32-byte boundaries.  */
+-    const __m256i *p = QEMU_ALIGN_PTR_DOWN(buf + 32, 32);
+-    const __m256i *e = QEMU_ALIGN_PTR_DOWN(buf + len - 1, 32);
+-    __m256i zero = { 0 };
+-
+-    /* Collect a partial block at tail end.  */
+-    v |= e[-1]; w |= e[-2];
+-    SSE_REASSOC_BARRIER(v, w);
+-    v |= e[-3]; w |= e[-4];
+-    SSE_REASSOC_BARRIER(v, w);
+-    v |= e[-5]; w |= e[-6];
+-    SSE_REASSOC_BARRIER(v, w);
+-    v |= e[-7]; v |= w;
+-
+-    /* Loop over complete 256-byte blocks.  */
+-    for (; p < e - 7; p += 8) {
+-        /* PTEST is not profitable here.  */
+-        v = _mm256_cmpeq_epi8(v, zero);
+-        if (unlikely(_mm256_movemask_epi8(v) != 0xFFFFFFFF)) {
+-            return false;
+-        }
+-        v = p[0]; w = p[1];
+-        SSE_REASSOC_BARRIER(v, w);
+-        v |= p[2]; w |= p[3];
+-        SSE_REASSOC_BARRIER(v, w);
+-        v |= p[4]; w |= p[5];
+-        SSE_REASSOC_BARRIER(v, w);
+-        v |= p[6]; w |= p[7];
+-        SSE_REASSOC_BARRIER(v, w);
+-        v |= w;
+-    }
+-
+-    return _mm256_movemask_epi8(_mm256_cmpeq_epi8(v, zero)) == 0xFFFFFFFF;
+-}
+-#endif /* CONFIG_AVX2_OPT */
+-
+-static biz_accel_fn const accel_table[] = {
+-    buffer_is_zero_int_ge256,
+-    buffer_zero_sse2,
+-#ifdef CONFIG_AVX2_OPT
+-    buffer_zero_avx2,
+-#endif
+-};
+-
+-static unsigned best_accel(void)
+-{
+-    unsigned info = cpuinfo_init();
+-
+-#ifdef CONFIG_AVX2_OPT
+-    if (info & CPUINFO_AVX2) {
+-        return 2;
+-    }
+-#endif
+-    return info & CPUINFO_SSE2 ? 1 : 0;
+-}
+-
+-#else
+-# include "host/include/generic/host/bufferiszero.c.inc"
+-#endif
+diff --git a/host/include/x86_64/host/bufferiszero.c.inc b/host/include/x86_64/host/bufferiszero.c.inc
+index 1d3f1fd6f5..74ae98580f 100644
+--- a/host/include/x86_64/host/bufferiszero.c.inc
++++ b/host/include/x86_64/host/bufferiszero.c.inc
+@@ -1 +1,125 @@
+-#include "host/include/i386/host/bufferiszero.c.inc"
++/*
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ * buffer_is_zero acceleration, x86 version.
++ */
++
++#if defined(CONFIG_AVX2_OPT) || defined(__SSE2__)
++#include <immintrin.h>
++
++/* Helper for preventing the compiler from reassociating
++   chains of binary vector operations.  */
++#define SSE_REASSOC_BARRIER(vec0, vec1) asm("" : "+x"(vec0), "+x"(vec1))
++
++/* Note that these vectorized functions may assume len >= 256.  */
++
++static bool __attribute__((target("sse2")))
++buffer_zero_sse2(const void *buf, size_t len)
++{
++    /* Unaligned loads at head/tail.  */
++    __m128i v = *(__m128i_u *)(buf);
++    __m128i w = *(__m128i_u *)(buf + len - 16);
++    /* Align head/tail to 16-byte boundaries.  */
++    const __m128i *p = QEMU_ALIGN_PTR_DOWN(buf + 16, 16);
++    const __m128i *e = QEMU_ALIGN_PTR_DOWN(buf + len - 1, 16);
++    __m128i zero = { 0 };
++
++    /* Collect a partial block at tail end.  */
++    v |= e[-1]; w |= e[-2];
++    SSE_REASSOC_BARRIER(v, w);
++    v |= e[-3]; w |= e[-4];
++    SSE_REASSOC_BARRIER(v, w);
++    v |= e[-5]; w |= e[-6];
++    SSE_REASSOC_BARRIER(v, w);
++    v |= e[-7]; v |= w;
++
++    /*
++     * Loop over complete 128-byte blocks.
++     * With the head and tail removed, e - p >= 14, so the loop
++     * must iterate at least once.
++     */
++    do {
++        v = _mm_cmpeq_epi8(v, zero);
++        if (unlikely(_mm_movemask_epi8(v) != 0xFFFF)) {
++            return false;
++        }
++        v = p[0]; w = p[1];
++        SSE_REASSOC_BARRIER(v, w);
++        v |= p[2]; w |= p[3];
++        SSE_REASSOC_BARRIER(v, w);
++        v |= p[4]; w |= p[5];
++        SSE_REASSOC_BARRIER(v, w);
++        v |= p[6]; w |= p[7];
++        SSE_REASSOC_BARRIER(v, w);
++        v |= w;
++        p += 8;
++    } while (p < e - 7);
++
++    return _mm_movemask_epi8(_mm_cmpeq_epi8(v, zero)) == 0xFFFF;
++}
++
++#ifdef CONFIG_AVX2_OPT
++static bool __attribute__((target("avx2")))
++buffer_zero_avx2(const void *buf, size_t len)
++{
++    /* Unaligned loads at head/tail.  */
++    __m256i v = *(__m256i_u *)(buf);
++    __m256i w = *(__m256i_u *)(buf + len - 32);
++    /* Align head/tail to 32-byte boundaries.  */
++    const __m256i *p = QEMU_ALIGN_PTR_DOWN(buf + 32, 32);
++    const __m256i *e = QEMU_ALIGN_PTR_DOWN(buf + len - 1, 32);
++    __m256i zero = { 0 };
++
++    /* Collect a partial block at tail end.  */
++    v |= e[-1]; w |= e[-2];
++    SSE_REASSOC_BARRIER(v, w);
++    v |= e[-3]; w |= e[-4];
++    SSE_REASSOC_BARRIER(v, w);
++    v |= e[-5]; w |= e[-6];
++    SSE_REASSOC_BARRIER(v, w);
++    v |= e[-7]; v |= w;
++
++    /* Loop over complete 256-byte blocks.  */
++    for (; p < e - 7; p += 8) {
++        /* PTEST is not profitable here.  */
++        v = _mm256_cmpeq_epi8(v, zero);
++        if (unlikely(_mm256_movemask_epi8(v) != 0xFFFFFFFF)) {
++            return false;
++        }
++        v = p[0]; w = p[1];
++        SSE_REASSOC_BARRIER(v, w);
++        v |= p[2]; w |= p[3];
++        SSE_REASSOC_BARRIER(v, w);
++        v |= p[4]; w |= p[5];
++        SSE_REASSOC_BARRIER(v, w);
++        v |= p[6]; w |= p[7];
++        SSE_REASSOC_BARRIER(v, w);
++        v |= w;
++    }
++
++    return _mm256_movemask_epi8(_mm256_cmpeq_epi8(v, zero)) == 0xFFFFFFFF;
++}
++#endif /* CONFIG_AVX2_OPT */
++
++static biz_accel_fn const accel_table[] = {
++    buffer_is_zero_int_ge256,
++    buffer_zero_sse2,
++#ifdef CONFIG_AVX2_OPT
++    buffer_zero_avx2,
++#endif
++};
++
++static unsigned best_accel(void)
++{
++    unsigned info = cpuinfo_init();
++
++#ifdef CONFIG_AVX2_OPT
++    if (info & CPUINFO_AVX2) {
++        return 2;
++    }
++#endif
++    return info & CPUINFO_SSE2 ? 1 : 0;
++}
++
++#else
++# include "host/include/generic/host/bufferiszero.c.inc"
++#endif
 -- 
 2.43.0
 
