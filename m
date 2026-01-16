@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4773AD303FA
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:19:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1D83D3047D
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jan 2026 12:21:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vghrS-0008Cy-Oh; Fri, 16 Jan 2026 06:19:26 -0500
+	id 1vghrT-0008NE-L8; Fri, 16 Jan 2026 06:19:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghr8-00081S-0L
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:19:07 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghrF-00087d-7Y
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:19:17 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghr6-0005pc-Da
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:19:05 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-47fedb7c68dso12969075e9.2
- for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 03:19:04 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vghrD-0005sE-Db
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 06:19:12 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-42fb0fc5aa9so983550f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 03:19:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768562343; x=1769167143; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768562349; x=1769167149; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=aaDCuoO92f4Vf69cn2iypqC0aQgUpS+QpOm8Ne49+7s=;
- b=ZOjrq8OB+PkYF6eWi0RpsIpflXFmSDvp67U7eYuCa2Ld5e3cWZ2Oca1GL3AKlDhGaH
- xjoTKZnBuUZfxnM6xcFxOs94To2LvN/xxYsnfkayo13KoszrPmonRpwP8Bc8bIBA9Unc
- svKFundAKi1TJrBrrmdRRFaFiRMK+31mF8dVtDKYxxOPuHEMKweF+y2GwOHQy8yyjtvn
- 9AYld2CDojvXDHCTBpoI6yGGgNKYlFOFhEeU9NoHfa2Tfi6ELwolMrJp/AIKu1W+smC/
- CwCy9vN6BB7PXbgukyOSeL113R+7E3unYi1+G9UMPrpKeScuCLItmYyCUvFn/JQm0+zm
- uLTQ==
+ :reply-to; bh=FJKnxppWAC/n1eSB1d1Olh3eK3qa6g9cnmgeq7kmKnk=;
+ b=QrA6FZ04erDB+CuzLIUdrUEMiTf1P3uXjEp35btjIcUG15WAW1p9hCtLYyLBbYfWjw
+ DVRqmmfS/DWFeWsplvr5tEk6S/E4xRNGl/43MRNEVus+FIUXDKX+KS5u+ElhezBndnTD
+ YFQn2yjMOMq7bPoUkvVB/qxVgv+j493GZupWmZ+BGsdUcGB/Zv6tWnYXew3cJ5B0AxPN
+ 6C3UDtwNz9Fj+T7ZoLZhAWeDa6sh6jFkmwiVHBL8LAcIyKyVoIeDuTfSduBte72uYtBm
+ FBKS0KuHfUyKKRSewZGOXv9PRMpalmRsxE+LJ+Wri2vgPbixTmn7GcwqNkennJ6NZZS5
+ OYug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768562343; x=1769167143;
+ d=1e100.net; s=20230601; t=1768562349; x=1769167149;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=aaDCuoO92f4Vf69cn2iypqC0aQgUpS+QpOm8Ne49+7s=;
- b=r1+4F6dAqQuFQEjabAga0S8EVwmoS5pbKT0v/t2D87/jvM8bS7foalq4F1E0A5JJku
- FbvGstllYVCbSzTeps86iSO9ZfbUJm0JTEJh1SGvjJ16pZgWMAihPWXtSbRHv45iNqMU
- xUW1dSv0svZgzjEk0fbwBcn7XEJJfLlfbZBH4ALK/vADIEhp3rcJ+8NuLEKmyPC/QODn
- PSXm8J1eb+3FK6X/oAWQzRug2RVFdn38QpTsHISmOGe3xlUB/VmpSlAVH8j5LdmoYMlw
- iyzReHn5TnZcWh0+tB7ST48DGnCasFI0ACuxBxMapC2TIucXSd4WBLdf7WjkUO6e3rKb
- 1eyw==
-X-Gm-Message-State: AOJu0YzW8X/BKf9sSMZ7kVz6wlVFdaE/nQBV4R1xorp/+nz9gA80i21/
- VGXuMzVCSItoiZ59yMDEGplJZDYgZillpdVFPqtwu7W+q8Jtbbm2ynHb2QMy9wCcJ9325DX1UrB
- FA4Pt7ZI=
-X-Gm-Gg: AY/fxX484biZMuIN6kqGGJbos7oXLiyyp4jfuCTivIeDL2UcoiknKKcE1N2GgJOXDmZ
- LfdYRhQk7SWcHkgar6SLFsTA9esWxtN5nH4pDCRDoQcOoHrViZUTggMa0LkZyQ65qUiYfn3C8XX
- GSWvvh+qy1LkKICzrmlnCMq87nPx0r4QC0wAMmvr62y0hYyLDPaWgTAKcHD7K26tOQWI3pPJ4uH
- zaGO9TGzf3IfqcJkvbBwH1uhFNt+dVxa3rqMG0NL/CmtJVM5T1uCVjsxGGOyznQi7VO7cSxYP5k
- SQjlE25zM2Z/KVtrwpEaC/9zWxWZQ09JaAscOTRScEJAwI6tm6eFEvsxYb0jVDA7XVHnUDusU8b
- H8o1L1/TAPw77OAfbnwJykhLt29eeb/jWfnlZ1os18PCsVK2qUuajdyGn+KxGyRuZ7nQBl+7iBv
- dUyAt2im2KlCb+cjYZOdhb0pCqQRUi5dH4swnEOW5K8bsylJEnDp1ERGoP3eTx
-X-Received: by 2002:a05:600c:1d0a:b0:477:8ba7:fe0a with SMTP id
- 5b1f17b1804b1-4801e343051mr35811995e9.24.1768562342598; 
- Fri, 16 Jan 2026 03:19:02 -0800 (PST)
+ bh=FJKnxppWAC/n1eSB1d1Olh3eK3qa6g9cnmgeq7kmKnk=;
+ b=gVr9cqqVbXo2XiOuy6GYgAbm7Uac6+4SEpViOjYr/uDg/wfFyR6pylZQowFfmXiJ06
+ fYXR6/qESDpk6bEzM89lvG1PzYs0Zc30G8l9ccrHheJ0BdvTD2sGHuvqkpPplV5i2S8r
+ E7oQrCRobtegDyDARZut/a3mdn0FLsFrIwM0FqkeFeV4T/tyo3uB3Iv+yc7G9+YZbmS3
+ Tnp25D1nxns7mKLKAwTmsR9Z/cUIhvdGjty+gTF4lFwXZ8R0gvF/slT8Hg1XnsY6oT/g
+ 13hRqDOWcrZc6N4qqrmtTKd7dZTRuZfakr0pFlFRJ59+yTkPyRoiDBiZGrPB7aivzjfj
+ JZ5Q==
+X-Gm-Message-State: AOJu0Ywk/0xHvXWC6CWMUiOKP4RYO+rMWRo6I/dXTO9nur1EO0mxzTzT
+ KfZq8pFsmm5V77juzD3LNgfqmuq7rI1nMcWvjJSGZ09d6DuoyxWsSjfM+N3O1kH7+u4k6knuwYy
+ pLRdd71I=
+X-Gm-Gg: AY/fxX60c3RiDKZmCzg2xrBFbF5Bmsk/E+4Tx2Liob/bfHLziWr69G6Y8ka4mGSalBq
+ CxpY2J5nFqf1hMQFYq7HYlOrj6DrTmJgJRCFGjgYVJawOdHJfZl7EQbfu9WAozBgI3OnGUl8fqq
+ 4v7O2vrLl1iWxBurzLfHLzYbgHD/QJX1MvFCUU0LbG9Ntwp+ODUFMMil1SkUdQmRvKmpbvGAUOn
+ aLI09QvwKUjZ1cPC73v75zOUpjzvkqqki6lOhdVL7HzDV1rYTaXQ2EkORRAaxuDhi/WgIjMFRu/
+ Ucowo2tB+U8AosLHCqg0s/9/i3iCU32rN2sUDYxz4Bg1WvUe1lwZ4N9q5uossWXmuKwqn4xHYYu
+ igN7WNI67Hpzr3rAUyLA77KMpjF/b6RUGB+dRaKZ2bGB3GPQrqAnoRmqE6i6PD1MBN5xGf8shts
+ eWxERApOvjOZTVf6PukzoCCeH4ydSamlKZO2uZip+8wFfTzJNbiEcYmf3WGck7ar5uCNxsQzM=
+X-Received: by 2002:a05:6000:2281:b0:430:f40f:61b9 with SMTP id
+ ffacd0b85a97d-4356a024c7amr3136262f8f.4.1768562349435; 
+ Fri, 16 Jan 2026 03:19:09 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4356997e6dasm4696524f8f.32.2026.01.16.03.19.01
+ ffacd0b85a97d-4356999810bsm4690869f8f.40.2026.01.16.03.19.08
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 16 Jan 2026 03:19:02 -0800 (PST)
+ Fri, 16 Jan 2026 03:19:08 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 08/30] accel/hvf: Create hvf_protect_clean_range,
- hvf_unprotect_dirty_range
-Date: Fri, 16 Jan 2026 12:17:45 +0100
-Message-ID: <20260116111807.36053-9-philmd@linaro.org>
+Subject: [PULL 09/30] target/i386/hvf: Use host page alignment in
+ ept_emulation_fault()
+Date: Fri, 16 Jan 2026 12:17:46 +0100
+Message-ID: <20260116111807.36053-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260116111807.36053-1-philmd@linaro.org>
 References: <20260116111807.36053-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,79 +97,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+While on x86 the host page size is fixed to 4KB, it is
+better to call qemu_real_host_page_size() for consistency.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Message-ID: <20251103101034.59039-2-philmd@linaro.org>
+Message-ID: <20251103101034.59039-3-philmd@linaro.org>
 ---
- include/system/hvf_int.h |  3 +++
- accel/hvf/hvf-all.c      | 25 +++++++++++++++++++++++++
- accel/hvf/trace-events   |  1 +
- 3 files changed, 29 insertions(+)
+ target/i386/hvf/hvf.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/include/system/hvf_int.h b/include/system/hvf_int.h
-index 3d2be4092ef..5a57691885f 100644
---- a/include/system/hvf_int.h
-+++ b/include/system/hvf_int.h
-@@ -89,6 +89,9 @@ int hvf_arch_get_registers(CPUState *);
- /* Must be called by the owning thread */
- void hvf_arch_update_guest_debug(CPUState *cpu);
+diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+index 2023a7bfbb0..731cd954630 100644
+--- a/target/i386/hvf/hvf.c
++++ b/target/i386/hvf/hvf.c
+@@ -76,7 +76,7 @@
+ #include "qemu/main-loop.h"
+ #include "qemu/accel.h"
+ #include "target/i386/cpu.h"
+-#include "exec/target_page.h"
++#include "exec/cpu-common.h"
  
-+void hvf_protect_clean_range(hwaddr addr, size_t size);
-+void hvf_unprotect_dirty_range(hwaddr addr, size_t size);
-+
- struct hvf_sw_breakpoint {
-     vaddr pc;
-     vaddr saved_insn;
-diff --git a/accel/hvf/hvf-all.c b/accel/hvf/hvf-all.c
-index 77f4e4e4f30..741b4bdc4fb 100644
---- a/accel/hvf/hvf-all.c
-+++ b/accel/hvf/hvf-all.c
-@@ -58,6 +58,31 @@ void assert_hvf_ok_impl(hv_return_t ret, const char *file, unsigned int line,
-     abort();
- }
+ static Error *invtsc_mig_blocker;
  
-+static void do_hv_vm_protect(hwaddr start, size_t size,
-+                             hv_memory_flags_t flags)
-+{
-+    hv_return_t ret;
+@@ -137,9 +137,12 @@ static bool ept_emulation_fault(hvf_slot *slot, uint64_t gpa, uint64_t ept_qual)
+ 
+     if (write && slot) {
+         if (slot->flags & HVF_SLOT_LOG) {
+-            uint64_t dirty_page_start = gpa & ~(TARGET_PAGE_SIZE - 1u);
++            uintptr_t page_size = qemu_real_host_page_size();
++            intptr_t page_mask = -(intptr_t)page_size;
++            uint64_t dirty_page_start = gpa & page_mask;
 +
-+    trace_hvf_vm_protect(start, size, flags,
-+                         flags & HV_MEMORY_READ  ? 'R' : '-',
-+                         flags & HV_MEMORY_WRITE ? 'W' : '-',
-+                         flags & HV_MEMORY_EXEC  ? 'X' : '-');
-+
-+    ret = hv_vm_protect(start, size, flags);
-+    assert_hvf_ok(ret);
-+}
-+
-+void hvf_protect_clean_range(hwaddr addr, size_t size)
-+{
-+    do_hv_vm_protect(addr, size, HV_MEMORY_READ | HV_MEMORY_EXEC);
-+}
-+
-+void hvf_unprotect_dirty_range(hwaddr addr, size_t size)
-+{
-+    do_hv_vm_protect(addr, size,
-+                     HV_MEMORY_READ | HV_MEMORY_WRITE | HV_MEMORY_EXEC);
-+}
-+
- static int do_hvf_set_memory(hvf_slot *slot, hv_memory_flags_t flags)
- {
-     struct mac_slot *macslot;
-diff --git a/accel/hvf/trace-events b/accel/hvf/trace-events
-index 2fd3e127c74..f989da59492 100644
---- a/accel/hvf/trace-events
-+++ b/accel/hvf/trace-events
-@@ -5,3 +5,4 @@
- # hvf-accel-ops.c
- hvf_vm_map(uint64_t paddr, uint64_t size, void *vaddr, uint8_t flags, const char r, const char w, const char e) "paddr:0x%016"PRIx64" size:0x%08"PRIx64" vaddr:%p flags:0x%02x/%c%c%c"
- hvf_vm_unmap(uint64_t paddr, uint64_t size) "paddr:0x%016"PRIx64" size:0x%08"PRIx64
-+hvf_vm_protect(uint64_t paddr, size_t size, uint8_t flags, const char r, const char w, const char e) "paddr:0x%016"PRIx64" size:0x%08zx flags:0x%02x/%c%c%c"
+             memory_region_set_dirty(slot->region, gpa - slot->start, 1);
+-            hv_vm_protect(dirty_page_start, TARGET_PAGE_SIZE,
++            hv_vm_protect(dirty_page_start, page_size,
+                           HV_MEMORY_READ | HV_MEMORY_WRITE | HV_MEMORY_EXEC);
+         }
+     }
 -- 
 2.52.0
 
