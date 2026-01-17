@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BF9BD38EFB
-	for <lists+qemu-devel@lfdr.de>; Sat, 17 Jan 2026 15:14:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93FF2D38EFC
+	for <lists+qemu-devel@lfdr.de>; Sat, 17 Jan 2026 15:15:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vh70S-0007jb-KP; Sat, 17 Jan 2026 09:10:24 -0500
+	id 1vh702-0007ZO-Qc; Sat, 17 Jan 2026 09:09:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1vh6zo-0007Vx-Lb
+ id 1vh6zn-0007Vu-Nl
  for qemu-devel@nongnu.org; Sat, 17 Jan 2026 09:09:44 -0500
-Received: from mout.web.de ([212.227.17.11])
+Received: from mout.web.de ([212.227.17.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1vh6zl-0002Y6-EL
- for qemu-devel@nongnu.org; Sat, 17 Jan 2026 09:09:44 -0500
+ id 1vh6zl-0002Z0-EB
+ for qemu-devel@nongnu.org; Sat, 17 Jan 2026 09:09:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
  s=s29768273; t=1768658975; x=1769263775; i=lukasstraub2@web.de;
- bh=w2r8bkR7RlW4NZ+SMP6LZqpIB8Sn/8gVNZAjtN04PI8=;
+ bh=sY5U6tkhVqUdCuq/PtEYepJ63eDBszrJPvN5TBPfsdM=;
  h=X-UI-Sender-Class:From:Date:Subject:MIME-Version:Content-Type:
  Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
  cc:content-transfer-encoding:content-type:date:from:message-id:
  mime-version:reply-to:subject:to;
- b=pQVrY491VrdaEQwYoMxa9uO8CrhL3hPWJL+a2ZA58dmzM1xU9nlVbHUnUp4f36Ye
- lhr79Mo7FX7av9BDiJjsq2/D3dVQ7MnW3hHQRc63FTB/P5v7kUTzlzqaLghaktkWp
- chu5wGm8huE8mzdm7WT66nOQLDWDts9NHJr6kAZ2cdclUtE8N1qjlq73D1LpLcgcE
- PgAmjLDj9LVdYlCFB1AeB5VAEsSRnNwMK74y1jxWxjhVo3NGwWm6HCtgLnkdk76lg
- Sa57g79nGLlXY3/jzUKfxmo8bkjgfqYm5p/RXtw5A59ebeUnK7UUpZyiq7yyQhGqR
- X7JBx3EJClPj+t8esg==
+ b=ZYcWS/bnAC89Tk8if8Rba3us6trv7e8pXDGdICRtJo+juECzF4XidEgw9NWeLUJH
+ +yOdgLymYVwp+BJbTwwRiLvaa7SsHtj3HF5TJA4m/dEvbPrkpBlVGSBVWdgPIXnDs
+ jDzey7RYsUw1EK4jpXFVLOLg61dHDXFC+KDFF/+3OrFWrvGzSHxm+vwfoJuYKU1Js
+ aYQJOJQdzI4qsqfggrZ3Y4Wyvv3MIk1HmgyK09Rh9vaJYgrk8k1YtOdQZLiuRkHM+
+ her2NEhYpK9tYjyjARffPY+kqWQXoIVtttUG7hC5lxsSYwZ65THBjv6JvMs3CRojf
+ 4a0Clfu481IXCdrzoA==
 X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
 Received: from [127.0.1.1] ([217.247.100.70]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MgANA-1wIu2r1W4k-00iMyk; Sat, 17
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1N6bCu-1vsblh2eA2-00r8QA; Sat, 17
  Jan 2026 15:09:35 +0100
 From: Lukas Straub <lukasstraub2@web.de>
-Date: Sat, 17 Jan 2026 15:09:11 +0100
-Subject: [PATCH v2 4/8] multifd: Add COLO support
+Date: Sat, 17 Jan 2026 15:09:12 +0100
+Subject: [PATCH v2 5/8] migration-test: Add COLO migration unit test
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <20260117-colo_unit_test_multifd-v2-4-ab521777fa51@web.de>
+Message-Id: <20260117-colo_unit_test_multifd-v2-5-ab521777fa51@web.de>
 References: <20260117-colo_unit_test_multifd-v2-0-ab521777fa51@web.de>
 In-Reply-To: <20260117-colo_unit_test_multifd-v2-0-ab521777fa51@web.de>
 To: qemu-devel@nongnu.org
@@ -49,103 +49,104 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
  Zhang Chen <zhangckid@gmail.com>, 
  Hailiang Zhang <zhanghailiang@xfusion.com>, 
- Markus Armbruster <armbru@redhat.com>, Lukas Straub <lukasstraub2@web.de>, 
- Juan Quintela <quintela@trasno.org>
+ Markus Armbruster <armbru@redhat.com>, Lukas Straub <lukasstraub2@web.de>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6500; i=lukasstraub2@web.de;
- h=from:subject:message-id; bh=SKX0paz3JMTU/nE8nfcjnRfRq9nlVBXZdFYjuY4Q1dI=;
- b=owEBbQKS/ZANAwAKATWrCyicXbJYAcsmYgBpa5gb7uMkvkFn6zkDQ7Pb5+0KH9i7bS/L0mF6H
- TDMJJwtz3yJAjMEAAEKAB0WIQSD+rFYoNm4+3Jij6Q1qwsonF2yWAUCaWuYGwAKCRA1qwsonF2y
- WEN8EAC7wiYFiRfkzP3tiDgJieOJ2sYghmZQoVf76c1kgDkp57SBpeh+RhLDIrtoH6F1XqyG0RH
- Q8yN4gQFV/N062zeoJnJzHN1j8fNEqAvwD+nUn4vAPtglYToSd6mHLgbZtltPyYgqGEadCefLYy
- 7DAWn2x23YD2WLhW0ivpcczs6QliqmvmafmEo6c/UG2g62FX2lQaHH1TktJ4BJeza/8cIJ3UAr7
- cB3NN5p07flBNC+bnOdngPEtrZBaqG+LjtuscbGaWHJUax/sQqsdh2dq7GQCNhbLBLL7eatqVom
- efnI/PfsP79fuMYvIyLuDvkX/iLYTllVN8toB7g7BBR6I60wFsVzewoTL7guF3zNVuwhyOipuR4
- vevTniwYwir9C3iBpVGeBOq+xQE/TEJOJs6hdsIshsaOqn7PKFkJsNNmGRZB9Y7ZqxBSR6ZVTOZ
- T8iaoGx8ELI2IZ1lZeTazUISe7qCf92axqwcGfDLMVbpb1vUJ4oeDLWQTeRxrRBM/6U0WI8J8KZ
- BW5c8FJ/nu6Nnw9JeXT7kg5zTMqVnrh19W9Nodvlez00dFFgsx2vquFwK0vgYUPBp4DnBbsz9H1
- 5pCsN166+4O4rufjzXHE7PdVRO+YI30FLyQT4H0AEcPDfG+n4g9+hISNAwq/ErmePQgqLP053+u
- PvQN4UBxNM1VvCQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=12402; i=lukasstraub2@web.de; 
+ h=from:subject:message-id;
+ bh=97WW2FsFUoW7E0Z8lUFQmJQQp+dc0Wwh8C2s6P2aMDY=; 
+ b=owEBbQKS/ZANAwAKATWrCyicXbJYAcsmYgBpa5gb2RALg3uJb+xMs7RZbV+CU7wnamdNTQ+Oh
+ S7xmyVkuf2JAjMEAAEKAB0WIQSD+rFYoNm4+3Jij6Q1qwsonF2yWAUCaWuYGwAKCRA1qwsonF2y
+ WMq9D/sHwfh2L7KOOJY4ZPTgEAERUvF69Syq52NpZtIgQV6iXJ/VimRaB377QTkoa5oJbqGtCvq
+ Kh3MoVWqvq8K2NRFY2ZOSh5qUc77klhIZV8svd7VTv3u1BKyLRcwZlB7XqHwh7vjAhzlLW75qTE
+ 7wGLooLmd83oM2rj5/ZoZQf5ZRA23mhgf9DXELyaCBmdsRake5T2QbGorxX1QqJX/XeNbVtEp9E
+ tRhS9u1Z+9h3olegaXXv2eAkCF62alRQiRKx3eArNv25h3OwQAbc67POkyS9MYeeVfsyPW9xthR
+ 5clIp+ggr203HYnfxqFhd9/XTYi6KLpVXrSFpgyee2zjfdEXdOThLpLElBxvxylWtCfTFNmfhxg
+ lGKsUTyAX/84J2GBKE1SzS19guCWWMxv1Bhq7TwQCclNyVyQMxTFFjCJdLOSTVytIt1NpRiajiv
+ ulaXbhS5J+6+yl+i64wQ0RETWbv4cn4vzUaFhXMWXTEN0E5lVJelc0pFH2NPyhUdqkE6+o6ohFU
+ dPXARDFkWeF1onM0rzm9dBzxestchOqL/jqW8OtMVHXcxt0tZlpKg2CzJaH5H+UCcZFMx9NxFkW
+ gaw3N5t81fvldOG31E7LQ17P/C4UuLydnnVVwEJM9CSStFgO8Ra0UPTljTVmqjhqnOxGhEsXSpx
+ m7Y8Ub71+xzMrZw==
 X-Developer-Key: i=lukasstraub2@web.de; a=openpgp;
  fpr=83FAB158A0D9B8FB72628FA435AB0B289C5DB258
-X-Provags-ID: V03:K1:pVMFzmchPVNPPlwBYkKL0f40ZjVFueBXDAg4qZvCW8JaPtyJ2Fh
- ITuRZvlR4tqDT4y3MzGBgrlWYsS2TnfnVXSWv9OD2rrV1NqTXCONLBdJUxPKRkoBErnBzLZ
- aVUpf4CekqXvZPIQ11NE+0kpUXv2UbvFlRQ67kBMg9wyE4DctNxi2Wl+Rf3MPimhD/IaDKT
- F73OUVWymA127jJf0m69A==
-UI-OutboundReport: notjunk:1;M01:P0:ejBYPJfkpzU=;n14Rq6bgvYt2W5voX1svqh4BwX6
- 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
-Received-SPF: pass client-ip=212.227.17.11; envelope-from=lukasstraub2@web.de;
+X-Provags-ID: V03:K1:2M0uyHlZQlPmJc2YlupLhtMSzrB5g2I6RwJDwAbuEjpOiaetA3p
+ 9TbmqJSccZ1lCru7r76Z1FIC8uDRXZXLkyyWAsgsurRPOblruTBHnwdJ+s+S7NPAYOrARVS
+ Kffx2TgpUjEkpOukh2Kl/qiSABRrqwUaBRYZlvF3Es7/1LIRewf1zgrrQTKNFTj32wIjS2k
+ ddQvpPhaqYA3uqBmu8ONw==
+UI-OutboundReport: notjunk:1;M01:P0:gMb5PuJwo34=;fl7ZCe3XMm7jG2zF4pYU8bar2Nz
+ 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
+ ySLfFSHEqkLPkcxTAn6/A9I3ghum8
+Received-SPF: pass client-ip=212.227.17.12; envelope-from=lukasstraub2@web.de;
  helo=mout.web.de
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -171,224 +172,367 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Like in the normal ram_load() path, put the received pages into the
-colo cache and mark the pages in the bitmap so that they will be
-flushed to the guest later.
+Add a COLO migration test for COLO migration and failover.
 
-Multifd with COLO is useful to reduce the VM pause time during checkpointi=
-ng
-for latency sensitive workloads. In such workloads the worst-case latency
-is especially important.
+COLO does not support q35 machine at this time.
 
-Also, multifd migration is the preferred way to do migration nowadays and =
-this
-allows to use multifd compression with COLO.
-
-Benchmark:
-Cluster nodes
- - Intel Xenon E5-2630 v3
- - 48Gb RAM
- - 10G Ethernet
-Guest
- - Windows Server 2016
- - 6Gb RAM
- - 4 cores
-Workload
- - Upload a file to the guest with SMB to simulate moderate
-   memory dirtying
- - Measure the memory transfer time portion of each checkpoint
- - 600ms COLO checkpoint interval
-
-Results
-Plain
- idle mean: 4.50ms 99per: 10.33ms
- load mean: 24.30ms 99per: 78.05ms
-Multifd-4
- idle mean: 6.48ms 99per: 10.41ms
- load mean: 14.12ms 99per: 31.27ms
-
-Evaluation
-While multifd has slightly higher latency when the guest idles, it is
-10ms faster under load and more importantly it's worst case latency is
-less than 1/2 of plain under load as can be seen in the 99. Percentile.
-
-Signed-off-by: Juan Quintela <quintela@redhat.com>
 Signed-off-by: Lukas Straub <lukasstraub2@web.de>
 =2D--
- MAINTAINERS              |  1 +
- migration/meson.build    |  2 +-
- migration/multifd-colo.c | 49 +++++++++++++++++++++++++++++++++++++++++++=
+ MAINTAINERS                        |   1 +
+ tests/qtest/meson.build            |   7 ++-
+ tests/qtest/migration-test.c       |   1 +
+ tests/qtest/migration/colo-tests.c | 113 ++++++++++++++++++++++++++++++++=
 +++++
- migration/multifd-colo.h | 26 +++++++++++++++++++++++++
- migration/multifd.c      | 12 ++++++++++++
- migration/multifd.h      |  1 +
- 6 files changed, 90 insertions(+), 1 deletion(-)
+ tests/qtest/migration/framework.c  |  87 +++++++++++++++++++++++++++-
+ tests/qtest/migration/framework.h  |  10 ++++
+ 6 files changed, 217 insertions(+), 2 deletions(-)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 563804345fec68ee72793dbb7c1b7e5be4c32083..dbb217255c2cf35dc0ce971c20=
-21b130fac5469b 100644
+index dbb217255c2cf35dc0ce971c2021b130fac5469b..92ca20c9d4186a08519d15bfe8=
+cbd583ab061a8b 100644
 =2D-- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -3837,6 +3837,7 @@ COLO Framework
- M: Lukas Straub <lukasstraub2@web.de>
- S: Maintained
- F: migration/colo*
-+F: migration/multifd-colo.*
+@@ -3840,6 +3840,7 @@ F: migration/colo*
+ F: migration/multifd-colo.*
  F: include/migration/colo.h
  F: include/migration/failover.h
++F: tests/qtest/migration/colo-tests.c
  F: docs/COLO-FT.txt
-diff --git a/migration/meson.build b/migration/meson.build
-index 16909d54c5110fc5d8187fd3a68c4a5b08b59ea7..1e59fe4f1f0bbfffed90df38e8=
-f39fa87bceb9b9 100644
-=2D-- a/migration/meson.build
-+++ b/migration/meson.build
-@@ -40,7 +40,7 @@ system_ss.add(files(
- ), gnutls, zlib)
 =20
- if get_option('replication').allowed()
--  system_ss.add(files('colo-failover.c', 'colo.c'))
-+  system_ss.add(files('colo-failover.c', 'colo.c', 'multifd-colo.c'))
- else
-   system_ss.add(files('colo-stubs.c'))
+ COLO Proxy
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 0f053fb56de5806d3c213e3a26c0b19998ae151a..d0129af4431bb08a94a918a1e4=
+0a8f657059d764 100644
+=2D-- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -367,6 +367,11 @@ if gnutls.found()
+   endif
  endif
-diff --git a/migration/multifd-colo.c b/migration/multifd-colo.c
+=20
++migration_colo_files =3D []
++if get_option('replication').allowed()
++  migration_colo_files =3D [files('migration/colo-tests.c')]
++endif
++
+ qtests =3D {
+   'aspeed_hace-test': files('aspeed-hace-utils.c', 'aspeed_hace-test.c'),
+   'aspeed_smc-test': files('aspeed-smc-utils.c', 'aspeed_smc-test.c'),
+@@ -378,7 +383,7 @@ qtests =3D {
+                              'migration/migration-util.c') + dbus_vmstate=
+1,
+   'erst-test': files('erst-test.c'),
+   'ivshmem-test': [rt, '../../contrib/ivshmem-server/ivshmem-server.c'],
+-  'migration-test': test_migration_files + migration_tls_files,
++  'migration-test': test_migration_files + migration_tls_files + migratio=
+n_colo_files,
+   'pxe-test': files('boot-sector.c'),
+   'pnv-xive2-test': files('pnv-xive2-common.c', 'pnv-xive2-flush-sync.c',
+                           'pnv-xive2-nvpg_bar.c'),
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 08936871741535c926eeac40a7d7c3f461c72fd0..e582f05c7dc2673dbd05a936df=
+8feb6c964b5bbc 100644
+=2D-- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -55,6 +55,7 @@ int main(int argc, char **argv)
+     migration_test_add_precopy(env);
+     migration_test_add_cpr(env);
+     migration_test_add_misc(env);
++    migration_test_add_colo(env);
+=20
+     ret =3D g_test_run();
+=20
+diff --git a/tests/qtest/migration/colo-tests.c b/tests/qtest/migration/co=
+lo-tests.c
 new file mode 100644
-index 0000000000000000000000000000000000000000..d8d98e79b12ed52c41f341052a=
-682d7786e221b5
+index 0000000000000000000000000000000000000000..5004f581e4d9e4e6f54eee6d70=
+a9307b7fd123be
 =2D-- /dev/null
-+++ b/migration/multifd-colo.c
-@@ -0,0 +1,49 @@
++++ b/tests/qtest/migration/colo-tests.c
+@@ -0,0 +1,113 @@
 +/*
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + *
-+ * multifd colo implementation
++ * QTest testcases for COLO migration
 + *
-+ * Copyright (c) Lukas Straub <lukasstraub2@web.de>
++ * Copyright (c) 2025 Lukas Straub <lukasstraub2@web.de>
 + *
 + * This work is licensed under the terms of the GNU GPL, version 2 or lat=
 er.
 + * See the COPYING file in the top-level directory.
++ *
 + */
 +
 +#include "qemu/osdep.h"
-+#include "exec/target_page.h"
-+#include "qemu/error-report.h"
-+#include "qapi/error.h"
-+#include "ram.h"
-+#include "multifd.h"
-+#include "options.h"
-+#include "io/channel-socket.h"
-+#include "migration/colo.h"
-+#include "multifd-colo.h"
-+#include "system/ramblock.h"
++#include "libqtest.h"
++#include "migration/framework.h"
++#include "migration/migration-qmp.h"
++#include "migration/migration-util.h"
++#include "qemu/module.h"
 +
-+void multifd_colo_prepare_recv(MultiFDRecvParams *p)
++static void test_colo_plain_common(MigrateCommon *args,
++                                   bool failover_during_checkpoint,
++                                   bool primary_failover)
 +{
-+    assert(p->block->colo_cache);
++    args->listen_uri =3D "tcp:127.0.0.1:0";
++    test_colo_common(args, failover_during_checkpoint, primary_failover);
++}
++
++static void *hook_start_multifd(QTestState *from, QTestState *to)
++{
++    return migrate_hook_start_precopy_tcp_multifd_common(from, to, "none"=
+);
++}
++
++static void test_colo_multifd_common(MigrateCommon *args,
++                                     bool failover_during_checkpoint,
++                                     bool primary_failover)
++{
++    args->listen_uri =3D "defer";
++    args->start_hook =3D hook_start_multifd;
++    args->start.caps[MIGRATION_CAPABILITY_MULTIFD] =3D true;
++    test_colo_common(args, failover_during_checkpoint, primary_failover);
++}
++
++static void test_colo_plain_primary_failover(char *name, MigrateCommon *a=
+rgs)
++{
++    test_colo_plain_common(args, false, true);
++}
++
++static void test_colo_plain_secondary_failover(char *name, MigrateCommon =
+*args)
++{
++    test_colo_plain_common(args, false, false);
++}
++
++static void test_colo_multifd_primary_failover(char *name, MigrateCommon =
+*args)
++{
++    test_colo_multifd_common(args, false, true);
++}
++
++static void test_colo_multifd_secondary_failover(char *name,
++                                                 MigrateCommon *args)
++{
++    test_colo_multifd_common(args, false, false);
++}
++
++static void test_colo_plain_primary_failover_checkpoint(char *name,
++                                                        MigrateCommon *ar=
+gs)
++{
++    test_colo_plain_common(args, true, true);
++}
++
++static void test_colo_plain_secondary_failover_checkpoint(char *name,
++                                                          MigrateCommon *=
+args)
++{
++    test_colo_plain_common(args, true, false);
++}
++
++static void test_colo_multifd_primary_failover_checkpoint(char *name,
++                                                          MigrateCommon *=
+args)
++{
++    test_colo_multifd_common(args, true, true);
++}
++
++static void test_colo_multifd_secondary_failover_checkpoint(char *name,
++                                                            MigrateCommon=
+ *args)
++{
++    test_colo_multifd_common(args, true, false);
++}
++
++void migration_test_add_colo(MigrationTestEnv *env)
++{
++    if (!env->full_set) {
++        return;
++    }
++
++    migration_test_add("/migration/colo/plain/primary_failover",
++                       test_colo_plain_primary_failover);
++    migration_test_add("/migration/colo/plain/secondary_failover",
++                       test_colo_plain_secondary_failover);
++
++    migration_test_add("/migration/colo/multifd/primary_failover",
++                       test_colo_multifd_primary_failover);
++    migration_test_add("/migration/colo/multifd/secondary_failover",
++                       test_colo_multifd_secondary_failover);
++
++    migration_test_add("/migration/colo/plain/primary_failover_checkpoint=
+",
++                       test_colo_plain_primary_failover_checkpoint);
++    migration_test_add("/migration/colo/plain/secondary_failover_checkpoi=
+nt",
++                       test_colo_plain_secondary_failover_checkpoint);
++
++    migration_test_add("/migration/colo/multifd/primary_failover_checkpoi=
+nt",
++                       test_colo_multifd_primary_failover_checkpoint);
++    migration_test_add("/migration/colo/multifd/secondary_failover_checkp=
+oint",
++                       test_colo_multifd_secondary_failover_checkpoint);
++}
+diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/fra=
+mework.c
+index 57d3b9b7c5a269d31659971e308367bd916d28f6..fe34e7cc7a1a4eeb8d5219f547=
+33bbd8446b0e4e 100644
+=2D-- a/tests/qtest/migration/framework.c
++++ b/tests/qtest/migration/framework.c
+@@ -315,7 +315,7 @@ int migrate_args(char **from, char **to, const char *u=
+ri, MigrateStart *args)
+     if (strcmp(arch, "i386") =3D=3D 0 || strcmp(arch, "x86_64") =3D=3D 0)=
+ {
+         memory_size =3D "150M";
+=20
+-        if (g_str_equal(arch, "i386")) {
++        if (g_str_equal(arch, "i386") || args->force_pc_machine) {
+             machine_alias =3D "pc";
+         } else {
+             machine_alias =3D "q35";
+@@ -1066,6 +1066,91 @@ void *migrate_hook_start_precopy_tcp_multifd_common=
+(QTestState *from,
+     return NULL;
+ }
+=20
++int test_colo_common(MigrateCommon *args, bool failover_during_checkpoint=
+,
++                     bool primary_failover)
++{
++    QTestState *from, *to;
++    void *data_hook =3D NULL;
 +
 +    /*
-+     * While we're still in precopy state (not yet in colo state), we cop=
-y
-+     * received pages to both guest and cache. No need to set dirty bits,
-+     * since guest and cache memory are in sync.
++     * For the COLO test, both VMs will run in parallel. Thus both VMs wa=
+nt to
++     * open the image read/write at the same time. Using read-only=3Don i=
+s not
++     * possible here, because ide-hd does not support read-only backing i=
+mage.
++     *
++     * So use -snapshot, where each qemu instance creates its own writabl=
+e
++     * snapshot internally while leaving the real image read-only.
 +     */
-+    if (migration_incoming_in_colo_state()) {
-+        colo_record_bitmap(p->block, p->normal, p->normal_num);
++    args->start.opts_source =3D "-snapshot";
++    args->start.opts_target =3D "-snapshot";
++
++    /*
++     * COLO migration code logs many errors when the migration socket
++     * is shut down, these are expected so we hide them here.
++     */
++    args->start.hide_stderr =3D true;
++
++    /*
++     * COLO currently does not work with Q35 machine
++     */
++    args->start.force_pc_machine =3D true;
++
++    args->start.oob =3D true;
++    args->start.caps[MIGRATION_CAPABILITY_X_COLO] =3D true;
++
++    if (migrate_start(&from, &to, args->listen_uri, &args->start)) {
++        return -1;
 +    }
-+    p->host =3D p->block->colo_cache;
++
++    migrate_set_parameter_int(from, "x-checkpoint-delay", 300);
++
++    if (args->start_hook) {
++        data_hook =3D args->start_hook(from, to);
++    }
++
++    migrate_ensure_converge(from);
++    wait_for_serial("src_serial");
++
++    migrate_qmp(from, to, args->connect_uri, NULL, "{}");
++
++    wait_for_migration_status(from, "colo", NULL);
++    wait_for_resume(to, &dst_state);
++
++    wait_for_serial("src_serial");
++    wait_for_serial("dest_serial");
++
++    /* wait for 3 checkpoints */
++    for (int i =3D 0; i < 3; i++) {
++        qtest_qmp_eventwait(to, "RESUME");
++        wait_for_serial("src_serial");
++        wait_for_serial("dest_serial");
++    }
++
++    if (failover_during_checkpoint) {
++        qtest_qmp_eventwait(to, "STOP");
++    }
++    if (primary_failover) {
++        qtest_qmp_assert_success(from, "{'exec-oob': 'yank', 'id': 'yank-=
+cmd', "
++                                            "'arguments': {'instances':"
++                                                "[{'type': 'migration'}]}=
+}");
++        qtest_qmp_assert_success(from, "{'execute': 'x-colo-lost-heartbea=
+t'}");
++        wait_for_serial("src_serial");
++    } else {
++        qtest_qmp_assert_success(to, "{'exec-oob': 'yank', 'id': 'yank-cm=
+d', "
++                                        "'arguments': {'instances':"
++                                            "[{'type': 'migration'}]}}");
++        qtest_qmp_assert_success(to, "{'execute': 'x-colo-lost-heartbeat'=
+}");
++        wait_for_serial("dest_serial");
++    }
++
++    if (args->end_hook) {
++        args->end_hook(from, to, data_hook);
++    }
++
++    migrate_end(from, to, !primary_failover);
++
++    return 0;
 +}
 +
-+void multifd_colo_process_recv(MultiFDRecvParams *p)
-+{
-+    if (!migration_incoming_in_colo_state()) {
-+        for (int i =3D 0; i < p->normal_num; i++) {
-+            void *guest =3D p->block->host + p->normal[i];
-+            void *cache =3D p->host + p->normal[i];
-+            memcpy(guest, cache, multifd_ram_page_size());
-+        }
-+    }
-+    p->host =3D p->block->host;
-+}
-diff --git a/migration/multifd-colo.h b/migration/multifd-colo.h
-new file mode 100644
-index 0000000000000000000000000000000000000000..82eaf3f48c47de2f090f9de52f=
-9d57a337d4754a
-=2D-- /dev/null
-+++ b/migration/multifd-colo.h
-@@ -0,0 +1,26 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * multifd colo header
-+ *
-+ * Copyright (c) Lukas Straub <lukasstraub2@web.de>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or lat=
-er.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#ifndef QEMU_MIGRATION_MULTIFD_COLO_H
-+#define QEMU_MIGRATION_MULTIFD_COLO_H
-+
-+#ifdef CONFIG_REPLICATION
-+
-+void multifd_colo_prepare_recv(MultiFDRecvParams *p);
-+void multifd_colo_process_recv(MultiFDRecvParams *p);
-+
-+#else
-+
-+static inline void multifd_colo_prepare_recv(MultiFDRecvParams *p) {}
-+static inline void multifd_colo_process_recv(MultiFDRecvParams *p) {}
-+
-+#endif
-+#endif
-diff --git a/migration/multifd.c b/migration/multifd.c
-index 8e71171fb7a17726ba7eb0705e293c41e8aa32ec..6c85acec3bac134e85cfcee0d3=
-2057134f5af8d1 100644
-=2D-- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -29,6 +29,7 @@
- #include "qemu-file.h"
- #include "trace.h"
- #include "multifd.h"
-+#include "multifd-colo.h"
- #include "threadinfo.h"
- #include "options.h"
- #include "qemu/yank.h"
-@@ -1269,7 +1270,18 @@ static int multifd_ram_state_recv(MultiFDRecvParams=
- *p, Error **errp)
+ QTestMigrationState *get_src(void)
  {
-     int ret;
+     return &src_state;
+diff --git a/tests/qtest/migration/framework.h b/tests/qtest/migration/fra=
+mework.h
+index 2ef0f57962605c9e3bc7b7de48e52351e5389138..75088c5fb098a0f95acb1e2358=
+5d3b6e8307451e 100644
+=2D-- a/tests/qtest/migration/framework.h
++++ b/tests/qtest/migration/framework.h
+@@ -139,6 +139,9 @@ typedef struct {
+     /* Do not connect to target monitor and qtest sockets in qtest_init *=
+/
+     bool defer_target_connect;
 =20
-+    if (migrate_colo()) {
-+        multifd_colo_prepare_recv(p);
-+    }
++    /* Use pc machine for x86_64 */
++    bool force_pc_machine;
 +
-     ret =3D multifd_recv_state->ops->recv(p, errp);
-+    if (ret !=3D 0) {
-+        return ret;
-+    }
-+
-+    if (migrate_colo()) {
-+        multifd_colo_process_recv(p);
-+    }
+     /*
+      * Migration capabilities to be set in both source and
+      * destination. For unilateral capabilities, use
+@@ -248,6 +251,8 @@ void test_postcopy_common(MigrateCommon *args);
+ void test_postcopy_recovery_common(MigrateCommon *args);
+ int test_precopy_common(MigrateCommon *args);
+ void test_file_common(MigrateCommon *args, bool stop_src);
++int test_colo_common(MigrateCommon *args, bool failover_during_checkpoint=
+,
++                     bool colo_primary_failover);
+ void *migrate_hook_start_precopy_tcp_multifd_common(QTestState *from,
+                                                     QTestState *to,
+                                                     const char *method);
+@@ -267,5 +272,10 @@ void migration_test_add_file(MigrationTestEnv *env);
+ void migration_test_add_precopy(MigrationTestEnv *env);
+ void migration_test_add_cpr(MigrationTestEnv *env);
+ void migration_test_add_misc(MigrationTestEnv *env);
++#ifdef CONFIG_REPLICATION
++void migration_test_add_colo(MigrationTestEnv *env);
++#else
++static inline void migration_test_add_colo(MigrationTestEnv *env) {};
++#endif
 =20
-     return ret;
- }
-diff --git a/migration/multifd.h b/migration/multifd.h
-index 9b6d81e7ede024f05d4cd235de95e73840d0bbc4..7036f438fade1baed2442bfdcf=
-8b5d6397c4a448 100644
-=2D-- a/migration/multifd.h
-+++ b/migration/multifd.h
-@@ -280,6 +280,7 @@ typedef struct {
-     /* ramblock */
-     RAMBlock *block;
-     /* ramblock host address */
-+    /* or points to the corresponding address in the colo cache */
-     uint8_t *host;
-     /* buffers to recv */
-     struct iovec *iov;
+ #endif /* TEST_FRAMEWORK_H */
 
 =2D-=20
 2.39.5
