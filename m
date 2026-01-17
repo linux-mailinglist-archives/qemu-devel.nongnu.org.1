@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E92D7D38B2A
-	for <lists+qemu-devel@lfdr.de>; Sat, 17 Jan 2026 02:19:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC3AD38B2B
+	for <lists+qemu-devel@lfdr.de>; Sat, 17 Jan 2026 02:19:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vguxL-0004oI-3L; Fri, 16 Jan 2026 20:18:23 -0500
+	id 1vguxL-0004pl-OA; Fri, 16 Jan 2026 20:18:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
- id 1vguxC-0004mV-1a
+ id 1vguxC-0004mW-1l
  for qemu-devel@nongnu.org; Fri, 16 Jan 2026 20:18:14 -0500
 Received: from mgamail.intel.com ([192.198.163.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
- id 1vgux9-00077n-D8
+ id 1vgux9-00078g-Ct
  for qemu-devel@nongnu.org; Fri, 16 Jan 2026 20:18:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1768612691; x=1800148691;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=w7jOopBKAsOvzRXrsvabqYkwvIVcHNW6Lo4RVZLUNCw=;
- b=DBqn/9siW8n1zLpnuEVJJf2Vdu9FO+GA10O++XD8Bc2P0e9gtAqM13VY
- z77kfl0PPeXel6ol5El3/Tcj/mU+Te+NQmzc8RQ2lzcZs0Obrs0CGwdLZ
- 8vN+YRBVTumuwAwDKjr4Jr18dxpkqvIWrIClkSe9qHmj9lqVTHGp6+qKq
- y5uU1Zw2AgCcT0wptJm9YkEXwX2O9iwYIYIU3gH9p3GDGoXUa5gxPyKLG
- ng/2kwutrgiPhXJ07Q54aE4E566+X6FwyN/F232Kvqr0J04Z7aiKRD2w/
- JMLpNkHDDlWbX5hK1TOGzA83O5mifPcOCLckyrJ5yLNIrTbUEMRjB3d1g Q==;
-X-CSE-ConnectionGUID: nUO49pnPTv2iIK+ptce8rA==
-X-CSE-MsgGUID: EXy4XWGDQq2f0R3LRe11EA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11673"; a="69131145"
-X-IronPort-AV: E=Sophos;i="6.21,232,1763452800"; d="scan'208";a="69131145"
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=1YGD2m13b08g6ocSDICUbrUDqi3sC1hiqJxS0srsQNg=;
+ b=A0o6oCaAH6prttYWJ3HETH2xgnay/Twx9zemHsHPy6QYJpEPm2eRypLT
+ Hr/73OcWlTQcs7Ohrar7r+RFkzg2SnJz4htr9WkgBTcxapjO/KrHHyduW
+ 3OZqD4pCP7CNprEhbNvHzKTh6IkGJNVqg+ojHsHEdZ7A+AIE0dvyPoOiL
+ o7E6DbxJR8K6KneYXOK7Oxb1O4sHjxMUEwFJZ5zjrQdBVAHrkAoDnvw5q
+ d5UHhXoAY/MEtIOntmp1gargmOnI8qeDXTYwZuDdieorqpGjTvaZ34DZt
+ RHGsZ6k4OlS5WJzuucGbh5sTuPYZmlboqQsU93/h6iYfk4uB2oPYDPr/e w==;
+X-CSE-ConnectionGUID: 6pd8hLkyT7CkNXI8msao6A==
+X-CSE-MsgGUID: dX12aJjvR3ajdX4frCFKvQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11673"; a="69131148"
+X-IronPort-AV: E=Sophos;i="6.21,232,1763452800"; d="scan'208";a="69131148"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  16 Jan 2026 17:18:07 -0800
-X-CSE-ConnectionGUID: GiPwZMx5TkueL1hlMkFzwg==
-X-CSE-MsgGUID: OGVleIAPSyCX3IVDb2McVg==
+X-CSE-ConnectionGUID: 3gTCIqKOQNaUvL1gCEEEKw==
+X-CSE-MsgGUID: do0kuAd5TgW1OmLmWJblrA==
 X-ExtLoop1: 1
 Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.43])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jan 2026 17:18:06 -0800
+ 16 Jan 2026 17:18:07 -0800
 From: Zide Chen <zide.chen@intel.com>
 To: qemu-devel@nongnu.org, kvm@vger.kernel.org,
  Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
 Cc: xiaoyao.li@intel.com, Dongli Zhang <dongli.zhang@oracle.com>,
  Dapeng Mi <dapeng1.mi@linux.intel.com>, Zide Chen <zide.chen@intel.com>
-Subject: [PATCH 0/7] target/i386: Misc PMU, PEBS,
- and MSR fixes and improvements
-Date: Fri, 16 Jan 2026 17:10:46 -0800
-Message-ID: <20260117011053.80723-1-zide.chen@intel.com>
+Subject: [PATCH 1/7] target/i386: Disable unsupported BTS for guest
+Date: Fri, 16 Jan 2026 17:10:47 -0800
+Message-ID: <20260117011053.80723-2-zide.chen@intel.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260117011053.80723-1-zide.chen@intel.com>
+References: <20260117011053.80723-1-zide.chen@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.18; envelope-from=zide.chen@intel.com;
@@ -81,29 +82,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series contains a set of mostly independent fixes and small
-improvements in target/i386 related to PMU, PEBS, and MSR handling.
+BTS (Branch Trace Store), enumerated by IA32_MISC_ENABLE.BTS_UNAVAILABLE
+(bit 11), is deprecated and has been superseded by LBR and Intel PT.
 
-The patches are grouped into a single series for review convenience;
-they are not tightly coupled and can be applied individually.
+KVM yields control of the above mentioned bit to userspace since KVM
+commit 9fc222967a39 ("KVM: x86: Give host userspace full control of
+MSR_IA32_MISC_ENABLES").
 
-Dapeng Mi (3):
-  target/i386: Don't save/restore PERF_GLOBAL_OVF_CTRL MSR
-  target/i386: Support full-width writes for perf counters
-  target/i386: Save/Restore DS based PEBS specfic MSRs
+However, QEMU does not set this bit, which allows guests to write the
+BTS and BTINT bits in IA32_DEBUGCTL.  Since KVM doesn't support BTS,
+this may lead to unexpected MSR access errors.
 
-Zide Chen (4):
-  target/i386: Disable unsupported BTS for guest
-  target/i386: Gate enable_pmu on kvm_enabled()
-  target/i386: Make some PEBS features user-visible
-  target/i386: Increase MSR_BUF_SIZE and split KVM_[GET/SET]_MSRS calls
+Setting this bit does not introduce migration compatibility issues, so
+the VMState version_id is not bumped.
 
- target/i386/cpu.c     |  15 ++--
- target/i386/cpu.h     |  20 +++++-
- target/i386/kvm/kvm.c | 162 +++++++++++++++++++++++++++++++++++-------
- target/i386/machine.c |  35 +++++++--
- 4 files changed, 191 insertions(+), 41 deletions(-)
+Signed-off-by: Zide Chen <zide.chen@intel.com>
+---
+ target/i386/cpu.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 2bbc977d9088..f2b79a8bf1dc 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -474,7 +474,10 @@ typedef enum X86Seg {
+ 
+ #define MSR_IA32_MISC_ENABLE            0x1a0
+ /* Indicates good rep/movs microcode on some processors: */
+-#define MSR_IA32_MISC_ENABLE_DEFAULT    1
++#define MSR_IA32_MISC_ENABLE_FASTSTRING    1
++#define MSR_IA32_MISC_ENABLE_BTS_UNAVAIL   (1ULL << 11)
++#define MSR_IA32_MISC_ENABLE_DEFAULT       (MSR_IA32_MISC_ENABLE_FASTSTRING     |\
++                                            MSR_IA32_MISC_ENABLE_BTS_UNAVAIL)
+ #define MSR_IA32_MISC_ENABLE_MWAIT      (1ULL << 18)
+ 
+ #define MSR_MTRRphysBase(reg)           (0x200 + 2 * (reg))
 -- 
 2.52.0
 
