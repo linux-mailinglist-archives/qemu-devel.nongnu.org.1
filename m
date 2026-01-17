@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC3AD38B2B
-	for <lists+qemu-devel@lfdr.de>; Sat, 17 Jan 2026 02:19:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3E41D38B29
+	for <lists+qemu-devel@lfdr.de>; Sat, 17 Jan 2026 02:19:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vguxL-0004pl-OA; Fri, 16 Jan 2026 20:18:23 -0500
+	id 1vguxM-0004qD-6m; Fri, 16 Jan 2026 20:18:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
- id 1vguxC-0004mW-1l
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 20:18:14 -0500
+ id 1vguxD-0004mi-PX
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 20:18:16 -0500
 Received: from mgamail.intel.com ([192.198.163.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
- id 1vgux9-00078g-Ct
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 20:18:13 -0500
+ id 1vguxC-00077n-2B
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 20:18:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768612691; x=1800148691;
+ t=1768612694; x=1800148694;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=1YGD2m13b08g6ocSDICUbrUDqi3sC1hiqJxS0srsQNg=;
- b=A0o6oCaAH6prttYWJ3HETH2xgnay/Twx9zemHsHPy6QYJpEPm2eRypLT
- Hr/73OcWlTQcs7Ohrar7r+RFkzg2SnJz4htr9WkgBTcxapjO/KrHHyduW
- 3OZqD4pCP7CNprEhbNvHzKTh6IkGJNVqg+ojHsHEdZ7A+AIE0dvyPoOiL
- o7E6DbxJR8K6KneYXOK7Oxb1O4sHjxMUEwFJZ5zjrQdBVAHrkAoDnvw5q
- d5UHhXoAY/MEtIOntmp1gargmOnI8qeDXTYwZuDdieorqpGjTvaZ34DZt
- RHGsZ6k4OlS5WJzuucGbh5sTuPYZmlboqQsU93/h6iYfk4uB2oPYDPr/e w==;
-X-CSE-ConnectionGUID: 6pd8hLkyT7CkNXI8msao6A==
-X-CSE-MsgGUID: dX12aJjvR3ajdX4frCFKvQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11673"; a="69131148"
-X-IronPort-AV: E=Sophos;i="6.21,232,1763452800"; d="scan'208";a="69131148"
+ bh=WVJQSNpNKHu3X0iUjOMBxv0QHS5KDEf9o+KQJ8gyVAQ=;
+ b=gVZJ8uMqShYL/INe6YTbv/boC7zvTxcBIA8/0+G6G90Py+6i1tJ2zxF/
+ 7s3oUnXhCP/t8syEjg3Hu1gPy33LTt5uR07NM8/47J+lCdgTRM23zRRDe
+ iC09f85kGoF61YpnR6Xzkirwj/kCV2uPRWLqOBS/8uSUOxFOKmMtVcvvI
+ Q6F0CdnJvfowu+YLcRJaWRZYYlOc+F7OHTf3dJdm32WkgjXzWeOkMWGri
+ 7mQnBQiv5egHK/oRIWhMzhe5wfNdzvECFBjR6RewaVPIN0H7XaMYTGQfO
+ /8nTA3pCNYhbf2bN3wn94adfvWBdczHau6jUwBSsdLgPAn3O/WeYCSuua w==;
+X-CSE-ConnectionGUID: a0PLjm+BRhumKkzimtDJ8A==
+X-CSE-MsgGUID: LjP/hSMqRAO7vpySNOCAKw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11673"; a="69131153"
+X-IronPort-AV: E=Sophos;i="6.21,232,1763452800"; d="scan'208";a="69131153"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jan 2026 17:18:07 -0800
-X-CSE-ConnectionGUID: 3gTCIqKOQNaUvL1gCEEEKw==
-X-CSE-MsgGUID: do0kuAd5TgW1OmLmWJblrA==
+ 16 Jan 2026 17:18:08 -0800
+X-CSE-ConnectionGUID: /+z504YORU+VnwiO6lsoeA==
+X-CSE-MsgGUID: UW7hqU9YRR2jgIAvFDbxCg==
 X-ExtLoop1: 1
 Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.43])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
@@ -49,9 +49,9 @@ To: qemu-devel@nongnu.org, kvm@vger.kernel.org,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
 Cc: xiaoyao.li@intel.com, Dongli Zhang <dongli.zhang@oracle.com>,
  Dapeng Mi <dapeng1.mi@linux.intel.com>, Zide Chen <zide.chen@intel.com>
-Subject: [PATCH 1/7] target/i386: Disable unsupported BTS for guest
-Date: Fri, 16 Jan 2026 17:10:47 -0800
-Message-ID: <20260117011053.80723-2-zide.chen@intel.com>
+Subject: [PATCH 2/7] target/i386: Don't save/restore PERF_GLOBAL_OVF_CTRL MSR
+Date: Fri, 16 Jan 2026 17:10:48 -0800
+Message-ID: <20260117011053.80723-3-zide.chen@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260117011053.80723-1-zide.chen@intel.com>
 References: <20260117011053.80723-1-zide.chen@intel.com>
@@ -82,41 +82,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-BTS (Branch Trace Store), enumerated by IA32_MISC_ENABLE.BTS_UNAVAILABLE
-(bit 11), is deprecated and has been superseded by LBR and Intel PT.
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
 
-KVM yields control of the above mentioned bit to userspace since KVM
-commit 9fc222967a39 ("KVM: x86: Give host userspace full control of
-MSR_IA32_MISC_ENABLES").
+MSR_CORE_PERF_GLOBAL_OVF_CTRL is a write-only MSR and reads always
+return zero.
 
-However, QEMU does not set this bit, which allows guests to write the
-BTS and BTINT bits in IA32_DEBUGCTL.  Since KVM doesn't support BTS,
-this may lead to unexpected MSR access errors.
+Saving and restoring this MSR is therefore unnecessary.  Replace
+VMSTATE_UINT64 with VMSTATE_UNUSED in the VMStateDescription to ignore
+env.msr_global_ovf_ctrl during migration.  This avoids the need to bump
+version_id and does not introduce any migration incompatibility.
 
-Setting this bit does not introduce migration compatibility issues, so
-the VMState version_id is not bumped.
-
+Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
 Signed-off-by: Zide Chen <zide.chen@intel.com>
 ---
- target/i386/cpu.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ target/i386/cpu.h     | 1 -
+ target/i386/kvm/kvm.c | 6 ------
+ target/i386/machine.c | 4 ++--
+ 3 files changed, 2 insertions(+), 9 deletions(-)
 
 diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 2bbc977d9088..f2b79a8bf1dc 100644
+index f2b79a8bf1dc..0b480c631ed0 100644
 --- a/target/i386/cpu.h
 +++ b/target/i386/cpu.h
-@@ -474,7 +474,10 @@ typedef enum X86Seg {
+@@ -2086,7 +2086,6 @@ typedef struct CPUArchState {
+     uint64_t msr_fixed_ctr_ctrl;
+     uint64_t msr_global_ctrl;
+     uint64_t msr_global_status;
+-    uint64_t msr_global_ovf_ctrl;
+     uint64_t msr_fixed_counters[MAX_FIXED_COUNTERS];
+     uint64_t msr_gp_counters[MAX_GP_COUNTERS];
+     uint64_t msr_gp_evtsel[MAX_GP_COUNTERS];
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 7b9b740a8e5a..cffbc90d1c50 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -4069,8 +4069,6 @@ static int kvm_put_msrs(X86CPU *cpu, KvmPutState level)
+             if (has_architectural_pmu_version > 1) {
+                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_STATUS,
+                                   env->msr_global_status);
+-                kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_OVF_CTRL,
+-                                  env->msr_global_ovf_ctrl);
  
- #define MSR_IA32_MISC_ENABLE            0x1a0
- /* Indicates good rep/movs microcode on some processors: */
--#define MSR_IA32_MISC_ENABLE_DEFAULT    1
-+#define MSR_IA32_MISC_ENABLE_FASTSTRING    1
-+#define MSR_IA32_MISC_ENABLE_BTS_UNAVAIL   (1ULL << 11)
-+#define MSR_IA32_MISC_ENABLE_DEFAULT       (MSR_IA32_MISC_ENABLE_FASTSTRING     |\
-+                                            MSR_IA32_MISC_ENABLE_BTS_UNAVAIL)
- #define MSR_IA32_MISC_ENABLE_MWAIT      (1ULL << 18)
+                 /* Now start the PMU.  */
+                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR_CTRL,
+@@ -4588,7 +4586,6 @@ static int kvm_get_msrs(X86CPU *cpu)
+             kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR_CTRL, 0);
+             kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_CTRL, 0);
+             kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_STATUS, 0);
+-            kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_OVF_CTRL, 0);
+         }
+         for (i = 0; i < num_architectural_pmu_fixed_counters; i++) {
+             kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR0 + i, 0);
+@@ -4917,9 +4914,6 @@ static int kvm_get_msrs(X86CPU *cpu)
+         case MSR_CORE_PERF_GLOBAL_STATUS:
+             env->msr_global_status = msrs[i].data;
+             break;
+-        case MSR_CORE_PERF_GLOBAL_OVF_CTRL:
+-            env->msr_global_ovf_ctrl = msrs[i].data;
+-            break;
+         case MSR_CORE_PERF_FIXED_CTR0 ... MSR_CORE_PERF_FIXED_CTR0 + MAX_FIXED_COUNTERS - 1:
+             env->msr_fixed_counters[index - MSR_CORE_PERF_FIXED_CTR0] = msrs[i].data;
+             break;
+diff --git a/target/i386/machine.c b/target/i386/machine.c
+index c9139612813b..1125c8a64ec5 100644
+--- a/target/i386/machine.c
++++ b/target/i386/machine.c
+@@ -666,7 +666,7 @@ static bool pmu_enable_needed(void *opaque)
+     int i;
  
- #define MSR_MTRRphysBase(reg)           (0x200 + 2 * (reg))
+     if (env->msr_fixed_ctr_ctrl || env->msr_global_ctrl ||
+-        env->msr_global_status || env->msr_global_ovf_ctrl) {
++        env->msr_global_status) {
+         return true;
+     }
+     for (i = 0; i < MAX_FIXED_COUNTERS; i++) {
+@@ -692,7 +692,7 @@ static const VMStateDescription vmstate_msr_architectural_pmu = {
+         VMSTATE_UINT64(env.msr_fixed_ctr_ctrl, X86CPU),
+         VMSTATE_UINT64(env.msr_global_ctrl, X86CPU),
+         VMSTATE_UINT64(env.msr_global_status, X86CPU),
+-        VMSTATE_UINT64(env.msr_global_ovf_ctrl, X86CPU),
++        VMSTATE_UNUSED(sizeof(uint64_t)),
+         VMSTATE_UINT64_ARRAY(env.msr_fixed_counters, X86CPU, MAX_FIXED_COUNTERS),
+         VMSTATE_UINT64_ARRAY(env.msr_gp_counters, X86CPU, MAX_GP_COUNTERS),
+         VMSTATE_UINT64_ARRAY(env.msr_gp_evtsel, X86CPU, MAX_GP_COUNTERS),
 -- 
 2.52.0
 
