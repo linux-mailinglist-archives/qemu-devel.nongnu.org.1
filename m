@@ -2,58 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93457D38BD1
-	for <lists+qemu-devel@lfdr.de>; Sat, 17 Jan 2026 04:19:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF41ED38C38
+	for <lists+qemu-devel@lfdr.de>; Sat, 17 Jan 2026 05:36:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vgwpS-0002vR-Qr; Fri, 16 Jan 2026 22:18:22 -0500
+	id 1vgxuY-0000oH-PS; Fri, 16 Jan 2026 23:27:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tangtao1634@phytium.com.cn>)
- id 1vgwpP-0002vG-IP
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 22:18:19 -0500
-Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net ([209.97.181.73])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <tangtao1634@phytium.com.cn>) id 1vgwpN-0006G4-5c
- for qemu-devel@nongnu.org; Fri, 16 Jan 2026 22:18:19 -0500
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwBXW5dy_2ppTGTnBQ--.7800S2;
- Sat, 17 Jan 2026 11:18:10 +0800 (CST)
-Received: from [192.168.31.151] (unknown [113.246.235.43])
- by mail (Coremail) with SMTP id AQAAfwCH3+xu_2pp+U8UAA--.36385S2;
- Sat, 17 Jan 2026 11:18:06 +0800 (CST)
-Message-ID: <f0733a8e-afa9-4911-ad25-c664737a5555@phytium.com.cn>
-Date: Sat, 17 Jan 2026 11:18:05 +0800
+ (Exim 4.90_1) (envelope-from <chao.liu.zevorn@gmail.com>)
+ id 1vgxuW-0000lM-N2
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 23:27:40 -0500
+Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <chao.liu.zevorn@gmail.com>)
+ id 1vgxuV-0001Zh-10
+ for qemu-devel@nongnu.org; Fri, 16 Jan 2026 23:27:40 -0500
+Received: by mail-pf1-x442.google.com with SMTP id
+ d2e1a72fcca58-81dbc0a99d2so1369503b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 16 Jan 2026 20:27:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1768624057; x=1769228857; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=M0FbB8dK4EiizAZXE9IV2Z8FiC4c35NhVdV2ncAsdOE=;
+ b=W6a3LAMbjAeawCgf6d//WpV5X2/I6p1MKj+QLtcDk/BjRQnHqreiu3PbQ6gKqXG93g
+ fELNWB7Gc+/tbFlWqEdm2J+J6CIjaSoRFMkOZ49kvZqYPQEzs4fUTUyD8mPgoSjP+dlf
+ kSoVl8tBfVMnlwzhLsLSMnfhFcCFFObt6y5N7tw1H/uqpbcK8L84yX+ODgBR5uENI9aE
+ gdJ+DFetyhpXMh2rRPMzgMcT5JDSgMTCTeA1PrOLfMLXziC7whUeUoIhRgs8FWznECBP
+ GP3PgK3a+w5RhJ8yy/3bW+TM+AWPs4ep4WWuQlLs3eRMKUBF4YVc8HbPMyM0CRpTaoRd
+ JAMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768624057; x=1769228857;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=M0FbB8dK4EiizAZXE9IV2Z8FiC4c35NhVdV2ncAsdOE=;
+ b=eL7+DZXli3NmwsQJ9hFO8WuwiexjJnxlvjoVp2Py9ynR8s1RE1HOZkzpmLf+6/0yN6
+ lJ4lzSgrVFAsd2+iFVG77aBqSBk9BPQJJkMtIZJqkaDt3hgfs3nlTT3s0k3KGroA83z4
+ MOpxUMgtvg6rtjjC4wH03qmzLogB5eWSDZXK199iXtRJtIeJPWvne8DHzn5UjM2B7hHH
+ Zmis7qJCZey3f4gxdyjhifhAbTJPYL3dT5wrZp1swnWz8BqoHOAvXUQv+YyixmkdY6m/
+ G2ZobaiUMvkNj1QjumJKbvrxy5Smyt0EeaRADsNDq242lLDgngl+4AW8Dj6tReW6LlTC
+ MqQw==
+X-Gm-Message-State: AOJu0Yx8OsZ1H6b9XSlTRy1QIDsaSwfr1nJm6Esp51coApcaWG2g9iLK
+ BpCEg6TEHYGcmlNM9Cm1mSm0FCib/noFcZ3nlvXnS+NrjLAAm1hlydUU
+X-Gm-Gg: AY/fxX5Bk+o0PYhtqjMiGlpJ+irv0/VE84HzITIU3XlWqflyW6Gb63ZJAQBq/STvUE3
+ 6AMwQS44MwLQt4XJdUDnF9g911m4ag+9xuxe+Ph4WhMo20NtNUpN4Mj6TDWCbozfltthxesqXyg
+ vpHYBnOwhnHJlDHBlUe+5W6xPFBFFwnvGM7bQ3kDgyh0ISJN/oNHTU23JajUA/4HjZzNMj0l4AG
+ n8POIjvSrqsjgooJ5RtBatNutjpSbV55ES/zgQJY1P1GjFlvvuZRnop8uH/mr73Uf8NP25sOeyk
+ A78VUYpBsttcyr/3cMc3Z1cbQqhemePn1+bWRgEFgfZ/+d8mcCjaPOglBOh/J1cF9ppYyXT0Kjk
+ gTKeofSGB4lws2COmcykBVFnW4gw/QU7zoOvF6rnKymx6kQSkI4DDtBwbJY5eV3csBP7gWDv/NM
+ 04YaqkCVh1omlk+TQir45PYf2d0PR90Nw32OQSc0iO6KJVNjT0LoEFyIBn1IDvOUatwEuLik+9
+X-Received: by 2002:a05:6a00:4f8e:b0:81f:49cc:ea11 with SMTP id
+ d2e1a72fcca58-81fa03b3b73mr4363863b3a.65.1768624057152; 
+ Fri, 16 Jan 2026 20:27:37 -0800 (PST)
+Received: from ZEVORN-PC.localdomain ([114.88.97.170])
+ by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-c5edf395851sm3273056a12.36.2026.01.16.20.27.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 16 Jan 2026 20:27:36 -0800 (PST)
+From: Chao Liu <chao.liu.zevorn@gmail.com>
+To: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, wangjingwei@iscas.ac.cn,
+ Chao Liu <chao.liu.zevorn@gmail.com>
+Subject: [RFC PATCH v1 0/8] riscv: add initial sdext support
+Date: Sat, 17 Jan 2026 12:27:21 +0800
+Message-ID: <cover.1768622881.git.chao.liu.zevorn@gmail.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] hw/arm/smmu: add memory regions as property for an
- SMMU instance
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-References: <20260108210453.2280733-1-pierrick.bouvier@linaro.org>
- <be4d7b95-143a-4370-b7a2-364e186bdb41@linaro.org>
-From: Tao Tang <tangtao1634@phytium.com.cn>
-In-Reply-To: <be4d7b95-143a-4370-b7a2-364e186bdb41@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAfwCH3+xu_2pp+U8UAA--.36385S2
-X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQARBWlpSgQHHAAEsE
-Authentication-Results: hzbj-icmmx-7; spf=neutral smtp.mail=tangtao163
- 4@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvJXoW7JrWDtrW3ArWDAw4DuF4fGrg_yoW8Jr47p3
- WkKas0qFy5Gr1fur4Svr1xCFy5Xw4kJa15Gr17AF98Cr15trn0qF4Uuw4FgryUJr48Jr1j
- gr12v348u3WUAFJanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
- DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
- UUUUU
-Received-SPF: pass client-ip=209.97.181.73;
- envelope-from=tangtao1634@phytium.com.cn;
- helo=zg8tmja5ljk3lje4ms43mwaa.icoremail.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::442;
+ envelope-from=chao.liu.zevorn@gmail.com; helo=mail-pf1-x442.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -70,43 +99,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Daniel,
 
-On 2026/1/17 06:58, Pierrick Bouvier wrote:
-> Hi Tao,
->
-> On 1/8/26 1:04 PM, Pierrick Bouvier wrote:
->> This will be used to access non-secure and secure memory. Secure support
->> and Granule Protection Check (for RME) for SMMU need to access secure
->> memory.
->>
->> As well, it allows to remove usage of global address_space_memory,
->> allowing different SMMU instances to have a specific view of memory.
->>
->> User creatable SMMU are handled as well for virt machine,
->> by setting the memory properties when device is plugged in.
->>
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->> ---
->>   include/hw/arm/smmu-common.h |  4 ++++
->>   include/hw/arm/virt.h        |  2 ++
->>   hw/arm/sbsa-ref.c            | 16 ++++++++++++----
->>   hw/arm/smmu-common.c         | 11 +++++++++++
->>   hw/arm/virt.c                | 13 +++++++++++--
->>   5 files changed, 40 insertions(+), 6 deletions(-)
->>
->
-> this has been merged upstream FYI.
->
-> Regards,
-> Pierrick
+This RFC series adds a minimal CPU-side model for Sdext and Sdtrig in
+RISC-V QEMU. It is based on RISC-V Debug Specification 1.0:
+https://github.com/riscv/riscv-debug-spec/releases/tag/1.0
+
+It introduces the sdext/sdtrig config bits, DCSR/DPC/DSCRATCH state,
+Debug Mode enter/leave helpers, DRET, EBREAK entry, single-step, and
+trigger action=debug mode.
+
+To reduce review load, this series focuses on the Sdext features first.
+The Debug Module (DM) and related flows will follow in a later series.
+
+Current status:
+- Debug Mode entry/exit updates DCSR/DPC and restores execution via DRET.
+- EBREAK honors DCSR ebreak bits and enters Debug Mode when enabled.
+- Single-step uses DCSR.STEP with a TB flag and a helper at TB exit.
+  It references Max Chou's patch "target/riscv: Use the tb->cs_bqse as
+  the extend tb flags.":
+  https://lore.kernel.org/qemu-devel/20260108132631.9429-6-max.chou@sifive.com/
+- Sdtrig supports action=debug mode for mcontrol/mcontrol6 and reports
+  inst-count triggers in tinfo.
+
+Differences vs Debug Spec (known gaps):
+- No Debug Module (no DMI, dmcontrol/dmstatus, haltreq/resumereq).
+- No debug ROM, program buffer, abstract commands, or SBA.
+- Resume is modeled by leaving Debug Mode at cpu_exec_enter.
+- Step/exception ordering is simplified: if the stepped instruction
+  traps, the normal exception is taken and Debug Mode is not forced.
+- Several DCSR fields are not fully modeled (stopcount/stoptime, etc).
+
+Roadmap (next stage, DM focus):
+1) Add a DM core with DMI access and hart state tracking.
+2) Implement halt/resume handshake and move Debug Mode transitions
+   under DM control.
+3) Add debug ROM, program buffer, and abstract commands for GPR/CSR
+   and memory access.
+4) Add SBA if required by tooling.
+5) Tighten ordering rules for step/exception/trigger priorities.
+
+Thanks,
+Chao
 
 
-Hi Pierrick,
+Chao Liu (8):
+  riscv: split sdext and sdtrig config bits
+  riscv: add sdext debug CSRs state
+  riscv: add sdext Debug Mode helpers
+  riscv: add dret instruction
+  riscv: add sdext enter Debug Mode on ebreak
+  riscv: add sdext single-step support
+  riscv: add sdtrig trigger action=debug mode
+  tests: update riscv64 virt RHCT
 
-Thanks for the update. I will rebase my upcoming patch series accordingly.
+ include/exec/translation-block.h              |   3 +-
+ target/riscv/cpu.c                            |  23 ++-
+ target/riscv/cpu.h                            |  10 ++
+ target/riscv/cpu_bits.h                       |  33 ++++
+ target/riscv/cpu_cfg_fields.h.inc             |   2 +
+ target/riscv/cpu_helper.c                     |  93 ++++++++++++
+ target/riscv/csr.c                            | 142 +++++++++++++++++-
+ target/riscv/debug.c                          |  58 ++++++-
+ target/riscv/helper.h                         |   3 +
+ target/riscv/insn32.decode                    |   1 +
+ .../riscv/insn_trans/trans_privileged.c.inc   |  24 ++-
+ target/riscv/machine.c                        |  12 +-
+ target/riscv/op_helper.c                      |  72 +++++++++
+ target/riscv/tcg/tcg-cpu.c                    |  34 +++--
+ target/riscv/translate.c                      |  16 +-
+ tests/data/acpi/riscv64/virt/RHCT             | Bin 416 -> 422 bytes
+ 16 files changed, 492 insertions(+), 34 deletions(-)
 
-Best regards,
-Tao
+-- 
+2.52.0
 
 
