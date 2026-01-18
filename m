@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE405D39A55
-	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jan 2026 23:09:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87911D39A58
+	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jan 2026 23:09:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhaxT-0008J7-Qc; Sun, 18 Jan 2026 17:09:19 -0500
+	id 1vhaxW-0000CY-JA; Sun, 18 Jan 2026 17:09:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vhaxI-0007zj-9s
- for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:09:08 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1vhaxK-0008Ll-9F
+ for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:09:10 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vhaxG-0001bn-Oo
- for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:09:07 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-2a102494058so22845135ad.0
- for <qemu-devel@nongnu.org>; Sun, 18 Jan 2026 14:09:06 -0800 (PST)
+ id 1vhaxI-0001c0-Mh
+ for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:09:09 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-29f1bc40b35so38116895ad.2
+ for <qemu-devel@nongnu.org>; Sun, 18 Jan 2026 14:09:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768774145; x=1769378945; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768774147; x=1769378947; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7cyYL4DVaKa33AbZpjE1YQS7WRtchLKWVUrU1QN8V2g=;
- b=YyVtVg5wUMi7A6/rmNNS221NcLzH5rKQ/JhFjTKUAD3A5NCfSD2FOJ16wRieUFoZ0s
- IE7hwhnzGzabLKG2S9KdWbAwuukgpxPm7pJZmCs/bRWvEwhAZpja7HYzHDb0zBdoa1VG
- hwwumqiYZLw2x4kSKZAUYvtvrMmsuNHzk4z3qF/A2fYVBKvNMrhI8V6qLzas9hDchNDm
- gEmzZDFtp2pKCuVAXMsJmwk6Dn6/AQ3nostlDpWeXO0FtHC7AmiBaI78ezovL7i+eb9w
- vzgB9HRvyii9BZpbDjCGVvgE1iXP+sYSlserqFf5hosE2byRGOAc4P3zyS48rE7U0t3T
- g+Yw==
+ bh=mY8SF4Lgdoetp90UFxDHJbg0kRe28ldzal692R5R0k0=;
+ b=yWFe7ee04KaYK9KFPhxBONIehtf1Lb2M/6PV+Ej1R0E79+sstTy5pD7qdyCF3GlAYF
+ SJRvJCr2taTdZkih6vtz38guyFrpvOnNd0w2Ce05VLGMV2X4wEyfuPGXJDckew/TQUCQ
+ HB9ApnjvWb2D1nAdhEU/XeMvObbjDBl+TErUtF2zNutnGB0SUeuIc5b2KHexYjWe5vAw
+ bOpZXW/UfBaOKEjKT1S8BlgnUZEXzTfqc23SGke2TYThsxUIlMzcxGU5TOFRk1whs3KY
+ xon8E7+ayp/69Mvr/sS7GQ9GWUDJ8HVutqZQYOnhoDxEFzuZ2eNhleO5EkF+Ji/uJetg
+ ceSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768774145; x=1769378945;
+ d=1e100.net; s=20230601; t=1768774147; x=1769378947;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=7cyYL4DVaKa33AbZpjE1YQS7WRtchLKWVUrU1QN8V2g=;
- b=aZkz+fwurAoGWWFgn/W7v07Mbrvm4wLojEP9X8JoveE9sD738GjqFgKcroxDLRtWdW
- 6t92/BpKtIz/6RTUxSblF4pWiVbCtu02+DyFgQoeAf+UQu06+GXjZqdg/3Gm7d4Ka8r2
- zWpFOdlA8yQ3Zhb1jYjjfSOmTbqqou6iBDHAcg42bEa1/QRX2yxmzZItZ8Bf9njvwf13
- ztCfgJ2R+z3JCjiHAbuRB5+3VBKW/rG6oMZWAXse+y+v29o0BNX1Ibwfov6w79s30TgC
- xeZQ8t0TlUYPQzw87/MmIDMX7yoYbs+p+QrSI2woDrik1Q92v0OlktJDSUBB2WtB9mCI
- hUBA==
-X-Gm-Message-State: AOJu0YxeP7AiqHKKxPiE2YeqbkEv86B803KgBCxguO6CYobrodAu+n3Y
- zUdRFNLHnn0yDULSvUocdRxkXc9rvQehO5K9JeHxMGtqHDHItHKgHWcvXFjh0BQ68deMvnPYBm9
- QfB1/9rB3oQ==
-X-Gm-Gg: AY/fxX5CGVN38creUrYkI8DCBf6r+HgVn2h3nHwF+2afg6NXV0Oh1skOUQKleShSl0t
- ZoIYEacIeBnyzbQtco7vsmesYOrt2iHwBAD1YKZDdtaSRgq/82RVo9TQimY+ObBK+H3ZxnNFp02
- I4Z1g4305SsGK3Rq6o5NaAWoc0MuH9h69TZYaJjYYne9d/1Lg18CnWXe+NWAPqTyB2UFsbq7jaq
- 4iFVYGZGfavG7nyP8vQuhVtZCI3xSGs8pW81GQZ5VjTWMUvnwsjQopVCXcYt6GSBr/WaAKfbjhU
- kcOqZhm+I9k2yih4zjlPmHMyo0QtP1Oy4/wtwDJ0JS6bO8Aihsk1YdBUb4moBw0k8ZB6BQc645A
- DIPSLsWl7jSw2fujetZVLlgQrLSdZtap5DBx1FnJKeu/ut49Juh/edJGzjKVnOrb1Cj04G1tfbg
- RE65LmYIGrkK1bvnBpeGsgjOCapPW1
-X-Received: by 2002:a17:902:f686:b0:2a0:e5c3:d149 with SMTP id
- d9443c01a7336-2a71780a3e3mr79236195ad.23.1768774145138; 
- Sun, 18 Jan 2026 14:09:05 -0800 (PST)
+ bh=mY8SF4Lgdoetp90UFxDHJbg0kRe28ldzal692R5R0k0=;
+ b=PLXxLimNIuWMtAoFQxK3mS7xDiX/kUsyPp59U/VoejfKoNVrvIT5XnzkXrLJg24tqi
+ qIZVjrIpiPvXlwVSWROrnABPrcqaZCxuXMLXPbnrIAbRpWnOsZNIJigbrKAFREp2mb/p
+ K4o27r5acApiekM40TqXCto87ZQy3oUCt3iO+3I8oLUG/lAqqVmEyI9Os42G30B/BWJB
+ xyjBTMCWxALYSAj4T3//KZGPrVfTH6Z10MWAyzmHq3r+Tds+mEvAwiT9EvibgX4nPoQU
+ wDfqtvGq7GbZQmjQ3nqg0KjjX2LRGuDndQxeu6ur7ekBmBN74kkfA3PlMRrRVN+qY1fl
+ 8ZKA==
+X-Gm-Message-State: AOJu0YyJJakUHAXZAOpJ+GzCtSXJPe1RN3gWVnQJFnQO0Z946yjBMvzx
+ m/i59TewFdvbgZtqoRoHaWwEwodEXQM9qo9xAvzLqlpOn0YpPbRIIYLMcHcqz1uXqW2Ux+h3KV9
+ WBPEYCwA/DA==
+X-Gm-Gg: AY/fxX6JI7rwm/jNN4eyFGaCLjxoLqunZtsK81SbwTatLyYFOGQit224WMDLuQqPyBt
+ xmK5xXgXQKW6iLKu0BPYSecnX75xerHDeJESRgQdYMT8TO2R4hfyDGAoHQlpeYTWTNJ7WAbW145
+ OQ7rGZ2mqGo45ScwZkmlZnYhoKblRCXS1EZ/n081rs+LRdKkV/H6jcYUxGFrSa/K5HiIPWT9rXz
+ +9+DOB/pv74beqmacKDsWZ8WxFdDRDYMwdR1Ys8uK5szN5Q59cd1Ewpj/cKK6Xi4dUD5KW0iRl5
+ mqjfVcbQJk06WuDHKadv/gyv5ApEwhfRH8mArEVqxsW19VbAS1eheIr520C1yctzHYhmMYgV15+
+ l1l4K0Ou/KCnKAg99JbTzyJR37AdimOvXkEe9uSAAEnDCc/qFTxCvOEHFDV8oQtboyPL/w4XqZn
+ rmRH0NO/B8icANEbKEFQ==
+X-Received: by 2002:a17:902:e84a:b0:2a3:bf5f:926c with SMTP id
+ d9443c01a7336-2a7175cbc87mr102103885ad.39.1768774147265; 
+ Sun, 18 Jan 2026 14:09:07 -0800 (PST)
 Received: from stoup.. ([180.233.125.201]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a7190ab921sm73298205ad.8.2026.01.18.14.09.03
+ d9443c01a7336-2a7190ab921sm73298205ad.8.2026.01.18.14.09.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 Jan 2026 14:09:04 -0800 (PST)
+ Sun, 18 Jan 2026 14:09:06 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 43/54] linux-user/hppa: Drop CONFIG_ATOMIC64 test
-Date: Mon, 19 Jan 2026 09:04:03 +1100
-Message-ID: <20260118220414.8177-44-richard.henderson@linaro.org>
+Subject: [PULL 44/54] target/arm: Drop CONFIG_ATOMIC64 tests
+Date: Mon, 19 Jan 2026 09:04:04 +1100
+Message-ID: <20260118220414.8177-45-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260118220414.8177-1-richard.henderson@linaro.org>
 References: <20260118220414.8177-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -100,35 +100,65 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/hppa/cpu_loop.c | 14 +-------------
- 1 file changed, 1 insertion(+), 13 deletions(-)
+ target/arm/ptw.c | 18 +++++-------------
+ 1 file changed, 5 insertions(+), 13 deletions(-)
 
-diff --git a/linux-user/hppa/cpu_loop.c b/linux-user/hppa/cpu_loop.c
-index 356cb48acc..e5c0f52d94 100644
---- a/linux-user/hppa/cpu_loop.c
-+++ b/linux-user/hppa/cpu_loop.c
-@@ -83,20 +83,8 @@ static abi_ulong hppa_lws(CPUHPPAState *env)
-                 uint64_t o64, n64, r64;
-                 o64 = *(uint64_t *)g2h(cs, old);
-                 n64 = *(uint64_t *)g2h(cs, new);
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index a986dc66f6..8b8dc09e72 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -757,20 +757,12 @@ static uint64_t arm_ldq_ptw(CPUARMState *env, S1Translate *ptw,
+ 
+     if (likely(host)) {
+         /* Page tables are in RAM, and we have the host address. */
 -#ifdef CONFIG_ATOMIC64
--                r64 = qatomic_cmpxchg__nocheck((aligned_uint64_t *)g2h(cs, addr),
--                                               o64, n64);
-+                r64 = qatomic_cmpxchg((aligned_uint64_t *)g2h(cs, addr), o64, n64);
-                 ret = r64 != o64;
+-        data = qatomic_read__nocheck((uint64_t *)host);
++        data = qatomic_read((uint64_t *)host);
+         if (ptw->out_be) {
+             data = be64_to_cpu(data);
+         } else {
+             data = le64_to_cpu(data);
+         }
 -#else
--                start_exclusive();
--                r64 = *(uint64_t *)g2h(cs, addr);
--                ret = 1;
--                if (r64 == o64) {
--                    *(uint64_t *)g2h(cs, addr) = n64;
--                    ret = 0;
--                }
--                end_exclusive();
+-        if (ptw->out_be) {
+-            data = ldq_be_p(host);
+-        } else {
+-            data = ldq_le_p(host);
+-        }
 -#endif
-             }
-             break;
-         default:
+     } else {
+         /* Page tables are in MMIO. */
+         MemTxAttrs attrs = {
+@@ -798,7 +790,7 @@ static uint64_t arm_casq_ptw(CPUARMState *env, uint64_t old_val,
+                              uint64_t new_val, S1Translate *ptw,
+                              ARMMMUFaultInfo *fi)
+ {
+-#if defined(CONFIG_ATOMIC64) && defined(CONFIG_TCG)
++#ifdef CONFIG_TCG
+     uint64_t cur_val;
+     void *host = ptw->out_host;
+ 
+@@ -903,17 +895,17 @@ static uint64_t arm_casq_ptw(CPUARMState *env, uint64_t old_val,
+     if (ptw->out_be) {
+         old_val = cpu_to_be64(old_val);
+         new_val = cpu_to_be64(new_val);
+-        cur_val = qatomic_cmpxchg__nocheck((uint64_t *)host, old_val, new_val);
++        cur_val = qatomic_cmpxchg((uint64_t *)host, old_val, new_val);
+         cur_val = be64_to_cpu(cur_val);
+     } else {
+         old_val = cpu_to_le64(old_val);
+         new_val = cpu_to_le64(new_val);
+-        cur_val = qatomic_cmpxchg__nocheck((uint64_t *)host, old_val, new_val);
++        cur_val = qatomic_cmpxchg((uint64_t *)host, old_val, new_val);
+         cur_val = le64_to_cpu(cur_val);
+     }
+     return cur_val;
+ #else
+-    /* AArch32 does not have FEAT_HADFS; non-TCG guests only use debug-mode. */
++    /* Non-TCG guests only use debug-mode. */
+     g_assert_not_reached();
+ #endif
+ }
 -- 
 2.43.0
 
