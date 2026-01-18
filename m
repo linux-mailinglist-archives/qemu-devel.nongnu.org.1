@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD77ED39A25
-	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jan 2026 23:04:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34CE1D39A2C
+	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jan 2026 23:05:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhatB-0001i8-Cx; Sun, 18 Jan 2026 17:04:53 -0500
+	id 1vhate-00023H-Hh; Sun, 18 Jan 2026 17:05:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vhat7-0001PQ-J6
- for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:04:49 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1vhatB-0001pj-5w
+ for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:04:53 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vhat5-0000Vm-Qk
- for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:04:49 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-2a110548cdeso24515255ad.0
- for <qemu-devel@nongnu.org>; Sun, 18 Jan 2026 14:04:47 -0800 (PST)
+ id 1vhat8-0000WJ-Ej
+ for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:04:52 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-2a1022dda33so22054835ad.2
+ for <qemu-devel@nongnu.org>; Sun, 18 Jan 2026 14:04:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768773886; x=1769378686; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768773889; x=1769378689; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RAjiwiRuOWizs0EGl+79VhmlGSH6tR7oUS2c/1ByVNA=;
- b=d+8B6wk0fKB5AfoXB7xKQW05B5qN8lwZbMxRWDsHyP4Vbzu0KVgjcfS8ljIQbx+6Jy
- UclqxclpgWxMs/hz3VztzHdJ8NYQaPggZAyFoCqP2tcFuuJ8S7zx385sUgdRFIso7Vik
- Tu80Y49W1MVtJ3/1vK7FIPIE26thY2/RSAs4zSPR8oq9ljCoC1o3l05WF8N9OTtUHAMT
- V5bcMzIFvTyyX4tmjebC7EICo9hjKr5A2L+yuxVMK/sKNe9wQ58BggoHr4ejkT5nOK71
- RQLjjSIhCN/WJ9QPHAwe7UqmmD18kI2/56StD+Yc2Sm2hfY7rn0YrsCj9R2qWgs6TXoJ
- vfng==
+ bh=UanRVIi+nePBx9P9C2dWtHxLGCeZ+PWfJ962yXiADQc=;
+ b=BitKkuLNRHvAcIgf58hxp8T30f8baegGgA1O7hj7K81Vf0/nvhQxxFemTIpHoUY2Bf
+ Bw323PSnTXlW2c9U4ldgqgZiHy1AQuiewkl0Vob6+93YpTP6JCTb/oTFA497q4fNIwVs
+ oKsx45+DZ7ecdXbG/kCa74lGl9/+arG1s8fXnhGpOt+p0cM2j6/Rxdda/p3LE+/OeHR7
+ ISUEgg8+qAfPKjNoMiLeNdkK6yzfx3ygegioVum5kf20LsHRRF81coCX3/x9lstMHxyw
+ aEA8qT0VU1nNwKLC4/pWyJOHzGtR4bQRpRgK9VwWaRqGh1AvilUgW1RJMNbSpGzuAW8k
+ 3u4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768773886; x=1769378686;
+ d=1e100.net; s=20230601; t=1768773889; x=1769378689;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=RAjiwiRuOWizs0EGl+79VhmlGSH6tR7oUS2c/1ByVNA=;
- b=cJVZLphq0xd4CU2oAnamUc+E4Xn+eRpoASw2CSpxC2zc06MAr25qdoKFzfr17u3Kao
- SA37DvM3596tOBprIW64AkSvxzgnZy+tbaRUPuGM4h+PWQTqq4KxHDITuaosHodk1a0P
- QP/JqB6J/a1xQ0nJH/K5tdENrk+PI4l+txlJOUc4B4P3Q0EdwyHFAy5sWxfxlWZyTkCf
- 2avbcJr0tOORP/l7BkMt7d3DSBPLgtB+wPHs+VXIAcRVRxg0vdRWzkYegKOpwTfDgntt
- EVeQwNaJZqnwf1tRPH7tipji81ttebAGg4edD3anR4hifYsbmF7DxrDiV4SGMQ5h8wfK
- vC4A==
-X-Gm-Message-State: AOJu0YzB0mXgXer1JjWRqU5SyKPu4+yvPkCsOPCcQepPVtzVrtiB/76K
- ebpBuJuQ/yj6Yv/FM+Fsd6dbQ/HObgAWP5ohx/uXJyLDsdALlSZjSvakj6E/4ed+EcJrsPL3cBD
- Xu+Yxggat/g==
-X-Gm-Gg: AY/fxX7COLnfJJeG7I1j3Ve/p6n0ab9sUT7dP25UulRwj8Q3kD9L+jqL5g/VJUwyR/v
- QargEcl/GlMYW/sW5ZrUe2huNf6OXdggHMNrsCO3wH4HTnSbr5G52qBvkZ6w7l8aDzOvBivUI1l
- psJE9F0N7XQHUZ7Qy7x03g/o9GTUn+90jQHuwNJkIjJYONMkYM3x9uLrrCks7m4ojIg4t+6glF5
- IYIExyPhNwJVUCuAvl4ZF1FSw5pTZuwjYtClAQPvptH/1LSWDSd24ccjcPhy+ZZG52nn9tcwXf4
- /UuglWypNMr3bU61R6lFOo2QW8Y+t3v/t0qyI24N5Ju5ZfsybtQr6r7ZzZZhsIyA6+1GqX+UZhP
- RsT3MwhHzS3ZJXkPWEP5Dl7rT2c3DaSJT8yKAggTLO3dCB+pQqyd9Qxr4IhUCcJuXgP5rojzaX7
- S+sm8O5zSki0VtjThYyg==
-X-Received: by 2002:a17:902:da8d:b0:295:9b3a:16b7 with SMTP id
- d9443c01a7336-2a7175189aemr98621865ad.4.1768773886173; 
- Sun, 18 Jan 2026 14:04:46 -0800 (PST)
+ bh=UanRVIi+nePBx9P9C2dWtHxLGCeZ+PWfJ962yXiADQc=;
+ b=qf54zAe8nNORpWpzuSeH60BzkVQF7JVjBPe2bD5/KoZhbEaSTsoAcHPQMXyYjbky/r
+ oDv6QpV73Aexrle7btYzndXj1Zo/QNfuUMjs1ZaJS28XkV4jB4S2FY+qE+JZXOHJnzkV
+ 7iCBW+pHSsKviZkwL6kPoBVDJ9yKBDG2GzMS2EkuMPd5YcIkR9Yq/7lzPM6/HlWikgMF
+ /2Cfgtp/jaquQJO31emK9mv91U3oF+PB3x28tUKZ9x64QhRwqL+laoMgPYM1dzWB9VD9
+ D8Uyl+CotS7aeyC+oKOy8qs2xkR0Utm359pfWrpaGTVooFtZeC9ZIQh6YmD48JolRlhU
+ z7kA==
+X-Gm-Message-State: AOJu0YzZULAFyaQkLP4ZQzKbiMkEUvNBunH35Zf2MxKyCeMC/wuzOeTX
+ miGWITPGQXZYFZLLlmvBv4V464j3bTpuQLP36jrGUIRpxgp2bQFIYbbBFPfdrvykTkZSAUdI79L
+ Surqw6RtUBA==
+X-Gm-Gg: AY/fxX5F51zhte45Wxo3wAaKPAPrleocwtgVs2huMTSr3jCQ9mu8ubvo1k7WjrQJpbm
+ U6ZHmH9FGfo652xAOH9WHS37eXtaOn99iKOb0hrxRyj0rqp3GmxUjj9Lhy2kEUwyRnR5cOItE3A
+ bRU0pL+55I5V/1L7BF19wxsicfbPxb1W4KnUEzIY4M5/lMjoW0T0XB/GhwmTYgURkoUWaDT8XwS
+ NFjBktPyJarf5h50MDWqj+fJhqBPkWtbbdYdtlfR9gmo7aGNXYqIzvw/37AR3rQ4RwukmE27//m
+ hXwg/q9ISn6vniPW+C/Cz0hV/nh3N7m0LLGeq5nJKGHz/+bI+DXa9UnonBKt/rl9iKtXyQTOuIp
+ t3OCzBZXiN38kZ9x65WPlx65ZX9WL2gnZ1Z+z+TP6B8bHkIsi3CLl3ZHpxqPDFJnKnCaV0XXOyw
+ GuvKtg6tcHQW6xM8K4ZMWG0l4SePO4
+X-Received: by 2002:a17:902:cf4c:b0:29f:2734:6ffb with SMTP id
+ d9443c01a7336-2a717545acamr94899975ad.22.1768773888664; 
+ Sun, 18 Jan 2026 14:04:48 -0800 (PST)
 Received: from stoup.. ([180.233.125.201]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a7193dbb74sm74402865ad.56.2026.01.18.14.04.44
+ d9443c01a7336-2a7193dbb74sm74402865ad.56.2026.01.18.14.04.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 Jan 2026 14:04:45 -0800 (PST)
+ Sun, 18 Jan 2026 14:04:48 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 11/54] meson: Remove cpu == x86 tests
-Date: Mon, 19 Jan 2026 09:03:31 +1100
-Message-ID: <20260118220414.8177-12-richard.henderson@linaro.org>
+Subject: [PULL 12/54] *: Remove ppc host support
+Date: Mon, 19 Jan 2026 09:03:32 +1100
+Message-ID: <20260118220414.8177-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260118220414.8177-1-richard.henderson@linaro.org>
 References: <20260118220414.8177-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -98,158 +98,658 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 32-bit x86 host is no longer supported.
+Move the files from host/include/ppc to host/include/ppc64,
+replacing the stub headers that redirected to ppc.
+
+Remove linux-user/include/host/ppc.
+Remove common-user/host/ppc.
+Remove cpu == ppc tests from meson.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- configure   | 16 +---------------
- meson.build | 49 ++++++++++---------------------------------------
- 2 files changed, 11 insertions(+), 54 deletions(-)
+ host/include/ppc/host/cpuinfo.h            |  30 ----
+ host/include/ppc/host/crypto/aes-round.h   | 182 --------------------
+ host/include/ppc64/host/cpuinfo.h          |  31 +++-
+ host/include/ppc64/host/crypto/aes-round.h | 183 ++++++++++++++++++++-
+ linux-user/include/host/ppc/host-signal.h  |  39 -----
+ common-user/host/ppc/safe-syscall.inc.S    | 107 ------------
+ meson.build                                |   4 +-
+ 7 files changed, 213 insertions(+), 363 deletions(-)
+ delete mode 100644 host/include/ppc/host/cpuinfo.h
+ delete mode 100644 host/include/ppc/host/crypto/aes-round.h
+ delete mode 100644 linux-user/include/host/ppc/host-signal.h
+ delete mode 100644 common-user/host/ppc/safe-syscall.inc.S
 
-diff --git a/configure b/configure
-index de0f3a8ebe..e9d0b9e2c0 100755
---- a/configure
-+++ b/configure
-@@ -447,13 +447,6 @@ case "$cpu" in
-     linux_arch=arm64
-     ;;
- 
--  i386|i486|i586|i686)
--    cpu="i386"
--    host_arch=i386
--    linux_arch=x86
--    CPU_CFLAGS="-m32"
--    ;;
+diff --git a/host/include/ppc/host/cpuinfo.h b/host/include/ppc/host/cpuinfo.h
+deleted file mode 100644
+index 38b8eabe2a..0000000000
+--- a/host/include/ppc/host/cpuinfo.h
++++ /dev/null
+@@ -1,30 +0,0 @@
+-/*
+- * SPDX-License-Identifier: GPL-2.0-or-later
+- * Host specific cpu identification for ppc.
+- */
 -
-   loongarch*)
-     cpu=loongarch64
-     host_arch=loongarch64
-@@ -1944,14 +1937,7 @@ if test "$skip_meson" = no; then
-   if test "$cross_compile" = "yes"; then
-     echo "[host_machine]" >> $cross
-     echo "system = '$host_os'" >> $cross
--    case "$cpu" in
--        i386)
--            echo "cpu_family = 'x86'" >> $cross
--            ;;
--        *)
--            echo "cpu_family = '$cpu'" >> $cross
--            ;;
--    esac
-+    echo "cpu_family = '$cpu'" >> $cross
-     echo "cpu = '$cpu'" >> $cross
-     if test "$bigendian" = "yes" ; then
-         echo "endian = 'big'" >> $cross
+-#ifndef HOST_CPUINFO_H
+-#define HOST_CPUINFO_H
+-
+-/* Digested version of <cpuid.h> */
+-
+-#define CPUINFO_ALWAYS          (1u << 0)  /* so cpuinfo is nonzero */
+-#define CPUINFO_V2_06           (1u << 1)
+-#define CPUINFO_V2_07           (1u << 2)
+-#define CPUINFO_V3_0            (1u << 3)
+-#define CPUINFO_V3_1            (1u << 4)
+-#define CPUINFO_ISEL            (1u << 5)
+-#define CPUINFO_ALTIVEC         (1u << 6)
+-#define CPUINFO_VSX             (1u << 7)
+-#define CPUINFO_CRYPTO          (1u << 8)
+-
+-/* Initialized with a constructor. */
+-extern unsigned cpuinfo;
+-
+-/*
+- * We cannot rely on constructor ordering, so other constructors must
+- * use the function interface rather than the variable above.
+- */
+-unsigned cpuinfo_init(void);
+-
+-#endif /* HOST_CPUINFO_H */
+diff --git a/host/include/ppc/host/crypto/aes-round.h b/host/include/ppc/host/crypto/aes-round.h
+deleted file mode 100644
+index 8062d2a537..0000000000
+--- a/host/include/ppc/host/crypto/aes-round.h
++++ /dev/null
+@@ -1,182 +0,0 @@
+-/*
+- * Power v2.07 specific aes acceleration.
+- * SPDX-License-Identifier: GPL-2.0-or-later
+- */
+-
+-#ifndef PPC_HOST_CRYPTO_AES_ROUND_H
+-#define PPC_HOST_CRYPTO_AES_ROUND_H
+-
+-#ifdef __ALTIVEC__
+-#include "host/cpuinfo.h"
+-
+-#ifdef __CRYPTO__
+-# define HAVE_AES_ACCEL  true
+-#else
+-# define HAVE_AES_ACCEL  likely(cpuinfo & CPUINFO_CRYPTO)
+-#endif
+-#define ATTR_AES_ACCEL
+-
+-/*
+- * While there is <altivec.h>, both gcc and clang "aid" with the
+- * endianness issues in different ways. Just use inline asm instead.
+- */
+-
+-/* Bytes in memory are host-endian; bytes in register are @be. */
+-static inline AESStateVec aes_accel_ld(const AESState *p, bool be)
+-{
+-    AESStateVec r;
+-
+-    if (be) {
+-        asm("lvx %0, 0, %1" : "=v"(r) : "r"(p), "m"(*p));
+-    } else if (HOST_BIG_ENDIAN) {
+-        AESStateVec rev = {
+-            15, 14, 13, 12, 11, 10, 9, 8, 7,  6,  5,  4,  3,  2,  1,  0,
+-        };
+-        asm("lvx %0, 0, %1\n\t"
+-            "vperm %0, %0, %0, %2"
+-            : "=v"(r) : "r"(p), "v"(rev), "m"(*p));
+-    } else {
+-#ifdef __POWER9_VECTOR__
+-        asm("lxvb16x %x0, 0, %1" : "=v"(r) : "r"(p), "m"(*p));
+-#else
+-        asm("lxvd2x %x0, 0, %1\n\t"
+-            "xxpermdi %x0, %x0, %x0, 2"
+-            : "=v"(r) : "r"(p), "m"(*p));
+-#endif
+-    }
+-    return r;
+-}
+-
+-static void aes_accel_st(AESState *p, AESStateVec r, bool be)
+-{
+-    if (be) {
+-        asm("stvx %1, 0, %2" : "=m"(*p) : "v"(r), "r"(p));
+-    } else if (HOST_BIG_ENDIAN) {
+-        AESStateVec rev = {
+-            15, 14, 13, 12, 11, 10, 9, 8, 7,  6,  5,  4,  3,  2,  1,  0,
+-        };
+-        asm("vperm %1, %1, %1, %2\n\t"
+-            "stvx %1, 0, %3"
+-            : "=m"(*p), "+v"(r) : "v"(rev), "r"(p));
+-    } else {
+-#ifdef __POWER9_VECTOR__
+-        asm("stxvb16x %x1, 0, %2" : "=m"(*p) : "v"(r), "r"(p));
+-#else
+-        asm("xxpermdi %x1, %x1, %x1, 2\n\t"
+-            "stxvd2x %x1, 0, %2"
+-            : "=m"(*p), "+v"(r) : "r"(p));
+-#endif
+-    }
+-}
+-
+-static inline AESStateVec aes_accel_vcipher(AESStateVec d, AESStateVec k)
+-{
+-    asm("vcipher %0, %0, %1" : "+v"(d) : "v"(k));
+-    return d;
+-}
+-
+-static inline AESStateVec aes_accel_vncipher(AESStateVec d, AESStateVec k)
+-{
+-    asm("vncipher %0, %0, %1" : "+v"(d) : "v"(k));
+-    return d;
+-}
+-
+-static inline AESStateVec aes_accel_vcipherlast(AESStateVec d, AESStateVec k)
+-{
+-    asm("vcipherlast %0, %0, %1" : "+v"(d) : "v"(k));
+-    return d;
+-}
+-
+-static inline AESStateVec aes_accel_vncipherlast(AESStateVec d, AESStateVec k)
+-{
+-    asm("vncipherlast %0, %0, %1" : "+v"(d) : "v"(k));
+-    return d;
+-}
+-
+-static inline void
+-aesenc_MC_accel(AESState *ret, const AESState *st, bool be)
+-{
+-    AESStateVec t, z = { };
+-
+-    t = aes_accel_ld(st, be);
+-    t = aes_accel_vncipherlast(t, z);
+-    t = aes_accel_vcipher(t, z);
+-    aes_accel_st(ret, t, be);
+-}
+-
+-static inline void
+-aesenc_SB_SR_AK_accel(AESState *ret, const AESState *st,
+-                      const AESState *rk, bool be)
+-{
+-    AESStateVec t, k;
+-
+-    t = aes_accel_ld(st, be);
+-    k = aes_accel_ld(rk, be);
+-    t = aes_accel_vcipherlast(t, k);
+-    aes_accel_st(ret, t, be);
+-}
+-
+-static inline void
+-aesenc_SB_SR_MC_AK_accel(AESState *ret, const AESState *st,
+-                         const AESState *rk, bool be)
+-{
+-    AESStateVec t, k;
+-
+-    t = aes_accel_ld(st, be);
+-    k = aes_accel_ld(rk, be);
+-    t = aes_accel_vcipher(t, k);
+-    aes_accel_st(ret, t, be);
+-}
+-
+-static inline void
+-aesdec_IMC_accel(AESState *ret, const AESState *st, bool be)
+-{
+-    AESStateVec t, z = { };
+-
+-    t = aes_accel_ld(st, be);
+-    t = aes_accel_vcipherlast(t, z);
+-    t = aes_accel_vncipher(t, z);
+-    aes_accel_st(ret, t, be);
+-}
+-
+-static inline void
+-aesdec_ISB_ISR_AK_accel(AESState *ret, const AESState *st,
+-                        const AESState *rk, bool be)
+-{
+-    AESStateVec t, k;
+-
+-    t = aes_accel_ld(st, be);
+-    k = aes_accel_ld(rk, be);
+-    t = aes_accel_vncipherlast(t, k);
+-    aes_accel_st(ret, t, be);
+-}
+-
+-static inline void
+-aesdec_ISB_ISR_AK_IMC_accel(AESState *ret, const AESState *st,
+-                            const AESState *rk, bool be)
+-{
+-    AESStateVec t, k;
+-
+-    t = aes_accel_ld(st, be);
+-    k = aes_accel_ld(rk, be);
+-    t = aes_accel_vncipher(t, k);
+-    aes_accel_st(ret, t, be);
+-}
+-
+-static inline void
+-aesdec_ISB_ISR_IMC_AK_accel(AESState *ret, const AESState *st,
+-                            const AESState *rk, bool be)
+-{
+-    AESStateVec t, k, z = { };
+-
+-    t = aes_accel_ld(st, be);
+-    k = aes_accel_ld(rk, be);
+-    t = aes_accel_vncipher(t, z);
+-    aes_accel_st(ret, t ^ k, be);
+-}
+-#else
+-/* Without ALTIVEC, we can't even write inline assembly. */
+-#include "host/include/generic/host/crypto/aes-round.h"
+-#endif
+-
+-#endif /* PPC_HOST_CRYPTO_AES_ROUND_H */
+diff --git a/host/include/ppc64/host/cpuinfo.h b/host/include/ppc64/host/cpuinfo.h
+index 2f036a0627..38b8eabe2a 100644
+--- a/host/include/ppc64/host/cpuinfo.h
++++ b/host/include/ppc64/host/cpuinfo.h
+@@ -1 +1,30 @@
+-#include "host/include/ppc/host/cpuinfo.h"
++/*
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ * Host specific cpu identification for ppc.
++ */
++
++#ifndef HOST_CPUINFO_H
++#define HOST_CPUINFO_H
++
++/* Digested version of <cpuid.h> */
++
++#define CPUINFO_ALWAYS          (1u << 0)  /* so cpuinfo is nonzero */
++#define CPUINFO_V2_06           (1u << 1)
++#define CPUINFO_V2_07           (1u << 2)
++#define CPUINFO_V3_0            (1u << 3)
++#define CPUINFO_V3_1            (1u << 4)
++#define CPUINFO_ISEL            (1u << 5)
++#define CPUINFO_ALTIVEC         (1u << 6)
++#define CPUINFO_VSX             (1u << 7)
++#define CPUINFO_CRYPTO          (1u << 8)
++
++/* Initialized with a constructor. */
++extern unsigned cpuinfo;
++
++/*
++ * We cannot rely on constructor ordering, so other constructors must
++ * use the function interface rather than the variable above.
++ */
++unsigned cpuinfo_init(void);
++
++#endif /* HOST_CPUINFO_H */
+diff --git a/host/include/ppc64/host/crypto/aes-round.h b/host/include/ppc64/host/crypto/aes-round.h
+index 5eeba6dcb7..8062d2a537 100644
+--- a/host/include/ppc64/host/crypto/aes-round.h
++++ b/host/include/ppc64/host/crypto/aes-round.h
+@@ -1 +1,182 @@
+-#include "host/include/ppc/host/crypto/aes-round.h"
++/*
++ * Power v2.07 specific aes acceleration.
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef PPC_HOST_CRYPTO_AES_ROUND_H
++#define PPC_HOST_CRYPTO_AES_ROUND_H
++
++#ifdef __ALTIVEC__
++#include "host/cpuinfo.h"
++
++#ifdef __CRYPTO__
++# define HAVE_AES_ACCEL  true
++#else
++# define HAVE_AES_ACCEL  likely(cpuinfo & CPUINFO_CRYPTO)
++#endif
++#define ATTR_AES_ACCEL
++
++/*
++ * While there is <altivec.h>, both gcc and clang "aid" with the
++ * endianness issues in different ways. Just use inline asm instead.
++ */
++
++/* Bytes in memory are host-endian; bytes in register are @be. */
++static inline AESStateVec aes_accel_ld(const AESState *p, bool be)
++{
++    AESStateVec r;
++
++    if (be) {
++        asm("lvx %0, 0, %1" : "=v"(r) : "r"(p), "m"(*p));
++    } else if (HOST_BIG_ENDIAN) {
++        AESStateVec rev = {
++            15, 14, 13, 12, 11, 10, 9, 8, 7,  6,  5,  4,  3,  2,  1,  0,
++        };
++        asm("lvx %0, 0, %1\n\t"
++            "vperm %0, %0, %0, %2"
++            : "=v"(r) : "r"(p), "v"(rev), "m"(*p));
++    } else {
++#ifdef __POWER9_VECTOR__
++        asm("lxvb16x %x0, 0, %1" : "=v"(r) : "r"(p), "m"(*p));
++#else
++        asm("lxvd2x %x0, 0, %1\n\t"
++            "xxpermdi %x0, %x0, %x0, 2"
++            : "=v"(r) : "r"(p), "m"(*p));
++#endif
++    }
++    return r;
++}
++
++static void aes_accel_st(AESState *p, AESStateVec r, bool be)
++{
++    if (be) {
++        asm("stvx %1, 0, %2" : "=m"(*p) : "v"(r), "r"(p));
++    } else if (HOST_BIG_ENDIAN) {
++        AESStateVec rev = {
++            15, 14, 13, 12, 11, 10, 9, 8, 7,  6,  5,  4,  3,  2,  1,  0,
++        };
++        asm("vperm %1, %1, %1, %2\n\t"
++            "stvx %1, 0, %3"
++            : "=m"(*p), "+v"(r) : "v"(rev), "r"(p));
++    } else {
++#ifdef __POWER9_VECTOR__
++        asm("stxvb16x %x1, 0, %2" : "=m"(*p) : "v"(r), "r"(p));
++#else
++        asm("xxpermdi %x1, %x1, %x1, 2\n\t"
++            "stxvd2x %x1, 0, %2"
++            : "=m"(*p), "+v"(r) : "r"(p));
++#endif
++    }
++}
++
++static inline AESStateVec aes_accel_vcipher(AESStateVec d, AESStateVec k)
++{
++    asm("vcipher %0, %0, %1" : "+v"(d) : "v"(k));
++    return d;
++}
++
++static inline AESStateVec aes_accel_vncipher(AESStateVec d, AESStateVec k)
++{
++    asm("vncipher %0, %0, %1" : "+v"(d) : "v"(k));
++    return d;
++}
++
++static inline AESStateVec aes_accel_vcipherlast(AESStateVec d, AESStateVec k)
++{
++    asm("vcipherlast %0, %0, %1" : "+v"(d) : "v"(k));
++    return d;
++}
++
++static inline AESStateVec aes_accel_vncipherlast(AESStateVec d, AESStateVec k)
++{
++    asm("vncipherlast %0, %0, %1" : "+v"(d) : "v"(k));
++    return d;
++}
++
++static inline void
++aesenc_MC_accel(AESState *ret, const AESState *st, bool be)
++{
++    AESStateVec t, z = { };
++
++    t = aes_accel_ld(st, be);
++    t = aes_accel_vncipherlast(t, z);
++    t = aes_accel_vcipher(t, z);
++    aes_accel_st(ret, t, be);
++}
++
++static inline void
++aesenc_SB_SR_AK_accel(AESState *ret, const AESState *st,
++                      const AESState *rk, bool be)
++{
++    AESStateVec t, k;
++
++    t = aes_accel_ld(st, be);
++    k = aes_accel_ld(rk, be);
++    t = aes_accel_vcipherlast(t, k);
++    aes_accel_st(ret, t, be);
++}
++
++static inline void
++aesenc_SB_SR_MC_AK_accel(AESState *ret, const AESState *st,
++                         const AESState *rk, bool be)
++{
++    AESStateVec t, k;
++
++    t = aes_accel_ld(st, be);
++    k = aes_accel_ld(rk, be);
++    t = aes_accel_vcipher(t, k);
++    aes_accel_st(ret, t, be);
++}
++
++static inline void
++aesdec_IMC_accel(AESState *ret, const AESState *st, bool be)
++{
++    AESStateVec t, z = { };
++
++    t = aes_accel_ld(st, be);
++    t = aes_accel_vcipherlast(t, z);
++    t = aes_accel_vncipher(t, z);
++    aes_accel_st(ret, t, be);
++}
++
++static inline void
++aesdec_ISB_ISR_AK_accel(AESState *ret, const AESState *st,
++                        const AESState *rk, bool be)
++{
++    AESStateVec t, k;
++
++    t = aes_accel_ld(st, be);
++    k = aes_accel_ld(rk, be);
++    t = aes_accel_vncipherlast(t, k);
++    aes_accel_st(ret, t, be);
++}
++
++static inline void
++aesdec_ISB_ISR_AK_IMC_accel(AESState *ret, const AESState *st,
++                            const AESState *rk, bool be)
++{
++    AESStateVec t, k;
++
++    t = aes_accel_ld(st, be);
++    k = aes_accel_ld(rk, be);
++    t = aes_accel_vncipher(t, k);
++    aes_accel_st(ret, t, be);
++}
++
++static inline void
++aesdec_ISB_ISR_IMC_AK_accel(AESState *ret, const AESState *st,
++                            const AESState *rk, bool be)
++{
++    AESStateVec t, k, z = { };
++
++    t = aes_accel_ld(st, be);
++    k = aes_accel_ld(rk, be);
++    t = aes_accel_vncipher(t, z);
++    aes_accel_st(ret, t ^ k, be);
++}
++#else
++/* Without ALTIVEC, we can't even write inline assembly. */
++#include "host/include/generic/host/crypto/aes-round.h"
++#endif
++
++#endif /* PPC_HOST_CRYPTO_AES_ROUND_H */
+diff --git a/linux-user/include/host/ppc/host-signal.h b/linux-user/include/host/ppc/host-signal.h
+deleted file mode 100644
+index de25c803f5..0000000000
+--- a/linux-user/include/host/ppc/host-signal.h
++++ /dev/null
+@@ -1,39 +0,0 @@
+-/*
+- * host-signal.h: signal info dependent on the host architecture
+- *
+- * Copyright (c) 2022 Linaro Ltd.
+- *
+- * This work is licensed under the terms of the GNU LGPL, version 2.1 or later.
+- * See the COPYING file in the top-level directory.
+- */
+-
+-#ifndef PPC_HOST_SIGNAL_H
+-#define PPC_HOST_SIGNAL_H
+-
+-#include <asm/ptrace.h>
+-
+-/* The third argument to a SA_SIGINFO handler is ucontext_t. */
+-typedef ucontext_t host_sigcontext;
+-
+-static inline uintptr_t host_signal_pc(host_sigcontext *uc)
+-{
+-    return uc->uc_mcontext.regs->nip;
+-}
+-
+-static inline void host_signal_set_pc(host_sigcontext *uc, uintptr_t pc)
+-{
+-    uc->uc_mcontext.regs->nip = pc;
+-}
+-
+-static inline void *host_signal_mask(host_sigcontext *uc)
+-{
+-    return &uc->uc_sigmask;
+-}
+-
+-static inline bool host_signal_write(siginfo_t *info, host_sigcontext *uc)
+-{
+-    return uc->uc_mcontext.regs->trap != 0x400
+-        && (uc->uc_mcontext.regs->dsisr & 0x02000000);
+-}
+-
+-#endif
+diff --git a/common-user/host/ppc/safe-syscall.inc.S b/common-user/host/ppc/safe-syscall.inc.S
+deleted file mode 100644
+index 0851f6c0b8..0000000000
+--- a/common-user/host/ppc/safe-syscall.inc.S
++++ /dev/null
+@@ -1,107 +0,0 @@
+-/*
+- * safe-syscall.inc.S : host-specific assembly fragment
+- * to handle signals occurring at the same time as system calls.
+- * This is intended to be included by common-user/safe-syscall.S
+- *
+- * Copyright (C) 2022 Linaro, Ltd.
+- *
+- * This work is licensed under the terms of the GNU GPL, version 2 or later.
+- * See the COPYING file in the top-level directory.
+- */
+-
+-/*
+- * Standardize on the _CALL_FOO symbols used by GCC:
+- * Apple XCode does not define _CALL_DARWIN.
+- * Clang defines _CALL_ELF (64-bit) but not _CALL_SYSV (32-bit).
+- */
+-#if !defined(_CALL_SYSV) && \
+-    !defined(_CALL_DARWIN) && \
+-    !defined(_CALL_AIX) && \
+-    !defined(_CALL_ELF)
+-# if defined(__APPLE__)
+-#  define _CALL_DARWIN
+-# elif defined(__ELF__) && TCG_TARGET_REG_BITS == 32
+-#  define _CALL_SYSV
+-# else
+-#  error "Unknown ABI"
+-# endif
+-#endif 
+-
+-#ifndef _CALL_SYSV
+-# error "Unsupported ABI"
+-#endif
+-
+-
+-        .global safe_syscall_base
+-        .global safe_syscall_start
+-        .global safe_syscall_end
+-        .type   safe_syscall_base, @function
+-
+-        .text
+-
+-        /*
+-         * This is the entry point for making a system call. The calling
+-         * convention here is that of a C varargs function with the
+-         * first argument an 'int *' to the signal_pending flag, the
+-         * second one the system call number (as a 'long'), and all further
+-         * arguments being syscall arguments (also 'long').
+-         */
+-safe_syscall_base:
+-        .cfi_startproc
+-        stwu    1, -8(1)
+-        .cfi_def_cfa_offset 8
+-        stw     30, 4(1)
+-        .cfi_offset 30, -4
+-
+-        /*
+-         * We enter with r3 == &signal_pending
+-         *               r4 == syscall number
+-         *               r5 ... r10 == syscall arguments
+-         *               and return the result in r3
+-         * and the syscall instruction needs
+-         *               r0 == syscall number
+-         *               r3 ... r8 == syscall arguments
+-         *               and returns the result in r3
+-         * Shuffle everything around appropriately.
+-         */
+-        mr      30, 3           /* signal_pending */
+-        mr      0, 4            /* syscall number */
+-        mr      3, 5            /* syscall arguments */
+-        mr      4, 6
+-        mr      5, 7
+-        mr      6, 8
+-        mr      7, 9
+-        mr      8, 10
+-
+-        /*
+-         * This next sequence of code works in conjunction with the
+-         * rewind_if_safe_syscall_function(). If a signal is taken
+-         * and the interrupted PC is anywhere between 'safe_syscall_start'
+-         * and 'safe_syscall_end' then we rewind it to 'safe_syscall_start'.
+-         * The code sequence must therefore be able to cope with this, and
+-         * the syscall instruction must be the final one in the sequence.
+-         */
+-safe_syscall_start:
+-        /* if signal_pending is non-zero, don't do the call */
+-        lwz     12, 0(30)
+-        cmpwi   0, 12, 0
+-        bne-    2f
+-        sc
+-safe_syscall_end:
+-        /* code path when we did execute the syscall */
+-        lwz     30, 4(1)        /* restore r30 */
+-        addi    1, 1, 8         /* restore stack */
+-        .cfi_restore 30
+-        .cfi_def_cfa_offset 0
+-        bnslr+                  /* return on success */
+-        b       safe_syscall_set_errno_tail
+-
+-        /* code path when we didn't execute the syscall */
+-2:      lwz     30, 4(1)
+-        addi    1, 1, 8
+-        addi    3, 0, QEMU_ERESTARTSYS
+-        b       safe_syscall_set_errno_tail
+-
+-        .cfi_endproc
+-
+-        .size   safe_syscall_base, .-safe_syscall_base
 diff --git a/meson.build b/meson.build
-index 137b2dcdc7..506904c7d7 100644
+index 506904c7d7..7993e4cfb9 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -50,7 +50,7 @@ qapi_trace_events = []
  
  bsd_oses = ['gnu/kfreebsd', 'freebsd', 'netbsd', 'openbsd', 'dragonfly', 'darwin']
  supported_oses = ['windows', 'freebsd', 'netbsd', 'openbsd', 'darwin', 'sunos', 'linux', 'emscripten']
--supported_cpus = ['ppc', 'ppc64', 's390x', 'riscv32', 'riscv64', 'x86', 'x86_64',
-+supported_cpus = ['ppc', 'ppc64', 's390x', 'riscv32', 'riscv64', 'x86_64',
+-supported_cpus = ['ppc', 'ppc64', 's390x', 'riscv32', 'riscv64', 'x86_64',
++supported_cpus = ['ppc64', 's390x', 'riscv32', 'riscv64', 'x86_64',
    'aarch64', 'loongarch64', 'mips64', 'sparc64', 'wasm64']
  
  cpu = host_machine.cpu_family()
-@@ -265,8 +265,6 @@ enable_modules = get_option('modules') \
- 
- if cpu not in supported_cpus
-   host_arch = 'unknown'
--elif cpu == 'x86'
--  host_arch = 'i386'
- elif cpu == 'mips64'
-   host_arch = 'mips'
- elif cpu in ['riscv32', 'riscv64']
-@@ -275,9 +273,7 @@ else
-   host_arch = cpu
- endif
- 
--if cpu == 'x86'
--  kvm_targets = ['i386-softmmu']
--elif cpu == 'x86_64'
-+if cpu == 'x86_64'
-   kvm_targets = ['i386-softmmu', 'x86_64-softmmu']
- elif cpu == 'aarch64'
+@@ -279,8 +279,6 @@ elif cpu == 'aarch64'
    kvm_targets = ['aarch64-softmmu']
-@@ -300,9 +296,7 @@ else
- endif
- accelerator_targets = { 'CONFIG_KVM': kvm_targets }
- 
--if cpu == 'x86'
--  xen_targets = ['i386-softmmu']
--elif cpu == 'x86_64'
-+if cpu == 'x86_64'
-   xen_targets = ['i386-softmmu', 'x86_64-softmmu']
- elif cpu == 'aarch64'
-   # i386 emulator provides xenpv machine type for multiple architectures
-@@ -391,40 +385,17 @@ endif
- 
- qemu_isa_flags = []
- 
--# __sync_fetch_and_and requires at least -march=i486. Many toolchains
--# use i686 as default anyway, but for those that don't, an explicit
--# specification is necessary
--if host_arch == 'i386' and not cc.links('''
--  static int sfaa(int *ptr)
--  {
--    return __sync_fetch_and_and(ptr, 0);
--  }
--
--  int main(void)
--  {
--    int val = 42;
--    val = __sync_val_compare_and_swap(&val, 0, 1);
--    sfaa(&val);
--    return val;
--  }''')
--  qemu_isa_flags += ['-march=i486']
--endif
--
- # Pick x86-64 baseline version
--if host_arch in ['i386', 'x86_64']
--  if get_option('x86_version') == '0' and host_arch == 'x86_64'
-+if host_arch == 'x86_64'
-+  if get_option('x86_version') == '0'
-     error('x86_64-v1 required for x86-64 hosts')
-   endif
- 
-   # add flags for individual instruction set extensions
-   if get_option('x86_version') >= '1'
--    if host_arch == 'i386'
--      qemu_common_flags = ['-mfpmath=sse'] + qemu_common_flags
--    else
--      # present on basically all processors but technically not part of
--      # x86-64-v1, so only include -mneeded for x86-64 version 2 and above
--      qemu_isa_flags += ['-mcx16']
--    endif
-+    # present on basically all processors but technically not part of
-+    # x86-64-v1, so only include -mneeded for x86-64 version 2 and above
-+    qemu_isa_flags += ['-mcx16']
-   endif
-   if get_option('x86_version') >= '2'
-     qemu_isa_flags += ['-mpopcnt']
-@@ -1040,7 +1011,7 @@ have_xen_pci_passthrough = get_option('xen_pci_passthrough') \
-            error_message: 'Xen PCI passthrough requested but Xen not enabled') \
-   .require(host_os == 'linux',
-            error_message: 'Xen PCI passthrough not available on this platform') \
--  .require(cpu == 'x86'  or cpu == 'x86_64',
-+  .require(cpu == 'x86_64',
-            error_message: 'Xen PCI passthrough not available on this platform') \
-   .allowed()
- 
-@@ -4564,7 +4535,7 @@ if have_tools
-                               libcap_ng, mpathpersist],
-                install: true)
- 
--    if cpu in ['x86', 'x86_64']
-+    if cpu == 'x86_64'
-       executable('qemu-vmsr-helper', files('tools/i386/qemu-vmsr-helper.c'),
-                dependencies: [authz, crypto, io, qom, qemuutil,
-                               libcap_ng, mpathpersist],
+ elif cpu == 's390x'
+   kvm_targets = ['s390x-softmmu']
+-elif cpu == 'ppc'
+-  kvm_targets = ['ppc-softmmu']
+ elif cpu == 'ppc64'
+   kvm_targets = ['ppc-softmmu', 'ppc64-softmmu']
+ elif cpu == 'mips64'
 -- 
 2.43.0
 
