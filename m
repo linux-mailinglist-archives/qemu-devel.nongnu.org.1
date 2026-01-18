@@ -2,88 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7ADBD39A61
-	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jan 2026 23:10:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94831D39B3A
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 00:22:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhaxl-0001bc-C7; Sun, 18 Jan 2026 17:09:37 -0500
+	id 1vhc59-0008CV-P4; Sun, 18 Jan 2026 18:21:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vhaxi-0001MH-2N
- for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:09:34 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vhc57-0008BJ-KH
+ for qemu-devel@nongnu.org; Sun, 18 Jan 2026 18:21:17 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vhaxg-0001gC-5V
- for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:09:33 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-2a0833b5aeeso37543665ad.1
- for <qemu-devel@nongnu.org>; Sun, 18 Jan 2026 14:09:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1vhc54-0003jx-VH
+ for qemu-devel@nongnu.org; Sun, 18 Jan 2026 18:21:17 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-4801c314c84so20775265e9.0
+ for <qemu-devel@nongnu.org>; Sun, 18 Jan 2026 15:21:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768774171; x=1769378971; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1768778473; x=1769383273; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VnCVV9AnEgawNA+fiIe+uEXCZKJSFhPJndsOefTu71g=;
- b=nYpprE9xQYkq3l3Amy2P21fGeiHWahqg3XLCvfqPfxFfW3S24pQbtZ72nBZzkkIMqW
- uIC8hogQc7b93vtjuo3yYwsYOzvqCJr5ljacLyd1OrOvObfR+/W91RlfevT64LxKEQOw
- Bwu4tDyRMod/+wCyMPV8naIz24wdTgTau01nmJhyLZX9deOFrMUwK2uvDN3Kq+0Awlw6
- rCiywKbWkFbhEd2DleEy5ZoBmQrAnXh/qPDXuoy19HxhMF2KBjefr4GUtKRWGSvww/Uj
- YkJROWeB0C5PhQV/pKWROL5sb3Xnlxn051XGgyNsfMBVzciYDCF+vx6zoeTniHlHtMPO
- n0eg==
+ bh=Oi+8iRPhyIsFnki7pDengp9/o/rjfpHUeK4b5AYYbhs=;
+ b=gzRtUbQr4Kn5WEeItBwS/7o0v+k5dUsgrnb3gfKaTcqpG6cW9VyAp5APsp9X2iUTBL
+ AQHOvNTDbcDx6VPf521I4l9sFzXPwGvtabQpBVeLSc5kd3F2R8bIpinCRuUEocVs4KiX
+ s2u3Qozg9S+S+gphPUlanCUtjfJuL/hi1TE1V6gBVaOTwgEoDr1AdVD8q20hhDkf1H7P
+ PFSGGLyWlnxFFhE1kJkIcCeh0lGmgWNz0PeCiOV4C5bk+QR3pBJLpkwrL6PYKkZ0f9U1
+ j00b/mh5tHPNEfq74FjJ7+PLwsRPFt0LD0QaDBoDEVWW5xZ7gFvortnxd0DmfHyc9XSZ
+ UrVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768774171; x=1769378971;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ d=1e100.net; s=20230601; t=1768778473; x=1769383273;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=VnCVV9AnEgawNA+fiIe+uEXCZKJSFhPJndsOefTu71g=;
- b=iytQoEl1YYiyxOVJjyXgTWCsuLyU6cs++RMD8z5OskLNdTsGhEMCrmpsJODYpX5PYU
- TX3PZIl8RkrbEotNAeqfNokduQY0glifTSXTRYinoZgCjnwjoSGIbIlNTL4YI7CbQchg
- C3nha4RcgxWVtCfb1BwGPibI5sfEZVPjLKth0ac1YJO29wA3cg47RYye+MnXfBOcnOlq
- jPNJxqryvvw9U6nhQtMCFlAKPNle8vQJLlzKGl7glGMbzGEDKNvrtWduUDhSW6BZ6/IP
- rR+ELQ94pFqeL8bL7x/ONjVuXGnRtzTYbkSIiYSkb17G+FfC/rDogfUvaQecv4Rp4ebV
- 02pA==
-X-Gm-Message-State: AOJu0YwNfvhXCZD0zRvupZsFi+Uqzjs3AS+2JUQYIoHsbEdNrYvshN+D
- m4LoPB9Whqtd1LWmhEu59ZNjvoVLQlyl2F51rXRFPGQ5RxsukDtqBTZFr2+F1HMDaC2k3DGLP5Q
- lW3oYoBsR8g==
-X-Gm-Gg: AY/fxX6GnMwNKUnDhxGcpTP79dwYBrOSKEhkNvrTUG2tI1qqkPREft5YR8mUacFubYn
- z84MfRyl47i2cUO9o+vyDlfBINJ3nG1bHLaecYRc3oWwkqPHFNFlPyjZX2ioNH3+y9BW1/T2OXb
- sFzXUEgZ8DzX6DIbkB8MVTa+/5lzqDtTbHxf/TqfCUeBU+HpvQOaxP4495VLCuLKjmIY03drGrE
- cS1khVHkmZXhB7zcJiejSX4JneKoMWK1pnm4WIdv0Yr5dr9znN7VR75Xlf8Z7AJQAegsE39NLfo
- PmNGDJKuKoimTKtinWbCcJQaoTJ60Mf/m0g7QHIJBdGEg7FNHCNt7mTWIgAp64Q+AmpooATq6XW
- PPMb8/6VKpEAfD9hV3TgC9OUEtEMDzBtm1RXFLXwgBm3cvNSJ4eBGrvUUTv56hdN/fH5cZfmRRz
- ND1rQvF4b6VIgYGAwwUA==
-X-Received: by 2002:a17:903:2f4c:b0:2a0:a8c2:be5d with SMTP id
- d9443c01a7336-2a7188583d4mr76683165ad.5.1768774170634; 
- Sun, 18 Jan 2026 14:09:30 -0800 (PST)
-Received: from stoup.. ([180.233.125.201]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a7190ab921sm73298205ad.8.2026.01.18.14.09.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 Jan 2026 14:09:30 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 54/54] include/qemu/atomic: Drop aligned_{u}int64_t
-Date: Mon, 19 Jan 2026 09:04:14 +1100
-Message-ID: <20260118220414.8177-55-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260118220414.8177-1-richard.henderson@linaro.org>
-References: <20260118220414.8177-1-richard.henderson@linaro.org>
+ bh=Oi+8iRPhyIsFnki7pDengp9/o/rjfpHUeK4b5AYYbhs=;
+ b=MFeEEKjBX7a3HldrN0SJ+6bq9t7NW0OMapy2AQj2tCvu21rZUYTd0PYL4XbMUWTnbO
+ 7bFpkWf1DuC0UA3tAtAUMIjagWJsnimz4ys57j28z8ENV8M9/JZX6TEaZN0S4Rc5BbmT
+ aUgAu6Yp1axnqCnabYkuhj8j+HUm4iu+FW+wLOn3Sh8ejYhWnHzBifGfpz9WQ2utkOq0
+ vSW/z/ROvvLWqFN04jO2gYEzS2H+Babxx+uDnfd0EGs8cJpZoAg4e75boYSwXE7nMrmH
+ zr8GUFUAy96MAExisiC0rpxUkpFNjk6BY5yXFC2LmqIxL/QM/l16PuCTV/KoBnK9CI0k
+ 1Huw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWaKeXq931+8+/LO9dzFfUDaYFGizuN8YBqlPQr3Px4qlufmw2moL0HQt/IMzR+9fRmv8ElR9RN5kMw@nongnu.org
+X-Gm-Message-State: AOJu0YwiLPzBxBIu9Ie6CRZIH598I64gh3048j6sRlH3x4CfcHD9rmbD
+ CLusTxzsuxO+boA0XyiQTuzAgDO8Ppf7yhDa7A9ufRZPObtOs9njuuCM
+X-Gm-Gg: AY/fxX4OXd5OuayDcDdDoOWD79/QGcuI103DVugJQfAVBuRY43Krv5uufrg9AwF+Sef
+ g3eB2JJUE06cwJVzkoAdDQTtAr6/YdU6SmYDqxWKibsba0xh0Y6L5dSohPAEht6zmsAfw0HOd2I
+ +avbpW5uW/TfR6gW+5QNYMABUoOglXL1lwDT8EHJnzS3O0x7wts8nJeqtqXE9/To2W4XOvKng8m
+ IVZAwN7a/iJbOtilcuDXAWNYZXxPrNg0PsZPVc6yKPuOGEIEfuPAvtcck2IUesL5v1hzFKvVuR6
+ VhWHa2Ty087Sdv8HPb5byfeCp9K8QKY26zCLqEjNIUO/lx0nWb/CtKuWaFmhpa6uc/g//yrVqDg
+ KYO6tpRA/iY+ebYsVdF6g5AA+UCA+Oc/TSJK/A9BXO65sdjgfmnpz9VmL3EKqgUZLrZk34X2G0c
+ bNrEhMvsnQEQAnQwrYWJcEoCCjC8h7q1sf1bmo7AlzHjCA7kfUroAGZByNoDEWBPqZDErm1l4BJ
+ Nwgkz5jvC6x3AYOZqBic1qRGCJnGAEVCNGhCZXVPaVtBg==
+X-Received: by 2002:a05:6000:2c0a:b0:430:ff41:5c87 with SMTP id
+ ffacd0b85a97d-43569bd490amr11644588f8f.60.1768778472368; 
+ Sun, 18 Jan 2026 15:21:12 -0800 (PST)
+Received: from ehlo.thunderbird.net
+ (dynamic-2a02-3100-2f50-f200-f91d-651c-a220-693b.310.pool.telefonica.de.
+ [2a02:3100:2f50:f200:f91d:651c:a220:693b])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-43569997f41sm18664913f8f.38.2026.01.18.15.21.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 18 Jan 2026 15:21:11 -0800 (PST)
+Date: Sun, 18 Jan 2026 22:56:29 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+CC: Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-arm@nongnu.org,
+ Guenter Roeck <linux@roeck-us.net>, Bin Meng <bmeng.cn@gmail.com>,
+ Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ qemu-block@nongnu.org, qemu-ppc@nongnu.org
+Subject: Re: [PATCH 00/14] Freescale SDHCI Fixes
+In-Reply-To: <4add79fa-6cee-4795-96e9-033ae98c472e@linaro.org>
+References: <20260112145418.220506-1-shentey@gmail.com>
+ <4add79fa-6cee-4795-96e9-033ae98c472e@linaro.org>
+Message-ID: <3F4EA15D-0769-4FF6-BC25-B1052EA69032@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x331.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,99 +106,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As we no longer support i386 as a host architecture,
-this abstraction is no longer required.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- accel/tcg/atomic_template.h          |  4 ++--
- include/qemu/atomic.h                | 13 -------------
- include/system/cpu-timers-internal.h |  2 +-
- linux-user/hppa/cpu_loop.c           |  2 +-
- util/qsp.c                           |  4 ++--
- 5 files changed, 6 insertions(+), 19 deletions(-)
 
-diff --git a/accel/tcg/atomic_template.h b/accel/tcg/atomic_template.h
-index ae5203b439..f7924078f7 100644
---- a/accel/tcg/atomic_template.h
-+++ b/accel/tcg/atomic_template.h
-@@ -27,8 +27,8 @@
- # define SHIFT      4
- #elif DATA_SIZE == 8
- # define SUFFIX     q
--# define DATA_TYPE  aligned_uint64_t
--# define SDATA_TYPE aligned_int64_t
-+# define DATA_TYPE  uint64_t
-+# define SDATA_TYPE int64_t
- # define BSWAP      bswap64
- # define SHIFT      3
- #elif DATA_SIZE == 4
-diff --git a/include/qemu/atomic.h b/include/qemu/atomic.h
-index 27d98014d4..dc9290084b 100644
---- a/include/qemu/atomic.h
-+++ b/include/qemu/atomic.h
-@@ -234,17 +234,4 @@
-     _oldn;                                                              \
- })
- 
--/*
-- * Abstractions to access atomically (i.e. "once") i64/u64 variables.
-- *
-- * The i386 abi is odd in that by default members are only aligned to
-- * 4 bytes, which means that 8-byte types can wind up mis-aligned.
-- * Clang will then warn about this, and emit a call into libatomic.
-- *
-- * Use of these types in structures when they will be used with atomic
-- * operations can avoid this.
-- */
--typedef int64_t aligned_int64_t __attribute__((aligned(8)));
--typedef uint64_t aligned_uint64_t __attribute__((aligned(8)));
--
- #endif /* QEMU_ATOMIC_H */
-diff --git a/include/system/cpu-timers-internal.h b/include/system/cpu-timers-internal.h
-index 94bb7394c5..8c262ce139 100644
---- a/include/system/cpu-timers-internal.h
-+++ b/include/system/cpu-timers-internal.h
-@@ -47,7 +47,7 @@ typedef struct TimersState {
-     int64_t last_delta;
- 
-     /* Compensate for varying guest execution speed.  */
--    aligned_int64_t qemu_icount_bias;
-+    int64_t qemu_icount_bias;
- 
-     int64_t vm_clock_warp_start;
-     int64_t cpu_clock_offset;
-diff --git a/linux-user/hppa/cpu_loop.c b/linux-user/hppa/cpu_loop.c
-index e5c0f52d94..972e85c487 100644
---- a/linux-user/hppa/cpu_loop.c
-+++ b/linux-user/hppa/cpu_loop.c
-@@ -83,7 +83,7 @@ static abi_ulong hppa_lws(CPUHPPAState *env)
-                 uint64_t o64, n64, r64;
-                 o64 = *(uint64_t *)g2h(cs, old);
-                 n64 = *(uint64_t *)g2h(cs, new);
--                r64 = qatomic_cmpxchg((aligned_uint64_t *)g2h(cs, addr), o64, n64);
-+                r64 = qatomic_cmpxchg((uint64_t *)g2h(cs, addr), o64, n64);
-                 ret = r64 != o64;
-             }
-             break;
-diff --git a/util/qsp.c b/util/qsp.c
-index 382e4397e2..55477ae025 100644
---- a/util/qsp.c
-+++ b/util/qsp.c
-@@ -83,8 +83,8 @@ typedef struct QSPCallSite QSPCallSite;
- struct QSPEntry {
-     void *thread_ptr;
-     const QSPCallSite *callsite;
--    aligned_uint64_t n_acqs;
--    aligned_uint64_t ns;
-+    uint64_t n_acqs;
-+    uint64_t ns;
-     unsigned int n_objs; /* count of coalesced objs; only used for reporting */
- };
- typedef struct QSPEntry QSPEntry;
--- 
-2.43.0
+Am 18=2E Januar 2026 18:23:11 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <p=
+hilmd@linaro=2Eorg>:
+>> Bernhard Beschow (14):
+>>    hw/sd/sdhci: Fix TYPE_IMX_USDHC to implement sd-spec-version 3 by
+>>      default
+>>    hw/arm/fsl-imx6: Remove now redundant setting of "sd-spec-version"
+>>      property
+>>    hw/arm/fsl-imx6: Fix naming of SDHCI related constants and attribute=
+s
+>>    hw/arm/fsl-imx25: Apply missing reset quirk
+>>    Revert "hw/sd/sdhci: Rename ESDHC_* defines to USDHC_*"
+>>    hw/sd/sdhci: Consolidate eSDHC constants
+>>    hw/sd/sdhci: Rename usdhc_ functions
+>>    hw/sd/sdhci: Add TYPE_FSL_ESDHC_BE
+>>    hw/ppc/e500: Use TYPE_FSL_ESDHC_BE
+>>    hw/arm/fsl-imx25: Extract TYPE_FSL_ESDHC_LE
+>>    hw/sd/sdhci: Remove endianness property
+>>    hw/sd/sdhci: Add uSDHC-specific quirk
+>>    hw/sd/sdhci: Remove vendor property
+>>    hw/sd/trace-events: Remove redundant "SWITCH " command name
+>
+>Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
+>
+>and queued, thanks!
 
+Thanks, Phil!
+
+Could you do me a favor and drop patch "hw/sd/sdhci: Add uSDHC-specific qu=
+irk" for now? Although the patch does solve a boot problem I think it needs=
+ some more thought=2E Thanks!
+
+Best regards,
+Bernhard
 
