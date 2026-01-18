@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7A7BD39A62
-	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jan 2026 23:10:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7ADBD39A61
+	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jan 2026 23:10:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhaxi-0001Fu-5Z; Sun, 18 Jan 2026 17:09:34 -0500
+	id 1vhaxl-0001bc-C7; Sun, 18 Jan 2026 17:09:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vhaxf-00015W-Fh
- for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:09:31 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1vhaxi-0001MH-2N
+ for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:09:34 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vhaxd-0001fo-Ld
- for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:09:31 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-2a0d0788adaso23386235ad.3
- for <qemu-devel@nongnu.org>; Sun, 18 Jan 2026 14:09:29 -0800 (PST)
+ id 1vhaxg-0001gC-5V
+ for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:09:33 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-2a0833b5aeeso37543665ad.1
+ for <qemu-devel@nongnu.org>; Sun, 18 Jan 2026 14:09:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768774168; x=1769378968; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768774171; x=1769378971; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YwA+XxyWFDkORFNBlQmOw9xYRUenABDhu5WGq8pWY6s=;
- b=Zfg0cMHa1yPi2CTMgdR2jOx0X2nSPWRCIXGVoRisxmdot/U6fZR2ExWu6MPJ3LDLpn
- ViddAcTzRmjHGzUG/5Dr/7pcmVDtebPr5iC9+AxzQ4+XEJ/rVsvV3WGqKsDOZaoefPcB
- bX6HRpR+v2ZSRckhn7arOgHGVO+U9CNjkECOKJbAFrq+hYdkdsiNjdOJVPsr/UrHYbYU
- iiAhkkLdnVwZwxMCdLTPq8Fw3xNQHgsHIWdt29gtpOO5H/o0DVEFq1KLE2VUvECC7es1
- BvhAIP1H8TeK5ZHM5cXbAVrAsHhxDVrNIgD4in1RYlAFYMX4dcWOJH5Z3k7hOb3+FGI+
- Ia2w==
+ bh=VnCVV9AnEgawNA+fiIe+uEXCZKJSFhPJndsOefTu71g=;
+ b=nYpprE9xQYkq3l3Amy2P21fGeiHWahqg3XLCvfqPfxFfW3S24pQbtZ72nBZzkkIMqW
+ uIC8hogQc7b93vtjuo3yYwsYOzvqCJr5ljacLyd1OrOvObfR+/W91RlfevT64LxKEQOw
+ Bwu4tDyRMod/+wCyMPV8naIz24wdTgTau01nmJhyLZX9deOFrMUwK2uvDN3Kq+0Awlw6
+ rCiywKbWkFbhEd2DleEy5ZoBmQrAnXh/qPDXuoy19HxhMF2KBjefr4GUtKRWGSvww/Uj
+ YkJROWeB0C5PhQV/pKWROL5sb3Xnlxn051XGgyNsfMBVzciYDCF+vx6zoeTniHlHtMPO
+ n0eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768774168; x=1769378968;
+ d=1e100.net; s=20230601; t=1768774171; x=1769378971;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=YwA+XxyWFDkORFNBlQmOw9xYRUenABDhu5WGq8pWY6s=;
- b=jK3IsNpX68z8nIWuJCe6jjsvrTIO8DiQmB5ISSM6D2PGRItyIWmZqFUDTRb1CTrVKE
- FHKrm3ecQKYj2dMBEkLieXDtgt57tc5MnHty97z7/cY6UKyD2drC0KCrzW82aZuD2NXx
- Yx3U+AkRr6MOAdxEeRSpOfQQPPDWrrGbNrVwKXFhmVu7fSG9f1nAxK5sB1/pTaEPP5Om
- /GSydwkObqGYdnL+BrqG+cQkfGzJt8m3bDkH4PMz+XCfu/IC5UVw/N11+1UsQX/NXXCU
- 0cOi99QdFw/tr+fuZ+2b4j/MOweijBi120fliNFJ0I8k19KIsHySHCUhIAD1fAlTjdvT
- qg9w==
-X-Gm-Message-State: AOJu0YyVod1XqPbNGEslXbYq8lvcEW4G2odhPWsanTM320+EsLQkaRiE
- 1UXgt754Wg9EgHOPygUuOgvYH92ag2oG2WQqeAfs2kAki2HPUdIWdoXVZKLqDgUGfUYzr+SLjxp
- xg21J8JYhuw==
-X-Gm-Gg: AY/fxX5nFRqX7x2X/zvh7KjTkT62Jqa5YD8CXqds0bqpJhoRJt5tyxV4tZlmoTVpxuK
- uwS3fqtZGH2Tjc9w4a9tiCyfELRGODY3w6EtZXVCGcpbOddsy273HApSNkyW0cIiLQVtYrYuTzR
- XG0tGDTnv/FMSumSI75y248gGUxQwWcDoSR8VrHlnE+qiB1LC8d4VWls2022XWDfABT5rQwIM+0
- W6KLMEqABhe/Z8hO2UjxfCsw7aQt6XQhsCAjBFZkVVrlEd/4URmcljUX2pJJ/PIXSoX2fL1xYFb
- t4XYXyajrSY+5HEsEsk/L3Q3YTnmw+CMNry92edFlgk9piS/ZQw+rhrdUuNu/Ddj0wt1mBaTp2X
- kCr8oTliTvPnso6aGZV4vUMJvDbqO0pgETs/EMyOdFcsZyb8EZKY+5YdRJi4IvoKrs0e4a0yVZ4
- w7ehkrqjTPsT+xmNcla0SjelrkLdpZ
-X-Received: by 2002:a17:903:41c7:b0:297:f8d9:aad7 with SMTP id
- d9443c01a7336-2a7177dfcb2mr83654925ad.50.1768774168266; 
- Sun, 18 Jan 2026 14:09:28 -0800 (PST)
+ bh=VnCVV9AnEgawNA+fiIe+uEXCZKJSFhPJndsOefTu71g=;
+ b=iytQoEl1YYiyxOVJjyXgTWCsuLyU6cs++RMD8z5OskLNdTsGhEMCrmpsJODYpX5PYU
+ TX3PZIl8RkrbEotNAeqfNokduQY0glifTSXTRYinoZgCjnwjoSGIbIlNTL4YI7CbQchg
+ C3nha4RcgxWVtCfb1BwGPibI5sfEZVPjLKth0ac1YJO29wA3cg47RYye+MnXfBOcnOlq
+ jPNJxqryvvw9U6nhQtMCFlAKPNle8vQJLlzKGl7glGMbzGEDKNvrtWduUDhSW6BZ6/IP
+ rR+ELQ94pFqeL8bL7x/ONjVuXGnRtzTYbkSIiYSkb17G+FfC/rDogfUvaQecv4Rp4ebV
+ 02pA==
+X-Gm-Message-State: AOJu0YwNfvhXCZD0zRvupZsFi+Uqzjs3AS+2JUQYIoHsbEdNrYvshN+D
+ m4LoPB9Whqtd1LWmhEu59ZNjvoVLQlyl2F51rXRFPGQ5RxsukDtqBTZFr2+F1HMDaC2k3DGLP5Q
+ lW3oYoBsR8g==
+X-Gm-Gg: AY/fxX6GnMwNKUnDhxGcpTP79dwYBrOSKEhkNvrTUG2tI1qqkPREft5YR8mUacFubYn
+ z84MfRyl47i2cUO9o+vyDlfBINJ3nG1bHLaecYRc3oWwkqPHFNFlPyjZX2ioNH3+y9BW1/T2OXb
+ sFzXUEgZ8DzX6DIbkB8MVTa+/5lzqDtTbHxf/TqfCUeBU+HpvQOaxP4495VLCuLKjmIY03drGrE
+ cS1khVHkmZXhB7zcJiejSX4JneKoMWK1pnm4WIdv0Yr5dr9znN7VR75Xlf8Z7AJQAegsE39NLfo
+ PmNGDJKuKoimTKtinWbCcJQaoTJ60Mf/m0g7QHIJBdGEg7FNHCNt7mTWIgAp64Q+AmpooATq6XW
+ PPMb8/6VKpEAfD9hV3TgC9OUEtEMDzBtm1RXFLXwgBm3cvNSJ4eBGrvUUTv56hdN/fH5cZfmRRz
+ ND1rQvF4b6VIgYGAwwUA==
+X-Received: by 2002:a17:903:2f4c:b0:2a0:a8c2:be5d with SMTP id
+ d9443c01a7336-2a7188583d4mr76683165ad.5.1768774170634; 
+ Sun, 18 Jan 2026 14:09:30 -0800 (PST)
 Received: from stoup.. ([180.233.125.201]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a7190ab921sm73298205ad.8.2026.01.18.14.09.26
+ d9443c01a7336-2a7190ab921sm73298205ad.8.2026.01.18.14.09.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 Jan 2026 14:09:27 -0800 (PST)
+ Sun, 18 Jan 2026 14:09:30 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 53/54] meson: Remove CONFIG_ATOMIC64
-Date: Mon, 19 Jan 2026 09:04:13 +1100
-Message-ID: <20260118220414.8177-54-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PULL 54/54] include/qemu/atomic: Drop aligned_{u}int64_t
+Date: Mon, 19 Jan 2026 09:04:14 +1100
+Message-ID: <20260118220414.8177-55-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260118220414.8177-1-richard.henderson@linaro.org>
 References: <20260118220414.8177-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -97,41 +99,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This config is no longer used.
+As we no longer support i386 as a host architecture,
+this abstraction is no longer required.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- meson.build | 16 ----------------
- 1 file changed, 16 deletions(-)
+ accel/tcg/atomic_template.h          |  4 ++--
+ include/qemu/atomic.h                | 13 -------------
+ include/system/cpu-timers-internal.h |  2 +-
+ linux-user/hppa/cpu_loop.c           |  2 +-
+ util/qsp.c                           |  4 ++--
+ 5 files changed, 6 insertions(+), 19 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 0189d8fd44..3108f01e88 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2939,22 +2939,6 @@ config_host_data.set('HAVE_BROKEN_SIZE_MAX', not cc.compiles('''
-         return printf("%zu", SIZE_MAX);
-     }''', args: ['-Werror']))
+diff --git a/accel/tcg/atomic_template.h b/accel/tcg/atomic_template.h
+index ae5203b439..f7924078f7 100644
+--- a/accel/tcg/atomic_template.h
++++ b/accel/tcg/atomic_template.h
+@@ -27,8 +27,8 @@
+ # define SHIFT      4
+ #elif DATA_SIZE == 8
+ # define SUFFIX     q
+-# define DATA_TYPE  aligned_uint64_t
+-# define SDATA_TYPE aligned_int64_t
++# define DATA_TYPE  uint64_t
++# define SDATA_TYPE int64_t
+ # define BSWAP      bswap64
+ # define SHIFT      3
+ #elif DATA_SIZE == 4
+diff --git a/include/qemu/atomic.h b/include/qemu/atomic.h
+index 27d98014d4..dc9290084b 100644
+--- a/include/qemu/atomic.h
++++ b/include/qemu/atomic.h
+@@ -234,17 +234,4 @@
+     _oldn;                                                              \
+ })
  
--# See if 64-bit atomic operations are supported.
--# Note that without __atomic builtins, we can only
--# assume atomic loads/stores max at pointer size.
--config_host_data.set('CONFIG_ATOMIC64', cc.links('''
--  #include <stdint.h>
--  int main(void)
--  {
--    uint64_t x = 0, y = 0;
--    y = __atomic_load_n(&x, __ATOMIC_RELAXED);
--    __atomic_store_n(&x, y, __ATOMIC_RELAXED);
--    __atomic_compare_exchange_n(&x, &y, x, 0, __ATOMIC_RELAXED, __ATOMIC_RELAXED);
--    __atomic_exchange_n(&x, y, __ATOMIC_RELAXED);
--    __atomic_fetch_add(&x, y, __ATOMIC_RELAXED);
--    return 0;
--  }''', args: qemu_isa_flags))
+-/*
+- * Abstractions to access atomically (i.e. "once") i64/u64 variables.
+- *
+- * The i386 abi is odd in that by default members are only aligned to
+- * 4 bytes, which means that 8-byte types can wind up mis-aligned.
+- * Clang will then warn about this, and emit a call into libatomic.
+- *
+- * Use of these types in structures when they will be used with atomic
+- * operations can avoid this.
+- */
+-typedef int64_t aligned_int64_t __attribute__((aligned(8)));
+-typedef uint64_t aligned_uint64_t __attribute__((aligned(8)));
 -
- # has_int128_type is set to false on Emscripten to avoid errors by libffi
- # during runtime.
- has_int128_type = host_os != 'emscripten' and cc.compiles('''
+ #endif /* QEMU_ATOMIC_H */
+diff --git a/include/system/cpu-timers-internal.h b/include/system/cpu-timers-internal.h
+index 94bb7394c5..8c262ce139 100644
+--- a/include/system/cpu-timers-internal.h
++++ b/include/system/cpu-timers-internal.h
+@@ -47,7 +47,7 @@ typedef struct TimersState {
+     int64_t last_delta;
+ 
+     /* Compensate for varying guest execution speed.  */
+-    aligned_int64_t qemu_icount_bias;
++    int64_t qemu_icount_bias;
+ 
+     int64_t vm_clock_warp_start;
+     int64_t cpu_clock_offset;
+diff --git a/linux-user/hppa/cpu_loop.c b/linux-user/hppa/cpu_loop.c
+index e5c0f52d94..972e85c487 100644
+--- a/linux-user/hppa/cpu_loop.c
++++ b/linux-user/hppa/cpu_loop.c
+@@ -83,7 +83,7 @@ static abi_ulong hppa_lws(CPUHPPAState *env)
+                 uint64_t o64, n64, r64;
+                 o64 = *(uint64_t *)g2h(cs, old);
+                 n64 = *(uint64_t *)g2h(cs, new);
+-                r64 = qatomic_cmpxchg((aligned_uint64_t *)g2h(cs, addr), o64, n64);
++                r64 = qatomic_cmpxchg((uint64_t *)g2h(cs, addr), o64, n64);
+                 ret = r64 != o64;
+             }
+             break;
+diff --git a/util/qsp.c b/util/qsp.c
+index 382e4397e2..55477ae025 100644
+--- a/util/qsp.c
++++ b/util/qsp.c
+@@ -83,8 +83,8 @@ typedef struct QSPCallSite QSPCallSite;
+ struct QSPEntry {
+     void *thread_ptr;
+     const QSPCallSite *callsite;
+-    aligned_uint64_t n_acqs;
+-    aligned_uint64_t ns;
++    uint64_t n_acqs;
++    uint64_t ns;
+     unsigned int n_objs; /* count of coalesced objs; only used for reporting */
+ };
+ typedef struct QSPEntry QSPEntry;
 -- 
 2.43.0
 
