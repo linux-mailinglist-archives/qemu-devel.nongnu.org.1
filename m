@@ -2,90 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC499D39A1D
-	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jan 2026 23:01:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC46CD39A21
+	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jan 2026 23:03:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhaoc-0003sY-7f; Sun, 18 Jan 2026 17:00:10 -0500
+	id 1vharu-0007iL-13; Sun, 18 Jan 2026 17:03:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vhaoZ-0003r8-Sd
- for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:00:08 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vhari-0007gv-09
+ for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:03:22 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vhaoY-0008WL-24
- for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:00:07 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4801bbbdb4aso17159115e9.1
- for <qemu-devel@nongnu.org>; Sun, 18 Jan 2026 14:00:05 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vharg-0000P3-Ex
+ for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:03:21 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-4801bc328easo28310585e9.3
+ for <qemu-devel@nongnu.org>; Sun, 18 Jan 2026 14:03:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768773604; x=1769378404; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pijc4SGaIxjhH3hv/CpBfkcN+nrHKNQfSy0KVIp/tpg=;
- b=jpK4WCfFHllo+/ae0q0gm6BOFWxRKQ8AykPc7gejav1BKqlWTMbvhI6ZMQFRtIY4V0
- ZWp1L7e0kz4//uMjbMIeFdw15rl0ybl2xJsbuY723z0pnMKLzsXsBV5O56jbgSj+NUhl
- 1fRAu7BlJgN82BAx6A8DJWYyBKmxRzH1df8X9htL4x/RBgn30vWVrZPqY5WmdVDNuNXJ
- l8BD1SH4XayOtCE9KHbv3ljKV15LZBnX5u1iyLkDZRrFSU8/DRxGPeElUnnWUy9qX8Zu
- 3Gy+m2Mm2hE9B6MNxmcC+r35Nk5mY9EZ4ttq9sp3WzEcfFTvRGBE2XqGtnjek35/CBIR
- 8Osw==
+ d=linaro.org; s=google; t=1768773799; x=1769378599; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Hgv2TCb53Yuj1iGRviITZXfy1CdbaMx/7OSQNso2nK0=;
+ b=S1oI0z7LtlCQIhELK7uvW695ENeT8jdAKU5ajBwuyEO9qv7YHHG+BhA/ItTMoo5gWs
+ OYcbsBAzjChJ4ZpKDdDrHRbAurkauW3YjHtApZPSVPs4oA0Fzb3BGt527cQJAIO+UiSD
+ ZlIWgCkDyhIY+lMlp2NHtxvP77p2BVZva4WSxp5wGgLVKd265QK3HjovxWBnFMe/UBla
+ d9bY/Psrl5a7MvsLkXJN6lhiUNWbK/SOPZ7xcEKqb/M7QJULlD1YVIANGjfe+8OZEvOy
+ b+wiOW6Mf3iCzQd2pKd3xJppCWdygiV+r3cmPzSm0fnsLm8h0q5SYZpoamrK9/6HGjvk
+ cAfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768773604; x=1769378404;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=pijc4SGaIxjhH3hv/CpBfkcN+nrHKNQfSy0KVIp/tpg=;
- b=E0g68rLKfLRZKSBYLe14hWfywaspPyY+jfx28QudA2B8ryuEwvV5XdxKO8di/eRICM
- BqViatoAGAtv4zmT8pwCqDiW9nLYGNkjn4vYMPdCAZAOF+m4PD4QW/BtTvSTFfAB6wE8
- cMo0hrEvgrRptxkCeCuIIlEgCmY3y5HyqgX76hMdKE85J1hFUoKOXlrEoGVdncIj/jX4
- RBB5KOsOBwvDaX+mxCIjmcLAjLZudS/XBq3/fwtuZjFPPWuV6DoyrKNpIx3u96Z61Mh6
- 6/jayGB9CZqqsnzVsjERNaFcv5X2LqHmvuAbSsc3iRwsWxwKmPRlxltmpnzwM/P0r+WI
- 5Whw==
-X-Gm-Message-State: AOJu0YxezVckyRcopGiTd2ayOrNJn4hM6ouOseypA3R+KLGbdo+khFRz
- i/WSkiD6Cdo+Un+FfAXmuDo5pFxeWBwqN5Ry0B7l/3NNYg2SpKfE/pzYMH5UThpPsUlhA3Uid7H
- wvHeZ5/4=
-X-Gm-Gg: AY/fxX4nlWOT2LzTc1eI+Lz5yNJBfv2uwUfAT+OzzLOgf7ZgLpZrstZs21KDlUOcITS
- SRNW8XbQnQ8F4pG2MiOl8aqjagnBrSFRRQAZw2t9YHsZ4GwK82Ll6bqQ+Zqx2rFZNYuCeE9YLW3
- QQYIhCjgXj50SUvv9ITu5X3XJqaWITHrPiC6/SzwGnn8z0KwaAkUPEt/mjOZ+Itm7Lp4qpJR6gH
- DDYDrs1ZswJfPSexP2xktEWBNqsNn+GV4G4ni+GIVkfacOpMf6AkJYqEZ34h9b2dL84JZLms8vK
- JQh/Q2ZOjqN4qQSrVvicHFW7ZAIU0LPYKZbBbhy91/iOBcTflSEgDP9U+g7/3nJHvl1mBEZlj8+
- xk0fk+T8I0NRMmRnokwT+O4aXzZ3U/EkQgiKUnJsC0aQ4QC3rGxXqAUzTJjPgx/vKbd5l7xBY20
- BeTU5/gTDeAOlff4wyB/zHKEY9fjblnxpFuku7znKHP0LBzzXdbdPJbM9U/IsnOn4uO9//kzI=
-X-Received: by 2002:a05:600c:3e8e:b0:47b:deb9:163d with SMTP id
- 5b1f17b1804b1-4801e53c118mr104787115e9.7.1768773604014; 
- Sun, 18 Jan 2026 14:00:04 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1768773799; x=1769378599;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Hgv2TCb53Yuj1iGRviITZXfy1CdbaMx/7OSQNso2nK0=;
+ b=qKN2Nxcm0rYJqtP5+or699WMvSLMjJ76j7vTErepbNCN+2sQztCTeFxRhKqNZozjzz
+ q7YsahN0rixluV5vQVBuxbQHNGiOIASnISSyMgOoLMAtPHYvu+hipqiItMQluLsGGeLN
+ IDwImlRxoe4X0RG85McMGsOeQy3q9Pyhy2SIpWXTy43azYZ1AcGonvZYNmlywrjlqwfw
+ bGbSy9QsiFk5E0aWar07dB+H4d51d9AfGXfjIlps+oJrKDB2LYxXURRm8Kk3k4OkcCr1
+ XMbLCwYLkzxGbLPjghKmn50+W/h5H12RccIB0id0WqccFpiVN6zVr5xl+QwySPRtGSC2
+ Ki3g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW8NupOXB3wRfh31pfyKcSJMYQ45gXwWdB4ohxHhXzjJe6oOZg4l9AlClm1EV/gvcFW3EVBHIBM8V8a@nongnu.org
+X-Gm-Message-State: AOJu0YwXD+nBUayrY7ioFMLhA7l3+QO7WNUy3tzxBV0gGs71ihYADGhd
+ FGpjtYhOXVFxpP8ppTbVTCNhJ32jxwGh9N5pJUquY6mjmQDUe4yHrBw00BKsWmyBAWA=
+X-Gm-Gg: AY/fxX7VVYZ6MI+O3PV1SKc96hxA3pHzHi8xtpSsqRqZeYgKcHAMiuoAYm5j+m+/2U3
+ lQa7i0SeQVcp8m5zDwwguYqwsSRERKoQOWJ4AIgn4Rm8S57pCpURq8V93LzuCrDMMaQEFfj2UOm
+ z/TDuD2d2LHU8I3hc6UWlpzr/Pukw7tD9JdfDUGlulPUxf4ADzbslFXOVLWNNDSEP1lfvyl4trq
+ WeqLrOrupAcr03gcQLGlixx4Dqd3m5Gbl+Q/JPQeR883nO7HWJ4dKnZ7weFISZtkCQRuyiadI9S
+ 21vUYxMbMCmudHGEzGWtNpyuRRfSCl+lhkN8wUmmO8MTV35FQJ8vznXvLX7YtjudhBKFi3/nYlL
+ fvyXvj9bouZgUjj1dJqnIbQxQ0izoRIUqdITROcLTjzVoqIBVtwI840fYviDZv/7nEoFP1UbEJU
+ sIrpvmgfaGkbS7lCMcbZQayvJ0QEZwXhrL1weFq2meqf5eSFpaPlJaCQ==
+X-Received: by 2002:a05:600c:8710:b0:471:14f5:126f with SMTP id
+ 5b1f17b1804b1-4801eb142famr109060695e9.33.1768773798709; 
+ Sun, 18 Jan 2026 14:03:18 -0800 (PST)
+Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47f4b26764fsm214997135e9.12.2026.01.18.14.00.02
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 18 Jan 2026 14:00:02 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-arm@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>, Alexander Graf <agraf@csgraf.de>,
- Cameron Esfahani <dirty@apple.com>, Mads Ynddal <mads@ynddal.dk>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v5 2/2] target/arm/hvf: Sync CNTV_CTL_EL0 & CNTV_CVAL_EL0
-Date: Sun, 18 Jan 2026 22:59:45 +0100
-Message-ID: <20260118215945.46693-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260118215945.46693-1-philmd@linaro.org>
-References: <20260118215945.46693-1-philmd@linaro.org>
+ 5b1f17b1804b1-4801fe67780sm65442845e9.16.2026.01.18.14.03.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 18 Jan 2026 14:03:17 -0800 (PST)
+Message-ID: <06ea18a9-e02c-4d5b-91e8-9f0fd1e8ac43@linaro.org>
+Date: Sun, 18 Jan 2026 23:03:16 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 50/59] target/arm/hvf: Do not abort in
+ hvf_arm_get_*_ipa_bit_size()
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: Mads Ynddal <mads@ynddal.dk>, Cameron Esfahani <dirty@apple.com>,
+ qemu-arm@nongnu.org, Roman Bolshakov <rbolshakov@ddn.com>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ Mohamed Mediouni <mohamed@unpredictable.fr>,
+ Peter Collingbourne <pcc@google.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Alexander Graf <agraf@csgraf.de>
+References: <20251028054238.14949-1-philmd@linaro.org>
+ <20251028054238.14949-51-philmd@linaro.org>
+ <f7a2dc18-ecad-4487-9b7d-f85618fc2ba5@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <f7a2dc18-ecad-4487-9b7d-f85618fc2ba5@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,79 +109,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Keep CNTV_CTL_EL0 and CNTV_CVAL_EL0 synchronized with the
-host hardware accelerator.
+On 28/10/25 13:06, Richard Henderson wrote:
+> On 10/28/25 06:42, Philippe Mathieu-Daudé wrote:
+>> Do not abort in hvf_arm_get_default_ipa_bit_size()
+>> and hvf_arm_get_max_ipa_bit_size() when the IPA can
+>> not be fetched. Return 0 (and document it).
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   target/arm/hvf_arm.h | 11 +++++++++++
+>>   target/arm/hvf/hvf.c |  8 ++------
+>>   2 files changed, 13 insertions(+), 6 deletions(-)
+> 
+> Doesn't this just lead to a nonsensical error_report, e.g.
+> 
+> -m and ,maxmem option values require an IPA range (XX bits) larger than 
+> the one supported by the host (0 bits)
+> 
+> ?
+> 
+> Is there a reasonable way to populate an Error return?
+> I guess this only happens with older versions of Darwin, because surely 
+> we can always probe the supported IPA size...
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/arm/hvf/hvf.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
-
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index fcb7fa3b30c..9ce720793d8 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -200,6 +200,9 @@ void hvf_arm_init_debug(void)
- #define SYSREG_PMCEID0_EL0    SYSREG(3, 3, 9, 12, 6)
- #define SYSREG_PMCEID1_EL0    SYSREG(3, 3, 9, 12, 7)
- #define SYSREG_PMCCNTR_EL0    SYSREG(3, 3, 9, 13, 0)
-+
-+#define SYSREG_CNTV_CTL_EL0   SYSREG(3, 3, 14, 3, 1)
-+#define SYSREG_CNTV_CVAL_EL0  SYSREG(3, 3, 14, 3, 2)
- #define SYSREG_PMCCFILTR_EL0  SYSREG(3, 3, 14, 15, 7)
- 
- #define SYSREG_ICC_AP0R0_EL1     SYSREG(3, 0, 12, 8, 4)
-@@ -502,6 +505,7 @@ int hvf_arch_get_registers(CPUState *cpu)
-     uint64_t val;
-     hv_simd_fp_uchar16_t fpval;
-     int i, n;
-+    bool b;
- 
-     for (i = 0; i < ARRAY_SIZE(hvf_reg_match); i++) {
-         ret = hv_vcpu_get_reg(cpu->accel->fd, hvf_reg_match[i].reg, &val);
-@@ -631,6 +635,16 @@ int hvf_arch_get_registers(CPUState *cpu)
- 
-     aarch64_restore_sp(env, arm_current_el(env));
- 
-+    ret = hv_vcpu_get_sys_reg(cpu->accel->fd, HV_SYS_REG_CNTV_CVAL_EL0, &val);
-+    assert_hvf_ok(ret);
-+    b = hvf_sysreg_write_cp(cpu, "VTimer", SYSREG_CNTV_CVAL_EL0, val);
-+    assert(b);
-+
-+    ret = hv_vcpu_get_sys_reg(cpu->accel->fd, HV_SYS_REG_CNTV_CTL_EL0, &val);
-+    assert_hvf_ok(ret);
-+    b = hvf_sysreg_write_cp(cpu, "VTimer", SYSREG_CNTV_CTL_EL0, val);
-+    assert(b);
-+
-     return 0;
- }
- 
-@@ -642,6 +656,7 @@ int hvf_arch_put_registers(CPUState *cpu)
-     uint64_t val;
-     hv_simd_fp_uchar16_t fpval;
-     int i, n;
-+    bool b;
- 
-     for (i = 0; i < ARRAY_SIZE(hvf_reg_match); i++) {
-         val = *(uint64_t *)((void *)env + hvf_reg_match[i].offset);
-@@ -756,6 +771,16 @@ int hvf_arch_put_registers(CPUState *cpu)
-     ret = hv_vcpu_set_vtimer_offset(cpu->accel->fd, hvf_state->vtimer_offset);
-     assert_hvf_ok(ret);
- 
-+    b = hvf_sysreg_read_cp(cpu, "VTimer", SYSREG_CNTV_CVAL_EL0, &val);
-+    assert(b);
-+    ret = hv_vcpu_set_sys_reg(cpu->accel->fd, HV_SYS_REG_CNTV_CVAL_EL0, val);
-+    assert_hvf_ok(ret);
-+
-+    b = hvf_sysreg_read_cp(cpu, "VTimer", SYSREG_CNTV_CTL_EL0, &val);
-+    assert(b);
-+    ret = hv_vcpu_set_sys_reg(cpu->accel->fd, HV_SYS_REG_CNTV_CTL_EL0, val);
-+    assert_hvf_ok(ret);
-+
-     return 0;
- }
- 
--- 
-2.52.0
+I suppose (it came from 
+https://gitlab.com/qemu-project/qemu/-/issues/2981). Let's drop this for 
+now.
 
 
