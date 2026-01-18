@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AA3BD39980
-	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jan 2026 20:38:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72AFCD39982
+	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jan 2026 20:38:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhYaz-0007w9-9m; Sun, 18 Jan 2026 14:37:57 -0500
+	id 1vhYb2-0008Q8-KD; Sun, 18 Jan 2026 14:38:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vhYZV-0006FZ-1i
- for qemu-devel@nongnu.org; Sun, 18 Jan 2026 14:36:26 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vhYZe-0006Vk-OR
+ for qemu-devel@nongnu.org; Sun, 18 Jan 2026 14:36:38 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vhYZS-0006lu-Nn
- for qemu-devel@nongnu.org; Sun, 18 Jan 2026 14:36:24 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-47fedb7c68dso23618555e9.2
- for <qemu-devel@nongnu.org>; Sun, 18 Jan 2026 11:36:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vhYZa-0006mW-Gt
+ for qemu-devel@nongnu.org; Sun, 18 Jan 2026 14:36:33 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4801d98cf39so13845925e9.1
+ for <qemu-devel@nongnu.org>; Sun, 18 Jan 2026 11:36:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768764981; x=1769369781; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768764988; x=1769369788; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RRVd3/fIp9XGWnatHHkuG/q29nD05xPL4cBPZy1sqvs=;
- b=dtm8OBltM8Z7XtRIFXvi3XwGlBUJYt6S1YQz7ixUQ3rSOHSnkzib5nLaULRCbTiv1C
- l7kxrnQ3uHzFOAlunJlHmTwDuxp/3Ad0KCPLv9YtGyywwDsBkz+74BGzR8U+UtYj435E
- BZDEe5LVEXHKm7M3tI2CS+pckJkT2fZzqxJbkQULlOi/DL+364dHnQcMqI0uh8Zd47Lj
- JE3dXEo/Xme/8TlQRAIBfkYTxZrnYrNNu+mC3kQHMmxiVMxnJGu8y3ArixKJEI01v9OS
- f1MdrJtHJOvYBjueSYfhk5f0zaby+7uXtLrxY9smzZHte3FWTDiKQwtaUo5IRH46hxRP
- YElA==
+ bh=y4SqeZxl5HqhEizpE5MaSMKz3/wkRaflVH0M8Y28zmg=;
+ b=SrciQ54MG8qeDHrrFLwDPHy4bgqT970Bo4zeHHix4GyqK9MQwmA+4wZ91q2YE/BajU
+ SI7BrKYlCctY7qSR93aeQbs0TAil+EGnDyyuB6jcNVC7KiT37XUFL1Hw2kPhKClIilye
+ uQbm9G8dM37BOdRLH6HkzD4acYO3yZMdYiH5MkpZrWKIRpSSAS5nVzoZRuirZoveMfFO
+ /a3BxPTzpY84aiXukCW50tXt5RTodmS1KFKWIwXbdlEtMF9w6ewtn/vAvzBN9jdDNYrK
+ i67ox02J8rbRAz9iTbkfPfLJlDh0/WihKAHWXMPEQQfKk94zSARR7kLvvpRgl97+/IC9
+ Q3ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768764981; x=1769369781;
+ d=1e100.net; s=20230601; t=1768764988; x=1769369788;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=RRVd3/fIp9XGWnatHHkuG/q29nD05xPL4cBPZy1sqvs=;
- b=Nt/w4tLrWIE+4ACmTqOLuBkCpQlpB2Wxu8/IaFfHm9TtPHSNxAxb6cnjTz1A/l2wxK
- ionUmXt94U12Qkno0inMrxRRFNwW02J+JwYN2Sfl7VoaLVcXPLNJLwZZvSE2nxWC9jcM
- hEdxrrnh0yIvmFs3IAvIO18mxvqJGwJypOoZ+J0WmrEMeHkYc40z5r2EF+5e05bXZnp6
- rM5nmh0xdsYANT29g0rbk+892TZhk/r9/aGpJqnyBOaaZdkE+LYIfAe/iZ54k0DcFkuL
- lM0GqhjSJbSomqTd9fr0/YArxNPkt0n8DLNWT9Mu1RF/wII4kiO0mTneESyYQvsojQmU
- NFyA==
-X-Gm-Message-State: AOJu0Yx9jci/3lO3jLIOvnlD3CM5v5ZxY05EzdTxAVZVG7YHJWwIo8e0
- QH+FAqTYWjeIJyUINB36HVHwVzJrqfFOf0VUV10t+djR+PQu7kfACNIE/4SLvPz1F/H1JWSCj2i
- bbd3TLoo=
-X-Gm-Gg: AY/fxX5e5GdXd1gWG14Q+qLf7YrM4CwQnSW2quFETK+130YAZ5X6oYp+Vor8ONubZ1d
- P2lJrZBf3B51eM9zbj20EkzPSL7QqrPalKlnWwgpvF5EtRNirnbHGOuU1Wbq4Yk26Y0+P3t7wxU
- L8GnKni3Y4ObegDH38siI+3nbNmmWnGOPJ8CiDac96cbgu2Rwnfed2EViguOeysD9bqzhkjmz9b
- u5cwaekWl+V5ZCqXjj4u8AXje4ITks40l7hJyeiS+Gp38gjTlsM0V6FV0WJdYMsC2U7MvsABJ2j
- oBAd3UWW+iGiLkZDM/g6eDp8I2ExtCTlk8ev0hZjUM/jJ4kDmYCL9BHr0a1FHhcFjqaRfPcYbQr
- 4GqXDrzTfyZvnq0fqkjEwg7IADtTMdVdfHgilouUOPehwzJruQvAJBLvqeSu6mFQyDnPJFtC3eh
- kfg/421CtkaaJeuUn/mDODAy3bAmhiC0DSBcVhwkgO+AnbM8A6CHZzOK21O3Zj
-X-Received: by 2002:a05:600c:4745:b0:479:2f95:5179 with SMTP id
- 5b1f17b1804b1-4801e30fae9mr120940615e9.15.1768764980873; 
- Sun, 18 Jan 2026 11:36:20 -0800 (PST)
+ bh=y4SqeZxl5HqhEizpE5MaSMKz3/wkRaflVH0M8Y28zmg=;
+ b=D53S9vKhef9004MgQDOiLfAqCXbmkB0ZmH7BX8MrhtW9ervR5SxbPRIcPvfz6isvB5
+ larsDbT7r4MiISR8mU4K/UsTbdTb6F2YZrozcCNC/zF+T8flsgAcedRG7CdCkkEWVr7d
+ PwKZ/LnqZ/7S887ViL3CgatEo3NAhyXjwWkfwAQXtN4CE687Fl19gF5eddkPB5txFQdM
+ 8sASHlRM9k4bA+twQOiZbRvw/x/OaHpyoHQ46nqPCMjptKEw4prWJAZ+TbG8nIkhu2P/
+ MwoxRSMAqztXi/1foFekrcMNXMwdZn5Zstj7KE/eov2M6ShugAGDh+y4rO2In6wm/fVr
+ Qn4Q==
+X-Gm-Message-State: AOJu0YxUMs6vKdXcdnoV9b0dfUDZA2rqv+5szkAuonSSSOLkcaDuFNsn
+ +M9G38zm7BJlJ2e1M6novEKnRXA5LYw6u1onoHHdldlFpzPdzFZgkShqmnu7b6Ud0GstniCcH8f
+ G3xvIKGs=
+X-Gm-Gg: AY/fxX40SilcTczdDOeTaJUIcdHaIBZ6ziuRdcjaMr7Cqk+sD9p5nmZU+wly4Az8QU9
+ geQadxxSQ0TKyYE5az8EpMhZdtwmDZ8GAE/SLTQSG7Y/F0wis+4V1pmWFuUgBa+vGK5SxQYLFja
+ mclbhcZ92Db/f7TjjOepp1yQLURcVyEQtYvy0OnNI0kTM9K1RGANgcBM6f0xPGtZRB5jE/TcIh6
+ OCSRuNgvDN0kXdvKDwlSHdi+oIH3NbzmOMh6/BL1ectTQ7jj2eb3v8CliD4f6Xrk76+2CHgEPLd
+ fsHTlCHYPgTuqjaYBnY0VJGwXUOgq0uyka1uCpulh21jdSOeBFtQU9l/7omt+y/W1PoU3dafL9X
+ zZtAi82hOSMZ4a59hkuKXn0tj5W8vtWeH9070wJ9+STQ/HJdLklweamCHtbvRF3ksP+pVZV0O6d
+ q+fFrcIS0CvwdhElw1280u05U64TWknhQDkwHvzET6AmoNqQGbAD17+/12kz9Y
+X-Received: by 2002:a05:600c:37cc:b0:480:1b65:b741 with SMTP id
+ 5b1f17b1804b1-4801eac97b9mr109494195e9.15.1768764987621; 
+ Sun, 18 Jan 2026 11:36:27 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4801e879542sm159776465e9.4.2026.01.18.11.36.19
+ 5b1f17b1804b1-4801e86c197sm156490585e9.1.2026.01.18.11.36.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 18 Jan 2026 11:36:20 -0800 (PST)
+ Sun, 18 Jan 2026 11:36:27 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -68,17 +68,18 @@ Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Anton Johansson <anjo@rev.ng>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v6 10/18] system/memory: Use ldm_p() and stm_p() helpers
-Date: Sun, 18 Jan 2026 20:35:00 +0100
-Message-ID: <20260118193509.42923-11-philmd@linaro.org>
+Subject: [PATCH v6 11/18] system/memory: Directly call
+ address_space_ldst[M]_internal() helper
+Date: Sun, 18 Jan 2026 20:35:01 +0100
+Message-ID: <20260118193509.42923-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260118193509.42923-1-philmd@linaro.org>
 References: <20260118193509.42923-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,64 +102,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-address_space_{ld,st}m_internal() take a MemOp argument
-so can directly use the {ld,st}m_p() helpers.
+Inline internal address_space_ld/st[L,D,Q] helpers,
+directly calling address_space_ldst[M]_internal().
 
-Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- system/memory_ldst.c.inc | 16 ++--------------
- 1 file changed, 2 insertions(+), 14 deletions(-)
+ system/memory_ldst.c.inc        | 47 ---------------------------------
+ system/memory_ldst_endian.c.inc | 12 ++++-----
+ 2 files changed, 6 insertions(+), 53 deletions(-)
 
 diff --git a/system/memory_ldst.c.inc b/system/memory_ldst.c.inc
-index 5c8299e0cdc..d51c5feddf7 100644
+index d51c5feddf7..ebb441f1a66 100644
 --- a/system/memory_ldst.c.inc
 +++ b/system/memory_ldst.c.inc
-@@ -27,7 +27,6 @@ uint64_t glue(address_space_ldm_internal, SUFFIX)(ARG1_DECL, MemOp mop,
-                                                   MemTxResult *result)
+@@ -57,22 +57,6 @@ uint64_t glue(address_space_ldm_internal, SUFFIX)(ARG1_DECL, MemOp mop,
+     return val;
+ }
+ 
+-/* warning: addr must be aligned */
+-static inline uint32_t glue(address_space_ldl_internal, SUFFIX)(ARG1_DECL,
+-    MemOp mop, hwaddr addr, MemTxAttrs attrs, MemTxResult *result)
+-{
+-    return glue(address_space_ldm_internal, SUFFIX)(ARG1, mop | MO_32, addr,
+-                                                    attrs, result);
+-}
+-
+-/* warning: addr must be aligned */
+-static inline uint64_t glue(address_space_ldq_internal, SUFFIX)(ARG1_DECL,
+-    MemOp mop, hwaddr addr, MemTxAttrs attrs, MemTxResult *result)
+-{
+-    return glue(address_space_ldm_internal, SUFFIX)(ARG1, mop | MO_64, addr,
+-                                                    attrs, result);
+-}
+-
+ uint8_t glue(address_space_ldub, SUFFIX)(ARG1_DECL, hwaddr addr,
+                                          MemTxAttrs attrs, MemTxResult *result)
  {
-     const unsigned size = memop_size(mop);
--    uint8_t *ptr;
-     uint64_t val;
-     MemoryRegion *mr;
-     hwaddr l = size;
-@@ -45,12 +44,7 @@ uint64_t glue(address_space_ldm_internal, SUFFIX)(ARG1_DECL, MemOp mop,
-     } else {
-         /* RAM case */
-         fuzz_dma_read_cb(addr, size, mr);
--        ptr = qemu_map_ram_ptr(mr->ram_block, addr1);
--        if ((mop & MO_BSWAP) == MO_LE) {
--            val = ldn_le_p(ptr, size);
--        } else {
--            val = ldn_be_p(ptr, size);
--        }
-+        val = ldm_p(qemu_map_ram_ptr(mr->ram_block, addr1), mop);
-         r = MEMTX_OK;
-     }
-     if (result) {
-@@ -102,7 +96,6 @@ void glue(address_space_stm_internal, SUFFIX)(ARG1_DECL, MemOp mop,
-                                               MemTxResult *result)
+@@ -80,14 +64,6 @@ uint8_t glue(address_space_ldub, SUFFIX)(ARG1_DECL, hwaddr addr,
+                                                     attrs, result);
+ }
+ 
+-/* warning: addr must be aligned */
+-static inline uint16_t glue(address_space_lduw_internal, SUFFIX)(ARG1_DECL,
+-    MemOp mop, hwaddr addr, MemTxAttrs attrs, MemTxResult *result)
+-{
+-    return glue(address_space_ldm_internal, SUFFIX)(ARG1, mop | MO_16, addr,
+-                                                    attrs, result);
+-}
+-
+ /* warning: addr must be aligned */
+ static inline
+ void glue(address_space_stm_internal, SUFFIX)(ARG1_DECL, MemOp mop,
+@@ -122,14 +98,6 @@ void glue(address_space_stm_internal, SUFFIX)(ARG1_DECL, MemOp mop,
+     RCU_READ_UNLOCK();
+ }
+ 
+-/* warning: addr must be aligned */
+-static inline void glue(address_space_stl_internal, SUFFIX)(ARG1_DECL,
+-    MemOp mop, hwaddr addr, uint32_t val, MemTxAttrs attrs, MemTxResult *result)
+-{
+-    glue(address_space_stm_internal, SUFFIX)(ARG1, mop | MO_32, addr, val,
+-                                             attrs, result);
+-}
+-
+ void glue(address_space_stb, SUFFIX)(ARG1_DECL, hwaddr addr, uint8_t val,
+                                      MemTxAttrs attrs, MemTxResult *result)
  {
-     const unsigned size = memop_size(mop);
--    uint8_t *ptr;
-     MemoryRegion *mr;
-     hwaddr l = size;
-     hwaddr addr1;
-@@ -116,12 +109,7 @@ void glue(address_space_stm_internal, SUFFIX)(ARG1_DECL, MemOp mop,
-         r = memory_region_dispatch_write(mr, addr1, val, mop, attrs);
-     } else {
-         /* RAM case */
--        ptr = qemu_map_ram_ptr(mr->ram_block, addr1);
--        if ((mop & MO_BSWAP) == MO_LE) {
--            stn_le_p(ptr, size, val);
--        } else {
--            stn_be_p(ptr, size, val);
--        }
-+        stm_p(qemu_map_ram_ptr(mr->ram_block, addr1), mop, val);
-         invalidate_and_set_dirty(mr, addr1, size);
-         r = MEMTX_OK;
-     }
+@@ -137,21 +105,6 @@ void glue(address_space_stb, SUFFIX)(ARG1_DECL, hwaddr addr, uint8_t val,
+                                              attrs, result);
+ }
+ 
+-/* warning: addr must be aligned */
+-static inline void glue(address_space_stw_internal, SUFFIX)(ARG1_DECL,
+-    MemOp mop, hwaddr addr, uint16_t val, MemTxAttrs attrs, MemTxResult *result)
+-{
+-    glue(address_space_stm_internal, SUFFIX)(ARG1, mop | MO_16, addr, val,
+-                                             attrs, result);
+-}
+-
+-static inline void glue(address_space_stq_internal, SUFFIX)(ARG1_DECL,
+-    MemOp mop, hwaddr addr, uint64_t val, MemTxAttrs attrs, MemTxResult *result)
+-{
+-    glue(address_space_stm_internal, SUFFIX)(ARG1, mop | MO_64, addr, val,
+-                                             attrs, result);
+-}
+-
+ #define ENDIANNESS
+ #define MO_ENDIAN               (target_big_endian() ? MO_BE : MO_LE)
+ #include "memory_ldst_endian.c.inc"
+diff --git a/system/memory_ldst_endian.c.inc b/system/memory_ldst_endian.c.inc
+index 9cf36017135..fb933de11f8 100644
+--- a/system/memory_ldst_endian.c.inc
++++ b/system/memory_ldst_endian.c.inc
+@@ -22,42 +22,42 @@
+ uint16_t ADDRESS_SPACE_LD(uw)(ARG1_DECL, hwaddr addr,
+                               MemTxAttrs attrs, MemTxResult *result)
+ {
+-    return ADDRESS_SPACE_LD_INTERNAL(uw)(ARG1, MO_ENDIAN,
++    return ADDRESS_SPACE_LD_INTERNAL(m)(ARG1, MO_ENDIAN | MO_16,
+                                         addr, attrs, result);
+ }
+ 
+ uint32_t ADDRESS_SPACE_LD(l)(ARG1_DECL, hwaddr addr,
+                              MemTxAttrs attrs, MemTxResult *result)
+ {
+-    return ADDRESS_SPACE_LD_INTERNAL(l)(ARG1, MO_ENDIAN,
++    return ADDRESS_SPACE_LD_INTERNAL(m)(ARG1, MO_ENDIAN | MO_32,
+                                         addr, attrs, result);
+ }
+ 
+ uint64_t ADDRESS_SPACE_LD(q)(ARG1_DECL, hwaddr addr,
+                              MemTxAttrs attrs, MemTxResult *result)
+ {
+-    return ADDRESS_SPACE_LD_INTERNAL(q)(ARG1, MO_ENDIAN,
++    return ADDRESS_SPACE_LD_INTERNAL(m)(ARG1, MO_ENDIAN | MO_64,
+                                         addr, attrs, result);
+ }
+ 
+ void ADDRESS_SPACE_ST(w)(ARG1_DECL, hwaddr addr, uint16_t val,
+                          MemTxAttrs attrs, MemTxResult *result)
+ {
+-    ADDRESS_SPACE_ST_INTERNAL(w)(ARG1, MO_ENDIAN,
++    ADDRESS_SPACE_ST_INTERNAL(m)(ARG1, MO_ENDIAN | MO_16,
+                                  addr, val, attrs, result);
+ }
+ 
+ void ADDRESS_SPACE_ST(l)(ARG1_DECL, hwaddr addr, uint32_t val,
+                          MemTxAttrs attrs, MemTxResult *result)
+ {
+-    ADDRESS_SPACE_ST_INTERNAL(l)(ARG1, MO_ENDIAN,
++    ADDRESS_SPACE_ST_INTERNAL(m)(ARG1, MO_ENDIAN | MO_32,
+                                  addr, val, attrs, result);
+ }
+ 
+ void ADDRESS_SPACE_ST(q)(ARG1_DECL, hwaddr addr, uint64_t val,
+                          MemTxAttrs attrs, MemTxResult *result)
+ {
+-    ADDRESS_SPACE_ST_INTERNAL(q)(ARG1, MO_ENDIAN,
++    ADDRESS_SPACE_ST_INTERNAL(m)(ARG1, MO_ENDIAN | MO_64,
+                                  addr, val, attrs, result);
+ }
+ 
 -- 
 2.52.0
 
