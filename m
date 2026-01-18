@@ -2,99 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F40F4D39A22
-	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jan 2026 23:04:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6171D39A2D
+	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jan 2026 23:05:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhasZ-0008Al-9f; Sun, 18 Jan 2026 17:04:15 -0500
+	id 1vhatr-0002cn-Fx; Sun, 18 Jan 2026 17:05:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vhas3-0007rz-Dz
- for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:03:45 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1vhatN-00029f-Kv
+ for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:05:07 -0500
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vhas1-0000Ps-EV
- for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:03:42 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4801d98cf39so14063785e9.1
- for <qemu-devel@nongnu.org>; Sun, 18 Jan 2026 14:03:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1vhatL-0000d6-Fu
+ for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:05:04 -0500
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-2a110548cdeso24515685ad.0
+ for <qemu-devel@nongnu.org>; Sun, 18 Jan 2026 14:05:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768773820; x=1769378620; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=FaZNk12IqzS05+aUpzyIrcevxknb2qrEovM9BwTaCGo=;
- b=XbuKK7uZEJNauF/GjSU9N+aZn8Q+67PHXqJO1pwBeaVVb5QPkI8y0t4W1VVNzkgY5k
- cnRhHFdzD4m2EjoFqI9BI1gGVucydMJ9vVZjWOAMrt6ZCpl+HzKuQZ82tsjdArDCuuGF
- lW5WOleAA02FopT00P5dxeZnwn/OKNKJeJN/XaBTDk6cWTsoVF8Bpn1dIyN6M98XKvcq
- MI/HUNbTuV6E5EfJJJaLDG/d9xlMDkzGkpETIi7I5TkSv+scwh9ukOmC7vH0GwjsWPrS
- EVmQE+le0A5tnlsNHkSl0xQHDIRfeQz06Z0qyGUd/kPuLf7bABC3WR0e6kLr34hlGOv3
- NnGg==
+ d=linaro.org; s=google; t=1768773901; x=1769378701; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=1elLXYSGrJNsfz40yQiYIFdnTmy9vR+YxG5ftNQkGbA=;
+ b=D3qlQ9OXenMm39QsRr4VJTOR/+M132m2owehbRumXFAXMrQOZxPvUFTtbDcH8yVd2k
+ ucgry0T4AmJWZ0+0sUv8rpPzPoenwauJKp//yA1gDxXbcAdpkcbmaClzwzz6p11/UX/3
+ nyvYxj5UQpN4W4KqiAKW1BpjHeGnGkL8pp7ZYfmn6NC9stgXDOqa0bzKfrpcGy5bppFM
+ MhJn771eR+5dVeyzmeRJTEgfPYe+aXIpZWZwgjNnYh2SBJOdIo9uEKWDXAcKlCqclmIu
+ NzsFDcKYVC5FxWshfU+5/EbK+IZKE8D3tVeQix4Vg6H170u32P2Cd8V/59dnvMqTc5uk
+ GpYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768773820; x=1769378620;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=FaZNk12IqzS05+aUpzyIrcevxknb2qrEovM9BwTaCGo=;
- b=QZfUwSEp45bNaOKBRORNQ+w70oQqE8UZKxeaYcWdRXu7lyBQ+S5yPKFU5VY/Sp2Qdh
- b/0uh1UE+zmB2++k3xa0sfNVEXrLhDl5bH68MqNM05Xz200YBHNsTQA8/SPECORtOo3d
- 5NsO78Ijg1OgcshkhNg9FwHEQYiqtYsSU6OldvBJ/fpdGlqBQQoqjeQZo9H/VartAYfo
- nZ3C0Wl/CtFy6NyYbzz25x7NMG1hb4G77dad3uIwFK0MT9i/RsIZFgqIacol0knT71vL
- 05aqGmYjVLEtAnBqBGdaFQFM7a7E+21EpliljwvYDJgrQLLPIxo5O+2TICdncZ5NI77C
- 8msQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVVPskJhOBtIWV2nlrNyu66lr1VVb0HaES4NXqI7p3K/ymOtxEBKuTGM0w1wjmwoVoLvEfD3jar30+2@nongnu.org
-X-Gm-Message-State: AOJu0YzL39mgG69bxW9ywMC6EoldVBMwyBISec2i5UpZlyvcOhQOC/Cq
- niYI0na8mAh2+bvibnM+1DUAVSwRoWRmAUfPygezGBz4ccqJqEvOeE3lhMinRbevLjSO56CK95r
- fYwAaVt0=
-X-Gm-Gg: AY/fxX6DGaVjUikpbMagybrmVR+SqERdVJyc5CgJdXiR64LHNLmXLaDDbfWvdCCaJa9
- ZyW8a8C108VI9j4oR2lwv3Cga8Hz9+C5x37QIpVzcp6nbGv55n1JHKBy5ITiCPnsKG2QTRWOueF
- f6UhEo3B/jHy0GcFgRG98Vu/gLh3cM2aWwdiZVHmZj8uAGGAysr0dt7jgT1/oBSoK/qSM1UCUCj
- /0l9RWnOqyW7nElYwSCmbjiBBDUM69nc6xD9K/16JUc8S4CIjQPTeWh0vR4l4C7I5+5AOELZzBg
- lQ4YUS1O1ryeEHL6aZONLyZGJ5+DoBSsGABC3J7kn4jTUhe0hxYOio1M2cDcjwki5FNChh2t3GL
- Qv3jC05dXn4l3cIZj38r9/MZ9MqQqSBLZu6Plg2J9rdZ2jvmE9TIj89SAjDs6vBzoVhfiIs57Ix
- KHEOl57YaTNzTgOLVp/eYTuDK2qyTUEcINKclxV71aZSno1iHafDNa/A==
-X-Received: by 2002:a05:600c:3b8e:b0:47e:de23:dd6f with SMTP id
- 5b1f17b1804b1-4801eac0a1dmr101632225e9.12.1768773819837; 
- Sun, 18 Jan 2026 14:03:39 -0800 (PST)
-Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4801e879537sm160228885e9.5.2026.01.18.14.03.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 18 Jan 2026 14:03:39 -0800 (PST)
-Message-ID: <8af2b03c-6fc3-48c6-a307-7d49d38532b4@linaro.org>
-Date: Sun, 18 Jan 2026 23:03:37 +0100
+ d=1e100.net; s=20230601; t=1768773901; x=1769378701;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=1elLXYSGrJNsfz40yQiYIFdnTmy9vR+YxG5ftNQkGbA=;
+ b=Ok1r+edDeSGxPkknIBFgDUoN1WUi2BA5GgcyTCQS1wzRcF+6tMt96fP6zWt714bX4B
+ Rv4vIyEYpWyjAN3Rmbw0ZwcxQyZf2I3Uir2OrA8aMV3Kz7V/YOVyw4ENPE44gp2piqrR
+ CZgvH6NrT00Z4zoJF1fL5FkQpoXA3VTTqRW3vAuWoQlMf3ocgJ4iW9OHcRXq4zHjNf4j
+ DB6V91mf5Vw3FMmGiU+wE8c1rhOXb7mM/YIG31eiOQGPmsme6Bs7SkGWGr/MehsVPMSB
+ b1fJ4Ag/AItgF/KxiIervv/ANXyymbZay0D/l6ay8s7qhridRVVI2y7wtm5YOdEt2F8I
+ 5dlw==
+X-Gm-Message-State: AOJu0YybV1OCfsr8JrIE+ZlTukn2uVLtxRIFNqHDAqx7IKA8CF7ac7Go
+ C0lgvTIUqzQ+O4T+kHJKAEX/dd8UnPlvkrKSuwRA0y0p1M1B43as5Wa6RULv+rjjdZwjubjvqnn
+ KCixI4t2rYQ==
+X-Gm-Gg: AY/fxX7Fe4TT+euRVHfID06hbZMHkxUCeSdG5AgT+VdIiEZCbPDjKDeD/X5hOE8KDiz
+ KmHK4lOgoBCnQPbONwnaz2Wm74pg1XoiiIWp6DJD3cEYsGMqeGVCBrAKh9qZEXH3j1Unl0X7lIU
+ CRw/FRCthQUtDestjMoBUwwLeI9ZQ4xgSBTSGspEspZGn3qmMc5zsbyOtG5MdvTYeF9iInuWKDX
+ VvpPXBx6EuyugAgeZhAi6wOSz+D0FJRFkiNAgFC1kmveA10IAEqqmGvLJ4yQ0C/5EApk5QMALJI
+ YQmA8y5GDGu+nB/C0PSVYZ2tpSDMSjMNPwyVVpjZiP9mqdgHiF8ZWuj8dcRu5aJTtdkEpdnRphe
+ +fEbfy1QogN+Vj2ksERVwvfGTcrJhBwB00U6FZ9aJH1lJdhc8PYiZRwVcEIbiQbRnxJMkNtRz6v
+ x7/qPnOvd6b103QTs1MQ==
+X-Received: by 2002:a17:902:d488:b0:295:7b89:cb8f with SMTP id
+ d9443c01a7336-2a717413b94mr74261785ad.0.1768773901329; 
+ Sun, 18 Jan 2026 14:05:01 -0800 (PST)
+Received: from stoup.. ([180.233.125.201]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2a7193dbb74sm74402865ad.56.2026.01.18.14.04.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 18 Jan 2026 14:05:01 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PULL 17/54] meson: Drop host_arch rename for riscv64
+Date: Mon, 19 Jan 2026 09:03:37 +1100
+Message-ID: <20260118220414.8177-18-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260118220414.8177-1-richard.henderson@linaro.org>
+References: <20260118220414.8177-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 51/59] hw/arm/virt: Warn when HVF doesn't report IPA
- bit length
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: Mads Ynddal <mads@ynddal.dk>, Cameron Esfahani <dirty@apple.com>,
- qemu-arm@nongnu.org, Roman Bolshakov <rbolshakov@ddn.com>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Phil Dennis-Jordan <phil@philjordan.eu>,
- Mohamed Mediouni <mohamed@unpredictable.fr>,
- Peter Collingbourne <pcc@google.com>,
- Peter Maydell <peter.maydell@linaro.org>, Alexander Graf <agraf@csgraf.de>
-References: <20251028054238.14949-1-philmd@linaro.org>
- <20251028054238.14949-52-philmd@linaro.org>
- <cd27bf13-a8ef-4b7a-bfea-0e4220091ec1@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <cd27bf13-a8ef-4b7a-bfea-0e4220091ec1@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,39 +99,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/10/25 13:07, Richard Henderson wrote:
-> On 10/28/25 06:42, Philippe Mathieu-Daudé wrote:
->> Emit a warning when HVF doesn't return the IPA bit length
->> and return -1 as "this accelerator is not usable", allowing
->> QEMU to try with the next one (when using '-accel hvf:tcg').
->>
->> Reported-by: Ivan Krasilnikov
->> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2981
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   hw/arm/virt.c | 8 ++++++--
->>   1 file changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
->> index 175023897a7..1d65fa471dc 100644
->> --- a/hw/arm/virt.c
->> +++ b/hw/arm/virt.c
->> @@ -3225,8 +3225,12 @@ static int 
->> virt_hvf_get_physical_address_range(MachineState *ms)
->>   {
->>       VirtMachineState *vms = VIRT_MACHINE(ms);
->> -    int default_ipa_size = hvf_arm_get_default_ipa_bit_size();
->> -    int max_ipa_size = hvf_arm_get_max_ipa_bit_size();
->> +    uint32_t default_ipa_size = hvf_arm_get_default_ipa_bit_size();
->> +    uint32_t max_ipa_size = hvf_arm_get_max_ipa_bit_size();
->> +    if (!default_ipa_size || !max_ipa_size) {
->> +        warn_report("HVF didn't report IPA bit length");
->> +        return -1;
->> +    }
-> 
-> I suppose this goes back to the previous patch.
-> It might have been slightly less confusing to merge them, but the 
-> underlying questions about when and how this can fail remain.
+This requires renaming several directories:
+tcg/riscv, linux-user/include/host/riscv, and
+common-user/host/riscv.
 
-Right. I'm dropping this patch.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ host/include/{riscv => riscv64}/host/cpuinfo.h           | 0
+ linux-user/include/host/{riscv => riscv64}/host-signal.h | 0
+ tcg/{riscv => riscv64}/tcg-target-con-set.h              | 0
+ tcg/{riscv => riscv64}/tcg-target-con-str.h              | 0
+ tcg/{riscv => riscv64}/tcg-target-has.h                  | 0
+ tcg/{riscv => riscv64}/tcg-target-mo.h                   | 0
+ tcg/{riscv => riscv64}/tcg-target-reg-bits.h             | 0
+ tcg/{riscv => riscv64}/tcg-target.h                      | 0
+ MAINTAINERS                                              | 2 +-
+ common-user/host/{riscv => riscv64}/safe-syscall.inc.S   | 0
+ configure                                                | 4 ++--
+ meson.build                                              | 2 --
+ tcg/{riscv => riscv64}/tcg-target-opc.h.inc              | 0
+ tcg/{riscv => riscv64}/tcg-target.c.inc                  | 0
+ 14 files changed, 3 insertions(+), 5 deletions(-)
+ rename host/include/{riscv => riscv64}/host/cpuinfo.h (100%)
+ rename linux-user/include/host/{riscv => riscv64}/host-signal.h (100%)
+ rename tcg/{riscv => riscv64}/tcg-target-con-set.h (100%)
+ rename tcg/{riscv => riscv64}/tcg-target-con-str.h (100%)
+ rename tcg/{riscv => riscv64}/tcg-target-has.h (100%)
+ rename tcg/{riscv => riscv64}/tcg-target-mo.h (100%)
+ rename tcg/{riscv => riscv64}/tcg-target-reg-bits.h (100%)
+ rename tcg/{riscv => riscv64}/tcg-target.h (100%)
+ rename common-user/host/{riscv => riscv64}/safe-syscall.inc.S (100%)
+ rename tcg/{riscv => riscv64}/tcg-target-opc.h.inc (100%)
+ rename tcg/{riscv => riscv64}/tcg-target.c.inc (100%)
+
+diff --git a/host/include/riscv/host/cpuinfo.h b/host/include/riscv64/host/cpuinfo.h
+similarity index 100%
+rename from host/include/riscv/host/cpuinfo.h
+rename to host/include/riscv64/host/cpuinfo.h
+diff --git a/linux-user/include/host/riscv/host-signal.h b/linux-user/include/host/riscv64/host-signal.h
+similarity index 100%
+rename from linux-user/include/host/riscv/host-signal.h
+rename to linux-user/include/host/riscv64/host-signal.h
+diff --git a/tcg/riscv/tcg-target-con-set.h b/tcg/riscv64/tcg-target-con-set.h
+similarity index 100%
+rename from tcg/riscv/tcg-target-con-set.h
+rename to tcg/riscv64/tcg-target-con-set.h
+diff --git a/tcg/riscv/tcg-target-con-str.h b/tcg/riscv64/tcg-target-con-str.h
+similarity index 100%
+rename from tcg/riscv/tcg-target-con-str.h
+rename to tcg/riscv64/tcg-target-con-str.h
+diff --git a/tcg/riscv/tcg-target-has.h b/tcg/riscv64/tcg-target-has.h
+similarity index 100%
+rename from tcg/riscv/tcg-target-has.h
+rename to tcg/riscv64/tcg-target-has.h
+diff --git a/tcg/riscv/tcg-target-mo.h b/tcg/riscv64/tcg-target-mo.h
+similarity index 100%
+rename from tcg/riscv/tcg-target-mo.h
+rename to tcg/riscv64/tcg-target-mo.h
+diff --git a/tcg/riscv/tcg-target-reg-bits.h b/tcg/riscv64/tcg-target-reg-bits.h
+similarity index 100%
+rename from tcg/riscv/tcg-target-reg-bits.h
+rename to tcg/riscv64/tcg-target-reg-bits.h
+diff --git a/tcg/riscv/tcg-target.h b/tcg/riscv64/tcg-target.h
+similarity index 100%
+rename from tcg/riscv/tcg-target.h
+rename to tcg/riscv64/tcg-target.h
+diff --git a/MAINTAINERS b/MAINTAINERS
+index d3e6041186..c1e586c58f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4086,7 +4086,7 @@ M: Palmer Dabbelt <palmer@dabbelt.com>
+ M: Alistair Francis <Alistair.Francis@wdc.com>
+ L: qemu-riscv@nongnu.org
+ S: Maintained
+-F: tcg/riscv/
++F: tcg/riscv64/
+ F: disas/riscv.[ch]
+ 
+ S390 TCG target
+diff --git a/common-user/host/riscv/safe-syscall.inc.S b/common-user/host/riscv64/safe-syscall.inc.S
+similarity index 100%
+rename from common-user/host/riscv/safe-syscall.inc.S
+rename to common-user/host/riscv64/safe-syscall.inc.S
+diff --git a/configure b/configure
+index 04d0b214b6..ee09f90125 100755
+--- a/configure
++++ b/configure
+@@ -469,8 +469,8 @@ case "$cpu" in
+     CPU_CFLAGS="-m64 -mlittle-endian"
+     ;;
+ 
+-  riscv32 | riscv64)
+-    host_arch=riscv
++  riscv64)
++    host_arch=riscv64
+     linux_arch=riscv
+     ;;
+ 
+diff --git a/meson.build b/meson.build
+index c36f2f6962..e1ac764793 100644
+--- a/meson.build
++++ b/meson.build
+@@ -265,8 +265,6 @@ enable_modules = get_option('modules') \
+ 
+ if cpu not in supported_cpus
+   host_arch = 'unknown'
+-elif cpu in ['riscv32', 'riscv64']
+-  host_arch = 'riscv'
+ else
+   host_arch = cpu
+ endif
+diff --git a/tcg/riscv/tcg-target-opc.h.inc b/tcg/riscv64/tcg-target-opc.h.inc
+similarity index 100%
+rename from tcg/riscv/tcg-target-opc.h.inc
+rename to tcg/riscv64/tcg-target-opc.h.inc
+diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv64/tcg-target.c.inc
+similarity index 100%
+rename from tcg/riscv/tcg-target.c.inc
+rename to tcg/riscv64/tcg-target.c.inc
+-- 
+2.43.0
+
 
