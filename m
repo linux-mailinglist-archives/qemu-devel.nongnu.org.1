@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 059E0D39A42
-	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jan 2026 23:08:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04E50D39A3E
+	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jan 2026 23:08:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhauT-0005uT-9g; Sun, 18 Jan 2026 17:06:13 -0500
+	id 1vhauR-0005ei-6R; Sun, 18 Jan 2026 17:06:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vhaty-0003rr-5P
- for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:05:42 -0500
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ id 1vhau3-0004X4-JJ
+ for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:05:47 -0500
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vhatw-0000vq-Gh
- for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:05:41 -0500
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-c3e921afad1so1471134a12.1
- for <qemu-devel@nongnu.org>; Sun, 18 Jan 2026 14:05:40 -0800 (PST)
+ id 1vhaty-0000wV-Jg
+ for qemu-devel@nongnu.org; Sun, 18 Jan 2026 17:05:46 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-29f0f875bc5so25188625ad.3
+ for <qemu-devel@nongnu.org>; Sun, 18 Jan 2026 14:05:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768773939; x=1769378739; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768773941; x=1769378741; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1nYgK0g6eEdhcQX8r1Op2+JuLhyO76+gPoRJlKgReBU=;
- b=LXzDxNJpW/tDKFrBlYs21L2djtmfq59pp6RF+hphD9TluDqR+A7775dGjL8bYX97XN
- 4ixPUpCYEDyEA45hpfYt2L5dqOWji1AuQknO58qbrtMLnsl2lQY8N4rOKJ+oKgAEqE+I
- I+S9r9WdQG/JF30IWZecbDm7f4Sw7VTRwDnAIr0oHIvEpYCdnLiqT9KUg+URW+2/xnkP
- sdFv2i9x/Z3T0u/xAxCoMjyYiI4E0W9aD8xj7DBkLG/ZV9CbsI39GbOcK7o4LF+rvkc5
- EndEVSFJ5B0ApCETybi2RAjoxO0drJfRRimvfu251chEJB9yoFmP7vfd//l6XFkaubu8
- O7yQ==
+ bh=SRTKY77Q5AGOWWtgWUqll/eZ5kBhHSvVz6RI7rqXw3s=;
+ b=CHoH1mn7qz6q6W51iyKzq3z69hwUZw+e4Wkaz4DlOWCx4c+R6bqc0r7pT5FWojw4nT
+ lZqcOY5baY6IGw1UoG7+yq9rR/b3GZAuF2eGuT403mZXaW5QUcOoxQYWstW5IhcX415+
+ HDANawinJcZBWv4NW/9359vvYC5qrEC0kKKxexhxWWC7SuDPvzxA/+dcUH0ca64VSRos
+ 49YGyBgwmgypJgQffBtNG+GyFafC2UMyx46Cyf0cVITdsZtnKJaCBdh8RhF54dakkxAc
+ AmPyUq1Vyq//iXCa4JJFQnt5idTVnPO94Zbz+w9Lt40GWP+lGlZNKNZDuS9DqN76MTTR
+ PObw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768773939; x=1769378739;
+ d=1e100.net; s=20230601; t=1768773941; x=1769378741;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=1nYgK0g6eEdhcQX8r1Op2+JuLhyO76+gPoRJlKgReBU=;
- b=Je1EaDXlPphZc7xSpBtk/rGmpaQILPV41SY19rtYn556NG78gwx1i822HkwSzMvbwZ
- JJ9/0QQ1x9jPkkgf2bCVo1THuUlCEZEFaaa7KL72y6jJBjFd/gPzoSQVykZdnFJANpZa
- e/W4ub2UYm70pbliipCPvJI94ohD9c7WNz4rjXUpy8WP0zjKUwQJkDOWxEyzae3SUeir
- LypEEiDxyp9Iqjsx8Gf7mnPIxUKLIkGZlfHhGI8AcfNgnlXHo1h8uu1hgjcjkXrx19yR
- Ya8pupwsglw1HhXQ+WtoqngtbTTpWu1SBUiRqG6jGcqCxGGzsnl7zrn/Bujx48SS4Uml
- Maiw==
-X-Gm-Message-State: AOJu0YxqLVQ09rVe3tIDEzqkUiRrU1KRP488K4GcM8TrDvpeFYWnMfZG
- 0oWxBdzpTiCQc7berT5gPX1cO+tyi4AGGJVrXqBS8SBLRu29ZuyWrMUt6GGhkpyAJNwd5c7nI1T
- gjjKUoXynMw==
-X-Gm-Gg: AY/fxX7t3JU+/PUJUxQaQcqBN00LpWnu+2d7pjUL0hqsJ1PSW1frzYFp8cP01xBIJlC
- 7ii4agBrubvJzs3Y4C3PWUL9TGlrIayVPjIdmqNLTlvTq4CgzLUPZ/cbXcbO25hlTcwuTQPe65e
- qdMZ/iulSA7q+IoQm03AvzZX4898Ytox+OkoAo6oeQNxLiXmREqwczCaOfPhw7sID7t5FgZPpU1
- N0vIR+3kwyWOqVZNMedzXQpSNd4B79iIouQfRifYdakbbnZR9krm0Aoknz4JBrI6sBSrGyYhEun
- ZPc4+TbHD99zgMN4nr0NhlG82LVMnXQDEpT5jWztgnBdONfVpSwi2nsltx2Ixy1wItpQPjjAQTo
- YREbqM1i2wxuwqirnJxDLW3S9LgufDTGW56E0Yf+u0yCUSSVG/5ERF2LkxEbGLuXXtY8ibBl5Sp
- B9ljMcRDDzfqkduIpU8g==
-X-Received: by 2002:a05:6a21:483:b0:35e:11ff:45c1 with SMTP id
- adf61e73a8af0-38dfe5a938dmr7467511637.18.1768773938879; 
- Sun, 18 Jan 2026 14:05:38 -0800 (PST)
+ bh=SRTKY77Q5AGOWWtgWUqll/eZ5kBhHSvVz6RI7rqXw3s=;
+ b=skh6sBkMclOoeeViwuUiLAGi3n8pdzY/BIBvxkEys7eeWWThDTzFbapRMjv9pfAJMA
+ f1luy4anPPknTB48MEVEpj/TycXpTICqc9OymaoAfdiaBfij8gYSpXIU8afPIWpbJsNd
+ /mx45RErjRSHk+5ie2moRyZXciWPvufs6aijikKrFQhhYi37mW9tch22IVI4K7U0pAnu
+ QaMRKk+ZAr8uSkO1uZY0l1XUmbpbWBc46JeQg2Hi5Vz5MM2So4Meo0TDhPCwSG2nQ8up
+ CNqMsYc5mlLSb4ch2UEiozmuX1RsFOcOpiGxkR1Ftm0YxzxXNXv9EnExL3t8rvIE8Gul
+ Nyvw==
+X-Gm-Message-State: AOJu0YzrvGRItapHNME3C4lnejt8YXqIjHFdf7UMBNLZbIEiBCRr7XCF
+ kRyRfXb8JgbCQ0g/hcgSV1bg5am07dFyQKsV7cNpg4O4T0yX7NhukA6JJlUzi6gZDa5cgKVtyGq
+ v557e25JOfA==
+X-Gm-Gg: AY/fxX7uDsnfbwtEI0vyYWpQYmXIN+r6tOlP/JUK6TcOvKO8qGeG/2EQpuHF3NIs5Xs
+ 3/zw+Yaliz6/af+r1JzFKgXXcp9tX0xBBlLtWLvc/7x3Wy7fiUXzvBJ/2gz43dbsZIkDC7zdCXc
+ kK0Rn0Xo1qyV73r/O0E3AmTsjaf1J72brCQflucV4o996W1wtjlSSToJLeH4KO1aN+UzzyQEV/y
+ UECGPK/M1jGlCC6s+y+vrkTiUIpFyQq0Dm5lrLeCtj9vvAMyKl+FwDPo/LxqyArwQCz9+2uP1s3
+ 2LBk+rZ9Q0qRYqbSnPXr7GAqpvYtKx0kOxDuM5vxRTbspfvo/vlLKjqtifC89rbcrbgd82RXnki
+ NreFr1AUZlS/iiDWmbYGM+58C0Qs9yuK0CCwRZR0MqqJQEinXD3J4RIwsoemw1V8zn3ND9lbwIN
+ lQtYHn/PV5ofwgTuBB8A==
+X-Received: by 2002:a17:903:40cb:b0:2a0:faf1:782 with SMTP id
+ d9443c01a7336-2a717519edbmr68746205ad.9.1768773940990; 
+ Sun, 18 Jan 2026 14:05:40 -0800 (PST)
 Received: from stoup.. ([180.233.125.201]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a7193dbb74sm74402865ad.56.2026.01.18.14.05.37
+ d9443c01a7336-2a7193dbb74sm74402865ad.56.2026.01.18.14.05.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 Jan 2026 14:05:38 -0800 (PST)
+ Sun, 18 Jan 2026 14:05:40 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 33/54] tcg: Drop TCG_TARGET_REG_BITS test in tcg-has.h
-Date: Mon, 19 Jan 2026 09:03:53 +1100
-Message-ID: <20260118220414.8177-34-richard.henderson@linaro.org>
+Subject: [PULL 34/54] include/tcg: Drop TCG_TARGET_REG_BITS tests
+Date: Mon, 19 Jan 2026 09:03:54 +1100
+Message-ID: <20260118220414.8177-35-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260118220414.8177-1-richard.henderson@linaro.org>
 References: <20260118220414.8177-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -100,25 +100,128 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/tcg-has.h | 5 -----
- 1 file changed, 5 deletions(-)
+ include/tcg/tcg-op.h  |  9 +++------
+ include/tcg/tcg-opc.h |  5 +----
+ include/tcg/tcg.h     | 27 ++-------------------------
+ 3 files changed, 6 insertions(+), 35 deletions(-)
 
-diff --git a/tcg/tcg-has.h b/tcg/tcg-has.h
-index 2fc0e50d20..27771dc7f0 100644
---- a/tcg/tcg-has.h
-+++ b/tcg/tcg-has.h
-@@ -9,11 +9,6 @@
+diff --git a/include/tcg/tcg-op.h b/include/tcg/tcg-op.h
+index 232733cb71..ee379994e7 100644
+--- a/include/tcg/tcg-op.h
++++ b/include/tcg/tcg-op.h
+@@ -31,8 +31,7 @@
+ #if TARGET_INSN_START_EXTRA_WORDS == 0
+ static inline void tcg_gen_insn_start(target_ulong pc)
+ {
+-    TCGOp *op = tcg_emit_op(INDEX_op_insn_start,
+-                            INSN_START_WORDS * 64 / TCG_TARGET_REG_BITS);
++    TCGOp *op = tcg_emit_op(INDEX_op_insn_start, INSN_START_WORDS);
+     tcg_set_insn_start_param(op, 0, pc);
+     tcg_set_insn_start_param(op, 1, 0);
+     tcg_set_insn_start_param(op, 2, 0);
+@@ -40,8 +39,7 @@ static inline void tcg_gen_insn_start(target_ulong pc)
+ #elif TARGET_INSN_START_EXTRA_WORDS == 1
+ static inline void tcg_gen_insn_start(target_ulong pc, target_ulong a1)
+ {
+-    TCGOp *op = tcg_emit_op(INDEX_op_insn_start,
+-                            INSN_START_WORDS * 64 / TCG_TARGET_REG_BITS);
++    TCGOp *op = tcg_emit_op(INDEX_op_insn_start, INSN_START_WORDS);
+     tcg_set_insn_start_param(op, 0, pc);
+     tcg_set_insn_start_param(op, 1, a1);
+     tcg_set_insn_start_param(op, 2, 0);
+@@ -50,8 +48,7 @@ static inline void tcg_gen_insn_start(target_ulong pc, target_ulong a1)
+ static inline void tcg_gen_insn_start(target_ulong pc, target_ulong a1,
+                                       target_ulong a2)
+ {
+-    TCGOp *op = tcg_emit_op(INDEX_op_insn_start,
+-                            INSN_START_WORDS * 64 / TCG_TARGET_REG_BITS);
++    TCGOp *op = tcg_emit_op(INDEX_op_insn_start, INSN_START_WORDS);
+     tcg_set_insn_start_param(op, 0, pc);
+     tcg_set_insn_start_param(op, 1, a1);
+     tcg_set_insn_start_param(op, 2, a2);
+diff --git a/include/tcg/tcg-opc.h b/include/tcg/tcg-opc.h
+index 28806057c5..61f1c28858 100644
+--- a/include/tcg/tcg-opc.h
++++ b/include/tcg/tcg-opc.h
+@@ -109,9 +109,7 @@ DEF(extu_i32_i64, 1, 1, 0, 0)
+ DEF(extrl_i64_i32, 1, 1, 0, 0)
+ DEF(extrh_i64_i32, 1, 1, 0, 0)
  
- #include "tcg-target-has.h"
+-#define DATA64_ARGS  (TCG_TARGET_REG_BITS == 64 ? 1 : 2)
+-
+-DEF(insn_start, 0, 0, DATA64_ARGS * INSN_START_WORDS, TCG_OPF_NOT_PRESENT)
++DEF(insn_start, 0, 0, INSN_START_WORDS, TCG_OPF_NOT_PRESENT)
+ 
+ DEF(exit_tb, 0, 0, 1, TCG_OPF_BB_EXIT | TCG_OPF_BB_END | TCG_OPF_NOT_PRESENT)
+ DEF(goto_tb, 0, 0, 1, TCG_OPF_BB_EXIT | TCG_OPF_BB_END | TCG_OPF_NOT_PRESENT)
+@@ -184,5 +182,4 @@ DEF(last_generic, 0, 0, 0, TCG_OPF_NOT_PRESENT)
+ 
+ #include "tcg-target-opc.h.inc"
+ 
+-#undef DATA64_ARGS
+ #undef DEF
+diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
+index 067150c542..60942ce05c 100644
+--- a/include/tcg/tcg.h
++++ b/include/tcg/tcg.h
+@@ -43,19 +43,10 @@
+ #define CPU_TEMP_BUF_NLONGS 128
+ #define TCG_STATIC_FRAME_SIZE  (CPU_TEMP_BUF_NLONGS * sizeof(long))
  
 -#if TCG_TARGET_REG_BITS == 32
--/* Turn some undef macros into false macros.  */
--#define TCG_TARGET_HAS_extr_i64_i32     0
+-typedef int32_t tcg_target_long;
+-typedef uint32_t tcg_target_ulong;
+-#define TCG_PRIlx PRIx32
+-#define TCG_PRIld PRId32
+-#elif TCG_TARGET_REG_BITS == 64
+ typedef int64_t tcg_target_long;
+ typedef uint64_t tcg_target_ulong;
+ #define TCG_PRIlx PRIx64
+ #define TCG_PRIld PRId64
+-#else
+-#error unsupported
 -#endif
--
- #if !defined(TCG_TARGET_HAS_v64) \
-     && !defined(TCG_TARGET_HAS_v128) \
-     && !defined(TCG_TARGET_HAS_v256)
+ 
+ #if TCG_TARGET_NB_REGS <= 32
+ typedef uint32_t TCGRegSet;
+@@ -147,11 +138,7 @@ typedef enum TCGType {
+ #define TCG_TYPE_COUNT  (TCG_TYPE_V256 + 1)
+ 
+     /* An alias for the size of the host register.  */
+-#if TCG_TARGET_REG_BITS == 32
+-    TCG_TYPE_REG = TCG_TYPE_I32,
+-#else
+     TCG_TYPE_REG = TCG_TYPE_I64,
+-#endif
+ 
+     /* An alias for the size of the native pointer.  */
+ #if UINTPTR_MAX == UINT32_MAX
+@@ -605,23 +592,13 @@ static inline void tcg_set_insn_param(TCGOp *op, unsigned arg, TCGArg v)
+ static inline uint64_t tcg_get_insn_start_param(TCGOp *op, unsigned arg)
+ {
+     tcg_debug_assert(arg < INSN_START_WORDS);
+-    if (TCG_TARGET_REG_BITS == 64) {
+-        return tcg_get_insn_param(op, arg);
+-    } else {
+-        return deposit64(tcg_get_insn_param(op, arg * 2), 32, 32,
+-                         tcg_get_insn_param(op, arg * 2 + 1));
+-    }
++    return tcg_get_insn_param(op, arg);
+ }
+ 
+ static inline void tcg_set_insn_start_param(TCGOp *op, unsigned arg, uint64_t v)
+ {
+     tcg_debug_assert(arg < INSN_START_WORDS);
+-    if (TCG_TARGET_REG_BITS == 64) {
+-        tcg_set_insn_param(op, arg, v);
+-    } else {
+-        tcg_set_insn_param(op, arg * 2, v);
+-        tcg_set_insn_param(op, arg * 2 + 1, v >> 32);
+-    }
++    tcg_set_insn_param(op, arg, v);
+ }
+ 
+ /* The last op that was emitted.  */
 -- 
 2.43.0
 
