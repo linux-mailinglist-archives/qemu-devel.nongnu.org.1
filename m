@@ -2,72 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E23D3A596
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 11:47:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 590FBD3A626
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 12:05:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhmm9-0006W2-In; Mon, 19 Jan 2026 05:46:25 -0500
+	id 1vhn3M-00069Y-TI; Mon, 19 Jan 2026 06:04:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vhmm5-0006UM-Gk
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 05:46:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vhmm3-0003tF-A8
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 05:46:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768819577;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=7EqoF3VLYqgRpCFAULfgIQ/I8BD/WzeG5ImtSd811HQ=;
- b=IcRluPg79o6IUzxUDDlqVxq34Y632FDlkGNZ8lgcR1f0twCWGCMru2Zm7EmEteDXh102Rn
- NNbjGumDnNTHBBx3iNm0dfdnBiLZsvTIvn7vSAhW+pi6zzJAn8kTSasvjqLkTn6jOJ2GA2
- jen70M6qmxLGwO1Aki/P/d+y682GC2U=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-477-Bjd4WQakMkGEBjdGuj1xtA-1; Mon,
- 19 Jan 2026 05:46:14 -0500
-X-MC-Unique: Bjd4WQakMkGEBjdGuj1xtA-1
-X-Mimecast-MFC-AGG-ID: Bjd4WQakMkGEBjdGuj1xtA_1768819573
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 96B1919560A7
- for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 10:46:13 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.53])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5836B1955F22; Mon, 19 Jan 2026 10:46:12 +0000 (UTC)
-Date: Mon, 19 Jan 2026 10:46:08 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH 0/5] Clean up header guards again
-Message-ID: <aW4LcOkEqpPCq9sH@redhat.com>
-References: <20260119100537.463312-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vhn3F-0005ty-Uz
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 06:04:07 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vhn3D-0006Uq-80
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 06:04:05 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-42fed090e5fso2253092f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 03:04:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1768820641; x=1769425441; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=1oLWab/Xaud4IgoL2Fl+eccutCbR+6dlUmvzxaTjay0=;
+ b=Z9pqDHdWp1YtBIdqM6G53JsddxJe8LvcK5upQlimjqi3eIO69k9ITonollWdgRDX0C
+ PMyc/9chFruJMfN2SjiUeQ1hpdn1d4UyDaTnVO9Ja4EyG16i+fWDn9V+ul9buNgIFLVa
+ qS02bDpZ+q+OkJI16XJsKV5hkQ7P2A53U0ERUPGUkqx3bXqKRXiFIeErOH1VvbF+MfKI
+ KuIK1uQ/B3uNfTH4RqguhR+MyK7PdFOVgRgyYPWozJywZTBcNK+yHNnJspGW+RFIJ1FE
+ eet8mtUC55IhWM43wvo4r1SS/6e6VehFn/sHaXOCjPzG+mD0c3k1klIsSIKPAYPcArX2
+ SFPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768820641; x=1769425441;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=1oLWab/Xaud4IgoL2Fl+eccutCbR+6dlUmvzxaTjay0=;
+ b=PEEWVtxskkBGagiHZu0H8rJNpMDfqw0gTSQcn2I2zyQfU2uYWl/6qS8Bak5VsPVfty
+ Bod6AZx06R9BgTZbKn/hrZsiDKXEnH/mMEOmJdljuIwCowqgUy6vKF97vm1DvtYaMeWY
+ XobihVdOM6v80W9ZWnBP98DCd9/71Hr0QXmujVkyNU2zha8rmsnDq1QziEIKl2Qvcv/Q
+ SEY4Z6cldBqklH4mz+PHKBISm9BfbMwor2Da1dbMNDRq8LRMo9FmcDMWzXyppIaQFuTJ
+ MXvl/fneSby2M557h8L22U1QQEX3bjOjBhqXpeRlyINFLtTZv4noCPtjgSCbnVioAsAE
+ ZVYg==
+X-Gm-Message-State: AOJu0YzxoRoPACoiCzxsr5oOi0bsbiE3imbrXAoKsIa6Ltex7n7JScqd
+ mK4dPg6HQiSkmcEsW5e1DuIoMPeqIPvbEkWxCAhIPtsjRyaWCXYhUoNyXfypVbvhUcz0kns2S/V
+ HKbDWfSU=
+X-Gm-Gg: AZuq6aKQjks99AGSiUt6IezyCFTrjh3I+67Vz0T6Fo24Ili1CJVqbJFV62J4XVf5zyn
+ tBuNfs9pc2OYlHjh2WkSTEm6vxgKSHybj2QwuDAozIZWOQI1kSPP8msuowgYxnHvBJHP0/xCANv
+ 3T1vlaF3gMplqSri7A5FLA6Wk2+xKC7291M5oRx/6+hsbcvbveTrYI5cqZOorcjs5sNr1jHeu1t
+ QPxtCrHlgJjFsDhf5EOtLYXRGl1i+LTVqZgSAY/QtxeBJurf+70qymzZfeWqLbqvunHmRVObxMg
+ wz/w767gOM3Ur9DMzQ2E8ZIjuN740dUqMtROvX3Km7VtxHTNjBmt68NHrDg4cvXWZpv4n0VcQN1
+ qaoBKFIkRhdrfcdxDZd0f6hEiGz9bBZS4aNnZj/x/eamcTalFTcweco7TML3JdnG/Vcmd9LO24r
+ RtY6KnsGvi2RzGx8G/AX8mYIMhJzClYK+Monb5OsoX24A1JvYffVw6V2MlyDFAdsIqqYFHxHI=
+X-Received: by 2002:a05:6000:200d:b0:430:fdc8:8bc9 with SMTP id
+ ffacd0b85a97d-43569bc17c2mr14631364f8f.40.1768820640923; 
+ Mon, 19 Jan 2026 03:04:00 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-4356997e6cdsm23521377f8f.31.2026.01.19.03.03.59
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 19 Jan 2026 03:04:00 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Markus Armbruster <armbru@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH v3 0/8] monitor/hmp: Reduce target-specific definitions
+Date: Mon, 19 Jan 2026 12:03:50 +0100
+Message-ID: <20260119110358.66821-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260119100537.463312-1-armbru@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.077,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,44 +95,54 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 19, 2026 at 11:05:32AM +0100, Markus Armbruster wrote:
-> Our use of header guards is rather sloppy.  Sloppiness there can lead
-> to confusing compilation errors.  This series cleans up existing
-> header guards.  In particular, it normalizes guard symbols to follow a
-> common pattern, in the hope of making clashes less likely.  It doesn't
-> add new header guards.  We have more than 300 headers without a
-> recognizable header guard.  A few of them are for multiple inclusion,
-> many don't need header guards because they don't do anything but
-> include, but quite a few probably should have one.  Left for another
-> day.
-> 
-> Previously cleaned up in merge commit ec11dc41eec (2022), merge commit
-> 01807c8b0e9 (2019), and merge commit ca3d87d4c84 (2016).
+Missing review: #6
 
-No objection to applying these fixups since you've done the work
-already.
+v3: Rename MD_I32 -> MD_U32 (Dave)
+v2: Change get_value() prototype signature, use ldn_he_p()
 
-Based on the repeated cleanups, and your notes above that we still
-have many problems though, can I again suggest we just adopt the
-GCC/CLang extension of adding
+Move most of target-agnostic definitions from
+"monitor/hmp-target.h" to "monitor/hmp.h" to
+reduce files target-poisoning.
 
-  #pragma once
+Philippe Mathieu-Daudé (8):
+  target/i386: Include missing 'svm.h' header in 'sev.h'
+  monitor: Add hmp_cmds_for_target() helper
+  monitor: Reduce target-specific methods
+  monitor: Have MonitorDef::get_value() return an unsigned type
+  monitor: Have *get_monitor_def() fill an unsigned value
+  monitor: Truncate target register using ldn_he_p() API
+  monitor: Reduce target-specific methods further
+  monitor: Remove 'monitor/hmp-target.h' header
 
-at the top of every header and burn all the #ifdefs.
+ MAINTAINERS                   |   2 +-
+ include/monitor/hmp-target.h  |  64 -------------------
+ include/monitor/hmp.h         |  31 +++++++++
+ monitor/monitor-internal.h    |  10 ++-
+ target/i386/sev.h             |   2 +
+ hw/i386/sgx-stub.c            |   2 +-
+ hw/i386/sgx.c                 |   1 -
+ monitor/hmp-cmds.c            |   1 -
+ monitor/hmp-target.c          | 108 +------------------------------
+ monitor/hmp.c                 | 116 ++++++++++++++++++++++++++++++++--
+ stubs/target-monitor-defs.c   |   2 +-
+ target/i386/cpu-apic.c        |   2 +-
+ target/i386/monitor.c         |   9 ++-
+ target/i386/sev-system-stub.c |   2 +-
+ target/i386/sev.c             |   1 -
+ target/m68k/monitor.c         |  62 +++++++++---------
+ target/ppc/ppc-qmp-cmds.c     |  26 ++++----
+ target/riscv/monitor.c        |   2 +-
+ target/riscv/riscv-qmp-cmds.c |   1 -
+ target/sh4/monitor.c          |   1 -
+ target/sparc/monitor.c        |  11 ++--
+ target/xtensa/monitor.c       |   1 -
+ 22 files changed, 212 insertions(+), 245 deletions(-)
+ delete mode 100644 include/monitor/hmp-target.h
 
-It is easy & cheap to verify that it is present on every single .h file,
-and there are no style variations to get wrong, or closing statements to
-make inconsistent.
-
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.52.0
 
 
