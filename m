@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCCA9D3B028
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 17:13:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A80D3B02D
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 17:13:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhrqx-0005Xr-JQ; Mon, 19 Jan 2026 11:11:43 -0500
+	id 1vhrqx-0005Xs-ND; Mon, 19 Jan 2026 11:11:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tangtao1634@phytium.com.cn>)
- id 1vhrqt-0005VF-DI; Mon, 19 Jan 2026 11:11:39 -0500
-Received: from sgoci-sdnproxy-4.icoremail.net ([129.150.39.64])
+ id 1vhrqs-0005V3-G5; Mon, 19 Jan 2026 11:11:39 -0500
+Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net ([162.243.164.118])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
  (envelope-from <tangtao1634@phytium.com.cn>)
- id 1vhrqp-00027P-91; Mon, 19 Jan 2026 11:11:38 -0500
+ id 1vhrqp-00028N-3x; Mon, 19 Jan 2026 11:11:37 -0500
 Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwAHD1OvV25pU3w4Aw--.8345S2;
- Tue, 20 Jan 2026 00:11:27 +0800 (CST)
+ by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwAXHVG0V25pY3w4Aw--.8267S2;
+ Tue, 20 Jan 2026 00:11:32 +0800 (CST)
 Received: from phytium.com.cn (unknown [218.76.62.144])
- by mail (Coremail) with SMTP id AQAAfwCX8O2mV25pCfIUAA--.37135S7;
- Tue, 20 Jan 2026 00:11:26 +0800 (CST)
+ by mail (Coremail) with SMTP id AQAAfwCX8O2mV25pCfIUAA--.37135S8;
+ Tue, 20 Jan 2026 00:11:27 +0800 (CST)
 From: Tao Tang <tangtao1634@phytium.com.cn>
 To: Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Laurent Vivier <lvivier@redhat.com>, Eric Auger <eric.auger@redhat.com>,
@@ -34,30 +34,32 @@ Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
  Mostafa Saleh <smostafa@google.com>,
  CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>,
  Tao Tang <tangtao1634@phytium.com.cn>
-Subject: [RFC v9 4/8] hw/arm/smmuv3-common: Add NSCFG bit definition for CD
-Date: Tue, 20 Jan 2026 00:11:08 +0800
-Message-Id: <20260119161112.3841386-5-tangtao1634@phytium.com.cn>
+Subject: [RFC v9 5/8] hw/arm/smmuv3-common: Add STE/CD set helpers for
+ repeated field setup
+Date: Tue, 20 Jan 2026 00:11:09 +0800
+Message-Id: <20260119161112.3841386-6-tangtao1634@phytium.com.cn>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260119161112.3841386-1-tangtao1634@phytium.com.cn>
 References: <20260119161112.3841386-1-tangtao1634@phytium.com.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAfwCX8O2mV25pCfIUAA--.37135S7
-X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQAABWltPrkFKgAAso
+X-CM-TRANSID: AQAAfwCX8O2mV25pCfIUAA--.37135S8
+X-CM-SenderInfo: pwdqw3tdrrljuu6sx5pwlxzhxfrphubq/1tbiAQAABWltPrkFLAAAsu
 Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=tangtao163
  4@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvJXoW7AF1kJFWUKFW8AF17CF4kWFg_yoW8GF4DpF
- 1xCr1kG34qgF1Ikrn5Jw47uF9xXayDCr4xtryjgry7urnaqwnrZ392qa15Kr18Wr4vvr15
- uFnavrW8Wr4ftrDanT9S1TB71UUUUj7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+X-Coremail-Antispam: 1Uk129KBjvJXoWxuF43Cr4kJrWkWry3ZrWxCrg_yoWrKF4Dpr
+ yxAryDXw17CF12kw1fJF4UKFsxZrn2q34DGryxKrsrC3ZxJrn7WFZ7KFWrJFyDuanYqFy0
+ krsIgrWUWayDCrUanT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
  DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
  UUUUU
-Received-SPF: pass client-ip=129.150.39.64;
- envelope-from=tangtao1634@phytium.com.cn; helo=sgoci-sdnproxy-4.icoremail.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Received-SPF: pass client-ip=162.243.164.118;
+ envelope-from=tangtao1634@phytium.com.cn;
+ helo=zg8tmtyylji0my4xnjqumte4.icoremail.net
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -75,44 +77,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add NSCFG bit definition for CD structure. This allows proper
-configuration of non-secure access settings in CD.
+This change introduces STE_SET_* and CD_SET_* helpers to centralize and
+simplify repeated field setting logic.
 
 Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
 ---
- include/hw/arm/smmuv3-common.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/hw/arm/smmuv3-common.h | 79 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 79 insertions(+)
 
 diff --git a/include/hw/arm/smmuv3-common.h b/include/hw/arm/smmuv3-common.h
-index 6b48b5414d..6920a024d1 100644
+index 6920a024d1..7feb5302f8 100644
 --- a/include/hw/arm/smmuv3-common.h
 +++ b/include/hw/arm/smmuv3-common.h
-@@ -123,11 +123,13 @@ REG32(CD_1, 4)
-     FIELD(CD_1, A, 14, 1)
-     FIELD(CD_1, ASID, 16, 16)
- REG32(CD_2, 8)
-+    FIELD(CD_2, NSCFG0, 0, 1)
-     FIELD(CD_2, HAD0, 1, 1)
-     FIELD(CD_2, TTB0_LO, 4, 28)
- REG32(CD_3, 12)
-     FIELD(CD_3, TTB0_HI, 0, 19)
- REG32(CD_4, 16)
-+    FIELD(CD_4, NSCFG1, 0, 1)
-     FIELD(CD_4, HAD1, 1, 1)
-     FIELD(CD_4, TTB1_LO, 4, 28)
- REG32(CD_5, 20)
-@@ -155,6 +157,9 @@ REG32(CD_5, 20)
- #define CD_R(x)          FIELD_EX32((x)->word[1], CD_1, R)
- #define CD_A(x)          FIELD_EX32((x)->word[1], CD_1, A)
- #define CD_ASID(x)       FIELD_EX32((x)->word[1], CD_1, ASID)
-+#define CD_NSCFG(x, sel) ((sel) ?                                         \
-+    FIELD_EX32((x)->word[4], CD_4, NSCFG1) :                              \
-+    FIELD_EX32((x)->word[2], CD_2, NSCFG0))
- #define CD_HAD(x, sel)   ((sel) ?                                         \
-     FIELD_EX32((x)->word[4], CD_4, HAD1) :                                \
-     FIELD_EX32((x)->word[2], CD_2, HAD0))
+@@ -100,6 +100,37 @@ REG32(STE_7, 28)
+ #define STE_CFG_ABORT(config)      (!(config & 0x4))
+ #define STE_CFG_BYPASS(config)     (config == 0x4)
+ 
++/* Update STE fields */
++#define STE_SET_VALID(ste, v)                                                 \
++    ((ste)->word[0] = FIELD_DP32((ste)->word[0], STE_0, VALID, (v)))
++#define STE_SET_CONFIG(ste, v)                                                \
++    ((ste)->word[0] = FIELD_DP32((ste)->word[0], STE_0, CONFIG, (v)))
++
++#define STE_SET_CTXPTR(ste, v) do {                                           \
++    (ste)->word[0] = FIELD_DP32((ste)->word[0], STE_0, CTXPTR_LO, (v) >> 6);  \
++    (ste)->word[1] = FIELD_DP32((ste)->word[1], STE_1, CTXPTR_HI, (v) >> 32); \
++} while (0)
++#define STE_SET_S2T0SZ(ste, v)                                                \
++    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2T0SZ, (v)))
++#define STE_SET_S2SL0(ste, v)                                                 \
++    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2SL0, (v)))
++#define STE_SET_S2TG(ste, v)                                                  \
++    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2TG, (v)))
++#define STE_SET_S2PS(ste, v)                                                  \
++    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2PS, (v)))
++#define STE_SET_S2AA64(ste, v)                                                \
++    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2AA64, (v)))
++#define STE_SET_S2ENDI(ste, v)                                                \
++    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2ENDI, (v)))
++#define STE_SET_S2AFFD(ste, v)                                                \
++    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2AFFD, (v)))
++#define STE_SET_S2S(ste, v)                                                   \
++    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2S, (v)))
++#define STE_SET_S2TTB(ste, v) do {                                            \
++    (ste)->word[6] = FIELD_DP32((ste)->word[6], STE_6, S2TTB_LO, (v) >> 4);   \
++    (ste)->word[7] = FIELD_DP32((ste)->word[7], STE_7, S2TTB_HI, (v) >> 32);  \
++} while (0)
++
+ /* CD fields */
+ 
+ REG32(CD_0, 0)
+@@ -169,6 +200,54 @@ REG32(CD_5, 20)
+              (((uint64_t)FIELD_EX32((x)->word[3], CD_3, TTB0_HI) << 32) | \
+               ((uint64_t)FIELD_EX32((x)->word[2], CD_2, TTB0_LO) << 4)))
+ 
++/* Update CD fields */
++#define CD_SET_VALID(cd, v)                                                   \
++    ((cd)->word[0] = FIELD_DP32((cd)->word[0], CD_0, VALID, (v)))
++#define CD_SET_ASID(cd, v)                                                    \
++    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, ASID, (v)))
++#define CD_SET_TTB(cd, sel, v) do {                                           \
++    if (sel) {                                                                \
++        (cd)->word[4] = FIELD_DP32((cd)->word[4], CD_4, TTB1_LO, (v) >> 4);   \
++        (cd)->word[5] = FIELD_DP32((cd)->word[5], CD_5, TTB1_HI, (v) >> 32);  \
++    } else {                                                                  \
++        (cd)->word[2] = FIELD_DP32((cd)->word[2], CD_2, TTB0_LO, (v) >> 4);   \
++        (cd)->word[3] = FIELD_DP32((cd)->word[3], CD_3, TTB0_HI, (v) >> 32);  \
++    }                                                                         \
++} while (0)
++
++#define CD_SET_TSZ(cd, sel, v)                                                \
++    ((cd)->word[0] = (sel) ? FIELD_DP32((cd)->word[0], CD_0, TSZ1, (v)) :     \
++                             FIELD_DP32((cd)->word[0], CD_0, TSZ0, (v)))
++#define CD_SET_TG(cd, sel, v)                                                 \
++    ((cd)->word[0] = (sel) ? FIELD_DP32((cd)->word[0], CD_0, TG1, (v)) :      \
++                             FIELD_DP32((cd)->word[0], CD_0, TG0, (v)))
++#define CD_SET_EPD(cd, sel, v)                                                \
++    ((cd)->word[0] = (sel) ? FIELD_DP32((cd)->word[0], CD_0, EPD1, (v)) :     \
++                             FIELD_DP32((cd)->word[0], CD_0, EPD0, (v)))
++#define CD_SET_ENDI(cd, v)                                                    \
++    ((cd)->word[0] = FIELD_DP32((cd)->word[0], CD_0, ENDI, (v)))
++#define CD_SET_IPS(cd, v)                                                     \
++    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, IPS, (v)))
++#define CD_SET_AFFD(cd, v)                                                    \
++    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, AFFD, (v)))
++#define CD_SET_TBI(cd, v)                                                     \
++    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, TBI, (v)))
++#define CD_SET_HD(cd, v)                                                      \
++    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, HD, (v)))
++#define CD_SET_HA(cd, v)                                                      \
++    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, HA, (v)))
++#define CD_SET_S(cd, v)                                                       \
++    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, S, (v)))
++#define CD_SET_R(cd, v)                                                       \
++    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, R, (v)))
++#define CD_SET_A(cd, v)                                                       \
++    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, A, (v)))
++#define CD_SET_AARCH64(cd, v)                                                 \
++    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, AARCH64, (v)))
++#define CD_SET_NSCFG(cd, sel, v)                                              \
++    ((sel) ? ((cd)->word[4] = FIELD_DP32((cd)->word[4], CD_4, NSCFG1, (v))) : \
++             ((cd)->word[2] = FIELD_DP32((cd)->word[2], CD_2, NSCFG0, (v))))
++
+ /* MMIO Registers */
+ 
+ REG32(IDR0,                0x0)
 -- 
 2.34.1
 
