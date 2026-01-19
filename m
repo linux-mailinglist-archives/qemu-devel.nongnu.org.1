@@ -2,66 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1519CD3B6FB
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 20:12:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 882E5D3B6FF
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 20:13:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhufQ-0006rK-Ev; Mon, 19 Jan 2026 14:12:00 -0500
+	id 1vhufR-0006sG-Vx; Mon, 19 Jan 2026 14:12:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vhufN-0006pK-1o
+ id 1vhufN-0006q0-I2
  for qemu-devel@nongnu.org; Mon, 19 Jan 2026 14:11:57 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vhufL-0001Uh-2s
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 14:11:56 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-2a0bae9aca3so30439535ad.3
- for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 11:11:54 -0800 (PST)
+ id 1vhufL-0001Uv-Ob
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 14:11:57 -0500
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-2a0d67f1877so31101325ad.2
+ for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 11:11:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768849913; x=1769454713; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768849914; x=1769454714; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BAwgkxcCnnqe9jCM08ttRZ7hAqumVGJ7T0ER05F6LwQ=;
- b=f5f1N0879vdmzEt8fX7HzriwVfPEhS8dbll++v6qOS5CD8VIE5tE5pOrS50cWirEfU
- rpKhO4KvnKwtVl4I/AsTX3yvotR5KSyTFbfiwanY1yVGwcUbEpg2sGBhAgkRJYZoqJjq
- WD4hCJiwadl4VLfpujHoyIdfOGrZ8HI51lTxe2jnaYovCViyPva1dgbrO5qLwu3Xv+yi
- Tnn40upEyDkBmRRR3O1N7kt/B2sc5xqv7lzEuxuxSQOj3l7yJ2/MIaU3H80H9IYBgusu
- zqO78dt1KZotAPWABHlOEyRf9cDwP/S3vjHSCCmAgiM7XEsS7npX4A6AMqFKw4nViQgQ
- ynjQ==
+ bh=v+UNy75P3JDLlxl4oorAdGDjnZ4Yy9t5V2rmv0cUcHM=;
+ b=hP7x77aCVF8fdwV0T+Oxk0gHj4I1m96hZtPCU1+kruuQ//5bcohMOkcbGeTE+EVuNH
+ +VDbNsdo4uCUaCP6SjmdH0UoyT8xK4M/fneuGjS19v7Emk/pkbskNtiR66bQ3dZN2SUd
+ oa5ELxfu7LIBDakNhpmC0mKuNOft3EhHEAk1tOs7pCiuOwturnsgGC1qN8OUXkZTUzhA
+ uGrioRClK8jqUieBuoJLGewZoigeYr7s3MXYRkUxJ+6v7KW0oQOeQpZml2c+TvtaHJ7G
+ 9LUbDrm4+pSx5U09rWAi1uG0q0uUpq8Z96VP7vfZ+7S0Xids7uC/ivv0ObMRpb9BNRhF
+ XxMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768849913; x=1769454713;
+ d=1e100.net; s=20230601; t=1768849914; x=1769454714;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=BAwgkxcCnnqe9jCM08ttRZ7hAqumVGJ7T0ER05F6LwQ=;
- b=Ab0k89rkXTt7b7k4JfkWBGsq1sdgv4L8XLl8HkNR7ty6AumjC0Mq0MdifJvNP1x7Q1
- 08GWwnd3bwD+UnT87GwSzfBiBdehhGBhr3bXwN1w2wfy3xEmDuK3k3sYb+NOwE4mZDNG
- H93jpI7Ww3hVgxr8E7AzxPJu4xYOX9xa6D0R0qyl4wa1w9CC594YaETxeDjdFY7ALpOB
- aD5sy0QvsyfgEKvuID8OnSEBGCQUubQt76vkJAHoj7GpvoD1YgJAfVr52geB3zvmhWjM
- BDEZOvxCeNrElU1loBf61bDWHZHplCjZDUTJl3hbPGN1mANEmN2kKhQr586QvGiWaCuL
- wBjQ==
-X-Gm-Message-State: AOJu0YxnYrw7LO8B+GnzzE2tFKICajCPRo2YfsQPO/EhMlMKf49YPRHm
- iHPUJpDIwHX/a98HSMFuCmoFAWo5zBD2tucdo6vR9p4aWTgYHpj+qcoFkoiy6xJeXrYncLNNKab
- P6fwA
-X-Gm-Gg: AZuq6aKmkhSmkBnVHW/yPa+fpRb+eGAwc8hPSvobDQTVgLpZc9hyxtdA7MJzQ+UdHAE
- oRHBgENr8rHTA2cSf3xAjVfTdv5haNwBtEWREpF4lG9XYRMJbx7YfRKIqFpRs3Qi92vyiNeLw7p
- h2g78I/Fp72es7pDqJ4y8supFkXs5r2Vk+2AgSIzUp9jn29yLd73sJ4yz1UNq81en16sGsaLvts
- VDreMIsdLKBOw1NUhv7lNls0srFNerUxc+K0/lh6h7rTxNFHvP4kTfVbIGKlBqHepW4ygxpuPYg
- Z7zXv/b/+zDeAHSxCIo4JVdCd49LCPBUkCNPRMq4Fx33z7pjLa+qOMCNvvGLYe5e7RLNReTyNjc
- 2N0tFl3UusQoIeFJoHVhVIp8eBDWoLz0ymLBCVYstXWMAqs2GvlnIIhI6oWb+N2mXPjTtu+BCqD
- OjRLBd6/mqsMa1uYUlgW51Vd85d8JqSiR/B4DuqcG724JGjUSRR4vnw68iLFO+MZ+kOYiYH724e
- 4M=
-X-Received: by 2002:a17:903:11cc:b0:298:2616:c8e2 with SMTP id
- d9443c01a7336-2a7177d6fbbmr110460095ad.53.1768849913395; 
- Mon, 19 Jan 2026 11:11:53 -0800 (PST)
+ bh=v+UNy75P3JDLlxl4oorAdGDjnZ4Yy9t5V2rmv0cUcHM=;
+ b=OJ9wD/PEK2I/vwQPEyi3YtlQXy9k40Xlx2gHPkOmJ3Gn8cq+2AFkixLnqMU2GUs1LX
+ uN/gC3z8M9LW5WwxihtIahBw8ZN/q/IfN4vLOD7jsuLiTzXZOgSvuQswKKQ8vNPxgf4a
+ oiebM/2ntTQibdypqhrK+DvvOJKR4wVaavQVmpncU1rxEAckl/sst3a15NrjP3ceT+2S
+ b+K91nwYwYGu7l8deptbJmB21IAdIwiiMArfaEEnJxKxV/16S+SW0/eBsDd4HGKE7Kms
+ 8H96f7foOxQZcQfga8eoQtckFPSv9WYsXn3L2Ye+u8uOXocr9mU6w2SWt7RLdD8bEZcG
+ UZQw==
+X-Gm-Message-State: AOJu0YwYl5N8SwF5L4zcpLESC/hgQt7EGE2/7Uf4D2O0m+LB1tMlQ3ox
+ NevSlUdGBjYMuG4GpRz9Y1aSAXlV+QyyShyKUalM1I5VG+SFN5KQdFaYy9nxkVEe7JjiaVqjHW2
+ P3EwC
+X-Gm-Gg: AZuq6aLQt7C4Ukn+qUfY2+iGseFMOmAhIAflTbXCgkd+U2PnqUenz6HstKKFExxcBMr
+ W0CWx57aGesb/2SsNWIKfpRV+L0UMioOD9YY58sv0DlEBdArlmanFT+XOwHBVkcaMtTYv2p5uU7
+ lkqqdytfXrEn4qM19ISdDC8r4Wiwghg38tzH2Oy8dIyVDWnCHvwJundjG8YshdAZ+C36aRf27t+
+ Ml97ZvuoSoqKJTcCx1Uw9SCgMWs6xQf/WPHb3g9YDm9zfp9Q+i8w2oJ8GLWwWgrP6S4y08VY04/
+ Uxo6ZyqohWoMzLQo4t7V9W3mR5+AFmaOyg7pjq/4F4+8ib7WUEIZRf0ekDFdc6ZTRC4QqgDuo/3
+ fS9F/3amK7b9tXoAxTMEAJYdFJUC4zFEby3eICfnjT35pFEZZEErk4u2Kr3m0WyjsjH/c2EyHLC
+ TPFMfcD+ZLURT0PWU6DQ0OOpAj1DWX3oaP0T6GAIhmvaYDnLFP3vO9RRwDBJW/oQt5
+X-Received: by 2002:a17:903:1b48:b0:297:df4e:fdd5 with SMTP id
+ d9443c01a7336-2a7188b8c56mr103280255ad.23.1768849914170; 
+ Mon, 19 Jan 2026 11:11:54 -0800 (PST)
 Received: from pc.taild8403c.ts.net (216-71-219-44.dyn.novuscom.net.
  [216.71.219.44]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a719415f0asm47011795ad.89.2026.01.19.11.11.52
+ d9443c01a7336-2a719415f0asm47011795ad.89.2026.01.19.11.11.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 19 Jan 2026 11:11:53 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
@@ -78,16 +77,16 @@ Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
  Gustavo Bueno Romero <gustavo.romero@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v3 09/11] qga/vss-win32: fix clang warning with C++20
-Date: Mon, 19 Jan 2026 11:11:35 -0800
-Message-ID: <20260119191138.811069-10-pierrick.bouvier@linaro.org>
+Subject: [PATCH v3 10/11] meson: update C++ standard to C++23
+Date: Mon, 19 Jan 2026 11:11:36 -0800
+Message-ID: <20260119191138.811069-11-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260119191138.811069-1-pierrick.bouvier@linaro.org>
 References: <20260119191138.811069-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,37 +109,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-C++20 deprecated such constructs.
-
-../qga/vss-win32/requester.cpp:380:32: error: bitwise operation between different enumeration types ('_VSS_SNAPSHOT_CONTEXT' and '_VSS_VOLUME_SNAPSHOT_ATTRIBUTES') is deprecated [-Werror,-Wdeprecated-enum-enum-conversion]
-  380 |     ctx = VSS_CTX_APP_ROLLBACK | VSS_VOLSNAP_ATTR_TRANSPORTABLE |
-
-This is a false positive, since VSS_CTX_APP_ROLLBACK is not a value
-defined in _VSS_VOLUME_SNAPSHOT_ATTRIBUTES enum.
+C++ is evolving faster than C, so it's useful to enable new standards,
+especially for standard library.
+Update to most recent standard available in our build environments.
 
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- qga/vss-win32/requester.cpp | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/qga/vss-win32/requester.cpp b/qga/vss-win32/requester.cpp
-index 5615955b6f3..74489fcd0ae 100644
---- a/qga/vss-win32/requester.cpp
-+++ b/qga/vss-win32/requester.cpp
-@@ -377,8 +377,10 @@ void requester_freeze(int *num_vols, void *mountpoints, ErrorSet *errset)
-      * To prevent the final commit (which requires to write to snapshots),
-      * ATTR_NO_AUTORECOVERY and ATTR_TRANSPORTABLE are specified here.
-      */
--    ctx = VSS_CTX_APP_ROLLBACK | VSS_VOLSNAP_ATTR_TRANSPORTABLE |
--        VSS_VOLSNAP_ATTR_NO_AUTORECOVERY | VSS_VOLSNAP_ATTR_TXF_RECOVERY;
-+    ctx = VSS_CTX_APP_ROLLBACK;
-+    ctx |= VSS_VOLSNAP_ATTR_TRANSPORTABLE |
-+           VSS_VOLSNAP_ATTR_NO_AUTORECOVERY |
-+           VSS_VOLSNAP_ATTR_TXF_RECOVERY;
-     hr = vss_ctx.pVssbc->SetContext(ctx);
-     if (hr == (HRESULT)VSS_E_UNSUPPORTED_CONTEXT) {
-         /* Non-server version of Windows doesn't support ATTR_TRANSPORTABLE */
+diff --git a/meson.build b/meson.build
+index a2671a325a6..d57623e4f79 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1,5 +1,5 @@
+ project('qemu', ['c'], meson_version: '>=1.5.0',
+-        default_options: ['warning_level=1', 'c_std=gnu11', 'cpp_std=gnu++11', 'b_colorout=auto',
++        default_options: ['warning_level=1', 'c_std=gnu11', 'cpp_std=gnu++23', 'b_colorout=auto',
+                           'b_staticpic=false', 'stdsplit=false', 'optimization=2', 'b_pie=true',
+                           'rust_std=2021', 'build.rust_std=2021'],
+         version: files('VERSION'))
 -- 
 2.47.3
 
