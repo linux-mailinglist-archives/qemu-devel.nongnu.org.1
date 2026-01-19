@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91530D39EBA
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 07:40:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D617BD39E19
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 06:57:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhivH-00082f-Cv; Mon, 19 Jan 2026 01:39:35 -0500
+	id 1vhiFK-00066i-HA; Mon, 19 Jan 2026 00:56:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vhivE-00080s-Ue
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 01:39:32 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1vhiFC-00066F-TL
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 00:56:06 -0500
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vhivC-0004F8-UL
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 01:39:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768804769;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- resent-to:resent-from:resent-message-id:in-reply-to:in-reply-to:
- references:references; bh=0kVb8YfrJWNArcdK5tvNG5PDCxF5rPAW/7RbW0BoDjU=;
- b=LOi1Xu3zsjmJyf1PdD2iDcTNUwW7q9H3zqwt1hIvpFEIccujFvnHBtqjiEYiY/30CVPlk2
- 700sFg2wppGgGummp6DJn1Yklat9Btg5CV8j6IhBbNhAzquZJxSjlwW4IoFhVrihjCZkTd
- yWlcn6IJ81w98NEGvoUKlpv0Clgl1U8=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-433-iKk-ZXWePDGtqYV_mOqP4w-1; Mon,
- 19 Jan 2026 01:39:25 -0500
-X-MC-Unique: iKk-ZXWePDGtqYV_mOqP4w-1
-X-Mimecast-MFC-AGG-ID: iKk-ZXWePDGtqYV_mOqP4w_1768804764
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7669C1956050; Mon, 19 Jan 2026 06:39:23 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.3])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 476351955F22; Mon, 19 Jan 2026 06:39:22 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id C584F21E692D; Mon, 19 Jan 2026 07:39:19 +0100 (CET)
-Resent-To: philmd@linaro.org, qemu-devel@nongnu.org,
- d-tatianin@yandex-team.ru, vsementsov@yandex-team.ru,
- yc-core@yandex-team.ru
-Resent-From: Markus Armbruster <armbru@redhat.com>
-Resent-Date: Mon, 19 Jan 2026 07:39:19 +0100
-Resent-Message-ID: <87zf6ap0mg.fsf@pond.sub.org>
-From: Markus Armbruster <armbru@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: marcandre.lureau@redhat.com,  pbonzini@redhat.com,  eblake@redhat.com,
- berrange@redhat.com,  yc-core@yandex-team.ru,  d-tatianin@yandex-team.ru,
- qemu-devel@nongnu.org,  philmd@linaro.org
-Subject: Re: [PATCH v2 2/3] error-report: make real_time_iso8601() public
-In-Reply-To: <20251204202653.597319-3-vsementsov@yandex-team.ru> (Vladimir
- Sementsov-Ogievskiy's message of "Thu, 4 Dec 2025 23:26:47 +0300")
-References: <20251204202653.597319-1-vsementsov@yandex-team.ru>
- <20251204202653.597319-3-vsementsov@yandex-team.ru>
-Date: Mon, 19 Jan 2026 06:52:29 +0100
-Message-ID: <875x8yqhcy.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1vhiF8-00076I-UR
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 00:56:06 -0500
+Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
+ (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 60J5sb6s055143
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Mon, 19 Jan 2026 14:55:34 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=/DmbTavcJqFtMIAiRuwzW1JrmkVZ/h9yd/JBR5NTfYs=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=Message-ID:Date:Subject:To:From;
+ s=rs20250326; t=1768802134; v=1;
+ b=sKjbnhiNg5PrdY5IUrkbVOgdRdiFRo/Z+Rl8KT7ccRPqgIe8NYS2g2+MtqzKlBoQ
+ Ci3AvYm8oAqYwZaxuR0zArgNXHRlI1+6sIn8Hl9q0HgpaLeLzUN3ilv4cUDinUOE
+ gPXq/diJyr1ybBwcuFwmM+LlvdU7Pm+6jhKMKJjYUB9bTaUNNKCIWyws2znMYv/K
+ ij92sREeeMkXLd6GkoX0tidxLfOuy0yQZ06jkNIcFU3aLlGbXrr4Zm0DtgnoGOS/
+ n7qpoU1jpbKh6725zYgti9i2BLbwwfdDPPJaSR9eaTcRCBY56rBtdXANsDq7ZMcH
+ Mb+MqgmlSHHGkqhjnSjMsw==
+Message-ID: <b7c6f158-f263-4e19-b30c-406312cbee93@rsg.ci.i.u-tokyo.ac.jp>
+Date: Mon, 19 Jan 2026 14:54:36 +0900
 MIME-Version: 1.0
-Content-Type: text/plain
-Lines: 45
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.077,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v9 3/5] virtio-gpu: Replace finish_unmapping with
+ mapping_state
+To: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Huang Rui <ray.huang@amd.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Yiwei Zhang <zzyiwei@gmail.com>,
+ Sergio Lopez Pascual <slp@redhat.com>
+Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
+ Gurchetan Singh <gurchetansingh@chromium.org>, Alyssa Ross <hi@alyssa.is>,
+ =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Stefano Stabellini <stefano.stabellini@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
+ Honglei Huang <honglei1.huang@amd.com>,
+ Julia Zhang <julia.zhang@amd.com>, Chen Jiqian <Jiqian.Chen@amd.com>,
+ Rob Clark <robdclark@gmail.com>, Robert Beckett <bob.beckett@collabora.com>
+References: <20260112225246.3526313-1-dmitry.osipenko@collabora.com>
+ <20260112225246.3526313-4-dmitry.osipenko@collabora.com>
+ <1011721c-cc29-4e85-a6fe-c26398685ba1@rsg.ci.i.u-tokyo.ac.jp>
+ <72a78f94-97cc-4523-bb05-514a3c5f45d7@collabora.com>
+Content-Language: en-US
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <72a78f94-97cc-4523-bb05-514a3c5f45d7@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,50 +93,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
+On 2026/01/19 1:28, Dmitry Osipenko wrote:
+> On 1/13/26 07:51, Akihiko Odaki wrote:
+>> On 2026/01/13 7:52, Dmitry Osipenko wrote:
+>>> Allow virtio_gpu_virgl_unmap_resource_blob() to be invoked while async
+>>> unmapping is in progress. Do it in preparation to improvement of
+>>> virtio-gpu
+>>> resetting that will require this change.
+>>>
+>>> Suggested-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+>>> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+>>> ---
+>>>    hw/display/trace-events       |  2 +-
+>>>    hw/display/virtio-gpu-virgl.c | 28 +++++++++++++++++++++++-----
+>>>    2 files changed, 24 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/hw/display/trace-events b/hw/display/trace-events
+>>> index e323a82cff24..4bfc457fbac1 100644
+>>> --- a/hw/display/trace-events
+>>> +++ b/hw/display/trace-events
+>>> @@ -39,7 +39,7 @@ virtio_gpu_cmd_res_create_2d(uint32_t res, uint32_t
+>>> fmt, uint32_t w, uint32_t h)
+>>>    virtio_gpu_cmd_res_create_3d(uint32_t res, uint32_t fmt, uint32_t w,
+>>> uint32_t h, uint32_t d) "res 0x%x, fmt 0x%x, w %d, h %d, d %d"
+>>>    virtio_gpu_cmd_res_create_blob(uint32_t res, uint64_t size) "res
+>>> 0x%x, size %" PRId64
+>>>    virtio_gpu_cmd_res_map_blob(uint32_t res, void *vmr, void *mr) "res
+>>> 0x%x, vmr %p, mr %p"
+>>> -virtio_gpu_cmd_res_unmap_blob(uint32_t res, void *mr, bool
+>>> finish_unmapping) "res 0x%x, mr %p, finish_unmapping %d"
+>>> +virtio_gpu_cmd_res_unmap_blob(uint32_t res, void *mr, int
+>>> mapping_state) "res 0x%x, mr %p, mapping_state %d"
+>>>    virtio_gpu_cmd_res_unref(uint32_t res) "res 0x%x"
+>>>    virtio_gpu_cmd_res_back_attach(uint32_t res) "res 0x%x"
+>>>    virtio_gpu_cmd_res_back_detach(uint32_t res) "res 0x%x"
+>>> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-
+>>> virgl.c
+>>> index 6a2aac0b6e5c..342e93728df0 100644
+>>> --- a/hw/display/virtio-gpu-virgl.c
+>>> +++ b/hw/display/virtio-gpu-virgl.c
+>>> @@ -68,10 +68,16 @@ virgl_get_egl_display(G_GNUC_UNUSED void *cookie)
+>>>    #endif
+>>>      #if VIRGL_VERSION_MAJOR >= 1
+>>> +enum virtio_gpu_virgl_hostmem_region_mapping_state {
+>>> +    VIRTIO_GPU_MR_MAPPED,
+>>> +    VIRTIO_GPU_MR_UNMAP_STARTED,
+>>> +    VIRTIO_GPU_MR_UNMAP_COMPLETED,
+>>> +};
+>>> +
+>>>    struct virtio_gpu_virgl_hostmem_region {
+>>>        MemoryRegion mr;
+>>>        struct VirtIOGPU *g;
+>>> -    bool finish_unmapping;
+>>> +    enum virtio_gpu_virgl_hostmem_region_mapping_state mapping_state;
+>>>    };
+>>>      static struct virtio_gpu_virgl_hostmem_region *
+>>> @@ -95,7 +101,7 @@ static void
+>>> virtio_gpu_virgl_hostmem_region_free(void *obj)
+>>>        VirtIOGPUGL *gl;
+>>>          vmr = to_hostmem_region(mr);
+>>> -    vmr->finish_unmapping = true;
+>>> +    vmr->mapping_state = VIRTIO_GPU_MR_UNMAP_COMPLETED;
+>>>          b = VIRTIO_GPU_BASE(vmr->g);
+>>>        b->renderer_blocked--;
+>>> @@ -135,6 +141,7 @@ virtio_gpu_virgl_map_resource_blob(VirtIOGPU *g,
+>>>          vmr = g_new0(struct virtio_gpu_virgl_hostmem_region, 1);
+>>>        vmr->g = g;
+>>> +    vmr->mapping_state = VIRTIO_GPU_MR_MAPPED;
+>>>          mr = &vmr->mr;
+>>>        memory_region_init_ram_ptr(mr, OBJECT(mr), "blob", size, data);
+>>> @@ -171,7 +178,8 @@ virtio_gpu_virgl_unmap_resource_blob(VirtIOGPU *g,
+>>>          vmr = to_hostmem_region(res->mr);
+>>>    -    trace_virtio_gpu_cmd_res_unmap_blob(res->base.resource_id, mr,
+>>> vmr->finish_unmapping);
+>>> +    trace_virtio_gpu_cmd_res_unmap_blob(res->base.resource_id, mr,
+>>> +                                        vmr->mapping_state);
+>>>          /*
+>>>         * Perform async unmapping in 3 steps:
+>>> @@ -182,7 +190,8 @@ virtio_gpu_virgl_unmap_resource_blob(VirtIOGPU *g,
+>>>         *    asynchronously by virtio_gpu_virgl_hostmem_region_free().
+>>>         * 3. Finish the unmapping with final
+>>> virgl_renderer_resource_unmap().
+>>>         */
+>>> -    if (vmr->finish_unmapping) {
+>>> +    switch (vmr->mapping_state) {
+>>> +    case VIRTIO_GPU_MR_UNMAP_COMPLETED:
+>>>            res->mr = NULL;
+>>>            g_free(vmr);
+>>>    @@ -193,15 +202,24 @@ virtio_gpu_virgl_unmap_resource_blob(VirtIOGPU
+>>> *g,
+>>>                              __func__, strerror(-ret));
+>>>                return ret;
+>>>            }
+>>> -    } else {
+>>> +        break;
+>>> +
+>>> +    case VIRTIO_GPU_MR_MAPPED:
+>>>            *cmd_suspended = true;
+>>>              /* render will be unblocked once MR is freed */
+>>>            b->renderer_blocked++;
+>>>    +        vmr->mapping_state = VIRTIO_GPU_MR_UNMAP_STARTED;
+>>> +
+>>>            /* memory region owns self res->mr object and frees it by
+>>> itself */
+>>>            memory_region_del_subregion(&b->hostmem, mr);
+>>>            object_unparent(OBJECT(mr));
+>>> +        break;
+>>
+>> I suggest:
+>>
+>> - Put vmr->mapping_state = VIRTIO_GPU_MR_UNMAP_STARTED; here
+>> - Remove *cmd_suspended = true for VIRTIO_GPU_MR_MAPPED.
+>> - Let it fall through.
+>>
+>> This way, it is clear that we need to execute *cmd_suspended = true
+>> because the state is now VIRTIO_GPU_MR_UNMAP_STARTED, and we can save on
+>> line by not having a duplicate *cmd_suspended = true.
+> 
+> The `mapping_state = VIRTIO_GPU_MR_UNMAP_STARTED` shall be set before
+> memory_region_del_subregion() is invoked because technically refcounting
+> logic may change in future and MR may become freed instantly. Will only
+> add the fall-through if no objections, otherwise please comment on v10.
 
-> To be reused in the following commit.
->
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> ---
->  include/qemu/error-report.h | 6 ++++++
->  util/error-report.c         | 3 +--
->  2 files changed, 7 insertions(+), 2 deletions(-)
->
-> diff --git a/include/qemu/error-report.h b/include/qemu/error-report.h
-> index 3ae2357fda..bcd542a118 100644
-> --- a/include/qemu/error-report.h
-> +++ b/include/qemu/error-report.h
-> @@ -74,4 +74,10 @@ extern bool message_with_timestamp;
->  extern bool error_with_guestname;
->  extern const char *error_guest_name;
->  
-> +/*
-> + * Returns current datetime in ISO 8601 format.
+That makes sense.
 
-Imperative mood, please: Return current ...
+Strictly speaking, even if the refcounting change happens, 
+qemu_bh_schedule(gl->cmdq_resume_bh) will delay the next invocation of 
+this function in virtio_gpu_virgl_hostmem_region_free(). But even 
+virtio_gpu_virgl_hostmem_region_free() can be changed in the future so I 
+no longer believe moving `mapping_state = VIRTIO_GPU_MR_UNMAP_STARTED` 
+is absolutely good. Please choose a design option you prefer.
 
-> + * Caller is responsible to g_free() the returned string.
-> + */
-> +char *real_time_iso8601(void);
-> +
->  #endif
-> diff --git a/util/error-report.c b/util/error-report.c
-> index 1b17c11de1..d6b7448183 100644
-> --- a/util/error-report.c
-> +++ b/util/error-report.c
-> @@ -169,8 +169,7 @@ static void print_loc(void)
->      }
->  }
->  
-> -static char *
-> -real_time_iso8601(void)
-> +char *real_time_iso8601(void)
->  {
->      g_autoptr(GDateTime) dt = g_date_time_new_now_utc();
->      return g_date_time_format_iso8601(dt);
-
-With the comment tweak:
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-
+Regards,
+Akihiko Odaki
 
