@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9535D3B9E9
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 22:28:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 766BBD3B9F1
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 22:29:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhwnZ-00020q-JV; Mon, 19 Jan 2026 16:28:34 -0500
+	id 1vhwo2-0002Wx-M3; Mon, 19 Jan 2026 16:29:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vhwnI-0001uw-Kc
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:28:18 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vhwnL-0001yi-QM
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:28:24 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vhwnG-0007rV-Qh
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:28:16 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vhwnJ-0007tp-Ur
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:28:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768858090;
+ s=mimecast20190719; t=1768858097;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8d2DW1Adux348p7ee8xuMAWfr5v32X6fOFoFcCm1tFo=;
- b=C2WzOvCLYI2IlV1JKEvPudUj1cRJipCPuAdNY6we4SfxnIUO7JrEpJ6v0R7bkjS/ISlPlI
- ESN2fYb4c07gjnHCHcSHH4aQS7/0e1uZ6TmcnobFdJmsFgm73gHQIEKAvca5VdKeBxt1HL
- CVcOUvNauMinYvowkTFV6X+O35TNQZ0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=Z6uxp9YjUAiQBFWXxqd0cFDjE8p7uRy9z/pYS8bCk3c=;
+ b=F4Lo8LwMwf1j1HvXlSd1n+pSKxe4Dfeow+ciOnXeVo1f0uDhxwsCyS4hMbrhf3vq455qaA
+ HoEZwRLz0VEcOv/kUxO78O3fvbCVJtzEZUJ4ptaft6pOn+IIUjHWQwERBw2vJehlXKwKtj
+ VIktI0+hQ2HDnMXxHbl/9Z+x0z5h5yE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-650-2SeSKpxxP9u1mpFY_f-kGA-1; Mon,
- 19 Jan 2026 16:28:06 -0500
-X-MC-Unique: 2SeSKpxxP9u1mpFY_f-kGA-1
-X-Mimecast-MFC-AGG-ID: 2SeSKpxxP9u1mpFY_f-kGA_1768858084
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-184-Osu0yFZ_NyqvZZU12O0u1Q-1; Mon,
+ 19 Jan 2026 16:28:14 -0500
+X-MC-Unique: Osu0yFZ_NyqvZZU12O0u1Q-1
+X-Mimecast-MFC-AGG-ID: Osu0yFZ_NyqvZZU12O0u1Q_1768858093
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C317A1800637; Mon, 19 Jan 2026 21:28:04 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DF84C19560A3; Mon, 19 Jan 2026 21:28:12 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.170])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BB11619560AB; Mon, 19 Jan 2026 21:27:58 +0000 (UTC)
+ id 04A9B1955F43; Mon, 19 Jan 2026 21:28:04 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -59,10 +59,10 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v4 01/17] python/mkvenv: create timestamp file for each group
- "ensured"
-Date: Mon, 19 Jan 2026 16:27:27 -0500
-Message-ID: <20260119212744.1275455-2-jsnow@redhat.com>
+Subject: [PATCH v4 02/17] python/mkvenv: bump 'qemu.qmp' dependency for
+ testdeps
+Date: Mon, 19 Jan 2026 16:27:28 -0500
+Message-ID: <20260119212744.1275455-3-jsnow@redhat.com>
 In-Reply-To: <20260119212744.1275455-1-jsnow@redhat.com>
 References: <20260119212744.1275455-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -93,33 +93,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Each group ensured by the mkvenv script will create an empty timestamp
-file named {groupname}.group which can be used to conditionally trigger
-dependency installation from various scripts and build machinery.
+First up, use the newest v0.0.5 instead of the older v0.0.3.
+
+Secondly, the use of a period in the key name does not behave as
+expected when installing and checking for dependencies, so quote this
+string instead.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- python/scripts/mkvenv.py | 6 ++++++
- 1 file changed, 6 insertions(+)
+ pythondeps.toml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
-index a064709e6ce..a22e3ee3394 100644
---- a/python/scripts/mkvenv.py
-+++ b/python/scripts/mkvenv.py
-@@ -838,6 +838,12 @@ def ensure_group(
-             raise Ouch(result[0])
-         raise SystemExit(f"\n{result[0]}\n\n")
+diff --git a/pythondeps.toml b/pythondeps.toml
+index 9a096160e62..85220a36426 100644
+--- a/pythondeps.toml
++++ b/pythondeps.toml
+@@ -32,5 +32,5 @@ sphinx = { accepted = ">=3.4.3", installed = "6.2.1", canary = "sphinx-build" }
+ sphinx_rtd_theme = { accepted = ">=0.5", installed = "1.2.2" }
  
-+    if inside_a_venv():
-+        for group in groups:
-+            path = Path(sys.prefix).joinpath(f"{group}.group")
-+            with open(path, "w", encoding="UTF8"):
-+                pass
-+
- 
- def post_venv_setup() -> None:
-     """
+ [testdeps]
+-qemu.qmp = { accepted = ">=0.0.3", installed = "0.0.3" }
++"qemu.qmp" = { accepted = ">=0.0.5", installed = "0.0.5" }
+ pygdbmi = { accepted = ">=0.11.0.0", installed = "0.11.0.0" }
 -- 
 2.52.0
 
