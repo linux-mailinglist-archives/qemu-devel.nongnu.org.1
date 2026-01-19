@@ -2,53 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93E4FD3B645
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 19:54:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B76ECD3B653
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 19:55:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhuN5-0006Hp-9H; Mon, 19 Jan 2026 13:53:03 -0500
+	id 1vhuN3-0006Et-Pi; Mon, 19 Jan 2026 13:53:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vhuMt-00067Z-6x
+ id 1vhuMt-00067V-5G
  for qemu-devel@nongnu.org; Mon, 19 Jan 2026 13:52:51 -0500
 Received: from forwardcorp1d.mail.yandex.net
  ([2a02:6b8:c41:1300:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vhuMo-0005qF-Kt
+ id 1vhuMo-0005qH-Jc
  for qemu-devel@nongnu.org; Mon, 19 Jan 2026 13:52:49 -0500
 Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
  [IPv6:2a02:6b8:c0c:5c05:0:640:ff67:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 61F1D804AA;
- Mon, 19 Jan 2026 21:52:41 +0300 (MSK)
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id D37AB8072F;
+ Mon, 19 Jan 2026 21:52:42 +0300 (MSK)
 Received: from vsementsov-lin (unknown [2a02:6bf:8080:934::1:38])
  by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id dqetGa1BQGk0-KQ6HFLGV; Mon, 19 Jan 2026 21:52:40 +0300
+ ESMTPSA id dqetGa1BQGk0-PF0hALdb; Mon, 19 Jan 2026 21:52:42 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1768848760;
- bh=8sBVX4BbnuTheNjAsAvdtk4my30psEqfh9wtRMqbnuQ=;
- h=Message-ID:Date:Cc:Subject:To:From;
- b=1Mv8+PzLf2HgK00cMFisRLGU+1zAvIchZniKNdBGro9UG0+9sPgi00yuXA8qL0XFk
- mRmB5INbrgp3yEzU2X73NSyLEdEeU559/vjayi7o+RLS2lxVJw8t+OzUVomxDsMCCp
- 0L4LOsuAp9smJNVDV9azdYKuVF9IqzD4GU3OLs8Y=
+ s=default; t=1768848762;
+ bh=2QJAlf70N0EQAeu+sY5mYIW7U8Kb/aPsvIxdva1LARw=;
+ h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
+ b=O7sf8SOvWtvkp8oUrvV1XXuSRzYbfBvsPtOI8m2nvZMvvAyRdZG6kipipKnRa9gg1
+ FiPeV+/v68lP9YyVe7Cc77NuXjzwPukBhLdmnaSVEmKBh8t00AE8T6l5S57Gf5dJJA
+ pNJETiaY7aFS30QeKvU1CkJnwrRmOXIsK9snoypc=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: mst@redhat.com
 Cc: sgarzare@redhat.com, raphael@enfabrica.net, qemu-devel@nongnu.org,
  vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
- d-tatianin@yandex-team.ru
-Subject: [PATCH v4 00/23] vhost refactoring and fixes
-Date: Mon, 19 Jan 2026 21:52:04 +0300
-Message-ID: <20260119185228.203296-1-vsementsov@yandex-team.ru>
+ d-tatianin@yandex-team.ru, Raphael Norwitz <raphael.s.norwitz@gmail.com>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ zhenwei pi <zhenwei.pi@linux.dev>, Jason Wang <jasowang@redhat.com>
+Subject: [PATCH v4 01/23] vhost-user: rework enabling vrings
+Date: Mon, 19 Jan 2026 21:52:05 +0300
+Message-ID: <20260119185228.203296-2-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260119185228.203296-1-vsementsov@yandex-team.ru>
+References: <20260119185228.203296-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a02:6b8:c41:1300:1:45:d181:df01;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
@@ -72,80 +75,157 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all. That's a preparation for vhost-user-blk backend-transfer
-feature.
+We call the handler almost the same way in three places:
 
-v4: rebase on master, and follow Michael's comments:
-04: cover one more (new) dev->protocol-features access, keep r-bs
-06: add r-b by Daniil
-07: new
-08: support virtio-ccw, drop r-b
-11: rebase on changed code in master, drop r-bs
-15: rebase on changed code in master, drop r-bs
-16: rebase on changed code in master, drop r-bs
-21: add macro VHOST_USER_CASE, drop r-bs
-23: s/virtque/virtqueue/, keep r-bs
+ - cryptodev-vhost.c
+ - vhost_net.c
+ - vhost.c
 
-I also have dropped
- [PATCH v3 18/23] vhost: introduce check_memslots() helper
-as it was doubtful, and I'm not sure now, do I really need
-it, and should it be done this way. Will look, when reworking
-actual vhost-user-blk backend-transfer series on top of this.
+The only difference, is that in vhost.c we don't try to call the handler
+for old vhost-user (when VHOST_USER_F_PROTOCOL_FEATURES is not supported).
 
-And can't keep t-b of v3, I think.
+cryptodev-vhost and vhost_net code will just fail in this case. Probably
+they were developed only for newer vhost-user. Anyway, it doesn't seem
+correct to rely on this error path, if these devices want to check,
+that they don't communicate to old vhost-user protocol, they should
+do that earlier.
 
-Vladimir Sementsov-Ogievskiy (23):
-  vhost-user: rework enabling vrings
-  vhost: drop backend_features field
-  vhost-user: introduce vhost_user_has_protocol_feature() helper
-  vhost: move protocol_features to vhost_user
-  vhost-user-gpu: drop code duplication
-  vhost: make vhost_dev.features private
-  virtio-ccw: virtio_ccw_set_guest_notifier(): fix failure path
-  virtio: move common part of _set_guest_notifier to generic code
-  virtio: drop *_set_guest_notifier_fd_handler() helpers
-  vhost-user: keep QIOChannelSocket for backend channel
-  vhost: vhost_virtqueue_start(): fix failure path
-  vhost: make vhost_memory_unmap() null-safe
-  vhost: simplify calls to vhost_memory_unmap()
-  vhost: move vrings mapping to the top of vhost_virtqueue_start()
-  vhost: vhost_virtqueue_start(): drop extra local variables
-  vhost: final refactoring of vhost vrings map/unmap
-  vhost: simplify vhost_dev_init() error-path
-  vhost: move busyloop timeout initialization to vhost_virtqueue_init()
-  vhost: vhost_dev_init(): simplify features initialization
-  hw/virtio/virtio-bus: refactor virtio_bus_set_host_notifier()
-  vhost-user: make trace events more readable
-  vhost-user-blk: add some useful trace-points
-  vhost: add some useful trace-points
+Let's create the common helper, to call .vhost_set_vring_enable and
+use in all three places. For vhost-user let's just always skip
+enable/disable if it's unsupported.
 
- backends/cryptodev-vhost.c     |   9 +-
- hw/block/trace-events          |  10 ++
- hw/block/vhost-user-blk.c      |  20 ++-
- hw/display/vhost-user-gpu.c    |  11 +-
- hw/net/vhost_net.c             |  35 ++---
- hw/s390x/virtio-ccw.c          |  34 ++---
- hw/scsi/vhost-scsi.c           |   1 -
- hw/scsi/vhost-user-scsi.c      |   1 -
- hw/virtio/trace-events         |  16 +-
- hw/virtio/vdpa-dev.c           |   3 +-
- hw/virtio/vhost-user-base.c    |   8 +-
- hw/virtio/vhost-user.c         | 258 ++++++++++++++++++++++-----------
- hw/virtio/vhost.c              | 238 +++++++++++++++---------------
- hw/virtio/virtio-bus.c         |  18 +--
- hw/virtio/virtio-hmp-cmds.c    |   2 -
- hw/virtio/virtio-mmio.c        |  41 +-----
- hw/virtio/virtio-pci.c         |  34 +----
- hw/virtio/virtio-qmp.c         |  12 +-
- hw/virtio/virtio.c             |  48 +++---
- include/hw/virtio/vhost-user.h |   3 +
- include/hw/virtio/vhost.h      |  63 +++++---
- include/hw/virtio/virtio-pci.h |   3 -
- include/hw/virtio/virtio.h     |  16 +-
- net/vhost-vdpa.c               |   7 +-
- qapi/virtio.json               |   3 -
- 25 files changed, 487 insertions(+), 407 deletions(-)
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Reviewed-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
+Reviewed-by: Raphael Norwitz <raphael.s.norwitz@gmail.com>
+---
+ backends/cryptodev-vhost.c |  8 +-------
+ hw/net/vhost_net.c         |  7 +------
+ hw/virtio/vhost-user.c     |  7 ++++++-
+ hw/virtio/vhost.c          | 21 ---------------------
+ include/hw/virtio/vhost.h  |  9 +++++++++
+ 5 files changed, 17 insertions(+), 35 deletions(-)
 
+diff --git a/backends/cryptodev-vhost.c b/backends/cryptodev-vhost.c
+index 943680a23a..abdfce33af 100644
+--- a/backends/cryptodev-vhost.c
++++ b/backends/cryptodev-vhost.c
+@@ -152,7 +152,6 @@ vhost_set_vring_enable(CryptoDevBackendClient *cc,
+ {
+     CryptoDevBackendVhost *crypto =
+                        cryptodev_get_vhost(cc, b, queue);
+-    const VhostOps *vhost_ops;
+ 
+     cc->vring_enable = enable;
+ 
+@@ -160,12 +159,7 @@ vhost_set_vring_enable(CryptoDevBackendClient *cc,
+         return 0;
+     }
+ 
+-    vhost_ops = crypto->dev.vhost_ops;
+-    if (vhost_ops->vhost_set_vring_enable) {
+-        return vhost_ops->vhost_set_vring_enable(&crypto->dev, enable);
+-    }
+-
+-    return 0;
++    return vhost_dev_set_vring_enable(&crypto->dev, enable);
+ }
+ 
+ int cryptodev_vhost_start(VirtIODevice *dev, int total_queues)
+diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
+index a8ee18a912..25e9f1fd24 100644
+--- a/hw/net/vhost_net.c
++++ b/hw/net/vhost_net.c
+@@ -587,7 +587,6 @@ VHostNetState *get_vhost_net(NetClientState *nc)
+ int vhost_net_set_vring_enable(NetClientState *nc, int enable)
+ {
+     VHostNetState *net = get_vhost_net(nc);
+-    const VhostOps *vhost_ops = net->dev.vhost_ops;
+ 
+     /*
+      * vhost-vdpa network devices need to enable dataplane virtqueues after
+@@ -601,11 +600,7 @@ int vhost_net_set_vring_enable(NetClientState *nc, int enable)
+ 
+     nc->vring_enable = enable;
+ 
+-    if (vhost_ops && vhost_ops->vhost_set_vring_enable) {
+-        return vhost_ops->vhost_set_vring_enable(&net->dev, enable);
+-    }
+-
+-    return 0;
++    return vhost_dev_set_vring_enable(&net->dev, enable);
+ }
+ 
+ int vhost_net_set_mtu(struct vhost_net *net, uint16_t mtu)
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+index 63fa9a1b4b..7615ae2a9b 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -1235,7 +1235,12 @@ static int vhost_user_set_vring_enable(struct vhost_dev *dev, int enable)
+     int i;
+ 
+     if (!virtio_has_feature(dev->features, VHOST_USER_F_PROTOCOL_FEATURES)) {
+-        return -EINVAL;
++        /*
++         * For vhost-user devices, if VHOST_USER_F_PROTOCOL_FEATURES has not
++         * been negotiated, the rings start directly in the enabled state,
++         * and can't be disabled.
++         */
++        return 0;
+     }
+ 
+     for (i = 0; i < dev->nvqs; ++i) {
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 31e9704cdc..29f2c75f1e 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -2022,27 +2022,6 @@ int vhost_dev_get_inflight(struct vhost_dev *dev, uint16_t queue_size,
+     return 0;
+ }
+ 
+-static int vhost_dev_set_vring_enable(struct vhost_dev *hdev, int enable)
+-{
+-    if (!hdev->vhost_ops->vhost_set_vring_enable) {
+-        return 0;
+-    }
+-
+-    /*
+-     * For vhost-user devices, if VHOST_USER_F_PROTOCOL_FEATURES has not
+-     * been negotiated, the rings start directly in the enabled state, and
+-     * .vhost_set_vring_enable callback will fail since
+-     * VHOST_USER_SET_VRING_ENABLE is not supported.
+-     */
+-    if (hdev->vhost_ops->backend_type == VHOST_BACKEND_TYPE_USER &&
+-        !virtio_has_feature(hdev->backend_features,
+-                            VHOST_USER_F_PROTOCOL_FEATURES)) {
+-        return 0;
+-    }
+-
+-    return hdev->vhost_ops->vhost_set_vring_enable(hdev, enable);
+-}
+-
+ /*
+  * Host notifiers must be enabled at this point.
+  *
+diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+index 08bbb4dfe9..1ee639dd7e 100644
+--- a/include/hw/virtio/vhost.h
++++ b/include/hw/virtio/vhost.h
+@@ -215,6 +215,15 @@ static inline bool vhost_dev_is_started(struct vhost_dev *hdev)
+     return hdev->started;
+ }
+ 
++static inline int vhost_dev_set_vring_enable(struct vhost_dev *hdev, int enable)
++{
++    if (!hdev->vhost_ops->vhost_set_vring_enable) {
++        return 0;
++    }
++
++    return hdev->vhost_ops->vhost_set_vring_enable(hdev, enable);
++}
++
+ /**
+  * vhost_dev_start() - start the vhost device
+  * @hdev: common vhost_dev structure
 -- 
 2.52.0
 
