@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ADD0D39D17
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 04:36:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 552BED39D23
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 04:38:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhfwz-00074m-9j; Sun, 18 Jan 2026 22:29:11 -0500
+	id 1vhfx9-00076G-H6; Sun, 18 Jan 2026 22:29:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <filip.hejsek@gmail.com>)
- id 1vhfwi-00073p-61
- for qemu-devel@nongnu.org; Sun, 18 Jan 2026 22:28:53 -0500
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ id 1vhfwm-000746-0q
+ for qemu-devel@nongnu.org; Sun, 18 Jan 2026 22:28:59 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <filip.hejsek@gmail.com>)
- id 1vhfwd-0004Bd-WB
- for qemu-devel@nongnu.org; Sun, 18 Jan 2026 22:28:51 -0500
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-6505cac9879so6334046a12.1
- for <qemu-devel@nongnu.org>; Sun, 18 Jan 2026 19:28:47 -0800 (PST)
+ id 1vhfwf-0004Bt-VS
+ for qemu-devel@nongnu.org; Sun, 18 Jan 2026 22:28:53 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-64b9dfc146fso6702586a12.0
+ for <qemu-devel@nongnu.org>; Sun, 18 Jan 2026 19:28:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1768793326; x=1769398126; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1768793327; x=1769398127; darn=nongnu.org;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=tn+OZOSXDbknR2OaFoKADd3P/YORnV8fEUKXR99UvC0=;
- b=PTmxipqdimREFbsNVzpAus7UxpaBrdS63t4mkOFQOomOxh6F2F+dJFZf7uxByfZu0s
- 7l/t2CXnX4K0N9wuBtFqovMPw/FakuUwcVnc0XnYFyhZCiqKGAb/CtTL9SdKpkg7QRY7
- C9ajMUulon6/eamRXS5nTJLumldm7xOnjTYhF94pBVjSBA87VSf9Qtfosndw1RKtxB72
- NWTmd1YTzNemNOKTCaEh3urRxp+5E5brpWLMTiiegXvJ9zYEOK6CRaIFMV1/7gC0f5cF
- +KSmBE5hJpnnUg2ysMiqTiR2+F7G8ZOaj3gAd8KHeb6Yd1SI0oTswWGi3ALSU1aA7wAM
- QclA==
+ :reply-to; bh=+hcIvsm19O7NRhgdd4H1QI2pcN+x2HRYIcp2/OHgPhA=;
+ b=YalZzgSVtR6eMEglLrZP/RAWtXjkqj3u87EajPn93A6ylO/KCvgjinHK6W0b1nhTt3
+ pj2QgCggSToBHNKaBwUBjERJ/IzPAUZGWwnfoy1Lwdmw+rscDKT+cimoAgSvKGsy2gLw
+ L+WfetKvbAupwEaiec6MeyqOY0GpZ6qEol7iufS4yXacUIY58FHrTlFglRWwWMI9tGCz
+ vEqm2p8yMfKjDEwTjU+cKFgyAMdaPKXX9X22IxFZOnEN3Hgf0K3KDmG78Qn5yq2fL9az
+ KEmzaw3o88+h1HwZtKLhogQTsFmwqxrwifOTWV6BMnyugdqV54J2eJBLpJ8EK2nP6Gwg
+ p/Lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768793326; x=1769398126;
+ d=1e100.net; s=20230601; t=1768793327; x=1769398127;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=tn+OZOSXDbknR2OaFoKADd3P/YORnV8fEUKXR99UvC0=;
- b=Hfupgkxl4pzmX4JxgjhRVuumTmlfW32Vr5FkRs1SJWYV+UfEmJYq5jmNa1UoGgpwMy
- 7DpjdAnNRT5xwd4YPRIiVGHasGMjfHLiesPgLR50PVFY6ZjZF8xEw6bYaXUqjwRhekxi
- 1f0oXShXNo4c8kJxVp/pG1CzTuxvJ9xwsevCw7rRGPnuWd/ykjUVV+2EAdZdfXxs6mny
- jB/Ht7Vv6dsxjFTZDnAyYsB12s1hzaywcHT0QRnVPBwonWK37Os2Zi6RiTbQr4lLcsGP
- CjNwJ1qU+vKgNotVT2uNravl59KCriQujbjDbXEmK3liarsZ6Ghi/Ly8kkb0NUsiDfcH
- NIJA==
-X-Gm-Message-State: AOJu0YzADDlptx/E6JhobZpbdBFqxM1jTKnXV04CDPCr5wpWg7+TWnwB
- rQfesAIhFHpSgTkYfXm+fJSlaZAovZOhg2ga4Xv5CQQyRl/lVvkxWyBK
-X-Gm-Gg: AY/fxX5F12YE3HC89UQj26zoRtiMWkfNySATX/+Y+8a0zfKJcqkE6Fe2sjBjNZ/nc+B
- gZmlyIXfrAqvlp2dt+qEDweAvOnyn0OLtid84ppYDQW6mCjnquLcKMPstt5aZ7K22rnbOl6ZrFq
- +OtSsMvYczOQnvK4jS68vQBmCKsgc/U5G7C8TbBH5m+9A1UBDavCShZ4aP6PPVBeAFKeeyMei4m
- 0Vb6DAsWepPL2P0DjIYG8FSyfJgYpmhLa3GWmYx08Mzh7/LuzOrBhsjIFc8zS7YH2pOzoUpz5Uf
- sMXjSKsLODsp3iEPd7ojcSe0RAV9w1gQsp6pa5Sy2oJe2cT6x9qj+Ds13Q6McUgnHi8tPIwFirM
- VYYPiQzzGOOTAA44YRq1RVJ/aMfRC77Drtz//82nFFeWpgJ68rxCOwrUJyAYN8aGHZql5GrNogy
- Ybybg6kTdh4i5v/VCXxjJhl2/qvAfUqZ57oJZiGeiB
-X-Received: by 2002:a17:907:1ca5:b0:b80:3fff:32ea with SMTP id
- a640c23a62f3a-b8792fede57mr931808966b.57.1768793325817; 
- Sun, 18 Jan 2026 19:28:45 -0800 (PST)
+ bh=+hcIvsm19O7NRhgdd4H1QI2pcN+x2HRYIcp2/OHgPhA=;
+ b=twWfG7eNktJrSd2JEv0PuLDhuVIEyMmqWOADh4lMg8aVQIJbMtBbxM5wpJTnv7OUAg
+ 9/jRC5EXTj3aiufsR4CvwgG9JCP25N/w6KU6nao21/HOunR7wDu+xZyeFmftOc7z3Eaq
+ b4Vz4D83KaZOUcT0TSVaEJOfrbMOkVOvSrHraIX7+bl7xPJmxUoEd7jOUCCGoTJfRISg
+ C/fx6RAeuRsyVXUo67g+EXlDXGYg4S5DYuw+w3Q3j7mdSvvcWu+nrhNFO7ZO+oBIS0Or
+ f2Fp+VibZ/cIMmzkAQBsyUW5OTBGc9lKrltnZz9xjePXSwUcV15/ZdpoUEaVA6PHPf2E
+ 2oSg==
+X-Gm-Message-State: AOJu0Yy0RgrUGeWuHNtKCEkDpoCYmixbHJGVpPrPsZgZIvjd0OI7XOQh
+ AW8ts7FPcSopYDt3ojc8NSwlo6LaolBvbiz7r0x32pMHhDKOQwIUlGaB
+X-Gm-Gg: AY/fxX5JMI1R8trzl1gtsSlJ20ThqF7jxhuyXqnjjMnXrtTvutUdh/Dh3KvHpUe/znU
+ ZBbTIEMWEHB4pkJsqqlFXC34BsDmcdgZnNCwcON9Pw0N3YSKBO5LoKi/31z8l+IrdDDAgP19CjD
+ ACjMNHOX7d5dKvNW3THoYMmbv4YM+Xqw4bTbVYPAEVtdv7l4jMakgcIXm8jsWxHts6WVk1WHQQB
+ Jq8d+zMEz6DJWfMfK8oCK3koBiwVL3Bhq8vbMcAqCelv/Itp+syfbrOBsv5T9aShkiHwQ0Cc5QN
+ YrHinSAjSiRPAzb9/UsktMkRLGcLHCdFrqQeG8w1mmvunJvSh0K3Vk+D23JuBPglz4l7BMpouFI
+ UNLsoCHjL9b9wQ0R6TocCeg3q++Kn4Ca/E5z1qZi9dtnswhNPAuHmGPwme6XLKs8w2OBE0BbS84
+ NgusNSG4d3USLlResCQJF51TglLqCWPH8JE00sq1Cw
+X-Received: by 2002:a05:6402:95a:b0:640:abb1:5eff with SMTP id
+ 4fb4d7f45d1cf-65412f26c76mr8453512a12.8.1768793326860; 
+ Sun, 18 Jan 2026 19:28:46 -0800 (PST)
 Received: from localhost (mem-185.47.220.165.jmnet.cz. [185.47.220.165])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b87d1e6dd64sm236516866b.32.2026.01.18.19.28.45
+ 4fb4d7f45d1cf-654535c52afsm9076235a12.33.2026.01.18.19.28.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 Jan 2026 19:28:45 -0800 (PST)
+ Sun, 18 Jan 2026 19:28:46 -0800 (PST)
 From: Filip Hejsek <filip.hejsek@gmail.com>
-Date: Mon, 19 Jan 2026 04:27:51 +0100
-Subject: [PATCH v6 08/12] virtio-serial-bus: add terminal resize messages
+Date: Mon, 19 Jan 2026 04:27:52 +0100
+Subject: [PATCH v6 09/12] virtio-console: notify the guest about terminal
+ resizes
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260119-console-resize-v6-8-33a7b0330a7a@gmail.com>
+Message-Id: <20260119-console-resize-v6-9-33a7b0330a7a@gmail.com>
 References: <20260119-console-resize-v6-0-33a7b0330a7a@gmail.com>
 In-Reply-To: <20260119-console-resize-v6-0-33a7b0330a7a@gmail.com>
 To: qemu-devel@nongnu.org
@@ -83,15 +84,15 @@ Cc: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
  Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>, 
  Szymon Lukasz <noh4hss@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768793314; l=7237;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768793314; l=3302;
  i=filip.hejsek@gmail.com; s=20250912; h=from:subject:message-id;
- bh=iA4bzXkkPsS0eGd8S0fKQQSaARDJLTGpF3c43PCxCTg=;
- b=wsO/GtjNynmS9ZF6de16+ezf6aZHn7ouWvpYw6UmCffe7e3rCaVYCBjFKnWXavrdm02s7/jQk
- N390GJZZuiFDaVMtCg0zMGiTQ4WjpSDmN2oTnXWKbIbzhLYhF83MoKR
+ bh=ZzKneST3CEGU8zC4XP2YPWswsNvk2tWadVWgPvDK+sY=;
+ b=36RE9gnmbO/S8PNNGtEK8UNYWq4fTaJC5IDAS1yrJ7bt1wAtbEQUVwzEnOp2RwVIGh8QLEIWi
+ e6mmdu6MUZ3BqWGZgsYNIsX0I0KRgBtsmVNseHNtMbWuCrxKprymm/F
 X-Developer-Key: i=filip.hejsek@gmail.com; a=ed25519;
  pk=nakB8gEK3oi+Q/5dBTMCy/LgZL47NP60z1jeDR6O/WU=
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=filip.hejsek@gmail.com; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=filip.hejsek@gmail.com; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -114,193 +115,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement the part of the virtio spec that allows to notify the virtio
-driver about terminal resizes. The virtio spec contains two methods to
-achieve that:
+From: Szymon Lukasz <noh4hss@gmail.com>
 
-For legacy drivers, we have only one port and we put the terminal size
-in the config space and inject the config changed interrupt.
-
-For multiport devices, we use the control virtqueue to send a packet
-containing the terminal size. Note that old versions of the Linux kernel
-used an incorrect order for the fields (rows then cols instead of cols
-then rows), until it was fixed by commit 5326ab737a47278dbd16ed3ee7380b26c7056ddd.
-
-As a result, when using a Linux kernel older than 6.15, the number of rows
-and columns will be swapped.
-
-Based on a patch originally written by Szymon Lukasz <noh4hss@gmail.com>,
-but partially rewritten to fix various corner cases.
+If a virtio serial port is a console port, forward terminal resize
+messages from the chardev backend to the guest.
 
 Signed-off-by: Szymon Lukasz <noh4hss@gmail.com>
+[Filip: rename things, remove logic that is now handled in virtio-serial-bus.c]
 Signed-off-by: Filip Hejsek <filip.hejsek@gmail.com>
 ---
- hw/char/trace-events              |  1 +
- hw/char/virtio-serial-bus.c       | 76 +++++++++++++++++++++++++++++++++++++--
- hw/core/machine.c                 |  4 ++-
- include/hw/virtio/virtio-serial.h |  5 +++
- 4 files changed, 83 insertions(+), 3 deletions(-)
+ hw/char/virtio-console.c | 34 +++++++++++++++++++++++++++++++---
+ 1 file changed, 31 insertions(+), 3 deletions(-)
 
-diff --git a/hw/char/trace-events b/hw/char/trace-events
-index 9e74be2c14..2416d4d04e 100644
---- a/hw/char/trace-events
-+++ b/hw/char/trace-events
-@@ -11,6 +11,7 @@ serial_update_parameters(uint64_t baudrate, char parity, int data_bits, int stop
- 
- # virtio-serial-bus.c
- virtio_serial_send_control_event(unsigned int port, uint16_t event, uint16_t value) "port %u, event %u, value %u"
-+virtio_serial_send_console_resize(unsigned int port, uint16_t cols, uint16_t rows) "port %u, cols %u, rows %u"
- virtio_serial_throttle_port(unsigned int port, bool throttle) "port %u, throttle %d"
- virtio_serial_handle_control_message(uint16_t event, uint16_t value) "event %u, value %u"
- virtio_serial_handle_control_message_port(unsigned int port) "port %u"
-diff --git a/hw/char/virtio-serial-bus.c b/hw/char/virtio-serial-bus.c
-index 5ec5f5313b..6348eef3a2 100644
---- a/hw/char/virtio-serial-bus.c
-+++ b/hw/char/virtio-serial-bus.c
-@@ -260,6 +260,68 @@ static size_t send_control_event(VirtIOSerial *vser, uint32_t port_id,
-     return send_control_msg(vser, &cpkt, sizeof(cpkt));
+diff --git a/hw/char/virtio-console.c b/hw/char/virtio-console.c
+index dcfe5830f9..de7979c2d3 100644
+--- a/hw/char/virtio-console.c
++++ b/hw/char/virtio-console.c
+@@ -107,6 +107,15 @@ static ssize_t flush_buf(VirtIOSerialPort *port,
+     return ret;
  }
  
-+/*
-+ * This struct should be added to the Linux kernel uapi headers
-+ * and later imported to standard-headers/linux/virtio_console.h
-+ */
-+struct virtio_console_resize {
-+    __virtio16 cols;
-+    __virtio16 rows;
-+};
-+
-+static void send_console_resize(VirtIOSerialPort *port)
++static void virtconsole_update_size(VirtIOSerialPort *port)
 +{
-+    VirtIOSerial *vser = port->vser;
-+    VirtIODevice *vdev = VIRTIO_DEVICE(vser);
-+
-+    if (!virtio_has_feature(vser->host_features, VIRTIO_CONSOLE_F_SIZE)) {
-+        return;
-+    }
-+
-+    trace_virtio_serial_send_console_resize(port->id, port->cols, port->rows);
-+
-+    if (use_multiport(vser)) {
-+        struct {
-+            struct virtio_console_control control;
-+            struct virtio_console_resize resize;
-+        } buffer;
-+
-+        virtio_stl_p(vdev, &buffer.control.id, port->id);
-+        virtio_stw_p(vdev, &buffer.control.event, VIRTIO_CONSOLE_RESIZE);
-+        virtio_stw_p(vdev, &buffer.resize.cols, port->cols);
-+        virtio_stw_p(vdev, &buffer.resize.rows, port->rows);
-+
-+        send_control_msg(vser, &buffer, sizeof(buffer));
-+    }
-+}
-+
-+void virtio_serial_resize_console(VirtIOSerialPort *port,
-+                                  uint16_t cols, uint16_t rows)
-+{
-+    VirtIOSerial *vser = port->vser;
-+    VirtIODevice *vdev = VIRTIO_DEVICE(vser);
-+
-+    if (port->cols == cols && port->rows == rows) {
-+        return;
-+    }
-+
-+    port->cols = cols;
-+    port->rows = rows;
-+
-+    if (port->id == 0 && !use_multiport(vser) &&
-+        virtio_vdev_has_feature(vdev, VIRTIO_CONSOLE_F_SIZE)) {
-+        virtio_notify_config(vdev);
-+    }
-+
-+    /*
-+     * We will send these messages even before we told the guest that
-+     * it is a console port (by sending VIRTIO_CONSOLE_CONSOLE_PORT
-+     * message), but that should be fine as the guest will likely
-+     * ignore them.
-+     */
-+    send_console_resize(port);
-+}
-+
- /* Functions for use inside qemu to open and read from/write to ports */
- int virtio_serial_open(VirtIOSerialPort *port)
- {
-@@ -408,6 +470,7 @@ static void handle_control_message(VirtIOSerial *vser, void *buf, size_t len)
-          */
-         if (vsc->is_console) {
-             send_control_event(vser, port->id, VIRTIO_CONSOLE_CONSOLE_PORT, 1);
-+            send_console_resize(port);
-         }
- 
-         if (port->name) {
-@@ -568,11 +631,18 @@ static uint64_t get_features(VirtIODevice *vdev, uint64_t features,
- static void get_config(VirtIODevice *vdev, uint8_t *config_data)
- {
-     VirtIOSerial *vser = VIRTIO_SERIAL(vdev);
-+    VirtIOSerialPort *port;
-     struct virtio_console_config *config =
-         (struct virtio_console_config *)config_data;
- 
--    config->cols = 0;
--    config->rows = 0;
-+    port = find_port_by_id(vser, 0);
-+    if (port) {
-+        config->cols = virtio_tswap16(vdev, port->cols);
-+        config->rows = virtio_tswap16(vdev, port->rows);
-+    } else {
-+        config->cols = 0;
-+        config->rows = 0;
-+    }
-     config->max_nr_ports = virtio_tswap32(vdev,
-                                           vser->serial.max_virtserial_ports);
- }
-@@ -1158,6 +1228,8 @@ static const Property virtio_serial_properties[] = {
-                                                   31),
-     DEFINE_PROP_BIT64("emergency-write", VirtIOSerial, host_features,
-                       VIRTIO_CONSOLE_F_EMERG_WRITE, true),
-+    DEFINE_PROP_BIT64("console-size", VirtIOSerial, host_features,
-+                      VIRTIO_CONSOLE_F_SIZE, true),
- };
- 
- static void virtio_serial_class_init(ObjectClass *klass, const void *data)
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 6411e68856..50554b8900 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -38,7 +38,9 @@
- #include "hw/acpi/generic_event_device.h"
- #include "qemu/audio.h"
- 
--GlobalProperty hw_compat_10_2[] = {};
-+GlobalProperty hw_compat_10_2[] = {
-+    { "virtio-serial-device", "console-size", "off" },
-+};
- const size_t hw_compat_10_2_len = G_N_ELEMENTS(hw_compat_10_2);
- 
- GlobalProperty hw_compat_10_1[] = {
-diff --git a/include/hw/virtio/virtio-serial.h b/include/hw/virtio/virtio-serial.h
-index 60641860bf..bda6d5312a 100644
---- a/include/hw/virtio/virtio-serial.h
-+++ b/include/hw/virtio/virtio-serial.h
-@@ -145,6 +145,9 @@ struct VirtIOSerialPort {
-     bool host_connected;
-     /* Do apps not want to receive data? */
-     bool throttled;
-+
-+    /* Terminal size reported to the guest.  Only used for consoles. */
 +    uint16_t cols, rows;
- };
++    VirtConsole *vcon = VIRTIO_CONSOLE(port);
++
++    qemu_chr_fe_get_winsize(&vcon->chr, &cols, &rows);
++    virtio_serial_resize_console(port, cols, rows);
++}
++
+ /* Callback function that's called when the guest opens/closes the port */
+ static void set_guest_connected(VirtIOSerialPort *port, int guest_connected)
+ {
+@@ -174,6 +183,23 @@ static void chr_event(void *opaque, QEMUChrEvent event)
+     }
+ }
  
- /* The virtio-serial bus on top of which the ports will ride as devices */
-@@ -222,5 +225,7 @@ size_t virtio_serial_guest_ready(VirtIOSerialPort *port);
-  */
- void virtio_serial_throttle_port(VirtIOSerialPort *port, bool throttle);
++static void chr_event_console(void *opaque, QEMUChrEvent event)
++{
++    VirtConsole *vcon = opaque;
++    VirtIOSerialPort *port = VIRTIO_SERIAL_PORT(vcon);
++
++    trace_virtio_console_chr_event(port->id, event);
++    switch (event) {
++    case CHR_EVENT_OPENED:
++    case CHR_EVENT_MUX_IN:
++    case CHR_EVENT_RESIZE:
++        virtconsole_update_size(port);
++        break;
++    default:
++        break;
++    }
++}
++
+ static int chr_be_change(void *opaque)
+ {
+     VirtConsole *vcon = opaque;
+@@ -182,7 +208,9 @@ static int chr_be_change(void *opaque)
  
-+void virtio_serial_resize_console(VirtIOSerialPort *port,
-+                                  uint16_t cols, uint16_t rows);
+     if (k->is_console) {
+         qemu_chr_fe_set_handlers(&vcon->chr, chr_can_read, chr_read,
+-                                 NULL, chr_be_change, vcon, NULL, true);
++                                 chr_event_console, chr_be_change,
++                                 vcon, NULL, true);
++        virtconsole_update_size(port);
+     } else {
+         qemu_chr_fe_set_handlers(&vcon->chr, chr_can_read, chr_read,
+                                  chr_event, chr_be_change, vcon, NULL, false);
+@@ -210,7 +238,7 @@ static void virtconsole_enable_backend(VirtIOSerialPort *port, bool enable)
+         VirtIOSerialPortClass *k = VIRTIO_SERIAL_PORT_GET_CLASS(port);
  
- #endif
+         qemu_chr_fe_set_handlers(&vcon->chr, chr_can_read, chr_read,
+-                                 k->is_console ? NULL : chr_event,
++                                 k->is_console ? chr_event_console : chr_event,
+                                  chr_be_change, vcon, NULL, false);
+     } else {
+         qemu_chr_fe_set_handlers(&vcon->chr, NULL, NULL, NULL,
+@@ -242,7 +270,7 @@ static void virtconsole_realize(DeviceState *dev, Error **errp)
+          */
+         if (k->is_console) {
+             qemu_chr_fe_set_handlers(&vcon->chr, chr_can_read, chr_read,
+-                                     NULL, chr_be_change,
++                                     chr_event_console, chr_be_change,
+                                      vcon, NULL, true);
+             virtio_serial_open(port);
+         } else {
 
 -- 
 2.52.0
