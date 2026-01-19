@@ -2,110 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4725FD3AB64
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 15:14:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FB82D3AB6C
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 15:15:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhq1F-0001oS-GI; Mon, 19 Jan 2026 09:14:16 -0500
+	id 1vhq1w-0002jZ-7B; Mon, 19 Jan 2026 09:14:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hbathini@linux.ibm.com>)
- id 1vhk3O-0007ou-KB; Mon, 19 Jan 2026 02:52:04 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hbathini@linux.ibm.com>)
- id 1vhk3L-00042i-Fi; Mon, 19 Jan 2026 02:52:02 -0500
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60INkqud012605;
- Mon, 19 Jan 2026 07:51:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=+BCcdZ
- mfnQBcvBawJxKVGDg42lliYU9j3L15LX3vK8A=; b=TlonmpU6mDsDIkig4/iWFQ
- Fv8jOk0Yt6BnCamMN5GojXoa9gSiHa3QFIkKhO3IUcA0Y+DRW8yujEEdGOFk4pVU
- 8sSGzLsyGKAFe+wGn/GcsCv10jmUS+VgWl5tDM1teytpe78/ImZIAmjNG0i5EQkr
- hD4yFp/t7GONFlIcGAPnLaj7XrW85pvbz3NC4E1en5kQ0u7Swa18jOYfrnfLddxz
- 0AArm8Py784Y5IS063Uy8g5ExKRF9kZOkIi93r1k3sYPz2ADLCcNkPxIA4TyuxmA
- 8ja++1gTVD9+ChiIqk45YWqfPFxNBlbqlQUDHwM3q8AKkgVvr6v10xLzQ0eIeyaA
- ==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4br1x4y0y2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Jan 2026 07:51:57 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60J747QN027382;
- Mon, 19 Jan 2026 07:51:56 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4brnrmnex0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Jan 2026 07:51:56 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 60J7pqBK40304956
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 19 Jan 2026 07:51:52 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7253D20049;
- Mon, 19 Jan 2026 07:51:52 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7CB1520040;
- Mon, 19 Jan 2026 07:51:51 +0000 (GMT)
-Received: from [9.43.98.125] (unknown [9.43.98.125])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 19 Jan 2026 07:51:51 +0000 (GMT)
-Message-ID: <f67681eb-d2b2-48cd-995c-a889550cdba4@linux.ibm.com>
-Date: Mon, 19 Jan 2026 13:21:50 +0530
+ (Exim 4.90_1) (envelope-from <florian.hofhammer@fhofhammer.de>)
+ id 1vhmS9-0000BR-2K; Mon, 19 Jan 2026 05:25:45 -0500
+Received: from mwd01m.fhofhammer.de ([2a02:c207:3002:3725::1])
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <florian.hofhammer@fhofhammer.de>)
+ id 1vhmS7-0000II-Gw; Mon, 19 Jan 2026 05:25:44 -0500
+Message-ID: <018a86fd-b831-4fd6-b479-9d73e2e95ee0@fhofhammer.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fhofhammer.de;
+ s=2023; t=1768818331;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+ bh=KcTQnaxrkm4kdGKnfoHfDTipwHdRMY2Cf4qxbasUQWc=;
+ b=bxOEQNXaMyeFkN8Xm846knVqPWA0++ibfhNbxz+pHZwni1njiY2ra4Xxy1BSYACaNhrX0Q
+ 7nH0VY0GFD8GVVKSvtNVUacVzCNBLvvdlZN4TA8w3idx9PLqdfd0dwbJzQq8XcOvmerPVX
+ 5+uo0yEDuVn78+odYZ/h2UOdUT+YBemJKzFXoAVyX1suOxgN2Te0xyAarlbUkY5nhD5V2z
+ znDo5/EHUac/OOaLzr9dgHp9lRFDnbS26h+p/t+nzKGUv+mccXxW5nDa8AOyhWwERO5Cc9
+ ZyohfzhqjZ63C9URxEFWPmy2XSkgsOCpdPJUg8d7byaZaIgt/NJIieLW7sMbZanzdCVR+M
+ HqNin+U7D/Fnk1NbhwV99v7a7GCOr7LVph0lvkAb2aukatn/QGuBK5qy7hOmIGu2Q7hvMF
+ vb7IwE6hKB/CUAq16bg5p81TO0EYjWD6QNon2lNG2qKiZOBJKGjDN9hn3d5OF4YKZQqqZ7
+ H6OvnIp9NXQ/Z5zTBFDVSg9A7GRYseuWnKLRFaaXE7IAC6tLEgIniCMtG63S+pKxh4NBy+
+ BwYbz3RvhWDs6Aa/5TamJLT1p3hBjcmCktjQifQg9MayfoMoADk2qE8q8Mujl3u2Qmyt7S
+ p1AU/4PJsBgUWL+ZvPO7I8PiUIl7+fnPwk9EtFaIYeV5xun9NXbDs=
+Authentication-Results: ORIGINATING;
+ auth=pass smtp.auth=florian.hofhammer@fhofhammer.de
+ smtp.mailfrom=florian.hofhammer@fhofhammer.de
+Date: Mon, 19 Jan 2026 11:25:30 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 8/9] pnv/mpipl: Enable MPIPL support
-To: Aditya Gupta <adityag@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Sourabh Jain <sourabhjain@linux.ibm.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-References: <20251206055648.1908734-1-adityag@linux.ibm.com>
- <20251206055648.1908734-9-adityag@linux.ibm.com>
+From: Florian Hofhammer <florian.hofhammer@fhofhammer.de>
+Subject: [PATCH trivial] configure: add ppc target back to container tests
 Content-Language: en-US
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <20251206055648.1908734-9-adityag@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: qemu-devel@nongnu.org
+Cc: philmd@linaro.org, qemu-trivial@nongnu.org
+Autocrypt: addr=florian.hofhammer@fhofhammer.de; keydata=
+ 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
+ /zEc5hMMZIzTI4AtIcgA3xe4Ew==
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=R8AO2NRX c=1 sm=1 tr=0 ts=696de29d cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=e90L0FevrDqDP2QLzzAA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: tSNGiOJ6AUk2i2HFa0QOo9DiyoFh3dkT
-X-Proofpoint-GUID: tSNGiOJ6AUk2i2HFa0QOo9DiyoFh3dkT
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE5MDA2MyBTYWx0ZWRfX48/Vo/QXObPC
- Lvf+SAqFA+d1/t/LYr78DFxeYpVUlqFawzcCccevqx+EJXrlyLOSk+XMdH2yVtAaOvVTd65cq32
- w9XTGigfQNC0GGDm35+/zPcoLWeNsiLsTlHjVq4Aie6gx0HC+aAYPyzPduFzVaxE0uhY07aY6zA
- sQf4YJG+dGq6M4I4+OlCwXKL8eBeJC/MA99IfkneKD2pBDHQmMFPAdwP1datWJ8DXBqj4X3iRqo
- fOQCd75QDhdWjyYRA1N9syq3FU5DzYczYaaBelYX6ao7D3bvb4vLmgFfZTghjQSIWMF0IPFf+jT
- V7M0QwTJ2DwdD7tUTgyedBMIz6IC9NfZE889IhAbWHGqKL0gYxe8cyJS4WZjBUcWltO0aVbbYIj
- h6dpF0q7ErGCR0Lbg7LotCKQtqt9p/kTtAgk787t+E4wX3EFZETIWd8yxX4POk3EKrJJSQVH0aN
- w//ttXNXoF6vlq3/Sug==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-19_01,2026-01-19_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 priorityscore=1501 bulkscore=0 lowpriorityscore=0 adultscore=0
- spamscore=0 phishscore=0 malwarescore=0 suspectscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2601150000 definitions=main-2601190063
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=hbathini@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Received-SPF: pass client-ip=2a02:c207:3002:3725::1;
+ envelope-from=florian.hofhammer@fhofhammer.de; helo=mwd01m.fhofhammer.de
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 19 Jan 2026 09:14:03 -0500
+X-Mailman-Approved-At: Mon, 19 Jan 2026 09:14:02 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -120,70 +114,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Commit 2ff8c9a298 removed support for 32-bit PPC hosts from the build
+system. Unfortunately, the patch also removed the 32-bit PPC target for
+containerized tests, which leads to an error when trying to run tests,
+e.g., with "make check-tcg":
+"make[1]: *** No rule to make target 'docker-image-debian-ppc-cross',
+needed by 'build-tcg-tests-ppc-linux-user'.  Stop."
 
+This patch adds the PPC target back for containerized tests.
 
-On 06/12/25 11:26 am, Aditya Gupta wrote:
-> With all MPIPL support in place, export a "dump" node in device tree,
-> signifying that PowerNV QEMU platform supports MPIPL
-> 
-> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
-> ---
->   hw/ppc/pnv.c | 37 +++++++++++++++++++++++++++++++++++++
->   1 file changed, 37 insertions(+)
-> 
-> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-> index 7c36f3a00e90..8a62b0ee1074 100644
-> --- a/hw/ppc/pnv.c
-> +++ b/hw/ppc/pnv.c
-> @@ -54,6 +54,7 @@
->   #include "hw/ppc/pnv_chip.h"
->   #include "hw/ppc/pnv_xscom.h"
->   #include "hw/ppc/pnv_pnor.h"
-> +#include "hw/ppc/pnv_mpipl.h"
->   
->   #include "hw/isa/isa.h"
->   #include "hw/char/serial-isa.h"
-> @@ -671,6 +672,39 @@ static void pnv_dt_power_mgt(PnvMachineState *pnv, void *fdt)
->       _FDT(fdt_setprop_cell(fdt, off, "ibm,enabled-stop-levels", 0xc0000000));
->   }
->   
-> +static void pnv_dt_mpipl_dump(PnvMachineState *pnv, void *fdt)
-> +{
-> +    int off;
-> +
-> +    /*
-> +     * Add "dump" node so kernel knows MPIPL (aka fadump) is supported
-> +     *
-> +     * Note: This is only needed to be done since we are passing device tree to
-> +     * opal
-> +     *
-> +     * In case HDAT is supported in future, then opal can add these nodes by
-> +     * itself based on system attribute having MPIPL_SUPPORTED bit set
-> +     */
-> +    off = fdt_add_subnode(fdt, 0, "ibm,opal");
-> +    if (off == -FDT_ERR_EXISTS) {
-> +        off = fdt_path_offset(fdt, "/ibm,opal");
-> +    }
-> +
-> +    _FDT(off);
-> +    off = fdt_add_subnode(fdt, off, "dump");
-> +    _FDT(off);
-> +    _FDT((fdt_setprop_string(fdt, off, "compatible", "ibm,opal-dump")));
-> +
+Fixes: 2ff8c9a2984bb20e350ae52152812c5370b02e32
+Signed-off-by: Florian Hofhammer <florian.hofhammer@fhofhammer.de>
+---
+ configure | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> +    /* Add kernel and initrd as fw-load-area */
-> +    uint64_t fw_load_area[4] = {
-> +        cpu_to_be64(KERNEL_LOAD_ADDR), cpu_to_be64(KERNEL_MAX_SIZE),
-> +        cpu_to_be64(INITRD_LOAD_ADDR), cpu_to_be64(INITRD_MAX_SIZE)
-> +    };
-> +
-> +    _FDT((fdt_setprop(fdt, off, "fw-load-area",
-> +                    fw_load_area, sizeof(fw_load_area))));
-> +}
-> +
+diff --git a/configure b/configure
+index e69b3e474e..1b0af0cf46 100755
+--- a/configure
++++ b/configure
+@@ -1451,7 +1451,7 @@ probe_target_compiler() {
+         container_image=debian-all-test-cross
+         container_cross_prefix=mips64-linux-gnuabi64-
+         ;;
+-      ppc64|ppc64le)
++      ppc|ppc64|ppc64le)
+         container_image=debian-all-test-cross
+         container_cross_prefix=powerpc${target_arch#ppc}-linux-gnu-
+         ;;
+-- 
+2.51.0
 
-While the changelog only talks about dump node, fw-load-area is
-exported too. A comment explaining what and why it is used helps..
-
-- Hari
 
