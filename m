@@ -2,67 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E67CD3B437
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 18:27:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48840D3B440
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 18:28:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vht1q-0007PY-40; Mon, 19 Jan 2026 12:27:02 -0500
+	id 1vht2Z-0000zq-Qv; Mon, 19 Jan 2026 12:27:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vht1d-0007NT-7p
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 12:26:52 -0500
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1vht2Y-0000ty-2k
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 12:27:46 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vht1Z-0008Ma-4b
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 12:26:49 -0500
-Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:5c05:0:640:ff67:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 47E7FC0158;
- Mon, 19 Jan 2026 20:26:41 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:8080:934::1:38] (unknown
- [2a02:6bf:8080:934::1:38])
- by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id eQdrmY1BEeA0-HHtdIlER; Mon, 19 Jan 2026 20:26:40 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1768843600;
- bh=2OgTIJbrrf4ClvYAeWbUn/6uJU5CFWid+yYCcdYMezM=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=QaOMpXlZRWl1eZds+FvKvqvxLnN0ZukAQjpLFCEMxfuunw5o1tn007b0Phb0B8csO
- 5tCvKqWJS7cwBr7F7Pzjrr10VLpEIgcOuFDP2ChLKcTJN8qvZ2X9bP0/N1G17wZhhx
- txyKzp1JvQhLJn9vSvUmj8D/YPBLmKjJdIex9ia0=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <1192488b-51d9-4024-8f76-3b2dd85b3d3c@yandex-team.ru>
-Date: Mon, 19 Jan 2026 20:26:40 +0300
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1vht2W-00008k-Ie
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 12:27:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1768843664;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=1CfNdcX5g6g1ZKiERp1Bn5uFMT6Xn11TLLIP7XhynmY=;
+ b=dGdTGtRBHM0AffIysLu1SbXhorWwPbRPpOgU7Na1PFqweCVByT8k2c6VCHMMPTo3ssjsEj
+ 3EpQE4utwTtEBUeN0ZgkqmlS3KEo4XV7eFZOUN5e7SmQrABJWcPFumMghFFXFJGXL0UoAB
+ Bzn367zTe69XGhVPQv8eKtAzfJO3uuE=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-356--IsOWaqUNXKHYDZDdKtSYw-1; Mon,
+ 19 Jan 2026 12:27:40 -0500
+X-MC-Unique: -IsOWaqUNXKHYDZDdKtSYw-1
+X-Mimecast-MFC-AGG-ID: -IsOWaqUNXKHYDZDdKtSYw_1768843659
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 50C6618005B4; Mon, 19 Jan 2026 17:27:39 +0000 (UTC)
+Received: from gondolin.str.redhat.com (dhcp-192-210.str.redhat.com
+ [10.33.192.210])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id B87FA19560A2; Mon, 19 Jan 2026 17:27:37 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Eric Auger <eric.auger@redhat.com>, Cornelia Huck <cohuck@redhat.com>
+Subject: [PATCH RFC 0/3] arm: demuxed ID registers (CCSIDR_EL1)
+Date: Mon, 19 Jan 2026 18:27:29 +0100
+Message-ID: <20260119172732.140613-1-cohuck@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] tests/unit: add unit test for qemu_hexdump()
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- berrange@redhat.com
-Cc: qemu-devel@nongnu.org
-References: <20251113064935.342018-1-vsementsov@yandex-team.ru>
- <a40731d0-7add-4d09-9a89-902f75e2eede@linaro.org>
- <8259d920-32bc-41a7-94b9-cd1af9783b6e@yandex-team.ru>
- <05340117-a75b-4d64-98fe-8868b7bfb5c5@linaro.org>
-Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <05340117-a75b-4d64-98fe-8868b7bfb5c5@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.72;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.016,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,77 +80,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19.01.26 19:31, Philippe Mathieu-Daudé wrote:
-> On 19/1/26 16:42, Vladimir Sementsov-Ogievskiy wrote:
->> Hi! Isn't this patch lost?
->>
->> On 14.11.25 00:01, Philippe Mathieu-Daudé wrote:
->>> On 13/11/25 07:49, Vladimir Sementsov-Ogievskiy wrote:
->>>> Test, that fix in previous commit make sense.
->>>>
->>>> To not break compilation when we build without
->>>> 'block', move hexdump.c out of "if have_block"
->>>> in meson.build.
->>>>
->>>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->>>> ---
->>>>
->>>> v3: change meson.build to compile hexdump.c always
->>>>
->>>>   tests/unit/test-cutils.c | 43 ++++++++++++++++++++++++++++++++++++++++
->>>>   util/meson.build         |  2 +-
->>>>   2 files changed, 44 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/tests/unit/test-cutils.c b/tests/unit/test-cutils.c
->>>> index 227acc5995..24fef16a7f 100644
->>>> --- a/tests/unit/test-cutils.c
->>>> +++ b/tests/unit/test-cutils.c
->>>> @@ -3626,6 +3626,44 @@ static void test_si_prefix(void)
->>>>       g_assert_cmpstr(si_prefix(18), ==, "E");
->>>>   }
->>>> +static void test_qemu_hexdump_alignment(void)
->>>> +{
->>>> +    /*
->>>> +     * Test that ASCII part is properly aligned for incomplete lines.
->>>> +     * This test catches the bug that was fixed in previous commit
->>>> +     * "util/hexdump: fix QEMU_HEXDUMP_LINE_WIDTH logic".
->>>> +     *
->>>> +     * We use data that is not aligned to 16 bytes, so last line
->>>> +     * is incomplete.
->>>> +     */
->>>> +    const uint8_t data[] = {
->>>> +        /* First line: 16 bytes */
->>>> +        0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x57, 0x6f,  /* "Hello Wo" */
->>>> +        0x72, 0x6c, 0x64, 0x21, 0x20, 0x54, 0x68, 0x69,  /* "rld! Thi" */
->>>> +        /* Second line: 5 bytes (incomplete) */
->>>> +        0x73, 0x20, 0x69, 0x73, 0x20                     /* "s is " */
->>>> +    };
->>>> +    char *output = NULL;
->>>> +    size_t size;
->>>> +    FILE *stream = open_memstream(&output, &size);
->>>> +
->>>> +    g_assert_nonnull(stream);
->>>> +
->>>> +    qemu_hexdump(stream, "test", data, sizeof(data));
->>>> +    fclose(stream);
->>>> +
->>>> +    g_assert_nonnull(output);
->>>> +
->>>> +    /* We expect proper alignment of "s is" part on the second line */
->>>> +    const char *expected =
->>>> +        "test: 0000: 48 65 6c 6c  6f 20 57 6f  72 6c 64 21  20 54 68 69   Hello World! Thi\n"
->>>> +        "test: 0010: 73 20 69 73 20                                      s is \n";
->>>
->>> Thanks, queued wrapping the long lines to pass checkpatch.pl,
->>> as in:
->>> https://lore.kernel.org/qemu-devel/20251031211518.38503-9- philmd@linaro.org/
-> 
-> I have it tagged but there is still a meson issue. I should revisit
-> but it is low in my priority queue.
+Note: this is on top of <20260105154119.59853-1-cohuck@redhat.com>
+("[PATCH v3 0/2] arm: move DCZID_EL0 to idregs array")
 
-Ok, thanks
+While trying to move to an autogenerated cpu-sysregs.h.inc (so that we
+may keep a common view on registers), we should first address the ID
+registers that are still kept outside of ARMISARegisters. Other than
+DCZID_EL0 (addressed by the series this one goes on top of), that's
+the CCSIDR_EL1 values kept in cpu->cssidr[] (indexed via CSSELR_EL1.)
+
+My idea was to provide {GET,SET}_IDREG_DEMUX helper that work similar
+to {GET,SET}_IDREG and operate on a two-dimensional array. As a side
+effect, this also allows to get the values KVM provides for CCSIDR_EL1
+(which are virtualized as well.)
+
+RFC because there are still some open questions:
+- The demux array cannot easily be autogenerated. We can get rid of the
+  ccsidr[] array, but we now have an autogenerated entry in the non-demux
+  array that does nothing. Both are not that nice.
+- I'm not sure if we need any compat handling for KVM (on TCG, everything
+  should stay the same.) In theory, the KVM interface allows setting
+  values from userspace (I didn't try.)
+- There's a slight disagreement between the current code (providing 16
+  entries for CCSIDR_EL1) and the KVM code (providing (7 cache levels) *
+  (data/unified, instruction) = 14 entries.) With FEAT_MTE2, we might be
+  needing 7 more entries.
+
+Feedback appreciated.
+
+Cornelia Huck (3):
+  arm: handle demuxed ID registers
+  arm: handle CCSIDR_EL1 as a demuxed register
+  arm/kvm: get demuxed ID registers from kvm
+
+ hw/intc/armv7m_nvic.c        |  2 +-
+ target/arm/cpu-sysregs.h     |  6 ++++
+ target/arm/cpu-sysregs.h.inc |  1 +
+ target/arm/cpu.h             | 26 ++++++++++++----
+ target/arm/cpu64.c           | 12 ++++----
+ target/arm/helper.c          |  2 +-
+ target/arm/kvm.c             | 33 ++++++++++++++++++++
+ target/arm/tcg/cpu32.c       | 32 +++++++++----------
+ target/arm/tcg/cpu64.c       | 60 ++++++++++++++++++------------------
+ 9 files changed, 114 insertions(+), 60 deletions(-)
 
 -- 
-Best regards,
-Vladimir
+2.52.0
+
 
