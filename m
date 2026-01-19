@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9878AD3BA04
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 22:30:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61B53D3B9FB
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 22:30:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhwoa-0003qY-MA; Mon, 19 Jan 2026 16:29:37 -0500
+	id 1vhwoy-0005Ld-Dn; Mon, 19 Jan 2026 16:30:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vhwo1-0002q5-N9
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:29:02 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vhwo6-00032g-Ph
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:29:08 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vhwnz-0008IA-FB
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:29:01 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vhwo4-0008N5-Dy
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:29:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768858138;
+ s=mimecast20190719; t=1768858143;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cV2lc3N0MbxJhjLRkTuCdN2XwVtlbf4p3z9LWjnzgrU=;
- b=AhTavvPTSX/R8Sc2cCz+6wnxBmfEV5wbjhHjdhCarWZ6C9by475Z3enr+UZVuMUJSaDYga
- O2EKEixmC2+l9FS4vJ/uCEM9NxzTn8PGGrxveiwC3uF561LwVzqONRUBfb7zWMX4qLbBsX
- do7d2fp1N9knYkoPO4jguOpWqlUD7qU=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=UV6iTrJ61McZf37mb9sQoVtKdMyNjGSiiYxhbMmYhSs=;
+ b=LsaM5QDmq18cHryt/o+qwHWU49MUu2pMeiNqPWzPvBChiJp+dYSRoUubZnEUdrW+1Wj9nk
+ W8ZoxPnfgvu+qIuNaV7OFg3vOd+ZUSfrMlnvTtXdle0tQ5aB9fmgEDFb15dqkAygjslw1f
+ WBC0uUeXA2GZlEZd0ghTW32y8bWC2oo=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-650-DNDGoEVlOkW_l1LMT8rQdw-1; Mon,
- 19 Jan 2026 16:28:57 -0500
-X-MC-Unique: DNDGoEVlOkW_l1LMT8rQdw-1
-X-Mimecast-MFC-AGG-ID: DNDGoEVlOkW_l1LMT8rQdw_1768858136
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-604-4P5zBOgdM-WGv8Q7bVb66g-1; Mon,
+ 19 Jan 2026 16:29:00 -0500
+X-MC-Unique: 4P5zBOgdM-WGv8Q7bVb66g-1
+X-Mimecast-MFC-AGG-ID: 4P5zBOgdM-WGv8Q7bVb66g_1768858139
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D7A661956052; Mon, 19 Jan 2026 21:28:55 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 03EEB195609E; Mon, 19 Jan 2026 21:28:59 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.170])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id EB3B21955F43; Mon, 19 Jan 2026 21:28:52 +0000 (UTC)
+ id 183F719560AB; Mon, 19 Jan 2026 21:28:55 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -59,9 +59,10 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v4 13/17] tests: remove "make check-venv" target
-Date: Mon, 19 Jan 2026 16:27:39 -0500
-Message-ID: <20260119212744.1275455-14-jsnow@redhat.com>
+Subject: [PATCH v4 14/17] scripts: nudge users to use 'run' script for scripts
+ that import qemu.qmp
+Date: Mon, 19 Jan 2026 16:27:40 -0500
+Message-ID: <20260119212744.1275455-15-jsnow@redhat.com>
 In-Reply-To: <20260119212744.1275455-1-jsnow@redhat.com>
 References: <20260119212744.1275455-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -92,132 +93,322 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With the qemu.qmp and qemu.machine dependencies now installed by default
-at configure time and additional dependencies required by functional
-testing installed on demand, there is no longer any reason to have an
-explicit target.
-
-FIXME: This forces image regeneration for vm tests whenever Make
-determines that the image needs to be rebuilt; which is a regression
-over the previous behavior.
+Now that qmp has to be installed and isn't local, we can no longer offer
+a simple forwarder for these scripts (nor path hacks) and hope that it
+works. Encourage users to use the 'run' script to use these scripts
+instead.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- tests/Makefile.include    | 22 ++--------------------
- tests/vm/Makefile.include | 24 +++++++-----------------
- 2 files changed, 9 insertions(+), 37 deletions(-)
+ scripts/compare-machine-types.py           |  7 ++-----
+ scripts/qmp/qemu-ga-client                 | 13 ++++++-------
+ scripts/qmp/qmp-shell                      | 13 ++++++-------
+ scripts/qmp/qmp-shell-wrap                 | 13 ++++++-------
+ scripts/qmp/qom-fuse                       | 13 ++++++-------
+ scripts/qmp/qom-get                        | 13 ++++++-------
+ scripts/qmp/qom-list                       | 13 ++++++-------
+ scripts/qmp/qom-set                        | 13 ++++++-------
+ scripts/qmp/qom-tree                       | 13 ++++++-------
+ scripts/qmp_helper.py                      |  9 ++-------
+ scripts/render_block_graph.py              | 10 +++++++---
+ scripts/simplebench/bench_block_job.py     | 10 +++++++---
+ tests/migration-stress/guestperf/engine.py | 15 ++++++++++++---
+ 13 files changed, 78 insertions(+), 77 deletions(-)
 
-diff --git a/tests/Makefile.include b/tests/Makefile.include
-index f28c9e329aa..2a203e23718 100644
---- a/tests/Makefile.include
-+++ b/tests/Makefile.include
-@@ -21,7 +21,6 @@ ifneq ($(filter $(all-check-targets), check-softfloat),)
- endif
- 	@echo
- 	@echo " $(MAKE) check-report.junit.xml   Generates an aggregated XML test report"
--	@echo " $(MAKE) check-venv               Creates a Python venv for tests"
- 	@echo " $(MAKE) check-clean              Clean the tests and related data"
- 	@echo
- 	@echo "The following are useful for CI builds"
-@@ -92,33 +91,16 @@ clean-tcg: $(CLEAN_TCG_TARGET_RULES)
- .PHONY: distclean-tcg
- distclean-tcg: $(DISTCLEAN_TCG_TARGET_RULES)
+diff --git a/scripts/compare-machine-types.py b/scripts/compare-machine-types.py
+index b4f899082a7..83be361f4f6 100755
+--- a/scripts/compare-machine-types.py
++++ b/scripts/compare-machine-types.py
+@@ -27,19 +27,16 @@
+ # along with this program; if not, see <http://www.gnu.org/licenses/>.
  
--# Python venv for running tests
+ import sys
+-from os import path
+ from argparse import ArgumentParser, RawTextHelpFormatter, Namespace
+ import pandas as pd
+ from contextlib import ExitStack
+ from typing import Optional, List, Dict, Generator, Tuple, Union, Any, Set
+ 
+ try:
+-    qemu_dir = path.abspath(path.dirname(path.dirname(__file__)))
+-    sys.path.append(path.join(qemu_dir, 'python'))
+     from qemu.machine import QEMUMachine
+ except ModuleNotFoundError as exc:
+-    print(f"Module '{exc.name}' not found.")
+-    print("Try export PYTHONPATH=top-qemu-dir/python or run from top-qemu-dir")
++    print(f"Module '{exc.name}' not found.", file=sys.stderr)
++    print(f"Try $builddir/run {' '.join(sys.argv)}", file=sys.stderr)
+     sys.exit(1)
+ 
+ 
+diff --git a/scripts/qmp/qemu-ga-client b/scripts/qmp/qemu-ga-client
+index 56edd0234a6..7ea01b9a11d 100755
+--- a/scripts/qmp/qemu-ga-client
++++ b/scripts/qmp/qemu-ga-client
+@@ -1,11 +1,10 @@
+ #!/usr/bin/env python3
+ 
+-import os
+ import sys
+ 
+-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'python'))
+-from qemu.utils import qemu_ga_client
 -
--.PHONY: check-venv
 -
- # Build up our target list from the filtered list of ninja targets
- TARGETS=$(patsubst libqemu-%.a, %, $(filter libqemu-%.a, $(ninja-targets)))
+-if __name__ == '__main__':
+-    sys.exit(qemu_ga_client.main())
++print(
++    "This script has moved; after running configure,"
++    " please use '$builddir/run qemu-ga-client [...]' instead.",
++    file=sys.stderr
++)
++sys.exit(1)
+diff --git a/scripts/qmp/qmp-shell b/scripts/qmp/qmp-shell
+index 4a20f97db70..436c4940c26 100755
+--- a/scripts/qmp/qmp-shell
++++ b/scripts/qmp/qmp-shell
+@@ -1,11 +1,10 @@
+ #!/usr/bin/env python3
  
--TESTS_VENV_TOKEN=$(BUILD_DIR)/pyvenv/tests.group
+-import os
+ import sys
+ 
+-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'python'))
+-from qemu.qmp import qmp_shell
 -
--quiet-venv-pip = $(quiet-@)$(call quiet-command-run, \
--    $(PYTHON) -m pip -q --disable-pip-version-check $1, \
--    "VENVPIP","$1")
 -
--$(TESTS_VENV_TOKEN): $(SRC_PATH)/pythondeps.toml
--	$(call quiet-venv-pip,install -e "$(SRC_PATH)/python/")
--	$(MKVENV_ENSUREGROUP) $< tooling functests
--	$(call quiet-command, touch $@)
+-if __name__ == '__main__':
+-    qmp_shell.main()
++print(
++    "This script has moved; after running configure,"
++    " please use '$builddir/run qmp-shell [...]' instead.",
++    file=sys.stderr
++)
++sys.exit(1)
+diff --git a/scripts/qmp/qmp-shell-wrap b/scripts/qmp/qmp-shell-wrap
+index 9e94da114f5..f63dadad1ed 100755
+--- a/scripts/qmp/qmp-shell-wrap
++++ b/scripts/qmp/qmp-shell-wrap
+@@ -1,11 +1,10 @@
+ #!/usr/bin/env python3
+ 
+-import os
+ import sys
+ 
+-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'python'))
+-from qemu.qmp import qmp_shell
 -
--check-venv: $(TESTS_VENV_TOKEN)
 -
- FUNCTIONAL_TARGETS=$(patsubst %-softmmu,check-functional-%, $(filter %-softmmu,$(TARGETS)))
- .PHONY: $(FUNCTIONAL_TARGETS)
--$(FUNCTIONAL_TARGETS): check-venv
-+$(FUNCTIONAL_TARGETS):
- 	@$(MAKE) SPEED=thorough $(subst -functional,-func,$@)
+-if __name__ == '__main__':
+-    qmp_shell.main_wrap()
++print(
++    "This script has moved; after running configure,"
++    " please use '$builddir/run qmp-shell-wrap [...]' instead.",
++    file=sys.stderr
++)
++sys.exit(1)
+diff --git a/scripts/qmp/qom-fuse b/scripts/qmp/qom-fuse
+index d453807b273..7d4724a3710 100755
+--- a/scripts/qmp/qom-fuse
++++ b/scripts/qmp/qom-fuse
+@@ -1,11 +1,10 @@
+ #!/usr/bin/env python3
  
- .PHONY: check-functional
--check-functional: check-venv
-+check-functional:
- 	@$(NINJA) precache-functional
- 	@$(PYTHON) $(SRC_PATH)/scripts/clean_functional_cache.py
- 	@QEMU_TEST_NO_DOWNLOAD=1 $(MAKE) SPEED=thorough check-func check-func-quick
-diff --git a/tests/vm/Makefile.include b/tests/vm/Makefile.include
-index 14188bba1c6..095ec2eefa3 100644
---- a/tests/vm/Makefile.include
-+++ b/tests/vm/Makefile.include
-@@ -1,14 +1,5 @@
- # Makefile for VM tests
+-import os
+ import sys
  
--# Hack to allow running in an unconfigured build tree
--ifeq ($(realpath $(SRC_PATH)),$(realpath .))
--VM_PYTHON = PYTHONPATH=$(SRC_PATH)/python /usr/bin/env python3
--VM_VENV =
--else
--VM_PYTHON = $(PYTHON)
--VM_VENV = check-venv
--endif
+-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'python'))
+-from qemu.utils.qom_fuse import QOMFuse
 -
- .PHONY: vm-build-all vm-clean-all
+-
+-if __name__ == '__main__':
+-    sys.exit(QOMFuse.entry_point())
++print(
++    "This script has moved; after running configure,"
++    " please use '$builddir/run qom-fuse [...]' instead.",
++    file=sys.stderr
++)
++sys.exit(1)
+diff --git a/scripts/qmp/qom-get b/scripts/qmp/qom-get
+index 04ebe052e82..96363539624 100755
+--- a/scripts/qmp/qom-get
++++ b/scripts/qmp/qom-get
+@@ -1,11 +1,10 @@
+ #!/usr/bin/env python3
  
- EFI_AARCH64 = $(wildcard $(BUILD_DIR)/pc-bios/edk2-aarch64-code.fd)
-@@ -90,11 +81,10 @@ vm-clean-all:
+-import os
+ import sys
  
- $(IMAGES_DIR)/%.img:	$(SRC_PATH)/tests/vm/% \
- 			$(SRC_PATH)/tests/vm/basevm.py \
--			$(SRC_PATH)/tests/vm/Makefile.include \
--			$(VM_VENV)
-+			$(SRC_PATH)/tests/vm/Makefile.include
- 	@mkdir -p $(IMAGES_DIR)
- 	$(call quiet-command, \
--		$(VM_PYTHON) $< \
-+		$(PYTHON) $< \
- 		$(if $(V)$(DEBUG), --debug) \
- 		$(if $(GENISOIMAGE),--genisoimage $(GENISOIMAGE)) \
- 		$(if $(QEMU_LOCAL),--build-path $(BUILD_DIR)) \
-@@ -102,14 +92,14 @@ $(IMAGES_DIR)/%.img:	$(SRC_PATH)/tests/vm/% \
- 		$(if $(LOG_CONSOLE),--log-console) \
- 		--source-path $(SRC_PATH) \
- 		--image "$@" \
--		$(if $(filter-out check-venv, $?), --force) \
-+		--force \
- 		--build-image $@, \
- 		"  VM-IMAGE $*")
+-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'python'))
+-from qemu.utils.qom import QOMGet
+-
+-
+-if __name__ == '__main__':
+-    sys.exit(QOMGet.entry_point())
++print(
++    "This script has moved; after running configure,"
++    " please use '$builddir/run qom-get [...]' instead.",
++    file=sys.stderr
++)
++sys.exit(1)
+diff --git a/scripts/qmp/qom-list b/scripts/qmp/qom-list
+index 853b85a8d3f..e988274d1e7 100755
+--- a/scripts/qmp/qom-list
++++ b/scripts/qmp/qom-list
+@@ -1,11 +1,10 @@
+ #!/usr/bin/env python3
  
- # Build in VM $(IMAGE)
--vm-build-%: $(IMAGES_DIR)/%.img $(VM_VENV)
-+vm-build-%: $(IMAGES_DIR)/%.img
- 	$(call quiet-command, \
--		$(VM_PYTHON) $(SRC_PATH)/tests/vm/$* \
-+		$(PYTHON) $(SRC_PATH)/tests/vm/$* \
- 		$(if $(V)$(DEBUG), --debug) \
- 		$(if $(DEBUG), --interactive) \
- 		$(if $(J),--jobs $(J)) \
-@@ -133,9 +123,9 @@ vm-boot-serial-%: $(IMAGES_DIR)/%.img
- 		-device virtio-net-pci,netdev=vnet \
- 	|| true
+-import os
+ import sys
  
--vm-boot-ssh-%: $(IMAGES_DIR)/%.img $(VM_VENV)
-+vm-boot-ssh-%: $(IMAGES_DIR)/%.img
- 	$(call quiet-command, \
--		$(VM_PYTHON) $(SRC_PATH)/tests/vm/$* \
-+		$(PYTHON) $(SRC_PATH)/tests/vm/$* \
- 		$(if $(J),--jobs $(J)) \
- 		$(if $(V)$(DEBUG), --debug) \
- 		$(if $(QEMU_LOCAL),--build-path $(BUILD_DIR)) \
+-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'python'))
+-from qemu.utils.qom import QOMList
+-
+-
+-if __name__ == '__main__':
+-    sys.exit(QOMList.entry_point())
++print(
++    "This script has moved; after running configure,"
++    " please use '$builddir/run qom-list [...]' instead.",
++    file=sys.stderr
++)
++sys.exit(1)
+diff --git a/scripts/qmp/qom-set b/scripts/qmp/qom-set
+index 06820feec42..c2569afdcd7 100755
+--- a/scripts/qmp/qom-set
++++ b/scripts/qmp/qom-set
+@@ -1,11 +1,10 @@
+ #!/usr/bin/env python3
+ 
+-import os
+ import sys
+ 
+-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'python'))
+-from qemu.utils.qom import QOMSet
+-
+-
+-if __name__ == '__main__':
+-    sys.exit(QOMSet.entry_point())
++print(
++    "This script has moved; after running configure,"
++    " please use '$builddir/run qom-set [...]' instead.",
++    file=sys.stderr
++)
++sys.exit(1)
+diff --git a/scripts/qmp/qom-tree b/scripts/qmp/qom-tree
+index 760e172277e..b3cd5ab6f82 100755
+--- a/scripts/qmp/qom-tree
++++ b/scripts/qmp/qom-tree
+@@ -1,11 +1,10 @@
+ #!/usr/bin/env python3
+ 
+-import os
+ import sys
+ 
+-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'python'))
+-from qemu.utils.qom import QOMTree
+-
+-
+-if __name__ == '__main__':
+-    sys.exit(QOMTree.entry_point())
++print(
++    "This script has moved; after running configure,"
++    " please use '$builddir/run qom-tree [...]' instead.",
++    file=sys.stderr
++)
++sys.exit(1)
+diff --git a/scripts/qmp_helper.py b/scripts/qmp_helper.py
+index c1e7e0fd80c..521612fb946 100755
+--- a/scripts/qmp_helper.py
++++ b/scripts/qmp_helper.py
+@@ -13,17 +13,12 @@
+ import sys
+ 
+ from datetime import datetime
+-from os import path as os_path
+ 
+ try:
+-    qemu_dir = os_path.abspath(os_path.dirname(os_path.dirname(__file__)))
+-    sys.path.append(os_path.join(qemu_dir, 'python'))
+-
+     from qemu.qmp.legacy import QEMUMonitorProtocol
+-
+ except ModuleNotFoundError as exc:
+-    print(f"Module '{exc.name}' not found.")
+-    print("Try export PYTHONPATH=top-qemu-dir/python or run from top-qemu-dir")
++    print(f"Module '{exc.name}' not found.", file=sys.stderr)
++    print(f"Try $builddir/run {' '.join(sys.argv)}", file=sys.stderr)
+     sys.exit(1)
+ 
+ from base64 import b64encode
+diff --git a/scripts/render_block_graph.py b/scripts/render_block_graph.py
+index 3e1a2e3fa71..b9079bbed52 100755
+--- a/scripts/render_block_graph.py
++++ b/scripts/render_block_graph.py
+@@ -24,9 +24,13 @@
+ import json
+ from graphviz import Digraph
+ 
+-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'python'))
+-from qemu.qmp import QMPError
+-from qemu.qmp.legacy import QEMUMonitorProtocol
++try:
++    from qemu.qmp import QMPError
++    from qemu.qmp.legacy import QEMUMonitorProtocol
++except ModuleNotFoundError as exc:
++    print(f"Module '{exc.name}' not found.", file=sys.stderr)
++    print(f"Try $builddir/run {' '.join(sys.argv)}", file=sys.stderr)
++    sys.exit(1)
+ 
+ 
+ def perm(arr):
+diff --git a/scripts/simplebench/bench_block_job.py b/scripts/simplebench/bench_block_job.py
+index e575a3af10e..541a47e586d 100755
+--- a/scripts/simplebench/bench_block_job.py
++++ b/scripts/simplebench/bench_block_job.py
+@@ -25,9 +25,13 @@
+ import socket
+ import json
+ 
+-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'python'))
+-from qemu.machine import QEMUMachine
+-from qemu.qmp import ConnectError
++try:
++    from qemu.machine import QEMUMachine
++    from qemu.qmp import ConnectError
++except ModuleNotFoundError as exc:
++    print(f"Module '{exc.name}' not found.", file=sys.stderr)
++    print(f"Try $builddir/run {' '.join(sys.argv)}", file=sys.stderr)
++    sys.exit(1)
+ 
+ 
+ def bench_block_job(cmd, cmd_args, qemu_args):
+diff --git a/tests/migration-stress/guestperf/engine.py b/tests/migration-stress/guestperf/engine.py
+index d8462db7653..8d2ed757af3 100644
+--- a/tests/migration-stress/guestperf/engine.py
++++ b/tests/migration-stress/guestperf/engine.py
+@@ -27,9 +27,18 @@
+ from guestperf.report import Report, ReportResult
+ from guestperf.timings import TimingRecord, Timings
+ 
+-sys.path.append(os.path.join(os.path.dirname(__file__),
+-                             '..', '..', '..', 'python'))
+-from qemu.machine import QEMUMachine
++try:
++    from qemu.machine import QEMUMachine
++except ModuleNotFoundError as exc:
++    print(
++        f"Module '{exc.name}' not found.\n"
++        "It should be installed as part of the configure-time "
++        "virtual environment in $builddir/pyvenv.\n"
++        "Try re-running this script as:\n"
++        f"> $builddir/run {' '.join(sys.argv)}",
++        file=sys.stderr
++    )
++    sys.exit(1)
+ 
+ # multifd supported compression algorithms
+ MULTIFD_CMP_ALGS = ("zlib", "zstd", "qpl", "uadk")
 -- 
 2.52.0
 
