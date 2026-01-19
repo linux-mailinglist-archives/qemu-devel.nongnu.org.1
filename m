@@ -2,33 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7C44D3AB33
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 15:07:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13BA1D3AB2F
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 15:07:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhptg-0004FD-Pn; Mon, 19 Jan 2026 09:06:24 -0500
+	id 1vhpte-00042I-Ar; Mon, 19 Jan 2026 09:06:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vhptU-0003u3-DA; Mon, 19 Jan 2026 09:06:13 -0500
+ id 1vhptU-0003u7-Mp; Mon, 19 Jan 2026 09:06:13 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1vhptS-0006Y2-S7; Mon, 19 Jan 2026 09:06:12 -0500
+ id 1vhptT-0006Y9-28; Mon, 19 Jan 2026 09:06:12 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A852B17FD46;
+ by isrv.corpit.ru (Postfix) with ESMTP id B481D17FD47;
  Mon, 19 Jan 2026 17:05:43 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 74EC7350E61;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 8BB4C350E62;
  Mon, 19 Jan 2026 17:05:59 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>,
 	qemu-trivial@nongnu.org
-Subject: [PATCH trivial v2 4/7] meson.build: stop checking for inotify_init()
-Date: Mon, 19 Jan 2026 17:05:53 +0300
-Message-ID: <20260119140557.2167351-3-mjt@tls.msk.ru>
+Subject: [PATCH trivial v2 7/7] rename CONFIG_EPOLL_CREATE1 to CONFIG_EPOLL,
+ and stop checking for epoll in meson.build
+Date: Mon, 19 Jan 2026 17:05:54 +0300
+Message-ID: <20260119140557.2167351-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260119140557.2167351-1-mjt@tls.msk.ru>
 References: <20260119140557.2167351-1-mjt@tls.msk.ru>
@@ -57,27 +58,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-the only place in qemu which used the check for inotify_init()
-was linux-user, which now assumes inotify_init() is always
-present.  There's no need to check for this function anymore.
+Since CONFIG_EPOLL is now unused, it's okay to
+perform this rename, to make it less ugly.
+
+Since epoll is linux-specific and is always present on linux,
+define CONFIG_EPOLL to 1 on linux, without compile-time test.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- meson.build | 1 -
- 1 file changed, 1 deletion(-)
+ meson.build      | 3 +--
+ util/aio-posix.h | 4 ++--
+ util/meson.build | 2 +-
+ 3 files changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index c7d237403f..41b6b7b0aa 100644
+index f4eae50764..157189e306 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -2669,7 +2669,6 @@ if (have_inotify_init or have_inotify_init1) and host_os == 'freebsd'
-     have_inotify_init1 = inotify.found()
-   endif
- endif
--config_host_data.set('CONFIG_INOTIFY', have_inotify_init)
- config_host_data.set('CONFIG_INOTIFY1', have_inotify_init1)
- 
+@@ -2673,8 +2673,7 @@ config_host_data.set('CONFIG_INOTIFY1', have_inotify_init1)
  # has_header_symbol
+ config_host_data.set('CONFIG_BLKZONED',
+                      cc.has_header_symbol('linux/blkzoned.h', 'BLKOPENZONE'))
+-config_host_data.set('CONFIG_EPOLL_CREATE1',
+-                     cc.has_header_symbol('sys/epoll.h', 'epoll_create1'))
++config_host_data.set('CONFIG_EPOLL', host_os == 'linux')
+ config_host_data.set('CONFIG_FALLOCATE_PUNCH_HOLE',
+                      cc.has_header_symbol('linux/falloc.h', 'FALLOC_FL_PUNCH_HOLE') and
+                      cc.has_header_symbol('linux/falloc.h', 'FALLOC_FL_KEEP_SIZE'))
+diff --git a/util/aio-posix.h b/util/aio-posix.h
+index 0cedb8d189..ab894a3c0f 100644
+--- a/util/aio-posix.h
++++ b/util/aio-posix.h
+@@ -52,7 +52,7 @@ extern const FDMonOps fdmon_poll_ops;
+ /* Switch back to poll(2). list_lock must be held. */
+ void fdmon_poll_downgrade(AioContext *ctx);
+ 
+-#ifdef CONFIG_EPOLL_CREATE1
++#ifdef CONFIG_EPOLL
+ bool fdmon_epoll_try_upgrade(AioContext *ctx, unsigned npfd);
+ void fdmon_epoll_setup(AioContext *ctx);
+ 
+@@ -71,7 +71,7 @@ static inline void fdmon_epoll_setup(AioContext *ctx)
+ static inline void fdmon_epoll_disable(AioContext *ctx)
+ {
+ }
+-#endif /* !CONFIG_EPOLL_CREATE1 */
++#endif /* !CONFIG_EPOLL */
+ 
+ #ifdef CONFIG_LINUX_IO_URING
+ bool fdmon_io_uring_setup(AioContext *ctx, Error **errp);
+diff --git a/util/meson.build b/util/meson.build
+index 59e835a8d3..8c01d7a3de 100644
+--- a/util/meson.build
++++ b/util/meson.build
+@@ -3,7 +3,7 @@ util_ss.add(files('thread-context.c'), numa)
+ if host_os != 'windows'
+   util_ss.add(files('aio-posix.c'))
+   util_ss.add(files('fdmon-poll.c'))
+-  if config_host_data.get('CONFIG_EPOLL_CREATE1')
++  if config_host_data.get('CONFIG_EPOLL')
+     util_ss.add(files('fdmon-epoll.c'))
+   endif
+   util_ss.add(files('compatfd.c'))
 -- 
 2.47.3
 
