@@ -2,81 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78FDED3B9F8
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 22:30:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35E39D3BA37
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 22:42:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhwof-00048g-68; Mon, 19 Jan 2026 16:29:44 -0500
+	id 1vhwzw-0002IU-Tu; Mon, 19 Jan 2026 16:41:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vhwoG-0003Cx-V3
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:29:20 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1vhwzv-0002G2-CK
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:41:19 -0500
+Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vhwoF-00005Y-LG
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:29:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768858154;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=XfA2AX39riqHz1+odmR+VKvUbnz1hUqw1aMnsi96UbI=;
- b=MSv/oRAHVqqM5O0g8ibbSF4gNy6HvOWA548It6FXZwrcEF6ZZs56zUHZEByMzL+rudN0mz
- HGM+2COcrIRO3Uo8+Ml7Xvgm7FA8gTrPqcUDM8G4uNXF9J1llxVjQiqFqT4EXfosjf+rr1
- ylE6ZV19cfpYRGMxCDK/Fv33kLXu5vs=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-461-lYGhiRPPP1O8rRCprqRW4g-1; Mon,
- 19 Jan 2026 16:29:11 -0500
-X-MC-Unique: lYGhiRPPP1O8rRCprqRW4g-1
-X-Mimecast-MFC-AGG-ID: lYGhiRPPP1O8rRCprqRW4g_1768858150
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E90E019560A1; Mon, 19 Jan 2026 21:29:09 +0000 (UTC)
-Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.170])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D5C8D19560AB; Mon, 19 Jan 2026 21:29:06 +0000 (UTC)
-From: John Snow <jsnow@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Kevin Wolf <kwolf@redhat.com>, Maksim Davydov <davydov-max@yandex-team.ru>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Li-Wen Hsu <lwhsu@freebsd.org>, Markus Armbruster <armbru@redhat.com>,
- Thomas Huth <thuth@redhat.com>, John Snow <jsnow@redhat.com>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Hanna Reitz <hreitz@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Michael Roth <michael.roth@amd.com>, Yonggang Luo <luoyonggang@gmail.com>,
- Ed Maste <emaste@freebsd.org>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-block@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v4 17/17] RFC: exclude pyvenv targets from "make check-build"
-Date: Mon, 19 Jan 2026 16:27:43 -0500
-Message-ID: <20260119212744.1275455-18-jsnow@redhat.com>
-In-Reply-To: <20260119212744.1275455-1-jsnow@redhat.com>
-References: <20260119212744.1275455-1-jsnow@redhat.com>
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1vhwzt-0003Sw-7i
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:41:19 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1768858859; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=SG3enuD/4oyeD8iPun3GMwfwolIlQKdObY6F2d/UPgVtWAa25ugZIjmMe4homJxlxkSR4EMIEeBxfkawR6p1qdCiHB075XPCldmqQbwGGGqpW+IVBHysJc1gaANPNRMF7hKpQGrKjww45cUQhPj+7YCNj2mXsBzEIdKRGuIKVB8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1768858859;
+ h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=xhwCRbx4cjp2IpZrG7sRkybgnIqhXbxjo05ipNa5APs=; 
+ b=eA0izDtKYQfgnrOzo+eT5hMqDC3x3kw/hbkbbWyLHqkf4fi6pOC7Dt5HSv28b1+euBoPXWpVYDY8tKi4c5Klpa1niqjB/vgkK7QDaq1KokdQJRRqchiOoWNk1OcFI43muVHTt1XRlpqahhTTxnugFhwDX3WWqKXOBTuhpDwtVuc=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+ dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1768858859; 
+ s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
+ h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=xhwCRbx4cjp2IpZrG7sRkybgnIqhXbxjo05ipNa5APs=;
+ b=U3o1q+gBHUAn0W8OMN0rHri3lq3YMNd8u2H6mux2yLqMh0im1xWRUq0ZMbd+oJ5c
+ s8c0ExRvFOX2VSxqQtbD0+0Hxz3f6GJR25JcTpJ3iniQDv7xcP1fG0LjNOuH3Nhx0dE
+ rgFoZI2/OMugYSJ7EUgclLMEPh4Uj/elMS5lxU0g=
+Received: by mx.zohomail.com with SMTPS id 1768858857895970.930405994819;
+ Mon, 19 Jan 2026 13:40:57 -0800 (PST)
+Message-ID: <e2219c76-1c4b-46e5-8b96-a04884880a88@collabora.com>
+Date: Tue, 20 Jan 2026 00:40:50 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v9 3/5] virtio-gpu: Replace finish_unmapping with
+ mapping_state
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ Huang Rui <ray.huang@amd.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Yiwei Zhang <zzyiwei@gmail.com>, Sergio Lopez Pascual <slp@redhat.com>
+Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
+ Gurchetan Singh <gurchetansingh@chromium.org>, Alyssa Ross <hi@alyssa.is>,
+ =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Stefano Stabellini <stefano.stabellini@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
+ Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
+ Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>,
+ Robert Beckett <bob.beckett@collabora.com>
+References: <20260112225246.3526313-1-dmitry.osipenko@collabora.com>
+ <20260112225246.3526313-4-dmitry.osipenko@collabora.com>
+ <1011721c-cc29-4e85-a6fe-c26398685ba1@rsg.ci.i.u-tokyo.ac.jp>
+ <72a78f94-97cc-4523-bb05-514a3c5f45d7@collabora.com>
+ <b7c6f158-f263-4e19-b30c-406312cbee93@rsg.ci.i.u-tokyo.ac.jp>
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Content-Language: en-US
+In-Reply-To: <b7c6f158-f263-4e19-b30c-406312cbee93@rsg.ci.i.u-tokyo.ac.jp>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-ZohoMailClient: External
+Received-SPF: pass client-ip=136.143.188.112;
+ envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.016,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,35 +100,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch removes python venv preparation steps from "make check-build".
+On 1/19/26 08:54, Akihiko Odaki wrote:
+> On 2026/01/19 1:28, Dmitry Osipenko wrote:
+>> On 1/13/26 07:51, Akihiko Odaki wrote:
+>>> On 2026/01/13 7:52, Dmitry Osipenko wrote:
+>>>> Allow virtio_gpu_virgl_unmap_resource_blob() to be invoked while async
+>>>> unmapping is in progress. Do it in preparation to improvement of
+>>>> virtio-gpu
+>>>> resetting that will require this change.
+>>>>
+>>>> Suggested-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+>>>> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+>>>> ---
+>>>>    hw/display/trace-events       |  2 +-
+>>>>    hw/display/virtio-gpu-virgl.c | 28 +++++++++++++++++++++++-----
+>>>>    2 files changed, 24 insertions(+), 6 deletions(-)
+>>>>
+>>>> diff --git a/hw/display/trace-events b/hw/display/trace-events
+>>>> index e323a82cff24..4bfc457fbac1 100644
+>>>> --- a/hw/display/trace-events
+>>>> +++ b/hw/display/trace-events
+>>>> @@ -39,7 +39,7 @@ virtio_gpu_cmd_res_create_2d(uint32_t res, uint32_t
+>>>> fmt, uint32_t w, uint32_t h)
+>>>>    virtio_gpu_cmd_res_create_3d(uint32_t res, uint32_t fmt, uint32_t w,
+>>>> uint32_t h, uint32_t d) "res 0x%x, fmt 0x%x, w %d, h %d, d %d"
+>>>>    virtio_gpu_cmd_res_create_blob(uint32_t res, uint64_t size) "res
+>>>> 0x%x, size %" PRId64
+>>>>    virtio_gpu_cmd_res_map_blob(uint32_t res, void *vmr, void *mr) "res
+>>>> 0x%x, vmr %p, mr %p"
+>>>> -virtio_gpu_cmd_res_unmap_blob(uint32_t res, void *mr, bool
+>>>> finish_unmapping) "res 0x%x, mr %p, finish_unmapping %d"
+>>>> +virtio_gpu_cmd_res_unmap_blob(uint32_t res, void *mr, int
+>>>> mapping_state) "res 0x%x, mr %p, mapping_state %d"
+>>>>    virtio_gpu_cmd_res_unref(uint32_t res) "res 0x%x"
+>>>>    virtio_gpu_cmd_res_back_attach(uint32_t res) "res 0x%x"
+>>>>    virtio_gpu_cmd_res_back_detach(uint32_t res) "res 0x%x"
+>>>> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-
+>>>> virgl.c
+>>>> index 6a2aac0b6e5c..342e93728df0 100644
+>>>> --- a/hw/display/virtio-gpu-virgl.c
+>>>> +++ b/hw/display/virtio-gpu-virgl.c
+>>>> @@ -68,10 +68,16 @@ virgl_get_egl_display(G_GNUC_UNUSED void *cookie)
+>>>>    #endif
+>>>>      #if VIRGL_VERSION_MAJOR >= 1
+>>>> +enum virtio_gpu_virgl_hostmem_region_mapping_state {
+>>>> +    VIRTIO_GPU_MR_MAPPED,
+>>>> +    VIRTIO_GPU_MR_UNMAP_STARTED,
+>>>> +    VIRTIO_GPU_MR_UNMAP_COMPLETED,
+>>>> +};
+>>>> +
+>>>>    struct virtio_gpu_virgl_hostmem_region {
+>>>>        MemoryRegion mr;
+>>>>        struct VirtIOGPU *g;
+>>>> -    bool finish_unmapping;
+>>>> +    enum virtio_gpu_virgl_hostmem_region_mapping_state mapping_state;
+>>>>    };
+>>>>      static struct virtio_gpu_virgl_hostmem_region *
+>>>> @@ -95,7 +101,7 @@ static void
+>>>> virtio_gpu_virgl_hostmem_region_free(void *obj)
+>>>>        VirtIOGPUGL *gl;
+>>>>          vmr = to_hostmem_region(mr);
+>>>> -    vmr->finish_unmapping = true;
+>>>> +    vmr->mapping_state = VIRTIO_GPU_MR_UNMAP_COMPLETED;
+>>>>          b = VIRTIO_GPU_BASE(vmr->g);
+>>>>        b->renderer_blocked--;
+>>>> @@ -135,6 +141,7 @@ virtio_gpu_virgl_map_resource_blob(VirtIOGPU *g,
+>>>>          vmr = g_new0(struct virtio_gpu_virgl_hostmem_region, 1);
+>>>>        vmr->g = g;
+>>>> +    vmr->mapping_state = VIRTIO_GPU_MR_MAPPED;
+>>>>          mr = &vmr->mr;
+>>>>        memory_region_init_ram_ptr(mr, OBJECT(mr), "blob", size, data);
+>>>> @@ -171,7 +178,8 @@ virtio_gpu_virgl_unmap_resource_blob(VirtIOGPU *g,
+>>>>          vmr = to_hostmem_region(res->mr);
+>>>>    -    trace_virtio_gpu_cmd_res_unmap_blob(res->base.resource_id, mr,
+>>>> vmr->finish_unmapping);
+>>>> +    trace_virtio_gpu_cmd_res_unmap_blob(res->base.resource_id, mr,
+>>>> +                                        vmr->mapping_state);
+>>>>          /*
+>>>>         * Perform async unmapping in 3 steps:
+>>>> @@ -182,7 +190,8 @@ virtio_gpu_virgl_unmap_resource_blob(VirtIOGPU *g,
+>>>>         *    asynchronously by virtio_gpu_virgl_hostmem_region_free().
+>>>>         * 3. Finish the unmapping with final
+>>>> virgl_renderer_resource_unmap().
+>>>>         */
+>>>> -    if (vmr->finish_unmapping) {
+>>>> +    switch (vmr->mapping_state) {
+>>>> +    case VIRTIO_GPU_MR_UNMAP_COMPLETED:
+>>>>            res->mr = NULL;
+>>>>            g_free(vmr);
+>>>>    @@ -193,15 +202,24 @@ virtio_gpu_virgl_unmap_resource_blob(VirtIOGPU
+>>>> *g,
+>>>>                              __func__, strerror(-ret));
+>>>>                return ret;
+>>>>            }
+>>>> -    } else {
+>>>> +        break;
+>>>> +
+>>>> +    case VIRTIO_GPU_MR_MAPPED:
+>>>>            *cmd_suspended = true;
+>>>>              /* render will be unblocked once MR is freed */
+>>>>            b->renderer_blocked++;
+>>>>    +        vmr->mapping_state = VIRTIO_GPU_MR_UNMAP_STARTED;
+>>>> +
+>>>>            /* memory region owns self res->mr object and frees it by
+>>>> itself */
+>>>>            memory_region_del_subregion(&b->hostmem, mr);
+>>>>            object_unparent(OBJECT(mr));
+>>>> +        break;
+>>>
+>>> I suggest:
+>>>
+>>> - Put vmr->mapping_state = VIRTIO_GPU_MR_UNMAP_STARTED; here
+>>> - Remove *cmd_suspended = true for VIRTIO_GPU_MR_MAPPED.
+>>> - Let it fall through.
+>>>
+>>> This way, it is clear that we need to execute *cmd_suspended = true
+>>> because the state is now VIRTIO_GPU_MR_UNMAP_STARTED, and we can save on
+>>> line by not having a duplicate *cmd_suspended = true.
+>>
+>> The `mapping_state = VIRTIO_GPU_MR_UNMAP_STARTED` shall be set before
+>> memory_region_del_subregion() is invoked because technically refcounting
+>> logic may change in future and MR may become freed instantly. Will only
+>> add the fall-through if no objections, otherwise please comment on v10.
+> 
+> That makes sense.
+> 
+> Strictly speaking, even if the refcounting change happens,
+> qemu_bh_schedule(gl->cmdq_resume_bh) will delay the next invocation of
+> this function in virtio_gpu_virgl_hostmem_region_free(). But even
+> virtio_gpu_virgl_hostmem_region_free() can be changed in the future so I
+> no longer believe moving `mapping_state = VIRTIO_GPU_MR_UNMAP_STARTED`
+> is absolutely good. Please choose a design option you prefer.
 
-Thomas pointed out that "make check-build" was installing all venv
-preparation targets, which may or may not be desired. In case it isn't
-desired, this patch showcases a crude hack to bypass it.
+virtio_gpu_virgl_hostmem_region_free() changes state to UNMAP_COMPLETED,
+hence the UNMAP_STARTED need to be set before region_free() invoked.
+Will keep the v10 variant then, thanks.
 
-Signed-off-by: John Snow <jsnow@redhat.com>
----
- scripts/mtest2make.py | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/scripts/mtest2make.py b/scripts/mtest2make.py
-index 4b252defc3f..f102369287b 100644
---- a/scripts/mtest2make.py
-+++ b/scripts/mtest2make.py
-@@ -82,9 +82,11 @@ def emit_prolog(suites, prefix):
- 
- def emit_suite(name, suite, prefix):
-     deps = ' '.join(suite.deps)
-+    testdeps = ' '.join([x for x in suite.deps if 'pyvenv' not in x])
-     print()
-     print(f'.{prefix}-{name}.deps = {deps}')
--    print(f'.ninja-goals.check-build += $(.{prefix}-{name}.deps)')
-+    print(f'.{prefix}-{name}.testdeps = {testdeps}')
-+    print(f'.ninja-goals.check-build += $(.{prefix}-{name}.testdeps)')
- 
-     names = ' '.join(suite.names(name))
-     targets = f'{prefix}-{name} {prefix}-report-{name}.junit.xml'
 -- 
-2.52.0
-
+Best regards,
+Dmitry
 
