@@ -2,127 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BFA1D3B652
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 19:55:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D482D3B6B7
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 20:05:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhuO7-0000Jx-9P; Mon, 19 Jan 2026 13:54:07 -0500
+	id 1vhuYN-0003kJ-1h; Mon, 19 Jan 2026 14:04:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vhuNn-0000A6-Rw
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 13:53:48 -0500
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vhuNl-00063W-VM
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 13:53:47 -0500
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-2a0d6f647e2so44974365ad.1
- for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 10:53:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768848824; x=1769453624; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=AY5MzOw4a8HckOvh6QLzD6UgkgdI/FRbQtUT79On6BI=;
- b=sJjn6Ooe5H5wAD23o9eEV/NYDKdmmllJXrtlPnW46d5UOhQxf/5rEE4B2dTZNblGgO
- O2LlTdpcvyBhp5URdvbdk9Gf3EVtRPYGbDvZuVxPEMLj7Viru0vlqImXrZaFWXIG9lCA
- 7n0p2OoWC6R/Ft/gTIzewWWMV3Hx2VdqR2mN4pU6J2PzafnwL5CGcGgwcwjyClGyuphT
- i7dp+rI/JN7HFFJNF6dlhy1Ticli0W+cje4Af9OlOrWR8+59DlxcWNBJEOSN2GLfQR0c
- lrB1DOdnKFdofcs6dTQOnN9ptmiS3VIsmuUmRLI/UTWvxdxWFYZNVaBuHAFQxVL8nDCE
- iyJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768848824; x=1769453624;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=AY5MzOw4a8HckOvh6QLzD6UgkgdI/FRbQtUT79On6BI=;
- b=h91OXACDR5f0QjIXMhK7Tzb5XPD57dx3CarxNAu9E8rl4VDXzEff1+dwHF6zH6YRko
- bIKtvnpC7zHZzdS3vdksIHM7pq/GFWdVjJ1QOpWHGi23YP7jhu6djVnSm8TO3uu21+m8
- pVFqmSjrh/au3hA/g2Yu5qM6BBwakamrViJH4VYq8VDT9VRx+d8lYKXVDgxG7H4wz5P1
- gVFJI5Xtvy8O+1Nrz2F+G6JCLDQ6CatujzPYFN+VxOJzoanthhis/dcaSJmfaiyYwOso
- FWqptKdNI12wdyfA05BiUM+KSbOqKJ1SJVkOa5YFUdoLp+quAqwTZXZNKC0FKG5Lm9io
- /cWg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWFx31os+BuQhl5XZC9oGUdgwSgmUs6Xyo0aLYYtgNy2lAGWfKlmg99HhBuTUaip/C8FjlSXQV3nisw@nongnu.org
-X-Gm-Message-State: AOJu0Yyd+VNgENbtO1GD/b/Xici2DHc4aXbaU+sPiz+3JodoeadkkW3y
- m52bKMCjoA1cEnjGLJp78YAMAsQsOjxYnjF3U7pJE2iWHCMkeOcAqgZyLRNBtP3t/EM=
-X-Gm-Gg: AZuq6aJxYmqmJZk3tDpus7TdPpqRlbFaX2BeX2a1nflr/Kdm8RuHTqJYcFeakbX0E1L
- dMX5pZvN+GmymcxcC55vmTdNtrFwuaKBv4slmETXgyHH3HmG4XvDR3oQKOFpXU2JVyvsRyVeU89
- mLbblQ+KWJypSr9boxQrQ4qpq0y+wJ2GKi5Dd4tknxrXwct7/Ot/vB/vxLfQhhfOM52+ltkPSco
- R/AqfXOxd7BLUNfmcEM7JbV9pyKack9Xl5D1G/hszOY9YGmoJiA0Ou+vPbnxYTPa8pfcCoWEn1B
- G61XjCG7vxc+eLXXsXke5MqkgWG8j0g3sq/vwP98C7qRphFH8yJMA52ZzimJg1B++SmuNYw6E3l
- 9M9xjy3l1MPdZI+8CcXzdinZwAp89mJN/Nq9kc3l77h3zI92rLGdg09JJKvyJsjysNyJ6OhhHBQ
- 5N3daY6zH1wB5o9foZCzLmzMALXKi+3S2+Nl2lSa6R0SPS5+9Zn7tFAY68
-X-Received: by 2002:a17:902:f685:b0:295:96bc:8699 with SMTP id
- d9443c01a7336-2a7175408damr119166905ad.20.1768848824415; 
- Mon, 19 Jan 2026 10:53:44 -0800 (PST)
-Received: from [192.168.1.87] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a7193dca71sm99186625ad.48.2026.01.19.10.53.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 19 Jan 2026 10:53:43 -0800 (PST)
-Message-ID: <16e93209-efed-4bea-9e21-a5299154e9a9@linaro.org>
-Date: Mon, 19 Jan 2026 10:53:43 -0800
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1vhuY1-0003fG-QZ
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 14:04:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1vhuXz-00088l-Ov
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 14:04:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1768849457;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=8aJb/07z0tMj9R2kpuEKP4EmyMzUHF/QY09sNDIQwog=;
+ b=CNopljMUeeVHfl0mwMxxlUsiSBibk+l80HbBY0g0F5Pd5sBBGDoGXVvrUJB5JhP4uqJN+U
+ h7LQL0QCO+PBpkvoUw7+xmZ/C89QpQhnGJcwH91BPRw+5f0Q0aPe6a4bt/oG2OsBm6x+a/
+ RCLRL1/iohSW+v42PN9ntiZzlTiMHC4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-613-owqu9-vRMXeseAxhRaQZHQ-1; Mon,
+ 19 Jan 2026 14:04:16 -0500
+X-MC-Unique: owqu9-vRMXeseAxhRaQZHQ-1
+X-Mimecast-MFC-AGG-ID: owqu9-vRMXeseAxhRaQZHQ_1768849455
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F3090195422D; Mon, 19 Jan 2026 19:04:14 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.150])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 6E63A1800993; Mon, 19 Jan 2026 19:04:14 +0000 (UTC)
+Date: Mon, 19 Jan 2026 14:04:13 -0500
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, Mads Ynddal <mads@ynddal.dk>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v2] tests/tracetool: Honor the Python interpreter that
+ "configure" detected
+Message-ID: <20260119190413.GB834718@fedora>
+References: <20260115155318.37823-1-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] plugins: return bool from register r/w API
-Content-Language: en-US
-To: Florian Hofhammer <florian.hofhammer@fhofhammer.de>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-References: <f877dd79-1285-4752-811e-f0d430ff27fe@fhofhammer.de>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Autocrypt: addr=pierrick.bouvier@linaro.org; keydata=
- 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
- ZtfdHNZotF092MIH0IQC3poExQpV/WBYFAI=
-In-Reply-To: <f877dd79-1285-4752-811e-f0d430ff27fe@fhofhammer.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x632.google.com
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="4JrmfGCgP7/O/JiO"
+Content-Disposition: inline
+In-Reply-To: <20260115155318.37823-1-thuth@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.016,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -138,31 +84,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/19/26 5:18 AM, Florian Hofhammer wrote:
-> The qemu_plugin_{read,write} register API previously was inconsistent
-> with regard to its docstring (where a return value of both -1 and 0
-> would indicate an error) and to the memory read/write APIs, which
-> already return a boolean value to indicate success or failure.
-> Returning the number of bytes read or written is superfluous, as the
-> GByteArray* passed to the API functions already encodes the length.
-> See the linked thread for more details.
-> 
-> This patch moves from returning an int (number of bytes read/written) to
-> returning a bool from the register read/write API, bumps the plugin API
-> version, and adjusts plugins and tests accordingly.
-> 
-> Link: https://lore.kernel.org/qemu-devel/60089475-3891-4448-bfe0-8dd698cd2435@epfl.ch/
-> Signed-off-by: Florian Hofhammer <florian.hofhammer@fhofhammer.de>
+
+--4JrmfGCgP7/O/JiO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Jan 15, 2026 at 04:53:18PM +0100, Thomas Huth wrote:
+> From: Thomas Huth <thuth@redhat.com>
+>=20
+> The tracetool tests currently fail if the host installation does not
+> have a "python3" binary (and you compiled QEMU by selecting a different
+> one during the "configure" step). This happens because tracetool-test.py
+> executes scripts/tracetool.py directly, so that this script is run via
+> its shebang line. To fix the issue, use the same Python interpreter to
+> run scripts/tracetool.py as we are using to run the tracetool-test.py
+> script.
+>=20
+> Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->   contrib/plugins/execlog.c  | 14 ++++++++------
->   contrib/plugins/uftrace.c  |  8 ++++----
->   include/qemu/qemu-plugin.h | 19 +++++++++++--------
->   plugins/api.c              | 15 ++++++++-------
->   tests/tcg/plugins/insn.c   |  4 ++--
->   5 files changed, 33 insertions(+), 27 deletions(-)
-> 
+>  v2: Use sys.executable instead of passing the Python interpreter around
+>      via a PYTHON environment variable.
+>=20
+>  tests/tracetool/tracetool-test.py | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
-Thank you for the very quick patch Florian, looks great!
+Thanks, applied to my tracing tree:
+https://gitlab.com/stefanha/qemu/commits/tracing
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Stefan
+
+--4JrmfGCgP7/O/JiO
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmlugC0ACgkQnKSrs4Gr
+c8hehgf/VTnPWnKgjmi0dLZE0SsmvcVkqwC04FRb/nVW+UCc31eEmSvtWYte3KPc
+sCx+TFXKnQO1+GP80mZwTeKGX8fxleABU3xjHX/O/RlZmwDryGKXgEinVtj4qDl2
+wd9KVTqfXIMZM5hezemBXDWxGQRlBEmhVBlCyU8PmO81o3qrIzmYsCbh83X6txvH
+FiNWAbBvUgS9Dup74LdZs1NyNnTKWnMfMSqHsDDT5ye9maH5XDQ6thmH+SwtIwiz
+Md4gkmJ2uVXNhH8/3i/9pdqGhW06iV7IpQqeuUYd0g5C1Hbmim+9rzyn0aq4Hwil
+E+rH9ltE4eBYG76NqrYDMYVjIM97mw==
+=FcNq
+-----END PGP SIGNATURE-----
+
+--4JrmfGCgP7/O/JiO--
+
 
