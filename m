@@ -2,87 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3857FD39B93
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 01:08:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C03CBD39BAF
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 01:53:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhcoX-0001wJ-6b; Sun, 18 Jan 2026 19:08:13 -0500
+	id 1vhdV0-0003pu-0a; Sun, 18 Jan 2026 19:52:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vhcoH-0001rj-2M
- for qemu-devel@nongnu.org; Sun, 18 Jan 2026 19:07:57 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1vhcoF-00015n-DE
- for qemu-devel@nongnu.org; Sun, 18 Jan 2026 19:07:56 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-2a58f2e514eso23218425ad.3
- for <qemu-devel@nongnu.org>; Sun, 18 Jan 2026 16:07:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768781274; x=1769386074; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=dVPzdCnFdmlrffK3fWEylRJxEnVHNoCcDL2ufRITdLk=;
- b=WTvli8KhBPtZ0h6otPyq8teGrxCOc7VQ2HJoLCBHftpVWkBE4MNg83QeLP/+3EVSkZ
- ZjGAnSI1y302wQcNHV74QsopMQiIfm2f2+vg43LFNiUnv5FEyBQPMlyqN0HswnVoY4cz
- ygDAbBaKZ7M6ZsciZF3MqwbgK8U0cdS4PDp4X5yPVafGLFHmO/obAMAW5VSQVQ3BhXmr
- KCNv59K2FS1l5125i+1eBCuwQ4kVAmu67YcUBFkuvFKHjPx18vOuwATzB2xxsqqEvI6h
- JN69JoBTyUMp6yRebxGcAhBj/rA7FfpagulHqCSusyvebYuw/7YTcUip2ys6GZ4E+UAE
- bm8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768781274; x=1769386074;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=dVPzdCnFdmlrffK3fWEylRJxEnVHNoCcDL2ufRITdLk=;
- b=K6B+aQl3SFQrtKFqQAAY4WMiaPs0jJrf54ND8/80l1JOaO6QT03q23uk65tpTTPpwP
- YCw7VRxB4p9Fqdn9NCEzATcxMyrssc25S7I7qhq93mgLCqD9/mP/yZlHJ8AXBYFzI6BY
- Q8IAzO//rlmEH111ouXnnpseCpS/3tckT6QSXjjld8wLJPYNkcMUSN7m0XODuVkcRKyz
- k3ketRl5XVfoY9K5hbScrh/uuVNPSxP3h+PrO4sU0uGMmNPEQKRGMaWLgQBCHIxJNYWQ
- 1jP9KY8M0wcVEZ/18TwhByVHsBywUqVAs/hwdDWeA+4zRHbPEV7w1QeSlearD4I6usMg
- DF/Q==
-X-Gm-Message-State: AOJu0Yw8oBQFf0MTf1+zQjrusP0twlhCD7rVffBB+P3fT5GhusbwxTkh
- LRzeKzELRGPX4vtyMqEpj00mkVXkM13Gziap4USlvTJ2StqhU0xwZwmCW23Hnh0y4KjxSLqlP1q
- 4MPggi1e/WQ==
-X-Gm-Gg: AY/fxX6cJWWBjfHlnjC1oKOMy4/7H+J3CPlUe1yJs6ipBvkE/v0WyKryTCRVLKTYHGq
- 6qlKPxEzrvlMdu9G3l1v0Ae8w9x1U8fuVC+kQChw8y0mI321wJmYX/q7I8PIOZ1Es+x3MjzE58U
- g0fWbksommwmZ+fqWOivuG+M7yyiamcRsL44bbFOx5fQ+DxsWLX3Pch0Ba7ulHv6p9AUSz3klOS
- g94O0UHiCtM5qz0oq4c2SH86eXriSX/j29yIOYKz0Qg/UpyX6znMUVi9VaNs5VXEd2H9gjVkCGi
- cdKbxJRe+J4REsRwxCusPiR7QHPlrU8ksDBNjUHRzhWBzyj6ViUVSApuhi4wa7fqS+0E5u7lzrY
- dFjLK1pNs2pG10f8forc+tjGutY1mSdYCzfYukkLiaO2oV8MhUGn+DFPzs8Chh+8WElJCuGeE4I
- fxrP9BYETA2GJLYbybaghp9HjYlw9L
-X-Received: by 2002:a17:903:2bce:b0:29e:c2dd:85ea with SMTP id
- d9443c01a7336-2a71885a283mr83880435ad.11.1768781273617; 
- Sun, 18 Jan 2026 16:07:53 -0800 (PST)
-Received: from stoup.. ([180.233.125.201]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a7190eee39sm74872145ad.45.2026.01.18.16.07.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 Jan 2026 16:07:53 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com,
-	jim.macarthur@linaro.org
-Subject: [PATCH 3/3] tcg: Expand missing rotri with extract2
-Date: Mon, 19 Jan 2026 11:07:40 +1100
-Message-ID: <20260119000740.50516-4-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260119000740.50516-1-richard.henderson@linaro.org>
-References: <20260119000740.50516-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1vhdTu-0003aw-Nz
+ for qemu-devel@nongnu.org; Sun, 18 Jan 2026 19:51:05 -0500
+Received: from mx.treblig.org ([2a00:1098:5b::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1vhdTq-0007L7-Po
+ for qemu-devel@nongnu.org; Sun, 18 Jan 2026 19:50:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+ ; s=bytemarkmx;
+ h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
+ :Subject; bh=NDigq1LK0rR4uYH//Em4zAT3WceKTgcxIZcQGZALPK8=; b=CzdB7yo+ZgvcnR5m
+ JimABfCx2wmG4MW7crc6Od571tmGUSbQKZnvZRzou1bxq45kNjm95eYX0RuWEbFWSJajgk72Mteg8
+ IJ8yvfztvIzsgEruZ+cz94SptqAGRWPYm4Zh3z6urU2QMzUBCyRrmzchAHy2QvR06NgtEcdpMSSmV
+ I5KVQbQSRXbLoh8hSw6YLi+8LoZTGYVuICX5bO+Oom0eOf9S6vs/PLntCNDcGfIq+jm8RkUGWvT/u
+ XyG6L0aYoJYa7zmTK4fxflcBeAQMSxRfGqyrYJiv9bSRBkMM26qtC8iFmATI4xKKcRL1shDQxiyA6
+ K0Hz6fmdE89oTY5xHQ==;
+Received: from dg by mx.treblig.org with local (Exim 4.98.2)
+ (envelope-from <dg@treblig.org>) id 1vhdTm-0000000FepZ-2MaQ;
+ Mon, 19 Jan 2026 00:50:50 +0000
+Date: Mon, 19 Jan 2026 00:50:50 +0000
+From: "Dr. David Alan Gilbert" <dave@treblig.org>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH v2 3/8] monitor: Reduce target-specific methods
+Message-ID: <aW1_6lacDJaXHCFj@gallifrey>
+References: <20260117162926.74225-1-philmd@linaro.org>
+ <20260117162926.74225-4-philmd@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+In-Reply-To: <20260117162926.74225-4-philmd@linaro.org>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/6.12.48+deb13-amd64 (x86_64)
+X-Uptime: 00:50:40 up 84 days, 26 min,  2 users,  load average: 0.00, 0.00,
+ 0.00
+User-Agent: Mutt/2.2.13 (2024-03-09)
+Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
+ helo=mx.treblig.org
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,107 +72,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use extract2 to implement rotri.  To make this easier,
-redefine rotli in terms of rotri, rather than the reverse.
+* Philippe Mathieu-Daudé (philmd@linaro.org) wrote:
+> The following methods don't use target-specific code anymore:
+> - hmp_compare_cmd()
+> - monitor_register_hmp()
+> - monitor_register_hmp_info_hrt()
+> Move them to hmp.c which is target-agnostic, being built once.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tcg/tcg-op.c | 52 ++++++++++++++++++++++++----------------------------
- 1 file changed, 24 insertions(+), 28 deletions(-)
+Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
 
-diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
-index 8a4fd14ad5..078adce610 100644
---- a/tcg/tcg-op.c
-+++ b/tcg/tcg-op.c
-@@ -826,23 +826,12 @@ void tcg_gen_rotl_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2)
- void tcg_gen_rotli_i32(TCGv_i32 ret, TCGv_i32 arg1, int32_t arg2)
- {
-     tcg_debug_assert(arg2 >= 0 && arg2 < 32);
--    /* some cases can be optimized here */
-     if (arg2 == 0) {
-         tcg_gen_mov_i32(ret, arg1);
-     } else if (tcg_op_supported(INDEX_op_rotl, TCG_TYPE_I32, 0)) {
--        TCGv_i32 t0 = tcg_constant_i32(arg2);
--        tcg_gen_op3_i32(INDEX_op_rotl, ret, arg1, t0);
--    } else if (tcg_op_supported(INDEX_op_rotr, TCG_TYPE_I32, 0)) {
--        TCGv_i32 t0 = tcg_constant_i32(32 - arg2);
--        tcg_gen_op3_i32(INDEX_op_rotr, ret, arg1, t0);
-+        tcg_gen_op3_i32(INDEX_op_rotl, ret, arg1, tcg_constant_i32(arg2));
-     } else {
--        TCGv_i32 t0 = tcg_temp_ebb_new_i32();
--        TCGv_i32 t1 = tcg_temp_ebb_new_i32();
--        tcg_gen_shli_i32(t0, arg1, arg2);
--        tcg_gen_shri_i32(t1, arg1, 32 - arg2);
--        tcg_gen_or_i32(ret, t0, t1);
--        tcg_temp_free_i32(t0);
--        tcg_temp_free_i32(t1);
-+        tcg_gen_rotri_i32(ret, arg1, -arg2 & 31);
-     }
- }
- 
-@@ -870,7 +859,16 @@ void tcg_gen_rotr_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2)
- void tcg_gen_rotri_i32(TCGv_i32 ret, TCGv_i32 arg1, int32_t arg2)
- {
-     tcg_debug_assert(arg2 >= 0 && arg2 < 32);
--    tcg_gen_rotli_i32(ret, arg1, -arg2 & 31);
-+    if (arg2 == 0) {
-+        tcg_gen_mov_i32(ret, arg1);
-+    } else if (tcg_op_supported(INDEX_op_rotr, TCG_TYPE_I32, 0)) {
-+        tcg_gen_op3_i32(INDEX_op_rotr, ret, arg1, tcg_constant_i32(arg2));
-+    } else if (tcg_op_supported(INDEX_op_rotl, TCG_TYPE_I32, 0)) {
-+        tcg_gen_op3_i32(INDEX_op_rotl, ret, arg1, tcg_constant_i32(32 - arg2));
-+    } else {
-+        /* Do not recurse with the rotri simplification. */
-+        tcg_gen_op4i_i32(INDEX_op_extract2, ret, arg1, arg1, arg2);
-+    }
- }
- 
- void tcg_gen_deposit_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2,
-@@ -2042,23 +2040,12 @@ void tcg_gen_rotl_i64(TCGv_i64 ret, TCGv_i64 arg1, TCGv_i64 arg2)
- void tcg_gen_rotli_i64(TCGv_i64 ret, TCGv_i64 arg1, int64_t arg2)
- {
-     tcg_debug_assert(arg2 >= 0 && arg2 < 64);
--    /* some cases can be optimized here */
-     if (arg2 == 0) {
-         tcg_gen_mov_i64(ret, arg1);
-     } else if (tcg_op_supported(INDEX_op_rotl, TCG_TYPE_I64, 0)) {
--        TCGv_i64 t0 = tcg_constant_i64(arg2);
--        tcg_gen_op3_i64(INDEX_op_rotl, ret, arg1, t0);
--    } else if (tcg_op_supported(INDEX_op_rotr, TCG_TYPE_I64, 0)) {
--        TCGv_i64 t0 = tcg_constant_i64(64 - arg2);
--        tcg_gen_op3_i64(INDEX_op_rotr, ret, arg1, t0);
-+        tcg_gen_op3_i64(INDEX_op_rotl, ret, arg1, tcg_constant_i64(arg2));
-     } else {
--        TCGv_i64 t0 = tcg_temp_ebb_new_i64();
--        TCGv_i64 t1 = tcg_temp_ebb_new_i64();
--        tcg_gen_shli_i64(t0, arg1, arg2);
--        tcg_gen_shri_i64(t1, arg1, 64 - arg2);
--        tcg_gen_or_i64(ret, t0, t1);
--        tcg_temp_free_i64(t0);
--        tcg_temp_free_i64(t1);
-+        tcg_gen_rotri_i64(ret, arg1, -arg2 & 63);
-     }
- }
- 
-@@ -2086,7 +2073,16 @@ void tcg_gen_rotr_i64(TCGv_i64 ret, TCGv_i64 arg1, TCGv_i64 arg2)
- void tcg_gen_rotri_i64(TCGv_i64 ret, TCGv_i64 arg1, int64_t arg2)
- {
-     tcg_debug_assert(arg2 >= 0 && arg2 < 64);
--    tcg_gen_rotli_i64(ret, arg1, -arg2 & 63);
-+    if (arg2 == 0) {
-+        tcg_gen_mov_i64(ret, arg1);
-+    } else if (tcg_op_supported(INDEX_op_rotr, TCG_TYPE_I64, 0)) {
-+        tcg_gen_op3_i64(INDEX_op_rotr, ret, arg1, tcg_constant_i64(arg2));
-+    } else if (tcg_op_supported(INDEX_op_rotl, TCG_TYPE_I64, 0)) {
-+        tcg_gen_op3_i64(INDEX_op_rotl, ret, arg1, tcg_constant_i64(64 - arg2));
-+    } else {
-+        /* Do not recurse with the rotri simplification. */
-+        tcg_gen_op4i_i64(INDEX_op_extract2, ret, arg1, arg1, arg2);
-+    }
- }
- 
- void tcg_gen_deposit_i64(TCGv_i64 ret, TCGv_i64 arg1, TCGv_i64 arg2,
+> ---
+>  monitor/hmp-target.c | 57 --------------------------------------------
+>  monitor/hmp.c        | 55 ++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 55 insertions(+), 57 deletions(-)
+> 
+> diff --git a/monitor/hmp-target.c b/monitor/hmp-target.c
+> index 59c60d13b52..420969bd6eb 100644
+> --- a/monitor/hmp-target.c
+> +++ b/monitor/hmp-target.c
+> @@ -33,8 +33,6 @@
+>  #include "qapi/qapi-commands-control.h"
+>  #include "qapi/qapi-commands-misc.h"
+>  #include "qapi/qapi-commands-machine.h"
+> -#include "qapi/error.h"
+> -#include "qemu/cutils.h"
+>  
+>  #if defined(TARGET_S390X)
+>  #include "hw/s390x/storage-keys.h"
+> @@ -44,29 +42,6 @@
+>  /* Make devices configuration available for use in hmp-commands*.hx templates */
+>  #include CONFIG_DEVICES
+>  
+> -/**
+> - * Is @name in the '|' separated list of names @list?
+> - */
+> -int hmp_compare_cmd(const char *name, const char *list)
+> -{
+> -    const char *p, *pstart;
+> -    int len;
+> -    len = strlen(name);
+> -    p = list;
+> -    for (;;) {
+> -        pstart = p;
+> -        p = qemu_strchrnul(p, '|');
+> -        if ((p - pstart) == len && !memcmp(pstart, name, len)) {
+> -            return 1;
+> -        }
+> -        if (*p == '\0') {
+> -            break;
+> -        }
+> -        p++;
+> -    }
+> -    return 0;
+> -}
+> -
+>  /* Please update hmp-commands.hx when adding or changing commands */
+>  static HMPCommand hmp_info_cmds[] = {
+>  #include "hmp-commands-info.h"
+> @@ -147,35 +122,3 @@ static void __attribute__((__constructor__)) sortcmdlist(void)
+>            sizeof(*hmp_info_cmds),
+>            compare_mon_cmd);
+>  }
+> -
+> -void monitor_register_hmp(const char *name, bool info,
+> -                          void (*cmd)(Monitor *mon, const QDict *qdict))
+> -{
+> -    HMPCommand *table = hmp_cmds_for_target(info);
+> -
+> -    while (table->name != NULL) {
+> -        if (strcmp(table->name, name) == 0) {
+> -            g_assert(table->cmd == NULL && table->cmd_info_hrt == NULL);
+> -            table->cmd = cmd;
+> -            return;
+> -        }
+> -        table++;
+> -    }
+> -    g_assert_not_reached();
+> -}
+> -
+> -void monitor_register_hmp_info_hrt(const char *name,
+> -                                   HumanReadableText *(*handler)(Error **errp))
+> -{
+> -    HMPCommand *table = hmp_cmds_for_target(true);
+> -
+> -    while (table->name != NULL) {
+> -        if (strcmp(table->name, name) == 0) {
+> -            g_assert(table->cmd == NULL && table->cmd_info_hrt == NULL);
+> -            table->cmd_info_hrt = handler;
+> -            return;
+> -        }
+> -        table++;
+> -    }
+> -    g_assert_not_reached();
+> -}
+> diff --git a/monitor/hmp.c b/monitor/hmp.c
+> index 17e5756986f..0a5bbf82197 100644
+> --- a/monitor/hmp.c
+> +++ b/monitor/hmp.c
+> @@ -1497,3 +1497,58 @@ void monitor_init_hmp(Chardev *chr, bool use_readline, Error **errp)
+>                               monitor_event, NULL, &mon->common, NULL, true);
+>      monitor_list_append(&mon->common);
+>  }
+> +
+> +/**
+> + * Is @name in the '|' separated list of names @list?
+> + */
+> +int hmp_compare_cmd(const char *name, const char *list)
+> +{
+> +    const char *p, *pstart;
+> +    int len;
+> +    len = strlen(name);
+> +    p = list;
+> +    for (;;) {
+> +        pstart = p;
+> +        p = qemu_strchrnul(p, '|');
+> +        if ((p - pstart) == len && !memcmp(pstart, name, len)) {
+> +            return 1;
+> +        }
+> +        if (*p == '\0') {
+> +            break;
+> +        }
+> +        p++;
+> +    }
+> +    return 0;
+> +}
+> +
+> +void monitor_register_hmp(const char *name, bool info,
+> +                          void (*cmd)(Monitor *mon, const QDict *qdict))
+> +{
+> +    HMPCommand *table = hmp_cmds_for_target(info);
+> +
+> +    while (table->name != NULL) {
+> +        if (strcmp(table->name, name) == 0) {
+> +            g_assert(table->cmd == NULL && table->cmd_info_hrt == NULL);
+> +            table->cmd = cmd;
+> +            return;
+> +        }
+> +        table++;
+> +    }
+> +    g_assert_not_reached();
+> +}
+> +
+> +void monitor_register_hmp_info_hrt(const char *name,
+> +                                   HumanReadableText *(*handler)(Error **errp))
+> +{
+> +    HMPCommand *table = hmp_cmds_for_target(true);
+> +
+> +    while (table->name != NULL) {
+> +        if (strcmp(table->name, name) == 0) {
+> +            g_assert(table->cmd == NULL && table->cmd_info_hrt == NULL);
+> +            table->cmd_info_hrt = handler;
+> +            return;
+> +        }
+> +        table++;
+> +    }
+> +    g_assert_not_reached();
+> +}
+> -- 
+> 2.52.0
+> 
 -- 
-2.43.0
-
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
 
