@@ -2,110 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFC41D3AB5E
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 15:13:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46A32D3AB83
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 15:20:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhpzp-0000g7-4T; Mon, 19 Jan 2026 09:12:45 -0500
+	id 1vhq6X-0000Vy-I8; Mon, 19 Jan 2026 09:19:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1vhpzo-0000eF-3c
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 09:12:44 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1vhpzl-0007qA-Mh
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 09:12:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768831959;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=4yJcbJXxa0NBg6e/UZTm6jpNfPmN7vOTkKCXm18lRc0=;
- b=AYbdcU+JnT6eYYCcJ8WZpl9YaYMGEHXRBKHbTiXju/lepevKCWiVRavrOprtkfkXgq3dnB
- 3YXMcLwGAeECgGbELwO6wH0CYGzmAyWI7aNRI42jnsAlvTTvyGwNcROe1RqQXR3McPnmwK
- CQkogD+wulwPV4TJwK5GBM5Z0L/gxBw=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-662-9ZVokaLCNNuboceqdYhCTg-1; Mon, 19 Jan 2026 09:12:37 -0500
-X-MC-Unique: 9ZVokaLCNNuboceqdYhCTg-1
-X-Mimecast-MFC-AGG-ID: 9ZVokaLCNNuboceqdYhCTg_1768831957
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-477c49f273fso40633955e9.3
- for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 06:12:37 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768831956; x=1769436756;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <chao.liu.zevorn@gmail.com>)
+ id 1vhq5w-0000Nd-AX
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 09:19:05 -0500
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <chao.liu.zevorn@gmail.com>)
+ id 1vhq5u-0001kk-Am
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 09:19:04 -0500
+Received: by mail-pl1-x643.google.com with SMTP id
+ d9443c01a7336-29f0f875bc5so29957215ad.3
+ for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 06:19:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1768832340; x=1769437140; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4yJcbJXxa0NBg6e/UZTm6jpNfPmN7vOTkKCXm18lRc0=;
- b=QPGsjUKcQeAs6prCrzZ+rdcIGIdosogv6VBbYT96XdFJX6m7PVrkxQG+qJOmQW5wY/
- NSBOrmRm6AE1tkEOTW8hjN3Vc+ueleD0aRA+b5IZ3gIwu5BpCLL62x3W7pUwgCoK9/DB
- 9GfDPZel9tUW6S7lT+1aJKDSS+V5EG82Ymr8m2UQ9Vi69Qp1XZrL2wle485vXtNdmcL8
- ssG+lsI3Kvw0oRmJY4KM6tr++SNW0NpAJh+VzDU/vW9hIIVNlPnjzbX84WtGQklGfY9t
- fl7PPM8ln9e9thDxi9QHyRswjhI6gA+TCeEjrlNs+L3jsK3ckrFGxseNHjiWNAk/Rvi6
- 5dUA==
+ bh=QbeXQg7wdyPMdZ1NdyneqHstd+QgsASKfM2ty1zMcgc=;
+ b=ZyAwmGVv6LXHUzXa0ZYR4whtVLg4kZ38X02sCfdj2BkyDKhexYXsFqV7/uSnOcuAH9
+ 3UW3dNoIC5dBwmzOfdYHf37LLIN0GM71IhwwMalA09RJ9xHoOybuhuZ7LBh11FxJWyzV
+ p/CgJyK+cwDSn59nPVE3wly90pCqKeQUg5/eEV9QuL3BSmx5E56vnaIGRqkvGdkYuAdF
+ t1Gt7kWxdnxx4ewT0b34vTxGBLdzJVZoQ46E/AIdV9+M/nyfCePU9Oad4kxA8xDz98Wj
+ 4Mvdr/4ERGToLjjawsqwCuJhYd0un6Be4i0sxQI+lClYCEjTAHhOxcbqai0zsw8AtJkz
+ Jy6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768832340; x=1769437140;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=QbeXQg7wdyPMdZ1NdyneqHstd+QgsASKfM2ty1zMcgc=;
+ b=B0ZYebvBf953/+022t/vjCgIVfmILAyaa4uqJ/4O4sQMnkkufTpKiPAxJyie0ehgHU
+ JmrmtMNlJ5UCBzYHDf/K0PHjaPYBs3QtCUq9LLl2V5rIMr8WzpbSbHPyOABfd9lHI2SJ
+ fIX9VrkRyhEUKn8DXE/1f7bD6oYvHTSEacaK/UcR4j/er4l70NudYeDcwJUtUuEIZpA+
+ mC5WAuIXh5JtGY1ZOEVrPzSioqEhb/RU6151cvm39RAON7xRPQsAm1ORiGcF4x97wwkn
+ YoYQp2l71Ky7u+QP3zdqX5yFbYnx9Vuz/fkP3N86n3cLXK8YGy5kO64oAUQV1Ebc1PcJ
+ ZOBg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVwHlRYrRpjhhBJv13mjD2pCIz3HGxBRm4i9OGbqKtyJFZv1/ufX94HSnVW+f3hTm8zQKV0klzTzJNo@nongnu.org
-X-Gm-Message-State: AOJu0Yx4IaXDqImQf/cI9E66xgXMaHerlck9ONuUQRfASayThOA/EmQx
- r1FaBL4d3yPfFdvPZnkqzLiE9daE7ANo3Iy4EQ8wZ7kw73+BbhtWXksMrcjjb8hFhVakmBH448u
- uWorNE5CJVa5t6SWIBjWacXbFEARK+Ona42C+YY9nEuqVD+TikefHWfBJtKJDGH3I
-X-Gm-Gg: AY/fxX4fazult3n41uYKfzkRMiwgyOE38AwiO6IgzlJ5u1+6wraiat8kbJ/Ecu77Nd4
- Tix01uM4MlPgKsmpOtkngpFDylKgJHZ8l/hehVJSEyxGKdsdqPzeqZXDwxDYlvq9yBxup7MP54i
- Lvz+/54MtgMyxBgKpq39GfFihAwv3+uIp4Mb1aCDwJUBh6uFwHx35ckjAMLEH6Ty7c203d1AULo
- rvWZV99Ahv/+guDq41jmdQ44HxULe8lofj3kaZVHAMQU/uz+XtfV4SsZshIqVbTWou6eT2/fLyu
- k7yadSns/t/mSooSZ8PwePUBzKE7putP27V1DJtk34sdGj39qnuLwueS1tXHLdu8VSRgSK84N1Q
- j40xTp4XF4WfLxqLOZs83g74iC53rdFoXNrxXdodd73CguBHHr8EylobPSA==
-X-Received: by 2002:a05:600c:5487:b0:477:755b:5587 with SMTP id
- 5b1f17b1804b1-4801e2f055amr141807715e9.8.1768831956302; 
- Mon, 19 Jan 2026 06:12:36 -0800 (PST)
-X-Received: by 2002:a05:600c:5487:b0:477:755b:5587 with SMTP id
- 5b1f17b1804b1-4801e2f055amr141807355e9.8.1768831955838; 
- Mon, 19 Jan 2026 06:12:35 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
- ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
+ AJvYcCXwKPhzR12gGNRsaC0dZX1jy8/9McJOim9d3Eo5AM/7AgcADJPp2ZIUy+KLogXb1rwmCANZSIRbRYT2@nongnu.org
+X-Gm-Message-State: AOJu0YzfZgQ7zhNI1yCccOZnuJyOK3AivsQWb4ixv3LJIchmZJKcSbKf
+ 0l6TyNFmweePNtWGAzWaREDMpGLLrYDRlGg7QTu5dipPG5Ol775fawpr
+X-Gm-Gg: AZuq6aKvcaBSWT4zTCx5If9wGDO2P674JO2+n+XUsBThRDRBX4gmkxlY0vh+/LWSGbY
+ ZkK+/a6Se3IyrrZt6WS2Nc/6fPh/+ykf0QZ9bWg2A3dHLugJDGh9ubEd3dZyoAxM3kIUZ4ru0PD
+ cpLsTw/CgmFxbxGJUuMCH7yy3inQLqvXUSqO/yhtnBkkd4GlOwPf7Jp41nDCn+Dyznwms330YR+
+ I77VFJqus6OCO4xW5lWOUPOsAc64hBc1BRzxW3qjKH3xCKEYm4RAi04J7BX+LLVAkSAOCr5WjDU
+ /a7xLI7DMXVaIqvvkCbQ05RZ9Dl+NqBQwS2Qu8I3raNsTi2A2NyvZuPWrnGm8J6HlVr20Gv6+vh
+ kUpp7f0ARiGylutVH6EJLDIayCcdmj7yHTc0rUQEqTet758jVVspvvLIUg6obOefjtvNc9guMhU
+ TaMTySlx64XB2i30thUK1Y1EaVOyibwL3CvwCF/nv9EReaj9vXqW42+hxp2gA=
+X-Received: by 2002:a17:903:1ae6:b0:2a2:f0cd:4351 with SMTP id
+ d9443c01a7336-2a7175c3241mr105612185ad.37.1768832339473; 
+ Mon, 19 Jan 2026 06:18:59 -0800 (PST)
+Received: from ZEVORN-PC.bbrouter ([183.195.22.240])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4801e8d90b3sm200129445e9.15.2026.01.19.06.12.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 19 Jan 2026 06:12:35 -0800 (PST)
-Message-ID: <386995bf-b5fc-4cb3-9a9e-8d598c86927f@redhat.com>
-Date: Mon, 19 Jan 2026 15:12:33 +0100
+ d9443c01a7336-2a7190c9e85sm96458745ad.26.2026.01.19.06.18.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 19 Jan 2026 06:18:59 -0800 (PST)
+From: Chao Liu <chao.liu.zevorn@gmail.com>
+To: dbarboza@ventanamicro.com
+Cc: alistair.francis@wdc.com, chao.liu.zevorn@gmail.com, liwei1518@gmail.com,
+ palmer@dabbelt.com, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
+ wangjingwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com
+Subject: Re: [RFC PATCH v1 1/8] riscv: split sdext and sdtrig config bits
+Date: Mon, 19 Jan 2026 22:18:49 +0800
+Message-ID: <20260119141849.773459-1-chao.liu.zevorn@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <d7fa00f7-7e10-454c-b4b1-03ac4862fc9d@ventanamicro.com>
+References: <d7fa00f7-7e10-454c-b4b1-03ac4862fc9d@ventanamicro.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 34/36] hw/pci: Factor out common PASID capability
- initialization
-Content-Language: en-US
-To: Shameer Kolothum <skolothumtho@nvidia.com>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, jgg@nvidia.com, nicolinc@nvidia.com,
- ddutile@redhat.com, berrange@redhat.com, clg@redhat.com, alex@shazbot.org,
- nathanc@nvidia.com, mochs@nvidia.com, smostafa@google.com,
- wangzhou1@hisilicon.com, jiangkunkun@huawei.com,
- jonathan.cameron@huawei.com, zhangfei.gao@linaro.org,
- zhenzhong.duan@intel.com, yi.l.liu@intel.com, kjaju@nvidia.com,
- "Michael S . Tsirkin" <mst@redhat.com>
-References: <20260111195508.106943-1-skolothumtho@nvidia.com>
- <20260111195508.106943-35-skolothumtho@nvidia.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20260111195508.106943-35-skolothumtho@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::643;
+ envelope-from=chao.liu.zevorn@gmail.com; helo=mail-pl1-x643.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.016,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,85 +98,164 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Daniel:
+
+On 1/19/2026 9:19 PM, Daniel Henrique Barboza wrote:
+>On 1/17/2026 1:27 AM, Chao Liu wrote:
+>> Add cfg.ext_sdext and cfg.ext_sdtrig and expose them as ISA
+>> extensions. Keep the legacy 'debug' CPU property as a global kill
+>> switch and force-disable both when it is off.
 
 
-On 1/11/26 8:53 PM, Shameer Kolothum wrote:
-> Refactor PCIe PASID capability initialization by moving the common
-> register init into a new helper, pcie_pasid_common_init().
->
-> Subsequent patch to synthesize a vPASID will make use of this
-> helper.
->
-> No functional change intended.
->
-> Cc: Michael S. Tsirkin <mst@redhat.com>
-> Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+>I would rather put the 'debug' flag in deprecation. It's a flag that at
+>this moment means 'enable sdtrig' and I'd rather get rid of it than
+>making it enable sdext too.
 
-Eric
-> ---
->  hw/pci/pcie.c         | 19 ++++++++++++-------
->  include/hw/pci/pcie.h |  2 ++
->  2 files changed, 14 insertions(+), 7 deletions(-)
->
-> diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-> index 8568a062a5..efd5588e96 100644
-> --- a/hw/pci/pcie.c
-> +++ b/hw/pci/pcie.c
-> @@ -1273,18 +1273,13 @@ void pcie_acs_reset(PCIDevice *dev)
->      }
->  }
->  
-> -/* PASID */
-> -void pcie_pasid_init(PCIDevice *dev, uint16_t offset, uint8_t pasid_width,
-> -                     bool exec_perm, bool priv_mod)
-> +void pcie_pasid_common_init(PCIDevice *dev, uint16_t offset,
-> +                            uint8_t pasid_width, bool exec_perm, bool priv_mod)
->  {
->      static const uint16_t control_reg_rw_mask = 0x07;
->      uint16_t capability_reg;
->  
->      assert(pasid_width <= PCI_EXT_CAP_PASID_MAX_WIDTH);
-> -
-> -    pcie_add_capability(dev, PCI_EXT_CAP_ID_PASID, PCI_PASID_VER, offset,
-> -                        PCI_EXT_CAP_PASID_SIZEOF);
-> -
->      capability_reg = ((uint16_t)pasid_width) << PCI_PASID_CAP_WIDTH_SHIFT;
->      capability_reg |= exec_perm ? PCI_PASID_CAP_EXEC : 0;
->      capability_reg |= priv_mod  ? PCI_PASID_CAP_PRIV : 0;
-> @@ -1296,6 +1291,16 @@ void pcie_pasid_init(PCIDevice *dev, uint16_t offset, uint8_t pasid_width,
->      pci_set_word(dev->wmask + offset + PCI_PASID_CTRL, control_reg_rw_mask);
->  
->      dev->exp.pasid_cap = offset;
-> +
-> +}
-> +
-> +/* PASID */
-> +void pcie_pasid_init(PCIDevice *dev, uint16_t offset, uint8_t pasid_width,
-> +                     bool exec_perm, bool priv_mod)
-> +{
-> +    pcie_add_capability(dev, PCI_EXT_CAP_ID_PASID, PCI_PASID_VER, offset,
-> +                        PCI_EXT_CAP_PASID_SIZEOF);
-> +    pcie_pasid_common_init(dev, offset, pasid_width, exec_perm, priv_mod);
->  }
->  
->  /* PRI */
-> diff --git a/include/hw/pci/pcie.h b/include/hw/pci/pcie.h
-> index d68bfa6257..fc02aeb169 100644
-> --- a/include/hw/pci/pcie.h
-> +++ b/include/hw/pci/pcie.h
-> @@ -155,6 +155,8 @@ void pcie_cap_slot_unplug_cb(HotplugHandler *hotplug_dev, DeviceState *dev,
->  void pcie_cap_slot_unplug_request_cb(HotplugHandler *hotplug_dev,
->                                       DeviceState *dev, Error **errp);
->  
-> +void pcie_pasid_common_init(PCIDevice *dev, uint16_t offset,
-> +                            uint8_t pasid_width, bool exec_perm, bool priv_mod);
->  void pcie_pasid_init(PCIDevice *dev, uint16_t offset, uint8_t pasid_width,
->                       bool exec_perm, bool priv_mod);
->  void pcie_pri_init(PCIDevice *dev, uint16_t offset, uint32_t outstanding_pr_cap,
+>But deprecating 'debug' is out of scope for this work and we can handle
+>it later. Matter of fact I might drop patches deprecating it today.
 
+>About enabling sdext by default, the patch is breaking bios-table-test
+>because we're adding an extra string in riscv,isa ...
+
+Thanks for the review :)
+
+Enabling sdext by default is indeed not a good idea, especially when it is
+not fully implemented,
+
+so I agree to set it to disable by default until it is fully available before
+considering whether to enable it by default.
+
+>>
+>> Trigger CSRs (tselect/tdata*/tinfo/mcontext) and trigger setup now
+>> depend on ext_sdtrig instead of cfg.debug.
+>>
+>> Signed-off-by: Chao Liu <chao.liu.zevorn@gmail.com>
+>> ---
+>>   target/riscv/cpu.c                | 18 +++++++++++++++---
+>>   target/riscv/cpu_cfg_fields.h.inc |  2 ++
+>>   target/riscv/csr.c                | 16 ++++++++--------
+>>   target/riscv/machine.c            |  4 ++--
+>>   target/riscv/tcg/tcg-cpu.c        | 11 +----------
+>>   5 files changed, 28 insertions(+), 23 deletions(-)
+>>
+>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>> index 73d4280d7c..bc0b385cc1 100644
+>> --- a/target/riscv/cpu.c
+>> +++ b/target/riscv/cpu.c
+>> @@ -189,7 +189,8 @@ const RISCVIsaExtData isa_edata_arr[] = {
+>>       ISA_EXT_DATA_ENTRY(zvkt, PRIV_VERSION_1_12_0, ext_zvkt),
+>>       ISA_EXT_DATA_ENTRY(zhinx, PRIV_VERSION_1_12_0, ext_zhinx),
+>>       ISA_EXT_DATA_ENTRY(zhinxmin, PRIV_VERSION_1_12_0, ext_zhinxmin),
+>> -    ISA_EXT_DATA_ENTRY(sdtrig, PRIV_VERSION_1_12_0, debug),
+>> +    ISA_EXT_DATA_ENTRY(sdext, PRIV_VERSION_1_12_0, ext_sdext),
+>> +    ISA_EXT_DATA_ENTRY(sdtrig, PRIV_VERSION_1_12_0, ext_sdtrig),
+>>       ISA_EXT_DATA_ENTRY(shcounterenw, PRIV_VERSION_1_12_0, has_priv_1_12),
+>>       ISA_EXT_DATA_ENTRY(sha, PRIV_VERSION_1_12_0, ext_sha),
+>>       ISA_EXT_DATA_ENTRY(shgatpa, PRIV_VERSION_1_12_0, has_priv_1_12),
+>> @@ -783,7 +784,7 @@ static void riscv_cpu_reset_hold(Object *obj, ResetType type)
+>>       env->vill = true;
+>>
+>>   #ifndef CONFIG_USER_ONLY
+>> -    if (cpu->cfg.debug) {
+>> +    if (cpu->cfg.ext_sdtrig) {
+>>           riscv_trigger_reset_hold(env);
+>>       }
+>>
+>> @@ -922,6 +923,15 @@ void riscv_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
+>>               return;
+>>           }
+>>       }
+>> +
+>> +    /*
+>> +     * Keep the legacy 'debug' CPU property as a global kill switch.
+>> +     * If it is off, force-disable Sdext/Sdtrig regardless of ISA strings.
+>> +     */
+>> +    if (!cpu->cfg.debug) {
+>> +        cpu->cfg.ext_sdext = false;
+>> +        cpu->cfg.ext_sdtrig = false;
+>> +    }
+>>   }
+>>
+>>   static void riscv_cpu_realize(DeviceState *dev, Error **errp)
+>> @@ -946,7 +956,7 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
+>>       riscv_cpu_register_gdb_regs_for_features(cs);
+>>
+>>   #ifndef CONFIG_USER_ONLY
+>> -    if (cpu->cfg.debug) {
+>> +    if (cpu->cfg.ext_sdtrig) {
+>>           riscv_trigger_realize(&cpu->env);
+>>       }
+>>   #endif
+>> @@ -1112,6 +1122,8 @@ static void riscv_cpu_init(Object *obj)
+>>        */
+>>       RISCV_CPU(obj)->cfg.ext_zicntr = !mcc->def->bare;
+>>       RISCV_CPU(obj)->cfg.ext_zihpm = !mcc->def->bare;
+>> +    RISCV_CPU(obj)->cfg.ext_sdext = true;
+>> +    RISCV_CPU(obj)->cfg.ext_sdtrig = true;
+
+
+> ^ here. Every time we change the defaults we have to dance around
+> bios-tables-test due to riscv,isa changes.
+
+> If we really want sdext to be enabled by default we should (1) only
+> enable it when the feature is already fully implemented and (2) changing
+> bios-tables-test according to avoid leaving broken tests.
+
+I agree, as stated above.
+
+> The remaining of the patch has the right idea, like here:
+
+
+>>
+>>       /* Default values for non-bool cpu properties */
+>>       cpu->cfg.pmu_mask = MAKE_64BIT_MASK(3, 16);
+>> diff --git a/target/riscv/cpu_cfg_fields.h.inc b/target/riscv/cpu_cfg_fields.h.inc
+>> index a154ecdc79..9701319195 100644
+>> --- a/target/riscv/cpu_cfg_fields.h.inc
+>> +++ b/target/riscv/cpu_cfg_fields.h.inc
+>> @@ -44,6 +44,8 @@ BOOL_FIELD(ext_zihpm)
+>>   BOOL_FIELD(ext_zimop)
+>>   BOOL_FIELD(ext_zcmop)
+>>   BOOL_FIELD(ext_ztso)
+>> +BOOL_FIELD(ext_sdext)
+>> +BOOL_FIELD(ext_sdtrig)
+>>   BOOL_FIELD(ext_smstateen)
+>>   BOOL_FIELD(ext_sstc)
+>>   BOOL_FIELD(ext_smcdeleg)
+>> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+>> index 5c91658c3d..4f071b1db2 100644
+>> --- a/target/riscv/csr.c
+>> +++ b/target/riscv/csr.c
+>> @@ -775,9 +775,9 @@ static RISCVException have_mseccfg(CPURISCVState *env, int csrno)
+>>       return RISCV_EXCP_ILLEGAL_INST;
+>>   }
+>>
+>> -static RISCVException debug(CPURISCVState *env, int csrno)
+>> +static RISCVException sdtrig(CPURISCVState *env, int csrno)
+>>   {
+>> -    if (riscv_cpu_cfg(env)->debug) {
+>> +    if (riscv_cpu_cfg(env)->ext_sdtrig) {
+>>           return RISCV_EXCP_NONE;
+>>       }
+
+> debug == sdtrig is what we want and we should use 'sdtrig' everywhere
+> 'debug' is appearing, but there's a particular way to go about it. We
+> need to add getters/setters for 'debug' that would enable/disable
+> sdtrig. We should avoid adding this kind of handling in init() or
+> finalize().
+
+> I can do that in a deprecation patch. You can use your patches to handle
+> sdext only.
+
+Thanks! I agree with this plan. I will focus on the implementation of sdext in
+subsequent patches.
+
+If you have patches related to handling debug flags, I will rebase them to
+continue the work on sdext.
+
+Thanks,
+Chao
 
