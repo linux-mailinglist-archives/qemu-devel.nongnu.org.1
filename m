@@ -2,62 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18E94D3A697
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 12:18:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47373D3A6E3
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 12:31:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhnH5-0004iX-31; Mon, 19 Jan 2026 06:18:23 -0500
+	id 1vhnTO-0007Et-HB; Mon, 19 Jan 2026 06:31:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1vhnH3-0004eX-FY
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 06:18:21 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1vhnT9-0007D9-8L
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 06:30:51 -0500
+Received: from smtp-relay-services-1.canonical.com ([185.125.188.251])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1vhnH1-0000eN-I9
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 06:18:21 -0500
-Received: from mail.maildlp.com (unknown [172.18.224.150])
- by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dvnxS4sNMzHnH7f;
- Mon, 19 Jan 2026 19:17:48 +0800 (CST)
-Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
- by mail.maildlp.com (Postfix) with ESMTPS id 5827340539;
- Mon, 19 Jan 2026 19:18:18 +0800 (CST)
-Received: from SecurePC-101-06.huawei.com (10.122.19.247) by
- dubpeml500005.china.huawei.com (7.214.145.207) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 19 Jan 2026 11:18:17 +0000
-To: Michael Tsirkin <mst@redhat.com>, <qemu-devel@nongnu.org>,
- <shiju.jose@huawei.com>, <armbru@redhat.com>
-CC: <linuxarm@huawei.com>, <linux-cxl@vger.kernel.org>, Ravi Shankar
- <venkataravis@micron.com>
-Subject: [PATCH qemu v4 5/5] hw/cxl/events: Updates for rev3.2 memory module
- event record
-Date: Mon, 19 Jan 2026 11:15:42 +0000
-Message-ID: <20260119111542.788389-6-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20260119111542.788389-1-Jonathan.Cameron@huawei.com>
-References: <20260119111542.788389-1-Jonathan.Cameron@huawei.com>
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1vhnT6-0003os-SA
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 06:30:51 -0500
+Received: from scripts.lp.internal (scripts.lp.internal [10.131.215.246])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-relay-services-1.canonical.com (Postfix) with ESMTPSA id 0D51F4019C
+ for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 11:30:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
+ s=20210803; t=1768822246;
+ bh=0a3xzWK/r0OPZGNRRtPPiAxQX/xc0LgQd3Xbb8f8BzU=;
+ h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
+ Message-Id:Subject;
+ b=IhIOMNxdQDaNM1rZCLfzC68d4kEG3ULCrRm+QT49B9jucg2mXzsm6Yl/OY+rJ82gf
+ waAN+YNWm1aJn4OqbhhVKmCAt9s/jyYWXPX7TfWkDB49klnONDj/xpw2dXRc+5GjJ2
+ 2pKJNZ5KXKPOVknEdodHiNR9CD4ariBB+QoYp6aKgi+ijuldMtBhg95ic7EWavwIYI
+ srks3mBI5PZsrmpyozjn4muOFOBJPH9M4L+TzXFgnA7m8Gd4wAIPnoWqkABIuZ8z1W
+ 7pBwccClDs6Mc3ab7MYINBXZBm3czidox7eiVRefjeStft7z0Le+1xZD/UG4y0k8cG
+ hl/HDB0XbqlUA==
+Received: from scripts.lp.internal (localhost [127.0.0.1])
+ by scripts.lp.internal (Postfix) with ESMTP id E618B7F5E7
+ for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 11:30:45 +0000 (UTC)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.19.247]
-X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
- dubpeml500005.china.huawei.com (7.214.145.207)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 19 Jan 2026 11:24:19 -0000
+From: Utkarsh Gupta <2133804@bugs.launchpad.net>
+To: qemu-devel@nongnu.org
+X-Launchpad-Notification-Type: bug
+X-Launchpad-Bug: product=qemu; status=New; importance=Unknown; assignee=None;
+X-Launchpad-Bug: distribution=ubuntu; sourcepackage=qemu; component=main;
+ milestone=ubuntu-26.04; status=Confirmed; importance=High; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=jammy; sourcepackage=qemu;
+ component=main; status=Confirmed; importance=Low; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=noble; sourcepackage=qemu;
+ component=main; milestone=ubuntu-24.04.4; status=Confirmed; importance=High;
+ assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=plucky; sourcepackage=qemu;
+ component=main; status=Won't Fix; importance=Medium; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=questing; sourcepackage=qemu;
+ component=main; status=Confirmed; importance=Medium; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; distroseries=resolute; sourcepackage=qemu;
+ component=main; milestone=ubuntu-26.04; status=Confirmed; importance=High;
+ assignee=None; 
+X-Launchpad-Bug-Information-Type: Public
+X-Launchpad-Bug-Private: no
+X-Launchpad-Bug-Security-Vulnerability: no
+X-Launchpad-Bug-Commenters: paelzer utkarsh xypron
+X-Launchpad-Bug-Reporter: Heinrich Schuchardt (xypron)
+X-Launchpad-Bug-Modifier: Utkarsh Gupta (utkarsh)
+References: <176477927666.3767208.4954653462090539439.malonedeb@juju-98d295-prod-launchpad-3>
+Message-Id: <176882185969.3085567.5486088281406237476.malone@juju-98d295-prod-launchpad-7>
+Subject: [Bug 2133804] Re: QEMU does not emulate IOCTL TCGETS2
+X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
+X-Launchpad-Message-For: qemu-devel-ml
+Precedence: bulk
+X-Generated-By: Launchpad (canonical.com);
+ Revision="9fcfff1971229ac997140f06b41a902ac8ec69f4";
+ Instance="launchpad-scripts"
+X-Launchpad-Hash: c5f2f961576c546b6c34813ed26290daf0bb4fd2
+Received-SPF: pass client-ip=185.125.188.251;
+ envelope-from=noreply@launchpad.net; helo=smtp-relay-services-1.canonical.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
 X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: qemu development <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -66,196 +96,76 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via qemu development <qemu-devel@nongnu.org>
+Reply-To: Bug 2133804 <2133804@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Shiju Jose <shiju.jose@huawei.com>
+Ubuntu 25.04 (Plucky Puffin) has reached end of life, so this bug will
+not be fixed for that specific release.
 
-CXL spec rev3.2 section 8.2.10.2.1.3 Table 8-50, memory module
-event record has updated with following new fields.
-1. Validity Flags
-2. Component Identifier
-3. Device Event Sub-Type
+** Changed in: qemu (Ubuntu Plucky)
+       Status: Confirmed =3D> Won't Fix
 
-Add updates for the above spec changes in the CXL memory module
-event reporting and QMP command to inject memory module event.
+--=20
+You received this bug notification because you are a member of qemu-
+devel-ml, which is subscribed to QEMU.
+https://bugs.launchpad.net/bugs/2133804
 
-Updated all references for this command to the CXL r3.2
-specification.
+Title:
+  QEMU does not emulate IOCTL TCGETS2
 
-Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Status in QEMU:
+  New
+Status in qemu package in Ubuntu:
+  Confirmed
+Status in qemu source package in Jammy:
+  Confirmed
+Status in qemu source package in Noble:
+  Confirmed
+Status in qemu source package in Plucky:
+  Won't Fix
+Status in qemu source package in Questing:
+  Confirmed
+Status in qemu source package in Resolute:
+  Confirmed
 
----
-v4: Update spec reference in the actual command as well (Markus)
-V3: Update spec references for whole command (Markus)
----
- qapi/cxl.json               | 30 ++++++++++++++++++++----------
- include/hw/cxl/cxl_events.h |  7 +++++--
- hw/mem/cxl_type3.c          | 20 ++++++++++++++++++++
- hw/mem/cxl_type3_stubs.c    |  4 ++++
- 4 files changed, 49 insertions(+), 12 deletions(-)
+Bug description:
+  In Ubuntu 25.10 we moved to glibc 2.42. Here glibc has changed the
+  implementation of isatty(). It now uses IOCTL TCGETS2 instead of
+  TCGETS. TCGETS2 is not emulated by static QEMU (qemu-riscv64, qemu-
+  arm64, ...).
 
-diff --git a/qapi/cxl.json b/qapi/cxl.json
-index 1dc8b08ca301..81d6198ba030 100644
---- a/qapi/cxl.json
-+++ b/qapi/cxl.json
-@@ -214,20 +214,20 @@
- ##
- # @CXLMemModuleEvent:
- #
--# Event record for a Memory Module Event (CXL r3.0 8.2.9.2.1.3).
-+# Event record for a Memory Module Event (CXL r3.2 8.2.10.2.1.3).
- #
--# @type: Device Event Type.  See CXL r3.0 Table 8-45 Memory Module
-+# @type: Device Event Type.  See CXL r3.2 Table 8-59 Memory Module
- #     Event Record for bit definitions for bit definiions.
- #
--# @health-status: Overall health summary bitmap.  See CXL r3.0 Table
--#     8-100 Get Health Info Output Payload, Health Status for bit
-+# @health-status: Overall health summary bitmap.  See CXL r3.2 Table
-+#     8-148 Get Health Info Output Payload, Health Status for bit
- #     definitions.
- #
--# @media-status: Overall media health summary.  See CXL r3.0 Table
--#     8-100 Get Health Info Output Payload, Media Status for bit
-+# @media-status: Overall media health summary.  See CXL r3.2 Table
-+#     8-148 Get Health Info Output Payload, Media Status for bit
- #     definitions.
- #
--# @additional-status: See CXL r3.0 Table 8-100 Get Health Info Output
-+# @additional-status: See CXL r3.2 Table 8-148 Get Health Info Output
- #     Payload, Additional Status for subfield definitions.
- #
- # @life-used: Percentage (0-100) of factory expected life span.
-@@ -243,6 +243,14 @@
- # @corrected-persistent-error-count: Total number of correctable
- #     errors in persistent memory
- #
-+# @component-id: Device specific component identifier for the event.
-+#     May describe a field replaceable sub-component of the device.
-+#
-+# @is-comp-id-pldm: This flag specifies whether the device-specific
-+#     component identifier format follows PLDM.
-+#
-+# @sub-type: Device event sub-type.
-+#
- # Since: 8.1
- ##
- { 'struct': 'CXLMemModuleEvent',
-@@ -252,14 +260,16 @@
-             'life-used': 'uint8', 'temperature' : 'int16',
-             'dirty-shutdown-count': 'uint32',
-             'corrected-volatile-error-count': 'uint32',
--            'corrected-persistent-error-count': 'uint32'
-+            'corrected-persistent-error-count': 'uint32',
-+            '*component-id': 'str', '*is-comp-id-pldm':'bool',
-+            'sub-type':'uint8'
-             }}
- 
- ##
- # @cxl-inject-memory-module-event:
- #
--# Inject an event record for a Memory Module Event (CXL r3.0
--# 8.2.9.2.1.3).  This event includes a copy of the Device Health info
-+# Inject an event record for a Memory Module Event (CXL r3.2
-+# 8.2.10.2.1.3).  This event includes a copy of the Device Health info
- # at the time of the event.
- #
- # Since: 8.1
-diff --git a/include/hw/cxl/cxl_events.h b/include/hw/cxl/cxl_events.h
-index a3c5f2ec20e6..4a7836ad7227 100644
---- a/include/hw/cxl/cxl_events.h
-+++ b/include/hw/cxl/cxl_events.h
-@@ -166,7 +166,7 @@ typedef struct CXLEventDram {
- 
- /*
-  * Memory Module Event Record
-- * CXL r3.1 Section 8.2.9.2.1.3: Table 8-47
-+ * CXL r3.2 Section 8.2.10.2.1.3: Table 8-59
-  * All fields little endian.
-  */
- typedef struct CXLEventMemoryModule {
-@@ -180,7 +180,10 @@ typedef struct CXLEventMemoryModule {
-     uint32_t dirty_shutdown_count;
-     uint32_t corrected_volatile_error_count;
-     uint32_t corrected_persistent_error_count;
--    uint8_t reserved[0x3d];
-+    uint16_t validity_flags;
-+    uint8_t component_id[CXL_EVENT_GEN_MED_COMP_ID_SIZE];
-+    uint8_t sub_type;
-+    uint8_t reserved[0x2a];
- } QEMU_PACKED CXLEventMemoryModule;
- 
- /*
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 3da538bafb64..4dc9b223f476 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -1937,6 +1937,9 @@ void qmp_cxl_inject_dram_event(const char *path, CxlEventLog log,
-     }
- }
- 
-+#define CXL_MMER_VALID_COMPONENT                        BIT(0)
-+#define CXL_MMER_VALID_COMPONENT_ID_FORMAT              BIT(1)
-+
- void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
-                                         uint32_t flags, bool has_maint_op_class,
-                                         uint8_t maint_op_class,
-@@ -1953,11 +1956,16 @@ void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
-                                         uint32_t dirty_shutdown_count,
-                                         uint32_t corrected_volatile_error_count,
-                                         uint32_t corrected_persist_error_count,
-+                                        const char *component_id,
-+                                        bool has_comp_id_pldm,
-+                                        bool is_comp_id_pldm,
-+                                        uint8_t sub_type,
-                                         Error **errp)
- {
-     Object *obj = object_resolve_path(path, NULL);
-     CXLEventMemoryModule module;
-     CXLEventRecordHdr *hdr = &module.hdr;
-+    uint16_t valid_flags = 0;
-     CXLDeviceState *cxlds;
-     CXLType3Dev *ct3d;
-     uint8_t enc_log;
-@@ -2000,6 +2008,18 @@ void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
-     stl_le_p(&module.corrected_persistent_error_count,
-              corrected_persist_error_count);
- 
-+    if (component_id) {
-+        strncpy((char *)module.component_id, component_id,
-+                sizeof(module.component_id) - 1);
-+        valid_flags |= CXL_MMER_VALID_COMPONENT;
-+        if (has_comp_id_pldm && is_comp_id_pldm) {
-+            valid_flags |= CXL_MMER_VALID_COMPONENT_ID_FORMAT;
-+        }
-+    }
-+    module.sub_type = sub_type;
-+
-+    stw_le_p(&module.validity_flags, valid_flags);
-+
-     if (cxl_event_insert(cxlds, enc_log, (CXLEventRecordRaw *)&module)) {
-         cxl_event_irq_assert(ct3d);
-     }
-diff --git a/hw/mem/cxl_type3_stubs.c b/hw/mem/cxl_type3_stubs.c
-index 231dda263fa4..98292a931c16 100644
---- a/hw/mem/cxl_type3_stubs.c
-+++ b/hw/mem/cxl_type3_stubs.c
-@@ -78,6 +78,10 @@ void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
-                                         uint32_t dirty_shutdown_count,
-                                         uint32_t corrected_volatile_error_count,
-                                         uint32_t corrected_persist_error_count,
-+                                        const char *component_id,
-+                                        bool has_comp_id_pldm,
-+                                        bool is_comp_id_pldm,
-+                                        uint8_t sub_type,
-                                         Error **errp) {}
- 
- void qmp_cxl_inject_poison(const char *path, uint64_t start, uint64_t length,
--- 
-2.48.1
+  This leads to failures in containers for foreign architectures. E.g. no c=
+onsole prompt is displayed.=20
+  A detailed analysis is contained in LP #2133188.
+
+  A proper implementation of the missing IOCTLs will include:
+
+  Functions:
+
+  in linux-user/syscall.c:
+  host_to_target_termios2()
+  target_to_host_termios2()
+  print_termios2()
+
+  Definitions:
+
+  in linux-user/syscall.c
+  #define termios2 host_termios2
+
+  in linux-user/syscall_types.h
+  STRUCT_SPECIAL(termios2)
+
+  in linux-user/ioctls.h:
+  IOCTL(TCGETS2, IOC_R, MK_PTR(MK_STRUCT(STRUCT_termios2)))
+  IOCTL(TCSETS2, IOC_W, MK_PTR(MK_STRUCT(STRUCT_termios2)))
+  IOCTL(TCSETSF2, IOC_W, MK_PTR(MK_STRUCT(STRUCT_termios2)))
+  IOCTL(TCSETSW2, IOC_W, MK_PTR(MK_STRUCT(STRUCT_termios2)))
+
+  in linux-user/user-internals.h:
+  void print_termios2(void *arg);
+
+To manage notifications about this bug go to:
+https://bugs.launchpad.net/qemu/+bug/2133804/+subscriptions
 
 
