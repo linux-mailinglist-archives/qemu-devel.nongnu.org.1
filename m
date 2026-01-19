@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61972D3ABD7
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 15:26:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9870AD3ABC8
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 15:26:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhqCl-0007EN-Sc; Mon, 19 Jan 2026 09:26:07 -0500
+	id 1vhqBl-0005wp-D0; Mon, 19 Jan 2026 09:25:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ashish.a6@samsung.com>)
- id 1vhqCe-00077r-8P
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 09:26:01 -0500
-Received: from mailout1.samsung.com ([203.254.224.24])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ashish.a6@samsung.com>)
- id 1vhqCX-0003jc-SA
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 09:25:58 -0500
-Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
- by mailout1.samsung.com (KnoxPortal) with ESMTP id
- 20260119142539epoutp0167108ffe2205c28017023d67d124a5bb~MKAE_dPvd2474624746epoutp01O
- for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 14:25:39 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com
- 20260119142539epoutp0167108ffe2205c28017023d67d124a5bb~MKAE_dPvd2474624746epoutp01O
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1768832739;
- bh=Ml8p3Hs0n7h/1LkC90I4r0H3Wwiit+IMmckorMtofAc=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=njU6GpUvibyd3MBfgIvDh3hvmZJTCvxQMFcBRsESJCwq+tbKIFFCxLFNSGbgIfiYP
- rynPCgiO1ouMDUA1ANRY7yBYcHbO/smC5U7DckjyCdTsktKUYqHbKf0rqzHeK3+3RL
- x5diG7XpPB1kjVDwkOS9BXrQB4S9kIOKsyzo0dLg=
-Received: from epsnrtp04.localdomain (unknown [182.195.42.156]) by
- epcas5p3.samsung.com (KnoxPortal) with ESMTPS id
- 20260119142539epcas5p39a2ba7dad6a41ff784a60d7b43bf3c26~MKAEkh2LL1368913689epcas5p33;
- Mon, 19 Jan 2026 14:25:39 +0000 (GMT)
-Received: from epcas5p1.samsung.com (unknown [182.195.38.86]) by
- epsnrtp04.localdomain (Postfix) with ESMTP id 4dvt6B0VxFz6B9m5; Mon, 19 Jan
- 2026 14:25:38 +0000 (GMT)
-Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
- epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
- 20260119142536epcas5p2d9236e4c2d14ea6615b502556ecab9bd~MKAClJqHE2210822108epcas5p2F;
- Mon, 19 Jan 2026 14:25:36 +0000 (GMT)
-Received: from test-System-Product-Name (unknown [107.99.41.85]) by
- epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
- 20260119142535epsmtip2454953449bd94c239a8a247d920e52b3~MKABlmplP1108511085epsmtip2V;
- Mon, 19 Jan 2026 14:25:35 +0000 (GMT)
-Date: Mon, 19 Jan 2026 19:52:48 +0530
-From: Ashish Anand <ashish.a6@samsung.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, saurabh@samsung.com,
- y.kaushal@samsung.com, vishwa.mg@samsung.com, ashish.anand202@gmail.com
-Subject: Re: [PATCH] target/arm: Implement WFE, SEV and SEVONPEND for Cortex-M
-Message-ID: <odihr4w6t7ykwqb6v2la5wvs2y3be5htxggs7rzp5wtfcvyhdz@k6wb5c3n4rdv>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vhqBi-0005vx-T9
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 09:25:02 -0500
+Received: from mail-yw1-x1135.google.com ([2607:f8b0:4864:20::1135])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vhqBf-0003Pu-6s
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 09:25:02 -0500
+Received: by mail-yw1-x1135.google.com with SMTP id
+ 00721157ae682-7927b3e5253so34762487b3.1
+ for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 06:24:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1768832697; x=1769437497; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7iHEXYgdYrDiFmK48N+FJPpplW2jHumrtupIndSNh1k=;
+ b=BKFhZzhzTNYh7F66YLcijw61GndJj7jqk714nom7nXPahghFprYRiaDNY/RvgYGbWe
+ 0JMdobf2AGA31KJnEzRruixd9bZU5RsCrCNHuWvMLrXq3tNyM0V4KFhNWE9NTC1ltiSc
+ cgVi7pnzVkKASZyqF6ipUE+eCb1WJsI8Kunp3b69fXG27NenwJ+XvmPKTdFK/YR44ysc
+ 1JJxxOkhZd1KpU5gJQ92H/aV0vtiCBBGMtfxGcbTGeT6CubXydrxE9CyoWyKQQfOE5ki
+ u351zAB53GFe7OP8A8lsW0PEj0Wh5btFEfVkvs+KLXa49n5ax0p7xP97psLkIGSQSPul
+ GS6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768832697; x=1769437497;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=7iHEXYgdYrDiFmK48N+FJPpplW2jHumrtupIndSNh1k=;
+ b=no7qOE1nZIu+BtaVqvUsqGBW+0EYcQEhXOTUfoG7lfjxupF5tnvrbr8NnvpqLCwdXP
+ +1kf4Ot9ssKVNiPWXhmk9m+JaTketxAFl0HCM3EV7N9P6tsfetTFpGIEGQhIv+38G1oP
+ Ror96PWaBhHbMbgVPn5Rngo6XKhmaGw3by2T/1GBaQLQe2QLYPya5BeUHkLNRFQN9vmd
+ QUCMPi7B4HD8ZoNLOjXLiIymvK8FYhhet2Hh9M+7Atc7FoQVVscMmvWxRxKwEk7DNAlG
+ P9znmkyZ2rKnMUhfi235gyI0KwBAso7VyN8JnfqJxoNfrOBYz2KmvesAMKAGeJGBXP7x
+ XULQ==
+X-Gm-Message-State: AOJu0Yz0Y5sA26EnifkcfbUzmyNFFBRUzDvm5/9SqTAtASi7Pn4Vco7L
+ OgNbLbOxKn6tiI9XBAWdD5oyXVCiQ+FpP+4Rk7OO8vKabM5K+xJxc2fdW3RAI73+Cog/MlHIn1I
+ GnVxTQx0mPz1nsjxrRy2P38C+KWRYgIRVJ59YtkwadDDU0789PMb9pdA=
+X-Gm-Gg: AZuq6aKuYw7LGH/VaDDYenFaAmRSRYuHHeyTzn+prkT5yNUubcyBTXvQG1FiYLYy4gI
+ B47r85PM0T4eHOoxcmwf3SRj5zRuZQ6djmD4rIIz67zkQr/pgJr1z6ZkYJmNAoHzgWbFb0uccn7
+ fObLFE4vzsNUwFofiviJCl1joiubvGe7gpC2m5g84dEjyYVbhOqlnBJk1ncvQG1HWrfbOEod97A
+ D95Q4tRnh5uP4H/XqpRMxV3ZN6J28VoF/KHSXby8VB9qmPePhzYV+sGxbDuqG5TZofH2Q==
+X-Received: by 2002:a05:690c:e3c6:b0:78f:8666:4b92 with SMTP id
+ 00721157ae682-793c52b5e5emr99095267b3.27.1768832697489; Mon, 19 Jan 2026
+ 06:24:57 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <CAFEAcA-DtfMjEg2SUNeMNRHfxmyYBuJ9tn2fR0LQxfNVrVoyUA@mail.gmail.com>
-X-CMS-MailID: 20260119142536epcas5p2d9236e4c2d14ea6615b502556ecab9bd
-X-Msg-Generator: CA
-Content-Type: multipart/mixed;
- boundary="----on9-joxjuqL8vLZJsXK9p6vuNy0FCcc_Bo-VMubfWYorGk78=_10ab09_"
-CMS-TYPE: 105P
-cpgsPolicy: CPGSC10-542,Y
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20251223120242epcas5p44b454df5afd0d517a4562a545ad11218
-References: <CGME20251223120242epcas5p44b454df5afd0d517a4562a545ad11218@epcas5p4.samsung.com>
- <20251223120012.541777-1-ashish.a6@samsung.com>
- <CAFEAcA-UFgxLx8uYM10DoLXutMMNVQaq9xWBjZS5BY6RL1eRnw@mail.gmail.com>
- <tixhu4eob36aeq5cbbvtudkpzvdvigiztii4bycwuj622m5ngn@vt7rf2iln6jz>
- <CAFEAcA-DtfMjEg2SUNeMNRHfxmyYBuJ9tn2fR0LQxfNVrVoyUA@mail.gmail.com>
-Received-SPF: pass client-ip=203.254.224.24;
- envelope-from=ashish.a6@samsung.com; helo=mailout1.samsung.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.016,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20260119120030.2593993-1-alex.bennee@linaro.org>
+In-Reply-To: <20260119120030.2593993-1-alex.bennee@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 19 Jan 2026 14:24:46 +0000
+X-Gm-Features: AZwV_Qik23CK7KMXmrVoHNbJkMHJrlQ3pHqjT4bwt_678Ha2bfhHnby2Vi52ggs
+Message-ID: <CAFEAcA-VkFuVZrGDcpbvpmOEO8b62BqJ_sBUMSTw+7+heMRWzQ@mail.gmail.com>
+Subject: Re: [RFC PATCH] hw/intc: avoid byte swap fiddling in gicv3 its path
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, "open list:ARM cores" <qemu-arm@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1135;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1135.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,51 +91,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-------on9-joxjuqL8vLZJsXK9p6vuNy0FCcc_Bo-VMubfWYorGk78=_10ab09_
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Disposition: inline
-
->I hadn't looked at the v7M documentation. Looking at the v7M Arm ARM,
->the text doesn't mention the exception-entry case, but the pseudocode
->ExceptionTaken() function unconditionally calls SetEventRegister().
->So I think this is likely a case where the manual text was wrong and
->it got corrected for v8M, rather than being a divergence in behaviour.
->For QEMU we should set the event register in both these cases
->regardless of M-profile version.
+On Mon, 19 Jan 2026 at 12:00, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
+te:
 >
-
-Hi Peter,
-Thanks for clarifying this I will take this into account for v2. 
-
->v7M's text is also a bit confused about whether the SEVONPEND
->bit affects only interrupts, or all exceptions. v8M seems to
->consistently say "interrupts". I guess we go with "assume this
->was a mistake in the v7M text". If you happen to have convenient
->access to real hardware we could test the actual behaviour, but
->if not I would go with "only interrupts" for both v7M and v8M.
-
-Currently I don't have access to hardware, so I will take "only interrupts" into consideration.
-In future if I do get access to real hardware I will test this separately.
-
->Ah, I see -- currently the wfe helper calls the yield helper,
->and that always calls cpu_loop_exit(), so the helper never
->returns. (I'd assumed that because WFE is conceptually a NOP
->for us at the moment that the helper would return.)
+> The GIC should always be a little-endian device as big-endian
+> behaviour is a function of the current CPU configuration not the
+> system as a whole. This allows us to keep the MSI data in plain host
+> order rather then potentially truncating with multiple byte swaps of
+> different sizes.
 >
->We should add a comment similar to the one we have for the
->DISAS_WFI case:
->    /* Go back to the main loop to check for interrupts */
+> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> ---
+>  hw/intc/arm_gicv3_its_common.c | 4 ++--
+>  hw/intc/arm_gicv3_its_kvm.c    | 2 +-
+>  2 files changed, 3 insertions(+), 3 deletions(-)
 >
+> diff --git a/hw/intc/arm_gicv3_its_common.c b/hw/intc/arm_gicv3_its_commo=
+n.c
+> index e946e3fb87b..60a5abd8d3e 100644
+> --- a/hw/intc/arm_gicv3_its_common.c
+> +++ b/hw/intc/arm_gicv3_its_common.c
+> @@ -81,7 +81,7 @@ static MemTxResult gicv3_its_trans_write(void *opaque, =
+hwaddr offset,
+>      if (offset =3D=3D 0x0040 && ((size =3D=3D 2) || (size =3D=3D 4))) {
+>          GICv3ITSState *s =3D ARM_GICV3_ITS_COMMON(opaque);
+>          GICv3ITSCommonClass *c =3D ARM_GICV3_ITS_COMMON_GET_CLASS(s);
+> -        int ret =3D c->send_msi(s, le64_to_cpu(value), attrs.requester_i=
+d);
+> +        int ret =3D c->send_msi(s, value, attrs.requester_id);
+>
+>          if (ret <=3D 0) {
+>              qemu_log_mask(LOG_GUEST_ERROR,
 
-Sure will take care of this in v2.
+> diff --git a/hw/intc/arm_gicv3_its_kvm.c b/hw/intc/arm_gicv3_its_kvm.c
+> index ae12d41eee1..a8d6d4fb540 100644
+> --- a/hw/intc/arm_gicv3_its_kvm.c
+> +++ b/hw/intc/arm_gicv3_its_kvm.c
+> @@ -58,7 +58,7 @@ static int kvm_its_send_msi(GICv3ITSState *s, uint32_t =
+value, uint16_t devid)
+>
+>      msi.address_lo =3D extract64(s->gits_translater_gpa, 0, 32);
+>      msi.address_hi =3D extract64(s->gits_translater_gpa, 32, 32);
+> -    msi.data =3D le32_to_cpu(value);
+> +    msi.data =3D value;
+>      msi.flags =3D KVM_MSI_VALID_DEVID;
+>      msi.devid =3D devid;
+>      memset(msi.pad, 0, sizeof(msi.pad));
 
+Having looked at this code a bit more carefully and figured out
+that the send_msi method isn't calling core QEMU code but just
+one bit of our ITS implementation talking to another, I agree
+that these changes are correct:
 
-Thanks,
-Ashish
+ * the kernel KVM_SIGNAL_MSI ioctl expects the data field to
+   be in host byte order
+ * the send_msi() method is entirely up to us how to
+   specify, and "host byte order" is the least surprising
+   one for a function call
+ * write methods of a MemoryRegionOps always get their
+   data in host byte order
 
-------on9-joxjuqL8vLZJsXK9p6vuNy0FCcc_Bo-VMubfWYorGk78=_10ab09_
-Content-Type: text/plain; charset="utf-8"
+So we should write this up in the commit message. This is
+technically a bug fix (albeit one which only affects anybody
+adventurous enough to run KVM on big-endian AArch64 :-))
+so we could probably cc: stable too.
 
+I also noticed while looking through the code that we
+only seem to implement the send_msi method on the KVM
+ITS. This works because TCG passes in its own MemoryRegionOps
+for the "translation" MemoryRegion. But that means all
+this base class code that calls a send_msi method on
+the subclass is used only by KVM. We could tidy this up by:
+ * moving gicv3_its_trans_{read,write} from the base class
+   to the KVM subclass
+ * having gicv3_its_init_mmio() not have fallback code
+   for tops =3D=3D NULL
+ * directly call kvm_its_send_msi() instead of indirecting
+   through a send_msi method
+ * remove the send_msi method pointer entirely
 
-------on9-joxjuqL8vLZJsXK9p6vuNy0FCcc_Bo-VMubfWYorGk78=_10ab09_--
+Second side note: kvm_irqchip_send_msi() in accel/kvm/kvm-all.c
+also has a rather dodgy looking le32_to_cpu() call in it,
+which is probably the inspiration for this one in the Arm code.
+Luckily, we never use that function on Arm, and its only
+callers are in always-LE-host targets. But all those callsites
+seem to assume the msi.data field should be in host order
+so this is probably something that somebody who cares about
+x86 hosts might like to tidy up.
+
+thanks
+-- PMM
 
