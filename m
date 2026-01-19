@@ -2,99 +2,131 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDD20D3A6DA
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 12:29:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26597D3A6F2
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 12:35:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhnRB-0004Js-UU; Mon, 19 Jan 2026 06:28:49 -0500
+	id 1vhnWq-0002He-50; Mon, 19 Jan 2026 06:34:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1vhnR8-0004IM-MZ
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 06:28:48 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1vhnWm-0002EM-Lr
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 06:34:36 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1vhnR5-0002mb-0y
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 06:28:45 -0500
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1vhnWk-0004Cj-FD
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 06:34:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768822120;
+ s=mimecast20190719; t=1768822472;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dOISUtSj78x0ONFe/AsL0HHbp2xRizmQoh1SgShwvbI=;
- b=EO/OViHI6cRlVfxn6dX8jWCa+ZoYg0eANGgzuunAdrPyVHTGs6dfS091gERuvEW1FecwY6
- GJFXPNjdSoBQ9f/PyR+33TVO7fx20rvAIJd6/dryn46/nNjzLW5oONnt94u8RMRIwPIXOw
- cYMRHb8LJO7tk5Y6NqPzmqmhy6ph8jU=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=o7TxcPdLQ2LcqoJG9uEAdRE5KHhictaYqL39i6pRHmM=;
+ b=aMQSbMiaFbayevTJsDByv011PIu4Ma+OTHdeG+w8TgvW4WguxrlEvgbT7aIAjaddN7ExdY
+ l+MOPVzcc8Vcs7kvggGWvNmWidxmrRcVBdbUs8HKeIJ8+uqitPs8Mi3xOdbxU470SoP15x
+ 4FLDuOGtjiYpiEhvdsMfnhbKziBtqIo=
+Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
+ [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-517-cjU0v1CEOPa7djRi8DVKVw-1; Mon, 19 Jan 2026 06:28:38 -0500
-X-MC-Unique: cjU0v1CEOPa7djRi8DVKVw-1
-X-Mimecast-MFC-AGG-ID: cjU0v1CEOPa7djRi8DVKVw_1768822118
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-47d5c7a2f54so35844445e9.1
- for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 03:28:38 -0800 (PST)
+ us-mta-70-bhg1QAhBPrC6CL01H7PGNg-1; Mon, 19 Jan 2026 06:34:31 -0500
+X-MC-Unique: bhg1QAhBPrC6CL01H7PGNg-1
+X-Mimecast-MFC-AGG-ID: bhg1QAhBPrC6CL01H7PGNg_1768822470
+Received: by mail-yx1-f72.google.com with SMTP id
+ 956f58d0204a3-64558391a78so5563142d50.1
+ for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 03:34:30 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768822470; cv=none;
+ d=google.com; s=arc-20240605;
+ b=ME1mj05PeZcxSXjGiEmYauwTvKTXXis2keUrDEPgO3sOJNgyCaZtwswgY4YkmL1afP
+ peGOYBjCNCRs0prXpOJ3CTPlpKaIg2LB4pgoIVLtQE74baTxGBcUqm9MJsKEybrzER1G
+ u4inDzPdO6QxHJDY4U8hih069ZNeJtBk8HS65tGODcjSHyXAEWHXvpxZFkMUcMNAcy3x
+ UnlNyDiZKty5m1ugQ8YOAo/uKHVUMwKB9uqEn2bZn6NwuMko+jtXZbymR6rzXc46XjEC
+ ymETlVGrLigjDKEhqhBFnBi5Dq46K30Uv/qidvEDhcd/GqodOof8svoXuqa/2QJWvtmZ
+ mfZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
+ s=arc-20240605; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :disposition-notification-to:in-reply-to:references:mime-version
+ :dkim-signature;
+ bh=o7TxcPdLQ2LcqoJG9uEAdRE5KHhictaYqL39i6pRHmM=;
+ fh=SCla5qwtivMsa9WuGACYFmsiD8ZAou9vajHYlsGjyaE=;
+ b=VYELmX1KtlO7vj2FW+x3C06tnQn14DevkcfUznNQpWFHP02mg0OfSo1COt0XvqKJ5K
+ kAZG9Co8h5UqbFxvS7U5KChyiCXk2vXImfpOb4d5jhZ40fHbyZGWBLZmjNBBZrPI7jIb
+ E+RV6uQLkUPvdxcDdVqOF3kVNqhXALukhnvQXvh+dFwQWBUSgsG8jx/5ZvNN/XRiv0+B
+ 3bFoRJnjNNkFlhOpToFI5ENRA1Zhww0mBJcuMqHYYU+O/hmBwcJoF0HBbB0OPwrtAFST
+ SBTXrDPKVVDHoKt1+XUFpjf/cyjThYz9X+wruZsRpJX/Mzi81KIPlkD5q4Sao2ShdB0q
+ Plww==; darn=nongnu.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768822118; x=1769426918; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=dOISUtSj78x0ONFe/AsL0HHbp2xRizmQoh1SgShwvbI=;
- b=cwz5w0ZT/UJhahD+3lCp2Hbe5T8e1Tk6fWioMyfoOTLrAq0SIxYqLvIqNqaox3/5VZ
- w/ssyBO546Q0JsYHmLsfRRizJNzOBrGSd9FfvYwI0CPdMepC38zFDGK/FKc4WWK1jAys
- QHfuwCRVeENFnTfdaH9AB1m+yMoeAwEI/Orn3emHXSNhsf2TEVIHr8ynAjS8XfwmJ2cC
- PadKgOwvGAFPpaUc9lqXXdgK23ysa9qkSwrcKVWhqH0eCbazGFdXT0qZw0bhcTkqkcU4
- wf59a0InCXc8mjFr80Cz2eCK+A2RtTpvuvxbaVJR6gjvKsddVHIIVOxhwLK2fxGNM8W+
- CEQw==
+ d=redhat.com; s=google; t=1768822470; x=1769427270; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :disposition-notification-to:in-reply-to:references:mime-version
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=o7TxcPdLQ2LcqoJG9uEAdRE5KHhictaYqL39i6pRHmM=;
+ b=VZRm7zEbK8sEqNkKilCpLBKpxxXhww04FYNMrqwuF2cCHcuejGWnkIN/4yGEb1R8D8
+ UHAOcUj8eMvFzolg5GZTz/TV9h2vh4ZpnMxKOE7WB9nWBVVM5kJGo2ot3VHRJ4P3yp5A
+ kUBQ9gKK8orQpJwTimUNG7njqvGVgjf/4w9LPWgb25sbvUVFzhummXcU/u06/W4buGn+
+ Tp89cu/kn0oH+qq196rwDSNyC18ZbIUnH/CXJmNQ3e1Cm97msFJ6NT7dpNHHPZrCMmKi
+ nx8hwDsx8PbpFG8Ws+xuSkAiilvxaC6MMXHVCyb8Xla+7MdYJ2ftuXjGCoBcNI2i0snA
+ /plQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768822118; x=1769426918;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=dOISUtSj78x0ONFe/AsL0HHbp2xRizmQoh1SgShwvbI=;
- b=O9IAjkF8k7yHOhTxYsUE2CkyMDbxJDj28MYLk5lfFyN59hiAiRE1GP2H8h52J33yQQ
- 1ZqCO7d61ZhkFEGl+jkVjc8i2vtu9tUwpzB4uqMahR9L1euspt4paCv3GdYUaN+VjuKl
- GKLsiAcBVAiPEs4CGOGQ2lQY++ijRl756jixGCgSDFMx/EubNWbtGOnrzPHZvOmTDRIx
- J4lbob4j9SejRM8R2iHDYzZJN5/A8mkKRxw5snz4wJk9waf/odCd2obzIFbdywHtVH4u
- BcUMsycIK8VsfJxK9tGJyhXxyddSpjy+cqsmKl+pOcduLEX3KFdcUQdHi+q+fdruN2mN
- Av3A==
-X-Gm-Message-State: AOJu0YzIbhcd62OnGD8Tr5E/6H0YZPHOb4mNqAsq2TbAy+lSKJZ7LqWM
- uoqeLzY5wee/z9zkv7FlOJIlLdwheB7Y4UFX/Yr+iZflNborCv3xmyJ2s/q+SCJ1kwBS8PPenoR
- +G/naqdcrxNbNN/hn+29Nks/00tFP5Wzd1jJw2vLjsjTjYQBHTNuR0/jLhBrc9DMhF1B3LJaclI
- AzSG9C3N2C56NHjYK9Jtl291lzaCqXolc=
-X-Gm-Gg: AY/fxX7RlaSo4asPsEkUXYoG1MLkpMImd439jOUmxBn3qsFpQv0zFnmgtlFJg7yzTyH
- /fzNAdFKeGTPbUZDkibMBJ0vUqbxTAowvA/k7kmIwn782CYUS3Mbt+FTUvpjTm9pHZpDnvkNzDn
- 7fPrliU8DxsforlvMgUEp0hpzXZGycuP1MfuehnI4+KvnVjPeEMy0UEBwoE4ogXvKushS8z+18X
- hOzABm9M/qZOVZee/KHPDAN1INYsR4b6ucJOMUmtiGissL8LqHPNNmK
-X-Received: by 2002:a05:600c:314f:b0:479:13e9:3d64 with SMTP id
- 5b1f17b1804b1-4801e67c8ecmr127109105e9.15.1768822117538; 
- Mon, 19 Jan 2026 03:28:37 -0800 (PST)
-X-Received: by 2002:a05:600c:314f:b0:479:13e9:3d64 with SMTP id
- 5b1f17b1804b1-4801e67c8ecmr127108765e9.15.1768822116995; Mon, 19 Jan 2026
- 03:28:36 -0800 (PST)
+ d=1e100.net; s=20230601; t=1768822470; x=1769427270;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :disposition-notification-to:in-reply-to:references:mime-version
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=o7TxcPdLQ2LcqoJG9uEAdRE5KHhictaYqL39i6pRHmM=;
+ b=N74gvgdSE+eWyLszG4puDM4ZLI1oNL0skBdKSchD/vcs0p/M4eW4F2mYosmXQjUENO
+ xR9JR8EvvuCpjxYndawjQPfCqMJ/SHlqJRaVn5kokilF5U0YMaLFfORTIRR7gBoAqWVs
+ mpH+m2brC6YU6bu+XJw7esHPQDxxJWSbBE4/vYJt1+VVGjidphZoXyPeV/1uGa3E+/HL
+ T8CAnj7z4n0Xwv7wp+tYfjXzRQm6K5NCvpselAGF3JstwrKtgWbNfkTgsg5ZAoWpltPl
+ IMbVt8PKiT95a2q0LH6qtR755K2q2o3kjZ9uaVU5ohOzOHvB0eytDjB6Y4SvhYjOgBdp
+ MLfw==
+X-Gm-Message-State: AOJu0Yy6E2gJroeSf6DQS9RKAQ2Oyj8yVp8Ym+NSs2E0WMGfmynBjv7W
+ Ztja8XY0AF38h86SsovENqx/ixyJJl2/+4CDUkIyWIgRGGmAmha4EwZI89WqyeyksXXFghN6/om
+ Out+5RJ6jXom7SkW3Qi5K4nQl2ngmrz3fFLg4UZJN+wPu4WVu6jNQWT4+ZFskELm1zAwWLWEERW
+ 62QR04iAb2gXMj+gDCwrYl1r9snmaJBOg=
+X-Gm-Gg: AZuq6aJe+yLBuVeSQjavqs0Kufo6OVIxINz8IwJnR1Lh7/5/BGeJqhMSIFsrxSmw+SZ
+ vCVf2DTVQA6fcXekluB3HmIv8ugP7nJLyz5mvQJfuNonuBrQAoif5vNm09rCu1nSKsqVEoPNak0
+ 5sQaQAj756ZRQkVGzvKoa6KOW8j1Idg7p42rc39P6tNXgGYnYO6xG+LDtGC6EGAQ==
+X-Received: by 2002:a05:690e:148b:b0:63f:9fbd:6e8c with SMTP id
+ 956f58d0204a3-649164d2b44mr8656906d50.48.1768822470409; 
+ Mon, 19 Jan 2026 03:34:30 -0800 (PST)
+X-Received: by 2002:a05:690e:148b:b0:63f:9fbd:6e8c with SMTP id
+ 956f58d0204a3-649164d2b44mr8656881d50.48.1768822470044; Mon, 19 Jan 2026
+ 03:34:30 -0800 (PST)
 MIME-Version: 1.0
-References: <20260109124043.25019-1-farosas@suse.de>
- <20260109124043.25019-26-farosas@suse.de>
-In-Reply-To: <20260109124043.25019-26-farosas@suse.de>
-From: Prasad Pandit <ppandit@redhat.com>
-Date: Mon, 19 Jan 2026 16:58:19 +0530
-X-Gm-Features: AZwV_QixEJpUZMTa7tJpyjPHeerqTGk2vJb-XZSg4OpBa3LCWXg5XTqO9op-Ytw
-Message-ID: <CAE8KmOyZVCNj9R2tv1ZCkpE3_n0FSr4vqZAVsUq0bTD+4Z0AkA@mail.gmail.com>
-Subject: Re: [PATCH v3 25/25] migration/channel: Centralize calling
- migration_channel_connect_outgoing
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, peterx@redhat.com, berrange@redhat.com, 
- Li Zhijian <lizhijian@fujitsu.com>
+References: <20251111091058.879669-1-aesteve@redhat.com>
+ <20251111091058.879669-6-aesteve@redhat.com>
+ <CADSE00+24EjXdRMDXXf7tgWLaH2gqeDhL_OeRbmZQ2e8JULPXA@mail.gmail.com>
+ <20260116055716-mutt-send-email-mst@kernel.org>
+ <CADSE00+AOpy2JNPvZ_DFGR8pJ=-4iiYdb-5Mh_LAnLusjBDyQA@mail.gmail.com>
+In-Reply-To: <CADSE00+AOpy2JNPvZ_DFGR8pJ=-4iiYdb-5Mh_LAnLusjBDyQA@mail.gmail.com>
+From: Albert Esteve <aesteve@redhat.com>
+Date: Mon, 19 Jan 2026 12:34:19 +0100
+X-Gm-Features: AZwV_QhjTaZ_ib0U5u0VkKOGD69qbjo6fU9SdA2M4UqzxnqMqchk9I0sFDSOADc
+Message-ID: <CADSE00+HphD568RSejK7pPFgCif52jcZU9QAXWL05cLpeKOa+g@mail.gmail.com>
+Subject: Re: [PATCH v11 5/7] vhost_user.rst: Add GET_SHMEM_CONFIG message
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, dbassey@redhat.com, manos.pitsidianakis@linaro.org, 
+ slp@redhat.com, stefanha@redhat.com, Fabiano Rosas <farosas@suse.de>,
+ jasowang@redhat.com, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>, david@redhat.com, hi@alyssa.is,
+ stevensd@chromium.org, 
+ Stefano Garzarella <sgarzare@redhat.com>, Laurent Vivier <lvivier@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.077,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -112,332 +144,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 9 Jan 2026 at 18:12, Fabiano Rosas <farosas@suse.de> wrote:
-> Make the synchronous calls evident by not hiding the call to
-> migration_channel_connect_outgoing() in the transport code. Have those
-> functions return and call the function at the upper level.
+On Fri, Jan 16, 2026 at 2:04=E2=80=AFPM Albert Esteve <aesteve@redhat.com> =
+wrote:
 >
-> This helps with navigation: the transport code returns the ioc,
-> there's no need to look into them when browsing the code.
+> On Fri, Jan 16, 2026 at 12:15=E2=80=AFPM Michael S. Tsirkin <mst@redhat.c=
+om> wrote:
+> >
+> > On Fri, Jan 16, 2026 at 11:20:25AM +0100, Albert Esteve wrote:
+> > > On Tue, Nov 11, 2025 at 10:11=E2=80=AFAM Albert Esteve <aesteve@redha=
+t.com> wrote:
+> > > >
+> > > > Add GET_SHMEM_CONFIG vhost-user frontend
+> > > > message to the spec documentation.
+> > > >
+> > > > Reviewed-by: Alyssa Ross <hi@alyssa.is>
+> > > > Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > > > Signed-off-by: Albert Esteve <aesteve@redhat.com>
+> > > > ---
+> > > >  docs/interop/vhost-user.rst | 39 +++++++++++++++++++++++++++++++++=
+++++
+> > > >  1 file changed, 39 insertions(+)
+> > > >
+> > > > diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.=
+rst
+> > > > index 6c1d66d7d3..6a1ecd7f48 100644
+> > > > --- a/docs/interop/vhost-user.rst
+> > > > +++ b/docs/interop/vhost-user.rst
+> > > > @@ -371,6 +371,20 @@ MMAP request
+> > > >    - 0: Pages are mapped read-only
+> > > >    - 1: Pages are mapped read-write
+> > > >
+> > > > +VIRTIO Shared Memory Region configuration
+> > > > +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> > > > +
+> > > > ++-------------+---------+------------+----+--------------+
+> > > > +| num regions | padding | mem size 0 | .. | mem size 255 |
+> > > > ++-------------+---------+------------+----+--------------+
+> > > > +
+> > > > +:num regions: a 32-bit number of regions
+> > > > +
+> > > > +:padding: 32-bit
+> > > > +
+> > > > +:mem size: contains ``num regions`` 64-bit fields representing the=
+ size of each
+> > > > +           VIRTIO Shared Memory Region
+> > > > +
+> > >
+> > > When implementing this for rust-vmm, the mem size came up a bit
+> > > confusing. In the last patch (7/7) of this series, the implementation
+> > > uses `num regions` as a count for the number of valid regions (thus
+> > > accounting for gaps in the shmem region mapping). Thus, `mem size` ha=
+s
+> > > this confusing statement saying that it containers `num regions`
+> > > fields. It should say it contains 256 fields (it is only sent once
+> > > during initialization, so no need to save bytes here), with only `num
+> > > regions` that are valid (i.e., greater than 0). Maybe it could even
+> > > discard the `num regions` field, and send only the full array.
+> > > Thoughts?
+> >
+> > Let's discuss the exact wording here.
+> > I'm not sure why would we need this padding sending unused fields
+> > though. Waste no, need not?
 >
-> It also allows RDMA in the source side to use the same path as the
-> rest of the transports.
+> What about something like this:
 >
-> While here, document the async calls which are the exception.
->
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->  migration/channel.c | 28 ++++++++++++++++++++++++----
->  migration/exec.c    |  8 ++++----
->  migration/exec.h    |  5 ++++-
->  migration/fd.c      | 13 +++++++------
->  migration/fd.h      |  7 +++++--
->  migration/file.c    | 18 ++++++++++--------
->  migration/file.h    |  5 +++--
->  migration/rdma.c    | 11 +++++------
->  migration/rdma.h    |  4 ++--
->  9 files changed, 64 insertions(+), 35 deletions(-)
->
-> diff --git a/migration/channel.c b/migration/channel.c
-> index cee78532ea..589a5520fe 100644
-> --- a/migration/channel.c
-> +++ b/migration/channel.c
-> @@ -37,26 +37,40 @@
->  void migration_connect_outgoing(MigrationState *s, MigrationAddress *addr,
->                                  Error **errp)
->  {
-> +    g_autoptr(QIOChannel) ioc = NULL;
-> +
->      if (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET) {
->          SocketAddress *saddr = &addr->u.socket;
->          if (saddr->type == SOCKET_ADDRESS_TYPE_INET ||
->              saddr->type == SOCKET_ADDRESS_TYPE_UNIX ||
->              saddr->type == SOCKET_ADDRESS_TYPE_VSOCK) {
->              socket_connect_outgoing(s, saddr, errp);
-> +            /*
-> +             * async: after the socket is connected, calls
-> +             * migration_channel_connect_outgoing() directly.
-> +             */
-> +            return;
-> +
->          } else if (saddr->type == SOCKET_ADDRESS_TYPE_FD) {
-> -            fd_connect_outgoing(s, saddr->u.fd.str, errp);
-> +            ioc = fd_connect_outgoing(s, saddr->u.fd.str, errp);
->          }
->  #ifdef CONFIG_RDMA
->      } else if (addr->transport == MIGRATION_ADDRESS_TYPE_RDMA) {
-> -        rdma_connect_outgoing(s, &addr->u.rdma, errp);
-> +        ioc = rdma_connect_outgoing(s, &addr->u.rdma, errp);
->  #endif
->      } else if (addr->transport == MIGRATION_ADDRESS_TYPE_EXEC) {
-> -        exec_connect_outgoing(s, addr->u.exec.args, errp);
-> +        ioc = exec_connect_outgoing(s, addr->u.exec.args, errp);
->      } else if (addr->transport == MIGRATION_ADDRESS_TYPE_FILE) {
-> -        file_connect_outgoing(s, &addr->u.file, errp);
-> +        ioc = file_connect_outgoing(s, &addr->u.file, errp);
->      } else {
->          error_setg(errp, "uri is not a valid migration protocol");
->      }
-> +
-> +    if (ioc) {
-> +        migration_channel_connect_outgoing(s, ioc);
-> +    }
-> +
-> +    return;
->  }
->
->  void migration_connect_incoming(MigrationAddress *addr, Error **errp)
-> @@ -81,6 +95,12 @@ void migration_connect_incoming(MigrationAddress *addr, Error **errp)
->      } else {
->          error_setg(errp, "unknown migration protocol");
->      }
-> +
-> +    /*
-> +     * async: the above routines all wait for the incoming connection
-> +     * and call back to migration_channel_process_incoming() to start
-> +     * the migration.
-> +     */
->  }
->
->  bool migration_has_main_and_multifd_channels(void)
-> diff --git a/migration/exec.c b/migration/exec.c
-> index c3085e803e..a1a7ede3b4 100644
-> --- a/migration/exec.c
-> +++ b/migration/exec.c
-> @@ -40,7 +40,8 @@ const char *exec_get_cmd_path(void)
->  }
->  #endif
->
-> -void exec_connect_outgoing(MigrationState *s, strList *command, Error **errp)
-> +QIOChannel *exec_connect_outgoing(MigrationState *s, strList *command,
-> +                                  Error **errp)
->  {
->      QIOChannel *ioc = NULL;
->      g_auto(GStrv) argv = strv_from_str_list(command);
-> @@ -50,12 +51,11 @@ void exec_connect_outgoing(MigrationState *s, strList *command, Error **errp)
->      trace_migration_exec_outgoing(new_command);
->      ioc = QIO_CHANNEL(qio_channel_command_new_spawn(args, O_RDWR, errp));
->      if (!ioc) {
-> -        return;
-> +        return NULL;
->      }
->
->      qio_channel_set_name(ioc, "migration-exec-outgoing");
-> -    migration_channel_connect_outgoing(s, ioc);
-> -    object_unref(OBJECT(ioc));
-> +    return ioc;
->  }
->
->  static gboolean exec_accept_incoming_migration(QIOChannel *ioc,
-> diff --git a/migration/exec.h b/migration/exec.h
-> index e7e8e475ac..3e39270dce 100644
-> --- a/migration/exec.h
-> +++ b/migration/exec.h
-> @@ -20,10 +20,13 @@
->  #ifndef QEMU_MIGRATION_EXEC_H
->  #define QEMU_MIGRATION_EXEC_H
->
-> +#include "io/channel.h"
-> +
->  #ifdef WIN32
->  const char *exec_get_cmd_path(void);
->  #endif
->  void exec_connect_incoming(strList *host_port, Error **errp);
->
-> -void exec_connect_outgoing(MigrationState *s, strList *host_port, Error **errp);
-> +QIOChannel *exec_connect_outgoing(MigrationState *s, strList *host_port,
-> +                                  Error **errp);
->  #endif
-> diff --git a/migration/fd.c b/migration/fd.c
-> index b689426ad4..bbf380d1a0 100644
-> --- a/migration/fd.c
-> +++ b/migration/fd.c
-> @@ -49,12 +49,13 @@ static bool migration_fd_valid(int fd)
->      return false;
->  }
->
-> -void fd_connect_outgoing(MigrationState *s, const char *fdname, Error **errp)
-> +QIOChannel *fd_connect_outgoing(MigrationState *s, const char *fdname,
-> +                                Error **errp)
->  {
-> -    QIOChannel *ioc;
-> +    QIOChannel *ioc = NULL;
->      int fd = monitor_get_fd(monitor_cur(), fdname, errp);
->      if (fd == -1) {
-> -        return;
-> +        goto out;
->      }
->
->      if (!migration_fd_valid(fd)) {
-> @@ -66,12 +67,12 @@ void fd_connect_outgoing(MigrationState *s, const char *fdname, Error **errp)
->      ioc = qio_channel_new_fd(fd, errp);
->      if (!ioc) {
->          close(fd);
-> -        return;
-> +        goto out;
->      }
->
->      qio_channel_set_name(ioc, "migration-fd-outgoing");
-> -    migration_channel_connect_outgoing(s, ioc);
-> -    object_unref(OBJECT(ioc));
-> +out:
-> +    return ioc;
->  }
->
->  static gboolean fd_accept_incoming_migration(QIOChannel *ioc,
-> diff --git a/migration/fd.h b/migration/fd.h
-> index 7211629270..ce0b751273 100644
-> --- a/migration/fd.h
-> +++ b/migration/fd.h
-> @@ -16,8 +16,11 @@
->
->  #ifndef QEMU_MIGRATION_FD_H
->  #define QEMU_MIGRATION_FD_H
-> +
-> +#include "io/channel.h"
-> +
->  void fd_connect_incoming(const char *fdname, Error **errp);
->
-> -void fd_connect_outgoing(MigrationState *s, const char *fdname,
-> -                         Error **errp);
-> +QIOChannel *fd_connect_outgoing(MigrationState *s, const char *fdname,
-> +                                Error **errp);
->  #endif
-> diff --git a/migration/file.c b/migration/file.c
-> index b7b0fb5194..5618aced49 100644
-> --- a/migration/file.c
-> +++ b/migration/file.c
-> @@ -93,36 +93,38 @@ out:
->      return ret;
->  }
->
-> -void file_connect_outgoing(MigrationState *s,
-> -                           FileMigrationArgs *file_args, Error **errp)
-> +QIOChannel *file_connect_outgoing(MigrationState *s,
-> +                                  FileMigrationArgs *file_args, Error **errp)
->  {
-> -    g_autoptr(QIOChannelFile) fioc = NULL;
-> +    QIOChannelFile *fioc = NULL;
->      g_autofree char *filename = g_strdup(file_args->filename);
->      uint64_t offset = file_args->offset;
-> -    QIOChannel *ioc;
-> +    QIOChannel *ioc = NULL;
->
->      trace_migration_file_outgoing(filename);
->
->      fioc = qio_channel_file_new_path(filename, O_CREAT | O_WRONLY, 0600, errp);
->      if (!fioc) {
-> -        return;
-> +        goto out;
->      }
->
->      if (ftruncate(fioc->fd, offset)) {
->          error_setg_errno(errp, errno,
->                           "failed to truncate migration file to offset %" PRIx64,
->                           offset);
-> -        return;
-> +        goto out;
->      }
->
->      outgoing_args.fname = g_strdup(filename);
->
->      ioc = QIO_CHANNEL(fioc);
->      if (offset && qio_channel_io_seek(ioc, offset, SEEK_SET, errp) < 0) {
-> -        return;
-> +        ioc = NULL;
-> +        goto out;
->      }
->      qio_channel_set_name(ioc, "migration-file-outgoing");
-> -    migration_channel_connect_outgoing(s, ioc);
-> +out:
-> +    return ioc;
->  }
->
->  static gboolean file_accept_incoming_migration(QIOChannel *ioc,
-> diff --git a/migration/file.h b/migration/file.h
-> index 9b1e874bb7..5936c64fea 100644
-> --- a/migration/file.h
-> +++ b/migration/file.h
-> @@ -9,14 +9,15 @@
->  #define QEMU_MIGRATION_FILE_H
->
->  #include "qapi/qapi-types-migration.h"
-> +#include "io/channel.h"
->  #include "io/task.h"
->  #include "channel.h"
->  #include "multifd.h"
->
->  void file_connect_incoming(FileMigrationArgs *file_args, Error **errp);
->
-> -void file_connect_outgoing(MigrationState *s,
-> -                           FileMigrationArgs *file_args, Error **errp);
-> +QIOChannel *file_connect_outgoing(MigrationState *s,
-> +                                  FileMigrationArgs *file_args, Error **errp);
->  int file_parse_offset(char *filespec, uint64_t *offsetp, Error **errp);
->  void file_cleanup_outgoing_migration(void);
->  bool file_send_channel_create(gpointer opaque, Error **errp);
-> diff --git a/migration/rdma.c b/migration/rdma.c
-> index b726392097..5d78c1827a 100644
-> --- a/migration/rdma.c
-> +++ b/migration/rdma.c
-> @@ -3934,8 +3934,8 @@ err:
->      g_free(rdma);
->  }
->
-> -void rdma_connect_outgoing(void *opaque,
-> -                           InetSocketAddress *host_port, Error **errp)
-> +QIOChannel *rdma_connect_outgoing(void *opaque,
-> +                                  InetSocketAddress *host_port, Error **errp)
->  {
->      MigrationState *s = opaque;
->      RDMAContext *rdma_return_path = NULL;
-> @@ -3945,7 +3945,7 @@ void rdma_connect_outgoing(void *opaque,
->      /* Avoid ram_block_discard_disable(), cannot change during migration. */
->      if (ram_block_discard_is_required()) {
->          error_setg(errp, "RDMA: cannot disable RAM discard");
-> -        return;
-> +        return NULL;
->      }
->
->      rdma = qemu_rdma_data_init(host_port, errp);
-> @@ -3995,12 +3995,11 @@ void rdma_connect_outgoing(void *opaque,
->      trace_rdma_connect_outgoing_after_rdma_connect();
->
->      s->rdma_migration = true;
-> -    migration_outgoing_setup(rdma_new_output(rdma));
-> -    migration_start_outgoing(s);
-> -    return;
-> +    return rdma_new_output(rdma);
->  return_path_err:
->      qemu_rdma_cleanup(rdma);
->  err:
->      g_free(rdma);
->      g_free(rdma_return_path);
-> +    return NULL;
->  }
-> diff --git a/migration/rdma.h b/migration/rdma.h
-> index 170c25cf44..8a6515f130 100644
-> --- a/migration/rdma.h
-> +++ b/migration/rdma.h
-> @@ -21,8 +21,8 @@
->
->  #include "system/memory.h"
->
-> -void rdma_connect_outgoing(void *opaque, InetSocketAddress *host_port,
-> -                           Error **errp);
-> +QIOChannel *rdma_connect_outgoing(void *opaque, InetSocketAddress *host_port,
-> +                                  Error **errp);
->
->  void rdma_connect_incoming(InetSocketAddress *host_port, Error **errp);
->
-> --
+> +:mem size: an array of 256 64-bit fields representing the size of each
+> +          VIRTIO Shared Memory Region. ``num regions`` specifies the
+> +          number of valid regions (non-zero size). The array index
+> +          corresponds to the shared memory ID (shmid).
 
-* Change looks okay.
-Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
+Just to be clear, I'd favour this change, which only entails a minor
+clarification on these lines. The rest of the series, including
+implementation and structures, remain unchanged.
 
-Thank you.
----
-  - Prasad
+>
+> If you are suggesting removing the num regions+padding field, then the
+> description could be further simplified to:
+>
+> +:mem size: an array of 256 64-bit fields representing the size of each
+> +          VIRTIO Shared Memory Region. The array index corresponds
+> +          to the shared memory ID (shmid).
+>
+>
+>
+>
+> >
+> > > As much as I wanted this series merged, this deserves a clarification=
+.
+> > > So I can either send a new version of the series or split the last
+> > > three patches into a different series. Hopefully it only requires one
+> > > more version though.
+> > >
+> > >
+> > > >  C structure
+> > > >  -----------
+> > > >
+> > > > @@ -397,6 +411,7 @@ In QEMU the vhost-user message is implemented w=
+ith the following struct:
+> > > >            VhostUserShared object;
+> > > >            VhostUserTransferDeviceState transfer_state;
+> > > >            VhostUserMMap mmap;
+> > > > +          VhostUserShMemConfig shmem;
+> > > >        };
+> > > >    } QEMU_PACKED VhostUserMsg;
+> > > >
+> > > > @@ -1761,6 +1776,30 @@ Front-end message types
+> > > >    Using this function requires prior negotiation of the
+> > > >    ``VHOST_USER_PROTOCOL_F_DEVICE_STATE`` feature.
+> > > >
+> > > > +``VHOST_USER_GET_SHMEM_CONFIG``
+> > > > +  :id: 44
+> > > > +  :equivalent ioctl: N/A
+> > > > +  :request payload: N/A
+> > > > +  :reply payload: ``struct VhostUserShMemConfig``
+> > > > +
+> > > > +  When the ``VHOST_USER_PROTOCOL_F_SHMEM`` protocol feature has be=
+en
+> > > > +  successfully negotiated, this message can be submitted by the fr=
+ont-end
+> > > > +  to gather the VIRTIO Shared Memory Region configuration. The bac=
+k-end will
+> > > > +  respond with the number of VIRTIO Shared Memory Regions it requi=
+res, and
+> > > > +  each shared memory region size in an array. The shared memory ID=
+s are
+> > > > +  represented by the array index. The information returned shall c=
+omply
+> > > > +  with the following rules:
+> > > > +
+> > > > +  * The shared information will remain valid and unchanged for the=
+ entire
+> > > > +    lifetime of the connection.
+> > > > +
+> > > > +  * The Shared Memory Region size must be a multiple of the page s=
+ize
+> > > > +    supported by mmap(2).
+> > > > +
+> > > > +  * The size may be 0 if the region is unused. This can happen whe=
+n the
+> > > > +    device does not support an optional feature but does support a=
+ feature
+> > > > +    that uses a higher shmid.
+> > > > +
+> > > >  Back-end message types
+> > > >  ----------------------
+> > > >
+> > > > --
+> > > > 2.49.0
+> > > >
+> >
 
 
