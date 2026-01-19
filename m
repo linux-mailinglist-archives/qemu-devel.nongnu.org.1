@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2E6BD3A632
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 12:05:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26C29D3A62A
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 12:05:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhn3V-0006xw-6m; Mon, 19 Jan 2026 06:04:21 -0500
+	id 1vhn3s-00080b-0L; Mon, 19 Jan 2026 06:04:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vhn3T-0006rG-NC
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 06:04:19 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vhn3q-0007v3-60
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 06:04:42 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vhn3S-0006YD-32
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 06:04:19 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-47ff94b46afso26958795e9.1
- for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 03:04:17 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vhn3o-0006ca-Dx
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 06:04:41 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-47ee4338e01so16752195e9.2
+ for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 03:04:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768820656; x=1769425456; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768820678; x=1769425478; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2/5ri0x0HKOQ4AevWnY2CiNFX91P9a3QRDv363s7aV8=;
- b=XfNHp/TrPO1lkJtC/QCvoRAOP8HvOwXhAeUDnP2Ke9d2kzKHL0+IW/cGJ3H6ecfZhk
- azMeHSstJSRpy14opES4lLwIDXhu7jo5kAukj5qbssE7/bo2tPxwlYc5A7v+RVtJCSNE
- dAHklFGs6KpZY6ve1pefOh7VXddpTE1H8q8+mXBI9RbKGRhWyineba+Y19y3zz7KgsVP
- 5VBa5C9WuB5Ut+gxTBo0m3VqJAo1X7pu//dzADL3pnQoP3rvZ4O8jYc9BhqWu03L/o0T
- 8440RqAJata7Ob7BIK6RLeps8UAfJUbSj7V6QUjLUiT3/lSZWG/XJdr4iR6J3pRMdthr
- FhGw==
+ bh=31vcExfhyxITyDpAatH4IsbdJjBgBKYHjZYCzAjc2Rk=;
+ b=reWORSN56g0T0sRIIYYu/8tyV7tCxnz0RnTUm+2RVe4alT/fbT+dqc2AFNkydWam/G
+ MOk/u1CWrwMEYOYWBBL0l0K3sWvqyRM+8m4aGZ83hD3rmtaB72RCDK1siSchpjtiDkTO
+ cDarKtSzFBhllQLl+EIifeZguVu33W828ZuK3xZyWcDw8FoBAOgCMHDkrwzAvziffh3y
+ Rb4T+EN1m0W0Oe9pbopGkbbekPBCO6uTc9jfP1/jpJArpMuAQ+HRnTjm3TOmoWEsnI23
+ xho8CdFRUWXnWbqlGeU3E9iZP0vPVGVSt8daHfq1F6j3kV9w6Y/PddZ5AHqykRqez9HH
+ nuUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768820656; x=1769425456;
+ d=1e100.net; s=20230601; t=1768820678; x=1769425478;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=2/5ri0x0HKOQ4AevWnY2CiNFX91P9a3QRDv363s7aV8=;
- b=u8siMuZ16ajasJXCZjPuJz0HAwoL7cg2aVABO0TvDWwFtp/wT90o6mAyRw/4KwP114
- hkJgPqZtyDyEjViiraubgOd2wE+BUCrSxycBkZzS6c3q41IAAJpo3erBfL9zh1QzCPBa
- uVN/tkrYp2WbLvOQupYvsPbO70wajUPo/FL5p+Fg4sR7ysHbXgP1lYJJ28/A2xV1oeyn
- pMf2IjNv74UIWKtLGP58zTyxSekE68YNhnmsPy4EW9m7+bV4G3yQ2bK3um0vr89muX8n
- 7sSSh0q91RSBWu8wwplGwMUm+ATdrvH1AeOLrpagEk7oRb8Vx4jnbhvQzroxiL25ElGm
- g5eQ==
-X-Gm-Message-State: AOJu0YygCt/yOzUm62ZUdxfo+Nrw+OivUsfXFpNRZdENyj3m8n4yAv/m
- FKKvDbTz3RYrBnKb18naNnteJRUy4GPki3RdYqSp1d6iIlltDtJqiY2fsXapqoaelB+NXHdVfA6
- kq/0lB3I=
-X-Gm-Gg: AY/fxX7SjIoUHozQo769+Y64QgSjJK1xhy7uhK3OT/g0c1xHs+fur4J+aT40DcSct3v
- Jh5exjZa3elgyg7vSTqKttOzQDp7uVuFA4uSIwO9Dod3GXj3qNwh8H8O4FDQ+n5uqZngwowXjGp
- pBSJDHaIJNRqgcR87ls29nDnotMND2sXkdzU72ZY3TB5fLZqeldDASkOwIf3YLT2QgW5pdK9f79
- tGv4i84dEWdLHtxXEMq0Ae+hxzdCZboQ/Vg+OqUAmcqQaZ0v5lTNXc9yRc/URNahdxiBGKZzs4c
- 0pDK3S0bJ3sqve3l5Rm1OqluUmvxzesujG3TR00oXSCpT7LVnl7mmz4fqtrPuk9Swy7Gsb71cML
- /WTscmkc0vCRV+GdGXW+C566ebBmnSDS4Pf08jmbwZg1Y4rcx48CMXp0v2ILx+Ad6MsWFPK2o1d
- HB5cFZp64v1Q/LP5W6LF2jxbgzS6IYxWN3ENxnNfMm5uTDbxouScO1VhEuSNEkVrD3MH8m/Xw=
-X-Received: by 2002:a05:600c:8184:b0:475:d9de:952e with SMTP id
- 5b1f17b1804b1-4801e530d08mr129131105e9.1.1768820655782; 
- Mon, 19 Jan 2026 03:04:15 -0800 (PST)
+ bh=31vcExfhyxITyDpAatH4IsbdJjBgBKYHjZYCzAjc2Rk=;
+ b=cdrMeMqHXv5Yy6iRZRiZSviHleAHySrVeigHxP2yq4IB7+FlGGS628WBisiFnvAvhp
+ Rlek11IjJGuJgd7nUdbhWa8k1lJRD98mPsPdHk6Mkrq3bA6qnwnUbFIcMLFhzo70G55N
+ 6PY/3WRHpD+7xg+W+5aAW8z0YGiWbxosixerdMEYHf7y+BGZ1k85OZnZY3hwHStysm3A
+ 0WwhrcaCZwOpXZkA/O900OpUcuTvGUBVr2CHjioD/3tfwUG+eK3ATjrVOcvVwFjvaME2
+ YbdLh0xe8f2YFD4MvYSjqdxloYV+nb1YOxX4qItnEUY7DhRZbYC+NW0/G0C7iVxenVI6
+ p7Jg==
+X-Gm-Message-State: AOJu0Yx4UNLsHuFJhLTJ9EzmhXrZ2MNvnRQnEXtxn+MYFUjGTOCkatr4
+ AxxqVNClQZgV2ETsusgcPPYVFgPA15ZwORNEdpFfiy86lM86TBJndXEG+xwoaZ9vEEIfh+66dqe
+ NvsW4mXM=
+X-Gm-Gg: AY/fxX4vk7TYl/Cx3TgxnendZdOlw8ubS2gWhUioki6mYN6wKNWNxiR34kxPsYwZV9L
+ cLO2SBE2wAqnFdXO3296nqoGQTgYdpsHZG6NP+J7jG0LfMXjkAxEFuP660RKSTjhhsLo6GAlD0N
+ x0QHhjo2IrFSmzmKVpdI1c+Wq5ODn6Ii7RmQHB8jo7SignpKUrKMTtMtInr3IWILtn0VFbd57kX
+ rrJGvGaVCRk98/d/m1RF9w6yaYZRjo/YFfWssGWKOdY9YD3lM2hAe1gesF13H6LDaiKHj4jfIso
+ k2mvzofq38vGMugmCwfeJOiKq5gqfPhOlytduk5wz+fPPWJDcc3hfeCwPe6zk/55UgcqJIOGEF7
+ hx6Oq+OfNIHd7Q4pR39oCp1k0iNakj49GrgprpucO1UuKYLk0wtdg17Cdp8KHOqxKPzBIgIEvv4
+ LP+ryIQQdOzlE3abiTaYOxgnibJoVJmpwSc9UiSSjIt0cW1xxb4K6i1XhURlMg
+X-Received: by 2002:a05:600c:4448:b0:477:b0b9:312a with SMTP id
+ 5b1f17b1804b1-4801eab9db5mr122218155e9.7.1768820678212; 
+ Mon, 19 Jan 2026 03:04:38 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4801fe74987sm82032795e9.8.2026.01.19.03.04.14
+ 5b1f17b1804b1-4801fe3b01csm82111835e9.5.2026.01.19.03.04.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 19 Jan 2026 03:04:15 -0800 (PST)
+ Mon, 19 Jan 2026 03:04:36 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
@@ -68,17 +68,17 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  "Dr. David Alan Gilbert" <dave@treblig.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v3 2/8] monitor: Add hmp_cmds_for_target() helper
-Date: Mon, 19 Jan 2026 12:03:52 +0100
-Message-ID: <20260119110358.66821-3-philmd@linaro.org>
+Subject: [PATCH v3 5/8] monitor: Have *get_monitor_def() fill an unsigned value
+Date: Mon, 19 Jan 2026 12:03:55 +0100
+Message-ID: <20260119110358.66821-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260119110358.66821-1-philmd@linaro.org>
 References: <20260119110358.66821-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,126 +101,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-HMPCommand arrays are filled with target-specific
-commands, so defined in a target-specific unit.
-Introduce the hmp_cmds_for_target() to allow
-target-agnostic code to access the arrays.
+target_get_monitor_def() fills an unsigned value.
+Have get_monitor_def() fill an unsigned value too.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
 ---
- monitor/monitor-internal.h |  9 +++++++--
- monitor/hmp-target.c       | 13 ++++++++-----
- monitor/hmp.c              |  8 +++++---
- 3 files changed, 20 insertions(+), 10 deletions(-)
+ monitor/monitor-internal.h | 2 +-
+ monitor/hmp-target.c       | 4 ++--
+ monitor/hmp.c              | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/monitor/monitor-internal.h b/monitor/monitor-internal.h
-index 7735c731083..feca111ae31 100644
+index feca111ae31..8dc88963630 100644
 --- a/monitor/monitor-internal.h
 +++ b/monitor/monitor-internal.h
-@@ -169,8 +169,6 @@ extern QmpCommandList qmp_commands, qmp_cap_negotiation_commands;
- extern QemuMutex monitor_lock;
- extern MonitorList mon_list;
+@@ -181,7 +181,7 @@ void monitor_data_destroy_qmp(MonitorQMP *mon);
+ void coroutine_fn monitor_qmp_dispatcher_co(void *data);
+ void qmp_dispatcher_co_wake(void);
  
--extern HMPCommand hmp_cmds[];
--
- void monitor_data_init(Monitor *mon, bool is_qmp, bool skip_flush,
-                        bool use_io_thread);
- void monitor_data_destroy(Monitor *mon);
-@@ -187,4 +185,11 @@ int get_monitor_def(Monitor *mon, int64_t *pval, const char *name);
+-int get_monitor_def(Monitor *mon, int64_t *pval, const char *name);
++int get_monitor_def(Monitor *mon, uint64_t *pval, const char *name);
  void handle_hmp_command(MonitorHMP *mon, const char *cmdline);
  int hmp_compare_cmd(const char *name, const char *list);
  
-+/*
-+ * hmp_cmds_for_target: Return array of HMPCommand entries
-+ *
-+ * If @info_command is true, return the particular 'info foo' commands array.
-+ */
-+HMPCommand *hmp_cmds_for_target(bool info_command);
-+
- #endif
 diff --git a/monitor/hmp-target.c b/monitor/hmp-target.c
-index 37dfd7fd4c6..59c60d13b52 100644
+index 1600666ee92..5738b47bb03 100644
 --- a/monitor/hmp-target.c
 +++ b/monitor/hmp-target.c
-@@ -44,8 +44,6 @@
- /* Make devices configuration available for use in hmp-commands*.hx templates */
- #include CONFIG_DEVICES
- 
--static HMPCommand hmp_info_cmds[];
--
- /**
-  * Is @name in the '|' separated list of names @list?
-  */
-@@ -76,11 +74,16 @@ static HMPCommand hmp_info_cmds[] = {
- };
- 
- /* hmp_cmds and hmp_info_cmds would be sorted at runtime */
--HMPCommand hmp_cmds[] = {
-+static HMPCommand hmp_cmds[] = {
- #include "hmp-commands.h"
-     { NULL, NULL, },
- };
- 
-+HMPCommand *hmp_cmds_for_target(bool info_command)
-+{
-+    return info_command ? hmp_info_cmds : hmp_cmds;
-+}
-+
- /*
+@@ -63,7 +63,7 @@ HMPCommand *hmp_cmds_for_target(bool info_command)
   * Set @pval to the value in the register identified by @name.
   * return 0 if OK, -1 if not found
-@@ -148,7 +151,7 @@ static void __attribute__((__constructor__)) sortcmdlist(void)
- void monitor_register_hmp(const char *name, bool info,
-                           void (*cmd)(Monitor *mon, const QDict *qdict))
+  */
+-int get_monitor_def(Monitor *mon, int64_t *pval, const char *name)
++int get_monitor_def(Monitor *mon, uint64_t *pval, const char *name)
  {
--    HMPCommand *table = info ? hmp_info_cmds : hmp_cmds;
-+    HMPCommand *table = hmp_cmds_for_target(info);
+     const MonitorDef *md = target_monitor_defs();
+     CPUState *cs = mon_get_cpu(mon);
+@@ -100,7 +100,7 @@ int get_monitor_def(Monitor *mon, int64_t *pval, const char *name)
  
-     while (table->name != NULL) {
-         if (strcmp(table->name, name) == 0) {
-@@ -164,7 +167,7 @@ void monitor_register_hmp(const char *name, bool info,
- void monitor_register_hmp_info_hrt(const char *name,
-                                    HumanReadableText *(*handler)(Error **errp))
- {
--    HMPCommand *table = hmp_info_cmds;
-+    HMPCommand *table = hmp_cmds_for_target(true);
+     ret = target_get_monitor_def(cs, name, &tmp);
+     if (!ret) {
+-        *pval = (target_long) tmp;
++        *pval = (target_ulong)tmp;
+     }
  
-     while (table->name != NULL) {
-         if (strcmp(table->name, name) == 0) {
+     return ret;
 diff --git a/monitor/hmp.c b/monitor/hmp.c
-index 4caafbc7146..17e5756986f 100644
+index 0a5bbf82197..eee8b7e964e 100644
 --- a/monitor/hmp.c
 +++ b/monitor/hmp.c
-@@ -301,7 +301,7 @@ void hmp_help_cmd(Monitor *mon, const char *name)
-     }
+@@ -376,7 +376,7 @@ static int64_t expr_unary(Monitor *mon)
+     case '$':
+         {
+             char buf[128], *q;
+-            int64_t reg = 0;
++            uint64_t reg = 0;
  
-     /* 2. dump the contents according to parsed args */
--    help_cmd_dump(mon, hmp_cmds, args, nb_args, 0);
-+    help_cmd_dump(mon, hmp_cmds_for_target(false), args, nb_args, 0);
- 
-     free_cmdline_args(args, nb_args);
- }
-@@ -1131,7 +1131,8 @@ void handle_hmp_command(MonitorHMP *mon, const char *cmdline)
- 
-     trace_handle_hmp_command(mon, cmdline);
- 
--    cmd = monitor_parse_command(mon, cmdline, &cmdline, hmp_cmds);
-+    cmd = monitor_parse_command(mon, cmdline, &cmdline,
-+                                hmp_cmds_for_target(false));
-     if (!cmd) {
-         return;
-     }
-@@ -1375,7 +1376,8 @@ static void monitor_find_completion(void *opaque,
-     }
- 
-     /* 2. auto complete according to args */
--    monitor_find_completion_by_table(mon, hmp_cmds, args, nb_args);
-+    monitor_find_completion_by_table(mon, hmp_cmds_for_target(false),
-+                                     args, nb_args);
- 
- cleanup:
-     free_cmdline_args(args, nb_args);
+             pch++;
+             q = buf;
 -- 
 2.52.0
 
