@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55100D3B703
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 20:13:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19991D3B6FE
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 20:13:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhufN-0006p7-Ep; Mon, 19 Jan 2026 14:11:57 -0500
+	id 1vhufN-0006pb-SA; Mon, 19 Jan 2026 14:11:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vhufK-0006nc-LN
+ id 1vhufL-0006nd-3q
  for qemu-devel@nongnu.org; Mon, 19 Jan 2026 14:11:55 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1vhufI-0001UB-Hh
+ id 1vhufJ-0001UO-4W
  for qemu-devel@nongnu.org; Mon, 19 Jan 2026 14:11:54 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-2a3e89aa5d0so45546195ad.1
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-2a07f8dd9cdso28782935ad.1
  for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 11:11:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768849911; x=1769454711; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768849912; x=1769454712; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=i7jTI226rULEenFWR/jaa3SSAyZLW7ymCONJzGfrIrs=;
- b=q+AQOSKQ6968mZfZ0RV2Z9dUWow3rBbaOY+Zp1qLKsNnsOu/kKTBrfmDaE9Y50nqAf
- c6EC6lX57/yzcycZ8orxDmFc9DIzrmkVyphV1gQc9rDKbfPoB7g2Zb492DRu/Y1G8F9x
- ktE0st9VcRnNlf+n0ImrijQ+2CLsmt7evHA0F3+7XWM1TGMZU+uApPscWtHFfSH0b5q8
- thxSPWP7ztK5NxHUsiWuYsxVzsf8rZKYiSi5w0Q0eMS+yMfBneaMCGacFlA7zhc54EMu
- K1ujCcc7e9S7FOSc/cKfkhB0D/B/LxBzMVPBGOTgYpx2yuKd7f7PZMvTlB5SQzU1XLJY
- Hdfg==
+ bh=Wfknli3tDQs/F7BIkzAI6JhFur+SyPp89eslEi0dJ30=;
+ b=ZzkB0jcwvP0d3GaS2THjaNcA3v9SfkzXRG5TrICB+EgsnMYjKoT8T40LQLo1FxBlFe
+ w3WNzUnk5cEEz3IANOpuPYFJJ/4gG5KJz6iWfRmP/Sa3AZPym0RP9WuG+NxrtAfXSlLc
+ C4t6eC1beEHutxf1m386y+opoyXHpnMQjboAiJGHjnN9ToRCcErudO4k30E6VdNTbyxu
+ oNj2V90eDJ/Ot2UnS7ikBjfIjy16p/juh9Z3gCW1OzZ7claQ9Pfixf2tAfNiHHdkSwFJ
+ 30flIi85yCv2VMGnAcsHCbvQzv2pqz/SN68vuRLbs79wNYSKDkiocuaV67IDmNfNJssA
+ nNiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768849911; x=1769454711;
+ d=1e100.net; s=20230601; t=1768849912; x=1769454712;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=i7jTI226rULEenFWR/jaa3SSAyZLW7ymCONJzGfrIrs=;
- b=besOh/AyefzKk7bnC3wI0/6Ajdel4VnjXXD14K8n/FnogFZ0NxY2cYzs2gwkQlDE8O
- GG1CTm7QIDWfEMSb/N21C7zqteAiBwb2+YWLZ06NdJINiALW/k7M5+RH5eFmWbh//qQf
- Ujhp9twIAYha4NV2amLS6ywYWOyU9iifNZ/eezOXtXc8BQCrorrwgqmOmMtsHzRFUUJC
- Mkbhro47+j+0RtRToBucn5HOkVICgZFm/dSmKQ3hwOVZc8PqyrQveQcszy4djaKd1i3N
- ODYDPFPYlBqMDIkLZpEfLN6gsdMKE9duS3/8D7rqWOfwWuWb/kkCRcsHtmRWsbct1Hbx
- Hs8w==
-X-Gm-Message-State: AOJu0YwWzQu0WUZ9C2TESjRFKwgezwlwt4hubu27Ggr3uQ18JSn2tgui
- fdQdBU/t1yT1qT+n2I7PEvfvy0iGhcD4JHi4M7pRSYo9wDEkj7uZCAO1nOxlh76kndnTXebtuDb
- ZfKOm
-X-Gm-Gg: AZuq6aLzxrANlL9sKRs+1HVJ0emjVI2zLOrCGHuTrI/oa8uFuoMacQmF/d4URx/ZsHf
- Gk0H5dwJ5iPWrh+Ul4uMovtLiXYqRfP88k0dbbKe6yudZcOZ+cEQ3/umEYBEO5khOqj53prLagf
- qiGaGfKBtiM8xoacl6VB19CyFV0EWNZ8U/jhiJVqd4CQQ7tzdCqBTvvD12Hb/L/YUS04LBNq4Yk
- +XCjhg0WtbLvQS3MvvWrxOj7eV11K4AXXrcHvvbP5a+JamHr7O1E56UjR1FvFqPzdIYjldpYfvT
- VVl1ot4Ths4SDcuNrhNlAl5bThCuvs/Wt/qNsGurEL2Nj403/ELpvsyqQLovdRwr/4UsvfzNA84
- eiKF+F/S4jNj1SXPWvFyw88Pgdw1nUEjw/6H09Ysx6Q0QDXKOF+DUVUiupxVZSvFzUJ5yfa6ukR
- lLBRWSZipwR9oI2DKJZjFAwnrZB9gNTCrbCUa3Moj0n4JU+Ohwmk8+SH5laK9m6YJ9
-X-Received: by 2002:a17:902:c951:b0:2a1:3ade:c351 with SMTP id
- d9443c01a7336-2a7174efcd0mr141827195ad.2.1768849910800; 
- Mon, 19 Jan 2026 11:11:50 -0800 (PST)
+ bh=Wfknli3tDQs/F7BIkzAI6JhFur+SyPp89eslEi0dJ30=;
+ b=vFZhetpZgfW62gQdS1Xjlt9kc9eb7s+1RODfSUSde83oGS7HjzP8fcHzhP5QOTEQV5
+ O/cKVuBQTxYB2GqfNpzIH44hJTssF60PyxsdGMV8Fa1TvARsNjRhJwWf2GXjlSPNo4j3
+ e3hPXs+vsPre2EmI/gGd12sL/ZQXyTCbVUlFKnqlqFT3LddXP6BSiSswjWgktkBaGn+w
+ 2/JZzD05suYJ2xBJNJtsm5vsNKnBm+GRMvVTfDk4sC6WF7al2kZQtpKsi2KMD957HZ9R
+ iEg9j3xIG1iO9+eX3bbnpsewqQQ4qHyLSRrgNjw+eP3GCNquzKb+HVa/5+0jERkDnOuW
+ t07Q==
+X-Gm-Message-State: AOJu0Yz53NkByxbdi+c0uaR2RY4r0RGbnq9V3R6rfpXsFE2kI69ItGM8
+ F4iYSdhfTGJ0J1Cfz0DHlGx201CQmY4okjey2jAIcGn+7pRBwhpvq6grFqNBtsbOnLoiFTK2Ia4
+ neAVC
+X-Gm-Gg: AZuq6aLa5nN9QMmWFsvNOdSDkz+nUjP4sOLpqTBlm8PZ39Phl8rRHv2TA+Lsn8iEHXr
+ Liu2ZXOBxj7CNoEY6wRXajAtLNyQWgImbySGb3OW3MWSpzny/julQLOxs2UnmI3LfVDs19XYSlH
+ nzZf33gKLKLb4kC8uiaS5wcD3la9scmnMIQGq8Lnt4BV5XHPjJbfoRFlLLsZDe5bYPZNJW35wJo
+ z+57VJynL94fOH32byTmyldWLkB+abglb/R+0vpqihJWV1d4E2rMkiLEbygaWy7RCr0RR3cpWQT
+ 4mr8mhZqXTrVqxylswyrsYvtCC+7HR8pTT1crbUnKwWeljc0XYgdXHXNeemAgk7hwaOhKnSKR/r
+ /hdOUhCHuk5gUg8h48PUmCCVlVLqUxW7KjBzLdE/ov95+JaOcT9cElYvoOZjtFlcfBduitKTkXh
+ bYe0aNCRyFp1DunRiSKLFUwxC8NKbHWv7v+wvfkyZ3iWkF1QusbV3qAN3KKvhiSrgAP1IRKVZXD
+ aU=
+X-Received: by 2002:a17:903:fa4:b0:2a0:fb1c:144c with SMTP id
+ d9443c01a7336-2a71752af9cmr103997285ad.5.1768849911690; 
+ Mon, 19 Jan 2026 11:11:51 -0800 (PST)
 Received: from pc.taild8403c.ts.net (216-71-219-44.dyn.novuscom.net.
  [216.71.219.44]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a719415f0asm47011795ad.89.2026.01.19.11.11.50
+ d9443c01a7336-2a719415f0asm47011795ad.89.2026.01.19.11.11.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Jan 2026 11:11:50 -0800 (PST)
+ Mon, 19 Jan 2026 11:11:51 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
@@ -77,16 +78,18 @@ Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
  Gustavo Bueno Romero <gustavo.romero@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v3 06/11] plugins: move qemu-plugin.h to include/plugins/
-Date: Mon, 19 Jan 2026 11:11:32 -0800
-Message-ID: <20260119191138.811069-7-pierrick.bouvier@linaro.org>
+Subject: [PATCH v3 07/11] meson: fix supported compiler arguments in other
+ languages than C
+Date: Mon, 19 Jan 2026 11:11:33 -0800
+Message-ID: <20260119191138.811069-8-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260119191138.811069-1-pierrick.bouvier@linaro.org>
 References: <20260119191138.811069-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,140 +112,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This change has two benefits:
-- ensure plugins can't include anything else from QEMU than plugins API
-- when compiling a C++ module, solves the header conflict with iostream
-  header that includes transitively the wrong ctype.h, which already
-  exists in include/qemu.
+qemu_common_flags are only checked for c compiler, even though they
+are applied to c++ and objc. This is a problem when C compiler is gcc,
+and C++ compiler is clang, creating a possible mismatch.
 
-By Hyrum's law, there was already one usage of other headers with mem
-plugin, which has been eliminated in previous commit.
+One concrete example is option -fzero-call-used-regs=used-gpr with
+ubuntu2204 container, which is supported by gcc, but not by clang, thus
+leading to a failure when compiling a C++ TCG plugin.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- docs/devel/tcg-plugins.rst              | 4 ++--
- meson.build                             | 2 +-
- include/{qemu => plugins}/qemu-plugin.h | 3 ---
- include/qemu/plugin.h                   | 2 +-
- plugins/core.c                          | 2 +-
- plugins/meson.build                     | 6 +++---
- scripts/clean-includes                  | 2 +-
- 7 files changed, 9 insertions(+), 12 deletions(-)
- rename include/{qemu => plugins}/qemu-plugin.h (99%)
+ meson.build | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/docs/devel/tcg-plugins.rst b/docs/devel/tcg-plugins.rst
-index 9463692c411..f48c32bd844 100644
---- a/docs/devel/tcg-plugins.rst
-+++ b/docs/devel/tcg-plugins.rst
-@@ -166,7 +166,7 @@ Plugin API
- ==========
- 
- The following API is generated from the inline documentation in
--``include/qemu/qemu-plugin.h``. Please ensure any updates to the API
-+``include/plugins/qemu-plugin.h``. Please ensure any updates to the API
- include the full kernel-doc annotations.
- 
--.. kernel-doc:: include/qemu/qemu-plugin.h
-+.. kernel-doc:: include/plugins/qemu-plugin.h
 diff --git a/meson.build b/meson.build
-index 6f02547df9b..3ed62a406b7 100644
+index 3ed62a406b7..8820a9832c0 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -4443,7 +4443,7 @@ endforeach
- # Other build targets
- 
- if get_option('plugins')
--  install_headers('include/qemu/qemu-plugin.h')
-+  install_headers('include/plugins/qemu-plugin.h')
-   if host_os == 'windows'
-     # On windows, we want to deliver the qemu_plugin_api.lib file in the qemu installer,
-     # so that plugin authors can compile against it.
-diff --git a/include/qemu/qemu-plugin.h b/include/plugins/qemu-plugin.h
-similarity index 99%
-rename from include/qemu/qemu-plugin.h
-rename to include/plugins/qemu-plugin.h
-index e44f863d839..78872716246 100644
---- a/include/qemu/qemu-plugin.h
-+++ b/include/plugins/qemu-plugin.h
-@@ -2,9 +2,6 @@
-  * Copyright (C) 2017, Emilio G. Cota <cota@braap.org>
-  * Copyright (C) 2019, Linaro
-  *
-- * License: GNU GPL, version 2 or later.
-- *   See the COPYING file in the top-level directory.
-- *
-  * SPDX-License-Identifier: GPL-2.0-or-later
-  */
- 
-diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
-index cea0a68858b..cdd4f68c0c1 100644
---- a/include/qemu/plugin.h
-+++ b/include/qemu/plugin.h
-@@ -8,7 +8,7 @@
- #define QEMU_PLUGIN_H
- 
- #include "qemu/config-file.h"
--#include "qemu/qemu-plugin.h"
-+#include "plugins/qemu-plugin.h"
- #include "qemu/error-report.h"
- #include "qemu/queue.h"
- #include "qemu/option.h"
-diff --git a/plugins/core.c b/plugins/core.c
-index b4b783008f7..3f66533d749 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -15,7 +15,7 @@
- #include "qemu/lockable.h"
- #include "qemu/option.h"
- #include "qemu/plugin.h"
--#include "qemu/qemu-plugin.h"
-+#include "plugins/qemu-plugin.h"
- #include "qemu/queue.h"
- #include "qemu/rcu_queue.h"
- #include "qemu/rcu.h"
-diff --git a/plugins/meson.build b/plugins/meson.build
-index 4318e3a1671..34643e2cea3 100644
---- a/plugins/meson.build
-+++ b/plugins/meson.build
-@@ -3,7 +3,7 @@ if not get_option('plugins')
+@@ -682,10 +682,7 @@ if cc.compiles('extern struct { void (*cb)(void); } s; void f(void) { s.cb(); }'
+     hardening_flags += '-fzero-call-used-regs=used-gpr'
  endif
  
- qemu_plugin_symbols = configure_file(
--  input: files('../include/qemu/qemu-plugin.h'),
-+  input: files('../include/plugins/qemu-plugin.h'),
-   output: 'qemu-plugin.symbols',
-   capture: true,
-   command: [files('../scripts/qemu-plugin-symbols.py'), '@INPUT@'])
-@@ -62,12 +62,12 @@ endif
+-qemu_common_flags += cc.get_supported_arguments(hardening_flags)
+-
+-add_global_arguments(qemu_common_flags, native: false, language: all_languages)
+-add_global_link_arguments(qemu_ldflags, native: false, language: all_languages)
++qemu_common_flags += hardening_flags
  
- if host_os == 'windows'
-   plugins_deps = declare_dependency(sources: [files('win32_linker.c')],
--                                    include_directories: '../include/qemu',
-+                                    include_directories: '../include/plugins',
-                                     link_with: win32_qemu_plugin_api_lib,
-                                     link_args: win32_qemu_plugin_api_link_flags,
-                                     dependencies: glib)
- else
--  plugins_deps = declare_dependency(include_directories: '../include/qemu',
-+  plugins_deps = declare_dependency(include_directories: '../include/plugins',
-                                     dependencies: glib)
+ # Collect warning flags we want to set, sorted alphabetically
+ warn_flags = [
+@@ -744,15 +741,19 @@ if 'cpp' in all_languages
+   qemu_cxxflags = ['-D__STDC_LIMIT_MACROS', '-D__STDC_CONSTANT_MACROS', '-D__STDC_FORMAT_MACROS'] + qemu_cflags
  endif
  
-diff --git a/scripts/clean-includes b/scripts/clean-includes
-index 25dbf16c021..3fae8e00e67 100755
---- a/scripts/clean-includes
-+++ b/scripts/clean-includes
-@@ -128,7 +128,7 @@ for f in "$@"; do
-       ;;
-     *include/qemu/osdep.h | \
-     *include/qemu/compiler.h | \
--    *include/qemu/qemu-plugin.h | \
-+    *include/plugins/qemu-plugin.h | \
-     *include/glib-compat.h | \
-     *include/system/os-posix.h | \
-     *include/system/os-win32.h | \
+-add_project_arguments(qemu_cflags, native: false, language: 'c')
+-add_project_arguments(cc.get_supported_arguments(warn_flags), native: false, language: 'c')
++add_project_arguments(cc.get_supported_arguments(qemu_common_flags + qemu_cflags + warn_flags),
++                      native: false, language: 'c')
++add_global_link_arguments(qemu_ldflags, native: false, language: all_languages)
++
+ if 'cpp' in all_languages
+-  add_project_arguments(qemu_cxxflags, native: false, language: 'cpp')
++  add_project_arguments(cxx.get_supported_arguments(qemu_common_flags + qemu_cxxflags),
++                        native: false, language: 'cpp')
+   add_project_arguments(cxx.get_supported_arguments(warn_flags), native: false, language: 'cpp')
+ endif
+ if 'objc' in all_languages
+   # Note sanitizer flags are not applied to Objective-C sources!
+-  add_project_arguments(objc.get_supported_arguments(warn_flags), native: false, language: 'objc')
++  add_project_arguments(objc.get_supported_arguments(qemu_common_flags + warn_flags),
++                        native: false, language: 'objc')
+ endif
+ if host_os == 'linux'
+   add_project_arguments('-isystem', meson.current_source_dir() / 'linux-headers',
 -- 
 2.47.3
 
