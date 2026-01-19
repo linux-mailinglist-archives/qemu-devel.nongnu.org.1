@@ -2,63 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD8F0D3ACCD
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 15:51:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12512D3AD33
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 15:55:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhqa5-0008M8-TW; Mon, 19 Jan 2026 09:50:14 -0500
+	id 1vhqf5-0006vO-A9; Mon, 19 Jan 2026 09:55:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vhqZo-0008D1-UC; Mon, 19 Jan 2026 09:49:58 -0500
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vhqes-0006kb-4s
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 09:55:11 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vhqZk-0008OP-D3; Mon, 19 Jan 2026 09:49:55 -0500
-Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:5a81:0:640:624e:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id D1D6AC015D;
- Mon, 19 Jan 2026 17:49:50 +0300 (MSK)
-Received: from vsementsov-lin (unknown [2a02:6bf:8080:934::1:38])
- by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id gnaGbV0CCKo0-Tme69IbB; Mon, 19 Jan 2026 17:49:50 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1768834190;
- bh=gj6BWqpIIeyPn+JIEMMDww7yxiIxHS9HjNX3kbpOKHw=;
- h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=nWF1xIWot31eWzfxR17nutGbWUMT1Axl+7wQ6U5KUgC0/VOLhxPZpaM+lcdVmv6eV
- z6jeFO8g01rSY4uT3W3IxxU5HE21aM+bvBgngsPnuMThkwlJw2R5tleUKqV+WgEVIp
- 7kxXE0qUG2qjzXVrMti3Dd3Tgg4POKBIZKMdOsR4=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, eduardo@habkost.net, berrange@redhat.com,
- pbonzini@redhat.com, armbru@redhat.com, eblake@redhat.com,
- devel@lists.libvirt.org, hreitz@redhat.com, kwolf@redhat.com,
- vsementsov@yandex-team.ru
-Subject: [PATCH v10 8/8] deprecate names duplication between qdev,
- block-node and block-export
-Date: Mon, 19 Jan 2026 17:49:41 +0300
-Message-ID: <20260119144941.87936-9-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260119144941.87936-1-vsementsov@yandex-team.ru>
-References: <20260119144941.87936-1-vsementsov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vhqeo-0001Kt-2J
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 09:55:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1768834504;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=wCvzM6if4FwMrH8BPo2Q3oswj4biU34qldpwKxLgbz0=;
+ b=GuNZfRmcCUypjbmFQJoWgZiz7V/K3kB+dw7XpFHXHcnUGRW3+K8rZYu0PrkEBZfync4bmD
+ 3HisKGkRctR6406l5xDTTpZtpbUQLYdrzR4Y20ncX4sn8TbWMl0U4rcmyw1/R9aCiBp/l7
+ o4Z8DwdOiALbbrOhQHSCqayWFDwoTJk=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-593-ilD-PKr5O3GQilP7Fi0hgQ-1; Mon,
+ 19 Jan 2026 09:55:00 -0500
+X-MC-Unique: ilD-PKr5O3GQilP7Fi0hgQ-1
+X-Mimecast-MFC-AGG-ID: ilD-PKr5O3GQilP7Fi0hgQ_1768834499
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1E59E1956050; Mon, 19 Jan 2026 14:54:59 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.3])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4EF5619560AB; Mon, 19 Jan 2026 14:54:58 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id D0A6F21E692D; Mon, 19 Jan 2026 15:54:55 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org,  Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>,  Daniel P.
+ =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Thomas Huth
+ <thuth@redhat.com>,  Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  "Edgar E. Iglesias"
+ <edgar.iglesias@gmail.com>,  Alistair Francis <alistair@alistair23.me>,
+ Zhang Chen <zhangckid@gmail.com>,  Li Zhijian <lizhijian@fujitsu.com>
+Subject: Re: [PATCH 3/4] qemu-options.hx: Drop uses of @var
+In-Reply-To: <20260115142629.665319-4-peter.maydell@linaro.org> (Peter
+ Maydell's message of "Thu, 15 Jan 2026 14:26:28 +0000")
+References: <20260115142629.665319-1-peter.maydell@linaro.org>
+ <20260115142629.665319-4-peter.maydell@linaro.org>
+Date: Mon, 19 Jan 2026 15:54:55 +0100
+Message-ID: <87o6mplkjk.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.016,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,195 +89,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now we have blockdev-replace QMP command, which depend on a possibility
-to select any block parent (block node, block export, or qdev) by one
-unique name. The command fails, if name is ambiguous (i.e., match
-several parents of different types). In future we want to rid of this
-ambiguity.
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- block.c                                     | 12 ++++++++++++
- block/export/export.c                       | 13 +++++++++++++
- docs/about/deprecated.rst                   | 10 ++++++++++
- include/block/block-global-state.h          |  1 +
- include/system/block-backend-global-state.h |  2 ++
- stubs/blk-by-qdev-id.c                      |  5 +++++
- stubs/blk-exp-find-by-blk.c                 |  4 ++++
- system/qdev-monitor.c                       | 16 ++++++++++++++++
- 8 files changed, 63 insertions(+)
+> A few entries in qemu-options.hx use the syntax "my-option=@var{name}"
+> when documenting an option that takes an argument. This syntax isn't
+> consistently used, and the documentation generation has no support for
+> it: it just appears literally in the HTML output.
 
-diff --git a/block.c b/block.c
-index 8254d57212..5eae8b8623 100644
---- a/block.c
-+++ b/block.c
-@@ -1649,6 +1649,9 @@ static void bdrv_assign_node_name(BlockDriverState *bs,
-         goto out;
-     }
- 
-+    warn_device_exists(node_name);
-+    warn_block_export_exists(node_name);
-+
-     /* copy node name into the bs and insert it into the graph list */
-     pstrcpy(bs->node_name, sizeof(bs->node_name), node_name);
-     QTAILQ_INSERT_TAIL(&graph_bdrv_states, bs, node_list);
-@@ -6233,6 +6236,15 @@ BlockDriverState *bdrv_find_node(const char *node_name)
-     return NULL;
- }
- 
-+void warn_block_node_exists(const char *node_name)
-+{
-+    if (bdrv_find_node(node_name)) {
-+        warn_report("block node already exist with name '%s'. "
-+                    "Ambigous identifiers are deprecated. "
-+                    "In future that would be an error.", node_name);
-+    }
-+}
-+
- /* Put this QMP function here so it can access the static graph_bdrv_states. */
- BlockDeviceInfoList *bdrv_named_nodes_list(bool flat,
-                                            Error **errp)
-diff --git a/block/export/export.c b/block/export/export.c
-index 9169b43e13..e65d1bec8e 100644
---- a/block/export/export.c
-+++ b/block/export/export.c
-@@ -23,6 +23,7 @@
- #include "qapi/qapi-commands-block-export.h"
- #include "qapi/qapi-events-block-export.h"
- #include "qemu/id.h"
-+#include "qemu/error-report.h"
- #ifdef CONFIG_VHOST_USER_BLK_SERVER
- #include "vhost-user-blk-server.h"
- #endif
-@@ -108,6 +109,9 @@ BlockExport *blk_exp_add(BlockExportOptions *export, Error **errp)
-         return NULL;
-     }
- 
-+    warn_device_exists(export->id);
-+    warn_block_node_exists(export->id);
-+
-     drv = blk_exp_find_driver(export->type);
-     if (!drv) {
-         error_setg(errp, "No driver found for the requested export type");
-@@ -384,6 +388,15 @@ BlockExportInfoList *qmp_query_block_exports(Error **errp)
-     return head;
- }
- 
-+void warn_block_export_exists(const char *id)
-+{
-+    if (blk_exp_find(id)) {
-+        warn_report("block-export already exist with name '%s'. "
-+                    "Ambigous identifiers are deprecated. "
-+                    "In future that would be an error.", id);
-+    }
-+}
-+
- BlockBackend *blk_by_export_id(const char *id, Error **errp)
- {
-     BlockExport *exp;
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 88efa3aa80..18bb1eeafc 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -551,3 +551,13 @@ command documentation for details on the ``fdset`` usage.
- 
- The ``zero-blocks`` capability was part of the block migration which
- doesn't exist anymore since it was removed in QEMU v9.1.
-+
-+Identifiers
-+-----------
-+
-+Possibility to intersect qdev ids/paths, block node names, and block
-+export names namespaces is deprecated. In future that would be
-+abandoned and all block exports, block nodes and devices will have
-+unique names. Now, reusing the name for another type of object (for
-+example, creating block-node with node-name equal to existing qdev
-+id) produce a warning.
-diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
-index ed89999f0f..ea50478fc4 100644
---- a/include/block/block-global-state.h
-+++ b/include/block/block-global-state.h
-@@ -207,6 +207,7 @@ void bdrv_aio_cancel(BlockAIOCB *acb);
- int bdrv_has_zero_init_1(BlockDriverState *bs);
- int coroutine_mixed_fn GRAPH_RDLOCK bdrv_has_zero_init(BlockDriverState *bs);
- BlockDriverState *bdrv_find_node(const char *node_name);
-+void warn_block_node_exists(const char *node_name);
- BlockDeviceInfoList *bdrv_named_nodes_list(bool flat, Error **errp);
- XDbgBlockGraph * GRAPH_RDLOCK bdrv_get_xdbg_block_graph(Error **errp);
- BlockDriverState *bdrv_lookup_bs(const char *device,
-diff --git a/include/system/block-backend-global-state.h b/include/system/block-backend-global-state.h
-index f23b9f1518..69e6aee618 100644
---- a/include/system/block-backend-global-state.h
-+++ b/include/system/block-backend-global-state.h
-@@ -73,6 +73,8 @@ DeviceState *blk_get_attached_dev(BlockBackend *blk);
- BlockBackend *blk_by_dev(void *dev);
- BlockBackend *blk_by_qdev_id(const char *id, Error **errp);
- BlockBackend *blk_by_export_id(const char *id, Error **errp);
-+void warn_block_export_exists(const char *id);
-+void warn_device_exists(const char *id);
- void blk_set_dev_ops(BlockBackend *blk, const BlockDevOps *ops, void *opaque);
- 
- int blk_make_zero(BlockBackend *blk, BdrvRequestFlags flags);
-diff --git a/stubs/blk-by-qdev-id.c b/stubs/blk-by-qdev-id.c
-index 66ead77f4d..c83a2dde0d 100644
---- a/stubs/blk-by-qdev-id.c
-+++ b/stubs/blk-by-qdev-id.c
-@@ -11,3 +11,8 @@ BlockBackend *blk_by_qdev_id(const char *id, Error **errp)
-     error_setg(errp, "Parameter 'parent-type' does not accept value 'qdev'");
-     return NULL;
- }
-+
-+void warn_device_exists(const char *id)
-+{
-+    /* do nothing */
-+}
-diff --git a/stubs/blk-exp-find-by-blk.c b/stubs/blk-exp-find-by-blk.c
-index 20f7ff1bdd..a98c4572fc 100644
---- a/stubs/blk-exp-find-by-blk.c
-+++ b/stubs/blk-exp-find-by-blk.c
-@@ -7,3 +7,7 @@ BlockExport *blk_exp_find_by_blk(BlockBackend *blk)
-     return NULL;
- }
- 
-+void warn_block_export_exists(const char *id)
-+{
-+    /* do nothing */
-+}
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index be18902bb2..67b9da952d 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -605,6 +605,8 @@ const char *qdev_set_id(DeviceState *dev, char *id, Error **errp)
-                                              OBJECT(dev), NULL);
-         if (prop) {
-             dev->id = id;
-+            warn_block_export_exists(id);
-+            warn_block_node_exists(id);
-         } else {
-             error_setg(errp, "Duplicate device ID '%s'", id);
-             g_free(id);
-@@ -903,6 +905,20 @@ static DeviceState *find_device_state(const char *id, bool use_generic_error,
-     return dev;
- }
- 
-+void warn_device_exists(const char *id)
-+{
-+    Object *obj = object_resolve_path_at(qdev_get_peripheral(), id);
-+
-+    if (obj) {
-+        DeviceState *dev = (DeviceState *)object_dynamic_cast(obj, TYPE_DEVICE);
-+
-+        warn_report("%s '%s' already exist. "
-+                    "Ambigous identifiers are deprecated. "
-+                    "In future that would be an error.",
-+                    dev ? "Device" : "Object", id);
-+    }
-+}
-+
- void qdev_unplug(DeviceState *dev, Error **errp)
- {
-     HotplugHandler *hotplug_ctrl;
--- 
-2.52.0
+TexInfo leftovers?
+
+> Switch these uses to the more common "my-option=<name>". This also
+> doesn't have any particular support in the documentation generation
+> and so appears literally in the output, but it is a little less odd
+> looking to the end-user.
+
+Note for later: rewrite 1 is from KEY=@var{VALUE} to KEY=<VALUE>.
+
+> The other common pattern we have is "my-option=name" with no marking
+> at all that the right hand side of the '=' is not literal text;
+> using <> seems preferable to me, as it makes it more distinct from
+> cases where the right hand side is documenting that only certain
+> values are permitted, as in "my-option=on|off".
+
+Rewrite 2 is from KEY=VALUE to KEY=<VALUE>.
+
+> We don't change the uses of @var in the colo-compare documentation,
+> as that part deserves a slightly more wide-ranging overhaul that
+> is better in its own commit.
+>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>  qemu-options.hx | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/qemu-options.hx b/qemu-options.hx
+> index ec92723f10..aca9dba8b9 100644
+> --- a/qemu-options.hx
+> +++ b/qemu-options.hx
+> @@ -36,7 +36,7 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
+>      "                dea-key-wrap=on|off controls support for DEA key wrapping (default=on)\n"
+>      "                suppress-vmdesc=on|off disables self-describing migration (default=off)\n"
+>      "                nvdimm=on|off controls NVDIMM support (default=off)\n"
+> -    "                memory-encryption=@var{} memory encryption object to use (default=none)\n"
+> +    "                memory-encryption=<id> memory encryption object to use (default=none)\n"
+
+This is rewrite 1, except you additionally make up a missing VALUE.
+
+>      "                hmat=on|off controls ACPI HMAT support (default=off)\n"
+>      "                spcr=on|off controls ACPI SPCR support (default=on)\n"
+>  #ifdef CONFIG_POSIX
+> @@ -100,7 +100,7 @@ SRST
+>      ``nvdimm=on|off``
+>          Enables or disables NVDIMM support. The default is off.
+>  
+> -    ``memory-encryption=``
+> +    ``memory-encryption=<id>``
+>          Memory encryption object to use. The default is none.
+
+This is rewrite 2, except you additionally make up a missing VALUE.
+
+>  
+>      ``hmat=on|off``
+> @@ -180,7 +180,7 @@ SRST
+>  
+>              -machine cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.targets.1=cxl.1,cxl-fmw.0.size=128G,cxl-fmw.0.interleave-granularity=512
+>  
+> -    ``sgx-epc.0.memdev=@var{memid},sgx-epc.0.node=@var{numaid}``
+> +    ``sgx-epc.0.memdev=<memid>,sgx-epc.0.node=<numaid>``
+>          Define an SGX EPC section.
+
+This is rewrite 1.
+
+>  
+>      ``smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel``
+> @@ -4530,7 +4530,7 @@ DEF("compat", HAS_ARG, QEMU_OPTION_compat,
+>      "                Policy for handling unstable management interfaces\n",
+>      QEMU_ARCH_ALL)
+>  SRST
+> -``-compat [deprecated-input=@var{input-policy}][,deprecated-output=@var{output-policy}]``
+> +``-compat [deprecated-input=<input-policy>][,deprecated-output=<output-policy>]``
+
+Rewrite 1.
+
+>      Set policy for handling deprecated management interfaces (experimental):
+>  
+>      ``deprecated-input=accept`` (default)
+> @@ -4546,7 +4546,7 @@ SRST
+>  
+>      Limitation: covers only syntactic aspects of QMP.
+>  
+> -``-compat [unstable-input=@var{input-policy}][,unstable-output=@var{output-policy}]``
+> +``-compat [unstable-input=<input-policy>][,unstable-output=<output-policy>]``
+
+Rewrite 1.
+
+>      Set policy for handling unstable management interfaces (experimental):
+>  
+>      ``unstable-input=accept`` (default)
+
+This patch and the next apply rewrite 1 exhaustively.
+
+Not the case for rewrite 2, e.g. there's still
+
+    "                cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity]\n"
+
+where the value size is not literal.  Many more.
+
+So, what this patch actually does is rewrite 1 plus add missing values.
+Could be separate patches, up to you.  Regardless, the commit message
+should match what the patch does.
 
 
