@@ -2,84 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64DE4D39E29
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 07:00:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF686D39EE2
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 07:45:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhiIl-0007RQ-9P; Mon, 19 Jan 2026 00:59:47 -0500
+	id 1vhj06-0004NN-MA; Mon, 19 Jan 2026 01:44:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vhiIi-0007R0-Mb
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 00:59:45 -0500
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
+ id 1vhj00-0004Gy-9y; Mon, 19 Jan 2026 01:44:28 -0500
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1vhiIg-0007RZ-5W
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 00:59:44 -0500
-Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 60J5x85l056820
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Mon, 19 Jan 2026 14:59:15 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=uxS04zXX/mAmJCduWdoM4mVSm3rapkhrXN9jfrQSiZY=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=Message-ID:Date:Subject:To:From;
- s=rs20250326; t=1768802356; v=1;
- b=IcYhEtwgL6t+waN5BvXmDCfvrKTn6wweFhgT3oM0YUBsx/rmMnp1/D68+qLZZTBW
- IqnFvBIDetDpY4MbcOwFZQ1xA1QArHni7X6hHP26veOjclF2DudkvpwpIRFgL4Iu
- 6ShzFFMj10Tv1ILrKmyhRYt/q0hSRVxfddDVA8Wnk7jWpWh6iAbO3dBibbqUMuXt
- ZuYhky9YemlIUrnL9couYKQ8sB/AFkEQbQ1+FpXugz2lWdxQwe/+PKLfOu7Dpo3/
- /qKXs5Ur0Meg54juFptvkEjdz9/fUGKyqdl7JnLAtDAChM8EKINA9fVY2UVWxM7q
- Kc8A2hP85wuW1NcQjfawaA==
-Message-ID: <ba1dea86-d599-4978-9e6e-1a3ec610f486@rsg.ci.i.u-tokyo.ac.jp>
-Date: Mon, 19 Jan 2026 14:59:07 +0900
+ (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
+ id 1vhizx-0005EG-1D; Mon, 19 Jan 2026 01:44:28 -0500
+Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
+ [IPv6:2a02:6b8:c10:49f:0:640:b99a:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 7CDCF80773;
+ Mon, 19 Jan 2026 09:44:17 +0300 (MSK)
+Received: from [IPV6:2a02:6bf:803e:400:b140:e026:1e77:2c4e] (unknown
+ [2a02:6bf:803e:400:b140:e026:1e77:2c4e])
+ by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id DiS7FK1AGSw0-7xdEwpIv; Mon, 19 Jan 2026 09:44:16 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1768805057;
+ bh=ZsvMTs0Uqlh1GRTwseMjcxyIQFvUltLDZ2/diE7k4E4=;
+ h=In-Reply-To:Cc:Date:References:To:Subject:Message-ID:From;
+ b=pr7LkyulQMe7nFML1MZxUjJEL4zyxR4gjFL6bL/Hq+jYYZcfWfq5rs9Qe1uroSMcE
+ 4pHoxx/MBiGagVG1H+JXLBg/qSkr/sUu4PdCen6GH55J69l70sn5RU76OblNQRknCR
+ 4FQZM2SXyfn2rpELJQJRdBfKGXS4oO1R5oALKT6k=
+Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Content-Type: multipart/alternative;
+ boundary="------------1y9Tz0fCHamFvToe7ZbcvFe9"
+Message-ID: <947c2ef9-dbd8-46ea-b61d-1817fb4c33aa@yandex-team.ru>
+Date: Mon, 19 Jan 2026 11:44:21 +0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v10 5/5] virtio-gpu: Support mapping hostmem blobs
- with map_fixed
-To: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Huang Rui <ray.huang@amd.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Yiwei Zhang <zzyiwei@gmail.com>,
- Sergio Lopez Pascual <slp@redhat.com>
-Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
- Gurchetan Singh <gurchetansingh@chromium.org>, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>,
- Julia Zhang <julia.zhang@amd.com>, Chen Jiqian <Jiqian.Chen@amd.com>,
- Rob Clark <robdclark@gmail.com>, Robert Beckett <bob.beckett@collabora.com>
-References: <20260118162856.223796-1-dmitry.osipenko@collabora.com>
- <20260118162856.223796-6-dmitry.osipenko@collabora.com>
+Subject: Re: [PATCH v7 5/5] vhost-user-blk: support inter-host inflight
+ migration
+To: Raphael Norwitz <raphael.s.norwitz@gmail.com>
+Cc: qemu-devel@nongnu.org, "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Zhenwei Pi <pizhenwei@bytedance.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Raphael Norwitz <raphael@enfabrica.net>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, mzamazal@redhat.com,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ qemu-block@nongnu.org, virtio-fs@lists.linux.dev,
+ "yc-core@yandex-team.ru" <yc-core@yandex-team.ru>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>
+References: <20260115081103.655749-1-dtalexundeer@yandex-team.ru>
+ <20260115081103.655749-6-dtalexundeer@yandex-team.ru>
+ <CAFubqFtKrsPn++kMPEAOO2LdygY9BZyDmzb0nU7YbK1on2GNCw@mail.gmail.com>
 Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20260118162856.223796-6-dmitry.osipenko@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+From: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
+In-Reply-To: <CAFubqFtKrsPn++kMPEAOO2LdygY9BZyDmzb0nU7YbK1on2GNCw@mail.gmail.com>
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+ envelope-from=dtalexundeer@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: qemu development <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -91,245 +86,311 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2026/01/19 1:28, Dmitry Osipenko wrote:
-> Support mapping virgl blobs to a fixed location of a hostmem memory
-> region using new virglrenderer MAP_FIXED API.
-> 
-> This new feature closes multiple problems for virtio-gpu on QEMU:
-> 
-> - Having dedicated memory region for each mapped blob works notoriously
-> slow due to QEMU's memory region software design built around RCU that
-> isn't optimized for frequent removal of the regions
-> 
-> - KVM isn't optimized for a frequent slot changes too
-> 
-> - QEMU/KVM has a limit for a total number of created memory regions,
-> crashing QEMU when limit is reached
-> 
-> This patch makes virtio-gpu-gl to pre-create a single anonymous memory
-> region covering whole hostmem area to which blobs will be mapped using
-> the MAP_FIXED API.
-> 
-> Not all virgl resources will support mapping at a fixed memory address. For
-> them, we will continue to create individual nested memory sub-regions. In
-> particular, vrend resources may not have MAP_FIXED capability.
-> 
-> Venus and DRM native contexts will largely benefit from the MAP_FIXED
-> feature in terms of performance and stability improvement.
-> 
-> Tested-by: Yiwei Zhang <zzyiwei@gmail.com>
-> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> ---
->   hw/display/virtio-gpu-gl.c     | 40 ++++++++++++++++++++++-
->   hw/display/virtio-gpu-virgl.c  | 59 +++++++++++++++++++++++++++++++++-
->   include/hw/virtio/virtio-gpu.h |  3 ++
->   3 files changed, 100 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-> index 8b71dd6fc26f..add6af73e980 100644
-> --- a/hw/display/virtio-gpu-gl.c
-> +++ b/hw/display/virtio-gpu-gl.c
-> @@ -13,6 +13,7 @@
->   
->   #include "qemu/osdep.h"
->   #include "qemu/iov.h"
-> +#include "qemu/mmap-alloc.h"
->   #include "qemu/module.h"
->   #include "qemu/error-report.h"
->   #include "qapi/error.h"
-> @@ -106,7 +107,12 @@ static void virtio_gpu_gl_reset(VirtIODevice *vdev)
->   static void virtio_gpu_gl_device_realize(DeviceState *qdev, Error **errp)
->   {
->       ERRP_GUARD();
-> -    VirtIOGPU *g = VIRTIO_GPU(qdev);
-> +    VirtIOGPUBase *b = VIRTIO_GPU_BASE(qdev);
-> +    VirtIOGPU *g = VIRTIO_GPU(b);
-> +#if !defined(CONFIG_WIN32)
-> +    VirtIOGPUGL *gl = VIRTIO_GPU_GL(g);
-> +    void *map;
-> +#endif
->   
->   #if HOST_BIG_ENDIAN
->       error_setg(errp, "virgl is not supported on bigendian platforms");
-> @@ -137,6 +143,27 @@ static void virtio_gpu_gl_device_realize(DeviceState *qdev, Error **errp)
->   #endif
->   
->       virtio_gpu_device_realize(qdev, errp);
-> +    if (*errp) {
-> +        return;
-> +    }
-> +
-> +#if !defined(CONFIG_WIN32)
-> +    if (virtio_gpu_hostmem_enabled(b->conf)) {
-> +        map = qemu_ram_mmap(-1, b->conf.hostmem, qemu_real_host_page_size(),
-> +                            0, 0);
-> +        if (map == MAP_FAILED) {
-> +            error_setg_errno(errp, errno,
-> +                             "virgl hostmem region could not be initialized");
-> +            return;
+This is a multi-part message in MIME format.
+--------------1y9Tz0fCHamFvToe7ZbcvFe9
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-This "return" will leak bunch of memory allocated in 
-virtio_gpu_device_realize(). Though the relization code is not carefully 
-written to avoid memory leaks in case of errors, it is better to avoid 
-adding another by keeping virtio_gpu_device_realize() at the end.
 
-By the way, I think this is likely to be my last comment (unless I miss 
-nothing more; hopefully it won't happen). This patch and "[RFC PATCH v10 
-2/5] virtio-gpu: Validate hostmem mapping offset" are only useful after 
-the new release of virglrenderer is made, but the other patches are 
-independelty useful, so I suggest submitting them without RFC.
-
-Perhaps it may be even fine to submit the MAP_FIXED changes without RFC 
-before virglrenderer 1.2.1 is released since the merge request is 
-already accepted, but I leave that to you.
-
-Regards,
-Akihiko Odaki
-
-> +        }
-> +
-> +        gl->hostmem_mmap = map;
-> +        memory_region_init_ram_ptr(&gl->hostmem_background, NULL,
-> +                                   "hostmem-background", b->conf.hostmem,
-> +                                   gl->hostmem_mmap);
-> +        memory_region_add_subregion(&b->hostmem, 0, &gl->hostmem_background);
-> +    }
-> +#endif
->   }
->   
->   static const Property virtio_gpu_gl_properties[] = {
-> @@ -172,6 +199,17 @@ static void virtio_gpu_gl_device_unrealize(DeviceState *qdev)
->       gl->renderer_state = RS_START;
->   
->       g_array_unref(g->capset_ids);
-> +
-> +    /*
-> +     * It is not guaranteed that the memory region will be finalized
-> +     * immediately with memory_region_del_subregion(), there can be
-> +     * a remaining reference to gl->hostmem_mmap. VirtIO-GPU is not
-> +     * hotpluggable, hence no need to worry about the leaked mapping.
-> +     *
-> +     * The memory_region_del_subregion(gl->hostmem_background) is unnecessary
-> +     * because b->hostmem  and gl->hostmem_background belong to the same
-> +     * device and will be gone at the same time.
-> +     */
->   }
->   
->   static void virtio_gpu_gl_class_init(ObjectClass *klass, const void *data)
-> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-> index 63548964ca4f..08f14eb91bfb 100644
-> --- a/hw/display/virtio-gpu-virgl.c
-> +++ b/hw/display/virtio-gpu-virgl.c
-> @@ -41,9 +41,13 @@
->        VIRGL_VERSION_MICRO >= (micro))
->   #endif
->   
-> +#define VIRGL_HAS_MAP_FIXED \
-> +    (VIRGL_CHECK_VERSION(1, 2, 1) && !IS_ENABLED(CONFIG_WIN32))
-> +
->   struct virtio_gpu_virgl_resource {
->       struct virtio_gpu_simple_resource base;
->       MemoryRegion *mr;
-> +    void *map_fixed;
->   };
->   
->   static struct virtio_gpu_virgl_resource *
-> @@ -126,6 +130,9 @@ virtio_gpu_virgl_map_resource_blob(VirtIOGPU *g,
->   {
->       struct virtio_gpu_virgl_hostmem_region *vmr;
->       VirtIOGPUBase *b = VIRTIO_GPU_BASE(g);
-> +#if VIRGL_HAS_MAP_FIXED
-> +    VirtIOGPUGL *gl = VIRTIO_GPU_GL(g);
-> +#endif
->       MemoryRegion *mr;
->       uint64_t size;
->       void *data;
-> @@ -136,6 +143,41 @@ virtio_gpu_virgl_map_resource_blob(VirtIOGPU *g,
->           return -EOPNOTSUPP;
->       }
->   
-> +#if VIRGL_HAS_MAP_FIXED
-> +    /*
-> +     * virgl_renderer_resource_map_fixed() allows to create multiple
-> +     * mappings of the same resource, while virgl_renderer_resource_map()
-> +     * not. Don't allow mapping same resource twice.
-> +     */
-> +    if (res->map_fixed || res->mr) {
-> +        qemu_log_mask(LOG_GUEST_ERROR,
-> +                      "%s: failed to map(fixed) virgl resource: already mapped\n",
-> +                      __func__);
-> +        return -EBUSY;
-> +    }
-> +
-> +    ret = virgl_renderer_resource_map_fixed(res->base.resource_id,
-> +                                            gl->hostmem_mmap + offset);
-> +    switch (ret) {
-> +    case 0:
-> +        res->map_fixed = gl->hostmem_mmap + offset;
-> +        return 0;
-> +
-> +    case -EOPNOTSUPP:
-> +        /*
-> +         * MAP_FIXED is unsupported by this resource.
-> +         * Mapping falls back to a blob subregion method in that case.
-> +         */
-> +        break;
-> +
-> +    default:
-> +        qemu_log_mask(LOG_GUEST_ERROR,
-> +                      "%s: failed to map(fixed) virgl resource: %s\n",
-> +                      __func__, strerror(-ret));
-> +        return ret;
-> +    }
-> +#endif
-> +
->       ret = virgl_renderer_resource_map(res->base.resource_id, &data, &size);
->       if (ret) {
->           qemu_log_mask(LOG_GUEST_ERROR, "%s: failed to map virgl resource: %s\n",
-> @@ -149,7 +191,7 @@ virtio_gpu_virgl_map_resource_blob(VirtIOGPU *g,
->   
->       mr = &vmr->mr;
->       memory_region_init_ram_ptr(mr, OBJECT(mr), "blob", size, data);
-> -    memory_region_add_subregion(&b->hostmem, offset, mr);
-> +    memory_region_add_subregion_overlap(&b->hostmem, offset, mr, 1);
->   
->       /*
->        * MR could outlive the resource if MR's reference is held outside of
-> @@ -176,6 +218,21 @@ virtio_gpu_virgl_unmap_resource_blob(VirtIOGPU *g,
->       MemoryRegion *mr = res->mr;
->       int ret;
->   
-> +#if VIRGL_HAS_MAP_FIXED
-> +    if (res->map_fixed) {
-> +        if (mmap(res->map_fixed, res->base.blob_size, PROT_READ | PROT_WRITE,
-> +                 MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED,
-> +                 -1, 0) == MAP_FAILED) {
-> +            ret = -errno;
-> +            error_report("%s: failed to unmap(fixed) virgl resource: %s",
-> +                          __func__, strerror(-ret));
-> +            return ret;
-> +        }
-> +
-> +        res->map_fixed = NULL;
-> +    }
-> +#endif
-> +
->       if (!mr) {
+On 1/17/26 00:50, Raphael Norwitz wrote:
+> Apologies if I've missed something obvious here - what actually skips
+> the GET_VRING_BASE operation here? I was expecting something like:
+>
+> --- a/hw/block/vhost-user-blk.c
+> +++ b/hw/block/vhost-user-blk.c
+> @@ -221,8 +221,9 @@ static int vhost_user_blk_stop(VirtIODevice *vdev)
 >           return 0;
 >       }
-> diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-> index 1f509d0d5beb..a48b50d4c825 100644
-> --- a/include/hw/virtio/virtio-gpu.h
-> +++ b/include/hw/virtio/virtio-gpu.h
-> @@ -263,6 +263,9 @@ struct VirtIOGPUGL {
->   
->       QEMUBH *async_fence_bh;
->       QSLIST_HEAD(, virtio_gpu_virgl_context_fence) async_fenceq;
-> +
-> +    MemoryRegion hostmem_background;
-> +    void *hostmem_mmap;
->   };
->   
->   struct VhostUserGPU {
+>
+> -    force_stop = s->skip_get_vring_base_on_force_shutdown &&
+> -                 qemu_force_shutdown_requested();
+> +    force_stop = (s->skip_get_vring_base_on_force_shutdown &&
+> +                 qemu_force_shutdown_requested()) ||
+> +                 s->inflight_migration; // FIXME: runstate check?
+>
+> Without setting force_stop in vhost_user_blk_stop() I don't see how
+> the GET_VRING_BASE operation would be skipped.
 
+Nothing skip GET_VRING_BASE) In the first versions of the patch, this 
+was done, but then I realized that this was the wrong way, because the 
+last_avail_idx and avail_idx counters may be incorrect after migration.
+
+Therefore, it is now implemented that on GET_VRING_BASE the backend 
+needs to either wait for all in-flight requests or not (depending on 
+protocol_feature).
+
+> On Thu, Jan 15, 2026 at 3:13 AM Alexandr Moshkov
+> <dtalexundeer@yandex-team.ru> wrote:
+>> During inter-host migration, waiting for disk requests to be drained
+>> in the vhost-user backend can incur significant downtime.
+>>
+>> This can be avoided if QEMU migrates the inflight region in
+>> vhost-user-blk.
+>> Thus, during the qemu migration, with feature flag the vhost-user
+>> back-end can immediately stop vrings, so all in-flight requests will be
+>> migrated to another host.
+>>
+>> Signed-off-by: Alexandr Moshkov<dtalexundeer@yandex-team.ru>
+>> Reviewed-by: Stefan Hajnoczi<stefanha@redhat.com>
+>> ---
+>>   hw/block/vhost-user-blk.c          | 27 +++++++++++++++++++++++++++
+>>   include/hw/virtio/vhost-user-blk.h |  1 +
+>>   include/hw/virtio/vhost.h          |  6 ++++++
+>>   3 files changed, 34 insertions(+)
+>>
+>> diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
+>> index 4d81d2dc34..c151e83677 100644
+>> --- a/hw/block/vhost-user-blk.c
+>> +++ b/hw/block/vhost-user-blk.c
+>> @@ -353,6 +353,7 @@ static int vhost_user_blk_connect(DeviceState *dev, Error **errp)
+>>       vhost_dev_set_config_notifier(&s->dev, &blk_ops);
+>>
+>>       s->vhost_user.supports_config = true;
+>> +    s->vhost_user.supports_inflight_migration = s->inflight_migration;
+>>       ret = vhost_dev_init(&s->dev, &s->vhost_user, VHOST_BACKEND_TYPE_USER, 0,
+>>                            errp);
+>>       if (ret < 0) {
+>> @@ -568,6 +569,26 @@ static struct vhost_dev *vhost_user_blk_get_vhost(VirtIODevice *vdev)
+>>       return &s->dev;
+>>   }
+>>
+>> +static bool vhost_user_blk_inflight_needed(void *opaque)
+>> +{
+>> +    struct VHostUserBlk *s = opaque;
+>> +
+>> +    bool inflight_migration = virtio_has_feature(s->dev.protocol_features,
+>> +                               VHOST_USER_PROTOCOL_F_GET_VRING_BASE_INFLIGHT);
+>> +
+>> +    return inflight_migration;
+>> +}
+>> +
+>> +static const VMStateDescription vmstate_vhost_user_blk_inflight = {
+>> +    .name = "vhost-user-blk/inflight",
+>> +    .version_id = 1,
+>> +    .needed = vhost_user_blk_inflight_needed,
+>> +    .fields = (const VMStateField[]) {
+>> +        VMSTATE_VHOST_INFLIGHT_REGION(inflight, VHostUserBlk),
+>> +        VMSTATE_END_OF_LIST()
+>> +    },
+>> +};
+>> +
+>>   static const VMStateDescription vmstate_vhost_user_blk = {
+>>       .name = "vhost-user-blk",
+>>       .minimum_version_id = 1,
+>> @@ -576,6 +597,10 @@ static const VMStateDescription vmstate_vhost_user_blk = {
+>>           VMSTATE_VIRTIO_DEVICE,
+>>           VMSTATE_END_OF_LIST()
+>>       },
+>> +    .subsections = (const VMStateDescription * const []) {
+>> +        &vmstate_vhost_user_blk_inflight,
+>> +        NULL
+>> +    }
+>>   };
+>>
+>>   static const Property vhost_user_blk_properties[] = {
+>> @@ -591,6 +616,8 @@ static const Property vhost_user_blk_properties[] = {
+>>                         VIRTIO_BLK_F_WRITE_ZEROES, true),
+>>       DEFINE_PROP_BOOL("skip-get-vring-base-on-force-shutdown", VHostUserBlk,
+>>                        skip_get_vring_base_on_force_shutdown, false),
+>> +    DEFINE_PROP_BOOL("inflight-migration", VHostUserBlk,
+>> +                     inflight_migration, false),
+>>   };
+>>
+>>   static void vhost_user_blk_class_init(ObjectClass *klass, const void *data)
+>> diff --git a/include/hw/virtio/vhost-user-blk.h b/include/hw/virtio/vhost-user-blk.h
+>> index 8158d4673d..1e41a2bcdf 100644
+>> --- a/include/hw/virtio/vhost-user-blk.h
+>> +++ b/include/hw/virtio/vhost-user-blk.h
+>> @@ -52,6 +52,7 @@ struct VHostUserBlk {
+>>       bool started_vu;
+>>
+>>       bool skip_get_vring_base_on_force_shutdown;
+>> +    bool inflight_migration;
+>>   };
+>>
+>>   #endif
+>> diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+>> index 08bbb4dfe9..89817bd848 100644
+>> --- a/include/hw/virtio/vhost.h
+>> +++ b/include/hw/virtio/vhost.h
+>> @@ -554,4 +554,10 @@ static inline int vhost_load_backend_state(struct vhost_dev *dev, QEMUFile *f,
+>>   }
+>>   #endif
+>>
+>> +extern const VMStateDescription vmstate_vhost_inflight_region;
+>> +#define VMSTATE_VHOST_INFLIGHT_REGION(_field, _state) \
+>> +    VMSTATE_STRUCT_POINTER(_field, _state, \
+>> +                           vmstate_vhost_inflight_region, \
+>> +                           struct vhost_inflight)
+>> +
+>>   #endif
+>> --
+>> 2.34.1
+>>
+>>
+--------------1y9Tz0fCHamFvToe7ZbcvFe9
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 1/17/26 00:50, Raphael Norwitz
+      wrote:<br>
+    </div>
+    <blockquote type="cite"
+cite="mid:CAFubqFtKrsPn++kMPEAOO2LdygY9BZyDmzb0nU7YbK1on2GNCw@mail.gmail.com">
+      <pre wrap="" class="moz-quote-pre">Apologies if I've missed something obvious here - what actually skips
+the GET_VRING_BASE operation here? I was expecting something like:
+
+--- a/hw/block/vhost-user-blk.c
++++ b/hw/block/vhost-user-blk.c
+@@ -221,8 +221,9 @@ static int vhost_user_blk_stop(VirtIODevice *vdev)
+         return 0;
+     }
+
+-    force_stop = s-&gt;skip_get_vring_base_on_force_shutdown &amp;&amp;
+-                 qemu_force_shutdown_requested();
++    force_stop = (s-&gt;skip_get_vring_base_on_force_shutdown &amp;&amp;
++                 qemu_force_shutdown_requested()) ||
++                 s-&gt;inflight_migration; // FIXME: runstate check?
+
+Without setting force_stop in vhost_user_blk_stop() I don't see how
+the GET_VRING_BASE operation would be skipped.</pre>
+    </blockquote>
+    <p class="CPO0LE0j16AwB0G2HeuZ" dir="ltr"><span
+      style="white-space: pre-wrap;">Nothing skip GET_VRING_BASE) In the first versions of the patch, this was done, but then I realized that this was the wrong way, because the last_avail_idx and avail_idx counters may be incorrect after migration. </span></p>
+    <p class="CPO0LE0j16AwB0G2HeuZ" dir="ltr"><span
+      style="white-space: pre-wrap;">Therefore, it is now implemented that on GET_</span><span
+      data-lexical-key="142" data-highlighted="false" data-error="true"
+      style="white-space: pre-wrap;">VRING</span><span
+      style="white-space: pre-wrap;">_BASE the backend needs to either wait for all in-flight requests or not (depending on protocol_feature).</span></p>
+    <p></p>
+    <blockquote type="cite"
+cite="mid:CAFubqFtKrsPn++kMPEAOO2LdygY9BZyDmzb0nU7YbK1on2GNCw@mail.gmail.com">
+      <pre wrap="" class="moz-quote-pre">
+On Thu, Jan 15, 2026 at 3:13 AM Alexandr Moshkov
+<a class="moz-txt-link-rfc2396E" href="mailto:dtalexundeer@yandex-team.ru">&lt;dtalexundeer@yandex-team.ru&gt;</a> wrote:
+</pre>
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">
+During inter-host migration, waiting for disk requests to be drained
+in the vhost-user backend can incur significant downtime.
+
+This can be avoided if QEMU migrates the inflight region in
+vhost-user-blk.
+Thus, during the qemu migration, with feature flag the vhost-user
+back-end can immediately stop vrings, so all in-flight requests will be
+migrated to another host.
+
+Signed-off-by: Alexandr Moshkov <a class="moz-txt-link-rfc2396E" href="mailto:dtalexundeer@yandex-team.ru">&lt;dtalexundeer@yandex-team.ru&gt;</a>
+Reviewed-by: Stefan Hajnoczi <a class="moz-txt-link-rfc2396E" href="mailto:stefanha@redhat.com">&lt;stefanha@redhat.com&gt;</a>
+---
+ hw/block/vhost-user-blk.c          | 27 +++++++++++++++++++++++++++
+ include/hw/virtio/vhost-user-blk.h |  1 +
+ include/hw/virtio/vhost.h          |  6 ++++++
+ 3 files changed, 34 insertions(+)
+
+diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
+index 4d81d2dc34..c151e83677 100644
+--- a/hw/block/vhost-user-blk.c
++++ b/hw/block/vhost-user-blk.c
+@@ -353,6 +353,7 @@ static int vhost_user_blk_connect(DeviceState *dev, Error **errp)
+     vhost_dev_set_config_notifier(&amp;s-&gt;dev, &amp;blk_ops);
+
+     s-&gt;vhost_user.supports_config = true;
++    s-&gt;vhost_user.supports_inflight_migration = s-&gt;inflight_migration;
+     ret = vhost_dev_init(&amp;s-&gt;dev, &amp;s-&gt;vhost_user, VHOST_BACKEND_TYPE_USER, 0,
+                          errp);
+     if (ret &lt; 0) {
+@@ -568,6 +569,26 @@ static struct vhost_dev *vhost_user_blk_get_vhost(VirtIODevice *vdev)
+     return &amp;s-&gt;dev;
+ }
+
++static bool vhost_user_blk_inflight_needed(void *opaque)
++{
++    struct VHostUserBlk *s = opaque;
++
++    bool inflight_migration = virtio_has_feature(s-&gt;dev.protocol_features,
++                               VHOST_USER_PROTOCOL_F_GET_VRING_BASE_INFLIGHT);
++
++    return inflight_migration;
++}
++
++static const VMStateDescription vmstate_vhost_user_blk_inflight = {
++    .name = "vhost-user-blk/inflight",
++    .version_id = 1,
++    .needed = vhost_user_blk_inflight_needed,
++    .fields = (const VMStateField[]) {
++        VMSTATE_VHOST_INFLIGHT_REGION(inflight, VHostUserBlk),
++        VMSTATE_END_OF_LIST()
++    },
++};
++
+ static const VMStateDescription vmstate_vhost_user_blk = {
+     .name = "vhost-user-blk",
+     .minimum_version_id = 1,
+@@ -576,6 +597,10 @@ static const VMStateDescription vmstate_vhost_user_blk = {
+         VMSTATE_VIRTIO_DEVICE,
+         VMSTATE_END_OF_LIST()
+     },
++    .subsections = (const VMStateDescription * const []) {
++        &amp;vmstate_vhost_user_blk_inflight,
++        NULL
++    }
+ };
+
+ static const Property vhost_user_blk_properties[] = {
+@@ -591,6 +616,8 @@ static const Property vhost_user_blk_properties[] = {
+                       VIRTIO_BLK_F_WRITE_ZEROES, true),
+     DEFINE_PROP_BOOL("skip-get-vring-base-on-force-shutdown", VHostUserBlk,
+                      skip_get_vring_base_on_force_shutdown, false),
++    DEFINE_PROP_BOOL("inflight-migration", VHostUserBlk,
++                     inflight_migration, false),
+ };
+
+ static void vhost_user_blk_class_init(ObjectClass *klass, const void *data)
+diff --git a/include/hw/virtio/vhost-user-blk.h b/include/hw/virtio/vhost-user-blk.h
+index 8158d4673d..1e41a2bcdf 100644
+--- a/include/hw/virtio/vhost-user-blk.h
++++ b/include/hw/virtio/vhost-user-blk.h
+@@ -52,6 +52,7 @@ struct VHostUserBlk {
+     bool started_vu;
+
+     bool skip_get_vring_base_on_force_shutdown;
++    bool inflight_migration;
+ };
+
+ #endif
+diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+index 08bbb4dfe9..89817bd848 100644
+--- a/include/hw/virtio/vhost.h
++++ b/include/hw/virtio/vhost.h
+@@ -554,4 +554,10 @@ static inline int vhost_load_backend_state(struct vhost_dev *dev, QEMUFile *f,
+ }
+ #endif
+
++extern const VMStateDescription vmstate_vhost_inflight_region;
++#define VMSTATE_VHOST_INFLIGHT_REGION(_field, _state) \
++    VMSTATE_STRUCT_POINTER(_field, _state, \
++                           vmstate_vhost_inflight_region, \
++                           struct vhost_inflight)
++
+ #endif
+--
+2.34.1
+
+
+</pre>
+      </blockquote>
+    </blockquote>
+  </body>
+</html>
+
+--------------1y9Tz0fCHamFvToe7ZbcvFe9--
 
