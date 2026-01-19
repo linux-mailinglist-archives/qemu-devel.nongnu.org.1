@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF558D3AB6A
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 15:15:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 276F5D3AB61
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 15:14:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhq1h-0001tW-9e; Mon, 19 Jan 2026 09:14:44 -0500
+	id 1vhq1I-0001nO-3m; Mon, 19 Jan 2026 09:14:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hbathini@linux.ibm.com>)
- id 1vhjqo-00089X-QQ; Mon, 19 Jan 2026 02:39:20 -0500
+ id 1vhjrT-0008S5-JL; Mon, 19 Jan 2026 02:39:44 -0500
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hbathini@linux.ibm.com>)
- id 1vhjqk-0000zp-4S; Mon, 19 Jan 2026 02:39:00 -0500
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60INfWS7002734;
- Mon, 19 Jan 2026 07:38:54 GMT
+ id 1vhjrR-00017N-Tg; Mon, 19 Jan 2026 02:39:43 -0500
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60ILHRvg025199;
+ Mon, 19 Jan 2026 07:39:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=X8WOKT
- 3lNXu+9QrGrMvxE/ZfONCI6g6WEFj1cabPSsg=; b=dTzRlcIiDdINksYCijamwK
- dMEHcAwTCKXnCB4qfl6Fk/GiyXMhNOIBV5/oqY5Szd/oOY0t9nzSqHATiHBZw2po
- A06PfpS1ZGhPpeFbUAjZoVqPB2EcOP5P9h5nu283lylrWwp2w+mCKCW6Gkf43Frl
- 06Zr+9m4S5A3uhZVFGbjhjv2f1esKT5MLaffYv1sHY3Oy7EVSBkMxw0AcGUhr3xf
- 9kH7Bnc8PTB+XTtJe+gct6bmDw3Q+KiIpLEs9bRvYbpaEL8Rt9D66v0EdmYrR9s/
- 9In2jOB+itIoKuyG1T1Zs5+vbyWmLYgVkESEUEpSfgoAAsK9sLd3MJt2AZ3srt5w
+ :message-id:mime-version:references:subject:to; s=pp1; bh=ueK27K
+ jA/FMl/+8YSWPfz45Jrk87OQGu4nqPmBzNIvM=; b=mc+gP9LJHNlRbYZKJiiNf6
+ Okdp00Eriha6m1qsQbiIUJ8E89xJPZ2z17Tr6JeixB9v2wh1zbalFyFY/dlt/um8
+ RFmJI6EaGU03y9K3a+vVQLtHe9ZGzdkEz3v/fgfOkVEmuYe8t2UaxbS3IFnL7GtY
+ Zj1AmxVL3H/lG+7A6cFjIxcJ8phYLWG216XAHx+9nkn4EUWVwTH6CWfwumefR0QW
+ U8SqHna5TD308B3RQkh/YKuYPLcpZ8rKdRgPgU7nTEveFZYw+NyYfwnE88qpnIXH
+ YDV7hdYbdPNKXfPquctKhYBcZAFsh/7b/2Z4CLP3niRQrf820JxAnZcRLdj5QzsA
  ==
 Received: from ppma22.wdc07v.mail.ibm.com
  (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4br1x4xye3-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4br23rq0dm-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Jan 2026 07:38:54 +0000 (GMT)
+ Mon, 19 Jan 2026 07:39:40 +0000 (GMT)
 Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60J6s2ms016679;
- Mon, 19 Jan 2026 07:38:53 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4brn4xnhvd-1
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60J6ct26016611;
+ Mon, 19 Jan 2026 07:39:39 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4brn4xnhxq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Jan 2026 07:38:53 +0000
+ Mon, 19 Jan 2026 07:39:38 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 60J7cnjt54985146
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 60J7dYBs25231686
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 19 Jan 2026 07:38:49 GMT
+ Mon, 19 Jan 2026 07:39:35 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 42F8F20049;
- Mon, 19 Jan 2026 07:38:49 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id DB93020049;
+ Mon, 19 Jan 2026 07:39:34 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 11C7020040;
- Mon, 19 Jan 2026 07:38:48 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id A023C20040;
+ Mon, 19 Jan 2026 07:39:33 +0000 (GMT)
 Received: from [9.43.98.125] (unknown [9.43.98.125])
  by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 19 Jan 2026 07:38:47 +0000 (GMT)
-Message-ID: <d1d537b7-5fbb-4cfc-be4a-5e65324a63a3@linux.ibm.com>
-Date: Mon, 19 Jan 2026 13:08:47 +0530
+ Mon, 19 Jan 2026 07:39:33 +0000 (GMT)
+Message-ID: <7c6031bb-14ab-4c9b-82cc-5a0b67c6d02e@linux.ibm.com>
+Date: Mon, 19 Jan 2026 13:09:32 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 0/9] Implement MPIPL for PowerNV
@@ -71,26 +71,26 @@ In-Reply-To: <20251206055648.1908734-1-adityag@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=R8AO2NRX c=1 sm=1 tr=0 ts=696ddf8e cx=c_pps
+X-Proofpoint-GUID: -yl1uIlk_FlGkUf3j3_97R1_pBUdMSoa
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE5MDA1OSBTYWx0ZWRfX2665eGnEKevR
+ Pb+8cH8LzGO5AFl5Q6kOwSW7zd7Tf7mg/1Y9vjvgwUd+ueaxpqC+C+Dot5k/EWVPQC8EsWoehMt
+ fj1XuryWlHDehYkzfDWArPcOtW7Wijw3/4h6GwxOz2I2TKUmLVwSzNZbvDBvxzE94fr4czHQ3Za
+ oOBih1Z2r29F8a9u3YlMl0LiQ/meygOTKPhyuSG31hOK1PWo2Iswxh+7Ztw2keEqhAAAb6LKp98
+ lyxfBInqLSZRD5Mmaeq35ruDusC+8lvNdxYIqQNT8+buv9nkU2arYLvpDSinMiqSHY1Xz91bDMo
+ yMC3hsjbhjV5SKGYlsrRl0/cwLwZdd7uwZPkuLU38BCf3B7gtm4hqZQTBq8Fsa7GY3//J0llGw7
+ eWm0pDrtt4Pq1edx4wcbbCQ5QT4oLKKRKzJhnzZ060tRZ7gE7Nd2ZNeY6DKubdDpvjscW0XoqA7
+ +YJerFES5zHjde+17lA==
+X-Authority-Analysis: v=2.4 cv=J9SnLQnS c=1 sm=1 tr=0 ts=696ddfbc cx=c_pps
  a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
  a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=0rgLX0TTvtzbSEFFmHoA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: R9b6S5oK6zVitmzXQT-se6hWlxmAMTii
-X-Proofpoint-GUID: R9b6S5oK6zVitmzXQT-se6hWlxmAMTii
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE5MDA1OSBTYWx0ZWRfX2m17iGgK2J8w
- WGog4Qwiql7rgsWj+74kgHJqkKjKKyg7hjMyxJVrYLzxOVUE08OePOVhZ+vreI/x4pdjw6naZU4
- IC41/khMs1xQ7ZHxLKbeF1AHNrPLffzYhLY9blHEjutsmKMJIsRIG/r1akT1x+rP6HRVU1G2kmO
- +dtFJgljRdTjNdaYTIV5+jh7IEr2NHCuMrzztASGqfM5Z/suXkUEOgJqY5PgRbhCB139iXbCTeH
- YNOCCeS/laEWvW9hERYOv0VjLY0oiaAkRcNwXv0sZrvU0Y6gnDAoFOBaa3YZedGd+h8mhTylxsv
- PPSRyKcMRTA0zmyahou6Pr1esiHOHwmsKGNuvet/AXxh11pIa72k2IMqIa42XHHXb8uvc1oWvcL
- IJgDB6XE/EtxKDRUt/7hGJnlwOHAvt3DypvchZ+7agoCyzPM/uph7hdUbzqKrduNryGxEjiqQGK
- GVgI48g5M78NPwc3Nxg==
+ a=wKXm-OcLlGojyDf9JHMA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: -yl1uIlk_FlGkUf3j3_97R1_pBUdMSoa
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-19_01,2026-01-19_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 priorityscore=1501 bulkscore=0 lowpriorityscore=0 adultscore=0
- spamscore=0 phishscore=0 malwarescore=0 suspectscore=0 impostorscore=0
+ priorityscore=1501 impostorscore=0 adultscore=0 suspectscore=0 spamscore=0
+ lowpriorityscore=0 malwarescore=0 clxscore=1011 bulkscore=0 phishscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2601150000 definitions=main-2601190059
 Received-SPF: pass client-ip=148.163.156.1;
@@ -145,8 +145,6 @@ On 06/12/25 11:26 am, Aditya Gupta wrote:
 > "ibm,opal/dump" node in the device tree, to tell the kernel we support
 > MPIPL
 > 
-
-
 > Once kernel sees the support, and "fadump=on" is passed on commandline,
 > kernel will register memory regions to preserve with Skiboot.
 > 
@@ -155,11 +153,20 @@ On 06/12/25 11:26 am, Aditya Gupta wrote:
 > 
 > Skiboot then triggers the "S0 Interrupt" to the SBE (Self Boot Engine),
 > along with OPAL's relocated base address.
+> 
+> SBE then stops all core clocks, and only does particular ISteps for a
+> memory preserving boot.
+> 
+> Then, hostboot comes up, and with help of the relocated base address, it
+> accesses MDST & MDDT tables (S-source and D-destination), and preserves the
+> memory regions according to the data in these tables.
+> And after preserving, it writes the preserved memory region details to MDRT
+> tables (R-Result), for the kernel to know where/whether a memory region is
+> preserved.
+> 
 
-This sounds as though skiboot triggers S0 Interrupt right after kernel
-registers through OPAL calls, which is not the case. Please make it
-explicit that kernel initiates fadump with another OPAL call after
-registering..
+> Both SBE's and hostboot responsiblities have in implemented in the SBE code
+> in QEMU.
 
-- Hari
+s/have in implemented/are implemented/
 
