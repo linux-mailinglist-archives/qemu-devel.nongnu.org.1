@@ -2,50 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CF6CD3B648
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 19:54:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38882D3B643
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 19:54:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhuNU-00077j-HW; Mon, 19 Jan 2026 13:53:28 -0500
+	id 1vhuNR-0006t8-GE; Mon, 19 Jan 2026 13:53:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vhuN2-0006KV-KU
+ id 1vhuN2-0006KW-Nd
  for qemu-devel@nongnu.org; Mon, 19 Jan 2026 13:53:01 -0500
 Received: from forwardcorp1d.mail.yandex.net
  ([2a02:6b8:c41:1300:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vhuN0-0005ti-9f
+ id 1vhuN0-0005u9-WF
  for qemu-devel@nongnu.org; Mon, 19 Jan 2026 13:53:00 -0500
 Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
  [IPv6:2a02:6b8:c0c:5c05:0:640:ff67:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 02F8780762;
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id AA5778076E;
  Mon, 19 Jan 2026 21:52:57 +0300 (MSK)
 Received: from vsementsov-lin (unknown [2a02:6bf:8080:934::1:38])
  by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id dqetGa1BQGk0-2z6XDdr4; Mon, 19 Jan 2026 21:52:56 +0300
+ ESMTPSA id dqetGa1BQGk0-CiWFGwtZ; Mon, 19 Jan 2026 21:52:57 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1768848776;
- bh=xvEQ//6kyBg0qf2oNsfAS8mNhDRGeBvSk08XUDTkKmo=;
+ s=default; t=1768848777;
+ bh=pPhptMC/ns/zstRN0CmUZAxzpqQHrHM1w7CB4RzM8S4=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=b1LLP6bTJmjvyv3F4TgsQdWEx011HAbe1z0U5isH4FxhQg3gfYMeZztwmO8jsDYTZ
- Fv9ki8PdeeuOdaMcO7HMIDimEH2Zg/+2F/Qhpa891C6/wE1gFwr/pWI7DdkmBltSFO
- ugWPS33Dmz6egY88xObdFuJOgQRsvCfwYPKlioD8=
+ b=W6qVRJeWdreVPGQzrN4GPyGhooBibBXkSQLYSP0jUWv0vtDRgjgGl2nqrYwNCUHMJ
+ 7V3Mt6iWGEuZXggL5ZBdkF7vgJs/1qM5vjsG2kVUI8XmcAV4UA6R+KlcFoFN59vfsz
+ 7fm/Yc++7fn6QjxPIP1KV1XeJvcw/liLlr6xGnd8=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: mst@redhat.com
 Cc: sgarzare@redhat.com, raphael@enfabrica.net, qemu-devel@nongnu.org,
  vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
- d-tatianin@yandex-team.ru
-Subject: [PATCH v4 16/23] vhost: final refactoring of vhost vrings map/unmap
-Date: Mon, 19 Jan 2026 21:52:20 +0300
-Message-ID: <20260119185228.203296-17-vsementsov@yandex-team.ru>
+ d-tatianin@yandex-team.ru, Raphael Norwitz <raphael.s.norwitz@gmail.com>
+Subject: [PATCH v4 17/23] vhost: simplify vhost_dev_init() error-path
+Date: Mon, 19 Jan 2026 21:52:21 +0300
+Message-ID: <20260119185228.203296-18-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260119185228.203296-1-vsementsov@yandex-team.ru>
 References: <20260119185228.203296-1-vsementsov@yandex-team.ru>
@@ -73,135 +73,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce helper functions vhost_vrings_map() and
-vhost_vrings_unmap() and use them.
+No reason to rollback setting up busyloop timeout on failure.
+We don't do such rollback for other things we setup in backend.
+Also, look at vhost_net_init() in hw/net/vhost_net.c: we may fail
+after successfully called vhost_dev_init(), and in this case we'll
+just call vhost_dev_cleanup(), which doesn't rollback busyloop
+timeout.
+
+So, let's keep it simple.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Acked-by: Raphael Norwitz <raphael.s.norwitz@gmail.com>
+Reviewed-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
 ---
- hw/virtio/vhost.c | 89 +++++++++++++++++++++++++++++------------------
- 1 file changed, 55 insertions(+), 34 deletions(-)
+ hw/virtio/vhost.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
 diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 653cb706cc..7efdc4643d 100644
+index 7efdc4643d..412bbd9063 100644
 --- a/hw/virtio/vhost.c
 +++ b/hw/virtio/vhost.c
-@@ -489,6 +489,56 @@ static void vhost_memory_unmap(struct vhost_dev *dev, void **buffer,
-     *buffer = NULL;
- }
- 
-+static void vhost_vrings_unmap(struct vhost_dev *dev,
-+                               struct vhost_virtqueue *vq, bool touched)
-+{
-+    vhost_memory_unmap(dev, &vq->used, vq->used_size, touched,
-+                       touched ? vq->used_size : 0);
-+    vhost_memory_unmap(dev, &vq->avail, vq->avail_size, 0,
-+                       touched ? vq->avail_size : 0);
-+    vhost_memory_unmap(dev, &vq->desc, vq->desc_size, 0,
-+                       touched ? vq->desc_size : 0);
-+}
-+
-+static int vhost_vrings_map(struct vhost_dev *dev,
-+                            struct VirtIODevice *vdev,
-+                            struct vhost_virtqueue *vq,
-+                            unsigned idx)
-+{
-+    vq->desc_size = virtio_queue_get_desc_size(vdev, idx);
-+    vq->desc_phys = virtio_queue_get_desc_addr(vdev, idx);
-+    vq->desc = NULL;
-+    vq->avail_size = virtio_queue_get_avail_size(vdev, idx);
-+    vq->avail_phys = virtio_queue_get_avail_addr(vdev, idx);
-+    vq->avail = NULL;
-+    vq->used_size = virtio_queue_get_used_size(vdev, idx);
-+    vq->used_phys = virtio_queue_get_used_addr(vdev, idx);
-+    vq->used = NULL;
-+
-+    if (vq->desc_phys == 0) {
-+        /* Queue might not be ready for start */
-+        return 0;
-+    }
-+    vq->desc = vhost_memory_map(dev, vq->desc_phys, vq->desc_size, false);
-+    if (!vq->desc) {
-+        goto fail;
-+    }
-+    vq->avail = vhost_memory_map(dev, vq->avail_phys, vq->avail_size, false);
-+    if (!vq->avail) {
-+        goto fail;
-+    }
-+    vq->used = vhost_memory_map(dev, vq->used_phys, vq->used_size, true);
-+    if (!vq->used) {
-+        goto fail;
-+    }
-+
-+    return 1;
-+
-+fail:
-+    vhost_vrings_unmap(dev, vq, false);
-+    return -ENOMEM;
-+}
-+
- static int vhost_verify_ring_part_mapping(void *ring_hva,
-                                           uint64_t ring_gpa,
-                                           uint64_t ring_size,
-@@ -1287,34 +1337,9 @@ int vhost_virtqueue_start(struct vhost_dev *dev,
-     };
-     struct VirtQueue *vvq = virtio_get_queue(vdev, idx);
- 
--    vq->desc_size = virtio_queue_get_desc_size(vdev, idx);
--    vq->desc_phys = virtio_queue_get_desc_addr(vdev, idx);
--    vq->desc = NULL;
--    vq->avail_size = virtio_queue_get_avail_size(vdev, idx);
--    vq->avail_phys = virtio_queue_get_avail_addr(vdev, idx);
--    vq->avail = NULL;
--    vq->used_size = virtio_queue_get_used_size(vdev, idx);
--    vq->used_phys = virtio_queue_get_used_addr(vdev, idx);
--    vq->used = NULL;
--
--    if (vq->desc_phys == 0) {
--        /* Queue might not be ready for start */
--        return 0;
--    }
--    vq->desc = vhost_memory_map(dev, vq->desc_phys, vq->desc_size, false);
--    if (!vq->desc) {
--        r = -ENOMEM;
--        goto fail;
--    }
--    vq->avail = vhost_memory_map(dev, vq->avail_phys, vq->avail_size, false);
--    if (!vq->avail) {
--        r = -ENOMEM;
--        goto fail;
--    }
--    vq->used = vhost_memory_map(dev, vq->used_phys, vq->used_size, true);
--    if (!vq->used) {
--        r = -ENOMEM;
--        goto fail;
-+    r = vhost_vrings_map(dev, vdev, vq, idx);
-+    if (r <= 0) {
-+        return r;
+@@ -1625,7 +1625,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+                                                      busyloop_timeout);
+             if (r < 0) {
+                 error_setg_errno(errp, -r, "Failed to set busyloop timeout");
+-                goto fail_busyloop;
++                goto fail;
+             }
+         }
+     }
+@@ -1665,7 +1665,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+     if (hdev->migration_blocker != NULL) {
+         r = migrate_add_blocker_normal(&hdev->migration_blocker, errp);
+         if (r < 0) {
+-            goto fail_busyloop;
++            goto fail;
+         }
      }
  
-     vq->num = state.num = virtio_queue_get_num(vdev, idx);
-@@ -1376,9 +1401,7 @@ int vhost_virtqueue_start(struct vhost_dev *dev,
+@@ -1697,17 +1697,11 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+                    " than current number of used (%d) and reserved (%d)"
+                    " memory slots for memory devices.", limit, used, reserved);
+         r = -EINVAL;
+-        goto fail_busyloop;
++        goto fail;
+     }
+ 
      return 0;
  
+-fail_busyloop:
+-    if (busyloop_timeout) {
+-        while (--i >= 0) {
+-            vhost_virtqueue_set_busyloop_timeout(hdev, hdev->vq_index + i, 0);
+-        }
+-    }
  fail:
--    vhost_memory_unmap(dev, &vq->used, vq->used_size, 0, 0);
--    vhost_memory_unmap(dev, &vq->avail, vq->avail_size, 0, 0);
--    vhost_memory_unmap(dev, &vq->desc, vq->desc_size, 0, 0);
-+    vhost_vrings_unmap(dev, vq, false);
-     return r;
- }
- 
-@@ -1425,9 +1448,7 @@ static int do_vhost_virtqueue_stop(struct vhost_dev *dev,
-                                                 vhost_vq_index);
-     }
- 
--    vhost_memory_unmap(dev, &vq->used, vq->used_size, 1, vq->used_size);
--    vhost_memory_unmap(dev, &vq->avail, vq->avail_size, 0, vq->avail_size);
--    vhost_memory_unmap(dev, &vq->desc, vq->desc_size, 0, vq->desc_size);
-+    vhost_vrings_unmap(dev, vq, true);
-     return r;
- }
- 
+     hdev->nvqs = n_initialized_vqs;
+     vhost_dev_cleanup(hdev);
 -- 
 2.52.0
 
