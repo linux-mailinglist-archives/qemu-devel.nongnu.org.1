@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56DD0D39E90
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 07:34:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A27CCD39EBB
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 07:40:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhipE-0002XK-PV; Mon, 19 Jan 2026 01:33:21 -0500
+	id 1vhivm-0008GE-Rj; Mon, 19 Jan 2026 01:40:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vhip8-0002WT-Pz; Mon, 19 Jan 2026 01:33:15 -0500
-Received: from mgamail.intel.com ([198.175.65.20])
+ id 1vhivc-0008Dy-BL; Mon, 19 Jan 2026 01:39:56 -0500
+Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1vhip6-0003Y3-1z; Mon, 19 Jan 2026 01:33:14 -0500
+ id 1vhivZ-0004Hl-OP; Mon, 19 Jan 2026 01:39:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768804392; x=1800340392;
+ t=1768804794; x=1800340794;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=f1zvckxP1sVfN4GVJ77Bja0O4O0419dYbsdVoL/Nih8=;
- b=RPNQFCVTjZ7uQ5xxSUvYxsG2qnXTTiYI9VldpESPLUSsgea8jLxUr+FM
- tNdOQUw+y6N2xiMaPb3MaI0Hxo0/vZUT9HP7kWE9mjpDyDRT69CYS0peN
- PmTD8aePW2VX8MQQweBh4U0sgaabBWzC7HSP4T02m/cYN0CIEhXQqi37t
- x2z54Z98LIIad0VDQ/ovbM2Em31GUQiRPdrV7UoRT32esencJEWfmkluI
- SPE6UIUuaTCrTpFBFOcD17B0J8OW2ovrBiQMWAsNBTFN4Pu4OXJNPy1t4
- Yg4g9dKZ4v6Q0A2wBK1gTTd80UNIr1qfc0w9DSzq9fLiSKYh1TwO9xsZj g==;
-X-CSE-ConnectionGUID: QS2DTBJlTZaKEHULdEid6w==
-X-CSE-MsgGUID: TigeSfakTTKFgU953qFtLQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="69743819"
-X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; d="scan'208";a="69743819"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jan 2026 22:33:07 -0800
-X-CSE-ConnectionGUID: KKIutbL3TZKANG3sAYim0g==
-X-CSE-MsgGUID: hA1eP+9gRguGD6+qzQSkSQ==
+ mime-version:in-reply-to;
+ bh=lPXeWH0ivt6gw1JCJFBC/xnC4csFZZNwnsRSzpHyr0w=;
+ b=D+bLPU9pYZOzg4weBHu9w+pe2n4qP9Xqeonl4DC+84y0t4POtEt3RPRl
+ 35lrnhS55uoeA26WnsBBUEWoEYttNoXDOIvOTFhYATnSh8+4pRA85aXwD
+ 9sPoCDCjqPozcN8IAWi+yUuAQzmOdaxL6vVYusHLza0azBsLr6AKRwr+x
+ eWrbVrBRTwu1iyRYr2nss7q+QEIf4V80zWWksz8bnasDP/49sqmpvzbvs
+ 5mupAtjvpbgPIX0HsdWnRZ8V/alLnkAAo7ZowVQpIOfx6zFntX783VEG7
+ E5y6HAEC1nSdwLo05sbO3cT4sXEX0nCCQgnTmC6IWU2uc8FKwH+lpS92X w==;
+X-CSE-ConnectionGUID: u5N1flJ+TJKPQ8UphdsbWw==
+X-CSE-MsgGUID: NStk9ryRQOy6JJ4IMOBDvQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="87427050"
+X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; d="scan'208";a="87427050"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jan 2026 22:39:51 -0800
+X-CSE-ConnectionGUID: 5UDmtpScTq6xDvJRE44fyw==
+X-CSE-MsgGUID: sZOl5pHIToO5BZyGjHr5yg==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; d="scan'208";a="243353735"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by fmviesa003.fm.intel.com with ESMTP; 18 Jan 2026 22:33:05 -0800
-Date: Mon, 19 Jan 2026 14:58:36 +0800
+ by orviesa001.jf.intel.com with ESMTP; 18 Jan 2026 22:39:50 -0800
+Date: Mon, 19 Jan 2026 15:05:20 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, armbru@redhat.com,
  =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
  qemu-rust@nongnu.org
-Subject: Re: [PATCH v2 09/16] scripts/qapi: add QAPISchemaIfCond.rsgen()
-Message-ID: <aW3WHPutY/4raiMX@intel.com>
+Subject: Re: [PATCH v2 11/16] scripts/qapi: pull c_name from camel_to_upper
+ to caller
+Message-ID: <aW3XsMGCCZB2kFQ+@intel.com>
 References: <20260108131043.490084-1-pbonzini@redhat.com>
- <20260108131043.490084-10-pbonzini@redhat.com>
+ <20260108131043.490084-12-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260108131043.490084-10-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.20; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20260108131043.490084-12-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -44
 X-Spam_score: -4.5
@@ -81,37 +82,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jan 08, 2026 at 02:10:36PM +0100, Paolo Bonzini wrote:
-> Date: Thu,  8 Jan 2026 14:10:36 +0100
+On Thu, Jan 08, 2026 at 02:10:38PM +0100, Paolo Bonzini wrote:
+> Date: Thu,  8 Jan 2026 14:10:38 +0100
 > From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH v2 09/16] scripts/qapi: add QAPISchemaIfCond.rsgen()
+> Subject: [PATCH v2 11/16] scripts/qapi: pull c_name from camel_to_upper to
+>  caller
 > X-Mailer: git-send-email 2.52.0
 > 
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+> Allow using it for other languages too.
 > 
-> Generate Rust #[cfg(...)] guards from QAPI 'if' conditions; it
-> turns out that they are very similar, with both of them using
-> not/any/all, so just walk the tree.
-> 
-> The next commit will put it to use.
-> 
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> Link: https://lore.kernel.org/r/20210907121943.3498701-15-marcandre.lureau@redhat.com
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  scripts/qapi/common.py | 19 +++++++++++++++++++
->  scripts/qapi/schema.py |  4 ++++
->  2 files changed, 23 insertions(+)
-> 
-> diff --git a/scripts/qapi/common.py b/scripts/qapi/common.py
-> index d7c8aa3365c..14d5dd259c4 100644
-> --- a/scripts/qapi/common.py
-> +++ b/scripts/qapi/common.py
-> @@ -199,6 +199,25 @@ def guardend(name: str) -> str:
->                   name=c_fname(name).upper())
->  
-
-LGTM,
+>  scripts/qapi/common.py | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
