@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDDB3D3B9E2
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 22:27:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9207CD3B9E4
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 22:27:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhwlc-0007JB-Ek; Mon, 19 Jan 2026 16:26:32 -0500
+	id 1vhwlf-0007SI-2h; Mon, 19 Jan 2026 16:26:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vhwlV-000734-3U
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:26:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vhwlZ-0007Fs-Bf
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:26:30 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vhwlT-0007Nf-D3
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:26:24 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vhwlW-0007ON-C8
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:26:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768857981;
+ s=mimecast20190719; t=1768857985;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=y+qb0PUtsm3MrHbHnagwpFIRmijHiO3tu7Amu/FnY2s=;
- b=f30SjwlIwFhsLvG4woQr6/nzk2gVUUTdSRG3SgLPTgLCo6ms7JAsZBC0zqH5dYoxubSAKu
- ptzV1QE9TJb3xHR5DtzxolwYDVAx/HrHiniBuam1W4TtUCNfksYh09dzg9M47l9Icsyuwv
- I7P9uV56VZRFfk7lArcXGzU5WQc4IT0=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=nhqf6UDFYsexs/pw/I/lDafG4BN8D1dYeZUdtvqNzoI=;
+ b=DWfS8KQ894R30E3qwIoexqyI3/7SF0HHs0iCA9pcBTk+5Qlg+Al42rV/LTO2hv3Or2Jc3I
+ fVOwR5wNkwjGhHIX+2nrD6/t4AW5zoMcCvb+S/3hl8TnDTxqc5bPszBRhntyk4WLYKUNk6
+ eVng1/BBRTvASDONaTpkF8gs0IZ34j8=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-154-8Qh-MnmdMkiWi7wg503v_w-1; Mon,
- 19 Jan 2026 16:26:18 -0500
-X-MC-Unique: 8Qh-MnmdMkiWi7wg503v_w-1
-X-Mimecast-MFC-AGG-ID: 8Qh-MnmdMkiWi7wg503v_w_1768857976
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-693-vZxXVcR5O-mnEJ9XzHE50g-1; Mon,
+ 19 Jan 2026 16:26:21 -0500
+X-MC-Unique: vZxXVcR5O-mnEJ9XzHE50g-1
+X-Mimecast-MFC-AGG-ID: vZxXVcR5O-mnEJ9XzHE50g_1768857980
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7FF571800359; Mon, 19 Jan 2026 21:26:16 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1CF1D1955DD6; Mon, 19 Jan 2026 21:26:20 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.170])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1C00C1800285; Mon, 19 Jan 2026 21:26:12 +0000 (UTC)
+ id A07561800285; Mon, 19 Jan 2026 21:26:16 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
@@ -60,23 +60,22 @@ Cc: Thomas Huth <thuth@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Michael Roth <michael.roth@amd.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v4 04/17] python/mkvenv: add mechanism to install local
- package(s)
-Date: Mon, 19 Jan 2026 16:25:40 -0500
-Message-ID: <20260119212554.1274940-5-jsnow@redhat.com>
+Subject: [PATCH v4 05/17] meson, mkvenv: add functests custom target
+Date: Mon, 19 Jan 2026 16:25:41 -0500
+Message-ID: <20260119212554.1274940-6-jsnow@redhat.com>
 In-Reply-To: <20260119212554.1274940-1-jsnow@redhat.com>
 References: <20260119212554.1274940-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.016,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -94,117 +93,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, we "implicitly" install the local 'qemu' python package for
-'make check-venv' with some logic inside tests/Makefile.include. I would
-like to make this installation explicit in pythondeps.toml instead.
+add the "pyvenv_functests_group" target to meson. This target will
+invoke mkvenv.py to install the associated dependency group to the
+build/pyvenv directory.
 
-The version constraint specification that Python specifies does not
-support relative paths, so it is difficult (or impossible?) to specify a
-path within the source tree, and we will need a workaround to do so.
-
-By specifying a package name that starts with $SRCROOT, you can now
-specify a file path to a local package for installation. This is done to
-allow us to install the python packages hosted inside of the tree while
-also processing dependencies; i.e. so that our "qemu" package can
-specify that it needs "qemu.qmp", which soon will not be included in
-qemu.git.
-
-This also has the benefit of being able to specify in a declarative
-configuration file that our pyvenv environment *will* have our local
-python packages installed and available without any PYTHONPATH hacks,
-which should simplify iotests, device-crash-test and functional tests
-without needing to manage local inclusion paths in environment
-variables.
-
-On the downsides, installing packages through mkvenv/ensuregroup means
-that there are extra steps we need to take in order to install a local
-package *offline*; namely we must disable build isolation (so we have
-access to setuptools) and we must also include python3-wheel in QEMU's
-build dependencies in order for "make check" to run successfully when in
-an offline, isolated environment. These extra dependencies are handled
-in a forthcoming commit; for now, nothing is utilizing this new pathway.
+A "pyvenv_tooling_group" is not included here as it is the plan to
+always install this group by default, so it will not need an on-demand
+trigger.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- python/scripts/mkvenv.py | 38 ++++++++++++++++++++++++++++++++------
- 1 file changed, 32 insertions(+), 6 deletions(-)
+ meson.build        |  1 +
+ pyvenv/meson.build | 28 ++++++++++++++++++++++++++++
+ 2 files changed, 29 insertions(+)
+ create mode 100644 pyvenv/meson.build
 
-diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
-index a22e3ee3394..608b8faa9b2 100644
---- a/python/scripts/mkvenv.py
-+++ b/python/scripts/mkvenv.py
-@@ -662,6 +662,7 @@ def pip_install(
-     args: Sequence[str],
-     online: bool = False,
-     wheels_dir: Optional[Union[str, Path]] = None,
-+    env: Optional[Dict[str, str]] = None,
- ) -> None:
-     """
-     Use pip to install a package or package(s) as specified in @args.
-@@ -687,6 +688,7 @@ def pip_install(
-     full_args += list(args)
-     subprocess.run(
-         full_args,
-+        env=env,
-         check=True,
-     )
- 
-@@ -733,9 +735,15 @@ def _do_ensure(
-     :param wheels_dir: If specified, search this path for packages.
-     """
-     absent = []
-+    local_packages = []
-     present = []
-     canary = None
-     for name, info in group.items():
-+        if name.startswith("$SRCROOT/"):
-+            srcroot = Path(__file__).parents[2]
-+            pkgpath = name.replace("$SRCROOT/", f"file://{srcroot}/")
-+            local_packages.append(pkgpath)
-+            continue
-         constraint = _make_version_constraint(info, False)
-         matcher = Matcher(name + constraint)
-         print(f"mkvenv: checking for {matcher}", file=sys.stderr)
-@@ -770,15 +778,33 @@ def _do_ensure(
-             print(f"mkvenv: installing {', '.join(absent)}", file=sys.stderr)
-             try:
-                 pip_install(args=absent, online=online, wheels_dir=wheels_dir)
--                return None
-+                absent = []
-             except subprocess.CalledProcessError:
-                 pass
- 
--        return diagnose(
--            absent[0],
--            online,
--            wheels_dir,
--            canary,
-+        if absent:
-+            return diagnose(
-+                absent[0],
-+                online,
-+                wheels_dir,
-+                canary,
-+            )
+diff --git a/meson.build b/meson.build
+index 3108f01e887..245f1bc2ec9 100644
+--- a/meson.build
++++ b/meson.build
+@@ -4551,6 +4551,7 @@ subdir('scripts')
+ subdir('tools')
+ subdir('pc-bios')
+ subdir('docs')
++subdir('pyvenv')
+ # Tests are disabled on emscripten because they rely on host features that aren't
+ # supported by emscripten (e.g. fork and unix socket).
+ if host_os != 'emscripten'
+diff --git a/pyvenv/meson.build b/pyvenv/meson.build
+new file mode 100644
+index 00000000000..2bfddeb4a52
+--- /dev/null
++++ b/pyvenv/meson.build
+@@ -0,0 +1,28 @@
++# Note that this file only controls "optional" dependency groups; groups
++# *required* for the build are handled directly in configure instead:
++# namely, meson and sphinx.
 +
-+    # Handle local packages separately and last so we can use different
-+    # installation arguments (-e), and so that any dependencies that may
-+    # be covered above will be handled according to the depfile
-+    # specifications.
-+    if local_packages:
-+        print(f"mkvenv: installing {', '.join(local_packages)}",
-+              file=sys.stderr)
-+        env = dict(os.environ)
-+        env['PIP_CONFIG_SETTINGS'] = "editable_mode=compat"
-+        pip_install(
-+            args=["--no-build-isolation",
-+                  "-e"] + local_packages,
-+            online=online,
-+            wheels_dir=wheels_dir,
-+            env=env,
-         )
- 
-     return None
++# NB: This command may or may not include the "--online" flag, depending
++# on the results of configure.
++ensuregroup_cmd = config_host['MKVENV_ENSUREGROUP'].split()
++
++pyvenv_common_deps = files(
++    meson.project_source_root() + '/pythondeps.toml',
++    meson.project_source_root() + '/python/scripts/mkvenv.py'
++)
++pyvenv_wheel_dir = meson.project_source_root() + '/python/wheels'
++
++
++# This group is allowed to rely on internet, to fetch from PyPI.
++# If --online was not passed to configure, this could fail.
++pyvenv_functests_group = custom_target(
++    'pyvenv_functests_group',
++    output: 'functests.group',
++    input: pyvenv_common_deps,
++    command: ensuregroup_cmd + [
++        '--online',
++        '--dir', pyvenv_wheel_dir,
++        '@INPUT0@',
++        'functests',
++    ],
++)
 -- 
 2.52.0
 
