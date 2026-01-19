@@ -2,101 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD4DAD3AB6D
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 15:15:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36A35D3AB66
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 15:14:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhq1t-0002Ny-5z; Mon, 19 Jan 2026 09:14:53 -0500
+	id 1vhq1G-0001nZ-WC; Mon, 19 Jan 2026 09:14:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hbathini@linux.ibm.com>)
- id 1vhjxC-0002b4-E9; Mon, 19 Jan 2026 02:45:42 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1vhjz9-0003cj-JA; Mon, 19 Jan 2026 02:47:41 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hbathini@linux.ibm.com>)
- id 1vhjx8-0003Bk-Fr; Mon, 19 Jan 2026 02:45:36 -0500
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60J4omgu001545;
- Mon, 19 Jan 2026 07:45:33 GMT
+ id 1vhjz6-0003OP-Lz; Mon, 19 Jan 2026 02:47:38 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60IKkhT3021348;
+ Mon, 19 Jan 2026 07:47:35 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=d5sN+V
- 599iPvwMQjrv/5fGxAtFZ2AVSkt88m+olERqM=; b=Cru3kbUJhdurzyYYhq7rJo
- sz49J4uchDMc8RlMaubuZCXSk6G16zObg6ildiXvjKErQFJadB7cXN6Q1bp5QXoR
- NYNrZjDNWJqZWvvy1W+fdppLwiE8uPRhQzDtqhTYGcFiNVUw9Sh7+3DAy1riSfsS
- AJ5yF2vNFixk4ca0oc90tf4wrW+65lx1eAw3Gx1F40Cb06EoVkx+Ed2eAw+vxVaW
- xgNFaFuNyFkCgD3kkf8IiYI1bYDE/XPElIaLj+O0IicKh0UX+K0KJBQ+l2D8+Pm4
- Fu/iwe3GC+T+SmOYZHqwHtHRHn8wLj+9qyQEvde+SuqucoV5aWoYlCbvQtrG5v0A
+ :message-id:mime-version:references:subject:to; s=pp1; bh=mhLvNm
+ h+CW2AU+jWTQjjbmuWsC+eEPP+C8KQsuAbQ7U=; b=KpE02hBVE2gdr0zDVjf4V1
+ j6WAM97Foy2iOdh1GIYGhKMTVP9G2nnGHvoYrLwBVKIBmQqtGlZOSswowF8JOAm2
+ 60AOH2Swde00kXYH0bTD4kEXYt/DHi92SIdwuqrCS2gEDL2B/Eza4HV4ewSbekb8
+ EShrbbNTTG5tD0gZNtfLkDz2J5dI4kEBXznOVUJDJGdEqaDZOk6TjsRcQowQosLH
+ DyrHU/jSI7A6Llkr+RpxEOQhAYBMIS1+jHPsjawoW4ZuVq3P7NmtBsrIsj+bwCJA
+ k3U3+wLMapl3iSqd1mMadzWYLOEdE+Kog9gywAuB4cn7/8INqTT16SKWkT+7ULOA
  ==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4br23rq0yn-1
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4br22u6cvh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Jan 2026 07:45:32 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60J4qmBC006394;
- Mon, 19 Jan 2026 07:45:31 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4brqf154nm-1
+ Mon, 19 Jan 2026 07:47:35 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60J7GRr8009266;
+ Mon, 19 Jan 2026 07:47:34 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4brp8jwcj5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Jan 2026 07:45:31 +0000
+ Mon, 19 Jan 2026 07:47:34 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 60J7jSEc57016720
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 60J7lTmn34472390
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 19 Jan 2026 07:45:28 GMT
+ Mon, 19 Jan 2026 07:47:29 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0EB772004B;
- Mon, 19 Jan 2026 07:45:28 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id AE29320049;
+ Mon, 19 Jan 2026 07:47:29 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 164EC20049;
- Mon, 19 Jan 2026 07:45:27 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id A738D20040;
+ Mon, 19 Jan 2026 07:47:28 +0000 (GMT)
 Received: from [9.43.98.125] (unknown [9.43.98.125])
  by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 19 Jan 2026 07:45:26 +0000 (GMT)
-Message-ID: <eb079c05-2ff9-4dde-a82d-31d3f37951d8@linux.ibm.com>
-Date: Mon, 19 Jan 2026 13:15:26 +0530
+ Mon, 19 Jan 2026 07:47:28 +0000 (GMT)
+Message-ID: <b35e15b0-6677-4fda-b687-50affe40c678@linux.ibm.com>
+Date: Mon, 19 Jan 2026 13:17:27 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/9] pnv/mpipl: Preserve memory regions as per
- MDST/MDDT tables
+Subject: Re: [PATCH v2 5/9] pnv/mpipl: Preserve CPU registers after crash
 To: Aditya Gupta <adityag@linux.ibm.com>, qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, Sourabh Jain <sourabhjain@linux.ibm.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
 References: <20251206055648.1908734-1-adityag@linux.ibm.com>
- <20251206055648.1908734-5-adityag@linux.ibm.com>
+ <20251206055648.1908734-6-adityag@linux.ibm.com>
 Content-Language: en-US
 From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <20251206055648.1908734-5-adityag@linux.ibm.com>
+In-Reply-To: <20251206055648.1908734-6-adityag@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: _y-dZq98iI7qXqRNvr1UEbJ4HTjxaw_h
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE5MDA1OSBTYWx0ZWRfXxQpS6u46zNgA
- mGz8mdloVrPnfiZzYd/r3+Q0diM+dRY/dju3y4/bhGHcM4zZUblOamtZl/p6mDPyojhtjEreRyh
- LQK/4W56MIvXWZyUopPswjifWQtNlg7BpOsUIaYvSu3e2vXnrpYNMdRogBDrBhLWPtJRKEOFlHo
- Q/0LbqJTh4+lBrhxZzzotxSW22ClOL1cBjGMTYXwx65GOkiLXQKDVIwwad947hELY+tuOhSEAMc
- jTAecCh//4mjoyEZD8bpUP/0JM2GillfPCvHG8LYmHFhey6iaAxw90zFf+FNehi0/T2ZBFaXxDL
- qhOPX5AcE+lxTl03UqiNPeIB89Cf4qzs1TjUVbSJcH/beAGHgiLTq+pXyAT//rAj3QVrK85de3c
- 7ii2xus7XyZ3Dm2Vq6QdZY7/nm7mAVaXZ6xdtXKjbN7XpcZ8oHVLDpFTuOvgMed4p1DEWL80ee6
- QmzPQaPJ7APhofkfmlQ==
-X-Authority-Analysis: v=2.4 cv=J9SnLQnS c=1 sm=1 tr=0 ts=696de11c cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+X-Proofpoint-GUID: uu-ca0Va5pcPs-YJoJQUo-p36vDdYsG2
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE5MDA2MyBTYWx0ZWRfX0ieXWL60q4Yi
+ Ertm9Z7x/JXkOIJbfYORY6v60E5flSIBOCHgTrHatiue5Hi7h2ElZ1bv9ypXuvfSRZ8REP+a+W6
+ hmwD+k6hlbfdoRhgKQMDu3sYwSa+9Pt9grMJJlMEnq04csEkN2wgBMyDSiSj7z452LQFDzCu5zf
+ iOvwUCaek/4z65gFTKq5PegWCqQ7iXRUnJmTXeMUmNj8mq7KdFZeu5L31TMvWS6OYDlwE4yEuxq
+ kDfTm6EJ84aTdB/HzwoYYcLdG+aYMaUDGoP+c/5PT3Ve9xGnTo8R15rSIQ9oTJto8TSeMVpPZjP
+ i4Dec5qnQnqoAqw4MP6YDLzMJgyh3UTc2O/7kvAIfQ+3v19bgoOqyPUkN3LMDEeV8ubVEBCxvyo
+ kwnxIumtYfQ4ja9i6UG0KPNr2iVQrTZEux010Ev0SflWKC0I1gBUKpLXDbUMRmjX9Jw1IS2axwB
+ +aTYw4boyvk4Zt6EbOw==
+X-Proofpoint-ORIG-GUID: uu-ca0Va5pcPs-YJoJQUo-p36vDdYsG2
+X-Authority-Analysis: v=2.4 cv=Sp2dKfO0 c=1 sm=1 tr=0 ts=696de197 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
  a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=sXdiNxlIhFd3OQyGzZcA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: _y-dZq98iI7qXqRNvr1UEbJ4HTjxaw_h
+ a=VnNF1IyMAAAA:8 a=Ufpwnig-cY6aIHvSwJ8A:9 a=QEXdDO2ut3YA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-19_01,2026-01-19_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 adultscore=0 suspectscore=0 spamscore=0
- lowpriorityscore=0 malwarescore=0 clxscore=1015 bulkscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2601150000 definitions=main-2601190059
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=hbathini@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+ impostorscore=0 bulkscore=0 spamscore=0 adultscore=0 phishscore=0
+ priorityscore=1501 lowpriorityscore=0 malwarescore=0 suspectscore=0
+ clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
+ definitions=main-2601190063
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=hbathini@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -124,143 +124,175 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 06/12/25 11:26 am, Aditya Gupta wrote:
-> Implement copying of memory region, as mentioned by MDST and MDDT
-> tables.
+> Kernel expects the platform to provide CPU registers after pausing
+> execution of the CPUs.
 > 
-> Copy the memory regions from source to destination in chunks of 32MB
-> 
-> Note, qemu can fail preserving a particular entry due to any reason,
-> such as:
->    * region length mis-matching in MDST & MDDT
->    * failed copy due to access/decode/etc memory issues
-> 
-> HDAT doesn't specify any field in MDRT to notify host about such errors.
-> 
-
-> Though HDAT section "15.3.1.3 Memory Dump Results Table (MDRT)" says:
->      The Memory Dump Results Table is a list of the memory ranges that
->      have been included in the dump
-> 
-> Based on above statement, it looks like MDRT should include only those
-> regions which are successfully captured in the dump, hence, regions
-> which qemu fails to dump, just get skipped, and will not have a
-> corresponding entry in MDRT
-
-Yeah. No error status is looked for by kernel. It tries to export
-/proc/vmcore with how much ever firmware succeeds in preserving..
-
+> Currently only exporting the registers, used by Linux, for generating
+> the /proc/vmcore
 > 
 > Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
 > ---
->   hw/ppc/pnv_mpipl.c         | 157 +++++++++++++++++++++++++++++++++++++
->   include/hw/ppc/pnv_mpipl.h |  83 ++++++++++++++++++++
->   2 files changed, 240 insertions(+)
+>   hw/ppc/pnv_mpipl.c         | 102 +++++++++++++++++++++++++++++++++++++
+>   include/hw/ppc/pnv_mpipl.h |  62 ++++++++++++++++++++++
+>   2 files changed, 164 insertions(+)
 > 
 > diff --git a/hw/ppc/pnv_mpipl.c b/hw/ppc/pnv_mpipl.c
-> index d8c9b7a428b7..a4f7113a44fd 100644
+> index a4f7113a44fd..8b41938c2e87 100644
 > --- a/hw/ppc/pnv_mpipl.c
 > +++ b/hw/ppc/pnv_mpipl.c
-> @@ -5,12 +5,169 @@
->    */
->   
->   #include "qemu/osdep.h"
-> +#include "qemu/log.h"
-> +#include "qemu/units.h"
-> +#include "system/address-spaces.h"
+> @@ -8,6 +8,8 @@
+>   #include "qemu/log.h"
+>   #include "qemu/units.h"
+>   #include "system/address-spaces.h"
+> +#include "system/cpus.h"
+> +#include "system/hw_accel.h"
 >   #include "system/runstate.h"
 >   #include "hw/ppc/pnv.h"
 >   #include "hw/ppc/pnv_mpipl.h"
-> +#include <math.h>
+> @@ -17,6 +19,8 @@
+>       (pnv->mpipl_state.skiboot_base + MDST_TABLE_OFF)
+>   #define MDDT_TABLE_RELOCATED                            \
+>       (pnv->mpipl_state.skiboot_base + MDDT_TABLE_OFF)
+> +#define PROC_DUMP_RELOCATED                             \
+> +    (pnv->mpipl_state.skiboot_base + PROC_DUMP_AREA_OFF)
+>   
+>   /*
+>    * Preserve the memory regions as pointed by MDST table
+> @@ -164,9 +168,107 @@ static bool pnv_mpipl_preserve_mem(PnvMachineState *pnv)
+>       return true;
+>   }
+>   
+> +static void do_store_cpu_regs(CPUState *cpu, MpiplPreservedCPUState *state)
+> +{
+> +    CPUPPCState *env = cpu_env(cpu);
+> +    MpiplRegDataHdr *regs_hdr = &state->hdr;
+> +    MpiplRegEntry *reg_entries = state->reg_entries;
+> +    MpiplRegEntry *curr_reg_entry;
+> +    uint32_t num_saved_regs = 0;
 > +
-> +#define MDST_TABLE_RELOCATED                            \
-> +    (pnv->mpipl_state.skiboot_base + MDST_TABLE_OFF)
-> +#define MDDT_TABLE_RELOCATED                            \
-> +    (pnv->mpipl_state.skiboot_base + MDDT_TABLE_OFF)
+> +    cpu_synchronize_state(cpu);
+> +
+> +    regs_hdr->pir = cpu_to_be32(env->spr[SPR_PIR]);
+> +
+> +    /* QEMU CPUs are not in Power Saving Mode */
+> +    regs_hdr->core_state = 0xff;
+> +
+> +    regs_hdr->off_regentries = 0;
+> +    regs_hdr->num_regentries = cpu_to_be32(NUM_REGS_PER_CPU);
+> +
+> +    regs_hdr->alloc_size = cpu_to_be32(sizeof(MpiplRegEntry));
+> +    regs_hdr->act_size   = cpu_to_be32(sizeof(MpiplRegEntry));
+> +
+> +#define REG_TYPE_GPR  0x1
+> +#define REG_TYPE_SPR  0x2
+> +#define REG_TYPE_TIMA 0x3
 > +
 > +/*
-> + * Preserve the memory regions as pointed by MDST table
+> + * ID numbers used by f/w while populating certain registers
 > + *
-> + * During this, the memory region pointed by entries in MDST, are 'copied'
-> + * as it is to the memory region pointed by corresponding entry in MDDT
-> + *
-> + * Notes: All reads should consider data coming from skiboot as bigendian,
-> + *        and data written should also be in big-endian
+> + * Copied these defines from the linux kernel
 > + */
-> +static bool pnv_mpipl_preserve_mem(PnvMachineState *pnv)
+> +#define REG_ID_NIP          0x7D0
+> +#define REG_ID_MSR          0x7D1
+> +#define REG_ID_CCR          0x7D2
+> +
+> +    curr_reg_entry = reg_entries;
+> +
+> +#define REG_ENTRY(type, num, val)                          \
+> +    do {                                               \
+> +        curr_reg_entry->reg_type = cpu_to_be32(type);  \
+> +        curr_reg_entry->reg_num  = cpu_to_be32(num);   \
+> +        curr_reg_entry->reg_val  = cpu_to_be64(val);   \
+> +        ++curr_reg_entry;                              \
+> +        ++num_saved_regs;                            \
+> +    } while (0)
+> +
+> +    /* Save the GPRs */
+> +    for (int gpr_id = 0; gpr_id < 32; ++gpr_id) {
+> +        REG_ENTRY(REG_TYPE_GPR, gpr_id, env->gpr[gpr_id]);
+> +    }
+> +
+> +    REG_ENTRY(REG_TYPE_SPR, REG_ID_NIP, env->nip);
+> +    REG_ENTRY(REG_TYPE_SPR, REG_ID_MSR, env->msr);
+> +
+> +    /*
+> +     * Ensure the number of registers saved match the number of
+> +     * registers per cpu
+> +     *
+> +     * This will help catch an error if in future a new register entry
+> +     * is added/removed while not modifying NUM_PER_CPU_REGS
+> +     */
+> +    assert(num_saved_regs == NUM_REGS_PER_CPU);
+> +}
+> +
+> +static void pnv_mpipl_preserve_cpu_state(PnvMachineState *pnv)
 > +{
-> +    g_autofree MdstTableEntry *mdst = g_malloc(MDST_TABLE_SIZE);
-> +    g_autofree MddtTableEntry *mddt = g_malloc(MDDT_TABLE_SIZE);
-> +    g_autofree MdrtTableEntry *mdrt = g_malloc0(MDRT_TABLE_SIZE);
-> +    AddressSpace *default_as = &address_space_memory;
-> +    MemTxResult io_result;
-> +    MemTxAttrs attrs;
-> +    uint64_t src_addr, dest_addr;
-> +    uint32_t src_len;
-> +    uint64_t num_chunks;
-> +    int mdrt_idx = 0;
+> +    MachineState *machine = MACHINE(pnv);
+> +    uint32_t num_cpus = machine->smp.cpus;
+> +    MpiplPreservedCPUState *state;
+> +    CPUState *cpu;
 > +
-> +    /* Mark the memory transactions as privileged memory access */
-> +    attrs.user = 0;
-> +    attrs.memory = 1;
-> +
-> +    if (pnv->mpipl_state.mdrt_table) {
+> +    if (pnv->mpipl_state.cpu_states) {
 > +        /*
-> +         * MDRT table allocated from some past crash, free the memory to
-> +         * prevent memory leak
+> +         * CPU States might have been allocated from some past crash, free the
+> +         * memory to preven memory leak
 > +         */
-> +        g_free(pnv->mpipl_state.mdrt_table);
-> +        pnv->mpipl_state.num_mdrt_entries = 0;
+> +        g_free(pnv->mpipl_state.cpu_states);
+> +        pnv->mpipl_state.num_cpu_states = 0;
 > +    }
 > +
-> +    io_result = address_space_read(default_as, MDST_TABLE_RELOCATED, attrs,
-> +            mdst, MDST_TABLE_SIZE);
-> +    if (io_result != MEMTX_OK) {
-> +        qemu_log_mask(LOG_GUEST_ERROR,
-> +            "MPIPL: Failed to read MDST table at: 0x%lx\n",
-> +            MDST_TABLE_RELOCATED);
+> +    pnv->mpipl_state.cpu_states = g_malloc_n(num_cpus,
+> +            sizeof(MpiplPreservedCPUState));
+> +    pnv->mpipl_state.num_cpu_states = num_cpus;
 > +
-> +        return false;
+> +    state = pnv->mpipl_state.cpu_states;
+> +
+> +    /* Preserve the Processor Dump Area */
+> +    cpu_physical_memory_read(PROC_DUMP_RELOCATED, &pnv->mpipl_state.proc_area,
+> +            sizeof(MpiplProcDumpArea));
+> +
+> +    CPU_FOREACH(cpu) {
+> +        do_store_cpu_regs(cpu, state);
+> +        ++state;
 > +    }
+> +}
 > +
-> +    io_result = address_space_read(default_as, MDDT_TABLE_RELOCATED, attrs,
-> +            mddt, MDDT_TABLE_SIZE);
-> +    if (io_result != MEMTX_OK) {
-> +        qemu_log_mask(LOG_GUEST_ERROR,
-> +            "MPIPL: Failed to read MDDT table at: 0x%lx\n",
-> +            MDDT_TABLE_RELOCATED);
+>   void do_mpipl_preserve(PnvMachineState *pnv)
+>   {
+> +    pause_all_vcpus();
 > +
-> +        return false;
-> +    }
+>       pnv_mpipl_preserve_mem(pnv);
+> +    pnv_mpipl_preserve_cpu_state(pnv);
+>   
+>       /* Mark next boot as Memory-preserving boot */
+>       pnv->mpipl_state.is_next_boot_mpipl = true;
+> diff --git a/include/hw/ppc/pnv_mpipl.h b/include/hw/ppc/pnv_mpipl.h
+> index ec173ba8268e..d85970bba039 100644
+> --- a/include/hw/ppc/pnv_mpipl.h
+> +++ b/include/hw/ppc/pnv_mpipl.h
+> @@ -16,6 +16,12 @@ typedef struct MdstTableEntry MdstTableEntry;
+>   typedef struct MdrtTableEntry MdrtTableEntry;
+>   typedef struct MpiplPreservedState MpiplPreservedState;
+>   
+> +typedef struct MpiplRegDataHdr MpiplRegDataHdr;
+> +typedef struct MpiplRegEntry MpiplRegEntry;
+> +typedef struct MpiplProcDumpArea MpiplProcDumpArea;
+> +typedef struct MpiplPreservedState MpiplPreservedState;
+> +typedef struct MpiplPreservedCPUState MpiplPreservedCPUState;
 > +
-> +    /* Try to read all entries */
-> +    for (int i = 0; i < MDST_MAX_ENTRIES; ++i) {
-> +        g_autofree uint8_t *copy_buffer = NULL;
-> +        bool is_copy_failed = false;
-> +
-> +        /* Considering entry with address and size as 0, as end of table */
-> +        if ((mdst[i].addr == 0) && (mdst[i].size == 0)) {
-> +            break;
-> +        }
-> +
-> +        if (mdst[i].size != mddt[i].size) {
-> +            qemu_log_mask(LOG_TRACE,
-> +                    "Warning: Invalid entry, size mismatch in MDST & MDDT\n");
-> +            continue;
-> +        }
-> +
-> +        if (mdst[i].data_region != mddt[i].data_region) {
-> +            qemu_log_mask(LOG_TRACE,
-> +                    "Warning: Invalid entry, region mismatch in MDST & MDDT\n");
-> +            continue;
-> +        }
-> +
-> +        src_addr  = be64_to_cpu(mdst[i].addr) & ~HRMOR_BIT;
-> +        dest_addr = be64_to_cpu(mddt[i].addr) & ~HRMOR_BIT;
+>   /* Following offsets are copied from skiboot source code */
+>   /* Use 768 bytes for SPIRAH */
+>   #define SPIRAH_OFF      0x00010000
+> @@ -46,6 +52,8 @@ typedef struct MpiplPreservedState MpiplPreservedState;
+>   
+>   #define __packed             __attribute__((packed))
+>   
 
-> +        src_len   = be32_to_cpu(mddt[i].size);
+> +#define NUM_REGS_PER_CPU 34 /*(32 GPRs, NIP, MSR)*/
+> +
 
-data_len sounds more appropriate instead of src_len here, especially
-as we are using mddt length..
+Any limitation with saving the other SPRs? At least, LR is one other
+relevant SPR that needs to be saved for some meaningful context..
 
 - Hari
 
