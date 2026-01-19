@@ -2,78 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE414D3AE0A
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 16:02:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B519D3AE66
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 16:09:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhqlV-0003nS-Fa; Mon, 19 Jan 2026 10:02:01 -0500
+	id 1vhqq1-0008HY-CY; Mon, 19 Jan 2026 10:06:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vhqlT-0003my-Cz
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 10:01:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vhqlR-0002uK-IL
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 10:01:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768834916;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Nd9+4K82OqUbNnr+hwh6S7L8Uy5+O48ckJN/MqUavIc=;
- b=JUllsZfjKlp3t3qgV0RB5+KJ0JhcKi9n4JXH+pr6QlnBpxiyUITrbY122T3V8jqqPt8XI/
- 474eqxvwz5ozAiYX8Yvr+/En2cxGE1ZZtahlkqAaYN2IOe1j1etbSA9aKFtZ4ZjeSvFL5H
- hww9zibpx8zG3uQccjDkEZbnR58xdRo=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-627-NdbWNaEOMoK7-Ta65kgntg-1; Mon,
- 19 Jan 2026 10:01:51 -0500
-X-MC-Unique: NdbWNaEOMoK7-Ta65kgntg-1
-X-Mimecast-MFC-AGG-ID: NdbWNaEOMoK7-Ta65kgntg_1768834910
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 480221956052; Mon, 19 Jan 2026 15:01:50 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.3])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AFE3819560A2; Mon, 19 Jan 2026 15:01:49 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 40EE821E692D; Mon, 19 Jan 2026 16:01:47 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org,  Alex =?utf-8?Q?Benn=C3=A9e?=
- <alex.bennee@linaro.org>,  Daniel P.
- =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Thomas Huth
- <thuth@redhat.com>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  "Edgar E. Iglesias"
- <edgar.iglesias@gmail.com>,  Alistair Francis <alistair@alistair23.me>,
- Zhang Chen <zhangckid@gmail.com>,  Li Zhijian <lizhijian@fujitsu.com>
-Subject: Re: [PATCH 2/4] docs: avoid unintended mailto: hyperlinks
-In-Reply-To: <20260115142629.665319-3-peter.maydell@linaro.org> (Peter
- Maydell's message of "Thu, 15 Jan 2026 14:26:27 +0000")
-References: <20260115142629.665319-1-peter.maydell@linaro.org>
- <20260115142629.665319-3-peter.maydell@linaro.org>
-Date: Mon, 19 Jan 2026 16:01:47 +0100
-Message-ID: <87jyxdlk84.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vhqpz-0008FN-IO
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 10:06:39 -0500
+Received: from mail-yw1-x1132.google.com ([2607:f8b0:4864:20::1132])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1vhqpx-0003nH-Oe
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 10:06:39 -0500
+Received: by mail-yw1-x1132.google.com with SMTP id
+ 00721157ae682-78fc3572431so45870017b3.0
+ for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 07:06:37 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768835196; cv=none;
+ d=google.com; s=arc-20240605;
+ b=KkEH3rp2SDsRe2AkyrpOECcxOwMSNloijdgaXT2EuNq3CdEQNksPMbK5tcCDyR9/pN
+ QovMKeZ0h7qY2TMhWxKdqlsl0CEqFeDPkfOZTKrjr1fe/WxnJ9hOUrK0xenUk7+MtNWI
+ i5J0C7K5Ezq0u+du9MeYi7sDmrFkUUesFhVOFlpUZ2Ke8pm9RkQYMsorZLSztxHSieUP
+ 7vDYu/s3yr1FYupDtWVccNj5RM7ipksQ3H38qQyb7WvLskRtb7rsy++ndvDbRd1zOkuA
+ +RWal9v/C7mOckp7Wz5zKdji2ga4+W6zEApPo9Sm9g48LmZZmnTtCajxiW4qcHY7TcUq
+ 54pQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
+ s=arc-20240605; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:dkim-signature;
+ bh=p4W1gG0X4bCYXfbzKfBWZgtjQlTtkMq+GzMIfsy9dYg=;
+ fh=ea5iynPX0c3PeNaJDpBz488PRwtBvVAI4RKUDWzUnsI=;
+ b=SAluKjHburYvBsv+XBEH8gw9cLHbUbFsDRH5Ty79fM4KUlEeL7x3tIqcOhp7mHkqhT
+ 9uKXOV++IoEOq0yCV0qVdxooPyf6KTuRhC8LT7RIoR1u8PnEtdQjrg+FdAigbHA/ac1/
+ W2NXVOG9hyHLyMT9aq/JlXkm+jbG6PesOxD2pGX6nzqANxbgOVaJdjZGFMcOhhM+53Bv
+ 16Mcp1qRcNoVeMNItHKSgtsPtY6mHIX3sD7NG06QDNHHEgXXdLnfhlci4G6AywEi8C8G
+ gRuhXI3OUCFQ9mstxJXxAIOBahcsNWRsGAWHNslxyuaLDUTVBOPKtO9h2Gh21z4dkASu
+ ugng==; darn=nongnu.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1768835196; x=1769439996; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=p4W1gG0X4bCYXfbzKfBWZgtjQlTtkMq+GzMIfsy9dYg=;
+ b=AQ/ZuFUVp4C3+gikJeAP1e5uZWmMa7mav78og1bNBDL+nNOKjZKN/hfAcC7raCKug0
+ dloLZVrB5EF0AeN/ixZAv0rOIeliCMbv0go2F8yfemRgMNb68sswppLYxEIk/Z5gctWy
+ 1YcNDtOxssxQO7DFSNi8cnClqeqz7lM3Sfxp7Wi+/dA6Jx3WHHQ1f8ZFLM9sUHQyrZrX
+ LdafLp3ccowZFUYsyaURjbbj1MJoCtR6yFGYXSd24+4f9Ir2OeK8wFow3qz2X7FbnC7S
+ RkPgAsdsN8WfGZIJd+kc5ESCtflNuTm7796SkqGfAPQ3H1mFTInXKKXxSdJC0lJqLOfB
+ /VcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768835196; x=1769439996;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=p4W1gG0X4bCYXfbzKfBWZgtjQlTtkMq+GzMIfsy9dYg=;
+ b=GkS+TBgNGAX6Is1bZPOdI9544ilRfEO5mksfTFEYRminalgYSSxPAzyJGSuzhPg1OP
+ 27mOMcGwniImmHr1TYaU5V1tb0k3ej/1pXXLwHryjZggzKuQHsBJ+1FxZfzuZCMGoK4Y
+ ku1nmm1g+JHZW0Wne+11dU1UvyrswpRC5sn//0D7mw/PRcwYn+zV9S8MRiogbwb+/biS
+ Wv7nf1PdNvFFN2i2NpUlJ722uNg2EyCl3qCdJg4gKHe+OgD/yqMJHWAvUSGxbhxZ8Hf0
+ vGPBXLO/Drz7O+J14zVqIWxRbUtwUrRHuzgU1tJshqYP7Jtt7eagOsHCskKidfyyI8ho
+ XKJw==
+X-Gm-Message-State: AOJu0YzFQqXovTrnC7vND7S6KO1bOBaEOAENcok39anXd5Ndgde+aT8J
+ LVCp5Hmi54VChjnV9VRCds6RuB3zdCHqcUwO6xKGwSaa93op1+F8t5Kx/BS0wTwvQL7c9X7nTnL
+ HDfVOxeMOWu3KpaLIjdjsluwzKR8haShNOOVp62Rh1w==
+X-Gm-Gg: AZuq6aL2Jh7nYCS2oh6nToyKhRJ1zW/aV/+znvK0MjWrPxLeRArlktmqXUQ203kyXzK
+ QlHg5GCeOS6Ml9YDN0ke8PCdUGVLZv83lgt2pXMuwqg9ToQkSrNFWAIiF7lVZI6JVe5xuMZKrao
+ W6QgbWbYvCsoJAE6AOBGGwZGwg9r0FVVoy15UsczcQhF1vcDU2+di2p0NQRLYlHS4xgdd1st8Ux
+ 5Bq/glW/I1Tn/maKrziG9ArDH/PrFUD4yTUui9dFWO+tfj08Wz/w/x5EKUcEy6mufwrww==
+X-Received: by 2002:a05:690c:6f10:b0:793:afdd:e63e with SMTP id
+ 00721157ae682-793c544d6ddmr93068357b3.33.1768835196310; Mon, 19 Jan 2026
+ 07:06:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20260115142629.665319-1-peter.maydell@linaro.org>
+ <20260115142629.665319-4-peter.maydell@linaro.org>
+ <87o6mplkjk.fsf@pond.sub.org>
+In-Reply-To: <87o6mplkjk.fsf@pond.sub.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 19 Jan 2026 15:06:24 +0000
+X-Gm-Features: AZwV_QidmhmSX8kE_OXSmWALCJdlXsjeBViVCQwt6m-P4sfLAZipWrMX0Nnq6ok
+Message-ID: <CAFEAcA8=psrFCnssVUdSwUrw16x3rBRjB=BV0VmGc1MiMDxPZA@mail.gmail.com>
+Subject: Re: [PATCH 3/4] qemu-options.hx: Drop uses of @var
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>, 
+ Zhang Chen <zhangckid@gmail.com>, Li Zhijian <lizhijian@fujitsu.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1132;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.016,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,20 +119,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Maydell <peter.maydell@linaro.org> writes:
-
-> In rST documents, an '@' character in normal text or a parsed-literal is
-> assumed to be an email address and will result in a 'mailto:' hyperlink in
-> the generated HTML.  In several places we have mailto: hyperlinks that are
-> unintended nonsense; correct these by either escaping the @ character or
-> making the text use ``...`` preformatted rendering.
+On Mon, 19 Jan 2026 at 14:55, Markus Armbruster <armbru@redhat.com> wrote:
 >
-> This commit covers only the simple cases which can be trivially fixed
-> with escaping or ``..``; the remaining cases will be handled in
-> separate commits.
+> Peter Maydell <peter.maydell@linaro.org> writes:
 >
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> > A few entries in qemu-options.hx use the syntax "my-option=@var{name}"
+> > when documenting an option that takes an argument. This syntax isn't
+> > consistently used, and the documentation generation has no support for
+> > it: it just appears literally in the HTML output.
+>
+> TexInfo leftovers?
+>
+> > Switch these uses to the more common "my-option=<name>". This also
+> > doesn't have any particular support in the documentation generation
+> > and so appears literally in the output, but it is a little less odd
+> > looking to the end-user.
+>
+> Note for later: rewrite 1 is from KEY=@var{VALUE} to KEY=<VALUE>.
 
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+More generally, any uses of @var{} to KEY=<VALUE>.
 
+> > The other common pattern we have is "my-option=name" with no marking
+> > at all that the right hand side of the '=' is not literal text;
+> > using <> seems preferable to me, as it makes it more distinct from
+> > cases where the right hand side is documenting that only certain
+> > values are permitted, as in "my-option=on|off".
+>
+> Rewrite 2 is from KEY=VALUE to KEY=<VALUE>.
+
+This patch is not trying to do any rewrite 2; this part of
+the commit message is just noting that we are not consistent
+about KEY=<VALUE> currently, and so we had another option for
+how to fix the @var{} usage, and explaining why I didn't take
+that other option.
+
+> > We don't change the uses of @var in the colo-compare documentation,
+> > as that part deserves a slightly more wide-ranging overhaul that
+> > is better in its own commit.
+> >
+> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> > ---
+> >  qemu-options.hx | 10 +++++-----
+> >  1 file changed, 5 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/qemu-options.hx b/qemu-options.hx
+> > index ec92723f10..aca9dba8b9 100644
+> > --- a/qemu-options.hx
+> > +++ b/qemu-options.hx
+> > @@ -36,7 +36,7 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
+> >      "                dea-key-wrap=on|off controls support for DEA key wrapping (default=on)\n"
+> >      "                suppress-vmdesc=on|off disables self-describing migration (default=off)\n"
+> >      "                nvdimm=on|off controls NVDIMM support (default=off)\n"
+> > -    "                memory-encryption=@var{} memory encryption object to use (default=none)\n"
+> > +    "                memory-encryption=<id> memory encryption object to use (default=none)\n"
+>
+> This is rewrite 1, except you additionally make up a missing VALUE.
+
+The key=<value> syntax requires one, or it wouldn't be that syntax.
+
+> >      "                hmat=on|off controls ACPI HMAT support (default=off)\n"
+> >      "                spcr=on|off controls ACPI SPCR support (default=on)\n"
+> >  #ifdef CONFIG_POSIX
+> > @@ -100,7 +100,7 @@ SRST
+> >      ``nvdimm=on|off``
+> >          Enables or disables NVDIMM support. The default is off.
+> >
+> > -    ``memory-encryption=``
+> > +    ``memory-encryption=<id>``
+> >          Memory encryption object to use. The default is none.
+>
+> This is rewrite 2, except you additionally make up a missing VALUE.
+
+This is just because we changed the memory-encryption suboption
+in the --help output text above and so also should fix it up
+in the RST docs here.
+
+> This patch and the next apply rewrite 1 exhaustively.
+>
+> Not the case for rewrite 2, e.g. there's still
+>
+>     "                cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity]\n"
+>
+> where the value size is not literal.  Many more.
+>
+> So, what this patch actually does is rewrite 1 plus add missing values.
+> Could be separate patches, up to you.  Regardless, the commit message
+> should match what the patch does.
+
+I think it does. Perhaps it could be more clearly stated...
+
+-- PMM
 
