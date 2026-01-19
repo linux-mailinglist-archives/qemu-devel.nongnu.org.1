@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B9DFD3B9FE
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 22:30:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78FDED3B9F8
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 22:30:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhwp1-0005mI-4I; Mon, 19 Jan 2026 16:30:03 -0500
+	id 1vhwof-00048g-68; Mon, 19 Jan 2026 16:29:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vhwoE-0003Cg-CB
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vhwoG-0003Cx-V3
  for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:29:20 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vhwoC-0008U5-KQ
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:29:14 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vhwoF-00005Y-LG
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:29:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768858151;
+ s=mimecast20190719; t=1768858154;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=37eYZjfLDDKfcsWVFesPB0ivB7/znnlKkL/aeD6vYe0=;
- b=CY37R5wsFFZ1QMiPOvy9HGXYebcfmCUI/8tQdnZEMZK+9GeoXs+Oc9RrURHb1WssytUmFl
- e//GKllB19VwfF6cs1DN8GsKymZTKEddleZUenWZLNGQhf5MdHv7qDn46BxENNrbuTe6b+
- GqTf7Ss+EWfaR4yaqTS6x06VE7Or8+c=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=XfA2AX39riqHz1+odmR+VKvUbnz1hUqw1aMnsi96UbI=;
+ b=MSv/oRAHVqqM5O0g8ibbSF4gNy6HvOWA548It6FXZwrcEF6ZZs56zUHZEByMzL+rudN0mz
+ HGM+2COcrIRO3Uo8+Ml7Xvgm7FA8gTrPqcUDM8G4uNXF9J1llxVjQiqFqT4EXfosjf+rr1
+ ylE6ZV19cfpYRGMxCDK/Fv33kLXu5vs=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-317-rq84weV5MTOenRFLs706EQ-1; Mon,
- 19 Jan 2026 16:29:08 -0500
-X-MC-Unique: rq84weV5MTOenRFLs706EQ-1
-X-Mimecast-MFC-AGG-ID: rq84weV5MTOenRFLs706EQ_1768858146
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-461-lYGhiRPPP1O8rRCprqRW4g-1; Mon,
+ 19 Jan 2026 16:29:11 -0500
+X-MC-Unique: lYGhiRPPP1O8rRCprqRW4g-1
+X-Mimecast-MFC-AGG-ID: lYGhiRPPP1O8rRCprqRW4g_1768858150
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9FF4A19560B5; Mon, 19 Jan 2026 21:29:06 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E90E019560A1; Mon, 19 Jan 2026 21:29:09 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.170])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B41E019560AB; Mon, 19 Jan 2026 21:29:03 +0000 (UTC)
+ id D5C8D19560AB; Mon, 19 Jan 2026 21:29:06 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -59,10 +59,9 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v4 16/17] python: update README.rst to reflect qemu.qmp's
- removal
-Date: Mon, 19 Jan 2026 16:27:42 -0500
-Message-ID: <20260119212744.1275455-17-jsnow@redhat.com>
+Subject: [PATCH v4 17/17] RFC: exclude pyvenv targets from "make check-build"
+Date: Mon, 19 Jan 2026 16:27:43 -0500
+Message-ID: <20260119212744.1275455-18-jsnow@redhat.com>
 In-Reply-To: <20260119212744.1275455-1-jsnow@redhat.com>
 References: <20260119212744.1275455-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -93,98 +92,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is no longer simply possible to just use this directory as if it were
-an installed package now that it has dependencies, so update the README
-to reflect this.
+This patch removes python venv preparation steps from "make check-build".
+
+Thomas pointed out that "make check-build" was installing all venv
+preparation targets, which may or may not be desired. In case it isn't
+desired, this patch showcases a crude hack to bypass it.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- python/README.rst | 50 ++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 43 insertions(+), 7 deletions(-)
+ scripts/mtest2make.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/python/README.rst b/python/README.rst
-index d62e71528d2..2accfd7760e 100644
---- a/python/README.rst
-+++ b/python/README.rst
-@@ -3,7 +3,17 @@ QEMU Python Tooling
+diff --git a/scripts/mtest2make.py b/scripts/mtest2make.py
+index 4b252defc3f..f102369287b 100644
+--- a/scripts/mtest2make.py
++++ b/scripts/mtest2make.py
+@@ -82,9 +82,11 @@ def emit_prolog(suites, prefix):
  
- This directory houses Python tooling used by the QEMU project to build,
- configure, and test QEMU. It is organized by namespace (``qemu``), and
--then by package (e.g. ``qemu/machine``, ``qemu/qmp``, etc).
-+then by package (e.g. ``qemu/machine``, ``qemu/utils``, etc).
-+
-+These tools and libraries are installed to the QEMU configure-time
-+Python virtual environment by default (see qemu.git/pythondeps.toml
-+"tooling" group), and are available for use by any Python script
-+executed by the build system. To have these libraries available for
-+manual invocations of scripts, use of the "run" script executable in
-+your build directory is recommended.
-+
-+General structure
-+-----------------
+ def emit_suite(name, suite, prefix):
+     deps = ' '.join(suite.deps)
++    testdeps = ' '.join([x for x in suite.deps if 'pyvenv' not in x])
+     print()
+     print(f'.{prefix}-{name}.deps = {deps}')
+-    print(f'.ninja-goals.check-build += $(.{prefix}-{name}.deps)')
++    print(f'.{prefix}-{name}.testdeps = {testdeps}')
++    print(f'.ninja-goals.check-build += $(.{prefix}-{name}.testdeps)')
  
- ``setup.py`` is used by ``pip`` to install this tooling to the current
- environment. ``setup.cfg`` provides the packaging configuration used by
-@@ -20,9 +30,9 @@ environment. ``setup.cfg`` provides the packaging configuration used by
- 
- If you append the ``--editable`` or ``-e`` argument to either invocation
- above, pip will install in "editable" mode. This installs the package as
--a forwarder ("qemu.egg-link") that points to the source tree. In so
--doing, the installed package always reflects the latest version in your
--source tree.
-+a forwarder that points to the source tree. In so doing, the installed
-+package always reflects the latest version in your source tree. This is
-+the mode used to install these packages at configure time.
- 
- Installing ".[devel]" instead of "." will additionally pull in required
- packages for testing this package. They are not runtime requirements,
-@@ -40,8 +50,18 @@ for more information.
- Using these packages without installing them
- --------------------------------------------
- 
--These packages may be used without installing them first, by using one
--of two tricks:
-+It is no longer recommended to try to use these packages without
-+installing them to a virtual environment, but depending on your use
-+case, it may still be possible to do.
-+
-+The "qemu.qmp" library is now hosted outside of the qemu.git repository,
-+and the "qemu.machine" library that remains in-tree here has qemu.qmp as
-+a dependency. It is possible to install "qemu.qmp" independently and
-+then use the rest of these packages without installing them, but be
-+advised that if future dependencies are introduced, bypassing the
-+installation phase may introduce breakages to your script in the future.
-+
-+That said, you can use these packages without installing them by either:
- 
- 1. Set your PYTHONPATH environment variable to include this source
-    directory, e.g. ``~/src/qemu/python``. See
-@@ -61,8 +81,24 @@ invoke them without installation, you can invoke e.g.:
- 
- ``> PYTHONPATH=~/src/qemu/python python3 -m qemu.qmp.qmp_shell``
- 
-+Or, with the runscript available in the QEMU build directory, simply:
-+
-+``> $builddir/run qmp-shell``
-+
- The mappings between console script name and python module path can be
--found in ``setup.cfg``.
-+found in ``setup.cfg``, but the console scripts available are listed
-+here for reference:
-+
-+* ``qemu-ga-client``
-+* ``qmp-shell``
-+* ``qmp-shell-wrap``
-+* ``qmp-tui`` (prototype urwid interface for async QMP)
-+* ``qom``
-+* ``qom-fuse`` (requires fusepy to be installed!)
-+* ``qom-get``
-+* ``qom-list``
-+* ``qom-set``
-+* ``qom-tree``
- 
- 
- Files in this directory
+     names = ' '.join(suite.names(name))
+     targets = f'{prefix}-{name} {prefix}-report-{name}.junit.xml'
 -- 
 2.52.0
 
