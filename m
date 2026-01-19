@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590FBD3A626
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 12:05:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 499F5D3A624
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 12:05:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhn3M-00069Y-TI; Mon, 19 Jan 2026 06:04:12 -0500
+	id 1vhn3O-0006P6-Rx; Mon, 19 Jan 2026 06:04:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vhn3F-0005ty-Uz
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 06:04:07 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vhn3M-0006AR-DB
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 06:04:12 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vhn3D-0006Uq-80
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 06:04:05 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-42fed090e5fso2253092f8f.1
- for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 03:04:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vhn3K-0006Vw-Rj
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 06:04:12 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-47ee0291921so27080015e9.3
+ for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 03:04:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768820641; x=1769425441; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=1oLWab/Xaud4IgoL2Fl+eccutCbR+6dlUmvzxaTjay0=;
- b=Z9pqDHdWp1YtBIdqM6G53JsddxJe8LvcK5upQlimjqi3eIO69k9ITonollWdgRDX0C
- PMyc/9chFruJMfN2SjiUeQ1hpdn1d4UyDaTnVO9Ja4EyG16i+fWDn9V+ul9buNgIFLVa
- qS02bDpZ+q+OkJI16XJsKV5hkQ7P2A53U0ERUPGUkqx3bXqKRXiFIeErOH1VvbF+MfKI
- KuIK1uQ/B3uNfTH4RqguhR+MyK7PdFOVgRgyYPWozJywZTBcNK+yHNnJspGW+RFIJ1FE
- eet8mtUC55IhWM43wvo4r1SS/6e6VehFn/sHaXOCjPzG+mD0c3k1klIsSIKPAYPcArX2
- SFPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768820641; x=1769425441;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1768820649; x=1769425449; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1oLWab/Xaud4IgoL2Fl+eccutCbR+6dlUmvzxaTjay0=;
- b=PEEWVtxskkBGagiHZu0H8rJNpMDfqw0gTSQcn2I2zyQfU2uYWl/6qS8Bak5VsPVfty
- Bod6AZx06R9BgTZbKn/hrZsiDKXEnH/mMEOmJdljuIwCowqgUy6vKF97vm1DvtYaMeWY
- XobihVdOM6v80W9ZWnBP98DCd9/71Hr0QXmujVkyNU2zha8rmsnDq1QziEIKl2Qvcv/Q
- SEY4Z6cldBqklH4mz+PHKBISm9BfbMwor2Da1dbMNDRq8LRMo9FmcDMWzXyppIaQFuTJ
- MXvl/fneSby2M557h8L22U1QQEX3bjOjBhqXpeRlyINFLtTZv4noCPtjgSCbnVioAsAE
- ZVYg==
-X-Gm-Message-State: AOJu0YzxoRoPACoiCzxsr5oOi0bsbiE3imbrXAoKsIa6Ltex7n7JScqd
- mK4dPg6HQiSkmcEsW5e1DuIoMPeqIPvbEkWxCAhIPtsjRyaWCXYhUoNyXfypVbvhUcz0kns2S/V
- HKbDWfSU=
-X-Gm-Gg: AZuq6aKQjks99AGSiUt6IezyCFTrjh3I+67Vz0T6Fo24Ili1CJVqbJFV62J4XVf5zyn
- tBuNfs9pc2OYlHjh2WkSTEm6vxgKSHybj2QwuDAozIZWOQI1kSPP8msuowgYxnHvBJHP0/xCANv
- 3T1vlaF3gMplqSri7A5FLA6Wk2+xKC7291M5oRx/6+hsbcvbveTrYI5cqZOorcjs5sNr1jHeu1t
- QPxtCrHlgJjFsDhf5EOtLYXRGl1i+LTVqZgSAY/QtxeBJurf+70qymzZfeWqLbqvunHmRVObxMg
- wz/w767gOM3Ur9DMzQ2E8ZIjuN740dUqMtROvX3Km7VtxHTNjBmt68NHrDg4cvXWZpv4n0VcQN1
- qaoBKFIkRhdrfcdxDZd0f6hEiGz9bBZS4aNnZj/x/eamcTalFTcweco7TML3JdnG/Vcmd9LO24r
- RtY6KnsGvi2RzGx8G/AX8mYIMhJzClYK+Monb5OsoX24A1JvYffVw6V2MlyDFAdsIqqYFHxHI=
-X-Received: by 2002:a05:6000:200d:b0:430:fdc8:8bc9 with SMTP id
- ffacd0b85a97d-43569bc17c2mr14631364f8f.40.1768820640923; 
- Mon, 19 Jan 2026 03:04:00 -0800 (PST)
+ bh=XbQjc8ZYqWORXyizHA7cHB2eAOXerMSR4t/7ALRc1wY=;
+ b=CHSBINrkzFAqdfJYxOC/tzkhKW8yRjGStoTU2uTiVCMt3Na/T5eVoIe1QlxzlpuTt4
+ kpipMSSvtOl02flwJe9/XmKVqUjHQeYV9dRSKC6E3yB263UliHJp1mAgfsoO8QTSuDGb
+ L3yW0gnVrYDJvicWhweZ0+5LxJHQQIsy/vgKkiI+1CFHh+ChOb0QQ9R4yBGDYaBFjOyn
+ BgvqtL/FKwPWivsOdIzwoKPdII5Joei0/3450ZHqB/NymyQEOlcyFp7+SI2jA3PLz2lQ
+ 3K4owoF2cJnI5xMXWhVYmlj4M8xzrmik8vvkgLeNweGv9xhLxj28sPV+L6Z3b0dyt+rE
+ xPZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768820649; x=1769425449;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=XbQjc8ZYqWORXyizHA7cHB2eAOXerMSR4t/7ALRc1wY=;
+ b=EgUzQQWIiaTnYJYyuqJA8uC/eDJpn0PDkjCtqjfjL3ZZ+ljfI8gdG6lqq0b8q3uWZO
+ PyMTwP/zfhcLufehTnOf5b30vEKBt7T9WS4tDo22VqMTzCpfVdru22C+9DFIzpXJTS58
+ jvsRB9RJuA0v0exsrR8+I6SZKGAR90id2M1arHWoSadTfue9ldMlEqQlDtd+qKR+kXbW
+ F2jeQapBeW0/u7/qUw/X6r+4NLd3420Ti68xmASdF+gPnGcBb/WUFrQTa9tWjouI75+T
+ t41XT/tJWVN4uLrdimXzXBFDFWyUPmt9SOamJYZ6fAQa4ctgZMMvktAshh5zxA9bNRxi
+ K/yA==
+X-Gm-Message-State: AOJu0YwqAfIgvPMMXUL7NN+r/VkUPAjy5fwJgloGWipi5XzCTNLnSR2n
+ etBqu74weKeZwdpgRgTwWEePZlgO4+hAbYbO1vydr/yUnO/zA0wcSxbwUsyacVj4A4sG43ken4c
+ RClNEWGk=
+X-Gm-Gg: AY/fxX7UAXWk0gB2lev+8MwdrUYKOX29VQPtjl90B02G3bHFlVa+CUMtL89X6D/ol7c
+ OCLkAZ1ONVq9CpRxBe32P1pdgFvTLaI/rIQKduAi9rTU3judAsDA92JGBrnWZp8hQABCb8ns6xN
+ 5k040eAj4zaRhrFV5BnftdLxj5DTObk6q5hapUG7IhF8V/LPPr8Y7CgE7UcE/1eYOtHfhOewlkE
+ wkLYjN8reNN1FV/GTBv2e4IFFMtsFcENaUn4/J1mle7oxXYqmWrMv1qtfI8jAhtS35m9a2uD2bx
+ mcz+oD9/wuS1iRhAIcsL+AWITCFKPRGiuFUKqafNQ3y8wo7rrqps9F1SxmeklI37zTvEPjxNMTF
+ zq6YfzrSk6Os+6nCgmM0cxlVe/KanbjQSaPicX3dQ+x4O/HCxPMf6FN2STpG6MekiRlWuAeTkGW
+ 0LgR+nwGJOE00jw/yGMZuAA6X1WxmZvOYLbzqKPbfJLahHq+O2ocm/xRayqCSb
+X-Received: by 2002:a05:600c:c16b:b0:47e:e78a:c831 with SMTP id
+ 5b1f17b1804b1-4801eb14ff0mr118218625e9.36.1768820648670; 
+ Mon, 19 Jan 2026 03:04:08 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4356997e6cdsm23521377f8f.31.2026.01.19.03.03.59
+ 5b1f17b1804b1-47f4b267661sm245742745e9.13.2026.01.19.03.04.06
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 19 Jan 2026 03:04:00 -0800 (PST)
+ Mon, 19 Jan 2026 03:04:08 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
@@ -67,15 +68,17 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  "Dr. David Alan Gilbert" <dave@treblig.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v3 0/8] monitor/hmp: Reduce target-specific definitions
-Date: Mon, 19 Jan 2026 12:03:50 +0100
-Message-ID: <20260119110358.66821-1-philmd@linaro.org>
+Subject: [PATCH v3 1/8] target/i386: Include missing 'svm.h' header in 'sev.h'
+Date: Mon, 19 Jan 2026 12:03:51 +0100
+Message-ID: <20260119110358.66821-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260119110358.66821-1-philmd@linaro.org>
+References: <20260119110358.66821-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,50 +101,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Missing review: #6
+"target/i386/sev.h" uses the vmcb_seg structure type, which
+is defined in "target/i386/svm.h". Current builds succeed
+because the files including "target/i386/sev.h" also include
+"monitor/hmp-target.h", itself including "cpu.h" and finally
+"target/i386/svm.h".
 
-v3: Rename MD_I32 -> MD_U32 (Dave)
-v2: Change get_value() prototype signature, use ldn_he_p()
+Include the latter, otherwise removing "cpu.h" from
+"monitor/hmp-target.h" triggers:
 
-Move most of target-agnostic definitions from
-"monitor/hmp-target.h" to "monitor/hmp.h" to
-reduce files target-poisoning.
+  ../target/i386/sev.h:62:21: error: field has incomplete type 'struct vmcb_seg'
+     62 |     struct vmcb_seg es;
+        |                     ^
 
-Philippe Mathieu-Daudé (8):
-  target/i386: Include missing 'svm.h' header in 'sev.h'
-  monitor: Add hmp_cmds_for_target() helper
-  monitor: Reduce target-specific methods
-  monitor: Have MonitorDef::get_value() return an unsigned type
-  monitor: Have *get_monitor_def() fill an unsigned value
-  monitor: Truncate target register using ldn_he_p() API
-  monitor: Reduce target-specific methods further
-  monitor: Remove 'monitor/hmp-target.h' header
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+---
+ target/i386/sev.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
- MAINTAINERS                   |   2 +-
- include/monitor/hmp-target.h  |  64 -------------------
- include/monitor/hmp.h         |  31 +++++++++
- monitor/monitor-internal.h    |  10 ++-
- target/i386/sev.h             |   2 +
- hw/i386/sgx-stub.c            |   2 +-
- hw/i386/sgx.c                 |   1 -
- monitor/hmp-cmds.c            |   1 -
- monitor/hmp-target.c          | 108 +------------------------------
- monitor/hmp.c                 | 116 ++++++++++++++++++++++++++++++++--
- stubs/target-monitor-defs.c   |   2 +-
- target/i386/cpu-apic.c        |   2 +-
- target/i386/monitor.c         |   9 ++-
- target/i386/sev-system-stub.c |   2 +-
- target/i386/sev.c             |   1 -
- target/m68k/monitor.c         |  62 +++++++++---------
- target/ppc/ppc-qmp-cmds.c     |  26 ++++----
- target/riscv/monitor.c        |   2 +-
- target/riscv/riscv-qmp-cmds.c |   1 -
- target/sh4/monitor.c          |   1 -
- target/sparc/monitor.c        |  11 ++--
- target/xtensa/monitor.c       |   1 -
- 22 files changed, 212 insertions(+), 245 deletions(-)
- delete mode 100644 include/monitor/hmp-target.h
-
+diff --git a/target/i386/sev.h b/target/i386/sev.h
+index 9db1a802f6b..4358df40e48 100644
+--- a/target/i386/sev.h
++++ b/target/i386/sev.h
+@@ -14,6 +14,8 @@
+ #ifndef I386_SEV_H
+ #define I386_SEV_H
+ 
++#include "target/i386/svm.h"
++
+ #ifndef CONFIG_USER_ONLY
+ #include CONFIG_DEVICES /* CONFIG_SEV */
+ #endif
 -- 
 2.52.0
 
