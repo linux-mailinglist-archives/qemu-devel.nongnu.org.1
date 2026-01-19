@@ -2,103 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16645D3A9E3
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 14:06:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D78AD3AB6B
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 15:15:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhowN-0007cp-MP; Mon, 19 Jan 2026 08:05:07 -0500
+	id 1vhq24-0003QT-F5; Mon, 19 Jan 2026 09:15:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vhowL-0007Z0-Mt
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 08:05:05 -0500
-Received: from mail-yw1-x112e.google.com ([2607:f8b0:4864:20::112e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1vhowI-0002I7-7g
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 08:05:04 -0500
-Received: by mail-yw1-x112e.google.com with SMTP id
- 00721157ae682-7926b269f03so35843617b3.2
- for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 05:05:01 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768827901; cv=none;
- d=google.com; s=arc-20240605;
- b=MBi50zolTrFEuGO86snR2wTssPhYo0H/50TsZom3xD8Vz+S6cs8yhv/hb2pE0NbvLH
- 8ib1ZHuvt0R581o1Aawhqw1zRd1SgRbOH9VSpfdReQU+FNercjQrFORMGWOWtVzi/o6B
- wcns7cQX4ppP/v6dBPruie6VZUMfLRU80O2Ai7GkpOhGRsjZLQPG0dX8pyDtcS7MfzP8
- gwLtTInXcT5QhutEZP0WW4d7pUpXmsaDrerelqI/nArl+JoZnuteXmK5ha+uH4vY6sdL
- TBXeutli0SMZ8M5CdAOPVBk68IZhsfPMNeqHdZi14iec6b6vgjaE3379PKsUTn/AHjNd
- R3WQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
- s=arc-20240605; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:dkim-signature;
- bh=fvSoz863+pofqy1eH4DP7vwtOin0O6YjaWxufyzdyf8=;
- fh=wahW1+RimJuX2MiKJkK+njf/+j9C1d2Eihxe3z70jfE=;
- b=ERzjx1IvQmt8ENJrlhmvoLYkhyE2mKozvxtmjJ4/KPWwnqjs/Bfvy1gkMs9xXbDva4
- R7O2XrKRGtSGxb5wmx9dKSVSxIOOpBymdvNMoUe4B+dfQhcnOjav7QaN6vcBe80YrawG
- 01NRZt8wG16wPWKxxGXpfGvYIb9Q/3JH9a5eTTKNu9S+jGKnrAGnc24e6N8+t+2o0qs9
- 7mqwTSCCDplkzWqLVHw+2x7cq3yjzuTykj3lCoSTaNEBfa3qvph8JPuv8gpOefqhpR8S
- DHLdpfxB/hLEQEGjZO7LdSts+XNzOF9IhzAP05KN1UW5Vt1IOD+kdheSTdmfryJ1XQPd
- I7ew==; darn=nongnu.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768827901; x=1769432701; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=fvSoz863+pofqy1eH4DP7vwtOin0O6YjaWxufyzdyf8=;
- b=Mn74yiWEE/ezct6Sk+KtS9m25bL9vUrs/zH3A5E0drlJdZJe4zc84N2MqiNvZolsvY
- cfvzxH0xY8TqQ2hC5zni++AhEwhOC59mLQWCJ34BGnX9BIEJBB2gdTg6XaLebPSFdnOe
- GeHOoF0OgdVaKaXI+r+9bC/D3FtQfGXGkMlM3AXjppcGjlhaSf9miiVwahlpzycARuf2
- axvvqXJhTMHvWU2T0/+K6Iew6sW44vXFL5IbtRaesuhyaUxOPY2H9yNjjgYavDHn0Zvd
- vNcoxyPUfHBeGgN2xhz1yjMsWOT1EsZ/IVZsF0RhEaT/2E08eWp+izhM3MvuIW8RCHe0
- W8jQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768827901; x=1769432701;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=fvSoz863+pofqy1eH4DP7vwtOin0O6YjaWxufyzdyf8=;
- b=HZzTwgbrcz6ZYF9PW7o+9rlPT1gnJemwPxk+dqv5kqGlQjRyIHfFSpGyjLWD7/AWdA
- i1IRvz7kbNvGu5l6hq+Lfo8q26Kja9OLf9zMWmLtxElYhE9ZjsNrt7I2vN9LrN7KKDkf
- eYIn1sGFl87JBU7gQXucFDKxfPedjHA0eG2HJM6lPsff3CiTCQLirF9bdjYqJL58ixhT
- gqEqA6LV5IrqKFTYsAMy0FolwzNXdFbLj4HSUfktabufVEvdJJULqV+s5ptGVfvW8cp5
- dte+uYjnTHlgV1rsM4m0d2uh2xylhGWROFvjXBO9JR3zBLbTd7kG3h8lKWWjzKwQZA3u
- 94JQ==
-X-Gm-Message-State: AOJu0YyxTRVDlonI0ICM6aRETS8MHrFARasiwEitbgJyFJKrCB0tSvv9
- BQCMCdmaTe7AX3zzSqN7sTpwO+o1w9/kstCK1iCH8MCvsBOSnKspCf6B/uY5kOoj9RDLM62osSg
- nLIcpsQH9MyL2oxJ16sCp/0T4hOJb/mDJ0KvKPZzllw==
-X-Gm-Gg: AZuq6aJJcoyc8QS1e+dLjqlPow4LgYJCB9H6ELYuQgomR+PkMi1RGkVSWYBGhFL3IZe
- n2E41ZXMoTyereK8AKuhXP4To3f+mlvkoIto3IPDb6A86G2OQBEuW5kzuCreCWoR0DBoiHC7qkg
- bcfE0OHpudXHj2jY/hDvFkidjuS1Qw0zxZv5S+GJbbwkdJWqXk7dKPHFCOiDF+ThQfqadnVvLX7
- ymE5JBb347jTCyMPowuhkH4XKFZNGzEmPhOKweG1hMcnST5syUVQSJ+6MrV8D26pcdGKif2wuHg
- D8mb
-X-Received: by 2002:a05:690c:ec9:b0:78d:6c06:4a04 with SMTP id
- 00721157ae682-793c523d4dbmr195035277b3.1.1768827900199; Mon, 19 Jan 2026
- 05:05:00 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <florian.hofhammer@fhofhammer.de>)
+ id 1vhp98-0000lP-Nc
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 08:18:18 -0500
+Received: from mwd01m.fhofhammer.de ([2a02:c207:3002:3725::1])
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <florian.hofhammer@fhofhammer.de>)
+ id 1vhp96-0004oX-Fr
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 08:18:18 -0500
+Message-ID: <f877dd79-1285-4752-811e-f0d430ff27fe@fhofhammer.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fhofhammer.de;
+ s=2023; t=1768828693;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+ bh=+zvffJgGv3ouUsYkA0vKSbqYjNB5VVO1dcPMheaIZdo=;
+ b=zJBdWFl2qovILoddCoPktI97b4QhxYeTqdYJ5RmkMIPQiQXJTH2mP+kf0I7XRfL5PhI6GM
+ k0KCcecpBQZfHrz8XNXywzaTzuPGqpKRp6qxTmLv2Rd7JSffo0zUBrQBgs3/49kHnkLtSX
+ pIxBsyCWprBks6eGQB2y4TDSLdKVTAm1eoOrH1UnyXccY9f6x/sJ+NO0EDbGUYfdrQEk7S
+ mI3HCtaQJIqn6e6XyxlsrQJ3XdIBzBVBv/6FN8ic1+K28yeUBpFbD9/wAqBtxkPbpESsAQ
+ qtDpp8sPL0XU2N5FSjgp+wVqgOMiR11QdLcfrydebath8tp5kzLmbxlt2rrdzj/+UgFsML
+ 0qe3IitZvLdCTQZbTK8c4kA7f9EUEtIieCCpvwPS2RhX0AqU879kcy/1SDNY7yLte2X2/U
+ HlbxIvQ6vwBns0NosyswKj9t9/wP2fuhgg5IMoa6Bb6Yint2YaEpiOVHzWtMem7Iv4BS5k
+ rq7J5wvCF7sA+Fzlj0JY/JK3N0WoTZY0FzsT+wUvUFzmsEwSdFQpUE+sLuNcYPfiLCFFo0
+ GhXBuWTpp0kl66DGBvPwSefmciz6IzT86JJMMnzcAt87j7K+wCSHEDIYSMOHC9XtPePLtw
+ LGFKC9pGJI8YO2LTAZcrpflvYhNj4Zq9Vp8T+rLAPN6TlHxR9KEYo=
+Authentication-Results: ORIGINATING;
+ auth=pass smtp.auth=florian.hofhammer@fhofhammer.de
+ smtp.mailfrom=florian.hofhammer@fhofhammer.de
+Date: Mon, 19 Jan 2026 14:18:12 +0100
 MIME-Version: 1.0
-References: <20260119120030.2593993-1-alex.bennee@linaro.org>
-In-Reply-To: <20260119120030.2593993-1-alex.bennee@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 19 Jan 2026 13:04:48 +0000
-X-Gm-Features: AZwV_Qgf1sucgZlu1IDeL5WSKjSsReA-PesTdz71syb-aze6UMvzQWAFmI5TtHk
-Message-ID: <CAFEAcA-WNZsMuHu=3wA8JhjMf1agTBG6yXO8G=C-iX+ApY80bQ@mail.gmail.com>
-Subject: Re: [RFC PATCH] hw/intc: avoid byte swap fiddling in gicv3 its path
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, "open list:ARM cores" <qemu-arm@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112e;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+From: Florian Hofhammer <florian.hofhammer@fhofhammer.de>
+Subject: [PATCH] plugins: return bool from register r/w API
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>
+Autocrypt: addr=florian.hofhammer@fhofhammer.de; keydata=
+ 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
+ /zEc5hMMZIzTI4AtIcgA3xe4Ew==
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a02:c207:3002:3725::1;
+ envelope-from=florian.hofhammer@fhofhammer.de; helo=mwd01m.fhofhammer.de
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 19 Jan 2026 09:14:03 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,74 +119,205 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 19 Jan 2026 at 12:00, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
-te:
->
-> The GIC should always be a little-endian device as big-endian
-> behaviour is a function of the current CPU configuration not the
-> system as a whole. This allows us to keep the MSI data in plain host
-> order rather then potentially truncating with multiple byte swaps of
-> different sizes.
->
-> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> ---
->  hw/intc/arm_gicv3_its_common.c | 4 ++--
->  hw/intc/arm_gicv3_its_kvm.c    | 2 +-
->  2 files changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/hw/intc/arm_gicv3_its_common.c b/hw/intc/arm_gicv3_its_commo=
-n.c
-> index e946e3fb87b..60a5abd8d3e 100644
-> --- a/hw/intc/arm_gicv3_its_common.c
-> +++ b/hw/intc/arm_gicv3_its_common.c
-> @@ -81,7 +81,7 @@ static MemTxResult gicv3_its_trans_write(void *opaque, =
-hwaddr offset,
->      if (offset =3D=3D 0x0040 && ((size =3D=3D 2) || (size =3D=3D 4))) {
->          GICv3ITSState *s =3D ARM_GICV3_ITS_COMMON(opaque);
->          GICv3ITSCommonClass *c =3D ARM_GICV3_ITS_COMMON_GET_CLASS(s);
-> -        int ret =3D c->send_msi(s, le64_to_cpu(value), attrs.requester_i=
-d);
-> +        int ret =3D c->send_msi(s, value, attrs.requester_id);
+The qemu_plugin_{read,write} register API previously was inconsistent
+with regard to its docstring (where a return value of both -1 and 0
+would indicate an error) and to the memory read/write APIs, which
+already return a boolean value to indicate success or failure.
+Returning the number of bytes read or written is superfluous, as the
+GByteArray* passed to the API functions already encodes the length.
+See the linked thread for more details.
 
-This change is either fixing a bug on big-endian hosts,
-or breaking big-endian hosts. Which is it ?
+This patch moves from returning an int (number of bytes read/written) to
+returning a bool from the register read/write API, bumps the plugin API
+version, and adjusts plugins and tests accordingly.
 
->          if (ret <=3D 0) {
->              qemu_log_mask(LOG_GUEST_ERROR,
-> @@ -97,7 +97,7 @@ static MemTxResult gicv3_its_trans_write(void *opaque, =
-hwaddr offset,
->  static const MemoryRegionOps gicv3_its_trans_ops =3D {
->      .read_with_attrs =3D gicv3_its_trans_read,
->      .write_with_attrs =3D gicv3_its_trans_write,
-> -    .endianness =3D DEVICE_NATIVE_ENDIAN,
-> +    .endianness =3D DEVICE_LITTLE_ENDIAN,
+Link: https://lore.kernel.org/qemu-devel/60089475-3891-4448-bfe0-8dd698cd2435@epfl.ch/
+Signed-off-by: Florian Hofhammer <florian.hofhammer@fhofhammer.de>
+---
+ contrib/plugins/execlog.c  | 14 ++++++++------
+ contrib/plugins/uftrace.c  |  8 ++++----
+ include/qemu/qemu-plugin.h | 19 +++++++++++--------
+ plugins/api.c              | 15 ++++++++-------
+ tests/tcg/plugins/insn.c   |  4 ++--
+ 5 files changed, 33 insertions(+), 27 deletions(-)
 
-This change is fine, as all arm system binaries are LE, so
-it is not a behavioural change.
+diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
+index 811f320319..d00d9c4ff3 100644
+--- a/contrib/plugins/execlog.c
++++ b/contrib/plugins/execlog.c
+@@ -91,11 +91,13 @@ static void insn_check_regs(CPU *cpu)
+ {
+     for (int n = 0; n < cpu->registers->len; n++) {
+         Register *reg = cpu->registers->pdata[n];
+-        int sz;
++        bool success = false;
++        int sz = 0;
+ 
+         g_byte_array_set_size(reg->new, 0);
+-        sz = qemu_plugin_read_register(reg->handle, reg->new);
+-        g_assert(sz > 0);
++        success = qemu_plugin_read_register(reg->handle, reg->new);
++        g_assert(success);
++        sz = reg->new->len;
+         g_assert(sz == reg->last->len);
+ 
+         if (memcmp(reg->last->data, reg->new->data, sz)) {
+@@ -303,7 +305,7 @@ static Register *init_vcpu_register(qemu_plugin_reg_descriptor *desc)
+ {
+     Register *reg = g_new0(Register, 1);
+     g_autofree gchar *lower = g_utf8_strdown(desc->name, -1);
+-    int r;
++    bool success = false;
+ 
+     reg->handle = desc->handle;
+     reg->name = g_intern_string(lower);
+@@ -311,8 +313,8 @@ static Register *init_vcpu_register(qemu_plugin_reg_descriptor *desc)
+     reg->new = g_byte_array_new();
+ 
+     /* read the initial value */
+-    r = qemu_plugin_read_register(reg->handle, reg->last);
+-    g_assert(r > 0);
++    success = qemu_plugin_read_register(reg->handle, reg->last);
++    g_assert(success);
+     return reg;
+ }
+ 
+diff --git a/contrib/plugins/uftrace.c b/contrib/plugins/uftrace.c
+index b7d6124d2f..a7e21b5b87 100644
+--- a/contrib/plugins/uftrace.c
++++ b/contrib/plugins/uftrace.c
+@@ -403,8 +403,8 @@ static uint64_t cpu_read_register64(Cpu *cpu, struct qemu_plugin_register *reg)
+ {
+     GByteArray *buf = cpu->buf;
+     g_byte_array_set_size(buf, 0);
+-    size_t sz = qemu_plugin_read_register(reg, buf);
+-    g_assert(sz == 8);
++    bool success = qemu_plugin_read_register(reg, buf);
++    g_assert(success);
+     g_assert(buf->len == 8);
+     return *((uint64_t *) buf->data);
+ }
+@@ -413,8 +413,8 @@ static uint32_t cpu_read_register32(Cpu *cpu, struct qemu_plugin_register *reg)
+ {
+     GByteArray *buf = cpu->buf;
+     g_byte_array_set_size(buf, 0);
+-    size_t sz = qemu_plugin_read_register(reg, buf);
+-    g_assert(sz == 4);
++    bool success = qemu_plugin_read_register(reg, buf);
++    g_assert(success);
+     g_assert(buf->len == 4);
+     return *((uint32_t *) buf->data);
+ }
+diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+index 60de4fdd3f..c3b0532619 100644
+--- a/include/qemu/qemu-plugin.h
++++ b/include/qemu/qemu-plugin.h
+@@ -72,11 +72,14 @@ typedef uint64_t qemu_plugin_id_t;
+  * - added qemu_plugin_write_memory_hwaddr
+  * - added qemu_plugin_write_register
+  * - added qemu_plugin_translate_vaddr
++ *
++ * version 6:
++ * - changed return value of qemu_plugin_{read,write}_register from int to bool
+  */
+ 
+ extern QEMU_PLUGIN_EXPORT int qemu_plugin_version;
+ 
+-#define QEMU_PLUGIN_VERSION 5
++#define QEMU_PLUGIN_VERSION 6
+ 
+ /**
+  * struct qemu_info_t - system information for plugins
+@@ -972,12 +975,12 @@ GArray *qemu_plugin_get_registers(void);
+  * qemu_plugin_register_vcpu_init_cb(), except for callbacks registered with
+  * qemu_plugin_register_atexit_cb() and qemu_plugin_register_flush_cb().
+  *
+- * Returns the size of the read register. The content of @buf is in target byte
+- * order. On failure returns -1.
++ * Returns true on success, false on failure. The content of @buf is in target
++ * byte order.
+  */
+ QEMU_PLUGIN_API
+-int qemu_plugin_read_register(struct qemu_plugin_register *handle,
+-                              GByteArray *buf);
++bool qemu_plugin_read_register(struct qemu_plugin_register *handle,
++                               GByteArray *buf);
+ 
+ /**
+  * qemu_plugin_write_register() - write register for current vCPU
+@@ -997,11 +1000,11 @@ int qemu_plugin_read_register(struct qemu_plugin_register *handle,
+  * Attempting to write a register with @buf smaller than the register size
+  * will result in a crash or other undesired behavior.
+  *
+- * Returns the number of bytes written. On failure returns 0.
++ * Returns true on sucess, false on failure.
+  */
+ QEMU_PLUGIN_API
+-int qemu_plugin_write_register(struct qemu_plugin_register *handle,
+-                              GByteArray *buf);
++bool qemu_plugin_write_register(struct qemu_plugin_register *handle,
++                                GByteArray *buf);
+ 
+ /**
+  * qemu_plugin_read_memory_vaddr() - read from memory using a virtual address
+diff --git a/plugins/api.c b/plugins/api.c
+index eac04cc1f6..d8846b4773 100644
+--- a/plugins/api.c
++++ b/plugins/api.c
+@@ -434,27 +434,28 @@ GArray *qemu_plugin_get_registers(void)
+     return create_register_handles(regs);
+ }
+ 
+-int qemu_plugin_read_register(struct qemu_plugin_register *reg, GByteArray *buf)
++bool qemu_plugin_read_register(struct qemu_plugin_register *reg,
++                               GByteArray *buf)
+ {
+     g_assert(current_cpu);
+ 
+     if (qemu_plugin_get_cb_flags() == QEMU_PLUGIN_CB_NO_REGS) {
+-        return -1;
++        return false;
+     }
+ 
+-    return gdb_read_register(current_cpu, buf, GPOINTER_TO_INT(reg) - 1);
++    return (gdb_read_register(current_cpu, buf, GPOINTER_TO_INT(reg) - 1) > 0);
+ }
+ 
+-int qemu_plugin_write_register(struct qemu_plugin_register *reg,
+-                               GByteArray *buf)
++bool qemu_plugin_write_register(struct qemu_plugin_register *reg,
++                                GByteArray *buf)
+ {
+     g_assert(current_cpu);
+ 
+     if (buf->len == 0 || qemu_plugin_get_cb_flags() != QEMU_PLUGIN_CB_RW_REGS) {
+-        return -1;
++        return false;
+     }
+ 
+-    return gdb_write_register(current_cpu, buf->data, GPOINTER_TO_INT(reg) - 1);
++    return (gdb_write_register(current_cpu, buf->data, GPOINTER_TO_INT(reg) - 1) > 0);
+ }
+ 
+ bool qemu_plugin_read_memory_vaddr(uint64_t addr, GByteArray *data, size_t len)
+diff --git a/tests/tcg/plugins/insn.c b/tests/tcg/plugins/insn.c
+index 0c723cb9ed..e6c5207cd6 100644
+--- a/tests/tcg/plugins/insn.c
++++ b/tests/tcg/plugins/insn.c
+@@ -93,8 +93,8 @@ static void vcpu_init(qemu_plugin_id_t id, unsigned int vcpu_index)
+         for (int i = 0; i < reg_list->len; i++) {
+             qemu_plugin_reg_descriptor *rd = &g_array_index(
+                 reg_list, qemu_plugin_reg_descriptor, i);
+-            int count = qemu_plugin_read_register(rd->handle, reg_value);
+-            g_assert(count > 0);
++            bool success = qemu_plugin_read_register(rd->handle, reg_value);
++            g_assert(success);
+         }
+     }
+ }
 
->  };
->
->  void gicv3_its_init_mmio(GICv3ITSState *s, const MemoryRegionOps *ops,
-> diff --git a/hw/intc/arm_gicv3_its_kvm.c b/hw/intc/arm_gicv3_its_kvm.c
-> index ae12d41eee1..a8d6d4fb540 100644
-> --- a/hw/intc/arm_gicv3_its_kvm.c
-> +++ b/hw/intc/arm_gicv3_its_kvm.c
-> @@ -58,7 +58,7 @@ static int kvm_its_send_msi(GICv3ITSState *s, uint32_t =
-value, uint16_t devid)
->
->      msi.address_lo =3D extract64(s->gits_translater_gpa, 0, 32);
->      msi.address_hi =3D extract64(s->gits_translater_gpa, 32, 32);
-> -    msi.data =3D le32_to_cpu(value);
-> +    msi.data =3D value;
->      msi.flags =3D KVM_MSI_VALID_DEVID;
->      msi.devid =3D devid;
->      memset(msi.pad, 0, sizeof(msi.pad));
+base-commit: c1c58cee16380f81f88fbde6b12f247b376839e2
+-- 
+2.51.0
 
-This is nominally in the same category as the first change,
-with the exception that we know that any host with KVM is
-going to be little-endian, so the bug being fixed or
-introduced is only conceptual.
-
-thanks
--- PMM
 
