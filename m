@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A8FAD3B6D9
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 20:09:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3430FD3B6DC
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 20:09:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhucL-0002C0-Li; Mon, 19 Jan 2026 14:08:49 -0500
+	id 1vhucM-0002CW-Eo; Mon, 19 Jan 2026 14:08:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1vhuc9-00023a-CX
+ id 1vhuc9-00023b-Cd
  for qemu-devel@nongnu.org; Mon, 19 Jan 2026 14:08:37 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1vhuc5-0000u9-2l
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 14:08:35 -0500
+ id 1vhuc6-0000uR-PN
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 14:08:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768849712;
+ s=mimecast20190719; t=1768849714;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4pQtSxw25lsseQxtlDKzKY2GXSF9H+AJrIAZz2l5pKI=;
- b=TB9oXzKnGK8cZxPLUgKieRhYDe0mxwLh3/mRggA/tUXXBHggpFBWnzg2NmkoNTGtxR4Ccj
- KeXs+qsinnyG5tzpyp+qYi2eFUfWhHqzoVcF7WX9fW6R/yBCCFIKSojvHgFy1nByI47kWg
- Ra0/AFxkMGKNxHw7klGrcxMJ+Y9lhVk=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=iDD3m9+6vrdoCwdV9CML/lAYXwH542ggYVyS9HO3KmE=;
+ b=AnbrZ6J08ZjYyaQzNotn7VUdGkNGpJAL5e85DHFt9/KgemErGRV+oBX4OgXrZdKRou7KsX
+ 9wTdvsudgYsRgehfOu1wkN612YITZXjyI9NsXFoOoMWfl/0lW3kim2JNCi/S+5vjWUlkQ6
+ JbBDBxPyEabiePZc5AqCX2slzCf3ZLw=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-572-biK80lY4MFOz5hxu5b0EzA-1; Mon,
- 19 Jan 2026 14:08:30 -0500
-X-MC-Unique: biK80lY4MFOz5hxu5b0EzA-1
-X-Mimecast-MFC-AGG-ID: biK80lY4MFOz5hxu5b0EzA_1768849710
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-106-j0iQmdHiMWWjDGRu-SmYiA-1; Mon,
+ 19 Jan 2026 14:08:32 -0500
+X-MC-Unique: j0iQmdHiMWWjDGRu-SmYiA-1
+X-Mimecast-MFC-AGG-ID: j0iQmdHiMWWjDGRu-SmYiA_1768849711
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 97FE218005B8; Mon, 19 Jan 2026 19:08:29 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8EB92195608E; Mon, 19 Jan 2026 19:08:31 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.150])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2C4FB180049F; Mon, 19 Jan 2026 19:08:28 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id D3C2119560AB; Mon, 19 Jan 2026 19:08:30 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Cleber Rosa <crosa@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  Mads Ynddal <mads@ynddal.dk>, Richard Henderson <rth@twiddle.net>,
  John Snow <jsnow@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 2/8] tracetool: apply isort and add check
-Date: Mon, 19 Jan 2026 14:08:17 -0500
-Message-ID: <20260119190823.867761-3-stefanha@redhat.com>
+Subject: [PULL 3/8] tracetool: "import annotations"
+Date: Mon, 19 Jan 2026 14:08:18 -0500
+Message-ID: <20260119190823.867761-4-stefanha@redhat.com>
 In-Reply-To: <20260119190823.867761-1-stefanha@redhat.com>
 References: <20260119190823.867761-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -87,174 +87,284 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-Sort imports automatically, to keep the coding style more uniform.
+In preparations for adding type annotations, make Python process them lazily.
+
+This avoids the need to express some annotations as strings.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20251008063546.376603-3-pbonzini@redhat.com>
+Message-ID: <20251008063546.376603-4-pbonzini@redhat.com>
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- python/tests/tracetool-isort.sh      | 4 ++++
- scripts/tracetool.py                 | 5 ++---
- scripts/tracetool/backend/dtrace.py  | 1 -
- scripts/tracetool/backend/ftrace.py  | 3 +--
- scripts/tracetool/backend/log.py     | 3 +--
- scripts/tracetool/backend/simple.py  | 1 -
- scripts/tracetool/backend/syslog.py  | 3 +--
- scripts/tracetool/backend/ust.py     | 1 -
- scripts/tracetool/format/d.py        | 2 +-
- scripts/tracetool/format/log_stap.py | 1 -
- scripts/tracetool/format/stap.py     | 1 -
- 11 files changed, 10 insertions(+), 15 deletions(-)
- create mode 100755 python/tests/tracetool-isort.sh
+ scripts/tracetool.py                         | 2 ++
+ scripts/tracetool/__init__.py                | 2 ++
+ scripts/tracetool/backend/__init__.py        | 2 ++
+ scripts/tracetool/backend/dtrace.py          | 2 ++
+ scripts/tracetool/backend/ftrace.py          | 2 ++
+ scripts/tracetool/backend/log.py             | 2 ++
+ scripts/tracetool/backend/simple.py          | 2 ++
+ scripts/tracetool/backend/syslog.py          | 2 ++
+ scripts/tracetool/backend/ust.py             | 2 ++
+ scripts/tracetool/format/__init__.py         | 2 ++
+ scripts/tracetool/format/c.py                | 2 ++
+ scripts/tracetool/format/d.py                | 2 ++
+ scripts/tracetool/format/h.py                | 2 ++
+ scripts/tracetool/format/log_stap.py         | 2 ++
+ scripts/tracetool/format/rs.py               | 2 ++
+ scripts/tracetool/format/simpletrace_stap.py | 2 ++
+ scripts/tracetool/format/stap.py             | 2 ++
+ scripts/tracetool/format/ust_events_c.py     | 2 ++
+ scripts/tracetool/format/ust_events_h.py     | 2 ++
+ 19 files changed, 38 insertions(+)
 
-diff --git a/python/tests/tracetool-isort.sh b/python/tests/tracetool-isort.sh
-new file mode 100755
-index 0000000000..b23f3d4844
---- /dev/null
-+++ b/python/tests/tracetool-isort.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+python3 -m isort --sp . -c ../scripts/tracetool/
 diff --git a/scripts/tracetool.py b/scripts/tracetool.py
-index 0fdc9cb947..22fdc29e01 100755
+index 22fdc29e01..390f1a371b 100755
 --- a/scripts/tracetool.py
 +++ b/scripts/tracetool.py
-@@ -12,13 +12,12 @@
- __email__      = "stefanha@redhat.com"
+@@ -4,6 +4,8 @@
+ Command-line wrapper for the tracetool machinery.
+ """
  
++from __future__ import annotations
++
+ __author__     = "Lluís Vilanova <vilanova@ac.upc.edu>"
+ __copyright__  = "Copyright 2012-2014, Lluís Vilanova <vilanova@ac.upc.edu>"
+ __license__    = "GPL version 2 or (at your option) any later version"
+diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init__.py
+index fab98bf67e..0316f3f852 100644
+--- a/scripts/tracetool/__init__.py
++++ b/scripts/tracetool/__init__.py
+@@ -4,6 +4,8 @@
+ Machinery for generating tracing-related intermediate files.
+ """
  
--import sys
- import getopt
-+import sys
++from __future__ import annotations
++
+ __author__     = "Lluís Vilanova <vilanova@ac.upc.edu>"
+ __copyright__  = "Copyright 2012-2017, Lluís Vilanova <vilanova@ac.upc.edu>"
+ __license__    = "GPL version 2 or (at your option) any later version"
+diff --git a/scripts/tracetool/backend/__init__.py b/scripts/tracetool/backend/__init__.py
+index 9109a783c7..8cc9c82138 100644
+--- a/scripts/tracetool/backend/__init__.py
++++ b/scripts/tracetool/backend/__init__.py
+@@ -49,6 +49,8 @@
  
--from tracetool import error_write, out, out_open
- import tracetool.backend
- import tracetool.format
--
-+from tracetool import error_write, out, out_open
+ """
  
- _SCRIPT = ""
- 
++from __future__ import annotations
++
+ __author__     = "Lluís Vilanova <vilanova@ac.upc.edu>"
+ __copyright__  = "Copyright 2012-2014, Lluís Vilanova <vilanova@ac.upc.edu>"
+ __license__    = "GPL version 2 or (at your option) any later version"
 diff --git a/scripts/tracetool/backend/dtrace.py b/scripts/tracetool/backend/dtrace.py
-index f0b58cc158..5f313ddaed 100644
+index 5f313ddaed..c21a04c653 100644
 --- a/scripts/tracetool/backend/dtrace.py
 +++ b/scripts/tracetool/backend/dtrace.py
-@@ -14,7 +14,6 @@
+@@ -4,6 +4,8 @@
+ DTrace/SystemTAP backend.
+ """
  
- from tracetool import out
- 
--
- PUBLIC = True
- 
- 
++from __future__ import annotations
++
+ __author__     = "Lluís Vilanova <vilanova@ac.upc.edu>"
+ __copyright__  = "Copyright 2012-2017, Lluís Vilanova <vilanova@ac.upc.edu>"
+ __license__    = "GPL version 2 or (at your option) any later version"
 diff --git a/scripts/tracetool/backend/ftrace.py b/scripts/tracetool/backend/ftrace.py
-index e03698a2ed..0d77bd23a5 100644
+index 0d77bd23a5..40bb323f5e 100644
 --- a/scripts/tracetool/backend/ftrace.py
 +++ b/scripts/tracetool/backend/ftrace.py
-@@ -12,8 +12,7 @@
- __email__      = "stefanha@redhat.com"
+@@ -4,6 +4,8 @@
+ Ftrace built-in backend.
+ """
  
- 
--from tracetool import out, expand_format_string
--
-+from tracetool import expand_format_string, out
- 
- PUBLIC = True
- CHECK_TRACE_EVENT_GET_STATE = True
++from __future__ import annotations
++
+ __author__     = "Eiichi Tsukata <eiichi.tsukata.xh@hitachi.com>"
+ __copyright__  = "Copyright (C) 2013 Hitachi, Ltd."
+ __license__    = "GPL version 2 or (at your option) any later version"
 diff --git a/scripts/tracetool/backend/log.py b/scripts/tracetool/backend/log.py
-index 9e3e5046f5..bbfb56911d 100644
+index bbfb56911d..d346a19e40 100644
 --- a/scripts/tracetool/backend/log.py
 +++ b/scripts/tracetool/backend/log.py
-@@ -12,8 +12,7 @@
- __email__      = "stefanha@redhat.com"
+@@ -4,6 +4,8 @@
+ Stderr built-in backend.
+ """
  
- 
--from tracetool import out, expand_format_string
--
-+from tracetool import expand_format_string, out
- 
- PUBLIC = True
- CHECK_TRACE_EVENT_GET_STATE = True
++from __future__ import annotations
++
+ __author__     = "Lluís Vilanova <vilanova@ac.upc.edu>"
+ __copyright__  = "Copyright 2012-2017, Lluís Vilanova <vilanova@ac.upc.edu>"
+ __license__    = "GPL version 2 or (at your option) any later version"
 diff --git a/scripts/tracetool/backend/simple.py b/scripts/tracetool/backend/simple.py
-index b131e4fc19..b67257ce7e 100644
+index b67257ce7e..9c691dc231 100644
 --- a/scripts/tracetool/backend/simple.py
 +++ b/scripts/tracetool/backend/simple.py
-@@ -14,7 +14,6 @@
+@@ -4,6 +4,8 @@
+ Simple built-in backend.
+ """
  
- from tracetool import out
- 
--
- PUBLIC = True
- CHECK_TRACE_EVENT_GET_STATE = True
- 
++from __future__ import annotations
++
+ __author__     = "Lluís Vilanova <vilanova@ac.upc.edu>"
+ __copyright__  = "Copyright 2012-2017, Lluís Vilanova <vilanova@ac.upc.edu>"
+ __license__    = "GPL version 2 or (at your option) any later version"
 diff --git a/scripts/tracetool/backend/syslog.py b/scripts/tracetool/backend/syslog.py
-index 12b826593d..c3efab036c 100644
+index c3efab036c..9311453c5a 100644
 --- a/scripts/tracetool/backend/syslog.py
 +++ b/scripts/tracetool/backend/syslog.py
-@@ -12,8 +12,7 @@
- __email__      = "stefanha@redhat.com"
+@@ -4,6 +4,8 @@
+ Syslog built-in backend.
+ """
  
- 
--from tracetool import out, expand_format_string
--
-+from tracetool import expand_format_string, out
- 
- PUBLIC = True
- CHECK_TRACE_EVENT_GET_STATE = True
++from __future__ import annotations
++
+ __author__     = "Paul Durrant <paul.durrant@citrix.com>"
+ __copyright__  = "Copyright 2016, Citrix Systems Inc."
+ __license__    = "GPL version 2 or (at your option) any later version"
 diff --git a/scripts/tracetool/backend/ust.py b/scripts/tracetool/backend/ust.py
-index 3aa9bb1da2..a70e3d83e1 100644
+index a70e3d83e1..f227072512 100644
 --- a/scripts/tracetool/backend/ust.py
 +++ b/scripts/tracetool/backend/ust.py
-@@ -14,7 +14,6 @@
+@@ -4,6 +4,8 @@
+ LTTng User Space Tracing backend.
+ """
  
- from tracetool import out
++from __future__ import annotations
++
+ __author__     = "Lluís Vilanova <vilanova@ac.upc.edu>"
+ __copyright__  = "Copyright 2012-2017, Lluís Vilanova <vilanova@ac.upc.edu>"
+ __license__    = "GPL version 2 or (at your option) any later version"
+diff --git a/scripts/tracetool/format/__init__.py b/scripts/tracetool/format/__init__.py
+index 7b9d1b5782..4c606d5757 100644
+--- a/scripts/tracetool/format/__init__.py
++++ b/scripts/tracetool/format/__init__.py
+@@ -27,6 +27,8 @@
  
--
- PUBLIC = True
+ """
  
++from __future__ import annotations
++
+ __author__     = "Lluís Vilanova <vilanova@ac.upc.edu>"
+ __copyright__  = "Copyright 2012-2014, Lluís Vilanova <vilanova@ac.upc.edu>"
+ __license__    = "GPL version 2 or (at your option) any later version"
+diff --git a/scripts/tracetool/format/c.py b/scripts/tracetool/format/c.py
+index 50e03313cb..5b3459f2be 100644
+--- a/scripts/tracetool/format/c.py
++++ b/scripts/tracetool/format/c.py
+@@ -4,6 +4,8 @@
+ trace/generated-tracers.c
+ """
  
++from __future__ import annotations
++
+ __author__     = "Lluís Vilanova <vilanova@ac.upc.edu>"
+ __copyright__  = "Copyright 2012-2014, Lluís Vilanova <vilanova@ac.upc.edu>"
+ __license__    = "GPL version 2 or (at your option) any later version"
 diff --git a/scripts/tracetool/format/d.py b/scripts/tracetool/format/d.py
-index e9e33dfe30..0befd444e8 100644
+index 0befd444e8..dda80eeb76 100644
 --- a/scripts/tracetool/format/d.py
 +++ b/scripts/tracetool/format/d.py
-@@ -12,9 +12,9 @@
- __email__      = "stefanha@redhat.com"
+@@ -4,6 +4,8 @@
+ trace/generated-tracers.dtrace (DTrace only).
+ """
  
++from __future__ import annotations
++
+ __author__     = "Lluís Vilanova <vilanova@ac.upc.edu>"
+ __copyright__  = "Copyright 2012-2014, Lluís Vilanova <vilanova@ac.upc.edu>"
+ __license__    = "GPL version 2 or (at your option) any later version"
+diff --git a/scripts/tracetool/format/h.py b/scripts/tracetool/format/h.py
+index dd58713a15..d04cabc63e 100644
+--- a/scripts/tracetool/format/h.py
++++ b/scripts/tracetool/format/h.py
+@@ -4,6 +4,8 @@
+ trace/generated-tracers.h
+ """
  
--from tracetool import out
- from sys import platform
- 
-+from tracetool import out
- 
- # Reserved keywords from
- # https://wikis.oracle.com/display/DTrace/Types,+Operators+and+Expressions
++from __future__ import annotations
++
+ __author__     = "Lluís Vilanova <vilanova@ac.upc.edu>"
+ __copyright__  = "Copyright 2012-2017, Lluís Vilanova <vilanova@ac.upc.edu>"
+ __license__    = "GPL version 2 or (at your option) any later version"
 diff --git a/scripts/tracetool/format/log_stap.py b/scripts/tracetool/format/log_stap.py
-index 259303a189..99c6181f38 100644
+index 99c6181f38..6551444203 100644
 --- a/scripts/tracetool/format/log_stap.py
 +++ b/scripts/tracetool/format/log_stap.py
-@@ -18,7 +18,6 @@
- from tracetool.backend.simple import is_string
- from tracetool.format.stap import stap_escape
+@@ -4,6 +4,8 @@
+ Generate .stp file that printfs log messages (DTrace with SystemTAP only).
+ """
  
--
- STATE_SKIP = 0
- STATE_LITERAL = 1
- STATE_MACRO = 2
++from __future__ import annotations
++
+ __author__     = "Daniel P. Berrange <berrange@redhat.com>"
+ __copyright__  = "Copyright (C) 2014-2019, Red Hat, Inc."
+ __license__    = "GPL version 2 or (at your option) any later version"
+diff --git a/scripts/tracetool/format/rs.py b/scripts/tracetool/format/rs.py
+index 7d9af7edfe..1dc43a3b34 100644
+--- a/scripts/tracetool/format/rs.py
++++ b/scripts/tracetool/format/rs.py
+@@ -4,6 +4,8 @@
+ trace-DIR.rs
+ """
+ 
++from __future__ import annotations
++
+ __author__     = "Tanish Desai <tanishdesai37@gmail.com>"
+ __copyright__  = "Copyright 2025, Tanish Desai <tanishdesai37@gmail.com>"
+ __license__    = "GPL version 2 or (at your option) any later version"
+diff --git a/scripts/tracetool/format/simpletrace_stap.py b/scripts/tracetool/format/simpletrace_stap.py
+index c7bde97a85..eb58b4b959 100644
+--- a/scripts/tracetool/format/simpletrace_stap.py
++++ b/scripts/tracetool/format/simpletrace_stap.py
+@@ -4,6 +4,8 @@
+ Generate .stp file that outputs simpletrace binary traces (DTrace with SystemTAP only).
+ """
+ 
++from __future__ import annotations
++
+ __author__     = "Stefan Hajnoczi <redhat.com>"
+ __copyright__  = "Copyright (C) 2014, Red Hat, Inc."
+ __license__    = "GPL version 2 or (at your option) any later version"
 diff --git a/scripts/tracetool/format/stap.py b/scripts/tracetool/format/stap.py
-index 285c9203ba..f917bd7545 100644
+index f917bd7545..808fb478b5 100644
 --- a/scripts/tracetool/format/stap.py
 +++ b/scripts/tracetool/format/stap.py
-@@ -15,7 +15,6 @@
- from tracetool import out
- from tracetool.backend.dtrace import binary, probeprefix
+@@ -4,6 +4,8 @@
+ Generate .stp file (DTrace with SystemTAP only).
+ """
  
--
- # Technically 'self' is not used by systemtap yet, but
- # they recommended we keep it in the reserved list anyway
- RESERVED_WORDS = (
++from __future__ import annotations
++
+ __author__     = "Lluís Vilanova <vilanova@ac.upc.edu>"
+ __copyright__  = "Copyright 2012-2014, Lluís Vilanova <vilanova@ac.upc.edu>"
+ __license__    = "GPL version 2 or (at your option) any later version"
+diff --git a/scripts/tracetool/format/ust_events_c.py b/scripts/tracetool/format/ust_events_c.py
+index 074226bfd3..fa7d543798 100644
+--- a/scripts/tracetool/format/ust_events_c.py
++++ b/scripts/tracetool/format/ust_events_c.py
+@@ -4,6 +4,8 @@
+ trace/generated-ust.c
+ """
+ 
++from __future__ import annotations
++
+ __author__     = "Mohamad Gebai <mohamad.gebai@polymtl.ca>"
+ __copyright__  = "Copyright 2012, Mohamad Gebai <mohamad.gebai@polymtl.ca>"
+ __license__    = "GPL version 2 or (at your option) any later version"
+diff --git a/scripts/tracetool/format/ust_events_h.py b/scripts/tracetool/format/ust_events_h.py
+index cee7970a40..1057d02577 100644
+--- a/scripts/tracetool/format/ust_events_h.py
++++ b/scripts/tracetool/format/ust_events_h.py
+@@ -4,6 +4,8 @@
+ trace/generated-ust-provider.h
+ """
+ 
++from __future__ import annotations
++
+ __author__     = "Mohamad Gebai <mohamad.gebai@polymtl.ca>"
+ __copyright__  = "Copyright 2012, Mohamad Gebai <mohamad.gebai@polymtl.ca>"
+ __license__    = "GPL version 2 or (at your option) any later version"
 -- 
 2.52.0
 
