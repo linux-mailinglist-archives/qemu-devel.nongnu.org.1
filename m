@@ -2,109 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D78AD3AB6B
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 15:15:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1D2FD3AA2D
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 14:20:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhq24-0003QT-F5; Mon, 19 Jan 2026 09:15:04 -0500
+	id 1vhpAD-0000ty-5p; Mon, 19 Jan 2026 08:19:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <florian.hofhammer@fhofhammer.de>)
- id 1vhp98-0000lP-Nc
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 08:18:18 -0500
-Received: from mwd01m.fhofhammer.de ([2a02:c207:3002:3725::1])
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <florian.hofhammer@fhofhammer.de>)
- id 1vhp96-0004oX-Fr
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 08:18:18 -0500
-Message-ID: <f877dd79-1285-4752-811e-f0d430ff27fe@fhofhammer.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fhofhammer.de;
- s=2023; t=1768828693;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
- bh=+zvffJgGv3ouUsYkA0vKSbqYjNB5VVO1dcPMheaIZdo=;
- b=zJBdWFl2qovILoddCoPktI97b4QhxYeTqdYJ5RmkMIPQiQXJTH2mP+kf0I7XRfL5PhI6GM
- k0KCcecpBQZfHrz8XNXywzaTzuPGqpKRp6qxTmLv2Rd7JSffo0zUBrQBgs3/49kHnkLtSX
- pIxBsyCWprBks6eGQB2y4TDSLdKVTAm1eoOrH1UnyXccY9f6x/sJ+NO0EDbGUYfdrQEk7S
- mI3HCtaQJIqn6e6XyxlsrQJ3XdIBzBVBv/6FN8ic1+K28yeUBpFbD9/wAqBtxkPbpESsAQ
- qtDpp8sPL0XU2N5FSjgp+wVqgOMiR11QdLcfrydebath8tp5kzLmbxlt2rrdzj/+UgFsML
- 0qe3IitZvLdCTQZbTK8c4kA7f9EUEtIieCCpvwPS2RhX0AqU879kcy/1SDNY7yLte2X2/U
- HlbxIvQ6vwBns0NosyswKj9t9/wP2fuhgg5IMoa6Bb6Yint2YaEpiOVHzWtMem7Iv4BS5k
- rq7J5wvCF7sA+Fzlj0JY/JK3N0WoTZY0FzsT+wUvUFzmsEwSdFQpUE+sLuNcYPfiLCFFo0
- GhXBuWTpp0kl66DGBvPwSefmciz6IzT86JJMMnzcAt87j7K+wCSHEDIYSMOHC9XtPePLtw
- LGFKC9pGJI8YO2LTAZcrpflvYhNj4Zq9Vp8T+rLAPN6TlHxR9KEYo=
-Authentication-Results: ORIGINATING;
- auth=pass smtp.auth=florian.hofhammer@fhofhammer.de
- smtp.mailfrom=florian.hofhammer@fhofhammer.de
-Date: Mon, 19 Jan 2026 14:18:12 +0100
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1vhpAA-0000tc-AE
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 08:19:22 -0500
+Received: from mail-qt1-x836.google.com ([2607:f8b0:4864:20::836])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1vhpA7-0004xK-RO
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 08:19:21 -0500
+Received: by mail-qt1-x836.google.com with SMTP id
+ d75a77b69052e-5014e1312c6so19520651cf.2
+ for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 05:19:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1768828758; x=1769433558; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=kkaooDlowkjQOVv6SkrGEd2sYv+v1R/MT/ZtiDERZbk=;
+ b=GevjxHUh+OVHLbNVgzRo0SPjDRI6FNA8VUnhNblSCt5SNTptpvsNJOsAYUzExPNVRW
+ WPbCCkmSngriLP51WDyZfvS2KklxiaKg7DN5RIwsP1nA3Ids5v8XtfsMNYl97izpo5TD
+ KkXCkM48xzZfg0nIhnU/qTDqgwFdQLwW9uTqnTz5u+uDkZsojMdfzyymeJZiG19L9D76
+ hoLrXA+WLBU+ECkKzOMbGiEy2w+vlSsmooz7v9VFXzml4XM+Q3tOgHLvzKBk9fHSnPSL
+ OmiljQbmnNPAWrUygsuODMwpCtMFAn/1umc+6fi8qWkDmLlSXfATG4RbGVRgwbM8TGdu
+ xwZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768828758; x=1769433558;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=kkaooDlowkjQOVv6SkrGEd2sYv+v1R/MT/ZtiDERZbk=;
+ b=tCafZYvoTBCXvDf1GK++524MC1bvE7ZO6vIEGOrgdStgyPWQRZHoccVpQZG9BWX7+C
+ lNXmCqNPfrGSZUEsUi9gSfj/3D1rzKipuBuwUFJUD31v9eBZS232djUJP/1MM56kpn3h
+ uS8WI4UteL7k54cAEwGrl3ggUKmaca/SSqU2nBT0Q4aowZF5M1Mdj7sWtTKWndn9yfPr
+ fOukHtPyIPCSDvJqa3fGdZv6bdlnZZDuJqbg1f5RtBeDa+vgHhnjskPYWiqTKRls5e0V
+ AfWsmNP6oQFzdvdpzO+yWV3Sg52Y3GgWFvpTOf8IZU2TIZak+6nZpImIXLhk6MSphcU0
+ Szjg==
+X-Gm-Message-State: AOJu0YxqL8PpgvVtEglMExVDkPfP6tNA54fHjR8Beis81QH7FdWcGqf8
+ VaDLsAa6lT6N8Jrq615uGS/ajUu+50nCxMKdirxKO3WzAxSC59MPfb7phLY2v49Gwd4=
+X-Gm-Gg: AY/fxX5gtKxp001naYtBBUtbSkZ0SE6+b/GGOWjN4FjCtUjWP1nSFXMR91U1voRu+Y0
+ fYnv9j7KdclhaZys/t6guBI99Ojsr4IgzZcpKSVg63jrJRgAlqDNYxT4mlSaoRM/yf9TsFZs4Eg
+ vyWLRDGh1jbdqlKta6Ft35D1/UGtst5rLW4rW2liA1UaRI8/yvGpD4Bd5O8Ct6RJP87Q0FYFQWl
+ pf55DJPr76/MyXqqL4hZ2N2/LC+0zAgJj+lac20o9KPqFDSLZfmcaNIlPIe/kPgcDTGgliIlg0N
+ iTbo1LqwlpYMMqhkMUZ/aMxZMUphAHeorZPSK83fNF66AobUjoOGDvXrU0ympXjwdkXl0bN4J+p
+ 5zh/JvzzWlIeCROBFB05kJfdgikNaI80XJs7bBnbXNHV0uZQlHl02MD/fHMQ7/A8kflTszjEEHK
+ Jci1x7Rc5noH2InaWjxpqWvJ1TbqtbZrl8n1uWQoA=
+X-Received: by 2002:ac8:5ac2:0:b0:4ed:b83f:78a3 with SMTP id
+ d75a77b69052e-502a1759606mr153059241cf.47.1768828757732; 
+ Mon, 19 Jan 2026 05:19:17 -0800 (PST)
+Received: from [192.168.68.103] ([152.234.122.35])
+ by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-502a1d9eca6sm77073521cf.11.2026.01.19.05.19.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 19 Jan 2026 05:19:17 -0800 (PST)
+Message-ID: <d7fa00f7-7e10-454c-b4b1-03ac4862fc9d@ventanamicro.com>
+Date: Mon, 19 Jan 2026 10:19:14 -0300
 MIME-Version: 1.0
-From: Florian Hofhammer <florian.hofhammer@fhofhammer.de>
-Subject: [PATCH] plugins: return bool from register r/w API
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 1/8] riscv: split sdext and sdtrig config bits
+To: Chao Liu <chao.liu.zevorn@gmail.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, wangjingwei@iscas.ac.cn
+References: <cover.1768622881.git.chao.liu.zevorn@gmail.com>
+ <78122e119ee8c961716e2bec72c9895148b04ef9.1768622882.git.chao.liu.zevorn@gmail.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-Autocrypt: addr=florian.hofhammer@fhofhammer.de; keydata=
- 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
- /zEc5hMMZIzTI4AtIcgA3xe4Ew==
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <78122e119ee8c961716e2bec72c9895148b04ef9.1768622882.git.chao.liu.zevorn@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:c207:3002:3725::1;
- envelope-from=florian.hofhammer@fhofhammer.de; helo=mwd01m.fhofhammer.de
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=2607:f8b0:4864:20::836;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-qt1-x836.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 19 Jan 2026 09:14:03 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -119,205 +103,223 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The qemu_plugin_{read,write} register API previously was inconsistent
-with regard to its docstring (where a return value of both -1 and 0
-would indicate an error) and to the memory read/write APIs, which
-already return a boolean value to indicate success or failure.
-Returning the number of bytes read or written is superfluous, as the
-GByteArray* passed to the API functions already encodes the length.
-See the linked thread for more details.
 
-This patch moves from returning an int (number of bytes read/written) to
-returning a bool from the register read/write API, bumps the plugin API
-version, and adjusts plugins and tests accordingly.
 
-Link: https://lore.kernel.org/qemu-devel/60089475-3891-4448-bfe0-8dd698cd2435@epfl.ch/
-Signed-off-by: Florian Hofhammer <florian.hofhammer@fhofhammer.de>
----
- contrib/plugins/execlog.c  | 14 ++++++++------
- contrib/plugins/uftrace.c  |  8 ++++----
- include/qemu/qemu-plugin.h | 19 +++++++++++--------
- plugins/api.c              | 15 ++++++++-------
- tests/tcg/plugins/insn.c   |  4 ++--
- 5 files changed, 33 insertions(+), 27 deletions(-)
+On 1/17/2026 1:27 AM, Chao Liu wrote:
+> Add cfg.ext_sdext and cfg.ext_sdtrig and expose them as ISA
+> extensions. Keep the legacy 'debug' CPU property as a global kill
+> switch and force-disable both when it is off.
 
-diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
-index 811f320319..d00d9c4ff3 100644
---- a/contrib/plugins/execlog.c
-+++ b/contrib/plugins/execlog.c
-@@ -91,11 +91,13 @@ static void insn_check_regs(CPU *cpu)
- {
-     for (int n = 0; n < cpu->registers->len; n++) {
-         Register *reg = cpu->registers->pdata[n];
--        int sz;
-+        bool success = false;
-+        int sz = 0;
- 
-         g_byte_array_set_size(reg->new, 0);
--        sz = qemu_plugin_read_register(reg->handle, reg->new);
--        g_assert(sz > 0);
-+        success = qemu_plugin_read_register(reg->handle, reg->new);
-+        g_assert(success);
-+        sz = reg->new->len;
-         g_assert(sz == reg->last->len);
- 
-         if (memcmp(reg->last->data, reg->new->data, sz)) {
-@@ -303,7 +305,7 @@ static Register *init_vcpu_register(qemu_plugin_reg_descriptor *desc)
- {
-     Register *reg = g_new0(Register, 1);
-     g_autofree gchar *lower = g_utf8_strdown(desc->name, -1);
--    int r;
-+    bool success = false;
- 
-     reg->handle = desc->handle;
-     reg->name = g_intern_string(lower);
-@@ -311,8 +313,8 @@ static Register *init_vcpu_register(qemu_plugin_reg_descriptor *desc)
-     reg->new = g_byte_array_new();
- 
-     /* read the initial value */
--    r = qemu_plugin_read_register(reg->handle, reg->last);
--    g_assert(r > 0);
-+    success = qemu_plugin_read_register(reg->handle, reg->last);
-+    g_assert(success);
-     return reg;
- }
- 
-diff --git a/contrib/plugins/uftrace.c b/contrib/plugins/uftrace.c
-index b7d6124d2f..a7e21b5b87 100644
---- a/contrib/plugins/uftrace.c
-+++ b/contrib/plugins/uftrace.c
-@@ -403,8 +403,8 @@ static uint64_t cpu_read_register64(Cpu *cpu, struct qemu_plugin_register *reg)
- {
-     GByteArray *buf = cpu->buf;
-     g_byte_array_set_size(buf, 0);
--    size_t sz = qemu_plugin_read_register(reg, buf);
--    g_assert(sz == 8);
-+    bool success = qemu_plugin_read_register(reg, buf);
-+    g_assert(success);
-     g_assert(buf->len == 8);
-     return *((uint64_t *) buf->data);
- }
-@@ -413,8 +413,8 @@ static uint32_t cpu_read_register32(Cpu *cpu, struct qemu_plugin_register *reg)
- {
-     GByteArray *buf = cpu->buf;
-     g_byte_array_set_size(buf, 0);
--    size_t sz = qemu_plugin_read_register(reg, buf);
--    g_assert(sz == 4);
-+    bool success = qemu_plugin_read_register(reg, buf);
-+    g_assert(success);
-     g_assert(buf->len == 4);
-     return *((uint32_t *) buf->data);
- }
-diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
-index 60de4fdd3f..c3b0532619 100644
---- a/include/qemu/qemu-plugin.h
-+++ b/include/qemu/qemu-plugin.h
-@@ -72,11 +72,14 @@ typedef uint64_t qemu_plugin_id_t;
-  * - added qemu_plugin_write_memory_hwaddr
-  * - added qemu_plugin_write_register
-  * - added qemu_plugin_translate_vaddr
-+ *
-+ * version 6:
-+ * - changed return value of qemu_plugin_{read,write}_register from int to bool
-  */
- 
- extern QEMU_PLUGIN_EXPORT int qemu_plugin_version;
- 
--#define QEMU_PLUGIN_VERSION 5
-+#define QEMU_PLUGIN_VERSION 6
- 
- /**
-  * struct qemu_info_t - system information for plugins
-@@ -972,12 +975,12 @@ GArray *qemu_plugin_get_registers(void);
-  * qemu_plugin_register_vcpu_init_cb(), except for callbacks registered with
-  * qemu_plugin_register_atexit_cb() and qemu_plugin_register_flush_cb().
-  *
-- * Returns the size of the read register. The content of @buf is in target byte
-- * order. On failure returns -1.
-+ * Returns true on success, false on failure. The content of @buf is in target
-+ * byte order.
-  */
- QEMU_PLUGIN_API
--int qemu_plugin_read_register(struct qemu_plugin_register *handle,
--                              GByteArray *buf);
-+bool qemu_plugin_read_register(struct qemu_plugin_register *handle,
-+                               GByteArray *buf);
- 
- /**
-  * qemu_plugin_write_register() - write register for current vCPU
-@@ -997,11 +1000,11 @@ int qemu_plugin_read_register(struct qemu_plugin_register *handle,
-  * Attempting to write a register with @buf smaller than the register size
-  * will result in a crash or other undesired behavior.
-  *
-- * Returns the number of bytes written. On failure returns 0.
-+ * Returns true on sucess, false on failure.
-  */
- QEMU_PLUGIN_API
--int qemu_plugin_write_register(struct qemu_plugin_register *handle,
--                              GByteArray *buf);
-+bool qemu_plugin_write_register(struct qemu_plugin_register *handle,
-+                                GByteArray *buf);
- 
- /**
-  * qemu_plugin_read_memory_vaddr() - read from memory using a virtual address
-diff --git a/plugins/api.c b/plugins/api.c
-index eac04cc1f6..d8846b4773 100644
---- a/plugins/api.c
-+++ b/plugins/api.c
-@@ -434,27 +434,28 @@ GArray *qemu_plugin_get_registers(void)
-     return create_register_handles(regs);
- }
- 
--int qemu_plugin_read_register(struct qemu_plugin_register *reg, GByteArray *buf)
-+bool qemu_plugin_read_register(struct qemu_plugin_register *reg,
-+                               GByteArray *buf)
- {
-     g_assert(current_cpu);
- 
-     if (qemu_plugin_get_cb_flags() == QEMU_PLUGIN_CB_NO_REGS) {
--        return -1;
-+        return false;
-     }
- 
--    return gdb_read_register(current_cpu, buf, GPOINTER_TO_INT(reg) - 1);
-+    return (gdb_read_register(current_cpu, buf, GPOINTER_TO_INT(reg) - 1) > 0);
- }
- 
--int qemu_plugin_write_register(struct qemu_plugin_register *reg,
--                               GByteArray *buf)
-+bool qemu_plugin_write_register(struct qemu_plugin_register *reg,
-+                                GByteArray *buf)
- {
-     g_assert(current_cpu);
- 
-     if (buf->len == 0 || qemu_plugin_get_cb_flags() != QEMU_PLUGIN_CB_RW_REGS) {
--        return -1;
-+        return false;
-     }
- 
--    return gdb_write_register(current_cpu, buf->data, GPOINTER_TO_INT(reg) - 1);
-+    return (gdb_write_register(current_cpu, buf->data, GPOINTER_TO_INT(reg) - 1) > 0);
- }
- 
- bool qemu_plugin_read_memory_vaddr(uint64_t addr, GByteArray *data, size_t len)
-diff --git a/tests/tcg/plugins/insn.c b/tests/tcg/plugins/insn.c
-index 0c723cb9ed..e6c5207cd6 100644
---- a/tests/tcg/plugins/insn.c
-+++ b/tests/tcg/plugins/insn.c
-@@ -93,8 +93,8 @@ static void vcpu_init(qemu_plugin_id_t id, unsigned int vcpu_index)
-         for (int i = 0; i < reg_list->len; i++) {
-             qemu_plugin_reg_descriptor *rd = &g_array_index(
-                 reg_list, qemu_plugin_reg_descriptor, i);
--            int count = qemu_plugin_read_register(rd->handle, reg_value);
--            g_assert(count > 0);
-+            bool success = qemu_plugin_read_register(rd->handle, reg_value);
-+            g_assert(success);
-         }
-     }
- }
 
-base-commit: c1c58cee16380f81f88fbde6b12f247b376839e2
--- 
-2.51.0
+I would rather put the 'debug' flag in deprecation. It's a flag that at 
+this moment means 'enable sdtrig' and I'd rather get rid of it than 
+making it enable sdext too.
+
+But deprecating 'debug' is out of scope for this work and we can handle 
+it later. Matter of fact I might drop patches deprecating it today.
+
+About enabling sdext by default, the patch is breaking bios-table-test 
+because we're adding an extra string in riscv,isa ...
+
+
+
+> 
+> Trigger CSRs (tselect/tdata*/tinfo/mcontext) and trigger setup now
+> depend on ext_sdtrig instead of cfg.debug.
+> 
+> Signed-off-by: Chao Liu <chao.liu.zevorn@gmail.com>
+> ---
+>   target/riscv/cpu.c                | 18 +++++++++++++++---
+>   target/riscv/cpu_cfg_fields.h.inc |  2 ++
+>   target/riscv/csr.c                | 16 ++++++++--------
+>   target/riscv/machine.c            |  4 ++--
+>   target/riscv/tcg/tcg-cpu.c        | 11 +----------
+>   5 files changed, 28 insertions(+), 23 deletions(-)
+> 
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 73d4280d7c..bc0b385cc1 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -189,7 +189,8 @@ const RISCVIsaExtData isa_edata_arr[] = {
+>       ISA_EXT_DATA_ENTRY(zvkt, PRIV_VERSION_1_12_0, ext_zvkt),
+>       ISA_EXT_DATA_ENTRY(zhinx, PRIV_VERSION_1_12_0, ext_zhinx),
+>       ISA_EXT_DATA_ENTRY(zhinxmin, PRIV_VERSION_1_12_0, ext_zhinxmin),
+> -    ISA_EXT_DATA_ENTRY(sdtrig, PRIV_VERSION_1_12_0, debug),
+> +    ISA_EXT_DATA_ENTRY(sdext, PRIV_VERSION_1_12_0, ext_sdext),
+> +    ISA_EXT_DATA_ENTRY(sdtrig, PRIV_VERSION_1_12_0, ext_sdtrig),
+>       ISA_EXT_DATA_ENTRY(shcounterenw, PRIV_VERSION_1_12_0, has_priv_1_12),
+>       ISA_EXT_DATA_ENTRY(sha, PRIV_VERSION_1_12_0, ext_sha),
+>       ISA_EXT_DATA_ENTRY(shgatpa, PRIV_VERSION_1_12_0, has_priv_1_12),
+> @@ -783,7 +784,7 @@ static void riscv_cpu_reset_hold(Object *obj, ResetType type)
+>       env->vill = true;
+>   
+>   #ifndef CONFIG_USER_ONLY
+> -    if (cpu->cfg.debug) {
+> +    if (cpu->cfg.ext_sdtrig) {
+>           riscv_trigger_reset_hold(env);
+>       }
+>   
+> @@ -922,6 +923,15 @@ void riscv_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
+>               return;
+>           }
+>       }
+> +
+> +    /*
+> +     * Keep the legacy 'debug' CPU property as a global kill switch.
+> +     * If it is off, force-disable Sdext/Sdtrig regardless of ISA strings.
+> +     */
+> +    if (!cpu->cfg.debug) {
+> +        cpu->cfg.ext_sdext = false;
+> +        cpu->cfg.ext_sdtrig = false;
+> +    }
+>   }
+>   
+>   static void riscv_cpu_realize(DeviceState *dev, Error **errp)
+> @@ -946,7 +956,7 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
+>       riscv_cpu_register_gdb_regs_for_features(cs);
+>   
+>   #ifndef CONFIG_USER_ONLY
+> -    if (cpu->cfg.debug) {
+> +    if (cpu->cfg.ext_sdtrig) {
+>           riscv_trigger_realize(&cpu->env);
+>       }
+>   #endif
+> @@ -1112,6 +1122,8 @@ static void riscv_cpu_init(Object *obj)
+>        */
+>       RISCV_CPU(obj)->cfg.ext_zicntr = !mcc->def->bare;
+>       RISCV_CPU(obj)->cfg.ext_zihpm = !mcc->def->bare;
+> +    RISCV_CPU(obj)->cfg.ext_sdext = true;
+> +    RISCV_CPU(obj)->cfg.ext_sdtrig = true;
+
+
+^ here. Every time we change the defaults we have to dance around 
+bios-tables-test due to riscv,isa changes.
+
+If we really want sdext to be enabled by default we should (1) only 
+enable it when the feature is already fully implemented and (2) changing 
+bios-tables-test according to avoid leaving broken tests.
+
+
+
+The remaining of the patch has the right idea, like here:
+
+
+
+>   
+>       /* Default values for non-bool cpu properties */
+>       cpu->cfg.pmu_mask = MAKE_64BIT_MASK(3, 16);
+> diff --git a/target/riscv/cpu_cfg_fields.h.inc b/target/riscv/cpu_cfg_fields.h.inc
+> index a154ecdc79..9701319195 100644
+> --- a/target/riscv/cpu_cfg_fields.h.inc
+> +++ b/target/riscv/cpu_cfg_fields.h.inc
+> @@ -44,6 +44,8 @@ BOOL_FIELD(ext_zihpm)
+>   BOOL_FIELD(ext_zimop)
+>   BOOL_FIELD(ext_zcmop)
+>   BOOL_FIELD(ext_ztso)
+> +BOOL_FIELD(ext_sdext)
+> +BOOL_FIELD(ext_sdtrig)
+>   BOOL_FIELD(ext_smstateen)
+>   BOOL_FIELD(ext_sstc)
+>   BOOL_FIELD(ext_smcdeleg)
+> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+> index 5c91658c3d..4f071b1db2 100644
+> --- a/target/riscv/csr.c
+> +++ b/target/riscv/csr.c
+> @@ -775,9 +775,9 @@ static RISCVException have_mseccfg(CPURISCVState *env, int csrno)
+>       return RISCV_EXCP_ILLEGAL_INST;
+>   }
+>   
+> -static RISCVException debug(CPURISCVState *env, int csrno)
+> +static RISCVException sdtrig(CPURISCVState *env, int csrno)
+>   {
+> -    if (riscv_cpu_cfg(env)->debug) {
+> +    if (riscv_cpu_cfg(env)->ext_sdtrig) {
+>           return RISCV_EXCP_NONE;
+>       }
+
+debug == sdtrig is what we want and we should use 'sdtrig' everywhere 
+'debug' is appearing, but there's a particular way to go about it. We 
+need to add getters/setters for 'debug' that would enable/disable 
+sdtrig. We should avoid adding this kind of handling in init() or 
+finalize().
+
+I can do that in a deprecation patch. You can use your patches to handle 
+sdext only.
+
+
+Thanks,
+Daniel
+
+>   
+> @@ -6308,12 +6308,12 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
+>                            .min_priv_ver = PRIV_VERSION_1_12_0           },
+>   
+>       /* Debug CSRs */
+> -    [CSR_TSELECT]   =  { "tselect",  debug, read_tselect,  write_tselect  },
+> -    [CSR_TDATA1]    =  { "tdata1",   debug, read_tdata,    write_tdata    },
+> -    [CSR_TDATA2]    =  { "tdata2",   debug, read_tdata,    write_tdata    },
+> -    [CSR_TDATA3]    =  { "tdata3",   debug, read_tdata,    write_tdata    },
+> -    [CSR_TINFO]     =  { "tinfo",    debug, read_tinfo,    write_ignore   },
+> -    [CSR_MCONTEXT]  =  { "mcontext", debug, read_mcontext, write_mcontext },
+> +    [CSR_TSELECT]   =  { "tselect",  sdtrig, read_tselect,  write_tselect  },
+> +    [CSR_TDATA1]    =  { "tdata1",   sdtrig, read_tdata,    write_tdata    },
+> +    [CSR_TDATA2]    =  { "tdata2",   sdtrig, read_tdata,    write_tdata    },
+> +    [CSR_TDATA3]    =  { "tdata3",   sdtrig, read_tdata,    write_tdata    },
+> +    [CSR_TINFO]     =  { "tinfo",    sdtrig, read_tinfo,    write_ignore   },
+> +    [CSR_MCONTEXT]  =  { "mcontext", sdtrig, read_mcontext, write_mcontext },
+>   
+>       [CSR_MCTRCTL]    = { "mctrctl",    ctr_mmode,  NULL, NULL, rmw_xctrctl    },
+>       [CSR_SCTRCTL]    = { "sctrctl",    ctr_smode,  NULL, NULL, rmw_xctrctl    },
+> diff --git a/target/riscv/machine.c b/target/riscv/machine.c
+> index 18d790af0d..d6a0b8e357 100644
+> --- a/target/riscv/machine.c
+> +++ b/target/riscv/machine.c
+> @@ -222,7 +222,7 @@ static bool debug_needed(void *opaque)
+>   {
+>       RISCVCPU *cpu = opaque;
+>   
+> -    return cpu->cfg.debug;
+> +    return cpu->cfg.ext_sdext || cpu->cfg.ext_sdtrig;
+>   }
+>   
+>   static int debug_post_load(void *opaque, int version_id)
+> @@ -230,7 +230,7 @@ static int debug_post_load(void *opaque, int version_id)
+>       RISCVCPU *cpu = opaque;
+>       CPURISCVState *env = &cpu->env;
+>   
+> -    if (icount_enabled()) {
+> +    if (cpu->cfg.ext_sdtrig && icount_enabled()) {
+>           env->itrigger_enabled = riscv_itrigger_enabled(env);
+>       }
+>   
+> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+> index d3968251fa..b5a26cf662 100644
+> --- a/target/riscv/tcg/tcg-cpu.c
+> +++ b/target/riscv/tcg/tcg-cpu.c
+> @@ -177,7 +177,7 @@ static TCGTBCPUState riscv_get_tb_cpu_state(CPUState *cs)
+>                ? EXT_STATUS_DIRTY : EXT_STATUS_DISABLED;
+>       }
+>   
+> -    if (cpu->cfg.debug && !icount_enabled()) {
+> +    if (cpu->cfg.ext_sdtrig && !icount_enabled()) {
+>           flags = FIELD_DP32(flags, TB_FLAGS, ITRIGGER, env->itrigger_enabled);
+>       }
+>   #endif
+> @@ -469,15 +469,6 @@ static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
+>                   continue;
+>               }
+>   
+> -            /*
+> -             * cpu.debug = true is marked as 'sdtrig', priv spec 1.12.
+> -             * Skip this warning since existing CPUs with older priv
+> -             * spec and debug = true will be impacted.
+> -             */
+> -            if (!strcmp(edata->name, "sdtrig")) {
+> -                continue;
+> -            }
+> -
+>               isa_ext_update_enabled(cpu, edata->ext_enable_offset, false);
+>   
+>               /*
 
 
