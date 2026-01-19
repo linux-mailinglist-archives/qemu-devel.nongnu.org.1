@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5786D39D1C
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 04:37:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 098EED39D16
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 04:36:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhfx7-000766-9a; Sun, 18 Jan 2026 22:29:17 -0500
+	id 1vhfx7-000762-1m; Sun, 18 Jan 2026 22:29:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <filip.hejsek@gmail.com>)
- id 1vhfwe-00072g-8W
- for qemu-devel@nongnu.org; Sun, 18 Jan 2026 22:28:49 -0500
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ id 1vhfwg-00073C-7M
+ for qemu-devel@nongnu.org; Sun, 18 Jan 2026 22:28:51 -0500
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <filip.hejsek@gmail.com>)
- id 1vhfwa-0004B0-CM
- for qemu-devel@nongnu.org; Sun, 18 Jan 2026 22:28:47 -0500
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-b87677a8abeso648064366b.1
- for <qemu-devel@nongnu.org>; Sun, 18 Jan 2026 19:28:43 -0800 (PST)
+ id 1vhfwc-0004BD-4Q
+ for qemu-devel@nongnu.org; Sun, 18 Jan 2026 22:28:49 -0500
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-b87677a8abeso648065866b.1
+ for <qemu-devel@nongnu.org>; Sun, 18 Jan 2026 19:28:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1768793323; x=1769398123; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1768793324; x=1769398124; darn=nongnu.org;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=KOxHrDkh7/Td6NrYlRMgCWmk9a51ZdxVFAmtZjzdmGU=;
- b=PrKsf+ZUVwZyULYnoLM2zr/0wsWgBTYEir+yE720a7CUIQDYH3pGDHV/1pTgcTMzD0
- zU3AJPCT5DIvj3VWxTuI9j6D3Ulb63extD5k03kuoKBgjUAxDQtaP9aFt3nFdhwBOigs
- dqoj0U/GaUorkKqeBoYmFTebZ4aFig9sSImvja8tdHojbQJ0Chp8PXZzvKjOIfajx4Kd
- Gkxi5DkjzOU65De6Em8RfnsRnYu0UM6Q2smnzG7QxyqLvwcbFUplSikSseL17EM5q6q0
- Z7NJbDW/O4FSfXd0Hvz2fXoSVZpI20ziAcJEqCd2UoN2eiWG6fbTEtsf9MVZgQ+Pd8IQ
- eRrQ==
+ :reply-to; bh=CwdpHXJqzSVJBL7iuiAdXf2ozQwuKqDkTKYPeqcNrWI=;
+ b=EeSDTrYNKJ/9MmMCx5+QbvyWG4LMppZYGA6Wct/0YtyE3komKztsw4Vg9mAqmRiOOg
+ du9d3C+g7ru8HcrmwrxDSeuNBRm0EGvhMrNM/2/P4W4+cYKtCLKVhJztJp48D1HUFNKM
+ F8yz/sIrhTbCscRZT5rxudcMv8spLIrMojnAFK866qIaw68NqtM1ZLJv1Agig0p+1YXI
+ 7WyUYmz7Qxg8E02tAX6fkbGdT0NFhGKlWrD0gcRke35Y/Kxi1v0ZeKvTucR41UVx7rea
+ Nu8oc8RZyDRNdiNjqv+eElM4ym4l9Fr4kfqbQtUhwKdGa7ruKfOyPzDSegqigT+nXeho
+ N51Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768793323; x=1769398123;
+ d=1e100.net; s=20230601; t=1768793324; x=1769398124;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=KOxHrDkh7/Td6NrYlRMgCWmk9a51ZdxVFAmtZjzdmGU=;
- b=H7eCpF/NnCM1i2iJqqDY0mazIvtF6/dEd2MfMgINPHs2BKFDcXWX7hdcTyxh7b/Hnh
- xyUoyzPVKcrEZb7+nOnQ8lerGYIxYL0h39QJgBvytaMq2Mz6wbOKGmZt8eh2nPJ6W8V+
- 7RIdOxTAJSw6xzbT66BXSvFHHHfXU3qg0/bNSLmG+MYluoMQvuzJAZ/miaFWnv0wUpFF
- Kz35HVegdGaXVDTN0Wv6tlXfH+CP3d7FM65hfiJNJi82low7AD44yIEYAuPoAC1poy6L
- EB8NaLwM4ZheOC9M/hrHrlHBGmZuCeDMWbiNtjWBEaK4tP6b071Yr0zKp7XN7/yQF11R
- 3zag==
-X-Gm-Message-State: AOJu0YzNOEnra58xbIP457fPA3NsLf7+R2ZGgMzFHvR2CwOK4cTNbngd
- Fty5RoOASpcZLDNLHRNHyClkP6X9+7HWwhORnLEaKLWq2XzoOzcdjd35
-X-Gm-Gg: AY/fxX5GSFmMFL5AY3WCLIMNnlGtWQpXykz6yzJ12gbxjDLsFFWZUd3czssrWyuhewE
- XF6Fs0vdLdvYYguHbgCfCpdP8Jii5sJCFBd1hWRRcFy3qG7EM2+KNTBlc4ykAuND15c2hyvOSWT
- rbprLEX0uoLybkqm8ufY5YxaRNnNXKhm9S/Dhj/xC02cv28SaXeJRg2GVCXPTDJs5OZdq4XK28F
- Qxp7+UMjngyvIILB52GDVZCICIJVfUU+RH6DKYRHvyS13EaQsepzGyHc/9MVAtsSnzVSqNHaDiA
- HgMjYXgouNa2dLpORNNKilwNBa+4Ef9ajqv6csun/wEPYpcQo0Cp/HuQ7DsmsJVk920FKSHgUJL
- H5fuDEpNgjyJaJrmLQyJ0sC+GDysWa0z3a/FV1vSekx1o0bH0WD/qLNfpY0OuJpQOvzJU5YqnG6
- 2Am3fsJDpOmEhn+HGlH//h91L8Ix5ctCsbFC527LjO
-X-Received: by 2002:a17:907:724d:b0:b87:124c:5f54 with SMTP id
- a640c23a62f3a-b87932b6908mr879973266b.59.1768793322649; 
- Sun, 18 Jan 2026 19:28:42 -0800 (PST)
+ bh=CwdpHXJqzSVJBL7iuiAdXf2ozQwuKqDkTKYPeqcNrWI=;
+ b=N7BY+knaglQ2qVRbF1ZYFsdYRygvLzg+PYf1JogIE0PeLEbNbXP7K/NBt5ph26ZQVc
+ 936D+85aQVN1c/HiGoZoyc/hzJi5LUlqJ7a3ic47mQsBlxjcZzACrE0uXMfYJotsKd0m
+ mpS4TzC7DUwsaFuWBCilppIZ/nmcks0YyR229HrcPZjyuW3pLXLUyE+RQ6tu/B5llzB1
+ NKoJpTtoaQpbFBqkKqVT4IJQ8UIidlFgyGHtPJj38De7cvLfXqeb8UppVJ3HdTpY0mR6
+ SMcYUlgklt6IbyArsy/TBpHNmIh4kn4gLW9w1jnSAgeGf4BdLlKwj8Vm/1pqx/pD7fCl
+ /akQ==
+X-Gm-Message-State: AOJu0YwX7cSOyHEBdWkvEn9K9x13zqCkBWt+zRBXDOvm6bsplSz6z96X
+ raDcpS7Cqr1uSVvfyXCJdJZ1PiolcWDoL54fgoKyQ/eop0bHSADzEvwm
+X-Gm-Gg: AY/fxX4CcvdfTzsfyT+kWGlS2WWoKyJ2QXwR4yWobUxM9oX1qkme2Zd4fpQblEx7GRy
+ iUq1gaK+nOMJPGwiPLT7iiGetjwM6k9GNR6k9wff+mg+s0xOIq/c0b3kzyWReBaK1ta5jKMav8g
+ 0dcF7L6ImQbqh1utJRtiAtOyygFrC4QKmA2efjGPuZInrfF5dBBd31Qkh3sGFkpmIxug3jX/WfV
+ tykc4UTQGQWcZ8fS4NkAk0CsRTmHK7U+8yPPUnJiGVqR2VctRhpx2T/Uo/3K4p06V950QxeQWdP
+ N+jyZ47dapHq/7o8wbq9GaMheQmaC2lpv95jV9hd4YNtAd/S/NL44r8SbTDoQvA1rl949I1RjRb
+ a56X51U5KBw32KakSq4oSv2Agxx43tR+gy1uXM1oM06OXpJPTVarXHQUsAdgKxaDCWGGjZOD3Er
+ /mqueKK9TlBr2ul6xHfTNhO907Ok8FLGnTIacb26Fk78a1bMOQibM=
+X-Received: by 2002:a17:907:9405:b0:b79:f8ae:a893 with SMTP id
+ a640c23a62f3a-b879327f09amr851085366b.49.1768793323683; 
+ Sun, 18 Jan 2026 19:28:43 -0800 (PST)
 Received: from localhost (mem-185.47.220.165.jmnet.cz. [185.47.220.165])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b879e2c1be7sm895132966b.67.2026.01.18.19.28.42
+ a640c23a62f3a-b87d1e6dd64sm236511066b.32.2026.01.18.19.28.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 Jan 2026 19:28:42 -0800 (PST)
+ Sun, 18 Jan 2026 19:28:43 -0800 (PST)
 From: Filip Hejsek <filip.hejsek@gmail.com>
-Date: Mon, 19 Jan 2026 04:27:48 +0100
-Subject: [PATCH v6 05/12] main-loop: change the handling of SIGWINCH
+Date: Mon, 19 Jan 2026 04:27:49 +0100
+Subject: [PATCH v6 06/12] char-stdio: add support for the terminal size
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260119-console-resize-v6-5-33a7b0330a7a@gmail.com>
+Message-Id: <20260119-console-resize-v6-6-33a7b0330a7a@gmail.com>
 References: <20260119-console-resize-v6-0-33a7b0330a7a@gmail.com>
 In-Reply-To: <20260119-console-resize-v6-0-33a7b0330a7a@gmail.com>
 To: qemu-devel@nongnu.org
@@ -83,15 +83,15 @@ Cc: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
  Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>, 
  Szymon Lukasz <noh4hss@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768793314; l=3291;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768793314; l=2558;
  i=filip.hejsek@gmail.com; s=20250912; h=from:subject:message-id;
- bh=Wpb+Av6dyfCrnZRtwb26zXMQvGbITtEVXsGaT2s43Mc=;
- b=cPctFHleyR0v5L0I/ML24SyWZLAmGxINF9qsB+ueQJ/7yel93Xs+Hdp2OZUPnDYq2gprHBiQs
- v3uBvTfuaQDAbo1ddieFG8WIHNBTrnClyXZDi3Ygp5kQZ1GvIXoYrs/
+ bh=Y2PdlDn9BtibdmNVATyYsNZJjK+AQSI47PNbPt4RVGU=;
+ b=nK49SIEzS7uNwEXaruzPmJbjxZ7KZG+Pjv0qJOfAbGSi9+QPU+1QQy6o+T9rcrLUZ8w1SFf4H
+ rRbBGI5P9urCfPqkxsFzwLvRGHn1yRwK42GJ5/NpDKSTl6Sg5OJ+oU7
 X-Developer-Key: i=filip.hejsek@gmail.com; a=ed25519;
  pk=nakB8gEK3oi+Q/5dBTMCy/LgZL47NP60z1jeDR6O/WU=
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=filip.hejsek@gmail.com; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=filip.hejsek@gmail.com; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -116,114 +116,91 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Szymon Lukasz <noh4hss@gmail.com>
 
-Block SIGWINCH, so it is delivered only via signalfd.
-Install a handler that uses NotifierList to tell
-interested parties about SIGWINCH delivery.
+Update the terminal size upon SIGWINCH delivery.
 
 Signed-off-by: Szymon Lukasz <noh4hss@gmail.com>
+[Filip: use DECLARE_INSTANCE_CHECKER]
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Filip Hejsek <filip.hejsek@gmail.com>
 ---
- include/qemu/main-loop.h |  4 ++++
- ui/curses.c              | 11 ++++++-----
- util/main-loop.c         | 21 +++++++++++++++++++++
- 3 files changed, 31 insertions(+), 5 deletions(-)
+ chardev/char-stdio.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/include/qemu/main-loop.h b/include/qemu/main-loop.h
-index 8c1241a2c1..ff41346b0b 100644
---- a/include/qemu/main-loop.h
-+++ b/include/qemu/main-loop.h
-@@ -449,4 +449,8 @@ typedef struct MainLoopPoll {
- void main_loop_poll_add_notifier(Notifier *notify);
- void main_loop_poll_remove_notifier(Notifier *notify);
- 
-+#ifndef _WIN32
-+void sigwinch_add_notifier(Notifier *n);
-+#endif
-+
- #endif
-diff --git a/ui/curses.c b/ui/curses.c
-index 161f78c35c..d1b308d5f8 100644
---- a/ui/curses.c
-+++ b/ui/curses.c
-@@ -33,6 +33,7 @@
- #include <iconv.h>
- 
- #include "qapi/error.h"
-+#include "qemu/main-loop.h"
- #include "qemu/module.h"
- #include "ui/console.h"
- #include "ui/input.h"
-@@ -149,7 +150,7 @@ static void curses_resize(DisplayChangeListener *dcl,
- }
- 
- #if !defined(_WIN32) && defined(SIGWINCH) && defined(KEY_RESIZE)
--static volatile sig_atomic_t got_sigwinch;
-+static bool got_sigwinch;
- static void curses_winch_check(void)
- {
-     struct winsize {
-@@ -172,17 +173,17 @@ static void curses_winch_check(void)
-     invalidate = 1;
- }
- 
--static void curses_winch_handler(int signum)
-+static void curses_winch_handler(Notifier *n, void *data)
- {
-     got_sigwinch = true;
- }
- 
- static void curses_winch_init(void)
- {
--    struct sigaction old, winch = {
--        .sa_handler  = curses_winch_handler,
-+    static Notifier n = {
-+        .notify = curses_winch_handler
-     };
--    sigaction(SIGWINCH, &winch, &old);
-+    sigwinch_add_notifier(&n);
- }
+diff --git a/chardev/char-stdio.c b/chardev/char-stdio.c
+index 2568164a10..f55a7be24b 100644
+--- a/chardev/char-stdio.c
++++ b/chardev/char-stdio.c
+@@ -34,7 +34,9 @@
+ #include "chardev/char-win-stdio.h"
  #else
- static void curses_winch_check(void) {}
-diff --git a/util/main-loop.c b/util/main-loop.c
-index ad8645c30a..136886e4ee 100644
---- a/util/main-loop.c
-+++ b/util/main-loop.c
-@@ -100,6 +100,7 @@ static int qemu_signal_init(Error **errp)
-     sigaddset(&set, SIGIO);
-     sigaddset(&set, SIGALRM);
-     sigaddset(&set, SIGBUS);
-+    sigaddset(&set, SIGWINCH);
-     /* SIGINT cannot be handled via signalfd, so that ^C can be used
-      * to interrupt QEMU when it is being run under gdb.  SIGHUP and
-      * SIGTERM are also handled asynchronously, even though it is not
-@@ -124,6 +125,26 @@ static int qemu_signal_init(Error **errp)
-     return 0;
+ #include <termios.h>
++#include <sys/ioctl.h>
+ #include "chardev/char-fd.h"
++#include "qemu/main-loop.h"
+ #endif
+ 
+ #ifndef _WIN32
+@@ -46,6 +48,14 @@ static bool stdio_in_use;
+ static bool stdio_allow_signal;
+ static bool stdio_echo_state;
+ 
++typedef struct {
++    FDChardev parent;
++    Notifier resize_notifier;
++} StdioChardev;
++
++DECLARE_INSTANCE_CHECKER(StdioChardev, STDIO_CHARDEV,
++                         TYPE_CHARDEV_STDIO)
++
+ static void term_exit(void)
+ {
+     if (stdio_in_use) {
+@@ -85,11 +95,26 @@ static void term_stdio_handler(int sig)
+     qemu_chr_set_echo_stdio(NULL, stdio_echo_state);
  }
  
-+static NotifierList sigwinch_notifiers =
-+    NOTIFIER_LIST_INITIALIZER(sigwinch_notifiers);
-+
-+static void sigwinch_handler(int signum)
++static void qemu_chr_resize_stdio(Chardev *chr)
 +{
-+    notifier_list_notify(&sigwinch_notifiers, NULL);
-+}
-+
-+void sigwinch_add_notifier(Notifier *n)
-+{
-+    if (notifier_list_empty(&sigwinch_notifiers)) {
-+        struct sigaction action = {
-+            .sa_handler = sigwinch_handler,
-+        };
-+        sigaction(SIGWINCH, &action, NULL);
++    struct winsize ws;
++    if (ioctl(1, TIOCGWINSZ, &ws) != -1) {
++        qemu_chr_resize(chr, ws.ws_col, ws.ws_row);
 +    }
-+
-+    notifier_list_add(&sigwinch_notifiers, n);
 +}
 +
- #else /* _WIN32 */
++static void term_resize_notify(Notifier *n, void *data)
++{
++    StdioChardev *s = container_of(n, StdioChardev, resize_notifier);
++    qemu_chr_resize_stdio(CHARDEV(s));
++}
++
+ static void qemu_chr_open_stdio(Chardev *chr,
+                                 ChardevBackend *backend,
+                                 bool *be_opened,
+                                 Error **errp)
+ {
++    StdioChardev *s = STDIO_CHARDEV(chr);
+     ChardevStdio *opts = backend->u.stdio.data;
+     struct sigaction act;
  
- static int qemu_signal_init(Error **errp)
+@@ -123,6 +148,10 @@ static void qemu_chr_open_stdio(Chardev *chr,
+ 
+     stdio_allow_signal = !opts->has_signal || opts->signal;
+     qemu_chr_set_echo_stdio(chr, false);
++
++    qemu_chr_resize_stdio(chr);
++    s->resize_notifier.notify = term_resize_notify;
++    sigwinch_add_notifier(&s->resize_notifier);
+ }
+ #endif
+ 
+@@ -162,6 +191,7 @@ static const TypeInfo char_stdio_type_info = {
+     .parent = TYPE_CHARDEV_WIN_STDIO,
+ #else
+     .parent = TYPE_CHARDEV_FD,
++    .instance_size = sizeof(StdioChardev),
+ #endif
+     .instance_finalize = char_stdio_finalize,
+     .class_init = char_stdio_class_init,
 
 -- 
 2.52.0
