@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 434B1D3ACE0
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 15:52:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD8F0D3ACCD
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 15:51:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhqaA-0008PT-21; Mon, 19 Jan 2026 09:50:18 -0500
+	id 1vhqa5-0008M8-TW; Mon, 19 Jan 2026 09:50:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vhqZo-0008D3-UX; Mon, 19 Jan 2026 09:49:58 -0500
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
+ id 1vhqZo-0008D1-UC; Mon, 19 Jan 2026 09:49:58 -0500
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vhqZj-0008Nw-I2; Mon, 19 Jan 2026 09:49:55 -0500
+ id 1vhqZk-0008OP-D3; Mon, 19 Jan 2026 09:49:55 -0500
 Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
  [IPv6:2a02:6b8:c0c:5a81:0:640:624e:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id EF2E28086B;
- Mon, 19 Jan 2026 17:49:49 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id D1D6AC015D;
+ Mon, 19 Jan 2026 17:49:50 +0300 (MSK)
 Received: from vsementsov-lin (unknown [2a02:6bf:8080:934::1:38])
  by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id gnaGbV0CCKo0-Xa41qkHW; Mon, 19 Jan 2026 17:49:49 +0300
+ ESMTPSA id gnaGbV0CCKo0-Tme69IbB; Mon, 19 Jan 2026 17:49:50 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1768834189;
- bh=RO/wOYcRCwTBkuY0dTwRudi/MmxKTmNkQmhSEgfxUww=;
+ s=default; t=1768834190;
+ bh=gj6BWqpIIeyPn+JIEMMDww7yxiIxHS9HjNX3kbpOKHw=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=yBvWEEg/Lfih+NGPOQm7av1V+wjrGOJrJnNBMIaj1MHgnreOOFHMjlmYNiuaq78S1
- 3yBBD8FoH8Ml/UhhVi86urBa7dlE49GDeoJLX46Tgc2VhX6dA7CjxoR+i8pDx/eRDg
- ZLUnWleZ+7JeVGV2N4sviuKANHR8sTMznLBziH3Q=
+ b=nWF1xIWot31eWzfxR17nutGbWUMT1Axl+7wQ6U5KUgC0/VOLhxPZpaM+lcdVmv6eV
+ z6jeFO8g01rSY4uT3W3IxxU5HE21aM+bvBgngsPnuMThkwlJw2R5tleUKqV+WgEVIp
+ 7kxXE0qUG2qjzXVrMti3Dd3Tgg4POKBIZKMdOsR4=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -41,21 +41,23 @@ Cc: qemu-block@nongnu.org, eduardo@habkost.net, berrange@redhat.com,
  pbonzini@redhat.com, armbru@redhat.com, eblake@redhat.com,
  devel@lists.libvirt.org, hreitz@redhat.com, kwolf@redhat.com,
  vsementsov@yandex-team.ru
-Subject: [PATCH v10 7/8] iotests: add filter-insertion
-Date: Mon, 19 Jan 2026 17:49:40 +0300
-Message-ID: <20260119144941.87936-8-vsementsov@yandex-team.ru>
+Subject: [PATCH v10 8/8] deprecate names duplication between qdev,
+ block-node and block-export
+Date: Mon, 19 Jan 2026 17:49:41 +0300
+Message-ID: <20260119144941.87936-9-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260119144941.87936-1-vsementsov@yandex-team.ru>
 References: <20260119144941.87936-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -72,255 +74,194 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Demonstrate new blockdev-replace API for filter insertion and removal.
+Now we have blockdev-replace QMP command, which depend on a possibility
+to select any block parent (block node, block export, or qdev) by one
+unique name. The command fails, if name is ambiguous (i.e., match
+several parents of different types). In future we want to rid of this
+ambiguity.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- tests/qemu-iotests/tests/filter-insertion     | 222 ++++++++++++++++++
- tests/qemu-iotests/tests/filter-insertion.out |   5 +
- 2 files changed, 227 insertions(+)
- create mode 100755 tests/qemu-iotests/tests/filter-insertion
- create mode 100644 tests/qemu-iotests/tests/filter-insertion.out
+ block.c                                     | 12 ++++++++++++
+ block/export/export.c                       | 13 +++++++++++++
+ docs/about/deprecated.rst                   | 10 ++++++++++
+ include/block/block-global-state.h          |  1 +
+ include/system/block-backend-global-state.h |  2 ++
+ stubs/blk-by-qdev-id.c                      |  5 +++++
+ stubs/blk-exp-find-by-blk.c                 |  4 ++++
+ system/qdev-monitor.c                       | 16 ++++++++++++++++
+ 8 files changed, 63 insertions(+)
 
-diff --git a/tests/qemu-iotests/tests/filter-insertion b/tests/qemu-iotests/tests/filter-insertion
-new file mode 100755
-index 0000000000..23e114f959
---- /dev/null
-+++ b/tests/qemu-iotests/tests/filter-insertion
-@@ -0,0 +1,222 @@
-+#!/usr/bin/env python3
-+#
-+# Tests for inserting and removing filters in a block graph.
-+#
-+# Copyright (c) 2022 Virtuozzo International GmbH.
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/block.c b/block.c
+index 8254d57212..5eae8b8623 100644
+--- a/block.c
++++ b/block.c
+@@ -1649,6 +1649,9 @@ static void bdrv_assign_node_name(BlockDriverState *bs,
+         goto out;
+     }
+ 
++    warn_device_exists(node_name);
++    warn_block_export_exists(node_name);
 +
-+import os
+     /* copy node name into the bs and insert it into the graph list */
+     pstrcpy(bs->node_name, sizeof(bs->node_name), node_name);
+     QTAILQ_INSERT_TAIL(&graph_bdrv_states, bs, node_list);
+@@ -6233,6 +6236,15 @@ BlockDriverState *bdrv_find_node(const char *node_name)
+     return NULL;
+ }
+ 
++void warn_block_node_exists(const char *node_name)
++{
++    if (bdrv_find_node(node_name)) {
++        warn_report("block node already exist with name '%s'. "
++                    "Ambigous identifiers are deprecated. "
++                    "In future that would be an error.", node_name);
++    }
++}
 +
-+import iotests
-+from iotests import qemu_img_create, try_remove
+ /* Put this QMP function here so it can access the static graph_bdrv_states. */
+ BlockDeviceInfoList *bdrv_named_nodes_list(bool flat,
+                                            Error **errp)
+diff --git a/block/export/export.c b/block/export/export.c
+index 9169b43e13..e65d1bec8e 100644
+--- a/block/export/export.c
++++ b/block/export/export.c
+@@ -23,6 +23,7 @@
+ #include "qapi/qapi-commands-block-export.h"
+ #include "qapi/qapi-events-block-export.h"
+ #include "qemu/id.h"
++#include "qemu/error-report.h"
+ #ifdef CONFIG_VHOST_USER_BLK_SERVER
+ #include "vhost-user-blk-server.h"
+ #endif
+@@ -108,6 +109,9 @@ BlockExport *blk_exp_add(BlockExportOptions *export, Error **errp)
+         return NULL;
+     }
+ 
++    warn_device_exists(export->id);
++    warn_block_node_exists(export->id);
 +
+     drv = blk_exp_find_driver(export->type);
+     if (!drv) {
+         error_setg(errp, "No driver found for the requested export type");
+@@ -384,6 +388,15 @@ BlockExportInfoList *qmp_query_block_exports(Error **errp)
+     return head;
+ }
+ 
++void warn_block_export_exists(const char *id)
++{
++    if (blk_exp_find(id)) {
++        warn_report("block-export already exist with name '%s'. "
++                    "Ambigous identifiers are deprecated. "
++                    "In future that would be an error.", id);
++    }
++}
 +
-+disk = os.path.join(iotests.test_dir, 'disk')
-+sock = os.path.join(iotests.sock_dir, 'sock')
-+size = 1024 * 1024
+ BlockBackend *blk_by_export_id(const char *id, Error **errp)
+ {
+     BlockExport *exp;
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 88efa3aa80..18bb1eeafc 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -551,3 +551,13 @@ command documentation for details on the ``fdset`` usage.
+ 
+ The ``zero-blocks`` capability was part of the block migration which
+ doesn't exist anymore since it was removed in QEMU v9.1.
 +
++Identifiers
++-----------
 +
-+class TestFilterInsertion(iotests.QMPTestCase):
-+    def setUp(self):
-+        qemu_img_create('-f', iotests.imgfmt, disk, str(size))
++Possibility to intersect qdev ids/paths, block node names, and block
++export names namespaces is deprecated. In future that would be
++abandoned and all block exports, block nodes and devices will have
++unique names. Now, reusing the name for another type of object (for
++example, creating block-node with node-name equal to existing qdev
++id) produce a warning.
+diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
+index ed89999f0f..ea50478fc4 100644
+--- a/include/block/block-global-state.h
++++ b/include/block/block-global-state.h
+@@ -207,6 +207,7 @@ void bdrv_aio_cancel(BlockAIOCB *acb);
+ int bdrv_has_zero_init_1(BlockDriverState *bs);
+ int coroutine_mixed_fn GRAPH_RDLOCK bdrv_has_zero_init(BlockDriverState *bs);
+ BlockDriverState *bdrv_find_node(const char *node_name);
++void warn_block_node_exists(const char *node_name);
+ BlockDeviceInfoList *bdrv_named_nodes_list(bool flat, Error **errp);
+ XDbgBlockGraph * GRAPH_RDLOCK bdrv_get_xdbg_block_graph(Error **errp);
+ BlockDriverState *bdrv_lookup_bs(const char *device,
+diff --git a/include/system/block-backend-global-state.h b/include/system/block-backend-global-state.h
+index f23b9f1518..69e6aee618 100644
+--- a/include/system/block-backend-global-state.h
++++ b/include/system/block-backend-global-state.h
+@@ -73,6 +73,8 @@ DeviceState *blk_get_attached_dev(BlockBackend *blk);
+ BlockBackend *blk_by_dev(void *dev);
+ BlockBackend *blk_by_qdev_id(const char *id, Error **errp);
+ BlockBackend *blk_by_export_id(const char *id, Error **errp);
++void warn_block_export_exists(const char *id);
++void warn_device_exists(const char *id);
+ void blk_set_dev_ops(BlockBackend *blk, const BlockDevOps *ops, void *opaque);
+ 
+ int blk_make_zero(BlockBackend *blk, BdrvRequestFlags flags);
+diff --git a/stubs/blk-by-qdev-id.c b/stubs/blk-by-qdev-id.c
+index 66ead77f4d..c83a2dde0d 100644
+--- a/stubs/blk-by-qdev-id.c
++++ b/stubs/blk-by-qdev-id.c
+@@ -11,3 +11,8 @@ BlockBackend *blk_by_qdev_id(const char *id, Error **errp)
+     error_setg(errp, "Parameter 'parent-type' does not accept value 'qdev'");
+     return NULL;
+ }
 +
-+        self.vm = iotests.VM()
-+        self.vm.launch()
++void warn_device_exists(const char *id)
++{
++    /* do nothing */
++}
+diff --git a/stubs/blk-exp-find-by-blk.c b/stubs/blk-exp-find-by-blk.c
+index 20f7ff1bdd..a98c4572fc 100644
+--- a/stubs/blk-exp-find-by-blk.c
++++ b/stubs/blk-exp-find-by-blk.c
+@@ -7,3 +7,7 @@ BlockExport *blk_exp_find_by_blk(BlockBackend *blk)
+     return NULL;
+ }
+ 
++void warn_block_export_exists(const char *id)
++{
++    /* do nothing */
++}
+diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
+index be18902bb2..67b9da952d 100644
+--- a/system/qdev-monitor.c
++++ b/system/qdev-monitor.c
+@@ -605,6 +605,8 @@ const char *qdev_set_id(DeviceState *dev, char *id, Error **errp)
+                                              OBJECT(dev), NULL);
+         if (prop) {
+             dev->id = id;
++            warn_block_export_exists(id);
++            warn_block_node_exists(id);
+         } else {
+             error_setg(errp, "Duplicate device ID '%s'", id);
+             g_free(id);
+@@ -903,6 +905,20 @@ static DeviceState *find_device_state(const char *id, bool use_generic_error,
+     return dev;
+ }
+ 
++void warn_device_exists(const char *id)
++{
++    Object *obj = object_resolve_path_at(qdev_get_peripheral(), id);
 +
-+        self.vm.cmd('blockdev-add', {
-+            'node-name': 'disk0',
-+            'driver': 'qcow2',
-+            'file': {
-+                'node-name': 'file0',
-+                'driver': 'file',
-+                'filename': disk
-+            }
-+        })
++    if (obj) {
++        DeviceState *dev = (DeviceState *)object_dynamic_cast(obj, TYPE_DEVICE);
 +
-+    def tearDown(self):
-+        self.vm.shutdown()
-+        os.remove(disk)
-+        try_remove(sock)
++        warn_report("%s '%s' already exist. "
++                    "Ambigous identifiers are deprecated. "
++                    "In future that would be an error.",
++                    dev ? "Device" : "Object", id);
++    }
++}
 +
-+    def test_simple_insertion(self):
-+        vm = self.vm
-+
-+        vm.cmd('blockdev-add', {
-+            'node-name': 'filter',
-+            'driver': 'blkdebug',
-+            'image': 'file0'
-+        })
-+
-+        vm.cmd('blockdev-replace', {
-+            'parent': 'disk0',
-+            'child': 'file',
-+            'new-child': 'filter'
-+        })
-+
-+        # Filter inserted:
-+        # disk0 -file-> filter -file-> file0
-+        vm.assert_edges_list([
-+            ('disk0', 'file', 'filter'),
-+            ('filter', 'image', 'file0')
-+        ])
-+
-+        vm.cmd('blockdev-replace', {
-+            'parent': 'disk0',
-+            'child': 'file',
-+            'new-child': 'file0'
-+        })
-+
-+        # Filter replaced, but still exists:
-+        # dik0 -file-> file0 <-file- filter
-+        vm.assert_edges_list([
-+            ('disk0', 'file', 'file0'),
-+            ('filter', 'image', 'file0')
-+        ])
-+
-+        vm.cmd('blockdev-del', node_name='filter')
-+
-+        # Filter removed
-+        # dik0 -file-> file0
-+        vm.assert_edges_list([
-+            ('disk0', 'file', 'file0')
-+        ])
-+
-+    def test_insert_under_qdev(self):
-+        vm = self.vm
-+
-+        vm.cmd('device_add', driver='virtio-scsi')
-+        vm.cmd('device_add', id='sda', driver='scsi-hd',
-+                     drive='disk0')
-+
-+        vm.cmd('blockdev-add', {
-+            'node-name': 'filter',
-+            'driver': 'compress',
-+            'file': 'disk0'
-+        })
-+
-+        vm.cmd('blockdev-replace', {
-+            'parent': 'sda',
-+            'child': 'root',
-+            'new-child': 'filter'
-+        })
-+
-+        # Filter inserted:
-+        # sda -root-> filter -file-> disk0 -file-> file0
-+        vm.assert_edges_list([
-+            # parent_node_name, child_name, child_node_name
-+            ('sda', 'root', 'filter'),
-+            ('filter', 'file', 'disk0'),
-+            ('disk0', 'file', 'file0'),
-+        ])
-+
-+        vm.cmd('blockdev-replace', {
-+            'parent': 'sda',
-+            'child': 'root',
-+            'new-child': 'disk0'
-+        })
-+        vm.cmd('blockdev-del', node_name='filter')
-+
-+        # Filter removed:
-+        # sda -root-> disk0 -file-> file0
-+        vm.assert_edges_list([
-+            # parent_node_name, child_name, child_node_name
-+            ('sda', 'root', 'disk0'),
-+            ('disk0', 'file', 'file0'),
-+        ])
-+
-+    def test_insert_under_nbd_export(self):
-+        vm = self.vm
-+
-+        vm.cmd('nbd-server-start',
-+                     addr={'type': 'unix', 'data': {'path': sock}})
-+        vm.cmd('block-export-add', id='exp1', type='nbd',
-+                     node_name='disk0', name='exp1')
-+        vm.cmd('block-export-add', id='exp2', type='nbd',
-+                     node_name='disk0', name='exp2')
-+        vm.cmd('object-add', qom_type='throttle-group',
-+                     id='tg', limits={'iops-read': 1})
-+
-+        vm.cmd('blockdev-add', {
-+            'node-name': 'filter',
-+            'driver': 'throttle',
-+            'throttle-group': 'tg',
-+            'file': 'disk0'
-+        })
-+
-+        vm.cmd('blockdev-replace', {
-+            'parent': 'exp1',
-+            'child': 'root',
-+            'new-child': 'filter'
-+        })
-+
-+        # Only exp1 is throttled, exp2 is not:
-+        # exp1 -root-> filter
-+        #                |
-+        #                |file
-+        #                v
-+        # exp2 -file-> disk0 -file> file0
-+        vm.assert_edges_list([
-+            # parent_node_name, child_name, child_node_name
-+            ('exp1', 'root', 'filter'),
-+            ('filter', 'file', 'disk0'),
-+            ('disk0', 'file', 'file0'),
-+            ('exp2', 'root', 'disk0')
-+        ])
-+
-+        vm.cmd('blockdev-replace', {
-+            'parent': 'exp2',
-+            'child': 'root',
-+            'new-child': 'filter'
-+        })
-+
-+        # Both throttled:
-+        # exp1 -root-> filter <-file- exp2
-+        #                |
-+        #                |file
-+        #                v
-+        #              disk0 -file> file0
-+        vm.assert_edges_list([
-+            # parent_node_name, child_name, child_node_name
-+            ('exp1', 'root', 'filter'),
-+            ('filter', 'file', 'disk0'),
-+            ('disk0', 'file', 'file0'),
-+            ('exp2', 'root', 'filter')
-+        ])
-+
-+        # Check, that filter is in use and can't be removed
-+        result = vm.qmp('blockdev-del', node_name='filter')
-+        self.assert_qmp(result, 'error/desc', 'Node filter is in use')
-+
-+        vm.cmd('blockdev-replace', {
-+            'parent': 'exp1',
-+            'child': 'root',
-+            'new-child': 'disk0'
-+        })
-+
-+        vm.cmd('blockdev-replace', {
-+            'parent': 'exp2',
-+            'child': 'root',
-+            'new-child': 'disk0'
-+        })
-+        vm.cmd('blockdev-del', node_name='filter')
-+
-+        # Filter removed:
-+        # exp1 -root-> disk0 <-file- exp2
-+        #                |
-+        #                |file
-+        #                v
-+        #              file0
-+        vm.assert_edges_list([
-+            # parent_node_name, child_name, child_node_name
-+            ('exp1', 'root', 'disk0'),
-+            ('disk0', 'file', 'file0'),
-+            ('exp2', 'root', 'disk0')
-+        ])
-+
-+
-+if __name__ == '__main__':
-+    iotests.main(
-+        supported_fmts=['qcow2'],
-+        supported_protocols=['file']
-+    )
-diff --git a/tests/qemu-iotests/tests/filter-insertion.out b/tests/qemu-iotests/tests/filter-insertion.out
-new file mode 100644
-index 0000000000..8d7e996700
---- /dev/null
-+++ b/tests/qemu-iotests/tests/filter-insertion.out
-@@ -0,0 +1,5 @@
-+...
-+----------------------------------------------------------------------
-+Ran 3 tests
-+
-+OK
+ void qdev_unplug(DeviceState *dev, Error **errp)
+ {
+     HotplugHandler *hotplug_ctrl;
 -- 
 2.52.0
 
