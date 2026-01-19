@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19296D3ACDD
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 15:52:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D24BBD3ACD5
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 15:51:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhqa2-0008GN-MP; Mon, 19 Jan 2026 09:50:10 -0500
+	id 1vhqa9-0008P5-8I; Mon, 19 Jan 2026 09:50:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vhqZm-0008Cj-LQ; Mon, 19 Jan 2026 09:49:57 -0500
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ id 1vhqZl-00089t-8W; Mon, 19 Jan 2026 09:49:56 -0500
+Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vhqZi-0008NI-F0; Mon, 19 Jan 2026 09:49:54 -0500
+ id 1vhqZi-0008NU-DA; Mon, 19 Jan 2026 09:49:53 -0500
 Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
  [IPv6:2a02:6b8:c0c:5a81:0:640:624e:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 09354C015A;
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id BAE788079C;
  Mon, 19 Jan 2026 17:49:46 +0300 (MSK)
 Received: from vsementsov-lin (unknown [2a02:6bf:8080:934::1:38])
  by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id gnaGbV0CCKo0-rU9v1UQW; Mon, 19 Jan 2026 17:49:45 +0300
+ ESMTPSA id gnaGbV0CCKo0-la3gfru8; Mon, 19 Jan 2026 17:49:46 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1768834185;
- bh=lXRrptFlJe5HYpQfYVtYh/snqUvBJmv+mKkgz5B5lJ0=;
+ s=default; t=1768834186;
+ bh=ltRcaqsFk9h/Orn1pinLuc7naJ9gQSmnjhdHrEohM+8=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=bgne+6IKMT1TLPu+XL3yyTUC5ac3xG7KlqSLDtErkDuvioxCBiX19jRksLlhddMsO
- cAekfRvEN7UQI9e0xHLbdAdxZcMPVe7cIt/vyl11lc808BBXI434YXIEqM1oQenqTk
- cTchKVQQhCHxa5PuIRjQ5jrPOi+1lIcVlN1icbXM=
+ b=TpRyjDEPIutqLbDapwdq62yVivK4M3yz+T9YUBJj1g8FdZqL9uYby6rQ+xnk8PFpz
+ hzSOY/NUnclPhQlcKe6WUzlOOVWQEUlnbGGTq5qgrXaMYgW+6CJ2fqEF1oIgKxRvmd
+ Y6SU17axKmxJuf4qkF3NQ3dK1y/t7uabBxsqwWTA=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -41,23 +40,23 @@ Cc: qemu-block@nongnu.org, eduardo@habkost.net, berrange@redhat.com,
  pbonzini@redhat.com, armbru@redhat.com, eblake@redhat.com,
  devel@lists.libvirt.org, hreitz@redhat.com, kwolf@redhat.com,
  vsementsov@yandex-team.ru
-Subject: [PATCH v10 2/8] block/export: add blk_by_export_id()
-Date: Mon, 19 Jan 2026 17:49:35 +0300
-Message-ID: <20260119144941.87936-3-vsementsov@yandex-team.ru>
+Subject: [PATCH v10 3/8] block: make bdrv_find_child() function public
+Date: Mon, 19 Jan 2026 17:49:36 +0300
+Message-ID: <20260119144941.87936-4-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260119144941.87936-1-vsementsov@yandex-team.ru>
 References: <20260119144941.87936-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,49 +72,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We need it for further blockdev-replace functionality.
+To be reused soon for blockdev-replace functionality.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- block/export/export.c                       | 15 +++++++++++++++
- include/system/block-backend-global-state.h |  1 +
- 2 files changed, 16 insertions(+)
+ block.c                      | 13 +++++++++++++
+ blockdev.c                   | 14 --------------
+ include/block/block_int-io.h |  2 ++
+ 3 files changed, 15 insertions(+), 14 deletions(-)
 
-diff --git a/block/export/export.c b/block/export/export.c
-index f3bbf11070..d11beb900f 100644
---- a/block/export/export.c
-+++ b/block/export/export.c
-@@ -370,3 +370,18 @@ BlockExportInfoList *qmp_query_block_exports(Error **errp)
- 
-     return head;
+diff --git a/block.c b/block.c
+index 48a17f393c..b13d06f709 100644
+--- a/block.c
++++ b/block.c
+@@ -8288,6 +8288,19 @@ int bdrv_make_empty(BdrvChild *c, Error **errp)
+     return 0;
  }
-+
-+BlockBackend *blk_by_export_id(const char *id, Error **errp)
+ 
++BdrvChild *bdrv_find_child(BlockDriverState *parent_bs, const char *child_name)
 +{
-+    BlockExport *exp;
++    BdrvChild *child;
 +
-+    exp = blk_exp_find(id);
-+    if (exp == NULL) {
-+        error_setg(errp, "Export '%s' not found", id);
-+        return NULL;
++    QLIST_FOREACH(child, &parent_bs->children, next) {
++        if (strcmp(child->name, child_name) == 0) {
++            return child;
++        }
 +    }
 +
-+    assert(exp->blk);
-+
-+    return exp->blk;
++    return NULL;
 +}
-diff --git a/include/system/block-backend-global-state.h b/include/system/block-backend-global-state.h
-index a438f21dff..f23b9f1518 100644
---- a/include/system/block-backend-global-state.h
-+++ b/include/system/block-backend-global-state.h
-@@ -72,6 +72,7 @@ void blk_detach_dev(BlockBackend *blk, DeviceState *dev);
- DeviceState *blk_get_attached_dev(BlockBackend *blk);
- BlockBackend *blk_by_dev(void *dev);
- BlockBackend *blk_by_qdev_id(const char *id, Error **errp);
-+BlockBackend *blk_by_export_id(const char *id, Error **errp);
- void blk_set_dev_ops(BlockBackend *blk, const BlockDevOps *ops, void *opaque);
++
+ /*
+  * Return the child that @bs acts as an overlay for, and from which data may be
+  * copied in COW or COR operations.  Usually this is the backing file.
+diff --git a/blockdev.c b/blockdev.c
+index 6e86c6262f..2540f991b3 100644
+--- a/blockdev.c
++++ b/blockdev.c
+@@ -3569,20 +3569,6 @@ unlock:
+     }
+ }
  
- int blk_make_zero(BlockBackend *blk, BdrvRequestFlags flags);
+-static BdrvChild * GRAPH_RDLOCK
+-bdrv_find_child(BlockDriverState *parent_bs, const char *child_name)
+-{
+-    BdrvChild *child;
+-
+-    QLIST_FOREACH(child, &parent_bs->children, next) {
+-        if (strcmp(child->name, child_name) == 0) {
+-            return child;
+-        }
+-    }
+-
+-    return NULL;
+-}
+-
+ void qmp_x_blockdev_change(const char *parent, const char *child,
+                            const char *node, Error **errp)
+ {
+diff --git a/include/block/block_int-io.h b/include/block/block_int-io.h
+index ed8b5657d6..8ff3bc6d87 100644
+--- a/include/block/block_int-io.h
++++ b/include/block/block_int-io.h
+@@ -130,6 +130,8 @@ bdrv_co_refresh_total_sectors(BlockDriverState *bs, int64_t hint);
+ int co_wrapper_mixed_bdrv_rdlock
+ bdrv_refresh_total_sectors(BlockDriverState *bs, int64_t hint);
+ 
++BdrvChild * GRAPH_RDLOCK
++bdrv_find_child(BlockDriverState *parent_bs, const char *child_name);
+ BdrvChild * GRAPH_RDLOCK bdrv_cow_child(BlockDriverState *bs);
+ BdrvChild * GRAPH_RDLOCK bdrv_filter_child(BlockDriverState *bs);
+ BdrvChild * GRAPH_RDLOCK bdrv_filter_or_cow_child(BlockDriverState *bs);
 -- 
 2.52.0
 
