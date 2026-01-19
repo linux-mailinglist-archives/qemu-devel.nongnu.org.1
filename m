@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87E37D3B9F6
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 22:29:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EEBDD3BA00
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 22:30:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhwob-0003vm-WF; Mon, 19 Jan 2026 16:29:38 -0500
+	id 1vhwp2-0005z0-5M; Mon, 19 Jan 2026 16:30:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vhwnl-0002Mf-Et
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:28:47 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vhwnn-0002Oa-8a
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:28:48 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vhwni-000827-0Y
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:28:44 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1vhwnj-000847-Pu
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 16:28:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768858117;
+ s=mimecast20190719; t=1768858121;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Aa8jNgCx/I9mgq+axY3IkSlZYtf4Rh/XsWbodmDUPaQ=;
- b=dc9MS4p1DrSCN79cD4bOFglD15CMKlCUqhwhbcKwaiCoUFyK5rga/TiS1/5DbCKp0GRcAg
- BRTkLRLOhRPlIJRABWvxdeeHWQUD9wPrzaYNWwgNAS9VvLRQvyUUrF2fX6FNc0IcdM0L4C
- f1nYXOE9G9DUHetpyfs97zFmXs24bEY=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=CsQrTEcN9Hns4oSyVxG40f0aNlBrrfDnWF2j79Eoezo=;
+ b=LnOSrq7pmmsJbtOtbVurFEwz2AhIs0tV2vSbybukHGoCYayGLCTPRDLzSK9pikfGcVB9Q1
+ GF9Q+AQDHpJe0YAuicifE/qTX33Ee2ihxWy7pRZUL7oQf8nsv6+eWxFT+3U2RXSmIr7MLH
+ 2fVQRoBVhPLmJGeF/DR/kSrNZYOI8ak=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-15-IOM3sle_Of6A6-zHVsVnSQ-1; Mon,
- 19 Jan 2026 16:28:34 -0500
-X-MC-Unique: IOM3sle_Of6A6-zHVsVnSQ-1
-X-Mimecast-MFC-AGG-ID: IOM3sle_Of6A6-zHVsVnSQ_1768858112
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-101-8T_iaa1QOWWiudWV2cYqAw-1; Mon,
+ 19 Jan 2026 16:28:37 -0500
+X-MC-Unique: 8T_iaa1QOWWiudWV2cYqAw-1
+X-Mimecast-MFC-AGG-ID: 8T_iaa1QOWWiudWV2cYqAw_1768858115
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3CB721954B06; Mon, 19 Jan 2026 21:28:32 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8A23818005B0; Mon, 19 Jan 2026 21:28:35 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.170])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 54F7619560AB; Mon, 19 Jan 2026 21:28:29 +0000 (UTC)
+ id 7485319560AB; Mon, 19 Jan 2026 21:28:32 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -59,9 +59,9 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v4 06/17] tests: Use configured python to run GitLab iotests
-Date: Mon, 19 Jan 2026 16:27:32 -0500
-Message-ID: <20260119212744.1275455-7-jsnow@redhat.com>
+Subject: [PATCH v4 07/17] tests: use "run" script to execute device-crash-test
+Date: Mon, 19 Jan 2026 16:27:33 -0500
+Message-ID: <20260119212744.1275455-8-jsnow@redhat.com>
 In-Reply-To: <20260119212744.1275455-1-jsnow@redhat.com>
 References: <20260119212744.1275455-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -76,7 +76,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.016,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,45 +92,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-use the configured python (and the pyvenv) to run iotests instead of the
-system default python3 interpreter. Use the new "run" script in the
-build directory to execute the command inside the meson developer
-environment, templated in qemu.git/run.in.
+Instead of invoking python from the configure venv manually, instruct
+developers to use the "run" script instead. Change the test invocation
+to be a good example going forward.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- .gitlab-ci.d/buildtest.yml | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ .gitlab-ci.d/buildtest.yml | 6 +++---
+ scripts/device-crash-test  | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index e9b5b05e6e8..4c280dd29bc 100644
+index 4c280dd29bc..b2db70ff904 100644
 --- a/.gitlab-ci.d/buildtest.yml
 +++ b/.gitlab-ci.d/buildtest.yml
-@@ -350,15 +350,15 @@ build-tcg-disabled:
-     - make -j"$JOBS"
-     - make check-unit
-     - make check-qapi-schema
--    - cd tests/qemu-iotests/
--    - ./check -raw 001 002 003 004 005 008 009 010 011 012 021 025 032 033 048
--            052 063 077 086 101 104 106 113 148 150 151 152 157 159 160 163
--            170 171 184 192 194 208 221 226 227 236 253 277 image-fleecing
--    - ./check -qcow2 028 051 056 057 058 065 068 082 085 091 095 096 102 122
--            124 132 139 142 144 145 151 152 155 157 165 194 196 200 202
--            208 209 216 218 227 234 246 247 248 250 254 255 257 258
--            260 261 262 263 264 270 272 273 277 279 image-fleecing
--    - cd ../..
-+    - ./run tests/qemu-iotests/check -raw 001 002 003 004 005 008 009
-+            010 011 012 021 025 032 033 048 052 063 077 086 101 104 106
-+            113 148 150 151 152 157 159 160 163 170 171 184 192 194 208
-+            221 226 227 236 253 277 image-fleecing
-+    - ./run tests/qemu-iotests/check -qcow2 028 051 056 057 058 065 068
-+            082 085 091 095 096 102 122 124 132 139 142 144 145 151 152
-+            155 157 165 194 196 200 202 208 209 216 218 227 234 246 247
-+            248 250 254 255 257 258 260 261 262 263 264 270 272 273 277
-+            279 image-fleecing
-     - make distclean
+@@ -102,7 +102,7 @@ crash-test-debian:
+   script:
+     - cd build
+     - make NINJA=":" check-venv
+-    - pyvenv/bin/python3 scripts/device-crash-test -q --tcg-only ./qemu-system-i386
++    - ./run scripts/device-crash-test -q --tcg-only ./qemu-system-i386
  
- build-user:
+ build-system-fedora:
+   extends:
+@@ -159,8 +159,8 @@ crash-test-fedora:
+   script:
+     - cd build
+     - make NINJA=":" check-venv
+-    - pyvenv/bin/python3 scripts/device-crash-test -q ./qemu-system-ppc
+-    - pyvenv/bin/python3 scripts/device-crash-test -q ./qemu-system-riscv32
++    - ./run scripts/device-crash-test -q ./qemu-system-ppc
++    - ./run scripts/device-crash-test -q ./qemu-system-riscv32
+ 
+ build-system-centos:
+   extends:
+diff --git a/scripts/device-crash-test b/scripts/device-crash-test
+index f97d9909c05..8a91dcaee31 100755
+--- a/scripts/device-crash-test
++++ b/scripts/device-crash-test
+@@ -42,7 +42,7 @@ except ModuleNotFoundError as exc:
+     print(f"Module '{exc.name}' not found.")
+     print("  Try 'make check-venv' from your build directory,")
+     print("  and then one way to run this script is like so:")
+-    print(f'  > $builddir/pyvenv/bin/python3 "{path}"')
++    print(f'  > $builddir/run "{path}"')
+     sys.exit(1)
+ 
+ logger = logging.getLogger('device-crash-test')
 -- 
 2.52.0
 
