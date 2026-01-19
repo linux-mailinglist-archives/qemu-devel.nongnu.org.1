@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38882D3B643
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 19:54:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46034D3B649
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jan 2026 19:55:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vhuNR-0006t8-GE; Mon, 19 Jan 2026 13:53:25 -0500
+	id 1vhuNS-00071X-5c; Mon, 19 Jan 2026 13:53:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vhuN2-0006KW-Nd
+ id 1vhuN3-0006Km-BP
  for qemu-devel@nongnu.org; Mon, 19 Jan 2026 13:53:01 -0500
-Received: from forwardcorp1d.mail.yandex.net
- ([2a02:6b8:c41:1300:1:45:d181:df01])
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1vhuN0-0005u9-WF
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 13:53:00 -0500
+ id 1vhuN1-0005uV-Na
+ for qemu-devel@nongnu.org; Mon, 19 Jan 2026 13:53:01 -0500
 Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
  [IPv6:2a02:6b8:c0c:5c05:0:640:ff67:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id AA5778076E;
- Mon, 19 Jan 2026 21:52:57 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 64CC98863C;
+ Mon, 19 Jan 2026 21:52:58 +0300 (MSK)
 Received: from vsementsov-lin (unknown [2a02:6bf:8080:934::1:38])
  by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id dqetGa1BQGk0-CiWFGwtZ; Mon, 19 Jan 2026 21:52:57 +0300
+ ESMTPSA id dqetGa1BQGk0-JHmy9Ipu; Mon, 19 Jan 2026 21:52:57 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1768848777;
- bh=pPhptMC/ns/zstRN0CmUZAxzpqQHrHM1w7CB4RzM8S4=;
+ bh=lLXxusRw2YZVf5A40u70o3SKR8jxXl1iK3azs8RLRWQ=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=W6qVRJeWdreVPGQzrN4GPyGhooBibBXkSQLYSP0jUWv0vtDRgjgGl2nqrYwNCUHMJ
- 7V3Mt6iWGEuZXggL5ZBdkF7vgJs/1qM5vjsG2kVUI8XmcAV4UA6R+KlcFoFN59vfsz
- 7fm/Yc++7fn6QjxPIP1KV1XeJvcw/liLlr6xGnd8=
+ b=yX8qGZ3bMjs3kCw0obZq1JH8NSo1usY0DiV+x++swBA3HGMEOVBthttLmvICHD6XU
+ fIN7wSCXztj9Ox8rkxfctvA8Ks1gMa3QE0SXm8tb3BNjqTfyNpRc1ew8bq/87dvu69
+ njGj4QB0KIDWmVRyIp1gmyo+UuT98G9GjwqJxcyc=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -43,16 +43,17 @@ To: mst@redhat.com
 Cc: sgarzare@redhat.com, raphael@enfabrica.net, qemu-devel@nongnu.org,
  vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
  d-tatianin@yandex-team.ru, Raphael Norwitz <raphael.s.norwitz@gmail.com>
-Subject: [PATCH v4 17/23] vhost: simplify vhost_dev_init() error-path
-Date: Mon, 19 Jan 2026 21:52:21 +0300
-Message-ID: <20260119185228.203296-18-vsementsov@yandex-team.ru>
+Subject: [PATCH v4 18/23] vhost: move busyloop timeout initialization to
+ vhost_virtqueue_init()
+Date: Mon, 19 Jan 2026 21:52:22 +0300
+Message-ID: <20260119185228.203296-19-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260119185228.203296-1-vsementsov@yandex-team.ru>
 References: <20260119185228.203296-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c41:1300:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -73,63 +74,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-No reason to rollback setting up busyloop timeout on failure.
-We don't do such rollback for other things we setup in backend.
-Also, look at vhost_net_init() in hw/net/vhost_net.c: we may fail
-after successfully called vhost_dev_init(), and in this case we'll
-just call vhost_dev_cleanup(), which doesn't rollback busyloop
-timeout.
-
-So, let's keep it simple.
+Let's all per-virtqueue initializations be in one place.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Acked-by: Raphael Norwitz <raphael.s.norwitz@gmail.com>
+Reviewed-by: Raphael Norwitz <raphael.s.norwitz@gmail.com>
 Reviewed-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
 ---
- hw/virtio/vhost.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ hw/virtio/vhost.c | 25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
 diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 7efdc4643d..412bbd9063 100644
+index 412bbd9063..b9f26a4ee8 100644
 --- a/hw/virtio/vhost.c
 +++ b/hw/virtio/vhost.c
-@@ -1625,7 +1625,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-                                                      busyloop_timeout);
-             if (r < 0) {
-                 error_setg_errno(errp, -r, "Failed to set busyloop timeout");
--                goto fail_busyloop;
-+                goto fail;
-             }
-         }
-     }
-@@ -1665,7 +1665,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-     if (hdev->migration_blocker != NULL) {
-         r = migrate_add_blocker_normal(&hdev->migration_blocker, errp);
-         if (r < 0) {
--            goto fail_busyloop;
-+            goto fail;
-         }
+@@ -1497,7 +1497,8 @@ static void vhost_virtqueue_error_notifier(EventNotifier *n)
+ }
+ 
+ static int vhost_virtqueue_init(struct vhost_dev *dev,
+-                                struct vhost_virtqueue *vq, int n)
++                                struct vhost_virtqueue *vq, int n,
++                                bool busyloop_timeout)
+ {
+     int vhost_vq_index = dev->vhost_ops->vhost_get_vq_index(dev, n);
+     struct vhost_vring_file file = {
+@@ -1534,6 +1535,14 @@ static int vhost_virtqueue_init(struct vhost_dev *dev,
+                                    vhost_virtqueue_error_notifier);
      }
  
-@@ -1697,17 +1697,11 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-                    " than current number of used (%d) and reserved (%d)"
-                    " memory slots for memory devices.", limit, used, reserved);
-         r = -EINVAL;
--        goto fail_busyloop;
-+        goto fail;
-     }
- 
++    if (busyloop_timeout) {
++        r = vhost_virtqueue_set_busyloop_timeout(dev, n, busyloop_timeout);
++        if (r < 0) {
++            VHOST_OPS_DEBUG(r, "Failed to set busyloop timeout");
++            goto fail_err;
++        }
++    }
++
      return 0;
  
--fail_busyloop:
+ fail_err:
+@@ -1612,24 +1621,14 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+     }
+ 
+     for (i = 0; i < hdev->nvqs; ++i, ++n_initialized_vqs) {
+-        r = vhost_virtqueue_init(hdev, hdev->vqs + i, hdev->vq_index + i);
++        r = vhost_virtqueue_init(hdev, hdev->vqs + i, hdev->vq_index + i,
++                                 busyloop_timeout);
+         if (r < 0) {
+             error_setg_errno(errp, -r, "Failed to initialize virtqueue %d", i);
+             goto fail;
+         }
+     }
+ 
 -    if (busyloop_timeout) {
--        while (--i >= 0) {
--            vhost_virtqueue_set_busyloop_timeout(hdev, hdev->vq_index + i, 0);
+-        for (i = 0; i < hdev->nvqs; ++i) {
+-            r = vhost_virtqueue_set_busyloop_timeout(hdev, hdev->vq_index + i,
+-                                                     busyloop_timeout);
+-            if (r < 0) {
+-                error_setg_errno(errp, -r, "Failed to set busyloop timeout");
+-                goto fail;
+-            }
 -        }
 -    }
- fail:
-     hdev->nvqs = n_initialized_vqs;
-     vhost_dev_cleanup(hdev);
+-
+     virtio_features_copy(hdev->_features_ex, features);
+ 
+     hdev->memory_listener = (MemoryListener) {
 -- 
 2.52.0
 
