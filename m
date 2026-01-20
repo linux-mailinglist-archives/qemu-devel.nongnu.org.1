@@ -2,75 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iIJCJhO2b2nHMAAAu9opvQ
+	id 4J5MDNmvb2nMKgAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:06:27 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:39:53 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CB0248410
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:06:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D44F347C37
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:39:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viAkN-0005jJ-0S; Tue, 20 Jan 2026 07:22:11 -0500
+	id 1viAyw-0001Rr-S1; Tue, 20 Jan 2026 07:37:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1viAje-0005Ls-FC
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 07:21:30 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1viAya-0001OH-Mo; Tue, 20 Jan 2026 07:36:53 -0500
+Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1viAjb-0008F8-Lx
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 07:21:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768911682;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=ShMc2XHbUAPIbnNN5HY4lv4NPM3nDKydBPkK/9xe5Zg=;
- b=UW/574At3lZU/o4QyW+ayzC6kWX28fvGWTSYGQAbAreDJR2FOBHK+Rt0Qbys6EcCC66S2E
- 5wi/CcjfNu2/b5lDzOT19Fo3DBlbiZ583XnvikLqwQ2m+4WFDHEP9xiEBLgdbkdcfqYUWf
- k5GuH9INUsSJ2oK7hXFLBNFJxp4JKVI=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-442-zrtLTfGNPN-r8amCIVfXZg-1; Tue,
- 20 Jan 2026 07:21:16 -0500
-X-MC-Unique: zrtLTfGNPN-r8amCIVfXZg-1
-X-Mimecast-MFC-AGG-ID: zrtLTfGNPN-r8amCIVfXZg_1768911675
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EF10F18005A7; Tue, 20 Jan 2026 12:21:14 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.45.226.98])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D8A1B30001A2; Tue, 20 Jan 2026 12:21:10 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
- qemu-arm@nongnu.org
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-devel@nongnu.org
-Subject: [PATCH] hw/arm: Move the "arm-cpu" compat settings out of
- hw/core/machine.c
-Date: Tue, 20 Jan 2026 13:21:08 +0100
-Message-ID: <20260120122108.131708-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1viAyY-0002U6-FA; Tue, 20 Jan 2026 07:36:52 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 8F7231802BF;
+ Tue, 20 Jan 2026 15:21:33 +0300 (MSK)
+Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 1331B351748;
+ Tue, 20 Jan 2026 15:21:51 +0300 (MSK)
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: Michael Tokarev <mjt@tls.msk.ru>,
+	qemu-trivial@nongnu.org
+Subject: [PULL 0/9] Trivial patches for 2026-01-20
+Date: Tue, 20 Jan 2026 15:21:37 +0300
+Message-ID: <20260120122150.2254321-1-mjt@tls.msk.ru>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.087,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,112 +60,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
-X-Spamd-Result: default: False [1.79 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [0.49 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.20)[mailman];
 	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:peter.maydell@linaro.org,m:philmd@linaro.org,m:wangyanan55@huawei.com,m:zhao1.liu@intel.com,m:qemu-arm@nongnu.org,m:eduardo@habkost.net,m:marcel.apfelbaum@gmail.com,m:qemu-devel@nongnu.org,m:marcelapfelbaum@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[thuth@redhat.com,qemu-devel-bounces@nongnu.org];
-	FORWARDED(0.00)[qemu-devel@nongnu.org];
-	FREEMAIL_CC(0.00)[habkost.net,gmail.com,nongnu.org];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[thuth@redhat.com,qemu-devel-bounces@nongnu.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TAGGED_RCPT(0.00)[qemu-devel];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MISSING_XM_UA(0.00)[];
+	ARC_NA(0.00)[];
 	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo]
-X-Rspamd-Queue-Id: 4CB0248410
+	DMARC_NA(0.00)[tls.msk.ru];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	R_DKIM_NA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	FROM_NEQ_ENVFROM(0.00)[mjt@tls.msk.ru,qemu-devel-bounces@nongnu.org];
+	FROM_HAS_DN(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tls.msk.ru:mid,gitlab.com:url,lists.gnu.org:rdns,lists.gnu.org:helo]
+X-Rspamd-Queue-Id: D44F347C37
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Thomas Huth <thuth@redhat.com>
+The following changes since commit 38879a667fbb4ef54c70de71494882615f600a64:
 
-The hw_compat_* arrays in hw/core/machine.c should be used for generic
-compat settings that might affect all (or at least multiple) machines.
-Target specific settings should rather go into the target specific
-source files instead. For arm/aarch64, the virt machine is the only
-one that cares about compat settings, so move the "arm-cpu" related
-switches to hw/arm/virt.c now.
+  Merge tag 'pull-tcg-20260119' of https://gitlab.com/rth7680/qemu into staging (2026-01-19 09:04:31 +1100)
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- hw/arm/virt.c     | 10 ++++++++++
- hw/core/machine.c |  2 --
- 2 files changed, 10 insertions(+), 2 deletions(-)
+are available in the Git repository at:
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 4badc1a7348..99040e08f6a 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -3571,8 +3571,13 @@ DEFINE_VIRT_MACHINE(10, 0)
- 
- static void virt_machine_9_2_options(MachineClass *mc)
- {
-+    static GlobalProperty compat_9_2[] = {
-+        { "arm-cpu", "backcompat-pauth-default-use-qarma5", "true"},
-+    };
-+
-     virt_machine_10_0_options(mc);
-     compat_props_add(mc->compat_props, hw_compat_9_2, hw_compat_9_2_len);
-+    compat_props_add(mc->compat_props, compat_9_2, G_N_ELEMENTS(compat_9_2));
- }
- DEFINE_VIRT_MACHINE(9, 2)
- 
-@@ -3589,9 +3594,14 @@ DEFINE_VIRT_MACHINE(9, 1)
- 
- static void virt_machine_9_0_options(MachineClass *mc)
- {
-+    static GlobalProperty compat_9_0[] = {
-+        { "arm-cpu", "backcompat-cntfrq", "true" },
-+    };
-+
-     virt_machine_9_1_options(mc);
-     mc->smbios_memory_device_size = 16 * GiB;
-     compat_props_add(mc->compat_props, hw_compat_9_0, hw_compat_9_0_len);
-+    compat_props_add(mc->compat_props, compat_9_0, G_N_ELEMENTS(compat_9_0));
- }
- DEFINE_VIRT_MACHINE(9, 0)
- 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 6411e68856b..1c1de7b5d18 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -59,7 +59,6 @@ GlobalProperty hw_compat_10_0[] = {
- const size_t hw_compat_10_0_len = G_N_ELEMENTS(hw_compat_10_0);
- 
- GlobalProperty hw_compat_9_2[] = {
--    { "arm-cpu", "backcompat-pauth-default-use-qarma5", "true"},
-     { "virtio-balloon-pci", "vectors", "0" },
-     { "virtio-balloon-pci-transitional", "vectors", "0" },
-     { "virtio-balloon-pci-non-transitional", "vectors", "0" },
-@@ -76,7 +75,6 @@ GlobalProperty hw_compat_9_1[] = {
- const size_t hw_compat_9_1_len = G_N_ELEMENTS(hw_compat_9_1);
- 
- GlobalProperty hw_compat_9_0[] = {
--    { "arm-cpu", "backcompat-cntfrq", "true" },
-     { "scsi-hd", "migrate-emulated-scsi-request", "false" },
-     { "scsi-cd", "migrate-emulated-scsi-request", "false" },
-     { "vfio-pci", "skip-vsc-check", "false" },
--- 
-2.52.0
+  https://gitlab.com/mjt0k/qemu.git tags/pull-trivial-patches
 
+for you to fetch changes up to 83017c4aaa9e3ef80161443019764196dffdb654:
+
+  linux-user/aarch64/target_fcntl.h: add missing TARGET_O_LARGEFILE definition (2026-01-20 15:21:08 +0300)
+
+----------------------------------------------------------------
+trivial patches for 2026-01-20
+
+----------------------------------------------------------------
+Florian Hofhammer (1):
+      configure: add ppc target back to container tests
+
+Julian Ganz (1):
+      tests: fix comment declaring runtime in rv64 interruptedmemory test
+
+Michael Tokarev (3):
+      Revert "gdbstub: Try unlinking the unix socket before binding"
+      gdbstub: unlink the unix socket before bind()
+      qemu-options.hx: use KiB, MiB, GiB for power-of-2 units
+
+Pierrick Bouvier (1):
+      linux-user/aarch64/target_fcntl.h: add missing TARGET_O_LARGEFILE definition
+
+Thomas Huth (3):
+      configure: Set $PYTHON in the configuration of the optionroms
+      tests/qemu-iotests: Use "gsed" for expressions that require GNU sed
+      MAINTAINERS: Add docs/system/i386/ to the general x86 architecture section
+
+ MAINTAINERS                           |  1 +
+ configure                             |  3 ++-
+ gdbstub/user.c                        | 30 +++++++++++++++++++++++++++---
+ linux-user/aarch64/target_fcntl.h     |  1 +
+ qemu-options.hx                       | 20 ++++++++++----------
+ stubs/meson.build                     |  2 --
+ tests/qemu-iotests/286                |  2 +-
+ tests/qemu-iotests/common.rc          |  2 +-
+ tests/tcg/riscv64/interruptedmemory.S |  2 +-
+ util/meson.build                      |  2 --
+ 10 files changed, 44 insertions(+), 21 deletions(-)
 
