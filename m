@@ -2,112 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mBx0LPLHb2mgMQAAu9opvQ
+	id 6OU/C3u/b2kOMQAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:22:42 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:46:35 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26009495F2
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:22:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9453948CE3
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:46:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vi9a3-0000PD-BV; Tue, 20 Jan 2026 06:07:27 -0500
+	id 1vi9dx-0007ay-Qv; Tue, 20 Jan 2026 06:11:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1vi9a1-0000Ow-9J
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 06:07:25 -0500
+ id 1vi9dq-0007YH-Vx
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 06:11:23 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1vi9Zz-0003ob-6r
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 06:07:24 -0500
+ id 1vi9do-0004V3-R9
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 06:11:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768907241;
+ s=mimecast20190719; t=1768907480;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=J+D9rSUXqfsXN9SEQp7srK755p+CLrSem0MTmOU+OhI=;
- b=MlIPWSbZRfsiOyxqsVgOVUMtrjUN9Ij0TlEQ4PuotATxvTWCEE5afWDM+JFibTVq/LVmUh
- GAvRLkhyHY/NXJTwgzuSycao7j3NChDq88g47ElBbFmZ5gtIFli8hKH6H3V0FNvcdXsQoP
- u2LyLYCYTdKQU3cDDpW/b6R89esyvaE=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=TxS1R7yv0cCAnM2W2jf0MASw9kSOSzlNKXyFYinRKFI=;
+ b=XVIH0S3CU+r+8DvA5U8jk0khF6M5J7/95x6jzAglSNzqQ/BD4lKjSHUlgl01+K5BLuizBe
+ Rhd5ERd0pp5okhaVjV3VehLaY7myrYbOTKlcT76Kf5mL94sApLvAq8TvJcnyMMvmmI1w3i
+ Y9/N78afM1TKNuQcUpqEd3Lo5MJTtPs=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-584-kb_S-pWiNlOXZQ2FGMafWg-1; Tue, 20 Jan 2026 06:07:20 -0500
-X-MC-Unique: kb_S-pWiNlOXZQ2FGMafWg-1
-X-Mimecast-MFC-AGG-ID: kb_S-pWiNlOXZQ2FGMafWg_1768907239
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-43102ac1da8so4408551f8f.2
- for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 03:07:20 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768907238; cv=none;
+ us-mta-86-erNxWxDIM5yLc8778TikYw-1; Tue, 20 Jan 2026 06:11:18 -0500
+X-MC-Unique: erNxWxDIM5yLc8778TikYw-1
+X-Mimecast-MFC-AGG-ID: erNxWxDIM5yLc8778TikYw_1768907477
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-477c49f273fso49301995e9.3
+ for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 03:11:18 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768907477; cv=none;
  d=google.com; s=arc-20240605;
- b=HqjP/CMVY6NAjP3dOA8nHNEbOOF4fRR3gDs4ax+iACturw36UmoNijhFC7O4d5dj9x
- TgzgIXeIdytS2DMPFVE6+v2xRJxyu63CDew0v/zR9Pdm/8ikzQjJOA1Oii+LV1rHqyih
- ZJEVVYQGAFFXcmxzq4klBkgjmOxekW0qr3nQBK0WBoPi7Y8MRXClO1VAe8e/89pQ2LUZ
- BkiPFMsRpmW0udN2DWWa4UVZ9/C42cdmlObzgnh+CgDVFSzcKrmKNWEcIrPrcP2Xt9Lb
- Ycgl36V5g8d1TccSqlIIMee6aZOzimQc+ymGjh8ortELAkrd2aPWpDYv6V2o4f5hr70r
- 4fIg==
+ b=QHOovfv85AiF3gwbvCCKqUecpjgXnHLHnhOagtumTgYp3oxBQ584Cji/i+MaXF60Jd
+ 4cQXPhXJ8Ma2EjD9XI/favAxGLAtudj9628dXY0VqQyj5USSqyKdQuAQxOb8fBHEKw5D
+ jju/e8RC7rnpy1AMMhHAq0GbHtGHkVDoLcDciWy4pjQnU5xhsoIYedwobLy0DxB2qH/D
+ MCHaaIhBAW16BFh/zfrW6J/nbSrQzf8ekKwcGSB2EwBEbdBL+vhaHj7TePckm9kSN/9R
+ qCy/By56whZSgD3viOYHUM21puCZJmMmYwnQLXsLjrqYTUAf0bYBOQTlA0vCDD62frpz
+ YAqA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
  s=arc-20240605; 
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:dkim-signature;
- bh=J+D9rSUXqfsXN9SEQp7srK755p+CLrSem0MTmOU+OhI=;
+ bh=TxS1R7yv0cCAnM2W2jf0MASw9kSOSzlNKXyFYinRKFI=;
  fh=SJ3HPovJyRUvRbjEYgfW8f8/HsJC2a+l/HOVRBs3/Wg=;
- b=cNEqA2EkGm9H08lHCFyf8AhWkdgSPoiiKZsd/xLq5wm71KuxziPDuPbLbQAchG/b8p
- uadBInIlvxrgYJLZ8dFPojXS1HRZs7pdu+dg7PPResYv+SAV3IKyLAzskuKzhPgdpvsF
- ee0PEqfOVbvqGqAsa39h94UvhQiQBJvUQsyRGoKJPYZ6fwDL0u/cDlvdfx7Jaj+wLBcQ
- H260n0YnalI0rc7cYZ9clpEpR1AXyOXLDWJXTt7DLpGgn5e+XWnrw8jARa82KZr8WCEh
- H7HJ+Qct9x1a80/dqiUaA4OaVtfOswtwLbZFUqZr1CFfQKjN8wze8FSynAwktkZJoMhX
- uKUw==; darn=nongnu.org
+ b=ZiyPYuEX3kYw+ygheOZitZmqiyEBtyVjEc3M/IT3S/yP1ad3rru9hi6HVvWto9kfHV
+ sem7XxroVDALPok4HJBtfmz1FW0yts0O0OaKishywzVvcMzGm0NMxPJlAOyS+e+amJu0
+ JxjZmE1cgDpP3HQm83FHAzDGKzrMB7CKr+ygVawYNEbU5B6RIJGI91+otokHHsDrpMqX
+ 35WqzRtRbKUmJvOZdxECuhIOjIYuTWPki7zcap9SZg69EXz/r7hEKZaLNRHIxSyizNl7
+ roJt5Z6CcRPTGVnMUu+qry0ApgyjqgQ0Z1SKbsg4w8SZkgnoZ2GtyOYgRJ/jN5ccYPrZ
+ D2KQ==; darn=nongnu.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768907238; x=1769512038; darn=nongnu.org;
+ d=redhat.com; s=google; t=1768907477; x=1769512277; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=J+D9rSUXqfsXN9SEQp7srK755p+CLrSem0MTmOU+OhI=;
- b=gu59Xh6uRLcnKVBpXFOgDntJSiK8t8JpuI0Esv2GHPwzmdpYHAwEFIVfEqUerUYGOk
- hcDmqHYVzgFGQDXc3glhnBdfDdSjkdHZsqpwM2JAFGJn0Y1BmFq0urUjNeEfzowvsU2g
- OZN02soj9zHG8oT2VroEZiCG4VQ4bR1JfqEHo+VlRDmzZQF/U+JD17+EwycvzczKI0E7
- l1jiEtjKV81frwfMaeVTjMvnCW6ZvhDm5iaOkZwX2kwjaOMqe+2g5dMYjNA9er/g/+Kn
- Hot570AyHaAt1ETzhlmZN5DTLVc1YwZ4BiV1BnN/xj3VjtXTZ8BNqa1Ziw4D1JIO0XBB
- XTAg==
+ bh=TxS1R7yv0cCAnM2W2jf0MASw9kSOSzlNKXyFYinRKFI=;
+ b=Vfqfi4fieIOFZ/OCmp0eGkRYU4t0o4rvfZfEECKWUqTrEJLxsXfM8t5b8gOvJLw95i
+ Q+UR54FgW/FDkA/7JXizHOeGAHPCxADA5FhhkeSWh43nYAg+cyOZFZaDEhQ2/97oWBy2
+ jDoz0mloQkFhBMYJawgAQyHAPD1bJKm9ZLELEJMg1a1snAs/PmoPI9xziHE1+FtO6aId
+ F0w2GR9Fhy9VgAq4UAT4UyX/tXWZj5lrVVe0+bJ3ClbaN3GPU8zhJy5lOpw6ZbFTpMwV
+ ZGlmg0aM7tILr/zeW+49A3q9i0It2FwYbOdbXL1Pwzwo3XZ3KW6E6cqmn1JLMfQCoBi9
+ SqZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768907238; x=1769512038;
+ d=1e100.net; s=20230601; t=1768907477; x=1769512277;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=J+D9rSUXqfsXN9SEQp7srK755p+CLrSem0MTmOU+OhI=;
- b=SGbpBZU88GIr7qkeTgmn7NuURevZ2oYKQAq//KY5RgEj/OKNEMbk87NwnyG+o2UwLF
- IKYRWjWlbs0riXaeH7avoqPR80wbVdyzh6OaAQGUoDVlHRhJpK/jl1aUjpexaIXHI5BD
- w6VrfQxKo1L+QDlBXQ1RQSHF+1IszSAc85Q4flOxpUbcXuuvcKVdANsSC3UjvzMgOf8u
- dD13u4qbWYA6WyRMUy6M6BbBc2MV3aKwMziM1fMUlVFv/T2Ng/6/p0X6/kbaa5ZTFCxa
- hj9fS0s9buGPbQ6jugBq5aOaioBSYW1AH0mduvjzWLItylWYqXokLKS6hacpZrFbOmf+
- r8Sg==
-X-Gm-Message-State: AOJu0YzBo7raXERPXFcZRG+iOVilO3HzWodsuzfALfzClvjHbyWeQIcb
- vbp6my9veeV5jRUfmDRsbWOH79E4xd5xhC2+PFi5f9pc7rSD0fzvKq5BNVPkFQPQvx/iLxo887/
- JrQMGggyeXB5JVpnIsoCSYOW9m/BaGb9+ILjzqRakYlwXMTUQUZxrQGCtMTRrpKSCVtwgKwiekj
- 5wdtQcqdPl8btDcnrzPqMRRbEgupwDKVMxxomER9rFsw==
-X-Gm-Gg: AY/fxX4PDVfHcFFQvpqRwjT45ecaCY3EQwjGHJuNASDB9f6CQCS42b8GSBU/M06cto8
- +75UPhvWau5BZN0bDSVkH9SYYnPZiGTTiTlaAqrXKuu8MjVtoX7y/d2iucblu/rc9+3YK1X33PI
- Ze7JW2/A4T7hOUjwCWovLilqTObmZADsEi1U0H5caYfjECB4zJjYFsewUzADty1lgvZXIR42J60
- KKbXOEP76MN5RHooPmBn0ViGrbgynSNp7jEXCByKPZ4kpeQtW1XEftx
-X-Received: by 2002:a05:600c:1d14:b0:47d:4fbe:e6cc with SMTP id
- 5b1f17b1804b1-4803e7a39damr20169855e9.13.1768907238018; 
- Tue, 20 Jan 2026 03:07:18 -0800 (PST)
-X-Received: by 2002:a05:600c:1d14:b0:47d:4fbe:e6cc with SMTP id
- 5b1f17b1804b1-4803e7a39damr20169475e9.13.1768907237503; Tue, 20 Jan 2026
- 03:07:17 -0800 (PST)
+ bh=TxS1R7yv0cCAnM2W2jf0MASw9kSOSzlNKXyFYinRKFI=;
+ b=cFfyE14Gjc9lDqbsc8E/nUySFZqMTPfum0NDsYdV4iAAWEoXdtv7yj0JCiipNmFuDC
+ hUFTlZbtuVOp133xaYRshsC4ozlou8OaDf8gDLB7X1AdnYQGPVXnijykncwMVR0lKZlg
+ WWdfxzBBXxKB7rznbHErgZS1/H34hdZMSvB+tzi7yNYvOp36+Dtm8w5xW8ll+43YPAkj
+ TEbbnY8Xq5k6JMZgq048u3nbywyuL/OQqDL0KVKsR3f41ATB3KGEZx1OsYj+B7/UhVBb
+ rf6zu6bHneI7L9cfTjlk1vZW5ZrTTItxQ82ooorgVTRzAubOMgUBEmDo3U2eLUd/7BAe
+ mgww==
+X-Gm-Message-State: AOJu0YxUoVTaOSfJfhkPt/QtPWUIOz4IBUBBKzBKBy8UQRz9jxAbhhUO
+ JC2aeFsKrEqWUJvVJinlz4kLzGOaAk4+kUmJrFLAfm07gy5CpMyHa3/Mkdsm9DhTspDJjs+5La+
+ xJC++X3EeAT7d4vPtJ0DRR8W+qOMoYgYfSTgDvGdDsOBlg8AzRpmk04w/F9h5I7/W+E6GWghKWa
+ PgeE1ErmN3XJzNZH0b6vvg73U008VgN/Ea5cToos79kg==
+X-Gm-Gg: AY/fxX67hQRpe2N2Z4OTiM82iCBgaMsE3o4X25sjZxam0+aIVa2k0ZtZAw6m9v7N0tR
+ UnPyveEY30WGN+oUr8gGHe26Tq4Z+AhwC1xN+QboBZ7NejkBeX1SWSGrFu0IlDI72xCSykGLVQS
+ NdYphmFrzJq7fdROTeVDM0WXqCUH0zHDufQtM1jxV1tSsxoCsj5OpDqmwzTz5e4YOyKQWMjjDOG
+ pcxVY2AKiPkZ3Kozh06SHVG7TFxikdAtMl1wXWWkZQUeJsUBRgOHryX
+X-Received: by 2002:a05:600c:458c:b0:47d:6856:9bd9 with SMTP id
+ 5b1f17b1804b1-4801e3342bamr138372425e9.23.1768907476657; 
+ Tue, 20 Jan 2026 03:11:16 -0800 (PST)
+X-Received: by 2002:a05:600c:458c:b0:47d:6856:9bd9 with SMTP id
+ 5b1f17b1804b1-4801e3342bamr138372005e9.23.1768907476170; Tue, 20 Jan 2026
+ 03:11:16 -0800 (PST)
 MIME-Version: 1.0
 References: <20260109124043.25019-1-farosas@suse.de>
- <20260109124043.25019-25-farosas@suse.de>
-In-Reply-To: <20260109124043.25019-25-farosas@suse.de>
+ <20260109124043.25019-17-farosas@suse.de>
+In-Reply-To: <20260109124043.25019-17-farosas@suse.de>
 From: Prasad Pandit <ppandit@redhat.com>
-Date: Tue, 20 Jan 2026 16:37:00 +0530
-X-Gm-Features: AZwV_Qg6vAR_Dap2uM5MhN9c6ZtLllRh_qGvw2OmK1LcXmtSNW-cApHL4tAA70k
-Message-ID: <CAE8KmOyns_hmR-uU-qUmUCLD0uj9uhbBbn3mu-LEZPjXnroK2A@mail.gmail.com>
-Subject: Re: [PATCH v3 24/25] migration: Remove qmp_migrate_finish
+Date: Tue, 20 Jan 2026 16:40:57 +0530
+X-Gm-Features: AZwV_QhOBoh_qnDbn55X14gMInmpVjTdSR857keGZZqIsi65MBLpVnIjukjZIAs
+Message-ID: <CAE8KmOzCMq7rcQyoS8TX6aXXPqn17H6mLwSCjWeHG=H3Mw=3vQ@mail.gmail.com>
+Subject: Re: [PATCH v3 16/25] migration/channel: Rename
+ migration_channel_connect
 To: Fabiano Rosas <farosas@suse.de>
 Cc: qemu-devel@nongnu.org, peterx@redhat.com, berrange@redhat.com
 Content-Type: text/plain; charset="UTF-8"
@@ -164,92 +165,129 @@ X-Spamd-Result: default: False [-2.21 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[fedoraproject.org:email,lists.gnu.org:rdns,lists.gnu.org:helo,suse.de:email,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 26009495F2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,fedoraproject.org:email,lists.gnu.org:rdns,lists.gnu.org:helo]
+X-Rspamd-Queue-Id: 9453948CE3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 On Fri, 9 Jan 2026 at 18:18, Fabiano Rosas <farosas@suse.de> wrote:
-> After cleanups, the qmp_migrate_finish function is now just a call to
-> migration_connect_outgoing(). Remove qmp_migrate_finish() and rename
-> the qmp_migrate_finish_cb callback.
->
-> This also allows the function's error handling to be removed as it now
-> receives &local_err like the rest of the callees of qmp_migrate().
+> Rename migration_channel_connect to indicate this is the source
+> side. Future patches will do similar changes to the incoming side and
+> this will avoid inconsistencies in naming.
 >
 > Reviewed-by: Peter Xu <peterx@redhat.com>
 > Signed-off-by: Fabiano Rosas <farosas@suse.de>
 > ---
->  migration/migration.c | 35 +++++++++++++----------------------
->  1 file changed, 13 insertions(+), 22 deletions(-)
+>  migration/channel.c | 9 +--------
+>  migration/channel.h | 2 +-
+>  migration/exec.c    | 2 +-
+>  migration/fd.c      | 2 +-
+>  migration/file.c    | 2 +-
+>  migration/socket.c  | 2 +-
+>  migration/tls.c     | 2 +-
+>  7 files changed, 7 insertions(+), 14 deletions(-)
 >
-> diff --git a/migration/migration.c b/migration/migration.c
-> index 6be2849326..086bbb03de 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -2001,15 +2001,18 @@ static bool migrate_prepare(MigrationState *s, bool resume, Error **errp)
->      return true;
->  }
->
-> -static void qmp_migrate_finish(MigrationAddress *addr, Error **errp);
-> -
-> -static gboolean qmp_migrate_finish_cb(QIOChannel *channel,
-> -                                      GIOCondition cond,
-> -                                      void *opaque)
-> +static gboolean migration_connect_outgoing_cb(QIOChannel *channel,
-> +                                              GIOCondition cond, void *opaque)
->  {
-> -    MigrationAddress *addr = opaque;
-> +    MigrationState *s = migrate_get_current();
-> +    Error *local_err = NULL;
-> +
-> +    migration_connect_outgoing(s, opaque, &local_err);
-> +
-> +    if (local_err) {
-> +        migration_connect_error_propagate(s, local_err);
-> +    }
->
-> -    qmp_migrate_finish(addr, NULL);
->      return G_SOURCE_REMOVE;
->  }
->
-> @@ -2063,10 +2066,11 @@ void qmp_migrate(const char *uri, bool has_channels,
->       * connection, so qmp_migrate_finish will fail to connect, and then recover.
->       */
->      if (migrate_mode() == MIG_MODE_CPR_TRANSFER) {
-> -        cpr_transfer_add_hup_watch(s, qmp_migrate_finish_cb, main_ch->addr);
-> +        cpr_transfer_add_hup_watch(s, migration_connect_outgoing_cb,
-> +                                   main_ch->addr);
->
->      } else {
-> -        qmp_migrate_finish(main_ch->addr, errp);
-> +        migration_connect_outgoing(s, main_ch->addr, &local_err);
->      }
->
->  out:
-> @@ -2076,19 +2080,6 @@ out:
+> diff --git a/migration/channel.c b/migration/channel.c
+> index b8d757c17b..f41333adcc 100644
+> --- a/migration/channel.c
+> +++ b/migration/channel.c
+> @@ -61,14 +61,7 @@ out:
 >      }
 >  }
 >
-> -static void qmp_migrate_finish(MigrationAddress *addr, Error **errp)
-> -{
-> -    MigrationState *s = migrate_get_current();
-> -    Error *local_err = NULL;
 > -
-> -    migration_connect_outgoing(s, addr, &local_err);
-> -
-> -    if (local_err) {
-> -        migration_connect_error_propagate(s, error_copy(local_err));
-> -        error_propagate(errp, local_err);
-> -    }
-> -}
-> -
->  void qmp_migrate_cancel(Error **errp)
+> -/**
+> - * @migration_channel_connect - Create new outgoing migration channel
+> - *
+> - * @s: Current migration state
+> - * @ioc: Channel to which we are connecting
+> - */
+> -void migration_channel_connect(MigrationState *s, QIOChannel *ioc)
+> +void migration_channel_connect_outgoing(MigrationState *s, QIOChannel *ioc)
 >  {
->      /*
+>      trace_migration_set_outgoing_channel(ioc, object_get_typename(OBJECT(ioc)));
+>
+> diff --git a/migration/channel.h b/migration/channel.h
+> index b361e1c838..574bfec65c 100644
+> --- a/migration/channel.h
+> +++ b/migration/channel.h
+> @@ -28,7 +28,7 @@ typedef enum {
+>
+>  void migration_channel_process_incoming(QIOChannel *ioc);
+>
+> -void migration_channel_connect(MigrationState *s, QIOChannel *ioc);
+> +void migration_channel_connect_outgoing(MigrationState *s, QIOChannel *ioc);
+>
+>  int migration_channel_read_peek(QIOChannel *ioc,
+>                                  const char *buf,
+> diff --git a/migration/exec.c b/migration/exec.c
+> index d83a07435a..d1629944dc 100644
+> --- a/migration/exec.c
+> +++ b/migration/exec.c
+> @@ -55,7 +55,7 @@ void exec_start_outgoing_migration(MigrationState *s, strList *command,
+>      }
+>
+>      qio_channel_set_name(ioc, "migration-exec-outgoing");
+> -    migration_channel_connect(s, ioc);
+> +    migration_channel_connect_outgoing(s, ioc);
+>      object_unref(OBJECT(ioc));
+>  }
+>
+> diff --git a/migration/fd.c b/migration/fd.c
+> index 0144a70742..150b236fbf 100644
+> --- a/migration/fd.c
+> +++ b/migration/fd.c
+> @@ -70,7 +70,7 @@ void fd_start_outgoing_migration(MigrationState *s, const char *fdname, Error **
+>      }
+>
+>      qio_channel_set_name(ioc, "migration-fd-outgoing");
+> -    migration_channel_connect(s, ioc);
+> +    migration_channel_connect_outgoing(s, ioc);
+>      object_unref(OBJECT(ioc));
+>  }
+>
+> diff --git a/migration/file.c b/migration/file.c
+> index 7bb9c1c79f..935402f36b 100644
+> --- a/migration/file.c
+> +++ b/migration/file.c
+> @@ -122,7 +122,7 @@ void file_start_outgoing_migration(MigrationState *s,
+>          return;
+>      }
+>      qio_channel_set_name(ioc, "migration-file-outgoing");
+> -    migration_channel_connect(s, ioc);
+> +    migration_channel_connect_outgoing(s, ioc);
+>  }
+>
+>  static gboolean file_accept_incoming_migration(QIOChannel *ioc,
+> diff --git a/migration/socket.c b/migration/socket.c
+> index 298bac30cc..611915f84d 100644
+> --- a/migration/socket.c
+> +++ b/migration/socket.c
+> @@ -73,7 +73,7 @@ static void socket_outgoing_migration(QIOTask *task,
+>      }
+>
+>      trace_migration_socket_outgoing_connected();
+> -    migration_channel_connect(data->s, sioc);
+> +    migration_channel_connect_outgoing(data->s, sioc);
+>      return;
+>  err:
+>      trace_migration_socket_outgoing_error(error_get_pretty(err));
+> diff --git a/migration/tls.c b/migration/tls.c
+> index 837b08294f..89ba52de02 100644
+> --- a/migration/tls.c
+> +++ b/migration/tls.c
+> @@ -114,7 +114,7 @@ static void migration_tls_outgoing_handshake(QIOTask *task,
+>      }
+>
+>      trace_migration_tls_outgoing_handshake_complete();
+> -    migration_channel_connect(s, ioc);
+> +    migration_channel_connect_outgoing(s, ioc);
+>  }
+>
+>  QIOChannelTLS *migration_tls_client_create(QIOChannel *ioc,
 > --
 
-* Nice. Looks good.
+* Looks right.
 Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
 
 Thank you.
