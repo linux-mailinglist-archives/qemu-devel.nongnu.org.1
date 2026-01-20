@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SI1CEEnMb2mgMQAAu9opvQ
+	id IKGnD0XMb2mgMQAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:41:13 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:41:09 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F415949A22
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:41:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A187049A18
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:41:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viGeW-00013Q-26; Tue, 20 Jan 2026 13:40:32 -0500
+	id 1viGeX-0001Bp-PX; Tue, 20 Jan 2026 13:40:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGeL-0000Ju-4R
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:40:23 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGeQ-0000cm-RD
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:40:26 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGeJ-0006Id-JP
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:40:20 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-4327555464cso3010241f8f.1
- for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 10:40:17 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGeO-0006Je-JO
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:40:26 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-47ee07570deso40114365e9.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 10:40:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768934416; x=1769539216; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768934423; x=1769539223; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=9H+ku3kicwpTVsDL+ymVANL2vQb8RdWLt/npWzFJonM=;
- b=WxiobAT7k2bfLR9wGulSeQHUvsqUXvY+vW2IFQWPE6Og2zn8pxMsyBdn4F8AArE1RC
- yG/xEOxuWOFwB054cCVrb3V3zJ+Q65y2YaD33GGG7Wx8xkLXKcIx66CpKi8/VuzlgNvQ
- 8W6qfSlrYuKLqxJXfZbKEsHQ7hj5tW7o97e/QLjM6tJE4KhpOJAXukfmtL4RXRlFGsuV
- g/7ADaFU7z3nO/s4aVVBDs9vaO4qGowRlimR+RTXIDDKlTy2+Pgj6I4btkyF9m1mTPuC
- ZQ2mcPlkSb+kj9zINIz3WZP16GbI/vzhst8qOfQS+SRAEGzLu5v+DUh6Ll1x5OPGJbQ2
- TEew==
+ :reply-to; bh=HMrUqacCaGVauSVeco7pmqIAM/xQRkgygcSUJ7ApSQw=;
+ b=YguxEK1/BliAkuf5SQNyLI1yltJKRrP6VmwDXUYWly8zoGMCEn0AQRJmo6KjFhZrKN
+ 8YSVyRlI+RHu6Itz0aHzAHdQQ96w3lso+q3KzVAbHHApvBo5Kccfe4E09RbkRNK5M+jI
+ hgXfhTkToN/B0XVyS8/iPsTJNKGc4eSJfj7WMLAFeLH9tmgixhQ2QFaIugegIWKx1fmL
+ Mnm40ZlLGT4iaRb7vCX1rRi/42Uix65BF5ZHvUsteWBFvqXTIt9dZB6q2mLRS8x+Z59s
+ MpoY3bypGisufQf+NhgdIB9U612XQY1pPZY4w15CrWftuXQ1KfzrpBZPTbEOwYRQ9X4D
+ qXCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768934416; x=1769539216;
+ d=1e100.net; s=20230601; t=1768934423; x=1769539223;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=9H+ku3kicwpTVsDL+ymVANL2vQb8RdWLt/npWzFJonM=;
- b=jiXiEgRIA2xtwd70n6plp0wlZP70Fgcpir4MC7SVqyBKWeqgWNXuXNRl+5bpEseyXq
- wGvdmXxBvKUtKM4Lzvp3kz8HJUObYx4mN8Ay0X1HeypSOobnReHrG7MnfOMC1gG5HdPq
- m2rVsj130Tv6p+SgtAuCc5F0Vu23tT3xMJQCu1zMRAXclH9/xDR3x005Dk5nudN4aCFC
- jAJ4JwssLoUQ8yePrjH2BWbyqX4Wagt0M2zh91Qld+Re3dZgmKssa7OGOnZ/MqrSX66d
- oYvLvZFucglLaMLYZQl+3BNWEEzA7AkUC6PNSLpViXNmpmMQPJ2L7DCzB/lNs/5CZEpJ
- Wm0g==
-X-Gm-Message-State: AOJu0Yz0Xd++2h5/f3Rtt5s/tn5JD/Lnvnsu7giv5dq31bSHlAsHU+jq
- 0OOnzo99AEY5UI/RN2rqS2ZhT1Fz8zpu5bkqXouAe6hjyAsSn8iH1Qi+OWSbld3eXUbRpyW+QCj
- hVvZjPJU=
-X-Gm-Gg: AZuq6aKUXbI09oaPlAnFW27+Dm5o4Y0ToxTzPO47QGOWonO0WD3szXtrr9K2XGGwP/J
- BT50+GQEYMFXjlXaRxl/DyvIoQjMnz4CJH3Yd5BsWWMM/bw7LNwGIr8tcSFXUHFggu/PbOO46Lo
- fLTiiaUjCNY8yjxS+bMMCkhmYp2AvuiqseBY6fhKsg10pZ7/oCP76+sCnIWdIfZvJ/BZu34V6Kf
- Alwo+Vw2ZQXceSoCfz/B7b35EMIirLW9WY2X7IZJ/1bucTR5EsuXc/DzJt0YgOWD072HBbxihIW
- k5ayfMN+eOghktxtzQbFlnFyf30yGuERn2aGHv5NmB58wsb+rrrmR+aB3EmY2kP2jjlxVE4zAIq
- 73fzM7RRNIkk9KOQMA/RL5wVeUH3+7AGV1VP4V7mx6ILN+QbkeP2fLWh2708rbI3DKRSZJXk86W
- E3L+3NUugZsDOBt9GTjaToxbYsXCVGxOaYWlUmoGNb/aJqnL/m3vGB7t7dDtnc
-X-Received: by 2002:a05:6000:40c9:b0:432:851d:35ef with SMTP id
- ffacd0b85a97d-4359017478bmr4363207f8f.42.1768934415417; 
- Tue, 20 Jan 2026 10:40:15 -0800 (PST)
+ bh=HMrUqacCaGVauSVeco7pmqIAM/xQRkgygcSUJ7ApSQw=;
+ b=XLM2Qu7DFpzEii18d1/MemhvTdLJXNw0Q7+cQ7VfjqnhxgwX97l6lgSFS34ynIu9gv
+ dL2+fD++/FcGG9MkklXzOg8byN9VuuLI8TKFBE3GLJougxGKFGnNoAI7hl4gM2EkvAqm
+ CzseRexbAL2diX1rMajB26ofDkqyHmZ1CTUHut2VTsoAlEtHWjkiBoGhSMwUu2tem3nN
+ BdMv6m4bV3GevqwdZWjKpjIMTznf5gsHWM4zoLSVuyKLFdXHODC/ezBDSVKLG9O3UIHt
+ mYred5fYIcFh6HITXByigmWoXqI9z0Yjpj77khwXto5WVyq9/DX9Ydx2KOH7vP2Le6oy
+ B/UA==
+X-Gm-Message-State: AOJu0YwX+YaZZ5viBjwr8XcHIjo8FJxFOXF++U45OxKu3dmc1sA7BTGL
+ kYezFABMzPHSHK93pYiUFvq0J4Uo/i7XKxlbo2+Wz0kPj3KxKAyFzEN8eTZPhxoakPTbMcXJfoQ
+ A4zwmOM4=
+X-Gm-Gg: AY/fxX6NGn41mLmraB3diiXEzzeWcspF+Qb181EEwktZWcygGzGT63CUPqdOEkqPvi7
+ R2E7VLXTdW0vIOlpDsFbQUlweS9ouJv6L9pPaQydT7Tr5f00xFBMqtI+8GDiXE1o2psRnk9G0tX
+ yFTKgI3amvuDgJc+ALeUj4lQIJPzMNPFFCz7sS+hQDUn5D71qNxzHttN/tLnAoe3b1ubqZ77+YE
+ SI9ucFXmP7nPWuDxkuCiQLgZonxR4uwNLeNkePEXqTLD9fF622LdJDFeP+C8gf9Oqhtm5soF77a
+ n8DGqGcEdvnKdmFUgN1d8+GLygq/Cit0ZFhMCWFeXeKeyQS5e1lqBUo1b4wVNtp5w+bAlQHlzjM
+ yJ7BMziWPZL+4sK6JPthzEeHzBGBfpapU/jBw64rQ19N5Nq7qqpp3t9ND1RFn/VDZOKC8DnDP+6
+ 6ahQFzRKtQdb2sbCJdJj9oYDUwv9u0gjMx++92jJExuL4ADDzgDcUjiBcE2EClgmIw0qXdAHg=
+X-Received: by 2002:a05:600c:811a:b0:477:63db:c718 with SMTP id
+ 5b1f17b1804b1-4801ead0fd1mr178347785e9.16.1768934422521; 
+ Tue, 20 Jan 2026 10:40:22 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-43595609c8asm2869271f8f.34.2026.01.20.10.40.14
+ 5b1f17b1804b1-4801e8795f1sm262937425e9.6.2026.01.20.10.40.21
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 20 Jan 2026 10:40:14 -0800 (PST)
+ Tue, 20 Jan 2026 10:40:21 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 10/29] hw/arm/fsl-imx6: Remove now redundant setting of
- "sd-spec-version" property
-Date: Tue, 20 Jan 2026 19:38:43 +0100
-Message-ID: <20260120183902.73845-11-philmd@linaro.org>
+Subject: [PULL 11/29] hw/arm/fsl-imx6: Fix naming of SDHCI related constants
+ and attributes
+Date: Tue, 20 Jan 2026 19:38:44 +0100
+Message-ID: <20260120183902.73845-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260120183902.73845-1-philmd@linaro.org>
 References: <20260120183902.73845-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -126,38 +126,97 @@ X-Spamd-Result: default: False [-0.21 / 15.00];
 	TAGGED_RCPT(0.00)[qemu-devel];
 	PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linaro.org:dkim,linaro.org:mid,lists.gnu.org:rdns,lists.gnu.org:helo,bme.hu:email]
-X-Rspamd-Queue-Id: F415949A22
+	DBL_BLOCKED_OPENRESOLVER(0.00)[i.mx:url,linaro.org:email,linaro.org:dkim,linaro.org:mid,lists.gnu.org:rdns,lists.gnu.org:helo,bme.hu:email]
+X-Rspamd-Queue-Id: A187049A18
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-Now that TYPE_IMX_USDHC sets this property internally it is not needed
-on the SoC level any longer.
+The i.MX 6 SoC features uSDHC controllers which are the successors of eSDHC.
+Fix the naming to make this clear.
 
+Fixes: ec46eaa83a3c ("i.MX: Add i.MX6 SOC implementation.")
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
-Message-ID: <20260112145418.220506-3-shentey@gmail.com>
+Message-ID: <20260112145418.220506-4-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/fsl-imx6.c | 2 --
- 1 file changed, 2 deletions(-)
+ include/hw/arm/fsl-imx6.h |  4 ++--
+ hw/arm/fsl-imx6.c         | 16 ++++++++--------
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
+diff --git a/include/hw/arm/fsl-imx6.h b/include/hw/arm/fsl-imx6.h
+index 5520473ba0b..bb866994dff 100644
+--- a/include/hw/arm/fsl-imx6.h
++++ b/include/hw/arm/fsl-imx6.h
+@@ -46,7 +46,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(FslIMX6State, FSL_IMX6)
+ #define FSL_IMX6_NUM_EPITS 2
+ #define FSL_IMX6_NUM_I2CS 3
+ #define FSL_IMX6_NUM_GPIOS 7
+-#define FSL_IMX6_NUM_ESDHCS 4
++#define FSL_IMX6_NUM_USDHCS 4
+ #define FSL_IMX6_NUM_ECSPIS 5
+ #define FSL_IMX6_NUM_WDTS 2
+ #define FSL_IMX6_NUM_USB_PHYS 2
+@@ -67,7 +67,7 @@ struct FslIMX6State {
+     IMXEPITState       epit[FSL_IMX6_NUM_EPITS];
+     IMXI2CState        i2c[FSL_IMX6_NUM_I2CS];
+     IMXGPIOState       gpio[FSL_IMX6_NUM_GPIOS];
+-    SDHCIState         esdhc[FSL_IMX6_NUM_ESDHCS];
++    SDHCIState         usdhc[FSL_IMX6_NUM_USDHCS];
+     IMXSPIState        spi[FSL_IMX6_NUM_ECSPIS];
+     IMX2WdtState       wdt[FSL_IMX6_NUM_WDTS];
+     IMXUSBPHYState     usbphy[FSL_IMX6_NUM_USB_PHYS];
 diff --git a/hw/arm/fsl-imx6.c b/hw/arm/fsl-imx6.c
-index f3aa1d81501..46967b74882 100644
+index 46967b74882..39667c4a49a 100644
 --- a/hw/arm/fsl-imx6.c
 +++ b/hw/arm/fsl-imx6.c
-@@ -323,8 +323,6 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
+@@ -79,9 +79,9 @@ static void fsl_imx6_init(Object *obj)
+         object_initialize_child(obj, name, &s->gpio[i], TYPE_IMX_GPIO);
+     }
+ 
+-    for (i = 0; i < FSL_IMX6_NUM_ESDHCS; i++) {
++    for (i = 0; i < FSL_IMX6_NUM_USDHCS; i++) {
+         snprintf(name, NAME_SIZE, "sdhc%d", i + 1);
+-        object_initialize_child(obj, name, &s->esdhc[i], TYPE_IMX_USDHC);
++        object_initialize_child(obj, name, &s->usdhc[i], TYPE_IMX_USDHC);
+     }
+ 
+     for (i = 0; i < FSL_IMX6_NUM_USB_PHYS; i++) {
+@@ -311,11 +311,11 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
+     }
+ 
+     /* Initialize all SDHC */
+-    for (i = 0; i < FSL_IMX6_NUM_ESDHCS; i++) {
++    for (i = 0; i < FSL_IMX6_NUM_USDHCS; i++) {
+         static const struct {
+             hwaddr addr;
+             unsigned int irq;
+-        } esdhc_table[FSL_IMX6_NUM_ESDHCS] = {
++        } esdhc_table[FSL_IMX6_NUM_USDHCS] = {
+             { FSL_IMX6_uSDHC1_ADDR, FSL_IMX6_uSDHC1_IRQ },
+             { FSL_IMX6_uSDHC2_ADDR, FSL_IMX6_uSDHC2_IRQ },
+             { FSL_IMX6_uSDHC3_ADDR, FSL_IMX6_uSDHC3_IRQ },
+@@ -323,13 +323,13 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
          };
  
          /* UHS-I SDIO3.0 SDR104 1.8V ADMA */
--        object_property_set_uint(OBJECT(&s->esdhc[i]), "sd-spec-version", 3,
--                                 &error_abort);
-         object_property_set_uint(OBJECT(&s->esdhc[i]), "capareg",
+-        object_property_set_uint(OBJECT(&s->esdhc[i]), "capareg",
++        object_property_set_uint(OBJECT(&s->usdhc[i]), "capareg",
                                   IMX6_ESDHC_CAPABILITIES, &error_abort);
-         if (!sysbus_realize(SYS_BUS_DEVICE(&s->esdhc[i]), errp)) {
+-        if (!sysbus_realize(SYS_BUS_DEVICE(&s->esdhc[i]), errp)) {
++        if (!sysbus_realize(SYS_BUS_DEVICE(&s->usdhc[i]), errp)) {
+             return;
+         }
+-        sysbus_mmio_map(SYS_BUS_DEVICE(&s->esdhc[i]), 0, esdhc_table[i].addr);
+-        sysbus_connect_irq(SYS_BUS_DEVICE(&s->esdhc[i]), 0,
++        sysbus_mmio_map(SYS_BUS_DEVICE(&s->usdhc[i]), 0, esdhc_table[i].addr);
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->usdhc[i]), 0,
+                            qdev_get_gpio_in(gic, esdhc_table[i].irq));
+     }
+ 
 -- 
 2.52.0
 
