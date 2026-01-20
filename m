@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uEqBCObMb2mgMQAAu9opvQ
+	id sCEiL9bMb2mgMQAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:43:50 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:43:34 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8EAB49B3B
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:43:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3442549B17
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:43:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viGh2-0000J6-R4; Tue, 20 Jan 2026 13:43:08 -0500
+	id 1viGh4-0000hK-TN; Tue, 20 Jan 2026 13:43:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGg5-0007K5-5F
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:42:10 -0500
-Received: from mail-wm1-x341.google.com ([2a00:1450:4864:20::341])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGgB-0007SP-CU
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:42:15 -0500
+Received: from mail-wr1-x443.google.com ([2a00:1450:4864:20::443])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGg0-0006fS-Sf
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:42:07 -0500
-Received: by mail-wm1-x341.google.com with SMTP id
- 5b1f17b1804b1-480142406b3so31098305e9.1
- for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 10:42:04 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGg8-0006g1-R3
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:42:14 -0500
+Received: by mail-wr1-x443.google.com with SMTP id
+ ffacd0b85a97d-432d28870ddso3193281f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 10:42:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768934523; x=1769539323; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768934530; x=1769539330; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Jd3E3cgQtLspUatXKsJv5d53ERg76xpdU3e+kzswFcU=;
- b=mn7Kr+3Ydqdwp+WYs7EtgIyIjd80R2rMJ45fkqvY6lzaT75+y5U9dC4i+JI1efF2Hr
- 5OePBzi5NTpxXfzbStyxhDUTIl1V5LrfIdZVlSVIhWa9CI7VNTF5fXN9iyq9t9m+fhbr
- XcmLQROOjmrmqKhu1aRGDNBfuB/+7xGU0omyVyquqe77oP95ZKl+HbT7ju3K0z67LifV
- BM85d7EzbgmdEkMN831+/HBqgpHxGsdn5ZybWnWg3pIHDvjYVWhSAoVsKAEHVrZjTXUy
- qzA/uXyLr15Xs3z+8iryyyQy7Mg1afnpAmkefpy+QcfZ7xoWFxhnHP1C7adE5vg8l3Yd
- ACgA==
+ :reply-to; bh=zqrLqq609CQUjCSSvXVi6semWi0zMFDysWxfDqV7aAs=;
+ b=g19OgJpocvMqwwOMK9MheMYi6iBgXp/UY1+dmW3fy4xlHeNwl51ti4yqZuRbNMzzFB
+ yWQHmem8rtGBTMCRbs3F5f6iadwTctG/l7zydT8rnB2I15xmj3F2ZIzJLrYEpc6smrH0
+ HyO7y0BnMsX7IXVIYxtLIYqDEyVzSlD0hFHy1ouV9tSP6ooBGW169cVpX6z104pImjFW
+ 6lDV5TJ/81CH+Rb2kP/qCt/IvlACqLaCsZiSI1b/zEKLGbuGL8GIyAM6sBBF8+h22Vl9
+ cdZl18FaCi+5l0reQg78U12TY/6VprF6GOHXoE8dusfngdGNy//aVhFLsSSCi9b1gN1d
+ sEKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768934523; x=1769539323;
+ d=1e100.net; s=20230601; t=1768934530; x=1769539330;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=Jd3E3cgQtLspUatXKsJv5d53ERg76xpdU3e+kzswFcU=;
- b=Q0GpJZGU9bIZhLbjIRGFTVRgQBlxaJVWkaYyWflt1EOYZSlp6VSyGTlSyz98eAM+tp
- NidtCL4Nwv8wmBHSlhO3eWm0ytblQJXxTgi9/4fbVMZ4FyHRxYkQvMMI6tAYUMKA4ovX
- dB8BhRigaSKvCZ5T0AYIbBvsvdM27spti2Uyjav496VzPBAoMvRRgXz+YWwdFVUzBolA
- gcrK/YGpARtAzBPfPII9au4CMHDf6Fria2JSSwfLEGSVLuu+vMED2CGwc1Vrm6qbl6+j
- 2Zy5Ri9A4ae8xguQubm8Wi945BTSmOn/3BwS9VjF4bchF6MnZJO8mF55bUa4wMppt6ln
- sWXw==
-X-Gm-Message-State: AOJu0YwofT5krF/5F88UbTZDD6qmsz1vHbxigkIO3PR4MuOmIAnjsas+
- LrY3LkwuasFqA9/2bAuepr0lKgBYOHmmu5/auUAtmsEfa94jkpycEp5gFe1tEjEpoaCb7hWA9Rf
- z4vs+LZg=
-X-Gm-Gg: AY/fxX6FXC8w5OU/Q39qLj/ER2XEGFlDbDYvp5Acg5NeqmssmXrDKHJY8FJHlMbGOpr
- FMvH2EFPrnemByIMLVNCKMr6I3DtD+ktn32UggQttM9SJTmzJd29jwRDg9zJwYEmtXedQ1c2q4y
- 4ieLvr+McWtFzdsaA3qrIkxv9ZnQEzjLpxVeTR2LoYb6ImVSRpVpztZgfIUm00qnEyn+tbr6LtI
- GQoZOI215xrLVP2qEQPmNFUimNaCRjOkQbrGI3FUrCG8kEheirij30aDzgflaxCCYG79gRNNbT8
- B2f+ECFeLEQ4gvmF8JZ9yr07hF/K6tZD4xY3+sAGN+ql2yciOsbtC5CXe/SxMHGMGLLQB0StWEX
- pO7mnXfBWLvhu0wdYBWHL1JkK/KyZRU1NTgA8utqqGL7UM5WcNAghfiKuCsbTrEJWueTof6LCtk
- 2mSh7JmJ7BcKdyXsXJA1pyPrUWFk4TeAuo4sV5WMNgdDr1dOst/BgefaQ6I8dB
-X-Received: by 2002:a05:600c:a305:b0:480:2521:4d92 with SMTP id
- 5b1f17b1804b1-4802521516emr147455075e9.24.1768934522907; 
- Tue, 20 Jan 2026 10:42:02 -0800 (PST)
+ bh=zqrLqq609CQUjCSSvXVi6semWi0zMFDysWxfDqV7aAs=;
+ b=cuRQgNzVF/W/fRlP1xw18JtDpaHTevDiE1urUKB6S6qpF5PAJ3s+tQKu1sRcPooO6p
+ om7zC3RnBY897maoGZu4Ma3H8fqfPpsdstQPieom0Num10/hfZq+agZjupJybtWBcPbV
+ AU5+V6Hm+TFL81rRldg2tqDXcW/V8XDSuSGKpmkx0N5k5rk3/EceF4nH7W+EYUEQan3K
+ RSROB6ALl/weANa1wM9rB8d88NWI8JmjdEkZ+nBgCxr96bCarhIBPRpttbThnT70KPlN
+ ijCtol274Xq7x2gdIAVxHk5hA+S9WO+N942ad6sb8EZdnpvR4rkLsHWCHjllmNQacF+Q
+ eCug==
+X-Gm-Message-State: AOJu0YwHO8jROQJxnzuMpIQTGPFjCFaMbdj1Uryh/vHnKBxiqUjzoGKa
+ F107vrqHW3D7OurZXFocxcnfgygN8LyQCHdcM0ygABYf2tmhOpQwBr7RwSuxlYOj/xSpKDGiv5q
+ avt48hRE=
+X-Gm-Gg: AZuq6aKQkSuy5F5dFIA9kFzhdgMD/fcaGRH0dlzDlOJPz6o7Suurc0Gd+DtdjHQzgp/
+ j+Nip0nsnN40f9vP9BNKDpMxI4DrTXzAFuMCy3To+EEpOn8rK/mDFOE/GaMDdt3kWf3Gh7JwF1r
+ hdGSHp7iZcXOaoWXEVVZ9mS4UjIJaYCcqj8vJmBxartKxtuCORhkl8d/ejhdKK/yvKj+VYhwa6n
+ 2QtPGtSl8mGYVdIyH02TvsesAaFvlJA0iue2ClfpqqoGpsdKxlzBbjP87GXe+Xq37rMDI8uUK3H
+ jCBHCjdqz13E+ltMDnAR45xVm+95Jqnz0q/6IELKsPXU/H3K8XQdc8HiHpnAS60xOY5nK6Gid7U
+ pYS9KP1dRbXpyaCUn8jELCMPyLHoZkdZMLZyTzsgK5QggG9ehxrKE9X4n5et4p69Zb4E+O1morL
+ Bxue4tWHMnr7NfxOlyY5wb80ZhAljeJh2kFOeePbA797xpwtEldfHgeHf7WIZhYbw/z5UwhWk=
+X-Received: by 2002:a05:6000:2505:b0:432:5b81:49c with SMTP id
+ ffacd0b85a97d-43569bd463bmr17900265f8f.55.1768934529487; 
+ Tue, 20 Jan 2026 10:42:09 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-43595e0a705sm2697508f8f.14.2026.01.20.10.42.02
+ ffacd0b85a97d-435996540cesm56559f8f.43.2026.01.20.10.42.08
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 20 Jan 2026 10:42:02 -0800 (PST)
+ Tue, 20 Jan 2026 10:42:08 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 26/29] hw: move pcap structs to header file
-Date: Tue, 20 Jan 2026 19:38:59 +0100
-Message-ID: <20260120183902.73845-27-philmd@linaro.org>
+Subject: [PULL 27/29] hw/uefi: add pcap support
+Date: Tue, 20 Jan 2026 19:39:00 +0100
+Message-ID: <20260120183902.73845-28-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260120183902.73845-1-philmd@linaro.org>
 References: <20260120183902.73845-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::341;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x341.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::443;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x443.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -125,98 +125,218 @@ X-Spamd-Result: default: False [-0.21 / 15.00];
 	TAGGED_RCPT(0.00)[qemu-devel];
 	PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,wireshark.org:url,tcpdump.org:url,linaro.org:email,linaro.org:dkim,linaro.org:mid]
-X-Rspamd-Queue-Id: E8EAB49B3B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,linaro.org:email,linaro.org:dkim,linaro.org:mid,checkpatch.pl:url]
+X-Rspamd-Queue-Id: 3442549B17
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Gerd Hoffmann <kraxel@redhat.com>
 
-Allow reusing them elsewhere in qemu.
+Add pcapfile property to uevi-vars-* devices, allowing to write out a
+capture of the communication traffic between uefi firmware and qemu.
 
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20260114110406.3500357-2-kraxel@redhat.com>
+Message-ID: <20260114110406.3500357-3-kraxel@redhat.com>
+[PMD: Wrap long line to avoid checkpatch.pl warning]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/qemu/pcap.h | 30 ++++++++++++++++++++++++++++++
- hw/usb/pcap.c       | 24 +-----------------------
- 2 files changed, 31 insertions(+), 23 deletions(-)
- create mode 100644 include/qemu/pcap.h
+ include/hw/uefi/var-service.h | 10 ++++
+ hw/uefi/var-service-core.c    |  7 +++
+ hw/uefi/var-service-pcap.c    | 95 +++++++++++++++++++++++++++++++++++
+ hw/uefi/var-service-sysbus.c  |  1 +
+ hw/uefi/meson.build           |  1 +
+ 5 files changed, 114 insertions(+)
+ create mode 100644 hw/uefi/var-service-pcap.c
 
-diff --git a/include/qemu/pcap.h b/include/qemu/pcap.h
+diff --git a/include/hw/uefi/var-service.h b/include/hw/uefi/var-service.h
+index 91fb4a20918..7d84025cd58 100644
+--- a/include/hw/uefi/var-service.h
++++ b/include/hw/uefi/var-service.h
+@@ -77,6 +77,10 @@ struct uefi_vars_state {
+     bool                              force_secure_boot;
+     bool                              disable_custom_mode;
+     bool                              use_pio;
++
++    /* request + reply capture */
++    char                              *pcapfile;
++    FILE                              *pcapfp;
+ };
+ 
+ struct uefi_vars_cert {
+@@ -189,4 +193,10 @@ uefi_var_policy *uefi_vars_add_policy(uefi_vars_state *uv,
+                                       variable_policy_entry *pe);
+ uint32_t uefi_vars_mm_check_policy_proto(uefi_vars_state *uv);
+ 
++/* vars-service-pcap.c */
++void uefi_vars_pcap_init(uefi_vars_state *uv, Error **errp);
++void uefi_vars_pcap_reset(uefi_vars_state *uv);
++void uefi_vars_pcap_request(uefi_vars_state *uv, void *buffer, size_t size);
++void uefi_vars_pcap_reply(uefi_vars_state *uv, void *buffer, size_t size);
++
+ #endif /* QEMU_UEFI_VAR_SERVICE_H */
+diff --git a/hw/uefi/var-service-core.c b/hw/uefi/var-service-core.c
+index 6ab8df091aa..ce0628fa524 100644
+--- a/hw/uefi/var-service-core.c
++++ b/hw/uefi/var-service-core.c
+@@ -101,6 +101,8 @@ static uint32_t uefi_vars_cmd_mm(uefi_vars_state *uv, bool dma_mode)
+     }
+     memset(uv->buffer + size, 0, uv->buf_size - size);
+ 
++    uefi_vars_pcap_request(uv, uv->buffer, size);
++
+     /* dispatch */
+     if (qemu_uuid_is_equal(&mhdr->guid, &EfiSmmVariableProtocolGuid)) {
+         retval = uefi_vars_mm_vars_proto(uv);
+@@ -127,6 +129,8 @@ static uint32_t uefi_vars_cmd_mm(uefi_vars_state *uv, bool dma_mode)
+         retval = UEFI_VARS_STS_ERR_NOT_SUPPORTED;
+     }
+ 
++    uefi_vars_pcap_reply(uv, uv->buffer, sizeof(*mhdr) + mhdr->length);
++
+     /* write buffer */
+     if (dma_mode) {
+         dma_memory_write(&address_space_memory, dma,
+@@ -163,6 +167,8 @@ void uefi_vars_hard_reset(uefi_vars_state *uv)
+     uefi_vars_clear_volatile(uv);
+     uefi_vars_policies_clear(uv);
+     uefi_vars_auth_init(uv);
++
++    uefi_vars_pcap_reset(uv);
+ }
+ 
+ static uint32_t uefi_vars_cmd(uefi_vars_state *uv, uint32_t cmd)
+@@ -319,4 +325,5 @@ void uefi_vars_realize(uefi_vars_state *uv, Error **errp)
+ {
+     uefi_vars_json_init(uv, errp);
+     uefi_vars_json_load(uv, errp);
++    uefi_vars_pcap_init(uv, errp);
+ }
+diff --git a/hw/uefi/var-service-pcap.c b/hw/uefi/var-service-pcap.c
 new file mode 100644
-index 00000000000..05aba83c15b
+index 00000000000..a09ee1d4c05
 --- /dev/null
-+++ b/include/qemu/pcap.h
-@@ -0,0 +1,30 @@
++++ b/hw/uefi/var-service-pcap.c
+@@ -0,0 +1,95 @@
 +/*
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + */
-+#ifndef QEMU_PCAP_H
-+#define QEMU_PCAP_H
-+
-+#define PCAP_MAGIC                   0xa1b2c3d4
-+#define PCAP_MAJOR                   2
-+#define PCAP_MINOR                   4
-+
-+/* https://wiki.wireshark.org/Development/LibpcapFileFormat */
-+
-+struct pcap_hdr {
-+    uint32_t magic_number;   /* magic number */
-+    uint16_t version_major;  /* major version number */
-+    uint16_t version_minor;  /* minor version number */
-+    int32_t  thiszone;       /* GMT to local correction */
-+    uint32_t sigfigs;        /* accuracy of timestamps */
-+    uint32_t snaplen;        /* max length of captured packets, in octets */
-+    uint32_t network;        /* data link type */
-+};
-+
-+struct pcaprec_hdr {
-+    uint32_t ts_sec;         /* timestamp seconds */
-+    uint32_t ts_usec;        /* timestamp microseconds */
-+    uint32_t incl_len;       /* number of octets of packet saved in file */
-+    uint32_t orig_len;       /* actual length of packet */
-+};
-+
-+#endif /* QEMU_PCAP_H */
-diff --git a/hw/usb/pcap.c b/hw/usb/pcap.c
-index bb74d046a59..1fe772d5066 100644
---- a/hw/usb/pcap.c
-+++ b/hw/usb/pcap.c
-@@ -8,31 +8,9 @@
-  */
- 
- #include "qemu/osdep.h"
++#include "qemu/osdep.h"
++#include "qemu/error-report.h"
 +#include "qemu/pcap.h"
- #include "hw/usb/usb.h"
- 
--#define PCAP_MAGIC                   0xa1b2c3d4
--#define PCAP_MAJOR                   2
--#define PCAP_MINOR                   4
--
--/* https://wiki.wireshark.org/Development/LibpcapFileFormat */
--
--struct pcap_hdr {
--    uint32_t magic_number;   /* magic number */
--    uint16_t version_major;  /* major version number */
--    uint16_t version_minor;  /* minor version number */
--    int32_t  thiszone;       /* GMT to local correction */
--    uint32_t sigfigs;        /* accuracy of timestamps */
--    uint32_t snaplen;        /* max length of captured packets, in octets */
--    uint32_t network;        /* data link type */
--};
--
--struct pcaprec_hdr {
--    uint32_t ts_sec;         /* timestamp seconds */
--    uint32_t ts_usec;        /* timestamp microseconds */
--    uint32_t incl_len;       /* number of octets of packet saved in file */
--    uint32_t orig_len;       /* actual length of packet */
--};
--
- /* https://www.tcpdump.org/linktypes.html */
- /* linux: Documentation/usb/usbmon.rst */
- /* linux: drivers/usb/mon/mon_bin.c */
++#include "system/dma.h"
++
++#include "hw/uefi/var-service.h"
++
++#define LINKTYPE_EDK2_MM  302
++
++#define SNAPLEN   (64 * 1024)
++#define TYPE_RESET       0x01
++#define TYPE_REQUEST     0x02
++#define TYPE_REPLY       0x03
++
++static void uefi_vars_pcap_header(FILE *fp)
++{
++    static const struct pcap_hdr header = {
++        .magic_number  = PCAP_MAGIC,
++        .version_major = PCAP_MAJOR,
++        .version_minor = PCAP_MINOR,
++        .snaplen       = SNAPLEN,
++        .network       = LINKTYPE_EDK2_MM,
++    };
++
++    fwrite(&header, sizeof(header), 1, fp);
++    fflush(fp);
++}
++
++static void uefi_vars_pcap_packet(FILE *fp, uint32_t type,
++                                  void *buffer, size_t size)
++{
++    struct pcaprec_hdr header;
++    struct timeval tv;
++    uint32_t orig_len = size + sizeof(type);
++    uint32_t incl_len = MIN(orig_len, SNAPLEN);
++
++    gettimeofday(&tv, NULL);
++    header.ts_sec   = tv.tv_sec;
++    header.ts_usec  = tv.tv_usec;
++    header.incl_len = incl_len;
++    header.orig_len = orig_len;
++
++    fwrite(&header, sizeof(header), 1, fp);
++    fwrite(&type, sizeof(type), 1, fp);
++    if (buffer) {
++        fwrite(buffer, incl_len - sizeof(type), 1, fp);
++    }
++    fflush(fp);
++}
++
++void uefi_vars_pcap_init(uefi_vars_state *uv, Error **errp)
++{
++    int fd;
++
++    if (!uv->pcapfile) {
++        return;
++    }
++
++    fd = qemu_create(uv->pcapfile,
++                     O_WRONLY | O_TRUNC | O_BINARY,
++                     0666, errp);
++    if (fd < 0) {
++        return;
++    }
++
++    uv->pcapfp = fdopen(fd, "wb");
++    uefi_vars_pcap_header(uv->pcapfp);
++}
++
++void uefi_vars_pcap_reset(uefi_vars_state *uv)
++{
++    if (!uv->pcapfp) {
++        return;
++    }
++    uefi_vars_pcap_packet(uv->pcapfp, TYPE_RESET, NULL, 0);
++}
++
++void uefi_vars_pcap_request(uefi_vars_state *uv, void *buffer, size_t size)
++{
++    if (!uv->pcapfp) {
++        return;
++    }
++    uefi_vars_pcap_packet(uv->pcapfp, TYPE_REQUEST, buffer, size);
++}
++
++void uefi_vars_pcap_reply(uefi_vars_state *uv, void *buffer, size_t size)
++{
++    if (!uv->pcapfp) {
++        return;
++    }
++    uefi_vars_pcap_packet(uv->pcapfp, TYPE_REPLY, buffer, size);
++}
+diff --git a/hw/uefi/var-service-sysbus.c b/hw/uefi/var-service-sysbus.c
+index 75b07905184..97a96cae6a2 100644
+--- a/hw/uefi/var-service-sysbus.c
++++ b/hw/uefi/var-service-sysbus.c
+@@ -33,6 +33,7 @@ static const Property uefi_vars_sysbus_properties[] = {
+     DEFINE_PROP_SIZE("size", uefi_vars_sysbus_state, state.max_storage,
+                      256 * 1024),
+     DEFINE_PROP_STRING("jsonfile", uefi_vars_sysbus_state, state.jsonfile),
++    DEFINE_PROP_STRING("pcapfile", uefi_vars_sysbus_state, state.pcapfile),
+     DEFINE_PROP_BOOL("force-secure-boot", uefi_vars_sysbus_state,
+                      state.force_secure_boot, false),
+     DEFINE_PROP_BOOL("disable-custom-mode", uefi_vars_sysbus_state,
+diff --git a/hw/uefi/meson.build b/hw/uefi/meson.build
+index c8f38dfae24..3eae4755331 100644
+--- a/hw/uefi/meson.build
++++ b/hw/uefi/meson.build
+@@ -3,6 +3,7 @@ system_ss.add(files('hardware-info.c', 'ovmf-log.c'))
+ uefi_vars_ss = ss.source_set()
+ if (config_all_devices.has_key('CONFIG_UEFI_VARS'))
+   uefi_vars_ss.add(files('var-service-core.c',
++                         'var-service-pcap.c',
+                          'var-service-json.c',
+                          'var-service-vars.c',
+                          'var-service-auth.c',
 -- 
 2.52.0
 
