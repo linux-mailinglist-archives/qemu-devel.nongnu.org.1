@@ -2,104 +2,132 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GC3WFpiqb2lmEwAAu9opvQ
+	id iJNTO9mrb2mgEwAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:17:28 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:22:49 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A384F47435
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:17:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87DF24763A
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:22:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vi9c6-0004da-7U; Tue, 20 Jan 2026 06:09:34 -0500
+	id 1viA3G-0001N5-42; Tue, 20 Jan 2026 06:37:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vi9c4-0004aQ-9f
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 06:09:32 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vi9c2-00048s-IV
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 06:09:32 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-42fbc305552so3831088f8f.0
- for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 03:09:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1viA3D-0001MO-DE
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 06:37:35 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1viA39-0000GT-SM
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 06:37:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1768909050;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lXsAnxQEHE3y/76F1zw300Yl1/m0kQI+scHEhPa3/HI=;
+ b=S8z6UXiBiFSD6t5Q9N35eQGzF8m6rJchZC2DS9ehD7zsGmGAtyM7xl4UcTS16bJZDQCyqU
+ iSx5mlBFSULDlOB4YLzO5x822cXMHdlSPr7FRiJPx4+EQYVhBoUC3nNkQR+B6Y1Bbb5lcy
+ m9+7VfwsgvcARZMP3LWMZJx1O+iyvLc=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-308-XuMIQL40Pcy7Zl2FEJBgdA-1; Tue, 20 Jan 2026 06:37:29 -0500
+X-MC-Unique: XuMIQL40Pcy7Zl2FEJBgdA-1
+X-Mimecast-MFC-AGG-ID: XuMIQL40Pcy7Zl2FEJBgdA_1768909048
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-43284f60a8aso4502943f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 03:37:28 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768909048; cv=none;
+ d=google.com; s=arc-20240605;
+ b=JXR/xk38XBb2kmAcRPH+s186z6cFunw55Yn7i31PWHizrwHdpeOJo+fQWgpfJeC3Wo
+ WIdWAEYV3NBd1TLTekAluatg+Wgehs6dcgDhMgIiTnDE9dzk5iwHkNQnm4NiHhz58rFY
+ sSeoeyh40WrdThWK7pTRtbv7hFB1fexSx1RYRcc77+SU2G25wcjsC+/cUiiIohC6s73R
+ PNzWWPWV089YSr3YUoAixA+lj7sUoVhCyCzsCgPqhXGNyfODvZddvpseKYV2/9+jznX8
+ IpR4Uv32MUvrndpfMtGIpLv2X8RTY5ttDq2/y+yBDQAepmUD35KMeg6BzwGuf1as9aul
+ X70g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
+ s=arc-20240605; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:dkim-signature;
+ bh=lXsAnxQEHE3y/76F1zw300Yl1/m0kQI+scHEhPa3/HI=;
+ fh=nzjBS48/fGEvhTwnCEPhQf+fF3B0V83pieQjyOEXTYs=;
+ b=KlMwiY/KQWG5lC6A+z69u1BvpSf0+/063nERhD4snGnaIzk8kMnEhrTtbU2B1goNST
+ W1q0Lg9dlu1fLTTEQCEdL2SKRNFu1D2hj9XoY80HhW3+9FilOVtg3ZDhre+lwoR/rvff
+ CqtEJTWKLPh9bSn2p4RGUdrydbO6amYk2DJSvNbapnHBBc1BsHYf+JoYnFvyqalAO9m6
+ cKQBls80Jo9XhMgcdE/JcTyu9hLC5egxylH7z14LxSHd315MXHcVsh2I21DBo2z69Ww/
+ oMh8wsBHtZmGP7F+TCEnA/XcRh86AlHe9dz/UlwTJkFvSeecXBZxOViTPTMi7gje92zS
+ Fy1g==; darn=nongnu.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768907369; x=1769512169; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=mhjkzYRBTq9Ofw1jT3sPOsdw85Ujc7XaRUyDZIgIbkw=;
- b=fJ0S1wkPsYYBWvuSssMnw4rWH5eJ2eefAIpuRpJvyF41iK3YbgVKXF4dsmqI50wbgf
- XvEtk1i08Kow1sLmTfLCEIEAzXJ+JiqkFmFj0z/lFbNHfLX50f96eIqBcJwh0J/+QtOO
- Z4iZ41MHlpxRzV3bKnY7VdErK/p3KfnkfMpgXFrXC30ePh2XXEWILmJfKg1CYl6skDgi
- sbfQHVFfFMvKFQKu57upIjQmNELUcxEZ6qiO0ckiC7rSV0sbWFSx2KmxqPyVPv4tRKps
- u2h1H5gVukAIaYo5IqnWNaGx7yr5C7jjy8RMcKtYbVuXw/dWVeRLNsudGprExBYJknpv
- wtgg==
+ d=redhat.com; s=google; t=1768909048; x=1769513848; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=lXsAnxQEHE3y/76F1zw300Yl1/m0kQI+scHEhPa3/HI=;
+ b=q18MOM77IZ10bUZ2F1NNBfdOXrEz9wIqnLtuylczvgUzPWaPQepE1cTzI0g5QK0aOP
+ yXtQMghPVSGAthrHkITgZFSgnPQqeh5JpI6kxSZVazyfgomttzKTiVxh1jjxXkgcT3AD
+ byzUt+eNkWfLcsG03xGIrwayN/t2eFJ62G7ZlOheTGfor2MDPnYnmzqzTyyiB2mm/XaL
+ yESOn0UktFM5pVZ8apZvfE60CdVgfRwaFPsvOwgYe+I07toFS4QOaBxO2by570isEEaa
+ 4b3yaPc7LHVyI3esEhBxj1QNlpHEAkps+HiX0nswk8OHzl99eTqjfwf+X0bGsm3AOp5t
+ ufiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768907369; x=1769512169;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=mhjkzYRBTq9Ofw1jT3sPOsdw85Ujc7XaRUyDZIgIbkw=;
- b=Brb2kIj6X9/rUSjOuBzsEv8kM2bKd7n2bycqCu8lqA/KD9VlunR3ZR6yDIBZN4t6ow
- KkvyhBof0FY66ms4+x4JpuCpyGqJheBGMXk5/4HVolbZUZu9XaBb86aEuv1xhJUtJBQM
- 74xsL4lmdtBYvfB+BTvDXwRS7ZkwqE2qYBwlIuMSCNAm2zroTlix2f4+aFqKt4R6gpvQ
- cJp8q22CI61cIUaOtcgUbvpKhdQWwRgAVN4oScyz8jne/2i1q3278Pykiig5fvwIQzDw
- SH+xoT9Gy0BEea6rci678swnDBUU/tTIRDrJRuYEoiR+MH7WHz+bbyqk+2MLlz1DOEE8
- LQiQ==
+ d=1e100.net; s=20230601; t=1768909048; x=1769513848;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=lXsAnxQEHE3y/76F1zw300Yl1/m0kQI+scHEhPa3/HI=;
+ b=JRWHQpWmqtVpFv+8rKdWtPq29goAGRKavtDHS+ECgRtggFW2GAz9ZCHeVh3tBr/1xB
+ bkyHcgUzBrHGcv0K8B+N/tu7IxOLlB50GnMPGmyWXUgEP101LWCkOpQ3XQJO091BeOLC
+ bFagtFrpJybu64qrGrXIpm0JvmiN+PcO+HZ1RQajDdjQgxBCgoxtCU7jjrEKv9GcSRmP
+ Uzhw25MTH47Ziq0fCmNctk0QPZk7KqjIoey2z8hrt28I5yFWrimWNX1hP6Xumz2W3iXQ
+ A1SK2GqhgnAnIhgm0qvYw3pr9tFE21076zjFfJmTf7r73Z9Sn5RVeQLVgZY98ZZf5KRH
+ DlYg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWtwjficXtbwGEiB5QWJ9D5AJceW+QG3L1PFXnvTxy43h8InR0eCj840ipA2h/Qv1E+21DmOl2YV8Hj@nongnu.org
-X-Gm-Message-State: AOJu0Yw//JyXuxZgW1SEcpjXh1bJ1Vr2zk/3+HgomH9sWfTj4edZingh
- j2iaa3GxCe0X7bQIY5L8uo66WymWAAonc72WuIU/XSmv7rkUlvil6KuL+fY4RiSRIMY=
-X-Gm-Gg: AZuq6aIHCIh6WqnIvJBRQwLVNTBIwK8PvQmWCtU2q36mxNuf665h1foT5XIIM0xOe/4
- zzFjwwkXnX/wrmxToy4YHZSHO8Sh70vjYRh6mTp/ipRYD9fGcknJaFH379+rDipFWIFG1NkLrgW
- cqzxJfMgV+DiwV7WpIppxZZrRVo7gH/HgbK22/PtJPGjafC1SgN4jXTDlChn17EBZobbQ1eqzr/
- 5pC6ZqCxvm0Jg6ZtnCFCY8fbdg3dvYoqbDt964s7Tc/m3VtGlqmJu7y1Xc6Zp7VUX5AmQQpEkSZ
- VicR7oFMUhFhHXUVZdlPsNY6VZvxjBV7W31mkopi8yO92kV/nd2gWheq54E4vVoDlncOySUfi0r
- hWE25vhBXcH4kvMYZ3DPwGEj4lp3U9aev09FNQfShyZdZ2Ycnu7NHHEfVI2Z2Cwps7eQ4AoIdnp
- nykRLWXf6GHGRzTeUE8O0qc/CmoN8ejAuUQ5j4Cm3K4U1jYxJo610jXw==
-X-Received: by 2002:a05:6000:2282:b0:430:fc63:8d0 with SMTP id
- ffacd0b85a97d-4356a0773aemr18404450f8f.36.1768907368829; 
- Tue, 20 Jan 2026 03:09:28 -0800 (PST)
-Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4359333b924sm1778302f8f.13.2026.01.20.03.09.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jan 2026 03:09:28 -0800 (PST)
-Message-ID: <a1b95dc7-cd3d-40e3-b8ac-bbcc6e154298@linaro.org>
-Date: Tue, 20 Jan 2026 12:09:27 +0100
+ AJvYcCXVY/YO8I7KfI1bhmrIokYfXvKvNPNSR4yZaciAbk6vz9A1MzEC2cHAGb9wmQZWNnxsgsMDtJxg4zge@nongnu.org
+X-Gm-Message-State: AOJu0YzrQJtmhWFAgdbr0buiFi6HIWiytnO0I3Ta7b09A2ChcOP98nQw
+ aBy9fisywMygEZcHfvOIxKPTIiZGQcux+HGenDZ3Qfr5/AAQkcElWmJzg25b7Qp4p1FGMHSRwGv
+ +6TIbYRgFKI+12/NfjBzH6OsUVWVmS7k4aTFoymkp+LkzdKvOm1lpXPVevTiQ+EX6R8Fw3uhoPN
+ e6vjvZQnxs4Fsdd2TDNcHFaJ9Apn5xuYA=
+X-Gm-Gg: AY/fxX5+7ILI/EizemM1uNVv9mI10+VaeWVssGXEJu74oQcDQL9TWadMLo1XvJRlmrW
+ yecnkNcsFAYxrSdGjwmUVvAkE17PUPvvjWPm+m5mGGjNnI3Ok4jb96HPV1xjNPHaJ0rUEetxTkm
+ 8sKCw+mygS7EDOoN9Dtr52+VhIaZqfg6JBO1sfrQooH591BaYEPxo9ikkBEX1G8sNLUwzyuxmfJ
+ kkKrLecvVNAwWogNg7nY1b8tjDR23dsTJYBFx5CZVmyuPAwZYyJY50d
+X-Received: by 2002:a05:600c:4513:b0:477:9cdb:e337 with SMTP id
+ 5b1f17b1804b1-4801e2fc2e3mr195882095e9.7.1768909047658; 
+ Tue, 20 Jan 2026 03:37:27 -0800 (PST)
+X-Received: by 2002:a05:600c:4513:b0:477:9cdb:e337 with SMTP id
+ 5b1f17b1804b1-4801e2fc2e3mr195881755e9.7.1768909047288; Tue, 20 Jan 2026
+ 03:37:27 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 16/26] whpx: change memory management logic
-Content-Language: en-US
-To: Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Pedro Barbuda <pbarbuda@microsoft.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Shannon Zhao <shannon.zhaosl@gmail.com>, qemu-arm@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-References: <20260116135235.38092-1-mohamed@unpredictable.fr>
- <20260116135235.38092-17-mohamed@unpredictable.fr>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20260116135235.38092-17-mohamed@unpredictable.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+References: <20260109124043.25019-1-farosas@suse.de>
+ <20260109124043.25019-5-farosas@suse.de>
+ <CAE8KmOw66B0Za=KA=TyxyWMPYSjFK=GBq7XhREevkCO4Vs+HYQ@mail.gmail.com>
+ <aW9ixg59R8a90FIs@redhat.com>
+In-Reply-To: <aW9ixg59R8a90FIs@redhat.com>
+From: Prasad Pandit <ppandit@redhat.com>
+Date: Tue, 20 Jan 2026 17:07:10 +0530
+X-Gm-Features: AZwV_QjbsdPSxE3pAMz_VGpztWGm4zmiudJqC5HxZmXxa5I0UM2Zw4xazpqVG0c
+Message-ID: <CAE8KmOwdfWPkmV87DWGVvHj7=QEYEXoHJOsRV4+SW3M_-PXdCQ@mail.gmail.com>
+Subject: Re: [PATCH v3 04/25] migration: Cleanup TLS handshake hostname passing
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org, peterx@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=ppandit@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.016,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,169 +142,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
-X-Spamd-Result: default: False [0.29 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+X-Spamd-Result: default: False [-2.21 / 15.00];
+	ARC_ALLOW(-1.00)[google.com:s=arc-20240605:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
 	MAILLIST(-0.20)[mailman];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	ARC_NA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:berrange@redhat.com,m:farosas@suse.de,m:qemu-devel@nongnu.org,m:peterx@redhat.com,s:lists@lfdr.de];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:mohamed@unpredictable.fr,m:qemu-devel@nongnu.org,m:marcandre.lureau@redhat.com,m:pbarbuda@microsoft.com,m:peter.maydell@linaro.org,m:eduardo@habkost.net,m:marcel.apfelbaum@gmail.com,m:phil@philjordan.eu,m:odaki@rsg.ci.i.u-tokyo.ac.jp,m:shannon.zhaosl@gmail.com,m:qemu-arm@nongnu.org,m:richard.henderson@linaro.org,m:pierrick.bouvier@linaro.org,m:marcelapfelbaum@gmail.com,m:shannonzhaosl@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[qemu-devel@nongnu.org];
-	FORGED_SENDER(0.00)[philmd@linaro.org,qemu-devel-bounces@nongnu.org];
-	FREEMAIL_CC(0.00)[redhat.com,microsoft.com,linaro.org,habkost.net,gmail.com,philjordan.eu,rsg.ci.i.u-tokyo.ac.jp,nongnu.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[ppandit@redhat.com,qemu-devel-bounces@nongnu.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[philmd@linaro.org,qemu-devel-bounces@nongnu.org];
+	FORWARDED(0.00)[qemu-devel@nongnu.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linaro.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ppandit@redhat.com,qemu-devel-bounces@nongnu.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[qemu-devel];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,linaro.org:email,linaro.org:dkim,linaro.org:mid,unpredictable.fr:email]
-X-Rspamd-Queue-Id: A384F47435
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 87DF24763A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 16/1/26 14:52, Mohamed Mediouni wrote:
-> This allows edk2 to work on Arm, although u-boot is still not functional.
-> 
-> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
-> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> ---
->   accel/whpx/whpx-common.c | 97 +++++++++++++++-------------------------
->   1 file changed, 36 insertions(+), 61 deletions(-)
-> 
-> diff --git a/accel/whpx/whpx-common.c b/accel/whpx/whpx-common.c
-> index 827f50f3e0..f018a8f5c7 100644
-> --- a/accel/whpx/whpx-common.c
-> +++ b/accel/whpx/whpx-common.c
-> @@ -255,89 +255,64 @@ void whpx_vcpu_kick(CPUState *cpu)
->    * Memory support.
->    */
->   
-> -static void whpx_update_mapping(hwaddr start_pa, ram_addr_t size,
-> -                                void *host_va, int add, int rom,
-> -                                const char *name)
-> +static void whpx_set_phys_mem(MemoryRegionSection *section, bool add)
->   {
->       struct whpx_state *whpx = &whpx_global;
-> +    MemoryRegion *area = section->mr;
-> +    bool writable = !area->readonly && !area->rom_device;
-> +    WHV_MAP_GPA_RANGE_FLAGS flags;
-> +    uint64_t page_size = qemu_real_host_page_size();
-> +    uint64_t gva = section->offset_within_address_space;
-> +    uint64_t size = int128_get64(section->size);
->       HRESULT hr;
-> +    void *mem;
->   
-> -    /*
-> -    if (add) {
-> -        printf("WHPX: ADD PA:%p Size:%p, Host:%p, %s, '%s'\n",
-> -               (void*)start_pa, (void*)size, host_va,
-> -               (rom ? "ROM" : "RAM"), name);
-> -    } else {
-> -        printf("WHPX: DEL PA:%p Size:%p, Host:%p,      '%s'\n",
-> -               (void*)start_pa, (void*)size, host_va, name);
-> -    }
-> -    */
-> -
-> -    if (add) {
-> -        hr = whp_dispatch.WHvMapGpaRange(whpx->partition,
-> -                                         host_va,
-> -                                         start_pa,
-> -                                         size,
-> -                                         (WHvMapGpaRangeFlagRead |
-> -                                          WHvMapGpaRangeFlagExecute |
-> -                                          (rom ? 0 : WHvMapGpaRangeFlagWrite)));
-> -    } else {
-> -        hr = whp_dispatch.WHvUnmapGpaRange(whpx->partition,
-> -                                           start_pa,
-> -                                           size);
-> -    }
-> -
-> -    if (FAILED(hr)) {
-> -        error_report("WHPX: Failed to %s GPA range '%s' PA:%p, Size:%p bytes,"
-> -                     " Host:%p, hr=%08lx",
-> -                     (add ? "MAP" : "UNMAP"), name,
-> -                     (void *)(uintptr_t)start_pa, (void *)size, host_va, hr);
-> +    if (!memory_region_is_ram(area)) {
-> +        if (writable) {
-> +            return;
-> +        } else if (!memory_region_is_romd(area)) {
-> +            add = false;
-> +        }
->       }
-> -}
-> -
-> -static void whpx_process_section(MemoryRegionSection *section, int add)
-> -{
-> -    MemoryRegion *mr = section->mr;
-> -    hwaddr start_pa = section->offset_within_address_space;
-> -    ram_addr_t size = int128_get64(section->size);
-> -    unsigned int delta;
-> -    uint64_t host_va;
->   
-> -    if (!memory_region_is_ram(mr)) {
-> -        return;
-> +    if (!QEMU_IS_ALIGNED(size, page_size) ||
-> +        !QEMU_IS_ALIGNED(gva, page_size)) {
-> +        /* Not page aligned, so we can not map as RAM */
-> +        add = false;
->       }
->   
-> -    delta = qemu_real_host_page_size() - (start_pa & ~qemu_real_host_page_mask());
-> -    delta &= ~qemu_real_host_page_mask();
-> -    if (delta > size) {
-> -        return;
-> -    }
-> -    start_pa += delta;
-> -    size -= delta;
-> -    size &= qemu_real_host_page_mask();
-> -    if (!size || (start_pa & ~qemu_real_host_page_mask())) {
-> +    if (!add) {
-> +        hr = whp_dispatch.WHvUnmapGpaRange(whpx->partition,
-> +                gva, size);
-> +        if (FAILED(hr)) {
-> +            error_report("WHPX: failed to unmap GPA range");
-> +            abort();
-> +        }
->           return;
->       }
->   
-> -    host_va = (uintptr_t)memory_region_get_ram_ptr(mr)
-> -            + section->offset_within_region + delta;
-> +    flags = WHvMapGpaRangeFlagRead | WHvMapGpaRangeFlagExecute
-> +     | (writable ? WHvMapGpaRangeFlagWrite : 0);
-> +    mem = memory_region_get_ram_ptr(area) + section->offset_within_region;
->   
-> -    whpx_update_mapping(start_pa, size, (void *)(uintptr_t)host_va, add,
-> -                        memory_region_is_rom(mr), mr->name);
-> +    hr = whp_dispatch.WHvMapGpaRange(whpx->partition,
-> +         mem, gva, size, flags);
-> +    if (FAILED(hr)) {
-> +        error_report("WHPX: failed to map GPA range");
-> +        abort();
+Hi,
 
-Maybe aborting is too violent (i.e. trying to start a SBSA-Ref guest)
-and we could just exit(1)... Anyhow,
+On Tue, 20 Jan 2026 at 16:41, Daniel P. Berrang=C3=A9 <berrange@redhat.com>=
+ wrote:
+> Normal default behaviour is that the hostname in the TLS certificate
+> MUST be validated against the hostname that is specified by the user
+> (or mgmt app) in the migration URI.
+>
+> The 'tls-hostname' migration parameter is an optional override that
+> replaces the hostname from the migration URI, to be used in scenarios
+> such as:
+>
+>  * The URI is a UNIX socket. eg the UNIX socket points to a proxy
+>    that is transporting data to the dest in some manner.  There is
+>    no way to know the hostname from the URI, so 'tls-hostname' must
+>    be provided
+>
+>  * The URI is pointing to a proxy that forwards to the real host.
+>    eg perhaps you setup an SSH tunnel from localhost, to the real
+>    target. QEMU must NOT validate the remote TLS cert against
+>    'localhost', so 'tls-hostname' must be provided by the user
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+* I see, got it. Thank you for the explanation.
 
-> +    }
->   }
+> Whatever is usd to validate the TLS hostname, must be data that is
+> provided by the user in some manner.
+>
+> TL:DR: always use 'tls-hostname' if it is provided by the user,
+> otherwise always use the hostname from the migration URI,
+> otherwise do not provide a hostname.
+
+* So when 'tls-hostname' is not defined, it could be set to
+'s->hostname', then migration_tls_hostname() stays unchanged.
+
+Thank you.
+---
+  - Prasad
 
 
