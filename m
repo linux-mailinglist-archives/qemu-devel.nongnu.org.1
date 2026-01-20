@@ -2,94 +2,131 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4B1ZAynNb2mgMQAAu9opvQ
+	id iImLK1/Kb2mgMQAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:44:57 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:33:03 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D2CF49B87
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:44:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F8E749828
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:33:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viGiA-00072i-Qy; Tue, 20 Jan 2026 13:44:18 -0500
+	id 1viGWr-00029j-1a; Tue, 20 Jan 2026 13:32:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1viGi8-0006wr-8F
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:44:16 -0500
-Received: from ci-2001j-snip4-7.eps.apple.com ([57.103.91.100]
- helo=outbound.ci.icloud.com)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1viGWp-00028r-6M
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:32:35 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1viGi5-00072v-Pg
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:44:16 -0500
-Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
- by p00-icloudmta-asmtp-us-central-1k-100-percent-0 (Postfix) with ESMTPS id
- 7F8D91807433; Tue, 20 Jan 2026 18:44:06 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; t=1768934652; x=1771526652;
- bh=6woRe8jTuj6yZ/WBDzOGbJo3INWTQfSFKjPkUVscoE4=;
- h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme;
- b=Zv6r54Sjr75Cybh6N88WQNvXdoFkIy9gUvZg56lGIS6+xdtGMgX6BmkpkZ2Dy8wEAoBKK3TH/t7RmyS/Ig0EWZXakc5HvzbuxE9FYF3zLWi8SNUxQ8A6iVXWKhG5+oM9X/PuwPQzM+Tkx46bQpfQOCAfSKeDvDaRIZqlsLX8hC7tkYqp2lc5LlMn4D9rFbiimiLvd9KrF2+oHvHa+khnCmxTyLqZNkYiZd1Rop7bO0OgiWqgGjK0q8/YP6ub7iSo031mwqBIH2MMThobnS1bYm5jgfSx/n7UY+Mhl6eDEuADuBhku8cq/QqSY/CJFL9A6n3WU/1fGabQrw4qt1gnTw==
-mail-alias-created-date: 1752046281608
-Received: from smtpclient.apple (unknown [17.57.156.36])
- by p00-icloudmta-asmtp-us-central-1k-100-percent-0 (Postfix) with ESMTPSA id
- ED33618170B4; Tue, 20 Jan 2026 18:31:33 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
-Subject: Re: [PATCH v16 04/26] hw/arm: virt: add GICv2m for the case when ITS
- is not available
-From: Mohamed Mediouni <mohamed@unpredictable.fr>
-In-Reply-To: <CAFEAcA-3P6i_w3b7SaFTn4Zmwnot5vpDs89y+zpjcJ=-mEnP5w@mail.gmail.com>
-Date: Tue, 20 Jan 2026 19:31:22 +0100
-Cc: qemu-devel@nongnu.org,
- =?utf-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Pedro Barbuda <pbarbuda@microsoft.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>, qemu-arm@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1viGWm-0004xA-FR
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:32:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1768933950;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=eUkuueK+X4u/bLVwIf6J4p0M7t0768LvdacUDNxPknk=;
+ b=UPqrKHN0R2QMEHvzwEKbfMixqK7OlKMOTq7KWFQhN4QOOJYWWYUNJseXg9jHtEhCtK4uTl
+ S3Ui69JXQB/i80dbWiOo2f7jR4uxex3tcNcPj7/t9kz1rxzuHO0ucqhew7FxZEGCRg41/U
+ QcKxucANlhZEa5mWI22v36l/sH2nZ6g=
+Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
+ [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-657-2suJxFEbMGSe9Gizt3P42g-1; Tue, 20 Jan 2026 13:32:29 -0500
+X-MC-Unique: 2suJxFEbMGSe9Gizt3P42g-1
+X-Mimecast-MFC-AGG-ID: 2suJxFEbMGSe9Gizt3P42g_1768933949
+Received: by mail-yw1-f200.google.com with SMTP id
+ 00721157ae682-78d694a1eb2so56525937b3.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 10:32:29 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768933949; cv=none;
+ d=google.com; s=arc-20240605;
+ b=Fitn6J3asigvD/G4sW6dWz3Q+RyLpxAJ8lFzQTLfNXItRlOS4RY+80xLF1t5Xu8SGk
+ r2tB734KgWiWtQf0g9AXMh4jtudFRS460FsUA/4SK8XM22Jx446cSxi2/4YO67W0twMm
+ bz8ToxaoYt92T75fIr+Mku5GwU4pi0nawUss1kSERXDk2etX0D3CCgXOReLYnP+GxPcz
+ WN995TlBNC9fYsn/r6cTPKyPkuCKndNjDSo7eoXPOyKLy6b2dvyXL/+jpJUMfZdCePdN
+ Y2/QjI9J4QcsBdl2eS6E/Zn3oH41svN3WqH/R0yjE7f2xwgPQp4CQHIaVnIhrmgcjm/o
+ KkIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
+ s=arc-20240605; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:dkim-signature;
+ bh=eUkuueK+X4u/bLVwIf6J4p0M7t0768LvdacUDNxPknk=;
+ fh=jm6QaAGnV17+u5Ubx2P/5VVq19DYDRw7hX2tO+OpmpA=;
+ b=NwEoymfqYTgul3N/2I1hGEX4LNLepFa4ueInYKs+rRVw/3nwlKrUPvsY23jPMmgTpI
+ 5FzlYeETmX2zNz3NESGkvADXKAe9smCAzKVNXIkeUnfE/ilna8eBiGjDGLKpcLuE1gdC
+ 8eqmL5uOXBtMkF1W+hiJgBMNGSpa/so9Msrdl20OhPvZ/+i6NjT0YZ6+SpSX0MsuJvBx
+ rtxSCKm/hJijfB6eyH185HzJc3GY4IrEBBIpAza3qDYwqRpmtKCLzAVaHVmiusjecDj4
+ nOXCripbd9hFo1SoohVkOBRfJx+9r5Ml5b5VlE2JYIsJJ+4gYP4NfHMI/lZIpRRt5Hr6
+ gceQ==; darn=nongnu.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=redhat.com; s=google; t=1768933949; x=1769538749; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=eUkuueK+X4u/bLVwIf6J4p0M7t0768LvdacUDNxPknk=;
+ b=Ma/o7hr8Ni5Tckv/AEhvCzwACl3pk2HT7VRKxUXi2SS5/pCQPJfn1wvmCHr1UixcTQ
+ Z/3Pc+vKCeHJEWVguT0Yeo8JWuy4KD/Pjq8cxPJhy2t883UfepuszL2aGDsjrZSbUlge
+ 0Rm+89nBDpZH6qSdBIKJ6E/AohDfzgPpyloyyHv0KP48jtizJd5GMn811x53U0xXAs4y
+ v4EypjZTb//0OjYdo5CA5Yxz7yZatg5i5vZWKNp078IWI1mRh8DTkQ3y4nTI09MwWfS0
+ tK6B/Nfo/zOs6pWPefV5rnD6bYfhRmp8npzMlOC9p81Qdj53Z2d+nbR2HIOxZY6NBqLV
+ M7aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768933949; x=1769538749;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=eUkuueK+X4u/bLVwIf6J4p0M7t0768LvdacUDNxPknk=;
+ b=dnbIrOUIOvrVgVMcKgJ8r61e73JyE6n4eCQlNg3xnPzlOkI98O4Zlt7gcAFMV953dJ
+ vbzjBexzKsWWmlrq4bnJieCvcIQUto8r54Rmw8TXj3yoNVxp7hu70ZXCeAYMQbMTJwF/
+ eR9ZtMjcbjwkmraaUiI0/PswJflu1dkAR1btRjtLnGCDNSEyDdMYTNTo+nf8SR4jc/48
+ 6BsWioyn9C8wnW7w/74MkGsAvylh9bpfy77wAiETJFLMaFYl6ZYClWdRnSc0AZLkt7fh
+ 1l6Xb2YD6hC7QvaNCU/qshEzfhLNlJ4FHKYna7UMkUOx3qy9kUqtqhbrIyoPN2lI+ay9
+ 2lXQ==
+X-Gm-Message-State: AOJu0YwAlVDNrP1W95VkD3dUw7qDuOH49PGRPOROQNkW+tSg4VYvoBa2
+ i11bMke8Kxk0ez+yKvdYrvp/U+D1yuLGe/e7kiaiyWmP15rERHoXShb1ngUAY9j7RplHiQg96kd
+ Wu4bQmc+B1uzBZgshL2QUorKhexmR6NaEEBXPZ2U2KubY/+bUNINqUhsT5Bn1YScsQ6HB5zE8jy
+ gYoy8Nb7NQkyyE64S5ne5yGNYL18VGP48=
+X-Gm-Gg: AZuq6aJ6PM8yAakHufOIN2ztDyTlCH5OGbN5Ez+mrWBCn0avkmp3djU8Hmj0QoUeQW8
+ w5pXqN0XrrXOw78QjAwhBvqE8j2ZxbS9Gk+6TzRfjxHkpaFStj7MgEgWwjoQVoOJF29Ya4/lWXI
+ /weaCkam6hIaYyHLwSE9qNp+jes/wT7DGDRbKTcPG+vgylIbNBfGYJFalXdvZU2L6I8D6HuTKe3
+ AhMfaWFjRFjMzflWPfz3DZOLw==
+X-Received: by 2002:a05:690c:4b11:b0:787:cddb:ec2d with SMTP id
+ 00721157ae682-7940a12058amr53347757b3.19.1768933948465; 
+ Tue, 20 Jan 2026 10:32:28 -0800 (PST)
+X-Received: by 2002:a05:690c:4b11:b0:787:cddb:ec2d with SMTP id
+ 00721157ae682-7940a12058amr53347187b3.19.1768933948086; Tue, 20 Jan 2026
+ 10:32:28 -0800 (PST)
+MIME-Version: 1.0
+References: <20260115164756.799402-1-berrange@redhat.com>
+ <20260115164756.799402-2-berrange@redhat.com>
+In-Reply-To: <20260115164756.799402-2-berrange@redhat.com>
+From: John Snow <jsnow@redhat.com>
+Date: Tue, 20 Jan 2026 13:32:17 -0500
+X-Gm-Features: AZwV_Qhv-Q2-HVry6B_cgIeObu3t_O8NvP_cWe_o0RZ_LlXn8saYJS4MbXTEgkc
+Message-ID: <CAFn=p-as=ip=rdWLxdCPiXagvzMxKbZdze4qnjcQhTTNG7-+4A@mail.gmail.com>
+Subject: Re: [PATCH v3 01/14] Revert "python/aqmp: fix send_fd_scm for python
+ 3.6.x"
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, 
+ Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Cleber Rosa <crosa@redhat.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Kevin Wolf <kwolf@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <8158CEFE-8EA2-40A4-970E-01B30BACC019@unpredictable.fr>
-References: <20260116135235.38092-1-mohamed@unpredictable.fr>
- <20260116135235.38092-5-mohamed@unpredictable.fr>
- <CAFEAcA-3P6i_w3b7SaFTn4Zmwnot5vpDs89y+zpjcJ=-mEnP5w@mail.gmail.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-X-Mailer: Apple Mail (2.3864.300.41.1.7)
-X-Proofpoint-GUID: IQMB32Rzn7WyiNvAqKg-8hszxKdXZ2zs
-X-Proofpoint-ORIG-GUID: IQMB32Rzn7WyiNvAqKg-8hszxKdXZ2zs
-X-Authority-Info: v=2.4 cv=DZ4aa/tW c=1 sm=1 tr=0 ts=696fccf9
- cx=c_apl:c_apl_out:c_pps a=2G65uMN5HjSv0sBfM2Yj2w==:117
- a=2G65uMN5HjSv0sBfM2Yj2w==:17 a=8tVNtdTugjW4QW2w:21 a=IkcTkHD0fZMA:10
- a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=KKAkSRfTAAAA:8
- a=RnglCoYQ5a6lEa2ZeEsA:9 a=QEXdDO2ut3YA:10 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIwMDE1NyBTYWx0ZWRfX19cT9fUl5GnM
- bM56+yNnsT2x2pttkhPYJBQQRLPqHV1yoKRIse+/FzwMeF1vb2Oan460sZF1RfywIXmm/c5rWgY
- pJpdoisEVVM1amvuzbEyLNkDf2cB3RKK0+TfB/IUV6sRU7uspRQnlNGV7ZdjpaZm5ugYqW+Y9Xx
- 5X9Fn+6yImVOc7UtScYZW6iITbwS76smq3vjdBczmd8Wb7Tq76KyCVkt+n03IdJHwexG/fpspf6
- g9Yf5ZL6ORDYrXvW6lUJ9j+sPJrgNh8zvOrJxdNb+gBx+/FBvKpyoLUBGrMg/mGZcmlgBG/QrNw
- 7LnDxR+/hNYf6OfCwf1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
- definitions=2026-01-20_05,2026-01-20_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1030
- adultscore=0 mlxscore=0 phishscore=0 mlxlogscore=999 suspectscore=0
- spamscore=0 malwarescore=0 bulkscore=0 classifier=spam authscore=0 adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2601200157
-X-JNJ: AAAAAAAB7r40ZohuCB8s6D8P9BknfoGPXb1Z1SSqaXS1L86OEOuZYV4O/8xRfKD+HuLXcM+TUi4KC57fhg3a8hgKa6+HsyHwtuzD+TbndrCnwYmsrGD1NBG39rUsDygOQfKtWGLVtKPImxDJqHg9gqsUCjnqaoYcmg8UgQqk1TAxcw1zAS9gjdPMgTWwXT0IWYXIyy30Gc3RBoJEezDjkUL38zmFRw43Tf+7m3WNZ8DcYKmumEVckXxund37GSuVbdGJ3cqE7QWLXvdi0WeRI16gCIuN7OGBj+2tfAgXwlUKulw5bpmNC8L0lY6AfiFJk1fw8wn2pw3pYpOHgKr1zcQXq611DBw5s1w3/luxowlTcG3u5xNtHLHgKCyG+DJ/+dMKm64OeY4svZMBcrTLE8kHHPZ9KBDKdbPXyXv787TB2ZDVZHAB4s6mZZ9h9xvzGU3NC7L3IwmmzU/iORobEPeVg9hth3NMduAjkHFdA5VLFPfjOrtIzVVzUEcOCFbCCFl9FqFM8as92ccKFdNE4mecTq7Ub8N0Y3QFQjPjX/UvdkUWWaXxaWjV4xQbslydeQqX+NdNS/uC2Ec+40tF2302Re9h4QQ9csxRdd0R13QLuJDFnwHpPutG3Zj2V6TyRZsXk6I12ABXJNy5oQrSaceQgDeomeG6R1+wvFpt93FNta7AA5u+JVe/1oGV8Bf2VHwEhIOy9Y/QH88K6vY7EXhL7OkaWfe6Bl1D8wz53cz8NHblkddtn4EXkbs3/WB4F9blahejXZut7cy1dgHKasv1YZ3oE7yS1gmckx0tPHEVZJf9WEe+FQA1AmY=
-Received-SPF: pass client-ip=57.103.91.100;
- envelope-from=mohamed@unpredictable.fr; helo=outbound.ci.icloud.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.087,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -106,88 +143,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
-X-Spamd-Result: default: False [0.79 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[unpredictable.fr,reject];
-	MV_CASE(0.50)[];
-	MAILLIST(-0.20)[mailman];
-	R_DKIM_ALLOW(-0.20)[unpredictable.fr:s=sig1];
+X-Spamd-Result: default: False [-2.21 / 15.00];
+	ARC_ALLOW(-1.00)[google.com:s=arc-20240605:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
+	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ARC_NA(0.00)[];
 	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FREEMAIL_CC(0.00)[nongnu.org,redhat.com,microsoft.com,habkost.net,gmail.com,philjordan.eu,rsg.ci.i.u-tokyo.ac.jp,linaro.org];
+	FORGED_SENDER(0.00)[jsnow@redhat.com,qemu-devel-bounces@nongnu.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:berrange@redhat.com,m:qemu-devel@nongnu.org,m:thuth@redhat.com,m:hreitz@redhat.com,m:qemu-block@nongnu.org,m:pbonzini@redhat.com,m:philmd@linaro.org,m:crosa@redhat.com,m:alex.bennee@linaro.org,m:kwolf@redhat.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[qemu-devel@nongnu.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[mohamed@unpredictable.fr,qemu-devel-bounces@nongnu.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[unpredictable.fr:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[qemu-devel];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jsnow@redhat.com,qemu-devel-bounces@nongnu.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[unpredictable.fr:mid,unpredictable.fr:dkim,lists.gnu.org:rdns,lists.gnu.org:helo,linaro.org:email]
-X-Rspamd-Queue-Id: 8D2CF49B87
+	TAGGED_RCPT(0.00)[qemu-devel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,mail.gmail.com:mid,sock.family:url]
+X-Rspamd-Queue-Id: 3F8E749828
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Thu, Jan 15, 2026 at 11:48=E2=80=AFAM Daniel P. Berrang=C3=A9 <berrange@=
+redhat.com> wrote:
+>
+> This reverts commit a57cb3e23d5ac918a69d0aab918470ff0b429ff9.
+>
+> The current code now only requires compatibility with Python
+> 3.8 or later.
+>
+> The conditional usage of 'sendmsg' on the async IO socket
+> wrapper will generate a deprecation warning on stderr
+> every time send_fd_scm is used with older Python versions.
+>
+> This has the effect of breaking the QEMU I/O tests when run
+> on Python versions before the 'sendmsg' wrapper was removed.
+>
+> Unconditionally accessing 'sock._sock' ensures we never use
+> the asyncio socket wrapper, and thus never risk triggering
+> deprecation warnings on any Python version
+>
+> Most notably this fixes the QEMU block I/O tests on CentOS
+> Stream9 that use "sendmsg" for FD passing, which otherwise
+> generate deprecation messages breaking the expected output
+> comparison.
+>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Acked-by: John Snow <jsnow@redhat.com>
+> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> ---
+>  python/qemu/qmp/qmp_client.py | 9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
+>
+> diff --git a/python/qemu/qmp/qmp_client.py b/python/qemu/qmp/qmp_client.p=
+y
+> index 8beccfe29d..7a115b693b 100644
+> --- a/python/qemu/qmp/qmp_client.py
+> +++ b/python/qemu/qmp/qmp_client.py
+> @@ -720,12 +720,9 @@ def send_fd_scm(self, fd: int) -> None:
+>          if sock.family !=3D socket.AF_UNIX:
+>              raise QMPError("Sending file descriptors requires a UNIX soc=
+ket.")
+>
+> -        if not hasattr(sock, 'sendmsg'):
+> -            # We need to void the warranty sticker.
+> -            # Access to sendmsg is scheduled for removal in Python 3.11.
+> -            # Find the real backing socket to use it anyway.
+> -            sock =3D sock._sock  # pylint: disable=3Dprotected-access
+> -
+> +        # Void the warranty sticker.
+> +        # Access to sendmsg in asyncio is scheduled for removal in Pytho=
+n 3.11.
+> +        sock =3D sock._sock  # pylint: disable=3Dprotected-access
+>          sock.sendmsg(
+>              [b' '],
+>              [(socket.SOL_SOCKET, socket.SCM_RIGHTS, struct.pack('@i', fd=
+))]
+> --
+> 2.52.0
+>
 
+Acked-by: John Snow <jsnow@redhat.com>
 
-> On 20. Jan 2026, at 19:02, Peter Maydell <peter.maydell@linaro.org> =
-wrote:
+PS, for your other qemu.qmp fix, it can go in as soon as the pipeline
+is fixed, which I (think) I have accomplished here:
+https://gitlab.com/qemu-project/python-qemu-qmp/-/merge_requests/47
 
+Sorry for the delay on that.
 
-> The MSI controller selection logic is already pretty confusing,
-> and this is making it more complicated. I don't think we should
-> need this machine back compatibility, because currently there
-> is no setup where you can have a GICv3 that doesn't also have
-> either an ITS or no MSI controller.
->=20
-Hello,
-
-This was to replicate the =E2=80=9Cno_tcg_its=E2=80=9D where this was =
-done when introducing TCG.
-And for the purpose of VM save/restore on HVF with the older machine =
-type continuing to work as expected.
-
-Also worth noting that for HVF specifically GICv3 + ITS works today when =
-using kernel-irqchip=3Doff
-and that only kernel-irqchip=3Don to leverage the hardware vGIC =
-doesn=E2=80=99t support it.
-
-> I think also that we can make the code cleaner if we:
-> (1) clean the existing "pick an MSI controller" logic up
-> so that we do it up front, the same way we do "pick a GIC
-> version"
-> (2) add the new "msi" property and deprecate the old "its" one
-> (3) then add the gicv3-with-gicv2m-on-hvf logic to that
->=20
-> I see this series adds an "msi" property, but it also
-> makes the old "its" property an OnOffAuto -- do we really
-> need both ?
-The =E2=80=9Crework MSI-X configuration=E2=80=9D patch in the series =
-flips the =E2=80=9Cits=E2=80=9D property
-back to a bool.
-
-Would it be better to reorder that earlier in the series or keep it as =
-is?
-Squashing the =E2=80=9Chw/arm: virt: cleanly fail on attempt to use the =
-platform vGIC together with ITS=E2=80=9D commit
-with =E2=80=9Crework MSI-X configuration=E2=80=9D is an option too.
-
-Thank you,
--Mohamed
-=20
-> I wrote some code for this this afternoon before I realised
-> that you'd done the "msi" property in that series (so the
-> duplication with your work is my fault). I'll send them
-> out as an RFC to give an idea of what I have in mind.
+--js
 
 
