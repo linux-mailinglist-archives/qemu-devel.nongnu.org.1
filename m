@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SOj7AGerb2lUEwAAu9opvQ
+	id 2E38AOurb2mhEwAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:20:55 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:23:07 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C879E47548
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:20:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B26B24764F
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:23:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viAze-0001yW-Ae; Tue, 20 Jan 2026 07:37:59 -0500
+	id 1viB01-0002W2-PM; Tue, 20 Jan 2026 07:38:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1viAz6-0001ag-Cp; Tue, 20 Jan 2026 07:37:31 -0500
+ id 1viAyv-0001WK-0i; Tue, 20 Jan 2026 07:37:14 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1viAyy-0002XV-Op; Tue, 20 Jan 2026 07:37:21 -0500
+ id 1viAyn-0002Wc-Ak; Tue, 20 Jan 2026 07:37:10 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BB8081802C2;
+ by isrv.corpit.ru (Postfix) with ESMTP id D3E3C1802C3;
  Tue, 20 Jan 2026 15:21:33 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 42D1935174B;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4F47235174C;
  Tue, 20 Jan 2026 15:21:51 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>,
-	qemu-trivial@nongnu.org
-Subject: [PULL 3/9] qemu-options.hx: use KiB, MiB, GiB for power-of-2 units
-Date: Tue, 20 Jan 2026 15:21:40 +0300
-Message-ID: <20260120122150.2254321-4-mjt@tls.msk.ru>
+Cc: Julian Ganz <neither@nut.email>, qemu-trivial@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 4/9] tests: fix comment declaring runtime in rv64
+ interruptedmemory test
+Date: Tue, 20 Jan 2026 15:21:41 +0300
+Message-ID: <20260120122150.2254321-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260120122150.2254321-1-mjt@tls.msk.ru>
 References: <20260120122150.2254321-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,103 +62,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
-X-Spamd-Result: default: False [0.49 / 15.00];
+X-Spamd-Result: default: False [0.99 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.20)[mailman];
 	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_RCPT(0.00)[qemu-devel];
-	ARC_NA(0.00)[];
-	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
-	DMARC_NA(0.00)[tls.msk.ru];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	R_DKIM_NA(0.00)[];
+	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
+	TAGGED_RCPT(0.00)[qemu-devel];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	ARC_NA(0.00)[];
+	DMARC_NA(0.00)[tls.msk.ru];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[mjt@tls.msk.ru,qemu-devel-bounces@nongnu.org];
 	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	R_DKIM_NA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	RCVD_TLS_LAST(0.00)[];
 	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,tls.msk.ru:email,tls.msk.ru:mid,lists.gnu.org:rdns,lists.gnu.org:helo,gitlab.com:url]
-X-Rspamd-Queue-Id: C879E47548
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,tls.msk.ru:email,tls.msk.ru:mid,qualcomm.com:email,nut.email:email]
+X-Rspamd-Queue-Id: B26B24764F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Use MiB &Co instead of MB &Co when the talk is about
-power-of-two-based sizes, in qemu-options.hx.
+From: Julian Ganz <neither@nut.email>
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3222
+The test attempts to trigger a regression for arount 30s. However, a
+comment just before the computation of the target wall clock time falsly
+declares the run time to be around 60s.
+
+This was the case already when we introduced the test in
+
+    5241645c47a9987f4fcc65bab303a444966b7942
+    (tests: add test with interrupted memory accesses on rv64)
+
+Signed-off-by: Julian Ganz <neither@nut.email>
+Reviewed-by: Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- qemu-options.hx | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ tests/tcg/riscv64/interruptedmemory.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/qemu-options.hx b/qemu-options.hx
-index ec92723f10..455b8be890 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -305,9 +305,9 @@ SRST
-         with break-before-make sequences are considerable and also if guest
-         workloads are read intensive. The size here specifies how many pages
-         to break at a time and needs to be a valid block size which is
--        1GB/2MB/4KB, 32MB/16KB and 512MB/64KB for 4KB/16KB/64KB PAGE_SIZE
--        respectively. Be wary of specifying a higher size as it will have an
--        impact on the memory. By default, this feature is disabled
-+        1GiB/2MiB/4KiB, 32MiB/16KiB and 512MiB/64KiB for 4KiB/16KiB/64KiB
-+        PAGE_SIZE respectively. Be wary of specifying a higher size as it will
-+        have an impact on the memory. By default, this feature is disabled
-         (eager-split-size=0).
+diff --git a/tests/tcg/riscv64/interruptedmemory.S b/tests/tcg/riscv64/interruptedmemory.S
+index cd9073ee31..c154f93839 100644
+--- a/tests/tcg/riscv64/interruptedmemory.S
++++ b/tests/tcg/riscv64/interruptedmemory.S
+@@ -25,7 +25,7 @@ _start:
+ 	li	a0, 0x03	# 8N1, DLAB=0
+ 	sb	a0, 3(t1)
  
-     ``notify-vmexit=run|internal-error|disable,notify-window=n``
-@@ -564,7 +564,7 @@ SRST
- 
-     lat is latency value in nanoseconds. bw is bandwidth value, the
-     possible value and units are NUM[M\|G\|T], mean that the bandwidth
--    value are NUM byte per second (or MB/s, GB/s or TB/s depending on
-+    value are NUM byte per second (or MiB/s, GiB/s or TiB/s depending on
-     used suffix). Note that if latency or bandwidth value is 0, means
-     the corresponding latency or bandwidth information is not provided.
- 
-@@ -579,10 +579,10 @@ SRST
-     For example, the following options describe 2 NUMA nodes. Node 0 has
-     2 cpus and a ram, node 1 has only a ram. The processors in node 0
-     access memory in node 0 with access-latency 5 nanoseconds,
--    access-bandwidth is 200 MB/s; The processors in NUMA node 0 access
-+    access-bandwidth is 200 MiB/s; The processors in NUMA node 0 access
-     memory in NUMA node 1 with access-latency 10 nanoseconds,
--    access-bandwidth is 100 MB/s. And for memory side cache information,
--    NUMA node 0 and 1 both have 1 level memory cache, size is 10KB,
-+    access-bandwidth is 100 MiB/s. And for memory side cache information,
-+    NUMA node 0 and 1 both have 1 level memory cache, size is 10KiB,
-     policy is write-back, the cache Line size is 8 bytes:
- 
-     ::
-@@ -739,8 +739,8 @@ SRST
-     amount of memory. Note that maxmem must be aligned to the page size.
- 
-     For example, the following command-line sets the guest startup RAM
--    size to 1GB, creates 3 slots to hotplug additional memory and sets
--    the maximum memory the guest can reach to 4GB:
-+    size to 1GiB, creates 3 slots to hotplug additional memory and sets
-+    the maximum memory the guest can reach to 4GiB:
- 
-     .. parsed-literal::
- 
-@@ -1696,7 +1696,7 @@ SRST
-         Specify bandwidth throttling limits in bytes per second, either
-         for all request types or for reads or writes only. Small values
-         can lead to timeouts or hangs inside the guest. A safe minimum
--        for disks is 2 MB/s.
-+        for disks is 2 MiB/s.
- 
-     ``bps_max=bm,bps_rd_max=rm,bps_wr_max=wm``
-         Specify bursts in bytes per second, either for all request types
+-	# Run test for around 60s
++	# Run test for around 30s
+ 	call	rtc_get
+ 	li	t0, 30
+ 	slli	t0, t0, 30 # Approx. 10e9 ns
 -- 
 2.47.3
 
