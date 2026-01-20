@@ -2,131 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJNTO9mrb2mgEwAAu9opvQ
+	id QLb1Dn+sb2miEwAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:22:49 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:25:35 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87DF24763A
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:22:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA1534771B
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:25:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viA3G-0001N5-42; Tue, 20 Jan 2026 06:37:38 -0500
+	id 1viAhT-0008L2-31; Tue, 20 Jan 2026 07:19:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1viA3D-0001MO-DE
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 06:37:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1viAhJ-0008IL-MK
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 07:19:01 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1viA39-0000GT-SM
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 06:37:34 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1viAhI-0007RH-4o
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 07:19:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768909050;
+ s=mimecast20190719; t=1768911537;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=lXsAnxQEHE3y/76F1zw300Yl1/m0kQI+scHEhPa3/HI=;
- b=S8z6UXiBiFSD6t5Q9N35eQGzF8m6rJchZC2DS9ehD7zsGmGAtyM7xl4UcTS16bJZDQCyqU
- iSx5mlBFSULDlOB4YLzO5x822cXMHdlSPr7FRiJPx4+EQYVhBoUC3nNkQR+B6Y1Bbb5lcy
- m9+7VfwsgvcARZMP3LWMZJx1O+iyvLc=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-308-XuMIQL40Pcy7Zl2FEJBgdA-1; Tue, 20 Jan 2026 06:37:29 -0500
-X-MC-Unique: XuMIQL40Pcy7Zl2FEJBgdA-1
-X-Mimecast-MFC-AGG-ID: XuMIQL40Pcy7Zl2FEJBgdA_1768909048
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-43284f60a8aso4502943f8f.3
- for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 03:37:28 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768909048; cv=none;
- d=google.com; s=arc-20240605;
- b=JXR/xk38XBb2kmAcRPH+s186z6cFunw55Yn7i31PWHizrwHdpeOJo+fQWgpfJeC3Wo
- WIdWAEYV3NBd1TLTekAluatg+Wgehs6dcgDhMgIiTnDE9dzk5iwHkNQnm4NiHhz58rFY
- sSeoeyh40WrdThWK7pTRtbv7hFB1fexSx1RYRcc77+SU2G25wcjsC+/cUiiIohC6s73R
- PNzWWPWV089YSr3YUoAixA+lj7sUoVhCyCzsCgPqhXGNyfODvZddvpseKYV2/9+jznX8
- IpR4Uv32MUvrndpfMtGIpLv2X8RTY5ttDq2/y+yBDQAepmUD35KMeg6BzwGuf1as9aul
- X70g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
- s=arc-20240605; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:dkim-signature;
- bh=lXsAnxQEHE3y/76F1zw300Yl1/m0kQI+scHEhPa3/HI=;
- fh=nzjBS48/fGEvhTwnCEPhQf+fF3B0V83pieQjyOEXTYs=;
- b=KlMwiY/KQWG5lC6A+z69u1BvpSf0+/063nERhD4snGnaIzk8kMnEhrTtbU2B1goNST
- W1q0Lg9dlu1fLTTEQCEdL2SKRNFu1D2hj9XoY80HhW3+9FilOVtg3ZDhre+lwoR/rvff
- CqtEJTWKLPh9bSn2p4RGUdrydbO6amYk2DJSvNbapnHBBc1BsHYf+JoYnFvyqalAO9m6
- cKQBls80Jo9XhMgcdE/JcTyu9hLC5egxylH7z14LxSHd315MXHcVsh2I21DBo2z69Ww/
- oMh8wsBHtZmGP7F+TCEnA/XcRh86AlHe9dz/UlwTJkFvSeecXBZxOViTPTMi7gje92zS
- Fy1g==; darn=nongnu.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768909048; x=1769513848; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lXsAnxQEHE3y/76F1zw300Yl1/m0kQI+scHEhPa3/HI=;
- b=q18MOM77IZ10bUZ2F1NNBfdOXrEz9wIqnLtuylczvgUzPWaPQepE1cTzI0g5QK0aOP
- yXtQMghPVSGAthrHkITgZFSgnPQqeh5JpI6kxSZVazyfgomttzKTiVxh1jjxXkgcT3AD
- byzUt+eNkWfLcsG03xGIrwayN/t2eFJ62G7ZlOheTGfor2MDPnYnmzqzTyyiB2mm/XaL
- yESOn0UktFM5pVZ8apZvfE60CdVgfRwaFPsvOwgYe+I07toFS4QOaBxO2by570isEEaa
- 4b3yaPc7LHVyI3esEhBxj1QNlpHEAkps+HiX0nswk8OHzl99eTqjfwf+X0bGsm3AOp5t
- ufiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768909048; x=1769513848;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=lXsAnxQEHE3y/76F1zw300Yl1/m0kQI+scHEhPa3/HI=;
- b=JRWHQpWmqtVpFv+8rKdWtPq29goAGRKavtDHS+ECgRtggFW2GAz9ZCHeVh3tBr/1xB
- bkyHcgUzBrHGcv0K8B+N/tu7IxOLlB50GnMPGmyWXUgEP101LWCkOpQ3XQJO091BeOLC
- bFagtFrpJybu64qrGrXIpm0JvmiN+PcO+HZ1RQajDdjQgxBCgoxtCU7jjrEKv9GcSRmP
- Uzhw25MTH47Ziq0fCmNctk0QPZk7KqjIoey2z8hrt28I5yFWrimWNX1hP6Xumz2W3iXQ
- A1SK2GqhgnAnIhgm0qvYw3pr9tFE21076zjFfJmTf7r73Z9Sn5RVeQLVgZY98ZZf5KRH
- DlYg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXVY/YO8I7KfI1bhmrIokYfXvKvNPNSR4yZaciAbk6vz9A1MzEC2cHAGb9wmQZWNnxsgsMDtJxg4zge@nongnu.org
-X-Gm-Message-State: AOJu0YzrQJtmhWFAgdbr0buiFi6HIWiytnO0I3Ta7b09A2ChcOP98nQw
- aBy9fisywMygEZcHfvOIxKPTIiZGQcux+HGenDZ3Qfr5/AAQkcElWmJzg25b7Qp4p1FGMHSRwGv
- +6TIbYRgFKI+12/NfjBzH6OsUVWVmS7k4aTFoymkp+LkzdKvOm1lpXPVevTiQ+EX6R8Fw3uhoPN
- e6vjvZQnxs4Fsdd2TDNcHFaJ9Apn5xuYA=
-X-Gm-Gg: AY/fxX5+7ILI/EizemM1uNVv9mI10+VaeWVssGXEJu74oQcDQL9TWadMLo1XvJRlmrW
- yecnkNcsFAYxrSdGjwmUVvAkE17PUPvvjWPm+m5mGGjNnI3Ok4jb96HPV1xjNPHaJ0rUEetxTkm
- 8sKCw+mygS7EDOoN9Dtr52+VhIaZqfg6JBO1sfrQooH591BaYEPxo9ikkBEX1G8sNLUwzyuxmfJ
- kkKrLecvVNAwWogNg7nY1b8tjDR23dsTJYBFx5CZVmyuPAwZYyJY50d
-X-Received: by 2002:a05:600c:4513:b0:477:9cdb:e337 with SMTP id
- 5b1f17b1804b1-4801e2fc2e3mr195882095e9.7.1768909047658; 
- Tue, 20 Jan 2026 03:37:27 -0800 (PST)
-X-Received: by 2002:a05:600c:4513:b0:477:9cdb:e337 with SMTP id
- 5b1f17b1804b1-4801e2fc2e3mr195881755e9.7.1768909047288; Tue, 20 Jan 2026
- 03:37:27 -0800 (PST)
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=LnQKGFufQx8qCGTBEBecJTKER7en+5CsY9AbB+5txRU=;
+ b=Dzg54s+tlQGl+OmsaBnNbq3u0F38EFLEls6GTSNgMpl/9yqDLfi5angcsPIetycMAfN29k
+ paSyKo8mxuvAt3L07jWCUpD/6/W26XEm35MeG/yMZNaVh6psL/FhN2EMndj8yiZZtvocqW
+ rOFLt2a1eIZrUlRb/5tMy6YD8MOmiwM=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-483-Lbz4G2gbNc6L-m6GDznILA-1; Tue,
+ 20 Jan 2026 07:18:55 -0500
+X-MC-Unique: Lbz4G2gbNc6L-m6GDznILA-1
+X-Mimecast-MFC-AGG-ID: Lbz4G2gbNc6L-m6GDznILA_1768911534
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7225918002C9; Tue, 20 Jan 2026 12:18:54 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.45.226.98])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 4AC2518004D8; Tue, 20 Jan 2026 12:18:51 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Cc: John Snow <jsnow@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] scripts: Allow sha512 in clean_functional_cache.py, too
+Date: Tue, 20 Jan 2026 13:18:49 +0100
+Message-ID: <20260120121849.131604-1-thuth@redhat.com>
 MIME-Version: 1.0
-References: <20260109124043.25019-1-farosas@suse.de>
- <20260109124043.25019-5-farosas@suse.de>
- <CAE8KmOw66B0Za=KA=TyxyWMPYSjFK=GBq7XhREevkCO4Vs+HYQ@mail.gmail.com>
- <aW9ixg59R8a90FIs@redhat.com>
-In-Reply-To: <aW9ixg59R8a90FIs@redhat.com>
-From: Prasad Pandit <ppandit@redhat.com>
-Date: Tue, 20 Jan 2026 17:07:10 +0530
-X-Gm-Features: AZwV_QjbsdPSxE3pAMz_VGpztWGm4zmiudJqC5HxZmXxa5I0UM2Zw4xazpqVG0c
-Message-ID: <CAE8KmOwdfWPkmV87DWGVvHj7=QEYEXoHJOsRV4+SW3M_-PXdCQ@mail.gmail.com>
-Subject: Re: [PATCH v3 04/25] migration: Cleanup TLS handshake hostname passing
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org, peterx@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=ppandit@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.016,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.087,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -142,76 +82,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
-X-Spamd-Result: default: False [-2.21 / 15.00];
-	ARC_ALLOW(-1.00)[google.com:s=arc-20240605:i=1];
+X-Spamd-Result: default: False [0.29 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.20)[mailman];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:berrange@redhat.com,m:farosas@suse.de,m:qemu-devel@nongnu.org,m:peterx@redhat.com,s:lists@lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER(0.00)[ppandit@redhat.com,qemu-devel-bounces@nongnu.org];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORWARDED(0.00)[qemu-devel@nongnu.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	ARC_NA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ppandit@redhat.com,qemu-devel-bounces@nongnu.org];
+	MIME_TRACE(0.00)[0:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	DKIM_TRACE(0.00)[redhat.com:+];
-	PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
-	TAGGED_RCPT(0.00)[qemu-devel];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[thuth@redhat.com,qemu-devel-bounces@nongnu.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 87DF24763A
+	TAGGED_RCPT(0.00)[qemu-devel];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo]
+X-Rspamd-Queue-Id: DA1534771B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
+From: Thomas Huth <thuth@redhat.com>
 
-On Tue, 20 Jan 2026 at 16:41, Daniel P. Berrang=C3=A9 <berrange@redhat.com>=
- wrote:
-> Normal default behaviour is that the hostname in the TLS certificate
-> MUST be validated against the hostname that is specified by the user
-> (or mgmt app) in the migration URI.
->
-> The 'tls-hostname' migration parameter is an optional override that
-> replaces the hostname from the migration URI, to be used in scenarios
-> such as:
->
->  * The URI is a UNIX socket. eg the UNIX socket points to a proxy
->    that is transporting data to the dest in some manner.  There is
->    no way to know the hostname from the URI, so 'tls-hostname' must
->    be provided
->
->  * The URI is pointing to a proxy that forwards to the real host.
->    eg perhaps you setup an SSH tunnel from localhost, to the real
->    target. QEMU must NOT validate the remote TLS cert against
->    'localhost', so 'tls-hostname' must be provided by the user
+The functional testing frameworks also supports assets that are
+identified by their sha512 checksum (instead of only using sha25),
+and at least one of the tests (tests/functional/ppc64/test_fadump.py)
+is already using such a checksum, so adjust the clean_functional_cache
+script to support these checksums, too.
 
-* I see, got it. Thank you for the explanation.
-
-> Whatever is usd to validate the TLS hostname, must be data that is
-> provided by the user in some manner.
->
-> TL:DR: always use 'tls-hostname' if it is provided by the user,
-> otherwise always use the hostname from the migration URI,
-> otherwise do not provide a hostname.
-
-* So when 'tls-hostname' is not defined, it could be set to
-'s->hostname', then migration_tls_hostname() stays unchanged.
-
-Thank you.
+Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
-  - Prasad
+ scripts/clean_functional_cache.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/scripts/clean_functional_cache.py b/scripts/clean_functional_cache.py
+index c3370ffbb87..f0342b4b438 100755
+--- a/scripts/clean_functional_cache.py
++++ b/scripts/clean_functional_cache.py
+@@ -24,8 +24,8 @@
+ os.chdir(cache_dir)
+ 
+ for file in cache_dir.iterdir():
+-    # Only consider the files that use a sha256 as filename:
+-    if len(file.name) != 64:
++    # Only consider the files that use a sha256 or sha512 as filename:
++    if len(file.name) != 64 and len(file.name) != 128:
+         continue
+ 
+     try:
+-- 
+2.52.0
 
 
