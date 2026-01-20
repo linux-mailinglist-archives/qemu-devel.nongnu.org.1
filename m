@@ -2,140 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YLU5M3rJb2mgMQAAu9opvQ
+	id qCNvCxnKb2mgMQAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:29:14 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:31:53 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 598C149759
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:29:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93ED14980B
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:31:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viGSh-0006E8-Ho; Tue, 20 Jan 2026 13:28:19 -0500
+	id 1viGVe-0001Jb-Dv; Tue, 20 Jan 2026 13:31:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1viGSf-0006Dg-5z
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:28:17 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1viGSc-0003nu-OR
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:28:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768933692;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=fVUJ1JIRb1Q8VZzqOfuryykqdN+f2APx7/IZOrw9B5g=;
- b=JznvLCgg6vS4QVAdfFysr56OO7Vvza5khXULkGGAP5A6fnXVOWSRx9umSwMh0Ny0q7eSsd
- s91yLf40H5Owpaj3Errjun6Oti+krw8k4ixFCMRDAwxFjco4asShcSMivQa0gAZmNU9/1h
- 3lZNBpWL0/Hgy+7bPo48GxVBCUGNrU0=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-542-qX1K-lzkMeyRQKvUU5CvMQ-1; Tue, 20 Jan 2026 13:28:11 -0500
-X-MC-Unique: qX1K-lzkMeyRQKvUU5CvMQ-1
-X-Mimecast-MFC-AGG-ID: qX1K-lzkMeyRQKvUU5CvMQ_1768933691
-Received: by mail-yw1-f200.google.com with SMTP id
- 00721157ae682-792738a717fso65782357b3.1
- for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 10:28:11 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768933689; cv=none;
- d=google.com; s=arc-20240605;
- b=EWTu1nlyN4pii+m7a1/67GNzxqHqqZwD4CQOyrNMt9GVnS9IpKTmFEMQLa/EYVkFuJ
- H9OYEHP3QixSL6eaKWIQbUt3u9s89JxYEMIpDdZYJtUg7S+W/M7tyXSd+dQbcSGFTcMF
- q33opBN5IGZ1ewvCwwOAAs7nfrpEcN4LVJzj6D4YpugtzpVHPGZSVI0/i31Mwsx7s/cJ
- qRsrevb3eZjy/1ypGXOBNYsV1UoFMX8i6SHigy/2OdlUC72lbVX9vaFwwFW8Fgg0Yn+Z
- yFeZKdNwg6RX/cA7WH3/WQfqCJEZnlM/HCZgzQf6NmeEfznQNl2fQuGcR/B3XEy2vKke
- WRqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
- s=arc-20240605; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:dkim-signature;
- bh=fVUJ1JIRb1Q8VZzqOfuryykqdN+f2APx7/IZOrw9B5g=;
- fh=3Vi40FEfOsRvAJsSQmHr3FcCQ3abLEDWYqfMpQJLGSk=;
- b=dvrHtFX14p+I9dtRh+oANPQ+6Ny4xsag4Qn7+FS0kAq92bkBMFz1Yk4+F4nn9SMLL4
- xyWclkV1J8IEWOqVp646hKh9mf8gdl2YUecZQLYIi5cN7g4y0Z1qwItBc70aOGULJnTS
- u7kTYrMxenUIXBOa3Hzz2fOcVWjlqO2Vao0pYXBpWx9F81TE2WlLBGGhNvE+F2r0cvew
- uXhr5QWc5zqx6Y/S6ATNL4GKxoj7jlPIfDhCI9pusk0+xENn8SOvgMeG/EM0fYA/Eeir
- g52Ria1ZPPIFjKgVPwGOLA04mdLlC5MraM/HGhnlZWVe9iJLsursCsTXV949lgha7xWh
- ODmw==; darn=nongnu.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGVc-0001Ih-U8
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:31:20 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGVa-0004mz-Vb
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:31:20 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-432755545fcso3299571f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 10:31:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768933689; x=1769538489; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=fVUJ1JIRb1Q8VZzqOfuryykqdN+f2APx7/IZOrw9B5g=;
- b=JY/a37l5YgH/+xfoZheTpXRpuZDAgZU/e/61PNKXG4+LjVFYurjZJSoI05T9Gz2KXx
- XKpxepsQEF8qxgS7w8CKHHMmh5DYqTZJc9mRd4NFlnZYdfj7y+v4vd/9YikxnW0bSHO5
- E8EwGWgt51dU5NsiERQUBM0dfELogD9pksMepjJ+S/EIYSHXGAZdrwxLzFyCNlanb6jy
- xxZ9aQiU635FutpbbwzHE1OM/ZskDhNHZTs2U+XVpPiN/LzG1REO3nERvkRAp1Zy8sDE
- 8g3Z6Mxgan231R6WIauNKWGwh2DiE447GbWsVqwuw44BlvU2zKt6KmOGTl1J3c7U3O8R
- 7FdQ==
+ d=linaro.org; s=google; t=1768933877; x=1769538677; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=8l7DjF7gyDSglpKq646fLnuvHs25JxjRrZEp3/D9DPQ=;
+ b=L5DVDaIQNfQEeEGHtBuqpJiCBM/DolmfJerTMcpC6g35yLaZinZG4mWLmbugh/jwVz
+ WLh8DH4vMrbqJZKGuON286k/ZYsrf/ub34GI+yi8f2oOrh7396qnsqPwNWEe2IqWf14i
+ jOfj7fPtJXCIyzQ0bcFerarLZK8M1rY3QHc9SiuTNeRazQ+zmZz6iNeGUoRGA1oiYlWP
+ Q1E4pjr8GkKDYi14PxeKm5Cfuj5aSWfFVShMBmU25OshvKPcI6t8N11Lnjo4NwN8zd8t
+ mYv5X7POdu76wsk0h7CAWqMTYMsLHzpCIhgcdr/HbvxPZDorJ7xBYotYoeeX6dNHQQJw
+ sHNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768933689; x=1769538489;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=fVUJ1JIRb1Q8VZzqOfuryykqdN+f2APx7/IZOrw9B5g=;
- b=B5xQeqdoKHh83XRPLjUZlQ8f7Fz0nXvFfcUR62T8s0H6UFJw4MH7kgKL3R9esj0B5a
- enDlbnLEvEIMA9SUbLqqM6o27Nop8xoF4JiJJNW/aPf5oHGi55xY+CexXFNoOZy5GPHW
- Ufmba++99/NuFsVcP7Vxb0RAe8u++zwH/cor+d4EQER4dB/pMhza3zJCiZYBdxfnKRvf
- Q85NqlrzD8xryrgFup12RVX9IcP5ezmSleeWerYZXG6rb42KFbV3odoqdTWyEkVMVQUR
- Zo+GWaeQmquq4MzAaomKpLql3Gd+YQ/KbdxOnLUyagg1tw+JZljozQRsNp4JP3hIRRLh
- vkyg==
-X-Gm-Message-State: AOJu0YzPYY//BIz24c96L1zlynfnwtGbJVg67e6ITgWV5JFqrO69ur72
- Uq4jRRlA23RbkAaxV9rt4iVU8QPBVNpCpnr8gfMSMCGbEeqWEp7NsgT+8F6bPZ26zJnHBmUtaHZ
- wp8XupAavAKIOyvQKQyK6/6FgdMVuF9ngTh1LmBHMwGcY2I0TtQqDmYuQvpW0RH4DqeIIEbiGJo
- qqIgjc57hkH9lv7MO0kfIW2+Gxfm27H6nd1GrSCEJ65g==
-X-Gm-Gg: AZuq6aJhRXrhSd5ZQERGX965DQ+OQigRQPUouWuZ23Qwr7tOq7En/GsVdZqEbCuuUWW
- QPkJP5px9eS975Ha6qz2mozFmHYPKOTr0/lGqH+pijC6V92VLdayy4SA5V8mKNmwwzBnRSdDWkU
- YMndAtu19/wlqUaeNBZOvtiBwdbWMe92x6NV3u1bFt7NNkWB4/BLZ7BvTti2K/46ADGdjktttA0
- 05KA7ShnTL/VeiyaTLIsvJiOg==
-X-Received: by 2002:a05:690e:4104:b0:644:60d9:7516 with SMTP id
- 956f58d0204a3-6493c86574bmr2009862d50.90.1768933688806; 
- Tue, 20 Jan 2026 10:28:08 -0800 (PST)
-X-Received: by 2002:a05:690e:4104:b0:644:60d9:7516 with SMTP id
- 956f58d0204a3-6493c86574bmr2009830d50.90.1768933688319; Tue, 20 Jan 2026
- 10:28:08 -0800 (PST)
+ d=1e100.net; s=20230601; t=1768933877; x=1769538677;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8l7DjF7gyDSglpKq646fLnuvHs25JxjRrZEp3/D9DPQ=;
+ b=R/S5kHVI1g9UrNylX7l1oKsruuMqLiYWuUBnz7xnt3sao15GJYdEY1tuk/7x79cwtG
+ ZhMm/+Z7S83fSFI3ObLloJMMqeSQGGInT1+yWO08ZG7I3hhu/Ws434kPOFSsmEtNsD39
+ GNmyeN20KJxS6GZ0KgUJw9JEnV2fdjtbVy3awI8b8AR04mLuxHUcF845M4AFKqWKAhyu
+ Q37bbh4sFW7OLIBnfwnU4Vdx7cXc9mx8+LdLGNB3G6DBFVWkNF592aWuioPdTQYC51dA
+ +F17txkQE255jD/Y10HZaKwvy97uYlqt/Udnt+ibiz0PNO6JkqNq67Zz9whuuTsq8brv
+ jVTQ==
+X-Gm-Message-State: AOJu0YwxsxQnIUVo6WaAwRA1eAjrLrD3p03s6lezlSphPEgusMK98e5Z
+ TE0ACLn57CADu5Jfk5mwRcdjjcfobrx9d9C0yRE897R/0xTthfoZmahCUU1z/BgeTgc=
+X-Gm-Gg: AZuq6aLpYqf41olTeSgft3GM78hgFQLJJhfg7l/fqi2yVvr1ELzI0xwZQuQOSB8pOxR
+ YTi364AGaEYY6qLuJoyIbWSgfVZ/HtsyOhLNDo9tYQxuCynLEFgcbG0ffRROdhrtrJH38ymd0K/
+ 75LfS9SIJJiw4GpRqI5G0Ar5xs2eGBe1S7k3wYPfwoK3KIfKdB5DUnBWTlmvfBYVDn+regMGoC/
+ ndWJ/S9o2sDCYxQdAgL9W1VckocT/Vez5iUD3sspTJz1L/wxCZm0APuG+5J25MgWxrZAZ9r56DE
+ KmGSzFpXxUYL1rpCV+MvuyETCuL+3eub4Pp0sHDH/1sFWvIRGrMgQ4ZrHr9XStivjVcb3YEbmFL
+ Yfnj96H34G8Y7+Z2kmXZ2o9ur8CruFH/739SFQddshk1F1hJcvTB5E15jnl2VDh6SEamFSfwjc3
+ xtyt7U5Z2MOhcHawlI/PZ7ViMMg+U22avMSuunVysfPPUGXjDWon1MuIuNnMIRjs7U
+X-Received: by 2002:a05:6000:2085:b0:435:907f:e439 with SMTP id
+ ffacd0b85a97d-435907fe6bfmr3786416f8f.18.1768933876915; 
+ Tue, 20 Jan 2026 10:31:16 -0800 (PST)
+Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-4356996dad0sm30652245f8f.27.2026.01.20.10.31.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 20 Jan 2026 10:31:16 -0800 (PST)
+Message-ID: <c9308d86-889f-4ca3-8f67-eb6b253987da@linaro.org>
+Date: Tue, 20 Jan 2026 19:31:14 +0100
 MIME-Version: 1.0
-References: <20260119212744.1275455-1-jsnow@redhat.com>
-In-Reply-To: <20260119212744.1275455-1-jsnow@redhat.com>
-From: John Snow <jsnow@redhat.com>
-Date: Tue, 20 Jan 2026 13:27:57 -0500
-X-Gm-Features: AZwV_Qj9W5zNIBIWyud6xaQv8-OPfCbNbnO9trK1dFzCxv_w_Oj4XUu2n7XMhQc
-Message-ID: <CAFn=p-ZwZcvJM=essB8GU1+-P2Gi3xXCQVURvPWxB5qbq0AYbg@mail.gmail.com>
-Subject: Re: [PATCH v4 00/17] python: drop qemu.qmp from qemu.git tree
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Kevin Wolf <kwolf@redhat.com>, 
- Maksim Davydov <davydov-max@yandex-team.ru>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Li-Wen Hsu <lwhsu@freebsd.org>, Markus Armbruster <armbru@redhat.com>,
- Thomas Huth <thuth@redhat.com>, 
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Hanna Reitz <hreitz@redhat.com>, 
- Cleber Rosa <crosa@redhat.com>, Michael Roth <michael.roth@amd.com>, 
- Yonggang Luo <luoyonggang@gmail.com>, Ed Maste <emaste@freebsd.org>,
- Peter Xu <peterx@redhat.com>, 
- Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-block@nongnu.org, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v9 3/8] hw/misc: Introduce iommu-testdev for bare-metal
+ IOMMU testing
+Content-Language: en-US
+To: Tao Tang <tangtao1634@phytium.com.cn>, Paolo Bonzini
+ <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>, Eric Auger <eric.auger@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Chen Baozi <chenbaozi@phytium.com.cn>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Mostafa Saleh <smostafa@google.com>,
+ CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
+References: <20260119161112.3841386-1-tangtao1634@phytium.com.cn>
+ <20260119161112.3841386-4-tangtao1634@phytium.com.cn>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20260119161112.3841386-4-tangtao1634@phytium.com.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.087,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -150,229 +112,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[google.com:s=arc-20240605:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+X-Spamd-Result: default: False [-1.21 / 15.00];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
 	MAILLIST(-0.20)[mailman];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:tangtao1634@phytium.com.cn,m:pbonzini@redhat.com,m:farosas@suse.de,m:lvivier@redhat.com,m:eric.auger@redhat.com,m:peter.maydell@linaro.org,m:alex.bennee@linaro.org,m:qemu-devel@nongnu.org,m:qemu-arm@nongnu.org,m:chenbaozi@phytium.com.cn,m:pierrick.bouvier@linaro.org,m:smostafa@google.com,m:clement.mathieu--drif@eviden.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	FREEMAIL_CC(0.00)[redhat.com,yandex-team.ru,freebsd.org,kernel.org,amd.com,gmail.com,suse.de,nongnu.org,linaro.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[jsnow@redhat.com,qemu-devel-bounces@nongnu.org];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
+	FORGED_SENDER(0.00)[philmd@linaro.org,qemu-devel-bounces@nongnu.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[qemu-devel@nongnu.org];
+	DKIM_TRACE(0.00)[linaro.org:+];
 	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
-	TAGGED_RCPT(0.00)[qemu-devel,huawei];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,mkvenv.py:url,meson.build:url,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 598C149759
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[philmd@linaro.org,qemu-devel-bounces@nongnu.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[qemu-devel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linaro.org:dkim,linaro.org:mid,suse.de:email,lists.gnu.org:rdns,lists.gnu.org:helo,eviden.com:email]
+X-Rspamd-Queue-Id: 93ED14980B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Jan 19, 2026 at 4:28=E2=80=AFPM John Snow <jsnow@redhat.com> wrote:
->
-> Hello!
->
-> This series drops the in-tree version of our python-qemu-qmp package
-> ("qemu.qmp") in favor of the version hosted on PyPI, whose repository is
-> located at https://gitlab.com/qemu-project/python-qemu-qmp.
->
-> GitLab CI: https://gitlab.com/jsnow/qemu/-/pipelines/2272170300
+On 19/1/26 17:11, Tao Tang wrote:
+> Add a minimal PCI test device designed to exercise IOMMU translation
+> (such as ARM SMMUv3) without requiring guest firmware or OS. The device
+> provides MMIO registers to configure and trigger DMA operations with
+> controllable attributes (security state, address space), enabling
+> deterministic IOMMU testing.
+> 
+> Key features:
+> - Bare-metal IOMMU testing via simple MMIO interface
+> - Configurable DMA attributes for security states and address spaces
+> - Write-then-read verification pattern with automatic result checking
+> 
+> The device performs a deterministic DMA test pattern: write a known
+> value (0x12345678) to a configured GVA, read it back, and verify data
+> integrity. Results are reported through a dedicated result register,
+> eliminating the need for complex interrupt handling or driver
+> infrastructure in tests.
+> 
+> This is purely a test device and not intended for production use or
+> machine realism. It complements existing test infrastructure like
+> pci-testdev but focuses specifically on IOMMU translation path
+> validation.
+> 
+> Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
+> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> Reviewed-by: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
+> Reviewed-by: Fabiano Rosas <farosas@suse.de>
+> ---
+>   MAINTAINERS                     |   7 +
+>   docs/specs/index.rst            |   1 +
+>   docs/specs/iommu-testdev.rst    | 138 ++++++++++++++
+>   hw/misc/Kconfig                 |   5 +
+>   hw/misc/iommu-testdev.c         | 318 ++++++++++++++++++++++++++++++++
+>   hw/misc/meson.build             |   1 +
+>   hw/misc/trace-events            |  10 +
+>   include/hw/misc/iommu-testdev.h |  87 +++++++++
+>   8 files changed, 567 insertions(+)
+>   create mode 100644 docs/specs/iommu-testdev.rst
+>   create mode 100644 hw/misc/iommu-testdev.c
+>   create mode 100644 include/hw/misc/iommu-testdev.h
 
-Current status of this series: all patches reviewed by either Thomas,
-Dan or Vladimir; except:
 
-[PATCH v4 04/17] python/mkvenv: add mechanism to install local package(s)
-    - Review from Paolo would be nice, if he has the time.
-[PATCH v4 05/17] meson, mkvenv: add functests custom target
-    - Fixed comments as per Dan's review
-[PATCH v4 11/17] meson, mkvenv: add qemu.git/python/qemu package to
-pythondeps.toml
-    - Probably fine, but a Paolo ACK would be nice.
-[PATCH v4 13/17] tests: remove "make check-venv" target
-    - I regress an optimization Alex Bennee made, would like to fix
-this before merge.
-[PATCH v4 16/17] python: update README.rst to reflect qemu.qmp's removal
-    - Discussing this with Dan
-[PATCH v4 17/17] RFC: exclude pyvenv targets from "make check-build"
-    - Still not clear if we want this or not, I'm pretty neutral.
+> diff --git a/docs/specs/iommu-testdev.rst b/docs/specs/iommu-testdev.rst
+> new file mode 100644
+> index 0000000000..e15f9a55a7
+> --- /dev/null
+> +++ b/docs/specs/iommu-testdev.rst
+> @@ -0,0 +1,138 @@
 
->
-> This version reflects Dan's suggestion to always install the in-tree
-> Python packages by default.
->
-> The major effects of this patch series are:
->
-> 1. qemu.qmp and the python/ directory will be installed to the
->    configure-time venv (build/pyvenv) by default.
-> 2. qemu.qmp will be installed from PyPI or vendored packages instead of
->    being utilized directly from the qemu.git tree.
-> 3. "make check-venv" is removed as it is no longer needed.
-> 4. functional test dependencies are installed as-needed when running
->    those tests.
-> 5. Unfortunately, python3-wheel and python3-setuptools are now required
->    on the host system if tests are to be executed and >=3D Python 3.13 is
->    used.
-> 6. An awful lot of deleted lines of code, and a lot fewer headaches
->    managing two nearly-identical copies of this source code. O:-)
->
-> v4:
->
->  - Rename "checktests" group to "tooling", install it by default
->    alongside meson at configure-time.
->  - Remove "check-venv" entirely.
->  - Update python/README.rst to reflect the new paradigm
->  - Update many scripts that import qemu.qmp to give new errors when they
->    are run outside of the configure venv
->
-> KNOWN ISSUES IN V4:
->
->  - The last patch is an RFC based on Thomas' observations, I don't have
->    a strong opinion on if we want it or not.
->  - Removing "make check-venv" causes the VM tests to rebuild more often;
->    I was not sure how to replace the old conditional behavior in an
->    equivalent manner. Suggestions, anyone...?
->
-> v3:
->
->  - Fixed FreeBSD vm test
->  - Fixed Cirrus macOS test (Needed setuptools as a dep, "file:///" had
->    one too many forward slashes, which works fine for older
->    pip/setuptools, but was incompatibly fixed recently.)
->  - Fixed an issue that prevented installing the local python packages in
->    an offline, isolated build environment (need --no-isolated-build and
->    pip environment variable flags)
->  - Added the python3-wheel and python3-setuptools build dependencies to
->    lcitool, owing to the above issues
->  - Ensured that the $download flag (for PyPI access) from configure is
->    carried over into pytest/meson.build invocations.  This defaults to
->    "enabled", so test dependencies should not have any issue being
->    fetched on most developer workstations and build environments.
->  - Fixed several bugs in the mkvenv.py local package installation mechani=
-sm.
->  - Flags and workarounds added for installing local packages offline now
->    apply *only* to local package installations, and not "normal"
->    depspecs.
->  - Reordered patches into more logical "phases" for easier review (I
->    hope...?)
->
-> Known issues: "make check-build" still installs all of the test
-> dependencies to the pyvenv. I'm not sure if this is desired or not, but
-> I ran into problems preventing it from doing this without breaking a ton
-> of CI tests. I'll continue to investigate this, but wanted to send this
-> v3 out.
->
-> v2:
->
->  - move "make check-venv" earlier in GitLab CI/CD pipeline, to avoid
->    re-running configure
->  - Fix functional tests not using PyPI to fetch pygdbmi package
->  - Remove pre-requisites which are now merged
->
-> --js
->
-> John Snow (17):
->   python/mkvenv: create timestamp file for each group "ensured"
->   python/mkvenv: bump 'qemu.qmp' dependency for testdeps
->   python/mkvenv: add 'tooling' and 'functests' dependency groups
->   python/mkvenv: add mechanism to install local package(s)
->   meson, mkvenv: add functests custom target
->   tests: Use configured python to run GitLab iotests
->   tests: use "run" script to execute device-crash-test
->   tests/lcitool: add python3 wheel and setuptools deps for qemu
->   python: add vendored qemu.qmp package
->   meson, mkvenv: make functional tests depend on functests group
->   meson, mkvenv: add qemu.git/python/qemu package to pythondeps.toml
->   configure: unconditionally install "tooling" group
->   tests: remove "make check-venv" target
->   scripts: nudge users to use 'run' script for scripts that import
->     qemu.qmp
->   python: delete qemu.qmp
->   python: update README.rst to reflect qemu.qmp's removal
->   RFC: exclude pyvenv targets from "make check-build"
->
->  python/README.rst                             |   50 +-
->  configure                                     |    2 +-
->  meson.build                                   |    1 +
->  .gitlab-ci.d/buildtest.yml                    |   26 +-
->  .gitlab-ci.d/cirrus/freebsd-14.vars           |    2 +-
->  .gitlab-ci.d/cirrus/macos-14.vars             |    2 +-
->  .gitlab-ci.d/windows.yml                      |    2 +
->  python/qemu/qmp/__init__.py                   |   60 -
->  python/qemu/qmp/error.py                      |   53 -
->  python/qemu/qmp/events.py                     |  751 -----------
->  python/qemu/qmp/legacy.py                     |  339 -----
->  python/qemu/qmp/message.py                    |  217 ----
->  python/qemu/qmp/models.py                     |  146 ---
->  python/qemu/qmp/protocol.py                   | 1101 -----------------
->  python/qemu/qmp/py.typed                      |    0
->  python/qemu/qmp/qmp_client.py                 |  732 -----------
->  python/qemu/qmp/qmp_shell.py                  |  689 -----------
->  python/qemu/qmp/qmp_tui.py                    |  665 ----------
->  python/qemu/qmp/util.py                       |  150 ---
->  python/qemu/utils/qom_fuse.py                 |    1 -
->  python/scripts/mkvenv.py                      |   44 +-
->  python/scripts/vendor.py                      |    2 +
->  python/setup.cfg                              |   31 +-
->  python/tests/minreqs.txt                      |    8 +-
->  python/tests/protocol.py                      |  596 ---------
->  python/wheels/qemu_qmp-0.0.5-py3-none-any.whl |  Bin 0 -> 72263 bytes
->  pythondeps.toml                               |   13 +-
->  pyvenv/meson.build                            |   28 +
->  scripts/compare-machine-types.py              |    7 +-
->  scripts/device-crash-test                     |    5 +-
->  scripts/mtest2make.py                         |    4 +-
->  scripts/qmp/qemu-ga-client                    |   13 +-
->  scripts/qmp/qmp-shell                         |   13 +-
->  scripts/qmp/qmp-shell-wrap                    |   13 +-
->  scripts/qmp/qom-fuse                          |   13 +-
->  scripts/qmp/qom-get                           |   13 +-
->  scripts/qmp/qom-list                          |   13 +-
->  scripts/qmp/qom-set                           |   13 +-
->  scripts/qmp/qom-tree                          |   13 +-
->  scripts/qmp_helper.py                         |    9 +-
->  scripts/render_block_graph.py                 |   10 +-
->  scripts/simplebench/bench_block_job.py        |   10 +-
->  tests/Makefile.include                        |   22 +-
->  tests/docker/dockerfiles/alpine.docker        |    2 +
->  tests/docker/dockerfiles/centos9.docker       |    2 +
->  tests/functional/meson.build                  |    5 +-
->  tests/lcitool/projects/qemu.yml               |    2 +
->  tests/migration-stress/guestperf/engine.py    |   15 +-
->  tests/vm/Makefile.include                     |   24 +-
->  tests/vm/generated/freebsd.json               |    2 +
->  50 files changed, 250 insertions(+), 5684 deletions(-)
->  delete mode 100644 python/qemu/qmp/__init__.py
->  delete mode 100644 python/qemu/qmp/error.py
->  delete mode 100644 python/qemu/qmp/events.py
->  delete mode 100644 python/qemu/qmp/legacy.py
->  delete mode 100644 python/qemu/qmp/message.py
->  delete mode 100644 python/qemu/qmp/models.py
->  delete mode 100644 python/qemu/qmp/protocol.py
->  delete mode 100644 python/qemu/qmp/py.typed
->  delete mode 100644 python/qemu/qmp/qmp_client.py
->  delete mode 100644 python/qemu/qmp/qmp_shell.py
->  delete mode 100644 python/qemu/qmp/qmp_tui.py
->  delete mode 100644 python/qemu/qmp/util.py
->  delete mode 100644 python/tests/protocol.py
->  create mode 100644 python/wheels/qemu_qmp-0.0.5-py3-none-any.whl
->  create mode 100644 pyvenv/meson.build
->
-> --
-> 2.52.0
->
->
+Squashing 'SPDX-License-Identifier: GPL-2.0-or-later' like .c & .h.
 
+> +iommu-testdev — IOMMU test device for bare-metal testing
+> +=========================================================
+> +
+> +Overview
+> +--------
+> +``iommu-testdev`` is a minimal, test-only PCI device designed to exercise
+> +IOMMU translation (such as ARM SMMUv3) without requiring firmware or a guest
+> +OS. Tests can populate IOMMU translation tables with known values and trigger
+> +DMA operations that flow through the IOMMU translation path. It is **not** a
+> +faithful PCIe endpoint and must be considered a QEMU-internal test vehicle.
+   ...
+
+> diff --git a/hw/misc/iommu-testdev.c b/hw/misc/iommu-testdev.c
+> new file mode 100644
+> index 0000000000..15eb6de78a
+> --- /dev/null
+> +++ b/hw/misc/iommu-testdev.c
+> @@ -0,0 +1,318 @@
+> +/*
+> + * A test device for IOMMU
+> + *
+> + * Copyright (c) 2026 Phytium Technology
+> + *
+> + * Author:
+> + *  Tao Tang <tangtao1634@phytium.com.cn>
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+
+
+> diff --git a/include/hw/misc/iommu-testdev.h b/include/hw/misc/iommu-testdev.h
+> new file mode 100644
+> index 0000000000..338365947c
+> --- /dev/null
+> +++ b/include/hw/misc/iommu-testdev.h
+> @@ -0,0 +1,87 @@
+> +/*
+> + * A test device for IOMMU
+> + *
+> + * Copyright (c) 2026 Phytium Technology
+> + *
+> + * Author:
+> + *  Tao Tang <tangtao1634@phytium.com.cn>
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
 
