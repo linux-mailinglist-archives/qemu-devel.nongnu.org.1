@@ -2,59 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yB9YH2+3b2kBMQAAu9opvQ
+	id EDk2NSy4b2kBMQAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:12:15 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:15:24 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1106648556
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:12:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8469848612
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:15:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viF9Z-0004GO-A1; Tue, 20 Jan 2026 12:04:29 -0500
+	id 1viFJ5-00030G-Nf; Tue, 20 Jan 2026 12:14:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1viF9L-0004Bg-NM; Tue, 20 Jan 2026 12:04:20 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1viFJ4-000304-5R
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 12:14:18 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1viF9I-00083M-2X; Tue, 20 Jan 2026 12:04:15 -0500
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id D01E9596ABC;
- Tue, 20 Jan 2026 18:04:06 +0100 (CET)
-X-Virus-Scanned: amavis at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id e_JtQ4S0D29p; Tue, 20 Jan 2026 18:04:04 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 6EC1B596ABB; Tue, 20 Jan 2026 18:04:04 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 6CE28596A0D;
- Tue, 20 Jan 2026 18:04:04 +0100 (CET)
-Date: Tue, 20 Jan 2026 18:04:04 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Bernhard Beschow <shentey@gmail.com>
-cc: qemu-devel@nongnu.org, 
- =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-arm@nongnu.org, 
- Guenter Roeck <linux@roeck-us.net>, Bin Meng <bmeng.cn@gmail.com>, 
- Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, 
- qemu-block@nongnu.org, qemu-ppc@nongnu.org
-Subject: Re: [PATCH 00/14] Freescale SDHCI Fixes
-In-Reply-To: <20260112145418.220506-1-shentey@gmail.com>
-Message-ID: <ae54581c-2a49-b6c2-cde1-d50bbde70a84@eik.bme.hu>
-References: <20260112145418.220506-1-shentey@gmail.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1viFJ1-00017a-Nd
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 12:14:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1768929253;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Ik+bVVX3xwrIormXBQVp1PPxSpXq2ko+RZAxh9HwZC4=;
+ b=YGIhbM9A2A1GlMrZg/aMzwyBzy1Q4/Ib6mz0aDlEX640eYJcwxkZhFf8oooKJ27+R9l+f+
+ EZV5MXWjaUIDuejCKMhs7UsEee8+l6sOyqW7o8Rxi4P4Wb6F1t8pqvrcklyNMf2/1pKUSP
+ xG11wLZnem+rs7eApt8t7PDKZznei3g=
+Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com
+ [74.125.82.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-41-LmM7aontOZ2fyDLTvgH1Xw-1; Tue, 20 Jan 2026 12:14:11 -0500
+X-MC-Unique: LmM7aontOZ2fyDLTvgH1Xw-1
+X-Mimecast-MFC-AGG-ID: LmM7aontOZ2fyDLTvgH1Xw_1768929250
+Received: by mail-dy1-f198.google.com with SMTP id
+ 5a478bee46e88-2b70c92f404so300752eec.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 09:14:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=redhat.com; s=google; t=1768929250; x=1769534050; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ik+bVVX3xwrIormXBQVp1PPxSpXq2ko+RZAxh9HwZC4=;
+ b=VqThX83vBKJYFfJ80oPXCiqI3/vxazYEqXxPjYWNx1Quq3CBiJFJxKKfCq7HxXPTs/
+ MvaYtd28KQhE+nVd0S+m9RP7GTNHo8iFBs1Mn+CshqHN+uB5gRizZpnY6gzmLvzXMkES
+ FDyThiq1GCa9pMpDaIXbAU8DeuBvaMBYnje5sWyTcYtH/lr002gFuDke/AMIgOK8DUjG
+ PgqzzqkfQ1S0HA2PhlTWauibiCz5XONl5Iv/iQbN8YJ7Y1HkKYTXDFvU0jAGEfRD384h
+ JVEbdIpEI6TdRsFNENwogMHAm/sY4SdaNuYg/amHoRI8fzhbfcWtVmIjCVnyMCTfvRaY
+ /2CA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768929250; x=1769534050;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Ik+bVVX3xwrIormXBQVp1PPxSpXq2ko+RZAxh9HwZC4=;
+ b=AXVpSXdpuZQff/nBkgV3eVCDoDpEUIPfjpH9ZSP4wZXmTItQYERpDPHqUMbHBhAsgi
+ x/CpdV9MgyImqhSx04q48Dew0zGHvoTVbHZ/FLkhnrvNsTVmj2Qh77yChZjNOMqwlyOX
+ T0mM4n9sKonJH+BJwY0trwJYKyClrTpcDOqwfg+/ThwGHUitBocpy3L20OpYgd5m+v/g
+ gsQcHC+0eACL1s4pHKXOM+Pv/1okeJymUfZZwZ/K9EyEGCbl1yCB7z8reoClZbuM0l8J
+ 2xxyp+umLWwxJ4Bsvag8uUhDtAlIPw30rPRKL8M+PndJdKH6rZZdguDAhkLHm6PzXS37
+ s3wA==
+X-Gm-Message-State: AOJu0YwF1XX1RmGR2e9nuCKriBiHt+MkoBdbsF5PdSse2ryfTUqao1tX
+ kqEg7/dzGy0clY5HgXOnlVIUh+cZV169bwrNOH5uKVjcD3K+v6k3nai5L5adsXoc6Hb2HJ91844
+ LT4DRUY0tffjlrqs47RO8ItsfM4nuNOiX3gS2to+gnDMB6T/gqtO6GlrF
+X-Gm-Gg: AZuq6aLE/LDvqq7SwqCOHW0t/ay8GI7MwCnwaRQ0Q1MfbKPYzX7aimkh/VrrEy1OFqA
+ 2nUk30xdStw/txO9q8BvF65NRYEbfQRU5fB6DD5ExNqDIH89+F3SeEHu6A9ifAIEVLFT/MGIJTL
+ QKFRWcDCUmsvtea+QZ0EkQjEGNc2irznncZwKS69X4s0fgP74uAcokJEpvfBOiRbRBkkhPB7kih
+ 8EtPpt1uQei8YUKM1T/a7aujvAAjEFAcr2xzYcH3bThNkHwK54F/jXQbuxpMOswuy/k8V+Mucko
+ msiLq7S6ETW950/gmd7w2nZLQIO5ih+is4Pc1zplY7/cA5hi43gjFC5acleu5lY/KH+HIZABCxj
+ yL/c=
+X-Received: by 2002:a05:7300:ec0c:b0:2ae:5a13:9e3a with SMTP id
+ 5a478bee46e88-2b6b412acafmr9565589eec.40.1768929248724; 
+ Tue, 20 Jan 2026 09:14:08 -0800 (PST)
+X-Received: by 2002:a05:7300:ec0c:b0:2ae:5a13:9e3a with SMTP id
+ 5a478bee46e88-2b6b412acafmr9565489eec.40.1768929246636; 
+ Tue, 20 Jan 2026 09:14:06 -0800 (PST)
+Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
+ a92af1059eb24-1244af108absm19954268c88.13.2026.01.20.09.14.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 Jan 2026 09:14:06 -0800 (PST)
+Date: Tue, 20 Jan 2026 12:13:58 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Lukas Straub <lukasstraub2@web.de>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Zhang Chen <zhangckid@gmail.com>,
+ Hailiang Zhang <zhanghailiang@xfusion.com>,
+ Markus Armbruster <armbru@redhat.com>, Juan Quintela <quintela@trasno.org>
+Subject: Re: [PATCH v2 4/8] multifd: Add COLO support
+Message-ID: <aW-31rQky14G8_lq@x1.local>
+References: <20260117-colo_unit_test_multifd-v2-0-ab521777fa51@web.de>
+ <20260117-colo_unit_test_multifd-v2-4-ab521777fa51@web.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260117-colo_unit_test_multifd-v2-4-ab521777fa51@web.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.087,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,206 +121,297 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
-X-Spamd-Result: default: False [1.09 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MAILLIST(-0.20)[mailman];
+X-Spamd-Result: default: False [-1.21 / 15.00];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
+	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[eik.bme.hu : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,bme.hu:email,qemu-advent-calendar.org:url,eik.bme.hu:mid,i.mx:url];
-	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:lukasstraub2@web.de,m:qemu-devel@nongnu.org,m:farosas@suse.de,m:lvivier@redhat.com,m:pbonzini@redhat.com,m:zhangckid@gmail.com,m:zhanghailiang@xfusion.com,m:armbru@redhat.com,m:quintela@trasno.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
 	ARC_NA(0.00)[];
+	FREEMAIL_CC(0.00)[nongnu.org,suse.de,redhat.com,gmail.com,xfusion.com,trasno.org];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[nongnu.org,linaro.org,tribudubois.net,roeck-us.net,gmail.com,redhat.com];
-	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	R_DKIM_NA(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[balaton@eik.bme.hu,qemu-devel-bounces@nongnu.org];
+	FREEMAIL_TO(0.00)[web.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[peterx@redhat.com,qemu-devel-bounces@nongnu.org];
+	FORWARDED(0.00)[qemu-devel@nongnu.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[peterx@redhat.com,qemu-devel-bounces@nongnu.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TAGGED_RCPT(0.00)[qemu-devel];
-	MID_RHS_MATCH_FROM(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 1106648556
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[x1.local:mid,lists.gnu.org:rdns,lists.gnu.org:helo]
+X-Rspamd-Queue-Id: 8469848612
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, 12 Jan 2026, Bernhard Beschow wrote:
-> This series splits TYPE_IMX_USDHC into three device models which fixes issues
-> in the ppce500 and some i.MX machines. In particular, it introduces uSDHC's
-> predecessor eSDHC in big and little endian variants. Once the eSDHCs are
-> split off, uSDHC emulation is improved which is a stepping stone towards
-> running u-boot on the i.MX8MP (not implemented yet).
->
-> In a way this series picks up previous efforts:
-> * https://lore.kernel.org/qemu-devel/20250310000620.70120-14-philmd@linaro.org
-> * https://lore.kernel.org/qemu-devel/20250310000620.70120-15-philmd@linaro.org
->
-> There is quite some code churn involved to fix all the issues addressed in
-> this series. Let me know if you have any better ideas to achieve the same.
->
-> Best regards,
-> Bernhard
->
-> Testing done:
-> * make check
-> * Boot https://www.qemu-advent-calendar.org/2018/download/day19.tar.xz in
-> ppce500
-> * Boot guest in imx8mp-evk
+On Sat, Jan 17, 2026 at 03:09:11PM +0100, Lukas Straub wrote:
+> Like in the normal ram_load() path, put the received pages into the
+> colo cache and mark the pages in the bitmap so that they will be
+> flushed to the guest later.
+> 
+> Multifd with COLO is useful to reduce the VM pause time during checkpointing
+> for latency sensitive workloads. In such workloads the worst-case latency
+> is especially important.
+> 
+> Also, multifd migration is the preferred way to do migration nowadays and this
+> allows to use multifd compression with COLO.
+> 
+> Benchmark:
+> Cluster nodes
+>  - Intel Xenon E5-2630 v3
+>  - 48Gb RAM
+>  - 10G Ethernet
+> Guest
+>  - Windows Server 2016
+>  - 6Gb RAM
+>  - 4 cores
+> Workload
+>  - Upload a file to the guest with SMB to simulate moderate
+>    memory dirtying
+>  - Measure the memory transfer time portion of each checkpoint
+>  - 600ms COLO checkpoint interval
+> 
+> Results
+> Plain
+>  idle mean: 4.50ms 99per: 10.33ms
+>  load mean: 24.30ms 99per: 78.05ms
+> Multifd-4
+>  idle mean: 6.48ms 99per: 10.41ms
+>  load mean: 14.12ms 99per: 31.27ms
 
-I've tried it with the A1222 U-Boot and it still works the same with this 
-series as before so:
+Thanks for the numbers.  They're persuasive at least from 1st look.
 
-Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
+Said that, one major question is, multifd should only help with throughput
+when cpu is a bottleneck sending, in your case it's 10Gbps NIC.  Normally
+any decent cpu should be able to push closer to 10Gbps even without
+multifd.
 
-Looks like after this series I can revert this change:
+Per my previous experiences, multifd can only show a difference when the
+hosts have at least 25GBps+ bandwidth available.
 
-diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index 5d8dad7bba..c86dfa281f 100644
---- a/hw/sd/sdhci.c
-+++ b/hw/sd/sdhci.c
-@@ -614,11 +614,11 @@ static void 
-sdhci_sdma_transfer_multi_blocks(SDHCIState *s)
-       * XXX: Some sd/mmc drivers (for example, u-boot-slp) do not account for
-       * possible stop at page boundary if initial address is not page aligned,
-       * allow them to work properly
-       */
-      if ((s->sdmasysad % boundary_chk) == 0) {
--//        page_aligned = true;
-+        page_aligned = true;
-      }
+Maybe you turned on compression already?  If so, worth stating the
+compressor methods chosen / parameters.
 
-      s->prnsts |= SDHC_DATA_INHIBIT | SDHC_DAT_LINE_ACTIVE;
-      if (s->trnmod & SDHC_TRNS_READ) {
-          s->prnsts |= SDHC_DOING_READ;
+> 
+> Evaluation
+> While multifd has slightly higher latency when the guest idles, it is
+> 10ms faster under load and more importantly it's worst case latency is
+> less than 1/2 of plain under load as can be seen in the 99. Percentile.
+> 
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> Signed-off-by: Lukas Straub <lukasstraub2@web.de>
+> ---
+>  MAINTAINERS              |  1 +
+>  migration/meson.build    |  2 +-
+>  migration/multifd-colo.c | 49 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  migration/multifd-colo.h | 26 +++++++++++++++++++++++++
+>  migration/multifd.c      | 12 ++++++++++++
+>  migration/multifd.h      |  1 +
+>  6 files changed, 90 insertions(+), 1 deletion(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 563804345fec68ee72793dbb7c1b7e5be4c32083..dbb217255c2cf35dc0ce971c2021b130fac5469b 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3837,6 +3837,7 @@ COLO Framework
+>  M: Lukas Straub <lukasstraub2@web.de>
+>  S: Maintained
+>  F: migration/colo*
+> +F: migration/multifd-colo.*
+>  F: include/migration/colo.h
+>  F: include/migration/failover.h
+>  F: docs/COLO-FT.txt
+> diff --git a/migration/meson.build b/migration/meson.build
+> index 16909d54c5110fc5d8187fd3a68c4a5b08b59ea7..1e59fe4f1f0bbfffed90df38e8f39fa87bceb9b9 100644
+> --- a/migration/meson.build
+> +++ b/migration/meson.build
+> @@ -40,7 +40,7 @@ system_ss.add(files(
+>  ), gnutls, zlib)
+>  
+>  if get_option('replication').allowed()
+> -  system_ss.add(files('colo-failover.c', 'colo.c'))
+> +  system_ss.add(files('colo-failover.c', 'colo.c', 'multifd-colo.c'))
+>  else
+>    system_ss.add(files('colo-stubs.c'))
+>  endif
+> diff --git a/migration/multifd-colo.c b/migration/multifd-colo.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..d8d98e79b12ed52c41f341052a682d7786e221b5
+> --- /dev/null
+> +++ b/migration/multifd-colo.c
+> @@ -0,0 +1,49 @@
+> +/*
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + *
+> + * multifd colo implementation
+> + *
+> + * Copyright (c) Lukas Straub <lukasstraub2@web.de>
+> + *
+> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
+> + * See the COPYING file in the top-level directory.
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "exec/target_page.h"
+> +#include "qemu/error-report.h"
+> +#include "qapi/error.h"
+> +#include "ram.h"
+> +#include "multifd.h"
+> +#include "options.h"
+> +#include "io/channel-socket.h"
+> +#include "migration/colo.h"
+> +#include "multifd-colo.h"
+> +#include "system/ramblock.h"
+> +
+> +void multifd_colo_prepare_recv(MultiFDRecvParams *p)
+> +{
+> +    assert(p->block->colo_cache);
+> +
+> +    /*
+> +     * While we're still in precopy state (not yet in colo state), we copy
+> +     * received pages to both guest and cache. No need to set dirty bits,
+> +     * since guest and cache memory are in sync.
+> +     */
+> +    if (migration_incoming_in_colo_state()) {
+> +        colo_record_bitmap(p->block, p->normal, p->normal_num);
+> +    }
+> +    p->host = p->block->colo_cache;
 
-which needed to be commented out before but now works with or without 
-this change. Is this XXX hack still needed?
+I should have mentioned it while reviewing the previous version, anyway..
 
-Another change I see is that before it ended in:
+IMHO it would be better to have one place setting p->host instead of
+overwritting it.
 
-SDHC wr_4b @0x44 <- 0x00000010 read-only
-SDHC wr_4b @0x44 <- 0x00000010 read-only
+So instead of hooking before ->recv(), we should do it in
+multifd_ram_unfill_packet(), moving the p->host update to the end of
+function and hook it there with COLO (so that you can still record the
+bitmaps, only after normal[]).
 
-repeated 18 times which now says:
+Another thing, which might be more important: you seem to have ignored
+zero[], but I think you need it.  zero[] keeps all pages that are zeros
+(which may not used to be zeros).  So IMHO you'll need to record them as
+dirty too in COLO's dest bitmap, otherwise you may hit hard to debug RAM
+corruptions.
 
-SD: CMD12 in a wrong state: transfer (spec v3.01)
-SD: CMD12 in a wrong state: transfer (spec v3.01)
+> +}
+> +
+> +void multifd_colo_process_recv(MultiFDRecvParams *p)
+> +{
+> +    if (!migration_incoming_in_colo_state()) {
+> +        for (int i = 0; i < p->normal_num; i++) {
+> +            void *guest = p->block->host + p->normal[i];
+> +            void *cache = p->host + p->normal[i];
+> +            memcpy(guest, cache, multifd_ram_page_size());
+> +        }
+> +    }
+> +    p->host = p->block->host;
 
-repeated 17 times. But this fails after not finding a bootable device so 
-I'm not sure this is not a bug in this U-Boot version. With more traces 
-enabled it seems to do some transfer then get these errors when trying to 
-continue reading:
+Is resetting the pointer required?  If not, we can skip it.
 
-sdcard_read_data SD    READ_SINGLE_BLOCK/ CMD17 ofs 509 size 512 blklen 512
-sdbus_read @sd-bus value 0x00
-sdcard_read_data SD    READ_SINGLE_BLOCK/ CMD17 ofs 510 size 512 blklen 512
-sdbus_read @sd-bus value 0x55
-sdcard_read_data SD    READ_SINGLE_BLOCK/ CMD17 ofs 511 size 512 blklen 512
-sdbus_read @sd-bus value 0xaa
-sdhci_end_transfer Automatically issue CMD12 0x00000000
-sdbus_command @sd-bus CMD12 arg 0x00000000
-sdcard_normal_command SD    STOP_TRANSMISSION/ CMD12 arg 0x00000000 (mode transfer, state transfer)
-SD: CMD12 in a wrong state: transfer (spec v3.01)
-sdcard_response ILLEGAL RESP (sz:0)
-sdhci_access wr32: addr[0x000c] <- 0x113a0037 (289013815)
-sdhci_access rd32: addr[0x0030] -> 0x0000000b (11)
-sdhci_access rd32: addr[0x0030] -> 0x0000000b (11)
-sdhci_access rd32: addr[0x0010] -> 0x00000900 (2304)
-sdhci_access rd32: addr[0x0030] -> 0x0000000b (11)
-sdhci_access wr32: addr[0x0030] <- 0xfffffeff (4294967039)
-sdhci_access wr32: addr[0x0030] <- 0xfffffeff (4294967039)
-sdbus_get_dat_lines @sd-bus dat_lines: 15
-sdbus_get_cmd_line @sd-bus cmd_line: 1
-sdhci_access rd32: addr[0x0024] -> 0x01ff0000 (33488896)
-sdbus_get_dat_lines @sd-bus dat_lines: 15
-sdbus_get_cmd_line @sd-bus cmd_line: 1
-sdhci_access rd32: addr[0x0024] -> 0x01ff0000 (33488896)
-sdbus_get_dat_lines @sd-bus dat_lines: 15
-sdbus_get_cmd_line @sd-bus cmd_line: 1
-sdhci_access rd32: addr[0x0024] -> 0x01ff0000 (33488896)
-sdhci_access wr32: addr[0x0038] <- 0x00000000 (0)
-sdhci_access wr32: addr[0x0008] <- 0x00000200 (512)
-sdhci_send_command CMD16 ARG[0x00000200]
-sdbus_command @sd-bus CMD16 arg 0x00000200
-sdcard_normal_command SD         SET_BLOCKLEN/ CMD16 arg 0x00000200 (mode transfer, state transfer)
-sdcard_set_blocklen block len 0x200
-sdcard_response RESP#1 (normal cmd) (sz:4)
-sdhci_response4 RSPREG[31..0]=0x00400900
-sdhci_access wr32: addr[0x000c] <- 0x101a0037 (270139447)
-sdhci_access rd32: addr[0x0030] -> 0x00000001 (1)
-sdhci_access rd32: addr[0x0030] -> 0x00000001 (1)
-sdhci_access rd32: addr[0x0010] -> 0x00400900 (4196608)
-sdhci_access wr32: addr[0x0030] <- 0xfffffeff (4294967039)
-sdhci_access wr32: addr[0x0030] <- 0xfffffeff (4294967039)
-sdbus_get_dat_lines @sd-bus dat_lines: 15
-sdbus_get_cmd_line @sd-bus cmd_line: 1
-sdhci_access rd32: addr[0x0024] -> 0x01ff0000 (33488896)
-sdbus_get_dat_lines @sd-bus dat_lines: 15
-sdbus_get_cmd_line @sd-bus cmd_line: 1
-sdhci_access rd32: addr[0x0024] -> 0x01ff0000 (33488896)
-sdbus_get_dat_lines @sd-bus dat_lines: 15
-sdbus_get_cmd_line @sd-bus cmd_line: 1
-sdhci_access rd32: addr[0x0024] -> 0x01ff0000 (33488896)
-sdhci_access wr32: addr[0x0000] <- 0x79401de8 (2034245096)
-sdhci_access wr32: addr[0x0004] <- 0x00017200 (94720)
-sdhci_access rd32: addr[0x002c] -> 0x000b011f (721183)
-sdhci_access wr32: addr[0x002c] <- 0x000b011f (721183)
-sdhci_access wr32: addr[0x0038] <- 0x00000000 (0)
-sdhci_access wr32: addr[0x0008] <- 0x00000200 (512)
-sdhci_send_command CMD17 ARG[0x00000200]
-sdbus_command @sd-bus CMD17 arg 0x00000200
-sdcard_normal_command SD    READ_SINGLE_BLOCK/ CMD17 arg 0x00000200 (mode transfer, state transfer)
-sdcard_req_addr req 0x200 addr 0x200
-sdcard_read_block addr 0x200 size 0x200
-sdcard_response RESP#1 (normal cmd) (sz:4)
-sdhci_response4 RSPREG[31..0]=0x00000900
-sdcard_read_data SD    READ_SINGLE_BLOCK/ CMD17 ofs 0 size 512 blklen 512
-sdbus_read @sd-bus value 0x00
-sdcard_read_data SD    READ_SINGLE_BLOCK/ CMD17 ofs 1 size 512 blklen 512
-sdbus_read @sd-bus value 0x00
+> +}
+> diff --git a/migration/multifd-colo.h b/migration/multifd-colo.h
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..82eaf3f48c47de2f090f9de52f9d57a337d4754a
+> --- /dev/null
+> +++ b/migration/multifd-colo.h
+> @@ -0,0 +1,26 @@
+> +/*
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + *
+> + * multifd colo header
+> + *
+> + * Copyright (c) Lukas Straub <lukasstraub2@web.de>
+> + *
+> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
+> + * See the COPYING file in the top-level directory.
+> + */
+> +
+> +#ifndef QEMU_MIGRATION_MULTIFD_COLO_H
+> +#define QEMU_MIGRATION_MULTIFD_COLO_H
+> +
+> +#ifdef CONFIG_REPLICATION
+> +
+> +void multifd_colo_prepare_recv(MultiFDRecvParams *p);
+> +void multifd_colo_process_recv(MultiFDRecvParams *p);
+> +
+> +#else
+> +
+> +static inline void multifd_colo_prepare_recv(MultiFDRecvParams *p) {}
+> +static inline void multifd_colo_process_recv(MultiFDRecvParams *p) {}
+> +
+> +#endif
+> +#endif
+> diff --git a/migration/multifd.c b/migration/multifd.c
+> index 8e71171fb7a17726ba7eb0705e293c41e8aa32ec..6c85acec3bac134e85cfcee0d32057134f5af8d1 100644
+> --- a/migration/multifd.c
+> +++ b/migration/multifd.c
+> @@ -29,6 +29,7 @@
+>  #include "qemu-file.h"
+>  #include "trace.h"
+>  #include "multifd.h"
+> +#include "multifd-colo.h"
+>  #include "threadinfo.h"
+>  #include "options.h"
+>  #include "qemu/yank.h"
+> @@ -1269,7 +1270,18 @@ static int multifd_ram_state_recv(MultiFDRecvParams *p, Error **errp)
+>  {
+>      int ret;
+>  
+> +    if (migrate_colo()) {
+> +        multifd_colo_prepare_recv(p);
+> +    }
+> +
+>      ret = multifd_recv_state->ops->recv(p, errp);
+> +    if (ret != 0) {
+> +        return ret;
+> +    }
+> +
+> +    if (migrate_colo()) {
+> +        multifd_colo_process_recv(p);
+> +    }
+>  
+>      return ret;
+>  }
+> diff --git a/migration/multifd.h b/migration/multifd.h
+> index 9b6d81e7ede024f05d4cd235de95e73840d0bbc4..7036f438fade1baed2442bfdcf8b5d6397c4a448 100644
+> --- a/migration/multifd.h
+> +++ b/migration/multifd.h
+> @@ -280,6 +280,7 @@ typedef struct {
+>      /* ramblock */
+>      RAMBlock *block;
+>      /* ramblock host address */
+> +    /* or points to the corresponding address in the colo cache */
 
-Regards,
-BALATON Zoltan
+Nit: we can merge it with /* ... */, and some wording change:
 
-> Bernhard Beschow (14):
->  hw/sd/sdhci: Fix TYPE_IMX_USDHC to implement sd-spec-version 3 by
->    default
->  hw/arm/fsl-imx6: Remove now redundant setting of "sd-spec-version"
->    property
->  hw/arm/fsl-imx6: Fix naming of SDHCI related constants and attributes
->  hw/arm/fsl-imx25: Apply missing reset quirk
->  Revert "hw/sd/sdhci: Rename ESDHC_* defines to USDHC_*"
->  hw/sd/sdhci: Consolidate eSDHC constants
->  hw/sd/sdhci: Rename usdhc_ functions
->  hw/sd/sdhci: Add TYPE_FSL_ESDHC_BE
->  hw/ppc/e500: Use TYPE_FSL_ESDHC_BE
->  hw/arm/fsl-imx25: Extract TYPE_FSL_ESDHC_LE
->  hw/sd/sdhci: Remove endianness property
->  hw/sd/sdhci: Add uSDHC-specific quirk
->  hw/sd/sdhci: Remove vendor property
->  hw/sd/trace-events: Remove redundant "SWITCH " command name
->
-> hw/sd/sdhci-internal.h    |   3 -
-> include/hw/arm/fsl-imx6.h |   4 +-
-> include/hw/sd/sdhci.h     |   8 +-
-> hw/arm/fsl-imx25.c        |   5 +-
-> hw/arm/fsl-imx6.c         |  18 ++--
-> hw/ppc/e500.c             |  10 +-
-> hw/sd/sdhci.c             | 201 ++++++++++++++++++++++++--------------
-> hw/sd/trace-events        |   2 +-
-> 8 files changed, 146 insertions(+), 105 deletions(-)
->
-> --
-> 2.52.0
->
->
->
+       /*
+        * Normally, it points to ramblock's host address.  When COLO
+        * enabled, it points to the mirror cache for the ramblock.
+        */
+
+>      uint8_t *host;
+>      /* buffers to recv */
+>      struct iovec *iov;
+> 
+> -- 
+> 2.39.5
+> 
+
+-- 
+Peter Xu
+
 
