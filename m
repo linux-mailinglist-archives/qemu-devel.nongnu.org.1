@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 550A1D3BEB2
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 06:21:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4071DD3BEB0
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 06:20:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vi49Q-0004NV-Uh; Tue, 20 Jan 2026 00:19:36 -0500
+	id 1vi49T-0004PC-P4; Tue, 20 Jan 2026 00:19:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1vi49O-0004Ll-I7; Tue, 20 Jan 2026 00:19:34 -0500
+ id 1vi49Q-0004Nd-RG; Tue, 20 Jan 2026 00:19:36 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1vi49N-0004ZS-6p; Tue, 20 Jan 2026 00:19:34 -0500
+ id 1vi49P-0004ZS-AZ; Tue, 20 Jan 2026 00:19:36 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Tue, 20 Jan
- 2026 13:19:02 +0800
+ 2026 13:19:03 +0800
 Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Tue, 20 Jan 2026 13:19:02 +0800
+ Transport; Tue, 20 Jan 2026 13:19:03 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>, Andrew Jeffery
@@ -32,10 +32,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
 CC: <troy_lee@aspeedtech.com>, Kane-Chen-AS <kane_chen@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>, Nabih Estefan
  <nabihestefan@google.com>
-Subject: [PATCH v5 07/22] hw/arm/aspeed: Attach LTPI controller to AST1700
- model
-Date: Tue, 20 Jan 2026 13:18:38 +0800
-Message-ID: <20260120051859.1920565-8-kane_chen@aspeedtech.com>
+Subject: [PATCH v5 08/22] hw/arm/aspeed: Attach UART device to AST1700 model
+Date: Tue, 20 Jan 2026 13:18:39 +0800
+Message-ID: <20260120051859.1920565-9-kane_chen@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260120051859.1920565-1-kane_chen@aspeedtech.com>
 References: <20260120051859.1920565-1-kane_chen@aspeedtech.com>
@@ -69,7 +68,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Kane-Chen-AS <kane_chen@aspeedtech.com>
 
-Connect the LTPI controller to the AST1700 model by mapping its MMIO
+Connect the UART controller to the AST1700 model by mapping its MMIO
 region.
 
 Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
@@ -77,84 +76,82 @@ Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Nabih Estefan <nabihestefan@google.com>
 Tested-by: Nabih Estefan <nabihestefan@google.com>
 ---
- include/hw/arm/aspeed_ast1700.h |  3 +++
- hw/arm/aspeed_ast1700.c         | 28 ++++++++++++++++++++++++++++
- 2 files changed, 31 insertions(+)
+ include/hw/arm/aspeed_ast1700.h |  2 ++
+ hw/arm/aspeed_ast1700.c         | 18 ++++++++++++++++++
+ 2 files changed, 20 insertions(+)
 
 diff --git a/include/hw/arm/aspeed_ast1700.h b/include/hw/arm/aspeed_ast1700.h
-index 378dcb437a..addea3ab1f 100644
+index addea3ab1f..b15b13aedd 100644
 --- a/include/hw/arm/aspeed_ast1700.h
 +++ b/include/hw/arm/aspeed_ast1700.h
-@@ -9,6 +9,7 @@
- #define ASPEED_AST1700_H
+@@ -10,6 +10,7 @@
  
  #include "hw/core/sysbus.h"
-+#include "hw/misc/aspeed_ltpi.h"
+ #include "hw/misc/aspeed_ltpi.h"
++#include "hw/char/serial-mm.h"
  
  #define TYPE_ASPEED_AST1700 "aspeed.ast1700"
  
-@@ -18,6 +19,8 @@ struct AspeedAST1700SoCState {
-     SysBusDevice parent_obj;
- 
+@@ -21,6 +22,7 @@ struct AspeedAST1700SoCState {
      MemoryRegion iomem;
-+
-+    AspeedLTPIState ltpi;
+ 
+     AspeedLTPIState ltpi;
++    SerialMM uart;
  };
  
  #endif /* ASPEED_AST1700_H */
 diff --git a/hw/arm/aspeed_ast1700.c b/hw/arm/aspeed_ast1700.c
-index dd38b819b8..e4c8565d3f 100644
+index e4c8565d3f..450ca6f5c7 100644
 --- a/hw/arm/aspeed_ast1700.c
 +++ b/hw/arm/aspeed_ast1700.c
-@@ -13,6 +13,14 @@
+@@ -9,15 +9,18 @@
+ #include "qemu/osdep.h"
+ #include "hw/core/boards.h"
+ #include "qom/object.h"
++#include "hw/core/qdev-properties.h"
+ #include "hw/arm/aspeed_ast1700.h"
  
  #define AST2700_SOC_LTPI_SIZE        0x01000000
  
-+enum {
-+    ASPEED_AST1700_DEV_LTPI_CTRL,
-+};
-+
-+static const hwaddr aspeed_ast1700_io_memmap[] = {
-+    [ASPEED_AST1700_DEV_LTPI_CTRL] =  0x00C34000,
-+};
-+
- static void aspeed_ast1700_realize(DeviceState *dev, Error **errp)
- {
-     AspeedAST1700SoCState *s = ASPEED_AST1700(dev);
-@@ -22,6 +30,25 @@ static void aspeed_ast1700_realize(DeviceState *dev, Error **errp)
-     memory_region_init(&s->iomem, OBJECT(s), TYPE_ASPEED_AST1700,
+ enum {
++    ASPEED_AST1700_DEV_UART12,
+     ASPEED_AST1700_DEV_LTPI_CTRL,
+ };
+ 
+ static const hwaddr aspeed_ast1700_io_memmap[] = {
++    [ASPEED_AST1700_DEV_UART12]    =  0x00C33B00,
+     [ASPEED_AST1700_DEV_LTPI_CTRL] =  0x00C34000,
+ };
+ 
+@@ -31,6 +34,17 @@ static void aspeed_ast1700_realize(DeviceState *dev, Error **errp)
                         AST2700_SOC_LTPI_SIZE);
      sysbus_init_mmio(sbd, &s->iomem);
-+
-+    /* LTPI controller */
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->ltpi), errp)) {
+ 
++    /* UART */
++    qdev_prop_set_uint8(DEVICE(&s->uart), "regshift", 2);
++    qdev_prop_set_uint32(DEVICE(&s->uart), "baudbase", 38400);
++    qdev_prop_set_uint8(DEVICE(&s->uart), "endianness", DEVICE_LITTLE_ENDIAN);
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s->uart), errp)) {
 +        return;
 +    }
 +    memory_region_add_subregion(&s->iomem,
-+                        aspeed_ast1700_io_memmap[ASPEED_AST1700_DEV_LTPI_CTRL],
-+                        sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->ltpi), 0));
-+}
++                        aspeed_ast1700_io_memmap[ASPEED_AST1700_DEV_UART12],
++                        sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->uart), 0));
 +
-+static void aspeed_ast1700_instance_init(Object *obj)
-+{
-+    AspeedAST1700SoCState *s = ASPEED_AST1700(obj);
-+
-+    /* LTPI controller */
-+    object_initialize_child(obj, "ltpi-ctrl",
-+                            &s->ltpi, TYPE_ASPEED_LTPI);
-+
-+    return;
- }
+     /* LTPI controller */
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->ltpi), errp)) {
+         return;
+@@ -44,6 +58,10 @@ static void aspeed_ast1700_instance_init(Object *obj)
+ {
+     AspeedAST1700SoCState *s = ASPEED_AST1700(obj);
  
- static void aspeed_ast1700_class_init(ObjectClass *klass, const void *data)
-@@ -36,6 +63,7 @@ static const TypeInfo aspeed_ast1700_info = {
-     .parent        = TYPE_SYS_BUS_DEVICE,
-     .instance_size = sizeof(AspeedAST1700SoCState),
-     .class_init    = aspeed_ast1700_class_init,
-+    .instance_init = aspeed_ast1700_instance_init,
- };
- 
- static void aspeed_ast1700_register_types(void)
++    /* UART */
++    object_initialize_child(obj, "uart[*]", &s->uart,
++                            TYPE_SERIAL_MM);
++
+     /* LTPI controller */
+     object_initialize_child(obj, "ltpi-ctrl",
+                             &s->ltpi, TYPE_ASPEED_LTPI);
 -- 
 2.43.0
 
