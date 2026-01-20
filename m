@@ -2,120 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YCroMiqtb2ncEwAAu9opvQ
+	id 4NEFDAKtb2n0EwAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:28:26 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:27:46 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61ADD47830
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:28:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB09F47802
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:27:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viBJU-0003Nb-QW; Tue, 20 Jan 2026 07:58:28 -0500
+	id 1viBn6-0006NL-Ja; Tue, 20 Jan 2026 08:29:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1viBJG-0003I0-9c
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 07:58:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1viBJE-0005tL-PF
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 07:58:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768913891;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=XcJpC/SsM5SB21diMG4bdOKmIF1sLjFTXKYW5m3604A=;
- b=T59m7dtHzPzyDWDoEuBsaxaEErBDGRpcVaXUrG/TneXRSZ4JXzyUHyYhtalsTH5gLNsBUi
- q0s9VYAbKyEHqeFdVozOnRrIjwE2RQ4yjU4iOEdGK1ccZDPw2KUOMXpXsFjFxidUM6YM0p
- ScNUshG7E6AK+v6rmQGyhY/fK5sAd8M=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-161-pbIA2EF1MOORBdVjpNsxBA-1; Tue, 20 Jan 2026 07:58:10 -0500
-X-MC-Unique: pbIA2EF1MOORBdVjpNsxBA-1
-X-Mimecast-MFC-AGG-ID: pbIA2EF1MOORBdVjpNsxBA_1768913889
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-42fd46385c0so3119572f8f.0
- for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 04:58:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viBmg-0006Dk-RC
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 08:28:44 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viBmd-0003R0-Cy
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 08:28:37 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-47ee807a4c5so40094265e9.2
+ for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 05:28:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768913889; x=1769518689; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=XcJpC/SsM5SB21diMG4bdOKmIF1sLjFTXKYW5m3604A=;
- b=cIZpaU64ZAQXUyrxfcigfuFMlAY/YyICOjeABc1HXstCHAz/USAPuy8S8Cce3fh51L
- UYqFSoRzVFmyU9bBRZBA9ctpibDdWDv6l1d5BMfZ2aikOwO0KNcaxehLKuoQVPPF/neq
- 8Xhn3xNbf8xIZkw5ea39xI3++ePPrQPVOaBu0Ko2FZdWJGPyB1NVqhYDaSbuEkrH99LO
- ha+tDX8OkR5zewn1lDCNEhDmKf3PMUTr5JhkkTTMLNH3lFti2k8Sucnac1uIOBh5irF1
- RxmR0B+oFjCb1jXSQIJihn2YCJwanJHGz5dEdo8SDxmiGRbcyEwfWOIlMOkYfzg2qRHT
- jObw==
+ d=linaro.org; s=google; t=1768915714; x=1769520514; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=srwK5qMV3taU/eXCoCnrx9Y2KKg2uUGkqQJAM+4dcNM=;
+ b=Lcx70FTVQ0uwfUH/3XCFCBJYtWfU7Ua68yziYkkdW7RVJLHh3AY5hPqsJPmNSRwPjV
+ UTc3prmTRGkQJkbvxqLn+dDGRdzJgt3MLcgugItG4Z+GU4uX801N6cnY+p21afjvn2ou
+ gPJALaYPKjyJPji0jlcfxZl9XqkHF9pZr01BlMGLn4JKTlVC70lk/ALnDvRUuURgTpQU
+ WPcvuRXdt+ifGKr4HUKL5/wp7HvfvzYFda7Jpy3XjW3VzMv1QhYMYwNVXQwHkAOWjb4z
+ xIzflgvHUXuAFEj7XdAYhbj4rm86H1cIjyYQydFsrRdmxiFr+zujQJZTzAbcXsgzrZBW
+ HwSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768913889; x=1769518689;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=XcJpC/SsM5SB21diMG4bdOKmIF1sLjFTXKYW5m3604A=;
- b=fC3rNoY27UhZTdbqjGRI+Vc3bQRXOdpK6Z7J4/Uy2Nt0q/k0PZCmknIOwA35+ZQLNH
- MFOwD8FJPksMPt8LGv+zy0gwuUxxB8H2Clp/6RchmVIYVxuLDT1v2JF80LSijyJlwDIt
- vcn1OUJdAeeUvUGUINxMMkg/uPVq+ajAKbsUGEPUw4Zti7ebb3lhGF/voxKKkD92dVew
- glESvLQxrMbXtUP1oSUNojn5r9OeAWF13owUNwVkwWRyVVpQ3Bb5yZuscHJOhhlIa3ck
- xAU8Gg9RnAR1APXnA9wbEupKuyRkwqreKaLWlZmjsPRn31I8cLswaqpy5/o5MzpVp/DT
- WP1A==
-X-Gm-Message-State: AOJu0YzM+FcFi6Hg6PlQOZN1E6sgYFC1VkKDgGGYsxMBPMw7nIZVH550
- r3y2QWVcj+gkvRAn37CNKfmmpoFgfOuKWvhLq7zO3nIu8cNWVFGtfX5OuQwAtN3p+k5yKWxAAlT
- Zyt2X/vKGDq1FLAZ66QdifBfx67Acee3z84poBDhWHrZfumQy1Dc1rNXCsWD4oDBh
-X-Gm-Gg: AZuq6aLT12FKdBL4ddCn1XdxxCZPcHXSwzsdU2KBQZsdQdDBtGpDK/TeC7Ez6bE+9lB
- xZtcaQ6fjue6tlqbE2ae4uaEOCCXdEnDX2bwl8iHIZpWakp/55T7rVh54aIJrMlukXXmQqkw3ST
- wd+UknzI0ADQaI5pSIaurFlVmD7pLwty4pMNKDzvHn8D1UVOv4QcftDZ+WEkkVm7+wuEMxgPfq4
- bj440KpYDs6i3P1bN0tp5PZsQIMlFARIFczLvDIG6eWkVWRVphvRLYsf/UAHqQDJyPBVuodUuQf
- ByOW6xhPlO79eRmHjvBh7pxXuvUXDARuX1DjiMpIfAnIs1ArD+RlLAbLP549iMDQ1SOmPep5CHi
- 1NKyhhunlp+eOaiqkBC5QMQ2RogxafKg=
-X-Received: by 2002:a05:6000:2f82:b0:435:8f88:7235 with SMTP id
- ffacd0b85a97d-4358f887404mr2905249f8f.33.1768913889071; 
- Tue, 20 Jan 2026 04:58:09 -0800 (PST)
-X-Received: by 2002:a05:6000:2f82:b0:435:8f88:7235 with SMTP id
- ffacd0b85a97d-4358f887404mr2905200f8f.33.1768913888514; 
- Tue, 20 Jan 2026 04:58:08 -0800 (PST)
-Received: from redhat.com (IGLD-80-230-35-22.inter.net.il. [80.230.35.22])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4356997e6dasm29854795f8f.32.2026.01.20.04.58.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jan 2026 04:58:07 -0800 (PST)
-Date: Tue, 20 Jan 2026 07:58:04 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Filip Hejsek <filip.hejsek@gmail.com>
-Cc: qemu-devel@nongnu.org,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Amit Shah <amit@kernel.org>,
- Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>,
- Szymon Lukasz <noh4hss@gmail.com>
-Subject: Re: [PATCH v6 08/12] virtio-serial-bus: add terminal resize messages
-Message-ID: <20260120075710-mutt-send-email-mst@kernel.org>
-References: <20260119-console-resize-v6-0-33a7b0330a7a@gmail.com>
- <20260119-console-resize-v6-8-33a7b0330a7a@gmail.com>
- <6910accb5917c60e89801af1c3528187e732166f.camel@gmail.com>
+ d=1e100.net; s=20230601; t=1768915714; x=1769520514;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=srwK5qMV3taU/eXCoCnrx9Y2KKg2uUGkqQJAM+4dcNM=;
+ b=m3hWFDxQK5z50K2PKF7MK3pHLYvDFYMK0BluxyxoZLwTRpHjvDqeqvS1b+k8+Uvyfa
+ O2X7z2Imh41zbFA1l/FhqNBFdCqVa76tOyL4UnFTaO9LwPGXTW0PcOkUGhTfKXdvXly3
+ MyNhe+akvt9vO5dzFDdWMf6tV92Ak57oBjTK14IYFwXu0cOLLR/sMlEa8d+V3OmgozHh
+ V0Y3/TzNEOeGFgc26aPXZAG+I74K2GJAqbq9/yyliYL57Sshf5StDpIxnQ6kPKUfy1no
+ 7Ebtd1JX7jvs9Nha1rbuMnWBVa56s99V3g6x5a59q16Pq29r9FfAZHuve93cDay+9BIG
+ qncA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWt3QX8daXWEaGY7cdM/mzmfQBzaqB3aNDMe3uAOK4JMzR/IDUtfV7lsFWf8FOq+29Sh7pl6r0o3Bky@nongnu.org
+X-Gm-Message-State: AOJu0Yx9yl+0RcamdPfUD3HpHtenHuZD+qqn1RKL59pROLJAop6YLuzm
+ +5HCNxZaZEgGFNkpLP3SqIrgk6WQs08HoaxyeFFjIWo7qvkirB0Q7cSeGH7/5XK8wLI=
+X-Gm-Gg: AY/fxX68lQrjjq+vrDRwnsVk2HbehXdpTmIzuXHY8OOfHy9geNkG9vZpDYmtbI3qxrL
+ gHI+ipI3NaKAIPwAc05XACJr7wRTRQf0GQ9c4Dt/ds/AzdRGdVtyrAQdtQRIAbHwV+aBhj4sqS1
+ P8Ar2D2ML8yNNlbpx1QtBdZ+Mft88q6r6HgL5Z5cs0llxGU54/banWvk9yGKFAx84ALphRhzldP
+ JlcOmcChNAQToxrpzJEuCIcdZ7O+/WVXH2L10oiV1B7zGQ/vClN4BafYqOK3xU4a0a1vDnA5lGz
+ 0krzKj09SZOcNftCEdkM3wZgraB1D/9TF0RiIxm+D7dBaK5aC8dOKmq1gXyINkkpZlGktSys1Lu
+ 3F+esFa20YnvxaEq68bXjCChIx3cWYFeL+JT7F6aGGowV+bb2lxrNrAYWuLNyXpD4JjuZQqPldK
+ 5amnheO5jSxvU7zsOGTqMOEuY6R/5AR/BEKbjQ/7GwFGVdWP91RyUQwQ==
+X-Received: by 2002:a05:600c:8b82:b0:480:1b65:b744 with SMTP id
+ 5b1f17b1804b1-4801eb0e10emr183765335e9.28.1768915713788; 
+ Tue, 20 Jan 2026 05:28:33 -0800 (PST)
+Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4801e8c0475sm294068615e9.10.2026.01.20.05.28.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 20 Jan 2026 05:28:33 -0800 (PST)
+Message-ID: <6a5bd9c7-34e5-4d73-8980-a3b930754d98@linaro.org>
+Date: Tue, 20 Jan 2026 14:28:32 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6910accb5917c60e89801af1c3528187e732166f.camel@gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 01/11] plugins: move win32_linker.c file to plugins
+ directory
+Content-Language: en-US
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Kostiantyn Kostiuk <kkostiuk@redhat.com>, Michael Roth
+ <michael.roth@amd.com>, Gustavo Bueno Romero <gustavo.romero@linaro.org>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
+References: <20260119191138.811069-1-pierrick.bouvier@linaro.org>
+ <20260119191138.811069-2-pierrick.bouvier@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20260119191138.811069-2-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.087,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -132,98 +116,51 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 X-Spamd-Result: default: False [0.29 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
-	MAILLIST(-0.20)[mailman];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:filip.hejsek@gmail.com,m:qemu-devel@nongnu.org,m:marcandre.lureau@redhat.com,m:pbonzini@redhat.com,m:lvivier@redhat.com,m:amit@kernel.org,m:armbru@redhat.com,m:eblake@redhat.com,m:eduardo@habkost.net,m:marcel.apfelbaum@gmail.com,m:philmd@linaro.org,m:wangyanan55@huawei.com,m:zhao1.liu@intel.com,m:berrange@redhat.com,m:maxbr@linux.ibm.com,m:noh4hss@gmail.com,m:filiphejsek@gmail.com,m:marcelapfelbaum@gmail.com,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[mst@redhat.com,qemu-devel-bounces@nongnu.org];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	ARC_NA(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:pierrick.bouvier@linaro.org,m:qemu-devel@nongnu.org,m:ma.mandourr@gmail.com,m:alex.bennee@linaro.org,m:marcandre.lureau@redhat.com,m:manos.pitsidianakis@linaro.org,m:richard.henderson@linaro.org,m:pbonzini@redhat.com,m:erdnaxe@crans.org,m:kkostiuk@redhat.com,m:michael.roth@amd.com,m:gustavo.romero@linaro.org,m:berrange@redhat.com,m:mamandourr@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[qemu-devel@nongnu.org];
-	FREEMAIL_CC(0.00)[nongnu.org,redhat.com,kernel.org,habkost.net,gmail.com,linaro.org,huawei.com,intel.com,linux.ibm.com];
-	DKIM_TRACE(0.00)[redhat.com:+];
+	FORGED_SENDER(0.00)[philmd@linaro.org,qemu-devel-bounces@nongnu.org];
+	FREEMAIL_CC(0.00)[gmail.com,linaro.org,redhat.com,crans.org,amd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[mst@redhat.com,qemu-devel-bounces@nongnu.org];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[philmd@linaro.org,qemu-devel-bounces@nongnu.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linaro.org:+];
 	PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
-	TAGGED_RCPT(0.00)[qemu-devel];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo]
-X-Rspamd-Queue-Id: 61ADD47830
+	TAGGED_RCPT(0.00)[qemu-devel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,linaro.org:email,linaro.org:dkim,linaro.org:mid]
+X-Rspamd-Queue-Id: CB09F47802
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Jan 20, 2026 at 10:50:04AM +0100, Filip Hejsek wrote:
-> On Mon, 2026-01-19 at 04:27 +0100, Filip Hejsek wrote:
-> > Implement the part of the virtio spec that allows to notify the virtio
-> > driver about terminal resizes. The virtio spec contains two methods to
-> > achieve that:
-> > 
-> > For legacy drivers, we have only one port and we put the terminal size
-> > in the config space and inject the config changed interrupt.
-> > 
-> > For multiport devices, we use the control virtqueue to send a packet
-> > containing the terminal size. Note that old versions of the Linux kernel
-> > used an incorrect order for the fields (rows then cols instead of cols
-> > then rows), until it was fixed by commit 5326ab737a47278dbd16ed3ee7380b26c7056ddd.
-> > 
-> > As a result, when using a Linux kernel older than 6.15, the number of rows
-> > and columns will be swapped.
-> > 
-> > Based on a patch originally written by Szymon Lukasz <noh4hss@gmail.com>,
-> > but partially rewritten to fix various corner cases.
-> > 
-> > Signed-off-by: Szymon Lukasz <noh4hss@gmail.com>
-> > Signed-off-by: Filip Hejsek <filip.hejsek@gmail.com>
-> > ---
-> >  hw/char/trace-events              |  1 +
-> >  hw/char/virtio-serial-bus.c       | 76 +++++++++++++++++++++++++++++++++++++--
-> >  hw/core/machine.c                 |  4 ++-
-> >  include/hw/virtio/virtio-serial.h |  5 +++
-> >  4 files changed, 83 insertions(+), 3 deletions(-)
-> > 
-> > [...]
-> > 
-> > diff --git a/include/hw/virtio/virtio-serial.h b/include/hw/virtio/virtio-serial.h
-> > index 60641860bf..bda6d5312a 100644
-> > --- a/include/hw/virtio/virtio-serial.h
-> > +++ b/include/hw/virtio/virtio-serial.h
-> > @@ -145,6 +145,9 @@ struct VirtIOSerialPort {
-> >      bool host_connected;
-> >      /* Do apps not want to receive data? */
-> >      bool throttled;
-> > +
-> > +    /* Terminal size reported to the guest.  Only used for consoles. */
-> > +    uint16_t cols, rows;
-> >  };
-> 
-> I found a bug: after a migration, the guest is not informed about the
-> new console size. I see two ways to fix this: either add the cols and
-> rows fields to the migration stream, or always send the console size to
-> the guest after migration, even if it might not have changed. Which do
-> you prefer?
+On 19/1/26 20:11, Pierrick Bouvier wrote:
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>   {contrib/plugins => plugins}/win32_linker.c | 0
+>   contrib/plugins/meson.build                 | 2 +-
+>   tests/tcg/plugins/meson.build               | 2 +-
+>   3 files changed, 2 insertions(+), 2 deletions(-)
+>   rename {contrib/plugins => plugins}/win32_linker.c (100%)
 
-I prefer not adding a performance overhead to guests without
-a good reason. We are already sending too much stuff to guests on
-resume, let's not add more to this.
-
-> Modifying the migration stream is somewhat annoying,
-> because both versions will have to be supported, and also the device
-> still uses legacy save/load functions rather than VMState.
-
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
