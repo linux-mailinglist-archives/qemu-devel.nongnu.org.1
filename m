@@ -2,69 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kET1IeCub2lBGgAAu9opvQ
+	id yI1wEeeub2lBGgAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:35:44 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:35:51 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 347E947B0A
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:35:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C5C47B19
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:35:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viD1y-0004s6-Is; Tue, 20 Jan 2026 09:48:30 -0500
+	id 1viD4y-0001by-6j; Tue, 20 Jan 2026 09:51:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
- id 1viCzx-00049m-6h
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 09:46:33 -0500
+ (Exim 4.90_1) (envelope-from <leonardi@redhat.com>)
+ id 1viD4T-0001Ow-28
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 09:51:05 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
- id 1viCzv-0007Nh-3y
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 09:46:24 -0500
+ (Exim 4.90_1) (envelope-from <leonardi@redhat.com>)
+ id 1viD4Q-00007L-KL
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 09:51:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768920370;
+ s=mimecast20190719; t=1768920660;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rtvOs6oqUv/P4O+hxq7j2SLb0tEOZS5BMGbK2lAS/OA=;
- b=VuZyJ0p0tsrtfcSdHD0woOzcUOdTFlReYEaamPG+DhyX6DHVeuT8YaZyizjHwG3FOpGYHk
- laiOJZk0YfEL7/J0PhesLDTdigHlFpW73a0To+/xUk2/BaA8hyzwCURhXJMNz40C5hipv9
- Whyyl2xGcZR6aS9OzNG3RkzxJ8QDwbg=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-84-0MHIKvp9PxShdvNJTGDjUQ-1; Tue,
- 20 Jan 2026 09:46:06 -0500
-X-MC-Unique: 0MHIKvp9PxShdvNJTGDjUQ-1
-X-Mimecast-MFC-AGG-ID: 0MHIKvp9PxShdvNJTGDjUQ_1768920366
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 17F431954B06; Tue, 20 Jan 2026 14:46:06 +0000 (UTC)
-Received: from speedmetal.lan (unknown [10.44.22.5])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 102451800993; Tue, 20 Jan 2026 14:46:03 +0000 (UTC)
-From: Peter Krempa <pkrempa@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH v2 2/2] hmp_nbd_server_start: Don't ask for backing image data
-Date: Tue, 20 Jan 2026 15:45:57 +0100
-Message-ID: <3d34ff5e7166abf4fd9d9b9b324cde3a1c2b00ee.1768920111.git.pkrempa@redhat.com>
-In-Reply-To: <cover.1768920111.git.pkrempa@redhat.com>
-References: <cover.1768920111.git.pkrempa@redhat.com>
+ bh=yoACEDNkFlXzoChXLraeiX9PL89XSvoNlQcmvRvpFug=;
+ b=OybAiJtAPTZLabuIDC1iBkT1Qq3CMRe5XsvGDz2iaQb8TI5Day27pTC5dvFvqEmHhSrVqy
+ j3uZ2UsGA+il6P9aQWgcY9aNenVVxE1H/kcHAaooMtKQ06G/WjjoOSp3NPFGVImr9WMYKY
+ R26Y2sCpAmE3cfIblvK56884FGuj5tk=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-308-gSgW3csCPx2KMwDMDlGqvA-1; Tue, 20 Jan 2026 09:50:59 -0500
+X-MC-Unique: gSgW3csCPx2KMwDMDlGqvA-1
+X-Mimecast-MFC-AGG-ID: gSgW3csCPx2KMwDMDlGqvA_1768920658
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-47d4029340aso50896035e9.3
+ for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 06:50:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=redhat.com; s=google; t=1768920658; x=1769525458; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=yoACEDNkFlXzoChXLraeiX9PL89XSvoNlQcmvRvpFug=;
+ b=ogpY+VXGRWN7jDnF/BOLMzDlc5D6gQBqn6OCjTpBWGMAZHGnJa87V2J96BqesbzhI2
+ 0aZ3BR4Ylor69gr1H4NX+b8/pbx+K6ya2zl1e8khJerTli4wRoUfVNxV0LMK9V4KNcXa
+ Z7YqZt3U9RlEvnzPSv76qClKdgXrqq1+rdK288Mk5L8D+4E0Qg3kJNzP/os0ABt57c5/
+ AHQceajMYrJS+jFNqT6jSGj6s3DcRIcWaCBC2WD79wDwItU/FsCbqFP1WQlm8KH07GGW
+ kfu2dBl+1F9XCjP6itp/uM1wLpL8Hvm3f2F/DxHZXJK/fJZStgYQ+SBZg9+HqWKrGZNr
+ NCsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768920658; x=1769525458;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=yoACEDNkFlXzoChXLraeiX9PL89XSvoNlQcmvRvpFug=;
+ b=NeCJK5IRa5aZAUKovWqInmI/rv/TAkya7p9k70CTaLcX7Qh+oPUc1yXbh4g/RUA/l6
+ TTeLTVv63nZcYFsAHCB2yEcKZ7xA50gnSOVHUDyCoTroL7AGoAoMI5ioxlul0DmT64EZ
+ zz5TDSg5OM5GmtSXvEs1ivuJZ5Sm7kATnemBrB9j5Qcd6Z28aZ1ecdG7GvYLflkCkBjF
+ w8QrgPo9eXqqj9mxfbMt5YYntumAZ970UELHZFVfa+dcZicl+wOjQ9gGmfAnMacEFm+h
+ BHAKmY/d25V8B2jOsmaCMHvgiz4jZlEmjNC5zPhSMSpeKFDmWEXI0g9IMj7whTZoFdS4
+ G/jQ==
+X-Gm-Message-State: AOJu0Yx5NusxfZCh/I/s1/OBEjgb7x9kqOhejYd6PIQDopRf3cLnYsQB
+ CYf7mSe+L8fYsSw+8YQZfxuvVm4Gn4G25VJ+pfMj0745TGY/u/KQF4aFDdInLFi69Wo1dntyXQY
+ SZ1LCdtvgjFJ49EH2nfU35ZxlX2YZ7Own1b62tQPxhreHivECkANgqN86
+X-Gm-Gg: AY/fxX4YG7LPgcCnVIdEfit+0FVoBC5oc1jgtfnyybGGjZ+6gDGk4nBrW7YuyYDY5up
+ V7hKrzVOwp5giGS6vlcK8yFgSif/+HsGQ7Aw/6JCIGk1cLJfXGweoUpOU4rG5T19OU1X5zdK0FU
+ qADXWaOkUz+ig821rw3J94CC8ZV6esykz0r7tEVcGH1rvN35S7iXc/bvFeAc3VaioI5c8n7tbFC
+ ANGYOOQZI7EJ3fgrCLZ85I9vSXyCyhml9q+ZpxWRkRHvPDvwdpV/wR/udImzYGzmrQtrnaUHnpc
+ c5y4KgggUBUHyrdTxemoixXuDc4MDSeTWRNlHWGHlLinT91I8sGNuTcLusctxys7YcceIJal4JX
+ jiCgPENA5A8NoTK0=
+X-Received: by 2002:a05:600c:8b75:b0:477:9574:d641 with SMTP id
+ 5b1f17b1804b1-4803e7e8531mr31560985e9.22.1768920657857; 
+ Tue, 20 Jan 2026 06:50:57 -0800 (PST)
+X-Received: by 2002:a05:600c:8b75:b0:477:9574:d641 with SMTP id
+ 5b1f17b1804b1-4803e7e8531mr31560775e9.22.1768920657406; 
+ Tue, 20 Jan 2026 06:50:57 -0800 (PST)
+Received: from leonardi-redhat ([176.206.16.134])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-4356997df75sm29995689f8f.29.2026.01.20.06.50.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 Jan 2026 06:50:57 -0800 (PST)
+Date: Tue, 20 Jan 2026 15:50:55 +0100
+From: Luigi Leonardi <leonardi@redhat.com>
+To: Jim MacArthur <jim.macarthur@linaro.org>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: Re: [PATCH v2] docs/system/igvm.rst: Update external links
+Message-ID: <aW-V9HJspxXbQH7K@leonardi-redhat>
+References: <20260119-igvm-documentation-fix-v2-1-b2f6174e3f4f@linaro.org>
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pkrempa@redhat.com;
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260119-igvm-documentation-fix-v2-1-b2f6174e3f4f@linaro.org>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=leonardi@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -73,7 +105,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.087,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,61 +120,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
-X-Spamd-Result: default: False [0.29 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.71 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
 	MAILLIST(-0.20)[mailman];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:jim.macarthur@linaro.org,m:qemu-devel@nongnu.org,m:kraxel@redhat.com,m:sgarzare@redhat.com,m:anisinha@redhat.com,s:lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[leonardi@redhat.com,qemu-devel-bounces@nongnu.org];
+	FORWARDED(0.00)[qemu-devel@nongnu.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
 	DKIM_TRACE(0.00)[redhat.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkrempa@redhat.com,qemu-devel-bounces@nongnu.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_COUNT_FIVE(0.00)[6];
-	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
+	PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[leonardi@redhat.com,qemu-devel-bounces@nongnu.org];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[qemu-devel];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo]
-X-Rspamd-Queue-Id: 347E947B0A
+	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,linaro.org:email,gitlab.com:url,amd.com:url]
+X-Rspamd-Queue-Id: E7C5C47B19
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Peter Krempa <pkrempa@redhat.com>
+On Mon, Jan 19, 2026 at 03:25:43PM +0000, Jim MacArthur wrote:
+>* Fixes link to AMD64 Architecture Programmer's
+>Manual and bumps version to 3.43.
+>* Updates link to buildigvm to new home on GitLab.
+>
+>Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3247
+>Signed-off-by: Jim MacArthur <jim.macarthur@linaro.org>
+>---
+>Fixes broken links for the AMD64 Architecture Programmer's Manual and
+>buildigvm.
+>---
+>Changes in v2:
+>- Changed link to buildigvm as supplied by Stefano Garzarella
+>  <sgarzare@redhat.com>
+>- Link to v1: https://lore.kernel.org/qemu-devel/20251230-igvm-documentation-fix-v1-1-865750a66cc8@linaro.org
+>---
+> docs/system/igvm.rst | 6 +++---
+> 1 file changed, 3 insertions(+), 3 deletions(-)
+>
+>diff --git a/docs/system/igvm.rst b/docs/system/igvm.rst
+>index 79508d9588..9db8ae43d2 100644
+>--- a/docs/system/igvm.rst
+>+++ b/docs/system/igvm.rst
+>@@ -166,8 +166,8 @@ References
+> ----------
+>
+> [1] AMD64 Architecture Programmer's Manual, Volume 2: System Programming
+>-  Rev 3.41
+>-  https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/programmer-references/24593.pdf
+>+  Rev 3.43
+>+  https://docs.amd.com/v/u/en-US/24593_3.43
+>
+> [2] ``buildigvm`` - A tool to build example IGVM files containing OVMF firmware
+>-  https://github.com/roy-hopkins/buildigvm
+>\ No newline at end of file
+>+  https://gitlab.com/qemu-project/buildigvm
+>
+>---
+>base-commit: c1c58cee16380f81f88fbde6b12f247b376839e2
+>change-id: 20251230-igvm-documentation-fix-6a937c2cb9fc
+>
+>Best regards,
+>-- 
+>Jim MacArthur <jim.macarthur@linaro.org>
+>
 
-'hmp_nbd_server_start' uses only the device name from the data returned
-from 'qmp_query_block', thus no backing file information. Use the new
-options to suppress asking for the unused parts to save on resources.
+Thanks!
 
-Signed-off-by: Peter Krempa <pkrempa@redhat.com>
----
- block/monitor/block-hmp-cmds.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/block/monitor/block-hmp-cmds.c b/block/monitor/block-hmp-cmds.c
-index bde25bb588..1fd28d59eb 100644
---- a/block/monitor/block-hmp-cmds.c
-+++ b/block/monitor/block-hmp-cmds.c
-@@ -422,7 +422,7 @@ void hmp_nbd_server_start(Monitor *mon, const QDict *qdict)
-     /* Then try adding all block devices.  If one fails, close all and
-      * exit.
-      */
--    block_list = qmp_query_block(false, false, NULL);
-+    block_list = qmp_query_block(true, true, NULL);
-
-     for (info = block_list; info; info = info->next) {
-         if (!info->value->inserted) {
--- 
-2.52.0
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
 
 
