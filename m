@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E17D3C385
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 10:31:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2632ED3C396
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 10:33:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vi83r-0003eq-Rr; Tue, 20 Jan 2026 04:30:07 -0500
+	id 1vi83t-0003nL-QP; Tue, 20 Jan 2026 04:30:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vi83o-0003aK-3S; Tue, 20 Jan 2026 04:30:04 -0500
+ id 1vi83r-0003hA-G4; Tue, 20 Jan 2026 04:30:07 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vi83m-0005eG-8J; Tue, 20 Jan 2026 04:30:03 -0500
+ id 1vi83o-0005eG-Vq; Tue, 20 Jan 2026 04:30:06 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Tue, 20 Jan
@@ -30,10 +30,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <kane_chen@aspeedtech.com>
-Subject: [PATCH v1 06/11] hw/misc/aspeed_scu: Implement SSP reset and power-on
+Subject: [PATCH v1 07/11] hw/misc/aspeed_scu: Implement TSP reset and power-on
  control via SCU registers
-Date: Tue, 20 Jan 2026 17:29:31 +0800
-Message-ID: <20260120092939.2708302-7-jamin_lin@aspeedtech.com>
+Date: Tue, 20 Jan 2026 17:29:32 +0800
+Message-ID: <20260120092939.2708302-8-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260120092939.2708302-1-jamin_lin@aspeedtech.com>
 References: <20260120092939.2708302-1-jamin_lin@aspeedtech.com>
@@ -65,206 +65,130 @@ From:  Jamin Lin via qemu development <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch implements SSP reset and power control logic in the SCU for AST2700.
-It introduces support for the following behavior:
+This patch implements TSP reset and power control logic in the SCU module
+for AST2700. It introduces support for the following behavior:
 
-1. SSP Reset Trigger (via SCU 0x200):
-   - SSP reset is triggered by writing 1 to bit 30 (RW1S) of SYS_RESET_CTRL_1.
+1. TSP Reset Trigger (via SCU 0x220):
 
-2. SSP Reset State and Source Hold (via SCU 0x120):
-   - Upon reset, bit 8 (RST_RB) is set to indicate the SSP is in reset.
+   - TSP reset is triggered by writing 1 to bit 9 (RW1S) of SYS_RESET_CTRL_2.
+
+2. TSP Reset State and Source Hold (via SCU 0x160):
+
+   - Upon reset, bit 8 (RST_RB) is set to indicate the TSP is in reset.
    - Bit 10 (RST_SRC_RB) is set to indicate the reset was triggered by an external source.
-   - Bit 1 (RST) is a software-controlled bit used to request holding SSP in reset.
+   - Bit 1 (RST) is a software-controlled bit used to request holding TSP in reset.
    - If an external reset source is present and bit 1 is set, bit 9 (RST_HOLD_RB)
-     will also be asserted to indicate the SSP is being held in reset.
+     will also be asserted to indicate the TSP is being held in reset.
    - If bit 1 is cleared, RST_HOLD_RB will be deasserted accordingly.
 
 3. Hold Release and Power-on:
-   - If RST_HOLD_RB is clear (0), SSP is powered on immediately after reset is deasserted.
-   - If RST_HOLD_RB is set (1), the user must write ENABLE (bit 0) to SSP_CTRL_0 to release
-     the hold and power on SSP explicitly.
+
+   - If RST_HOLD_RB is clear (0), TSP is powered on immediately after reset is deasserted.
+   - If RST_HOLD_RB is set (1), the user must write ENABLE (bit 0) to TSP_CTRL_0 to release
+     the hold and power on TSP explicitly.
    - Writing ENABLE (bit 0) is a one-shot operation and will auto-clear after execution.
 
-4. Reset Status Clear (via SCU 0x204):
-   - The reset status can be cleared by writing 1 to bit 30 (RW1C) of SYS_RST_CLR_1,
+4. Reset Status Clear (via SCU 0x224):
+
+   - The reset status can be cleared by writing 1 to bit 9 (RW1C) of SYS_RST_CLR_2,
      which will deassert RST_SRC_RB and potentially trigger power-on if no hold is active.
 
-5. SSP Power Control Logic:
-   - `handle_ssp_tsp_on()` clears RST_SRC_RB and RST_RB (if not held), and invokes
-     `arm_set_cpu_on_and_reset(cpuid)` to power on the SSP core (CPUID 4).
-   - `handle_ssp_tsp_off()` sets RST_RB and RST_SRC_RB; if RST is active, also asserts
-     RST_HOLD_RB and invokes `arm_set_cpu_off(cpuid)`.
+5. TSP Power Control Logic:
 
-6. Register Initialization and Definitions:
-   - Adds SCU register definitions for SSP_CTRL_0 (0x120), SYS_RST_CTRL_1 (0x200),
-     and SYS_RST_CLR_1 (0x204).
-   - Updates the reset values for these registers during SCU initialization.
+   - handle_ssp_tsp_on() clears RST_SRC_RB and RST_RB (if not held), and invokes
+     arm_set_cpu_on_and_reset(cpuid) to power on the TSP core (CPUID 5).
+   - handle_ssp_tsp_off() sets RST_RB and RST_SRC_RB; if RST is active, also asserts
+     RST_HOLD_RB and invokes arm_set_cpu_off(cpuid).
 
 The default values are based on EVB (evaluation board) register dump observations.
-This patch enables proper modeling of SSP lifecycle management across reset,
-hold, and power-on states for the AST2700 SoC.
+TSP reset control shares the same helper functions and register bit layout as SSP,
+with logic selected by cpuid and distinct external reset sources.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/misc/aspeed_scu.c | 107 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 107 insertions(+)
+ hw/misc/aspeed_scu.c | 37 ++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
 
 diff --git a/hw/misc/aspeed_scu.c b/hw/misc/aspeed_scu.c
-index ec373147ab..506a4fa73f 100644
+index 506a4fa73f..6aebdd630f 100644
 --- a/hw/misc/aspeed_scu.c
 +++ b/hw/misc/aspeed_scu.c
-@@ -21,6 +21,7 @@
- #include "qemu/module.h"
- #include "trace.h"
- #include "qemu/units.h"
-+#include "target/arm/arm-powerctl.h"
+@@ -147,6 +147,7 @@
  
- #define TO_REG(offset) ((offset) >> 2)
+ /* SSP TSP */
+ #define AST2700_SCU_SSP_CTRL_0          TO_REG(0x120)
++#define AST2700_SCU_TSP_CTRL_0          TO_REG(0x160)
+ #define AST2700_SSP_TSP_ENABLE          BIT(0)
+ #define AST2700_SSP_TSP_RST             BIT(1)
+ #define AST2700_SSP_TSP_RST_RB          BIT(8)
+@@ -155,6 +156,9 @@
+ #define AST2700_SCU_SYS_RST_CTRL_1      TO_REG(0x200)
+ #define AST2700_SCU_SYS_RST_CLR_1       TO_REG(0x204)
+ #define AST2700_SCU_SYS_RST_SSP         BIT(30)
++#define AST2700_SCU_SYS_RST_CTRL_2      TO_REG(0x220)
++#define AST2700_SCU_SYS_RST_CLR_2       TO_REG(0x224)
++#define AST2700_SCU_SYS_RST_TSP         BIT(9)
  
-@@ -144,6 +145,17 @@
- #define AST2700_HW_STRAP1_SEC2    TO_REG(0x28)
- #define AST2700_HW_STRAP1_SEC3    TO_REG(0x2C)
- 
-+/* SSP TSP */
-+#define AST2700_SCU_SSP_CTRL_0          TO_REG(0x120)
-+#define AST2700_SSP_TSP_ENABLE          BIT(0)
-+#define AST2700_SSP_TSP_RST             BIT(1)
-+#define AST2700_SSP_TSP_RST_RB          BIT(8)
-+#define AST2700_SSP_TSP_RST_HOLD_RB     BIT(9)
-+#define AST2700_SSP_TSP_RST_SRC_RB      BIT(10)
-+#define AST2700_SCU_SYS_RST_CTRL_1      TO_REG(0x200)
-+#define AST2700_SCU_SYS_RST_CLR_1       TO_REG(0x204)
-+#define AST2700_SCU_SYS_RST_SSP         BIT(30)
-+
  #define AST2700_SCU_CLK_SEL_1       TO_REG(0x280)
  #define AST2700_SCU_HPLL_PARAM      TO_REG(0x300)
- #define AST2700_SCU_HPLL_EXT_PARAM  TO_REG(0x304)
-@@ -920,6 +932,35 @@ static void aspeed_2700_scu_dram_remap_alias_init(AspeedSCUState *s)
-     }
- }
- 
-+static void handle_2700_ssp_tsp_on(struct AspeedSCUState *s, int cpuid,
-+                                   int reg)
-+{
-+    uint32_t val = s->regs[reg];
-+
-+    val &= ~AST2700_SSP_TSP_RST_SRC_RB;
-+    if (!(val & AST2700_SSP_TSP_RST_HOLD_RB)) {
-+        val &= ~AST2700_SSP_TSP_RST_RB;
-+        arm_set_cpu_on_and_reset(cpuid);
-+    }
-+
-+    s->regs[reg] = val;
-+}
-+
-+static void handle_2700_ssp_tsp_off(struct AspeedSCUState *s, int cpuid,
-+                                    int reg)
-+{
-+    uint32_t val = s->regs[reg];
-+
-+    val |= AST2700_SSP_TSP_RST_RB;
-+    val |= AST2700_SSP_TSP_RST_SRC_RB;
-+    if (val & AST2700_SSP_TSP_RST) {
-+        val |= AST2700_SSP_TSP_RST_HOLD_RB;
-+    }
-+    arm_set_cpu_off(cpuid);
-+
-+    s->regs[reg] = val;
-+}
-+
- static uint64_t aspeed_ast2700_scu_read(void *opaque, hwaddr offset,
-                                         unsigned size)
- {
-@@ -951,6 +992,9 @@ static void aspeed_ast2700_scu_write(void *opaque, hwaddr offset,
-     int reg = TO_REG(offset);
-     /* Truncate here so bitwise operations below behave as expected */
-     uint32_t data = data64;
-+    uint32_t active;
-+    uint32_t oldval;
-+    int cpuid;
- 
-     if (reg >= ASPEED_AST2700_SCU_NR_REGS) {
-         qemu_log_mask(LOG_GUEST_ERROR,
-@@ -962,6 +1006,63 @@ static void aspeed_ast2700_scu_write(void *opaque, hwaddr offset,
-     trace_aspeed_ast2700_scu_write(offset, size, data);
+@@ -1007,7 +1011,10 @@ static void aspeed_ast2700_scu_write(void *opaque, hwaddr offset,
  
      switch (reg) {
-+    case AST2700_SCU_SSP_CTRL_0:
-+        cpuid = s->ssp_cpuid;
-+        if (cpuid < 0) {
+     case AST2700_SCU_SSP_CTRL_0:
+-        cpuid = s->ssp_cpuid;
++    case AST2700_SCU_TSP_CTRL_0:
++        cpuid = (reg == AST2700_SCU_SSP_CTRL_0) ?
++                s->ssp_cpuid : s->tsp_cpuid;
++
+         if (cpuid < 0) {
+             return;
+         }
+@@ -1063,6 +1070,28 @@ static void aspeed_ast2700_scu_write(void *opaque, hwaddr offset,
+         }
+         s->regs[AST2700_SCU_SYS_RST_CTRL_1] &= ~active;
+         return;
++    case AST2700_SCU_SYS_RST_CTRL_2:
++        if (s->tsp_cpuid < 0) {
 +            return;
 +        }
-+        oldval = s->regs[reg];
-+        data &= 0xff;
-+        active = oldval ^ data;
-+
-+        /*
-+         * If reset bit is being released (1 -> 0) and no other reset source
-+         * is active, clear HOLD_RB and power on the corresponding CPU.
-+         */
-+        if ((active & AST2700_SSP_TSP_RST) && !(data & AST2700_SSP_TSP_RST)) {
-+            s->regs[reg] &= ~AST2700_SSP_TSP_RST_HOLD_RB;
-+            if ((oldval & AST2700_SSP_TSP_RST_RB) &&
-+                !(oldval & AST2700_SSP_TSP_RST_SRC_RB)) {
-+                handle_2700_ssp_tsp_on(s, cpuid, reg);
-+            }
-+        }
-+
-+        /*
-+         * If ENABLE bit is newly set and reset state is ready,
-+         * clear HOLD_RB and power on the corresponding CPU.
-+         */
-+        if ((active & AST2700_SSP_TSP_ENABLE) &&
-+            (oldval & AST2700_SSP_TSP_RST_RB) &&
-+            (oldval & AST2700_SSP_TSP_RST_HOLD_RB) &&
-+            !(oldval & AST2700_SSP_TSP_RST_SRC_RB)) {
-+                s->regs[reg] &= ~AST2700_SSP_TSP_RST_HOLD_RB;
-+                handle_2700_ssp_tsp_on(s, cpuid, reg);
-+        }
-+
-+        /* Auto-clear the ENABLE bit (one-shot behavior) */
-+        data &= ~AST2700_SSP_TSP_ENABLE;
-+        s->regs[reg] = (s->regs[reg] & ~0xff) | (data & 0xff);
-+        return;
-+    case AST2700_SCU_SYS_RST_CTRL_1:
-+        if (s->ssp_cpuid < 0) {
-+            return;
-+        }
-+        if (data & AST2700_SCU_SYS_RST_SSP) {
-+            handle_2700_ssp_tsp_off(s, s->ssp_cpuid, AST2700_SCU_SSP_CTRL_0);
++        data &= 0x00001fff;
++        if (data & AST2700_SCU_SYS_RST_TSP) {
++            handle_2700_ssp_tsp_off(s, s->tsp_cpuid, AST2700_SCU_TSP_CTRL_0);
 +        }
 +        s->regs[reg] |= data;
 +        return;
-+    case AST2700_SCU_SYS_RST_CLR_1:
-+        if (s->ssp_cpuid < 0) {
++    case AST2700_SCU_SYS_RST_CLR_2:
++        if (s->tsp_cpuid < 0) {
 +            return;
 +        }
-+        oldval = s->regs[AST2700_SCU_SYS_RST_CTRL_1];
++        data &= 0x00001fff;
++        oldval = s->regs[AST2700_SCU_SYS_RST_CTRL_2];
 +        active = data & oldval;
-+        if (active & AST2700_SCU_SYS_RST_SSP) {
-+            handle_2700_ssp_tsp_on(s, s->ssp_cpuid, AST2700_SCU_SSP_CTRL_0);
++        if (active & AST2700_SCU_SYS_RST_TSP) {
++            handle_2700_ssp_tsp_on(s, s->tsp_cpuid, AST2700_SCU_TSP_CTRL_0);
 +        }
-+        s->regs[AST2700_SCU_SYS_RST_CTRL_1] &= ~active;
++        s->regs[AST2700_SCU_SYS_RST_CTRL_2] &= ~active;
 +        return;
      default:
          qemu_log_mask(LOG_GUEST_ERROR,
                        "%s: Unhandled write at offset 0x%" HWADDR_PRIx "\n",
-@@ -989,6 +1090,8 @@ static const uint32_t ast2700_a0_resets[ASPEED_AST2700_SCU_NR_REGS] = {
-     [AST2700_HW_STRAP1_SEC1]        = 0x000000FF,
+@@ -1091,7 +1120,9 @@ static const uint32_t ast2700_a0_resets[ASPEED_AST2700_SCU_NR_REGS] = {
      [AST2700_HW_STRAP1_SEC2]        = 0x00000000,
      [AST2700_HW_STRAP1_SEC3]        = 0x1000408F,
-+    [AST2700_SCU_SSP_CTRL_0]        = 0x000007FE,
-+    [AST2700_SCU_SYS_RST_CTRL_1]    = 0xFFC37FDC,
+     [AST2700_SCU_SSP_CTRL_0]        = 0x000007FE,
++    [AST2700_SCU_TSP_CTRL_0]        = 0x000007FE,
+     [AST2700_SCU_SYS_RST_CTRL_1]    = 0xFFC37FDC,
++    [AST2700_SCU_SYS_RST_CTRL_2]    = 0x00001FFF,
      [AST2700_SCU_HPLL_PARAM]        = 0x0000009f,
      [AST2700_SCU_HPLL_EXT_PARAM]    = 0x8000004f,
      [AST2700_SCU_DPLL_PARAM]        = 0x0080009f,
-@@ -1014,6 +1117,10 @@ static void aspeed_ast2700_scu_reset(DeviceState *dev)
-     memcpy(s->regs, asc->resets, asc->nr_regs * 4);
-     s->regs[AST2700_SILICON_REV] = s->silicon_rev;
-     s->regs[AST2700_HW_STRAP1] = s->hw_strap1;
+@@ -1121,6 +1152,10 @@ static void aspeed_ast2700_scu_reset(DeviceState *dev)
+     if (s->ssp_cpuid > 0) {
+         arm_set_cpu_off(s->ssp_cpuid);
+     }
 +
-+    if (s->ssp_cpuid > 0) {
-+        arm_set_cpu_off(s->ssp_cpuid);
++    if (s->tsp_cpuid > 0) {
++        arm_set_cpu_off(s->tsp_cpuid);
 +    }
  }
  
