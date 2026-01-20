@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kIS7G2S8b2kOMQAAu9opvQ
+	id cA6dL368b2kOMQAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:33:24 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:33:50 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49F9A48A0F
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:33:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 727DE48A28
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:33:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viFb2-0007vV-La; Tue, 20 Jan 2026 12:32:52 -0500
+	id 1viFbR-00089k-GL; Tue, 20 Jan 2026 12:33:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1viFax-0007lp-RU
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 12:32:47 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1viFbE-00085b-1d
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 12:33:05 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1viFaw-0004Ey-BQ
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 12:32:47 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1viFbA-0004G2-NL
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 12:33:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768930365;
+ s=mimecast20190719; t=1768930380;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=0kXakt/+Ldv99CnbkW6EqLpjKJ+Pqsv8XBG8EjouJCI=;
- b=A+m5Pt61pb+dfUhCxQZlAOdoX4cpSkGorDzyXa517TxcRR0XEYYl/OMWHR/b1nef2VM3DD
- LvHYVkNQs6IIP55OvHnwaPVNMQx8nqF1xHaOOzEAfaOghuAeABAvQC063BrEttd9ZdH1jR
- X6KULCj3FjaHolm8qsjIM0I5/jfLW+o=
+ bh=kAdCBY/46JJWp8qAOLL5mvW/XijKZTD7McbyxFPfK7c=;
+ b=FQ3Bdu77FP9woIYEkuvvXJuWU6zgsNWsl7/D6QhapxdUyprh2/Bi9sxx+Ab0Cv3RT0O18v
+ hy+aKieUbBncqpc5RvouJPQ1NnbiLW8yAeG4zMeyvSuX6Xm0uH6eIYtLRnihcBFaxmX5CE
+ W+4+GjcptMYSqFcl+GyUvaZ7Dcrxo58=
 Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com
  [74.125.82.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-694-Q-MkwUIsP2G1efTUXh3gdA-1; Tue, 20 Jan 2026 12:32:44 -0500
-X-MC-Unique: Q-MkwUIsP2G1efTUXh3gdA-1
-X-Mimecast-MFC-AGG-ID: Q-MkwUIsP2G1efTUXh3gdA_1768930363
+ us-mta-508-HJzTJmW4M_-R4b2qjtGFVg-1; Tue, 20 Jan 2026 12:32:58 -0500
+X-MC-Unique: HJzTJmW4M_-R4b2qjtGFVg-1
+X-Mimecast-MFC-AGG-ID: HJzTJmW4M_-R4b2qjtGFVg_1768930377
 Received: by mail-dy1-f197.google.com with SMTP id
- 5a478bee46e88-2b6ba50fc34so3319783eec.0
- for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 09:32:43 -0800 (PST)
+ 5a478bee46e88-2b0531e07e3so5171935eec.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 09:32:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768930363; x=1769535163; darn=nongnu.org;
+ d=redhat.com; s=google; t=1768930377; x=1769535177; darn=nongnu.org;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=0kXakt/+Ldv99CnbkW6EqLpjKJ+Pqsv8XBG8EjouJCI=;
- b=bJDp0HVDXqUcmB02ILXP0X+mqTg5KFcSmixiVTNGIt5bWHFpTZqYO7weVrPWkxYDf3
- OKKSOSsL6lP+6LM2WZ8j+1EH5SqAKfTa4EZSYKjM2pyPcPrs6wx4V9Ken+USOo7XaA9r
- XrUrlpsDA3mq33Z+7I054BF+8A1ZdX2Trl/NjIrcjBkLOUgWzxkuMmru2uHaw8OIbM/F
- in/+qqUtw1RNHG00jTbQ/A333MiY7P0lRS/U2D7vi0BLrUxGRSh7L1qvElfeSUbMp+ac
- Hyyykdk3/vPndTtqsVL44rg65p13HAbx5n3xuB6gNYptT4wkDMkYQ400PSnlPYrNg2DO
- rraA==
+ bh=kAdCBY/46JJWp8qAOLL5mvW/XijKZTD7McbyxFPfK7c=;
+ b=bdy2YxyKbiXMmkITjlDPQpMwO+3zg4qgMHgZ2dBh9FuiqDlNFuxyCblY4f6AtQi/Kv
+ mX5y7I4N2XIFF66nEYiSM9V/JfaHILwsG/QOT/90xAlqDlbdr7ncRxMHmVlAAO0PZkFF
+ SDTrgQzsZRFaZEyqqOQolcOjFEgcfN9N3HCF2bsHb8YXAtvxW2EuxPLpUfM5nT62UgG+
+ ZpOs5JxX2D50zibnuM01tGB01M77Dewtpb05kgjKKM6/yGTHkVJJEzgAgN4DpEnOLYkI
+ wCzvudzxfMUmJoavs0fGvwxbvbdspQDJZdQJW5/1BIGBziTgd2vMeuf0NY+XYmJKpTil
+ UmBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768930363; x=1769535163;
+ d=1e100.net; s=20230601; t=1768930377; x=1769535177;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0kXakt/+Ldv99CnbkW6EqLpjKJ+Pqsv8XBG8EjouJCI=;
- b=kEsH9RDphgeVRuZqtpE+g3S0HBiWzKma/mITSCOsfwQA//dALcRSDSL/PWCe108xZ5
- NIkA4uAIj0/ONuwICICdj35KUM2AgYioFABsXnwhU07MQuLNdz44lxzN5Fxp0C92uI0H
- tc8Z5gwE2qXv0hT0cU/euE3ymgsSyQQ0R+O3Ngv0/UV2xvYpiVAwJZHQZTWl7PEMOhNG
- Xt0oS+JImFeZ8vl/WYanhA4VPxusTfwFR+t/eAeyd58WVl4THqm/CWr7/DueKKnO7OyM
- QgwnzK9aZgFlwF+JoZontWn3CwpYLUGqhAKVhS4CXtOWsBpspk8fFSJxL52lmen+eNmT
- tGlA==
-X-Gm-Message-State: AOJu0YyGgsq9a5n5xefq1f/8UCzl6U9MT5G4sKmn9xsUFZMMiZtQUUID
- l17h96Rr+55PeZ34wm3b76uF0cGVTbR4Ab6zq2VuOwyWDA2jG59HqsNMZxfEsw82FmGe7cKU9hC
- kXS1W3uqDAXKsw1QMj1cYsy7OP0PqXO3sP9CT7lAJTaCIfRO9dcprVZWP
-X-Gm-Gg: AZuq6aJFaRZ+rA5IJHb7a8HPLctMC6iwzyWAKBURALZjvlk+IYms0prAITi1lPf4GVk
- fiaV3bZWXi9/xu2tw3/jIJaxMfIbGOM0W/7j1hvb004rA/eqOGc9c81eKLiPCKFJLRVL7kh+xB+
- y+hPuVvllbVQnVOE/FSETC3eEf1d/sM180/xuLm1srRV5bF0GZQ2ONnHwY7/WSSKskJziFsmWzU
- boqKbPIhCyANXIWoIOg4JFNk0XmV+efJW365olw52DHvdowuPGub2WMWyn8ko3TI9QLzy+XZ+4h
- xm3luEj9BoztAQ6B0wJezxcde5oF9rkN9vtvnS/ixeCb049oc0fbeXO9wLDd4HHXMkRz017GfN3
- oblY=
-X-Received: by 2002:a05:7300:3206:b0:2ae:533d:19ee with SMTP id
- 5a478bee46e88-2b6fd7b5e37mr2170997eec.21.1768930361355; 
- Tue, 20 Jan 2026 09:32:41 -0800 (PST)
-X-Received: by 2002:a05:7300:3206:b0:2ae:533d:19ee with SMTP id
- 5a478bee46e88-2b6fd7b5e37mr2170884eec.21.1768930359352; 
- Tue, 20 Jan 2026 09:32:39 -0800 (PST)
+ bh=kAdCBY/46JJWp8qAOLL5mvW/XijKZTD7McbyxFPfK7c=;
+ b=otOgfEyLy1yJzAfENRxWMNOmmZpFa3QGkTaiTbygGweSa+xQj64gaaaR2Z5sTJ7Azm
+ fhaEJe6PN3UxB8hK3hGB4XBu+Dg70DZXKb9T9r9pprIgjnJX7/8wdZFdK0VzTgyPeGjq
+ //PmL7f//gsqMSgOQ8JDLZpE7qKrE2SnBKehcIeGlD3vWXAyuqKID7UdVYbtUgMlMrhB
+ SSxfpOvYeuSZjXgngC6kL/g7vmqXK8Uk0rwWM5pnmv8BQ3piEfNc5eGao+wgzyCitIUW
+ QSlhppkRMR9POQOqw2v53ogDV3/AqzdN8DIjAI/Puhwc8U19SvcEBK5QaNrjvJZQ7I0k
+ zpyQ==
+X-Gm-Message-State: AOJu0Yx2H5NggbjKW6WvWqXsP98U2FMVj/DwlvCTo3IwxowBWmuyXMCs
+ GrjhIIsLq53/3/PrAfwRGmIihZgT1AXMyWYloAJr5yubpZkjKV+hs5dOuVR2GZEY/1Mg3PkBQRw
+ yn28464gLFL5rYJLoMSxozDyE6TosbD67DGWyTseI/sKYrOuZ9xODuGqy
+X-Gm-Gg: AZuq6aJR33ZoRA09PB0qqYk/pKyxjE4WfKkYIHpleWpvxDqj25F3UFyInYgOpjPRfJ3
+ R3U9NQgX6cGA3MdSSF7wP9TTUxtkrIz1yUNefNiQhNqRDwPwg8bXQcQjKzE1W/2S9fPWwzI4DMY
+ XMJ6O7NQGOf7EMQoRGbQmULYS3xAvkFNo6OUaCLZkseS6hyfn6/XalazyBt6oK1NZRaPXYKvbTD
+ 34uxbIIBbIzEJHdttjVmkpi42R7s5hCQPGF0lDTI0RCwSZzTAFZKWV4wGJFqrkNOaHAMRhA1JWW
+ oQvJRiCat05cEliDn2mVBFUKGkr+GLFevYYO4s+Pdulz3kFVF+H8hOWMAhieSHWUZz2bwza8bsP
+ hvvc=
+X-Received: by 2002:a05:693c:2c96:b0:2b6:c03d:9ff0 with SMTP id
+ 5a478bee46e88-2b6fd78dfc2mr1731565eec.22.1768930376405; 
+ Tue, 20 Jan 2026 09:32:56 -0800 (PST)
+X-Received: by 2002:a05:693c:2c96:b0:2b6:c03d:9ff0 with SMTP id
+ 5a478bee46e88-2b6fd78dfc2mr1731531eec.22.1768930375580; 
+ Tue, 20 Jan 2026 09:32:55 -0800 (PST)
 Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- 5a478bee46e88-2b6fba43c3dsm3583255eec.0.2026.01.20.09.32.35
+ 5a478bee46e88-2b70b3c8ea3sm872685eec.22.2026.01.20.09.32.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jan 2026 09:32:39 -0800 (PST)
-Date: Tue, 20 Jan 2026 12:32:31 -0500
+ Tue, 20 Jan 2026 09:32:55 -0800 (PST)
+Date: Tue, 20 Jan 2026 12:32:48 -0500
 From: Peter Xu <peterx@redhat.com>
 To: Lukas Straub <lukasstraub2@web.de>
 Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
@@ -89,15 +89,15 @@ Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
  Zhang Chen <zhangckid@gmail.com>,
  Hailiang Zhang <zhanghailiang@xfusion.com>,
  Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH v2 1/8] MAINTAINERS: Add myself as maintainer for COLO
+Subject: Re: [PATCH v2 2/8] MAINTAINERS: Remove Hailiang Zhang from COLO
  migration framework
-Message-ID: <aW-8L6f-CMu8iMHx@x1.local>
+Message-ID: <aW-8QNQJ3PvBD35r@x1.local>
 References: <20260117-colo_unit_test_multifd-v2-0-ab521777fa51@web.de>
- <20260117-colo_unit_test_multifd-v2-1-ab521777fa51@web.de>
+ <20260117-colo_unit_test_multifd-v2-2-ab521777fa51@web.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260117-colo_unit_test_multifd-v2-1-ab521777fa51@web.de>
+In-Reply-To: <20260117-colo_unit_test_multifd-v2-2-ab521777fa51@web.de>
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -155,12 +155,13 @@ X-Spamd-Result: default: False [-1.21 / 15.00];
 	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,x1.local:mid]
-X-Rspamd-Queue-Id: 49F9A48A0F
+X-Rspamd-Queue-Id: 727DE48A28
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sat, Jan 17, 2026 at 03:09:08PM +0100, Lukas Straub wrote:
-> I am ready to maintain it.
+On Sat, Jan 17, 2026 at 03:09:09PM +0100, Lukas Straub wrote:
+> His last email to the mailing list is from December 2021:
+> https://lore.kernel.org/qemu-devel/20211214075424.6920-1-zhanghailiang@xfusion.com/
 > 
 > Signed-off-by: Lukas Straub <lukasstraub2@web.de>
 
