@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12669D3C384
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 10:31:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26727D3C389
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 10:31:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vi840-0003yM-40; Tue, 20 Jan 2026 04:30:16 -0500
+	id 1vi84R-000442-DC; Tue, 20 Jan 2026 04:30:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vi83w-0003ty-Pp; Tue, 20 Jan 2026 04:30:12 -0500
+ id 1vi83z-0003z8-Ee; Tue, 20 Jan 2026 04:30:15 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vi83v-0005eG-5B; Tue, 20 Jan 2026 04:30:12 -0500
+ id 1vi83x-0005eG-JN; Tue, 20 Jan 2026 04:30:15 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Tue, 20 Jan
@@ -30,10 +30,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <kane_chen@aspeedtech.com>
-Subject: [PATCH v1 09/11] hw/misc/aspeed_scu: Add SCU support for TSP SDRAM
- remap
-Date: Tue, 20 Jan 2026 17:29:34 +0800
-Message-ID: <20260120092939.2708302-10-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 10/11] tests/functional/aarch64/test_aspeed_ast2700fc: Boot
+ SSP/TSP via PSP and load binaries from DRAM
+Date: Tue, 20 Jan 2026 17:29:35 +0800
+Message-ID: <20260120092939.2708302-11-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260120092939.2708302-1-jamin_lin@aspeedtech.com>
 References: <20260120092939.2708302-1-jamin_lin@aspeedtech.com>
@@ -65,85 +65,117 @@ From:  Jamin Lin via qemu development <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit adds SCU register support for TSP SDRAM remap control and runtime
-activation. Unlike SSP, the TSP does not support configurable target address remapping
-through SCU registers. It only supports setting the PSP DRAM base and size, which
-are then aliased into the TSP-visible SDRAM window.
+SSP and TSP now boot in a powered-off state by default. Enabling them requires
+the PSP (Cortex-A35) to explicitly set SCU control registers at runtime. This
+behavior aligns with real hardware.
 
-coprocessor_sdram_remap[2]: maps PSP DRAM offset 0x42E000000 (size: 32MB) to TSP SDRAM
-      offset 0x0
+Update the AST2700 FC functional test to reflect this behavior by enabling
+SSP and TSP from the U-Boot shell before booting OpenBMC. The test now
+programs the required SCU registers, saves the environment, and boots the
+system so that SSP and TSP are powered on when the PSP starts.
 
-The SCU registers AST2700_SCU_TSP_CTRL_1 and
-AST2700_SCU_TSP_REMAP_SIZE_2 allow runtime reconfiguration of the DRAM base (alias offset)
-and mapping size.
+For the vbootrom test case, these steps are not required because vbootrom
+already performs the necessary initialization. Therefore, the U-Boot shell
+configuration is only applied to the manual loader test flow.
 
-|------------------------------------------|         |----------------------------|
-|               PSP DRAM                   |         |        TSP SDRAM           |
-|------------------------------------------|         |----------------------------|
-| 0x42E0_0000_0 (SCU_168 << 4)             |         | 0x0000_0000                |
-|   remap base                             |------>  |  - fixed target addr       |
-|   size: 32MB    (SCU_194)                |         |                            |
-|------------------------------------------|         |----------------------------|
+Additionally, switch SSP and TSP loading from ELF-based CPU loaders to
+binary images loaded into PSP DRAM at fixed addresses, and remove the use
+of snapshot mode.
+
+Changes include:
+- Add enable_ssp_tsp() to configure SCU registers via U-Boot
+- Remove snapshot option from QEMU command line
+- Load SSP binary at DRAM address 0x42C000000
+- Load TSP binary at DRAM address 0x42E000000
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/misc/aspeed_scu.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ .../aarch64/test_aspeed_ast2700fc.py          | 35 +++++++++++--------
+ 1 file changed, 20 insertions(+), 15 deletions(-)
 
-diff --git a/hw/misc/aspeed_scu.c b/hw/misc/aspeed_scu.c
-index 27591f53c4..69d26df818 100644
---- a/hw/misc/aspeed_scu.c
-+++ b/hw/misc/aspeed_scu.c
-@@ -159,6 +159,8 @@
- #define AST2700_SSP_TSP_RST_RB          BIT(8)
- #define AST2700_SSP_TSP_RST_HOLD_RB     BIT(9)
- #define AST2700_SSP_TSP_RST_SRC_RB      BIT(10)
-+#define AST2700_SCU_TSP_CTRL_1          TO_REG(0x168)
-+#define AST2700_SCU_TSP_REMAP_SIZE_2    TO_REG(0x194)
- #define AST2700_SCU_SYS_RST_CTRL_1      TO_REG(0x200)
- #define AST2700_SCU_SYS_RST_CLR_1       TO_REG(0x204)
- #define AST2700_SCU_SYS_RST_SSP         BIT(30)
-@@ -1088,6 +1090,23 @@ static void aspeed_ast2700_scu_write(void *opaque, hwaddr offset,
-         data &= 0x3fffffff;
-         memory_region_set_size(mr, data);
-         break;
-+    case AST2700_SCU_TSP_CTRL_1:
-+        mr = &s->dram_remap_alias[2];
-+        if (s->tsp_cpuid < 0 || mr == NULL) {
-+            return;
-+        }
-+        data &= 0x7fffffff;
-+        memory_region_set_alias_offset(mr,
-+                                       ((uint64_t) data << 4) & 0x3ffffffff);
-+        break;
-+    case AST2700_SCU_TSP_REMAP_SIZE_2:
-+        mr = &s->dram_remap_alias[2];
-+        if (s->tsp_cpuid < 0 || mr == NULL) {
-+            return;
-+        }
-+        data &= 0x3fffffff;
-+        memory_region_set_size(mr, data);
-+        break;
-     case AST2700_SCU_SYS_RST_CTRL_1:
-         if (s->ssp_cpuid < 0) {
-             return;
-@@ -1165,6 +1184,8 @@ static const uint32_t ast2700_a0_resets[ASPEED_AST2700_SCU_NR_REGS] = {
-     [AST2700_SCU_SSP_REMAP_ADDR_2]  = 0x00000000,
-     [AST2700_SCU_SSP_REMAP_SIZE_2]  = 0x02000000,
-     [AST2700_SCU_TSP_CTRL_0]        = 0x000007FE,
-+    [AST2700_SCU_TSP_CTRL_1]        = 0x42E00000,
-+    [AST2700_SCU_TSP_REMAP_SIZE_2]  = 0x02000000,
-     [AST2700_SCU_SYS_RST_CTRL_1]    = 0xFFC37FDC,
-     [AST2700_SCU_SYS_RST_CTRL_2]    = 0x00001FFF,
-     [AST2700_SCU_HPLL_PARAM]        = 0x0000009f,
-@@ -1205,6 +1226,8 @@ static void aspeed_ast2700_scu_reset(DeviceState *dev)
+diff --git a/tests/functional/aarch64/test_aspeed_ast2700fc.py b/tests/functional/aarch64/test_aspeed_ast2700fc.py
+index 8dbc8f234f..e0fb4890be 100755
+--- a/tests/functional/aarch64/test_aspeed_ast2700fc.py
++++ b/tests/functional/aarch64/test_aspeed_ast2700fc.py
+@@ -9,7 +9,7 @@
+ import os
  
-     if (s->tsp_cpuid > 0) {
-         arm_set_cpu_off(s->tsp_cpuid);
-+        memory_region_set_alias_offset(&s->dram_remap_alias[2], 0x2e000000);
-+        memory_region_set_size(&s->dram_remap_alias[2], 32 * MiB);
-     }
- }
+ from qemu_test import QemuSystemTest, Asset
+-from qemu_test import wait_for_console_pattern
++from qemu_test import wait_for_console_pattern, exec_command
+ from qemu_test import exec_command_and_wait_for_pattern
+ 
+ 
+@@ -23,12 +23,22 @@ def do_test_aarch64_aspeed_sdk_start(self, image):
+         self.vm.add_args('-device', 'e1000e,netdev=net1,bus=pcie.2')
+         self.vm.add_args('-netdev', 'user,id=net1')
+         self.vm.add_args('-drive', 'file=' + image + ',if=mtd,format=raw',
+-                         '-net', 'nic', '-net', 'user', '-snapshot')
++                         '-net', 'nic', '-net', 'user')
+ 
+         self.vm.launch()
+ 
++    def enable_ssp_tsp(self):
++        wait_for_console_pattern(self, 'Hit any key to stop autoboot')
++        exec_command_and_wait_for_pattern(self, '\012', '=>')
++        exec_command_and_wait_for_pattern(self,
++            'setenv bootcmd "mw 12c02204 40000000; mw 12c02120 1;'
++            'mw 12c02224 00000200; mw 12c02160 1; run bootspi"', '=>')
++        exec_command_and_wait_for_pattern(self, 'saveenv', 'OK')
++        exec_command(self, 'boot')
++
+     def verify_openbmc_boot_and_login(self, name):
+         wait_for_console_pattern(self, 'U-Boot 2023.10')
++        self.enable_ssp_tsp();
+         wait_for_console_pattern(self, '## Loading kernel from FIT Image')
+         wait_for_console_pattern(self, 'Starting kernel ...')
+ 
+@@ -36,17 +46,6 @@ def verify_openbmc_boot_and_login(self, name):
+         exec_command_and_wait_for_pattern(self, 'root', 'Password:')
+         exec_command_and_wait_for_pattern(self, '0penBmc', f'root@{name}:~#')
+ 
+-    def load_ast2700fc_coprocessor(self, name):
+-        load_elf_list = {
+-            'ssp': self.scratch_file(name, 'zephyr-aspeed-ssp.elf'),
+-            'tsp': self.scratch_file(name, 'zephyr-aspeed-tsp.elf')
+-        }
+-
+-        for cpu_num, key in enumerate(load_elf_list, start=4):
+-            file = load_elf_list[key]
+-            self.vm.add_args('-device',
+-                             f'loader,file={file},cpu-num={cpu_num}')
+-
+     ASSET_SDK_V908_AST2700 = Asset(
+             'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.08/ast2700-default-obmc.tar.gz',
+             'eac3dc409b7ea3cd4b03d4792d3cebd469792ad893cb51e1d15f0fc20bd1e2cd')
+@@ -121,6 +120,14 @@ def start_ast2700fc_test(self, name):
+                 'addr': '0x430080000',
+                 'file': self.scratch_file(name, 'optee',
+                                           'tee-raw.bin')
++            },
++            {
++                'addr': '0x42C000000',
++                'file': self.scratch_file(name, 'zephyr-aspeed-ssp.bin')
++            },
++            {
++                'addr': '0x42E000000',
++                'file': self.scratch_file(name, 'zephyr-aspeed-tsp.bin')
+             }
+         ]
+ 
+@@ -134,13 +141,11 @@ def start_ast2700fc_test(self, name):
+             self.vm.add_args('-device',
+                              f'loader,addr=0x430000000,cpu-num={i}')
+ 
+-        self.load_ast2700fc_coprocessor(name)
+         self.do_test_aarch64_aspeed_sdk_start(
+                 self.scratch_file(name, 'image-bmc'))
+ 
+     def start_ast2700fc_test_vbootrom(self, name):
+         self.vm.add_args('-bios', 'ast27x0_bootrom.bin')
+-        self.load_ast2700fc_coprocessor(name)
+         self.do_test_aarch64_aspeed_sdk_start(
+                 self.scratch_file(name, 'image-bmc'))
  
 -- 
 2.43.0
