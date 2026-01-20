@@ -2,148 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IPBEBTCvb2lBGgAAu9opvQ
+	id iIJCJhO2b2nHMAAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:37:04 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:06:27 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8425247B7A
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:37:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CB0248410
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:06:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viAS7-00050l-0J; Tue, 20 Jan 2026 07:03:20 -0500
+	id 1viAkN-0005jJ-0S; Tue, 20 Jan 2026 07:22:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1viARw-0004yW-1i
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 07:03:08 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1viAje-0005Ls-FC
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 07:21:30 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1viARu-0004I0-BS
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 07:03:07 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1viAjb-0008F8-Lx
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 07:21:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768910584;
+ s=mimecast20190719; t=1768911682;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=vHAz0BJbdAQaWn3tqm5U93G4LyMZwJO1Eh6wuzVHc+s=;
- b=NBMT0aTslsLWmR1jS4t8SMkhFK+0m9YJ6D79BJRso1n2RZxofsUmu6EweY5u8C6MTpoDXa
- STluDPXiA4wPXT5aOvSwiqsh1KFDtVG7FCz0me5Xo1UoDodcJjDAEab4G4TM7iAIiLXKXl
- Kz3O3G0zD/i+VsjfH9cbiOflM9PWCAo=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-626-MGAvz1OQNhOZXdn3vu6xXA-1; Tue, 20 Jan 2026 07:03:02 -0500
-X-MC-Unique: MGAvz1OQNhOZXdn3vu6xXA-1
-X-Mimecast-MFC-AGG-ID: MGAvz1OQNhOZXdn3vu6xXA_1768910582
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-b7cea4b3f15so697814066b.3
- for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 04:03:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768910581; x=1769515381; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=vHAz0BJbdAQaWn3tqm5U93G4LyMZwJO1Eh6wuzVHc+s=;
- b=Xyt0k9e9FmAzgSZEqE/TJRsCeP9ihoXafDy2XJNm3afxCMHaPiSCgkWWE9A+Ej7fDm
- SJo3oKuXLOXwT03T037vO7xfoTpH4grFyg2ha2kh+WuhNWKcXdlVxypZ2No+qaPf69uv
- +OQZUKYqN/FjdTZEd4L+7mlqmDMvDLaTh8+TXSlyjiXuHxnQ0SX30aQVWzpyGSp8m4kv
- XkhFPBd78NIOjsxXPyzFeoXLsvdNSz6vkegSzSZQY92LShrwB0msX775bOqF8bpzdcL2
- Fb93MGsifqZu3nnygjqNRMvilTUJRmo7/CcW2mmMcAzlMnv4cQHKGOGjsj/y4pk9YdEp
- b9jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768910581; x=1769515381;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vHAz0BJbdAQaWn3tqm5U93G4LyMZwJO1Eh6wuzVHc+s=;
- b=XK2ClixAzfDBFBDx5XAkfzgQm+gY+khvCWy5EgJ04NTv4PnCWOow9gP23ge0Xaz7oD
- l0qBo6ORkO8cP3VXo20VJNo888zzDIsUNqrBQ98qpeyN+Wzz3QxLEDgAqy1jqsurGwHr
- toBJbsttPFfo5nwZaNP6JzS0G5UwISGefkqOuWBd0vjxOgYXsG1gfsHogdu5Q69R/P/a
- wxZEYOnYpZ8wXGthMct9eJw4+KUFflwF+QDwe/4DSTTgSm0Rusux2feKj1GVzwhjfN2E
- 6qY7gLYSXfkDRUZs+DplqBCOR5TsWWVvL/aa4lqEEcSI+UMBt73lgbKzbT4OEuU4kfKT
- o1PA==
-X-Gm-Message-State: AOJu0Yzp7scDTpJxusrgKY1pl7/wR0gL+eYTzMeqH3zrwmQCS4ucX8FF
- t/4Zf1+JvtUkPv4eXuPeHTMN5C4FCzydHHLNfkKr8lwf+N3PeCK2zQsbqU3nrK164lqK/SBYLP8
- P5QNBXGJg2bszuAdiRqpSaqu+PUcH+RynJCWEY8x+5qVO39vWxZXKtTGQ
-X-Gm-Gg: AZuq6aI3ItRDhgc9RW8j3MVEBk/+BYwKZUqBD4sCPLe8/K0kj1Uq8Y/6UU4AidOD2dK
- znY8Iuq9gYrwDuB/faRs1iUT6wRjYC3gUdjXtxQ5droRwY7/LxW5o9GXA9qC0XxJr/n9v8lGa7L
- i2n5gqrmy591UeB8NNyQzvsiFp+TZ359mLkdG1V9otenikvsRltzcpzhcKXajG9tOjV03E5okBc
- /2rbUHIjgeRsFo4mPNPeV7FMSOgnTTA2TEGLupTlivrInisRPJ+zm2N7S6lUkfHpMmvM11obv75
- 9ItETlRqkJRPUpjhsvkB+VEKoLLBz12GASTW+AsDyOkdECsCams9BUH3W0sp6uza25J9sJOfRLJ
- u5qbu
-X-Received: by 2002:a17:907:3e12:b0:b87:322d:a8d0 with SMTP id
- a640c23a62f3a-b8792f8b97cmr1299593266b.41.1768910581543; 
- Tue, 20 Jan 2026 04:03:01 -0800 (PST)
-X-Received: by 2002:a17:907:3e12:b0:b87:322d:a8d0 with SMTP id
- a640c23a62f3a-b8792f8b97cmr1299591366b.41.1768910581140; 
- Tue, 20 Jan 2026 04:03:01 -0800 (PST)
-Received: from [192.168.0.9] ([47.64.113.5]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b8795168c7bsm1455074366b.20.2026.01.20.04.02.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jan 2026 04:03:00 -0800 (PST)
-Message-ID: <35b3750b-31ab-4120-8edd-74aa1ae5f0bf@redhat.com>
-Date: Tue, 20 Jan 2026 13:02:59 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] configure: Remove duplicated entry of --gdb in the help
- text
-To: Michael Tokarev <mjt@tls.msk.ru>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-trivial@nongnu.org, gustavo.romero@linaro.org
-References: <20260114155355.82096-1-thuth@redhat.com>
- <878qe0jfgs.fsf@draig.linaro.org>
- <bc463c63-ec0c-4666-a9ed-7c53e02a24c4@tls.msk.ru>
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ShMc2XHbUAPIbnNN5HY4lv4NPM3nDKydBPkK/9xe5Zg=;
+ b=UW/574At3lZU/o4QyW+ayzC6kWX28fvGWTSYGQAbAreDJR2FOBHK+Rt0Qbys6EcCC66S2E
+ 5wi/CcjfNu2/b5lDzOT19Fo3DBlbiZ583XnvikLqwQ2m+4WFDHEP9xiEBLgdbkdcfqYUWf
+ k5GuH9INUsSJ2oK7hXFLBNFJxp4JKVI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-442-zrtLTfGNPN-r8amCIVfXZg-1; Tue,
+ 20 Jan 2026 07:21:16 -0500
+X-MC-Unique: zrtLTfGNPN-r8amCIVfXZg-1
+X-Mimecast-MFC-AGG-ID: zrtLTfGNPN-r8amCIVfXZg_1768911675
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EF10F18005A7; Tue, 20 Jan 2026 12:21:14 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.45.226.98])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id D8A1B30001A2; Tue, 20 Jan 2026 12:21:10 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <bc463c63-ec0c-4666-a9ed-7c53e02a24c4@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+ qemu-arm@nongnu.org
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-devel@nongnu.org
+Subject: [PATCH] hw/arm: Move the "arm-cpu" compat settings out of
+ hw/core/machine.c
+Date: Tue, 20 Jan 2026 13:21:08 +0100
+Message-ID: <20260120122108.131708-1-thuth@redhat.com>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -168,62 +85,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
-X-Spamd-Result: default: False [-1.21 / 15.00];
+X-Spamd-Result: default: False [1.79 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.20)[mailman];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:mjt@tls.msk.ru,m:alex.bennee@linaro.org,m:qemu-devel@nongnu.org,m:pbonzini@redhat.com,m:qemu-trivial@nongnu.org,m:gustavo.romero@linaro.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:peter.maydell@linaro.org,m:philmd@linaro.org,m:wangyanan55@huawei.com,m:zhao1.liu@intel.com,m:qemu-arm@nongnu.org,m:eduardo@habkost.net,m:marcel.apfelbaum@gmail.com,m:qemu-devel@nongnu.org,m:marcelapfelbaum@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[thuth@redhat.com,qemu-devel-bounces@nongnu.org];
 	FORWARDED(0.00)[qemu-devel@nongnu.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thuth@redhat.com,qemu-devel-bounces@nongnu.org];
+	FREEMAIL_CC(0.00)[habkost.net,gmail.com,nongnu.org];
 	DKIM_TRACE(0.00)[redhat.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[qemu-devel];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[thuth@redhat.com,qemu-devel-bounces@nongnu.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TAGGED_RCPT(0.00)[qemu-devel];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo]
-X-Rspamd-Queue-Id: 8425247B7A
+X-Rspamd-Queue-Id: 4CB0248410
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 20/01/2026 12.31, Michael Tokarev wrote:
-> On 1/14/26 20:01, Alex Bennée wrote:
->> Thomas Huth <thuth@redhat.com> writes:
->>
->>> From: Thomas Huth <thuth@redhat.com>
->>>
->>> Since --gdb has recently been added to meson_options.txt, the help
->>> text shows up twice in the output of "./configure --help":
->>>
->>>   $ ./configure --help | grep gdb
->>>     --gdb=GDB-path           gdb to use for gdbstub tests [/usr/bin/gdb]
->>>     --gdb=VALUE              Path to GDB
->>
->> It's a shame to loose the default value - is there anyway for the meson
->> version to show the auto-detected value?
-> 
-> Maybe we can drop this line from meson but keep it in ./configure?
+From: Thomas Huth <thuth@redhat.com>
 
-The meson stuff is generated automatically, so no clue how that could be 
-done in a nice way?
+The hw_compat_* arrays in hw/core/machine.c should be used for generic
+compat settings that might affect all (or at least multiple) machines.
+Target specific settings should rather go into the target specific
+source files instead. For arm/aarch64, the virt machine is the only
+one that cares about compat settings, so move the "arm-cpu" related
+switches to hw/arm/virt.c now.
 
-  Thomas
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ hw/arm/virt.c     | 10 ++++++++++
+ hw/core/machine.c |  2 --
+ 2 files changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 4badc1a7348..99040e08f6a 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -3571,8 +3571,13 @@ DEFINE_VIRT_MACHINE(10, 0)
+ 
+ static void virt_machine_9_2_options(MachineClass *mc)
+ {
++    static GlobalProperty compat_9_2[] = {
++        { "arm-cpu", "backcompat-pauth-default-use-qarma5", "true"},
++    };
++
+     virt_machine_10_0_options(mc);
+     compat_props_add(mc->compat_props, hw_compat_9_2, hw_compat_9_2_len);
++    compat_props_add(mc->compat_props, compat_9_2, G_N_ELEMENTS(compat_9_2));
+ }
+ DEFINE_VIRT_MACHINE(9, 2)
+ 
+@@ -3589,9 +3594,14 @@ DEFINE_VIRT_MACHINE(9, 1)
+ 
+ static void virt_machine_9_0_options(MachineClass *mc)
+ {
++    static GlobalProperty compat_9_0[] = {
++        { "arm-cpu", "backcompat-cntfrq", "true" },
++    };
++
+     virt_machine_9_1_options(mc);
+     mc->smbios_memory_device_size = 16 * GiB;
+     compat_props_add(mc->compat_props, hw_compat_9_0, hw_compat_9_0_len);
++    compat_props_add(mc->compat_props, compat_9_0, G_N_ELEMENTS(compat_9_0));
+ }
+ DEFINE_VIRT_MACHINE(9, 0)
+ 
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 6411e68856b..1c1de7b5d18 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -59,7 +59,6 @@ GlobalProperty hw_compat_10_0[] = {
+ const size_t hw_compat_10_0_len = G_N_ELEMENTS(hw_compat_10_0);
+ 
+ GlobalProperty hw_compat_9_2[] = {
+-    { "arm-cpu", "backcompat-pauth-default-use-qarma5", "true"},
+     { "virtio-balloon-pci", "vectors", "0" },
+     { "virtio-balloon-pci-transitional", "vectors", "0" },
+     { "virtio-balloon-pci-non-transitional", "vectors", "0" },
+@@ -76,7 +75,6 @@ GlobalProperty hw_compat_9_1[] = {
+ const size_t hw_compat_9_1_len = G_N_ELEMENTS(hw_compat_9_1);
+ 
+ GlobalProperty hw_compat_9_0[] = {
+-    { "arm-cpu", "backcompat-cntfrq", "true" },
+     { "scsi-hd", "migrate-emulated-scsi-request", "false" },
+     { "scsi-cd", "migrate-emulated-scsi-request", "false" },
+     { "vfio-pci", "skip-vsc-check", "false" },
+-- 
+2.52.0
 
 
