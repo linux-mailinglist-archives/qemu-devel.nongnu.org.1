@@ -2,108 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gMyBLIbDb2lsMQAAu9opvQ
+	id yA94KMDDb2lsMQAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:03:50 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:04:48 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296AE49087
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:03:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 518E8490E8
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:04:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viG4b-0006L5-Uw; Tue, 20 Jan 2026 13:03:25 -0500
+	id 1viG5O-0007CA-JT; Tue, 20 Jan 2026 13:04:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1viG4P-0006FH-Qx
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:03:21 -0500
-Received: from mail-yw1-x112b.google.com ([2607:f8b0:4864:20::112b])
+ id 1viG4w-0006bB-Cf
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:03:52 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1viG4O-0000R1-2T
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:03:13 -0500
-Received: by mail-yw1-x112b.google.com with SMTP id
- 00721157ae682-793ae293fadso48865997b3.0
- for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 10:03:11 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768932191; cv=none;
- d=google.com; s=arc-20240605;
- b=PLMTDGxiWOXeUR/XX9296kteUHbZEoUPr63IY0BzMki6dEdv8BOr+P0EecBCyB4ILR
- CHKEGWtclx51hTAJSxVB47e3O9Lyayv2XoK+SlpU5LNxCtzy9Hrjr+MvGQZ1iIFhLcDc
- dNlG/IPxDtEhPp64C+qrpYNNeXmxr6Ibw1ACfD8D3YJGnijZLrwEjWbcKxNkggBC9ysM
- 268g0L75+MH/8sjHwE+SqEvgrWiIhsvNUKAyuMBQDX89QzRCz3nOHHz6u4UenGuz04It
- KWtC/ch9iSkKs5lXazvGH/fEF6ZiqCQgCmy8m10lQG5sYdl0bCuiVoH2QmdNL0+OfYEH
- PyVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
- s=arc-20240605; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:dkim-signature;
- bh=NDi/W0I+/+kW+XukCQLUwooPVxYe/yxhyjh9j/z90ig=;
- fh=h5XwtwbFZRZ1FUOtZRgdKZteGKilXmRo+GqhpTRH7tM=;
- b=kNfnZpMbPqePAYtEqr5ZoYaQTKQuZE+fQuD6bAxSA+0tWhvBAsxuOK6Uu7hb3HaMk6
- o1bIffk1zpEIK48DKj0ffinhOm83Ut/d2l158gEMARQ0pr5UVfOx8CFGW8gT3DgT4uYx
- DZWW4tXPys3gYlRiwuy2+3NOhfK3bbg5WdmxFxsgmDcRaYnRMPGCfWGcfhiWhOlYKY6U
- EEaLgWUAKfLdsNAqps9ZZPvWCnSdyIaoHKOUwP7NPLJQTz9VuBSgWSoYhBCSUHqGc5NG
- GpbbrxUM20aqoC0dh1QV3JYjRo1Xvpz8x+vMhj5jY/o6heVTtSh/QJdmqWQKKYYNcGQP
- J3Lw==; darn=nongnu.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+ id 1viG4u-0000T8-4r
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:03:46 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-432d2c7dd52so5184390f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 10:03:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768932191; x=1769536991; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=NDi/W0I+/+kW+XukCQLUwooPVxYe/yxhyjh9j/z90ig=;
- b=yTMz9qq1t5fi8wud8fYcwfNd5izhGIMo1HrBSBF69v7o7M1Eg5SomI+FittlOQn5/d
- oMLsau/nDhunAd3ZlxfmOA7w+ycRt4BtAm5gFTkLbZkwr9LzZRPGlq9vbJiAQnsYFNFB
- ktIhIcakKkazO5UgiIo2bAjlj8fq+i4tu9foW/u39wtLkW/OV9dvChM1ixTn/6vWRuSf
- NBU/uLX7Ia0H9PIx162TLr7W7lvckqRMAk6dD3VGSxHoaeUH5/RiS6wYNAAMGSoSwQZU
- sZj6+kQCVr7lzRoEfjtEvdas1j/A6dwZ6NrBZIrpRtKTXNXSYq/HhwPlo9q70dOj/Om0
- IFuA==
+ d=linaro.org; s=google; t=1768932223; x=1769537023; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ObhW9j7iVZMnL/DYXgdUoxnMKmIHFreb1e5ON17wdqw=;
+ b=wy/1oUeWbCVCqnd1xtFdhH44aUZV3aucseai9wiuMsSjHxkzPvJPiMEybKmbGV1tr5
+ qfIztmlY1GLht78ZfbIgd3Q212+LY3U7kgeNVAYDRE+rwIyMO3ojYslcb7f/tgNq2HHL
+ irVKRZCkqUkLRpVYHIXPYWVFxUQDoSXyJU7gIz2AGCp2Zyk09y1/dSchBBzZCTLtG52g
+ SSPsfXUYi21iel9a6td3ts+eoqTILWZECWft5pwvhhTIzrqWLXaWZ1d4KxPEKl/h39oR
+ H2Y6u3sxWOT96LvyWiINgUEEfaaj9MOgtaAMZzGid4FmN7g6d/OQeADW6ZgJKWlC/g6d
+ Ldmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768932191; x=1769536991;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=1e100.net; s=20230601; t=1768932223; x=1769537023;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NDi/W0I+/+kW+XukCQLUwooPVxYe/yxhyjh9j/z90ig=;
- b=o/i5psmFLQ6HYy4xD5CT5+aep9xdtE3nMGaZHZBIf1YN7wNYlPT1uxNIIoI28Zdg+K
- CdeZ/8M6aXFhctw+r8dmwe9OKyq4nLZk6HjzSGbAm49DM8gbpPtF5UtJbJ7wCp26viPx
- DHJMFKcLdmjwTmFl7Oc1fgYSVshVUmwy0yZDk58wODtovw22fPEeONYDWHiEV6apkxzx
- ycr2uhZOfSHOM+jB6X51r0QeBwJF/noRZv2JO1KwZXsIszUS++tuB2KNGt21O5UN87E6
- SnCwk8SxLemQwR2mTpbW7giz7MkIYViCiIMFfao5w5I2YKX1cc02LjbIAp8PRZdpADWN
- AtbA==
-X-Gm-Message-State: AOJu0YxdB+Ot7B0BtVjzKbGxkodvVwRUenWljMXJBuvQ6HaTkyfuuumv
- JZVMz1iiDRwDnym9UTiMj8y6Ig5oo/TugAm2bsiQ9qfDBT+E5Gp63T4QjehDFwRPxCw4nGa84Eg
- b4AWPORY5+FaJeTlKUEeBTxMNATrS4QlmJJ55HEH8jg==
-X-Gm-Gg: AZuq6aK6w/uDDkkc4GnXnL3t3+74MGCWN0g86JUEHwQxbPwKo/YJVdZzWItO8WzLdxg
- HwIA1qcwYkIMko05NuFq0wgzKRg5d1BQXkl5lAaX/wgdYdPBz5ZO+LS9YHjX7Hok/7n2JBI/9p2
- tJnJYsyMpD8P/X4pP6UV1l/OBf/8AApZF3FnNqmNUfs5txG3kSNWN1wbUCb9g4y7g9XVWv4+PhM
- E0lZ/LK/MC6zQodCRY90KxWmCu/mvWZWhvjJhFPnpONRHysleAcQVFujZhvaSxwmrRI9Q==
-X-Received: by 2002:a05:690c:5:b0:78f:a6e7:76fc with SMTP id
- 00721157ae682-793c671d131mr116039317b3.24.1768932189149; Tue, 20 Jan 2026
- 10:03:09 -0800 (PST)
-MIME-Version: 1.0
-References: <20260116135235.38092-1-mohamed@unpredictable.fr>
- <20260116135235.38092-5-mohamed@unpredictable.fr>
-In-Reply-To: <20260116135235.38092-5-mohamed@unpredictable.fr>
+ bh=ObhW9j7iVZMnL/DYXgdUoxnMKmIHFreb1e5ON17wdqw=;
+ b=Aytd6FSMQ8XDS0o34yQUJ6uwWyUA6tKYVqscsoWK+ch33p+/13SjcJqvtPw+6+RPqq
+ DKX32QgQufcdvA7iD+T6MbgEiAELQydCrdITyCCO6/TJDTTD2X1MRXhmwRWzT+SYQD0+
+ +Fo/OrLMgOf2tKx68ZAHWJPxFg3fwfzK7S2zGeeGXdkBbBgLs2X+SSYPEioBt3Y9UTDP
+ stCrUlp7k7kSTtRQ0HKvH+xAeu3rASB/aJXjiWk07QJ8FshIvqGVYic+CZzqFN1eHDrD
+ lG6FwZzxMRmbys/PA33g32Mwz0D1sajEcRWgfIgaVDx9iV5E1G/H6x4UyybtxnnnM5gu
+ MjtQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVVKP8iQm2GDQRFZOVe9ujow4wBfZNJ57OyaeOg43wZKvFqjk9Tz8H/U1L9Nw4vToghp8u2xXbupbCK@nongnu.org
+X-Gm-Message-State: AOJu0Yylo+oxNRlhrkhg+j8ALRWE7EA9CXVBNxltx+VTLqI+dIhYUpBH
+ SXWA+eHmjPTsWyc4n8DtqGy+D2/WV+8um3JwlTw26q0hEhtPuh0c7Im5aAKIGbOb5mo=
+X-Gm-Gg: AZuq6aK0xVoGLmp6t+GTAEIXrvOEPvKfqPgo1ZiJ1E/Ul5fwLDVwG3vWhHx733z+ACi
+ MeQay79ORce3jvq8I/4iDEbCWKlqSE1SqO3sv+IHGrSFZMboPfOyLZ+XRKMdIUY5xV4k2XSQ9VV
+ IS4M8+HrKPDab7Zj1gqgX+RHg+IfMggpo50nLacaOBiVJqIN6Gg7lZQDY5G8RV8AC9q38Muf8Py
+ gHbZUR7tEdUMFhITwsWX5/9i1zLYOl1AVG+cCLluOF0KPSrnRbEAjsfJnDwxBj5PJMYrueHxoEO
+ fv/E5PyqdiCoCp0QV80BIWMf1gr20vsRFgx5ewjRdU59WMtaUaBdc/YkJuujrEYlqA2mU7fnQ+x
+ ueu02AXCDGxT8873epQzEvUvWGkYz2uCxZdpLoagUkSR8sA2FH6LQW2zsIFOOx5fvylO8lipayM
+ vte0tE8XpPt48KdEHKwKkDt4SM/Uu2QBVA/+ZH00zRE2yhj6KRP5n5
+X-Received: by 2002:a05:6000:26d2:b0:431:1d4:3a71 with SMTP id
+ ffacd0b85a97d-4358fef5f11mr4599198f8f.27.1768932221167; 
+ Tue, 20 Jan 2026 10:03:41 -0800 (PST)
+Received: from mnementh.archaic.org.uk (mnementh.archaic.org.uk.
+ [81.2.115.146]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-4356996cf58sm31310889f8f.22.2026.01.20.10.03.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 Jan 2026 10:03:40 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 20 Jan 2026 18:02:56 +0000
-X-Gm-Features: AZwV_QgsQqZLoqCe6lU68ohPxKsx5IohRR9xjA1qQRHSrALtyUvwTyacYdORsXY
-Message-ID: <CAFEAcA-3P6i_w3b7SaFTn4Zmwnot5vpDs89y+zpjcJ=-mEnP5w@mail.gmail.com>
-Subject: Re: [PATCH v16 04/26] hw/arm: virt: add GICv2m for the case when ITS
- is not available
-To: Mohamed Mediouni <mohamed@unpredictable.fr>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Pedro Barbuda <pbarbuda@microsoft.com>, Eduardo Habkost <eduardo@habkost.net>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>, 
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Shannon Zhao <shannon.zhaosl@gmail.com>, qemu-arm@nongnu.org, 
- Richard Henderson <richard.henderson@linaro.org>, 
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: Mohamed Mediouni <mohamed@unpredictable.fr>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112b;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112b.google.com
+Subject: [RFC PATCH 0/4] hw/arm/virt: Deprecate 'its', introduce 'msi'
+Date: Tue, 20 Jan 2026 18:03:35 +0000
+Message-ID: <20260120180339.1416328-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -125,136 +102,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[google.com:s=arc-20240605:i=1];
+X-Spamd-Result: default: False [0.29 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	MAILLIST(-0.20)[mailman];
 	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
 	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
-	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:mohamed@unpredictable.fr,m:qemu-devel@nongnu.org,m:marcandre.lureau@redhat.com,m:pbarbuda@microsoft.com,m:eduardo@habkost.net,m:marcel.apfelbaum@gmail.com,m:phil@philjordan.eu,m:odaki@rsg.ci.i.u-tokyo.ac.jp,m:philmd@linaro.org,m:shannon.zhaosl@gmail.com,m:qemu-arm@nongnu.org,m:richard.henderson@linaro.org,m:pierrick.bouvier@linaro.org,m:marcelapfelbaum@gmail.com,m:shannonzhaosl@gmail.com,s:lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[qemu-devel@nongnu.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[peter.maydell@linaro.org,qemu-devel-bounces@nongnu.org];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[peter.maydell@linaro.org,qemu-devel-bounces@nongnu.org];
-	FREEMAIL_CC(0.00)[nongnu.org,redhat.com,microsoft.com,habkost.net,gmail.com,philjordan.eu,rsg.ci.i.u-tokyo.ac.jp,linaro.org];
-	TAGGED_RCPT(0.00)[qemu-devel];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
-	DKIM_TRACE(0.00)[linaro.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,linaro.org:email,linaro.org:dkim]
-X-Rspamd-Queue-Id: 296AE49087
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:qemu-arm@nongnu.org,m:qemu-devel@nongnu.org,m:mohamed@unpredictable.fr,m:pierrick.bouvier@linaro.org,s:lists@lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER(0.00)[peter.maydell@linaro.org,qemu-devel-bounces@nongnu.org];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[qemu-devel@nongnu.org];
+	DKIM_TRACE(0.00)[linaro.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[peter.maydell@linaro.org,qemu-devel-bounces@nongnu.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
+	TAGGED_RCPT(0.00)[qemu-devel];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:mid,linaro.org:dkim,lists.gnu.org:rdns,lists.gnu.org:helo]
+X-Rspamd-Queue-Id: 518E8490E8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, 16 Jan 2026 at 13:52, Mohamed Mediouni <mohamed@unpredictable.fr> wrote:
->
-> On Hypervisor.framework for macOS and WHPX for Windows, the provided environment is a GICv3 without ITS.
->
-> As such, support a GICv3 w/ GICv2m for that scenario.
->
-> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
->
-> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> ---
->  hw/arm/virt-acpi-build.c | 5 ++++-
->  hw/arm/virt.c            | 8 ++++++++
->  include/hw/arm/virt.h    | 2 ++
->  3 files changed, 14 insertions(+), 1 deletion(-)
->
-> diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-> index 03b4342574..40ea6b6dd5 100644
-> --- a/hw/arm/virt-acpi-build.c
-> +++ b/hw/arm/virt-acpi-build.c
-> @@ -960,7 +960,10 @@ build_madt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
->              build_append_int_noprefix(table_data, memmap[VIRT_GIC_ITS].base, 8);
->              build_append_int_noprefix(table_data, 0, 4);    /* Reserved */
->          }
-> -    } else {
-> +    }
-> +
-> +    if (!(vms->gic_version != VIRT_GIC_VERSION_2 && vms->its)
-> +     && !vms->no_gicv3_with_gicv2m) {
->          const uint16_t spi_base = vms->irqmap[VIRT_GIC_V2M] + ARM_SPI_BASE;
->
->          /* 5.2.12.16 GIC MSI Frame Structure */
-> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> index 4badc1a734..275f26d439 100644
-> --- a/hw/arm/virt.c
-> +++ b/hw/arm/virt.c
-> @@ -959,6 +959,8 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
->
->      if (vms->gic_version != VIRT_GIC_VERSION_2 && vms->its) {
->          create_its(vms);
-> +    } else if (vms->gic_version != VIRT_GIC_VERSION_2 && !vms->no_gicv3_with_gicv2m) {
-> +        create_v2m(vms);
->      } else if (vms->gic_version == VIRT_GIC_VERSION_2) {
->          create_v2m(vms);
->      }
-> @@ -2449,6 +2451,8 @@ static void machvirt_init(MachineState *machine)
->      vms->ns_el2_virt_timer_irq = ns_el2_virt_timer_present() &&
->          !vmc->no_ns_el2_virt_timer_irq;
->
-> +    vms->no_gicv3_with_gicv2m = vmc->no_gicv3_with_gicv2m;
-> +
->      fdt_add_timer_nodes(vms);
->      fdt_add_cpu_nodes(vms);
->
-> @@ -3497,6 +3501,7 @@ static void virt_instance_init(Object *obj)
->      vms->its = true;
->      /* Allow ITS emulation if the machine version supports it */
->      vms->tcg_its = !vmc->no_tcg_its;
-> +    vms->no_gicv3_with_gicv2m = false;
->
->      /* Default disallows iommu instantiation */
->      vms->iommu = VIRT_IOMMU_NONE;
-> @@ -3549,7 +3554,10 @@ DEFINE_VIRT_MACHINE_AS_LATEST(11, 0)
->
->  static void virt_machine_10_2_options(MachineClass *mc)
->  {
-> +    VirtMachineClass *vmc = VIRT_MACHINE_CLASS(OBJECT_CLASS(mc));
-> +
->      virt_machine_11_0_options(mc);
-> +    vmc->no_gicv3_with_gicv2m = true;
->      compat_props_add(mc->compat_props, hw_compat_10_2, hw_compat_10_2_len);
->  }
-
-The MSI controller selection logic is already pretty confusing,
-and this is making it more complicated. I don't think we should
-need this machine back compatibility, because currently there
-is no setup where you can have a GICv3 that doesn't also have
-either an ITS or no MSI controller.
-
-I think also that we can make the code cleaner if we:
-(1) clean the existing "pick an MSI controller" logic up
-so that we do it up front, the same way we do "pick a GIC
-version"
-(2) add the new "msi" property and deprecate the old "its" one
-(3) then add the gicv3-with-gicv2m-on-hvf logic to that
-
-I see this series adds an "msi" property, but it also
-makes the old "its" property an OnOffAuto -- do we really
-need both ?
-
-I wrote some code for this this afternoon before I realised
-that you'd done the "msi" property in that series (so the
-duplication with your work is my fault). I'll send them
-out as an RFC to give an idea of what I have in mind.
+This patchset is an RFC sketch of cleaning up the logic that we
+have for selecting the MSI controller, so we can add the handling
+for "hvf and whpx give you a GICv3 without an ITS" in a
+hopefully clear manner.
 
 thanks
 -- PMM
+
+Peter Maydell (4):
+  hw/arm/virt: Clean up MSI controller selection logic
+  hw/arm/virt: Don't use vms->tcg_its in create_gic()
+  hw/arm/virt: Drop VirtMachineState::tcg_its
+  hw/arm/virt: new "msi" property
+
+ docs/system/arm/virt.rst |  21 +++++++-
+ hw/arm/virt.c            | 108 +++++++++++++++++++++++++++++++++------
+ include/hw/arm/virt.h    |   2 +-
+ 3 files changed, 114 insertions(+), 17 deletions(-)
+
+-- 
+2.47.3
+
 
