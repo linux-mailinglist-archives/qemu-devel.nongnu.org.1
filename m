@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YImhFV/Mb2mgMQAAu9opvQ
+	id ADtdHI3Mb2mgMQAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:41:35 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:42:21 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6C3349A3D
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:41:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E89D49AC5
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:42:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viGfB-0001rm-KI; Tue, 20 Jan 2026 13:41:13 -0500
+	id 1viGfF-00020p-Th; Tue, 20 Jan 2026 13:41:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGef-0001aJ-1N
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:40:42 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGek-0001lJ-A0
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:40:52 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGec-0006L6-7K
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:40:39 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-43596062728so79635f8f.1
- for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 10:40:37 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGei-0006Lw-SQ
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:40:46 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-47ee301a06aso54007955e9.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 10:40:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768934436; x=1769539236; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768934443; x=1769539243; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=g2CdOzO4uzMuyL3eUd9Xq4lX5VlpfqF563IVR0wUOKc=;
- b=lRw8RMRtX73qGmiqzipqTRqiUaP1040I3S7WintEseBY+t+twHDvmgiHRnfljXLyeW
- pomnMRGXZrSGBSELNFpiTGIafs/pRh+bru/hgjpUb8kS81FHHCkSz9sVFoGrMGax+PZc
- xtLU+FwGbI0B27JoeDln1AP/nlUsxQtHvRDiESHyhhY6K/7a9ChqyDr03Pi4+xzmWSM5
- ZFsAtxUE6vmsUMHC13eW0yU0NeqrflETit0DF1qI/IQ58oklsRd57v7fAJYGAUWjE13k
- N7F191Y5RRWiDFxVUr8hHckEYSYNY9orETbdjnsPKReWNVMsgqK2UJZJB0sYUlpWpbbZ
- /VZg==
+ :reply-to; bh=8/8EVFYZXMFuk6VWmUP64vs2hU05CO6vz8Wwm+fVrOk=;
+ b=TBsA9neE0MQGzM2TKRc+CzVvRRwtKirrmKxato5zKdpXv4JsD3VnxfwMbsOEWs4c3n
+ yhto7VqYOmT359PI9N2K23/sb2po1CHdRtzV8ukixC+0mEjExyW+Mvg52bxkZnOWlx4L
+ kwx16Ocyq24j+qzlKHqWJjp3xdbclggdM+/tFuLdYm6ODAvj7vQRrT+IQgfrNEb1RKGu
+ ttunH7HiT4qw1zVSo+bfngtOGFMUi8gARzJciOrjcxm4b9HyHJiXK9wo1hDoBwj9w6Wi
+ SqXcWzwex2wIQQiLY7EAkgQlGEui+l9PySGGfX3uJGzrtdc/lLYqpKnGoIGx+OeCOfQk
+ dEig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768934436; x=1769539236;
+ d=1e100.net; s=20230601; t=1768934443; x=1769539243;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=g2CdOzO4uzMuyL3eUd9Xq4lX5VlpfqF563IVR0wUOKc=;
- b=F5Xih8dJJtIh/SB1HMh/WmuT6FMRMPGs7MUbq7GDtN2oErneAug5zUPz4Rqo9HfTco
- kjiNDMYj/3frIOKRzlcqaElCq+YFd9BIMRCIr0aGHMuQ/Q/wW4a62hyHBmCZlnVBBS84
- GnJeSpPP7YUphnQ31Mzz0b1JQQOsRHlXuoyeszpUYCitBxY4q/UCr2KIx1859TsB4J8X
- zeTBYSzhiBWCV5HhRB51FFTxlYhbOm74aeSH2gf0ftruLAZyTAu0HJ1v627OtoNK7Yy7
- 1F/kZgLSy8wwVuw0b2o7jwIU4lroHwEfOZv/ShaVMsJfoMzvFkxXqtXjdff5v8GF5nLn
- Uc9Q==
-X-Gm-Message-State: AOJu0YydPs49Bq+t+E2P/lEsdS35VxE7Lfr6JdBo2v1fjRKycMbWW/Fi
- rHZmN8arJZEYk3LASlP9A1JXU9obBbQJsoxGE00usocavIqvcmBi2Fu7ZsLF/YVJe7m6xzpXqLQ
- yw4muNKk=
-X-Gm-Gg: AZuq6aI3JsuiZ40rxIEgOdBwwponPJSpypvbloX81EM8sx15TVgLsVtBRXBLQcCV1nw
- r/3fe8gcR+nGQq4V9PFFqqkgtsttCj/HQ3vNISFIkBAfxZoqHEKw3pP54fNHyk+KwhExmddX/2f
- 0SK7hEm6vP3EJTnLC/ZtlPAHwgzWXY2OkqB3Jxuj7kP5bSixnWLiz9m5wRKS0eckwFLtmbmcukH
- He+rFVuybTd19Esm9ZzH8VfKPlYcsCE7S1cQlC+/TE56hPFg9DmgVig/lRQzVyxmCx7PjdbTwuL
- wXHgbqgvcDwKd3CIy35xXxcL6j/batoDHkKsUgBsCWyRCOSCfdpwkZCh71CwwvAVDzLfTP7/uFJ
- 8RtRfTqtLPAzhGd+7JTn2aV/i2v/A+klh6tqJVOfRjR2bUHzRIw21jaKyLdwGV2+izJ8ciEP1TX
- bxHyLKAHNXSfmp45TYFG7n57qPrNlelXv8tjPKny7w8L8I9njjuVA4to2wSvBY
-X-Received: by 2002:a5d:588c:0:b0:432:c0b8:ee42 with SMTP id
- ffacd0b85a97d-434d7553187mr30023517f8f.11.1768934436253; 
- Tue, 20 Jan 2026 10:40:36 -0800 (PST)
+ bh=8/8EVFYZXMFuk6VWmUP64vs2hU05CO6vz8Wwm+fVrOk=;
+ b=b7iZxolVLf14Cxi+p9CdcCOhmaJuPCMNdhYuHo/gLSnSzdoxg4V5Cqcte7SjLfDW5+
+ uGUgDiYe4AlPjng28DHrmUJNMGqGtdXBUML9Xfww3553mVKrnfTvFGcg/8vQEjVxJVhw
+ uGS0rfXYwIcjsS0ul+XL5pF04/6uin+Q9Zu4ayz2Zhx6wSfBFJ/XWtQX3gUujGdvv8IX
+ HpY7KODuEJYO9Xc53zJ6/4UKH82CziPVxAhUvmJT7Gi2XUGSLqOPDmiktvQevDVUe9k6
+ JwfO15uY+68LvY/C9PHZFZiglmhWGPhvW6v4+pDYfeTrOirTAGCVDywOcsRzRJ1Bjaay
+ QznQ==
+X-Gm-Message-State: AOJu0YyanjoHtWekqbXxBl1bPLflX+1EOOt0eSUTrqJtQN0nAoxYB7ni
+ 2VnxcR/aojC0SfadeL3EG12kliYjateliff7k6By+J5+KGoXr6vE0u0qJ6B6rcDy2DACalWBkRJ
+ T3mqy68U=
+X-Gm-Gg: AY/fxX4p731rz2Pgsa0dOTUQ5+cnvKt0rTHfxt8EFTyEVF/KrgmA33/26ZR2KVINxsT
+ wXkJZXh7W4bd0HFzNspPCU6kYLQ84DhtoKTWXQKt8nDINksrPZzYPe5oUTDlgRCrSTT3R/hH7FH
+ hYZ25E/bAOoFzjH4DpDMYxAnw5S7nj0wcFXZVp9XZUZGqYc6ZokriWchXlv7uv2zAWyY7GUk6Ye
+ 77SZApd++spNm7GFxg7uGpQwnPHhvV+q4OR7dBUmXXGrjJ9S31NEGw2pJEZ4672tZVUWgqYw1hw
+ Rm5jtICY/72/tawU2hiCsJiS8dtsMcNTRfqFaxHzxfLLnnAoT19j8//2swelHCSf84s6NzAU5J2
+ L+zanJJgzWyhzKCpV7cG7e7OqKqs1IQ49Ibk5HBDkgf20CM2YestuIVegsL6j4YI9FymD+iWkIO
+ FHh0NeEXVrUXz3vc7O67T/YzQEmp7pecrFUvvJUEgxwYLiULGhjzkHB3hjwnVvLKUIA9zE2Lk=
+X-Received: by 2002:a05:600c:1552:b0:47e:e946:3a72 with SMTP id
+ 5b1f17b1804b1-4801eb0e021mr198656835e9.27.1768934443034; 
+ Tue, 20 Jan 2026 10:40:43 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4356997e6dasm31430283f8f.32.2026.01.20.10.40.35
+ 5b1f17b1804b1-4801e8c05c3sm254264795e9.11.2026.01.20.10.40.42
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 20 Jan 2026 10:40:35 -0800 (PST)
+ Tue, 20 Jan 2026 10:40:42 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/29] Revert "hw/sd/sdhci: Rename ESDHC_* defines to USDHC_*"
-Date: Tue, 20 Jan 2026 19:38:46 +0100
-Message-ID: <20260120183902.73845-14-philmd@linaro.org>
+Subject: [PULL 14/29] hw/sd/sdhci: Consolidate eSDHC constants
+Date: Tue, 20 Jan 2026 19:38:47 +0100
+Message-ID: <20260120183902.73845-15-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260120183902.73845-1-philmd@linaro.org>
 References: <20260120183902.73845-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,20 +103,20 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 X-Spamd-Result: default: False [-0.21 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
 	MAILLIST(-0.20)[mailman];
+	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_ONE(0.00)[1];
+	MIME_TRACE(0.00)[0:+];
 	ARC_NA(0.00)[];
 	DKIM_TRACE(0.00)[linaro.org:+];
 	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_ONE(0.00)[1];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[philmd@linaro.org,qemu-devel-bounces@nongnu.org];
 	FROM_HAS_DN(0.00)[];
@@ -125,165 +125,74 @@ X-Spamd-Result: default: False [-0.21 / 15.00];
 	TAGGED_RCPT(0.00)[qemu-devel];
 	PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bme.hu:email,linaro.org:email,linaro.org:dkim,linaro.org:mid,lists.gnu.org:rdns,lists.gnu.org:helo,i.mx:url]
-X-Rspamd-Queue-Id: C6C3349A3D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linaro.org:dkim,linaro.org:mid,lists.gnu.org:rdns,lists.gnu.org:helo,bme.hu:email]
+X-Rspamd-Queue-Id: 2E89D49AC5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-This reverts commit 1e76667f7adf48c6c3596aaa26b8886b57b8498d.
-
-Unaware that the constants were named after Linux and U-Boot code,
-commit 1e76667f7adf ("hw/sd/sdhci: Rename ESDHC_* defines to USDHC_*")
-changed the naming to be consistent with the function names. Fix the
-constant naming to be consistent with Linux and U-Boot again. In the
-next step, the function names will be renamed according to Linux and
-U-Boot code as well.
+Drop the "IMX_" part of the names since these are actually {E,U}SDHC
+specific and apply for PowerPC-based SoCs as well. While at it
+consolidate all ESDHC constants into the ESDHC section.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
-Message-ID: <20260112145418.220506-6-shentey@gmail.com>
+Message-ID: <20260112145418.220506-7-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sd/sdhci.c | 66 +++++++++++++++++++++++++--------------------------
- 1 file changed, 33 insertions(+), 33 deletions(-)
+ hw/sd/sdhci-internal.h | 1 -
+ hw/sd/sdhci.c          | 9 +++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
+diff --git a/hw/sd/sdhci-internal.h b/hw/sd/sdhci-internal.h
+index 3e81821dd1e..f24532eed28 100644
+--- a/hw/sd/sdhci-internal.h
++++ b/hw/sd/sdhci-internal.h
+@@ -75,7 +75,6 @@
+ #define SDHC_CMD_INHIBIT               0x00000001
+ #define SDHC_DATA_INHIBIT              0x00000002
+ #define SDHC_DAT_LINE_ACTIVE           0x00000004
+-#define SDHC_IMX_CLOCK_GATE_OFF        0x00000080
+ #define SDHC_DOING_WRITE               0x00000100
+ #define SDHC_DOING_READ                0x00000200
+ #define SDHC_SPACE_AVAILABLE           0x00000400
 diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index 23d8f7cbc8d..ccdfc59af85 100644
+index ccdfc59af85..779f411babe 100644
 --- a/hw/sd/sdhci.c
 +++ b/hw/sd/sdhci.c
-@@ -1639,24 +1639,24 @@ static void sdhci_bus_class_init(ObjectClass *klass, const void *data)
+@@ -1642,7 +1642,7 @@ static void sdhci_bus_class_init(ObjectClass *klass, const void *data)
+ #define ESDHC_MIX_CTRL                  0x48
  
- /* --- qdev i.MX eSDHC --- */
+ #define ESDHC_VENDOR_SPEC               0xc0
+-#define ESDHC_IMX_FRC_SDCLK_ON          (1 << 8)
++#define ESDHC_FRC_SDCLK_ON              (1 << 8)
  
--#define USDHC_MIX_CTRL                  0x48
-+#define ESDHC_MIX_CTRL                  0x48
+ #define ESDHC_DLL_CTRL                  0x60
  
--#define USDHC_VENDOR_SPEC               0xc0
--#define USDHC_IMX_FRC_SDCLK_ON          (1 << 8)
-+#define ESDHC_VENDOR_SPEC               0xc0
-+#define ESDHC_IMX_FRC_SDCLK_ON          (1 << 8)
+@@ -1657,6 +1657,7 @@ static void sdhci_bus_class_init(ObjectClass *klass, const void *data)
+ #define ESDHC_CTRL_8BITBUS              (0x2 << 1)
  
--#define USDHC_DLL_CTRL                  0x60
-+#define ESDHC_DLL_CTRL                  0x60
- 
--#define USDHC_TUNING_CTRL               0xcc
--#define USDHC_TUNE_CTRL_STATUS          0x68
--#define USDHC_WTMK_LVL                  0x44
-+#define ESDHC_TUNING_CTRL               0xcc
-+#define ESDHC_TUNE_CTRL_STATUS          0x68
-+#define ESDHC_WTMK_LVL                  0x44
- 
- /* Undocumented register used by guests working around erratum ERR004536 */
--#define USDHC_UNDOCUMENTED_REG27        0x6c
-+#define ESDHC_UNDOCUMENTED_REG27        0x6c
- 
--#define USDHC_CTRL_4BITBUS              (0x1 << 1)
--#define USDHC_CTRL_8BITBUS              (0x2 << 1)
-+#define ESDHC_CTRL_4BITBUS              (0x1 << 1)
-+#define ESDHC_CTRL_8BITBUS              (0x2 << 1)
- 
--#define USDHC_PRNSTS_SDSTB              (1 << 3)
-+#define ESDHC_PRNSTS_SDSTB              (1 << 3)
+ #define ESDHC_PRNSTS_SDSTB              (1 << 3)
++#define ESDHC_PRNSTS_CLOCK_GATE_OFF     BIT(7)
  
  static uint64_t usdhc_read(void *opaque, hwaddr offset, unsigned size)
  {
-@@ -1677,11 +1677,11 @@ static uint64_t usdhc_read(void *opaque, hwaddr offset, unsigned size)
-         hostctl1 = SDHC_DMA_TYPE(s->hostctl1) << (8 - 3);
+@@ -1731,10 +1732,10 @@ usdhc_write(void *opaque, hwaddr offset, uint64_t val, unsigned size)
  
-         if (s->hostctl1 & SDHC_CTRL_8BITBUS) {
--            hostctl1 |= USDHC_CTRL_8BITBUS;
-+            hostctl1 |= ESDHC_CTRL_8BITBUS;
-         }
- 
-         if (s->hostctl1 & SDHC_CTRL_4BITBUS) {
--            hostctl1 |= USDHC_CTRL_4BITBUS;
-+            hostctl1 |= ESDHC_CTRL_4BITBUS;
-         }
- 
-         ret  = hostctl1;
-@@ -1692,21 +1692,21 @@ static uint64_t usdhc_read(void *opaque, hwaddr offset, unsigned size)
- 
-     case SDHC_PRNSTS:
-         /* Add SDSTB (SD Clock Stable) bit to PRNSTS */
--        ret = sdhci_read(opaque, offset, size) & ~USDHC_PRNSTS_SDSTB;
-+        ret = sdhci_read(opaque, offset, size) & ~ESDHC_PRNSTS_SDSTB;
-         if (s->clkcon & SDHC_CLOCK_INT_STABLE) {
--            ret |= USDHC_PRNSTS_SDSTB;
-+            ret |= ESDHC_PRNSTS_SDSTB;
-         }
-         break;
- 
--    case USDHC_VENDOR_SPEC:
-+    case ESDHC_VENDOR_SPEC:
-         ret = s->vendor_spec;
-         break;
--    case USDHC_DLL_CTRL:
--    case USDHC_TUNE_CTRL_STATUS:
--    case USDHC_UNDOCUMENTED_REG27:
--    case USDHC_TUNING_CTRL:
--    case USDHC_MIX_CTRL:
--    case USDHC_WTMK_LVL:
-+    case ESDHC_DLL_CTRL:
-+    case ESDHC_TUNE_CTRL_STATUS:
-+    case ESDHC_UNDOCUMENTED_REG27:
-+    case ESDHC_TUNING_CTRL:
-+    case ESDHC_MIX_CTRL:
-+    case ESDHC_WTMK_LVL:
-         ret = 0;
-         break;
-     }
-@@ -1722,16 +1722,16 @@ usdhc_write(void *opaque, hwaddr offset, uint64_t val, unsigned size)
-     uint32_t value = (uint32_t)val;
- 
-     switch (offset) {
--    case USDHC_DLL_CTRL:
--    case USDHC_TUNE_CTRL_STATUS:
--    case USDHC_UNDOCUMENTED_REG27:
--    case USDHC_TUNING_CTRL:
--    case USDHC_WTMK_LVL:
-+    case ESDHC_DLL_CTRL:
-+    case ESDHC_TUNE_CTRL_STATUS:
-+    case ESDHC_UNDOCUMENTED_REG27:
-+    case ESDHC_TUNING_CTRL:
-+    case ESDHC_WTMK_LVL:
-         break;
- 
--    case USDHC_VENDOR_SPEC:
-+    case ESDHC_VENDOR_SPEC:
+     case ESDHC_VENDOR_SPEC:
          s->vendor_spec = value;
--        if (value & USDHC_IMX_FRC_SDCLK_ON) {
-+        if (value & ESDHC_IMX_FRC_SDCLK_ON) {
-             s->prnsts &= ~SDHC_IMX_CLOCK_GATE_OFF;
+-        if (value & ESDHC_IMX_FRC_SDCLK_ON) {
+-            s->prnsts &= ~SDHC_IMX_CLOCK_GATE_OFF;
++        if (value & ESDHC_FRC_SDCLK_ON) {
++            s->prnsts &= ~ESDHC_PRNSTS_CLOCK_GATE_OFF;
          } else {
-             s->prnsts |= SDHC_IMX_CLOCK_GATE_OFF;
-@@ -1796,12 +1796,12 @@ usdhc_write(void *opaque, hwaddr offset, uint64_t val, unsigned size)
-          * Second, split "Data Transfer Width" from bits 2 and 1 in to
-          * bits 5 and 1
-          */
--        if (value & USDHC_CTRL_8BITBUS) {
-+        if (value & ESDHC_CTRL_8BITBUS) {
-             hostctl1 |= SDHC_CTRL_8BITBUS;
+-            s->prnsts |= SDHC_IMX_CLOCK_GATE_OFF;
++            s->prnsts |= ESDHC_PRNSTS_CLOCK_GATE_OFF;
          }
- 
--        if (value & USDHC_CTRL_4BITBUS) {
--            hostctl1 |= USDHC_CTRL_4BITBUS;
-+        if (value & ESDHC_CTRL_4BITBUS) {
-+            hostctl1 |= ESDHC_CTRL_4BITBUS;
-         }
- 
-         /*
-@@ -1824,7 +1824,7 @@ usdhc_write(void *opaque, hwaddr offset, uint64_t val, unsigned size)
-         sdhci_write(opaque, offset, value, size);
          break;
  
--    case USDHC_MIX_CTRL:
-+    case ESDHC_MIX_CTRL:
-         /*
-          * So, when SD/MMC stack in Linux tries to write to "Transfer
-          * Mode Register", ESDHC i.MX quirk code will translate it
 -- 
 2.52.0
 
