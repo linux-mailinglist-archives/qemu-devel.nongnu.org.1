@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yA94KMDDb2lsMQAAu9opvQ
+	id IKC6OcDDb2lsMQAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
 	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:04:48 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 518E8490E8
+	by mail.lfdr.de (Postfix) with ESMTPS id AA4EC490EA
 	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:04:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viG5O-0007CA-JT; Tue, 20 Jan 2026 13:04:14 -0500
+	id 1viG5N-000758-MU; Tue, 20 Jan 2026 13:04:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1viG4w-0006bB-Cf
+ id 1viG4w-0006bC-Ea
  for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:03:52 -0500
 Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1viG4u-0000T8-4r
+ id 1viG4u-0000T4-2h
  for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:03:46 -0500
 Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-432d2c7dd52so5184390f8f.2
+ ffacd0b85a97d-43590777e22so539478f8f.3
  for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 10:03:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768932223; x=1769537023; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ObhW9j7iVZMnL/DYXgdUoxnMKmIHFreb1e5ON17wdqw=;
- b=wy/1oUeWbCVCqnd1xtFdhH44aUZV3aucseai9wiuMsSjHxkzPvJPiMEybKmbGV1tr5
- qfIztmlY1GLht78ZfbIgd3Q212+LY3U7kgeNVAYDRE+rwIyMO3ojYslcb7f/tgNq2HHL
- irVKRZCkqUkLRpVYHIXPYWVFxUQDoSXyJU7gIz2AGCp2Zyk09y1/dSchBBzZCTLtG52g
- SSPsfXUYi21iel9a6td3ts+eoqTILWZECWft5pwvhhTIzrqWLXaWZ1d4KxPEKl/h39oR
- H2Y6u3sxWOT96LvyWiINgUEEfaaj9MOgtaAMZzGid4FmN7g6d/OQeADW6ZgJKWlC/g6d
- Ldmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768932223; x=1769537023;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1768932222; x=1769537022; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ObhW9j7iVZMnL/DYXgdUoxnMKmIHFreb1e5ON17wdqw=;
- b=Aytd6FSMQ8XDS0o34yQUJ6uwWyUA6tKYVqscsoWK+ch33p+/13SjcJqvtPw+6+RPqq
- DKX32QgQufcdvA7iD+T6MbgEiAELQydCrdITyCCO6/TJDTTD2X1MRXhmwRWzT+SYQD0+
- +Fo/OrLMgOf2tKx68ZAHWJPxFg3fwfzK7S2zGeeGXdkBbBgLs2X+SSYPEioBt3Y9UTDP
- stCrUlp7k7kSTtRQ0HKvH+xAeu3rASB/aJXjiWk07QJ8FshIvqGVYic+CZzqFN1eHDrD
- lG6FwZzxMRmbys/PA33g32Mwz0D1sajEcRWgfIgaVDx9iV5E1G/H6x4UyybtxnnnM5gu
- MjtQ==
+ bh=jCPqRpQUUqzqFmpPhdz1jQmtLeDG3BlVkhJSsKOlHuY=;
+ b=UbOU/51hS0AOV++3d6AIMK6JVnfRAwVUZf0KTeI5o81yHnvBIxHPYrhZuXdf3hGUaD
+ n62Yj19EHtXvAfKt3coMto3Dehu8VftE6ggd+itI2BUy0k6JURWVlF3tWKAnt3LxSVY0
+ 67aIJ2LUIuKT7tYHdR6hQgPbCcj4LrQO/yHX4dV5Koq6T0ApuX4yHSu8Fot2J1aBAfNH
+ BaVE20E8FtLetOvVU3aD6kMw4zFC+AHCfNIzTUiRO3Fx/pPWfqQ8QsR+7kuCCwP1Di65
+ SDJz+J9XtIxGzoSpKonka1sOB6m3dCSKoHaRPsobQMD1gxuheHKiMCm9W5KpLQvswC0b
+ Cx7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768932222; x=1769537022;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=jCPqRpQUUqzqFmpPhdz1jQmtLeDG3BlVkhJSsKOlHuY=;
+ b=LzOzXv46pMq/S3eWHRFi3VaXRL6X3nJ3Lsc5EfC0T2EK4Wums7gOntmM67ibyKIRC0
+ fYGX1AMGr3OwJ4eLPLNae6dnMynnrhli2ceaQBvTjz4Vp1NINSRCy5P/vH5lXCJkTBra
+ VnQVux3V3gdjhkxMA4pwiz2LLht749ZiEt+7mrfh+qQE749UmBhMqDMyitnnG62Ynvpm
+ L9H4daYc6q5fUVRPyfDLhu+D/7kDKjki2EFY9kpGnyQ4bfDHTSJGiHc4zTpAQC1oitbn
+ RU+t5NoXAgQPv1SRTDjyqszx92rUCDMXRZZU6d1ecj+KNe85hXGCIHgExB1hsh5ugq2y
+ q+dg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVVKP8iQm2GDQRFZOVe9ujow4wBfZNJ57OyaeOg43wZKvFqjk9Tz8H/U1L9Nw4vToghp8u2xXbupbCK@nongnu.org
-X-Gm-Message-State: AOJu0Yylo+oxNRlhrkhg+j8ALRWE7EA9CXVBNxltx+VTLqI+dIhYUpBH
- SXWA+eHmjPTsWyc4n8DtqGy+D2/WV+8um3JwlTw26q0hEhtPuh0c7Im5aAKIGbOb5mo=
-X-Gm-Gg: AZuq6aK0xVoGLmp6t+GTAEIXrvOEPvKfqPgo1ZiJ1E/Ul5fwLDVwG3vWhHx733z+ACi
- MeQay79ORce3jvq8I/4iDEbCWKlqSE1SqO3sv+IHGrSFZMboPfOyLZ+XRKMdIUY5xV4k2XSQ9VV
- IS4M8+HrKPDab7Zj1gqgX+RHg+IfMggpo50nLacaOBiVJqIN6Gg7lZQDY5G8RV8AC9q38Muf8Py
- gHbZUR7tEdUMFhITwsWX5/9i1zLYOl1AVG+cCLluOF0KPSrnRbEAjsfJnDwxBj5PJMYrueHxoEO
- fv/E5PyqdiCoCp0QV80BIWMf1gr20vsRFgx5ewjRdU59WMtaUaBdc/YkJuujrEYlqA2mU7fnQ+x
- ueu02AXCDGxT8873epQzEvUvWGkYz2uCxZdpLoagUkSR8sA2FH6LQW2zsIFOOx5fvylO8lipayM
- vte0tE8XpPt48KdEHKwKkDt4SM/Uu2QBVA/+ZH00zRE2yhj6KRP5n5
-X-Received: by 2002:a05:6000:26d2:b0:431:1d4:3a71 with SMTP id
- ffacd0b85a97d-4358fef5f11mr4599198f8f.27.1768932221167; 
- Tue, 20 Jan 2026 10:03:41 -0800 (PST)
+ AJvYcCWSCIBbje+LHGzt4+xQ9jtuPndk6KhOPgy/uQSohBpfNLJb2jY4x7G0J6QOTgrYGTYO9fHSIZpskzIh@nongnu.org
+X-Gm-Message-State: AOJu0YwS4FUdUkGvdhEOmWeBGwLw03CJPYPciMAon7pdCTT3zZ+MleqJ
+ +3uJNJQt82iXq1pPjOJWqco2LR6CqqONWQ264ZN93qylXeNhlxjxUYDuSv0RflwmPgw=
+X-Gm-Gg: AZuq6aKsf366guWRUGG2+cKWXX0O4127txxO2WNQDFN06KjwdpMpzKRLF9gQNiCPT82
+ cX3HOZ4iVNSluha8n6NYV7TZemZPCdGT9H4y+ksHB/M1SVxcik7r9IW9D3qWvKx2LZNElP+XHWD
+ Sza6sv3C/b2o6CbyH/Cyrqp2yUnGgOt0rW8p6LDaiW9h7sxOuzk4qliQD7bEo6XheWHPSm9+bKa
+ UJa8aNR9ctuwHHgl2j50naQigu51fVvuu1StCiJ4XVvO4UDNBmF+Gu2PuWYDjGDt5gQAs11yi+K
+ cIHJ/v1XyfBVU9W06sgekJw7joUIpSEJSoVzTFdAswBcU8JZ51JyNFA4rg/u9KJD8dyz6vRx9Qk
+ mZTEvlNiOFxz76PB1AyW1JgHRNcoNNp9Ij3/Y730bdMPdSL4uFC03ckwp8SKh+RDlgwzFhvs1e3
+ WjhoLHi+P8qqSh/1PNuhpJVqbG11UiFS7fB2KXzDDDq4dHt4uf7D7b
+X-Received: by 2002:a05:6000:2281:b0:431:16d:63d7 with SMTP id
+ ffacd0b85a97d-4356a05d461mr21542141f8f.47.1768932222095; 
+ Tue, 20 Jan 2026 10:03:42 -0800 (PST)
 Received: from mnementh.archaic.org.uk (mnementh.archaic.org.uk.
  [81.2.115.146]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4356996cf58sm31310889f8f.22.2026.01.20.10.03.40
+ ffacd0b85a97d-4356996cf58sm31310889f8f.22.2026.01.20.10.03.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jan 2026 10:03:40 -0800 (PST)
+ Tue, 20 Jan 2026 10:03:41 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Mohamed Mediouni <mohamed@unpredictable.fr>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [RFC PATCH 0/4] hw/arm/virt: Deprecate 'its', introduce 'msi'
-Date: Tue, 20 Jan 2026 18:03:35 +0000
-Message-ID: <20260120180339.1416328-1-peter.maydell@linaro.org>
+Subject: [RFC PATCH 1/4] hw/arm/virt: Clean up MSI controller selection logic
+Date: Tue, 20 Jan 2026 18:03:36 +0000
+Message-ID: <20260120180339.1416328-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260120180339.1416328-1-peter.maydell@linaro.org>
+References: <20260120180339.1416328-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::433;
@@ -87,7 +90,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -133,30 +136,120 @@ X-Spamd-Result: default: False [0.29 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:mid,linaro.org:dkim,lists.gnu.org:rdns,lists.gnu.org:helo]
-X-Rspamd-Queue-Id: 518E8490E8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,linaro.org:email,linaro.org:dkim,linaro.org:mid]
+X-Rspamd-Queue-Id: AA4EC490EA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This patchset is an RFC sketch of cleaning up the logic that we
-have for selecting the MSI controller, so we can add the handling
-for "hvf and whpx give you a GICv3 without an ITS" in a
-hopefully clear manner.
+The virt board might have multiple different ways to handle MSI
+interrupts: via an ITS, via the GICv2M device, or not at all.  The
+logic to select which of these we use is confusing because it is
+controlled by a mix of versioned-board compatibility flags, board
+option flags, and open-coded logic inside the create_gic() and
+create_its() functions.
 
-thanks
--- PMM
+Currently we set VirtMachineState::msi_controller as the very last
+part of this, inside create_its() or create_gicv2m().  This field is
+then used only in the hotplug pre-plug callback function.
 
-Peter Maydell (4):
-  hw/arm/virt: Clean up MSI controller selection logic
-  hw/arm/virt: Don't use vms->tcg_its in create_gic()
-  hw/arm/virt: Drop VirtMachineState::tcg_its
-  hw/arm/virt: new "msi" property
+As a first step in making this clearer to understand, move the logic
+into a single finalize_msi_controller() function, which sets
+VirtMachineState::msi_controller.  The actual machine creation code
+can then look only at that field.  (This is a parallel to what we do
+with the GIC, where finalize_gic_version() sets the
+VirtMachineState::gic_version field.)
 
- docs/system/arm/virt.rst |  21 +++++++-
- hw/arm/virt.c            | 108 +++++++++++++++++++++++++++++++++------
- include/hw/arm/virt.h    |   2 +-
- 3 files changed, 114 insertions(+), 17 deletions(-)
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ hw/arm/virt.c | 38 +++++++++++++++++++++++++++-----------
+ 1 file changed, 27 insertions(+), 11 deletions(-)
 
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 4badc1a734..b55297455f 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -738,13 +738,6 @@ static void create_its(VirtMachineState *vms)
+     DeviceState *dev;
+ 
+     assert(vms->its);
+-    if (!kvm_irqchip_in_kernel() && !vms->tcg_its) {
+-        /*
+-         * Do nothing if ITS is neither supported by the host nor emulated by
+-         * the machine.
+-         */
+-        return;
+-    }
+ 
+     dev = qdev_new(its_class_name());
+ 
+@@ -754,7 +747,6 @@ static void create_its(VirtMachineState *vms)
+     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, vms->memmap[VIRT_GIC_ITS].base);
+ 
+     fdt_add_its_gic_node(vms);
+-    vms->msi_controller = VIRT_MSI_CTRL_ITS;
+ }
+ 
+ static void create_v2m(VirtMachineState *vms)
+@@ -775,7 +767,6 @@ static void create_v2m(VirtMachineState *vms)
+     }
+ 
+     fdt_add_v2m_gic_node(vms);
+-    vms->msi_controller = VIRT_MSI_CTRL_GICV2M;
+ }
+ 
+ /*
+@@ -957,10 +948,15 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+ 
+     fdt_add_gic_node(vms);
+ 
+-    if (vms->gic_version != VIRT_GIC_VERSION_2 && vms->its) {
++    switch (vms->msi_controller) {
++    case VIRT_MSI_CTRL_NONE:
++        break;
++    case VIRT_MSI_CTRL_ITS:
+         create_its(vms);
+-    } else if (vms->gic_version == VIRT_GIC_VERSION_2) {
++        break;
++    case VIRT_MSI_CTRL_GICV2M:
+         create_v2m(vms);
++        break;
+     }
+ }
+ 
+@@ -2079,6 +2075,24 @@ static VirtGICType finalize_gic_version_do(const char *accel_name,
+     return gic_version;
+ }
+ 
++static void finalize_msi_controller(VirtMachineState *vms)
++{
++    /*
++     * Determine the final msi_controller according to
++     * the relevant user settings and compat data. Called
++     * after finalizing the GIC version.
++     */
++    if (vms->gic_version != VIRT_GIC_VERSION_2 && vms->its) {
++        if (!kvm_irqchip_in_kernel() && !vms->tcg_its) {
++            vms->msi_controller = VIRT_MSI_CTRL_NONE;
++        } else {
++            vms->msi_controller = VIRT_MSI_CTRL_ITS;
++        }
++    } else if (vms->gic_version == VIRT_GIC_VERSION_2) {
++        vms->msi_controller = VIRT_MSI_CTRL_GICV2M;
++    }
++}
++
+ /*
+  * finalize_gic_version - Determines the final gic_version
+  * according to the gic-version property
+@@ -2251,6 +2265,8 @@ static void machvirt_init(MachineState *machine)
+      * KVM is not available yet
+      */
+     finalize_gic_version(vms);
++    /* MSI controller type depends on GIC version */
++    finalize_msi_controller(vms);
+ 
+     if (vms->secure) {
+         /*
 -- 
 2.47.3
 
