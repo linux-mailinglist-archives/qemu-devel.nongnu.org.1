@@ -2,88 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UMbGEwe8b2kOMQAAu9opvQ
+	id 2JbHLWO8b2kOMQAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:31:51 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:33:23 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B52E948982
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:31:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C61F48A07
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:33:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viFZ7-0006ev-Q2; Tue, 20 Jan 2026 12:30:53 -0500
+	id 1viFay-0007lK-Pw; Tue, 20 Jan 2026 12:32:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1viFZ5-0006cW-Ta
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 12:30:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1viFak-0007gH-Nq
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 12:32:40 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1viFZ4-00048n-5f
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 12:30:51 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1viFaj-0004EN-48
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 12:32:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768930247;
+ s=mimecast20190719; t=1768930350;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Lix4T3Jf4MaWYxQCCSsdRao/bXlgbtP5Dl3pVFuMvsM=;
- b=G5t/OjmgFJCRuAgE2ot3DcDJNK9USJ32ueFpbiHQlQK+t+LGeisoVMnGvSNqolBxv00KzW
- nYt8pIyD1vCbf5lFjAGwXn2OE1r4R3ZxMnwcJl4PxUWA7mPTLhlq8tB39Dum9F1URI9lNH
- B7/sDYaZy0Wt2yw+5gW1W/3tnOi8LoQ=
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com
- [74.125.82.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=F6h+s7JHj4y5CEIX3cDgU1YNf6U2ny+ot0Az6p0zctE=;
+ b=IimsFQoJS9+l5Ha47rt4+4ACJTJyE47wtW8Zp9UeapbMRUI1ResD1/TRndddDtCo+KFbmn
+ j6OeMT5rc1iVsdMU3F0Xy2rZ+KTjAZuqGP4indkP1DjjFTNTGxp1FwIKCoFJt+0JiaPNxW
+ G4Mo3w3wr7p6ZHpAnEkWfAVJtln3lM4=
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com
+ [74.125.82.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-656-bIRSRTyEPYiUf5b5XMLJoQ-1; Tue, 20 Jan 2026 12:30:45 -0500
-X-MC-Unique: bIRSRTyEPYiUf5b5XMLJoQ-1
-X-Mimecast-MFC-AGG-ID: bIRSRTyEPYiUf5b5XMLJoQ_1768930245
-Received: by mail-dy1-f198.google.com with SMTP id
- 5a478bee46e88-2b70c92f404so333289eec.0
- for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 09:30:45 -0800 (PST)
+ us-mta-443-tFwOGJBFON2OjtpntJsPXw-1; Tue, 20 Jan 2026 12:32:26 -0500
+X-MC-Unique: tFwOGJBFON2OjtpntJsPXw-1
+X-Mimecast-MFC-AGG-ID: tFwOGJBFON2OjtpntJsPXw_1768930345
+Received: by mail-dy1-f197.google.com with SMTP id
+ 5a478bee46e88-2ac34c4b41fso36522eec.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 09:32:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768930245; x=1769535045; darn=nongnu.org;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=Lix4T3Jf4MaWYxQCCSsdRao/bXlgbtP5Dl3pVFuMvsM=;
- b=PmBty6ltNZN/n4StmEd/UqtTno9uwL/Osb3+fbSbUs3yQqZLDgUobWZcyd9OSWL0uF
- laO2b+8cjTvBwtd4eT4j6e46WiDmVtiZ1ggXUJY/Riba0aZXdC1EoqXAHMha91LzoGzc
- RdLuN/em4wn+AhjUmtQNDUQBwpB1XJ30BCgBD0wrvlt6nl6PIZsQhpbQaEENWKk2LB67
- BDteAkwVAjzkz5nlaMzHA358P4gC8/T18nNGOgr8ltlxTA4O5tfVw825djeKkV7tau4k
- 5Wr7q3LcKGEmhzyc+WqNoDUvroN/nQtxGR9XIfj//4tg4cSbhRoNGTqdVbXMwp+xmAvY
- NP3Q==
+ d=redhat.com; s=google; t=1768930345; x=1769535145; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=F6h+s7JHj4y5CEIX3cDgU1YNf6U2ny+ot0Az6p0zctE=;
+ b=ASOWQopvVxkpjF0zdFal1tvK0CbkbNHdzAPj1U0tjHdTuUi5hIBY+VsPA1wzUy7Dfu
+ G6rG5wAqi0TArKm5d2TWOhjXE7ujfybgU4n9LPL9lDJ1ZzpKQ038A2iZrb/ruNON2ZQl
+ UWarvtMewFOWBATCQrrF2LfC90ElKoKIJk+1fQCFudDjGD3lzEfDCYymyuxbDbRWrGCZ
+ 8ZZ3YjLq2MPT44M6rKCwL1L3eBWIZoMPBgTjIcGAHfsZeTQRzf5dhWdk4r9L1ZvfULfk
+ 2SCCqg2s6Cw3u932t7KNO675nrFnIwoNJQcIpUa5zb161mkQXInkV7pFIp/a8PVp3/Cr
+ FlUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768930245; x=1769535045;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Lix4T3Jf4MaWYxQCCSsdRao/bXlgbtP5Dl3pVFuMvsM=;
- b=xFPliGBXEoxiwOyEZaaah2ay9Kx0Dyca3uA3LYbSTo632a4gtDuxesHm3bR3FcOo8K
- /SemWLHKbBmV9NrcYk/z/V7ZFRpXb+7IAvujj736oviWI8d44VBmF8DY29ROC1hgXaCk
- cXWB4QU5BlzS3nVZ2G7L1+zk4zdtcFy8O61z9fi8+sKJk7zweZfnrs783aaRAVN9JIVF
- C8A63RcgutQ5WYHUJUdKcwzcaYMaxaV8n9JziJkr8XUSNEj+Xs7RHQmPsYPlPdbdx4Vd
- NiXCLg6lXGVmCe/wdoMymmI4rCuiPM4y1FlaDpJX/MJiqtvYfWodVUE6jqV7iylBcu8g
- BLIg==
-X-Gm-Message-State: AOJu0YxRtywfAGNJI1MyVkdLWqlPcXlIIBnN2pAtBRwEb/QLH406tJyt
- zXkUifRXlqU3a3f7gU2YtNnUQ/V6YlBY3OLhHcLftA9vXhz0E1tXlgCFBct2PUBdXnqYGLakmfP
- vp2GWXFUPv6kbH3XhqO5VuhQ1Piinwl6PiMe0kIyDw/92bzSS5v9kXrLq
-X-Gm-Gg: AZuq6aL+eAV8JVzVFQv+cXWGu/C+GVFoRGS+qq0PiAg3MgFeLQ9ULOokrYelVfnHxAw
- Z+WoGZSiJ2KlLjUbdD7Cu0985btMuLoBw09ux8foJzTRCD4hNEr5/EGnbU3gq9Wi/NWXryNdX21
- DiZGpa4fRaPFgeh2f0ddYssyx+oSNBwckoGrAt9d3E9FlQeEsjuVlVhwAauqVzKo45BJyw9/Lg7
- bpdUbgbrIDUDI09dv93HsYpHf5XtswYsYTiT+u6hDB1NMBnJow2dnMclVdDGyhdWihiLVKRGzxb
- irsFjNDZY63VXT/944LAT7pjMaRgAkCZ6dGZeSY12uxHDUVKW9ffKiWSF/a+EEXrYQ6v0xxBEc7
- 3vtI=
-X-Received: by 2002:a05:7300:cc0a:b0:2a4:3594:72d7 with SMTP id
- 5a478bee46e88-2b6b3f069dcmr9237644eec.6.1768930243099; 
- Tue, 20 Jan 2026 09:30:43 -0800 (PST)
-X-Received: by 2002:a05:7300:cc0a:b0:2a4:3594:72d7 with SMTP id
- 5a478bee46e88-2b6b3f069dcmr9237582eec.6.1768930241787; 
- Tue, 20 Jan 2026 09:30:41 -0800 (PST)
+ d=1e100.net; s=20230601; t=1768930345; x=1769535145;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=F6h+s7JHj4y5CEIX3cDgU1YNf6U2ny+ot0Az6p0zctE=;
+ b=cGycK/x07Vb8bMQPK1tvpdhg10iQ3X0MZrmKDR2e4gGMMLi2uhvLi6QY7l/0pPHuQv
+ Z7U5LzEoe2XmxAdyJ8o+AZE/I+RJ3A+cC0HI+iHdT66wRtipUYkK2Zoxdv6m9l98y+/w
+ CpRc7Hp7eE0XwT4pzSnMTmldrqzUCWek80gjpMMC5qoEx9UEzzcXslWPSWL6w3UduIQZ
+ 3SN47fWz4O4tZawWHZAWj5YTIaDJUZ7d3iu1IkRwooZ9QT0JI5Dh47o5BEEDQfkU7cMB
+ zNmlKM5sIpE0NCwewrRa3jBx+WuC9np+IGjvUqOML82NWUurL1nOJYvt8TziZCBshsNI
+ 6AEQ==
+X-Gm-Message-State: AOJu0YzjonrdvFkm7nC8S9saKdPD/UFZF1mABA0IJD956CiWk/uX8RGK
+ ueHIMhbmbVA9Lsi4KCCvLuOQEzbJVQ6RBIkdv2CALbQrkmDgwApRJaIv5kzNX39Bz3N8mBG8lho
+ JQFIIff+rWAvWw+jHIeef8A52CQQa6rjONtniLnMAAY8aeKFWFwd2nSH6
+X-Gm-Gg: AZuq6aLz4fbwvsObyWNGDJU+GyXU9fIStuseI06ctW0xdYNyhMotasluoqJ47uw1jsM
+ WEfHVhBikzueYEbdYbW7gr3yAN7AqymEXSFVQF128wextVZY6CucdVFzubLCeCSrS+383LTcLWc
+ k2Btl+yMesHTejqQeuG/THQMxhWy+IF/kvhIqVDx1CvLJ0vsDjO39FGlm9fTeNHmZ2rPBXLDpo0
+ FDDXeXN22KYcslkKnYVCdRK/U2r9hxNdDoEysPb3fh2PH11SF1EopFETuEVGFrdZnFlxgx1tzsy
+ a9eJocD6RkntqAl11vb5C4QJNK4Ao1z4qf9gvNYRTC9B8wNuKd0JLz//q7bbrmGE3J36OzWpCkm
+ Q5Po=
+X-Received: by 2002:a05:7300:30c8:b0:2b4:5618:be67 with SMTP id
+ 5a478bee46e88-2b6b3498c2dmr13766921eec.5.1768930344521; 
+ Tue, 20 Jan 2026 09:32:24 -0800 (PST)
+X-Received: by 2002:a05:7300:30c8:b0:2b4:5618:be67 with SMTP id
+ 5a478bee46e88-2b6b3498c2dmr13766886eec.5.1768930343819; 
+ Tue, 20 Jan 2026 09:32:23 -0800 (PST)
 Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- 5a478bee46e88-2b6c56a23ecsm15528033eec.11.2026.01.20.09.30.37
+ 5a478bee46e88-2b7047b099bsm1945563eec.31.2026.01.20.09.32.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jan 2026 09:30:41 -0800 (PST)
-Date: Tue, 20 Jan 2026 12:30:34 -0500
+ Tue, 20 Jan 2026 09:32:23 -0800 (PST)
+Date: Tue, 20 Jan 2026 12:32:16 -0500
 From: Peter Xu <peterx@redhat.com>
 To: Lukas Straub <lukasstraub2@web.de>
 Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
@@ -91,23 +89,22 @@ Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
  Zhang Chen <zhangckid@gmail.com>,
  Hailiang Zhang <zhanghailiang@xfusion.com>,
  Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH v2 7/8] qemu-colo.rst: Miscellaneous changes
-Message-ID: <aW-7ulV3ZVUdXnzP@x1.local>
+Subject: Re: [PATCH v2 8/8] qemu-colo.rst: Simplify the block replication setup
+Message-ID: <aW-8IBvujjjPP2_Z@x1.local>
 References: <20260117-colo_unit_test_multifd-v2-0-ab521777fa51@web.de>
- <20260117-colo_unit_test_multifd-v2-7-ab521777fa51@web.de>
+ <20260117-colo_unit_test_multifd-v2-8-ab521777fa51@web.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260117-colo_unit_test_multifd-v2-7-ab521777fa51@web.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <20260117-colo_unit_test_multifd-v2-8-ab521777fa51@web.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.087,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -127,7 +124,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 X-Spamd-Result: default: False [-1.21 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24];
+	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
 	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -135,12 +132,12 @@ X-Spamd-Result: default: False [-1.21 / 15.00];
 	FORGED_RECIPIENTS(0.00)[m:lukasstraub2@web.de,m:qemu-devel@nongnu.org,m:farosas@suse.de,m:lvivier@redhat.com,m:pbonzini@redhat.com,m:zhangckid@gmail.com,m:zhanghailiang@xfusion.com,m:armbru@redhat.com,s:lists@lfdr.de];
 	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER(0.00)[peterx@redhat.com,qemu-devel-bounces@nongnu.org];
+	ARC_NA(0.00)[];
 	FREEMAIL_CC(0.00)[nongnu.org,suse.de,redhat.com,gmail.com,xfusion.com];
 	TO_DN_SOME(0.00)[];
 	FREEMAIL_TO(0.00)[web.de];
 	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
+	FORGED_SENDER(0.00)[peterx@redhat.com,qemu-devel-bounces@nongnu.org];
 	FORWARDED(0.00)[qemu-devel@nongnu.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -156,108 +153,79 @@ X-Spamd-Result: default: False [-1.21 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,x1.local:mid]
-X-Rspamd-Queue-Id: B52E948982
+	DBL_BLOCKED_OPENRESOLVER(0.00)[x1.local:mid,lists.gnu.org:rdns,lists.gnu.org:helo]
+X-Rspamd-Queue-Id: 2C61F48A07
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sat, Jan 17, 2026 at 03:09:14PM +0100, Lukas Straub wrote:
+On Sat, Jan 17, 2026 at 03:09:15PM +0100, Lukas Straub wrote:
+> On the primary side we don't actually need the replication
+> block driver, since it only passes trough all IO.
+> So simplify the setup and also use 'blockdev-add' instead of
+> 'human-monitor-command'.
+> 
 > Signed-off-by: Lukas Straub <lukasstraub2@web.de>
+> Tested-by: Lukas Straub <lukasstraub2@web.de>
+
+We can drop this line; Tested-by is normally not used on one's own patch.
+Proposer should always test one's own patch..
+
+I'll leave it to Chen and others to review this patch.  Please consider
+copy Zhijian and Dave when you repost; you'll get higher chance to get it
+reviewed.
+
+Thanks,
+
 > ---
->  docs/system/qemu-colo.rst | 30 ++++++++++++------------------
->  1 file changed, 12 insertions(+), 18 deletions(-)
+>  docs/system/qemu-colo.rst | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
 > 
 > diff --git a/docs/system/qemu-colo.rst b/docs/system/qemu-colo.rst
-> index 5b00c6c4c2679153f398ed5a85a5d9cc515630e6..2052e207e57afdd3ab3ab1a447d55f5e2e5b5b87 100644
+> index 2052e207e57afdd3ab3ab1a447d55f5e2e5b5b87..7e361998d871b2c9a0e8065a15c004a9d841958b 100644
 > --- a/docs/system/qemu-colo.rst
 > +++ b/docs/system/qemu-colo.rst
-> @@ -1,14 +1,6 @@
->  Qemu COLO Fault Tolerance
->  =========================
+> @@ -233,8 +233,8 @@ Note:
+>  **4.** On Primary VM's QEMU monitor, issue command::
 >  
-> -| Copyright (c) 2016 Intel Corporation
-> -| Copyright (c) 2016 HUAWEI TECHNOLOGIES CO., LTD.
-> -| Copyright (c) 2016 Fujitsu, Corp.
-> -| Copyright (c) 2026 Lukas Straub <lukasstraub2@web.de>
-
-Hmm, I don't see this copyright line in the current code base.  I think you
-added it in previous conversion patch.
-
-When converting, we should keep that patch change nothing in the content
-but only convert things.
-
-If you want to propose new things to the doc, it needs to be separately
-done and reviewed.
-
-We'd better not hide real changes within a conversion patch.
-
-Here, I'm not sure you should add your copyright line.  IIUC, that can be
-added only if you made prominent contribution to this solution in the code
-base.  Becoming a maintainer is definitely a bless, however not justified
-for an additional copyright update.  I can also be wrong, but please
-justify.
-
-> -
-> -This work is licensed under the terms of the GNU GPL, version 2 or later.
-> -See the COPYING file in the top-level directory.
-> -
->  This document gives an overview of COLO's design and how to use it.
+>      {"execute":"qmp_capabilities"}
+> -    {"execute": "human-monitor-command", "arguments": {"command-line": "drive_add -n buddy driver=replication,mode=primary,file.driver=nbd,file.host=127.0.0.2,file.port=9999,file.export=parent0,node-name=replication0"}}
+> -    {"execute": "x-blockdev-change", "arguments":{"parent": "colo-disk0", "node": "replication0" } }
+> +    {"execute": "blockdev-add", "arguments": {"driver": "nbd", "node-name": "nbd0", "server": {"type": "inet", "host": "127.0.0.2", "port": "9999"}, "export": "parent0", "detect-zeroes": "on"} }
+> +    {"execute": "x-blockdev-change", "arguments":{"parent": "colo-disk0", "node": "nbd0" } }
+>      {"execute": "migrate-set-capabilities", "arguments": {"capabilities": [ {"capability": "x-colo", "state": true } ] } }
+>      {"execute": "migrate", "arguments": {"uri": "tcp:127.0.0.2:9998" } }
 >  
->  Background
-> @@ -83,8 +75,8 @@ Overview::
->          |   Storage     |  |External Network|       | External Network | |   Storage    |
->          +---------------+  +----------------+       +------------------+ +--------------+
+> @@ -262,7 +262,7 @@ Primary Failover
+>  The Secondary died, resume on the Primary::
 >  
-> -Components introduction
-> -^^^^^^^^^^^^^^^^^^^^^^^
-> +Components
-> +^^^^^^^^^^
->  You can see there are several components in COLO's diagram of architecture.
->  Their functions are described below.
+>      {"execute": "x-blockdev-change", "arguments":{ "parent": "colo-disk0", "child": "children.1"} }
+> -    {"execute": "human-monitor-command", "arguments":{ "command-line": "drive_del replication0" } }
+> +    {"execute": "blockdev-del", "arguments": {"node-name": "nbd0"} }
+>      {"execute": "object-del", "arguments":{ "id": "comp0" } }
+>      {"execute": "object-del", "arguments":{ "id": "iothread1" } }
+>      {"execute": "object-del", "arguments":{ "id": "m0" } }
+> @@ -302,8 +302,8 @@ Wait until disk is synced, then::
+>      {"execute": "stop"}
+>      {"execute": "block-job-cancel", "arguments":{ "device": "resync"} }
 >  
-> @@ -158,14 +150,14 @@ in test procedure.
+> -    {"execute": "human-monitor-command", "arguments":{ "command-line": "drive_add -n buddy driver=replication,mode=primary,file.driver=nbd,file.host=127.0.0.2,file.port=9999,file.export=parent0,node-name=replication0"}}
+> -    {"execute": "x-blockdev-change", "arguments":{ "parent": "colo-disk0", "node": "replication0" } }
+> +    {"execute": "blockdev-add", "arguments": {"driver": "nbd", "node-name": "nbd0", "server": {"type": "inet", "host": "127.0.0.2", "port": "9999"}, "export": "parent0", "detect-zeroes": "on"} }
+> +    {"execute": "x-blockdev-change", "arguments":{ "parent": "colo-disk0", "node": "nbd0" } }
 >  
->  Test procedure
->  --------------
-> -Note: Here we are running both instances on the same host for testing,
-> +Here we are running both instances on the same host for testing,
->  change the IP Addresses if you want to run it on two hosts. Initially
->  ``127.0.0.1`` is the Primary Host and ``127.0.0.2`` is the Secondary Host.
+>      {"execute": "object-add", "arguments":{ "qom-type": "filter-mirror", "id": "m0", "netdev": "hn0", "queue": "tx", "outdev": "mirror0" } }
+>      {"execute": "object-add", "arguments":{ "qom-type": "filter-redirector", "id": "redire0", "netdev": "hn0", "queue": "rx", "indev": "compare_out" } }
+> @@ -334,8 +334,8 @@ Wait until disk is synced, then::
+>      {"execute": "stop"}
+>      {"execute": "block-job-cancel", "arguments":{ "device": "resync" } }
 >  
->  Startup qemu
->  ^^^^^^^^^^^^
->  **1. Primary**:
-> -Note: Initially, ``$imagefolder/primary.qcow2`` needs to be copied to all hosts.
-> +Initially, ``$imagefolder/primary.qcow2`` needs to be copied to all hosts.
->  You don't need to change any IP's here, because ``0.0.0.0`` listens on any
->  interface. The chardev's with ``127.0.0.1`` IP's loopback to the local qemu
->  instance::
-> @@ -193,7 +185,7 @@ instance::
+> -    {"execute": "human-monitor-command", "arguments":{ "command-line": "drive_add -n buddy driver=replication,mode=primary,file.driver=nbd,file.host=127.0.0.1,file.port=9999,file.export=parent0,node-name=replication0"}}
+> -    {"execute": "x-blockdev-change", "arguments":{ "parent": "colo-disk0", "node": "replication0" } }
+> +    {"execute": "blockdev-add", "arguments": {"driver": "nbd", "node-name": "nbd0", "server": {"type": "inet", "host": "127.0.0.1", "port": "9999"}, "export": "parent0", "detect-zeroes": "on"} }
+> +    {"execute": "x-blockdev-change", "arguments":{ "parent": "colo-disk0", "node": "nbd0" } }
 >  
->  
->  **2. Secondary**:
-> -Note: Active and hidden images need to be created only once and the
-> +Active and hidden images need to be created only once and the
->  size should be the same as ``primary.qcow2``. Again, you don't need to change
->  any IP's here, except for the ``$primary_ip`` variable::
->  
-> @@ -354,8 +346,10 @@ Wait until disk is synced, then::
->      {"execute": "migrate-set-capabilities", "arguments":{ "capabilities": [ {"capability": "x-colo", "state": true } ] } }
->      {"execute": "migrate", "arguments":{ "uri": "tcp:127.0.0.1:9998" } }
->  
-> -TODO
-> -----
-> -1. Support shared storage.
-> -2. Develop the heartbeat part.
-> -3. Reduce checkpoint VM’s downtime while doing checkpoint.
-> +| Copyright (c) 2016 Intel Corporation
-> +| Copyright (c) 2016 HUAWEI TECHNOLOGIES CO., LTD.
-> +| Copyright (c) 2016 Fujitsu, Corp.
-> +| Copyright (c) 2026 Lukas Straub <lukasstraub2@web.de>
-> +
-> +This work is licensed under the terms of the GNU GPL, version 2 or later.
-> +See the COPYING file in the top-level directory.
-> \ No newline at end of file
+>      {"execute": "object-add", "arguments":{ "qom-type": "filter-mirror", "id": "m0", "insert": "before", "position": "id=rew0", "netdev": "hn0", "queue": "tx", "outdev": "mirror0" } }
+>      {"execute": "object-add", "arguments":{ "qom-type": "filter-redirector", "id": "redire0", "insert": "before", "position": "id=rew0", "netdev": "hn0", "queue": "rx", "indev": "compare_out" } }
 > 
 > -- 
 > 2.39.5
