@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNFFC3jMb2mgMQAAu9opvQ
+	id +E+WIYTMb2mgMQAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:42:00 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:42:12 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5E5F49A91
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:41:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1947049A99
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:42:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viGfW-0003VK-DL; Tue, 20 Jan 2026 13:41:34 -0500
+	id 1viGfb-0004Lc-HZ; Tue, 20 Jan 2026 13:41:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGfI-0002tS-HA
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:41:20 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGfX-00048A-LS
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:41:35 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGfG-0006TB-Os
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:41:20 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-432d2c7a8b9so4903757f8f.2
- for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 10:41:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGfU-0006Tl-79
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:41:35 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4801eb2c0a5so38009435e9.3
+ for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 10:41:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768934477; x=1769539277; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768934483; x=1769539283; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=2cNvAef1f1a86mPi1RwfvIDzIhMfVvuK1vOhyNdPbjk=;
- b=N1CTsVwfZNgn2PjWDC4H8w8orPrrUSIybnNqiSeI9o1MNvArGYTTP78pydO5hCHS98
- 8ckuxvEy6FQCvCil8FGBAdiide7G+ZOAB/zvmL7oN8s5/1J4u4BsLDQjLp6g5O+M3s81
- 0eP/Z+TV4iR/X96pDuLcilugsvvwyURIn6WaDb2cR6unOZNbFs17a58OnKqx2W64myV3
- Rc82zRTSiJpnYfx/TkTNwNnFxQ/aBFRIHUOTYa10MYfOAJ5G9sNmUloU6qe+2iXV/SSp
- 6HSXLyINgn4q0Ili7UjLotdbYMokmyrMiSIkVu+tjfU8Y6uwWCulRZPGmC40TdKgDerB
- YQgg==
+ :reply-to; bh=36oy4LpXeaubv2KU3/hvOkUmF2AsCyfbGtc0pgUrW5Y=;
+ b=VX3VDbAP1WlCyr5/1QV0Xx8+Xox5o3+ANJws33YSuQFL/YHqJubVg9wutiRi8lOlCP
+ bcFzKGmTARwB8iZDBc8hzlNCUYUQFID5JSxA6nl0Xk3xecVQAcf9OwETbAFHJu9NlvDM
+ 3xeMS11NGydnaGJ0eik8FDQPWvv2AUiRfR/GYdFKTd24iKW3kC2RHH67lDMTHz0kNMDM
+ DLYTqf5zhx960eQ6fol9vUK05QD4i+rf08foFVp6PDPKFNdhC6Eo03KVVED1Be0UK6dr
+ MrwdCalvm7AtvES0P/XGU/2wVuS5tpx7B+Z0LBcIb/OVo7pTyAAzDqkyZl1++TMC/euU
+ WAyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768934477; x=1769539277;
+ d=1e100.net; s=20230601; t=1768934483; x=1769539283;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=2cNvAef1f1a86mPi1RwfvIDzIhMfVvuK1vOhyNdPbjk=;
- b=PC/uBvYuxSBc5VkJXu0fEH0F/Ar5Unuvsjsib50Y1r3/6Yq3TyF4H1w5oVS6AQRBpn
- LYemVCQC9X7sIKAsLoLri5iDdhV+2WhB9zo9fzpEPZBbs6b93XhNUDUe40FaY/yEo8Np
- yrI+p2JIlW2yyq1nLViiTNi0Sp1yv945h819JDNsZEN0JFz8Tdqc7GUwygC5T8WLwqmI
- ttPyPPPh6HXtCEV7MTiR7+v0KoP3pMfPqJ/tPjB4+51FMLBmOyLHBitfC2bw1G3s9lkx
- aRjiTkKStQy7BXlQh8OYRs10tpVsuf/PtcyOhPtcv1fdJIvzvZRlTRIVhrYojVJ3SRgM
- 6saA==
-X-Gm-Message-State: AOJu0Yw2W9jmhPRHGs63C7bTxgZ7h2wFe5MOKGcslkQMd5/L8sjYT2Bh
- yPt+p6u3hZBmbiBExZ2ALagj+V9p3LnpPDpZaZ+s62LAqFHvJp6GprLiPqEhJuqKBDdb6yxSHwa
- 4RYQK0NE=
-X-Gm-Gg: AZuq6aJmt2vQ+xSPF+ID1BRrY51lIG2dtfIWVhms7nx/+V4g7YkiGxXNuRpaAa071Pt
- heGxyPLozsb26MHDyg1iEyYr1DuZlUFhjA2D+r7kTgqGRKbKNCqZfDtGsa+rYfmyLNkIWTr9sxr
- /AM9s/auiEgG8F+3OSCHsNdtJdhSd/HA2wrPe7Cen4mvH4i+DmTIPH86/CUfYIhp92m5fHTyUnK
- dwPrTSQ9hm9hnjWrALXnf8Dcx/IP/zxI/BizkbDU+CAb5MX/WRg1odNq5vcbqAlLxiqElVurl4K
- CyF5RxZp/fw/KKTo5p/iWWQCxLq1qgIW2hosDziJoGpOTj6aFRXAx6xYj3tdvNGinQKwJH5WIdr
- qoNdDDlG9ptThRGleZUsxLArmW3m0zOCWlWjoBttFhzms6Z6MF8XNByzFq6smEOVGRmb4wSunTR
- oow9AIT6vvXyA1YXqofwW5/oK+a90vY1gFlENH38iCXbx7m6x+vbem/VETOWE9
-X-Received: by 2002:a05:6000:2403:b0:42b:3c25:cd06 with SMTP id
- ffacd0b85a97d-4356a039bd5mr19947198f8f.22.1768934476565; 
- Tue, 20 Jan 2026 10:41:16 -0800 (PST)
+ bh=36oy4LpXeaubv2KU3/hvOkUmF2AsCyfbGtc0pgUrW5Y=;
+ b=em0xkBI34jsjwUhK9Sp6x0opqr8VPu7i25NuZ3D0T4zIGfJx6TMiv8eFOis9hh4IAg
+ BlTwFYsmMy6hlAM0k7KpXE8/Rtp7Mpn3AcBUJggvbeGQcxAwOTV4cmur3TYFXCQMg/ob
+ 9YH1658W2pUawaj403ni/dg8+HYHuyaWe9ujy9+KQzPnOn21dLR+n3hqgYaeBQa+TRxY
+ opMceTzi0RN+Fen4gtNkj3ggNTKxhdH4nHHvU/+OkxV5uuoJFu3yunmjFbzCREVvPII3
+ Oct2pHhwcy4YhhBYyaKEw5YC+IHcjpXSBRkhNH2tHZzkIrDLgyj0iXe/UXtUAQAjjkoG
+ tL3g==
+X-Gm-Message-State: AOJu0YzzG+jbCjWOY1wzzElmPdtFzetKoDKzCnk+2mlFjvVOg7mkjg6Y
+ IyEQQIkJemT92vrVgHdQl2WzOrRGoLXci07ne8hGW6HHurxrxxY/ffQbYGmaz7nemQob7IL/aAY
+ 6pBMmHZ0=
+X-Gm-Gg: AY/fxX4glazd9iMuPCSRS5weGnaZ1z2XgqqnDmZOGz8z8M6jfOUjKSnGHTFhPXABCE+
+ iC1EibaLyH9rL1Ur24O5OdAMT9G+OIepycn4V5CZb8PLzQIuoaA0zMHs/DEGnkuaUGq04bgaPd0
+ GHRjpXMVrEco5LpTHPZuFEZfsR00dJ2Ee/PJ7w70H0N2Uuluunb+y1oLGQEL/heysWi0hZG8p73
+ td0K26GqC+aDr4jUs6M8I/e5iWloXUbeZeGVbqqu/v/pOYH+ZKISNKt1g6PKrf0DryQvJVGieDk
+ ZKyYEecYLRLxe4Kl2fddqgb437aIVOfoa5jls71MTwJkRgBg9y+mwvhztiouWHsDfVxxGCQ6zLB
+ hX1dWnRDC0ljiokZMNgEDvgrIzi6EGOxXg+cj/k/zb31KU/GV41qlVTaE2aG+rBh2PUIoZvh5an
+ HcjjT9llPt6ot9bBhrNbFMzz3QCMW8Xq/b/UbnExIHrvB18Q6l3gpCNWlKalgpsR3QEJj9Sy8=
+X-Received: by 2002:a05:600c:1991:b0:47d:6140:3284 with SMTP id
+ 5b1f17b1804b1-4801e34b5a7mr175900705e9.37.1768934483316; 
+ Tue, 20 Jan 2026 10:41:23 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4356992c6f2sm30014190f8f.19.2026.01.20.10.41.15
+ 5b1f17b1804b1-47f429071besm312546805e9.10.2026.01.20.10.41.22
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 20 Jan 2026 10:41:15 -0800 (PST)
+ Tue, 20 Jan 2026 10:41:22 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 19/29] hw/sd/sdhci: Remove endianness property
-Date: Tue, 20 Jan 2026 19:38:52 +0100
-Message-ID: <20260120183902.73845-20-philmd@linaro.org>
+Subject: [PULL 20/29] hw/sd/sdhci: Remove vendor property
+Date: Tue, 20 Jan 2026 19:38:53 +0100
+Message-ID: <20260120183902.73845-21-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260120183902.73845-1-philmd@linaro.org>
 References: <20260120183902.73845-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -126,121 +126,92 @@ X-Spamd-Result: default: False [-0.21 / 15.00];
 	PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linaro.org:dkim,linaro.org:mid,lists.gnu.org:rdns,lists.gnu.org:helo,bme.hu:email]
-X-Rspamd-Queue-Id: C5E5F49A91
+X-Rspamd-Queue-Id: 1947049A99
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-The endianness property was only explicitly set in the e500 machine which
-now instantiates TYPE_FSL_ESDHC_BE. The property could also not be used
-meaningfully in a hypothetical, common TYPE_FSL_ESDHC device model since
-sdhci_common_realize() would fail in that case or it would need to know
-all MMIO implementations upfront. Remove the property in favor of dedicated
-device models.
+Now that there are dedicated eSDHC device models it is possible to replace
+the "vendor" property (which is really a device-specific property) with a
+dynamic cast, "fishing" out only the device models which shall have the
+quirk applied.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
-Message-ID: <20260112145418.220506-12-shentey@gmail.com>
+Message-ID: <20260112145418.220506-14-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sd/sdhci-internal.h |  1 -
- include/hw/sd/sdhci.h  |  1 -
- hw/sd/sdhci.c          | 35 ++---------------------------------
- 3 files changed, 2 insertions(+), 35 deletions(-)
+ hw/sd/sdhci-internal.h | 1 -
+ include/hw/sd/sdhci.h  | 4 ----
+ hw/sd/sdhci.c          | 5 ++---
+ 3 files changed, 2 insertions(+), 8 deletions(-)
 
 diff --git a/hw/sd/sdhci-internal.h b/hw/sd/sdhci-internal.h
-index f24532eed28..50fb746a177 100644
+index 50fb746a177..4aeed120bf1 100644
 --- a/hw/sd/sdhci-internal.h
 +++ b/hw/sd/sdhci-internal.h
-@@ -307,7 +307,6 @@ extern const VMStateDescription sdhci_vmstate;
- #define SDHC_CAPAB_REG_DEFAULT 0x057834b4
- 
+@@ -309,7 +309,6 @@ extern const VMStateDescription sdhci_vmstate;
  #define DEFINE_SDHCI_COMMON_PROPERTIES(_state) \
--    DEFINE_PROP_UINT8("endianness", _state, endianness, DEVICE_LITTLE_ENDIAN), \
      DEFINE_PROP_UINT8("sd-spec-version", _state, sd_spec_version, 2), \
      DEFINE_PROP_UINT8("uhs", _state, uhs_mode, UHS_NOT_SUPPORTED), \
-     DEFINE_PROP_UINT8("vendor", _state, vendor, SDHCI_VENDOR_NONE), \
+-    DEFINE_PROP_UINT8("vendor", _state, vendor, SDHCI_VENDOR_NONE), \
+     \
+     /* Capabilities registers provide information on supported
+      * features of this specific host controller implementation */ \
 diff --git a/include/hw/sd/sdhci.h b/include/hw/sd/sdhci.h
-index 32c52c7d0be..51551348cf5 100644
+index 51551348cf5..a9da6203fcb 100644
 --- a/include/hw/sd/sdhci.h
 +++ b/include/hw/sd/sdhci.h
-@@ -96,7 +96,6 @@ struct SDHCIState {
-     /* Configurable properties */
-     bool pending_insert_quirk; /* Quirk for Raspberry Pi card insert int */
+@@ -98,7 +98,6 @@ struct SDHCIState {
      uint32_t quirks;
--    uint8_t endianness;
      uint8_t sd_spec_version;
      uint8_t uhs_mode;
-     uint8_t vendor;        /* For vendor specific functionality */
+-    uint8_t vendor;        /* For vendor specific functionality */
+     /*
+      * Write Protect pin default active low for detecting SD card
+      * to be protected. Set wp_inverted to invert the signal.
+@@ -107,9 +106,6 @@ struct SDHCIState {
+ };
+ typedef struct SDHCIState SDHCIState;
+ 
+-#define SDHCI_VENDOR_NONE       0
+-#define SDHCI_VENDOR_FSL        2
+-
+ /*
+  * Controller does not provide transfer-complete interrupt when not
+  * busy.
 diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index 6001b71c61d..eab814096d7 100644
+index eab814096d7..c86dfa281f4 100644
 --- a/hw/sd/sdhci.c
 +++ b/hw/sd/sdhci.c
-@@ -1374,7 +1374,7 @@ sdhci_write(void *opaque, hwaddr offset, uint64_t val, unsigned size)
-                        value >> shift, value >> shift);
+@@ -307,7 +307,8 @@ static void sdhci_reset(SDHCIState *s)
+     s->data_count = 0;
+     s->stopped_state = sdhc_not_stopped;
+     s->pending_insert_state = false;
+-    if (s->vendor == SDHCI_VENDOR_FSL) {
++    if (object_dynamic_cast(OBJECT(s), TYPE_FSL_ESDHC_BE) ||
++            object_dynamic_cast(OBJECT(s), TYPE_FSL_ESDHC_LE)) {
+         s->norintstsen = 0x013f;
+         s->errintstsen = 0x117f;
+     }
+@@ -1863,7 +1864,6 @@ static void fsl_esdhc_be_init(Object *obj)
+     s->io_ops = &esdhc_mmio_be_ops;
+     s->quirks = SDHCI_QUIRK_NO_BUSY_IRQ;
+     qdev_prop_set_uint8(dev, "sd-spec-version", 2);
+-    qdev_prop_set_uint8(dev, "vendor", SDHCI_VENDOR_FSL);
  }
  
--static const MemoryRegionOps sdhci_mmio_le_ops = {
-+static const MemoryRegionOps sdhci_mmio_ops = {
-     .read = sdhci_read,
-     .write = sdhci_write,
-     .valid = {
-@@ -1385,21 +1385,6 @@ static const MemoryRegionOps sdhci_mmio_le_ops = {
-     .endianness = DEVICE_LITTLE_ENDIAN,
- };
- 
--static const MemoryRegionOps sdhci_mmio_be_ops = {
--    .read = sdhci_read,
--    .write = sdhci_write,
--    .impl = {
--        .min_access_size = 4,
--        .max_access_size = 4,
--    },
--    .valid = {
--        .min_access_size = 1,
--        .max_access_size = 4,
--        .unaligned = false
--    },
--    .endianness = DEVICE_BIG_ENDIAN,
--};
--
- static void sdhci_init_readonly_registers(SDHCIState *s, Error **errp)
- {
-     ERRP_GUARD();
-@@ -1430,7 +1415,7 @@ void sdhci_initfn(SDHCIState *s)
-     s->transfer_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-                                      sdhci_data_transfer, s);
- 
--    s->io_ops = &sdhci_mmio_le_ops;
-+    s->io_ops = &sdhci_mmio_ops;
+ static const MemoryRegionOps esdhc_mmio_le_ops = {
+@@ -1889,7 +1889,6 @@ static void fsl_esdhc_le_init(Object *obj)
+     s->io_ops = &esdhc_mmio_le_ops;
+     s->quirks = SDHCI_QUIRK_NO_BUSY_IRQ;
+     qdev_prop_set_uint8(dev, "sd-spec-version", 2);
+-    qdev_prop_set_uint8(dev, "vendor", SDHCI_VENDOR_FSL);
  }
  
- void sdhci_uninitfn(SDHCIState *s)
-@@ -1446,22 +1431,6 @@ void sdhci_common_realize(SDHCIState *s, Error **errp)
- {
-     ERRP_GUARD();
- 
--    switch (s->endianness) {
--    case DEVICE_LITTLE_ENDIAN:
--        /* s->io_ops is little endian by default */
--        break;
--    case DEVICE_BIG_ENDIAN:
--        if (s->io_ops != &sdhci_mmio_le_ops) {
--            error_setg(errp, "SD controller doesn't support big endianness");
--            return;
--        }
--        s->io_ops = &sdhci_mmio_be_ops;
--        break;
--    default:
--        error_setg(errp, "Incorrect endianness");
--        return;
--    }
--
-     sdhci_init_readonly_registers(s, errp);
-     if (*errp) {
-         return;
+ static const MemoryRegionOps usdhc_mmio_ops = {
 -- 
 2.52.0
 
