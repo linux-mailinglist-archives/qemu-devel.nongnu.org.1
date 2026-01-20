@@ -2,91 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19385D3BE98
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 06:00:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 915A8D3BEC8
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 06:25:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vi3pY-0002cv-RB; Mon, 19 Jan 2026 23:59:04 -0500
+	id 1vi4F7-0003RF-DM; Tue, 20 Jan 2026 00:25:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chao.liu.zevorn@gmail.com>)
- id 1vi3pW-0002bi-NS
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 23:59:03 -0500
-Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chao.liu.zevorn@gmail.com>)
- id 1vi3pV-0000FX-1R
- for qemu-devel@nongnu.org; Mon, 19 Jan 2026 23:59:02 -0500
-Received: by mail-pl1-x642.google.com with SMTP id
- d9443c01a7336-2a1022dda33so30201195ad.2
- for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 20:59:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1768885140; x=1769489940; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iHPPQtLsBrf6SxxB3IwlY/gIhjLfsrdUl251mQ5AQeg=;
- b=msnJj/ZN1IK94GlglrmGJYYXnmH/sB8uzr2yf9QYgGeDMuCnZO9aNq+QpFLRMYb0gF
- Ao+YGPrcZUzvmY2JjUN4i/Y/6kKXPyE2UDRXCgEKYBCkMtpkX0sPtfmsKXs0b1YuwWyv
- 5IJ2r67xe3q09/nm6x+lrC/EeOCpRqVbxHD3N5jdYP0glZJecuHWVu6Pi0dxCVt8Bl6H
- jp7XXkQJUpbU5XF9unYvSRiMVu9aP0cmq421EHg9bDfJsoPX4TfEtmoQCQss6Ldd32CW
- Yszwh9I7K3F8yuWFWp9hI/vSVHEQeThAiqLCVfyaghs7FjH4jmPz1p1Nl3H+zcEoTbM3
- ArGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768885140; x=1769489940;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=iHPPQtLsBrf6SxxB3IwlY/gIhjLfsrdUl251mQ5AQeg=;
- b=ZPm76dI3Wnugn+VwDmD+B2Lg/GD6HHiwi9OukxCmQWbKh7+EUbgQJROjN3VYBoG5jJ
- 0oC9rb4dzPwsnut5aeUvzCExdoTBybEXlAl6klIod/tvScUAtAk/R0sAwy1alKq4WGxs
- djRGu/Ixfgi4T0Jlj7vESLDUKOPgBV5SiipHPSfc7Kzcisknv6YWMWPqZH7kw4erUibI
- 5An9UccpFLEqlj3drQ0uUks3C0L7OOQQfmiW+OINJJMm2Y+d/X/I4z8VeSvZYpWtao3o
- 8jrKfd3oJjUHyVVfZWfeq3ppzRE3l68OYaWzEPhgmolNB15uEYCzY/zro6A/3Hr8uZY9
- 9PuQ==
-X-Gm-Message-State: AOJu0YzbFqYBkQYYPTW3sHwMULaChmuIPdNWlM+o20tz61NXVa/QFQu+
- i3nJXc3fJGwig6cW433UXvQgG69lh4x7pM+5pGCJPCJg9ffSmqWlHmBV
-X-Gm-Gg: AZuq6aKE/L+RCz+aDCqOc7+MlKdVmrSlIRpSk5B6lFzR5PlD70C/cYqFdudeYeXE+E2
- sld+bWJy4eh3hMj0qFvgV8ORXnJ78z3l1oQ9ZOTOPueQn8PGv5HPuj8TZr6JNTz0t78iCc9EdFf
- vZm3LjQFrmX/37kWQLTqBTVr8W/5oj9K1W1LiM4bIWdSwMH6gGXkBG0o+qkAKKvYiOWnXyypTgn
- 6044mUFxRVRsA89TCOF27ERU3yG5NpR6RQweKYpqLBAttozvVmPnSbQrlnp8+OL409QN/2jvEu7
- oTlMnj1xRlf8oyrN0JcZBuYGwc7tMkfL8BpACguoafJwnAmnr4TkvUDuNRHIq85nM+ueDx0yXTq
- KNWHXhXlv61Hpdcg0fESG1Mis7+BXn6z8CVd+iIW7+ubIP9o2RB0/K9ZmMTfx+a/Ggu1GaZrfwu
- x/EqWtzA0IYOo2yOOHIIOMc77CQUfA9kRL+bKpluiRXsRkqVvUbLZtCJXddcA=
-X-Received: by 2002:a17:903:22c5:b0:2a0:9eed:5182 with SMTP id
- d9443c01a7336-2a7698f99e1mr6136605ad.20.1768885139717; 
- Mon, 19 Jan 2026 20:58:59 -0800 (PST)
-Received: from ZEVORN-PC.bbrouter ([183.195.21.180])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2a7190d14cfsm110703045ad.38.2026.01.19.20.58.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Jan 2026 20:58:59 -0800 (PST)
-From: Chao Liu <chao.liu.zevorn@gmail.com>
-To: Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liwei1518@gmail.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, wangjingwei@iscas.ac.cn,
- Chao Liu <chao.liu@zevorn.cn>, Chao Liu <chao.liu.zevorn@gmail.com>
-Subject: [PATCH v4 5/5] docs/system/riscv: add documentation for k230 machine
-Date: Tue, 20 Jan 2026 12:56:55 +0800
-Message-ID: <03fd30a68eae5d850953fef26f9b69294ff00048.1768884546.git.chao.liu.zevorn@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1768884546.git.chao.liu.zevorn@gmail.com>
-References: <cover.1768884546.git.chao.liu.zevorn@gmail.com>
+ (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
+ id 1vi4Eu-0003G8-U3; Tue, 20 Jan 2026 00:25:17 -0500
+Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
+ id 1vi4Et-0005s1-3Z; Tue, 20 Jan 2026 00:25:16 -0500
+Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Tue, 20 Jan
+ 2026 13:18:59 +0800
+Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
+ Transport; Tue, 20 Jan 2026 13:18:59 +0800
+To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>, Andrew Jeffery
+ <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, "open
+ list:ASPEED BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
+ <qemu-devel@nongnu.org>
+CC: <troy_lee@aspeedtech.com>, Kane-Chen-AS <kane_chen@aspeedtech.com>
+Subject: [PATCH v5 00/22] hw/arm/aspeed: AST1700 LTPI support and device
+ hookups
+Date: Tue, 20 Jan 2026 13:18:31 +0800
+Message-ID: <20260120051859.1920565-1-kane_chen@aspeedtech.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::642;
- envelope-from=chao.liu.zevorn@gmail.com; helo=mail-pl1-x642.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=211.20.114.72;
+ envelope-from=kane_chen@aspeedtech.com; helo=TWMBX01.aspeed.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,101 +58,142 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Kane Chen <kane_chen@aspeedtech.com>
+From:  Kane Chen via qemu development <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Chao Liu <chao.liu@zevorn.cn>
+From: Kane-Chen-AS <kane_chen@aspeedtech.com>
 
-Add documentation for k230 virt reference platform.
+Hi all,
 
-Signed-off-by: Chao Liu <chao.liu.zevorn@gmail.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+LTPI (LVDS Tunneling Protocol & Interface) is defined in the OCP DC-SCM
+2.0 specification (see Figure 2):
+https://www.opencompute.org/documents/ocp-dc-scm-2-0-ltpi-ver-1-0-pdf
+
+LTPI provides a protocol and physical interface for tunneling various
+low-speed signals between the Host Processor Module (HPM) and the
+Satellite Controller Module (SCM). In Figure 2 of the specification,
+the AST27x0 SoC (left) integrates two LTPI controllers, allowing it to
+connect to up to two AST1700 boards. On the other side, the AST1700
+consolidates HPM FPGA functions and multiple peripheral interfaces
+(GPIO, UART, I2C, I3C, etc.) onto a single board.
+
+Because the AST1700 exposes additional I/O interfaces (GPIO, I2C, I3C,
+and others), it acts as an I/O expander. Once connected over LTPI,
+the AST27x0 can control additional downstream devices through this link.
+
+This patch series is based on the aspeed_next branch and incorporates
+recent I2C bus label changes.
+Ref: https://patchwork.kernel.org/project/qemu-devel/patch/20260112083054.4151945-2-kane_chen@aspeedtech.com/
+
+It introduces a basic LTPI controller model and wires it into the
+AST27x0 SoC. The series also adds the AST1700-specific LTPI expander
+device and incrementally connects common peripherals on the AST1700
+model. For the I3C block, which may cause kernel crashes, its MMIO
+region is modeled as an unimplemented device to reserve address space
+and make the missing functionality explicit, ensuring stable guest
+probing.
+
+In the official release images, the AST1700 functions are not included
+by default. To test the AST1700-related functionality, please include
+the following DTS files for probing:
+https://github.com/AspeedTech-BMC/linux/blob/aspeed-master-v6.6/arch/arm64/boot/dts/aspeed/aspeed-ltpi0.dtsi
+https://github.com/AspeedTech-BMC/linux/blob/aspeed-master-v6.6/arch/arm64/boot/dts/aspeed/aspeed-ltpi1.dtsi
+
+After including these DTS files in the BMC image, you can verify LTPI
+functionality using the following scenarios:
+
+1. In U-Boot:
+   Run the ltpi command to trigger the LTPI connection and display the
+   current connection status.
+2. In BMC Linux:
+   Run i2cdetect -y <16-38> to scan and test the I2C buses exposed by
+   the AST1700.
+
+Any feedback or suggestions are appreciated!
+
+Kane
+
 ---
- MAINTAINERS                  |  1 +
- docs/system/riscv/k230.rst   | 48 ++++++++++++++++++++++++++++++++++++
- docs/system/target-riscv.rst |  1 +
- 3 files changed, 50 insertions(+)
- create mode 100644 docs/system/riscv/k230.rst
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5464e7fb5c..80d6bd6e90 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1761,6 +1761,7 @@ F: include/hw/riscv/xiangshan_kmh.h
- K230 Machines
- M: Chao Liu <chao.liu.zevorn@gmail.com>
- S: Maintained
-+F: docs/system/riscv/k230.rst
- F: hw/riscv/k230.c
- F: hw/watchdog/k230_wdt.c
- F: include/hw/riscv/k230.h
-diff --git a/docs/system/riscv/k230.rst b/docs/system/riscv/k230.rst
-new file mode 100644
-index 0000000000..3e6ca295df
---- /dev/null
-+++ b/docs/system/riscv/k230.rst
-@@ -0,0 +1,48 @@
-+Kendryte K230 virt reference platform (``k230``)
-+==========================================================================
-+The ``k230`` machine is compatible with with Kendryte K230 SDK.
-+
-+The K230 is a chip from the AIoT SoC series made by Kendryte ® — a part of
-+Canaan Inc. It uses a brand-new multi-heterogeneous unit accelerated computing
-+structure.
-+
-+This chip has 2 RISC-V computing cores and a new-generation KPU (Knowledge
-+Process Unit) smart computing unit.
-+
-+It has multi-precision AI computing ability, works with many common AI computing
-+frameworks, and for some typical networks, its usage rate is over 70%. Besides,
-+the K230 chip supports many peripheral connections and has several special
-+hardware acceleration units (like 2D and 2.5D accelerators). It can speed up
-+different tasks (such as image processing, video processing, audio processing
-+and AI computing). It also has many good features: low delay, high performance,
-+low power use and fast start-up.
-+
-+For more information, see <https://www.kendryte.com/en/proDetail/230>
-+
-+Supported devices
-+-----------------
-+The ``k230`` machine supports the following devices:
-+
-+* 1 c908 cores
-+* Core Local Interruptor (CLINT)
-+* Incoming MSI Controller (IMSIC)
-+* 2 K230 Watchdog Timer
-+* 4 UART
-+
-+Boot options
-+------------
-+The ``k230`` machine can start using the standard ``-bios``
-+functionality for loading the boot image. You need to compile and link
-+the firmware, kernel, and Device Tree (FDT) into a single binary file with
-+K230 SDK(k230_canmv_defconfig), such as ``uboot``.
-+
-+Running
-+-------
-+Below is an example command line for running the ``k230``
-+machine:
-+
-+.. code-block:: bash
-+
-+   $ qemu-system-riscv64 -machine k230 \
-+      -bios k230_sdk/output/k230_canmv_defconfig/little/uboot/u-boot \
-+      -nographic
-diff --git a/docs/system/target-riscv.rst b/docs/system/target-riscv.rst
-index 3ad5d1ddaf..b0b2f9584f 100644
---- a/docs/system/target-riscv.rst
-+++ b/docs/system/target-riscv.rst
-@@ -66,6 +66,7 @@ undocumented; you can get a complete list by running
- .. toctree::
-    :maxdepth: 1
- 
-+   riscv/k230
-    riscv/microblaze-v-generic
-    riscv/microchip-icicle-kit
-    riscv/mips
+ChangeLog
+---------
+v5:
+- Add functional test case for AST1700 I2C
+- Corrected the From attribution
+- Fixed incorrect DRAM setting for SPI and I2C controllers
+- Refine code structure
+
+v4:
+- Add missing Signed-off-by
+- Fix checkpatch.pl warnings
+- Refine code structure
+- Enable AST1700 support only after all devices are ready
+
+v3:
+- Add PWM model
+- Integrate the SGPIO model
+- Fix I2C test case failure
+- Refine code structure
+
+v2:
+- Separate the AST1700 model into a standalone implementation
+- Refine the mechanism for assigning the AST1700 board number
+
+v1:
+- Initial version
+---
+
+Cédric Le Goater (1):
+  hw/misc: Add basic Aspeed PWM model
+
+Kane-Chen-AS (21):
+  hw/misc: Add LTPI controller
+  hw/arm/aspeed: Attach LTPI controller to AST27X0 platform
+  hw/arm/aspeed: Add AST1700 LTPI expander device model
+  hw/arm/aspeed: Integrate AST1700 device into AST27X0
+  hw/arm/aspeed: Integrate interrupt controller for AST1700
+  hw/arm/aspeed: Attach LTPI controller to AST1700 model
+  hw/arm/aspeed: Attach UART device to AST1700 model
+  hw/arm/aspeed: Attach SRAM device to AST1700 model
+  hw/arm/aspeed: Attach SPI device to AST1700 model
+  hw/arm/aspeed: Attach ADC device to AST1700 model
+  hw/arm/aspeed: Attach SCU device to AST1700 model
+  hw/arm/aspeed: Attach GPIO device to AST1700 model
+  hw/arm/aspeed: Introduce 'bus-label' property for AST1700 SoC
+  hw/arm/aspeed: attach I2C device to AST1700 model
+  hw/arm/aspeed: Attach WDT device to AST1700 model
+  hw/arm/aspeed: Attach PWM device to AST1700 model
+  hw/arm/aspeed: Attach SGPIOM device to AST1700 model
+  hw/arm/aspeed: Model AST1700 I3C block as unimplemented device
+  hw/arm/aspeed: Enable AST1700 IO expander support
+  test/functional/aarch64: Parameterize I2C bus ID in AST2700 test
+  test/functional/aarch64: Add I2C test for AST1700 IO expanders
+
+ include/hw/arm/aspeed_ast1700.h               |  55 ++++
+ include/hw/arm/aspeed_soc.h                   |  25 +-
+ include/hw/intc/aspeed_intc.h                 |   2 +
+ include/hw/misc/aspeed_ltpi.h                 |  33 +++
+ include/hw/misc/aspeed_pwm.h                  |  31 ++
+ hw/arm/aspeed_ast1700.c                       | 280 ++++++++++++++++++
+ hw/arm/aspeed_ast27x0.c                       | 170 ++++++++++-
+ hw/intc/aspeed_intc.c                         |  60 ++++
+ hw/misc/aspeed_ltpi.c                         | 193 ++++++++++++
+ hw/misc/aspeed_pwm.c                          | 121 ++++++++
+ hw/arm/meson.build                            |   1 +
+ hw/misc/meson.build                           |   2 +
+ hw/misc/trace-events                          |   4 +
+ .../functional/aarch64/test_aspeed_ast2700.py |  52 +++-
+ 14 files changed, 999 insertions(+), 30 deletions(-)
+ create mode 100644 include/hw/arm/aspeed_ast1700.h
+ create mode 100644 include/hw/misc/aspeed_ltpi.h
+ create mode 100644 include/hw/misc/aspeed_pwm.h
+ create mode 100644 hw/arm/aspeed_ast1700.c
+ create mode 100644 hw/misc/aspeed_ltpi.c
+ create mode 100644 hw/misc/aspeed_pwm.c
+
 -- 
-2.52.0
+2.43.0
 
 
