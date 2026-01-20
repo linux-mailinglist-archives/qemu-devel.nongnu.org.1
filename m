@@ -2,112 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wEoRNyy4b2kOMQAAu9opvQ
+	id EPPoJ4C4b2kOMQAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:15:24 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:16:48 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB42B48613
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:15:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC41748664
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:16:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viFJL-0003EO-Fj; Tue, 20 Jan 2026 12:14:36 -0500
+	id 1viFL1-0004xF-36; Tue, 20 Jan 2026 12:16:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1viFJI-0003D7-CH
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 12:14:32 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1viFKR-0004to-DV
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 12:15:49 -0500
+Received: from forwardcorp1d.mail.yandex.net
+ ([2a02:6b8:c41:1300:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1viFJG-00018X-R9
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 12:14:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768929269;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=CoQDvc6A7+//zuquv8zn8ciw1M1QxQZNphCJsrqFf2g=;
- b=ARzQbMgjhZEE0ndGq0tMruvk2wdrOKCsCLtAIaM3IUryTnnKq311luXTifFuUwbvWEdOWw
- HtolCFqQR3Pu7dIsA1Jk67Jra3smDwxSGO/PPl+kpCni/gt6SPpbmGj0hMCLpRgAUeMsSh
- mnStMzXrNFZdqZa/x+ypAqGosYIDKUM=
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com
- [74.125.82.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-226-C3GswPvqOuiKUVPBUPWIZg-1; Tue, 20 Jan 2026 12:14:28 -0500
-X-MC-Unique: C3GswPvqOuiKUVPBUPWIZg-1
-X-Mimecast-MFC-AGG-ID: C3GswPvqOuiKUVPBUPWIZg_1768929267
-Received: by mail-dy1-f198.google.com with SMTP id
- 5a478bee46e88-2b6a8b32fa9so23101958eec.1
- for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 09:14:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=redhat.com; s=google; t=1768929267; x=1769534067; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=CoQDvc6A7+//zuquv8zn8ciw1M1QxQZNphCJsrqFf2g=;
- b=ZSq5bVdZNP/E0LySjoZyO7gZ6eyoU9y1sa4Vp00Bo+FhoIbOiQhJOnnFt1mHwPvk8W
- LxghSjiRMZVjZcbWzvH6AENTWtx2mRrIGONY9JMvJn1Ms8vNTb/btLMNULaTRdGO1aMg
- ZaHP9L+4ecVgSvJz9fnA5FGf8mR4rzFaecfXXjkNNdCMTXdalhWiNOu79JOXVRyAl5R6
- gxJIv/nKtKcttM+NU4HX/iCFVhdNWgp98wuWrixBQo/IRJh5ob2qOsLvvZKY/AbSxtVY
- +50LhrG+s8tiFDNDf0l6lfCASyFrFmoj+mN9di3BqSD6qwMF+K7m7T0KQqLxjFuruDhC
- UxuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768929267; x=1769534067;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CoQDvc6A7+//zuquv8zn8ciw1M1QxQZNphCJsrqFf2g=;
- b=cqP9+cjDvYEqKCA1w2LvWolpQChb8gSL4Ssn2WXFu3qklxH0CZvXUzXFxKp1fI8zwM
- U8/1k9MG9TMya/ipv0iU+n6ce7myp/mD/Mwxb3bVCh+9R9NhfJ7D+zl43hXKdCkQpNEU
- 0xCo8O36wNkqyKOuf75lm04meJvvjsVJBEDrStD8F+WEOpLPM2wPSDk2zJsuUrQt2Xcw
- KTZKo8epnCVNHFQ1YgQD7AtyKq9wdCdWxBaMbEIpA6VEBTyX0vLiS2KTUb7cdYmCYBTK
- oi5pCoXfNSCXS58bkcFtIqbvp5xDb38iaCya0xwqbAAcUuVY2yeLLyV3baY6K8U2oGAN
- 33vQ==
-X-Gm-Message-State: AOJu0Yzqo6CL07yDECc2BncsflcsbMuVcMHKftj1bDM6gENFfr6iOsW9
- HyV/3ISjeLl3kOIb7tq0odmv/Y47htsWTab0Qau0waTu9KF5YvIByKM70m/Zg9l2fArZZ0l10vG
- Gxi2eKn5laMMoQKpixOdsu/ECMiXlnaFHRsLHw2QXjkrfZKyQYe2P9f/C
-X-Gm-Gg: AZuq6aJrCNX3PrdrgsI9wpeJUMBN3Q/c5kqFA4D3972eBjwMlCLMlYIt/nsGHe+1uz9
- Qu8MCFdOjjXQL8SMAdsJbQ1sTnBm6Q9v+FGYeABiLyEpWJmp/6GrU15NL4Q9v+I3zxgcfIKux8V
- RRMtTYRXSIqAbydZDBtUa2q0SP5OI6So7V6uzt5Cf3P+aHZvrarUT/OC0LfTsndE+7x63xYyTEs
- 6VZLN07SjprWaDKUrCXRBhVmQYKhtZVCG7n5BWpK0k7NXtOtmz+80qZDyEJBzyE1S8DAjxIYnsv
- gVi3GIftlp36QiqLrr+08gkIPXK5TO6syjArxFnW+uI7LfZjOC+lcth8G23v1gu6biBj+F7OjbG
- QnO0=
-X-Received: by 2002:a05:7300:df4c:b0:2ac:1e9f:a0ed with SMTP id
- 5a478bee46e88-2b6b40d9828mr14157060eec.25.1768929265781; 
- Tue, 20 Jan 2026 09:14:25 -0800 (PST)
-X-Received: by 2002:a05:7300:df4c:b0:2ac:1e9f:a0ed with SMTP id
- 5a478bee46e88-2b6b40d9828mr14156958eec.25.1768929263841; 
- Tue, 20 Jan 2026 09:14:23 -0800 (PST)
-Received: from x1.local ([142.188.210.156]) by smtp.gmail.com with ESMTPSA id
- 5a478bee46e88-2b6b364579csm17627802eec.23.2026.01.20.09.14.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jan 2026 09:14:23 -0800 (PST)
-Date: Tue, 20 Jan 2026 12:14:15 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Lukas Straub <lukasstraub2@web.de>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Zhang Chen <zhangckid@gmail.com>,
- Hailiang Zhang <zhanghailiang@xfusion.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH v2 3/8] Move ram state receive into
- multifd_ram_state_recv()
-Message-ID: <aW-353Qwg_Qi_8yX@x1.local>
-References: <20260117-colo_unit_test_multifd-v2-0-ab521777fa51@web.de>
- <20260117-colo_unit_test_multifd-v2-3-ab521777fa51@web.de>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1viFKO-0001Ws-Vc
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 12:15:43 -0500
+Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:5c05:0:640:ff67:0])
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 9FD068076F;
+ Tue, 20 Jan 2026 20:15:34 +0300 (MSK)
+Received: from [IPV6:2a02:6bf:8080:b20::1:6] (unknown [2a02:6bf:8080:b20::1:6])
+ by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id XFeRjw1BN0U0-ynhh3A0W; Tue, 20 Jan 2026 20:15:34 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1768929334;
+ bh=xoGGMJew88MgDIHmEzp+UKv8OdM4LZvrnlp4zLbZv+g=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=oILhNyqb+A1tMRA18hl7n2e7RWOixDQpqJ2bq5Ad9joEQiDD2jUTvKTnDlhiRtXzD
+ rrjsbmdpuPdU7eNn+MCQegul+EOUWRH2lKmUik5PAa1IAney/4eNzTAAYiaTmPD8bT
+ qlvKLI75UfA5vUikYrf08kyqVmM9i9SaNChh9eVM=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <9937f414-f286-49c7-985d-8a4c951561ad@yandex-team.ru>
+Date: Tue, 20 Jan 2026 20:15:33 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260117-colo_unit_test_multifd-v2-3-ab521777fa51@web.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] tests/unit: add unit test for qemu_hexdump()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ berrange@redhat.com
+Cc: qemu-devel@nongnu.org
+References: <20251113064935.342018-1-vsementsov@yandex-team.ru>
+ <a40731d0-7add-4d09-9a89-902f75e2eede@linaro.org>
+ <8259d920-32bc-41a7-94b9-cd1af9783b6e@yandex-team.ru>
+ <05340117-a75b-4d64-98fe-8868b7bfb5c5@linaro.org>
+ <1192488b-51d9-4024-8f76-3b2dd85b3d3c@yandex-team.ru>
+ <0a7dfd69-26df-407e-a8cb-543dcefab685@linaro.org>
+ <db1f4846-afef-42f5-9181-9c25406be863@yandex-team.ru>
+ <e0a6625d-1b3d-4fd8-90d8-8bb996e2f259@linaro.org>
+ <a4135018-6673-4414-a900-7a35b5882aab@linaro.org>
+Content-Language: en-US
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <a4135018-6673-4414-a900-7a35b5882aab@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a02:6b8:c41:1300:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.087,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,51 +86,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
-X-Spamd-Result: default: False [-1.21 / 15.00];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
+X-Spamd-Result: default: False [-8.21 / 15.00];
+	WHITELIST_DMARC(-7.00)[yandex-team.ru:D:+];
+	DMARC_POLICY_ALLOW(-0.50)[yandex-team.ru,none];
 	MAILLIST(-0.20)[mailman];
+	R_DKIM_ALLOW(-0.20)[yandex-team.ru:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:lukasstraub2@web.de,m:qemu-devel@nongnu.org,m:farosas@suse.de,m:lvivier@redhat.com,m:pbonzini@redhat.com,m:zhangckid@gmail.com,m:zhanghailiang@xfusion.com,m:armbru@redhat.com,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	ARC_NA(0.00)[];
-	FREEMAIL_CC(0.00)[nongnu.org,suse.de,redhat.com,gmail.com,xfusion.com];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[web.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[peterx@redhat.com,qemu-devel-bounces@nongnu.org];
-	FORWARDED(0.00)[qemu-devel@nongnu.org];
+	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[vsementsov@yandex-team.ru,qemu-devel-bounces@nongnu.org];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:philmd@linaro.org,m:berrange@redhat.com,m:qemu-devel@nongnu.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[qemu-devel@nongnu.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[peterx@redhat.com,qemu-devel-bounces@nongnu.org];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vsementsov@yandex-team.ru,qemu-devel-bounces@nongnu.org];
+	DKIM_TRACE(0.00)[yandex-team.ru:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[qemu-devel];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,x1.local:mid]
-X-Rspamd-Queue-Id: AB42B48613
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,meson.build:url,gitlab.com:url,yandex:email,linaro.org:email]
+X-Rspamd-Queue-Id: EC41748664
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sat, Jan 17, 2026 at 03:09:10PM +0100, Lukas Straub wrote:
-> This is in preparation for the next patch.
+On 20.01.26 19:38, Philippe Mathieu-Daudé wrote:
+> On 19/1/26 20:29, Philippe Mathieu-Daudé wrote:
+>> On 19/1/26 20:18, Vladimir Sementsov-Ogievskiy wrote:
+>>> On 19.01.26 21:38, Philippe Mathieu-Daudé wrote:
+>>>> On 19/1/26 18:26, Vladimir Sementsov-Ogievskiy wrote:
+>>>>> On 19.01.26 19:31, Philippe Mathieu-Daudé wrote:
+>>>>>> On 19/1/26 16:42, Vladimir Sementsov-Ogievskiy wrote:
+>>>>>>> Hi! Isn't this patch lost?
+>>>>>>>
+>>>>>>> On 14.11.25 00:01, Philippe Mathieu-Daudé wrote:
+>>>>>>>> On 13/11/25 07:49, Vladimir Sementsov-Ogievskiy wrote:
+>>>>>>>>> Test, that fix in previous commit make sense.
+>>>>>>>>>
+>>>>>>>>> To not break compilation when we build without
+>>>>>>>>> 'block', move hexdump.c out of "if have_block"
+>>>>>>>>> in meson.build.
+>>>>>>>>>
+>>>>>>>>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex- team.ru>
+>>>>>>>>> ---
+>>>>>>>>>
+>>>>>>>>> v3: change meson.build to compile hexdump.c always
+>>>>>>>>>
+>>>>>>>>>   tests/unit/test-cutils.c | 43 ++++++++++++++++++++++++++++++++ + ++ +++++
+>>>>>>>>>   util/meson.build         |  2 +-
+>>>>>>>>>   2 files changed, 44 insertions(+), 1 deletion(-)
+>>>>>>>>>
+>>>>>>>>> diff --git a/tests/unit/test-cutils.c b/tests/unit/test-cutils.c
+>>>>>>>>> index 227acc5995..24fef16a7f 100644
+>>>>>>>>> --- a/tests/unit/test-cutils.c
+>>>>>>>>> +++ b/tests/unit/test-cutils.c
+>>>>>>>>> @@ -3626,6 +3626,44 @@ static void test_si_prefix(void)
+>>>>>>>>>       g_assert_cmpstr(si_prefix(18), ==, "E");
+>>>>>>>>>   }
+>>>>>>>>> +static void test_qemu_hexdump_alignment(void)
+>>>>>>>>> +{
+>>>>>>>>> +    /*
+>>>>>>>>> +     * Test that ASCII part is properly aligned for incomplete lines.
+>>>>>>>>> +     * This test catches the bug that was fixed in previous commit
+>>>>>>>>> +     * "util/hexdump: fix QEMU_HEXDUMP_LINE_WIDTH logic".
+>>>>>>>>> +     *
+>>>>>>>>> +     * We use data that is not aligned to 16 bytes, so last line
+>>>>>>>>> +     * is incomplete.
+>>>>>>>>> +     */
+>>>>>>>>> +    const uint8_t data[] = {
+>>>>>>>>> +        /* First line: 16 bytes */
+>>>>>>>>> +        0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x57, 0x6f,  /* "Hello Wo" */
+>>>>>>>>> +        0x72, 0x6c, 0x64, 0x21, 0x20, 0x54, 0x68, 0x69,  /* "rld! Thi" */
+>>>>>>>>> +        /* Second line: 5 bytes (incomplete) */
+>>>>>>>>> +        0x73, 0x20, 0x69, 0x73, 0x20                     /* "s is " */
+>>>>>>>>> +    };
+>>>>>>>>> +    char *output = NULL;
+>>>>>>>>> +    size_t size;
+>>>>>>>>> +    FILE *stream = open_memstream(&output, &size);
+>>>>>>>>> +
+>>>>>>>>> +    g_assert_nonnull(stream);
+>>>>>>>>> +
+>>>>>>>>> +    qemu_hexdump(stream, "test", data, sizeof(data));
+>>>>>>>>> +    fclose(stream);
+>>>>>>>>> +
+>>>>>>>>> +    g_assert_nonnull(output);
+>>>>>>>>> +
+>>>>>>>>> +    /* We expect proper alignment of "s is" part on the second line */
+>>>>>>>>> +    const char *expected =
+>>>>>>>>> +        "test: 0000: 48 65 6c 6c  6f 20 57 6f  72 6c 64 21  20 54 68 69   Hello World! Thi\n"
+>>>>>>>>> +        "test: 0010: 73 20 69 73 20                                      s is \n";
+>>>>>>>>
+>>>>>>>> Thanks, queued wrapping the long lines to pass checkpatch.pl,
+>>>>>>>> as in:
+>>>>>>>> https://lore.kernel.org/qemu-devel/20251031211518.38503-9- philmd@linaro.org/
+>>>>>>
+>>>>>> I have it tagged but there is still a meson issue. I should revisit
+>>>>>> but it is low in my priority queue.
+>>>>
+>>>> Found it, see that pipeline:
+>>>> https://gitlab.com/philmd/qemu/-/pipelines/2238533614
+>>>
+>>> This build contains previous version of the patch. v3 should fix it.
+>>
+>> Doh sorry, maybe I tested v2 then, I don't remember :(
 > 
-> Signed-off-by: Lukas Straub <lukasstraub2@web.de>
+> On MinGW (v3):
+> 
+> ../tests/unit/test-cutils.c: In function 'test_qemu_hexdump_alignment':
+> ../tests/unit/test-cutils.c:3648:20: error: implicit declaration of function 'open_memstream' [-Wimplicit-function-declaration]
+>   3648 |     FILE *stream = open_memstream(&output, &size);
+>        |                    ^~~~~~~~~~~~~~
+> 
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Ogh. Let's try without open_memstream, I'll send a v4.
+
 
 -- 
-Peter Xu
-
+Best regards,
+Vladimir
 
