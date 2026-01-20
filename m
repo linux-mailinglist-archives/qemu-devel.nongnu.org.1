@@ -2,94 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6NVTFjDHb2myMQAAu9opvQ
+	id WM2BK3rJb2mgMQAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:19:28 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:29:14 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C55D349536
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:19:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B8AE4975A
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:29:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viGJ3-0008GA-17; Tue, 20 Jan 2026 13:18:21 -0500
+	id 1viGSY-0006BB-F8; Tue, 20 Jan 2026 13:28:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1viGIy-0008CP-1e
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:18:16 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1viGIv-0002Rg-O7
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:18:15 -0500
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id E08E65BCC3;
- Tue, 20 Jan 2026 18:18:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1768933091; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=YLNCGS/0C6dp1/9N/zIyIn0EirHAi2opVXHTWFw3RwE=;
- b=uj0KismVyA4PtPVg8k72vYcBUGYAyULkpQ/7gR/HXepTb+2Flt7cOmTqqqDeNvdmboCQ/w
- hz/9KG0lNbk6HJcC6cKJLmtnLrwegwcZmMsgvliZ/6GuIOfeFeisO932qat3KbtH+rF9lF
- Y91+pRk/3NH8cZMI5JAC4bfiSlKVZ8s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1768933091;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=YLNCGS/0C6dp1/9N/zIyIn0EirHAi2opVXHTWFw3RwE=;
- b=3lVaoKYHQ7uc6m+TnulT9hUq2KS7lErskGYWghstB5VTb+wt0rJA4zO8hEKu5iMk7Wbs/z
- lZD8EhlyYL0KHNDA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1768933090; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=YLNCGS/0C6dp1/9N/zIyIn0EirHAi2opVXHTWFw3RwE=;
- b=fr3SgyT2bWh/Nb/i7OLHaI5WbljSO1J9DEb0TmVp4ed6Iq1FcUja101196cTRMEJb/KuTT
- 20S/tM1a3Ov9unY5p5Epx1d4CkDmh5RZnu2sPkgq3U66HC2/jZN17u9VseyGNY2xt4SA0l
- +g/4XeZo86zCGsRxMX9ZOnjB4t1XsvE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1768933090;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=YLNCGS/0C6dp1/9N/zIyIn0EirHAi2opVXHTWFw3RwE=;
- b=Xk9HhSUKJOYbrxuz4R0JRxzx/nAyVj32C9jC6u2PQJHjiDG79aY52rLUXqUFiDUfAgF4VA
- ZeB1QvJ3iuIZeEBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 53A413EA63;
- Tue, 20 Jan 2026 18:18:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id rotbBOLGb2lsQwAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 20 Jan 2026 18:18:10 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Prasad Pandit <ppandit@redhat.com>
-Cc: qemu-devel@nongnu.org, peterx@redhat.com, berrange@redhat.com
-Subject: Re: [PATCH v3 20/25] migration: Move channel parsing to channel.c
-In-Reply-To: <CAE8KmOzKkF2M0c4yresB+Y87XTXssbmvGp77C640tt33dbj37g@mail.gmail.com>
-References: <20260109124043.25019-1-farosas@suse.de>
- <20260109124043.25019-21-farosas@suse.de>
- <CAE8KmOzKkF2M0c4yresB+Y87XTXssbmvGp77C640tt33dbj37g@mail.gmail.com>
-Date: Tue, 20 Jan 2026 15:18:07 -0300
-Message-ID: <87ikcw87xc.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1viGSW-00069X-1Y; Tue, 20 Jan 2026 13:28:08 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1viGST-0003mL-Cn; Tue, 20 Jan 2026 13:28:07 -0500
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id E8C4B596A07;
+ Tue, 20 Jan 2026 19:27:58 +0100 (CET)
+X-Virus-Scanned: amavis at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
+ id HNc79LQCno2M; Tue, 20 Jan 2026 19:27:56 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 8F255596A03; Tue, 20 Jan 2026 19:27:56 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 8CC015969E4;
+ Tue, 20 Jan 2026 19:27:56 +0100 (CET)
+Date: Tue, 20 Jan 2026 19:27:56 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Bernhard Beschow <shentey@gmail.com>
+cc: qemu-devel@nongnu.org, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-arm@nongnu.org, 
+ Guenter Roeck <linux@roeck-us.net>, Bin Meng <bmeng.cn@gmail.com>, 
+ Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, 
+ qemu-block@nongnu.org, qemu-ppc@nongnu.org
+Subject: Re: [PATCH 00/14] Freescale SDHCI Fixes
+In-Reply-To: <ae54581c-2a49-b6c2-cde1-d50bbde70a84@eik.bme.hu>
+Message-ID: <25c93133-a8a7-5456-5964-a7df9e1daf88@eik.bme.hu>
+References: <20260112145418.220506-1-shentey@gmail.com>
+ <ae54581c-2a49-b6c2-cde1-d50bbde70a84@eik.bme.hu>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -4.30
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,298 +70,293 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+X-Spamd-Result: default: False [1.09 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MAILLIST(-0.20)[mailman];
+	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[eik.bme.hu : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_SEVEN(0.00)[7];
 	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:ppandit@redhat.com,m:qemu-devel@nongnu.org,m:peterx@redhat.com,m:berrange@redhat.com,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[qemu-devel@nongnu.org];
-	FORGED_SENDER(0.00)[farosas@suse.de,qemu-devel-bounces@nongnu.org];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	ARC_NA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[farosas@suse.de,qemu-devel-bounces@nongnu.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[qemu-devel];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[nongnu.org,linaro.org,tribudubois.net,roeck-us.net,gmail.com,redhat.com];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[balaton@eik.bme.hu,qemu-devel-bounces@nongnu.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TAGGED_RCPT(0.00)[qemu-devel];
+	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,suse.de:email,suse.de:dkim,suse.de:mid,fedoraproject.org:email]
-X-Rspamd-Queue-Id: C55D349536
+	DBL_BLOCKED_OPENRESOLVER(0.00)[i.mx:url,lists.gnu.org:rdns,lists.gnu.org:helo]
+X-Rspamd-Queue-Id: 5B8AE4975A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Prasad Pandit <ppandit@redhat.com> writes:
-
-> On Fri, 9 Jan 2026 at 18:14, Fabiano Rosas <farosas@suse.de> wrote:
->> Encapsulate the MigrationChannelList parsing in a new
->> migrate_channels_parse() located at channel.c.
->>
->> This also makes the memory management of the MigrationAddress more
->> uniform. Previously, half the parsing code (uri parsing) would
->> allocate memory for the address while the other half (channel parsing)
->> would instead pass the original QAPI object along. After this patch,
->> the MigrationAddress is always QAPI_CLONEd, so the callers can use
->> g_autoptr(MigrationAddress) in all cases.
->>
->> Reviewed-by: Peter Xu <peterx@redhat.com>
->> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->> ---
->>  migration/channel.c   | 45 ++++++++++++++++++++++++++++++++++++++
->>  migration/channel.h   |  5 +++++
->>  migration/migration.c | 50 ++++++++++++-------------------------------
->>  3 files changed, 64 insertions(+), 36 deletions(-)
->>
->> diff --git a/migration/channel.c b/migration/channel.c
->> index 56c80b5cdf..8b71b3f430 100644
->> --- a/migration/channel.c
->> +++ b/migration/channel.c
->> @@ -11,6 +11,7 @@
->>   */
->>
->>  #include "qemu/osdep.h"
->> +#include "qemu/cutils.h"
->>  #include "channel.h"
->>  #include "exec.h"
->>  #include "fd.h"
->> @@ -20,7 +21,9 @@
->>  #include "migration.h"
->>  #include "multifd.h"
->>  #include "options.h"
->> +#include "qapi/clone-visitor.h"
->>  #include "qapi/qapi-types-migration.h"
->> +#include "qapi/qapi-visit-migration.h"
->>  #include "qapi/error.h"
->>  #include "qemu-file.h"
->>  #include "qemu/yank.h"
->> @@ -280,3 +283,45 @@ int migration_channel_read_peek(QIOChannel *ioc,
->>
->>      return 0;
->>  }
->> +
->> +bool migrate_channels_parse(MigrationChannelList *channels,
->> +                            MigrationChannel **main_channelp,
->> +                            MigrationChannel **cpr_channelp,
->> +                            Error **errp)
->> +{
->> +    MigrationChannel *channelv[MIGRATION_CHANNEL_TYPE__MAX] = { NULL };
->> +    bool single_channel = cpr_channelp ? false : true;
->> +
->> +    if (single_channel && channels->next) {
->> +        error_setg(errp, "Channel list must have only one entry, "
->> +                   "for type 'main'");
->> +        return false;
->> +    }
+On Tue, 20 Jan 2026, BALATON Zoltan wrote:
+> On Mon, 12 Jan 2026, Bernhard Beschow wrote:
+>> This series splits TYPE_IMX_USDHC into three device models which fixes 
+>> issues
+>> in the ppce500 and some i.MX machines. In particular, it introduces uSDHC's
+>> predecessor eSDHC in big and little endian variants. Once the eSDHCs are
+>> split off, uSDHC emulation is improved which is a stepping stone towards
+>> running u-boot on the i.MX8MP (not implemented yet).
+>> 
+>> In a way this series picks up previous efforts:
+>> * 
+>> https://lore.kernel.org/qemu-devel/20250310000620.70120-14-philmd@linaro.org
+>> * 
+>> https://lore.kernel.org/qemu-devel/20250310000620.70120-15-philmd@linaro.org
+>> 
+>> There is quite some code churn involved to fix all the issues addressed in
+>> this series. Let me know if you have any better ideas to achieve the same.
+>> 
+>> Best regards,
+>> Bernhard
+>> 
+>> Testing done:
+>> * make check
+>> * Boot https://www.qemu-advent-calendar.org/2018/download/day19.tar.xz in
+>> ppce500
+>> * Boot guest in imx8mp-evk
 >
-> * Instead of the single_channel variable above, we could say
-> (!cpr_channelp && channels->next)? and avoid the single_channel
-> variable.
+> I've tried it with the A1222 U-Boot and it still works the same with this 
+> series as before so:
 >
-
-ok
-
->> +    for ( ; channels; channels = channels->next) {
->> +        MigrationChannelType type;
->> +
->> +        type = channels->value->channel_type;
->> +        if (channelv[type]) {
->> +            error_setg(errp, "Channel list has more than one %s entry",
->> +                       MigrationChannelType_str(type));
->> +            return false;
->> +        }
->> +        channelv[type] = channels->value;
->> +    }
->> +
->> +    if (cpr_channelp) {
->> +        *cpr_channelp = QAPI_CLONE(MigrationChannel,
->> +                                   channelv[MIGRATION_CHANNEL_TYPE_CPR]);
->> +    }
->> +
->> +    *main_channelp = QAPI_CLONE(MigrationChannel,
->> +                                channelv[MIGRATION_CHANNEL_TYPE_MAIN]);
->> +
->> +    if (!(*main_channelp)->addr) {
->> +        error_setg(errp, "Channel list has no main entry");
->> +        return false;
->> +    }
->> +
->> +    return true;
->> +}
->> diff --git a/migration/channel.h b/migration/channel.h
->> index 8264fe327d..5110fb45a4 100644
->> --- a/migration/channel.h
->> +++ b/migration/channel.h
->> @@ -42,4 +42,9 @@ bool migration_has_all_channels(void);
->>  void migration_connect_outgoing(MigrationState *s, MigrationAddress *addr,
->>                                  Error **errp);
->>  void migration_connect_incoming(MigrationAddress *addr, Error **errp);
->> +
->> +bool migrate_channels_parse(MigrationChannelList *channels,
->> +                            MigrationChannel **main_channelp,
->> +                            MigrationChannel **cpr_channelp,
->> +                            Error **errp);
->>  #endif
->> diff --git a/migration/migration.c b/migration/migration.c
->> index 3c93fb23cc..98c1f38e8e 100644
->> --- a/migration/migration.c
->> +++ b/migration/migration.c
->> @@ -741,8 +741,7 @@ static void qemu_setup_incoming_migration(const char *uri, bool has_channels,
->>                                            MigrationChannelList *channels,
->>                                            Error **errp)
->>  {
->> -    g_autoptr(MigrationChannel) channel = NULL;
->> -    MigrationAddress *addr = NULL;
->> +    g_autoptr(MigrationChannel) main_ch = NULL;
->>      MigrationIncomingState *mis = migration_incoming_get_current();
->>
->>      /*
->> @@ -754,25 +753,20 @@ static void qemu_setup_incoming_migration(const char *uri, bool has_channels,
->>      }
->>
->>      if (channels) {
->> -        /* To verify that Migrate channel list has only item */
->> -        if (channels->next) {
->> -            error_setg(errp, "Channel list must have only one entry, "
->> -                             "for type 'main'");
->> +        if (!migrate_channels_parse(channels, &main_ch, NULL, errp)) {
->>              return;
->>          }
->> -        addr = channels->value->addr;
->>      }
->>
->>      if (uri) {
->>          /* caller uses the old URI syntax */
->> -        if (!migrate_uri_parse(uri, &channel, errp)) {
->> +        if (!migrate_uri_parse(uri, &main_ch, errp)) {
->>              return;
->>          }
->> -        addr = channel->addr;
->>      }
->>
->>      /* transport mechanism not suitable for migration? */
->> -    if (!migration_transport_compatible(addr, errp)) {
->> +    if (!migration_transport_compatible(main_ch->addr, errp)) {
->>          return;
->>      }
->>
->> @@ -780,7 +774,7 @@ static void qemu_setup_incoming_migration(const char *uri, bool has_channels,
->>          return;
->>      }
->>
->> -    migration_connect_incoming(addr, errp);
->> +    migration_connect_incoming(main_ch->addr, errp);
->>
->>      /* Close cpr socket to tell source that we are listening */
->>      cpr_state_close();
->> @@ -2116,10 +2110,8 @@ void qmp_migrate(const char *uri, bool has_channels,
->>                   bool has_resume, bool resume, Error **errp)
->>  {
->>      MigrationState *s = migrate_get_current();
->> -    g_autoptr(MigrationChannel) channel = NULL;
->> -    MigrationAddress *addr = NULL;
->> -    MigrationChannel *channelv[MIGRATION_CHANNEL_TYPE__MAX] = { NULL };
->> -    MigrationChannel *cpr_channel = NULL;
->> +    g_autoptr(MigrationChannel) main_ch = NULL;
->> +    g_autoptr(MigrationChannel) cpr_ch = NULL;
->>
->>      /*
->>       * Having preliminary checks for uri and channel
->> @@ -2130,38 +2122,24 @@ void qmp_migrate(const char *uri, bool has_channels,
->>      }
->>
->>      if (channels) {
->> -        for ( ; channels; channels = channels->next) {
->> -            MigrationChannelType type = channels->value->channel_type;
->> -
->> -            if (channelv[type]) {
->> -                error_setg(errp, "Channel list has more than one %s entry",
->> -                           MigrationChannelType_str(type));
->> -                return;
->> -            }
->> -            channelv[type] = channels->value;
->> -        }
->> -        cpr_channel = channelv[MIGRATION_CHANNEL_TYPE_CPR];
->> -        addr = channelv[MIGRATION_CHANNEL_TYPE_MAIN]->addr;
->> -        if (!addr) {
->> -            error_setg(errp, "Channel list has no main entry");
->> +        if (!migrate_channels_parse(channels, &main_ch, &cpr_ch, errp)) {
->>              return;
->>          }
->>      }
->>
->>      if (uri) {
->>          /* caller uses the old URI syntax */
->> -        if (!migrate_uri_parse(uri, &channel, errp)) {
->> +        if (!migrate_uri_parse(uri, &main_ch, errp)) {
->>              return;
->>          }
->> -        addr = channel->addr;
->>      }
->>
->>      /* transport mechanism not suitable for migration? */
->> -    if (!migration_transport_compatible(addr, errp)) {
->> +    if (!migration_transport_compatible(main_ch->addr, errp)) {
->>          return;
->>      }
->>
->> -    if (migrate_mode() == MIG_MODE_CPR_TRANSFER && !cpr_channel) {
->> +    if (migrate_mode() == MIG_MODE_CPR_TRANSFER && !cpr_ch) {
->>          error_setg(errp, "missing 'cpr' migration channel");
->>          return;
->>      }
+> Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
 >
-> * This check for (_CPR_TRANSFER && !cpr_ch) and error could be moved
-> to migrate_channels_parse() as is done for the main_ch.
+> Looks like after this series I can revert this change:
 >
+> diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
+> index 5d8dad7bba..c86dfa281f 100644
+> --- a/hw/sd/sdhci.c
+> +++ b/hw/sd/sdhci.c
+> @@ -614,11 +614,11 @@ static void sdhci_sdma_transfer_multi_blocks(SDHCIState 
+> *s)
+>      * XXX: Some sd/mmc drivers (for example, u-boot-slp) do not account for
+>      * possible stop at page boundary if initial address is not page 
+> aligned,
+>      * allow them to work properly
+>      */
+>     if ((s->sdmasysad % boundary_chk) == 0) {
+> -//        page_aligned = true;
+> +        page_aligned = true;
+>     }
+>
+>     s->prnsts |= SDHC_DATA_INHIBIT | SDHC_DAT_LINE_ACTIVE;
+>     if (s->trnmod & SDHC_TRNS_READ) {
+>         s->prnsts |= SDHC_DOING_READ;
+>
+> which needed to be commented out before but now works with or without this 
+> change. Is this XXX hack still needed?
+>
+> Another change I see is that before it ended in:
+>
+> SDHC wr_4b @0x44 <- 0x00000010 read-only
+> SDHC wr_4b @0x44 <- 0x00000010 read-only
+>
+> repeated 18 times which now says:
+>
+> SD: CMD12 in a wrong state: transfer (spec v3.01)
+> SD: CMD12 in a wrong state: transfer (spec v3.01)
+>
+> repeated 17 times. But this fails after not finding a bootable device so I'm 
+> not sure this is not a bug in this U-Boot version. With more traces enabled 
+> it seems to do some transfer then get these errors when trying to continue 
+> reading:
 
-Hm, it would then apply to the incoming side as well which can't set the
-mode due to how cpr-transfer works. But I guess it's fine as the
-invocation of migration_channel_parse_input is already different between
-src and dst. I'll change it. Thanks
+In case that helps here's the beginning of this transfer that produces the 
+above messages after the first block:
 
->> @@ -2178,7 +2156,7 @@ void qmp_migrate(const char *uri, bool has_channels,
->>       */
->>      Error *local_err = NULL;
->>
->> -    if (!cpr_state_save(cpr_channel, &local_err)) {
->> +    if (!cpr_state_save(cpr_ch, &local_err)) {
->>          goto out;
->>      }
->>
->> @@ -2194,10 +2172,10 @@ void qmp_migrate(const char *uri, bool has_channels,
->>       */
->>      if (migrate_mode() == MIG_MODE_CPR_TRANSFER) {
->>          migrate_hup_add(s, cpr_state_ioc(), (GSourceFunc)qmp_migrate_finish_cb,
->> -                        QAPI_CLONE(MigrationAddress, addr));
->> +                        QAPI_CLONE(MigrationAddress, main_ch->addr));
->>
->>      } else {
->> -        qmp_migrate_finish(addr, errp);
->> +        qmp_migrate_finish(main_ch->addr, errp);
->>      }
->>
->>  out:
+sdcard_read_data SD  READ_MULTIPLE_BLOCK/ CMD18 ofs 510 size 512 blklen  512
+sdbus_read @sd-bus value 0x00
+sdcard_read_data SD  READ_MULTIPLE_BLOCK/ CMD18 ofs 511 size 512 blklen 512
+sdbus_read @sd-bus value 0x00
+sdhci_end_transfer Automatically issue CMD12 0x00000000
+sdbus_command @sd-bus CMD12 arg 0x00000000
+sdcard_normal_command SD    STOP_TRANSMISSION/ CMD12 arg 0x00000000 (mode transfer, state sendingdata)
+sdcard_response RESP#1 (normal cmd) (sz:4)
+sdhci_access wr32: addr[0x000c] <- 0x123a0037 (305791031)
+sdhci_access rd32: addr[0x0030] -> 0x0000000b (11)
+sdhci_access rd32: addr[0x0030] -> 0x0000000b (11)
+sdhci_access rd32: addr[0x0010] -> 0x00000900 (2304)
+sdhci_access rd32: addr[0x0030] -> 0x0000000b (11)
+sdhci_access wr32: addr[0x0030] <- 0xfffffeff (4294967039)
+## Starting application at 0x00200000 ...
+Invalid read at addr 0xFFFE0F200, size 4, region '(null)', reason: rejected
+Invalid write at addr 0xFFFE0F200, size 4, region '(null)', reason: rejected
+Invalid read at addr 0xFFFE0F204, size 4, region '(null)', reason: rejected
+Invalid write at addr 0xFFFE0F204, size 4, region '(null)', reason: rejected
+Invalid read at addr 0xFFFE0F208, size 4, region '(null)', reason: rejected
+Invalid write at addr 0xFFFE0F208, size 4, region '(null)', reason: rejected
+sdhci_access wr32: addr[0x0030] <- 0xfffffeff (4294967039)
+sdbus_get_dat_lines @sd-bus dat_lines: 15
+sdbus_get_cmd_line @sd-bus cmd_line: 1
+sdhci_access rd32: addr[0x0024] -> 0x01ff0000 (33488896)
+sdbus_get_dat_lines @sd-bus dat_lines: 15
+sdbus_get_cmd_line @sd-bus cmd_line: 1
+sdhci_access rd32: addr[0x0024] -> 0x01ff0000 (33488896)
+sdbus_get_dat_lines @sd-bus dat_lines: 15
+sdbus_get_cmd_line @sd-bus cmd_line: 1
+sdhci_access rd32: addr[0x0024] -> 0x01ff0000 (33488896)
+sdhci_access wr32: addr[0x0038] <- 0x00000000 (0)
+sdhci_access wr32: addr[0x0008] <- 0x00000200 (512)
+sdhci_send_command CMD16 ARG[0x00000200]
+sdbus_command @sd-bus CMD16 arg 0x00000200
+sdcard_normal_command SD         SET_BLOCKLEN/ CMD16 arg 0x00000200 (mode transfer, state transfer)
+sdcard_set_blocklen block len 0x200
+sdcard_response RESP#1 (normal cmd) (sz:4)
+sdhci_response4 RSPREG[31..0]=0x00000900
+sdhci_access wr32: addr[0x000c] <- 0x101a0037 (270139447)
+sdhci_access rd32: addr[0x0030] -> 0x00000001 (1)
+sdhci_access rd32: addr[0x0030] -> 0x00000001 (1)
+sdhci_access rd32: addr[0x0010] -> 0x00000900 (2304)
+sdhci_access wr32: addr[0x0030] <- 0xfffffeff (4294967039)
+sdhci_access wr32: addr[0x0030] <- 0xfffffeff (4294967039)
+sdbus_get_dat_lines @sd-bus dat_lines: 15
+sdbus_get_cmd_line @sd-bus cmd_line: 1
+sdhci_access rd32: addr[0x0024] -> 0x01ff0000 (33488896)
+sdbus_get_dat_lines @sd-bus dat_lines: 15
+sdbus_get_cmd_line @sd-bus cmd_line: 1
+sdhci_access rd32: addr[0x0024] -> 0x01ff0000 (33488896)
+sdbus_get_dat_lines @sd-bus dat_lines: 15
+sdbus_get_cmd_line @sd-bus cmd_line: 1
+sdhci_access rd32: addr[0x0024] -> 0x01ff0000 (33488896)
+sdhci_access wr32: addr[0x0000] <- 0x79401de8 (2034245096)
+sdhci_access wr32: addr[0x0004] <- 0x00017200 (94720)
+sdhci_access rd32: addr[0x002c] -> 0x000b011f (721183)
+sdhci_access wr32: addr[0x002c] <- 0x000b011f (721183)
+sdhci_access wr32: addr[0x0038] <- 0x00000000 (0)
+sdhci_access wr32: addr[0x0008] <- 0x00000000 (0)
+sdhci_send_command CMD17 ARG[0x00000000]
+sdbus_command @sd-bus CMD17 arg 0x00000000
+sdcard_normal_command SD    READ_SINGLE_BLOCK/ CMD17 arg 0x00000000 (mode transfer, state transfer)
+sdcard_req_addr req 0x0 addr 0x0
+sdcard_read_block addr 0x0 size 0x200
+sdcard_response RESP#1 (normal cmd) (sz:4)
+sdhci_response4 RSPREG[31..0]=0x00000900
+sdcard_read_data SD    READ_SINGLE_BLOCK/ CMD17 ofs 0 size 512 blklen 512
+sdbus_read @sd-bus value 0x00
+sdcard_read_data SD    READ_SINGLE_BLOCK/ CMD17 ofs 1 size 512 blklen 512
+sdbus_read @sd-bus value 0x00
+
+and so on with increasing ofs until:
+
+> sdcard_read_data SD    READ_SINGLE_BLOCK/ CMD17 ofs 509 size 512 blklen 512
+> sdbus_read @sd-bus value 0x00
+> sdcard_read_data SD    READ_SINGLE_BLOCK/ CMD17 ofs 510 size 512 blklen 512
+> sdbus_read @sd-bus value 0x55
+> sdcard_read_data SD    READ_SINGLE_BLOCK/ CMD17 ofs 511 size 512 blklen 512
+> sdbus_read @sd-bus value 0xaa
+> sdhci_end_transfer Automatically issue CMD12 0x00000000
+> sdbus_command @sd-bus CMD12 arg 0x00000000
+> sdcard_normal_command SD    STOP_TRANSMISSION/ CMD12 arg 0x00000000 (mode 
+> transfer, state transfer)
+> SD: CMD12 in a wrong state: transfer (spec v3.01)
+> sdcard_response ILLEGAL RESP (sz:0)
+> sdhci_access wr32: addr[0x000c] <- 0x113a0037 (289013815)
+> sdhci_access rd32: addr[0x0030] -> 0x0000000b (11)
+> sdhci_access rd32: addr[0x0030] -> 0x0000000b (11)
+> sdhci_access rd32: addr[0x0010] -> 0x00000900 (2304)
+> sdhci_access rd32: addr[0x0030] -> 0x0000000b (11)
+> sdhci_access wr32: addr[0x0030] <- 0xfffffeff (4294967039)
+> sdhci_access wr32: addr[0x0030] <- 0xfffffeff (4294967039)
+> sdbus_get_dat_lines @sd-bus dat_lines: 15
+> sdbus_get_cmd_line @sd-bus cmd_line: 1
+> sdhci_access rd32: addr[0x0024] -> 0x01ff0000 (33488896)
+> sdbus_get_dat_lines @sd-bus dat_lines: 15
+> sdbus_get_cmd_line @sd-bus cmd_line: 1
+> sdhci_access rd32: addr[0x0024] -> 0x01ff0000 (33488896)
+> sdbus_get_dat_lines @sd-bus dat_lines: 15
+> sdbus_get_cmd_line @sd-bus cmd_line: 1
+> sdhci_access rd32: addr[0x0024] -> 0x01ff0000 (33488896)
+> sdhci_access wr32: addr[0x0038] <- 0x00000000 (0)
+> sdhci_access wr32: addr[0x0008] <- 0x00000200 (512)
+> sdhci_send_command CMD16 ARG[0x00000200]
+> sdbus_command @sd-bus CMD16 arg 0x00000200
+> sdcard_normal_command SD         SET_BLOCKLEN/ CMD16 arg 0x00000200 (mode 
+> transfer, state transfer)
+> sdcard_set_blocklen block len 0x200
+> sdcard_response RESP#1 (normal cmd) (sz:4)
+> sdhci_response4 RSPREG[31..0]=0x00400900
+> sdhci_access wr32: addr[0x000c] <- 0x101a0037 (270139447)
+> sdhci_access rd32: addr[0x0030] -> 0x00000001 (1)
+> sdhci_access rd32: addr[0x0030] -> 0x00000001 (1)
+> sdhci_access rd32: addr[0x0010] -> 0x00400900 (4196608)
+> sdhci_access wr32: addr[0x0030] <- 0xfffffeff (4294967039)
+> sdhci_access wr32: addr[0x0030] <- 0xfffffeff (4294967039)
+> sdbus_get_dat_lines @sd-bus dat_lines: 15
+> sdbus_get_cmd_line @sd-bus cmd_line: 1
+> sdhci_access rd32: addr[0x0024] -> 0x01ff0000 (33488896)
+> sdbus_get_dat_lines @sd-bus dat_lines: 15
+> sdbus_get_cmd_line @sd-bus cmd_line: 1
+> sdhci_access rd32: addr[0x0024] -> 0x01ff0000 (33488896)
+> sdbus_get_dat_lines @sd-bus dat_lines: 15
+> sdbus_get_cmd_line @sd-bus cmd_line: 1
+> sdhci_access rd32: addr[0x0024] -> 0x01ff0000 (33488896)
+> sdhci_access wr32: addr[0x0000] <- 0x79401de8 (2034245096)
+> sdhci_access wr32: addr[0x0004] <- 0x00017200 (94720)
+> sdhci_access rd32: addr[0x002c] -> 0x000b011f (721183)
+> sdhci_access wr32: addr[0x002c] <- 0x000b011f (721183)
+> sdhci_access wr32: addr[0x0038] <- 0x00000000 (0)
+> sdhci_access wr32: addr[0x0008] <- 0x00000200 (512)
+> sdhci_send_command CMD17 ARG[0x00000200]
+> sdbus_command @sd-bus CMD17 arg 0x00000200
+> sdcard_normal_command SD    READ_SINGLE_BLOCK/ CMD17 arg 0x00000200 (mode 
+> transfer, state transfer)
+> sdcard_req_addr req 0x200 addr 0x200
+> sdcard_read_block addr 0x200 size 0x200
+> sdcard_response RESP#1 (normal cmd) (sz:4)
+> sdhci_response4 RSPREG[31..0]=0x00000900
+> sdcard_read_data SD    READ_SINGLE_BLOCK/ CMD17 ofs 0 size 512 blklen 512
+> sdbus_read @sd-bus value 0x00
+> sdcard_read_data SD    READ_SINGLE_BLOCK/ CMD17 ofs 1 size 512 blklen 512
+> sdbus_read @sd-bus value 0x00
+>
+> Regards,
+> BALATON Zoltan
+>
+>> Bernhard Beschow (14):
+>>  hw/sd/sdhci: Fix TYPE_IMX_USDHC to implement sd-spec-version 3 by
+>>    default
+>>  hw/arm/fsl-imx6: Remove now redundant setting of "sd-spec-version"
+>>    property
+>>  hw/arm/fsl-imx6: Fix naming of SDHCI related constants and attributes
+>>  hw/arm/fsl-imx25: Apply missing reset quirk
+>>  Revert "hw/sd/sdhci: Rename ESDHC_* defines to USDHC_*"
+>>  hw/sd/sdhci: Consolidate eSDHC constants
+>>  hw/sd/sdhci: Rename usdhc_ functions
+>>  hw/sd/sdhci: Add TYPE_FSL_ESDHC_BE
+>>  hw/ppc/e500: Use TYPE_FSL_ESDHC_BE
+>>  hw/arm/fsl-imx25: Extract TYPE_FSL_ESDHC_LE
+>>  hw/sd/sdhci: Remove endianness property
+>>  hw/sd/sdhci: Add uSDHC-specific quirk
+>>  hw/sd/sdhci: Remove vendor property
+>>  hw/sd/trace-events: Remove redundant "SWITCH " command name
+>> 
+>> hw/sd/sdhci-internal.h    |   3 -
+>> include/hw/arm/fsl-imx6.h |   4 +-
+>> include/hw/sd/sdhci.h     |   8 +-
+>> hw/arm/fsl-imx25.c        |   5 +-
+>> hw/arm/fsl-imx6.c         |  18 ++--
+>> hw/ppc/e500.c             |  10 +-
+>> hw/sd/sdhci.c             | 201 ++++++++++++++++++++++++--------------
+>> hw/sd/trace-events        |   2 +-
+>> 8 files changed, 146 insertions(+), 105 deletions(-)
+>> 
 >> --
+>> 2.52.0
+>> 
+>> 
+>> 
 >
-> * Otherwise it looks okay.
-> Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
 >
-> Thank you.
-> ---
->   - Prasad
 
