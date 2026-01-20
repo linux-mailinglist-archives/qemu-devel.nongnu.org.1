@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26727D3C389
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 10:31:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AC77D3C39B
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 10:33:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vi84R-000442-DC; Tue, 20 Jan 2026 04:30:45 -0500
+	id 1vi85K-00058a-7A; Tue, 20 Jan 2026 04:31:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vi83z-0003z8-Ee; Tue, 20 Jan 2026 04:30:15 -0500
+ id 1vi841-00041V-Vr; Tue, 20 Jan 2026 04:30:21 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1vi83x-0005eG-JN; Tue, 20 Jan 2026 04:30:15 -0500
+ id 1vi840-0005eG-Bj; Tue, 20 Jan 2026 04:30:17 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Tue, 20 Jan
@@ -30,10 +30,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <kane_chen@aspeedtech.com>
-Subject: [PATCH v1 10/11] tests/functional/aarch64/test_aspeed_ast2700fc: Boot
- SSP/TSP via PSP and load binaries from DRAM
-Date: Tue, 20 Jan 2026 17:29:35 +0800
-Message-ID: <20260120092939.2708302-11-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 11/11] docs: Add support vbootrom and update Manual boot
+ for ast2700fc
+Date: Tue, 20 Jan 2026 17:29:36 +0800
+Message-ID: <20260120092939.2708302-12-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260120092939.2708302-1-jamin_lin@aspeedtech.com>
 References: <20260120092939.2708302-1-jamin_lin@aspeedtech.com>
@@ -65,117 +65,81 @@ From:  Jamin Lin via qemu development <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SSP and TSP now boot in a powered-off state by default. Enabling them requires
-the PSP (Cortex-A35) to explicitly set SCU control registers at runtime. This
-behavior aligns with real hardware.
-
-Update the AST2700 FC functional test to reflect this behavior by enabling
-SSP and TSP from the U-Boot shell before booting OpenBMC. The test now
-programs the required SCU registers, saves the environment, and boots the
-system so that SSP and TSP are powered on when the PSP starts.
-
-For the vbootrom test case, these steps are not required because vbootrom
-already performs the necessary initialization. Therefore, the U-Boot shell
-configuration is only applied to the manual loader test flow.
-
-Additionally, switch SSP and TSP loading from ELF-based CPU loaders to
-binary images loaded into PSP DRAM at fixed addresses, and remove the use
-of snapshot mode.
-
-Changes include:
-- Add enable_ssp_tsp() to configure SCU registers via U-Boot
-- Remove snapshot option from QEMU command line
-- Load SSP binary at DRAM address 0x42C000000
-- Load TSP binary at DRAM address 0x42E000000
-
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- .../aarch64/test_aspeed_ast2700fc.py          | 35 +++++++++++--------
- 1 file changed, 20 insertions(+), 15 deletions(-)
+ docs/system/arm/aspeed.rst | 37 +++++++++++++++++++++++++++++++++----
+ 1 file changed, 33 insertions(+), 4 deletions(-)
 
-diff --git a/tests/functional/aarch64/test_aspeed_ast2700fc.py b/tests/functional/aarch64/test_aspeed_ast2700fc.py
-index 8dbc8f234f..e0fb4890be 100755
---- a/tests/functional/aarch64/test_aspeed_ast2700fc.py
-+++ b/tests/functional/aarch64/test_aspeed_ast2700fc.py
-@@ -9,7 +9,7 @@
- import os
- 
- from qemu_test import QemuSystemTest, Asset
--from qemu_test import wait_for_console_pattern
-+from qemu_test import wait_for_console_pattern, exec_command
- from qemu_test import exec_command_and_wait_for_pattern
- 
- 
-@@ -23,12 +23,22 @@ def do_test_aarch64_aspeed_sdk_start(self, image):
-         self.vm.add_args('-device', 'e1000e,netdev=net1,bus=pcie.2')
-         self.vm.add_args('-netdev', 'user,id=net1')
-         self.vm.add_args('-drive', 'file=' + image + ',if=mtd,format=raw',
--                         '-net', 'nic', '-net', 'user', '-snapshot')
-+                         '-net', 'nic', '-net', 'user')
- 
-         self.vm.launch()
- 
-+    def enable_ssp_tsp(self):
-+        wait_for_console_pattern(self, 'Hit any key to stop autoboot')
-+        exec_command_and_wait_for_pattern(self, '\012', '=>')
-+        exec_command_and_wait_for_pattern(self,
-+            'setenv bootcmd "mw 12c02204 40000000; mw 12c02120 1;'
-+            'mw 12c02224 00000200; mw 12c02160 1; run bootspi"', '=>')
-+        exec_command_and_wait_for_pattern(self, 'saveenv', 'OK')
-+        exec_command(self, 'boot')
+diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
+index 4fa1739cb5..a1f4366f87 100644
+--- a/docs/system/arm/aspeed.rst
++++ b/docs/system/arm/aspeed.rst
+@@ -391,6 +391,14 @@ Booting the ast2700fc machine
+ AST2700 features four Cortex-A35 primary processors and two Cortex-M4 coprocessors.
+ **ast2700-evb** machine focuses on emulating the four Cortex-A35 primary processors,
+ **ast2700fc** machine extends **ast2700-evb** by adding support for the two Cortex-M4 coprocessors.
++There are two methods to boot the ast2700fc machine.
 +
-     def verify_openbmc_boot_and_login(self, name):
-         wait_for_console_pattern(self, 'U-Boot 2023.10')
-+        self.enable_ssp_tsp();
-         wait_for_console_pattern(self, '## Loading kernel from FIT Image')
-         wait_for_console_pattern(self, 'Starting kernel ...')
++Manual boot using ``-device loader``:
++
++In this approach, users manually load firmware and assign entry points via QEMU loader devices.
++By default, the PSP begins execution at address ``0x430000000``, the load address of the bl31
++firmware. The SSP and TSP start in the powered-off state and must be explicitly enabled by the
++PSP through writes to SCU registers.
  
-@@ -36,17 +46,6 @@ def verify_openbmc_boot_and_login(self, name):
-         exec_command_and_wait_for_pattern(self, 'root', 'Password:')
-         exec_command_and_wait_for_pattern(self, '0penBmc', f'root@{name}:~#')
+ Steps to boot the AST2700fc machine:
  
--    def load_ast2700fc_coprocessor(self, name):
--        load_elf_list = {
--            'ssp': self.scratch_file(name, 'zephyr-aspeed-ssp.elf'),
--            'tsp': self.scratch_file(name, 'zephyr-aspeed-tsp.elf')
--        }
--
--        for cpu_num, key in enumerate(load_elf_list, start=4):
--            file = load_elf_list[key]
--            self.vm.add_args('-device',
--                             f'loader,file={file},cpu-num={cpu_num}')
--
-     ASSET_SDK_V908_AST2700 = Asset(
-             'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.08/ast2700-default-obmc.tar.gz',
-             'eac3dc409b7ea3cd4b03d4792d3cebd469792ad893cb51e1d15f0fc20bd1e2cd')
-@@ -121,6 +120,14 @@ def start_ast2700fc_test(self, name):
-                 'addr': '0x430080000',
-                 'file': self.scratch_file(name, 'optee',
-                                           'tee-raw.bin')
-+            },
-+            {
-+                'addr': '0x42C000000',
-+                'file': self.scratch_file(name, 'zephyr-aspeed-ssp.bin')
-+            },
-+            {
-+                'addr': '0x42E000000',
-+                'file': self.scratch_file(name, 'zephyr-aspeed-tsp.bin')
-             }
-         ]
+@@ -401,8 +409,8 @@ Steps to boot the AST2700fc machine:
+  * bl31.bin
+  * optee/tee-raw.bin
+  * image-bmc
+- * zephyr-aspeed-ssp.elf (for SSP firmware, CPU 5)
+- * zephyr-aspeed-tsp.elf (for TSP firmware, CPU 6)
++ * zephyr-aspeed-ssp.bin (for SSP firmware, CPU 5)
++ * zephyr-aspeed-tsp.bin (for TSP firmware, CPU 6)
  
-@@ -134,13 +141,11 @@ def start_ast2700fc_test(self, name):
-             self.vm.add_args('-device',
-                              f'loader,addr=0x430000000,cpu-num={i}')
+ 2. Execute the following command to start ``ast2700fc`` machine:
  
--        self.load_ast2700fc_coprocessor(name)
-         self.do_test_aarch64_aspeed_sdk_start(
-                 self.scratch_file(name, 'image-bmc'))
+@@ -416,17 +424,38 @@ Steps to boot the AST2700fc machine:
+        -device loader,force-raw=on,addr=$((0x400000000 + ${UBOOT_SIZE})),file=${IMGDIR}/u-boot.dtb \
+        -device loader,force-raw=on,addr=0x430000000,file=${IMGDIR}/bl31.bin \
+        -device loader,force-raw=on,addr=0x430080000,file=${IMGDIR}/optee/tee-raw.bin \
++       -device loader,addr=0x42C000000,file=${IMGDIR}/zephyr-aspeed-ssp.bin,force-raw=on \
++       -device loader,addr=0x42E000000,file=${IMGDIR}/zephyr-aspeed-tsp.bin,force-raw=on \
+        -device loader,cpu-num=0,addr=0x430000000 \
+        -device loader,cpu-num=1,addr=0x430000000 \
+        -device loader,cpu-num=2,addr=0x430000000 \
+        -device loader,cpu-num=3,addr=0x430000000 \
+        -drive file=${IMGDIR}/image-bmc,if=mtd,format=raw \
+-       -device loader,file=${IMGDIR}/zephyr-aspeed-ssp.elf,cpu-num=4 \
+-       -device loader,file=${IMGDIR}/zephyr-aspeed-tsp.elf,cpu-num=5 \
+        -serial pty -serial pty -serial pty \
+        -snapshot \
+        -S -nographic
  
-     def start_ast2700fc_test_vbootrom(self, name):
-         self.vm.add_args('-bios', 'ast27x0_bootrom.bin')
--        self.load_ast2700fc_coprocessor(name)
-         self.do_test_aarch64_aspeed_sdk_start(
-                 self.scratch_file(name, 'image-bmc'))
++Boot using a virtual boot ROM (-bios):
++
++In this method, the virtual boot ROM (vbootrom) handles the full initialization sequence.
++It starts the PSP, which then enables the SSP and TSP by programming the appropriate SCU
++registers, following the hardware behavior.
++
++Execute the following command to start ``ast2700fc`` machine:
++
++.. code-block:: bash
++
++  IMGDIR=ast2700-default
++
++  $ qemu-system-aarch64 -M ast2700fc \
++      -bios ast27x0_bootrom.bin \
++      -drive file=${IMGDIR}/image-bmc,if=mtd,format=raw \
++      -serial pty -serial pty -serial pty \
++      -snapshot \
++      -S -nographic
++
++Serial Console Redirection:
++
+ After launching QEMU, serial devices will be automatically redirected.
+ Example output:
  
 -- 
 2.43.0
