@@ -2,39 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gBgvFc62b2nHMAAAu9opvQ
+	id KClFHtG2b2nHMAAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:09:34 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:09:37 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08901484E1
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:09:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3861B484E8
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:09:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viAzc-0001wg-Ik; Tue, 20 Jan 2026 07:37:56 -0500
+	id 1viAzc-0001uj-1w; Tue, 20 Jan 2026 07:37:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1viAzF-0001ex-SQ; Tue, 20 Jan 2026 07:37:35 -0500
+ id 1viAyr-0001Vh-9v; Tue, 20 Jan 2026 07:37:14 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1viAzA-0002YR-5f; Tue, 20 Jan 2026 07:37:31 -0500
+ id 1viAyi-0002Vo-8q; Tue, 20 Jan 2026 07:37:05 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 990F31802DE;
+ by isrv.corpit.ru (Postfix) with ESMTP id A50D51802E0;
  Tue, 20 Jan 2026 15:30:50 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 20F2F35175C;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 2D5BC35175D;
  Tue, 20 Jan 2026 15:31:08 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>,
-	qemu-trivial@nongnu.org
-Subject: [PULL v2 00/10] Trivial patches for 2026-01-20
-Date: Tue, 20 Jan 2026 15:30:50 +0300
-Message-ID: <20260120123107.2255178-1-mjt@tls.msk.ru>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-trivial@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 10/10] bsd-user/syscall_defs.h: define STAT_TIME_T_EXT only for
+ 32 bits
+Date: Tue, 20 Jan 2026 15:30:51 +0300
+Message-ID: <20260120123107.2255178-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260120123107.2255178-1-mjt@tls.msk.ru>
+References: <20260120123107.2255178-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -74,7 +77,7 @@ X-Spamd-Result: default: False [0.49 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	R_DKIM_NA(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[mjt@tls.msk.ru,qemu-devel-bounces@nongnu.org];
 	FROM_HAS_DN(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
@@ -82,60 +85,53 @@ X-Spamd-Result: default: False [0.49 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tls.msk.ru:mid,lists.gnu.org:rdns,lists.gnu.org:helo,gitlab.com:url]
-X-Rspamd-Queue-Id: 08901484E1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,linaro.org:email,tls.msk.ru:email,tls.msk.ru:mid]
+X-Rspamd-Queue-Id: 3861B484E8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The following changes since commit 38879a667fbb4ef54c70de71494882615f600a64:
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-  Merge tag 'pull-tcg-20260119' of https://gitlab.com/rth7680/qemu into staging (2026-01-19 09:04:31 +1100)
+Commit 369c1ba2b changed the wrong conditional "#if defined(__i386__)" to
+"#if defined(TARGET_I386)".
+However, TARGET_I386 is defined for target x86_64 also.
 
-are available in the Git repository at:
+This commit fixes it by identifying correctly 32 bits target.
 
-  https://gitlab.com/mjt0k/qemu.git tags/pull-trivial-patches
+Found with:
+$ ./build/qemu-x86_64 \
+  -plugin ./build/contrib/plugins/libstoptrigger,icount=1000000 \
+  -plugin ./build/tests/tcg/plugins/libinsn \
+  -d plugin \
+  ./build/qemu-system-x86_64 --version
+ld-elf.so.1: /lib/libz.so.6: invalid file format
+cpu 0 insns: 59746
+total insns: 59746
 
-for you to fetch changes up to f0de58ccf6566ad5cf04948788f9b0cfb8b960b4:
+Fixes: 369c1ba2b ("Fix __i386__ test for TARGET_HAS_STAT_TIME_T_EXT")
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Warner Losh <imp@bsdimp.com>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+---
+ bsd-user/syscall_defs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  bsd-user/syscall_defs.h: define STAT_TIME_T_EXT only for 32 bits (2026-01-20 15:28:21 +0300)
+diff --git a/bsd-user/syscall_defs.h b/bsd-user/syscall_defs.h
+index c49be32bdc..cc4b484f3a 100644
+--- a/bsd-user/syscall_defs.h
++++ b/bsd-user/syscall_defs.h
+@@ -247,7 +247,7 @@ struct target_freebsd11_stat {
+     unsigned int:(8 / 2) * (16 - (int)sizeof(struct target_freebsd_timespec));
+ } __packed;
+ 
+-#if defined(TARGET_I386)
++#if defined(TARGET_I386) && !defined(TARGET_X86_64)
+ #define TARGET_HAS_STAT_TIME_T_EXT       1
+ #endif
+ 
+-- 
+2.47.3
 
-----------------------------------------------------------------
-trivial patches for 2026-01-20
-
-I'm also picking up the STAT_TIME_T_EXT fix from Pierrick
-(not resending whole series, just this additional patch)
-
-----------------------------------------------------------------
-Florian Hofhammer (1):
-      configure: add ppc target back to container tests
-
-Julian Ganz (1):
-      tests: fix comment declaring runtime in rv64 interruptedmemory test
-
-Michael Tokarev (3):
-      Revert "gdbstub: Try unlinking the unix socket before binding"
-      gdbstub: unlink the unix socket before bind()
-      qemu-options.hx: use KiB, MiB, GiB for power-of-2 units
-
-Pierrick Bouvier (2):
-      linux-user/aarch64/target_fcntl.h: add missing TARGET_O_LARGEFILE definition
-      bsd-user/syscall_defs.h: define STAT_TIME_T_EXT only for 32 bits
-
-Thomas Huth (3):
-      configure: Set $PYTHON in the configuration of the optionroms
-      tests/qemu-iotests: Use "gsed" for expressions that require GNU sed
-      MAINTAINERS: Add docs/system/i386/ to the general x86 architecture section
-
- MAINTAINERS                           |  1 +
- bsd-user/syscall_defs.h               |  2 +-
- configure                             |  3 ++-
- gdbstub/user.c                        | 30 +++++++++++++++++++++++++++---
- linux-user/aarch64/target_fcntl.h     |  1 +
- qemu-options.hx                       | 20 ++++++++++----------
- stubs/meson.build                     |  2 --
- tests/qemu-iotests/286                |  2 +-
- tests/qemu-iotests/common.rc          |  2 +-
- tests/tcg/riscv64/interruptedmemory.S |  2 +-
- util/meson.build                      |  2 --
- 11 files changed, 45 insertions(+), 22 deletions(-)
 
