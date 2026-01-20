@@ -2,117 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aCCrHPCtb2nxEwAAu9opvQ
+	id ACV5EVizb2nHMAAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:31:44 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:54:48 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6F7F47968
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:31:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ED83480C1
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:54:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viClp-0002Wf-ET; Tue, 20 Jan 2026 09:31:49 -0500
+	id 1viCsS-00009W-Ue; Tue, 20 Jan 2026 09:38:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
- id 1viClm-0002RW-Ax; Tue, 20 Jan 2026 09:31:46 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1viCsN-0008O5-Oi; Tue, 20 Jan 2026 09:38:35 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
- id 1viClk-0005FL-E2; Tue, 20 Jan 2026 09:31:46 -0500
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60K7XL7H001734;
- Tue, 20 Jan 2026 14:31:41 GMT
+ id 1viCsK-00067Z-VG; Tue, 20 Jan 2026 09:38:34 -0500
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60K3bdNM030811;
+ Tue, 20 Jan 2026 14:38:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=3aLiCi
- iiGGwg7X5Wyz6Catjseq6MhPU6EcYxvts1tPY=; b=BNVZ2chLZYvjcnZ68kB13u
- R0WRKCFq3Vb3VdbTJtShpMSNgRyDDIDV6RzHTr575CnXgcc9xFp/pEm/GJZR8sRX
- cj8Yi9k4AYq6Gz9JDZQ55A64MdqVsHMZ4GHawgSIfT6mh8PZplTprADaWese8MYO
- 2HYCFU55cAi1kSBlbRNgynaex7P1193ayu1p4/RUaTd9kC32NpfG1ULu+3N65ccu
- KaoLgnskbun2jZorLe7Ow+RI2w90RtvedSUwQDRLQesQLm1HPyLN8WOsNIWJIRsS
- 6J9LPY/BwHP1vo+K/4Hs0us+lu+gYT1ppSHoN+kdyph4Kt39+//B9e3Ll7yEO2aA
+ :message-id:mime-version:references:subject:to; s=pp1; bh=DL+6dR
+ dLL+gnyr87LC+XBanjuKkWH7OYZMal4/wH5iM=; b=UU2ZhG/Sv4feU/jrfDdRVt
+ 35yY7bvZZ4p8DPlcdJKkyHDASAfuTMaCWSV3VP95qaK5zB4iRICE772nK+u2S34A
+ KOUg/Fy1d7EjhgGNMVDVT2UxKT8++PgBQYF+p9rPJpAtK7M5ueC3odhicblkQ5qe
+ RLlIWvIhp6kPbj9dormdGrGxDZapQnMZ+dzcevEUQUlweN4EI9lul4ax1zWn2gWe
+ QKwUox2HHW7nrfPN5YdJhsfNykFF2m2SOzrBeOC5TZufJmRQ5BmT2/Xnm4EwOVss
+ JFHl4z4dwCBOJWaLE90/AWY6xsJ6TagiHVdGr9MjXTOy0CbDysJuwgZbEwBh2XeA
  ==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4br0ufdeax-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4br255x8u8-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Jan 2026 14:31:41 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60KEDkno017336;
- Tue, 20 Jan 2026 14:31:40 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4br0ufdeat-1
+ Tue, 20 Jan 2026 14:38:28 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60KEJGK1029312;
+ Tue, 20 Jan 2026 14:38:28 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4br255x8u3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Jan 2026 14:31:40 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60KED6Pe009265;
- Tue, 20 Jan 2026 14:31:40 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4brp8k5a2v-1
+ Tue, 20 Jan 2026 14:38:28 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60KEQQWS002002;
+ Tue, 20 Jan 2026 14:38:27 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4brpyjn6fb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Jan 2026 14:31:40 +0000
+ Tue, 20 Jan 2026 14:38:27 +0000
 Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
  [10.39.53.232])
- by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 60KEVKHY14680624
+ by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 60KEcPHh32571888
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 20 Jan 2026 14:31:20 GMT
+ Tue, 20 Jan 2026 14:38:25 GMT
 Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9F77058059;
- Tue, 20 Jan 2026 14:31:38 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 970705805D;
+ Tue, 20 Jan 2026 14:38:25 +0000 (GMT)
 Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1CE8058053;
- Tue, 20 Jan 2026 14:31:38 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 048E858043;
+ Tue, 20 Jan 2026 14:38:25 +0000 (GMT)
 Received: from [9.10.80.137] (unknown [9.10.80.137])
  by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 20 Jan 2026 14:31:38 +0000 (GMT)
-Message-ID: <6072a537-e18c-4d46-9142-36e9c25bb11c@linux.ibm.com>
-Date: Tue, 20 Jan 2026 08:31:37 -0600
+ Tue, 20 Jan 2026 14:38:24 +0000 (GMT)
+Message-ID: <9c85e853-2c43-48de-b433-99fc110247db@linux.ibm.com>
+Date: Tue, 20 Jan 2026 08:38:24 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] ppc/pnv: Suppress some "pnv_chiptod unimplemented
- register" messages
+Subject: Re: [PATCH] hw/ssi/pnv_spi: Fix fifo8 memory leak on unrealize
 To: Aditya Gupta <adityag@linux.ibm.com>
-Cc: milesg@linux.ibm.com, qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- npiggin@gmail.com, chalapathi.v@linux.ibm.com
-References: <20251218200353.301866-1-calebs@linux.ibm.com>
- <20251218200353.301866-2-calebs@linux.ibm.com>
- <1fa38659565cf4dc1dfe24cc365d685554faecf0.camel@linux.ibm.com>
- <5e13f2c3-2075-4d31-bddc-06dcc31f6eae@linux.ibm.com>
- <aW3wVCdyn3WkeUoF@li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, npiggin@gmail.com,
+ milesg@linux.ibm.com, alistair@alistair23.me, chalapathi.v@linux.ibm.com
+References: <20251216154503.2263755-1-calebs@linux.ibm.com>
+ <aW3VANPAcyejWJ4Y@li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com>
 Content-Language: en-US
 From: Caleb Schlossin <calebs@linux.ibm.com>
-In-Reply-To: <aW3wVCdyn3WkeUoF@li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com>
+In-Reply-To: <aW3VANPAcyejWJ4Y@li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: TedUwzfyA3wc4WduEp2CQYEmeZtnq-db
-X-Proofpoint-ORIG-GUID: ZpG9xfWc8y0mo7XnVNdejVXMyVDlTJUE
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIwMDExOCBTYWx0ZWRfXwJ1DGzDSRwnl
- OxXAZaeKPRbcmMTH4DSWPGrOluliUO7bX3FkHnDrD5uef4ifJYiXppEQKj6k9HTIqq4/zW8Ixbw
- 1RcqTh5jvHat99XXzZuPxmymG2YH5AJoB9AyOMd/3cgyVOfJjOdESvEnm0xqrKOBATLy+/qWhqZ
- 3SvxhsiQR/ErUlRdBmeIL6tgRz7SHsVZRT3Ujf+g4HFn1x2lORBhqxUGrN4MmGm39nXIghSNGGj
- 6g/eF1kUAELoFF2Wk42RZOaaCblWLFxx159GeZFrh2LhmuyrXn60Dd8zWKk3cBKggXKAdn2GuTS
- o00ZL+AFAIrjojwJCYmCzesaTHWORUuGr3MBdLzlI8pn83aoOQFpK3SNpLU8ZCeg1475oq+14qF
- Hi73WrXLm+kxkxR5W6YcbFD/42Hx2sfkaJf9jO817+dgL9U8tNi8QdOqNtaL6rcXqQrFriyqMgc
- YAunRS9WwBoLLiY9fbQ==
-X-Authority-Analysis: v=2.4 cv=bopBxUai c=1 sm=1 tr=0 ts=696f91cd cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIwMDExOCBTYWx0ZWRfXz8CBNSr518BR
+ JT6sfpbc7kBN4qhdPfzvafOCHvc+TgjGiQSw9SqtmX2x73mzUAXIy7+RF8EA8eEkQgUJGvP2sDU
+ zNWQeDw4h2uxahP7F9AtABhDxtW8/hLTK6C9z4oSUyZKxfr9eURSjTOkFGz/1s+b777YOrLtQQt
+ FE+Xr6NBztDlQjimKINmHafGTe+4e3YDL71KxT/8eM7aQKdVhhBk8XCr2oR7Or+7BuD+isaDXiK
+ Uswvwb2E2E5aRiZwXJMGJN448o0J8XTPZSdt+8Gz35xfmKEoVqQkoUHk+YX0M2usTpZrj8j6rBR
+ Znwg/ToLrsOtGFh6HfEyie/p4CNbMM1Q6ZOAc+1AHMjXdmCf/n9kfX4Hmvrg4zA/ZERhAf1pSl6
+ VjDfgqHTk10imlWaKsDqdviJ9U04R6PbtihJ7gFY2sGN1DaJryoWdvHVo2s+PeNFsexdvRwKXRM
+ fSIiKOqvvPpcs1zhwNg==
+X-Authority-Analysis: v=2.4 cv=BpSQAIX5 c=1 sm=1 tr=0 ts=696f9364 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=zemG__UicHLbtfz2P7kA:9 a=QEXdDO2ut3YA:10
+ a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=dhUF3OugxwqxtIcJtT8A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: kdPv1HudR3oAD-pMqkGoUJgveiuSz1a3
+X-Proofpoint-ORIG-GUID: Vos_Zezgmm9wHSdOLUNquIelwjS7As1E
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
  definitions=2026-01-20_03,2026-01-20_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0 adultscore=0 suspectscore=0 impostorscore=0
- phishscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501
- clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
+ spamscore=0 bulkscore=0 clxscore=1015 adultscore=0 phishscore=0
+ malwarescore=0 impostorscore=0 suspectscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
  definitions=main-2601200118
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=calebs@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=calebs@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -142,66 +138,86 @@ X-Spamd-Result: default: False [-1.21 / 15.00];
 	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	ARC_NA(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	ARC_NA(0.00)[];
+	FREEMAIL_CC(0.00)[nongnu.org,gmail.com,linux.ibm.com,alistair23.me];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_TWELVE(0.00)[13];
 	FROM_NEQ_ENVFROM(0.00)[calebs@linux.ibm.com,qemu-devel-bounces@nongnu.org];
-	FREEMAIL_CC(0.00)[linux.ibm.com,nongnu.org,gmail.com];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
 	TAGGED_RCPT(0.00)[qemu-devel];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,linux.ibm.com:mid]
-X-Rspamd-Queue-Id: E6F7F47968
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo]
+X-Rspamd-Queue-Id: 9ED83480C1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 
-On 1/19/26 4:18 AM, Aditya Gupta wrote:
-> On 26/01/06 11:07AM, Caleb Schlossin wrote:
+On 1/19/26 12:57 AM, Aditya Gupta wrote:
+> On 25/12/16 09:45AM, Caleb Schlossin wrote:
+>> unrealize should free the fifo8 memory that was allocated by realize.
 >>
->>
->> On 1/6/26 10:49 AM, Miles Glenn wrote:
->>> Hi Caleb.  I wonder if it makes sense to upstream this commit since I
->>> suspect that most upstream users will not have the "unimp" log messages
->>> enabled unless they are debugging a problem and in that case, we would
->>> be erroneously masking these unimplemented registers from the logged
->>> output.
->>>
->>> Thanks,
->>>
->>> Glenn
->>
->> I understand your point. Here are my thoughts:
->> - Cleaning up these logs for valid accesses (PowerVM bringup and development) reduces the overall log output and helps find real errors
->> - In the future, there may be a customer that wants to run PowerVM with upstream QEMU. The more we upstream, the easier that will be.
->> - In the future, we are going to have a number of cases like this where we accept accesses and don't log for every unimp access (to clean up log output). If we choose to keep those patches private and don't upstream them it's going to increase the number of private patches we keep, making future rebasing more difficult.
->> - I'd prefer to upstream more patches, and focus on keeping only the patches we need to private (for confidentiality or other reasons). To make future rebasing easier.
+>> Fixes: 17befecda85 ("hw/ssi/pnv_spi: Replace PnvXferBuffer with Fifo8 structure")
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> Signed-off-by: Caleb Schlossin <calebs@linux.ibm.com>
 > 
-> I agree with Glenn that we shouldn't mask these warnings for everyone.
+> Hello Caleb,
 > 
-> Since a warning saying a feature is unimplemented is better than
-> silently not doing anything without any warnings.
+> Sorry for the delayed review. The patch currently doesn't apply on
+> upstream, as there was a merge conflict with vmstate patch and this.
 > 
-> Maybe the excessive warnings should only be masked for PowerMV
-> development work, rather than upstreaming, or we can always upstream
-> once those are implemented.
+> Can you send a v2, rebased on upstream ?
 > 
+> Thank you,
 > - Aditya G
 > 
 
-Ok. Would you like me to pull out this patch from the series and send out v2 containing only the approved patches?
+Yup, I'll rebase and fix in v2.
 
 Thanks,
 Caleb
+
+>> ---
+>>  hw/ssi/pnv_spi.c | 8 ++++++++
+>>  1 file changed, 8 insertions(+)
+>>
+>> diff --git a/hw/ssi/pnv_spi.c b/hw/ssi/pnv_spi.c
+>> index f40e8836b9..5db440be9a 100644
+>> --- a/hw/ssi/pnv_spi.c
+>> +++ b/hw/ssi/pnv_spi.c
+>> @@ -1176,6 +1176,13 @@ static void pnv_spi_realize(DeviceState *dev, Error **errp)
+>>                            s, "xscom-spi", PNV10_XSCOM_PIB_SPIC_SIZE);
+>>  }
+>>  
+>> +static void pnv_spi_unrealize(DeviceState *dev)
+>> +{
+>> +    PnvSpi *s = PNV_SPI(dev);
+>> +    fifo8_destroy(&s->tx_fifo);
+>> +    fifo8_destroy(&s->rx_fifo);
+>> +}
+>> +
+>>  static int pnv_spi_dt_xscom(PnvXScomInterface *dev, void *fdt,
+>>                               int offset)
+>>  {
+>> @@ -1208,6 +1215,7 @@ static void pnv_spi_class_init(ObjectClass *klass, const void *data)
+>>  
+>>      dc->desc = "PowerNV SPI";
+>>      dc->realize = pnv_spi_realize;
+>> +    dc->unrealize = pnv_spi_unrealize;
+>>      device_class_set_legacy_reset(dc, do_reset);
+>>      device_class_set_props(dc, pnv_spi_properties);
+>>  }
+>> -- 
+>> 2.47.3
+>>
 
 
