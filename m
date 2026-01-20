@@ -1,88 +1,105 @@
 Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
-X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
+Received: from mail.lfdr.de
+	by lfdr with LMTP
+	id GC3WFpiqb2lmEwAAu9opvQ
+	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:17:28 +0100
+X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E97F0D3C586
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 11:38:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A384F47435
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:17:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vi96m-0006Nh-M7; Tue, 20 Jan 2026 05:37:12 -0500
+	id 1vi9c6-0004da-7U; Tue, 20 Jan 2026 06:09:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vi96i-0006L3-Tz
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 05:37:08 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1vi96g-0007s8-E2
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 05:37:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768905424;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5rqZPS2TZSZeJEkRjXzAkbq2CuVva/I1N1UzXpNu3k4=;
- b=X20YzFCeTYIq2nxzlQuUD3h6+1Dv6fAVLl3fip0sn4kh7CV+xtEJetNqnX6WQz/fk+z2f+
- GK2r/fi2qDskb6GwcWapf91cBfdFjx/fg1JvFST6cZei2iQcsy/UmTEULXu4HWwKoSe06+
- v4ur/sIGhXkFFktajOO6y8SXAdPUzwo=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-176-EDH7FiJbPXyqFVarrKaqJg-1; Tue,
- 20 Jan 2026 05:37:00 -0500
-X-MC-Unique: EDH7FiJbPXyqFVarrKaqJg-1
-X-Mimecast-MFC-AGG-ID: EDH7FiJbPXyqFVarrKaqJg_1768905418
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EFD8718005B4; Tue, 20 Jan 2026 10:36:57 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.3])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 981F018008FF; Tue, 20 Jan 2026 10:36:55 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id F1CA821E692D; Tue, 20 Jan 2026 11:36:52 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Kane Chen
- <kane_chen@aspeedtech.com>,  Peter Maydell <peter.maydell@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>,  Troy Lee <leetroy@gmail.com>,
- Jamin Lin <jamin_lin@aspeedtech.com>,  Andrew Jeffery
- <andrew@codeconstruct.com.au>,  Joel Stanley <joel@jms.id.au>,  "open
- list:ASPEED BMCs" <qemu-arm@nongnu.org>,  "open list:All patches CC here"
- <qemu-devel@nongnu.org>,  <troy_lee@aspeedtech.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Daniel P. Berrange
- <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH v1 0/1] hw/i2c/aspeed: Introduce 'bus-label' to
- customize bus naming
-In-Reply-To: <ba5b61db-64ad-495d-90f4-03e5553bf38e@kaod.org>
- (=?utf-8?Q?=22C=C3=A9dric?= Le
- Goater"'s message of "Mon, 19 Jan 2026 18:38:50 +0100")
-References: <20260112083054.4151945-1-kane_chen@aspeedtech.com>
- <5e72f6d4-6914-4797-85f6-6131af0d1349@linaro.org>
- <7b67c00a-2bf3-4a25-aae4-9d4dd932486a@kaod.org>
- <877btdn0gv.fsf@pond.sub.org>
- <ba5b61db-64ad-495d-90f4-03e5553bf38e@kaod.org>
-Date: Tue, 20 Jan 2026 11:36:52 +0100
-Message-ID: <875x8win97.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vi9c4-0004aQ-9f
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 06:09:32 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vi9c2-00048s-IV
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 06:09:32 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-42fbc305552so3831088f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 03:09:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1768907369; x=1769512169; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=mhjkzYRBTq9Ofw1jT3sPOsdw85Ujc7XaRUyDZIgIbkw=;
+ b=fJ0S1wkPsYYBWvuSssMnw4rWH5eJ2eefAIpuRpJvyF41iK3YbgVKXF4dsmqI50wbgf
+ XvEtk1i08Kow1sLmTfLCEIEAzXJ+JiqkFmFj0z/lFbNHfLX50f96eIqBcJwh0J/+QtOO
+ Z4iZ41MHlpxRzV3bKnY7VdErK/p3KfnkfMpgXFrXC30ePh2XXEWILmJfKg1CYl6skDgi
+ sbfQHVFfFMvKFQKu57upIjQmNELUcxEZ6qiO0ckiC7rSV0sbWFSx2KmxqPyVPv4tRKps
+ u2h1H5gVukAIaYo5IqnWNaGx7yr5C7jjy8RMcKtYbVuXw/dWVeRLNsudGprExBYJknpv
+ wtgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768907369; x=1769512169;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=mhjkzYRBTq9Ofw1jT3sPOsdw85Ujc7XaRUyDZIgIbkw=;
+ b=Brb2kIj6X9/rUSjOuBzsEv8kM2bKd7n2bycqCu8lqA/KD9VlunR3ZR6yDIBZN4t6ow
+ KkvyhBof0FY66ms4+x4JpuCpyGqJheBGMXk5/4HVolbZUZu9XaBb86aEuv1xhJUtJBQM
+ 74xsL4lmdtBYvfB+BTvDXwRS7ZkwqE2qYBwlIuMSCNAm2zroTlix2f4+aFqKt4R6gpvQ
+ cJp8q22CI61cIUaOtcgUbvpKhdQWwRgAVN4oScyz8jne/2i1q3278Pykiig5fvwIQzDw
+ SH+xoT9Gy0BEea6rci678swnDBUU/tTIRDrJRuYEoiR+MH7WHz+bbyqk+2MLlz1DOEE8
+ LQiQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWtwjficXtbwGEiB5QWJ9D5AJceW+QG3L1PFXnvTxy43h8InR0eCj840ipA2h/Qv1E+21DmOl2YV8Hj@nongnu.org
+X-Gm-Message-State: AOJu0Yw//JyXuxZgW1SEcpjXh1bJ1Vr2zk/3+HgomH9sWfTj4edZingh
+ j2iaa3GxCe0X7bQIY5L8uo66WymWAAonc72WuIU/XSmv7rkUlvil6KuL+fY4RiSRIMY=
+X-Gm-Gg: AZuq6aIHCIh6WqnIvJBRQwLVNTBIwK8PvQmWCtU2q36mxNuf665h1foT5XIIM0xOe/4
+ zzFjwwkXnX/wrmxToy4YHZSHO8Sh70vjYRh6mTp/ipRYD9fGcknJaFH379+rDipFWIFG1NkLrgW
+ cqzxJfMgV+DiwV7WpIppxZZrRVo7gH/HgbK22/PtJPGjafC1SgN4jXTDlChn17EBZobbQ1eqzr/
+ 5pC6ZqCxvm0Jg6ZtnCFCY8fbdg3dvYoqbDt964s7Tc/m3VtGlqmJu7y1Xc6Zp7VUX5AmQQpEkSZ
+ VicR7oFMUhFhHXUVZdlPsNY6VZvxjBV7W31mkopi8yO92kV/nd2gWheq54E4vVoDlncOySUfi0r
+ hWE25vhBXcH4kvMYZ3DPwGEj4lp3U9aev09FNQfShyZdZ2Ycnu7NHHEfVI2Z2Cwps7eQ4AoIdnp
+ nykRLWXf6GHGRzTeUE8O0qc/CmoN8ejAuUQ5j4Cm3K4U1jYxJo610jXw==
+X-Received: by 2002:a05:6000:2282:b0:430:fc63:8d0 with SMTP id
+ ffacd0b85a97d-4356a0773aemr18404450f8f.36.1768907368829; 
+ Tue, 20 Jan 2026 03:09:28 -0800 (PST)
+Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-4359333b924sm1778302f8f.13.2026.01.20.03.09.27
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 20 Jan 2026 03:09:28 -0800 (PST)
+Message-ID: <a1b95dc7-cd3d-40e3-b8ac-bbcc6e154298@linaro.org>
+Date: Tue, 20 Jan 2026 12:09:27 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 16/26] whpx: change memory management logic
+Content-Language: en-US
+To: Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Pedro Barbuda <pbarbuda@microsoft.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>, qemu-arm@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+References: <20260116135235.38092-1-mohamed@unpredictable.fr>
+ <20260116135235.38092-17-mohamed@unpredictable.fr>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20260116135235.38092-17-mohamed@unpredictable.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.016,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,247 +114,169 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
+X-Spamd-Result: default: False [0.29 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	MAILLIST(-0.20)[mailman];
+	MIME_GOOD(-0.10)[text/plain];
+	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	ARC_NA(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:mohamed@unpredictable.fr,m:qemu-devel@nongnu.org,m:marcandre.lureau@redhat.com,m:pbarbuda@microsoft.com,m:peter.maydell@linaro.org,m:eduardo@habkost.net,m:marcel.apfelbaum@gmail.com,m:phil@philjordan.eu,m:odaki@rsg.ci.i.u-tokyo.ac.jp,m:shannon.zhaosl@gmail.com,m:qemu-arm@nongnu.org,m:richard.henderson@linaro.org,m:pierrick.bouvier@linaro.org,m:marcelapfelbaum@gmail.com,m:shannonzhaosl@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[qemu-devel@nongnu.org];
+	FORGED_SENDER(0.00)[philmd@linaro.org,qemu-devel-bounces@nongnu.org];
+	FREEMAIL_CC(0.00)[redhat.com,microsoft.com,linaro.org,habkost.net,gmail.com,philjordan.eu,rsg.ci.i.u-tokyo.ac.jp,nongnu.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[philmd@linaro.org,qemu-devel-bounces@nongnu.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linaro.org:+];
+	PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[qemu-devel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,linaro.org:email,linaro.org:dkim,linaro.org:mid,unpredictable.fr:email]
+X-Rspamd-Queue-Id: A384F47435
+X-Rspamd-Action: no action
+X-Rspamd-Server: lfdr
 
-Cc: QOM/qdev maintainers
+On 16/1/26 14:52, Mohamed Mediouni wrote:
+> This allows edk2 to work on Arm, although u-boot is still not functional.
+> 
+> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
+> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>   accel/whpx/whpx-common.c | 97 +++++++++++++++-------------------------
+>   1 file changed, 36 insertions(+), 61 deletions(-)
+> 
+> diff --git a/accel/whpx/whpx-common.c b/accel/whpx/whpx-common.c
+> index 827f50f3e0..f018a8f5c7 100644
+> --- a/accel/whpx/whpx-common.c
+> +++ b/accel/whpx/whpx-common.c
+> @@ -255,89 +255,64 @@ void whpx_vcpu_kick(CPUState *cpu)
+>    * Memory support.
+>    */
+>   
+> -static void whpx_update_mapping(hwaddr start_pa, ram_addr_t size,
+> -                                void *host_va, int add, int rom,
+> -                                const char *name)
+> +static void whpx_set_phys_mem(MemoryRegionSection *section, bool add)
+>   {
+>       struct whpx_state *whpx = &whpx_global;
+> +    MemoryRegion *area = section->mr;
+> +    bool writable = !area->readonly && !area->rom_device;
+> +    WHV_MAP_GPA_RANGE_FLAGS flags;
+> +    uint64_t page_size = qemu_real_host_page_size();
+> +    uint64_t gva = section->offset_within_address_space;
+> +    uint64_t size = int128_get64(section->size);
+>       HRESULT hr;
+> +    void *mem;
+>   
+> -    /*
+> -    if (add) {
+> -        printf("WHPX: ADD PA:%p Size:%p, Host:%p, %s, '%s'\n",
+> -               (void*)start_pa, (void*)size, host_va,
+> -               (rom ? "ROM" : "RAM"), name);
+> -    } else {
+> -        printf("WHPX: DEL PA:%p Size:%p, Host:%p,      '%s'\n",
+> -               (void*)start_pa, (void*)size, host_va, name);
+> -    }
+> -    */
+> -
+> -    if (add) {
+> -        hr = whp_dispatch.WHvMapGpaRange(whpx->partition,
+> -                                         host_va,
+> -                                         start_pa,
+> -                                         size,
+> -                                         (WHvMapGpaRangeFlagRead |
+> -                                          WHvMapGpaRangeFlagExecute |
+> -                                          (rom ? 0 : WHvMapGpaRangeFlagWrite)));
+> -    } else {
+> -        hr = whp_dispatch.WHvUnmapGpaRange(whpx->partition,
+> -                                           start_pa,
+> -                                           size);
+> -    }
+> -
+> -    if (FAILED(hr)) {
+> -        error_report("WHPX: Failed to %s GPA range '%s' PA:%p, Size:%p bytes,"
+> -                     " Host:%p, hr=%08lx",
+> -                     (add ? "MAP" : "UNMAP"), name,
+> -                     (void *)(uintptr_t)start_pa, (void *)size, host_va, hr);
+> +    if (!memory_region_is_ram(area)) {
+> +        if (writable) {
+> +            return;
+> +        } else if (!memory_region_is_romd(area)) {
+> +            add = false;
+> +        }
+>       }
+> -}
+> -
+> -static void whpx_process_section(MemoryRegionSection *section, int add)
+> -{
+> -    MemoryRegion *mr = section->mr;
+> -    hwaddr start_pa = section->offset_within_address_space;
+> -    ram_addr_t size = int128_get64(section->size);
+> -    unsigned int delta;
+> -    uint64_t host_va;
+>   
+> -    if (!memory_region_is_ram(mr)) {
+> -        return;
+> +    if (!QEMU_IS_ALIGNED(size, page_size) ||
+> +        !QEMU_IS_ALIGNED(gva, page_size)) {
+> +        /* Not page aligned, so we can not map as RAM */
+> +        add = false;
+>       }
+>   
+> -    delta = qemu_real_host_page_size() - (start_pa & ~qemu_real_host_page_mask());
+> -    delta &= ~qemu_real_host_page_mask();
+> -    if (delta > size) {
+> -        return;
+> -    }
+> -    start_pa += delta;
+> -    size -= delta;
+> -    size &= qemu_real_host_page_mask();
+> -    if (!size || (start_pa & ~qemu_real_host_page_mask())) {
+> +    if (!add) {
+> +        hr = whp_dispatch.WHvUnmapGpaRange(whpx->partition,
+> +                gva, size);
+> +        if (FAILED(hr)) {
+> +            error_report("WHPX: failed to unmap GPA range");
+> +            abort();
+> +        }
+>           return;
+>       }
+>   
+> -    host_va = (uintptr_t)memory_region_get_ram_ptr(mr)
+> -            + section->offset_within_region + delta;
+> +    flags = WHvMapGpaRangeFlagRead | WHvMapGpaRangeFlagExecute
+> +     | (writable ? WHvMapGpaRangeFlagWrite : 0);
+> +    mem = memory_region_get_ram_ptr(area) + section->offset_within_region;
+>   
+> -    whpx_update_mapping(start_pa, size, (void *)(uintptr_t)host_va, add,
+> -                        memory_region_is_rom(mr), mr->name);
+> +    hr = whp_dispatch.WHvMapGpaRange(whpx->partition,
+> +         mem, gva, size, flags);
+> +    if (FAILED(hr)) {
+> +        error_report("WHPX: failed to map GPA range");
+> +        abort();
 
-C=C3=A9dric Le Goater <clg@kaod.org> writes:
+Maybe aborting is too violent (i.e. trying to start a SBSA-Ref guest)
+and we could just exit(1)... Anyhow,
 
-> Hello,
->
-> On 1/19/26 15:25, Markus Armbruster wrote:
->> C=C3=A9dric Le Goater <clg@kaod.org> writes:
->>=20
->>> On 1/15/26 20:47, Philippe Mathieu-Daud=C3=A9 wrote:
->>>> Hi,
->>>> Cc'ing Markus.
->>>> On 12/1/26 09:30, Kane Chen via qemu development wrote:
->>>>> From: Kane-Chen-AS <kane_chen@aspeedtech.com>
->>>>>
->>>>> Currently, the Aspeed I2C controller uses a static naming convention
->>>>> for its buses (e.g., "aspeed.i2c.bus.0"). This approach leads to
->>>>> object name conflicts in machine models that incorporate multiple I2C
->>>>> controllers, such as an Aspeed SoC paired with an external IO expander
->>>>> or a co-processor like the AST1700.
->>>>>
->>>> Is this a side-effect of Problem 4: 'The /machine/unattached/ orphanag=
-e'
->>>> described here?
->>>> https://lore.kernel.org/qemu-devel/87o7d1i7ky.fsf@pond.sub.org/
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-No, but ...
-
->>>> This problem isn't specific to I2C nor Aspeed.
-
-... yes, indeed.  Details below.
-
->>> See the discussion here :
->>>
->>>    https://lore.kernel.org/qemu-devel/006fa26f-6b84-4e82-b6e1-7d1353579=
-441@kaod.org/
->>>
->>> The Aspeed SoC has 3*16 I2C buses attached on 3 different I2C
->>> controllers plus the I2C/I3C buses. We need to find a way to
->>> distinguish these groups at the QEMU machine level to be able
->>> to add devices on the right bus when using the command line.
->>>
->>> Suggestions welcome !
->>
->> Please show me how to start a QEMU with the 48 I2C mentioned above,
->> complete with output of "info qtree".
->
-> Clone
->
->   https://github.com/legoater/qemu/commits/aspeed-11.0
->
-> Download
->
->   https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.08/ast2=
-700-default-obmc.tar.gz
->
-> And run :
->
->   qemu-system-aarch64 -M ast2700a1-evb -m 8G -smp 4 -net nic,macaddr=3D,n=
-etdev=3Dnet0 -netdev user,id=3Dnet0,hostfwd=3D::2207-:22 -drive file=3Dpath=
-/to/ast2700-default/image-bmc,format=3Draw,if=3Dmtd -nographic -serial mon:=
-stdio -snapshot
->
-> Today, to attach an I2C device on one of the Aspeed SoC I2C buses :
->
->   -device tmp105,bus=3Daspeed.i2c.bus.1,address=3D0x4d,id=3Dtmp-test
->
-> The Aspeed SoC I2C bus names follow the "aspeed.i2c.bus.X" format.
-> This is the model typename. The 2 new IO expander models attached
-> to the Aspeed SoC have an extra 16 I2C buses each. These buses use
-> an "ioexpX.Y" name, as proposed in the aspeed-next branch.
->
-> Attaching a device to one of the IO expanders I2C buses would be :
->
->   -device tmp105,bus=3Dioexp0.1,address=3D0x4d,id=3Dtmp-test
->
-> See the qtree below.
-
-Thank you!
-
-Machine ast2700a1-evb has QOM objects
-
-    /machine/soc/i2c/ (aspeed.i2c-ast2700)
-      /bus[N] (aspeed.i2c.bus)    for N in 0..15
-        /aspeed.i2c.bus.N (i2c-bus)
-
-in both master and aspeed-11.0.
-
-Object aspeed.i2c-ast2700 is a sysbus device that contains 16
-aspeed.i2c.bus objects as children bus[N] for N in 0..15.  Each object
-has a property "bus-id" with value N.
-
-Object aspeed.i2c.bus is a sysbus device that contains an i2c-bus object
-as child aspeed.i2c.bus.N.
-
-Aside: why parent TYPE_SYS_BUS_DEVICE, and not TYPE_DEVICE?  It doesn't
-actually plug into a sysbus...
-
-Object i2c-bus is a qbus.
-
-In master, object aspeed.i2c.bus computes the child name by appending .N
-to its own type name TYPE_ASPEED_I2C_BUS.
-
-In aspeed-11.0, it takes it from its property "bus-name".  The property
-is set by its QOM parent aspeed.i2c-ast2700, and computed by appending
-.N to the value of its property "bus-label".  It defaults the property
-to TYPE_ASPEED_I2C_BUS.
-
-Since nothing sets this property in this case, we get the same child
-name.
-
-aspeed-11.0 additionally has QOM objects
-
-    /machine/soc/ioexp[M] (aspeed.ast1700)    for M in 0..1
-        /ioexp-i2c[0] (aspeed.i2c-ast2700)
-          /bus[N] (aspeed.i2c.bus)    for N in 0..15
-            /ioexpM.N (i2c-bus)
-
-Object aspeed.ast1700 is a sysbus device that contains an
-aspeed.i2c-ast2700 as child "ioexp-i2c[0]".  It has a property
-"board-idx" with value M.
-
-Aside: we only ever create one aspeed.i2c-ast2700 child.  Why [0]?
-
-Aside^2: I tried to strangle the "[*]" feature in the crib, but failed.
-Has been a minor thorn in my side ever since.
-
-aspeed.ast1700 set its child's (aspeed.i2c-ast2700) property "bus-label"
-to "ioexpM".  This makes the child set the grandchild's (aspeed.i2c.bus)
-property "bus-name" to "ioexpM.N", which makes the grandchild name the
-great-grandchild (i2c-bus) "ioexpM.N".
-
-This naming business is complicated, and I had a hard time ferreting it
-out.  As far as I can tell, it's all in service of -device bus=3D...
-Let's examine how that works.
-
-We want to be able to plug i2c devices into any of these 48 i2c buses
-with -device / device_add.  To do that, we need to select a bus with the
-"bus" argument.
-
-In a world saner than the one we live in, the value of "bus" would be a
-QOM path or qdev ID, where qdev ID is shorthand for the QOM path
-/machine/peripheral/ID.
-
-For instance, the first i2c bus could then be selected with absolute QOM
-path "/machine/soc/i2c/bus[0]" or partial QOM paths "soc/i2c/bus[0]" or
-"i2c/bus[0]".  Partial QOM paths are a convenience feature that is
-virtually unknown (and possibly ill-advised): you can omit leading path
-components as long as there's no ambiguity.
-
-However, in the world we live in, the value of bus is not a QOM path,
-it's a path in the qtree.  Why?  qdev and -device / device_add predate
-QOM.
-
-If the path starts with "/", it's anchored at the main system bus.
-
-Else, it's anchored at a bus whose name is the first path component.  If
-there's more than one such bus, we pick the first one we find.  This is
-a misfeature.
-
-Remaining path components, if any, pick a path in the qtree from that
-anchor towards leaves.  Note that the child of a qbus is always a qdev,
-and the child of a qdev always a qbus.
-
-This must ultimately resolve to a qbus of the appropriate type.
-
-Picking a qdev child of a qbus works like this:
-
-* If a child with a (user-specified) qdev ID equal to the path component
-  exists, pick it.  Since qdev IDs are unique, there can only be one.
-
-* Else, if children whose QOM type name equals the path component
-  exists, pick the first one.
-
-* Else, if children whose qdev alias equals the path component exists,
-  pick the first one.
-
-Picking the first one is again a misfeature.
-
-Picking a qbus child is simpler: we pick the first child whose bus name
-equals the path component.
-
-Bus names are defined as follows:
-
-* Whatever creates the bus may set its name.
-
-* Else, if the qbus's parent qdev has an ID, the bus name is ID.N, where
-  N counts up from 0 within that qdev.
-
-* Else, the bus name is TYPE.N, where TYPE is the parent qdev's QOM type
-  name, and N counts up from 0 within that bus class.
-
-The only case where this is actually works is picking the N-th bus child
-provided by a qdev with an ID: use bus=3DID.N (a partial tree path of just
-one component).  Anything else is unfit for purpose, except in special
-cases, e.g. when the machine can have just one device of a certain type.
-
-This mess is harmless for user-created devices: just specify the ID.
-It's awful for onboard devices, which cannot have an ID.
-
-This is a qdev design flaw.  It's not specific to I2C or Aspeed, as
-Philippe suspected.
-
-To illustrate it further, let's have a look at the qtree of machine
-ast2700a1-evb.  Output of "info qtree" in master:
-
-    bus: main-system-bus
-      type System
-      [...]
-      dev: aspeed.i2c.bus, id ""    for N in 0..15
-        [...]
-        bus: aspeed.i2c.bus.N
-          type i2c-bus
-          [...]
-=20=20=20=20=20=20
-In aspeed-11.0, we additionally have
-
-      dev: aspeed.i2c.bus, id ""    for M in 0..1, N in 0..15
-        [...]
-        bus: ioexpM.N
-          type i2c-bus
-          [...]
-
-The i2c-buses all have unique names: aspeed.i2c-bus.N and ioexpM.N.  We
-can point to any of them with a partial qtree path of just one
-component: bus=3DNAME where NAME is one of these unique names works, and
-there is no ambiguity.
-
-The buses have unique names only because device code takes pains to make
-them configurable by parent devices, and the parent devices cooperate to
-configure them so the resulting bus names are unique.
-
-This is a lot of complexity to work around this qdev design flaw for
-just one special instance.
-
-Can we instead remedy the design flaw once and for all?
-
-Here't the obvious stupid idea: give -device / device_add the means to
-pick a bus by QOM path.
-
-Thoughts?
+> +    }
+>   }
 
 
