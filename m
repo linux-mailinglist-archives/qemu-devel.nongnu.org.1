@@ -2,50 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8DhUGQrHb2mgMQAAu9opvQ
+	id sM/PN57Eb2lsMQAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:18:50 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:08:30 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F20694950D
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:18:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76EFB491F6
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:08:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viA4t-0002If-GA; Tue, 20 Jan 2026 06:39:19 -0500
+	id 1viAAh-0003bb-3O; Tue, 20 Jan 2026 06:45:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1viA4r-0002He-EV; Tue, 20 Jan 2026 06:39:17 -0500
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
+ id 1viAAW-0003Tf-2k; Tue, 20 Jan 2026 06:45:10 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1viA4o-0000K5-VF; Tue, 20 Jan 2026 06:39:17 -0500
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 0292F466FC;
- Tue, 20 Jan 2026 12:39:12 +0100 (CET)
-From: Fiona Ebner <f.ebner@proxmox.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
- stefanha@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru,
- eblake@redhat.com
-Subject: [PATCH] iotests: test active mirror with unaligned,
- small write zeroes op
-Date: Tue, 20 Jan 2026 12:38:57 +0100
-Message-ID: <20260120113859.251743-1-f.ebner@proxmox.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <0e2a9f8d-c6f4-43dd-936d-4d977d427b96@yandex-team.ru>
-References: <0e2a9f8d-c6f4-43dd-936d-4d977d427b96@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
+ id 1viAAT-00011E-8i; Tue, 20 Jan 2026 06:45:07 -0500
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dwQTd6Yk2zHnGdS;
+ Tue, 20 Jan 2026 19:44:21 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+ by mail.maildlp.com (Postfix) with ESMTPS id 944AB40572;
+ Tue, 20 Jan 2026 19:44:53 +0800 (CST)
+Received: from localhost (10.203.177.99) by dubpeml500005.china.huawei.com
+ (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 20 Jan
+ 2026 11:44:52 +0000
+Date: Tue, 20 Jan 2026 11:44:47 +0000
+To: Cornelia Huck <cohuck@redhat.com>
+CC: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Eric Auger <eric.auger@redhat.com>,
+ <jonathan.cameron@huawei.com>
+Subject: Re: [PATCH RFC 0/3] arm: demuxed ID registers (CCSIDR_EL1)
+Message-ID: <20260120114447.00004699.alireza.sanaee@huawei.com>
+In-Reply-To: <20260119172732.140613-1-cohuck@redhat.com>
+References: <20260119172732.140613-1-cohuck@redhat.com>
+Organization: Huawei
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
-X-Bm-Transport-Timestamp: 1768909095958
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.99]
+X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
+ dubpeml500005.china.huawei.com (7.214.145.207)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=alireza.sanaee@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -60,92 +69,97 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Alireza Sanaee <alireza.sanaee@huawei.com>
+From:  Alireza Sanaee via qemu development <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
-X-Spamd-Result: default: False [0.99 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	MAILLIST(-0.20)[mailman];
+X-Spamd-Result: default: False [-1.01 / 15.00];
+	DMARC_POLICY_ALLOW(-0.50)[nongnu.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
+	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_RCPT(0.00)[qemu-devel];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	ARC_NA(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
-	DMARC_NA(0.00)[proxmox.com];
-	R_DKIM_NA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[f.ebner@proxmox.com,qemu-devel-bounces@nongnu.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_DN_NONE(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,proxmox.com:email,proxmox.com:mid]
-X-Rspamd-Queue-Id: F20694950D
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	SUSPICIOUS_AUTH_ORIGIN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	HAS_REPLYTO(0.00)[alireza.sanaee@huawei.com];
+	FROM_NEQ_ENVFROM(0.00)[qemu-devel@nongnu.org,qemu-devel-bounces@nongnu.org];
+	FROM_HAS_DN(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	R_DKIM_NA(0.00)[];
+	HAS_XOIP(0.00)[];
+	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
+	TAGGED_RCPT(0.00)[qemu-devel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,huawei.com:replyto,huawei.com:mid,lists.gnu.org:rdns,lists.gnu.org:helo,h.inc:url]
+X-Rspamd-Queue-Id: 76EFB491F6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This tests the scenario fixed by "block/mirror: check range
-when setting zero bitmap for sync write" [0].
+On Mon, 19 Jan 2026 18:27:29 +0100
+Cornelia Huck <cohuck@redhat.com> wrote:
 
-[0] https://lore.kernel.org/qemu-devel/20260112152544.261923-1-f.ebner@proxmox.com/
-
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
----
- tests/qemu-iotests/151     | 20 ++++++++++++++++++++
- tests/qemu-iotests/151.out |  4 ++--
- 2 files changed, 22 insertions(+), 2 deletions(-)
-
-diff --git a/tests/qemu-iotests/151 b/tests/qemu-iotests/151
-index 06ee3585db..9b9c815db5 100755
---- a/tests/qemu-iotests/151
-+++ b/tests/qemu-iotests/151
-@@ -191,6 +191,26 @@ class TestActiveMirror(iotests.QMPTestCase):
- 
-         self.potential_writes_in_flight = False
- 
-+    def testUnalignedSmallerThanGranularityWriteZeroes(self):
-+        # Fill the source image
-+        self.vm.hmp_qemu_io('source', 'write -P 1 0 %i' % self.image_len);
-+
-+        # Start the block job
-+        self.vm.cmd('blockdev-mirror',
-+                    job_id='mirror',
-+                    filter_node_name='mirror-node',
-+                    device='source-node',
-+                    target='target-node',
-+                    sync='full',
-+                    copy_mode='write-blocking')
-+
-+        # Wait for the READY event
-+        self.wait_ready(drive='mirror')
-+
-+        for offset in range(6 * self.image_len // 8, 7 * self.image_len // 8, 1024 * 1024):
-+            self.vm.hmp_qemu_io('source', 'aio_write -z %i 512' % (offset + 512))
-+
-+        self.complete_and_wait(drive='mirror', wait_ready=False)
- 
- class TestThrottledWithNbdExportBase(iotests.QMPTestCase):
-     image_len = 128 * 1024 * 1024  # MB
-diff --git a/tests/qemu-iotests/151.out b/tests/qemu-iotests/151.out
-index 3f8a935a08..2f7d3902f2 100644
---- a/tests/qemu-iotests/151.out
-+++ b/tests/qemu-iotests/151.out
-@@ -1,5 +1,5 @@
--......
-+.......
- ----------------------------------------------------------------------
--Ran 6 tests
-+Ran 7 tests
- 
- OK
--- 
-2.47.3
+Hi Cornelia,
 
 
+
+> Note: this is on top of <20260105154119.59853-1-cohuck@redhat.com>
+> ("[PATCH v3 0/2] arm: move DCZID_EL0 to idregs array")
+> 
+> While trying to move to an autogenerated cpu-sysregs.h.inc (so that we
+> may keep a common view on registers), we should first address the ID
+> registers that are still kept outside of ARMISARegisters. Other than
+> DCZID_EL0 (addressed by the series this one goes on top of), that's
+> the CCSIDR_EL1 values kept in cpu->cssidr[] (indexed via CSSELR_EL1.)
+> 
+> My idea was to provide {GET,SET}_IDREG_DEMUX helper that work similar
+> to {GET,SET}_IDREG and operate on a two-dimensional array. As a side
+> effect, this also allows to get the values KVM provides for CCSIDR_EL1
+> (which are virtualized as well.)
+> 
+> RFC because there are still some open questions:
+> - The demux array cannot easily be autogenerated. We can get rid of the
+>   ccsidr[] array, but we now have an autogenerated entry in the non-demux
+>   array that does nothing. Both are not that nice.
+> - I'm not sure if we need any compat handling for KVM (on TCG, everything
+>   should stay the same.) In theory, the KVM interface allows setting
+>   values from userspace (I didn't try.)
+> - There's a slight disagreement between the current code (providing 16
+>   entries for CCSIDR_EL1) and the KVM code (providing (7 cache levels) *
+>   (data/unified, instruction) = 14 entries.) With FEAT_MTE2, we might be
+>   needing 7 more entries.
+> 
+> Feedback appreciated.
+> 
+> Cornelia Huck (3):
+>   arm: handle demuxed ID registers
+>   arm: handle CCSIDR_EL1 as a demuxed register
+>   arm/kvm: get demuxed ID registers from kvm
+> 
+>  hw/intc/armv7m_nvic.c        |  2 +-
+>  target/arm/cpu-sysregs.h     |  6 ++++
+>  target/arm/cpu-sysregs.h.inc |  1 +
+>  target/arm/cpu.h             | 26 ++++++++++++----
+>  target/arm/cpu64.c           | 12 ++++----
+>  target/arm/helper.c          |  2 +-
+>  target/arm/kvm.c             | 33 ++++++++++++++++++++
+>  target/arm/tcg/cpu32.c       | 32 +++++++++----------
+>  target/arm/tcg/cpu64.c       | 60 ++++++++++++++++++------------------
+>  9 files changed, 114 insertions(+), 60 deletions(-)
+> 
+
+This impacts my set https://lore.kernel.org/all/20260106155828.643-1-alireza.sanaee@huawei.com/
+
+I tested it with mine of course it required a few changes, but looks like working on TCG, didn't try KVM.
+
+Tested-by: Alireza Sanaee <alireza.sanaee@huawei.com>
 
