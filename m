@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGdEDhfMb2mgMQAAu9opvQ
+	id UDGNMmbMb2mgMQAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:40:23 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:41:42 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5F54499C7
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:40:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54FF949A5D
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:41:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viGdU-0007m9-Bk; Tue, 20 Jan 2026 13:39:28 -0500
+	id 1viGdd-00085c-P0; Tue, 20 Jan 2026 13:39:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGdG-0007gu-JY
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:39:18 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGdN-0007k5-2V
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:39:21 -0500
 Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGdC-0005ud-Vx
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:39:12 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGdI-0005vM-Pl
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:39:20 -0500
 Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4801bbbdb4aso701255e9.1
- for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 10:39:07 -0800 (PST)
+ 5b1f17b1804b1-47ee76e8656so66898365e9.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 10:39:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768934346; x=1769539146; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=bZN2rVENHtu99EBcPdBrwcNflvrUjjbRG/7TgKKA2yA=;
- b=EtARPt17Ig4BMwCCE0ISmEz6TF7yV7BLJ6ZAw0Mlw6en+C6cxUov9VtK7u4/oMebiA
- /jBSkOpLSpc8AhOw2+QP78lwE1rJlbL0IJToLPp8wctMrcPcXbNYqBCs00ZwUPCE42d1
- v3Ao5e2+DCkJMo/rwp188r4hh1w4fN+FKm3J+ILFC2B5OZ02yPBNNqP7kzFMHzkDNMqK
- qs3wEhoXsdqPmDUvzrglFF3kNgrgBz2Xtb+XBGd3w8WeZemCm9RlcBvwWcD5O47h3Z87
- rx5ZwiekmSecfvHh+76Gqqhw/yU3hiL7D3kpqRa1P/A09fb9W6d4h/i6U00dNqhxwSWc
- zXoQ==
+ d=linaro.org; s=google; t=1768934353; x=1769539153; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=z+/IfCOOQHd614qj42ctysWvaB7Y8AkyWHk+0TA5fIE=;
+ b=PLYN9zFnzOYpMWWziu0w5ynkafnwT6p3ICoi/QEdxRoEjyOY1cNhz2DRJP7nNb4wSN
+ cFc5x6sl3UBdIL2JaqXrk7z3bdoTEd95PZF9RBZxZqYI0ID1vK3EdMVHJNSrRRK07Btm
+ L07oHa0cRGMuatKdzRqRNmtPo4aS2q16pl1BM3KvFflcpAG1NxLYKW4t9cAb27rh7gfB
+ Ldswh55IvrDUI0fpK01SxnPNIkoBDOfGbxBM2y/WaSvOQG9hjIYxBh0ZpJmG8VvcG72+
+ vhx+TCl/6NIbUtqffzx6JrMJelY2h0PmFssRRwgAJN2jiRQE9OoyRxo2hmmghUbr3gIH
+ BNoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768934346; x=1769539146;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=bZN2rVENHtu99EBcPdBrwcNflvrUjjbRG/7TgKKA2yA=;
- b=BYUh0+AWH6uiJjwgO2DWS5/gZbga+qQBvMpvMvgbg8BsnLp3xwwJuUcK/SQwGvtdcb
- 0sLrnxJO0n90fNpVTWqi1+eJ29wDtwD5B2zU38pLG3o+jDGspzBZkimMa0bSMvgJ+OQp
- tmqlhfhiFJ5VMaJdwODRvclW5Z9yAzW54hEVBH6RoZ36cxDI/BXNZVAeotxrmFWvZ9X5
- cIfaVQZ/oSibDS4Uag1PPpiZFzEqnyjNwp6nxXmksHYl8oCtKrlRcQXd0vD5jlN0hOWX
- WIkB4uPozdieF9mEPTZVDpZDUa5JytQI7PSLndtS7BLvvZHILUrDI87KtCrn7nSdFYSi
- vjmA==
-X-Gm-Message-State: AOJu0YwSbFj62cUNw28mR8ArJCZzyMqYBlT7obb/m/qc9KM1rNUvp27V
- S+XGVocGjhORoS8vGykDPVhEQDNvOkl3TTIrzK7ixQcHzXtQe7iSyWxilg4GcHt9Yq9cFRE6MSy
- QU5XBW3A=
-X-Gm-Gg: AY/fxX7pRB63XmS5mUol/ehkwCm7e0EsU32foNqgMmwHJ8llBxf7PyDN5C993royiQx
- t+WNagsopT/ZanhUm2F1NECOaNoKN2C02brz7kyElemYPY78I0LiIxWFQ9ufmwjP3FBo1JbVnQm
- YKkcvH2Cg8SKGvxk4AFo7ULy9/y0OmSOLgL+vFFOkaH0rBhd9jdClm9ilFtjjD5q/IqUubZSxrT
- Ss1cLXsdQ//3Qd2zvqyqKzBMkRXtFgnQoKZxxkuhLIHk8w9ii9Ai8PkCKBHvNSnY+TWA2GgMTdF
- vIPEgxO9IBmZX/SJBmft6G9l17GfWtmVNOKTt9RUtvUAoVqM8YnR5BSZ7pcpjkeaQoYPbtzHNnE
- TP2bAw8nm1AZam2yIsKVyMErsEwzqYgSkY1Bnwf73c2VcUAjFP7vtDBkgaB2Rfgh66BX+IZmwTE
- Zo0SSro7J4PRIUBn+SE/H9oRTjAj0Zl4hr//H49IFx0TIdOuatpjAopMzaLQj6sbl4xoU8oro=
-X-Received: by 2002:a05:600c:60f:b0:47d:52ef:c572 with SMTP id
- 5b1f17b1804b1-47f4289abb5mr160864665e9.1.1768934345831; 
- Tue, 20 Jan 2026 10:39:05 -0800 (PST)
+ d=1e100.net; s=20230601; t=1768934353; x=1769539153;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=z+/IfCOOQHd614qj42ctysWvaB7Y8AkyWHk+0TA5fIE=;
+ b=JdekUB9ysEb9xpqo3lR/2XKw2tNx8zQuGkPqLSwMFmqQGVWrByaVe4BC/q+hwOgz/2
+ fA2tJs3+/mbyRIqmNCjPKgu6ll4C/TYN55i7pQGeZlCrdlJMEmEoVrN4gSL5FPGK9N8D
+ r11FZDM+NWswgBAcRXCA975k3313yoJ8ZCY8+3YZnuEYUjVLO0i+hRl36MGi4295/oey
+ eF2uU1Ll2JkWdaWkXqQmWRBMUT/ZvVJ4EOamEO/+jjNlG3ZfBb2TYq6DEjZ14HYg7bI4
+ IkGCT+WuByLZUoc3Aa6fd5b6UWG4/mnbkJerY2xWL3MNFZSQOPu4XO5YOGq7eVZ8hAGE
+ poFg==
+X-Gm-Message-State: AOJu0YzLHjDGD2gEUk4thgWQ2hQmKxXq3dwnaTTl5ApRahrryFB+xr8k
+ D2alW7aHM0RPPYbDWuNy1CcxCyPmiHEkve60ysJ1BY3bRk5dxXdue4r1xVjVaxrh0nmvUxc5i1M
+ jil0iNww=
+X-Gm-Gg: AY/fxX7ZkN/2ibcgOep1S4xyx49Oyd+wehbMYZnrxawvrb2/+lEBff2xQZb5/ExCYQH
+ yaQJzPj21ARrMFmelMhE3XLttR+Mck3xbfsurAT059cVzJWamnloThP18OrdiNcHaaBnpWbzSxO
+ oVxyOo8vWLN5FbksQwqXemWIhw6lx/b5Q2ItoMylAeSGpcYXNWTU51eLJl1NHe1RtBYMilqWtIL
+ TQjZVlB/vQ9bQOU2O8ZTNHBORyA/50L7PkyOARoAXFPWvBFvKfM6qPv0V43HwDVGfiDAiga8RFr
+ VC59VWV1eSkke8v8VTeFdp5hEpmvi9OlhC1KqlWypvrCzvJ430rBtyhg2A2f0v3gvD2MrWAyhEc
+ DKMRdfsDsscHbXWk7+QoAfqrNm9okPwhrYFueKLU+m02nU/MTUAQVq2DdXeL7V58UEuUB85iv4B
+ caY7aTcSnvkpIHYaYsLEwmUYtTH1nSuOwRntfr+Ij1m+CNKdh9Dq05EDM4m42Q
+X-Received: by 2002:a05:600c:458b:b0:46e:6d5f:f68 with SMTP id
+ 5b1f17b1804b1-4803e7a2ce4mr39510835e9.12.1768934353103; 
+ Tue, 20 Jan 2026 10:39:13 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-47f42907141sm317820645e9.9.2026.01.20.10.39.03
+ 5b1f17b1804b1-48042694e77sm587205e9.12.2026.01.20.10.39.11
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 20 Jan 2026 10:39:04 -0800 (PST)
+ Tue, 20 Jan 2026 10:39:11 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/29] Misc HW patches for 2026-01-20
-Date: Tue, 20 Jan 2026 19:38:33 +0100
-Message-ID: <20260120183902.73845-1-philmd@linaro.org>
+Subject: [PULL 01/29] hw/arm/smmuv3: Extract common definitions to
+ smmuv3-common.h
+Date: Tue, 20 Jan 2026 19:38:34 +0100
+Message-ID: <20260120183902.73845-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260120183902.73845-1-philmd@linaro.org>
+References: <20260120183902.73845-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::330;
  envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
@@ -101,20 +104,20 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 X-Spamd-Result: default: False [-0.21 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24];
 	MAILLIST(-0.20)[mailman];
+	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_ONE(0.00)[1];
+	MIME_TRACE(0.00)[0:+];
 	ARC_NA(0.00)[];
 	DKIM_TRACE(0.00)[linaro.org:+];
 	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_ONE(0.00)[1];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[philmd@linaro.org,qemu-devel-bounces@nongnu.org];
 	FROM_HAS_DN(0.00)[];
@@ -123,127 +126,601 @@ X-Spamd-Result: default: False [-0.21 / 15.00];
 	TAGGED_RCPT(0.00)[qemu-devel];
 	PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,linaro.org:mid,linaro.org:dkim,meson.build:url]
-X-Rspamd-Queue-Id: B5F54499C7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linaro.org:dkim,linaro.org:mid,lists.gnu.org:rdns,lists.gnu.org:helo,phytium.com.cn:email]
+X-Rspamd-Queue-Id: 54FF949A5D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The following changes since commit 38879a667fbb4ef54c70de71494882615f600a64:
+From: Tao Tang <tangtao1634@phytium.com.cn>
 
-  Merge tag 'pull-tcg-20260119' of https://gitlab.com/rth7680/qemu into staging (2026-01-19 09:04:31 +1100)
+Move register definitions, command enums, and Stream Table Entry (STE) /
+Context Descriptor (CD) structure definitions from the internal header
+hw/arm/smmuv3-internal.h to a new common header
+include/hw/arm/smmuv3-common.h.
 
-are available in the Git repository at:
+This allows other components, such as generic SMMUv3 tests or test devices,
+to utilize these definitions without including the specific SMMUv3 device
+internal state.
 
-  https://github.com/philmd/qemu.git tags/hw-misc-20260120
-
-for you to fetch changes up to 84f82697f8294377224aad9f7cc499116ae0ec49:
-
-  meson: Do not try to build module for empty per-target hw/ directory (2026-01-20 19:34:44 +0100)
-
-----------------------------------------------------------------
-Misc HW patches
-
-- Generalized IOMMU test framework
-- Fix Freescale SDHCI endianness issues
-- Support for zboot images compressed with Zstd
-- Pcap support to analyze UEFI firmware traffic
-----------------------------------------------------------------
-
-Bernhard Beschow (13):
-  hw/sd/sdhci: Fix TYPE_IMX_USDHC to implement sd-spec-version 3 by
-    default
-  hw/arm/fsl-imx6: Remove now redundant setting of "sd-spec-version"
-    property
-  hw/arm/fsl-imx6: Fix naming of SDHCI related constants and attributes
-  hw/arm/fsl-imx25: Apply missing reset quirk
-  Revert "hw/sd/sdhci: Rename ESDHC_* defines to USDHC_*"
-  hw/sd/sdhci: Consolidate eSDHC constants
-  hw/sd/sdhci: Rename usdhc_ functions
-  hw/sd/sdhci: Add TYPE_FSL_ESDHC_BE
-  hw/ppc/e500: Use TYPE_FSL_ESDHC_BE
-  hw/arm/fsl-imx25: Extract TYPE_FSL_ESDHC_LE
-  hw/sd/sdhci: Remove endianness property
-  hw/sd/sdhci: Remove vendor property
-  hw/sd/trace-events: Remove redundant "SWITCH " command name
-
-Daan De Meyer (4):
-  hw/loader: Rename LOAD_IMAGE_MAX _GUNZIP_BYTES to _DECOMPRESSED_BYTES
-  hw/loader: Rename UBOOT_MAX _GUNZIP_BYTES to _DECOMPRESSED_BYTES
-  hw/loader: Use g_autofree in unpack_efi_zboot_image()
-  hw/loader: Add support for zboot images compressed with zstd
-
-Gerd Hoffmann (2):
-  hw: move pcap structs to header file
-  hw/uefi: add pcap support
-
-Paolo Bonzini (1):
-  hw/virtio-nsm: include qemu/osdep.h
-
-Philippe Mathieu-Daudé (1):
-  meson: Do not try to build module for empty per-target hw/ directory
-
-Tao Tang (8):
-  hw/arm/smmuv3: Extract common definitions to smmuv3-common.h
-  hw/arm/smmuv3-common: Define STE/CD fields via registerfields
-  hw/misc: Introduce iommu-testdev for bare-metal IOMMU testing
-  hw/arm/smmuv3-common: Add NSCFG bit definition for CD
-  hw/arm/smmuv3-common: Add STE/CD set helpers for repeated field setup
-  tests/qtest: Add libqos iommu-testdev helpers
-  tests/qtest/libqos: Add SMMUv3 helper library
-  tests/qtest: Add SMMUv3 bare-metal test using iommu-testdev
-
- MAINTAINERS                            |  14 +
- docs/specs/index.rst                   |   1 +
- docs/specs/iommu-testdev.rst           | 140 ++++++
- meson.build                            |   7 +-
- hw/arm/smmuv3-internal.h               | 255 +---------
- hw/sd/sdhci-internal.h                 |   3 -
- include/hw/arm/fsl-imx6.h              |   4 +-
- include/hw/arm/smmuv3-common.h         | 423 +++++++++++++++++
- include/hw/core/loader.h               |   4 +-
- include/hw/misc/iommu-testdev.h        |  87 ++++
- include/hw/sd/sdhci.h                  |   8 +-
- include/hw/uefi/var-service.h          |  10 +
- include/qemu/pcap.h                    |  30 ++
- tests/qtest/libqos/qos-iommu-testdev.h |  43 ++
- tests/qtest/libqos/qos-smmuv3.h        | 242 ++++++++++
- hw/arm/boot.c                          |   4 +-
- hw/arm/fsl-imx25.c                     |   5 +-
- hw/arm/fsl-imx6.c                      |  18 +-
- hw/core/loader-fit.c                   |   2 +-
- hw/core/loader.c                       |  44 +-
- hw/misc/iommu-testdev.c                | 318 +++++++++++++
- hw/nvram/fw_cfg.c                      |   3 +-
- hw/ppc/e500.c                          |  10 +-
- hw/sd/sdhci.c                          | 181 ++++---
- hw/uefi/var-service-core.c             |   7 +
- hw/uefi/var-service-pcap.c             |  95 ++++
- hw/uefi/var-service-sysbus.c           |   1 +
- hw/usb/pcap.c                          |  24 +-
- hw/virtio/cbor-helpers.c               |   1 +
- tests/qtest/iommu-smmuv3-test.c        | 132 ++++++
- tests/qtest/libqos/qos-iommu-testdev.c |  82 ++++
- tests/qtest/libqos/qos-smmuv3.c        | 629 +++++++++++++++++++++++++
- hw/misc/Kconfig                        |   5 +
- hw/misc/meson.build                    |   1 +
- hw/misc/trace-events                   |  10 +
- hw/sd/trace-events                     |   2 +-
- hw/uefi/meson.build                    |   1 +
- tests/qtest/libqos/meson.build         |   4 +
- tests/qtest/meson.build                |   3 +
- 39 files changed, 2445 insertions(+), 408 deletions(-)
- create mode 100644 docs/specs/iommu-testdev.rst
+Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Message-ID: <20260119161112.3841386-2-tangtao1634@phytium.com.cn>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/arm/smmuv3-internal.h       | 255 +------------------------------
+ include/hw/arm/smmuv3-common.h | 268 +++++++++++++++++++++++++++++++++
+ 2 files changed, 269 insertions(+), 254 deletions(-)
  create mode 100644 include/hw/arm/smmuv3-common.h
- create mode 100644 include/hw/misc/iommu-testdev.h
- create mode 100644 include/qemu/pcap.h
- create mode 100644 tests/qtest/libqos/qos-iommu-testdev.h
- create mode 100644 tests/qtest/libqos/qos-smmuv3.h
- create mode 100644 hw/misc/iommu-testdev.c
- create mode 100644 hw/uefi/var-service-pcap.c
- create mode 100644 tests/qtest/iommu-smmuv3-test.c
- create mode 100644 tests/qtest/libqos/qos-iommu-testdev.c
- create mode 100644 tests/qtest/libqos/qos-smmuv3.c
 
+diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
+index d15031f2651..687ee6aaca4 100644
+--- a/hw/arm/smmuv3-internal.h
++++ b/hw/arm/smmuv3-internal.h
+@@ -23,6 +23,7 @@
+ 
+ #include "hw/core/registerfields.h"
+ #include "hw/arm/smmu-common.h"
++#include "hw/arm/smmuv3-common.h"
+ 
+ typedef enum SMMUTranslationStatus {
+     SMMU_TRANS_DISABLE,
+@@ -38,147 +39,6 @@ typedef enum SMMUTranslationClass {
+     SMMU_CLASS_IN,
+ } SMMUTranslationClass;
+ 
+-/* MMIO Registers */
+-
+-REG32(IDR0,                0x0)
+-    FIELD(IDR0, S2P,         0 , 1)
+-    FIELD(IDR0, S1P,         1 , 1)
+-    FIELD(IDR0, TTF,         2 , 2)
+-    FIELD(IDR0, COHACC,      4 , 1)
+-    FIELD(IDR0, BTM,         5 , 1)
+-    FIELD(IDR0, HTTU,        6 , 2)
+-    FIELD(IDR0, DORMHINT,    8 , 1)
+-    FIELD(IDR0, HYP,         9 , 1)
+-    FIELD(IDR0, ATS,         10, 1)
+-    FIELD(IDR0, NS1ATS,      11, 1)
+-    FIELD(IDR0, ASID16,      12, 1)
+-    FIELD(IDR0, MSI,         13, 1)
+-    FIELD(IDR0, SEV,         14, 1)
+-    FIELD(IDR0, ATOS,        15, 1)
+-    FIELD(IDR0, PRI,         16, 1)
+-    FIELD(IDR0, VMW,         17, 1)
+-    FIELD(IDR0, VMID16,      18, 1)
+-    FIELD(IDR0, CD2L,        19, 1)
+-    FIELD(IDR0, VATOS,       20, 1)
+-    FIELD(IDR0, TTENDIAN,    21, 2)
+-    FIELD(IDR0, ATSRECERR,   23, 1)
+-    FIELD(IDR0, STALL_MODEL, 24, 2)
+-    FIELD(IDR0, TERM_MODEL,  26, 1)
+-    FIELD(IDR0, STLEVEL,     27, 2)
+-    FIELD(IDR0, RME_IMPL,    30, 1)
+-
+-REG32(IDR1,                0x4)
+-    FIELD(IDR1, SIDSIZE,      0 , 6)
+-    FIELD(IDR1, SSIDSIZE,     6 , 5)
+-    FIELD(IDR1, PRIQS,        11, 5)
+-    FIELD(IDR1, EVENTQS,      16, 5)
+-    FIELD(IDR1, CMDQS,        21, 5)
+-    FIELD(IDR1, ATTR_PERMS_OVR, 26, 1)
+-    FIELD(IDR1, ATTR_TYPES_OVR, 27, 1)
+-    FIELD(IDR1, REL,          28, 1)
+-    FIELD(IDR1, QUEUES_PRESET, 29, 1)
+-    FIELD(IDR1, TABLES_PRESET, 30, 1)
+-    FIELD(IDR1, ECMDQ,        31, 1)
+-
+-#define SMMU_IDR1_SIDSIZE 16
+-#define SMMU_CMDQS   19
+-#define SMMU_EVENTQS 19
+-
+-REG32(IDR2,                0x8)
+-     FIELD(IDR2, BA_VATOS, 0, 10)
+-
+-REG32(IDR3,                0xc)
+-     FIELD(IDR3, HAD,         2, 1);
+-     FIELD(IDR3, PBHA,        3, 1);
+-     FIELD(IDR3, XNX,         4, 1);
+-     FIELD(IDR3, PPS,         5, 1);
+-     FIELD(IDR3, MPAM,        7, 1);
+-     FIELD(IDR3, FWB,         8, 1);
+-     FIELD(IDR3, STT,         9, 1);
+-     FIELD(IDR3, RIL,        10, 1);
+-     FIELD(IDR3, BBML,       11, 2);
+-     FIELD(IDR3, E0PD,       13, 1);
+-     FIELD(IDR3, PTWNNC,     14, 1);
+-     FIELD(IDR3, DPT,        15, 1);
+-
+-REG32(IDR4,                0x10)
+-
+-REG32(IDR5,                0x14)
+-     FIELD(IDR5, OAS,         0, 3);
+-     FIELD(IDR5, GRAN4K,      4, 1);
+-     FIELD(IDR5, GRAN16K,     5, 1);
+-     FIELD(IDR5, GRAN64K,     6, 1);
+-     FIELD(IDR5, VAX,        10, 2);
+-     FIELD(IDR5, STALL_MAX,  16, 16);
+-
+-#define SMMU_IDR5_OAS 4
+-
+-REG32(IIDR,                0x18)
+-REG32(AIDR,                0x1c)
+-REG32(CR0,                 0x20)
+-    FIELD(CR0, SMMU_ENABLE,   0, 1)
+-    FIELD(CR0, EVENTQEN,      2, 1)
+-    FIELD(CR0, CMDQEN,        3, 1)
+-
+-#define SMMU_CR0_RESERVED 0xFFFFFC20
+-
+-REG32(CR0ACK,              0x24)
+-REG32(CR1,                 0x28)
+-REG32(CR2,                 0x2c)
+-REG32(STATUSR,             0x40)
+-REG32(GBPA,                0x44)
+-    FIELD(GBPA, ABORT,        20, 1)
+-    FIELD(GBPA, UPDATE,       31, 1)
+-
+-/* Use incoming. */
+-#define SMMU_GBPA_RESET_VAL 0x1000
+-
+-REG32(IRQ_CTRL,            0x50)
+-    FIELD(IRQ_CTRL, GERROR_IRQEN,        0, 1)
+-    FIELD(IRQ_CTRL, PRI_IRQEN,           1, 1)
+-    FIELD(IRQ_CTRL, EVENTQ_IRQEN,        2, 1)
+-
+-REG32(IRQ_CTRL_ACK,        0x54)
+-REG32(GERROR,              0x60)
+-    FIELD(GERROR, CMDQ_ERR,           0, 1)
+-    FIELD(GERROR, EVENTQ_ABT_ERR,     2, 1)
+-    FIELD(GERROR, PRIQ_ABT_ERR,       3, 1)
+-    FIELD(GERROR, MSI_CMDQ_ABT_ERR,   4, 1)
+-    FIELD(GERROR, MSI_EVENTQ_ABT_ERR, 5, 1)
+-    FIELD(GERROR, MSI_PRIQ_ABT_ERR,   6, 1)
+-    FIELD(GERROR, MSI_GERROR_ABT_ERR, 7, 1)
+-    FIELD(GERROR, MSI_SFM_ERR,        8, 1)
+-
+-REG32(GERRORN,             0x64)
+-
+-#define A_GERROR_IRQ_CFG0  0x68 /* 64b */
+-REG32(GERROR_IRQ_CFG1, 0x70)
+-REG32(GERROR_IRQ_CFG2, 0x74)
+-
+-#define A_STRTAB_BASE      0x80 /* 64b */
+-
+-#define SMMU_BASE_ADDR_MASK 0xfffffffffffc0
+-
+-REG32(STRTAB_BASE_CFG,     0x88)
+-    FIELD(STRTAB_BASE_CFG, FMT,      16, 2)
+-    FIELD(STRTAB_BASE_CFG, SPLIT,    6 , 5)
+-    FIELD(STRTAB_BASE_CFG, LOG2SIZE, 0 , 6)
+-
+-#define A_CMDQ_BASE        0x90 /* 64b */
+-REG32(CMDQ_PROD,           0x98)
+-REG32(CMDQ_CONS,           0x9c)
+-    FIELD(CMDQ_CONS, ERR, 24, 7)
+-
+-#define A_EVENTQ_BASE      0xa0 /* 64b */
+-REG32(EVENTQ_PROD,         0xa8)
+-REG32(EVENTQ_CONS,         0xac)
+-
+-#define A_EVENTQ_IRQ_CFG0  0xb0 /* 64b */
+-REG32(EVENTQ_IRQ_CFG1,     0xb8)
+-REG32(EVENTQ_IRQ_CFG2,     0xbc)
+-
+-#define A_IDREGS           0xfd0
+-
+ static inline int smmu_enabled(SMMUv3State *s)
+ {
+     return FIELD_EX32(s->cr[0], CR0, SMMU_ENABLE);
+@@ -272,37 +132,6 @@ static inline void smmu_write_cmdq_err(SMMUv3State *s, uint32_t err_type)
+     s->cmdq.cons = FIELD_DP32(s->cmdq.cons, CMDQ_CONS, ERR, err_type);
+ }
+ 
+-/* Commands */
+-
+-typedef enum SMMUCommandType {
+-    SMMU_CMD_NONE            = 0x00,
+-    SMMU_CMD_PREFETCH_CONFIG       ,
+-    SMMU_CMD_PREFETCH_ADDR,
+-    SMMU_CMD_CFGI_STE,
+-    SMMU_CMD_CFGI_STE_RANGE,
+-    SMMU_CMD_CFGI_CD,
+-    SMMU_CMD_CFGI_CD_ALL,
+-    SMMU_CMD_CFGI_ALL,
+-    SMMU_CMD_TLBI_NH_ALL     = 0x10,
+-    SMMU_CMD_TLBI_NH_ASID,
+-    SMMU_CMD_TLBI_NH_VA,
+-    SMMU_CMD_TLBI_NH_VAA,
+-    SMMU_CMD_TLBI_EL3_ALL    = 0x18,
+-    SMMU_CMD_TLBI_EL3_VA     = 0x1a,
+-    SMMU_CMD_TLBI_EL2_ALL    = 0x20,
+-    SMMU_CMD_TLBI_EL2_ASID,
+-    SMMU_CMD_TLBI_EL2_VA,
+-    SMMU_CMD_TLBI_EL2_VAA,
+-    SMMU_CMD_TLBI_S12_VMALL  = 0x28,
+-    SMMU_CMD_TLBI_S2_IPA     = 0x2a,
+-    SMMU_CMD_TLBI_NSNH_ALL   = 0x30,
+-    SMMU_CMD_ATC_INV         = 0x40,
+-    SMMU_CMD_PRI_RESP,
+-    SMMU_CMD_RESUME          = 0x44,
+-    SMMU_CMD_STALL_TERM,
+-    SMMU_CMD_SYNC,
+-} SMMUCommandType;
+-
+ static const char *cmd_stringify[] = {
+     [SMMU_CMD_PREFETCH_CONFIG] = "SMMU_CMD_PREFETCH_CONFIG",
+     [SMMU_CMD_PREFETCH_ADDR]   = "SMMU_CMD_PREFETCH_ADDR",
+@@ -525,64 +354,6 @@ typedef struct SMMUEventInfo {
+ 
+ void smmuv3_record_event(SMMUv3State *s, SMMUEventInfo *event);
+ 
+-/* Configuration Data */
+-
+-/* STE Level 1 Descriptor */
+-typedef struct STEDesc {
+-    uint32_t word[2];
+-} STEDesc;
+-
+-/* CD Level 1 Descriptor */
+-typedef struct CDDesc {
+-    uint32_t word[2];
+-} CDDesc;
+-
+-/* Stream Table Entry(STE) */
+-typedef struct STE {
+-    uint32_t word[16];
+-} STE;
+-
+-/* Context Descriptor(CD) */
+-typedef struct CD {
+-    uint32_t word[16];
+-} CD;
+-
+-/* STE fields */
+-
+-#define STE_VALID(x)   extract32((x)->word[0], 0, 1)
+-
+-#define STE_CONFIG(x)  extract32((x)->word[0], 1, 3)
+-#define STE_CFG_S1_ENABLED(config) (config & 0x1)
+-#define STE_CFG_S2_ENABLED(config) (config & 0x2)
+-#define STE_CFG_ABORT(config)      (!(config & 0x4))
+-#define STE_CFG_BYPASS(config)     (config == 0x4)
+-
+-#define STE_S1FMT(x)       extract32((x)->word[0], 4 , 2)
+-#define STE_S1CDMAX(x)     extract32((x)->word[1], 27, 5)
+-#define STE_S1STALLD(x)    extract32((x)->word[2], 27, 1)
+-#define STE_EATS(x)        extract32((x)->word[2], 28, 2)
+-#define STE_STRW(x)        extract32((x)->word[2], 30, 2)
+-#define STE_S2VMID(x)      extract32((x)->word[4], 0 , 16)
+-#define STE_S2T0SZ(x)      extract32((x)->word[5], 0 , 6)
+-#define STE_S2SL0(x)       extract32((x)->word[5], 6 , 2)
+-#define STE_S2TG(x)        extract32((x)->word[5], 14, 2)
+-#define STE_S2PS(x)        extract32((x)->word[5], 16, 3)
+-#define STE_S2AA64(x)      extract32((x)->word[5], 19, 1)
+-#define STE_S2ENDI(x)      extract32((x)->word[5], 20, 1)
+-#define STE_S2AFFD(x)      extract32((x)->word[5], 21, 1)
+-#define STE_S2HD(x)        extract32((x)->word[5], 23, 1)
+-#define STE_S2HA(x)        extract32((x)->word[5], 24, 1)
+-#define STE_S2S(x)         extract32((x)->word[5], 25, 1)
+-#define STE_S2R(x)         extract32((x)->word[5], 26, 1)
+-
+-#define STE_CTXPTR(x)                                   \
+-    ((extract64((x)->word[1], 0, 16) << 32) |           \
+-     ((x)->word[0] & 0xffffffc0))
+-
+-#define STE_S2TTB(x)                                    \
+-    ((extract64((x)->word[7], 0, 16) << 32) |           \
+-     ((x)->word[6] & 0xfffffff0))
+-
+ static inline int oas2bits(int oas_field)
+ {
+     switch (oas_field) {
+@@ -603,30 +374,6 @@ static inline int oas2bits(int oas_field)
+     g_assert_not_reached();
+ }
+ 
+-/* CD fields */
+-
+-#define CD_VALID(x)   extract32((x)->word[0], 31, 1)
+-#define CD_ASID(x)    extract32((x)->word[1], 16, 16)
+-#define CD_TTB(x, sel)                                          \
+-    ((extract64((x)->word[(sel) * 2 + 3], 0, 19) << 32) |       \
+-     ((x)->word[(sel) * 2 + 2] & ~0xfULL))
+-
+-#define CD_HAD(x, sel)   extract32((x)->word[(sel) * 2 + 2], 1, 1)
+-
+-#define CD_TSZ(x, sel)   extract32((x)->word[0], (16 * (sel)) + 0, 6)
+-#define CD_TG(x, sel)    extract32((x)->word[0], (16 * (sel)) + 6, 2)
+-#define CD_EPD(x, sel)   extract32((x)->word[0], (16 * (sel)) + 14, 1)
+-#define CD_ENDI(x)       extract32((x)->word[0], 15, 1)
+-#define CD_IPS(x)        extract32((x)->word[1], 0 , 3)
+-#define CD_AFFD(x)       extract32((x)->word[1], 3 , 1)
+-#define CD_TBI(x)        extract32((x)->word[1], 6 , 2)
+-#define CD_HD(x)         extract32((x)->word[1], 10 , 1)
+-#define CD_HA(x)         extract32((x)->word[1], 11 , 1)
+-#define CD_S(x)          extract32((x)->word[1], 12, 1)
+-#define CD_R(x)          extract32((x)->word[1], 13, 1)
+-#define CD_A(x)          extract32((x)->word[1], 14, 1)
+-#define CD_AARCH64(x)    extract32((x)->word[1], 9 , 1)
+-
+ /**
+  * tg2granule - Decodes the CD translation granule size field according
+  * to the ttbr in use
+diff --git a/include/hw/arm/smmuv3-common.h b/include/hw/arm/smmuv3-common.h
+new file mode 100644
+index 00000000000..9da817f41ae
+--- /dev/null
++++ b/include/hw/arm/smmuv3-common.h
+@@ -0,0 +1,268 @@
++/*
++ * ARM SMMUv3 support - Common API
++ *
++ * Copyright (C) 2014-2016 Broadcom Corporation
++ * Copyright (c) 2017 Red Hat, Inc.
++ * Written by Prem Mallappa, Eric Auger
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef HW_ARM_SMMUV3_COMMON_H
++#define HW_ARM_SMMUV3_COMMON_H
++
++/* Configuration Data */
++
++/* STE Level 1 Descriptor */
++typedef struct STEDesc {
++    uint32_t word[2];
++} STEDesc;
++
++/* CD Level 1 Descriptor */
++typedef struct CDDesc {
++    uint32_t word[2];
++} CDDesc;
++
++/* Stream Table Entry(STE) */
++typedef struct STE {
++    uint32_t word[16];
++} STE;
++
++/* Context Descriptor(CD) */
++typedef struct CD {
++    uint32_t word[16];
++} CD;
++
++/* STE fields */
++
++#define STE_VALID(x)   extract32((x)->word[0], 0, 1)
++
++#define STE_CONFIG(x)  extract32((x)->word[0], 1, 3)
++#define STE_CFG_S1_ENABLED(config) (config & 0x1)
++#define STE_CFG_S2_ENABLED(config) (config & 0x2)
++#define STE_CFG_ABORT(config)      (!(config & 0x4))
++#define STE_CFG_BYPASS(config)     (config == 0x4)
++
++#define STE_S1FMT(x)       extract32((x)->word[0], 4 , 2)
++#define STE_S1CDMAX(x)     extract32((x)->word[1], 27, 5)
++#define STE_S1STALLD(x)    extract32((x)->word[2], 27, 1)
++#define STE_EATS(x)        extract32((x)->word[2], 28, 2)
++#define STE_STRW(x)        extract32((x)->word[2], 30, 2)
++#define STE_S2VMID(x)      extract32((x)->word[4], 0 , 16)
++#define STE_S2T0SZ(x)      extract32((x)->word[5], 0 , 6)
++#define STE_S2SL0(x)       extract32((x)->word[5], 6 , 2)
++#define STE_S2TG(x)        extract32((x)->word[5], 14, 2)
++#define STE_S2PS(x)        extract32((x)->word[5], 16, 3)
++#define STE_S2AA64(x)      extract32((x)->word[5], 19, 1)
++#define STE_S2ENDI(x)      extract32((x)->word[5], 20, 1)
++#define STE_S2AFFD(x)      extract32((x)->word[5], 21, 1)
++#define STE_S2HD(x)        extract32((x)->word[5], 23, 1)
++#define STE_S2HA(x)        extract32((x)->word[5], 24, 1)
++#define STE_S2S(x)         extract32((x)->word[5], 25, 1)
++#define STE_S2R(x)         extract32((x)->word[5], 26, 1)
++
++#define STE_CTXPTR(x)                                   \
++    ((extract64((x)->word[1], 0, 16) << 32) |           \
++     ((x)->word[0] & 0xffffffc0))
++
++#define STE_S2TTB(x)                                    \
++    ((extract64((x)->word[7], 0, 16) << 32) |           \
++     ((x)->word[6] & 0xfffffff0))
++
++/* CD fields */
++
++#define CD_VALID(x)   extract32((x)->word[0], 31, 1)
++#define CD_ASID(x)    extract32((x)->word[1], 16, 16)
++#define CD_TTB(x, sel)                                          \
++    ((extract64((x)->word[(sel) * 2 + 3], 0, 19) << 32) |       \
++     ((x)->word[(sel) * 2 + 2] & ~0xfULL))
++
++#define CD_HAD(x, sel)   extract32((x)->word[(sel) * 2 + 2], 1, 1)
++
++#define CD_TSZ(x, sel)   extract32((x)->word[0], (16 * (sel)) + 0, 6)
++#define CD_TG(x, sel)    extract32((x)->word[0], (16 * (sel)) + 6, 2)
++#define CD_EPD(x, sel)   extract32((x)->word[0], (16 * (sel)) + 14, 1)
++#define CD_ENDI(x)       extract32((x)->word[0], 15, 1)
++#define CD_IPS(x)        extract32((x)->word[1], 0 , 3)
++#define CD_AFFD(x)       extract32((x)->word[1], 3 , 1)
++#define CD_TBI(x)        extract32((x)->word[1], 6 , 2)
++#define CD_HD(x)         extract32((x)->word[1], 10 , 1)
++#define CD_HA(x)         extract32((x)->word[1], 11 , 1)
++#define CD_S(x)          extract32((x)->word[1], 12, 1)
++#define CD_R(x)          extract32((x)->word[1], 13, 1)
++#define CD_A(x)          extract32((x)->word[1], 14, 1)
++#define CD_AARCH64(x)    extract32((x)->word[1], 9 , 1)
++
++/* MMIO Registers */
++
++REG32(IDR0,                0x0)
++    FIELD(IDR0, S2P,         0 , 1)
++    FIELD(IDR0, S1P,         1 , 1)
++    FIELD(IDR0, TTF,         2 , 2)
++    FIELD(IDR0, COHACC,      4 , 1)
++    FIELD(IDR0, BTM,         5 , 1)
++    FIELD(IDR0, HTTU,        6 , 2)
++    FIELD(IDR0, DORMHINT,    8 , 1)
++    FIELD(IDR0, HYP,         9 , 1)
++    FIELD(IDR0, ATS,         10, 1)
++    FIELD(IDR0, NS1ATS,      11, 1)
++    FIELD(IDR0, ASID16,      12, 1)
++    FIELD(IDR0, MSI,         13, 1)
++    FIELD(IDR0, SEV,         14, 1)
++    FIELD(IDR0, ATOS,        15, 1)
++    FIELD(IDR0, PRI,         16, 1)
++    FIELD(IDR0, VMW,         17, 1)
++    FIELD(IDR0, VMID16,      18, 1)
++    FIELD(IDR0, CD2L,        19, 1)
++    FIELD(IDR0, VATOS,       20, 1)
++    FIELD(IDR0, TTENDIAN,    21, 2)
++    FIELD(IDR0, ATSRECERR,   23, 1)
++    FIELD(IDR0, STALL_MODEL, 24, 2)
++    FIELD(IDR0, TERM_MODEL,  26, 1)
++    FIELD(IDR0, STLEVEL,     27, 2)
++    FIELD(IDR0, RME_IMPL,    30, 1)
++
++REG32(IDR1,                0x4)
++    FIELD(IDR1, SIDSIZE,      0 , 6)
++    FIELD(IDR1, SSIDSIZE,     6 , 5)
++    FIELD(IDR1, PRIQS,        11, 5)
++    FIELD(IDR1, EVENTQS,      16, 5)
++    FIELD(IDR1, CMDQS,        21, 5)
++    FIELD(IDR1, ATTR_PERMS_OVR, 26, 1)
++    FIELD(IDR1, ATTR_TYPES_OVR, 27, 1)
++    FIELD(IDR1, REL,          28, 1)
++    FIELD(IDR1, QUEUES_PRESET, 29, 1)
++    FIELD(IDR1, TABLES_PRESET, 30, 1)
++    FIELD(IDR1, ECMDQ,        31, 1)
++
++#define SMMU_IDR1_SIDSIZE 16
++#define SMMU_CMDQS   19
++#define SMMU_EVENTQS 19
++
++REG32(IDR2,                0x8)
++     FIELD(IDR2, BA_VATOS, 0, 10)
++
++REG32(IDR3,                0xc)
++     FIELD(IDR3, HAD,         2, 1);
++     FIELD(IDR3, PBHA,        3, 1);
++     FIELD(IDR3, XNX,         4, 1);
++     FIELD(IDR3, PPS,         5, 1);
++     FIELD(IDR3, MPAM,        7, 1);
++     FIELD(IDR3, FWB,         8, 1);
++     FIELD(IDR3, STT,         9, 1);
++     FIELD(IDR3, RIL,        10, 1);
++     FIELD(IDR3, BBML,       11, 2);
++     FIELD(IDR3, E0PD,       13, 1);
++     FIELD(IDR3, PTWNNC,     14, 1);
++     FIELD(IDR3, DPT,        15, 1);
++
++REG32(IDR4,                0x10)
++
++REG32(IDR5,                0x14)
++     FIELD(IDR5, OAS,         0, 3);
++     FIELD(IDR5, GRAN4K,      4, 1);
++     FIELD(IDR5, GRAN16K,     5, 1);
++     FIELD(IDR5, GRAN64K,     6, 1);
++     FIELD(IDR5, VAX,        10, 2);
++     FIELD(IDR5, STALL_MAX,  16, 16);
++
++#define SMMU_IDR5_OAS 4
++
++REG32(IIDR,                0x18)
++REG32(AIDR,                0x1c)
++REG32(CR0,                 0x20)
++    FIELD(CR0, SMMU_ENABLE,   0, 1)
++    FIELD(CR0, EVENTQEN,      2, 1)
++    FIELD(CR0, CMDQEN,        3, 1)
++
++#define SMMU_CR0_RESERVED 0xFFFFFC20
++
++REG32(CR0ACK,              0x24)
++REG32(CR1,                 0x28)
++REG32(CR2,                 0x2c)
++REG32(STATUSR,             0x40)
++REG32(GBPA,                0x44)
++    FIELD(GBPA, ABORT,        20, 1)
++    FIELD(GBPA, UPDATE,       31, 1)
++
++/* Use incoming. */
++#define SMMU_GBPA_RESET_VAL 0x1000
++
++REG32(IRQ_CTRL,            0x50)
++    FIELD(IRQ_CTRL, GERROR_IRQEN,        0, 1)
++    FIELD(IRQ_CTRL, PRI_IRQEN,           1, 1)
++    FIELD(IRQ_CTRL, EVENTQ_IRQEN,        2, 1)
++
++REG32(IRQ_CTRL_ACK,        0x54)
++REG32(GERROR,              0x60)
++    FIELD(GERROR, CMDQ_ERR,           0, 1)
++    FIELD(GERROR, EVENTQ_ABT_ERR,     2, 1)
++    FIELD(GERROR, PRIQ_ABT_ERR,       3, 1)
++    FIELD(GERROR, MSI_CMDQ_ABT_ERR,   4, 1)
++    FIELD(GERROR, MSI_EVENTQ_ABT_ERR, 5, 1)
++    FIELD(GERROR, MSI_PRIQ_ABT_ERR,   6, 1)
++    FIELD(GERROR, MSI_GERROR_ABT_ERR, 7, 1)
++    FIELD(GERROR, MSI_SFM_ERR,        8, 1)
++
++REG32(GERRORN,             0x64)
++
++#define A_GERROR_IRQ_CFG0  0x68 /* 64b */
++REG32(GERROR_IRQ_CFG1, 0x70)
++REG32(GERROR_IRQ_CFG2, 0x74)
++
++#define A_STRTAB_BASE      0x80 /* 64b */
++
++#define SMMU_BASE_ADDR_MASK 0xfffffffffffc0
++
++REG32(STRTAB_BASE_CFG,     0x88)
++    FIELD(STRTAB_BASE_CFG, FMT,      16, 2)
++    FIELD(STRTAB_BASE_CFG, SPLIT,    6 , 5)
++    FIELD(STRTAB_BASE_CFG, LOG2SIZE, 0 , 6)
++
++#define A_CMDQ_BASE        0x90 /* 64b */
++REG32(CMDQ_PROD,           0x98)
++REG32(CMDQ_CONS,           0x9c)
++    FIELD(CMDQ_CONS, ERR, 24, 7)
++
++#define A_EVENTQ_BASE      0xa0 /* 64b */
++REG32(EVENTQ_PROD,         0xa8)
++REG32(EVENTQ_CONS,         0xac)
++
++#define A_EVENTQ_IRQ_CFG0  0xb0 /* 64b */
++REG32(EVENTQ_IRQ_CFG1,     0xb8)
++REG32(EVENTQ_IRQ_CFG2,     0xbc)
++
++#define A_IDREGS           0xfd0
++
++/* Commands */
++
++typedef enum SMMUCommandType {
++    SMMU_CMD_NONE            = 0x00,
++    SMMU_CMD_PREFETCH_CONFIG       ,
++    SMMU_CMD_PREFETCH_ADDR,
++    SMMU_CMD_CFGI_STE,
++    SMMU_CMD_CFGI_STE_RANGE,
++    SMMU_CMD_CFGI_CD,
++    SMMU_CMD_CFGI_CD_ALL,
++    SMMU_CMD_CFGI_ALL,
++    SMMU_CMD_TLBI_NH_ALL     = 0x10,
++    SMMU_CMD_TLBI_NH_ASID,
++    SMMU_CMD_TLBI_NH_VA,
++    SMMU_CMD_TLBI_NH_VAA,
++    SMMU_CMD_TLBI_EL3_ALL    = 0x18,
++    SMMU_CMD_TLBI_EL3_VA     = 0x1a,
++    SMMU_CMD_TLBI_EL2_ALL    = 0x20,
++    SMMU_CMD_TLBI_EL2_ASID,
++    SMMU_CMD_TLBI_EL2_VA,
++    SMMU_CMD_TLBI_EL2_VAA,
++    SMMU_CMD_TLBI_S12_VMALL  = 0x28,
++    SMMU_CMD_TLBI_S2_IPA     = 0x2a,
++    SMMU_CMD_TLBI_NSNH_ALL   = 0x30,
++    SMMU_CMD_ATC_INV         = 0x40,
++    SMMU_CMD_PRI_RESP,
++    SMMU_CMD_RESUME          = 0x44,
++    SMMU_CMD_STALL_TERM,
++    SMMU_CMD_SYNC,
++} SMMUCommandType;
++
++#endif /* HW_ARM_SMMUV3_COMMON_H */
 -- 
 2.52.0
 
