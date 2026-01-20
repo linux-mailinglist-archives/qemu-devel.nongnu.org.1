@@ -2,72 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QLb1Dn+sb2miEwAAu9opvQ
+	id SOj7AGerb2lUEwAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:25:35 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:20:55 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA1534771B
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:25:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C879E47548
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:20:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viAhT-0008L2-31; Tue, 20 Jan 2026 07:19:11 -0500
+	id 1viAze-0001yW-Ae; Tue, 20 Jan 2026 07:37:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1viAhJ-0008IL-MK
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 07:19:01 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1viAz6-0001ag-Cp; Tue, 20 Jan 2026 07:37:31 -0500
+Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1viAhI-0007RH-4o
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 07:19:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768911537;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=LnQKGFufQx8qCGTBEBecJTKER7en+5CsY9AbB+5txRU=;
- b=Dzg54s+tlQGl+OmsaBnNbq3u0F38EFLEls6GTSNgMpl/9yqDLfi5angcsPIetycMAfN29k
- paSyKo8mxuvAt3L07jWCUpD/6/W26XEm35MeG/yMZNaVh6psL/FhN2EMndj8yiZZtvocqW
- rOFLt2a1eIZrUlRb/5tMy6YD8MOmiwM=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-483-Lbz4G2gbNc6L-m6GDznILA-1; Tue,
- 20 Jan 2026 07:18:55 -0500
-X-MC-Unique: Lbz4G2gbNc6L-m6GDznILA-1
-X-Mimecast-MFC-AGG-ID: Lbz4G2gbNc6L-m6GDznILA_1768911534
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7225918002C9; Tue, 20 Jan 2026 12:18:54 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.45.226.98])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4AC2518004D8; Tue, 20 Jan 2026 12:18:51 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Cc: John Snow <jsnow@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] scripts: Allow sha512 in clean_functional_cache.py, too
-Date: Tue, 20 Jan 2026 13:18:49 +0100
-Message-ID: <20260120121849.131604-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1viAyy-0002XV-Op; Tue, 20 Jan 2026 07:37:21 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id BB8081802C2;
+ Tue, 20 Jan 2026 15:21:33 +0300 (MSK)
+Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 42D1935174B;
+ Tue, 20 Jan 2026 15:21:51 +0300 (MSK)
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: Michael Tokarev <mjt@tls.msk.ru>,
+	qemu-trivial@nongnu.org
+Subject: [PULL 3/9] qemu-options.hx: use KiB, MiB, GiB for power-of-2 units
+Date: Tue, 20 Jan 2026 15:21:40 +0300
+Message-ID: <20260120122150.2254321-4-mjt@tls.msk.ru>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260120122150.2254321-1-mjt@tls.msk.ru>
+References: <20260120122150.2254321-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.087,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,65 +62,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
-X-Spamd-Result: default: False [0.29 / 15.00];
+X-Spamd-Result: default: False [0.49 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.20)[mailman];
+	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_RCPT(0.00)[qemu-devel];
 	ARC_NA(0.00)[];
+	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
+	DMARC_NA(0.00)[tls.msk.ru];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[thuth@redhat.com,qemu-devel-bounces@nongnu.org];
-	FROM_HAS_DN(0.00)[];
+	R_DKIM_NA(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
-	TAGGED_RCPT(0.00)[qemu-devel];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo]
-X-Rspamd-Queue-Id: DA1534771B
+	RCPT_COUNT_THREE(0.00)[3];
+	FROM_NEQ_ENVFROM(0.00)[mjt@tls.msk.ru,qemu-devel-bounces@nongnu.org];
+	FROM_HAS_DN(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,tls.msk.ru:email,tls.msk.ru:mid,lists.gnu.org:rdns,lists.gnu.org:helo,gitlab.com:url]
+X-Rspamd-Queue-Id: C879E47548
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Thomas Huth <thuth@redhat.com>
+Use MiB &Co instead of MB &Co when the talk is about
+power-of-two-based sizes, in qemu-options.hx.
 
-The functional testing frameworks also supports assets that are
-identified by their sha512 checksum (instead of only using sha25),
-and at least one of the tests (tests/functional/ppc64/test_fadump.py)
-is already using such a checksum, so adjust the clean_functional_cache
-script to support these checksums, too.
-
-Signed-off-by: Thomas Huth <thuth@redhat.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3222
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- scripts/clean_functional_cache.py | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ qemu-options.hx | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/scripts/clean_functional_cache.py b/scripts/clean_functional_cache.py
-index c3370ffbb87..f0342b4b438 100755
---- a/scripts/clean_functional_cache.py
-+++ b/scripts/clean_functional_cache.py
-@@ -24,8 +24,8 @@
- os.chdir(cache_dir)
+diff --git a/qemu-options.hx b/qemu-options.hx
+index ec92723f10..455b8be890 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -305,9 +305,9 @@ SRST
+         with break-before-make sequences are considerable and also if guest
+         workloads are read intensive. The size here specifies how many pages
+         to break at a time and needs to be a valid block size which is
+-        1GB/2MB/4KB, 32MB/16KB and 512MB/64KB for 4KB/16KB/64KB PAGE_SIZE
+-        respectively. Be wary of specifying a higher size as it will have an
+-        impact on the memory. By default, this feature is disabled
++        1GiB/2MiB/4KiB, 32MiB/16KiB and 512MiB/64KiB for 4KiB/16KiB/64KiB
++        PAGE_SIZE respectively. Be wary of specifying a higher size as it will
++        have an impact on the memory. By default, this feature is disabled
+         (eager-split-size=0).
  
- for file in cache_dir.iterdir():
--    # Only consider the files that use a sha256 as filename:
--    if len(file.name) != 64:
-+    # Only consider the files that use a sha256 or sha512 as filename:
-+    if len(file.name) != 64 and len(file.name) != 128:
-         continue
+     ``notify-vmexit=run|internal-error|disable,notify-window=n``
+@@ -564,7 +564,7 @@ SRST
  
-     try:
+     lat is latency value in nanoseconds. bw is bandwidth value, the
+     possible value and units are NUM[M\|G\|T], mean that the bandwidth
+-    value are NUM byte per second (or MB/s, GB/s or TB/s depending on
++    value are NUM byte per second (or MiB/s, GiB/s or TiB/s depending on
+     used suffix). Note that if latency or bandwidth value is 0, means
+     the corresponding latency or bandwidth information is not provided.
+ 
+@@ -579,10 +579,10 @@ SRST
+     For example, the following options describe 2 NUMA nodes. Node 0 has
+     2 cpus and a ram, node 1 has only a ram. The processors in node 0
+     access memory in node 0 with access-latency 5 nanoseconds,
+-    access-bandwidth is 200 MB/s; The processors in NUMA node 0 access
++    access-bandwidth is 200 MiB/s; The processors in NUMA node 0 access
+     memory in NUMA node 1 with access-latency 10 nanoseconds,
+-    access-bandwidth is 100 MB/s. And for memory side cache information,
+-    NUMA node 0 and 1 both have 1 level memory cache, size is 10KB,
++    access-bandwidth is 100 MiB/s. And for memory side cache information,
++    NUMA node 0 and 1 both have 1 level memory cache, size is 10KiB,
+     policy is write-back, the cache Line size is 8 bytes:
+ 
+     ::
+@@ -739,8 +739,8 @@ SRST
+     amount of memory. Note that maxmem must be aligned to the page size.
+ 
+     For example, the following command-line sets the guest startup RAM
+-    size to 1GB, creates 3 slots to hotplug additional memory and sets
+-    the maximum memory the guest can reach to 4GB:
++    size to 1GiB, creates 3 slots to hotplug additional memory and sets
++    the maximum memory the guest can reach to 4GiB:
+ 
+     .. parsed-literal::
+ 
+@@ -1696,7 +1696,7 @@ SRST
+         Specify bandwidth throttling limits in bytes per second, either
+         for all request types or for reads or writes only. Small values
+         can lead to timeouts or hangs inside the guest. A safe minimum
+-        for disks is 2 MB/s.
++        for disks is 2 MiB/s.
+ 
+     ``bps_max=bm,bps_rd_max=rm,bps_wr_max=wm``
+         Specify bursts in bytes per second, either for all request types
 -- 
-2.52.0
+2.47.3
 
 
