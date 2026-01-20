@@ -2,39 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UH3nExnCb2lsMQAAu9opvQ
+	id OJvjDFW0b2nHMAAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:57:45 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:59:01 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E39F548F5F
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:57:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9C96482F0
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 17:59:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viAzn-0001ze-46; Tue, 20 Jan 2026 07:38:10 -0500
+	id 1viAzc-0001wI-JK; Tue, 20 Jan 2026 07:37:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1viAzF-0001ez-Tl; Tue, 20 Jan 2026 07:37:35 -0500
+ id 1viAyf-0001T7-16; Tue, 20 Jan 2026 07:36:57 -0500
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1viAzA-0002YT-Pk; Tue, 20 Jan 2026 07:37:32 -0500
+ id 1viAyd-0002V7-EC; Tue, 20 Jan 2026 07:36:56 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 055E11802C5;
+ by isrv.corpit.ru (Postfix) with ESMTP id 295DD1802C7;
  Tue, 20 Jan 2026 15:21:34 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 801B035174E;
+ by tsrv.corpit.ru (Postfix) with ESMTP id A3D11351750;
  Tue, 20 Jan 2026 15:21:51 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, qemu-trivial@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 6/9] tests/qemu-iotests: Use "gsed" for expressions that
- require GNU sed
-Date: Tue, 20 Jan 2026 15:21:43 +0300
-Message-ID: <20260120122150.2254321-7-mjt@tls.msk.ru>
+Cc: Florian Hofhammer <florian.hofhammer@fhofhammer.de>,
+ qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 8/9] configure: add ppc target back to container tests
+Date: Tue, 20 Jan 2026 15:21:45 +0300
+Message-ID: <20260120122150.2254321-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260120122150.2254321-1-mjt@tls.msk.ru>
 References: <20260120122150.2254321-1-mjt@tls.msk.ru>
@@ -85,67 +84,46 @@ X-Spamd-Result: default: False [0.49 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,tls.msk.ru:email,tls.msk.ru:mid]
-X-Rspamd-Queue-Id: E39F548F5F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo,linaro.org:email,tls.msk.ru:email,tls.msk.ru:mid,fhofhammer.de:email]
+X-Rspamd-Queue-Id: D9C96482F0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Thomas Huth <thuth@redhat.com>
+From: Florian Hofhammer <florian.hofhammer@fhofhammer.de>
 
-A bunch of tests are currently failing e.g. on FreeBSD like this:
+Commit 2ff8c9a298 removed support for 32-bit PPC hosts from the build
+system. Unfortunately, the patch also removed the 32-bit PPC target for
+containerized tests, which leads to an error when trying to run tests,
+e.g., with "make check-tcg":
+"make[1]: *** No rule to make target 'docker-image-debian-ppc-cross',
+needed by 'build-tcg-tests-ppc-linux-user'.  Stop."
 
- 082   fail       [13:38:58] [13:38:59]   0.5s                 output
-  mismatch (see .../build/tests/qemu-iotests/scratch/qcow2-file-082/082.out.bad)
- --- .../src/tests/qemu-iotests/082.out
- +++ .../build/tests/qemu-iotests/scratch/qcow2-file-082/082.out.bad
- @@ -17,7 +17,7 @@
-  cluster_size: 4096
-  Format specific information:
-      compat: 1.1
- -    compression type: COMPRESSION_TYPE
- +    compression type: zlib
-      lazy refcounts: true
-      refcount bits: 16
-      corrupt: false
+This patch adds the PPC target back for containerized tests.
 
-This happens because the sed statements require GNU sed. Let's use
-gsed in these spots to get it fixed.
-
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Fixes: 2ff8c9a2984b ("buildsys: Remove support for 32-bit PPC hosts")
+Signed-off-by: Florian Hofhammer <florian.hofhammer@fhofhammer.de>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+[Mjt: specify commit subject in Fixes tag)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- tests/qemu-iotests/286       | 2 +-
- tests/qemu-iotests/common.rc | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ configure | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/qemu-iotests/286 b/tests/qemu-iotests/286
-index 38216c2a0e..cc6aacf022 100755
---- a/tests/qemu-iotests/286
-+++ b/tests/qemu-iotests/286
-@@ -62,7 +62,7 @@ wait=yes _cleanup_qemu
- 
- echo 'Output structure:'
- $QEMU_IMG snapshot -l "$TEST_IMG" | tail -n 1 | tr -s ' ' \
--    | sed -e 's/\S\+/./g' \
-+    | gsed -e 's/\S\+/./g' \
-     | sed -e 's/\./(snapshot ID)/' \
-           -e 's/\./(snapshot name)/' \
-           -e 's/\./(VM state size value)/' \
-diff --git a/tests/qemu-iotests/common.rc b/tests/qemu-iotests/common.rc
-index c0f8f0f8df..731e4b2b99 100644
---- a/tests/qemu-iotests/common.rc
-+++ b/tests/qemu-iotests/common.rc
-@@ -719,7 +719,7 @@ _img_info()
-     regex_json_spec_start='^ *"format-specific": \{'
-     regex_json_child_start='^ *"children": \['
-     $QEMU_IMG info $QEMU_IMG_EXTRA_ARGS "$@" "$TEST_IMG" 2>&1 | \
--        sed -e "s#$REMOTE_TEST_DIR#TEST_DIR#g" \
-+        gsed -e "s#$REMOTE_TEST_DIR#TEST_DIR#g" \
-             -e "s#$IMGPROTO:$TEST_DIR#TEST_DIR#g" \
-             -e "s#$TEST_DIR#TEST_DIR#g" \
-             -e "s#$SOCK_DIR/fuse-#TEST_DIR/#g" \
+diff --git a/configure b/configure
+index 0d73eefc15..213880df89 100755
+--- a/configure
++++ b/configure
+@@ -1451,7 +1451,7 @@ probe_target_compiler() {
+         container_image=debian-all-test-cross
+         container_cross_prefix=mips64-linux-gnuabi64-
+         ;;
+-      ppc64|ppc64le)
++      ppc|ppc64|ppc64le)
+         container_image=debian-all-test-cross
+         container_cross_prefix=powerpc${target_arch#ppc}-linux-gnu-
+         ;;
 -- 
 2.47.3
 
