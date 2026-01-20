@@ -2,89 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24797D3C2B7
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 09:58:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31F29D3C2BF
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 09:58:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vi7Yk-0001pk-QF; Tue, 20 Jan 2026 03:57:58 -0500
+	id 1vi7Yp-0001rs-UV; Tue, 20 Jan 2026 03:58:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vi7Yj-0001pA-4B
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 03:57:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1vi7Yn-0001qK-PP; Tue, 20 Jan 2026 03:58:01 -0500
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1vi7Yh-0008TH-Jp
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 03:57:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1768899475;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=FnyANBmgJYSV7AlMoeKb/j7g0sEi+/kUkxo4mDEcEEk=;
- b=CWjmHrYjdN9meIK04Q2HpEJ3MAzefXtRypY1wHBXnavKIFVKvrB++oVqPAR5RUFuJeynhI
- OZpu/sqUlPpZE+8QILxiR6gERHM7owi8XfmLtTtp70uydFBGW3TqVz49BBNNQOSpZKjedo
- Zen4F0tlAzOV9PuQ6ytrb2iA/vbBoRM=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-588-z1bRLgYrM5W-iDsGm--Cnw-1; Tue,
- 20 Jan 2026 03:57:51 -0500
-X-MC-Unique: z1bRLgYrM5W-iDsGm--Cnw-1
-X-Mimecast-MFC-AGG-ID: z1bRLgYrM5W-iDsGm--Cnw_1768899470
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B34D5180035D; Tue, 20 Jan 2026 08:57:49 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.89])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B3DED30001A2; Tue, 20 Jan 2026 08:57:43 +0000 (UTC)
-Date: Tue, 20 Jan 2026 08:57:40 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Kevin Wolf <kwolf@redhat.com>, Maksim Davydov <davydov-max@yandex-team.ru>,
- Li-Wen Hsu <lwhsu@freebsd.org>, Markus Armbruster <armbru@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Hanna Reitz <hreitz@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- Yonggang Luo <luoyonggang@gmail.com>, Ed Maste <emaste@freebsd.org>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-block@nongnu.org,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: Re: [PATCH v4 10/17] meson, mkvenv: make functional tests depend on
- functests group
-Message-ID: <aW9DhFjCQTqHAc6N@redhat.com>
-References: <20260119212744.1275455-1-jsnow@redhat.com>
- <20260119212744.1275455-11-jsnow@redhat.com>
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1vi7Yl-0008Qm-2l; Tue, 20 Jan 2026 03:58:01 -0500
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 52E5748F3E;
+ Tue, 20 Jan 2026 09:57:47 +0100 (CET)
+Message-ID: <3e89208c-b0b9-44a8-beed-e122daabaf54@proxmox.com>
+Date: Tue, 20 Jan 2026 09:57:42 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260119212744.1275455-11-jsnow@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.016,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] block/mirror: check range when setting zero bitmap for
+ sync write
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, hreitz@redhat.com,
+ kwolf@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru,
+ qemu-stable@nongnu.org, eblake@redhat.com
+References: <20260112152544.261923-1-f.ebner@proxmox.com>
+ <20260119201059.GA869317@fedora>
+Content-Language: en-US
+From: Fiona Ebner <f.ebner@proxmox.com>
+In-Reply-To: <20260119201059.GA869317@fedora>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
+X-Bm-Transport-Timestamp: 1768899411596
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,29 +58,91 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 19, 2026 at 04:27:36PM -0500, John Snow wrote:
-> Note that only the thorough group requires the extra testing
-> dependencies; the quick group will run with just the "tooling" group,
-> which we intend to install by default at configure time in a forthcoming
-> commit.
+Am 19.01.26 um 9:10 PM schrieb Stefan Hajnoczi:
+> On Mon, Jan 12, 2026 at 04:23:51PM +0100, Fiona Ebner wrote:
+>> Some Proxmox users reported an occasional assertion failure [0][1] in
+>> busy VMs when using drive mirror with active mode. In particular, the
+>> failure may occur for zero writes shorter than the job granularity:
+>>
+>>> #0  0x00007b421154b507 in abort ()
+>>> #1  0x00007b421154b420 in ?? ()
+>>> #2  0x0000641c582e061f in bitmap_set (map=0x7b4204014e00, start=14, nr=-1)
+>>> #3  0x0000641c58062824 in do_sync_target_write (job=0x641c7e73d1e0,
+>>>       method=MIRROR_METHOD_ZERO, offset=852480, bytes=4096, qiov=0x0, flags=0)
+>>> #4  0x0000641c58062250 in bdrv_mirror_top_do_write (bs=0x641c7e62e1f0,
+>>         method=MIRROR_METHOD_ZERO, copy_to_target=true, offset=852480,
+>>         bytes=4096, qiov=0x0, flags=0)
+>>> #5  0x0000641c58061f31 in bdrv_mirror_top_pwrite_zeroes (bs=0x641c7e62e1f0,
+>>         offset=852480, bytes=4096, flags=0)
+>>
+>> The range for the dirty bitmap described by dirty_bitmap_offset and
+>> dirty_bitmap_end is narrower than the original range and in fact,
+>> dirty_bitmap_end might be smaller than dirty_bitmap_offset. There
+>> already is a check for 'dirty_bitmap_offset < dirty_bitmap_end' before
+>> resetting the dirty bitmap. Add such a check for setting the zero
+>> bitmap too, which uses the same narrower range.
+>>
+>> [0]: https://forum.proxmox.com/threads/177981/
+>> [1]: https://bugzilla.proxmox.com/show_bug.cgi?id=7222
+>>
+>> Cc: qemu-stable@nongnu.org
+>> Fixes: 7e277545b9 ("mirror: Skip writing zeroes when target is already zero")
+>> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+>> ---
+>>  block/mirror.c | 9 ++++++---
+>>  1 file changed, 6 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/block/mirror.c b/block/mirror.c
+>> index b344182c74..bc982cb99a 100644
+>> --- a/block/mirror.c
+>> +++ b/block/mirror.c
+>> @@ -1514,9 +1514,12 @@ do_sync_target_write(MirrorBlockJob *job, MirrorMethod method,
+>>          assert(!qiov);
+>>          ret = blk_co_pwrite_zeroes(job->target, offset, bytes, flags);
+>>          if (job->zero_bitmap && ret >= 0) {
+>> -            bitmap_set(job->zero_bitmap, dirty_bitmap_offset / job->granularity,
+>> -                       (dirty_bitmap_end - dirty_bitmap_offset) /
+>> -                       job->granularity);
+>> +            if (dirty_bitmap_offset < dirty_bitmap_end) {
+>> +                bitmap_set(job->zero_bitmap,
+>> +                           dirty_bitmap_offset / job->granularity,
+>> +                           (dirty_bitmap_end - dirty_bitmap_offset) /
+>> +                           job->granularity);
+>> +            }
 > 
-> Signed-off-by: John Snow <jsnow@redhat.com>
-> ---
->  tests/functional/meson.build | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+> Why does this case clause use dirty_bitmap_offset and dirty_bitmap_end
+> instead of zero_bitmap_offset and zero_bitmap_end like the other
+> zero_bitmap operations in this switch statement?
+> 
+>    if (job->zero_bitmap && ret >= 0) {
+> -      bitmap_set(job->zero_bitmap, dirty_bitmap_offset / job->granularity,
+> -                 (dirty_bitmap_end - dirty_bitmap_offset) /
+> -                 job->granularity);
+> +      bitmap_set(job->zero_bitmap, zero_bitmap_offset,
+> +                 zero_bitmap_end - zero_bitmap_offset);
+>    }
+> 
+> I'm probably missing something, but it's not obvious to me :).
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Sorry, I could've mentioned this in the commit message. There is a
+comment explaining it further up in the function:
 
+>     /*
+>      * Tails are either clean or shrunk, so for dirty bitmap resetting
+>      * we safely align the range narrower.  But for zero bitmap, round
+>      * range wider for checking or clearing, and narrower for setting.
+>      */
+>     dirty_bitmap_offset = QEMU_ALIGN_UP(offset, job->granularity);
+>     dirty_bitmap_end = QEMU_ALIGN_DOWN(offset + bytes, job->granularity);
+>     if (dirty_bitmap_offset < dirty_bitmap_end) {
+>         bdrv_reset_dirty_bitmap(job->dirty_bitmap, dirty_bitmap_offset,
+>                                 dirty_bitmap_end - dirty_bitmap_offset);
+>     }
+>     zero_bitmap_offset = offset / job->granularity;
+>     zero_bitmap_end = DIV_ROUND_UP(offset + bytes, job->granularity);
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
