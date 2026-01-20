@@ -2,110 +2,128 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0F0CID22b2nHMAAAu9opvQ
+	id GDYIBODFb2mgMQAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:07:09 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:13:52 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 535BA4843D
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 18:07:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A52CC4935D
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:13:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viBHK-0000kr-CT; Tue, 20 Jan 2026 07:56:14 -0500
+	id 1viBHt-0001Ur-8P; Tue, 20 Jan 2026 07:56:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1viBHE-0000dm-VK
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 07:56:10 -0500
-Received: from mail-yx1-xb136.google.com ([2607:f8b0:4864:20::b136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1viBHB-0005K5-KB
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 07:56:07 -0500
-Received: by mail-yx1-xb136.google.com with SMTP id
- 956f58d0204a3-64471fcdef0so4307379d50.1
- for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 04:56:04 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768913764; cv=none;
- d=google.com; s=arc-20240605;
- b=MwzjM3VodxuciU8wLKjSpT9HOK6qGxEQQoSFoIOFG94yjqQhMrEvtFQjwGYr8lKgtN
- Yme3HkdeT+PtMUbMMVUBNXECU9s4ZzTERxCtnZJgoE4Amy6FEGdXsiNveeMUIoBz1f2Z
- W/E3Ti1gCMvIvpOIzsqpLaiOuRk4MIB4m7hMAbgvxC38ZuM/DqJeN2rOUb1N7q4/+NLh
- YT+SywFmDbKhgBRjSaXKOD4pPrJy7L6V/2wR+Y+3mDU8/RqyvWa6uag6L89a03TqnlBG
- QYsUbtBE3hoYqqPgUbtLBMwl79WJTlTx5xOSryEcpYe0o6uzVcyfbbOOPB6h9vRU856j
- nUFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
- s=arc-20240605; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:dkim-signature;
- bh=omFAiSpJLZYPxf7ZDkfiMVG/PJNHvB899Uos2656+38=;
- fh=/7s1nUSA0frF4G90NEoYZzdIY7SE2U2MgJpwf+NOgAg=;
- b=lzENqRD905m8ejHXU/JC8zra1zYXp279yGWyUeLRNwXCCFpnMFXI4GuEYBqG4ZJV6L
- zmhOufHSQM5QBa3i+R5mLrrDzFjlGu6r/mzaBBRK/wr/j8pKLuJyOTaVUKVoL0cziOqy
- y93Xjpwh4J98y41X1yocK7FmTETTBVhHtdx6EcJdU9Tkwq2RtU7+L+S2aiGFv+FFmfu/
- geE3oNAb/Mu6rmODbEfymjA9C0OHFVhCaUwdXupGO4NjU2RQRsdW7QgbZWTMLg8HNzVD
- cPWr+eP/NyfylpA6IoEyRQXNm9TXNFCGFPq/vd0fPtZcIM6iI1xrRUDVU8fzHz5lXYEV
- RRVQ==; darn=nongnu.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1viBHm-0001OA-Sw
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 07:56:44 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1viBHk-0005P7-Id
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 07:56:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1768913799;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=j+H1cZls3pILkwGVYIv88oJDl8JEn9ZJu/l9PKUO630=;
+ b=V/xz66wmwLDzYc+YPedqckg+ujmZBex7Z/TNWwyxrs5PCeVL5UxFgCHnds2QjYm9GV5/th
+ TU2maIsuWedZtTSytOAfHYagTQDzS6bQyEVjZL7NLqmPR4xuJuw4V5KMPLrRKIxGVwwJER
+ 29MRZ2ckmOzciQTL0FGqWCOA24r3T+A=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-94-C6L0rrGFOuG_nQvf8DdVgA-1; Tue, 20 Jan 2026 07:56:37 -0500
+X-MC-Unique: C6L0rrGFOuG_nQvf8DdVgA-1
+X-Mimecast-MFC-AGG-ID: C6L0rrGFOuG_nQvf8DdVgA_1768913796
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-43101a351c7so4938845f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 04:56:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768913764; x=1769518564; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=omFAiSpJLZYPxf7ZDkfiMVG/PJNHvB899Uos2656+38=;
- b=EoPSYAluTIvBwhAxYIjEU21skSdIJyyJMjWrG9h6f6vZydP0kmNEayP66tR1N7gTg9
- D+sZDiQq5ZK4zLXxTtqSK/gQr8ZOqATb04IB1APmZgycjThb22Oa2RF7iI2vG5dC7TRL
- CWy5JZQpNQP3XwKHTWHuImArLP3j/a90FNI91ZZR8VkwJdnUM67w11NEDgDF4/0a85cE
- DF9A5tUUYumtdgTPIqRVHkW5NMmi7JjbXbwBHJ5iCklpK3u5PPCWc7dBm+6xuDfZlP0O
- NI7wSoAdus4XBdTx3ZQA+tOh2Fq+eqqbEqY4o9bQFsQKJKvWKKV3CrmnKu2Mq1mzqvzz
- 9njg==
+ d=redhat.com; s=google; t=1768913796; x=1769518596; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=j+H1cZls3pILkwGVYIv88oJDl8JEn9ZJu/l9PKUO630=;
+ b=a/MpKa/DIAG9ad5cpyJnu3kbr+T0eZ5J9v/XXEkvaBjwh4AmGak4jy0FNMu8jJYI1J
+ /sVjnH4cyuFCcIRn3gujdw9zoCfntklv3XKM/FdXrNt31j4BxLBw0Y39xSL3X2eQGsh8
+ uPOdjreqkqXj2Z9xy6mYkZ9YIabVYkOd4IqsRZciYNjO/05opOnZHMToL1TsJyUKJPSY
+ kZ0tl8DQgam+MFVPQjT4zqk8I+lttvUFoc6YfQ4b8IEwkngdD7HTYHrsiFODCHUQJgtj
+ EJ4KYJ8UJez61YohRMRxoNpro2nF7LT/z5mhNJaq/mvo9m5mOQWtyo1N05ScThdS0xYt
+ R/lA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768913764; x=1769518564;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=omFAiSpJLZYPxf7ZDkfiMVG/PJNHvB899Uos2656+38=;
- b=JME1fZ0YZEXtk5Kne2NF1TyQdPWRnQsydtLVruIQ1DBBTdHO3dvWiPzWdT9dJWU8Jw
- 0X3/EB6LA4Y1n02NIygtdc6IENT5P2xcTgQhKL/6tRW+CUa9YndVxCv4BW8C6bLwxz00
- IFfVGo4b++wzBoeAWwKz/8n0zXlRuGcJjJg3sAecV+QJCHcvZMJkjaif7gyBXBfyf38m
- iRgzPjOJAXCHASlryDKUh2aj+1tMeOMV4dfsfurK4D7vPmfC4vAA6uF/ppzjbNN+VIlG
- NSnOkPrKAryR4SUMrEGXCVpRUnLRzN+uoS7BeTa3Q+XHUUq4p8nNWKukLdQnUP5/dUGy
- Gxbg==
+ d=1e100.net; s=20230601; t=1768913796; x=1769518596;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=j+H1cZls3pILkwGVYIv88oJDl8JEn9ZJu/l9PKUO630=;
+ b=KHW14O7J+m19LBBmdZX9uANTCz47cBqobO5+0QMaSifV3BGHnI0vuY8BYzes9jDqFu
+ wygCjTROgwtSfvKGbXYKIwUYSYMIaqVGAtcIxlm8TmsImsjb11cH1PHXY8sMc0u6mcrx
+ o01tfXUpxBIZtydsLsCN0nU6Xj0+TpyEmHvvLyQAfAUFHvWF1aHqK2AGjBMHnNzCnGhO
+ c2Lw6PgIaOU/4O9EG8CZn789lQkUbto+HQfwlNNzaIa9zUWzVyU2Ukaf1xLgMwSt6thV
+ NGRremzTu1A5IBg2bgsU8HHB8vtp5VVVxFMwXgI75rQrQOa/D5M2DgWvqx41MU3IX36R
+ J1oQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWq3/cFrIn4KvjkuWtZbUzMvBfhWfj8cyJeuoxXF3w99MaStcf48d3TetU2/0fkSLZxAJlaxd2uRaYp@nongnu.org
-X-Gm-Message-State: AOJu0Yy5XzzaOSfj0DL51PB31ziXeYdrCIbzdt1xZ/KSuLNv1J8PnGUU
- hswzdqcI/sOW/89R4E++NFPAyO/B62cX5z+XhQ2/0TIctm0bjTY+ZiZdSRl2k6luDDu1wfs6CIt
- N2bXqsc7O065xa11nLEOL0A/Ddo36ehxNeBgqaeuNBA==
-X-Gm-Gg: AZuq6aLa7FBmLk0ofBN0iR0rlZmmcNSUdGW1rm/eacemUS5zhY9HJeP5umH4FOjrjXE
- TEgTeE/594wPm3QzcZVShE43D/msGCV2maTt3cU4/OiUa4Qw81ZctGYo3J/LkIOlIPla2U+3SnK
- 3I5jEJF9Z/MoXvjwJzt37s2qjHjINcONyA3/L0a8CU3biCahzA6ThOdUpPTq3aqJPo8rMB/xrrb
- SJKmXn8WKaAUEidAD8tpmBgf87iDln+1JPBwiOHMgK/Z9C9j3BC4bdULuvrSrmgJF7jmw==
-X-Received: by 2002:a05:690c:6209:b0:794:87a:fba7 with SMTP id
- 00721157ae682-7940a116c60mr27517467b3.15.1768913763845; Tue, 20 Jan 2026
- 04:56:03 -0800 (PST)
-MIME-Version: 1.0
-References: <20260120122108.131708-1-thuth@redhat.com>
-In-Reply-To: <20260120122108.131708-1-thuth@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 20 Jan 2026 12:55:52 +0000
-X-Gm-Features: AZwV_Qi_7BWL_eeKJtOqa4gmPfLmIXZu54cyVs9q_xAA5vB3G8FokRs4ACT2dVo
-Message-ID: <CAFEAcA8nzm+CEN_Dp+X+AggcTg57wAt8D43x-7oixLeNH4TDdA@mail.gmail.com>
-Subject: Re: [PATCH] hw/arm: Move the "arm-cpu" compat settings out of
- hw/core/machine.c
-To: Thomas Huth <thuth@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ AJvYcCU2WOnDGeaIYNoW7p0gpe5Onxrh1307VRfSv2Xffbx7MTQpqYJi2/VoROVS6tuB7jP8u036LgtakYPi@nongnu.org
+X-Gm-Message-State: AOJu0YzfrO9IeYa5MehrMw0hF0Hf5BJThWUs70vK4O4u4F1JhLpSbzIk
+ 0AgaaYkb8HBSZjX06cjWUk/fFsKnSK7iATBGhCc54NWDAJTdxndRsRhzU/A46syeKUl2f3G0Kr/
+ JmMvr2nsDFXbJ1RmQ+i1YLqVgL/5XDV3lj3AtqxpW/J2E1S9UvfDY3jYT
+X-Gm-Gg: AZuq6aK3/4vPBAY+tSDoYwoQDoV2HZFeMKHedoCvlWn/1UqQeOYPPzR2cM97oZOn9Gi
+ L4OlKkBuR4ruB7rrht8HKUVZL8HU5ntrrqfmI8FITLg48TPZp92jyMjrSNcXGLuHA9bL4XSfbw9
+ vyyDEuQQpP4A+PMtc4q2li6ubwenBE1SfNkop1WJW8kHxe5Ln6eT7uJPWlSpeXtolF9/hEAy5nt
+ vv+PZYZX55aYJI0Oo9EHkSG4UrG1TWXHNgYLPdrltWvcmgUAtSkrxm25dh9udjfzQRsLTdNIBCE
+ Wj3Ea9xmNIji8Go90tm9szwckvR+d/oHFO7zg/Q0qiZSeBJmW09Yz/ihSvRCu1ShKGkXBou8Jag
+ 9WNM3pavDlt+SFfaHJM59/lGsJO50ZTQ=
+X-Received: by 2002:a05:6000:4007:b0:435:95c9:687a with SMTP id
+ ffacd0b85a97d-43595c96c1bmr1306646f8f.4.1768913795677; 
+ Tue, 20 Jan 2026 04:56:35 -0800 (PST)
+X-Received: by 2002:a05:6000:4007:b0:435:95c9:687a with SMTP id
+ ffacd0b85a97d-43595c96c1bmr1306574f8f.4.1768913795079; 
+ Tue, 20 Jan 2026 04:56:35 -0800 (PST)
+Received: from redhat.com (IGLD-80-230-35-22.inter.net.il. [80.230.35.22])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-4356996e2d8sm29384021f8f.28.2026.01.20.04.56.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 Jan 2026 04:56:34 -0800 (PST)
+Date: Tue, 20 Jan 2026 07:56:31 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Filip Hejsek <filip.hejsek@gmail.com>
+Cc: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Amit Shah <amit@kernel.org>,
+ Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
  Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
- qemu-arm@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b136;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb136.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>,
+ Szymon Lukasz <noh4hss@gmail.com>
+Subject: Re: [PATCH v6 08/12] virtio-serial-bus: add terminal resize messages
+Message-ID: <20260120075558-mutt-send-email-mst@kernel.org>
+References: <20260119-console-resize-v6-0-33a7b0330a7a@gmail.com>
+ <20260119-console-resize-v6-8-33a7b0330a7a@gmail.com>
+ <aW37oZ1X_7O6AXvo@redhat.com>
+ <20260119044148-mutt-send-email-mst@kernel.org>
+ <aW9AEjN3TDov1jLj@redhat.com>
+ <ef45a24d7052d685f4951aaa6d37ce55b0746698.camel@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ef45a24d7052d685f4951aaa6d37ce55b0746698.camel@gmail.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.087,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -120,60 +138,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
-X-Spamd-Result: default: False [-0.71 / 15.00];
+X-Spamd-Result: default: False [0.29 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[google.com:s=arc-20240605:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MAILLIST(-0.20)[mailman];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:filip.hejsek@gmail.com,m:berrange@redhat.com,m:qemu-devel@nongnu.org,m:marcandre.lureau@redhat.com,m:pbonzini@redhat.com,m:lvivier@redhat.com,m:amit@kernel.org,m:armbru@redhat.com,m:eblake@redhat.com,m:eduardo@habkost.net,m:marcel.apfelbaum@gmail.com,m:philmd@linaro.org,m:wangyanan55@huawei.com,m:zhao1.liu@intel.com,m:maxbr@linux.ibm.com,m:noh4hss@gmail.com,m:filiphejsek@gmail.com,m:marcelapfelbaum@gmail.com,s:lists@lfdr.de];
 	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[mst@redhat.com,qemu-devel-bounces@nongnu.org];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:thuth@redhat.com,m:philmd@linaro.org,m:wangyanan55@huawei.com,m:zhao1.liu@intel.com,m:qemu-arm@nongnu.org,m:eduardo@habkost.net,m:marcel.apfelbaum@gmail.com,m:qemu-devel@nongnu.org,m:marcelapfelbaum@gmail.com,s:lists@lfdr.de];
+	ARC_NA(0.00)[];
 	FORWARDED(0.00)[qemu-devel@nongnu.org];
-	FORGED_SENDER(0.00)[peter.maydell@linaro.org,qemu-devel-bounces@nongnu.org];
+	FREEMAIL_CC(0.00)[redhat.com,nongnu.org,kernel.org,habkost.net,gmail.com,linaro.org,huawei.com,intel.com,linux.ibm.com];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[mst@redhat.com,qemu-devel-bounces@nongnu.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linaro.org:+];
 	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[peter.maydell@linaro.org,qemu-devel-bounces@nongnu.org];
-	FREEMAIL_CC(0.00)[linaro.org,huawei.com,intel.com,nongnu.org,habkost.net,gmail.com];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
 	TAGGED_RCPT(0.00)[qemu-devel];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:dkim,lists.gnu.org:rdns,lists.gnu.org:helo,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 535BA4843D
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.gnu.org:rdns,lists.gnu.org:helo]
+X-Rspamd-Queue-Id: A52CC4935D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 20 Jan 2026 at 12:21, Thomas Huth <thuth@redhat.com> wrote:
->
-> From: Thomas Huth <thuth@redhat.com>
->
-> The hw_compat_* arrays in hw/core/machine.c should be used for generic
-> compat settings that might affect all (or at least multiple) machines.
-> Target specific settings should rather go into the target specific
-> source files instead. For arm/aarch64, the virt machine is the only
-> one that cares about compat settings, so move the "arm-cpu" related
-> switches to hw/arm/virt.c now.
+On Tue, Jan 20, 2026 at 10:16:08AM +0100, Filip Hejsek wrote:
+> On Tue, 2026-01-20 at 08:43 +0000, Daniel P. Berrangé wrote:
+> > On Mon, Jan 19, 2026 at 04:43:21AM -0500, Michael S. Tsirkin wrote:
+> > > On Mon, Jan 19, 2026 at 09:38:41AM +0000, Daniel P. Berrangé wrote:
+> > > > On Mon, Jan 19, 2026 at 04:27:51AM +0100, Filip Hejsek wrote:
+> > > > > Implement the part of the virtio spec that allows to notify the virtio
+> > > > > driver about terminal resizes. The virtio spec contains two methods to
+> > > > > achieve that:
+> > > > > 
+> > > > > For legacy drivers, we have only one port and we put the terminal size
+> > > > > in the config space and inject the config changed interrupt.
+> > > > > 
+> > > > > For multiport devices, we use the control virtqueue to send a packet
+> > > > > containing the terminal size. Note that old versions of the Linux kernel
+> > > > > used an incorrect order for the fields (rows then cols instead of cols
+> > > > > then rows), until it was fixed by commit 5326ab737a47278dbd16ed3ee7380b26c7056ddd.
+> > > > > 
+> > > > > As a result, when using a Linux kernel older than 6.15, the number of rows
+> > > > > and columns will be swapped.
+> > > > > 
+> > > > > Based on a patch originally written by Szymon Lukasz <noh4hss@gmail.com>,
+> > > > > but partially rewritten to fix various corner cases.
+> > > > > 
+> > > > > Signed-off-by: Szymon Lukasz <noh4hss@gmail.com>
+> > > > > Signed-off-by: Filip Hejsek <filip.hejsek@gmail.com>
+> > > > > ---
+> > > > >  hw/char/trace-events              |  1 +
+> > > > >  hw/char/virtio-serial-bus.c       | 76 +++++++++++++++++++++++++++++++++++++--
+> > > > >  hw/core/machine.c                 |  4 ++-
+> > > > >  include/hw/virtio/virtio-serial.h |  5 +++
+> > > > >  4 files changed, 83 insertions(+), 3 deletions(-)
+> > > > > 
+> > > > 
+> > > > > @@ -1158,6 +1228,8 @@ static const Property virtio_serial_properties[] = {
+> > > > >                                                    31),
+> > > > >      DEFINE_PROP_BIT64("emergency-write", VirtIOSerial, host_features,
+> > > > >                        VIRTIO_CONSOLE_F_EMERG_WRITE, true),
+> > > > > +    DEFINE_PROP_BIT64("console-size", VirtIOSerial, host_features,
+> > > > > +                      VIRTIO_CONSOLE_F_SIZE, true),
+> > > > >  };
+> > > > 
+> > > > Given the horrible mess with the kernel intentionally changing its
+> > > > behaviour after 15 years, I don't think we can we set this to be
+> > > > enabled by default.
+> > > > 
+> > > > The recent behaviour change is never going to be backported to enough
+> > > > stable distros that we can rely on the new behaviour, and thanks to
+> > > > the change we can't rely on the old behaviour either. We're doomed no
+> > > > matter what ordernig we use.
+> > > > 
+> > > > Thus, IMHO, this has to stay set to false indefinitely.
+> > > 
+> > > Not sure. But what we can do is add another flag to detect new kernels.
+> > > I'll try to think of a good name but suggestions are welcome.
+> > 
+> > How can we detect the kernel ? There's no feature flag that can be
+> > negotiated or detected to report the changed kernel behaviour
+> > AFAICS. We have no visibility of kernel version, and even if we did,
+> > the possibility of backports would make that unreliable too. The
+> > inability to auto-detect anything is what makes the kernel behaviour
+> > change so awful.
+> > 
+> > We can add a nother qemu flag "console-size-inverted" to flip QEMU
+> > between the 2 behaviours, but that still won't let us be able to
+> > enable 'console-size' by default without guaranteed regressions.
+> > The 'console-size-inverted' flag would merely flip the breakage
+> > between different groups of guest OS.
+> 
+> We could add a new virtio feature flag, and by default only enable
+> resizing when the guest supports this new flag. Kernels that support
+> the flag would work by default, and kernels that have the correct order
+> but don't yet support the flag would require manually enabling the
+> feature.
 
-I think it makes more sense for all the compat stuff to
-live in one place, rather than being scattered around,
-unless it is truly machine-specific (which this isn't).
-The hw/core arrays seem to be where we put compat
-props which are related to a particular device rather
-than a specific machine.
+Right. For now. In X years when we see downstreams backporting the
+feature, things can change.
 
-thanks
--- PMM
+
+> In any case, we will probably need to add some documentation for the
+> property. I'm trying to find a good place for it, but it seems that the
+> virtconsole and virtio-serial-bus devices are not actually documented
+> anywhere at all. They should probably be documented in the man page,
+> right?
+> 
+> > 
+> > > > >  static void virtio_serial_class_init(ObjectClass *klass, const void *data)
+> > > > > diff --git a/hw/core/machine.c b/hw/core/machine.c
+> > > > > index 6411e68856..50554b8900 100644
+> > > > > --- a/hw/core/machine.c
+> > > > > +++ b/hw/core/machine.c
+> > > > > @@ -38,7 +38,9 @@
+> > > > >  #include "hw/acpi/generic_event_device.h"
+> > > > >  #include "qemu/audio.h"
+> > > > >  
+> > > > > -GlobalProperty hw_compat_10_2[] = {};
+> > > > > +GlobalProperty hw_compat_10_2[] = {
+> > > > > +    { "virtio-serial-device", "console-size", "off" },
+> > > > > +};
+> > > > >  const size_t hw_compat_10_2_len = G_N_ELEMENTS(hw_compat_10_2);
+> > > > >  
+> > > > >  GlobalProperty hw_compat_10_1[] = {
+> > 
+> > With regards,
+> > Daniel
+
 
