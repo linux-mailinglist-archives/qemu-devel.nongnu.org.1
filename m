@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0OGsAGvMb2mgMQAAu9opvQ
+	id GLbNLN3Mb2mgMQAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:41:47 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:43:41 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B99EC49A81
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:41:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C43D49B26
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:43:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viGfL-00030O-CZ; Tue, 20 Jan 2026 13:41:23 -0500
+	id 1viGfT-0003OR-Cj; Tue, 20 Jan 2026 13:41:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGf6-00027H-SH
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:41:13 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGfC-0002Hw-TQ
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:41:15 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGf4-0006Nw-1d
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:41:08 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-432d256c2e6so4834781f8f.3
- for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 10:41:04 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGfA-0006Oq-8w
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:41:14 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-47eddddcdcfso28322765e9.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 10:41:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768934463; x=1769539263; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768934470; x=1769539270; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=783rdm+bkQ356/mKoFd+xki71gfr3hdbrK/yAD5kMUM=;
- b=y+gpK5t4IeIk8HK+gUueHpxJp6Vk64TJaOtheLzmAHDT3Qi/ncAcD3rxJiRMs2Va/7
- b1cPLDrGN1uuAwh/WJSKVS0rUBxNzj3Fh9+SX6Oj+akQdQO4z+xjnhc6ML6VYXEfsiQE
- jUOqcC2RucOt3aTfCLmaKrfQWNrvtFysvch6udB+Xkk+cswV1ShdOgPbOjKdtuQpxYs4
- 11ooAyNACIvwjKGY9VRzcORMHYA9e1ASww+C1woeR73b+3p6ft7qLIDFpEv77XBXUrpc
- v/ujyf86X86GC5NpCxnPGNkXJ/vv6QtHDWl+aM5hUre/xnONh7soepWISasoTcDzV2BT
- 3g0Q==
+ :reply-to; bh=oY/XtSQ2gGwc58E9vKBho+DUeDG3sgS/5ejQ5/WSECA=;
+ b=HBF0tc8VoRm3/HISaW6SlRpcgyt4Gum3r/giCYXU9o5prArM7e+NJutRRKfTbOrLqu
+ 9oXCACYaotGNSW410hcXKJ9FkyCcbW93xSyJ2wW/lQWPXEgO0khcRe5nSdfVk3nw7UJl
+ BuI06spy+JE+CmfNmKTw6m6qhyfxVXPo2nP9MoAis6TBGlVf8v/N1X/R2Ku4gcb121X4
+ QwgeTust6DOe1wKTGce343+qxmy+Mbb5+Oc6Jc3Y3JN8mwKo2FxS+eAsYQT6asTqP5RO
+ X34RCLeoPq+g9JPZdDzRd0QvDWZUXhvrkBzOq0aD7mIyf76nZ+bUVktiv649T3AnHW6C
+ JWAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768934463; x=1769539263;
+ d=1e100.net; s=20230601; t=1768934470; x=1769539270;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=783rdm+bkQ356/mKoFd+xki71gfr3hdbrK/yAD5kMUM=;
- b=tPKI4ItQnwGgd5PZvYucGSjGE3HJqCOUQqr5Ua6imz2D/+aH8dm//Zx7GzaxFjwlgt
- yovtsRCbjyl8c9zB3sVmvi8WVySyxi5wXsxTILISWWUKj4KYUgSkspYMeqZn96mO2mlt
- 2tBLU2Ki33tMdTca+uei80h3U3/a0aQk15eqfseApsDrIycrIsVqwUWkTApDACyDeUVA
- 2Iw7U5cFtOZ1BK6BQmb4wcxdb4Dj3mL0yc2wkhDEm4EYh4wOeWntxln4Uj3CPwXTjKpO
- LmAK+4iTXgpHbpd6+JsCBAF/NhEV3XthA3tLD7krQbNqorMf3pGtnyPMAsxIJWKFmfIJ
- PAvg==
-X-Gm-Message-State: AOJu0YwHVrJhdNqG4biwx7dIQp2YXQQi0HC9Hi/Jkc7Is9Z2YSM8iMuO
- JPEgqGe9gD/XdBuEa1isUbAIuqdwZoE2Gq9ioSY1eyWUBSAvvFJUbddtCwlUSiL5LxIrVio+8wr
- JwykweEI=
-X-Gm-Gg: AZuq6aJvAzU0sfiBDQCX2qUX4MlqEnItZv9aq9/dq8CU9LJJDycX0PUNm4aUsFs9nel
- Xe16dpTqp9Js2kqS+40soEteeW/HR1L39jYxaXVEzEsK+CTjCFzEJby2MfrZx4dFtx/Kn+7+36p
- qXgcQUqkt7ICBHSj9ZhBw4QmdHW0+E+3PnJh2+xa7pWvaK8Xt0MTfoO5vG5XUz0GhGA3Sw4jYED
- fLCx9uZmg6o+xjEjEeWy/NBHhTnZGMtUjDxazjiuKqnyUH0i5hM6RU19p3mWDXS36aTvP1At/3+
- bl0dFbBU17lovFZI7q0/M7vdXlLK+Ic1ElABCOICj341oNhLS0DZX9MWcO+kgTPC7TC5W2OD5+V
- YVDS66K2IEjPTEVkilMOX7Zoci+HhoPLLN9TihtvVCUIAfK/7oUmEM6av5PCmbTbQFeR7O533AN
- 27bqFwsM1+tmxP1V/9ZHvYgSNpf4Ndki/nUqyJ6CdpfJKLdbFQ34/NNm9lEW2m
-X-Received: by 2002:a05:6000:26cb:b0:430:f1d3:f96 with SMTP id
- ffacd0b85a97d-4358fed1153mr3952291f8f.6.1768934463197; 
- Tue, 20 Jan 2026 10:41:03 -0800 (PST)
+ bh=oY/XtSQ2gGwc58E9vKBho+DUeDG3sgS/5ejQ5/WSECA=;
+ b=YHcvQFG5kdut9Vv27BS2O5HZfWCvzl1rVlTVD1THWH1HBUz7GvEpmUrUAV24ULhFQ1
+ O5nu9CzJ4miVT0CURr7V+k/EzOLuYhONdNgj9lVCpi7+p/7NK/M0nBFd4IV8g3Ld6CB/
+ ut2kp39nofQg/9XSJRuDAXBIAmfa+/I4LT7Ixzseloj0rJ8iEXTXeQNC1APc6+ASVuAy
+ zKLapt/gMWRFjCUt9f1MmBLdgAGtsF3MmYZTrsZwkdCed7+P8lHIKKPSqp2O02rO28lg
+ XE50ReDUHDba7LJqi5+V5nJ3kFkxjsDWGlM84z0uwENafeInubSD4Ni5GPjDpWp3beMu
+ Xf7g==
+X-Gm-Message-State: AOJu0YzUahyw/XD6pMiwZJY+tPfAxNWFPnVQ6rcRFm9c3GeY7zz+NtBL
+ n/rCHstEoaxt75w4/KxUDAQtE0Fleu1tgDna1Mo95Cc4tSm2dbKAw0r2e50Yh8PJQE5ir1FWcLT
+ fKw2yGLU=
+X-Gm-Gg: AY/fxX4zFuOd7Ty2ThVEfn4MUfdLcDvkFAeYfzdgIjngE8EUOMeDiGDOvZvbv/olvC4
+ 5l7S2oXOCmLiVFMqXApJh5gfjYGT6gAgy7ft81hrew4mhVfJgcjy2sAXO6/IXTekK2Nij0rs8j9
+ dF9gDA/u9hkw4BaUMf4/YB6TavdGUwFZ1WzMSzvXSA4BJi4N8FfbqJ3FharDZQb2F1PQxxMikJu
+ qEiZO73eKDhQI8IYVGQ0t29LNE4QzwKHhamfs84UlpOegoMdj7ihK088Snl1JwKY9pw1RHrShBJ
+ 6P14styLX6F/1H6a0MRFaD9j72hDtdZl48Sz9H9bz7o7FlK4mkDX62MNzrWFdEO2vfxWpxuMDTV
+ 8QGVJY7jTpVe74dIeN1LV3dTOp0uvBEB3ndo+L+ftHqC5UfbyfIc9+NtPlQKNSmYECclfP73ZRV
+ bAuSwc4ilrDZnOCNOEN11ongGtsM6jPVmeHZI7IlBqJ831fxVYCxQkvHq/f9IV
+X-Received: by 2002:a05:600c:3d97:b0:47d:403e:4eaf with SMTP id
+ 5b1f17b1804b1-48029b7db7dmr151068165e9.10.1768934469910; 
+ Tue, 20 Jan 2026 10:41:09 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-43569921f6esm30226717f8f.4.2026.01.20.10.41.02
+ 5b1f17b1804b1-47f4289b789sm317503165e9.1.2026.01.20.10.41.09
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 20 Jan 2026 10:41:02 -0800 (PST)
+ Tue, 20 Jan 2026 10:41:09 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 17/29] hw/ppc/e500: Use TYPE_FSL_ESDHC_BE
-Date: Tue, 20 Jan 2026 19:38:50 +0100
-Message-ID: <20260120183902.73845-18-philmd@linaro.org>
+Subject: [PULL 18/29] hw/arm/fsl-imx25: Extract TYPE_FSL_ESDHC_LE
+Date: Tue, 20 Jan 2026 19:38:51 +0100
+Message-ID: <20260120183902.73845-19-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260120183902.73845-1-philmd@linaro.org>
 References: <20260120183902.73845-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -125,49 +125,115 @@ X-Spamd-Result: default: False [-0.21 / 15.00];
 	TAGGED_RCPT(0.00)[qemu-devel];
 	PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bme.hu:email,linaro.org:email,linaro.org:dkim,linaro.org:mid,lists.gnu.org:rdns,lists.gnu.org:helo]
-X-Rspamd-Queue-Id: B99EC49A81
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bme.hu:email,lists.gnu.org:rdns,lists.gnu.org:helo,linaro.org:email,linaro.org:dkim,linaro.org:mid]
+X-Rspamd-Queue-Id: 2C43D49B26
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-TYPE_FSL_ESDHC_BE maches real hardware more closely by reusing code of
-TYPE_IMX_USDHC. For example, it fixes Linux to flood the guest console with
-"mmc0: Internal clock never stabilised" messages in the QEMU advent calendar
-2018 day 19 image.
+Extract an eSDHC (little endian) device model since the uSDHC device model
+will get an uSDHC-specific MMIO quirk.
 
-Reported-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
-Message-ID: <20260112145418.220506-10-shentey@gmail.com>
+Message-ID: <20260112145418.220506-11-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/e500.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ include/hw/sd/sdhci.h |  1 +
+ hw/arm/fsl-imx25.c    |  7 ++-----
+ hw/sd/sdhci.c         | 31 +++++++++++++++++++++++++++++++
+ 3 files changed, 34 insertions(+), 5 deletions(-)
 
-diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-index eb0d3a418e2..d6ca2e8563a 100644
---- a/hw/ppc/e500.c
-+++ b/hw/ppc/e500.c
-@@ -1036,15 +1036,7 @@ void ppce500_init(MachineState *machine)
-         memory_region_add_subregion(ccsr_addr_space, MPC85XX_ESDHC_REGS_OFFSET,
-                                     sysbus_mmio_get_region(s, 0));
+diff --git a/include/hw/sd/sdhci.h b/include/hw/sd/sdhci.h
+index 3eb0684a890..32c52c7d0be 100644
+--- a/include/hw/sd/sdhci.h
++++ b/include/hw/sd/sdhci.h
+@@ -129,6 +129,7 @@ DECLARE_INSTANCE_CHECKER(SDHCIState, SYSBUS_SDHCI,
+                          TYPE_SYSBUS_SDHCI)
  
--        /*
--         * Compatible with:
--         * - SD Host Controller Specification Version 2.0 Part A2
--         * (See MPC8569E Reference Manual)
--         */
--        dev = qdev_new(TYPE_SYSBUS_SDHCI);
--        qdev_prop_set_uint8(dev, "sd-spec-version", 2);
--        qdev_prop_set_uint8(dev, "endianness", DEVICE_BIG_ENDIAN);
--        qdev_prop_set_uint8(dev, "vendor", SDHCI_VENDOR_FSL);
-+        dev = qdev_new(TYPE_FSL_ESDHC_BE);
-         s = SYS_BUS_DEVICE(dev);
-         sysbus_realize_and_unref(s, &error_fatal);
-         sysbus_connect_irq(s, 0, qdev_get_gpio_in(mpicdev, MPC85XX_ESDHC_IRQ));
+ #define TYPE_FSL_ESDHC_BE "fsl-esdhc-be"
++#define TYPE_FSL_ESDHC_LE "fsl-esdhc-le"
+ 
+ #define TYPE_IMX_USDHC "imx-usdhc"
+ 
+diff --git a/hw/arm/fsl-imx25.c b/hw/arm/fsl-imx25.c
+index 9e02063533c..7f65f4ca4bb 100644
+--- a/hw/arm/fsl-imx25.c
++++ b/hw/arm/fsl-imx25.c
+@@ -68,7 +68,8 @@ static void fsl_imx25_init(Object *obj)
+     }
+ 
+     for (i = 0; i < FSL_IMX25_NUM_ESDHCS; i++) {
+-        object_initialize_child(obj, "sdhc[*]", &s->esdhc[i], TYPE_IMX_USDHC);
++        object_initialize_child(obj, "sdhc[*]", &s->esdhc[i],
++                                TYPE_FSL_ESDHC_LE);
+     }
+ 
+     for (i = 0; i < FSL_IMX25_NUM_USBS; i++) {
+@@ -239,12 +240,8 @@ static void fsl_imx25_realize(DeviceState *dev, Error **errp)
+             { FSL_IMX25_ESDHC2_ADDR, FSL_IMX25_ESDHC2_IRQ },
+         };
+ 
+-        object_property_set_uint(OBJECT(&s->esdhc[i]), "sd-spec-version", 2,
+-                                 &error_abort);
+         object_property_set_uint(OBJECT(&s->esdhc[i]), "capareg",
+                                  IMX25_ESDHC_CAPABILITIES, &error_abort);
+-        object_property_set_uint(OBJECT(&s->esdhc[i]), "vendor",
+-                                 SDHCI_VENDOR_FSL, &error_abort);
+         if (!sysbus_realize(SYS_BUS_DEVICE(&s->esdhc[i]), errp)) {
+             return;
+         }
+diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
+index 6277abe8702..6001b71c61d 100644
+--- a/hw/sd/sdhci.c
++++ b/hw/sd/sdhci.c
+@@ -1897,6 +1897,32 @@ static void fsl_esdhc_be_init(Object *obj)
+     qdev_prop_set_uint8(dev, "vendor", SDHCI_VENDOR_FSL);
+ }
+ 
++static const MemoryRegionOps esdhc_mmio_le_ops = {
++    .read = esdhc_read,
++    .write = esdhc_write,
++    .impl = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
++    .valid = {
++        .min_access_size = 1,
++        .max_access_size = 4,
++        .unaligned = false
++    },
++    .endianness = DEVICE_LITTLE_ENDIAN,
++};
++
++static void fsl_esdhc_le_init(Object *obj)
++{
++    SDHCIState *s = SYSBUS_SDHCI(obj);
++    DeviceState *dev = DEVICE(obj);
++
++    s->io_ops = &esdhc_mmio_le_ops;
++    s->quirks = SDHCI_QUIRK_NO_BUSY_IRQ;
++    qdev_prop_set_uint8(dev, "sd-spec-version", 2);
++    qdev_prop_set_uint8(dev, "vendor", SDHCI_VENDOR_FSL);
++}
++
+ static const MemoryRegionOps usdhc_mmio_ops = {
+     .read = esdhc_read,
+     .write = esdhc_write,
+@@ -1996,6 +2022,11 @@ static const TypeInfo sdhci_types[] = {
+         .parent = TYPE_SYSBUS_SDHCI,
+         .instance_init = fsl_esdhc_be_init,
+     },
++    {
++        .name = TYPE_FSL_ESDHC_LE,
++        .parent = TYPE_SYSBUS_SDHCI,
++        .instance_init = fsl_esdhc_le_init,
++    },
+     {
+         .name = TYPE_IMX_USDHC,
+         .parent = TYPE_SYSBUS_SDHCI,
 -- 
 2.52.0
 
