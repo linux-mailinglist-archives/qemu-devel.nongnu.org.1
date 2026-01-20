@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJdtIB7Mb2mgMQAAu9opvQ
+	id 4I+lCE/Mb2mgMQAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:40:30 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:41:19 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 333F2499E6
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:40:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 997A249A2F
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:41:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viGeP-0000RO-Mc; Tue, 20 Jan 2026 13:40:25 -0500
+	id 1viGeT-0000kl-3A; Tue, 20 Jan 2026 13:40:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGdm-0008I0-8J
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:39:51 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGds-0008KC-9Y
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:39:56 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGdj-00063e-0p
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:39:44 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-47ee974e230so45715215e9.2
- for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 10:39:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGdq-000645-2K
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:39:51 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-47f3b7ef761so33432155e9.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 10:39:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768934381; x=1769539181; darn=nongnu.org;
+ d=linaro.org; s=google; t=1768934388; x=1769539188; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=RpgFu71iSgMMr/zkbX8X7POnwFWrfw1mWAO/J2FKty4=;
- b=PCfdDspYs9ArUXw2mpUrGApZPUbO56JQLpwD/dMmsVG1vTOfR+7gETs0P1JpTrmC/A
- XNHHo87qsUc78Pw+Woy9EaSJWxeQ8zV3ARtlmyOowbYXEeME8/+2wnWZIO8klcq2bFQk
- ktUw6MJ5TBmCvbsilGeQJdnjD/Rn2HZs9mlzE+srQ6CiAkk55kf9GD81Fci89T6nBXm6
- MGmuG34cAoFhxJZS8Af9JO2SKp5lT7/RC5a00+/PHFhOnifkQzxGBdDhegQNIxMYvVNG
- m/G7XgBuZP/7EzYwUBpCD4qyJMda4cf2DDHNrjndp5dcZb2BtWU6/y5D/AOdq1FL1AFO
- koRg==
+ :reply-to; bh=wGGJfg7cdndkR9NDz3LfOfgo5mhBYtHV0xGydFpvfG8=;
+ b=C+PiqdzFCzMNUE7mVu8EPEKgaXdds+kjK9kK87/9UdsV+cCMzMXFVCLf10TT4IfMVJ
+ P3Wfq6h372MS3VgcEGm7EuQbJDsOpyxrRgmnTcMWHCPWigwf8mR3KHb0lyvqJ3ou0Ywn
+ kxNDRfTL3I5PySc8+q637dv0qMKRlES/M17bVJGgxp/0DMrKmJT30w+8z2+IMhZdilo8
+ 1b0FSLaZWEqnfXD8OSASV+q87DogWD8xllK7PjJPbvtb/xgK7dzeAEBpGEQeB50+vgTg
+ 8iI9RMlckSL0GUqfu4hu7fnX+bDxnAPl2P4IsmO19eF8G3OsUQpHTgSBfCcoksUuJrDq
+ fvSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768934381; x=1769539181;
+ d=1e100.net; s=20230601; t=1768934388; x=1769539188;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=RpgFu71iSgMMr/zkbX8X7POnwFWrfw1mWAO/J2FKty4=;
- b=tx8pRip8arwl+1wTrVIRm3MaUr8Iv2v0bkBe0LmF7MrLRTtWf2QUlhth5m1HQlzBOi
- ro7tlqwBW27nBo8/gG1FyC/UQCtYgulnyoy+C9bNnzge5h0qZhZ2wwSOFTWiru9iGDx5
- F8movteBvqIL6Cc4H1OzsNn3yShifOYPLGwOkmS/UmBbNxKPFVc/nG0HATSS40B+THkH
- lxXjlKX6yqil6LR2kTeAh/kjkbOnTvvGkbQoyBUeHkVgi1Rf4nuodEWRClaNyBNaNmvp
- tcyxmklMsCEe5s9F0p9agTl0MmTsrkThyzyLiJW1RFoPJT5AajBnab2ulkLK62/zbhrq
- RNkg==
-X-Gm-Message-State: AOJu0Yz8szGJ0PNRhxTgiKlRYhh35OHARSifMGRokCqriUCBsNihoIMQ
- Rtho2H3ikxoF8xPpK5UT48TEGdtYLoab0NBANcQWd0/zYSTp1O9VBXdwAyVHYUhBzuJU03+J7Wu
- 0suVBgmk=
-X-Gm-Gg: AY/fxX4vqeqRvPs1wf0vJtYTnG4NX8V3oAfJofz6GftfkjUmeDB7dRqOmnUMigwU5no
- W/FgleB/xViFNC0FxNKE/AggvobnNSSDTvNtXUtdgFOOenXo7HAdn4c3q86lMd1+O7ciRIDTyiY
- dd/axHivHsDFa1Qwt3NFon60iS+Ngz0S0TgIDIq7Dvn/I+qisblF8SbNTfLP0sECGwYkZ0qJEol
- 3SGrE7okkCsrHwWbGReS6M1ooH83QLwOsT00Yy2jVJY9UP4DXKoTrU0fvpw7qajkIE+4B1jDMa1
- 8ijUnDq4NVe/q9BavHtB92kFqU2PKpuN2eYLV6xcNUkB+h+XyYKExoViN/V7E5E0ndxZjbdbJoc
- ag5j1vlgWpBOlgzm33gF069LDrGnHilPxIXrw8ExooDuqDx1zdePIDonlQ5CZMsFPu/5sS52XeL
- wkIMueBOvtRFzbuwHXqIQuPrqv/extDHICMi+2RUFapCnDRYprR2SgzzA+f6jy
-X-Received: by 2002:a05:600c:5299:b0:477:a9e:859a with SMTP id
- 5b1f17b1804b1-4803e7e859dmr41492995e9.22.1768934381153; 
- Tue, 20 Jan 2026 10:39:41 -0800 (PST)
+ bh=wGGJfg7cdndkR9NDz3LfOfgo5mhBYtHV0xGydFpvfG8=;
+ b=IfNioW3PQTCzQ22ksSuyxXXwAEbCJe6718uZQwQpzba3w5EOeP9qS4RLW/zxUsy4HE
+ KXlnHBNmFls5hrooJ2KaD0W1+wXQBbEe16kK7RIWlwD2t2zc7cF9qXKQ1tTHjFKgP6dq
+ 7i0+taqTHSZHjiADj3nRLtCEQuYo6DYZrqlujyN6XzgyNFzQvCFU07AF1ToGE+JCI3fh
+ sji18fdRY3umXXg2FKzHWemREGFPZV9w/dUmmyLNhMiT8B0iat4ndZVJiDwdjTldCqB/
+ 7NLwpjj+4xwLsMoxgPEP+AeasMvKcSkHmiPNvuK8k1RVXD2/PYJjr2T2QD9X8CP7Mbg1
+ vHBQ==
+X-Gm-Message-State: AOJu0YwFc8ClIVOUjuBZIxTZd+IfJI+OzLK2dr2/sP60HD7bp0pUTweG
+ cuCC8WLq8e7QFpLcy8T8HuHRz3Xr8bvlDd9bwc+7lcETQ0nLNxauv5Pkzqea81cFK/RcSViogwK
+ sBQ6zhYI=
+X-Gm-Gg: AY/fxX6OMb0T989Hb88E5mhsMtMz5sdslDTFLj1dndvZjJPy9dacTcMjJuxr58QNXde
+ kCN03O1l9ZIdeMe5CRlu++dHrRYHOB04oeWl+guNcMwxH8bayvk4ptD+2A6lLQnqIcX8HrqlXzX
+ o5i/6C7gp3OpRL1/e0FlXuJWkpVSd9t4R2Q1VMIDuzNABkgZZMgg8ba7zc0WSmrMCraWFovOdhs
+ SlHIPx88VdMIDTEaIdy3x0EzIVKiCRYJB7Cyw1kYt5mcPJS1pUpy+r9flTLAfN8jLGnUMHjFlji
+ xcViyF3NVpBBTRkGaQJIIk6xaDmAlCMhCv8HYiQPaCoBTzliCF3V+d/n5zi+rSK+nTY0E1F82rk
+ F6cn8rniRctollEEvdV1zXIJZr11wp6G2/ni/maSleksYWFBztLOMI2g/tWANyEM2UGL3KV/poK
+ ovRYxh6XecVI+vDPuUCONNSJM3746bHIFug3m+C/VvtGcg3pj28C+7fEhM23m4
+X-Received: by 2002:a05:600c:4e05:b0:45d:d97c:236c with SMTP id
+ 5b1f17b1804b1-480416867d8mr19644505e9.21.1768934387889; 
+ Tue, 20 Jan 2026 10:39:47 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4801fe6e703sm110306665e9.18.2026.01.20.10.39.40
+ 5b1f17b1804b1-4801e86c00esm256288795e9.2.2026.01.20.10.39.46
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 20 Jan 2026 10:39:40 -0800 (PST)
+ Tue, 20 Jan 2026 10:39:47 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/29] hw/arm/smmuv3-common: Add STE/CD set helpers for
- repeated field setup
-Date: Tue, 20 Jan 2026 19:38:38 +0100
-Message-ID: <20260120183902.73845-6-philmd@linaro.org>
+Subject: [PULL 06/29] tests/qtest: Add libqos iommu-testdev helpers
+Date: Tue, 20 Jan 2026 19:38:39 +0100
+Message-ID: <20260120183902.73845-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260120183902.73845-1-philmd@linaro.org>
 References: <20260120183902.73845-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -126,122 +125,199 @@ X-Spamd-Result: default: False [-0.21 / 15.00];
 	TAGGED_RCPT(0.00)[qemu-devel];
 	PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linaro.org:dkim,linaro.org:mid,lists.gnu.org:rdns,lists.gnu.org:helo,phytium.com.cn:email]
-X-Rspamd-Queue-Id: 333F2499E6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linaro.org:dkim,linaro.org:mid,lists.gnu.org:rdns,lists.gnu.org:helo,phytium.com.cn:email,bu.edu:email]
+X-Rspamd-Queue-Id: 997A249A2F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Tao Tang <tangtao1634@phytium.com.cn>
 
-This change introduces STE_SET_* and CD_SET_* helpers to centralize and
-simplify repeated field setting logic.
+Introduce a libqos helper module for the iommu-testdev
+device used by qtests. This module provides some common functions to
+all IOMMU test cases using iommu-testdev.
+
+Wire the new sources into tests/qtest/libqos/meson.build so
+they are built as part of the qtest support library.
 
 Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Message-ID: <20260119161112.3841386-6-tangtao1634@phytium.com.cn>
+Message-ID: <20260119161112.3841386-7-tangtao1634@phytium.com.cn>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/arm/smmuv3-common.h | 79 ++++++++++++++++++++++++++++++++++
- 1 file changed, 79 insertions(+)
+ MAINTAINERS                            |  5 ++
+ tests/qtest/libqos/qos-iommu-testdev.h | 43 ++++++++++++++
+ tests/qtest/libqos/qos-iommu-testdev.c | 82 ++++++++++++++++++++++++++
+ tests/qtest/libqos/meson.build         |  3 +
+ 4 files changed, 133 insertions(+)
+ create mode 100644 tests/qtest/libqos/qos-iommu-testdev.h
+ create mode 100644 tests/qtest/libqos/qos-iommu-testdev.c
 
-diff --git a/include/hw/arm/smmuv3-common.h b/include/hw/arm/smmuv3-common.h
-index e8e7746d1fa..f644618f38b 100644
---- a/include/hw/arm/smmuv3-common.h
-+++ b/include/hw/arm/smmuv3-common.h
-@@ -100,6 +100,37 @@ REG32(STE_7, 28)
- #define STE_CFG_ABORT(config)      (!(config & 0x4))
- #define STE_CFG_BYPASS(config)     (config == 0x4)
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 63a04350fb0..cc219e39b98 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3578,6 +3578,11 @@ F: docs/devel/testing/qtest.rst
+ X: tests/qtest/bios-tables-test*
+ X: tests/qtest/migration-*
  
-+/* Update STE fields */
-+#define STE_SET_VALID(ste, v)                                                 \
-+    ((ste)->word[0] = FIELD_DP32((ste)->word[0], STE_0, VALID, (v)))
-+#define STE_SET_CONFIG(ste, v)                                                \
-+    ((ste)->word[0] = FIELD_DP32((ste)->word[0], STE_0, CONFIG, (v)))
++QTest IOMMU helpers
++M: Tao Tang <tangtao1634@phytium.com.cn>
++S: Maintained
++F: tests/qtest/libqos/qos-iommu*
 +
-+#define STE_SET_CTXPTR(ste, v) do {                                           \
-+    (ste)->word[0] = FIELD_DP32((ste)->word[0], STE_0, CTXPTR_LO, (v) >> 6);  \
-+    (ste)->word[1] = FIELD_DP32((ste)->word[1], STE_1, CTXPTR_HI, (v) >> 32); \
-+} while (0)
-+#define STE_SET_S2T0SZ(ste, v)                                                \
-+    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2T0SZ, (v)))
-+#define STE_SET_S2SL0(ste, v)                                                 \
-+    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2SL0, (v)))
-+#define STE_SET_S2TG(ste, v)                                                  \
-+    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2TG, (v)))
-+#define STE_SET_S2PS(ste, v)                                                  \
-+    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2PS, (v)))
-+#define STE_SET_S2AA64(ste, v)                                                \
-+    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2AA64, (v)))
-+#define STE_SET_S2ENDI(ste, v)                                                \
-+    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2ENDI, (v)))
-+#define STE_SET_S2AFFD(ste, v)                                                \
-+    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2AFFD, (v)))
-+#define STE_SET_S2S(ste, v)                                                   \
-+    ((ste)->word[5] = FIELD_DP32((ste)->word[5], STE_5, S2S, (v)))
-+#define STE_SET_S2TTB(ste, v) do {                                            \
-+    (ste)->word[6] = FIELD_DP32((ste)->word[6], STE_6, S2TTB_LO, (v) >> 4);   \
-+    (ste)->word[7] = FIELD_DP32((ste)->word[7], STE_7, S2TTB_HI, (v) >> 32);  \
-+} while (0)
+ Device Fuzzing
+ M: Alexander Bulekov <alxndr@bu.edu>
+ R: Paolo Bonzini <pbonzini@redhat.com>
+diff --git a/tests/qtest/libqos/qos-iommu-testdev.h b/tests/qtest/libqos/qos-iommu-testdev.h
+new file mode 100644
+index 00000000000..3713b89ea4c
+--- /dev/null
++++ b/tests/qtest/libqos/qos-iommu-testdev.h
+@@ -0,0 +1,43 @@
++/*
++ * IOMMU test device helpers for libqos qtests
++ *
++ * Copyright (c) 2026 Phytium Technology
++ *
++ * Author:
++ *  Tao Tang <tangtao1634@phytium.com.cn>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
 +
- /* CD fields */
++#ifndef QTEST_LIBQOS_IOMMU_TESTDEV_H
++#define QTEST_LIBQOS_IOMMU_TESTDEV_H
++
++#include "pci.h"
++#include "hw/misc/iommu-testdev.h"
++
++typedef uint32_t (*QOSIOMMUTestdevSetupFn)(void *opaque);
++typedef uint32_t (*QOSIOMMUTestdevAttrsFn)(void *opaque);
++typedef bool (*QOSIOMMUTestdevValidateFn)(void *opaque);
++typedef void (*QOSIOMMUTestdevReportFn)(void *opaque, uint32_t dma_result);
++
++typedef struct QOSIOMMUTestdevDmaCfg {
++    QPCIDevice *dev;
++    QPCIBar bar;
++    uint64_t iova;
++    uint64_t gpa;
++    uint32_t len;
++} QOSIOMMUTestdevDmaCfg;
++
++uint32_t qos_iommu_testdev_trigger_dma(QPCIDevice *dev, QPCIBar bar,
++                                       uint64_t iova, uint64_t gpa,
++                                       uint32_t len, uint32_t attrs);
++
++void qos_iommu_testdev_single_translation(const QOSIOMMUTestdevDmaCfg *dma,
++                                          void *opaque,
++                                          QOSIOMMUTestdevSetupFn setup_fn,
++                                          QOSIOMMUTestdevAttrsFn attrs_fn,
++                                          QOSIOMMUTestdevValidateFn validate_fn,
++                                          QOSIOMMUTestdevReportFn report_fn,
++                                          uint32_t *dma_result_out);
++
++#endif /* QTEST_LIBQOS_IOMMU_TESTDEV_H */
+diff --git a/tests/qtest/libqos/qos-iommu-testdev.c b/tests/qtest/libqos/qos-iommu-testdev.c
+new file mode 100644
+index 00000000000..91718a56738
+--- /dev/null
++++ b/tests/qtest/libqos/qos-iommu-testdev.c
+@@ -0,0 +1,82 @@
++/*
++ * IOMMU test device helpers for libqos qtests
++ *
++ * Copyright (c) 2026 Phytium Technology
++ *
++ * Author:
++ *  Tao Tang <tangtao1634@phytium.com.cn>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "../libqtest.h"
++#include "pci.h"
++#include "qos-iommu-testdev.h"
++
++uint32_t qos_iommu_testdev_trigger_dma(QPCIDevice *dev, QPCIBar bar,
++                                       uint64_t iova, uint64_t gpa,
++                                       uint32_t len, uint32_t attrs)
++{
++    uint32_t result = ITD_DMA_RESULT_BUSY;
++
++    qpci_io_writel(dev, bar, ITD_REG_DMA_GVA_LO, (uint32_t)iova);
++    qpci_io_writel(dev, bar, ITD_REG_DMA_GVA_HI, (uint32_t)(iova >> 32));
++    qpci_io_writel(dev, bar, ITD_REG_DMA_GPA_LO, (uint32_t)gpa);
++    qpci_io_writel(dev, bar, ITD_REG_DMA_GPA_HI, (uint32_t)(gpa >> 32));
++    qpci_io_writel(dev, bar, ITD_REG_DMA_LEN, len);
++    qpci_io_writel(dev, bar, ITD_REG_DMA_ATTRS, attrs);
++
++    qpci_io_writel(dev, bar, ITD_REG_DMA_DBELL, ITD_DMA_DBELL_ARM);
++    qpci_io_readl(dev, bar, ITD_REG_DMA_TRIGGERING);
++
++    for (int i = 0; i < 1000; i++) {
++        result = qpci_io_readl(dev, bar, ITD_REG_DMA_RESULT);
++        if (result != ITD_DMA_RESULT_BUSY) {
++            break;
++        }
++        g_usleep(1000);
++    }
++
++    if (result == ITD_DMA_RESULT_BUSY) {
++        return ITD_DMA_ERR_TX_FAIL;
++    }
++
++    return result;
++}
++
++void qos_iommu_testdev_single_translation(const QOSIOMMUTestdevDmaCfg *dma,
++                                          void *opaque,
++                                          QOSIOMMUTestdevSetupFn setup_fn,
++                                          QOSIOMMUTestdevAttrsFn attrs_fn,
++                                          QOSIOMMUTestdevValidateFn validate_fn,
++                                          QOSIOMMUTestdevReportFn report_fn,
++                                          uint32_t *dma_result_out)
++{
++    uint32_t config_result;
++    uint32_t dma_result;
++    uint32_t attrs_val;
++
++    g_assert(dma);
++    g_assert(setup_fn);
++    g_assert(attrs_fn);
++
++    config_result = setup_fn(opaque);
++    g_assert_cmpuint(config_result, ==, 0);
++
++    attrs_val = attrs_fn(opaque);
++    dma_result = qos_iommu_testdev_trigger_dma(dma->dev, dma->bar,
++                                               dma->iova, dma->gpa,
++                                               dma->len, attrs_val);
++    if (dma_result_out) {
++        *dma_result_out = dma_result;
++    }
++
++    if (report_fn) {
++        report_fn(opaque, dma_result);
++    }
++
++    if (validate_fn) {
++        g_assert_true(validate_fn(opaque));
++    }
++}
+diff --git a/tests/qtest/libqos/meson.build b/tests/qtest/libqos/meson.build
+index 1ddaf7b095b..9805d63a290 100644
+--- a/tests/qtest/libqos/meson.build
++++ b/tests/qtest/libqos/meson.build
+@@ -60,6 +60,9 @@ libqos_srcs = files(
+         'x86_64_pc-machine.c',
+         'riscv-virt-machine.c',
+         'loongarch-virt-machine.c',
++
++        # SMMU:
++        'qos-iommu-testdev.c',
+ )
  
- REG32(CD_0, 0)
-@@ -169,6 +200,54 @@ REG32(CD_5, 20)
-              (((uint64_t)FIELD_EX32((x)->word[3], CD_3, TTB0_HI) << 32) | \
-               ((uint64_t)FIELD_EX32((x)->word[2], CD_2, TTB0_LO) << 4)))
- 
-+/* Update CD fields */
-+#define CD_SET_VALID(cd, v)                                                   \
-+    ((cd)->word[0] = FIELD_DP32((cd)->word[0], CD_0, VALID, (v)))
-+#define CD_SET_ASID(cd, v)                                                    \
-+    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, ASID, (v)))
-+#define CD_SET_TTB(cd, sel, v) do {                                           \
-+    if (sel) {                                                                \
-+        (cd)->word[4] = FIELD_DP32((cd)->word[4], CD_4, TTB1_LO, (v) >> 4);   \
-+        (cd)->word[5] = FIELD_DP32((cd)->word[5], CD_5, TTB1_HI, (v) >> 32);  \
-+    } else {                                                                  \
-+        (cd)->word[2] = FIELD_DP32((cd)->word[2], CD_2, TTB0_LO, (v) >> 4);   \
-+        (cd)->word[3] = FIELD_DP32((cd)->word[3], CD_3, TTB0_HI, (v) >> 32);  \
-+    }                                                                         \
-+} while (0)
-+
-+#define CD_SET_TSZ(cd, sel, v)                                                \
-+    ((cd)->word[0] = (sel) ? FIELD_DP32((cd)->word[0], CD_0, TSZ1, (v)) :     \
-+                             FIELD_DP32((cd)->word[0], CD_0, TSZ0, (v)))
-+#define CD_SET_TG(cd, sel, v)                                                 \
-+    ((cd)->word[0] = (sel) ? FIELD_DP32((cd)->word[0], CD_0, TG1, (v)) :      \
-+                             FIELD_DP32((cd)->word[0], CD_0, TG0, (v)))
-+#define CD_SET_EPD(cd, sel, v)                                                \
-+    ((cd)->word[0] = (sel) ? FIELD_DP32((cd)->word[0], CD_0, EPD1, (v)) :     \
-+                             FIELD_DP32((cd)->word[0], CD_0, EPD0, (v)))
-+#define CD_SET_ENDI(cd, v)                                                    \
-+    ((cd)->word[0] = FIELD_DP32((cd)->word[0], CD_0, ENDI, (v)))
-+#define CD_SET_IPS(cd, v)                                                     \
-+    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, IPS, (v)))
-+#define CD_SET_AFFD(cd, v)                                                    \
-+    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, AFFD, (v)))
-+#define CD_SET_TBI(cd, v)                                                     \
-+    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, TBI, (v)))
-+#define CD_SET_HD(cd, v)                                                      \
-+    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, HD, (v)))
-+#define CD_SET_HA(cd, v)                                                      \
-+    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, HA, (v)))
-+#define CD_SET_S(cd, v)                                                       \
-+    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, S, (v)))
-+#define CD_SET_R(cd, v)                                                       \
-+    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, R, (v)))
-+#define CD_SET_A(cd, v)                                                       \
-+    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, A, (v)))
-+#define CD_SET_AARCH64(cd, v)                                                 \
-+    ((cd)->word[1] = FIELD_DP32((cd)->word[1], CD_1, AARCH64, (v)))
-+#define CD_SET_NSCFG(cd, sel, v)                                              \
-+    ((sel) ? ((cd)->word[4] = FIELD_DP32((cd)->word[4], CD_4, NSCFG1, (v))) : \
-+             ((cd)->word[2] = FIELD_DP32((cd)->word[2], CD_2, NSCFG0, (v))))
-+
- /* MMIO Registers */
- 
- REG32(IDR0,                0x0)
+ if have_virtfs
 -- 
 2.52.0
 
