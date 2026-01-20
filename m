@@ -2,102 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qCNvCxnKb2mgMQAAu9opvQ
+	id 4B1ZAynNb2mgMQAAu9opvQ
 	(envelope-from <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>)
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:31:53 +0100
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:44:57 +0100
 X-Original-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93ED14980B
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:31:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D2CF49B87
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 19:44:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1viGVe-0001Jb-Dv; Tue, 20 Jan 2026 13:31:22 -0500
+	id 1viGiA-00072i-Qy; Tue, 20 Jan 2026 13:44:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGVc-0001Ih-U8
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:31:20 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1viGVa-0004mz-Vb
- for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:31:20 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-432755545fcso3299571f8f.1
- for <qemu-devel@nongnu.org>; Tue, 20 Jan 2026 10:31:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1768933877; x=1769538677; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=8l7DjF7gyDSglpKq646fLnuvHs25JxjRrZEp3/D9DPQ=;
- b=L5DVDaIQNfQEeEGHtBuqpJiCBM/DolmfJerTMcpC6g35yLaZinZG4mWLmbugh/jwVz
- WLh8DH4vMrbqJZKGuON286k/ZYsrf/ub34GI+yi8f2oOrh7396qnsqPwNWEe2IqWf14i
- jOfj7fPtJXCIyzQ0bcFerarLZK8M1rY3QHc9SiuTNeRazQ+zmZz6iNeGUoRGA1oiYlWP
- Q1E4pjr8GkKDYi14PxeKm5Cfuj5aSWfFVShMBmU25OshvKPcI6t8N11Lnjo4NwN8zd8t
- mYv5X7POdu76wsk0h7CAWqMTYMsLHzpCIhgcdr/HbvxPZDorJ7xBYotYoeeX6dNHQQJw
- sHNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768933877; x=1769538677;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=8l7DjF7gyDSglpKq646fLnuvHs25JxjRrZEp3/D9DPQ=;
- b=R/S5kHVI1g9UrNylX7l1oKsruuMqLiYWuUBnz7xnt3sao15GJYdEY1tuk/7x79cwtG
- ZhMm/+Z7S83fSFI3ObLloJMMqeSQGGInT1+yWO08ZG7I3hhu/Ws434kPOFSsmEtNsD39
- GNmyeN20KJxS6GZ0KgUJw9JEnV2fdjtbVy3awI8b8AR04mLuxHUcF845M4AFKqWKAhyu
- Q37bbh4sFW7OLIBnfwnU4Vdx7cXc9mx8+LdLGNB3G6DBFVWkNF592aWuioPdTQYC51dA
- +F17txkQE255jD/Y10HZaKwvy97uYlqt/Udnt+ibiz0PNO6JkqNq67Zz9whuuTsq8brv
- jVTQ==
-X-Gm-Message-State: AOJu0YwxsxQnIUVo6WaAwRA1eAjrLrD3p03s6lezlSphPEgusMK98e5Z
- TE0ACLn57CADu5Jfk5mwRcdjjcfobrx9d9C0yRE897R/0xTthfoZmahCUU1z/BgeTgc=
-X-Gm-Gg: AZuq6aLpYqf41olTeSgft3GM78hgFQLJJhfg7l/fqi2yVvr1ELzI0xwZQuQOSB8pOxR
- YTi364AGaEYY6qLuJoyIbWSgfVZ/HtsyOhLNDo9tYQxuCynLEFgcbG0ffRROdhrtrJH38ymd0K/
- 75LfS9SIJJiw4GpRqI5G0Ar5xs2eGBe1S7k3wYPfwoK3KIfKdB5DUnBWTlmvfBYVDn+regMGoC/
- ndWJ/S9o2sDCYxQdAgL9W1VckocT/Vez5iUD3sspTJz1L/wxCZm0APuG+5J25MgWxrZAZ9r56DE
- KmGSzFpXxUYL1rpCV+MvuyETCuL+3eub4Pp0sHDH/1sFWvIRGrMgQ4ZrHr9XStivjVcb3YEbmFL
- Yfnj96H34G8Y7+Z2kmXZ2o9ur8CruFH/739SFQddshk1F1hJcvTB5E15jnl2VDh6SEamFSfwjc3
- xtyt7U5Z2MOhcHawlI/PZ7ViMMg+U22avMSuunVysfPPUGXjDWon1MuIuNnMIRjs7U
-X-Received: by 2002:a05:6000:2085:b0:435:907f:e439 with SMTP id
- ffacd0b85a97d-435907fe6bfmr3786416f8f.18.1768933876915; 
- Tue, 20 Jan 2026 10:31:16 -0800 (PST)
-Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-4356996dad0sm30652245f8f.27.2026.01.20.10.31.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jan 2026 10:31:16 -0800 (PST)
-Message-ID: <c9308d86-889f-4ca3-8f67-eb6b253987da@linaro.org>
-Date: Tue, 20 Jan 2026 19:31:14 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v9 3/8] hw/misc: Introduce iommu-testdev for bare-metal
- IOMMU testing
-Content-Language: en-US
-To: Tao Tang <tangtao1634@phytium.com.cn>, Paolo Bonzini
- <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Laurent Vivier <lvivier@redhat.com>, Eric Auger <eric.auger@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- Chen Baozi <chenbaozi@phytium.com.cn>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Mostafa Saleh <smostafa@google.com>,
- CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
-References: <20260119161112.3841386-1-tangtao1634@phytium.com.cn>
- <20260119161112.3841386-4-tangtao1634@phytium.com.cn>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20260119161112.3841386-4-tangtao1634@phytium.com.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+ (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
+ id 1viGi8-0006wr-8F
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:44:16 -0500
+Received: from ci-2001j-snip4-7.eps.apple.com ([57.103.91.100]
+ helo=outbound.ci.icloud.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
+ id 1viGi5-00072v-Pg
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 13:44:16 -0500
+Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
+ by p00-icloudmta-asmtp-us-central-1k-100-percent-0 (Postfix) with ESMTPS id
+ 7F8D91807433; Tue, 20 Jan 2026 18:44:06 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
+ s=sig1; t=1768934652; x=1771526652;
+ bh=6woRe8jTuj6yZ/WBDzOGbJo3INWTQfSFKjPkUVscoE4=;
+ h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme;
+ b=Zv6r54Sjr75Cybh6N88WQNvXdoFkIy9gUvZg56lGIS6+xdtGMgX6BmkpkZ2Dy8wEAoBKK3TH/t7RmyS/Ig0EWZXakc5HvzbuxE9FYF3zLWi8SNUxQ8A6iVXWKhG5+oM9X/PuwPQzM+Tkx46bQpfQOCAfSKeDvDaRIZqlsLX8hC7tkYqp2lc5LlMn4D9rFbiimiLvd9KrF2+oHvHa+khnCmxTyLqZNkYiZd1Rop7bO0OgiWqgGjK0q8/YP6ub7iSo031mwqBIH2MMThobnS1bYm5jgfSx/n7UY+Mhl6eDEuADuBhku8cq/QqSY/CJFL9A6n3WU/1fGabQrw4qt1gnTw==
+mail-alias-created-date: 1752046281608
+Received: from smtpclient.apple (unknown [17.57.156.36])
+ by p00-icloudmta-asmtp-us-central-1k-100-percent-0 (Postfix) with ESMTPSA id
+ ED33618170B4; Tue, 20 Jan 2026 18:31:33 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
+Subject: Re: [PATCH v16 04/26] hw/arm: virt: add GICv2m for the case when ITS
+ is not available
+From: Mohamed Mediouni <mohamed@unpredictable.fr>
+In-Reply-To: <CAFEAcA-3P6i_w3b7SaFTn4Zmwnot5vpDs89y+zpjcJ=-mEnP5w@mail.gmail.com>
+Date: Tue, 20 Jan 2026 19:31:22 +0100
+Cc: qemu-devel@nongnu.org,
+ =?utf-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Pedro Barbuda <pbarbuda@microsoft.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>, qemu-arm@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <8158CEFE-8EA2-40A4-970E-01B30BACC019@unpredictable.fr>
+References: <20260116135235.38092-1-mohamed@unpredictable.fr>
+ <20260116135235.38092-5-mohamed@unpredictable.fr>
+ <CAFEAcA-3P6i_w3b7SaFTn4Zmwnot5vpDs89y+zpjcJ=-mEnP5w@mail.gmail.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+X-Mailer: Apple Mail (2.3864.300.41.1.7)
+X-Proofpoint-GUID: IQMB32Rzn7WyiNvAqKg-8hszxKdXZ2zs
+X-Proofpoint-ORIG-GUID: IQMB32Rzn7WyiNvAqKg-8hszxKdXZ2zs
+X-Authority-Info: v=2.4 cv=DZ4aa/tW c=1 sm=1 tr=0 ts=696fccf9
+ cx=c_apl:c_apl_out:c_pps a=2G65uMN5HjSv0sBfM2Yj2w==:117
+ a=2G65uMN5HjSv0sBfM2Yj2w==:17 a=8tVNtdTugjW4QW2w:21 a=IkcTkHD0fZMA:10
+ a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=KKAkSRfTAAAA:8
+ a=RnglCoYQ5a6lEa2ZeEsA:9 a=QEXdDO2ut3YA:10 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIwMDE1NyBTYWx0ZWRfX19cT9fUl5GnM
+ bM56+yNnsT2x2pttkhPYJBQQRLPqHV1yoKRIse+/FzwMeF1vb2Oan460sZF1RfywIXmm/c5rWgY
+ pJpdoisEVVM1amvuzbEyLNkDf2cB3RKK0+TfB/IUV6sRU7uspRQnlNGV7ZdjpaZm5ugYqW+Y9Xx
+ 5X9Fn+6yImVOc7UtScYZW6iITbwS76smq3vjdBczmd8Wb7Tq76KyCVkt+n03IdJHwexG/fpspf6
+ g9Yf5ZL6ORDYrXvW6lUJ9j+sPJrgNh8zvOrJxdNb+gBx+/FBvKpyoLUBGrMg/mGZcmlgBG/QrNw
+ 7LnDxR+/hNYf6OfCwf1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
+ definitions=2026-01-20_05,2026-01-20_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1030
+ adultscore=0 mlxscore=0 phishscore=0 mlxlogscore=999 suspectscore=0
+ spamscore=0 malwarescore=0 bulkscore=0 classifier=spam authscore=0 adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2601200157
+X-JNJ: AAAAAAAB7r40ZohuCB8s6D8P9BknfoGPXb1Z1SSqaXS1L86OEOuZYV4O/8xRfKD+HuLXcM+TUi4KC57fhg3a8hgKa6+HsyHwtuzD+TbndrCnwYmsrGD1NBG39rUsDygOQfKtWGLVtKPImxDJqHg9gqsUCjnqaoYcmg8UgQqk1TAxcw1zAS9gjdPMgTWwXT0IWYXIyy30Gc3RBoJEezDjkUL38zmFRw43Tf+7m3WNZ8DcYKmumEVckXxund37GSuVbdGJ3cqE7QWLXvdi0WeRI16gCIuN7OGBj+2tfAgXwlUKulw5bpmNC8L0lY6AfiFJk1fw8wn2pw3pYpOHgKr1zcQXq611DBw5s1w3/luxowlTcG3u5xNtHLHgKCyG+DJ/+dMKm64OeY4svZMBcrTLE8kHHPZ9KBDKdbPXyXv787TB2ZDVZHAB4s6mZZ9h9xvzGU3NC7L3IwmmzU/iORobEPeVg9hth3NMduAjkHFdA5VLFPfjOrtIzVVzUEcOCFbCCFl9FqFM8as92ccKFdNE4mecTq7Ub8N0Y3QFQjPjX/UvdkUWWaXxaWjV4xQbslydeQqX+NdNS/uC2Ec+40tF2302Re9h4QQ9csxRdd0R13QLuJDFnwHpPutG3Zj2V6TyRZsXk6I12ABXJNy5oQrSaceQgDeomeG6R1+wvFpt93FNta7AA5u+JVe/1oGV8Bf2VHwEhIOy9Y/QH88K6vY7EXhL7OkaWfe6Bl1D8wz53cz8NHblkddtn4EXkbs3/WB4F9blahejXZut7cy1dgHKasv1YZ3oE7yS1gmckx0tPHEVZJf9WEe+FQA1AmY=
+Received-SPF: pass client-ip=57.103.91.100;
+ envelope-from=mohamed@unpredictable.fr; helo=outbound.ci.icloud.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,136 +106,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
-X-Spamd-Result: default: False [-1.21 / 15.00];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
+X-Spamd-Result: default: False [0.79 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[unpredictable.fr,reject];
+	MV_CASE(0.50)[];
 	MAILLIST(-0.20)[mailman];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	R_DKIM_ALLOW(-0.20)[unpredictable.fr:s=sig1];
+	R_SPF_ALLOW(-0.20)[+ip4:209.51.188.0/24:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:tangtao1634@phytium.com.cn,m:pbonzini@redhat.com,m:farosas@suse.de,m:lvivier@redhat.com,m:eric.auger@redhat.com,m:peter.maydell@linaro.org,m:alex.bennee@linaro.org,m:qemu-devel@nongnu.org,m:qemu-arm@nongnu.org,m:chenbaozi@phytium.com.cn,m:pierrick.bouvier@linaro.org,m:smostafa@google.com,m:clement.mathieu--drif@eviden.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[philmd@linaro.org,qemu-devel-bounces@nongnu.org];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	ARC_NA(0.00)[];
+	TAGGED_FROM(0.00)[lists,qemu-devel=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_CC(0.00)[nongnu.org,redhat.com,microsoft.com,habkost.net,gmail.com,philjordan.eu,rsg.ci.i.u-tokyo.ac.jp,linaro.org];
 	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[qemu-devel@nongnu.org];
-	DKIM_TRACE(0.00)[linaro.org:+];
-	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[philmd@linaro.org,qemu-devel-bounces@nongnu.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[mohamed@unpredictable.fr,qemu-devel-bounces@nongnu.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[unpredictable.fr:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[qemu-devel];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linaro.org:dkim,linaro.org:mid,suse.de:email,lists.gnu.org:rdns,lists.gnu.org:helo,eviden.com:email]
-X-Rspamd-Queue-Id: 93ED14980B
+	ASN(0.00)[asn:22989, ipnet:209.51.188.0/24, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[unpredictable.fr:mid,unpredictable.fr:dkim,lists.gnu.org:rdns,lists.gnu.org:helo,linaro.org:email]
+X-Rspamd-Queue-Id: 8D2CF49B87
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 19/1/26 17:11, Tao Tang wrote:
-> Add a minimal PCI test device designed to exercise IOMMU translation
-> (such as ARM SMMUv3) without requiring guest firmware or OS. The device
-> provides MMIO registers to configure and trigger DMA operations with
-> controllable attributes (security state, address space), enabling
-> deterministic IOMMU testing.
-> 
-> Key features:
-> - Bare-metal IOMMU testing via simple MMIO interface
-> - Configurable DMA attributes for security states and address spaces
-> - Write-then-read verification pattern with automatic result checking
-> 
-> The device performs a deterministic DMA test pattern: write a known
-> value (0x12345678) to a configured GVA, read it back, and verify data
-> integrity. Results are reported through a dedicated result register,
-> eliminating the need for complex interrupt handling or driver
-> infrastructure in tests.
-> 
-> This is purely a test device and not intended for production use or
-> machine realism. It complements existing test infrastructure like
-> pci-testdev but focuses specifically on IOMMU translation path
-> validation.
-> 
-> Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
-> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> Reviewed-by: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
-> Reviewed-by: Fabiano Rosas <farosas@suse.de>
-> ---
->   MAINTAINERS                     |   7 +
->   docs/specs/index.rst            |   1 +
->   docs/specs/iommu-testdev.rst    | 138 ++++++++++++++
->   hw/misc/Kconfig                 |   5 +
->   hw/misc/iommu-testdev.c         | 318 ++++++++++++++++++++++++++++++++
->   hw/misc/meson.build             |   1 +
->   hw/misc/trace-events            |  10 +
->   include/hw/misc/iommu-testdev.h |  87 +++++++++
->   8 files changed, 567 insertions(+)
->   create mode 100644 docs/specs/iommu-testdev.rst
->   create mode 100644 hw/misc/iommu-testdev.c
->   create mode 100644 include/hw/misc/iommu-testdev.h
 
 
-> diff --git a/docs/specs/iommu-testdev.rst b/docs/specs/iommu-testdev.rst
-> new file mode 100644
-> index 0000000000..e15f9a55a7
-> --- /dev/null
-> +++ b/docs/specs/iommu-testdev.rst
-> @@ -0,0 +1,138 @@
-
-Squashing 'SPDX-License-Identifier: GPL-2.0-or-later' like .c & .h.
-
-> +iommu-testdev — IOMMU test device for bare-metal testing
-> +=========================================================
-> +
-> +Overview
-> +--------
-> +``iommu-testdev`` is a minimal, test-only PCI device designed to exercise
-> +IOMMU translation (such as ARM SMMUv3) without requiring firmware or a guest
-> +OS. Tests can populate IOMMU translation tables with known values and trigger
-> +DMA operations that flow through the IOMMU translation path. It is **not** a
-> +faithful PCIe endpoint and must be considered a QEMU-internal test vehicle.
-   ...
-
-> diff --git a/hw/misc/iommu-testdev.c b/hw/misc/iommu-testdev.c
-> new file mode 100644
-> index 0000000000..15eb6de78a
-> --- /dev/null
-> +++ b/hw/misc/iommu-testdev.c
-> @@ -0,0 +1,318 @@
-> +/*
-> + * A test device for IOMMU
-> + *
-> + * Copyright (c) 2026 Phytium Technology
-> + *
-> + * Author:
-> + *  Tao Tang <tangtao1634@phytium.com.cn>
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
+> On 20. Jan 2026, at 19:02, Peter Maydell <peter.maydell@linaro.org> =
+wrote:
 
 
-> diff --git a/include/hw/misc/iommu-testdev.h b/include/hw/misc/iommu-testdev.h
-> new file mode 100644
-> index 0000000000..338365947c
-> --- /dev/null
-> +++ b/include/hw/misc/iommu-testdev.h
-> @@ -0,0 +1,87 @@
-> +/*
-> + * A test device for IOMMU
-> + *
-> + * Copyright (c) 2026 Phytium Technology
-> + *
-> + * Author:
-> + *  Tao Tang <tangtao1634@phytium.com.cn>
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
+> The MSI controller selection logic is already pretty confusing,
+> and this is making it more complicated. I don't think we should
+> need this machine back compatibility, because currently there
+> is no setup where you can have a GICv3 that doesn't also have
+> either an ITS or no MSI controller.
+>=20
+Hello,
+
+This was to replicate the =E2=80=9Cno_tcg_its=E2=80=9D where this was =
+done when introducing TCG.
+And for the purpose of VM save/restore on HVF with the older machine =
+type continuing to work as expected.
+
+Also worth noting that for HVF specifically GICv3 + ITS works today when =
+using kernel-irqchip=3Doff
+and that only kernel-irqchip=3Don to leverage the hardware vGIC =
+doesn=E2=80=99t support it.
+
+> I think also that we can make the code cleaner if we:
+> (1) clean the existing "pick an MSI controller" logic up
+> so that we do it up front, the same way we do "pick a GIC
+> version"
+> (2) add the new "msi" property and deprecate the old "its" one
+> (3) then add the gicv3-with-gicv2m-on-hvf logic to that
+>=20
+> I see this series adds an "msi" property, but it also
+> makes the old "its" property an OnOffAuto -- do we really
+> need both ?
+The =E2=80=9Crework MSI-X configuration=E2=80=9D patch in the series =
+flips the =E2=80=9Cits=E2=80=9D property
+back to a bool.
+
+Would it be better to reorder that earlier in the series or keep it as =
+is?
+Squashing the =E2=80=9Chw/arm: virt: cleanly fail on attempt to use the =
+platform vGIC together with ITS=E2=80=9D commit
+with =E2=80=9Crework MSI-X configuration=E2=80=9D is an option too.
+
+Thank you,
+-Mohamed
+=20
+> I wrote some code for this this afternoon before I realised
+> that you'd done the "msi" property in that series (so the
+> duplication with your work is my fault). I'll send them
+> out as an RFC to give an idea of what I have in mind.
+
 
