@@ -2,52 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4558D3BEC5
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 06:24:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 560B0D3BEC0
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jan 2026 06:24:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1vi4BE-0001az-SU; Tue, 20 Jan 2026 00:21:28 -0500
+	id 1vi4Cx-0006YR-PX; Tue, 20 Jan 2026 00:23:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1vi4B7-00018F-Gs; Tue, 20 Jan 2026 00:21:21 -0500
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1vi4B5-00053q-FU; Tue, 20 Jan 2026 00:21:20 -0500
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Tue, 20 Jan
- 2026 13:19:08 +0800
-Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Tue, 20 Jan 2026 13:19:08 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>, Andrew Jeffery
- <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, "open
- list:ASPEED BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>
-CC: <troy_lee@aspeedtech.com>, Kane-Chen-AS <kane_chen@aspeedtech.com>
-Subject: [PATCH v5 22/22] test/functional/aarch64: Add I2C test for AST1700 IO
- expanders
-Date: Tue, 20 Jan 2026 13:18:53 +0800
-Message-ID: <20260120051859.1920565-23-kane_chen@aspeedtech.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260120051859.1920565-1-kane_chen@aspeedtech.com>
-References: <20260120051859.1920565-1-kane_chen@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vi4Cn-0006M5-JQ
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 00:23:05 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1vi4Cl-0005MR-RV
+ for qemu-devel@nongnu.org; Tue, 20 Jan 2026 00:23:05 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-47ee07570deso33515295e9.1
+ for <qemu-devel@nongnu.org>; Mon, 19 Jan 2026 21:23:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1768886582; x=1769491382; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ypLxl3JUA61p+0cp4u8H24rNYVH0VBvsJ96rBibZ3bI=;
+ b=ztp9OUMsVsdQpkgEm8wD2Z0bYl+73adLwvwB7KUOBnZUXlsKirSEtglEPiYqFdR//A
+ 0wt1C+YbTsMP9f9Zj2ZBPNMvDbqn6R0ESFOz0Vz5UUg59G/8jJvwMi2g7nEQGFO1bpW8
+ HTotg0lPjHmViYJARf47tnX8BLLekE5DPrIABev7Q6wxcIVF0bH+lLmhq6nECz4XHoYj
+ N7Vqy4Db5RPeyrzD25/KvrcPfM0ihDDr6zpdqffi+s130j794NeNdbr6KQiy1fvi1axd
+ uQoXQCSjdkpE0qcT/bAHELTmlwAMOrnH9vAVOCebHj+Me8sFbwnWMGEDh6KbCLLbrHEU
+ 8WtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768886582; x=1769491382;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ypLxl3JUA61p+0cp4u8H24rNYVH0VBvsJ96rBibZ3bI=;
+ b=MB3kEQP0cql+B8LKYfaHaydfqqAnTcbkTqUX/T4vTwTdmVVYQVmUaXGvbyMDTGAom7
+ V1pYz7huC3AO6C0vgGIaQx+JcQk0a/d6resVu9YZTGr14mISOerffO4WHkXra15yU45O
+ H3RalBShp7hIjs+g9x0WQIxqfCpttJtFaQJgCkKqPorwW1VzKAuSHnWeOyW/BxFIe/i7
+ bq+h4zOkMxp9DQIl2rGlVX2tNem88m4k9GI2PgzfJQXNSGnVSV5J0lhbBRHKeJhAHHKy
+ RUML7KwDFmC+Oj8uGWiyc7AfpX2MBu2wqh7jyo9IoIkYHnpRzG4HcUfhbUqeT44vx7LD
+ m9xQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWzSooSYZ35EwAFAJEqC+BkDMJwUiJlddNaH4EXhPVH3bXmIcyTEloPuSjkDwvTVR1tXIMJ0wrZfd/x@nongnu.org
+X-Gm-Message-State: AOJu0YwW4FpVSZ1u0/nCvG62p8ydBqzqtkQn5gIOKJsXDOsTCkUy5HVX
+ zoGCz5g5/MEaTi/jw8R1t7gaXTNGyWqm1fb632//jLojBIQlVz797AtTQ4ujPOqdChQ=
+X-Gm-Gg: AY/fxX50XERi+nhmBbTn3ooZIrxhQjCup0AIEtYHKkv1HysPGvTu2ANRYKQYDnlmd02
+ GIGybdTKteyblKkBsu0/PWVpx6fNMTnUwIC9c5pwKQkARfhu5DzM97dF3ItoUsqrC920LFxuRWW
+ XY2ckLwN6tQ9euJ5sttWrexlirR4HshgQ3+EtCd9dl1hxJ/RWiw35DiEsZHExMWATkcdR05HPaS
+ Ks/aSwvCrnqb0039v3XF9NNqgEi1iv4mQWAPocRUtP06V1/ZwunKmmXpZ2Lsd8cIHgu4CH5wjmK
+ y7hdGHo2QC9kRRQ5jD+L7OAu679VmLpzid1hnBpaHQpxcTikEyTWpbfqTLtK0byWRIbv7RK5GPL
+ GVCHn2iqubF/NvFgSFTTFwpGxSjZXxUgTYl2YEKgXLHMjvaJA0hhgri6vHjvndwtLDTBC1bHc0N
+ FmPZgb8jF65S0qls0p6atYOXTRBHWd3z/cFWhHzx1Ikbc5vlNwPG/ORw==
+X-Received: by 2002:a05:600c:c04b:10b0:477:582e:7a81 with SMTP id
+ 5b1f17b1804b1-4801eab9e81mr131146255e9.4.1768886581808; 
+ Mon, 19 Jan 2026 21:23:01 -0800 (PST)
+Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-47f4289b7aasm289067695e9.2.2026.01.19.21.23.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 19 Jan 2026 21:23:01 -0800 (PST)
+Message-ID: <37c56641-346d-41d8-88a0-57f4994c6ca4@linaro.org>
+Date: Tue, 20 Jan 2026 06:23:00 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] docs: avoid unintended mailto: hyperlinks
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>, Zhang Chen <zhangckid@gmail.com>,
+ Li Zhijian <lizhijian@fujitsu.com>
+References: <20260115142629.665319-1-peter.maydell@linaro.org>
+ <20260115142629.665319-3-peter.maydell@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20260115142629.665319-3-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=kane_chen@aspeedtech.com; helo=TWMBX01.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,69 +103,26 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Kane Chen <kane_chen@aspeedtech.com>
-From:  Kane Chen via qemu development <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kane-Chen-AS <kane_chen@aspeedtech.com>
+On 15/1/26 15:26, Peter Maydell wrote:
+> In rST documents, an '@' character in normal text or a parsed-literal is
+> assumed to be an email address and will result in a 'mailto:' hyperlink in
+> the generated HTML.  In several places we have mailto: hyperlinks that are
+> unintended nonsense; correct these by either escaping the @ character or
+> making the text use ``...`` preformatted rendering.
+> 
+> This commit covers only the simple cases which can be trivially fixed
+> with escaping or ``..``; the remaining cases will be handled in
+> separate commits.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   docs/devel/submitting-a-patch.rst     | 2 +-
+>   docs/system/device-url-syntax.rst.inc | 4 ++--
+>   docs/system/vnc-security.rst          | 6 +++---
+>   3 files changed, 6 insertions(+), 6 deletions(-)
 
-Extend the AST2700 test suite to verify I2C connectivity on AST1700
-IO expanders using the DCSCM image. This validates the new bus-label
-naming scheme by testing communication on both primary and
-expander-attached I2C buses.
-
-Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
----
- .../functional/aarch64/test_aspeed_ast2700.py | 24 +++++++++++++++++++
- 1 file changed, 24 insertions(+)
-
-diff --git a/tests/functional/aarch64/test_aspeed_ast2700.py b/tests/functional/aarch64/test_aspeed_ast2700.py
-index 438f7eb37c..f2bdac5177 100755
---- a/tests/functional/aarch64/test_aspeed_ast2700.py
-+++ b/tests/functional/aarch64/test_aspeed_ast2700.py
-@@ -50,10 +50,21 @@ def verify_openbmc_boot_and_login(self, name):
-         exec_command_and_wait_for_pattern(self, 'root', 'Password:')
-         exec_command_and_wait_for_pattern(self, '0penBmc', f'root@{name}:~#')
- 
-+    def bring_up_ast1700_and_login(self, name):
-+        wait_for_console_pattern(self, 'Hit any key to stop autoboot')
-+        exec_command_and_wait_for_pattern(self, '0', '=>')
-+        exec_command_and_wait_for_pattern(self, 'cp.b 100420000 403000000 800000; bootm 403000000#conf-ast2700-dcscm_ast1700-evb.dtb', f'{name} login:')
-+        exec_command_and_wait_for_pattern(self, 'root', 'Password:')
-+        exec_command_and_wait_for_pattern(self, '0penBmc', f'root@{name}:~#')
-+
-     ASSET_SDK_V908_AST2700A1 = Asset(
-             'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.08/ast2700-default-obmc.tar.gz',
-             'eac3dc409b7ea3cd4b03d4792d3cebd469792ad893cb51e1d15f0fc20bd1e2cd')
- 
-+    ASSET_SDK_V908_AST2700A1_DCSCM = Asset(
-+            'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.08/ast2700-dcscm-obmc.tar.gz',
-+            '59dc1282db886087342419824edf91806bb4f83febf916ec5350238aa5613268')
-+
-     def do_ast2700_i2c_test(self, bus_id):
-         bus_str = str(bus_id)
-         exec_command_and_wait_for_pattern(self,
-@@ -148,5 +159,18 @@ def test_aarch64_ast2700a1_evb_sdk_vbootrom_v09_08(self):
-         self.verify_vbootrom_firmware_flow()
-         self.verify_openbmc_boot_start()
- 
-+    def test_aarch64_ast2700a1_evb_ioexp_v09_08(self):
-+        self.set_machine('ast2700a1-evb')
-+        self.require_netdev('user')
-+
-+        self.archive_extract(self.ASSET_SDK_V908_AST2700A1_DCSCM)
-+        self.vm.set_machine('ast2700a1-evb,fmc-model=w25q512jv')
-+        self.vm.add_args('-device',
-+                         'tmp105,bus=ioexp0.0,address=0x4d,id=tmp-test-16')
-+        self.start_ast2700_test_vbootrom('ast2700-dcscm', 8)
-+        self.bring_up_ast1700_and_login('ast2700-dcscm')
-+        self.do_ast2700_i2c_test(8)
-+        self.do_ast2700_i2c_test(16)
-+
- if __name__ == '__main__':
-     QemuSystemTest.main()
--- 
-2.43.0
-
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
